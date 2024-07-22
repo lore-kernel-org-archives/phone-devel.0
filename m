@@ -1,116 +1,95 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E164E4400;
-	Sun, 21 Jul 2024 17:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE05D53F;
+	Mon, 22 Jul 2024 07:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721584046; cv=none; b=UwJYE6AvOSHoaNkOGIrb9BfAzvgxWaHtt5+lhvCDCgs+VrHEtdwwq9bnx/fa9arQdGiviNWAXylvFM6nipxI4iUJq7oSf7/Xh2KXuaqE21fIGvjrOUr7HYiIuxeBo8kqNjYBtmcUKtDboB9RqJTD2Gj4sjb/nk8vslTTIV7nZHs=
+	t=1721632266; cv=none; b=o8Uz/pfOxEFwnl9m8mqCqj9WhxJ8jZj5MK/MaChAf0miWNwHbCxCoNVjzbkGbCUtZSPLTNUlXA6hW+SqXsJnRGxWayqGF9x4HoyXUkgYQl/Rn3oqOXcJaHOVxrCKZ512lc6+QUT2e34cJfZcX3TE2MlNI0HkbafgXUn+eOnttEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721584046; c=relaxed/simple;
-	bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ryM5VHEQO1y8osePLI5ZM49qlwfCIBgCtThvy23y5RzOolnFCo8QCpOILWBQOfu8Ez7RamJV8AK9yqDkhp7dM47Y535K8Bz6VddkDclO3TduToFEaJUsdqYwFrTgm6x3umt4kIBED0gbUVjnO8YMF9178EugS5EKTkZ6vwNWook=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=Sgu3+6TU; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=JG7lptBq; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1721632266; c=relaxed/simple;
+	bh=Nty9qEmvFD3zjctxi60UX8L3t/rMXaATRXBcG6VkeGg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CygV4XI1imI/XcfBbYuxkE5Ybh9lM4mjoND9McO3/cTnZYcV57vtNGbWzrMspun6kixYpAlP51vISR5h/y5HmxNDqe4snzGLZ7x7eHNMx4FF2l7CeTwxPAMwiuYJwws/cl+y0gOh4NPGyuSus0/tVVilRLi8WTqvGblf0o1WUQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=dNyJ235n; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="Sgu3+6TU";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="JG7lptBq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1721583606; bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sgu3+6TUeBs+SpS0KIiuym/svV7vKmdzh0FMv7dw+unTmpBdSdnw2shBF1xwZQFby
-	 GWNpXf5ceCVDIL1+LqZirojLCDOvbcVKUF2Kn5I+sWaupLuzob0k7GYV1Q6lZj2ofX
-	 9cHSdFDxroWIyJmhe5AcYeI7XdlX75Sb+1CDNPdN6gaZywKYo4OHDpHWqrvTsOwy8m
-	 FAMQziD4rAYwWOUa5M8oqxJskf/Tf76ONvBW2Tuh9/N2q86b1+fw2pDRsjMJsU0toB
-	 vMkdC359yVpUCGB+1gqzFjBIiFngUdxd/IYSzvDfWLNwMLaOi2+056j4tVD6u9iJsB
-	 SFJe82Id1M16w==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 87768FB03;
-	Sun, 21 Jul 2024 19:40:06 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 7RSxfV_Cfwjt; Sun, 21 Jul 2024 19:40:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1721583603; bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JG7lptBq5VbklQ71l4pTx+U9PtHQB+rI0ClnYKKGMgR4Ot5nexQEddlITanvYyt1L
-	 xjEbhl7DEXg153uZOzv7HjwrlWJjNGPuai0oGPjNlvIkmzHaAD9/ylzQ5+6hVvBQIt
-	 DkASeega108UvNt8Ak8qnVr4NIBBSRkJXkvNyXK5Wc4NAZaos5g2BFSGrawI2DTcjB
-	 oU0GYHw7XFu59wfZdeeHM612IxUk+OL0Z/KLLT2MxPtFNJ6qTS5gsnb9HG13Rpd8XK
-	 i3Aow+SociT+UaeCv9GnySWshfex5db8QgYdq1IWcBRx1bubzuDDMhyoGZkOJYPzwy
-	 xNrDKkGxnmcmw==
-Date: Sun, 21 Jul 2024 19:40:01 +0200
-From: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Hermes Zhang <chenhuiz@axis.com>, Tony Lindgren <tony@atomide.com>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
-Message-ID: <Zp1H8UC2MLZizjHn@qwark.sigxcpu.org>
-References: <cover.1715255980.git.agx@sigxcpu.org>
- <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
- <ZkKQoTq2xyNvJlHE@google.com>
- <ZkOLwIEuZ8hfzO4M@qwark.sigxcpu.org>
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="dNyJ235n"
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4WSBJl2k94zDqX8;
+	Mon, 22 Jul 2024 07:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1721632263; bh=Nty9qEmvFD3zjctxi60UX8L3t/rMXaATRXBcG6VkeGg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=dNyJ235n4dCKzF2LPgswFnlNAVlgQ1lW8VYI+49l2l2m++vzdxEFBdm4Q+hYBtsfm
+	 /KcsUJ1e0wKboVQY07x1i/mdJpnZh43C+qlTVpnupM5Bz7OEufePV441rgryCInzsj
+	 esojVTDeeIZVxy9en0Nmeeki3JzvQ80OLTx0VbVE=
+X-Riseup-User-ID: 10048D71B9D1C5C1D8B2623470FC11309BFDDC133F94D03C7F3E159DE8C04C92
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WSBJT1wFWzJrYb;
+	Mon, 22 Jul 2024 07:10:49 +0000 (UTC)
+From: Dang Huynh <danct12@riseup.net>
+Subject: [PATCH 00/12] F(x)tec Pro1X feature expansion
+Date: Mon, 22 Jul 2024 14:10:10 +0700
+Message-Id: <20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZkOLwIEuZ8hfzO4M@qwark.sigxcpu.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANIFnmYC/x3MQQqDMBBG4avIrB2IQ9XiVcTF0P5pZ5NqohIQ7
+ 27q8i2+d1BCNCQaqoMidkv2CyWauqLXV8MHbO/SJE4erhfhJTeudeyh6xbByLOGP+LedyrdU7x
+ AqfA5wlu+1+N0nhdLXk0YagAAAA==
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dang Huynh <danct12@riseup.net>
 
-Hi,
-On Tue, May 14, 2024 at 06:05:20PM +0200, Guido Günther wrote:
-> Hi,
-> On Mon, May 13, 2024 at 03:13:53PM -0700, Dmitry Torokhov wrote:
-> > Hi Guido,
-> > 
-> > On Thu, May 09, 2024 at 02:00:28PM +0200, Guido Günther wrote:
-> > > This helps user space to figure out which keys should be used to unidle a
-> > > device. E.g on phones the volume rocker should usually not unblank the
-> > > screen.
-> > 
-> > How exactly this is supposed to be used? We have "disabled" keys and
-> > switches attribute because this function can be controlled at runtime
-> > from userspace while wakeup control is a static device setting.
-> 
-> Current Linux userspace usually unblanks/unidles a device on every
-> keypress. That is usually not the expected result on phones where often
-> only the power button and e.g. some home buttons should do this.
-> 
-> These keys usually match the keys that are used as wakeup sources to
-> bring a device out of suspend. So if we export the wakeup keys to
-> userspace we can pick some sensible defaults (overridable via hwdb¹).
-> 
-> > Kernel also does not really know if the screen should be unblanked or
-> > not, if a button or switch is configured for wake up the kernel will go
-> > through wakeup process all the same and then userspace can decide if it
-> > should stay woken up or not.
-> 
-> Yes, we merely want that as a hint to figure out sensible defaults in
-> userspace (which might be a subset of the wakeup keys).
+This patch series expand F(x)tec Pro1X (QX1050) device tree to support
+various components of the device.
 
-Is there anything I can do to get this applied (currently we play
-catchup per device when the wakup keys change) ?
+Most notably:
++ SD Card slot
++ Touchscreen
++ MDSS, DRM display panel
++ WLAN (ATH10K)
++ Hall sensor and camera button
 
-Cheers,
- -- Guido
+This patch series has been tested on Buildroot Linux with TQFTPSERV and
+RMTFS present in userspace.
 
-> 
-> Cherrs,
->  -- Guido
-> 
-> ¹) See https://gitlab.gnome.org/World/Phosh/gmobile/-/blob/main/data/61-gmobile-wakeup.hwdb?ref_type=heads#L57-L59
-> 
-> > 
-> > Thanks.
-> > 
-> > -- 
-> > Dmitry
-> > 
+Signed-off-by: Dang Huynh <danct12@riseup.net>
+---
+Dang Huynh (12):
+      arm64: dts: qcom: sm6115-pro1x: Add Hall Switch and Camera Button
+      arm64: dts: qcom: sm6115-pro1x: Add PCA9534 IO Expander
+      arm64: dts: qcom: sm6115-pro1x: Add Goodix Touchscreen
+      arm64: dts: qcom: sm6115-pro1x: Add Caps Lock LED
+      arm64: dts: qcom: sm6115-pro1x: Enable SD card slot
+      arm64: dts: qcom: sm6115-pro1x: Enable MDSS and GPU
+      arm64: dts: qcom: sm6115-pro1x: Hook up USB3 SS
+      arm64: dts: qcom: sm6115-pro1x: Update copyright year
+      arm64: dts: qcom: sm6115-pro1x: Add PMI632 Type-C property
+      arm64: dts: qcom: sm6115-pro1x: Enable RGB LED
+      arm64: dts: qcom: sm6115-pro1x: Enable remoteprocs
+      arm64: dts: qcom: sm6115-pro1x: Enable ATH10K WLAN
+
+ arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 316 +++++++++++++++++++++++-
+ 1 file changed, 306 insertions(+), 10 deletions(-)
+---
+base-commit: 41c196e567fb1ea97f68a2ffb7faab451cd90854
+change-id: 20240722-qx1050-feature-expansion-7f6a2682f2ea
+
+Best regards,
+-- 
+Dang Huynh <danct12@riseup.net>
+
