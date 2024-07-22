@@ -1,68 +1,105 @@
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEC216ABF3;
-	Mon, 22 Jul 2024 09:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237A116C437;
+	Mon, 22 Jul 2024 09:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721639836; cv=none; b=CPcqUhbM0a431qhYgRDnR1i23JzJlMf+uAC4TLDLY61ts6DYYdto0SToYhbfOJ0E2N3sXKyF9bdXSm72QuICHIhfjGt+1S3Hv76k893mM5seWQDO7Y58jLn4hfBQx3EVaNGDQ9fYfyrybGiW2xBvfHiTOZuPGwvudiGKJL5FdVo=
+	t=1721641936; cv=none; b=eishTYswVoroD/93HbAsoPab37cUt7EgQBnQdBxLlSOPB+uSfiFD0wvjXR3dw4ZbJKMzXEEsb1Cmw8RPuj8RSDqYiXmSgmxJlnHu77TXlhLyE1mnHsSU9Xz/ZIPE/n/WmTWknpXuDI6PGnce8yBqgvqbxAdBSKvKxzHaThiIVdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721639836; c=relaxed/simple;
-	bh=fScq566XnRNd6AA0xPg2aOnSVjCHflGPmFXAyikTsn0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tlG035EaXEEmrtBUTd9R1cwUaIRjTf9I7lrp6E5jv8wIWOtwMC8Pff53AlaNeBKVXRjWVimqEwdsgDZJ6X4DQnFHmhV1uU7GimE2Tf4Qflqf7t1eSZySeaCL8zeDb0EjiDfVhbGHCaSAJ5+BEd906QDdhSq9hXGy76n7Mq3tfJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=MvZCyBoy; arc=none smtp.client-ip=198.252.153.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+	s=arc-20240116; t=1721641936; c=relaxed/simple;
+	bh=0LjKiXktDHZSweMPPr1G1Ui1nNR6eQAesBAToZ8LpPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nbr1PLCiYZH4EgSblMrPTdZaRl34wdMCK1Om1CtHqTc9Fwm/1EAiNOlONQAMdi6IYw+KtJ5z3rTyXJle4XGTXMOk9BjZKG1w9iAseDtucEa/u5djL14/OYXcjO+eVVLCs9C2+1j1X9jBAPO/WeCjJt3H1M+GG2qKXfMMnpEbbR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TbzHNfLF; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="MvZCyBoy"
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx0.riseup.net (Postfix) with ESMTPS id 4WSF6L1d3wz9s93;
-	Mon, 22 Jul 2024 09:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-	t=1721639834; bh=fScq566XnRNd6AA0xPg2aOnSVjCHflGPmFXAyikTsn0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvZCyBoykTnWpCWx8TXn0hRq5FhaU62QJe+vV/sUskf6uwXqELsnAKfBKx9slnrSy
-	 jqdvtt0eYbENjltPcU2Fkz4pArPj4u4jFmuwAkd2IjyHsB9/PcyTwcDvPDFvhZ1xIE
-	 35dthzS/m9YwmWOv5+B4ZzBKaI79irKmDw2+gzNE=
-X-Riseup-User-ID: DA389E7C6FEA219298227EA4A4FB07FF7A1A5924C27901CEDFF03F711FD62ACC
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WSF6H36BDzJn9v;
-	Mon, 22 Jul 2024 09:17:11 +0000 (UTC)
-From: Dang Huynh <danct12@riseup.net>
-To: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/12] arm64: dts: qcom: sm6115-pro1x: Enable MDSS and GPU
-Date: Mon, 22 Jul 2024 16:17:08 +0700
-Message-ID: <15331308.O9o76ZdvQC@melttower>
-In-Reply-To: <b902989e-148a-430c-a013-172e49733769@linaro.org>
-References:
- <20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net>
- <20240722-qx1050-feature-expansion-v1-6-c4d486435b96@riseup.net>
- <b902989e-148a-430c-a013-172e49733769@linaro.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TbzHNfLF"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52f025ab3a7so1361634e87.2;
+        Mon, 22 Jul 2024 02:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721641933; x=1722246733; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9E2WTC0jfBaQQGfChBxNUT7+lSWee29QeSeHVUI7bU=;
+        b=TbzHNfLFhpMVKWrJUMr1TkZyd2XluCdoDEj8ZZM+D+Y9MZlSEaIkzhTIXvEXWZCBWj
+         wHh/izlQWQa2XoWYrskT/vcB9cdl44wcDmbofuJVfUs9iFjO9TsnYCZjjIUlhNS/n2Y/
+         NpCLsVErqHxiUJmzYK58RgwT7ET4+fed9VeHLaArt8PWLOlQpYa/eVwq+mzQuFXV+ZP8
+         THcwVPH1Hcg51MOG3R8VCs6VNmPWUTRFN17DXOL0UwGT77P6HYA3Nus8EwQLoqSQ26/5
+         1tfoK6kzdBIaLFw4PhzqEM0RST0pTbX6XomIxVp7JgI0W8aJH/Mdg5/8rW/ms0KGbRUH
+         DohA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721641933; x=1722246733;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M9E2WTC0jfBaQQGfChBxNUT7+lSWee29QeSeHVUI7bU=;
+        b=HbFp2XP7tH2XKf9jLdcCdNb83G+6iTLGom9pJf+GOCzRFVq9ga6Y5mARxF+WsRNZYR
+         Av8te949VH9m4dcMqutdy+uHA18CoFvxv0nDpiVzY5EU0/FMcdwpShFatd00RfxiCkbd
+         TAhrYqoIHg+SBoPEilvFOhpyUUqJcemT120IM7aAmrvjZfR0EUjWt42xjXmXdyvYqOLK
+         c3jPIdiZlfVWvXrdoPvtU0WUJephWQ2QwBuHb4NL78ASMFwXULQ7wNJdFw9Eg4Ab7rkq
+         L2ImNYTtcFsPKU8V4c7yGm4uh/rfmKvFMN5KKmexiya4SVuTdfPnatvhgKACcJ7xAdT+
+         Nttw==
+X-Forwarded-Encrypted: i=1; AJvYcCXELQbYfAYDsMxOqCo5QXnx1pKvi5x5hOgGd3oALjcZyH+zYzH7HxEZswXtjOR+9JE7HKRdhPwFHqj+nBJ7TXyz/Jllm1EpHPPnRXPQuKHFhBhsKFmBBv5cLCNiX8Z8TjUfmInOm7s6ja6wUOiGj9Mv4PEcMN3eXTHIwHsourVlaOFdnWfUmocfu7skAgUTrSFo6Z1lOq/RpkEAFze8YsKaazLhnA==
+X-Gm-Message-State: AOJu0YydCQJiwe3XF9BcVG5AmtV3VDiZ/7c2sABy6G19DFKElvo83UWp
+	x7a8fvo7HAPlLjhQ2czJ+1EKu0a4zpfnXVrKvSdmwboiws3IkB/l13/RRA==
+X-Google-Smtp-Source: AGHT+IHUrVK9nAGRcepdpcmmyoaKs3owYskKR6lrL0H9J1qjEWYRZA/UQF9/9MY/4zXr/4CmzISjbA==
+X-Received: by 2002:ac2:4e15:0:b0:52c:a016:5405 with SMTP id 2adb3069b0e04-52ef8d859f8mr4808575e87.8.1721641932543;
+        Mon, 22 Jul 2024 02:52:12 -0700 (PDT)
+Received: from localhost.localdomain (byy214.neoplus.adsl.tpnet.pl. [83.30.44.214])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fc226cdccsm91552e87.164.2024.07.22.02.52.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jul 2024 02:52:11 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-arm-msm@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] MSM8953/MSM8976 ASoC support
+Date: Mon, 22 Jul 2024 11:51:04 +0200
+Message-ID: <20240722095147.3372-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-> > +&mdss_dsi0_phy {
-> > +	status = "okay";
-> 
-> No power supplies?
-> 
-> Konrad
+Introduce support for basic sound card setup on MSM8953/MSM8976
+platforms, document new compatibles and introduce support for more dais.
+Most of code is sourced from msm8953-mainline fork over github
+with some changes implemented by me,some basic changes are 
+mentioned in each patch.
 
-Doesn't seem to be defined anywhere on downstream, may be hardware controlled.
+Adam Skladowski (1):
+  ASoC: dt-bindings: qcom,sm8250: Add msm8953/msm8976-qdsp6-sndcard
 
+Vladimir Lypak (3):
+  ASoC: qcom: apq8016_sbc.c: Add Quinary support
+  ASoC: msm8916-wcd-analog: add cajon and cajon v2 support
+  ASoC: qcom: apq8016_sbc: Add support for msm8953/msm8976 SoC
+
+ .../bindings/sound/qcom,sm8250.yaml           | 28 ++++++-
+ sound/soc/codecs/msm8916-wcd-analog.c         | 63 +++++++++++++-
+ sound/soc/qcom/apq8016_sbc.c                  | 82 ++++++++++++++++++-
+ 3 files changed, 164 insertions(+), 9 deletions(-)
+
+-- 
+2.45.2
 
