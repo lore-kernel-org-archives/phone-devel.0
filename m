@@ -1,59 +1,59 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E8C5338D
-	for <phone-devel@vger.kernel.org>; Mon, 22 Jul 2024 10:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28FD16B723
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jul 2024 10:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721645223; cv=none; b=bDpl7p9U6kDuvM46XwN0U/CTrBup7eES3oOQZ6LX2khHcCI+jSbrJ++1zFxBngw1mG+FTEpPXVpgW16LKRQ8x8rzrJpV1UvOQ0jH+ZXdEDoXgNpfBEcgDtHhEnQ0CIgtliqacrREj6vAlDXGgh3Na3ElRtJreS9k13PfmFLQVdw=
+	t=1721645229; cv=none; b=uF7CqEGfAdFhqlOdOtgSu8vCd3pGzbAUH9aJAKg2SxWvtqqPviEXh8T0wUmfyoa4ALbuIuKSN4I4FwZZ6bd6KJcl3FnM1vYqUcDfAKUBLTunMFlejpeP8oLGt0DTThAj6PchIcjTQZNp9RckieyoYZo0SJGC7WDrL5MirW+Vpdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721645223; c=relaxed/simple;
-	bh=fVw/ZDmf6JuPXrt5WCdg/l5jKHSNmV5inH988XFjM9I=;
+	s=arc-20240116; t=1721645229; c=relaxed/simple;
+	bh=hF6ayJCJkIBKijeaBFULRdN6VNY2DaemcsN3XyDmXGI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y9ZJ1cw3C37VvM6d3x+Ld54+xNHlGMjuHm/60pTghAWD1iNNK7InqKSi0kFpwWy4SGJJxp7EFsq1v+wljhB6SdJ6mZyO0rTwekrTjjTMU8O283Z6LoJjebfBnrod1IGlPrZrSsx73dEKZgUfwq9kD6uBKiAutNJxdy7FQuUhxPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BQyLgCvJ; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:Content-Type; b=BMmFQQ/cjNC63KoI6CkcBEBjpEicVWebbEKE58O4qLQe051c5101ly9KicGKPQspbRGcBjs5S8xJdeAK3qgj8aLi02YkQUVbI1cD6mHJOoxjywhMF9t5NtFdg4i2+o6fRulV4vJwR7VYVJCWtvw2afh6r5fixyHQaZwb53qv+po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aEq/s2Fy; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BQyLgCvJ"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a77ec5d3b0dso380438066b.0
-        for <phone-devel@vger.kernel.org>; Mon, 22 Jul 2024 03:47:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aEq/s2Fy"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5a15692b6f6so3372838a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jul 2024 03:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721645220; x=1722250020; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1721645225; x=1722250025; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jUGuE+9wNhw9HjAclVJblWyQTPW0RDppgthjHGFJ0Zs=;
-        b=BQyLgCvJRbay/s96DnNO8MG0JF0gpgMJ+x/HnQJYJkPuzxyVJaI0b8AG5cxUX4Vd4N
-         Lof89xQ4Q0uvY7Ql7mO1qPmncz+zO7XUHJsW8n3unwy1N9kseKxI3ajgutAB7buVaPqP
-         xAi6rdpc1cEFGzb47Rfgn0Sexivs4DyOZw6WcPK6xFoVKqSCiO7SFFVjTfPdqA+mJ6DD
-         AQlfISx0quBixjaJUrtKhkL6FCPMnsnxPxGBOzgqzUv4t+9mWlXG5CyKyaO231jVNusM
-         r8edPCPJxP2IMTH+WPSKMf5ILE8fZD5Irr6jd/bWXXC2A4sPvimDZL2yvY03aC8XsVzw
-         qhtw==
+        bh=0GHq2/UdLxU9Y0D4l+QGu4ETbrx8HO0wX8xQZ/agm08=;
+        b=aEq/s2Fyxod6cWFLjnbpiS8SclNhhwGKmeDfZuFFBZwAXwN+hEP/ZWhaAE2Rft1X/h
+         ru8GRf3xHbiSEi/xBY0gILVwBfZWNK5O5fHbNnrHuPQbEffzQ6CaPxQCH4Det+eUQXus
+         16Zdx1UgZkYqtzEkuV5JonxiMRb8pSl2N6RkbTFijGUvs5Wr9FByu8kTW92k+otK1i7b
+         S+Yc+cbwOv31Y2nOJT0/DwBDNHL0iEwkEQbU9nDL/hN0JwghN4vMg39myJJg84BCoR5m
+         1jBlgUb0gazua+nb9BOjP68lBoW9I1lJzsr6tdMPEqT4aFP/NnNOrNTNbgHOZ0uOWgPz
+         u5Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721645220; x=1722250020;
+        d=1e100.net; s=20230601; t=1721645225; x=1722250025;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jUGuE+9wNhw9HjAclVJblWyQTPW0RDppgthjHGFJ0Zs=;
-        b=nwk1VsaGie+x7NmmWvu0EHg7ylFcXW1XLYcaq/JwXheRmeM9P+f4AsQ+MU+r78u4qq
-         Ls9S4H3y1a/GWA+TetnOvnGqt2ueLPMqCoHEZn4dTJuPWVZzyU+3wKC3Ug9IktX6sUab
-         SkOi1ogm4aOGHSe93M5/qQB0z+Yc/UjlV4/UmEpZmCdi0wdUnPkaw55SyQE+BRDSnI5d
-         W7W+coJBvMWxw4Mpg6X3CvFo3CYwpEg+NfA2xr/OZI6OW1AntV7+KL8pKkjWmY63hmnF
-         pv31mz6qEDAzqxNTnjcys4kJgqBl1kIcmm9ryRt62bvBWOhb/TFFERlW7rglKwSvJaGZ
-         jMQw==
-X-Gm-Message-State: AOJu0YxlgefxFPjRd35jWQtvCMAry5K6k9psp7dEaV6wE0ZZbzdF+BXL
-	HWqKD3xKTFJ2QTyB/+CdWewWZfEsHtFjLZMUZmKNoAdzUzO10hV1j354M0oL7h0=
-X-Google-Smtp-Source: AGHT+IFDPkE9ht5Jf4eu8fX337F+j3qeF2SEnGJZgGhVMVJv0WJIBl3UfIdt9/zRKHev70mXk7BFhA==
-X-Received: by 2002:a17:907:6d17:b0:a77:eb34:3b4d with SMTP id a640c23a62f3a-a7a4bf98915mr443097066b.13.1721645219715;
-        Mon, 22 Jul 2024 03:46:59 -0700 (PDT)
+        bh=0GHq2/UdLxU9Y0D4l+QGu4ETbrx8HO0wX8xQZ/agm08=;
+        b=a6psrAND1Nx3/MZP5//kQu3aHw7pC5V4hOs29SubQMm6ZVZoVplUzZzeVUjjzaTvxs
+         usYV7+oQnXaDvqZz3T4iD58kmVOBMEbTj/GYU8EMpqTzeh3KHRdz0D5xwpCTVpHskMWF
+         qLY2kPCRjApWDMWIE2jieJpnirD5Xgd8isTxPuwc7L/F3G4KODhPxeNLxWYm7ZfGalmP
+         zHJnRJLpQF8BzSNZviJTZWMYvL45DUflI7aa1tPNOVxYG/cU0yVTShpcwiyhnzxEQYTF
+         Z75RPO++zI4FcQZQ/d49LiaxYCp8y/glnN8jSrrVuHu+owIG5MCg2gVwfCjkD/ZinbBA
+         ircA==
+X-Gm-Message-State: AOJu0YwC6OcL+bS11Yy8b31WHHi0YAZhN2kNmsMZeyV4AVHXhhg5YJ+K
+	FlXyJg4DT6JqKAOea9xFCjSJWgfMn/WyqIr7RRlSA3kiMSplQuVydvhsQ119MYU=
+X-Google-Smtp-Source: AGHT+IFaZ8NoZLu7yBEkVtDAIhC7XEeJ2YCA6hIW9sNo3VVvtI5shChc5IkB0TnPYYlhXNZDTyxiPA==
+X-Received: by 2002:a17:907:86a7:b0:a77:deb2:8af2 with SMTP id a640c23a62f3a-a7a4c011cbemr441422566b.16.1721645224954;
+        Mon, 22 Jul 2024 03:47:04 -0700 (PDT)
 Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c950ff7sm408118466b.224.2024.07.22.03.46.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c950ff7sm408118466b.224.2024.07.22.03.47.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 03:46:59 -0700 (PDT)
-Message-ID: <4c80afa7-5555-4b75-aa70-6c8ae8effaf6@linaro.org>
-Date: Mon, 22 Jul 2024 12:46:57 +0200
+        Mon, 22 Jul 2024 03:47:04 -0700 (PDT)
+Message-ID: <e13ad261-beff-49c0-b838-8d32ef4042ce@linaro.org>
+Date: Mon, 22 Jul 2024 12:47:03 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,8 +61,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] arm64: dts: qcom: sm6115-pro1x: Add PMI632 Type-C
- property
+Subject: Re: [PATCH 11/12] arm64: dts: qcom: sm6115-pro1x: Enable remoteprocs
 To: Dang Huynh <danct12@riseup.net>, Bjorn Andersson <andersson@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
@@ -70,7 +69,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net>
- <20240722-qx1050-feature-expansion-v1-9-c4d486435b96@riseup.net>
+ <20240722-qx1050-feature-expansion-v1-11-c4d486435b96@riseup.net>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -108,24 +107,16 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240722-qx1050-feature-expansion-v1-9-c4d486435b96@riseup.net>
+In-Reply-To: <20240722-qx1050-feature-expansion-v1-11-c4d486435b96@riseup.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 22.07.2024 9:10 AM, Dang Huynh wrote:
-> The USB-C port is used for powering external devices and transfer
-> data from/to them.
+> Enable [A,C]DSP and MPSS remote processor on this device.
 > 
 > Signed-off-by: Dang Huynh <danct12@riseup.net>
 > ---
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Konradqmpphy_out {
-> +	remote-endpoint = <&pmi632_ss_in>;
-> +};
-> +
->  &xo_board {
->  	clock-frequency = <19200000>;
->  };
-> 
+Konrad
