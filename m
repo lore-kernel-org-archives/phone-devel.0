@@ -1,39 +1,43 @@
-Received: from mail-43166.protonmail.ch (mail-43166.protonmail.ch [185.70.43.166])
+Received: from mail-40130.protonmail.ch (mail-40130.protonmail.ch [185.70.40.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3561152182;
-	Tue, 23 Jul 2024 13:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9584D152196
+	for <phone-devel@vger.kernel.org>; Tue, 23 Jul 2024 13:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721740517; cv=none; b=uIHsmILH/Tl6CUW2NH7pogCorrZKbL80qQ7TkL7Nw7EB7a2XWvEAr7ESbIfr7E1XTfNASM+oa58vVJ+lYqJHgnCrsYpetkCMde4DvOJIXr/LezT6LYKvxyqbVVgujwjSQ3hTi1aU3IqkKIWd14hzu5EFg7L4esghLA2b3ovE29Y=
+	t=1721741273; cv=none; b=RhgMcIs+DfINgToIBZ7DRjjMxGYpS5klSjkRplRMgdaF4dpXGrRoLPwpHjPDTUrU8q5+Yn3Zr/aDMKMUvFL83sM4LjmWCu9c1ogHlBCIQlAE5yLrq8VuqVA390yK1Ev/oevWdXGZoRG4wnRWSkqxiPyQ+RK4Pp1e4ntTAaV7lao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721740517; c=relaxed/simple;
-	bh=/6winp2by/iIplqWPNZeZXrWGYotUEFtKmE6wfbZ/Mk=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=RO7epDM6XGrIunk4xeWPizDZ/2hsOJRqb6kSalDj+ADyQEhDR5I70iqEu8gBIcPj1Oa3PezOVhebXPYtI/jQlsChQGOBOTZX0hK4CT4i+ZlnXGwoSDvFWblIwqN/BkT9alZKX5yjvHdpP+zAjVJxaKrVZudoZlw0O3IYRCqyCfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=NeQ/DRhP; arc=none smtp.client-ip=185.70.43.166
+	s=arc-20240116; t=1721741273; c=relaxed/simple;
+	bh=wLN/Yjw8usP9RnuSqHJm4kmNonhPo0cW+GVQCrhFtG8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W/yHojGEzyngKvXKwUrbKIhDM7SVOT0TPfdwFHdYB1/k3Mp108rZR4WnxQW9jv8RQGIuzLXTdvVsYd/y9fFO0uNaKyqKsr4kuinyEMuPtWsZmTGa4VWJsJhjCWXfOAVdZpNJXreFTfzO317skHC/i8JZGxT2bbE4D1MAt0Xnwh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=LqGt6uc9; arc=none smtp.client-ip=185.70.40.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="NeQ/DRhP"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="LqGt6uc9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1721740514; x=1721999714;
-	bh=on9ibum8FjWFI1I9Gyja7J9aoxew839hbA9XJGpxTrg=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NeQ/DRhPM17BmRx98+ZxFaba1FpdB9OgCBivxCy2hWYxiCT6L/o+5HtxNeQz9ZsPu
-	 kV4SCLPG2iWL1HhF90E+if0fG1v0pgHRQ/b8nSwJsvcVvDCnIJmDvYnJ08OeKEXrPb
-	 xd8yjFgJkZ9oyISAubPujS7mDUlVVXM8Mz0KU+mPOHGaI94XBbpI8PLihi0KCpkcEm
-	 3kmdVWjUOMy7c6aB06Dw+ZpsRFwqZDtZENqqJcBQqRjMeSH06aNtlDtecO89ubBuWj
-	 hP3FEPQpKe78GBtIZtWVsWhkbzJJ2XqZqGh23Z3oH+YrOZji4ZQcNsrEMe4mC0W/dS
-	 ONsdwWNZL528w==
-Date: Tue, 23 Jul 2024 13:15:09 +0000
-To: linux-kernel@vger.kernel.org
+	s=protonmail3; t=1721741263; x=1722000463;
+	bh=wLN/Yjw8usP9RnuSqHJm4kmNonhPo0cW+GVQCrhFtG8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LqGt6uc9qmOgwlb8XluF6NUshBEiRLAxX2BGBeTHqu254KFOlqRSlnFDJQk69kSQl
+	 7ePm0zlQntrpTF3EnShxlZ/pVdiN/23B/jfCLNFy0xUU8287AIliT7Zr/UV3unGyOR
+	 Eg9WRJ1NVsuhyFHCZNXsRp/c7j4k5SKFyzskWPza60MM4+loXoWeClBO7+yX05ODKG
+	 p2h8ObM1g9xBOWZ1Ks1j0C+gg1qNKoG4ismzDsu3pXVbZBW+8U++X7duz4XmvLymP/
+	 oj00ooInvmC0T6hIlriOxKra13A3V2Kukn9oiPwIywlgkvDFuub5vboU+3wM+V8cFf
+	 cB51ioy5Tis+A==
+Date: Tue, 23 Jul 2024 13:27:39 +0000
+To: raymondhackley@protonmail.com
 From: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-rossa: Add touchscreen
-Message-ID: <20240723131441.1764-1-raymondhackley@protonmail.com>
+Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, konrad.dybcio@linaro.org, krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, nikita@trvn.ru, phone-devel@vger.kernel.org, robh+dt@kernel.org, stephan@gerhold.net, ~postmarketos/upstreaming@lists.sr.ht, Juan-Rafael Fernandez <jrfern@proton.me>
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-rossa: Add touchscreen
+Message-ID: <20240723132705.1832-1-raymondhackley@protonmail.com>
+In-Reply-To: <20240723131441.1764-1-raymondhackley@protonmail.com>
+References: <20240723131441.1764-1-raymondhackley@protonmail.com>
 Feedback-ID: 49437091:user:proton
-X-Pm-Message-ID: fea10e1a407495c71894b7df662f94914cc68eff
+X-Pm-Message-ID: 57867d9b0b0de10c95e0902eccadfef40b27b69c
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,47 +47,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Core Prime uses an Imagis IST3038 touchscreen that is connected to
-blsp_i2c5. Add it to the device tree.
+Tested-by: Juan-Rafael Fernandez <jrfern@proton.me>
 
-Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
----
- .../boot/dts/qcom/msm8916-samsung-rossa.dts   | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts b/arch/arm6=
-4/boot/dts/qcom/msm8916-samsung-rossa.dts
-index 1981bb71f6a9..3413b0970c4a 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts
-@@ -16,6 +16,26 @@ &battery {
- =09constant-charge-voltage-max-microvolt =3D <4400000>;
- };
-=20
-+&blsp_i2c5 {
-+=09touchscreen@50 {
-+=09=09compatible =3D "imagis,ist3038";
-+=09=09reg =3D <0x50>;
-+
-+=09=09interrupts-extended =3D <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
-+
-+=09=09touchscreen-size-x =3D <480>;
-+=09=09touchscreen-size-y =3D <800>;
-+
-+=09=09vdd-supply =3D <&reg_vdd_tsp_a>;
-+=09=09vddio-supply =3D <&pm8916_l6>;
-+
-+=09=09pinctrl-0 =3D <&tsp_int_default>;
-+=09=09pinctrl-names =3D "default";
-+
-+=09=09linux,keycodes =3D <KEY_APPSELECT KEY_BACK>;
-+=09};
-+};
-+
- &mpss_mem {
- =09/* Firmware for rossa needs more space */
- =09reg =3D <0x0 0x86800000 0x0 0x5800000>;
---=20
-2.39.2
-
+Regards,
+Raymond
 
