@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF85314B94C;
-	Tue, 23 Jul 2024 08:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5BA14A0A4;
+	Tue, 23 Jul 2024 08:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721722750; cv=none; b=ORQBiJYKYoRag1pPa3jt3oUHSx+2jOQWdWJwP+fITa9jceyg5X/YfUXGnn8TRILK40icQTg6U5iEOpNYCxozjGhj0T/fOH3KsmwkPOpQCX87yx/VDb7lEGsmwI+lzJSpmIBVbuJXjTeJN/fjDiEJpCxBMW7dSGjJDSWuusGf+7k=
+	t=1721723794; cv=none; b=kxKCUIzqxSP22TKR2XL5IFknHYqLh0DayBfoqSZtRgXUwWDMRYT0oPsp75/NONl47/p8N904OSnRnHhwwXAQUfFxJU4CrwQx/uvZf3WNH8uemv1XkrHQL8bXr5m4+A7HMbAL94qEQmqRoycXG4/bzUoFZ8nHLQey8OIbyamZPJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721722750; c=relaxed/simple;
-	bh=6e0Z0aaAvxxzijYS/k8qqEo9hPFUeuv/sn/KQKMbgUI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KLNXOZRNDG0EHVMMmDwB/B4NmRYqzKcPFScmV8muEFVU7xT40eUQawbTYALUklnsjFwP4z46rSNpc+cxrow2lyKehVtaPR0lI2OIa4kHbe9epXaT26KfFHlDcwobxzB6W6CccaB87Kxz/3VeEIirQ0ISqL0EKE26S2hcMDca6sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb/VJl5w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721723794; c=relaxed/simple;
+	bh=bdT6WXZm8HMSNPpbUWhqRb25Qc2ZpMdIwQWjm0rmeZc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rkihEJCOhASzs7h1ITPvl8Xmtqa6qR4Gbo97F8Amrhy8sRbAs23AGoVe2Xpg5cXW6tIb4FcUCUbiXPXB62c4Qd1xgPRNNMBSDGWI9nRzuc5i8TdO2Po4bYA+ZjfgHXcAiuXmd738pJ5pYLu6iQJ57PO0jUZPhZ5tJcLvspD9CHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFCAgjU2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb/VJl5w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2CFC4AF0A;
-	Tue, 23 Jul 2024 08:19:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFCAgjU2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7BCC4AF09;
+	Tue, 23 Jul 2024 08:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721722749;
-	bh=6e0Z0aaAvxxzijYS/k8qqEo9hPFUeuv/sn/KQKMbgUI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gb/VJl5w+ctuVmoBVIwOTz+Jr0gmNClWvh/iF2ZSSTIyBlK6pG4f3/VsJXV3v4xO8
-	 BG92JiPGOqz2DX/Pkvi1eIIXmqHgaC/R61FyTb761kqzT9tFABbOeEvN2G+Eto87df
-	 Qfe9gWZhATv1A0RhwQSjJEz2WUGFVaWBKCzs1HmXtHjr4lkKOczzW5peKafYnl0ubD
-	 BZLGnjNDN7SFKg7LH6Z0lv+dG+sTsto5JzjYly+CJw1mZGYXKEWRn2RZE6islqdmI+
-	 RngBMIdjiSx13CB+H9An43fdJ1D4xyGLjPSUaqblbX1nr4G4HOOhr7KG85dpH3XJyh
-	 mMNZODpK3r+2A==
-Message-ID: <c9386ee6-77bb-49be-97cd-2b25ebb08472@kernel.org>
-Date: Tue, 23 Jul 2024 10:19:01 +0200
+	s=k20201202; t=1721723793;
+	bh=bdT6WXZm8HMSNPpbUWhqRb25Qc2ZpMdIwQWjm0rmeZc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=VFCAgjU2CCrtWrmuu8FdY9bnqEjlELO5BjP+eN9w2cjoAHnlQEpF3I9bbQ8WEYmmF
+	 5yyu6SQJGQeIyVXXjRtHGQLDZuXmC5ERGIrczs6L1BPMZ/GMrN9c6De3rDovyBpOpL
+	 sJJDgne1rAVsSIFOZ1l/ayBA48IIgCmq/V/djcME2yJLFRRiJZvYz3UJt4euHTmfQT
+	 iZzvEFDKQmlj1MCWcE5CLdeSMrlIH/XrlkzyrysQ3gBWG/taCSTRDyspGI1Nsul7P5
+	 di8xyWENBqbl9wN0pCLes8ek0RJmFZPRM0PvrudaB0gZIrFZMyqMiwA3JGL6oINEH4
+	 GsdjYcs8f26vQ==
+Message-ID: <ea4436f1-1b85-4083-9807-98e814ba597e@kernel.org>
+Date: Tue, 23 Jul 2024 10:36:25 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -37,6 +37,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 3/4] ASoC: dt-bindings: qcom,sm8250: Add
  msm8953/msm8976-qdsp6-sndcard
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
@@ -49,7 +50,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240722095147.3372-1-a39.skl@gmail.com>
  <20240722095147.3372-4-a39.skl@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <c9386ee6-77bb-49be-97cd-2b25ebb08472@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -94,45 +95,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240722095147.3372-4-a39.skl@gmail.com>
+In-Reply-To: <c9386ee6-77bb-49be-97cd-2b25ebb08472@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/07/2024 11:51, Adam Skladowski wrote:
-> Document MSM8953/MSM8976 QDSP6 cards.
+On 23/07/2024 10:19, Krzysztof Kozlowski wrote:
+> On 22/07/2024 11:51, Adam Skladowski wrote:
+>> Document MSM8953/MSM8976 QDSP6 cards.
+>>
+>> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ...
+> 
+>> +    then:
+>>        properties:
+>> -        reg: false
+>> -        reg-names: false
+>> +        reg:
+>> +          items:
+>> +            - description: Microphone I/O mux register address
+>> +            - description: Speaker I/O mux register address
+>> +            - description: Quinary Mi2S I/O mux register address
+>> +        reg-names:
+>> +          items:
+>> +            - const: mic-iomux
+>> +            - const: spkr-iomux
+>> +            - const: quin-iomux
+>> +      required:
+>> +        - compatible
+>> +        - model
+> 
+> Don't duplicate. It's already required.
 
-...
-
-> +    then:
->        properties:
-> -        reg: false
-> -        reg-names: false
-> +        reg:
-> +          items:
-> +            - description: Microphone I/O mux register address
-> +            - description: Speaker I/O mux register address
-> +            - description: Quinary Mi2S I/O mux register address
-> +        reg-names:
-> +          items:
-> +            - const: mic-iomux
-> +            - const: spkr-iomux
-> +            - const: quin-iomux
-> +      required:
-> +        - compatible
-> +        - model
-
-Don't duplicate. It's already required.
-
-> +        - reg
-> +        - reg-names
-
-And what happened with all other variants? Why do you affect them?
-
->  
->  additionalProperties: false
->  
+I suggest to rebase on top of my patch. Optionally, take it into your
+patchset.
 
 Best regards,
 Krzysztof
