@@ -1,71 +1,132 @@
-Received: from mail-40130.protonmail.ch (mail-40130.protonmail.ch [185.70.40.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B011E50F;
-	Wed, 24 Jul 2024 14:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06FF13BC31
+	for <phone-devel@vger.kernel.org>; Wed, 24 Jul 2024 21:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721831597; cv=none; b=tvxvXa3z/AZflDHtQ29L1X11A/9PHuDxzX5TS0rQPSCQoM27HxEVKiv25S5Y9Ak9ECCG3wyIpnMAz1pLMn/8ucHIyMPV3KNxi/CM5mSeU4Wj2UU6hr6aRFNN0LIci++anPffsFnMhH11xdYznBKZbFsxpne3j+4dbzXJa5w7PSM=
+	t=1721857387; cv=none; b=fs1btbVmZnuo7EMahvvkeF33YBw1eSutmxZAUOu1wcV5AS+L0sCHlGWuzYu9f+Y6LFD/WxCjIy6nC0nEjTlq17FdZyJi7oCYmIn746tuRInKW+GFdsePYCuT5u7gL3WN0jxPsUAXK+sYybI14BYaB1fxZxKbFLJxskq0zoHreEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721831597; c=relaxed/simple;
-	bh=EnV5UsbxFBuNVgZ1fpn8eYGK4awmnWIVIQgpXSfVkV0=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BC9L1HmmguU5isbCvpBnhuoKCbeRwBN+Uqj9KG6LUZ5QCH52ZNG2d9wTBOg/A9ZURYTPe7ln1KY1D5h8oBBwlO9zLYzmrYEbRe1S7kxDgLWf6WQ+4CfUyQupKnOaQSAQRow6c747ncjA4pq+520jOvuSx0XamwY99+7O9nuOm+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=s1PSxEML; arc=none smtp.client-ip=185.70.40.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1721857387; c=relaxed/simple;
+	bh=E2xr7KdHpOeVO8weg/YauvOwd3FI22iwYLqct3kkkuU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KVgqEpW77BGoKWFkfxZh+sgWPNOye1i7pUgl7Vqn4vVQvxYrQhQxDDU8lZN/6YmI3+4x00T7lNau6Q/nE0MjSuq2w23pv33KdsDPpjKLZUdKq4XS6Jgkjz1khx/iUNveenR/EaqI0PHSwbUkeTwFmCbekHras/i+wwOE2Nb2Pi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y8opjxQx; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="s1PSxEML"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1721831587; x=1722090787;
-	bh=EnV5UsbxFBuNVgZ1fpn8eYGK4awmnWIVIQgpXSfVkV0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=s1PSxEMLCUvD6LF6DhbIib4nvaLF4ys6htTI9rPzgNoP6H9ClMqo2JTfHlUi+iSHe
-	 URxXe7lCloK5sME4oukdwyS+ZQcYgtlg+jBAO2fyuRtUWEVXVwBNW2YPXvB+hH5b2t
-	 y7s84TsRJQkuH78ztwjKdwpak5qqZQcRSDdcNNeTfnxKLP5njuYW50aKk7eY3wcyOk
-	 ODXu0/tD9MKuV9ywm0LHojnG12+781MGPskrei9xEbeR19iBSf/2LDwn+oD9uVQSG5
-	 odN9sTtWC7vsoCApKn/LzpswP4DAXK9qbqWk3M0DcYMaDVtXuWJSKyEYXTUmDVF437
-	 Gcyy3+4BPucTw==
-Date: Wed, 24 Jul 2024 14:32:51 +0000
-To: linux-kernel@vger.kernel.org
-From: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-fortuna: Add touch keys
-Message-ID: <20240724143230.3804-1-raymondhackley@protonmail.com>
-Feedback-ID: 49437091:user:proton
-X-Pm-Message-ID: aff0725e9f024821dc25699dbfd266db4bd634eb
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y8opjxQx"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a7a9a369055so36882666b.3
+        for <phone-devel@vger.kernel.org>; Wed, 24 Jul 2024 14:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721857383; x=1722462183; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PVcOW0F31P5btkB2U94IntsHunux8cldHR5tp2dBkfU=;
+        b=Y8opjxQxdEgyznwS0k9r440vF2O+MuvdqCIJsPYi3PDQhus9VskEL+6JN7AqWDXqzi
+         khlueNx2JiQSLsSxeaihGaAoYNlXUuE4OpDwBcVjT2U4rd8aF1rgtldEKgS+A2riOtBX
+         4awJ+tQJrSMFLF/2IZ3lAVb335F968K4oqpX0CWXQuAUBNMnnyKFGLC/1a8ynB9EjtGW
+         0OOil7A+BSgQTdH9IDPLACovzKiCB6S6GVA9BSm37rvGICIN614hroHFtj9Dnxd1OBLz
+         f8VrP9I1V/v+4w2UCtGpT96EM78mSuNCbv9Sm8kXVQZlwjtiuBK96KYZto8BOrnv5Zg6
+         V6/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721857383; x=1722462183;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PVcOW0F31P5btkB2U94IntsHunux8cldHR5tp2dBkfU=;
+        b=R1dN6hum8Vtpq49knictd2/IN//3N+6XInh+YHQS3fSZikoUy5fLdCRafTpl6tq7Km
+         O/svPLzqnUlsvEYsyOjQVeW1T2c5+57B8KKQa0rFJ9Lu1Z6RdE31O+RMpoL0RnTH37gg
+         RgXmgDniUdGrjvAE5i71VIruSPrlUV8UXmpy8bd3VOfb89bSJgCabkJSVGivWvJqv2fG
+         DVEcRS91xzSuNvi7DpXVqEN9hhUqRwjIvxPw2+GVvZDZ1cDMyW04hKQQhe7aj+hS67LW
+         4tbiWAnyIY8O1QoODniIBsOr2VcAaEEgypSKZoqeDGgA9AOaLOLt27KssoVs+pgvKNfT
+         X/Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCXQpx0n6wwCyDJi8Xwx3YMfhCRg6kzXEVYqTWtoUtc9raxd+O6XAvDzd9HihoDtMty4ElH5lIXqjvX/yGb6vTDzres5g+TiK0s7yWk=
+X-Gm-Message-State: AOJu0YxSVQM2W5VmkDI/cfklxLbCsm/M2QLNUw2KrZ3efUGnX35WkTpT
+	2gJlLUf10Wwt6H0OhWktKl8CuS4wZiobgGHzDjTuRKbzStJSa3gu0gEs/vz9i2Q=
+X-Google-Smtp-Source: AGHT+IFVM1Nkj2yYiNbf9q5q1cpfowyG3cIYVGgomj/kaPJhDFTuPBpzG2oJBpqSohsBTOMNFw8Xuw==
+X-Received: by 2002:a17:906:26d2:b0:a7a:8cb9:7491 with SMTP id a640c23a62f3a-a7ac503439emr44164966b.54.1721857382590;
+        Wed, 24 Jul 2024 14:43:02 -0700 (PDT)
+Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acad414e2sm1071666b.127.2024.07.24.14.43.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jul 2024 14:43:02 -0700 (PDT)
+Message-ID: <835d7a84-aa37-43da-a4e7-ef52d8642357@linaro.org>
+Date: Wed, 24 Jul 2024 23:42:59 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-fortuna: Add touch keys
+To: Raymond Hackley <raymondhackley@protonmail.com>,
+ linux-kernel@vger.kernel.org
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
+ Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240724143230.3804-1-raymondhackley@protonmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240724143230.3804-1-raymondhackley@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Touch keys feature on fortuna phones are provided by Zinitix touchscreen.
-Add property linux,keycodes to enable touch keys.
+On 24.07.2024 4:32 PM, Raymond Hackley wrote:
+> Touch keys feature on fortuna phones are provided by Zinitix touchscreen.
+> Add property linux,keycodes to enable touch keys.
+> 
+> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+> ---
 
-Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
----
- arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+please bump the revision (v1 -> v2) when changing the commit
+message and keep a link to the previous one & a changelog under
+the --- line
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi b=
-/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
-index 81b3e0760154f..7a7e99b015d9b 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
-@@ -262,6 +262,8 @@ touchscreen: touchscreen@20 {
-=20
- =09=09pinctrl-0 =3D <&tsp_int_default>;
- =09=09pinctrl-names =3D "default";
-+
-+=09=09linux,keycodes =3D <KEY_APPSELECT KEY_BACK>;
- =09};
- };
-=20
---=20
-2.39.2
+in this instance, don't bother as it's a simple change and it
+looks good now
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
+Konrad
