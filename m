@@ -1,60 +1,62 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0381153506
-	for <phone-devel@vger.kernel.org>; Tue, 23 Jul 2024 13:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA4F54670
+	for <phone-devel@vger.kernel.org>; Wed, 24 Jul 2024 07:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721742165; cv=none; b=t8+pkS3f+D7qAUj08FmngndQs1RBnQ3/mV7yAPJOlI9YsnLp5LG3H0o7vMyG8euWDrC4McHaAxOOv1W/DVZhB4/tSzUYLUNhElKXBl4KLeInWNJgOT4w5Op9tARU07pG7EmmN4Eb6R7ra2GI/y1TNqVrOhI6aR40nXMstAgnEro=
+	t=1721807598; cv=none; b=RGbXZLum84noxY5b0MOC3KwFNsI2ms+kl2TDBRrFuHaaGE+2/F6XoHwR1dbYuyb5V2FhiLSVyW+jMZzMDIerH+Het2fG9utRBXwL5g62apsVJczjAIXUmYC5TBFglZZZeYb0fYKi9fqxMuNW5KXU3+gkLE9u1sAALf0JbmAfxZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721742165; c=relaxed/simple;
-	bh=mUQzPtT2XThMQKTCSV3aOtTGerG3ylAPdr3dhYMetBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tz//fp4+eym5DTs6MtXYEIJQ5Gy8yTtEstL7lpeOQiMYGA2haMwM3Ev7xTvqMAjf74Yqs1c4XBPBF+/baA1mw2vCEUmyaeGDF/30OFREzFAq1KiQV2xlweVTgP/r8AmE6hineYtUv0+NnlJrTtfNo+7BsN4wymO1HGjvYFhxymQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TE5OFNxZ; arc=none smtp.client-ip=209.85.208.52
+	s=arc-20240116; t=1721807598; c=relaxed/simple;
+	bh=tOT1e8MJiGceTGKKzM8O0kfZwKcCl3jacK9viYGUHwM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=W56kX2hFvnzFGLI55PJ8c2LmeEWxRUQwtqk+380rrTMogb0Z4u22gHisJZCG1J+dwm9OajOSABC/f4nymByyIyt2G8Vi4IsvNhB8/oYtHTfF70wQX1NCaQP6wWioedLn8db0bP+ShPZpO28NWm7Nrq0+p/mBvCuswwBoOespv/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oAo1r1aS; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TE5OFNxZ"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-58b0beaf703so4532028a12.2
-        for <phone-devel@vger.kernel.org>; Tue, 23 Jul 2024 06:42:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oAo1r1aS"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3685afd0c56so1958952f8f.1
+        for <phone-devel@vger.kernel.org>; Wed, 24 Jul 2024 00:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721742162; x=1722346962; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nV4TE2hHk/91FnY1EU/k6szISDYggtUzta0pEuTGF4Q=;
-        b=TE5OFNxZNCiDEi1Xksb5f/9/y8XsRTaFS75KT9gifCjIgy89wnJJYya+f2W2Wh0HgN
-         dSPhKVvE9Kis9AjaY3HpHhTVMKNbe6NNs/5bbtEa5qpKh3+RQK14DUznwvWNFJleU6UI
-         RnijFiHJbFYSAPVYO3wwvVKd783BbOzP8sJEaKmYh9O+Ov2xcj4/IpMaaG13pueH8Eyh
-         C9CAEVrZEmDApm0ZaFKCR5EM+TVQBo2yYJhamZ26oHjLI2s+YeU3SsYy6EDjRh/MXJ/C
-         KARqpxvSVRGY1bgeM0Chn+laY3I1fG58ZJSdi9w3Fve5nPjnWp5x9CWhIMdhqmeKo8cf
-         edDQ==
+        d=linaro.org; s=google; t=1721807595; x=1722412395; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a2KlSahuFArGhX1/nu3nesKMLISwLS8Oj6J8y4N86tg=;
+        b=oAo1r1aSZLJ6ebpXlMxwsp8C+Pl5c113DzkgRkTguEOe/l2BiQtOQlL2ix0LZqlA7V
+         EIXQscohxLe2dx/KCn4LvGlDsm8Bcska7CMSp3LLN2MnGIIIXL6xFVD27Y+JNWvxUCdC
+         7yvwIXilj44l3SkEOnpHjpyElsRl7PzQVH/B6IXr8DTc8d+ULsNCBJg33r3DpVTaQ/In
+         tfM3WBCkCxw04FtrcvB4BaWXP9iXWDsCEA+aggj4T+8kOBErGkcHlQRjewlZtRAxsBnB
+         k6FRSexYQAMJK2aHhUMmPXEZv9FcwsNGa1NNiu7rkWAkvbCDPgzpZuUuQM0mHeS4XkbJ
+         cFAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721742162; x=1722346962;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nV4TE2hHk/91FnY1EU/k6szISDYggtUzta0pEuTGF4Q=;
-        b=iKM3IiP0nphzRG0lNrpi3ZH+UtfERmtQYNaeGQ6AD3VATB98PTwnA1cIADga1EgQbR
-         kkn+ofoH9oZL2cYdff4oZ27w+Vja+87It5OF5jxTamvsOXPv+J+3LdNkuOOE6ydnx8a1
-         Qwgh7pu3keYFDM+1yyVNZ0bD5UWegOkoqhpnhVSetZJSNwREyBxh0hcy4OYTXRjVoi+B
-         VX4KqamlhT46k7t2POGpfPRoZm9eOnIpLSVz+16gKNk8V8MR+rOxXgbsEOjczM92xh4L
-         L3NjQKk9ds2UgFivE5DeRHi8XcdbMyGUIN9J6JzXF6i/jvzhlDztpG288+pnkuMBCkzZ
-         3dPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWUu0x+Jn+VKzbquCaLy5xVuK5xCy/x1jLIAR8zMhJE+9zRtOLP+TPoAP0ABpfKYjnYb9NwmloeKMOaWFKG9WcCD/Hj//mgmupKhbI=
-X-Gm-Message-State: AOJu0YxqAkoMseZ6uwW4FTvssKnl/jn7b644YQgogaj0xX26FQOtjEjk
-	QOiFqSAsu8tdAlBWAIol2oPi+1LtVOTYCjjEO/c4VMug9p0bYnyEzSKA/VRR88g=
-X-Google-Smtp-Source: AGHT+IFIyfv/xsCxjz9LEuJEre81NchieIPIZ6Q4RlznZaERXPc2L0McoQqV6TklQByyAQs2tqDrJw==
-X-Received: by 2002:a05:6402:2553:b0:5a3:c00c:eafe with SMTP id 4fb4d7f45d1cf-5a3f089da5fmr7627498a12.23.1721742149420;
-        Tue, 23 Jul 2024 06:42:29 -0700 (PDT)
-Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30aaa253fsm7524519a12.23.2024.07.23.06.42.27
+        d=1e100.net; s=20230601; t=1721807595; x=1722412395;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=a2KlSahuFArGhX1/nu3nesKMLISwLS8Oj6J8y4N86tg=;
+        b=CNPVZ6NA47Of+IJ5kYcAXHCrKRzMaly4+Y0cG2urqlG6ibCXvoAVPlAnQeKsQRfG2O
+         xl0Gp1I/wDUbZZ3iyK4DfIoF31A5mvinxVtZCwBwi6WsnV1ABrteeS5NBYq6yejmql+7
+         JKz2/BCY2j4bMJJvTwUwQ5nqJBkEMiO0FGvbDi5cOiXNixKpe7DftuItH+QOAVquw0A5
+         0K/pqLpzWADDGFHie9hmtoFcPdWINdEn+T1r0Rij5Y+EYUUBElT2SZywz/6uSnuMChL/
+         1I3z3NUZsvuYG3nszd7vtWgOQYYWd2ZGph4PII1c2rdyYYOK+q8DlfnJEUhxXOV9DhMb
+         TjQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXNjTQubqEuo4xFfQGhXUzazouS6dbcyd5kJv501EFJ5OXxeUpAMPk+UmypS9FRB63DH6WhUtTV1LOTazF+gwCzKzy58LNtG6rH2Yk=
+X-Gm-Message-State: AOJu0YyjEnzMQwQnRAvP+zq+u/w8VKdT+7xBW2ZLUrPDEcAgy9VKl8Dp
+	LYxpMbkwi9HO9NeEr4yU5NzeRpDg5v97jwfRhn9P6M8DnzyHjdsv80Yod/shDyzFE3rEmhMIMGE
+	z
+X-Google-Smtp-Source: AGHT+IGwVEKmEHSe9k5B2D7ijwxG0vlMth4QsYhxFpbQgy422sw8HIZrxRw/RlhoiJzflOjRUKSsww==
+X-Received: by 2002:adf:e6c5:0:b0:367:8909:197b with SMTP id ffacd0b85a97d-369f5ba036dmr840211f8f.61.1721807594852;
+        Wed, 24 Jul 2024 00:53:14 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:deff:4fa8:5076:b4c7? ([2a01:e0a:982:cbb0:deff:4fa8:5076:b4c7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368787cf156sm13691739f8f.70.2024.07.24.00.53.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jul 2024 06:42:29 -0700 (PDT)
-Message-ID: <a1c12920-4217-4898-b23a-1ee8d91b5961@linaro.org>
-Date: Tue, 23 Jul 2024 15:42:26 +0200
+        Wed, 24 Jul 2024 00:53:14 -0700 (PDT)
+Message-ID: <ed6b10f5-f297-4839-a9fa-8c178792ab2d@linaro.org>
+Date: Wed, 24 Jul 2024 09:53:13 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,71 +64,83 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-fortuna: Enable the
- touchkeys
-To: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, nikita@trvn.ru, phone-devel@vger.kernel.org,
- robh+dt@kernel.org, stephan@gerhold.net,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20240723131142.1703-1-raymondhackley@protonmail.com>
- <c5f8cd32-d5c5-4c29-be8b-571804a4b088@linaro.org>
- <20240723133916.1947-1-raymondhackley@protonmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240723133916.1947-1-raymondhackley@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH] drm: panel: boe-bf060y8m-aj0: Enable prepare_prev_first
+To: Dang Huynh <danct12@riseup.net>, Jessica Zhang
+ <quic_jesszhan@quicinc.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Marijn Suijten <marijn.suijten@somainline.org>
+References: <20240722-bf060y8m-aj0-prepare-prev-v1-1-0e51c0f59d22@riseup.net>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20240722-bf060y8m-aj0-prepare-prev-v1-1-0e51c0f59d22@riseup.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 23.07.2024 3:39 PM, Raymond Hackley wrote:
->> Fixes?
->>
->> Konrad
+On 22/07/2024 09:07, Dang Huynh wrote:
+> Enable prepare_prev_first flag for BF060Y8M-AJ0 panel so that the
+> previous controller should be prepared first before the prepare for
+> the panel is called.
 > 
-> Hi Konrad,
+> This makes sure that the previous controller, likely to be a DSI host
+> controller should be initialized to LP-11 before the panel is powered up.
 > 
-> the issue is not reported or discussed on lkml, so there is no thread to fix?
+> Suggested-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Signed-off-by: Dang Huynh <danct12@riseup.net>
+> ---
+> This fixes display initialization on some platform/devices such as the
+> Fxtec Pro1X.
+> ---
+>   drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+> index e77db8597eb7..7e66db4a88bb 100644
+> --- a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+> +++ b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+> @@ -377,6 +377,8 @@ static int boe_bf060y8m_aj0_probe(struct mipi_dsi_device *dsi)
+>   	drm_panel_init(&boe->panel, dev, &boe_bf060y8m_aj0_panel_funcs,
+>   		       DRM_MODE_CONNECTOR_DSI);
+>   
+> +	boe->panel.prepare_prev_first = true;
+> +
+>   	boe->panel.backlight = boe_bf060y8m_aj0_create_backlight(dsi);
+>   	if (IS_ERR(boe->panel.backlight))
+>   		return dev_err_probe(dev, PTR_ERR(boe->panel.backlight),
+> 
+> ---
+> base-commit: 41c196e567fb1ea97f68a2ffb7faab451cd90854
+> change-id: 20240722-bf060y8m-aj0-prepare-prev-2db87e7dd996
+> 
+> Best regards,
 
-See the "In case your patch fixes a bug.." paragraph in:
-
-https://docs.kernel.org/process/submitting-patches.html
-> 
-> Regards,
-> Raymond
-> 
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
