@@ -1,40 +1,40 @@
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CB022638;
-	Thu, 25 Jul 2024 01:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C452B9C3;
+	Thu, 25 Jul 2024 01:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721871812; cv=none; b=psOUyS9bwtlKOHV2VNS5YI9/dBgT7JHhLex9ZhLo0dZcukXnlHyfuWHTTJ0FWzeGfAg3vT6czV7JuSkKaoSubtYs+5zTRuw6qJ4lG/qptyj1GFmUxHZdX3JDG4LXH5cizA6lmpSgaHYXkDyTUbCR+dvF8irVp6BAiva6/bWIy2Y=
+	t=1721871815; cv=none; b=OmQfhS+cD19nbRzSSoHOMkB7ccd9gkaCy8PSnunLjEO3ITvDEYfzvhcf1n8Hqgrc4hvKIwz3g6KQ3BUA0JJxDOhKLuXPRO/wXTsVZiyScE0m/+up/7mmBKj4SLNC+4hg0dr2jA8/zZh40ZR/0FlNybdpkpi/ljf0vEvoGdL3lzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721871812; c=relaxed/simple;
-	bh=EJVZ1grtY6xvpuvgsYU8b5pTPUrZoqx8Mj6QQe0GIvU=;
+	s=arc-20240116; t=1721871815; c=relaxed/simple;
+	bh=06xCHX6G0CAp40GbFoUH0NALBIXsManKNRduPreuF7k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P/WIYCjZrGs7MgBkLixHZxae1bCjdrxp5eAQuiwfMf5WZZ3i0mxqiTsfYdmCDW5htZcql5rlH/cQqtPPuVeDo3l4op4SjiyNYiJm3guzQWUODNCIV4I9WaLJOqRFUWkiqiBesVsVh2JhE43V0YQtDHSuOAtspqyMMemPqf3N6vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=DbpJHE5x; arc=none smtp.client-ip=198.252.153.6
+	 In-Reply-To:To:Cc; b=EoMURUAl5tGBUWfm7TrNvmxvM/uZZJDXcoT1le7aCjUQpQdp8Eo343i7x+ldFbBYL0TKHvJlmmpXWNHH/vOGi7675hOHq04pUpI79lFYMHnMQEt03dUVc1xfRchVOaDmSOaER07HP9s0wk/FDdXUp+kZSW103et1AG3txu5Ox9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=AZA0iN7X; arc=none smtp.client-ip=198.252.153.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="DbpJHE5x"
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="AZA0iN7X"
 Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx0.riseup.net (Postfix) with ESMTPS id 4WTtvQ2sGxz9t9m;
-	Thu, 25 Jul 2024 01:43:30 +0000 (UTC)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4WTtvF44q8zDqk2;
+	Thu, 25 Jul 2024 01:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-	t=1721871810; bh=EJVZ1grtY6xvpuvgsYU8b5pTPUrZoqx8Mj6QQe0GIvU=;
+	t=1721871813; bh=06xCHX6G0CAp40GbFoUH0NALBIXsManKNRduPreuF7k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DbpJHE5xDnUkPMSYSfkE6OFJFXZp7K0SxZopyvJlGQsCvKViAB0lqkatz+Bc8IuaS
-	 aI0pJ8QQIgzjUKgnXIylASc399U788D8ZahKgNKAdvbBxuUOcoYj9ReXHR7gfEmzJP
-	 5THIwyDOiR7pUHLc+yxiEdfhsyGlqYY5l/k9qKSo=
-X-Riseup-User-ID: D126182958E2FF562944F0E4B8C151F5D7D26218990B6E9663E1CC1636E76DFF
+	b=AZA0iN7XeDLa1EwPSfkBP46Orz/8nM4oYhHtb4KNBYMJn8iK7/Z373NUttxr3J69A
+	 nIyuWEXC/Tq8BWsIuwLSlbJjVzb6BQ9Pgfpx9Qjk8jKj/9uCeHDCfpNH/g7vB02/vT
+	 54O1PwdTCYls1NhIJqwz7BwXQD0Zq+EB3lEgWmk0=
+X-Riseup-User-ID: 17A9782C175B03C17C7418CA294103C77C2A962BB1886FA0C8BA59163213D08F
 Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WTtvM4mK4zJrWZ;
-	Thu, 25 Jul 2024 01:43:27 +0000 (UTC)
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WTtvB5XpQzJrRJ;
+	Thu, 25 Jul 2024 01:43:18 +0000 (UTC)
 From: Dang Huynh <danct12@riseup.net>
-Date: Thu, 25 Jul 2024 08:42:16 +0700
-Subject: [PATCH v2 07/11] arm64: dts: qcom: sm6115-pro1x: Hook up USB3 SS
+Date: Thu, 25 Jul 2024 08:42:13 +0700
+Subject: [PATCH v2 04/11] arm64: dts: qcom: sm6115-pro1x: Add Caps Lock LED
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240725-qx1050-feature-expansion-v2-7-5fac4bbd946f@riseup.net>
+Message-Id: <20240725-qx1050-feature-expansion-v2-4-5fac4bbd946f@riseup.net>
 References: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
 In-Reply-To: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -54,39 +54,45 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Dang Huynh <danct12@riseup.net>
 
-The F(x)tec Pro1X supports USB 3.0 through it's USB-C port.
+The Pro1X has a caps lock LED on the keyboard.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Dang Huynh <danct12@riseup.net>
 ---
- arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-index 69ef404d9de6..5dd70dc87328 100644
+index 3be70beb9562..7c3a7bb8df8f 100644
 --- a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
 +++ b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-@@ -433,7 +433,6 @@ &usb {
+@@ -8,6 +8,7 @@
+ #include "sm6115.dtsi"
+ #include "pm6125.dtsi"
+ #include <dt-bindings/arm/qcom,ids.h>
++#include <dt-bindings/leds/common.h>
  
- &usb_dwc3 {
- 	/delete-property/ usb-role-switch;
--	maximum-speed = "high-speed";
- 	dr_mode = "peripheral";
- };
+ / {
+ 	model = "F(x)tec Pro1X (QX1050)";
+@@ -64,6 +65,19 @@ key-volume-up {
+ 		};
+ 	};
  
-@@ -444,6 +443,12 @@ &usb_hsphy {
- 	status = "okay";
- };
- 
-+&usb_qmpphy {
-+	vdda-phy-supply = <&pm6125_l4a>;
-+	vdda-pll-supply = <&pm6125_l12a>;
-+	status = "okay";
-+};
++	gpio-leds {
++		compatible = "gpio-leds";
 +
- &xo_board {
- 	clock-frequency = <19200000>;
- };
++		capslock-led {
++			label = "green:capslock";
++			function = LED_FUNCTION_CAPSLOCK;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&pca9534 1 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "kbd-capslock";
++			default-state = "off";
++		};
++	};
++
+ 	ts_vdd_supply: ts-vdd-supply {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "ts_vdd_supply";
 
 -- 
 2.45.2
