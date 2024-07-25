@@ -1,95 +1,128 @@
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41DF63A9;
-	Thu, 25 Jul 2024 01:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924CD1990BC
+	for <phone-devel@vger.kernel.org>; Thu, 25 Jul 2024 10:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721871824; cv=none; b=oElfWBUiiOldcIOpTrEaYljyNrsa+6eMdZlDDLqAUTNnEXeJz0nmf1dsdTQE5KHf3eKI/GXSgyc1/GwLbHn4ChMgz+1QePL8gpKsnp1F5p4h37FMtBk030JysMK4GVxAdmohbmK07MLy3VpswSwuWviH42DOBGLkfB74Gv1+4Mk=
+	t=1721904106; cv=none; b=IoBoKzpKwwIoKd3xwqxPNlgFhsEfZjy7GIffhdcDv8IZDH2ZiTSRY1b/fH6WkGjrrhkD1OLqkn3+GPK55oudNjM+6RjYviZcSWuCzTYoyBR9+X9drzprhRzHtbVwBASp931g/3iHbh8lycA6QYgtCB69L/awJoTqxSTpDVkLIF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721871824; c=relaxed/simple;
-	bh=W27i8GsddWkkGbO43nNSrNo7kUCmHrqjkxKShFt8uBE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DPkk2ngVE41UFy0E4VT4YYLs7x1hcOrtLwErzX8mRgjSxSvHkOB06xStl15ITxvnaX1ADXjUvVe/gGi8lFu63J0emDnS1sOEoCPSWXXIVYfzHN+5s+mrmp34o7nPQJ7yqe+a/35e4L9yCPhGMqNY+lRPazItiZ1QLEu3QCqkVdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=srn4n+kJ; arc=none smtp.client-ip=198.252.153.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+	s=arc-20240116; t=1721904106; c=relaxed/simple;
+	bh=FSwQ0wkvzxTWHcw6h+wBcTwPcBci8zA2o8+fRiyVn1Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=umxit3/6vDfpSLBhhMgFrRs5tXrxLQ60vUxUoYAA4Xg1qn1Jn7DPUUhtssiOr4O4J06c+NFRNwp2rFTONh8E18yEo43R0wqABBCO8lYyfNZpa+5cJ0FPnyS91BoYJLl0HD1RGf+Z4JM7ck+aqjm8oBc4ANrlWQMBOnwBFgeFwTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CkBCq/DK; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="srn4n+kJ"
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1.riseup.net (Postfix) with ESMTPS id 4WTtvf1skBzDqWn;
-	Thu, 25 Jul 2024 01:43:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-	t=1721871822; bh=W27i8GsddWkkGbO43nNSrNo7kUCmHrqjkxKShFt8uBE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=srn4n+kJrmAxuGdPRwpNbOq2jilBzgpNuAvZJZnYe7CiyjSxKuXgj0P0qZCapmGjB
-	 RGo/XBnpo5X2H/muUWMTWptuOAOutG5r1M5Bi9rZCHMqxahnWvn1E9RDC4PMHXXk0k
-	 xdVmimIbC2BfY6lD/vLj8bN47AVtiosREPKW6g9w=
-X-Riseup-User-ID: 3C13B24D9ADA5A948DEBA86D6218C0230D81CB46BC5330AC4AE95BA046F5E57E
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WTtvb3YpXzJrRJ;
-	Thu, 25 Jul 2024 01:43:39 +0000 (UTC)
-From: Dang Huynh <danct12@riseup.net>
-Date: Thu, 25 Jul 2024 08:42:20 +0700
-Subject: [PATCH v2 11/11] arm64: dts: qcom: sm6115-pro1x: Enable ATH10K
- WLAN
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CkBCq/DK"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5ab2baf13d9so918725a12.2
+        for <phone-devel@vger.kernel.org>; Thu, 25 Jul 2024 03:41:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1721904102; x=1722508902; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=vFtglIWJthoynwbfLw8PxYyGxtoLyAotI7f+V4bt/oY=;
+        b=CkBCq/DKJud2D9jfF6/OxVoyuVYX7OCmBfg3GelB7UAcq8Tr8JzrYp/cLzECRWrMz4
+         dlZEGGvhDoiUxOysRTGwciiqymcUOsFyQTnJs2Ho/uqDj16A1hXViexe+16EhODWR7T9
+         e9UHC95Z4dzhJ/5Gl/ILGGD9GZZygHFFkslFEohjEH3r4AZGkR/0+3ZEoF1vWYDyIVfk
+         vo6klXPolInfaB3oA8MzPcTO7KF5TR8vTFrZWlkBZjuAcbhqfnzPchcuT3reOcSb/08d
+         0qg6nD2IiDAJnuLHdEf3GuBWbFRrp0aiYiAciIrPmP8OduZZcmY/jbxnATdoXOHKx6pG
+         Fglw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721904102; x=1722508902;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vFtglIWJthoynwbfLw8PxYyGxtoLyAotI7f+V4bt/oY=;
+        b=IkrvslJbBnBxpr/bmaA7WaABBIsmbXkI7H82IbXawku8wnHdXG03xFey5xBTsGl64I
+         eFUXrVlfonX2ZqSayGtgrCRgSXhfPrz2sVrVX1+tvLvXUt8mGWxgyRJxyhqGWQmQU1+J
+         QLWZWfaxyCEtw7VsdVZrPo/r5Y8uE/2dY7CCo/2iWoSEwuWwbjoHDZ1VyimTfq0Cqzsl
+         k8ALh+zxUILjUR2Yw7i5G6BYI9+3V9y4sxz1g/u0aCTQZ2CvwKEZIA4pE8dzTxzzYHva
+         kQIse131kVjKUc0bx5xhObs+A1OjdzE1lPsGM6GDkrx5/kxs1CTiZ1If9+npyZxyNy8x
+         b04w==
+X-Gm-Message-State: AOJu0Yz0hFWLFjXaEExiuRTYvlM6XcCmjy85BjA6BAXSS9GcA1pU56Yo
+	iUAwFsqSm63n9r+iMORbURkaGRdtpnPVh9O+qH8OKVyhg/90JTkEiLefNz1qZrU=
+X-Google-Smtp-Source: AGHT+IHVvxlnfI9Ukx+jT1YweIaLcPDCHDq1H4IxeI7Mgyx27l1uhNoieLy7E64mr/e13aJH6h5AiQ==
+X-Received: by 2002:a17:906:7952:b0:a77:c199:9d01 with SMTP id a640c23a62f3a-a7ac4f18839mr190070066b.22.1721904101586;
+        Thu, 25 Jul 2024 03:41:41 -0700 (PDT)
+Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acada25a8sm58650166b.175.2024.07.25.03.41.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jul 2024 03:41:40 -0700 (PDT)
+Message-ID: <1a2095f9-b46f-4299-b07c-2fb628153ed1@linaro.org>
+Date: Thu, 25 Jul 2024 12:41:38 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240725-qx1050-feature-expansion-v2-11-5fac4bbd946f@riseup.net>
-References: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
-In-Reply-To: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/11] arm64: dts: qcom: sm6115-pro1x: Enable ATH10K
+ WLAN
+To: Dang Huynh <danct12@riseup.net>, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dang Huynh <danct12@riseup.net>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
+ <20240725-qx1050-feature-expansion-v2-11-5fac4bbd946f@riseup.net>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240725-qx1050-feature-expansion-v2-11-5fac4bbd946f@riseup.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Enable onboard Wi-Fi on the F(x)tec Pro1X.
+On 25.07.2024 3:42 AM, Dang Huynh wrote:
+> Enable onboard Wi-Fi on the F(x)tec Pro1X.
+> 
+> For reference, HW/SW identifies as:
+> qmi chip_id 0x120 chip_family 0x4007 board_id 0xff soc_id 0x40670000
+> qmi fw_version 0x324103d6 fw_build_timestamp 2021-12-02 08:20
+> fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.4-00982-QCAHLSWMTPLZ-1
+> 
+> Signed-off-by: Dang Huynh <danct12@riseup.net>
+> ---
 
-For reference, HW/SW identifies as:
-qmi chip_id 0x120 chip_family 0x4007 board_id 0xff soc_id 0x40670000
-qmi fw_version 0x324103d6 fw_build_timestamp 2021-12-02 08:20
-fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.4-00982-QCAHLSWMTPLZ-1
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: Dang Huynh <danct12@riseup.net>
----
- arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-index 3f6676edc9a7..2ef2733bff48 100644
---- a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-@@ -536,6 +536,17 @@ &usb_qmpphy_out {
- 	remote-endpoint = <&pmi632_ss_in>;
- };
- 
-+&wifi {
-+	vdd-0.8-cx-mx-supply = <&pm6125_l8a>;
-+	vdd-1.8-xo-supply = <&pm6125_l16a>;
-+	vdd-1.3-rfa-supply = <&pm6125_l17a>;
-+	vdd-3.3-ch0-supply = <&pm6125_l23a>;
-+
-+	qcom,ath10k-calibration-variant = "Fxtec_QX1050";
-+
-+	status = "okay";
-+};
-+
- &xo_board {
- 	clock-frequency = <19200000>;
- };
-
--- 
-2.45.2
-
+Konrad
