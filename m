@@ -1,56 +1,56 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39932BCF9
-	for <phone-devel@vger.kernel.org>; Sat, 27 Jul 2024 20:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80F03BBC9
+	for <phone-devel@vger.kernel.org>; Sat, 27 Jul 2024 22:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722111740; cv=none; b=nYRitb4VEMBZFVqgX9AC5NVKpCdHWAOEUJzVp9WidrqFyxw13MxXY6ozQjbvMTbBcvNhG5C6Q5nRI1O7GTij6xfuLHwGAref+ziCUYIGGf+TS0AugQtGOzlqjpBJukVVSXMQkcQLJlPQcZmz8hYq2NYutYfQnIVxSyxxSNH/BAc=
+	t=1722118426; cv=none; b=dwlvEJObkrIqO3PjvZHlMly7qVSZ2XTKXmwt4v1e7DWAELuxzXPYEYDCA3R+GHY2PUCMlMsk0fxngcxNazKp60ZlNDntywKW3v0MQZ8vR+v36g+QRgpoiYNxbOTjbnxIDmr7QriHsQ52AxBhmjyejgW8/2enwLjmsUABaewoJQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722111740; c=relaxed/simple;
-	bh=kHGL1U4vzMPjvspLRMbkYBQBI26OdTx3BOt3JS1aT1E=;
+	s=arc-20240116; t=1722118426; c=relaxed/simple;
+	bh=xTufxf82ZcI8yph5qtryfWMk73NHkLewGz4Mh0eSR9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mtyKQwya5FS3+wse2MS+6KYiaZk2WlMtwRxUlTarCZGSwUECOwLaSLR27h5GIWEpyIZruPMzRh6mCNPqOHPL59aHtVtaXKrwozoRdrCgRwdKh4UGSIK6Y1dJWQFqVtydD9F8ILIv/ObOAANxdyVOR+eGUQ7YjDAGNqRfjBUyQuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZS/8keje; arc=none smtp.client-ip=209.85.208.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=MRpBj64s2mZHrzA6pow0tB3tcEAuFBNR02VP8i6tMOQthANZUCK+acirr8OcJ7TCEAz7A6QU4mM2l/pwh3ez+K/gOO7b+lgQfAJzYrOQkUFphttOOm2AggAga/w+kt3CVRqfq/vs+008XH8R6xNUMfYiHhLlUZPp99zH77/ovRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tzzoE4jm; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZS/8keje"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ef2c56d9dcso28914241fa.2
-        for <phone-devel@vger.kernel.org>; Sat, 27 Jul 2024 13:22:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tzzoE4jm"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so36626601fa.2
+        for <phone-devel@vger.kernel.org>; Sat, 27 Jul 2024 15:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722111737; x=1722716537; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1722118423; x=1722723223; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Huc0K8rSvsCtHtQb7ohCUWF9mvI2cqys5jRNGU3Q/E8=;
-        b=ZS/8kejeAGjjqXt76f8goBCDm9OrBjV4XlypphiZ/JnPDEdyRbsOYXZmleNmCi3jbw
-         gjMm8N4NY+O2HqssvpTccHFAlO0B5mrzxaEtMDi/eV6n0DAf20fbgonBduYuNlVu4CaD
-         feMrcwFcNnIhIdeI4AoxdhGyI8IKhlv5WkEkWSlZToabnwbJhPnbvOlYgYxx2oX2DfMf
-         k42+IX9hJhWrOPAYi4w57f/RpOwajt+rYTMfl/0FRpy+1MKKgAGVZTbT20Lae0OoUnCY
-         iN0X2x0TP3CiZqz/5zhLh4bt9Z7uj33Xt0QyMM1MsPyVtaG81LoFtxzXvhsI9zDRlBmU
-         B9cA==
+        bh=QXKci/NSkTkc7j5F8GcMlz5bnFyJnE5pZB5gvn3Nv7g=;
+        b=tzzoE4jmPJLi1vxu8fv6vtDeoEsqvjZyvNN5hDsOy47dZoidS/t+cYaeGQ/ZJHA+JQ
+         zJwXSxDoOYgQJMxl+k9WCW+8v7yaWsbAqoRbULNmlmfZSs60R3GoJxfQrNUnsFhLqk95
+         xVVMhuBGaVSvcl3gNqHaYuYvscIe0bbPIJ67WNlpvkCA1Bq37SdwEESEoATqQZmIa1cH
+         Dttzxtlj36skQRZdse+m7smHPaoFY/SLQ5PVy1M0VhWbJ4/ZCDlOPjUwLZhuyleelnDb
+         GTu4Qc/E4q0S1MLhgpvdI3qJOPG3B8DzxFF98oV8a4jaKBn3HUqgyFXMnTTrrWX2iMzf
+         4EWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722111737; x=1722716537;
+        d=1e100.net; s=20230601; t=1722118423; x=1722723223;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Huc0K8rSvsCtHtQb7ohCUWF9mvI2cqys5jRNGU3Q/E8=;
-        b=oirYnmJ/jp1bXfDEsCSKikHhQD+mutqxvRwOICxlrQvSbJGax1dGuVt+9pEXvaxVTZ
-         DxQ1auPRP7CjuesB3rcH9Inphnh/G0Q01mVVqk8pibeUA6thLWmRQhYuxo8dI99NQQ7h
-         0dhaGvgFbOBDzUL8jg9oi/6syFfA/RIhR5Tet7IxNPAOPj7nBDEPaR6s28a4ijYR2AZ1
-         VdT+pHYKnCp//UcNOUZalZWxZSIURvGB/bvZ1CqCLqXhRvknkP0wKZrtIPbPx78USqJf
-         KSGDpOobQQElSZr8adGvHuMjUF2y0Wi3qstuRtgMAZdVIzTzkscoEd4//uExMSjLy4hO
-         OgsQ==
-X-Gm-Message-State: AOJu0YxIDCF01k8J4uDjVvCRKnGksubq8ztm2P3xJzTnKqxoCDQ8PpoI
-	AYe1Qx2HZ154ND62aD3NOfvYiu47Efzz5oeD/PItapaSjiy2fAhHKWYmv3QHcdY=
-X-Google-Smtp-Source: AGHT+IEAM19ZrUTa03e6rXgthK0w+W59uGj7mGDLlSdELDkmYK6fX4CrolrKItgRARpBhijKL3BlCQ==
-X-Received: by 2002:a05:6512:3416:b0:52c:1d8a:9716 with SMTP id 2adb3069b0e04-5309b270b3cmr3069385e87.19.1722111736812;
-        Sat, 27 Jul 2024 13:22:16 -0700 (PDT)
+        bh=QXKci/NSkTkc7j5F8GcMlz5bnFyJnE5pZB5gvn3Nv7g=;
+        b=o96C1vN/GOQHqoAhoTIeoDCnIH8DKosnIZ+/ZYYm8/9X0xzBvxCpg7+rVCAz507Y97
+         XbAv2Uwj+5Hkanx+s3KdFWB+pLIWr6nh8usR9X8HTu0J8BVlNgvzwWHRcyYjk1AmSOlj
+         JO613RJAetXgMVrwBxzMncfNLwxPZBdH3sf+EGL/NyGORygwM46Rw81UiZxYNdBvvioN
+         Ocnu8Fi4sVAg7BEoyQKVp17gmB7w8YC6HVBspd82v5NaLJhyBtkh1zM6e4oW6RY1MPP5
+         mlW5D/UIryHfpmQ5jMJ0ibRUon1RPLbHmM7yzNkwQ3RIVTJd9LiphzX/hicFsJ3LcIji
+         SXIw==
+X-Gm-Message-State: AOJu0YwNg5aScKaBh2gSuMDHnufswNdhoKxoZ1iZWOUY4a6b0f18UqL7
+	bHYinVkDfUDInud823HUcmMqBoLGTIgaXmDfXXgz8jv3vNYkVMPfMjEt+gCVa1I=
+X-Google-Smtp-Source: AGHT+IHkNunJs80mXYRHwnrzwHYeTT7dYtIIdvFSJvbxhJtb1sB6ciAg8z3hcjNebhQgLpPjAhVO2Q==
+X-Received: by 2002:a2e:9608:0:b0:2ef:2f17:9edd with SMTP id 38308e7fff4ca-2f12ee2f188mr21770451fa.44.1722118422335;
+        Sat, 27 Jul 2024 15:13:42 -0700 (PDT)
 Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5c08e9fsm843335e87.134.2024.07.27.13.22.15
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f03cf0dc4bsm7945261fa.18.2024.07.27.15.13.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jul 2024 13:22:16 -0700 (PDT)
-Date: Sat, 27 Jul 2024 23:22:14 +0300
+        Sat, 27 Jul 2024 15:13:41 -0700 (PDT)
+Date: Sun, 28 Jul 2024 01:13:40 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
@@ -63,10 +63,11 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 	Stephan Gerhold <stephan@gerhold.net>, alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org, 
 	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	llvm@lists.linux.dev, Vladimir Lypak <vladimir.lypak@gmail.com>
-Subject: Re: [PATCH v2 1/4] ASoC: qcom: apq8016_sbc.c: Add Quinary support
-Message-ID: <hyjoqu6w4oqv5i4hvuewtgod3ngdkkanzokz5k2uh24gce74jw@ne5ctq7bfzv4>
+Subject: Re: [PATCH v2 2/4] ASoC: msm8916-wcd-analog: add cajon and cajon v2
+ support
+Message-ID: <g2aj4z3t54esit6u63i2pwovyujqg45orhpcnp5zad6l3dhvyr@5qgpcbcghg77>
 References: <20240727182031.35069-1-a39.skl@gmail.com>
- <20240727182031.35069-2-a39.skl@gmail.com>
+ <20240727182031.35069-3-a39.skl@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,42 +76,129 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240727182031.35069-2-a39.skl@gmail.com>
+In-Reply-To: <20240727182031.35069-3-a39.skl@gmail.com>
 
-On Sat, Jul 27, 2024 at 08:20:24PM GMT, Adam Skladowski wrote:
+On Sat, Jul 27, 2024 at 08:20:25PM GMT, Adam Skladowski wrote:
 > From: Vladimir Lypak <vladimir.lypak@gmail.com>
 > 
-> Add support for configuring Quinary Mi2S interface
-> it will be used on MSM8953 and MSM8976 platform.
+> Add regs overrides for Cajon(PM8952) and Cajon v2(PM8953) codecs.
 > 
 > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> [Adam: Split from MSM8953 support patch,add msg]
+> [Adam: Add Cajon support,add msg]
+> Co-developed-by: Adam Skladowski <a39.skl@gmail.com>
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->  sound/soc/qcom/apq8016_sbc.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-
-
-[...]
-
+>  sound/soc/codecs/msm8916-wcd-analog.c | 63 +++++++++++++++++++++++++--
+>  1 file changed, 60 insertions(+), 3 deletions(-)
 > 
-> @@ -320,6 +331,9 @@ static int apq8016_sbc_platform_probe(struct platform_device *pdev)
->  	if (IS_ERR(data->spkr_iomux))
->  		return PTR_ERR(data->spkr_iomux);
+> diff --git a/sound/soc/codecs/msm8916-wcd-analog.c b/sound/soc/codecs/msm8916-wcd-analog.c
+> index 9ca381812975..daf65f5d4e99 100644
+> --- a/sound/soc/codecs/msm8916-wcd-analog.c
+> +++ b/sound/soc/codecs/msm8916-wcd-analog.c
+> @@ -250,6 +250,7 @@
+>  		SPKR_DRV_CAL_EN | SPKR_DRV_SETTLE_EN | \
+>  		SPKR_DRV_FW_EN | SPKR_DRV_BOOST_SET | \
+>  		SPKR_DRV_CMFB_SET | SPKR_DRV_GAIN_SET)
+> +#define CDC_A_SPKR_ANA_BIAS_SET		(0xf1B3)
+>  #define CDC_A_SPKR_OCP_CTL		(0xf1B4)
+>  #define CDC_A_SPKR_PWRSTG_CTL		(0xf1B5)
+>  #define SPKR_PWRSTG_CTL_DAC_EN_MASK	BIT(0)
+> @@ -264,12 +265,15 @@
 >  
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "quin-iomux");
-> +	data->quin_iomux = devm_ioremap_resource(&pdev->dev, res);
+>  #define CDC_A_SPKR_DRV_DBG		(0xf1B7)
+>  #define CDC_A_CURRENT_LIMIT		(0xf1C0)
+> +#define CDC_A_BYPASS_MODE		(0xf1C2)
+>  #define CDC_A_BOOST_EN_CTL		(0xf1C3)
+>  #define CDC_A_SLOPE_COMP_IP_ZERO	(0xf1C4)
+>  #define CDC_A_SEC_ACCESS		(0xf1D0)
+>  #define CDC_A_PERPH_RESET_CTL3		(0xf1DA)
+>  #define CDC_A_PERPH_RESET_CTL4		(0xf1DB)
+>  
+> +#define CDC_A_RX_EAR_STATUS		(0xf1A1)
 
-
-This will still print an error if there is no quin-iomux. It's better to
-call devm_ioremap_resource() only if res is not NULL.
-
-LGTM otherwise
+This one should go before CDC_A_SPKR_DAC_CTL
 
 > +
->  	snd_soc_card_set_drvdata(card, data);
+>  #define MSM8916_WCD_ANALOG_RATES (SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |\
+>  			SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_48000)
+>  #define MSM8916_WCD_ANALOG_FORMATS (SNDRV_PCM_FMTBIT_S16_LE |\
+> @@ -715,6 +719,50 @@ static const struct reg_default wcd_reg_defaults_2_0[] = {
+>  	{CDC_A_MASTER_BIAS_CTL, 0x30},
+>  };
 >  
->  	add_ops(card);
+> +static const struct reg_default wcd_reg_defaults_cajon[] = {
+> +	{CDC_A_RX_COM_OCP_CTL, 0xD1},
+> +	{CDC_A_RX_COM_OCP_COUNT, 0xFF},
+> +	{CDC_D_SEC_ACCESS, 0xA5},
+> +	{CDC_D_PERPH_RESET_CTL3, 0x0F},
+> +	{CDC_A_TX_1_2_OPAMP_BIAS, 0x4C},
+> +	{CDC_A_NCP_FBCTRL, 0xA8},
+> +	{CDC_A_NCP_VCTRL, 0xA4},
+> +	{CDC_A_SPKR_DRV_CTL, 0x69},
+> +	{CDC_A_SPKR_DRV_DBG, 0x01},
+> +	{CDC_A_SEC_ACCESS, 0xA5},
+> +	{CDC_A_PERPH_RESET_CTL3, 0x0F},
+> +	{CDC_A_CURRENT_LIMIT, 0x82},
+> +	{CDC_A_SPKR_ANA_BIAS_SET, 0x41},
+> +	{CDC_A_SPKR_DAC_CTL, 0x03},
+> +	{CDC_A_SPKR_OCP_CTL, 0xE1},
+> +	{CDC_A_RX_HPH_BIAS_PA, 0xFA},
+> +	{CDC_A_MASTER_BIAS_CTL, 0x30},
+> +	{CDC_A_MICB_1_INT_RBIAS, 0x00},
+> +};
+> +
+> +static const struct reg_default wcd_reg_defaults_cajon_2_0[] = {
+> +	{CDC_A_RX_COM_OCP_CTL, 0xD1},
+> +	{CDC_A_RX_COM_OCP_COUNT, 0xFF},
+> +	{CDC_D_SEC_ACCESS, 0xA5},
+> +	{CDC_D_PERPH_RESET_CTL3, 0x0F},
+> +	{CDC_A_TX_1_2_OPAMP_BIAS, 0x4C},
+> +	{CDC_A_NCP_FBCTRL, 0xA8},
+> +	{CDC_A_NCP_VCTRL, 0xA4},
+> +	{CDC_A_SPKR_DRV_CTL, 0x69},
+> +	{CDC_A_SPKR_DRV_DBG, 0x01},
+> +	{CDC_A_SEC_ACCESS, 0xA5},
+> +	{CDC_A_PERPH_RESET_CTL3, 0x0F},
+> +	{CDC_A_CURRENT_LIMIT, 0xA2},
+> +	{CDC_A_BYPASS_MODE, 0x18},
+> +	{CDC_A_SPKR_ANA_BIAS_SET, 0x41},
+> +	{CDC_A_SPKR_DAC_CTL, 0x03},
+> +	{CDC_A_SPKR_OCP_CTL, 0xE1},
+> +	{CDC_A_RX_HPH_BIAS_PA, 0xFA},
+> +	{CDC_A_RX_EAR_STATUS, 0x10},
+> +	{CDC_A_MASTER_BIAS_CTL, 0x30},
+> +	{CDC_A_MICB_1_INT_RBIAS, 0x00},
+> +};
+> +
+>  static int pm8916_wcd_analog_probe(struct snd_soc_component *component)
+>  {
+>  	struct pm8916_wcd_analog_priv *priv = dev_get_drvdata(component->dev);
+> @@ -738,9 +786,18 @@ static int pm8916_wcd_analog_probe(struct snd_soc_component *component)
+>  	snd_soc_component_write(component, CDC_D_PERPH_RESET_CTL4, 0x01);
+>  	snd_soc_component_write(component, CDC_A_PERPH_RESET_CTL4, 0x01);
+>  
+> -	for (reg = 0; reg < ARRAY_SIZE(wcd_reg_defaults_2_0); reg++)
+> -		snd_soc_component_write(component, wcd_reg_defaults_2_0[reg].reg,
+> -			      wcd_reg_defaults_2_0[reg].def);
+> +	if (priv->codec_version == 4)
+> +		for (reg = 0; reg < ARRAY_SIZE(wcd_reg_defaults_cajon_2_0); reg++)
+> +			snd_soc_component_write(component, wcd_reg_defaults_cajon_2_0[reg].reg,
+> +					wcd_reg_defaults_cajon_2_0[reg].def);
+> +	else if (priv->codec_version == 3)
+> +		for (reg = 0; reg < ARRAY_SIZE(wcd_reg_defaults_cajon); reg++)
+> +			snd_soc_component_write(component, wcd_reg_defaults_cajon[reg].reg,
+> +					wcd_reg_defaults_cajon[reg].def);
+> +	else
+> +		for (reg = 0; reg < ARRAY_SIZE(wcd_reg_defaults_2_0); reg++)
+> +			snd_soc_component_write(component, wcd_reg_defaults_2_0[reg].reg,
+> +					wcd_reg_defaults_2_0[reg].def);
+
+I have mixed feelings towards this. Would it be better to use
+PMIC-specific compatibles and pass register init as match data instead?
+
+>  
+>  	priv->component = component;
+>  
 > -- 
 > 2.45.2
 > 
