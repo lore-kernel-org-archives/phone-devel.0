@@ -1,113 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D8143752;
-	Mon, 29 Jul 2024 12:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD1E2209B
+	for <phone-devel@vger.kernel.org>; Mon, 29 Jul 2024 12:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722254601; cv=none; b=s4Cr4GntsEpYS1fIX8GF4omQomHppYj53XTBYDFDVjJjwxI1+FEdlHty7a8aCktarLfUAqTSzT9GP3mlYjN9FZF6VhR5xZEyWGVhFj2erhAo5m3IMhbtR1MOY5+5jk917stYaIj0Q1cviORpZqIun9i1Yklwsl15Gys5Hq8zB50=
+	t=1722256276; cv=none; b=P6FKcYijQgzpb7XSglgx2RN0U40KqwRuFUmg6RIqK52HBkpmAE2rAD3Wl8K/bSJjQ87ptapb2dWnst20c1Zeud2PI6r7U3ams8JwdO5Pzl293w66B1mH2aTBFHPar4OxNWOr5PKkJbFEi6mFFmr3TTZWTgsi4nv6e42gRDrD2ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722254601; c=relaxed/simple;
-	bh=lXf72ckhhbgg5O3Y7wY7iYMZFSmYWB3p3X2wf1yGDdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oOGvpCFBatvASPzlhUsxNyCCxvu8M8QpEuUcc1KB2oWv22kjn5IwsSjL7gHLvCP6bcW9s+W18U0iT22sSi6JMBCXPBlpIJiRbepacl9WDJl13Md+PweEGPjXAj/ZEVzVskTXCZ1ysaIIEUu4PJYB+t5+XbXniIB6KnZTrOokRiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R42JEzSH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722256276; c=relaxed/simple;
+	bh=DNhanqTWJd/OkgCTvbBYdOC5y5bwxHTguZCfFa1RUyo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KeQXYs2oyzEXs7UkinY+XKJOsOrBk//88vtpbqD3ngn4KxcuUhmfRjrIrsI0IiITb7RLh9gwDhzzjiw4Huwcy7fexIZpXyDbyaA9zbs0S5jOT2Y3pUbW0c1cN4m4/JannYdobBEj2n3H7sdKRW/jAGhN5gXBzE+wILMyNuvh/wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xx2+iyqK; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R42JEzSH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D46C4AF0A;
-	Mon, 29 Jul 2024 12:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722254600;
-	bh=lXf72ckhhbgg5O3Y7wY7iYMZFSmYWB3p3X2wf1yGDdo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R42JEzSHdRhncXb5jmbBQ7FQckeyskXB9yTXuYjH8/CLaG4+zKgIanX2tYGc7BDAv
-	 W0S8cI7e51U5+FtAWVlz3bUiCtOBqnU1nzO+3dt0f99J58TicPdvOJDREgo8+up+Iw
-	 O7BQM5xP7h2BqTJXKlYl0yITUXOwzN0M/O1jSH4DchK9Z8hEM9+3n3QpBGLTx4vgKe
-	 b9qMngnnNz8LjzbT884qOOWCBCwaMIVJQyXA0pbeJONMHqIfQMzlIIEycr1lOUAevc
-	 7+u1YR3bhwHexSYgYYrlQGHbe+KHBeApqCkHIxugvOu97+E9HwU6xFGIz5B7U1MHQE
-	 O3l/WMprLMc0Q==
-Message-ID: <a1dae393-7951-4dcc-9340-484ea9a5d404@kernel.org>
-Date: Mon, 29 Jul 2024 14:03:14 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xx2+iyqK"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52f04c1e58eso4258590e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 29 Jul 2024 05:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722256272; x=1722861072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y7hmd3mWm1gQNax1rdnBwm9X3nvRpjYNFyOf3EAYVg8=;
+        b=Xx2+iyqK2xILW5rbylj88DdGnDjEPkDH+GfKyPJl4dz359q+EUq4MihYUQQ14EkytO
+         hVHNdZk4bPDRfMAeRccC1KWZu70IfX1gTaUDAtAI5/4krI4reRk2R52Eva/2R7hQz7RI
+         QbfG9Y5XK0fqiaQu+U5eGXu7WJwBkmh8S1rVvxurWwOl2aWWuAZwVyw5rC3bTGap9hFP
+         Q7LWHzxwjd/18vb9++74fFlNqm1swXhp8r7+io8UhyZXOgII3h0O31RNi8Bi8LHnM3YB
+         K0yteUmWUUzWqD4zAttuaPkv8NguKKsLPkxQaL1NtQnI/cHhaZtc89T3l6ZK5ZRco/ui
+         w00w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722256272; x=1722861072;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y7hmd3mWm1gQNax1rdnBwm9X3nvRpjYNFyOf3EAYVg8=;
+        b=ECrEsKSSZ0wURZof9cJ0iiMLBlHLFqKbl5+bEsM6M0nanlcvvVXvHcYAE+vsYNaLaN
+         E/g78vDBS/Kx/QtoSvQpUc1RIP0Ul4O1OWS1J5esgCxucE+GftSiJ4Hi3TK6rsIt11kZ
+         w6jJUUx+H+bmzwC3Bpwqr/1ytsjt++bDqPdp2B2jHhSyipjJlrlwJkEiWqrDIEk6ZCXn
+         pB0NnglRYWexXgtbnLNoo5a+MxIGxs/l2Heg1YDxnUWlHuKqICMnvUG2cHqz7GPVknIs
+         LDHJDLjdXqhSN9M5yAB4v8FlwwQc0oBmObiiutJYHtW0u3nXC4qgiKMZjpsseh1QXWdQ
+         HgBg==
+X-Gm-Message-State: AOJu0YyXx+LA81+9DYY/Xq3xcVtoGLX5DI8Acjuu5Htha6WS6VmD3BgK
+	4cNlT9mhfXgub2+Go1d3yXIjwgBQx1CzK+cVi0BPJQ6sG3hx62eBXMcVEjW5ZkA=
+X-Google-Smtp-Source: AGHT+IHmZcVRj+OQubC+Y9JLE+mJvdVS0zZVFUn2gdyL1G0hR405kWsdn6atd1FZXPPAZ9g+dW56PA==
+X-Received: by 2002:ac2:4f07:0:b0:52c:df55:e110 with SMTP id 2adb3069b0e04-5309b26928bmr7668841e87.12.1722256271901;
+        Mon, 29 Jul 2024 05:31:11 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab22ff1sm501973966b.35.2024.07.29.05.31.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 05:31:11 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: David Virag <virag.david003@gmail.com>
+Cc: phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Sam Protsenko <semen.protsenko@linaro.org>, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240713180607.147942-3-virag.david003@gmail.com>
+References: <20240713180607.147942-3-virag.david003@gmail.com>
+Subject: Re: [PATCH] arm64: dts: exynos: exynos7885-jackpotlte: Correct RAM
+ amount to 4GB
+Message-Id: <172225627029.280610.17022654796794760064.b4-ty@linaro.org>
+Date: Mon, 29 Jul 2024 14:31:10 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/11] arm64: dts: qcom: sm6115-pro1x: Add Hall Switch
- and Camera Button
-To: Dang Huynh <danct12@riseup.net>, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
- <20240725-qx1050-feature-expansion-v2-1-5fac4bbd946f@riseup.net>
-Content-Language: en-US
-From: Konrad Dybcio <konradybcio@kernel.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- JDZelR9Xqh8=
-In-Reply-To: <20240725-qx1050-feature-expansion-v2-1-5fac4bbd946f@riseup.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.1
 
-On 25.07.2024 3:42 AM, Dang Huynh wrote:
-> The Pro1X has a flip keyboard and a single-state camera button.
+
+On Sat, 13 Jul 2024 19:58:32 +0200, David Virag wrote:
+> All known jackpotlte variants have 4GB of RAM, let's use it all.
+> RAM was set to 3GB from a mistake in the vendor provided DTS file.
 > 
-> Signed-off-by: Dang Huynh <danct12@riseup.net>
-> ---
+> 
 
-[...]
+Applied, thanks!
 
+[1/1] arm64: dts: exynos: exynos7885-jackpotlte: Correct RAM amount to 4GB
+      https://git.kernel.org/krzk/linux/c/d281814b8f7a710a75258da883fb0dfe1329c031
 
->  
->  &tlmm {
->  	gpio-reserved-ranges = <0 4>, <14 4>;
-> +
-> +	hall_sensor_n: hall-sensor-n {
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-These must end in -state to pass binding checks (also in other
-patches)
-
-Also,
-
-https://docs.kernel.org/devicetree/bindings/dts-coding-style.html#order-of-nodes
-
-suggests to sort these nodes by gpio number
-
-Konrad
