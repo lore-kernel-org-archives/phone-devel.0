@@ -1,48 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF44823AF;
-	Mon, 29 Jul 2024 03:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F77A1422C5;
+	Mon, 29 Jul 2024 03:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722225529; cv=none; b=LlN0J09OWkDj85bchuLBDeUWgbOhkANYwGwxQW72JLgQPWvX7qrjxlW+fJChD22UaxlNj5O7L4qbTMcq4XP19qpLZLJVfWoJoj77wChVJjk6EHsy2e500QfOVwrmZwLm2Tv7xV5r5VExa8SvnI9eOtxQ5ulEPID0T96tMnpiaAU=
+	t=1722225542; cv=none; b=lNPDSbyrgIkJMRTGYh1Pw3681rXpr03urY2dOvg1HETpPtiprw4zbCjHRCsuI9m3AFcU2saX27PzPOrNPdKUvDl/Pw3VmiPtTczhIHOjH1V5es8zzihjocOEjxrKFeks3Ecv0B3ci1n8nQrL54uSgR+WajI+3aumsSlQhYoum88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722225529; c=relaxed/simple;
-	bh=ATaRItJ/Sz0VUq0W/PC5liODZCDYtH2gbLIdYmeEUIg=;
+	s=arc-20240116; t=1722225542; c=relaxed/simple;
+	bh=dSrPOgUsIyjtjeJHQWCuoWo1xW0ghb5lu9T5CfWdiUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IFCZi4so0/vXXxILii/WYJ80g5l97M9bkz8jPPm+r5DFuh3+FsNc3x4jypbwBrkXj9cDtOnrijRNzTkILFkw13yoIGsCP2f84XdoMVVkUqCj95IrgLcWsR5JP92XzJH5MFEBs4wleKFo5zwIa2i9KEn5OlYolqGkhjqiCVct8pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyaUffV6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=F14mYCKwf6paWw1xxp0dO51+46BDrr1xVfpd/Yh9c4UxEaYi4qQD/Syu1KjKjoPsW21sAGTJ6wfKALfR+XTZmhJRCZLtz3qs8bghPTw50OvW+XFUdZijSxiXsz75+6v63/MgLccGaBnvMgTvhILmk1kh7k/OwS4jNTrX8OTua8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCc9K3NE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyaUffV6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9E0C4AF10;
-	Mon, 29 Jul 2024 03:58:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCc9K3NE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51557C4AF10;
+	Mon, 29 Jul 2024 03:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722225529;
-	bh=ATaRItJ/Sz0VUq0W/PC5liODZCDYtH2gbLIdYmeEUIg=;
+	s=k20201202; t=1722225542;
+	bh=dSrPOgUsIyjtjeJHQWCuoWo1xW0ghb5lu9T5CfWdiUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyaUffV647u60mkzU5NbJv3ZT2RDfb6X9PWOLZwIOlaFrWsUtVW3x3kXumhA+yqn8
-	 1iGtNUwyD2QF8Af/Aag6yhNgpQQ3pMMI0YjnsBX1+wM6o0LZ8XOWsx5HFEJvLfc8WN
-	 QZ00CrcVj85zcAgd3LDs8fXwf7DeHyBimGF6PC3CTIhOCQa7eqZ7XD+rk0xCe0gjNp
-	 B3PNtJyAaZaMx2TNs8I+UHnuGIxV3nLKpNBvfJ3qwH8en0z6qOpxySH2Rj1vIqrKrM
-	 7aF+q0LwRAgay/Kz9DNz7FKiAm6X26MzIxAFWQK4jFPeZ01P2cfGy5oW6guw9ESvRi
-	 ykR9R3cMV046Q==
+	b=pCc9K3NEA+loMC6zoy9B2ANaD1drrVbgNdx6IofJKzeENk1ZrFxF+Hz+a1d7D30I0
+	 pkNCsPgzC1dbXpZl01FP3keDu4sls/k3fDOJyPfJpI5GbKhmCHxP5VzBQINMq7ILzp
+	 4zVbZBjzfpotzThAieuhTGIFJWkCJmmSRaC7weIlztiJnSAma/s+7WyiySAbPVGK1W
+	 niw845j9q9/pE7/Tux0COrK46qLZDiSWKWeAjRGi2RoGqK78gmTmvbVEYUaMTNmm1F
+	 cHZGtDgAIwCf3FeiTfBlv/yrBWg7pOgdwZDvvZgN6HetdIa7Z2t2wm1tDPeO6bjAij
+	 43rD2cNuOdrNg==
 From: Bjorn Andersson <andersson@kernel.org>
 To: linux-kernel@vger.kernel.org,
-	"Lin, Meng-Bo" <linmengbo06890@proton.me>
+	Raymond Hackley <raymondhackley@protonmail.com>
 Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Nikita Travkin <nikita@trvn.ru>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	phone-devel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-grandmax: Add touchscreen
-Date: Sun, 28 Jul 2024 22:58:15 -0500
-Message-ID: <172222551318.175430.17570782671190447857.b4-ty@kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-rossa: Add touchscreen
+Date: Sun, 28 Jul 2024 22:58:27 -0500
+Message-ID: <172222551326.175430.16332190112821856592.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240718112715.6117-1-linmengbo06890@proton.me>
-References: <20240718112715.6117-1-linmengbo06890@proton.me>
+In-Reply-To: <20240723131441.1764-1-raymondhackley@protonmail.com>
+References: <20240723131441.1764-1-raymondhackley@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,16 +55,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 18 Jul 2024 11:28:57 +0000, Lin, Meng-Bo wrote:
-> Grand Max uses an Imagis IST3038 touchscreen that is connected to
+On Tue, 23 Jul 2024 13:15:09 +0000, Raymond Hackley wrote:
+> Core Prime uses an Imagis IST3038 touchscreen that is connected to
 > blsp_i2c5. Add it to the device tree.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: msm8916-samsung-grandmax: Add touchscreen
-      commit: 1e19ffdb780a43f34d5da28b7f84ae8c23b47451
+[1/1] arm64: dts: qcom: msm8916-samsung-rossa: Add touchscreen
+      commit: 2bb08c4c9adcff11855b4a8d5e2f583306da883b
 
 Best regards,
 -- 
