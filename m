@@ -1,114 +1,189 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E28155CBA;
-	Mon, 29 Jul 2024 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8796182869;
+	Mon, 29 Jul 2024 21:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722265657; cv=none; b=EsmcZ8rhHp5bvdtAAYxspwzhz+QPzWtb9Sgxud/r77PnPGqTux38vZ2t2z4lEnKAOnQeerbyT0k0XlXk/oh88/S38FYDeLdjyxtSb6x6j4yFOxBYU1xhpt5+4KBlYK8MkyfOmbG039aF+xjDl8f4pILX3zuK7/YoU0TfTPImZhs=
+	t=1722288156; cv=none; b=i4F7h3oTtX0ojoEU4J4M32gsgTuos9aIBHVtu+aNqeK/B+HopU4syuvMEk8BO3bS0mVDC+T+wDE/ITZ0YgjbdGeLPDjiMJABqNAA7IPQpKtEgxj4B18ldFLnOy3D58xL8pXDovYoBTCjD5fBd/zj1vSUIpV7rjRbh2FmGNO4hWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722265657; c=relaxed/simple;
-	bh=OwAUwVLJ7+eVQc6vfbdzjd3PzOUWGzQjMCm8iSIEeik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PNWXlYLCzc1WTEwBeenUHeRTy5KweAV2Cwao0ysda6iPmpY+Njtw5tL8Kp+12ZQCCL77v3tkjOO97vRMmSomPMDZW8UQ52uF/ryNe5dOJzzuejRVv9t9sxZPyC7fnFcZmFrWnXpBhJymeHR5Y2D5544co7xUa3PVIIzm6+3a2A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jyTEgguz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722288156; c=relaxed/simple;
+	bh=F8ef2LDwx73H3bb2EMmW031XbE67mopRtD6WTxjZLwQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Zr5Gwe/j6WQqshJB87bfp6F6XYFaRf9WH4Qv4IvzaEJXjTDzCZm7A6XE6GDLkjVQXkWxuJIgMPjeH1g5sO4KX//x+3sJE2Jj3dqvTjR1p886+gY1jftQOQcO+yDImNRSgDCJe+jorRJEqjXH4NUswnW5W//IErkrqLzStUw3HTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmAt9mx5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jyTEgguz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1F0C32786;
-	Mon, 29 Jul 2024 15:07:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmAt9mx5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0EAF3C32786;
+	Mon, 29 Jul 2024 21:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722265657;
-	bh=OwAUwVLJ7+eVQc6vfbdzjd3PzOUWGzQjMCm8iSIEeik=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jyTEgguzCTVdoWSLiwtmoQrXfIoDfde227P7yBp/bgLMaQJVI77NWiDQGV6aStq2A
-	 7B8lySoIkr9ZyG0PbjUqpNQ2EWMJlj0+cVShvLoyQGcwty9G++pOtcOxqlalkHGFNg
-	 rlVn2A0115LWsMKhdCtff1fJMXnsTMZmxihekfUxkueizPgOnIEu9OpC4WL8qQpACi
-	 qU+TuJm09syxX3OUcRGaoBypvNAwWB4xyhXDwZ2781+5Kr4iCQrMpRS6qUJbUzQCjO
-	 vXChfChfj7cQdF54OpnSD+qPCFTfvKhdNdBUCxF8LC9uAgaudAgLRl/1Z9bNZb/heT
-	 JLsUcXBPgXE+Q==
-Message-ID: <91004ef6-7904-412c-bc3b-28a50b704579@kernel.org>
-Date: Mon, 29 Jul 2024 17:07:32 +0200
+	s=k20201202; t=1722288156;
+	bh=F8ef2LDwx73H3bb2EMmW031XbE67mopRtD6WTxjZLwQ=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=PmAt9mx5DLPTLR9pzzN+MNia/8Zg+5f7ddSrppVHUoxoNwaP+W9qeymFNDeGCLdCB
+	 KtTXISWn/Sxno7pF339Q1L++CAdfqrhUNRAVqQbtBcAcOQpQLMbjKJdgn7tkY40WvM
+	 YLu00LqZ+MU7xCiUXgAsKSOnful/TLzadr4JSbpxlS1yed7osSooSvFp+dT9k8B5Fh
+	 v4H5JmpGzW5oh0KPonvw1/+Vp3Cvl1Fsqcee4wojz+qtBDKe5psAKWfdG655ZGmupS
+	 zRWAJjnM9uHDVgVk4/+P/tm/Ejfv+AyOUTDRHa3RrZrZBp2DkSHv7mFv08M+9Qz1hk
+	 l0Qjs4wgaYJ4A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1687C3DA61;
+	Mon, 29 Jul 2024 21:22:35 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Mon, 29 Jul 2024 23:23:04 +0200
+Subject: [PATCH RESEND v6] arm64: dts: qcom: msm8939-longcheer-l9100: Add
+ rear flash
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/11] arm64: dts: qcom: sm6115-pro1x: Add Hall Switch
- and Camera Button
-To: Dang Huynh <danct12@riseup.net>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net>
- <20240725-qx1050-feature-expansion-v2-1-5fac4bbd946f@riseup.net>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240725-qx1050-feature-expansion-v2-1-5fac4bbd946f@riseup.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240729-sy7802-v6-1-86bb9083e40b@apitzsch.eu>
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Trilok Soni <quic_tsoni@quicinc.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees Cook <kees@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722288184; l=3739;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=PCHxsETnqMCOtnrhqJf1EyDZwF469Myb53EG0JzMbr8=;
+ b=R41Cn5ZKcw2KtJh8ebGpfkx53Ew/zWyK2YNsULcY/fu5FAXW8J1xss0PQq6fsocyHz6f22SRm
+ C1GF2/xvJwuBWbUHV2FMavpMU+x7Fxny+yIK5EXtoABuKtQfm69wCJ8
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On 25/07/2024 03:42, Dang Huynh wrote:
-> The Pro1X has a flip keyboard and a single-state camera button.
-> 
-> Signed-off-by: Dang Huynh <danct12@riseup.net>
-> ---
->  arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 34 +++++++++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
-> 
+From: André Apitzsch <git@apitzsch.eu>
 
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
+The phone has a Silergy SY7802 flash LED controller.
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+This series introduces a driver for the Silergy SY7802 charge pump used
+in the BQ Aquaris M5 and X5 smartphones.
+
+The implementation is based on information extracted from downstream as
+the datasheet provided by a distributor of the hardware didn't include
+any information about the i2c register description.
+---
+Changes in v6:
+- Drop applied patches 1/3 and 2/3
+- Move #address-/size-cells to the end
+- Add R-b tag
+- Link to v5: https://lore.kernel.org/r/20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu
+
+Changes in v5:
+- Fix language in driver description comment
+- Unwrap function arguments
+- Remove unnecessary empty lines
+- Add Acked-by tag to second patch
+- Link to v4: https://lore.kernel.org/r/20240616-sy7802-v4-0-789994180e05@apitzsch.eu
+
+Changes in v4:
+- Use for_each_available_child_of_node_scoped() to simplify code
+- Use dev_err_probe() to be consistent with the other code in
+  sy7802_probe()
+- Split devm_add_action() into 2 devm_add_action_or_reset() to simplify
+  code and balance regulator_enable()
+- Link to v3: https://lore.kernel.org/r/20240612-sy7802-v3-0-1e9cc1c79b79@apitzsch.eu
+
+Changes in v3:
+- Add R-b tag to first patch
+- Extend driver commit message
+- Improve readability of defines by using BIT()
+- Rename some variables/parameters
+  * led_no -> led_id
+  * level -> brightness
+  * curr -> fled_{strobe,torch}_used_tmp
+  * mask -> {flash,torch}_mask
+  * i -> child_num
+- Restructure structs ("Place th big stuff at the top")
+- Declare 'child' on a separate line
+- Move multi-line assignments out of declaration block
+- Update warning/error messages and comments
+- Use gotos to handle error path
+- Use devm API to cleanup module's resources
+- Init mutex before LED class device is registered to avoid race
+  condition
+- Link to v2: https://lore.kernel.org/r/20240401-sy7802-v2-0-1138190a7448@apitzsch.eu
+
+Changes in v2:
+- bindings: remove unneeded allOf
+- bindings: example: move flash-led-controller under i2c node to fix
+  check error
+- Cc to phone-devel
+- Link to v1: https://lore.kernel.org/r/20240327-sy7802-v1-0-db74ab32faaf@apitzsch.eu
+---
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
+index e3404c4455cf..b845da4fa23e 100644
+--- a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
++++ b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
+@@ -159,6 +159,26 @@ led@2 {
+ 			};
+ 		};
+ 	};
++
++	flash-led-controller@53 {
++		compatible = "silergy,sy7802";
++		reg = <0x53>;
++
++		enable-gpios = <&tlmm 16 GPIO_ACTIVE_HIGH>;
++
++		pinctrl-0 = <&camera_rear_flash_default>;
++		pinctrl-names = "default";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		led@0 {
++			reg = <0>;
++			function = LED_FUNCTION_FLASH;
++			color = <LED_COLOR_ID_WHITE>;
++			led-sources = <0>, <1>;
++		};
++	};
+ };
+ 
+ &blsp_i2c3 {
+@@ -318,6 +338,13 @@ camera_front_flash_default: camera-front-flash-default-state {
+ 		bias-disable;
+ 	};
+ 
++	camera_rear_flash_default: camera-rear-flash-default-state {
++		pins = "gpio9", "gpio16", "gpio51";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
+ 		pins = "gpio20";
+ 		function = "gpio";
+
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20240325-sy7802-f40fc6f56525
 
 Best regards,
-Krzysztof
+-- 
+André Apitzsch <git@apitzsch.eu>
+
 
