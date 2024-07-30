@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8796182869;
-	Mon, 29 Jul 2024 21:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED49199E86;
+	Tue, 30 Jul 2024 10:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722288156; cv=none; b=i4F7h3oTtX0ojoEU4J4M32gsgTuos9aIBHVtu+aNqeK/B+HopU4syuvMEk8BO3bS0mVDC+T+wDE/ITZ0YgjbdGeLPDjiMJABqNAA7IPQpKtEgxj4B18ldFLnOy3D58xL8pXDovYoBTCjD5fBd/zj1vSUIpV7rjRbh2FmGNO4hWY=
+	t=1722335171; cv=none; b=UkTaNiEWTCfh/BCIy2++SNB4DVnvDVCFpLGMsVUmuPPVbckqsX6Afp44XdxXmRt2Zri3yZSXZfMMu54+oTHzMBQc0HWUpmaAoRSgrfX4dWHZdWQYBVb18VBaDZx/5sNOdqZjoCLjmgXg8gfk0XZYdJQ25a2wfwWKxZo4+anorCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722288156; c=relaxed/simple;
-	bh=F8ef2LDwx73H3bb2EMmW031XbE67mopRtD6WTxjZLwQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Zr5Gwe/j6WQqshJB87bfp6F6XYFaRf9WH4Qv4IvzaEJXjTDzCZm7A6XE6GDLkjVQXkWxuJIgMPjeH1g5sO4KX//x+3sJE2Jj3dqvTjR1p886+gY1jftQOQcO+yDImNRSgDCJe+jorRJEqjXH4NUswnW5W//IErkrqLzStUw3HTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmAt9mx5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722335171; c=relaxed/simple;
+	bh=46Oqf2WgSUncFl6KJ/Rl3s+WL3FozDK9b2e8JLoL7Ns=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Z251ND+Z3j/LICWz6NpUwahjDJo+IuHkjbfemVs7urvyw06Ol1oK5Iii1k5+MnxecZb/tJyta6dyLSC4vBp31gT10RFS7b2Wu8PEobUh2y/uzfesp1d99ZFxVpW9lGqr/yw43+GhTNkk/CPMJZI404TRKiBck1CMiwodQW0PfSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+BXSZjB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmAt9mx5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0EAF3C32786;
-	Mon, 29 Jul 2024 21:22:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+BXSZjB"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E18B9C4AF15;
+	Tue, 30 Jul 2024 10:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722288156;
-	bh=F8ef2LDwx73H3bb2EMmW031XbE67mopRtD6WTxjZLwQ=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=PmAt9mx5DLPTLR9pzzN+MNia/8Zg+5f7ddSrppVHUoxoNwaP+W9qeymFNDeGCLdCB
-	 KtTXISWn/Sxno7pF339Q1L++CAdfqrhUNRAVqQbtBcAcOQpQLMbjKJdgn7tkY40WvM
-	 YLu00LqZ+MU7xCiUXgAsKSOnful/TLzadr4JSbpxlS1yed7osSooSvFp+dT9k8B5Fh
-	 v4H5JmpGzW5oh0KPonvw1/+Vp3Cvl1Fsqcee4wojz+qtBDKe5psAKWfdG655ZGmupS
-	 zRWAJjnM9uHDVgVk4/+P/tm/Ejfv+AyOUTDRHa3RrZrZBp2DkSHv7mFv08M+9Qz1hk
-	 l0Qjs4wgaYJ4A==
+	s=k20201202; t=1722335171;
+	bh=46Oqf2WgSUncFl6KJ/Rl3s+WL3FozDK9b2e8JLoL7Ns=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=N+BXSZjBPJ05X2LFbTDl1h09oy5MmBGn370bk2kuqsqPK19WsbTPSNHWdkwOejE4r
+	 roP+CQgYjlGiJuEANaEYhh/FvfH5NriT4+aVKMYDcgLq7hRUAKM4d+K7nTAkWToN0x
+	 xoAjB31G17BY5iGI4s1aLuExj/ClKBgXB+prS8OEzpO326sOCtj4SPrTcuT6Nk1Hcf
+	 w7dgSBsy5ifw94SsnBSCeuKfdM0j2oJSAxsiKTUn7uc/mZjjMIzrquwTvzWitXyo6f
+	 qZczdGLRjgqpHV4Jp/1dMzAPgXk7Rm8VNkk5TuXUAnX+dGDeHzRWqtSDFlOaP/bU/S
+	 oOlTEbC5cHVVQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1687C3DA61;
-	Mon, 29 Jul 2024 21:22:35 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Mon, 29 Jul 2024 23:23:04 +0200
-Subject: [PATCH RESEND v6] arm64: dts: qcom: msm8939-longcheer-l9100: Add
- rear flash
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE7BC3DA61;
+	Tue, 30 Jul 2024 10:26:10 +0000 (UTC)
+From: =?utf-8?q?Duje_Mihanovi=C4=87_via_B4_Relay?= <devnull+duje.mihanovic.skole.hr@kernel.org>
+Date: Tue, 30 Jul 2024 12:25:10 +0200
+Subject: [PATCH v11 02/12] dt-bindings: pinctrl: pinctrl-single: add
+ marvell,pxa1908-padconf compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,150 +41,67 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240729-sy7802-v6-1-86bb9083e40b@apitzsch.eu>
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- Trilok Soni <quic_tsoni@quicinc.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees Cook <kees@kernel.org>
-Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722288184; l=3739;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=PCHxsETnqMCOtnrhqJf1EyDZwF469Myb53EG0JzMbr8=;
- b=R41Cn5ZKcw2KtJh8ebGpfkx53Ew/zWyK2YNsULcY/fu5FAXW8J1xss0PQq6fsocyHz6f22SRm
- C1GF2/xvJwuBWbUHV2FMavpMU+x7Fxny+yIK5EXtoABuKtQfm69wCJ8
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+Message-Id: <20240730-pxa1908-lkml-v11-2-21dbb3e28793@skole.hr>
+References: <20240730-pxa1908-lkml-v11-0-21dbb3e28793@skole.hr>
+In-Reply-To: <20240730-pxa1908-lkml-v11-0-21dbb3e28793@skole.hr>
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+ Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
+ Lubomir Rintel <lkundrak@v3.sk>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=989;
+ i=duje.mihanovic@skole.hr; s=20240706; h=from:subject:message-id;
+ bh=mlhjrL140onBNKS/OlhGE8aipvQXsIEzCBjKg3OZbFE=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDGkr9m8+fdLL/eGBzkMCxouFiiYUTRASq25QeL3z0Z5gk
+ +Ri33enO0pZGMS4GGTFFFly/zte4/0ssnV79jIDmDmsTCBDGLg4BWAir9YwMvwrNghK8u14+ff+
+ J62MmJmh19wPbnN/9l7YdlJ5yq+tZtkM/6zz7vI973IKMHrxWLNzGZOk58HsmfanTJbH9+w4/dZ
+ rMx8A
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
+X-Endpoint-Received: by B4 Relay for duje.mihanovic@skole.hr/20240706 with
+ auth_id=191
+X-Original-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Reply-To: duje.mihanovic@skole.hr
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-The phone has a Silergy SY7802 flash LED controller.
+Add the "marvell,pxa1908-padconf" compatible to allow migrating to a
+separate pinctrl driver later.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
-This series introduces a driver for the Silergy SY7802 charge pump used
-in the BQ Aquaris M5 and X5 smartphones.
+ Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-The implementation is based on information extracted from downstream as
-the datasheet provided by a distributor of the hardware didn't include
-any information about the i2c register description.
----
-Changes in v6:
-- Drop applied patches 1/3 and 2/3
-- Move #address-/size-cells to the end
-- Add R-b tag
-- Link to v5: https://lore.kernel.org/r/20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu
-
-Changes in v5:
-- Fix language in driver description comment
-- Unwrap function arguments
-- Remove unnecessary empty lines
-- Add Acked-by tag to second patch
-- Link to v4: https://lore.kernel.org/r/20240616-sy7802-v4-0-789994180e05@apitzsch.eu
-
-Changes in v4:
-- Use for_each_available_child_of_node_scoped() to simplify code
-- Use dev_err_probe() to be consistent with the other code in
-  sy7802_probe()
-- Split devm_add_action() into 2 devm_add_action_or_reset() to simplify
-  code and balance regulator_enable()
-- Link to v3: https://lore.kernel.org/r/20240612-sy7802-v3-0-1e9cc1c79b79@apitzsch.eu
-
-Changes in v3:
-- Add R-b tag to first patch
-- Extend driver commit message
-- Improve readability of defines by using BIT()
-- Rename some variables/parameters
-  * led_no -> led_id
-  * level -> brightness
-  * curr -> fled_{strobe,torch}_used_tmp
-  * mask -> {flash,torch}_mask
-  * i -> child_num
-- Restructure structs ("Place th big stuff at the top")
-- Declare 'child' on a separate line
-- Move multi-line assignments out of declaration block
-- Update warning/error messages and comments
-- Use gotos to handle error path
-- Use devm API to cleanup module's resources
-- Init mutex before LED class device is registered to avoid race
-  condition
-- Link to v2: https://lore.kernel.org/r/20240401-sy7802-v2-0-1138190a7448@apitzsch.eu
-
-Changes in v2:
-- bindings: remove unneeded allOf
-- bindings: example: move flash-led-controller under i2c node to fix
-  check error
-- Cc to phone-devel
-- Link to v1: https://lore.kernel.org/r/20240327-sy7802-v1-0-db74ab32faaf@apitzsch.eu
----
- .../boot/dts/qcom/msm8939-longcheer-l9100.dts      | 27 ++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
-index e3404c4455cf..b845da4fa23e 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
-@@ -159,6 +159,26 @@ led@2 {
- 			};
- 		};
- 	};
-+
-+	flash-led-controller@53 {
-+		compatible = "silergy,sy7802";
-+		reg = <0x53>;
-+
-+		enable-gpios = <&tlmm 16 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&camera_rear_flash_default>;
-+		pinctrl-names = "default";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			function = LED_FUNCTION_FLASH;
-+			color = <LED_COLOR_ID_WHITE>;
-+			led-sources = <0>, <1>;
-+		};
-+	};
- };
+diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+index e02595316c9f..f83dbf32ad18 100644
+--- a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.yaml
+@@ -33,6 +33,10 @@ properties:
+               - ti,omap5-padconf
+               - ti,j7200-padconf
+           - const: pinctrl-single
++      - items:
++          - enum:
++              - marvell,pxa1908-padconf
++          - const: pinconf-single
  
- &blsp_i2c3 {
-@@ -318,6 +338,13 @@ camera_front_flash_default: camera-front-flash-default-state {
- 		bias-disable;
- 	};
- 
-+	camera_rear_flash_default: camera-rear-flash-default-state {
-+		pins = "gpio9", "gpio16", "gpio51";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
- 		pins = "gpio20";
- 		function = "gpio";
+   reg:
+     maxItems: 1
 
----
-base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
-change-id: 20240325-sy7802-f40fc6f56525
-
-Best regards,
 -- 
-André Apitzsch <git@apitzsch.eu>
+2.45.2
 
 
