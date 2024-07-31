@@ -1,114 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C413125D6;
-	Wed, 31 Jul 2024 03:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F83F1BC3F;
+	Wed, 31 Jul 2024 06:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722396920; cv=none; b=lyWo+BPne/nWbSgEguQXxRXFoGQedZd5SiTmmTuwglevnL0/2aBmWDUgviw9LhqBZBGQ7iXlIvyvpzqmswcuk11yQC+JQWfSQ7sb4a/ivW2p9siyib1W+HBhorm63oD4fRez0Oo8uGSTeZgNAovGuGqPi3KfhGmz8dDDpY9tfRY=
+	t=1722406766; cv=none; b=MKq/oZm1VJHXLdEbMbvIt6guLfDe5CHt0JZRqmD7uqIN9ZVf/51wZ0B6NNeVT7yhlRthyfPGmDX0ACVGElVxeDMGp+SrteeAsKCnLHwtr2BNdbkpCKjwYYb7mlSLWGUSEHkHUfgKRskb/gLzp3A7q1mfZZwgJ+ykF/90/AN/usY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722396920; c=relaxed/simple;
-	bh=AryltjAf6AGkg7qjk0xdwvpOG3hQp506KMvJGysEHmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kcq9CJ4rzCqVTNCxq0wta0lfCrkyJOnDQKm/92J0AO3wYYvpOM1JXqiFToGL1gDOfAFVwVQ4VOJQYUj7MkbVfKQeElu39kPR8gpHSFLAOK+9hQattEJhIL/QerjqgAw6hP6ikURDWk1y/R9Mv/RG3dQt3AdhQIpv8UTf0t8QnDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YwKQr8tB; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1722406766; c=relaxed/simple;
+	bh=+jTBJW79nUPA1WQZfxR+meREaFGoSoYk6ArYlaOhtgU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZRyLmwQ/ZKb3WyHya+scY2B9zI25fZx0qpKjq0jmp6jz75HvvE+bviwt/oK/D22QTne46s7N/lr/YUzzrXFycrvsv25Mnhfx0tHf1u1v6NCWz6Hz7Zy09OcpgubyMwGW8QpO5C7sjTlEU6NFtijwsZE7RWy9X6T7gsQuLP94BVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=PoP1IeAN; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YwKQr8tB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722396918; x=1753932918;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AryltjAf6AGkg7qjk0xdwvpOG3hQp506KMvJGysEHmg=;
-  b=YwKQr8tBXBtseikbzjx/S+otCMsiMP3oriukruMdZSCeUkBSCc3q/Yrj
-   3Ccbrmba+Wz/HwiBrFjTeWK2jeTjaJNazZ6qzhFrbF1RqN16RBrjFyOgV
-   tN14zVjVk6vs67HNIabUWqKpJc7NWoDcZ2IAuZMZPFkqC3Wne+/Uco/e4
-   /WvXm3HpoVXpt4aFkmm2aGgkiKu3NVbOrNBGauMvgPd1cmLDy6I5LJTPl
-   L4Lk3rpK3Y2TC30/6MllQ+aQ51AmV6izKDLrctJaRiEgg3nE93DqaA3pU
-   JxO4i8Rp19OOqOdWpSr/m6y1MQLsFk39JMzdNMvLwBHxwecaUKKgLNMPp
-   w==;
-X-CSE-ConnectionGUID: aispFCZaTqOovRDsQSTi/Q==
-X-CSE-MsgGUID: yV1zb7o8RCOU03UgBUJUeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="24119544"
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
-   d="scan'208";a="24119544"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 20:35:17 -0700
-X-CSE-ConnectionGUID: TYyhdOYMRgyXjyH984EsNQ==
-X-CSE-MsgGUID: xnU9NzGRQ1+M9L8pQNfsBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
-   d="scan'208";a="54588641"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 30 Jul 2024 20:35:13 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sZ07K-000thk-04;
-	Wed, 31 Jul 2024 03:35:10 +0000
-Date: Wed, 31 Jul 2024 11:34:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= via B4 Relay <devnull+duje.mihanovic.skole.hr@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v11 10/12] arm64: Kconfig.platforms: Add config for
- Marvell PXA1908 platform
-Message-ID: <202407311123.I2HGcXOK-lkp@intel.com>
-References: <20240730-pxa1908-lkml-v11-10-21dbb3e28793@skole.hr>
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="PoP1IeAN"
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4WYhkx29KXzDqPx;
+	Wed, 31 Jul 2024 06:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1722406761; bh=+jTBJW79nUPA1WQZfxR+meREaFGoSoYk6ArYlaOhtgU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=PoP1IeANs3Ns9hD0UAvmmFPZ+vJ+jLYN7AwgqkCR1mDyA5h3Nn2hV1kCwLddm4npO
+	 baT5xif0Xs9VtK0CTkpBZ65UasIYF626AJnVeGt2Bg+4Lqjlet+hAOYqIhP2ZA8qH/
+	 dYJS9te4Zz7022ha0w1ZdaFrN2P2V3/AriGs08Zw=
+X-Riseup-User-ID: ECDF847ABA548A65E58F0C1CCB205533198445340F2ED3E36FC8ECA3FE7519A3
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WYhkg16LTzJmtl;
+	Wed, 31 Jul 2024 06:19:06 +0000 (UTC)
+From: Dang Huynh <danct12@riseup.net>
+Subject: [PATCH v3 00/11] F(x)tec Pro1X feature expansion
+Date: Wed, 31 Jul 2024 13:18:41 +0700
+Message-Id: <20240731-qx1050-feature-expansion-v3-0-b945527fa5d2@riseup.net>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730-pxa1908-lkml-v11-10-21dbb3e28793@skole.hr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEHXqWYC/43NsQ6CMBDG8VchN1tTjraAk+9hHApcpUvBFhoM4
+ d0tTLoYx/8l3+9WCOQtBbhkK3iKNtjBpShOGbS9dg9itksNyFHwEpE9l5xLzgzpafbEaBm120e
+ sNEqjqtAgaUjz0ZOxy0Hf7ql7G6bBv45PMd+vf6AxZ5y1ohOVEoVsanX1NtA8nh1NsKsRPyX5Q
+ 8IkSaNb0TRdLZT5krZtewMRCgYVCwEAAA==
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dang Huynh <danct12@riseup.net>
 
-Hi Duje,
+This patch series expand F(x)tec Pro1X (QX1050) device tree to support
+various components of the device.
 
-kernel test robot noticed the following build warnings:
+Most notably:
++ SD Card slot
++ Touchscreen
++ MDSS, DRM display panel
++ WLAN (ATH10K)
++ Hall sensor and camera button
 
-[auto build test WARNING on 8400291e289ee6b2bf9779ff1c83a291501f017b]
+This patch series has been tested on Buildroot Linux with TQFTPSERV and
+RMTFS present in userspace.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi-via-B4-Relay/clk-mmp-Switch-to-use-struct-u32_fract-instead-of-custom-one/20240730-204129
-base:   8400291e289ee6b2bf9779ff1c83a291501f017b
-patch link:    https://lore.kernel.org/r/20240730-pxa1908-lkml-v11-10-21dbb3e28793%40skole.hr
-patch subject: [PATCH v11 10/12] arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
-config: arm64-kismet-CONFIG_I2C_GPIO-CONFIG_VIDEO_MMP_CAMERA-0-0 (https://download.01.org/0day-ci/archive/20240731/202407311123.I2HGcXOK-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20240731/202407311123.I2HGcXOK-lkp@intel.com/reproduce)
+Signed-off-by: Dang Huynh <danct12@riseup.net>
+---
+Changes in v3:
+- Fix dtschema errors
+- Reorder gpio nodes by it's number
+- Link to v2: https://lore.kernel.org/r/20240725-qx1050-feature-expansion-v2-0-5fac4bbd946f@riseup.net
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407311123.I2HGcXOK-lkp@intel.com/
+Changes in v2:
+- Squash copyright year commit to the hall sensor commit
+- Reorder pinctrl-n and pinctrl-names in several commits
+- Use interrupts-extended for touchscreen
+- Add further information to the caps lock LED node
+- Move status property from &wifi to the end of the node
+- Link to v1: https://lore.kernel.org/r/20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net
 
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for I2C_GPIO when selected by VIDEO_MMP_CAMERA
-   WARNING: unmet direct dependencies detected for I2C_GPIO
-     Depends on [n]: I2C [=y] && HAS_IOMEM [=y] && (GPIOLIB [=n] || COMPILE_TEST [=n])
-     Selected by [y]:
-     - VIDEO_MMP_CAMERA [=y] && MEDIA_SUPPORT [=y] && MEDIA_PLATFORM_SUPPORT [=y] && MEDIA_PLATFORM_DRIVERS [=y] && V4L_PLATFORM_DRIVERS [=y] && I2C [=y] && VIDEO_DEV [=y] && (ARCH_MMP [=y] || COMPILE_TEST [=n]) && COMMON_CLK [=y]
+---
+Dang Huynh (11):
+      arm64: dts: qcom: sm6115-pro1x: Add Hall Switch and Camera Button
+      arm64: dts: qcom: sm6115-pro1x: Add PCA9534 IO Expander
+      arm64: dts: qcom: sm6115-pro1x: Add Goodix Touchscreen
+      arm64: dts: qcom: sm6115-pro1x: Add Caps Lock LED
+      arm64: dts: qcom: sm6115-pro1x: Enable SD card slot
+      arm64: dts: qcom: sm6115-pro1x: Enable MDSS and GPU
+      arm64: dts: qcom: sm6115-pro1x: Hook up USB3 SS
+      arm64: dts: qcom: sm6115-pro1x: Add PMI632 Type-C property
+      arm64: dts: qcom: sm6115-pro1x: Enable RGB LED
+      arm64: dts: qcom: sm6115-pro1x: Enable remoteprocs
+      arm64: dts: qcom: sm6115-pro1x: Enable ATH10K WLAN
 
+ arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 343 +++++++++++++++++++++++-
+ 1 file changed, 334 insertions(+), 9 deletions(-)
+---
+base-commit: 41c196e567fb1ea97f68a2ffb7faab451cd90854
+change-id: 20240722-qx1050-feature-expansion-7f6a2682f2ea
+
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Dang Huynh <danct12@riseup.net>
+
