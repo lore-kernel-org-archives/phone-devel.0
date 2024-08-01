@@ -1,48 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2F913DDA6;
-	Thu,  1 Aug 2024 03:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96942D2F5;
+	Thu,  1 Aug 2024 03:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722482396; cv=none; b=NruCQwi9e0ZDRbSDDjPq2drStInYbPGGVRnuor3LB0tBGP5DlzKdq5Dgt5hxMKIVTGU7/xsdL7fRNq7RiaHrsct1aJiSIoeuk6oTEI+DYw8wwFMTenp3H5cjlBJcyc7W8wyQ2UO/dTSr6JwQsqGWw1ij+HAp1plNVJ0Y6eGiaqg=
+	t=1722482399; cv=none; b=dvUge6j2VmIMZzYhVibJhNdeompODQmVCSIkK63zI8jCCw3t/Tt952YCz6wBN3vko2oNbbD9Hmi3iHSxrJAT/6+pZCL8MJaABeF7GDTZ/on1AlF/oG99C95K1Xu+w6aF5ZbhrMrnFeD+Aammlq7nMuANwWFtdsjJ0uzKT0L7qTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722482396; c=relaxed/simple;
-	bh=SwcWJVYuniZVBoSS577qS16zzVwVHvPrvOJSGVqYyA8=;
+	s=arc-20240116; t=1722482399; c=relaxed/simple;
+	bh=62CvZFHiUZVVGVRnDRrYGgy7Qz4cBtl/5I+U/jVoanU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rBSp31FP56tsWRgpfOfJOcQyiBa6dQDg17nySJKaHCXh9qz0f4vzRIKvspFc4SZRA12oYtmhQGkkD5qtnbeoSLQSIA1PqccMoZoOh2RAC8BRg9fhK8XV7rkIir0e9bwPv2CazcjpqBZMAVEgrhPE/ekHqBOD6K9Kdl7bzkTGMA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s0DzDDyB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=bXggHzYMGbVcFmlpD9BjjeeLJES4Boh9AKpk3+cgy36odq64aF6wQl6ds6Pf7Z46SjPyuBU+2Ec3C70jR/xQlyZ+E2qMstkqZ5ypdvGrMYXP0HYX3wRFhmme3RPJo/iRil6tkj9US+HWb5x4SBYLFsvEkCEf4YygVpBKGz1zLU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXwGz1Om; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s0DzDDyB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172B2C116B1;
-	Thu,  1 Aug 2024 03:19:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXwGz1Om"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A282FC4AF0E;
+	Thu,  1 Aug 2024 03:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722482395;
-	bh=SwcWJVYuniZVBoSS577qS16zzVwVHvPrvOJSGVqYyA8=;
+	s=k20201202; t=1722482399;
+	bh=62CvZFHiUZVVGVRnDRrYGgy7Qz4cBtl/5I+U/jVoanU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0DzDDyBq/x2wtlwNmQMO4z9gqmk3pLpaCpuYSAc9/wmNLSuqwJWLiWzaqHRDNxrt
-	 nqNmrZF4dEnLgUGS/tBuCN/Q8hSKCxnnjMC98f08W2NQLRy8ia7tadunfZO8DMGkCI
-	 +FdpKl6636zCAJ+kb5AXrByNJsfK/7J8bKvf+Lg8ylgSchx61SV92+PcV+dwFnSARj
-	 HIFV7jPffHr/HFfM2n2YKHvMKvEv73etPKR0aQ3sgO2bkIqBnUF1xfSbzsWIsXNXxc
-	 po0T8XzUsZyPFudzjIBJkc3HYgfCe/VLLQZ8jdEA2asyttbmxMAPxYfcZRYc1jvA0i
-	 bpdsbVerzgAyQ==
+	b=XXwGz1Omjc+G7UAb5MLMJYlGuQ/Atjv6QMmm9aFLIXDZXVWDvtp6lSSoIaf2NYDaD
+	 XbLI1oliuYo6ooV9aCwht5nazRG781zMzV/qTem7RL9L6MDlc6+b5iNGjiv9jsKqZy
+	 40ojVA1K8nKtnSPJ6EOJV4XXV03ZgwZeTX+DeCqD2VsSK1RZ5DAbxdCjsAKGX90BEg
+	 p3KVAcvXl3yp0aiP7kmxFbctBnEb0Vy7R9AYcTGRpIy1mnEVRi9aHIyxQCQRCBX2r4
+	 BVcpO21cHAS5Ab/UwxJDhqZHnfVwbT5w33wAWHdIco1OuC6qnWs8uQ3KUOksQ4FxCx
+	 KrA3TA+TNGLOA==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
-	Dang Huynh <danct12@riseup.net>
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	linux-arm-msm@vger.kernel.org,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>
+Cc: linux-leds@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/11] F(x)tec Pro1X feature expansion
-Date: Wed, 31 Jul 2024 22:19:40 -0500
-Message-ID: <172248238595.319692.2768074398610917928.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: Re: (subset) [PATCH v5 0/3] Add sy7802 flash led driver
+Date: Wed, 31 Jul 2024 22:19:42 -0500
+Message-ID: <172248238588.319692.10867242578610062893.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240731-qx1050-feature-expansion-v3-0-b945527fa5d2@riseup.net>
-References: <20240731-qx1050-feature-expansion-v3-0-b945527fa5d2@riseup.net>
+In-Reply-To: <20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu>
+References: <20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,43 +61,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Wed, 31 Jul 2024 13:18:41 +0700, Dang Huynh wrote:
-> This patch series expand F(x)tec Pro1X (QX1050) device tree to support
-> various components of the device.
+On Mon, 24 Jun 2024 23:25:11 +0200, André Apitzsch wrote:
+> This series introduces a driver for the Silergy SY7802 charge pump used
+> in the BQ Aquaris M5 and X5 smartphones.
 > 
-> Most notably:
-> + SD Card slot
-> + Touchscreen
-> + MDSS, DRM display panel
-> + WLAN (ATH10K)
-> + Hall sensor and camera button
+> The implementation is based on information extracted from downstream as
+> the datasheet provided by a distributor of the hardware didn't include
+> any information about the i2c register description.
 > 
 > [...]
 
 Applied, thanks!
 
-[01/11] arm64: dts: qcom: sm6115-pro1x: Add Hall Switch and Camera Button
-        commit: ff5affd17bde4ea78d153122a601d69b3f302326
-[02/11] arm64: dts: qcom: sm6115-pro1x: Add PCA9534 IO Expander
-        commit: 4686161eb87168ec746eb54d7b84c5d022073a33
-[03/11] arm64: dts: qcom: sm6115-pro1x: Add Goodix Touchscreen
-        commit: e46b455e67f836361a94512ca187442a8b699f25
-[04/11] arm64: dts: qcom: sm6115-pro1x: Add Caps Lock LED
-        commit: 17c98581155e88d3f118cd879ba263e952b83946
-[05/11] arm64: dts: qcom: sm6115-pro1x: Enable SD card slot
-        commit: 95b19afd734d0a278088456b052a2fb94c4ade55
-[06/11] arm64: dts: qcom: sm6115-pro1x: Enable MDSS and GPU
-        commit: 8b9f76a6f8fbc81fdc44b5c4b134d20095c38a6a
-[07/11] arm64: dts: qcom: sm6115-pro1x: Hook up USB3 SS
-        commit: e0674d85c80456782fdc44c36c4884fa64bb3a58
-[08/11] arm64: dts: qcom: sm6115-pro1x: Add PMI632 Type-C property
-        commit: 79f8d127c46a1311de49db7c175fee84ce827d3a
-[09/11] arm64: dts: qcom: sm6115-pro1x: Enable RGB LED
-        commit: b5c63330a7ef026c21da5eed4669a790b22ea642
-[10/11] arm64: dts: qcom: sm6115-pro1x: Enable remoteprocs
-        commit: e055924159df6ec2ffa0f221aa84c49429cfe6db
-[11/11] arm64: dts: qcom: sm6115-pro1x: Enable ATH10K WLAN
-        commit: 84c1711f27509a6a5841b13ac08fc58b1d091ae8
+[3/3] arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
+      commit: f98bdb21cfc94cb7733a5c3216e8f1dec1c06023
 
 Best regards,
 -- 
