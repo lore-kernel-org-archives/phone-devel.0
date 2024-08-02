@@ -1,71 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE39214B957;
-	Thu,  1 Aug 2024 03:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988EE3D6A
+	for <phone-devel@vger.kernel.org>; Fri,  2 Aug 2024 08:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722482408; cv=none; b=legaZojcetDq6X3W6VwdrTxMKxBCLkyeMruv6lNOr6P6T6LH3GaGIyywgvCS2/8Y8bGys0zuylAEACe6GLY3bbCldZh1+Mal0FFVPxRsaj45lYzcn4DlIaqSA36GwhbAfOWZJJsMCYQTKkfiHN2muIZza1yPEYFbHHfAeEk2Vi4=
+	t=1722586054; cv=none; b=nTXiLvAe5jXouE3hrk+H0r0QknOqVaiWAvtGV7hYi3JQC1a0G7LZ2+Ybo7Qk2wUBsJLLrCGpy7xEAJ/cmiu4JL0c0y3XF9RS2WHUMSSepnPOTVS1J8/rtUv2E6llj+TnkOz1mqT31KYuOJfOL/H9WZjOc2GC8cLtDVVVEHQmRFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722482408; c=relaxed/simple;
-	bh=FHkodLwBkaNsh86EqXVleT/LCfkrzJLjQ5EDyUdDgX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WZoddMlUdKMuoraq/QmcFgNcm6dYcWMNKWtuTHLYhLjKSg16Ghymu83XS9ho3dF1oKB2z4hI5Dny43n9f2Oi4UDZDWM++/mttjO3Mj7U3YJP5XcGP7Q8Oc2Q9iwduW+byNQTW8WYrE+2JuU0tcCo+22puX6vOOv7WqQ4b45jFtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWvOLrtE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722586054; c=relaxed/simple;
+	bh=6bRNDTSn7NG2m4UUq9bRnjAmIn1wnrCrKqnIjDHhxNI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=GRDOKOR/KToftCLwHNC3YNaiuXeg6VmuBJIZcM75tyFYCHlcb/wL7AWL/Nol7//xDdy2YS57Lu5TvT3G6qiuhd18bbzms8Leh005Rz97lPSyoaZUVB824ATX8NC/SQAvG8EcSD7G+sEukuYvWLVdRTkOtE39u7Kd+HX7m0vh5b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=P6ocFeae; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWvOLrtE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6172C116B1;
-	Thu,  1 Aug 2024 03:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722482408;
-	bh=FHkodLwBkaNsh86EqXVleT/LCfkrzJLjQ5EDyUdDgX4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWvOLrtEYNV1e7QOsRQm/bUFTTQP1Rnm+BOgOsvqK11OrlGPIfhocSMngLbAFPJc0
-	 vIzUVQSS5pjM5p3cjAWNfPYsKIT6LyL9n9qvasnLrv6YSegiKHzQg/hKYy445IUaLw
-	 8rcNj9iwGbNkGddYXBs0GeGPssJZhRLtePDOvZraSpADvU6sJ+yBaqJiPrtrRnw3aK
-	 GuTwTFIMeo3pgZpJGbmW+plGTU0OSbEDxvFNSsi9pUsw64/lPTII032H7QLX/6crfT
-	 Ll6h/uqcOrmRQOEJhh5msHUXk6fcfwQDqSLBB1QUp7QuPidf7QIWomdOM0edultHXi
-	 15+XbnObe7aVQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	Raymond Hackley <raymondhackley@protonmail.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Nikita Travkin <nikita@trvn.ru>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Konrad Dybcio <konradybcio@kernel.org>
-Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-fortuna: Add touch keys
-Date: Wed, 31 Jul 2024 22:19:49 -0500
-Message-ID: <172248238601.319692.10234728164556158796.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240724143230.3804-1-raymondhackley@protonmail.com>
-References: <20240724143230.3804-1-raymondhackley@protonmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="P6ocFeae"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722586043; x=1722845243;
+	bh=Wy+SqFUYOWwBwGRfuKWoUvPm1nL0Kd/BTvULVmw6+eA=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=P6ocFeae4F+a1VMqHe9TPi+dAdTO9cJedVbZjZmZJVEkTABbqufNORCiW+wPgcgKO
+	 IJDXiyB1X1+5hDEMuMHnRsVePEYZRK6vDm7wFp1GVJw3xMLRXYrPwekLIzxkOk9Rzd
+	 H1IuVu1MmKZ4WydnjjDot2gfGxxhY18ZY5/uwNX2jgWSnUfp2D+22U9VMRubMVIgeQ
+	 qec3TyZ9ST5iApHNfq7LYyrod6KcFS28/QrBYk/b1FGkLIXR+Llidk4Xq6zfDjs8eJ
+	 fLRkQYCXoXP0w305I7/hH3c1ppuRXsfgSoEgnzoDiTjBl2sq+ZzAmgCOUPqMYExGHx
+	 nEPrr2KZHW05w==
+Date: Fri, 02 Aug 2024 08:07:16 +0000
+To: linux-kernel@vger.kernel.org
+From: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH 0/2] arm64: dts: qcom: msm8916-samsung-j3ltetw: Add initial device tree
+Message-ID: <20240802080701.3643-1-linmengbo06890@proton.me>
+Feedback-ID: 112742687:user:proton
+X-Pm-Message-ID: e48e463b51e86a9f7300844944fc80b772208d9f
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+The dts and dtsi add support for msm8916 variant of Samsung Galaxy J3
+SM-J320YZ smartphone released in 2016.
 
-On Wed, 24 Jul 2024 14:32:51 +0000, Raymond Hackley wrote:
-> Touch keys feature on fortuna phones are provided by Zinitix touchscreen.
-> Add property linux,keycodes to enable touch keys.
-> 
-> 
+Add a device tree for SM-J320YZ with initial support for:
 
-Applied, thanks!
+- GPIO keys
+- SDHCI (internal and external storage)
+- USB Device Mode
+- UART (on USB connector via the SM5703 MUIC)
+- WCNSS (WiFi/BT)
+- Regulators
+- QDSP6 audio
+- Speaker/earpiece/headphones/microphones via digital/analog codec in
+  MSM8916/PM8916
+- WWAN Internet via BAM-DMUX
+- Touchscreen
 
-[1/1] arm64: dts: qcom: msm8916-samsung-fortuna: Add touch keys
-      commit: ccf683fa0c9b5c53534030ddc9dd8a8603f715a0
+There are different variants of J3, with some differences in MUIC, sensor,
+NFC and touch key I2C buses.
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+The common parts are shared in msm8916-samsung-j3-common.dtsi to reduce
+duplication.
+
