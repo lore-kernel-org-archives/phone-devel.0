@@ -1,207 +1,157 @@
-Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74646179AE;
-	Sun,  4 Aug 2024 06:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC04D1CF9A
+	for <phone-devel@vger.kernel.org>; Sun,  4 Aug 2024 08:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722754785; cv=none; b=XZdO+jki8nFiynIfvEXWGFtzqux3IRUTJCW5OR/mGCYStNoL9LDeBqgMggTTWY2QT73QE54pHneEBm7Sj3i/EijmIUmQ7LDU9C4/l2TYjfvyN/jvm3o+drvuXyq0u7IzUgwjVx6RCRR/gozvSVyJSK07qPYsIbpLjBZ0bmQpQ6o=
+	t=1722761237; cv=none; b=tc+JJonHEzhi4Vn5pvF2cEBTOKcN1NNye9iWy1CsMpuon+xcEC5aeqk6W8CCSTdmWz/+YBL222GOCzZAIw0qLNZpp9GTPo4mJnPOiXeaKPQRo3UDOsPJiZYskNHvCfyuxdZj/gWMH03kcLhjkxPNyINDOdGMT7dMSnSRN8smIIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722754785; c=relaxed/simple;
-	bh=nsRQ1etX1+W7HruMiV9my+fjXwFdsLYCejqobYmOaCg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kn5KbVipziArFk97y3KxJ+BVz/QhICvs9B8XCxRpgqDUS5TqaBWAwjdzr2mYZTXz7CMyaQ5mXKmodc9UMw904XSrXFOfzM07aS4sVWuW8ZMY4tAZUYftWDBcFcUvzUKomDcoAxpZUYkIss+6140t/dY+kJ/qcKOq/1rPAAUn9e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TtOH3wAX; arc=none smtp.client-ip=185.70.43.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722761237; c=relaxed/simple;
+	bh=2jLSaEpu2v6/ztQDy5TBTo6ym8H/iZtsY3FjoNcgYfY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SIke2Baq8QYlbB5ibu9wExTgH62dvTOk0qWv5wsmH7mBnuagUCP2tnoID9CKyVs1IjuHvZrEHPKbCl8jvEXy9XZsLBFJqrrbJz0c6kyt61yFNdIYsUAFqOfg3DyGOSWVMOGKfy4w0pYcZLxDkKY9SV/SFqd3H6rRHrrUdYFrnPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LuM28zjo; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TtOH3wAX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722754775; x=1723013975;
-	bh=jV/a7Anm1CtcuENFnTfCvdUEKmbYAc87EIA67wPbdHo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TtOH3wAXkbTscKMDulThBPrAnuzTXPTCoWCpvV6X7bkgpWOuJD9QsNTNQZrg8cJp/
-	 FatXS7/Bxg5RBkxSI0G3wWVm5QF7LEeVG/Y9VrjPRAWnv++mTYzUUq89m57xMaDA0l
-	 Qlj+LIJmj8uK7O2GJZTQouDzV07J059ax+D8hJrPgfOjZlBXnLzMv9hqlmfzUJB2BZ
-	 MLGaTSVshNMmvXAtrs7giAwQJPD2UO6DIfKPG4g1wPeYN0h9JBm7u5k6hV3f4ZTsRh
-	 yRNutdUedN90DLzxBsYW8aO1DFNg7tb8RSiRZRcu/r7kgUUH+Dwz1uLXi3c0YfY4Kp
-	 W0K6uatZjmSBw==
-Date: Sun, 04 Aug 2024 06:59:32 +0000
-To: linux-kernel@vger.kernel.org
-From: "Lin, Meng-Bo" <linmengbo06890@proton.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v2 2/2] arm64: dts: qcom: msm8916-samsung-j3ltetw: Add initial device tree
-Message-ID: <20240804065854.42437-3-linmengbo06890@proton.me>
-In-Reply-To: <20240804065854.42437-1-linmengbo06890@proton.me>
-References: <20240804065854.42437-1-linmengbo06890@proton.me>
-Feedback-ID: 112742687:user:proton
-X-Pm-Message-ID: 3366380bf8c6aefc5f8e47f76d81c88753b23dd6
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LuM28zjo"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-428e0d184b4so22922805e9.2
+        for <phone-devel@vger.kernel.org>; Sun, 04 Aug 2024 01:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722761234; x=1723366034; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8CitPlNE/SDD7urvRpgu8WV1xvuBvTbSWKqKmC6oEoQ=;
+        b=LuM28zjoYXi4FkrG+9Ut+ZDczDSr98TjkN5FsXF+cWEVDMcJkrLBJpIHb8md3IbFEo
+         WcCt5mnowITY8GT+++b5Ri0U8adZqTvGmnackMX38c3GeJKiFAWsU0ixWQ6gCsiFYDuD
+         Aj6IhHl7AcLYPe/+88GYBx/cNz5LaOx/Ar3KUOzVA98e/Kl16GIngCxgmkxCWmp5MYx5
+         sDF1enZEXvu/VTEf7+nGHnyqB98pvDpRSV8hyLBAT5RoV6Z/r6CUsCoom+uub7+dguQ4
+         v9SXcOk6ysC1OPGU27NDSHJB/xRmDBihUMn7T3K/xAik2nYDPMlhqJKdOsvKpfqluY1S
+         wBAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722761234; x=1723366034;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8CitPlNE/SDD7urvRpgu8WV1xvuBvTbSWKqKmC6oEoQ=;
+        b=pW1IZhexe13Ck4CaVZRly/NowBDB6jEPm+cvvYC/HKP+WYL4ghT9QyH9ikunmNCIbO
+         Fdj74iAqGLssSe4Jw1cMP387IyrThqRQNBgJhgzakkaITWkHtGKOuz7ia6FnSRmmvHEK
+         +egID2vnauKSWBwa03VaA5/Gr3GtW9qQTzJuUEH0uMY1D7L77Ig2UlKh2yRlyJj5aYXc
+         rXQh64uPwAJIBhfWxHLOhzBtAO9vcLr2rRf4X4pi4EKYT2Ys11bbUE98nPLLNZMGqRHx
+         q6PAC3ePUnYtnHqR2TRANPJ7aBsiMcUC2/W3hk7HTROf8Pio1DPrg+2Ps+dqe1W0p6zv
+         0vuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlTvfyF336+iuytFdpAOPVmxbHXbynjRGXZuSLvrtkpGJF4c84fqgA2UJpQI+yDPdK/Os7hc9qq+WtSZowkjLOOi1wb/dy83dpMOU=
+X-Gm-Message-State: AOJu0YxHvbI/1y0VVlIoFkWm34opHKDmo8PKyRp8spzn7fjTAK3PNgMN
+	HredGwRhUO5F6kRn1MVjsDgeiJ5Qh8A9hQxgPb/EWLxGCzIle8dFIwt8qX7ql7A=
+X-Google-Smtp-Source: AGHT+IFJhq/h5m1XaZO3dd2l7+V8KF6f4ePyJHTBOeKJLuAJojXkXCVyJUWdEXLhQZz/Y9cYOR0XYQ==
+X-Received: by 2002:a05:600c:5102:b0:428:52a:3580 with SMTP id 5b1f17b1804b1-428e6af4b58mr49602955e9.3.1722761233277;
+        Sun, 04 Aug 2024 01:47:13 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428e6e7d57asm92117905e9.33.2024.08.04.01.47.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Aug 2024 01:47:12 -0700 (PDT)
+Message-ID: <448705b3-be39-4938-a421-2cc36d4c132b@linaro.org>
+Date: Sun, 4 Aug 2024 10:47:10 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: qcom: Document samsung,j3ltetw
+To: "Lin, Meng-Bo" <linmengbo06890@proton.me>, linux-kernel@vger.kernel.org
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
+ Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240804065854.42437-1-linmengbo06890@proton.me>
+ <20240804065854.42437-2-linmengbo06890@proton.me>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240804065854.42437-2-linmengbo06890@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The dts and dtsi add support for msm8916 variant of Samsung Galaxy J3
-SM-J320YZ smartphone released in 2016.
+On 04/08/2024 08:59, Lin, Meng-Bo wrote:
+> Document samsung,j3ltetw bindings used in its device tree.
+> 
 
-Add a device tree for SM-J320YZ with initial support for:
+Please do not work on old kernels... You *must* base on something recent.
 
-- GPIO keys
-- SDHCI (internal and external storage)
-- USB Device Mode
-- UART (on USB connector via the SM5703 MUIC)
-- WCNSS (WiFi/BT)
-- Regulators
-- QDSP6 audio
-- Speaker/earpiece/headphones/microphones via digital/analog codec in
-  MSM8916/PM8916
-- WWAN Internet via BAM-DMUX
-- Touchscreen
-- Accelerometer
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC (and consider --no-git-fallback argument). It might
+happen, that command when run on an older kernel, gives you outdated
+entries. Therefore please be sure you base your patches on recent Linux
+kernel.
 
-There are different variants of J3, with some differences in MUIC, sensor,
-NFC and touch key I2C buses.
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+</form letter>
 
-The common parts are shared in msm8916-samsung-j3-common.dtsi to reduce
-duplication.
 
-Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
----
- arch/arm64/boot/dts/qcom/Makefile             |  1 +
- .../dts/qcom/msm8916-samsung-j3-common.dtsi   | 62 +++++++++++++++++++
- .../boot/dts/qcom/msm8916-samsung-j3ltetw.dts | 31 ++++++++++
- 3 files changed, 94 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-j3-common.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dts
+> Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/M=
-akefile
-index e534442620a1..197ab325c0b9 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -48,6 +48,7 @@ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-grandmax.d=
-tb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-grandprimelte.dtb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-gt510.dtb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-gt58.dtb
-+dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-j3ltetw.dtb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-j5.dtb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-j5x.dtb
- dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-rossa.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j3-common.dtsi b/arch=
-/arm64/boot/dts/qcom/msm8916-samsung-j3-common.dtsi
-new file mode 100644
-index 000000000000..1d74cccc438a
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j3-common.dtsi
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "msm8916-samsung-j5-common.dtsi"
-+
-+/ {
-+=09reserved-memory {
-+=09=09/delete-node/ tz-apps@85500000;
-+
-+=09=09/* Additional memory used by Samsung firmware modifications */
-+=09=09tz-apps@85800000 {
-+=09=09=09reg =3D <0x0 0x85800000 0x0 0x800000>;
-+=09=09=09no-map;
-+=09=09};
-+=09};
-+
-+=09reg_vdd_tsp_a: regulator-vdd-tsp-a {
-+=09=09compatible =3D "regulator-fixed";
-+=09=09regulator-name =3D "vdd_tsp_a";
-+=09=09regulator-min-microvolt =3D <3000000>;
-+=09=09regulator-max-microvolt =3D <3000000>;
-+
-+=09=09gpio =3D <&tlmm 16 GPIO_ACTIVE_HIGH>;
-+=09=09enable-active-high;
-+
-+=09=09pinctrl-0 =3D <&tsp_ldo_en_default>;
-+=09=09pinctrl-names =3D "default";
-+=09};
-+};
-+
-+&accelerometer {
-+=09vdd-supply =3D <&pm8916_l5>;
-+=09vddio-supply =3D <&pm8916_l5>;
-+
-+=09mount-matrix =3D "0", "-1", "0",
-+=09=09       "1", "0", "0",
-+=09=09       "0", "0", "-1";
-+};
-+
-+&gpio_hall_sensor {
-+=09status =3D "disabled";
-+};
-+
-+&i2c_muic {
-+=09/* GPIO pins vary depending on model variant */
-+};
-+
-+&i2c_sensors {
-+=09/* GPIO pins vary depending on model variant */
-+};
-+
-+&touchscreen {
-+=09vdd-supply =3D <&reg_vdd_tsp_a>;
-+};
-+
-+&tlmm {
-+=09tsp_ldo_en_default: tsp-ldo-en-default-state {
-+=09=09pins =3D "gpio16";
-+=09=09function =3D "gpio";
-+=09=09drive-strength =3D <2>;
-+=09=09bias-disable;
-+=09};
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dts b/arch/ar=
-m64/boot/dts/qcom/msm8916-samsung-j3ltetw.dts
-new file mode 100644
-index 000000000000..a26d2fd13c94
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dts
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8916-samsung-j3-common.dtsi"
-+
-+/ {
-+=09model =3D "Samsung Galaxy J3 (2016) (SM-J320YZ)";
-+=09compatible =3D "samsung,j3ltetw", "qcom,msm8916";
-+=09chassis-type =3D "handset";
-+};
-+
-+&i2c_muic {
-+=09sda-gpios =3D <&tlmm 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+=09scl-gpios =3D <&tlmm 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+};
-+
-+&i2c_sensors {
-+=09/* I2C2 */
-+=09sda-gpios =3D <&tlmm 6 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+=09scl-gpios =3D <&tlmm 7 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+};
-+
-+&muic_i2c_default {
-+=09pins =3D "gpio0", "gpio1";
-+};
-+
-+&sensors_i2c_default {
-+=09/* I2C2 */
-+=09pins =3D "gpio6", "gpio7";
-+};
---=20
-2.39.2
 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
