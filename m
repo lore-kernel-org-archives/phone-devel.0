@@ -1,113 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8920D15F3F3;
-	Mon,  5 Aug 2024 15:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7446F18DF69
+	for <phone-devel@vger.kernel.org>; Fri,  9 Aug 2024 08:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722870018; cv=none; b=ZZrhIsOBnRE6NY8Xx31fOrnEG13uyToXFEKbYuzls0WE0oj8kwgEQIUDPvaflxJiogwFdyFfF8wsPlH77pSO6bZVINKy8vW23Fwak49j67UWUOiPT18tI43VKAow94jUR720LmwV5M4+wscAU7QKg1MOsBFcxvefDNpdWuaV2MQ=
+	t=1723191770; cv=none; b=pSTQKewT0oRy50fVF4tdw2A4rfBTKC2XhRfDCAA+ViHJBfbh2Egzodsolta1FxnZUWrIA2VBYr8YzflWvB2GoJJcTvYrUEIEOrk5IqezhWiR7ZPD7IWo+sg66gtiuRRB6d9n0kjV+EsVTKFfc64QeslhKSPzERoXoV9OCdOGN4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722870018; c=relaxed/simple;
-	bh=QMaY66zonE2pj6F2rnx/k9di7OL7zdn/ZAOCrMtqjjk=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Ew0AMwCovDm6A0v3AmXePSaOy/wzvQOa1L0VO76+/x6UXrVJ0ry++gNOpx5k776WcTD7K3/duSBjYarHEVw4x3NGyKrJaQOJzBVZo0/6pQn4+nwQZWj4OHUgIOYzUShxFJ2eduQZ5yY3ya/3PqqDpyoFCyi6hOH5IoTi4YuSFM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPB+SZ7W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723191770; c=relaxed/simple;
+	bh=Ms18h9NjuLZqJPYnLon/Q1xIk7Z7z9uiAC/S/PYy7ZU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=F085rwKW4qHun/pfKA7//ZsS+ZQiGMvPPRmg1O739Fb7rYYbB8c9g4YgyPaWkL4sfIfYcnKCfiuq5Tao42Nz/DuOitJcbsQJYo/+JgXlO1zoua8dFn/gcG6TQGu6UKVqaLZ39hBxIXixXSMgigP4Io2/D4AblAxsU2WjlVBXJ9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=rhOTNa5H; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPB+SZ7W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B1BC4AF0E;
-	Mon,  5 Aug 2024 15:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722870018;
-	bh=QMaY66zonE2pj6F2rnx/k9di7OL7zdn/ZAOCrMtqjjk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=tPB+SZ7W49QWln/GkG5rDG+UhrTCZmiyGvjhSPPzgOqC6xA47ilxJgDesXzD5zs6K
-	 79c/ytuSGH50LhKSF9NI1p9Y8wWDEICdFq92jK2Zo7QOwqiGTPZNO27lM55sKd/9yl
-	 g8xZ5dIgSiqoQViUK8drs53/75TOtfp2hMbkkBNWT37jewIwwJlJBEi0NHvTAMLyFr
-	 CYlTl9dSdOiWv2oEvXYcNv0eAYQeA/1sl/pt3XpqP/kZbDMTRK5omvuRGEyZ6pLjP0
-	 hLld8RojhtWLc5FL4MfXVEnTqLzFCfo0Xr7uge1QF7t3H7iuxUkh8XrpoaglhskPDj
-	 MxnFcPedxoQUw==
-Date: Mon, 05 Aug 2024 09:00:17 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="rhOTNa5H"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a7d2a9a23d9so208456866b.3
+        for <phone-devel@vger.kernel.org>; Fri, 09 Aug 2024 01:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1723191767; x=1723796567; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hvSjJhQsiaOkLBeBDuAHjN93be2CrieZJTO6dIpg/w4=;
+        b=rhOTNa5HYUZirDigL6zKL3xOqTXTV/NtGbnOQm6vUFlCDY10DkWjFUXISpvxkuH6+t
+         bSJ4apzgZKTmup1gy6CRayk2Lyyn2SeTA3cwSMGpKYXO/co5l4Cg+L1gmlQT5j5bLBkr
+         FkoJ9ZRxW9I7myUF3/GOn/XX9YHkkfGoX3cB2T8OTUNmPdtW5oWtfj/wCROD5xKil44K
+         pVRUBNoCdwIo5uZybBjnwJSU2WzWvYHlDOLUpgveiLHn1rXQGnx01wP5rhJZnQx+vnGp
+         oBURuNz9MxhfEZOONNXWrw0RaHl8o6WYLWfxMvRY/iTJxTQwnAKqlPyvhUNTJfHw+6Hl
+         t/ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723191767; x=1723796567;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hvSjJhQsiaOkLBeBDuAHjN93be2CrieZJTO6dIpg/w4=;
+        b=VvkDLJx/AVFrTtPS4nDfYOAWnmkUwU/n3l5+oEXJsgkB1UGhxgRMQFZbQcJp/prVLd
+         pwWyEtOwrZdGdT3YzghRq6XHo9wv+t7ooZXw7wRk/6sTcxOcLAg00ur3rQkws68BqSOy
+         k8Qdiisa5UiGK7BWp0M/qgpjIUyq6LaTXYGNIFNDAjXD5XMxhBaRcrSf6bwKVk9n9jqq
+         Pn93dVrO5zLAa3OA7TxjdDuRiG1b2qIvrQEp4cP4VHPYh+dZz8qTR4rxEjPrOfiY+7+t
+         MuXnDl26/2mCQi4Qp8lFFxjGVyR1dYXwYsfi3ILtW0wIDaE5iUf5e+zt193aJYqxGfWb
+         bFfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvT95ka9fUDwDCji8Vh2HQWLbRCYeFKbmMTZKaPHt6T7jnbCngC+jkKKFcQOKouF8pCcVrYgFQr5tZVOeiql3t557hQZn5+bliyhI=
+X-Gm-Message-State: AOJu0Yyok6uePtZdkZmz1cd0GN2wlcPWATYyQ/8jo6H4zLiRSab+LDsj
+	kWLUTtcNdqjKto7jq6l4MMPxNz8IfffPxTj0EkLRdZ6lZLLLsMtE3CcJ1ee3cvs=
+X-Google-Smtp-Source: AGHT+IFnmUoOc78x9xnZg4BTUCEu1xBvAZLSD1YT+x9iEix9bA+IJPvu6V3OKL334EWP+pDr+DaUhw==
+X-Received: by 2002:a17:907:c7d2:b0:a7a:8876:4427 with SMTP id a640c23a62f3a-a80aa59b6b6mr65561366b.25.1723191766644;
+        Fri, 09 Aug 2024 01:22:46 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7de2e1b093sm708152166b.148.2024.08.09.01.22.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Aug 2024 01:22:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: "Lin, Meng-Bo" <linmengbo06890@proton.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
- Stephan Gerhold <stephan@gerhold.net>, linux-kernel@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, Nikita Travkin <nikita@trvn.ru>, 
- phone-devel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-In-Reply-To: <20240804065854.42437-1-linmengbo06890@proton.me>
-References: <20240804065854.42437-1-linmengbo06890@proton.me>
-Message-Id: <172286967129.2710260.12547511216605996134.robh@kernel.org>
-Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: msm8916-samsung-j3ltetw: Add
- initial device tree
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Aug 2024 10:22:45 +0200
+Message-Id: <D3B8I0RHMCRX.27GXO53ITZKEH@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2] media: dt-bindings: qcom,sc7280-venus: Allow one
+ IOMMU entry
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Stanimir
+ Varbanov" <stanimir.k.varbanov@gmail.com>, "Vikash Garodia"
+ <quic_vgarodia@quicinc.com>, "Bryan O'Donoghue"
+ <bryan.odonoghue@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <20240412-sc7280-venus-bindings-v2-1-48ca8c2ec532@fairphone.com>
+ <D1Q6CMZM78VI.ABYGRRV5E61B@fairphone.com>
+ <D2245MXG8CS1.11EGKFJQLYPTI@fairphone.com>
+In-Reply-To: <D2245MXG8CS1.11EGKFJQLYPTI@fairphone.com>
 
+On Mon Jun 17, 2024 at 9:28 AM CEST, Luca Weiss wrote:
+> On Mon Jun 3, 2024 at 8:39 AM CEST, Luca Weiss wrote:
+> > On Fri Apr 12, 2024 at 4:19 PM CEST, Luca Weiss wrote:
+> > > Some SC7280-based boards crash when providing the "secure_non_pixel"
+> > > context bank, so allow only one iommu in the bindings also.
+> >
+> > Hi all,
+> >
+> > This patch is still pending and not having it causes dt validation
+> > warnings for some qcom-sc7280 boards.
+>
+> Hi Rob,
+>
+> Could you please pick up this patch? Mauro seems to ignore this patch
+> either on purpose or by accident and I'd like for this dtbs_check
+> failure to finally be fixed.
 
-On Sun, 04 Aug 2024 06:59:06 +0000, Lin, Meng-Bo wrote:
-> The dts and dtsi add support for msm8916 variant of Samsung Galaxy J3
-> SM-J320YZ smartphone released in 2016.
-> 
-> Add a device tree for SM-J320YZ with initial support for:
-> 
-> - GPIO keys
-> - SDHCI (internal and external storage)
-> - USB Device Mode
-> - UART (on USB connector via the SM5703 MUIC)
-> - WCNSS (WiFi/BT)
-> - Regulators
-> - QDSP6 audio
-> - Speaker/earpiece/headphones/microphones via digital/analog codec in
->   MSM8916/PM8916
-> - WWAN Internet via BAM-DMUX
-> - Touchscreen
-> - Accelerometer
-> 
-> There are different variants of J3, with some differences in MUIC, sensor,
-> NFC and touch key I2C buses.
-> 
-> The common parts are shared in msm8916-samsung-j3-common.dtsi to reduce
-> duplication.
-> 
-> ---
-> v2: Add accelerometer
-> V1: Initial device tree
-> Link: https://lore.kernel.org/r/20240802080701.3643-1-linmengbo06890@proton.me
-> 
-> 
-> 
+Hi all,
 
+Another month, another ping.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Can *anybody* please pick up this patch?
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Regards
+Luca
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y qcom/msm8916-samsung-j3ltetw.dtb' for 20240804065854.42437-1-linmengbo06890@proton.me:
-
-arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dtb: /soc@0/power-manager@b088000: failed to match any schema with compatible: ['qcom,msm8916-acc']
-arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dtb: /soc@0/power-manager@b098000: failed to match any schema with compatible: ['qcom,msm8916-acc']
-arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dtb: /soc@0/power-manager@b0a8000: failed to match any schema with compatible: ['qcom,msm8916-acc']
-arch/arm64/boot/dts/qcom/msm8916-samsung-j3ltetw.dtb: /soc@0/power-manager@b0b8000: failed to match any schema with compatible: ['qcom,msm8916-acc']
-
-
-
-
+>
+> Regards
+> Luca
+>
+> >
+> > Regards
+> > Luca
+> >
+> > >
+> > > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > ---
+> > > Reference:
+> > > https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-=
+bc132dc5fc30@fairphone.com/
+> > > ---
+> > > Changes in v2:
+> > > - Pick up tags
+> > > - Otherwise just a resend, v1 was sent in January
+> > > - Link to v1: https://lore.kernel.org/r/20240129-sc7280-venus-binding=
+s-v1-1-20a9ba194c60@fairphone.com
+> > > ---
+> > >  Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venu=
+s.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > > index 8f9b6433aeb8..10c334e6b3dc 100644
+> > > --- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > > +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > > @@ -43,6 +43,7 @@ properties:
+> > >        - const: vcodec_bus
+> > > =20
+> > >    iommus:
+> > > +    minItems: 1
+> > >      maxItems: 2
+> > > =20
+> > >    interconnects:
+> > >
+> > > ---
+> > > base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
+> > > change-id: 20240129-sc7280-venus-bindings-6e62a99620de
+> > >
+> > > Best regards,
 
