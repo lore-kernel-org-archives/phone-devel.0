@@ -1,83 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F33158520;
-	Sat, 10 Aug 2024 12:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CF81BDC3;
+	Sat, 10 Aug 2024 13:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723293309; cv=none; b=JSFPc7bF5JVgayhc0UjbThZTu8Sz3gzdqOZBlnNVt2q2fpdlcWb9A/igKlql8ybl35MZoXS22M6xficQ3hGAqXO3yTXvjKNvDRw/iTXQyBSFHds2oFvDrwq9LxEQ4yBa7xVRoOyO5YSOUDiXhe++NrZMa8JPOuMkEsOVuLbSnmg=
+	t=1723297052; cv=none; b=KFJPXdQTt5L+M7Lq1iV+HkHfrvA3wvsX6OjEHdWSl5uWfO6F18RRJLpE7XBPrGT691AsbXn194PDAXXvNgBE+yVCTUeDz8GRRm4CGnZFL16Bnm5E9XvCOmwo1RUcoN/gccDpx06wbDxIpue9Qhx9FM9aXT3ENyoqfgWcnfFRNc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723293309; c=relaxed/simple;
-	bh=ptzjTGluuL+41Igjh0PWCntVwN8czL3T2wfcNMPpkKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PkIKey0+jTCOUaJybDLcsYg/ooMjw/P4EMy5+UznAZy0mGqWonS+GxmuFqVzHfrHr4MsfqeEhSJTsZ8O/8m6z88+8pvfaT5eDCb3pmIXbG7nrfuPq+WuPqTi/X8X5UlsGy/C43teGV+C2QXXeAFTO01QfubzS082uFf7dHQNfDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WY0M2ZL1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723297052; c=relaxed/simple;
+	bh=FoMGXcxzmZi6fsVLQcG2de1o9CKISWaGNCi1QFogghg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ww1HKTfmbpOyIpyP2TTtUSjTXT3Pci3RDR2b27nh5OBovDkHM9HY6ry8aShTVfBmDo6V0XCn4+i8w1sCXQlkHs7sNIKNitelgX23TR462lkCaQESJcGKg4EwiRXxLy9la2KUjm3KRbTZ2eQJQ0YzN8HoxifUmeDXrifZSGB0y7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=NMm4nnLS; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WY0M2ZL1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21498C32781;
-	Sat, 10 Aug 2024 12:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723293308;
-	bh=ptzjTGluuL+41Igjh0PWCntVwN8czL3T2wfcNMPpkKU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WY0M2ZL1p77mv5fwSxY9HB6+2MkMxt8dYvk6lQoMd19QWPfRtnrnCaicdEJyismKh
-	 bqxOR4w5yyWThGtYTsGCQVNA8KCPZflF4Ed5cCju3UFTgL/W0+hGlNs+puMijBVuZr
-	 w6sNy7S7B9RKPQMgHVs/2NtMO9L02QYEyT+ttIWJPPVCOvvtRPrU+fZoExehV96k0R
-	 VTMa/PdzXkrvcQfrR/kCgec5QCrQ8bS3yf4fmFtvlLG4O04lLeNeaaX6ZJtJyjF8Gi
-	 gxdPalOxr/UD+3abDqxxr2Ul/6vGDQMN6whiMlE3cL2nEWizkn3h4M24nD0zm3YcTU
-	 j8V6kL3lB3zYA==
-Message-ID: <192e3c22-fd63-4891-86b2-89a3383ab76d@kernel.org>
-Date: Sat, 10 Aug 2024 14:35:00 +0200
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="NMm4nnLS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1723296602; bh=FoMGXcxzmZi6fsVLQcG2de1o9CKISWaGNCi1QFogghg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NMm4nnLSuRckPGTr6LEmABPa7lLHILGmiOC4ai/zz/aq8AOWf38e31cnej5cgkBKj
+	 FRD0HANPayEpxa5OFHMTYrqOAm56dN9iAVyj6OC4wwpIFg1jElKc64tTbo+9j3o+E9
+	 S64Gpfq1vuG8yk+Qr9GGeVyE1NidNgmFhtdYUPZM=
+From: Luca Weiss <luca@lucaweiss.eu>
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Konrad Dybcio <konradybcio@kernel.org>
+Subject:
+ Re: [PATCH 0/3] Add DisplayPort sound support for Fairphone 5 smartphone
+Date: Sat, 10 Aug 2024 15:30:01 +0200
+Message-ID: <2741308.mvXUDI8C0e@g550jk>
+In-Reply-To: <192e3c22-fd63-4891-86b2-89a3383ab76d@kernel.org>
+References:
+ <20240809-fp5-dp-sound-v1-0-d7ba2c24f6b9@fairphone.com>
+ <192e3c22-fd63-4891-86b2-89a3383ab76d@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Add DisplayPort sound support for Fairphone 5
- smartphone
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240809-fp5-dp-sound-v1-0-d7ba2c24f6b9@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konradybcio@kernel.org>
-In-Reply-To: <20240809-fp5-dp-sound-v1-0-d7ba2c24f6b9@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On 9.08.2024 10:33 AM, Luca Weiss wrote:
-> Add the necessary sound card bits and some dts additions to enable sound
-> over DisplayPort-over-USB-C, e.g. to a connected TV or monitor.
+On Samstag, 10. August 2024 14:35:00 MESZ Konrad Dybcio wrote:
+> On 9.08.2024 10:33 AM, Luca Weiss wrote:
+> > Add the necessary sound card bits and some dts additions to enable sound
+> > over DisplayPort-over-USB-C, e.g. to a connected TV or monitor.
+> > 
+> > The UCM files can be found here:
+> > https://gitlab.com/postmarketOS/pmaports/-/tree/master/device/testing/
+device-fairphone-fp5/ucm
+> > 
+> > Two extra notes:
+> > 
+> > 1. I don't quite understand whether the sound driver should have
+> >    SoC-specific compatible or device-specific compatible. Some earlier
+> >    patches by another author for a QCM6490 board and a QCS6490 board use
+> >    device-specific compatible - but from what I can tell this is not how
+> >    it's generally done for other sound drivers?
+> > 
+> > 2. Unfortunately DisplayPort enablement itself for Fairphone 5 is not
+> >    upstream yet. This is blocked by DSI display bringup upstream which
+> >    is blocked by DSC 1:1:1 not being supported upstream yet and just
+> >    working with a hacky patch. Nevertheless, DisplayPort audio was
+> >    validated working with no additional sound-related changes so once
+> >    DisplayPort gets enabled, sound should also just work upstream.
 > 
-> The UCM files can be found here:
-> https://gitlab.com/postmarketOS/pmaports/-/tree/master/device/testing/device-fairphone-fp5/ucm
-> 
-> Two extra notes:
-> 
-> 1. I don't quite understand whether the sound driver should have
->    SoC-specific compatible or device-specific compatible. Some earlier
->    patches by another author for a QCM6490 board and a QCS6490 board use
->    device-specific compatible - but from what I can tell this is not how
->    it's generally done for other sound drivers?
-> 
-> 2. Unfortunately DisplayPort enablement itself for Fairphone 5 is not
->    upstream yet. This is blocked by DSI display bringup upstream which
->    is blocked by DSC 1:1:1 not being supported upstream yet and just
->    working with a hacky patch. Nevertheless, DisplayPort audio was
->    validated working with no additional sound-related changes so once
->    DisplayPort gets enabled, sound should also just work upstream.
+> You can enable DP and keep DSI disabled for the time being
 
-You can enable DP and keep DSI disabled for the time being
+I need to enable dispcc for DP which breaks simple-fb from my testing?
 
-Konrad
+Maybe I can figure out the correct clocks and power domains to put into the 
+simple-fb node? Do you think that would work and be sufficient to make both 
+simple-fb and DP work?
+
+> 
+> Konrad
+> 
+
+
+
+
