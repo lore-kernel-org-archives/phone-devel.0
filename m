@@ -1,81 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtprelay05.ispgateway.de (smtprelay05.ispgateway.de [80.67.31.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641CE15B14B;
-	Thu, 15 Aug 2024 20:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6B4558A5;
+	Fri, 16 Aug 2024 17:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.67.31.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723754477; cv=none; b=uKdmNEFE29PTZDY7E/3DYRAU7a7FjSyx7CNU/RVAc4uGY+wEsjcjjb46sPnBORMlkOyJyLp/lASoJt1FuREIJR70dkCh6yboX9d/uJsN5/NK6YwirYoT2aSQSj2fjLzSLAWw1KvUjn5hXJ2DAbsh/HgztcYG6JhEEjDLuid4bqc=
+	t=1723828290; cv=none; b=lrEEzMbGCb7Cfwbe7x6qJ5dq2MI7TyeC+ozrEumfnSZZ58qUfbeJrGKfQwmwbEjp2e02TC/dbujV/fAmkcfy97AormjdBl5zDSvbegkyz4qitlQcaRctO3y/cZB64FVN22wFkCq6AUaphU5QFifYtBSKjp79A7rh1+VBcB31ftA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723754477; c=relaxed/simple;
-	bh=PvoSBLcsFkiZ61vIQf0gteyF3WBUp8LYafg6D6HKjYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jgstr4nNjlqcPSYD84ASr8UbPkIBjOFAHe0VGmBraSYq/9N4LEtNnGLOMqU3ceTRlCgFZReu675bRDwKWK42/idYajbVVd/9QzPRhToVpwXTWZpACFFxkDAw6jrniyjNxrWh9LEjYZ2D2ExZL+iqyS1M+ZGqxXeaakiEDD+RRfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOCxcpBA; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOCxcpBA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F72FC4AF09;
-	Thu, 15 Aug 2024 20:41:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723754476;
-	bh=PvoSBLcsFkiZ61vIQf0gteyF3WBUp8LYafg6D6HKjYg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOCxcpBA6F7P8NyCeBZ+7D963bvMKnr2+hODJ/NXv9pFPQc4q9omzrN5Krur/vYEu
-	 7k2p+WZmk3frheU3lPFy5vhrbAaMve7fxHNS4xL6DVcPUiZOk1o+Is06214Gkiaizt
-	 xGkJiBE3AnpHpeqa4CKBwskExy8lwZwbZgO6gApMhkglpEBBUhPjXLPpLQVL75DIs6
-	 kTRCyTqHMYbgUt4EYeuwLeOT1LxfkNlxhbM7a8Ki9l+cw4x/Pxe0va2/XzIWEZZP3z
-	 bhcG1gGyOL54kFPGYqwAYKGd/qeepsVRJ1VUZA/CkFkNBKa7gN3H3apljklsSBPMaP
-	 yaVpE/ezB/kbg==
-From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca@lucaweiss.eu>
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/7] Add CPU frequency scaling support for MSM8226
-Date: Thu, 15 Aug 2024 15:40:31 -0500
-Message-ID: <172375444799.1011236.3821270590230686544.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
-References: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
+	s=arc-20240116; t=1723828290; c=relaxed/simple;
+	bh=OQj9aflFz5/1xZELeYBBSnRGJvXqvpt8ZmmFo5/oPpY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TyXODleqR4kTyuHbIiKD6E1f0+IGmqagq618CU38c2sYGmO8BJxL7XWMw60/XJXR2RQhV4KbWsxQtVgdDLvJeUS65e2Yse2V1bQVBsJAV2Gk/DV/tNeR7olKfoH2pPxlqMrzvvJ6SpoZi3EJ/YqpQBE6i3deIOmz/V9X7lm4IiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; arc=none smtp.client-ip=80.67.31.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+Received: from [77.64.252.82] (helo=framework.lan)
+	by smtprelay05.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98)
+	(envelope-from <git@apitzsch.eu>)
+	id 1sf0TS-000000000nw-3QWQ;
+	Fri, 16 Aug 2024 19:10:50 +0200
+Message-ID: <f50d7129b6023d89d7c83820d9f69075800fe1ae.camel@apitzsch.eu>
+Subject: Re: [PATCH RESEND v6] arm64: dts: qcom: msm8939-longcheer-l9100:
+ Add rear flash
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Bjorn Andersson <andersson@kernel.org>, Pavel Machek <pavel@ucw.cz>, Lee
+ Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,  "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,  Trilok Soni
+ <quic_tsoni@quicinc.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees
+ Cook <kees@kernel.org>,  Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Date: Fri, 16 Aug 2024 19:11:29 +0200
+In-Reply-To: <172375444816.1011236.9460813836275052885.b4-ty@kernel.org>
+References: <20240729-sy7802-v6-1-86bb9083e40b@apitzsch.eu>
+	 <172375444816.1011236.9460813836275052885.b4-ty@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 
+Am Donnerstag, dem 15.08.2024 um 15:40 -0500 schrieb Bjorn Andersson:
+>=20
+> On Mon, 29 Jul 2024 23:23:04 +0200, Andr=C3=A9 Apitzsch wrote:
+> > The phone has a Silergy SY7802 flash LED controller.
+> >=20
+> >=20
+>=20
+> Applied, thanks!
+>=20
+> [1/1] arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: 04b2f8d5aec32973d34839ae9838218579=
+24cc66
+>=20
+> Best regards,
 
-On Wed, 19 Jun 2024 23:02:44 +0200, Luca Weiss wrote:
-> Apart from a bunch of bindings updates, add support for the a7pll found
-> on the SoC and wire up everything in the dtsi. And finally switch over
-> to using apcs via mbox interface to stop using the apcs via syscon.
-> 
-> Only a limited list of CPU frequencies are supported for now, higher
-> ones require speedbin support which I plan to work on after this lands.
-> 
-> [...]
+Hi Bjorn,
 
-Applied, thanks!
-
-[5/7] ARM: dts: qcom: msm8226: Add CPU frequency scaling support
-      commit: 02f2ddaa1a78cbebd4255f78260781b404225170
-[6/7] ARM: dts: qcom: msm8226: Hook up CPU cooling
-      commit: 807dfab845209062e4d268157cfbf0ba46652df7
-[7/7] ARM: dts: qcom: msm8226: Convert APCS usages to mbox interface
-      commit: c47dd4a87160fd604577aca41ca8b3391b5c5d3e
+It looks like you applied the patch twice (two different version)[1,2].
 
 Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Andr=C3=A9
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?=
+h=3Dfor-next&id=3Df98bdb21cfc94cb7733a5c3216e8f1dec1c06023 (v5)
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?=
+h=3Dfor-next&id=3D04b2f8d5aec32973d34839ae983821857924cc66 (v6)
