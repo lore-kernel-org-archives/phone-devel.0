@@ -1,77 +1,116 @@
-Received: from smtprelay05.ispgateway.de (smtprelay05.ispgateway.de [80.67.31.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6B4558A5;
-	Fri, 16 Aug 2024 17:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.67.31.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC23B14AD3F
+	for <phone-devel@vger.kernel.org>; Sun, 18 Aug 2024 20:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723828290; cv=none; b=lrEEzMbGCb7Cfwbe7x6qJ5dq2MI7TyeC+ozrEumfnSZZ58qUfbeJrGKfQwmwbEjp2e02TC/dbujV/fAmkcfy97AormjdBl5zDSvbegkyz4qitlQcaRctO3y/cZB64FVN22wFkCq6AUaphU5QFifYtBSKjp79A7rh1+VBcB31ftA=
+	t=1724012503; cv=none; b=sfWoWsFw8euXNcuB0PBGNGQeQAg7/0cQFu4EFWUUPXz4NIC/Q14/K/61+CA3D6FfxtsjCF3K9aJhvj70/Vo4AFZtwoqYwmHEyOBcYRh+te/6GzyrHQIG1eWpMO/5vftLfedT0N28tfLs+8rXJ7B0lN2qUr+9vIuR4FTf75hwnPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723828290; c=relaxed/simple;
-	bh=OQj9aflFz5/1xZELeYBBSnRGJvXqvpt8ZmmFo5/oPpY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TyXODleqR4kTyuHbIiKD6E1f0+IGmqagq618CU38c2sYGmO8BJxL7XWMw60/XJXR2RQhV4KbWsxQtVgdDLvJeUS65e2Yse2V1bQVBsJAV2Gk/DV/tNeR7olKfoH2pPxlqMrzvvJ6SpoZi3EJ/YqpQBE6i3deIOmz/V9X7lm4IiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; arc=none smtp.client-ip=80.67.31.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
-Received: from [77.64.252.82] (helo=framework.lan)
-	by smtprelay05.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98)
-	(envelope-from <git@apitzsch.eu>)
-	id 1sf0TS-000000000nw-3QWQ;
-	Fri, 16 Aug 2024 19:10:50 +0200
-Message-ID: <f50d7129b6023d89d7c83820d9f69075800fe1ae.camel@apitzsch.eu>
-Subject: Re: [PATCH RESEND v6] arm64: dts: qcom: msm8939-longcheer-l9100:
- Add rear flash
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Bjorn Andersson <andersson@kernel.org>, Pavel Machek <pavel@ucw.cz>, Lee
- Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,  "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,  Trilok Soni
- <quic_tsoni@quicinc.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees
- Cook <kees@kernel.org>,  Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org
-Date: Fri, 16 Aug 2024 19:11:29 +0200
-In-Reply-To: <172375444816.1011236.9460813836275052885.b4-ty@kernel.org>
-References: <20240729-sy7802-v6-1-86bb9083e40b@apitzsch.eu>
-	 <172375444816.1011236.9460813836275052885.b4-ty@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+	s=arc-20240116; t=1724012503; c=relaxed/simple;
+	bh=70Z4hvDcxJ0JQ1h2UgF/clGEXvnPtqwlNLdYJo/LkOQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SgUo6g+hyLWxLvEIUeeq461MmSVZs87lxKN3ogieRpTNFIoGEzGX8Jwp3NOF7/p4x5HDAZ/3WPmwonjpKW7sKs8vda0bti+JiQkc8rcTW0pCV5AMTQMFQCCqa6+/DK8dJ9X4K7Do9jPcz5i1KQlohgxwtI4OYPx6NdG4zVGr8wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=upWdjS4g; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="upWdjS4g"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-371b97cfd6fso483010f8f.2
+        for <phone-devel@vger.kernel.org>; Sun, 18 Aug 2024 13:21:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1724012499; x=1724617299; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YP6/tJr0AaQIXolLt7n3xjX+yRAvdjUkQdCsfI84uZ4=;
+        b=upWdjS4gqjW0G8OLeXw7JRBfVMFnPdzPLGCzb6JJAyxSu68srOvLqFHjGL5igHZkzh
+         F94dwWFsc40XmY0MdhX/MIRbzYE2Fi3F0iF4OQn06W8LaUtKNae3VKOx5+Vj9ysh1p9j
+         1/3NebsVkfogFyRCci1qwiQr7g+4KrSwT4FMvQ+H54//TnMyDUUKuM4MTXwV0Cw0caFC
+         9XS3SK7wR0IRAeAUI1aqn2EjJMdmgU6G9GIhmeydSxWH3ojLW0tHzYSVIV5ZJJlKQ0fx
+         vbWzIkiBVtCsUHajMzzKGJiOYwSFWmy2ZVsC28Gw1rXomA/XYJQbiGnXE0mijFTco7DW
+         7xYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724012499; x=1724617299;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YP6/tJr0AaQIXolLt7n3xjX+yRAvdjUkQdCsfI84uZ4=;
+        b=HQa247uzYgXsOPvz/F7NZTzML+QI5zseCXOA7l9oRRSKVfc4hAeNbO1ALqVcWgJtrF
+         M5QQxu34/Bgk2EzS6ujI47hgAfxwcqBaNoIFnymlLMWTg3kBNasIVG1FY3rIHvHXjLfY
+         nVLqpco/MLrUMvQ9uQXPf+vInXT04NvcvuAzk0ssTZuwFdedVC2cwIAU3wRNwZpkGrBn
+         LUmeiuakjU+CrfYyjmMLorAynIFmGMASCqWI8BRkKCZ5PxRzeK4FQcvOj7X1NGRN268k
+         xc80/TzJroutWHLP9AAGW3XlrfJkhoVfXL8JLAnhSsexym+wymf8U8kSTOiGoQyw/ibL
+         sk/g==
+X-Forwarded-Encrypted: i=1; AJvYcCV46nj52bVmuLRpcmXY/F41rmhU9Ol2WnJAsqCcp8cXCbTecfTohPM+OajrpRqrrOHuCW1rxyzdaJZSPA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt/ReHDmV9PQ9ssSgQl+Xfm2/Mk/7Yt1WtjxYzHOzzX9LF7TFa
+	BT20yAvsio4w8uuErVODvSmI9K4qGrxQIH2QB6q/t+hZhMkWGtwZ4dqKjrTpadUbNeHiGjZvwec
+	O
+X-Google-Smtp-Source: AGHT+IEzeMiU4Y8sfoqhoetfoMozEKIafj6FwkmAOx4atTNxTwtNuJAsjc81DT9gdhnWnvwnbKMMlw==
+X-Received: by 2002:adf:fad1:0:b0:36b:a3f1:eb with SMTP id ffacd0b85a97d-371946bfa9amr4842568f8f.53.1724012498679;
+        Sun, 18 Aug 2024 13:21:38 -0700 (PDT)
+Received: from [100.64.0.4] (ip-185-104-138-79.ptr.icomera.net. [185.104.138.79])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37189849a05sm8716179f8f.26.2024.08.18.13.21.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Aug 2024 13:21:38 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Sun, 18 Aug 2024 22:21:01 +0200
+Subject: [PATCH] usb: typec: fsa4480: Relax CHIP_ID check
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAKxXwmYC/x2MQQqAIBAAvyJ7bkFNSfpKdBBdcy8lChFIf086z
+ sBMh0aVqcEqOlS6ufF1DlCTgJD9eRByHAxaaiOdcpiaN8ZJDJkLR0z8oA5LSNYpqWYLIyyVhv6
+ n2/6+H/xHf5xkAAAA
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Caleb Connolly <caleb.connolly@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, stable@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.1
 
-Am Donnerstag, dem 15.08.2024 um 15:40 -0500 schrieb Bjorn Andersson:
->=20
-> On Mon, 29 Jul 2024 23:23:04 +0200, Andr=C3=A9 Apitzsch wrote:
-> > The phone has a Silergy SY7802 flash LED controller.
-> >=20
-> >=20
->=20
-> Applied, thanks!
->=20
-> [1/1] arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: 04b2f8d5aec32973d34839ae9838218579=
-24cc66
->=20
-> Best regards,
+Some FSA4480-compatible chips like the OCP96011 used on Fairphone 5
+return 0x00 from the CHIP_ID register. Handle that gracefully and only
+fail probe when the I2C read has failed.
 
-Hi Bjorn,
+With this the dev_dbg will print 0 but otherwise continue working.
 
-It looks like you applied the patch twice (two different version)[1,2].
+  [    0.251581] fsa4480 1-0042: Found FSA4480 v0.0 (Vendor ID = 0)
+
+Cc: stable@vger.kernel.org
+Fixes: e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ drivers/usb/typec/mux/fsa4480.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
+index cd235339834b..f71dba8bf07c 100644
+--- a/drivers/usb/typec/mux/fsa4480.c
++++ b/drivers/usb/typec/mux/fsa4480.c
+@@ -274,7 +274,7 @@ static int fsa4480_probe(struct i2c_client *client)
+ 		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
+ 
+ 	ret = regmap_read(fsa->regmap, FSA4480_DEVICE_ID, &val);
+-	if (ret || !val)
++	if (ret)
+ 		return dev_err_probe(dev, -ENODEV, "FSA4480 not found\n");
+ 
+ 	dev_dbg(dev, "Found FSA4480 v%lu.%lu (Vendor ID = %lu)\n",
+
+---
+base-commit: ccdbf91fdf5a71881ef32b41797382c4edd6f670
+change-id: 20240818-fsa4480-chipid-fix-2c7cf5810135
 
 Best regards,
-Andr=C3=A9
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?=
-h=3Dfor-next&id=3Df98bdb21cfc94cb7733a5c3216e8f1dec1c06023 (v5)
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?=
-h=3Dfor-next&id=3D04b2f8d5aec32973d34839ae983821857924cc66 (v6)
