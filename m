@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8B8187FEE;
-	Mon,  2 Sep 2024 21:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BBA187FF7;
+	Mon,  2 Sep 2024 21:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725314032; cv=none; b=hkr6wsRNNcQ6qDFngcCCwP79pnlmv2adbqPkGNphOYqUZH5B15O9x5Fgj2HSeehEU/1EDPUU+OJqkspqP4ob00QrIB1jGJgJOUqQ+WPZgcGtJuu420OwIhgG51ah34fMLPeydbozVWVjy8erLIy4JIEeejK51DNhcp60UVMQofM=
+	t=1725314032; cv=none; b=GU8/jtz7Ohgt9PeHB5OTn0UrrnkjPoIN9tiNEuaYLLaATF9785DnXm/KN+wEKcbw07iOintEaTy7/rf/smyuC98k+11F7bQ86hsMP70u6reCv7rY2b4C4ZMDqdUJc4TFux4A5B2w7xM3tXsFOd38WReqnap4uK1YscVikLcMYlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725314032; c=relaxed/simple;
-	bh=xIQpd+6F/rJuhu1Lnvl6Lh9tIuVnFXCVzRvNOsSe3Eg=;
+	bh=heylAxykd8X4rIhXf7HcHXhHxx01Fwwpbrn2DfxpdCY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kJwWRvMi28wUIZqL3Hj5U4Ptnl9CDJxIIh9H+i2GAoM2YMCtltZ8iRaEyIFVcL3F3F8pTfHRq5hOWiY8TG8gXoyIM2n9TRpk3+HVreaZX2QcIWN3E5NUD5yFhgVww/L4UUVq+Za/BDqbCSGimHR/kiUjSlN+fx0OA8/JcwSJZHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOwVH75s; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ewrQMFLJshhyJXXObMphWxqhYCei2w8sWfRi/t2ZrlIZi9gLnzn8nnZyqGw8XNKZvHGcGmtfs0Amb/jNYACVuSOXch+hrYvnxSEwx4k/NpcsOuFjaypu9S0w2En5ZimIiJY2h1AxLdLuqr7woVPUNfIVGTYrwWIPGL8gSUspNjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OROlkf2L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOwVH75s"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C22A8C4AF0C;
-	Mon,  2 Sep 2024 21:53:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OROlkf2L"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1096AC4CEDE;
+	Mon,  2 Sep 2024 21:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725314031;
-	bh=xIQpd+6F/rJuhu1Lnvl6Lh9tIuVnFXCVzRvNOsSe3Eg=;
+	s=k20201202; t=1725314032;
+	bh=heylAxykd8X4rIhXf7HcHXhHxx01Fwwpbrn2DfxpdCY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EOwVH75swyJ7Q4jAvTKiQ2+VzPqvw4bcSoi7NO893II68lXEGK0n3C8aUPX3rxh4l
-	 eH2++SsWniJG8FOmnUHzLc1PF1Q7IxjisoDyRgln1/8wO0zPfZ2C0r6W7lSknxnPL6
-	 ZqyA/9GYqoFy1hDyHz3tESiidVNujVvPDnmmLKKiNBAkm0FZOmayvuo/vulBhLQ3+P
-	 KwP4AEqPBhHfu+iSP/GU3KDKXOl1GN6NVj9Pp6/sa9iT+cykT+MqBUKzuPr+RFGahT
-	 8RX+VWcy6Fmr80PLulhElEnu8gQBdQ8MksIiDxdYBXcNi0536NgOLYQG/2MYup7oxU
-	 8EYOHiV7f+cEQ==
+	b=OROlkf2LFfHDJgPmtGoFN1NvSEm1YEQccQ8NEZnvlZrrrE1LWyxGqb9ATQ36Ih4eb
+	 TV8x7MLQkeVHhQ5ARiTpFUmAfR43g9NvfnNtM+p2VelCoXTyME4GUp9WVmtTScSITJ
+	 0sr0wsIruf7jo8urKB1czUCsPVcodldnUNE+mgDYcAB3al/TSXtwBpXaWDH8VJwdl2
+	 7THQ2t9LVnsaJHnAUwM9E1ZhrytxTTdMdmPuPlQeWEQEUApgj2JwFRD1OXg+Mp9uHa
+	 dqGIh8+zzC75fdTba4doJeMt4eQNGRY4tfVog/1yktQPza8KQMBBXJLzaPUXZyXFXu
+	 f9dxocaTlXhiA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B85C6CD3420;
-	Mon,  2 Sep 2024 21:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06695C54FC6;
+	Mon,  2 Sep 2024 21:53:52 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Mon, 02 Sep 2024 23:54:36 +0200
-Subject: [PATCH 09/13] media: i2c: imx214: Extract format and crop settings
+Date: Mon, 02 Sep 2024 23:54:40 +0200
+Subject: [PATCH 13/13] media: i2c: imx214: Add test pattern control
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240902-imx214-v1-9-c96cba989315@apitzsch.eu>
+Message-Id: <20240902-imx214-v1-13-c96cba989315@apitzsch.eu>
 References: <20240902-imx214-v1-0-c96cba989315@apitzsch.eu>
 In-Reply-To: <20240902-imx214-v1-0-c96cba989315@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
@@ -50,11 +50,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725314079; l=8319;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725314079; l=4184;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=tx8U555AKCRQmtqlBNaqTC3U56zndeMKNcNs+hIE70M=;
- b=iBUrQTwzUL/nNPABMRdIW3mKC58g8AoXvUqbjww5HAtktrl8og2fEPjpcCurKW8daABL6T8jy
- YZzKjiuu+wtCByt2PMxyUhr+0EC/k91T+P6eJxeI9qQlEfWFD7FFmiL
+ bh=S18zCLZxu7uVo4Qh5/WJT4wrMs1kwsCQDThfCqeUjns=;
+ b=U/c1WEWfj8syWYQeIrbBlFiv5eQwLYmTf5yiaWH6BWuDlXpTe1+9nQDo7H9r0b5OV7qIlcc8k
+ FB9uSncKAiIAt1POKGcqitKycWHyKX/NTeGtkp42QIfCGdpUkzB90Yy
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -64,251 +64,135 @@ Reply-To: git@apitzsch.eu
 
 From: André Apitzsch <git@apitzsch.eu>
 
-Remove format and crop settings from register sequences and set them
-programmatically.
+This adds V4L2_CID_TEST_PATTERN control support.
 
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 137 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 105 insertions(+), 32 deletions(-)
+ drivers/media/i2c/imx214.c | 77 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 75 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 9f5a57aebb86..733f55257585 100644
+index 6493a9b9ea88..6d67c7b307bd 100644
 --- a/drivers/media/i2c/imx214.c
 +++ b/drivers/media/i2c/imx214.c
-@@ -132,6 +132,9 @@
- #define IMX214_BINNING_NONE		0
- #define IMX214_BINNING_ENABLE		1
- #define IMX214_REG_BINNING_TYPE		CCI_REG8(0x0901)
-+#define IMX214_BINNING_1X1		0
-+#define IMX214_BINNING_2X2		0x22
-+#define IMX214_BINNING_4X4		0x44
- #define IMX214_REG_BINNING_WEIGHTING	CCI_REG8(0x0902)
- #define IMX214_BINNING_AVERAGE		0x00
- #define IMX214_BINNING_SUMMED		0x01
-@@ -214,36 +217,22 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
--	{ IMX214_REG_X_ADD_STA, 56 },
--	{ IMX214_REG_Y_ADD_STA, 408 },
--	{ IMX214_REG_X_ADD_END, 4151 },
--	{ IMX214_REG_Y_ADD_END, 2711 },
- 	{ IMX214_REG_X_EVEN_INC, 1 },
- 	{ IMX214_REG_X_ODD_INC, 1 },
- 	{ IMX214_REG_Y_EVEN_INC, 1 },
- 	{ IMX214_REG_Y_ODD_INC, 1 },
--	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
--	{ IMX214_REG_BINNING_TYPE, 0 },
- 	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
- 	{ CCI_REG8(0x3000), 0x35 },
- 	{ CCI_REG8(0x3054), 0x01 },
- 	{ CCI_REG8(0x305C), 0x11 },
+@@ -181,6 +181,23 @@
  
--	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10 },
--	{ IMX214_REG_X_OUTPUT_SIZE, 4096 },
--	{ IMX214_REG_Y_OUTPUT_SIZE, 2304 },
- 	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
- 	{ IMX214_REG_SCALE_M, 2 },
--	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_WIDTH, 4096 },
--	{ IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+ #define IMX214_REG_ATR_FAST_MOVE	CCI_REG8(0x9300)
  
- 	{ IMX214_REG_VTPXCK_DIV, 5 },
- 	{ IMX214_REG_VTSYCK_DIV, 2 },
- 	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
- 	{ IMX214_REG_PLL_VT_MPY, 150 },
--	{ IMX214_REG_OPPXCK_DIV, 10 },
- 	{ IMX214_REG_OPSYCK_DIV, 1 },
- 	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
- 
-@@ -284,36 +273,22 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
--	{ IMX214_REG_X_ADD_STA, 1144 },
--	{ IMX214_REG_Y_ADD_STA, 1020 },
--	{ IMX214_REG_X_ADD_END, 3063 },
--	{ IMX214_REG_Y_ADD_END, 2099 },
- 	{ IMX214_REG_X_EVEN_INC, 1 },
- 	{ IMX214_REG_X_ODD_INC, 1 },
- 	{ IMX214_REG_Y_EVEN_INC, 1 },
- 	{ IMX214_REG_Y_ODD_INC, 1 },
--	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
--	{ IMX214_REG_BINNING_TYPE, 0 },
- 	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
- 	{ CCI_REG8(0x3000), 0x35 },
- 	{ CCI_REG8(0x3054), 0x01 },
- 	{ CCI_REG8(0x305C), 0x11 },
- 
--	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10 },
--	{ IMX214_REG_X_OUTPUT_SIZE, 1920 },
--	{ IMX214_REG_Y_OUTPUT_SIZE, 1080 },
- 	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
- 	{ IMX214_REG_SCALE_M, 2 },
--	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_WIDTH, 1920 },
--	{ IMX214_REG_DIG_CROP_HEIGHT, 1080 },
- 
- 	{ IMX214_REG_VTPXCK_DIV, 5 },
- 	{ IMX214_REG_VTSYCK_DIV, 2 },
- 	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
- 	{ IMX214_REG_PLL_VT_MPY, 150 },
--	{ IMX214_REG_OPPXCK_DIV, 10 },
- 	{ IMX214_REG_OPSYCK_DIV, 1 },
- 	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
- 
-@@ -626,6 +601,7 @@ static int imx214_set_format(struct v4l2_subdev *sd,
- 	struct v4l2_mbus_framefmt *__format;
- 	struct v4l2_rect *__crop;
- 	const struct imx214_mode *mode;
-+	unsigned int bin_h, bin_v, bin;
- 
- 	mode = v4l2_find_nearest_size(imx214_modes,
- 				      ARRAY_SIZE(imx214_modes), width, height,
-@@ -637,9 +613,32 @@ static int imx214_set_format(struct v4l2_subdev *sd,
- 	__format = v4l2_subdev_state_get_format(sd_state, 0);
- 	*__format = format->format;
- 
-+	/*
-+	 * Use binning to maximize the crop rectangle size, and centre it in the
-+	 * sensor.
-+	 */
-+	bin_h = IMX214_PIXEL_ARRAY_WIDTH / __format->width;
-+	bin_v = IMX214_PIXEL_ARRAY_HEIGHT / __format->height;
++/* Test Pattern Control */
++#define IMX214_REG_TEST_PATTERN		CCI_REG16(0x0600)
++#define IMX214_TEST_PATTERN_DISABLE	0
++#define IMX214_TEST_PATTERN_SOLID_COLOR	1
++#define IMX214_TEST_PATTERN_COLOR_BARS	2
++#define IMX214_TEST_PATTERN_GREY_COLOR	3
++#define IMX214_TEST_PATTERN_PN9		4
 +
-+	switch (min(bin_h, bin_v)) {
-+	case 1:
-+		bin = 1;
-+		break;
-+	case 2:
-+	case 3:
-+		bin = 2;
-+		break;
-+	case 4:
-+	default:
-+		bin = 4;
-+		break;
-+	}
++/* Test pattern colour components */
++#define IMX214_REG_TESTP_RED		CCI_REG16(0x0602)
++#define IMX214_REG_TESTP_GREENR		CCI_REG16(0x0604)
++#define IMX214_REG_TESTP_BLUE		CCI_REG16(0x0606)
++#define IMX214_REG_TESTP_GREENB		CCI_REG16(0x0608)
++#define IMX214_TESTP_COLOUR_MIN		0
++#define IMX214_TESTP_COLOUR_MAX		0x03ff
++#define IMX214_TESTP_COLOUR_STEP	1
 +
- 	__crop = v4l2_subdev_state_get_crop(sd_state, 0);
--	__crop->width = mode->width;
--	__crop->height = mode->height;
-+	__crop->width = __format->width * bin;
-+	__crop->height = __format->height * bin;
-+	__crop->left = (IMX214_NATIVE_WIDTH - __crop->width) / 2;
-+	__crop->top = (IMX214_NATIVE_HEIGHT - __crop->height) / 2;
- 
- 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
- 		int exposure_max;
-@@ -845,6 +844,71 @@ static int imx214_ctrls_init(struct imx214 *imx214)
- 	return 0;
+ /* IMX214 native and active pixel array size */
+ #define IMX214_NATIVE_WIDTH		4224U
+ #define IMX214_NATIVE_HEIGHT		3136U
+@@ -213,6 +230,22 @@ static const u32 imx214_mbus_formats[] = {
+ 	MEDIA_BUS_FMT_SBGGR10_1X10,
  };
  
-+static int imx214_set_framefmt(struct imx214 *imx214,
-+			       struct v4l2_subdev_state *state)
-+{
-+	const struct v4l2_mbus_framefmt *format;
-+	const struct v4l2_rect *crop;
-+	unsigned int bpp;
-+	u64 bin_mode;
-+	u64 bin_type;
-+	int ret = 0;
-+
-+	format = v4l2_subdev_state_get_format(state, 0);
-+	crop = v4l2_subdev_state_get_crop(state, 0);
-+
-+	switch (format->code) {
-+	case MEDIA_BUS_FMT_SRGGB10_1X10:
-+	case MEDIA_BUS_FMT_SGRBG10_1X10:
-+	case MEDIA_BUS_FMT_SGBRG10_1X10:
-+	case MEDIA_BUS_FMT_SBGGR10_1X10:
-+	default:
-+		bpp = 10;
-+		break;
-+	}
-+
-+	cci_write(imx214->regmap, IMX214_REG_X_ADD_STA,
-+		  crop->left - IMX214_PIXEL_ARRAY_LEFT, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_X_ADD_END,
-+		  crop->left - IMX214_PIXEL_ARRAY_LEFT + crop->width - 1, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_ADD_STA,
-+		  crop->top - IMX214_PIXEL_ARRAY_TOP, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_ADD_END,
-+		  crop->top - IMX214_PIXEL_ARRAY_TOP + crop->height - 1, &ret);
-+
-+	/* Proper setting is required even if cropping is not used */
-+	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_WIDTH, crop->width, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_HEIGHT, crop->height, &ret);
-+
-+	switch (crop->width / format->width) {
-+	case 1:
-+	default:
-+		bin_mode = IMX214_BINNING_NONE;
-+		bin_type = IMX214_BINNING_1X1;
-+		break;
-+	case 2:
-+		bin_mode = IMX214_BINNING_ENABLE;
-+		bin_type = IMX214_BINNING_2X2;
-+		break;
-+	case 4:
-+		bin_mode = IMX214_BINNING_ENABLE;
-+		bin_type = IMX214_BINNING_4X4;
-+		break;
-+	}
-+
-+	cci_write(imx214->regmap, IMX214_REG_BINNING_MODE, bin_mode, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_BINNING_TYPE, bin_type, &ret);
-+
-+	cci_write(imx214->regmap, IMX214_REG_X_OUTPUT_SIZE, format->width, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_OUTPUT_SIZE, format->height, &ret);
-+
-+	cci_write(imx214->regmap, IMX214_REG_CSI_DATA_FORMAT,
-+		  (bpp << 8) | bpp, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV, bpp, &ret);
-+
-+	return ret;
++static const char * const imx214_test_pattern_menu[] = {
++	"Disabled",
++	"Color Bars",
++	"Solid Color",
++	"Grey Color Bars",
++	"PN9"
 +};
 +
- static int imx214_configure_lanes(struct imx214 *imx214)
- {
- 	return cci_write(imx214->regmap, IMX214_REG_CSI_LANE_MODE,
-@@ -852,7 +916,8 @@ static int imx214_configure_lanes(struct imx214 *imx214)
- 			 IMX214_CSI_4_LANE_MODE, NULL);
- };
- 
--static int imx214_start_streaming(struct imx214 *imx214)
-+static int imx214_start_streaming(struct imx214 *imx214,
-+				  struct v4l2_subdev_state *state)
- {
- 	const struct imx214_mode *mode;
- 	int ret;
-@@ -871,6 +936,14 @@ static int imx214_start_streaming(struct imx214 *imx214)
- 		return ret;
++static const int imx214_test_pattern_val[] = {
++	IMX214_TEST_PATTERN_DISABLE,
++	IMX214_TEST_PATTERN_COLOR_BARS,
++	IMX214_TEST_PATTERN_SOLID_COLOR,
++	IMX214_TEST_PATTERN_GREY_COLOR,
++	IMX214_TEST_PATTERN_PN9,
++};
++
+ struct imx214 {
+ 	struct device *dev;
+ 	struct clk *xclk;
+@@ -819,6 +852,26 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
+ 		cci_write(imx214->regmap, IMX214_REG_FRM_LENGTH_LINES,
+ 			  format->height + ctrl->val, &ret);
+ 		break;
++	case V4L2_CID_TEST_PATTERN:
++		cci_write(imx214->regmap, IMX214_REG_TEST_PATTERN,
++			  imx214_test_pattern_val[ctrl->val], &ret);
++		break;
++	case V4L2_CID_TEST_PATTERN_RED:
++		cci_write(imx214->regmap, IMX214_REG_TESTP_RED,
++			  ctrl->val, &ret);
++		break;
++	case V4L2_CID_TEST_PATTERN_GREENR:
++		cci_write(imx214->regmap, IMX214_REG_TESTP_GREENR,
++			  ctrl->val, &ret);
++		break;
++	case V4L2_CID_TEST_PATTERN_BLUE:
++		cci_write(imx214->regmap, IMX214_REG_TESTP_BLUE,
++			  ctrl->val, &ret);
++		break;
++	case V4L2_CID_TEST_PATTERN_GREENB:
++		cci_write(imx214->regmap, IMX214_REG_TESTP_GREENB,
++			  ctrl->val, &ret);
++		break;
+ 	default:
+ 		ret = -EINVAL;
  	}
+@@ -846,14 +899,14 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+ 	struct v4l2_ctrl_handler *ctrl_hdlr;
+ 	int exposure_max, exposure_def;
+ 	int hblank;
+-	int ret;
++	int i, ret;
  
-+	/* Apply format and crop settings */
-+	ret = imx214_set_framefmt(imx214, state);
-+	if (ret) {
-+		dev_err(imx214->dev, "%s failed to set frame format: %d\n",
-+			__func__, ret);
-+		return ret;
+ 	ret = v4l2_fwnode_device_parse(imx214->dev, &props);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ctrl_hdlr = &imx214->ctrls;
+-	ret = v4l2_ctrl_handler_init(&imx214->ctrls, 12);
++	ret = v4l2_ctrl_handler_init(&imx214->ctrls, 13);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -908,6 +961,26 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+ 	if (imx214->vflip)
+ 		imx214->vflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+ 
++	v4l2_ctrl_new_std_menu_items(ctrl_hdlr, &imx214_ctrl_ops,
++				     V4L2_CID_TEST_PATTERN,
++				     ARRAY_SIZE(imx214_test_pattern_menu) - 1,
++				     0, 0, imx214_test_pattern_menu);
++	for (i = 0; i < 4; i++) {
++		/*
++		 * The assumption is that
++		 * V4L2_CID_TEST_PATTERN_GREENR == V4L2_CID_TEST_PATTERN_RED + 1
++		 * V4L2_CID_TEST_PATTERN_BLUE   == V4L2_CID_TEST_PATTERN_RED + 2
++		 * V4L2_CID_TEST_PATTERN_GREENB == V4L2_CID_TEST_PATTERN_RED + 3
++		 */
++		v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
++				  V4L2_CID_TEST_PATTERN_RED + i,
++				  IMX214_TESTP_COLOUR_MIN,
++				  IMX214_TESTP_COLOUR_MAX,
++				  IMX214_TESTP_COLOUR_STEP,
++				  IMX214_TESTP_COLOUR_MAX);
++		/* The "Solid color" pattern is white by default */
 +	}
 +
- 	mode = v4l2_find_nearest_size(imx214_modes,
- 				ARRAY_SIZE(imx214_modes), width, height,
- 				imx214->fmt.width, imx214->fmt.height);
-@@ -922,7 +995,7 @@ static int imx214_s_stream(struct v4l2_subdev *subdev, int enable)
- 			return ret;
- 
- 		state = v4l2_subdev_lock_and_get_active_state(subdev);
--		ret = imx214_start_streaming(imx214);
-+		ret = imx214_start_streaming(imx214, state);
- 		v4l2_subdev_unlock_state(state);
- 		if (ret < 0)
- 			goto err_rpm_put;
+ 	imx214->unit_size = v4l2_ctrl_new_std_compound(ctrl_hdlr,
+ 				NULL,
+ 				V4L2_CID_UNIT_CELL_SIZE,
 
 -- 
 2.46.0
