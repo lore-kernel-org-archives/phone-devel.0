@@ -1,410 +1,298 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEF31ACDF9
-	for <phone-devel@vger.kernel.org>; Thu, 12 Sep 2024 14:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FC61BD4F8
+	for <phone-devel@vger.kernel.org>; Thu, 12 Sep 2024 15:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726152694; cv=none; b=RMJ74Kvr0K6H2pYAc9KtuNNw40b3arhREl5/qyRfkbvzrvqpwY8dmGetnaP7scdZijz3qnzIfTjjJ10dRgChPNhYrlAJqlGkaWInvSR8B2JblwlJ3cktwofask/u1rDT9nAIzBHT/IoKR8zApagT/tuJar7AXjyIG6pw0gP6FwA=
+	t=1726154192; cv=none; b=KqGFr3E2pqBo/H6IzuE+xSaCCoPXSrePkreQkhOWNygIbjCv8LmOGbFMMUm3rOrLYU91a1fP2FOAS6bug6Mdc/AsBL15KX+GS/oXecXuFr6bwvSDExz6EX/rlVf1ZYtfLX+khlQnVdXsqeC1MaT/ItqSe/YemdEy/v5CcrYDERY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726152694; c=relaxed/simple;
-	bh=RZQFypfeX9TrywRPmW6cwL/Krnv3GLCAD6r6CrtTv84=;
+	s=arc-20240116; t=1726154192; c=relaxed/simple;
+	bh=rTjIdXGqTtWh6DCGbfiplFxev2qSYEs+DpLwF9tjrwQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lzzN2d7xgvNW6R3QqRnmp47zittNa17NYxQcEstcoRfiKUAXLPiQOaHEKC98BslYyxaxQkz8aVKFypOTO2OZw4R9iuK+bDeXGi7+P7vroLhAUm5WnzdxqqyEYP3QTgZ52b3Kq6S54KVfO+BVIWtBSWiRDbwGUBKHqFdCrfMO8Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=Yze7yuSK; arc=none smtp.client-ip=209.85.219.179
+	 To:Cc:Content-Type; b=ErDzciHY25yXbeadR/RyXJL8/BLxgVHhyQZHMcBX/JC7UvF9pjdlq2FscXnggFwdF/CKbQLQK3RZhq6kVIziZpRfra2PGG2wGZIlcoolQKBUj84XtmFr3yzlzBk+O4MAEdB/9khinHB3UokalTECbH7O8RBAzHetdsGahpxJbmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=dlI1bMjQ; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="Yze7yuSK"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e1a9463037cso913177276.2
-        for <phone-devel@vger.kernel.org>; Thu, 12 Sep 2024 07:51:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="dlI1bMjQ"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e1a7e54b898so1031571276.2
+        for <phone-devel@vger.kernel.org>; Thu, 12 Sep 2024 08:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1726152691; x=1726757491; darn=vger.kernel.org;
+        d=raspberrypi.com; s=google; t=1726154189; x=1726758989; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/6Va2xPqOEk33E5AfH0xgYcrVCi0r5AOnG5DFPjSBkw=;
-        b=Yze7yuSK6rSyhkj1fqVKME8BmjLiLw3r8S/MlnZa95F/WTx1xa55NlTyz0jOSTyVFV
-         QlbWwX4pr9QVCuVZKzmnk3/OWT26RxmDDY5PrR4uy5U4v4rQ4usGyt7VgLgK0cfja88i
-         fO/ihEMGI+7wyQ3M0AaiVcfXGY2veqOd6psZlSq5JhaMqHPGROw5WKhMKHlXJlqbAuZA
-         Hm39v+49vydKU5CB7jmLhzc7X2kXkS8hqfFilJyEZ5oqBkrk3PnAq+EJJ6wKIbgu6b09
-         qUk7VwXxLT4Q8DXmCFDKCcj7Wp/hN5Ca/5cocodcjjW5I5zFNNQhsbeUz1N0lK4XRv26
-         Cl3w==
+        bh=7jDXM/8JYc74GeqomisgcAX27KJrohlYuCAxmOfiyHE=;
+        b=dlI1bMjQdJQtqQNxiXmBkb5qMhB/Eqw97E1hayar0drl7f1SblvzmyTtaalGHx1Zl7
+         oCH0GeTPEBg7QGxxaniQ1j4So/uBk9OUTFYAHXXOrT2yxNtKKW60L0fNXm4UCpOqWTfZ
+         go4dTXcFmjhBqQ9RsMbHN2Fz4+Kfaz1B9HEgNK5s17Vdq1ZLW+BLM4A2TlVPlR0STlFL
+         9qB0B2RwNe0cmlvXIAyrNbQezwF5FjQvHK7ZuK1GILrMcOQeBwjOYdb5diaZy4k/qtv/
+         TwJrV+b/Hyr5bmpLOR+G0qAFIdbRGmvbTEx1w+1hA3kr1IZK6rLuZWbvCAEcgiZlYVCF
+         vMkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726152691; x=1726757491;
+        d=1e100.net; s=20230601; t=1726154189; x=1726758989;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/6Va2xPqOEk33E5AfH0xgYcrVCi0r5AOnG5DFPjSBkw=;
-        b=ZF8OTeL0VCxdwjb0bZRW0Riw0YM7GINfTJbG68JCPUG5/XrmJwLu5lSm8zWrqL2m4v
-         bYjn0QmAOJfoTMuV//RfRNrjo0vnqVI318nwtZ1CuQ3GPTPichkzzYkXosDgI5HrUiP1
-         BU3FNSQe0yj8LkIb2VNtqwMbk7zjt1Ux91rEoMfwNZCls2Mh2gYnJndfuNAEq1rtok0v
-         cXqCt0FsX5kC/JaiOupHy5d6tqQzn12/94FKcrpkCvXfIFxuq4SS4gLrojA+QuBWQYWp
-         Cah1QhsgBi7E2VRO2hjg9RtFw6PblYT0jC5Dhrt+d2RcyM+IefFioBBD/7//veoR9s+h
-         aztQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlGL236b70RTyGqXIKAbcox3mn8Hi0a3b6ELmfUcPsWB7mIpeckJsmt3EsyAGN2ZPVBF+RelinsvUVwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuSpDCYGBW5SuW26S+MYYx14F5RoFOkddpuq+2h5p47LfjyQzx
-	H+9RvKnmE66aaJg2Uv2LQjf6l/QPHP2vjAWhYLkqeMEpFaBk8OnBWgCEeRwAYZDbjK7Xasvd8fA
-	hmpNNqiUiJl1SUD8kgH2WnhBl6WeEALloXNRJLQ==
-X-Google-Smtp-Source: AGHT+IEatxtcvEOjJNOQA46gP6GIxTqwpTb5hmrMYGSwB3W/GOrd22Z+Dw5WS5G4QCwUjFk66AYg9sgvV5OEHtby7E4=
-X-Received: by 2002:a05:6902:1081:b0:e1a:85df:832c with SMTP id
- 3f1490d57ef6-e1d9db9c8fdmr2379333276.12.1726152690986; Thu, 12 Sep 2024
- 07:51:30 -0700 (PDT)
+        bh=7jDXM/8JYc74GeqomisgcAX27KJrohlYuCAxmOfiyHE=;
+        b=TJJ2O+AsNU5lk8GdmRmwLezNKvAe30X8mJrFetW5lybcpclo1tDYPoYBa7iX64JkKR
+         9myxp0/XUQnMr6ycuPqlCtJ1dGBkwdrLw0RHvpTRc874oMsbpv0BwZff0t7GlG0O9IkM
+         DyuoqVy0e+wpiQO/YhiPj7Y2AufrlT9v3mHfBZrYSOYdbL8+F6JfnhJxkEoFouZJwOLh
+         uMe03tAx0dfFnUPI7mSJ2oaSiN8nh4+hqBXiBtluyG4++LKRr9U9FImYzm95sPt5tuqp
+         LMNn/fHwijwQw9OQH8RdYFSJObwq3oSygqs4TOsCKt5sWOLZAB+mMvBGWYrjFMFudi7K
+         Px7g==
+X-Forwarded-Encrypted: i=1; AJvYcCV51VoP+eM0GKde8qKy1NWzYVVGUrSIVZbwGkYKt3MKohMGoIrK4bDQNDR4d0rhWAanYTbZ61HGvQ//7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+OjEtt7c9X1glmqpSHgj+Uq7jncEk8YO6Jii7X3q4mDoUPTls
+	eGNkT5Y3joy4lfI79Zm0qsUjredHQzNgmMHSh1Gbh8iIPZ1VYsYcP69Z2gIDVbT4U9ekQjXO929
+	Hb35bBJSOC8puYB6EoRIyqb1lQF6zOEXu7Htc1dD0E3ZjCrQitJ8=
+X-Google-Smtp-Source: AGHT+IHUOVEIikRTp4j+VV9CsLzlAMQU/EfA+K9ougOAUrzzUXwDf5IHXBGuxgEuzZwwJAlz4uNTezgk08+2j1j4E6o=
+X-Received: by 2002:a05:6902:e0e:b0:e11:6961:2fdf with SMTP id
+ 3f1490d57ef6-e1d9dbd22c7mr2934644276.33.1726154189157; Thu, 12 Sep 2024
+ 08:16:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902-imx214-v1-0-c96cba989315@apitzsch.eu>
- <20240902-imx214-v1-8-c96cba989315@apitzsch.eu> <CAPybu_2VPDTHb=nOaze7bwLvEEGxcS1zK=su5vpfLNao59Gwfw@mail.gmail.com>
-In-Reply-To: <CAPybu_2VPDTHb=nOaze7bwLvEEGxcS1zK=su5vpfLNao59Gwfw@mail.gmail.com>
+References: <20240902-imx214-v1-0-c96cba989315@apitzsch.eu> <20240902-imx214-v1-10-c96cba989315@apitzsch.eu>
+In-Reply-To: <20240902-imx214-v1-10-c96cba989315@apitzsch.eu>
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Thu, 12 Sep 2024 15:51:15 +0100
-Message-ID: <CAPY8ntCOWxXXmkahhMwx4E74LAtFQKrUxmJOrERm2F7KqiiOyg@mail.gmail.com>
-Subject: Re: [PATCH 08/13] media: i2c: imx214: Add vblank and hblank controls
-To: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Cc: git@apitzsch.eu, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+Date: Thu, 12 Sep 2024 16:16:13 +0100
+Message-ID: <CAPY8ntCjaJBmmjjbHz8PaT=eZQY0-BTjM==foMwZWpPTDHtcfg@mail.gmail.com>
+Subject: Re: [PATCH 10/13] media: i2c: imx214: Implement vflip/hflip controls
+To: git@apitzsch.eu
+Cc: Ricardo Ribalda <ribalda@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
 	Mauro Carvalho Chehab <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
 	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Andr=C3=A9 & Ricardo
+Hi Andr=C3=A9
 
-On Thu, 12 Sept 2024 at 14:41, Ricardo Ribalda Delgado
-<ribalda@kernel.org> wrote:
+On Mon, 2 Sept 2024 at 22:54, Andr=C3=A9 Apitzsch via B4 Relay
+<devnull+git.apitzsch.eu@kernel.org> wrote:
 >
-> Hi
+> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
 >
-> Arent you missing some chage in enum_frame_interval?
-
-Raw sensors shouldn't be using [enum|set|get]_frame_interval at all
-https://www.kernel.org/doc/html/latest/userspace-api/media/drivers/camera-s=
-ensor.html#frame-interval-configuration
-
-The question now is how to handle the backwards compatibility for any
-userspace app that might be using this driver and expecting to use the
-frame_interval calls.
-Seeing as it only ever allowed a fixed value of 30fps, leaving it as
-is with a comment as to why it is there would be reasonable in my
-view.
-
-> On Mon, Sep 2, 2024 at 11:53=E2=80=AFPM Andr=C3=A9 Apitzsch via B4 Relay
-> <devnull+git.apitzsch.eu@kernel.org> wrote:
-> >
-> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> >
-> > Add vblank control to allow changing the framerate /
-> > higher exposure values.
-> >
-> > The vblank and hblank controls are needed for libcamera support.
-> >
-> > While at it, fix the minimal exposure time according to the datasheet.
-> >
-> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > ---
-> >  drivers/media/i2c/imx214.c | 112 ++++++++++++++++++++++++++++++++++++-=
---------
-> >  1 file changed, 91 insertions(+), 21 deletions(-)
-> >
-> > diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> > index 3b422cddbdce..9f5a57aebb86 100644
-> > --- a/drivers/media/i2c/imx214.c
-> > +++ b/drivers/media/i2c/imx214.c
-> > @@ -34,11 +34,18 @@
-> >
-> >  /* V-TIMING internal */
-> >  #define IMX214_REG_FRM_LENGTH_LINES    CCI_REG16(0x0340)
-> > +#define IMX214_VTS_MAX                 0xffff
-> > +
-> > +#define IMX214_VBLANK_MIN              4
-> > +
-> > +/* HBLANK control - read only */
-> > +#define IMX214_PPL_DEFAULT             5008
-> >
-> >  /* Exposure control */
-> >  #define IMX214_REG_EXPOSURE            CCI_REG16(0x0202)
-> > -#define IMX214_EXPOSURE_MIN            0
-> > -#define IMX214_EXPOSURE_MAX            3184
-> > +#define IMX214_EXPOSURE_OFFSET         10
-> > +#define IMX214_EXPOSURE_MIN            1
-> > +#define IMX214_EXPOSURE_MAX            (IMX214_VTS_MAX - IMX214_EXPOSU=
-RE_OFFSET)
-> >  #define IMX214_EXPOSURE_STEP           1
-> >  #define IMX214_EXPOSURE_DEFAULT                3184
-> >  #define IMX214_REG_EXPOSURE_RATIO      CCI_REG8(0x0222)
-> > @@ -189,6 +196,8 @@ struct imx214 {
-> >         struct v4l2_ctrl_handler ctrls;
-> >         struct v4l2_ctrl *pixel_rate;
-> >         struct v4l2_ctrl *link_freq;
-> > +       struct v4l2_ctrl *vblank;
-> > +       struct v4l2_ctrl *hblank;
-> >         struct v4l2_ctrl *exposure;
-> >         struct v4l2_ctrl *unit_size;
-> >
-> > @@ -205,8 +214,6 @@ static const struct cci_reg_sequence mode_4096x2304=
-[] =3D {
-> >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
-> >         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> > -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> > -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
-> >         { IMX214_REG_X_ADD_STA, 56 },
-> >         { IMX214_REG_Y_ADD_STA, 408 },
-> >         { IMX214_REG_X_ADD_END, 4151 },
-> > @@ -277,8 +284,6 @@ static const struct cci_reg_sequence mode_1920x1080=
-[] =3D {
-> >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
-> >         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> > -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> > -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
-> >         { IMX214_REG_X_ADD_STA, 1144 },
-> >         { IMX214_REG_Y_ADD_STA, 1020 },
-> >         { IMX214_REG_X_ADD_END, 3063 },
-> > @@ -362,6 +367,7 @@ static const struct cci_reg_sequence mode_table_com=
-mon[] =3D {
-> >         { IMX214_REG_ORIENTATION, 0 },
-> >         { IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
-> >         { IMX214_REG_FAST_STANDBY_CTRL, 1 },
-> > +       { IMX214_REG_LINE_LENGTH_PCK, IMX214_PPL_DEFAULT },
-> >         { CCI_REG8(0x4550), 0x02 },
-> >         { CCI_REG8(0x4601), 0x00 },
-> >         { CCI_REG8(0x4642), 0x05 },
-> > @@ -465,18 +471,24 @@ static const struct cci_reg_sequence mode_table_c=
-ommon[] =3D {
-> >  static const struct imx214_mode {
-> >         u32 width;
-> >         u32 height;
-> > +
-> > +       /* V-timing */
-> > +       unsigned int vts_def;
-> > +
-> >         unsigned int num_of_regs;
-> >         const struct cci_reg_sequence *reg_table;
-> >  } imx214_modes[] =3D {
-> >         {
-> >                 .width =3D 4096,
-> >                 .height =3D 2304,
-> > +               .vts_def =3D 3194,
-> >                 .num_of_regs =3D ARRAY_SIZE(mode_4096x2304),
-> >                 .reg_table =3D mode_4096x2304,
-> >         },
-> >         {
-> >                 .width =3D 1920,
-> >                 .height =3D 1080,
-> > +               .vts_def =3D 3194,
-> >                 .num_of_regs =3D ARRAY_SIZE(mode_1920x1080),
-> >                 .reg_table =3D mode_1920x1080,
-> >         },
-> > @@ -629,6 +641,37 @@ static int imx214_set_format(struct v4l2_subdev *s=
-d,
-> >         __crop->width =3D mode->width;
-> >         __crop->height =3D mode->height;
-> >
-> > +       if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE) {
-> > +               int exposure_max;
-> > +               int exposure_def;
-> > +               int hblank;
-> > +
-> > +               /* Update limits and set FPS to default */
-> > +               __v4l2_ctrl_modify_range(imx214->vblank, IMX214_VBLANK_=
-MIN,
-> > +                                        IMX214_VTS_MAX - mode->height,=
- 1,
-> > +                                        mode->vts_def - mode->height);
-> > +               __v4l2_ctrl_s_ctrl(imx214->vblank,
-> > +                                  mode->vts_def - mode->height);
-> > +
-> > +               /* Update max exposure while meeting expected vblanking=
- */
-> > +               exposure_max =3D mode->vts_def - IMX214_EXPOSURE_OFFSET=
-;
-> > +               exposure_def =3D (exposure_max < IMX214_EXPOSURE_DEFAUL=
-T) ?
-> > +                       exposure_max : IMX214_EXPOSURE_DEFAULT;
-> > +               __v4l2_ctrl_modify_range(imx214->exposure,
-> > +                                        imx214->exposure->minimum,
-> > +                                        exposure_max, imx214->exposure=
-->step,
-> > +                                        exposure_def);
-> > +
-> > +               /*
-> > +                * Currently PPL is fixed to IMX214_PPL_DEFAULT, so hbl=
-ank
-> > +                * depends on mode->width only, and is not changeble in=
- any
-> > +                * way other than changing the mode.
-> > +                */
-> > +               hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> > +               __v4l2_ctrl_modify_range(imx214->hblank, hblank, hblank=
-, 1,
-> > +                                        hblank);
-> > +       }
-> > +
-> >         return 0;
-> >  }
-> >
-> > @@ -678,8 +721,25 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
-> >  {
-> >         struct imx214 *imx214 =3D container_of(ctrl->handler,
-> >                                              struct imx214, ctrls);
-> > +       const struct v4l2_mbus_framefmt *format;
-> > +       struct v4l2_subdev_state *state;
-> >         int ret;
-> >
-> > +       state =3D v4l2_subdev_get_locked_active_state(&imx214->sd);
-> > +       format =3D v4l2_subdev_state_get_format(state, 0);
-> > +
-> > +       if (ctrl->id =3D=3D V4L2_CID_VBLANK) {
-> > +               int exposure_max, exposure_def;
-> > +
-> > +               /* Update max exposure while meeting expected vblanking=
- */
-> > +               exposure_max =3D format->height + ctrl->val - IMX214_EX=
-POSURE_OFFSET;
-> > +               exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFA=
-ULT);
-> > +               __v4l2_ctrl_modify_range(imx214->exposure,
-> > +                                        imx214->exposure->minimum,
-> > +                                        exposure_max, imx214->exposure=
-->step,
-> > +                                        exposure_def);
-> > +       }
-> > +
-> >         /*
-> >          * Applying V4L2 control value only happens
-> >          * when power is up for streaming
-> > @@ -691,7 +751,10 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
-> >         case V4L2_CID_EXPOSURE:
-> >                 cci_write(imx214->regmap, IMX214_REG_EXPOSURE, ctrl->va=
-l, &ret);
-> >                 break;
-> > -
-> > +       case V4L2_CID_VBLANK:
-> > +               cci_write(imx214->regmap, IMX214_REG_FRM_LENGTH_LINES,
-> > +                         format->height + ctrl->val, &ret);
-
-My datasheet says this register is "set up in multiples of 2".
-(LINE_LENGTH_PCK for HBLANK is "set in multiples of 8")
-
-I don't have one of these modules, but is that saying only multiples
-of 2 are permitted (in which case the step size for the control needs
-to reflect that), or that setting a value of N is interpreted by the
-hardware as 2N?
-Do all the numbers with PIXEL_RATE work out correctly in the frame rate cal=
-cs?
-
-Reading the spec sheet that 30fps is the max frame rate at full res
-(4096x2304), and the driver was setting a value of 3194 to this
-register, I don't see it being interpreted as 2N. Then again having
-VBLANK at 890 seems pretty high.
-
-> > +               break;
-> >         default:
-> >                 ret =3D -EINVAL;
-> >         }
-> > @@ -714,8 +777,11 @@ static int imx214_ctrls_init(struct imx214 *imx214=
+> The imx214 sensor supports horizontal and vertical flipping. Add
+> appropriate controls to the driver.
+>
+> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> ---
+>  drivers/media/i2c/imx214.c | 73 ++++++++++++++++++++++++++++++++++++++++=
++-----
+>  1 file changed, 65 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> index 733f55257585..4a1433728cd5 100644
+> --- a/drivers/media/i2c/imx214.c
+> +++ b/drivers/media/i2c/imx214.c
+> @@ -30,7 +30,6 @@
+>  #define IMX214_DEFAULT_LINK_FREQ 480000000
+>  #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10=
 )
-> >                 .width =3D 1120,
-> >                 .height =3D 1120,
-> >         };
-> > +       const struct imx214_mode *mode =3D &imx214_modes[0];
-> >         struct v4l2_fwnode_device_properties props;
-> >         struct v4l2_ctrl_handler *ctrl_hdlr;
-> > +       int exposure_max, exposure_def;
-> > +       int hblank;
-> >         int ret;
-> >
-> >         ret =3D v4l2_fwnode_device_parse(imx214->dev, &props);
-> > @@ -723,7 +789,7 @@ static int imx214_ctrls_init(struct imx214 *imx214)
-> >                 return ret;
-> >
-> >         ctrl_hdlr =3D &imx214->ctrls;
-> > -       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 6);
-> > +       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 8);
-> >         if (ret)
-> >                 return ret;
-> >
-> > @@ -739,22 +805,26 @@ static int imx214_ctrls_init(struct imx214 *imx21=
-4)
-> >         if (imx214->link_freq)
-> >                 imx214->link_freq->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> >
-> > -       /*
-> > -        * WARNING!
-> > -        * Values obtained reverse engineering blobs and/or devices.
-> > -        * Ranges and functionality might be wrong.
-> > -        *
-> > -        * Sony, please release some register set documentation for the
-> > -        * device.
-> > -        *
-> > -        * Yours sincerely, Ricardo.
-> > -        */
+>  #define IMX214_FPS 30
+> -#define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
 >
-> I would like to keep this comment until there is a public document availa=
-ble.
-
-I suspect you'll be waiting forever for a document to be officially release=
-d.
-
-I have a datasheet for IMX214, and I believe Kieran and Jacopo do too.
-Which specific values do you wish to be verified?
-
+>  /* V-TIMING internal */
+>  #define IMX214_REG_FRM_LENGTH_LINES    CCI_REG16(0x0340)
+> @@ -186,6 +185,22 @@ static const char * const imx214_supply_name[] =3D {
 >
-> > +       /* Initial vblank/hblank/exposure parameters based on current m=
-ode */
-> > +       imx214->vblank =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_op=
-s,
-> > +                                          V4L2_CID_VBLANK, IMX214_VBLA=
-NK_MIN,
+>  #define IMX214_NUM_SUPPLIES ARRAY_SIZE(imx214_supply_name)
+>
+> +/*
+> + * The supported formats.
+> + * This table MUST contain 4 entries per format, to cover the various fl=
+ip
+> + * combinations in the order
+> + * - no flip
+> + * - h flip
+> + * - v flip
+> + * - h&v flips
+> + */
+> +static const u32 imx214_mbus_formats[] =3D {
+> +       MEDIA_BUS_FMT_SRGGB10_1X10,
+> +       MEDIA_BUS_FMT_SGRBG10_1X10,
+> +       MEDIA_BUS_FMT_SGBRG10_1X10,
+> +       MEDIA_BUS_FMT_SBGGR10_1X10,
+> +};
+> +
+>  struct imx214 {
+>         struct device *dev;
+>         struct clk *xclk;
+> @@ -202,6 +217,8 @@ struct imx214 {
+>         struct v4l2_ctrl *vblank;
+>         struct v4l2_ctrl *hblank;
+>         struct v4l2_ctrl *exposure;
+> +       struct v4l2_ctrl *vflip;
+> +       struct v4l2_ctrl *hflip;
+>         struct v4l2_ctrl *unit_size;
+>
+>         struct regulator_bulk_data      supplies[IMX214_NUM_SUPPLIES];
+> @@ -339,7 +356,6 @@ static const struct cci_reg_sequence mode_table_commo=
+n[] =3D {
+>
+>         /* global setting */
+>         /* basic config */
+> -       { IMX214_REG_ORIENTATION, 0 },
+>         { IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
+>         { IMX214_REG_FAST_STANDBY_CTRL, 1 },
+>         { IMX214_REG_LINE_LENGTH_PCK, IMX214_PPL_DEFAULT },
+> @@ -518,11 +534,29 @@ static int __maybe_unused imx214_power_off(struct d=
+evice *dev)
+>         return 0;
+>  }
+>
+> +/* Get bayer order based on flip setting. */
+> +static u32 imx214_get_format_code(struct imx214 *imx214, u32 code)
+> +{
+> +       unsigned int i;
+> +
+> +       for (i =3D 0; i < ARRAY_SIZE(imx214_mbus_formats); i++)
+> +               if (imx214_mbus_formats[i] =3D=3D code)
+> +                       break;
+> +
+> +       if (i >=3D ARRAY_SIZE(imx214_mbus_formats))
+> +               i =3D 0;
+> +
+> +       i =3D (i & ~3) | (imx214->vflip->val ? 2 : 0) |
+> +           (imx214->hflip->val ? 1 : 0);
+> +
+> +       return imx214_mbus_formats[i];
+> +}
+> +
+>  static void imx214_update_pad_format(struct imx214 *imx214,
+>                                      const struct imx214_mode *mode,
+>                                      struct v4l2_mbus_framefmt *fmt, u32 =
+code)
+>  {
+> -       fmt->code =3D IMX214_MBUS_CODE;
+> +       fmt->code =3D imx214_get_format_code(imx214, code);
+>         fmt->width =3D mode->width;
+>         fmt->height =3D mode->height;
+>         fmt->field =3D V4L2_FIELD_NONE;
+> @@ -538,10 +572,12 @@ static int imx214_enum_mbus_code(struct v4l2_subdev=
+ *sd,
+>                                  struct v4l2_subdev_state *sd_state,
+>                                  struct v4l2_subdev_mbus_code_enum *code)
+>  {
+> -       if (code->index > 0)
+> +       struct imx214 *imx214 =3D to_imx214(sd);
+> +
+> +       if (code->index >=3D (ARRAY_SIZE(imx214_mbus_formats) / 4))
+>                 return -EINVAL;
+>
+> -       code->code =3D IMX214_MBUS_CODE;
+> +       code->code =3D imx214_get_format_code(imx214, imx214_mbus_formats=
+[code->index * 4]);
+>
+>         return 0;
+>  }
+> @@ -550,7 +586,11 @@ static int imx214_enum_frame_size(struct v4l2_subdev=
+ *subdev,
+>                                   struct v4l2_subdev_state *sd_state,
+>                                   struct v4l2_subdev_frame_size_enum *fse=
+)
+>  {
+> -       if (fse->code !=3D IMX214_MBUS_CODE)
+> +       struct imx214 *imx214 =3D to_imx214(subdev);
+> +       u32 code;
+> +
+> +       code =3D imx214_get_format_code(imx214, fse->code);
+> +       if (fse->code !=3D code)
+>                 return -EINVAL;
+>
+>         if (fse->index >=3D ARRAY_SIZE(imx214_modes))
+> @@ -708,6 +748,7 @@ static int imx214_entity_init_state(struct v4l2_subde=
+v *subdev,
+>         struct v4l2_subdev_format fmt =3D { };
+>
+>         fmt.which =3D sd_state ? V4L2_SUBDEV_FORMAT_TRY : V4L2_SUBDEV_FOR=
+MAT_ACTIVE;
+> +       fmt.format.code =3D MEDIA_BUS_FMT_SRGGB10_1X10;
+>         fmt.format.width =3D imx214_modes[0].width;
+>         fmt.format.height =3D imx214_modes[0].height;
+>
+> @@ -750,6 +791,11 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
+>         case V4L2_CID_EXPOSURE:
+>                 cci_write(imx214->regmap, IMX214_REG_EXPOSURE, ctrl->val,=
+ &ret);
+>                 break;
+> +       case V4L2_CID_HFLIP:
+> +       case V4L2_CID_VFLIP:
+> +               cci_write(imx214->regmap, IMX214_REG_ORIENTATION,
+> +                         imx214->hflip->val | imx214->vflip->val << 1, &=
+ret);
+> +               break;
+>         case V4L2_CID_VBLANK:
+>                 cci_write(imx214->regmap, IMX214_REG_FRM_LENGTH_LINES,
+>                           format->height + ctrl->val, &ret);
+> @@ -788,7 +834,7 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+>                 return ret;
+>
+>         ctrl_hdlr =3D &imx214->ctrls;
+> -       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 8);
+> +       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 10);
+>         if (ret)
+>                 return ret;
+>
+> @@ -825,6 +871,16 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+>                                              IMX214_EXPOSURE_STEP,
+>                                              exposure_def);
+>
+> +       imx214->hflip =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
+> +                                         V4L2_CID_HFLIP, 0, 1, 1, 0);
+> +       if (imx214->hflip)
+> +               imx214->hflip->flags |=3D V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+> +
+> +       imx214->vflip =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
+> +                                         V4L2_CID_VFLIP, 0, 1, 1, 0);
+> +       if (imx214->vflip)
+> +               imx214->vflip->flags |=3D V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+> +
 
-IMX214_VBLANK_MIN being 4 feels plausible, but pretty low.
-I read the datasheet to say there are 4 embedded data lines per image.
-Seeing as you have STATS data output enabled as well that makes 5
-lines of non-image data per frame, but you're only adding blanking
-time for 4 lines.
+A minor optimisation.
+Currently a VIDIOC_S_EXT_CTRLS with both HFLIP and VFLIP in the list
+will call your set_ctrl function twice, which gives a redundant update
+to the register.
+Define the two controls as a cluster via v4l2_ctrl_cluster(), and
+you'll only get called once.
 
-As noted above, I think you've also increased the max frame rate
-significantly above that quoted by Sony. Has that been actually
-exercised and confirmed to function correctly?
+See ccs-core.c or imx290.c for an example, and docs at
+https://www.kernel.org/doc/html/latest/driver-api/media/v4l2-controls.html#=
+control-clusters
 
   Dave
 
-> > +                                          IMX214_VTS_MAX - mode->heigh=
-t, 1,
-> > +                                          mode->vts_def - mode->height=
-);
-> > +
-> > +       hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> > +       imx214->hblank =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_op=
-s,
-> > +                                          V4L2_CID_HBLANK, hblank, hbl=
-ank,
-> > +                                          1, hblank);
-> > +       if (imx214->hblank)
-> > +               imx214->hblank->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> > +
-> > +       exposure_max =3D mode->vts_def - IMX214_EXPOSURE_OFFSET;
-> > +       exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFAULT);
-> >         imx214->exposure =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_=
-ops,
-> >                                              V4L2_CID_EXPOSURE,
-> > -                                            IMX214_EXPOSURE_MIN,
-> > -                                            IMX214_EXPOSURE_MAX,
-> > +                                            IMX214_EXPOSURE_MIN, expos=
-ure_max,
-> >                                              IMX214_EXPOSURE_STEP,
-> > -                                            IMX214_EXPOSURE_DEFAULT);
-> > +                                            exposure_def);
-> >
-> >         imx214->unit_size =3D v4l2_ctrl_new_std_compound(ctrl_hdlr,
-> >                                 NULL,
-> >
-> > --
-> > 2.46.0
-> >
-> >
+>         imx214->unit_size =3D v4l2_ctrl_new_std_compound(ctrl_hdlr,
+>                                 NULL,
+>                                 V4L2_CID_UNIT_CELL_SIZE,
+> @@ -1034,6 +1090,7 @@ static int imx214_enum_frame_interval(struct v4l2_s=
+ubdev *subdev,
+>                                 struct v4l2_subdev_state *sd_state,
+>                                 struct v4l2_subdev_frame_interval_enum *f=
+ie)
+>  {
+> +       struct imx214 *imx214 =3D to_imx214(subdev);
+>         const struct imx214_mode *mode;
+>
+>         if (fie->index !=3D 0)
+> @@ -1043,7 +1100,7 @@ static int imx214_enum_frame_interval(struct v4l2_s=
+ubdev *subdev,
+>                                 ARRAY_SIZE(imx214_modes), width, height,
+>                                 fie->width, fie->height);
+>
+> -       fie->code =3D IMX214_MBUS_CODE;
+> +       fie->code =3D imx214_get_format_code(imx214, fie->code);
+>         fie->width =3D mode->width;
+>         fie->height =3D mode->height;
+>         fie->interval.numerator =3D 1;
+>
+> --
+> 2.46.0
+>
+>
 >
