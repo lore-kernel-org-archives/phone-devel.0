@@ -1,107 +1,115 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EA8EED6;
-	Fri, 13 Sep 2024 14:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236D22D052;
+	Fri, 13 Sep 2024 16:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726239129; cv=none; b=mkHnxxFjk93CUWTkFt0vGgtz93cZOCDJgz52vDxcErCsjvU5VdXbnfdsqjng/jWlPx/4JOB6npId4GQ+HnfOS/biAsbZVVXCPKMPAz4q4u0rdo9q8ekeXMKo2WukSDPvok9c7gordTi3QiGC0F1nFmeZ7+eTsGeNyH8RSwVDYis=
+	t=1726246069; cv=none; b=KK06VkkMVp7sfjJdofh7OohlJATP8/mWVFwu+2H98RCdBBRtMy+0yy/46UcpWmZNNSPun/0MBjcElMODVSu/FMjaAFHhtFasY0H/R6GLJRKv10Jt8V9HTM0zhru9zqjzgdizuobrjolkBlSaXKqK8j8lr0YBrt7R2ue8gZ3eiCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726239129; c=relaxed/simple;
-	bh=N/xGBp+Akf2x8w+9/94FGQTZDsqfmxwzez4y1UP+/QE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NCFhJpkvD5KwwpdrsSdffP6atYvisomz0OrGH3DDpTDJvDHrKYGcRedN9+3dNa4Ln+RxC7QCPnN/05cWnlm8BCDZ/6rIP1wT7J3tB3/0mXuhPcRE6KNk3erUmweg3wi33DVnDN4Z95qYeJd29wxduigjxiur2ip9iG3goMPX/co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPmJL5L+; arc=none smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1726246069; c=relaxed/simple;
+	bh=u5+27xyUUOfs9JlsXpfN9e9YD2zu86QlM9sNV0ZIPIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TZLUTRGfrKnRwmI/cYOB616M8n43IYxKGScGgiclrvhg/01ODOksoIfhKC55zaEpqSNOmttrgLXpo8euD2c43+qWpI2lgJWCq6frvJ5PpDAUmaeqbaiCVpz3keikRfphwVmp4nQbTSwF7ll70WU3luhF5TPIf1yh5MjdzIYeTPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxp3WfnE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPmJL5L+"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-49bc13c3a47so431440137.3;
-        Fri, 13 Sep 2024 07:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726239127; x=1726843927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SC7Qi9CJ/UlqMx5HJFGorczxcYiMNzmkMF/PjtSiNQc=;
-        b=IPmJL5L+04gC83EmJWm29rUNtery4irTfv6Xk/zS5n3eowIaa6CsvTTkBV2WkWek8V
-         Y0wXGApYmUf6Q/EWvW7wUdjYaM7VdYsJlGh3dtnTlPbHyJ7JBhaGdYGMIpg7Th/HdOrq
-         LYBrutaaXAz3fIw3veyEemYw0rUpN/ew84Ey0fi6y0L6ECopep0KZAmFCezMwQBUtV6k
-         nXegm6dmXfFZd/VtJIjdoZRrPrhdgGvko46y2QvQI01UIi6aA/piykwN6xXArhyxmg1w
-         b0jMfVloZVpd8EVfgqAC9o3tR/PNrwyCTFZnVpOkuGnp3CE9+pm7wdgZsFCog2M4TUal
-         uu3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726239127; x=1726843927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SC7Qi9CJ/UlqMx5HJFGorczxcYiMNzmkMF/PjtSiNQc=;
-        b=H6c11HRDRwFOV4HLKNU9jAUKt+dua81y0GOyk5blz6vG+l0qg+hlFTMFGx3i7PCFNW
-         EqRaEZy8ZAItkRsVcVLUTKhScAslqkxEfRMzA48GWtRfq5R7Q/v+ynsj6herKiKXzljm
-         KuvtlIf1YSQ57LiXLXyhNEHXXyJsCmjfyIlzutu/U2CU5BmB/6pONchFN38LxedZTsrG
-         eqaEmCeqExX+V8GBrXnj6RKGaaErnduFzwNBhTNwtBmiCyl3RKeb1NnPFd4ZUs42ia9Q
-         KKU6Ghmn/tO5WsCKswg75u1SqNYzz7w7t9AKQaep7jQtByM+qoj2GnC+uNeiMJLua/7k
-         a1gQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPokIGQIq/NAJsD1Gpkp/6TscdctQ9pnU48LLOFTVQ+9ZDcIhKtC5kD3wYu94zj/TaJgtr1pbHBzsu@vger.kernel.org, AJvYcCUYMiAz5tZBawjr5X4ZK8N9AMmo47YPfyUGCcU8D1vL0P0w8cfX2gULw8U8zxwATGnFWtvX2jAEDFHyC0RP@vger.kernel.org, AJvYcCUomohpmDVKMEesmL81cfkFZZ2vW5wPQsYH6LkVOVPo6eda88qhKJoer5Bi+RBkpDxiTIzcGmGd875e@vger.kernel.org, AJvYcCUqG/6J9y2M/mr6bZeCtHGcyjIE1fL5ZnhD0pekNAQA0Off0F5D7ODSjNbKctV9Fyg7Ok4PjBWcy0Zr@vger.kernel.org, AJvYcCUuV1TE0NfbDttYSLJMYiRssi0fzXzrGLs/5vKClypYaF2X1Krq4noR0RknvloiML04QgvOvDpW2kKiL9i+eBYaSA0=@vger.kernel.org, AJvYcCVjHeGDvMz5cACO+5y2pcLPE2fP02QIIzbJJRZ9Fxz/Yy3QEGgBhazHYwa1ZsTKIy1grpFxNjMntse5qGU=@vger.kernel.org, AJvYcCVjo5ulMq6V0AumAXef8nCmLmZ0ETTOQmOtEBZZnIYDJuEi4Lz4azHYIp2Dm7eFKBqh8WVo2nRQFFhdMg4=@vger.kernel.org, AJvYcCVpE9w8kQ//h/aJ3E5xsEUzmzYfWbMeto/At0C8gj7+2VWt18bnV7Lw4eidhTLUZ+oKBB8VoWi2nE0=@vger.kernel.org, AJvYcCXnxOGyyjk1ffPSZ0jU9lbdoESo5JGGp/eaIyjz4AUYqrdOJHVH+RAJAL9BF7ZyRT+F3jdLF4YnvQZl7F4OIg==@vger.kernel.org, AJvYcCXtHPOAWmKj0dkrupoB5srGsNVHjupE0Qr1+FSjQtSnJMcRejmxnPrXCJuQz8bvBvRk1vLfg+4ITHOOCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8F6z+yyfgnP8PtHBXPYFCB/v8g60xniBP7lnisolRABExAdF4
-	+/aVgMhtFL2fqMPhAJUxQ9YfjZAF8SSsjomyd0nDu8fK8shyrZPErDcMcQ0Qadd3YmDOt4XdQGd
-	AGeLHvcOtGa9puniCDDyjZ1uwYD0=
-X-Google-Smtp-Source: AGHT+IFzt77B+UQvTyXWnWYICtP+/AmJJ5rq6JqNXDt5n+hgGmGESoN8kaR8YY1ZG0wjobVeQOsHMwrHDFFr4Mg31HU=
-X-Received: by 2002:a05:6102:e14:b0:49c:1bc:1eff with SMTP id
- ada2fe7eead31-49d4f6fafc6mr2074878137.28.1726239127329; Fri, 13 Sep 2024
- 07:52:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxp3WfnE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331EBC4CEC0;
+	Fri, 13 Sep 2024 16:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726246068;
+	bh=u5+27xyUUOfs9JlsXpfN9e9YD2zu86QlM9sNV0ZIPIs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dxp3WfnEec3z+Qchn+RvKHnza6/Hd4uDbbnNLerZze1hvLkeiDERjv7JNPfYXMTxB
+	 +yG0urQnyu1DGsT6N96ZYFogXCsf8vCxMHJz2AmbL7uWO9AYnat8RjV9ZRrxpyd/jB
+	 I7UdijVMgYL6yyQ9rdOqmqQ9Wr2qvbwlRAGZNw27Z1WaL/Lm3Lus+q6bJ2dBqTlFMQ
+	 ith8yad7QZFl49dI9nKDsriqsuhifcF1gqEjnNPWNFpdkHI7C6XOzA7ijcBblDRW9s
+	 pTDf4jG85eiowyGp7EFgovmeIki1pSyssjiMGhONgjuRyePS8bf7DPKQZzU4eYsv/q
+	 +WL06gHoXA3ew==
+Date: Fri, 13 Sep 2024 17:47:40 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Dzmitry Sankouski <dsankouski@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v3 04/23] dt-bindings: mfd: add maxim,max77705
+Message-ID: <20240913-platter-reset-2ec8d7c7295a@spud>
+References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
+ <20240618-starqltechn_integration_upstream-v3-4-e3f6662017ac@gmail.com>
+ <13a650f4-7ca7-4c95-b536-9814a22f00ff@kernel.org>
+ <CABTCjFCOTd5V5WyRbD1OCS9Hatk0mOCtNy5WWfp0KkUBgqXs+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
- <20240618-starqltechn_integration_upstream-v3-4-e3f6662017ac@gmail.com> <13a650f4-7ca7-4c95-b536-9814a22f00ff@kernel.org>
-In-Reply-To: <13a650f4-7ca7-4c95-b536-9814a22f00ff@kernel.org>
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Fri, 13 Sep 2024 17:51:56 +0300
-Message-ID: <CABTCjFCOTd5V5WyRbD1OCS9Hatk0mOCtNy5WWfp0KkUBgqXs+A@mail.gmail.com>
-Subject: Re: [PATCH v3 04/23] dt-bindings: mfd: add maxim,max77705
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Sebastian Reichel <sre@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	phone-devel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ye/AKZ4nM3H9W2aP"
+Content-Disposition: inline
+In-Reply-To: <CABTCjFCOTd5V5WyRbD1OCS9Hatk0mOCtNy5WWfp0KkUBgqXs+A@mail.gmail.com>
+
+
+--ye/AKZ4nM3H9W2aP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-=D1=87=D1=82, 20 =D0=B8=D1=8E=D0=BD. 2024=E2=80=AF=D0=B3. =D0=B2 18:46, Krz=
-ysztof Kozlowski <krzk@kernel.org>:
->
-> On 18/06/2024 15:59, Dzmitry Sankouski wrote:
-> > maxim,max77705 is MAX77705 pmic binding part
+On Fri, Sep 13, 2024 at 05:51:56PM +0300, Dzmitry Sankouski wrote:
+> =D1=87=D1=82, 20 =D0=B8=D1=8E=D0=BD. 2024=E2=80=AF=D0=B3. =D0=B2 18:46, K=
+rzysztof Kozlowski <krzk@kernel.org>:
 > >
-> > Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-> > ---
-> >  .../devicetree/bindings/mfd/maxim,max77705.yaml    | 112 +++++++++++++=
-++++++++
->
-> Your patch order is totally messed. Not tested by automation. Only
-> limited review follows.
->
-Hmm, not sure what was wrong. I sent version 4 to myself with `b4 send
---reflect`, the order looks good.
+> > On 18/06/2024 15:59, Dzmitry Sankouski wrote:
+> > > maxim,max77705 is MAX77705 pmic binding part
+> > >
+> > > Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+> > > ---
+> > >  .../devicetree/bindings/mfd/maxim,max77705.yaml    | 112 +++++++++++=
+++++++++++
+> >
+> > Your patch order is totally messed. Not tested by automation. Only
+> > limited review follows.
+> >
+> Hmm, not sure what was wrong. I sent version 4 to myself with `b4 send
+> --reflect`, the order looks good.
 
---=20
+I suspect that the order that he is referring to is not what you think,
+and that the patches do appear in the order to him that they did to you,
+but that order you committed changes is likely not bisectable due
+dependencies coming after their users.
 
-Best regards,
-Dzmitry
+--ye/AKZ4nM3H9W2aP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuRsrAAKCRB4tDGHoIJi
+0sARAP9HtB47ae3VUBdcqtRSXtfh9F/QtUAtZQYTV93JLHGAvwEAgE6iBhZNSP8y
+/bl7XakNdZvek3z1WJ6OStgIn8KeBQ4=
+=yLFY
+-----END PGP SIGNATURE-----
+
+--ye/AKZ4nM3H9W2aP--
