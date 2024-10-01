@@ -1,284 +1,372 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C5A189F35;
-	Mon, 30 Sep 2024 10:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A6D1C8FB2;
+	Tue,  1 Oct 2024 14:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727691194; cv=none; b=bMFBOnWcMZ4K9T3mUPa8nW3F+TqJrcmj6oPkEYln9+UxhyyC8h3cLRq6ZLo1HpN2ynPgo3BxLWhnL88NlRMyP6xXnhCW3WQraG2XiMeS1v9Ww6sXtyAZL+PaKuSVTXaojIhp2KX1NlTLFDJajD+Hnrk1DMDgS0XiJKWLGwQ7lS0=
+	t=1727793568; cv=none; b=aTbPyQV3NvqoPkAxc3JCuWyLj/dh2ZpL8L3VugMP3px2XxDeTJPuq5bN3IS/3O+GYyPXYXJs9IWty79eveFsyL3VDkMI9Yvj1b19MK+WKExehj/ab7Wv8IRTfyFTv2J7AdQi8imsZzxVjZBaP63chZE2h5BM7pDw16AySmRhSvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727691194; c=relaxed/simple;
-	bh=PlMn12m/YDLJX6CGIA4X7g5ySMWRXwywQnMxGBadu6A=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jyWvZX+ldyW0WUWngQIXPkFqFbyI26aqhbZ9cLeWwjGVeLv9dsMtGSvqpul29QtzgfABW3U23btZX71b6S6NL2IENmOLLkfWXfVPCVs55+VQJs4fOQNdJNY3t9a6MsQEwfWsnZxRnqzC1NKhZRc87IhfQVOFJXm6Hir38P7fVtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1+Yilfn; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727793568; c=relaxed/simple;
+	bh=j7cEcKzext16oP7OAxC9breMWXfoaROVojla+gdYgKc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JBKUuCgN8KOWUsgDDg1e7C2dGV+nBpIP3N7ylmmNe0aKUXf6VMQ2Tooef/nyGs5gfZTHcaJAVin8EUuvUIIsTgcWMdbbr1IDZAFmzS/Gz3q9kt6MsxmxgWluIaVdgd/OFzgNKMevDn96TiqL+JSXTpPQWcfRFCEYHlZ4645d3Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rns/Cat+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1+Yilfn"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8a7b1c2f2bso697653166b.0;
-        Mon, 30 Sep 2024 03:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727691191; x=1728295991; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=R6pcZYDGpExPDliSOuce9JHJM/oFY8zuqaXv7LJ0SI8=;
-        b=R1+Yilfn/l0imQzAjL84mbEOmM8afdYk8gTWMwaQ8Li8GFisXFyVua5be4UuDz9Ghf
-         T1jqHhEAUUtRKGUbhhk/z4BoKeBBjj7EjJWDrlBleS4wBt2aejWZy16F+oWBTrdS9T+x
-         WlaX887sN9cLOEPa2fEY+AQs6YD1YV94nmcj7ihQ7YkvceUwFCZQP5FFxyVd8ABDPH3C
-         xZRF/Wz/yCkoSPi0wpxQJo5gS11SOvrVnn2pyADG0RnAC1GAfcJcXfTi9iS9OCuHVbp1
-         QWb+dTEZmdhB2y90ibENO8VZ293ni5Y0BN5O5J4KTDhDPC/D93Ku2cUDNWpx2O2i+UjP
-         sLjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727691191; x=1728295991;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R6pcZYDGpExPDliSOuce9JHJM/oFY8zuqaXv7LJ0SI8=;
-        b=ro5naOV+v4gvU5E9b8S4Vw8PKrm36rqslKvUIP5Wlnna9g1EbAiHiuUnncuYWHAyhJ
-         onjfTLJIyDgIGE69fmWS1q6WF9zcW/GUnfJYCt3soCZO5Ils1LVvA/vpQoHzwe+JwA8j
-         EpPMAR5IpLtWpNG0/9bQCleEzM5p/u65mJwmm7Hf2kkV5kYUIYLqbkMh42F70FRmSKez
-         7j6AgOQuKhqaVzkJKMVS0Cc0gJLmjt8jkMjhdIZpBfZ5ZzHdWteYbWlFzykxfXZPeX1y
-         dJnOLLTmJEGVbZnBEIYObVAEIS24DBwox3I1TQc56Sic6uHOWiHzdTY+8ZZAdXZKzpQo
-         mKcA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2HG7dsO/iuN2+lKWTn/tK5bX8BIkxWd1YDzX0IV9eLsKmN+oqj4Btt5BzcSTV54MWPhqEGW8GDBOa1yU=@vger.kernel.org, AJvYcCVVMNcCI1B7agyDM0CvUzXIpwuVT2ZXj4scs/+xUmyHv2RRIbmQAeHCz/V/MJaGn5jRzqg+x9RN6Yc=@vger.kernel.org, AJvYcCW+HBzXFtVGL8gkEvaD0t1dzo1jxqGbycIlfv20yZAi7nzjs91SNaX7nIXd5K++nHp4gFvgqvoyXpl+lwlkeg==@vger.kernel.org, AJvYcCW4NQNCbUB3j6YvYE9+TBqhOjjwr+3ma8FeMRaspjkl4r0ikltuhW+rBf/ItIbeXbYhKEKI0OGni0Ocsh3Y@vger.kernel.org, AJvYcCXwjQb/ZfkbJ4Y+TfHrbHUErVAPVyzJTzsdI31V4DTPnmMa1cJ3ayRp7qexrriBcIeRZiU7K8+9tZF2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6PzqGPf2NQLY6KKustX5N1Jb4t6dAzqdLx8cCNdujYIwEA8u4
-	PVKbHHlEiSwbTmA/pkB/qIAjqBB4kCnqnhK844vuSu+KAkunhvcR
-X-Google-Smtp-Source: AGHT+IHiDwmAlbvA79BbqZfqJufqIEN+i8Zje5kiLK8A6GTms4OXnpuYCdwY1SEiJAsZMYFJeszZ0g==
-X-Received: by 2002:a17:907:a41:b0:a80:f358:5d55 with SMTP id a640c23a62f3a-a93c492a705mr1432068366b.33.1727691190323;
-        Mon, 30 Sep 2024 03:13:10 -0700 (PDT)
-Received: from [10.34.18.39] ([95.183.227.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c277723esm510060566b.7.2024.09.30.03.13.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 03:13:09 -0700 (PDT)
-Message-ID: <692e70b4-d4c1-4b14-94f9-e612a23c43e7@gmail.com>
-Date: Mon, 30 Sep 2024 13:13:04 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rns/Cat+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D5BACC4CEC7;
+	Tue,  1 Oct 2024 14:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727793567;
+	bh=j7cEcKzext16oP7OAxC9breMWXfoaROVojla+gdYgKc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Rns/Cat+AEOQeI7jP+6zWAml/O1enmAsX7qaQrxXji7zas0R8q7Hhrs/pGvR7v1yf
+	 uApP6dMeVZcOgDWUazNZCKswuk6WpEiKN5CPHUrOpQg0nbGoO0LJg+68vSKg0/cPjT
+	 dwYA6oB8d0OJ4nhdXmFRFAHCeA74tpIdNQMj3Ku4saVSj1kcAPLS8uKAjKo4BBex2J
+	 F+fca2XkzWmz+WlLh6mnPTXuWMWdUFS5xdcLLPdYXikXRQYAaw5qV91Y8h2kzyd2oc
+	 Qmapj1u/oqhPPAIRuszs98lKW4dceyLiJ83TqFzMkSUkub97bhRGZko9kUbf3SNJ6X
+	 DBji+piSiWtBA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C453ACEACD0;
+	Tue,  1 Oct 2024 14:39:27 +0000 (UTC)
+From: =?utf-8?q?Duje_Mihanovi=C4=87_via_B4_Relay?= <devnull+duje.mihanovic.skole.hr@kernel.org>
+Date: Tue, 01 Oct 2024 16:37:31 +0200
+Subject: [PATCH v13 01/12] clk: mmp: Switch to use struct u32_fract instead
+ of custom one
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Yassine Oudjana <yassine.oudjana@gmail.com>
-Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for
- Qualcomm SMBCHG
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Sebastian Reichel <sre@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Yassine Oudjana <y.oudjana@protonmail.com>,
- Alejandro Tafalla <atafalla@dnyon.com>,
- Konrad Dybcio <konrad.dybcio@somainline.org>, linux-pm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220808073459.396278-1-y.oudjana@protonmail.com>
- <20220808073459.396278-2-y.oudjana@protonmail.com>
- <9412f6ff-1fd7-31b5-56a7-12bda174f7f6@linaro.org>
-Content-Language: en-US
-In-Reply-To: <9412f6ff-1fd7-31b5-56a7-12bda174f7f6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241001-pxa1908-lkml-v13-1-6b9a7f64f9ae@skole.hr>
+References: <20241001-pxa1908-lkml-v13-0-6b9a7f64f9ae@skole.hr>
+In-Reply-To: <20241001-pxa1908-lkml-v13-0-6b9a7f64f9ae@skole.hr>
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+ Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
+ Lubomir Rintel <lkundrak@v3.sk>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10838;
+ i=duje.mihanovic@skole.hr; s=20240706; h=from:subject:message-id;
+ bh=aUPxtF04qTKpLPEJgHiKaCixpSaCfAFycFxZA5nFzBw=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDGl/OCeV5Ly+/fDZncaCu7/kA27Zek551tboHX3A7cR7a
+ TGugoqOjlIWBjEuBlkxRZbc/47XeD+LbN2evcwAZg4rE8gQBi5OAZiIpxojw1k+gV9P2VYlme4/
+ bHAi8/u7J+vVZttZxgkd/MMj5jDd9SbDP8PIyK9/tnHt0rt3u61jjt+yn1v/zk/XOCznmbVOfZV
+ zFhMA
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
+X-Endpoint-Received: by B4 Relay for duje.mihanovic@skole.hr/20240706 with
+ auth_id=191
+X-Original-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Reply-To: duje.mihanovic@skole.hr
 
-Coming back to this patch series after putting it on hold for too long.
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-On 30/11/2022 7:24 pm, Krzysztof Kozlowski wrote:
-> On 08/08/2022 09:34, Yassine Oudjana wrote:
->> From: Yassine Oudjana <y.oudjana@protonmail.com>
->>
-> 
-> 
->> +      See Documentation/devicetree/bindings/power/supply/battery.yaml
->> +
->> +  interrupts:
->> +    items:
->> +      - description: Charger error
->> +      - description: Charger inhibited
->> +      - description: Charger precharge safety timer timeout
->> +      - description: Charger charge safety timer timeout
->> +      - description: Charger pre to fast charging switch threshold reached
->> +      - description: Charger recharge threshold reached
->> +      - description: Charger taper threshold reached
-> 
-> After discussing with Dmitry, it's current design of the PMIC (parent
-> device) so it's fine. We would need to make bigger refactoring of
-> drivers and bindings to change it to match other typical MFD PMICs. In
-> current state it's the only way to express device interrupts.
-> 
-> Two more comments below.
-> 
->> +      - description: Charger charge termination threshold reached
->> +      - description: Battery hot
->> +      - description: Battery warm
->> +      - description: Battery cold
->> +      - description: Battery cool
->> +      - description: Battery overvoltage
->> +      - description: Battery low
->> +      - description: Battery missing
->> +      - description: Battery thermistor missing # unconfirmed
->> +      - description: USB input undervolt
->> +      - description: USB input overvolt
->> +      - description: USB input source detected
->> +      - description: OTG regulator failure
->> +      - description: OTG regulator overcurrent
->> +      - description: Automatic input current limiting done
->> +      - description: USB ID pin changed
->> +      - description: DC input undervolt
->> +      - description: DC input overvolt
->> +      - description: Power OK
->> +      - description: Temperature shutdown
->> +      - description: Watchdog timeout
->> +      - description: Flash failure
->> +      - description: OTST2 # unknown
->> +      - description: OTST3 # unknown
->> +
->> +  interrupt-names:
->> +    items:
->> +      - const: chg-error
->> +      - const: chg-inhibit
->> +      - const: chg-prechg-sft
->> +      - const: chg-complete-chg-sft
->> +      - const: chg-p2f-thr
->> +      - const: chg-rechg-thr
->> +      - const: chg-taper-thr
->> +      - const: chg-tcc-thr
->> +      - const: batt-hot
->> +      - const: batt-warm
->> +      - const: batt-cold
->> +      - const: batt-cool
->> +      - const: batt-ov
->> +      - const: batt-low
->> +      - const: batt-missing
->> +      - const: batt-term-missing
->> +      - const: usbin-uv
->> +      - const: usbin-ov
->> +      - const: usbin-src-det
->> +      - const: otg-fail
->> +      - const: otg-oc
->> +      - const: aicl-done
->> +      - const: usbid-change
->> +      - const: dcin-uv
->> +      - const: dcin-ov
->> +      - const: power-ok
->> +      - const: temp-shutdown
->> +      - const: wdog-timeout
->> +      - const: flash-fail
->> +      - const: otst2
->> +      - const: otst3
->> +
->> +  otg-vbus:
->> +    type: object
-> 
-> I think I did not comment about this one - this looks like regulator.yaml.
+The struct mmp_clk_factor_tbl repeats the generic struct u32_fract.
+Kill the custom one and use the generic one instead.
 
-Correct. Will add reference.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+---
+ drivers/clk/mmp/clk-frac.c       | 57 ++++++++++++++++++++--------------------
+ drivers/clk/mmp/clk-of-mmp2.c    | 26 +++++++++---------
+ drivers/clk/mmp/clk-of-pxa168.c  |  4 +--
+ drivers/clk/mmp/clk-of-pxa1928.c |  6 ++---
+ drivers/clk/mmp/clk-of-pxa910.c  |  4 +--
+ drivers/clk/mmp/clk.h            | 10 +++----
+ 6 files changed, 51 insertions(+), 56 deletions(-)
 
-> 
->> +
->> +    description:
->> +      OTG regulator subnode.
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - monitored-battery
->> +  - interrupts
->> +  - interrupt-names
->> +  - otg-vbus
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +
->> +    battery: battery {
->> +        compatible = "simple-battery";
->> +
->> +        charge-full-design-microamp-hours = <4070000>;
->> +        charge-term-current-microamp = <100000>;
->> +        voltage-min-design-microvolt = <3400000>;
->> +        voltage-max-design-microvolt = <4400000>;
->> +    };
->> +
->> +    pmic {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        charger@1000 {
->> +            compatible = "qcom,pmi8996-smbchg";
->> +            reg = <0x1000>;
->> +
->> +            interrupts = <0x2 0x10 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x1 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x2 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x3 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x4 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x5 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x10 0x6 IRQ_TYPE_EDGE_RISING>,
->> +                         <0x2 0x10 0x7 IRQ_TYPE_EDGE_RISING>,
->> +                         <0x2 0x12 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x1 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x2 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x3 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x4 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x5 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x6 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x12 0x7 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x13 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x13 0x1 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x13 0x2 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x13 0x3 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x13 0x4 IRQ_TYPE_EDGE_RISING>,
->> +                         <0x2 0x13 0x5 IRQ_TYPE_EDGE_RISING>,
->> +                         <0x2 0x13 0x6 IRQ_TYPE_EDGE_FALLING>,
->> +                         <0x2 0x14 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x14 0x1 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x1 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x2 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x3 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x4 IRQ_TYPE_EDGE_BOTH>,
->> +                         <0x2 0x16 0x5 IRQ_TYPE_EDGE_BOTH>;
->> +            interrupt-names = "chg-error",
->> +                              "chg-inhibit",
->> +                              "chg-prechg-sft",
->> +                              "chg-complete-chg-sft",
->> +                              "chg-p2f-thr",
->> +                              "chg-rechg-thr",
->> +                              "chg-taper-thr",
->> +                              "chg-tcc-thr",
->> +                              "batt-hot",
->> +                              "batt-warm",
->> +                              "batt-cold",
->> +                              "batt-cool",
->> +                              "batt-ov",
->> +                              "batt-low",
->> +                              "batt-missing",
->> +                              "batt-term-missing",
->> +                              "usbin-uv",
->> +                              "usbin-ov",
->> +                              "usbin-src-det",
->> +                              "otg-fail",
->> +                              "otg-oc",
->> +                              "aicl-done",
->> +                              "usbid-change",
->> +                              "dcin-uv",
->> +                              "dcin-ov",
->> +                              "power-ok",
->> +                              "temp-shutdown",
->> +                              "wdog-timeout",
->> +                              "flash-fail",
->> +                              "otst2",
->> +                              "otst3";
->> +
->> +            monitored-battery = <&battery>;
->> +
->> +            otg-vbus { };
-> 
-> Why empty?
+diff --git a/drivers/clk/mmp/clk-frac.c b/drivers/clk/mmp/clk-frac.c
+index 1b90867b60c4b5b2582cc92b0050221330a3c003..6556f6ada2e830178b9525462f684bad683db454 100644
+--- a/drivers/clk/mmp/clk-frac.c
++++ b/drivers/clk/mmp/clk-frac.c
+@@ -26,14 +26,15 @@ static long clk_factor_round_rate(struct clk_hw *hw, unsigned long drate,
+ {
+ 	struct mmp_clk_factor *factor = to_clk_factor(hw);
+ 	u64 rate = 0, prev_rate;
++	struct u32_fract *d;
+ 	int i;
+ 
+ 	for (i = 0; i < factor->ftbl_cnt; i++) {
+-		prev_rate = rate;
+-		rate = *prate;
+-		rate *= factor->ftbl[i].den;
+-		do_div(rate, factor->ftbl[i].num * factor->masks->factor);
++		d = &factor->ftbl[i];
+ 
++		prev_rate = rate;
++		rate = (u64)(*prate) * d->denominator;
++		do_div(rate, d->numerator * factor->masks->factor);
+ 		if (rate > drate)
+ 			break;
+ 	}
+@@ -52,23 +53,22 @@ static unsigned long clk_factor_recalc_rate(struct clk_hw *hw,
+ {
+ 	struct mmp_clk_factor *factor = to_clk_factor(hw);
+ 	struct mmp_clk_factor_masks *masks = factor->masks;
+-	unsigned int val, num, den;
++	struct u32_fract d;
++	unsigned int val;
+ 	u64 rate;
+ 
+ 	val = readl_relaxed(factor->base);
+ 
+ 	/* calculate numerator */
+-	num = (val >> masks->num_shift) & masks->num_mask;
++	d.numerator = (val >> masks->num_shift) & masks->num_mask;
+ 
+ 	/* calculate denominator */
+-	den = (val >> masks->den_shift) & masks->den_mask;
+-
+-	if (!den)
++	d.denominator = (val >> masks->den_shift) & masks->den_mask;
++	if (!d.denominator)
+ 		return 0;
+ 
+-	rate = parent_rate;
+-	rate *= den;
+-	do_div(rate, num * factor->masks->factor);
++	rate = (u64)parent_rate * d.denominator;
++	do_div(rate, d.numerator * factor->masks->factor);
+ 
+ 	return rate;
+ }
+@@ -82,18 +82,18 @@ static int clk_factor_set_rate(struct clk_hw *hw, unsigned long drate,
+ 	int i;
+ 	unsigned long val;
+ 	unsigned long flags = 0;
++	struct u32_fract *d;
+ 	u64 rate = 0;
+ 
+ 	for (i = 0; i < factor->ftbl_cnt; i++) {
+-		rate = prate;
+-		rate *= factor->ftbl[i].den;
+-		do_div(rate, factor->ftbl[i].num * factor->masks->factor);
++		d = &factor->ftbl[i];
+ 
++		rate = (u64)prate * d->denominator;
++		do_div(rate, d->numerator * factor->masks->factor);
+ 		if (rate > drate)
+ 			break;
+ 	}
+-	if (i > 0)
+-		i--;
++	d = i ? &factor->ftbl[i - 1] : &factor->ftbl[0];
+ 
+ 	if (factor->lock)
+ 		spin_lock_irqsave(factor->lock, flags);
+@@ -101,10 +101,10 @@ static int clk_factor_set_rate(struct clk_hw *hw, unsigned long drate,
+ 	val = readl_relaxed(factor->base);
+ 
+ 	val &= ~(masks->num_mask << masks->num_shift);
+-	val |= (factor->ftbl[i].num & masks->num_mask) << masks->num_shift;
++	val |= (d->numerator & masks->num_mask) << masks->num_shift;
+ 
+ 	val &= ~(masks->den_mask << masks->den_shift);
+-	val |= (factor->ftbl[i].den & masks->den_mask) << masks->den_shift;
++	val |= (d->denominator & masks->den_mask) << masks->den_shift;
+ 
+ 	writel_relaxed(val, factor->base);
+ 
+@@ -118,7 +118,8 @@ static int clk_factor_init(struct clk_hw *hw)
+ {
+ 	struct mmp_clk_factor *factor = to_clk_factor(hw);
+ 	struct mmp_clk_factor_masks *masks = factor->masks;
+-	u32 val, num, den;
++	struct u32_fract d;
++	u32 val;
+ 	int i;
+ 	unsigned long flags = 0;
+ 
+@@ -128,23 +129,22 @@ static int clk_factor_init(struct clk_hw *hw)
+ 	val = readl(factor->base);
+ 
+ 	/* calculate numerator */
+-	num = (val >> masks->num_shift) & masks->num_mask;
++	d.numerator = (val >> masks->num_shift) & masks->num_mask;
+ 
+ 	/* calculate denominator */
+-	den = (val >> masks->den_shift) & masks->den_mask;
++	d.denominator = (val >> masks->den_shift) & masks->den_mask;
+ 
+ 	for (i = 0; i < factor->ftbl_cnt; i++)
+-		if (den == factor->ftbl[i].den && num == factor->ftbl[i].num)
++		if (d.denominator == factor->ftbl[i].denominator &&
++		    d.numerator == factor->ftbl[i].numerator)
+ 			break;
+ 
+ 	if (i >= factor->ftbl_cnt) {
+ 		val &= ~(masks->num_mask << masks->num_shift);
+-		val |= (factor->ftbl[0].num & masks->num_mask) <<
+-			masks->num_shift;
++		val |= (factor->ftbl[0].numerator & masks->num_mask) << masks->num_shift;
+ 
+ 		val &= ~(masks->den_mask << masks->den_shift);
+-		val |= (factor->ftbl[0].den & masks->den_mask) <<
+-			masks->den_shift;
++		val |= (factor->ftbl[0].denominator & masks->den_mask) << masks->den_shift;
+ 	}
+ 
+ 	if (!(val & masks->enable_mask) || i >= factor->ftbl_cnt) {
+@@ -168,8 +168,7 @@ static const struct clk_ops clk_factor_ops = {
+ struct clk *mmp_clk_register_factor(const char *name, const char *parent_name,
+ 		unsigned long flags, void __iomem *base,
+ 		struct mmp_clk_factor_masks *masks,
+-		struct mmp_clk_factor_tbl *ftbl,
+-		unsigned int ftbl_cnt, spinlock_t *lock)
++		struct u32_fract *ftbl, unsigned int ftbl_cnt, spinlock_t *lock)
+ {
+ 	struct mmp_clk_factor *factor;
+ 	struct clk_init_data init;
+diff --git a/drivers/clk/mmp/clk-of-mmp2.c b/drivers/clk/mmp/clk-of-mmp2.c
+index eaad36ee323d14ff3d0f61c917d57d1501359db1..a4f15cee630ee65bcedba3975cf337ff765d3b2d 100644
+--- a/drivers/clk/mmp/clk-of-mmp2.c
++++ b/drivers/clk/mmp/clk-of-mmp2.c
+@@ -143,9 +143,9 @@ static struct mmp_clk_factor_masks uart_factor_masks = {
+ 	.den_shift = 0,
+ };
+ 
+-static struct mmp_clk_factor_tbl uart_factor_tbl[] = {
+-	{.num = 8125, .den = 1536},	/*14.745MHZ */
+-	{.num = 3521, .den = 689},	/*19.23MHZ */
++static struct u32_fract uart_factor_tbl[] = {
++	{ .numerator = 8125, .denominator = 1536 },	/* 14.745MHZ */
++	{ .numerator = 3521, .denominator =  689 },	/* 19.23MHZ */
+ };
+ 
+ static struct mmp_clk_factor_masks i2s_factor_masks = {
+@@ -157,16 +157,16 @@ static struct mmp_clk_factor_masks i2s_factor_masks = {
+ 	.enable_mask = 0xd0000000,
+ };
+ 
+-static struct mmp_clk_factor_tbl i2s_factor_tbl[] = {
+-	{.num = 24868, .den =  511},	/*  2.0480 MHz */
+-	{.num = 28003, .den =  793},	/*  2.8224 MHz */
+-	{.num = 24941, .den = 1025},	/*  4.0960 MHz */
+-	{.num = 28003, .den = 1586},	/*  5.6448 MHz */
+-	{.num = 31158, .den = 2561},	/*  8.1920 MHz */
+-	{.num = 16288, .den = 1845},	/* 11.2896 MHz */
+-	{.num = 20772, .den = 2561},	/* 12.2880 MHz */
+-	{.num =  8144, .den = 1845},	/* 22.5792 MHz */
+-	{.num = 10386, .den = 2561},	/* 24.5760 MHz */
++static struct u32_fract i2s_factor_tbl[] = {
++	{ .numerator = 24868, .denominator =  511 },	/*  2.0480 MHz */
++	{ .numerator = 28003, .denominator =  793 },	/*  2.8224 MHz */
++	{ .numerator = 24941, .denominator = 1025 },	/*  4.0960 MHz */
++	{ .numerator = 28003, .denominator = 1586 },	/*  5.6448 MHz */
++	{ .numerator = 31158, .denominator = 2561 },	/*  8.1920 MHz */
++	{ .numerator = 16288, .denominator = 1845 },	/* 11.2896 MHz */
++	{ .numerator = 20772, .denominator = 2561 },	/* 12.2880 MHz */
++	{ .numerator =  8144, .denominator = 1845 },	/* 22.5792 MHz */
++	{ .numerator = 10386, .denominator = 2561 },	/* 24.5760 MHz */
+ };
+ 
+ static DEFINE_SPINLOCK(acgr_lock);
+diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
+index c5a7ba1deaa3a1d42cd85cf462b7eed79c5d9ba1..5f250427e60d25b24208d02322a441d86faf346b 100644
+--- a/drivers/clk/mmp/clk-of-pxa168.c
++++ b/drivers/clk/mmp/clk-of-pxa168.c
+@@ -106,8 +106,8 @@ static struct mmp_clk_factor_masks uart_factor_masks = {
+ 	.den_shift = 0,
+ };
+ 
+-static struct mmp_clk_factor_tbl uart_factor_tbl[] = {
+-	{.num = 8125, .den = 1536},	/*14.745MHZ */
++static struct u32_fract uart_factor_tbl[] = {
++	{ .numerator = 8125, .denominator = 1536 },	/* 14.745MHZ */
+ };
+ 
+ static void pxa168_pll_init(struct pxa168_clk_unit *pxa_unit)
+diff --git a/drivers/clk/mmp/clk-of-pxa1928.c b/drivers/clk/mmp/clk-of-pxa1928.c
+index 9def4b5f10e910b18065647dcde2a44c43b8185d..ebb6e278eda33c551abce893051bf52e97f898c4 100644
+--- a/drivers/clk/mmp/clk-of-pxa1928.c
++++ b/drivers/clk/mmp/clk-of-pxa1928.c
+@@ -61,9 +61,9 @@ static struct mmp_clk_factor_masks uart_factor_masks = {
+ 	.den_shift = 0,
+ };
+ 
+-static struct mmp_clk_factor_tbl uart_factor_tbl[] = {
+-	{.num = 832, .den = 234},	/*58.5MHZ */
+-	{.num = 1, .den = 1},		/*26MHZ */
++static struct u32_fract uart_factor_tbl[] = {
++	{ .numerator = 832, .denominator = 234 },	/* 58.5MHZ */
++	{ .numerator =   1, .denominator =   1 },	/* 26MHZ */
+ };
+ 
+ static void pxa1928_pll_init(struct pxa1928_clk_unit *pxa_unit)
+diff --git a/drivers/clk/mmp/clk-of-pxa910.c b/drivers/clk/mmp/clk-of-pxa910.c
+index 7a38c424782e619347c44b75edb1938cb7a27dc9..fe65e7bdb411fe9be93e8dd5d571e1c62b12909f 100644
+--- a/drivers/clk/mmp/clk-of-pxa910.c
++++ b/drivers/clk/mmp/clk-of-pxa910.c
+@@ -86,8 +86,8 @@ static struct mmp_clk_factor_masks uart_factor_masks = {
+ 	.den_shift = 0,
+ };
+ 
+-static struct mmp_clk_factor_tbl uart_factor_tbl[] = {
+-	{.num = 8125, .den = 1536},	/*14.745MHZ */
++static struct u32_fract uart_factor_tbl[] = {
++	{ .numerator = 8125, .denominator = 1536 },	/* 14.745MHZ */
+ };
+ 
+ static void pxa910_pll_init(struct pxa910_clk_unit *pxa_unit)
+diff --git a/drivers/clk/mmp/clk.h b/drivers/clk/mmp/clk.h
+index 55ac053797819e791d62e5f950779c56a957c994..c83cec169ddc5e3fcd0561cf857f248178c25b68 100644
+--- a/drivers/clk/mmp/clk.h
++++ b/drivers/clk/mmp/clk.h
+@@ -3,6 +3,7 @@
+ #define __MACH_MMP_CLK_H
+ 
+ #include <linux/clk-provider.h>
++#include <linux/math.h>
+ #include <linux/pm_domain.h>
+ #include <linux/clkdev.h>
+ 
+@@ -20,16 +21,11 @@ struct mmp_clk_factor_masks {
+ 	unsigned int enable_mask;
+ };
+ 
+-struct mmp_clk_factor_tbl {
+-	unsigned int num;
+-	unsigned int den;
+-};
+-
+ struct mmp_clk_factor {
+ 	struct clk_hw hw;
+ 	void __iomem *base;
+ 	struct mmp_clk_factor_masks *masks;
+-	struct mmp_clk_factor_tbl *ftbl;
++	struct u32_fract *ftbl;
+ 	unsigned int ftbl_cnt;
+ 	spinlock_t *lock;
+ };
+@@ -37,7 +33,7 @@ struct mmp_clk_factor {
+ extern struct clk *mmp_clk_register_factor(const char *name,
+ 		const char *parent_name, unsigned long flags,
+ 		void __iomem *base, struct mmp_clk_factor_masks *masks,
+-		struct mmp_clk_factor_tbl *ftbl, unsigned int ftbl_cnt,
++		struct u32_fract *ftbl, unsigned int ftbl_cnt,
+ 		spinlock_t *lock);
+ 
+ /* Clock type "mix" */
 
-I was following similar bindings (see qcom,pm8941-charger and bq24190. 
-What properties would I add here? There is nothing configurable with 
-this regulator, only way it can be controlled is by enabling/disabling it.
+-- 
+2.46.2
+
+
