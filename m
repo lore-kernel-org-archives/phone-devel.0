@@ -1,79 +1,69 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F19A13AD2A;
-	Fri,  4 Oct 2024 07:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E353A8F0
+	for <phone-devel@vger.kernel.org>; Sun,  6 Oct 2024 20:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728027621; cv=none; b=P+5tAizxKz4vwr5z7VSY8FHpfKCTG14vPPTnCXUzMdXEEISpRRTS95zNSr10BMxKTztfSl9/um66ZEcUmtJjmvlQJW3mhHYg/p2js2b/TXmOZY4QumIYx/iyMIEDOfk8LaN35nfUnIff7gYd+Zvnut/INy3GSG/ddzf6Nt8C2NA=
+	t=1728246396; cv=none; b=UkEKuCByzwsTTSgE27A5UGA9NMEYw2iSmQbTmqB9izUCZkmszW7cwX3668Wi0JlUXGUHecXHRu0+Aip9Iz9x6gQEX1E4Ywu9cFYd31kie7Zdo3i1bMjls4t2+nvMDo2/ji61+Bj4lhFZtIamnbHcNL2rp/jbCbNfs1N/8iQpTTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728027621; c=relaxed/simple;
-	bh=jeuOprsNrHYvDhtbr8K1Fr4rBYGsHng5OzWZolAVMD0=;
+	s=arc-20240116; t=1728246396; c=relaxed/simple;
+	bh=i1HSlcfG6Gk/k+UqtSwJNp1NND5qicT3kFk53HYZUe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kK3QJlZ7lc0wTkRVw8n4f7ZkXSfQDSDcqsa0S/5gUQki1t7pcnHMgdLpwmTmESD+rK058OlBnIOmT+CegWJxUAhr2XxAPRbGVUJjEo6lELxuyAXuUg9jYUdZfOQz2oqnVLbziFzG+K5DA0+da+yV/6HONfDyln+AtwUMEaRhrqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hyVjzgjr; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJpYZ8FOK1hZWOgoDNdk3WSSuF3wsbraNT/kkOxyn4LKCr+iq2Da++gTPehUYCcEzM5qsJvim5ur3b/0dnItB8fqcjVw1FgTTGhhmvIzv6Pnnipu3jYH2AwLp6ft5zS9bAdx0eJVSO7uzQP0df0UlNHdy99h9aXF6aPsyeUkJj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d7hCGmKv; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hyVjzgjr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728027620; x=1759563620;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jeuOprsNrHYvDhtbr8K1Fr4rBYGsHng5OzWZolAVMD0=;
-  b=hyVjzgjrhOq2s07v10OyPeB2ZqvGKMWsEJbFOmlr6BJvU5u3JQifYHju
-   1tDLhQBVw/imqmuyt/Jgr0izIBjaQ4fOVIYA//gb/05wEe6oYSTnwsGb+
-   WPENJe99KOLykQklEDeaTesFOrOhC1MakqdrH9DBXvhXajmSU/CuNNQoe
-   t8Jh4iEJrL/ZMzfvjjDRs6idhuQF4nxC9EgB5G1+cfgcdven0qPeGRD8m
-   lGbQtUTOCAiJPMBgm6GRypNrft+o5b39PNOX4H+wPYVudhmyiLqDCqG3V
-   sIkns2IPwFDkIp7qVsnjbW/B8wcc66gUR4/QC1wCzLtzVAx9g8CkZUDJC
-   Q==;
-X-CSE-ConnectionGUID: z+2r0mhWSDu33Gm0Z3+UhA==
-X-CSE-MsgGUID: DYgDRTGxTVanCS0NWhBIvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="49773667"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
-   d="scan'208";a="49773667"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2024 00:40:19 -0700
-X-CSE-ConnectionGUID: X57WiVEhQPqNeRPsnrVrMQ==
-X-CSE-MsgGUID: oupDzxnnRnqC/EiV8myw8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
-   d="scan'208";a="105368585"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 04 Oct 2024 00:40:09 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1swcv0-0001Ku-0l;
-	Fri, 04 Oct 2024 07:40:06 +0000
-Date: Fri, 4 Oct 2024 15:39:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= via B4 Relay <devnull+duje.mihanovic.skole.hr@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v13 10/12] arm64: Kconfig.platforms: Add config for
- Marvell PXA1908 platform
-Message-ID: <202410041521.flkiRLrV-lkp@intel.com>
-References: <20241001-pxa1908-lkml-v13-10-6b9a7f64f9ae@skole.hr>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d7hCGmKv"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fad5024b8dso41340581fa.1
+        for <phone-devel@vger.kernel.org>; Sun, 06 Oct 2024 13:26:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728246392; x=1728851192; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BBuPk8VD/ExsghxOi7SybSYIm/8sA+XnlePRO8akAWg=;
+        b=d7hCGmKvqcaYbXke9FlfQ9E+9EcrwGRTml1Z2N+3RK6hqeFsFr58iSCDT+qkrX6IIG
+         tnx4AD46SGeTadjAZe+MgAFCxDt1T/qR72R/NQV6ctDiTfqSlXkO94gQHslzt1yPY4De
+         AFOJ267G6c/hVI7C3Bt/Yj/MmITxSktYArh6yFd2JUQ8uvqz+F+vMkM2zARnzwwUNVgC
+         neaBIpuwbNDtonld4K4Tt9GMsJ+aoT4caagv6T5uML1W8meKHxAEpCiNcKKPGpLSnSVV
+         PJDsIahJZ6Sy6D4kJ+4bI9YMGAYAmu2K2ZY1mKF8yQiUoXSoInxPItGovsEE2iXEFQzG
+         zjIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728246392; x=1728851192;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BBuPk8VD/ExsghxOi7SybSYIm/8sA+XnlePRO8akAWg=;
+        b=aADod4nXvUYMKcP7l9MHcrz6rJg1LNYnufmDoyT7WkELxrSxE+8as6E2NMlseHlEBd
+         O+pqqliVGDLWhoOTUyUIEf//Row1oWAokwAyOr9Sb3HQL4Z30xRtgN5e2C9jwDIHa9N5
+         XBa8gJdkdli/xp8AJfOCRm/hyRqiiEfyztLDStqfOmq7YlM6EpEO0g9QVRA26hPPufNZ
+         4ug3Mz1JqZV93lqEZ4gU0KmSUpHHi1DMoUTYUYgh5vJx3K0tXZHZv0pAEzHHAQV68oqe
+         WWNNhWmfqoXqtt3OsBWxkYz5EqltChgLh8avfNP/KbKjivT29kgVpYDY8UNPEOLJCuc8
+         /9fA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+gQVRRb7BesCH7gDjijEadB9PwyrhoHhXiSPSJhbbuFNxr57GELm1AQ/8xtdXrgg5M7/bSE0KzFAOWg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4l9GQpa3K4rQzKDspKrq1V+VFUNMHVY+uxHzTwfiFoPOV7jhU
+	55m5/c18kZLIlYAIhc/Ujt9/IpsvOTmGORq4u5rWTmbzSj/eyi/lBF3W90kp7VqHWGVgFKauR5H
+	zHG42Lanf
+X-Google-Smtp-Source: AGHT+IFWMqbwIyqjBvX1et2WcBrUvnbXH6lIH+e+p5RToYoqEH6r+OtkMZyvqhjPIOtHuKw7nRa7mw==
+X-Received: by 2002:a05:6512:3d10:b0:533:4522:7409 with SMTP id 2adb3069b0e04-539ab8c2165mr4593871e87.53.1728246392322;
+        Sun, 06 Oct 2024 13:26:32 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00-89ea-67f6-92cd-b49.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:89ea:67f6:92cd:b49])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539afec8b66sm602501e87.119.2024.10.06.13.26.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Oct 2024 13:26:31 -0700 (PDT)
+Date: Sun, 6 Oct 2024 23:26:30 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add thermistor
+ for UFS/RAM
+Message-ID: <fshhw6lknar4z36rc2sjjcgkiixpp7hak7gq3j373mjvbokax3@7s7kmzlmtjal>
+References: <20241002-fp5-ufs-therm-v1-1-1d2d8c1f08b5@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -82,33 +72,48 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241001-pxa1908-lkml-v13-10-6b9a7f64f9ae@skole.hr>
+In-Reply-To: <20241002-fp5-ufs-therm-v1-1-1d2d8c1f08b5@fairphone.com>
 
-Hi Duje,
+On Wed, Oct 02, 2024 at 03:01:08PM GMT, Luca Weiss wrote:
+> Configure the ADC and thermal zone for the thermistor next to the
+> UFS+RAM chip which is connected to GPIO_12 of PM7250B. It is used to
+> measure the temperature of that area of the PCB.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 40 ++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 8ab30c01712e0b7c0cc1b403e0fe01650315b9e2..fdc62f1b1c5a398abaa71818fdf2858fdc445d28 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -207,6 +207,20 @@ active-config0 {
+>  			};
+>  		};
+>  
+> +		mem-thermal {
+> +			polling-delay-passive = <0>;
+> +
+> +			thermal-sensors = <&pm7250b_adc_tm 2>;
+> +
+> +			trips {
+> +				active-config0 {
+> +					temperature = <125000>;
+> +					hysteresis = <1000>;
+> +					type = "passive";
 
-kernel test robot noticed the following build warnings:
+Is it really just "passive"? Especially with no cooling devices it
+sounds more like "critical". LGTM otherwise.
 
-[auto build test WARNING on 9852d85ec9d492ebef56dc5f229416c925758edc]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi-via-B4-Relay/clk-mmp-Switch-to-use-struct-u32_fract-instead-of-custom-one/20241001-224233
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241001-pxa1908-lkml-v13-10-6b9a7f64f9ae%40skole.hr
-patch subject: [PATCH v13 10/12] arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
-config: arm64-kismet-CONFIG_I2C_GPIO-CONFIG_VIDEO_MMP_CAMERA-0-0 (https://download.01.org/0day-ci/archive/20241004/202410041521.flkiRLrV-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20241004/202410041521.flkiRLrV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410041521.flkiRLrV-lkp@intel.com/
-
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for I2C_GPIO when selected by VIDEO_MMP_CAMERA
-   WARNING: unmet direct dependencies detected for I2C_GPIO
-     Depends on [n]: I2C [=y] && HAS_IOMEM [=y] && (GPIOLIB [=n] || COMPILE_TEST [=n])
-     Selected by [y]:
-     - VIDEO_MMP_CAMERA [=y] && MEDIA_SUPPORT [=y] && MEDIA_PLATFORM_SUPPORT [=y] && MEDIA_PLATFORM_DRIVERS [=y] && V4L_PLATFORM_DRIVERS [=y] && I2C [=y] && VIDEO_DEV [=y] && (ARCH_MMP [=y] || COMPILE_TEST [=n]) && COMMON_CLK [=y]
+> +				};
+> +			};
+> +		};
+> +
+>  		pm8008-thermal {
+>  			polling-delay-passive = <100>;
+>  			thermal-sensors = <&pm8008>;
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With best wishes
+Dmitry
