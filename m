@@ -1,65 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F6218E05C;
-	Wed,  9 Oct 2024 10:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B9840849;
+	Wed,  9 Oct 2024 19:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728468407; cv=none; b=VGSQ5RUHF/3lwIpJ7QNkUavSMQwNnDgYZiCmn6rQljn/CeCbgDrj/LRhu34b6zx93vWLVhsf81PclauJnEVisRVk/2jE2PrpycuuERAdS4a5EqzL4mlcQelCGfX+abHWeJotrgO0F2b6J9bXpqxvrSUIu4xl08gkSKV7HP9Ehi8=
+	t=1728501345; cv=none; b=ZBuygD50EfqPY6gaRiJ9SbCD0Vb8HbMlixuPPfrKPSlQceFy0hZ1yts7ufVgY5I5VgfmtNbWsbvyWc+RLc+WcyPJzcvNpE4Xkp1dfixpCoS4cEb/+qNTEHctuI3Qq4RVj++iFO8Eb85Gsj+eAODNmowW6pgjHrYuqx1dMMuzrsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728468407; c=relaxed/simple;
-	bh=uLTxIOnXy1v9yT3KDAjoqFg62MCTN/O9vMCI/xag4rg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MCTiYAoQKEYT3YYbrqzIeBlj1zgvyG9pExxaRWKmyRWOxo4TpQyjV24m200ViweWv6WYIesIJ+WTIwHnlXU7prpI8gG7fh9JRiCDAOWXHF6gfEeS2xfdn918YPCYFju2Sc9Gdh0X7n6r9pyED3gXYKLzIyHh47OifPpEJE2qOZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYxUg/Cn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728501345; c=relaxed/simple;
+	bh=eeF51X/Pr889RF+v8derUcgl6dLAU/jZRB0uKu6r/jc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:Subject:To:
+	 References:In-Reply-To; b=FsHMlciNCvOPglZpw1NOvgt0iUwIdnRYliJgmlMPGhVjbISmnYiM7di+YpmLpd2Alxi8DvCjSJe/PsTpIblRPcdpPRz+jEF3+QngfOEbcwzyviqP5fzkgG6EI4AsF5FWs/36kIrWeX4VgYw7vSMCaS6somFv0AZNDHtbWjBe7Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=FtdrYhHO; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYxUg/Cn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FFCC4CEC5;
-	Wed,  9 Oct 2024 10:06:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728468405;
-	bh=uLTxIOnXy1v9yT3KDAjoqFg62MCTN/O9vMCI/xag4rg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=tYxUg/CnSlzIiRpchtEl1dFcSwX/x5LCnDf/Zz+ydo2nsEHyirr5RJUcURlodFvUX
-	 fCQOOU1jl0SSSpYwPCsQ9mRctZiCQndW02PJW9PXlp5YGdpdfmM3LccIi7dGunjfYs
-	 WDrweC70MB8Qw+Q4pyliUej0dCFe5jidn9EAM3Mya/cRYriw2D/0vEXiTL5jcrpRkk
-	 uMszZu545TcOASP2TU617eflSWee6+Cvy55KoCsBCcbX++HLtzrqfDFZ48kDqxwWY2
-	 JnjKIB1EAzGvmiunlJyB0Uj84IuwE35O8ncT6uvDf2QXWsyW0Ka8+D1plvStzfDgo9
-	 NSpWj3FgrvlLQ==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org, 
- Karel Balej <balejk@matfyz.cz>
-Cc: duje.mihanovic@skole.hr, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht
-In-Reply-To: <20240920161518.32346-1-balejk@matfyz.cz>
-References: <20240920161518.32346-1-balejk@matfyz.cz>
-Subject: Re: (subset) [RFC PATCH 1/2] mfd: 88pm886: add the RTC cell and
- relevant definitions
-Message-Id: <172846840369.471299.4136306941601177946.b4-ty@kernel.org>
-Date: Wed, 09 Oct 2024 11:06:43 +0100
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="FtdrYhHO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1728500611; x=1729800611;
+	bh=eeF51X/Pr889RF+v8derUcgl6dLAU/jZRB0uKu6r/jc=; h=From;
+	b=FtdrYhHOCw/N6RBvhv907tDGuV++7ajwgitObUQqTXSRW8kGRTzytCtgX+2ufhJMM
+	 bIp1ggVfbw6HzrHkLrvgmOlxj3ia8gltnAE6rdLZwKlO8f9Dsbo3BGm0ywqp5uE5o5
+	 ro615uJ38MN+LnsFH+88bcZk+d+PhMjlH6/uhqg17tHOtpopHU5Ses1e79rLgMrJCG
+	 fINjhfN4E7Rn+ljz0zWBmh2B3HKhPfGVQoXcD55Mye80UFdgPAKQm/z0MhXK9Qrf+T
+	 PxFXIRM3csFBmxcsz68mW1mvwe3p+l7C6d/IjatmfhbQysOuL7LN985/jwc5MKq1gL
+	 0clM4YKy5hImQ==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 499J3TIW034138
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Wed, 9 Oct 2024 21:03:30 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Oct 2024 21:03:29 +0200
+Message-Id: <D4RIBTPD0W5Y.198XNBY2OIDGL@matfyz.cz>
+From: "Karel Balej" <balejk@matfyz.cz>
+Cc: <duje.mihanovic@skole.hr>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "Alexandre Belloni"
+ <alexandre.belloni@bootlin.com>,
+        <linux-kernel@vger.kernel.org>, <linux-rtc@vger.kernel.org>
+Subject: Re: (subset) [RFC PATCH 1/2] mfd: 88pm886: add the RTC cell and
+ relevant definitions
+To: "Lee Jones" <lee@kernel.org>
+References: <20240920161518.32346-1-balejk@matfyz.cz>
+ <172846840369.471299.4136306941601177946.b4-ty@kernel.org>
+In-Reply-To: <172846840369.471299.4136306941601177946.b4-ty@kernel.org>
 
-On Fri, 20 Sep 2024 18:12:34 +0200, Karel Balej wrote:
-> RTC lives on the base register page of the chip. Add definitions of the
-> registers needed for a basic set/read time functionality.
-> 
-> 
+Lee Jones, 2024-10-09T11:06:43+01:00:
+> On Fri, 20 Sep 2024 18:12:34 +0200, Karel Balej wrote:
+> > RTC lives on the base register page of the chip. Add definitions of the
+> > registers needed for a basic set/read time functionality.
+> >=20
+> >=20
+>
+> Applied, thanks!
 
-Applied, thanks!
+Thank you, however I'm a little perplexed.
 
-[1/2] mfd: 88pm886: add the RTC cell and relevant definitions
-      commit: 0a936c2c45884b9a3800379f3cab4d0a685d63f5
+It was my understanding that RFC patches should not be applied without
+further agreement, is that not the case? Obviously this patch was very
+simple and I used RFC mainly because of the RTC driver itself, but I'm
+curious to know for future submissions.
 
---
-Lee Jones [李琼斯]
+Also, I expected the entire series to go at once through the rtc tree
+with your ack as while it is not a strict dependency in terms of
+breakage, the first patch seems rather pointless without the follow-up
+which could theoretically take a long time to get applied and even some
+requested changes could require changes to this patch. Could you please
+explain what the policy is on this?
 
+Thank you, kind regards,
+K. B.
