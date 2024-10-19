@@ -1,85 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5132118BBA2;
-	Tue, 15 Oct 2024 08:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A318C34B;
+	Sat, 19 Oct 2024 10:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728981368; cv=none; b=rB9bJaJ+qQ5crQdfpu6qtj4DPSuFtnHTRzdPBkT4LIDKdNc1ViXAmEBWgAzRBPpzBWNqJlKFLglQV0X0nz3B7LGSj+84EULgj9IwVzbtCUN0KlFw3j/t2ufD22jGmczW2U7X1kUzYg4PJPMDGIanG4CXzfMx8NjVmc3m6ewoY6E=
+	t=1729333037; cv=none; b=CuV7K1TUWyur2L41jc3Az5yDOcwRtRpDvYMAlWBvZn41fga/gi/4pJt4WW6hGcEXPrypS1rODffux21FKIukfoynWyL3gLtQb9N+L6X2NsRXG1hXfGcPu/dsDJZs+WMLV8GpbQyQWwXSktEzQGP8dS3sz+gjDwKPU/ifTvZIOdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728981368; c=relaxed/simple;
-	bh=T9XLHbWuFkoXFRLF1LpDabJBHG+uY4lL1iioAODVpeM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jgHHP+Zd2fuFoWJsyvdctrPxkkwaocovoIf+n7FSlz1jy0Z0WApX7AGLGPa+rZzhzlc3SkLiIlCLdsgC6zegUyGZppk7ZhawtkhtgwWHp+lNopsYsw4j4ZYeIW1x51LkF95BS7juUO/LOMIQsD5W6xA6Vs4KVInw1Ptme9fgF/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwckEADR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729333037; c=relaxed/simple;
+	bh=EEoegO5HOQfYcl3gGqouvUqNUEa6zCKW1b8JWwcSwno=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qNcmXbi3/0/Rg2EEZePBaxZXciCqvflpkAXIUR63ZxyGJ9LcLERYIEenbrsC0h2uJcb3gvxrKY2h+2FNrH6tNVbzujL1QbFZ3SOxyjDsFri9E5IdxB+TpaqvjKiGc5XPO7lYklkSWmpW/u0Eg3lTUK0mvCXwaIiYcF4+lbY8HQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=NhMFqeM1; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwckEADR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73612C4CEC7;
-	Tue, 15 Oct 2024 08:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728981367;
-	bh=T9XLHbWuFkoXFRLF1LpDabJBHG+uY4lL1iioAODVpeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jwckEADR7kQEyu/o408HBXU9JixBJ82yK/t0kKJDbNX4kW4QkFDfe1PvM6UFFcoN+
-	 iPRmubk6BJwYu1xijDIvMiBooky6KHqjPLsj7HpVM+kxqLL6xFvcGhJgj79P7vj0il
-	 6NFbOjY7XIbn5GlqGmTmCBTmzOoStPl8tO7cBrR9nxsI7YyCQKtW2QOpg2CFFDlGQt
-	 x80TJQnAr3SlKUqCJlpjOFW+v2lV5z9CPeuUbXReZ2pBAUhPe7uCB63kzPfz7vwKIU
-	 gBOT8M3NfPXKQAtoHx6Cn4UhzQh2FCCnX6QMJZFGlmc72GAltH7xA3V8sSWu1bXuZ1
-	 FaEeheYlhMq2w==
-Date: Tue, 15 Oct 2024 09:36:03 +0100
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <balejk@matfyz.cz>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
-	duje.mihanovic@skole.hr, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [RFC PATCH v2 1/2] mfd: 88pm886: add the RTC cell
-Message-ID: <20241015083603.GB8348@google.com>
-References: <20241012193345.18594-1-balejk@matfyz.cz>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="NhMFqeM1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1729332413; bh=EEoegO5HOQfYcl3gGqouvUqNUEa6zCKW1b8JWwcSwno=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NhMFqeM1xVfZLawOWT92RfW8LTIOJfidwNp7MHnmkEBLJateXf6PVaPck2LUqDeS9
+	 L+wZ2/Vm2kGurlrUdKzeMsmY/dNoppxdhMlYDKiOqgn87zlRQTmxGHO5UHZFJDo3FR
+	 xYuxtG/a5fdw0XwYNfGVAIa2TMrrJSVpLYx0808o=
+From: Luca Weiss <luca@lucaweiss.eu>
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject:
+ Re: [PATCH v2] rpmsg: qcom_smd: Improve error handling for
+ qcom_smd_parse_edge
+Date: Sat, 19 Oct 2024 12:06:50 +0200
+Message-ID: <2827287.mvXUDI8C0e@g550jk>
+In-Reply-To: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
+References: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241012193345.18594-1-balejk@matfyz.cz>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, 12 Oct 2024, Karel Balej wrote:
-
-> Add a MFD cell for the chip's real-time clock.
+On Donnerstag, 6. Juni 2024 21:01:36 MESZ Luca Weiss wrote:
+> When the mailbox driver has not probed yet, the error message "failed to
+> parse smd edge" is just going to confuse users, so improve the error
+> prints a bit.
 > 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+> Cover the last remaining exits from qcom_smd_parse_edge with proper
+> error prints, especially the one for the mbox_chan deserved
+> dev_err_probe to handle EPROBE_DEFER nicely. And add one for ipc_regmap
+> also to be complete.
+> 
+> With this done, we can remove the outer print completely.
+
+Ping, looks like this is still pending.
+
+Regards
+Luca
+
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
+> Changes in v2:
+> - Rebase on qcom for-next, drop dts patches which have been applied
+> - Improve error printing situation (Bjorn)
+> - Link to v1: https://lore.kernel.org/r/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz
+> ---
+>  drivers/rpmsg/qcom_smd.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Notes:
->     RFC v2:
->     - Break out the register definitions and reword the commit message
->       accordingly.
->     - RFC v1: https://lore.kernel.org/r/20240920161518.32346-1-balejk@matfyz.cz/
-> 
->  drivers/mfd/88pm886.c | 1 +
->  1 file changed, 1 insertion(+)
-
-Looks fine.  Let me know when you're ready for me to take it.
-
-> diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-> index dbe9efc027d2..891fdce5d8c1 100644
-> --- a/drivers/mfd/88pm886.c
-> +++ b/drivers/mfd/88pm886.c
-> @@ -37,6 +37,7 @@ static struct resource pm886_onkey_resources[] = {
->  static struct mfd_cell pm886_devs[] = {
->  	MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
->  	MFD_CELL_NAME("88pm886-regulator"),
-> +	MFD_CELL_NAME("88pm886-rtc"),
->  };
+> diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+> index 43f601c84b4f..06e6ba653ea1 100644
+> --- a/drivers/rpmsg/qcom_smd.c
+> +++ b/drivers/rpmsg/qcom_smd.c
+> @@ -1369,7 +1369,8 @@ static int qcom_smd_parse_edge(struct device *dev,
+>  	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
+>  	if (IS_ERR(edge->mbox_chan)) {
+>  		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
+> -			ret = PTR_ERR(edge->mbox_chan);
+> +			ret = dev_err_probe(dev, PTR_ERR(edge->mbox_chan),
+> +					    "failed to acquire IPC mailbox\n");
+>  			goto put_node;
+>  		}
 >  
->  static int pm886_power_off_handler(struct sys_off_data *sys_off_data)
-> -- 
-> 2.47.0
+> @@ -1386,6 +1387,7 @@ static int qcom_smd_parse_edge(struct device *dev,
+>  		of_node_put(syscon_np);
+>  		if (IS_ERR(edge->ipc_regmap)) {
+>  			ret = PTR_ERR(edge->ipc_regmap);
+> +			dev_err(dev, "failed to get regmap from syscon: %d\n", ret);
+>  			goto put_node;
+>  		}
+>  
+> @@ -1501,10 +1503,8 @@ struct qcom_smd_edge *qcom_smd_register_edge(struct device *parent,
+>  	}
+>  
+>  	ret = qcom_smd_parse_edge(&edge->dev, node, edge);
+> -	if (ret) {
+> -		dev_err(&edge->dev, "failed to parse smd edge\n");
+> +	if (ret)
+>  		goto unregister_dev;
+> -	}
+>  
+>  	ret = qcom_smd_create_chrdev(edge);
+>  	if (ret) {
+> 
+> ---
+> base-commit: 2c79712cc83b172ce26c3086ced1c1fae087d8fb
+> change-id: 20240423-apcs-mboxes-12ee6c01a5b3
+> 
+> Best regards,
 > 
 
--- 
-Lee Jones [李琼斯]
+
+
+
