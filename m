@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFA71991BE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA6B1991C6;
 	Sun, 20 Oct 2024 22:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729462452; cv=none; b=nJhzlEh6c5ZOaqEn5k2iJKMV9ogXTrRCp70zMZ6LfL20/QHVCIpg25ZxtZjo02Y6X/iBa80cPRjOT+v2r5K78S3hxJsds94vWYZWqIbZX7QOPDNvpBqO3dtxV9ZKUHODTQ83OtY76DMLx7DQgUNRxai9hB2exZw9iQ8Ub/9hTmw=
+	t=1729462452; cv=none; b=ek+Ef6E8WijmPeHARA+VxjCjJaI+eNkE8h73zfpiM9zQ2roTUfDLckLaVAodyC3sk8LMR3RvqNyrTgGXQciuC7sfN8TamiFzExnvfThobrB3ooOfs7DtPqctBKNKsGll6I4qMKulqMIOFl4OGHF9DhEJD3jThXOZ3I2lsEWMEJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729462452; c=relaxed/simple;
-	bh=yk0ClJZp0r8exg54uJLYZ+QTLVTk1fuu+8aNLiSCesA=;
+	bh=71QPmlZCbZanm+0hrX+C+CLoss9GpN+DnnoqT8310lE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lpryWpyV0U7QU1SPTp8/g3FJMWo2tfeED60aykiHynzWyHj9gH+aF6CWhM9xVKdG659noPAhNOwVQt8wo1ORYJzZBNDmgfynm4PcBr0N/Niy2VyrafP1ZGOBiRvtCJNYSUPM7SbeFX6T1Dohh1Ib79ruqu/fVXrbi5uNpzT9aHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUTjSpVy; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=HKPPP1ZOZ59Cqb5MI2SVrIoT/5aiRgz8sodegcZb2K08RlXBTh7TA8QEXo3OptE7p9ZFtjBQ9SGmyaF/S1w6TGhzDb84gRMURT6fefHU4YFVrcr3eTzhH6dqNShFV4JOw3EPkFImuUkmfbZu6iPzsKhE2/RX86QqftK+XcMplMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wl2cqdwK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUTjSpVy"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 27151C4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wl2cqdwK"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 43957C4CEFD;
 	Sun, 20 Oct 2024 22:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1729462452;
-	bh=yk0ClJZp0r8exg54uJLYZ+QTLVTk1fuu+8aNLiSCesA=;
+	bh=71QPmlZCbZanm+0hrX+C+CLoss9GpN+DnnoqT8310lE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XUTjSpVyFHAg0KwGLYhCR0y5HgDukFcl/CA+pBxzHbhf8Mzk0GSi7ETkaWk4znbDa
-	 VP2wrBSYWzngAckJHmlMezfG9VMMjknoeJfavx/quZUCGqYC8Xm2BHeN0d4CYV069v
-	 YwW+CSAjAzwjh0K31dt8qnic4YWwllf3Vjnrdvzk9ryRfOMEqCt1tDNKFAKrEa9KNl
-	 FYr13DFAuwIkLYEJdgMgjoKGMGgwW8uDhKcGAMgPaLtPN4oe8pISyJ9zo20m7yffQj
-	 n7AMN9SDtl4hx+ukgweJqkSQhKZ9SkzYATn7DdAOcq1v0nbVWFQ/CGf7ZDPA2pPn5R
-	 tuQif4xO/k4DA==
+	b=Wl2cqdwKJzlDLN5BQciKp9Fk+linQvpY5YloAa0NdkiZYDA/0tA4GS47sOd8GyJ3x
+	 wpYhEBFmPRX68Z9v045L+trwyWUjkRabD28OoqdCH/FjDf38aV9Q45kNlI/i5QZ73/
+	 W9T3C1muGRRbAsOvn0WcowO94y4c+8x7V7DAyVOMifbYF3q/vgiTPpCUG/xc5ioQCe
+	 0Yj3b/s28jkMVBgE21x1ucTmUpT60s47njRqgOR27JC0fWXWtSh/2ZxMMzB1ilz627
+	 4po4k+jtrwvYey7thvNPA1wwkGiTexkwVw/1eCHE5X7EfxZEAbQp8MQelpDcH4V4zF
+	 UfNVG6boWGwLA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BC9FD3C938;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38FE4D3C937;
 	Sun, 20 Oct 2024 22:14:12 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Mon, 21 Oct 2024 00:13:29 +0200
-Subject: [PATCH v2 09/13] media: i2c: imx214: Extract format and crop
- settings
+Date: Mon, 21 Oct 2024 00:13:31 +0200
+Subject: [PATCH v2 11/13] media: i2c: imx214: Add analogue/digital gain
+ control
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241021-imx214-v2-9-fbd23e99541e@apitzsch.eu>
+Message-Id: <20241021-imx214-v2-11-fbd23e99541e@apitzsch.eu>
 References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
 In-Reply-To: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
@@ -50,13 +50,14 @@ To: Ricardo Ribalda <ribalda@kernel.org>,
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729462449; l=8252;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729462449; l=4360;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=p6Xt8IYTKhjGLY7+IsD6FSf18HwHfmecuRaNE4HBLGo=;
- b=c231zhCszMGcLxejHIBpb8PUy+apsdIsRncJWUXpJa7kgv3g94A1ttBXcqYfmktjOTWGXA4nd
- fFnHqnj3xPjD8W4W3pR0JDrStgxAg7KLR5LDG2oRW8c79dvN9qzp7BY
+ bh=rXL1g7Oe8YzuPPhYACw/Jy36nnaFTf5MQS8SSUXbNRE=;
+ b=WXzI6ca0GpCmGXV5kfd81sVpwBwcxO20nmSYMpCVzCYDlSMqSE99G519iO0kdYJTqvNoBcrlz
+ +3B7Ev4qk4rBGIiATX+S+xa2f/eZgvQvJONCJhC8YpRWxdoSt2aI+Mi
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -66,243 +67,128 @@ Reply-To: git@apitzsch.eu
 
 From: André Apitzsch <git@apitzsch.eu>
 
-Remove format and crop settings from register sequences and set them
-programmatically.
+The imx214 sensor supports analogue gain up to 8x and digital gain up to
+16x. Implement the corresponding controls in the driver. Default gain
+values are not modified by this patch.
 
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 129 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 97 insertions(+), 32 deletions(-)
+ drivers/media/i2c/imx214.c | 53 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index cb443d8bee6fe72dc9378b2c2d3caae09f8642c5..87a03e292e19ccd71f1b2dcee3409826b2f5cb6f 100644
+index f2d21c2e8cf84ed25403c98e280073f32e50e758..ad1f88057ac47ae0d494d7a10520fabf969315ed 100644
 --- a/drivers/media/i2c/imx214.c
 +++ b/drivers/media/i2c/imx214.c
-@@ -96,6 +96,9 @@
- #define IMX214_REG_PREPLLCK_VT_DIV	CCI_REG8(0x0305)
- #define IMX214_REG_PLL_VT_MPY		CCI_REG16(0x0306)
- #define IMX214_REG_OPPXCK_DIV		CCI_REG8(0x0309)
-+#define IMX214_OPPXCK_DIV_COMP6		6
-+#define IMX214_OPPXCK_DIV_COMP8		8
-+#define IMX214_OPPXCK_DIV_RAW10		10
- #define IMX214_REG_OPSYCK_DIV		CCI_REG8(0x030b)
- #define IMX214_REG_PLL_MULT_DRIV	CCI_REG8(0x0310)
- #define IMX214_PLL_SINGLE		0
-@@ -132,6 +135,9 @@
- #define IMX214_BINNING_NONE		0
- #define IMX214_BINNING_ENABLE		1
- #define IMX214_REG_BINNING_TYPE		CCI_REG8(0x0901)
-+#define IMX214_BINNING_1X1		0
-+#define IMX214_BINNING_2X2		0x22
-+#define IMX214_BINNING_4X4		0x44
- #define IMX214_REG_BINNING_WEIGHTING	CCI_REG8(0x0902)
- #define IMX214_BINNING_AVERAGE		0x00
- #define IMX214_BINNING_SUMMED		0x01
-@@ -211,36 +217,22 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
--	{ IMX214_REG_X_ADD_STA, 56 },
--	{ IMX214_REG_Y_ADD_STA, 408 },
--	{ IMX214_REG_X_ADD_END, 4151 },
--	{ IMX214_REG_Y_ADD_END, 2711 },
- 	{ IMX214_REG_X_EVEN_INC, 1 },
- 	{ IMX214_REG_X_ODD_INC, 1 },
- 	{ IMX214_REG_Y_EVEN_INC, 1 },
- 	{ IMX214_REG_Y_ODD_INC, 1 },
--	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
--	{ IMX214_REG_BINNING_TYPE, 0 },
- 	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
- 	{ CCI_REG8(0x3000), 0x35 },
- 	{ CCI_REG8(0x3054), 0x01 },
- 	{ CCI_REG8(0x305C), 0x11 },
+@@ -53,12 +53,20 @@
+ /* Analog gain control */
+ #define IMX214_REG_ANALOG_GAIN		CCI_REG16(0x0204)
+ #define IMX214_REG_SHORT_ANALOG_GAIN	CCI_REG16(0x0216)
++#define IMX214_ANA_GAIN_MIN		0
++#define IMX214_ANA_GAIN_MAX		448
++#define IMX214_ANA_GAIN_STEP		1
++#define IMX214_ANA_GAIN_DEFAULT		0x0
  
--	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10 },
--	{ IMX214_REG_X_OUTPUT_SIZE, 4096 },
--	{ IMX214_REG_Y_OUTPUT_SIZE, 2304 },
- 	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
- 	{ IMX214_REG_SCALE_M, 2 },
--	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_WIDTH, 4096 },
--	{ IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+ /* Digital gain control */
+ #define IMX214_REG_DIG_GAIN_GREENR	CCI_REG16(0x020e)
+ #define IMX214_REG_DIG_GAIN_RED		CCI_REG16(0x0210)
+ #define IMX214_REG_DIG_GAIN_BLUE	CCI_REG16(0x0212)
+ #define IMX214_REG_DIG_GAIN_GREENB	CCI_REG16(0x0214)
++#define IMX214_DGTL_GAIN_MIN		0x0100
++#define IMX214_DGTL_GAIN_MAX		0x0fff
++#define IMX214_DGTL_GAIN_DEFAULT	0x0100
++#define IMX214_DGTL_GAIN_STEP		1
  
- 	{ IMX214_REG_VTPXCK_DIV, 5 },
- 	{ IMX214_REG_VTSYCK_DIV, 2 },
- 	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
- 	{ IMX214_REG_PLL_VT_MPY, 150 },
--	{ IMX214_REG_OPPXCK_DIV, 10 },
- 	{ IMX214_REG_OPSYCK_DIV, 1 },
- 	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+ #define IMX214_REG_ORIENTATION		CCI_REG8(0x0101)
  
-@@ -281,36 +273,22 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
--	{ IMX214_REG_X_ADD_STA, 1144 },
--	{ IMX214_REG_Y_ADD_STA, 1020 },
--	{ IMX214_REG_X_ADD_END, 3063 },
--	{ IMX214_REG_Y_ADD_END, 2099 },
- 	{ IMX214_REG_X_EVEN_INC, 1 },
- 	{ IMX214_REG_X_ODD_INC, 1 },
- 	{ IMX214_REG_Y_EVEN_INC, 1 },
- 	{ IMX214_REG_Y_ODD_INC, 1 },
--	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
--	{ IMX214_REG_BINNING_TYPE, 0 },
- 	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
- 	{ CCI_REG8(0x3000), 0x35 },
- 	{ CCI_REG8(0x3054), 0x01 },
- 	{ CCI_REG8(0x305C), 0x11 },
+@@ -273,13 +281,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
  
--	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10 },
--	{ IMX214_REG_X_OUTPUT_SIZE, 1920 },
--	{ IMX214_REG_Y_OUTPUT_SIZE, 1080 },
- 	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
- 	{ IMX214_REG_SCALE_M, 2 },
--	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
--	{ IMX214_REG_DIG_CROP_WIDTH, 1920 },
--	{ IMX214_REG_DIG_CROP_HEIGHT, 1080 },
+ 	{ IMX214_REG_SHORT_EXPOSURE, 500 },
  
- 	{ IMX214_REG_VTPXCK_DIV, 5 },
- 	{ IMX214_REG_VTSYCK_DIV, 2 },
- 	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
- 	{ IMX214_REG_PLL_VT_MPY, 150 },
--	{ IMX214_REG_OPPXCK_DIV, 10 },
- 	{ IMX214_REG_OPSYCK_DIV, 1 },
- 	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+-	{ IMX214_REG_ANALOG_GAIN, 0 },
+-	{ IMX214_REG_DIG_GAIN_GREENR, 256 },
+-	{ IMX214_REG_DIG_GAIN_RED, 256 },
+-	{ IMX214_REG_DIG_GAIN_BLUE, 256 },
+-	{ IMX214_REG_DIG_GAIN_GREENB, 256 },
+-	{ IMX214_REG_SHORT_ANALOG_GAIN, 0 },
+-
+ 	{ CCI_REG8(0x4170), 0x00 },
+ 	{ CCI_REG8(0x4171), 0x10 },
+ 	{ CCI_REG8(0x4176), 0x00 },
+@@ -329,13 +330,6 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
  
-@@ -623,6 +601,7 @@ static int imx214_set_format(struct v4l2_subdev *sd,
- 	struct v4l2_mbus_framefmt *__format;
- 	struct v4l2_rect *__crop;
- 	const struct imx214_mode *mode;
-+	unsigned int bin_h, bin_v, bin;
+ 	{ IMX214_REG_SHORT_EXPOSURE, 500 },
  
- 	mode = v4l2_find_nearest_size(imx214_modes,
- 				      ARRAY_SIZE(imx214_modes), width, height,
-@@ -637,9 +616,32 @@ static int imx214_set_format(struct v4l2_subdev *sd,
- 
- 	*__format = format->format;
- 
-+	/*
-+	 * Use binning to maximize the crop rectangle size, and centre it in the
-+	 * sensor.
-+	 */
-+	bin_h = IMX214_PIXEL_ARRAY_WIDTH / __format->width;
-+	bin_v = IMX214_PIXEL_ARRAY_HEIGHT / __format->height;
-+
-+	switch (min(bin_h, bin_v)) {
-+	case 1:
-+		bin = 1;
-+		break;
-+	case 2:
-+	case 3:
-+		bin = 2;
-+		break;
-+	case 4:
-+	default:
-+		bin = 4;
-+		break;
-+	}
-+
- 	__crop = v4l2_subdev_state_get_crop(sd_state, 0);
--	__crop->width = mode->width;
--	__crop->height = mode->height;
-+	__crop->width = __format->width * bin;
-+	__crop->height = __format->height * bin;
-+	__crop->left = (IMX214_NATIVE_WIDTH - __crop->width) / 2;
-+	__crop->top = (IMX214_NATIVE_HEIGHT - __crop->height) / 2;
- 
- 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
- 		int exposure_max;
-@@ -847,7 +849,62 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+-	{ IMX214_REG_ANALOG_GAIN, 0 },
+-	{ IMX214_REG_DIG_GAIN_GREENR, 256 },
+-	{ IMX214_REG_DIG_GAIN_RED, 256 },
+-	{ IMX214_REG_DIG_GAIN_BLUE, 256 },
+-	{ IMX214_REG_DIG_GAIN_GREENB, 256 },
+-	{ IMX214_REG_SHORT_ANALOG_GAIN, 0 },
+-
+ 	{ CCI_REG8(0x4170), 0x00 },
+ 	{ CCI_REG8(0x4171), 0x10 },
+ 	{ CCI_REG8(0x4176), 0x00 },
+@@ -756,6 +750,18 @@ static int imx214_entity_init_state(struct v4l2_subdev *subdev,
  	return 0;
- };
+ }
  
--static int imx214_start_streaming(struct imx214 *imx214)
-+static int imx214_set_framefmt(struct imx214 *imx214,
-+			       struct v4l2_subdev_state *state)
++static int imx214_update_digital_gain(struct imx214 *imx214, u32 val)
 +{
-+	const struct v4l2_mbus_framefmt *format;
-+	const struct v4l2_rect *crop;
-+	u64 bin_mode;
-+	u64 bin_type;
 +	int ret = 0;
 +
-+	format = v4l2_subdev_state_get_format(state, 0);
-+	crop = v4l2_subdev_state_get_crop(state, 0);
-+
-+	cci_write(imx214->regmap, IMX214_REG_X_ADD_STA,
-+		  crop->left - IMX214_PIXEL_ARRAY_LEFT, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_X_ADD_END,
-+		  crop->left - IMX214_PIXEL_ARRAY_LEFT + crop->width - 1, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_ADD_STA,
-+		  crop->top - IMX214_PIXEL_ARRAY_TOP, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_ADD_END,
-+		  crop->top - IMX214_PIXEL_ARRAY_TOP + crop->height - 1, &ret);
-+
-+	/* Proper setting is required even if cropping is not used */
-+	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_WIDTH, crop->width, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_HEIGHT, crop->height, &ret);
-+
-+	switch (crop->width / format->width) {
-+	case 1:
-+	default:
-+		bin_mode = IMX214_BINNING_NONE;
-+		bin_type = IMX214_BINNING_1X1;
-+		break;
-+	case 2:
-+		bin_mode = IMX214_BINNING_ENABLE;
-+		bin_type = IMX214_BINNING_2X2;
-+		break;
-+	case 4:
-+		bin_mode = IMX214_BINNING_ENABLE;
-+		bin_type = IMX214_BINNING_4X4;
-+		break;
-+	}
-+
-+	cci_write(imx214->regmap, IMX214_REG_BINNING_MODE, bin_mode, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_BINNING_TYPE, bin_type, &ret);
-+
-+	cci_write(imx214->regmap, IMX214_REG_X_OUTPUT_SIZE, format->width, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_Y_OUTPUT_SIZE, format->height, &ret);
-+
-+	cci_write(imx214->regmap, IMX214_REG_CSI_DATA_FORMAT,
-+		  IMX214_CSI_DATA_FORMAT_RAW10, &ret);
-+	cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV, IMX214_OPPXCK_DIV_RAW10, &ret);
++	cci_write(imx214->regmap, IMX214_REG_DIG_GAIN_GREENR, val, &ret);
++	cci_write(imx214->regmap, IMX214_REG_DIG_GAIN_RED, val, &ret);
++	cci_write(imx214->regmap, IMX214_REG_DIG_GAIN_BLUE, val, &ret);
++	cci_write(imx214->regmap, IMX214_REG_DIG_GAIN_GREENB, val, &ret);
 +
 +	return ret;
-+};
++}
 +
-+static int imx214_start_streaming(struct imx214 *imx214,
-+				  struct v4l2_subdev_state *state)
+ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
  {
- 	int ret;
+ 	struct imx214 *imx214 = container_of(ctrl->handler,
+@@ -787,6 +793,15 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
+ 		return 0;
  
-@@ -865,6 +922,14 @@ static int imx214_start_streaming(struct imx214 *imx214)
+ 	switch (ctrl->id) {
++	case V4L2_CID_ANALOGUE_GAIN:
++		cci_write(imx214->regmap, IMX214_REG_ANALOG_GAIN,
++			  ctrl->val, &ret);
++		cci_write(imx214->regmap, IMX214_REG_SHORT_ANALOG_GAIN,
++			  ctrl->val, &ret);
++		break;
++	case V4L2_CID_DIGITAL_GAIN:
++		ret = imx214_update_digital_gain(imx214, ctrl->val);
++		break;
+ 	case V4L2_CID_EXPOSURE:
+ 		cci_write(imx214->regmap, IMX214_REG_EXPOSURE, ctrl->val, &ret);
+ 		break;
+@@ -833,7 +848,7 @@ static int imx214_ctrls_init(struct imx214 *imx214)
  		return ret;
- 	}
  
-+	/* Apply format and crop settings */
-+	ret = imx214_set_framefmt(imx214, state);
-+	if (ret) {
-+		dev_err(imx214->dev, "%s failed to set frame format: %d\n",
-+			__func__, ret);
-+		return ret;
-+	}
+ 	ctrl_hdlr = &imx214->ctrls;
+-	ret = v4l2_ctrl_handler_init(&imx214->ctrls, 10);
++	ret = v4l2_ctrl_handler_init(&imx214->ctrls, 12);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -870,6 +885,14 @@ static int imx214_ctrls_init(struct imx214 *imx214)
+ 					     IMX214_EXPOSURE_STEP,
+ 					     exposure_def);
+ 
++	v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops, V4L2_CID_ANALOGUE_GAIN,
++			  IMX214_ANA_GAIN_MIN, IMX214_ANA_GAIN_MAX,
++			  IMX214_ANA_GAIN_STEP, IMX214_ANA_GAIN_DEFAULT);
 +
- 	ret = cci_multi_reg_write(imx214->regmap, imx214->cur_mode->reg_table,
- 				  imx214->cur_mode->num_of_regs, NULL);
- 	if (ret < 0) {
-@@ -913,7 +978,7 @@ static int imx214_s_stream(struct v4l2_subdev *subdev, int enable)
- 			return ret;
- 
- 		state = v4l2_subdev_lock_and_get_active_state(subdev);
--		ret = imx214_start_streaming(imx214);
-+		ret = imx214_start_streaming(imx214, state);
- 		v4l2_subdev_unlock_state(state);
- 		if (ret < 0)
- 			goto err_rpm_put;
++	v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops, V4L2_CID_DIGITAL_GAIN,
++			  IMX214_DGTL_GAIN_MIN, IMX214_DGTL_GAIN_MAX,
++			  IMX214_DGTL_GAIN_STEP, IMX214_DGTL_GAIN_DEFAULT);
++
+ 	imx214->hflip = v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
+ 					  V4L2_CID_HFLIP, 0, 1, 1, 0);
+ 	if (imx214->hflip)
 
 -- 
 2.47.0
