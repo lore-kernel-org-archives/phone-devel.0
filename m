@@ -1,121 +1,106 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A318C34B;
-	Sat, 19 Oct 2024 10:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2036B197A81;
+	Sun, 20 Oct 2024 22:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729333037; cv=none; b=CuV7K1TUWyur2L41jc3Az5yDOcwRtRpDvYMAlWBvZn41fga/gi/4pJt4WW6hGcEXPrypS1rODffux21FKIukfoynWyL3gLtQb9N+L6X2NsRXG1hXfGcPu/dsDJZs+WMLV8GpbQyQWwXSktEzQGP8dS3sz+gjDwKPU/ifTvZIOdg=
+	t=1729462452; cv=none; b=a7RyA+ZQo3f9zbBrIwZw0cxRcmjOOASgXi+WVrQu9NDZfqMqnebklGeM84QUhVs9s1lpgh5RMjPR3Bby+5YbH6BEtZg7zCojNYPEhbAViO1FuuXcIxzwYRVDTbGPpcbmcYbFTwKFF6mGeXzL4HiJTunNJ13H45CJ9FrRE+I9v4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729333037; c=relaxed/simple;
-	bh=EEoegO5HOQfYcl3gGqouvUqNUEa6zCKW1b8JWwcSwno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNcmXbi3/0/Rg2EEZePBaxZXciCqvflpkAXIUR63ZxyGJ9LcLERYIEenbrsC0h2uJcb3gvxrKY2h+2FNrH6tNVbzujL1QbFZ3SOxyjDsFri9E5IdxB+TpaqvjKiGc5XPO7lYklkSWmpW/u0Eg3lTUK0mvCXwaIiYcF4+lbY8HQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=NhMFqeM1; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1729462452; c=relaxed/simple;
+	bh=S8FfBXPNjjhlCI/HFOT2nHb83ABvho1ixjaatY2LUpc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Tt8cJ1Pf/S0lBhPZBxIXWwLlrDyUTTlN+ysj21mO40y/M++cNDDzu5RNSebD4FIbfR+c/FpT1hgXS82LXU8cIVUXtogAyfBkuWDtbV4kVgJ3lGsUcx3cEt8pbmWX312IMd1/nl1CdQrDftoR/e6jGfW6wl3Esn5se7l3vzho6d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIQFpZyR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="NhMFqeM1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1729332413; bh=EEoegO5HOQfYcl3gGqouvUqNUEa6zCKW1b8JWwcSwno=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NhMFqeM1xVfZLawOWT92RfW8LTIOJfidwNp7MHnmkEBLJateXf6PVaPck2LUqDeS9
-	 L+wZ2/Vm2kGurlrUdKzeMsmY/dNoppxdhMlYDKiOqgn87zlRQTmxGHO5UHZFJDo3FR
-	 xYuxtG/a5fdw0XwYNfGVAIa2TMrrJSVpLYx0808o=
-From: Luca Weiss <luca@lucaweiss.eu>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject:
- Re: [PATCH v2] rpmsg: qcom_smd: Improve error handling for
- qcom_smd_parse_edge
-Date: Sat, 19 Oct 2024 12:06:50 +0200
-Message-ID: <2827287.mvXUDI8C0e@g550jk>
-In-Reply-To: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
-References: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIQFpZyR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9930AC4CECD;
+	Sun, 20 Oct 2024 22:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729462451;
+	bh=S8FfBXPNjjhlCI/HFOT2nHb83ABvho1ixjaatY2LUpc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=TIQFpZyRPt+QsAbzdlJg+8UlTWm4iXFQeZXbWQslyh42AcsIYh/NAgTbU6z/I8x9f
+	 3UHn7/ybQEOcMj5HUTTY5XWQU0BVC2+0RmvRvVgUAH79z0FU1IxuJO26jgh72oBGhl
+	 7ZQydrFrOZre+nGobqkcVcFfj96ZZovqWwqbveP0nXy6T135OWFkMCpT4VplRPA6Dr
+	 ciXIjo2/oyA3jlcpiy0nWrGP9zYjQ2WqA9Xuss6I6WpYPHdom+7F24+8jZ4wFTm4X4
+	 3LU8sR26+5gHz/Z/Rb8lfBHqdsGm2JZkcGPcyic5adHL/uuok7NcKYvp4rwxU2jGqD
+	 xE+xxIg6db65w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86B79D3C92D;
+	Sun, 20 Oct 2024 22:14:11 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Mon, 21 Oct 2024 00:13:21 +0200
+Subject: [PATCH v2 01/13] media: i2c: imx214: Fix link frequency
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241021-imx214-v2-1-fbd23e99541e@apitzsch.eu>
+References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
+In-Reply-To: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
+To: Ricardo Ribalda <ribalda@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729462449; l=1541;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=NluvLjOk7zpWEGYYj4MVNV0Nec5J7Y/DcA8dZZTRiIo=;
+ b=BrgCerZaFunRpJUctNvXFFArnADMv/vNjc/D3ZpQZveBIg/+nfL1ilwXeiid0JffRzm2c8MWS
+ EaPTRw8w1xRAj+9h6jXE0GW+1fhu/BSkI4Ia6q/hZAdIl81GSvWB1sI
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On Donnerstag, 6. Juni 2024 21:01:36 MESZ Luca Weiss wrote:
-> When the mailbox driver has not probed yet, the error message "failed to
-> parse smd edge" is just going to confuse users, so improve the error
-> prints a bit.
-> 
-> Cover the last remaining exits from qcom_smd_parse_edge with proper
-> error prints, especially the one for the mbox_chan deserved
-> dev_err_probe to handle EPROBE_DEFER nicely. And add one for ipc_regmap
-> also to be complete.
-> 
-> With this done, we can remove the outer print completely.
+From: André Apitzsch <git@apitzsch.eu>
 
-Ping, looks like this is still pending.
+The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
+IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
+which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
 
-Regards
-Luca
+Parsing the PLL registers with the defined 24MHz input. We're in single
+PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
+up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
+"Frame rate calculation formula" says "Pixel rate
+[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
+agrees with my number above.
 
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes in v2:
-> - Rebase on qcom for-next, drop dts patches which have been applied
-> - Improve error printing situation (Bjorn)
-> - Link to v1: https://lore.kernel.org/r/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz
-> ---
->  drivers/rpmsg/qcom_smd.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-> index 43f601c84b4f..06e6ba653ea1 100644
-> --- a/drivers/rpmsg/qcom_smd.c
-> +++ b/drivers/rpmsg/qcom_smd.c
-> @@ -1369,7 +1369,8 @@ static int qcom_smd_parse_edge(struct device *dev,
->  	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
->  	if (IS_ERR(edge->mbox_chan)) {
->  		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
-> -			ret = PTR_ERR(edge->mbox_chan);
-> +			ret = dev_err_probe(dev, PTR_ERR(edge->mbox_chan),
-> +					    "failed to acquire IPC mailbox\n");
->  			goto put_node;
->  		}
->  
-> @@ -1386,6 +1387,7 @@ static int qcom_smd_parse_edge(struct device *dev,
->  		of_node_put(syscon_np);
->  		if (IS_ERR(edge->ipc_regmap)) {
->  			ret = PTR_ERR(edge->ipc_regmap);
-> +			dev_err(dev, "failed to get regmap from syscon: %d\n", ret);
->  			goto put_node;
->  		}
->  
-> @@ -1501,10 +1503,8 @@ struct qcom_smd_edge *qcom_smd_register_edge(struct device *parent,
->  	}
->  
->  	ret = qcom_smd_parse_edge(&edge->dev, node, edge);
-> -	if (ret) {
-> -		dev_err(&edge->dev, "failed to parse smd edge\n");
-> +	if (ret)
->  		goto unregister_dev;
-> -	}
->  
->  	ret = qcom_smd_create_chrdev(edge);
->  	if (ret) {
-> 
-> ---
-> base-commit: 2c79712cc83b172ce26c3086ced1c1fae087d8fb
-> change-id: 20240423-apcs-mboxes-12ee6c01a5b3
-> 
-> Best regards,
-> 
+3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
+0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
+frequency of 600MHz due to DDR.
+That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
 
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+ drivers/media/i2c/imx214.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 4962cfe7c83d62425aeccb46a400fa93146f14ea..5d411452d342fdb177619cd1c9fd9650d31089bb 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -24,7 +24,7 @@
+ #define IMX214_MODE_STREAMING		0x01
+ 
+ #define IMX214_DEFAULT_CLK_FREQ	24000000
+-#define IMX214_DEFAULT_LINK_FREQ 480000000
++#define IMX214_DEFAULT_LINK_FREQ 600000000
+ #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
+ #define IMX214_FPS 30
+ #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
+
+-- 
+2.47.0
 
 
