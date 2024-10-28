@@ -1,76 +1,42 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0351DE3D1;
-	Mon, 28 Oct 2024 15:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D710C1DE8B3;
+	Mon, 28 Oct 2024 16:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730131190; cv=none; b=eXZAYBasr9wMIuJnyF72rxjtUgh7HJiHGeflF2/1mUWvVrusx9YRE2uJBYicyoWVijH22sOYkDLxUzw12i76EAqO+8eh9U83wSbJ2p8kehU4u14iuHSH0UOgan/r44MXn7CrqHLodx9NExLcwfXlHzh6KQ8xhHE1e0fn1HW4eFY=
+	t=1730133447; cv=none; b=llTVk+qEzsnvFHA2MQ2kTCqfUwsKrqNiY9R3hLb9CxXBRH98y0Z2nWciep4/eOxb0u2D433uTYCFxbLlTUxUwgzgCO+06wAnHLP0IXb+dZU7DLxOV+GS+CTdKQPxcd6F9en9kRqHjsDE4Zf2tBBV/JF84WOUr/FuzpOR3jSCh90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730131190; c=relaxed/simple;
-	bh=M0le9V9Kdnc+SoqVOHgbafA8bV44ev7rfgdQq7f2H2o=;
+	s=arc-20240116; t=1730133447; c=relaxed/simple;
+	bh=ObFeJAniS5fEngLmJJFrcIB6eWoaLLkxX0G3X/tyv1I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uvmp2HTDWTL3lghSihsA34cEwCO/LwYkGzlJhS9vvBOXlBzkn2kygWmRHEEwMcP6cK+sDpnu8zmAu4GviyH0tcs0m39U9YSxmlbUI/C1gIqZKuTfITNDfSpJuGPjYsQJJi4nzDTVQtw4JoBesgI2TquPqt5Ot7GJDR7w5xNAa/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SYGe6Fym; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=jCsernhtIVEQ9Z/eHkXMdvU/YB8Fu/nffHbRrDTn7jXaWZgKGVjeEizQJ1ZSaVzU5Sga34gi03tyLTrioHDKIYaHJgWHp1reT9xP/7tcpoAEktK9l96xlrfxWwgIaW1X51k/ndhrjW9hkQYAyytSejLQwU1glOfRNUeTF4xvZqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=kFVcCIcJ; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SYGe6Fym"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730131188; x=1761667188;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M0le9V9Kdnc+SoqVOHgbafA8bV44ev7rfgdQq7f2H2o=;
-  b=SYGe6FymWEYf0B/JlHLFHItK7+pdPGR8x+75GsTH8nrA1cRdxQ4nJws1
-   CAIh98ooo75Uul53B41Wkswq8oYK+r0SIikvRRnmuiqHFY5tu8z8ktTok
-   +B5edx/EDgVTVMF5lHOMtztXLhM0gyEjVnjgdaDZl/D5aVvbB/uqhAql7
-   abiqCrmybLxPWQ5QWfz90Uh3DJe5ollGAx2xZ9c0VsM/R9baBXRo5ADHB
-   QTWNjLPt/ju9RNPFhkUJF0Sn8qMjPO/TqvE2JqpTaVRk4NALc6vwJnMI1
-   tKJPH+pvlh3PMRFGyZ9k04LpNtxDF4G+0wztHwUUq5N5ZK0PpiNOZkCiU
-   Q==;
-X-CSE-ConnectionGUID: CVYrT8BIRXyBecNTo2bfDQ==
-X-CSE-MsgGUID: 1EtnO4bwS/mWsBV6wUnalA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29506433"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="29506433"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 08:59:33 -0700
-X-CSE-ConnectionGUID: iQc8wkRRTKWL3fpaCf50SQ==
-X-CSE-MsgGUID: ov8Po5UBSmyDzG3bh9zQUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112480471"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 08:59:28 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t5S9M-000000087nQ-3TE6;
-	Mon, 28 Oct 2024 17:59:24 +0200
-Date: Mon, 28 Oct 2024 17:59:24 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Aren <aren@peacevolution.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	=?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <trabarni@gmail.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] iio: light: stk3310: log error if reading the
- chip id fails
-Message-ID: <Zx-03Era_8ulHjDb@smile.fi.intel.com>
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="kFVcCIcJ"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id DFFE24C7D9;
+	Mon, 28 Oct 2024 16:37:21 +0000 (UTC)
+Date: Mon, 28 Oct 2024 12:37:14 -0400
+From: Aren Moynihan <aren@peacevolution.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Kaustabh Chakraborty <kauschluss@disroot.org>, =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, 
+	Ondrej Jirman <megi@xff.cz>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] iio: light: stk3310: Implement vdd and leda
+ supplies
+Message-ID: <ggpxs4mlkobdkvqxbzroeogqe2kxlixne7ly4njb5ynnszvvkv@3gusj5w53bbj>
 References: <20241028142000.1058149-1-aren@peacevolution.org>
- <20241028142000.1058149-6-aren@peacevolution.org>
- <Zx-jj8FEldW6sG55@smile.fi.intel.com>
- <xcavh66uxpl2orehtlzsy4g4udr3p2yqsq5pyhmxdqdmnegsvq@jpomr2uuwspz>
+ <20241028142000.1058149-4-aren@peacevolution.org>
+ <Zx-h7QUnCKwtu8iC@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -79,34 +45,76 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <xcavh66uxpl2orehtlzsy4g4udr3p2yqsq5pyhmxdqdmnegsvq@jpomr2uuwspz>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <Zx-h7QUnCKwtu8iC@smile.fi.intel.com>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1730133443;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:in-reply-to:references;
+	bh=gdOU4coDgP08ETzmQ6TrRirADJ9U/DUQX3kgQYM7trA=;
+	b=kFVcCIcJo6Ek5A4d6Q2vJUHdv6X6HwVgUIczq4fGAc+pf54dMUmDlrVQ6Eke3XInhVXd7E
+	PVtfa3b4ITCZ9SQQ/Y/6Os+XfjHE4beWqBE1BJrzfxNZHraO2ZgAak/YNnz/C9L2F1F+ij
+	uXKcRDiF/zD1BEXb+ZEbsKob8TH3ZTA=
 
-On Mon, Oct 28, 2024 at 11:29:35AM -0400, Aren wrote:
-> On Mon, Oct 28, 2024 at 04:45:35PM +0200, Andy Shevchenko wrote:
-> > On Mon, Oct 28, 2024 at 10:19:59AM -0400, Aren Moynihan wrote:
-> > > If the chip isn't powered, this call is likely to return an error.
-> > > Without a log here the driver will silently fail to probe. Common errors
-> > > are ENXIO (when the chip isn't powered) and ETIMEDOUT (when the i2c bus
-> > > isn't powered).
+On Mon, Oct 28, 2024 at 04:38:37PM +0200, Andy Shevchenko wrote:
+> On Mon, Oct 28, 2024 at 10:19:57AM -0400, Aren Moynihan wrote:
+> > The vdd and leda supplies must be powered on for the chip to function
+> > and can be powered off during system suspend.
 > > 
-> > The commit message does not explain why dev_err_probe() has been chosen
-> > and not simple dev_err().
+> > Co-developed-by: Ondrej Jirman <megi@xff.cz>
 > 
-> This function is only called from stk3310_probe, and this condition
-> should propagate it's error, so it fits what dev_err_probe is designed
-> for. dev_err would be pretty much equivalent just longer, like this:
+> Missing SoB. Please, read Submitting Patches documentation for understanding
+> what has to be done here.
 > 
-> if (ret < 0) {
-> 	dev_err(&client->dev, "failed to read chip it: %d\n", ret);
-> 	return ret;
-> }
+> > Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+> 
+> ...
+> 
+> > Notes:
+> >     I'm not sure what the proper way to handle attribution for this patch
+> >     is. It was origionally based on a patch by Ondrej Jirman[1], but I have
+> >     rewritten a large portion if it. I have included a Co-developed-by tag
+> >     to indicate this, but haven't sent him this patch, so I'm not sure what
+> >     to do about a Signed-off-by.
+> 
+> Ah, seems you already aware of this issue. So, either drop Co-developed-by
+> (and if you wish you may give a credit in a free form inside commit message)
+> or make sure you get his SoB tag.
 
-It's fine, the problem is the commit message in the patch. Please,
-update the commit message accordingly.
+Alright, thanks for clarifying that.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> >  	mutex_init(&data->lock);
+> 
+> Somewhere (in the previous patch?) you want to switch to devm_mutex_init().
 
+Good catch, it looks like that was being leaked before this refactor.
+Yeah that sounds like the right place, I'll include it in v4.
 
+> > +	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->supplies),
+> > +				      data->supplies);
+> > +	if (ret)
+> > +		return dev_err_probe(&client->dev, ret, "get regulators failed\n");
+> 
+> > +		return dev_err_probe(&client->dev, ret,
+> > +				     "regulator enable failed\n");
+> 
+> > +	ret = devm_add_action_or_reset(&client->dev, stk3310_regulators_disable, data);
+> > +	if (ret)
+> > +		return dev_err_probe(&client->dev, ret,
+> > +				     "failed to register regulator cleanup\n");
+> 
+> With
+> 
+> 	struct devuce *dev = &client->dev;
+> 
+> at the top of the function makes these and more lines neater.
+> 
+[snip]
+> 
+> While changing to RCT order here, it seems you have inconsistent approach
+> elsewhere (in your own patches!). Please, be consistent with chosen style.
+
+Sounds easy enough to fix, I'll include these in v4.
+
+Thanks taking the time to review
+ - Aren
