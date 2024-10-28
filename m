@@ -1,105 +1,152 @@
-Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840AD18C93D;
-	Mon, 28 Oct 2024 14:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F181DDA14;
+	Mon, 28 Oct 2024 14:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730125813; cv=none; b=c88n4z7uowoZFLhukMrkXn6FeR5E+fVoRqs2VxD1vgRdPhRtnpOl7Nkc36trVWZ+9U/aBOZIePKaLcRfkMfDxIECrWhrRigXr7/iJAPXD6GMTssdBXv+eTLa5qVYPH/Gy2Yrd/+oEbUaOEB64iU9CUl/vA4YUOBz7E4iXalQEB0=
+	t=1730126329; cv=none; b=C0+Y9TWTYqaubZ/2pBuUwLMFPk+7i7t5AmokrFUuKpO6OWmRHAR4Q0QbjMtUCsYqSSFCTxOJeI3/Q13LUuYAnSTi92UoyxqY/LWBnKvXpNCd1iHL4ESeXrg9aZXndbO5pQMsvOH15Ynkct8OXN1kH42fcSO7vDMt/Zf9dVYD5rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730125813; c=relaxed/simple;
-	bh=sdstsogHfVVzt/qF2FVu3AhaNVUWpR2HAeKX/JoSshs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZMCAIdVsNmapcun4lDdaEaGo0e122KrCaqVLN0yfB7kkgvIN1KLz8bnX1JLZp6vBooS7uF/lIdh+prXNSnnfPgn3Lz8hsECK5+iZ55tlpFHK+fH5NhruL6Pkq4eEVaslQxW6YHf8EOV/jNutmrMiF1jqvCZXd7iGt7vQ/k9IL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=AVB+177H; arc=none smtp.client-ip=206.189.193.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
+	s=arc-20240116; t=1730126329; c=relaxed/simple;
+	bh=VnKHNq/LVYhXDEEst8PtAj0P/TxTkAgJaUiIvrCxnO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CXn9dJ4ZJwkO9oMRnQTdC5xxOJVuLU3sAiqwr7UTTKvDVEl881AgIzfA3RFZPBdh9mTii/nQZxwXdxy9YMEupYFo+4ch1eTJ8jqXYMNMd4W5HIcYsZtbpmdfe9V9ipo8TE3xqFp/rAyZzcpmpiEmeWLMlCho3HRPR4wEGC9/1ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ox2ej3l3; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="AVB+177H"
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id 0ADD64C564;
-	Mon, 28 Oct 2024 14:21:41 +0000 (UTC)
-From: Aren Moynihan <aren@peacevolution.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ox2ej3l3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730126327; x=1761662327;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VnKHNq/LVYhXDEEst8PtAj0P/TxTkAgJaUiIvrCxnO8=;
+  b=Ox2ej3l3gYiuNqwFYqfrGzWQ754v3TkHvi/fFc/0oHYUEg6V43KscZ5s
+   +3Mv84PvgpzX8hDYfTPE61gzplhb2calRp6s2Bh/tbU7V8S7kLymTCd3u
+   kbseSDgFubkaIoDMehkFdPB9NGUKgezEinKOS4dL1j4/pxB6mHdU/btc1
+   z/Y107ho/+b1JfEgh2bmqC7O8n297UH7CoEBRBmZceuQRjPOBuekw7Y8c
+   vjPRcslqhHjz76ZBkrfoBaor6Z0ceF3TZ7X/mO4ADjP4uo2P+4RBP7MNc
+   xZk0Dee6d+dLstwLQ8qMYNgFQQn6JUz6RpLDczJ4GcUTP64WV4O2LDfxO
+   g==;
+X-CSE-ConnectionGUID: BI/hltz7TLOAFTd31KLATg==
+X-CSE-MsgGUID: DHP7+XRCRHqo2o0vOwN0eQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52277500"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="52277500"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 07:38:46 -0700
+X-CSE-ConnectionGUID: Zv0JGberReG955Uff7Y88g==
+X-CSE-MsgGUID: X4oBG17qSt+qqfke9r9MQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
+   d="scan'208";a="86424632"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 07:38:41 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1t5QtB-000000085dP-42c5;
+	Mon, 28 Oct 2024 16:38:37 +0200
+Date: Mon, 28 Oct 2024 16:38:37 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Aren Moynihan <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
 	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>
-Cc: Aren Moynihan <aren@peacevolution.org>,
+	Samuel Holland <samuel@sholland.org>,
 	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <trabarni@gmail.com>,
 	Ondrej Jirman <megi@xff.cz>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
 	phone-devel@vger.kernel.org
-Subject: [PATCH v3 0/6] iio: light: stk3310: support powering off during suspend
-Date: Mon, 28 Oct 2024 10:19:54 -0400
-Message-ID: <20241028142000.1058149-1-aren@peacevolution.org>
+Subject: Re: [PATCH v3 3/6] iio: light: stk3310: Implement vdd and leda
+ supplies
+Message-ID: <Zx-h7QUnCKwtu8iC@smile.fi.intel.com>
+References: <20241028142000.1058149-1-aren@peacevolution.org>
+ <20241028142000.1058149-4-aren@peacevolution.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
-X-Spam-Level: ****
-X-Spamd-Bar: ++++
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1730125303;
-	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding;
-	bh=O8RsRfQ0OglbTcLNh0bfBx27J2SnHEfQFA6wmv/Gu7k=;
-	b=AVB+177HK9Qd1iMLpM+4bhuIlh+W5zJ0k9Xni0T4R1EpdgmfO27T9W+uRd7xZWcMQn1Umk
-	eBOM/iW098j9le51t7XRoFHmU0h8egOB+38mmvB8050DsIcJnp/DyEcpwyx4p2IhRx7Q0X
-	F2Ni2tmH1dq7ve0XTTiY5Up5GMew57U=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028142000.1058149-4-aren@peacevolution.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-In the Pine64 PinePhone, the stk3310 chip is powered by a regulator that is
-disabled at system boot and can be shut off during suspend. To ensure that
-the chip properly initializes, both after boot and suspend, we need to
-manage this regulator.
+On Mon, Oct 28, 2024 at 10:19:57AM -0400, Aren Moynihan wrote:
+> The vdd and leda supplies must be powered on for the chip to function
+> and can be powered off during system suspend.
+> 
+> Co-developed-by: Ondrej Jirman <megi@xff.cz>
 
-Additionally if the chip is shut off in suspend, we need to make sure that
-it gets reinitialized with the same parameters after resume.
+Missing SoB. Please, read Submitting Patches documentation for understanding
+what has to be done here.
 
-Major changes in v3:
- - Use bulk regulators instead of two individual ones
- - Replace stk3310_remove with devm callbacks
- - Hopefully I haven't missed anything, it's been a while since I worked on this
-   patch, and I didn't take good enough notes
+> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
 
-Major changes in v2:
- - Add handling of the IR LED. I was hesitant to include this as it is the
-   same as pull-up regulator for the i2c bus on the hardware I have, so I
-   can't test it well. I think leaving it out is more likely to cause
-   issues than including it.
- - Convert stk3310 to use dev_err_probe for errors.
- - Always enable / disable regulators and rely on dummy devices if they're
-   not specified.
- - more listed in individual patches
+...
 
-Aren Moynihan (5):
-  dt-bindings: iio: light: stk33xx: add vdd and leda regulators
-  iio: light: stk3310: handle all remove logic with devm callbacks
-  iio: light: stk3310: Implement vdd and leda supplies
-  iio: light: stk3310: use dev_err_probe where possible
-  iio: light: stk3310: log error if reading the chip id fails
+> Notes:
+>     I'm not sure what the proper way to handle attribution for this patch
+>     is. It was origionally based on a patch by Ondrej Jirman[1], but I have
+>     rewritten a large portion if it. I have included a Co-developed-by tag
+>     to indicate this, but haven't sent him this patch, so I'm not sure what
+>     to do about a Signed-off-by.
 
-Ondrej Jirman (1):
-  arm64: dts: allwinner: pinephone: Add power supplies to stk3311
+Ah, seems you already aware of this issue. So, either drop Co-developed-by
+(and if you wish you may give a credit in a free form inside commit message)
+or make sure you get his SoB tag.
 
- .../bindings/iio/light/stk33xx.yaml           |   4 +
- .../dts/allwinner/sun50i-a64-pinephone.dtsi   |   2 +
- drivers/iio/light/stk3310.c                   | 156 +++++++++++++-----
- 3 files changed, 118 insertions(+), 44 deletions(-)
+...
+
+>  	mutex_init(&data->lock);
+
+Somewhere (in the previous patch?) you want to switch to devm_mutex_init().
+
+...
+
+> +	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->supplies),
+> +				      data->supplies);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret, "get regulators failed\n");
+
+> +		return dev_err_probe(&client->dev, ret,
+> +				     "regulator enable failed\n");
+
+> +	ret = devm_add_action_or_reset(&client->dev, stk3310_regulators_disable, data);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret,
+> +				     "failed to register regulator cleanup\n");
+
+With
+
+	struct devuce *dev = &client->dev;
+
+at the top of the function makes these and more lines neater.
+
+...
+
+>  static int stk3310_resume(struct device *dev)
+>  {
+> -	u8 state = 0;
+>  	struct stk3310_data *data;
+> +	u8 state = 0;
+> +	int ret;
+
+While changing to RCT order here, it seems you have inconsistent approach
+elsewhere (in your own patches!). Please, be consistent with chosen style.
+
+>  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
 
 -- 
-2.47.0
+With Best Regards,
+Andy Shevchenko
+
 
