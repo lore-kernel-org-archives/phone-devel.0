@@ -1,102 +1,140 @@
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDBA18E03D;
-	Mon, 28 Oct 2024 20:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1283156F54;
+	Wed, 30 Oct 2024 11:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730148290; cv=none; b=piIKLYl1MdhntgopAiWXR0lbaXWxsWrENWZNv5c7ORYBTwVg6HFWYaMRYhhYRnMcIlCNO/Wr6oGeasHGPx9bKsL9VXrX2IspVkQbmB6x+j4hnwJhR9U9Hw0K61QdH0G29kau8gjFoXzQPr2XXCj057ccV+pn4rd6Ha9ldVqtat8=
+	t=1730287543; cv=none; b=k+7aYQWQiyXLMrI3cNIfeS+mLZOk5Wy5EitAG1edoEogD+Q4VlzHBxkCpQ33DZrISoq0qT7YKdq40+uz0IiQS0PvklpFgAcf4M5hLfQkh6r1hlE5c7HpbpHGb/0XOHvRydbbJ3YO/enZ2N6+bq0maxrQRC6d5zpNRvLRJI5r6AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730148290; c=relaxed/simple;
-	bh=6TnCRjPA3Ba+zxlsnQDMZsAXdvK66rr2MUy4e6J0U2c=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Q9/+LVjMW8lWr9qGLgqWL63BwJ2KoKJE2TAnUpuVBNV36QEMQUMSjweMiK85Ic21VT8VQmF3UI1jg0Z42+7j3jY6Gs3dovNJXz1SbY1J3lY3OySpgp91kFbPuBVd5QU3JToWob+vt+Ty1ytL7MWrFHKExuvLdRHaoioDhp2QQ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=V4msOG75; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1730287543; c=relaxed/simple;
+	bh=pNa+VsBVYyKIrBAGRVMBxaWvEJvSkXNDNmc5rWOx9YM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kwDY1MNcTSm2dAH6x75cIBc4GN+zpftioRWMyaPjStUhJ9Qud8imzp/g7WNV0psUQdyFItZPEOwdRXThn0EqFpNJHG0sr79UGO5vQhBtAkfdVkNhgdH3CPKsvBFNBZtYB6JMQDKotGMZtpyg/RLokDWcPC5RKVyh1pLBF/5xMEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufAlKkUA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="V4msOG75"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufAlKkUA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D551C4CEE7;
+	Wed, 30 Oct 2024 11:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730287543;
+	bh=pNa+VsBVYyKIrBAGRVMBxaWvEJvSkXNDNmc5rWOx9YM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ufAlKkUAhCGPj/auQF6rHYED8CFspclfKoB94a1VTC1cJGnkDFMT5ORqK1lWTv88e
+	 9Bfo/G9Q3nAb9Jm1YTxj7vB3xiaf9lxaWm1MSxQ2iVKPyPNv3z3Fg7HRhu0oPP8Snc
+	 Nm86ZopAxQki9Opnce+PwMKtlI8HHFRPAX4LyHRuA3emzRrTYMnpSj1vASCxQ/ilce
+	 UyJS8lRdMuEfhgZjZLh8eCyeXgHgwoJu39VQaexeHGLpUe9JdpCptuB/XCHiD+e2HW
+	 hgKaYwWK7v0fmg4yIOI52e5Yf9uQl3ac9miMUAodgpxmMSD0xVCUDEMqti6D3JSxes
+	 lKyHUwCbnoaeA==
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-84fd057a993so2061402241.3;
+        Wed, 30 Oct 2024 04:25:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUOizf2QYypZvFWcmBxuhRgOSD7TFIU26MkD+/tQl9G2S2AGdGlFQYU2cB3rv+prYbxsI5xupRfz2EeTwc=@vger.kernel.org, AJvYcCWBJI2qFYFV1Z6g6jnII0hICKkAsA0uDSuMK/RHCrZpYlBfUEoiJ2eCZzTinmKXzzR7Ngpw7SfpyD9Gj98=@vger.kernel.org, AJvYcCXwFrbfebpP70uvtUdq4Jd7s6KGeL4n0HREM4bstjVeQmT0efgwQSrusG+kkE6i7cKZjA7fAbhsVPovbHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiL23V+uQ90dD4QEZeTLObjlWnpn45iUK5bHYuQ+tK9IQYVpRw
+	IJp+35w8jE1LZoq1lkKCv5qDZo2zjrVhzg8wpuTuo2LRaeXlmrtL/5JCdkS96u4CLfUthXQVfRN
+	4+30xjDI6TDmUvHq9zdPH5b+43k4=
+X-Google-Smtp-Source: AGHT+IFcj4ArYSXy6RowfeL0PKK8BGT1Y7OSex/rX6l5UUiTFAxTX0iZ0k+liK3/QVIlTGgMUBgbDIP+9OeBwQ9oGPI=
+X-Received: by 2002:a05:6102:943:b0:4a5:ba3b:665e with SMTP id
+ ada2fe7eead31-4a8cfb8287emr14789540137.13.1730287542275; Wed, 30 Oct 2024
+ 04:25:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1730148280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CY+XwZ0fuc1pJBzr3ZbrtC3qPygvT+6N7jxEZ8PMcdI=;
-	b=V4msOG75IkYLOHuvX3IjHDPHm/gxy4ZUnk0PDBO8WsGVwRNG0V3ymYOSNTwnkjqkg02iRH
-	zA0RtCZwy9wwafaGfqKwnI/d+o1keEyBbYQS5k3q9iNnp3zzLB/9g0HvCd1YZpyOLX9qVE
-	YHMg0moOoeDHs9MrGBLMBmrLn3t3UKairICOMRfmWE10lwkQT18Ma7ChZORbYgT4lo7OJt
-	rxp9UV/5Z3v3xW4LV/y0c7vmb/rB+d6sBpj9PkGVyL8NCjMPO1vauLAMJAOaTCcoRlfbLf
-	NfZuGHCgrPppLYL8OgVJB+q9FtNP46+UerKpV0ISmjaSsZgh6LBYZdHT76YIHQ==
-Date: Mon, 28 Oct 2024 21:44:37 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Aren Moynihan <aren@peacevolution.org>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Kaustabh
- Chakraborty <kauschluss@disroot.org>, =?UTF-8?Q?Barnab=C3=A1s_Cz=C3=A9?=
- =?UTF-8?Q?m=C3=A1n?= <trabarni@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] iio: light: stk3310: Implement vdd and leda
- supplies
-In-Reply-To: <Zx-h7QUnCKwtu8iC@smile.fi.intel.com>
-References: <20241028142000.1058149-1-aren@peacevolution.org>
- <20241028142000.1058149-4-aren@peacevolution.org>
- <Zx-h7QUnCKwtu8iC@smile.fi.intel.com>
-Message-ID: <98dd3fbf970559de8b7559da312e22fc@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu> <20241021-imx214-v2-1-fbd23e99541e@apitzsch.eu>
+In-Reply-To: <20241021-imx214-v2-1-fbd23e99541e@apitzsch.eu>
+From: Ricardo Ribalda Delgado <ribalda@kernel.org>
+Date: Wed, 30 Oct 2024 12:25:25 +0100
+X-Gmail-Original-Message-ID: <CAPybu_0o+csbkyS7bbMUjB+VSUwj2DK_STy=wubCT_frH0DzgA@mail.gmail.com>
+Message-ID: <CAPybu_0o+csbkyS7bbMUjB+VSUwj2DK_STy=wubCT_frH0DzgA@mail.gmail.com>
+Subject: Re: [PATCH v2 01/13] media: i2c: imx214: Fix link frequency
+To: git@apitzsch.eu
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Aren,
+Hi Andre
 
-On 2024-10-28 15:38, Andy Shevchenko wrote:
-> On Mon, Oct 28, 2024 at 10:19:57AM -0400, Aren Moynihan wrote:
->> The vdd and leda supplies must be powered on for the chip to function
->> and can be powered off during system suspend.
->> 
->> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> 
-> Missing SoB. Please, read Submitting Patches documentation for 
-> understanding
-> what has to be done here.
-> 
->> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> 
-> ...
-> 
->> Notes:
->>     I'm not sure what the proper way to handle attribution for this 
->> patch
->>     is. It was origionally based on a patch by Ondrej Jirman[1], but I 
->> have
->>     rewritten a large portion if it. I have included a Co-developed-by 
->> tag
->>     to indicate this, but haven't sent him this patch, so I'm not sure 
->> what
->>     to do about a Signed-off-by.
-> 
-> Ah, seems you already aware of this issue. So, either drop 
-> Co-developed-by
-> (and if you wish you may give a credit in a free form inside commit 
-> message)
-> or make sure you get his SoB tag.
+On Mon, Oct 21, 2024 at 12:14=E2=80=AFAM Andr=C3=A9 Apitzsch via B4 Relay
+<devnull+git.apitzsch.eu@kernel.org> wrote:
+>
+> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+>
+> The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
+> IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
+> which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
+>
+> Parsing the PLL registers with the defined 24MHz input. We're in single
+> PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
+> up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
+> "Frame rate calculation formula" says "Pixel rate
+> [pixels/s] =3D VTPXCK [MHz] * 4", so 120 * 4 =3D 480MPix/s, which basical=
+ly
+> agrees with my number above.
+>
+> 3.1.4. MIPI global timing setting says "Output bitrate =3D OPPXCK * reg
+> 0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
+> frequency of 600MHz due to DDR.
+> That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
+>
+I think your calculations are correct and the value should be 600M...
+but if we land this change, there will be boards that will stop
+working until they update their dts.
+Not sure if we allow that.
 
-Perhaps the best and also easiest solution would be to provide an
-Originally-by tag for Ondrej, because that's what it is.  The patch
-was written originally by Ondrej, but you've changed many parts of
-the patch while upstreaming it.
+Can we move this change to the last one of the series and add something lik=
+e:
+
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 2aca3d88a0a7..8b4ded4cb5ce 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -1281,13 +1281,9 @@ static int imx214_parse_fwnode(struct device
+*dev, struct imx214 *imx214)
+                if (bus_cfg.link_frequencies[i] =3D=3D IMX214_DEFAULT_LINK_=
+FREQ)
+                        break;
+
+-       if (i =3D=3D bus_cfg.nr_of_link_frequencies) {
+-               dev_err_probe(dev, -EINVAL,
+-                             "link-frequencies %d not supported,
+Please review your DT\n",
++       if (i =3D=3D bus_cfg.nr_of_link_frequencies)
++               dev_warn(dev, "link-frequencies %d not supported,
+Please review your DT. Continuing anyway\n",
+                              IMX214_DEFAULT_LINK_FREQ);
+-               ret =3D -EINVAL;
+-               goto done;
+-       }
+
+
+
+> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> ---
+>  drivers/media/i2c/imx214.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> index 4962cfe7c83d62425aeccb46a400fa93146f14ea..5d411452d342fdb177619cd1c=
+9fd9650d31089bb 100644
+> --- a/drivers/media/i2c/imx214.c
+> +++ b/drivers/media/i2c/imx214.c
+> @@ -24,7 +24,7 @@
+>  #define IMX214_MODE_STREAMING          0x01
+>
+>  #define IMX214_DEFAULT_CLK_FREQ        24000000
+> -#define IMX214_DEFAULT_LINK_FREQ 480000000
+> +#define IMX214_DEFAULT_LINK_FREQ 600000000
+>  #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10=
+)
+>  #define IMX214_FPS 30
+>  #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
+>
+> --
+> 2.47.0
+>
+>
