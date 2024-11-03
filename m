@@ -1,236 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E64770832;
-	Sun,  3 Nov 2024 11:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F9B17DFE4;
+	Sun,  3 Nov 2024 16:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730633483; cv=none; b=qlKoxuxPr2NL3BdiKG3+dDdlg6p9qjwwU9vEpt4JgaWICDv1Kmbhvauh6d8Xr4Mui55vLkoVNg4fy9fzLXij3Gh0mGHAI2Yx0sVwrS/WlGihBbdgXCwDwL717zW9fjTw99kzriEzHjjdt9Ibkx7I3IQKiZd4wA2AOHo1+6S4AgI=
+	t=1730650280; cv=none; b=ff8nwkncRm652FX7GTdpW2uE1ZCbCSkRH4nsgDEelRv/C6PwPUSJWhZNqHb6YbjQ2QU6514uo+Jk9xncNrS8gZo5Qesnz87QZ/Y0v3ROnvu8JyfCSyDhxn4nYQ0ypSoVOlS0l4TY580dyZLWsBAeZVAcPz7UyBAZu5tRFngWMrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730633483; c=relaxed/simple;
-	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qFxUng7VldNrQKJcFvDqJZ/gwUWTp/+vRkoCj4b+E8TUbUoy/130mwf9QPL7UstAP0CqfRSxwlqb8TPsmWMwrS6+keBSVuX186Fcm14OWcFPsWNW7J6+LHKFuqNn1Mn4jUdqZnlAHpLmw+vPS+w5e4LGpyWcIBFUjgAoZqttR9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfsI9xbL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730650280; c=relaxed/simple;
+	bh=NxDS9O+723j2rQWp5co1wAaa/RB6x3JY6rfjUVcqhKA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A+AMS2o0hjWYBqYJwP06M8A0k3O2rwqvAme5YLji3sb1r/XUB/G3n17Z3S/gbbhUiSGzc+n3n1AnTDpLr6TubGsjvFBXKs8vCE/SM19bNgirIdN8OqU95+75+JoFhHLJEq6t/yOjdEgNTk0I4IcAVZ6mqKqO+FjIZ1PUWBcje7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=pLlGFQaC; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfsI9xbL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD515C4CECD;
-	Sun,  3 Nov 2024 11:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730633483;
-	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WfsI9xbLsIDKjoAK61UpdaKB1MZDf+nzsNT6q0hqXnk+BOWHDvW+ZejPDr83/cTcC
-	 5p0njkFXStrBEqtWjGHGB9TDDyanBXuM99CK93l8AEemJBPfXy8vS/PZLK3EiO8XLG
-	 3XUKYcaiTZoAJKwbQlZRqIJ1nIw+0U4J4uut0SH5BJwUv1wbA1UxDXkuVbXu1q5mr1
-	 v/7jbnVwp9LzEbLO5xuLhuRlX4GFPWG0RwW7rLq8L0B+EUBk9Z8m/Ei9WnH/5ntr6H
-	 aYmjPhjfBmQpayBwpDHyvUFpoj7tl3JH+OhSLDKlgC93FHrKqVVWMhk7jbFEgjE6nz
-	 hizgVfwY6NINA==
-Date: Sun, 3 Nov 2024 11:31:03 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Aren Moynihan <aren@peacevolution.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Kaustabh
- Chakraborty <kauschluss@disroot.org>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
- <trabarni@gmail.com>, Ondrej Jirman <megi@xff.cz>, Uwe =?UTF-8?B?S2xlaW5l?=
- =?UTF-8?B?LUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
- phone-devel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="pLlGFQaC"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id B0D134C745;
+	Sun,  3 Nov 2024 16:11:15 +0000 (UTC)
+Date: Sun, 3 Nov 2024 11:11:13 -0500
+From: Aren <aren@peacevolution.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Kaustabh Chakraborty <kauschluss@disroot.org>, =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, 
+	Ondrej Jirman <megi@xff.cz>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
 Subject: Re: [PATCH v4 3/6] iio: light: stk3310: Implement vdd and leda
  supplies
-Message-ID: <20241103112933.60f96f97@jic23-huawei>
-In-Reply-To: <20241102195037.3013934-9-aren@peacevolution.org>
+Message-ID: <cx5bvcqfabsptn37uzscooh73j73dsoqadmfaibzxrzjk3byx4@ofwu7qa6ht4f>
 References: <20241102195037.3013934-3-aren@peacevolution.org>
-	<20241102195037.3013934-9-aren@peacevolution.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+ <20241102195037.3013934-9-aren@peacevolution.org>
+ <20241103112933.60f96f97@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241103112933.60f96f97@jic23-huawei>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1730650277;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:in-reply-to:references;
+	bh=3q7IWRD1gpOW1Lskvc4rjHRf5AbTOTI6oSgYSMbB074=;
+	b=pLlGFQaC+RM79asWpic5KogsiEgd7rRKglcrwIATo9BlHDxXN1CfmqzAZDL+ATwdbmOjG5
+	pUiNx1bIU1/iU751En6NAr5vmzF7xDI64tGRkfacCUOIKoqq8QVCqJvvXKAuasXuQer4Jw
+	F9P2J+OeRh+nMCaavLqn3ENg6jl+zCc=
 
-On Sat,  2 Nov 2024 15:50:39 -0400
-Aren Moynihan <aren@peacevolution.org> wrote:
+On Sun, Nov 03, 2024 at 11:31:03AM +0000, Jonathan Cameron wrote:
+> On Sat,  2 Nov 2024 15:50:39 -0400
+> Aren Moynihan <aren@peacevolution.org> wrote:
+> 
+> > The vdd and leda supplies must be powered on for the chip to function
+> > and can be powered off during system suspend.
+> > 
+> > This was originally based on a patch by Ondrej Jirman[1], but has been
+> > rewritten since.
+> > 
+> > 1: https://codeberg.org/megi/linux/commit/a933aff8b7a0e6e3c9cf1d832dcba07022bbfa82
+> > 
+> > Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+> > ---
+> > 
+> > Notes:
+> >     Changes in v4:
+> >      - fix variable declaration order in stk3310_resume to match the rest of
+> >        the driver
+> 
+> For this Andy was asking for consistency.  Generally we don't insist on a
+> particular ordering in IIO drivers, but we do prefer them to be the same.
+> Your new ordering is inconsistent between resume and suspend.  Whilst
+> existing code may be inconsistent, you can still pick most common ordering
+> and use that for your new code.
+> 
+> If the existing driver is inconsistent then feel free to tidy that up but
+> do it in a precursor patch so there is a consistent style for you to then
+> carry on.
 
-> The vdd and leda supplies must be powered on for the chip to function
-> and can be powered off during system suspend.
-> 
-> This was originally based on a patch by Ondrej Jirman[1], but has been
-> rewritten since.
-> 
-> 1: https://codeberg.org/megi/linux/commit/a933aff8b7a0e6e3c9cf1d832dcba07022bbfa82
-> 
-> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> ---
-> 
-> Notes:
->     Changes in v4:
->      - fix variable declaration order in stk3310_resume to match the rest of
->        the driver
+Oh right, the order of declarations in stk3310_suspend also needs to be
+flipped. Is that simple enough that you can fix it when applying this?
 
-For this Andy was asking for consistency.  Generally we don't insist on a
-particular ordering in IIO drivers, but we do prefer them to be the same.
-Your new ordering is inconsistent between resume and suspend.  Whilst
-existing code may be inconsistent, you can still pick most common ordering
-and use that for your new code.
+Apparently I was being dense, I checked the rest of the driver to see
+what it did (it's consistent about putting shorter lines & ones without
+an assignment first), and fixed the case Andy pointed out to match that,
+but failed to check the rest of the patch.
 
-If the existing driver is inconsistent then feel free to tidy that up but
-do it in a precursor patch so there is a consistent style for you to then
-carry on.
-
->     
->     Changes in v3:
->      - use bulk regulators instead of two individual ones
->      - handle cleanup using devm callbacks instead of the remove function
->     
->     Changes in v2:
->      - always enable / disable regulators and rely on a dummy regulator if
->        one isn't specified
->      - replace usleep_range with fsleep
->      - reorder includes so iio headers are last
->      - add missing error handling to resume
-> 
->  drivers/iio/light/stk3310.c | 76 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 74 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-> index 181b7acb3f96..f93689c61f44 100644
-> --- a/drivers/iio/light/stk3310.c
-> +++ b/drivers/iio/light/stk3310.c
-> @@ -13,6 +13,8 @@
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +
->  #include <linux/iio/events.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -130,6 +132,7 @@ struct stk3310_data {
->  	struct regmap_field *reg_int_ps;
->  	struct regmap_field *reg_flag_psint;
->  	struct regmap_field *reg_flag_nf;
-> +	struct regulator_bulk_data supplies[2];
->  };
->  
->  static const struct iio_event_spec stk3310_events[] = {
-> @@ -621,6 +624,31 @@ static irqreturn_t stk3310_irq_event_handler(int irq, void *private)
->  	return IRQ_HANDLED;
->  }
->  
-> +static int stk3310_regulators_enable(struct stk3310_data *data)
-> +{
-> +	int ret;
-> +
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* we need a short delay to allow the chip time to power on */
-> +	fsleep(1000);
-> +
-> +	return 0;
-> +}
-> +
-> +static void stk3310_regulators_disable(void *private)
-> +{
-> +	int ret;
-> +	struct stk3310_data *data = private;
-> +	struct device *dev = &data->client->dev;
-> +
-> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret)
-> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
-> +}
-> +
->  static int stk3310_probe(struct i2c_client *client)
->  {
->  	int ret;
-> @@ -642,6 +670,13 @@ static int stk3310_probe(struct i2c_client *client)
->  
->  	devm_mutex_init(&client->dev, &data->lock);
->  
-> +	data->supplies[0].supply = "vdd";
-> +	data->supplies[1].supply = "leda";
-> +	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->supplies),
-> +				      data->supplies);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret, "get regulators failed\n");
-> +
->  	ret = stk3310_regmap_init(data);
->  	if (ret < 0)
->  		return ret;
-> @@ -652,6 +687,16 @@ static int stk3310_probe(struct i2c_client *client)
->  	indio_dev->channels = stk3310_channels;
->  	indio_dev->num_channels = ARRAY_SIZE(stk3310_channels);
->  
-> +	ret = stk3310_regulators_enable(data);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "regulator enable failed\n");
-> +
-> +	ret = devm_add_action_or_reset(&client->dev, stk3310_regulators_disable, data);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "failed to register regulator cleanup\n");
-> +
->  	ret = stk3310_init(indio_dev);
->  	if (ret < 0)
->  		return ret;
-> @@ -682,18 +727,45 @@ static int stk3310_probe(struct i2c_client *client)
->  static int stk3310_suspend(struct device *dev)
->  {
->  	struct stk3310_data *data;
-> +	int ret;
->  
->  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
->  
-> -	return stk3310_set_state(data, STK3310_STATE_STANDBY);
-> +	ret = stk3310_set_state(data, STK3310_STATE_STANDBY);
-> +	if (ret)
-> +		return ret;
-> +
-> +	regcache_mark_dirty(data->regmap);
-> +
-> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret) {
-> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
->  }
->  
->  static int stk3310_resume(struct device *dev)
->  {
-> -	u8 state = 0;
-> +	int ret;
->  	struct stk3310_data *data;
-> +	u8 state = 0;
->  
->  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
-> +
-> +	ret = stk3310_regulators_enable(data);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to re-enable regulators: %d", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = regcache_sync(data->regmap);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to restore registers: %d\n", ret);
-> +		return ret;
-> +	}
-> +
->  	if (data->ps_enabled)
->  		state |= STK3310_STATE_EN_PS;
->  	if (data->als_enabled)
-
+Thanks
+ - Aren
