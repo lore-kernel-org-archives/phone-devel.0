@@ -1,25 +1,25 @@
 Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC89418E1F;
-	Sun, 10 Nov 2024 21:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B70149011;
+	Sun, 10 Nov 2024 22:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731274477; cv=none; b=L9eK90h+IuBdPcMXEytqQ5xodqMlR+oxWb4RMIzWdncoiSvWA3p2i9ce1CmPIdTUrHTiWGgtviHN6EDMjb1AC2zm84YNrkBiwOFoyaKso6dKsKx/QcZS2+aaGp6mLV9I9w3n4a90XHUZcR054U3eZOybii+6CnvpntTdIU+xqpM=
+	t=1731278283; cv=none; b=suiNM6bJiTVqTIdgyoEAS1F5o5gHeoZ9fnyBtZZVTvW5ENgv4qKcCqmYzYtVHsm5UjJI0rZj6ZTiEnKUO14WRDB9DXflExo3uXsFXloxcOx7cLAHTWaKxoUPYDB+0yvj2CZXK5i/QEGMZQ3rTdJmwmdcm9mXujvDTBSw5togOOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731274477; c=relaxed/simple;
-	bh=OgL/qoT3LYnj9w1Et57aGyhc6u3/rI4DxO7jGiTe47I=;
+	s=arc-20240116; t=1731278283; c=relaxed/simple;
+	bh=9hkl6dXSpQpYY3J+vmbhVG+9S37EpWR2G7m6e5A7ATQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=abAtHU9d7n64VNQhEwnCymlieQ78ma3fNSD/rU59LvUAjqdRjOLRQR18jeRpUvrHamwcw+2HkZ5lAiaXB9eL2XSEZJ2yREBm4G/6NY7XD7KbBba+HvxdzJ0dTrT9IJVuL5gsKZIHGGvS1/pvYYybQ8R7OXR6seb+PNLS+Q/vwx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=f9tVVIwx; arc=none smtp.client-ip=206.189.193.133
+	 Content-Type:Content-Disposition:In-Reply-To; b=V/qHrU41A7HqegoEOmeYCLv4f0us9H20JT6OpamElCxqgqEDOzQ6YkGR92GsUxW2AZZAHY1aiZGfNt3x0IRniX7+ZPDuTfdmXjNLmJeHlewQ69oDZrX4TTGuaCs1rb0h2fR6coB7GYdrmXcagqSR6xACwYgn/NOrHIi+JlWeRBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=JCoGsG4K; arc=none smtp.client-ip=206.189.193.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="f9tVVIwx"
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="JCoGsG4K"
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id 2763C4C949;
-	Sun, 10 Nov 2024 21:34:33 +0000 (UTC)
-Date: Sun, 10 Nov 2024 16:34:30 -0500
+	by a.peacevolution.org (Postfix) with ESMTPA id 9861E4C954;
+	Sun, 10 Nov 2024 22:37:58 +0000 (UTC)
+Date: Sun, 10 Nov 2024 17:37:56 -0500
 From: Aren <aren@peacevolution.org>
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
@@ -32,14 +32,14 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
- possible
-Message-ID: <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
+Subject: Re: [PATCH v4 2/6] iio: light: stk3310: handle all remove logic with
+ devm callbacks
+Message-ID: <qqk4rbx6wxr7vofepk63yvuimavafbiy2srkqx2zvl2kxttlrk@axpphmdxffis>
 References: <20241102195037.3013934-3-aren@peacevolution.org>
- <20241102195037.3013934-11-aren@peacevolution.org>
- <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
- <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
- <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+ <20241102195037.3013934-7-aren@peacevolution.org>
+ <ZyiGiK6bSd_d0VQ6@smile.fi.intel.com>
+ <mlvzaskgxqjfu6yiib2u7m3pczsifsluc4mqnzy6w3xzxblvm6@xrxvvruzftn2>
+ <ZzEOqC9dAHCRX5a9@surfacebook.localdomain>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -48,75 +48,37 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+In-Reply-To: <ZzEOqC9dAHCRX5a9@surfacebook.localdomain>
 X-Spamd-Bar: /
 Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1731274474;
+	s=dkim; t=1731278280;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:in-reply-to:references;
-	bh=oZcPhgVogTXytMRM2X3xlfPRj/xPsn3yw0hTKHL8ttU=;
-	b=f9tVVIwxnKGQLg6bmCXySmWScp8LSpvZQfexKo1/aOdBOYhvxAdyTpFbVZUj3C2ce1hshi
-	iixMbVEkA1qUwuAwFnlTEC1qAYNUMd6D5MeRodWpF/VCKgPS9VXM1nAPOtNjlKcSsYiodK
-	L6nJMhaEPdkFvEp7pHwo/J+aFEuiEbQ=
+	bh=mxdzehp9E1yxMOm96JOXj/7tzWysSA5vOI9pS4TNxug=;
+	b=JCoGsG4KLKcpc4jAcywobkNkrZK3tdmgMdqJpCz10h79Xv0fvSFkWe2uMcpRrIr5S59UOn
+	urWG6uJB44+OePGrN6eLIyXkcUYf0Rn4MFnQgtS54HNmEivIPX/8PQdkOXzs6ZsbAS6b7n
+	RMuK70nMMwGFCx88FZJ9flsKH8Cvf88=
 
-On Sun, Nov 10, 2024 at 09:52:32PM +0200, Andy Shevchenko wrote:
-> Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
-> > On Mon, Nov 04, 2024 at 10:40:16AM +0200, Andy Shevchenko wrote:
-> > > On Sat, Nov 02, 2024 at 03:50:41PM -0400, Aren Moynihan wrote:
+On Sun, Nov 10, 2024 at 09:51:04PM +0200, Andy Shevchenko wrote:
+> Sun, Nov 10, 2024 at 01:38:39PM -0500, Aren kirjoitti:
+> > On Mon, Nov 04, 2024 at 10:32:08AM +0200, Andy Shevchenko wrote:
+> > > On Sat, Nov 02, 2024 at 03:50:37PM -0400, Aren Moynihan wrote:
 > 
 > ...
 > 
-> > > >  #define STK3310_REGFIELD(name)						    \
-> > > >  	do {								    \
-> > > >  		data->reg_##name =					    \
-> > > > -			devm_regmap_field_alloc(&client->dev, regmap,	    \
-> > > > +			devm_regmap_field_alloc(dev, regmap,		    \
-> > > >  				stk3310_reg_field_##name);		    \
-> > > > -		if (IS_ERR(data->reg_##name)) {				    \
-> > > > -			dev_err(&client->dev, "reg field alloc failed.\n"); \
-> > > > -			return PTR_ERR(data->reg_##name);		    \
-> > > > -		}							    \
-> > > > +		if (IS_ERR(data->reg_##name))				    \
+> > > > +	ret = devm_add_action_or_reset(&client->dev, stk3310_set_state_disable, data);
 > > > 
-> > > > +			return dev_err_probe(dev,			    \
-> > > > +				PTR_ERR(data->reg_##name),		    \
-> > > 
-> > > AFAICS these two can be put on one.
+> > > Why not simply 'dev' as in below call?
 > > 
-> > This doesn't leave room for whitespace between the end of line and "\",
+> > I was trying to avoid refactoring the entire function to replace
+> > &client->dev with dev, I'll add a patch for that to the next revision.
 > 
-> Is it a problem?
+> I'm not talking about refactoring, I'm talking only about the lines that you
+> have touched / added.
 
-It feels a bit camped and not as readable to me:
-
-#define STK3310_REGFIELD(name)						    \
-	do {								    \
-		data->reg_##name =					    \
-			devm_regmap_field_alloc(dev, regmap,		    \
-				stk3310_reg_field_##name);		    \
-		if (IS_ERR(data->reg_##name))				    \
-			return dev_err_probe(dev, PTR_ERR(data->reg_##name),\
-					     "reg field alloc failed.\n");  \
-	} while (0)
-
-Removing a level of indentation makes it much better
-
-#define STK3310_REGFIELD(name) ({						\
-	data->reg_##name = devm_regmap_field_alloc(dev, regmap,			\
-						   stk3310_reg_field_##name);   \
-	if (IS_ERR(data->reg_##name))						\
-		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
-				     "reg field alloc failed\n");		\
-})
-
-> > replacing "do { } while (0)" with "({ })" and deindenting could make
-> > enough room to clean this up the formatting of this macro though.
-> 
-> do {} while (0) is C standard, ({}) is not.
-
-({ }) is used throughout the kernel, and is documented as such[1]. I
-don't see a reason to avoid it, if it helps readability.
-
-1: the "GNU Extensions" section of Documentation/kernel-hacking/hacking.rst
+Ah right, this one makes sense, my comment should have been on the next
+patch in this series which is a little more complex. For that patch it
+seemed inconsistent to use dev only in new code and mix it with calls
+using &client->dev.
 
  - Aren
