@@ -1,25 +1,25 @@
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326315AF6
-	for <phone-devel@vger.kernel.org>; Sun, 10 Nov 2024 19:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A2145348
+	for <phone-devel@vger.kernel.org>; Sun, 10 Nov 2024 19:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731268348; cv=none; b=Ud2smGVSy3M5g//uBJJNV1w59C8n6epQkN7aG6OwzNJWVQjNmjLJWxRdxU97NLZsJTgmfeUsVJpAIcgDuhUCJIcyPTkTz+ez2JHd1gB290lm5J+PHDjdJRLT+90bhkYLriUo+03gogFjszz7L8jqM4bWfyiv7oFx9wJUMwBF7Xk=
+	t=1731268373; cv=none; b=VKf0/KK61exEY0/AkJ0EG7RFJkApxGLT4gzjuZAzjEqhD5HzCcdvmTUTUGr1er1sA01rgN3qCnqsh6v/zdhw7fE2TDidYTUy7VTgiqXKcqiRPNU8ib6QAEMy6xmx4fmfx2PfKjXhZwCSVMO6J5UL2BSp+57Ss/VURzfWG/EfaL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731268348; c=relaxed/simple;
-	bh=PgYesiTdPA5OVXXO/NUazx9gOX69ohmxZNRoY8rs0cw=;
+	s=arc-20240116; t=1731268373; c=relaxed/simple;
+	bh=9Z/pDoqd+qplmP5YdyAJMIIHWDi+W2hpCCQf7xbBy0c=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=harSyUDnTamxPMfR7EEUZerDA7AZGEMM9bsSCcuHGrpC8Sm2TIHxlgjUwHRpGGM9Ruz8pyER6IQpB90N26BP8JX7R+igQLdSGtJQXzrILN99cwfnVUfj7XyITAEZ4ThbP4K6qIzDAdEU0/c+fOGSjoE5EoosCCe8jKq/snFRJl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=gSHEsgeRXaGzDljNsqk8SnhMsHifFNMlDO+oxXGK63jezXkK4onclJPme3SNKKBT8sYchetXcyny5wNFzK+8x3sqqRhLCYRD6D5oLLCzLVD5v5fgvnrxdIubsATqY4/qh/eUludMsfWleBWuQRR9f5QEeoeVWodJ/AdqCpKCrYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-24-75.elisa-laajakaista.fi [88.113.24.75])
-	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-	id 1eef05fe-9f9d-11ef-9aff-005056bd6ce9;
-	Sun, 10 Nov 2024 21:51:07 +0200 (EET)
+	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+	id 5376b6f1-9f9d-11ef-8874-005056bdd08f;
+	Sun, 10 Nov 2024 21:52:33 +0200 (EET)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 10 Nov 2024 21:51:04 +0200
+Date: Sun, 10 Nov 2024 21:52:32 +0200
 To: Aren <aren@peacevolution.org>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -36,13 +36,13 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
 	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] iio: light: stk3310: handle all remove logic with
- devm callbacks
-Message-ID: <ZzEOqC9dAHCRX5a9@surfacebook.localdomain>
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+Message-ID: <ZzEPACoblmcQD9yu@surfacebook.localdomain>
 References: <20241102195037.3013934-3-aren@peacevolution.org>
- <20241102195037.3013934-7-aren@peacevolution.org>
- <ZyiGiK6bSd_d0VQ6@smile.fi.intel.com>
- <mlvzaskgxqjfu6yiib2u7m3pczsifsluc4mqnzy6w3xzxblvm6@xrxvvruzftn2>
+ <20241102195037.3013934-11-aren@peacevolution.org>
+ <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
+ <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,26 +51,42 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <mlvzaskgxqjfu6yiib2u7m3pczsifsluc4mqnzy6w3xzxblvm6@xrxvvruzftn2>
+In-Reply-To: <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
 
-Sun, Nov 10, 2024 at 01:38:39PM -0500, Aren kirjoitti:
-> On Mon, Nov 04, 2024 at 10:32:08AM +0200, Andy Shevchenko wrote:
-> > On Sat, Nov 02, 2024 at 03:50:37PM -0400, Aren Moynihan wrote:
+Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
+> On Mon, Nov 04, 2024 at 10:40:16AM +0200, Andy Shevchenko wrote:
+> > On Sat, Nov 02, 2024 at 03:50:41PM -0400, Aren Moynihan wrote:
 
 ...
 
-> > > +	ret = devm_add_action_or_reset(&client->dev, stk3310_set_state_disable, data);
+> > >  #define STK3310_REGFIELD(name)						    \
+> > >  	do {								    \
+> > >  		data->reg_##name =					    \
+> > > -			devm_regmap_field_alloc(&client->dev, regmap,	    \
+> > > +			devm_regmap_field_alloc(dev, regmap,		    \
+> > >  				stk3310_reg_field_##name);		    \
+> > > -		if (IS_ERR(data->reg_##name)) {				    \
+> > > -			dev_err(&client->dev, "reg field alloc failed.\n"); \
+> > > -			return PTR_ERR(data->reg_##name);		    \
+> > > -		}							    \
+> > > +		if (IS_ERR(data->reg_##name))				    \
 > > 
-> > Why not simply 'dev' as in below call?
+> > > +			return dev_err_probe(dev,			    \
+> > > +				PTR_ERR(data->reg_##name),		    \
+> > 
+> > AFAICS these two can be put on one.
 > 
-> I was trying to avoid refactoring the entire function to replace
-> &client->dev with dev, I'll add a patch for that to the next revision.
+> This doesn't leave room for whitespace between the end of line and "\",
 
-I'm not talking about refactoring, I'm talking only about the lines that you
-have touched / added.
+Is it a problem?
 
-> > > +	if (ret)
-> > > +		return dev_err_probe(dev, ret, "failed to register cleanup function\n");
+> replacing "do { } while (0)" with "({ })" and deindenting could make
+> enough room to clean this up the formatting of this macro though.
+
+do {} while (0) is C standard, ({}) is not.
+
+> > > +				"reg field alloc failed.\n");		    \
+> > >  	} while (0)
 
 -- 
 With Best Regards,
