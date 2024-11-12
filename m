@@ -1,78 +1,171 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB0720BB59;
-	Tue, 12 Nov 2024 07:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA62123F0
+	for <phone-devel@vger.kernel.org>; Tue, 12 Nov 2024 10:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731397460; cv=none; b=MUki1naqs92mBkXOj5/XDGGQzajsTnb15pFnnHsEwQN5hEhLpVhz1Gr11Mzs0mIyYoLk604Ouz8QGfQzPh8Ey2jmhGZYXkCJ5rfWVpK2pLzR3zE0YXHF8nKebYMu3BpvqsmkLi37wANjy7JSxYt5LPG8WHXVDdDTOQFdmNC0idA=
+	t=1731406559; cv=none; b=tAFc7foxo80mKZKVOVlLgDo0YU96NmTdBspE4lABe5AqFzFNela2ICzwIT/LQix2d/h+PSXc8MZlLci51VU2aVmGSvWErdyYpMrSCLjnTDnHclc2tvFTtlLFo+TUXyiT8WRY36LwgC8Q9nVz1/ZpLcGrXEVRq7goNuvnEeg52p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731397460; c=relaxed/simple;
-	bh=x2ua2USJVM8FxXVp18G3kQbTxWx3p894vl1R/r+UMfg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:To:From:Cc:
-	 References:In-Reply-To; b=SYGTp3kYVma+GsKFQJbtGsAU3lkQtuSp0LpTNl6f6jgpDDZKL1v2aclmN73PJr2VFM0CRToYTqRBLCr36quULde8Hwowr2q0teVD+UlcDmgaSDb/Thv3hxyhTKA8gfIU5zvupFCAae8L6HSQbJL7pKpfX0uYI9vGA2bxBC33oXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=bdv67QQf; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1731406559; c=relaxed/simple;
+	bh=uGuGiQIlJrIXE4iVMImssRilu1RGQ+ZOnY+Z06vrHoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nb24K13aUeGpAxaTv4NiM2GNWCDPjB44Wb6Qs0jjF8TeylrQ65RM7HfFwjeFQCk47KAK0t/Od4/2+olounSxEQRxaqLEfkerxGKkTZGcAk+nsmkQc3bxrcJ/2owisbekMvjRKf/0jgtUOaP5nWquD9Srw0k1oq1e5cifd1qTqM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bbc+El5o; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="bdv67QQf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1731396007; x=1732696007;
-	bh=S6iM5RqKzxExJqEtglYbXBXWxKbxcAgVmoPl/2aSlU0=; h=From;
-	b=bdv67QQfr4H9s+tGJChS7AH8r/7MmuIJf0GQZP9EzASr9KbWZnS7+FE8TsCcEnDFM
-	 VCMj/sQK1BeZ+F+0ZCKw96awT07iNNHzIhYQ+DmoJFjWQ7f3JZZQHGxgDHxWzb8Eqt
-	 5FcYqeUoeq0deMMoU/EMxftd+aleo9sPr4wX048mKbZMvrjzGyhLBIZ+gXvTMMSCfO
-	 S9+8Jq0NAPsTbgEtiXHYsf/Wfb0/YaM8IVtuyLlCEN2TVBcagh5QREuB5GxBfVevY+
-	 wN+lB0UdKklLLcLLi5YGB+9q5q3LD18FLtwQlZtuDo4ZzDXcGlVcEzcWsLzXUZIoWi
-	 srqtiUoKctbzg==
-Received: from localhost (90-176-225-75.rcj.o2.cz [90.176.225.75])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 4AC7K55m085697
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 12 Nov 2024 08:20:07 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bbc+El5o"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43159c9f617so42997375e9.2
+        for <phone-devel@vger.kernel.org>; Tue, 12 Nov 2024 02:15:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731406556; x=1732011356; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=obp8yGIldYDVzI0XN70dXZCO2SHc5IgrE0mc+D/CPjg=;
+        b=Bbc+El5oUdB8pUtW5r8ewApdOQ8EcPOc8Y9SArUlAPQB9BN21P6IFSKaH+ezVdOqZZ
+         jvKhoTqtz9QSDzGIInBUA+kPmIfbBj+emxvuDHI2jgle+orpUVPP0QYtMauL6XWmQiQt
+         1nZACWK4ySUYEmm1Hxjj+XM2RgRBbR5CCpPLO/4PzQJ2FHJnRRrCTUk5XBN9qqwThkST
+         Zp0G8v3HxrX/kfRcOAwTm04rU8EH0s+MFa9nOKylb9OYjwIGCJUelw9nPuvgU7zNMD2k
+         xj79uEipbdoS/wt4TnSVJQZOaSGWLih1Z1vvW2dtDo+xjrTpQVBbNmU41zW9xs2Kdwxm
+         VKQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731406556; x=1732011356;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=obp8yGIldYDVzI0XN70dXZCO2SHc5IgrE0mc+D/CPjg=;
+        b=K1Av9LkdgcAXGTUSB8vBeHi0e0nqneutqOT0J92SSz/3XpfE5QGoVQ+298XP9jcviN
+         kQmOxZKL4axNB4pBPMiE9te1L+DTy0DM8okEkAlyGZ48xVqdQBWbUicnv6k7hLGrB9Sy
+         auChSGUcUwA/c+tSOekmQBELaaQt5T8wnjRQxgnLhVKwGUgRoFloCaSkhBDdzBRHN8yW
+         lXCsxBiaKR3fBtoCsjJjnuxnce8/LGd87352BQiIEKzHd8QHrFn8ry0vrIThaBAKp3N9
+         mt7OErQGmEISyPYSIybT6CprzvjtEHLmn45g++MdYgUHVCeuLzGei5vpARgf4Hos/R5r
+         JclA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOU6NbFFrLOgCFWOs7uXUiAyd0DDzQzsA9TfszKtVptKUa4lC6sDU3c2RCM8WlcNLop/MDGl6YYgjwmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZd5LHc3txRWfcRPzO3deL3jL7ncrh6fJriif7+OquF/PDhMht
+	PcDpGaecpYoBX3u39uzBFxY0+V/Wgm61wuzLVtNwb8UPI4wlX+LJWYu+GTEZxec=
+X-Google-Smtp-Source: AGHT+IFUtKcOxI9iGKzatyRYf8XbPC5gcQcujb8cjUFmjs/ViAYZu4pW7ViB0cQLuE4H16EQLauy0w==
+X-Received: by 2002:a05:600c:3c8f:b0:431:4e25:fe42 with SMTP id 5b1f17b1804b1-432b751e28fmr122955855e9.32.1731406555816;
+        Tue, 12 Nov 2024 02:15:55 -0800 (PST)
+Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05305a4sm205703715e9.5.2024.11.12.02.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 02:15:55 -0800 (PST)
+Date: Tue, 12 Nov 2024 11:15:54 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aren <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Kaustabh Chakraborty <kauschluss@disroot.org>, =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, 
+	Ondrej Jirman <megi@xff.cz>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+Message-ID: <4ibd5tgpt3uzbmouqdiiv5pvfxebo5qsmgn3xh6rlb73qevatv@cajznxqnlca3>
+References: <20241102195037.3013934-3-aren@peacevolution.org>
+ <20241102195037.3013934-11-aren@peacevolution.org>
+ <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
+ <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
+ <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+ <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
+ <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mx2qhhffnejmsbkn"
+Content-Disposition: inline
+In-Reply-To: <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
+
+
+--mx2qhhffnejmsbkn
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Nov 2024 08:21:08 +0100
-Message-Id: <D5K0OL5FSDNH.1LBD86S2ZF706@matfyz.cz>
-Subject: Re: [RFC PATCH v2 1/2] mfd: 88pm886: add the RTC cell
-To: "Lee Jones" <lee@kernel.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        <linux-kernel@vger.kernel.org>, <linux-rtc@vger.kernel.org>,
-        <duje.mihanovic@skole.hr>, <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-References: <20241012193345.18594-1-balejk@matfyz.cz>
- <20241015083603.GB8348@google.com>
-In-Reply-To: <20241015083603.GB8348@google.com>
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+MIME-Version: 1.0
 
-Lee Jones, 2024-10-15T09:36:03+01:00:
-> On Sat, 12 Oct 2024, Karel Balej wrote:
->
-> > Add a MFD cell for the chip's real-time clock.
-> >=20
-> > Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> > ---
-> >=20
-> > Notes:
-> >     RFC v2:
-> >     - Break out the register definitions and reword the commit message
-> >       accordingly.
-> >     - RFC v1: https://lore.kernel.org/r/20240920161518.32346-1-balejk@m=
-atfyz.cz/
-> >=20
-> >  drivers/mfd/88pm886.c | 1 +
-> >  1 file changed, 1 insertion(+)
->
-> Looks fine.  Let me know when you're ready for me to take it.
+Hello Andy, hello Aren,
 
-I'm ready :-)
+On Mon, Nov 11, 2024 at 11:44:51AM +0200, Andy Shevchenko wrote:
+> On Sun, Nov 10, 2024 at 04:34:30PM -0500, Aren wrote:
+> > On Sun, Nov 10, 2024 at 09:52:32PM +0200, Andy Shevchenko wrote:
+> > > Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
+>=20
+> You can do it differently
+>=20
+> #define STK3310_REGFIELD(name)							\
+> do {										\
+> 	data->reg_##name =3D							\
+> 		devm_regmap_field_alloc(dev, regmap, stk3310_reg_field_##name);	\
+> 	if (IS_ERR(data->reg_##name))						\
+> 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> 				     "reg field alloc failed.\n");		\
+> } while (0)
+>=20
+> > #define STK3310_REGFIELD(name) ({						\
+> > 	data->reg_##name =3D devm_regmap_field_alloc(dev, regmap,			\
+> > 						   stk3310_reg_field_##name);   \
+> > 	if (IS_ERR(data->reg_##name))						\
+> > 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> > 				     "reg field alloc failed\n");		\
+> > })
+>=20
+> I am against unneeded use of GNU extensions.
+>=20
+> > > > replacing "do { } while (0)" with "({ })" and deindenting could make
+> > > > enough room to clean this up the formatting of this macro though.
+> > >=20
+> > > do {} while (0) is C standard, ({}) is not.
+> >=20
+> > ({ }) is used throughout the kernel, and is documented as such[1]. I
+> > don't see a reason to avoid it, if it helps readability.
+>=20
+> I don't see how it makes things better here, and not everybody is familia=
+r with
+> the concept even if it's used in the kernel here and there. Also if a too=
+l is
+> being used in one case it doesn't mean it's suitable for another.
 
-Thank you,
-K. B.
+Just to throw in my subjective view here: I don't expect anyone with
+some base level knowledge of C will have doubts about the semantics of
+({ ... }) and compared to that I find do { ... } while (0) less optimal,
+because it's more verbose and when spotting the "do {" part, the
+semantic only gets clear when you also see the "while (0)". Having said
+that I also dislike the "do" starting on column 0, IMHO the RHS of the
+#define should be intended.
+
+So if you ask me, this is not an unneeded use of an extension. The
+extension is used to improve readabilty and I blame the C standard to
+not support this syntax.
+
+While I'm in critics mode: I consider hiding a return in a macro bad
+style.
+
+Best regards
+Uwe
+
+--mx2qhhffnejmsbkn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmczKtcACgkQj4D7WH0S
+/k5IrAf9Egz14wVYaV3DKBPJo8fgsKBghLX7gexCzWL4+0rkjfgtP8gSFaK8OnVY
+8howbIeCxwbCUSEZEtWJU36A5oaLI370Mb24KajDPQZyayedIXqF1UubYE3ZXcrA
+gwbGyho7TkbsUnrXbMhkp5lr7aU6O8JdIedrSqv7FnMxfkVUVkU6Hrai52+r3b3t
+k6uAvR1Yl+OD1XIq5FEeCW5tcoYEQ5rK6apeMXvdkPdg0o6ZKVjAt9vK9NVxPPpW
+2CdM15ron07ikOYiBDin1ZaD3x7FdzVh8z9RiizG5q5a6fPjh5SELLbBMHeGtnaZ
+5cCYi84a0NHhmndqIy6gZYPX4hhDXg==
+=b8YO
+-----END PGP SIGNATURE-----
+
+--mx2qhhffnejmsbkn--
