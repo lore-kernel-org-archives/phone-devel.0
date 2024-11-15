@@ -1,186 +1,101 @@
-Received: from sonic312-26.consmr.mail.ir2.yahoo.com (sonic312-26.consmr.mail.ir2.yahoo.com [77.238.178.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8D01B0F29
-	for <phone-devel@vger.kernel.org>; Thu, 14 Nov 2024 22:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.178.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CEF1D54C2;
+	Fri, 15 Nov 2024 15:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731623879; cv=none; b=nFXFtXhE5ZllIJFYGdOTpScEtlrC9ZVC/4uMoIodpikI4Kof63QgLHcfh9k2HmtwsOzdpTEWfcaYrZEZK3bZC+/JvUO28fR9Hq1y4PD9rJ0lm/0ndF1yvmK8zCEV/p/+j18I0fg3aPxQtIcvc84+7u+FenvEaadHpCd8Fv91hVQ=
+	t=1731683588; cv=none; b=Tf64QlIEMuxE9btQkDuB3rh6k29dgI3DGZssWbgVcTVwJhyBCPa+vQabskreE5JG70P+3pYLcG+1ai9i9IFK1B66kDKYqQhKWJ6wrfTM8Ka850Q7kmjWcd/wOT74RpdT5w7asdXJRofMWQ3WBgZT3tFepkekM4mx//Vu6hhC4Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731623879; c=relaxed/simple;
-	bh=8JzMaKrWlHH5Cvl6LgJr+4ysWctwILSWMc8f7gCR6pI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:References; b=X8ZCwZPbBK9i0cgbs3vnAwsoYdyAB1/5zvmxxwa5Vi12HA2WFUzQH3nm50pd2i96uB0zpzmRpLdVGmwNYQ7DAi40gIjWQgzOWcXThnWhJ9EEy4wgJE+d8QXBXgdBkN0f1iHbrxdtrBMe6N0MLSOYmyLZpHP5EnEt7p5EUcBcBJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com; spf=pass smtp.mailfrom=rocketmail.com; dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b=F5EzQ+Ol; arc=none smtp.client-ip=77.238.178.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rocketmail.com
+	s=arc-20240116; t=1731683588; c=relaxed/simple;
+	bh=VFJq4FmuDHQna4ybq4+6PkEP/orjQAqeR9GFf5ZES7c=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=TqmDFsV0D4o+WohjwMsN4APOa7b/VqOGiyqbJr76/zadd97f8N71uPELFfHeKRgPFhZ73ExKmaoSEJ3qPtzQpN+gRIwlmwFgR7pvHl6xjFX7XAks85H6h4MC+XNbsgxo0s8reewucB5jxw8g/WBZyDddeAXl1eR19L8R2wFR9Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6uWxtGi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b="F5EzQ+Ol"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1731623875; bh=VUBlByHueXDmXb9r+9Fa/bqlDMIi1BWz7KWtmRZf9Fs=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=F5EzQ+OlRHhB6xHiRBgETwTquHu6AJvpFCLw4pz+HPgdyZvkAJB9RPwcmJiTIXDCQf3GNP0xvd7AOdrQtQXYKsryL6GEG2/GqA/QyotMEcYEJOpRoGYvThrW4MzL08WBrESYCzxUUAiWOkAOlrHVrsmb2VxpAJZCBVbAN6giNzhW+k3909w4y37K515oFIoIwqLIVYlzdKYq40lIoqfq/0davAajEtOFSrUka95/Z+M3AgLZZZrtzBvhC5snBdxYj895pO7ExLLMZw9pf23jYnK2eA5tZ0AiF6BJurVL1YLNKcHt3g3txfhVqz0TFsDWe55H27KRUsKnuPozDhRa2g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731623875; bh=lOJykm3MzY4qOc/KX5pXICSpVUF02SYRcV+YeTEmP7l=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=VsfYNHx2tSbiiu2Lx0u3uAQah66UGhQIcavbEufYcMYmrHu636L4LKNdXsNCKsVQdT8QLbSM5xZ40Ml1gepPKBl9coLgPTjpUp2IU+52uNiFWE0kMaOMQY/czdYdwgjcT+zoSaMl645DeZNfMmJMD9Z19GPEm27NOdn9O6quSVpNPa5MuLw9Q4VqKxBNS4fPTUJwHj1Bu2rIapl260k4a8/iyvME3dUpHhQh5h+mBnQWVEdXlD+dne2ENY842xdJK9Ap6QBx2c1/yapkEwFB4slJZjpl0LKbYY1PyftEVRefeMtSZFnU/wOUZXiIgbyoVpEhlu3yQ6m5H1GgBQ7euA==
-X-YMail-OSG: Q5hDKeAVM1kIdEWwfSbfZU5EqLlTt7208ibXW4yWSK6P8CnODAtAQ3rBrxBT.9m
- 5L8xwbK6XDV5fyAYQHrs38e0PG63Ye0iR2M4L0vau8V1316kIqFqULxJ87LlPQZKROGAMkJICaz1
- o5iNZm_5AKhxPHR9_ED9l.YExtYFSCJEfFMgNsPdoZ71ADc67U.TLIXiCMykeW.fDLuTCuuRs9vd
- k0bF5cL3SP7Wf.qMpScuYKBSVfgsu4V5tkN1MUJTrf2a9AujJJWIDPG96p_oZXC9vakm7WBisFKL
- Ym9pxyvySkk1drMx_B79Dun0gRr3A5ypQX5ktrUdviCrrnS.Ez_lEZlfZ64EUqXoYgywoQC6lYs5
- esRab8Ljz3oFIm_fB8dd22dYLfktjVtJFUgsem2u50vTamqwnI2_96M4GJN.xONy_eAZkfPyzUpv
- JfUIUR08KVZ7E4Moh8JZTRMSI9gLO8YLvtuHMN2i777uwyppVm4LUADxdjF6LbsmomFJqVzw9o0u
- yFoE2xCJWHW5smKPhfWkXdZyMIdFXhtxF2KSK1bxoJUkR5RQaRO3EA3kNIi9B7n_qqDeNKpgv4lT
- lH_p0eIk227_1TQXtzaHdbiKeD5eNdzyTXfSrMtYWKb5Klh_TwkwVbmYpJptuBhaPbmwTFpZ3hvM
- RrrHP6RnzR2D8BWMVRvmeVse4_EvL2AYWPHLpvElIUhHBZJIdUJE3.xgxww.m120bgxUf.b4dfVy
- YcGTEGlwEkZ1GahHOKLqUaOwNIPM6AGpk23VVzXokYnJcydLhWVl3VnjiPOZt6zZesq9JGOvfI.1
- ZtoNqdkHYNB8aqD8ogu5RzZA.wJ.tBIbAZiZmjAKL5i8OLuE0qmlhDy2b9TTahs6Eef.4hJWGngv
- Q8IplUrMAlHFlq3_.H80TuQtvtvkj6CaH_iApTlhgek99DygXyGFgOfkdbZg7URsxwGoTeY61.j_
- x6Q2f_9jpNCnRKftkrLl4FkeLb4o2skI9tTqKXbkhE9NF9XL_cMSt4uEKVwiyr0MSGPm.Q.D8.Tj
- eD7V_cSnngbTUbS7WQX4Bp3rTfHW11K9IdO5ECzvFXxf.k81Mv2jO1N87cW7mrlyBi3RqupL.P00
- RCLN.C62AKxJX_YjYdVo1Qd3it_NjNuFU3BxQgqeyAHvssM2I2yp5HsxtTSJwr85_ZZeRL.7AA_P
- 8UrnH8CaW2sjckjEOOXcK96YqsaxS.dHMdukkbC1CqUky3tHlQMdK9OVIDgZTSUxGSniBGnl_Tb6
- REm6nkNGJ0ikvpH8mxBj5D5xrGHc4.hficfLDXnI7hUUVD4A.bCKabHliEaZ9fvSg9Jjef7LrZzD
- GD76xBAKSlA_p67et7XFqTyaNum4bjsD7U0OyUNJuGOFDHGhS5A_r99iiakhtk_59kN8H2aGmZ.b
- 3Y.TeEcGeJkyhuYYg4lZ2ANgGvrwV.J_TpnsQZ66SPPHPmbW3G3pMS0HuVZcJrKbIwG7hfsU2JVw
- ZMVjQlSo0S9Wbx5Xu3h1t20jObAvlTplU8Xe49GXdDS1q8GR1xNit6h2v4eGRlvKd1QUN3DrSstJ
- vg_GU_do_hyqr6emz5DScy28YTUT..PpbLI0dlmIHRBnfhAOhfgfv2j9JsLacrQ3Yb4yzq83lpdT
- cedTSJdtWoHIBBvwSTuqQpmmBvoq4Ooef6KPg04V_BVGh1JRksam4iEo64PzGU2lAhV7OW9XBYst
- klS.6S8hl7.S9QIrHK0kKn1rpej_1PnC0UWz1XMLOd0TRftL7t8h8Q0XU2xmVpkzb.hGoA7ZZpbQ
- GL6vLgLL1g7iFfg2pLuNqt9HlB9CJTTp9M_hI_ctoybQCXl8HxGzjotrXxeGY5rF1NnbBDL8dd5S
- KSNubgqsGhOw9md6XJoQCdq4j1QDHr.YKc_8ROkxk7x9uZFuPRhQ259jJPWVcJo4IQcSe8cXsRVi
- YymSiuEFYzzVHz7Ip_sPoMRIMcfZ4zm2JPurrOph2wl52fzgl4bwIhjJquOrGJidH3gc0yxbOugh
- SOlpqTxDm8Nf012Dm6TTUg.1kEzIV77S4A8DEo.MeMMM05DP1DlfOEJCLGprrLP7Rh81u1.h2xtD
- lefhal02VEmW.1Cd_qTqY6uAXggKKnQheCWw_HEyw00eSZSdNaAp98zzn6Rszv.cOxAyJbRNCKtp
- xD35gidCwJ5vH7XUGfoM.PRY7vpy2vp44CuA0PqjqoPKKRGIrQuZNziyEW8uqFZSAvcgm4XScwbj
- 3xGptjnV8tOlW2WdeLyGg7oe3Bd.hzYbSmtlNF27omIsfYjuqltZUNKfms0VVVI7iUNvChYNPAMa
- lXz5tsL4sj04mYE9un1XTEBZyGfmZH9_FwewnLCw-
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: cd958c09-780b-4501-906f-d67165ec7c2a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ir2.yahoo.com with HTTP; Thu, 14 Nov 2024 22:37:55 +0000
-Received: by hermes--production-ir2-c694d79d9-mr45v (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 60a5376110f1aceebb11253fa288c199;
-          Thu, 14 Nov 2024 22:07:30 +0000 (UTC)
-From: Jakob Hauser <jahau@rocketmail.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add display panel
-Date: Thu, 14 Nov 2024 23:07:18 +0100
-Message-Id: <20241114220718.12248-1-jahau@rocketmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6uWxtGi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC90C4CED8;
+	Fri, 15 Nov 2024 15:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731683587;
+	bh=VFJq4FmuDHQna4ybq4+6PkEP/orjQAqeR9GFf5ZES7c=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=g6uWxtGiiieXpygDK5p0qO6QVx+VxCDbm4Y90Y2cXoWhd4oOeo5QBmNQZ+RBmydE5
+	 g4qtosk4ebPG7Uswm2+L0oJ9uIoAxI8I7TUqAnkW3I3m5Rc6qR9GR9nuBvcSefHQFX
+	 zSvVk5dKg/t23ZCEHdmuWUUu56ecom1qLVyqy59sXLkm6qahkjPLAgKZpUrBdBNC4a
+	 DLsl0rfyEiGlCcLpIKfl8VMSRpI5xsoXR7hYKyrSIayjWn8LSxFCu2euXgQ7GqwRk2
+	 vYlxd9Beyu6p7YcZ4gdQrB0hE+hV1Z50Zru2swQPVR/ETNx1eh5JUmKkeKUnscFC9q
+	 jkNk62bF4JOhg==
+Date: Fri, 15 Nov 2024 09:13:05 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+ Stephan Gerhold <stephan@gerhold.net>, phone-devel@vger.kernel.org, 
+ Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>
+To: Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20241114220718.12248-1-jahau@rocketmail.com>
 References: <20241114220718.12248-1-jahau.ref@rocketmail.com>
+ <20241114220718.12248-1-jahau@rocketmail.com>
+Message-Id: <173168321575.2749850.6753805357544168038.robh@kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add
+ display panel
 
-From: Stephan Gerhold <stephan@gerhold.net>
 
-Add the Samsung S6E88A0-AMS427AP24 panel to the device tree for the
-Samsung Galaxy S4 Mini Value Edition. By default the panel displays
-everything horizontally flipped, so add "flip-horizontal" to the panel
-node to correct that.
+On Thu, 14 Nov 2024 23:07:18 +0100, Jakob Hauser wrote:
+> From: Stephan Gerhold <stephan@gerhold.net>
+> 
+> Add the Samsung S6E88A0-AMS427AP24 panel to the device tree for the
+> Samsung Galaxy S4 Mini Value Edition. By default the panel displays
+> everything horizontally flipped, so add "flip-horizontal" to the panel
+> node to correct that.
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> Co-developed-by: Jakob Hauser <jahau@rocketmail.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> ---
+> Patch base is kernel/git/qcom/linux.git current branch "arm64-for-6.13".
+> 
+> The panel driver was recently added to linux-next:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/gpu/drm/panel/panel-samsung-s6e88a0-ams427ap24.c?h=next-20241101
+> 
+> The associated dt-binding in linux-next is:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/display/panel/samsung,s6e88a0-ams427ap24.yaml?h=next-20241101
+> ---
+>  .../dts/qcom/msm8916-samsung-serranove.dts    | 58 +++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+> 
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Co-developed-by: Jakob Hauser <jahau@rocketmail.com>
-Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
----
-Patch base is kernel/git/qcom/linux.git current branch "arm64-for-6.13".
 
-The panel driver was recently added to linux-next:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/gpu/drm/panel/panel-samsung-s6e88a0-ams427ap24.c?h=next-20241101
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-The associated dt-binding in linux-next is:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/display/panel/samsung,s6e88a0-ams427ap24.yaml?h=next-20241101
----
- .../dts/qcom/msm8916-samsung-serranove.dts    | 58 +++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 5ce8f1350abc..caad1dead2e0 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -321,6 +321,41 @@ &blsp_uart2 {
- 	status = "okay";
- };
- 
-+&gpu {
-+	status = "okay";
-+};
-+
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mdss_dsi0 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&mdss_default>;
-+	pinctrl-1 = <&mdss_sleep>;
-+
-+	panel@0 {
-+		compatible = "samsung,s6e88a0-ams427ap24";
-+		reg = <0>;
-+
-+		vdd3-supply = <&pm8916_l17>;
-+		vci-supply = <&pm8916_l6>;
-+		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
-+		flip-horizontal;
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&mdss_dsi0_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&mdss_dsi0_out {
-+	data-lanes = <0 1>;
-+	remote-endpoint = <&panel_in>;
-+};
-+
- &mpss_mem {
- 	reg = <0x0 0x86800000 0x0 0x5a00000>;
- };
-@@ -330,6 +365,13 @@ &pm8916_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- };
- 
-+&pm8916_rpm_regulators {
-+	pm8916_l17: l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+};
-+
- &pm8916_vib {
- 	status = "okay";
- };
-@@ -425,6 +467,22 @@ imu_irq_default: imu-irq-default-state {
- 		bias-disable;
- 	};
- 
-+	mdss_default: mdss-default-state {
-+		pins = "gpio25";
-+		function = "gpio";
-+
-+		drive-strength = <8>;
-+		bias-disable;
-+	};
-+
-+	mdss_sleep: mdss-sleep-state {
-+		pins = "gpio25";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
-+
- 	muic_i2c_default: muic-i2c-default-state {
- 		pins = "gpio105", "gpio106";
- 		function = "gpio";
--- 
-2.39.5
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y qcom/msm8916-samsung-serranove.dtb' for 20241114220718.12248-1-jahau@rocketmail.com:
+
+arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dtb: /soc@0/power-manager@b088000: failed to match any schema with compatible: ['qcom,msm8916-acc']
+arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dtb: /soc@0/power-manager@b098000: failed to match any schema with compatible: ['qcom,msm8916-acc']
+arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dtb: /soc@0/power-manager@b0a8000: failed to match any schema with compatible: ['qcom,msm8916-acc']
+arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dtb: /soc@0/power-manager@b0b8000: failed to match any schema with compatible: ['qcom,msm8916-acc']
+
+
+
+
 
