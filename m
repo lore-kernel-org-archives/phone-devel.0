@@ -1,303 +1,394 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9146C145B18;
-	Wed, 20 Nov 2024 20:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4491474B7;
+	Wed, 20 Nov 2024 21:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732134477; cv=none; b=JqhQz7Ooj/nqKer9XYf58TSTHOFd6+jvZTfRB0k02Wgv+/gGOtO/TwDnfWLMlX+4qtV7vLq1lfNOshSIWd/rFwAIzUtpESP4XzbcugIAbnuwXrmFGTZMFY9mE3fV6FsgqnP/wMGbCNmbPmcZZALmGlwgqtSiTJDOfVzSnwgVcCc=
+	t=1732137792; cv=none; b=fmq379TchvGUeT+uZGpKsiVccHbeixYyo9Na4rdds0zYV14NTAjQfD+DN9FBQu3xMaDKrUiaiDb97t/rhjzlFvUCRwdyQwKzDNTrPjdyKLxbXeiHa4Vefvd0bOT96fc7WW72bl06b2agyNkwvsdeRFrivHQAd2xPKmUotdF5Ykg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732134477; c=relaxed/simple;
-	bh=vEwmbkvMjTjBxJ6KtccZ/yHNUcbURMU/G396XC552QI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TdOxrf0OzHrpq71RbkdKf/05L2bVBmCrM9IRWd3rE55YlJFexo8xfP46XDWlH+hMRM33VQRaYb5lrAhAiYpHj0QzSyMObykBzz/ZYbV9vLyJQI0/tIfVTbRfzACMPbRugovmItWgTN9wou0hOw5uXlpuTs8ONSxRLyxzYaiYl50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=Qar1Jy9v; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1732137792; c=relaxed/simple;
+	bh=sbFLVTgrX0lRcgGH6NfQV47ieMtIKzNKI8d2WtpizN8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hJlc77TIyXsptIO4AhCMFXvlQVtjoX6HvcBj6wni1cZaj84UOFC8OjzEh+souy0HJy5FyxG/D86dTUGBpU0Hbgk91rOCfXoR9rrLyu0fmAEd7Uu9NWEkQHUmq/WmO6zd/KkgK9Z2HFcPTik+VurImFtH5leWgMsCtREu5/EgNSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSB73bPp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="Qar1Jy9v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=vEwmbkvMjTjBxJ6KtccZ/yHNUcbURMU/G396XC552QI=; b=Qar1Jy9vJfBtOcesoAALq01cpf
-	B9gw+NfVjD6xmwPefYTDO/3oXON83ClY6wxKo9Sk9t/ryiZOe9QVj9M2xWYKJYMcpfr6fiCx0n/2q
-	ELigQkhM6phBwyiJNqQmziwyPGujeMnn+ulz1CkukK5Lr9kIZL/6LTyVmFrRGbYEK5e1sc2Kf9QPP
-	v9/EhwJnMFyS9HhS6NSaEX9xrEpr5NbuzESrTVvIUNi3zrV9Tb3NxS/5OKjjtPF7nTjDEXsTX5UtU
-	kxIVBHUdKRPvpMf7VfXBCHyOjsPvtf5BPHP0g0IHepVxglb8o1wjWml1wbbWDQTmaXh7XdW4Stoxz
-	t6uT+/Zg==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tDqyr-000B5b-3A;
-	Wed, 20 Nov 2024 21:07:18 +0100
-Received: from [77.64.252.106] (helo=framework.lan)
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tDqyr-000N7o-2C;
-	Wed, 20 Nov 2024 21:07:17 +0100
-Message-ID: <f927d1aa8718568cd7cecc90255f73ddbd673a41.camel@apitzsch.eu>
-Subject: Re: [PATCH v2 09/13] media: i2c: imx214: Extract format and crop
- settings
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus	
- <sakari.ailus@linux.intel.com>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dave Stevenson
- <dave.stevenson@raspberrypi.com>, 	sakari.ailus@iki.fi
-Date: Wed, 20 Nov 2024 21:07:16 +0100
-In-Reply-To: <CAPybu_09-1E4+Xe1Tnaue01i4JPtOHz15OUei=4q=Roqcuoz2Q@mail.gmail.com>
-References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
-	 <20241021-imx214-v2-9-fbd23e99541e@apitzsch.eu>
-	 <CAPybu_09-1E4+Xe1Tnaue01i4JPtOHz15OUei=4q=Roqcuoz2Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.54.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSB73bPp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17337C4CED8;
+	Wed, 20 Nov 2024 21:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732137792;
+	bh=sbFLVTgrX0lRcgGH6NfQV47ieMtIKzNKI8d2WtpizN8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SSB73bPpgfhBsQOUBXy/YqFyLcP2yTZQExMHvgH7CG+vzZK76zFpUtKTerFPTZuEV
+	 +9oF55VM2Uztv73U7KqYIkwbKcNzO3qiWN2EP3rvcFjVsCtZum0mpJN82sYtPyR/l9
+	 6biyS0WXt6MuPVBJjP8uPHbX6XAC+0OJT3bMXAUWrBAdiaCs3pWcZ3uqElLlp5fo02
+	 XsKPeNa5Q5KVBuTz+7Qxg1Udm5q/Yu8AvDVAKLqkku7LScTpfa10sjKu8qBgHPT1YZ
+	 ZPo+1+xaDlHvmvF2DsXv80DjQbOS4OtAj20UPk5X94YhLoFs9v97gRHnhXJwIKLKSG
+	 ALWLc8PAz/X2g==
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-856f2b3e1b7so64041241.0;
+        Wed, 20 Nov 2024 13:23:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUA7BrKbpVYs9oYUGXyzOgrRkKJgGWqRIg++xuFdyn0kfB9amGSwP3FH8Ps54zL8Bgg+I82eiTHIaT73vU=@vger.kernel.org, AJvYcCVLnSOnEeo+HouuatwelXKOxE2kfIMb+UW0hS645fv5cFxewCIhY0ah8EQCuh+dzGfsWnBve+52Ki7fizE=@vger.kernel.org, AJvYcCVSclr8EHGspS5L8SuAniEFgDmHsBQqCisQt6bnfd9Qt4KOb7Ib5CX926EZeH6sZQ09jxwtwB9IAxUBvyY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHSVMlvzBYampx55WXsFBRKKJcWZTesF81dFEdVQO4YRXIJe1u
+	/soXhAbcUFoF+5S7n3Xw00JstNNkCez+5ybaetGtrhOzgliYvePhr4Iwa3AWQPnSCJK3rVV3hEJ
+	+ZzgEPE1DZX21Ck/2U/wg4r6M2jM=
+X-Google-Smtp-Source: AGHT+IEu2QMMzTVlLo4cbU6GVKYwYglQRvIKvCieV7Y80btyw62Xl+Q1DZ6EREBn/hKhvnV/UnGJjahyxT9iAJX2aUY=
+X-Received: by 2002:a05:6102:4b0c:b0:4a7:4829:8cb0 with SMTP id
+ ada2fe7eead31-4adaf425a7dmr5639965137.3.1732137791059; Wed, 20 Nov 2024
+ 13:23:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Authenticated-Sender: andre@apitzsch.eu
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27464/Wed Nov 20 10:37:01 2024)
+References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
+ <20241021-imx214-v2-9-fbd23e99541e@apitzsch.eu> <CAPybu_09-1E4+Xe1Tnaue01i4JPtOHz15OUei=4q=Roqcuoz2Q@mail.gmail.com>
+ <f927d1aa8718568cd7cecc90255f73ddbd673a41.camel@apitzsch.eu>
+In-Reply-To: <f927d1aa8718568cd7cecc90255f73ddbd673a41.camel@apitzsch.eu>
+From: Ricardo Ribalda Delgado <ribalda@kernel.org>
+Date: Wed, 20 Nov 2024 22:22:54 +0100
+X-Gmail-Original-Message-ID: <CAPybu_2xPkrL=jTT0O_10KuCgyfe3BU033Y+q2+jq9ErPU9ACA@mail.gmail.com>
+Message-ID: <CAPybu_2xPkrL=jTT0O_10KuCgyfe3BU033Y+q2+jq9ErPU9ACA@mail.gmail.com>
+Subject: Re: [PATCH v2 09/13] media: i2c: imx214: Extract format and crop settings
+To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, sakari.ailus@iki.fi
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGkgUmljYXJkbywKCkFtIE1pdHR3b2NoLCBkZW0gMzAuMTAuMjAyNCB1bSAxMzoxMCArMDEwMCBz
-Y2hyaWViIFJpY2FyZG8gUmliYWxkYQpEZWxnYWRvOgo+IEhpCj4gCj4gQXJlbid0IHlvdSBjaGFu
-Z2luZyB0aGUgYmlubmluZyBtb2RlIGZvciAxOTIweDEwODDCoCB3aXRoIHRoaXMgcGF0Y2g/Cj4g
-SSB0aGluayB0aGF0IGNvdWxkIGJlIGNvbnNpZGVyZWQgYW4gQUJJIGNoYW5nZS4KCklzIHRoZSBw
-cm9ibGVtIHRoYXQgdGhlIEFCSSBjaGFuZ2VzIG9yIHRoYXQgaXQgaXMgbm90IG1lbnRpb25lZCBp
-biB0aGUKY29tbWl0IG1lc3NhZ2U/Cj4gCj4gQWxzbywgaWYgd2UgYXJlIG5vdCBsZXR0aW5nIHRo
-ZSB1c2VyIGNoYW5nZSB0aGUgdmFsdWUsIEkgZG8gbm90IHNlZQo+IG11Y2ggdmFsdWUgaW4gc2V0
-dGluZyB0aGUgY3JvcHBpbmcgcHJvZ3JhbW1hdGljYWxseSwgSSdkIHJhdGhlciBub3QKPiB0YWtl
-IHRoaXMgY2hhbmdlLgoKSSBhc3N1bWUgdGhlIGZpcnN0ICJ2YWx1ZSIgcmVmZXJzIHRvICJiaW5u
-aW5nIHZhbHVlIiwgdGhhdCBjYW5ub3QgYmUKY2hhbmdlZCBieSB0aGUgdXNlci4gSXMgaXQgcmln
-aHQsIHRoYXQgLnNldF9zZWxlY3Rpb24gbmVlZHMgdG8gYmUKaW1wbGVtZW50ZWQgdG8gY2hhbmdl
-IHRoYXQ/CgpUaGUgZGlmZmVyZW50IHZhbHVlcyBhcmUgc2V0IHByb2dyYW1tYXRpY2FsbHkgdG8g
-cmVkdWNlIHRoZSBudW1iZXIgb2YKZW50cmllcyBpbiB0aGUgY2NpIHJlZyBzZXF1ZW5jZXMgdG8g
-bWFrZSBpdCBlYXNpZXIgdG8gYWRkIG1vcmUgbW9kZXMKbGF0ZXIuCgpSZWdhcmRzLApBbmRyw6kK
-Cj4gCj4gT24gTW9uLCBPY3QgMjEsIDIwMjQgYXQgMTI6MTTigK9BTSBBbmRyw6kgQXBpdHpzY2gg
-dmlhIEI0IFJlbGF5Cj4gPGRldm51bGwrZ2l0LmFwaXR6c2NoLmV1QGtlcm5lbC5vcmc+IHdyb3Rl
-Ogo+ID4gCj4gPiBGcm9tOiBBbmRyw6kgQXBpdHpzY2ggPGdpdEBhcGl0enNjaC5ldT4KPiA+IAo+
-ID4gUmVtb3ZlIGZvcm1hdCBhbmQgY3JvcCBzZXR0aW5ncyBmcm9tIHJlZ2lzdGVyIHNlcXVlbmNl
-cyBhbmQgc2V0Cj4gPiB0aGVtCj4gPiBwcm9ncmFtbWF0aWNhbGx5Lgo+ID4gCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBBbmRyw6kgQXBpdHpzY2ggPGdpdEBhcGl0enNjaC5ldT4KPiA+IC0tLQo+ID4gwqBk
-cml2ZXJzL21lZGlhL2kyYy9pbXgyMTQuYyB8IDEyOQo+ID4gKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKy0tLS0tLS0tLS0tCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA5NyBpbnNlcnRp
-b25zKCspLCAzMiBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWVk
-aWEvaTJjL2lteDIxNC5jCj4gPiBiL2RyaXZlcnMvbWVkaWEvaTJjL2lteDIxNC5jCj4gPiBpbmRl
-eAo+ID4gY2I0NDNkOGJlZTZmZTcyZGM5Mzc4YjJjMmQzY2FhZTA5Zjg2NDJjNS4uODdhMDNlMjky
-ZTE5Y2NkNzFmMWIyZGNlZQo+ID4gMzQwOTgyNmIyZjVjYjZmIDEwMDY0NAo+ID4gLS0tIGEvZHJp
-dmVycy9tZWRpYS9pMmMvaW14MjE0LmMKPiA+ICsrKyBiL2RyaXZlcnMvbWVkaWEvaTJjL2lteDIx
-NC5jCj4gPiBAQCAtOTYsNiArOTYsOSBAQAo+ID4gwqAjZGVmaW5lIElNWDIxNF9SRUdfUFJFUExM
-Q0tfVlRfRElWwqDCoMKgwqAgQ0NJX1JFRzgoMHgwMzA1KQo+ID4gwqAjZGVmaW5lIElNWDIxNF9S
-RUdfUExMX1ZUX01QWcKgwqDCoMKgwqDCoMKgwqDCoCBDQ0lfUkVHMTYoMHgwMzA2KQo+ID4gwqAj
-ZGVmaW5lIElNWDIxNF9SRUdfT1BQWENLX0RJVsKgwqDCoMKgwqDCoMKgwqDCoCBDQ0lfUkVHOCgw
-eDAzMDkpCj4gPiArI2RlZmluZSBJTVgyMTRfT1BQWENLX0RJVl9DT01QNsKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCA2Cj4gPiArI2RlZmluZSBJTVgyMTRfT1BQWENLX0RJVl9DT01QOMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA4Cj4gPiArI2RlZmluZSBJTVgyMTRfT1BQWENL
-X0RJVl9SQVcxMMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAxMAo+ID4gwqAjZGVmaW5l
-IElNWDIxNF9SRUdfT1BTWUNLX0RJVsKgwqDCoMKgwqDCoMKgwqDCoCBDQ0lfUkVHOCgweDAzMGIp
-Cj4gPiDCoCNkZWZpbmUgSU1YMjE0X1JFR19QTExfTVVMVF9EUklWwqDCoMKgwqDCoMKgIENDSV9S
-RUc4KDB4MDMxMCkKPiA+IMKgI2RlZmluZSBJTVgyMTRfUExMX1NJTkdMRcKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIDAKPiA+IEBAIC0xMzIsNiArMTM1LDkgQEAKPiA+IMKgI2RlZmluZSBJTVgy
-MTRfQklOTklOR19OT05FwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwCj4gPiDCoCNkZWZpbmUgSU1Y
-MjE0X0JJTk5JTkdfRU5BQkxFwqDCoMKgwqDCoMKgwqDCoMKgIDEKPiA+IMKgI2RlZmluZSBJTVgy
-MTRfUkVHX0JJTk5JTkdfVFlQRcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBDQ0lfUkVH
-OCgweDA5MDEpCj4gPiArI2RlZmluZSBJTVgyMTRfQklOTklOR18xWDHCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgMAo+ID4gKyNkZWZpbmUgSU1YMjE0X0JJTk5JTkdfMlgywqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIDB4MjIKPiA+ICsjZGVmaW5lIElNWDIxNF9CSU5OSU5HXzRYNMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAweDQ0Cj4gPiDCoCNkZWZpbmUgSU1YMjE0X1JFR19CSU5OSU5HX1dFSUdI
-VElOR8KgwqAgQ0NJX1JFRzgoMHgwOTAyKQo+ID4gwqAjZGVmaW5lIElNWDIxNF9CSU5OSU5HX0FW
-RVJBR0XCoMKgwqDCoMKgwqDCoMKgIDB4MDAKPiA+IMKgI2RlZmluZSBJTVgyMTRfQklOTklOR19T
-VU1NRUTCoMKgwqDCoMKgwqDCoMKgwqAgMHgwMQo+ID4gQEAgLTIxMSwzNiArMjE3LDIyIEBAIHN0
-YXRpYyBjb25zdCBzdHJ1Y3QgY2NpX3JlZ19zZXF1ZW5jZQo+ID4gbW9kZV80MDk2eDIzMDRbXSA9
-IHsKPiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19IRFJfTU9ERSwgSU1YMjE0X0hEUl9N
-T0RFX09GRiB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX0hEUl9SRVNfUkVEVUNU
-SU9OLCBJTVgyMTRfSERSX1JFU19SRURVX1RIUk9VR0gKPiA+IH0sCj4gPiDCoMKgwqDCoMKgwqDC
-oCB7IElNWDIxNF9SRUdfRVhQT1NVUkVfUkFUSU8sIDEgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJ
-TVgyMTRfUkVHX1hfQUREX1NUQSwgNTYgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVH
-X1lfQUREX1NUQSwgNDA4IH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19YX0FERF9F
-TkQsIDQxNTEgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1lfQUREX0VORCwgMjcx
-MSB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1hfRVZFTl9JTkMsIDEgfSwKPiA+
-IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19YX09ERF9JTkMsIDEgfSwKPiA+IMKgwqDCoMKg
-wqDCoMKgIHsgSU1YMjE0X1JFR19ZX0VWRU5fSU5DLCAxIH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7
-IElNWDIxNF9SRUdfWV9PRERfSU5DLCAxIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JF
-R19CSU5OSU5HX01PREUsIElNWDIxNF9CSU5OSU5HX05PTkUgfSwKPiA+IC3CoMKgwqDCoMKgwqAg
-eyBJTVgyMTRfUkVHX0JJTk5JTkdfVFlQRSwgMCB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgy
-MTRfUkVHX0JJTk5JTkdfV0VJR0hUSU5HLCBJTVgyMTRfQklOTklOR19BVkVSQUdFIH0sCj4gPiDC
-oMKgwqDCoMKgwqDCoCB7IENDSV9SRUc4KDB4MzAwMCksIDB4MzUgfSwKPiA+IMKgwqDCoMKgwqDC
-oMKgIHsgQ0NJX1JFRzgoMHgzMDU0KSwgMHgwMSB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBDQ0lf
-UkVHOCgweDMwNUMpLCAweDExIH0sCj4gPiAKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVH
-X0NTSV9EQVRBX0ZPUk1BVCwgSU1YMjE0X0NTSV9EQVRBX0ZPUk1BVF9SQVcxMAo+ID4gfSwKPiA+
-IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1hfT1VUUFVUX1NJWkUsIDQwOTYgfSwKPiA+IC3C
-oMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1lfT1VUUFVUX1NJWkUsIDIzMDQgfSwKPiA+IMKgwqDC
-oMKgwqDCoMKgIHsgSU1YMjE0X1JFR19TQ0FMRV9NT0RFLCBJTVgyMTRfU0NBTEVfTk9ORSB9LAo+
-ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1NDQUxFX00sIDIgfSwKPiA+IC3CoMKgwqDC
-oMKgwqAgeyBJTVgyMTRfUkVHX0RJR19DUk9QX1hfT0ZGU0VULCAwIH0sCj4gPiAtwqDCoMKgwqDC
-oMKgIHsgSU1YMjE0X1JFR19ESUdfQ1JPUF9ZX09GRlNFVCwgMCB9LAo+ID4gLcKgwqDCoMKgwqDC
-oCB7IElNWDIxNF9SRUdfRElHX0NST1BfV0lEVEgsIDQwOTYgfSwKPiA+IC3CoMKgwqDCoMKgwqAg
-eyBJTVgyMTRfUkVHX0RJR19DUk9QX0hFSUdIVCwgMjMwNCB9LAo+ID4gCj4gPiDCoMKgwqDCoMKg
-wqDCoCB7IElNWDIxNF9SRUdfVlRQWENLX0RJViwgNSB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJ
-TVgyMTRfUkVHX1ZUU1lDS19ESVYsIDIgfSwKPiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JF
-R19QUkVQTExDS19WVF9ESVYsIDMgfSwKPiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19Q
-TExfVlRfTVBZLCAxNTAgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX09QUFhDS19E
-SVYsIDEwIH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfT1BTWUNLX0RJViwgMSB9
-LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1BMTF9NVUxUX0RSSVYsIElNWDIxNF9Q
-TExfU0lOR0xFIH0sCj4gPiAKPiA+IEBAIC0yODEsMzYgKzI3MywyMiBAQCBzdGF0aWMgY29uc3Qg
-c3RydWN0IGNjaV9yZWdfc2VxdWVuY2UKPiA+IG1vZGVfMTkyMHgxMDgwW10gPSB7Cj4gPiDCoMKg
-wqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfSERSX01PREUsIElNWDIxNF9IRFJfTU9ERV9PRkYgfSwK
-PiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19IRFJfUkVTX1JFRFVDVElPTiwgSU1YMjE0
-X0hEUl9SRVNfUkVEVV9USFJPVUdICj4gPiB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRf
-UkVHX0VYUE9TVVJFX1JBVElPLCAxIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19Y
-X0FERF9TVEEsIDExNDQgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX1lfQUREX1NU
-QSwgMTAyMCB9LAo+ID4gLcKgwqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfWF9BRERfRU5ELCAzMDYz
-IH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19ZX0FERF9FTkQsIDIwOTkgfSwKPiA+
-IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19YX0VWRU5fSU5DLCAxIH0sCj4gPiDCoMKgwqDC
-oMKgwqDCoCB7IElNWDIxNF9SRUdfWF9PRERfSU5DLCAxIH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7
-IElNWDIxNF9SRUdfWV9FVkVOX0lOQywgMSB9LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRf
-UkVHX1lfT0REX0lOQywgMSB9LAo+ID4gLcKgwqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfQklOTklO
-R19NT0RFLCBJTVgyMTRfQklOTklOR19OT05FIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0
-X1JFR19CSU5OSU5HX1RZUEUsIDAgfSwKPiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19C
-SU5OSU5HX1dFSUdIVElORywgSU1YMjE0X0JJTk5JTkdfQVZFUkFHRSB9LAo+ID4gwqDCoMKgwqDC
-oMKgwqAgeyBDQ0lfUkVHOCgweDMwMDApLCAweDM1IH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7IEND
-SV9SRUc4KDB4MzA1NCksIDB4MDEgfSwKPiA+IMKgwqDCoMKgwqDCoMKgIHsgQ0NJX1JFRzgoMHgz
-MDVDKSwgMHgxMSB9LAo+ID4gCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19DU0lfREFU
-QV9GT1JNQVQsIElNWDIxNF9DU0lfREFUQV9GT1JNQVRfUkFXMTAKPiA+IH0sCj4gPiAtwqDCoMKg
-wqDCoMKgIHsgSU1YMjE0X1JFR19YX09VVFBVVF9TSVpFLCAxOTIwIH0sCj4gPiAtwqDCoMKgwqDC
-oMKgIHsgSU1YMjE0X1JFR19ZX09VVFBVVF9TSVpFLCAxMDgwIH0sCj4gPiDCoMKgwqDCoMKgwqDC
-oCB7IElNWDIxNF9SRUdfU0NBTEVfTU9ERSwgSU1YMjE0X1NDQUxFX05PTkUgfSwKPiA+IMKgwqDC
-oMKgwqDCoMKgIHsgSU1YMjE0X1JFR19TQ0FMRV9NLCAyIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsg
-SU1YMjE0X1JFR19ESUdfQ1JPUF9YX09GRlNFVCwgMCB9LAo+ID4gLcKgwqDCoMKgwqDCoCB7IElN
-WDIxNF9SRUdfRElHX0NST1BfWV9PRkZTRVQsIDAgfSwKPiA+IC3CoMKgwqDCoMKgwqAgeyBJTVgy
-MTRfUkVHX0RJR19DUk9QX1dJRFRILCAxOTIwIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0
-X1JFR19ESUdfQ1JPUF9IRUlHSFQsIDEwODAgfSwKPiA+IAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJ
-TVgyMTRfUkVHX1ZUUFhDS19ESVYsIDUgfSwKPiA+IMKgwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JF
-R19WVFNZQ0tfRElWLCAyIH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfUFJFUExM
-Q0tfVlRfRElWLCAzIH0sCj4gPiDCoMKgwqDCoMKgwqDCoCB7IElNWDIxNF9SRUdfUExMX1ZUX01Q
-WSwgMTUwIH0sCj4gPiAtwqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19PUFBYQ0tfRElWLCAxMCB9
-LAo+ID4gwqDCoMKgwqDCoMKgwqAgeyBJTVgyMTRfUkVHX09QU1lDS19ESVYsIDEgfSwKPiA+IMKg
-wqDCoMKgwqDCoMKgIHsgSU1YMjE0X1JFR19QTExfTVVMVF9EUklWLCBJTVgyMTRfUExMX1NJTkdM
-RSB9LAo+ID4gCj4gPiBAQCAtNjIzLDYgKzYwMSw3IEBAIHN0YXRpYyBpbnQgaW14MjE0X3NldF9m
-b3JtYXQoc3RydWN0IHY0bDJfc3ViZGV2Cj4gPiAqc2QsCj4gPiDCoMKgwqDCoMKgwqDCoCBzdHJ1
-Y3QgdjRsMl9tYnVzX2ZyYW1lZm10ICpfX2Zvcm1hdDsKPiA+IMKgwqDCoMKgwqDCoMKgIHN0cnVj
-dCB2NGwyX3JlY3QgKl9fY3JvcDsKPiA+IMKgwqDCoMKgwqDCoMKgIGNvbnN0IHN0cnVjdCBpbXgy
-MTRfbW9kZSAqbW9kZTsKPiA+ICvCoMKgwqDCoMKgwqAgdW5zaWduZWQgaW50IGJpbl9oLCBiaW5f
-diwgYmluOwo+ID4gCj4gPiDCoMKgwqDCoMKgwqDCoCBtb2RlID0gdjRsMl9maW5kX25lYXJlc3Rf
-c2l6ZShpbXgyMTRfbW9kZXMsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBBUlJBWV9TSVpFKGlteDIx
-NF9tb2RlcyksCj4gPiB3aWR0aCwgaGVpZ2h0LAo+ID4gQEAgLTYzNyw5ICs2MTYsMzIgQEAgc3Rh
-dGljIGludCBpbXgyMTRfc2V0X2Zvcm1hdChzdHJ1Y3QKPiA+IHY0bDJfc3ViZGV2ICpzZCwKPiA+
-IAo+ID4gwqDCoMKgwqDCoMKgwqAgKl9fZm9ybWF0ID0gZm9ybWF0LT5mb3JtYXQ7Cj4gPiAKPiA+
-ICvCoMKgwqDCoMKgwqAgLyoKPiA+ICvCoMKgwqDCoMKgwqDCoCAqIFVzZSBiaW5uaW5nIHRvIG1h
-eGltaXplIHRoZSBjcm9wIHJlY3RhbmdsZSBzaXplLCBhbmQKPiA+IGNlbnRyZSBpdCBpbiB0aGUK
-PiA+ICvCoMKgwqDCoMKgwqDCoCAqIHNlbnNvci4KPiA+ICvCoMKgwqDCoMKgwqDCoCAqLwo+ID4g
-K8KgwqDCoMKgwqDCoCBiaW5faCA9IElNWDIxNF9QSVhFTF9BUlJBWV9XSURUSCAvIF9fZm9ybWF0
-LT53aWR0aDsKPiA+ICvCoMKgwqDCoMKgwqAgYmluX3YgPSBJTVgyMTRfUElYRUxfQVJSQVlfSEVJ
-R0hUIC8gX19mb3JtYXQtPmhlaWdodDsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqAgc3dpdGNoICht
-aW4oYmluX2gsIGJpbl92KSkgewo+ID4gK8KgwqDCoMKgwqDCoCBjYXNlIDE6Cj4gPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBiaW4gPSAxOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgYnJlYWs7Cj4gPiArwqDCoMKgwqDCoMKgIGNhc2UgMjoKPiA+ICvCoMKgwqDCoMKg
-wqAgY2FzZSAzOgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYmluID0gMjsKPiA+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOwo+ID4gK8KgwqDCoMKgwqDCoCBj
-YXNlIDQ6Cj4gPiArwqDCoMKgwqDCoMKgIGRlZmF1bHQ6Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBiaW4gPSA0Owo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJl
-YWs7Cj4gPiArwqDCoMKgwqDCoMKgIH0KPiA+ICsKPiA+IMKgwqDCoMKgwqDCoMKgIF9fY3JvcCA9
-IHY0bDJfc3ViZGV2X3N0YXRlX2dldF9jcm9wKHNkX3N0YXRlLCAwKTsKPiA+IC3CoMKgwqDCoMKg
-wqAgX19jcm9wLT53aWR0aCA9IG1vZGUtPndpZHRoOwo+ID4gLcKgwqDCoMKgwqDCoCBfX2Nyb3At
-PmhlaWdodCA9IG1vZGUtPmhlaWdodDsKPiA+ICvCoMKgwqDCoMKgwqAgX19jcm9wLT53aWR0aCA9
-IF9fZm9ybWF0LT53aWR0aCAqIGJpbjsKPiA+ICvCoMKgwqDCoMKgwqAgX19jcm9wLT5oZWlnaHQg
-PSBfX2Zvcm1hdC0+aGVpZ2h0ICogYmluOwo+ID4gK8KgwqDCoMKgwqDCoCBfX2Nyb3AtPmxlZnQg
-PSAoSU1YMjE0X05BVElWRV9XSURUSCAtIF9fY3JvcC0+d2lkdGgpIC8gMjsKPiA+ICvCoMKgwqDC
-oMKgwqAgX19jcm9wLT50b3AgPSAoSU1YMjE0X05BVElWRV9IRUlHSFQgLSBfX2Nyb3AtPmhlaWdo
-dCkgLyAyOwo+ID4gCj4gPiDCoMKgwqDCoMKgwqDCoCBpZiAoZm9ybWF0LT53aGljaCA9PSBWNEwy
-X1NVQkRFVl9GT1JNQVRfQUNUSVZFKSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgaW50IGV4cG9zdXJlX21heDsKPiA+IEBAIC04NDcsNyArODQ5LDYyIEBAIHN0YXRpYyBpbnQg
-aW14MjE0X2N0cmxzX2luaXQoc3RydWN0IGlteDIxNAo+ID4gKmlteDIxNCkKPiA+IMKgwqDCoMKg
-wqDCoMKgIHJldHVybiAwOwo+ID4gwqB9Owo+ID4gCj4gPiAtc3RhdGljIGludCBpbXgyMTRfc3Rh
-cnRfc3RyZWFtaW5nKHN0cnVjdCBpbXgyMTQgKmlteDIxNCkKPiA+ICtzdGF0aWMgaW50IGlteDIx
-NF9zZXRfZnJhbWVmbXQoc3RydWN0IGlteDIxNCAqaW14MjE0LAo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IHY0bDJf
-c3ViZGV2X3N0YXRlICpzdGF0ZSkKPiA+ICt7Cj4gPiArwqDCoMKgwqDCoMKgIGNvbnN0IHN0cnVj
-dCB2NGwyX21idXNfZnJhbWVmbXQgKmZvcm1hdDsKPiA+ICvCoMKgwqDCoMKgwqAgY29uc3Qgc3Ry
-dWN0IHY0bDJfcmVjdCAqY3JvcDsKPiA+ICvCoMKgwqDCoMKgwqAgdTY0IGJpbl9tb2RlOwo+ID4g
-K8KgwqDCoMKgwqDCoCB1NjQgYmluX3R5cGU7Cj4gPiArwqDCoMKgwqDCoMKgIGludCByZXQgPSAw
-Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoCBmb3JtYXQgPSB2NGwyX3N1YmRldl9zdGF0ZV9nZXRf
-Zm9ybWF0KHN0YXRlLCAwKTsKPiA+ICvCoMKgwqDCoMKgwqAgY3JvcCA9IHY0bDJfc3ViZGV2X3N0
-YXRlX2dldF9jcm9wKHN0YXRlLCAwKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqAgY2NpX3dyaXRl
-KGlteDIxNC0+cmVnbWFwLCBJTVgyMTRfUkVHX1hfQUREX1NUQSwKPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBjcm9wLT5sZWZ0IC0gSU1YMjE0X1BJWEVMX0FSUkFZX0xFRlQs
-ICZyZXQpOwo+ID4gK8KgwqDCoMKgwqDCoCBjY2lfd3JpdGUoaW14MjE0LT5yZWdtYXAsIElNWDIx
-NF9SRUdfWF9BRERfRU5ELAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNy
-b3AtPmxlZnQgLSBJTVgyMTRfUElYRUxfQVJSQVlfTEVGVCArIGNyb3AtCj4gPiA+d2lkdGggLSAx
-LCAmcmV0KTsKPiA+ICvCoMKgwqDCoMKgwqAgY2NpX3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJTVgy
-MTRfUkVHX1lfQUREX1NUQSwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBj
-cm9wLT50b3AgLSBJTVgyMTRfUElYRUxfQVJSQVlfVE9QLCAmcmV0KTsKPiA+ICvCoMKgwqDCoMKg
-wqAgY2NpX3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJTVgyMTRfUkVHX1lfQUREX0VORCwKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjcm9wLT50b3AgLSBJTVgyMTRfUElYRUxf
-QVJSQVlfVE9QICsgY3JvcC0+aGVpZ2h0Cj4gPiAtIDEsICZyZXQpOwo+ID4gKwo+ID4gK8KgwqDC
-oMKgwqDCoCAvKiBQcm9wZXIgc2V0dGluZyBpcyByZXF1aXJlZCBldmVuIGlmIGNyb3BwaW5nIGlz
-IG5vdCB1c2VkCj4gPiAqLwo+ID4gK8KgwqDCoMKgwqDCoCBjY2lfd3JpdGUoaW14MjE0LT5yZWdt
-YXAsIElNWDIxNF9SRUdfRElHX0NST1BfV0lEVEgsIGNyb3AtCj4gPiA+d2lkdGgsICZyZXQpOwo+
-ID4gK8KgwqDCoMKgwqDCoCBjY2lfd3JpdGUoaW14MjE0LT5yZWdtYXAsIElNWDIxNF9SRUdfRElH
-X0NST1BfSEVJR0hULCBjcm9wLQo+ID4gPmhlaWdodCwgJnJldCk7Cj4gPiArCj4gPiArwqDCoMKg
-wqDCoMKgIHN3aXRjaCAoY3JvcC0+d2lkdGggLyBmb3JtYXQtPndpZHRoKSB7Cj4gPiArwqDCoMKg
-wqDCoMKgIGNhc2UgMToKPiA+ICvCoMKgwqDCoMKgwqAgZGVmYXVsdDoKPiBuaXQ6IEl0IGZlZWxz
-IHdlaXJkIHRoYXQgZGVmYXVsdCBpcyBub3QgdGhlIGxhc3QgY2FzZS7CoCBDYW4geW91IG1vdmUK
-PiBpdCB0byB0aGUgYm90dG9tPwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYmlu
-X21vZGUgPSBJTVgyMTRfQklOTklOR19OT05FOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgYmluX3R5cGUgPSBJTVgyMTRfQklOTklOR18xWDE7Cj4gPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBicmVhazsKPiA+ICvCoMKgwqDCoMKgwqAgY2FzZSAyOgo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYmluX21vZGUgPSBJTVgyMTRfQklOTklOR19FTkFCTEU7
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBiaW5fdHlwZSA9IElNWDIxNF9CSU5O
-SU5HXzJYMjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOwo+ID4gK8Kg
-wqDCoMKgwqDCoCBjYXNlIDQ6Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBiaW5f
-bW9kZSA9IElNWDIxNF9CSU5OSU5HX0VOQUJMRTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIGJpbl90eXBlID0gSU1YMjE0X0JJTk5JTkdfNFg0Owo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgYnJlYWs7Cj4gPiArwqDCoMKgwqDCoMKgIH0KPiA+ICsKPiA+ICvCoMKg
-wqDCoMKgwqAgY2NpX3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJTVgyMTRfUkVHX0JJTk5JTkdfTU9E
-RSwKPiA+IGJpbl9tb2RlLCAmcmV0KTsKPiA+ICvCoMKgwqDCoMKgwqAgY2NpX3dyaXRlKGlteDIx
-NC0+cmVnbWFwLCBJTVgyMTRfUkVHX0JJTk5JTkdfVFlQRSwKPiA+IGJpbl90eXBlLCAmcmV0KTsK
-PiA+ICsKPiA+ICvCoMKgwqDCoMKgwqAgY2NpX3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJTVgyMTRf
-UkVHX1hfT1VUUFVUX1NJWkUsIGZvcm1hdC0KPiA+ID53aWR0aCwgJnJldCk7Cj4gPiArwqDCoMKg
-wqDCoMKgIGNjaV93cml0ZShpbXgyMTQtPnJlZ21hcCwgSU1YMjE0X1JFR19ZX09VVFBVVF9TSVpF
-LCBmb3JtYXQtCj4gPiA+aGVpZ2h0LCAmcmV0KTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqAgY2Np
-X3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJTVgyMTRfUkVHX0NTSV9EQVRBX0ZPUk1BVCwKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBJTVgyMTRfQ1NJX0RBVEFfRk9STUFUX1JB
-VzEwLCAmcmV0KTsKPiA+ICvCoMKgwqDCoMKgwqAgY2NpX3dyaXRlKGlteDIxNC0+cmVnbWFwLCBJ
-TVgyMTRfUkVHX09QUFhDS19ESVYsCj4gPiBJTVgyMTRfT1BQWENLX0RJVl9SQVcxMCwgJnJldCk7
-Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgIHJldHVybiByZXQ7Cj4gPiArfTsKPiA+ICsKPiA+ICtz
-dGF0aWMgaW50IGlteDIxNF9zdGFydF9zdHJlYW1pbmcoc3RydWN0IGlteDIxNCAqaW14MjE0LAo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgc3RydWN0IHY0bDJfc3ViZGV2X3N0YXRlICpzdGF0ZSkKPiA+IMKgewo+ID4g
-wqDCoMKgwqDCoMKgwqAgaW50IHJldDsKPiA+IAo+ID4gQEAgLTg2NSw2ICs5MjIsMTQgQEAgc3Rh
-dGljIGludCBpbXgyMTRfc3RhcnRfc3RyZWFtaW5nKHN0cnVjdAo+ID4gaW14MjE0ICppbXgyMTQp
-Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIHJldDsKPiA+IMKgwqDC
-oMKgwqDCoMKgIH0KPiA+IAo+ID4gK8KgwqDCoMKgwqDCoCAvKiBBcHBseSBmb3JtYXQgYW5kIGNy
-b3Agc2V0dGluZ3MgKi8KPiA+ICvCoMKgwqDCoMKgwqAgcmV0ID0gaW14MjE0X3NldF9mcmFtZWZt
-dChpbXgyMTQsIHN0YXRlKTsKPiA+ICvCoMKgwqDCoMKgwqAgaWYgKHJldCkgewo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGV2X2VycihpbXgyMTQtPmRldiwgIiVzIGZhaWxlZCB0
-byBzZXQgZnJhbWUKPiA+IGZvcm1hdDogJWRcbiIsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgX19mdW5jX18sIHJldCk7Cj4gPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gcmV0Owo+ID4gK8KgwqDCoMKgwqDCoCB9Cj4gPiArCj4g
-PiDCoMKgwqDCoMKgwqDCoCByZXQgPSBjY2lfbXVsdGlfcmVnX3dyaXRlKGlteDIxNC0+cmVnbWFw
-LCBpbXgyMTQtPmN1cl9tb2RlLQo+ID4gPnJlZ190YWJsZSwKPiA+IMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbXgyMTQt
-PmN1cl9tb2RlLT5udW1fb2ZfcmVncywKPiA+IE5VTEwpOwo+ID4gwqDCoMKgwqDCoMKgwqAgaWYg
-KHJldCA8IDApIHsKPiA+IEBAIC05MTMsNyArOTc4LDcgQEAgc3RhdGljIGludCBpbXgyMTRfc19z
-dHJlYW0oc3RydWN0IHY0bDJfc3ViZGV2Cj4gPiAqc3ViZGV2LCBpbnQgZW5hYmxlKQo+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gcmV0Owo+
-ID4gCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RhdGUgPQo+ID4gdjRsMl9z
-dWJkZXZfbG9ja19hbmRfZ2V0X2FjdGl2ZV9zdGF0ZShzdWJkZXYpOwo+ID4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgcmV0ID0gaW14MjE0X3N0YXJ0X3N0cmVhbWluZyhpbXgyMTQpOwo+
-ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0ID0gaW14MjE0X3N0YXJ0X3N0cmVh
-bWluZyhpbXgyMTQsIHN0YXRlKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB2
-NGwyX3N1YmRldl91bmxvY2tfc3RhdGUoc3RhdGUpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIGlmIChyZXQgPCAwKQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBnb3RvIGVycl9ycG1fcHV0Owo+ID4gCj4gPiAtLQo+ID4gMi40Ny4w
-Cj4gPiAKPiA+IAoK
+Hi Andr=C3=A9
 
+On Wed, Nov 20, 2024 at 9:07=E2=80=AFPM Andr=C3=A9 Apitzsch <git@apitzsch.e=
+u> wrote:
+>
+> Hi Ricardo,
+>
+> Am Mittwoch, dem 30.10.2024 um 13:10 +0100 schrieb Ricardo Ribalda
+> Delgado:
+> > Hi
+> >
+> > Aren't you changing the binning mode for 1920x1080  with this patch?
+> > I think that could be considered an ABI change.
+>
+> Is the problem that the ABI changes or that it is not mentioned in the
+> commit message?
+
+I think it is a combination of both. There will be products out there
+that after applying this change will get different frames using the
+same configuration.
+
+@Sakari Ailus  What do we usually do in these cases?
+
+> >
+> > Also, if we are not letting the user change the value, I do not see
+> > much value in setting the cropping programmatically, I'd rather not
+> > take this change.
+>
+> I assume the first "value" refers to "binning value", that cannot be
+> changed by the user. Is it right, that .set_selection needs to be
+> implemented to change that?
+
+I believe set_selection is the correct way, yes. Sakari again to keep
+me honest :)
+
+>
+> The different values are set programmatically to reduce the number of
+> entries in the cci reg sequences to make it easier to add more modes
+> later.
+
+If it is not a huge rework: Can we start by having  the crop area
+moved to imx214_mode and add all the binning logic to a different
+patch?
+It will be easier to discuss things that way.
+
+>
+> Regards,
+> Andr=C3=A9
+>
+> >
+> > On Mon, Oct 21, 2024 at 12:14=E2=80=AFAM Andr=C3=A9 Apitzsch via B4 Rel=
+ay
+> > <devnull+git.apitzsch.eu@kernel.org> wrote:
+> > >
+> > > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > >
+> > > Remove format and crop settings from register sequences and set
+> > > them
+> > > programmatically.
+> > >
+> > > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > > ---
+> > >  drivers/media/i2c/imx214.c | 129
+> > > ++++++++++++++++++++++++++++++++++-----------
+> > >  1 file changed, 97 insertions(+), 32 deletions(-)
+> > >
+> > > diff --git a/drivers/media/i2c/imx214.c
+> > > b/drivers/media/i2c/imx214.c
+> > > index
+> > > cb443d8bee6fe72dc9378b2c2d3caae09f8642c5..87a03e292e19ccd71f1b2dcee
+> > > 3409826b2f5cb6f 100644
+> > > --- a/drivers/media/i2c/imx214.c
+> > > +++ b/drivers/media/i2c/imx214.c
+> > > @@ -96,6 +96,9 @@
+> > >  #define IMX214_REG_PREPLLCK_VT_DIV     CCI_REG8(0x0305)
+> > >  #define IMX214_REG_PLL_VT_MPY          CCI_REG16(0x0306)
+> > >  #define IMX214_REG_OPPXCK_DIV          CCI_REG8(0x0309)
+> > > +#define IMX214_OPPXCK_DIV_COMP6                6
+> > > +#define IMX214_OPPXCK_DIV_COMP8                8
+> > > +#define IMX214_OPPXCK_DIV_RAW10                10
+> > >  #define IMX214_REG_OPSYCK_DIV          CCI_REG8(0x030b)
+> > >  #define IMX214_REG_PLL_MULT_DRIV       CCI_REG8(0x0310)
+> > >  #define IMX214_PLL_SINGLE              0
+> > > @@ -132,6 +135,9 @@
+> > >  #define IMX214_BINNING_NONE            0
+> > >  #define IMX214_BINNING_ENABLE          1
+> > >  #define IMX214_REG_BINNING_TYPE                CCI_REG8(0x0901)
+> > > +#define IMX214_BINNING_1X1             0
+> > > +#define IMX214_BINNING_2X2             0x22
+> > > +#define IMX214_BINNING_4X4             0x44
+> > >  #define IMX214_REG_BINNING_WEIGHTING   CCI_REG8(0x0902)
+> > >  #define IMX214_BINNING_AVERAGE         0x00
+> > >  #define IMX214_BINNING_SUMMED          0x01
+> > > @@ -211,36 +217,22 @@ static const struct cci_reg_sequence
+> > > mode_4096x2304[] =3D {
+> > >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
+> > >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
+> > > },
+> > >         { IMX214_REG_EXPOSURE_RATIO, 1 },
+> > > -       { IMX214_REG_X_ADD_STA, 56 },
+> > > -       { IMX214_REG_Y_ADD_STA, 408 },
+> > > -       { IMX214_REG_X_ADD_END, 4151 },
+> > > -       { IMX214_REG_Y_ADD_END, 2711 },
+> > >         { IMX214_REG_X_EVEN_INC, 1 },
+> > >         { IMX214_REG_X_ODD_INC, 1 },
+> > >         { IMX214_REG_Y_EVEN_INC, 1 },
+> > >         { IMX214_REG_Y_ODD_INC, 1 },
+> > > -       { IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
+> > > -       { IMX214_REG_BINNING_TYPE, 0 },
+> > >         { IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
+> > >         { CCI_REG8(0x3000), 0x35 },
+> > >         { CCI_REG8(0x3054), 0x01 },
+> > >         { CCI_REG8(0x305C), 0x11 },
+> > >
+> > > -       { IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10
+> > > },
+> > > -       { IMX214_REG_X_OUTPUT_SIZE, 4096 },
+> > > -       { IMX214_REG_Y_OUTPUT_SIZE, 2304 },
+> > >         { IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
+> > >         { IMX214_REG_SCALE_M, 2 },
+> > > -       { IMX214_REG_DIG_CROP_X_OFFSET, 0 },
+> > > -       { IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
+> > > -       { IMX214_REG_DIG_CROP_WIDTH, 4096 },
+> > > -       { IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+> > >
+> > >         { IMX214_REG_VTPXCK_DIV, 5 },
+> > >         { IMX214_REG_VTSYCK_DIV, 2 },
+> > >         { IMX214_REG_PREPLLCK_VT_DIV, 3 },
+> > >         { IMX214_REG_PLL_VT_MPY, 150 },
+> > > -       { IMX214_REG_OPPXCK_DIV, 10 },
+> > >         { IMX214_REG_OPSYCK_DIV, 1 },
+> > >         { IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+> > >
+> > > @@ -281,36 +273,22 @@ static const struct cci_reg_sequence
+> > > mode_1920x1080[] =3D {
+> > >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
+> > >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
+> > > },
+> > >         { IMX214_REG_EXPOSURE_RATIO, 1 },
+> > > -       { IMX214_REG_X_ADD_STA, 1144 },
+> > > -       { IMX214_REG_Y_ADD_STA, 1020 },
+> > > -       { IMX214_REG_X_ADD_END, 3063 },
+> > > -       { IMX214_REG_Y_ADD_END, 2099 },
+> > >         { IMX214_REG_X_EVEN_INC, 1 },
+> > >         { IMX214_REG_X_ODD_INC, 1 },
+> > >         { IMX214_REG_Y_EVEN_INC, 1 },
+> > >         { IMX214_REG_Y_ODD_INC, 1 },
+> > > -       { IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
+> > > -       { IMX214_REG_BINNING_TYPE, 0 },
+> > >         { IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
+> > >         { CCI_REG8(0x3000), 0x35 },
+> > >         { CCI_REG8(0x3054), 0x01 },
+> > >         { CCI_REG8(0x305C), 0x11 },
+> > >
+> > > -       { IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10
+> > > },
+> > > -       { IMX214_REG_X_OUTPUT_SIZE, 1920 },
+> > > -       { IMX214_REG_Y_OUTPUT_SIZE, 1080 },
+> > >         { IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
+> > >         { IMX214_REG_SCALE_M, 2 },
+> > > -       { IMX214_REG_DIG_CROP_X_OFFSET, 0 },
+> > > -       { IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
+> > > -       { IMX214_REG_DIG_CROP_WIDTH, 1920 },
+> > > -       { IMX214_REG_DIG_CROP_HEIGHT, 1080 },
+> > >
+> > >         { IMX214_REG_VTPXCK_DIV, 5 },
+> > >         { IMX214_REG_VTSYCK_DIV, 2 },
+> > >         { IMX214_REG_PREPLLCK_VT_DIV, 3 },
+> > >         { IMX214_REG_PLL_VT_MPY, 150 },
+> > > -       { IMX214_REG_OPPXCK_DIV, 10 },
+> > >         { IMX214_REG_OPSYCK_DIV, 1 },
+> > >         { IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+> > >
+> > > @@ -623,6 +601,7 @@ static int imx214_set_format(struct v4l2_subdev
+> > > *sd,
+> > >         struct v4l2_mbus_framefmt *__format;
+> > >         struct v4l2_rect *__crop;
+> > >         const struct imx214_mode *mode;
+> > > +       unsigned int bin_h, bin_v, bin;
+> > >
+> > >         mode =3D v4l2_find_nearest_size(imx214_modes,
+> > >                                       ARRAY_SIZE(imx214_modes),
+> > > width, height,
+> > > @@ -637,9 +616,32 @@ static int imx214_set_format(struct
+> > > v4l2_subdev *sd,
+> > >
+> > >         *__format =3D format->format;
+> > >
+> > > +       /*
+> > > +        * Use binning to maximize the crop rectangle size, and
+> > > centre it in the
+> > > +        * sensor.
+> > > +        */
+> > > +       bin_h =3D IMX214_PIXEL_ARRAY_WIDTH / __format->width;
+> > > +       bin_v =3D IMX214_PIXEL_ARRAY_HEIGHT / __format->height;
+> > > +
+> > > +       switch (min(bin_h, bin_v)) {
+> > > +       case 1:
+> > > +               bin =3D 1;
+> > > +               break;
+> > > +       case 2:
+> > > +       case 3:
+> > > +               bin =3D 2;
+> > > +               break;
+> > > +       case 4:
+> > > +       default:
+> > > +               bin =3D 4;
+> > > +               break;
+> > > +       }
+> > > +
+> > >         __crop =3D v4l2_subdev_state_get_crop(sd_state, 0);
+> > > -       __crop->width =3D mode->width;
+> > > -       __crop->height =3D mode->height;
+> > > +       __crop->width =3D __format->width * bin;
+> > > +       __crop->height =3D __format->height * bin;
+> > > +       __crop->left =3D (IMX214_NATIVE_WIDTH - __crop->width) / 2;
+> > > +       __crop->top =3D (IMX214_NATIVE_HEIGHT - __crop->height) / 2;
+> > >
+> > >         if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE) {
+> > >                 int exposure_max;
+> > > @@ -847,7 +849,62 @@ static int imx214_ctrls_init(struct imx214
+> > > *imx214)
+> > >         return 0;
+> > >  };
+> > >
+> > > -static int imx214_start_streaming(struct imx214 *imx214)
+> > > +static int imx214_set_framefmt(struct imx214 *imx214,
+> > > +                              struct v4l2_subdev_state *state)
+> > > +{
+> > > +       const struct v4l2_mbus_framefmt *format;
+> > > +       const struct v4l2_rect *crop;
+> > > +       u64 bin_mode;
+> > > +       u64 bin_type;
+> > > +       int ret =3D 0;
+> > > +
+> > > +       format =3D v4l2_subdev_state_get_format(state, 0);
+> > > +       crop =3D v4l2_subdev_state_get_crop(state, 0);
+> > > +
+> > > +       cci_write(imx214->regmap, IMX214_REG_X_ADD_STA,
+> > > +                 crop->left - IMX214_PIXEL_ARRAY_LEFT, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_X_ADD_END,
+> > > +                 crop->left - IMX214_PIXEL_ARRAY_LEFT + crop-
+> > > >width - 1, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_Y_ADD_STA,
+> > > +                 crop->top - IMX214_PIXEL_ARRAY_TOP, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_Y_ADD_END,
+> > > +                 crop->top - IMX214_PIXEL_ARRAY_TOP + crop->height
+> > > - 1, &ret);
+> > > +
+> > > +       /* Proper setting is required even if cropping is not used
+> > > */
+> > > +       cci_write(imx214->regmap, IMX214_REG_DIG_CROP_WIDTH, crop-
+> > > >width, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_DIG_CROP_HEIGHT, crop-
+> > > >height, &ret);
+> > > +
+> > > +       switch (crop->width / format->width) {
+> > > +       case 1:
+> > > +       default:
+> > nit: It feels weird that default is not the last case.  Can you move
+> > it to the bottom?
+> > > +               bin_mode =3D IMX214_BINNING_NONE;
+> > > +               bin_type =3D IMX214_BINNING_1X1;
+> > > +               break;
+> > > +       case 2:
+> > > +               bin_mode =3D IMX214_BINNING_ENABLE;
+> > > +               bin_type =3D IMX214_BINNING_2X2;
+> > > +               break;
+> > > +       case 4:
+> > > +               bin_mode =3D IMX214_BINNING_ENABLE;
+> > > +               bin_type =3D IMX214_BINNING_4X4;
+> > > +               break;
+> > > +       }
+> > > +
+> > > +       cci_write(imx214->regmap, IMX214_REG_BINNING_MODE,
+> > > bin_mode, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_BINNING_TYPE,
+> > > bin_type, &ret);
+> > > +
+> > > +       cci_write(imx214->regmap, IMX214_REG_X_OUTPUT_SIZE, format-
+> > > >width, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_Y_OUTPUT_SIZE, format-
+> > > >height, &ret);
+> > > +
+> > > +       cci_write(imx214->regmap, IMX214_REG_CSI_DATA_FORMAT,
+> > > +                 IMX214_CSI_DATA_FORMAT_RAW10, &ret);
+> > > +       cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV,
+> > > IMX214_OPPXCK_DIV_RAW10, &ret);
+> > > +
+> > > +       return ret;
+> > > +};
+> > > +
+> > > +static int imx214_start_streaming(struct imx214 *imx214,
+> > > +                                 struct v4l2_subdev_state *state)
+> > >  {
+> > >         int ret;
+> > >
+> > > @@ -865,6 +922,14 @@ static int imx214_start_streaming(struct
+> > > imx214 *imx214)
+> > >                 return ret;
+> > >         }
+> > >
+> > > +       /* Apply format and crop settings */
+> > > +       ret =3D imx214_set_framefmt(imx214, state);
+> > > +       if (ret) {
+> > > +               dev_err(imx214->dev, "%s failed to set frame
+> > > format: %d\n",
+> > > +                       __func__, ret);
+> > > +               return ret;
+> > > +       }
+> > > +
+> > >         ret =3D cci_multi_reg_write(imx214->regmap, imx214->cur_mode-
+> > > >reg_table,
+> > >                                   imx214->cur_mode->num_of_regs,
+> > > NULL);
+> > >         if (ret < 0) {
+> > > @@ -913,7 +978,7 @@ static int imx214_s_stream(struct v4l2_subdev
+> > > *subdev, int enable)
+> > >                         return ret;
+> > >
+> > >                 state =3D
+> > > v4l2_subdev_lock_and_get_active_state(subdev);
+> > > -               ret =3D imx214_start_streaming(imx214);
+> > > +               ret =3D imx214_start_streaming(imx214, state);
+> > >                 v4l2_subdev_unlock_state(state);
+> > >                 if (ret < 0)
+> > >                         goto err_rpm_put;
+> > >
+> > > --
+> > > 2.47.0
+> > >
+> > >
+>
