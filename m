@@ -1,353 +1,111 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84371B6555;
-	Sun,  1 Dec 2024 18:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776863BB48
+	for <phone-devel@vger.kernel.org>; Mon,  2 Dec 2024 15:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733078685; cv=none; b=gPYumq7yl+Vyfk+wW26QQJtFVW0Rp4OrKs1/1XI05jJch2b0IsbnwHjItFvB6z7ccvHy2jqoRnPK9tDvCIhnKpDObC0KfhWwLRi0xB1EMCP23LdCas+RHrInlaEWgDOhF21zWo1f7/uW9kAnEsmZJHU+Gw01NyrOrVXjJUt/vDU=
+	t=1733154309; cv=none; b=lBvaf/3yTH6Nkwf4tTfkqJUaLREaFFQy2ToaDy+vUpKHi8+T0r8HHdMPbwYUxSaEEiIQ6T6B62i5DFOfJhghDtvpl0Hr+putbZCrcE5+rx04AN0cvydYp6avFfH5G+FMulSkBIxqF6fVdawNYD5r+3alOyGYOP1DtrP1GjCa6zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733078685; c=relaxed/simple;
-	bh=7RnqtiIs3yxjelXw16vVWhcdS9fqa1m8NOdcsIZw86Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HzMYFzy6Yi303VTkWs0tajQoXnEd6bSNqiLrFIJacSbMfPElIXGadhY7yubz63cezFLjMq4Kt1+nB0QPj4QcvDZ3zYM2YdVFGQO6X34il3m7ySKeFVQmuyBi2XK2+wctQ3J6bOJyvdL1Y7eeuZ85QFSnZCI+aGtRMq5pWn+pgrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=aWMQqYrV; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1733154309; c=relaxed/simple;
+	bh=g9aUICujfvbjpqeM4w3JMq2L4/zhb7YLW+mfp8bRqU8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ug5ocAe4/2lc0I94MHmWlgP93eGf8jnkDFGR1IN2lrovK5ID2UQ2mecuBDHklu5KiwRVcJaEefQ3UEMNeljZeX5WdVs2o7TJr/2a/FoZAmNucaNPBOKcS72dTWmKCN41AEuJDiPgb7DcpMEp3hQp3eFxvSs3A68m6HNljgNZIx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yRpuJQGm; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="aWMQqYrV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=/4nI2FAaoA3rsXi7OjP//bqodmp6s6H263icRSEzEr8=; b=aWMQqYrVsUnFUbN7iY4fxIj3+t
-	qjZzkiDXaLKSAuBsk2Cv7acHxaVYDjk2jwEEcXaZ+aZ5zR67RZnxOq2KtzJ0CYh2aLYCcKvb9Qwc8
-	FFqYdYx4RYKeyFoRWBnz5EzMjHgOJ10FcAlH6mGlCc/LerFbfwN/uNC1GEvyFVOt7AkzvtDFJU34y
-	Dvvo7IiNgrVlkDyEYznMnceghUQ8nDdjyZJepWl2Au9GK8h1ZJA27pTlgc1FNFKD6UdfUK3NbfrGu
-	Os/aFsqqjFUve+2hadRIMDvkwleKnyly8TsH6l5KYOYMWFL0PwFDYq+mJvn5C2QXjFgJ2/8zcUeLH
-	RZrc84WQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tHob6-0005M6-0V;
-	Sun, 01 Dec 2024 19:23:08 +0100
-Received: from [77.64.252.106] (helo=framework.lan)
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tHob6-000NxA-15;
-	Sun, 01 Dec 2024 19:23:08 +0100
-Message-ID: <16eebeed3cbc45394d12a67a393315a454cdbd5a.camel@apitzsch.eu>
-Subject: Re: [PATCH v2 09/13] media: i2c: imx214: Extract format and crop
- settings
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Ricardo Ribalda <ribalda@kernel.org>, Mauro Carvalho Chehab
-	 <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Dave Stevenson
-	 <dave.stevenson@raspberrypi.com>
-Date: Sun, 01 Dec 2024 19:23:07 +0100
-In-Reply-To: <20241021-imx214-v2-9-fbd23e99541e@apitzsch.eu>
-References: <20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu>
-	 <20241021-imx214-v2-9-fbd23e99541e@apitzsch.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yRpuJQGm"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434a766b475so40853345e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 02 Dec 2024 07:45:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1733154304; x=1733759104; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xXCuDP180luZ4JePdaAEPqLFzpR2coh76lHb7Z0CuU0=;
+        b=yRpuJQGmtPcp/0xj+LTQkGBZ6UtxWROEWBR80euqB8nBcEPVp4ftOh2ElW1Nkq7nhE
+         gAUPsTNKLUysXWAOLsFFwJDCvBUlWElLL0KLtWPnsiL3zZgk66MpKWw3lrmWbYwdKzdZ
+         O0iQUe1wGUkbglDOeCKGuUUWJ4vYtoPrkI+S67MV7UsYyyFepzMqhnsW6OCBbcuJ4aQ2
+         l2I6TR/C7mPi18wvxN7HX/n4L1SreMq3ZJRAdj6ZpUgF+KyeopLtTtVp/8JcDiYXkEKX
+         1Ebd8Ennu/olGPWKoA6oo7NSp9+MlQwKGQHqcbYwozdW7vYgBthMylWHs97ArpToVz+9
+         IQdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733154304; x=1733759104;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xXCuDP180luZ4JePdaAEPqLFzpR2coh76lHb7Z0CuU0=;
+        b=o2KV5SXVcdVnx3mwytVnbWlqAkVHNa6yd2uIdxEegniY9FJg31VXbIQZ7t0Tgcz0kJ
+         z4RQHjEE1I5RUY6d7H6Tfv/XcbH7mPUhXQwMi1H3CBN/DsOZ2PJvc3BAk5a8yjvyDro9
+         ytrKmNV46Vgl+oStbZzIxhRMzOu6coYXCfRUvUwYtSqCWK6JSnzIfFCJkNaubd44k1Am
+         Qw8M65kzt1sJ6HISajXebosO+pbnyulQx0mxAin1Noufbvub6a4bMWzPcYj3zh1ywwDh
+         5NKpUkkP/F4yV8WP/qo8tqa1xwmFKi4OBKj3WaThN7Ad34EQfPIiv4s3UyErtxr5tyzG
+         eZvw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4RNTR8ajYPNMo+9EeTCAhoWJnrzs7g5onWe/4XbYJ71LCBGq0t+VSlzxlb5Iujl9Q2+61eoTifGQF7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YySJz4HinTvrg1RLvg82desE6unew1PbCtcAvLet/2bbTrpfDBx
+	mqi2gKC9cEuwEhV13le4yXU7m+hfOtKbieF2g55Q7GofR+FymiYPK0v73ffeedX9cIgDjGeniqS
+	9XKQ=
+X-Gm-Gg: ASbGncvF7ot1xkHp0P4qItAEYSqd71DwFlGyCxNqoMEs1mah+Fk+i6zJRm7Her36bd3
+	loW7NteTwZs3eas3gTNuWywaqpi6yytAGtzRKdmHsVWkxwhPIR6B34kgbO4QIAZHq3UrG8bcitY
+	I0a7F2Nnf9wmLSbceoBnLWSYETMAV8wS7eajoZOq41lGcpHFC2/Pd0c9bzcPODoVvoJdBJ7xmvU
+	o8/HqRz4Ix2p+X35722pZW107G6aETkONdzW1sBZpgy4bQjAaFYc/WJemPdaWp9tBv14Z+XjwCZ
+	vxu1o/a2VJlIKP9ucAy7Wh0=
+X-Google-Smtp-Source: AGHT+IGgu7NcMFp/eaHdVsUxC15X5VcowG3qWNXAtBMGKtwV64OuR/ITdkzi/tMktSJ0w/eSu83O5Q==
+X-Received: by 2002:a05:600c:510c:b0:431:52b7:a499 with SMTP id 5b1f17b1804b1-434a9df270fmr189824075e9.20.1733154304558;
+        Mon, 02 Dec 2024 07:45:04 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0dc63b6sm155711085e9.22.2024.12.02.07.45.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 07:45:04 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Mon, 02 Dec 2024 16:45:02 +0100
+Subject: [PATCH] dt-bindings: power: rpmpd: Fix comment for SM6375
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Authenticated-Sender: andre@apitzsch.eu
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27474/Sun Dec  1 10:42:26 2024)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241202-rpmpd-sm6375-v1-1-12a4f0182133@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAP3VTWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIKFbVJBbkKJbnGtmbG6qa2BmamGUamhklmKepgTUUlCUmpZZATYuOra
+ 2FgB4/GQDXgAAAA==
+X-Change-ID: 20241202-rpmpd-sm6375-06582e126d7f
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-Hi,
+During an earlier commit, the comment from SM6350 was copied without
+modifying. Adjust the comment to reflect the defines.
 
-I'll drop this patch for now. The changes included are not needed to
-make imx214 work with libcamera. And with [1] the patch might need a
-rework anyway.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ include/dt-bindings/power/qcom-rpmpd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index df599bf462207267a412eac8e01634189a696a59..d9b7bac309537cbfd2488e7d4fe21d195c919ef5 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -65,7 +65,7 @@
+ #define SM6350_MSS	4
+ #define SM6350_MX	5
+ 
+-/* SM6350 Power Domain Indexes */
++/* SM6375 Power Domain Indexes */
+ #define SM6375_VDDCX		0
+ #define SM6375_VDDCX_AO	1
+ #define SM6375_VDDCX_VFL	2
+
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241202-rpmpd-sm6375-06582e126d7f
 
 Best regards,
-Andr=C3=A9
-
-[1]
-https://lore.kernel.org/linux-media/20241129095142.87196-1-sakari.ailus@lin=
-ux.intel.com/
-
-Am Montag, dem 21.10.2024 um 00:13 +0200 schrieb Andr=C3=A9 Apitzsch via B4
-Relay:
-> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
->=20
-> Remove format and crop settings from register sequences and set them
-> programmatically.
->=20
-> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> ---
-> =C2=A0drivers/media/i2c/imx214.c | 129 ++++++++++++++++++++++++++++++++++=
--
-> ----------
-> =C2=A01 file changed, 97 insertions(+), 32 deletions(-)
->=20
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index
-> cb443d8bee6fe72dc9378b2c2d3caae09f8642c5..87a03e292e19ccd71f1b2dcee34
-> 09826b2f5cb6f 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -96,6 +96,9 @@
-> =C2=A0#define IMX214_REG_PREPLLCK_VT_DIV	CCI_REG8(0x0305)
-> =C2=A0#define IMX214_REG_PLL_VT_MPY		CCI_REG16(0x0306)
-> =C2=A0#define IMX214_REG_OPPXCK_DIV		CCI_REG8(0x0309)
-> +#define IMX214_OPPXCK_DIV_COMP6		6
-> +#define IMX214_OPPXCK_DIV_COMP8		8
-> +#define IMX214_OPPXCK_DIV_RAW10		10
-> =C2=A0#define IMX214_REG_OPSYCK_DIV		CCI_REG8(0x030b)
-> =C2=A0#define IMX214_REG_PLL_MULT_DRIV	CCI_REG8(0x0310)
-> =C2=A0#define IMX214_PLL_SINGLE		0
-> @@ -132,6 +135,9 @@
-> =C2=A0#define IMX214_BINNING_NONE		0
-> =C2=A0#define IMX214_BINNING_ENABLE		1
-> =C2=A0#define IMX214_REG_BINNING_TYPE		CCI_REG8(0x0901)
-> +#define IMX214_BINNING_1X1		0
-> +#define IMX214_BINNING_2X2		0x22
-> +#define IMX214_BINNING_4X4		0x44
-> =C2=A0#define IMX214_REG_BINNING_WEIGHTING	CCI_REG8(0x0902)
-> =C2=A0#define IMX214_BINNING_AVERAGE		0x00
-> =C2=A0#define IMX214_BINNING_SUMMED		0x01
-> @@ -211,36 +217,22 @@ static const struct cci_reg_sequence
-> mode_4096x2304[] =3D {
-> =C2=A0	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> =C2=A0	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
-> },
-> =C2=A0	{ IMX214_REG_EXPOSURE_RATIO, 1 },
-> -	{ IMX214_REG_X_ADD_STA, 56 },
-> -	{ IMX214_REG_Y_ADD_STA, 408 },
-> -	{ IMX214_REG_X_ADD_END, 4151 },
-> -	{ IMX214_REG_Y_ADD_END, 2711 },
-> =C2=A0	{ IMX214_REG_X_EVEN_INC, 1 },
-> =C2=A0	{ IMX214_REG_X_ODD_INC, 1 },
-> =C2=A0	{ IMX214_REG_Y_EVEN_INC, 1 },
-> =C2=A0	{ IMX214_REG_Y_ODD_INC, 1 },
-> -	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
-> -	{ IMX214_REG_BINNING_TYPE, 0 },
-> =C2=A0	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
-> =C2=A0	{ CCI_REG8(0x3000), 0x35 },
-> =C2=A0	{ CCI_REG8(0x3054), 0x01 },
-> =C2=A0	{ CCI_REG8(0x305C), 0x11 },
-> =C2=A0
-> -	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10
-> },
-> -	{ IMX214_REG_X_OUTPUT_SIZE, 4096 },
-> -	{ IMX214_REG_Y_OUTPUT_SIZE, 2304 },
-> =C2=A0	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
-> =C2=A0	{ IMX214_REG_SCALE_M, 2 },
-> -	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
-> -	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
-> -	{ IMX214_REG_DIG_CROP_WIDTH, 4096 },
-> -	{ IMX214_REG_DIG_CROP_HEIGHT, 2304 },
-> =C2=A0
-> =C2=A0	{ IMX214_REG_VTPXCK_DIV, 5 },
-> =C2=A0	{ IMX214_REG_VTSYCK_DIV, 2 },
-> =C2=A0	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
-> =C2=A0	{ IMX214_REG_PLL_VT_MPY, 150 },
-> -	{ IMX214_REG_OPPXCK_DIV, 10 },
-> =C2=A0	{ IMX214_REG_OPSYCK_DIV, 1 },
-> =C2=A0	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
-> =C2=A0
-> @@ -281,36 +273,22 @@ static const struct cci_reg_sequence
-> mode_1920x1080[] =3D {
-> =C2=A0	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> =C2=A0	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
-> },
-> =C2=A0	{ IMX214_REG_EXPOSURE_RATIO, 1 },
-> -	{ IMX214_REG_X_ADD_STA, 1144 },
-> -	{ IMX214_REG_Y_ADD_STA, 1020 },
-> -	{ IMX214_REG_X_ADD_END, 3063 },
-> -	{ IMX214_REG_Y_ADD_END, 2099 },
-> =C2=A0	{ IMX214_REG_X_EVEN_INC, 1 },
-> =C2=A0	{ IMX214_REG_X_ODD_INC, 1 },
-> =C2=A0	{ IMX214_REG_Y_EVEN_INC, 1 },
-> =C2=A0	{ IMX214_REG_Y_ODD_INC, 1 },
-> -	{ IMX214_REG_BINNING_MODE, IMX214_BINNING_NONE },
-> -	{ IMX214_REG_BINNING_TYPE, 0 },
-> =C2=A0	{ IMX214_REG_BINNING_WEIGHTING, IMX214_BINNING_AVERAGE },
-> =C2=A0	{ CCI_REG8(0x3000), 0x35 },
-> =C2=A0	{ CCI_REG8(0x3054), 0x01 },
-> =C2=A0	{ CCI_REG8(0x305C), 0x11 },
-> =C2=A0
-> -	{ IMX214_REG_CSI_DATA_FORMAT, IMX214_CSI_DATA_FORMAT_RAW10
-> },
-> -	{ IMX214_REG_X_OUTPUT_SIZE, 1920 },
-> -	{ IMX214_REG_Y_OUTPUT_SIZE, 1080 },
-> =C2=A0	{ IMX214_REG_SCALE_MODE, IMX214_SCALE_NONE },
-> =C2=A0	{ IMX214_REG_SCALE_M, 2 },
-> -	{ IMX214_REG_DIG_CROP_X_OFFSET, 0 },
-> -	{ IMX214_REG_DIG_CROP_Y_OFFSET, 0 },
-> -	{ IMX214_REG_DIG_CROP_WIDTH, 1920 },
-> -	{ IMX214_REG_DIG_CROP_HEIGHT, 1080 },
-> =C2=A0
-> =C2=A0	{ IMX214_REG_VTPXCK_DIV, 5 },
-> =C2=A0	{ IMX214_REG_VTSYCK_DIV, 2 },
-> =C2=A0	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
-> =C2=A0	{ IMX214_REG_PLL_VT_MPY, 150 },
-> -	{ IMX214_REG_OPPXCK_DIV, 10 },
-> =C2=A0	{ IMX214_REG_OPSYCK_DIV, 1 },
-> =C2=A0	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
-> =C2=A0
-> @@ -623,6 +601,7 @@ static int imx214_set_format(struct v4l2_subdev
-> *sd,
-> =C2=A0	struct v4l2_mbus_framefmt *__format;
-> =C2=A0	struct v4l2_rect *__crop;
-> =C2=A0	const struct imx214_mode *mode;
-> +	unsigned int bin_h, bin_v, bin;
-> =C2=A0
-> =C2=A0	mode =3D v4l2_find_nearest_size(imx214_modes,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ARRAY_SIZE(imx214_modes),
-> width, height,
-> @@ -637,9 +616,32 @@ static int imx214_set_format(struct v4l2_subdev
-> *sd,
-> =C2=A0
-> =C2=A0	*__format =3D format->format;
-> =C2=A0
-> +	/*
-> +	 * Use binning to maximize the crop rectangle size, and
-> centre it in the
-> +	 * sensor.
-> +	 */
-> +	bin_h =3D IMX214_PIXEL_ARRAY_WIDTH / __format->width;
-> +	bin_v =3D IMX214_PIXEL_ARRAY_HEIGHT / __format->height;
-> +
-> +	switch (min(bin_h, bin_v)) {
-> +	case 1:
-> +		bin =3D 1;
-> +		break;
-> +	case 2:
-> +	case 3:
-> +		bin =3D 2;
-> +		break;
-> +	case 4:
-> +	default:
-> +		bin =3D 4;
-> +		break;
-> +	}
-> +
-> =C2=A0	__crop =3D v4l2_subdev_state_get_crop(sd_state, 0);
-> -	__crop->width =3D mode->width;
-> -	__crop->height =3D mode->height;
-> +	__crop->width =3D __format->width * bin;
-> +	__crop->height =3D __format->height * bin;
-> +	__crop->left =3D (IMX214_NATIVE_WIDTH - __crop->width) / 2;
-> +	__crop->top =3D (IMX214_NATIVE_HEIGHT - __crop->height) / 2;
-> =C2=A0
-> =C2=A0	if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE) {
-> =C2=A0		int exposure_max;
-> @@ -847,7 +849,62 @@ static int imx214_ctrls_init(struct imx214
-> *imx214)
-> =C2=A0	return 0;
-> =C2=A0};
-> =C2=A0
-> -static int imx214_start_streaming(struct imx214 *imx214)
-> +static int imx214_set_framefmt(struct imx214 *imx214,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct v4l2_subdev_state *state)
-> +{
-> +	const struct v4l2_mbus_framefmt *format;
-> +	const struct v4l2_rect *crop;
-> +	u64 bin_mode;
-> +	u64 bin_type;
-> +	int ret =3D 0;
-> +
-> +	format =3D v4l2_subdev_state_get_format(state, 0);
-> +	crop =3D v4l2_subdev_state_get_crop(state, 0);
-> +
-> +	cci_write(imx214->regmap, IMX214_REG_X_ADD_STA,
-> +		=C2=A0 crop->left - IMX214_PIXEL_ARRAY_LEFT, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_X_ADD_END,
-> +		=C2=A0 crop->left - IMX214_PIXEL_ARRAY_LEFT + crop->width
-> - 1, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_Y_ADD_STA,
-> +		=C2=A0 crop->top - IMX214_PIXEL_ARRAY_TOP, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_Y_ADD_END,
-> +		=C2=A0 crop->top - IMX214_PIXEL_ARRAY_TOP + crop->height
-> - 1, &ret);
-> +
-> +	/* Proper setting is required even if cropping is not used
-> */
-> +	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_WIDTH, crop-
-> >width, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_DIG_CROP_HEIGHT, crop-
-> >height, &ret);
-> +
-> +	switch (crop->width / format->width) {
-> +	case 1:
-> +	default:
-> +		bin_mode =3D IMX214_BINNING_NONE;
-> +		bin_type =3D IMX214_BINNING_1X1;
-> +		break;
-> +	case 2:
-> +		bin_mode =3D IMX214_BINNING_ENABLE;
-> +		bin_type =3D IMX214_BINNING_2X2;
-> +		break;
-> +	case 4:
-> +		bin_mode =3D IMX214_BINNING_ENABLE;
-> +		bin_type =3D IMX214_BINNING_4X4;
-> +		break;
-> +	}
-> +
-> +	cci_write(imx214->regmap, IMX214_REG_BINNING_MODE, bin_mode,
-> &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_BINNING_TYPE, bin_type,
-> &ret);
-> +
-> +	cci_write(imx214->regmap, IMX214_REG_X_OUTPUT_SIZE, format-
-> >width, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_Y_OUTPUT_SIZE, format-
-> >height, &ret);
-> +
-> +	cci_write(imx214->regmap, IMX214_REG_CSI_DATA_FORMAT,
-> +		=C2=A0 IMX214_CSI_DATA_FORMAT_RAW10, &ret);
-> +	cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV,
-> IMX214_OPPXCK_DIV_RAW10, &ret);
-> +
-> +	return ret;
-> +};
-> +
-> +static int imx214_start_streaming(struct imx214 *imx214,
-> +				=C2=A0 struct v4l2_subdev_state *state)
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> @@ -865,6 +922,14 @@ static int imx214_start_streaming(struct imx214
-> *imx214)
-> =C2=A0		return ret;
-> =C2=A0	}
-> =C2=A0
-> +	/* Apply format and crop settings */
-> +	ret =3D imx214_set_framefmt(imx214, state);
-> +	if (ret) {
-> +		dev_err(imx214->dev, "%s failed to set frame format:
-> %d\n",
-> +			__func__, ret);
-> +		return ret;
-> +	}
-> +
-> =C2=A0	ret =3D cci_multi_reg_write(imx214->regmap, imx214->cur_mode-
-> >reg_table,
-> =C2=A0				=C2=A0 imx214->cur_mode->num_of_regs,
-> NULL);
-> =C2=A0	if (ret < 0) {
-> @@ -913,7 +978,7 @@ static int imx214_s_stream(struct v4l2_subdev
-> *subdev, int enable)
-> =C2=A0			return ret;
-> =C2=A0
-> =C2=A0		state =3D
-> v4l2_subdev_lock_and_get_active_state(subdev);
-> -		ret =3D imx214_start_streaming(imx214);
-> +		ret =3D imx214_start_streaming(imx214, state);
-> =C2=A0		v4l2_subdev_unlock_state(state);
-> =C2=A0		if (ret < 0)
-> =C2=A0			goto err_rpm_put;
->=20
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
