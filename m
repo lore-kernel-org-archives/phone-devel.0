@@ -1,101 +1,141 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30621F12F8
-	for <phone-devel@vger.kernel.org>; Tue,  3 Dec 2024 13:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76D214A0B9;
+	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733234268; cv=none; b=OWndu3BMw17YOOiU8YkNy3oD+egf3X4vEu4+v1ogwfw8wqnwtCCjPg2X2jopFLeNS1Tkxrl2lsVHLnV8/0w9xpOM5FZ7TNBvUN+EizMJqKdYHeTcUGBXcmUh7g+DTtbiPUVb4EfPe1V7FDfjtm51i79eDOrPOFyzd7t8RoUke/Q=
+	t=1733604506; cv=none; b=oRiKDjiz9tgomkcS2sz0r/zd43TGk6hEARBKGbBvxNyMpA4pOqYCYhNi1aLh9hs5lu7fJNLlrBBzR+/Ml+ktsx0oqzm6wCxqILgzkGSk94c+WbQMFTbJCmxTYcfiSVLNt2e0dJEdv9IVX99INCPBpRILvrieS8yqFfopYurwGck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733234268; c=relaxed/simple;
-	bh=rYvvBdg8fi4Xr/3R+nVFs7fW312NlcNLWvE6GK67uZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MynMegf+wnM7amjF258RCGrNY/bgP9qQdwtd/Ef/VmO48MTi0YZbplwtyTlbOI9C1pvyi+z+0aovWPu1YTRhYwBC5eqT95aLiAEta+PICkhBo9RWn0yhPQsRQCE5A7MD2OU3ssjm+qN5CNiIEHgmGu6Dnjul9oPwV0KQhkUeR7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fl+HyxFY; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1733604506; c=relaxed/simple;
+	bh=rWz9GxnchMLN6fSpu6IMZqkDL9a3pSZ+wb6rekAUHzY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AYmUgKz6dW0yc1+7z4gK4gLfkCB+Na5R78R0n88rYsQGMGkhCpCID5XgLLpjTsZNbwYLt+pHUhMZ0ILV7lXCMmRpqL5NKtQ8LOBjGislNT92OVfurElKVr/MGnb9hTz4Tgd4HZRU64xJ2EwiDbpgE+wTUm3TXZTEP2TMvNRRoLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMKkkuat; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fl+HyxFY"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ffc81cee68so57038691fa.0
-        for <phone-devel@vger.kernel.org>; Tue, 03 Dec 2024 05:57:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733234265; x=1733839065; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vma/aVgOijobBlFAdjamC8x1tA3Lu2jI5+iEG7pb/Rs=;
-        b=Fl+HyxFYW+x4I5aqYjjuCRfwZjrlx5AD52TR86fq15vcJGuthMvY0T5nbjIxdgek32
-         xqQXEEOi9YZte0gnhnDQGK7EUPruhor8bp4WZpX3+3Ib5bDTo9s7jC1xmnN5eQr2QPlq
-         bNZeCdmTyJKycEofHFFGuqnN2XcmTrVKGZq8kf7lTZYpsfCPKt/LdOx1sgjri/QsyirK
-         Z+R7NFqjgNoBFUDRJV8tb13T8z2ignlBD2r4FytBTiHTpjgcFfGKytV75jweJ3+Hq0T5
-         3ZlGFx0f5R7RiJskcxFrIFeAJQnpniQpgBPl3bUdrzXcFdzzYmpsiYwFi1LPa1bPIA3j
-         lEUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733234265; x=1733839065;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vma/aVgOijobBlFAdjamC8x1tA3Lu2jI5+iEG7pb/Rs=;
-        b=i43t/TA9NSpivEAVg9/2d1vsVwM5YF0DP4PbTvggylU7/e4S9h+maItAnMfSPWa/8J
-         PCJu5gYK4IpelipnX1ujxRbZY+k7rCzv2sbrqimFQhuwutytigL1Pvb7QkDoa5Pv8THa
-         vQ6ChNJLANKU4JiMwMtEtbAOC+dGBBKfZ3EK3runYB3uPVoenVSzEb7Aark048/2vdcr
-         O+Be/aFLcwaAZAcSgzOdNbu7hHzeUTD8NauM/Qd/gGQoPZokVgCL+BYnPSZpX9TM5veL
-         TA2FJ20q/hXFdmUHp8P7xJnhoSOH9c1K23i6T6vEZW9Sh4+beAbqfx3TNEES7qQoPBvt
-         hWyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcNwbBJVVO4Ngw1FDKWQD3l5Ka2LPAWR0Uw395oOnRKRJxSvnuALLbfdbJBnlUv3reMb3NxitUUc2pag==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0Aj+tVL+b8e4dcb8kziC3mqPcWeyWu0im07VHVP/LspHi0caN
-	818UauNqpu/QG+pjXj3tAooNwTC4F5LFqrrvAN+TZKpBirA/19ngHphjMFic7Jw=
-X-Gm-Gg: ASbGnct/5fw4241HByit1GBoGjLA6bUAQnRTsV3XJPfO8t5WGmUlR6U/CcVtY90GWId
-	CvV5ckWcvIDpzurYhO5lqFD/vCkls2j1MY4i/ODy6GpMU9HLdL9de3mrUKNJIho75b04SHtzRoF
-	ZCgIUE5apcPOGIyRbS02mNKGRfUXASnAH/BRigU28lcbe7RyOUq2fVboOT23HBw3f9hxNUu0uHL
-	X8BgE2GmalCJlmypZegy1gWz0ClbBtI4566YxdPrdI+eXzpuu0hdg1W+i30hI4Zvz4XYKwB6jWU
-	Mu1k3AbcMdtw1oS9WtMELq6X115cGA==
-X-Google-Smtp-Source: AGHT+IEWu4ApKaC7Ta4KrqQTWekPko59agvuRUFXVxJooAszNQZ064G9g5fn/NzI3dsNUT1RD2yGnA==
-X-Received: by 2002:a05:6512:3b2c:b0:53d:ef6a:17f4 with SMTP id 2adb3069b0e04-53e129cc3d9mr1370082e87.1.1733234265135;
-        Tue, 03 Dec 2024 05:57:45 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df64432b8sm1845404e87.90.2024.12.03.05.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 05:57:43 -0800 (PST)
-Date: Tue, 3 Dec 2024 15:57:41 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: power: rpmpd: Fix comment for SM6375
-Message-ID: <rcoo6p56lowzbkgci5umhg3xd2hnp6ledk74ys3hw2t2il22nw@bcbs4zmcbzgn>
-References: <20241202-rpmpd-sm6375-v1-1-12a4f0182133@fairphone.com>
- <yo5cc3cvvwwdrqrrgwlquztj52sijip3ffyyqag55jrnztxi2m@hn75ylkhnxie>
- <D61WIF2XWKL8.MWU6PK2XGX4F@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMKkkuat"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1EB12C4CECD;
+	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733604506;
+	bh=rWz9GxnchMLN6fSpu6IMZqkDL9a3pSZ+wb6rekAUHzY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=VMKkkuatp//a6q58hLMpDx9SiOix3UeRZOXDnNJMNH7PebGPlhGbWnNixquF7Zw3B
+	 ESnJnvvoXH4mau2SDzgxlSbh+XEhEWfn2R1skhDEf+vH6MDeBPcFcC9Op9prk+JnKJ
+	 ZHa5uWIgjEesHKpJr2opf7Aw30A05QErekrGdU38ECDn+hwYPph3qq9ghKPxzZBdim
+	 g/MH0wY+hw04BvejNLvb5qUeA5ecTHYamhUyLGiU56S+auhQKNOJxJcd48gjct9VQ0
+	 02W88E5jW7aemKGfCpfh9SK1FALV9LtF+crMqmuvpTj1O3duQ+pL5ANt360P4OY8pE
+	 1RMahSSE+VDkA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03360E7717B;
+	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH v3 00/12] media: i2c: imx214: Miscellaneous cleanups and
+ improvements
+Date: Sat, 07 Dec 2024 21:47:49 +0100
+Message-Id: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D61WIF2XWKL8.MWU6PK2XGX4F@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHW0VGcC/1WMwQ6CMBAFf4X0bE13W6T15H8YD1AW6UEgLTYo4
+ d8tGEk8zsubmVkg7yiwczYzT9EF13cJ5CFjti27O3FXJ2YoUAkNmrvHhKC4lqgKrWxREbF0Hjw
+ 1btpC11vi1oWx96+tG2Fdvwkj8JeIwAW35mSr0mgjIb+UgxvfwbZHerI1EnEXQSDsIiaxqWqUZ
+ EyugP7FZVk+/2K1HNcAAAA=
+X-Change-ID: 20240818-imx214-8324784c7bee
+To: Ricardo Ribalda <ribalda@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Vincent Knecht <vincent.knecht@mailoo.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733604504; l=2879;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=rWz9GxnchMLN6fSpu6IMZqkDL9a3pSZ+wb6rekAUHzY=;
+ b=bGLVRCS/O8ECvYhfAvnZFfe5jzV8wf+QLCRW2vAi6smx/TEFXdNQOdNs19XxOqCb7zvkXHOTV
+ ie0Obio8ulgCPeubzMnCEaFp9sT4Rd81gzsi7EE6R+5Z7J8PXrVuG1o
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On Tue, Dec 03, 2024 at 08:52:59AM +0100, Luca Weiss wrote:
-> On Mon Dec 2, 2024 at 9:00 PM CET, Dmitry Baryshkov wrote:
-> > On Mon, Dec 02, 2024 at 04:45:02PM +0100, Luca Weiss wrote:
-> > > During an earlier commit, the comment from SM6350 was copied without
-> > > modifying. Adjust the comment to reflect the defines.
-> > > 
-> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >
-> > Fixes tag, please.
-> 
-> I thought for just a comment fix it's not necessary / desired.
-> 
-> Anyways:
-> 
-> Fixes: 2d48e6ea3080 ("dt-bindings: power: rpmpd: Add SM6375 power domains")
+This patch series is a collection of miscellaneous cleanups and
+improvements to the imx214 driver.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+The series converts the driver to the CCI helpers and adds controls
+needed to make the driver work with libcamera.
 
+The changes are inspired by the imx219 driver.
+
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v3:
+- Also keep previous link freq for backward compatibility
+- Move link freq patch to the end of the series
+- Remove return-early check from imx214_set_format()
+- Remove unneeded struct imx214 function parameter
+- Use correct ret value on number of data lanes error
+- Revert changing order (imx214_parse_fwnode, devm_kzalloc)
+- Fix typo
+- Remove unused definition IMX214_EXPOSURE_MAX
+- Don't set FPS to default
+- Simplify exposure_def definition
+- Set state and format only if control id is V4L2_CID_VBLANK
+- Restore Ricardo's message to Sony
+- Drop "media: i2c: imx214: Extract format and crop settings" patch
+- Add A-b tag
+- Link to v2: https://lore.kernel.org/r/20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu
+
+Changes in v2:
+- Add patch to fix link frequency
+- Don't use and remove fmt and crop from struct imx214
+- Squash patch 1/13 and 2/13
+- Only check if #lanes == 4
+- Add comment that enum_frame_interval() shouldn't be used by userspace
+- Set V4L2_CID_VBLANK step size to 2 (according to datasheet Table 4-4)
+- Increase IMX214_VBLANK_MIN to limit max frame rate of full resolution
+  to the documented 30 fps
+- As bpp is always 10, simplify setting IMX214_REG_CSI_DATA_FORMAT and
+  IMX214_REG_OPPXCK_DIV
+- Simplify imx214_get_format_code()
+- Cluster hflip and vflip
+- Remove kernel log note from 11/13, issue was fixed by a kernel update
+- Add A-b tags
+- Link to v1: https://lore.kernel.org/r/20240902-imx214-v1-0-c96cba989315@apitzsch.eu
+
+---
+André Apitzsch (12):
+      media: i2c: imx214: Use subdev active state
+      media: i2c: imx214: Simplify with dev_err_probe()
+      media: i2c: imx214: Convert to CCI register access helpers
+      media: i2c: imx214: Replace register addresses with macros
+      media: i2c: imx214: Drop IMX214_REG_EXPOSURE from mode reg arrays
+      media: i2c: imx214: Check number of lanes from device tree
+      media: i2c: imx214: Add vblank and hblank controls
+      media: i2c: imx214: Implement vflip/hflip controls
+      media: i2c: imx214: Add analogue/digital gain control
+      media: i2c: imx214: Verify chip ID
+      media: i2c: imx214: Add test pattern control
+      media: i2c: imx214: Fix link frequency
+
+ drivers/media/i2c/Kconfig  |    1 +
+ drivers/media/i2c/imx214.c | 1253 ++++++++++++++++++++++++++------------------
+ 2 files changed, 739 insertions(+), 515 deletions(-)
+---
+base-commit: 7c537db2474dd5b1acf4ee9bb665113127e2d013
+change-id: 20240818-imx214-8324784c7bee
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+André Apitzsch <git@apitzsch.eu>
+
+
