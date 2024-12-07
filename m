@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7812156661;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A39158DAC;
 	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733604506; cv=none; b=MnddLYpDB/u8I4PyT5zZ0x4N0tfFfExfF2IZge8FYgNeCnd3LcehkDJV9qe+JxQzrLiYJ3okK06JNHzypVWpKBgQllIsu1q2QITw3PpTgeNiSKczsrl2eMfVmzQSiuXoCQEbw1iH6x2woRK4Fu+5p/OKIFe+DZGhHo4YsU/G2XU=
+	t=1733604507; cv=none; b=AVObLc72HL2/ZyjhNkASHlD1skrt1vcsrb0gi3PS/RERGMxfJozVCkAHmwZ5sYQV60hjtzKnXxMR3GNAsUsGPCQ2IBMrx7Kl1kcnkgJahbwzHBDOB0bIY8EvdRObaHZDe/vCRuUJRcvswq7Fgtws8YYpHUxwBTzAkfPbTwbUF+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733604506; c=relaxed/simple;
-	bh=jkAgNnHAYMLe/spDWhoZo9WikNGRTqVyT+iyybh2NFk=;
+	s=arc-20240116; t=1733604507; c=relaxed/simple;
+	bh=/L6FqkPT4TbCAkP5rtydFM0QCWKtDaB7KH3igAI/mxA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HywVBoMpYz3KC7znUkw5zoyo+xgvmQR8e4LLLAkbCWy6UjWB1BgUl5kzQseOyNNGhPqt+8N3z4D2ZGDv6TXu88KDib58ONcYAtBRJzaZQ5KKtMwzfbyxFvZo01vwfcnjE5HOb9IZYX1TxqbquFH3dDRco3u1Y4zZmEyV/vf/gO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/zdcO/f; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=H3p9vdCllAwv5x8BT8WSX3ZPKftVDrNTPNnaL2Rje7hWH5V/WbjKuBcHG1WFhEkTDIETL7g2odF024TFRX6kY9UEyHuadqZJayR73pGlySCClqsEMUrpF5P++1u8b3wbvFSuELKm38z3mFv+n5vTp7CGotmi8MC9HSom2UvhU8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNIpIJg0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/zdcO/f"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3D8BCC4CEDF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNIpIJg0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6801AC4CEE6;
 	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1733604506;
-	bh=jkAgNnHAYMLe/spDWhoZo9WikNGRTqVyT+iyybh2NFk=;
+	bh=/L6FqkPT4TbCAkP5rtydFM0QCWKtDaB7KH3igAI/mxA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=A/zdcO/fsp5UQKabk5mk0RuydJQPj6kLVAQa57LmMnAvmvF4htkI/njqBe2BmMDn5
-	 DdZgx0sIqlSWvqq8IpPXKAPXHsd7f6JgOTjxSkrUnJMVtyPsF9r8NGtVKPt5XqtXua
-	 R5t972gv8nbcA9Fjh9QksunkLa1N7OV4UWqx6XYBPYiDbDl8UoCsN7510Ontbihob8
-	 LW3HMWhfxlxuOFXWVx1HvjBr5cqgHXsqI7vViqw1QNvBIRskY/xlFkDfTW0oQGeOzK
-	 owzh+v/BckdesXL37Lwd57xLAweMhMTPshYMAWj1s5PbPvUMvk3vGvE+1Maa/08yYh
-	 cZFeBZ/tWbR3A==
+	b=pNIpIJg0qM5YGcBACCEdYQ2+pzKgaeS8s3VTRHeiOsKhJQ7RYqNJktI8JtLr7cqnI
+	 /gOqMbasZdI0LsPCdlUFrfV4HuujaeubxcvJvaBfAZ70dVS4K2yCz1lpR704eFH0rw
+	 PQ/ZEDQqABli4j0ZQ8bHpWMd34HLScOeTVzhs/M8LZhOpAj72gn2Ppe03juZiqzkgI
+	 8oXdlaBssYWKI6T6sSzv30qQtWUck1/MLH4Ag4T5KDSIPtuZ6z3lVA5WMoj1c7z0dY
+	 6n62ZKveBStCsxm8SmoSjhkJr2pPWPAeVdU39Qk71d6vAzFvd2UDGgEGFoqybJwPVU
+	 B1nWGmC8irUJQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C345E77180;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C8CAE7717F;
 	Sat,  7 Dec 2024 20:48:26 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sat, 07 Dec 2024 21:47:51 +0100
-Subject: [PATCH v3 02/12] media: i2c: imx214: Simplify with dev_err_probe()
+Date: Sat, 07 Dec 2024 21:47:54 +0100
+Subject: [PATCH v3 05/12] media: i2c: imx214: Drop IMX214_REG_EXPOSURE from
+ mode reg arrays
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241207-imx214-v3-2-ab60af7ee915@apitzsch.eu>
+Message-Id: <20241207-imx214-v3-5-ab60af7ee915@apitzsch.eu>
 References: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
 In-Reply-To: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
@@ -53,11 +54,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
  Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733604504; l=3934;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733604504; l=1197;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=6Yb2WJ/PsRWmG6pmBMXJE2hgYjX34ni/UK08kadzOpA=;
- b=lvTNkMz5iCgv8TYqAqdmkNi98zm6xGiJ62kZMWtpVkG/DCdhvimMA+H+NsBNMeNLQFZan4wBg
- BcfLj9RiLu2Dm/ZQWQPz6lJr9Wm6oUGcOmtsEYOuqcS15e0BAu1/yV2
+ bh=jP43uGcqxrfzHUqyboI1KtgTlpmbQuI2Drzp5GJyDuU=;
+ b=5WdOPxENZlLd5DjaUPE9SIqxWsA10r6Xzeg64Ds0l92QPgePJ0L12V0kX2UYsLdRqv2sHkyuY
+ BFhNtb02+BlBPfrGyKYDBzHnmZnPfGQGY8D/meblLdWD4+ApzEnFedJ
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -67,120 +68,36 @@ Reply-To: git@apitzsch.eu
 
 From: André Apitzsch <git@apitzsch.eu>
 
-Error handling in probe() can be a bit simpler with dev_err_probe().
+The IMX214_REG_EXPOSURE is configured twice, once with a hardcoded value
+in the mode_<res> registers arrays, and once via v4l2_ctrl_ops. The
+latter is enough, drop the former.
 
 Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 52 ++++++++++++++++++++--------------------------
- 1 file changed, 22 insertions(+), 30 deletions(-)
+ drivers/media/i2c/imx214.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 435d1ee12c3a0959ae751c3e7a8b4e7fa1a4c303..09f5078f341c467f083c0294212dad0f354e6185 100644
+index 41b2a098957a8a0636b95b7985be96dc508e01f9..07926f7257877155548f7bcf0e7ee80037b4ce6c 100644
 --- a/drivers/media/i2c/imx214.c
 +++ b/drivers/media/i2c/imx214.c
-@@ -930,14 +930,12 @@ static int imx214_parse_fwnode(struct device *dev)
- 	int ret;
+@@ -254,7 +254,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
+ 	{ CCI_REG8(0x3011), 0x00 },
+ 	{ IMX214_REG_STATS_OUT_EN, IMX214_STATS_OUT_ON },
  
- 	endpoint = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
--	if (!endpoint) {
--		dev_err(dev, "endpoint node not found\n");
--		return -EINVAL;
--	}
-+	if (!endpoint)
-+		return dev_err_probe(dev, -EINVAL, "endpoint node not found\n");
+-	{ IMX214_REG_EXPOSURE, IMX214_EXPOSURE_DEFAULT },
+ 	{ IMX214_REG_SHORT_EXPOSURE, 500 },
  
- 	ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, &bus_cfg);
- 	if (ret) {
--		dev_err(dev, "parsing endpoint node failed\n");
-+		dev_err_probe(dev, ret, "parsing endpoint node failed\n");
- 		goto done;
- 	}
+ 	{ IMX214_REG_ANALOG_GAIN, 0 },
+@@ -328,7 +327,6 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
+ 	{ CCI_REG8(0x3011), 0x00 },
+ 	{ IMX214_REG_STATS_OUT_EN, IMX214_STATS_OUT_ON },
  
-@@ -946,8 +944,9 @@ static int imx214_parse_fwnode(struct device *dev)
- 			break;
+-	{ IMX214_REG_EXPOSURE, IMX214_EXPOSURE_DEFAULT },
+ 	{ IMX214_REG_SHORT_EXPOSURE, 500 },
  
- 	if (i == bus_cfg.nr_of_link_frequencies) {
--		dev_err(dev, "link-frequencies %d not supported, Please review your DT\n",
--			IMX214_DEFAULT_LINK_FREQ);
-+		dev_err_probe(dev, -EINVAL,
-+			      "link-frequencies %d not supported, Please review your DT\n",
-+			      IMX214_DEFAULT_LINK_FREQ);
- 		ret = -EINVAL;
- 		goto done;
- 	}
-@@ -975,34 +974,27 @@ static int imx214_probe(struct i2c_client *client)
- 	imx214->dev = dev;
- 
- 	imx214->xclk = devm_clk_get(dev, NULL);
--	if (IS_ERR(imx214->xclk)) {
--		dev_err(dev, "could not get xclk");
--		return PTR_ERR(imx214->xclk);
--	}
-+	if (IS_ERR(imx214->xclk))
-+		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
-+				     "failed to get xclk\n");
- 
- 	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
--	if (ret) {
--		dev_err(dev, "could not set xclk frequency\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to set xclk frequency\n");
- 
- 	ret = imx214_get_regulators(dev, imx214);
--	if (ret < 0) {
--		dev_err(dev, "cannot get regulators\n");
--		return ret;
--	}
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to get regulators\n");
- 
- 	imx214->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
--	if (IS_ERR(imx214->enable_gpio)) {
--		dev_err(dev, "cannot get enable gpio\n");
--		return PTR_ERR(imx214->enable_gpio);
--	}
-+	if (IS_ERR(imx214->enable_gpio))
-+		return dev_err_probe(dev, PTR_ERR(imx214->enable_gpio),
-+				     "failed to get enable gpio\n");
- 
- 	imx214->regmap = devm_regmap_init_i2c(client, &sensor_regmap_config);
--	if (IS_ERR(imx214->regmap)) {
--		dev_err(dev, "regmap init failed\n");
--		return PTR_ERR(imx214->regmap);
--	}
-+	if (IS_ERR(imx214->regmap))
-+		return dev_err_probe(dev, PTR_ERR(imx214->regmap),
-+				     "regmap init failed\n");
- 
- 	v4l2_i2c_subdev_init(&imx214->sd, client, &imx214_subdev_ops);
- 	imx214->sd.internal_ops = &imx214_internal_ops;
-@@ -1031,20 +1023,20 @@ static int imx214_probe(struct i2c_client *client)
- 
- 	ret = media_entity_pads_init(&imx214->sd.entity, 1, &imx214->pad);
- 	if (ret < 0) {
--		dev_err(dev, "could not register media entity\n");
-+		dev_err_probe(dev, ret, "failed to init entity pads\n");
- 		goto free_ctrl;
- 	}
- 
- 	imx214->sd.state_lock = imx214->ctrls.lock;
- 	ret = v4l2_subdev_init_finalize(&imx214->sd);
- 	if (ret < 0) {
--		dev_err(dev, "subdev init error: %d\n", ret);
-+		dev_err_probe(dev, ret, "subdev init error\n");
- 		goto free_entity;
- 	}
- 
- 	ret = v4l2_async_register_subdev_sensor(&imx214->sd);
- 	if (ret < 0) {
--		dev_err(dev, "could not register v4l2 device\n");
-+		dev_err_probe(dev, ret, "failed to register sensor sub-device\n");
- 		goto error_subdev_cleanup;
- 	}
- 
+ 	{ IMX214_REG_ANALOG_GAIN, 0 },
 
 -- 
 2.47.1
