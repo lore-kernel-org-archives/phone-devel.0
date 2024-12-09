@@ -1,418 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35E46B8;
-	Sun,  8 Dec 2024 21:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2A3221D8E
+	for <phone-devel@vger.kernel.org>; Mon,  9 Dec 2024 12:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733694456; cv=none; b=WzkSkHiYAQ2LKv7JztTvx88/bwwM0lp5v58TUFWe7ck/rsxucJZbVB9CsWelzSHj4gI+Va9qfGoT+0FhMZQSBenE8X7PzioYNna1mFXGGD/AnfrbJ6r5VxfWeb3BL31jk76X3fNNCmt5aAb7n2Gw8h0Ihv4S7zM3kxX//ZFj4f4=
+	t=1733745671; cv=none; b=PYQu8ghtUdNde8zVpwcARbY/DdV1ltzHNc4XDqKMSrlOYElHbQJ3DarOXu8Iig3gsUNDymr5oolS/MMs0msq5i7smhoZiRPMrJbKqZNwzcRnq26JYYiyW2BclL8MP22Kx419BrMTsMzcu4qKUMv/HvdlMKn3BXGLqUr8ni08syM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733694456; c=relaxed/simple;
-	bh=vas7s9vNu57er7TEfccv5igCkYFNhTYZyH7eo+ELXnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gJLzOGqry5PMrY2QrOhQEr9Esc0AqRWTdEC9lCF/ZYgZECDN4Ti6n+Loiroel95YD4cY6wVjmywHIxmGmTgYPMdJQbY1nDZGpU7X2gAFeUmUTpRL1U6QyZGLwOLuKNF2XHcIZ87okyBZmiuu7kemfZheYeGK3PiLb8q1IS/dUos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFLZX7ZX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733745671; c=relaxed/simple;
+	bh=U6FIxo9NOFz5aJHwz/CGu0rXqmTcBFULicoq/xd9RaY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dlv/9Bd1KVawEa/6kN0xqUa+FVp9gLE/1QQceP9TfTzxpLuqyZcsGoH7E7uOajtvjXAzq4L0T967mo5Ane6dKFLvI8x8JU95MhqengkGHW4a1LI8tbRY7w+NLr8dvy/HwluDsb3yfVk46h55fihuTRiYW+Yd+FwU3cveBlwNBc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=kR1gr7EF; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFLZX7ZX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45636C4AF0C;
-	Sun,  8 Dec 2024 21:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733694456;
-	bh=vas7s9vNu57er7TEfccv5igCkYFNhTYZyH7eo+ELXnY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SFLZX7ZXT+sz5o+GHsKxDUjb/iyzDr0HSo8Hf4GJzH1enWtkkM2wE4t1hX1xmx+uw
-	 DxxHkk4Tww25F391sOmUZnLQS1t54JK4WbDkJ44kSv4riCBIlhAEp0QWnscoBCNnXv
-	 Laz2LtyBJyHSDnvC6MoXPXCB2/4UFDqcgRTY4EAPW1TyOKj9YJFcJYQpZMcmxPkf+B
-	 3juHJKtUiOPaVZwfIgS6p+AZv+35AkSTxI8tUbbjeikA+w+WDbRaKEwUNSLwf6c10g
-	 Iv/BqQGoq7NcFBznyGIEUfukw3CNWKx3SgGlFQNMqn7raqV6GGrSeAesXeylWXsXSp
-	 SRHbtHxJC4P4Q==
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso721781241.1;
-        Sun, 08 Dec 2024 13:47:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUsVFzougFxz1weeA/oRu2Ax+kzYenmADSrQOH1AuK5qgkllkpKRdlU18+/JD0w6QGEzOAwBH94Kl6N62w=@vger.kernel.org, AJvYcCXdcYxJDwPYCGAftRS9kHhqn958jcgMDusSnQJjeVE9PfpyRZ8ijS+5pTSadLqXXhtnY4ParXTAzag4TGw=@vger.kernel.org, AJvYcCXuFMU+nj6/FGRUWUl8Z8wTtnGNpeF/nWW26mxsguSHPEPaHqZC/CWPdsklg+Tum7resjT7bDEN/7esmUM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3y3jPlG6o+a6KngiLNmIohrBDxw6eSnaLNI/mDhoKuXRjeNl1
-	RJH+QYMxusYWbkn3GpJyopHdjonQW7NyQXKoV/FZV0V1+sbj41BAQh9q76M61CNc9Pr3U0ZI+RM
-	rUvBIHlWQnqaJAjJ/HIARE31N7ls=
-X-Google-Smtp-Source: AGHT+IHedwXw/7Tyuv1doiWX1sdVC7Rc8G54sbsDSqQgXGbmFmcRBQ4U2GL0zM7Qdhpj2rfeHMjxNuUETMK/pR8uAR4=
-X-Received: by 2002:a05:6122:1c0b:b0:515:c769:9d32 with SMTP id
- 71dfb90a1353d-515fca18638mr10368983e0c.4.1733694455212; Sun, 08 Dec 2024
- 13:47:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="kR1gr7EF"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa66e4d1d5aso239319366b.2
+        for <phone-devel@vger.kernel.org>; Mon, 09 Dec 2024 04:01:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1733745668; x=1734350468; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dIbPh213uMn4RKe5AQAX5FOeJn89qdDTeC1KU8kliyE=;
+        b=kR1gr7EFLhCP2DJof4vpZ5Rgy/H5KHnEe7uuce65uxmg4RJeI2WAE+C0HOB5XWn/gP
+         7EHQe8nq50AP4yJXGnSmZSGZWifePJdjrzxN4Ky/KGo8jLN7fmMJeWuWRHKkZsRWaORx
+         clq/QtxBnAGnaLYO4Jj8FRO1Ovwbjzc9UDhSeiE4c1+8sUhQZKTczksh2/qCxtly+NSp
+         8+6UqbRu31wDh+FBbmanO0g05i38ZCFPSSyQUjlZyd/0r7gvnErHfg5o5TQsXLyloXIh
+         lMEQYfneEUp6FsGS8px4Y34KVs222KxFaXgnaAvwI2XgitguK3SrP6xobvxnFl7zCd4m
+         YexQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733745668; x=1734350468;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dIbPh213uMn4RKe5AQAX5FOeJn89qdDTeC1KU8kliyE=;
+        b=EKf+zNZvz5g6S0d0OjzoETlGGuXMh4MsEyVSUapohEbr+p3A19MQFnSg+M12HFb7iq
+         VF82yqB248SKAPj62xrHOjnhXv1ZcpsoBLqy9LiDfVxQaspuF4oWsUWoIFRmEaBPZ33g
+         mNBJNdKK0U6v59szgIEsHy6JNWrPPe54W3QYGGUrKBfVVWjUhjyUS1PoQf3hBa9LiFre
+         7ZBN+7XodS0UnSztlvOeBSHYkGG/y9sGFvLAfP8Qe2A2hpOGYAVtWdXVgbRMcveEVpE6
+         xMPFSxnYg05Q/moUSM6FkpEOQ7ANuL1dtd5geBjUdbaC2YrVqSkImrwz5M06JoMJ7yCH
+         p17g==
+X-Forwarded-Encrypted: i=1; AJvYcCWUCypIiY+KhEl6k19mNw9rPtViDhBimBsBi2JdRlIBPqRRT+sdYhlj4HWE6rSwbYdCIGP+dVISc721ig==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzwj1N/ZxWcmwa9fFOereXiRU/lrvj3cxYdIiO0I0VZCGey/NFi
+	oWJhJ0z/+mCyCxT2tNK40UqWpOZpT3hKJ99C0+Hzxy33e3anXl5Eit4zzExBlNE=
+X-Gm-Gg: ASbGnct35rNUd0Z5HvOcFAb/ag4qrTgZtlRD4bMThR/ix8e7/jS29XhD592GhGEGQ0e
+	kVAesnYfqaOYfP6W3BJIAk7ObaduVBBr3W4t/ooy7N/OuD9zzGAFm5OUZNjEkYcFAprUL20Yb8R
+	5XgDGpVahzZVh6vCou3rrx8OOJ0mDyG7S1y1ybnZZZueonr50xkX49ty/Aqx7mRkL9mHyGZqIFF
+	11JAroYna3EuKcHnvYcEkUrezd8TmbYtta6hKV5oA+R0XC86HVcFJwaGeCv//QV6FpvugaRNUSG
+	XtrVHwLshD3aKRtvJFM5YO/8bZ2uuEbCNBPKewJl39jxOfs44zZWFKx2gZE1sPfpCw==
+X-Google-Smtp-Source: AGHT+IHIzUpxWEtu6qwCt8niQVJmNjY0QttQwYVmWWK8DQ6e2I9mse4mlgRgChp2cySuPRm+pt0vIQ==
+X-Received: by 2002:a17:906:3087:b0:aa6:9198:75ab with SMTP id a640c23a62f3a-aa69cd5193cmr7199166b.26.1733745668002;
+        Mon, 09 Dec 2024 04:01:08 -0800 (PST)
+Received: from [100.64.0.4] (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa69afa395csm22555066b.71.2024.12.09.04.01.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 04:01:07 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/2] Some small preparations around CAMSS D-PHY / C-PHY
+ support
+Date: Mon, 09 Dec 2024 13:01:04 +0100
+Message-Id: <20241209-camss-dphy-v1-0-5f1b6f25ed92@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
- <20241207-imx214-v3-7-ab60af7ee915@apitzsch.eu> <CAPybu_0Bdc03UrJNO42S1fBTvpuHUUExvkR1ont7VKdw2XBuKg@mail.gmail.com>
- <8c43e3c15335b650ac7b0ccfd7e1f66e7fd8fdaa.camel@apitzsch.eu>
-In-Reply-To: <8c43e3c15335b650ac7b0ccfd7e1f66e7fd8fdaa.camel@apitzsch.eu>
-From: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Date: Sun, 8 Dec 2024 22:47:19 +0100
-X-Gmail-Original-Message-ID: <CAPybu_1Ao_ExWft1HozsC4dBa9Ujp8tYipjEPU56xwZQP9jdhA@mail.gmail.com>
-Message-ID: <CAPybu_1Ao_ExWft1HozsC4dBa9Ujp8tYipjEPU56xwZQP9jdhA@mail.gmail.com>
-Subject: Re: [PATCH v3 07/12] media: i2c: imx214: Add vblank and hblank controls
-To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Vincent Knecht <vincent.knecht@mailoo.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAADcVmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIwNL3eTE3OJi3ZSCjEpdi6Q0E7NUI1NDI0tDJaCGgqLUtMwKsGHRsbW
+ 1AK9/BBVcAAAA
+X-Change-ID: 20241209-camss-dphy-8bf46e251291
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Barnabas Czeman <barnabas.czeman@mainlining.org>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
+ Caleb Connolly <caleb.connolly@linaro.org>, 
+ David Heidelberg <david@ixit.cz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-On Sun, Dec 8, 2024 at 10:35=E2=80=AFPM Andr=C3=A9 Apitzsch <git@apitzsch.e=
-u> wrote:
->
-> Hi Ricardo,
->
-> Am Sonntag, dem 08.12.2024 um 21:59 +0100 schrieb Ricardo Ribalda
-> Delgado:
-> > In general it looks good to me (besides the comments, ignore the nits
-> > if you want to).
-> >
-> > I'd recommend that you test with lockdep to make sure that we are not
-> > missing anything, and I'd like to hear back from Sakari regarding the
-> > get_locked_active
-> >
-> > Thanks!
-> >
-> > On Sat, Dec 7, 2024 at 9:48=E2=80=AFPM Andr=C3=A9 Apitzsch via B4 Relay
-> > <devnull+git.apitzsch.eu@kernel.org> wrote:
-> > >
-> > > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > >
-> > > Add vblank control to allow changing the framerate /
-> > > higher exposure values.
-> > >
-> > > The vblank and hblank controls are needed for libcamera support.
-> > >
-> > > While at it, fix the minimal exposure time according to the
-> > > datasheet.
-> > >
-> > > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > > ---
-> > >  drivers/media/i2c/imx214.c | 106
-> > > ++++++++++++++++++++++++++++++++++++++++-----
-> > >  1 file changed, 94 insertions(+), 12 deletions(-)
-> > >
-> > > diff --git a/drivers/media/i2c/imx214.c
-> > > b/drivers/media/i2c/imx214.c
-> > > index
-> > > f1c72db0775eaf4810f762e8798d301c5ad9923c..a7f49dbafe0f54af3c02f5534
-> > > 460fdee88a22fe2 100644
-> > > --- a/drivers/media/i2c/imx214.c
-> > > +++ b/drivers/media/i2c/imx214.c
-> > > @@ -34,11 +34,17 @@
-> > >
-> > >  /* V-TIMING internal */
-> > >  #define IMX214_REG_FRM_LENGTH_LINES    CCI_REG16(0x0340)
-> > > +#define IMX214_VTS_MAX                 0xffff
-> > > +
-> > > +#define IMX214_VBLANK_MIN              890
-> > > +
-> > > +/* HBLANK control - read only */
-> > > +#define IMX214_PPL_DEFAULT             5008
-> > >
-> > >  /* Exposure control */
-> > >  #define IMX214_REG_EXPOSURE            CCI_REG16(0x0202)
-> > > -#define IMX214_EXPOSURE_MIN            0
-> > > -#define IMX214_EXPOSURE_MAX            3184
-> > > +#define IMX214_EXPOSURE_OFFSET         10
-> > > +#define IMX214_EXPOSURE_MIN            1
-> > >  #define IMX214_EXPOSURE_STEP           1
-> > >  #define IMX214_EXPOSURE_DEFAULT                3184
-> > >  #define IMX214_REG_EXPOSURE_RATIO      CCI_REG8(0x0222)
-> > > @@ -187,6 +193,8 @@ struct imx214 {
-> > >         struct v4l2_ctrl_handler ctrls;
-> > >         struct v4l2_ctrl *pixel_rate;
-> > >         struct v4l2_ctrl *link_freq;
-> > > +       struct v4l2_ctrl *vblank;
-> > > +       struct v4l2_ctrl *hblank;
-> > >         struct v4l2_ctrl *exposure;
-> > >         struct v4l2_ctrl *unit_size;
-> > >
-> > > @@ -202,8 +210,6 @@ static const struct cci_reg_sequence
-> > > mode_4096x2304[] =3D {
-> > >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> > >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
-> > > },
-> > >         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> > > -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> > > -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
-> > >         { IMX214_REG_X_ADD_STA, 56 },
-> > >         { IMX214_REG_Y_ADD_STA, 408 },
-> > >         { IMX214_REG_X_ADD_END, 4151 },
-> > > @@ -274,8 +280,6 @@ static const struct cci_reg_sequence
-> > > mode_1920x1080[] =3D {
-> > >         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
-> > >         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH
-> > > },
-> > >         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> > > -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> > > -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
-> > >         { IMX214_REG_X_ADD_STA, 1144 },
-> > >         { IMX214_REG_Y_ADD_STA, 1020 },
-> > >         { IMX214_REG_X_ADD_END, 3063 },
-> > > @@ -359,6 +363,7 @@ static const struct cci_reg_sequence
-> > > mode_table_common[] =3D {
-> > >         { IMX214_REG_ORIENTATION, 0 },
-> > >         { IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
-> > >         { IMX214_REG_FAST_STANDBY_CTRL, 1 },
-> > > +       { IMX214_REG_LINE_LENGTH_PCK, IMX214_PPL_DEFAULT },
-> > >         { CCI_REG8(0x4550), 0x02 },
-> > >         { CCI_REG8(0x4601), 0x00 },
-> > >         { CCI_REG8(0x4642), 0x05 },
-> > > @@ -462,18 +467,24 @@ static const struct cci_reg_sequence
-> > > mode_table_common[] =3D {
-> > >  static const struct imx214_mode {
-> > >         u32 width;
-> > >         u32 height;
-> > > +
-> > > +       /* V-timing */
-> > > +       unsigned int vts_def;
-> > > +
-> > >         unsigned int num_of_regs;
-> > >         const struct cci_reg_sequence *reg_table;
-> > >  } imx214_modes[] =3D {
-> > >         {
-> > >                 .width =3D 4096,
-> > >                 .height =3D 2304,
-> > > +               .vts_def =3D 3194,
-> > >                 .num_of_regs =3D ARRAY_SIZE(mode_4096x2304),
-> > >                 .reg_table =3D mode_4096x2304,
-> > >         },
-> > >         {
-> > >                 .width =3D 1920,
-> > >                 .height =3D 1080,
-> > > +               .vts_def =3D 3194,
-> > >                 .num_of_regs =3D ARRAY_SIZE(mode_1920x1080),
-> > >                 .reg_table =3D mode_1920x1080,
-> > >         },
-> > > @@ -626,9 +637,36 @@ static int imx214_set_format(struct
-> > > v4l2_subdev *sd,
-> > >         __crop->width =3D mode->width;
-> > >         __crop->height =3D mode->height;
-> > >
-> > > -       if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE)
-> > > +       if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE) {
-> > > +               int exposure_max;
-> > > +               int exposure_def;
-> > > +               int hblank;
-> > > +
-> > >                 imx214->cur_mode =3D mode;
-> > >
-> > > +               /* Update FPS limits */
-> > nit: Update blank limits
-> > > +               __v4l2_ctrl_modify_range(imx214->vblank,
-> > > IMX214_VBLANK_MIN,
-> > > +                                        IMX214_VTS_MAX - mode-
-> > > >height, 2,
-> > > +                                        mode->vts_def - mode-
-> > > >height);
-> >
-> > Is the handler->lock held when we call this function? Can you try
-> > running the code with lockdep?
-> > > +
-> > > +               /* Update max exposure while meeting expected
-> > > vblanking */
-> > > +               exposure_max =3D mode->vts_def -
-> > > IMX214_EXPOSURE_OFFSET;
-> > > +               exposure_def =3D min(exposure_max,
-> > > IMX214_EXPOSURE_DEFAULT);
-> > > +               __v4l2_ctrl_modify_range(imx214->exposure,
-> > > +                                        imx214->exposure->minimum,
-> > > +                                        exposure_max, imx214-
-> > > >exposure->step,
-> > > +                                        exposure_def);
-> > > +
-> > > +               /*
-> > > +                * Currently PPL is fixed to IMX214_PPL_DEFAULT, so
-> > > hblank
-> > > +                * depends on mode->width only, and is not
-> > > changeable in any
-> > > +                * way other than changing the mode.
-> > > +                */
-> > > +               hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> > > +               __v4l2_ctrl_modify_range(imx214->hblank, hblank,
-> > > hblank, 1,
-> > > +                                        hblank);
-> > > +       }
-> > > +
-> > >         return 0;
-> > >  }
-> > >
-> > > @@ -678,8 +716,25 @@ static int imx214_set_ctrl(struct v4l2_ctrl
-> > > *ctrl)
-> > >  {
-> > >         struct imx214 *imx214 =3D container_of(ctrl->handler,
-> > >                                              struct imx214, ctrls);
-> > > +       const struct v4l2_mbus_framefmt *format;
-> > > +       struct v4l2_subdev_state *state;
-> > >         int ret;
-> > >
-> > > +       if (ctrl->id =3D=3D V4L2_CID_VBLANK) {
-> > > +               int exposure_max, exposure_def;
-> > > +
-> > > +               state =3D
-> > > v4l2_subdev_get_locked_active_state(&imx214->sd);
-> >
-> > Sakari, I see that other drivers assume that the active is locked in
-> > set_ctrl. Is this correct?
-> >
-> > > +               format =3D v4l2_subdev_state_get_format(state, 0);
->
-> (*) The format is read here.
->
-> > > +
-> > > +               /* Update max exposure while meeting expected
-> > > vblanking */
-> > > +               exposure_max =3D format->height + ctrl->val -
-> > > IMX214_EXPOSURE_OFFSET;
-> > > +               exposure_def =3D min(exposure_max,
-> > > IMX214_EXPOSURE_DEFAULT);
-> > > +               __v4l2_ctrl_modify_range(imx214->exposure,
-> > > +                                        imx214->exposure->minimum,
-> > > +                                        exposure_max, imx214-
-> > > >exposure->step,
-> > > +                                        exposure_def);
-> > > +       }
-> > > +
-> > >         /*
-> > >          * Applying V4L2 control value only happens
-> > >          * when power is up for streaming
-> > > @@ -691,7 +746,10 @@ static int imx214_set_ctrl(struct v4l2_ctrl
-> > > *ctrl)
-> > >         case V4L2_CID_EXPOSURE:
-> > >                 cci_write(imx214->regmap, IMX214_REG_EXPOSURE,
-> > > ctrl->val, &ret);
-> > >                 break;
-> > > -
-> > > +       case V4L2_CID_VBLANK:
-> >  No need to read the format here?
-> >                       format =3D v4l2_subdev_state_get_format(state,
-> > 0);
->
-> The format is read above (*), so no need to do it here. Note, in both
-> locations we have ctrl->id =3D=3D V4L2_CID_VBLANK.
+Since the hardware blocks on the SoCs generally support both D-PHY and
+C-PHY standards for camera, but the camss driver currently is only
+supporting D-PHY, do some preparations in order to add C-PHY support at
+some point.
 
-Can you init format to NULL at the declaration part to make the compiler ha=
-ppy?
+Make the dt bindings explicit that the hardware supports both (except
+for MSM8916) but also add a check to the driver that errors out in case
+a dt tries to use C-PHY since that's not supported yet.
 
-https://gitlab.freedesktop.org/linux-media/users/patchwork/-/pipelines/1325=
-516/test_report?job_name=3Dbuild
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (2):
+      media: dt-bindings: media: camss: Restrict bus-type property
+      media: qcom: camss: Restrict endpoint bus-type to D-PHY
 
->
-> > > +               cci_write(imx214->regmap,
-> > > IMX214_REG_FRM_LENGTH_LINES,
-> > > +                         format->height + ctrl->val, &ret);
-> > > +               break;
-> > >         default:
-> > >                 ret =3D -EINVAL;
-> > >         }
-> > > @@ -714,8 +772,11 @@ static int imx214_ctrls_init(struct imx214
-> > > *imx214)
-> > >                 .width =3D 1120,
-> > >                 .height =3D 1120,
-> > >         };
-> > > +       const struct imx214_mode *mode =3D &imx214_modes[0];
-> > >         struct v4l2_fwnode_device_properties props;
-> > >         struct v4l2_ctrl_handler *ctrl_hdlr;
-> > > +       int exposure_max, exposure_def;
-> > > +       int hblank;
-> > >         int ret;
-> > >
-> > >         ret =3D v4l2_fwnode_device_parse(imx214->dev, &props);
-> > > @@ -723,7 +784,7 @@ static int imx214_ctrls_init(struct imx214
-> > > *imx214)
-> > >                 return ret;
-> > >
-> > >         ctrl_hdlr =3D &imx214->ctrls;
-> > > -       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 6);
-> > > +       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 8);
-> > >         if (ret)
-> > >                 return ret;
-> > >
-> > > @@ -749,12 +810,27 @@ static int imx214_ctrls_init(struct imx214
-> > > *imx214)
-> > >          *
-> > >          * Yours sincerely, Ricardo.
-> > >          */
-> > > +
-> > > +       /* Initial vblank/hblank/exposure parameters based on
-> > > current mode */
-> > > +       imx214->vblank =3D v4l2_ctrl_new_std(ctrl_hdlr,
-> > > &imx214_ctrl_ops,
-> > > +                                          V4L2_CID_VBLANK,
-> > > IMX214_VBLANK_MIN,
-> > > +                                          IMX214_VTS_MAX - mode-
-> > > >height, 2,
-> > > +                                          mode->vts_def - mode-
-> > > >height);
-> > > +
-> > > +       hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> > > +       imx214->hblank =3D v4l2_ctrl_new_std(ctrl_hdlr,
-> > > &imx214_ctrl_ops,
-> > > +                                          V4L2_CID_HBLANK, hblank,
-> > > hblank,
-> > > +                                          1, hblank);
-> > > +       if (imx214->hblank)
-> > > +               imx214->hblank->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> > > +
-> > > +       exposure_max =3D mode->vts_def - IMX214_EXPOSURE_OFFSET;
-> > > +       exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFAULT);
-> > >         imx214->exposure =3D v4l2_ctrl_new_std(ctrl_hdlr,
-> > > &imx214_ctrl_ops,
-> > >                                              V4L2_CID_EXPOSURE,
-> > > -                                            IMX214_EXPOSURE_MIN,
-> > > -                                            IMX214_EXPOSURE_MAX,
-> > > +                                            IMX214_EXPOSURE_MIN,
-> > > exposure_max,
-> > nit: I think it looks nicer with exposure_max in the next line, but
-> > ignore if you prefer this way :)
-> > >                                              IMX214_EXPOSURE_STEP,
-> > > -
-> > > IMX214_EXPOSURE_DEFAULT);
-> > > +                                            exposure_def);
-> > >
-> > >         imx214->unit_size =3D v4l2_ctrl_new_std_compound(ctrl_hdlr,
-> > >                                 NULL,
-> > > @@ -876,6 +952,12 @@ static int imx214_get_frame_interval(struct
-> > > v4l2_subdev *subdev,
-> > >         return 0;
-> > >  }
-> > >
-> > > +/*
-> > > + * Raw sensors should be using the VBLANK and HBLANK controls to
-> > > determine
-> > > + * the frame rate. However this driver was initially added using
-> > > the
-> > > + * [S|G|ENUM]_FRAME_INTERVAL ioctls with a fixed rate of 30fps.
-> > > + * Retain the frame_interval ops for backwards compatibility, but
-> > > they do nothing.
-> > > + */
-> >
-> > Now that these controls are useless... maybe we can do a
-> > dev_warn_once
-> > when the user calls it to leave some output in dmesg?
->
-> Sure. We the following be a proper warning?
->
+ .../bindings/media/qcom,msm8916-camss.yaml         |  8 ++++++
+ .../bindings/media/qcom,msm8953-camss.yaml         | 15 +++++++++++
+ .../bindings/media/qcom,msm8996-camss.yaml         | 20 +++++++++++++++
+ .../bindings/media/qcom,sc8280xp-camss.yaml        | 20 +++++++++++++++
+ .../bindings/media/qcom,sdm660-camss.yaml          | 20 +++++++++++++++
+ .../bindings/media/qcom,sdm845-camss.yaml          | 20 +++++++++++++++
+ .../bindings/media/qcom,sm8250-camss.yaml          | 30 ++++++++++++++++++++++
+ drivers/media/platform/qcom/camss/camss.c          |  9 +++++++
+ 8 files changed, 142 insertions(+)
+---
+base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
+change-id: 20241209-camss-dphy-8bf46e251291
 
-nit: What about?
-"frame_interval functions returns an unreliable value for
-compatibility reasons. Use the VBLANK and HBLANK controls to determine
-the correct frame rate.\n"
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
-
-
->
-> > >  static int imx214_enum_frame_interval(struct v4l2_subdev *subdev,
-> > >                                 struct v4l2_subdev_state *sd_state,
-> > >                                 struct
-> > > v4l2_subdev_frame_interval_enum *fie)
-> > >
-> > > --
-> > > 2.47.1
-> > >
-> > >
->
