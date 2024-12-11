@@ -1,155 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic309-26.consmr.mail.ir2.yahoo.com (sonic309-26.consmr.mail.ir2.yahoo.com [77.238.179.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF761A38F9;
-	Tue, 10 Dec 2024 12:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56222451D8
+	for <phone-devel@vger.kernel.org>; Wed, 11 Dec 2024 01:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.179.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733834428; cv=none; b=iNRQ2zygxNJw3O9Hl+IIAOuLwhk2F5YX761hVDtNHOI5yEXsvOGBTD9ZbCml7Ng1BBjPzEqN2G8Y615zoeBAkqzzChVSMgN3WUoyEyl1zOLuHYLqzmeHSfu9pIjgFoY8eeCTC/JEyo9HiVQk4XiMM5CF9opo6ew3KcOLBTPFEdM=
+	t=1733879002; cv=none; b=unygrOHLN+xXBnxsUPeOx+Z6SvPXBMqcvq2qjkA5U1e+uSqbsZFzowZx95CgGNEWFjCAIqilta047EadgkKwBgKOZ5H+v9oW6KZDbzA17QMveyMqlPbKeibhe1dmWAvTFeu0VBDDiafk8KLaqRCayOR4erMYt20XbKfVnrEfLcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733834428; c=relaxed/simple;
-	bh=RwPFdHZbfpIwb1UCtTRh2G/DJLDZeth4BXh3a9ShpCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aC+/79GZeEoe/hGiS8ezEYFRheycLyIKHc3lZyZmPQ1XBi0qRvlIG3abJJWq7uXTNlxrFJfSJ/Bv3T8q/yayFgUpDkI165Pb10GoAia3cU7vZeoyfAigyU0C8DNnwGJzi4dbuvVgsyztqySK1MQ5AQhP1y1/6Nrsy40YugXi3Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n3gg5xVZ; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1733879002; c=relaxed/simple;
+	bh=LqHuqGpa5Grtt5aFubFwCo6EDZhmWlFfdhX7oG1lIrA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HTMOnhmAYkaYAsIjzcMwKI568LVuQ97WlfsKpLZ3YHe22yFb8mjy34TGyAmTGj4WqzY3lvxmU3rU23RGPDUtppvKW6GoTXcZ1g1b9eo1u56cOLwr8rmpkkjU6qlsyab2UlMxBGjA8FQCxo7Tng+xDt68h8Yn/7hDq6tC7S1Su7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com; spf=pass smtp.mailfrom=rocketmail.com; dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b=EpRQ1S7w; arc=none smtp.client-ip=77.238.179.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rocketmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n3gg5xVZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733834428; x=1765370428;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=RwPFdHZbfpIwb1UCtTRh2G/DJLDZeth4BXh3a9ShpCo=;
-  b=n3gg5xVZFKppQsc3reAbhlIo89FmmPj2v5JUTs8AKPDDNpOZEu8xdFiY
-   85EwW0LORh/CtSI4E71ERPV/APPkcjlfHOXzYLUmFwhM/PWd60RA/3L2w
-   H85l476C+3cpoFQ6yp4RkwyvGNfHwJT/X0zpLpc4K9mpv28KZOcEipxuq
-   RUbeG9RqCTcaoiAKObTxJCC0pqBoOX/DBwY0WakPyaZi71hzfxekI88SO
-   k3ctU05zhnXSfqjlMJKAMJMbCF9klnoPL4RDTJK3E6yMp1K7L94ggyHoV
-   cCsQj7s6pPCc2o6NBxbqGnWEsmcIN/0GM2mLbgcoSK2h63Xv38yDsx6g7
-   w==;
-X-CSE-ConnectionGUID: HDo2QoLbRAyMPwxquSnueA==
-X-CSE-MsgGUID: 8VPaUvhzSr+OwNaUEOQlaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44643887"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="44643887"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 04:40:26 -0800
-X-CSE-ConnectionGUID: pbQXO7PCQ7ypP3Nt08f/Dw==
-X-CSE-MsgGUID: qts2NLljRr6+uKLXnHQBQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="126300478"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 04:40:22 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 12DB611F81D;
-	Tue, 10 Dec 2024 14:40:20 +0200 (EET)
-Date: Tue, 10 Dec 2024 12:40:20 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Vincent Knecht <vincent.knecht@mailoo.org>,
-	Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH v3 10/12] media: i2c: imx214: Verify chip ID
-Message-ID: <Z1g2tLicdrb6lfoK@kekkonen.localdomain>
-References: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
- <20241207-imx214-v3-10-ab60af7ee915@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b="EpRQ1S7w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1733878998; bh=ktowREVGtv7pMwrhJAmbO+gSkvzC8xt1bBOXkRHQ/Y0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=EpRQ1S7wTitz0iTYtqDb56YxQL7yD/6o74JrT2MqN2AwPxYtVYAydutNmlfVWe2TQqjR0JgTMYitU9EM1gV6YRp9KPuVRnlM9xG27kji3Rs2dg4ewo/LQjPmSeBkMurguSMKrqgttSR5KJ2Ar3R7lMghoBpSHaQ9pp96XQALNn70da8cBZZeRtj6BvhEx1kJZ/514YjVAels3J3yGDqkL/PZ3jyP1L2paF+ZoQx7ZN050IeDF4gE+cmgctelXE3AwEv5SFD0/dNPi+JUAeKP2DTGShsrKB3V64MxzMti2qQiODTx0b8OnMIOzGhaWF6hHm53lGa4O7vl6jzp9deBww==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1733878998; bh=Te5A3NVQ4BvoZJR9MczoSimHKGB6VA2WvcIrNMxbYNY=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=QJvGhgddSPX4VNeTVJr+/qQeEVxIwQx2QKCv5e1cLqTjBTEzJEpAQ7twkFXJeoKovLljddiZO94Kp02Am43TDfavWGY7I1pew4xtWPV7jb8WWqro+AV955go/1U997BsaXjkEBT/FMSvM5qKJbOhmGFezFZoIN8Uclr8WehBpI7NIjefXOt1Y+mIOoomS61cWk4rdOTYVqXTS2MTI6BMM5YaNbnGCuVBuaNUB0sTS3ppzFQs1XjLl7qGIrkGgLOPvhjEMLondLzwno3teVahlfllsOhQjLIPkgrTWsw0M5Er6uG6yOFXIlr/AzTDCmwKSRw8cTBJrnD85IoeDZxp5g==
+X-YMail-OSG: R_zHgkAVM1lgYkaRnSsW_vEoALixplc.az4r89GopFYXnIWIdp4fkoJ2UmjDnrO
+ ah7_sV0NsBPgOidKoqWEHmfzs4pd3d7eLYtFDiUsGAoodhCW105W_SIeJDiwc9_CTJZWmzFKl1y6
+ fx74Q02cejSST_s0JB0J1Nx3xfNQn9LlbzTginX0Lj4JriZmPq0z0IjnMOTGOrMx9O1CK_DBSh8B
+ DbMWjAup9m6Sd_VVoN43.46GfSy37fT8ulgeXycWsXG04w3.s7aapXqOdIb40ezGiwIKPA3BtMtV
+ HjIWffiPyR_cjBGwLl5i1ST_scoDyZC.Mv_RdqtRKjYv5oWxYQiJLK68iQTqJbNFhiICVssy2GZg
+ MEt4oJQvnSmk2NjUthGov_6TeIttD6uTOAklOvLG4fpaCP1rna_khx5_LU4BBMR8jkj9kxRc2DHQ
+ verhYPq.IUD501kVZnzVX3s8bQNTrbIOz9OWDhMMqcj1HXp.wsoOOGe.ajMLRff2D88s5UZwZ68j
+ khCbA9XK4PLnVEmq0jdqB91NFgqo_aQtHVgMXNXpHhK3CglTVZLq4d89pJ2fNGV2_2cdVqBund8t
+ 4o.Nf8e0Fjl9ZkTSuVgUTcz41te9Z7UXXPQzCRR31wXl0J0Q4wJRy1tPGTS9j9tNKq9Sb8u5iBhT
+ .qAqns8zbFA5ek.2SzmxObim8NB8kVA_XRJ2eb70lXdTh1qKznP5GE5c2bmai1xdK3CTA.oFWH_9
+ oTz_jnZQznAcOHKFV4C_oLpM17se1GBDCoZ4d3RR3TXg.iXoa2Ek51m5qcxneurAAIgR0ySpXcFJ
+ 8rKbEKZDeDND1elSI.q4vg_0CVdpNksMLxgwUx_MBDys6JqdYG7_qOIewegRAbDNDOs4nAxAFJZS
+ mlWRI57KZLoRYTdVCl9H2mqBtF.PWIK2oOKKyrDSTGk1NPjHaw7_GIgWqTNjvpHKTDY84ClOsSew
+ P5z8YxYEdeTbUh.vcyPDZGgcvoNK1pvtcM4pfjXgmQKTHnMEYP0vu_rMpRQ.W7gURPUGTk1qlgRR
+ oL2Va0clphmjonzkMksGo0dhTPVrvaysbHhIGzk.g4KILELw6sfr3YMzq6zwo0nB2AJUhgNls57K
+ 11BkXske5znpwsH6e7s1X.nZxKVX1Ls4V1A.pb_Lbc26cMR5AHeT2dwodl4PFxD7QP6cuLLslRBt
+ sYN01mpUPldm8bjxTt0OdwlTBAvNlRwkA6M7eyjSSw01dEwlpYDwpydJAU0iybVc91iGuK1cNWk3
+ cNwxA0H_tjkxslvOV3q_buHAPt1TeZLPi9.4d62j2qfjeb.cRuy8ThtR01LgOaMqXjTt6xjzjqPB
+ 43ldJbiMrnAFe9vDds9DmDfgcAFk8Oh2jhthjjkzir80PKpaioEn49oaTnXcesyuj5IASMem60XF
+ 2PkVVewasoBUDFjlq6WtdLt0I.EAdkQawt.wIjkWxXyjsoIkEzW8MP3oFXoseTUAshyVnT72At_b
+ PEQLErHlndwobqWxS_usglZT8crjSeAyR.MBOK22sDhFuRw37ddW4kmCY_qVrhoCIJi5BZEJUndt
+ AEy_YCTZwVLAnE7HA4TJw3Cs6aDePhHZk.ZukUchymw2Drgz57BybIWfSfQ4QEChw41oF7QfdTYi
+ .1go5SnNmKIPvGF6QZhpSnMiSszG1zEKl5X28o128._7g56koUvzwdBIUkrPLmN21aLw1nFNe7c8
+ r8qCj3GJKVt3o92FYQOVcPfZuoxnHjGgVF_uhW3Lyo8WDjNvRajBm604atBT3j.750e9gLxgNXAW
+ UxFqzWO6Q06U844ZwcFim2rPNcISLJtZDE4TDawkrmMgV65lLTL6mXsHCskOJmgi6XF.0Kd5PTNM
+ QlsHwg1ANBcG.T80az0HhpJ5UrdcdO.x.mPTNWBIWzldor3GtPDyorAVfOi2ftFAI.MIPkf4x04f
+ A629lMBLZCNDJcYP2wCg3U8YRsI4uG03Ap2_IIQfP6H5hofYvvW4TJ7W9NgHnk3.jvW873lNEAxG
+ KVuvZIYUXqiaeHWqC0Z0VPRjD_TO6d8f2yqJxwnjfMAzCXCBUCq4fUGrqDgT5iLjWsJSVPD_FrpO
+ c4kwDMVU81BtBAxH5oab3dFjXpx2h8pVb6njA5njaKKQjOXEs3UWClEW3rpaB8wLsmA.5DZcby3n
+ dqBQ0XrXjRMKv2V5Jl5E2ClG8XDzBCUPPdZTSXRUa3Gj3l9sSjMh9o5Hv7nU5VI9pximGhQlkFMJ
+ Sojd6DLrhdWc7CEzRAU6oUgKpCzeS7Vu7GFUrL_LBx_MCMfQ.qLMwtxST_pFCEkwEMLeuPnG6tQD
+ M2IOuKcR6JjgovUbBPFp0QhPhGiR9SA--
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 9d8cd608-909b-4f61-b1d3-8cc7f4afe820
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Wed, 11 Dec 2024 01:03:18 +0000
+Received: by hermes--production-ir2-c694d79d9-zzg9t (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9eebe7d30b4fb4bf596e1406d98945ad;
+          Wed, 11 Dec 2024 00:32:51 +0000 (UTC)
+Message-ID: <d377405e-4cad-4c2e-ad38-8c0323384c41@rocketmail.com>
+Date: Wed, 11 Dec 2024 01:32:50 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241207-imx214-v3-10-ab60af7ee915@apitzsch.eu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add display
+ panel
+To: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Stephan Gerhold <stephan@gerhold.net>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20241114220718.12248-1-jahau.ref@rocketmail.com>
+ <20241114220718.12248-1-jahau@rocketmail.com>
+Content-Language: en-US
+From: Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20241114220718.12248-1-jahau@rocketmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.23040 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Hi André,
+Hi Bjorn, Hi Konrad,
 
-Thanks for the update.
+gentle reminder that this patch is still open.
 
-On Sat, Dec 07, 2024 at 09:47:59PM +0100, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
+Link: 
+https://lore.kernel.org/linux-arm-msm/20241114220718.12248-1-jahau@rocketmail.com/T/#u
+
+On 14.11.24 23:07, Jakob Hauser wrote:
+> From: Stephan Gerhold <stephan@gerhold.net>
 > 
-> Check the chip ID and stop probing if it is no imx214 sensor.
+> Add the Samsung S6E88A0-AMS427AP24 panel to the device tree for the
+> Samsung Galaxy S4 Mini Value Edition. By default the panel displays
+> everything horizontally flipped, so add "flip-horizontal" to the panel
+> node to correct that.
 > 
-> Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> Co-developed-by: Jakob Hauser <jahau@rocketmail.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 > ---
->  drivers/media/i2c/imx214.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+> Patch base is kernel/git/qcom/linux.git current branch "arm64-for-6.13".
 > 
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index a35e4e60e55c2b9d9e3090c98e695f78d099cf44..3cd64bb91795d8490acad5926940c111fb95fae5 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -20,6 +20,10 @@
->  #include <media/v4l2-fwnode.h>
->  #include <media/v4l2-subdev.h>
->  
-> +/* Chip ID */
-> +#define IMX214_REG_CHIP_ID		CCI_REG16(0x0016)
-> +#define IMX214_CHIP_ID			0x0214
-> +
->  #define IMX214_REG_MODE_SELECT		CCI_REG8(0x0100)
->  #define IMX214_MODE_STANDBY		0x00
->  #define IMX214_MODE_STREAMING		0x01
-> @@ -1092,6 +1096,27 @@ static int imx214_get_regulators(struct device *dev, struct imx214 *imx214)
->  				       imx214->supplies);
->  }
->  
-> +/* Verify chip ID */
-> +static int imx214_identify_module(struct imx214 *imx214)
-> +{
-> +	struct i2c_client *client = v4l2_get_subdevdata(&imx214->sd);
-> +	int ret;
-> +	u64 val;
-> +
-> +	ret = cci_read(imx214->regmap, IMX214_REG_CHIP_ID, &val, NULL);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "failed to read chip id %x\n",
-> +				     IMX214_CHIP_ID);
-> +
-> +	if (val != IMX214_CHIP_ID)
-> +		return dev_err_probe(&client->dev, -EIO,
-> +				     "chip id mismatch: %x!=%llx\n",
-> +				     IMX214_CHIP_ID, val);
-> +
-> +	return 0;
-> +}
-> +
->  static int imx214_parse_fwnode(struct device *dev)
->  {
->  	struct fwnode_handle *endpoint;
-> @@ -1184,6 +1209,10 @@ static int imx214_probe(struct i2c_client *client)
->  	 */
->  	imx214_power_on(imx214->dev);
->  
-> +	ret = imx214_identify_module(imx214);
-> +	if (ret)
-> +		goto error_power_off;
-
-The error handling was wrong in the driver, the code under the
-error_power_off label only disables the regulator (and runtime PM, which
-hasn't been enabled) but it does not disable or unprepare the clock. Could
-you fix these in a new patch, please?
-
-> +
->  	pm_runtime_set_active(imx214->dev);
->  	pm_runtime_enable(imx214->dev);
->  	pm_runtime_idle(imx214->dev);
+> The panel driver was recently added to linux-next:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/gpu/drm/panel/panel-samsung-s6e88a0-ams427ap24.c?h=next-20241101
 > 
+> The associated dt-binding in linux-next is:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/display/panel/samsung,s6e88a0-ams427ap24.yaml?h=next-20241101
+> ---
+>   .../dts/qcom/msm8916-samsung-serranove.dts    | 58 +++++++++++++++++++
+>   1 file changed, 58 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> index 5ce8f1350abc..caad1dead2e0 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> @@ -321,6 +321,41 @@ &blsp_uart2 {
+>   	status = "okay";
+>   };
+>   
+> +&gpu {
+> +	status = "okay";
+> +};
+> +
+> +&mdss {
+> +	status = "okay";
+> +};
+> +
+> +&mdss_dsi0 {
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&mdss_default>;
+> +	pinctrl-1 = <&mdss_sleep>;
+> +
+> +	panel@0 {
+> +		compatible = "samsung,s6e88a0-ams427ap24";
+> +		reg = <0>;
+> +
+> +		vdd3-supply = <&pm8916_l17>;
+> +		vci-supply = <&pm8916_l6>;
+> +		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
+> +		flip-horizontal;
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&mdss_dsi0_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&mdss_dsi0_out {
+> +	data-lanes = <0 1>;
+> +	remote-endpoint = <&panel_in>;
+> +};
+> +
+>   &mpss_mem {
+>   	reg = <0x0 0x86800000 0x0 0x5a00000>;
+>   };
+> @@ -330,6 +365,13 @@ &pm8916_resin {
+>   	linux,code = <KEY_VOLUMEDOWN>;
+>   };
+>   
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>   &pm8916_vib {
+>   	status = "okay";
+>   };
+> @@ -425,6 +467,22 @@ imu_irq_default: imu-irq-default-state {
+>   		bias-disable;
+>   	};
+>   
+> +	mdss_default: mdss-default-state {
+> +		pins = "gpio25";
+> +		function = "gpio";
+> +
+> +		drive-strength = <8>;
+> +		bias-disable;
+> +	};
+> +
+> +	mdss_sleep: mdss-sleep-state {
+> +		pins = "gpio25";
+> +		function = "gpio";
+> +
+> +		drive-strength = <2>;
+> +		bias-pull-down;
+> +	};
+> +
+>   	muic_i2c_default: muic-i2c-default-state {
+>   		pins = "gpio105", "gpio106";
+>   		function = "gpio";
 
--- 
 Kind regards,
+Jakob
 
-Sakari Ailus
