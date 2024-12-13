@@ -1,199 +1,129 @@
-Received: from sonic309-26.consmr.mail.ir2.yahoo.com (sonic309-26.consmr.mail.ir2.yahoo.com [77.238.179.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56222451D8
-	for <phone-devel@vger.kernel.org>; Wed, 11 Dec 2024 01:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.179.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF66C364D6;
+	Fri, 13 Dec 2024 09:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733879002; cv=none; b=unygrOHLN+xXBnxsUPeOx+Z6SvPXBMqcvq2qjkA5U1e+uSqbsZFzowZx95CgGNEWFjCAIqilta047EadgkKwBgKOZ5H+v9oW6KZDbzA17QMveyMqlPbKeibhe1dmWAvTFeu0VBDDiafk8KLaqRCayOR4erMYt20XbKfVnrEfLcI=
+	t=1734082468; cv=none; b=ZHTwiFrbUbCyCsQDc2+plDkdyhWhBhTB7DBNQfZovgsbU+z5XmX6qMSHUCEZ3mgcv9IgCAdeu0kyKkOUXNL1/1Xxe9WjCDKnkT4FYIzG2LFmA/9rSDWAVlLCQN+2Gvt8Tt/zd7V0t7S6ddLc0FNmuKzZSzrHOLGxCOIqnm7F9+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733879002; c=relaxed/simple;
-	bh=LqHuqGpa5Grtt5aFubFwCo6EDZhmWlFfdhX7oG1lIrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HTMOnhmAYkaYAsIjzcMwKI568LVuQ97WlfsKpLZ3YHe22yFb8mjy34TGyAmTGj4WqzY3lvxmU3rU23RGPDUtppvKW6GoTXcZ1g1b9eo1u56cOLwr8rmpkkjU6qlsyab2UlMxBGjA8FQCxo7Tng+xDt68h8Yn/7hDq6tC7S1Su7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com; spf=pass smtp.mailfrom=rocketmail.com; dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b=EpRQ1S7w; arc=none smtp.client-ip=77.238.179.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rocketmail.com
+	s=arc-20240116; t=1734082468; c=relaxed/simple;
+	bh=shAFm4xEcVgvQ08saw8ULWVwBdClSzYyPXaWFqnQ1mM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ywg2W+tTJeoVt/NCz2m+/xYUaxa8eu4OuGQfhxx3Dp19/4uxUumoZcIJhJLBbeRituQnSFgSg+2j0oVigFDKHUzELrTRzXzpjCyi4sxTrdK/jf6mawH+qfrwe05sqxp3jZ2wvfKXjvUzo0/oPH76PpX5r88Ku8T9qGKKs5hrgI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCP5FlPP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b="EpRQ1S7w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1733878998; bh=ktowREVGtv7pMwrhJAmbO+gSkvzC8xt1bBOXkRHQ/Y0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=EpRQ1S7wTitz0iTYtqDb56YxQL7yD/6o74JrT2MqN2AwPxYtVYAydutNmlfVWe2TQqjR0JgTMYitU9EM1gV6YRp9KPuVRnlM9xG27kji3Rs2dg4ewo/LQjPmSeBkMurguSMKrqgttSR5KJ2Ar3R7lMghoBpSHaQ9pp96XQALNn70da8cBZZeRtj6BvhEx1kJZ/514YjVAels3J3yGDqkL/PZ3jyP1L2paF+ZoQx7ZN050IeDF4gE+cmgctelXE3AwEv5SFD0/dNPi+JUAeKP2DTGShsrKB3V64MxzMti2qQiODTx0b8OnMIOzGhaWF6hHm53lGa4O7vl6jzp9deBww==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1733878998; bh=Te5A3NVQ4BvoZJR9MczoSimHKGB6VA2WvcIrNMxbYNY=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=QJvGhgddSPX4VNeTVJr+/qQeEVxIwQx2QKCv5e1cLqTjBTEzJEpAQ7twkFXJeoKovLljddiZO94Kp02Am43TDfavWGY7I1pew4xtWPV7jb8WWqro+AV955go/1U997BsaXjkEBT/FMSvM5qKJbOhmGFezFZoIN8Uclr8WehBpI7NIjefXOt1Y+mIOoomS61cWk4rdOTYVqXTS2MTI6BMM5YaNbnGCuVBuaNUB0sTS3ppzFQs1XjLl7qGIrkGgLOPvhjEMLondLzwno3teVahlfllsOhQjLIPkgrTWsw0M5Er6uG6yOFXIlr/AzTDCmwKSRw8cTBJrnD85IoeDZxp5g==
-X-YMail-OSG: R_zHgkAVM1lgYkaRnSsW_vEoALixplc.az4r89GopFYXnIWIdp4fkoJ2UmjDnrO
- ah7_sV0NsBPgOidKoqWEHmfzs4pd3d7eLYtFDiUsGAoodhCW105W_SIeJDiwc9_CTJZWmzFKl1y6
- fx74Q02cejSST_s0JB0J1Nx3xfNQn9LlbzTginX0Lj4JriZmPq0z0IjnMOTGOrMx9O1CK_DBSh8B
- DbMWjAup9m6Sd_VVoN43.46GfSy37fT8ulgeXycWsXG04w3.s7aapXqOdIb40ezGiwIKPA3BtMtV
- HjIWffiPyR_cjBGwLl5i1ST_scoDyZC.Mv_RdqtRKjYv5oWxYQiJLK68iQTqJbNFhiICVssy2GZg
- MEt4oJQvnSmk2NjUthGov_6TeIttD6uTOAklOvLG4fpaCP1rna_khx5_LU4BBMR8jkj9kxRc2DHQ
- verhYPq.IUD501kVZnzVX3s8bQNTrbIOz9OWDhMMqcj1HXp.wsoOOGe.ajMLRff2D88s5UZwZ68j
- khCbA9XK4PLnVEmq0jdqB91NFgqo_aQtHVgMXNXpHhK3CglTVZLq4d89pJ2fNGV2_2cdVqBund8t
- 4o.Nf8e0Fjl9ZkTSuVgUTcz41te9Z7UXXPQzCRR31wXl0J0Q4wJRy1tPGTS9j9tNKq9Sb8u5iBhT
- .qAqns8zbFA5ek.2SzmxObim8NB8kVA_XRJ2eb70lXdTh1qKznP5GE5c2bmai1xdK3CTA.oFWH_9
- oTz_jnZQznAcOHKFV4C_oLpM17se1GBDCoZ4d3RR3TXg.iXoa2Ek51m5qcxneurAAIgR0ySpXcFJ
- 8rKbEKZDeDND1elSI.q4vg_0CVdpNksMLxgwUx_MBDys6JqdYG7_qOIewegRAbDNDOs4nAxAFJZS
- mlWRI57KZLoRYTdVCl9H2mqBtF.PWIK2oOKKyrDSTGk1NPjHaw7_GIgWqTNjvpHKTDY84ClOsSew
- P5z8YxYEdeTbUh.vcyPDZGgcvoNK1pvtcM4pfjXgmQKTHnMEYP0vu_rMpRQ.W7gURPUGTk1qlgRR
- oL2Va0clphmjonzkMksGo0dhTPVrvaysbHhIGzk.g4KILELw6sfr3YMzq6zwo0nB2AJUhgNls57K
- 11BkXske5znpwsH6e7s1X.nZxKVX1Ls4V1A.pb_Lbc26cMR5AHeT2dwodl4PFxD7QP6cuLLslRBt
- sYN01mpUPldm8bjxTt0OdwlTBAvNlRwkA6M7eyjSSw01dEwlpYDwpydJAU0iybVc91iGuK1cNWk3
- cNwxA0H_tjkxslvOV3q_buHAPt1TeZLPi9.4d62j2qfjeb.cRuy8ThtR01LgOaMqXjTt6xjzjqPB
- 43ldJbiMrnAFe9vDds9DmDfgcAFk8Oh2jhthjjkzir80PKpaioEn49oaTnXcesyuj5IASMem60XF
- 2PkVVewasoBUDFjlq6WtdLt0I.EAdkQawt.wIjkWxXyjsoIkEzW8MP3oFXoseTUAshyVnT72At_b
- PEQLErHlndwobqWxS_usglZT8crjSeAyR.MBOK22sDhFuRw37ddW4kmCY_qVrhoCIJi5BZEJUndt
- AEy_YCTZwVLAnE7HA4TJw3Cs6aDePhHZk.ZukUchymw2Drgz57BybIWfSfQ4QEChw41oF7QfdTYi
- .1go5SnNmKIPvGF6QZhpSnMiSszG1zEKl5X28o128._7g56koUvzwdBIUkrPLmN21aLw1nFNe7c8
- r8qCj3GJKVt3o92FYQOVcPfZuoxnHjGgVF_uhW3Lyo8WDjNvRajBm604atBT3j.750e9gLxgNXAW
- UxFqzWO6Q06U844ZwcFim2rPNcISLJtZDE4TDawkrmMgV65lLTL6mXsHCskOJmgi6XF.0Kd5PTNM
- QlsHwg1ANBcG.T80az0HhpJ5UrdcdO.x.mPTNWBIWzldor3GtPDyorAVfOi2ftFAI.MIPkf4x04f
- A629lMBLZCNDJcYP2wCg3U8YRsI4uG03Ap2_IIQfP6H5hofYvvW4TJ7W9NgHnk3.jvW873lNEAxG
- KVuvZIYUXqiaeHWqC0Z0VPRjD_TO6d8f2yqJxwnjfMAzCXCBUCq4fUGrqDgT5iLjWsJSVPD_FrpO
- c4kwDMVU81BtBAxH5oab3dFjXpx2h8pVb6njA5njaKKQjOXEs3UWClEW3rpaB8wLsmA.5DZcby3n
- dqBQ0XrXjRMKv2V5Jl5E2ClG8XDzBCUPPdZTSXRUa3Gj3l9sSjMh9o5Hv7nU5VI9pximGhQlkFMJ
- Sojd6DLrhdWc7CEzRAU6oUgKpCzeS7Vu7GFUrL_LBx_MCMfQ.qLMwtxST_pFCEkwEMLeuPnG6tQD
- M2IOuKcR6JjgovUbBPFp0QhPhGiR9SA--
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 9d8cd608-909b-4f61-b1d3-8cc7f4afe820
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Wed, 11 Dec 2024 01:03:18 +0000
-Received: by hermes--production-ir2-c694d79d9-zzg9t (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9eebe7d30b4fb4bf596e1406d98945ad;
-          Wed, 11 Dec 2024 00:32:51 +0000 (UTC)
-Message-ID: <d377405e-4cad-4c2e-ad38-8c0323384c41@rocketmail.com>
-Date: Wed, 11 Dec 2024 01:32:50 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCP5FlPP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01FFC4CED0;
+	Fri, 13 Dec 2024 09:34:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734082465;
+	bh=shAFm4xEcVgvQ08saw8ULWVwBdClSzYyPXaWFqnQ1mM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TCP5FlPPGIRhcEfltKPzaQHKp6ODDUSOjfSjaYLX8rTfDbBX1Re+DPx+xvFlS4bCy
+	 ioboxr1O7HeS+Nt7wsbVxIa8TrFNx3bTP6qlb/kR6pMxwAegXKpWKtj5WOViMW6tTi
+	 HKWKo/hb4rI+KeecHGmUUA1dNWmQbzI2SruDOewOJW/4gZV/Edo2Sq7yt8D+dXmaJ0
+	 vqe+rn4nsEcM5ARLhWyb+a+ed2BsipJ3UFIFM8+KPEGIIAxR3pTQ+ZqtnvzFsbMOl8
+	 fo11zjQaCtwmg6UjlfIQCgHZVJXewJCPR3u1SQ5aVEpCEfp/KlfF91SeI7pAILjQzL
+	 9Ue17bRd1vWSA==
+Date: Fri, 13 Dec 2024 10:34:22 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Barnabas Czeman <barnabas.czeman@mainlining.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Caleb Connolly <caleb.connolly@linaro.org>, 
+	David Heidelberg <david@ixit.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] media: dt-bindings: media: camss: Restrict bus-type
+ property
+Message-ID: <nqggstwkytqxpxy3iuhkl6tup5elf45lqi3qlgyv6eaizvnfdr@2uy57umdzqfa>
+References: <20241209-camss-dphy-v1-0-5f1b6f25ed92@fairphone.com>
+ <20241209-camss-dphy-v1-1-5f1b6f25ed92@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add display
- panel
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20241114220718.12248-1-jahau.ref@rocketmail.com>
- <20241114220718.12248-1-jahau@rocketmail.com>
-Content-Language: en-US
-From: Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <20241114220718.12248-1-jahau@rocketmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.23040 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241209-camss-dphy-v1-1-5f1b6f25ed92@fairphone.com>
 
-Hi Bjorn, Hi Konrad,
-
-gentle reminder that this patch is still open.
-
-Link: 
-https://lore.kernel.org/linux-arm-msm/20241114220718.12248-1-jahau@rocketmail.com/T/#u
-
-On 14.11.24 23:07, Jakob Hauser wrote:
-> From: Stephan Gerhold <stephan@gerhold.net>
+On Mon, Dec 09, 2024 at 01:01:05PM +0100, Luca Weiss wrote:
+> The CSIPHY of Qualcomm SoCs support both D-PHY and C-PHY standards for
+> CSI-2, but not any others so restrict the bus-type property describing
+> this to the supported values.
 > 
-> Add the Samsung S6E88A0-AMS427AP24 panel to the device tree for the
-> Samsung Galaxy S4 Mini Value Edition. By default the panel displays
-> everything horizontally flipped, so add "flip-horizontal" to the panel
-> node to correct that.
+> The only exception here is MSM8916 which only supports D-PHY. C-PHY was
+> introduced with newer SoCs.
 > 
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> Co-developed-by: Jakob Hauser <jahau@rocketmail.com>
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> Do note, that currently the Linux driver only supports D-PHY.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
-> Patch base is kernel/git/qcom/linux.git current branch "arm64-for-6.13".
+>  .../bindings/media/qcom,msm8916-camss.yaml         |  8 ++++++
+>  .../bindings/media/qcom,msm8953-camss.yaml         | 15 +++++++++++
+>  .../bindings/media/qcom,msm8996-camss.yaml         | 20 +++++++++++++++
+>  .../bindings/media/qcom,sc8280xp-camss.yaml        | 20 +++++++++++++++
+>  .../bindings/media/qcom,sdm660-camss.yaml          | 20 +++++++++++++++
+>  .../bindings/media/qcom,sdm845-camss.yaml          | 20 +++++++++++++++
+>  .../bindings/media/qcom,sm8250-camss.yaml          | 30 ++++++++++++++++++++++
+>  7 files changed, 133 insertions(+)
 > 
-> The panel driver was recently added to linux-next:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/drivers/gpu/drm/panel/panel-samsung-s6e88a0-ams427ap24.c?h=next-20241101
-> 
-> The associated dt-binding in linux-next is:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/display/panel/samsung,s6e88a0-ams427ap24.yaml?h=next-20241101
-> ---
->   .../dts/qcom/msm8916-samsung-serranove.dts    | 58 +++++++++++++++++++
->   1 file changed, 58 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> index 5ce8f1350abc..caad1dead2e0 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> @@ -321,6 +321,41 @@ &blsp_uart2 {
->   	status = "okay";
->   };
->   
-> +&gpu {
-> +	status = "okay";
-> +};
+> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
+> index 9cc0a968a401836814560c1af3ee84d946500b4f..3de2a3d2b5b761106975aab65ff614b2ef579ef5 100644
+> --- a/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
+> +++ b/Documentation/devicetree/bindings/media/qcom,msm8916-camss.yaml
+> @@ -94,6 +94,10 @@ properties:
+>                  minItems: 1
+>                  maxItems: 4
+>  
+> +              bus-type:
+> +                enum:
+> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
 > +
-> +&mdss {
-> +	status = "okay";
-> +};
+>              required:
+>                - data-lanes
+>  
+> @@ -113,6 +117,10 @@ properties:
+>                  minItems: 1
+>                  maxItems: 4
+>  
+> +              bus-type:
+> +                enum:
+> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
 > +
-> +&mdss_dsi0 {
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&mdss_default>;
-> +	pinctrl-1 = <&mdss_sleep>;
-> +
-> +	panel@0 {
-> +		compatible = "samsung,s6e88a0-ams427ap24";
-> +		reg = <0>;
-> +
-> +		vdd3-supply = <&pm8916_l17>;
-> +		vci-supply = <&pm8916_l6>;
-> +		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
-> +		flip-horizontal;
-> +
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&mdss_dsi0_out>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&mdss_dsi0_out {
-> +	data-lanes = <0 1>;
-> +	remote-endpoint = <&panel_in>;
-> +};
-> +
->   &mpss_mem {
->   	reg = <0x0 0x86800000 0x0 0x5a00000>;
->   };
-> @@ -330,6 +365,13 @@ &pm8916_resin {
->   	linux,code = <KEY_VOLUMEDOWN>;
->   };
->   
-> +&pm8916_rpm_regulators {
-> +	pm8916_l17: l17 {
-> +		regulator-min-microvolt = <2850000>;
-> +		regulator-max-microvolt = <2850000>;
-> +	};
-> +};
-> +
->   &pm8916_vib {
->   	status = "okay";
->   };
-> @@ -425,6 +467,22 @@ imu_irq_default: imu-irq-default-state {
->   		bias-disable;
->   	};
->   
-> +	mdss_default: mdss-default-state {
-> +		pins = "gpio25";
-> +		function = "gpio";
-> +
-> +		drive-strength = <8>;
-> +		bias-disable;
-> +	};
-> +
-> +	mdss_sleep: mdss-sleep-state {
-> +		pins = "gpio25";
-> +		function = "gpio";
-> +
-> +		drive-strength = <2>;
-> +		bias-pull-down;
-> +	};
-> +
->   	muic_i2c_default: muic-i2c-default-state {
->   		pins = "gpio105", "gpio106";
->   		function = "gpio";
+>              required:
+>                - data-lanes
+>  
+> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8953-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8953-camss.yaml
+> index 8856fba385b1123d748199b46c5009c97700ad9b..6d776b0ca71140c0816b246dbaf41ef376205bba 100644
+> --- a/Documentation/devicetree/bindings/media/qcom,msm8953-camss.yaml
+> +++ b/Documentation/devicetree/bindings/media/qcom,msm8953-camss.yaml
+> @@ -112,6 +112,11 @@ properties:
+>                  minItems: 1
+>                  maxItems: 4
+>  
+> +              bus-type:
+> +                enum:
+> +                  - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
 
-Kind regards,
-Jakob
+Just 1
+
+> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
+
+Just 4
+
+The type and meaning is already stated by video-interfaces and the
+binding headers.
+
+Anyway:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
