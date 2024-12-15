@@ -1,129 +1,140 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08626374FF;
-	Sat, 14 Dec 2024 22:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCBD1119A;
+	Sun, 15 Dec 2024 12:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734216332; cv=none; b=HOoizLCz246x7MSgfIHGiqF0Cm45htM6adGusT8Wc2CUdejhnbOUyH0QvtystFYXKSNezYJ07JVpDdUs/Jhg/TW9fKfMYf2dK/+4qHHvjUCsjYN+sGz8b0viJVg6RoNfB8wRzv25FczrKLeByk6KhD7Ud5aHq52rtTQJ7JnDbG0=
+	t=1734264637; cv=none; b=jS+Mt0KiKpAQDTp2xXWHF67FXINL6rjG/kiKhanDUvJ5Gem8FQ+PJ3u4lzVNx78XXpc4dH0qSDDFMDAHoVvHRBsqjhINs+7coQdcV7OhkyySEZuJ0JcYUtwMlrVjin38H5m5JlGTEky23yhQG7E6mzxCZEoOBXNhp/jp67TEDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734216332; c=relaxed/simple;
-	bh=vExFBKYFpDLJb8wWLmXcMEyc2Ufj5kH4bbgxDRfqNbw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oKwbiifg1r82W0rJl6JJYC6FZ+CajeP2Wq5XvzjAFUMjz/hJVmxK9nHvQBjSSsODc+1j+1S5EsEsW3mpLmi5JzUnZa/NVK934Q+OufVGiR4nbwL7Dwt4VTcKq5l2ynMM3pvjCrysEruJxR6GA4svzaSusVtBcSYPzzNjUh2KU2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=O9jqzL6w; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1734264637; c=relaxed/simple;
+	bh=gqop87fE9QS0LtNMiI75Ht5vedT7Kqnrwh91p6h0U/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDOqqyqHaACpdF4bcIWKVwIXMuigL0vzrgO0VmA2MejX+Up7JfIp08WDeGc4j6pEg86g5PcaA5KTSQ/ssV40SUH5DRNxPRnqJmJP6QdebaPSs5V6u9r2sMwCwCCXk0Tg7JiX9s2DnZK1hW4Rie2BWxN4gAsIu85YdliY5oeyVPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UazM4hye; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="O9jqzL6w"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=d/PjcV+jDCKYzSJwV8DzSKIy1c3zEyLabtw0gF3Jwq0=; b=O9jqzL6wF2cCf2IKPhSXMfi9Dw
-	nKkxbRMs1vDBGCK9TXP6BA1ioqngrjSUMXJV6HmdZJJafnI35wq8dB0tw11l+PvlEY++dT6jrGZbc
-	Ji21jmciksTgAcOHUAsEqiV9knQxChDjgHUy+J8je2lMD1PRv+lY3HdclBBO3lgVw57gK/gGd+L5/
-	huqrwdtCKGEO/hUYQ1H8f2coHgSmPg5jUPvuffOpmsMu8Qsy6iMJese5yRFp8MS9jEZWCIlyFhwou
-	FxBZB1lJVMmRhw85Er2qlGHd9wFaxhS1bsxL4ofAVLsPcPq1qotio/YzlJMjDKqnm51g2YKxa8r3U
-	CfKJgOkw==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tMasv-0000k5-2A;
-	Sat, 14 Dec 2024 23:45:18 +0100
-Received: from [77.64.252.106] (helo=framework.lan)
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1tMasv-000Hdn-1K;
-	Sat, 14 Dec 2024 23:45:18 +0100
-Message-ID: <8255eb1a877a339a457979c8b4fc831f6fc5cc01.camel@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UazM4hye"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734264636; x=1765800636;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=gqop87fE9QS0LtNMiI75Ht5vedT7Kqnrwh91p6h0U/A=;
+  b=UazM4hyexhqv7N/9qQuhI0c3S54h7UQlthONA7W2HE4Sfyvldu075tIv
+   OfwWFim87P2ATNJnJaaQf7qrMO05IOX3EydW7dpGaS9pdr2HHf4O3H/Nk
+   T+v7CA+DMO+jGb5Yup5COJjbKdGh8JyFVElyaGvnXEhZF3EnB7RQoabNC
+   +QHTCI/uYJsS3FuY5ktFjq8/hC3XCWGRPLR+FgKD1YeD9TtAOYYEDb2aM
+   D0O4R8VvkUPbW7gOlYj9CdjguSNmlL4MixzbbcVW1bFH42Rqn82O57XLu
+   TZ2RPZkj4MBLRqL7hVim3V/O4yvr/IY1Sx5ETBpZKFXRApZNknzMTxiNw
+   A==;
+X-CSE-ConnectionGUID: 7gR7XBKgSsWaIZ3NGrSLdw==
+X-CSE-MsgGUID: MXuRF7wXT7alvnkWsaWOCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11286"; a="34807621"
+X-IronPort-AV: E=Sophos;i="6.12,236,1728975600"; 
+   d="scan'208";a="34807621"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 04:10:36 -0800
+X-CSE-ConnectionGUID: 9YXs+b+xQQa5kFdWDE2LRw==
+X-CSE-MsgGUID: kVZQeNQBTdCLvC40nk9Zug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="101100576"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 04:10:33 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id E347C120A17;
+	Sun, 15 Dec 2024 14:10:30 +0200 (EET)
+Date: Sun, 15 Dec 2024 12:10:30 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Cc: Ricardo Ribalda Delgado <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Vincent Knecht <vincent.knecht@mailoo.org>
 Subject: Re: [PATCH v3 07/12] media: i2c: imx214: Add vblank and hblank
  controls
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, Ricardo Ribalda Delgado
-	 <ribalda@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Dave Stevenson	
- <dave.stevenson@raspberrypi.com>, Vincent Knecht <vincent.knecht@mailoo.org>
-Date: Sat, 14 Dec 2024 23:45:16 +0100
-In-Reply-To: <Z1g1afPM1RRwD_EH@kekkonen.localdomain>
+Message-ID: <Z17HNqjz4ecL3fiU@kekkonen.localdomain>
 References: <20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu>
-	 <20241207-imx214-v3-7-ab60af7ee915@apitzsch.eu>
-	 <CAPybu_0Bdc03UrJNO42S1fBTvpuHUUExvkR1ont7VKdw2XBuKg@mail.gmail.com>
-	 <CAPybu_0Nk+p1rikH_t_zpEHx=KGnXfG+npr-XEnwtA4EnfJjuQ@mail.gmail.com>
-	 <Z1g1afPM1RRwD_EH@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 
+ <20241207-imx214-v3-7-ab60af7ee915@apitzsch.eu>
+ <CAPybu_0Bdc03UrJNO42S1fBTvpuHUUExvkR1ont7VKdw2XBuKg@mail.gmail.com>
+ <CAPybu_0Nk+p1rikH_t_zpEHx=KGnXfG+npr-XEnwtA4EnfJjuQ@mail.gmail.com>
+ <Z1g1afPM1RRwD_EH@kekkonen.localdomain>
+ <8255eb1a877a339a457979c8b4fc831f6fc5cc01.camel@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Authenticated-Sender: andre@apitzsch.eu
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27487/Sat Dec 14 10:38:46 2024)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8255eb1a877a339a457979c8b4fc831f6fc5cc01.camel@apitzsch.eu>
 
-Hi,
+Hi André,
 
-Am Dienstag, dem 10.12.2024 um 12:34 +0000 schrieb Sakari Ailus:
-> On Sun, Dec 08, 2024 at 10:19:51PM +0100, Ricardo Ribalda Delgado
-> wrote:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 state =3D
-> > > > v4l2_subdev_get_locked_active_state(&imx214->sd);
-> > >=20
-> > > Sakari, I see that other drivers assume that the active is locked
-> > > in
-> > > set_ctrl. Is this correct?
-> >=20
-> > imx214->sd.state_lock =3D imx214->ctrls.lock;
-> >=20
-> > So I guess it is fine :)
->=20
-> Yes, it is.
->=20
-> Please also run this on the set:
->=20
-> $ ./scripts/checkpatch.pl --strict --max-line-length=3D80
->=20
+On Sat, Dec 14, 2024 at 11:45:16PM +0100, André Apitzsch wrote:
+> Hi,
+> 
+> Am Dienstag, dem 10.12.2024 um 12:34 +0000 schrieb Sakari Ailus:
+> > On Sun, Dec 08, 2024 at 10:19:51PM +0100, Ricardo Ribalda Delgado
+> > wrote:
+> > > > > +               state =
+> > > > > v4l2_subdev_get_locked_active_state(&imx214->sd);
+> > > > 
+> > > > Sakari, I see that other drivers assume that the active is locked
+> > > > in
+> > > > set_ctrl. Is this correct?
+> > > 
+> > > imx214->sd.state_lock = imx214->ctrls.lock;
+> > > 
+> > > So I guess it is fine :)
+> > 
+> > Yes, it is.
+> > 
+> > Please also run this on the set:
+> > 
+> > $ ./scripts/checkpatch.pl --strict --max-line-length=80
+> > 
+> 
+> there are a few lines that exceed 80 columns:
+> 
+> WARNING: line length of 85 exceeds 80 columns
+> #163: FILE: drivers/media/i2c/imx214.c:576:
+> +	imx214_update_pad_format(imx214, mode, &format->format, format->format.code);
+> --
+> WARNING: line length of 81 exceeds 80 columns
+> #88: FILE: drivers/media/i2c/imx214.c:983:
+> +		return dev_err_probe(dev, ret, "failed to set xclk frequency\n");
+> --
+> WARNING: line length of 82 exceeds 80 columns
+> #138: FILE: drivers/media/i2c/imx214.c:1039:
+> +		dev_err_probe(dev, ret, "failed to register sensor sub-device\n");
+> --
+> WARNING: line length of 86 exceeds 80 columns
+> #491: FILE: drivers/media/i2c/imx214.c:359:
+> +	{ IMX214_REG_EXCK_FREQ, IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 1000000) },
+> --
+> WARNING: line length of 83 exceeds 80 columns
+> #177: FILE: drivers/media/i2c/imx214.c:730:
+> +		exposure_max = format->height + ctrl->val - IMX214_EXPOSURE_OFFSET;
+> --
+> WARNING: line length of 85 exceeds 80 columns
+> #85: FILE: drivers/media/i2c/imx214.c:1231:
+> +		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> 
+> 
+> Is the strict 80 columns limit really necessary, as it would decrease
+> readability?
 
-there are a few lines that exceed 80 columns:
+For the array that could be the case but I think I'd wrap the rest.
 
-WARNING: line length of 85 exceeds 80 columns
-#163: FILE: drivers/media/i2c/imx214.c:576:
-+	imx214_update_pad_format(imx214, mode, &format->format, format->format.co=
-de);
---
-WARNING: line length of 81 exceeds 80 columns
-#88: FILE: drivers/media/i2c/imx214.c:983:
-+		return dev_err_probe(dev, ret, "failed to set xclk frequency\n");
---
-WARNING: line length of 82 exceeds 80 columns
-#138: FILE: drivers/media/i2c/imx214.c:1039:
-+		dev_err_probe(dev, ret, "failed to register sensor sub-device\n");
---
-WARNING: line length of 86 exceeds 80 columns
-#491: FILE: drivers/media/i2c/imx214.c:359:
-+	{ IMX214_REG_EXCK_FREQ, IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 100000=
-0) },
---
-WARNING: line length of 83 exceeds 80 columns
-#177: FILE: drivers/media/i2c/imx214.c:730:
-+		exposure_max =3D format->height + ctrl->val - IMX214_EXPOSURE_OFFSET;
---
-WARNING: line length of 85 exceeds 80 columns
-#85: FILE: drivers/media/i2c/imx214.c:1231:
-+		if (bus_cfg.link_frequencies[i] =3D=3D IMX214_DEFAULT_LINK_FREQ_LEGACY) =
-{
+-- 
+Regards,
 
-
-Is the strict 80 columns limit really necessary, as it would decrease
-readability?
-
-Best regards,
-Andr=C3=A9
+Sakari Ailus
