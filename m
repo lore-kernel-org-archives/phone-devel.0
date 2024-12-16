@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441901DD54C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD11DC04A;
 	Mon, 16 Dec 2024 21:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734382892; cv=none; b=TxX7jXy/aOCmffT/TE9v6DLAIUa2E++NMFppi3/bkZQDFy7JVSIa58xX5o1E3FzQDuZHqaqgHwbrtgmzO67mwk4XU+oxE70sKsddEeQBPmy7VpuNXRC2oI9/f00uurxw2mkZk34qem2bIxzw6D+xWzt4HH2a1CcyzS7wiOqEPxQ=
+	t=1734382892; cv=none; b=c6qHTsHLUrEd9jjCDLX4FTVJbeZUxLk8fuCVXemYSfiWvb/h2MwmjUwIL5Yhyp7QbUGN/egrYOmOefPkGuKSaF4g1mbHa3EYm3PSYnkOEI/U/eIatCwebyY9M5Bo0QCQF0wdUMsx9CzwqdIY50CK8l4w9yQJCZI1Ezm90l8FWbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734382892; c=relaxed/simple;
-	bh=6cmEGBmf36veit8RAD1wqzyDYYwOBtBNXEx1H15Ah0M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WqbjxJeBN+1mbPdiGyjyJAL6hzVd6iBQ0c1iAZzawnzZSJQR/xVmun0eu6xRrXI/H1vQJqqvnocvolUStxOICnNLyn5GFLAOOiGF6NoOdvEfR1pt3A0eiItCcgpgrlxUJUjr1mgC/pTP2xpQoa5zNAkyWg6786S+DWxLWAxbDbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiMO/hLF; arc=none smtp.client-ip=10.30.226.201
+	bh=0SP32cbnOEdwf+FPbAKwzQ69lETdDDL7Jv/IocrrpaU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kwTgo1xrFcsCPv2hNCj7DkT1uLiIkJOoQGSPTb7PB8Z0lTwNx0v9Jo5/IDz+KFI9AVwzCXx78uncsA+ejKBP78wKhQ5KNptCePAu6AUXsFftevsIB4c++ckqDwDazi/o1oAMqXiLs5KkX0iZyo4J9illz0xKprBO6dMsrUaOSpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBH6H0oS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiMO/hLF"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D14F9C4CED0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBH6H0oS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F230FC4CEDD;
 	Mon, 16 Dec 2024 21:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734382891;
-	bh=6cmEGBmf36veit8RAD1wqzyDYYwOBtBNXEx1H15Ah0M=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=kiMO/hLFV5ElXfAt1xVc/PzprqMk6X+IbXUwiT2YaUsy8u9NNAl4RjNWpvBSV7qkr
-	 pk7EIaTjoPJjEETrzh1VNnM4hJmSqDvvh1ip8ZLgU9yrEZBcNz7OvRFPh7DYlG6DFj
-	 1hhBgJr54q4oZchXrp/k1/oW+zUEWukJ/dr4Ufpp8wwSYN+5vW5iX6xBWQQsyBtTtH
-	 xCjv8hXM5pwDZ/+ulYZfnIKTNIjOk5xY2aTF/lcKIEAd3WbZatkKRSh5tDyhUTar8H
-	 r726pUK1GvegwBsv0hvBTMNW5E1qiPK5JnZNRjq57KOP0sxBD/oXjML9hlf7eY6M+p
-	 4Me84+y0dlseA==
+	s=k20201202; t=1734382892;
+	bh=0SP32cbnOEdwf+FPbAKwzQ69lETdDDL7Jv/IocrrpaU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BBH6H0oStC+qk+N8Cj3qDldjJej+mH2PWSw27TcPmv2RH5pY2RVtvi9q0i7i766C+
+	 UToDdkLyB1cyBtQPsw1l8pdrkGxmHcedMBOQJhGrJtirubULUiYf4IG4ElUl62726y
+	 6An8wNbsE6Z3OPbwI+79EwCtObVAfAnFEbiza+AY0CQJPiGMKm/8I/kxI8CM6PacCS
+	 XNTCpT6XpALbn644Jo1wRs/iw0Vs/Lm7GlxsvSNjd4JxL5nMv50Y9xE5LXPy20FhIy
+	 yAMgCoW+iQJOsOpzOSaTZ76fcQ7RbYU7sld8LXKsjlMSpZbZ2m23za8rZHMKDCw5pl
+	 /SELtvevtrUQQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE001E7717F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0FE6E77184;
 	Mon, 16 Dec 2024 21:01:31 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Subject: [PATCH v4 00/13] media: i2c: imx214: Miscellaneous cleanups and
- improvements
-Date: Mon, 16 Dec 2024 22:00:46 +0100
-Message-Id: <20241216-imx214-v4-0-8cbda160fbce@apitzsch.eu>
+Date: Mon, 16 Dec 2024 22:00:48 +0100
+Subject: [PATCH v4 02/13] media: i2c: imx214: Simplify with dev_err_probe()
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,11 +40,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAP6UYGcC/2XN0Q6CIBTG8VdpXEeDAwp01Xu0LgCPyUXqxJzlf
- PfQlm11+Z3x+zORiF3ASI67iXQ4hBiaOg253xFf2fqKNBRpE2AgmeaahtsIXFItQCotvXKIJD1
- uOyzDuIbOl7SrEPume6zdgS/Xd8Iw+CQGThn1JvfOGm0Ez062Df0z+uqAd7JEBtggZ8A3CAmWr
- gCBxmSS4z8UXwhMbVAkaF3ObKkQze+P8zy/ABnu8h0QAQAA
-X-Change-ID: 20240818-imx214-8324784c7bee
+Message-Id: <20241216-imx214-v4-2-8cbda160fbce@apitzsch.eu>
+References: <20241216-imx214-v4-0-8cbda160fbce@apitzsch.eu>
+In-Reply-To: <20241216-imx214-v4-0-8cbda160fbce@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
  Sakari Ailus <sakari.ailus@linux.intel.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -56,11 +53,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
  Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734382889; l=3433;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734382889; l=3956;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=6cmEGBmf36veit8RAD1wqzyDYYwOBtBNXEx1H15Ah0M=;
- b=EHfC7AL8dJQADMDbAL4P/CKLIviut5r5NixmWIuMRzSFr0QF5xle8MOcbtWRbgGRlNhqxrhd6
- jaevR7sxKU1BAURvSXgndxBaI1vxq45lb2HDpA7I3QTj+28r3K+h+On
+ bh=eo0gDOYn7bljWPOoY3QLTS87AXFsl3SRuzYa33L9J5Q=;
+ b=YiminAadnZUd1EYsDHMzYaeefRV5wE4aCSQvtqOcUL3AhDfv8s+SbVNOWN3lx2F7oceT2he/H
+ Sjgp8q+sij0DdHdvKNFGadv0MJYrpSOjBIn1FRE26RoCAG0TK3bmIbB
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -68,87 +65,126 @@ X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
 X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 Reply-To: git@apitzsch.eu
 
-This patch series is a collection of miscellaneous cleanups and
-improvements to the imx214 driver.
+From: André Apitzsch <git@apitzsch.eu>
 
-The series converts the driver to the CCI helpers and adds controls
-needed to make the driver work with libcamera.
+Error handling in probe() can be a bit simpler with dev_err_probe().
 
-The changes are inspired by the imx219 driver.
-
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
-Changes in v4:
-- Drop function name from dev error message
-- Initialize *format to fix compile error
-- Improve comment "Update {FPS -> blank} limit"
-- Improve code formatting
-- Warn once on usage of frame_interval functions
-- Fix commit message
-- Add patch to fix clock handling on probe error or remove
-- Warn if number of DT provided link frequencies != 1
-- Add A-b tags
-- Link to v3: https://lore.kernel.org/r/20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu
+ drivers/media/i2c/imx214.c | 54 +++++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 30 deletions(-)
 
-Changes in v3:
-- Also keep previous link freq for backward compatibility
-- Move link freq patch to the end of the series
-- Remove return-early check from imx214_set_format()
-- Remove unneeded struct imx214 function parameter
-- Use correct ret value on number of data lanes error
-- Revert changing order (imx214_parse_fwnode, devm_kzalloc)
-- Fix typo
-- Remove unused definition IMX214_EXPOSURE_MAX
-- Don't set FPS to default
-- Simplify exposure_def definition
-- Set state and format only if control id is V4L2_CID_VBLANK
-- Restore Ricardo's message to Sony
-- Drop "media: i2c: imx214: Extract format and crop settings" patch
-- Add A-b tag
-- Link to v2: https://lore.kernel.org/r/20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 2e4322b90938c880896b216d3c46ccaa29485562..0eac27424483227a528e42d355a926bc346795e4 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -931,14 +931,12 @@ static int imx214_parse_fwnode(struct device *dev)
+ 	int ret;
+ 
+ 	endpoint = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
+-	if (!endpoint) {
+-		dev_err(dev, "endpoint node not found\n");
+-		return -EINVAL;
+-	}
++	if (!endpoint)
++		return dev_err_probe(dev, -EINVAL, "endpoint node not found\n");
+ 
+ 	ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, &bus_cfg);
+ 	if (ret) {
+-		dev_err(dev, "parsing endpoint node failed\n");
++		dev_err_probe(dev, ret, "parsing endpoint node failed\n");
+ 		goto done;
+ 	}
+ 
+@@ -947,8 +945,9 @@ static int imx214_parse_fwnode(struct device *dev)
+ 			break;
+ 
+ 	if (i == bus_cfg.nr_of_link_frequencies) {
+-		dev_err(dev, "link-frequencies %d not supported, Please review your DT\n",
+-			IMX214_DEFAULT_LINK_FREQ);
++		dev_err_probe(dev, -EINVAL,
++			      "link-frequencies %d not supported, Please review your DT\n",
++			      IMX214_DEFAULT_LINK_FREQ);
+ 		ret = -EINVAL;
+ 		goto done;
+ 	}
+@@ -976,34 +975,28 @@ static int imx214_probe(struct i2c_client *client)
+ 	imx214->dev = dev;
+ 
+ 	imx214->xclk = devm_clk_get(dev, NULL);
+-	if (IS_ERR(imx214->xclk)) {
+-		dev_err(dev, "could not get xclk");
+-		return PTR_ERR(imx214->xclk);
+-	}
++	if (IS_ERR(imx214->xclk))
++		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
++				     "failed to get xclk\n");
+ 
+ 	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
+-	if (ret) {
+-		dev_err(dev, "could not set xclk frequency\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to set xclk frequency\n");
+ 
+ 	ret = imx214_get_regulators(dev, imx214);
+-	if (ret < 0) {
+-		dev_err(dev, "cannot get regulators\n");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to get regulators\n");
+ 
+ 	imx214->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
+-	if (IS_ERR(imx214->enable_gpio)) {
+-		dev_err(dev, "cannot get enable gpio\n");
+-		return PTR_ERR(imx214->enable_gpio);
+-	}
++	if (IS_ERR(imx214->enable_gpio))
++		return dev_err_probe(dev, PTR_ERR(imx214->enable_gpio),
++				     "failed to get enable gpio\n");
+ 
+ 	imx214->regmap = devm_regmap_init_i2c(client, &sensor_regmap_config);
+-	if (IS_ERR(imx214->regmap)) {
+-		dev_err(dev, "regmap init failed\n");
+-		return PTR_ERR(imx214->regmap);
+-	}
++	if (IS_ERR(imx214->regmap))
++		return dev_err_probe(dev, PTR_ERR(imx214->regmap),
++				     "regmap init failed\n");
+ 
+ 	v4l2_i2c_subdev_init(&imx214->sd, client, &imx214_subdev_ops);
+ 	imx214->sd.internal_ops = &imx214_internal_ops;
+@@ -1032,20 +1025,21 @@ static int imx214_probe(struct i2c_client *client)
+ 
+ 	ret = media_entity_pads_init(&imx214->sd.entity, 1, &imx214->pad);
+ 	if (ret < 0) {
+-		dev_err(dev, "could not register media entity\n");
++		dev_err_probe(dev, ret, "failed to init entity pads\n");
+ 		goto free_ctrl;
+ 	}
+ 
+ 	imx214->sd.state_lock = imx214->ctrls.lock;
+ 	ret = v4l2_subdev_init_finalize(&imx214->sd);
+ 	if (ret < 0) {
+-		dev_err(dev, "subdev init error: %d\n", ret);
++		dev_err_probe(dev, ret, "subdev init error\n");
+ 		goto free_entity;
+ 	}
+ 
+ 	ret = v4l2_async_register_subdev_sensor(&imx214->sd);
+ 	if (ret < 0) {
+-		dev_err(dev, "could not register v4l2 device\n");
++		dev_err_probe(dev, ret,
++			      "failed to register sensor sub-device\n");
+ 		goto error_subdev_cleanup;
+ 	}
+ 
 
-Changes in v2:
-- Add patch to fix link frequency
-- Don't use and remove fmt and crop from struct imx214
-- Squash patch 1/13 and 2/13
-- Only check if #lanes == 4
-- Add comment that enum_frame_interval() shouldn't be used by userspace
-- Set V4L2_CID_VBLANK step size to 2 (according to datasheet Table 4-4)
-- Increase IMX214_VBLANK_MIN to limit max frame rate of full resolution
-  to the documented 30 fps
-- As bpp is always 10, simplify setting IMX214_REG_CSI_DATA_FORMAT and
-  IMX214_REG_OPPXCK_DIV
-- Simplify imx214_get_format_code()
-- Cluster hflip and vflip
-- Remove kernel log note from 11/13, issue was fixed by a kernel update
-- Add A-b tags
-- Link to v1: https://lore.kernel.org/r/20240902-imx214-v1-0-c96cba989315@apitzsch.eu
-
----
-André Apitzsch (13):
-      media: i2c: imx214: Use subdev active state
-      media: i2c: imx214: Simplify with dev_err_probe()
-      media: i2c: imx214: Convert to CCI register access helpers
-      media: i2c: imx214: Replace register addresses with macros
-      media: i2c: imx214: Drop IMX214_REG_EXPOSURE from mode reg arrays
-      media: i2c: imx214: Check number of lanes from device tree
-      media: i2c: imx214: Add vblank and hblank controls
-      media: i2c: imx214: Implement vflip/hflip controls
-      media: i2c: imx214: Add analogue/digital gain control
-      media: i2c: imx214: Verify chip ID
-      media: i2c: imx214: Add test pattern control
-      media: i2c: imx214: Fix clock handling on probe error or remove
-      media: i2c: imx214: Fix link frequency validation
-
- drivers/media/i2c/Kconfig  |    1 +
- drivers/media/i2c/imx214.c | 1267 ++++++++++++++++++++++++++------------------
- 2 files changed, 753 insertions(+), 515 deletions(-)
----
-base-commit: 62f608176a46b6a794725022101d0d7f42faedb9
-change-id: 20240818-imx214-8324784c7bee
-
-Best regards,
 -- 
-André Apitzsch <git@apitzsch.eu>
+2.47.1
 
 
