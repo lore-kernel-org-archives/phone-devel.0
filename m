@@ -1,148 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B374E217649;
-	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4447A1BD9C1
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 16:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734701194; cv=none; b=FScqjckJOe3z/zHSogirkuzVdoe/uqz1UO79EJQXA+jAEseurf1sdgQjq/RXwZb8jCwd5UzBzpE5H2F+sDZxIzFAciB9Q96wqUAvjLgxe51VQp41oHk8BpwpoHFnzVZFgWCeFEuG03DF3bpNG9n4BTDNjFKfyRdZmmuT7JdtD3o=
+	t=1734712622; cv=none; b=mnAqhqVVHg3CcgNNUDQMqele/GTEaIsTHKIqgLuAkQDN6P7G/W1jyV/YI3hiLetdI1t/8mCYFKkRcSS32s1mqor54oJ3/SFPEoH8jFoqO+GGA/FYl7oGnpn4hesC1Tvo/df9+zKj3LxsF+Qu/eQTFmy89+njDW4F/Z7XxcVbfoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734701194; c=relaxed/simple;
-	bh=YErCTUhQ/G7sCBOzYDhoT3G1Z1y0MkXWxHYYmk+C8lg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GM/zaDZfPtRaBXxwVYZ0/q1reQojfYkY8wKBiRY5YrgacES6XGpZX24L9T9HumK01Pm3G7cCzGX+44o9MQWC0/hzOzsxE2csC91a4dFHDCs6i9bgS2G8XzaK3kFZrmbhkFw3ADPp3ZalNXVB4b7+3hmeUlYhJSHQ+i8QDOntme8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXhDUsr/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734712622; c=relaxed/simple;
+	bh=bEWRU12WpWPIeMDN8FVOFQxbTCC7SXobuaxurF/0EsM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gAMPht3v1gTZOsCXXjQAF1pnAuG6ahSgs8PzygNbP7VdjXfx5a4nwe4lirW156UDvdN46mhh3gtYlKftIrGwAZzcBxIWtBSdNjPXo+ZlBMQEgDqZ9a2WzkYyAFw5FUYOQjhX/qxuYRicg23yWmlSMtItx4kuCg4wb6SfFCW+DP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mWD4iOZw; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXhDUsr/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D40DC4CEDE;
-	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734701194;
-	bh=YErCTUhQ/G7sCBOzYDhoT3G1Z1y0MkXWxHYYmk+C8lg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eXhDUsr/o9DN0qR1QCZgs69tfuq7yloh9rv3y3zEiQcw0LESUMt5JSnqATwQG94kj
-	 2X2C+mxzcWixhRfmobtImMTbLq9C9Tns9NE8kYn2JGbqMaNCEj91cAhntbx789r09G
-	 J/+va4xxKmhNcZpo8Lu23vFHqm8LXROzBZ0Su70R63b5vM/XrGHIVq3Zqo7ESz/zyv
-	 pIZue7drf+zKdgacA86qMdhEco3xGHqYXsmS4HzeeJ8gCiL55xLO3uNi3Sb5V/EF+S
-	 jlQ0+CfbsapmzLtDqpLK3oySnXHRzOk4ALF04pmxLmnGgClwdNDhd27md2IGVBroML
-	 5DuLEF/d73WCg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 836DEE7718C;
-	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Fri, 20 Dec 2024 14:26:12 +0100
-Subject: [PATCH v6 13/13] media: i2c: imx214: Fix link frequency validation
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mWD4iOZw"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5401c2bb7ccso239802e87.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 08:37:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734712618; x=1735317418; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d5A1L57IAweu5CryWVUj44bHWooyuzy3DJH86XpP5RM=;
+        b=mWD4iOZwikC6/sY1fhaqYUMyt6tG1yL084IiXUTLp7SdweQRxL76A1KS33G1xlj72X
+         yS/Szat3wBf+em2b0o06hBBoUzJZEaPt/J9I3Yfq6THuO5c2XEYL+VDFY91siGt/mFBR
+         WFs2AbUlpUNGwmydSnBwCjb8u9sRlVxnX50vjS/qVY7jvD4Wj1L0u8k3DoUW/Ben7MID
+         2m3ME3hIapwVhETCT3UT9n8uUysu+/P3jTPcDIR1Z6Vuv8krC7vzzNWXiq5aJZ2ikmFS
+         h+PjglAo9J7UjDuC3WbUDkQ7w5qPkpl//ROmBPMesrtWBXyMfq9UhdWYQ3IKBRWF76M8
+         nKvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734712618; x=1735317418;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d5A1L57IAweu5CryWVUj44bHWooyuzy3DJH86XpP5RM=;
+        b=aYkUX7Thqb/Eqgj8bLKz+IKjUQ8p+IhAJUIzG9T0+lPPMbdcc6HXOvKgB197s8wSTi
+         vu+rUOnQRLV95E6NOwCYAdhor7kus/wA2du0qEdyn6l8H+PogezZeCKYYCypKdTolXen
+         A/um7PFkw+6So+8omO4PYzX1rX5TkNpxphQC5YnXQ+4HUOiYQ102IIdQR++SkkMLUkZD
+         aSmuuJ4tlzVSvjb48fY3V4RxSMGk/Br9qI1Byu2/Vjzy15XH7VjH2EjylewoT7HitQU7
+         IEUkCCpllyeml9xkug9wV2sG16z8P/ngAXQovFjV5igqTLCZ1xdufku/1XGXbQr2CW7q
+         4hng==
+X-Forwarded-Encrypted: i=1; AJvYcCXiD/bVwpYWnvbVPayC4Qyc81LogsyceE/p0l/biSuzQDAgcRt9SCbieLk9C6HQNVglfLcT1IjSOgCPYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/BwUFjFVnI0Ab+FZItSRLoeWdX7jtzph9tnYJXGFGoBGEMhmy
+	WABY042AxP5iqYJ3Zq+zkgbUQwCPAnhqRT3/KFOSaiXm/peidHKPy8GpeQfAMo5frFVtSOlMU1B
+	W
+X-Gm-Gg: ASbGncsneY+G8mbF7pTrHWh80aMFbdc++iP2MqAoU06Rh2/eeAtdfFo1XWb/UiLZMd2
+	M696HG2Y+vWbBJnmE0GqH0qLwv+Xo033Jfm7HZjuw6ObP4fUS/YmnQ11LUUt8X0CWCWLe///cME
+	qHKoqwRNsg9zhqG7+fKxbT1YEPYoi2M2yIYY4gHJJOboxAqWmv+PHJ3SPw3+0uj7sfkHsqCYpSM
+	OTrS3frozm8x8QNhdinthhChUnT+RWIDn+zyY3oUqbKdA3ry/zrgkBuf8J7i76Zd6TNoCe+siyo
+	u7TRWPeV/oeAV3KyhMnkEjUV1sXCV4qqvHM=
+X-Google-Smtp-Source: AGHT+IE8TnK9IvRiznibBWY6VYtR979POUMMCtyniJxLit34dsZxQlt2H0tfxRvYUQfhVYsRY4b0qA==
+X-Received: by 2002:a05:6512:1252:b0:540:22bd:e24f with SMTP id 2adb3069b0e04-54229567da6mr425163e87.12.1734712618376;
+        Fri, 20 Dec 2024 08:36:58 -0800 (PST)
+Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223832c1bsm511240e87.280.2024.12.20.08.36.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 08:36:56 -0800 (PST)
+Message-ID: <d9030fb2-85a1-4b13-8fac-94ee2defca14@linaro.org>
+Date: Fri, 20 Dec 2024 18:36:54 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241220-imx214-v6-13-d90a185d82e5@apitzsch.eu>
-References: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
-In-Reply-To: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
-To: Ricardo Ribalda <ribalda@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Vincent Knecht <vincent.knecht@mailoo.org>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- Ricardo Ribalda <ribalda@chromium.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734701191; l=2951;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=IaHeW2kn0+BFS3UpeRipHSvLaInVm6GgixkZfvH8Zn8=;
- b=Po0SGggNaPu5O51OSAA3+Nyz+HSVKOHv8NES/O+KqW/EtK1fQnx6tqn3cvMXCBJ3xroWNX7AX
- 1JXE1KMkCEwCsWatXwTXB61SUb5Vvf4lS7wtevlgagfAHeNz+Vwy3OZ
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+Content-Language: ru-RU
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shyam Kumar Thella <sthella@codeaurora.org>,
+ Anirudh Ghayal <quic_aghayal@quicinc.com>,
+ Guru Das Srinagesh <quic_gurus@quicinc.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: André Apitzsch <git@apitzsch.eu>
+On 12/20/24 14:22, Luca Weiss wrote:
+> Let the nvmem core know what size the SDAM is, most notably this fixes
+> the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+> user space work with that file.
+> 
+>    ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+>    00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+>    00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+>    *
+>    00000080
+> 
+> Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
-IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
-which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-Parsing the PLL registers with the defined 24MHz input. We're in single
-PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
-up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
-"Frame rate calculation formula" says "Pixel rate
-[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
-agrees with my number above.
+> ---
+> Related, it would be nice to set sdam->sdam_config.type to an
+> appropriate value, the ones currently upstream are:
+> 
+>    enum nvmem_type {
+>        NVMEM_TYPE_UNKNOWN = 0,
+>        NVMEM_TYPE_EEPROM,
+>        NVMEM_TYPE_OTP,
+>        NVMEM_TYPE_BATTERY_BACKED,
+>        NVMEM_TYPE_FRAM,
+>    };
+> 
+> I don't know what would fit for SDAM and I couldn't find any info on
+> createpoint either, not even what the abbreviation SDAM stands for.
+> ---
+>   drivers/nvmem/qcom-spmi-sdam.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
+> index 9aa8f42faa4c93532cf8c70ea992a4fbb005d006..4f1cca6eab71e1efc5328448f69f863e6db57c5a 100644
+> --- a/drivers/nvmem/qcom-spmi-sdam.c
+> +++ b/drivers/nvmem/qcom-spmi-sdam.c
+> @@ -144,6 +144,7 @@ static int sdam_probe(struct platform_device *pdev)
+>   	sdam->sdam_config.owner = THIS_MODULE;
+>   	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+>   	sdam->sdam_config.stride = 1;
+> +	sdam->sdam_config.size = sdam->size;
+>   	sdam->sdam_config.word_size = 1;
+>   	sdam->sdam_config.reg_read = sdam_read;
+>   	sdam->sdam_config.reg_write = sdam_write;
+> 
 
-3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
-0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
-frequency of 600MHz due to DDR.
-That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
-
-Keep the previous link frequency for backward compatibility.
-
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- drivers/media/i2c/imx214.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index e8d35f8b0f8b57d64f03ff6f5ed9eac51a671e8e..6a05094bbd4e94bb1a436a602745c3b5b2fdfbe2 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -31,7 +31,9 @@
- #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
- 
- #define IMX214_DEFAULT_CLK_FREQ	24000000
--#define IMX214_DEFAULT_LINK_FREQ 480000000
-+#define IMX214_DEFAULT_LINK_FREQ	600000000
-+/* Keep wrong link frequency for backward compatibility */
-+#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
- #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
- #define IMX214_FPS 30
- 
-@@ -1225,18 +1227,26 @@ static int imx214_parse_fwnode(struct device *dev)
- 		goto done;
- 	}
- 
--	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
-+	if (bus_cfg.nr_of_link_frequencies != 1)
-+		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
-+
-+	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
- 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
- 			break;
--
--	if (i == bus_cfg.nr_of_link_frequencies) {
--		dev_err_probe(dev, -EINVAL,
--			      "link-frequencies %d not supported, Please review your DT\n",
--			      IMX214_DEFAULT_LINK_FREQ);
--		ret = -EINVAL;
--		goto done;
-+		if (bus_cfg.link_frequencies[i] ==
-+		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-+			dev_warn(dev,
-+				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
-+				 IMX214_DEFAULT_LINK_FREQ);
-+			break;
-+		}
- 	}
- 
-+	if (i == bus_cfg.nr_of_link_frequencies)
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "link-frequencies %d not supported, please review your DT\n",
-+				    IMX214_DEFAULT_LINK_FREQ);
-+
- done:
- 	v4l2_fwnode_endpoint_free(&bus_cfg);
- 	fwnode_handle_put(endpoint);
-
--- 
-2.47.1
-
-
+--
+Best wishes,
+Vladimir
