@@ -1,134 +1,164 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FED1A8405
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 13:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87902153E9;
+	Fri, 20 Dec 2024 13:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734700813; cv=none; b=WIUJFYjgtKVz3LUhwD7RXDQdg1PMtBYaYrVTqWVD+rfLUhKp8V8o7j/KcZ8h/ZZKGXA2FMv0OGTRHBovadnwJQUxZErW8KiyRA5dt3yUI2wSH7OGsWoqrVPZ0xcnoy2tEXW3+DEz7KmZEchnyW5MOPre90tVsIx/wvXyMpeZTt0=
+	t=1734701193; cv=none; b=DBG5qZa984jzPaDrSKFdNjrL8G7y7Y5GUkFXeDuC9FN3vI7RMFFIO8V0yCBgE2IvxytMwvEEi3gIuA2h9mhuX7K3iIZEvyQo7yQidRvuV5a/8mPu5vbtMIyC6N34tA0R9F1dfuK3DvtMjKzqOwr55eVoBEjEjcrnW+zEIxKVo9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734700813; c=relaxed/simple;
-	bh=qSfbqqTeUsfrV921pSzv4rotULKHnoKWr6PwLctoD8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MPpkpxr0u/hJbnoAi81t6ZE7zzHYmqCzWfeyyb718DgKNHHlNgmOjc2UhiavhGh0klu+yBDm0YLH7mwgjFr1fCEYfLaaYq7/PUB9FRGKTfUpwDyB1r8g/rhtvpIacDB44rF0/TBk4gX0H2w/FZKPnk8KilpHZKXjQ9WsSfX7P1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nbPKx//V; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1734701193; c=relaxed/simple;
+	bh=gsHp8x3rZPFbbVXat+AkjIIGNsSe4fQXvwGDypL8V4A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lavj404zbNgU2c2+nSfoTlDkXaPzHCYbMzgCwCv89bpkPNZNnTX8z7XKB6LwDy3HmT3EJt/oNYjtLIRV2lesMX4+HIXHn4rWrqspV3Pwa/Gj0OGjdlUgMvmuXJDLlCFTNUX+qACMtcsUWivpdrpiwRZ3OauC4cMRMCa0ULEH6hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djyFRx2C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nbPKx//V"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BKAKdmF003387
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 13:20:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3vU055oJIDpMQcbkPsF3SDZEF+lNsh9exzRg03WdMHM=; b=nbPKx//V0ggFPhqO
-	qta1Sa2dKDWtrgmvCkSazJQVl9LL1kNKMzkBgAA6jRqVMopfw1EhZWUMrp4wcrxL
-	sjYqgpOzwoqHL0fbXosCD9xhFRztahIQvWdRrjEKOvRPOrIu62gb3EgpeqKi/v+m
-	Ze4uiZ3Oqn16BHXxeKEyD/zSqxKSv1Bzu2CFvDkglsd1UrnGIMPqclBvJXBWYKiZ
-	oFbi1TLHzDj5X+/1Jj6XOBBDvvET0lnJ/l7J4OZYZKqeyn7RC9Cjg51ycNnt+VDz
-	fRUeFeE5iU+ccpeZyakC9Wp7dXErNSWCxIHD5yUaAEZmD7B1fA8J9BsxnFwEG2ZQ
-	oUsyFA==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n6ra8dpm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 13:20:09 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-467a437e5feso4455091cf.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 05:20:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734700808; x=1735305608;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3vU055oJIDpMQcbkPsF3SDZEF+lNsh9exzRg03WdMHM=;
-        b=iaahtLmqQOzhds7mTF6tibiUtgmYeOYDHoIOrw1/7t8jbLvg8P4cZSCyWqD1lD/eIp
-         iv/y7js/r5B84AuS+G/xz3mK2Jw4/lQuFlVfmS8OS989YHZwHmkBOXGztm2gBT8e2U6s
-         jvvo9jt8DhYTC7i0z/SX/GxKONZ0e6tdA5hySCgoYdOGxUg5Scn5lPR/2i5+XOPw6k70
-         q3RIUsNjkjBP1lWy9Cjpu5zTMYajrV0tpeJyV8+eOj+A79bAo1N1fQmOjV1wXMOkR5MG
-         REHobM4WXGrc20LAlCfBPwLg7vWQuZlBika9xAPcSIMhj4/KPWelj6mvaPE0rDPxe8HB
-         /wBg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4JzhNm9sZGS/RD7n2tT60tdeXYlW2kfizS2DnLONmgf0loW25GYAy1vA0kNIGT1IlFe9cEivgjyHeSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg/R5BbcgpM+BdEHxltqOTukwaIF1GWRSeXdRdOzRiw9yiyYj9
-	YKM46KrzYef9QpcmfnC9cnMROKKHnX9w8xGhapxYilG653RUc8CAOVkhUgLbtf2/L7rc75j0KAz
-	ZG+NBr2SUH58XA4THTf/HRah3pl0wUweBS5hfCMbcwWc1FSJufuvnyyvAhFj+zg==
-X-Gm-Gg: ASbGncuSdee7fJkORxf+0ya+Trpf0dEZCpwNMxVPfAizlnjLpiS0pXEB60tU9538MsR
-	Cg3b6yIUVTQKeOaVH6v6bDdGghM3DzfzRah7V/5vW0W6aUKZfOQg0cVdRDSfkLXyyIqLKsFXe0Q
-	NKbkXQjD9H/t1CSoks1MIPkqRNmyyVMnFbEJZYaThEbAgyqCnsfV2ZfG/pUHStmKz85vNEy+Vr8
-	B6QNutfQgyPO+IklcFHwEF6e+26MGCErT9gzjZnpfee5JAiDzDl1LItzzgoCaTcJnIMp0uUpgnb
-	0dlS8LN8GptGpBkcc5hrCvnaOxwuig8x8dc=
-X-Received: by 2002:a05:622a:64d:b0:467:742e:f07e with SMTP id d75a77b69052e-46a4a8f60afmr16227981cf.7.1734700808196;
-        Fri, 20 Dec 2024 05:20:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFkbtzvc/Ed5Ft0Yr+bncoaYDNLU16j3bsvHg4I5KI43NWq7dEYspuWnuZKSy6DmnCGEvS7wg==
-X-Received: by 2002:a05:622a:64d:b0:467:742e:f07e with SMTP id d75a77b69052e-46a4a8f60afmr16227781cf.7.1734700807708;
-        Fri, 20 Dec 2024 05:20:07 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f05fd7csm175668166b.172.2024.12.20.05.20.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 05:20:07 -0800 (PST)
-Message-ID: <fb4ddc73-545c-48b6-aefd-fdc83005ec07@oss.qualcomm.com>
-Date: Fri, 20 Dec 2024 14:20:04 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djyFRx2C"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9DF93C4CECD;
+	Fri, 20 Dec 2024 13:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734701193;
+	bh=gsHp8x3rZPFbbVXat+AkjIIGNsSe4fQXvwGDypL8V4A=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=djyFRx2CmUSI8SHzpb9b/9L4+YgpWnrZZHaBGO6LUpppgZTx8+otiTRVmu8EgkeH1
+	 o4bqH3DIKBEpZQjQoNb0A50nt034PR0EYMQ8+xdh8u+bT3iuWP1gbymwLSMIawZCV3
+	 aJV6MrbqcBF/p+rZKpqAc2YdZ9PKicgU+H0ZKyeQKAYgpxK5Jv8953WJ9Zt4hhABiP
+	 3c8N9GrZoIFfthtS+yM/aAJXmgpB9Ft3CYScFFL61kfbPwZEoD2vFXb5h3edALKJF0
+	 74mmeuMskcPrDe38eoDyTUEqNw30wEWyRT3QfM8eOxKbMxnTnikxcVFnLNtrwpkvl5
+	 b2bkruKyD6B/g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 900B9E77188;
+	Fri, 20 Dec 2024 13:26:33 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH v6 00/13] media: i2c: imx214: Miscellaneous cleanups and
+ improvements
+Date: Fri, 20 Dec 2024 14:25:59 +0100
+Message-Id: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: qcom: pd_mapper: Add SM7225 compatible
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241220-pd-mapper-sm7225-v1-1-68f85a87288d@fairphone.com>
- <2ee51e35-da7d-42c6-a868-bd8f8700d617@oss.qualcomm.com>
- <D6GG70FQ29ZB.PEJZ4TE4HWQV@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <D6GG70FQ29ZB.PEJZ4TE4HWQV@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: F1j-4CVzIo8ytQKnzvR5QOK5LpdYDNob
-X-Proofpoint-ORIG-GUID: F1j-4CVzIo8ytQKnzvR5QOK5LpdYDNob
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200110
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGdwZWcC/23NS24CMRAE0Ksgr+PI3f5nlXugLPxpZ7wIoDGMS
+ NDcPYaIARSW1epXdWKNxkqNva1ObKSptrrd9GBeViwNYfNJvOaeGQpUwoHj9euIoLiTqKxTyUY
+ i1p93I5V6vBStP3oeattvx+9L7wTn61+FF3itmIALnrxJMXjnJej3sKv7n5aGVzqwc8mECwSBs
+ EDssMSMkrzXCug/lDeIwi5QdhiiEaFYIv9sUd1BMAtUHboUcwAjSkxPFvU9vC3qDqWzRWPIVFR
+ +hPM8/wIahqqCggEAAA==
+X-Change-ID: 20240818-imx214-8324784c7bee
+To: Ricardo Ribalda <ribalda@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Vincent Knecht <vincent.knecht@mailoo.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734701191; l=3709;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=gsHp8x3rZPFbbVXat+AkjIIGNsSe4fQXvwGDypL8V4A=;
+ b=kpP/ESFAgb8Wb0hMNM857ZPboqwkgLMvplwHkTBM8Rb1m0q2a18F3IlcqCADtpSgIFqb7yRce
+ jShhJ8lEdaqAcuBx39G7csE7xws9Svzg9y2iyX/CI6papvOoGVPaJoa
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On 20.12.2024 11:15 AM, Luca Weiss wrote:
-> On Fri Dec 20, 2024 at 10:39 AM CET, Konrad Dybcio wrote:
->> On 20.12.2024 9:39 AM, Luca Weiss wrote:
->>> The Qualcomm SM7225 is practically identical to SM6350, so add an entry
->>> using that data.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>
->> I think we should instead add the fallback compatible, like
->>
->> - enum:
->>       - asdf,asdf
->> - const: qcom,sm7225
->> - const: qcom,sm6350
->>
->> as we've done for speedbin/rename variants of SoCs lately, with separate
->> entries being added for "actually different" sillicon.
-> 
-> We also have currently for example sm7325=sc7280=qcm6490, would that
-> fall into this category as well for you, or are they more different?
-> 
-> But do you think it's worth trying to also change existing platforms
-> like that? We also have basically the same list in
-> drivers/cpufreq/cpufreq-dt-platdev.c where we have both sm6350 and
-> sm7225 right now.
+This patch series is a collection of miscellaneous cleanups and
+improvements to the imx214 driver.
 
-Hm, with existing boards, I guess that's a question for dt-bindings folks
+The series converts the driver to the CCI helpers and adds controls
+needed to make the driver work with libcamera.
 
-Konrad
+The changes are inspired by the imx219 driver.
+
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v6:
+- Make series bisectable
+- Add A-b tag
+- Link to v5: https://lore.kernel.org/r/20241217-imx214-v5-0-387f52adef4d@apitzsch.eu
+
+Changes in v5:
+- Remove cur_mode field
+- Link to v4: https://lore.kernel.org/r/20241216-imx214-v4-0-8cbda160fbce@apitzsch.eu
+
+Changes in v4:
+- Drop function name from dev error message
+- Initialize *format to fix compile error
+- Improve comment "Update {FPS -> blank} limit"
+- Improve code formatting
+- Warn once on usage of frame_interval functions
+- Fix commit message
+- Add patch to fix clock handling on probe error or remove
+- Warn if number of DT provided link frequencies != 1
+- Add A-b tags
+- Link to v3: https://lore.kernel.org/r/20241207-imx214-v3-0-ab60af7ee915@apitzsch.eu
+
+Changes in v3:
+- Also keep previous link freq for backward compatibility
+- Move link freq patch to the end of the series
+- Remove return-early check from imx214_set_format()
+- Remove unneeded struct imx214 function parameter
+- Use correct ret value on number of data lanes error
+- Revert changing order (imx214_parse_fwnode, devm_kzalloc)
+- Fix typo
+- Remove unused definition IMX214_EXPOSURE_MAX
+- Don't set FPS to default
+- Simplify exposure_def definition
+- Set state and format only if control id is V4L2_CID_VBLANK
+- Restore Ricardo's message to Sony
+- Drop "media: i2c: imx214: Extract format and crop settings" patch
+- Add A-b tag
+- Link to v2: https://lore.kernel.org/r/20241021-imx214-v2-0-fbd23e99541e@apitzsch.eu
+
+Changes in v2:
+- Add patch to fix link frequency
+- Don't use and remove fmt and crop from struct imx214
+- Squash patch 1/13 and 2/13
+- Only check if #lanes == 4
+- Add comment that enum_frame_interval() shouldn't be used by userspace
+- Set V4L2_CID_VBLANK step size to 2 (according to datasheet Table 4-4)
+- Increase IMX214_VBLANK_MIN to limit max frame rate of full resolution
+  to the documented 30 fps
+- As bpp is always 10, simplify setting IMX214_REG_CSI_DATA_FORMAT and
+  IMX214_REG_OPPXCK_DIV
+- Simplify imx214_get_format_code()
+- Cluster hflip and vflip
+- Remove kernel log note from 11/13, issue was fixed by a kernel update
+- Add A-b tags
+- Link to v1: https://lore.kernel.org/r/20240902-imx214-v1-0-c96cba989315@apitzsch.eu
+
+---
+André Apitzsch (13):
+      media: i2c: imx214: Use subdev active state
+      media: i2c: imx214: Simplify with dev_err_probe()
+      media: i2c: imx214: Convert to CCI register access helpers
+      media: i2c: imx214: Replace register addresses with macros
+      media: i2c: imx214: Drop IMX214_REG_EXPOSURE from mode reg arrays
+      media: i2c: imx214: Check number of lanes from device tree
+      media: i2c: imx214: Add vblank and hblank controls
+      media: i2c: imx214: Implement vflip/hflip controls
+      media: i2c: imx214: Add analogue/digital gain control
+      media: i2c: imx214: Verify chip ID
+      media: i2c: imx214: Add test pattern control
+      media: i2c: imx214: Fix clock handling on probe error or remove
+      media: i2c: imx214: Fix link frequency validation
+
+ drivers/media/i2c/Kconfig  |    1 +
+ drivers/media/i2c/imx214.c | 1265 ++++++++++++++++++++++++++------------------
+ 2 files changed, 752 insertions(+), 514 deletions(-)
+---
+base-commit: 62f608176a46b6a794725022101d0d7f42faedb9
+change-id: 20240818-imx214-8324784c7bee
+
+Best regards,
+-- 
+André Apitzsch <git@apitzsch.eu>
+
+
