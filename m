@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624BB2163A3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794372165EB;
 	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734701194; cv=none; b=WYE5s/u8Mf7DGcKlN0zovUZIMou2PxqOOoC7vuuK9yjx71xtQjOwPEOVtxkiHfLPNVeuxXVheff4Jgus3KJCYhIzINlGBdvLVFRGvvmAL0eaIq0v/gunn+plFjDN+7N78y7dZdiYPw8Ix5pFSGihCtlgb4AnNRteRivKhNHWwts=
+	t=1734701194; cv=none; b=nZiyKve6j2qKedzbDZz2e+9sShtmV3e/crtaj9x/qIBsBFuZ6f2yOtaPX8+52Mm0rBaqxelnJ1ehj7HA0UjPLDzqhQIM/RsVHr5A6N/s7P9sRpgvuT3pAOvX+gVwls1QQmaSnuCtP9aEBQQJgniiWtTDNZHCnhWPTQrwNROG5zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734701194; c=relaxed/simple;
-	bh=Ld7YTXvBxZPDIj+jtmVBVzOpYRHENGO3HL8vAxNnog4=;
+	bh=/R5+PURHVNV+AidcyiHwuNntLSQ9yjMOD3AT1C1w8VA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qlym5H3Swpi+S/fj8fuBRyNeLPSi9CWfAUbhoaTbQmMZYx1tAMGvTuFuTc+8njtnIm84BIc3iR/yl1RbaIKnDbxVRYtiJCG4plXqwDpe8cTf0dYj3byrvd7caFcJyYudSVytjTPPJ7gpToAmbrNzQ6sGcrlkPr3bsqW3fnDL6v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZhuG3L9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gk1ct2IDafkyNhijpQMVpC6tyx4mcabGCtuW3ozSjJC2G9ZUzQ2qFdGNEx98d+bF+Q3DLYvEAktCsYt51S1absMQV09pKZMVB0r29tSHcXK55mdyTXgTrPykDeRcZC0iFDPjweZUxcTC1A3yHWUJLW2jx+sgNKbxjE2UwoBzpv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KM/u8tXH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZhuG3L9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 105E9C4CEE6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KM/u8tXH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57A65C4AF09;
 	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1734701194;
-	bh=Ld7YTXvBxZPDIj+jtmVBVzOpYRHENGO3HL8vAxNnog4=;
+	bh=/R5+PURHVNV+AidcyiHwuNntLSQ9yjMOD3AT1C1w8VA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WZhuG3L9X+wGnoz12Gk+6m+rTyhtJjHXVsSPn5uGbaB/QNRVtZuwhHvRrxeHudpp4
-	 OL+G/FisOyyzITFKoe2EeUHl6MoayZ9nyy+qKOLHsjUim1uUViVhbh07fHrWSi9B2y
-	 /uBu7khbtjY/aXkvNGG7SIG/DANf7S9D7DjKT5A6o3zasPSw+3qt4nm9vqynttlTMN
-	 yHXVWuvGBW+GKsq0O7ibVOLid3ztWqSLfElJHqO1g4GYem7HSw9wo5+436yogzDmLF
-	 9ORPuoLDy1E51lHhJ9OxIs23iDZjlH/Ml+5Dhj2mDuk3pQiIKpOgNLNMY6zFeBMbYU
-	 UvJqAxuyAovwg==
+	b=KM/u8tXHQH1U1kUlwGIp/zjvPI6au7mwuVs1zUz/BCUQy+wmdkcN/ecz5CBRBwcPF
+	 yWk0Q8sAbrzyLVaMlGYSpQTXOhV5wwHLOQdABhIrnhw5n2uajdMrPbTXDHp1Tu3mvM
+	 EMRVo3m9KgJ8Z+HZiFvEXUPtHv5qn1lqpsOYhk6IDWixASxl/ljrotp+d2wB20+shL
+	 aaMpGaBsPT6bBay4l1RzcwY2cDHSi9MU+vhOCwVPvlz8+6PqxJ6cj8NLnovPZUE/CN
+	 dHl/nTXeyG9HcD1p+b6xvHTPJHHcvj2B+V8oCEHJK+70xWK0QFDeYyWWa9MQQbWDBx
+	 EsfFsMYL1x5Mg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 049CCE7718C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D1A3E77188;
 	Fri, 20 Dec 2024 13:26:34 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Fri, 20 Dec 2024 14:26:05 +0100
-Subject: [PATCH v6 06/13] media: i2c: imx214: Check number of lanes from
- device tree
+Date: Fri, 20 Dec 2024 14:26:09 +0100
+Subject: [PATCH v6 10/13] media: i2c: imx214: Verify chip ID
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241220-imx214-v6-6-d90a185d82e5@apitzsch.eu>
+Message-Id: <20241220-imx214-v6-10-d90a185d82e5@apitzsch.eu>
 References: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
 In-Reply-To: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
@@ -54,11 +53,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
  Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734701191; l=2286;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734701191; l=1922;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=kGBTGQW3yjp+KF2H7SRL1ipKMVJ3Z0zLTnYkR0YvOEk=;
- b=m624UWQljSG0cT7UOMIEXmOcBa2mjZjtz0B83DKKoOCKxyRiwfruTP29Q4w0gbl5LdewqDRJM
- UEZo0y3qsbSDRIDGBdktBlCouzwy+Hd/5wvnCcx4ansZiCGczfWGzlV
+ bh=SjjQSnd3Z9zd8sIb5Zrn2Vj58ylYHPSyPr5HnJXGY74=;
+ b=SZH1F3RGQ7oockYP1UK3ByrdREMljohmXVdxLkso3DUVuag8IJpohGpovSIcIrR+q3b7aeSVQ
+ 0Zg9RZLCX9TB8cmekNCG6jQKyl/RB7S2Z+phV4FzDjUrRp926/6QTnj
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -68,65 +67,68 @@ Reply-To: git@apitzsch.eu
 
 From: André Apitzsch <git@apitzsch.eu>
 
-The imx214 camera is capable of either two-lane or four-lane operation.
-
-Currently only the four-lane mode is supported, as proper pixel rates
-and link frequences for the two-lane mode are unknown.
+Check the chip ID and stop probing if it is no imx214 sensor.
 
 Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx214.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 4e9a8e0e2c5f2ac3fd72be06906979dcd3aaa2a4..4f6c4f845a7ab36c7674a4ce8c1664d48e46c4d0 100644
+index 50dad9e1a90e56d0785c0f5067cc3fe18ebecf97..6b9584e330ddc17823cbb024e39f9c5fd54442bf 100644
 --- a/drivers/media/i2c/imx214.c
 +++ b/drivers/media/i2c/imx214.c
-@@ -197,7 +197,6 @@ struct imx214 {
+@@ -20,6 +20,10 @@
+ #include <media/v4l2-fwnode.h>
+ #include <media/v4l2-subdev.h>
  
- /*From imx214_mode_tbls.h*/
- static const struct cci_reg_sequence mode_4096x2304[] = {
--	{ IMX214_REG_CSI_LANE_MODE, IMX214_CSI_4_LANE_MODE },
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
-@@ -270,7 +269,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
- };
- 
- static const struct cci_reg_sequence mode_1920x1080[] = {
--	{ IMX214_REG_CSI_LANE_MODE, IMX214_CSI_4_LANE_MODE },
- 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
- 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
- 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
-@@ -787,6 +785,13 @@ static int imx214_start_streaming(struct imx214 *imx214)
- 		return ret;
- 	}
- 
-+	ret = cci_write(imx214->regmap, IMX214_REG_CSI_LANE_MODE,
-+			IMX214_CSI_4_LANE_MODE, NULL);
-+	if (ret) {
-+		dev_err(imx214->dev, "failed to configure lanes\n");
-+		return ret;
-+	}
++/* Chip ID */
++#define IMX214_REG_CHIP_ID		CCI_REG16(0x0016)
++#define IMX214_CHIP_ID			0x0214
 +
- 	state = v4l2_subdev_get_locked_active_state(&imx214->sd);
- 	fmt = v4l2_subdev_state_get_format(state, 0);
- 	mode = v4l2_find_nearest_size(imx214_modes, ARRAY_SIZE(imx214_modes),
-@@ -951,6 +956,13 @@ static int imx214_parse_fwnode(struct device *dev)
- 		goto done;
- 	}
+ #define IMX214_REG_MODE_SELECT		CCI_REG8(0x0100)
+ #define IMX214_MODE_STANDBY		0x00
+ #define IMX214_MODE_STREAMING		0x01
+@@ -1101,6 +1105,27 @@ static int imx214_get_regulators(struct device *dev, struct imx214 *imx214)
+ 				       imx214->supplies);
+ }
  
-+	/* Check the number of MIPI CSI2 data lanes */
-+	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 4) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "only 4 data lanes are currently supported\n");
-+		goto done;
-+	}
++/* Verify chip ID */
++static int imx214_identify_module(struct imx214 *imx214)
++{
++	struct i2c_client *client = v4l2_get_subdevdata(&imx214->sd);
++	int ret;
++	u64 val;
 +
- 	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
- 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
- 			break;
++	ret = cci_read(imx214->regmap, IMX214_REG_CHIP_ID, &val, NULL);
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "failed to read chip id %x\n",
++				     IMX214_CHIP_ID);
++
++	if (val != IMX214_CHIP_ID)
++		return dev_err_probe(&client->dev, -EIO,
++				     "chip id mismatch: %x!=%llx\n",
++				     IMX214_CHIP_ID, val);
++
++	return 0;
++}
++
+ static int imx214_parse_fwnode(struct device *dev)
+ {
+ 	struct fwnode_handle *endpoint;
+@@ -1194,6 +1219,10 @@ static int imx214_probe(struct i2c_client *client)
+ 	 */
+ 	imx214_power_on(imx214->dev);
+ 
++	ret = imx214_identify_module(imx214);
++	if (ret)
++		goto error_power_off;
++
+ 	pm_runtime_set_active(imx214->dev);
+ 	pm_runtime_enable(imx214->dev);
+ 	pm_runtime_idle(imx214->dev);
 
 -- 
 2.47.1
