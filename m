@@ -1,65 +1,63 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02621B415C
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 08:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3803A1A726B
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 08:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734684905; cv=none; b=gzsOb/oK9EhC1aZgm7CN1MOAbKJ1m0r+cU7H40fAxF/AWITaFsZhJzbFZUqQ7EhAI3PQT7z9QyAW7CSZVFbgyXLDduuSKVKuihyCMV6gWXN8xeEsTi1e5mO2frEz2Tq+F51q36oh6laiqbwkulN99YxxUNqUXxYGcNpAVFMcZIU=
+	t=1734685197; cv=none; b=SBfsGZ5gjUvSJv80upsQfFAYd1NYKQhxVMCbjCAwA8XX93h0/HGhqJLwW4on4UBnUuUEEdoO4VII/hSFjEViCbDWgydfxafddtFRidW87B2sZIG1Mylt3t7/ZtdeofVAleqJqqwbEE9XSbByT3cXlzuCe3Xu9CahxyUnByU3tqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734684905; c=relaxed/simple;
-	bh=RBDW6pIiESDvWThJlMdAfXLNct165Bn4CNYmU057wrA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PeKUfI0WnS8/MOu9e2EmpbeT2bPYBOb1vUA9y7t1RqmDEIyGwOhHl8iWTBWae+pmUAjoT6Dm64vnW2R8+KRGJctb4LifjGg6f3U+1SDVtBFnS6y1EW9yOgh0Ukdko2Mu3gWQv5rgJ+XEQ+3jBhB49G6un+IUH3bFuvEq4/lkZvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=DLtSAN0o; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1734685197; c=relaxed/simple;
+	bh=B/CSxh8bc02YGzxj4Cp8fAYbQzfHZ0MyOHkF9uHAlPE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nYKbrh4ezjb3PHE/XW1x8d5RvnfHtt6D+UtkZ52sBky8QPmBvp3rclfszD+XaKYlza95ck3SMUwnPlHIIMK1ZTX7CSjgEs0gmwoax7LgeKU4JSRqFUOcg/l55ifovo5btSoC/JMtNTLGsJ4e1qtbRN8Gt8IwIw5f83v7McPI6cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=srA+c5mv; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="DLtSAN0o"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436341f575fso17473365e9.1
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 00:55:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="srA+c5mv"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa5f1909d6fso268715266b.3
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 00:59:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1734684902; x=1735289702; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1734685194; x=1735289994; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x4bX0y1U2uj3LXkaRKY3Bj+bT7kkfpgx6oJ7MVuwDAg=;
-        b=DLtSAN0oFwmLXoI+MeSlyJCDC0zBvYGMKrqqOaUvAF9bItzelRb2Bc4OcNw4F3HsQW
-         caoHIMWEz5UMjjM+18T7JYuuQpMJ1dN8VEmnkCV8N3roHRXGGsSJIbcdGq7uJ49TI1En
-         ohAim1KGFhKDmuolyLA3MVXiUsXocmLo/2QCR+Sj43BcpaXFC7OZTUtIgwIsE8jEk3G1
-         DKJCeHQIFGfjSpNkosWQcLGgm1OtH7Qtpcnczw5i0o3IE9qgm1aZC/tD4p6G443Ng9k4
-         dTYhnJ2fcBxVL9hzNfRv7VDIQvahL0GkHOTQ1aKZYELLyfHSyQS8BWwLhMmxS9gcwciD
-         aMzA==
+        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
+        b=srA+c5mvSf5bH9gWc20ubWKiWy4hWZUtrPSmLYZE+W1mCrP7mP2V8v+KmNj0qDBAza
+         NZrudquBDpd5p+vy4Z2LK4MqUU/9YCPdi/7prh7cZjkIFTNMAGdfcScpUlwfXEVksere
+         xZ6QA56KqrZAvzU+KnscMXM26sNFQnBiuKyaSAlS02EUEK+4HgAz7WbSGyftKnhVEvd5
+         O1+3hjgo+M6zsg8JJxxyYuIpgM7JBKrDjpyHdw/CaOCWh9exAlixjWLoMkn9zIdt2XMD
+         BSOv6TuPDPZqUKYl96Gc0NdrdQbU8fkd6VQAM6dkYSKA+jdM4cPS8v5JjKSlLTABC6Ss
+         RilA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734684902; x=1735289702;
+        d=1e100.net; s=20230601; t=1734685194; x=1735289994;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x4bX0y1U2uj3LXkaRKY3Bj+bT7kkfpgx6oJ7MVuwDAg=;
-        b=g5qmKrFHBWu3KkOGuUYl4/jnZQBCCdhX+vH/Htn5KQzIoEVQ8IFc3ez9MwvQmrw5N4
-         FhXakJEcFAkVfBptPoqOpfcynoLenGyCFVP42exzkKpfU1FtlIgQdHyoykhUbeJXfM7k
-         iFRCIV4TxIb48HWDVuoNG23GeMR/7/zqdU8ZUqtO1UZRDN2c3VQeRPydeFJAkurlUkAE
-         Dad5rJb3SuP/QO9KJ7/veH33lJwxdX9cuaoJarctFVbpKWoWGclTHIPBtjBrEJclx/tp
-         +JOxxFw2QoyFRMzPOyqPiW7qGUweLS4coYqs7hGuwjffXBQskKTd6tvt9I8q1fNEN5LL
-         1mNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBFMtLW8sGMoCtks0j41+JVCz9GNc0kqH1GWsOZDVf2E5BwoHZFkQhlBTUsGbmgNB28Tjlhu2fZ93ydg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXk0F85r8ReLyP4tu4/OGCkpisT1JsM9oBk7P9iSPgs0TkXyqq
-	jbbB4bWxE/K3VEkyXDsxN5dJpRnEJeXjB1Lf+yvuzL4DWh9o9pN6TPdN3C+ZqSoBoQpQ/a2HFD2
-	Xb9s=
-X-Gm-Gg: ASbGncuXlJmL3dyJxETUTpQZO2XqAoYuINqiDuJSZ/asfmnUXHyYyUqwJpWxZ8nWb6F
-	oMBf70eguubVDksA9ez6AosYpqEIK+HkxCxxj5nNmgs66b4ARLetzSA+CZiqInM7rt/RJtS2JVQ
-	deBcSXDOdOO2HQekpaSMvYqlw36wzmguYqL1HapcIm8QgFzV6BLYLFZaY9yU03zEQVlCg+o09Ju
-	VNTPkU23HOKMMA0C6IuAdn7bAOa9qbn5Ux1j79fL52uha+UBwYwf62fRdOL02c12QGMiWMhH8OT
-	uXDDqseRgoYYTmdO8D1Y4o66TAah3w==
-X-Google-Smtp-Source: AGHT+IEYiNsrQEZYY/R6oX1gs6boqSiZAfgrH8ynuQCvryGC8V4E5T2j2oWTo6VitrE0P5xEju9nDA==
-X-Received: by 2002:a05:600c:450b:b0:434:f586:7520 with SMTP id 5b1f17b1804b1-4366835c3a3mr14506175e9.6.1734684901944;
-        Fri, 20 Dec 2024 00:55:01 -0800 (PST)
+        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
+        b=rhMGpennMSPVxAhiQFEJWx7liWeZYNJgsA9UnVaa2W4mxojtlH1H+hEUxCV/NL6VP0
+         7owOsh4EJkszhUMnkz4YbLMW9piALl2qFtW6Wv2J2sau8xuLV3Eu8ql+N9B0GxESFgmm
+         d+cVeFv7yuEHRlfI4Nu/HF4ltq0xrbuunKTUiruJuUYA2E4ohzl70wj7WAix0bFniZhe
+         Bu9NCQYEmdhHdu9GGoiBscs2qOx01ZmMED4YDzOLqAfAjSJklW4bvhK6s+Gur9iTMmsf
+         4Rzk1afQdGPdNwL0k3ineMrHZEw78GgS9lGPpi6JhVcnqwMKnq5oc90Te8KdRH9XyxWa
+         vVrw==
+X-Forwarded-Encrypted: i=1; AJvYcCWA8wnAvwbClrTRuwLbRIC1VyWHgd5LGq24zjvFTleybiUiUTRN6jzN7LwdSvFPb1l+uLUyNWz28GXkmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTrh2NuBC5vNdg5Hb7I7Zu93Lg1zbN0k0y4AJHBIbjr5V7pGMh
+	DHzRZENZqe/gr1/yw10uEpsIBlO/vwiEiNTl6h9+Rav5z15iunFiXFM7Yc3mN2Y=
+X-Gm-Gg: ASbGnctmMkupZUFbj3FEz6vNAUfgs17Mmd6l2ZE6Uqn2zgLqaXxeAUmW+aE6huzNXk0
+	l9O2TptLZI4fjUwOVVUXWbkHGEqBm+Nhv8ibvky9A7QEOBI9CluVCaK7HoPI3/KVvVrCHJRL7Hp
+	1EnTGPtEVoY5eXRQoUBmwLEq61LNjB9FdA8k20uhfzUSyUkTxFXSjt3Qga8t2RrbvcZ9/5JcXJC
+	aDJJ95NAqXfssR26sibAp0JkoW5tbOFzMp3MvRsewEqUGH4Ld3QalPZZr0C78eMZlS/DeRPZIl0
+	Es0vC1k+aXcVJSZSLRKI9h2vm0UJVA==
+X-Google-Smtp-Source: AGHT+IG4raqmf5z3+Bbit2pptVJL+0AF6PrPFax/4lpRRdG7CllZm9cIM6vpTrrrMN18RRgqKa7m+w==
+X-Received: by 2002:a17:907:6e8c:b0:aa9:1b4b:489e with SMTP id a640c23a62f3a-aac2ad8ea23mr156763466b.24.1734685194579;
+        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43661200abesm39815225e9.18.2024.12.20.00.55.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f080c1asm151178766b.205.2024.12.20.00.59.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 00:55:01 -0800 (PST)
+        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 20 Dec 2024 09:55:01 +0100
-Subject: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Drop extra
- qcom,msm-id value
+Date: Fri, 20 Dec 2024 09:59:50 +0100
+Subject: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,51 +66,49 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241220-fp4-msm-id-v1-1-2b75af02032a@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAOQwZWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDIyMD3bQCE93c4lygsG6yublpmpmFmYFJUpoSUENBUWpaZgXYsOjY2lo
- AyFQXelwAAAA=
-X-Change-ID: 20241220-fp4-msm-id-c775f68604bf
+Message-Id: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAAUyZWcC/x3MOQqAMBBA0avI1A5kU8SriEVMRp3ChURFCLm7w
+ fIV/yeIFJgi9FWCQA9HPvYCWVfgVrsvhOyLQQllpFIC49bqRuBtwyWRnUNPxgk7dUZqDyU7A83
+ 8/sthzPkDzf3AwmIAAAA=
+X-Change-ID: 20241220-sm6350-uart1-icc-de4c0ab8413d
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Luca Weiss <luca@lucaweiss.eu>
+ Conor Dooley <conor+dt@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
 
-The ID 434 is for SM6350 while 459 is for SM7225. Fairphone 4 is only
-SM7225, so drop the unused 434 entry.
+The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+bindings, just replace that path with the correct path for qup-config.
 
-Fixes: 4cbea668767d ("arm64: dts: qcom: sm7225: Add device tree for Fairphone 4")
+Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+Cc: stable@vger.kernel.org
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Completely dropping these values also appears to work when using
-boot.img header version 2, but doing this change now would mean any
-tooling in the wild for packaging up the boot.img using header v0 would
-stop producing working without adjusting that mkbootimg invocation.
----
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 2ee2561b57b1d6c7b0f40c93de62df47faaf95ca..52b16a4fdc43212e1ca1986361b01f47d36445d0 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -32,7 +32,7 @@ / {
- 	chassis-type = "handset";
- 
- 	/* required for bootloader to select correct board */
--	qcom,msm-id = <434 0x10000>, <459 0x10000>;
-+	qcom,msm-id = <459 0x10000>;
- 	qcom,board-id = <8 32>;
- 
- 	aliases {
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 8d697280249fefcc62ab0848e949b5509deb32a6..7b5c340df5f6f32233f4254db2012f84bdde6be2 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -936,7 +936,7 @@ uart1: serial@884000 {
+ 				power-domains = <&rpmhpd SM6350_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+-						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
++						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
+ 				interconnect-names = "qup-core", "qup-config";
+ 				status = "disabled";
+ 			};
 
 ---
 base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
-change-id: 20241220-fp4-msm-id-c775f68604bf
+change-id: 20241220-sm6350-uart1-icc-de4c0ab8413d
 
 Best regards,
 -- 
