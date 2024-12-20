@@ -1,136 +1,115 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9324A1A8415
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 09:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0F01AAA3D
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 09:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734685430; cv=none; b=YGGWagoCgQje4g52zoXk/aUU7gmnlrA43ZfYkovvxFafVrCj4W9R34SPoVHIsXKTn2fDCZ4C7+JRwzGnrbfBQ7zYKHLd6X+24CztvTL4aFGZOkOMTQA7I2noeq3OwJewQBDpZ/K+DZm4q7ZDsdgQDlVB8rYMsPOyZTJzaW4GuNo=
+	t=1734687341; cv=none; b=qqqr4CwZzfLTjU7+1TvhX/UZ5jiMCqPjtqXSLMYFZHxVy14921ISRcLNCITagE1zKVJ+IJEHPTFNH1nwx3Gvbm/D8u4+zZuZ87cdahYQsd9wnXnsKUWtYTX5zA0ypO6OcULBTxe4NtHL/3S8Q/zCeV8tiCqa3v+T6FfaJ86jLtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734685430; c=relaxed/simple;
-	bh=sYfJ8wnk7ijxOCPLQlV1R18oROlrwY0cZtyJnzBm9UA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TvSHU3OTyZMWdy9I+gKiHY/vV5vOqtbZcKp5fG3bxAW0395Y13M6QIlZz4SqbgDsXItTBgMaYfxZ0Lf4EUIlnhNz9hSxLubCduQbEvxvBvYX//EFhiZJXlz9iRDzHYVWVZSR/kkBtjrZrpADVZ/Z33ZwACQiGU6hEfu1wds9h8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=46Dm2X6z; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1734687341; c=relaxed/simple;
+	bh=zedFkMBUmq0Nn3VJdZuR2Lhi3SZTkWV7cImbJYQqa5s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kXkZzfwuHb92hQd/kbbHGuZOxgPY87/NVYDre8xjZQzHz2gOXq0KuaF7qXyS8QYMNoYhiZWlAagkt6pb+LiCn6FZC4vyduEPoJP6I/dVzLZriQ6I7nLC6vDah0SnNpOKgsj0wcTIEyDlbYzVfmTUneRd/HmDLJJdDBayo93WjsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XuxScu8t; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="46Dm2X6z"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4361b0ec57aso16112235e9.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 01:03:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1734685427; x=1735290227; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qTCVs5hxfcVP47+ZWc/YNDn2g1Drj1Yq7gW/RQstCeY=;
-        b=46Dm2X6zMEwBR1jAcACns7FPs83thyYHMYhfvg9jmPQ7R4FYcAaAhMYHdo7TMUmAZ8
-         oDHiGQ+fUJlo2lodqLX8sgv+1jP0xof2QhzVTAI0ReguUACnPoUJOEnzFAmPlxakkXGK
-         K1o+fx9xFQBWBTzcTqfTccatBYc2gvakRTeIRguVHkQpz76sIlPlS5jPZmbCjfVGTjoO
-         wkw3mDSjV5JKKDDeeTg37wzkzbSwTd6I4a6vDiDgC0iaxrp41H2doGWtA2jWPNuqhEUQ
-         JMePRl7hhX1Appl3PKDTU2pvP9hFQBqX+zX7zhaod/HGNp6q2BHTAsZB6l75Pk073eUb
-         ztHw==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XuxScu8t"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK795Ab024266
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 09:35:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2wvf4m/+8J1wY5OlIjVcb1V6YaBDy+XK0fLMoqV0tlg=; b=XuxScu8tfOWRW09K
+	0qjLVUZiGDW75uPfsYzamvC+rrdhgI3PuS+vDBLuJPEyV/Ru1OdPzgiOgpEFCmoZ
+	BtofhpQpr2Olc9HOg0FU4LZwYHHImzprO3TAhr4OnO1ZQl9tu2glBZXxmTxFRG4b
+	Pyr6PIc211JFtaEeEZQ3cVqIUqg6Ba/sb80T8+oEmRP9Hk3OO1Bc9k1TSwE3bP1g
+	vqvkUgyhzQyuWEg16k2RQn/5h9BSgsR4rDoKVSFizWOwmzdwkC83fm9eTrOMEYNd
+	oIkeD3Vd6++krCmm9jZcPG4EEiGN7LPLH+FVEL+QPJAcEsOxHUu8cEIjurLtPm7k
+	x76G8Q==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n3xjrdft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 09:35:33 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-467bb3eeb04so3426591cf.2
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 01:35:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734685427; x=1735290227;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qTCVs5hxfcVP47+ZWc/YNDn2g1Drj1Yq7gW/RQstCeY=;
-        b=ufjWipgVf+ApP9+KXXoqzll5x86dbsNJrlBTPMyZaYkC74iPdBwIeXvvhg6kjXzc0y
-         Qq2oN7sL5pwj+AAJWNoHimFnaBd2Y3OHpXzhqFvY/iANlTLjufpgTzyAxFV8RIPq/4MQ
-         OVOsHaC7hrFqD3wHjamHdFFxGCxz1Jxw4KqkZZZ4ATfLnd9wnZ9xZMubSAQanMut1hRo
-         hzl2qCRreDqmGz4sNA9bPUYKj5XPEemyWysRhsNBhUduRTnFXWQ1lN/i1rwKfEfxNyzz
-         98iS2qP6p+KWrq/Zwsiu30EwhkXyEjDzwPRG1wEN6hpnVMDAM2n2d2Zk0yGViIF9iRIG
-         IByw==
-X-Forwarded-Encrypted: i=1; AJvYcCWz4hUsXZ/xNTPX2NsXK7pcZqc+oq09yP+UX310rjiQuctXXi1FSX0N+RyhVqBjKHsfLUmKJzoJBXi6Xw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLzdlMel3d45q9YIUwAEclVbQf/6lMA6JesvkBNRdXvHCKWQD3
-	VZ10Jw1qpg4VO320H+0yt04SWB7yLwwCLYbploVSPNtgaU7cmyxTd5CvGpeFMDk=
-X-Gm-Gg: ASbGncsZKHBIPFglaXqv6Yuot/7e9a/s2JEzcQu4gs9xuh/pDE1TJXsDo+hjVuaGrVg
-	+eFmCOIOBQNtaQcEQ0w3x6goUbmTm+3TKfXpiap8uiY5ebjb1Un3P3rOGoJ1rq57Ppd2otFTr6L
-	6lW0mkCdFgNUVV3CziG4UNZrRWLwM16TfneXK6WWXNmqadCP0+suTyJ8DyTdZ2girKTzGLSfnKr
-	a1P0l/RPfLy+6996QB6e4JsZBZlTNyO66/DCLr2aHxGY0TYHwq5fQVME8hNHGKUuiKH4F2gBxuT
-	nZRcaZ+5tHUsstxG7iG3ts8Wq7D7rA==
-X-Google-Smtp-Source: AGHT+IGHpITziEb0AqGEPqXQ3d/Kd1ljvCdDAf6rDGr2ZBgcyCuqixvJ/Icbd0mED7HVr/rTukylng==
-X-Received: by 2002:a7b:c3c7:0:b0:434:a90b:94fe with SMTP id 5b1f17b1804b1-4366fb89a04mr358955e9.10.1734685426814;
-        Fri, 20 Dec 2024 01:03:46 -0800 (PST)
-Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436611ea3e0sm40610375e9.7.2024.12.20.01.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 01:03:46 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 20 Dec 2024 10:03:31 +0100
-Subject: [PATCH 2/2] clk: qcom: dispcc-sm6350: Add missing parent_map for a
- clock
+        d=1e100.net; s=20230601; t=1734687332; x=1735292132;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2wvf4m/+8J1wY5OlIjVcb1V6YaBDy+XK0fLMoqV0tlg=;
+        b=N8HL7Vynf7bYj0hcKr6C3UCkWJQpS5g1vfga9cyT/MGTBSi7IdRtK1xPUAOQxT7Vtt
+         aiTPIrj9DcTpdLBrrUJFe+XshOAZQ39hkhzkaqK2MdrlWqUtq4SF5Cr3igNAAfOZci8U
+         QJyfpBIcXU+U7aHCXqmh/zoB1qpJznls1BZJEF9EMtcHaIPKxwb7BGxftCKe3Urno9X6
+         5rWO6Zs99qGe2TCGPdRC7tWHhWOuaDw51Js0JSDnykkptdaj1Q4kTKhEy3aN/RY9JM6I
+         eY2lat91OvZxEU3WIM8skX4XtdflotDFcsv0Q2thmMgHbVBBdR5prRaucs9bpCCMTtPq
+         zmoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8K2KbhB2NQfYwXwr4Gs/1H2EwoWt1UJJJ9K+rgtEKDDWVfqUmD4BqcCh64TArHpN4pkzqmjX6QtkCUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbWol0tKyDIuWObuD/T6wStkUdrxIllvzfwHHModIB430M/LYN
+	pbm4bu+Br7DWlVBZWFFvBNZGgzUZ4jp3D0zIzFqaIzQo807aLGat6AP9qRL19QHMcsYfZnaON9n
+	G7RzAuysfxrNy1v6C95qYJ/ID8pCFvGrKW8v6n2poJttBRSfdQOL3rjOp89SfHkTkB3P8Gw==
+X-Gm-Gg: ASbGncv/717W6B1/Lra3MKfqrx/4MykqqFOptkSPaIk6MPY66uPyJqjB9fJfHFtKQ7G
+	/GZyEpV0FmRjWClSW4xjfBKwj3Ew1T8cZXA394B1hfhxA17LabY+TEjm6SsIu0S9qijW7yttvCV
+	7+JO1ikjyDMTc33odlfjHA3RazztnUwutpkd3IOounoS55HRGvGK10a9aHYWghVKIEW9phKKhax
+	u/t0cKpB7xFCb9I2fd8WhFdLFw0Rc8fWbzNzSJDuePQArpLM2xjci4iOt+PHXKS58bQcihkaDaG
+	P8SZM8xdznw0OhvsrNEZilrTm3DXF9KRvGs=
+X-Received: by 2002:ac8:7d0e:0:b0:467:7472:7acd with SMTP id d75a77b69052e-46a4a8b7e3amr15981891cf.3.1734687332280;
+        Fri, 20 Dec 2024 01:35:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGw19IDdykvlP7lz/VRK0vXRTUP0NYRGCinJslG+yp1jJUp8nxDB71kZfGUwkbxCXHvfdoZyg==
+X-Received: by 2002:ac8:7d0e:0:b0:467:7472:7acd with SMTP id d75a77b69052e-46a4a8b7e3amr15981761cf.3.1734687331900;
+        Fri, 20 Dec 2024 01:35:31 -0800 (PST)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f06f942sm156285066b.200.2024.12.20.01.35.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 01:35:31 -0800 (PST)
+Message-ID: <756178c6-20a4-4ec7-9a2f-6d756097cc84@oss.qualcomm.com>
+Date: Fri, 20 Dec 2024 10:35:28 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
-References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
-In-Reply-To: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: H5W54Ri_dQoSkcQukFBT1qYfVQUAEkPe
+X-Proofpoint-ORIG-GUID: H5W54Ri_dQoSkcQukFBT1qYfVQUAEkPe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=917 malwarescore=0 suspectscore=0 phishscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412200079
 
-If a clk_rcg2 has a parent, it should also have parent_map defined,
-otherwise we'll get a NULL pointer dereference when calling clk_set_rate
-like the following:
+On 20.12.2024 9:59 AM, Luca Weiss wrote:
+> The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+> qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+> bindings, just replace that path with the correct path for qup-config.
+> 
+> Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-  [    3.388105] Call trace:
-  [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
-  [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
-  [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
-  [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
-  [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
-  [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
-  [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
-  [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
-  [    3.455886]  clk_set_rate+0x38/0x14c
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Add the parent_map property for the clock where it's missing and also
-un-inline the parent_data as well to keep the matching parent_map and
-parent_data together.
-
-Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/clk/qcom/dispcc-sm6350.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
-index 50facb36701af99923584f1ca1549df6a70f06d9..2bc6b5f99f5725bf56c63623c3d5c16c25879d9e 100644
---- a/drivers/clk/qcom/dispcc-sm6350.c
-+++ b/drivers/clk/qcom/dispcc-sm6350.c
-@@ -187,13 +187,12 @@ static struct clk_rcg2 disp_cc_mdss_dp_aux_clk_src = {
- 	.cmd_rcgr = 0x1144,
- 	.mnd_width = 0,
- 	.hid_width = 5,
-+	.parent_map = disp_cc_parent_map_6,
- 	.freq_tbl = ftbl_disp_cc_mdss_dp_aux_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "disp_cc_mdss_dp_aux_clk_src",
--		.parent_data = &(const struct clk_parent_data){
--			.fw_name = "bi_tcxo",
--		},
--		.num_parents = 1,
-+		.parent_data = disp_cc_parent_data_6,
-+		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-
--- 
-2.47.1
-
+Konrad
