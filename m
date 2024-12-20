@@ -1,350 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22301DC985;
-	Thu, 19 Dec 2024 20:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F0A1A7AD0
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 08:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734639339; cv=none; b=H6EfmZU/d7rNLxO+0Osv0kiswvUh4Kmy6tWQeyI1Z+U6KI+M1GW7sjP/uDy+HGtzCUvhLouVKbppxQY5ZXqUUbn/2aeCC+qF/xZpiYXYjLrg6UXm5kx9RAd937CJmZHrg+E0QAfZf9sA7BmVZolR6KHwpYtXRspwTXoGxRntgK0=
+	t=1734684005; cv=none; b=AykBU31ci7+1oWp/hoLnreltuh5nezX8540RZgr3RQqAdnxL3IMMmRjS5p3NdcyjbSNdeupzm56gZbPmC0la4A8REFUb2riH285AzZCkJ30HuuSM+iToRI+Afq4VVrekSXgepKpPBoBTPDR3mbQBvN8JO8EbG+cDQMNTQW8VSvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734639339; c=relaxed/simple;
-	bh=s55+Xa+U4p/HLnw0PSVFKiq1ZeNqsw8UinsREMLPwzs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aVIol4FG+RzsFgGBd4cE7J6tIAwdeYqo4eH3FenhPdn4OxS0yDTPwuCJSXhOKWJkNYBRSHTHmMhZTYJ0hZwObJMMCV1rUL2ncOG3QH2xpKeaH1+DcGqdBMgzq3wi+BMlwOs3mawj23uJxZH/MYGXwnUDk8+v+BqmQd1OyIDXaLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csVtJdF7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734684005; c=relaxed/simple;
+	bh=z2MmtHXffncpgQV5SGtuXpmxrIzxSUW5JKjS/Vk7hbw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MUVZiRP6/6UU0kj4A33Wd73/uZFoJ5ZlV42SowoW06ARZjgFWRQuGQJSG1TDbry/NT3vtsAxDRjiSdIW28viB87l217L2yNU65cKtkULl1Y1IWW3Q2z/5URzO+ciTQmfo4C9hDBEFP62ay7+S08i8/aJebFZ4YX0fwOx5d/NrtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=XAZh3p8v; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csVtJdF7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3748EC4CED6;
-	Thu, 19 Dec 2024 20:15:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734639339;
-	bh=s55+Xa+U4p/HLnw0PSVFKiq1ZeNqsw8UinsREMLPwzs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=csVtJdF7SNCzG5AK2UG/1oftfQJ+SmNh2sQpxxW6koZlKYwx5wNe0OC5JM6jAaq0z
-	 nnWFsdH288ZTNrQcKDAJwwOb9918gPCdWPJcORutcp2usJ6eoRU5RFTuACVhlqGml+
-	 eOEVm1Mn6SyazIXGOLYiMJmN/2rJyUaz2zRCs3lounBeydCS/rNWsUjuITjdO8PmdD
-	 5lwKtBLERqr4RN3C+h0AeCaY3fE4UQmuXHX9ETm5ajTV/geuOB8hlWcuDlP28ZLDHd
-	 jqb/pB/iaYkPcN8gL5uKABkk4nTvkj0PjvE9c6rGwLij8DIoloQ0s67rUYbOtZFOmJ
-	 8YYLGC3b7rKSw==
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4afed12283eso691952137.1;
-        Thu, 19 Dec 2024 12:15:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUqAueShWyAIxwe0CLot9YnHL/KoiMExN/mGeYUjeBvuEYUPmOEj0poN2xTL1j0vfz8EMl573d+2ylOCEA=@vger.kernel.org, AJvYcCXEg09TZXC43JshohAlGp+EfosC4183k8O5SK+L0KdYeImaDZEiDeD0JfCm52sCc5rCZPT/sLhejNEJrX8=@vger.kernel.org, AJvYcCXJexHKtsEq9HGTQ7XUxx03m+/TuVaCAqAqHSHtQq/Py5z0QI9JgD4KbfZb+yqR40GJ48kfSeh9ssAWsBU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy7G6k6QumIv7OZaa626T5kG5iDnJXfb7MzXOoShmIS9juhaQj
-	p2O5UqB89ddpM6smNNrfa8l1xLpmDpME4/ELDIw4r7fHhL2aNmMnRgxrfdPVcdEzMZofAodY5/Y
-	L2HcGfqPUqZ2jAlTGtPZOvDb4YAw=
-X-Google-Smtp-Source: AGHT+IGCOO+OZb2PZIprBqRfMxd0i5WRdy5NKFZKYG5l2A2V+Re+M5FJY8YOJqR/MWPwetGVSRz3CqDUILXizPJC3pc=
-X-Received: by 2002:a05:6102:3e83:b0:4b2:5d16:2902 with SMTP id
- ada2fe7eead31-4b2cc323e38mr729641137.6.1734639338251; Thu, 19 Dec 2024
- 12:15:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="XAZh3p8v"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d3e8f64d5dso2875272a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 00:40:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1734684002; x=1735288802; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DU8qnxu3omGz0KQc/BKrW4isuAYnH4fQJBdHmtp6/ZM=;
+        b=XAZh3p8vEbeNR7/s0XXEEN5Q0tF9EEyUOEc36l1+VLqp4coWaxCvIOov6/Z+14oRUs
+         jrrwGr8Pr7bWQC+FAvXDH8AhSTt/qF4+H1OuHhMHuk/5IuwqZbYE56XtIE/gRkYu126O
+         59SVrom8tTGHU8i9bbmnEtXehWXYzDI3TAYNXe9A4WI6MXo5e7jhuBeQVCnbJxYP3jlz
+         AadagYtRWXbDK0kLojQWM96rSZHLwg+WbbF+prK4gw3ORdKgoYzEX63L83UGh0ZgaLjq
+         gHs8y+zigq8ZS2BbvtuUiR/S/lo52/dyk7WJrqa/vvsO0CtoV3bswDtifIhT3sB9E47w
+         k2Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734684002; x=1735288802;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DU8qnxu3omGz0KQc/BKrW4isuAYnH4fQJBdHmtp6/ZM=;
+        b=s23py6f30i5GAfIdtjEKpyD9OytpXsySoHU/ao40oYZeSVzPsCT6HbZ2eyn0bzk8Yc
+         +ks/OJxXjGKcVxsrsm4JaB5T5Oc5+K14rHg+oM/aFn8d8LAtcHZyNoNtsROt6st5p2Fd
+         yp66cK41O41zD5xJFVmw5hlVlw0WBhWIbrQs5fmY5H1LD5T9KehamI3TW5qOLZMJS6gO
+         6t3w5DEEVXAgoAPadHG/Qq9rpxIRLd4Xfp10nhzLCetEmzTD/1LnKQbd1Ou+P4Zt5wUS
+         zS4TBICsA2+yLTtjVTkpt6rJTZMcXGbT6vYfJl+ZCwwKozMsVdIyQvT37yPBYO3Za7Tq
+         KcgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpaMW8iMVFL7XKm6JrCeBwWs0uKgC9vnrE562rsMxKzwh+sm5mlED3bnTI+fit9m+59IDG2mQTZ59dsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsJbTLxBpB+5RUCwwyPtdZ/isGguggooL/16ed8/d1V8GlnIS2
+	GMxUrTSLUMxWjObSOS3/jmf1h+4u/rwpmOI8lfFdRqlp1Gv2ohCNV7V+6NQ8okY=
+X-Gm-Gg: ASbGnctkEHo4kvLYkh+g7E9fgOr2xQZzovjNab6939PUfpap7trvWQPj6BC9iBuldp+
+	veeIStxP7KWZHg95kOe1W1nXhD7FpKewAl8Cs1cexSVDr8v/TMqg3PuI1/6z3V/7872epmqzt42
+	zBJToppU700KugRJaY5iubHAu1a28cZrYLID44QNeoVer1MFaYDx2hnNBNXXfugqEQOeDTFAjXc
+	gpsPdUQL9CI3EStgT433izsnYXU7trLOF4+Yp5Mih/AgNTLCQMyFGlYwqRiBp3tIGkohQeWctB+
+	1CfLNqT1xORTklPng/9inPgGFDbKpg==
+X-Google-Smtp-Source: AGHT+IGB7HjxSdBTc/JxWWcal5m/SrHGgIfiH6YzvfBAk3Tw2A74/nQX/OQ2p0tJ66arvtQwzZGeOg==
+X-Received: by 2002:a17:906:c115:b0:aa6:6d2b:cbeb with SMTP id a640c23a62f3a-aac2d446f89mr151128766b.28.1734684001634;
+        Fri, 20 Dec 2024 00:40:01 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e82ede9sm151802466b.2.2024.12.20.00.40.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 00:40:01 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 20 Dec 2024 09:39:44 +0100
+Subject: [PATCH] soc: qcom: pd_mapper: Add SM7225 compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241217-imx214-v5-0-387f52adef4d@apitzsch.eu> <20241217-imx214-v5-7-387f52adef4d@apitzsch.eu>
-In-Reply-To: <20241217-imx214-v5-7-387f52adef4d@apitzsch.eu>
-From: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Date: Thu, 19 Dec 2024 21:15:22 +0100
-X-Gmail-Original-Message-ID: <CAPybu_2K0eimAVsH+SbE_QJ492AGUhE8MxOJnqEnow_G2i1GYw@mail.gmail.com>
-Message-ID: <CAPybu_2K0eimAVsH+SbE_QJ492AGUhE8MxOJnqEnow_G2i1GYw@mail.gmail.com>
-Subject: Re: [PATCH v5 07/13] media: i2c: imx214: Add vblank and hblank controls
-To: git@apitzsch.eu
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Vincent Knecht <vincent.knecht@mailoo.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241220-pd-mapper-sm7225-v1-1-68f85a87288d@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAE8tZWcC/x3MPQqAMAxA4atIZgMx/uJVxKG2UTOopQURpHe3O
+ H7Dey9ECSoRxuKFILdGvc6MqizA7ubcBNVlAxM3FTOhd3gY7yVgPHrmFofF1bSazi7UQ858kFW
+ ffznNKX3FT9OeYgAAAA==
+X-Change-ID: 20241220-pd-mapper-sm7225-8bd30fa6cb07
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-On Tue, Dec 17, 2024 at 10:39=E2=80=AFPM Andr=C3=A9 Apitzsch via B4 Relay
-<devnull+git.apitzsch.eu@kernel.org> wrote:
->
-> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
->
-> Add vblank control to allow changing the framerate /
-> higher exposure values.
->
-> The vblank and hblank controls are needed for libcamera support.
->
-> While at it, fix the minimal exposure time according to the datasheet.
->
-> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> ---
->  drivers/media/i2c/imx214.c | 108 +++++++++++++++++++++++++++++++++++++++=
-+-----
->  1 file changed, 98 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index 4f6c4f845a7ab36c7674a4ce8c1664d48e46c4d0..81d4ef67bcb5c660dfaab1203=
-9f8c683d7a7d683 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -34,11 +34,17 @@
->
->  /* V-TIMING internal */
->  #define IMX214_REG_FRM_LENGTH_LINES    CCI_REG16(0x0340)
-> +#define IMX214_VTS_MAX                 0xffff
-> +
-> +#define IMX214_VBLANK_MIN              890
-> +
-> +/* HBLANK control - read only */
-> +#define IMX214_PPL_DEFAULT             5008
->
->  /* Exposure control */
->  #define IMX214_REG_EXPOSURE            CCI_REG16(0x0202)
-> -#define IMX214_EXPOSURE_MIN            0
-> -#define IMX214_EXPOSURE_MAX            3184
-> +#define IMX214_EXPOSURE_OFFSET         10
-> +#define IMX214_EXPOSURE_MIN            1
->  #define IMX214_EXPOSURE_STEP           1
->  #define IMX214_EXPOSURE_DEFAULT                3184
->  #define IMX214_REG_EXPOSURE_RATIO      CCI_REG8(0x0222)
-> @@ -187,6 +193,8 @@ struct imx214 {
->         struct v4l2_ctrl_handler ctrls;
->         struct v4l2_ctrl *pixel_rate;
->         struct v4l2_ctrl *link_freq;
-> +       struct v4l2_ctrl *vblank;
-> +       struct v4l2_ctrl *hblank;
->         struct v4l2_ctrl *exposure;
->         struct v4l2_ctrl *unit_size;
->
-> @@ -200,8 +208,6 @@ static const struct cci_reg_sequence mode_4096x2304[]=
- =3D {
->         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
->         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
->         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
->         { IMX214_REG_X_ADD_STA, 56 },
->         { IMX214_REG_Y_ADD_STA, 408 },
->         { IMX214_REG_X_ADD_END, 4151 },
-> @@ -272,8 +278,6 @@ static const struct cci_reg_sequence mode_1920x1080[]=
- =3D {
->         { IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
->         { IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
->         { IMX214_REG_EXPOSURE_RATIO, 1 },
-> -       { IMX214_REG_FRM_LENGTH_LINES, 3194 },
-> -       { IMX214_REG_LINE_LENGTH_PCK, 5008 },
->         { IMX214_REG_X_ADD_STA, 1144 },
->         { IMX214_REG_Y_ADD_STA, 1020 },
->         { IMX214_REG_X_ADD_END, 3063 },
-> @@ -357,6 +361,7 @@ static const struct cci_reg_sequence mode_table_commo=
-n[] =3D {
->         { IMX214_REG_ORIENTATION, 0 },
->         { IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
->         { IMX214_REG_FAST_STANDBY_CTRL, 1 },
-> +       { IMX214_REG_LINE_LENGTH_PCK, IMX214_PPL_DEFAULT },
->         { CCI_REG8(0x4550), 0x02 },
->         { CCI_REG8(0x4601), 0x00 },
->         { CCI_REG8(0x4642), 0x05 },
-> @@ -460,18 +465,24 @@ static const struct cci_reg_sequence mode_table_com=
-mon[] =3D {
->  static const struct imx214_mode {
->         u32 width;
->         u32 height;
-> +
-> +       /* V-timing */
-> +       unsigned int vts_def;
-> +
->         unsigned int num_of_regs;
->         const struct cci_reg_sequence *reg_table;
->  } imx214_modes[] =3D {
->         {
->                 .width =3D 4096,
->                 .height =3D 2304,
-> +               .vts_def =3D 3194,
->                 .num_of_regs =3D ARRAY_SIZE(mode_4096x2304),
->                 .reg_table =3D mode_4096x2304,
->         },
->         {
->                 .width =3D 1920,
->                 .height =3D 1080,
-> +               .vts_def =3D 3194,
->                 .num_of_regs =3D ARRAY_SIZE(mode_1920x1080),
->                 .reg_table =3D mode_1920x1080,
->         },
-> @@ -625,6 +636,34 @@ static int imx214_set_format(struct v4l2_subdev *sd,
->         __crop->width =3D mode->width;
->         __crop->height =3D mode->height;
->
-> +       if (format->which =3D=3D V4L2_SUBDEV_FORMAT_ACTIVE) {
-> +               int exposure_max;
-> +               int exposure_def;
-> +               int hblank;
-> +
-> +               /* Update blank limits */
-> +               __v4l2_ctrl_modify_range(imx214->vblank, IMX214_VBLANK_MI=
-N,
-> +                                        IMX214_VTS_MAX - mode->height, 2=
-,
-> +                                        mode->vts_def - mode->height);
-> +
-> +               /* Update max exposure while meeting expected vblanking *=
-/
-> +               exposure_max =3D mode->vts_def - IMX214_EXPOSURE_OFFSET;
-> +               exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFAUL=
-T);
-> +               __v4l2_ctrl_modify_range(imx214->exposure,
-> +                                        imx214->exposure->minimum,
-> +                                        exposure_max, imx214->exposure->=
-step,
-> +                                        exposure_def);
-> +
-> +               /*
-> +                * Currently PPL is fixed to IMX214_PPL_DEFAULT, so hblan=
-k
-> +                * depends on mode->width only, and is not changeable in =
-any
-> +                * way other than changing the mode.
-> +                */
-> +               hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> +               __v4l2_ctrl_modify_range(imx214->hblank, hblank, hblank, =
-1,
-> +                                        hblank);
-> +       }
-> +
->         return 0;
->  }
->
-> @@ -674,8 +713,26 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
->  {
->         struct imx214 *imx214 =3D container_of(ctrl->handler,
->                                              struct imx214, ctrls);
-> +       const struct v4l2_mbus_framefmt *format =3D NULL;
-> +       struct v4l2_subdev_state *state;
->         int ret;
->
-> +       if (ctrl->id =3D=3D V4L2_CID_VBLANK) {
-> +               int exposure_max, exposure_def;
-> +
-> +               state =3D v4l2_subdev_get_locked_active_state(&imx214->sd=
-);
-> +               format =3D v4l2_subdev_state_get_format(state, 0);
-> +
-> +               /* Update max exposure while meeting expected vblanking *=
-/
-> +               exposure_max =3D
-> +                       format->height + ctrl->val - IMX214_EXPOSURE_OFFS=
-ET;
-> +               exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFAUL=
-T);
-> +               __v4l2_ctrl_modify_range(imx214->exposure,
-> +                                        imx214->exposure->minimum,
-> +                                        exposure_max, imx214->exposure->=
-step,
-> +                                        exposure_def);
-> +       }
-> +
->         /*
->          * Applying V4L2 control value only happens
->          * when power is up for streaming
-> @@ -687,7 +744,10 @@ static int imx214_set_ctrl(struct v4l2_ctrl *ctrl)
->         case V4L2_CID_EXPOSURE:
->                 cci_write(imx214->regmap, IMX214_REG_EXPOSURE, ctrl->val,=
- &ret);
->                 break;
-> -
-> +       case V4L2_CID_VBLANK:
-> +               cci_write(imx214->regmap, IMX214_REG_FRM_LENGTH_LINES,
-> +                         format->height + ctrl->val, &ret);
-> +               break;
->         default:
->                 ret =3D -EINVAL;
->         }
-> @@ -710,8 +770,11 @@ static int imx214_ctrls_init(struct imx214 *imx214)
->                 .width =3D 1120,
->                 .height =3D 1120,
->         };
-> +       const struct imx214_mode *mode =3D &imx214_modes[0];
->         struct v4l2_fwnode_device_properties props;
->         struct v4l2_ctrl_handler *ctrl_hdlr;
-> +       int exposure_max, exposure_def;
-> +       int hblank;
->         int ret;
->
->         ret =3D v4l2_fwnode_device_parse(imx214->dev, &props);
-> @@ -719,7 +782,7 @@ static int imx214_ctrls_init(struct imx214 *imx214)
->                 return ret;
->
->         ctrl_hdlr =3D &imx214->ctrls;
-> -       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 6);
-> +       ret =3D v4l2_ctrl_handler_init(&imx214->ctrls, 8);
->         if (ret)
->                 return ret;
->
-> @@ -745,12 +808,28 @@ static int imx214_ctrls_init(struct imx214 *imx214)
->          *
->          * Yours sincerely, Ricardo.
->          */
-> +
-> +       /* Initial vblank/hblank/exposure parameters based on current mod=
-e */
-> +       imx214->vblank =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
-> +                                          V4L2_CID_VBLANK, IMX214_VBLANK=
-_MIN,
-> +                                          IMX214_VTS_MAX - mode->height,=
- 2,
-> +                                          mode->vts_def - mode->height);
-> +
-> +       hblank =3D IMX214_PPL_DEFAULT - mode->width;
-> +       imx214->hblank =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_ops,
-> +                                          V4L2_CID_HBLANK, hblank, hblan=
-k,
-> +                                          1, hblank);
-> +       if (imx214->hblank)
-> +               imx214->hblank->flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> +
-> +       exposure_max =3D mode->vts_def - IMX214_EXPOSURE_OFFSET;
-> +       exposure_def =3D min(exposure_max, IMX214_EXPOSURE_DEFAULT);
->         imx214->exposure =3D v4l2_ctrl_new_std(ctrl_hdlr, &imx214_ctrl_op=
-s,
->                                              V4L2_CID_EXPOSURE,
->                                              IMX214_EXPOSURE_MIN,
-> -                                            IMX214_EXPOSURE_MAX,
-> +                                            exposure_max,
->                                              IMX214_EXPOSURE_STEP,
-> -                                            IMX214_EXPOSURE_DEFAULT);
-> +                                            exposure_def);
->
->         imx214->unit_size =3D v4l2_ctrl_new_std_compound(ctrl_hdlr,
->                                 NULL,
-> @@ -879,12 +958,21 @@ static int imx214_get_frame_interval(struct v4l2_su=
-bdev *subdev,
->         return 0;
->  }
->
-> +/*
-> + * Raw sensors should be using the VBLANK and HBLANK controls to determi=
-ne
-> + * the frame rate. However this driver was initially added using the
-> + * [S|G|ENUM]_FRAME_INTERVAL ioctls with a fixed rate of 30fps.
-> + * Retain the frame_interval ops for backwards compatibility, but they d=
-o
-> + * nothing.
-> + */
->  static int imx214_enum_frame_interval(struct v4l2_subdev *subdev,
->                                 struct v4l2_subdev_state *sd_state,
->                                 struct v4l2_subdev_frame_interval_enum *f=
-ie)
->  {
->         const struct imx214_mode *mode;
->
-> +       dev_warn_once(imx214->dev, "frame_interval functions return an un=
-reliable value for compatibility reasons. Use the VBLANK and HBLANK control=
-s to determine the correct frame rate.\n");
-Please make sure that the series is bisectable:
-https://linux-media.pages.freedesktop.org/-/users/patchwork/-/jobs/68347904=
-/artifacts/junit/0007-570c1fc5ead96a1cac9f1f83b4826d2ab0a606c6%20bisect%20b=
-uild.err.txt
+The Qualcomm SM7225 is practically identical to SM6350, so add an entry
+using that data.
 
-> +
->         if (fie->index !=3D 0)
->                 return -EINVAL;
->
->
-> --
-> 2.47.1
->
->
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+I double checked and the Android builds for this platform also have a
+.jsn file for the equivalent of &mpss_root_pd_gps but this is not part
+of sm6350_domains upstream.
+
+But I actually can't find any evidence of this actually being used in
+the AMSS sources. Just some Android proprietary user space seems to try
+and find 'gps/gps_service' but nothing relevant for 'msm/modem/root_pd'
+
+Should we still correct this? Everything appears to work as expected and
+"#define DEBUG" in the driver also doesn't show anything being wrong.
+---
+ drivers/soc/qcom/qcom_pd_mapper.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
+index 6e30f08761aa43da131a00885b2cc5e95960bc7c..d98738fd7c6456eb6c4ae265437363d2b8fb952a 100644
+--- a/drivers/soc/qcom/qcom_pd_mapper.c
++++ b/drivers/soc/qcom/qcom_pd_mapper.c
+@@ -553,6 +553,7 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+ 	{ .compatible = "qcom,sm4250", .data = sm6115_domains, },
+ 	{ .compatible = "qcom,sm6115", .data = sm6115_domains, },
+ 	{ .compatible = "qcom,sm6350", .data = sm6350_domains, },
++	{ .compatible = "qcom,sm7225", .data = sm6350_domains, },
+ 	{ .compatible = "qcom,sm7325", .data = sc7280_domains, },
+ 	{ .compatible = "qcom,sm8150", .data = sm8150_domains, },
+ 	{ .compatible = "qcom,sm8250", .data = sm8250_domains, },
+
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241220-pd-mapper-sm7225-8bd30fa6cb07
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
