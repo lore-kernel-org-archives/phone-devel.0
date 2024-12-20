@@ -1,63 +1,65 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3803A1A726B
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 08:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E1819ADA2
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 09:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734685197; cv=none; b=SBfsGZ5gjUvSJv80upsQfFAYd1NYKQhxVMCbjCAwA8XX93h0/HGhqJLwW4on4UBnUuUEEdoO4VII/hSFjEViCbDWgydfxafddtFRidW87B2sZIG1Mylt3t7/ZtdeofVAleqJqqwbEE9XSbByT3cXlzuCe3Xu9CahxyUnByU3tqo=
+	t=1734685428; cv=none; b=pxLDqNR4HNEaumV3BK0FoGQNC2sPn2ljoIzTy8vvtRvtg1dKeTSp3nlsYYt4lyM+GLVHGbAzVJKNgetual2zE02OyHbXUogFd8LIhVnaEs/fTW3xeMparbrX6KN7YjzxXUqxGBsDyXkkus5+kZFvAjjV5SnQ5XS8s1xKPtUQTtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734685197; c=relaxed/simple;
-	bh=B/CSxh8bc02YGzxj4Cp8fAYbQzfHZ0MyOHkF9uHAlPE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nYKbrh4ezjb3PHE/XW1x8d5RvnfHtt6D+UtkZ52sBky8QPmBvp3rclfszD+XaKYlza95ck3SMUwnPlHIIMK1ZTX7CSjgEs0gmwoax7LgeKU4JSRqFUOcg/l55ifovo5btSoC/JMtNTLGsJ4e1qtbRN8Gt8IwIw5f83v7McPI6cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=srA+c5mv; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1734685428; c=relaxed/simple;
+	bh=DbfIVgwdPOtjGyPYp3zFC8cSx0e4NRwlmaO+ILtD/1s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NxsmIWEs3Z9lE09tIExKA6s3ELE8v/UFp/QUPOqy9UIRaY/ce0zWkV7hEq+GauJHJpAC7cDYQo5W1w01ytIyh0/RGvlRs6elQ8t1B3t+yee3p5VvpIY4PnNPLcCzVgCEvxCHmOzRvmHOaZsTNCvJujSdy4YpS48+wnkjEfzxRWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vuWkiM2X; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="srA+c5mv"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa5f1909d6fso268715266b.3
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 00:59:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vuWkiM2X"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43623f0c574so11198945e9.2
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 01:03:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1734685194; x=1735289994; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
-        b=srA+c5mvSf5bH9gWc20ubWKiWy4hWZUtrPSmLYZE+W1mCrP7mP2V8v+KmNj0qDBAza
-         NZrudquBDpd5p+vy4Z2LK4MqUU/9YCPdi/7prh7cZjkIFTNMAGdfcScpUlwfXEVksere
-         xZ6QA56KqrZAvzU+KnscMXM26sNFQnBiuKyaSAlS02EUEK+4HgAz7WbSGyftKnhVEvd5
-         O1+3hjgo+M6zsg8JJxxyYuIpgM7JBKrDjpyHdw/CaOCWh9exAlixjWLoMkn9zIdt2XMD
-         BSOv6TuPDPZqUKYl96Gc0NdrdQbU8fkd6VQAM6dkYSKA+jdM4cPS8v5JjKSlLTABC6Ss
-         RilA==
+        d=fairphone.com; s=fair; t=1734685425; x=1735290225; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKQF6v9mjJTHAGrz+anbwJhJc4N1fYhnSvoLIwg6Hw4=;
+        b=vuWkiM2X2LurHfl3/g+Jj7uFleBh8ZZDzDqFryqzDp9kC5QIc8gZ2WbFhc/TTsyN5x
+         IZs3kh9hl0UccvbDEYBOQlMdhXagX4bHcRRIIpbJXJTN7sFNvQdDSmtaXQhTOYRfeOOz
+         M4ZKV9qzuxEcw3FGFo4lOazlVpYOIrfLPFZBui5clscZelSHKo2L/PXSSuIa1Qknaf6K
+         UG5DwwVxu45S4zgKRNtr7m7EfpT5X8/rjvxsgFYATcKobrG2D+935LQAUH5+Adufgl6o
+         OTEuaH51tfS6q5fjpO1mnZTTH6XBgcHK3oKjQB5mT4ylM/e6BD8ldfwIbiri9Qp7VUDh
+         tE0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734685194; x=1735289994;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1734685425; x=1735290225;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
-        b=rhMGpennMSPVxAhiQFEJWx7liWeZYNJgsA9UnVaa2W4mxojtlH1H+hEUxCV/NL6VP0
-         7owOsh4EJkszhUMnkz4YbLMW9piALl2qFtW6Wv2J2sau8xuLV3Eu8ql+N9B0GxESFgmm
-         d+cVeFv7yuEHRlfI4Nu/HF4ltq0xrbuunKTUiruJuUYA2E4ohzl70wj7WAix0bFniZhe
-         Bu9NCQYEmdhHdu9GGoiBscs2qOx01ZmMED4YDzOLqAfAjSJklW4bvhK6s+Gur9iTMmsf
-         4Rzk1afQdGPdNwL0k3ineMrHZEw78GgS9lGPpi6JhVcnqwMKnq5oc90Te8KdRH9XyxWa
-         vVrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWA8wnAvwbClrTRuwLbRIC1VyWHgd5LGq24zjvFTleybiUiUTRN6jzN7LwdSvFPb1l+uLUyNWz28GXkmQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTrh2NuBC5vNdg5Hb7I7Zu93Lg1zbN0k0y4AJHBIbjr5V7pGMh
-	DHzRZENZqe/gr1/yw10uEpsIBlO/vwiEiNTl6h9+Rav5z15iunFiXFM7Yc3mN2Y=
-X-Gm-Gg: ASbGnctmMkupZUFbj3FEz6vNAUfgs17Mmd6l2ZE6Uqn2zgLqaXxeAUmW+aE6huzNXk0
-	l9O2TptLZI4fjUwOVVUXWbkHGEqBm+Nhv8ibvky9A7QEOBI9CluVCaK7HoPI3/KVvVrCHJRL7Hp
-	1EnTGPtEVoY5eXRQoUBmwLEq61LNjB9FdA8k20uhfzUSyUkTxFXSjt3Qga8t2RrbvcZ9/5JcXJC
-	aDJJ95NAqXfssR26sibAp0JkoW5tbOFzMp3MvRsewEqUGH4Ld3QalPZZr0C78eMZlS/DeRPZIl0
-	Es0vC1k+aXcVJSZSLRKI9h2vm0UJVA==
-X-Google-Smtp-Source: AGHT+IG4raqmf5z3+Bbit2pptVJL+0AF6PrPFax/4lpRRdG7CllZm9cIM6vpTrrrMN18RRgqKa7m+w==
-X-Received: by 2002:a17:907:6e8c:b0:aa9:1b4b:489e with SMTP id a640c23a62f3a-aac2ad8ea23mr156763466b.24.1734685194579;
-        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
+        bh=TKQF6v9mjJTHAGrz+anbwJhJc4N1fYhnSvoLIwg6Hw4=;
+        b=jEELKdIOp8tU76tAyaocJooPAzb59ly0aN981ujqQeeKjAq9Fux/VDCTEwuqA2Rs/z
+         xPaj6yzo54Nr2flc2DAEFRmRV4H5YaUvGdGyJLSjjDDB/ppuevg9BNYPaCx/mdjgQe+E
+         fq2t2knpblBjHCNOC1MJFmDQcCIJRzxJfg0IdDWjkhqQDMSwEr/Xy8b/W3hBR33bNbV8
+         s0tUhgMEbz8H2pGYCl4eQgG1lqzzvf4WPfDGit+7zYQDx/6Wf2jL0pSicZbOlAgQKETc
+         Ok92xi+OagOvxLwXgC/+HjYgNXS9wTfnYa0x+DPcwoyy0RiOwiTK2POtKIdU9e+0fX/l
+         sLKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVp+LUgliHG58630/Vctvp7B2DXutypETuXJ41D/QJL37EvQ18sbgF/5U/zCnfWHe4hheXDeQqepOI4Mw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEN9L95WgLdjfqShKgaSaJq/5kAJlMY/fvqBPuHYx7MnmyfkUY
+	zgRou0cUKCycEITW3WCTHAsrpYtQLAI+mOj0ztGYnYW6Cti4rE5pugB9lymY9KY=
+X-Gm-Gg: ASbGnctcELL8h40Bx8oQT0h+5cFMaoZxa1Mg9OBjtcu8YU1fW8F0nLtZSljmcTlAuXb
+	fS3zbV69kXQ33tLeawN3ppJGVE3zZzA5QYd/9XeZnQP6DWO6ydnEWQWrBDkiAWZkBcQ8LLccscQ
+	EPad2QFZbn1TLu+YvdbHVv7u03uNROy/hMc5LdH5eCvU1ArlJ0axP3ZB9wnC31vLcKpxWnRaQq8
+	sJeA31b5a8mQOLXYi8fcSsChhYJ7a2wbHmTCB4ZnawkO2hCRVA+lf4VdXo0nmdOY+1lW1XlHYF2
+	sOtK8Bb77T/9OXj2ZpYcSYtWHPD4iQ==
+X-Google-Smtp-Source: AGHT+IGSHfVV7ZgeNmbzBWx67alIxQ8s1vI3ArjQYk5K4x5dU5OensPI2MOkBdI3RPTXPnjlqYDKeg==
+X-Received: by 2002:a05:600c:4f51:b0:436:1b7a:c0b4 with SMTP id 5b1f17b1804b1-4366854850emr12697055e9.1.1734685425468;
+        Fri, 20 Dec 2024 01:03:45 -0800 (PST)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f080c1asm151178766b.205.2024.12.20.00.59.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436611ea3e0sm40610375e9.7.2024.12.20.01.03.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
+        Fri, 20 Dec 2024 01:03:45 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 20 Dec 2024 09:59:50 +0100
-Subject: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
+Subject: [PATCH 0/2] Add missing parent_map to clocks in SM6350 clock
+ drivers
+Date: Fri, 20 Dec 2024 10:03:29 +0100
+Message-Id: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -66,49 +68,39 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAUyZWcC/x3MOQqAMBBA0avI1A5kU8SriEVMRp3ChURFCLm7w
- fIV/yeIFJgi9FWCQA9HPvYCWVfgVrsvhOyLQQllpFIC49bqRuBtwyWRnUNPxgk7dUZqDyU7A83
- 8/sthzPkDzf3AwmIAAAA=
-X-Change-ID: 20241220-sm6350-uart1-icc-de4c0ab8413d
+X-B4-Tracking: v=1; b=H4sIAOEyZWcC/x3MSQqAMAxA0atI1hY6OF9FRKpGzcJaGhFBeneLy
+ 7f4/wXGQMjQZS8EvInpdAkqz2DerdtQ0JIMWupCaS0FH5UppfA2oLvGw3oxS4PtVClbqwZS5wO
+ u9PzPfojxA5EIHo1jAAAA
+X-Change-ID: 20241220-sm6350-parent_map-c03e9b61a718
 To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
-qup-config. Since the qup-memory path is not part of the qcom,geni-uart
-bindings, just replace that path with the correct path for qup-config.
+If a clk_rcg2 has a parent, it should also have parent_map defined,
+otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+on those clocks.
 
-Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
-Cc: stable@vger.kernel.org
+Correct this on clocks in both gcc-sm6350 and dispcc-sm6350.
+
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Luca Weiss (2):
+      clk: qcom: gcc-sm6350: Add missing parent_map for two clocks
+      clk: qcom: dispcc-sm6350: Add missing parent_map for a clock
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 8d697280249fefcc62ab0848e949b5509deb32a6..7b5c340df5f6f32233f4254db2012f84bdde6be2 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -936,7 +936,7 @@ uart1: serial@884000 {
- 				power-domains = <&rpmhpd SM6350_CX>;
- 				operating-points-v2 = <&qup_opp_table>;
- 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
--						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
-+						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
- 				interconnect-names = "qup-core", "qup-config";
- 				status = "disabled";
- 			};
-
+ drivers/clk/qcom/dispcc-sm6350.c |  7 +++----
+ drivers/clk/qcom/gcc-sm6350.c    | 22 ++++++++++++++--------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 ---
 base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
-change-id: 20241220-sm6350-uart1-icc-de4c0ab8413d
+change-id: 20241220-sm6350-parent_map-c03e9b61a718
 
 Best regards,
 -- 
