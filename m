@@ -1,134 +1,135 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FFC1C07D8
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 10:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CE420468C
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 12:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734690522; cv=none; b=TX1FikX5oB2YSfdhMjnzvXS6BFNc+p3rdmrBAZ8r3P4W3W4tgMzX306lfttC6yU3bdF4PT9PsqsJP55cxz8fzJFi2fcy+PSf+4opimd3bFIVMyYcf1NTnacIwIrpCeWRm5FklR2LQc3/YBp0LMCZgKdLBdHUFKqenIqKrRryjEc=
+	t=1734697337; cv=none; b=gA6Jf9WIehUkmy5xxuDh6d4pCLKujKhZwufMYVg2Of4TCV3AlPEtVzfa99D4YxASsKXVZxJ964OtUcGyKMisBCR31lH4XjYdV9f2rHTdRdihBM69NJvFJP0ZU5ZTSxuCqsO2WW7K/re6hpxQJCbQIngFXTIqmZzIXegXsUoT8J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734690522; c=relaxed/simple;
-	bh=5QWr8KiK0fqKJ2BcZIva5mJXwGTB/TaTgOD7YAkLkD8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZLIeMtjFUMETZTb7hUsbNJeB3cTUrpHG/7Ilukjgzxo2fc07B3ncw7PZWjrwNml2V/387IS32HPTjOfCRdlr0gQIyyaJ0ZGuPa+jPN1lN3ah2oxCeYaeKlgcYU46ue4CZEnp/HulvcXtTz/hoqK31K6qeqXegfluBtEcJfDcGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gmjlEI1/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1734697337; c=relaxed/simple;
+	bh=qx5p/hDbUkuDZtzddbNWpM0QTt2rSGt/pmcZqagYCts=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F84pb/SLm/szhoNU4GCUkuvh7r0b8RxcTTKU9rQcxQEiotfZOUiFV54Yd0SRStJLkrCnk21ne16F7e7GD3iNzw5F6VH2IpMtFtYz/VqItkdPS5btcKKXL3XvXibCq4TlGSOnnxEVDXLPp0XYlHOiwhomrtr8ETPM3M4p8ylf2dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yNe1M87h; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gmjlEI1/"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK792ht024251
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 10:28:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B0LK1w8USgsUPXw9o6UhgF0/OBJgHQXzHotizFN7BT0=; b=gmjlEI1/IWZYvFCS
-	s2TrItx7xzF4NNTQ0SUQ1wQ/ICLkdu/xm/bxSapsBQD71mfrEcndIp7m4uIVh/4b
-	1fVL4GhNLbB3x6Kbryt3Rdj88zz8yX+wfNE3LbkiEqEt1kjqX0tAS1xj0ux6dEWl
-	DeUUDBJH5smvKi6iBsGfHNoq+5G5L6vGnKCWGam03vdkVNNWI+6mWMV2hI1sV9YI
-	xsGRzmhKvYXsSwWQJjp8gT/zI26VDx5HCwGa9ZkO0HRttABgXHyiuw0EmwnnBKL3
-	4/8E/UOQ4AgG0gDl8eFtN/Zu4SZDvVQjgvQMSz1QjAGGN4n3UceCg3R+g+7mkMZK
-	Fx4jLA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n3xjrhwk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 10:28:39 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4679d6f9587so4598021cf.1
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 02:28:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yNe1M87h"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa670ffe302so352451966b.2
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 04:22:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1734697333; x=1735302133; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVIs/A5zO1lF6Hvf56Jf96I1JylRoUAYB/UjCgUI+Ws=;
+        b=yNe1M87hI4shQl5xbvB5lfiFPX8AzZmee9d8Y/Qjy2JqC1Ws+mK3zlWN5TEW7NuYkr
+         MfHh5/GpW0ET11M3A/9CO9GevuavAJlWy+H46RjyU0kOpuO+LCiaT1HT32pXIowmrMEt
+         5ibW/d6SA+j1srgNYxGclQzDQtDufNO8GuNLjh4u8wE+xG6HcTBa4+toGaFmrTt+g/x6
+         uxFpTLtXIkJ0ipoAwgYC+OJjAfzmlBdfy0LF3fW+WTjTiCvDG3F8RfNj0wnMInu77edQ
+         Q1Utfk1POeg0y1Yc5V5d00b1Oontqwwvi5wYjTcXxKfL/zi8e6DKbRzCiri0FnzikYHL
+         oTsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734690519; x=1735295319;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B0LK1w8USgsUPXw9o6UhgF0/OBJgHQXzHotizFN7BT0=;
-        b=lCb/GttYRMFEm3827SjFkxNqCqSXZLAtYQiextBlMUhnfuswawHDK+t7hkpdqORpM8
-         vggDizRqcYOVJZ3mNRFgf2bC7rrYDy/w9PYr9LtUlVO36uQqZ+0MhFgeEj1LlLflmE1q
-         9k+RlQlfO6IvTouGQMixNsEEHjv46YMSSSNUrjOmVzfpPcAFW167AS2d4ZtbprPZlR6S
-         uwMfNuJZ2TTNiU87lW5nWSNz3QSKnmX5U9fNE+Pe6Pc48JB3oroztRBU2qqNAtHbCAmI
-         GjN8JUNPTuyKizhaa+hZriRP1OKRfdlDpgPLEQCEMUOJUNTgUaU5cPNnPtY++5MCSe9j
-         cymQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsrZS62vuHZj0UOpg+e0c0kTH8twjDvGw8H2OkhqWUthhazl54y9mbGvl7SPVLPQicn/ZH5AWgUKMe2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1ulq1EbQ6oF4I1cGJSxkPh++z5Psu5/b5/ANYJE5ozWBsHVnX
-	gTubtpk+8w00T+yl0PxVqZyDrKu6MeIyjzfUps35FcDBGoGfin6LfvNKPjPRNyEnQaAVUVMDgkU
-	hX9sBgPfnhENkwVEItV9aplFSQy86FAmhb0DuGAplicVWwq5UCYnQ3aEZ/EbcMA==
-X-Gm-Gg: ASbGncvLYH/G1t3xSqVdpA7+wVBykQ4rxu1bqLhNztqy5iO7ZU2y2penTLbQ9ceHEv4
-	gqKc8+yNnY6Cde/Wp7v4A/g8RDclJBgyThG5uu4pio170fOLI0uKLNso3GoLTPWzHSDD7uLVuUe
-	l2xXgMTxOdTT5VVckMePCFIbdcwVipL/hZqHAIcg2VcU5zcqDPbUEt+wFmu1CqfbtohJ591PXcr
-	TORGoaVhDrTjkZpWxfEgpCui+fGZv2mrXF9hHxJJ14Rs54QW7vlXeAyyqfj3isfD7dHnIMEjVRK
-	bpMMjbVoECxcs11ANgVgew1y/TpXp78honU=
-X-Received: by 2002:ac8:5f93:0:b0:467:5eaf:7d22 with SMTP id d75a77b69052e-46a4a9785cdmr14547651cf.10.1734690519003;
-        Fri, 20 Dec 2024 02:28:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFEnO9AJSDDgOGm3ytySndEK+tdE7dRdZ3crkt+on5jmDGWI0kAK+1MGayLMPEHLC1GlL8+sQ==
-X-Received: by 2002:ac8:5f93:0:b0:467:5eaf:7d22 with SMTP id d75a77b69052e-46a4a9785cdmr14547501cf.10.1734690518633;
-        Fri, 20 Dec 2024 02:28:38 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0eae4345sm160775866b.84.2024.12.20.02.28.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 02:28:38 -0800 (PST)
-Message-ID: <6220744e-8e62-475f-a1a3-3b7c2c888b3b@oss.qualcomm.com>
-Date: Fri, 20 Dec 2024 11:28:36 +0100
+        d=1e100.net; s=20230601; t=1734697333; x=1735302133;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dVIs/A5zO1lF6Hvf56Jf96I1JylRoUAYB/UjCgUI+Ws=;
+        b=RiVjEENTTL+G05mAPnw2XKorv2rfN171Z3x5lLEUeID6jmxlXm+XwgQIsWqCfMI0zS
+         eIJeZB7nsmk4WN/O9kcn0nNwtdjjrTLd1mrrO8pb1v5G7n7FSu03mlwuV7tpH68A8Ekt
+         Ip5bJLC02133RVnR/1EXEPiPZCr7rWtmDG6IS2zHZvMmR8+pU33GHia5ycn8wZWp6Egj
+         iyV+yQGZf63AVTQaV5/JuglmXebvENyPdLaozWZ/kOPo3ewsK3qqlyuKON+Xcv+V12sJ
+         4r01v+zmS7gesnXykhRKecWTJ31ajwFRfK+xj3C338R7BM/7KRzdw+JJ52Z8oux40eBR
+         Frwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUp7RTEOfCANGjRY8AEapUdWslXLIH+UOVF5aUbT3MYO3HCtDzv8DnZWP+lBK68H4ynACsJ0MWMdXfsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKGSH+pWU2bE1mbPD0nMtxKuHs96B5EA1iLSU0clQ5JraepPSb
+	cVaYczVrHtfn9H8NISooLlphpcJySAEf9WIbckSFTXAeobYS3hAxmtV12lh4DHg=
+X-Gm-Gg: ASbGncuG5wQK/aACpwE4qDZeorDRwTJWGa550mLkb+9DqwYqCEnAJoFE/2+r0z5erlq
+	Nx5rPBv9NlzW1PfajTpOyyR1LqicS1RTAikCMmiOmgzXLpUDYEqMyn5vUwVZqi9U7vtW0Ymro/b
+	p5JRCUNDETIPcnuqq/clbnzt7zWa6nF6P5VOvBhzWMJjD6NuK9FYIOSrcJosahs3GlHd+KPfpRo
+	pwkVt8KkzpOpDxFfZz/UuLwqSFgUB8bfnfmM9Btuez8cuMX81SKvh17lutoGj4PIU+vgWS+NMIs
+	uTZvip9Lblwy46m+c7S5T5PI5rJ++A==
+X-Google-Smtp-Source: AGHT+IFPG5xPXCwcvvE2JWaV4HcrHvc6W3DgQ5ZikyH58crfIMJ8TJhxYQjOiX6A2Ig+f3m0RqS6HQ==
+X-Received: by 2002:a17:907:7e86:b0:aac:4ef:36de with SMTP id a640c23a62f3a-aac2b19a851mr241107266b.17.1734697333203;
+        Fri, 20 Dec 2024 04:22:13 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e82f5f4sm171403166b.6.2024.12.20.04.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 04:22:12 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 20 Dec 2024 13:22:07 +0100
+Subject: [PATCH] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] clk: qcom: dispcc-sm6350: Add missing parent_map for
- a clock
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
- <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: m7In1Dpy4IaUxRDWUkSLs4JKr5hEdSrs
-X-Proofpoint-ORIG-GUID: m7In1Dpy4IaUxRDWUkSLs4JKr5hEdSrs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 phishscore=0
- bulkscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200086
+Message-Id: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAG5hZWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIyMD3eKUxFzd4syqVN2URLPElNRks7SkxEQloPqCotS0zAqwWdGxtbU
+ Aju9aLlsAAAA=
+X-Change-ID: 20241220-sdam-size-da6adec6fbaa
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shyam Kumar Thella <sthella@codeaurora.org>, 
+ Anirudh Ghayal <quic_aghayal@quicinc.com>, 
+ Guru Das Srinagesh <quic_gurus@quicinc.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-On 20.12.2024 10:03 AM, Luca Weiss wrote:
-> If a clk_rcg2 has a parent, it should also have parent_map defined,
-> otherwise we'll get a NULL pointer dereference when calling clk_set_rate
-> like the following:
-> 
->   [    3.388105] Call trace:
->   [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
->   [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
->   [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
->   [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
->   [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
->   [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
->   [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
->   [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
->   [    3.455886]  clk_set_rate+0x38/0x14c
-> 
-> Add the parent_map property for the clock where it's missing and also
-> un-inline the parent_data as well to keep the matching parent_map and
-> parent_data together.
-> 
-> Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
-Konrad
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Related, it would be nice to set sdam->sdam_config.type to an
+appropriate value, the ones currently upstream are:
+
+  enum nvmem_type {
+      NVMEM_TYPE_UNKNOWN = 0,
+      NVMEM_TYPE_EEPROM,
+      NVMEM_TYPE_OTP,
+      NVMEM_TYPE_BATTERY_BACKED,
+      NVMEM_TYPE_FRAM,
+  };
+
+I don't know what would fit for SDAM and I couldn't find any info on
+createpoint either, not even what the abbreviation SDAM stands for.
+---
+ drivers/nvmem/qcom-spmi-sdam.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
+index 9aa8f42faa4c93532cf8c70ea992a4fbb005d006..4f1cca6eab71e1efc5328448f69f863e6db57c5a 100644
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_device *pdev)
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
+
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241220-sdam-size-da6adec6fbaa
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
