@@ -1,62 +1,62 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714311BFE00
-	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 10:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6CF1BDAA0
+	for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 10:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734689751; cv=none; b=p7mMeUbMvrnEmK+2mER2FELGIwUaQJfTECSXuAToiQj2gswzFSER7jkh0VTZOhspmA5r3YUZY+/s56sZA51RGBIJ7tJjq4I/eeGMWC9YViZGOJoL4cPNPoP9Ep578rdEjaJ6WDBMZYIhwL3mXCmnLsyoJwQhgSYoy74ATtbHUNU=
+	t=1734690118; cv=none; b=crHx+oliVwFwrUZPTxt+dsRkIN/xDKArOCJoLhs5gNmaF4ZY2pxbh22IddfvJzFgwzBUOwkR8PTWN06tjynfB5XijDvniMOB4qOdXTGTX3ZSL3ZX9YV5Fy3w8NRdKah0jpVR6cRPrjlTYo+U2KTXm3wpZX7FbF0Vlm+EEdsX5k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734689751; c=relaxed/simple;
-	bh=azqgE6Nq+GvKhd1BTmIRgkn9xndaQhMOmC4bEnQpeQw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JuTUtLIJrp75uZNms+oNWzUPP58nKMX1/gD/U+5RAYgQqUpqLNhgGOUiWuhzoIcvGrdQVNYfkqWlrZ6ZYRyGb6YC8YxwFYn0QTEWkjK3m+8LOXqEN69/fKxHMLwPgqaRjH+7NaYaGVpKgBKfAHXLrUunR2qLAQX2vOPxCpnTAhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=voET3LR1; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1734690118; c=relaxed/simple;
+	bh=pVZaHkvdqKRcNvk4Ntas94k1G/NPGK94bJRewixfG+k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=YxMUg1u7cgDdWWzr1XO5qD2vg8tf/Zb/hBhyxce5sT1eY8V9HtUmu3sLnKTj+NxeXh6DT0d6PH2tc00LWUBaTi/zIkBxt3aBX5NS7+OMaYrU1taRmwFAwyfRPccYNmEYWVf9CXdB0H4bjZy9T7SjYKmpCclNpxkoFbPAM0gJe9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=oyBlyPnz; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="voET3LR1"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so983072f8f.2
-        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 02:15:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="oyBlyPnz"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-436341f575fso18317125e9.1
+        for <phone-devel@vger.kernel.org>; Fri, 20 Dec 2024 02:21:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1734689748; x=1735294548; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=fairphone.com; s=fair; t=1734690115; x=1735294915; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GcfGKSA3hn1YG3GtcYe7AtjSIId4RmWqN/7TX7SGkxg=;
-        b=voET3LR1sNBndDC8TvfxwWhnRd0b9ioyMXUR1JdIm7q92Ez1bo17qgMh6iNyYkcUPG
-         rGUhXyChFybKktT8nbgVft4iog3VFMkKUwnb75lML6ZksFWPho2l2nMm6Jphht4JD8pU
-         5yMTEAamUcJL7LucVmpc9ii5xgiXfOiEY7oO//FQWWaAPyomuv6NK4mTHlqiW9n3d8pE
-         VqsPQulpErRsW2+LFwoRdZO3X9M27CoUaqzh6gdgng0BSm922+W+Zbv52uabifrZk4Fl
-         WQ91JSdXiWehuSHHzD3DIBcqCoR2/GtoXW0WgBmVethKY8u7dw4bD7lgCqpkfnDZUAOD
-         FsIw==
+        bh=8hT9t7+Z62cNmrY6P7S0u2gAF6V0+KPuKWiIzoB2HDA=;
+        b=oyBlyPnzeKJYDd4OWJNJM6YKL02Scnrfx/MfJ5fST24BNntTFcYkihK8/A9oCYzklk
+         houHOctIEdk0Kxmra28t3u8sPcrt8WlSUZq0lsilg/HsQAVxdQhTilpGsp5cVMsg4Mkv
+         VXH5bzfPdU8KJhCmFgMfMWqWTlmtkKydbchEocH+nTDBw2KcGu9xgKXrdXJpenHJuntm
+         ZbBeUkqDATWNBqVt65HjvcZujqSz9OLDE1lCATJwgI+H5dsp+grMIVT1F/IOpd/yk5V7
+         Mqt6Yu0SNNxU4YxMI91sbCd7MamIOdjb9VsfDPLRR57f1DeJ3ljFAy1aQO6TcA3J4Zul
+         8noA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734689748; x=1735294548;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1734690115; x=1735294915;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GcfGKSA3hn1YG3GtcYe7AtjSIId4RmWqN/7TX7SGkxg=;
-        b=wRwxFGjNTrPohMhQ1ddYm/oJ8bPK/RFeKcEjQvfC6crWI024UrFxP74bBP9xBR2UXG
-         Mym+hhbbfYwVWioGs5jLna+Qjh+QhaVzwAilh0h3dmYRE1J4Hx2udPnsdpFaCJ7YzNvk
-         Yq8P0omvjwPC5uhP4F+6Zwb9H22/Rz0evOX4ztwekK3ZnsKZNEZfT3ThbnjDTYdltGH/
-         AYvPyz86TL/o0YexRLfGQOf4nSS+wHHtxSYeofr3FHNuCgYEcB5cFGOlQ68bgMalzoyB
-         cav6Elcy7xLx9dthMvuLRQu91LDCetZkKxsQXJJpcRrwVNibQ7yiBlNz4SyGVKO7AJLZ
-         rrag==
-X-Forwarded-Encrypted: i=1; AJvYcCUfU6gEjaPgePwx+ilPPSewuWvAi2+YKQihNpy8OPoA4od6GJbLbm0O5llFeH8RpthCEVz2ejmsE9pp5Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8na1Fngwbc4UC0ln/bT/JFVP78WFUHdlwZfnJBh0aIs511zL3
-	Z+sWthGOxEZQ+X/rd0ryymLQhBIFjSpRaf+/rMn7PS/WwKy4tvzcfp8uYNabFEM=
-X-Gm-Gg: ASbGnctCdBgxdydi3OpideLDju3J8/j0ZOzWdzekWXdIqirHUDFBXkw08BJ51Oe1285
-	nVnsgJQnPVTeOhhHL7oFknZ+pBLfkYvviHp3WxxMyJR4CIq1wH6UODuhBk6F1nh/7avlBpRft9M
-	vba1jnS4qi4GJBmUSIZTo9kqcJ8oXZkE4QWdMnoR2/E98hfoxjM93mWSQ7O5U/EFo90aB1nuevJ
-	2VAO6cIeaXfBlRphkwlGFzYB+dnJnCtwrd7rjsHhEKSZhuHnfzuN1UMzCQQDkyz9Hghe5KXSsKh
-	a6lWTAhYP4F+apoNSLrarOulWQ==
-X-Google-Smtp-Source: AGHT+IHT7Rzag8h2Rs/Aw2fgwF3ehSYhOv09XzJiHLyN4FafzTK5rIXYSFD8pNfiqxAdPRV0Lgx4hQ==
-X-Received: by 2002:a5d:6f01:0:b0:385:fc97:9c71 with SMTP id ffacd0b85a97d-38a221f17d7mr1847497f8f.12.1734689747739;
-        Fri, 20 Dec 2024 02:15:47 -0800 (PST)
+        bh=8hT9t7+Z62cNmrY6P7S0u2gAF6V0+KPuKWiIzoB2HDA=;
+        b=oXWLNW7o1wz2sHhkADtAWor4l4lgy04/fEW9ksLImHeUKU9kVewh9u6d/rqPgB1oFK
+         QRzmwkhfeh/WSiGGDuaOtoiUdTialzdolbKCrd1Ad61uF9t3bH8hMqSt6GSmwDyH9/O4
+         YqYaBpSJYz2illewouQD7yBxO6Kl1D9mexB5sRGzfTNJE7bwhBEVbFQQxwjCv1fwV4r2
+         SE90gY4B+uPEc29/faIjDl8LCwGoPUU7pRUvcmI0M9rFR0U5VhzlRgs0CeVNUK3BKeEp
+         9o913VRpxdiFjLyRnGU0gcB5cwuL2n8egwMYGQQPtC0Y+GTgObDeKPeUE5AVcYVLXWXl
+         I0GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqRd1MnQiq+ofVMSIpEvqNLtTcLDK/IcNtEgGfzF+/FysIOSjep/N5KgUGFkWyqH/lUtqwoScZF5jQkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRy+oMwhoHpDCj3EisGVxPEPoWiCgOqdTBFnFQRRPRMdcT33hV
+	e5vrEdTh9anuORYcvBA8m7xpqlyka7rAwGrKPVxZtKKcONnxSWJbTOWrZToad3o=
+X-Gm-Gg: ASbGncv7dC64g5QGsZiMIDhGEMdojc0p763VnShi/EpZEIkBzAkGPKEXhIbO0Hd+C6n
+	4eA7en1eJTrdt4ZmuM+to/sCXvPUZ9Vb4+1fDZcQysYYZI1KxvGTJmykSetH9Er/WU0lqkFSLEQ
+	QFL5ZxQc3JxaUJmjGBXsTWtz0otFwGEoJAmDbB0YJkEWNS+iyK5WLbnLYgJbBduOengXZKgV3dM
+	Qu2w3JETKUYP5hMu5JoJja5mNqYQ5USd7Wyap3I4zICCaYZw3Ge+tW7AOdRSoeVFlCGz/jxrN4M
+	BbYIkglOIqq1w0LhalXpdqoL8Q==
+X-Google-Smtp-Source: AGHT+IGfJzQyjs0tcbRlEOFSR6IiZW6L1coftNmeUL8VBSiDokEXLJGOVBXvHFoRemCYvC2ySUKHhg==
+X-Received: by 2002:a05:600c:a0a:b0:434:a04d:1670 with SMTP id 5b1f17b1804b1-436678f5775mr22693545e9.0.1734690115475;
+        Fri, 20 Dec 2024 02:21:55 -0800 (PST)
 Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e2d2sm3741052f8f.71.2024.12.20.02.15.47
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b119d7sm75380985e9.20.2024.12.20.02.21.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 02:15:47 -0800 (PST)
+        Fri, 20 Dec 2024 02:21:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -65,49 +65,73 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Dec 2024 11:15:47 +0100
-Message-Id: <D6GG70FQ29ZB.PEJZ4TE4HWQV@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] soc: qcom: pd_mapper: Add SM7225 compatible
+Date: Fri, 20 Dec 2024 11:21:54 +0100
+Message-Id: <D6GGBPC4V5XV.YU8Z2KASBH07@fairphone.com>
+Subject: Re: [PATCH 1/2] clk: qcom: gcc-sm6350: Add missing parent_map for
+ two clocks
 From: "Luca Weiss" <luca.weiss@fairphone.com>
 To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Dmitry
- Baryshkov" <dmitry.baryshkov@linaro.org>
+ <andersson@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@somainline.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
 X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20241220-pd-mapper-sm7225-v1-1-68f85a87288d@fairphone.com>
- <2ee51e35-da7d-42c6-a868-bd8f8700d617@oss.qualcomm.com>
-In-Reply-To: <2ee51e35-da7d-42c6-a868-bd8f8700d617@oss.qualcomm.com>
+References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
+ <20241220-sm6350-parent_map-v1-1-64f3d04cb2eb@fairphone.com>
+ <e909ac59-b2d6-4626-8d4e-8279a691f98a@oss.qualcomm.com>
+In-Reply-To: <e909ac59-b2d6-4626-8d4e-8279a691f98a@oss.qualcomm.com>
 
-On Fri Dec 20, 2024 at 10:39 AM CET, Konrad Dybcio wrote:
-> On 20.12.2024 9:39 AM, Luca Weiss wrote:
-> > The Qualcomm SM7225 is practically identical to SM6350, so add an entry
-> > using that data.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
+On Fri Dec 20, 2024 at 10:42 AM CET, Konrad Dybcio wrote:
+> On 20.12.2024 10:03 AM, Luca Weiss wrote:
+> > If a clk_rcg2 has a parent, it should also have parent_map defined,
 >
-> I think we should instead add the fallback compatible, like
->
-> - enum:
->       - asdf,asdf
-> - const: qcom,sm7225
-> - const: qcom,sm6350
->
-> as we've done for speedbin/rename variants of SoCs lately, with separate
-> entries being added for "actually different" sillicon.
+>                       ^
+>                         freq_tbl
 
-We also have currently for example sm7325=3Dsc7280=3Dqcm6490, would that
-fall into this category as well for you, or are they more different?
+I was basing this on that part of the clk-rcg2.c, so for every parent
+there also needs to be a parent_map specified.
 
-But do you think it's worth trying to also change existing platforms
-like that? We also have basically the same list in
-drivers/cpufreq/cpufreq-dt-platdev.c where we have both sm6350 and
-sm7225 right now.
+    int num_parents =3D clk_hw_get_num_parents(hw);
+    [...]
+    for (i =3D 0; i < num_parents; i++)
+        if (cfg =3D=3D rcg->parent_map[i].cfg)
+            [...]
+
+Should I still change the commit message? I guess there's no clk_rcg2
+without a parent at all?
+
+I guess I could reword it like that also or something?
+
+  A clk_rcg2 needs to have a parent_map entry for every parent it has,
+  otherwise [...]
 
 Regards
 Luca
 
+>
+> > otherwise we'll get a NULL pointer dereference when calling clk_set_rat=
+e
+> > like the following:
+> >=20
+> >   [    3.388105] Call trace:
+> >   [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
+> >   [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
+> >   [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
+> >   [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
+> >   [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
+> >   [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
+> >   [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
+> >   [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
+> >   [    3.455886]  clk_set_rate+0x38/0x14c
+> >=20
+> > Add the parent_map property for two clocks where it's missing and also
+> > un-inline the parent_data as well to keep the matching parent_map and
+> > parent_data together.
+>
+> The patch looks good otherwise
 >
 > Konrad
 
