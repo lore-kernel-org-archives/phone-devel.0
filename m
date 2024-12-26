@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBA1DB933;
-	Thu, 26 Dec 2024 18:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08801D8A04;
+	Thu, 26 Dec 2024 22:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735237649; cv=none; b=FFxikRra0OTK71T9Os6d0S4lfLqWDrqL/Yb/z5p+LY5zKQGG8EzVykajD+TjjX9wH0r0iaHtLcAI1EspVOxaBaYx2doPkHt/0QbNT7ZDpDff8xaN9b84lA5GcEVGXFSQACqKNOnwB023QBdsqVmZGyz2WtaJ7OYoPNSbjrdBuc4=
+	t=1735252750; cv=none; b=fCYpKugMmuTZR/cZShR5kJp8cbgq0od0onWKZt9GizuQjQjEnF1fhbpJKrr0SXJR60qBkdILrANGc93hR+UQQ9PxY1YtDYLA3WRwxC6t8zcD2fg03kC0ZUktHn7QeL9j22OO0T1L0+tFWsXXUIJbTr893DSlcyI4w8P7itLNBfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735237649; c=relaxed/simple;
-	bh=GpWvEosYE+MOeVXHv894f/KZ6FRugQ2cd6d3kLMslic=;
+	s=arc-20240116; t=1735252750; c=relaxed/simple;
+	bh=+RXCqt+iNZcaUif2XtyI5LwtUaXAQ0XSI65MsanBs/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HhYplg1UoRNAZIT4iGW9Fx/EaEy5nprjLCTUjeO5wsn3KgFiaVOYTILi+dRKROCfd4fk1CPq5lzE0codtCjl33/csOpnfJShGfYT1BfE5XpjOxHmuVnquftTWRui6ohF0EsRV8sSg8mQz8iF96f728ov79m8Ciltniq1ntZb/yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F125hghx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=RMwc/kKcxcwGA8C2iusFswq6idJuor20Lcmdc2olFgxhezacRZ6XcVPAhZFcctOFWopHfmh0MWWQo33Vw5q1UTozPOcSFA6aVqgR/B5RJobrUUaeNruFFHaFDb/NI4Ms3dfO0FNFlrqEtbK86AzwReF+zvU4dgGqJCscNXQGn7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hxMPoQRa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F125hghx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2FAC4CED7;
-	Thu, 26 Dec 2024 18:27:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxMPoQRa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B763C4CED3;
+	Thu, 26 Dec 2024 22:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735237648;
-	bh=GpWvEosYE+MOeVXHv894f/KZ6FRugQ2cd6d3kLMslic=;
+	s=k20201202; t=1735252750;
+	bh=+RXCqt+iNZcaUif2XtyI5LwtUaXAQ0XSI65MsanBs/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F125hghxBNOlXLdOwrWiCjfAsNKmEciiZ1/msGR9ulBFdZQlv7JNu2qMdQDlNr/lN
-	 4yzEMBd6JF/xSv/dKdjBqfJR4yz8nDMvMgc7S5/kCktUFCuExrBZEuH+NOrDQVkqJr
-	 zvyHxXNMBIPXWTy8LAmnIfxXo8Bjzvs7SPMYubjnPHXta/YmYFZL/xsucbUw6JBJpN
-	 cI7/p19f+LQAdt7g7jkiaq9Ib/Ii1pyOWfM+knpBDbxh5yZ/DlbZIJvFrM10UKkGh5
-	 j7g4bTgkNiiN1Pb/62ysGQfjnUMwqGewFrRJ4eJJxyIyQyAvtaa0WY7ZbRIu3fdNy0
-	 u/r3ojuTE+HQw==
+	b=hxMPoQRaaKAX8xVcKL6KDHl9YV0scIvaZjzGEFkoasmChLqGStNq5ntFMrBgnCqFx
+	 BKFqRFw3Yp8wZHxx2VO1SrXBvo74NJ9583gP9BOXwmqi9nHDRTKUGEzIlct8V4LnjR
+	 74JEoYqsQnToxi0gJ4KHQ8g5/xQD8qxemagDR0VYP+8WhNTB2FyXRupfKfee+R6FUM
+	 bTe6B0Zl8QEAzmGvKPqElAls5ekj2p5lmfAHGkW3aPKm32TaDO5nb3PNgFJIJxz+0w
+	 YaRINyAPqbu6nxoLRSxWy7Gyo9ZMJW8dvvhn0staLcSIbDTB2rAaD6G6RXI2/bvVFh
+	 JC2wB9nzeoOvQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
 	Luca Weiss <luca.weiss@fairphone.com>
 Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
-Date: Thu, 26 Dec 2024 12:26:46 -0600
-Message-ID: <173523761376.1412574.9908609145092222648.b4-ty@kernel.org>
+Subject: Re: [PATCH 0/2] Add missing parent_map to clocks in SM6350 clock drivers
+Date: Thu, 26 Dec 2024 16:38:40 -0600
+Message-ID: <173525273261.1449028.9949887980005310718.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
-References: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+In-Reply-To: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
+References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,17 +54,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 20 Dec 2024 09:59:50 +0100, Luca Weiss wrote:
-> The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
-> qup-config. Since the qup-memory path is not part of the qcom,geni-uart
-> bindings, just replace that path with the correct path for qup-config.
+On Fri, 20 Dec 2024 10:03:29 +0100, Luca Weiss wrote:
+> If a clk_rcg2 has a parent, it should also have parent_map defined,
+> otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+> on those clocks.
+> 
+> Correct this on clocks in both gcc-sm6350 and dispcc-sm6350.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
-      commit: be2f81eaa2c8e81d3de5b73dca5e133f63384cb3
+[1/2] clk: qcom: gcc-sm6350: Add missing parent_map for two clocks
+      commit: 96fe1a7ee477d701cfc98ab9d3c730c35d966861
+[2/2] clk: qcom: dispcc-sm6350: Add missing parent_map for a clock
+      commit: d4cdb196f182d2fbe336c968228be00d8c3fed05
 
 Best regards,
 -- 
