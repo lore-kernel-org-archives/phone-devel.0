@@ -1,66 +1,67 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946BE1F9ECF
-	for <phone-devel@vger.kernel.org>; Fri,  3 Jan 2025 11:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D471F9F4C
+	for <phone-devel@vger.kernel.org>; Fri,  3 Jan 2025 11:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735902729; cv=none; b=rhy5S5CutwY2widvrz2Rs7LwriihLGnoiaZn+6en1++bD8dOlkHvErT9KB2mi/N0/aWY5zH6wVnya8S7LOP27KUiVp+qX/pCD72OJ9Z2O7nvfvWoZ3UtPNHk7DeCVK/wAXY0WiLknslqJsEOWHT4J3NAQk3t0J2fO8KOMWsZiAE=
+	t=1735902730; cv=none; b=kmv6b+Ko4X9tOPmpS+nESqmpCf83tQS8sSRG9WucpA78yGIZmeAntt1YVfjzbfcklskUCSUod1WreloNcQ54q3jONrSB45ThDf9yUg8dox4trm01la3KntYNAbKnrJ7EazKlSO2C2DVF27BWMvaJVGIx3luL/3VPp8xBxKE7YDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735902729; c=relaxed/simple;
-	bh=9syiHfl5bY/+ZuerVXu4AD5kXE4TCvFe03fyh8+vtaw=;
+	s=arc-20240116; t=1735902730; c=relaxed/simple;
+	bh=hFrxBgJ07NatLLy+nIK/H0Io113gN4/rPtmjVt9wEEY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bq6qrwj1PLcXwGiGWoAfemDIpDybS9+o3TdHhES/ahEkfg9v9CQEstIWUzuCWCKiVT7ig53N7kd4mz0TS/zft6FkoGSBQUq6HlJIkm72R+3upi0XuXbexgI07YJUkxFW+AXsEG87cdc7OEpJobRArUXxuAWOI0yRKja80sIXukA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=3b24vBUc; arc=none smtp.client-ip=209.85.208.50
+	 In-Reply-To:To:Cc; b=cPaTvXiMz6N06+2js606qVT5Xxt28iHzjlmEaC6rNM5reX+sqUw829B9n2vlQNMXCmMpYV6eX6smW2dkkaqnDWLmr0q1tN7/ZPEyyyFNF+/Fs2tRCiugmNLXAdfn6sRkznkACkXeATCmwRMEnmxmFc2ozNj4mVhiej8sVs8vGY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=x7SfxGNA; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3b24vBUc"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d647d5df90so5729333a12.2
-        for <phone-devel@vger.kernel.org>; Fri, 03 Jan 2025 03:12:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="x7SfxGNA"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aa6a92f863cso2081953166b.1
+        for <phone-devel@vger.kernel.org>; Fri, 03 Jan 2025 03:12:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1735902724; x=1736507524; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1735902725; x=1736507525; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Kyyf31REfBMa8hAbzxypYy0avukSxSn2klPnuBIRiGs=;
-        b=3b24vBUcshzLE/LS9XP6AgERDFyybnplw3BHqeg9YT8j/s+X2ylkf6lh/QpH2m1iOl
-         ijBbX7EZeslfKwbFGKI7C9bzL7GHDviYTgWnRju7YQdxfaNGwJUzCZzvFSWcopZFx7xL
-         aSlUrYwwdbZ84CvvjUj3xQHkZGxYZu0JMae8SdpJRi6fqJEnAkySqfwO0OT/7hjlR6mc
-         ygx2wkq1ihUCfTV2Obbvspey5NNvIHgYz0D78IDLF4rKPkvP8gOxhrTpNSyvm4tiM3TE
-         mT60zcQmCb0Of/kWBO5f2rlgPN40UdbZdAqBDPtGr/5i/wNcMPoLv1n9vXBX94tT6uPc
-         d7jA==
+        bh=YHOvMibGbyPBOPoFr5QKh/wTDy8ZFQYsWy6HgvhHWug=;
+        b=x7SfxGNAuWCxuDecvpbjVDbPrrcHCJ/4J9ZqjFQ4L1iqfYBzFejVby5DJb6oXpnVnz
+         IG4hb+o/0q/tDsnnyu5jDgLZxa9dBfS7bRbZjaujRCo/4dj74BX36B4G8Tu8pv9XZg3k
+         nHOtImYW8byr+VfvKNP/U1Twy6MloDqrwMFnsX53Y5nUfglAhVlN29051RWVU8AutTeL
+         ZQCc8MlgM4pKg0Pj6XcBOkX96bPu5Nz4s/7ZOVd+DeC/DcXm17t/Lie8KnVnvd7Qk439
+         ++PaHkVQXPY9kNP4X6qX2Yt+H083Z5a9JhO88YXsb1QbQosa3DujL/qJu9jfF+EQRAtN
+         32Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735902724; x=1736507524;
+        d=1e100.net; s=20230601; t=1735902725; x=1736507525;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Kyyf31REfBMa8hAbzxypYy0avukSxSn2klPnuBIRiGs=;
-        b=wf4i48rRnN/1+3E8fKrzLQwCnC1ArAv8psJ+oqZKOEsZw9k9bsHsKTl3MfVP/aY4UZ
-         BsNtvK0ljsKHkx81mA7Mrupx1/V+70RR4TnCzkflIIPHkm+SWMlv/ZzDQ5OSRrJ92aYM
-         vsB5MHIUd//hFCN6+AS6Ml/RY1xYTHHBO0pl1hZLYiBMAJZeaKNqQt8poWhYtdA7len1
-         /XQ70bGIP383fpyxaW+OJdRxPLNEBnHrgs+tmHcVf9Ra+Z2+J9/G76N73vPcCUeiYgMB
-         U3qwdgEXqOpEQbf0icydRhwsSkxzcRjMSWKgbDTBpfCv4HlSrbP2r4DhtPd/eWOCy5Xz
-         nWlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWY09GgbH1MdOaAgmCSvQMvoAxCUGtgcF0wYtj6K2/irPa5/jnjXk4WxGuZiXmhI84/ViywhnnGOJpCgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGMpYVSXDYuSVGJV+2lMITis+D/lwo23V6rUXBRpJ3pI5Thu49
-	8OrxAbiaS/IvE4Xo9nSzeJ5lBgSKK4l5D6rBWDZmmb7BRvDYBlRac1iK2YozuEU=
-X-Gm-Gg: ASbGncudjwRzfwYCrpUni3gb5pIN73OQtsg1HR2Rzl4ab8GwqjuA6nL2ctxA/xlaqfO
-	yOLvUsuAtls0+RpefbdFnDOuxewSPpEJiGURevSE/Q4bAbZ87JJZ7FgwBAyjMysgdPVGDYJa+AC
-	jG/c1wfwsIY3PWykK+EpW5gvIfHuowwYhMUvUi6K4f6qugPnr4EwgGRJ85zNk+QYQejlHq3WTQ2
-	Ij9zAJId8SE3fTYw0xqigPqZlvom85DBcg0qsGkeIi2Rvvp1uQRURs5IGe8BUvr5YpTvM/G+dSQ
-	ZGikPB7/nGcmEXxlv5ANoe/gFg==
-X-Google-Smtp-Source: AGHT+IExS1Ap2K4zFzqvx1Mowb2othcDl78P9thYUgfIVS5DcvEsA3VQ8fR/5weNv3Ey9SlGemY5ZA==
-X-Received: by 2002:a17:907:7e8c:b0:aac:2128:c89e with SMTP id a640c23a62f3a-aac334f31fbmr5007224866b.43.1735902723800;
-        Fri, 03 Jan 2025 03:12:03 -0800 (PST)
+        bh=YHOvMibGbyPBOPoFr5QKh/wTDy8ZFQYsWy6HgvhHWug=;
+        b=gvfZYOCsmd+e7VLsYoR6xrDuHLS7R9ez0naeKYADvHV2+hSiGHusPFvJ6HmnJqb6EA
+         CUnYXpfL6Jv3mGbagS7FWD0IXv1lGqZ57WAFhKbuu360PHrjyr16Rfms32VqsoWBTbmQ
+         ohT9QSlp1Yo4LP5C7A2O8nut7aH6TewkFHbXkLqWfkpqF6z3hSbrxK+ORk9LpIlHq9JK
+         rgIq5YLHwO8hKSD1N38qxchA1As9v3//M+HQSdOlnqyaki5Lf3bDEaNsqQbTQpdOf9fj
+         uByWSiQP/X1weq0ZXacZItA1V/7TefTudmVPYdij1mmpplP83PbEG9/+clFbQONFUM01
+         AOOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSQvYY5pd2MdfiF7C8TSDSFHjecmhSHyPSgQwR4BqGAM5lQYESuIJQY0nR3Rr/7tqd59v/PD6faceQFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/YXF/zSJbDE/aQ8pWOFhp6daGaSexp0mNIgxMrOktUE/dDbEG
+	L+dotVPiJidIIUgQ7cp4C+eGHfBxQKyNBSCuw0n+1zicpKNCqwf4yuFGzcapZNj36QfXgM3zEd3
+	g
+X-Gm-Gg: ASbGnctLd7voTljfNakhrV6ce8T6AWPzZytdGTAO8V3K851+NDBnWuMNGUvROYpPqYh
+	n81Xsa5sihKRcvkgpnBdSLdrjNqCwpkrpmvFDy8k1dUwT6rcN6NQMxlxyd0ye+tV0EAGrFcY8nv
+	9yjs8WyRvFdnCyhLYuigpC5POIDJRGEkl1dJq2PiZujmxHDsKnHe2Gq/nLalzZV1YeQNNx9wYBZ
+	Scjthzf6p1a7ryoSdNPMGZefKWBgunvqxBtrqUnVfV03Sq1tUUJ+kDTvom9mF3Zsb7S7m6W6q30
+	YXp/W8LUxatcO1nRBz7PQURz9g==
+X-Google-Smtp-Source: AGHT+IFd8bCOiprfe2Wzx8rbAxGJwtv5TEfV+pliUKXxGJMY/Rwo3+ia2wgDHt5fi12mELrWPAU58w==
+X-Received: by 2002:a17:907:3607:b0:aa6:5910:49af with SMTP id a640c23a62f3a-aac2b6611c2mr4470650166b.24.1735902724669;
+        Fri, 03 Jan 2025 03:12:04 -0800 (PST)
 Received: from [192.168.178.188] (31-151-138-250.dynamic.upc.nl. [31.151.138.250])
         by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f066130sm1894101366b.183.2025.01.03.03.12.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2025 03:12:03 -0800 (PST)
+        Fri, 03 Jan 2025 03:12:04 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 03 Jan 2025 12:12:00 +0100
-Subject: [PATCH 4/5] arm64: dts: qcom: qcm6490-fairphone-fp5: Prefix
- regulator-fixed label
+Date: Fri, 03 Jan 2025 12:12:01 +0100
+Subject: [PATCH 5/5] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable camera
+ EEPROMs
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250103-fp5-cam-eeprom-v1-4-88dee1b36f8e@fairphone.com>
+Message-Id: <20250103-fp5-cam-eeprom-v1-5-88dee1b36f8e@fairphone.com>
 References: <20250103-fp5-cam-eeprom-v1-0-88dee1b36f8e@fairphone.com>
 In-Reply-To: <20250103-fp5-cam-eeprom-v1-0-88dee1b36f8e@fairphone.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
@@ -82,92 +83,69 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
 
-Add the common vreg_ prefix to the labels of the regulator-fixed. Also
-make sure the nodes are sorted alphabetically.
+Configure the EEPROMs which are found on the different camera sensors on
+this device.
+
+The pull-up regulator for these I2C busses is vreg_l6p, the same supply
+that powers VCC of all the EEPROMs.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 60 +++++++++++-----------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 41 ++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index fdc62f1b1c5a398abaa71818fdf2858fdc445d28..cc1f89a4015218b0ea06811d2acd4ec56078961e 100644
+index cc1f89a4015218b0ea06811d2acd4ec56078961e..769c66cb5d19dbf50e137b3a72de2e36ec4daecf 100644
 --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
 +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -108,6 +108,36 @@ pmic_glink_ss_in: endpoint {
- 		};
+@@ -556,6 +556,47 @@ vreg_bob: bob {
  	};
+ };
  
-+	vreg_afvdd_2p8: regulator-afvdd-2p8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "AFVDD_2P8";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
-+		gpio = <&tlmm 68 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&vreg_bob>;
-+	};
++&cci0 {
++	status = "okay";
++};
 +
-+	vreg_ois_avdd0_1p8: regulator-ois-avdd0-1p8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "OIS_AVDD0_1P8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		gpio = <&tlmm 157 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&vreg_bob>;
-+	};
++&cci0_i2c0 {
++	/* IMX800 @ 1a */
 +
-+	vreg_ois_dvdd_1p1: regulator-ois-dvdd-1p1 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "OIS_DVDD_1P1";
-+		regulator-min-microvolt = <1100000>;
-+		regulator-max-microvolt = <1100000>;
-+		gpio = <&tlmm 97 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&vreg_s8b>;
++	eeprom@50 {
++		compatible = "puya,p24c256c", "atmel,24c256";
++		reg = <0x50>;
++		vcc-supply = <&vreg_l6p>;
++		read-only;
 +	};
++};
 +
- 	reserved-memory {
- 		cont_splash_mem: cont-splash@e1000000 {
- 			reg = <0x0 0xe1000000 0x0 0x2300000>;
-@@ -134,36 +164,6 @@ rmtfs_mem: memory@f8500000 {
- 		};
- 	};
- 
--	ois_avdd0_1p8: regulator-ois-avdd0-1p8 {
--		compatible = "regulator-fixed";
--		regulator-name = "OIS_AVDD0_1P8";
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <1800000>;
--		gpio = <&tlmm 157 GPIO_ACTIVE_HIGH>;
--		enable-active-high;
--		vin-supply = <&vreg_bob>;
--	};
--
--	ois_dvdd_1p1: regulator-ois-dvdd-1p1 {
--		compatible = "regulator-fixed";
--		regulator-name = "OIS_DVDD_1P1";
--		regulator-min-microvolt = <1100000>;
--		regulator-max-microvolt = <1100000>;
--		gpio = <&tlmm 97 GPIO_ACTIVE_HIGH>;
--		enable-active-high;
--		vin-supply = <&vreg_s8b>;
--	};
--
--	afvdd_2p8: regulator-afvdd-2p8 {
--		compatible = "regulator-fixed";
--		regulator-name = "AFVDD_2P8";
--		regulator-min-microvolt = <2800000>;
--		regulator-max-microvolt = <2800000>;
--		gpio = <&tlmm 68 GPIO_ACTIVE_HIGH>;
--		enable-active-high;
--		vin-supply = <&vreg_bob>;
--	};
--
- 	thermal-zones {
- 		camera-thermal {
- 			polling-delay-passive = <0>;
++&cci0_i2c1 {
++	/* IMX858 @ 29 */
++
++	eeprom@54 {
++		compatible = "giantec,gt24p128f", "atmel,24c128";
++		reg = <0x54>;
++		vcc-supply = <&vreg_l6p>;
++		read-only;
++	};
++};
++
++&cci1 {
++	status = "okay";
++};
++
++&cci1_i2c1 {
++	/* S5KJN1SQ03 @ 10 */
++
++	eeprom@51 {
++		compatible = "giantec,gt24p128f", "atmel,24c128";
++		reg = <0x51>;
++		vcc-supply = <&vreg_l6p>;
++		read-only;
++	};
++};
++
+ &dispcc {
+ 	/* Disable for now so simple-framebuffer continues working */
+ 	status = "disabled";
 
 -- 
 2.47.1
