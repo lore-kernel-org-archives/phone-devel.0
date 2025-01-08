@@ -1,127 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385421F7554;
-	Wed,  8 Jan 2025 11:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B614F1A08CA;
+	Wed,  8 Jan 2025 21:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736337091; cv=none; b=OhyAbt6FcjmBf+Hz7OukgjwSIMxfZeyaslD5eJbnIUOHTclgB/Ulo4ley8NR17VnduRTjX/+i5SFkjYbljqB/Ot+z9nh0YIIFEREAYEeY5XcRTvHO5FE+INmLu6ZTrFgPmNMbMhAXB1UWpi5vM5bfSkE8vAVThfXiZ4zsFrFzTs=
+	t=1736372827; cv=none; b=pNo5h9UbT9ilxWGHnIfLIGqoqhZQsUiF4XkACH8sP+J5An7rVVkRV3euky8nOQ8bUaX/GIPsxStxBjKpp+uUcs1nEjAKZftW3ywTmKqX4jeC7C6Fz7NoIGvMhyHIAyQ29l3deRCIW7SqkSySERM9eur/e4qbUsMOt6SyjkJogKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736337091; c=relaxed/simple;
-	bh=rkKCHpvNGeFWh4x9a0HzXvY7gr+2ucLUjuhisunDK00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JsAf7AclSoyUjtnqjS+xVW4bZdTL8PO0mUvv87WZzISI/pA5do+MHviY7hIaEsxHGdaAVdQicCU1u8BbcztsUHPcI3fHMEcxrVEqC1vWrqoqUrTqWk9z/Oc2LZ6L1rXNnhF5SJfsiqqfXFsovgOpwrFsB/bzUYBbfZQ+d5RkYPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C/9/1IFw; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736372827; c=relaxed/simple;
+	bh=r6TPsiFF9469TCcU3lNiHDvfYSv19Wi3PmkcVGVqjG4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Tk6IW2TsB9fkVBmySfhgoCstGPdJNsPT75NSqKf5qRS79yQcvvWggsgBM02V77WJcWEuDy3Xn0V/8zyPOF57sNSsllUGnbcN+IPavL8tdnj7maJbgsjzMk+k3AqxGWPvmXBbqcA0quckAJq7N1ymUpOOAaWE8VhxkwPl8mMyT9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=sRqcOyYx; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C/9/1IFw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736337089; x=1767873089;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rkKCHpvNGeFWh4x9a0HzXvY7gr+2ucLUjuhisunDK00=;
-  b=C/9/1IFw11XZC9RJWPxV5V+KXxrTCMcjX1h740HrsTMmDhQ4j/qtNjzB
-   zeJgBYC2MTcDlw/Kvvt5RJrmPRCJ3o+m74+zBogGeh+KiSDHAmUIVG3eh
-   455ZLybRv3Z0XSfcmkjwjJxVuIgqlmnkFrHtj+1mL4Kb36C11DTxgaXge
-   sGB8YGTceWErfWj8VsivSF82SUdh8X8iooQLX7+9IoX/0Y7ZVMJOdC5Xe
-   ZXowL5+yyAT2IH6PTQMNiEsbs+02bkTIQHYM+coyrnE0rAie5e4H7rhrZ
-   jh2F6YUj2VVcMXi6wjTQPFEql18PtVGKBzn9c8/B6BHdVQvVvSPOKzpca
-   w==;
-X-CSE-ConnectionGUID: TbcKcoksQYWEz5yiYANpDA==
-X-CSE-MsgGUID: WWKyNsEKS0WjOgagWXL0LA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36440623"
-X-IronPort-AV: E=Sophos;i="6.12,298,1728975600"; 
-   d="scan'208";a="36440623"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 03:51:25 -0800
-X-CSE-ConnectionGUID: TKwn/y2wSQCWJ0qmYOM4Pw==
-X-CSE-MsgGUID: b1v4x6QGRLOqBn2zppSZBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="103581416"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 03:51:22 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id CD31011F8DF;
-	Wed,  8 Jan 2025 13:51:19 +0200 (EET)
-Date: Wed, 8 Jan 2025 11:51:19 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Vincent Knecht <vincent.knecht@mailoo.org>,
-	Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH v6 12/13] media: i2c: imx214: Fix clock handling on probe
- error or remove
-Message-ID: <Z35mt_ViYmrJLKZb@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="sRqcOyYx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=r3rUZgXCoX0ABltQexniZOiDWtUMtA6NHy3vAUGQcUw=; b=sRqcOyYx3gTB+Qqt3k/9cU1VEX
+	2yQB7USOYKLEXd+bOWzAboesFyicENH5ZFhvBt71w/7r3afJE+EEG00Hyzcywwi9apdZA8PJjgZ6r
+	0QAaqlSBY535KBTjk/MNGJQtdb75eN+duYNr/Y4eri6XPNDx9QH6Svo2VBah7SIh1X5/7iKFxM05K
+	T4xSmXik13lvX2OXlMDzPehuoKq2waTTZ5KaL8Wpkjab+l+0iNx1eb+3SsOp/086k0l1cu03K2oWx
+	LVRpgj7HXzNktsX9b+WAAKWGQ61Y/4mQeiYxBwEAHTqin7qW7nPAl8KdVASu3lZh5zM5Be9yvAjeD
+	jnTW3Mxg==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1tVdt6-000Bot-36;
+	Wed, 08 Jan 2025 22:46:53 +0100
+Received: from [77.64.252.250] (helo=framework.lan)
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1tVdt6-0006hV-2D;
+	Wed, 08 Jan 2025 22:46:52 +0100
+Message-ID: <97f7de9efc16f01b29f98dc888329db33715275c.camel@apitzsch.eu>
+Subject: Re: [PATCH v6 12/13] media: i2c: imx214: Fix clock handling on
+ probe error or remove
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Ricardo Ribalda <ribalda@kernel.org>, Mauro Carvalho Chehab	
+ <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Dave Stevenson
+ <dave.stevenson@raspberrypi.com>,  Vincent Knecht
+ <vincent.knecht@mailoo.org>, Ricardo Ribalda <ribalda@chromium.org>
+Date: Wed, 08 Jan 2025 22:46:51 +0100
+In-Reply-To: <Z35mt_ViYmrJLKZb@kekkonen.localdomain>
 References: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
- <20241220-imx214-v6-12-d90a185d82e5@apitzsch.eu>
+	 <20241220-imx214-v6-12-d90a185d82e5@apitzsch.eu>
+	 <Z35mt_ViYmrJLKZb@kekkonen.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241220-imx214-v6-12-d90a185d82e5@apitzsch.eu>
+X-Authenticated-Sender: andre@apitzsch.eu
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27512/Wed Jan  8 10:41:20 2025)
 
-Hi André,
+Hi Sakari,
 
-Thanks for the update.
+Am Mittwoch, dem 08.01.2025 um 11:51 +0000 schrieb Sakari Ailus:
+> Hi Andr=C3=A9,
+>=20
+> Thanks for the update.
+>=20
+> On Fri, Dec 20, 2024 at 02:26:11PM +0100, Andr=C3=A9 Apitzsch via B4 Rela=
+y
+> wrote:
+> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> >=20
+> > The driver should disable or unprepare the clock on probe error and
+> > on
+> > removing the module.
+> >=20
+> > Remove regulator_bulk_disable(), because it is called by
+> > imx214_power_off().
+> >=20
+> > Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+>=20
+> This and the next one appear to be bugfixes. I think it'd be
+> reasonable to backport them. Any idea where this got broken, for the
+> Fixes: tag?
+> The bug fixed by the last patch was probably introduced with the
+> driver?
+>=20
 
-On Fri, Dec 20, 2024 at 02:26:11PM +0100, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
-> 
-> The driver should disable or unprepare the clock on probe error and on
-> removing the module.
-> 
-> Remove regulator_bulk_disable(), because it is called by
-> imx214_power_off().
-> 
-> Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+I think both, the missing imx214_power_off() and the wrong link
+frequency where introduced with
+> 436190596241 ("media: imx214: Add imx214 camera sensor driver")
 
-This and the next one appear to be bugfixes. I think it'd be reasonable to
-backport them. Any idea where this got broken, for the Fixes: tag? The bug
-fixed by the last patch was probably introduced with the driver?
+The first one could also be considered as a fix for the incomplete
+> 9bc92332cc3f ("media: imx214: Fix the error handling in imx214_probe()")
 
-> ---
->  drivers/media/i2c/imx214.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index 96d05acfeb66480770bb6291027dd023fdccb649..e8d35f8b0f8b57d64f03ff6f5ed9eac51a671e8e 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -1340,7 +1340,7 @@ static int imx214_probe(struct i2c_client *client)
->  	v4l2_ctrl_handler_free(&imx214->ctrls);
->  error_power_off:
->  	pm_runtime_disable(imx214->dev);
-> -	regulator_bulk_disable(IMX214_NUM_SUPPLIES, imx214->supplies);
-> +	imx214_power_off(dev);
->  
->  	return ret;
->  }
-> @@ -1356,6 +1356,8 @@ static void imx214_remove(struct i2c_client *client)
->  	v4l2_ctrl_handler_free(&imx214->ctrls);
->  
->  	pm_runtime_disable(&client->dev);
-> +	if (!pm_runtime_status_suspended(&client->dev))
-> +		imx214_power_off(&client->dev);
->  	pm_runtime_set_suspended(&client->dev);
->  }
->  
-> 
+Shall I submit a new version with the Fixes: tag?
 
--- 
 Regards,
+Andr=C3=A9
 
-Sakari Ailus
+> > ---
+> > =C2=A0drivers/media/i2c/imx214.c | 4 +++-
+> > =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/media/i2c/imx214.c
+> > b/drivers/media/i2c/imx214.c
+> > index
+> > 96d05acfeb66480770bb6291027dd023fdccb649..e8d35f8b0f8b57d64f03ff6f5
+> > ed9eac51a671e8e 100644
+> > --- a/drivers/media/i2c/imx214.c
+> > +++ b/drivers/media/i2c/imx214.c
+> > @@ -1340,7 +1340,7 @@ static int imx214_probe(struct i2c_client
+> > *client)
+> > =C2=A0	v4l2_ctrl_handler_free(&imx214->ctrls);
+> > =C2=A0error_power_off:
+> > =C2=A0	pm_runtime_disable(imx214->dev);
+> > -	regulator_bulk_disable(IMX214_NUM_SUPPLIES, imx214-
+> > >supplies);
+> > +	imx214_power_off(dev);
+> > =C2=A0
+> > =C2=A0	return ret;
+> > =C2=A0}
+> > @@ -1356,6 +1356,8 @@ static void imx214_remove(struct i2c_client
+> > *client)
+> > =C2=A0	v4l2_ctrl_handler_free(&imx214->ctrls);
+> > =C2=A0
+> > =C2=A0	pm_runtime_disable(&client->dev);
+> > +	if (!pm_runtime_status_suspended(&client->dev))
+> > +		imx214_power_off(&client->dev);
+> > =C2=A0	pm_runtime_set_suspended(&client->dev);
+> > =C2=A0}
+> > =C2=A0
+> >=20
+>=20
+
