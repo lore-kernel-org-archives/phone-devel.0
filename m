@@ -1,85 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9305215174;
-	Thu,  9 Jan 2025 09:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67600747F;
+	Thu,  9 Jan 2025 18:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736413245; cv=none; b=b1AQp7LvDuUgECEYMH/Qvp3XFCuBLylI83DJgIWoNhSW3WK26Pv90x/fGO40ALaOg7lyae7qj8JsQc+1MYl7xesBlSbngR+R6D3FS7WeVtcq3FevHouWbDYLbn7OYoTSeVnEYVRLTS6tQifZ3fLU1LODoPlr3wprSWr3CdVFg6Y=
+	t=1736447256; cv=none; b=dHNfjhHwkaGuMhHsVfRs/y41g+L5mnzyJIVnfkvx5EKTG96Ipuv7LgrmfOAqRqGFIxF7qswdxFyz7j+4cfqZuYQZl7pEZ872OBGrOot6g6uvKdq8Iwm2CiKvGaGTv3h5jxPjUQL0WvXUZeglJf12esOSvZQzXWGsKLkBsi+4cMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736413245; c=relaxed/simple;
-	bh=USCkgBQ9KyquEqcMudtRMLLW99ZXwdRI7dKuUpJh4x0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E0i8iD0U3H09gVKF1JphD9Pnj3uYoG5jlze2q0ssOIqAfxnKRXD9nnI18P0Y44esY+clhXq0IDF2zPwdAHoyvkftIFjt8Gh+KpXnrkWA4aeeFHI8dajk91yd69NEXizgEXY1JWEClZbIsgbZA99B3YVBQdD1u0rODmLOdt4sXRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XsbaJUIk; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1736447256; c=relaxed/simple;
+	bh=7JtRwBFwNzluzPUJ5J3s1vtEzB6xDdjOI1Uuu7gw8zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DZoyg8eulL9jeTizGk5TScpEYafEJP4GcstO5lemU/dWsGJF9dxcXRlCSkRy+9HQKRetYtPlfe+sm6piAcVzTA7d92D74BOx7bSaUB9WisIrpAtu60cspPqvSpg3/YJWzqyB3smTeVMfN7NecnoBoNvBRfRHR1KxDYCkPRehvfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ln4eXpGa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XsbaJUIk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736413244; x=1767949244;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=USCkgBQ9KyquEqcMudtRMLLW99ZXwdRI7dKuUpJh4x0=;
-  b=XsbaJUIkGJkyllEtjaY6hKzu+Dxv9pT3pJRbs24tpj6DLMyHMJF1VXkM
-   N6cKk8fNDrMDS6rlFPOCPVgeZ9GCSdFWpu8fSMGCRTneZIu+vP7O3mz9E
-   ouKJI3IV66J0xMIFRivUtIDA6O++70/FeAp16HpyfBlQyYH2/ta95I1cb
-   hqG6k+8afKmVwYsajYarE5UqznrN9Q0SHBOGjta5ruxnapIM2sHot5oSr
-   TMOVQkGHcb5HsqrAGaamaio92EMbJjxNZSpze8376k6vC/CUhSGyZz/91
-   QzmmL93a21WZ/iDtUj4H3+cjul0vK2M5yD6qIQk4Yv0VrShnw60vMgBrK
-   A==;
-X-CSE-ConnectionGUID: dZ22xcuqT3eoBavCKDms9g==
-X-CSE-MsgGUID: UzOcDm6rQCGEINh95cC0Hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="24268100"
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="24268100"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 01:00:37 -0800
-X-CSE-ConnectionGUID: i2wKbr4UR/S5g4j1jmeucA==
-X-CSE-MsgGUID: eM6AzgLRT626GI4zhURkzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="103414554"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 01:00:34 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 0297E1201CA;
-	Thu,  9 Jan 2025 11:00:31 +0200 (EET)
-Date: Thu, 9 Jan 2025 09:00:31 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Vincent Knecht <vincent.knecht@mailoo.org>,
-	Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH v6 12/13] media: i2c: imx214: Fix clock handling on probe
- error or remove
-Message-ID: <Z3-QLyxKOSizbBoi@kekkonen.localdomain>
-References: <20241220-imx214-v6-0-d90a185d82e5@apitzsch.eu>
- <20241220-imx214-v6-12-d90a185d82e5@apitzsch.eu>
- <Z35mt_ViYmrJLKZb@kekkonen.localdomain>
- <97f7de9efc16f01b29f98dc888329db33715275c.camel@apitzsch.eu>
- <Z3-P__hmxn2uCd_t@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ln4eXpGa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C93C4CEDF;
+	Thu,  9 Jan 2025 18:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736447255;
+	bh=7JtRwBFwNzluzPUJ5J3s1vtEzB6xDdjOI1Uuu7gw8zk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ln4eXpGacDQ6+hfhHqR1cdfUczJHN+8UyRBuv9KpRskxY2rQkMmduRWuPBe0pfCH2
+	 uE1H+U8d+Sr0wTgRBR70gI0ewYG158CJ17jiq876WMJcO+5e6tKW0zYIfJdDtnVwrx
+	 7ZzW6/2EDPYf8Qr0ggvyZNhpfQ0uNtqQs8DR3SWWleJr+pIwv5wOT07/HbuG53K8VK
+	 lmqek9nBd2IJcTER1s1kPuozdYgA6P9UvjUi6tCInSzY7Mw2BCUo6vphl5iAtv0nJp
+	 8GYtD9t/6k125ZFiD0lIKsupWktN6L+GrFeq7V+VWRZas0k5SUhjDgXe+kz6/vg1vq
+	 6EQBVKwxPgKJw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Jakob Hauser <jahau@rocketmail.com>
+Cc: Stephan Gerhold <stephan@gerhold.net>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add display panel
+Date: Thu,  9 Jan 2025 12:27:31 -0600
+Message-ID: <173644724816.201886.7766873886728208466.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241114220718.12248-1-jahau@rocketmail.com>
+References: <20241114220718.12248-1-jahau.ref@rocketmail.com> <20241114220718.12248-1-jahau@rocketmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z3-P__hmxn2uCd_t@kekkonen.localdomain>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 09, 2025 at 08:59:43AM +0000, Sakari Ailus wrote:
-> I tried to find a good example but the few I found are buggy. :-( Getting
-> runtime PM right is just hard. I'll drop the last patch and post another to
 
-I meant to say this patch, not the last one.
+On Thu, 14 Nov 2024 23:07:18 +0100, Jakob Hauser wrote:
+> Add the Samsung S6E88A0-AMS427AP24 panel to the device tree for the
+> Samsung Galaxy S4 Mini Value Edition. By default the panel displays
+> everything horizontally flipped, so add "flip-horizontal" to the panel
+> node to correct that.
+> 
+> 
 
+Applied, thanks!
+
+[1/1] arm64: dts: qcom: msm8916-samsung-serranove: Add display panel
+      commit: 46316370e9257647d81c13782a6201a2256d6f1d
+
+Best regards,
 -- 
-Sakari Ailus
+Bjorn Andersson <andersson@kernel.org>
