@@ -1,24 +1,43 @@
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D517E22C9EC;
-	Thu, 16 Jan 2025 15:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99C3242266;
+	Thu, 16 Jan 2025 20:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737043053; cv=none; b=AwnRv+zWU7nTC2izwt6sWgdjW/xeH0jVKOXxOwjrdVp1XQfTR/kAJwfjar6nflXRS5XqdYBdDATFMDBuqmn6EyZjprX/s+xb1gS/R0vVL7DrHHwt6w5UJi4VDNLi5IxsMYeC8e6WYS52TX45pCZbt6LC4xQoMWbPn6mjIam3N6I=
+	t=1737058938; cv=none; b=Hhpz9EBY+BYDJ6K3iinOm2AxnG84HHVm1bRFIKdyWgPWQG759YQd498Taqm/aSOzrS8Cp/Jf/A94xRgxmRaPuHx6wxHEU0MjQ0NBSaeRgpgbbo++RsgFjmLM6FlIcnc6V3QpH4leSHzuFq+6DfngzSxHt2jxXD/PCW4QJYdnDSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737043053; c=relaxed/simple;
-	bh=pp53PsG2bW5UFxFqYOwl6ysQE+WIcRtaUgsyKfrRfKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rtNNv8lee3McU7V94k5aotiHi+96cGpjfpvMB19oZMilJd679kBk+2dDerkoDxfBXrhBChNyssDP9XjmisC1x835DADeo+E8JvIUos66vpGUhuz2D3MvTjjc0jLmvXuh+wUrnPucV3628Gc0Holg069tNL4dJRYFSx46JUmJcq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id 537F18346A;
-	Thu, 16 Jan 2025 16:50:10 +0100 (CET)
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
-To: Krzysztof Kozlowski <krzk@kernel.org>
+	s=arc-20240116; t=1737058938; c=relaxed/simple;
+	bh=nGJTLwgpB/FlwoIGVV1Okt3gljaY5aC8mYTIJ011MkA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBpcE5t7B9dcDJ2mrJSyryF29v/VsKw/BZbqeDGRn1Xxv8YkM6Hqm8wCaul+INSLgkI0x41LfHIvE90HnM/c0NJ3qNGqmXGmLsKR9EGCUeGaROCN3tkrJTgVBhnJ7d9SRnejZElTJ9Z4Eux1V0hDWpofUyAdt5U1++zpZ+I7pKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8rC1KPC; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8rC1KPC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57ADDC4CED6;
+	Thu, 16 Jan 2025 20:22:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737058937;
+	bh=nGJTLwgpB/FlwoIGVV1Okt3gljaY5aC8mYTIJ011MkA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=u8rC1KPCqxyQyhi6buwXRM357Gsl/1QWkhFtqQnOcWKkt1HUp9EWSS9a9M6+QdUq1
+	 L5QCTWY7Q7pGcusC1MiWLKQHikLYOEOngKuKDLDrNEGSJOLLzMb+46DpfcrtgS8GBk
+	 hz7mLOVetSSPVSfCwURYgaywSv5yDZvd/cM7saudqazb6zVi0BAAAPrpfLY2ZgMVfZ
+	 c0+tj/e0fNASpHgDhlM96njxU5cJuPF01zCyFopwqA7DRfIx+QFEG4PIObIO3os0bk
+	 b/cIC9r+DnknUb787mraMHi9/iMU5t7gh+3TU67My+Fwroj9nkNA54rpvFEjmdm0XO
+	 UTbL376vLNP4Q==
+Message-ID: <698cd1aa-6403-44be-9764-fbfa1db7f25e@kernel.org>
+Date: Thu, 16 Jan 2025 21:22:09 +0100
+Precedence: bulk
+X-Mailing-List: phone-devel@vger.kernel.org
+List-Id: <phone-devel.vger.kernel.org>
+List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 4/4] MAINTAINERS: add myself as Marvell PXA1908
+ maintainer
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -30,98 +49,95 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
  phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject:
- Re: [PATCH v14 4/4] MAINTAINERS: add myself as Marvell PXA1908 maintainer
-Date: Thu, 16 Jan 2025 16:47:29 +0100
-Message-ID: <2969840.e9J7NaK4W3@radijator>
-In-Reply-To: <oapsqjdop3szi7zfwiyy65ty65gz3uid6cc4lfao22o4d6amjd@bmfkt2wnmlom>
-References:
- <20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr>
+References: <20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr>
  <20250115-pxa1908-lkml-v14-4-847d24f3665a@skole.hr>
  <oapsqjdop3szi7zfwiyy65ty65gz3uid6cc4lfao22o4d6amjd@bmfkt2wnmlom>
-Precedence: bulk
-X-Mailing-List: phone-devel@vger.kernel.org
-List-Id: <phone-devel.vger.kernel.org>
-List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Autocrypt: addr=duje.mihanovic@skole.hr;
- keydata=
- mDMEZokhzhYJKwYBBAHaRw8BAQdAWJZ0hsI/ytTqHGFV8x6tzd5sB596cTeeDB4CQsTf+wC0KER
- 1amUgTWloYW5vdmnEhyA8ZHVqZUBkdWplbWloYW5vdmljLnh5ej6ImQQTFgoAQRYhBG3/QdYN8x
- S1t2umMK0xk1JFj60DBQJmiSHOAhsDBQkJZgGABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAA
- AoJEK0xk1JFj60D1GABAJVSorZdMOlrp/oQtCSH/G53NE56x/JHA8VX+ZQBd/H3AP4/EcUf6eef
- DUxVMh2bdkmuQKsVZGgOGiXpMksrVntWBrQpRHVqZSBNaWhhbm92acSHIDxkdWplLm1paGFub3Z
- pY0Bza29sZS5ocj6ImQQTFgoAQRYhBG3/QdYN8xS1t2umMK0xk1JFj60DBQJmiSH/AhsDBQkJZg
- GABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEK0xk1JFj60Dlw8A/i4lPOL7NaYoYePDq
- l8MaJaR9qoUi+D+HtD3t0Koi7ztAQCdizXbuqP3AVNxy5Gpb1ozgp9Xqh2MRcNmJCHA1YhWAbg4
- BGaJIc4SCisGAQQBl1UBBQEBB0DEc9JeA55OlZfWKgvmRgw6a/EpBQ8mDl6nQTBmnd1XHAMBCAe
- IfgQYFgoAJhYhBG3/QdYN8xS1t2umMK0xk1JFj60DBQJmiSHOAhsMBQkJZgGAAAoJEK0xk1JFj6
- 0DG5MA/iuo4l2GDEZ1Zf+XaS//8FwdXDO9nHkfbV2MHjF4NZXwAQDroMzBdMcqVvc8GABFlTTgG
- j7KrRDz2HwWNyF8ZeprAQ==
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+ <2969840.e9J7NaK4W3@radijator>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <2969840.e9J7NaK4W3@radijator>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thursday 16 January 2025 08:56:24 Central European Standard Time Krzyszt=
-of=20
-Kozlowski wrote:
-> On Wed, Jan 15, 2025 at 09:35:57PM +0100, Duje Mihanovi=C4=87 wrote:
-> > Add myself as the maintainer for Marvell PXA1908 SoC support.
-> >=20
-> > Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> > ---
-> >=20
-> >  MAINTAINERS | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index
-> >=20
-a87ddad78e26f28ffd0f3433560d6db1518f9f95..caa5f6b96251a3da0f3f9d2f760b38288
-> > eb23ab3 100644 --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -2624,6 +2624,15 @@ F:	drivers/irqchip/irq-mvebu-*
-> >=20
-> >  F:	drivers/pinctrl/mvebu/
-> >  F:	drivers/rtc/rtc-armada38x.c
-> >=20
-> > +ARM/Marvell PXA1908 SOC support
-> > +M:	Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> > +L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> > +S:	Maintained
-> > +T:	git https://gitlab.com/LegoLivesMatter/linux
->=20
-> Not sure if this was mentioned ever (it is v14, so it is likely) but if
-> that was not clear:
->=20
-> Pull requests from non-kernel.org repos must be signed and your key must
-> be in kernel.org keyring. Please get your key signed
-> (meetups/conferences/keysigning map/video confcalls) and submitted to
-> the keyring.
->=20
-> Patchset should be sent to soc@, as expressed in soc@ maintainer
-> profile.
->=20
-> Unless this is not going to be merged by soc@, but someone from Marvell
-> maintainers, but then please drop the repo. Git repos here are for
-> managing patches.
+On 16/01/2025 16:47, Duje Mihanović wrote:
+>>>
+>>> +ARM/Marvell PXA1908 SOC support
+>>> +M:	Duje Mihanović <duje.mihanovic@skole.hr>
+>>> +L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>>> +S:	Maintained
+>>> +T:	git https://gitlab.com/LegoLivesMatter/linux
+>>
+>> Not sure if this was mentioned ever (it is v14, so it is likely) but if
+>> that was not clear:
+>>
+>> Pull requests from non-kernel.org repos must be signed and your key must
+>> be in kernel.org keyring. Please get your key signed
+>> (meetups/conferences/keysigning map/video confcalls) and submitted to
+>> the keyring.
+>>
+>> Patchset should be sent to soc@, as expressed in soc@ maintainer
+>> profile.
+>>
+>> Unless this is not going to be merged by soc@, but someone from Marvell
+>> maintainers, but then please drop the repo. Git repos here are for
+>> managing patches.
+> 
+> I didn't know about Git repos being used for patch management, thanks for 
+> letting me know.
+> 
+> I believe this is best merged by soc@ since it is not mvebu and is the first 
+> arm64 MMP to be merged. However, for various reasons I'd prefer not to have my 
+> key signed quite yet, so would it be possible for this to get merged through 
+> soc@ if I removed the repo?
+Merging this now is independent of signed keys, so there is no problem
+in that.
+But after that, if you are maintainer handling patches, then the repo
+url would be useful here. It would be used for picking up patches,
+because it's you who supposed to do that. SoC is not for patches from
+contributors. In general SoC is only for other maintainers.
 
-I didn't know about Git repos being used for patch management, thanks for=20
-letting me know.
-
-I believe this is best merged by soc@ since it is not mvebu and is the firs=
-t=20
-arm64 MMP to be merged. However, for various reasons I'd prefer not to have=
- my=20
-key signed quite yet, so would it be possible for this to get merged throug=
-h=20
-soc@ if I removed the repo?
-
-Also, I will certainly add soc@ to the Cc list in v15.
-
-Regards,
-=2D-=20
-Duje
-
-
-
+Best regards,
+Krzysztof
