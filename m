@@ -1,22 +1,22 @@
-Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3947324A7F6;
-	Thu, 16 Jan 2025 15:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D517E22C9EC;
+	Thu, 16 Jan 2025 15:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737041722; cv=none; b=AV9Ht9B7chk96rurVGUKHPj10yln7eScQKLtw9MGqFb1MGgdCDSufN1931ysPhXFy9nX2bKpOiAPBiL+4bs0ZyLiNNlf/XI6QPnOVxO/tED3AFLzvulRH+zmZ5d00WLilbWuXXNmCm6SwcfynVku9liVwXNd2AskqoxRptDXtvs=
+	t=1737043053; cv=none; b=AwnRv+zWU7nTC2izwt6sWgdjW/xeH0jVKOXxOwjrdVp1XQfTR/kAJwfjar6nflXRS5XqdYBdDATFMDBuqmn6EyZjprX/s+xb1gS/R0vVL7DrHHwt6w5UJi4VDNLi5IxsMYeC8e6WYS52TX45pCZbt6LC4xQoMWbPn6mjIam3N6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737041722; c=relaxed/simple;
-	bh=rsInXZsOBmuQayw/szjA6bBIcpvuRkQLjrjIPLqPAjE=;
+	s=arc-20240116; t=1737043053; c=relaxed/simple;
+	bh=pp53PsG2bW5UFxFqYOwl6ysQE+WIcRtaUgsyKfrRfKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p8zsEuRazoAYvDzEbAnstaXQq3owuHyLCyC51qs/jA/cE1FHHMYeAYn8XMSwOUJFZva8nGMv9/enbpVm/IPiMLmt4stpjJvdMVR1fXFD3o3xua9fiWLYJxEZ/8Jb3QEvG1P/xCJvRidkU66tn8LfwURDzmi6AuqS7tvCxNNFbZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
+	 MIME-Version:Content-Type; b=rtNNv8lee3McU7V94k5aotiHi+96cGpjfpvMB19oZMilJd679kBk+2dDerkoDxfBXrhBChNyssDP9XjmisC1x835DADeo+E8JvIUos66vpGUhuz2D3MvTjjc0jLmvXuh+wUrnPucV3628Gc0Holg069tNL4dJRYFSx46JUmJcq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id A2BCD820FB;
-	Thu, 16 Jan 2025 16:29:46 +0100 (CET)
+Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id 537F18346A;
+	Thu, 16 Jan 2025 16:50:10 +0100 (CET)
 From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -31,15 +31,14 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
  phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 Subject:
- Re: [PATCH v14 3/4] arm64: dts: Add DTS for Marvell PXA1908 and
- samsung,coreprimevelte
-Date: Thu, 16 Jan 2025 16:26:59 +0100
-Message-ID: <5849160.DvuYhMxLoT@radijator>
-In-Reply-To: <ct7q2eaps2m2ceghiek2pmb7yhd5it6s53moumfncnyq4d4zmw@fmtoyyn3j5t2>
+ Re: [PATCH v14 4/4] MAINTAINERS: add myself as Marvell PXA1908 maintainer
+Date: Thu, 16 Jan 2025 16:47:29 +0100
+Message-ID: <2969840.e9J7NaK4W3@radijator>
+In-Reply-To: <oapsqjdop3szi7zfwiyy65ty65gz3uid6cc4lfao22o4d6amjd@bmfkt2wnmlom>
 References:
  <20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr>
- <20250115-pxa1908-lkml-v14-3-847d24f3665a@skole.hr>
- <ct7q2eaps2m2ceghiek2pmb7yhd5it6s53moumfncnyq4d4zmw@fmtoyyn3j5t2>
+ <20250115-pxa1908-lkml-v14-4-847d24f3665a@skole.hr>
+ <oapsqjdop3szi7zfwiyy65ty65gz3uid6cc4lfao22o4d6amjd@bmfkt2wnmlom>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -63,61 +62,62 @@ Autocrypt: addr=duje.mihanovic@skole.hr;
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
 
-On Thursday 16 January 2025 09:00:40 Central European Standard Time Krzyszt=
+On Thursday 16 January 2025 08:56:24 Central European Standard Time Krzyszt=
 of=20
 Kozlowski wrote:
-> On Wed, Jan 15, 2025 at 09:35:56PM +0100, Duje Mihanovi=C4=87 wrote:
-> > Add DTS for Marvell PXA1908 SoC and Samsung Galaxy Core Prime Value
-> > Edition LTE, a smartphone based on said SoC.
+> On Wed, Jan 15, 2025 at 09:35:57PM +0100, Duje Mihanovi=C4=87 wrote:
+> > Add myself as the maintainer for Marvell PXA1908 SoC support.
 > >=20
 > > Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
 > > ---
 > >=20
-> >  arch/arm64/boot/dts/marvell/Makefile               |   3 +
-> >  .../dts/marvell/pxa1908-samsung-coreprimevelte.dts | 336
-> >  +++++++++++++++++++++ arch/arm64/boot/dts/marvell/pxa1908.dtsi        =
-  =20
-|
-> >  300 ++++++++++++++++++ 3 files changed, 639 insertions(+)
+> >  MAINTAINERS | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
 > >=20
-> > diff --git a/arch/arm64/boot/dts/marvell/Makefile
-> > b/arch/arm64/boot/dts/marvell/Makefile index
-> > ce751b5028e2628834340b5c50f8992092226eba..
-39c5749e631db33aa8fb0386a951c0a70
-> > 215bc02 100644 --- a/arch/arm64/boot/dts/marvell/Makefile
-> > +++ b/arch/arm64/boot/dts/marvell/Makefile
-> > @@ -32,3 +32,6 @@ dtb-$(CONFIG_ARCH_MVEBU) +=3D cn9130-cf-base.dtb
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index
 > >=20
-> >  dtb-$(CONFIG_ARCH_MVEBU) +=3D cn9130-cf-pro.dtb
-> >  dtb-$(CONFIG_ARCH_MVEBU) +=3D cn9131-cf-solidwan.dtb
-> >  dtb-$(CONFIG_ARCH_MVEBU) +=3D cn9132-clearfog.dtb
+a87ddad78e26f28ffd0f3433560d6db1518f9f95..caa5f6b96251a3da0f3f9d2f760b38288
+> > eb23ab3 100644 --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2624,6 +2624,15 @@ F:	drivers/irqchip/irq-mvebu-*
 > >=20
-> > +
-> > +# MMP SoC Family
-> > +dtb-$(CONFIG_ARCH_MMP) +=3D pxa1908-samsung-coreprimevelte.dtb
+> >  F:	drivers/pinctrl/mvebu/
+> >  F:	drivers/rtc/rtc-armada38x.c
+> >=20
+> > +ARM/Marvell PXA1908 SOC support
+> > +M:	Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+> > +L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> > +S:	Maintained
+> > +T:	git https://gitlab.com/LegoLivesMatter/linux
 >=20
-> Hm, why separate ARCH if this is part of Marvell Makefile? One ARCH per
-> vendor, so if you think this is different than MVEBU, then should be in
-> a separate subdirectory of marvell.
-
-I see, for v15 I'll put these in a mmp/ subdir.
-
-> > +
-> > +		ramoops@8100000 {
-> > +			compatible =3D "ramoops";
-> > +			reg =3D <0 0x8100000 0 0x40000>;
-> > +			record-size =3D <0x8000>;
-> > +			console-size =3D <0x20000>;
-> > +			max-reason =3D <5>;
-> > +		};
-> > +	};
-> > +
-> > +
+> Not sure if this was mentioned ever (it is v14, so it is likely) but if
+> that was not clear:
 >=20
-> If there is going to be resend/new version:
-> Just one blank line.
+> Pull requests from non-kernel.org repos must be signed and your key must
+> be in kernel.org keyring. Please get your key signed
+> (meetups/conferences/keysigning map/video confcalls) and submitted to
+> the keyring.
+>=20
+> Patchset should be sent to soc@, as expressed in soc@ maintainer
+> profile.
+>=20
+> Unless this is not going to be merged by soc@, but someone from Marvell
+> maintainers, but then please drop the repo. Git repos here are for
+> managing patches.
 
-Will fix.
+I didn't know about Git repos being used for patch management, thanks for=20
+letting me know.
+
+I believe this is best merged by soc@ since it is not mvebu and is the firs=
+t=20
+arm64 MMP to be merged. However, for various reasons I'd prefer not to have=
+ my=20
+key signed quite yet, so would it be possible for this to get merged throug=
+h=20
+soc@ if I removed the repo?
+
+Also, I will certainly add soc@ to the Cc list in v15.
 
 Regards,
 =2D-=20
