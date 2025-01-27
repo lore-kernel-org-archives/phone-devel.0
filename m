@@ -1,63 +1,63 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EA51FCF47
-	for <phone-devel@vger.kernel.org>; Mon, 27 Jan 2025 08:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9781FCD11
+	for <phone-devel@vger.kernel.org>; Mon, 27 Jan 2025 09:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737968336; cv=none; b=Wi3HH//E0ECiWMCGVx09rK4dEjLnt2EGWNmPJP1Jx78Z3v1J+H96HtQeePC8yS279mI4QAXcE1xwB1JwPZo2HaY/xFRHUSjjmvWzNx3YYevj0YnGAlD2LW0Q/5iZOStyhVZVdybqzcCd8Jmp4xwDwzZc4ftPpKeObbjtg83qo9E=
+	t=1737968790; cv=none; b=RaLlvhWt7p0yB2bDaf/7KDOu3cBLLadjSuq5+Vt1X//bf6x31RkMSkxsiP6O7GfvlFTcR8aYwyMCcTdLfvI5tOl4XT2HfZIOe81ELpf/y4DJ0w3k5ANpLVbtr2Bp1QzTvqECNefQuEDBBCjSjr887v87yFT7rOgqt7xWWoCVE18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737968336; c=relaxed/simple;
-	bh=hPQNPdpnKb122Yk3wg35bhI+hlgYUc4H8HXP+rzOa3Y=;
+	s=arc-20240116; t=1737968790; c=relaxed/simple;
+	bh=gO3d/4mrWXGze06FTi6Z9lXpH3hV9B3qsDLKjVLRQjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxFOCIAEpT1KJx2dizrD2S5rLLDEerrgy/R3ML10ogDb69/r628wS0Rn3FyPcGjTq8tMVlO4jVFjJFtWC0+jaQpTi3RAeLxGRxDH+SuPM/imbz7DesEEzArBw7Hnl9DyDw81fPx5rW/uYUpSZDjH0Im7D1SDSyeyMUXlMbwgKOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HqJ2KFRN; arc=none smtp.client-ip=209.85.208.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3Q4+wyYR7JT+eG4AGxhmd9SR3CkLdOctxddq5ry6rhC4129LPuTTFsiVbqMxo9Qhoy7gJlxTSjUdn30z3zj7aJfyRe7SB5zKQjB5GArdQTjeaiTImqZdUpeWA7W+i0x93dcw53KNXPh314fAejdY/20dgTOibqtn3YxMYF7mq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MWsDLUNS; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HqJ2KFRN"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d3d14336f0so7158948a12.3
-        for <phone-devel@vger.kernel.org>; Mon, 27 Jan 2025 00:58:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MWsDLUNS"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab69bba49e2so176351166b.2
+        for <phone-devel@vger.kernel.org>; Mon, 27 Jan 2025 01:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737968332; x=1738573132; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1737968787; x=1738573587; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=U/+29q3aJYg5FUNszWdiS/6NR4U2E1gTZv4qESBbDms=;
-        b=HqJ2KFRN75V7MpnJuC1MX0Ud4jnTYqVFF89PnQvgCVSUHfL1RAoUZxuvQJlLZiFUfV
-         FV4XXXUZDG9h48RkEmSW2z5cFLXXJrSLteDlPV/YRV3/Wv8ARXDvkqUW67dmpjwKpF1C
-         q01pa22BAu8HMofO5KZEHzNC+wU/t77IvzvS1gz94ez5/dy9JkY4bIJv22PiS570lgem
-         Qgm/4PLy22uzcCKw2LLbx7H8FHCZWk39/+rg/jr4d0tmT1g8V2ox+I2Dwdck6b42sQAl
-         L0GOIL9nHsS2U5tX+gMWdwp728dn6OhonBHD4nfYrduwG5Xmfzp2p4DeBajb1s8sPffL
-         uH5w==
+        bh=Ru5JcDXJ0V6EvEX8QHAyIUNaLhSujmRQCuu+cesIXi4=;
+        b=MWsDLUNSCM7FFWg3dm7Qh6h//hk0sxd67bjvyUJoTmIzDbKOSt4vs692c4lO7XI2B9
+         bMZazHztRfBRHD7gBAP5qwhxn91kLh35Qaiff6aUetBCoyOSQtcH/VmqXZEdnWosOQS5
+         93QlyNAus1jgT7H0DXk+2K/C0fc9KnTXm35Raspw971doF7jupyEOKHu5O/qaPgcIFVJ
+         CYnzFs9IOeGH9dJ8Pi+F9CDNDpFfnluV3n5QQb7sp8tOlCPILsdS9zC5NmX1voIfKUKT
+         Lc4x0fMOVjYXqdazbUuwCeQ2Mi+69uf6lA/bu+ALAKM53mooEXAK7O7FnA1iTDefKsPl
+         1NfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737968332; x=1738573132;
+        d=1e100.net; s=20230601; t=1737968787; x=1738573587;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U/+29q3aJYg5FUNszWdiS/6NR4U2E1gTZv4qESBbDms=;
-        b=Yhp/q68N/t4wF0WdPP6U8bFKBBu/qg8fp//TckqW5xseR/DzL2Xu8JSeQ5PYLowFpY
-         ClJyUM99cDcZZ5tTJay7JAYLSIdbfHhiexJxsvBFL2Xexr8jK62zunCQbrk6omnlKZXl
-         V25/3jObbpg2JXjEO85ttLOio6DWldv0CEntakDRhB6oMFr1Len9Kicp3RD2oFC7zTjx
-         eGpipQFbASq/2J7dJxPUgDRBzHj+oTB/okOD9srj37w5D7WOUoZEgAXGk2rBsN+/CM4f
-         0YakhQwckHYqtn7Hnr5uCOvTQokR/hsddWSUfG6ZxIlaiyZ1DFPLx6uSaEtUyqfVDYTz
-         ZRsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEqlOx/kr8GbwnYCwac373NBSVfaFXEhmmNDP2/Q7hZtmfgfhdJL1dBBWMtZboG4hATxoBf/mq5KTfOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMVsnCb7t1oVzX9rhefoTbz+HRjr37zioY8un+6nXEv/aN2pa6
-	XtCvv7p3O9IyVJNf1h98ZZwy2EuEtO/0nLm71LnaoR3oO5B3D6lF+0IhByMkMWc=
-X-Gm-Gg: ASbGncssCGB0OnBW2arq3L003R6ZflQbzpVnm5D2X0ZKXwveapCBH+N+OFN1vXLLPIs
-	He3UV9NBOrimW1NtSoIS4f5OC4h+7BZzq5h21E/+nr0BSZKvGNPnJFSo7F5FEKD8bN+8bf4aYVT
-	U+YkTHpEfYqgFr1g4unwAO7CQ+9KxaOTqu+uklM7tXw8go3aoNA9nQZQ2gnFVQTgLSSTQxoOSgL
-	0zBsZ3rn5FgDvHuJMTi0buJdBA6YPQZzZN8rHvdAHFWSS6SARTTSgvJmkRSOHwgP0G3gFhnU69q
-	slppFViB848/R/fF
-X-Google-Smtp-Source: AGHT+IEuY2+SspxfDMaHf+BfUXNT4eZbrVPS2J6c7JmOp0oj4TXluMQD5/Otb9+8NR1ym+8zELGlbQ==
-X-Received: by 2002:a05:6402:26c7:b0:5dc:101f:f1ca with SMTP id 4fb4d7f45d1cf-5dc101ffe83mr14343034a12.14.1737968331888;
-        Mon, 27 Jan 2025 00:58:51 -0800 (PST)
+        bh=Ru5JcDXJ0V6EvEX8QHAyIUNaLhSujmRQCuu+cesIXi4=;
+        b=G9OkAI8KHsC+g278Kw4c8GDDlXLJrHwTfZ+hofl3zWJTJa6b7lSqzqDSgIV/yiz+1c
+         musEDE9EFKfj1hqeoRBD9km4BY/stplNJZcWg9JmGXlKXi0L3dL64suFvBz3Gk3dcyrn
+         v/xYgtOO+ru2pblcvV5BrMQ7lXS6zejstjGChbEmF43b/W0P25QPKKXKFtGtH2IsIjfk
+         wtLJYVz8TAVpGtkXX7gdyrVvJOqL3WCAqskicMMMFNHaCOfPaUH+zSCKjhVkoh604Enk
+         Psz4nraDG9RMWBJ1tGRe0AgpwiuWKN3A4bdBLd7TEf5cB9VKofrNbGkCqz+KycSdW4hv
+         TCaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXO1y7JZC97RfmlmASZyBoYcc9QrILvki3LEt6pKVZ6knyg+aYSn14qjYUWbg8myO1GWTbW03eDbLv9Ow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPD6f50iZXrY7tnwEJY58jTcCnR5aYo14XddyEVDz4bviiH6L1
+	FFvVclKT6jhvIqRSXafsK+ogLlY7cg/4D4ee/B8uc7cPZETQPyk9W5lUMA5wFuA=
+X-Gm-Gg: ASbGncuxmRKvo1yc/RhB07Xa5Q+binmgdv3caFLXRImo5SCQGifHfZC0a4JjtxCioov
+	O3WUgdaGQPOclD3gxfKfEk7uORYr4pPhIfZlMIJh7Bks5YLMqCX1ZUjSo4kEZFNRkWVTqOkRzht
+	HH5NOA1QWXYRh4kbd2VaQFMksBU0ZWpDboKcgoVV/UfZS3l14Qz7sirK42Ove0mQwjKqZsNBPAU
+	++BWEpQreanu/mVEgd0GcNdBUW18NsSjdZHrJEr/gtOFucxs3+7oafHAsKoZoccSSM/1nyMWyx/
+	MTWQQ8KChTW4ZA0C
+X-Google-Smtp-Source: AGHT+IEoku4hVU1Bs9oRO3XcssM7g6jlT/m4SSLdEG1yw4hlXESz6xS72CFcZgRwwuOZUWCMBW5YQg==
+X-Received: by 2002:a05:6402:518a:b0:5d3:ba42:e9e3 with SMTP id 4fb4d7f45d1cf-5db7d2f5ec0mr98139827a12.13.1737968787049;
+        Mon, 27 Jan 2025 01:06:27 -0800 (PST)
 Received: from linaro.org ([2a02:2454:ff21:ef30:f64e:7d70:e55f:6da8])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dc186d8e2dsm5017648a12.75.2025.01.27.00.58.50
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dc18638ed2sm5138630a12.36.2025.01.27.01.06.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 00:58:51 -0800 (PST)
-Date: Mon, 27 Jan 2025 09:58:45 +0100
+        Mon, 27 Jan 2025 01:06:25 -0800 (PST)
+Date: Mon, 27 Jan 2025 10:06:24 +0100
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 To: Luca Weiss <luca@lucaweiss.eu>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -71,11 +71,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	Matti =?iso-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
 	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] remoteproc: qcom_q6v5_mss: Handle platforms with
- one power domain
-Message-ID: <Z5dKxZ-fri8RaTPo@linaro.org>
+Subject: Re: [PATCH v2 4/9] remoteproc: qcom_q6v5_mss: Add modem support on
+ MSM8226
+Message-ID: <Z5dMkPvhjCkb9e9w@linaro.org>
 References: <20250126-msm8226-modem-v2-0-e88d76d6daff@lucaweiss.eu>
- <20250126-msm8226-modem-v2-3-e88d76d6daff@lucaweiss.eu>
+ <20250126-msm8226-modem-v2-4-e88d76d6daff@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -85,74 +85,114 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250126-msm8226-modem-v2-3-e88d76d6daff@lucaweiss.eu>
+In-Reply-To: <20250126-msm8226-modem-v2-4-e88d76d6daff@lucaweiss.eu>
 
-On Sun, Jan 26, 2025 at 09:57:22PM +0100, Luca Weiss wrote:
-> For example MSM8974 has mx voltage rail exposed as regulator and only cx
-> voltage rail is exposed as power domain. This power domain (cx) is
-> attached internally in power domain and cannot be attached in this driver.
+On Sun, Jan 26, 2025 at 09:57:23PM +0100, Luca Weiss wrote:
+> Add support for the external power block headswitch register needed by
+> MSM8226 and some other qcom platforms.
 > 
-> Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
 > Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
 > Changes in v2:
->   - Move MSM8974 mx-supply from "fallback_proxy_supply" to
->     "proxy_supply" to match updated DT schema
->   - Add fixes tag
+>   - Remove cx-supply from MSM8226 "fallback_proxy_supply" because it's
+>     always used as power domain
 > ---
->  drivers/remoteproc/qcom_q6v5_mss.c | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
+>  drivers/remoteproc/qcom_q6v5_mss.c | 117 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 117 insertions(+)
 > 
 > diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-> index e78bd986dc3f256effce4470222c0a5faeea86ec..e2523b01febf393abfe50740a68b85a04011293c 100644
+> index e2523b01febf393abfe50740a68b85a04011293c..ef85c9843a12acb0e4e9ee6167c34d4981d4dc8a 100644
 > --- a/drivers/remoteproc/qcom_q6v5_mss.c
 > +++ b/drivers/remoteproc/qcom_q6v5_mss.c
-> @@ -1828,6 +1828,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
->  	if (!pd_names)
->  		return 0;
+> @@ -134,6 +134,11 @@
+>  #define BOOT_FSM_TIMEOUT                10000
+>  #define BHS_CHECK_MAX_LOOPS             200
 >  
-> +	/* Handle single power domain */
-> +	if (dev->pm_domain) {
-> +		devs[0] = dev;
-> +		pm_runtime_enable(dev);
-> +		return 1;
+> +/* External power block headswitch */
+> +#define EXTERNAL_BHS_ON			BIT(0)
+> +#define EXTERNAL_BHS_STATUS		BIT(4)
+> +#define EXTERNAL_BHS_TIMEOUT_US		50
+> +
+>  struct reg_info {
+>  	struct regulator *reg;
+>  	int uV;
+> @@ -161,6 +166,7 @@ struct rproc_hexagon_res {
+> [...]
+> @@ -1871,6 +1897,36 @@ static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
+>  		dev_pm_domain_detach(pds[i], false);
+>  }
+>  
+> +static int q6v5_external_bhs_enable(struct q6v5 *qproc)
+> +{
+> +	u32 val;
+> +	int ret = 0;
+> +
+> +	/*
+> +	 * Enable external power block headswitch and wait for it to
+> +	 * stabilize
+> +	 */
+> +	regmap_update_bits(qproc->conn_map, qproc->ext_bhs,
+> +			   EXTERNAL_BHS_ON, 1);
+
+Nitpick: regmap_update_bits() doesn't take a bool (0/1) as last value,
+it's the actual value. The 1 as last argument is essentially a magic
+number here that happens to be equal to EXTERNAL_BHS_ON = BIT(0).
+
+This should be
+
+	regmap_update_bits(..., EXTERNAL_BHS_ON, EXTERNAL_BHS_ON);
+
+or even better just
+
+	regmap_set_bits(..., EXTERNAL_BHS_ON);
+
+> +
+> +	ret = regmap_read_poll_timeout(qproc->conn_map, qproc->ext_bhs,
+> +				       val, val & EXTERNAL_BHS_STATUS,
+> +				       1, EXTERNAL_BHS_TIMEOUT_US);
+> +
+> +	if (ret) {
+> +		dev_err(qproc->dev, "External BHS timed out\n");
+> +		ret = -ETIMEDOUT;
 > +	}
 > +
->  	while (pd_names[num_pds])
->  		num_pds++;
+> +	return ret;
+> +}
+> +
+> +static void q6v5_external_bhs_disable(struct q6v5 *qproc)
+> +{
+> +	regmap_update_bits(qproc->conn_map, qproc->ext_bhs,
+> +			   EXTERNAL_BHS_ON, 0);
 
-Hmm, I think you should put the above if condition below this loop and
-verify that num_pds == 1. Otherwise this would hide the error condition
-if the platform needs multple PDs, but someone only specifies one of
-them in the DT. i.e.
+	regmap_clear_bits(..., EXTERNAL_BHS_ON);
 
-	if (num_pds == 1 && dev->pm_domain) {
-		// ...
-	}
-
->  
-> @@ -1851,8 +1858,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
->  static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
->  			    size_t pd_count)
+> +}
+> +
+>  static int q6v5_init_reset(struct q6v5 *qproc)
 >  {
-> +	struct device *dev = qproc->dev;
->  	int i;
+>  	qproc->mss_restart = devm_reset_control_get_exclusive(qproc->dev,
+> @@ -2021,6 +2077,7 @@ static int q6v5_probe(struct platform_device *pdev)
+>  	platform_set_drvdata(pdev, qproc);
 >  
-> +	/* Handle single power domain */
-> +	if (dev->pm_domain && pd_count) {
+>  	qproc->has_qaccept_regs = desc->has_qaccept_regs;
+> +	qproc->has_ext_bhs_reg = desc->has_ext_bhs_reg;
+>  	qproc->has_ext_cntl_regs = desc->has_ext_cntl_regs;
+>  	qproc->has_vq6 = desc->has_vq6;
+>  	qproc->has_spare_reg = desc->has_spare_reg;
+> @@ -2079,6 +2136,14 @@ static int q6v5_probe(struct platform_device *pdev)
+>  		qproc->proxy_pd_count = ret;
+>  	}
+>  
+> +	if (qproc->has_ext_bhs_reg) {
+> +		ret = q6v5_external_bhs_enable(qproc);
+> +		if (ret < 0) {
+> +			dev_err(&pdev->dev, "Failed to enable external BHS.\n");
 
-Maybe if (pd_count == 1 && dev->pm_domain) for consistency with the
-above then.
-
-> +		pm_runtime_disable(dev);
-
-I'm guessing it does, but just to make sure: Have you verified that the
-power domain is indeed voted for off after this call to
-pm_runtime_disable()? Start the remoteproc and when it's booted inspect
-/sys/kernel/debug/pm_genpd/pm_genpd_summary to see if the PD/remoteproc
-dev is suspended.
+Since the only possible error condition inside
+q6v5_external_bhs_enable() is the timeout condition that is already
+logged, you might as well drop this error message.
 
 Thanks,
 Stephan
