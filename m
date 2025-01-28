@@ -1,62 +1,63 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443141DE4C3
-	for <phone-devel@vger.kernel.org>; Tue, 28 Jan 2025 08:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2981DDC22
+	for <phone-devel@vger.kernel.org>; Tue, 28 Jan 2025 08:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738051947; cv=none; b=rO17UIpT8eRqA5w2J2zEn99mx0bjSNfWDukQl3/7o4pV9PMNPTjqa/lzaQOo/wZ46g9+1y5pOfIOgliPuxH2Uvr8xFiBlKrVCoeCa+emm3VDMjcSaIS/3RRUS1P0weTAUf541nr4M4D4FDtBEEb0inuulsi7Q/wv6wsywYXMlnk=
+	t=1738051982; cv=none; b=kceEV+O0xO+z7fG18hI1C+DeMvCfumWH0Qt1+xs9u4oE16jSSkdjUAwpfhtC1RFez2F3R3Hr8dTBbzNxc7JfzY/ig2f5Li0lqhkQ26FQBPyq5IJ9GYkCqJjmTtKCAXqRU6JHA2atLEXzjvwvPgeaQDfhutuiiKPe8dXTNqodC1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738051947; c=relaxed/simple;
-	bh=sdZEeRkPPJORlWrnLjjmmoa2tGaGFsUYR1+bhJzQ/H4=;
+	s=arc-20240116; t=1738051982; c=relaxed/simple;
+	bh=7GogWxpPrugJ/fv5zqyxrBchyhiIWbXdp8OfMS2A8Sc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rVB0+Gd/QS2ve3j/RNH0nR7kUlZkm+crOexytIKs5h4ZVFlLOPidabXjX/Ez5DkwpXVGKvgs1zEmDTWvsVZISoIHZ0IlH5px4uV/9CiyTsGGi0d0KN7gTbeD5JLPqmjZu6DXrl95gfYSM7XmTBVKgRmp8VOanN91z5ckKpqi04g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ENwjmSrJ; arc=none smtp.client-ip=209.85.128.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=gY+wMbjP+Ksa+ig8T5kunqRqKeTzEyMgqU3h9Jvp6fCxtoluGB8CiSea3z1nSTcq1Lb2gyBgqtpd6eRXIq+yoyGWmX9xgVwEbBLj4p0VzYwULA75TgT/RRPGiKvEPu9WkVSdl7lXMEHolLL3mj2A8xYTeb7hRiPDsLA+TV1bZtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jx02ZFTq; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ENwjmSrJ"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361e89b6daso34404725e9.3
-        for <phone-devel@vger.kernel.org>; Tue, 28 Jan 2025 00:12:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jx02ZFTq"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4368a293339so60728235e9.3
+        for <phone-devel@vger.kernel.org>; Tue, 28 Jan 2025 00:13:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738051943; x=1738656743; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NPIrIyHDzbr+DneslcmVsjK/zZHn2oEO7WadPutyKCA=;
-        b=ENwjmSrJf0cPkH76dK2jABRQvh31fIHF2NbF8wHiY9XkIOS3vcTVhbbhX8AL028f8d
-         tuPdDuRAvEuOcHzb4Uigw+EzkhFFn0PRaGcHjlNRvuTRIBOuWIqHJNnEraw11fZsIe4Y
-         mi/ohDr4IKU0MZczSdrAzX7WnpWWL1JtuyPK2U5aPM0qyxQiMlMO/tflVj38x7J/WqgR
-         30MaG2c98I8/OBpw/BjzUXvxrDfjvVY/9oxMGjqxJwlpW87AklZTHwUDyy9U47iUSJNw
-         XRdOtzj5EPixP3ODbJMEFPDicMrqut5+8jd7JYcbedFBQddg+coOI7sJQp+pol8HlMys
-         +tPg==
+        d=linaro.org; s=google; t=1738051979; x=1738656779; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pnBgBrJa4vbsUSe6NrmhzROdgjcuHJqYe6HeWjCBo3k=;
+        b=Jx02ZFTqdYJVO6JVsncXn72Q+ncDYQZXkUfJbMuA0zcx81tJyAW76bZucWJ6IgwESP
+         ZoYzebV/NRAciq2//W9UucuxuDPPluKHt/ga4FK+Zgo+i5mpTKwt5pnEgxIv1u8lmEwI
+         R/RI5X8NODs2gZTUN8m8m+rCNY3pNx7BRWwj+/iYV/W9dp6gfIHTcu7npBoImG2i8YYV
+         kWWUfN916huOZ6JySnynHvCnPdlr/SvxencjLBxFJvb2PHgk6az4o9zXesZjgxqsi/h9
+         POQyqVodgcZSPMY60lDywGAahosF7G40aacND0Rp8fMMS/QJnQX3+Dyo3s9/Q/jLuXfP
+         rL0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738051943; x=1738656743;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NPIrIyHDzbr+DneslcmVsjK/zZHn2oEO7WadPutyKCA=;
-        b=gIEE9mUI9h8cCT3YzkpQrfyXPttDHtxzE1qugWkvqyJ5RSM99DRUxaWk7EukkvFy/c
-         CkNUPjjoWDRGMnCUsB3cYDsFIjWc0UxqtXKTNXFdxK/l6a//OOo9vPL5t0elb6rhUtml
-         klAb8N7PKt5W5lLzllPop7PuGuJP93bemW3YnpM8P0EzwCp6dVEMY4M19FpjuEP9t/lF
-         4NITIV52Fzdi+QU5D0nluooSUTJui9qtYL17rSTahOpgWPqE+Fp5lCPrBqtBkC+FJ2ud
-         Fi0pnbVAirto8XJb5UJ5w39zrmT9KqQX8WPfaM4oBaLzZp7ggdIlP3Jv0rJFGhA3bjnI
-         xg4w==
-X-Forwarded-Encrypted: i=1; AJvYcCV6HC5x1H1hgOV46m9AU9xriJajFSWUzZG20GYRriG8W8l+7VojF2PU3Lh+2udLQVAl3RhKmbzjtX/6DA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXwSX0J5NaAXrSGSDmSy+ZGFDZ16U2ivU6tIOHmDSOlguT+bIt
-	c2K3gwc7eom08qdBO74l0zjisLhMjNmmt2pS560ijTnCGY+67W/WaI8tt4KfVYw=
-X-Gm-Gg: ASbGncuAbNvgHrrfwmujDn+OLSHeKoOArU6iLuWnRQB39PO0SVA53k5U9rRIvZw7mpr
-	JUgDeIMr9dh8yrASux1JpV5TeNBNNrnSvmEWztT0eV5ahGOk66RCpNi9HVFVIVZ/lorwnOR5TDO
-	txYeYhzio/WnDql8Jmq679iO2tgtrhfWGBUR2QUDycYgdMDb7/MIYsok/HORQVHtx85jT1tnmZl
-	e++jYs3qmlrv5HqO3FSjlTy5zr4M+E8EGo52qPlDB3soqiRiBH+cpD2uTGTIop0qKAKdu/7HX5Q
-	4+USOsLXHrB0DgWUtSI+1PmSvK8=
-X-Google-Smtp-Source: AGHT+IH+dTcNBsNvGVhKoNcjBS6eABvpub5TXOPw7KJoYmzv+AsASoNKuisBMGeBZHrOTMvp9lwYoQ==
-X-Received: by 2002:a05:600c:1908:b0:434:9c1b:b36a with SMTP id 5b1f17b1804b1-438913dbf63mr404130455e9.13.1738051943413;
-        Tue, 28 Jan 2025 00:12:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738051979; x=1738656779;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pnBgBrJa4vbsUSe6NrmhzROdgjcuHJqYe6HeWjCBo3k=;
+        b=G83Qxt5XTbakRAO4rJJBOuXBQhKMt/SSvEjtuB/dSgWOwiVI6szeTmj/cuLSsZ6u9L
+         xB08sCp9KO0PRSMBL39R7B4ruqL9bckvO3AQW8LW2QcC/11FpL+/YZonb0i4fFeIeGKF
+         o49xqzsVnWUTaG86Kxzk9NhpYqUf1wUiFa1W6QUKJzYDWNPw6mwd06xqRckmZA5vHxpX
+         xX41o19gfeTrq/OqObdN7GVTP06Js3lPzNoL27pPn0HJkumpmlle4XKQ+oz+njEVcuIN
+         F4ORa6Ez7JMIKTBrFhzYSBlly7845GDgUV9+UoGD6pKwtf7DylmFp4bLPEil/xADNq/H
+         TOXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrUMQgbYMa9Ccf4svPmT8qoZFGkY4cRLv2lWgsN/Rbo00UMZmDcHPiGNWdByrtZLvAKy9BjErs8Iu5/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGs02gfW5WrzAsXMtf/UPi8UIqvkjIYXoaT+wtixh0Z6BJsd/1
+	RUQVwRWBfFdOJyCIa1hCB8ZTqDe0RCWryeB3lx0D5DyV3mfBQhtmLvLkh77FLGg=
+X-Gm-Gg: ASbGncvLBIPqt3V0dWlgGyqBH2lS3Pn7bzH3MO8sUhTG6V36I8/jzYCKoRt8kC0X81l
+	E/YYncwko/zeGLs0J0ZTZvpvGDzI4sfOvdypAmnlc+9uIoQNrqn2EWx4MwtFU8n4YuVvIkFgteS
+	BiCynYOQO6guwcv5nPspxXist01nHylNvIqc9XJYmv7+SwvVIPVTFSjErHsgfiPTgNrpbgrh4fc
+	MS1SqXrYFdqpP+WAbHbhAdAn2fc8RbTXDlj3UNYGOtfPPq9v3ptzsttcZ9lHc6rZSwFrCl3TUDW
+	CeRcXOhls7dRjD23wlO+3ATyTDc=
+X-Google-Smtp-Source: AGHT+IE9OQRLHmWjothWQ6ZFid7v4K8EL+HHTqLHBN94YDj7mMjt3aARpnqSVQu4cpZZIU0UkaKnYw==
+X-Received: by 2002:a5d:47c2:0:b0:385:e8ce:7483 with SMTP id ffacd0b85a97d-38bf56555admr32927261f8f.4.1738051979050;
+        Tue, 28 Jan 2025 00:12:59 -0800 (PST)
 Received: from linaro.org ([2a02:2454:ff21:ef30:3210:3bfd:4b47:59da])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd4fa57csm167719345e9.4.2025.01.28.00.12.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c4a160ba3sm1645445f8f.18.2025.01.28.00.12.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 00:12:22 -0800 (PST)
-Date: Tue, 28 Jan 2025 09:12:20 +0100
+        Tue, 28 Jan 2025 00:12:58 -0800 (PST)
+Date: Tue, 28 Jan 2025 09:12:56 +0100
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 To: Luca Weiss <luca@lucaweiss.eu>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -70,52 +71,73 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	Matti =?iso-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
 	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 12/13] ARM: dts: qcom: msm8926-htc-memul: Enable modem
-Message-ID: <Z5iRZLsPojlT-A5a@linaro.org>
+Subject: Re: [PATCH v3 13/13] ARM: dts: qcom: msm8226-samsung-matisse-common:
+ Enable modem
+Message-ID: <Z5iRiHGJsDmLfM2_@linaro.org>
 References: <20250127-msm8226-modem-v3-0-67e968787eef@lucaweiss.eu>
- <20250127-msm8226-modem-v3-12-67e968787eef@lucaweiss.eu>
+ <20250127-msm8226-modem-v3-13-67e968787eef@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250127-msm8226-modem-v3-12-67e968787eef@lucaweiss.eu>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250127-msm8226-modem-v3-13-67e968787eef@lucaweiss.eu>
 
-On Mon, Jan 27, 2025 at 11:45:44PM +0100, Luca Weiss wrote:
-> Enable the modem found on the MSM8926 HTC One Mini 2.
+On Mon, Jan 27, 2025 at 11:45:45PM +0100, Luca Weiss wrote:
+> From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > 
+> Enable modem remoteproc on samsung,matisse-wifi & matisselte.
+> 
+> The mattisselte - being msm8926 - requires an extra mss-supply, so add
+> that as well.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 
 Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 
 > ---
->  arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi | 7 +++++++
+>  arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts      | 4 ++++
+>  2 files changed, 11 insertions(+)
 > 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-> index d6eaa82cee4daf6a1386902f537f1351811d4a06..cb571aa13c11598182dc020f064fe8268bcc061f 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-> @@ -195,6 +195,16 @@ &blsp1_i2c6 {
->  	/* TPS61310 Flash/Torch @ 33 */
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
+> index 0a3147656f36ca2616e0e3cc7c1dd808b55f3a88..f1544a7e8369c329360e235c48291a5d4c261fdc 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
+> @@ -229,6 +229,13 @@ &blsp1_uart3 {
+>  	status = "okay";
 >  };
 >  
 > +&modem {
 > +	mx-supply = <&pm8226_l3>;
 > +	pll-supply = <&pm8226_l8>;
-> +	mss-supply = <&pm8226_s5>;
-> +
-> +	firmware-name = "qcom/msm8926/memul/mba.b00", "qcom/msm8926/memul/modem.mdt";
 > +
 > +	status = "okay";
 > +};
 > +
->  &pm8226_vib {
->  	status = "okay";
+>  &rpm_requests {
+>  	regulators {
+>  		compatible = "qcom,rpm-pm8226-regulators";
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+> index 772827cad972ad4ff032cfb9310568c5d2f0170f..73e19176eb97af569d99580c6b28fb2e0ec7f1b3 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+> @@ -28,6 +28,10 @@ reg_tsp_3p3v: regulator-tsp-3p3v {
+>  	};
 >  };
+>  
+> +&modem {
+> +	mss-supply = <&pm8226_s5>;
+> +};
+> +
+>  &tlmm {
+>  	tsp_en1_default_state: tsp-en1-default-state {
+>  		pins = "gpio32";
 > 
 > -- 
 > 2.48.1
