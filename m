@@ -1,89 +1,87 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6C11E0DD1
-	for <phone-devel@vger.kernel.org>; Wed, 29 Jan 2025 17:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D88C18E75A;
+	Wed, 29 Jan 2025 17:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738171201; cv=none; b=OZncODGVgcPB5yj9jGDepLb9NYVtSWjXalLDOCaNE2wAvRUoiWAqNEVRjYdFiocTW6TClOPdw8k5KHU67hWA7Vdz31MQg0XSvJZtRtR6NNO82Zls0bDdM3pQuNSIegekQdG1C/ntXS70Kp6FcIjLyl5l9O+m5dTbE9RgHdy2KkA=
+	t=1738173122; cv=none; b=eGQ83upgkSUrUDCEC+cmZJBGwtv4IEzrkCPwDbP6qW7EbiSE750Ab8ZKoNi4oMz84cXx3Z91o9ZvIio+R0h1haKtzKxv4ATwcyCKopwZnM8EU5BXcUCy3q63kGVmiOwoUNFgsDBcG8ZS/XPYqEbOtJZ8MxZlAs8WNh+bBF6n6g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738171201; c=relaxed/simple;
-	bh=FW/GI43N5p3BtB1D64rBvqr5odB3+1/4Ea0iYxTd780=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMmeDn20DUcBgeF6F7PvlpJkkbL0gEFoS3P7Xf/O4J7msVc+8HCtZhGv4Zd5GPPosTq9mX558G20k8w3ydkUsEIe4PD9CkwJ3cUG2KUxv7Ku4slJWRuSPCWVu6S3tg0igX2qErcZkJ0bxbEK11yjPXlr8C2rllfaRwSLOfF9ZmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=XqIGXxxq; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1738173122; c=relaxed/simple;
+	bh=F034U0F9Qebn9T+CgagQAO5PapIj94Zzv/Iz7/IHDIg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NKOlpUhyVA01FA3ECmqWeGepmVvb4s8wIz3l0nTn6CO0rhk3J1VDodyCP6dJQon3clGkJKHgh/rJmQh1sdWr6XKmfriAEBMgDhRLais9Rf4uO+ulQ8zZsJ3FTfQtqCsatP6UN/54jQzaufFlWDbLUTpjPKUVL48mfcydZeblNto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=M3pqxwOk; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="XqIGXxxq"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1738171192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m8dAhViTZBchMGhqpRD9jGMu8g0CRLVsIwsVjBG5aSo=;
-	b=XqIGXxxqfFGWikM3GD58Esh7FNvRaKbRYWOxWgqt6mhTtEAxATm0kXIDPdpzt+M429b11G
-	azgxuDxoOdXMEjMOvATzrc8I5ZthPKknS7ZPhtX59r8LUmOz3odnFhvhkfbuDeaDYXl6mT
-	ze/+sy9U6R1gN00VWdlj1cHmtxvt6pdE88H2fmvmAdTKgE3hc1wUwvgsLA1qFGmRmq/jRk
-	qpE7U8rll01ACM/KNmOoLW0le5GzrDn9iOOzVqkYy+QfKGZS0/cTL78kilYpYX506KT5sB
-	muTn/7vmeR3439edkBXDwVNhOLgIWJeb8AiWd606eUTkXTY1hj1So0wSRrmrbg==
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm630: Add missing resets to mmc blocks
-Date: Wed, 29 Jan 2025 20:18:41 +0300
-Message-ID: <20250129171842.1588526-2-alexeymin@postmarketos.org>
-In-Reply-To: <20250129171842.1588526-1-alexeymin@postmarketos.org>
-References: <20250129171842.1588526-1-alexeymin@postmarketos.org>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="M3pqxwOk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1738173118; bh=F034U0F9Qebn9T+CgagQAO5PapIj94Zzv/Iz7/IHDIg=;
+	h=From:Subject:Date:To:Cc;
+	b=M3pqxwOkcktu7YnNP2z8nCHJlZWrpuGXXg9c5+cA4QHS9sKGglnRXtJz5LqWZKMqV
+	 F/yTvtWguqeJHvYuztoLBvuRzslHZ94EjV0WciWzkPAqie9t97bBxr9GlLDiBoBRZq
+	 tAcoyB7qDGjumhkxbLlLfJdk2zzq1DP1mntFmoHY=
+From: Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH 0/2] Support single-PD in wcnss driver
+Date: Wed, 29 Jan 2025 18:51:42 +0100
+Message-Id: <20250129-wcnss-singlepd-v1-0-b01a6ba0b1bd@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIAK5qmmcC/x3MQQqAIBBA0avErBNMsrKrRIvQ0QbCwoEKxLsnL
+ d/i/wyMiZBhbjIkvInpjBVd24DdtxhQkKsGJZWWnTLisZFZMMVw4OWENzhMuld6RAc1uhJ6ev/
+ hspbyARg55qxgAAAA
+X-Change-ID: 20250129-wcnss-singlepd-f9e6854257ed
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Stephan Gerhold <stephan.gerhold@linaro.org>, 
+ =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=740; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=F034U0F9Qebn9T+CgagQAO5PapIj94Zzv/Iz7/IHDIg=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBnmmqwG1zV5BsrzT266t57OFG2ifaSlE9T8MBJ1
+ YGBjjOvOC+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZ5pqsAAKCRBy2EO4nU3X
+ VgqZD/4i7tdDIFsnP4xU5NVP9FQkZNVKpFZSa28tLjk1x+3bnQCLj942EaWPNKKZQF39KPw125L
+ 4TlVQ7kEINdEIRfFKdsb5wBY879wYV9ze9DzWzvK+KY2QKraYvP2uyi4zLwX3nnrBwBwwyiiMg/
+ 7d5y4G60Iw2tPsWJcXLyPR/dJzzoU9GipNMO7E1P/ynTMuTHUhhWTOzt2s+K2d7hohMC2tV/lkH
+ 7B8jrJKJtvz4wViZXkgaDpMwSJN5P+HeRPzq4AGBZJ1T2VriwET5bN//iPRvB/TOkGIpaadFWDQ
+ kosMC0HNF+tESMSizB04xp7IOJwJY9cHrZQLEPw1jaMWbAyHB6Bb7uHxXkoUIn+e2MXCGNB82WQ
+ WxGxqPbt+ylPtLKPisUJug+b20SdLZNoTWUZSHw4ThcW2iArEpAjEtwGuJ4Giw+f17noEUp8EIq
+ usyNs3/Cbf4Xw6eUfHOdp0jrpNCFuovU6ZIrnEmftAGd7pxCqARei8wqlWoa6VT8kGSP9XC8lme
+ lHaufgNJnaLqI4Iq7Na4maKrkxrABOYW86PrrcwflrUd9TDf6ZRBv8Bc15Cp4tztBs0+baDVhRk
+ 2cB2P0S/lOvQKkmRtgEHOz0rZeKJrzfzrjpHlvEcjxpcKdeABzmbFGfBW8AgSP1lLNjl06uB/bb
+ Sc8rA487D2mX/4A==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-Add resets to eMMC/SD card blocks so linux can properly reset
-them during initialization.
+Both MSM8974 and MSM8226 only model CX as power domain, leaving MX & PX
+as regulators. Add some patches to support this use case.
 
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+Matti Lehtimäki (2):
+      dt-bindings: remoteproc: qcom,wcnss-pil: Add support for single power-domain platforms
+      remoteproc: qcom_wcnss: Handle platforms with only single power domain
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index a2c079bac1a7..3722e405a97c 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1379,6 +1379,7 @@ sdhc_2: mmc@c084000 {
- 					<&xo_board>;
- 			clock-names = "iface", "core", "xo";
- 
-+			resets = <&gcc GCC_SDCC2_BCR>;
- 
- 			interconnects = <&a2noc 3 &a2noc 10>,
- 					<&gnoc 0 &cnoc 28>;
-@@ -1433,6 +1434,8 @@ sdhc_1: mmc@c0c4000 {
- 				 <&gcc GCC_SDCC1_ICE_CORE_CLK>;
- 			clock-names = "iface", "core", "xo", "ice";
- 
-+			resets = <&gcc GCC_SDCC1_BCR>;
-+
- 			interconnects = <&a2noc 2 &a2noc 10>,
- 					<&gnoc 0 &cnoc 27>;
- 			interconnect-names = "sdhc-ddr", "cpu-sdhc";
+ .../bindings/remoteproc/qcom,wcnss-pil.yaml        |  2 ++
+ drivers/remoteproc/qcom_wcnss.c                    | 32 +++++++++++++++++-----
+ 2 files changed, 27 insertions(+), 7 deletions(-)
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20250129-wcnss-singlepd-f9e6854257ed
+
+Best regards,
 -- 
-2.45.3
+Luca Weiss <luca@lucaweiss.eu>
 
