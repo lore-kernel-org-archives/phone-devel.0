@@ -1,118 +1,204 @@
-Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8A2244E9E;
-	Sat,  8 Feb 2025 21:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE551AB528
+	for <phone-devel@vger.kernel.org>; Sat,  8 Feb 2025 22:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.144.164.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739050001; cv=none; b=XZFSySJI0scaN7oJuvoWeMmlK9KmdPSB5vLOlRgy+0KBh7IuWqdtf33dhTPdqdsglbIVUhes8SB/6r3OEC64ROsfKPDH7UMmv2s0Bwh/eQqacI1RtmGPZt4QGbgGd+U0xKeBOXpXt29J/Fcz+H2XrX5aWqG7rbxyE+2pATJBuEU=
+	t=1739052250; cv=none; b=mbjAIqANg4qYrren3XwMx2fnuylaJc06I7w08ajD0uQ1n28l5lziH3XmVZ9LqjJENnBJIy3dOgTrrXPDsJOrm5iw+CNmsE3DtDzmxZCrOg21i+4MSZhj/Ay4D8nC0edBZ6Ecrpi6TBlEqGmp+zj7M8yxSDx63gp6RBgSAElWgY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739050001; c=relaxed/simple;
-	bh=sYQ5qlKk18c0A4Z5LLru+uwYh/WhPZ5cQ0bbtmlDVSo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L2VsPqM0PKvYWoTXGmlgEiRJhkCuZFgJh3D9432moz84vVg8k+zO0DcxacK/lsNY/z2u8D/ZPoR47+NVXUqkk+u7jNc+g+BlrnVGDFOAABLjnVjvHy6rls3wKjfIRvH+KcE2NkEHcU4LE8Pz7Y8S8XdeQhu8HJmzTpS4HUEe4Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=LsMjVCFw; arc=none smtp.client-ip=206.189.193.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="LsMjVCFw"
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id B852C41B41;
-	Sat,  8 Feb 2025 21:16:28 +0000 (UTC)
-From: Aren Moynihan <aren@peacevolution.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>
-Cc: Aren Moynihan <aren@peacevolution.org>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	Ondrej Jirman <megi@xff.cz>,
-	Dragan Simic <dsimic@manjaro.org>,
-	phone-devel@vger.kernel.org
-Subject: [PATCH v5 0/8] iio: light: stk3310: support powering off during suspend
-Date: Sat,  8 Feb 2025 16:13:18 -0500
-Message-ID: <20250208211325.992280-2-aren@peacevolution.org>
+	s=arc-20240116; t=1739052250; c=relaxed/simple;
+	bh=Is+Qs8gxBkUnO9SHFdZ152vDugn7Py1h5ACe9lKwTz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QvLs67fer2EnrHjv10HnCpscYE3WXoGa3VhKZUl+9FdpMGsfj9XTJp5WK3p7LOy8Tvoj1k+3DL3Wo82CHPzwOLontc2UW3hjQJm6R8zIa7HNhX4aRuhNZ2Srpqz2KbUSdB/NCOm8V9w3s2Q1+HOXVS3hxiTvLPM7QfFe56zfx94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org; spf=pass smtp.mailfrom=somainline.org; arc=none smtp.client-ip=5.144.164.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0E7742027E;
+	Sat,  8 Feb 2025 22:48:26 +0100 (CET)
+Date: Sat, 8 Feb 2025 22:48:24 +0100
+From: Marijn Suijten <marijn.suijten@somainline.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable
+ display
+Message-ID: <vm4wglq5xedieqwo4vy5eeszbx3a625jromi3ts3jkrhw3zccv@7eaol7dckbh7>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
+	Luca Weiss <luca.weiss@fairphone.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250202-fp5-display-v1-0-f52bf546e38f@fairphone.com>
+ <20250202-fp5-display-v1-1-f52bf546e38f@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
-X-Spam-Level: ****
-X-Spamd-Bar: ++++
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1739049390;
-	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding;
-	bh=2g66zt0j6YYPcgcDMhWi6vl+EYuVn16VPhbMythEXg8=;
-	b=LsMjVCFwIJa0HVwKJ1MEfttPkxVQeapgp9+l2aCgIXIAXgykqVD5fHvKFiBzXjKkwrdkQ3
-	KWcxtuV/We+qHesd72LHuukYRimqg69tT4PfsM0B+uBOukQQdpL6Xjws4ojfCEusID4sWX
-	lw9Kv40lzjrzWkV7ItsbqWaYXJfFkEE=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250202-fp5-display-v1-1-f52bf546e38f@fairphone.com>
 
-In the Pine64 PinePhone, the stk3310 chip is powered by a regulator that
-is disabled at system boot and can be shut off during suspend. To ensure
-that the chip properly initializes, both after boot and suspend, we need
-to manage this regulator.
+On 2025-02-02 23:45:51, Luca Weiss wrote:
+> Configure the MDSS nodes for the phone and add the panel node.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Additionally if the chip is shut off in suspend, we need to make sure
-that it gets reinitialized with the same parameters after resume.
+Glad to hear (and see in real life) that you're able to use the 1:1:1 topology
+patches.
 
-Changes in v5:
- - inline STK3310_REGFIELD macro
- - extract a separate dev variable instead of using &client->dev or
-   &data->client->dev
- - make log / error message format consistent (no period and a newline
-   at the end)
- - add error handling for devm_mutex_init
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 
-Major changes in v4:
- - replace mutex_init with devm_mutex_init
- - code style cleanup
+Thanks!
 
-Major changes in v3:
- - Use bulk regulators instead of two individual ones
- - Replace stk3310_remove with devm callbacks
-
-Major changes in v2:
- - Add handling of the IR LED. I was hesitant to include this as it is
-   the same as pull-up regulator for the i2c bus on the hardware I have,
-   so I can't test it well. I think leaving it out is more likely to
-   cause issues than including it.
- - Convert stk3310 to use dev_err_probe for errors.
- - Always enable / disable regulators and rely on dummy devices if
-   they're not specified.
- - more listed in individual patches
-
-Aren Moynihan (7):
-  dt-bindings: iio: light: stk33xx: add vdd and leda regulators
-  iio: light: stk3310: handle all remove logic with devm callbacks
-  iio: light: stk3310: implement vdd and leda supplies
-  iio: light: stk3310: simplify and inline STK3310_REGFIELD macro
-  iio: light: stk3310: refactor to always make dev a variable
-  iio: light: stk3310: use dev_err_probe where possible
-  iio: light: stk3310: log error if reading the chip id fails
-
-Ondrej Jirman (1):
-  arm64: dts: allwinner: pinephone: add power supplies to stk3311
-
- .../bindings/iio/light/stk33xx.yaml           |   4 +
- .../dts/allwinner/sun50i-a64-pinephone.dtsi   |   2 +
- drivers/iio/light/stk3310.c                   | 254 ++++++++++++------
- 3 files changed, 178 insertions(+), 82 deletions(-)
-
--- 
-2.48.1
-
+> ---
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 94 ++++++++++++++++++++--
+>  1 file changed, 89 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 389eca9b9e68187980e92ac921a77a3c3b54f6a5..965e32473a58ae4748e4cb748980fad1d2b06ab6 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -138,6 +138,34 @@ vreg_ois_dvdd_1p1: regulator-ois-dvdd-1p1 {
+>  		vin-supply = <&vreg_s8b>;
+>  	};
+>  
+> +	vreg_oled_dvdd: regulator-oled-dvdd {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "oled_dvdd";
+> +		regulator-min-microvolt = <1200000>;
+> +		regulator-max-microvolt = <1200000>;
+> +
+> +		gpio = <&tlmm 51 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +
+> +		vin-supply = <&vreg_s1b>;
+> +
+> +		regulator-boot-on;
+> +	};
+> +
+> +	vreg_oled_vci: regulator-oled-vci {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "oled_vci";
+> +		regulator-min-microvolt = <3000000>;
+> +		regulator-max-microvolt = <3000000>;
+> +
+> +		gpio = <&pm8350c_gpios 7 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +
+> +		vin-supply = <&vreg_l13c>;
+> +
+> +		regulator-boot-on;
+> +	};
+> +
+>  	reserved-memory {
+>  		cont_splash_mem: cont-splash@e1000000 {
+>  			reg = <0x0 0xe1000000 0x0 0x2300000>;
+> @@ -597,11 +625,6 @@ eeprom@51 {
+>  	};
+>  };
+>  
+> -&dispcc {
+> -	/* Disable for now so simple-framebuffer continues working */
+> -	status = "disabled";
+> -};
+> -
+>  &gcc {
+>  	protected-clocks = <GCC_CFG_NOC_LPASS_CLK>,
+>  			   <GCC_EDP_CLKREF_EN>,
+> @@ -733,6 +756,46 @@ &ipa {
+>  	status = "okay";
+>  };
+>  
+> +&mdss {
+> +	status = "okay";
+> +};
+> +
+> +&mdss_dsi {
+> +	vdda-supply = <&vreg_l6b>;
+> +	status = "okay";
+> +
+> +	panel@0 {
+> +		compatible = "fairphone,fp5-rm692e5-boe", "raydium,rm692e5";
+> +		reg = <0>;
+> +
+> +		reset-gpios = <&tlmm 44 GPIO_ACTIVE_LOW>;
+> +
+> +		vci-supply = <&vreg_oled_vci>;
+> +		vddio-supply = <&vreg_l12c>;
+> +		dvdd-supply = <&vreg_oled_dvdd>;
+> +
+> +		pinctrl-0 = <&disp_reset_n_active>, <&mdp_vsync>;
+> +		pinctrl-1 = <&disp_reset_n_suspend>, <&mdp_vsync>;
+> +		pinctrl-names = "default", "sleep";
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&mdss_dsi0_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&mdss_dsi0_out {
+> +	data-lanes = <0 1 2 3>;
+> +	remote-endpoint = <&panel_in>;
+> +};
+> +
+> +&mdss_dsi_phy {
+> +	vdds-supply = <&vreg_l10c>;
+> +	status = "okay";
+> +};
+> +
+>  &pm7250b_adc {
+>  	pinctrl-0 = <&pm7250b_adc_default>;
+>  	pinctrl-names = "default";
+> @@ -1026,6 +1089,20 @@ bluetooth_enable_default: bluetooth-enable-default-state {
+>  		bias-disable;
+>  	};
+>  
+> +	disp_reset_n_active: disp-reset-n-active-state {
+> +		pins = "gpio44";
+> +		function = "gpio";
+> +		drive-strength = <8>;
+> +		bias-disable;
+> +	};
+> +
+> +	disp_reset_n_suspend: disp-reset-n-suspend-state {
+> +		pins = "gpio44";
+> +		function = "gpio";
+> +		drive-strength = <2>;
+> +		bias-pull-down;
+> +	};
+> +
+>  	hall_sensor_default: hall-sensor-default-state {
+>  		pins = "gpio155";
+>  		function = "gpio";
+> @@ -1033,6 +1110,13 @@ hall_sensor_default: hall-sensor-default-state {
+>  		bias-pull-up;
+>  	};
+>  
+> +	mdp_vsync: mdp-vsync-state {
+> +		pins = "gpio80";
+> +		function = "mdp_vsync";
+> +		drive-strength = <2>;
+> +		bias-pull-down;
+> +	};
+> +
+>  	pm8008_int_default: pm8008-int-default-state {
+>  		pins = "gpio25";
+>  		function = "gpio";
+> 
+> -- 
+> 2.48.1
+> 
