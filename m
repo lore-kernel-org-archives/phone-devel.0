@@ -1,93 +1,108 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D5E230D2A;
-	Sun,  9 Feb 2025 21:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCC779CF;
+	Sun,  9 Feb 2025 21:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739134902; cv=none; b=h0tJMeNmA7HwpFfKwgnve16cP4dMUVLrJjf2wxqw6avzL1gI184SQJ3UVSXOO8BBULMFSzy1Vj9qqKYF7XDip0w9y0JW6XM06k1S+GQTOzarAmTK58mHVQr6UvgY+vdV6FrMt6/zszdefk3aBzLHNrj1SzBtemMfA116RkIOltY=
+	t=1739137938; cv=none; b=OjrDGwNeo3KovEHl25TklT4ijqBp7fclGLq3O2nYFarNjaJWJdJyBYd4OUIitMFX8XtaJx8I7v3XZHp28LAKarMgI5p4tdi9qrsMblupyyKBhmeu6SiUtZRd3bpvnohI6/mA4mVwrOMsmtHn/Jj8hXVhl75BPhkMaTKnXEYXupM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739134902; c=relaxed/simple;
-	bh=YW8BrEcFZGZunDWeCJaDA2yHjRVW0c0c5+iUiSNODZk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hK2NLsZflJfOncYtW8ldsbrIn1Z2jhpJFrZIGNhJOMr5iFX4oigWc0g1N87kCRa3tlwnOjMx3JAw/Nxwd4h9bylTmMOa3agQfzNHKNB6fekYcmzcvXEwECB2+DQVJ9irblNMuAgSsUYiQlp/PV0MIjQv1DPj9YpGVjFMYhXSS8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=sRgHRuqD; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1739137938; c=relaxed/simple;
+	bh=iSJ5jtMLBZnq74EPv4uYBA24MtpHvrIdYdyloL79HmQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=u71sYrrFWQknAU/R0NHhM+VLtLmd8zwZHcBJ6rEjrDt0Z/yP49BtDdx/y9LMxcEdgEzc0bBx4zt2gNskEZo6JbZiMzldubXclrABqpTXv1c2H2xxO0sA2a9Klt6uVXJ04CXmKyIccaZbBgVR5mcDj9awqzMdpJEBxSnYJKcohbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9kWHUXo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="sRgHRuqD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=YW8BrEcFZGZunDWeCJaDA2yHjRVW0c0c5+iUiSNODZk=; b=sRgHRuqDLv6ldG+iTvBwJRFpSc
-	nRtD6OKenKdbbsgRTGzCt5hDWmJAfawUpnm+ldNj03zpFe93ylrNLqiXiQI0S4yeGoLeqF5nd2us2
-	/qqikdcqOBcjw6/FJTLlQCJGS/a8yvCYlKTp3GvEESPMPl1LJMAnz40BjzYufOZ7y6ohxEerQiO4g
-	LcHRLwtil4ijRaWtIluQc7ddSOei2xbV5qcWaS5LW0KS4LT5cTgS3O83sDS2WhUaO1SpG1TOj0r2Y
-	iN1+X2taWovxIJfJRE9BS9Al3Fcs632fTvPMI0TgApirYXfXPdcYotNZd4gpreENlfif2yE20fTa5
-	x6TcEmdA==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1thEQj-000PpG-13;
-	Sun, 09 Feb 2025 22:01:29 +0100
-Received: from [92.206.120.88] (helo=framework.lan)
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1thEQj-000MLj-09;
-	Sun, 09 Feb 2025 22:01:29 +0100
-Message-ID: <3746957a5fd44c125152bc25033dee7d4f189663.camel@apitzsch.eu>
-Subject: Re: [PATCH v2] media: dw9719: Add of_match table
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: Daniel Scally <djrscally@gmail.com>, Sakari Ailus	
- <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 09 Feb 2025 22:01:27 +0100
-In-Reply-To: <Z6i5puujYD5sJ64n@valkosipuli.retiisi.eu>
-References: <20250208-dw9761dts-v2-1-c038f8a2fb94@apitzsch.eu>
-	 <Z6i5puujYD5sJ64n@valkosipuli.retiisi.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9kWHUXo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 10978C4CEE8;
+	Sun,  9 Feb 2025 21:52:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739137938;
+	bh=iSJ5jtMLBZnq74EPv4uYBA24MtpHvrIdYdyloL79HmQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=G9kWHUXoYQjCFzivzfaWKClkbHpfpWhtKxAkxvfg2N6smufoztLbC2yKlEuC1y7bc
+	 SdF2RqPLQIRPteh0pdj3m3N9iPpjC98wqfwK3FaKEad8Uu/MfDTcjpm3bpr5C2KK4R
+	 TsGnv91SmFZT5fV5E774UPUuTJgJNhbmiZYGoAGJWZU+dTbwsQWMzLA4JqbeDRG75a
+	 D3SKwr1m+wjMUDGsO9MYlhCtnI6Ip2rnAsxUDs0GlXwJnhCsQ+LuSYmaNW+rRD+Zne
+	 zoQIkeIZZQRiTQ5XQ20qQ5fJMHChos5dSyZ8u2DoagDpoi63U3a9bzWbasU9M720SS
+	 ttzJEtwb325XA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC9DCC021A2;
+	Sun,  9 Feb 2025 21:52:17 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Sun, 09 Feb 2025 22:51:58 +0100
+Subject: [PATCH v3 2/2] media: i2c: dw9719: Add of_match table
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Authenticated-Sender: andre@apitzsch.eu
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27544/Sun Feb  9 10:31:33 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
+References: <20250209-dw9761dts-v3-0-14d3f00f0585@apitzsch.eu>
+In-Reply-To: <20250209-dw9761dts-v3-0-14d3f00f0585@apitzsch.eu>
+To: Daniel Scally <djrscally@gmail.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739137936; l=1275;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=mGgvurDestv373N8gVyPxAuJTKfXOnE3tkcTk8bJG1E=;
+ b=XzW00rKO2isZu4IP2pkHVJ3PcZy+noiay7NCF3yEykQ/JGT+96Fxt4+ep/3N5XW4x+9Ld5y4j
+ MnH//KJxEvJD02Wk69bbm3tEn8zaqJJ2w4fRRLw4q9qkbewDCKSktzS
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-Hi,
+From: André Apitzsch <git@apitzsch.eu>
 
-Am Sonntag, dem 09.02.2025 um 14:20 +0000 schrieb Sakari Ailus:
-> Hi Andr=C3=A9,
->=20
-> On Sat, Feb 08, 2025 at 12:13:49PM +0100, Andr=C3=A9 Apitzsch via B4 Rela=
-y
-> wrote:
-> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> >=20
-> > Add of_match table for "dongwoon,dw9719" and "dongwoon,dw9761"
-> > compatible string. This fixes automatic driver loading when using a
-> > device-tree, and if built as a module like major linux
-> > distributions do.
-> >=20
-> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
->=20
-> How about the DT bindings?
->=20
-> The configuration should be documented, too. See e.g. for an example
-> Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml .
->=20
+Add of_match table for "dongwoon,dw9719" and "dongwoon,dw9761"
+compatible string. This fixes automatic driver loading when using a
+device-tree, and if built as a module like major linux distributions do.
 
-I was hoping, I could add it, when using the binding in a device tree.
-I'll prepare a new version that also has a DT bindings patch.
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+ drivers/media/i2c/dw9719.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Regards,
-Andr=C3=A9
+diff --git a/drivers/media/i2c/dw9719.c b/drivers/media/i2c/dw9719.c
+index 032fbcb981f20f4e93202415e62f67379897a048..6c76212d4c698462a9128d26ef95f0eccb243c7c 100644
+--- a/drivers/media/i2c/dw9719.c
++++ b/drivers/media/i2c/dw9719.c
+@@ -360,6 +360,13 @@ static const struct i2c_device_id dw9719_id_table[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, dw9719_id_table);
+ 
++static const struct of_device_id dw9719_of_table[] = {
++	{ .compatible = "dongwoon,dw9719" },
++	{ .compatible = "dongwoon,dw9761" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, dw9719_of_table);
++
+ static DEFINE_RUNTIME_DEV_PM_OPS(dw9719_pm_ops, dw9719_suspend, dw9719_resume,
+ 				 NULL);
+ 
+@@ -367,6 +374,7 @@ static struct i2c_driver dw9719_i2c_driver = {
+ 	.driver = {
+ 		.name = "dw9719",
+ 		.pm = pm_sleep_ptr(&dw9719_pm_ops),
++		.of_match_table = of_match_ptr(dw9719_of_table),
+ 	},
+ 	.probe = dw9719_probe,
+ 	.remove = dw9719_remove,
+
+-- 
+2.48.1
+
+
