@@ -1,204 +1,100 @@
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE551AB528
-	for <phone-devel@vger.kernel.org>; Sat,  8 Feb 2025 22:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.144.164.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739052250; cv=none; b=mbjAIqANg4qYrren3XwMx2fnuylaJc06I7w08ajD0uQ1n28l5lziH3XmVZ9LqjJENnBJIy3dOgTrrXPDsJOrm5iw+CNmsE3DtDzmxZCrOg21i+4MSZhj/Ay4D8nC0edBZ6Ecrpi6TBlEqGmp+zj7M8yxSDx63gp6RBgSAElWgY8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739052250; c=relaxed/simple;
-	bh=Is+Qs8gxBkUnO9SHFdZ152vDugn7Py1h5ACe9lKwTz8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421BE7602D;
+	Sun,  9 Feb 2025 14:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739110836; cv=pass; b=ll6aWNe+vwb1Ya9lYDIWjCX5Mj1mD009GMbh4xvl4wGcXjcQtd0m7OUO5FFk8VCy392Ix/pY8H96PxIrOUCvswVnrkT7AEmaukV5alEqtVY1m6gZQ5iImkDwmcygrNaJPUthAJThUlgjZ6Qk38utzwekg2iYSU9gdHIqeSRy6SQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739110836; c=relaxed/simple;
+	bh=1Sug2c693Lgh4dH6IPfzlesBDu3aBWBU5UIUzgWe9LQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QvLs67fer2EnrHjv10HnCpscYE3WXoGa3VhKZUl+9FdpMGsfj9XTJp5WK3p7LOy8Tvoj1k+3DL3Wo82CHPzwOLontc2UW3hjQJm6R8zIa7HNhX4aRuhNZ2Srpqz2KbUSdB/NCOm8V9w3s2Q1+HOXVS3hxiTvLPM7QfFe56zfx94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org; spf=pass smtp.mailfrom=somainline.org; arc=none smtp.client-ip=5.144.164.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sn9rz3h/P4JVK5U9AioPo+AadH61odbW86w8H6kd6saL3rVVz4RAjGSHwr9O+yhZ18DqveOnms0X30hbjwVRps8e+iYitB+2sxIfgX2dncMwLEYoBhn/1geNqBTeY3DcZ0rfruYThkUDTvQWbeQX6GSDvlV12aszcw914Z63qNs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=V6vdQCkK; arc=pass smtp.client-ip=195.140.195.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="V6vdQCkK"
+Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0E7742027E;
-	Sat,  8 Feb 2025 22:48:26 +0100 (CET)
-Date: Sat, 8 Feb 2025 22:48:24 +0100
-From: Marijn Suijten <marijn.suijten@somainline.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable
- display
-Message-ID: <vm4wglq5xedieqwo4vy5eeszbx3a625jromi3ts3jkrhw3zccv@7eaol7dckbh7>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
-	Luca Weiss <luca.weiss@fairphone.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250202-fp5-display-v1-0-f52bf546e38f@fairphone.com>
- <20250202-fp5-display-v1-1-f52bf546e38f@fairphone.com>
+	(Authenticated sender: sailus)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4YrVGv3VgszyQx;
+	Sun,  9 Feb 2025 16:20:23 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1739110823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3yreCpuFhLzNoChfFY5jECVucnlSVm8jP7X9qttv4G8=;
+	b=V6vdQCkKseCwa50j6VImTWKdmTjhBRtgF7q5VdKhgLbBxgZoBAd78ALrRFYI46lTFAjeU6
+	3BxzPZpETf1RYoKQahVZYmcnCDVBdt25P2YjP8ZlmJAnQmPufCWsPUGM9qOu2yIUSp4rvm
+	0fqnK7m0Do5j5iz5ArnSz8itHxawP1Q=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1739110823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3yreCpuFhLzNoChfFY5jECVucnlSVm8jP7X9qttv4G8=;
+	b=HSVO5rKM1PXqOQDV2SA3jfautp9Cyb3mVi5TeguWPCi/TJIiYGbya6HsgHLKbwQ7ceNG4w
+	bBLtY6bYYox+LK7wDE9+/rPKrl6oN836xYSiFe3AXyQ06nrUSNa1ys4cwiIagZdeh0R2FA
+	PzUGC6iVMb4OGxwMIC8RSxPC90IEp08=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1739110823; a=rsa-sha256; cv=none;
+	b=cOJxH6ql3eXJdCGSe9evp7Mi4VVB52NLpHo8tM2DrApuI6Y7cz/r6hthITu0x24IWbK0Hp
+	ZlewHA9zOgmq15TkvdQOnhVeCX2ZrBGVlOvjty7Oa5XXxV92fn7zCeDC+J/t4dU/4XHvQ4
+	jE1oDoGXNNNby30mS06ifrAu7jGoEzk=
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 00956634C96;
+	Sun,  9 Feb 2025 16:20:22 +0200 (EET)
+Date: Sun, 9 Feb 2025 14:20:22 +0000
+From: Sakari Ailus <sakari.ailus@iki.fi>
+To: git@apitzsch.eu
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] media: dw9719: Add of_match table
+Message-ID: <Z6i5puujYD5sJ64n@valkosipuli.retiisi.eu>
+References: <20250208-dw9761dts-v2-1-c038f8a2fb94@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250202-fp5-display-v1-1-f52bf546e38f@fairphone.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250208-dw9761dts-v2-1-c038f8a2fb94@apitzsch.eu>
 
-On 2025-02-02 23:45:51, Luca Weiss wrote:
-> Configure the MDSS nodes for the phone and add the panel node.
+Hi André,
+
+On Sat, Feb 08, 2025 at 12:13:49PM +0100, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-
-Glad to hear (and see in real life) that you're able to use the 1:1:1 topology
-patches.
-
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-
-Thanks!
-
-> ---
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 94 ++++++++++++++++++++--
->  1 file changed, 89 insertions(+), 5 deletions(-)
+> Add of_match table for "dongwoon,dw9719" and "dongwoon,dw9761"
+> compatible string. This fixes automatic driver loading when using a
+> device-tree, and if built as a module like major linux distributions do.
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> index 389eca9b9e68187980e92ac921a77a3c3b54f6a5..965e32473a58ae4748e4cb748980fad1d2b06ab6 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> @@ -138,6 +138,34 @@ vreg_ois_dvdd_1p1: regulator-ois-dvdd-1p1 {
->  		vin-supply = <&vreg_s8b>;
->  	};
->  
-> +	vreg_oled_dvdd: regulator-oled-dvdd {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "oled_dvdd";
-> +		regulator-min-microvolt = <1200000>;
-> +		regulator-max-microvolt = <1200000>;
-> +
-> +		gpio = <&tlmm 51 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +
-> +		vin-supply = <&vreg_s1b>;
-> +
-> +		regulator-boot-on;
-> +	};
-> +
-> +	vreg_oled_vci: regulator-oled-vci {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "oled_vci";
-> +		regulator-min-microvolt = <3000000>;
-> +		regulator-max-microvolt = <3000000>;
-> +
-> +		gpio = <&pm8350c_gpios 7 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +
-> +		vin-supply = <&vreg_l13c>;
-> +
-> +		regulator-boot-on;
-> +	};
-> +
->  	reserved-memory {
->  		cont_splash_mem: cont-splash@e1000000 {
->  			reg = <0x0 0xe1000000 0x0 0x2300000>;
-> @@ -597,11 +625,6 @@ eeprom@51 {
->  	};
->  };
->  
-> -&dispcc {
-> -	/* Disable for now so simple-framebuffer continues working */
-> -	status = "disabled";
-> -};
-> -
->  &gcc {
->  	protected-clocks = <GCC_CFG_NOC_LPASS_CLK>,
->  			   <GCC_EDP_CLKREF_EN>,
-> @@ -733,6 +756,46 @@ &ipa {
->  	status = "okay";
->  };
->  
-> +&mdss {
-> +	status = "okay";
-> +};
-> +
-> +&mdss_dsi {
-> +	vdda-supply = <&vreg_l6b>;
-> +	status = "okay";
-> +
-> +	panel@0 {
-> +		compatible = "fairphone,fp5-rm692e5-boe", "raydium,rm692e5";
-> +		reg = <0>;
-> +
-> +		reset-gpios = <&tlmm 44 GPIO_ACTIVE_LOW>;
-> +
-> +		vci-supply = <&vreg_oled_vci>;
-> +		vddio-supply = <&vreg_l12c>;
-> +		dvdd-supply = <&vreg_oled_dvdd>;
-> +
-> +		pinctrl-0 = <&disp_reset_n_active>, <&mdp_vsync>;
-> +		pinctrl-1 = <&disp_reset_n_suspend>, <&mdp_vsync>;
-> +		pinctrl-names = "default", "sleep";
-> +
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&mdss_dsi0_out>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&mdss_dsi0_out {
-> +	data-lanes = <0 1 2 3>;
-> +	remote-endpoint = <&panel_in>;
-> +};
-> +
-> +&mdss_dsi_phy {
-> +	vdds-supply = <&vreg_l10c>;
-> +	status = "okay";
-> +};
-> +
->  &pm7250b_adc {
->  	pinctrl-0 = <&pm7250b_adc_default>;
->  	pinctrl-names = "default";
-> @@ -1026,6 +1089,20 @@ bluetooth_enable_default: bluetooth-enable-default-state {
->  		bias-disable;
->  	};
->  
-> +	disp_reset_n_active: disp-reset-n-active-state {
-> +		pins = "gpio44";
-> +		function = "gpio";
-> +		drive-strength = <8>;
-> +		bias-disable;
-> +	};
-> +
-> +	disp_reset_n_suspend: disp-reset-n-suspend-state {
-> +		pins = "gpio44";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-down;
-> +	};
-> +
->  	hall_sensor_default: hall-sensor-default-state {
->  		pins = "gpio155";
->  		function = "gpio";
-> @@ -1033,6 +1110,13 @@ hall_sensor_default: hall-sensor-default-state {
->  		bias-pull-up;
->  	};
->  
-> +	mdp_vsync: mdp-vsync-state {
-> +		pins = "gpio80";
-> +		function = "mdp_vsync";
-> +		drive-strength = <2>;
-> +		bias-pull-down;
-> +	};
-> +
->  	pm8008_int_default: pm8008-int-default-state {
->  		pins = "gpio25";
->  		function = "gpio";
-> 
-> -- 
-> 2.48.1
-> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+
+How about the DT bindings?
+
+The configuration should be documented, too. See e.g. for an example
+Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml .
+
+-- 
+Regards,
+
+Sakari Ailus
