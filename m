@@ -1,66 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731B61C5799;
-	Mon, 10 Feb 2025 09:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1C21C54AF;
+	Mon, 10 Feb 2025 10:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739181222; cv=none; b=Q7i8QjZTv2azxowmqIwxunbEAtW8dcIUuDecbUsYnOcp1NtMewbVcea7w4NO6UR5jGeJTUWoIaShFCiPiTNtrNS0uxcip7ZdBDJJLXN9ktr1b593n84azvLWw4d230NV/iwt0JBSc7ym4FCtZWveQb5VnnISKKfhN0g+FaywN98=
+	t=1739182021; cv=none; b=hNcLXTCep0qNZUlliWPQSZLys+v/E/EO7Zl2zPGOnT3IQx6nXkDBEctJAoW5pq89e4xsT5K4cnkt3S686WM2YOlAuMoCg2TY/D0bZdXmLYMU4Bq+OFdAy6Wo2B/DwBpnTuLXuB5fvttmOYeDpSVximpqodaHJpxXxDOo/KLh1Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739181222; c=relaxed/simple;
-	bh=WZ8gMumvatbxQoJVCd/ooEA0OvxyHGeaCxHBr2ZS50Q=;
+	s=arc-20240116; t=1739182021; c=relaxed/simple;
+	bh=5uoVeSj0QN4EeZcCrlskyNvROXSluRl4IF+26szp08I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GS614fSINrczV0kvsrSfDp37tjHNljiTtDL5FpssPqJyM96liD1POSPj77oz+l4lpN4ZK+548ExHYoIHceWd87Nt5FyXNKE1/7Y+Vr93rgn08N2EOphgR3uSFXxAdXz4HaAckCPJJ4q8TEBSsUJvjDtw9SyJsHQitSDDZU5sSDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CAd2Xe4g; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=NtVEttD/OsX2Af/yh5fOHPfEyoR2y0DF4dH4gtY+Z4nyXbs7/HQPVcsV55lXCSQxSYdoj/8IEq+FvoP1MsFeqYIX6+Kw+GeaDZB04nNoaAQODGtsiIGh2aLdXWbkEviP4JDi1BT6IIh5nkl59uE30sPhYaSmM0Q4l3WycDS24ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kcs5z9wH; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CAd2Xe4g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kcs5z9wH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739181221; x=1770717221;
+  t=1739182020; x=1770718020;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=WZ8gMumvatbxQoJVCd/ooEA0OvxyHGeaCxHBr2ZS50Q=;
-  b=CAd2Xe4gG51vLARyF7Vu2+x2ULBPYDw9KREtIUxPgTlGFEEvGxJyYXnj
-   Lac1abg6RWnsxXeK5lwTo0F8fSuAoGXyi32At6+RLVr9bWRvcB7tX7U79
-   eUhh7gTH5LHBSnZM5ZnQLTn+s8zBGR7T1sfvWEneSw5P3b3zAEmKFJYs9
-   K+0tBOP+LrshkOdieeJM9kZnWY1xiT/hv0iqSpu3q1So0SM8fp2LAH+mf
-   dE4JHzYWaOfW16gTBfTmn39cnovhobSb1WDrY+m5r/7qf2KBt6dHROy21
-   rOZdIlfawioEIpRf4/lmyVlo4duoq9VbMG/yWCu/5zmL7OG4w5GpTBtg1
-   w==;
-X-CSE-ConnectionGUID: G0EaPDnERVmDYtvEGdVT3A==
-X-CSE-MsgGUID: DEo0TLV+RZKHs5Xiw7Ag4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="39882175"
+  bh=5uoVeSj0QN4EeZcCrlskyNvROXSluRl4IF+26szp08I=;
+  b=kcs5z9wHLHeh+oVGEtJrqvRYRRLDCb4vbj/upCCm8jyNEL8njo1TlLIP
+   rAZ2NumUDroMEQu9f9gYHYsmYcD+vy9/HIT4TdLQC7X7Kvtj9W/audGBH
+   rsds0lK5Fs7Sqj4NGsOG0uoSIIFRYrKT4gvVZzqzfJiorxBVoLEY37PQL
+   VKWysPLdCOmk50jk41IxZoECd/zfIULTuuOAgaKJTi63kkN80wkqyCB9T
+   d+yTLAe4F10Ng2oshXGza+QwNWy7uXep2Gmm+zy064+314vglGFLGGYF6
+   T+bI/NkndkbBWULNp2Qzf67yHIzxJh1HxNEUBhddDLuafrDsJUXSakWmn
+   Q==;
+X-CSE-ConnectionGUID: gTZZ8kYRRByoLnHb4lfNKg==
+X-CSE-MsgGUID: k3aytTCqT0ymGwYD4edwtA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="39441232"
 X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; 
-   d="scan'208";a="39882175"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 01:53:33 -0800
-X-CSE-ConnectionGUID: UiTXYApJSAuWHRDkrOw3uw==
-X-CSE-MsgGUID: WgVEtldIQeKNrzhHKBt+5Q==
+   d="scan'208";a="39441232"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 02:06:59 -0800
+X-CSE-ConnectionGUID: 7wCeTMN+S+WsBMFPG+3Jsg==
+X-CSE-MsgGUID: Ag8YuZa0Q8K+IdhuN1X07A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="113026011"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 01:53:30 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 3E4F311F94F;
-	Mon, 10 Feb 2025 11:53:27 +0200 (EET)
-Date: Mon, 10 Feb 2025 09:53:27 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Daniel Scally <djrscally@gmail.com>,
+   d="scan'208";a="116214442"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 10 Feb 2025 02:06:55 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1thQgn-0012Yd-1S;
+	Mon, 10 Feb 2025 10:06:53 +0000
+Date: Mon, 10 Feb 2025 18:06:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch via B4 Relay <devnull+git.apitzsch.eu@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: Add DW9719 and DW9761 VCM
-Message-ID: <Z6nMl7vXPkICysSJ@kekkonen.localdomain>
-References: <20250209-dw9761dts-v3-0-14d3f00f0585@apitzsch.eu>
- <20250209-dw9761dts-v3-1-14d3f00f0585@apitzsch.eu>
+	linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Subject: Re: [PATCH v3 2/2] media: i2c: dw9719: Add of_match table
+Message-ID: <202502101730.OtKFel6n-lkp@intel.com>
+References: <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,81 +72,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250209-dw9761dts-v3-1-14d3f00f0585@apitzsch.eu>
+In-Reply-To: <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
 
 Hi André,
 
-Thanks for the update.
+kernel test robot noticed the following build warnings:
 
-On Sun, Feb 09, 2025 at 10:51:57PM +0100, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
-> 
-> Document Dongwoon DW9719 and DW9761 VCM devicetree bindings.
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> ---
->  .../bindings/media/i2c/dongwoon,dw9719.yaml        | 45 ++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..b38d22bf09713a7999e1f9ce6553de7587dbe5d2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9719.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Dongwoon Anatech DW9719 Voice Coil Motor (VCM) Controller
-> +
-> +maintainers:
-> +  - devicetree@vger.kernel.org
-> +
-> +description:
-> +  The Dongwoon DW9719 is a 10-bit digital-to-analog (DAC) converter. The DAC
-> +  is controlled via a 2-wire (I2C-compatible) serial interface.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - dongwoon,dw9719
-> +      - dongwoon,dw9761
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Regulator providing power to the "VDD" pin.
+[auto build test WARNING on 8f6629c004b193d23612641c3607e785819e97ab]
 
-The driver uses dongwoon,sac-mode and dongwoon,vcm-freq properties. Could
-you document them as well, please, including the defaults? Are the values
-the same for both chips?
+url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Apitzsch-via-B4-Relay/dt-bindings-media-i2c-Add-DW9719-and-DW9761-VCM/20250210-055506
+base:   8f6629c004b193d23612641c3607e785819e97ab
+patch link:    https://lore.kernel.org/r/20250209-dw9761dts-v3-2-14d3f00f0585%40apitzsch.eu
+patch subject: [PATCH v3 2/2] media: i2c: dw9719: Add of_match table
+config: x86_64-randconfig-161-20250210 (https://download.01.org/0day-ci/archive/20250210/202502101730.OtKFel6n-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250210/202502101730.OtKFel6n-lkp@intel.com/reproduce)
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        camera-lens@c {
-> +            compatible = "dongwoon,dw9761";
-> +            reg = <0x0c>;
-> +            vdd-supply = <&pm8916_l10>;
-> +        };
-> +    };
-> 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502101730.OtKFel6n-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/media/i2c/dw9719.c:363:34: warning: 'dw9719_of_table' defined but not used [-Wunused-const-variable=]
+     363 | static const struct of_device_id dw9719_of_table[] = {
+         |                                  ^~~~~~~~~~~~~~~
+
+
+vim +/dw9719_of_table +363 drivers/media/i2c/dw9719.c
+
+   362	
+ > 363	static const struct of_device_id dw9719_of_table[] = {
+   364		{ .compatible = "dongwoon,dw9719" },
+   365		{ .compatible = "dongwoon,dw9761" },
+   366		{ }
+   367	};
+   368	MODULE_DEVICE_TABLE(of, dw9719_of_table);
+   369	
 
 -- 
-Regards,
-
-Sakari Ailus
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
