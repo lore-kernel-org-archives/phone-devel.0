@@ -1,66 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C91C5F14;
-	Mon, 10 Feb 2025 10:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079CC24CED6;
+	Mon, 10 Feb 2025 21:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739182638; cv=none; b=pMq1XFX9ntyYFuMwxGu661zXgz5Aj5s+vGwNBJVZqMaOn7tfDihE2YjZiv2wxqGAwnp4tM+BD6U948EvFidTkiQYSRQDEl100BXpNKGgg5XMrcwtG32+4+f/qw6GvrUTYidS1+LwxXEhbw/XoXmY1sA3D/paY75qgoaWB8+Kx/w=
+	t=1739222302; cv=none; b=UppwxxZBEJIvCmaL7dZLbJONudThiFtPltpzGwxaY6esJzrXsSaK5pZqF0ENtnChOpa/OOga338ji1q7JvFX3LRqLp8gGTEGOnDDI60GYJPMpoAgkXD/9U5eWE71Kp6489i6l2Kfg+pcOBSwFh39o1rQbL+VJosm0SYdDupUf00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739182638; c=relaxed/simple;
-	bh=yYZIyaS7DPr4T8bwU/okKPeXrYUxyBvElDgekCrprnA=;
+	s=arc-20240116; t=1739222302; c=relaxed/simple;
+	bh=Itk/H9cRgURUCZBx/2HgnA0hYhWGUxXd3mFNtaT01wY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AZIIG7ubufr1O7pgsQTbB3nS/F+x7ue6sNlcDbh/5aXujAeiwyt/gvIc+6C/SogI4r1Fm9pW/kcmRvaLGeWCNil3lMsoyVo4B/ajNalRWeEyM+rFqqiJdJLkKmNDiAzymLzyhXO4OJuRje3/KBNDzl957ozihPH67yXUAqMfKhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l0+gQw4w; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=T3Z9NHK1uksrs6nN7RXtK9xjLgN4VWnuxnp3c/RIHQd8y7Q8GtaqyAbGL5fjbI+y4IPuJSs7o+jN87N/Fz8Ec0Q0yanD0QnfeVtVyeyUGkjH0KeBUFmxcKQ2zyfcr6aL5wHlEloZ21Ht+NFLQoQ5YMAlJjXFM7tTEbrSSVEirgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6cC+Zv1; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l0+gQw4w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6cC+Zv1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739182636; x=1770718636;
+  t=1739222301; x=1770758301;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=yYZIyaS7DPr4T8bwU/okKPeXrYUxyBvElDgekCrprnA=;
-  b=l0+gQw4wZbmIHrCsVaXEVRsPyrkcumfSGAzJ0tLkDOmg8RwVPkQ2jByH
-   1jCKdl0e7y1Vy4HQ2r2L+U19eMmK0HXnL8igh8CG1ZqkUBdh3jpFFnOao
-   dGJiSeSBlo/Mb5iGHHREILeJ60MVH8zmhxARAkSlYAIKUDnbcsx9Xn2cn
-   iP6ZWHAQpVhcxzqzUZ2RifYAO671oejgn7jzNavca6Flmumi7Xeq1ayRz
-   aySeuhEJ/CYo9XhLAUn8OCg12ERbW/sWEshQ6gZlzu3sT1pbN2XZVc+i8
-   MdpMRcDvYzgNAHZ5IvQ1YX+HL80V2zN1UWGkuVK9COZQ0fvpbEoLIpAal
-   Q==;
-X-CSE-ConnectionGUID: ht98XkGBQY6EqYn9YDW8sw==
-X-CSE-MsgGUID: Kn0dNVqpQ0iVgNBOPGT9kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="50384654"
-X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; 
-   d="scan'208";a="50384654"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 02:17:15 -0800
-X-CSE-ConnectionGUID: K9LMqsj4Q7mbmGXT/NRsbw==
-X-CSE-MsgGUID: W3GjvN1HRHaRNsSnv5DsXg==
+  bh=Itk/H9cRgURUCZBx/2HgnA0hYhWGUxXd3mFNtaT01wY=;
+  b=E6cC+Zv1PZ0QpCg4F7pfBG+kJ7jeBIuUE4ieH3iV5BjNnDGcP0cm4Dth
+   lsB3Oyaid7sDmgYuYpWDWEc2Ll3EakkwTL7v/98thHaHSCEndcP8wVAC1
+   28lwMT3NPgXMJ2817NHdFZnf+5EK7Wt07e46jX7f2+vDR9ghT+tCZqR2e
+   5kozYKLtjifXdJgYvHYW2WYLCUpZ98IEsLKXmMGFj6zuW6BnMRS5uO4ZC
+   ZXCpZwe9FKLeWCDdElPaBbyoM7W1+59r7r10aEQ+eJCkrXilGsEKfkBq8
+   nuDVZWbfiZm+kIEyVSmL3YRfRX18MVGB+YjbgWdJ4QFfm34Tg58wYATgg
+   A==;
+X-CSE-ConnectionGUID: DeYUty0VT96sNtMus+PZgA==
+X-CSE-MsgGUID: olztcMucRjGrOl/a28Rbuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="51254253"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="51254253"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 13:18:20 -0800
+X-CSE-ConnectionGUID: qojBdk7+RnO/FKtEAmvP4g==
+X-CSE-MsgGUID: CyMZCbBRTvWduVPvCUCWlw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,274,1732608000"; 
-   d="scan'208";a="112782860"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 02:17:12 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 1CBDD120433;
-	Mon, 10 Feb 2025 12:17:10 +0200 (EET)
-Date: Mon, 10 Feb 2025 10:17:10 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Daniel Scally <djrscally@gmail.com>,
+X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
+   d="scan'208";a="117331685"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 10 Feb 2025 13:18:17 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1thbAU-0013Od-2K;
+	Mon, 10 Feb 2025 21:18:14 +0000
+Date: Tue, 11 Feb 2025 05:18:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch via B4 Relay <devnull+git.apitzsch.eu@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-media@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
 Subject: Re: [PATCH v3 2/2] media: i2c: dw9719: Add of_match table
-Message-ID: <Z6nSJstFmoykYhmn@kekkonen.localdomain>
-References: <20250209-dw9761dts-v3-0-14d3f00f0585@apitzsch.eu>
- <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
+Message-ID: <202502110539.EO1iB2au-lkp@intel.com>
+References: <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -74,10 +76,64 @@ In-Reply-To: <20250209-dw9761dts-v3-2-14d3f00f0585@apitzsch.eu>
 
 Hi André,
 
-On Sun, Feb 09, 2025 at 10:51:58PM +0100, André Apitzsch via B4 Relay wrote:
-> +		.of_match_table = of_match_ptr(dw9719_of_table),
+kernel test robot noticed the following build warnings:
 
-Please drop of_match_ptr(), that fixes the problem.
+[auto build test WARNING on 8f6629c004b193d23612641c3607e785819e97ab]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Apitzsch-via-B4-Relay/dt-bindings-media-i2c-Add-DW9719-and-DW9761-VCM/20250210-055506
+base:   8f6629c004b193d23612641c3607e785819e97ab
+patch link:    https://lore.kernel.org/r/20250209-dw9761dts-v3-2-14d3f00f0585%40apitzsch.eu
+patch subject: [PATCH v3 2/2] media: i2c: dw9719: Add of_match table
+config: x86_64-randconfig-001-20250211 (https://download.01.org/0day-ci/archive/20250211/202502110539.EO1iB2au-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250211/202502110539.EO1iB2au-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502110539.EO1iB2au-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/media/i2c/dw9719.c:12:
+   In file included from include/linux/i2c.h:19:
+   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:21:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/media/i2c/dw9719.c:363:34: warning: unused variable 'dw9719_of_table' [-Wunused-const-variable]
+     363 | static const struct of_device_id dw9719_of_table[] = {
+         |                                  ^~~~~~~~~~~~~~~
+   4 warnings generated.
+
+
+vim +/dw9719_of_table +363 drivers/media/i2c/dw9719.c
+
+   362	
+ > 363	static const struct of_device_id dw9719_of_table[] = {
+   364		{ .compatible = "dongwoon,dw9719" },
+   365		{ .compatible = "dongwoon,dw9761" },
+   366		{ }
+   367	};
+   368	MODULE_DEVICE_TABLE(of, dw9719_of_table);
+   369	
 
 -- 
-Sakari Ailus
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
