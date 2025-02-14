@@ -1,135 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E89209674;
-	Wed, 12 Feb 2025 10:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74F4186E54;
+	Fri, 14 Feb 2025 05:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739357032; cv=none; b=YRD/9hnXsrDL7wvAOznziDPrFARwNL9TFmLTDDqmgk64zSiRAUYXMkCaD24sy891dqXlgwUjKCT2sTG3tto5HEMGrIrn/4YVTw9mBfUcOfjA2TAvwB0Ccz4rSkjjifR36hRprw/lFwzeWPTr4VcD6DdTyaUhpvI4KXZbpXhV5IQ=
+	t=1739511016; cv=none; b=OsyDjP6sdSkZO4fYoOSAzL+vXXrIjuIqLmCdDtYmnt9+ZwzCooQC0Fu+Wd4WoplMpCIzMR3DHrIJiFrpCAu+TXm6ovW77bB/0BAizTWiqajhKIOnXKx+3BWrvdxcSngLco+MDC5oNLPI4j7CXQMvZchaF4zPTzuY4QodmG0ANRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739357032; c=relaxed/simple;
-	bh=X2eltLRhw1w4UIkkJvn+viee4/SqEPKwaFrktrUEYQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MW0LomOY+MkvwLS0dZMI6HibLpf+dF/xpbrvRDjffGFpxkl/Fw7hZrxwb0oKwLZRNXdNFUjT8n+P1z/2OzuRxIy+F58xjFoO222CFR7MDidpmVxpzJa0PsDxtcRbJlykpDUtFpbxVmZZr1XWMGjDoY2njbgyqvgt0o17FFGzKAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FmtZQn1B; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FmtZQn1B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739357031; x=1770893031;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=X2eltLRhw1w4UIkkJvn+viee4/SqEPKwaFrktrUEYQ0=;
-  b=FmtZQn1BLzus6bNFcNKWSJtoVzBdQSBws7WBsJqo/epOY77IAtFfcg5L
-   3H3B5YYjPRd3KHfOJmo0v+59CrbWMXHEVOPEjRrjB2adDHipBKWjAws1j
-   A3/o48xZrW8roOxpgtSSq4fjiMdOqiUbxreKsZyF20vS7QpdjHI2lrBwP
-   xyxh7tVRml6njGbXjIY2nfsR3nkFatRP+gnKrwDwC4IHvBlmn6yKFsJMg
-   HMiCxx3Gcg1tuNc+b3fZYM0xFsxk118egeULleh/7s751RlaDtLaMnGWQ
-   s2S0pmBcihFwKtpZJvZiy4Nvqmj18hwdwyPKs7lwyGHJ4EQV1zhga6Uhd
-   Q==;
-X-CSE-ConnectionGUID: MF+EgDxRSRGhAXdkTPap3A==
-X-CSE-MsgGUID: VR1FiWZFRj6YdwqvQD9Vew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40032078"
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="40032078"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:43:51 -0800
-X-CSE-ConnectionGUID: 9ogGZln/SR2AoJP2f85ftg==
-X-CSE-MsgGUID: 082GvNeQSUKxR8PlBtUqjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="112998158"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:43:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tiADW-0000000Ao56-16Qk;
-	Wed, 12 Feb 2025 12:43:42 +0200
-Date: Wed, 12 Feb 2025 12:43:42 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Aren Moynihan <aren@peacevolution.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	s=arc-20240116; t=1739511016; c=relaxed/simple;
+	bh=naQspt9rQxqLhYKrvz5bbzsUon+98m/GSA7HK5hENJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CAWrsQDTleTjN3zebfVr1sm1Wl+XbsBSXmtqHDj4nWKEFCEBFC6n2+t07KBlDkRBd3uJw+9+arU9xpnbOeY5OLHR00AQ/mKTjZmBX43yRG27IMU1wCXvJRW+NA7cJg0lv8U1ZOsclHZ0EjzpCi2dOi5ntrtbveR61XFqCuQfZ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=travitia.xyz; spf=none smtp.mailfrom=travitia.xyz; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=travitia.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=travitia.xyz
+Received: from mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:2d9f:0:640:f6ce:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id C9B4760D69;
+	Fri, 14 Feb 2025 08:30:11 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 5UJF7UBMgqM0-ZHxD7olK;
+	Fri, 14 Feb 2025 08:30:10 +0300
+X-Yandex-Fwd: 1
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net; dkim=pass
+From: Jens Reidel <adrian@travitia.xyz>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	=?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <trabarni@gmail.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, Ondrej Jirman <megi@xff.cz>,
-	Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v5 6/8] iio: light: stk3310: use dev_err_probe where
- possible
-Message-ID: <Z6x7XgtGr8Thx08Z@smile.fi.intel.com>
-References: <20250208211325.992280-2-aren@peacevolution.org>
- <20250208211325.992280-8-aren@peacevolution.org>
- <Z6jAEEU2dqn_FJVp@smile.fi.intel.com>
- <20250211194311.5255f25b@jic23-huawei>
+	Conor Dooley <conor+dt@kernel.org>,
+	Bastien Nocera <hadess@hadess.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Luca Weiss <luca.weiss@fairphone.com>,
+	linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	linux@mainlining.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Jens Reidel <adrian@travitia.xyz>
+Subject: [PATCH v2 1/2] dt-bindings: input: goodix,gt9916: Document gt9897 compatible
+Date: Fri, 14 Feb 2025 06:29:58 +0100
+Message-ID: <20250214052959.222668-2-adrian@travitia.xyz>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250214052959.222668-1-adrian@travitia.xyz>
+References: <20250214052959.222668-1-adrian@travitia.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250211194311.5255f25b@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 11, 2025 at 07:43:11PM +0000, Jonathan Cameron wrote:
-> On Sun, 9 Feb 2025 16:47:44 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Sat, Feb 08, 2025 at 04:13:24PM -0500, Aren Moynihan wrote:
-> > > Using dev_err_probe instead of dev_err and return makes the errors  
-> > 
-> > Use dev_err_probe()
-> > dev_err()
-> > 
-> > > easier to understand by including the error name, and saves a little
-> > > code.  
-> > 
-> > I believe this patch will make more sense before switching to local 'dev'
-> > variable. Then the previous one will have an additional justification as
-> > the "struct device *dev = ...;" lines in some cases will be added already
-> > by this patch.
-> 
-> I'm not sure I follow this one comment.
-> The only line that has struct device *dev =  added in this patch is
-> replacing an existing client->dev lookup that could have been pushed
-> to previous patch if this patch ordering was maintained.
-> 
-> For dev_err() to dev_err_probe() the number of references to dev
-> is the same after all. The only additional justification this patch
-> makes is some longer lines that using a local dev pointer shortens
-> again.
+Document the Goodix GT9897 which is a Berlin-A series touchscreen
+controller IC by Goodix.
 
-When converting to dev_err_probe() in some cases it makes sense to add a
-temporary variable at the same time.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Jens Reidel <adrian@travitia.xyz>
+---
+ .../devicetree/bindings/input/touchscreen/goodix,gt9916.yaml     | 1 +
+ 1 file changed, 1 insertion(+)
 
-	if (ret) {
-		dev_err(&pdev->dev, ...);
-		return ...;
-	}
-
-===>
-
-	struct device *dev = &pdev->dev;
-	...
-	if (ret)
-		return dev_err_probe(dev, ...);
-
-which reduces automatically the churn in the patch that wants to (re)use that
-temporary variable and also adds to the justification as "we already have that
-variable, just want to use it".
-
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml b/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
+index d90f045ac06c..c40d92b7f4af 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
+@@ -19,6 +19,7 @@ allOf:
+ properties:
+   compatible:
+     enum:
++      - goodix,gt9897
+       - goodix,gt9916
+ 
+   reg:
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.48.1
 
