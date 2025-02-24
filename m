@@ -1,101 +1,125 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D021EDA00;
-	Mon, 24 Feb 2025 09:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9826D15530B
+	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740387915; cv=none; b=WtNKvK7akvxDL9Ryo+M9VmLyThRB7y8mEKteq0fzuUKWJBu6kAWCU18o4trgpsAFXIaDN+m52Bs1mGOSrlD6NomXrYgfTWhB7leSY2yrjt6SM+4S84u3bbDuALtmYHszLV9VzViYPQpkLHATxLi+G+uOTuGSNgUAJPTM0kKQt4U=
+	t=1740428762; cv=none; b=iPFuY2WWUTvmf3nLAhAx4bBOWiNqKhuM8l5Zl8ParEeG9/SLxDe3D/0vVKEB3GP2mLzVwpwZssUqSyAiQRWT6oez0nN1YJLf26526XnfNzoVCPTFTlCi1byKsYXH2fHoyAvWw0dSY8Ey/G+qriuKT7JlxxcN91MXPr+RefEGMQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740387915; c=relaxed/simple;
-	bh=XKItg2QlUx4XyDSdch36WvmyLwcKtcZtpLrZTfCRZKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is/EpmaEIu8aBKhATLuzuU0GSlkj3irgt+EnvbXPEQ7cbKmXVwRDSLY4NZ+feYLpx/XoqHZ2WxDYdF5LTb/Nckw5Y0NRcNRvs5PlNLyGVfjbF63m3r2jnuNyWttyckzT+BSoO9eEU+BOFKIPwTN58ZIjpD07HhPfzZjKCDSKy7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdhUjYEv; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740428762; c=relaxed/simple;
+	bh=1j/g1K7Ja5vbzknnuLCVHa/8XApl+L1E/ioFi17G0B4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=agG5JV/ESDgEA8DAi1F6AbfJMJTk1RxsVFOtzG2gJ7SnC6a7gASSRsRxaPU9eA7lSMaGfZa1VfR7QH/FiMVeVqPNTOXve8iSHabQ0uXe0Qn16DfDldlzxjmuFFaMECrXuQXE4MkmNKUf2nIJG/yDbyckbeCx4PdaYyXcV/7arVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=L+cEEI41; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdhUjYEv"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso2066495f8f.3;
-        Mon, 24 Feb 2025 01:05:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740387912; x=1740992712; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7M59exBVp1K4bAfL9skHjpr2bs4oRBOILo9T08ve1k4=;
-        b=GdhUjYEv9d6eWIl8QRJypRrIWK/eB+xQK85k4csFriIJ7wsaZM7y+ULpYML3XFt4uE
-         7iLdZaPQ2nREzaqXXkcqLyGpttUszbVCHC47DapdUUvXcaoZSO2zn7b3Dpsd8k3EvtKx
-         hDTTpOLUYaQMaxRsn93I5yJTA/nz0Y6CbRD2nUZ0xhOF7UuHaImLKw8eqhJnBve+0Zb+
-         1aDkKEvrIQ8HBmXie0qKtSN/LN2M/uXCdZv20e4xnoIBgxECBWFqOmK5qyciYeJVUEh3
-         aVj+uypZSvy6BtVbwuxq9hTuGMu1iNQXza3XP1OmI6i9fmWv14YvdEizJZzTKvTASmFY
-         MObA==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="L+cEEI41"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OKOeLI012817
+	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:25:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	65ZKk2GtEBap0WC6JfQnvOCcYk0q6mp1fm75hAwKexE=; b=L+cEEI41C6nWNjyv
+	x3fE+tlVbbb1p6Qn/6V/hxl/wNoyArBMgKbJPPbfVEQq+jgfI8bADBOjsP8DPFVj
+	6mdOXo1i26JUOCe3akULpU3cnUlQAGO1VV7OMS3xdfZYRC8WacaOp63oqDhvSk0+
+	3EFRGZ86ccJfmJ/1cckB6ats39mRFy1Cs4DKSFqrSLAZCp1eU1kGpPg/wvsiVrmd
+	QbN1oZ5xIb2apWMxgMpLNKsmAHU2/QquJ2nRpqd1x4GpaZyeYlRsNtifNlFRloL4
+	ADeTOYfGHraIn4T5yy5jtWd97LpB4YVizyIFzfylEBDLtq42XxF3PzpdIMJEGImU
+	dozm6g==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y65xxean-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:25:59 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6e65862f4e0so7144366d6.2
+        for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 12:25:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740387912; x=1740992712;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7M59exBVp1K4bAfL9skHjpr2bs4oRBOILo9T08ve1k4=;
-        b=j1bLsuOzL2IBdTTqn3dpVC2v3kLxega2kHJyluNf6dRMw7keRQ6+Sw7C7Y9CPFw9+7
-         tlrpeoCq1Szri/8p5ou+/th5JWwB7UVeDZMFnd1kDsAkVZzwee77XCbuK+169W/ZjsqR
-         8gb06mX4BIy8AtArSM7BBOSEDMJjcLffYdjAemJw0cOn2YpJKRLOt/5EKXPiNBOCCE3M
-         Mn4oEDP+pAnfs0xjnLGSkLii+12mgVEv722kuP3dmjBLhESxtfKRJkPiZhVxXeZSHyxT
-         Z2xP5JGs+qkUVDv3bJkjB2R37UFVgfUInIAirOpeL1ZuabFCYxU5Dc8PmufZXQ07Uz5p
-         b5Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWu3NRX2ORnyf3sDuLuUTmI02dUI3RpI0aID4XWRBT9jzvOvmKO5A1NmKs+xNQgbarEwbcL9tBjbi5/YuyT@vger.kernel.org, AJvYcCXctTXKRAcy5S14hNZQDyzraQNQagcn0Ujb0wcmbQljw8uo2dQ9YkGoPGXssGAP0yZ0v7XPCHl1LO7Unw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK6agVpvAGu+T4wK8+LLLg5KU1TQTylBRl9SKirDTTK/azelB4
-	E2jAJNrh3qPhrNN1PUCV+lgsfiGmcBIrOHaSvlDUaVZrhSW4b7cE7CfiiVVHZ9Y=
-X-Gm-Gg: ASbGncvPm3G4V3Xno20qrQWeeDjFfMLawkUkden5kB7C5lEO+g1vsOOukjobHV23dIa
-	Y16G2xvaxylh7ggRgWgG0/p3nc974tsQ24ndGnAQZdMD/UNKkil4v6IZBonuZb/id8Elz7mTfHy
-	uAnDKdrFSSoCtAWNRDZIekbUHpo/q2umKZnsg50i6cChfAr/WubBgbrEeMwkxMeExxvkc4A2Yer
-	cF8MBswCryTWWLyzmTVslsmLVLQpXvp2jx3WoDxlXUxp/Rt1vJaFrdBMadbr2VWpLR5cLxTPPti
-	25OFgE7XVYJ30EY8oe/p979un+PUxKeypECzGrhEJOoUzFwaSEr0g0HL+kr+NQ==
-X-Google-Smtp-Source: AGHT+IHZTYyoyhOAUZ/lJGbOs2xiomtjHCa6Eb/b9UwpC8RdM6DfpfWnAGNmuQNxicqsu/bhnfWEAg==
-X-Received: by 2002:a05:6000:18a9:b0:38f:2990:c08d with SMTP id ffacd0b85a97d-38f6e95f339mr12596048f8f.14.1740387912191;
-        Mon, 24 Feb 2025 01:05:12 -0800 (PST)
-Received: from fedora.. (84-236-81-135.pool.digikabel.hu. [84.236.81.135])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b4123sm31835674f8f.17.2025.02.24.01.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 01:05:11 -0800 (PST)
-From: Andras Sebok <sebokandris2009@gmail.com>
-To: markuss.broks@gmail.com,
-	dmitry.torokhov@gmail.com,
-	linux-input@vger.kernel.org
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org,
-	Andras Sebok <sebokandris2009@gmail.com>
-Subject: [PATCH 2/2] input/touchscreen: imagis: document ist3038h
-Date: Mon, 24 Feb 2025 10:03:56 +0100
-Message-ID: <20250224090354.102903-4-sebokandris2009@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224090354.102903-2-sebokandris2009@gmail.com>
-References: <20250224090354.102903-2-sebokandris2009@gmail.com>
+        d=1e100.net; s=20230601; t=1740428758; x=1741033558;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=65ZKk2GtEBap0WC6JfQnvOCcYk0q6mp1fm75hAwKexE=;
+        b=rSJbuX9hVsLdT1tBCZp7i9g32GLMl6AG7scxXV5+hk9dcamFM3U5W33agmLpPlRDVf
+         txLRPOZpSk2v4rf5URVKxDrvrGIio4ceoAYDyiijG7NnI5Q9Pd/Hu/Zqq7JzZ5G7eck1
+         fPMNEmit+aO3M91p2QUzNvLpPmaJEO7iCl103cGFlp5Dgy4xtt8uccs14kUyO07S/2O+
+         wsUYasskpMr90o2kG0p2Y92CUA9JZtz2KeWo06KiDm9U4slf9XX+U4TL+6Bfh/mKHV6M
+         StDBv1ngZ6npx4pV6spATeBdoCcoMoqfNIrVJlgY3f1RVeK8gvGE0/UoMQRfXB3CZup3
+         tW9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUHfoUbBX4Qnbz4AP78fB500GwttpXLsNXMWDVd6SuqmhYr6O8IQcLuFoMHVL0ZNC9CSGoOQIveCmckww==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeZe82TAfAdLi6ehwMcCZFH9AmKQ3l8mXatYo4ir+M5qFVNerU
+	E/2Z5opCdZgWBA6R/PjIPFoUBtazsr7Cgb6BiLxJ1ywpaiFpQAiQPu9jrBL+4lUEMYzUHqD//R3
+	/NL4lDS1jYLvPB+2+DSyKSZZhAwNumsbbAOecPsvgSAV2yh8K0YxC0mWN6CXbfw==
+X-Gm-Gg: ASbGncvOyxEbMls9kVOgU6crOdBbpP/Rgk/TA587/ZrxTCjT+h3CwNtOHinOMZGFnxo
+	5UJv2XWTQZ32r0J1nJRXZGTQW9wQ3nxRNxGhBpbW6ZXBn1IImCJKox1DMBpprlwIEw1uFaSoCvZ
+	9nnEkGRf5l5Py+6mgz2ELKE/bq6tg4vwtShvssrlLj1OCdvhZZ2UbJVtX/cL5Jxvg/U5Kl15Qh/
+	pB8flbIS4X9OlNQYZ6DyLqC4lWSHcCOFfY2aPZTUKzXf3Fk8UdOCI9Ql5kEEWnoPQqHhEa4WEDb
+	Z/WWAN2cujG0YdiL0qlkRP+6bs6n9+canMWnxQ2N1vC6jQhOrQfuAa7NVkaRBMO4wOpDkw==
+X-Received: by 2002:ad4:594d:0:b0:6e6:5d69:ec2f with SMTP id 6a1803df08f44-6e6ae9d2e05mr63774596d6.8.1740428758382;
+        Mon, 24 Feb 2025 12:25:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfKUxFcIDY7voAldnprBxDRpcJ8vSl3Q4jTMO+GbQSLIoMZ1VG0lqyLwhpCWUnpAzTaWApvQ==
+X-Received: by 2002:ad4:594d:0:b0:6e6:5d69:ec2f with SMTP id 6a1803df08f44-6e6ae9d2e05mr63774336d6.8.1740428757890;
+        Mon, 24 Feb 2025 12:25:57 -0800 (PST)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1da1c2dsm17830366b.77.2025.02.24.12.25.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 12:25:57 -0800 (PST)
+Message-ID: <6fe42573-7e98-47d1-8815-c11d44671395@oss.qualcomm.com>
+Date: Mon, 24 Feb 2025 21:25:54 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: sdm632-fairphone-fp3: Enable
+ display and GPU
+To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20250222-fp3-display-v1-0-ccd812e16952@lucaweiss.eu>
+ <20250222-fp3-display-v1-4-ccd812e16952@lucaweiss.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250222-fp3-display-v1-4-ccd812e16952@lucaweiss.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: fbPgiXEJRRiDKCJM_tFdkgjHpm9sHCMl
+X-Proofpoint-ORIG-GUID: fbPgiXEJRRiDKCJM_tFdkgjHpm9sHCMl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_10,2025-02-24_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=999 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502240129
 
-Signed-off-by: Andras Sebok <sebokandris2009@gmail.com>
----
- .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
- 1 file changed, 1 insertion(+)
+On 22.02.2025 6:58 PM, Luca Weiss wrote:
+> Add the description for the display panel found on this phone.
+> Unfortunately the LCDB module on PMI632 isn't yet supported upstream so
+> we need to use a dummy regulator-fixed in the meantime.
+> 
+> And with this done we can also enable the GPU and set the zap shader
+> firmware path.
+> 
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> ---
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-index e24cbd960993..bd8ede3a4ad8 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-@@ -19,6 +19,7 @@ properties:
-       - imagis,ist3038
-       - imagis,ist3038b
-       - imagis,ist3038c
-+      - imagis,ist3038h
- 
-   reg:
-     maxItems: 1
--- 
-2.48.1
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
+Konrad
