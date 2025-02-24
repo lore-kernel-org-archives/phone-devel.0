@@ -1,78 +1,75 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F641607B4
-	for <phone-devel@vger.kernel.org>; Sun, 23 Feb 2025 18:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8C9567D
+	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 00:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740335137; cv=none; b=s4uylTWH42bAzwEcBxpJL+hUHHQLatM5sOVGniQ07qw18stjOQHc3ivw4v0uSTr8tiWAILoezBSRn+G5/bc2gjqz1+RKLnALednppwBq7hFl0sWFEoDjKRS1OwVfr88xwX8PItftA/8IufWskLn0k/QkKGMYQJ+FMu1/HB5eTiM=
+	t=1740356287; cv=none; b=ok8SfjURk9TLVCruVSZyTUqzCvqavkE+2xyh8IsJcmjeK07K78mK8KsqQpBLtWAAMKGy6ZydfhqDdNlhGyr4BRnONkxR0ruGMVHzWD0TM3R9O+5Cs1Y6Cx3g8gaHT9zeF1aTns+Dmu8V8+NqHkm5lt7CHKLe9MpN5Wi3z93RsBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740335137; c=relaxed/simple;
-	bh=IebdohvZSQVB2m0xM8vghThlOlO40yKJD09EDoioSGI=;
+	s=arc-20240116; t=1740356287; c=relaxed/simple;
+	bh=JdCnAXnxYid1mxV4nHuT8i/PGJKEdfOulCrTZSYikBs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A/uI2OzdSAUEBKupCaKqCMgWIcfkmipkemAa+Be2qmxn7G/0bZ71MDFR2eNwoMk857VwQQmNoB6WZaRJ825fwuzZhXZmKR2DR5z+R73LY9//aZ4iunUW6NFwvehYLoWiJxT1yA0lZlMUr25ZMwj+1DyEG72J43VGYLjoyYqdo78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kHtmnjkZ; arc=none smtp.client-ip=209.85.208.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=BMno++OGb/ghSZAcSGzFkqpHmv/5xe7BHUh+xBjeK2FSNBnTFt76HZWzXaAFBOUc7SzorCGMHQmmzASKSTB68zioOTafMBmQkfDDCqgOV1VW71KUSTR/Va7KcvV6+aBNtswKVOrIeWzFc4wu/+ke0Xl+qg6dWjTJKkQCqg/uzqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Th+kA8L6; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kHtmnjkZ"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30a2f240156so36800391fa.3
-        for <phone-devel@vger.kernel.org>; Sun, 23 Feb 2025 10:25:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Th+kA8L6"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30a69c1a8d3so10142881fa.3
+        for <phone-devel@vger.kernel.org>; Sun, 23 Feb 2025 16:18:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740335133; x=1740939933; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1740356282; x=1740961082; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mtNMK+QZB8Ju1QcEFH1uDPKTHzJj1OW/FdNy3G2F6jE=;
-        b=kHtmnjkZEQEkeKO+kQQ7+rM2m2hLtegoQ0KyhQV89jmpIzFcerpFqBB6op9EdofpjG
-         wRmsu4NBF4N1AXrpnjTzv2Fu7o2Kbg+wslGVJXPUrhIoqwl04TxkEXGfFy7UMwiU2zg0
-         Z33ON6AjhWVJt4qd8uZZ+Z174Y3l3hMKl9lcE3yrM7hgET/hJ3uWewxcK6KQfJWcpLct
-         U/OSdfT9sSLm4aRfd4T8w+JGds8aE0QgV6/jKVIlmk8S5iLI4c2ns0rEhCT8D3D//DWh
-         0b+7PEOV5XGffnhKpLXKkrh7ZurRW2SqjFBqfISeuMAgRwX/QbqQ4jhuArK2vmGACvJ8
-         rT+w==
+        bh=nD6DNE71VFEfXcLuCIsfR3SfpPP50CHXY1aUthPY5zE=;
+        b=Th+kA8L6xflxjS/Qe3ZZdHKPEM6EHCG7QUQYkp1vQey/QbWg6bk146ScDbXjT+S6xw
+         1SENtouugSpKlUPUI8oZB+HuiD6FvCy1cUB19xYm36kA59JItFEkb6q9hw5Vi3AiFpDS
+         tFdwRaMBxbj/gyrl5J0qmp3UxacBTeQP44Dp6F/VQcbrk5wcAHGt8cFcxuon/s0qw2e6
+         vZMZ7P2fcS1ebMHgEhD1IqqHLauD848n97g0smmRbENghk3GZnZRYplO1lQr/+bIb4x2
+         cUgzph3t239+/ZJAr3XnN2j5cZ22s2g0N6OV8A6NsgXJfVREo/1QxdAmC5Ydacpm0uvq
+         JjJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740335133; x=1740939933;
+        d=1e100.net; s=20230601; t=1740356282; x=1740961082;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mtNMK+QZB8Ju1QcEFH1uDPKTHzJj1OW/FdNy3G2F6jE=;
-        b=cqaqQsT5gxa4gFZExELFBgnC7wqgxlBJygVrATbKWoYwvLNdplQMs8CLIuEgQfihrY
-         UsfTf2un7o6YKRbiGR8//bZ7mM0FUgQ+EjmxAy+SHmPq8wIcvykp8lzYPb2FrcMcX6nQ
-         iTqPd//koFqBDIKlnlS1y2DBn+oXOH5xOKejKrCXi9kjVc6P5KD6S75sjRcSjLoETaxA
-         rXx+PMXfxeRgKjUcCdBFIWI3PzrfvhsQh5UE+y7VGlxWkxpVSKP5uTTIutsnOJuXBOUx
-         DHi6a1noh0jkI7d/XRZ4rvJ9jRhkMmS9z+HXGsoZ6DyfT6PUjog9Ie0+dDk4/mrVDDko
-         x3YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrjBU5mSRNvURompMc0agSRnVnkEjTH3qNGBqCNwRRBAUo2ZzPyxoXHpOGNz7XKy7FrLLWUCmCd4dwow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx987Ttwo6XHujICH9ZmQ535GmC5i+CG2AxoAJD/ZDyKBbIayX
-	BUk+4XjV/2SozwV98oGCqxvUTQiMW84nz2t1IFEOpLUL2zqWGEWSa5mepouAgC4=
-X-Gm-Gg: ASbGncsM9tilDUEXjuzVSuA9c7id1q4lsN2OsnFbMkWtvWoVBmJI8PqIp7w6eTu/mbG
-	LOoYjRpA3i3Mr3oScljznU22aSqSezBEW1QBxGE7PREomGtuN8eVk+WPKXcay+w/ZydlFEodiiG
-	jHt/l68flAUr+497fHHkewnFvVkz7rPgqWB0AIyGHDoEYoX6zlJ/9GyG0Sea5rHyKrKxFp8TXcH
-	SdmkXfhvjnDEP15SekEpJ+8vsccoHGFzolDMNRNfAIMC0GK14x/x9lhIgjgsDNZ4ccnnQutAmb2
-	nImwLbMm1XjEHGxSHOMo1iHRfueX7QrJJwjP0hV382WC9Zz0SVR6GjnZcJ7yokxvD3BJhOKTatU
-	O5jZ69g==
-X-Google-Smtp-Source: AGHT+IGKB1vocXj8KVqyAz4vvD7IpDGljmlluQ7IMEzMaAFJ3qaRjIbImaAgV9NSc9jWouTyZFOjIg==
-X-Received: by 2002:a2e:80d3:0:b0:302:4a61:8b85 with SMTP id 38308e7fff4ca-30a599951ebmr34295601fa.37.1740335132749;
-        Sun, 23 Feb 2025 10:25:32 -0800 (PST)
+        bh=nD6DNE71VFEfXcLuCIsfR3SfpPP50CHXY1aUthPY5zE=;
+        b=VTibATPICly/MvjsoccelnFtWHLUFf/j0zx3Iw+i5eVBqAqqf/UAJ7kbuHdRjJHrWK
+         sJP21x4F4sEFa5sjxwzUPge0cEGDySjDsXVvEtibFAsqpca0wL1J+VpGOiB3a/pyIAGp
+         xtC0cJgR3FEq/YjHf0mVf14WeyHQkOTnnyK/JKeDHgQzU+kipegJBhAwYRx7zHq0W3yO
+         Q1jpkUlOXsRwNRqxEawT7IUxJknyLfza+m6Lf1Q7veIBs7WSAMHVTRxEWm6SsDzKtnHn
+         AZArUmQaPVUyXAu+Jaz+INtizi9kjBpgtlLMa6hkqKtCQ98DqGfvzRuFuRFuT6ACLgnr
+         geMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpI27BWNUaGVQx1xXzTNIX6E2qI7OAH/5dnkYl4mZtJ9liGvLirPT8GyqfAZfvNJWr0y+HyGlqD+PX+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb0l6GEMieQlHQLjEOhXOtcjw0LppxuhjAmclx/hNztoPBUoB0
+	a0RLNbW+ikXd6+/cBkjbSce+UKXeJlLV1Ujj4TBWuRFaLQe204BMOL8KEkvagTM=
+X-Gm-Gg: ASbGnctE8KoM6h37uqDtYXxd0XlBfbaMeRFU06Y17EmXnQ6M9+cQXV7eb1RcT7TL8ux
+	thBAJRMSb8eBSaUGZpJ4EEkM9qgPsiQB+dGDZg2dai0McoImPjAZXGSoPNwEAZssI1VgA5yM13p
+	uiPcVkNHdGbnKJcJBSMPgvRPt8u+/LE1lmrC/IHaP59SwX+gjwtlK4BjdVkub8sG59Ym0LMZ0f8
+	gb6hCGRrUidV3HRLwTEk+0sJCD9TsBu9GAiA5z19DM1iLYqa9vsVbUmUTAEonkwfAjOEVDM+5zN
+	0p453Dqz6GQmmS9b4Pwp4YPIOfocEU0AsZ6gpUMrgYnfYk71o9jX/rWAlLE3Zrjr+6qvgHbN//S
+	8Mh+HaA==
+X-Google-Smtp-Source: AGHT+IEfy+mm+LIBEpBFk9ATKeXnV1ESjvN4vtfFY3zzlgmNDuwjPP+io43Va+DxHetU2qnplQe2kg==
+X-Received: by 2002:a05:6512:e96:b0:545:d08:86 with SMTP id 2adb3069b0e04-54838edda43mr4361626e87.5.1740356280998;
+        Sun, 23 Feb 2025 16:18:00 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3097b6584efsm26654891fa.33.2025.02.23.10.25.30
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-545318f4027sm2635082e87.141.2025.02.23.16.17.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 10:25:31 -0800 (PST)
-Date: Sun, 23 Feb 2025 20:25:29 +0200
+        Sun, 23 Feb 2025 16:18:00 -0800 (PST)
+Date: Mon, 24 Feb 2025 02:17:58 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Luca Weiss <luca@lucaweiss.eu>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 2/4] dt-bindings: display: panel: Add Himax HX83112B
-Message-ID: <77wat26ggsfqwssgt5wfq6yz6w3ccqz3pmn727a4aphqv4ljhx@vrzneg2rvzfj>
-References: <20250222-fp3-display-v1-0-ccd812e16952@lucaweiss.eu>
- <20250222-fp3-display-v1-2-ccd812e16952@lucaweiss.eu>
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] arm64: dts: qcom: sdm632-fairphone-fp3: Add
+ firmware-name for adsp & wcnss
+Message-ID: <w4l5drhu6exq4jb7x2pisqtkz5ylare7ashsmjjqomv3yetjwj@z3wapq4rkk3u>
+References: <20250222-fp3-remoteprocs-firmware-v1-0-237ed21c334a@lucaweiss.eu>
+ <20250222-fp3-remoteprocs-firmware-v1-3-237ed21c334a@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -81,101 +78,58 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250222-fp3-display-v1-2-ccd812e16952@lucaweiss.eu>
+In-Reply-To: <20250222-fp3-remoteprocs-firmware-v1-3-237ed21c334a@lucaweiss.eu>
 
-On Sat, Feb 22, 2025 at 06:58:05PM +0100, Luca Weiss wrote:
-> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
-> Describe it and the Fairphone 3 panel from DJN using it.
+On Sat, Feb 22, 2025 at 02:00:49PM +0100, Luca Weiss wrote:
+> Set the paths where the device-specific firmware can be found for this
+> device.
+> 
+> Fairphone 3 was shipped with secure-boot off so any testkey-signed
+> firmware is accepted.
 > 
 > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
->  .../bindings/display/panel/himax,hx83112b.yaml     | 75 ++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
+>  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..e6bd4b33d40be98e479d84617aea6d2af0df70e4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
-> @@ -0,0 +1,75 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/himax,hx83112b.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Himax HX83112B-based DSI display panels
-> +
-> +maintainers:
-> +  - Luca Weiss <luca@lucaweiss.eu>
-> +
-> +description:
-> +  The Himax HX83112B is a generic DSI Panel IC used to control
-> +  LCD panels.
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    contains:
-> +      const: djn,fairphone-fp3-panel
+> diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+> index 08ffe77d762c3a97f470efbfb5064282fe2090da..5611209dbfa41d7834af7903535ed3e05604ba63 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+> @@ -82,6 +82,8 @@ nfc@28 {
+>  };
+>  
+>  &lpass {
+> +	firmware-name = "qcom/msm8953/fairphone/fp3/adsp.mbn";
 
-Would you know a better name or ID for a panel?
+If any firmware is okay, wouldn't it be better to use
+"qcom/msm8953/foo.mbn" ? This way if we get any of the firmware (yeah,
+I'm a dreamer), then FB3 can pick it up.
 
 > +
-> +  reg:
-> +    maxItems: 1
+>  	status = "okay";
+>  };
+>  
+> @@ -297,11 +299,16 @@ &usb_dwc3_hs {
+>  };
+>  
+>  &wcnss {
+> +	firmware-name = "qcom/msm8953/fairphone/fp3/wcnss.mbn";
+>  	vddpx-supply = <&pm8953_l5>;
+>  
+>  	status = "okay";
+>  };
+>  
+> +&wcnss_ctrl {
+> +	firmware-name = "qcom/msm8953/fairphone/fp3/WCNSS_qcom_wlan_nv.bin";
+
+then this can become "qcom/msm8953/WCNSS_qcom_wlan_nv_fp3.bin"
+
+> +};
 > +
-> +  iovcc-supply:
-> +    description: I/O voltage rail
-> +
-> +  vsn-supply:
-> +    description: Positive source voltage rail
-> +
-> +  vsp-supply:
-> +    description: Negative source voltage rail
-> +
-> +  port: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reset-gpios
-> +  - iovcc-supply
-> +  - vsn-supply
-> +  - vsp-supply
-> +  - port
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    dsi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        panel@0 {
-> +            compatible = "djn,fairphone-fp3-panel";
-> +            reg = <0>;
-> +
-> +            reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
-> +
-> +            iovcc-supply = <&pm8953_l6>;
-> +            vsn-supply = <&pmi632_lcdb_ncp>;
-> +            vsp-supply = <&pmi632_lcdb_ldo>;
-> +
-> +            port {
-> +                panel_in_0: endpoint {
-> +                    remote-endpoint = <&dsi0_out>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
+>  &wcnss_iris {
+>  	compatible = "qcom,wcn3680";
+>  
 > 
 > -- 
 > 2.48.1
