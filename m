@@ -1,63 +1,64 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8C9567D
-	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 00:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1A5D515
+	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 00:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740356287; cv=none; b=ok8SfjURk9TLVCruVSZyTUqzCvqavkE+2xyh8IsJcmjeK07K78mK8KsqQpBLtWAAMKGy6ZydfhqDdNlhGyr4BRnONkxR0ruGMVHzWD0TM3R9O+5Cs1Y6Cx3g8gaHT9zeF1aTns+Dmu8V8+NqHkm5lt7CHKLe9MpN5Wi3z93RsBw=
+	t=1740356343; cv=none; b=aY0x6blE2yvutrEgm45kD+dFDx94vJHhLz8MSKVNHZlPxOgQk49WzsonGN504cpDNlPYAi9w5T/r5E9e5kZsLXd3Kp3DvsH2aEzp0r4nmo2D2FCn/hu1VgTB2E9l1nAjHNNxG+JoP2oOYz8O78127nyGMojLT3m6o84T+SIZ/MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740356287; c=relaxed/simple;
-	bh=JdCnAXnxYid1mxV4nHuT8i/PGJKEdfOulCrTZSYikBs=;
+	s=arc-20240116; t=1740356343; c=relaxed/simple;
+	bh=7Jy7dLx7zO3ZkOOyvfUI0Qww8vOfT8OV2kKdICBqy9s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BMno++OGb/ghSZAcSGzFkqpHmv/5xe7BHUh+xBjeK2FSNBnTFt76HZWzXaAFBOUc7SzorCGMHQmmzASKSTB68zioOTafMBmQkfDDCqgOV1VW71KUSTR/Va7KcvV6+aBNtswKVOrIeWzFc4wu/+ke0Xl+qg6dWjTJKkQCqg/uzqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Th+kA8L6; arc=none smtp.client-ip=209.85.208.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=B7xPc9mMrrVEr3924qKHlEhct0/9PdbxKumeX5TpKzQOwg7xQCme63MBtxclGyKt/3M9dE048bBqfKanIXBPrgxdIjoDLbsMFp1qeHUZBXtpH6sH3nMYitwY++dfsiZPJs/J/OOj2FsKm+mIwcic1H03ii+pntdphAuq8lTQN58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rxogge4k; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Th+kA8L6"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30a69c1a8d3so10142881fa.3
-        for <phone-devel@vger.kernel.org>; Sun, 23 Feb 2025 16:18:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rxogge4k"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30a69c1a8d3so10148861fa.3
+        for <phone-devel@vger.kernel.org>; Sun, 23 Feb 2025 16:19:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740356282; x=1740961082; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1740356339; x=1740961139; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nD6DNE71VFEfXcLuCIsfR3SfpPP50CHXY1aUthPY5zE=;
-        b=Th+kA8L6xflxjS/Qe3ZZdHKPEM6EHCG7QUQYkp1vQey/QbWg6bk146ScDbXjT+S6xw
-         1SENtouugSpKlUPUI8oZB+HuiD6FvCy1cUB19xYm36kA59JItFEkb6q9hw5Vi3AiFpDS
-         tFdwRaMBxbj/gyrl5J0qmp3UxacBTeQP44Dp6F/VQcbrk5wcAHGt8cFcxuon/s0qw2e6
-         vZMZ7P2fcS1ebMHgEhD1IqqHLauD848n97g0smmRbENghk3GZnZRYplO1lQr/+bIb4x2
-         cUgzph3t239+/ZJAr3XnN2j5cZ22s2g0N6OV8A6NsgXJfVREo/1QxdAmC5Ydacpm0uvq
-         JjJw==
+        bh=KGo606DZMNR3CPOmAAdH29sE1yGH7gxkKNN2u18HmZw=;
+        b=rxogge4k0F1EP+QODG0E+y6/Qq8Vo9PVYQgUJEDysKAxTIepMkh3DZtSzYNtJfbU+y
+         Kd5VqnXIB3S8xAqPSUc+dwUkjshaltdnT+kV6D2XOdkzV+aKqkmSIEU/8Zhd3ol53lJS
+         cxoENrK2HHhL9azEZAcpllSEiG22CUYGpfS6CLlpLNAi854eQglGZQ/W4eHpelFnYHoi
+         iHH7XP1ZP17Aypb58HxV3uUo5Yjv0nkDsifu6SqDUJW9J3A+R8y4Y02MfnvcZXjRQLJb
+         HScTvIzlryx8kCjBeFPJFtqaqGjO4ZO5bLWLXmxXi/LXnjsMgOM5E7gGzhe1LocDX9On
+         mRcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740356282; x=1740961082;
+        d=1e100.net; s=20230601; t=1740356339; x=1740961139;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nD6DNE71VFEfXcLuCIsfR3SfpPP50CHXY1aUthPY5zE=;
-        b=VTibATPICly/MvjsoccelnFtWHLUFf/j0zx3Iw+i5eVBqAqqf/UAJ7kbuHdRjJHrWK
-         sJP21x4F4sEFa5sjxwzUPge0cEGDySjDsXVvEtibFAsqpca0wL1J+VpGOiB3a/pyIAGp
-         xtC0cJgR3FEq/YjHf0mVf14WeyHQkOTnnyK/JKeDHgQzU+kipegJBhAwYRx7zHq0W3yO
-         Q1jpkUlOXsRwNRqxEawT7IUxJknyLfza+m6Lf1Q7veIBs7WSAMHVTRxEWm6SsDzKtnHn
-         AZArUmQaPVUyXAu+Jaz+INtizi9kjBpgtlLMa6hkqKtCQ98DqGfvzRuFuRFuT6ACLgnr
-         geMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpI27BWNUaGVQx1xXzTNIX6E2qI7OAH/5dnkYl4mZtJ9liGvLirPT8GyqfAZfvNJWr0y+HyGlqD+PX+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb0l6GEMieQlHQLjEOhXOtcjw0LppxuhjAmclx/hNztoPBUoB0
-	a0RLNbW+ikXd6+/cBkjbSce+UKXeJlLV1Ujj4TBWuRFaLQe204BMOL8KEkvagTM=
-X-Gm-Gg: ASbGnctE8KoM6h37uqDtYXxd0XlBfbaMeRFU06Y17EmXnQ6M9+cQXV7eb1RcT7TL8ux
-	thBAJRMSb8eBSaUGZpJ4EEkM9qgPsiQB+dGDZg2dai0McoImPjAZXGSoPNwEAZssI1VgA5yM13p
-	uiPcVkNHdGbnKJcJBSMPgvRPt8u+/LE1lmrC/IHaP59SwX+gjwtlK4BjdVkub8sG59Ym0LMZ0f8
-	gb6hCGRrUidV3HRLwTEk+0sJCD9TsBu9GAiA5z19DM1iLYqa9vsVbUmUTAEonkwfAjOEVDM+5zN
-	0p453Dqz6GQmmS9b4Pwp4YPIOfocEU0AsZ6gpUMrgYnfYk71o9jX/rWAlLE3Zrjr+6qvgHbN//S
-	8Mh+HaA==
-X-Google-Smtp-Source: AGHT+IEfy+mm+LIBEpBFk9ATKeXnV1ESjvN4vtfFY3zzlgmNDuwjPP+io43Va+DxHetU2qnplQe2kg==
-X-Received: by 2002:a05:6512:e96:b0:545:d08:86 with SMTP id 2adb3069b0e04-54838edda43mr4361626e87.5.1740356280998;
-        Sun, 23 Feb 2025 16:18:00 -0800 (PST)
+        bh=KGo606DZMNR3CPOmAAdH29sE1yGH7gxkKNN2u18HmZw=;
+        b=PEKF90TbUj+OcImSfYWRmtvx4P+ryCKdxa8fvCROQR/2PcKjwzKOinRYhf8DRAhdUq
+         exxyEye3+50R03kWPmHjhAuYW+MHvDlTS+ZbI1/kA9hl/CqvtvZqAtt0/eN3KU2hsXuw
+         7xWXg63mC1zGPHPnVtlL5ZeOFOzHWjTO+BI9856AXyFGN+K6D7XQy8QNhgeBCgL/3tfs
+         uifCC3UEawd9v9Vl8MFyni/JgjtpwLO3fqdk0wBiuDcxPZ1eKMYFVa8GYndCl5TTY+DT
+         VcJQ1an5A/EZVzzmJW6Rd+yDnWffVZOjmf/LJW1mq9H59BJlP2Lgn0bXO9iUEGfcKrgV
+         J1IA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaWJMdqyvWAZL4PksvIRdJ9TwZYkHhOg2fPwp27yS4/6rR+jHTWHAzH2MTHkku0yKU2swcps5HrT06sQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyUCa2BpeC43ackqghe82CO2tNGdkJmU5LVoKLVRBExvdoffXz
+	x/LWNXWBrACvxp9pLR7wpBmOxw4bTZ9TymYm7ahSUQUOb/vRhmpoKgTXJsl9EQP3V77oWkjP3C8
+	w
+X-Gm-Gg: ASbGncvEvELJvfTdvULkL7TY9TpSKBi8kK3nxsXEl+Axd5lP08XlGUMZIfYW0GSg1/b
+	gMv8iZGafuuoQKitbwuVD64YE2ySsoDGbfVJugNoBx4bsICdZklgWA/MaNoIGbGqthMwywknz0U
+	/5FXYS8J7tLAAxbGhd2wK2UKTFKxkGdwVPClj5bCRRbs8nswMvAhgXRLnQ/LRPbgk2zKa6y/CFd
+	VUZtCOAv+Qm/KG94ASbptcGKyP6hQ1251t/dlMrqnw2KFUogkiWqN9lR+GeiXGpZhpV4TKtztxg
+	XywQ931EVD+Sw1NQfo2Tlxo8v5ablj1KKGs0o9FF48TdqLbJX96cL5RJlJfF6rGtWV+g9ivIGKV
+	1cD5BDw==
+X-Google-Smtp-Source: AGHT+IHh5wVjH6EUlxs4+YZZSHGEjFF9k8cOMxZNtJaJAuOd8RU4IAkF2m0DIXqEyGl4vlUyI3tWrg==
+X-Received: by 2002:a05:6512:280b:b0:545:bb6:8e41 with SMTP id 2adb3069b0e04-54838f5b913mr4097064e87.52.1740356339157;
+        Sun, 23 Feb 2025 16:18:59 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-545318f4027sm2635082e87.141.2025.02.23.16.17.59
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5451f10cc28sm3301582e87.201.2025.02.23.16.18.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 16:18:00 -0800 (PST)
-Date: Mon, 24 Feb 2025 02:17:58 +0200
+        Sun, 23 Feb 2025 16:18:57 -0800 (PST)
+Date: Mon, 24 Feb 2025 02:18:55 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Luca Weiss <luca@lucaweiss.eu>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
@@ -65,11 +66,10 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- firmware-name for adsp & wcnss
-Message-ID: <w4l5drhu6exq4jb7x2pisqtkz5ylare7ashsmjjqomv3yetjwj@z3wapq4rkk3u>
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: sdm632-fairphone-fp3: Enable modem
+Message-ID: <bz3mola5r7v4rs4esmhiticq2ahpkhtwxqnv6nweyfkebszvrp@ap6yn6pvrtww>
 References: <20250222-fp3-remoteprocs-firmware-v1-0-237ed21c334a@lucaweiss.eu>
- <20250222-fp3-remoteprocs-firmware-v1-3-237ed21c334a@lucaweiss.eu>
+ <20250222-fp3-remoteprocs-firmware-v1-4-237ed21c334a@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -78,58 +78,42 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250222-fp3-remoteprocs-firmware-v1-3-237ed21c334a@lucaweiss.eu>
+In-Reply-To: <20250222-fp3-remoteprocs-firmware-v1-4-237ed21c334a@lucaweiss.eu>
 
-On Sat, Feb 22, 2025 at 02:00:49PM +0100, Luca Weiss wrote:
-> Set the paths where the device-specific firmware can be found for this
-> device.
-> 
-> Fairphone 3 was shipped with secure-boot off so any testkey-signed
-> firmware is accepted.
+On Sat, Feb 22, 2025 at 02:00:50PM +0100, Luca Weiss wrote:
+> Add the necessary supplies and set an appropriete firmware-name for the
+
+Nit: appropriate
+
+> modem and enable it.
 > 
 > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
->  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 > diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> index 08ffe77d762c3a97f470efbfb5064282fe2090da..5611209dbfa41d7834af7903535ed3e05604ba63 100644
+> index 5611209dbfa41d7834af7903535ed3e05604ba63..31ed26c31e6ea381a8942ccf569513df3300cdeb 100644
 > --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
 > +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> @@ -82,6 +82,8 @@ nfc@28 {
+> @@ -87,6 +87,14 @@ &lpass {
+>  	status = "okay";
 >  };
 >  
->  &lpass {
-> +	firmware-name = "qcom/msm8953/fairphone/fp3/adsp.mbn";
+> +&mpss {
+> +	firmware-name = "qcom/msm8953/fairphone/fp3/mba.mbn",
+> +			"qcom/msm8953/fairphone/fp3/modem.mbn";
 
-If any firmware is okay, wouldn't it be better to use
-"qcom/msm8953/foo.mbn" ? This way if we get any of the firmware (yeah,
-I'm a dreamer), then FB3 can pick it up.
+THe comment from the previous patch applies.
 
+> +	pll-supply = <&pm8953_l7>;
 > +
->  	status = "okay";
->  };
->  
-> @@ -297,11 +299,16 @@ &usb_dwc3_hs {
->  };
->  
->  &wcnss {
-> +	firmware-name = "qcom/msm8953/fairphone/fp3/wcnss.mbn";
->  	vddpx-supply = <&pm8953_l5>;
->  
->  	status = "okay";
->  };
->  
-> +&wcnss_ctrl {
-> +	firmware-name = "qcom/msm8953/fairphone/fp3/WCNSS_qcom_wlan_nv.bin";
-
-then this can become "qcom/msm8953/WCNSS_qcom_wlan_nv_fp3.bin"
-
+> +	status = "okay";
 > +};
 > +
->  &wcnss_iris {
->  	compatible = "qcom,wcn3680";
->  
+>  &pm8953_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  	status = "okay";
 > 
 > -- 
 > 2.48.1
