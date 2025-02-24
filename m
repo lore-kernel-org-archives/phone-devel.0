@@ -1,136 +1,169 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39813242909
-	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76030245006;
+	Mon, 24 Feb 2025 20:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740428845; cv=none; b=VbTiYSGhRIANZeooKUZkEl84ReL3AXdHSjB2UusGn8j3Ar9q5w0cwBKVPTi5tLQoZnus3bB8uQl5lzMLy6fwJw2D5dVdHNzEd22ALfB+WpgFKjG9/u5rdxhS8acdhq3VT34Vo8bzofz4vypYecKAIqEKzuN03/mQwySdB5eZIlw=
+	t=1740429635; cv=none; b=cotJhuvR7Wa8ymcqre2JQpYwnUsa7VGbAhwnjJzufs9/B3bkRDiqci6DCZ9szgcUaq8RR43XGax6L38auk24F/Kqf0KmdepDaRM/gqobl9XxggJifmIFit41ceBI5MuHHixzZ1sbldK1jdDY5yRkJAJdn8/NfS/PhmtM3/2SAmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740428845; c=relaxed/simple;
-	bh=VznEzXTNU42ddT4wxfYglEixBZX61SNeGSbkxX/CgPo=;
+	s=arc-20240116; t=1740429635; c=relaxed/simple;
+	bh=YCBdJbUx0eezkgiS7e5oa20MNmUQMvngyjUjEqpjLTM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GWJEdAD9e8Q4to9n5tFJ5kysCnypeXi0fI6obiisjsPVYKezyXo6gkjKvG4q0Obe1LP+RUj1CaYsowL68cwVzgA2iUTj4bZzvhr7QH419ViEf7MbyZTx37AhAVJOxdjILeFM9QTpU8r5+GR0eFnS4zkkQWcP3QZ/DGajvXWWjYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pp0p2S3i; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=RLeLhnQAyHGtnlXUgOntUu5Bfj3I+RuhHsICyQRpg8jeWcaqM2bhcDIx7jcHMDGfLUioYWdL0UsPQipKvRI7pj5Me76DQ/5crHfREFsuh9KQTvguhlLEXVYk1s/VGjgw5SQ/5FwAQCXz/UI3mZjxbLdCxXB0hCG41t8AypnKLDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=vitKRRCT; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pp0p2S3i"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OKOxKE032187
-	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:27:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	U3AJ4m7KBlOuSOpyPe5K7xkoXZDmH3H55Z4ePCDd2A8=; b=Pp0p2S3i/U7h+1kM
-	iBMFsO2s+uO1mabwQh70gcSoMet7kWNsg9rgb64B8njTrs86Lh8vwUbQ9Qq55Ty9
-	c1eUGd6446Fwymq0AiNaKo6pm4i5ejSFtJGQPAS/Ar6eOvD8pNouQsVIkQgdWSnV
-	I40jPYzK5qaJ3Z9AZxBlJKVM16U1UtmU5JajaKQ2qhMaGwi6s/eVn5HIAFhYv/Q+
-	A5Haljs3i4rJ5rUK6VxbZXqiuqhsFljN2HoedQy4idwvk1EdXoa9sgX/nGSTtnEh
-	EyWDkIz6NaednKc1zrdGscQf6CVPVqExkdhkLOYE8zq9unMGGXpzFsMlosezKc3z
-	e9Tjzw==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y6ntxfak-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 20:27:23 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c098c6c0caso111294785a.1
-        for <phone-devel@vger.kernel.org>; Mon, 24 Feb 2025 12:27:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740428842; x=1741033642;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3AJ4m7KBlOuSOpyPe5K7xkoXZDmH3H55Z4ePCDd2A8=;
-        b=eDUhzJ89dSgZrZ/B2Emej1vBoT9BrZQjaerm9P5pul+Szh+H4GSlXKxAtpRruANeru
-         pD9hf7G38rlx0U/F+w3M7l1gBxje43k489tKvz4xwHNrOnjHz4qSTY3ymDvklN7SKc8e
-         OGXp67jBt8ey51nu5BKDbDwSr8tkNAcIlsBhA2lWUSnLiBXXLJB78aVT0+kUTb51LxBE
-         RlcLuj830osJe/4GlEdjvKXBrOwVpqWYEAMzU2VJGBqcq4DmvF9pKnKHkD6hNd6ueuS9
-         A6aiJEcBC+4qRGmRUdUtAIrgYTHe9AYXvxO0Qu56wuG0f8L5j3Cl8q9IsAHfDCpv0VRA
-         mPog==
-X-Forwarded-Encrypted: i=1; AJvYcCXCd58uXfsF0oPioZ7SowJd7FRgnrkhkMbE/nliUQbCDgZhd3I/lOHvDM3ajafnYjFIDcObqJd4PkrYUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/1xVBeKG+DTgSyHEqlNdKngBUAFvFr7str3NJZWSxYImlGAfJ
-	EPx4KrqWg7k0YSckRmPkonogc4Tvs/GZdY11tNCfc5LIECWdrJePxznl296eF/AYIAi6SRMtbt1
-	xXVBMaqJnQlHJPnOfOT9e721t1LEvLKJRfHBwEy+H/7kqcWg8FeNl8a78gJp1uA==
-X-Gm-Gg: ASbGnctAyQFtW+KVcT6peWQEUyzXt3rMCAeVhhX/Skh3U5XzpdScErxNmxKeDULi2QO
-	UN12B0giDb3+3YhdRQLVrIeNPYcc/wSwJXqI27zfYyejTXKuAqZcw04x+G+AvAw0sfQ1+bKtYau
-	ScCqqfJCKO8qd2Eb4FjVFy7vUdd/kFjq8I1JHUJHFy24ywC1O4K/RlQUxB+Wp7JneNazB5n7p53
-	K+ohp0NO8ZITfdo67rQvB4nZaPFNxqZvjYguz8GFIf51peFJdRiImn1MdVwUamcaOM5nDpVky1T
-	qTA3xpZpHW8fEORu2JL1q6tV2DV677yLb7fiSzUMRGEJR30VFWxzpH242vpB3xEayeJVfA==
-X-Received: by 2002:a05:6214:21ca:b0:6d8:99b2:63c7 with SMTP id 6a1803df08f44-6e6ae9a12a7mr68994906d6.9.1740428842300;
-        Mon, 24 Feb 2025 12:27:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFEGIu0hTDGUdMHGJYXVXzWBQqkQ0NYTN86e+GcokshmcmZHhKJUOF/l7Lss/BuFaMNPTb8VA==
-X-Received: by 2002:a05:6214:21ca:b0:6d8:99b2:63c7 with SMTP id 6a1803df08f44-6e6ae9a12a7mr68994666d6.9.1740428841949;
-        Mon, 24 Feb 2025 12:27:21 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d59391sm18357266b.56.2025.02.24.12.27.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Feb 2025 12:27:21 -0800 (PST)
-Message-ID: <6d1a95a1-0b84-4bc5-9cb0-3cc514d292a6@oss.qualcomm.com>
-Date: Mon, 24 Feb 2025 21:27:19 +0100
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="vitKRRCT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1740429624; bh=YCBdJbUx0eezkgiS7e5oa20MNmUQMvngyjUjEqpjLTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=vitKRRCT0FDO+MFCpM+oNGOuuzlj4/oKKiebkE8stMHaxMzf27bAxxqur33AcvwDI
+	 jc8GJxIppGPasCEOD/Poo5P0RmXlMxZ+GB2EMrSDEOeG41CiydyeaUxipL0012T3rz
+	 hweWP6i1Qg6AYnNs2JH26YtOcVVIXuoO1tAnzHtQ=
+Message-ID: <8b67cea3-82f7-47f8-b026-fd26cfbf94b4@lucaweiss.eu>
+Date: Mon, 24 Feb 2025 21:40:23 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- firmware-name for adsp & wcnss
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Luca Weiss <luca@lucaweiss.eu>
+Subject: Re: [PATCH 2/4] dt-bindings: display: panel: Add Himax HX83112B
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250222-fp3-remoteprocs-firmware-v1-0-237ed21c334a@lucaweiss.eu>
- <20250222-fp3-remoteprocs-firmware-v1-3-237ed21c334a@lucaweiss.eu>
- <w4l5drhu6exq4jb7x2pisqtkz5ylare7ashsmjjqomv3yetjwj@z3wapq4rkk3u>
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+References: <20250222-fp3-display-v1-0-ccd812e16952@lucaweiss.eu>
+ <20250222-fp3-display-v1-2-ccd812e16952@lucaweiss.eu>
+ <77wat26ggsfqwssgt5wfq6yz6w3ccqz3pmn727a4aphqv4ljhx@vrzneg2rvzfj>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <w4l5drhu6exq4jb7x2pisqtkz5ylare7ashsmjjqomv3yetjwj@z3wapq4rkk3u>
-Content-Type: text/plain; charset=UTF-8
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <77wat26ggsfqwssgt5wfq6yz6w3ccqz3pmn727a4aphqv4ljhx@vrzneg2rvzfj>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: BOWni_q1rI23etilhyh_y1xwKXcHjb0i
-X-Proofpoint-GUID: BOWni_q1rI23etilhyh_y1xwKXcHjb0i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_10,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2502240129
 
-On 24.02.2025 1:17 AM, Dmitry Baryshkov wrote:
-> On Sat, Feb 22, 2025 at 02:00:49PM +0100, Luca Weiss wrote:
->> Set the paths where the device-specific firmware can be found for this
->> device.
->>
->> Fairphone 3 was shipped with secure-boot off so any testkey-signed
->> firmware is accepted.
+On 23-02-2025 7:25 p.m., Dmitry Baryshkov wrote:
+> On Sat, Feb 22, 2025 at 06:58:05PM +0100, Luca Weiss wrote:
+>> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
+>> Describe it and the Fairphone 3 panel from DJN using it.
 >>
 >> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 >> ---
->>  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 7 +++++++
->>  1 file changed, 7 insertions(+)
+>>   .../bindings/display/panel/himax,hx83112b.yaml     | 75 ++++++++++++++++++++++
+>>   1 file changed, 75 insertions(+)
 >>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
->> index 08ffe77d762c3a97f470efbfb5064282fe2090da..5611209dbfa41d7834af7903535ed3e05604ba63 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
->> +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
->> @@ -82,6 +82,8 @@ nfc@28 {
->>  };
->>  
->>  &lpass {
->> +	firmware-name = "qcom/msm8953/fairphone/fp3/adsp.mbn";
+>> diff --git a/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..e6bd4b33d40be98e479d84617aea6d2af0df70e4
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
+>> @@ -0,0 +1,75 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/panel/himax,hx83112b.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Himax HX83112B-based DSI display panels
+>> +
+>> +maintainers:
+>> +  - Luca Weiss <luca@lucaweiss.eu>
+>> +
+>> +description:
+>> +  The Himax HX83112B is a generic DSI Panel IC used to control
+>> +  LCD panels.
+>> +
+>> +allOf:
+>> +  - $ref: panel-common.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    contains:
+>> +      const: djn,fairphone-fp3-panel
 > 
-> If any firmware is okay, wouldn't it be better to use
-> "qcom/msm8953/foo.mbn" ? This way if we get any of the firmware (yeah,
-> I'm a dreamer), then FB3 can pick it up.
+> Would you know a better name or ID for a panel?
 
-No, the fw may have board/wiring differences encoded inside it
+Initially no, as mentioned on the cover letter.
 
-Konrad
+But I dug a bit more in some other documents and found this number now: 
+"98-03057-6598B-I"
+
+This also somewhat matches the format of the Fairphone 4 panel from DJN: 
+("djn,9a-3r063-1102b").
+
+So I'll change the compatible to "djn,98-03057-6598b-i" in the next 
+revision.
+
+Regards
+Luca
+
+> 
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  iovcc-supply:
+>> +    description: I/O voltage rail
+>> +
+>> +  vsn-supply:
+>> +    description: Positive source voltage rail
+>> +
+>> +  vsp-supply:
+>> +    description: Negative source voltage rail
+>> +
+>> +  port: true
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reset-gpios
+>> +  - iovcc-supply
+>> +  - vsn-supply
+>> +  - vsp-supply
+>> +  - port
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/gpio/gpio.h>
+>> +
+>> +    dsi {
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        panel@0 {
+>> +            compatible = "djn,fairphone-fp3-panel";
+>> +            reg = <0>;
+>> +
+>> +            reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
+>> +
+>> +            iovcc-supply = <&pm8953_l6>;
+>> +            vsn-supply = <&pmi632_lcdb_ncp>;
+>> +            vsp-supply = <&pmi632_lcdb_ldo>;
+>> +
+>> +            port {
+>> +                panel_in_0: endpoint {
+>> +                    remote-endpoint = <&dsi0_out>;
+>> +                };
+>> +            };
+>> +        };
+>> +    };
+>> +
+>> +...
+>>
+>> -- 
+>> 2.48.1
+>>
+> 
+
