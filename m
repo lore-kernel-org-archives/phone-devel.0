@@ -1,96 +1,134 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FF725B678;
-	Tue, 25 Feb 2025 06:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD9E126C18;
+	Tue, 25 Feb 2025 07:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740464986; cv=none; b=Muej5xEFdsVRmEMHWYPPcHk65kJc1NRuXQxGoDfFs4afdon0O7qfsJO3mF4YZ36YS0VBHmf4q4G/gwn2kSR3pWcK+7gu8GXf0L++1rDn37btRpginIpU2rTElSYkFftnTEaFapR3+7SlqtErgBuxDQ49iv2Cke/KjrsB1dYv5DM=
+	t=1740469297; cv=none; b=n3T/8e9omPTR3J7GPcTJXmRWJgkM/TkXfpGTg4maX+sCeus7KCW2QVgcsm9Ir2Ykkc4qH8GnNKgjT8EFXgw9l+IQskug7yIVfGPOAHdsR4a/hG79yuGEJfR60k8klz/tmSh4/0q/sLGSJ4BE+rlTD8iZhDgkn5RUXxjBUYvtLic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740464986; c=relaxed/simple;
-	bh=yRYOKfULkV53oO8Rz0BODMQU3XKL2g/35WTPAX2HXUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kqs2RhYfZPm9Nnu0BvzBJhmUr0TDWeSTgsOifztXCT5FYMUFsumKqzp0lXWYmXRa1g8vNTVn/Ysa2zipkXfNolhRRccOeEvfliActeMuS/8HGOy9YSvA8tiIOd1Z8Srzd2orrhPdBm9dQrBzNswrbxNTlzUDWUU8s9G+8Kff92M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IcLdfoF6; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740469297; c=relaxed/simple;
+	bh=2XYXMJOoj8jR7rOLBVWUvoeGA6TeanSWB2tNbRdbaQU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T6yxrAhCuRSPXn5W3Dr9HiXCWtSj3ZHcB6A1IClB6FaF2xPKPET7qvVOjV7wPZNTihJ/hMtkovi8yDoa/SxVmosEBKhN5d/nzQd7FShBOa70rNNEXblgZd/M2cn9Wt6cW4uYfWfGUceD4IQzZv9lZ69VpITGL54hVBNqZEPSLDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLKIoIsg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IcLdfoF6"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-220c8f38febso110181185ad.2;
-        Mon, 24 Feb 2025 22:29:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740464984; x=1741069784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+f1hUvDkXZQBjtzK58ov0lklvW60dTX93rXfPj7emh4=;
-        b=IcLdfoF6aeQ0wx7lPXNSivTYaWWTXCpc2Tbh/Oy/cLtORRKeKOV7xlST/W6xJGtxBH
-         hht113EvAEGrsYdRPswyX+CKVcm9h/BV8DZCf/4D8t2G6rCfqIoLijZwb0aAPG6oFGhP
-         h4m+S0ZO4H98IJNzheN0tOxe7byHxurjkVf9l//lFlyzaZ3ost3wgfdVCZckWxjFvC5q
-         JTecEaojBDe1hEuq+Zgvbd7pRMONc8Ab1W14FFLBNtuhXKTnXMLH6og/71DrAs/E6N0A
-         B66LKG0ZoR9N8+9a5i6ZNKE6a1DD69sSfOuNue8OBLjkZ1tQ6MORwf3UWfzfJbEW+GCS
-         WHhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740464984; x=1741069784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+f1hUvDkXZQBjtzK58ov0lklvW60dTX93rXfPj7emh4=;
-        b=EPxbjL0f3Mej2ViWotr2qppC0cQXrmDhM/g6mJkOjLufrW3koVFgj3hIiC+Xi5W4q8
-         LPghhS7gwB6L/yksiZ45TigjWn5dfoX2xjF7e1XgOr/7pLYEkOtFU82BwD0UVYpwZZL6
-         JpFNdzyQ8nOTntLPrItnsbk6a/3bvraOAa1lLnondVzI/U8V9qeM3fp+mjdEUbCVd3aO
-         au+JNv8eaOGNY+F524YAFTjjxEXplE6UrVMDH0bpHpZ6GalYI5m6cRGiPQhgm95WPAXX
-         b/otd4K9sZAzBRJyxTc0eeKjwKlh6MSU8TxbBnA7av6RMehsDwcVOTdLRem1YLEHjEw/
-         NcTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbIeyHlNqma24EeT7AbPM5J0B1Opa7hI/PDt1ftb1Kf5OcNnyJnBNXuHQev3AqfGTo50/gxoH4qBL0kYQ=@vger.kernel.org, AJvYcCV8P/tIXMJ1Vr8shEH1kzLNATzs/ckcSAHWs3ilXHOnbEWd7r1BCNieEyB2DPd4+OslMPj6x1g16TnU5Q==@vger.kernel.org, AJvYcCVVFlHBWnUgpGMGUWdp7RUoDOdGSXuEzDhzqb5B8Y02aD5vhcoDYMi8L38hShKazz7K7o2Gdtjthe+a+cpq@vger.kernel.org, AJvYcCXWgRGeDTl1F75fekIok+6JvY7M2kxXT14xexoV/JgSW7Rw6ABfufc0139w+cVZWqTs+g7y1MrV@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbmeF2xN7J1wZID0uBe+ZMErQh/rxykzc3/hjugL7MGmYAIfTz
-	f/RRnu3hFE0I1O5ARcNSRPOIUuv5QE7SxQrnf1ri5Irv/Hwmk+mL
-X-Gm-Gg: ASbGncuVqzJZovBVsVMNuWZgjSJj9nmdNG4b29AgqPiuTU/Dxogf9heUlMmkcJ06tG+
-	U3L2SjzK+0GyksqQC7pyISgD6QwkBjbawyoz7gJ/kvwxG+p/8Grk8pmcFKptuJYlI6kNuPVVyH8
-	yzzA+VXR/v7Ufsmlh5cIVoG0kQzw0KyqkWXSlavFo3VVavqidw0JgxzU2EGjke4UMrmzOpm+mwv
-	5DkwnjX7E5/L1SUFtyC4m/RrvTwT4LCLYXhL2cDiub6sNqXeujTJNJtS59DZcBTroGEFfv9ILjY
-	SEPeriaThIINPmDeMDwaz72VPQY=
-X-Google-Smtp-Source: AGHT+IFXSieuGfl63NCGaegFak2YYGly32E4Gjw0/onV28txeg789Sb7vqek4p48AX/riu1hOGv1PA==
-X-Received: by 2002:a17:902:e550:b0:216:282d:c67a with SMTP id d9443c01a7336-221a00156f6mr243620125ad.39.1740464984499;
-        Mon, 24 Feb 2025 22:29:44 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:464c:6229:2280:227e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a0aec2dsm6547595ad.221.2025.02.24.22.29.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 22:29:44 -0800 (PST)
-Date: Mon, 24 Feb 2025 22:29:41 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bastien Nocera <hadess@hadess.net>, Hans de Goede <hdegoede@redhat.com>,
-	Jeff LaBundy <jeff@labundy.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Charles Wang <charles.goodix@gmail.com>,
-	Jens Reidel <adrian@travitia.xyz>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] Input: goodix-berlin - fix vddio regulator references
-Message-ID: <Z71jVeD10z_25sWr@google.com>
-References: <20250103-goodix-berlin-fixes-v1-0-b014737b08b2@fairphone.com>
- <20250103-goodix-berlin-fixes-v1-2-b014737b08b2@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLKIoIsg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB343C4CEDD;
+	Tue, 25 Feb 2025 07:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740469296;
+	bh=2XYXMJOoj8jR7rOLBVWUvoeGA6TeanSWB2tNbRdbaQU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RLKIoIsgeoicWMs+xqA4V4aZNWo2G8yktpiOZlISV4mUzuWt9fLm1yWSzzP9eZgZ/
+	 bcFztsBRKEibxZ3c1sniOKr9IVzzgNmovqwWag/gXHFtn0yGbxMRFvGVFRr9LZrKH0
+	 nqBbGQwxXpExqaVNbSnhSn0xOQKfqQgPxDcTJ67zrPUhOcqOaAVJBLPlGwO9qb9heu
+	 CcDpIj0gfM4W/qlBIfLvgCI6Qi9RdWvakvJFmXPNxoinjGXrTvO7FGE9cBG9vLLbKl
+	 +f+MSIHmCPLf+abECnqs9Xm+znb73qVK44E7X6YFNiHzZbw4yZXX5oHviJEAZAAHTE
+	 DBEZ5XtHZKGbw==
+Message-ID: <2e383452-9a06-4278-930d-d6f8deed13a9@kernel.org>
+Date: Tue, 25 Feb 2025 08:41:32 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250103-goodix-berlin-fixes-v1-2-b014737b08b2@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] input/touchscreen: imagis: document ist3038h
+To: Andras Sebok <sebokandris2009@gmail.com>, markuss.broks@gmail.com,
+ dmitry.torokhov@gmail.com, linux-input@vger.kernel.org
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux-kernel@vger.kernel.org
+References: <20250224090354.102903-2-sebokandris2009@gmail.com>
+ <20250224090354.102903-4-sebokandris2009@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250224090354.102903-4-sebokandris2009@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 03, 2025 at 10:21:36AM +0100, Luca Weiss wrote:
-> As per dt-bindings the property is called vddio-supply, so use the
-> correct name in the driver instead of iovdd. The datasheet also calls
-> the supply 'VDDIO'.
-> 
-> Fixes: 44362279bdd4 ("Input: add core support for Goodix Berlin Touchscreen IC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On 24/02/2025 10:03, Andras Sebok wrote:
+> Signed-off-by: Andras Sebok <sebokandris2009@gmail.com>
+> ---
+>  .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
 
-Applied, thank you.
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
--- 
-Dmitry
+Please run scripts/checkpatch.pl and fix reported warnings. After that,
+run also `scripts/checkpatch.pl --strict` and (probably) fix more
+warnings. Some warnings can be ignored, especially from --strict run,
+but the code here looks like it needs a fix. Feel free to get in touch
+if the warning is not clear.
+
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+
+
+Best regards,
+Krzysztof
