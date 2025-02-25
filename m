@@ -1,71 +1,76 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31069254B18;
-	Tue, 25 Feb 2025 06:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F26257429;
+	Tue, 25 Feb 2025 06:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740463614; cv=none; b=RI8LK6ddrqZ/lhelHd+zfS6Z6GP0FRjLcPJy9ECOSoaXQGsfysZhz/UwO9wLQWhPuU3G5IPumJL1cNF5j4chIv7v3Xc8ySko34dY6MGYSTD7UVDTDrL24+J9s0ydf6Zuulxyv+QP92scbR12Is/rtE1cmVB/PRCg4bY8sGNm9cU=
+	t=1740464976; cv=none; b=Np1rwGnZ0ztZsH/IgbnoiQzGer15VW+y8AKxrBw90t3mi/oLUJUXMQs28EIRnO0F5cRNW3EwXIKGIGiUsMSrJeSrcy8z9zTqgYvSW1ZM1EEHMjpTvaAQ5lSfbnLa0QEW1ajU7tShO3shMclBSKBgjg6sMw9zp2UwtQmkh106HUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740463614; c=relaxed/simple;
-	bh=fU1fqUnYw2h+EOVeTywhFqS4gkbUcn4MgBI6LtkruSg=;
+	s=arc-20240116; t=1740464976; c=relaxed/simple;
+	bh=9E4tHldaOh3rJ13NGLgu0713HpspGXzpaub+CWVGSVs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dnA1jzLEUsrd+89xC7iJoAza9IppN8OuagZzM5Nn8ayg0S0sUi5oG8dX9Xpxg0L6G+7VjS1+JIRw8udMJMpSBAyOpWo6ut816e/LG2w5puYwgax7z2p8DMuzLCjCjkKLjGE1wlz6ZhxkIYNCkkh+RPZnPujQfNctaksh3M7/h8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8h69YGi; arc=none smtp.client-ip=209.85.214.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=lYXWmweQnS8SfhpC435PLx17BRjDIw5ELIxhYMTIFj/JQhpJrMfGnIUegEkIKnLyrEHpF8xqwOkY+w4OS5cAaevQJVDQxtp4EyAVH1wqSp653wUgNC3L9n5EXRIvN40hCIVvQluarLKA8HmeOh3AHVJ9AKYB2++bRD+ZnOG17fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqrmB6Ao; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8h69YGi"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22128b7d587so100318525ad.3;
-        Mon, 24 Feb 2025 22:06:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqrmB6Ao"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220c2a87378so87730135ad.1;
+        Mon, 24 Feb 2025 22:29:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740463612; x=1741068412; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740464974; x=1741069774; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qpLbYY3a8G6+noHchTGji9pm7nDKnaJPinYLsobaH7c=;
-        b=d8h69YGidtPoI2dwxdugtE6TZ2UemnxQxtPpTxsLYsED8bAp/ZdL3TG1uIOSeYfstF
-         HOGadKv1Cfp5bW6bfZ3e//bwsAaaALjfvZ2f3fbpbv4KXIzaCYtdvfaW3iUjGvJv54u4
-         QmX+Oc8U/ObVPrsVS7ClV4iNlW6eAGB35b6CrljrXlu4kLpcheYZlUzyM165tl8bjF0J
-         mWxo9rh8b4aJU7/U1YTAgu59yY6xTv3e4YKlNcHcqqCfM08gZm4d6p74Qhhamgr/Hhxf
-         O7TKC4foNmyf12rZAGatUqJilQ1Mq1UB6x/PAPeu9OHTkR0sAXQf3E4aP25F91v5FJ12
-         oAaQ==
+        bh=j4+q8/0z6WPZe5ZERpSVEokcuGv3BB2C4ZIRL289vZA=;
+        b=WqrmB6AoHdMU0uUIxQMLg9ETVcbmOoYVRqTpPD8ljzbDNOudORFlmCF8UaOxgMP/KT
+         /+t/39ov6zTzGquQJO2zVEPYqetbVJw0qp0gYY9EQQOykOhQNwuIc6y0IJgo5a+82dWN
+         H1zCfJJ38+AccXA/dke6WqK1QsYq/b0yyGXDdAsGNlYHsu3YmEq+5RzqLre7KIgHcDyF
+         rmUolhxMhYL2lh6xaiTz030/QSyX0Jc4qwR4o0jtEZlwHt5dHA9YRDDomIxsCRzhenPu
+         XgtuHXZc2+8xlSP8nycktSX3xXJnaPWo+FwRYhT/nCzLpkHQEn/VQ7H/733d4rwTLuu3
+         UUTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740463612; x=1741068412;
+        d=1e100.net; s=20230601; t=1740464974; x=1741069774;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qpLbYY3a8G6+noHchTGji9pm7nDKnaJPinYLsobaH7c=;
-        b=jHFMP3fZSofQudrgFIwfyA3i5Ixa0uabsvCZNn/KEantqFLsM80e3IZrvYXKnPB+uK
-         lnlhiIxteEJAXQGRjBAUpBwL5PyF76c3dNUkqYy/o5nOmJk2YsTypzaENLkVXYcAfLve
-         tR+2ukJ2mqsrBMtp7iv8Msvj8mSdSwAj4Y39Tp5OQUb7keeusrOJQ4JJHIIn59HYfI5M
-         XOdM7bJuJSv8IoSAAcEgLFOciI+qD9/CcfAqdUWAYqgsVyUdapHhG/aMx/2MCqdIsDNq
-         TO3Zmad21kjLCI46w2PA9xvSthuHSPwteRAGdo5LhtFvDr6W/TOxAp8fg9YT90iUEW/A
-         27ig==
-X-Forwarded-Encrypted: i=1; AJvYcCUGLYZ9eU71tFA95B3u9LsWirGyj/IZH4XaWSg2wDCiXkMvMNdCSomiIISX2Ou8A63zGTfxJ0YE/bWWOX0=@vger.kernel.org, AJvYcCWNWTPm5HXKugXocVsH0Cfu67EY2o/cws84FkcCoc1E9twZtO0EkcAcJPBLpOTlyhdExXj9XwWdAi7jCQ==@vger.kernel.org, AJvYcCX+D4q1oqbA/3eiYJ72WPP7KSxQMjDtDbHXDxWRzESyZcJtcmx5E1khfzmi87kxTvuMpHYWRPNVHDPu+oEO@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+WahWGGVIOoAW/t3lGD8MTJSVpUL/qzJmAuceE+hgA1/B87x2
-	vV5QvnkGoBZqtc39DlkX5EqYGEk/vDgEa7YzaNukt+YHqJJVUogk
-X-Gm-Gg: ASbGncvq+wleOwPZbdeg1A9NQSVy1OvrhwDpx8evu6i1cz6WO7qV+Lrk9BbIwdudeTw
-	8K8QpibtZlXuQU/DVbyG9NABH8zkxHBpbGqFQpteF47q8JmyPhuKDGYsdshl9Y9+i/O+eGUW7+5
-	wtw0rWc7bcALGOM/6wnvXkrOWWo0atNbJVFFm8QnSQ2i75yZPY02KDgwBRMjJANkYdcxfLiilfr
-	u3FITWOsEHsX++TdjSdInSxRFTW+k0DeXY7/CEpcgaWseK/4pw/4XolY9oTetw4N2hBLWb0YGlT
-	1K440GIHSe41feTZuTyE73901bE=
-X-Google-Smtp-Source: AGHT+IEaNuk7hgbrxOieRM9csy171AjtxJkiET5sWOVsdbQD7Gu7W6CKINnNRbiZrXi6/5JgfJzDKA==
-X-Received: by 2002:a05:6a00:4649:b0:730:9567:c3d4 with SMTP id d2e1a72fcca58-73426c8d910mr29554264b3a.3.1740463612112;
-        Mon, 24 Feb 2025 22:06:52 -0800 (PST)
+        bh=j4+q8/0z6WPZe5ZERpSVEokcuGv3BB2C4ZIRL289vZA=;
+        b=JhIY1PrGy+2ANqSZ5hyhSPHpXCVo1WPc1OXq05NumUsSz6JikT/dAqeni20FED6fzC
+         gvWSnljetrl+zuCAAoRgTdbKKq8j033p/kIkyTVdgBIQ7HTbqi3bxriG19cqVH2nmZuD
+         CvnL8spwiNXSow2gOTC+McRdHD6T78jRzejz+5lWFgDuAiS1oxa/d5ofWFkwhN08hkHS
+         7LnROhAMheG28vnqTnl2YngwyLabPx59UAmY7uOpSBppIVHnTMuNmV3EZHFlK90bO3fg
+         ozl7zwQxhw0mEsqKOomaCwPsQ1731X42A+uymB/PWKoIrxGDWNdREo3X3cv/IsJJ1Wjy
+         7DZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ27dFdxwLHtf2uLM9GOJc7/QCJ61kTe2odmH7USsVttw+5lwzY8Kk0d08nxOiV+hoJsiDsQPHbPdPNe77@vger.kernel.org, AJvYcCUbOeBnZRIglvj6pNly16n9ySlFw3FS6MpHoCLTK0fNo4Ouh1MqlFJbWoYJmqgnRi6OOCTZyNZwNICK3vA=@vger.kernel.org, AJvYcCVhEt5SzTr0Ieoe2oKwlkVmWY4l56wQ8iBzvWUR/cFy+KGGhzXYuiLD1OM+TXCb/9x6xF012nzIxG95gw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+V8RoxNoLBr5k6DqnjOcrR0WeIid9U6KP3rE5hEgrhhMgk3ln
+	eeUPzPGhrNfFkS1grz51BApqftX2FwApgX8X6mNhn3otRZ78mcoX
+X-Gm-Gg: ASbGncs+6BRN9CRu5tV2ddDRi6ZnjQPasjt5tduiWO+VbWz3CY1+HqWj+0WVYav66mU
+	qmRx0FVkQdORRSBudgDgNpP/mLHTFUX3yuiFrYcHmtGXlVrv5kqNhGyjhb6MajR6A4fNzW30FcN
+	TyYZAkixfPRFMDu11mE5RdJWrUa5mnyzOw5RfnJmnbP0PRLoHy0TSn4Hvp36pX5O+T6wn8EOcLU
+	euzz5jR3HxCa5LtPAiTUOwYhooUNZDlPUGG9ujd0anMU6beTXfopJ/o9uTzfraG0KaqWMzKPr/8
+	xufyT9HcCm2ts/8wMbIWxEG2x0U=
+X-Google-Smtp-Source: AGHT+IFsisg7kq4qoJMHCuHfj79GZoynxTMSU11v305fq5VKE1tV/Xn9I6Jksi84K3R5tdsWMDlsqw==
+X-Received: by 2002:a17:902:ccc7:b0:220:e8a1:c819 with SMTP id d9443c01a7336-221a1191665mr295309715ad.34.1740464973913;
+        Mon, 24 Feb 2025 22:29:33 -0800 (PST)
 Received: from google.com ([2620:15c:9d:2:464c:6229:2280:227e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a6fa079sm681486b3a.58.2025.02.24.22.06.51
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a00054dsm6608305ad.4.2025.02.24.22.29.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 22:06:51 -0800 (PST)
-Date: Mon, 24 Feb 2025 22:06:49 -0800
+        Mon, 24 Feb 2025 22:29:33 -0800 (PST)
+Date: Mon, 24 Feb 2025 22:29:30 -0800
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Andras Sebok <sebokandris2009@gmail.com>
-Cc: markuss.broks@gmail.com, linux-input@vger.kernel.org,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] input/touchscreen: imagis: document ist3038h
-Message-ID: <Z71d-YFUTkJZ4fp7@google.com>
-References: <20250224090354.102903-2-sebokandris2009@gmail.com>
- <20250224090354.102903-4-sebokandris2009@gmail.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bastien Nocera <hadess@hadess.net>, Hans de Goede <hdegoede@redhat.com>,
+	Jeff LaBundy <jeff@labundy.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Charles Wang <charles.goodix@gmail.com>,
+	Jens Reidel <adrian@travitia.xyz>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] Input: goodix-berlin - fix comment referencing wrong
+ regulator
+Message-ID: <Z71jSubLQIaqGTRX@google.com>
+References: <20250103-goodix-berlin-fixes-v1-0-b014737b08b2@fairphone.com>
+ <20250103-goodix-berlin-fixes-v1-1-b014737b08b2@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -74,12 +79,17 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224090354.102903-4-sebokandris2009@gmail.com>
+In-Reply-To: <20250103-goodix-berlin-fixes-v1-1-b014737b08b2@fairphone.com>
 
-On Mon, Feb 24, 2025 at 10:03:56AM +0100, Andras Sebok wrote:
-> Signed-off-by: Andras Sebok <sebokandris2009@gmail.com>
+On Fri, Jan 03, 2025 at 10:21:35AM +0100, Luca Weiss wrote:
+> In the statement above AVDD gets enabled, and not IOVDD, so fix this
+> copy-paste mistake.
+> 
+> Fixes: 44362279bdd4 ("Input: add core support for Goodix Berlin Touchscreen IC")
+> Reported-by: Jens Reidel <adrian@travitia.xyz>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Applied after updating commit description, thank you.
+Applied, thank you.
 
 -- 
 Dmitry
