@@ -1,134 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD9E126C18;
-	Tue, 25 Feb 2025 07:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74703153803;
+	Tue, 25 Feb 2025 08:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740469297; cv=none; b=n3T/8e9omPTR3J7GPcTJXmRWJgkM/TkXfpGTg4maX+sCeus7KCW2QVgcsm9Ir2Ykkc4qH8GnNKgjT8EFXgw9l+IQskug7yIVfGPOAHdsR4a/hG79yuGEJfR60k8klz/tmSh4/0q/sLGSJ4BE+rlTD8iZhDgkn5RUXxjBUYvtLic=
+	t=1740473409; cv=none; b=dcRs8txZmJG+PamXRvpdTqDoXFZIcFBy78syKjSEPp3qaJ9ZbsRvgZDicTT7ODJThW3s2QlMaZ9SNgOL4R5szm1EikKw0W3L+0AjbOV8H7HOJMZi1QoFKjwwk/Ew2hOOP867AK/De6X5J9CgkEEqBHpO4F3YCV3xRlfGuuX+6fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740469297; c=relaxed/simple;
-	bh=2XYXMJOoj8jR7rOLBVWUvoeGA6TeanSWB2tNbRdbaQU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T6yxrAhCuRSPXn5W3Dr9HiXCWtSj3ZHcB6A1IClB6FaF2xPKPET7qvVOjV7wPZNTihJ/hMtkovi8yDoa/SxVmosEBKhN5d/nzQd7FShBOa70rNNEXblgZd/M2cn9Wt6cW4uYfWfGUceD4IQzZv9lZ69VpITGL54hVBNqZEPSLDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLKIoIsg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740473409; c=relaxed/simple;
+	bh=XpUsFaeP/4EuHOSFzpnjeESHSFOoXTew5nmBDmFIWtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gqiPzuCnInKFyLyy/PSaOq1CQraTHyjRtv7JTN1Yly6kQBgGUFrLKmFzxCkgej5gYoUtF+j6rFR5YLPTKqiQoiZUd9HbcJC8mulWatpdy/B0pRP5XRA7GWZ3ZjZy9l6pqO7y4OEog9VToUwD2jTg3YxjHMuC61o6snjiO4w7a3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SA8RJIjw; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLKIoIsg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB343C4CEDD;
-	Tue, 25 Feb 2025 07:41:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740469296;
-	bh=2XYXMJOoj8jR7rOLBVWUvoeGA6TeanSWB2tNbRdbaQU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RLKIoIsgeoicWMs+xqA4V4aZNWo2G8yktpiOZlISV4mUzuWt9fLm1yWSzzP9eZgZ/
-	 bcFztsBRKEibxZ3c1sniOKr9IVzzgNmovqwWag/gXHFtn0yGbxMRFvGVFRr9LZrKH0
-	 nqBbGQwxXpExqaVNbSnhSn0xOQKfqQgPxDcTJ67zrPUhOcqOaAVJBLPlGwO9qb9heu
-	 CcDpIj0gfM4W/qlBIfLvgCI6Qi9RdWvakvJFmXPNxoinjGXrTvO7FGE9cBG9vLLbKl
-	 +f+MSIHmCPLf+abECnqs9Xm+znb73qVK44E7X6YFNiHzZbw4yZXX5oHviJEAZAAHTE
-	 DBEZ5XtHZKGbw==
-Message-ID: <2e383452-9a06-4278-930d-d6f8deed13a9@kernel.org>
-Date: Tue, 25 Feb 2025 08:41:32 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SA8RJIjw"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f1e8efef5so3079719f8f.1;
+        Tue, 25 Feb 2025 00:50:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740473406; x=1741078206; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sHXSg8VZ9v5h0G5Tv70nt8LfXIvRNemWc4WVPgwWg+Q=;
+        b=SA8RJIjwGaNPUUoYkqRUTfmVD4GZl0Oq94tAKwNMjbcPWDKYu0uwblOqGgS1xE3CaR
+         DTqYzgm7YEtL72WQsM6CA9XJUhA7JDxRcAJw1eMwamQ2DU4f9/e4mx1+hNHGazmmH19C
+         /nJdSPDk3AAKL4PqNrUBo6cva21vxv6MmfSFnnG8h4kO8HUnOUUw7uN9AD01iB8M+IKB
+         EvrBkpdydasIGMCJ44dq4aasLor0067M4p5FdoQ3A2KyOn7AmmPcZPn9GMlDkMQnRe00
+         rnulph9B7zPuSSNP/R0AAgFXSACfIQ8XIa8Zn62nN1MWNHdvqx7xb1dfGgsy2LT0TVLK
+         zBLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740473406; x=1741078206;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sHXSg8VZ9v5h0G5Tv70nt8LfXIvRNemWc4WVPgwWg+Q=;
+        b=Cwr/RiLHFS9vzYl38uTX+0SpLv7eg7BXf3MDkqmQl5fMg+ukKcXej3uV1JqR0d6pg2
+         erD5ORtZhnnoCrP4a0RHmYSgawMOHJlm6NhUkQCDZZXk5i5FiqKKZ5PtwFGbxXWk/6gZ
+         Gld184hsb3Du0X/QRPw8J5qgUW2ZFutD8rfpYYkS2iKaY9aX24ym1Luwi+7vS2MD0918
+         XL16kXZ6RTto2C1+nhHAmMl3WVT32tGOeSdAc9fkHyXAGYYTTfzj7OXWH87jXH09Fxhu
+         OiyJH+3yQ+H+U1pkOTxT63MbsAjMVHEPpWU5sfMNUOrKslZ39nHT514THZNAS225Q6f+
+         vBuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAfzyK2VAV7r2S85gNCj++II0lsUPkkzW5afi7U6Rqt5hcu43ufTErong2eNtW48L9ivErgFpJX0bJhU0=@vger.kernel.org, AJvYcCUMrTJec+1l2L0DlDzpQ/3mK2fT0liNtnvteWHlQxjTbW3jCZuiG8fdRnz5GS2pyq/zpzsB9TTvAu0f@vger.kernel.org, AJvYcCWCsotHKJ2MDXSQYc6V3zMu1SjpH4QpXjJsC8v8ustBdJMIzLZmvRG7tl14NJLrbEq+VtcdLlhCw1x3UXM3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw54HlQ+OcaeEbS6W6Tf6hO//w+Qcgqws4SK8dqaTJfurKiGTuA
+	7NahdJk29YdNOzQnTHrVDf7lwddqd5yyCKEDivqoxJOYIFVbsK2gHFCIPG59k5Y=
+X-Gm-Gg: ASbGnct3maqeeZWdUzjYXP93R6YCW6VlI0isopq3Xgy1x5GMnpiZHQBrAKZMevzgLj9
+	yOMQXbKIFW0PU98tPge7cpwD5/D1YDj1ub2JVJ8xbyaqwpmszko7/bdzsDfgTPwGAkGnBeUGuPF
+	f28p/QjmrJDIhvK7N1QUB3s7+7de5xHpVDBX2HpCMC9U01rpsv7wDhziYCbxyKyFUTmJIH/0SOW
+	JnyORubV25jmqjfCakJE0g6hZzkJM4nsfgzCUKLB/w95Osf4mE0v+FXwOKyXgbDinPjK1PB4bZv
+	6mZQxL0sZO0sVKkbU+evTQ+fuzBQeALZEoX6r3SpIGVtooaJYHWjGAWhk75SjA==
+X-Google-Smtp-Source: AGHT+IHhPvYQNhtYLskqMqtvAoq4ChhJsu5DYr2jsTpaPgizulGwceX6XLSoAE7kDyBHTXilzLi8og==
+X-Received: by 2002:a5d:64e4:0:b0:38d:a879:4778 with SMTP id ffacd0b85a97d-390cc60aeb6mr2147479f8f.33.1740473405557;
+        Tue, 25 Feb 2025 00:50:05 -0800 (PST)
+Received: from fedora.. (84-236-81-135.pool.digikabel.hu. [84.236.81.135])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8fbcabsm1503582f8f.86.2025.02.25.00.50.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 00:50:05 -0800 (PST)
+From: Andras Sebok <sebokandris2009@gmail.com>
+To: markuss.broks@gmail.com,
+	dmitry.torokhov@gmail.com,
+	linux-input@vger.kernel.org,
+	krzk+dt@kernel.org
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	Andras Sebok <sebokandris2009@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: input/touchscreen: imagis: add compatible for ist3038h
+Date: Tue, 25 Feb 2025 09:47:00 +0100
+Message-ID: <20250225084914.81715-1-sebokandris2009@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] input/touchscreen: imagis: document ist3038h
-To: Andras Sebok <sebokandris2009@gmail.com>, markuss.broks@gmail.com,
- dmitry.torokhov@gmail.com, linux-input@vger.kernel.org
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-kernel@vger.kernel.org
-References: <20250224090354.102903-2-sebokandris2009@gmail.com>
- <20250224090354.102903-4-sebokandris2009@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250224090354.102903-4-sebokandris2009@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 24/02/2025 10:03, Andras Sebok wrote:
-> Signed-off-by: Andras Sebok <sebokandris2009@gmail.com>
-> ---
->  .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
+IST3038H is a touchscreen IC which seems mostly compatible with IST3038C
+except that it reports a different chip ID value.
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+Signed-off-by: Andras Sebok <sebokandris2009@gmail.com>
+Link: https://lore.kernel.org/r/20250224090354.102903-4-sebokandris2009@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
 
-Please run scripts/checkpatch.pl and fix reported warnings. After that,
-run also `scripts/checkpatch.pl --strict` and (probably) fix more
-warnings. Some warnings can be ignored, especially from --strict run,
-but the code here looks like it needs a fix. Feel free to get in touch
-if the warning is not clear.
+This is the fixed version of the patch, which is already applied to 
+Dmitry Torokhov's input tree.
+Sorry for not CC-ing the devicetree list and maintainers before.
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+ .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+index e24cbd960993..bd8ede3a4ad8 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+@@ -19,6 +19,7 @@ properties:
+       - imagis,ist3038
+       - imagis,ist3038b
+       - imagis,ist3038c
++      - imagis,ist3038h
+ 
+   reg:
+     maxItems: 1
+-- 
+2.48.1
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
-
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
-
-
-
-Best regards,
-Krzysztof
