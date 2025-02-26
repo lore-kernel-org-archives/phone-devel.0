@@ -1,64 +1,72 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20D5222590
-	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 14:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160D4224896
+	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740581228; cv=none; b=SqfVUIZp96iopqv0FZVirwwnz75aVAIzoIn1myiFa7IteYwVmprVffqTIDx80k/7RKHw4vbI8fzqYLcJ3fAmd/9fik6EUyJ38RQQAfBoCQbf6nxPJJmsp5j02X/RePGrzKNmcX2PZM6gDAtpNfXybIbgpLkdx734s6GKQzyGY4E=
+	t=1740591652; cv=none; b=aYi+2J95WCR5vAGj4NGd+gn4sa9FjsM7gdi9bzKKIPVYuhKQzyUdxmT/OcGZnGaZWf0zcadmRICaNk/SgNmoE977zxYeFxEaVn4st95zNA1k+SCQ13TdrCto5u1odmYS5brQt4PtIV5Z8wmHbqZp1ZN2It49y7pGqBZa+LIO8lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740581228; c=relaxed/simple;
-	bh=m/XdZhhvS6FYiXUcwXOJ1LLkTXVWffO1oF02DIV7wEg=;
+	s=arc-20240116; t=1740591652; c=relaxed/simple;
+	bh=zxoFCEm/i4Fsrp5kMYsUFGNq4xymwxtSd66LlDonmFA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z1PX0zzgNOOjWznSc4LQXbYz3X+ozWxjIXR8nIxEBzxYYBWYyG38rHm+br74HYYY9Ye6ocUvvQgF3J2CMA1Rhhm1boPscupTQsPp0uhy+i6oETcFGKrgWQdKDhiJyR3XYjLwW+ko2PZiMNpCZkDqE3L8fRquBIh6lEpntoOrwPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S64eu0v7; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=Y2rEwnQCDVcTMnFDEHVKvB85mUw9AAaJGgCumdeFRaRvvW99QjyDn8G9fTnz8CYEmmgPslxA7pMMGSZ1vmr1O2xelb4deHy+BxE8lQV4lgLaQWseaIwP1Wxk1qRnlmpfgzELNkMR6usRuVyqGOZg4TuQJ4v/3LhHkorZ+xUmYCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=c2MOR45W; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S64eu0v7"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so66258955e9.1
-        for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 06:47:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740581223; x=1741186023; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8pOyW28UvUKwTgBKlyrzwQ8HJbMn+0BIuk/+k9qJPJw=;
-        b=S64eu0v7kcYJRl94NyQejbkOgpNvivDTCue5bJsmUbKgycmp10LRfYgw2JK0jIeSSR
-         2HxeVGcDCrNiVEB8c1g1Y3HLuA4xnRL8LF8oLpzlopCa1RWX4wLlfvCtdZzJkjCr2PBM
-         mt/Fu+3LJiR4x8/Ei7BDgZQE7nUNar9ULoklm11wS3Ruibktvj8Gyr1D3x5oVTGqooL0
-         V0Bkg/OdQ2AOec5Tz6THR4ygE06twnjFcKpMbOt3mI6knb2Nzgk7w8+ogdmeM++L0OZH
-         RfWidhzjrLo5xZyl/lII2rgRiBkASRlsQTllTBQcO43wUlD8ff/uqraX771hn1o+Xu+m
-         7xzQ==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="c2MOR45W"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QD9ZJb001813
+	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:40:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Dx9NSFPUTbfMI71GbqxOdXWvocLSr95GYi65otaMCUM=; b=c2MOR45Wq+zUfJXB
+	YFD2r5HLErySgksMaZ2bq4+++03Vpo8/PLPmzWEnPHttQjfT3sCdXaQKdp0+Dxc+
+	Si6jRpK42MtSZFAgdHYTYODQPvrelvynFaoTk2JbJj1pPGDabxiYYMhc/k1ZNsxF
+	TDwLq1nykwTGZUzSZzQKmMLWiYXABRBIXeIVIGxGc4faOnwvm+8wXX2glwBSYXIZ
+	1xeTxU8WwQw8wQkr7zdr8Hq8pAKTmjMpUedRukD0/Rj0WDlO8ZuTvVVtSGfnpuTh
+	UGqrMXa44biPffYeY1RxtuUH1MBLRUgrwzZ6UVlkC4CqBKoZxWXZ1VR8ErFaBgTU
+	D9QfFA==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4523kc8r1s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:40:49 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6e88eea1af5so183596d6.2
+        for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 09:40:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740581223; x=1741186023;
+        d=1e100.net; s=20230601; t=1740591648; x=1741196448;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8pOyW28UvUKwTgBKlyrzwQ8HJbMn+0BIuk/+k9qJPJw=;
-        b=VzzPBuJXbgjF/4ddODii9uXgR+110n9n57Ewm6Pxa4BWzkkcLVNH9mze6AV0PBrXsm
-         vpW3kfzpaHfFd3mdz7L/g1ZAPZCzYuI14wgtYVGnC3xTGF3jfrDZooysapX/tsWPhbRl
-         usLd8ckleL3xtZ4NGcSi9lx9xmQe8xTMf6JTYUIJmZObJaRTsYKs5OaQNDsDn7F+jdtj
-         3tLR3cPFWMc/Z64N6ZaRzT6/IHEnhuWLY8x7b5sIZ69cG9DqEZQ+C83Z95r+qiVdZU3I
-         c7kZRUhXP+T0rxplm4bnZ5xhkLFUCdQWmF5TFnIPzribngL2L51M7sb/WxgOSGgM1X/X
-         Criw==
-X-Forwarded-Encrypted: i=1; AJvYcCW546QDLdUO3c7I4WhvsTM2fzru8bxbLAfeuuQbLhRbhWd0ayx3isYqk0vPbQLn0nwC3WWsIx+atoEh6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzII54ZcO/dhypTEDB2tKU+xPhAywiDPaIpp6CMXprwZWO5gzmn
-	jh3P6UYLeZVdwzeOosCBZwfCdbG6xin97Bf5Iw1UaEyQDyp5gsi1ML+7aBI+wgM=
-X-Gm-Gg: ASbGnctcfmyFNSg7f+p3m6xW/mOsyx9gf1U8EDSzUk9Z6fpBjbMNRQOFwuzSiYNqpZO
-	c8sJSJh/2q/2T3zWDZaliZRxbdH2bPgUkZZ+m3T+QIihVH4W20YqWUP+0oLJrnikuzYTisMegcp
-	XzEi/57eDRlr/MN0tOAmwK9qL9bCqDPVUhrjJwwWnGOdvHq4WswoO/VSjvmi0oBRBeHb/3+I94d
-	EN+vrbUQzZLRyNYnhQ8KsY3srfChxmUwMe3z0OqU0TMX+7tU3yuNiwumyKhY5FHhADV41maVS+t
-	wuj9h5Vzo7ariKhu+vdP0iyD3J6C1v6L9qbUFD9ygtL+pIv/WXAFQcsy7UHRm/pN3Lg=
-X-Google-Smtp-Source: AGHT+IHNRfpULJPxhQY9HtJFoLDR0d9T57OoOlmyePOM9Y/l+ILE+lMCUBjbQM1hxPRcUu2S6ET/Lg==
-X-Received: by 2002:a05:6000:1a85:b0:38d:ba81:b5c2 with SMTP id ffacd0b85a97d-38f70854e1amr17780733f8f.47.1740581223249;
-        Wed, 26 Feb 2025 06:47:03 -0800 (PST)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8fbb5dsm5716850f8f.84.2025.02.26.06.47.02
+        bh=Dx9NSFPUTbfMI71GbqxOdXWvocLSr95GYi65otaMCUM=;
+        b=XgP0EOkK9HrEimBfABoui03aeyC2XgwnjG57/x5eJYqMMdcNXCbJ6yczGNyTRgPZKh
+         ftFzn/mmSMKKMjNp017lNF4gEqAG4JkLrdSwYeXAt09vXq3Di95MTvQBhk6qLLsOGY+Y
+         po0GuJIy6AA0T2S3zklvTu2aibM7ME7xcsi9MujhK9EtEtCcf3lgGOxOfSgQpuq1HtE4
+         1ipnlNKgCR0weMTcTXR7am0fvQCDDxWcxgN5zvkt9Kw0phoWZhhjWDHlXYMY0zMzQyN3
+         Zq+/KxW0cj3ciGMd7jFLVBI9RdwR97z7MQI5FTxylGjP02rXZEhr/YW7PpNw4RlrBfSh
+         18cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvYPHOOIMf1wK6gS487rEI3cJnXcByWBssBKFNcLyKpwUhuFoyWsUdtf/q6pzFIJCGRFfiyQNl7dSPZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5DpqXAX4cV7dccqZuvrAnW4WFf+HbEqTOkChO7yKr1EMkMn0W
+	v8rj1CZLILKo8avFzNqp8AWBYinMMGPsigRhYcBCAsUCOaoY9Mh3B+pWuXW6HDL9twRwQSlDnns
+	nqgHyB5CnVrvn0szKTnwH/yAPFV/QYBOcodxn+LOnXwCnNLl95vxBKzF1ypqlqw==
+X-Gm-Gg: ASbGncs3YtF/JiKjSI7Bb2cCcLWKippjuk/o9xJk7xcgK0esUuuXUb6QxIs8gyqUugs
+	wMY1NTwOid9unKPD4DC2Htf1tERyxH7jMc/vBX0+10u2Xp2RyUFOs1xasNJp8IoC5AOwwtBZsme
+	exVJSIHn207wNZD8YkulXso1DXoa9kZFMBwKlHeA+uqK10D37AiUBeqResEy1M30GxjacVC118L
+	gK4lSHU+4mB5vRukXIsfHYWo/fSPeuF3F/6foQQpdG/9Ir70pAcBYQEKeMFDO/k3SnM516zODD+
+	nMVOjFzOPmA43YwhjkDOm7lRCXYM8Bmlu64IZ7W0uoBIsKcasZ0ocRKfTLcwBUOxVSVj+w==
+X-Received: by 2002:a0c:eb51:0:b0:6e8:8f31:3120 with SMTP id 6a1803df08f44-6e88f313983mr9688136d6.8.1740591647871;
+        Wed, 26 Feb 2025 09:40:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IETLKJfnGGe63OoYuvkmyhbg6ykFKbgXEtFviZrtLEdWx7MZaKA72KFBrv7wh3/K01a8jQiRg==
+X-Received: by 2002:a0c:eb51:0:b0:6e8:8f31:3120 with SMTP id 6a1803df08f44-6e88f313983mr9687976d6.8.1740591647542;
+        Wed, 26 Feb 2025 09:40:47 -0800 (PST)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed205c7efsm366863966b.149.2025.02.26.09.40.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 06:47:02 -0800 (PST)
-Message-ID: <eb06daf1-3cc3-4b31-a0bf-bc450cd0f041@linaro.org>
-Date: Wed, 26 Feb 2025 14:47:01 +0000
+        Wed, 26 Feb 2025 09:40:47 -0800 (PST)
+Message-ID: <696aed52-7519-4351-a3f6-7b86778b18c3@oss.qualcomm.com>
+Date: Wed, 26 Feb 2025 18:40:44 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -66,53 +74,43 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Some small preparations around CAMSS D-PHY / C-PHY
- support
-To: Luca Weiss <luca.weiss@fairphone.com>, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Barnabas Czeman <barnabas.czeman@mainlining.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
- Caleb Connolly <caleb.connolly@linaro.org>, David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PTN36502
+ redriver
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241209-camss-dphy-v1-0-5f1b6f25ed92@fairphone.com>
- <D82FU3SIX5RZ.1Y525GJO0UOAA@fairphone.com>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20250226-fp5-pmic-glink-dp-v1-0-e6661d38652c@fairphone.com>
+ <20250226-fp5-pmic-glink-dp-v1-1-e6661d38652c@fairphone.com>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <D82FU3SIX5RZ.1Y525GJO0UOAA@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250226-fp5-pmic-glink-dp-v1-1-e6661d38652c@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: z4T5Z2orb0VwKfhU1-4hgHyX5QwiqTNX
+X-Proofpoint-ORIG-GUID: z4T5Z2orb0VwKfhU1-4hgHyX5QwiqTNX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-26_04,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 spamscore=0 mlxlogscore=926
+ clxscore=1015 priorityscore=1501 adultscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260139
 
-On 26/02/2025 14:13, Luca Weiss wrote:
-> Hi all,
+On 26.02.2025 3:10 PM, Luca Weiss wrote:
+> Add a node for the "Type-C USB 3.1 Gen 1 and DisplayPort v1.2 combo
+> redriver" found on this device.
 > 
-> On Mon Dec 9, 2024 at 1:01 PM CET, Luca Weiss wrote:
->> Since the hardware blocks on the SoCs generally support both D-PHY and
->> C-PHY standards for camera, but the camss driver currently is only
->> supporting D-PHY, do some preparations in order to add C-PHY support at
->> some point.
->>
->> Make the dt bindings explicit that the hardware supports both (except
->> for MSM8916) but also add a check to the driver that errors out in case
->> a dt tries to use C-PHY since that's not supported yet.
->>
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->> Luca Weiss (2):
->>        media: dt-bindings: media: camss: Restrict bus-type property
->>        media: qcom: camss: Restrict endpoint bus-type to D-PHY
-> 
-> This series is still pending, both patches got reviews and no pending
-> comments from what I can see.
-> 
-> Would be nice to get it in for 6.15.
-> 
-Yes this should be merged.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-Thanks for following up.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
----
-bod
+Konrad
