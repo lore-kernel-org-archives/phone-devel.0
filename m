@@ -1,73 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7218526B089;
-	Wed, 26 Feb 2025 07:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00A541C71;
+	Wed, 26 Feb 2025 13:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740556016; cv=none; b=Ztnn5LNRVdXNjW6enplwMCwZm+5RmKZu35Iwd9M151cuJOUrd1EB0jiolf85rWyRTEjbpn0a2zh0Ukl1r5J+bJhrBhpoM825tys+RTJhHqvM0o68UhoNIMyJ2piKauRi31iLX/LFJ3MdPAqTBRoo/ghGNQYBjWY82PdwCbtw8SU=
+	t=1740577253; cv=none; b=ceDRyuBVXbX55MeGCAeT+Wn+VQrsg1DQy/8RB6ESFSBijoRAY7LXP9cI9JCexwSOQt1Wh+sdsZKcStCsvpOk3FN8OokgdzyZbCBCh+/3j/TcsZMwWma2tdPco61/CpueTnHH8Dym1ICm+pJR1+3zOsqAKPmSkvalBGL3fSN3NGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740556016; c=relaxed/simple;
-	bh=JoAj9xLaECtQl+Lj5BZuQBxUIeb2+n1Z1pxP79r2H3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eU9lyG/z4UHwTeSKKNts5ArqPqrLQThZNRaMXBXR5d9HzllUCI6FawshxGfYL9EVfBNS4VAU/T+R5nTnRwEsCK61bQU2WfrlbWgqpm8binmKcCC8kJB613GSQKC/zWhA0+eO5lMNoE0MrHBf/hjDGdnXOS7nCLOqCx8LRFoVpoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QgqyvX99; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740577253; c=relaxed/simple;
+	bh=L6uf8oK5Soc9nDM8bA/96inI4Vk9d8hajhh3H5dyhA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oqZSyLMaN+EdQxSuMflXNxKqCl4QLA3dtqS/Cvwk37U6MgeKAEi+8MB/XUu+CjhIxOdD0y5xeBy8KFPxD6fvCci6GwJc8p17U0/WNxfejmRQAwXx+bEmWSj8V0xbHa4aww3D1cyWxwrWUUS9kpA+sRrPo9rq4k9sDJleHAIloVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plmDPQff; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QgqyvX99"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DD5C4CED6;
-	Wed, 26 Feb 2025 07:46:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plmDPQff"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D8EC4CED6;
+	Wed, 26 Feb 2025 13:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740556013;
-	bh=JoAj9xLaECtQl+Lj5BZuQBxUIeb2+n1Z1pxP79r2H3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QgqyvX991q884nQHjvQHuZwzm9PwsbnVmBzYqk3CBYUFaJ+IehlBR3Uc/dYSSApK8
-	 Ers6An5ej3cLmBul0T3wXnqmqZVpjcp8B+G1zE6YzWwkEvSMY1oLRUQagoKt14v7SK
-	 qksaH7l01YxnXAm+jKHOuNdqwauJdD8dc6yqrUrnN3NMKL7pCHetBWb1b2hfpgWWJH
-	 Hc01Ac9dcH4cvsYcyoL0GaXqoJZ2s+NEq8nYuzV+M+RGs9iib1uuuMO8suO2kVTOVk
-	 gXK/8oQVI9uLrC+De8O5bk7aP3pEQ1j+7QFaYzsPOc7d6VbrxB//6T6tgwF4IlKn2m
-	 GmBiGYyfnN1lg==
-Date: Wed, 26 Feb 2025 08:46:50 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca@lucaweiss.eu>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] dt-bindings: display: panel: Add Himax HX83112B
-Message-ID: <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
-References: <20250225-fp3-display-v2-0-0b1f05915fae@lucaweiss.eu>
- <20250225-fp3-display-v2-2-0b1f05915fae@lucaweiss.eu>
+	s=k20201202; t=1740577252;
+	bh=L6uf8oK5Soc9nDM8bA/96inI4Vk9d8hajhh3H5dyhA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=plmDPQfffxLBH4hefq4ApcNM4TJVesG1HZV/fP+ogm+ZwC2Yupya4kxTTbreaj1yz
+	 kOlToeGuT+ljmA7W9+X+SgUILMCl77us2dowIa3gyvQNTiftYTr4krkzPDwBWdVsOH
+	 sooipGquFleq+wvGGNZMVBwdzFiK3VwJs25M0o1Clr+dJ5O+OWioL9P7x9WXqB8uyc
+	 37AH6uklzTA+cexv5RdXvqPm0E6PNN90JdQuzFrUY1sHrweIRaBq9GXdHeThUJWx6q
+	 aBQ3fpPio8+SnScMs0HYXhPVMiokMBORoc7l2+idJ4od/r48sZhr/DHZFOHsMRjSG3
+	 5/VYQAfD0hvfw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: Re: (subset) [PATCH v3 0/3] Add missing SDCC resets for SDM630/660
+Date: Wed, 26 Feb 2025 07:40:43 -0600
+Message-ID: <174057724686.237840.12163185412028867634.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250203063427.358327-1-alexeymin@postmarketos.org>
+References: <20250203063427.358327-1-alexeymin@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250225-fp3-display-v2-2-0b1f05915fae@lucaweiss.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 25, 2025 at 10:14:30PM +0100, Luca Weiss wrote:
-> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
-> Describe it and the Fairphone 3 panel (98-03057-6598B-I) from DJN using
-> it.
+
+On Mon, 03 Feb 2025 09:34:23 +0300, Alexey Minnekhanov wrote:
+> These resets are part of GCC space and were missed during initial
+> porting of the platform.
 > 
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
->  .../bindings/display/panel/himax,hx83112b.yaml     | 75 ++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
+> Changelog:
 > 
+> v3:
+>  * dropped fixes tags, picked r-b
+> 
+> [...]
 
-Discussion is still going. Sending v2 after two days is hiding that
-previous talk, so that makes me sad.
+Applied, thanks!
 
-I am still at v1 and I am not going to review this one here.
+[3/3] arm64: dts: qcom: sdm630: Add missing resets to mmc blocks
+      commit: 0e2a500eff87c710f3947926e274fd83d0cabb02
 
 Best regards,
-Krzysztof
-
+-- 
+Bjorn Andersson <andersson@kernel.org>
