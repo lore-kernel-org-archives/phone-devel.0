@@ -1,45 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00A541C71;
-	Wed, 26 Feb 2025 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40AF22171D;
+	Wed, 26 Feb 2025 13:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740577253; cv=none; b=ceDRyuBVXbX55MeGCAeT+Wn+VQrsg1DQy/8RB6ESFSBijoRAY7LXP9cI9JCexwSOQt1Wh+sdsZKcStCsvpOk3FN8OokgdzyZbCBCh+/3j/TcsZMwWma2tdPco61/CpueTnHH8Dym1ICm+pJR1+3zOsqAKPmSkvalBGL3fSN3NGk=
+	t=1740577256; cv=none; b=uS+VDb55GMaLPgs0TjH2TBEu5FV41vyGI6QzwKio2m03l+dBcFx/3b8eRqMLdfaRrIw63DJXzkJEhaY4PUKS34A2hKHUE0TpB3HwbYS3t6D8/lzZEcWjA4eMIbaB/jlBduGSfcx78nfgISze42KLHhDZTuM90JTR5QRHv53nQ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740577253; c=relaxed/simple;
-	bh=L6uf8oK5Soc9nDM8bA/96inI4Vk9d8hajhh3H5dyhA8=;
+	s=arc-20240116; t=1740577256; c=relaxed/simple;
+	bh=atuoiEKGjvWyG0l6/UFsnCxdhe/5kXleknnmrJEwoKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oqZSyLMaN+EdQxSuMflXNxKqCl4QLA3dtqS/Cvwk37U6MgeKAEi+8MB/XUu+CjhIxOdD0y5xeBy8KFPxD6fvCci6GwJc8p17U0/WNxfejmRQAwXx+bEmWSj8V0xbHa4aww3D1cyWxwrWUUS9kpA+sRrPo9rq4k9sDJleHAIloVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plmDPQff; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Q69EnpzLV2GINIWhksi7Rhj0yagWXe8Hog/ZKVBglCDqw6gEaCpM5fguYj31l7Dww0NbpP+3WdpsCuuq9MekWssvEeJNbQpn9PsUmBxyh50wdPoYEegoMuG4kdHWvAP8txTGk3rbrier/PA/NYlsrK8gKiKjwFVO7pi7VP0AG0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWmMLq3u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plmDPQff"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D8EC4CED6;
-	Wed, 26 Feb 2025 13:40:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWmMLq3u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435EFC4CEEE;
+	Wed, 26 Feb 2025 13:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740577252;
-	bh=L6uf8oK5Soc9nDM8bA/96inI4Vk9d8hajhh3H5dyhA8=;
+	s=k20201202; t=1740577256;
+	bh=atuoiEKGjvWyG0l6/UFsnCxdhe/5kXleknnmrJEwoKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plmDPQfffxLBH4hefq4ApcNM4TJVesG1HZV/fP+ogm+ZwC2Yupya4kxTTbreaj1yz
-	 kOlToeGuT+ljmA7W9+X+SgUILMCl77us2dowIa3gyvQNTiftYTr4krkzPDwBWdVsOH
-	 sooipGquFleq+wvGGNZMVBwdzFiK3VwJs25M0o1Clr+dJ5O+OWioL9P7x9WXqB8uyc
-	 37AH6uklzTA+cexv5RdXvqPm0E6PNN90JdQuzFrUY1sHrweIRaBq9GXdHeThUJWx6q
-	 aBQ3fpPio8+SnScMs0HYXhPVMiokMBORoc7l2+idJ4od/r48sZhr/DHZFOHsMRjSG3
-	 5/VYQAfD0hvfw==
+	b=bWmMLq3uAF3y2ZQT1/rQ3LleLhY4mG04y+swrybrChGcYmaD0gzzHxfrUW7wNJKQS
+	 44ieF4aFZxbAn0LZv8rSeJTA05U+LF8Y4ufHGIg3yUDOlXYi6nCU9vOQ0kvWl3YbWb
+	 FqfFqPVuE/N6Dd4g6X1xduVeYhy56riVWotlIfFH9qt/khY7AEyYQmUVjnODHeuyGQ
+	 u2lmx/75u895a460DSuovuz+DRRjOa4BMQBckbWQPGIT8goDnUnnUbcr0U2AMgkNwh
+	 IP/ATa7Q7Ay6g6Bgf75e8udLVsqCSL78oOBOYv5w2YdXkCgFuEc14/LURcMqT0MijD
+	 2Y6ZwAi1WI24Q==
 From: Bjorn Andersson <andersson@kernel.org>
-To: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
 Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 0/3] Add missing SDCC resets for SDM630/660
-Date: Wed, 26 Feb 2025 07:40:43 -0600
-Message-ID: <174057724686.237840.12163185412028867634.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Enable panel and GPU on Fairphone 5
+Date: Wed, 26 Feb 2025 07:40:46 -0600
+Message-ID: <174057724685.237840.10215426173351646866.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250203063427.358327-1-alexeymin@postmarketos.org>
-References: <20250203063427.358327-1-alexeymin@postmarketos.org>
+In-Reply-To: <20250202-fp5-display-v1-0-f52bf546e38f@fairphone.com>
+References: <20250202-fp5-display-v1-0-f52bf546e38f@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -50,21 +54,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Mon, 03 Feb 2025 09:34:23 +0300, Alexey Minnekhanov wrote:
-> These resets are part of GCC space and were missed during initial
-> porting of the platform.
+On Sun, 02 Feb 2025 23:45:50 +0100, Luca Weiss wrote:
+> Now since upstream DPU driver can use 1:1:1 DSC topology, we can finally
+> enable the panel and GPU on Fairphone 5.
 > 
-> Changelog:
+> Depends on https://lore.kernel.org/linux-arm-msm/20250122-dpu-111-topology-v2-1-505e95964af9@somainline.org/
 > 
-> v3:
->  * dropped fixes tags, picked r-b
 > 
-> [...]
 
 Applied, thanks!
 
-[3/3] arm64: dts: qcom: sdm630: Add missing resets to mmc blocks
-      commit: 0e2a500eff87c710f3947926e274fd83d0cabb02
+[1/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable display
+      commit: c365a026155ca926f878dee528715be8a02dabc7
+[2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable the GPU
+      commit: 984748d30cd3ce0e11d63b0ba16dcbd61f7b4b9d
 
 Best regards,
 -- 
