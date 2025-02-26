@@ -1,126 +1,83 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B62229B0F
-	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E5A25BACE;
+	Wed, 26 Feb 2025 22:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740592051; cv=none; b=RjeBT6uY2jiUOUGSHYJRc2Ww2OUUID3jkXpnOXIHPB0JX1HKztKVNmrnhfBMzKqoUPZxa5DYsNzK9vx+vsmGdD+WDcX77XmDLZTzkWDY6m4ChW7P7Oo66labRPh1StQ3J6tzEi5aXHB75eqwAhkZAY0cs6WJ0pZl+62r24MQLWQ=
+	t=1740608335; cv=none; b=CUJ/9v1ie62wOUcDxK/oio0Ul6rl12ldIljtDVjlybc4sxD63EAw//9G+865CoMKIIkuUIY7FQlRqm8p3R3U0DDq72D0Bn/RcsdiT/m8/jGwAlcYJaQF5l0G1h2GJNHLJ0rzE0BENrBnpf0Og7sB9HBSlvAeAGyrmXCzlY+6P5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740592051; c=relaxed/simple;
-	bh=yx9HBoyTT64Je0uq82lxBgoaFRfHMn+wHZXRSMyTEQI=;
+	s=arc-20240116; t=1740608335; c=relaxed/simple;
+	bh=6+ds0fDE230uGEJmCn7EW1JKMdx4MNGD35GrH5IvopU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MIYCIVateamwEZAXBIv2Ui+u7+sv/AQmXOmhX0N/K78JUBZDlt4zFPJ4xkIIV4S+nlm4DVHK3g9Yto8eqEruhsHtqQfxAtyz7xVUcYwe67S/M3Hr25IBAiAA1WinKf92AsogpmojaJpeOaXBq0WOZLwBDgmXRW4q/nO63SR8JOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KpRBqUll; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=fIwAFWmQH4oHXjeVp4SDeJmPcwQniCNJ+OzjnasJV6KMUE8kQ9TMyL5BqRKmsle6D/T1xlqsyHsRk1PtFo4GgrTYuB8JWARA0EX2ehpmMTWiXVSR/rmUuJs24ZfhuacUb1jnUUJt5lM3AtgSAC55DotSVVNREyQ69HTTq2q4D6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=CqdwBf3U; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KpRBqUll"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q9hsHI012246
-	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:47:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6oY1wcKisWOl4v+aKxLtrgUHCu5Y3zouC5bBt02O79o=; b=KpRBqUlldn12lwci
-	Yl/kedKoLKajqP1yXSK8mg/Qwv6/xuzS0eZx/gg6cn60a9PbELaNGRWlqojs2oOu
-	6rhCYYT4pu4OCdBFHMBFE7kxNQ0lcwKtd4Zz1kwy3S92Q17n9FFK5Vx7E3zUqhxB
-	yZEQWGn3vuiv4BG+yPVS/OEc3UjinnQIMbUmwiind+KKP1zESXnunLypNpIRqq+3
-	26+Hti3sdlYK7hsBEgIAG+Gdp2ud1zf3hHuT4zrhxHBzAk8QgYRmHzdxsnFHPr8X
-	XNXxrbhOt7E8K2IwdHSuh/NoqW07J6b3+4xf6RnI62Q1yzSR51Lq2Ne6yRw+ArRT
-	We/mbA==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prk2t76-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 17:47:28 +0000 (GMT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e65d6882a6so161366d6.3
-        for <phone-devel@vger.kernel.org>; Wed, 26 Feb 2025 09:47:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740592048; x=1741196848;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6oY1wcKisWOl4v+aKxLtrgUHCu5Y3zouC5bBt02O79o=;
-        b=KNIQwQ5KVe5FLRBHRG+XvXpaOtvBK5kRmNRfcLbo+OLy8fbohOq1Hwgvrv7oGvd/ZT
-         kKqzEtOu0Zbu3dKj/6w4Xlm/IKeY55s3plr6jOyEG3QJlWO3n8nK8b+tMAZA7BTU0nUv
-         4ciFusF16BCgRicyc1mEYzGM5rat2RXRAWZXFUIQ8J59zvJtN0KrNSmo7tEH/9CZywEw
-         6yNVBuhdU+AiT8/Q88dZ0/q0Ki35H88aCfJPjtIFuhj+9WbHaH+AsuZidD5Gf5EIBLYm
-         lGST+rVtoN8R8ZSXtZB8lARGTr/zkgf63+kz9dIlRNlXM1t6SN0X70p+olg8S9R3PURs
-         0/yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuzwObB1BcF56GeI2/xoHzR98eohCDfgGEGBRCxRudq9PN5A3dSpNBP+xVhbhE8BYPCpAL2+r1O8A+mA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuuPI6VMHBfR/T+fvq/78GekaDs7QhOBBkzu8QNcW6leUDIZbi
-	QeA9cusa84uVoaVGj2joTCIDZsF1JrpWmsrSEz7dHSWeYuLPFkFMxLzND5DLoebqgncLhqGulUz
-	X0xuyvD+owB2X5PrDgvCTzV37melKzAZZ85Xm1v0q55Mgx5HETyg7P6umy7AYWA==
-X-Gm-Gg: ASbGnctF8ThYmV2i1SCC3/QYgonzb6kHIgdAVMD9R2gE1SmeymBDm90cPEXJGI86dxG
-	Yy3zCfr54gvwLQDqDJhTnAKf5MGkgQyuAdOMjI+Ch+nrjF6ztYQ3qx+BUxnr2bySSXll8mH/VpT
-	JHLkw69PlGfTCTpKTPsLH5FMorQ9aGV2ltoShTwAvAEd35P4IDZfDdic+tLDmMK0acX7Pjud1Zf
-	jbmNbv9/WLYgcpiskUJ2T2RRI+AUDHMR8wlJXqecBcDwOMQJaGQAdwi+wHbHbTdqkn9vwGNgCQr
-	AslrFTAzyKkrdixmj6dbDZtqEu0SRLtCUPsc4vExNiTrfN3ot72L9AteZXJvPsLDfOrm7w==
-X-Received: by 2002:ad4:576a:0:b0:6d8:98a4:cc5c with SMTP id 6a1803df08f44-6e6ae5f3142mr113399206d6.0.1740592048154;
-        Wed, 26 Feb 2025 09:47:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE3IU3MTjaiVctOk855G6e4ouS0ZCxqdD/RFoz0LzUHhEO0BvR1rzcfjcWWFGlZ+8n3by4XZQ==
-X-Received: by 2002:ad4:576a:0:b0:6d8:98a4:cc5c with SMTP id 6a1803df08f44-6e6ae5f3142mr113398956d6.0.1740592047859;
-        Wed, 26 Feb 2025 09:47:27 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed20122b0sm370019166b.107.2025.02.26.09.47.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 09:47:27 -0800 (PST)
-Message-ID: <e2351938-6def-412d-b22b-6f7a7810ce46@oss.qualcomm.com>
-Date: Wed, 26 Feb 2025 18:47:24 +0100
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="CqdwBf3U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1740608325; bh=6+ds0fDE230uGEJmCn7EW1JKMdx4MNGD35GrH5IvopU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CqdwBf3UB1FYG6uHtww+aGb8/5OdgV02krxsyJZcuVQLjOzTnKnYfOuYkR1VXs7Ct
+	 fZDxUrIVkjl1mUzDYTvsB8Oc6I6Ys5P/i3jX4tU8q/vCgDR4RMaJZmxmSGWlbGYbZh
+	 BAiGNnPn9VpMhKhVsPuNO2/BjwTi3BESUE8Bfd8o=
+Message-ID: <ebb3d366-05a2-4ae8-9b50-4b6a76d108a0@lucaweiss.eu>
+Date: Wed, 26 Feb 2025 23:18:44 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PTN36502
- redriver
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson
- <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org
+Subject: Re: [PATCH v2 2/4] dt-bindings: display: panel: Add Himax HX83112B
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20250226-fp5-pmic-glink-dp-v1-0-e6661d38652c@fairphone.com>
- <20250226-fp5-pmic-glink-dp-v1-1-e6661d38652c@fairphone.com>
- <696aed52-7519-4351-a3f6-7b86778b18c3@oss.qualcomm.com>
- <99ed4a61-6e0c-4743-91a1-2312152ccf6e@oss.qualcomm.com>
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+References: <20250225-fp3-display-v2-0-0b1f05915fae@lucaweiss.eu>
+ <20250225-fp3-display-v2-2-0b1f05915fae@lucaweiss.eu>
+ <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <99ed4a61-6e0c-4743-91a1-2312152ccf6e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 0aFAIm8htU6RblEm3zU9ckEirWw7tMZa
-X-Proofpoint-ORIG-GUID: 0aFAIm8htU6RblEm3zU9ckEirWw7tMZa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-26_04,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=876 malwarescore=0
- adultscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502260140
 
-On 26.02.2025 6:45 PM, Konrad Dybcio wrote:
-> On 26.02.2025 6:40 PM, Konrad Dybcio wrote:
->> On 26.02.2025 3:10 PM, Luca Weiss wrote:
->>> Add a node for the "Type-C USB 3.1 Gen 1 and DisplayPort v1.2 combo
->>> redriver" found on this device.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
+On 26-02-2025 8:46 a.m., Krzysztof Kozlowski wrote:
+> On Tue, Feb 25, 2025 at 10:14:30PM +0100, Luca Weiss wrote:
+>> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
+>> Describe it and the Fairphone 3 panel (98-03057-6598B-I) from DJN using
+>> it.
 >>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>> ---
+>>   .../bindings/display/panel/himax,hx83112b.yaml     | 75 ++++++++++++++++++++++
+>>   1 file changed, 75 insertions(+)
+>>
 > 
-> Actually, please also rename the redriver node to redriver@
+> Discussion is still going. Sending v2 after two days is hiding that
+> previous talk, so that makes me sad.
+> 
+> I am still at v1 and I am not going to review this one here.
 
-Scratch it, that seems to be used for dumber redrivers, I can't decide
-today..
+Sorry about that. I'm going to be away/not have time for kernel dev for 
+the next ~1.5 weeks so I thought I'd send v2 with the updated compatible 
+string already.
 
-Konrad
+Regards
+Luca
+
+> 
+> Best regards,
+> Krzysztof
+> 
+
