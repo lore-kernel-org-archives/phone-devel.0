@@ -1,62 +1,65 @@
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA2D12B93
-	for <phone-devel@vger.kernel.org>; Sun,  2 Mar 2025 18:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9807298CA0
+	for <phone-devel@vger.kernel.org>; Tue,  4 Mar 2025 16:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740941531; cv=none; b=ouJYdfyCOfUGwFE9i+iVZFRhTNhAwyXCtL+td/2tLDNzQ1M2DMfqSLEj+FKduQEG4EeofQq25VPv20EVta6flGZvpd5DHG2vS23aUKV6GeNDMFlW2Sa8NLtCoplmycN+I9GwxxNr16MSwwHVLHM5p0Td9XIunY89lYC5sAeAqsw=
+	t=1741107008; cv=none; b=imgU7JppCbYYETCHuT19QE3gJ/C5H3DbBQNv4VGbg94vYA1eoT560Rk0Qx62xAyYNN8I8p5GnwzXjV0VXqbEeeLxoMLRfWYnhfZJ41mgYQWUIcVIqGUE/Wg/M4NIqejLrynbTo6xGp4Yc8j3DgW19mRbZMzGEaz3s3rJl+1NPB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740941531; c=relaxed/simple;
-	bh=2YMARwFzpT/2fxXckH/UHsQeqc+WpNlGXz87LpMaUd8=;
+	s=arc-20240116; t=1741107008; c=relaxed/simple;
+	bh=L8HHTMU8DmC+6N2WJp3kjc3+BlXX6m9YnXOf1KwXSx8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ic2ow8jCqULQp1WDZEzWh+wBb+ol5LorB6+dh+F0kj2fUJ3BvNuYJaaZCAIFnEvW9RSHCAoO6TLiWl7VReGuyKmHtoGIq2/lpE7p+xAShSmZLEJcKHj39jdhYuEx/+9piDpq7K7d/xmY5wLO2oPqUr1SrhoVAg+sZN0ZbEo/ncg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=OdR0dY61; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	 In-Reply-To:Content-Type; b=AOP8OXb/ED6zGvuKrfRGo8QRyFedE6pjL0lT6vOaBas0mptqBnTxXWUuaOHF+c7Z1c1hROr08MVXXWHYFkH/3yzKtmc1/K057uFVEi633H/hpWMWyqBMS58l5gDrfdA+d0XBgvKr/sEM5/3vXq7X9Uy0gVDOebOI+jfFCSSSxRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=UKXAJCR1; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="OdR0dY61"
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3d2b3811513so14629045ab.1
-        for <phone-devel@vger.kernel.org>; Sun, 02 Mar 2025 10:52:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="UKXAJCR1"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5fcee9dfcb3so2460497eaf.0
+        for <phone-devel@vger.kernel.org>; Tue, 04 Mar 2025 08:50:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1740941528; x=1741546328; darn=vger.kernel.org;
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1741107006; x=1741711806; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=B7l7zFCEphXv5rcB1xTH7E9WWTKLPr1rVfyP4hQcYq8=;
-        b=OdR0dY61TX5AJXZhlonjpCk1JIgVFFxqwClSDjuHlNrLbhwDKGADhJYbTUTb7sE1+5
-         TsraLkBGn5nBVt2Ozn3J1q4LdUraaoQyd6t8+HTdGAhUkQ4ZuxmbQ2QHDVwsNHqX0EV2
-         /cHB8KhgnalUvlDxl2W0aC9R5R91lKzZsy4yE=
+        bh=FFC/0VaDOfAur/tgnlAkpmmS5lpWwryf/b8rBN6y4bk=;
+        b=UKXAJCR1/tTwsmoZ4x9nqIHt3iJiOx3wg33jD7tZPm4GLZj0FXhiwRnDlQRI/UFsRM
+         tHKZcH9BJP8yWCXszhuuYxWjUZOvTT6tVJxqCkm4gBKbN+ayHH9Q9A14mcBlJfzYH6PC
+         8PToCT73Xt0d8SlldeLUsM5g/ZQBOPRrDY1dsJBF3XQJs9Nev83VvY/mB4RaklGM2N0E
+         0SSdfPRgLIwVPAFR0kEDKq8cSUXXMgV/5m3hRWmcxM//NO5gfr9sld21ztQXusoRUeMf
+         AaFS1gA5FrXeKYYzznxCqHaquThoDbNg6ESjB/hsD8NmTsb0E0iWBLdj89MfdQZRrNKU
+         D/KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740941528; x=1741546328;
+        d=1e100.net; s=20230601; t=1741107006; x=1741711806;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B7l7zFCEphXv5rcB1xTH7E9WWTKLPr1rVfyP4hQcYq8=;
-        b=qNN9IQE8CAjBe/SohMVPcWyzjNRb4D6hv2tN3jiIcZELbZonshdNORiFjeDzENRIw3
-         ypEVa75UvIaWyI9ru5imlZTdAUWU8M1JZn36We+jR9aDWXXhfXJcHtwZKMv3KdoqUpI2
-         bL7wO928Rm0Y7DI7xrLCqn5V2D2d1DgbrK8gw9GEpyyFY1YKeM5DnVeChnqkjMqlASnX
-         eFgNNnYuHbg9OQUmO6zgTuKfQWA0fYhaGBYQbg/QOUc8NT97j2xTpCJIMhj25p94nnM9
-         Vmm6JhLKxrQIDYIbqCf8d+GK5WSTLAUulty958MrzC/qCMiraKgPp4CqPEF7zdcq3J08
-         Luyg==
-X-Forwarded-Encrypted: i=1; AJvYcCXAeldf+vn+Lcpm3qAK+kMRDxzAZNK2dozzWoWzGQnFiJNUX774iGnRKvaF6Nt8WTVDU9724EOHYj1sig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxanksmNCeho5lfuE4dvp/e7H5bqui1M2R2l90XL69PmpVLsSyl
-	VfLKpV6a8mznpRtQSVubG+xx5Zu0izvjXpknhkTZ+fewPlh/QFerSYJwMoZI0g==
-X-Gm-Gg: ASbGncvTkQ2mCL2g8b5h4hH2vi1SG2j07LlTybiOrdu/LM4RBG+8ZEvMc1Lm/jy2G0b
-	6gkUIEeBcp/noTcG56Yq0dTw+N30ro4Y0c9Y0ONNq+WztPa9YXv2fePuqS3JNmefxeMblKt6nPO
-	DQXI7aII91mkYGu6VTwENVTMu1IfhIZ0nTJLl5SPLQ0jNZgLEjnU/KALj8pWvjQiXItEYNPgq92
-	w4BHaECCSZeHB8LOtmOTX7BvYlj4FhFpw37YEnp/TurDBu2vwjCAnmNew+S7Kp610Q0ldDSU/Aw
-	3wecx4QeHOLm8o4jwfkRwkiKSR0vOOcbhwecmOumaHlxHO1ShG2riJK8tzVX5cfAFynrvP8Q9b2
-	t6J9o+WPMHrxI
-X-Google-Smtp-Source: AGHT+IGaYwptaiL4qcE0O0nJBy5S6QCvEaXlN2oaucVjj+jdPUcbQMj/htRswkhfxl61JYv1Owe54A==
-X-Received: by 2002:a05:6e02:1d87:b0:3d3:f72c:8fd8 with SMTP id e9e14a558f8ab-3d3f72c907bmr39999795ab.6.1740941528462;
-        Sun, 02 Mar 2025 10:52:08 -0800 (PST)
-Received: from [10.211.55.5] (c-73-228-159-35.hsd1.mn.comcast.net. [73.228.159.35])
-        by smtp.googlemail.com with ESMTPSA id e9e14a558f8ab-3d3dee70df6sm20104735ab.36.2025.03.02.10.52.05
+        bh=FFC/0VaDOfAur/tgnlAkpmmS5lpWwryf/b8rBN6y4bk=;
+        b=Ro2WZpn9jg1jhQYPSdLpm6owVI1LvjzzYSb4SUVnXXYaM3uPVZQ7alSQWLTYqZ86CD
+         nJH4aPBpLVER8n0cCBAwIEAN1dIo3VCMXNd1/ZfrNrHcNdOLZcS2+Tlt2TvYagCLFgE4
+         bLHQJ3rEgWfqAjK1eQkIlVBxKBd7pEmovK2wYiP6Jq2wKbd6nhMY9w/Jw2qdHxB7rZju
+         Ow3FKRMpUPYZQ7Ghkcq6cH64F5qOjDvdjio778fmVcqxJdZs3LGaDwBvAPY7zC9fc3y3
+         AByx6dxoyKJDA84dykomROECGr7V0PJ1J01Bk0HljA9rSHQEsmNgKZ8X+FPBZAoqiuXM
+         cYYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVc2jeXMtpR79FCZ1XLP3ev0eAvVC2rufePBDbcWVM1qDUGhiBactnVazEUhgZqLe2pSnTGqbRhDvHgHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWKbhRUZR4vnfAo+YLQxfg7lqPTmZgVbVmzjTj/X/Nc5E2LP6d
+	AOujixMxrpcFeXbt6eCb0Rvjh2IBFJ5dXzSkkafzxv1CB4FgcpkTr8OKoDsr8/o=
+X-Gm-Gg: ASbGncu8dkXrlKC+rTPfByYTNI45xf8KFV6xNFqmyAgQ7Npyot0Jt8hLWjWpj3fDKsP
+	UbTBU5FjKMF+tFnqUYZBfQ9ONdG2PbIrcONkhYA4+sjW5n+WMGA2ImccVCAFtD8QEmPpLyO2M11
+	LlMKGB2ayOULZJNCVBiroWGNGwDO3kpOJPb1AdYPhxq6m8dIJGJpPIVvxbOQebJGzEtG3cgrG6j
+	0tIbatqJyZzQgWu5sYBRTD+DnMw33SeEGf6hbY3gVjyS9AnZQvhwxEL+YQxCh6H864VhOnIvOFx
+	Fs//rM0oBXhlsoo4QJgv+BODYqM2SYCtYn/VJ0vHxu8tUmbKxFu6GDEmejBc0MC44nxC3SCqGsk
+	AdG00q6qI
+X-Google-Smtp-Source: AGHT+IENf5TzZy2paUOp2+yHiImyvpIf605z0YIuqY3weTYHuWBj9XQYDXLVtnPEtkn/E/5Jk+cT9w==
+X-Received: by 2002:a05:6871:53c9:b0:29d:c5e8:e41f with SMTP id 586e51a60fabf-2c1782c5bb3mr11456642fac.5.1741107005688;
+        Tue, 04 Mar 2025 08:50:05 -0800 (PST)
+Received: from [172.22.22.28] (c-73-228-159-35.hsd1.mn.comcast.net. [73.228.159.35])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c15c45e81bsm2333459fac.50.2025.03.04.08.50.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 10:52:06 -0800 (PST)
-Message-ID: <16588001-9fac-4508-87f8-026acfee8b34@ieee.org>
-Date: Sun, 2 Mar 2025 12:52:04 -0600
+        Tue, 04 Mar 2025 08:50:05 -0800 (PST)
+Message-ID: <f8a6aea3-fa69-4c59-bccc-ae6e5021d5f3@riscstar.com>
+Date: Tue, 4 Mar 2025 10:50:03 -0600
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -64,34 +67,90 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Fixes for IPA v4.7
-To: Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@kernel.org>
-Cc: Luca Weiss <luca.weiss@fairphone.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- phone-devel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] net: ipa: Fix v4.7 resource group names
+To: Luca Weiss <luca.weiss@fairphone.com>, Alex Elder <elder@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250227-ipa-v4-7-fixes-v1-0-a88dd8249d8a@fairphone.com>
- <20250228145246.7b24987e@kernel.org>
+ <20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com>
 Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20250228145246.7b24987e@kernel.org>
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <20250227-ipa-v4-7-fixes-v1-1-a88dd8249d8a@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/28/25 4:52 PM, Jakub Kicinski wrote:
-> On Thu, 27 Feb 2025 11:33:39 +0100 Luca Weiss wrote:
->> couldn't be tested much back then due to missing features in tqftpserv
->> which caused the modem to not enable correctly.
->>
->> Especially the last commit is important since it makes mobile data
->> actually functional on SoCs with IPA v4.7 like SM6350 - used on the
->> Fairphone 4. Before that, you'd get an IP address on the interface but
->> then e.g. ping never got any response back.
+On 2/27/25 4:33 AM, Luca Weiss wrote:
+> In the downstream IPA driver there's only one group defined for source
+> and destination, and the destination group doesn't have a _DPL suffix.
 > 
-> Hi Alex, would you be able to review this?
+> Fixes: b310de784bac ("net: ipa: add IPA v4.7 support")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Yes I will.  Sorry, I've been sick this week.  I'm
-feeling better now.
+FYI, I used this to check what you're saying:
+  
+https://git.codelinaro.org/clo/la/platform/vendor/opensource/dataipa/-/blob/clo/main/drivers/platform/msm/ipa/ipa_v3/ipa_utils.c
 
-					-Alex
+This looks good, thanks a lot for the patch.
+
+Reviewed-by: Alex Elder <elder@riscstar.com>
+
+> ---
+>   drivers/net/ipa/data/ipa_data-v4.7.c | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ipa/data/ipa_data-v4.7.c b/drivers/net/ipa/data/ipa_data-v4.7.c
+> index c8c23d9be961b1b818e8a1592a7f7dd76cdd5468..7e315779e66480c2a3f2473a068278ab5e513a3d 100644
+> --- a/drivers/net/ipa/data/ipa_data-v4.7.c
+> +++ b/drivers/net/ipa/data/ipa_data-v4.7.c
+> @@ -28,12 +28,10 @@ enum ipa_resource_type {
+>   enum ipa_rsrc_group_id {
+>   	/* Source resource group identifiers */
+>   	IPA_RSRC_GROUP_SRC_UL_DL			= 0,
+> -	IPA_RSRC_GROUP_SRC_UC_RX_Q,
+>   	IPA_RSRC_GROUP_SRC_COUNT,	/* Last in set; not a source group */
+>   
+>   	/* Destination resource group identifiers */
+> -	IPA_RSRC_GROUP_DST_UL_DL_DPL			= 0,
+> -	IPA_RSRC_GROUP_DST_UNUSED_1,
+> +	IPA_RSRC_GROUP_DST_UL_DL			= 0,
+>   	IPA_RSRC_GROUP_DST_COUNT,	/* Last; not a destination group */
+>   };
+>   
+> @@ -81,7 +79,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+>   		},
+>   		.endpoint = {
+>   			.config = {
+> -				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
+> +				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+>   				.aggregation	= true,
+>   				.status_enable	= true,
+>   				.rx = {
+> @@ -128,7 +126,7 @@ static const struct ipa_gsi_endpoint_data ipa_gsi_endpoint_data[] = {
+>   		},
+>   		.endpoint = {
+>   			.config = {
+> -				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL_DPL,
+> +				.resource_group	= IPA_RSRC_GROUP_DST_UL_DL,
+>   				.qmap		= true,
+>   				.aggregation	= true,
+>   				.rx = {
+> @@ -197,12 +195,12 @@ static const struct ipa_resource ipa_resource_src[] = {
+>   /* Destination resource configuration data for an SoC having IPA v4.7 */
+>   static const struct ipa_resource ipa_resource_dst[] = {
+>   	[IPA_RESOURCE_TYPE_DST_DATA_SECTORS] = {
+> -		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
+> +		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+>   			.min = 7,	.max = 7,
+>   		},
+>   	},
+>   	[IPA_RESOURCE_TYPE_DST_DPS_DMARS] = {
+> -		.limits[IPA_RSRC_GROUP_DST_UL_DL_DPL] = {
+> +		.limits[IPA_RSRC_GROUP_DST_UL_DL] = {
+>   			.min = 2,	.max = 2,
+>   		},
+>   	},
+> 
+
