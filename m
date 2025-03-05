@@ -1,83 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6D627456;
-	Wed,  5 Mar 2025 00:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A79284D08;
+	Wed,  5 Mar 2025 07:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741134599; cv=none; b=WjVYYRoXnQFnA9qjqSTYPRKYk9l8nAIboOI9VuHo6sgkEGIQmSZSfqtNDCa2ND+lW57bI/D6bH2UMc//W97iC07zHKdvYAWL5DCQ9PtK4PmRKIjRNhE6GrajLZvaOrH29HCKG/3QlYLVUi6waG5niLLvW1Bu6lqqp6MQuspm3gU=
+	t=1741159393; cv=none; b=RF8dqVfZj88HeV6h0xHchY5Ydda7rAGThxNeiWAbufoFptWGgf0SBaFGn3IhiDKwUGVhJhEa2b+i7nkIO/4OMlYZzspX1w5dlJzLxtRyfp4+AcN5tqGwZMqrjfafMkkcHPraDATJ/A705luYsBZ1oMjXB0kALT6P9DRPCF7i7u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741134599; c=relaxed/simple;
-	bh=Byb9Fn5sdn7q5Onud0bJf9pe9X56OHaqd58xQ8U6HHQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lrGV4wt+gSU49Y0OiH04upXd045eh5J8C0sD7IlXEXNmROn2+XehcZUbcg4RWr2llts6e+1IcO3wupFXp6KtISsLFvzd2EH7ibJzR/ZL6X5bYOSoZ+fjfK+9YCsEMAWGLlR1ESeDx5ysKLV7utH99zY0UsCzUVLV0QEH1mhQ5XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxJKehgR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741159393; c=relaxed/simple;
+	bh=GvWw8P7+MkJG2CMdbY3bdVHML1jTS8dX315tfxTG+44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FSM+HEeArSwpRbgyctWzpTtpaF/9E8ShqGydDp/DBFMlnP0PDJDCOqd9mStYjEQonRagTDEBozlBH1G4iNqWAfyu+LTS84DSZrsFMxcsUJJt0kYpODZEFUEio1HlSnuLcWQFM3yXJNypJLnO4uXz+RXkt45+smJSUqP8EK6HOj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDdN8v02; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxJKehgR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B537C4CEE5;
-	Wed,  5 Mar 2025 00:29:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDdN8v02"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223E6C4CEE2;
+	Wed,  5 Mar 2025 07:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741134599;
-	bh=Byb9Fn5sdn7q5Onud0bJf9pe9X56OHaqd58xQ8U6HHQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=KxJKehgRAd2bl+h+Yvv7nJkhM1Cby+CbdDXUXHyxBhsvw9mTUSofxgHtTERAYKT2K
-	 IXFuBRiIRI8ViMbun2iZAUc5cB1xBmu8N41a/3/ksDYIZjSvmfqQQ5nesJ3+nI92Ya
-	 mghuYFBsMlu5HIkspEe2jRywSosjZ9iT6vFYS8S1oEbNvxy4FMDjP++I8yEKoKq2e5
-	 VAhqF7bs7X3dDdr9CVstiyn0+Qcp8OosAdpTqt1xprluU1ahWZBAhK3bTFcUhWD4Y/
-	 zBkUPLaGW9yeHqMRujRGmJJ4d6TTj/uW5Xsm4XcxLcEli5AGChvGCdJO0dFWaAhG5B
-	 shoxThkaHcLkw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3434D380CFEB;
-	Wed,  5 Mar 2025 00:30:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741159393;
+	bh=GvWw8P7+MkJG2CMdbY3bdVHML1jTS8dX315tfxTG+44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XDdN8v02bROoYb/bMhHtVI9RLzeetS6j3zFXp2+Re5Sxo8D/Ipy+NWOOum47L9qcg
+	 RDjc16EXDbSdHq71oFhLc/7oi790pO/a39wsDv6MmAuvpZkskygAj9RxbkIUQ0LLgt
+	 wnFga9io00dhWACS0z2YdK2QEmuWFfEXIcgTGa5YyTfoFjpfwd8Di/+2qNOATSIqXH
+	 bXQhINc0qyvKXvWdqzi1Zvu0FwFteGSWEBxkE7gAnUrIn796mV1e1Mj48KWbLzcOnn
+	 YgPx0bkiUB0f53FGo8A6ZIJeDyjY+YVKvtfXu4Qbao3LjeU5vZcsB9MynIxxXtyeD/
+	 gO+B+LpxGsPyA==
+Date: Wed, 5 Mar 2025 08:23:09 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vasiliy Doylov <nekocwd@mainlining.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux@mainlining.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, Vitalii Skorkin <nikroks@mainlining.org>, 
+	Antonio Rische <nt8r@protonmail.com>
+Subject: Re: [PATCH v2 1/3] MAINTAINERS: Add entry for Onsemi LC898217XC lens
+ voice coil driver
+Message-ID: <20250305-voracious-outrageous-jaybird-5eae4b@krzk-bin>
+References: <20250304-media-i2c-lc898217xc-initial-driver-v2-0-6a463cef3ea8@mainlining.org>
+ <20250304-media-i2c-lc898217xc-initial-driver-v2-1-6a463cef3ea8@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/3] Fixes for IPA v4.7
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174113463200.345304.7962244845761048963.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Mar 2025 00:30:32 +0000
-References: <20250227-ipa-v4-7-fixes-v1-0-a88dd8249d8a@fairphone.com>
-In-Reply-To: <20250227-ipa-v4-7-fixes-v1-0-a88dd8249d8a@fairphone.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250304-media-i2c-lc898217xc-initial-driver-v2-1-6a463cef3ea8@mainlining.org>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 27 Feb 2025 11:33:39 +0100 you wrote:
-> During bringup of IPA v4.7 unfortunately some bits were missed, and it
-> couldn't be tested much back then due to missing features in tqftpserv
-> which caused the modem to not enable correctly.
+On Tue, Mar 04, 2025 at 10:32:18PM +0300, Vasiliy Doylov wrote:
+> Add entry for Onsemi LC898217XC lens voice coil driver
 > 
-> Especially the last commit is important since it makes mobile data
-> actually functional on SoCs with IPA v4.7 like SM6350 - used on the
-> Fairphone 4. Before that, you'd get an IP address on the interface but
-> then e.g. ping never got any response back.
+> Signed-off-by: Vasiliy Doylov <nekocwd@mainlining.org>
+> ---
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> [...]
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 29e1a423eee5bcf9df7938aaffe5bd3e2f6a2bbe..c15223f063357a8f89cf12f46ebcb7bd062903f3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17781,6 +17781,14 @@ S:	Supported
+>  W:	http://www.onsemi.com
+>  F:	drivers/net/phy/ncn*
+>  
+> +ONSEMI LC898217XC LENS VOICE COIL DRIVER
+> +M:	Vasiliy Doylov <nekocwd@mainlining.org>
+> +L:	linux-media@vger.kernel.org
+> +S:	Maintained
+> +T:	git git://linuxtv.org/media.git
 
-Here is the summary with links:
-  - [1/3] net: ipa: Fix v4.7 resource group names
-    https://git.kernel.org/netdev/net/c/5eb3dc1396aa
-  - [2/3] net: ipa: Fix QSB data for v4.7
-    https://git.kernel.org/netdev/net/c/6a2843aaf551
-  - [3/3] net: ipa: Enable checksum for IPA_ENDPOINT_AP_MODEM_{RX,TX} for v4.7
-    https://git.kernel.org/netdev/net/c/934e69669e32
+Drop, unless *you* are committing there.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> +F:	Documentation/devicetree/bindings/media/i2c/onnn,lc898217xc.yaml
 
+There is no such file.
+
+> +F:	drivers/media/i2c/lc898217xc.c
+
+There is no such file, either.
+
+Best regards,
+Krzysztof
 
