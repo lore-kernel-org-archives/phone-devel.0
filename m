@@ -1,90 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80B01EA7F5;
-	Wed,  5 Mar 2025 07:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC61E5B85;
+	Fri,  7 Mar 2025 09:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741159625; cv=none; b=hvubKzjH4Gxd1cqdWwql8y5sfPMWSljhbyaohEAsZNEvW3hFzmD7q8+T0OJsYtJPEgz3Rcd+kt4FHr4qChYUupK8VQuenO0npJnZhJrZURJvJ8mf4awdunlLj0dXCxT4hLXGy3U0zYmRoMHIXOFoZkOi8u9/epPF6wYf0t2qzgI=
+	t=1741340916; cv=none; b=sKG+S4emSGv9n0FI1Lv41+GwSfxujsnQbzm226tuJp64W+dN/VTNsfDZJcDbYTxqw2Tb7ku5nJuR9iKLuqtYQcrvoeQmantZrQIbMygjrtRghJu3ZWxYjVrc5Z5TlCeCJetMdpEtic26Lg+1Mf0YjOsNRICeFwES1TMafQx/UFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741159625; c=relaxed/simple;
-	bh=wRaq4uFDdTXwzW2CzVR/8V0Bnta0TTyoo+FbDAQvNt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqM7D9b7/ozJkQAInR+QpG+OB+nA1+TU7sOC3uiP1zIzgS3JfaaDpPylbNMiL1gHKXOpn+IQY/78yICSRwo3Odnu13eVXoMY0a6Y0jtaCUAMq4c7ewIZq/cZ7HRf3Ad2WTa5XXxhBaNpyWJ2hEvihR9/p+k3MC+tW87OC/P0qww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nD/e2oF5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741340916; c=relaxed/simple;
+	bh=7AfEAjVueD4CSg0GKlBjrHHbSydJfkmiSzoJ3cmfrYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TPJNwImNs2COQsz0e+S5XqoEc6i/w9hjDG98fhUi0mPaOf2II86vxrUtvmK71iX1hVK1r4wgnxMFFPcttp6rbFbApsW6T9ax2Ek+omjasdQ09lPFVx/ctLrw5AZkgXaNJb/nE+kCfVw31TyzrHJu4n39K08lPTuL1OnQXwIYjro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Cjg1Mi9T; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nD/e2oF5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A80FC4CEE2;
-	Wed,  5 Mar 2025 07:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741159624;
-	bh=wRaq4uFDdTXwzW2CzVR/8V0Bnta0TTyoo+FbDAQvNt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nD/e2oF5oGakQJofxgIE1SqfssbJLLX4TIicWW37Q5W/bvq1vlD5zUNrynDGJl8wO
-	 R9OUhQ0HbdOLl3czEjIFH1NdaUqNMRpjKTB+YhuAk6/EsW/5RFLvJoh2bbk07L2BmS
-	 lW3yYUQd1n2BJr+1CVtH4hF2ir0rVbiFD/YDP3/uZVTYxYkVHxtrNEbwelGK96M+VF
-	 gReEoZoKVNwUQxrHE0jRmoggtcRoXxLOmPqbF/4TfxKED+6vuJu74/PJinGLTzY4kp
-	 2izTB8hwFve0XrtWfIy1BAP1/p3Yj4i+AOI4XgCDj/MTcd34deJPBerxFyW2PYeJ+w
-	 E0vDOBcVXKlgw==
-Date: Wed, 5 Mar 2025 08:27:00 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vasiliy Doylov <nekocwd@mainlining.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux@mainlining.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, Vitalii Skorkin <nikroks@mainlining.org>, 
-	Antonio Rische <nt8r@protonmail.com>
-Subject: Re: [PATCH v2 2/3] media: dt-bindings: Add LC898217XC documentation
-Message-ID: <20250305-onyx-vicugna-of-action-cdcf0b@krzk-bin>
-References: <20250304-media-i2c-lc898217xc-initial-driver-v2-0-6a463cef3ea8@mainlining.org>
- <20250304-media-i2c-lc898217xc-initial-driver-v2-2-6a463cef3ea8@mainlining.org>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Cjg1Mi9T"
+Received: from karma.space.aachen.ccc.de (xdsl-78-35-222-202.nc.de [78.35.222.202])
+	by mail.mainlining.org (Postfix) with ESMTPSA id DBEF8BBAD2;
+	Fri,  7 Mar 2025 09:48:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1741340906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iTh8al/QMgkOMLb604e8GnqZSp6qAfMwJFpoZXijTOg=;
+	b=Cjg1Mi9Tl0zymWucLxgcL8x4QIghekxHyneTSSi5cjpaY6F7BWw0Par+YtRzcHyGNHxKYJ
+	bvqnFZ3COJAo7S3RhivhAFTxEsaHXZAxmZHRIuR57ydBeye0y8ElFxBRHZzndfqXsni9cw
+	HPmYNHdfil+CgRQptLf7p9ywC0ItHL1bFlZYQt87As1krt4Za//1xI1OMjC7noFwGrnyjy
+	hztoeJQQDyYECFq3F/WmlpiotFF7s5SugJh0p+Fx7Jfqvg0337fdiPssDY1BdydaGXXh3Q
+	NCglVBznPw+bG0qI+3bb9BKY45XnrGv1eK69HtMFgTZsgl2Ykx4XZ9GTincFHQ==
+From: Jens Reidel <adrian@mainlining.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bastien Nocera <hadess@hadess.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Luca Weiss <luca.weiss@fairphone.com>,
+	linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	linux@mainlining.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Jens Reidel <adrian@mainlining.org>
+Subject: [PATCH v3 1/2] dt-bindings: input: goodix,gt9916: Document gt9897 compatible
+Date: Fri,  7 Mar 2025 10:48:22 +0100
+Message-ID: <20250307094823.478152-2-adrian@mainlining.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250307094823.478152-1-adrian@mainlining.org>
+References: <20250307094823.478152-1-adrian@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250304-media-i2c-lc898217xc-initial-driver-v2-2-6a463cef3ea8@mainlining.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 04, 2025 at 10:32:19PM +0300, Vasiliy Doylov wrote:
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vcc-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +
+Document the Goodix GT9897 which is a Berlin-A series touchscreen
+controller IC by Goodix.
 
-If there is going to be resend/new version: drop above blank line.
-
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Jens Reidel <adrian@mainlining.org>
 ---
+ .../devicetree/bindings/input/touchscreen/goodix,gt9916.yaml     | 1 +
+ 1 file changed, 1 insertion(+)
 
-<form letter>
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here. However, there's no
-need to repost patches *only* to add the tags. The upstream maintainer
-will do that for tags received on the version they apply.
-
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-</form letter>
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml b/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
+index d90f045ac06c..c40d92b7f4af 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/goodix,gt9916.yaml
+@@ -19,6 +19,7 @@ allOf:
+ properties:
+   compatible:
+     enum:
++      - goodix,gt9897
+       - goodix,gt9916
+ 
+   reg:
+-- 
+2.48.1
 
