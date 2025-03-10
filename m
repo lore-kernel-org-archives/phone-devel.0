@@ -1,94 +1,117 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2103522A4EF;
-	Mon, 10 Mar 2025 14:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D459422D799;
+	Mon, 10 Mar 2025 17:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741615925; cv=none; b=iMud6Bti1Qpc3/yX/Y2KlWXrZwBMjJA+3fuB0NYZO+lci0ih8GRIaBhOnqIbhDkmYW4TkJ9YRtpF+QP7RNibEYqoIQ23MVDBz3UuG6h4ZzrIAnBAtUjXVFJIO/iCo5C5YNE40eClRbmlTcs2PCKvtKjQcUeBzXTHKovFuxBCxgU=
+	t=1741627621; cv=none; b=mEML8qnKLVpocMhXKjYgYmW2pMPb6T5Scw+j35kFccvyaU9DSESQlBvjLv89ckMCam8ngwKDXiAuo0AUzPN0NmSpTe6PXbaKm6ZNW1EwpnBAgEjHKSqK+rsqqbVkDr44T9NVZ0w0ZICAB9WBDSUwyHT+JuMD3viBNXDj2R9ZGtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741615925; c=relaxed/simple;
-	bh=hKS/i1hDoNE5fqZsxk8aQhzq7/t6eyz9xhmOphitBy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XdARnxJNz3VoLIwdm7CqWpr4MoOFDs7AJE7NPGzk88IEnpku2U9mmMy1C5VH5L3r/N0hmNhu7Sc8y/SFWcyoQrJCho9Xh5SFCTLFpYvljHkBHvYHwmSXJxYIhbEVETrA7kvl6pGf9rJjIKL5ueOn6u0VLLn7PTVyWHWZzgHz3Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=agwxbEHn; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1741627621; c=relaxed/simple;
+	bh=V2rzXXRqJrg2VQLAWz9UbOtWter9eLAmrrKUp0Vr7h8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OdHA35rhVSYrTLwdWuDeLlzDUl8wNiTEeAUhRNKWxQFqOYCxo7+/gSFgG4V5rt9Vf+MjiPrAncU41uiItQS4/qUVrQrk/HwNoTJFIQDvj5awFEGOLb/qfOJiwSJBkpF7DySlNolp4owNmPqaxRnJkzPzYWQDsXoVhHTR2ilxXhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEMc2EYT; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="agwxbEHn"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1741615901; x=1742915901;
-	bh=HuP1U8WK3q0G9GFLKBjjPxeJAILtXpxpnuy3cWlTYF8=; h=From;
-	b=agwxbEHnfhBdXNTQaUyutFxVT15eZMKGmdudwjfimIaHCQz66X3n6PEweyQeKpthd
-	 UszogEARqzGIanqOmPXwpr2ZsvQTJa89dMjFM3WdnmhgpGLQAUjr9bc0NNX1mv+4Hn
-	 dVB3KIj/i/JZg6V1R/zrNQxTdO+lwnNlpTrCwnnc+gdMzKacmdJbXJhpGsBV529uvB
-	 nm31UpiSUEPeMo3kBANqO9mrYzKlpbng1bSJXglwOwSt98FBwy2NfpYAybA5vcc1Ip
-	 ynDOvpXRBxe8cQRTzT0KP+n9ewrGcpbMQ/F6adqinLA8KXuzfOm3DcYy5gVEcPEC00
-	 cD9XNdyAtonxg==
-Received: from localhost (wlan-eduroam-130-237-240-93.su.se [130.237.240.93])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 52AEBcRm043117
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 10 Mar 2025 15:11:40 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
-From: Karel Balej <balejk@matfyz.cz>
-To: Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc@vger.kernel.org (open list:SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI...),
-	linux-kernel@vger.kernel.org (open list))
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Karel Balej <balejk@matfyz.cz>,
-        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        stable@vger.kernel.org
-Subject: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
-Date: Mon, 10 Mar 2025 15:07:04 +0100
-Message-ID: <20250310140707.23459-1-balejk@matfyz.cz>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEMc2EYT"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5dce099f4so5814527a12.1;
+        Mon, 10 Mar 2025 10:26:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741627618; x=1742232418; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0OnYcFNhi5mdYOjgVvWpjisma4iBvxD3cgP4cZqTTfY=;
+        b=VEMc2EYTpVLin/MC4A6UoG4+ttXS7PSHTWf7bOG/9UzDGVjdWMV0KoLsr6qxl15nop
+         KLFv0egeY4ude0tloMDVMyKgcDs2IKHVhZiEti33tOrGZfe3rkTEy4beRTgzgCvHn6oD
+         2iu90tSAsANPXf3abZvWWYeZGR6PgraPPb6vbLLnQxxWwz3EAaqpixauR6x+oN8XCQki
+         BF0XpVjMG46XLpu8QGpM+T+l4gB5OSTfRj7OgXRmnt3uQcSX5TnqYUqhC4NF+Q8atZug
+         OScNXD/UTX/CBoWugX0Vt1h4NzEv0lJwQLD17y1cs/pY4QoAIyLq9HZNIQx5jzKJDY7H
+         PpAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741627618; x=1742232418;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0OnYcFNhi5mdYOjgVvWpjisma4iBvxD3cgP4cZqTTfY=;
+        b=GzDxRg27E9uXVHltc7gJ2QBXy7WsEEk+Bx9+NkARuyK48qIhN14FPJfFLdHE5VRgoM
+         Ci2iDFlerw7tm4NfVE9kf7gbVt+k0i8FPTyetve3M3adavM8Oi1ZFjhkUZwqRfT0ykJR
+         nDXs7ett9UKan8Ul3LC8HCDTgYqdxY/J5IiZznSp898S6NvaXtlXIRC8qzO+w+s195r2
+         XAgSjo2Ms1dMg5yc8q+T/JAnVbaJDRW+VVa7XtA0kmojp/2XrQnXKxCRRLZALGlLxUnL
+         zSa+BdgqIL8Z7ogXym8zcBAmIK9ZJYCsT1CyJqL9UsnL/ocSjcR0RRPmhF/Qju55Sy6N
+         oQyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhdPNKBvHGSWy2SfZNVhXvSVXBJQZzsvfU+abpBiN/yxSHopqUbe8i9ckgBWwSkLlZeDdvyUFodg==@vger.kernel.org, AJvYcCXTLWpL4nGM7VTfBkmdacCN6J7Hnja6o4KPUlpQubknGXbxD+tCDbCmQGCEpW994U77t5TSjkm936cVIJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgTVTeMUhdyRZlkAbnjhOy2IX8gJqZQFJyuJpFjnfIkj8cboYk
+	rx2FQQMyPu5Y1etdxQ+GcuejyRsbl/WDd81/73ooUzCCYz9Rc+d+
+X-Gm-Gg: ASbGnct+OaYohcHeFsfKHIa4CVUWU5MgJ7z1+OzCBWteSRj+QzlgI/J75TwSD9EdemV
+	znHqLYHm2YbS3u2js4C8FPyHbtJT1euvSilLiEp+bVT1lH7plb4Zyh97wQi6uRuWyTJM1br/i1S
+	wAT28a7vMSpiC3FuqP471b5NT8dgVI5pzuwbMw1ptk0cHPCWI7cqElyN6RvhSJYL9n0qbASjOXv
+	9Pz00lZtX0a/iVlOZV1AL7WKlUfwlgsuoLREc7e/SvFoA7Tr0EAWUS0xlstM3czoitUDUB3/UCz
+	glAQKqeofA1+4pFhbM4/19kRPJR3vMJg6YpQtAox3OkKefo=
+X-Google-Smtp-Source: AGHT+IFOy8zOH7sXjAL34LP1z4OuQ2ll/9YwYtckUR8Zstq5U1gkyNd8ag1danBJdDwQrDKofXIoyg==
+X-Received: by 2002:a17:906:5589:b0:ac2:6ba6:46fe with SMTP id a640c23a62f3a-ac26ba64e00mr1069312066b.50.1741627617731;
+        Mon, 10 Mar 2025 10:26:57 -0700 (PDT)
+Received: from tp440p.steeds.sam ([41.84.247.62])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2a09ca468sm206335966b.5.2025.03.10.10.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 10:26:57 -0700 (PDT)
+Date: Mon, 10 Mar 2025 19:26:51 +0200
+From: Sicelo <absicsz@gmail.com>
+To: Sebastian Reichel <sre@kernel.org>
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>, pali@kernel.org,
+	linux-pm@vger.kernel.org, maemo-leste@lists.dyne.org,
+	phone-devel@vger.kernel.org,
+	Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+	akemnade@kernel.org
+Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
+Message-ID: <Z88g2yBuRkCl_yAu@tp440p.steeds.sam>
+References: <20250207220605.106768-1-absicsz@gmail.com>
+ <CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
+ <511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
+ <Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
+ <C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
+ <Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
+ <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
 
-Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
-prevent conversion of R1B responses to R1. Without this, the eMMC card
-in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
-with this mmc host doesn't probe with the ETIMEDOUT error originating in
-__mmc_poll_for_busy.
+Hi Sebastian
 
-Note that the other issues reported for this phone and host, namely
-floods of "Tuning failed, falling back to fixed sampling clock" dmesg
-messages for the eMMC and unstable SDIO are not mitigated by this
-change.
+On Fri, Feb 28, 2025 at 11:01:35AM +0100, H. Nikolaus Schaller wrote:
+> > It is in linux-next [0]. Not sure if that counts?
+> 
+> Ah, I didn't recognize that (and must admit that I did not search through
+> linux-next). Sometimes maintainers close a discussion by telling that it
+> has been merged.
+> 
+> Maybe Sebastian can replace it or recommends a fixup.
+> 
+> > I guess the only option
+> > now is to submit a follow-up fix?
 
-Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
-Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
-Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
-Cc: Duje Mihanović <duje.mihanovic@skole.hr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
----
- drivers/mmc/host/sdhci-pxav3.c | 1 +
- 1 file changed, 1 insertion(+)
+How would you like me to correct the bugs I introduced with the patch in
+the subject of this email?
 
-diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
-index 990723a008ae..3fb56face3d8 100644
---- a/drivers/mmc/host/sdhci-pxav3.c
-+++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
- 	if (!IS_ERR(pxa->clk_core))
- 		clk_prepare_enable(pxa->clk_core);
- 
-+	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
- 	/* enable 1/8V DDR capable */
- 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
- 
--- 
-2.48.1
+I guess it will either be:
 
+- submit v2 against linux-power-supply/master or
+  linux-power-supply/fixes (so the bad commit will be removed from
+  future history)
+- submit a new patch against linux-power-supply/for-next (so the bad
+  commit will always be in the history)
+- use a different solution you suggest
+
+I apologize for introducing the bug and have taken the time to more
+thoroughly test the changes, with help from HNS. I have the patch ready
+now, and just need to be sure how to submit it.
+
+Kind Regards
+Sicelo A. Mhlongo
