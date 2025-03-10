@@ -1,100 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5FB227581;
-	Mon, 10 Mar 2025 11:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2103522A4EF;
+	Mon, 10 Mar 2025 14:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741605090; cv=none; b=Gtq4YhrPWeyCnIUtGxICKjIV7BAHObZogo8LkWv8d5StnPJBbBrZ5atj0ieLUokEL19CG6xsoQm/zGnoduHBGBbbe97TO7+AnDkm6kE6cJkHPTAxoRMCbgtABPBWsSvR0KJl1SgaCriTq6EFXXXvv3ZNrJnq5iDkBPw8NU4qbRg=
+	t=1741615925; cv=none; b=iMud6Bti1Qpc3/yX/Y2KlWXrZwBMjJA+3fuB0NYZO+lci0ih8GRIaBhOnqIbhDkmYW4TkJ9YRtpF+QP7RNibEYqoIQ23MVDBz3UuG6h4ZzrIAnBAtUjXVFJIO/iCo5C5YNE40eClRbmlTcs2PCKvtKjQcUeBzXTHKovFuxBCxgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741605090; c=relaxed/simple;
-	bh=UxOUffZNESsbT7Z8GSqYcfxxCZg7cmpwRMjI71zfCXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTgNNY1U10lLLKKdCqJIQEejzSQbRvKw/TPdoEnFCEjgZhOv/0O0r/+N6sdTnwa723lSJ5jiQfTPKHERs/CUY7xyCNeftN8j4LiOWIwqDurIO6vUMMsov9zMHCGS8u11vjrd7ypuvgWYJCCUgFVf1R+8Hsi4EkKqUc1jiPY3rJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQ0f2W+o; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1741615925; c=relaxed/simple;
+	bh=hKS/i1hDoNE5fqZsxk8aQhzq7/t6eyz9xhmOphitBy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XdARnxJNz3VoLIwdm7CqWpr4MoOFDs7AJE7NPGzk88IEnpku2U9mmMy1C5VH5L3r/N0hmNhu7Sc8y/SFWcyoQrJCho9Xh5SFCTLFpYvljHkBHvYHwmSXJxYIhbEVETrA7kvl6pGf9rJjIKL5ueOn6u0VLLn7PTVyWHWZzgHz3Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=agwxbEHn; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQ0f2W+o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741605089; x=1773141089;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=UxOUffZNESsbT7Z8GSqYcfxxCZg7cmpwRMjI71zfCXU=;
-  b=KQ0f2W+oybCtodNpu8GCcIfn/wRVmgtldIHQnRmjrHAE98ufhCZxZzsf
-   Yx88d/FtsOV9kRI8nGbren/4ZxiaqED6UVVghaMywdmuwi4KS/ZuTuRu7
-   bLdftLGPqEef36DUqIAqyQCizBzSFF6tfSEXEfQSoWFf1FLa0m5nTR640
-   +6QsylhDBiEfvvJxkGjirytYsyJy72lNy+dMvV5/Fp1emnUKfC1nY0uLh
-   IdGoDxerNFGSNx9P8l9330RgDYuaZcpgW4dQwOPtF5Z8vbz1PKkAGuPhr
-   wD/L2hBCWXZi9cT5omPBTDjVH0rmIENnZFtaN8ZGX4XmY9shwdKYDrYax
-   A==;
-X-CSE-ConnectionGUID: cfJMhILOTze/KIu9RTA/5g==
-X-CSE-MsgGUID: goA/J/jWR1KLeUnKX4daCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="42787617"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="42787617"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 04:11:28 -0700
-X-CSE-ConnectionGUID: qJDWkpdYR4WjODFSm7tG8A==
-X-CSE-MsgGUID: lkCayGBqTPmjAy8j5OjF3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="120668568"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 04:11:26 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id A323A11F7F0;
-	Mon, 10 Mar 2025 13:11:23 +0200 (EET)
-Date: Mon, 10 Mar 2025 11:11:23 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND 0/4] media: i2c: imx214: Add support for 23.88MHz
- clock
-Message-ID: <Z87I2xh0HY-YD_tZ@kekkonen.localdomain>
-References: <20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="agwxbEHn"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1741615901; x=1742915901;
+	bh=HuP1U8WK3q0G9GFLKBjjPxeJAILtXpxpnuy3cWlTYF8=; h=From;
+	b=agwxbEHnfhBdXNTQaUyutFxVT15eZMKGmdudwjfimIaHCQz66X3n6PEweyQeKpthd
+	 UszogEARqzGIanqOmPXwpr2ZsvQTJa89dMjFM3WdnmhgpGLQAUjr9bc0NNX1mv+4Hn
+	 dVB3KIj/i/JZg6V1R/zrNQxTdO+lwnNlpTrCwnnc+gdMzKacmdJbXJhpGsBV529uvB
+	 nm31UpiSUEPeMo3kBANqO9mrYzKlpbng1bSJXglwOwSt98FBwy2NfpYAybA5vcc1Ip
+	 ynDOvpXRBxe8cQRTzT0KP+n9ewrGcpbMQ/F6adqinLA8KXuzfOm3DcYy5gVEcPEC00
+	 cD9XNdyAtonxg==
+Received: from localhost (wlan-eduroam-130-237-240-93.su.se [130.237.240.93])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 52AEBcRm043117
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 10 Mar 2025 15:11:40 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
+From: Karel Balej <balejk@matfyz.cz>
+To: Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org (open list:SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI...),
+	linux-kernel@vger.kernel.org (open list))
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Karel Balej <balejk@matfyz.cz>,
+        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        stable@vger.kernel.org
+Subject: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+Date: Mon, 10 Mar 2025 15:07:04 +0100
+Message-ID: <20250310140707.23459-1-balejk@matfyz.cz>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu>
 
-Hi André,
+Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+prevent conversion of R1B responses to R1. Without this, the eMMC card
+in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+with this mmc host doesn't probe with the ETIMEDOUT error originating in
+__mmc_poll_for_busy.
 
-On Sat, Mar 08, 2025 at 10:47:54PM +0100, André Apitzsch via B4 Relay wrote:
-> The imx214 driver currently supports only a 24MHz external clock. But
-> there are devices, like Qualcomm-MSM8916-based phones, which cannot
-> provide this frequency. To make the sensor usable by those devices, add
-> support for 23.88MHz clock.
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> ---
-> André Apitzsch (4):
->       media: i2c: imx214: Calculate link bit rate from clock frequency
->       media: i2c: imx214: Prepare for variable clock frequency
->       media: i2c: imx214: Read clock frequency from device tree
->       media: i2c: imx214: Add support for 23.88MHz clock
-> 
->  drivers/media/i2c/imx214.c | 188 +++++++++++++++++++++++++++++++++++----------
->  1 file changed, 146 insertions(+), 42 deletions(-)
+Note that the other issues reported for this phone and host, namely
+floods of "Tuning failed, falling back to fixed sampling clock" dmesg
+messages for the eMMC and unstable SDIO are not mitigated by this
+change.
 
-Thanks for the patches.
+Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
+Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
+Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
+Cc: Duje MihanoviÄ‡ <duje.mihanovic@skole.hr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Karel Balej <balejk@matfyz.cz>
+---
+ drivers/mmc/host/sdhci-pxav3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Do you think the driver could use the CCS PLL calculator? The PLL appears
-to be compliant. The AR0234 driver will do the same. (The sensor might just
-work with the CCS driver, too, but that's another discussion.)
-
+diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+index 990723a008ae..3fb56face3d8 100644
+--- a/drivers/mmc/host/sdhci-pxav3.c
++++ b/drivers/mmc/host/sdhci-pxav3.c
+@@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
+ 	if (!IS_ERR(pxa->clk_core))
+ 		clk_prepare_enable(pxa->clk_core);
+ 
++	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+ 	/* enable 1/8V DDR capable */
+ 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
+ 
 -- 
-Kind regards,
+2.48.1
 
-Sakari Ailus
