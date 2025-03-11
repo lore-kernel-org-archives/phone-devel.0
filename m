@@ -1,177 +1,200 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3712E232368
-	for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 12:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ADB2620F9;
+	Tue, 11 Mar 2025 20:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741695750; cv=none; b=gwrxNL/UDKAHWkWDDne+bCL8oPuA1WrsOkwIPUZv5qZfxIDiBZ7StjmZ5KsAEdxOwTi5wvRftkFP1avWGmyafqGnoHe9vh6ggJENJSvo+lj7ObVurT3QP+w6ksmqmQvYhUSNIYA+67TC8eFfMUg/unoL81sR+KoKyZbkwuIEjPQ=
+	t=1741726167; cv=none; b=oJgoy1iRWwJhEDNQ0VyGj5+mV6q7BgjiteI5sgeZ41UQPEHyoQPpfplogeNWGvCEs/m1fgmD5betijz1rqq3ma5ymH3ru0HKhQbRCw7BFCsVX3WAkeRVSMQoEsQDdXSUUgK0yOMflS1klOHS3i7lKc7doXdKpKKFITD6R8mYP7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741695750; c=relaxed/simple;
-	bh=BO2rDpHB1rK6ubktCHUsRSb+c7GamYkrXTUiMXgVYrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EjwONX8lef2qB6plbfuIjX17ZmRjMZH8MnglKDVaEifyhnRJeBWBeWe4yO8eFRtLafqWPn6sFRe+3R/KoK3lYp0uGNmtHYxVKgzlNXQBj+ITgVYKVb8+Nfrr8HX25sGqmXo//cLOYDpa8rMHqB6WJKlYJuhtWs62lSzHQvNMA24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=umwDyNNT; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741726167; c=relaxed/simple;
+	bh=8FmPYlcHFOpSfnHE1XVVmISlRoOzSb1SFySvsKU2bLM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tuRTdiqaexkVmQ8TAAf/fjjkkbhMpZPjmsrkokGKZBh7+kyLzgap0m9rG5YnMT8YAi4dF2vFtCdL+sLY5Q/IW3cmmFJUKU70kM9qyTbDINsrgueRavefvE32106qhwfsXNqH91tIf2P1B9rolFHNOMxqncgVdTnt3+f3HrHaOos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPmUW+YU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="umwDyNNT"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3913b539aabso1772568f8f.2
-        for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 05:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741695746; x=1742300546; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RuRTdmTo0miGxQN5iUZvcytRHU1YTlQp0tIlh3ar5LE=;
-        b=umwDyNNTJTqPsvOAdWRidI3Kk0+lbCzlq28naMq1jsWc6zR+TGEVH+X9ba9yDawsq1
-         GrzE/SkKmPsbSAnaD3bAnbsdK+LT1n0BKX8hCDQhnMxuont6k3OEksv7arAFNgR+9WQI
-         rqcoOb7oDn3N4rMES3KgU1j3/zJe9fCgvh6ykf1ncRIp7+MBzWbdvJSeuf3gGgRnEpoz
-         hcD5mxex6Z8Q58WN8QRkqYOc2/ExzGMklHWp4MTUaCQ/R/kSCiQDMS7JIRmuFLpjxNw9
-         7T/s6uj/cvGJ195Qb0iWHlmjehg7c3QC8g4IENFe7B4QrN0bELN4dl72H8PSo7DU6vxM
-         sYgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741695746; x=1742300546;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RuRTdmTo0miGxQN5iUZvcytRHU1YTlQp0tIlh3ar5LE=;
-        b=mjz7osMVSqWGxqro5PkPgBdFAE8Lrv1+eFvOsBuRAm9URZXcnDzx6bMIQSJ34iH9ww
-         6bCbCFq+AoQAM71QeRsU0V1Jfgalnn+2pF9oIYPEmv7sZ1nJR+0RpkAVftk/EF2a0EEn
-         72GfNU+BxdDwMTJfdSwY9Z7G5kjrk+Pk0jiD9Ifq8U/AY/m9o0bRaIDL+Q9T5/LPdm6y
-         q9a0reG58LMIJOQF5NhYmSlUTTL7Om0bLHEQ/jdb9BOIcEHlbZ3WYqptcVQnS+L2oRjF
-         MNg5yU9KKy3YIOVJV71X49PZ3zQtKRsiY6qpRvBIqHjYBZohZg2SWGoTXZpsd2hYwtdS
-         Odqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVok8CyPC27ilfKQpVl73jRVEbWruuAJPpMQ0NUkroa34dDoNapPCoFf7ZbBDJ8UehTnDdWybBNmUafRg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyArveBCxNYS7L5NXMn2eENne3pD8r3Q+T81BM9KTTWyLSrWWbm
-	F1S5sFWjQhAMH1gUAdhl9vIIwH83BDi5EdBunFRDeONxMnUwHm43dfTIFzH50Vw=
-X-Gm-Gg: ASbGncuoEaqZvsYhGzcEaFNq00rBF/n8k8YgGLHjBI6itC0h3XHVFzrSxcxA5DyR7on
-	JY1Yx9gOKEIlyQw9ZxMytQhOx8kdRVHIOKtCbk3ICXnlsOFRPSoIiqYo1YP/PAuy5JdAFvVtQPO
-	m1pgi5ybgjfJgwI3kMoyTY3lIay3Hj8AiKUO3EYDJ2nVwNFu4t7LF2SCxIPP5skPGw9nzcl4SDw
-	qXdrRdfh+UUswjAXNNlPxSHKM5e6wsia0PfMsKkWlt5MxGif2XmJt6naYQ2kHIBNOAoXT33d6fd
-	/Vg8D39DBjUepvwYGFwRkohIe+D2dg3OmTWBUuiH4SbhVUyF1bBBqM70FLqCYY2qcFFkI1PzZZr
-	rWfhckxeRKgkoB1ttMOfmbRdW2w==
-X-Google-Smtp-Source: AGHT+IHq20LH2uxw3VbZolyrJ2NcnkJ2H6FV9IdtXZLY8mifNy7lWFQGbFrn1pfpFBMVS+O5dKaU0w==
-X-Received: by 2002:a5d:64a4:0:b0:391:a74:d7dc with SMTP id ffacd0b85a97d-39132db7543mr13516692f8f.50.1741695746463;
-        Tue, 11 Mar 2025 05:22:26 -0700 (PDT)
-Received: from ?IPV6:2a0a:ef40:1d11:ab01:f578:9a7d:3957:bef9? ([2a0a:ef40:1d11:ab01:f578:9a7d:3957:bef9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e308dsm18364281f8f.67.2025.03.11.05.22.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 05:22:25 -0700 (PDT)
-Message-ID: <58cd8f7b-e824-4518-8bc1-c004c8a605f2@linaro.org>
-Date: Tue, 11 Mar 2025 12:22:24 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPmUW+YU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC513C4CEE9;
+	Tue, 11 Mar 2025 20:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741726167;
+	bh=8FmPYlcHFOpSfnHE1XVVmISlRoOzSb1SFySvsKU2bLM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hPmUW+YU4x+MqhdXvR9UPVQKT2sjxAiptQMsT01ERZr9zhhJOd1ulpswNO3COGf9S
+	 GlGAgr8lOc62Soihct+fa9aioqyCTDa4V86HncGSTvdtDDtG7Qw9FdUvUQZ3UH+iYm
+	 O3mxdnt/rb8PU4LJ6P0xraOjJyLPcrXBd657GIDNx2aQitpQcC+K7xUUpIPEsGbjp2
+	 X7LUKSzne9lQlIF1J5cYZfSFDrVPMsj4Wzaxd6XY0vyc/36ac9DBcZzbu+ULCaBzyB
+	 qhVpskFsFkdzhNNQsAm/EOIPgEAq9jbUoZX8Qs8+rahv9taCZFJUEU+Fo4v+R/fwH2
+	 6PrTfBVcQvW9A==
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-523ee30e0d4so2022630e0c.2;
+        Tue, 11 Mar 2025 13:49:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVSd7ObnlP098bYAo27uDnieGFqfSZJxwdgqYjSw5e39FxNvWcQvEaiUDTDBIsE5GYqS4xYq8PCqiLaHkU=@vger.kernel.org, AJvYcCWw77Ur7Pg8NhMoHNiSkWCkk0GIsJCGPxxBz7MpLH/JqxPIfBoKyP9VA7nCps6VHOx3P0LP7ek1KE+Q6X4=@vger.kernel.org, AJvYcCWxUYZlJlvvWbEnM6o0IuuTe81L5ixHaVQPrnpS+z4e0dPH1ar5palctRWXG+RFjw3zeYXjUxs7W0pRoes=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDkTf+1wZaxVoKnW0+gHl4LtJPY1X6oFEUVILX/GMrnchZPwho
+	smRj59lTH2oSkyvozag+79aMNZvmkhJxUYEbItTxwYAwZ01Cc4gwp2Cb3qwPoHo5NySCTYeOall
+	+YzK6J0Vqhz5wmjlPVdZRaMALMcc=
+X-Google-Smtp-Source: AGHT+IGv8rYPtePlNgNFcXomGIjZGgtpHGzu87s3KufWdYOrUgDZ1+WsBcXha+mFin0bUO1R5dcgCvuClQlj1vzVEKQ=
+X-Received: by 2002:a05:6102:3fa7:b0:4c3:49b:8f78 with SMTP id
+ ada2fe7eead31-4c30a72e421mr12682483137.25.1741726166067; Tue, 11 Mar 2025
+ 13:49:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/7] Input: synaptics-rmi4 - handle duplicate/unknown
- PDT entries
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, david@ixit.cz
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- methanal <baclofen@tuta.io>
-References: <20250308-synaptics-rmi4-v3-0-215d3e7289a2@ixit.cz>
- <20250308-synaptics-rmi4-v3-2-215d3e7289a2@ixit.cz>
- <Z885Jw0K6d2h_2pl@google.com>
-Content-Language: en-US
-From: Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <Z885Jw0K6d2h_2pl@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu> <20250308-imx214_clk_freq-v1-1-467a4c083c35@apitzsch.eu>
+In-Reply-To: <20250308-imx214_clk_freq-v1-1-467a4c083c35@apitzsch.eu>
+From: Ricardo Ribalda Delgado <ribalda@kernel.org>
+Date: Tue, 11 Mar 2025 21:49:09 +0100
+X-Gmail-Original-Message-ID: <CAPybu_3MEY8GziQFwA6QFfycdYvLovrY0bQOv=xSbOS=X+627A@mail.gmail.com>
+X-Gm-Features: AQ5f1JrlWikQKbkSC4DkBsFp6tcFAV6eyIqSzm6I74jq4lhMBcm0n3Qp36BdMzg
+Message-ID: <CAPybu_3MEY8GziQFwA6QFfycdYvLovrY0bQOv=xSbOS=X+627A@mail.gmail.com>
+Subject: Re: [PATCH RESEND 1/4] media: i2c: imx214: Calculate link bit rate
+ from clock frequency
+To: git@apitzsch.eu
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dmitry,
+On Sat, Mar 8, 2025 at 10:48=E2=80=AFPM Andr=C3=A9 Apitzsch via B4 Relay
+<devnull+git.apitzsch.eu@kernel.org> wrote:
+>
+> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+>
+> Replace the magic link bit rate number (4800) by its calculation based
+> on the used parameters and the provided external clock frequency.
+>
+> The link bit rate is output bitrate multiplied by the number lanes. The
+> output bitrate is the OPPXCK clock frequency multiplied by the number of
+> bits per pixel. The OPPXCK clock frequency is OPCK multiplied by the
+> OPPXCK clock division ratio. And OPCK is the external clock frequency
+> multiplied by the PreDivider setting and the PLL multiple setting.
+>
+> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/i2c/imx214.c | 51 +++++++++++++++++++++++++++++++++-------=
+------
+>  1 file changed, 37 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> index 6c3f6f3c8b1f7724110dc55fead0f8a168edf35b..14a4c5094799014da38ab1bee=
+c401f0d923c2152 100644
+> --- a/drivers/media/i2c/imx214.c
+> +++ b/drivers/media/i2c/imx214.c
+> @@ -84,6 +84,7 @@
+>  #define IMX214_CSI_DATA_FORMAT_RAW10   0x0A0A
+>  #define IMX214_CSI_DATA_FORMAT_COMP6   0x0A06
+>  #define IMX214_CSI_DATA_FORMAT_COMP8   0x0A08
+> +#define IMX214_BITS_PER_PIXEL_MASK     0xFF
+>
+>  #define IMX214_REG_CSI_LANE_MODE       CCI_REG8(0x0114)
+>  #define IMX214_CSI_2_LANE_MODE         1
+> @@ -104,11 +105,23 @@
+>
+>  /* PLL settings */
+>  #define IMX214_REG_VTPXCK_DIV          CCI_REG8(0x0301)
+> +#define IMX214_DEFAULT_VTPXCK_DIV      5
+> +
+>  #define IMX214_REG_VTSYCK_DIV          CCI_REG8(0x0303)
+> +#define IMX214_DEFAULT_VTSYCK_DIV      2
+> +
+>  #define IMX214_REG_PREPLLCK_VT_DIV     CCI_REG8(0x0305)
+> +#define IMX214_DEFAULT_PREPLLCK_VT_DIV 3
+> +
+>  #define IMX214_REG_PLL_VT_MPY          CCI_REG16(0x0306)
+> +#define IMX214_DEFAULT_PLL_VT_MPY      150
+> +
+>  #define IMX214_REG_OPPXCK_DIV          CCI_REG8(0x0309)
+> +#define IMX214_DEFAULT_OPPXCK_DIV      10
+> +
+>  #define IMX214_REG_OPSYCK_DIV          CCI_REG8(0x030b)
+> +#define IMX214_DEFAULT_OPSYCK_DIV      1
+> +
+>  #define IMX214_REG_PLL_MULT_DRIV       CCI_REG8(0x0310)
+>  #define IMX214_PLL_SINGLE              0
+>  #define IMX214_PLL_DUAL                        1
+> @@ -204,6 +217,14 @@
+>  #define IMX214_PIXEL_ARRAY_WIDTH       4208U
+>  #define IMX214_PIXEL_ARRAY_HEIGHT      3120U
+>
+> +/* Link bit rate for a given input clock frequency in single PLL mode */
+> +#define IMX214_LINK_BIT_RATE(clk_freq) \
+> +       (((clk_freq) / 1000000) / IMX214_DEFAULT_PREPLLCK_VT_DIV \
+> +       * IMX214_DEFAULT_PLL_VT_MPY \
+> +       / (IMX214_DEFAULT_OPSYCK_DIV * IMX214_DEFAULT_OPPXCK_DIV) \
+> +       * (IMX214_CSI_DATA_FORMAT_RAW10 & IMX214_BITS_PER_PIXEL_MASK) \
+> +       * (IMX214_CSI_4_LANE_MODE + 1))
+I am always very scared of these macros.... Integer over/underflows
+are very easy to miss
+If we support a small number of frequencies I would rather see a
+function with a switch and a comment explaining where the number comes
+from.
 
-On 3/10/25 19:10, Dmitry Torokhov wrote:
-> Hi David,
-> 
-> On Sat, Mar 08, 2025 at 03:08:38PM +0100, David Heidelberg via B4 Relay wrote:
->> From: Caleb Connolly <caleb.connolly@linaro.org>
->>
->> Some third party rmi4-compatible ICs don't expose their PDT entries
->> very well. Add a few checks to skip duplicate entries as well as entries
->> for unsupported functions.
->>
->> This is required to support some phones with third party displays.
->>
->> Validated on a stock OnePlus 6T (original parts):
->> manufacturer: Synaptics, product: S3706B, fw id: 2852315
->>
->> Co-developed-by: methanal <baclofen@tuta.io>
->> Signed-off-by: methanal <baclofen@tuta.io>
->> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/input/rmi4/rmi_driver.c | 47 +++++++++++++++++++++++++++++++++++------
->>   drivers/input/rmi4/rmi_driver.h |  6 ++++++
->>   2 files changed, 47 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
->> index 2168b6cd7167334d44553c9c566f870a4e034179..51c23a407b2731d5b6eaefe9cae6288f97316e34 100644
->> --- a/drivers/input/rmi4/rmi_driver.c
->> +++ b/drivers/input/rmi4/rmi_driver.c
->> @@ -493,12 +493,44 @@ static void rmi_driver_copy_pdt_to_fd(const struct pdt_entry *pdt,
->>   	fd->function_version = pdt->function_version;
->>   }
->>   
->> +static bool rmi_pdt_entry_is_valid(struct rmi_device *rmi_dev,
->> +				   struct pdt_scan_state *state, u8 fn)
->> +{
->> +	unsigned int i;
->> +
->> +	switch (fn) {
->> +	case 0x01:
->> +	case 0x03:
->> +	case 0x11:
->> +	case 0x12:
->> +	case 0x30:
->> +	case 0x34:
->> +	case 0x3a:
->> +	case 0x54:
->> +	case 0x55:
-> 
-> This mean that we need to update this code any time there is new
-> function introduced. I'd rather we did not do that. The driver should be
-> able to handle unknown functions.
 
-Synaptics don't produce new RMI4 based tech anymore afaik, they have 
-moved on. So I don't think there will be new functions being added here.
-
-Unfortunately in my experience the fake touch ICs report completely 
-random values here, so there really isn't a good way to handle this 
-otherwise.
-
-What if this list rather than being hardcoded here was just using the 
-fn_handlers[] array from rmi_bus.c?
-
-Kind regards,
-> 
->> +		break;
->> +
->> +	default:
->> +		rmi_dbg(RMI_DEBUG_CORE, &rmi_dev->dev,
->> +			"PDT has unknown function number %#02x\n", fn);
->> +		return false;
->> +	}
->> +
->> +	for (i = 0; i < state->pdt_count; i++) {
->> +		if (state->pdts[i] == fn)
->> +			return false;
->> +	}
->> +
->> +	state->pdts[state->pdt_count++] = fn;
-> 
-> Duplicate detection could be handled thorough a bitmap.
-> 
-> Thanks.
-> 
-
--- 
-Caleb (they/them)
-
+> +
+>  static const char * const imx214_supply_name[] =3D {
+>         "vdda",
+>         "vddd",
+> @@ -299,15 +320,16 @@ static const struct cci_reg_sequence mode_4096x2304=
+[] =3D {
+>         { IMX214_REG_DIG_CROP_WIDTH, 4096 },
+>         { IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+>
+> -       { IMX214_REG_VTPXCK_DIV, 5 },
+> -       { IMX214_REG_VTSYCK_DIV, 2 },
+> -       { IMX214_REG_PREPLLCK_VT_DIV, 3 },
+> -       { IMX214_REG_PLL_VT_MPY, 150 },
+> -       { IMX214_REG_OPPXCK_DIV, 10 },
+> -       { IMX214_REG_OPSYCK_DIV, 1 },
+> +       { IMX214_REG_VTPXCK_DIV, IMX214_DEFAULT_VTPXCK_DIV },
+> +       { IMX214_REG_VTSYCK_DIV, IMX214_DEFAULT_VTSYCK_DIV },
+> +       { IMX214_REG_PREPLLCK_VT_DIV, IMX214_DEFAULT_PREPLLCK_VT_DIV },
+> +       { IMX214_REG_PLL_VT_MPY, IMX214_DEFAULT_PLL_VT_MPY },
+> +       { IMX214_REG_OPPXCK_DIV, IMX214_DEFAULT_OPPXCK_DIV },
+> +       { IMX214_REG_OPSYCK_DIV, IMX214_DEFAULT_OPSYCK_DIV },
+>         { IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+>
+> -       { IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) }=
+,
+> +       { IMX214_REG_REQ_LINK_BIT_RATE,
+> +               IMX214_LINK_BIT_RATE_MBPS(IMX214_LINK_BIT_RATE(IMX214_DEF=
+AULT_CLK_FREQ)) },
+>
+>         { CCI_REG8(0x3A03), 0x09 },
+>         { CCI_REG8(0x3A04), 0x50 },
+> @@ -362,15 +384,16 @@ static const struct cci_reg_sequence mode_1920x1080=
+[] =3D {
+>         { IMX214_REG_DIG_CROP_WIDTH, 1920 },
+>         { IMX214_REG_DIG_CROP_HEIGHT, 1080 },
+>
+> -       { IMX214_REG_VTPXCK_DIV, 5 },
+> -       { IMX214_REG_VTSYCK_DIV, 2 },
+> -       { IMX214_REG_PREPLLCK_VT_DIV, 3 },
+> -       { IMX214_REG_PLL_VT_MPY, 150 },
+> -       { IMX214_REG_OPPXCK_DIV, 10 },
+> -       { IMX214_REG_OPSYCK_DIV, 1 },
+> +       { IMX214_REG_VTPXCK_DIV, IMX214_DEFAULT_VTPXCK_DIV },
+> +       { IMX214_REG_VTSYCK_DIV, IMX214_DEFAULT_VTSYCK_DIV },
+> +       { IMX214_REG_PREPLLCK_VT_DIV, IMX214_DEFAULT_PREPLLCK_VT_DIV },
+> +       { IMX214_REG_PLL_VT_MPY, IMX214_DEFAULT_PLL_VT_MPY },
+> +       { IMX214_REG_OPPXCK_DIV, IMX214_DEFAULT_OPPXCK_DIV },
+> +       { IMX214_REG_OPSYCK_DIV, IMX214_DEFAULT_OPSYCK_DIV },
+>         { IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+>
+> -       { IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) }=
+,
+> +       { IMX214_REG_REQ_LINK_BIT_RATE,
+> +               IMX214_LINK_BIT_RATE_MBPS(IMX214_LINK_BIT_RATE(IMX214_DEF=
+AULT_CLK_FREQ)) },
+>
+>         { CCI_REG8(0x3A03), 0x04 },
+>         { CCI_REG8(0x3A04), 0xF8 },
+>
+> --
+> 2.48.1
+>
+>
