@@ -1,141 +1,85 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B875322B5A8
-	for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 09:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F871EBA09;
+	Tue, 11 Mar 2025 11:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741686139; cv=none; b=UpFoLewG77DqMY32d9wHIoU/OR9VUooXmnHm6sx0sCXoOraG0Rn+BL1uz7c6GD0jWooKIVCSojoxqc0YkJ/xgNb39WigYmt63yF22Av2hs97gEae2umzATclTqR3ml0+kFUlCnm9yFV4U0SsiP1uTAQZNxR69UlwITg1uVuGi6A=
+	t=1741692426; cv=none; b=Ioq4qWG+fTQ93J9KAQclC3JMjAnQrvZReWGNBqBKeFKSNtJ6RFw73DHrc6J8oRXw9vQn2D0bNyTND5SC49dxXpr37SmmkvgD5vzqjRy8nDvikrtB2JilRLr2F7v2im0uyojO7o6DmAEgC3ibCJLS0fHYc22KUpZa1R7PdWKIupY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741686139; c=relaxed/simple;
-	bh=6G6q9gJE+xvV3I97HSJ4wqR6R7EQnz4zmkCtLbU3u8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fJx2yJ5pwn6+Tk1XKSEJuiIGEoQI5urOJNnk4iaTnE6/SYY4dhJtcWBKC7UmHcxSnbjtgud43nI4yjCYsqrwJQ4f4OGYfYeqRzuIhbWcNtbBPOAfZqM8tTjoWLr55JZbEzZHECa4TyH0DvlyX5S5o+q9GLogrcUCYLICEOYwcV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R8JW6M/K; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1741692426; c=relaxed/simple;
+	bh=fw+Gn7lVTmFQHX2G3+L709XHoTRr/Pnl+NP5DaQZweU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=GMJJGMvSz17lyWPA0fOH+1EjqBFu0i6+LhA/3t43pfJBd5F0eM9gbsCxMo6RfBly1gMRCBYQWdpTcyppJ4l79baDv9iHkg+sSwBr0zaI4Z5/r4jJC4WCzrRstE1cpyQGY7kaCYZ8rV6BGfbbPxd2a+i30TwWiYaeejCFnUgD9M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=kq/UFAtI; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R8JW6M/K"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B1AHjd007884
-	for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 09:42:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jLmEFyG3LTIS/8bd0t7FZ5xsj2uzD9vnCxgeQMsx2zY=; b=R8JW6M/Km9+3D2yt
-	U5m03KYMgJEVx+EdhRU/jwhD0Tq7GY20BnJjfEYNpPfJ1mPZ6T+Gox91keNRBQa3
-	jbEAmgGnEGICxwSAkR4C4kk7ER0IGsr6jfDKlB4KtJ8fyZ9lEpZeo7K5AZhQlsG8
-	EnC8BENpjx/3Nda8xExLwiiYbOj7NI+SHZ7p8YE/SNMYC+7teCz4Q3Kg83vrGkMz
-	Gh33SQ6JNSCaxbbuFtCkxgVcagQy2JO9woK8u2+/mELTTX4cCDylpkwc+2q7ZPKi
-	EdKuJ2zO4YMF3X0FG3h5Ivs33QrM2IcJLQ0DLk6uvXo6yCw8Cpbwb75sU1Eq31QS
-	cT4cGQ==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ab95hasf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 09:42:16 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e8fec7ab4dso13340086d6.3
-        for <phone-devel@vger.kernel.org>; Tue, 11 Mar 2025 02:42:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741686135; x=1742290935;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jLmEFyG3LTIS/8bd0t7FZ5xsj2uzD9vnCxgeQMsx2zY=;
-        b=dPd0A1RtfrJzeaMy0JXJRDV9IOsDl69PhWxX+rlM3GSwJqY0L3Ji3t6vhny2187Oes
-         WG1OCMtI57vV9dA0qx2lsO4LWf1VDPUbfK2laARTYYUSLqJQkJgrz+DtVcnRz2KBTmpL
-         n0Q5R4HJr1f8D5yQIxt0J0AHodpNWCnnHkqXqMyMu8Vcj6epYRYZEof1EMVR4vhXbqcx
-         OVrlqZmsaVUXc0DAYHJLuAxH7nUv+eoinqnrTKrUWzoGnbRP6Jl556qVNRnqR2MCJm7l
-         suKBqkFVdQrm/A1BA+qwO1nDiQs0YZz+Yw7RIWry/OOqocvw/QxApj2HKjrCHb3gk3u9
-         P+8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUWfclitHHhe48I5XEHS6I3MRNOSHKcqY9Ujtr5NLXQYwua3pXizuexRx78WkMSOOEx/UzgJGpejcqJPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzys37LqptTRlWbTXc3k8073/CCctD0kkaJ4R9JWShSY1Na9I5P
-	StwE4NHMJhiM7GzakOIuroJdavJ+cyVY9Pe9Rs9lDHOwH9vFxLNy1IRDCe816nZfodyxec09TXd
-	+aPKufJITaTqrINJQYGPjqF0wGKLPcD4A/znsswmSPVlxpyDWkELOi4vIX7GGXA==
-X-Gm-Gg: ASbGncuGHqg6Rx9s/YvoA3Mc6blUgucHDH5ieRquiIOx7W3e/hb0bOBZWzMPcQ1AF69
-	RmjUexfOMpRlMAcIC9wfPO/ywCBHWubyINgX4+UAYPL+Kqu7F+Ux3xs7C4MCEw1v19CqCBcrsIE
-	XTF8HuhnoTleiLObKd2DRtDxixrIAfw8Yi0nxizJ7/2vhy6Gbsj/4/zkpbtMZTDkXz8fEgazOjQ
-	31xw69badnrFbaE19YyqzyxCoW1nhQzYXkzWy7oDNLuJSwFmYwpDiFdjrjHrj2Ixs9om5XHlDii
-	rkacpYHvmC9VxZ6sVvFEPVRuDysVxbBKj/qFmLC/1uV9g5PFsGSUt7ge6dRhSPkf+/I8Tg==
-X-Received: by 2002:ad4:5bcd:0:b0:6e8:fe16:4d42 with SMTP id 6a1803df08f44-6e908c726c7mr74383936d6.1.1741686135463;
-        Tue, 11 Mar 2025 02:42:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFGSytYD0gUExD8i7pJCZHGU18JQpmW4aJe9Ty5cJD0CL5USKGnlHQQ7o9cBjRcodkWS9b6EA==
-X-Received: by 2002:ad4:5bcd:0:b0:6e8:fe16:4d42 with SMTP id 6a1803df08f44-6e908c726c7mr74383746d6.1.1741686135118;
-        Tue, 11 Mar 2025 02:42:15 -0700 (PDT)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac239438117sm882353366b.26.2025.03.11.02.42.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 02:42:14 -0700 (PDT)
-Message-ID: <e73b3666-9f1d-40c0-afd5-5c0c83771e37@oss.qualcomm.com>
-Date: Tue, 11 Mar 2025 10:42:12 +0100
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="kq/UFAtI"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1741692355; x=1742992355;
+	bh=fw+Gn7lVTmFQHX2G3+L709XHoTRr/Pnl+NP5DaQZweU=; h=From;
+	b=kq/UFAtIqSMucu4HI3iZlAgtVwVhOzpMtt3eb7CHhn/imNiexj3QCUul1NKSNqu1U
+	 FU873nUOeHpOMiioeU4wvDD97JtGMD2nZbD3KfBHFnCgUofTx3391f5KJOCElu8bLE
+	 dJzi/4uoXuzh2oGTxM7Nv35t0wBJ71hFCbzry/3uA5H+pf9wpz028QYqymYrGlnFld
+	 UjDfmurqYFolZvHmGm5XFA7epvrzSLM/2x0XH9u+cYehQp91HaWaVLRY6VgszmiVH1
+	 ob+8uIBArw5xIdBC7vAZD8cp4mPkF3aQ82SQYjtH6YykaA3YnYURQYfo6nDcfs/GLo
+	 2HJ1J0ZW8G2nQ==
+Received: from localhost (c-85-230-82-121.bbcust.telenor.se [85.230.82.121])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 52BBPpFx004169
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 12:25:53 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add touchscreen
- node
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Jens Reidel <adrian@mainlining.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20250311-fp5-touchscreen-v1-1-4d80ad3e4dfc@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250311-fp5-touchscreen-v1-1-4d80ad3e4dfc@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Or0fGFwvT1ZIss4nx8pWb4xXGZNumdO8
-X-Authority-Analysis: v=2.4 cv=fvgmZE4f c=1 sm=1 tr=0 ts=67d00578 cx=c_pps a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=8DUqKY-xeV0tu31MSWsA:9
- a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-ORIG-GUID: Or0fGFwvT1ZIss4nx8pWb4xXGZNumdO8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_01,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503110065
+Date: Tue, 11 Mar 2025 12:25:56 +0100
+Message-Id: <D8DEEUPB16WF.154Y3AEPXT4L1@matfyz.cz>
+Cc: <phone-devel@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+        =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        <stable@vger.kernel.org>, "linux-mmc" <linux-mmc@vger.kernel.org>,
+        "LKML"
+ <linux-kernel@vger.kernel.org>,
+        "Daniel Mack" <daniel@zonque.org>,
+        "Haojian
+ Zhuang" <haojian.zhuang@gmail.com>,
+        "Robert Jarzmik"
+ <robert.jarzmik@free.fr>,
+        "Jisheng Zhang" <jszhang@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+To: "Adrian Hunter" <adrian.hunter@intel.com>,
+        "Ulf Hansson"
+ <ulf.hansson@linaro.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20250310140707.23459-1-balejk@matfyz.cz>
+ <727c857f-0234-417b-af5d-69b3ae064d0f@intel.com>
+In-Reply-To: <727c857f-0234-417b-af5d-69b3ae064d0f@intel.com>
 
-On 3/11/25 9:23 AM, Luca Weiss wrote:
-> Add a node for the GT9897 touchscreen found on this smartphone connected
-> via SPI.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> The series adding support for this chip (incl. dt-bindings) has been
-> applied on 2025-03-10 to the input tree:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/log/?h=next
-> ---
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> index 356cee8aeba90e21c11f46df924ed180bfce3160..35ce9dfca6f092a88d8873673ff57b591e210b02 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> @@ -1069,7 +1069,18 @@ &sdhc_2 {
->  &spi13 {
->  	status = "okay";
->  
-> -	/* Goodix touchscreen @ 0 */
-> +	touchscreen@0 {
-> +		compatible = "goodix,gt9897";
-> +		reg = <0>;
-> +		interrupt-parent = <&tlmm>;
-> +		interrupts = <81 IRQ_TYPE_LEVEL_LOW>;
+Adrian Hunter, 2025-03-11T09:34:28+02:00:
+> On 10/03/25 16:07, Karel Balej wrote:
+>> Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+>> prevent conversion of R1B responses to R1. Without this, the eMMC card
+>> in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+>
+> So that SoC is from 2015?
 
-interrupts-extended
+Rather at least 2014 as that's the release year of the phone.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Is there anything more recent using this driver?
 
-Konrad
+Looking at the in-tree DTs using the compatibles offered by it, it seems
+that not really.
+
+K. B.
