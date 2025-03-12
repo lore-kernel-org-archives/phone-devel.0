@@ -1,67 +1,65 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A672405F9
-	for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 12:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E0C23C8B5
+	for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 12:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741781117; cv=none; b=AP0ral+zq9iLyC47y89gAO5my1M9oNDja5ihkxEyAEdFFkrKUbOBv0JufpB1fJ/W16qBYs4A1wqK/ynuD9iwH72yvOKzU1YhVy0EzD16IXz92b47mr1Q1L+YgJGhc1ltwXzzzXY7z6p3oIYMdfmGIWAt9VNKEv6N3IfHRsQTFAc=
+	t=1741781117; cv=none; b=Y1bpo0ntHp0VHA92TzMR//Bc3qPi0OoOW0MiXuXfu/1bRyFV5p5dVCFGcFfOPA3mOH18arCVvsJTB3jXGlc9qJ9h0ukd2dxD91pBXOUuFPvi8XmbGAtd603WZEVvRCOgZNrozzsuyuG3vQlVNdlo9HVeUJYfrQiOcjWyJvFDz6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741781117; c=relaxed/simple;
-	bh=6cX5THqC6SB9r/MQ3znf5AsR5rUbbWbJXTQlgQ/Nqjw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P2Oo2t2e5ZIrSTqA67+JzyW56Oo4qIkVOCXJTN+orAZiHbGxnMYwq/NHVCCLqoD4FvCYYOx917MFg+thPR2xXFelNV4+34+ZyMQ1qXkZaKbYBFQFNzSFKUNZRaLyUrYXSjeAhiXtEmIeE8zF3+OnfY1PkGc1Y/m5WmX9zzSOmtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=jUEYxV89; arc=none smtp.client-ip=209.85.128.51
+	bh=s18H99Qg8l+CBnR31Xn4OrMryEza5CUNK6AGHXXA8F8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q0K8YXgwtNOS9WjPHZeJ+hnVH1nlVVysQ0me/MiNq88weAN5Qma9csPH3tWEG7Q2PN6fnKVliegVt9bGW7ZtRLM6OlHOuLwnmPn62qLqU/RSGsPzV9/5mN4dLQEHUPOWLxk91fAhzst0VWeB6G65BfmiWmsoOonJKoQXcJSuZyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=tcbA6y9K; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="jUEYxV89"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cfe574976so18140265e9.1
-        for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 05:05:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="tcbA6y9K"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-391342fc1f6so5252252f8f.1
+        for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 05:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1741781113; x=1742385913; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jCeb1ULglGuh9XYKx2CHU6Na6xTURFvEBVoDxNzGMCs=;
-        b=jUEYxV89keR7imtJY9IfCWeqsaVyYj00KMLe3E41pEckrOnNGETmtX+/sS1VKQgGOW
-         x7Cv+0J8Y0trxcynk2C2HmIKvKwxSKvB7dfQkuay/EkhtamASXGos3go6mQZeK1D09iR
-         SmsvtUq2dM8GL4lTKjBcBfaeikdlDIsUpuXlwK7DDMICBIGzxAzmuxQPJSx+X0/ek6qy
-         2LbQwrxnhQmHVf9yM+9/Anc4f17x6xz8S3cBeRJ8SHEL1hhorEMrgveCu93e1g2eJWdn
-         62oouNVNCGd6QeaJ6B+GRev7jD4umtSga29waY7nSQ1fvoOTgp58zC3EuRvNs/haqDJD
-         u7fw==
+        d=fairphone.com; s=fair; t=1741781112; x=1742385912; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y/qhahxkC87okdK8vzcBKv94aryasTsuguXF0TtMtHg=;
+        b=tcbA6y9Ko0x5I1zla4WCuRnqVdAGHiWV56EmoqmAiTYOT3WuCwBoQ4VGtLPjuJVqGq
+         0M0hUP4mow2RH2Uow/JT1qZUAQmsBHtMSw22Xuy5VMkriZx0YOBIFcxLarEODNswe+Cz
+         Y5/ZhPNWNMU+GNIrHBvt/GZ3Ei0cMLdwM3TKcrXpa7Mfyt4sb5uAxUAJslZGyr4AYWBs
+         5X8WojC0jVY73FZQokvzAUtgAmhADCZzl1LVzhZFahFn32SSRAj7/praH2Pf8apNrrnr
+         kPdI5fBcRi5CVPWiz6b57AVlKygKD0quuj98FNaqvrArrOBtHiewcmDC95Tp7hCDxnEJ
+         dPlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741781113; x=1742385913;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jCeb1ULglGuh9XYKx2CHU6Na6xTURFvEBVoDxNzGMCs=;
-        b=ZCKAyj/5xekRRQBoQxZ6Dol7vjzWqf1gn1ufx4GK+EuH4sHhJ6Jvxr0MfjwnB54IIl
-         cG+/IZ48INxIB7suz6rsf6d6Hg3drsaqTKlpSgjbkuvySjEXc3SWEc+FCVY0Ym+QXCt/
-         PkFRY2FYZfxsPD3QxmkTQ6gAjq8X+JmlXdgyvRXuclK/e4y/FlNECbJFo1zZYv/eG+iA
-         cWUoqEvGpwXs6Dr5pyQAz4BMCcOWRCvmk8+0mh90Wu/tM+x0tbpHz/rMLdLFkCEwhyCA
-         5Xqj2t6i1ilyuFdDoBRoWn66obju2feOmkuA7K6nYFdPTPqr6ipojfH52FNoAWsDiPb5
-         bGxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjfEnGeBcRBpKaWY48jr8SAJfmQ5IZr3o7nVh2TX2s5VTOtedt484em/xY7H+V7WGJMSz1gogp8KSQQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqIoXHm+sJByodCLjUSfmzQACrLx0FIofqnkSrYqq0dAwKSZcD
-	Otv0wFXFXZOPcrw9V1u5eYG8YkVK6fr1t1V6slO6KkeXXn7TUlW5I+gQKr/tMU8=
-X-Gm-Gg: ASbGncu5xaZLZX2zMioozJjJSQWtgnzhPcjQYJta3902vVcGgEwTlyj4L/yrRmA/D/m
-	gRJyG+druWOxa89YQcwVu15EFvXwE7Ji7V2zcGjYknQxeYKY/aem7MjBs69bXjvfgKQKJiJKQbk
-	7z0NEnltCj+jf9T2Tf2zJ+irjlhFfgXr25bpV51YfpBTZRrxg1PcnAGZbYmYEiBrs7UAyssbXA2
-	rrTOl/u9lWDzMeVXhoojnXhDBmTgoK2kCXv2GfudIsljEVKtmJxo5NiN6QJmv8mYxoxOzBFvMQ7
-	pLBcEujhfjTHEg35wu+oqsSPoiCCM2N4GgeCew708y0nyG3y6C5gHL9BEWZq9ODpHxcnzsrSEsg
-	EG0nyr59rTgWoIs9wpQ==
-X-Google-Smtp-Source: AGHT+IFI0x1QPiyLI3WY31duJJ6H2f4cFVzC4D17zbYy5/vSinoP4DDZ+b2H7r9wwYkgkoxL/ETrNw==
-X-Received: by 2002:a5d:6da8:0:b0:390:e535:8770 with SMTP id ffacd0b85a97d-392640c841amr9041223f8f.14.1741781113576;
-        Wed, 12 Mar 2025 05:05:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741781112; x=1742385912;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y/qhahxkC87okdK8vzcBKv94aryasTsuguXF0TtMtHg=;
+        b=alICcxjbR3pfblQXzUpHgDSpZZq1329TuPJ1+vUhPNraoLAJISASiu3DUGKPjKTziE
+         rAxPh8YjYNZ6RB7UZ5stC8rJGFAscjmU7c4VmgCVEiNMkhmNe1Ca/KJQFW07BFZqMOuS
+         LaAxNNUNl2djWxHoty9fRdXkyeZfeIpEfUAlqxj+WVYvO2dQAKDF9PynOiK8UN94XQBt
+         9KNxWFdh3BjAqz3wxVIjKCBsk0d2Nw17SMz0CfxgrxaLy+vgiRfmTa1jiYe8SwCOFzlj
+         zeCjptAx+JSztZtdx6zCaphPDzmoplvdcyoeGHurg1w2dxPFkXB2yWOSOg/lzZn+T6zt
+         hbrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWfqUje9Kg9rpSz66nLoWXn75hCLsLzs2DttUz1aJQmoUFBsBIvwlhjMtNdlUCw11uw/LoMo8XialfETA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5eZBb+gTPBGCr4RQbIMBhS+trah2Gv6hvGD9c5+dIF+ZzlET+
+	dkaHHuB8SGdjHeOI5vq45ZMBc3V/XUK7IP7Up6erZ18dlvbVXkH6rk191Xff/6c=
+X-Gm-Gg: ASbGncsaSR7m6JHtoTZGpLCOUnqcLjDU5TeMdJC2S1vfekBk057eF/UOPcec9tcxMC2
+	FTkD/iIHS9M/OK9FFhCrayXtEkVtE8HZKZRFRpfjELphXDG8F2lDsehlrnTSu7jW3ObEvzyi7YQ
+	7e2oVewLDt6cjlyTM7xaOaAFhutU37SiWOgi4bpjS6Gj4g9/vLyfudnmUOoGePmj2IPV5Gyn5CD
+	Dq0GfWtx0ffExl5xv0XzuL/GnGd3h+ohr6hHkx3mX8EMsOD4owQt8nnObUO3nGAIGTOz2itpR30
+	unbrdcYdOxNsSP4hKTns4zpN1B20mY237hBN4CnRslBHIRWlIL9vVWVeO+qJttcE1nLqPObZkP1
+	+ZQ8qPfMZn1iVWaTNiA==
+X-Google-Smtp-Source: AGHT+IGC4xxP+Z3Fdvh6MXVOV92VRfrBtvnApHrB/c9+vstSSu3u4t5eJnb+88jYtJPAaZNUMHPC5w==
+X-Received: by 2002:a05:6000:1542:b0:391:a43:8bb6 with SMTP id ffacd0b85a97d-39132d8cba3mr18453006f8f.33.1741781112389;
+        Wed, 12 Mar 2025 05:05:12 -0700 (PDT)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfb799fsm20810608f8f.2.2025.03.12.05.05.13
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfb799fsm20810608f8f.2.2025.03.12.05.05.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 05:05:13 -0700 (PDT)
+        Wed, 12 Mar 2025 05:05:12 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Wed, 12 Mar 2025 13:05:09 +0100
-Subject: [PATCH v2 2/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
- OCP96011 audio switch
+Subject: [PATCH v2 0/3] Fairphone 5 DisplayPort over USB-C support
+Date: Wed, 12 Mar 2025 13:05:07 +0100
+Message-Id: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,9 +68,11 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-fp5-pmic-glink-dp-v2-2-a55927749d77@fairphone.com>
-References: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
-In-Reply-To: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAHN40WcC/22NQQ6CMBBFr0Jm7Zh2kEpceQ/DAsoAE6VtWkM0h
+ LtbWLt8L/nvr5A4Cie4FStEXiSJdxnoVICdWjcySp8ZSFGpSdU4hArDLBbHl7gn9gFJm+5qVH3
+ pmCHvQuRBPkfz0WSeJL19/B4Xi97tXqsUkflTWzQqZGOM7svaVGTvQysxTN7x2foZmm3bfnUqg
+ Xy2AAAA
+X-Change-ID: 20231208-fp5-pmic-glink-dp-216b76084bee
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -83,41 +83,40 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
 
-Add a node for the OCP96011 on the board which is used to handle USB-C
-analog audio switch and handles the SBU mux for DisplayPort-over-USB-C.
+This series adds all the necessary bits to enable DisplayPort-out over
+USB-C on Fairphone 5.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+There's currently a dt validation error with this, not quite sure how to
+resolve this:
+
+  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: typec-mux@42: port:endpoint: Unevaluated properties are not allowed ('data-lanes' was unexpected)
+          from schema $id: http://devicetree.org/schemas/usb/fcs,fsa4480.yaml#
+
+See also this mail plus replies:
+* https://lore.kernel.org/linux-arm-msm/D0H3VE6RLM2I.MK2NT1P9N02O@fairphone.com/
+
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Changes in v2:
+- Move adding "*-switch;" properties already in earlier patches
+- Move wiring up SS USB & DP to SoC instead of being done in device
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250226-fp5-pmic-glink-dp-v1-0-e6661d38652c@fairphone.com
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index ea9f5517e8a083e37c4b7432322bd6d18fea84a5..e0470be9142caa4bac4285a191725bbd60e706fa 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -750,7 +750,19 @@ vreg_l7p: ldo7 {
- 	};
- 
- 	/* Pixelworks @ 26 */
--	/* FSA4480 USB audio switch @ 42 */
-+
-+	typec-mux@42 {
-+		compatible = "ocs,ocp96011", "fcs,fsa4480";
-+		reg = <0x42>;
-+
-+		interrupts-extended = <&tlmm 7 IRQ_TYPE_LEVEL_LOW>;
-+
-+		vcc-supply = <&vreg_bob>;
-+
-+		mode-switch;
-+		orientation-switch;
-+	};
-+
- 	/* AW86927FCR haptics @ 5a */
- };
- 
+---
+Luca Weiss (3):
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Add PTN36502 redriver
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Add OCP96011 audio switch
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Hook up DisplayPort over USB-C
 
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 103 +++++++++++++++++++--
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               |   9 +-
+ 2 files changed, 104 insertions(+), 8 deletions(-)
+---
+base-commit: dcb11dc4740372cd4cce0b763a4a8ec4e9f347a6
+change-id: 20231208-fp5-pmic-glink-dp-216b76084bee
+
+Best regards,
 -- 
-2.48.1
+Luca Weiss <luca.weiss@fairphone.com>
 
