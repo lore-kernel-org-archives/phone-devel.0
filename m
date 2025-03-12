@@ -1,142 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02882641F1;
-	Tue, 11 Mar 2025 21:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157C51DE4CE;
+	Wed, 12 Mar 2025 07:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741728346; cv=none; b=iemZTWPU7cAngJqaMlNkTnjwwYwmjdBHkIyGE2YeujBhCulQylDyhsIgWeAMKtPnGP267T4BndYv3RW2zGmLaS+XAl5uqGAo8xReXH5Y9L48LcBZbe6AD3mxTMVY6cWSouWlnqHRCTdfvwZHKFOtjFau1E1k7Ng46JrzOTLkTk0=
+	t=1741763988; cv=none; b=LSp/pCJ+3E66VmndmPUKOCiWnZ9X4GLwQHc4JSViEZax8jlVhDPM3sLb8iMiFD+QR34Eeezhz8xS9qHANIiE7IbN4tNsQbByUep4U8kxU8rrY9m3dSERwjVCD8nHi8RZpSn457Qzqtr37hcLm8W4EFlkb9+A4SGhi4CV6sa/odg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741728346; c=relaxed/simple;
-	bh=Bg9VsBBRHOfLmNm09EUWZrCfteZ85VpMbsFjxXqE9Xc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gfDRMSlgOkBVLuRwWd0XJFiBbY1f+4Cr4Yoi9IBHPFB6lsODpdomKbLu/jk6MDdlFuEKCIE128+7ieTA8TA32DpwNdgtKA9fzn7JVGvS6rknVHVP9vPT3oJDJuNvhR8K4B6BDLCmtRpbezQR+zRmT8KZ12Y5j1mXLDwf3m9BQCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp6x/oTB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741763988; c=relaxed/simple;
+	bh=6Vp2RbvbiDxsKzgbBgmKIz+1OnS+5xYMUafOAmv8oO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E//SfPBQxE7akf0wOuXbcxipcdFUQWIaVn3VZEXurR2Mz7vycRoLr2PPd0cvJ2jZ51v5T5kdg6gWSMUWNdbsQNmETXYlmlr9DtsNinr8Q89TTFFAr5vTQfgQRgx8Y+g+10YKF9sBB+RpHA0ZI65HxWEdTrgXzbSPQYf1/xyW0pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwkpk1x+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp6x/oTB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25301C4CEE9;
-	Tue, 11 Mar 2025 21:25:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwkpk1x+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4903BC4CEE3;
+	Wed, 12 Mar 2025 07:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741728346;
-	bh=Bg9VsBBRHOfLmNm09EUWZrCfteZ85VpMbsFjxXqE9Xc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gp6x/oTBcq4h/M/tDtiZMKq+Up6etA9mewfOZDWZgTbOh2TejYyQtfD9Isi3H+R7J
-	 OPpbZQpOfUwNFJjZ+CKmYMRLlHjnu76LucC6u+x1//NOq2jrKauQI8pj7/q0AHAmhf
-	 1qnkHLljpt6na9/k7F/T8YlvK2JNqvjsKYOtpOCY7gFlFLsSCpJROPPHYwXx07NRsz
-	 CYF/+boqQ1AiLdhBziqOrCGNfrNxTzlVf42fEK5zBdsOFRqzF9dvBiW95dNLM9HtL1
-	 NHUl6WRgvCK2v6htLW4Qzt1LzvUcfPPnsezgm9SbypcK3ZPUlvvpNcIT9VC3NxxgiX
-	 D5T08rLPwlbNg==
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8670fd79990so2497204241.3;
-        Tue, 11 Mar 2025 14:25:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU/VkRlfGP7qeZeQ2TyanrzCmlZyi8N8anEAZatIBxolhs7255q+m5nmn3NDhgSxSR+mfBJLm/eaz1sXLs=@vger.kernel.org, AJvYcCUklD4KK0Ifu+r40FRRKUPzBcqe6sM+Pd2zVw5bnVa4ZrHKFTShQaILc6Nv0BY8hlf1XiDplwrS98eWvuM=@vger.kernel.org, AJvYcCVqwJhJAQEz1C2QIjRHy6DOQFH7HUza79SpfuU5TMHTCqOKIKbqg3eMU6rPSydlDEDTqAcWd9vzgjjSLmM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz12CzuOeaqZ6E7594bShKaxMMz/HTDZib5E1O32FFzxVfO55JS
-	rc3YFeYfeGGkYz7P+aJe2T8iPIYlkMqN6CuiI1X4FRpmHladxGHByzo8Wp/PK4IJvXrFKZidutm
-	Pb4v9/EhpHemImPybdCio/I5M0KE=
-X-Google-Smtp-Source: AGHT+IFFdWHYFEZEhxswLplJ46GlbaNVr+3GvHhID/nT4pmSOUIKlHfxaUq5alVyQXDiyvrTNKCOnVk5cPlwC3Pblc8=
-X-Received: by 2002:a05:6102:578f:b0:4bb:e8c5:b172 with SMTP id
- ada2fe7eead31-4c30a5e4f1fmr14782892137.8.1741728345318; Tue, 11 Mar 2025
- 14:25:45 -0700 (PDT)
+	s=k20201202; t=1741763987;
+	bh=6Vp2RbvbiDxsKzgbBgmKIz+1OnS+5xYMUafOAmv8oO8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mwkpk1x+a3IZVy+9eamRc7ExEz6XtNhstl20LiJEAA0+mtnya75dTqedvDXckFFpC
+	 LJc7kLbkG6SVty+WVQscA7HM5X4pfY2YAcmGgeMf3gGAxMsrOzG+ypQHP1SE54SdHz
+	 Uq2fqlUkLNOvm/k/8TFF/nIoobBBn5zRmh8nQRutCTbVBVdx9x57kSuCJ5+lzqHjBr
+	 sQH9nCbxxOFuMGPxq4aKLFkScecX0NzggxirqoLb+tTGQ8nMP961Qa9XFQ3ixaTAKZ
+	 //MkmI4ytuX7dKPoRqzWoVewXrzwtitLVmVeEqryMfT5Hk0X9YJzQLGSkjW2sXnm1x
+	 RCPbMvHr/hvgA==
+Received: by venus (Postfix, from userid 1000)
+	id 55F8E180692; Wed, 12 Mar 2025 08:19:44 +0100 (CET)
+Date: Wed, 12 Mar 2025 08:19:44 +0100
+From: Sebastian Reichel <sre@kernel.org>
+To: Sicelo <absicsz@gmail.com>
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>, pali@kernel.org, 
+	linux-pm@vger.kernel.org, maemo-leste@lists.dyne.org, phone-devel@vger.kernel.org, 
+	Discussions about the Letux Kernel <letux-kernel@openphoenux.org>, akemnade@kernel.org
+Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
+Message-ID: <b6xa7az5ohopf52ykp3quomkqpo5xmt2fratcmcw3efmkpa6nm@eth4wv4wm577>
+References: <20250207220605.106768-1-absicsz@gmail.com>
+ <CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
+ <511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
+ <Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
+ <C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
+ <Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
+ <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
+ <Z88g2yBuRkCl_yAu@tp440p.steeds.sam>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu> <20250308-imx214_clk_freq-v1-4-467a4c083c35@apitzsch.eu>
-In-Reply-To: <20250308-imx214_clk_freq-v1-4-467a4c083c35@apitzsch.eu>
-From: Ricardo Ribalda Delgado <ribalda@kernel.org>
-Date: Tue, 11 Mar 2025 22:25:28 +0100
-X-Gmail-Original-Message-ID: <CAPybu_1R_Ph7ELfX8gTgJi0E2YebjZj90eUc1KhAFhL_dfe6pg@mail.gmail.com>
-X-Gm-Features: AQ5f1JqPL65RgOB7xkGUhaaVr-uGZ7Hzaai7x5nmm0SNIeiCwkaDnQLif3Cd0lA
-Message-ID: <CAPybu_1R_Ph7ELfX8gTgJi0E2YebjZj90eUc1KhAFhL_dfe6pg@mail.gmail.com>
-Subject: Re: [PATCH RESEND 4/4] media: i2c: imx214: Add support for 23.88MHz clock
-To: git@apitzsch.eu
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z7lfqwgmcoaxlzdh"
+Content-Disposition: inline
+In-Reply-To: <Z88g2yBuRkCl_yAu@tp440p.steeds.sam>
+
+
+--z7lfqwgmcoaxlzdh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
+MIME-Version: 1.0
 
-On Sat, Mar 8, 2025 at 10:48=E2=80=AFPM Andr=C3=A9 Apitzsch via B4 Relay
-<devnull+git.apitzsch.eu@kernel.org> wrote:
->
-> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
->
-> Qualcomm MSM8916 devices only provide an external clock of 23.88MHz.
-> Make the sensor usable by those devices by adding support for this
-> frequency.
->
+Hi,
 
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-and after this patch  imx214->clk_params =3D &imx214_clk_params[1];
+On Mon, Mar 10, 2025 at 07:26:51PM +0200, Sicelo wrote:
+> Hi Sebastian
+>=20
+> On Fri, Feb 28, 2025 at 11:01:35AM +0100, H. Nikolaus Schaller wrote:
+> > > It is in linux-next [0]. Not sure if that counts?
+> >=20
+> > Ah, I didn't recognize that (and must admit that I did not search throu=
+gh
+> > linux-next). Sometimes maintainers close a discussion by telling that it
+> > has been merged.
+> >=20
+> > Maybe Sebastian can replace it or recommends a fixup.
+> >=20
+> > > I guess the only option now is to submit a follow-up fix?
+>=20
+> How would you like me to correct the bugs I introduced with the patch in
+> the subject of this email?
+>=20
+> I guess it will either be:
+>=20
+> - submit v2 against linux-power-supply/master or
+>   linux-power-supply/fixes (so the bad commit will be removed from
+>   future history)
+> - submit a new patch against linux-power-supply/for-next (so the bad
+>   commit will always be in the history)
+> - use a different solution you suggest
+>=20
+> I apologize for introducing the bug and have taken the time to more
+> thoroughly test the changes, with help from HNS. I have the patch ready
+> now, and just need to be sure how to submit it.
+>=20
+> Kind Regards
+> Sicelo A. Mhlongo
 
-Thanks for the set!
+Sorry for the delayed response. You need to prepare a follow-up
+patch against power-supply's for-next branch. Dropping the broken
+patch would require rebasing the whole branch. The only options
+you have are:
 
+1. Revert the original broken patch with a proper long description,
+   then create a new fix
+2. Add a fix on top of the broken fix
 
-> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> ---
->  drivers/media/i2c/imx214.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index c3d55259d6fd1c4ca96f52833864bdfe6bedf13a..e24c76e01ab5070c073d082b1=
-a2969cff3e17f9f 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -30,7 +30,10 @@
->
->  #define IMX214_REG_FAST_STANDBY_CTRL   CCI_REG8(0x0106)
->
-> +#define IMX214_CLK_FREQ_23880KHZ       23880000
->  #define IMX214_CLK_FREQ_24000KHZ       24000000
-> +
-> +#define IMX214_LINK_FREQ_597MHZ                597000000
->  #define IMX214_LINK_FREQ_600MHZ                600000000
->  /* Keep wrong link frequency for backward compatibility */
->  #define IMX214_DEFAULT_LINK_FREQ_LEGACY        480000000
-> @@ -233,6 +236,7 @@ static const char * const imx214_supply_name[] =3D {
->  #define IMX214_NUM_SUPPLIES ARRAY_SIZE(imx214_supply_name)
->
->  static const s64 link_freq[] =3D {
-> +       IMX214_LINK_FREQ_597MHZ,
->         IMX214_LINK_FREQ_600MHZ,
->  };
->
-> @@ -242,6 +246,10 @@ struct imx214_clk_params {
->  };
->
->  static const struct imx214_clk_params imx214_clk_params[] =3D {
-> +       {
-> +               .clk_freq =3D IMX214_CLK_FREQ_23880KHZ,
-> +               .link_freq =3D IMX214_LINK_FREQ_597MHZ,
-> +       },
->         {
->                 .clk_freq =3D IMX214_CLK_FREQ_24000KHZ,
->                 .link_freq =3D IMX214_LINK_FREQ_600MHZ,
-> @@ -1320,8 +1328,7 @@ static int imx214_parse_fwnode(struct device *dev, =
-struct imx214 *imx214)
->
->         if (i =3D=3D bus_cfg.nr_of_link_frequencies)
->                 ret =3D dev_err_probe(dev, -EINVAL,
-> -                                   "link-frequencies %d not supported, p=
-lease review your DT\n",
-> -                                   IMX214_LINK_FREQ_600MHZ);
-> +                                   "provided link-frequencies not suppor=
-ted, please review your DT\n");
->
->  done:
->         v4l2_fwnode_endpoint_free(&bus_cfg);
-> @@ -1359,6 +1366,7 @@ static int imx214_probe(struct i2c_client *client)
->         }
->
->         switch (xclk_freq) {
-> +       case IMX214_CLK_FREQ_23880KHZ:
->         case IMX214_CLK_FREQ_24000KHZ:
->                 if (imx214->clk_params->clk_freq !=3D xclk_freq)
->                         return dev_err_probe(imx214->dev, -EINVAL,
->
-> --
-> 2.48.1
->
->
+Please don't forget to add
+
+Fixes: f3974aca381e ("power: supply: bq27xxx: do not report bogus zero valu=
+es")
+
+Thanks,
+
+-- Sebastian
+
+--z7lfqwgmcoaxlzdh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmfRNYwACgkQ2O7X88g7
++powdA//VVZrqIGw7HsCPdNa9ZHEL6GhoS5krlBLUdqqEsxEd8w8xi1BGT8V3wox
+++Jx5eU3I/siOr9aLQzBXQCcqfzbdDFUzHEFKIS7tzgsTS9jBklLE5Z4DrZ0IWVe
+BtTPR8tO+EuxxtBD1COQZR2TouGflHC8krcfQ47vwmEeP5FZKXayYNgNr1zsncQG
+JzTrCe8D9Tq1C4ESnfDKZbFxy21dyUXs5UH3/AlI8IlQhozT1UNN78Y34v4QbT8d
+VQl8CGr12w2JfYvTxywl4LMyY1Lyx5CW+a/mHKHltQEXlSwABFY6T3Yxa95DEKvE
+6SLrBQrleB+FIu7S6647DiddoDt+cccRGjFCvDqBfnpsOQVCRUj6Qj9Cq8FvG9rw
+szAURGenXUqPy76LFW+09CTbzTSCcj1/i92Sk07sObpUQXyNsCfrjiihoYrNg4Hh
+ftKijYIg++CTqd94ExKMxSSiG/41e3mjtTSzcO0C/vPyNhkjlKzMddq9jMD0lDzX
+YCRaS5GopNvZpMeVgVTJ/hYv31rc7C5tKPgJ7996BmWMVWdtTd7f3TzehoB9GUeu
+U2cl0KEU6v5GAXgVQAF+20eexd8em5kR2KGSJPej2WNR1l7Q6ZusTh8rodR+8fA4
+2JwgWNG+Kb1XEPB+LA4TQuy390d4OaWywU1N7/YMb99qr9LSRP0=
+=xTJ+
+-----END PGP SIGNATURE-----
+
+--z7lfqwgmcoaxlzdh--
