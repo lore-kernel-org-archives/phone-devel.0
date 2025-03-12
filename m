@@ -1,78 +1,43 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018D02417C8;
-	Wed, 12 Mar 2025 12:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF57250BFC;
+	Wed, 12 Mar 2025 19:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741782499; cv=none; b=ehHUof4gUHHtkg7PFw3v0v1E6ThV1Wq9exWY+wyhyFuk0lBBJLA8RQDxNQ/33bJsWyd0SF8LBJVG6NoXswfmsg846hO2WNFj/CfYjS98rXw8L8lkDTVNPDzm/le4HhNhk1XEiDdXfPKwBjY2lSxA4WUuKEfBOZJ2/dOb8NbM9No=
+	t=1741806384; cv=none; b=cKJ8cD8zF2Hjh2ZvZxw7EgfxzgxwnKrHdI19dQwb8BPH2L41K4M+djBzzefUdY3JQkknsxOcVLRmSHChap2eMpscBLhxVsD+GHmgCFIFtWxsUNDbrG3uTy7jsu+k+q8d6CU9FNg1AjlrmQAtHMSFcohFbu146lTxo+k5yv5Kcu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741782499; c=relaxed/simple;
-	bh=JONbt992A2++n0cV4SiUFBSFKKZy3qKjS2WQIdDkxrs=;
+	s=arc-20240116; t=1741806384; c=relaxed/simple;
+	bh=59hxJxczmtJRD9AjP9dImrpiPr5PKifeoERgMGmkCUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a880GG4uvaTYH62F+n5WQy+xD5omnjYX9SbaiheMg22zgsTfDOmms0Ba9vRylsba/wa2Fkg2VaUxm7pVtRwv8q05DJ5Fl8Ky3a2wFAD65wC3IZakhy8a+E0W+bMU3CJzTywMUu78JdB7+n2kmQ1eKUd/wPpmQYJV00kQYTL/Kjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFTWDbPU; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ii8KG2Dvk0U+dbRnEklbwW/qeZkhwzMegQUcfYYV4tQRh3sXMdR1ww/++gpUFUkFDEiibFpgx61bwPy9dRNJWVKUUHawTTyylEy49GzgGhn476vY4nycxHjxtN0ha4xO2JbeH1JhHlPlakzZraPLWPhf3XFZJemeF44Nu1TwkQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byrug321; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFTWDbPU"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac298c8fa50so519677366b.1;
-        Wed, 12 Mar 2025 05:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741782496; x=1742387296; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=udcJZmwY9vygJ+nqWIO5M9M9ZBnqe+zAARQm+nnDFyU=;
-        b=LFTWDbPUpNV64aR/TK/Wpp8krMqZyoE+1nVQDUSg22k9IzM2cZwNRIMo3kZUe+ImRj
-         N6ZfpzZWOU0ZGsMCm/OjTRBYBQ/ri1t/ZPAlWlk8kTOdsPO7IOsw0gE9Ls7HYzVNtJPZ
-         hHftrwTU2J9LqwCXYhagFZpsXfFNIz448qdch2Ui20gxXUB1AT65qq8t2OkG+XaimsWE
-         xS1ggLV8LkShe5uysLdGSaS8Bg6yZ0V8RI/Y6nGi+4ojqiDVQ7wxmpIv4QpUVgsfFE2s
-         paAUtI/OFgsNdbkVVzv/9oKMpARBPM7bZmHqEAAqj5upd5zR6KNgbBfKVyDOzZE/XTGk
-         bIcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741782496; x=1742387296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=udcJZmwY9vygJ+nqWIO5M9M9ZBnqe+zAARQm+nnDFyU=;
-        b=IkTNVqMczmX2lkjP/6XIdgvdtNhWKUvmavGFiMNxoXc8G2OQtV4EeO58hKAZz+T26P
-         /Sn37y0zjvhiavYvNicnkJK2gwamDJXufscq8qwu4wMLYMZ/hU/esignm4UXTeIkfUaU
-         BIbz2Sco9xXvUlq/NyYw2gQ4ldfmRu+l0RGn3zsU5h+GxzzC5WeT+i/fhxdUt51mNoaj
-         ji/ODMpn9PVIS/PHl58gdX98R6yJSZD0GuosUb570sv/s0MPTmiaO1AdYoIWO+vy3kFD
-         dExe7ffMjNqPXwVFxJIPLOdkVG6lptnIkM/ZKudwJwC5tkTgiVoQTBbqxkAi2qFYrzIj
-         tu0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUXF8EoypIgZDZkDIsMjsOWO6QEoZak5HZl/ChwUQ4jLbUPDL58Lx6RXyBB6MY8mWMZTWwQ2MMkv41IFLQ=@vger.kernel.org, AJvYcCVmxcLpuxmNc5aKr4D7T4JvFfpPiwaN7MDHkZZCwvFlBDTmayN19cyj8CM15fmnqUC/8j5W59kl3g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyge1HLbjQGUKbuCnI8K855/oWlNBC6sJGVrpczc0gZZlLldSIa
-	27C9sGj/xkmUOVeCoPK1xM9gdjcSWNjDfrcpW+jBBH9mbB/ntseBaxrk06oc
-X-Gm-Gg: ASbGncv/w9fKzjfhC+mukRSJj3X6XL9lsyXDTLmiZYR1yuAj86g8UmELmJwYyaVc9ps
-	F0bcHN+gXtOJDK/8+mjl0N5O+xi+iUuCtbGRGrL3z0TP30kh8Bvg2MoXiEMjgea+2FCED++mSiG
-	/9N7tlwd0bpethA0WtEQktGQJB9sXp5eMwsSiL1ic5G3vkMfZuRr7lB83hvRDuiAlSVqvHlhs7G
-	VcgkskkOOp34Lnp78Fm2oFAWqfJkPzo5yAzP636WLJ82yFBrg5OsLPwt4KCWXBURRSwkkxVuFYN
-	oAvdn6ft4Ci8pl5PS3Jczt3g6YorgpxYbTuzeOrKIBk7IvY+ykgReGE=
-X-Google-Smtp-Source: AGHT+IFIg2lP7GRrUC4dOGs4mpOZWh5vYC4Zr3r96uhXiY5AlyYNsIBslsgU3YLwi+NCHNXhcXFbZg==
-X-Received: by 2002:a17:906:ef0a:b0:abf:6ebf:5500 with SMTP id a640c23a62f3a-ac25260afefmr519645966b.16.1741782495915;
-        Wed, 12 Mar 2025 05:28:15 -0700 (PDT)
-Received: from tp440p.steeds.sam ([69.63.64.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac254346ce8sm931347666b.177.2025.03.12.05.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 05:28:15 -0700 (PDT)
-Date: Wed, 12 Mar 2025 14:28:10 +0200
-From: Sicelo <absicsz@gmail.com>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Sebastian Reichel <sre@kernel.org>, pali@kernel.org,
-	linux-pm@vger.kernel.org, maemo-leste@lists.dyne.org,
-	phone-devel@vger.kernel.org,
-	Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-	akemnade@kernel.org
-Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
-Message-ID: <Z9F92vGJbyUSFgxa@tp440p.steeds.sam>
-References: <20250207220605.106768-1-absicsz@gmail.com>
- <CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
- <511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
- <Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
- <C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
- <Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
- <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byrug321"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED28C4CEDD;
+	Wed, 12 Mar 2025 19:06:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741806383;
+	bh=59hxJxczmtJRD9AjP9dImrpiPr5PKifeoERgMGmkCUQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=byrug321pPE95aUOrnvb48tmdWaZUxUkYcHtY6LmOiFMkfQ27+xqSQ2cNX+jN12TJ
+	 VnRrvMrShqavvQ8oXEIZdDnlYVKU2L65yInzOqs9/H6hAPIvHDdXBFKpZvFCzduABX
+	 4M8CbQwdmLlvkdve0N5etUfLwNNbxePJnsNzAM4bmjC17HOfA0ySypa6nbs0wpI6q7
+	 oUdWn4hQTS0OJWAkozP90xI/B0mwfYlo4cn7t3K7wFvwCvfXTTJlnnqAsQ6HSxDM+w
+	 MHKcmlKT/BzDnPuG+To2MwZPqdo6sP3q19hVr4oDzWNuwt2HfxmfsmbRrEa3Z7cVts
+	 b5vjrz0pOtysA==
+Date: Wed, 12 Mar 2025 21:06:18 +0200
+From: Dmitry Baryshkov <lumag@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	cros-qcom-dts-watchers@chromium.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/3] Fairphone 5 DisplayPort over USB-C support
+Message-ID: <y7dfv4mmtzkv2umvverkn6qvjt3tg7cz4jj4zsb4t6vu4heh4d@64zpkjihjc23>
+References: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -81,81 +46,52 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
+In-Reply-To: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
 
-Hi Nikolaus
+On Wed, Mar 12, 2025 at 01:05:07PM +0100, Luca Weiss wrote:
+> This series adds all the necessary bits to enable DisplayPort-out over
+> USB-C on Fairphone 5.
+> 
+> There's currently a dt validation error with this, not quite sure how to
+> resolve this:
+> 
+>   arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: typec-mux@42: port:endpoint: Unevaluated properties are not allowed ('data-lanes' was unexpected)
+>           from schema $id: http://devicetree.org/schemas/usb/fcs,fsa4480.yaml#
 
-On Fri, Feb 28, 2025 at 11:01:35AM +0100, H. Nikolaus Schaller wrote:
-> > 
-> > Thanks for the review. I will do more thorough testing over the weekend
-> > and send the patch.
+This comes from usb-switch.yaml, it requires that 'port' adheres to the
+/schemas/graph.yaml#/properties/port (which forbids extra properties).
+The usb-switch.yaml needs to be fixed to use port-base for that node.
 
-I have made a follow-up patch [0], which produces the following values
-on the N900:
+> 
+> See also this mail plus replies:
+> * https://lore.kernel.org/linux-arm-msm/D0H3VE6RLM2I.MK2NT1P9N02O@fairphone.com/
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes in v2:
+> - Move adding "*-switch;" properties already in earlier patches
+> - Move wiring up SS USB & DP to SoC instead of being done in device
+> - Pick up tags
+> - Link to v1: https://lore.kernel.org/r/20250226-fp5-pmic-glink-dp-v1-0-e6661d38652c@fairphone.com
+> 
+> ---
+> Luca Weiss (3):
+>       arm64: dts: qcom: qcm6490-fairphone-fp5: Add PTN36502 redriver
+>       arm64: dts: qcom: qcm6490-fairphone-fp5: Add OCP96011 audio switch
+>       arm64: dts: qcom: qcm6490-fairphone-fp5: Hook up DisplayPort over USB-C
+> 
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 103 +++++++++++++++++++--
+>  arch/arm64/boot/dts/qcom/sc7280.dtsi               |   9 +-
+>  2 files changed, 104 insertions(+), 8 deletions(-)
+> ---
+> base-commit: dcb11dc4740372cd4cce0b763a4a8ec4e9f347a6
+> change-id: 20231208-fp5-pmic-glink-dp-216b76084bee
+> 
+> Best regards,
+> -- 
+> Luca Weiss <luca.weiss@fairphone.com>
+> 
 
-bq27200 in 'normal' state:
-
-   DEVTYPE=power_supply
-   OF_NAME=bq27200
-   OF_FULLNAME=/ocp@68000000/i2c@48072000/bq27200@55
-   OF_COMPATIBLE_0=ti,bq27200
-   OF_COMPATIBLE_N=1
-   POWER_SUPPLY_NAME=bq27200-0
-   POWER_SUPPLY_TYPE=Battery
-   POWER_SUPPLY_STATUS=Discharging
-   POWER_SUPPLY_HEALTH=Calibration required
-   POWER_SUPPLY_PRESENT=1
-   POWER_SUPPLY_TECHNOLOGY=Li-ion
-   POWER_SUPPLY_CYCLE_COUNT=0
-   POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4064000
-   POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3000000
-   POWER_SUPPLY_VOLTAGE_NOW=3536000
-   POWER_SUPPLY_CURRENT_NOW=-432327
-   POWER_SUPPLY_POWER_AVG=1146100
-   POWER_SUPPLY_CHARGE_FULL_DESIGN=2056320
-   POWER_SUPPLY_CHARGE_FULL=2050560
-   POWER_SUPPLY_CHARGE_NOW=366680
-   POWER_SUPPLY_ENERGY_NOW=1207420
-   POWER_SUPPLY_CAPACITY=18
-   POWER_SUPPLY_CAPACITY_LEVEL=Normal
-   POWER_SUPPLY_TEMP=316
-   POWER_SUPPLY_TIME_TO_EMPTY_NOW=4140
-   POWER_SUPPLY_TIME_TO_EMPTY_AVG=3780
-   POWER_SUPPLY_TYPE=Battery
-   POWER_SUPPLY_MANUFACTURER=Texas Instruments
-
-bq27200 in 'broken' state:
-
-   DEVTYPE=power_supply
-   OF_NAME=bq27200
-   OF_FULLNAME=/ocp@68000000/i2c@48072000/bq27200@55
-   OF_COMPATIBLE_0=ti,bq27200
-   OF_COMPATIBLE_N=1
-   POWER_SUPPLY_NAME=bq27200-0
-   POWER_SUPPLY_TYPE=Battery
-   POWER_SUPPLY_STATUS=Discharging
-   POWER_SUPPLY_HEALTH=Calibration required
-   POWER_SUPPLY_PRESENT=1
-   POWER_SUPPLY_TECHNOLOGY=Li-ion
-   POWER_SUPPLY_CYCLE_COUNT=0
-   POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4064000
-   POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3000000
-   POWER_SUPPLY_VOLTAGE_NOW=3633000
-   POWER_SUPPLY_CURRENT_NOW=-397341
-   POWER_SUPPLY_POWER_AVG=1432260
-   POWER_SUPPLY_CHARGE_FULL_DESIGN=2056320
-   POWER_SUPPLY_CHARGE_FULL=2050560
-   POWER_SUPPLY_CAPACITY_LEVEL=Normal
-   POWER_SUPPLY_TEMP=299
-   POWER_SUPPLY_TYPE=Battery
-   POWER_SUPPLY_MANUFACTURER=Texas Instruments
-
-
-Hope this also works fine on your devices.
-
-Thanks and Regards
-Sicelo
-
-
-
-[0] https://lore.kernel.org/linux-pm/20250312121712.146109-1-absicsz@gmail.com/T/#t
+-- 
+With best wishes
+Dmitry
