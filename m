@@ -1,140 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157C51DE4CE;
-	Wed, 12 Mar 2025 07:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC1423F360
+	for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 11:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741763988; cv=none; b=LSp/pCJ+3E66VmndmPUKOCiWnZ9X4GLwQHc4JSViEZax8jlVhDPM3sLb8iMiFD+QR34Eeezhz8xS9qHANIiE7IbN4tNsQbByUep4U8kxU8rrY9m3dSERwjVCD8nHi8RZpSn457Qzqtr37hcLm8W4EFlkb9+A4SGhi4CV6sa/odg=
+	t=1741778109; cv=none; b=Dj2SnjsbJINl6dbk0ivApO8iGzQd22tu61WwCrfF5IHkhBEqhn0O8P+gObUL0lA1EWW+zRz/LRauycBGEEF+qP28JrvYZV5rsICK5whZBrqec1+AILlht7+us2qFWKixuFh2gwfAWRoL1qQx2jvOngCR01qAEN3u4UAzltWFYgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741763988; c=relaxed/simple;
-	bh=6Vp2RbvbiDxsKzgbBgmKIz+1OnS+5xYMUafOAmv8oO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E//SfPBQxE7akf0wOuXbcxipcdFUQWIaVn3VZEXurR2Mz7vycRoLr2PPd0cvJ2jZ51v5T5kdg6gWSMUWNdbsQNmETXYlmlr9DtsNinr8Q89TTFFAr5vTQfgQRgx8Y+g+10YKF9sBB+RpHA0ZI65HxWEdTrgXzbSPQYf1/xyW0pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwkpk1x+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741778109; c=relaxed/simple;
+	bh=hzIkYqCNiMo80kaSTJ9vM3Dwk3kxjnW9SITUVTmj8p8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bEfbbOESG6R85382eSNRPRNApr7qzif0ZimALXniNwsRnIhzxBzaqu1W21neQjP2Q5c1oopEIe55MaxYbf+sxSVBMjTbZ3vYLOSXEtgTEb31HVWGAbpgtGyX16TSA+ygEqMF7Np19p7veWQGBKmfrME8yBA8HNoxmyLi07nQmXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=gab5QYhm; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwkpk1x+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4903BC4CEE3;
-	Wed, 12 Mar 2025 07:19:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741763987;
-	bh=6Vp2RbvbiDxsKzgbBgmKIz+1OnS+5xYMUafOAmv8oO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mwkpk1x+a3IZVy+9eamRc7ExEz6XtNhstl20LiJEAA0+mtnya75dTqedvDXckFFpC
-	 LJc7kLbkG6SVty+WVQscA7HM5X4pfY2YAcmGgeMf3gGAxMsrOzG+ypQHP1SE54SdHz
-	 Uq2fqlUkLNOvm/k/8TFF/nIoobBBn5zRmh8nQRutCTbVBVdx9x57kSuCJ5+lzqHjBr
-	 sQH9nCbxxOFuMGPxq4aKLFkScecX0NzggxirqoLb+tTGQ8nMP961Qa9XFQ3ixaTAKZ
-	 //MkmI4ytuX7dKPoRqzWoVewXrzwtitLVmVeEqryMfT5Hk0X9YJzQLGSkjW2sXnm1x
-	 RCPbMvHr/hvgA==
-Received: by venus (Postfix, from userid 1000)
-	id 55F8E180692; Wed, 12 Mar 2025 08:19:44 +0100 (CET)
-Date: Wed, 12 Mar 2025 08:19:44 +0100
-From: Sebastian Reichel <sre@kernel.org>
-To: Sicelo <absicsz@gmail.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>, pali@kernel.org, 
-	linux-pm@vger.kernel.org, maemo-leste@lists.dyne.org, phone-devel@vger.kernel.org, 
-	Discussions about the Letux Kernel <letux-kernel@openphoenux.org>, akemnade@kernel.org
-Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
-Message-ID: <b6xa7az5ohopf52ykp3quomkqpo5xmt2fratcmcw3efmkpa6nm@eth4wv4wm577>
-References: <20250207220605.106768-1-absicsz@gmail.com>
- <CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
- <511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
- <Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
- <C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
- <Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
- <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
- <Z88g2yBuRkCl_yAu@tp440p.steeds.sam>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="gab5QYhm"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ac2a089fbbdso159391166b.1
+        for <phone-devel@vger.kernel.org>; Wed, 12 Mar 2025 04:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1741778105; x=1742382905; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lrye5RapocrcbRYwFATS9q/NOK1mFM++X2eM3TdS8l4=;
+        b=gab5QYhmj5E6mXJWr6tomW+oQwDECS3Hvb2RRVP6BuILFrh86W76eM4HuYEmwr/VSk
+         M78v3ap6W0ZroEbU2K7mFOYg10oYoSKkc9Jl9ASYa0+9NzGDF6x9F9/Dex/PwyOV/PAD
+         BJSnyr+ppkgO466FaFyW481xoeJvE340w69yCNznNbNcsSHq9rSeh3MJxYZ7I2+r5Cl7
+         Ixs+miYaXBP03jChomiYu74RBLPy5T/qda34b73OrLQRcYNnV4ikdQeiB6+r4ldZrIKO
+         d6iLld4i1L2kQTW3Eh9dXffh4Qe4EZh9JpQxWfQC7cJiGFoC3FF3KM+/mcWfo0ITqqi1
+         QK3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741778105; x=1742382905;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lrye5RapocrcbRYwFATS9q/NOK1mFM++X2eM3TdS8l4=;
+        b=j9aCqfIyYKCVQJbwXcMR1zx0ZYLrhDgQ5qVf0nv/DR/olG9sI++v+ZSQiS6oCvjkNA
+         AqsgbEm8xLyb3EuYHCpbAZsIZPcw9c+pjhYE4by/HEHrmAUyhcml9yxCqxPROK4hA2Ae
+         i0Gj/zXKxrMWkeoHnSQVQvtMybNMT4ldrvlGzdj8AerKxRB/ZyfFpRXk9oQTvG5KkM9Z
+         s5hZH5VJtTDeoYX5raIi9iTnAUAD9jL92s+fSgUvRqpAzFnwcP8sjfBwfurGHRvxGQj9
+         tMbUbm6bxNje2QyIk9MGihY0M+bDrbMcHJzJOMiRJh1mjLk/ev2CCjvUS3K9WM0muYkv
+         yx5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU7eqs1GDVBTYhRFnLH/UuqODFWGuTSmXH5BT32Cy+ajCAaxCtcR0dVHxyzcHDNCUOTfcRSoGlYTduTcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA5jLL2Y9SEzoEJiUHlJhr5YBX2Pj37yHJ8jaAcryaj+OVUMOt
+	vpV3xF2ZOG6k2YG/ltRt733reZvOUmC/LqHTFSaowvdUDNxs6FcaEGWLzg1VXTU=
+X-Gm-Gg: ASbGncvNknK/RdpHQMZ6NixLLVGNAcxYr/lXtOdA/eN+Jj5Sh/ibv1yd+Swyf0btw6y
+	uDXFZDSl9VMEvgHQiIGzCE2BIJQs1ULwAokPyXaQkJ4Xl4c1JHdcCtU5uMhrw89CtG4YFNR2QsL
+	uAJncg1WN0cByfDcChbUFDKokklSAW1eoQUzocl2qaLCXT7wV3aVrE7OdDOVozdPazMnZxdNcFM
+	KCLgjQ2aRAtwzWCKtMmwr5M51TyAhyxyXqVZKycmPjYxBWN53oIG+4tdW2i4MMl9Ieyq7TINSAW
+	BvhM/tv9t5LNS6megSMkBtUj8JBUOPinRveiwGMzxWgJuMyNfzkarfPAzMN5HqZXsTX4bxg204p
+	92YMZPAPIPi7wgYf8bw==
+X-Google-Smtp-Source: AGHT+IHnclcokenSW0BD2xU3JDOUI3YTaP87OCmSR72jOip2Alz/yxNoSA2D0hIW7QuWvkEWzMqRrQ==
+X-Received: by 2002:a17:907:82a0:b0:ac2:3a1:5a81 with SMTP id a640c23a62f3a-ac2ba53c9a5mr744096066b.26.1741778104396;
+        Wed, 12 Mar 2025 04:15:04 -0700 (PDT)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2a89f381fsm414129666b.169.2025.03.12.04.15.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 04:15:04 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Wed, 12 Mar 2025 12:14:59 +0100
+Subject: [PATCH v2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
+ touchscreen node
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="z7lfqwgmcoaxlzdh"
-Content-Disposition: inline
-In-Reply-To: <Z88g2yBuRkCl_yAu@tp440p.steeds.sam>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250312-fp5-touchscreen-v2-1-4bed270e0065@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIALJs0WcC/2WNOw7CMBAFrxJtjZE/SQRUuQdKYdZrvAV2ZIcIF
+ OXumFBSzkhv3gqFMlOBS7NCpoULp1hBHxrAYOOdBLvKoKXupJZG+KkTc3piKJiJokDsz71UpnX
+ 2BnU1ZfL82ovXsXLgMqf83g8W9bW/llHqr7UooUTrTtI6Q63zOHjLeQop0hHTA8Zt2z6Cr18gs
+ gAAAA==
+X-Change-ID: 20250203-fp5-touchscreen-cc6960134dab
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jens Reidel <adrian@mainlining.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
+Add a node for the GT9897 touchscreen found on this smartphone connected
+via SPI.
 
---z7lfqwgmcoaxlzdh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
-MIME-Version: 1.0
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+- Use interrupts-extended for irq (Konrad)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250311-fp5-touchscreen-v1-1-4d80ad3e4dfc@fairphone.com
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-Hi,
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 356cee8aeba90e21c11f46df924ed180bfce3160..0f1c83822f66f95b05d851a5d28b418ff048b09d 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -1069,7 +1069,17 @@ &sdhc_2 {
+ &spi13 {
+ 	status = "okay";
+ 
+-	/* Goodix touchscreen @ 0 */
++	touchscreen@0 {
++		compatible = "goodix,gt9897";
++		reg = <0>;
++		interrupts-extended = <&tlmm 81 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&tlmm 105 GPIO_ACTIVE_LOW>;
++		avdd-supply = <&vreg_l3c>;
++		vddio-supply = <&vreg_l2c>;
++		spi-max-frequency = <1000000>;
++		touchscreen-size-x = <1224>;
++		touchscreen-size-y = <2700>;
++	};
+ };
+ 
+ &tlmm {
 
-On Mon, Mar 10, 2025 at 07:26:51PM +0200, Sicelo wrote:
-> Hi Sebastian
->=20
-> On Fri, Feb 28, 2025 at 11:01:35AM +0100, H. Nikolaus Schaller wrote:
-> > > It is in linux-next [0]. Not sure if that counts?
-> >=20
-> > Ah, I didn't recognize that (and must admit that I did not search throu=
-gh
-> > linux-next). Sometimes maintainers close a discussion by telling that it
-> > has been merged.
-> >=20
-> > Maybe Sebastian can replace it or recommends a fixup.
-> >=20
-> > > I guess the only option now is to submit a follow-up fix?
->=20
-> How would you like me to correct the bugs I introduced with the patch in
-> the subject of this email?
->=20
-> I guess it will either be:
->=20
-> - submit v2 against linux-power-supply/master or
->   linux-power-supply/fixes (so the bad commit will be removed from
->   future history)
-> - submit a new patch against linux-power-supply/for-next (so the bad
->   commit will always be in the history)
-> - use a different solution you suggest
->=20
-> I apologize for introducing the bug and have taken the time to more
-> thoroughly test the changes, with help from HNS. I have the patch ready
-> now, and just need to be sure how to submit it.
->=20
-> Kind Regards
-> Sicelo A. Mhlongo
+---
+base-commit: 3910363993da7c2a1d31dc247de59e8ca1cf25fa
+change-id: 20250203-fp5-touchscreen-cc6960134dab
 
-Sorry for the delayed response. You need to prepare a follow-up
-patch against power-supply's for-next branch. Dropping the broken
-patch would require rebasing the whole branch. The only options
-you have are:
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
-1. Revert the original broken patch with a proper long description,
-   then create a new fix
-2. Add a fix on top of the broken fix
-
-Please don't forget to add
-
-Fixes: f3974aca381e ("power: supply: bq27xxx: do not report bogus zero valu=
-es")
-
-Thanks,
-
--- Sebastian
-
---z7lfqwgmcoaxlzdh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmfRNYwACgkQ2O7X88g7
-+powdA//VVZrqIGw7HsCPdNa9ZHEL6GhoS5krlBLUdqqEsxEd8w8xi1BGT8V3wox
-++Jx5eU3I/siOr9aLQzBXQCcqfzbdDFUzHEFKIS7tzgsTS9jBklLE5Z4DrZ0IWVe
-BtTPR8tO+EuxxtBD1COQZR2TouGflHC8krcfQ47vwmEeP5FZKXayYNgNr1zsncQG
-JzTrCe8D9Tq1C4ESnfDKZbFxy21dyUXs5UH3/AlI8IlQhozT1UNN78Y34v4QbT8d
-VQl8CGr12w2JfYvTxywl4LMyY1Lyx5CW+a/mHKHltQEXlSwABFY6T3Yxa95DEKvE
-6SLrBQrleB+FIu7S6647DiddoDt+cccRGjFCvDqBfnpsOQVCRUj6Qj9Cq8FvG9rw
-szAURGenXUqPy76LFW+09CTbzTSCcj1/i92Sk07sObpUQXyNsCfrjiihoYrNg4Hh
-ftKijYIg++CTqd94ExKMxSSiG/41e3mjtTSzcO0C/vPyNhkjlKzMddq9jMD0lDzX
-YCRaS5GopNvZpMeVgVTJ/hYv31rc7C5tKPgJ7996BmWMVWdtTd7f3TzehoB9GUeu
-U2cl0KEU6v5GAXgVQAF+20eexd8em5kR2KGSJPej2WNR1l7Q6ZusTh8rodR+8fA4
-2JwgWNG+Kb1XEPB+LA4TQuy390d4OaWywU1N7/YMb99qr9LSRP0=
-=xTJ+
------END PGP SIGNATURE-----
-
---z7lfqwgmcoaxlzdh--
