@@ -1,98 +1,77 @@
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDDD1FC0FF;
-	Thu, 13 Mar 2025 07:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E6513CF9C;
+	Thu, 13 Mar 2025 20:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741851765; cv=none; b=CLoqB50P+DTxgq5931ASygj+RCr5BML6V31cADkd6Mjm0xCGwq/eXTyx9C8cp14+as0PFF06/337vEOVS2ZhWP2ZsxjHhuqge9JTPwtyS9Wz9GU/u9zqhEmpj1vXxv0UfwCWMkFd1sZ/pAupZBcwDjhrxBFJeTWd2zQzjXhC+7M=
+	t=1741897261; cv=none; b=T3T3SeG2jH7Sst7SUdSptFxjyFdy5Tcmckq8LqxMDMTyRGXwhTUOwDuEAxTz1ppsasI7A/CacOwXVGl58xTCmfKoSXVoIGOZqlpPUlwXCwYDhPxTAhre1mhvqiumAhJlAH33x11CMI/s6qBwfg3Y3gL6jN6IDWR452oS3MKK9nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741851765; c=relaxed/simple;
-	bh=1CWiZ/QGHZQ0ncSiJsU2ciZ1PiftlSrzXql0n17AEB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j1YswKEoZJBgGXQHvZWLQYBGu6/zfu/z9L9kmErg1n6p/Pvdgcj5Su6fYup0aPq+DAkIFyZiX5eOOcNw4ZXCFv+2YhFhlMePE1nnB/kU+LCaZzYN2JAznHmjgZRmntY7its0yi7HOBlF56bShdkGYe25EQoupCsV1BtRJcQ36s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=ndndoLzp; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1741897261; c=relaxed/simple;
+	bh=znyasu6OgxD7QEN7xhvv+EL5QEszFzl0LeJoKkCF2+o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=anmz64n9vWIJ3KachKsnl4EddddIQuGczAzUAxfw6NhwC0fQbVjNGQd14zACKqnET62XDvyoRSNRzc9SXoiC4VUSSOfAQuoGAQv/R+Jd+vkk8EgK+bKrIGDYMqPpvaoSI6hBOCO76Ys4r7qfz36M+AtnloJWGe0vJCYsH2Em1YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=RzVw9DjX; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="ndndoLzp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=WRdyeSScTzNUiuoEjAxTUDecuGjauvQK9XKxzhuQQgo=; b=ndndoLzpYP3r4WHM5zp2YU1YbH
-	vSRIuqMVGPGeSl5FMl9gPh/okB/m+srxV9bCPUyTvKL2l5sdLMPHMo4u0iwDV5jkwIteFrr1WRMb3
-	TGtHAd5rdibe21ZAfriLejeznnnIng7BZsOwysE4OOrKdarKHxv/NuWWOV4vCdb+N/Goi8pJBkqHr
-	oZAOAx9i2MyInqp1LaNwWnsUbBGeCJCD74tBMMAXq0Jg5y8JJ58ezr24GCOUp9AEEu9dhdVhl6B5y
-	ibZxuQ516VMAU/Nq1gIRt0X+QPK9oXwIKXTOEhgncHQOBmBtpzn7B0L4BsBysKKE/U2pX13gy3Q9S
-	O6z9OINg==;
-Date: Thu, 13 Mar 2025 08:42:31 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Sicelo <absicsz@gmail.com>, Sebastian Reichel <sre@kernel.org>,
- pali@kernel.org, linux-pm@vger.kernel.org, maemo-leste@lists.dyne.org,
- phone-devel@vger.kernel.org, Discussions about the Letux Kernel
- <letux-kernel@openphoenux.org>, akemnade@kernel.org
-Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
-Message-ID: <20250313084231.7e132b17@akair>
-In-Reply-To: <FF01728B-C13C-4CD8-8F61-419AACE03C0C@goldelico.com>
-References: <20250207220605.106768-1-absicsz@gmail.com>
-	<CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
-	<511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
-	<Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
-	<C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
-	<Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
-	<4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
-	<Z9F92vGJbyUSFgxa@tp440p.steeds.sam>
-	<FF01728B-C13C-4CD8-8F61-419AACE03C0C@goldelico.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="RzVw9DjX"
+Received: from karma.space.aachen.ccc.de (xdsl-78-35-81-182.nc.de [78.35.81.182])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 07EF2BBAAE;
+	Thu, 13 Mar 2025 20:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1741897251;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/B5M0KFsM0DgaxoXpjc1mIdwfZ0M0cSAduiwjWXC+x4=;
+	b=RzVw9DjXNE4e0/vXwgBDKJSOkxxgaffD3h/R7I/rMEq9y5wWWqZE67q5REmfW6/PH+UuPK
+	Jg2aeR1UWurL80HZaYT79GbBEcVG34+z7o+73R94oK8v34d5rhg9Z0gEK//mmc/TOe/w8c
+	NaI4wrK2P0vz8mBB8h5u9x71L8JvP9cT2tRz5eiWOscOYDU4kqZCwk+NHkBjPX0/kDSmoP
+	jKa5IIGH6MY7vDX9f+ylm43TTb+fOvPKtl2m/0zShHH1iyn1TC7XhVaqmI4VwU7wiseuoG
+	eCTWQ8Rcf5qPVgRS9iPp0p5/H7MxAiv/HsUs9WNzi2YVPnfNTmeJfCGSntjczQ==
+From: Jens Reidel <adrian@mainlining.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+	Oliver Graute <oliver.graute@kococonnector.com>,
+	Felix Kaechele <felix@kaechele.ca>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Fabio Estevam <festevam@denx.de>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Yu Jiaoliang <yujiaoliang@vivo.com>
+Cc: linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	linux@mainlining.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Jens Reidel <adrian@mainlining.org>
+Subject: [PATCH 0/2] Add FT8716 support
+Date: Thu, 13 Mar 2025 21:20:15 +0100
+Message-ID: <20250313202017.19621-1-adrian@mainlining.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Am Thu, 13 Mar 2025 08:28:35 +0100
-schrieb "H. Nikolaus Schaller" <hns@goldelico.com>:
+This series adds support for the FocalTech FT8716 touchscreen to the
+edt-ft5x06 driver. It was tested on the BQ Aquaris X (bq-bardock) and BQ
+Aquaris X Pro (bq-bardockpro).
 
-> Hi Sicelo,
-> please can you append the patch to the e-mail as usual?
->=20
-That just applies, no issues.
-$ b4 shazam https://lore.kernel.org/linux-pm/20250312121712.146109-1-absics=
-z@gmail.com/T/#t
-Grabbing thread from lore.kernel.org/all/20250312121712.146109-1-absicsz%40=
-gmail.com/t.mbox.gz
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 3 messages in the thread
-Checking attestation on all messages, may take a moment...
----
-  =E2=9C=93 [PATCH 1/2] Revert "power: supply: bq27xxx: do not report bogus=
- zero values"
-  =E2=9C=93 [PATCH 2/2] power: supply: bq27xxx: do not report incorrect zer=
-o values
-  ---
-  =E2=9C=93 Signed: DKIM/gmail.com
----
-Total patches: 2
----
-Applying: Revert "power: supply: bq27xxx: do not report bogus zero values"
-Applying: power: supply: bq27xxx: do not report incorrect zero values
+Jens Reidel (2):
+  dt-bindings: input: touchscreen: edt-ft5x06: Document FT8716 support
+  Input: edt-ft5x06 - add support for FocalTech FT8716
 
+ .../devicetree/bindings/input/touchscreen/edt-ft5x06.yaml   | 1 +
+ drivers/input/touchscreen/edt-ft5x06.c                      | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-> Then "git am" can easily be applied or it can be found in patchwork.
->=20
-> BR and thanks,
-> Nikolaus
-[...]
-> >=20
-> > [0] https://lore.kernel.org/linux-pm/20250312121712.146109-1-absicsz@gm=
-ail.com/T/#t =20
->=20
->=20
-Regards,
-Andreas
+-- 
+2.48.1
+
