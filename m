@@ -1,97 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF57250BFC;
-	Wed, 12 Mar 2025 19:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741806384; cv=none; b=cKJ8cD8zF2Hjh2ZvZxw7EgfxzgxwnKrHdI19dQwb8BPH2L41K4M+djBzzefUdY3JQkknsxOcVLRmSHChap2eMpscBLhxVsD+GHmgCFIFtWxsUNDbrG3uTy7jsu+k+q8d6CU9FNg1AjlrmQAtHMSFcohFbu146lTxo+k5yv5Kcu8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741806384; c=relaxed/simple;
-	bh=59hxJxczmtJRD9AjP9dImrpiPr5PKifeoERgMGmkCUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ii8KG2Dvk0U+dbRnEklbwW/qeZkhwzMegQUcfYYV4tQRh3sXMdR1ww/++gpUFUkFDEiibFpgx61bwPy9dRNJWVKUUHawTTyylEy49GzgGhn476vY4nycxHjxtN0ha4xO2JbeH1JhHlPlakzZraPLWPhf3XFZJemeF44Nu1TwkQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byrug321; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9306E13AA3E;
+	Thu, 13 Mar 2025 07:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741850948; cv=pass; b=Hn4FJ69DSRsLV3J74Z+xonVHliKCkTX6W3PzxdlTmAvq7+I5KzizaxUv4mUQ+Dd5Y3wPLf0AYxS7/+mB6N1foTKtjFLGBQK5Ml8CGBuTOK8kq8zwAlzLM7L83iqrzhVRS0ZjnsLBcfkfnVDBqfHvyPZqvBX4N2jlfWits0fWuVc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741850948; c=relaxed/simple;
+	bh=uFSxP81pn/e6yGYfTf0mtO12DY8QUBvh9IO6vm5S4L4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=f11SPIZ5bOvjePNcQuUDyuymB4asmffy78x7uDMTST4738vgdxJmkRbyicArR9xW9bU1hU5m0u7zhDPuL3dK+H88vIKRDvxDN4iWAxgYhv5K4cu1rZBtP9Inu2OhpVz+PUnKccZy9ltvbrcsJxdhRsTH9MCNJH5kedktl+NAUhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=Furkzabx; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=4+Mwq12V; arc=pass smtp.client-ip=81.169.146.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byrug321"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED28C4CEDD;
-	Wed, 12 Mar 2025 19:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741806383;
-	bh=59hxJxczmtJRD9AjP9dImrpiPr5PKifeoERgMGmkCUQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=byrug321pPE95aUOrnvb48tmdWaZUxUkYcHtY6LmOiFMkfQ27+xqSQ2cNX+jN12TJ
-	 VnRrvMrShqavvQ8oXEIZdDnlYVKU2L65yInzOqs9/H6hAPIvHDdXBFKpZvFCzduABX
-	 4M8CbQwdmLlvkdve0N5etUfLwNNbxePJnsNzAM4bmjC17HOfA0ySypa6nbs0wpI6q7
-	 oUdWn4hQTS0OJWAkozP90xI/B0mwfYlo4cn7t3K7wFvwCvfXTTJlnnqAsQ6HSxDM+w
-	 MHKcmlKT/BzDnPuG+To2MwZPqdo6sP3q19hVr4oDzWNuwt2HfxmfsmbRrEa3Z7cVts
-	 b5vjrz0pOtysA==
-Date: Wed, 12 Mar 2025 21:06:18 +0200
-From: Dmitry Baryshkov <lumag@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	cros-qcom-dts-watchers@chromium.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 0/3] Fairphone 5 DisplayPort over USB-C support
-Message-ID: <y7dfv4mmtzkv2umvverkn6qvjt3tg7cz4jj4zsb4t6vu4heh4d@64zpkjihjc23>
-References: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="Furkzabx";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="4+Mwq12V"
+ARC-Seal: i=1; a=rsa-sha256; t=1741850927; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=XAYWul15chdPTIEU7rI7UWMq41H16DeZf2Bt6NAUsvEsiUUoJoKS41zbkTLWLZHgXN
+    GXSLJa6Ji/TDCU08rZpHdT2Y2xWEoh5SP4JaRC/XSg6lB1uZR1JmpW0TGJjL/bx1G+vh
+    Lx+RJLGmWo5VSMvasTHbkiPpsugTolqpJUqgz1I7EbPC3NKhkRT0ifSY4SwA2TmsRi55
+    MO+ZZ0Md5mOOqohV6XpnjLIrdH8UdYbd6Z9Cn53SxVe5DFR0Thg1y56uz5oPzgm/rskV
+    KBGQK0jxvYiGa9AMJXvpKN/0kdT4pr6L/DUdwygUuYtOivQ8hI2tb+X+zxodcP7LFltq
+    rBvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1741850927;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=2y7lhIIyHLZwLevk5jJUidsX10DrQJatyGZDfibeqIs=;
+    b=jGSgT1AZgiqobTfk1u2pOw4fU4VE8xLCFCA2mGtcfDoM6PclkTxmvzMPvi/oqWoi1J
+    9sHbOSWfHXTjcH5wzqL9bYQZ164wqBUx2fzOwVwI+7QfJ6YHrgb11sBt7piz/CdtDCfV
+    EuDuQC7i9+/ffcc6bPQAdGN3ZojJFeULHluKrkbT+qRtIg7nYGDQq+lbemDqlrRFauCr
+    GGsvY5Za5LOBFyOdAHxZzLmvgsPwkby8ZPBYjktnx4oRHAifuN724XiZ4foelfF+FsIz
+    E8O7gnbFbHzgxhQQMYRk1OCLp0DIVCJZ4KD82wAQTvRzUubgYusi04XCKBMQ4j86XEX9
+    nijA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1741850927;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=2y7lhIIyHLZwLevk5jJUidsX10DrQJatyGZDfibeqIs=;
+    b=FurkzabxQNucHd2+ArHgKqV9Oh8vp1EjQWbBo3Vqoj8SKTjJkK5GXE91cOeh05k0IV
+    +svaKqrewE/HfIgafg75dKlN6wFZLrPIhBEN6goda1r4FMBdQDZ5nX6zvsil6Wz35GKq
+    I2CJLNGMdo7Te7hH/9v2tZ11eq07tj0Ay9sKCtBFR2p3jcsb7Q63IwMAYaf9+1mlDxru
+    uve1K03stmAhDfNRZKpPRHrE76XUODU0qpEWNOei+cevXfqsX2Q8s2BFvJmNb1aV64x1
+    UYSBUx7++Nbd4SA6s46gtYb3iuVw1AndhsyU5JeKgBQ0j6uc9DgVS3SEmvyMX1S0l1pi
+    V9rA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1741850927;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=2y7lhIIyHLZwLevk5jJUidsX10DrQJatyGZDfibeqIs=;
+    b=4+Mwq12VsFMFnXeAySf7msUj0yZUXcDv7eyDktIVwIP4yBIBjD9lT8D/htUG0+Aymv
+    g3wxEVmhOjhpLKFB68AA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeTsZ"
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 51.3.0 DYNA|AUTH)
+    with ESMTPSA id Q56adc12D7SkmNT
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Thu, 13 Mar 2025 08:28:46 +0100 (CET)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250312-fp5-pmic-glink-dp-v2-0-a55927749d77@fairphone.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [PATCH] power: supply: bq27xxx: do not report bogus zero values
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <Z9F92vGJbyUSFgxa@tp440p.steeds.sam>
+Date: Thu, 13 Mar 2025 08:28:35 +0100
+Cc: Sebastian Reichel <sre@kernel.org>,
+ pali@kernel.org,
+ linux-pm@vger.kernel.org,
+ maemo-leste@lists.dyne.org,
+ phone-devel@vger.kernel.org,
+ Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+ akemnade@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FF01728B-C13C-4CD8-8F61-419AACE03C0C@goldelico.com>
+References: <20250207220605.106768-1-absicsz@gmail.com>
+ <CB5B8FE7-D619-4D30-BD2D-58B6CEF83D46@goldelico.com>
+ <511351B0-A78B-4517-B183-D39A4F807CB6@goldelico.com>
+ <Z8FtlaYkbVG1xrsc@tp440p.steeds.sam>
+ <C0E0C7EA-7C42-4DE3-9FCA-DAAA7B65B583@goldelico.com>
+ <Z8GHuu8RXkcY8utL@tp440p.steeds.sam>
+ <4D7D3E00-59C6-42F6-AE96-F04970D60E8D@goldelico.com>
+ <Z9F92vGJbyUSFgxa@tp440p.steeds.sam>
+To: Sicelo <absicsz@gmail.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
 
-On Wed, Mar 12, 2025 at 01:05:07PM +0100, Luca Weiss wrote:
-> This series adds all the necessary bits to enable DisplayPort-out over
-> USB-C on Fairphone 5.
-> 
-> There's currently a dt validation error with this, not quite sure how to
-> resolve this:
-> 
->   arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: typec-mux@42: port:endpoint: Unevaluated properties are not allowed ('data-lanes' was unexpected)
->           from schema $id: http://devicetree.org/schemas/usb/fcs,fsa4480.yaml#
+Hi Sicelo,
+please can you append the patch to the e-mail as usual?
 
-This comes from usb-switch.yaml, it requires that 'port' adheres to the
-/schemas/graph.yaml#/properties/port (which forbids extra properties).
-The usb-switch.yaml needs to be fixed to use port-base for that node.
+Then "git am" can easily be applied or it can be found in patchwork.
 
-> 
-> See also this mail plus replies:
-> * https://lore.kernel.org/linux-arm-msm/D0H3VE6RLM2I.MK2NT1P9N02O@fairphone.com/
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Changes in v2:
-> - Move adding "*-switch;" properties already in earlier patches
-> - Move wiring up SS USB & DP to SoC instead of being done in device
-> - Pick up tags
-> - Link to v1: https://lore.kernel.org/r/20250226-fp5-pmic-glink-dp-v1-0-e6661d38652c@fairphone.com
-> 
-> ---
-> Luca Weiss (3):
->       arm64: dts: qcom: qcm6490-fairphone-fp5: Add PTN36502 redriver
->       arm64: dts: qcom: qcm6490-fairphone-fp5: Add OCP96011 audio switch
->       arm64: dts: qcom: qcm6490-fairphone-fp5: Hook up DisplayPort over USB-C
-> 
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 103 +++++++++++++++++++--
->  arch/arm64/boot/dts/qcom/sc7280.dtsi               |   9 +-
->  2 files changed, 104 insertions(+), 8 deletions(-)
-> ---
-> base-commit: dcb11dc4740372cd4cce0b763a4a8ec4e9f347a6
-> change-id: 20231208-fp5-pmic-glink-dp-216b76084bee
-> 
-> Best regards,
-> -- 
-> Luca Weiss <luca.weiss@fairphone.com>
-> 
+BR and thanks,
+Nikolaus
 
--- 
-With best wishes
-Dmitry
+> Am 12.03.2025 um 13:28 schrieb Sicelo <absicsz@gmail.com>:
+>=20
+> Hi Nikolaus
+>=20
+> On Fri, Feb 28, 2025 at 11:01:35AM +0100, H. Nikolaus Schaller wrote:
+>>>=20
+>>> Thanks for the review. I will do more thorough testing over the =
+weekend
+>>> and send the patch.
+>=20
+> I have made a follow-up patch [0], which produces the following values
+> on the N900:
+>=20
+> bq27200 in 'normal' state:
+>=20
+>   DEVTYPE=3Dpower_supply
+>   OF_NAME=3Dbq27200
+>   OF_FULLNAME=3D/ocp@68000000/i2c@48072000/bq27200@55
+>   OF_COMPATIBLE_0=3Dti,bq27200
+>   OF_COMPATIBLE_N=3D1
+>   POWER_SUPPLY_NAME=3Dbq27200-0
+>   POWER_SUPPLY_TYPE=3DBattery
+>   POWER_SUPPLY_STATUS=3DDischarging
+>   POWER_SUPPLY_HEALTH=3DCalibration required
+>   POWER_SUPPLY_PRESENT=3D1
+>   POWER_SUPPLY_TECHNOLOGY=3DLi-ion
+>   POWER_SUPPLY_CYCLE_COUNT=3D0
+>   POWER_SUPPLY_VOLTAGE_MAX_DESIGN=3D4064000
+>   POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3D3000000
+>   POWER_SUPPLY_VOLTAGE_NOW=3D3536000
+>   POWER_SUPPLY_CURRENT_NOW=3D-432327
+>   POWER_SUPPLY_POWER_AVG=3D1146100
+>   POWER_SUPPLY_CHARGE_FULL_DESIGN=3D2056320
+>   POWER_SUPPLY_CHARGE_FULL=3D2050560
+>   POWER_SUPPLY_CHARGE_NOW=3D366680
+>   POWER_SUPPLY_ENERGY_NOW=3D1207420
+>   POWER_SUPPLY_CAPACITY=3D18
+>   POWER_SUPPLY_CAPACITY_LEVEL=3DNormal
+>   POWER_SUPPLY_TEMP=3D316
+>   POWER_SUPPLY_TIME_TO_EMPTY_NOW=3D4140
+>   POWER_SUPPLY_TIME_TO_EMPTY_AVG=3D3780
+>   POWER_SUPPLY_TYPE=3DBattery
+>   POWER_SUPPLY_MANUFACTURER=3DTexas Instruments
+>=20
+> bq27200 in 'broken' state:
+>=20
+>   DEVTYPE=3Dpower_supply
+>   OF_NAME=3Dbq27200
+>   OF_FULLNAME=3D/ocp@68000000/i2c@48072000/bq27200@55
+>   OF_COMPATIBLE_0=3Dti,bq27200
+>   OF_COMPATIBLE_N=3D1
+>   POWER_SUPPLY_NAME=3Dbq27200-0
+>   POWER_SUPPLY_TYPE=3DBattery
+>   POWER_SUPPLY_STATUS=3DDischarging
+>   POWER_SUPPLY_HEALTH=3DCalibration required
+>   POWER_SUPPLY_PRESENT=3D1
+>   POWER_SUPPLY_TECHNOLOGY=3DLi-ion
+>   POWER_SUPPLY_CYCLE_COUNT=3D0
+>   POWER_SUPPLY_VOLTAGE_MAX_DESIGN=3D4064000
+>   POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3D3000000
+>   POWER_SUPPLY_VOLTAGE_NOW=3D3633000
+>   POWER_SUPPLY_CURRENT_NOW=3D-397341
+>   POWER_SUPPLY_POWER_AVG=3D1432260
+>   POWER_SUPPLY_CHARGE_FULL_DESIGN=3D2056320
+>   POWER_SUPPLY_CHARGE_FULL=3D2050560
+>   POWER_SUPPLY_CAPACITY_LEVEL=3DNormal
+>   POWER_SUPPLY_TEMP=3D299
+>   POWER_SUPPLY_TYPE=3DBattery
+>   POWER_SUPPLY_MANUFACTURER=3DTexas Instruments
+>=20
+>=20
+> Hope this also works fine on your devices.
+>=20
+> Thanks and Regards
+> Sicelo
+>=20
+>=20
+>=20
+> [0] =
+https://lore.kernel.org/linux-pm/20250312121712.146109-1-absicsz@gmail.com=
+/T/#t
+
