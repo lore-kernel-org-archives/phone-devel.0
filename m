@@ -1,65 +1,64 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59831A5B81
-	for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 08:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ADF1946B8
+	for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 08:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741940490; cv=none; b=poOO8cjf+AYgdklzR9hfPRUlJSWL4bpH1rrCIZSaOMyr4e8Qs43cKSdhddmXFm4UeZ8tVFV6790EtSpgz8PEK281eZDcaAbuymO51t5xuReVBo9U6jjWMTqxjA0mcJx+ED749Bclfdu4OT92lNbZ0zuTa+OIZNBQWof6xwEc+eU=
+	t=1741940677; cv=none; b=skWq822AWJ90f/ej/0aOLwjbHF7Jn9wtjpb+MbK6fO6J/PccVTe+Ct5u71bGcwBxm1HiVlydkPlv31c7dPxdQh/p9iVDkkvYMSLstNUoiVaBfJCN0mA2UOedZhCwWuFM5Fpe73r7KbEI+h8yADut8X4dQKVLGa9TiAIMkZVzPN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741940490; c=relaxed/simple;
-	bh=mppd4LmheDALrusB9T4PJj9qjgXGvLPRSBiVOVkjTwg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n0ouqw2KN/LqVF5ywUdimYzRli+ftIQVDRCPOy4h2LVMU46x2+0f0I/aivUcAApaibsIGkijCpJdB6UQmvMRcS5h1v/+tjUn9H4KbRlwWauS8lxFUxSIZG/WMQ/Xti9FvJkwHdq+udgAvsBqYh2I5Uqlv5zWnCRbpb8OHtR8SZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ABVU3d7P; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1741940677; c=relaxed/simple;
+	bh=w97u6BXDdV//+jswswofrPD9VxViQ2Pn0svg6KRTA6E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Eve8VWa2pW18iedDepcvwuI4RHEM1y1Yt5P/u5FsWX4X7Jx+ZwQSRlDY5Wj+Ln47zrXFRe+Eh+Smr42/ZxJkhve8WTY3QxjUk3zxx9UC82581EOoy6bNWMTTWDpGNA/qL/QJXO/weXj7frePXn8tWCDOF37EAmDLZ8P+bYvCYuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=urM8dhWs; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ABVU3d7P"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e5c9662131so2802980a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 01:21:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="urM8dhWs"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaeec07b705so291045666b.2
+        for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 01:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1741940487; x=1742545287; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1741940674; x=1742545474; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c+NVtuVU2ISJtStqxHLi/aMeg5kRvIk3MtAqB/jXcng=;
-        b=ABVU3d7P8JpvvrdxbtwdJZqVgs18QiWje9f/moFUNBBMp8qXej9XFyb+bJIfhWcRuV
-         Ni4LyhVUYt6O062qf3Wa+d3iDLh3AAsGhBSb9hEJHi8GtykfW2MzuRREe3t86+PzwrSF
-         sBdQl+5p/E/owPbn9ds+F8JMpbqS0vG1C4SzfB/ppDB0+wqro8hJ1I6PuFYG7Ib2DLWB
-         xbuT4w4C5XXhobcT4jTpNaZ/MdCa6cf1XgK/V1gxCHKddIldcJU2tyFFywKR21PLADyG
-         U72WgOxx8q7cziSLU3R/LL/pQmf6H36fUy67Ajw9m7nA8yUwHGgbnh+t78AuY8S/wEAi
-         PeUg==
+        bh=ywEbrJtSFC2AqYUcKXRGNHqBvY9/O6csNZBNXCU4/xs=;
+        b=urM8dhWs5Y7oLcYQvV6dZx3UhUExNrSuJDeoQJufypl9eYw4jWCypSsOmzdfE83w9Y
+         lpftxzCo73kh/iXTa0QDlPDHx3rwnOh8PtKmLcS/t0ygyDNPgBszsxbSUd+twIGcgW0H
+         1tKob9Ic/oSHGgI7eedII5ltBV2Qd5BNujIBvLU23BqzGzEia1gDH+s6Hf7aBfDiYRd+
+         g1QfojjvqmBE4B66f6BNUu/8pguo/RMd7URx2BkIEwq/Vbq+mudQFGnNrd66WmPBJoDL
+         ORKi4Rj2aUtcKcFBBIlnvLJFSNy8b2uj95AS1NpJTcYsI49CKBPvidw/VMhq4l5qqlQi
+         o/Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741940487; x=1742545287;
+        d=1e100.net; s=20230601; t=1741940674; x=1742545474;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=c+NVtuVU2ISJtStqxHLi/aMeg5kRvIk3MtAqB/jXcng=;
-        b=udGuNTlzDDoNu5DlyeYhM1MJC/AZw8lTV+r+xBwm0lTGF5Ny7qC/Y4AmEmSxkpLil/
-         hOGp0zbOPZLo4RgM/HK9rXJhgLVCAapdPiro5ExvsE1xzQ8yNJfZvoNBVtgPnr/P6hoC
-         P8XCLrNtUN9D2CWwddeXqsAy40BHOwkg1hefSr3MrGXoUnh8SBhpqKqAELQuw2bcHDxs
-         SOz652LiurW5/gTc/7qEGOgXO4nwha9qfkaZjtTyBCnJ5ku2dOFqKdVj0rXUPjLFpcIC
-         KhxlpxP6zoiEthnbA3rEbpisOmOv8Io/IY00FRA8EDfZvea7Od3In1Nm5ysGW7H+QqoC
-         LF0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUlWrK2cpzVoHvWEmI1srukwFuDB5N7V/JvYI8v8GYonin563TDNDy6Oxq+LTb3Sjc6NgXPQrxIouAvTQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyratNO8p9rSA/8QF8/U6KMx6RHszImqgYQQ/z5RXu1vXLC4fwD
-	FH7EYzRLnvzr3QkFRUbn+EaqUZnuTW+eB/aoQlbPjX2d/qzdiMQugkfwgGCoFS+/wyxauO+rhbm
-	b
-X-Gm-Gg: ASbGncsyRQ5BmOPec8W+eu0u3/NSyrTsgIZQJ8dH9l1Qa+IZDF1ovkJUs3h1qITtYjZ
-	hpaiQSXppexamL2hAgRbcmwqFFazQspEzmTNvlXa3eGQnEf4n6JLGjovn/3FFKXOAip1guWYnBO
-	LZ6kzZbesHuvdF4jogzsVUWuT+RY4F3dvDa0fb2JfYAdznCK/XXFZPbP2h44LX7YjFC9g9pX1Nz
-	X0SvPje/sxwPMg+9AihgJFZD633O9tyi5a3iuzMbkBUO2++HbUIqtj4R+rtInZa+gKKe9GyC4uc
-	557e4rUT6RTenp1D1xMkl2rkpqT5xM9N3cHOVYMd03R/8z9fq3AZHSmgo31FP6ycYtcVEmOrxQb
-	MCvXqS0J4vOvjC8xjLw==
-X-Google-Smtp-Source: AGHT+IE6U7GmQ58fz7zI6ECFfeW+9X4eiOa30l8vgfN5EOFVNew13LY0sJrmHqQgR2MvZBZ6zRu3qg==
-X-Received: by 2002:a05:6402:1d53:b0:5e6:6407:3b23 with SMTP id 4fb4d7f45d1cf-5e8a0422028mr1472473a12.21.1741940486720;
-        Fri, 14 Mar 2025 01:21:26 -0700 (PDT)
+        bh=ywEbrJtSFC2AqYUcKXRGNHqBvY9/O6csNZBNXCU4/xs=;
+        b=LMGNstH/h/o2P/Lk3x/SOKaj1YYGFpfrbn6HCfQXJQ7ArcpbLnMlKS/n8ZWu0EqKyQ
+         QBss41wPZL/h6xvqvQumDM+PhqpJFaGN4VZnrGAf2fbVaE9+Lbr546yHEgs2nBCoFtSf
+         11w7WuSEP1TBZCu9UK+t2kPqrV7yjddJPjva/XVVz37qfxU7PTEtlAwI6RfMQzmTNmgt
+         WmQ8pxyjLRRZCOnnkJDE4/ZSmvJNpKG4zDvdfkiO94u4IPWA+CL8SAe2bl9Eu6NEe/Pm
+         GVcJidGiZ8nLRsPXwkTJAQA1N/7izVnw1ZRQnxei2viEgGgc1P4QTaxXyRbFj/1jhFRF
+         I/Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2y6tHHyDXON6Rqb507JywPnQ7agFMMPblxsJ74gDXW6P5gdIgwgY6xSSZThFjbaov+MLuyvtTLYnHtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf6tDXkf/j8j2T9ccGn/hhHSz9ZaMMV9aG1DVbcg52wCxLPrwK
+	WfVZ2KqwI3EruhIW/UOeLpNSkq+I+YjOCqbKcypq1jLsugVYOPLT1zBc79xwNOk=
+X-Gm-Gg: ASbGnctqWMch74PBnzobwgq7fpjK/p/HILhTqed0s6qLqiitIUktUzfT1Ak/MgD2ifP
+	kLrzaKTG7wT3hNves5zwSVNyNmQOzawDSYdmyqnNuihiQteqKaprGucoUAGUo46oYp+6Z4f1c0U
+	iKVUEGZDGk5mhVm92Bd9QY3C0jc9m2SDVqrSR28xbRzPuRlWbzQBiLUzcKlrIc6TtZNfC1AXY08
+	Cax2mt+6S94tTuAQB8Ai67ox7vmSbglPqlQR06tzF/nemU/23nSjipfHeyIOvjJIdueTT6WXTrx
+	fzx1p8Y85ioASkNHJNbSJM/jjgSWeYorYRS/M7oBNkGQmSLOKn+vZKMei/69e+zWRkZsrsftH6k
+	EfLo+4fg3WI6Bp+roBA==
+X-Google-Smtp-Source: AGHT+IGTscR7BYFU80Pa4ZMB91BZEbz1XZF1lYz6b8n9RlCmwKKPrDiAzrx8K9+FPXXto+nTQ+ePIg==
+X-Received: by 2002:a17:907:3d8c:b0:ac2:806e:bb51 with SMTP id a640c23a62f3a-ac33017d768mr166849366b.18.1741940673584;
+        Fri, 14 Mar 2025 01:24:33 -0700 (PDT)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816ad38fesm1643387a12.57.2025.03.14.01.21.25
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314aa6499sm188846866b.183.2025.03.14.01.24.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 01:21:26 -0700 (PDT)
+        Fri, 14 Mar 2025 01:24:33 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 14 Mar 2025 09:21:16 +0100
-Subject: [PATCH] arm64: dts: qcom: sm8650: Fix domain-idle-state for CPU2
+Date: Fri, 14 Mar 2025 09:24:31 +0100
+Subject: [PATCH] remoteproc: qcom: pas: add minidump_id to SC7280 WPSS
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,49 +67,43 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-sm8650-cpu2-sleep-v1-1-31d5c7c87a5d@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAPvm02cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDY0MT3eJcCzNTA93kglIj3eKc1NQCXQNTi+SkVGMLkzTzVCWgvoKi1LT
- MCrCZ0bG1tQABYppDYwAAAA==
-X-Change-ID: 20250314-sm8650-cpu2-sleep-058cbe384f7e
+Message-Id: <20250314-sc7280-wpss-minidump-v1-1-d869d53fd432@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAL7n02cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDY0MT3eJkcyMLA93yguJi3dzMvMyU0twCXSMTSxOzxBRjc7NkIyWg1oK
+ i1LTMCrCx0bG1tQAU0eCZZgAAAA==
+X-Change-ID: 20250314-sc7280-wpss-minidump-24946ad376c2
 To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
 
-On SM8650 the CPUs 0-1 are "silver" (Cortex-A520), CPU 2-6 are "gold"
-(Cortex-A720) and CPU 7 is "gold-plus" (Cortex-X4).
+Add the minidump ID to the wpss resources, based on msm-5.4 devicetree.
 
-So reference the correct "gold" idle-state for CPU core 2.
-
-Fixes: d2350377997f ("arm64: dts: qcom: add initial SM8650 dtsi")
+Fixes: 300ed425dfa9 ("remoteproc: qcom_q6v5_pas: Add SC7280 ADSP, CDSP & WPSS")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index 719ad437756a499cee4170abccc83f2047f0f747..5844d7d0d0e6b31c08de3391f5cae3f8d823b2cd 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -1449,7 +1449,7 @@ cpu_pd1: power-domain-cpu1 {
- 		cpu_pd2: power-domain-cpu2 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
--			domain-idle-states = <&silver_cpu_sleep_0>;
-+			domain-idle-states = <&gold_cpu_sleep_0>;
- 		};
- 
- 		cpu_pd3: power-domain-cpu3 {
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 97c4bdd9222a8d5324fa3655019e2818f4fd95f1..a78d4292a05c70ccc7ad0b46e641ef45253ad8e6 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -1348,6 +1348,7 @@ static const struct adsp_data sc7280_wpss_resource = {
+ 	.crash_reason_smem = 626,
+ 	.firmware_name = "wpss.mdt",
+ 	.pas_id = 6,
++	.minidump_id = 4,
+ 	.auto_boot = false,
+ 	.proxy_pd_names = (char*[]){
+ 		"cx",
 
 ---
 base-commit: eea255893718268e1ab852fb52f70c613d109b99
-change-id: 20250314-sm8650-cpu2-sleep-058cbe384f7e
+change-id: 20250314-sc7280-wpss-minidump-24946ad376c2
 
 Best regards,
 -- 
