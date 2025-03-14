@@ -1,115 +1,238 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351191EDA1E
-	for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 09:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741943839; cv=none; b=pe9XKBKpbn7GuyWLR7q6HEBmknjRAZxLP2UXbUwgXBeZxxFnVZyZWL4S0J4V/YmSxfHXjF+1gvQk9lJSygGAj6rhsAuzKNxpWZJvCUn+nQQGcVgji+mgmiRP1CmqW3lod4nHgo+hXFq5MyUZSS/PVncr7htYhEXv1GGPQhw8R8k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741943839; c=relaxed/simple;
-	bh=TQql/7bvMiWWTcBiokJKn28h+W+qXYbOIZNvdiAC8+g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AKSdfbZ1Wyv1v9j2x5GhO4PukwxpX7xt8ZCEpLktFmRYMLdLsMEGJ5Y8/nUy13jQuppfMhP1TA5Iv6gZmaCshFiFZVH6pGS48CVC03AgGK6E0WkIjoDuHDExRknfMOdx9l+6IgF4m0gbgU2F3tUZHqPVE9K0DQgidysPFHsZLOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=sAEJ9drg; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC20612FF6F;
+	Fri, 14 Mar 2025 13:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741960262; cv=fail; b=qW5jBwGmBkAwqWjVG/MLtv57HrvDYpVaNYgW02znfx/scK4GdBS95z0yf76T2Y281sNZFwSsKDQ4vD4TbNnY6VoNsbbm+NtM65LInmWWYv8Vb54+0tUWe6PBDa+2M5cnVq3rTPfIMM52HlxosiDaDylVLBSL1P7BW/77iRseKqQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741960262; c=relaxed/simple;
+	bh=opaRm8xr1vvbjoMvOwRa6OhkEsxC3HoCzS3RiRDdAuw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Sh1q9K/bwuIq0hHi6iadX5AUyvpkX3UvX/+Id05JW2FX2YSZNiSsMNZGuKe6BQFq8RebOoboh6WSdkjWvxzTVZxnQZWhGKwdxxcevvhiHkWQI5F/6TA/QWM9wbAxW1/IdyBGoZ5hbw+7Noe99R1ikNbE/G+X3DAx9I0jkMzVMiA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNO2STG1; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="sAEJ9drg"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abec8b750ebso319063166b.0
-        for <phone-devel@vger.kernel.org>; Fri, 14 Mar 2025 02:17:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1741943836; x=1742548636; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0EnUUGo2HHQ13RN1/OtPiMt5tSoeJymaCLmfHSf2tq8=;
-        b=sAEJ9drgHr3+wBROICba5S4zJQg7ZAo5X311awjDLWBZqkJ9xirCzZjA5gdnNP6/+P
-         UQtsEDta5CT3KR9OtozNCTvlAeTbGMVZPh8U5u+BZoe2P4r86KNnzjKADf8O8hcBPbLE
-         VTOT10nm/AHDuqa/DNuwBjBYkt5YRjONTvWO9UNkvMmBqZ0iErAnYqobv9AfMdP427FF
-         RacKPpMYj4Lx6T8sEMBU4dTaDdLpKuKwbuaB+cSs4xxcsHRxL6asOBMvwWmU8///r0sI
-         nJw7GAVLMkJmW4kph4nx/e3N1IjX4yZ/mOXqcp9L7gjbA1+03T/hhML2zQDEWTwNPuEF
-         52uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741943836; x=1742548636;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0EnUUGo2HHQ13RN1/OtPiMt5tSoeJymaCLmfHSf2tq8=;
-        b=PGMuF8apeh1/AkIKDC2AEIZDzTe0ft0j15aZVGeOi8kYE4/SpFTUjV8RS3etNbxF9u
-         JGHSCBRzGBbLUTDX7fFEJ7Ra+4T0CHjYkLwNwqbHCw5aRTxWUwoYgrKY13yH4wO/wAlz
-         x2mejGPkX1PCSn5NIHFdNTvKCJHRoQCxK5aQ7WkXKHvj+A3VMc2Ej7oIokR9sJiGvzOE
-         FmF55vPM+VH1Zx6De79J44On8hqbT/yp/QwaZPjX5ZbcC2OEnlvPiMN04BSnLPJIQU5n
-         YF0beOemOaM3Vr7Q+sqwElYcMy2jA5xvlQfjhObwJbBDRSohhJ2PS8IvjAml1yVPtc3y
-         FQxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQnThXgV2hG1ob7egIcJnTcyHBFNe/t2v46qh5NEsIUlrNaQBH4RFPbpUu2VhGWm0sz1pVjChop8zX0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4F/DYgoEgXAPf9BybWjpAQmZTpGKxlcBNElN6t+w7G38WzJj8
-	RYV8Lo6q02NfdPMMO3LGe4PUj5yTn5yuk4KfrSRbORbwnwtV+LYkaZOs20RR4Eckq68pRuU+FrU
-	6
-X-Gm-Gg: ASbGncsfzy9oHT03xJixu5gkRODbHSfNZhtXfho3jGKgw9DdM+60GSaSJXWSZZEGyUe
-	V8R+SVwwUxR6B0+7BrEM/+HgLI+2eYD8NS14yw/AumUXHBIcWTxdt83IRwgT/8HpSj5xwhFxnZ8
-	idmAKxDzuaYGibnhwVjxStsTqNb2Pa4ND92wen2ADBR9KK8mW0QNekRcMHxp4dqMtg70ZtCg3LP
-	RU7ZnU7944I2TtxAYymxz6o/LcCXMLY/dzK7uesK3A4dzdG6zEfkGPcgeLnU2yi0ZER+7ElyLae
-	ui/7JJfRmOGHzCngf93kYw1A8KSZ9tKN9kHp0sLqU76KDrOwEMzgUQeXUfRZVetqAEfCmglXWE7
-	Tvc1uCnzs4DfRW9gFgJpI1GeH4zcW
-X-Google-Smtp-Source: AGHT+IGROEW2AOW+QYcjTEvqRULVelQ6EYGyR5ofJR2GdD8rWy92xsCBu/twsCMr/ZtxcA4CpFpYHQ==
-X-Received: by 2002:a17:906:730b:b0:aa6:b63a:4521 with SMTP id a640c23a62f3a-ac33018ef75mr189422566b.15.1741943836163;
-        Fri, 14 Mar 2025 02:17:16 -0700 (PDT)
-Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aeadbsm195582166b.29.2025.03.14.02.17.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 02:17:15 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 14 Mar 2025 10:17:04 +0100
-Subject: [PATCH 3/3] arm64: dts: qcom: sm6350: Add interconnect support to
- UFS
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNO2STG1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741960260; x=1773496260;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=opaRm8xr1vvbjoMvOwRa6OhkEsxC3HoCzS3RiRDdAuw=;
+  b=nNO2STG1br0cQSpS1cOwyGQOTM+C+ei3ELqhRX+ih47l0GGSkWaTNKWm
+   ROTXfuVWr97MMjA6ZecNN9rYw8RHgQB2EMQO+UWT9yGxxpFzOMAcAbZ41
+   ymTSEu+LSe+9rgrCkDgss0zNy2NWLlMmYkSbE7OH59hLbo8rSQpm3AbZ8
+   DwziYg8HFUWpLwl/Q/XvE+q0ha8GGTKyCxMb6Mc/vFJcBWoFMCVVcGlmp
+   ZMtP3my5sXgU2cHMGmJEoJSzSRq72nV+B5CVIsDcYKtxhnaXYwAXbWcoJ
+   MDRFCSNhbFhfhxeNlUkUf31uiQPEN4jo8EA4/qNXnGkbbqMxw3m92k3Xn
+   g==;
+X-CSE-ConnectionGUID: 0oTV8CETQ2O+UGmuq73zWg==
+X-CSE-MsgGUID: dmbf9GHtRRqGDtNNdULgIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="43240848"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; 
+   d="scan'208";a="43240848"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2025 06:50:59 -0700
+X-CSE-ConnectionGUID: xIDl9/lLSnyLPVNFMGGiww==
+X-CSE-MsgGUID: OMGElGiAQsyT5PhiXM2iUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; 
+   d="scan'208";a="126500581"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2025 06:51:00 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Fri, 14 Mar 2025 06:50:58 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Fri, 14 Mar 2025 06:50:58 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.49) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 14 Mar 2025 06:50:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bE4SLdIJaGIcM3jlodTScMjEN6G8EGXYo6s47xltmyr31V6Yn73iU1sBON7I4hINTAHE97yNhq74kHWrYUTOfBnzy+tKxTcJ4ASC+9Gq3CQdnv/8M6+3mkB7E4rp04VxnVbr/Uk5AImtxX4ioSMrdKiitnwwASw4NQ/dbCgge/8H+LhmcmZvnazb8BEkfifMIObpaFxoSG6/ax9wE6Ix7xf/fTFkCCLXA9XwpZYfWz33ri9JtdCghB8aSE+y6YPHdLfpGTLdWEOf+vndMyoFwF/mvzAz6wiRMGRRgzvVTb5OtABPItigprkezjvgsP3+pQS4Nu2MvRgqviV85CIqpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sMHd0hUCEGj/L0L+LKmQqH7GRx6KJUdgdM/A8G2lA1M=;
+ b=yCTh9M+XPc2aHfSl3CxQpEGV7zvpTE7/pXSad5BbG2DuwKFEvm5dxp6u4GXhrYXk6lm1M0YnIDpmxHOLsRBZ+aVxNWwl4l9awrq+1cJP6HTCXjLlbt29d2rMkwmIDjVMgQiJIgvqmIeI0Ctn1ma2Lkufvh1R9My7Oh4V1m9Zjq6PhchZkEZx/p4UQV8DZwuAigdlF05tBnCEkrD0YcqtsFn0bex0AanN0lYujZEJLX8OtL0GE/S9JyJu9VNIOXMRETaZQ//4GhkNDrcrN3ez9JX/kAD8+nJP8GaiZARJGPx8g8era7/7Q0/8zipXFo0/SOkC5nsPo8i04V0kWcJbYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3605.namprd11.prod.outlook.com (2603:10b6:a03:f5::33)
+ by SA1PR11MB8575.namprd11.prod.outlook.com (2603:10b6:806:3a9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.26; Fri, 14 Mar
+ 2025 13:50:55 +0000
+Received: from BYAPR11MB3605.namprd11.prod.outlook.com
+ ([fe80::1c0:cc01:1bf0:fb89]) by BYAPR11MB3605.namprd11.prod.outlook.com
+ ([fe80::1c0:cc01:1bf0:fb89%4]) with mapi id 15.20.8511.026; Fri, 14 Mar 2025
+ 13:50:54 +0000
+Message-ID: <df48092d-2192-4f80-9951-70e321d28aff@intel.com>
+Date: Fri, 14 Mar 2025 15:50:42 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+To: Karel Balej <balejk@matfyz.cz>, Ulf Hansson <ulf.hansson@linaro.org>
+CC: <phone-devel@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+	=?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	<stable@vger.kernel.org>, linux-mmc <linux-mmc@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Daniel Mack <daniel@zonque.org>, "Haojian
+ Zhuang" <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jisheng Zhang <jszhang@kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+References: <20250310140707.23459-1-balejk@matfyz.cz>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20250310140707.23459-1-balejk@matfyz.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MI1P293CA0002.ITAP293.PROD.OUTLOOK.COM (2603:10a6:290:2::9)
+ To BYAPR11MB3605.namprd11.prod.outlook.com (2603:10b6:a03:f5::33)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-sm6350-ufs-things-v1-3-3600362cc52c@fairphone.com>
-References: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
-In-Reply-To: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3605:EE_|SA1PR11MB8575:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff9e76a6-19df-46a8-21ae-08dd62ff3d7e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007|41080700001;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ckpBdTl3Snlsd281ZURaa0NNakxwKzZMUlMrU1J1ZGNBREwwQlhXbHl3MmxW?=
+ =?utf-8?B?R2JvVlFVMGd4Umd1dTd5ZG43bHZoOU92dzdDQkN0N3JiSDE3bitod2huc2U5?=
+ =?utf-8?B?Si8ySlpSajg3dUhIeURjbEJWelR6YUs4Ynk1TDBYOEEvTlZ2TlZKRWZMRTJS?=
+ =?utf-8?B?SHpJc3JyVVVGM1ZXL0FYRXVYSUhCT0o1Q1hZakxxQ1d5eGtaMmt4bStzRzZp?=
+ =?utf-8?B?TzRPaWVLamRGcVFDUHc2MnpNcDBOSDRYd2F2azJVWnFwMDQ1OUlGdjBTMzBE?=
+ =?utf-8?B?TWtZTWw4a0NaS3VoUUxxdW80NHM1dGgyLzA4NDN0bWtNM1JLbFR3dFZhMktW?=
+ =?utf-8?B?TWJSR0FSZitOSUdrMlZrVEhRWHBqRFVnSjZ4Z2p6M2h2OThKa0QvN09nczA4?=
+ =?utf-8?B?T3ppU2lDSVlIa1VCalhSZS9yUjlRTnYzdGQ2VVlSNmEzSGZoNWxyU1NqNFhG?=
+ =?utf-8?B?VE5hT3QzVlp0ZWtOcE5KUE9CMVhtbW1sQkVLN2hYMC9jQlRCZVM0bUJnNFJx?=
+ =?utf-8?B?dkpnT01NRHNOQUUycUFFSkpNWmZGYk10bHNHMFlaVlBKcTZCUmY5UW4vb1pM?=
+ =?utf-8?B?aVJXR0UwZVdaT0tQNytrTjR5cDFFUG1tQ3lIcWU4dllSM3gycjB1WXRHOW9W?=
+ =?utf-8?B?SjRKSGZtWTF1SXp4MnJnekswK01kSlNwR0c2VjdIdHpIUHNyUjRSWlVBaWpM?=
+ =?utf-8?B?VWtaKzRlMzRDU1Jkb3JJdWt3b3hiUU1vcnhNa1dYRkNNNmlHSlVZZ3pUN2V3?=
+ =?utf-8?B?dHNEWkw3M0loUVhISHArQUV2TklBbWNnN2tZalA0WEN3c2kzYWJ5L1NYUnBJ?=
+ =?utf-8?B?cmZEUDMxSUFIZCtQYmh1alNxZmRNa3dldXMra2RGMXM0bU92NXJoVmIwR2JS?=
+ =?utf-8?B?OHhLWE5henNXa3RRTzNRb0poYXVyS0R1YkVvNFBpNkxDR0lJV1FOalBxYWYx?=
+ =?utf-8?B?M3N2dnJCMHpTaWVnQjFUTW1HTUxCajBObDNFSENVZUxYNjFIUVlGcU42S2I5?=
+ =?utf-8?B?TTF6MjFkY3dEeXBISXpFM2JOVXZsemVlcitQeDNJT3hLeTZsV082QmR5SlJK?=
+ =?utf-8?B?b3huZmdBSlo3U3hJS0Z0OG9tbDVjMHk3OUFFSTRNdlhqZ0Zha1B2T2xBamM4?=
+ =?utf-8?B?OUV2Si81cytpaGFXM3B1bG1TYXpnREpKWUNTUUtwZGFHR0ZYUjJVVlRnczBa?=
+ =?utf-8?B?UTF4dXEyRHUzS1ducWRTRkNFZ2d1N2xwODFhdC9hcVVDQ2wzTHkxOUE4enZU?=
+ =?utf-8?B?NXU3N2dHOStlcFJvQjZMTTNna0E0M2FIRzRhOStTOVZjR1dwVmRDV1grZ1dN?=
+ =?utf-8?B?US9heEFONUZiUXd4MlVhMVNiaGxBbnptQ0YxUHNWOSt6MUlNazU2dElWOGJr?=
+ =?utf-8?B?ME1jMTlqMUY2UDhMYzMxOXFldnFhc0tQUHFDaFZrcFMxamhncjYzL0gyaCt6?=
+ =?utf-8?B?TlJsYXh6dFZTdUN3bk94RXhFWFZWSkZBTS9XRWlqSGkvWnNhMU1nVDVpNDU4?=
+ =?utf-8?B?NTl2QzRHNnBRdlJSRmZ5aTdJajVpd2ozZ0xpZTFDcjROalZMUVF0c0s0cWxT?=
+ =?utf-8?B?VEpmdnhSaGc5U21WV2VLVjJnb1hnQmJBcERjUDZqcGp2bExsVDB0TVRhUHBs?=
+ =?utf-8?B?dmc5NEk1V3FHaHU2MHZobUFIcGlnVU8zK2QzTHlxemR6SW1qWWlDZFhxK1I1?=
+ =?utf-8?B?UXNkeHlaODYwb0xQMURwM2tmdDFVYXJqT00vTmk2YUgxSzRqSlBFVFpKdVo3?=
+ =?utf-8?B?M09LbGpBZWtoc29yelBCRC9uV25XSWxZRkUreE0yYlRXdUYvT0dOMWR2NXVH?=
+ =?utf-8?B?dlRMZDhBSC9YNWFBVVlaaVluT2ZaVXFJN2ZGb1BKWHZZMWdVM2tZU1FWaE45?=
+ =?utf-8?B?blM2T0luNzFrbTlHR25nZmp1UnBZMzZST0pOMG9mVXZ2LzJrbSs4UHRsNHlv?=
+ =?utf-8?B?OStFS0tBeUpjOUwrRldzZ0U0b3lWRXJDS0N2OFJRNUxXSE0vU0M4ZlpHSnc4?=
+ =?utf-8?B?UHpVNFdzRHRnPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007)(41080700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UE5OaU9IYXZJVFBPU0FYTitZQ1BCUWRRRE1xNlIvM1pWOHdHbUx4ZVBucXZT?=
+ =?utf-8?B?Q1ZwcmtadmRtcTZ2ZE4vOUNyS1JscnR1MnltQU1YbVNNSWRQWU9UeFlzNzA3?=
+ =?utf-8?B?QmNDN3pYTGxqdHFtMTJvZ3VqZUczUGdqNmdDTkk3bHN0NnFNaStkUUtpVlMv?=
+ =?utf-8?B?VVl1bkwySm41YVVPcmloQSs0dENYN010RGNXbUZBT3lUTHhoZk5SOXBxblJp?=
+ =?utf-8?B?OVorYVdTbXZzYng2aUxNOVh0c0VTMlYxbDRXNDhnbjBldk9VMXBEd2puWmtL?=
+ =?utf-8?B?c2ROODVvNVNKdXJleFlpU1lyS0ZXcUF0TTJMQVlQYlAwZjE1Z1A5bjY2VnFo?=
+ =?utf-8?B?UFZkeWtLcUJncmtpOVlGT3hTREZwbVdNYnh6cDFLbkZnaEsxT1pXSWJHUHdN?=
+ =?utf-8?B?Q09NV0kzNVI1QzJQRlcwUklCSEFOUnRuVjZZa1lZcG4yRkhxcVhSTU5MeTZv?=
+ =?utf-8?B?Vy9GU0JjQURyYjk2RXdVQjdadEoyc1ZVSzNkYlYvVWlhN2t1TW9TZ1JFZHM1?=
+ =?utf-8?B?K1JPaTZZOWR4M0ZwckZJVGRhN1d3OXR2MEVKbWpPUkQ4QWlkKzh2ck9YRm9a?=
+ =?utf-8?B?cmlMV2VRL3l6eUQvVnRqQWxqUkNYdzhXTHFmeERCOFU0eTdYWmZnUUl4clJk?=
+ =?utf-8?B?dVlFeWo5M2xaRE9XaGd0VDRyZDVIL2luUkdndWtJQytBNzJIMVlFdWRpTEMz?=
+ =?utf-8?B?Y21CVCtFWTBuQXFDaWdncjQrcTVueVdVSW5HVW0yQUYzWU9WR21jZjNIdVpX?=
+ =?utf-8?B?VjBYV09vdWozQjlkTCtSLzlJKzJtaGU3WEl3em81bWlqMS85V21KdmVzdXhE?=
+ =?utf-8?B?R00yQ1RnSnE5Q3pjUTM2cjJGSEU1c2xiZGo3aldYbGJjQmo4dzJRZ2tPbjAr?=
+ =?utf-8?B?YUdGYjFwdGxpNEM1UThrUmcwczhFQVBYNysyZUFxNGtOSXdTUWFERFdKY25D?=
+ =?utf-8?B?Vm4ybS9rMGhZQy80dE5veCt5RjZLNGNnSll6bDRMdTZtZmsvRFc0Q1JYeTNM?=
+ =?utf-8?B?cFU3SkRqcUI0K3UxYllGbFJ2ckJ2djRSUkxRaVhqS2tWNHJWUzZ6STRrM1N3?=
+ =?utf-8?B?MFhBakd2UVozMmdNQnRTdEZPNG9qMzY2SlZKblNLdWowR09MN0U1UDdQblZt?=
+ =?utf-8?B?WWc0STlIQ1JjZmVHQUlrMlVzU3dGRHMxZDYzZGxZajVyOXV4NDVOK3dUYjlD?=
+ =?utf-8?B?Y1kyZ2JhbnlYemt6NkRZaCsyUGZFUUNIS0xUN1EzWHN1TmZ6Wjl4YWhUVUQ3?=
+ =?utf-8?B?UGVteEloZUllalkwd2g4MkNSM3B4bUdqeEdaNnpQSGpCWDJZSWJVRGNhSFdW?=
+ =?utf-8?B?Mmx2NUdzTGs0bTJlOGVrMUc3UEJvMlV1YURPeG5PMWhlNytvQ1BXejVvV3FW?=
+ =?utf-8?B?MHYzeXI1bWpXYy9TK2VITU9LYTQzSUxkOGhqaFNOUkRqUUF4SXlXUDE3ZStC?=
+ =?utf-8?B?L2VVN2RITEhPWEdySllOc0hmb3cyZmNBcTZRM1ZPR09ERUxSemJEN2w3SW1r?=
+ =?utf-8?B?SHBybWREVitDdnE5bjFaVFAvZWQ4bnBWOWp3WkJFaWtYbDRxZFcrdkdyS095?=
+ =?utf-8?B?QVk5Y1p3YVVsUHduVE04aGI2R3dwUjk1ekRuL0I5QW42bUVLYWl6STZQMk1M?=
+ =?utf-8?B?ZTYvWnM3UWlJSmVsSmFYWFkrOWxHVzZKcnhSK0lTRDQyYTlZNEFVRkF4Zldh?=
+ =?utf-8?B?MG4zK1BzWVJ6cHdwUlBkaTFoT1pmN3g4TkdGVW5pM3VoaGoxSnJsSE90VExs?=
+ =?utf-8?B?akRVV1QwMXdKbGxYV0pNK00wOXJXWi9mQTN0R0pFWGlnUEQxRkh1WWVVSFk5?=
+ =?utf-8?B?TmE3TzJxdkRYUi9tTTU5YWlVSktQZUs0QXQ1dlJOOW5aaWVKYTNGajdEMDk0?=
+ =?utf-8?B?cVF0Rnpvc01ybWNtMUFsTXp5VGZkUGRXbmUrbGI2eGN5RmhCR1BJL2ZBVWps?=
+ =?utf-8?B?d0xIN05URFF1OWZWdzVXM0ZOcWx0QXdHZVNDME5lRmNvb0xmTkoxcDhFNjY2?=
+ =?utf-8?B?bWNJc20zT3RoZGNMWlNBeVlBaTJGOGJKK2VrY0RXMzBJbERieEZndkJZak1t?=
+ =?utf-8?B?UkxuUlJIdWE0U1dWRzNDZGZ2ZFVSQmNucThIS1lJaXlhM0xtVUw4ZUxiK2t1?=
+ =?utf-8?B?UTVITkZrV3l5OEhYNzlyQ1lNbXo1a21sb3NuQThjUlBIMUh3QzlFbTN3eXA3?=
+ =?utf-8?B?Y3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff9e76a6-19df-46a8-21ae-08dd62ff3d7e
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3605.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 13:50:54.7643
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Di7q9LnSQwkaijVU5JwELRc/d1otwMXm506jVBU5YPC/j6/6jzsliceMatON5Cesr2oP9ckM+KmPDVCvck4sg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8575
+X-OriginatorOrg: intel.com
 
-Define the two NoC paths used by UFS: ufs-ddr and cpu-ufs.
+On 10/03/25 16:07, Karel Balej wrote:
+> Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+> prevent conversion of R1B responses to R1. Without this, the eMMC card
+> in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+> with this mmc host doesn't probe with the ETIMEDOUT error originating in
+> __mmc_poll_for_busy.
+> 
+> Note that the other issues reported for this phone and host, namely
+> floods of "Tuning failed, falling back to fixed sampling clock" dmesg
+> messages for the eMMC and unstable SDIO are not mitigated by this
+> change.
+> 
+> Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
+> Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
+> Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
+> Cc: Duje Mihanović <duje.mihanovic@skole.hr>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+There doesn't seem to be much interest in this driver except from
+Karel Balej and it looks OK, so:
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 77ca8990c7a096f40aab5666da9f69465f59b71e..b26ee8cf66a3f53b6068efdd05ab4347fb175c61 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -1175,6 +1175,13 @@ ufs_mem_hc: ufshc@1d84000 {
- 
- 			operating-points-v2 = <&ufs_opp_table>;
- 
-+			interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
-+					 &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>,
-+					<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ACTIVE_ONLY
-+					 &config_noc SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
-+			interconnect-names = "ufs-ddr",
-+					     "cpu-ufs";
-+
- 			status = "disabled";
- 
- 			ufs_opp_table: opp-table {
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
--- 
-2.48.1
+> ---
+>  drivers/mmc/host/sdhci-pxav3.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+> index 990723a008ae..3fb56face3d8 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
+>  	if (!IS_ERR(pxa->clk_core))
+>  		clk_prepare_enable(pxa->clk_core);
+>  
+> +	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+>  	/* enable 1/8V DDR capable */
+>  	host->mmc->caps |= MMC_CAP_1_8V_DDR;
+>  
 
