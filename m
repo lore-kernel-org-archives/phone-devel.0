@@ -1,206 +1,126 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAD222C355;
-	Mon, 17 Mar 2025 09:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8525D2356DE
+	for <phone-devel@vger.kernel.org>; Mon, 17 Mar 2025 10:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742205472; cv=none; b=FrZWCa8Cwch7FvcDfJfD91j+Bso3TiMpzzO2DfaeIIU9yMLACNcHpBcOy20dj9QJ6goVTVeYDvrIwa99jfWOu9oqbEuP8DLMZz0BpJLIo95AGYQhL+ND8L9hQyv62L7kkamSHrgptkYXNzm7gy+xQdW+aSEgbm2+XIqeGA0hkUA=
+	t=1742208714; cv=none; b=h/gmzhfuQaBf900OVOEogM1quz6RKxsJgxtFV2iqSvl6iXebjwdhRuSUFeUmP6ZVlnJXpmYvjqBmTZqeoMYZeBOWs5bBlvBj5YE9W5PTMc6zHt4a9Ip4sydMThWbNC00fG2zI4C8HjHVEGzxUtCgMdJnMC6Kq9yP52KHJ5PdOao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742205472; c=relaxed/simple;
-	bh=u4gGQHQyXKmcD/n4B9Coibe/2rVi6aB/7qBpOdGg5FU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=p+ZW75W3IcAYoJRGo5xf9XtG3h9Osvhg0cWTNh3BxbquXXvmnJWhdgaR1kiFx95sDgUC3jyv7k8NC8/9YOaKPjckRn7n/nJuPPqjeKHAViWzC5cV5px8lzQVTIbKZPlvYOObXlEpzwIXsv7/PLqVbqwiTzWOOjwALu3KFVuRaEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=nkfwHgNI; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1742208714; c=relaxed/simple;
+	bh=SSJphfXCG2zCHPK6zCaKsC/SKYxjclRr36SEoRuzCYs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qvf//4qzGW6KjyuoAh+Xx5YQEUI/IlXQpmbGmXS13tj68aRjZpTIjYUmhMM2GEG+TpQvPStVNPRyYhbjk3GUbyy/m50P2/ZPhQDtxIm/LEC2zZwW0U+qlA8G04SREpxwYLiW/i8cFlMFfXgEj219ga86fE9uNdEE0E4JkXv8WpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UzjFmyQN; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="nkfwHgNI"
-Received: from [127.0.0.1] (254C1C5A.nat.pool.telekom.hu [37.76.28.90])
-	by mail.mainlining.org (Postfix) with ESMTPSA id B53F0BBAC4;
-	Mon, 17 Mar 2025 09:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
-	s=psm; t=1742205468;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhlrRtgQ29uAkg57Izvory2SkjADGQMOEcn3oIaEafg=;
-	b=nkfwHgNIkMw6drNJf+qwgVofGWU+RQr5cydxMVJUZvLcx3uT/yiIjF68d2I6B9d2H1DydP
-	AmymPLAI6g2lw7kEDLY+0D3uDkoP9QAUPFh6TEeG/dpXpr6lEisnrxIYknRRnEID3jHCtQ
-	N7MZ+vsQz5FHOYKqC1J89V2skPUC++82H33O3InzwoQO5ZmDaFg0uwmVqxqTsBqmeJG1AS
-	lcvUWqbfk29XZM0NjItqztSvwYQH6wtwYVBMjOYLAuZB8fFOHSsD/BKYZpMHFwGxb8SSof
-	8QBPprrFFrZjZ6wirsgCU+OShkqiFfLOD11BURS2ICwXmBXo27u7e81uiLmRvw==
-Date: Mon, 17 Mar 2025 10:57:45 +0100
-From: =?ISO-8859-1?Q?Barnab=E1s_Cz=E9m=E1n?= <barnabas.czeman@mainlining.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
- =?ISO-8859-1?Q?Otto_Pfl=FCger?= <otto.pflueger@abscue.de>,
- Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>,
- Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- iommu@lists.linux.dev, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_1/6=5D_dt-bindings=3A_clock=3A_q?=
- =?US-ASCII?Q?com=3A_Add_MSM8937_Global_Clock_Controller?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20250317-hot-obedient-sturgeon-394cb8@krzk-bin>
-References: <20250315-msm8937-v4-0-1f132e870a49@mainlining.org> <20250315-msm8937-v4-1-1f132e870a49@mainlining.org> <20250317-hot-obedient-sturgeon-394cb8@krzk-bin>
-Message-ID: <11695D76-7CBE-41CE-A8DD-D6845D01670C@mainlining.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UzjFmyQN"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6f6c90b51c3so44106207b3.2
+        for <phone-devel@vger.kernel.org>; Mon, 17 Mar 2025 03:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742208710; x=1742813510; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+yzwXCamUoTIUofZgcVBDy5XB48d1gyjHMwR9usrTvc=;
+        b=UzjFmyQNl8zWD2AFanI+KJNP+74g6g45uUuY4j9T+ddntv3g65ypV2RizBC9GwBMyT
+         CE8Jko3KpcGB/MtVucLma1lHCEOI25m+KoXYz+TwIDUxjzdzZT9VlhlICnCAECYUTEVX
+         JbhXy9oxr20DoEpkHKXeB9o+5wWFQdHqC4cFry8GRsc/nGQ/yQodcTpTeMitU3Bknpmr
+         e/QbCS+Kwemj+5ZapkSAAXQZoVvWSmvaR9lYTZZT7+vmY+NbtXXw9hwq45A0p/otbdvX
+         euYMzQ84w0gITmXBbGGiy3wXopEOacIlfTVXeHClClpVmz7nE5/G2i8ual4gMRpQI/d8
+         ShMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742208710; x=1742813510;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+yzwXCamUoTIUofZgcVBDy5XB48d1gyjHMwR9usrTvc=;
+        b=vXuMHb1deGlq4Q0D4K/OdcB1Ht3YVdkKj1of7cGtg98HOdFw3C17MHhk11RB20VMzT
+         KBcmy/rOASdFMajc+UiXQEICT5TrnF7ZErhSK4xXEte23R4jgPWmYHWtVpZN2esRKTWp
+         wVXUWXAd5jtF0n16Hi8XVEHEpbPK0o8FyWDrQhlg8TL6ZaZOMHtAj4w+dgmRxvs+tA5q
+         juawPSQu3YijI6KwULVROp41QtXq0PQNtp48gFRiQDrRZ1RH8vajx3ZwlPGhwkUib/SE
+         JCMP1g/TyGAHS9yJDhE4NGNpJ3dUeLPt8geDisV7Jw+MtARsXSIPfyAkDmf32NDWRBwB
+         uiPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWISr906Yo0qEYIBM+scDVgcedh17DBhOKDTRO4fiYZvgyQfbCnsGqrOW07/4/QucqjpOB+mTgy2xZ8TA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzovmhEtM7+04SHyp4vIqWPKi2K6Y1pEPkselTms0mP91H4QF+Q
+	Wx1XdKVdcAAxg74YNOXgScU1+b2FdalW+l72zk0522Pq92ToXKq7LYzE9CyQ2equS32Slf8MhMZ
+	GR9PSDRnJbUqFOinzMGt8ichigSCH/aHP8Adssg==
+X-Gm-Gg: ASbGncvyncQc7aJLrYQFbRbDJylOkhGWMcfi0QNH/SKJ043C9hnoFynqyf7oz+B6LvZ
+	sqCED8iIqhtnPOyavMDTHFi3E2bkSMwKdSpYkMX31XGddhABIiL6DtgnL+pvFG4PVGYcqtnifHD
+	2v61ci9T4LWy+C8C82DmOpGjMh53U=
+X-Google-Smtp-Source: AGHT+IHrpsNOZG0XVeApLlEX5Asu2hMQi9J2yKqum00y7qSmPZ38e0cxpvS/V3TQKrtP/AMHKZMhNpxTHaPPWWrkxLA=
+X-Received: by 2002:a05:690c:61c4:b0:6fb:9bbf:d53b with SMTP id
+ 00721157ae682-6ff460db0c7mr152934337b3.36.1742208710230; Mon, 17 Mar 2025
+ 03:51:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250310140707.23459-1-balejk@matfyz.cz>
+In-Reply-To: <20250310140707.23459-1-balejk@matfyz.cz>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 17 Mar 2025 11:51:14 +0100
+X-Gm-Features: AQ5f1JpZXdl7aZ24okiADw3I1eeMD-rDqu62KRWTaTVzBq0hjnVagCd7gLvyRJ8
+Message-ID: <CAPDyKFp+dZUuif4b0rH9G8NkksgQrVDeHWzWfeRz2TY_9j_gyA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
+To: Karel Balej <balejk@matfyz.cz>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, 
+	"open list:SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI...), linux-kernel@vger.kernel.org (open list)" <linux-mmc@vger.kernel.org>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, 
+	=?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Mon, 10 Mar 2025 at 15:11, Karel Balej <balejk@matfyz.cz> wrote:
+>
+> Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+> prevent conversion of R1B responses to R1. Without this, the eMMC card
+> in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+> with this mmc host doesn't probe with the ETIMEDOUT error originating in
+> __mmc_poll_for_busy.
+>
+> Note that the other issues reported for this phone and host, namely
+> floods of "Tuning failed, falling back to fixed sampling clock" dmesg
+> messages for the eMMC and unstable SDIO are not mitigated by this
+> change.
+>
+> Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.=
+org/
+> Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
+> Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@=
+skole.hr/
+> Cc: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
 
 
-On March 17, 2025 10:17:46 AM GMT+01:00, Krzysztof Kozlowski <krzk@kernel=
-=2Eorg> wrote:
->On Sat, Mar 15, 2025 at 03:57:35PM +0100, Barnab=C3=A1s Cz=C3=A9m=C3=A1n =
-wrote:
->> Add device tree bindings for the global clock controller on Qualcomm
->> MSM8937 platform=2E
->>=20
->> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas=2Eczeman@mainli=
-ning=2Eorg>
->> ---
->>  =2E=2E=2E/bindings/clock/qcom,gcc-msm8937=2Eyaml           | 75 ++++++=
-++++++++++++++++
->>  include/dt-bindings/clock/qcom,gcc-msm8917=2Eh       | 17 +++++
->>  2 files changed, 92 insertions(+)
->>=20
->> diff --git a/Documentation/devicetree/bindings/clock/qcom,gcc-msm8937=
-=2Eyaml b/Documentation/devicetree/bindings/clock/qcom,gcc-msm8937=2Eyaml
->> new file mode 100644
->> index 0000000000000000000000000000000000000000=2E=2E3c3f6756048e195671f=
-542b3a6cd09057558eafa
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/clock/qcom,gcc-msm8937=2Eyaml
->> @@ -0,0 +1,75 @@
->> +# SPDX-License-Identifier: (GPL-2=2E0-only OR BSD-2-Clause)
->> +%YAML 1=2E2
->> +---
->> +$id: http://devicetree=2Eorg/schemas/clock/qcom,gcc-msm8937=2Eyaml#
->> +$schema: http://devicetree=2Eorg/meta-schemas/core=2Eyaml#
->> +
->> +title: Qualcomm Global Clock & Reset Controller on MSM8937
->> +
->> +maintainers:
->> +  - Barnabas Czeman <barnabas=2Eczeman@mainlining=2Eorg>
->> +
->> +description: |
->> +  Qualcomm global clock control module provides the clocks, resets and=
- power
->> +  domains on MSM8937=2E
+> ---
+>  drivers/mmc/host/sdhci-pxav3.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
->This is exactly like msm8953, so why it cannot be there?
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav=
+3.c
+> index 990723a008ae..3fb56face3d8 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -399,6 +399,7 @@ static int sdhci_pxav3_probe(struct platform_device *=
+pdev)
+>         if (!IS_ERR(pxa->clk_core))
+>                 clk_prepare_enable(pxa->clk_core);
 >
-Not exactly clock names are different, msm8953 have sleep msm8937 have sle=
-ep_clk=2E
->> +
->> +  See also::
->> +    include/dt-bindings/clock/qcom,gcc-msm8917=2Eh
+> +       host->mmc->caps |=3D MMC_CAP_NEED_RSP_BUSY;
+>         /* enable 1/8V DDR capable */
+>         host->mmc->caps |=3D MMC_CAP_1_8V_DDR;
 >
->typo, 8937
->
-No
->> +
->> +properties:
->> +  compatible:
->> +    const: qcom,gcc-msm8937
->> +
->> +  clocks:
->> +    items:
->> +      - description: XO source
->> +      - description: Sleep clock source
->> +      - description: DSI phy instance 0 dsi clock
->> +      - description: DSI phy instance 0 byte clock
->> +      - description: DSI phy instance 1 dsi clock
->> +      - description: DSI phy instance 1 byte clock
->> +
->> +  clock-names:
->> +    items:
->> +      - const: xo
->> +      - const: sleep_clk
->> +      - const: dsi0pll
->> +      - const: dsi0pllbyte
->> +      - const: dsi1pll
->> +      - const: dsi1pllbyte
->> +
->> +required:
->> +  - compatible
->> +  - clocks
->> +  - clock-names
->> +  - '#power-domain-cells'
->> +
->> +allOf:
->> +  - $ref: qcom,gcc=2Eyaml#
->> +
->> +unevaluatedProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/clock/qcom,rpmcc=2Eh>
->> +
->> +    clock-controller@1800000 {
->> +      compatible =3D "qcom,gcc-msm8937";
->> +      reg =3D <0x01800000 0x80000>;
->> +      #clock-cells =3D <1>;
->> +      #reset-cells =3D <1>;
->> +      #power-domain-cells =3D <1>;
->> +      clocks =3D <&rpmcc RPM_SMD_XO_CLK_SRC>,
->> +               <&sleep_clk>,
->> +               <&dsi0_phy 1>,
->> +               <&dsi0_phy 0>,
->> +               <&dsi1_phy 1>,
->> +               <&dsi1_phy 0>;
->> +      clock-names =3D "xo",
->> +                    "sleep_clk",
->> +                    "dsi0pll",
->> +                    "dsi0pllbyte",
->> +                    "dsi1pll",
->> +                    "dsi1pllbyte";
->> +    };
->> +=2E=2E=2E
->> diff --git a/include/dt-bindings/clock/qcom,gcc-msm8917=2Eh b/include/d=
-t-bindings/clock/qcom,gcc-msm8917=2Eh
->> index 4b421e7414b50bef2e2400f868ae5b7212a427bb=2E=2Eec1f0b261dd5ccfe489=
-6a00ffa9cf86de98b9cb3 100644
->> --- a/include/dt-bindings/clock/qcom,gcc-msm8917=2Eh
->> +++ b/include/dt-bindings/clock/qcom,gcc-msm8917=2Eh
->> @@ -170,6 +170,22 @@
->>  #define VFE1_CLK_SRC				163
->>  #define VSYNC_CLK_SRC				164
->>  #define GPLL0_SLEEP_CLK_SRC			165
->> +#define BLSP1_QUP1_I2C_APPS_CLK_SRC		166
->> +#define BLSP1_QUP1_SPI_APPS_CLK_SRC		167
->> +#define BLSP2_QUP4_I2C_APPS_CLK_SRC		168
->> +#define BLSP2_QUP4_SPI_APPS_CLK_SRC		169
->
->Why are you adding bindings to 8917? Nothing in commit msg explains
->that=2E
-Because msm8917 driver was expanded with 8937 bits, i will expand the comm=
-it message=2E
->
->Best regards,
->Krzysztof
+> --
+> 2.48.1
 >
