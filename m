@@ -1,72 +1,92 @@
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E365A17BBF;
-	Sat, 15 Mar 2025 16:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85F018DB37;
+	Mon, 17 Mar 2025 02:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742055927; cv=none; b=CcCwmb3N6+RigmldxpgCLwrEUzePiklQf88h8brMOz8SJ+9/+WnnMyniU8N8sDLA1eMqkwuWSqI03VnQoHM51DsgZx2kb6XfoeSrl2YpxUpir1slIgbUiEGJw06NgUynm08p9+apvUyzdaIB/YcGEiwg4svRIniW4R+km417P7M=
+	t=1742180171; cv=none; b=Qsn1BkXemScZhSE3bOetgb5zHhcIGtwdsHjXcPJV1jc2wR/sRItndG8Y907h0KkkUzFbEPH/NaeYzltjy0yv6pmBvJXPn28f7ygRjImQVFtBD/TQ5GtSkA1PW5j9atSmwza1EhRMWgLn1INxN/nRf+uwRY3jQEHaJvaV6djcw1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742055927; c=relaxed/simple;
-	bh=OooLUublWM4AUomOTlrzjkR6hDHsebd4acX2bYkjReA=;
+	s=arc-20240116; t=1742180171; c=relaxed/simple;
+	bh=jFw7b900ZkEQ8RdW9FvK9cv1tNqStrsgog4XCObz7qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qV7J6Fv/M4wR8c39c7MyjqZsl7cGwhrFpLPEdMeZ1GgV5n2IE7tWbOLYwfV/DIYnpENYEZcogEKNT5S+dLrZ9ICE6Zfylc9IGzr7nrJF86ABSzckQ9StAn2iSv/loslwbS8SzmNSNiG2Mb2iVTwKPxXqsX4xJi/2hbyRkPxLP5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id 4E5CE830F8;
-	Sat, 15 Mar 2025 17:19:32 +0100 (CET)
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
-To: Adrian Hunter <adrian.hunter@intel.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
- Karel Balej <balejk@matfyz.cz>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Karel Balej <balejk@matfyz.cz>, stable@vger.kernel.org
-Subject: Re: [RFC PATCH] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
-Date: Sat, 15 Mar 2025 17:18:30 +0100
-Message-ID: <12652295.O9o76ZdvQC@radijator>
-In-Reply-To: <20250310140707.23459-1-balejk@matfyz.cz>
-References: <20250310140707.23459-1-balejk@matfyz.cz>
+	 MIME-Version:Content-Type; b=O2yahsBqhWA8kszfhEWdXqGj1wiKgXvEIIydmxcn+eqgD0ZLlPDiZD6bwkDmvGc6Bms4hBX/ij4ngGaEly14Eq4jlN1MJ1DSRYuuB0OwgBmFCvDBYWn+DzMUz1iS/Cm0RRnhYaFHHnRNmXokMWRbcOH4J3T4v/v3EPbdMLh0XEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/mrTsNl; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/mrTsNl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD65C4AF0B;
+	Mon, 17 Mar 2025 02:56:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742180171;
+	bh=jFw7b900ZkEQ8RdW9FvK9cv1tNqStrsgog4XCObz7qM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R/mrTsNlPu2V6n9PpRsqEn+AApRW479bej6SDx7uZPK420YYbf0AqnApj4HRBkIE/
+	 HO0a6IWoPmnvCIziBGShHZihykRw8y3rAOywQ3S6k2z4D6CMSvt6jXUizA2vibt7fg
+	 t6NZgkCkE0NBNuOfhz8pxhybp3Jo9z5biNFyYs+KzC0iYVkITfdbpzzahon8N1J/3x
+	 aJI884j4HuUgsCiURdn+YugT0AE2d9dok+Ru9GWrGgfFF4Tc5sJfzkU7BusRVHP4Al
+	 lNBN9gZAgdyji5ayABbhfCgYdGt1oL+eSFNowszZ8bNJBDr0vQ/xdwdRYXT91h1l4j
+	 TmFIHxhipwfFQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Luca Weiss <luca@lucaweiss.eu>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v5 00/13] Modem support for MSM8226
+Date: Sun, 16 Mar 2025 21:55:51 -0500
+Message-ID: <174218015900.1913428.14948939748843427587.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250217-msm8226-modem-v5-0-2bc74b80e0ae@lucaweiss.eu>
+References: <20250217-msm8226-modem-v5-0-2bc74b80e0ae@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Autocrypt: addr=duje.mihanovic@skole.hr;
- keydata=
- mDMEZokhzhYJKwYBBAHaRw8BAQdAWJZ0hsI/ytTqHGFV8x6tzd5sB596cTeeDB4CQsTf+wC0KER
- 1amUgTWloYW5vdmnEhyA8ZHVqZUBkdWplbWloYW5vdmljLnh5ej6ImQQTFgoAQRYhBG3/QdYN8x
- S1t2umMK0xk1JFj60DBQJmiSHOAhsDBQkJZgGABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAA
- AoJEK0xk1JFj60D1GABAJVSorZdMOlrp/oQtCSH/G53NE56x/JHA8VX+ZQBd/H3AP4/EcUf6eef
- DUxVMh2bdkmuQKsVZGgOGiXpMksrVntWBrQpRHVqZSBNaWhhbm92acSHIDxkdWplLm1paGFub3Z
- pY0Bza29sZS5ocj6ImQQTFgoAQRYhBG3/QdYN8xS1t2umMK0xk1JFj60DBQJmiSH/AhsDBQkJZg
- GABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEK0xk1JFj60Dlw8A/i4lPOL7NaYoYePDq
- l8MaJaR9qoUi+D+HtD3t0Koi7ztAQCdizXbuqP3AVNxy5Gpb1ozgp9Xqh2MRcNmJCHA1YhWAbg4
- BGaJIc4SCisGAQQBl1UBBQEBB0DEc9JeA55OlZfWKgvmRgw6a/EpBQ8mDl6nQTBmnd1XHAMBCAe
- IfgQYFgoAJhYhBG3/QdYN8xS1t2umMK0xk1JFj60DBQJmiSHOAhsMBQkJZgGAAAoJEK0xk1JFj6
- 0DG5MA/iuo4l2GDEZ1Zf+XaS//8FwdXDO9nHkfbV2MHjF4NZXwAQDroMzBdMcqVvc8GABFlTTgG
- j7KrRDz2HwWNyF8ZeprAQ==
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
-
-On Monday, 10 March 2025 15:07:04 Central European Standard Time Karel Bale=
-j=20
-wrote:
-> Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
-> prevent conversion of R1B responses to R1. Without this, the eMMC card
-> in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
-> with this mmc host doesn't probe with the ETIMEDOUT error originating in
-> __mmc_poll_for_busy.
-
-Works fine for me on the same board.
-
-Tested-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-
-Regards,
-=2D-=20
-Duje
+Content-Transfer-Encoding: 8bit
 
 
+On Mon, 17 Feb 2025 23:05:14 +0100, Luca Weiss wrote:
+> This series adds support for modem remoteproc found on MSM8226.
+> It also adds needed device tree nodes and enables modem used for
+> location service on matisse-wifi.
+> 
+> Also bam-dmux node is added for mobile data which is used on
+> 3G/4G-enabled devices.
+> 
+> [...]
 
+Applied, thanks!
+
+[07/13] ARM: dts: qcom: msm8226: Add node for TCSR halt regs
+        commit: 300edf73651b1151b18c0ef4b90cdf71946787f0
+[08/13] ARM: dts: qcom: msm8226: Add smsm node
+        commit: 184cb65984ca164e4adb3abe3ec1549ed358d1bd
+[09/13] ARM: dts: qcom: msm8226: Add modem remoteproc node
+        commit: 075555387244b51d9414a35d3b1d9f58a4df0fe3
+[10/13] ARM: dts: qcom: msm8226: Add BAM DMUX Ethernet/IP device
+        commit: 6b47ce06f22b3ad2921dda442be23abbe93ed251
+[11/13] ARM: dts: qcom: Introduce dtsi for LTE-capable MSM8926
+        commit: fc532eb25c0aeca1d20e7d3c8d8a24b3ff39e3a9
+[12/13] ARM: dts: qcom: msm8926-htc-memul: Enable modem
+        commit: 36663812eeb5e57f1d167c33bcb1dc970333bef1
+[13/13] ARM: dts: qcom: msm8226-samsung-matisse-common: Enable modem
+        commit: 32768db9cfc56554d1570ac71aa204f0751bd12e
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
