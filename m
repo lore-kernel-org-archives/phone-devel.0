@@ -1,65 +1,67 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FECB25D214
-	for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 08:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449725D8E2
+	for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 08:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742805669; cv=none; b=dSZYsY4VxNQSbT4pyFEvTOot4LVCX+wWkwR/yG0hQYxswVWxd0JIJMzxWKYGGo/bu5qFNTc9WO0az/IJ36hGP4SUKVGbdyMACMVPfup3wbzRTLvt92HfDJuaXOCCYyuLmAhGKgFwpZUqQi7DIpYl2TvNphMiHeSfclJ1eS5xrds=
+	t=1742805671; cv=none; b=hGCXDCic8ML9gkBWNq+2DiGr55IrEWvt18TCgPsEvXnieuN1e0gPKJ7RXHFdOghwJzZRUDzSHvV5fjUQsD/wfIYsGsn2q7//UTgWBYh/60Zn0AROJK8u2UEj08xlxYDxy7OAzfqSKiQlTjhFN2msI7SqUGJFWdIeE58dt3zSkaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742805669; c=relaxed/simple;
-	bh=+RNPkMlZKx3NJ+3YCG0FD3p8moXxVtBHXDEF3timP3Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CanCqEEWt7DYKQn2hSoSq62nPxPDf/5OWyhHs7nhlB+UBAXDIjIdNuuPaYN+NV9QRwnL0GVFusyS0MqNdY4R7AwyONNlZNWxYyttKzpKBRutPxbnEWeOU4gQi7nEeZIYWRjjQvNId7siZ8buRRP4NDlUgAuEReZKdjOPMuIRR7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ba+Qdy02; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1742805671; c=relaxed/simple;
+	bh=GLAsUw1OONraXoc4O2AxkqLiMT4MdPKRGHr5nbrSBI4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Y/BotX25C+Wb2C0RGXzVFT0oLZikpoZhbo9GJ90pA9xIvXxCKJIcKoWlhHGtB5icY+yguCt3d1HrLb+aU2HMoWEJKXeYKJ7LgU0Jc5LQmkzHp+T9dpdYHLvGjfF3gq0pYekvZrqfVG8DOpQhlF0JIzgA/3YwxGolzjImdE9K5bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=T5xDHaeJ; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ba+Qdy02"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e61375c108so5333353a12.1
-        for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 01:41:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="T5xDHaeJ"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e673822f76so6381633a12.2
+        for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 01:41:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1742805665; x=1743410465; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7yAl2Q0nLohT9vZl0hqyj3prGYXo8JS24o94BwYJufQ=;
-        b=ba+Qdy02uHb1RVsCeDccjjWm1PH8tFtVpzS5K/qXCPc9aX6eS5dT77gm6UK+HRxAG8
-         jSEz1Bb9t5NM305dtn/aHISC7j1mxtqvhMKYbfAwoyGgpoO9CGTbKkhTslIxGTh5E9zR
-         B+blM5r8G96OvqlQgNcbNZ7c1gHd9fjqr0x17a1B4KYn7EAoX7G7jutBcON5YOTStc8t
-         c6G1SC0bbDq0EA9oDiWAu+3eT2FhjgQdW3vSvTj8/4sLDDAi540N23m++8WdOMjUV0ww
-         f0SxSxD0odp5is+7WOVkszRl0mh3LSIfNHlRlynGxtm/Eq+Kmk9ryuZUtsc69XR2+zbD
-         Pzdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742805665; x=1743410465;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1742805668; x=1743410468; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7yAl2Q0nLohT9vZl0hqyj3prGYXo8JS24o94BwYJufQ=;
-        b=aPQ4n4yMGjszhmEWAR/bvaomQJga+Slp5Kyf3w2pA2ez11dmdPQxlxkj1ZiCx3i+4e
-         XWf0Ff5pTlQtldUwWkJGvWUJf+fxsCIKdmcixkmLsaUbRScWUGvPiimVI1KWuz9TkRA9
-         FgHLo0OOEvsQHl7jrTwVhaR0qZm+AEOlUPnWhN/lrb/cWUwOs0ltNtE6Zh5918edRMyT
-         JaixkR06JWNCg7ZCp+aenp9GmcfEdtYPC1gQLTNzRgL0nQQKo7BvmP0zjbOcncf+N1FG
-         dBKDZLx8U10o+jzWEzbpjQCey+kC6g9avxIBrYpIC+Gbdbc/vBALOjrvaWFCKc2L+UXU
-         RE/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVlLwYRelB6VoLCG41Or09atlhuwSRAnQUH63nmeBAxZpd+UgupYxnc6oRaC5MbbDPlA0F2kcjZSwZhqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8T4r8t02TkCsLK37ULvsqVKPUIJp1/TemELs0Pg5D0u7JeznZ
-	zE+XEYZICfPkCQH1VoSSJABu5YDjQ4/yWQeDHjId2nc9tR2x4IEi3as3srzl8k4=
-X-Gm-Gg: ASbGncvr9rmnitKyNZUhq40S8cuBrwlmUuaDJphorsOgDnF2lPPYDJPb1J2MsLSmnCN
-	AYTIt97lLmofGiSYDg4Dgjavx0Y3bpYlSGvqpdm9DtQvF52+XFjBLgGzGAOK3joBbYsEfikNSUN
-	16MgemzXceZavyaZYwuWYkw7zFDEXlqtEkUd2lZTAdPPe71xjWciyoNCkocNHZEFRDx/jzmXk1s
-	YwE7EGyFW65U0+kSFjOjmKJZ2Pg7W8wPnBZnF4PxXWZBFLoH93zW8Fl7FnBtr6rRCUDP4DTP6j5
-	/J8A4B8GKuOfpU/1vwn9diPrw8S1GNcg0+ZI69LJimktjehNlrgUjtuTaMSCBDbg1ublmmxeXgu
-	3XNjRIR1IbVQDuZHBiA==
-X-Google-Smtp-Source: AGHT+IH2pFE6i0Zm5wyOinKwndN5SuBfWx9dBH2pv1rqCqFeE+5G+h9xZXN6o5/fzRd7duxeGjB9pg==
-X-Received: by 2002:a05:6402:909:b0:5e6:e68c:b6e5 with SMTP id 4fb4d7f45d1cf-5ebcd51c105mr9408156a12.32.1742805665487;
-        Mon, 24 Mar 2025 01:41:05 -0700 (PDT)
+        bh=PHERlL971lhRhRNPhw773ZN7phaB0MazKYjf9mnRkOo=;
+        b=T5xDHaeJdhNYbVjkiU0qmpziz5FYqA0/E69+GlOtc2ruR9Eu1lJz8JbtD8IQEcrib/
+         JiZaPeEV/5h6MLw78ryzML3FX4p8pDFr9SVGayw20yz6YMlS1IOOdJ2Nm+wf2r1DoOq3
+         TJP/1LralDz2AgfjjvsC1CGrCQ1aWTMnMOAdYMlQnjFN3I0FZdfRATW5LHrAt4rddz+v
+         pi4x1n4Sw788bJiJ3+8k5L0oeH39+IEIWI1E7JzBt18GUhpPXiI8xPWCfD8ymPf34vYV
+         HHcctPH+af5sSfVKzFwqknWZOCPmQuGI5WKtPQGohjg3wixbVnOvRbYMaEBCIM913njD
+         aXjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742805668; x=1743410468;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PHERlL971lhRhRNPhw773ZN7phaB0MazKYjf9mnRkOo=;
+        b=VZzCRet7NnJyLv29nfxJDmxulmdXQZPHjsYfXlzUQuMSMtA6DGSHNMu+rxXcbMKQmm
+         h3qYKsyP7Axgf7ZJLA5d2sjNoKQr8QTOr7phlcbf4e7Trk9giQhNoDuvVeV4VKOhOS4x
+         0jU/8sfzDyYlmuLhphM9XC53rt2anh7uERZfdvCggkSxnCwoOE8r5dlrljCpQpNBollE
+         jPndRQr1gV/sSohsApj9TDbaIozPuR7Uhat2FzU5rArHha/EgCtITXVGrURYdLth01K6
+         E9bHIweQlzNy3emnl3Ns52HAh+juH/J9QDy3TtcsvXCFNUXjN565tNP/qD54IJIqBX0Q
+         DK+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVi6h0XJ+IJYaVEI8lWlQ4mPsnTIbFPJUU+STbaFzQvWQxXhKo1461msWu8jWR60L/IX9LiXpB8yX6U7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkxFYyhfPMiQAaT3l8dcamLYCNB4ApMhmafBGwPLV5KrIX5Nu4
+	hJXGWXt4phNDDkNuD9+rskJU3lf79DrdwYVSph21aViRFbZPO7RXxDCgzmEE7Po=
+X-Gm-Gg: ASbGncvLaY0APSjhVcoQVj071+mKxUen7z8gyUGB+WZ+bgGBd3FjZqPCyAw1hPX71Y6
+	4ojD/aRtbEL2SKxAIBdQFV2TYF+2a+g+L2aKw33cYk5ezEE0o/h0vSmuXkwdsJ7AiJUJXyUiu19
+	eP74aIXmUc5frGqLjoDji6VKkiLDTXGpZNxPo8q9lf4vEuDfoE56d8+GhTpRj3PoarEQuDll7b1
+	R+R/w4OdW6Z43+h1gEbyIqlmHkWksfjQCXnnLIB7g3LBwKRi/gsm6Zk3QnqwqZBJ6UFwNJi+HR/
+	Pfp5laFApQiE4Hu6d9jHW6Xhuex57Jc4RD9DsO9beRlrf6JSQjnEiYvdB6NO2iJwQS64uEOTsoC
+	1X7iPZVAbFKN2DX2RfA==
+X-Google-Smtp-Source: AGHT+IFE5/MpqqL2hNF98hOzKJwcxXpuxQ2ZxAMOx5ASm9H25AMrv76V9q9yPx88TbUT9h5ov9f4lQ==
+X-Received: by 2002:a05:6402:35d4:b0:5e6:466e:5866 with SMTP id 4fb4d7f45d1cf-5ebcd4ecdeemr10659531a12.25.1742805667522;
+        Mon, 24 Mar 2025 01:41:07 -0700 (PDT)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ebcd0dfb33sm5715937a12.68.2025.03.24.01.41.05
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ebcd0dfb33sm5715937a12.68.2025.03.24.01.41.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 01:41:05 -0700 (PDT)
+        Mon, 24 Mar 2025 01:41:07 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/4] Add video clock controller for SM6350
-Date: Mon, 24 Mar 2025 09:41:00 +0100
-Message-Id: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
+Date: Mon, 24 Mar 2025 09:41:02 +0100
+Subject: [PATCH v2 2/4] dt-bindings: clock: add SM6350 QCOM video clock
+ bindings
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,10 +70,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJwa4WcC/3XMyw7CIBCF4VdpZi2Gi9TLyvcwXdBhsLNoacAQT
- cO7i927/E9yvg0yJaYMt26DRIUzx6WFPnSAk1ueJNi3Bi21lUYrkefeWCkKe4qIoif049WN+mx
- 7aKc1UeD3Dj6G1hPnV0yf3S/qt/6lihJSoEVSQZ0uhugeHKd1igsdMc4w1Fq/6e/4LbAAAAA=
-X-Change-ID: 20250321-sm6350-videocc-6ecdb9ab2756
+Message-Id: <20250324-sm6350-videocc-v2-2-cc22386433f4@fairphone.com>
+References: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
+In-Reply-To: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Michael Turquette <mturquette@baylibre.com>, 
  Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -81,43 +82,100 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
 
-The driver for the SM6350 videocc has been lying around in some branches
-of my git tree for a long time, let's upstream it. It doesn't get any
-better by letting it age!
+From: Konrad Dybcio <konradybcio@kernel.org>
 
+Add device tree bindings for video clock controller for SM6350 SoCs.
+
+Signed-off-by: Konrad Dybcio <konradybcio@kernel.org>
+Co-developed-by: Luca Weiss <luca.weiss@fairphone.com>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes in v2:
-- Fix an uppercase hex in driver (Dmitry)
-- Use hex numbers for reg in dtsi (Dmitry)
-- Add patch to convert all reg = <0 0x123 0 0x123> to reg = <0x0 0x123 0x0 0x123> (Dmitry)
-- Link to v1: https://lore.kernel.org/r/20250321-sm6350-videocc-v1-0-c5ce1f1483ee@fairphone.com
+ .../devicetree/bindings/clock/qcom,videocc.yaml    | 20 ++++++++++++++++
+ include/dt-bindings/clock/qcom,sm6350-videocc.h    | 27 ++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
----
-Konrad Dybcio (2):
-      dt-bindings: clock: add SM6350 QCOM video clock bindings
-      clk: qcom: Add video clock controller driver for SM6350
+diff --git a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml b/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+index 340c7e5cf98024dedad6d7db4fea10e9f8077419..5f7738d6835c4ba999402e163fc85a07e3a47a5a 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,videocc.yaml
+@@ -14,6 +14,7 @@ description: |
+   domains on Qualcomm SoCs.
+ 
+   See also::
++    include/dt-bindings/clock/qcom,sm6350-videocc.h
+     include/dt-bindings/clock/qcom,videocc-sc7180.h
+     include/dt-bindings/clock/qcom,videocc-sc7280.h
+     include/dt-bindings/clock/qcom,videocc-sdm845.h
+@@ -26,6 +27,7 @@ properties:
+       - qcom,sc7180-videocc
+       - qcom,sc7280-videocc
+       - qcom,sdm845-videocc
++      - qcom,sm6350-videocc
+       - qcom,sm8150-videocc
+       - qcom,sm8250-videocc
+ 
+@@ -87,6 +89,24 @@ allOf:
+             - const: bi_tcxo
+             - const: bi_tcxo_ao
+ 
++  - if:
++      properties:
++        compatible:
++          enum:
++            - qcom,sm6350-videocc
++    then:
++      properties:
++        clocks:
++          items:
++            - description: Video AHB clock from GCC
++            - description: Board XO source
++            - description: Sleep Clock source
++        clock-names:
++          items:
++            - const: iface
++            - const: bi_tcxo
++            - const: sleep_clk
++
+   - if:
+       properties:
+         compatible:
+diff --git a/include/dt-bindings/clock/qcom,sm6350-videocc.h b/include/dt-bindings/clock/qcom,sm6350-videocc.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..2af7f91fa023bed469bbb2c071d93383dba29441
+--- /dev/null
++++ b/include/dt-bindings/clock/qcom,sm6350-videocc.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
++/*
++ * Copyright (c) 2021, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2021, Konrad Dybcio <konrad.dybcio@somainline.org>
++ */
++
++#ifndef _DT_BINDINGS_CLK_QCOM_VIDEO_CC_SM6350_H
++#define _DT_BINDINGS_CLK_QCOM_VIDEO_CC_SM6350_H
++
++/* VIDEO_CC clocks */
++#define VIDEO_PLL0			0
++#define VIDEO_PLL0_OUT_EVEN             1
++#define VIDEO_CC_IRIS_AHB_CLK		2
++#define VIDEO_CC_IRIS_CLK_SRC		3
++#define VIDEO_CC_MVS0_AXI_CLK		4
++#define VIDEO_CC_MVS0_CORE_CLK		5
++#define VIDEO_CC_MVSC_CORE_CLK		6
++#define VIDEO_CC_MVSC_CTL_AXI_CLK	7
++#define VIDEO_CC_SLEEP_CLK		8
++#define VIDEO_CC_SLEEP_CLK_SRC		9
++#define VIDEO_CC_VENUS_AHB_CLK		10
++
++/* GDSCs */
++#define MVSC_GDSC			0
++#define MVS0_GDSC			1
++
++#endif
 
-Luca Weiss (2):
-      arm64: dts: qcom: sm6350: Align reg properties with latest style
-      arm64: dts: qcom: sm6350: Add video clock controller
-
- .../devicetree/bindings/clock/qcom,videocc.yaml    |  20 ++
- arch/arm64/boot/dts/qcom/sm6350.dtsi               | 218 +++++++------
- drivers/clk/qcom/Kconfig                           |   9 +
- drivers/clk/qcom/Makefile                          |   1 +
- drivers/clk/qcom/videocc-sm6350.c                  | 355 +++++++++++++++++++++
- include/dt-bindings/clock/qcom,sm6350-videocc.h    |  27 ++
- 6 files changed, 528 insertions(+), 102 deletions(-)
----
-base-commit: 73b8c1dbc2508188e383023080ce6a582ff5f279
-change-id: 20250321-sm6350-videocc-6ecdb9ab2756
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.49.0
 
