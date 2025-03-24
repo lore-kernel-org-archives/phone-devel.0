@@ -1,126 +1,271 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438FA25DD03
-	for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 10:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742813823; cv=none; b=lm778G/+upUTuEZBjNX7NHH00/L65910/ncMg9C/732JVf5NBPvfPEdli5Xttu759qjYeiyjf/iWlbscQY2HoC/dKrfJJpoHo5JucjIF5J9xgfQWz0OGU34nwceQTMhVJso7m5/mPT34w9nmCnzO+EJue9siFVLnIwi+vHjUZqw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742813823; c=relaxed/simple;
-	bh=w6aPWy+Qhwe/Y2L6UoLVJWUQwbIVm3ZGC63aKmxOKVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YQ/1eiUSgrk0kyC7B/rgljvhQV2FajM2Q/qr///clxSEUKNmCoVNU//TRZyojqOHIfPLR5GWVsZzdIwajkAnGf9LpMYCrpm2WMbWi7/r0Uuph/3YxG9ivxs7XRFrjzUCiROTc2b9N38FTwf3f+Srjxv/NVR4q4hLuEXGqa4Znbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WMUjG97C; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA933261575;
+	Mon, 24 Mar 2025 15:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742829330; cv=pass; b=LgTaDb+qZ+3GVycoDmZpdVnB38xWQI+GEgDxf+jIdvgR/eG2+HkKGZ2H2YgY/nt3F23o+CAUl3WSpgOAIcWSiDMj9sabqKj9FP0JsPHtTT96WLF7PH8ktwBdhySrgRU2twJ1u8sM266xFHHx2QRDdjo8FUcnNgBdb3npFGct+rE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742829330; c=relaxed/simple;
+	bh=qRLDppWR5LoVnYVUmF6CDiqI605Y1BJ9C0a6P+AYzVw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NTF7uLCAsKXv8Qo/zSQVzhtoVL5hNKXZu+Fm7gKuZ4osMcgaC5/ZJKwlk2+sVQfg45qTl68Y0LKj/u48VAgaVnU4OShHW0WgYANZzaJxIreLSN9iCqdHzhWQhq2veLvZwZepnX7ZAfCH0JJc3QzgiK1j5KJ5RJaPdkkkBWNG1Ao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=PN1thBNn; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=M2MjGxNs; arc=pass smtp.client-ip=85.215.255.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WMUjG97C"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O9PNrP021981
-	for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 10:57:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=e4iq5ZmzgG7lLxopw43AFxoI
-	iRiSXqSMGZij+vqFUSc=; b=WMUjG97CfkjZxoEaKgZvO/dE/9TejQ/XF/zAx5wS
-	JOYy1QykJ5hriIcNX9mP4zYoYtCrTRvYJjOnGoGJl1ttAYm/OKdsZtPLXNLAseAR
-	WPiSXc1ix9qHCn4IRAPPDxWMq51e7BtjneVfwW9tT3EhCMzH5J5IFnVj2IVdLvzJ
-	M/HZL/A5UDX4bohIg9npfRnYdoAY/sDkioV0MkJvHisdxkgU93YcqSL7VR2AF3SK
-	M2LdZmYxJiFhDdma840K99rgWtMLUoFh1OpOaaawpdmx1h2yY3TwVRCAptni0qn9
-	E/gfYMvbR3BGnoREMkVuHvE2RCmCKmvrkJYcrX6cDQx09w==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hpcp3yyf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 10:57:01 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c548e16909so401202785a.2
-        for <phone-devel@vger.kernel.org>; Mon, 24 Mar 2025 03:57:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742813820; x=1743418620;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e4iq5ZmzgG7lLxopw43AFxoIiRiSXqSMGZij+vqFUSc=;
-        b=HqUlWs77xJNwewVb4SchffIRjn65BbsmWy0vRVI4a5GlIsKwg6mZcTpSTYoWVdI/V9
-         Kqgfe2a+xxauHP1cylmNpLIk5TulWuMxbCpB/PzVhosaeyQTNwFGg6ZCQw87pMGKxkxa
-         pX3+Wg6WI+u0On7HilZQJW3UT8FMwzJYkAXLs+LBBLNzB/4/uD1SPMsC+9YloN8vbWae
-         I/LhnngjZqlQaEMy9huNIJMJDG6XoNs22cxi141tpxiRydAjOUAU1QpsCl1fqwgIPmGj
-         LAaxCT4+SyflVbHjDcitGwa2sILY1vQruVgX7FBXAJ/si0vogj+njcsRPlAYDyJZOIVL
-         lGJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQNz2haZAcPKCNs5J3Szkt43EC7Ecw5cHKakQWlWfTBD+Bj5ysR0ZHBvDRy78NW7KGX4SpHrI1QbqsBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTTFTeFNtPaBQG6fAreklakdzW9/ZKsC20GHGLsdrWUoM6/H0a
-	wDf4pSafKkszCsrjRAR0kGJm38j2HjBCY9SpKN8jLKe8ecnjceS5+aadGJvNLV5M6XpgdCx5OJR
-	dwITUFmFTdWriyPbELaG9O3k9CQQ0ZevP3of8gfcog8gPg9rJkdCsxqUAUKkxSA==
-X-Gm-Gg: ASbGncu/O9dxXnpnisl+zID0QUrcaEgdSZ9D7tuwWudQ/qB4Dp/XTKoXv3X35B5rRIW
-	T83vR1hJdxJw+w1L2+GPNXlAZkP6Rcv+vnmhCBKImS6Frox7AIE+P1SwRnFMwBErSVDWXIotoCo
-	LN8E5st7O4Wke0IZmrFoEkkX9wf+IJ2un1Qlozy61GtELTsEWnjRzT9yQlyBkuIo84ZwG7EUjK0
-	ZpI3xaD+RhmeX6nRn4n/7Iu58ChNO/V43/pnUKmpCoLCmiWVA+QFZvMmWQQBOuDaxHPXrwXulbk
-	duJGWjv4LGNFGLyPY2UxOVI7PPzH24yuPA0zZjYdy2ejp0opkmYWW6el8mVMlHqzkaMASZm6TqN
-	OSSI=
-X-Received: by 2002:a05:620a:2946:b0:7c5:a441:f440 with SMTP id af79cd13be357-7c5ba134078mr1404877985a.12.1742813819879;
-        Mon, 24 Mar 2025 03:56:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGT85bm2iUMTANL530hIieoil1fUEuIlPX9t3T5XtetsmXWHkoxzeE/XwgtI5CCHjlOMTf57Q==
-X-Received: by 2002:a05:620a:2946:b0:7c5:a441:f440 with SMTP id af79cd13be357-7c5ba134078mr1404875485a.12.1742813819419;
-        Mon, 24 Mar 2025 03:56:59 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30d7d7e0baesm13193461fa.38.2025.03.24.03.56.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 03:56:58 -0700 (PDT)
-Date: Mon, 24 Mar 2025 12:56:56 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] arm64: dts: qcom: sm6350: Align reg properties
- with latest style
-Message-ID: <yrxpfsh26ymo74olbgglrgb7d35nj6owkzndfnrbmjorb7tg3k@maccic4kvlwn>
-References: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
- <20250324-sm6350-videocc-v2-1-cc22386433f4@fairphone.com>
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="PN1thBNn";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="M2MjGxNs"
+ARC-Seal: i=1; a=rsa-sha256; t=1742829138; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=LwKPPtVaQbMn7g3swvfDPjL4Dk+BjB6dvzSPxCG87nKmQXvi21/CxZxuvz7VHhl9Et
+    rMR02P2/8DbTy2ce+InE+EznG/es8jpztV1xblxxuQXlS43dRqDXRrt1Wm0H/zfJWafU
+    Gsj9xzjnOD//sX0CVfrAi2ZjRweTD6Ka72gI7RxMSt/s8UTo/ziGiAXKUSDyYKGBv8Bw
+    pL9lsIlTNPDurm2kJTdrM/oqmbIQYg66ottvS/WiqiHOso+C4HX6xpjGz5IxQfNQcmf/
+    TC5S6/bZPYIVL09DJJQBxFDdVrbV8V1cgRopjx/8iUZoUVH1aU7XcFD5X4NhQg3mRHU9
+    t3pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1742829138;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n5gVZ0trSyVTDwSeZDvbGSX/kVBa3zM48mak76QzcCs=;
+    b=CnNSe+QagkNdf6spdA43LkY0Xj8gnts4esjzjYbiXCGLKaQk/mOnhUiP9wVtIcr2fv
+    pPdMnRgE88wvfvGoB5Jh1Hd6PmkYPmFXg+KtG2DjlTzC221Pvw3hoq2AUE+cXDsmSJPM
+    E7BGC266ifrDeBymC7JuxraAWLgcGIWRG8WE1ZLpYagxwBWAjBLcYSUJli4RkYgAWT+y
+    AbDdvmuepT3QzvExXorwN+cKNkZO0/HsILbIVGR4VLhMAD7zSXyDFUe0bcPXd/zb08tj
+    FBAYydBjlGS2isOcRL8VcUgd5LKufv0BCNP0RcPbe7JMoVmcbUlsKCodsUNO6z8RReCW
+    CfRw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1742829138;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n5gVZ0trSyVTDwSeZDvbGSX/kVBa3zM48mak76QzcCs=;
+    b=PN1thBNn89AaUQ2u7qY9/N3Uq2BMKV/l1wGEaXtwSMy4KI/Z9Bq+Iu04yQ4sx65wSK
+    t5nx3xda5Z3BDmr7mFYP4FbYwteuR7ko4BVse093NIaUzBV3QGTohGq54N/kwD+HeXCc
+    LJ2UI9TyqZ17i9ZxAr3LJMAhaN9WKYz6m034b/RawL0gByn0YP4lmpldbGcGXnja4+wD
+    Csf+L3mpvpsmhsskKj8AxNZRO01dbwoOFsWESIyPdG2ZUCPehPlXH091Gd+5L+F+SwHh
+    THgSO4dEi1nRoIF67NB4X5wHe0n0vphfn2aZAlwG3tPEfYChOM6e/UgwzOOnd9T/MzLw
+    c7qw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1742829138;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=n5gVZ0trSyVTDwSeZDvbGSX/kVBa3zM48mak76QzcCs=;
+    b=M2MjGxNsYfyQQv6Zsxxl7uh9pAs+4KsWnsCr3TrhNIR5SXjsK5YT5pOFm/R6whqgK0
+    VL0f+ugqxwU1T+wY/NCw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeDsZ"
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 51.3.0 DYNA|AUTH)
+    with ESMTPSA id Q56adc12OFCHcFK
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+	(Client did not present a certificate);
+    Mon, 24 Mar 2025 16:12:17 +0100 (CET)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250324-sm6350-videocc-v2-1-cc22386433f4@fairphone.com>
-X-Proofpoint-GUID: 8i6qpc0OYFfATTbvbKuAoCVJmOmFCj_9
-X-Proofpoint-ORIG-GUID: 8i6qpc0OYFfATTbvbKuAoCVJmOmFCj_9
-X-Authority-Analysis: v=2.4 cv=PLYP+eqC c=1 sm=1 tr=0 ts=67e13a7d cx=c_pps a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Vs1iUdzkB0EA:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=YQ0UDAJD0Z16suNoM6kA:9 a=CjuIK1q_8ugA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 suspectscore=0 mlxscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 clxscore=1015 mlxlogscore=739 adultscore=0 malwarescore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503240079
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [PATCH v2] power: supply: bq27xxx: do not report incorrect zero
+ values
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20250322161718.253093-1-absicsz@gmail.com>
+Date: Mon, 24 Mar 2025 16:12:06 +0100
+Cc: Sebastian Reichel <sre@kernel.org>,
+ linux-pm@vger.kernel.org,
+ pali@kernel.org,
+ phone-devel@vger.kernel.org,
+ Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+ akemnade@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A77FAC9F-3CA2-4E53-9A36-8ADB5E16D17C@goldelico.com>
+References: <20250322161718.253093-1-absicsz@gmail.com>
+To: "Sicelo A. Mhlongo" <absicsz@gmail.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
 
-On Mon, Mar 24, 2025 at 09:41:01AM +0100, Luca Weiss wrote:
-> While in the past the 'reg' properties were often written using decimal
-> '0' for #address-cells = <2> & #size-cells = <2>, nowadays the style is
-> to use hexadecimal '0x0' instead.
-> 
-> Align this dtsi file to the new style to make it consistent, and don't
-> use mixed 0x0 and 0 anymore.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Hi Sicelo,
+
+> Am 22.03.2025 um 16:43 schrieb Sicelo A. Mhlongo <absicsz@gmail.com>:
+>=20
+> On the bq27x00 and bq27x10 variants, a number of conditions can reset =
+the
+> value stored in the NAC register. This will cause capacity, =
+time-to-empty,
+> energy, and charge to report the value 0, even when the battery is =
+full.
+> On the other hand, the chips provide a flag, EDVF, which reliably =
+reports
+> the true battery empty condition, when these properties are really =
+zero.
+> Therefore, discard readings for these properties if their value is 0 =
+while
+> EDVF is unset.
+>=20
+> Tested on the Nokia N900 with bq27200.
+>=20
+> Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 204 +++++++++++++++++------------------
->  1 file changed, 102 insertions(+), 102 deletions(-)
-> 
+> drivers/power/supply/bq27xxx_battery.c | 24 ++++++++++++++++++++++--
+> 1 file changed, 22 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/bq27xxx_battery.c =
+b/drivers/power/supply/bq27xxx_battery.c
+> index 2f31d750a4c1..8e5795c5754e 100644
+> --- a/drivers/power/supply/bq27xxx_battery.c
+> +++ b/drivers/power/supply/bq27xxx_battery.c
+> @@ -2107,6 +2107,15 @@ static int =
+bq27xxx_battery_read_dmin_volt(struct bq27xxx_device_info *di,
+> return 0;
+> }
+>=20
+> +static bool bq27xxx_value_is_valid(struct bq27xxx_device_info *di, =
+int value)
+> +{
+> + /*
+> + * On bq27xxx_0_zero, consider zero values invalid if EDVF is not set
+> + */
+> + return value || !(di->opts & BQ27XXX_O_ZERO) ||
+> +       (di->cache.flags & BQ27000_FLAG_EDVF);
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Hm. This still can return -EINVAL for a valid and successful readout of =
+value =3D=3D 0 which
+could happen for a fully drained HF08 in the GTA04 with bq27000.
 
--- 
-With best wishes
-Dmitry
+Here is an excerpt from running a battery until depletion:
+
+root@letux:~# echo off >/sys/class/power_supply/twl4030_usb/mode
+root@letux:~# while true; do echo $(date) $(cat =
+/sys/class/power_supply/bq27000-battery/capacity)%; sleep 1; done
+
+Mon Mar 24 14:37:11 UTC 2025 1%
+Mon Mar 24 14:37:12 UTC 2025 1%
+Mon Mar 24 14:37:13 UTC 2025 1%
+...
+
+Mon Mar 24 14:38:24 UTC 2025 1%
+Mon Mar 24 14:38:25 UTC 2025 1%
+Mon Mar 24 14:38:26 UTC 2025 1%
+Mon Mar 24 14:38:27 UTC 2025 1%
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:38:28 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:38:29 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:38:30 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:38:32 UTC 2025 %
+...
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:53:39 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:53:40 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:53:41 UTC 2025 %
+cat: /sys/class/power_supply/bq27000-battery/capacity: Invalid argument
+Mon Mar 24 14:53:42 UTC 2025 %
+Mon Mar 24 14:53:43 UTC 2025 0%
+Mon Mar 24 14:53:44 UTC 2025 0%
+Mon Mar 24 14:53:45 UTC 2025 0%
+Mon Mar 24 14:53:46 UTC 2025 0%
+Mon Mar 24 14:53:47 UTC 2025 0%
+Mon Mar 24 14:53:48 UTC 2025 0%
+Mon Mar 24 14:53:49 UTC 2025 0%
+Mon Mar 24 14:53:50 UTC 2025 0%
+Mon Mar 24 14:53:51 UTC 2025 0%
+Mon Mar 24 14:53:53 UTC 2025 0%
+
+...
+
+Mon Mar 24 15:10:12 UTC 2025 0%
+Mon Mar 24 15:10:14 UTC 2025 0%
+Mon Mar 24 15:10:15 UTC 2025 0%
+--- here device did shut down ---
+
+This means that the capacity can go to 0% for approx. 15 minutes before
+the BQ27000_FLAG_EDVF becomes set and 0% is reported. I would prefer not
+to see the EINVAL in between.
+
+This all may end that we have to add another DT property to tell the =
+driver
+if the bq27xxx is inside a battery or the battery is removeable and only =
+check
+for value=3D0 in the latter case?
+
+Or can you limit this logic to the bq27200 because it is unlikely that =
+the
+i2c variant is used inside a battery pack and the HF08 battery uses the =
+hdq
+variant?
+
+BR,
+Nikolaus
+
+> +}
+> +
+> static int bq27xxx_simple_value(int value,
+> union power_supply_propval *val)
+> {
+> @@ -2147,6 +2156,8 @@ static int bq27xxx_battery_get_property(struct =
+power_supply *psy,
+> ret =3D bq27xxx_battery_current_and_status(di, val, NULL, NULL);
+> break;
+> case POWER_SUPPLY_PROP_CAPACITY:
+> + if (!bq27xxx_value_is_valid(di, di->cache.capacity))
+> + return -EINVAL;
+> ret =3D bq27xxx_simple_value(di->cache.capacity, val);
+> break;
+
+> case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+> @@ -2157,9 +2168,13 @@ static int bq27xxx_battery_get_property(struct =
+power_supply *psy,
+> break;
+> case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
+> ret =3D bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE, val);
+> + if (!ret && !bq27xxx_value_is_valid(di, val->intval))
+> + return -EINVAL;
+> break;
+> case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+> ret =3D bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP, val);
+> + if (!ret && !bq27xxx_value_is_valid(di, val->intval))
+> + return -EINVAL;
+> break;
+> case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+> ret =3D bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF, val);
+> @@ -2171,10 +2186,13 @@ static int bq27xxx_battery_get_property(struct =
+power_supply *psy,
+> val->intval =3D POWER_SUPPLY_TECHNOLOGY_LION;
+> break;
+> case POWER_SUPPLY_PROP_CHARGE_NOW:
+> - if (di->regs[BQ27XXX_REG_NAC] !=3D INVALID_REG_ADDR)
+> + if (di->regs[BQ27XXX_REG_NAC] !=3D INVALID_REG_ADDR) {
+> ret =3D bq27xxx_battery_read_nac(di, val);
+> - else
+> + if (!ret && !bq27xxx_value_is_valid(di, val->intval))
+> + return -EINVAL;
+> + } else {
+> ret =3D bq27xxx_battery_read_rc(di, val);
+> + }
+> break;
+> case POWER_SUPPLY_PROP_CHARGE_FULL:
+> ret =3D bq27xxx_battery_read_fcc(di, val);
+> @@ -2199,6 +2217,8 @@ static int bq27xxx_battery_get_property(struct =
+power_supply *psy,
+> break;
+> case POWER_SUPPLY_PROP_ENERGY_NOW:
+> ret =3D bq27xxx_battery_read_energy(di, val);
+> + if (!ret && !bq27xxx_value_is_valid(di, val->intval))
+> + return -EINVAL;
+> break;
+> case POWER_SUPPLY_PROP_POWER_AVG:
+> ret =3D bq27xxx_battery_pwr_avg(di, val);
+> --=20
+> 2.49.0
+>=20
+
