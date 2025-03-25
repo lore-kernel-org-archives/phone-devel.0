@@ -1,33 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD5C253B68;
-	Tue, 25 Mar 2025 07:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232B225B694
+	for <phone-devel@vger.kernel.org>; Tue, 25 Mar 2025 13:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742888191; cv=none; b=lN/PC+UMGDmJDGT6FVhxiJ8PqIH7UMfQ+vCpwOPjcNnQqVjbL27paTq9Vz9vaSQFuwsjeWZH+xuMzDz3xZyO5Gt46lTU8VM0bEQfd630hY3jzw6j08+5UMVJl1wTRBqjy5GyjAYkKbZ92BJ0YXau4NLtadBlsiTS2e5grc9XAkU=
+	t=1742908994; cv=none; b=ud8xB/QEWPzeT0VsAG4ICDeysx7i7KyWfvRxCvmPtfAjRk5gA03y/oM7ZKqjHzphx+JMc8FhzWcnjjEbnKcJyXOXinX3LGCIAlwuFzr2aEbXp7nU3oY8z70w9ZZVMryjLvU5t+laSMIqOyktlXDtOPfOlBhXnaMLPj4uLJ1/+jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742888191; c=relaxed/simple;
-	bh=448kB14eOCTQmz4QTqHOt7UiZQ0V5/amZmylJyoge28=;
+	s=arc-20240116; t=1742908994; c=relaxed/simple;
+	bh=bKVYE/T6NcIGu3cZrPKAkLor3MGJL9W7Ab8jFOEairg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bltRQysc0EBcaD6EeXV3/sCoCHpADre+l5LX6c1g34EkuoYzuuYdiotAZdduYCGxBaKe75vHD4d0BCSCzz06S+mp5nHBcVTACSFoPt6ex0ARRBm2JGsFv3bghek3Idz7ZhQS82999XCsgXy9yfE3B+kVPJeUAisHnLuviNJg1bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBGhZyhs; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=cAxpFBhQ40gVXKbPlIfl4gB7ZdVDkLufHi860fb0WUFG2V51ZCsDqsglT/tFkmHVmrus7JO8KrxNPJgr751/6idKctRM/RJlKzX8p2xyidl+g9W1Jd1th4mY+q68+p+4TTGY9sMPtRWtkBJlU4H7S3ihtpQbfhb+a3c38/Wcj30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gqDo4yAn; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBGhZyhs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEB0C4CEE8;
-	Tue, 25 Mar 2025 07:36:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742888190;
-	bh=448kB14eOCTQmz4QTqHOt7UiZQ0V5/amZmylJyoge28=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SBGhZyhsbN1ZIDLL8h8H6PuG7KZpa6aHo+Bx1VaFY7nzLFbU1uEO/KRexMGuuyL3A
-	 v51O9sqfOn7HBll/gOI2F2p5PhzsdZe38QwlknfTu1bLWS55vbBMbz+nrWFOCvRCbu
-	 GsjooB/oKXQvnGAsXBlWMXcwG3mOsAjmOsF+qjytbcX7ZXuNgrGttvUHFnkiNKry3X
-	 N2p3QLCVJ4Dmy1k7SzolAWNul4ZOxJgR1Wgye/9f0nnrNoAmFN0bafk87TjLk6uVp3
-	 eLlpuFateThpHKcEFePZd3t0rzrZL/Jk4NsYwnasqMcj/lszyfdojYDgaGqnoJFpVH
-	 sao/YoAALQg4w==
-Message-ID: <b3a5ec89-0125-4b01-8cca-69b9985b6089@kernel.org>
-Date: Tue, 25 Mar 2025 08:36:22 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gqDo4yAn"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3912c09be7dso3749962f8f.1
+        for <phone-devel@vger.kernel.org>; Tue, 25 Mar 2025 06:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742908991; x=1743513791; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rnnj8guc/r23I6QAcBNhKNDl+BvAD7PlamUPifu4Lvg=;
+        b=gqDo4yAnpYNJhZGDkKCCeVSb/1GreZGo116rv2M80/9M9juxfj5wIYECHgQ8ZqzKVO
+         o+IgoNOCyh3suqUNhGuce8NF0Xlk5HZGJJH9AuPkxoCRnx42+zmTwPspCYXWqUcVvfv4
+         ClsJk27FCW/u0BdNrLoW2IqXrXMm2f+5nwnn+kNdTPnRsulhdIrG/ShX4Gzul06uQS9l
+         +fJod2SmMXnZGurMET5o0/ozbFul7yIFjGOnI+JF0e3TWtvti36xZ9wCNsJSVQ5lMeMT
+         HlwDsTFuc+vLVM99T7o8741KZCv8erlCYzeVJxShf9A4boNgUHZkIG7QlJsrghucGTBr
+         7NTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742908991; x=1743513791;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rnnj8guc/r23I6QAcBNhKNDl+BvAD7PlamUPifu4Lvg=;
+        b=AAUllhxVWwtsOTOiF0dLYLD/ULumPk1ByioCIf2ZAtnoQ1qU6Pr6Ty68S44BKHp3TV
+         Zhiezm0xHJXZD13joNY2EBWI9pNsCtecckLEpsPXObwOk1JwePiTLn7h4Oo15U5vjbki
+         0K60+0keRIcSJu6S3Y4nj+/5qHyCNmhy4ha0Cl3tnqkOtIqs2bHEx3DSKmG810IIF5AZ
+         fG/+uNRhFgkOeBxiMNe4dDOWk9jg5M6fBA6TgmHf054YW1SYH9q4A/kTnYQA06t2Xl44
+         b+eGO+woKYJLu5otQI0zflrLxR+ILV+0MjUNtsgBOak9EQGWEQEbch6PPJMj0I3OOlSo
+         0sLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrK2PxeivWOGoP+dKhvvlVwxxFguChjNSVJRdRxFuvLgfIaL+MrRRlxoZfpYPWQ3AxCry80L8knOrP7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxfaYDb7nh4AIw+LmBMkHOaCWmlkB8AGcU0otoHJkDZVJslEq0
+	buRebiQOpqhiSGrMcgbW0hTaAHdGDLdtXhzZ6hXCmow6O0tCI8ABV8PvoiktFHo=
+X-Gm-Gg: ASbGncvL3SXqVoZJ3KfC8iqvWsLl7FMchxsWu3ByFmj1a18VfS/PaS3SEG+TBUAXd9N
+	HM1t4mrrP374WvdkDw71Ji9QFot7M6kuI2xMeySfHbwELy3+7sfVMWixdXb/+A5KLNxy6tHsvDd
+	jpQTkDpvVxi6LNS1EQ0YzCYeyyUWUakqTgl1ZXPDPZ4fYzjejHtGcbinhYG/Jj2uF+ssZPi4Mrn
+	t+qbSwzPrXuTOynrCJzanwCe1WU2XSye+ohX9Q9GD5v8zVnS1EfQU4/hFtuPC2QTgeeUxB43OYo
+	MexgELc864/fKSZSQOeCu6MBYKU+fGLej9X9gvsJM8dyDD9lgYy7jgdMGgrg2eYqK53mDc26QD0
+	=
+X-Google-Smtp-Source: AGHT+IGqEw79oUCCpFPjvaE0rhu3IpGoUoLYUQBasFQeCPtItEofwSci1Gugid+vwciyZDzyVaQTrw==
+X-Received: by 2002:a5d:5885:0:b0:391:29f:4f87 with SMTP id ffacd0b85a97d-3997f93c495mr13385193f8f.49.1742908991354;
+        Tue, 25 Mar 2025 06:23:11 -0700 (PDT)
+Received: from [192.168.1.38] (i5E863BED.versanet.de. [94.134.59.237])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9957aasm13931016f8f.10.2025.03.25.06.23.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Mar 2025 06:23:10 -0700 (PDT)
+Message-ID: <48bb62eb-8aa9-465c-9e77-c0b375df0c9f@linaro.org>
+Date: Tue, 25 Mar 2025 14:23:09 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -37,87 +69,70 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/7] dt-bindings: input: syna,rmi4: document
  syna,pdt-fallback-desc
-To: David Heidelberg <david@ixit.cz>
+To: Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>
 Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
  Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Caleb Connolly <caleb.connolly@linaro.org>
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20250308-synaptics-rmi4-v3-0-215d3e7289a2@ixit.cz>
  <20250308-synaptics-rmi4-v3-1-215d3e7289a2@ixit.cz>
  <20250310-hissing-vagabond-pegasus-cc8aed@krzk-bin>
  <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <b3a5ec89-0125-4b01-8cca-69b9985b6089@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
+From: Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <b3a5ec89-0125-4b01-8cca-69b9985b6089@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 24/03/2025 19:00, David Heidelberg wrote:
-> On 10/03/2025 10:45, Krzysztof Kozlowski wrote:
->> On Sat, Mar 08, 2025 at 03:08:37PM +0100, David Heidelberg wrote:
->>> From: Caleb Connolly <caleb.connolly@linaro.org>
+
+
+On 3/25/25 08:36, Krzysztof Kozlowski wrote:
+> On 24/03/2025 19:00, David Heidelberg wrote:
+>> On 10/03/2025 10:45, Krzysztof Kozlowski wrote:
+>>> On Sat, Mar 08, 2025 at 03:08:37PM +0100, David Heidelberg wrote:
+>>>> From: Caleb Connolly <caleb.connolly@linaro.org>
+>>>>
+>>>> This new property allows devices to specify some register values which
+>>>> are missing on units with third party replacement displays. These
+>>>> displays use unofficial touch ICs which only implement a subset of the
+>>>> RMI4 specification.
 >>>
->>> This new property allows devices to specify some register values which
->>> are missing on units with third party replacement displays. These
->>> displays use unofficial touch ICs which only implement a subset of the
->>> RMI4 specification.
+>>> These are different ICs, so they have their own compatibles. Why this
+>>> cannot be deduced from the compatible?
 >>
->> These are different ICs, so they have their own compatibles. Why this
->> cannot be deduced from the compatible?
+>> Yes, but these identify as the originals.
 > 
-> Yes, but these identify as the originals.
+> 
+> It does not matter how they identify. You have the compatible for them.
+> If you cannot add compatible for them, how can you add dedicated
+> property for them?
 
+Hi Krzysztof,
 
-It does not matter how they identify. You have the compatible for them.
-If you cannot add compatible for them, how can you add dedicated
-property for them?
+There are an unknown number of knock-off RMI4 chips which are sold in 
+cheap replacement display panels from multiple vendors. We suspect 
+there's more than one implementation.
 
-Best regards,
-Krzysztof
+A new compatible string wouldn't help us, since we use the same DTB on 
+fully original hardware as on hardware with replacement parts.
+
+The proposed new property describes configuration registers which are 
+present on original RMI4 chips but missing on the third party ones, the 
+contents of the registers is static.
+
+The third party chips were designed to work with a specific downstream 
+driver which doesn't implement the self-describing features of RMI4 and 
+just hardcoded the functionality they expect.
+
+Kind regards,
+> 
+> Best regards,
+> Krzysztof
+
+-- 
+Caleb (they/them)
+
