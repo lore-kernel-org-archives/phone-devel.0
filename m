@@ -1,39 +1,33 @@
-Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859E2264606;
-	Mon, 24 Mar 2025 18:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD5C253B68;
+	Tue, 25 Mar 2025 07:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742839250; cv=none; b=u4yeYBnU0idYnHEqvm+oPy1Qnfcu89mzl3mkcTegvrZzczUx8f60RIebrJFoVED1bplahCvpGxz9UwKd6x0AZAX+KH8UMQDkSBzwMzkF0alRfP/2NxuHuZrBUncVuxc+2LkM5qK4JGQdTCI9zPrHS3BZgItdX9lKJaHiwibIu/8=
+	t=1742888191; cv=none; b=lN/PC+UMGDmJDGT6FVhxiJ8PqIH7UMfQ+vCpwOPjcNnQqVjbL27paTq9Vz9vaSQFuwsjeWZH+xuMzDz3xZyO5Gt46lTU8VM0bEQfd630hY3jzw6j08+5UMVJl1wTRBqjy5GyjAYkKbZ92BJ0YXau4NLtadBlsiTS2e5grc9XAkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742839250; c=relaxed/simple;
-	bh=ic/gD2e8FElvHjMYoVpKeuRsRXdNWE6ntV5CdKr+MG8=;
+	s=arc-20240116; t=1742888191; c=relaxed/simple;
+	bh=448kB14eOCTQmz4QTqHOt7UiZQ0V5/amZmylJyoge28=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OElbk+qYo7bM8GrGyzqYHWKCLHdEFS50gXGCf+WB1gLcDToslVR/v1X8vjYCVG6uaCvAqJy/io7FUGyNttEgfbtSuLJi04jIqz1poafbmGtAHkVM0Ou2CGhbft/V27kQDtNnzZPfAbZAOtuB/4mD+ILMaHTfB2rkAMT1h11X4Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TRdh2fja; arc=none smtp.client-ip=89.177.23.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=bltRQysc0EBcaD6EeXV3/sCoCHpADre+l5LX6c1g34EkuoYzuuYdiotAZdduYCGxBaKe75vHD4d0BCSCzz06S+mp5nHBcVTACSFoPt6ex0ARRBm2JGsFv3bghek3Idz7ZhQS82999XCsgXy9yfE3B+kVPJeUAisHnLuviNJg1bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBGhZyhs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TRdh2fja"
-Received: from [10.0.0.228] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 86FBA1669EF;
-	Mon, 24 Mar 2025 19:00:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1742839244;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gPNjVLcsszAEW3wUXYkTHGhTLdJohQD4DxTgKx7WZSI=;
-	b=TRdh2fjaJTkxlKXRb/owPxslyZoUh7mVt07qI1Sj9dS5g8mrEXdYJy8m2qB91jndTKGTrF
-	UhFuy4CcwEgliOaK3muYkpFLGWW5dig4PKpWcL9BA66iYM6/SmPpBjb8/ccMKENMC62GXf
-	nsHMGP//gOXVPIzxwZcSACwBPpwMHd0=
-Message-ID: <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
-Date: Mon, 24 Mar 2025 19:00:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBGhZyhs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEB0C4CEE8;
+	Tue, 25 Mar 2025 07:36:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742888190;
+	bh=448kB14eOCTQmz4QTqHOt7UiZQ0V5/amZmylJyoge28=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SBGhZyhsbN1ZIDLL8h8H6PuG7KZpa6aHo+Bx1VaFY7nzLFbU1uEO/KRexMGuuyL3A
+	 v51O9sqfOn7HBll/gOI2F2p5PhzsdZe38QwlknfTu1bLWS55vbBMbz+nrWFOCvRCbu
+	 GsjooB/oKXQvnGAsXBlWMXcwG3mOsAjmOsF+qjytbcX7ZXuNgrGttvUHFnkiNKry3X
+	 N2p3QLCVJ4Dmy1k7SzolAWNul4ZOxJgR1Wgye/9f0nnrNoAmFN0bafk87TjLk6uVp3
+	 eLlpuFateThpHKcEFePZd3t0rzrZL/Jk4NsYwnasqMcj/lszyfdojYDgaGqnoJFpVH
+	 sao/YoAALQg4w==
+Message-ID: <b3a5ec89-0125-4b01-8cca-69b9985b6089@kernel.org>
+Date: Tue, 25 Mar 2025 08:36:22 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,7 +37,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/7] dt-bindings: input: syna,rmi4: document
  syna,pdt-fallback-desc
-To: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Heidelberg <david@ixit.cz>
 Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
@@ -55,120 +49,75 @@ Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
 References: <20250308-synaptics-rmi4-v3-0-215d3e7289a2@ixit.cz>
  <20250308-synaptics-rmi4-v3-1-215d3e7289a2@ixit.cz>
  <20250310-hissing-vagabond-pegasus-cc8aed@krzk-bin>
+ <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20250310-hissing-vagabond-pegasus-cc8aed@krzk-bin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/03/2025 10:45, Krzysztof Kozlowski wrote:
-> On Sat, Mar 08, 2025 at 03:08:37PM +0100, David Heidelberg wrote:
->> From: Caleb Connolly <caleb.connolly@linaro.org>
+On 24/03/2025 19:00, David Heidelberg wrote:
+> On 10/03/2025 10:45, Krzysztof Kozlowski wrote:
+>> On Sat, Mar 08, 2025 at 03:08:37PM +0100, David Heidelberg wrote:
+>>> From: Caleb Connolly <caleb.connolly@linaro.org>
+>>>
+>>> This new property allows devices to specify some register values which
+>>> are missing on units with third party replacement displays. These
+>>> displays use unofficial touch ICs which only implement a subset of the
+>>> RMI4 specification.
 >>
->> This new property allows devices to specify some register values which
->> are missing on units with third party replacement displays. These
->> displays use unofficial touch ICs which only implement a subset of the
->> RMI4 specification.
+>> These are different ICs, so they have their own compatibles. Why this
+>> cannot be deduced from the compatible?
 > 
-> These are different ICs, so they have their own compatibles. Why this
-> cannot be deduced from the compatible?
+> Yes, but these identify as the originals.
 
-Yes, but these identify as the originals.
 
-Some of them can be detected at runtime which is what this patchset 
-tries to do.
+It does not matter how they identify. You have the compatible for them.
+If you cannot add compatible for them, how can you add dedicated
+property for them?
 
-> 
->>
->> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   Documentation/devicetree/bindings/input/syna,rmi4.yaml | 18 ++++++++++++++++++
->>   1 file changed, 18 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
->> index b522c8d3ce0db719ff379f2fefbdca79e73d027c..a80ec0c052cb1b7278f0832dd18ebd3256bc0874 100644
->> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
->> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
->> @@ -49,6 +49,24 @@ properties:
->>       description:
->>         Delay to wait after powering on the device.
->>   
->> +  syna,pdt-fallback-desc:
->> +    $ref: /schemas/types.yaml#/definitions/uint8-matrix
->> +    description:
->> +      This property provides fallback values for certain register fields that
->> +      are missing on devices using third-party replacement displays.
->> +      These unofficial displays contain touch controllers that claim RMI4
->> +      compliance but fail to populate the function_number and function_version
->> +      registers of their Page Descriptor Table (PDT) entries.
->> +
->> +      Since the number of required fallback entries depends on the number of
->> +      Page Descriptor Tables supported by a given device, this property
->> +      should be provided on a best-effort basis.
->> +
->> +    items:
-> 
-> min/maxItems here
-
-There is no hardcoded limit how many of these items will be provided, 
-should I put there some huge range as 1..1024?
-
-Thank you
-David
-
-> 
->> +      items:
->> +        - description: The 5th byte of the PDT entry (function number)
->> +        - description: The 4th byte of the PDT entry (version value)
-> 
-> Best regards,
-> Krzysztof
-> 
-
--- 
-David Heidelberg
-
+Best regards,
+Krzysztof
