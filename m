@@ -1,152 +1,136 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CF61B4139
-	for <phone-devel@vger.kernel.org>; Wed, 26 Mar 2025 10:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3582D98;
+	Wed, 26 Mar 2025 18:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742984773; cv=none; b=mSDoQeAg9pQPFZ/VCXZ7JfOwhLJ9NbNs5E9J8KGyZ/839mRRClz7tlGnKhBG+biOg2t5ZXRU7fXz8X6UjjWgNsTQTKzauYezoKMsMLcwsGwn3gCuUMNE7pVlBEiiR+ndZoX0OXdWoq7Nagj971+NpcUG7LbA55x+zuSV2Qst8BU=
+	t=1743013098; cv=none; b=RwPNS4XAL5DlqwvpzCRasRZ0hPeigX2JyCMIA2FTw6DRVY4rnvXBOMnCFKpvwospDSIgGXnr1iOvdt+FKRRavEcQgb8/Fo+kKsfCB6svhWF8mX+Yd1ksBuUrpPsGzQUbe1MehHyboB72ANVzNyHPfWl6IwoM6UkcADNiMd+4kKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742984773; c=relaxed/simple;
-	bh=VmZW3dYOkE+WcIdW+rTFDYurYECcNeudvlHZ1LESI8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W8yfRXNY5udPZQv7MIR+AwOy7L7off+vda4eA/tvSYl48x7ATiOBzyiIwCpz0behMwarEQuou7h1ezC5Q0DZ9p1MkB28H1c+wL3WufEoWwIuNdWq3qMZTxvU9nIUVCOSbRNdFCfbu+xA2PxUVPxayvVyIB7xJPKKl6x9aipGhxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XPPhUaHM; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1743013098; c=relaxed/simple;
+	bh=OjPr7Ip23T18evhoNwNXNFsyhpBrB+kLX/JvPys7vEc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gEBsr+/ZgeVugkdXvB0Es0vRz3uI7AhmHXpDvEC1jgc+fAT8PvNa1mOHASDVmxbfMtefPl6xm9hisyBaG3rhRa0txHITxS+RgKZdWmeRpz41M9fs2zBOkdpaxDN5ttFMOBwEtMtYcsfa8M3O0xcsrRNVkOAMhWeJpDKiEE4R9yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=ZoVD5wBG; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XPPhUaHM"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43d0782d787so46304185e9.0
-        for <phone-devel@vger.kernel.org>; Wed, 26 Mar 2025 03:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742984769; x=1743589569; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=98hcAito2MMtQTY1iL6KWHxMYRyo687ywiMmqIh+p7A=;
-        b=XPPhUaHMMHildxl7E/pGbg3LqEdcenwWvdjeuLPj1f8OT7a6BYtjs2bu24XtbAnFFY
-         s9+jVhzzy9BFkI3JMO+QBwfdpCUz6XYuPUqDbZPhh1GKp+3K27W5+fCppeyI/7od9GV5
-         scsDjSsDhiRkFPWlWeter1dzRKgY0BJ24tX0Zakn7d3gRB/jl78ONFJba5+ry4db+fqB
-         w+6iIB3FLjU3RMJ99bkzWnP317J2KjottjvJYV3+hj66I0kjq40id1xBzpo5I2EkX5wd
-         w/9qMcNz3WXfeWm2gcUcFe6Pwo2OXAUJ2wzYK+dfZXPPfP1ln1vMQLy1bUed15eH795l
-         DSVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742984769; x=1743589569;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=98hcAito2MMtQTY1iL6KWHxMYRyo687ywiMmqIh+p7A=;
-        b=Pyx9PfIVG17tyq3H2CsKHSgxzbxJXbsF7Ixvy/YsEbd5PNI2DFWIKn4q28rgDrp1lI
-         YZczWTrD5PpolehCL+s6sRM1r/di6zyWNBoIko2rYSLsvgSa1ZMOL2y3UfINRvmLmWnn
-         FA1FVt6mhh0ShxYcEEL6b4jmRgn46yQcaz92oLAEX5AkSC11nbBE73Znvrjg3B7Ofv4t
-         G9ArY53vxU+tPwtPIB1NLk/P4qIx0dGJxXRc40Caci0Xul7nypk8ro6/+GIuPWDdqVgM
-         sspEqcIW2i5DJ0pK6h+fhNYRjm+AmBl42dNEubd959zY7UV3dIQk2JWm6X7mafUj+f2U
-         hm5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVCL+7SzBjrPFfpzJDsr7BGrG3SaBurIe6+SPBdFsLfEx4NTHnP0bOPCZK72vwplRqdjwrF6qA2hMzMyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg7XhhSkr0tpIn/vMG8i4MKrElzwrTbslJj40tmbYuw7LCq/25
-	93FuGk1UibiYF3IxmudyzQD8/vD0IVphav9UVWPsnxm9eE85Vp0ioRdcW5hHW+c=
-X-Gm-Gg: ASbGncud/Lqd3SwluwREONtNnIgI7Ggxw1ACD6LBd7mMnmBbmz5O7ADCGcL/j+LNrQB
-	yH5JSkUtMmK1UhyMs5gw88aG2j1Kug5yOWFwjJDLV9iGSFjcZ2s5I7ng7/muT/1QrxMyhXNyQc4
-	WsAODJeKptenAf3f+HUJZwLA1f+NS4G9jhzkmtfb6uoXNda4OVtV4b6/IHMnkLLu2qqmGtN4eKe
-	4vlFfovkrDgqyUHlI77dEnbveVk8B0t1sL36v4NZFpSEhke5+lCtEC4DFKpOhWCI9J6cI5pUafC
-	RR9ye6ygU2Uf6AACZ1ysbB0eeCAzE1E1hGriz1VEE4bTz2uOvRTdfiaU1zxJCROBxAQLxxO8JIo
-	=
-X-Google-Smtp-Source: AGHT+IFNIgbM5SxndZJ31+RxAuvmVblk7zrUQEK1IUI9dhFX9c6aTpE7fdxiqMV2lHxT/eOf35nkUw==
-X-Received: by 2002:a05:600c:c0d:b0:43d:738:4a9 with SMTP id 5b1f17b1804b1-43d50a33d03mr154416225e9.27.1742984768921;
-        Wed, 26 Mar 2025 03:26:08 -0700 (PDT)
-Received: from [192.168.1.38] (i5E863BED.versanet.de. [94.134.59.237])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9e6651sm16436745f8f.75.2025.03.26.03.26.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Mar 2025 03:26:08 -0700 (PDT)
-Message-ID: <5060c248-3160-4d52-81ec-8e06bbd246bf@linaro.org>
-Date: Wed, 26 Mar 2025 11:26:06 +0100
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="ZoVD5wBG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1743012596; bh=OjPr7Ip23T18evhoNwNXNFsyhpBrB+kLX/JvPys7vEc=;
+	h=From:Date:Subject:To:Cc;
+	b=ZoVD5wBGvk1Giun7Jk54yr2ZB5kP6Vt5f3YZtkzfhLNxq3bmyE+xSm9ZX7FdzfI/m
+	 wpBlZj2ZdLh3Gs0ANlrHro/PiHZv3aXq/Ohc8nSbDQRNBnA6ltigAYstE8vdn7xI6Q
+	 lZJVCVl7XHtOIlIQQxQAvVdDI3VzSa1kazcCiYqM=
+From: Luca Weiss <luca@lucaweiss.eu>
+Date: Wed, 26 Mar 2025 19:09:29 +0100
+Subject: [PATCH v3] rpmsg: qcom_smd: Improve error handling for
+ qcom_smd_parse_edge
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/7] dt-bindings: input: syna,rmi4: document
- syna,pdt-fallback-desc
-To: Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20250308-synaptics-rmi4-v3-0-215d3e7289a2@ixit.cz>
- <20250308-synaptics-rmi4-v3-1-215d3e7289a2@ixit.cz>
- <20250310-hissing-vagabond-pegasus-cc8aed@krzk-bin>
- <3c5e12fc-eb91-46e8-a558-9896f0bdcab4@ixit.cz>
- <b3a5ec89-0125-4b01-8cca-69b9985b6089@kernel.org>
- <48bb62eb-8aa9-465c-9e77-c0b375df0c9f@linaro.org>
- <492da0ab-3a5c-4ee9-bc37-d66b007ffd81@kernel.org>
-Content-Language: en-US
-From: Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <492da0ab-3a5c-4ee9-bc37-d66b007ffd81@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250326-apcs-mboxes-v3-1-e20f39e125f2@lucaweiss.eu>
+X-B4-Tracking: v=1; b=H4sIANhC5GcC/1XMSw6CMBSF4a2Qjr2mty+DI/dhHNB6kQ4E0mLDI
+ +zdQmLU4TnJ/y0sUvAU2blYWKDko+/aPOShYK6p2geBv+fNBBeKKyGh6l2Ep+1GioCCyDiOlba
+ S5aIPVPtx1663vBsfhy5MO55wez+O+nMSAgejtXHq5KzmeJllO7yO4zSzzUni2xpu/lsBCAptS
+ SVSXVvz267r+gZdref64gAAAA==
+X-Change-ID: 20240423-apcs-mboxes-12ee6c01a5b3
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Dmitry Baryshkov <lumag@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@lucaweiss.eu>, 
+ Dmitry Baryshkov <lumag@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2392; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=OjPr7Ip23T18evhoNwNXNFsyhpBrB+kLX/JvPys7vEc=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBn5ELm2hRtGJAMUx/QXM8ZmQ8hf/CEJS4B64ECA
+ DXdjnNi25WJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZ+RC5gAKCRBy2EO4nU3X
+ VvsfEACtU+8tTVqDqzW1orNBIWSPkjXminHc/lGD4/mkvEa4Lj13u1t46ZT6iQUdz3HruKAH7NO
+ p8/txeaHpKX8JH0fkDNN6ghfjCY4ctl83CHTQKQBLJpGOBgGcTJ+ecNgHb7xFHqfvLKj1+/t56G
+ /Eu8wyVCcclR8zltqQP9j/ONTLw7GE//PV7QDPiy/qxECgejSNx8ARM4T95PCutZ3nRgpO2NKEh
+ 3q76LBLsR4yIN9vHDiGhMPBH/3lXD5DxedmaZ2VvnwW5glby8qolKo49DuvO5zk6xZ4jlwsEPLM
+ /YmzHynj/o2UpD7Q0IygQ3+T1a8hKo2YR4EzfwEwq4BXmZomzkcp0lrlNdChvnP7w6Gs5CsLFn2
+ q/6lROm4e7VJAjIMEFPSd/vE2GPH43LKnM11mHN6dDyLNFHzFXxKKdCvS1mXGhj6MJOHoMSeLEF
+ zrBezh8ZmWqU1qg8NFeGtFbH3dNGPl9jMP6totha1Jzu7REXNJDmu93uV1hqByUMhX5/9cAG3bY
+ LDWjs0N13fHnhVAUHAn6KPA7NJOONovVATqn9VJdEktx4kY8hFMef65AUet2ZgjjITgNknfx1r6
+ HEtLHyZb95ETwK/TUhFCVOa2qJRtlH8Q+4m11k2Xmw+QlpvEX6y3AVzMJ1kAXTn9mqtC0aGT3/c
+ VB+9pOY7IXFaGMw==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
+When the mailbox driver has not probed yet, the error message "failed to
+parse smd edge" is just going to confuse users, so improve the error
+prints a bit.
 
+Cover the last remaining exits from qcom_smd_parse_edge with proper
+error prints, especially the one for the mbox_chan deserved
+dev_err_probe to handle EPROBE_DEFER nicely. And add one for ipc_regmap
+also to be complete.
 
-On 3/26/25 07:57, Krzysztof Kozlowski wrote:
-> On 25/03/2025 14:23, Caleb Connolly wrote:
->>
->>
->> On 3/25/25 08:36, Krzysztof Kozlowski wrote:
->>> On 24/03/2025 19:00, David Heidelberg wrote:
->>>> On 10/03/2025 10:45, Krzysztof Kozlowski wrote:
->>>>> On Sat, Mar 08, 2025 at 03:08:37PM +0100, David Heidelberg wrote:
->>>>>> From: Caleb Connolly <caleb.connolly@linaro.org>
->>>>>>
->>>>>> This new property allows devices to specify some register values which
->>>>>> are missing on units with third party replacement displays. These
->>>>>> displays use unofficial touch ICs which only implement a subset of the
->>>>>> RMI4 specification.
->>>>>
->>>>> These are different ICs, so they have their own compatibles. Why this
->>>>> cannot be deduced from the compatible?
->>>>
->>>> Yes, but these identify as the originals.
->>>
->>>
->>> It does not matter how they identify. You have the compatible for them.
->>> If you cannot add compatible for them, how can you add dedicated
->>> property for them?
->>
->> Hi Krzysztof,
->>
->> There are an unknown number of knock-off RMI4 chips which are sold in
->> cheap replacement display panels from multiple vendors. We suspect
->> there's more than one implementation.
->>
->> A new compatible string wouldn't help us, since we use the same DTB on
->> fully original hardware as on hardware with replacement parts.
->>
->> The proposed new property describes configuration registers which are
->> present on original RMI4 chips but missing on the third party ones, the
->> contents of the registers is static.
-> 
-> 
-> So you want to add redundant information for existing compatible, while
-> claiming you cannot deduce it from that existing compatible... Well,
-> no.. you cannot be sure that only chosen boards will have touchscreens
-> replaced, thus you will have to add this property to every board using
-> this compatible making it equal to the compatible and we are back at my
-> original comment. This is deducible from the compatible. If not the new
-> one, then from old one.
+With this done, we can remove the outer print completely.
 
-hmm I see, so instead we should add a compatible for the specific 
-variant (S3320 or something) of RMI4 in this device and handle this in 
-the driver? I think that makes sense.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+Changes in v3:
+- Pick up tags
+- Update my email
+- Link to v2: https://lore.kernel.org/r/20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz
 
-> 
-> Best regards,
-> Krzysztof
+Changes in v2:
+- Rebase on qcom for-next, drop dts patches which have been applied
+- Improve error printing situation (Bjorn)
+- Link to v1: https://lore.kernel.org/r/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz
+---
+ drivers/rpmsg/qcom_smd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 40d386809d6b78e209861c23d934e1b9fd743606..9b5fa9d36998a84be9424d8726c5d7d1bffe36b1 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -1369,7 +1369,8 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
+ 	if (IS_ERR(edge->mbox_chan)) {
+ 		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
+-			ret = PTR_ERR(edge->mbox_chan);
++			ret = dev_err_probe(dev, PTR_ERR(edge->mbox_chan),
++					    "failed to acquire IPC mailbox\n");
+ 			goto put_node;
+ 		}
+ 
+@@ -1386,6 +1387,7 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 		of_node_put(syscon_np);
+ 		if (IS_ERR(edge->ipc_regmap)) {
+ 			ret = PTR_ERR(edge->ipc_regmap);
++			dev_err(dev, "failed to get regmap from syscon: %d\n", ret);
+ 			goto put_node;
+ 		}
+ 
+@@ -1501,10 +1503,8 @@ struct qcom_smd_edge *qcom_smd_register_edge(struct device *parent,
+ 	}
+ 
+ 	ret = qcom_smd_parse_edge(&edge->dev, node, edge);
+-	if (ret) {
+-		dev_err(&edge->dev, "failed to parse smd edge\n");
++	if (ret)
+ 		goto unregister_dev;
+-	}
+ 
+ 	ret = qcom_smd_create_chrdev(edge);
+ 	if (ret) {
+
+---
+base-commit: ee2653e1e7f4e50d0814e7a61242c86616108c48
+change-id: 20240423-apcs-mboxes-12ee6c01a5b3
+
+Best regards,
 -- 
-Caleb (they/them)
+Luca Weiss <luca@lucaweiss.eu>
 
