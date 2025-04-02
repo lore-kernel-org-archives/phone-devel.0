@@ -1,141 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC3E1E8325;
-	Wed,  2 Apr 2025 18:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BC718A93F;
+	Wed,  2 Apr 2025 18:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743619498; cv=none; b=gagKSSmmIXfkt768kycaXn1wCriGUFaoqECjdrwbGTUPMVs2jtFbS1r/mA0/XRiaPu34bIPr3b4Hoy7fXEVE7mnOHHPaHwLXPwK1eWWZVEznRpRgFmSzTCpf1Zu2O+lRJDFuAMzBd0M3T94iS2UZnVYzD9yR6nn/aP9bUolTaf8=
+	t=1743620115; cv=none; b=GUXmBH5tgIWxQevLkCu5ca0BpVoLgyhWBqNLdYjR4FncRHsk/+bZia+o2Z52kqItAu+9QRH0g/rY+s5AW1B7ya7B/jeXCaXeesoDTEJ0oc/0NIjJtQO69g+59EYW/R/7OV4pYopOTLk7Gf2HnOgVo3rn5sbHjrACPvX0iIVbbYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743619498; c=relaxed/simple;
-	bh=uhoOYFv9own1t9GTd9uKLCLoHj0zKUN854bDbom6MDw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=diCKce4kS0nW9kOPXNU5pUTlTYdLqKsMFdVTJowqQmOkd70U7V4nQSceofzSOSubg9mJEhEeCRGNWqQXgvggRJ0gLeAX8v2Rjo3BYgu0bb/z+ckLp81dnYhaMnDHHEW60rWRJWY/QjvjNJeSWo6sNUQlVl8xFb5XemR9G74ZWiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LhbQ48vq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743620115; c=relaxed/simple;
+	bh=2gM32VkBZFx/KkYq/5WSx6uUZJuzRdYUIyjnnWs44dI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QPunDK6iIVjeDqdmiAekLHobS4JBeO1QzRrv0EmrxK0fiWTg5xpWHwVav5mWopUglcTvi6JeiUvLZxoViJR4eihdnNMh/kIa8VDD4tLgmQd4tforMggW9nU1d5qW1qEpghZRgzVl92cpONQWIQjAqTitwGyGbbQzswj4Tz9uKw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cs0LP1ld; arc=none smtp.client-ip=89.177.23.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LhbQ48vq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 93A3EC4CEF2;
-	Wed,  2 Apr 2025 18:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743619497;
-	bh=uhoOYFv9own1t9GTd9uKLCLoHj0zKUN854bDbom6MDw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LhbQ48vqPyqmnm4ABxJmzcEECXHYJmjXeI0WF72JhT5iRDLtHsuIbFh8jwQLNtvMJ
-	 6zCPyHnDxvdjyLBNCaeCIzKycI2CdEJFRPSs4msxBN4MO3VkFFeFMrSj5DRfavxInF
-	 tQiVJm5rl38Heg8lUoq8RiOTFil7OCKPyMgj26CwvKytDSJNT8watJj8mIocOzH0+Q
-	 M3DWdn/4vA4SyO5iTeIYvh+qU/oVHuFruM7lj+z9g+RsMOTHntXJxEh45HiK1F/FRc
-	 BmNnPeRn8r7aImg8OoT9OvbRcOsHnXFh5L9wDPp+5yFMcgQsY57G1GBAG0ECfqx/S2
-	 FaJu+7cjp3+DQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8906BC36017;
-	Wed,  2 Apr 2025 18:44:57 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 02 Apr 2025 20:44:56 +0200
-Subject: [PATCH v4 5/7] Input: synaptics-rmi4 - don't do unaligned reads in
- IRQ context
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cs0LP1ld"
+Received: from [10.0.0.228] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 1F5CF166734;
+	Wed,  2 Apr 2025 20:54:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1743620099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Wy44fi9lg9n1CgNhcLGpSaP71J6yoU5UoZG4QwGVZ9c=;
+	b=Cs0LP1ld9FYRiaH8W07d41vNx/hxqAkEnXz9h3ANmYP3uFOnibDSRLcR46zx0JTEtdOUOe
+	QoqdND2x7sCFrR6FunpQdZ3RlK8FQMc5lTvJfLgN2mKn7Ii0yoUu5MuKDumvTAWbfca3dc
+	lqxn9OW9f1/WGtGI6HMiqFsQZ1VZbvI=
+Message-ID: <988dfca9-0dcb-481a-9352-efbe20532267@ixit.cz>
+Date: Wed, 2 Apr 2025 20:54:58 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/7] Input: synaptics-rmi4 - handle duplicate/unknown
+ PDT entries
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Caleb Connolly <caleb.connolly@linaro.org>, methanal <baclofen@tuta.io>
+References: <20250308-synaptics-rmi4-v3-0-215d3e7289a2@ixit.cz>
+ <20250308-synaptics-rmi4-v3-2-215d3e7289a2@ixit.cz>
+ <Z885Jw0K6d2h_2pl@google.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <Z885Jw0K6d2h_2pl@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250402-synaptics-rmi4-v4-5-1bb95959e564@ixit.cz>
-References: <20250402-synaptics-rmi4-v4-0-1bb95959e564@ixit.cz>
-In-Reply-To: <20250402-synaptics-rmi4-v4-0-1bb95959e564@ixit.cz>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
- Vincent Huang <vincent.huang@tw.synaptics.com>
-Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Caleb Connolly <caleb.connolly@linaro.org>, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2474; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=yMLuXgF9v/gFFJ+eFIvXnbQst25n9j3YV0dhX4KqpyU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn7YWn/MP81rV9Ai3YBRmaVNbv+GCZaR4aqY8Z2
- 7jKtV2jv1mJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ+2FpwAKCRBgAj/E00kg
- ch3REACV+Sw+Ehcsl6co/1yutsFO8jpuFKCjDFYaX4X6PuILT97X2sBpBeAKvgyNFcWy681SsSe
- zPDFNVwnh5jAnAHdvCTqPV8GJToSnkdSgQzsBsUfVbGAq1ZY9nnPcSWOAGwjmR3RHRZ7mpYWkEN
- 7lGt9njfD/bj6iNIv/HtxgMgMz1fXBH/9FlbcXo8WZrHIUtPx1RcM+6vW0hiUgf0C+S51jh9BRr
- BQt1BpWuFcDEjOXNW1h4rFMmpYtn7iJdzCTSfcdVfO7ww3F9W8+bnpTroW9kZo1kc7EmxYautjk
- hH88dXFZumwqNxV0xSwvbhDafbf9HmbjmNsqNjdUoHAWReSiSoOvbTFBYKWxPrOp+IeRDJUWvBP
- GqBVzDZr+XW5n7P0EUG9WdIoOuveOCEtYE5jHSkdRjRedi0EeZpuy43sfF5/0FvhU1JJHWk83la
- /Uiz5Q2q4zqRLWlCGei4XBZEoss81akGlx5G3ueWV8ei/bfngI7v/OUpwz/GEoNGxDblf1Dacpp
- MEYWFWWphPMPdBU9Ese9kb1QSa1sY8vYUkii8r62AqOL5K9Vcw1RG8gYPSXvqZDnVGjA7YcF+lR
- POKMqFWZQjoUQuL5p3eJZYQRZnHACAINO79XWG74qPBQLVlM4mRBKh5Fo2At9MHhq8L4WVPLLjL
- z/sYSD5zCZcG92g==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+On 10/03/2025 20:10, Dmitry Torokhov wrote:
+> Hi David,
+> 
+> On Sat, Mar 08, 2025 at 03:08:38PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: Caleb Connolly <caleb.connolly@linaro.org>
+>>
+>> Some third party rmi4-compatible ICs don't expose their PDT entries
+>> very well. Add a few checks to skip duplicate entries as well as entries
+>> for unsupported functions.
+>>
+>> This is required to support some phones with third party displays.
+>>
+>> Validated on a stock OnePlus 6T (original parts):
+>> manufacturer: Synaptics, product: S3706B, fw id: 2852315
+>>
+>> Co-developed-by: methanal <baclofen@tuta.io>
+>> Signed-off-by: methanal <baclofen@tuta.io>
+>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   drivers/input/rmi4/rmi_driver.c | 47 +++++++++++++++++++++++++++++++++++------
+>>   drivers/input/rmi4/rmi_driver.h |  6 ++++++
+>>   2 files changed, 47 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+>> index 2168b6cd7167334d44553c9c566f870a4e034179..51c23a407b2731d5b6eaefe9cae6288f97316e34 100644
+>> --- a/drivers/input/rmi4/rmi_driver.c
+>> +++ b/drivers/input/rmi4/rmi_driver.c
+>> @@ -493,12 +493,44 @@ static void rmi_driver_copy_pdt_to_fd(const struct pdt_entry *pdt,
+>>   	fd->function_version = pdt->function_version;
+>>   }
+>>   
+>> +static bool rmi_pdt_entry_is_valid(struct rmi_device *rmi_dev,
+>> +				   struct pdt_scan_state *state, u8 fn)
+>> +{
+>> +	unsigned int i;
+>> +
+>> +	switch (fn) {
+>> +	case 0x01:
+>> +	case 0x03:
+>> +	case 0x11:
+>> +	case 0x12:
+>> +	case 0x30:
+>> +	case 0x34:
+>> +	case 0x3a:
+>> +	case 0x54:
+>> +	case 0x55:
+> 
+> This mean that we need to update this code any time there is new
+> function introduced. I'd rather we did not do that. The driver should be
+> able to handle unknown functions.
 
-Some replacement displays include third-party touch ICs which incur a
-significant penalty (1-2 seconds) when doing certain unaligned reads.
-This is enough to break functionality when it happens in the hot path,
-so adjust the interrupt handler to not read from an unaligned address.
+Hello Dmitry,
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/input/rmi4/rmi_driver.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+I hope the final state of Synaptics RMI4 described by Caleb was 
+convincing for you, I sent v4, if you insist on re-doing this part, I'll 
+do in v5 :)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 0f6dbe586c652d641178f43ec27df3613126ca66..f977541d8913525d53a59e1d53c33897f1c93901 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -136,9 +136,14 @@ static int rmi_process_interrupt_requests(struct rmi_device *rmi_dev)
- 		return 0;
- 
- 	if (!data->attn_data.data) {
-+		/*
-+		 * Read the device status register as well and ignore it.
-+		 * Some aftermarket ICs have issues with interrupt requests
-+		 * otherwise.
-+		 */
- 		error = rmi_read_block(rmi_dev,
--				data->f01_container->fd.data_base_addr + 1,
--				data->irq_status, data->num_of_irq_regs);
-+				data->f01_container->fd.data_base_addr,
-+				(u8 *)data->irq_status - 1, data->num_of_irq_regs + 1);
- 		if (error < 0) {
- 			dev_err(dev, "Failed to read irqs, code=%d\n", error);
- 			return error;
-@@ -1078,16 +1083,17 @@ int rmi_probe_interrupts(struct rmi_driver_data *data)
- 	data->num_of_irq_regs = (data->irq_count + 7) / 8;
- 
- 	size = BITS_TO_LONGS(data->irq_count) * sizeof(unsigned long);
--	data->irq_memory = devm_kcalloc(dev, size, 4, GFP_KERNEL);
-+	data->irq_memory = devm_kzalloc(dev, size * 4 + 1, GFP_KERNEL);
- 	if (!data->irq_memory) {
- 		dev_err(dev, "Failed to allocate memory for irq masks.\n");
- 		return -ENOMEM;
- 	}
- 
--	data->irq_status	= data->irq_memory + size * 0;
--	data->fn_irq_bits	= data->irq_memory + size * 1;
--	data->current_irq_mask	= data->irq_memory + size * 2;
--	data->new_irq_mask	= data->irq_memory + size * 3;
-+	/* The first byte is reserved for the device status register */
-+	data->irq_status	= data->irq_memory + size * 0 + 1;
-+	data->fn_irq_bits	= data->irq_memory + size * 1 + 1;
-+	data->current_irq_mask	= data->irq_memory + size * 2 + 1;
-+	data->new_irq_mask	= data->irq_memory + size * 3 + 1;
- 
- 	return retval;
- }
+> 
+>> +		break;
+>> +
+>> +	default:
+>> +		rmi_dbg(RMI_DEBUG_CORE, &rmi_dev->dev,
+>> +			"PDT has unknown function number %#02x\n", fn);
+>> +		return false;
+>> +	}
+>> +
+>> +	for (i = 0; i < state->pdt_count; i++) {
+>> +		if (state->pdts[i] == fn)
+>> +			return false;
+>> +	}
+>> +
+>> +	state->pdts[state->pdt_count++] = fn;
+> 
+> Duplicate detection could be handled thorough a bitmap.
+
+Done
+
+Thank you
+David>
+> Thanks.
+> 
 
 -- 
-2.49.0
-
+David Heidelberg
 
