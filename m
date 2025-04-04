@@ -1,94 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A59190477;
-	Thu,  3 Apr 2025 06:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E37B19CD13
+	for <phone-devel@vger.kernel.org>; Fri,  4 Apr 2025 08:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743661999; cv=none; b=XAUe+geRr0dDV03iMVKyMO225ef3rDtxSwJCedKMQZr5FucBcOXLs/82yGmYL+k7MBkUhJGihDONR8yGG4XWptezERzqYW9DkdMJUREqNZcLVveDSVQIkbettBovfRSAvwhfJTRG2GJ4vsRXPGumQwyv5KubU4Q9CL9r9F7eRis=
+	t=1743756150; cv=none; b=nbiLB+Utt39HVnD/VCe9He6O+Dg53gV27iLz9Ti0JI6RFcQUbN7k4RGNncD6pcSx032fz6VVAckm14qKDv4yh+xiEJXI4vtp/LdrTxMU+33y1mgn8hHljD8Z3FZ612D/Yts2XstP6+UU/bLWEQuh96x5UntTyxeasmzQYI56W7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743661999; c=relaxed/simple;
-	bh=a791Ijrj4pxHIMDg2yMK6Vitj1r+VceYdbEDTVe5/A8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CwJQ2YMg6O2kM2rdHHa4R1vr2SmnWRgjM+Rm/HZGsLDazSLoihk2BHPWwlR1GqcHPrCrNbQyS2mVJOmXVQJEOSt7y1/Osr/6y4WP2+Dep+KiwGGOoWOt+ZwoZJBGqWVgaj8Zb9rcbvPA2gtfMPbg9RYb3hK75tQhdyBWiS8kChA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJu6QJgW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743756150; c=relaxed/simple;
+	bh=MS7WaIMkq20DORNXyXmGMCpiPauFYp4ukxiNJ1OFdIk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=klh3OdGb8Vr/0ptDgIrPepDzd+8ZSkBNpjGdKPS03hwRnlsMsMbh5AUWrnncCeSPLq3VX6nKb+mrLKd1VlzoFOVBMZvhd6fMfvVno9Yt1MOPm9ibjI3EWdBnA0OQ8mtjtcra3WNeHwPR7z50JH2h9onG1fWSO5vqfdJ92FmkCzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=RZz9MmEM; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJu6QJgW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F83C4CEE3;
-	Thu,  3 Apr 2025 06:33:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743661999;
-	bh=a791Ijrj4pxHIMDg2yMK6Vitj1r+VceYdbEDTVe5/A8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rJu6QJgWYL9WFNVdajsNsrLzLm7FW+H1Ikd8jh5JYpgIRkXWUodRdIPFx3MpV/cdh
-	 ipDXi4FrROjgpyqKDUxz6SSchMaIPAmX+HwpnKA/TYBO116Z2XMqlnXKVC2PHEahh3
-	 TRCrHwxqiMB2BmOnfi9tmROfQO6g5bkL1eELg4lpZl1Q9Ovp/nyEQ0RNoEwWY5wtC4
-	 dJX2+3fsvuiu3KKXYfQmH1ljOejAd18F7EgwgBDY0VPlbQWVlv9p7mX2WdimBseuUf
-	 QhFQ9vPD3u14uiYect9zUo5uXofWle8riAO+4wxRT2r1HHDke6G60rDN7DUTwEgUG6
-	 ToeE42DDL0vvw==
-Date: Thu, 3 Apr 2025 08:33:15 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
-	Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Caleb Connolly <caleb.connolly@linaro.org>, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 1/7] dt-bindings: input: syna,rmi4: Document
- syna,rmi4-s3706b-i2c
-Message-ID: <20250403-savvy-inquisitive-tamarin-9c14cd@krzk-bin>
-References: <20250402-synaptics-rmi4-v4-0-1bb95959e564@ixit.cz>
- <20250402-synaptics-rmi4-v4-1-1bb95959e564@ixit.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="RZz9MmEM"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac2bdea5a38so291741666b.0
+        for <phone-devel@vger.kernel.org>; Fri, 04 Apr 2025 01:42:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1743756146; x=1744360946; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EvpxFOAMjGbDEHBzr8d3BstbBwgEQIKMSe6Zjgd2RsE=;
+        b=RZz9MmEMnTgfc4/W7G43u7gvKWnEbMjqTmmHJJxQOj//rWl/peRlGenjLYOwZP8fjb
+         090TUTc3c0Hgr9k+jINC6jPeNgYJTfwVTkpw3HmJ9EvnjtGPpU0NHHkMJElch1QrMBEU
+         HmXIx2r2Sh+yeMmm5dgfGDZujDmCeM4BPZ3bQz0YOPPl4MStkoTaixub/0dXLVz8Srq2
+         qk3YoBI3wCaD2zau50uc6G65wLG9pvLZaIA55TLGfv9gOOimz9M5ikcA+47t0mI04ppb
+         /igZ8hBxIKdjOHsRNYU9LropLM4HUO+gcVteXMeGVea/BKTbuOtU9xSwiDraPKzyu0Y8
+         bwmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743756146; x=1744360946;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EvpxFOAMjGbDEHBzr8d3BstbBwgEQIKMSe6Zjgd2RsE=;
+        b=EzJ7q5MTapCRouWY15CURTyyAZklEqdvyEa6wRL2U/gO/SNdr+ym0hDbMdb4FwW/3H
+         B0V5GmRgLv3IoDpU2KGoXWVf7Ar8KGuN41aya9BltF/dVc9XsN5osaWpW6J1Q6QRZove
+         k7ctKi8ovMmi6YLWeJP00Hpn7SwpVPAOSZOGm9rK2iMbJHQ41WE4ysq/n2eVkfGaUZa/
+         pPNIb6yhKFDXspFPK3sCOnohupHk47QNqHrFMLJUeFjTBsSQgdMKK0bayzY+YmFwz7Ci
+         lwROXxpNH1DKoFntTcQ35EMCXhMgvzU3vj2OiuTsQ860geLZrnRT7xSH4KG9baF2/kPC
+         3uMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnZzlSX1exKFIpqfdYOitIKfpFo2AkzUA9QoAD3zwjmFoa6ilDfzopXdbDLtf+boHmx4MDvifgKVHZvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfbylOlao+Iu+pbyrsA4LrdHbWZ7T73Cn6kLI8Mp7QvDhyEd8c
+	rYucNk2X23b9FtCfS+B5pSzR4M6zFtzAPVtd2977GeLDc4VJ0RRQfhnk5w+bLx1nvkJ6qG8TfpH
+	R
+X-Gm-Gg: ASbGnctU4g+pw0HHHx2AqgqYS5e1GiBeCjXkXEojkKLu8Zeow05yqTz/GoN0Jydbd6t
+	RBCOaeSCtqjkDrlZU9++KCkn+i9wVteNuqhfW6OLVRg/Aav783L2mm5WIB7wp2it22vVgXk+Zax
+	nsrIJf/4fn4THBlcdiKg29z2DTvCrajhqAStxXX1uE7YCsFcSQV4Yns/hEGnxT5Cn02o9Isu4Es
+	yPirJGxyhYlXP9iWmtBNVuRkwrb6W35DMF9hSazuLECWroxeGPxHcwhehdwXWVjhuIPfJ5XO/4S
+	jqreW7h/NCRN3zp0MUSCgNUCPvttjwUOJyonELOLB+F3yDmQlUjr3ASl51f0x/Hn0U/GiriMWuP
+	luxjppmjgQntiImqfn6RZ5A==
+X-Google-Smtp-Source: AGHT+IHEpr1vauJBb+ztZ4BIYo4Rg69oVqKkkjWVKPc8XrGwoUcb7kFowBPp4QCiSvew91CEsHvqag==
+X-Received: by 2002:a17:907:3d9f:b0:ac2:cae8:e153 with SMTP id a640c23a62f3a-ac7d6c9fa0emr181343366b.4.1743756145955;
+        Fri, 04 Apr 2025 01:42:25 -0700 (PDT)
+Received: from [172.16.240.58] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c0185e15sm217465566b.132.2025.04.04.01.42.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Apr 2025 01:42:25 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 04 Apr 2025 10:42:22 +0200
+Subject: [PATCH] arm64: dts: qcom: sc7280: Stop setting dmic01 pinctrl for
+ va-macro
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250402-synaptics-rmi4-v4-1-1bb95959e564@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250404-sc7280-va-dmic01-v1-1-2862ddd20c48@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAG2b72cC/x3MQQ5AMBBA0as0szbJtIpyFbGgBrNQ0iYiEXfXW
+ L7F/w8kjsIJOvVA5EuSHCFDFwr8NoaVUeZsMGQqsmQx+cY4wmvEeRdPGuuprdlpcqX1kLMz8iL
+ 3v+yH9/0AtWv9t2IAAAA=
+X-Change-ID: 20250404-sc7280-va-dmic01-6b96e810834c
+To: cros-qcom-dts-watchers@chromium.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Prasad Kumpatla <quic_pkumpatl@quicinc.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-On Wed, Apr 02, 2025 at 08:44:52PM +0200, David Heidelberg wrote:
-> Mostly irrelevant for authentic Synaptics touchscreens, but very important
-> for applying workarounds to cheap TS knockoffs.
-> 
-> These knockoffs work well with the downstream driver, and since the user
-> has no way to distinguish them, later in this patch set, we introduce
-> workarounds to ensure they function as well as possible.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  Documentation/devicetree/bindings/input/syna,rmi4.yaml | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> index b522c8d3ce0db719ff379f2fefbdca79e73d027c..855614718bfd1c6c41805d64e713cf5635c20f10 100644
-> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> @@ -18,9 +18,14 @@ description: |
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - syna,rmi4-i2c
-> -      - syna,rmi4-spi
-> +    oneOf:
-> +      - enum:
-> +          - syna,rmi4-i2c
-> +          - syna,rmi4-spi
-> +      - items:
-> +          - enum:
-> +              - syna,rmi4-s3706b-i2c  # OnePlus 6/6T
+There's devices that don't have a DMIC connected to va-macro, so stop
+setting the pinctrl in sc7280.dtsi, but move it to the devices that
+actually are using it.
 
-Drop i2c suffix.
+No change in functionality is expected, just some boards with disabled
+va-macro are losing the pinctrl (herobrine-r1, villager-r0, zombie*).
 
-With that:
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-rt5682-3mic.dtsi | 1 +
+ arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi     | 3 +++
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi                         | 2 ++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi                             | 3 ---
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-rt5682-3mic.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-rt5682-3mic.dtsi
+index a90c70b1b73ea042af3c5509dccc60844f599acc..0e07429982bd69a5f2455d5fcb7bb03bdeb32fab 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-rt5682-3mic.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-rt5682-3mic.dtsi
+@@ -139,6 +139,7 @@ &lpass_va_macro {
+ 	vdd-micb-supply = <&pp1800_l2c>;
+ 	pinctrl-0 = <&lpass_dmic01_clk>, <&lpass_dmic01_data>, <&lpass_dmic23_clk>,
+ 			<&lpass_dmic23_data>;
++	pinctrl-names = "default";
+ 
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi
+index 020ef666e35fc676fcc4e4ae8aa65e5ba4f42d98..ce48e4cda1708798f40e792620de96034f093472 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi
+@@ -141,6 +141,9 @@ &lpass_tx_macro {
+ };
+ 
+ &lpass_va_macro {
++	pinctrl-0 = <&lpass_dmic01_clk>, <&lpass_dmic01_data>;
++	pinctrl-names = "default";
++
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+index 7370aa0dbf0e3f9e7a3e38c3f00686e1d3dcbc9f..90e5b9ab5b847edc447111825999f73f6453b33a 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+@@ -412,6 +412,8 @@ &lpass_tx_macro {
+ &lpass_va_macro {
+ 	status = "okay";
+ 	vdd-micb-supply = <&vreg_bob>;
++	pinctrl-0 = <&lpass_dmic01_clk>, <&lpass_dmic01_data>;
++	pinctrl-names = "default";
+ };
+ 
+ &pcie1 {
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index ec96c917b56b4a077b45ac0186da6aaedb899dbe..7fba3c6e2b04f18295b7c63dcb83978b2c6049ca 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2617,9 +2617,6 @@ lpass_va_macro: codec@3370000 {
+ 			compatible = "qcom,sc7280-lpass-va-macro";
+ 			reg = <0 0x03370000 0 0x1000>;
+ 
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&lpass_dmic01_clk>, <&lpass_dmic01_data>;
+-
+ 			clocks = <&lpass_aon LPASS_AON_CC_TX_MCLK_CLK>;
+ 			clock-names = "mclk";
+ 
+
+---
+base-commit: a4cda136f021ad44b8b52286aafd613030a6db5f
+change-id: 20250404-sc7280-va-dmic01-6b96e810834c
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
