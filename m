@@ -1,101 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE667DA7F;
-	Mon,  7 Apr 2025 10:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F0537F8;
+	Mon,  7 Apr 2025 13:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744020124; cv=none; b=Ebm5eWJi2vqUjqluFqaEuTers8FXpUehOnhIpipe40KoyGK64X+lhUt/kRZ3DBaIy1VNorDMAhjed80qHN77HVSOblNnz+X7oR1EaA9XFm5GASraBNc85sF/iyR+GIOzFLgKfQTAeZfpXJ1pNgmQF+lmwF2JIlY3aYGYT0fD1rk=
+	t=1744033023; cv=none; b=Kke0rnokAob/L6npINWrNZwPpWv2XXOXW5VlkdZhHLwLxlXAMJ6h5CrhJOs8xvjfEUtdbiTS2pwQWnh4Kk1+0QUj3TZ9B1JxVJ7h8DO6MgkenOYFx3TYpmMNms93rybrO2YxQmx3CCFrmMaTgwcDfuelhrUxAci0mBk0hzCYMSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744020124; c=relaxed/simple;
-	bh=rKZ/6WAjoBuHXoOD4i+p9W+oq/5Mz26bPr4EKFlhYz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dp0jCHy0FApCzjmO9j1W1LJlzNLl/j+AIJGFueDa9jgJEbfxiMcI5ltSjGgkViKUM4G6L7ruBXSwNBJUjfuhXkgE2z9nX+epHqcxU7rw689q5IU+SNHkQLY2JWpUh0zGR5qoE7UrPCnGO1QsHHGG9BGztqD+DsOfyXAvhsB+FlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGL2FK0r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744033023; c=relaxed/simple;
+	bh=z2YPPx/huYycm4RmyXI94B1UPAuAdtuMmpycOF2eNfE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OuJNYXiwHkto7j2hKFF7HiElkTi67DFqHDsxImQ3R1rux7cTXR/lwwYPyOnlUItH+itVwe9lbTDiZRWHehxxjBbvg+Vj4QcsO2QCshVPG1RbyrgGnWglek5ED5t5h44KT1p5IfXb5fkXM25cheQo6lxd1k83ls8sG6508ZpUx70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CAOTyETx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGL2FK0r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB9DC4CEDD;
-	Mon,  7 Apr 2025 10:01:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CAOTyETx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103DEC4CEDD;
+	Mon,  7 Apr 2025 13:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744020124;
-	bh=rKZ/6WAjoBuHXoOD4i+p9W+oq/5Mz26bPr4EKFlhYz8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EGL2FK0rSI0J2kiHNBlNlYgkE9ZkJGI4ta8fvRDqgqxTDTaqfB2OcvTpPdOuZjWEB
-	 Wi6F6M40jZUfL/w0qT/dgciRRJajlEMvlVhxiQz/bUFdn49aMd3RwlbKV7MxIIKcUL
-	 flOCqE7ByDM/wiyPpjyQDsXzGQJGbZ9aNzE20Hg+S2DZzCkwKaX1woFY7NzTs7OoDC
-	 RfWZfzthwcaQi0HWZq2Bz5wJOMm9u7P49znUlT8fkrCaLrnCQBokwH9wHMifyE8cQO
-	 h/f1t4+jEs1qL6+xfIf99P6mg6b22eciBRsFRb0x1maWgXR655oPlT4AhaELm7rbUH
-	 fvcHdHADPMyrw==
-Message-ID: <5555c2e5-029f-4c77-8c6b-3ded2b2f9d33@kernel.org>
-Date: Mon, 7 Apr 2025 11:01:57 +0100
+	s=k20201202; t=1744033022;
+	bh=z2YPPx/huYycm4RmyXI94B1UPAuAdtuMmpycOF2eNfE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CAOTyETxd6/g/MkX2N0+SDWbWzuP8ChrEt+8pQsd8Z1UN96yLAPX3mrm6rJKWgLc/
+	 GP3x7AwaHvtA0Jtsx74qQL2k+hZvMWDteDH/YB3GoICpZh4luvFSChhFJHTH/lrV20
+	 b+hXqyVtsiPwIggNMD8GmUD89BGniYLY3gCSsYq2n5lrrqmhhmW7ymG9qjFjP9yL3G
+	 /21cC3rQ6NjDx16wg2OaOfTpM7WbaY3YLdy1K6ptgw2JG8eYkTxWxNzd7W8wntLB0W
+	 4Tfy8s1qXT8M64MxdC+TayfHbH8QdysTiNhdTtVqqRFlGfQW4YpwRQqzBksqUAloUU
+	 COfTxc/kQ16Aw==
+Date: Mon, 7 Apr 2025 08:37:01 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Luca Weiss <luca@lucaweiss.eu>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>, Sean Paul <sean@poorly.run>,
+	Rob Clark <robdclark@gmail.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	freedreno@lists.freedesktop.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: msm: qcom,mdss: Document interconnect
+ paths
+Message-ID: <174403302028.2068916.9679649068590207721.robh@kernel.org>
+References: <20250406-msm8953-interconnect-v1-0-a23e22e236e0@lucaweiss.eu>
+ <20250406-msm8953-interconnect-v1-1-a23e22e236e0@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Some small preparations around CAMSS D-PHY / C-PHY
- support
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Robert Foss
- <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Barnabas Czeman <barnabas.czeman@mainlining.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
- Caleb Connolly <caleb.connolly@linaro.org>, David Heidelberg
- <david@ixit.cz>, Hans Verkuil <hverkuil@xs4all.nl>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241209-camss-dphy-v1-0-5f1b6f25ed92@fairphone.com>
- <D82FU3SIX5RZ.1Y525GJO0UOAA@fairphone.com>
- <eb06daf1-3cc3-4b31-a0bf-bc450cd0f041@linaro.org>
- <7bt-fuRycoJhLN28Wf0QCaz_rljIKilGsNyYSzjHz9Ig8AOEs94AlKMko__dGbNp1SgGCdHvaVZ6tU_9hCvj3Q==@protonmail.internalid>
- <D8IDHJAC4BJ1.WNTMQEJXD2R2@fairphone.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bod@kernel.org>
-In-Reply-To: <D8IDHJAC4BJ1.WNTMQEJXD2R2@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250406-msm8953-interconnect-v1-1-a23e22e236e0@lucaweiss.eu>
 
-On 17/03/2025 07:45, Luca Weiss wrote:
-> On Wed Feb 26, 2025 at 3:47 PM CET, Bryan O'Donoghue wrote:
->> On 26/02/2025 14:13, Luca Weiss wrote:
->>> Hi all,
->>>
->>> On Mon Dec 9, 2024 at 1:01 PM CET, Luca Weiss wrote:
->>>> Since the hardware blocks on the SoCs generally support both D-PHY and
->>>> C-PHY standards for camera, but the camss driver currently is only
->>>> supporting D-PHY, do some preparations in order to add C-PHY support at
->>>> some point.
->>>>
->>>> Make the dt bindings explicit that the hardware supports both (except
->>>> for MSM8916) but also add a check to the driver that errors out in case
->>>> a dt tries to use C-PHY since that's not supported yet.
->>>>
->>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>> ---
->>>> Luca Weiss (2):
->>>>         media: dt-bindings: media: camss: Restrict bus-type property
->>>>         media: qcom: camss: Restrict endpoint bus-type to D-PHY
->>>
->>> This series is still pending, both patches got reviews and no pending
->>> comments from what I can see.
->>>
->>> Would be nice to get it in for 6.15.
->>>
->> Yes this should be merged.
->>
->> Thanks for following up.
-> 
-> Hi Bryan, hi Hans,
-> 
-> 6.15 merge window is approaching fast, I wonder if this series was
-> missed still.
-> 
-As soon as possible.
 
----
-bod
+On Sun, 06 Apr 2025 22:55:03 +0200, Luca Weiss wrote:
+> Document two interconnect paths found on the MDSS on MSM8953.
+> 
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> ---
+> There's also some interconnect paths defined in the mdp5 schema, both
+> drivers accept it. Newer mdss schemas seem to prefer mdp0-mem + cpu-cfg
+> in the mdss schema instead of in the dpu subnode. Since there's no
+> cpu-cfg defined with mdp5, I've added these paths here.
+> ---
+>  Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+
