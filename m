@@ -1,280 +1,74 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676111C6FF3
-	for <phone-devel@vger.kernel.org>; Mon, 14 Apr 2025 20:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D6C2DFA32;
+	Tue, 15 Apr 2025 02:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744664132; cv=none; b=K9RTFDYJFKF0oKjI9YrVqlotFmsu+9kfhM1kYvJK+WdTlMnAsTEoGaxdqeCsByTfsd4/7qCWUUXQMAYCtAu+gHvrSlVMnR7VGeHVleQgvzI/sujb2kraaUJ/2moAHIIZNZaKhveqlinjACVW/qNFy0bpMRMWksZscCWNGZhFgQA=
+	t=1744685566; cv=none; b=slxgV/GjqqtOnKNzk7SvdP+2ske4ml6xZNGIQcjFNlUJPaw5+QlntyeVrVsUZiBIhH5dBFLCjBPmz1aNpffY3/50qCFmEXhJiel6y6PJj5Kc7+KGEcMsjUwGYxpX3+1aNtsoYwQmQlDBheV9t9IcOVmJts/I8O4e4fcoWkbimUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744664132; c=relaxed/simple;
-	bh=zjE3vRT+ssrRw7bL71CD3Oe95BvjsQfUHA6+heIvoZ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KKtsqSLEwIWxFOo8brNLI7vnJYXuchPz2+iO4AGI/DL3oYL4TPfi4mTrvPAmf7LDiwsA/7wojNgqa3Il5G68CfCp/Vtc1743++RLCISQfNRA32k3fQZE96pWwVTBR/lblNZJodnKktBDOSr78D7f+PSDOa8+ipI4dDjaCxhEQ74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=W16IqfEg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1744685566; c=relaxed/simple;
+	bh=IGxreNlwpqQm5syFJ8pj7BbF6kEXtKAd/PNKLjIuTvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Sl4rOw+mt2BxyAK5P5Sd6EEeh+/ht6K5aJtD3/GzaanGN303pU+cJ7ahbyExWoo+AdrasopvwsPkoaWF+dP915mIkyUjZNFGglEKScU83G86yGE8UuDrKXXjngE70nrmhQXk6kPIlvvrrNe0WRJXo0XZTWnbuLvGOfVXjG9DCDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anizWvRZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="W16IqfEg"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EKdgGI016751
-	for <phone-devel@vger.kernel.org>; Mon, 14 Apr 2025 20:55:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WxqIMMM+bD6pWCvSoOoUNZlHXMPZPcPy2ox/bPjumf4=; b=W16IqfEgr9ANz/Su
-	PT/7IXowclo9n8BNUIy5eNsu+iLRfEttOXQ0DOXxZk6EsByU9K4U/xc0AugxXZjZ
-	JhRWfIJXdvb8TGk2jtKw6xIkKujSxO1FMREqOei72PGhFq9pKIO2CcjF0lsk3DuD
-	CTw5qyK251zw7ETYI5SN4wWnjIs5q/5lozfs97LQHD7X5QglnaYg4j8tnA4GpZxQ
-	VACbYNT4b+zY018HIgXlnZvPvseQ2KI/FAhKl1v9tKQUfMXwIS3ZdV2pqFNhAwRd
-	qxLPwdCXrj2VB36MJjf2BVUSaKzIovig4Owq2NyhSuBxwNs1ozneWSqfl5wYnq7t
-	W9pWfw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yf4vdvkc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 14 Apr 2025 20:55:30 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c552802e9fso124642085a.0
-        for <phone-devel@vger.kernel.org>; Mon, 14 Apr 2025 13:55:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744664129; x=1745268929;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WxqIMMM+bD6pWCvSoOoUNZlHXMPZPcPy2ox/bPjumf4=;
-        b=SXHzY3ybrkKwd28jF4BpcVBrlz556WQkydHexCHl5ONj1jraxcKQyvTXNQoNqmnb43
-         WgOVjqYI31ujczxyf0+x4AEMIeNIIkaV5ApXAR3PR8Two+cyxwqbKHZKRrNIC13i70PG
-         hJvXuxt5vAbH4wk7vNLsdFYhzP+cNkzKFHQTeA7aT4m3iAsEP2t1DG095zRNOvJ046UC
-         AYFkgv5tlsP14FPHKwODkrNn1PpJAd3AvrrkEf0Mf7cXodPez65Bp1b3r10XzhS3uOhL
-         lWIwNhuHnZUtTnuOI3lEKGXABkcsPRmmiR0xB9BNALxxmRnS+pxdtCZogkonpBjSI2Ce
-         2mRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTSKNghGBLOta/d2rnw+L/8NgaEwNDm+HMEXnEgOgwhiRpwgwJ3Ghdn183qO2G1toEa31rV4T5wRgoyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8axr3HGWFimaQvHugRCQMAS+GyuqmoHQWrKiK1ZZmvBQgJe+q
-	JMGemK+1G7OpKREq8a/kMWzsYxJQ9Tk7GTSwjxeKp0QOL3lgGQTiJ1HWaEowhkZ55Rc7R/hXT8o
-	9UhdnMxvEc/ycmqx86kcOoP7Vi2tF/OePCeoiqaRUgHUdTrHjTxtHyg6zsq/hzQ==
-X-Gm-Gg: ASbGncveUKI27FZZ/YF81x/Yzj7UBxrH+OI3uJ3RBauXUbxFDO5HxY+8fOpg4+ADlek
-	HU26xvxxZWSw22Plg8qXmiBNAv5Yh2CNSMgPoLeoDaXiAPNnhzVIG3cnA9tIlKkJwGycwonke+C
-	/vsY3ub72TXr0tLED0a5VVe5FvoG6B72YnUO7tTWLkTudvgiVpvRiWBQeTI/OCCiMMYDR/MJKgR
-	o04T+k3KOQv/zL4bzEgHawNoIixwdlcIKnWiFU6Un62zlMnafe4C8is27hgbiIXCN0lNR6G8kgn
-	7GoZ7w7U5YY0mVaBIcexKGlBwf3gp7OfUQ95skKbdkvIzRm/JnWD6uWRSnsZZ3AK6w==
-X-Received: by 2002:a05:620a:4627:b0:7c0:bb63:536c with SMTP id af79cd13be357-7c7af10641cmr597552485a.4.1744664128878;
-        Mon, 14 Apr 2025 13:55:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGoWIvNWBnu8DBGFjtGdagGBK2fyiZED6ibSgijR4nYQRmR9ck5XDihEjcIo4pATTzpB4UWZQ==
-X-Received: by 2002:a05:620a:4627:b0:7c0:bb63:536c with SMTP id af79cd13be357-7c7af10641cmr597548885a.4.1744664128405;
-        Mon, 14 Apr 2025 13:55:28 -0700 (PDT)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f36f5056easm5692216a12.63.2025.04.14.13.55.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Apr 2025 13:55:27 -0700 (PDT)
-Message-ID: <f85195a1-f55e-41ea-967d-b758014cba06@oss.qualcomm.com>
-Date: Mon, 14 Apr 2025 22:55:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anizWvRZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCE0C4CEED;
+	Tue, 15 Apr 2025 02:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744685565;
+	bh=IGxreNlwpqQm5syFJ8pj7BbF6kEXtKAd/PNKLjIuTvU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=anizWvRZYfmt1Bm+YMw3o69qlGNd7ikTjSrCPDfDDjXFX8r1Em34EaA2rWaIaUbba
+	 KP6m+GhaBtf1gQN18oXsVnhBlLNMNonJTNSA/PIZhCvCHG2DHLGnLgl44Vw7K7/iWk
+	 Lze/6VRbgJGRaY97jBLVo1+Sg03L0yP2s35dDczt76NRZV/zyw40tVoPDArGEoiJWb
+	 nguIIIfC3CucCHfZ2m5sEOVbo1ZOh4g1gL26Pg7FkU+c3V0xmKLCPwIOlXhHwRyToz
+	 MelztK/oN3r/r+u8/NuLL0VF5gElZI3XQdveWsSISbHnOb/zYMYgwkl2F1Pefn+QDs
+	 0gn54hV6vYuLg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: Remove unnecessary MM_[UD]L audio routes
+Date: Mon, 14 Apr 2025 21:52:38 -0500
+Message-ID: <174468553410.331095.18181920532616083271.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250411-cleanup-mm-routes-v1-1-ba98f653aa69@fairphone.com>
+References: <20250411-cleanup-mm-routes-v1-1-ba98f653aa69@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] arm64: dts: qcom: Add initial support for MSM8937
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        =?UTF-8?Q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
-        Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Dmitry Baryshkov <lumag@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux@mainlining.org, Dang Huynh <danct12@riseup.net>
-References: <20250315-msm8937-v4-0-1f132e870a49@mainlining.org>
- <20250315-msm8937-v4-4-1f132e870a49@mainlining.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250315-msm8937-v4-4-1f132e870a49@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: _g15TSNQyJxYRM4KYWlLxN9v-Dn9FeM6
-X-Authority-Analysis: v=2.4 cv=IZ6HWXqa c=1 sm=1 tr=0 ts=67fd7642 cx=c_pps a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=bBqXziUQAAAA:8 a=OuZLqq7tAAAA:8 a=zdbjSHh-4Hdwht_aKTEA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=BjKv_IHbNJvPKzgot4uq:22 a=AKGiAy9iJ-JzxKVHQNES:22
-X-Proofpoint-GUID: _g15TSNQyJxYRM4KYWlLxN9v-Dn9FeM6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-14_07,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 spamscore=0 adultscore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 impostorscore=0 suspectscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504140152
 
-On 3/15/25 3:57 PM, Barnabás Czémán wrote:
-> From: Dang Huynh <danct12@riseup.net>
+
+On Fri, 11 Apr 2025 10:33:29 +0200, Luca Weiss wrote:
+> Since commit 6fd8d2d275f7 ("ASoC: qcom: qdsp6: Move frontend AIFs to
+> q6asm-dai") from over 4 years ago the audio routes beween MM_DL* +
+> MultiMedia* Playback and MultiMedia* Capture + MM_UL* are not necessary
+> anymore and can be removed from the dts files. It also helps to stop
+> anyone copying these into new dts files.
 > 
-> Add initial support for MSM8937 SoC.
 > 
-> Signed-off-by: Dang Huynh <danct12@riseup.net>
-> Co-developed-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> ---
+> [...]
 
-[...]
+Applied, thanks!
 
-> +			power-domains = <&cpu_pd0>;
-> +			power-domain-names = "psci";
+[1/1] arm64: dts: qcom: Remove unnecessary MM_[UD]L audio routes
+      commit: e8acfc1bbcda6978d952d0c18b0b5cebd6dcc3cf
 
-So CPU4-7 get "nicer" idle, but 0-3 don't?
-
-[...]
-
-> +		cpu-map {
-> +			/* The MSM8937 has 2 cluster A53 setup. */
-
-This comment seems superfluous
-
-[...]
-
-> +	timer {
-
-'p' < 't', please sort top-level nodes alphabetically
-
-[...]
-
-> +				wcss-wlan2-pins {
-> +					pins = "gpio76";
-> +					function = "wcss_wlan2";
-> +					drive-strength = <6>;
-
-please unify this order (drive-strength before bias)
-
-> +					bias-pull-up;
-> +
-> +				};
-
-Extra newline
-
-[...]
-
-> +		gpu: gpu@1c00000 {
-> +			compatible = "qcom,adreno-505.0", "qcom,adreno";
-> +			reg = <0x1c00000 0x40000>;
-> +			reg-names = "kgsl_3d0_reg_memory";
-> +			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "kgsl_3d0_irq";
-> +			#cooling-cells = <2>;
-> +			clocks = <&gcc GCC_OXILI_GFX3D_CLK>,
-> +				<&gcc GCC_OXILI_AHB_CLK>,
-> +				<&gcc GCC_BIMC_GFX_CLK>,
-> +				<&gcc GCC_BIMC_GPU_CLK>,
-> +				<&gcc GCC_OXILI_TIMER_CLK>,
-> +				<&gcc GCC_OXILI_AON_CLK>;
-
-Please align the <s
-
-> +			clock-names = "core",
-> +				      "iface",
-> +				      "mem_iface",
-> +				      "alt_mem_iface",
-> +				      "rbbmtimer",
-> +				      "alwayson";
-> +			operating-points-v2 = <&gpu_opp_table>;
-> +			power-domains = <&gcc OXILI_GX_GDSC>;
-> +
-> +			iommus = <&adreno_smmu 0>;
-> +
-> +			status = "disabled";
-> +
-> +			gpu_opp_table: opp-table {
-> +				compatible = "operating-points-v2";
-> +
-> +				opp-19200000 {
-> +					opp-hz = /bits/ 64 <19200000>;
-> +					opp-supported-hw = <0xFF>;
-
-0xff is overly broad, please document the existing known speed bins
-
-[...]
-
-> +		adreno_smmu: iommu@1c40000 {
-> +			compatible = "qcom,msm8996-smmu-v2",
-> +				     "qcom,adreno-smmu",
-> +				     "qcom,smmu-v2";
-> +			reg = <0x1c40000 0x10000>;
-
-Does it work as-is, without iommu changes?
-
-[...]
-
-> +	thermal_zones: thermal-zones {
-> +		aoss-thermal {
-> +			polling-delay-passive = <250>;
-
-There are no passive trip points> +
-> +			thermal-sensors = <&tsens 0>;
-> +
-> +			trips {
-> +				aoss_alert0: trip-point0 {
-> +					temperature = <85000>;
-> +					hysteresis = <2000>;
-> +					type = "hot";
-> +				};
-
-Please convert these to 'critical' instead
-
-[...]
-
-> +		cpuss1-thermal {
-> +			polling-delay-passive = <250>;
-
-You can drop polling-delay-passive under CPU tzones, as threshold
-crossing is interrupt-driven
-
-> +
-> +			thermal-sensors = <&tsens 4>;
-> +
-> +			cooling-maps {
-> +				map0 {
-> +					trip = <&cpuss1_alert0>;
-> +					cooling-device = <&cpu4 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +							 <&cpu5 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +							 <&cpu6 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-> +							 <&cpu7 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> +				};
-> +			};
-> +
-> +			trips {
-> +				cpuss1_alert0: trip-point0 {
-> +					temperature = <75000>;
-> +					hysteresis = <2000>;
-> +					type = "passive";
-> +				};
-> +
-> +				cpuss1_alert1: trip-point1 {
-> +					temperature = <85000>;
-> +					hysteresis = <2000>;
-> +					type = "hot";
-> +				};
-
-On newer platforms we rely on LMH to shut down the device if it
-were to reach the junction temperature, but let's leave them here
-as probably no one remembers for sure how reliable that is on these
-older platforms and you're most likely not willing to test that
-
-Konrad
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
