@@ -1,150 +1,112 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E6236458
-	for <phone-devel@vger.kernel.org>; Thu, 17 Apr 2025 11:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6BF277003
+	for <phone-devel@vger.kernel.org>; Fri, 18 Apr 2025 13:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744888285; cv=none; b=SLI5ygSZGq0DYxZWXrUCEQIscsyZX0mLYTGfp7WljWVpNHBjqjijAs/s/gfrvdwFedbBxdOiHKQftxIJI6Kh8FLGRdN//xwraPKdiktutdg3kineDTtoJgC1ykng86QPN6lrW0otnoV/dKfKKfAPf/IKmqYAlIYRL7qyAlBpbpw=
+	t=1744982042; cv=none; b=AG7pXF73dZnM+UMMAVi7yUcEUuFcsWHqemjvnp212iEp63yksiV/RPnV0WOk3DXWZx975XFVICeyqEAEkEeovgBRCkob3iRTpHxjjUuFcM1Zv79nkW/XsfJBaAKfS775oDeNaCl7KORdwm8gSB/EbO7JcP9BAn68lWapnvforYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744888285; c=relaxed/simple;
-	bh=cQFl5PUzH6hg0oQP041Wr6N3dkwwS+iRu/+8WAAEhHg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fkFbOAT4rq6Xa7d3PYuwvZVGcxZMNNzpucdnanUquw7teLm0qz9UcyY63fREU25vM8nnYJ7mI1jnDpheKOtssIXoW7+3McmYUAYK9KDZXZizx2Cw4MVkjTn2qeJFCnbGg6wy0m42ebB0UuvHMggUH+8NNJ/FxrvCdbzJclvp90U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JAvYzxEN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1744982042; c=relaxed/simple;
+	bh=wzHHP2feP6wHuqFLANo3CTLOjrw0/TxeFUFRj7B0ILE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dxY0Bb+2UZl9bVp9Z74T37eVpSFeNTO+XfE/31WyQs5xVOsxSESsG3cUgaflOzcgOeqxq5MfE8dGSnHyPkv2nqzCDo2jN5Zgdi3Oeq7RAdfyvS/rsnvC8sGyT5nuphZ5DK9eQi/8bV144JIdhTNo/RVgAoJmODfAoJy4HGzGV4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=lRXLUmeE; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JAvYzxEN"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H5l7r3010535
-	for <phone-devel@vger.kernel.org>; Thu, 17 Apr 2025 11:11:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	cQFl5PUzH6hg0oQP041Wr6N3dkwwS+iRu/+8WAAEhHg=; b=JAvYzxEN2qi+MMUi
-	ZC1VD7t5J625JEd9CrPq3AAkROFDv7AVAMbvQkO3obP0OSyN5T9Ucmzz5OGPg+4Z
-	UXHDA1S+yX2j6xA/0Eu0PNDPmynTwngd0hpDdNMU/y1vuUHOhtdt6w+VoySpxsnl
-	XAsxSHSuhnDGRC3s4lXR1skfZ6T0fHlx1QX3K0k6M7Ruw9tyAdVd9OfmpLs103UM
-	IzgwJVxmKDOcVGSEZ14f2DbJljZbVF8vgrrHDkResKonzukGlYlzK55OyhK0eH91
-	kfd2h57cfjtPI/KieNACUEQGSw/cy+f9j6VrolxIznyDvBMiBqTVs+H0RwTfEbrv
-	/UKxcA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yfgjpjxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 17 Apr 2025 11:11:22 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6f0c76e490cso952696d6.1
-        for <phone-devel@vger.kernel.org>; Thu, 17 Apr 2025 04:11:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="lRXLUmeE"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e5bc066283so2892494a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 18 Apr 2025 06:14:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1744982039; x=1745586839; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=seRyYYSYhDxZAINukYkT14l+opP0XSBbrpJYZxHqS48=;
+        b=lRXLUmeEL5AQDEvjNFCo7nX20BT818ObDRsW7bNGHHmmn996HXjOSBgMA/gX9/4QXY
+         ueNyKPDPQjb96TUsxT6bdpoEMWkoD4REzIe1WonQlqiiX6RbyVKaGJgaw7XGEl2EZNLV
+         R+LvQzeUTGfXEo5xY+ehfFIshlJdnYK57PeaOH8OMRIZ8S5IsfwoXGruvPanWVZTXEkG
+         hmEi3bdMq8tCr5A7nsHmItE4B+rQj+d/S/NmhfjvoSARqiwtMBRDihgaPPWjJYY8Z3c6
+         fAmwRKI5JlEM7tihczRUbWnbPufqngK85hEgSsZXl0MmTiKD12iIu8/JIfDR45q3fKXa
+         mUvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744888282; x=1745493082;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cQFl5PUzH6hg0oQP041Wr6N3dkwwS+iRu/+8WAAEhHg=;
-        b=KO1NXQ4yHGl6t4vFPrJennfbXPMhLbftP/RRZ4g0Qho9Q6/FZraZv20iCreHm1VggX
-         NKmne+bDx7iiPFxDV/41JjpLZUfflrUOdXM230rXTbi9O4zHsJLMlxyfBqYQd/aKbl3L
-         8q9O4Vuidp09CbWNqSz7XbkuRp+SpQx1JgsmsZZ3e1Pk0JR20fBAE/RuQF49uY0TLZ/O
-         opZCXzuGt3pI77+wLi5/OixiX2WI9Q3xrmb2MMwizjQ9oqQmIsVRU/7h7BR/sJLobCR2
-         yPOV9pN//xc9NlTzlsBFz3VlBxsr8/askx2+TmPtDV9DCNDo7AmgJxH8HnZtgB+RQyvX
-         Pz+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWBcZSxrkH7dDkkOXGhmypaZ0mhIsHxeRUoxfDxs4zhwADcMuQnbR1AoXn3SBYmTN+sE/rPdaUICTZesg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUk0ajYnr9Jn/9sY3QhulJ1oKeu4jR/uJR6YJAuHGc3OjFW7RX
-	NtebqhF1vm+jlJHD+aDKxDf96xdIJzg1X28LfPkBC5hQSMjqa5mKCKH4IvjzKdyqjY3Q+igiLEJ
-	kv6WVC9BFY/cB4lQ/yAFkRporgogTk2ApLc+Omzjc/kNbeQcQ8PGXbcChBcBMwQ==
-X-Gm-Gg: ASbGncsdTxDGjYx/4XGM1QnaKITkoZ1ApbdbPK/HR1pu+dlgzP0XC+x4dD2yBZHdHQj
-	RvCLPDcczdBcbop4kSCPo6gITpznlahOiIOruXUQE4652NoIk55lUGKgGdBErwj9aYC99ozUzFg
-	kG6+7KbmQzrCVVprO2ir9/B0ku8p+gnYlwBKgoPeSe/ce0lxnvVt8+2acB9Y8OQ5H+HXvepH5ZB
-	HBmWBsn/JRO8pbOY/EG+CSoUzWYsIV51lz4FhjhccdUxfiaI5ccyCktrSZbpBw7Dy7TPZOAw9+B
-	9sfob4kaaevfcw18yM4k5DP0aZUJ7qYfIKCwiHZ9gaUFz+WWgFzWPPvIAIltDqLrgw==
-X-Received: by 2002:a05:6214:b11:b0:6f2:c10b:db04 with SMTP id 6a1803df08f44-6f2c10be8bcmr1283216d6.1.1744888282057;
-        Thu, 17 Apr 2025 04:11:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5kju+O/dWoPIE9Ybn1kg3pBvJPXA+KWO908qYET4dQsJeQp8XiEZRcojtLSXCqXemg9A1+Q==
-X-Received: by 2002:a05:6214:b11:b0:6f2:c10b:db04 with SMTP id 6a1803df08f44-6f2c10be8bcmr1282886d6.1.1744888281656;
-        Thu, 17 Apr 2025 04:11:21 -0700 (PDT)
-Received: from [192.168.65.58] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb3cd6257bsm278243066b.13.2025.04.17.04.11.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 04:11:21 -0700 (PDT)
-Message-ID: <bfc3247e-16e7-4897-bdbd-dc7d82d45fa3@oss.qualcomm.com>
-Date: Thu, 17 Apr 2025 13:11:16 +0200
+        d=1e100.net; s=20230601; t=1744982039; x=1745586839;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=seRyYYSYhDxZAINukYkT14l+opP0XSBbrpJYZxHqS48=;
+        b=Ta+7DApWyzf/t+ZjyfoIBXPh/6RGEXnDdWrgsy/m76IwMYGrLuBSpiKq3cD6KxgKP2
+         GEqvlESuzr8gcc7/4DFTupLo7C/eGueu61GMqVCZC2U7IZoJxsw2Y6jQZy2SXkNNQuoJ
+         D+UVNW+E8JYVnPRIqUZtSowpq6UWpumyXRu6kRwdRx04V4+PAybtkM7lSBC7Lit/8rhO
+         j5YBOQnbYwmbYRCbRbyyOwLPAKq9e0pAj2q1xOKZBWm+UWeNqYvORU8FJ1RzRAIjAr+n
+         2w7BMXUgaTYsycxjTo6SfUmdgs2dS3TBr8hP0fMOcceGAEhCE3nVDNosrhViQ5IfdqVy
+         Su2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWhTHwwUenydSqL1y3eURsd9PhkJKAJbUBFCdnu3tyz7UJ08jkvUdGzJ6Bn+ImqpA5qr1RapT/n5zDG9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqDft6+eJGUx+DaF+Qsz22MDETL0g7IbG2ktljVgJxMKY3eHy2
+	LCpZ0GEf9MDBhx0E7s9oxr4n3CPqDjZf8YkOaEFqU+CgOkyhQh+CpcHbZwbMOGE=
+X-Gm-Gg: ASbGncvxUFTFCrzVQSoBb/wy+OOhhNXD6vDwYZpE0oimaJFKvAmFu77kFAmKIkN5FtX
+	oUndCMYL3I6NQUkt/YFQFVwfr2QkFRK4qm+dCN1Pfj+8eoaIy6WFL47h78aAN8D+eF66fTKiriN
+	aHbkZnNCpy9VY3+kJcCQMlljL9wKInOMOwQAcYXd2O/2bJ3sXytxPnXSEEO9SUDtgtFkOdJ60Os
+	hWfvOUvmcf25oGZ6OJQ70z9ZCq6diVX3B49xsMlbPIy4e08mQrKqUmzdA/SQNxwUpTFcaliRZPx
+	BD0Tjq9ljNW/tzCn2sNKYfElbwM6DW2lSuV04cx+AGusFKeeq1/MspmBL1Eqt69eFNhu2DjHmnI
+	D9ijgQZOoXsrIwg==
+X-Google-Smtp-Source: AGHT+IGK0w5o/tIazZ37+NXFgqNftZQkULjK7rkiUpRoTJsf3DztGjPOr0fER0jSN21I7Sk2h/cvdA==
+X-Received: by 2002:a17:907:7247:b0:acb:1908:6873 with SMTP id a640c23a62f3a-acb74d65b95mr270159466b.48.1744982038650;
+        Fri, 18 Apr 2025 06:13:58 -0700 (PDT)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef41605sm115901966b.124.2025.04.18.06.13.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 06:13:58 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 18 Apr 2025 15:13:42 +0200
+Subject: [PATCH v2 1/5] ASoC: dt-bindings: qcom,sm8250: Add Fairphone 5
+ sound card
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] arm64: dts: qcom: Add initial support for MSM8937
-To: barnabas.czeman@mainlining.org
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        =?UTF-8?Q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
-        Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        iommu@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
-        Dang Huynh <danct12@riseup.net>
-References: <20250315-msm8937-v4-0-1f132e870a49@mainlining.org>
- <20250315-msm8937-v4-4-1f132e870a49@mainlining.org>
- <f85195a1-f55e-41ea-967d-b758014cba06@oss.qualcomm.com>
- <93ea35691deaa1ff38d229225e26cf41@mainlining.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <93ea35691deaa1ff38d229225e26cf41@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 7cqLExz9hv-KLhSYRK3VKiHBprxLPAbA
-X-Proofpoint-ORIG-GUID: 7cqLExz9hv-KLhSYRK3VKiHBprxLPAbA
-X-Authority-Analysis: v=2.4 cv=Cve/cm4D c=1 sm=1 tr=0 ts=6800e1da cx=c_pps a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=OuZLqq7tAAAA:8 a=bBqXziUQAAAA:8 a=L7gxQ87vPTAOeZ-rjWYA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22 a=AKGiAy9iJ-JzxKVHQNES:22 a=BjKv_IHbNJvPKzgot4uq:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-17_03,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- malwarescore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 impostorscore=0 mlxlogscore=762 mlxscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504170084
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250418-fp5-dp-sound-v2-1-05d65f084b05@fairphone.com>
+References: <20250418-fp5-dp-sound-v2-0-05d65f084b05@fairphone.com>
+In-Reply-To: <20250418-fp5-dp-sound-v2-0-05d65f084b05@fairphone.com>
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-On 4/17/25 8:20 AM, barnabas.czeman@mainlining.org wrote:
-> On 2025-04-14 22:55, Konrad Dybcio wrote:
->> On 3/15/25 3:57 PM, Barnabás Czémán wrote:
->>> From: Dang Huynh <danct12@riseup.net>
->>>
->>> Add initial support for MSM8937 SoC.
->>>
->>> Signed-off-by: Dang Huynh <danct12@riseup.net>
->>> Co-developed-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>> ---
+Document the bindings for the sound card on Fairphone 5 which uses the
+older non-audioreach audio architecture.
 
-[...]
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ Documentation/devicetree/bindings/sound/qcom,sm8250.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
->> 0xff is overly broad, please document the existing known speed bins
-> There are no speedbins for 8937 gpu. 8940 have but 8940 is not scope of this series.
+diff --git a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
+index 4e208cb7f6c61adfd4b687227038d275f849480a..57f62a228c262f38e703816efdcf443355052619 100644
+--- a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
++++ b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
+@@ -28,6 +28,7 @@ properties:
+               - qcom,sm8750-sndcard
+           - const: qcom,sm8450-sndcard
+       - enum:
++          - fairphone,fp5-sndcard
+           - qcom,apq8096-sndcard
+           - qcom,qcm6490-idp-sndcard
+           - qcom,qcs6490-rb3gen2-sndcard
 
-So it would make sense to either drop them, or fill in the actual
-values here
+-- 
+2.49.0
 
-Konrad
