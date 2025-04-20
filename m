@@ -1,152 +1,103 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDF719E975;
-	Sat, 19 Apr 2025 09:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FB71E9B35
+	for <phone-devel@vger.kernel.org>; Sun, 20 Apr 2025 13:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745055227; cv=none; b=YelUmHYYCuU30oSmxwaihNF/OTApZxuYhV8mUKf6M7bTCe3xZnh76xzaraaVtbGj81hLlnLdw9jeca4i7SVCitttdvvlB5QB8L7h6X2ykhXejTHCLFGfYVbEdmxXAzq2Jrt6IcJoEWSIk2KgiiFkEhzNd0oLQS38bqdrHOH+eYA=
+	t=1745156507; cv=none; b=emQ2z6JpDz3kbeyVa6Af22HBULWS8okf+rqBaA0ZWcCdMmNo9e8deTc52n+ko4JSh6dRObL9awUTVte6v9WtIgeJewH4NFMOQYKUzVpQrsVYxgeCeOTGSjiS84dU5pn/SfWUm+8qjq420vMgo0kyK6+O2742DTEv+9gk5TI3BSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745055227; c=relaxed/simple;
-	bh=tujxZc5FPqQZaxnHUo43K6r9AT/xvx1PqUeV+WBpWHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rJhUDqodz2uBADBMjtsoCvEiD0/ZXD5vZ8L7bZTxKf6j2fiLp4ahgu4PBSMvwiQrKz3Fp+vW7Y9WFPi885cstiXeb1xhvImzjMxH0gt8doYJenw95SHOP2Urpe3WZKaFmA8pN0ntww383oh/DpB3stljspx/s1KJj43BRe4rh6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=2XzxFNgv; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1745156507; c=relaxed/simple;
+	bh=aJVxZLhnhscu/C/D0RmSAUgyWjWlCjNVqgUHfAwWSag=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=XJ2gOQoO3DjSvRFM/+2u9Eesepe/p1eF9JfagqB6qdU3s7gvlYgHcYe6Ib+lCWgpUBCGjMoLM7lrHKfsJqo66hme5jfj2wbjYCIb1xomUwfCV9QFb2KTaNlXiC5QBEpQL5I2lZaJtXhY0vMw1ptAGzXw8lcd409i1ZTUbaJKkCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=fUbH5dLg; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="2XzxFNgv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1745055223; bh=tujxZc5FPqQZaxnHUo43K6r9AT/xvx1PqUeV+WBpWHI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=2XzxFNgvjEvYAKv7VH49Xsa9L9X9dmjsKP5Rc3yeXS+PiL6qd2ai6CZZl3OmbkYa5
-	 U0TTddQHNBriLMSeZnpGOhhng2EzCz+/0UOZp1tcxjUuZJX8TfcYXKZrPulvrIy3MZ
-	 NploxEi+Nniuc1bQNEWEODsmuAnzbBp9hEZWtuCY=
-Message-ID: <89d37770-48b4-474e-abbe-99c974032613@lucaweiss.eu>
-Date: Sat, 19 Apr 2025 11:32:50 +0200
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="fUbH5dLg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1745156495; x=1745415695;
+	bh=aJVxZLhnhscu/C/D0RmSAUgyWjWlCjNVqgUHfAwWSag=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=fUbH5dLgApLtrcppGsTg/QDbQZUlPOCrfDpNESBieh9x2g72CCVIDj3yqhG+lUmoe
+	 E96nWPGyNv/uYdk6al4qYtw9lKX0ENg00FlSHRw0Z8rjMYiL+8SOacVJLdyBMrilqu
+	 kKjaFzhbxCJic9gkAwn/88oZGmupJHdXPTE1/6Ax35AoW8Y9+Hc8jcgOGt+iwi5o91
+	 Xz4NMjRNdb+pZJYBp61CWfpCKMsaXupWuwh9+RjUfvtELu/GLdu6gz69ihZJokMNzf
+	 Nzt/RUj9HarYoKpdKmJMYpa01rmJUO4FBB/Tw/Ni19uHopUmLIx/7dp0VK9N0bfkf5
+	 mnm8Qmj7LdMSw==
+Date: Sun, 20 Apr 2025 13:41:30 +0000
+To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: How can I stop Singapore Government hackers from hacking into my Android (Linux) phone, and all my other devices as well?
+Message-ID: <YXY8NSYikROrpBxVgc3PdRuxOAsdKqh_CtMT1RE3TfTHA_PC4FQRUBAAQ-Yd5w6R4HPzmc2sjd81MKeYsH8tY5FZICyxemC4MRn0HEepwsY=@protonmail.com>
+Feedback-ID: 39510961:user:proton
+X-Pm-Message-ID: a9c97ec7ca8791cd97d3dcf00303009abbb80066
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] ARM: dts: qcom: msm8974-samsung-hlte: Add touchkey
- support
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>
-References: <20250419-hlte-touchkey-v1-1-9d93c3e2b31f@lucaweiss.eu>
-Content-Language: en-US
-From: Luca Weiss <luca@lucaweiss.eu>
-In-Reply-To: <20250419-hlte-touchkey-v1-1-9d93c3e2b31f@lucaweiss.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 4/19/25 11:08 AM, Luca Weiss wrote:
-> From: Adam Honse <calcprogrammer1@gmail.com>
-> 
-> Add support for the touchkeys on the Samsung Galaxy Note 3 (hlte).
-> 
-> Signed-off-by: Adam Honse <calcprogrammer1@gmail.com>
-> ---
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Subject: How can I stop Singapore Government hackers from hacking into my A=
+ndroid (Linux) phone, and all my other devices as well?
 
-This Signed-off-by is obviously meant to be above the ---
+Good day from Singapore,
 
-B4 is unfortunately not warning when your own Signed-off-by is missing 
-and it added this one from the "cover letter".
+On the early morning of 3rd April 2025 Thursday, Singapore Government hacke=
+rs severely corrupted the Android (Linux) operating system on my vivo V25 P=
+ro 5G Android phone.
 
-Regards
-Luca
+As a result, I couldn't swipe up and down. I could only swipe left and righ=
+t.
 
-> ---
->   .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 45 ++++++++++++++++++++++
->   1 file changed, 45 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-> index 903bb4d125135771504281df50aa11c9b6576a28..17d3e319941b8fd0363af600d93fc10127e4ab21 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-> @@ -50,6 +50,34 @@ key-volume-up {
->   		};
->   	};
->   
-> +	i2c-gpio-touchkey {
-> +		compatible = "i2c-gpio";
-> +
-> +		sda-gpios = <&tlmm 95 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +		scl-gpios = <&tlmm 96 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +
-> +		pinctrl-0 = <&i2c_touchkey_pins>;
-> +		pinctrl-names = "default";
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		touchkey@20 {
-> +			compatible = "cypress,midas-touchkey";
-> +			reg = <0x20>;
-> +
-> +			interrupts-extended = <&pm8941_gpios 29 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +			pinctrl-0 = <&touchkey_pin>;
-> +			pinctrl-names = "default";
-> +
-> +			vcc-supply = <&pm8941_lvs3>;
-> +			vdd-supply = <&pm8941_l13>;
-> +
-> +			linux,keycodes = <KEY_APPSELECT KEY_BACK>;
-> +		};
-> +	};
-> +
->   	touch_ldo: regulator-touch {
->   		compatible = "regulator-fixed";
->   		regulator-name = "touch-ldo";
-> @@ -149,6 +177,14 @@ touch_ldo_pin: touchscreen-ldo-state {
->   		power-source = <PM8941_GPIO_S3>;
->   		qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
->   	};
-> +
-> +	touchkey_pin: touchkey-int-state {
-> +		pins = "gpio29";
-> +		function = "normal";
-> +		bias-disable;
-> +		input-enable;
-> +		power-source = <PM8941_GPIO_S3>;
-> +	};
->   };
->   
->   &remoteproc_adsp {
-> @@ -332,6 +368,9 @@ pm8941_l24: l24 {
->   			regulator-min-microvolt = <3075000>;
->   			regulator-max-microvolt = <3075000>;
->   		};
-> +
-> +		pm8941_lvs1: lvs1 {};
-> +		pm8941_lvs3: lvs3 {};
->   	};
->   };
->   
-> @@ -378,6 +417,12 @@ sdhc3_pin_a: sdhc3-pin-active-state {
->   		drive-strength = <8>;
->   		bias-disable;
->   	};
-> +
-> +	i2c_touchkey_pins: i2c-touchkey-state {
-> +		pins = "gpio95", "gpio96";
-> +		function = "gpio";
-> +		bias-pull-up;
-> +	};
->   };
->   
->   &usb {
-> 
-> ---
-> base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
-> change-id: 20250419-hlte-touchkey-8ea2f37a0795
-> 
-> Best regards,
+Many of the icons on the 1st screen of my Android (Linux) phone were delete=
+d by Singapore Government hackers.
+
+Thousands of files in the /Android/ folder were deleted by Singapore Govern=
+ment hackers. I found out using File Manager Plus.
+
+When I rebooted my Android (Linux) phone in the morning, it says my phone c=
+ould not read data from device storage. The error message goes on to say th=
+at the device storage could be damaged or corrupted.=20
+
+When I reached my office at 8.30 AM (it happened to be my last day of servi=
+ce at SBS Transit Ltd), my Android (Linux) phone managed to boot up, albeit=
+ very slowly.
+
+In the late afternoon on the same day, I decided to send my Android (Linux)=
+ phone to Vivo Phone Service Center at International Plaza, Singapore for s=
+ervicing. The technicians at Vivo Service Center agreed that my Android (Li=
+nux) phone had been hacked and compromised. They decided to erase/format my=
+ Android (Linux) phone and re-install the Android (Linux) operating system =
+from scratch (rebuild the system).
+
+In the evening on the same day, I managed to collect my vivo V25 Pro 5G And=
+roid phone back from Vivo Service Center.
+
+I went home and started installing back all the Android apps in the evening=
+, on the same day. But alas! Within a short period of time after I started =
+installing back all my Android apps, Singapore Government hackers managed t=
+o hack into my Android (Linux) phone AGAIN!!!!!!!!!!!!!!
+
+How can I stop Singapore Government hackers from hacking into my Android (L=
+inux) phone, and all my other devices as well?
+
+Are Android (Linux) phones so easy for Singapore Government hackers to hack=
+ into??????????????
+
+Regards,
+
+Mr. Turritopsis Dohrnii Teo En Ming
+Targeted Individuals in Singapore
+GIMP =3D Government-Induced Medical Problems
+20 April 2025 Sunday 9.36 PM
+
+
+
 
