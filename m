@@ -1,103 +1,103 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FB71E9B35
-	for <phone-devel@vger.kernel.org>; Sun, 20 Apr 2025 13:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1E38FAD;
+	Sun, 20 Apr 2025 15:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745156507; cv=none; b=emQ2z6JpDz3kbeyVa6Af22HBULWS8okf+rqBaA0ZWcCdMmNo9e8deTc52n+ko4JSh6dRObL9awUTVte6v9WtIgeJewH4NFMOQYKUzVpQrsVYxgeCeOTGSjiS84dU5pn/SfWUm+8qjq420vMgo0kyK6+O2742DTEv+9gk5TI3BSk=
+	t=1745161993; cv=none; b=UP9ni/JB52b04yoIryckoZIJvGcFN74lPE9TjcBDEqNy+3oWL7hbc0/t+NHZH0aRcJtwvmBuLJQFpkQuvERGj60FO/Vim1APHbO85i219cwp2WeAeFct05ek/FCqMMAcnKe47v7SZbjTjTVS7J4vjad5wc0IGL0XkXcl/c8cruM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745156507; c=relaxed/simple;
-	bh=aJVxZLhnhscu/C/D0RmSAUgyWjWlCjNVqgUHfAwWSag=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=XJ2gOQoO3DjSvRFM/+2u9Eesepe/p1eF9JfagqB6qdU3s7gvlYgHcYe6Ib+lCWgpUBCGjMoLM7lrHKfsJqo66hme5jfj2wbjYCIb1xomUwfCV9QFb2KTaNlXiC5QBEpQL5I2lZaJtXhY0vMw1ptAGzXw8lcd409i1ZTUbaJKkCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=fUbH5dLg; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1745161993; c=relaxed/simple;
+	bh=Kpq7ro3i9sA6BaEIgHSC/PwaQTt/JmVWsIY7UsowlcE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YW+3Ez+/hSi9qViZng8j3IMJ2FJfvlS9OpWtAU+LnaN8LyY5sNA2pUoXA2hGSloDaaST+8Jyc9dtcbVz6Nlzb6IahdfpZYXFfhNaV/9s2u4ne/+lhoF3LY8g84YBtecXfTZEh7W+UKyAZn8PIcLvXS+cNweNaAcNFz4KnigxtRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=HD+dgttS; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="fUbH5dLg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1745156495; x=1745415695;
-	bh=aJVxZLhnhscu/C/D0RmSAUgyWjWlCjNVqgUHfAwWSag=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=fUbH5dLgApLtrcppGsTg/QDbQZUlPOCrfDpNESBieh9x2g72CCVIDj3yqhG+lUmoe
-	 E96nWPGyNv/uYdk6al4qYtw9lKX0ENg00FlSHRw0Z8rjMYiL+8SOacVJLdyBMrilqu
-	 kKjaFzhbxCJic9gkAwn/88oZGmupJHdXPTE1/6Ax35AoW8Y9+Hc8jcgOGt+iwi5o91
-	 Xz4NMjRNdb+pZJYBp61CWfpCKMsaXupWuwh9+RjUfvtELu/GLdu6gz69ihZJokMNzf
-	 Nzt/RUj9HarYoKpdKmJMYpa01rmJUO4FBB/Tw/Ni19uHopUmLIx/7dp0VK9N0bfkf5
-	 mnm8Qmj7LdMSw==
-Date: Sun, 20 Apr 2025 13:41:30 +0000
-To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: How can I stop Singapore Government hackers from hacking into my Android (Linux) phone, and all my other devices as well?
-Message-ID: <YXY8NSYikROrpBxVgc3PdRuxOAsdKqh_CtMT1RE3TfTHA_PC4FQRUBAAQ-Yd5w6R4HPzmc2sjd81MKeYsH8tY5FZICyxemC4MRn0HEepwsY=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: a9c97ec7ca8791cd97d3dcf00303009abbb80066
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="HD+dgttS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1745161983; bh=Kpq7ro3i9sA6BaEIgHSC/PwaQTt/JmVWsIY7UsowlcE=;
+	h=From:Subject:Date:To:Cc;
+	b=HD+dgttS9Jh/G0d0tK1k5A9sju1HAJDEDaOa16rm89SITqVt6n0pmQ7pCAL9liwYJ
+	 By834uSV0wMKOOb0T2bR/PIgfB7aXrS/5OF012u5bRB/KcM2y9ZiOY0aTZaDxwmlVg
+	 b72eiDT6K6xJupWRluHQ4ZcsW1km1uZ2/7EGVvsc=
+From: Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH v2 0/2] Add interconnect nodes and paths for MSM8953 SoC
+Date: Sun, 20 Apr 2025 17:12:42 +0200
+Message-Id: <20250420-msm8953-interconnect-v2-0-828715dcb674@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOoOBWgC/4WNQQ6CQBAEv0L27JphEAKe/IfhAGsjk8hidgA1h
+ L+78gGPVUlXr0YRBGrOyWoCFlEZfQQ+JMb1jb/Dyi2yYeKcTlTYQYeyyjMrfkJwo/dwk0VHKVU
+ oO7StidNnQCfvPXutI/ei0xg++8uS/uyf4JJasg1nYAZnBejymF3zgqgeMZt627YvJ9/xGLsAA
+ AA=
+X-Change-ID: 20250406-msm8953-interconnect-ef0109e8febb
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Vladimir Lypak <vladimir.lypak@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1019; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=Kpq7ro3i9sA6BaEIgHSC/PwaQTt/JmVWsIY7UsowlcE=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBoBQ74aC8pRTjusLNC0w7cHA6fb0STc8x2OTrka
+ OHZiShYF6+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaAUO+AAKCRBy2EO4nU3X
+ VgD2D/0TK0MHeV6AMmap+qu1iDMxwkXZU6Mfj28QKdRSPe9L9pIVK/AQIQcuUoNJjrHot5ZWQwI
+ uYwPiI0xSYigpm9rJZLJe19Kp/BoO5n71wSfpFvBvoovCqZx5FMstqHd5ZV3iXS2L4Z16GOp0MR
+ 2RIhr8SXtsB69zDI7UMhvdPoMbtdj2e6FbSd1LHRYZr7sMqp4g/oW9YUaPktQLjTZdpXCeeyoBg
+ JGp1l5pRHtMLaKpclooOuHsb/vvEv6osmtjQd3djv1DGqVgI7Hny2IRDhsD04NJgcOX+Jj3TksM
+ vy11qyf2JK4Jx+pWfNwv9p6u1/n8ubr/9yKAvsvq9bRsGLzuXFEG/4kSGdDOyJQWSUM7x0USMHi
+ 9s2E5A7pme8glaZBzXJGTTsnHYAV4cQhEypfID2uZxj9PEjDrgGPRPRZAll9ym1vnwvF2S0OUKI
+ jOf1N9/UwSSC2yskRua+aUeau/NV4b8NPyHfmRJUR7af9xnBzu8MViCzSVd74Kt4f+0d/JPyEa3
+ w/0BG+KS25PLTeT+9t9ho4yjvKRdI4bqWM8ybP64YpZgWRdFt+LQcJGKarN6fZExX6e0FCL7na7
+ +YSa85SCFL403kViOOsgpkiEq8IdVTzyWAS3Xiv7F23qwcnPcBvqN5Yi2XBmXws80JGXhnLksBO
+ tH0QM8kE4sWo9Ww==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-Subject: How can I stop Singapore Government hackers from hacking into my A=
-ndroid (Linux) phone, and all my other devices as well?
+Since the interconnect driver for msm8953 is already upstream, let's add
+the nodes which are required for it to enable interconnect on MSM8953.
 
-Good day from Singapore,
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+Changes in v2:
+- RPM_ACTIVE_TAG -> RPM_ALWAYS_TAG for mdss, gpu, usb3, sdhc_1, sdhc_2
+  (Konrad)
+- Reformat interconnect-names for usb3
+- Add interconnect-names for sdhc_1 & sdhc_2
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250406-msm8953-interconnect-v1-0-a23e22e236e0@lucaweiss.eu
 
-On the early morning of 3rd April 2025 Thursday, Singapore Government hacke=
-rs severely corrupted the Android (Linux) operating system on my vivo V25 P=
-ro 5G Android phone.
+---
+Luca Weiss (1):
+      dt-bindings: msm: qcom,mdss: Document interconnect paths
 
-As a result, I couldn't swipe up and down. I could only swipe left and righ=
-t.
+Vladimir Lypak (1):
+      arm64: dts: qcom: msm8953: Add interconnects
 
-Many of the icons on the 1st screen of my Android (Linux) phone were delete=
-d by Singapore Government hackers.
+ .../devicetree/bindings/display/msm/qcom,mdss.yaml |  12 +++
+ arch/arm64/boot/dts/qcom/msm8953.dtsi              | 101 +++++++++++++++++++++
+ 2 files changed, 113 insertions(+)
+---
+base-commit: 26afa38c4ec694e22596b653849e25a54da68eb3
+change-id: 20250406-msm8953-interconnect-ef0109e8febb
 
-Thousands of files in the /Android/ folder were deleted by Singapore Govern=
-ment hackers. I found out using File Manager Plus.
-
-When I rebooted my Android (Linux) phone in the morning, it says my phone c=
-ould not read data from device storage. The error message goes on to say th=
-at the device storage could be damaged or corrupted.=20
-
-When I reached my office at 8.30 AM (it happened to be my last day of servi=
-ce at SBS Transit Ltd), my Android (Linux) phone managed to boot up, albeit=
- very slowly.
-
-In the late afternoon on the same day, I decided to send my Android (Linux)=
- phone to Vivo Phone Service Center at International Plaza, Singapore for s=
-ervicing. The technicians at Vivo Service Center agreed that my Android (Li=
-nux) phone had been hacked and compromised. They decided to erase/format my=
- Android (Linux) phone and re-install the Android (Linux) operating system =
-from scratch (rebuild the system).
-
-In the evening on the same day, I managed to collect my vivo V25 Pro 5G And=
-roid phone back from Vivo Service Center.
-
-I went home and started installing back all the Android apps in the evening=
-, on the same day. But alas! Within a short period of time after I started =
-installing back all my Android apps, Singapore Government hackers managed t=
-o hack into my Android (Linux) phone AGAIN!!!!!!!!!!!!!!
-
-How can I stop Singapore Government hackers from hacking into my Android (L=
-inux) phone, and all my other devices as well?
-
-Are Android (Linux) phones so easy for Singapore Government hackers to hack=
- into??????????????
-
-Regards,
-
-Mr. Turritopsis Dohrnii Teo En Ming
-Targeted Individuals in Singapore
-GIMP =3D Government-Induced Medical Problems
-20 April 2025 Sunday 9.36 PM
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca@lucaweiss.eu>
 
