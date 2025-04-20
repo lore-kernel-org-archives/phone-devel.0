@@ -1,83 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEEE10F1;
-	Sun, 20 Apr 2025 17:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D22617A302;
+	Sun, 20 Apr 2025 17:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745168740; cv=none; b=rEVLnWzE8ksSzocrZm88zTUwnG1/jYTzbwwVIik8D2+WDxX8nLD/sB1AEIErhgwk8HyFut+59gD94+OMB8djmq229/BGOJpCHHW1xbAomc7fujrpa00B6q3zh0400KoAtv6I0Uch2f/HHycIPpoM0oqvf2Z/9OGmWTPrSaLiSVU=
+	t=1745169261; cv=none; b=C4j7enAdTuQiYDZuRRByXpGZJlnv41IZmg8nwUPhQpGfwSFnUROWK732trKQWbkgq7U8MxHgcSOYPZf40v1/EOG6ThKiaifJbGFavNfqaddBlzRjQ3v0Q/FoOrGXRCqAWcv0S9Smb8VBP09/6IDaRpGFXr7fxR7J6y2d1ZIxun8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745168740; c=relaxed/simple;
-	bh=Y2pVCEFh35K+RUIcmOzKQq+C3eDWa/McD4hyR7bsBjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hCvgwFWoX87WanQFKRTxHtkTjv9pywRiMQ5Miyp+8EFovGeoCUc6MLJfdgDspKmGFaEQ8kaOklorYNVqOao9C/3M8TrjSE/JCk0vW8mVtT5xKrt4d+fmzZr+3rH3uYhuojBV3nnfQqPPMeCnqaIJ7zfQl7r+Z43MnP0/0AzhSGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ge2+syEV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745169261; c=relaxed/simple;
+	bh=DR9RTXhjwQk+raJBaZzX7DBA8S0Sta84T2246rAqUCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CqGkqUP2+MOIywh4KFRIOuS+U9KDkj4QLMVx/o6hA9F38Aa3/rYK6q/+QE3TwxbmSQD8o5U5RRkMVyaXPGVU7GLLPhq+wJmZCYMJnK0yQMvy85GYxNqTfO4dNTQ3QYVs6O75An4VLrxUBMZrjVMv2ULiCF6DK5tsUrLFjd2B0uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=mQtqfyAM; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ge2+syEV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7710C4CEE2;
-	Sun, 20 Apr 2025 17:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745168739;
-	bh=Y2pVCEFh35K+RUIcmOzKQq+C3eDWa/McD4hyR7bsBjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ge2+syEVpwWvWrfCX/w9WQize6aSsWVIxaKSipkGalWRph3me7A9Yq6EjP6ipyzHc
-	 yv4U3FgFUj2vbqJzH7I7u7lQL0nWZ/JPXoSvpubKR4nQqh+sp2/rqEOWum1OPm50Vi
-	 P/Ko095zA+XtRuqbl67xnVJCF+lLh28NaIWnO86nzf/VWl5mxqoowloLfaga6XCJo8
-	 GcfFtPGC3oUfU/j8kLI5Ky3j+cwd1sdl7E+Qjp/o75a69L8qHzfakKjtwn7aJ0961Y
-	 azK+LsxfLOGaERNuUrnhUlI6pfKyJ5a3VDfL+fGoWBqSNNxzYGAXxUuUDN8D+0PjNl
-	 J4QBzhcrOTWAg==
-Date: Sun, 20 Apr 2025 12:05:36 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca@lucaweiss.eu>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] ARM: dts: qcom: msm8974-oneplus-bacon: Add alias for
- mmc0
-Message-ID: <k7dm2tpw3mg34fydyug3rjnkwgfu2lwwzddd4edmano6jsgoiv@6klzba5rjpdy>
-References: <20250419-msm8974-mmc-alias-v1-0-82aa131224b6@lucaweiss.eu>
- <20250419-msm8974-mmc-alias-v1-1-82aa131224b6@lucaweiss.eu>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="mQtqfyAM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1745169253; bh=DR9RTXhjwQk+raJBaZzX7DBA8S0Sta84T2246rAqUCU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mQtqfyAMZ1vquFtvYte5peCKA43juMwEZ5JjD4lg8Jpk8fepWjOsLcDIqTVqkI/3d
+	 KdU92Pml8tC4HcfRjJKK5hjI9CYt/AGDPQCM7dipZnqV68grAjGVkxD5zm2LkRFAqH
+	 cv2CWYvih9Nb1BGiMgExi3IVXpWGSLb1x83dYJ5U=
+Message-ID: <ea7ac010-3b9d-4915-9a19-cb5ebb77c764@lucaweiss.eu>
+Date: Sun, 20 Apr 2025 19:14:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250419-msm8974-mmc-alias-v1-1-82aa131224b6@lucaweiss.eu>
+Subject: Re: [PATCH 1/3] ARM: dts: qcom: msm8974-oneplus-bacon: Add alias for
+ mmc0
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250419-msm8974-mmc-alias-v1-0-82aa131224b6@lucaweiss.eu>
+ <20250419-msm8974-mmc-alias-v1-1-82aa131224b6@lucaweiss.eu>
+ <k7dm2tpw3mg34fydyug3rjnkwgfu2lwwzddd4edmano6jsgoiv@6klzba5rjpdy>
+Content-Language: en-US
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <k7dm2tpw3mg34fydyug3rjnkwgfu2lwwzddd4edmano6jsgoiv@6klzba5rjpdy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Apr 19, 2025 at 11:03:57AM +0200, Luca Weiss wrote:
-> Add an alias for the internal storage so it always becomes mmcblk0.
-> 
+Hi Bjorn,
 
-https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
-calls for a problem description to start your commit message. Sometimes
-the problem is obvious, but here &sdhc_2 is disable on this board, so
-when does this not become mmcblk0? What is the problem you're solving?
+On 20-04-2025 7:05 p.m., Bjorn Andersson wrote:
+> On Sat, Apr 19, 2025 at 11:03:57AM +0200, Luca Weiss wrote:
+>> Add an alias for the internal storage so it always becomes mmcblk0.
+>>
+> 
+> https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
+> calls for a problem description to start your commit message. Sometimes
+> the problem is obvious, but here &sdhc_2 is disable on this board, so
+> when does this not become mmcblk0? What is the problem you're solving?
 
-Regards,
-Bjorn
+I have really seen internal storage become mmcblk1 on one of these 
+devices with no SD card. I can't recall which one anymore, but this was 
+the main idea why I wrote these patches. Maybe it's something to do with 
+the mmc wifi on some of the boards?
 
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts | 1 +
->  1 file changed, 1 insertion(+)
+But I think it's not a bad idea to make this explicit for all, and align 
+the boards with each other.
+
+Regards
+Luca
+
 > 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-> index 4c8edadea0ac63db668dbd666fbb8d92e23232b7..88ff6535477bffefe475cc5fe927b3cc5d223084 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-> @@ -13,6 +13,7 @@ / {
->  	qcom,board-id = <8 0>;
->  
->  	aliases {
-> +		mmc0 = &sdhc_1;
->  		serial0 = &blsp1_uart2;
->  	};
->  
+> Regards,
+> Bjorn
 > 
-> -- 
-> 2.49.0
-> 
+>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>> ---
+>>   arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+>> index 4c8edadea0ac63db668dbd666fbb8d92e23232b7..88ff6535477bffefe475cc5fe927b3cc5d223084 100644
+>> --- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+>> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+>> @@ -13,6 +13,7 @@ / {
+>>   	qcom,board-id = <8 0>;
+>>   
+>>   	aliases {
+>> +		mmc0 = &sdhc_1;
+>>   		serial0 = &blsp1_uart2;
+>>   	};
+>>   
+>>
+>> -- 
+>> 2.49.0
+>>
+
