@@ -1,81 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD452580E0;
-	Tue, 22 Apr 2025 08:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8874218CBE1;
+	Tue, 22 Apr 2025 13:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745311588; cv=none; b=EOZb1HkVJL9M+wEms59b0HQxMLLYr8T3S2SMXH9kbKTKXok8ndCW+M1myS+RK5Z4NIUdX/r3ET3JaYpXILVS5IMlApfEXj0T6PdwjNCuU7glVtS8TCi8CWA2LaalWydJRWm9SVSVkgY5Qxgw9G67Ne4777IWDr6M/T1nfvBcFQM=
+	t=1745327574; cv=none; b=eVVb3oGXy3dM48KQFF24lXl+AzY+TguYWKZrj3UKEEnibpLCSkr2l6StOFSIHto4XVyWjUPY/zAWIM7QwjWJ4gRH/bzCr5UqF9ooUWlhNxgmLL1/2wDhrWTjgp6cuG4WC1Xh50asrSJWgUHnpDYrqL9Vn9U9+zA18ZQydrW72jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745311588; c=relaxed/simple;
-	bh=H44nKWfJpflFFXOrn5cncTRUymqZaUjYXbKXiW88Txw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B6JV5+oCgSKSEeDYrthd0hku+ZHi1+r3Ic3fSI4kBJlcDNoVp45gT/rauM+ksatTf1t1w566xNWWNnG3pOpMSEcIf7tR44k5enaW5YI3ayGRz0P3KP8GqhKZwQCVPXo1xAS5TBMR0fvPxaXyc9o5DwybSHMuGESsX2i82KW4VE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmYN7D6/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745327574; c=relaxed/simple;
+	bh=4Hpol0KPoAON6t7t4ETx9AOFg1k/eK0uRWPS0I3Bwfg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=aqnvqrjhaNj6TJSf+RjM3UjkO3pTp9FluSqeREVmrZa6WLf1idWG5vnejNoEzSWDk4i1nD34oVSEh5hMmw07+Bq0orsjjoGlQRIlAJG9Z7Y9Ivf+3R8o8uJMPT5GrAxJ8IDjIpWkAFhyg2GNKHvwjb05mlYt/tmIH54xqojpZTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYvIgNyR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmYN7D6/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A82C4CEE9;
-	Tue, 22 Apr 2025 08:46:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYvIgNyR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E54BC4CEE9;
+	Tue, 22 Apr 2025 13:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745311587;
-	bh=H44nKWfJpflFFXOrn5cncTRUymqZaUjYXbKXiW88Txw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QmYN7D6/vQ3fhyXfvF2TBLjn9Eh6HHivB2z2YJK9Q1otgITmYvXWco87nUQ/XQFej
-	 d24PAugK941acJt881sWsHAnIbR9eKNrky+nbiRiL4mup5twIh0m67xqu46jrSWmRD
-	 8EPJxxMkxH/Vj/arYSTCAmWqj9iHXT7hyxLH9R9ouO3DvdjiwDA57a1hsnfA2oh+l/
-	 e9VnSQ8AiR2H7lLMrYiS9GbwvK3nvogHF+tFOyZtAZ5JPdY+8Mv7Fqt+XS2A39TlML
-	 XwuNTkJURqd4th6YNyQVCEGs1aHB+mD21WwZyZKVOSEvInoYdj422SG6TzvMh2cnJp
-	 NpNyOEY6X8TCQ==
-Date: Tue, 22 Apr 2025 10:46:24 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stephan Gerhold <stephan@gerhold.net>, Otto =?utf-8?Q?Pfl=C3=BCger?= <otto.pflueger@abscue.de>, 
-	Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Adam Skladowski <a_skl39@protonmail.com>, Sireesh Kodali <sireeshkodali@protonmail.com>, 
-	Srinivas Kandagatla <srini@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	iommu@lists.linux.dev, dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org
-Subject: Re: [PATCH v5 1/5] dt-bindings: clock: qcom: Add MSM8937 Global
- Clock Controller
-Message-ID: <20250422-ermine-of-pastoral-courage-bb7bcd@kuoka>
-References: <20250421-msm8937-v5-0-bf9879ef14d9@mainlining.org>
- <20250421-msm8937-v5-1-bf9879ef14d9@mainlining.org>
+	s=k20201202; t=1745327574;
+	bh=4Hpol0KPoAON6t7t4ETx9AOFg1k/eK0uRWPS0I3Bwfg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=EYvIgNyRCcY/Lfb8TnAFSSlCl/Z8FJj26sDCgysKHF/8tIIBAyjAfp6jpECFMNGrZ
+	 AhM57+lBcoOc2CRHlw8xcfw2lyZAxfLi0okc2WawkFnXW4IdwdQp4xfo0dimlSRwpu
+	 QPv/hqEgM41XR2PD6ZHz3VoscsLkCeVlb8wocIHy/ZfG4hgGvzuJUuLiYBD4NbZmPk
+	 lMj1Zd8WBrSecsAT1fxqt4zpf5K1q0gW73xDBAE7PP8Vbgua6dw8M/tTP02K7EaPCB
+	 /oYHyGJcP3SMKF5VmyoOiyLGB03nyt7k/Gq/flsKapl2ZKq7Or6WIEWUOCeYAMY6Ay
+	 oPqhT1ijDxDSg==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250418-wm8998-v1-1-21c4bead9cd8@apitzsch.eu>
+References: <20250418-wm8998-v1-1-21c4bead9cd8@apitzsch.eu>
+Subject: Re: [PATCH] ASoC: wm8998: Add Kconfig prompt
+Message-Id: <174532757224.44137.10845321242524410903.b4-ty@kernel.org>
+Date: Tue, 22 Apr 2025 14:12:52 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250421-msm8937-v5-1-bf9879ef14d9@mainlining.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-c25d1
 
-On Mon, Apr 21, 2025 at 10:18:23PM GMT, Barnab=C3=A1s Cz=C3=A9m=C3=A1n wrot=
-e:
-> Add device tree bindings for the global clock controller on Qualcomm
-> MSM8937 platform.
->=20
-> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlining=
-=2Eorg>
-> ---
->  .../devicetree/bindings/clock/qcom,gcc-msm8953.yaml   | 11 ++++++++---
->  include/dt-bindings/clock/qcom,gcc-msm8917.h          | 19 +++++++++++++=
-++++++
->  2 files changed, 27 insertions(+), 3 deletions(-)
+On Fri, 18 Apr 2025 22:22:04 +0200, André Apitzsch wrote:
+> Add tristate prompt to allow codec selection.
+> 
+> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Applied to
 
-Best regards,
-Krzysztof
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: wm8998: Add Kconfig prompt
+      commit: 9ef24511d29f0300fc7e9d4a5ea38d78e9eef73e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
