@@ -1,160 +1,127 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A73B2356BE
-	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 08:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5494236426
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 09:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745568461; cv=none; b=bRtVYCZe7wmwRcUz4uT4Zb9g44+uGkqeUX13s4F8xWoGzMEx8oui7VIu90v6UPDelnC4a48YuZzhewUVCqeZ0A7uV5KP8SrW14JRfO9ad/yyq71M8e6O5Dv6RnXuwIpUINT8u6gSZqBrc6+WPVOBnCrhN5fn07hfGU7/F7z9hlo=
+	t=1745572082; cv=none; b=WbK6I0ufwkZLqD76TLPCJOQHujYrniPFCS9ArWK4KaCtvpwK5jfe6RR2GM5GEfhtGJ7Hr057cnOc0nd2WIFKXNewoMH7cwhzxUk3olh7tmVT74A8+t0WpxHuZkFBYTslnq1GYfmoTmekYL3hx69oHymB2eO4mw3K4NR4o0VBFOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745568461; c=relaxed/simple;
-	bh=9du/cqVmLABi3S4H7ZzYui0a7J0RxPnHiR8v0eg+GN0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YXNE8q7NUT9YB15mf2ZA2j1R+fUy/PAUUEMOxJoJEINkJl77Ulgiqa3DM3ZclJdc/Fe5mKDOlG7pCNZ6bzO6OhYdZ53lSS/kTplK1CuZ6bFUpaIYv6JdyQ1EZGk+1Bck5qiaEDqJ38DeiOWSL4+mXc5WVULuN7YRQYYH2QsaGqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=06u9WB11; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1745572082; c=relaxed/simple;
+	bh=DsjDnHtiCgBweWj2Z9rRF9NFYYy/5gSoExnp430J+Js=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zxv6PLZJTDa7ApSfkTzaCWs2Sqi7IGJ3aMgl7zW9HLGbAX8wNDm2D3fdXaT9tMZXqjcCy1yjXXEd1P4WNh0OgPzpyB80W5xiiM7mRzolVwjCjtI2VTtcVQktjlohElmoaU1CXcCJZeSCDBYIVfYvJ+GtiBOm6enmIRa0TWrkOX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=R37HHpOU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="06u9WB11"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so22619295e9.1
-        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 01:07:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1745568458; x=1746173258; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1WF9R1PkrWxK/cwLXU/35vaxB2tRI8rlJl2KnNgRvug=;
-        b=06u9WB11yeFjOEXvumQCtZa/Y7L34FubxjwlIs7sJ9qQA7jRuQGjcwFNqy3IWih0j6
-         NyFjgg7M6LhuhZyxB65WpfGFYwjFVg8iYv7lbyfImyn/NUjiob2KXrnRiceo7s5YOlDP
-         YuW38CSglFy/P5j0C8r71cmN+cquvJ/t/jDXWnnZC9QhxlyHkURT6knOhC6Zr43Z8MXk
-         i231yFBWlfikmtuWGbtPb6YknEdWO3rmTZZHjM88WHmc5RH+xOJwE5whZXvkkMjah27V
-         JQIdSN2NTI8oxLvOpNt2Jot1IdoPfNBbuSOhxfhD+zfNRUq/dRn1VbvPTLfmV4xYu1nh
-         qpDQ==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="R37HHpOU"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53P8THF7012293
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 09:07:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=E7YGT9JoWm91VFNYG/u4ZzAL
+	7c7lgU5OKZbu1IKjJ28=; b=R37HHpOUIk4ozHJYiR/Vf6YEkpL6IJnwmqdF+5D/
+	Efzded7xua0q/u+CyTp9Zv6jKWBABfo7lgKiFApdm9UcbKC4jIf1amT0KxH3bbLZ
+	FLWfEcCHT3wCUpHOqxSJ7752t7yf0yAv6XvetfRfvEKikA3uUX1Yx5HM8+azt9hW
+	YQv78cpdaniUK/Bln8YCUxYmNVgQ0UJOsyyrXtNUb3FO/+vSAjCe90T2z5pPzFea
+	mU1OG55KJ7uNj0zotoSiZhxPf0x/2Mj4APd9uY+bzL8UGZlotVbymTdvZ8o4b9Db
+	zxKz2YpdNGirhCI/apCdUe3tRMWdP2hG2BDSbijWsWmAPg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh18ar9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 09:07:59 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7c5b9333642so253840285a.3
+        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 02:07:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745568458; x=1746173258;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1WF9R1PkrWxK/cwLXU/35vaxB2tRI8rlJl2KnNgRvug=;
-        b=rCrGrGDkoPNiFp4djH1NUD0eWhq213b3nnTcgvAwhQM/VqQM95K5+854fEmP5O3fVU
-         3BrUD0nUGNaNBMrWqzN3EGB+w1w+npcZl3Y2HYdJLJ6za4Cu5IbXLSzVNqXTAmclTxi1
-         p5wTaUR3Xdl4LJJfNE/9HDKSQxQurszjX3LLIZ8E80XP2AIUX/nqy/wTUGLONiEi4WPr
-         Etb0g+zKxKWzblF4nbogv/KkRFNyFzbLuGzi5i3H7l/e8BTVzjqjyjvSWEr3vOt1Q1cP
-         t5kGgMVjy3QTZlJSci6S8UBDafp5dMe0IiUzwU9lUInsW9Lm2G0csNbjHjHMNLP2W/LV
-         Xc+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV48LKZE009gFTrXskPc9bvAaGWSizj1DbIE2ZNkTzzVaZIeqYhsphg8PnaIJ3EdclKUgbObC2rtbuI9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfMZEuKVlX7HIyxJAbWlmrIrAPqRhKtw9nLPzUsIK+EJ8WrmTo
-	sXTG7BX4dAy6ZcgL8+dsSA4oGPIxu7FWCCbp9bKSJlYyZHAP2sazSdvNObWV+IM=
-X-Gm-Gg: ASbGnctgbcayDqgCRqEwqrwoY5xmZiFzh5ThnlxRgqhwYW3Raf0FYYcsr2yS4R9Y6Ov
-	Pos/XnMBZNA1ltB1j7Y3M7Ff5yF7q7B0Yl6ZCFYNTrcut4Nc19mIevWxNPirxvutypxQchYvhNM
-	+R26fcQkPNkjKU5Ey08qOxAcQr7veqqWxWYvLyLP747mUkpiepOXvkkSN0EU7vDOqgtzIkXY4Ag
-	9EX9AZkU6kPEVVLh1/cfp32AssRLZIS++1+QscLQ6S2RzPR9GVwku0fVDIC2+76QIU5WqJMv1FE
-	t3CfC0LAxrhy4H/wws4CnqA1n03Fw0uxFxFDNzK2elKWbYReuorNzcJtu0389N42Z9VRvNociPh
-	f8EjjcmTqFPonUA3LuzmfsMyyBd0obTY9FcG3T7By+HWRgefhIv2OiynZ
-X-Google-Smtp-Source: AGHT+IG/sz31Wny+TtyIaDzEEdUt0YMeO0mUdD924acJQ9OoByTsHsI0o1wsRu2TPR3UpEE0kePClQ==
-X-Received: by 2002:a05:600c:58d7:b0:43d:fa5f:7d04 with SMTP id 5b1f17b1804b1-4409c52a44dmr43791425e9.16.1745568457579;
-        Fri, 25 Apr 2025 01:07:37 -0700 (PDT)
-Received: from [100.64.0.4] (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e461casm1593513f8f.74.2025.04.25.01.07.36
+        d=1e100.net; s=20230601; t=1745572079; x=1746176879;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E7YGT9JoWm91VFNYG/u4ZzAL7c7lgU5OKZbu1IKjJ28=;
+        b=NuBCiKLINOK8Ay1DFfH9uukqR/9dCefLaAiahcsMp7OHD0qQniQ3dQbKnGqIHVNKLu
+         mgqV2YZPPBxmbrd4wwvQXupqeOOERF0WMVcoB55YdH+dnUWEVWhfPYLan32sxqHVWrUz
+         orsQFKdnxEXbqh3nU9oMAANim5gJORADzGM/JZ8IeeEovxSfRAd4Mp79H2B9eYmC/JF1
+         zb+FkeItrvZwk90wdpyz3sDrg1sjSeoXNE0KMMKxQfmS+kahw26w5WDLOh2zATLpAQjf
+         cV0cepLZ3fWGMis+6+R6r8TUr4mdPr3Drc/BPikrzQkGtjyE3WDlRnydW21yRSEufnRW
+         VuLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWuGycuzEw6R9lHa1J47OFNiXg0RinXnKe5mi7HIMzITR3ek6AaSkjvPsT34axMGU3J6tQaKJ5br4l92A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YweVtojl0Hs1J8dEbe1LEczO5DwBF4OMXsBw5aKlcrCbCcFICVO
+	2TRbN0G0YhFjTjGVD7K+2pOc/BwEI9DiAxqYVI5RNg1Vo41+tMAEMNka2h+FdNYSZOQd5R5Gsld
+	PY2naH8NB66vPNe5Dzg67a4wb5e+rIW4qZld9AxGYP2Aa7yz1qQHlGNoabM4VxQ==
+X-Gm-Gg: ASbGncud/1RLZ9BILRLzoX0M6nhJ0jY4p8HJlC4x+1Gbwu159wTy0Tj5mk71hZ1pKVa
+	7kVFbujqVWi2GJ/VN4EC22gFAFxVaO4C+sOTIUKMRj4orUqoSiQkhWZEatzo3RpKcrNIkp/O2sp
+	VgkmXRA6MLAepB1Za+7/vyefwFtMztJtIMXyy/5rTbxqKtvVo4cYYoFUwrH8FyPNHZ7L+dNRq2J
+	05p0vYfRYoiHSegTTtfgXyCw/dId9ohD5pyssJPSGKWruIHBRRXbuzx5E9UPLf6axz7erXupuWW
+	9EYnxAY1WD6HF/wgqIm/Vbbme/3GRtDjAJOi/HyQMAoA0RH9Y1cixOy0xKpgqAI7aBYtsH5dl3M
+	=
+X-Received: by 2002:a05:620a:1b99:b0:7c5:a463:397b with SMTP id af79cd13be357-7c9606e0b7dmr246311885a.20.1745572078688;
+        Fri, 25 Apr 2025 02:07:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHpqKgmY/joCABcKakjj51b/bf9LSO5bp8KVEFf7NSYBd5yr5G0Dj8JO9ClMIekjeU5G8jvg==
+X-Received: by 2002:a05:620a:1b99:b0:7c5:a463:397b with SMTP id af79cd13be357-7c9606e0b7dmr246308285a.20.1745572078331;
+        Fri, 25 Apr 2025 02:07:58 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7ccb83dasm520591e87.249.2025.04.25.02.07.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 01:07:37 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 25 Apr 2025 10:07:29 +0200
-Subject: [PATCH v3 5/5] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
- DisplayPort sound support
+        Fri, 25 Apr 2025 02:07:57 -0700 (PDT)
+Date: Fri, 25 Apr 2025 12:07:55 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] ASoC: qcom: sm8250: add DisplayPort Jack support
+Message-ID: <cgog34zs3e43n23mkt35swvu2ibuoaav4ccrhjoizg6b4kgc63@36blexv25aud>
+References: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
+ <20250425-fp5-dp-sound-v3-3-7cb45180091b@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250425-fp5-dp-sound-v3-5-7cb45180091b@fairphone.com>
-References: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
-In-Reply-To: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250425-fp5-dp-sound-v3-3-7cb45180091b@fairphone.com>
+X-Proofpoint-GUID: 8kGPED_-t5ZbYHHImbRScPhbVxDjIpWI
+X-Authority-Analysis: v=2.4 cv=OY6YDgTY c=1 sm=1 tr=0 ts=680b50ef cx=c_pps a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=EBsx7UlYEkoSbB8InyQA:9 a=CjuIK1q_8ugA:10
+ a=PEH46H7Ffwr30OY-TuGO:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-ORIG-GUID: 8kGPED_-t5ZbYHHImbRScPhbVxDjIpWI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDA2NiBTYWx0ZWRfXxm6NBl8DDg7s BODZHZuXniFB630hOK7m2pF+Q6gbQEccc/nNa7G/Hoa1NFj1sOx8lW6p6qfFbGq8es0RGLgKQ7K 4R7BU6xB1fbfEHyKq52Y4Sl/RmXxa2X5EsOnhmijf+zchaDlfImHmEY7POltQP/EgkT8ipCDpS3
+ +EinwigohJR9FzzLrG4I+X0wbMF0Rpsv5mg33PCNN6DTlYi8FLsY8tPgAal5YpBVrVuwxtsOtHa N9apt1gzQszSHvhP4KzmCaNqcqAtuykayHid1vbb1ImJJoaFIKyIGQBDQYeUbmHLSttDUuQos85 6GUby0omGGJ0iqtzEVO513tOh9sUCyoK819fKZTIqvdsGGTbQQF5T4AEZDBc9JWiu/HGaitKiFm
+ mLxu7YiGjan0oDcKeuf/S7guhCcSe1/J8dcMNBk9evl5x+DzgoZv7zIwHhd4GgM2WU1+GX/8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-25_02,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 clxscore=1015 malwarescore=0
+ mlxlogscore=940 phishscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504250066
 
-Add the required nodes for sound playback via a connected external
-display (DisplayPort over USB-C).
-
-In user space just the following route needs to be set (e.g. using
-ALSA UCM):
-
-  amixer -c0 cset name='DISPLAY_PORT_RX Audio Mixer MultiMedia1' 1
-
-Afterwards one can play audio on the MultiMedia1 sound device, e.g.:
-
-  aplay -D plughw:0,0 test.wav
+On Fri, Apr 25, 2025 at 10:07:27AM +0200, Luca Weiss wrote:
+> Add support for DisplayPort Jack events, so that user space can
+> configure the audio routing correctly.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  sound/soc/qcom/sm8250.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
+> 
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 31 ++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 9e8f9fb57c4723a24704a8239a86c6081910916b..e115b6a52b299ef663ccfb614785f8f89091f39d 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -14,6 +14,8 @@
- #include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-+#include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
- #include "sc7280.dtsi"
- #include "pm7250b.dtsi"
- #include "pm7325.dtsi"
-@@ -1147,6 +1149,35 @@ &sdhc_2 {
- 	status = "okay";
- };
- 
-+&sound {
-+	compatible = "fairphone,fp5-sndcard";
-+	model = "Fairphone 5";
-+
-+	mm1-dai-link {
-+		link-name = "MultiMedia1";
-+
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
-+		};
-+	};
-+
-+	displayport-rx-dai-link {
-+		link-name = "DisplayPort Playback";
-+
-+		codec {
-+			sound-dai = <&mdss_dp>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai DISPLAY_PORT_RX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+};
-+
- &spi13 {
- 	status = "okay";
- 
 
 -- 
-2.49.0
-
+With best wishes
+Dmitry
