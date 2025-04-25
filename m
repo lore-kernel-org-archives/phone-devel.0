@@ -1,66 +1,67 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C6D24A06A
-	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 11:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E924C095
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 11:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745582039; cv=none; b=B7mBziSx1XfPADoaUxyjWsJMaTJLQKZYr3UK24OPRBwNZMw17d7lPeh5qYuA2IahitbigMxKkxyeDxk7LOnNNnJfXyHWDiSjODzuhhx637AcD5lAUl9TbaI+Hdj0rqmWkuontURcvoaxueNU+YdJzy568SgYt5rLUHnR/W+02Xw=
+	t=1745582039; cv=none; b=MZQyWMekfKs5F1QPcixECeN82scgertEXGEmynDEn+jEaxRGfyaodXbEJujtlyYXajmXpN5nMfjZRTmD6mj0aSq/PgXr+u3aMWcqQwDILeaMxGqZdMmcgKuIkGcHZ+MJh3WFnp7k4ckt2eDiS9YRMwa/FUf/kYi+zZwfkfGpYkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745582039; c=relaxed/simple;
-	bh=IngzkbFYDjc7fzC8Ve0Clm88ktm5CuABxv1jFdJ+raM=;
+	bh=1eEHp7uYWZhKEK9Ng0jAlZtb/iv/YO+ZJkAaGAMQmPA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lCOkr9MuowUO26GONvAMxXh16kxzGxPN7LWa3JCg6Bx6Zm/bIuOoeC/XQAYgHg4F2G6QDW075WVL+9dcfEeOY6FB1QXcDqGKxqT2LNh2lnpMOAH9ioIlwINoWDeiyR3t/wAXdGpwiDkbMr+R1cynPchsipXP3yEi7EkRYTqoii4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=bubWXRCY; arc=none smtp.client-ip=209.85.208.50
+	 In-Reply-To:To:Cc; b=IW/ahhkIB3HRp3xcCpGybQkRQCIe5ZNxnPBvoZZubNv4mIv/VfzKjUixyASaBb2Ftd7r36On3rFO4TbPJaRNL72PoM2Fs/9dnwpVRr32qtQl8mIv3n1vN2dg1Wwv7RIBakqILIS7CosyK/K9j5er307vYmrXwx/t8YpTr94fEdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=DY+EuAHz; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="bubWXRCY"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e5e34f4e89so3981692a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 04:53:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="DY+EuAHz"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-acb2faa9f55so271089266b.3
+        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 04:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1745582034; x=1746186834; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1745582036; x=1746186836; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PZlycJTtKna9Dc90PkCHXWdnUH/ryxREv5nieSE18Ic=;
-        b=bubWXRCYVHS50nbRrpZ/PmbT1QKoHXekrFW2j3hBkq6NdTvATjRpT2uLbJ6a+mz6el
-         eQtuwpABK11x/X5kOln81u0Kgtru0e7T5YWjeMJt0+PeCGQk9alUMnnCQRSn1voYKA9M
-         waUZ9jHpHW7bY2fmRFmJPXobb1VeR5r8B3t7rVmMrihSHCi/T2kr4Xbigy4xyyTJ/ljf
-         YeKdNC+7gbA2uXAjFMAeHckQJnGx8mK08u8vjFqVfgsuKApTojaAXIOS6x3Od749OWkh
-         KRhJwTwQ+yNrLRX9LijcC1/61kpeemP1tzNXqOH/DU1TD/VPP69eiuyZk80WMlORetkD
-         hPEQ==
+        bh=yfKL7p32J3lTL5hY/U8dlghW4gxQZ8SlxPE/GiXifaw=;
+        b=DY+EuAHzYkr++SoajSKcu6/trBKUzkiCLvfy5NfAfoDB5C7spdUcl/CgBVALmjyEw8
+         /iYS9e192ox4QRjjNlHXHLW1tEbLoGv6N/C30s25gp2UxinbQAlMpvW9tEvcgr/L7AmO
+         w2rgniQ7FitwEpz/ve7eEClzIwH7fl8I44lzXbVs7qM3aGpKmvF5rfxSxbKx4EGy4D5d
+         6y4hA7znLkV6JnWxqkux3rOp2Bh0JMWsps1Dgbh4nYDPoonZmAK7hXty0PTSOad+/28W
+         ydItBQFPZ2PZDeriN/11yPhJEcwtFIRoLl+MQigK+2eyF9piq7xoZLRd+a80FdyyvuaY
+         qpVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745582034; x=1746186834;
+        d=1e100.net; s=20230601; t=1745582036; x=1746186836;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PZlycJTtKna9Dc90PkCHXWdnUH/ryxREv5nieSE18Ic=;
-        b=Pc5gSKNiDT3rdsDQmimscj0j52wMS5brtowFZkxAN/tbpY2Pi+Q7PiXkMQCKeNCSZq
-         CaLq06ZqFwi3ieM0IvMG+5tEjSvSl+HUgEbEydtFdhA+ossAVFrkpMNhMM6wVpJ8AMrU
-         kDMLUGh4FKVj4j7Zr91DF7eLGDSkCe1c4s3QeRnJUm8y7OJIjnJfyo2wzEZoiqb1JS5R
-         5pYfOcXYqKYYUeWwJ+4Pw93i4HGqGrhucFBt9X/xAcQq+ItZkwJ/p+qiEMT2zleevqYA
-         c6JaDYc+pNTwAp7f3j/U4WxPBDkzxMMERcnORXdlzzR+HpaxXEoO0mGPoM9mRKLdqPcD
-         onhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVriI7Q0rk5Evpn0/R0mOSckJUkrEyg3CnSfbuoERmcHREX+w6YUMIIJcvuJwklW3N6Su19LLg5a/5cTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvB7ZfP9s+xzPwEb+82Ck1wn3rqVOQwo3lsv2h3J7g2X+lw1D9
-	/UmpET51iOs8+F1kjXRiLa44cj2+Bp5DBdIRPhxDaj1oSYe+0VkefeSyiimZHwI=
-X-Gm-Gg: ASbGncvp+RF3Wyf07uJK1DNhNjq+tSgC9OrcfG66TCHP5FDzdhXFIzpi/5rTqDhnxbu
-	VtQGMbEn38EQA7bBKZs25hN3OtzL9W8iFQS0wxFoQP2sIEGNEEAx2rAWOYkuxoOr9mi4cCnsdlH
-	54I0bbhp7xWNh/zaRXpbCvh84blEMi4/n4Vtc5bK6KkFM+Xa4pONwWgWuNCzVD4yRPE7uRpvFJJ
-	NZox6hrHsGXhmjZHyqjebdu/yjSJOKSixscB4s9xj7kbbBddYI3QmAlUiC4dL+Akbm9SQw7zExE
-	2tcdzr7FWi/AZf9ZLEnc/NDLT4jUr/1j2gbsw9pR/h6OpUP+4iv0nF52iPThA0JexPUHfwSwgcE
-	RVDcFk+8c4Gu1uWe/nBZVLlNFYgsktRjh/xdd7+IW4IUrEMmigQyiNMmj
-X-Google-Smtp-Source: AGHT+IF+6VfkmfiBlwrXoh8cImg1rfKXlySdKmrFh1035IBp8Dn3xkJmmZNnuhY+ZvhM46jiLP1lhA==
-X-Received: by 2002:a17:907:8693:b0:acb:b0f4:bc77 with SMTP id a640c23a62f3a-ace713efb5dmr193451466b.57.1745582034612;
-        Fri, 25 Apr 2025 04:53:54 -0700 (PDT)
+        bh=yfKL7p32J3lTL5hY/U8dlghW4gxQZ8SlxPE/GiXifaw=;
+        b=MSLXe1rJtASa3UFnAefbCeJx5A8OqDhzfJg1WDgrfnBefKTrHld9WXyM5BbcHqI2GD
+         CUnNeFHSMjIfrIbBindV1TZXeA/Yo+wZS4WRLhCWeb3EYAFq/t7Rd3m8KJ5QnkbXebsZ
+         ucYQdMetoPR9OjOfMFj68OiC3+AjJxPU3YLtV5vsNfMon6XbdD7BoSyhZV3dIdBEkqpW
+         hxwbrPxvrEW67IyQqc69cmS8szUz2hFy+ciihBOfHkUzsS8dudNo97Aya4CUwbsZuzoD
+         xtXTueJs6TfhXggCvN3JIgWIgwgwqBsq+cv/CAseDa8+1ncW7F8dGOaxJlR2mno+5hpW
+         NHDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXw72CfWVAJbCs0KYOgKjTYDwNekUgtWTZn30UpBKcl8nMKbX2lLNkRUzz3gFSp5inmSda3L9Tl/Z6+7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2W5GfjgCPjaDHT01ppJuY7zilE5L4FMH+jMEdB0pfcarujtaY
+	E49MECwFC838JPlumMQs87PN3V0z476LEs5xZhs2pr3Qdckn8mO6xcszB8mLbqQ=
+X-Gm-Gg: ASbGncsfbDoGzD81SvbnodyA2sgZ6xMFPE+3M4CkShiaMAOrnZ8n3gfmSJMX2See+/n
+	EheFZvpxYjWATyMxUjyj8FUp6kO+HGmkcdlK2FYJqdugbxYpmSoJxw6XywEb7UEL6+5CbYNX1/5
+	XZdGdaqFJKSPgXjKOOKvYzOCC+Ydsi4YIA1RYI6J0S8ETpZJfa+GvErR2Zpdn4DNFeLOpeEs2uw
+	dz+he+zYMedky0ucDIaUo+/T3Ed7wM0I/QuRz8r7fPpFPGfVahZjWnb/QGN+aBcmeRG+rIhVlZE
+	vqDmZZ2wc4kd8B6XapJ2IVykvbshAKh5DAoYC7A45hMYyJxURUgBURW5sW8g/cSTl3zknOwWtnf
+	8fOEnaG1VinORN1FYi8pcPnj4EDfw0i4JQPPAInQK/hSDnoo8oiKirHhK
+X-Google-Smtp-Source: AGHT+IHEGtbYJkc/X6zmKZJpTYKg5SbhwKo367p0skHEsiPnLEarB+Zfnb6B80n1IamI/iDdFNeaIg==
+X-Received: by 2002:a17:907:86a7:b0:ac7:7e3e:6d3c with SMTP id a640c23a62f3a-ace71425b3dmr210633566b.55.1745582035730;
+        Fri, 25 Apr 2025 04:53:55 -0700 (PDT)
 Received: from [100.64.0.4] (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e41bc36sm126081566b.33.2025.04.25.04.53.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e41bc36sm126081566b.33.2025.04.25.04.53.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 04:53:54 -0700 (PDT)
+        Fri, 25 Apr 2025 04:53:55 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 25 Apr 2025 13:53:42 +0200
-Subject: [PATCH 03/11] arm64: dts: qcom: msm8953: Use q6asm defines for reg
+Date: Fri, 25 Apr 2025 13:53:43 +0200
+Subject: [PATCH 04/11] arm64: dts: qcom: msm8996*: Use q6asm defines for
+ reg
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250425-q6asmdai-defines-v1-3-28308e2ce7d4@fairphone.com>
+Message-Id: <20250425-q6asmdai-defines-v1-4-28308e2ce7d4@fairphone.com>
 References: <20250425-q6asmdai-defines-v1-0-28308e2ce7d4@fairphone.com>
 In-Reply-To: <20250425-q6asmdai-defines-v1-0-28308e2ce7d4@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -86,37 +87,104 @@ readable. No functional change intended.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/msm8953.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi   | 6 +++---
+ arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts     | 6 +++---
+ arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts | 6 +++---
+ arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts | 6 +++---
+ 4 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index 4793a60fa946195d3220b6c44dec170d443f56db..28fef68f7348b7f59256ab1ec9370241612d254d 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -1933,19 +1933,19 @@ q6asmdai: dais {
- 							#sound-dai-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
+index 38035e0db80be9c4829b67233ba5c4ce8a2baa21..3897a177f12e98b77d8d57633783ba951f3da083 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
+@@ -288,15 +288,15 @@ &q6asmdai {
+ 	#size-cells = <0>;
  
- 							dai@0 {
--								reg = <0>;
-+								reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
- 								direction = <Q6ASM_DAI_RX>;
- 							};
- 							dai@1 {
--								reg = <1>;
-+								reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
- 								direction = <Q6ASM_DAI_TX>;
- 							};
- 							dai@2 {
--								reg = <2>;
-+								reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
- 								direction = <Q6ASM_DAI_RX>;
- 							};
- 							dai@3 {
--								reg = <3>;
-+								reg = <MSM_FRONTEND_DAI_MULTIMEDIA4>;
- 								direction = <Q6ASM_DAI_RX>;
- 								is-compress-dai;
- 							};
+ 	dai@0 {
+-		reg = <0>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+ 	};
+ 
+ 	dai@1 {
+-		reg = <1>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+ 	};
+ 
+ 	dai@2 {
+-		reg = <2>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+index d7fa56808747ae1290b884430d5fa5443bdd9be1..bd3f39e1b98fb6360950b646fd05c6b7036dd0d5 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+@@ -137,15 +137,15 @@ &mss_pil {
+ 
+ &q6asmdai {
+ 	dai@0 {
+-		reg = <0>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+ 	};
+ 
+ 	dai@1 {
+-		reg = <1>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+ 	};
+ 
+ 	dai@2 {
+-		reg = <2>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts
+index 5e3fd1637f449675411b556b9cace21383b1935d..443599a5a5dd573a1ac2a83f64c5016c36d27020 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts
+@@ -87,15 +87,15 @@ &pmi8994_wled {
+ 
+ &q6asmdai {
+ 	dai@0 {
+-		reg = <0>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+ 	};
+ 
+ 	dai@1 {
+-		reg = <1>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+ 	};
+ 
+ 	dai@2 {
+-		reg = <2>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 	};
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
+index 5e3b9130e9c2c9e58c334e5ff2a340b82bbfbcfe..33d84ac541e1c52028ffa4d86d602e0dc876988f 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
+@@ -139,15 +139,15 @@ led@6 {
+ 
+ &q6asmdai {
+ 	dai@0 {
+-		reg = <0>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+ 	};
+ 
+ 	dai@1 {
+-		reg = <1>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+ 	};
+ 
+ 	dai@2 {
+-		reg = <2>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 	};
+ };
+ 
 
 -- 
 2.49.0
