@@ -1,66 +1,67 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883E92459D2
-	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 10:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAC024A063
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 10:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745577986; cv=none; b=ICmCs/UohuqnEqXp6ll7Admtc0EW58xPWW0odzmkhkpqtd5F8FOwhzhZdIi6s8jk8XDNbDYUqGGsZRUC6O8k/cEepTn5sawja7dBM95v5FJ0DP26vCL9BZyaZwWjHm1cimU6j96kuDJsCMIp6B6zdjkMCPGPtzH6AtbYRK6Qgv8=
+	t=1745577989; cv=none; b=qk8pk8KQ72NRDBOLzjjUjE49EGUPOqOMfFsbxNQAzDmTgXZNnMi0dT9znbnpyFIuLi6yCjrXTRTLcgSTVigm/VVktNyMCkD9xibjIKX3SR5b76S6wjms8rGNQU/S+9w/N+TVXb1oWgcNLgQ4Du0Md2EZFFBznmVxburDyEuruGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745577986; c=relaxed/simple;
-	bh=yM8BRFHXQ57lwyVkMBlhdAM+Q5zCu+0Nhquu24Prusg=;
+	s=arc-20240116; t=1745577989; c=relaxed/simple;
+	bh=RHZ+nVQR4jYnFcM+6sz6/jx39wA7buQUvA89B+ozHbU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I8pARE7D+JOR6wkrziaDdek/ok/zSTEPLEJILPvITtCRbEgFcG8nXKKf/Ioit5XE38J36pc3+GSyxP0M+0wMULSfFRKkDVNuu2GSsFk6vWdvwuoNDo63ewxBDtUKhCI6iVmpK7cJ0cj2u3zHciBeuQl1L9wvkWl6NKWtn5xhetw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=DCBvgc5E; arc=none smtp.client-ip=209.85.208.42
+	 In-Reply-To:To:Cc; b=LAbqhSOeov8CDwH1cyboEyy4kDkmaUzhdStPIQEmLTL2ItuhtK00bzzYHQKxBYX/ZN4kq1vmrLkBA+o6jK1ckpDZ11xKN4FWCU8slHPoh5aNeMyNfll1MntbI3sn+V3NZDiPPDTbC1YQgeRaAmKKAKVSyFGBcd7eLYUSEv4LR9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=mrudBh0s; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="DCBvgc5E"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e5c7d6b96fso4016964a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 03:46:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mrudBh0s"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ac3b12e8518so374062066b.0
+        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 03:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1745577983; x=1746182783; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1745577985; x=1746182785; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qLUosvBbF3U4VM5lbGixDzvfiX0alERKsKLS31xYB2c=;
-        b=DCBvgc5E40z3g8D/FKf0tRPVeoH5cdze5JE98ZBBXFkRvWSjvkdBmRrCmnBUvSGV56
-         17mxm47qjap9zg2xoSB7fqRijeyiC8/tBqKw7TToJrBhVEFgGsRWhNYqjwx/00wWl5yq
-         O118D53VSlNK2qyk/7xuPXC445k9NtLWRGLEShSTEkzVeOG9G8tac2bLTQSC58NOBZpc
-         4c3o6MJ0xghEOd57QFmwcYFp7DNRUMIk2Rj9I2lxwSBVPb85MRwVXWhHDfrk4g8Xe5uH
-         yoxYgHGA2lIWvWW2rWZ9zZIYsBmRB72CfJqNcQKXNCB7RNTUN6muOlXPvr9A4wacO3wg
-         GtQQ==
+        bh=75uO0qnYhcwp/9Ctw5vuVScHSNK7KyN/uUVAzxbVZk0=;
+        b=mrudBh0sff7oKJ0LpIKCnqAWZuJl10v1fkjVnQ4/C/5WNlTsZiR7+zLL7Dvqrh4yXz
+         mB/s+RNKjRySQN9FrGONStrVkBzw4g54yhgLRlmxjwP1vZ/VyYWd8Th0qxZjB6ZvnWHr
+         Bh1+JDX1f1diYAS+D3GZ8kRj0YBkllFJmUqZazlwUzJgrtPygcjoKeMnwaOQSiGKo5mM
+         Ynmn5hvyc67wVOuzN9N3k4JuaWHY5YskKsav4O8m4+3k3UlM5XeVJq1lMaFofJ68ef++
+         OUOJgZoS5y99zPwLLH2KMx1TXoulKbpIDefwteXMohkkqdS8pqazsLmj+ZKYLoLYcLz4
+         o01w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745577983; x=1746182783;
+        d=1e100.net; s=20230601; t=1745577985; x=1746182785;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qLUosvBbF3U4VM5lbGixDzvfiX0alERKsKLS31xYB2c=;
-        b=bWS38CSj6JlkrhG1EG0epR5gbqbpqNmyLKw2TJOae8FFm2ee0NO5CYFcK+KTt27bFX
-         oMMBK9JGFCxCsKbi55hQZFYGNDFueJdUtIw2zUoNIqWl811Gi+Ts6pxIgFRlm5BcjlNQ
-         tDy9ARE9zKseIOhzQ8QVmvDeBrYNWQKs6vD5SPEnjxHxEvDCiAfki0kO0ALBxLO69H+1
-         fK6dCGvn3ANfAhpi1y4NYhe4TOgjOxes9nzUVNACfNWdCp0VEyqOD2nPzjGYCGZAou9e
-         UNQvKTq4y6kuprOor+yYstlpisB0Dq3XCpyktYvKRriFLpgGVy2sS2tUW8RZuj3HSsZ6
-         320Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVlhW+CLnb9XURSalZ5nDRPLjJRKc8ld+EUWZF0P8yVI2Lvqq7nvm+ZW2RdZEcUsEHdlcd1BeWBYxQLNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy1Wv4cmvDMXhnFwUKZnGqLlpgeCwXtpr1vgodwuVrFTORyF7r
-	mkwhkAy4Fo/v3XMj/e+mwe9b4pWq0Q/8HG7SPPoVXupOYcxtf1rgAXrso/Gdv4A=
-X-Gm-Gg: ASbGncv/BxZx3swiIIWuQAZG4oahjjWkuegDLf3dJzNItd8ay1iGHC0Voz3V+CAeW6l
-	rRntn0/xJUoq4ACmxQi3xKX8yLqbsjWbgtBe4NiZUQwoYhyRckt4HGWbctlLuTsigMAvySDke3a
-	wG2aKA729fnB5BBZShnMB5dCixyQ1jSFyok6N+zyZYUCYJr0F2IysyT/xXGlk5EnwV5/oFiT70F
-	Cc6NFZYyfrjdThMFiHaB2UdLEHA8F663/T1M6FEPGxUt+7qZ/76YXhgC6put/ez+kP6fPbD4AVT
-	t/k6V+IiKhBCR+Fmxnkc8VxBOWdadne8S3wIBg99T2u1mewKGrMPQaaYIkUqV/wk9wOSyLlrNX6
-	8TkukHdQobgwBKcaRPG9Y/phAEoW5PD2af7GE/f0U/6h6Dmgtdcp/maP8
-X-Google-Smtp-Source: AGHT+IEMO/qU8Izgv8WgQTjq/p2rXnbTDGbYkosmMOLUyUMdq3+DaLxBEwE/Ly/BIlSR6mHqOeHOOg==
-X-Received: by 2002:a17:907:1b03:b0:acb:b966:3a8f with SMTP id a640c23a62f3a-ace71337b53mr162428266b.39.1745577982688;
-        Fri, 25 Apr 2025 03:46:22 -0700 (PDT)
+        bh=75uO0qnYhcwp/9Ctw5vuVScHSNK7KyN/uUVAzxbVZk0=;
+        b=xEIdcBFKkPquornu2mOzF61iaYBvKSslLoa1HMvYmtVvRIzOxD85LXH8pVxt4QW8l8
+         C5wzYn9yeUC2WMXdvwy4mXF6f0IIthrHD14XLiS035uq0XxOLyRJFgWgLEWAla0qrKNu
+         SBoB0CqAcmIMAhTPM4Iu8o3NkNFkqooxjm0KJFQ4ZKZ/eiceD//A2K5ud8syNIEZJ/vs
+         hWs2xC7eadlyI1f8zChg4p9mXWRDFiEDrwFnVBlM+jLZkLC76ZMRpIlQWwPsjqrbEDNB
+         wJseNN1eFnzn55GzCbzrKWlLSNJT/pBvMkD2Av/AEIcj2kXXrfKrE8/e52n8xI+bbS3s
+         yZNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUw9indoKTST9g1WhxDf46n7z1e086jlhMBdVg6O5Qb7vgxgdIX0837rac/ogkcypPUxSoyox8wf1+Ssg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLkh6ATVJJBWbswSVUkfbPjXy93DzMV9i/81Wjc9PyI9mwAnKk
+	G3obgefG6OzQWPZNS9k7ALZEDZgafK8IFmN7Qi7+g5YZrE6uvp377GWVU6ZOXTQ=
+X-Gm-Gg: ASbGncuuoj8XxFH3dv9A+yXpTLJIe4FuiRdOZNX41uhVb0U8cYAuaPq8Qh9CR8zdM1G
+	WbqwtljxZEKDzUvtg8k/LSsbWn5goPYmEDn/1b8oMHqymXlnnjOHXDfKDssoIvRfhMuExE6FJxW
+	z67sGGo8E9EmXAB0ydfqgdn1GCymBZ73yogXFKBbml0L4O1Ff7Zd5raXs/9SB0kGYS+8n2FKF55
+	zSIVhWr0CpYlao3WBDlIma3W8HVAiDcd1M4wrAe/7u2gOWdoR7dBNDas4BMA5ziZnYSh1hfNa1P
+	XGeW3R/e4kbpPix66O/mGQ073N6q/MIs4BwntMgKXoOg5lneVObIO0neJzNOM7ARoNk8fB5SCz5
+	HOkCk+7jOND2P9a01MwvUyzLCIRr3iAAyX15nWo7v30WFCyX1Z6Zf4c0g
+X-Google-Smtp-Source: AGHT+IHVMEndxh0XKCZm79DiwrttbUOJ0EeVVGzRFO8YMZeacxUM0z2X0Q0OP58ATSu1eJXn4Hqq4A==
+X-Received: by 2002:a17:906:6a0a:b0:ac7:9712:d11a with SMTP id a640c23a62f3a-ace710f03e9mr179888566b.32.1745577985179;
+        Fri, 25 Apr 2025 03:46:25 -0700 (PDT)
 Received: from [100.64.0.4] (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e4e7b98sm118765066b.66.2025.04.25.03.46.21
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e4e7b98sm118765066b.66.2025.04.25.03.46.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 03:46:22 -0700 (PDT)
+        Fri, 25 Apr 2025 03:46:24 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 25 Apr 2025 12:44:52 +0200
-Subject: [PATCH 2/6] ASoC: dt-bindings: qcom,q6afe: Document q6usb subnode
+Date: Fri, 25 Apr 2025 12:44:54 +0200
+Subject: [PATCH 4/6] ASoC: qcom: sm8250: Add Fairphone 4 soundcard
+ compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250425-fp4-usb-audio-offload-v1-2-f90f571636e4@fairphone.com>
+Message-Id: <20250425-fp4-usb-audio-offload-v1-4-f90f571636e4@fairphone.com>
 References: <20250425-fp4-usb-audio-offload-v1-0-f90f571636e4@fairphone.com>
 In-Reply-To: <20250425-fp4-usb-audio-offload-v1-0-f90f571636e4@fairphone.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -89,44 +90,26 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
 
-Document the subnode for Q6USB, used for USB audio offloading.
+Add a compatible for the SM7225-based Fairphone 4 which can use this
+machine driver.
 
-Cc: Wesley Cheng <quic_wcheng@quicinc.com>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/sound/qcom,q6afe.yaml | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ sound/soc/qcom/sm8250.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/qcom,q6afe.yaml b/Documentation/devicetree/bindings/sound/qcom,q6afe.yaml
-index 297aa362aa54ab41a956b3ceda73d4c7027d72a7..268f7073d7972da2ef46d36264c0f7d8f648071b 100644
---- a/Documentation/devicetree/bindings/sound/qcom,q6afe.yaml
-+++ b/Documentation/devicetree/bindings/sound/qcom,q6afe.yaml
-@@ -29,6 +29,12 @@ properties:
-     unevaluatedProperties: false
-     description: Qualcomm DSP audio ports
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index 43c93e24d77259f232062c7e4182a39151111c59..0025c8957abddf54d0aab6eb68acc79f031917f9 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -208,6 +208,7 @@ static int sm8250_platform_probe(struct platform_device *pdev)
+ }
  
-+  usbd:
-+    type: object
-+    $ref: /schemas/sound/qcom,q6usb.yaml#
-+    unevaluatedProperties: false
-+    description: Qualcomm DSP USB audio ports
-+
- required:
-   - compatible
-   - dais
-@@ -64,5 +70,12 @@ examples:
-                     qcom,sd-lines = <0 1 2 3>;
-                 };
-             };
-+
-+            usbd {
-+                compatible = "qcom,q6usb";
-+                #sound-dai-cells = <1>;
-+                iommus = <&apps_smmu 0x180f 0x0>;
-+                qcom,usb-audio-intr-idx = /bits/ 16 <2>;
-+            };
-         };
-     };
+ static const struct of_device_id snd_sm8250_dt_match[] = {
++	{ .compatible = "fairphone,fp4-sndcard", .data = "sm7225" },
+ 	{ .compatible = "fairphone,fp5-sndcard", .data = "qcm6490" },
+ 	{ .compatible = "qcom,qrb4210-rb2-sndcard", .data = "sm8250" },
+ 	{ .compatible = "qcom,qrb5165-rb5-sndcard", .data = "sm8250" },
 
 -- 
 2.49.0
