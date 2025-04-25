@@ -1,125 +1,114 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E87022068B;
-	Fri, 25 Apr 2025 20:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A2217677
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 20:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745612564; cv=none; b=NV1kzHyj9pA/0bU5ieUJ8doT0Vj64pgZwz6ZxQPaFDzTt3Pd2p0lnR8/KWG/YSy4M7XCAyqwOkdUMj/+juULfr0bZjrFAL1L35EaY+tqmWImHw+4RDyifcdOVWJEiWKE5ZQ3h5fqpl6wINuL+sGkTAPF1S3caQVZq1tOtkv6r58=
+	t=1745614068; cv=none; b=cFfEdWmrR3FRdgwDlsDuOa8OgDlMZGJzW1aQ8Z+hTWW8YC00YJkgRTXwGimMGtfVFL06JGhrD7rzm7YOLoLc5C/+p7eOZKKySu0P7ThmcUugZpuXELtUquaqO2wPZ49t8I4v4tu3iXKDJCx9bfibx8tPdRLvXHd4aS7LxuIHYsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745612564; c=relaxed/simple;
-	bh=bATJzVwifgOG0vWWHb4+YrLxNmRXS/txfK2CTpuYFSE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=PhDa7EqA1wiO2Q6x1jFNmnKmS4CLIMmC7D7yMjpVp2OUiSoL4nq8pJKpP616uyimn3s1hSg6BM/tqmw8/HEw4+89LQV6meji17pAUw9I7nwLRLUFfHwYgPBvC+GC02RkSyuyHTdrV3LFPiyk2Vyp56aKb/n3KV6JWa7xJZt/eJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=VRIAWQQp; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1745614068; c=relaxed/simple;
+	bh=Ons6fbZ/ZBBSkZ0lCnRlE60mRw4vXN50ao9l15AnCic=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=FjjdihN1i60XU18E9V/+HHqAsvDp2dA57Tt7ZVEfSW2EGk7mC/sX0//GP1UwF5G6S0v0eve3DjVGO6QTyAwrj4kUHC9ESShAevigvsqo5sCbBd8bmpH6SSiTWAQR7Xd9/so+F76YQ1Hup04BRhFCmbTe4zOZ1Py6XD6ArT3dBlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=iobspATP; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="VRIAWQQp"
-Received: from localhost (web.docker-mailserver_default [172.18.0.2])
-	by mail.mainlining.org (Postfix) with ESMTPSA id 697BFBBAD2;
-	Fri, 25 Apr 2025 20:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
-	s=psm; t=1745612559;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DXbQSFgD4UwsPz7sUQSSNntiwkGqZ/+DXflo57ZiM5I=;
-	b=VRIAWQQpSY1jIYydk8YDCqAmMBYaVVb557wH0buXtfezPSYpaqe/fUapYeD+EAG2sCGuxD
-	4WK3Ns7lGjgpH3tXDe0jVXfochXNnnUVts3CDSqsZ/T2H1wUGJQbRyAqL7b5K0OWWct9pf
-	yDuqGydiSB6w+bHArYHmbNToR0J1/rSjYxaIixxPfqaqyfi5guot5tb6qp9f3v20qFu3l0
-	wkdvdxcB4F0OBYUjH3xDY3SKRLHFr3QBH2sYQDOAFPW3ts63YdAiQslu6MyFlm04QfiFvK
-	hyrlsjYlVxj/I0PwhCuVhts7NvtHbYJFt8RYCBBF0DzO13HDMhgxcYPOHD3oAA==
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="iobspATP"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-39141ffa9fcso3020711f8f.0
+        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 13:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1745614064; x=1746218864; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ons6fbZ/ZBBSkZ0lCnRlE60mRw4vXN50ao9l15AnCic=;
+        b=iobspATPfwGqIsLM0hRdkX27+Vqee4L0hK2wogylTQQQC9L+KpXhkA5f+ufUH071k7
+         qgJ+/c36AdNxZ+cdMkrDE9ooQA33mTTGNqt5WcH+Wc0yI1bLLLdPvR+8RR6eE1ja1h5I
+         W+H7D/iIG+hff2pOE3PUh+2sGH4wo8EgNreZyL7jTb0xgL8hP3WvmQtCOV+5Cr7fqU3u
+         //Ki43jNqsfiXc/67oMwWU2xrQT6OPXwdPjTt8pMf80P5yrLIVscYTBJuGsgYEuvpEai
+         JKUXTf30k4vhbfxVbdV4in6mRewfa6G5fUDWy6ptcbwej9NsfGrL2C6+unNLWv4pTE9M
+         HrPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745614064; x=1746218864;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ons6fbZ/ZBBSkZ0lCnRlE60mRw4vXN50ao9l15AnCic=;
+        b=NO2MMbbXCVM+4SF2/I4ia2xLa5WxdPG+6NHuAlb9kzs9Vr/k+YlcSv1RndQ/Rv0AQA
+         r5VlNDKXjFWXAA2Zqj8VPnC3OmX+aT5anLwsxkjZoI9SKkI0GRsq+yKGp5Z+Xrzl9jPu
+         KaOBtVVpulkN8oNMqar7WMLaRnqxUEdZp7wUBiw+U29PBg1owGR+ZlhHjv0EAuGyMz71
+         SZeqEkOx47b6urcxR0hGcrKjB6GoJXR0/UewYT16vgmyxMNdlczlS8XOjZk8HddkWuj5
+         JEIaG9RC+LdArEa4bjQ8QOvheW2InltBYXDfjmv/F8Ph/C6LpBMTtrdbe+swbZr6dof/
+         +S2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUkEGsnO69u38P7vQAJf4kv3kW0bje/cXAUNbhgals0X6ZicS64He44dsxuC7Vsd0vfy42x9nVOuQC8Pg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhT7aSgi2Z14nb66HgQZyOrNxtY4h1zRczlukoewqTR6LrUYCm
+	d/T9PPY0cEbv9i6WAAvdv0cJqUVj0RrugV9QCLjmZXbQDu89bUXLdLNOUpUkqyA=
+X-Gm-Gg: ASbGnctbQfI0gSSuYb45pxXXUzamZ9IZdfYa3QF88fXJIdpolCWba0ovSY6cEzHfV1u
+	Y2z2uIejFCSjEEn4PySCvKrHAAIepKozOubw+A1aN4XhoRqs1e2q+AyNugzjG7mj4vLVDKeVq3Z
+	EyO+x9TInZ3uGMeKIMjyff3XDlOc/TKYdgOHEydqFdFEM8nrBvZFwDqBiYzZbFPPDyWblprxRR6
+	iBzsMEd7q7of2fEWUAioA+GtLIZijh9JsbvpuWvXhhi1RHye9iJsPYok69t6fKKlQSHudqoy60K
+	BTyxDnynt1bum6yhI9eQxSLDGM4bxYUIsPvaUDuDI3tvZ0rahlMa0dQB155cIZFw/g7OicnPYgl
+	uoo7NHYTy8MuGJsaGcq2J76IkuDOB8XKsQH0enHAGnanwiHM9O0ZN
+X-Google-Smtp-Source: AGHT+IHc2IGV1cabuJnO+f6tRyRq8tFSNKSMn/0EAuS9gCgWsxP2W699M+Xi8my9zfWANmox2FyRWg==
+X-Received: by 2002:a05:6000:18a8:b0:39f:a553:3d98 with SMTP id ffacd0b85a97d-3a074f89292mr3119425f8f.56.1745614064100;
+        Fri, 25 Apr 2025 13:47:44 -0700 (PDT)
+Received: from localhost (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e5da0dsm3245891f8f.88.2025.04.25.13.47.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Apr 2025 13:47:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Fri, 25 Apr 2025 22:22:39 +0200
-From: barnabas.czeman@mainlining.org
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
- =?UTF-8?Q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>, Linus Walleij
- <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>, Joerg Roedel
- <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, Rob Clark
- <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, Abhinav Kumar
- <quic_abhinavk@quicinc.com>, Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Dmitry
- Baryshkov <lumag@kernel.org>, Adam Skladowski <a_skl39@protonmail.com>,
- Sireesh Kodali <sireeshkodali@protonmail.com>, Srinivas Kandagatla
- <srini@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- iommu@lists.linux.dev, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org, Dang Huynh
- <danct12@riseup.net>
-Subject: Re: [PATCH v5 3/5] arm64: dts: qcom: Add initial support for MSM8937
-In-Reply-To: <68e2c0ee-d5e2-40fd-9ca0-262ed3270628@oss.qualcomm.com>
-References: <20250421-msm8937-v5-0-bf9879ef14d9@mainlining.org>
- <20250421-msm8937-v5-3-bf9879ef14d9@mainlining.org>
- <2e3d94a4-d9e1-429e-9f65-d004c80180e5@oss.qualcomm.com>
- <790a0b7537e0b82b70bc4b32612ecee6@mainlining.org>
- <70635d75-03f9-49ea-8098-57cb144fda94@oss.qualcomm.com>
- <5ccb39f9393b44761127717096a38a46@mainlining.org>
- <68e2c0ee-d5e2-40fd-9ca0-262ed3270628@oss.qualcomm.com>
-Message-ID: <31559417a92d1e1ff17d0f3add9a1ba0@mainlining.org>
-X-Sender: barnabas.czeman@mainlining.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Apr 2025 22:47:42 +0200
+Message-Id: <D9G0JHKZ0RXB.3LI5UGS7QTVQN@fairphone.com>
+Cc: "Srinivas Kandagatla" <srini@kernel.org>, "Banajit Goswami"
+ <bgoswami@quicinc.com>, "Liam Girdwood" <lgirdwood@gmail.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>,
+ "Takashi Iwai" <tiwai@suse.com>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <alsa-devel@alsa-project.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v3 2/5] ASoC: qcom: sm8250: set card driver name from
+ match data
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Mark Brown" <broonie@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
+ <20250425-fp5-dp-sound-v3-2-7cb45180091b@fairphone.com>
+ <36904d64-68e1-43b2-baed-50b5fddc2bcb@sirena.org.uk>
+ <D9FXE4TJ23QB.1CS3D6PU2FGMR@fairphone.com>
+ <ccca5e19-5a4e-423b-923e-ea0de6682752@sirena.org.uk>
+In-Reply-To: <ccca5e19-5a4e-423b-923e-ea0de6682752@sirena.org.uk>
 
-On 2025-04-25 21:26, Konrad Dybcio wrote:
-> On 4/25/25 5:13 PM, barnabas.czeman@mainlining.org wrote:
->> On 2025-04-25 11:57, Konrad Dybcio wrote:
->>> On 4/23/25 4:46 PM, barnabas.czeman@mainlining.org wrote:
->>>> On 2025-04-23 16:03, Konrad Dybcio wrote:
->>>>> On 4/21/25 10:18 PM, Barnabás Czémán wrote:
->>>>>> From: Dang Huynh <danct12@riseup.net>
->>>>>> 
->>>>>> Add initial support for MSM8937 SoC.
->>>>>> 
->>>>>> Signed-off-by: Dang Huynh <danct12@riseup.net>
->>>>>> Co-developed-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>>>>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>>>>> ---
->>> 
->>> [...]
->>> 
->>>>>> +            gpu_opp_table: opp-table {
->>>>>> +                compatible = "operating-points-v2";
->>>>>> +
->>>>>> +                opp-19200000 {
->>>>>> +                    opp-hz = /bits/ 64 <19200000>;
->>>>>> +                    opp-supported-hw = <0xff>;
->>>>> 
->>>>> The comment from the previous revision still stands
->>>> If i remove opp-supported-hw i will got -22 EINVAL messages and the 
->>>> opp will be not fine.
->>> 
->>> Right, I have a series pending to improve this situation a bit..
->>> 
->>> In the meantime, you should be able to define the nvmem cell and
->>> fill in meaningful values for this platform
->> As I wrote in the previous revision there is no nvmem for GPU on 
->> msm8937 only on msm8940.
-> 
-> This seems not to be the case
-> 
-> https://github.com/penglezos/android_kernel_xiaomi_msm8953/blob/pie/arch/arm/boot/dts/qcom/msm8937.dtsi#L2046-L2191
-> 
-These are on msm-4.9 was moved to msm8940.dtsi
-https://git.codelinaro.org/clo/la/kernel/msm-4.9/-/blob/LA.UM.10.6.2.c26-01500-89xx.0/arch/arm64/boot/dts/qcom/msm8937-gpu.dtsi#L162
-https://git.codelinaro.org/clo/la/kernel/msm-4.9/-/blob/LA.UM.10.6.2.c26-01500-89xx.0/arch/arm64/boot/dts/qcom/msm8940.dtsi#L600
-475 MHz and 500 MHz is for msm8940 at least based on 4.9
+On Fri Apr 25, 2025 at 9:03 PM CEST, Mark Brown wrote:
+> On Fri, Apr 25, 2025 at 08:19:39PM +0200, Luca Weiss wrote:
+>
+>> I've based this series on next-20250417 tag, so this is probably due to
+>> the changes from the USB sound offloading series that Greg has picked
+>> up.
+>
+>> So either Greg also picks up these changes when they're ready, or we
+>> wait until 6.17?
+>
+> Or base it on my tree and let things get sorted in the merge, I don't
+> know what the conflicts might be?
 
+For this patch here it might be okay but patch 3/5 from this series very
+much depends on the patch in Greg's tree, given it refactors/expands on
+the USB_RX if there. Resolving this through merge wouldn't be very
+pretty.
 
-> Konrad
+Regards
+Luca
