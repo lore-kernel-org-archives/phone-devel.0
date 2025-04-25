@@ -1,65 +1,67 @@
 Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536BD2459F1
-	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 11:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380D2472AA
+	for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 11:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745582035; cv=none; b=eMMPA4ts32hrfrbv3I9qLQThOd9uG30UPGKAlkLUbBgcYahSwaJ+aufFHM9CXPz5Lnqo/tcWShg0Wwu46MvMRLkEMe8tedvHZRURc8A99eydGBF8Nexp5hCBro04UO2DgVFKuttXpNvhTuUTXZeYGIH4xPBVlW75VXDnk/ebSqA=
+	t=1745582036; cv=none; b=cUBC11JnlQ1ICfGaPvKVc4SWRW2ta1V31m3ewbaHZZl/wOOEIC9lu6tSzflMlSTn+z+GGnLx8FODCwPjG4I8LOHGl1Atul/VufEC9GCdYW2mV4LRlNJR1j7wL3ecdLuM2nzdccmW++P21IxbfZB5nYGFXrVtBdTwWVvdQ8dAmpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745582035; c=relaxed/simple;
-	bh=t4TthAZ3F9lMsEFWpdYB4WXYguLQ2nA96zmSR9QywDQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P4jYdqFmZ79a0fVzPSgu8N3hC0A+5Wlqy/s82qo5f2vQASQ/royyEPuN5N2HSfXzBASnbo6KhzttsrjWHImoq3g0Wnrle3Am80ZDvvZYSqhdb2UnhsXVxlwoc0aA84ZkKML4TGWvlzOMq8kVTrblxLE/ldPARSFEsgXN/Aj9tJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=jI12LOsT; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1745582036; c=relaxed/simple;
+	bh=nIrdIC/aS51gt5+1wCiniQXTQ9R+S1955oLTVv53zdw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FnbCq0bDRwOnjhaMdmaZ5/sm3Nw9GLvY5PsOXDrrIXFKwIkRbbeyVJ0E3P3O7OebxDH/9qormMzLfVFav3A5daFbt75yJ/nJoNQJ0hLwP5zcd4f6X8706TzFIgdz5MfyD+ysiTTYyK+ECM4hVynIJh0/8zgxwnriIk17cL/4U6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=OhYNFARe; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="jI12LOsT"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ac29fd22163so308175166b.3
-        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 04:53:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="OhYNFARe"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-acb5ec407b1so358871366b.1
+        for <phone-devel@vger.kernel.org>; Fri, 25 Apr 2025 04:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1745582031; x=1746186831; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=13kUB0+PNIat0bECR/AFF7iIgHZGfM9/hy4AbRFvOtE=;
-        b=jI12LOsTw2SFhWRzJ0pL7YsyPUJUVi4JM2od+Im0qTvTQLVdJYyOXlAy0KnTvPFLWw
-         ma4yAKdwve2+2GQadd5b91Os1UR0lYi4fhMpCWhvJ42yMzqWF53vpsjU+B7rLEWuc/pb
-         L+jEyDnPQUJVb3lJDyzcQufeUwCiZyUDZrLsRU3sBx5cSoXSHTCzWStHgyB5b2ad+xFO
-         vC5Cm9CHdPC6yzEeB1ylz3YwzjLAkpQAkBeAqvxGcpv0g6dN1rcLf8+GE0yg8egc4ES9
-         Vc2qCva7HqnVP04GUQ4L28+nYz5rvd3Cz7RTfb4Tsoe4nJ8/cXO+d2wNkl2zKf6qxvnn
-         rkwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745582031; x=1746186831;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1745582032; x=1746186832; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=13kUB0+PNIat0bECR/AFF7iIgHZGfM9/hy4AbRFvOtE=;
-        b=V9SyR1RmWY5+6WUYKckKoGcuF7aTYyBvdspysu8266Y35HVM7B/UAi3gXomTU/IbFG
-         Zoehniq0KZQTkzjdt3m5bCkRnVhB3XupVUNo6qyZCZ96qawZZfigaxbh4b+mFYbGoXh8
-         zU3hsmJC/66rkyXlkNgUDjf1/jX0nIumnwkTmUdza5fkmUYNLIqinhFkIqUkX7lJYOU7
-         INKARcU63aIDF6/DthbaQ85bZj4V/KiO27/BzzvUijbbcH1eFK+ggCOw04aMmOl/RQ4+
-         t54zHr6I5VW8fyPmDy2f0D2zgeeec+v8h+PRTo/L4gUIEQRlVqIVaKeblg6gNCbpDZnw
-         7c8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXT1T00KBdsI0yf2DyXNC5alOOIfK4AP5EHWrJwAxOFNLCYLFNEB7QClfzrKg5hEM3OH19/LXda2bC2Sg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv04r30gVb5Ybi5ViHEcmFwzOjr/ve4JRlGrRo9QCc0u01FtxR
-	E8sGqwRyfmIzlhxn26npLx2t/0+qxSVu+uXp7LHM+ksGCDpfFF5tcpjIpMRGqAY=
-X-Gm-Gg: ASbGnctvyDpWceHpk96M7QYB4DzHQVL+rtU37OC+oYSKUYACTlWcxD1lpxvabPhOvXm
-	c7OnSJgDa2J2Aa6xyD+t5tMRZIaXt3anC6AUpnNJoqdYS37a3BNd5+vDhdlO8FNNlPXmy085vab
-	dtrsFet5I+mVSwh67aClMUZXh4C0d2iGbNfqAtnXpEr1IS3TmGONFyv8loqzXj1aUjREpDSS7l8
-	KDFduJgF/AEftA8Tt0HBMiRSuWObfYFInFOdx+kU3YPQlkEPciWrM1czCgL+SKkb7jBYOvzs5JA
-	Los3CJWYNhrk6q1N1dP/0WnwVCERlBz5gvO5AXuKYrvrGKXE9HfSqIz1SHFyrSuIh1pUDknnCYe
-	OxyCB7h1mHBtsmTaDRK3ooaGJ4rQzRdBjVgMaVWBcJfMd7e5wS1DemMU2
-X-Google-Smtp-Source: AGHT+IHT3eQUsAhEeDs3qU9PR3mRIlzHW76qCY013tbGyfPlA9ZIGQ4NtCbgs6pmjE11nGsBbT4gBA==
-X-Received: by 2002:a17:906:db08:b0:acd:89ba:8069 with SMTP id a640c23a62f3a-ace71037786mr189289866b.7.1745582031401;
-        Fri, 25 Apr 2025 04:53:51 -0700 (PDT)
+        bh=g2MffYYTdCwNfvkEGR6DdXcGomdgka4CtjmflmA34VE=;
+        b=OhYNFARe1Q7n+/CDQPYEn7t9QGvhxWrN8jk3pRmZmb4kC0+TT8Y1XiUo7i2SwY77Jw
+         bZ+pBiu/AURrY4N+LtH2fgnGNfEI3g8LajFkczQC2CWm9rCY/TyuXGLMNTQth9r2lkO9
+         K0+dzcsqA53MMTTlm+yR4hmi1bOLJPhf2RLgk6wxPLr4YA6NfMuSWgxrtru7n4J2edfM
+         /NP2riJG9DXsk4X0oOnP4EbSKFM4BAqskn1jKblCP3EAvr/u7ILmmyrl6OaPa9saa+xD
+         e2aotBYcU50t7vAAmd+dLcgquy87UQ95rldyCuFZFYr0zd/hZlHHTx86RtTnWWbcuLb9
+         2snQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745582032; x=1746186832;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2MffYYTdCwNfvkEGR6DdXcGomdgka4CtjmflmA34VE=;
+        b=fEcCtEdFdvEdmt4/nTg6RoV/NdYrJPoISt7MiYlOb9y4eXX0aOfBN5JCKtfJsEZv29
+         v8Y17CX5aWO8R8+9dbeyAMYxVIAaz3AgX8gN0bRxESNMYgQv/R7xwDqPcuQtcHPYcDxt
+         IkU5Gn9nJ5Bw6BDlZrW8wLV4U5BD/r2zQ79G78dGEcSk3cX227n8HUPJ06gzmAlNWciT
+         OxHiZiWvXqhHwcKQLHmtYzdx3KLgYhj3Cw6yeGQ5sY7SsIICAUl/QhrPbSmAt83y3qhi
+         NMchbEqRiLNCYEj2zp50Jd9CTuq9AhLkDJbFQcn7kK7yKiHRpK7O63YGiaS07QqIRPmH
+         hJBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWbdZLxGJ6NjSFVOG9dFW5w2OVF09uz9SZaUExzA5/Uj9orse0GYtfdyYtbxwhacZ/4j3xSuwyl2G5Yog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrhXngLkl/N+gJ98AtC403825P8CC5aYixU7cbMzmmaEvH8IFz
+	/wsPokA7AFuzHfpB5nyURECdrViIzh1yfzrxF2hVue0+5kDDKMmDuefv+QhMLZE=
+X-Gm-Gg: ASbGncuQADGxUJuQ0ZvBvLq0ffgmQkSq2l1HMR67uDA38NcpE+nLdYM809hdoF+M2vV
+	yRHthg2m/4UwYwP+TMnedVxPEn8nwXByJg4LzMDxVs5O9edf8VuLVnQEfe7gi+yW50VnWgkG6np
+	uvDiM1NEs8EX2mfeJG0HM8K7vgM0aqH6VUfrIWVNi5jX/ly4myr4uRKK/dF3mU/qZXlRnltrekr
+	R0UDz1p/gdoCBZLoscKtBE2eidudFDiiDlFtiFscTCvwYeJ++fn35sYCS/nlIc20PKdLL/YrCFO
+	pYSBwfjxfoj0YyY4qWH1mpPRIkgfqBwgKY5r0UijMn5k+COhUAB54B0OTIdNcwHCyBICfGcrDBV
+	pMLS/mUycGSCzT+/3ZAEGUr1JpaPIMhipvwIzYwjLnlLF2MUUSHynswtK
+X-Google-Smtp-Source: AGHT+IERqSPQC+gRgsoimNGLFUMQlpsefX8iY+PynWp36058zIqR+bhkys6buYwqIPpM3iwqACft9g==
+X-Received: by 2002:a17:907:3f0b:b0:abf:4da0:28e3 with SMTP id a640c23a62f3a-ace710a0e0fmr169716366b.18.1745582032503;
+        Fri, 25 Apr 2025 04:53:52 -0700 (PDT)
 Received: from [100.64.0.4] (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e41bc36sm126081566b.33.2025.04.25.04.53.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e41bc36sm126081566b.33.2025.04.25.04.53.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 04:53:50 -0700 (PDT)
+        Fri, 25 Apr 2025 04:53:52 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 00/11] Use q6asm defines for reg for all qcom boards
-Date: Fri, 25 Apr 2025 13:53:39 +0200
-Message-Id: <20250425-q6asmdai-defines-v1-0-28308e2ce7d4@fairphone.com>
+Date: Fri, 25 Apr 2025 13:53:40 +0200
+Subject: [PATCH 01/11] arm64: dts: qcom: apq8096-db820c: Use q6asm defines
+ for reg
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,10 +70,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMR3C2gC/x2MQQqAMAzAviI9W6ibE/Er4mG4qj04dQURZH93e
- AwheUE5CSsM1QuJb1E5YoGmrmDefFwZJRQGQ8ZRaxxendc9eMHAi0RWDM5xQ7O11BOU7ExFPP9
- ynHL+AHx37fZiAAAA
-X-Change-ID: 20250425-q6asmdai-defines-d55e10c33080
+Message-Id: <20250425-q6asmdai-defines-v1-1-28308e2ce7d4@fairphone.com>
+References: <20250425-q6asmdai-defines-v1-0-28308e2ce7d4@fairphone.com>
+In-Reply-To: <20250425-q6asmdai-defines-v1-0-28308e2ce7d4@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -84,47 +85,35 @@ X-Mailer: b4 0.14.2
 Use the MSM_FRONTEND_DAI_MULTIMEDIA* defines to make the code more
 readable. No functional change intended.
 
-Verified with dtx_diff.
-
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (11):
-      arm64: dts: qcom: apq8096-db820c: Use q6asm defines for reg
-      arm64: dts: qcom: msm8916-modem-qdsp6: Use q6asm defines for reg
-      arm64: dts: qcom: msm8953: Use q6asm defines for reg
-      arm64: dts: qcom: msm8996*: Use q6asm defines for reg
-      arm64: dts: qcom: qrb5165-rb5: Use q6asm defines for reg
-      arm64: dts: qcom: sc7180-acer-aspire1: Use q6asm defines for reg
-      arm64: dts: qcom: sc7280: Use q6asm defines for reg
-      arm64: dts: qcom: sdm845*: Use q6asm defines for reg
-      arm64: dts: qcom: sdm850*: Use q6asm defines for reg
-      arm64: dts: qcom: sm7325-nothing-spacewar: Use q6asm defines for reg
-      arm64: dts: qcom: sm8350: Use q6asm defines for reg
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- arch/arm64/boot/dts/qcom/apq8096-db820c.dts                  |  6 +++---
- arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi            |  8 ++++----
- arch/arm64/boot/dts/qcom/msm8953.dtsi                        |  8 ++++----
- arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi         |  6 +++---
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts           |  6 +++---
- arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-natrium.dts       |  6 +++---
- arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts       |  6 +++---
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts                     |  8 ++++----
- arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts             |  8 ++++----
- arch/arm64/boot/dts/qcom/sc7280.dtsi                         |  7 ++++---
- arch/arm64/boot/dts/qcom/sdm845-db845c.dts                   |  8 ++++----
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi          | 12 ++++++------
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi |  6 +++---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts           |  6 +++---
- arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts         |  6 +++---
- arch/arm64/boot/dts/qcom/sdm850-samsung-w737.dts             |  6 +++---
- arch/arm64/boot/dts/qcom/sm7325-nothing-spacewar.dts         |  2 +-
- arch/arm64/boot/dts/qcom/sm8350.dtsi                         |  7 ++++---
- 18 files changed, 62 insertions(+), 60 deletions(-)
----
-base-commit: 393d0c54cae31317deaa9043320c5fd9454deabc
-change-id: 20250425-q6asmdai-defines-d55e10c33080
+diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+index 1089964e6c0d819e166fd5a959f7f1e6fe688d65..5b2e88915c2fdbc1abf635f13537f970ead02cc8 100644
+--- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
++++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+@@ -953,15 +953,15 @@ &sdhc2 {
+ 
+ &q6asmdai {
+ 	dai@0 {
+-		reg = <0>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+ 	};
+ 
+ 	dai@1 {
+-		reg = <1>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+ 	};
+ 
+ 	dai@2 {
+-		reg = <2>;
++		reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 	};
+ };
+ 
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.49.0
 
