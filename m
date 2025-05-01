@@ -1,39 +1,66 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9563274671;
-	Wed, 30 Apr 2025 19:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31D13957E
+	for <phone-devel@vger.kernel.org>; Thu,  1 May 2025 06:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746042144; cv=none; b=RDMipg7cQy4axaCYUhzDjgf6+UdcOUDrwqqO15SKjUFj3uq9uACQQ60QrDGzdAnnMIMnlj3P5Y7P4uqLD6ehWIDBtWp4juVuWtHnsc40PjDuQgLTQZ5MhsEljsNoGSjqi/TiRYvAsa5oldomu26U29Pmg3A5dEl40tpw+ZIrzTs=
+	t=1746082158; cv=none; b=tr3OgwBM+qrQl3y/x4YZu08yTvW3iPSp9ln/lQrfqiV2xfVzGgbDZxkcm2MKqq/w6hALoIVT5/zdgWqXl/Mbqy2UZg7vI7KKiQ6FxLWOWuiRXXPRRKKgfwbnjqnb7fbUlotoI1sW2U8k1aVTOzNcBCPNKfp06pw5wSrdBl/985o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746042144; c=relaxed/simple;
-	bh=0YrxcUAUaXqkKGuZjlIfwbubu01yUpfA6AuAb1EDHhI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tm1qUpCm/V0vReLd3TftIeZZ+evxur15z+HD5kxZDaYyJuFdzBQ6hJC3nkb+5AvZLvqgIrctSCO9CVRZbsoyHsRK2BDH1bCO57Txc1EHOPQgJgmT438EUhTixgye4Z+Fg2oVWrNegV9mvub0POXpNvCfhcG9kR0upeCQCPwXIL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=PzQVBNa7; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1746082158; c=relaxed/simple;
+	bh=116cbfgSezwsafks+V57dwlIk5wKMliQXk8+AlFgvVQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ns+ZfcFMhMNS0wW6s+p+djWZYDO48vc5w0z84khOu8FsQYWWTGGJu3Q5bCrjRKNO9dxbbFWb5qB/178+amUXaxHvjwpY7YW0ztR6FRIzRAIE829UpjWcw94IeWhHFzGLcyrNxWNOIB3u63HILRl4VkRfISEySzVBGJQwn4eWRdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=HFDcAJtV; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="PzQVBNa7"
-Received: from [192.168.78.162] (254C22F1.nat.pool.telekom.hu [37.76.34.241])
-	by mail.mainlining.org (Postfix) with ESMTPSA id 68349BBEE7;
-	Wed, 30 Apr 2025 19:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
-	s=psm; t=1746042140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XWBVflhF5/ANXUctLJO1679Fk3zCvB2XbjExgvWA0Ro=;
-	b=PzQVBNa71RgYrCtYZN4K5lHjpdnG2PRszhdqTomsxeOUsVtRbUZBKsJm1wg0Li29C/16+z
-	OIEc+6Op0KxPRcVB+jNn8vURBNdphzKUPAfWQ6l48rVudbYkdXJg9sqt87FU2cl8q+t6GV
-	O86TH5JVuxi4lVLg9roVUtpXc2Py68GzdZ/Rd9HnfX30avkXU9cpgjX165gWEO3sR3QtlQ
-	OzFX4Rgajn8veF9vmsKPbM6RJ0IeYl3zdKMDXdDkLC3xg9Qe09EDBn6qSpyC79GkraMeAy
-	m88FRsXRdhvHTfvLxbYuIQbVu1K9oODyUa1jVFB1NRWdp5+wxv2ppNYcQhj+uw==
-From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Wed, 30 Apr 2025 21:42:13 +0200
-Subject: [PATCH v3 2/2] drivers: gpu: drm: panel: Add BOE TD4320
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="HFDcAJtV"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-acae7e7587dso80696966b.2
+        for <phone-devel@vger.kernel.org>; Wed, 30 Apr 2025 23:49:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1746082154; x=1746686954; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ICmVPwMjmOyli7RFKP/N7pH8Fgah0F5XlIiAvT0GKe8=;
+        b=HFDcAJtVf82bLkYnIFrvVYU1G3hK7DVDMD91FZOijkiHBSMYr/idJFBOCU18Rgpaqx
+         uBnMJnFSM1XOa7/jcBoi3ukZXvfYOPssGVWgqjutnBIn/UvNcx4SZaGx1d/JREzGDB0j
+         egtT//RENKPa+MHqq8LAa2nGl8ETbel45D/t3UNIqYr2Ty1I3eiSEYIJZY+XYNySgCdl
+         hYnP5cBbCeELCX7jdEWcaMplq2Dli84AIeXrFCrlVznIQ8SJV8Ter9Kb8mNGhR7jzYuy
+         q3bkoVwJEobCL795ouZFPVi0FejRfLUWPweyFIbOrq4+vMc85RvUd9jYcn+d592SS96G
+         ZtAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746082154; x=1746686954;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ICmVPwMjmOyli7RFKP/N7pH8Fgah0F5XlIiAvT0GKe8=;
+        b=psnHXMmZyUN06K/4htnB4AdMiCIMehrreVkeqvQhYw0IyCcA5uEuSWOiup00JrGgtH
+         yddXgjGB55TwJnI3rp/RRl61y6sfy7VscfviAR1gx1nFWVG/vrIawraFFnl6YAWNCeq/
+         TdMwuizKpuudSa6Yv9IDUEvjdXdA0kQatPjCCmcNgFUthUPpRvYxl/PKv8L+hCmrVyNJ
+         ZUu7kqH2tP6DoZrDFiyiw7hE7XhP4BeWLT6qWVqzHbgQBJc1R4SNNjfj1h/aw/W8s+CH
+         YFH3MbHXUo6j8cpZGylgR2fei5G4IlAvVBrD4bs4NylRujzu8FUsZJmJq9sI8pQP5gYk
+         NU0g==
+X-Forwarded-Encrypted: i=1; AJvYcCViR7ulTVLvF8Xgs1qlVBqUh+5pz8JCamP0JL6AocHDh3XDGNKK5gl1eCu5dgaCRQezZcdmgJfVaSRcKQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2fe6PzHlWBHm2oSO+uJ/UxagEYHAKVygq6BMUHWBFr5RlFFpw
+	JqkKsmyzb5oCQ4ZLGTuJOeL6HY87cz/MCqMpv4Jn1RL5kz/30Vd3eyYGaJt9rL8=
+X-Gm-Gg: ASbGnct7zus0jfXKF8LPeykaNbJ3AmCSCB3kfxSmV17jm9pf8QAeEEhagXqbnx8s+0I
+	OarCKS02p99a77NpR3gWZB4tDT9gVnvT+gpT0z7/QpPJ+mRA6ctO3FdWkzFKZXrS12YegvShi4B
+	sWakDk4D4xrEx2x+pyPaDB9b6hA9VtrVOwF/gYZBGTwo9X2/vK9UcJiQKwB5/Y+EOvfPDpqcwS0
+	Tf49rNZN1HF2HLX+Wy4K61JlVMGUWnjVVpqS8HGmur26RmCzMD1og4prEWf3jy1g0Bm+iviE3Lb
+	M4Xink04sbD9qlwG/4mUeuP73CtcLs/JYKAolg3nXgHIDoosU3A+M20bmYmRRXIjooBAPit96IA
+	jf+Y=
+X-Google-Smtp-Source: AGHT+IFecEcz1pbl0bNby1akbXk/OS9BB4XW+tEKuivEZ9a3ze3eHfwybQTHoaKz7WPzovMAVqwFdA==
+X-Received: by 2002:a17:907:7daa:b0:aca:cda4:9aae with SMTP id a640c23a62f3a-acefbfe36a4mr110480866b.37.1746082153725;
+        Wed, 30 Apr 2025 23:49:13 -0700 (PDT)
+Received: from [100.64.0.4] (31-151-138-250.dynamic.upc.nl. [31.151.138.250])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ecf8cc1sm1005486066b.89.2025.04.30.23.49.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 23:49:13 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v2 0/5] Enable USB audio offloading on Fairphone 4
+ smartphone
+Date: Thu, 01 May 2025 08:48:46 +0200
+Message-Id: <20250501-fp4-usb-audio-offload-v2-0-30f4596281cd@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,326 +68,81 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250430-lavender-panel-v3-2-7625e62d62b2@mainlining.org>
-References: <20250430-lavender-panel-v3-0-7625e62d62b2@mainlining.org>
-In-Reply-To: <20250430-lavender-panel-v3-0-7625e62d62b2@mainlining.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE4ZE2gC/4WQvW7EIBCEX8WizkbAgv+qvEd0BYYlRoqND2wr0
+ cnvHuwrki7ljDQzn+bBMqVAmfXVgyXaQw5xLkK+VMyOZv4gCK5oJrnUXEkNflGw5QHM5kKE6P1
+ nNA5Iu8YPWjvZIivZJZEPX1fv++2pE923Ur8+zd/2MnZ2oxSQpxo1B7MkENojNaRIW9Pvgv3lu
+ RKKt7wrNBrcAjlus4MBm7r1yEU3uH6/OAaTCWycprD2FXbouNXKGkKBonFkTMcVoiyud53Sqli
+ DZSfxGPIa0/d1TNk/kf/5YBfAwXfc60bUWJN68yakZYwzvRYEdjuO4wfPcLnJcAEAAA==
+X-Change-ID: 20250425-fp4-usb-audio-offload-e5d7fb55d283
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+ Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>, 
+ Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Wesley Cheng <quic_wcheng@quicinc.com>, 
+ Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746042135; l=9681;
- i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=0YrxcUAUaXqkKGuZjlIfwbubu01yUpfA6AuAb1EDHhI=;
- b=pHkE4B6wiiZFGGkGWYRve/zXeb2eAvs1gQiyG4utrZtqxcQJb22FXCQPmGiCJuPtDwPRdq1Ls
- A9aUkqF9Hk4CtxP1+K9bJ3J+jPACJdOt6/4Hah2YBC6tLNJ5+QvE0QQ
-X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
- pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-Add driver for BOE TD4320 DSI panel, used in Xiaomi Redmi Note 7
-mobile phone.
+Since the series for the USB sound offloading driver was finally merged,
+we can add the sm6350 dts and enable it on Fairphone 4.
 
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+A few devicetree binding bits have also been missing in that series, so
+there's some extra patches for the basics in this series.
+
+Depends on:
+- For qcom,sm8250.yaml & sm8250.c:
+  https://lore.kernel.org/linux-arm-msm/20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com/T/
+- For dts:
+  https://lore.kernel.org/linux-arm-msm/20250321-sm6350-apr-v1-1-7805ce7b4dcf@fairphone.com/
+
+Devicetree patches go through qcom
+
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/gpu/drm/panel/Kconfig            |   9 ++
- drivers/gpu/drm/panel/Makefile           |   1 +
- drivers/gpu/drm/panel/panel-boe-td4320.c | 247 +++++++++++++++++++++++++++++++
- 3 files changed, 257 insertions(+)
+Changes in v2:
+- Move num-hc-interrupters prop to sm6350.dtsi (Konrad)
+- Sort cpu & codec nodes correctly (Konrad)
+- Remove usb-soc-be prop as it's no longer needed (Wesley)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250425-fp4-usb-audio-offload-v1-0-f90f571636e4@fairphone.com
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 7e9c60a626fbbabb954ed2a7e3d1ef5eee0679d6..639f4324db617a0a2a56debd75eeca7a50e60df6 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -67,6 +67,15 @@ config DRM_PANEL_BOE_HIMAX8279D
- 	  24 bit RGB per pixel. It provides a MIPI DSI interface to
- 	  the host and has a built-in LED backlight.
- 
-+config DRM_PANEL_BOE_TD4320
-+	tristate "BOE TD4320 DSI panel"
-+	depends on OF
-+	depends on DRM_MIPI_DSI
-+	depends on BACKLIGHT_CLASS_DEVICE
-+	help
-+	  Say Y here if you want to enable support for BOE TD4320 1080x2340
-+	  video mode panel found in Xiaomi Redmi Note 7 smartphones.
-+
- config DRM_PANEL_BOE_TH101MB31UIG002_28A
- 	tristate "Boe TH101MB31UIG002-28A panel"
- 	depends on OF
-diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 883974f0cba128e28f23e31512f8d30d59913b0e..5eec88e4ac3dea6a1cb357e27a32d2d14c64af9b 100644
---- a/drivers/gpu/drm/panel/Makefile
-+++ b/drivers/gpu/drm/panel/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_DRM_PANEL_ASUS_Z00T_TM5P5_NT35596) += panel-asus-z00t-tm5p5-n35596.
- obj-$(CONFIG_DRM_PANEL_AUO_A030JTN01) += panel-auo-a030jtn01.o
- obj-$(CONFIG_DRM_PANEL_BOE_BF060Y8M_AJ0) += panel-boe-bf060y8m-aj0.o
- obj-$(CONFIG_DRM_PANEL_BOE_HIMAX8279D) += panel-boe-himax8279d.o
-+obj-$(CONFIG_DRM_PANEL_BOE_TD4320) += panel-boe-td4320.o
- obj-$(CONFIG_DRM_PANEL_BOE_TH101MB31UIG002_28A) += panel-boe-th101mb31ig002-28a.o
- obj-$(CONFIG_DRM_PANEL_BOE_TV101WUM_LL2) += panel-boe-tv101wum-ll2.o
- obj-$(CONFIG_DRM_PANEL_BOE_TV101WUM_NL6) += panel-boe-tv101wum-nl6.o
-diff --git a/drivers/gpu/drm/panel/panel-boe-td4320.c b/drivers/gpu/drm/panel/panel-boe-td4320.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..1956daa2c71bc92c94fc76319d841b520407001c
---- /dev/null
-+++ b/drivers/gpu/drm/panel/panel-boe-td4320.c
-@@ -0,0 +1,247 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2024 Barnabas Czeman <barnabas.czeman@mainlining.org>
-+// Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
-+//   Copyright (c) 2013, The Linux Foundation. All rights reserved.
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <video/mipi_display.h>
-+
-+#include <drm/drm_mipi_dsi.h>
-+#include <drm/drm_modes.h>
-+#include <drm/drm_panel.h>
-+#include <drm/drm_probe_helper.h>
-+
-+struct boe_td4320 {
-+	struct drm_panel panel;
-+	struct mipi_dsi_device *dsi;
-+	struct regulator_bulk_data *supplies;
-+	struct gpio_desc *reset_gpio;
-+};
-+
-+static const struct regulator_bulk_data boe_td4320_supplies[] = {
-+	{ .supply = "iovcc" },
-+	{ .supply = "vsn" },
-+	{ .supply = "vsp" },
-+};
-+
-+static inline struct boe_td4320 *to_boe_td4320(struct drm_panel *panel)
-+{
-+	return container_of(panel, struct boe_td4320, panel);
-+}
-+
-+static void boe_td4320_reset(struct boe_td4320 *ctx)
-+{
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	usleep_range(1000, 2000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	usleep_range(5000, 6000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	msleep(30);
-+}
-+
-+static int boe_td4320_on(struct boe_td4320 *ctx)
-+{
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-+
-+	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xb0, 0x04);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xd6, 0x00);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xb8,
-+					 0x19, 0x55, 0x00, 0xbe, 0x00, 0x00,
-+					 0x00);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xb9,
-+					 0x4d, 0x55, 0x05, 0xe6, 0x00, 0x02,
-+					 0x03);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xba,
-+					 0x9b, 0x5b, 0x07, 0xe6, 0x00, 0x13,
-+					 0x00);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xf9,
-+					 0x44, 0x3f, 0x00, 0x8d, 0xbf);
-+	mipi_dsi_generic_write_seq_multi(&dsi_ctx, 0xce,
-+					 0x5d, 0x00, 0x0f, 0x1f, 0x2f, 0x3f,
-+					 0x4f, 0x5f, 0x6f, 0x7f, 0x8f, 0x9f,
-+					 0xaf, 0xbf, 0xcf, 0xdf, 0xef, 0xff,
-+					 0x04, 0x00, 0x02, 0x02, 0x42, 0x01,
-+					 0x69, 0x5a, 0x40, 0x40, 0x00, 0x00,
-+					 0x04, 0xfa, 0x00);
-+	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x00b8);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
-+				     0x2c);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x03);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x11, 0x00);
-+	mipi_dsi_msleep(&dsi_ctx, 96);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x29, 0x00);
-+	mipi_dsi_msleep(&dsi_ctx, 20);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
-+static int boe_td4320_off(struct boe_td4320 *ctx)
-+{
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-+
-+	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
-+	mipi_dsi_msleep(&dsi_ctx, 20);
-+	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
-+	mipi_dsi_msleep(&dsi_ctx, 120);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
-+static int boe_td4320_prepare(struct drm_panel *panel)
-+{
-+	struct boe_td4320 *ctx = to_boe_td4320(panel);
-+	struct device *dev = &ctx->dsi->dev;
-+	int ret;
-+
-+	ret = regulator_bulk_enable(ARRAY_SIZE(boe_td4320_supplies), ctx->supplies);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to enable regulators: %d\n", ret);
-+		return ret;
-+	}
-+
-+	boe_td4320_reset(ctx);
-+
-+	ret = boe_td4320_on(ctx);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to initialize panel: %d\n", ret);
-+		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+		regulator_bulk_disable(ARRAY_SIZE(boe_td4320_supplies), ctx->supplies);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int boe_td4320_unprepare(struct drm_panel *panel)
-+{
-+	struct boe_td4320 *ctx = to_boe_td4320(panel);
-+	struct device *dev = &ctx->dsi->dev;
-+	int ret;
-+
-+	ret = boe_td4320_off(ctx);
-+	if (ret < 0)
-+		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
-+
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	regulator_bulk_disable(ARRAY_SIZE(boe_td4320_supplies), ctx->supplies);
-+
-+	return 0;
-+}
-+
-+static const struct drm_display_mode boe_td4320_mode = {
-+	.clock = (1080 + 86 + 2 + 100) * (2340 + 4 + 4 + 60) * 60 / 1000,
-+	.hdisplay = 1080,
-+	.hsync_start = 1080 + 86,
-+	.hsync_end = 1080 + 86 + 2,
-+	.htotal = 1080 + 86 + 2 + 100,
-+	.vdisplay = 2340,
-+	.vsync_start = 2340 + 4,
-+	.vsync_end = 2340 + 4 + 4,
-+	.vtotal = 2340 + 4 + 4 + 60,
-+	.width_mm = 67,
-+	.height_mm = 145,
-+	.type = DRM_MODE_TYPE_DRIVER,
-+};
-+
-+static int boe_td4320_get_modes(struct drm_panel *panel,
-+				struct drm_connector *connector)
-+{
-+	return drm_connector_helper_get_modes_fixed(connector, &boe_td4320_mode);
-+}
-+
-+static const struct drm_panel_funcs boe_td4320_panel_funcs = {
-+	.prepare = boe_td4320_prepare,
-+	.unprepare = boe_td4320_unprepare,
-+	.get_modes = boe_td4320_get_modes,
-+};
-+
-+static int boe_td4320_probe(struct mipi_dsi_device *dsi)
-+{
-+	struct device *dev = &dsi->dev;
-+	struct boe_td4320 *ctx;
-+	int ret;
-+
-+	ctx = devm_drm_panel_alloc(dev, struct boe_td4320, panel,
-+				   &boe_td4320_panel_funcs,
-+				   DRM_MODE_CONNECTOR_DSI);
-+	if (IS_ERR(ctx))
-+		return PTR_ERR(ctx);
-+
-+	ret = devm_regulator_bulk_get_const(dev,
-+					    ARRAY_SIZE(boe_td4320_supplies),
-+					    boe_td4320_supplies,
-+					    &ctx->supplies);
-+	if (ret < 0)
-+		return ret;
-+
-+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(ctx->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
-+				     "Failed to get reset-gpios\n");
-+
-+	ctx->dsi = dsi;
-+	mipi_dsi_set_drvdata(dsi, ctx);
-+
-+	dsi->lanes = 4;
-+	dsi->format = MIPI_DSI_FMT_RGB888;
-+	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-+			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
-+
-+	ctx->panel.prepare_prev_first = true;
-+
-+	ret = drm_panel_of_backlight(&ctx->panel);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get backlight\n");
-+
-+	drm_panel_add(&ctx->panel);
-+
-+	ret = mipi_dsi_attach(dsi);
-+	if (ret < 0) {
-+		drm_panel_remove(&ctx->panel);
-+		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static void boe_td4320_remove(struct mipi_dsi_device *dsi)
-+{
-+	struct boe_td4320 *ctx = mipi_dsi_get_drvdata(dsi);
-+	int ret;
-+
-+	ret = mipi_dsi_detach(dsi);
-+	if (ret < 0)
-+		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
-+
-+	drm_panel_remove(&ctx->panel);
-+}
-+
-+static const struct of_device_id boe_td4320_of_match[] = {
-+	{ .compatible = "boe,td4320" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, boe_td4320_of_match);
-+
-+static struct mipi_dsi_driver boe_td4320_driver = {
-+	.probe = boe_td4320_probe,
-+	.remove = boe_td4320_remove,
-+	.driver = {
-+		.name = "panel-boe-td4320",
-+		.of_match_table = boe_td4320_of_match,
-+	},
-+};
-+module_mipi_dsi_driver(boe_td4320_driver);
-+
-+MODULE_AUTHOR("Barnabas Czeman <barnabas.czeman@mainlining.org>");
-+MODULE_DESCRIPTION("DRM driver for boe td4320 fhdplus video mode dsi panel");
-+MODULE_LICENSE("GPL");
+---
+Luca Weiss (5):
+      ASoC: dt-bindings: qcom,q6afe: Document q6usb subnode
+      ASoC: dt-bindings: qcom,sm8250: Add Fairphone 4 sound card
+      ASoC: qcom: sm8250: Add Fairphone 4 soundcard compatible
+      arm64: dts: qcom: sm6350: Add q6usbdai node
+      arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB audio offload support
 
+ .../devicetree/bindings/sound/qcom,q6afe.yaml      | 13 ++++++++
+ .../devicetree/bindings/sound/qcom,sm8250.yaml     |  1 +
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               | 11 +++++++
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 36 ++++++++++++++++++++++
+ sound/soc/qcom/sm8250.c                            |  1 +
+ 5 files changed, 62 insertions(+)
+---
+base-commit: 393d0c54cae31317deaa9043320c5fd9454deabc
+change-id: 20250425-fp4-usb-audio-offload-e5d7fb55d283
+prerequisite-change-id: 20250321-sm6350-apr-15f3e7e4e5ca:v1
+prerequisite-patch-id: 69859554c94de52068406dab0d2869ca26072c78
+prerequisite-change-id: 20240809-fp5-dp-sound-b3768f3019bd:v3
+prerequisite-patch-id: 2d8997a2be02cfddf3a054c79e7eb308a6d06710
+prerequisite-patch-id: 1b7c8f00ab50ae71c0221868578b9c1dfe939e4d
+prerequisite-patch-id: 4fd0673c4d35c1fefce63ec5785ff5ea67cc3d3a
+prerequisite-patch-id: f5ec3a893de19900f62dc691d83986f1104914b0
+prerequisite-patch-id: fce7573c39e768f7a09c002064b6159b8e91161a
+
+Best regards,
 -- 
-2.49.0
+Luca Weiss <luca.weiss@fairphone.com>
 
