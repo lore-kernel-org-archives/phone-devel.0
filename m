@@ -1,135 +1,187 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BE3225A47;
-	Tue,  6 May 2025 08:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8528C27EC67
+	for <phone-devel@vger.kernel.org>; Tue,  6 May 2025 12:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746519850; cv=none; b=E58+vTEoOV02x4R+c2CSR0D8n4E35rmJSMw44uX3mgslXiJ5t2g9E6Zh2rNKCLo392uoPfIcITiw8yGUCV/fTKz/3ApcEi5NTin61l3wwG295M6gWCkRSA0YEWXs8zO/DOroTeL1L8W072+P7zzeyOLkaxU5J+guxp4ZE3CyFjU=
+	t=1746533256; cv=none; b=FwykTFcimPSsFMr+Kzm+Zijo756IKT50tsCnKRdU6oOGqy8eyVqdNEz2pux1Djfgb8oa5M2QwOUqdPbwm9B5ktZcrDNM9m3RGHUfrbdx1K2Y07OnjSYZuWeQJm1bbjnS61O/YPK7Ejudf8bpzUccpR9YVmMV10CM8MnHScHtphA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746519850; c=relaxed/simple;
-	bh=4Vq0BqJ8nGlSIUsmUEbVToE2ay07PjBE/NACmYz5mQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plIqoB3EFn2jJtqItoZdkbgPZCCdH9PFf9vn0sVfpitTxzsMU6XvT8pzDFuy7c8puKG6KlmK2LLSgmBxu39J+S6D6GBPYlr89pGIOs6xcyJmrChdczX32wCU0PeWs4rZjlwM+Iw1K3bmlIYLmgho6d2Evk6MwjyZO+S4lvNITuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G+P7wqpC; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1746533256; c=relaxed/simple;
+	bh=SeRmzyMcT6JX37/ImDnhvHk8HNSqfqzsFYexZDstrTc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=JX0nCZVMruG1PtXtP++kG+esORT2ln9utoCyaWXqw3NizNCH3RPE1Jrds+QDFjvcWxJyiH/Kner6BhHCEKy41dQ99iiw/SPTNXuUiwl+DT5i4TVik3+ATzjZ04YK2vllSekJqnwNZ5PbPSopaV6vYZA+VYxNES5sBIg3Msk+CgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=cusdtxba; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G+P7wqpC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746519849; x=1778055849;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=4Vq0BqJ8nGlSIUsmUEbVToE2ay07PjBE/NACmYz5mQ4=;
-  b=G+P7wqpCcPwTgJMw9qC7FHv5nd0ip+Sx5t8iwPEU/29Z43VauqxICyPG
-   sAqySludWaQpwOWTmbk9mPj0a/V2J/b0oHkr2CWurf1H+tHtsVSqdEs1L
-   MZxDHM4cmfVL4vPxfKypgQ2cjkVw1O8B+0xkSvaczUxQtG0BrdAoOkESf
-   i+wi7nu/c6OdP8Wc8A518IJz2t1INcYLt6ttyBkXZJFa7i9ieSzm1OuzR
-   jRRZYh0Ay4Am1ivNdX1mrSL925UKAF3fZ2kaPWhBxuTz+mJUZPbemww98
-   k/7qtvs2LAQnhxDFpcjCz7gFiKVJ5QwlRHBtjZi3SolHs+xyLBk4QgKwS
-   A==;
-X-CSE-ConnectionGUID: RiS/ppCoRGK4cFS642zCNQ==
-X-CSE-MsgGUID: FseWoxXrS8qvWi/2gbp8YQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59563301"
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; 
-   d="scan'208";a="59563301"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 01:24:08 -0700
-X-CSE-ConnectionGUID: pnnpdw61Q5O/uSeG+eOgtQ==
-X-CSE-MsgGUID: EzFzhfzPTjmvSUshnZev1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; 
-   d="scan'208";a="139593835"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.165])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 01:24:06 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 8B33C11F828;
-	Tue,  6 May 2025 11:24:03 +0300 (EEST)
-Date: Tue, 6 May 2025 08:24:03 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	laurent.pinchart@ideasonboard.com
-Subject: Re: [PATCH v2 4/4] media: i2c: imx214: Remove hard-coded external
- clock frequency
-Message-ID: <aBnHI1APgjfcj2xG@kekkonen.localdomain>
-References: <20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu>
- <20250505-imx214_ccs_pll-v2-4-f50452061ff1@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="cusdtxba"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5fab81d6677so2370432a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 06 May 2025 05:07:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1746533252; x=1747138052; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M7v7vpdvOuhIP8be0gZZCUIgIPmqxbVGMYXTijnoryU=;
+        b=cusdtxbaM55uSkeGT6mg39KJxRPo+aL8KfVGdhhHfRpJhL8wfwON1RPyv7yi1LPyqL
+         nmnLp/IHdUnnG7l6n3DW1CyN2n649CiPCxGhxTcWCEgklVcvTor0muHnbd+a9KcKy6Gd
+         P+JPojGHdB982humWyFyvtzX4UFEWlIwKOVmRam9QdaZKCtDyuQLRCaRmkaun4fsyK5J
+         NuVVHnFAEjQuZA7y+qnmJRIkB8tm11aflTU7BRrkOVRLrveyqOYmonzoNKUQtLYkQuLN
+         r1b8IwWSSJv1jvwHfwPHvH98CqwlAxcQKYsO6SxzZCkYpZS9e6w4zqvHdWUYLgPZG14s
+         h0rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746533252; x=1747138052;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M7v7vpdvOuhIP8be0gZZCUIgIPmqxbVGMYXTijnoryU=;
+        b=iS6bwJd8vuB8+SjBwJLDGgvf5svgPMJLl1IvCNFT+Bogz8MbA5ECI8R7QXYG7R5q81
+         N+YimET7Got/GMG/vbnQRTbAvR7SsqRa2zUE5toKNWyyFu/Cf+7ybBi0tVs4ZTnyMEUB
+         uXyaXrMYQO6M57OwHg4SDCVDvaOoUARkY7++gBhxCbnYpGPRLXDDD0vL/3MDu5HUvAS8
+         teofGYAFVfQZ5i8XBz1ZZYzcbT2347ZyXTehX+De8NCq/PDbAOSCroxPqPCv4QQ/h9al
+         Jt1GG9WvBlTUhlRVA73GLF63jd4MMTsm5fMfao+zE5krtwNAzBKp++BY0b2mTgA2otuD
+         9baA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1a4ENfZzbwZrK5HWigcpIVhCw8JkUeBiFM3ab5vsmhX95wkAKVFnjvzC6R7yUH+dDxBL/1iHnI/np7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycFxAy2l4OOexhGbcP1C3WX+RkICKyv+XDsDhCJjPJzsS2aJeH
+	lBfffHa2TSvu+lgPlqgeAeNFGlPlGCq+Zx5clQAcU/l9+YfKF21OOgu1+EUZVZM=
+X-Gm-Gg: ASbGncuWvdui3zUaKXcxxr/cZBxTK+i4UKksplJeqdLwE/wkVZicXV0aKPo0fVrA0lS
+	aIHAsGvO7qYvwPtrzM+oS8FKKSEs8emiVXLuXGbfC3P+/9+y0txmKEqlWuVFO226ggp4FhnipZM
+	4XQikT0bPIucTqJBl0PXeTjpTsPo+YtpnqPhKsWT2ZT02vZnINDSz61zh7hakelCRwAtWUVnQ25
+	pxhbJWaXuzz+WDF8eRfYh8Qjsa2xslK0cC5xkqknDDbvbf8tC9b/hmyNmznwkLMBf0ZYEcKMnIO
+	OJrylg9z67imO5TJZcxrQsqfavekhSIqr+tBab6IKIOAZeF3ASvPT3yh3RA6Mg4H7pd2rw0D766
+	qup2Xg80NOvmLOX1BsRxn8yS2qDUhgcevy1xrYcHBRH+BYtwkNA==
+X-Google-Smtp-Source: AGHT+IFBdvqmi68ta2wRWiT+FRzasDJ5pBCULv7R/+BuR+Ax+JNv4/CaLyds47/kxsM107rKwn7PFw==
+X-Received: by 2002:a17:907:868e:b0:ac2:49b1:166f with SMTP id a640c23a62f3a-ad1a4b36f20mr1047373266b.52.1746533251536;
+        Tue, 06 May 2025 05:07:31 -0700 (PDT)
+Received: from localhost (2001-1c00-3b8a-ea00-c4de-d39d-05f4-c77a.cable.dynamic.v6.ziggo.nl. [2001:1c00:3b8a:ea00:c4de:d39d:5f4:c77a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1891a5e1dsm704170466b.55.2025.05.06.05.07.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 05:07:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250505-imx214_ccs_pll-v2-4-f50452061ff1@apitzsch.eu>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 06 May 2025 14:07:30 +0200
+Message-Id: <D9P2D6PG7420.N4T2UBGAOFMR@fairphone.com>
+Cc: "Banajit Goswami" <bgoswami@quicinc.com>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi
+ Iwai" <tiwai@suse.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konradybcio@kernel.org>, <phone-devel@vger.kernel.org>,
+ <alsa-devel@alsa-project.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v3 2/5] ASoC: qcom: sm8250: set card driver name from
+ match data
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Srinivas Kandagatla" <srinivas.kandagatla@oss.qualcomm.com>, "Luca
+ Weiss" <luca@lucaweiss.eu>, <~postmarketos/upstreaming@lists.sr.ht>,
+ "Srinivas Kandagatla" <srini@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
+ <20250425-fp5-dp-sound-v3-2-7cb45180091b@fairphone.com>
+ <aBNdCRk_fP2q1vxQ@srini-hackbase>
+ <91110CA9-6E83-4811-AA04-C0312B99B95E@lucaweiss.eu>
+ <0d094cec-0a2e-4e21-845f-977f3a77993d@oss.qualcomm.com>
+In-Reply-To: <0d094cec-0a2e-4e21-845f-977f3a77993d@oss.qualcomm.com>
 
-Hi André,
+Hi Srini,
 
-On Mon, May 05, 2025 at 11:05:56PM +0200, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
-> 
-> Instead rely on the rate set on the clock (using assigned-clock-rates
-> etc.)
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> ---
->  drivers/media/i2c/imx214.c | 6 ------
->  1 file changed, 6 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index 9e9be47394ec768a5b34d44b06b5bbb0988da5a1..c12996e294dccebb18c608254f1e0d14dc064423 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -32,7 +32,6 @@
->  
->  #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
->  
-> -#define IMX214_DEFAULT_CLK_FREQ	24000000
->  #define IMX214_DEFAULT_LINK_FREQ	600000000
->  /* Keep wrong link frequency for backward compatibility */
->  #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
-> @@ -1405,11 +1404,6 @@ static int imx214_probe(struct i2c_client *client)
->  		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
->  				     "failed to get xclk\n");
->  
-> -	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret,
-> -				     "failed to set xclk frequency\n");
-> -
+On Fri May 2, 2025 at 1:06 PM CEST, Srinivas Kandagatla wrote:
+> On 5/1/25 15:13, Luca Weiss wrote:
+>> Hi Srini,
+>>=20
+>> Srinivas Kandagatla <srini@kernel.org> schreef op 1 mei 2025 13:37:45 CE=
+ST:
+>>> On Fri, Apr 25, 2025 at 10:07:26AM +0200, Luca Weiss wrote:
+>>>> Sound machine drivers for Qualcomm SoCs can be reused across multiple
+>>>> SoCs. But user space ALSA UCM files depend on the card driver name whi=
+ch
+>>>> should be set per board/SoC.
+>>>>
+>>>> Allow such customization by using driver match data as sound card driv=
+er
+>>>> name.
+>>>>
+>>>> Also while we're already touching these lines, sort the compatibles
+>>>> alphabetically.
+>>>>
+>>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>>> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>> ---
+>>>>  sound/soc/qcom/sm8250.c | 9 ++++-----
+>>>>  1 file changed, 4 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+>>>> index b70b2a5031dfbf69024666f8a1049c263efcde0a..e920b413b762c803cfcc40=
+49f35deba828275478 100644
+>>>> --- a/sound/soc/qcom/sm8250.c
+>>>> +++ b/sound/soc/qcom/sm8250.c
+>>>> @@ -16,7 +16,6 @@
+>>>>  #include "usb_offload_utils.h"
+>>>>  #include "sdw.h"
+>>>> =20
+>>>> -#define DRIVER_NAME		"sm8250"
+>>>>  #define MI2S_BCLK_RATE		1536000
+>>>> =20
+>>>>  struct sm8250_snd_data {
+>>>> @@ -200,15 +199,15 @@ static int sm8250_platform_probe(struct platform=
+_device *pdev)
+>>>>  	if (ret)
+>>>>  		return ret;
+>>>> =20
+>>>> -	card->driver_name =3D DRIVER_NAME;
+>>>> +	card->driver_name =3D of_device_get_match_data(dev);
+>>>>  	sm8250_add_be_ops(card);
+>>>>  	return devm_snd_soc_register_card(dev, card);
+>>>>  }
+>>>> =20
+>>>>  static const struct of_device_id snd_sm8250_dt_match[] =3D {
+>>>> -	{.compatible =3D "qcom,sm8250-sndcard"},
+>>>> -	{.compatible =3D "qcom,qrb4210-rb2-sndcard"},
+>>>> -	{.compatible =3D "qcom,qrb5165-rb5-sndcard"},
+>>>> +	{ .compatible =3D "qcom,qrb4210-rb2-sndcard", .data =3D "sm8250" },
+>>>
+>>> sm4250 for rb2?
+>>=20
+>> Since this name is visible to user space and used for picking the UCM co=
+nfig, I don't think it's a good idea to change it.
+>>=20
+> It is not correct to pretend that rb2 is sm8250 for ucm cases, I agree pr=
+evious code was
+> already doing this, Good thing is that we do not have a ucm written yet f=
+or RB2.
+>
+> Lets fix this as you are already doing this for other compatibles.
 
-Oops. I missed this is what the driver was doing already. Indeed, this is
-one of the historic sensor drivers that do set the frequency in DT systems.
+Okay, will change this in v4.
 
-The driver never used the clock-frequency property and instead used a fixed
-frequency. Changing the behaviour now could be problematic.
+Regards
+Luca
 
-There are options here that I think we could do:
+>
+> --srini
+>
+>> Regards
+>> Luca
+>>=20
+>>>
+>>>> +	{ .compatible =3D "qcom,qrb5165-rb5-sndcard", .data =3D "sm8250" },
+>>>> +	{ .compatible =3D "qcom,sm8250-sndcard", .data =3D "sm8250" },
+>>>>  	{}
+>>>>  };
+>>>> =20
+>>>>
+>>>> --=20
+>>>> 2.49.0
+>>>>
 
-1) use your v1 patch (4) which uses "clock-frequency" if it exists and
-otherwise uses the default, fixed frequency or
-
-2) set the frequency only if the "clock-frequency" property exists. The DT
-currently requires clock-frequency and the YAML conversion was done in 2020
-whereas the driver is from 2018. If we do this, the clock-frequency should
-be deprecated (or even removed from bingings).
-
-I wonder what others think. Cc'd Laurent in any case.
-
->  	ret = imx214_get_regulators(dev, imx214);
->  	if (ret < 0)
->  		return dev_err_probe(dev, ret, "failed to get regulators\n");
-> 
-
--- 
-Regards,
-
-Sakari Ailus
