@@ -1,53 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009C022338;
-	Mon, 12 May 2025 21:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB29290BC2;
+	Mon, 12 May 2025 21:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747086543; cv=none; b=fXRV8AzIcMKeYHU2Ct5sHKWOKfTxPQ+fyyb1u0Yrcd49AmzuW/NtUcY9R/CjK3umCy7+0CQza7EGauIINjRvkOQ+PfkOaJADKGAletq2ZfU8AshNLHvlLRV9RKcJG9xZPwJLr3/O5ldr6kkwRFg7gt/t50jfo1riBz1RCUocQ+I=
+	t=1747086560; cv=none; b=WCB/MMNzlqncGN5DynzFFZ3kyEDovnY/S/5EivaawWi8QkKa06YU50R/MUT7cBVQdt/yOeiI60EPBPSsfYfMjQYk+vT4hmElaPxjH6dk2XNRV6hTOavVl3uJ404tZ1mhPfIMFkH0ylInUENIWWeg8cQBsBB7eOvTUpsRVLp5W14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747086543; c=relaxed/simple;
-	bh=LuAOPUZgGmqT5sqplzTtEFTdMTPrEXMUaf/Wgr76LTg=;
+	s=arc-20240116; t=1747086560; c=relaxed/simple;
+	bh=C3G81qrv7/1vX1M5v42kE//YoE6ndcm9EiYPLOoN2Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eLkVojxUhdpHmhWJQUzOo8KT8fsrbUw54WMsGlhUNDqbiNy3Recdpm2kE+kcy+0TjheTM10OLDcjExz7l/Yxym6Te8H4KflxQsRH+WAhRGDeBuaV54jQQGOYeEXmxNllrHCcGTRsAGmgFvnIt6ClqFEGfCgUaDK/xLa9kOEqcEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hteDYr8U; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=DHlwL0qAJaPXOGgh6d4CGAJDd3fmtKZ8PCr6HEt+gSrZMrHokf2WV+pDeTDmjx+ZVC2QYc8f0wULc23qLDAaZB8aDDXkP6rd7g9dCCbzIjU94i68dnhJfw8iN0kq0E29DrcKEz5By+3y+6onRl1D6HRnbEjOSuZf+YZpbTQLIqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEtubNxr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hteDYr8U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCE9C4CEE7;
-	Mon, 12 May 2025 21:48:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEtubNxr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F874C4CEF3;
+	Mon, 12 May 2025 21:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747086542;
-	bh=LuAOPUZgGmqT5sqplzTtEFTdMTPrEXMUaf/Wgr76LTg=;
+	s=k20201202; t=1747086559;
+	bh=C3G81qrv7/1vX1M5v42kE//YoE6ndcm9EiYPLOoN2Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hteDYr8UbIqtSpmDpi//Sm6v3/BOIM97fYkz+iFZr8MUZ71/BwEmiAB0LKzKDko+z
-	 iNCvoG7adDNx/4A1S8f2Vmb8oj4LdqKOpAJVTd8DSvuPW5S93d0FnHiMKgPi+ryPki
-	 F+Omv5eWLtP0CO2jl6/f1P4nZjnMw+O1I+GZ4HebNTIwKW+GJ5y5znobdFedGhybVG
-	 ZMiF/D041d17Yu+KaScZsO1FeOwFh4oHOA1U0k7RNzv1R4mgqV34LtL8CqaTsfg2ct
-	 bvFs2N4VPLs0Oj3W+iwEyjDdnn3uLBzuBg9rBBc52S5OknRlJoCnhW/g46BYeB0CIO
-	 oCnFUHJ8vbJWw==
+	b=QEtubNxr+eEj63xi/ebEFe0eRwKoZZwIZFOt7BxtLa4kB9MWXlJOptYAbNhEq1xWc
+	 TgxQOjUGcl0+ztD0HEMgcHbwn8rp5P3vMdaZywMT4+WpJgoFwXqoYKlyvdG9X1v9lW
+	 VSYgw1AmVVa9nsB1gklZy1gFsQcUoehjrIIuoroauhyR8psHOQFfT8Cifh7s4XTNPa
+	 JiCofIyn7VPc+CU7CdTxtmEUJRrDghrVuPkDShxi7B1F7m7KDru/RJHsof04DYbOpV
+	 VHeLDUihKXSscRaEzAXCIH/W60foyvlC7FJUvnUrWbtXk6zD+E3cxw2B5OxH2jlX/t
+	 H4w7lzNpyhZlg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
+	Stanislav Jakubek <stano.jakubek@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/4] Add video clock controller for SM6350
-Date: Mon, 12 May 2025 22:48:49 +0100
-Message-ID: <174708642734.3671.5958647502216393277.b4-ty@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	phone-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] Moto G (2013) DTS updates
+Date: Mon, 12 May 2025 22:48:53 +0100
+Message-ID: <174708642735.3671.12706246098012962690.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
-References: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
+In-Reply-To: <cover.1746711762.git.stano.jakubek@gmail.com>
+References: <cover.1746711762.git.stano.jakubek@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -58,17 +53,27 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Mon, 24 Mar 2025 09:41:00 +0100, Luca Weiss wrote:
-> The driver for the SM6350 videocc has been lying around in some branches
-> of my git tree for a long time, let's upstream it. It doesn't get any
-> better by letting it age!
+On Thu, 08 May 2025 16:11:05 +0200, Stanislav Jakubek wrote:
+> This series improves the accuracy of motorola-falcon's DTS.
 > 
+> As a side note, I wanted to ask how to describe the Hall effect sensor's
+> vdd-supply. The sensor's currently described as part of the gpio-keys node.
+> According to the schematic it's powered by pm8226_lvs1, but I don't see a way
+> to describe this as part of the gpio-keys node (maybe it's always-on because
+> of this? Downstream describes it as gpio-keys too). Any tips?
 > 
+> [...]
 
 Applied, thanks!
 
-[2/4] dt-bindings: clock: add SM6350 QCOM video clock bindings
-      commit: b887afb9b2362b15c1ee5585df1fb8cf3a3384c6
+[1/4] ARM: dts: qcom: msm8226-motorola-falcon: add clocks, power-domain to simpleFB
+      commit: cbcd04ab82c61dc777a4b56014292b9467f10c4e
+[2/4] ARM: dts: qcom: msm8226-motorola-falcon: add I2C clock frequencies
+      commit: db6e3f2ba0bf6ad069347050ff62f29ef0d88b14
+[3/4] ARM: dts: qcom: msm8226-motorola-falcon: limit TPS65132 to 5.4V
+      commit: 7bce56fd73ee7264ed04418dab1719164e42f113
+[4/4] ARM: dts: qcom: msm8226-motorola-falcon: specify vddio_disp output voltage
+      commit: e41ece7cd173486f6767de050deb2d8f0882a82a
 
 Best regards,
 -- 
