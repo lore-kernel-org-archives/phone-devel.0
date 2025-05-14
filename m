@@ -1,87 +1,72 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FAA149C4D;
-	Wed, 14 May 2025 14:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B929671C;
+	Wed, 14 May 2025 21:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747233538; cv=none; b=B6rG5K3E9AjgaLoqIehnimLdqpn/xmFl4VD37agi1sxUhToUzoiktH9XYh3F+mji2aApGyeAX7jk6Vz4YUxPxN7Cs/PXcZptssMg42rJYVQZui9+7mGKBX+OC6rDvevxDAp4h1JaJDTvGc9PCdFWfQGi8oXMYy5RfHkKNfcdBuM=
+	t=1747256690; cv=none; b=Rds1+OfBG4JMU86cOCtsLTYprkCr1yrkBGZYxT3N9dkqNMq5OlzjxGhc36mKBv1BIzQx+jB2eJ2OBvDgnYMZRLowV7Bohas9BCezJWJocZhQCrfdQLrR6qEMbpJIBmGki3DvppOSat4FU7W+yPtZbtl5FblN5kFXq5Bb6F4dg48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747233538; c=relaxed/simple;
-	bh=Gcj5nd9FKHE5cWwXkk4NEvyBItenXrqDWNZrSF1XmE8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=cLJ7jIFi3Lo5qZTR7V6bAKMj4h03rJTATVfw0Mj8kghMe1+NRSYdsr35B/aMOT50wgcEPilWhFp9VvkrcE5gnwvqVQ6ADxXoxzEefr5nmmEDFeztrOjoXh+LzZXMmmALjXYe6v4Oh+EBdgFeHVZLaDIrCWx8jzF1QFE8XXcxJBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=Xq6TwNBa; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1747256690; c=relaxed/simple;
+	bh=8dAQlNr8wkgJPQta9+l99fjn6mNBAmRuVHQnNcWtNzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jJcAa3WhGO1HcD0pFIHF+9/LjVIInJS75NVQbMzld11Xh8z846xZCljUarY+ZY0+PhsRZQhRAaFXkqML+6EVMq9Pr2U9/UbZhUx+qgd0zcQjQ4NcK60XdN4W9xy31n+GOKR+J1h9ZpteawCprJq81uuOeOgi89F6jSd8lzN4UVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d00Kcvhi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="Xq6TwNBa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1747233085; bh=Gcj5nd9FKHE5cWwXkk4NEvyBItenXrqDWNZrSF1XmE8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xq6TwNBabd44lFs7H9hpcoAP3rrASWp5S/QzAT8JaEA+NYJMgDo3zyHOG63vfh1ZP
-	 rUxXUn75tginS46bGlHBNU3fe6Bp45qnObhDeqn/2pUOOfSJy18R371QoZ9Ukrk+cM
-	 jS+T/0Q5LbUaJrDIg3l51w9FMnYz4mCZ/IsP4ezk=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d00Kcvhi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A315C4CEED;
+	Wed, 14 May 2025 21:04:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747256690;
+	bh=8dAQlNr8wkgJPQta9+l99fjn6mNBAmRuVHQnNcWtNzU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d00KcvhiXjEAzWfLLrt3KzUd4TOeDwFaA4bsZqNf8mKj3+iEYHcVCsK9vPTUfyLep
+	 NstKMFFAuvOvWDV7ovwUkIZX8du1j4elV0jCSWsqmnAmMC6dm5lVoog8p9rGhty7LD
+	 Fk0eLwo2Mftov3omlga1lQOt1AuZhPKKxQArZg4gygiNWSK5YtRlMceyCx34mak6vx
+	 eQEGPvRdnIV5dDYz7XIBmoyzXcoaXO5WTZlF1DsTwnY49BW5yfQEc7H2SQS1dnxSyf
+	 JtgZ379wlEhWLacBf1q7k+QdOIi/WEV/Y8IjJ1WJS6GOIJLp1I3PnCWuBDpryg61U1
+	 wTSuKqbCAGdfw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Vincent Knecht <vincent.knecht@mailoo.org>
+Cc: Stephan Gerhold <stephan@gerhold.net>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH RESEND2 v2] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
+Date: Wed, 14 May 2025 22:03:53 +0100
+Message-ID: <174725663058.90041.15815541810993408682.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org>
+References: <20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 14 May 2025 15:31:25 +0100
-From: Luca Weiss <luca@lucaweiss.eu>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, Neil
- Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
- <quic_jesszhan@quicinc.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
- Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] dt-bindings: display: panel: Add Himax HX83112B
-In-Reply-To: <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
-References: <20250225-fp3-display-v2-0-0b1f05915fae@lucaweiss.eu>
- <20250225-fp3-display-v2-2-0b1f05915fae@lucaweiss.eu>
- <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
-Message-ID: <932d5cc223f8d1ff1bb09c68990e4a82@lucaweiss.eu>
-X-Sender: luca@lucaweiss.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Krzysztof,
 
-On 2025-02-26 07:46, Krzysztof Kozlowski wrote:
-> On Tue, Feb 25, 2025 at 10:14:30PM +0100, Luca Weiss wrote:
->> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
->> Describe it and the Fairphone 3 panel (98-03057-6598B-I) from DJN 
->> using
->> it.
->> 
->> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
->> ---
->>  .../bindings/display/panel/himax,hx83112b.yaml     | 75 
->> ++++++++++++++++++++++
->>  1 file changed, 75 insertions(+)
->> 
+On Mon, 14 Apr 2025 18:45:12 +0200, Vincent Knecht wrote:
+> Fix mclk0 & mclk1 parent map to use correct GPLL6 configuration and
+> freq_tbl to use GPLL6 instead of GPLL0 so that they tick at 24 MHz.
 > 
-> Discussion is still going. Sending v2 after two days is hiding that
-> previous talk, so that makes me sad.
 > 
-> I am still at v1 and I am not going to review this one here.
 
-Apart from [0] there was also no other activity in v1, could you take 
-another look now?
+Applied, thanks!
 
-[0] 
-https://lore.kernel.org/linux-arm-msm/emwpl2e7zpzkm4uea22g4hayz66nk7nxylinsd2stuwlatwdc3@ixkbc2bxbz4p/
+[1/1] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
+      commit: 9e7acf70cf6aa7b22f67d911f50a8cd510e8fb00
 
-Regards
-Luca
-
-> 
-> Best regards,
-> Krzysztof
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
