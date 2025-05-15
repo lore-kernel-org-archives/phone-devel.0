@@ -1,72 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B929671C;
-	Wed, 14 May 2025 21:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE89295DB5;
+	Thu, 15 May 2025 08:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747256690; cv=none; b=Rds1+OfBG4JMU86cOCtsLTYprkCr1yrkBGZYxT3N9dkqNMq5OlzjxGhc36mKBv1BIzQx+jB2eJ2OBvDgnYMZRLowV7Bohas9BCezJWJocZhQCrfdQLrR6qEMbpJIBmGki3DvppOSat4FU7W+yPtZbtl5FblN5kFXq5Bb6F4dg48=
+	t=1747299540; cv=none; b=ktAdOnVnlWpY4BfeFL08egQIUaggK+8+9fIkpw0cpfrlR/+5XQsBXZlRvuQ2RYva63tbAd9sWYK0wPm8DzsjyZo3BEKbIxievYeppT54l/YPjt4pdYZvAWAuLhicNb7p32CKe6tvVOXqRL+Sz+p3woyt1Z90Ikdw1fLTEFvmoEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747256690; c=relaxed/simple;
-	bh=8dAQlNr8wkgJPQta9+l99fjn6mNBAmRuVHQnNcWtNzU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jJcAa3WhGO1HcD0pFIHF+9/LjVIInJS75NVQbMzld11Xh8z846xZCljUarY+ZY0+PhsRZQhRAaFXkqML+6EVMq9Pr2U9/UbZhUx+qgd0zcQjQ4NcK60XdN4W9xy31n+GOKR+J1h9ZpteawCprJq81uuOeOgi89F6jSd8lzN4UVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d00Kcvhi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747299540; c=relaxed/simple;
+	bh=WKED9sw9AaRYnOXYd8MFwqseZ6zJJk0qej3Fm79ffHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=owF01NJDP4X7OCOE1gwZO+B/2mjZyAceupwVMSEVj9CDGepMPzWeHSETaK6L0E+xqyG8yjMhQsUJ2Pt4gUZscZL6j57ADWSaRlaw2Xvvn8rsXTy4rzCzy54l7jXQ0xFGEJtzzOXYEZ6K9017MbfZbvYc/6rQnPN8HEY1JR3dJKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=XoovOdPm; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d00Kcvhi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A315C4CEED;
-	Wed, 14 May 2025 21:04:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747256690;
-	bh=8dAQlNr8wkgJPQta9+l99fjn6mNBAmRuVHQnNcWtNzU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d00KcvhiXjEAzWfLLrt3KzUd4TOeDwFaA4bsZqNf8mKj3+iEYHcVCsK9vPTUfyLep
-	 NstKMFFAuvOvWDV7ovwUkIZX8du1j4elV0jCSWsqmnAmMC6dm5lVoog8p9rGhty7LD
-	 Fk0eLwo2Mftov3omlga1lQOt1AuZhPKKxQArZg4gygiNWSK5YtRlMceyCx34mak6vx
-	 eQEGPvRdnIV5dDYz7XIBmoyzXcoaXO5WTZlF1DsTwnY49BW5yfQEc7H2SQS1dnxSyf
-	 JtgZ379wlEhWLacBf1q7k+QdOIi/WEV/Y8IjJ1WJS6GOIJLp1I3PnCWuBDpryg61U1
-	 wTSuKqbCAGdfw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Vincent Knecht <vincent.knecht@mailoo.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH RESEND2 v2] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
-Date: Wed, 14 May 2025 22:03:53 +0100
-Message-ID: <174725663058.90041.15815541810993408682.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org>
-References: <20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="XoovOdPm"
+Received: from pendragon.ideasonboard.com (85-76-100-138-nat.elisa-mobile.fi [85.76.100.138])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E6F63836;
+	Thu, 15 May 2025 10:58:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1747299519;
+	bh=WKED9sw9AaRYnOXYd8MFwqseZ6zJJk0qej3Fm79ffHY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XoovOdPmyr7EB445fvejvr2nyZaScEJvqwiKsjwNym3vmDqJOIzk/MfyDdOaW+oFz
+	 emds7U4TpJy29QfZsIQkKa1/MsUvu35Rd4aQCilY7ATdXI06m7rKE1oQmZt4FTjukU
+	 SVpZR+o5hknWEWFHUFNF1KpL/tCl+BOZFkGyF2+8=
+Date: Thu, 15 May 2025 10:58:46 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: git@apitzsch.eu, Ricardo Ribalda <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] media: i2c: imx214: Remove hard-coded external
+ clock frequency
+Message-ID: <20250515085846.GR23592@pendragon.ideasonboard.com>
+References: <20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu>
+ <20250505-imx214_ccs_pll-v2-4-f50452061ff1@apitzsch.eu>
+ <aBnHI1APgjfcj2xG@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aBnHI1APgjfcj2xG@kekkonen.localdomain>
 
+Hi Sakari,
 
-On Mon, 14 Apr 2025 18:45:12 +0200, Vincent Knecht wrote:
-> Fix mclk0 & mclk1 parent map to use correct GPLL6 configuration and
-> freq_tbl to use GPLL6 instead of GPLL0 so that they tick at 24 MHz.
+On Tue, May 06, 2025 at 08:24:03AM +0000, Sakari Ailus wrote:
+> On Mon, May 05, 2025 at 11:05:56PM +0200, André Apitzsch via B4 Relay wrote:
+> > From: André Apitzsch <git@apitzsch.eu>
+> > 
+> > Instead rely on the rate set on the clock (using assigned-clock-rates
+> > etc.)
+> > 
+> > Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> > ---
+> >  drivers/media/i2c/imx214.c | 6 ------
+> >  1 file changed, 6 deletions(-)
+> > 
+> > diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> > index 9e9be47394ec768a5b34d44b06b5bbb0988da5a1..c12996e294dccebb18c608254f1e0d14dc064423 100644
+> > --- a/drivers/media/i2c/imx214.c
+> > +++ b/drivers/media/i2c/imx214.c
+> > @@ -32,7 +32,6 @@
+> >  
+> >  #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
+> >  
+> > -#define IMX214_DEFAULT_CLK_FREQ	24000000
+> >  #define IMX214_DEFAULT_LINK_FREQ	600000000
+> >  /* Keep wrong link frequency for backward compatibility */
+> >  #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
+> > @@ -1405,11 +1404,6 @@ static int imx214_probe(struct i2c_client *client)
+> >  		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
+> >  				     "failed to get xclk\n");
+> >  
+> > -	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
+> > -	if (ret)
+> > -		return dev_err_probe(dev, ret,
+> > -				     "failed to set xclk frequency\n");
+> > -
 > 
+> Oops. I missed this is what the driver was doing already. Indeed, this is
+> one of the historic sensor drivers that do set the frequency in DT systems.
 > 
+> The driver never used the clock-frequency property and instead used a fixed
+> frequency. Changing the behaviour now could be problematic.
+> 
+> There are options here that I think we could do:
+> 
+> 1) use your v1 patch (4) which uses "clock-frequency" if it exists and
+> otherwise uses the default, fixed frequency or
+> 
+> 2) set the frequency only if the "clock-frequency" property exists. The DT
+> currently requires clock-frequency and the YAML conversion was done in 2020
+> whereas the driver is from 2018. If we do this, the clock-frequency should
+> be deprecated (or even removed from bingings).
+> 
+> I wonder what others think. Cc'd Laurent in any case.
 
-Applied, thanks!
+Maybe I'm missing something, but I don't really see the issue here. The
+clock-frequency DT property is currently ignored, and this patch doesn't
+change that situation, does it ?
 
-[1/1] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
-      commit: 9e7acf70cf6aa7b22f67d911f50a8cd510e8fb00
+The change of behaviour here is related to the assigned-clock-rates
+property. If that property is specified today, it will set the clock
+rate, and the driver will override it to 24MHz right after. With this
+patch, the clock rate won't be overridden. I think the risk of
+regression is very low here, as I don't expect systems to set
+assigned-clock-rates in DT to a value different than 24MHz and expect
+the driver to override it.
 
-Best regards,
+> >  	ret = imx214_get_regulators(dev, imx214);
+> >  	if (ret < 0)
+> >  		return dev_err_probe(dev, ret, "failed to get regulators\n");
+
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Regards,
+
+Laurent Pinchart
