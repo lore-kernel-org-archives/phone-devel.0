@@ -1,46 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8325725A359;
-	Wed, 21 May 2025 10:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D16C223311;
+	Wed, 21 May 2025 16:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747821938; cv=none; b=K0evr6MBYkZ90a6XhijCUiixuIWADnjRi9MoCw/QyjJOtMA4GnTa/9ro62J98ZNJkC4GmBPPd5SgX7LGRS8ttWa545nAuM7Pk9Kb5DPf1Hg6554KEEsg+d8OQyoSeHDPzQdwdlkw/J7fsx2vOEWMV3ETAjTvscM51DT+S68iQTA=
+	t=1747846259; cv=none; b=PZRt9qF1PeJ8ka5iP3BtRpkp3zYf+UNK4IaFFaBPcDt/r/7aVdjbewkMZfZvTBIM3YnNC8Dl1bGWUoKyQQHxoflU+qZD0S3xW+2Yhjd1GvqgGZEzwfqgx/c7tKjiDTpB8dEPd3k/ukLkCMWeTmcoQSXQIJZywW7cYmVDmDqAYfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747821938; c=relaxed/simple;
-	bh=qF0sf5/kYu9pbScNuapYhsVL4yTaC3+FjQYRqrPusGo=;
+	s=arc-20240116; t=1747846259; c=relaxed/simple;
+	bh=+9HB5JZYZUStWziezn6DHT6Rxo7nJCm+/PmjLmyDFHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6ZP/x0kdMLDyveixAo8QcdsgmAeKOlSfFSwdA2kNW5J6JI30C35A+xrCC82fTtyMQrlWcP3xFRoJa0Wc7TIUNGlhoZZYwaENf5WccBiGK5NEQjgcDTMx60htuROOjZ/asc5039x+5Czh2VSdH5qlmrurpNqCbgYrUCbaa4YRHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nG2P98iy; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbSFaKeWeSf1NmMby3pV1X51jQSQU1rfdS6QuwmabMQ+9y8A3NcoPZdVx+GyX0AZ2SkXIyt9S7+tnOW6perKM++7AtisJsV/94Oq5gIjAixvOZmSy1S0UOUFpDn21DSdklriSy9Bs7qo5ty+Jt/b6XrM2bMVGEjlmuRe9CYr2Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=FiqMWvNI; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nG2P98iy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC05C4CEE4;
-	Wed, 21 May 2025 10:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747821938;
-	bh=qF0sf5/kYu9pbScNuapYhsVL4yTaC3+FjQYRqrPusGo=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="FiqMWvNI"
+Received: from pendragon.ideasonboard.com (179.218-130-109.adsl-dyn.isp.belgacom.be [109.130.218.179])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 045473A4;
+	Wed, 21 May 2025 18:50:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1747846233;
+	bh=+9HB5JZYZUStWziezn6DHT6Rxo7nJCm+/PmjLmyDFHM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nG2P98iy6mzm1RGqRoKNSrIcJ6NUHosfIAAMZguURxwk4ihFikJ9pRmolg77CeLo9
-	 1jlJ5tyoRWCx9wtLcnl/QMX1tif71pFpbSnaGcv9DawvPB1rwReJQetx37AD7x6QsG
-	 U73RsqMqXX59Q/fIhsvqxfncnXf1NsU0CVK8dyI027QReAXg784/oWM4VLkzZMzA4r
-	 K20iNB74v3CZY7KOtHsdD7kaWGvNyVpwW+QeNnEAEM916BtkeVqGk+6WKa89aYk+gY
-	 uXQGL3pRtiF98xqxfIaTulxxGgC2+tPKY+JW19xajIs3m3DKq/haJqG5QtRRrx9vob
-	 UrY9YNNsaxbOA==
-Date: Wed, 21 May 2025 12:05:35 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vincent Knecht <vincent.knecht@mailoo.org>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 3/4] media: dt-bindings: Add qcom,msm8939-camss
-Message-ID: <20250521-fast-almond-chihuahua-3e0a62@kuoka>
-References: <20250520-camss-8x39-vbif-v1-0-a12cd6006af9@mailoo.org>
- <20250520-camss-8x39-vbif-v1-3-a12cd6006af9@mailoo.org>
+	b=FiqMWvNIVgX6BQMJA1SA3s/E6tElHLXvMQ09bQlDzVsTTAJNwu7UN6qZP2xzKs2A/
+	 IGKrf7MIclenHv0X23378MyQqyikfn6bu5FEkrFsik3je4bMQpTmOD2yNYQa989xAg
+	 82Vz6OkgtFBqEJEX+Ov2m/+GzwjPa+D5uPbbZqew=
+Date: Wed, 21 May 2025 18:50:48 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] media: i2c: imx214: Remove hard-coded external
+ clock frequency
+Message-ID: <20250521165048.GA6792@pendragon.ideasonboard.com>
+References: <20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu>
+ <20250505-imx214_ccs_pll-v2-4-f50452061ff1@apitzsch.eu>
+ <aBnHI1APgjfcj2xG@kekkonen.localdomain>
+ <20250515085846.GR23592@pendragon.ideasonboard.com>
+ <aCXWDnZhffjlt+8i@svinhufvud>
+ <20250515130340.GC12492@pendragon.ideasonboard.com>
+ <aCZWV6xj4vap5PFZ@svinhufvud>
+ <7d2d4c3bc5e8d49fbcd4763487f82db634b06205.camel@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -49,221 +53,109 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250520-camss-8x39-vbif-v1-3-a12cd6006af9@mailoo.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7d2d4c3bc5e8d49fbcd4763487f82db634b06205.camel@apitzsch.eu>
 
-On Tue, May 20, 2025 at 08:39:08PM GMT, Vincent Knecht wrote:
-> Add bindings for qcom,msm8939-camss in order to support the camera
-> subsystem for MSM8939.
+Hi André,
+
+On Thu, May 15, 2025 at 11:21:42PM +0200, André Apitzsch wrote:
+> Am Freitag, dem 16.05.2025 um 00:02 +0300 schrieb Sakari Ailus:
+> > On Thu, May 15, 2025 at 03:03:40PM +0200, Laurent Pinchart wrote:
+> > > On Thu, May 15, 2025 at 02:54:54PM +0300, Sakari Ailus wrote:
+> > > > On Thu, May 15, 2025 at 10:58:46AM +0200, Laurent Pinchart wrote:
+> > > > > On Tue, May 06, 2025 at 08:24:03AM +0000, Sakari Ailus wrote:
+> > > > > > On Mon, May 05, 2025 at 11:05:56PM +0200, André Apitzsch via
+> > > > > > B4 Relay wrote:
+> > > > > > > From: André Apitzsch <git@apitzsch.eu>
+> > > > > > > 
+> > > > > > > Instead rely on the rate set on the clock (using assigned-clock-rates
+> > > > > > > etc.)
+> > > > > > > 
+> > > > > > > Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> > > > > > > ---
+> > > > > > >  drivers/media/i2c/imx214.c | 6 ------
+> > > > > > >  1 file changed, 6 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> > > > > > > index 9e9be47394ec768a5b34d44b06b5bbb0988da5a1..c12996e294dccebb18c608254f1e0d14dc064423 100644
+> > > > > > > --- a/drivers/media/i2c/imx214.c
+> > > > > > > +++ b/drivers/media/i2c/imx214.c
+> > > > > > > @@ -32,7 +32,6 @@
+> > > > > > >  
+> > > > > > >  #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
+> > > > > > >  
+> > > > > > > -#define IMX214_DEFAULT_CLK_FREQ	24000000
+> > > > > > >  #define IMX214_DEFAULT_LINK_FREQ	600000000
+> > > > > > >  /* Keep wrong link frequency for backward compatibility */
+> > > > > > >  #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
+> > > > > > > @@ -1405,11 +1404,6 @@ static int imx214_probe(struct i2c_client *client)
+> > > > > > >  		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
+> > > > > > >  				     "failed to get xclk\n");
+> > > > > > >  
+> > > > > > > -	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
+> > > > > > > -	if (ret)
+> > > > > > > -		return dev_err_probe(dev, ret,
+> > > > > > > -				     "failed to set xclk frequency\n");
+> > > > > > > -
+> > > > > > 
+> > > > > > Oops. I missed this is what the driver was doing already.
+> > > > > > Indeed, this is one of the historic sensor drivers that do
+> > > > > > set the frequency in DT systems.
+> > > > > > 
+> > > > > > The driver never used the clock-frequency property and
+> > > > > > instead used a fixed frequency. Changing the behaviour now
+> > > > > > could be problematic.
+> > > > > > 
+> > > > > > There are options here that I think we could do:
+> > > > > > 
+> > > > > > 1) use your v1 patch (4) which uses "clock-frequency" if it
+> > > > > > exists and otherwise uses the default, fixed frequency or
+> > > > > > 
+> > > > > > 2) set the frequency only if the "clock-frequency" property
+> > > > > > exists. The DT currently requires clock-frequency and the
+> > > > > > YAML conversion was done in 2020 whereas the driver is from
+> > > > > > 2018. If we do this, the clock-frequency should
+> > > > > > be deprecated (or even removed from bingings).
+> > > > > > 
+> > > > > > I wonder what others think. Cc'd Laurent in any case.
+> > > > > 
+> > > > > Maybe I'm missing something, but I don't really see the issue
+> > > > > here. The clock-frequency DT property is currently ignored, and
+> > > > > this patch doesn't change that situation, does it ?
+> > > > > 
+> > > > > The change of behaviour here is related to the assigned-clock-
+> > > > > rates property. If that property is specified today, it will
+> > > > > set the clock rate, and the driver will override it to 24MHz
+> > > > > right after.
+> > > > > With this patch, the clock rate won't be overridden. I think
+> > > > > the risk of regression is very low here, as I don't expect
+> > > > > systems to set assigned-clock-rates in DT to a value different
+> > > > > than 24MHz and expect the driver to override it.
+> > > > 
+> > > > If the DTS had assigned-clock-rates set correctly, then yes. How
+> > > > much can we trust the older DTS did have that?
+> > > 
+> > > I am relatively confident that DT-based systems wouldn't have an
+> > > assigned-clock-rates property with a frequency that doesn't match
+> > > IMX214_DEFAULT_CLK_FREQ. The real question is whether or not I'm
+> > > over-confident :-)
+> > 
+> > The assigned-clock stuff wasn't always there. But nowadays I guess a
+> > lot of things in practice depends on it.
+> > 
+> > So I guess doing this should be fine then.
 > 
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> ---
->  .../bindings/media/qcom,msm8939-camss.yaml         | 269 +++++++++++++++++++++
->  1 file changed, 269 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..e300b2c84971a45cca43366817a5ed70f9bae630
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml
-> @@ -0,0 +1,269 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/qcom,msm8939-camss.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm MSM8939 Camera Subsystem (CAMSS)
-> +
-> +maintainers:
-> +  - Vincent Knecht <vincent.knecht@mailoo.org>
-> +
-> +description:
-> +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm platforms
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,msm8939-camss
-> +
+> Just to be clear, this patch is fine and no changes are needed?
 
-No reg? No reg-names?
+I'm fine with it.
 
-> +  clocks:
-> +    minItems: 24
-> +    maxItems: 24
-> +
-> +  clock-names:
-> +    items:
-> +      - const: top_ahb
-> +      - const: ispif_ahb
-> +      - const: csiphy0_timer
-> +      - const: csiphy1_timer
-> +      - const: csi0_ahb
-> +      - const: csi0
-> +      - const: csi0_phy
-> +      - const: csi0_pix
-> +      - const: csi0_rdi
-> +      - const: csi1_ahb
-> +      - const: csi1
-> +      - const: csi1_phy
-> +      - const: csi1_pix
-> +      - const: csi1_rdi
-> +      - const: csi2_ahb
-> +      - const: csi2
-> +      - const: csi2_phy
-> +      - const: csi2_pix
-> +      - const: csi2_rdi
-> +      - const: ahb
-> +      - const: vfe0
-> +      - const: csi_vfe0
-> +      - const: vfe_ahb
-> +      - const: vfe_axi
-> +
-> +  interrupts:
-> +    minItems: 7
-> +    maxItems: 7
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: csiphy0
-> +      - const: csiphy1
-> +      - const: csid0
-> +      - const: csid1
-> +      - const: csid2
-> +      - const: ispif
-> +      - const: vfe0
-> +
-> +  iommus:
-> +    maxItems: 1
-> +
-> +  power-domains:
-> +    items:
-> +      - description: VFE GDSC - Video Front End, Global Distributed Switch Controller.
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +
-> +    description:
-> +      CSI input ports.
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description:
-> +          Input port for receiving CSI data.
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                minItems: 1
-> +                maxItems: 4
-> +
-> +              bus-type:
-> +                enum:
-> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
-> +
-> +            required:
-> +              - data-lanes
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description:
-> +          Input port for receiving CSI data.
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                minItems: 1
-> +                maxItems: 4
-> +
-> +              bus-type:
-> +                enum:
-> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
-> +
-> +            required:
-> +              - data-lanes
-> +
-> +  reg:
-> +    minItems: 11
-> +    maxItems: 11
+> Should the bindings be updated in this series or can that be done
+> later?
 
-OK, here they are. reg should follow compatible.
+If you could do it in the same series it would be very appreciated. It
+should be in a separate patch.
 
-> +
-> +  reg-names:
-> +    items:
-> +      - const: csiphy0
-> +      - const: csiphy0_clk_mux
-> +      - const: csiphy1
-> +      - const: csiphy1_clk_mux
-> +      - const: csid0
-> +      - const: csid1
-> +      - const: csid2
-> +      - const: ispif
-> +      - const: csi_clk_mux
-> +      - const: vfe0
-> +      - const: vfe0_vbif
-> +
-> +  vdda-supply:
-> +    description:
-> +      Definition of the regulator used as analog power supply.
-> +
-> +required:
-> +  - clock-names
-> +  - clocks
-> +  - compatible
+-- 
+Regards,
 
-Totally messed order. Keep the same order as in properties. See also DTS
-coding style.
-
-> +  - interrupt-names
-> +  - interrupts
-> +  - iommus
-> +  - power-domains
-> +  - reg
-> +  - reg-names
-> +  - vdda-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/clock/qcom,gcc-msm8939.h>
-> +
-> +    camss: camss@1b0ac00 {
-
-Drop unused label
-
-> +      compatible = "qcom,msm8939-camss";
-> +
-
-Follow DTS coding style.
-
-...
-
-> +      vdda-supply = <&reg_2v8>;
-> +
-> +      ports {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-
-Incomplete example.
-
-> +      };
-> +
-
-Drop redundant blank line.
-
-Best regards,
-Krzysztof
-
+Laurent Pinchart
