@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8EB23183D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9C6264A7C;
 	Wed, 21 May 2025 19:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747856151; cv=none; b=Md2qx0wK8ulb8sy/YQmG51b4cPjhn7atDT135/NOZmtWCwd3POYEO30OuKwlW3Kxm8H6s+uVZzCC8JH4pPu90ulU5PDn09oKVq3PqKfj7mGeJpWx/esJJyaPsrNpLBcY+pCuI/f8rgrfK9pEd9IXfGEIvBsQ0FLQT4wdLiHeLUY=
+	t=1747856151; cv=none; b=nN7MfWckzUu+nfjA7BJzuEt3Y6c1XGcIUkUFkIjUDDONrmu1WFDZ7xrQ3TkLZ5mYhooUQArPERo2gNFbzTLQJzq1uS8hxub/2Kx9ZYEff3i9S6TTgR9FnSr2EJK7b3phkTeQ3Y9GqkoGU6CquDg10mQTUkzwDfshr/XGdO3X74k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747856151; c=relaxed/simple;
-	bh=YCdymVDth/prPqkIK7W4QDnBSw+ChQ0vJvm38czsFpg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=js7EvzI4EgvC/3Xg3yXEhBMz1aD2eBH+AM94Mos23q28wcsodXqZ9cY98JYlHMqhmii4nYil7HnVh1tXhUO3LxDmr0C8b6dvYcayN3CbR+r3q0jrxY8immijG8i05JbBBE9fUIuMLvWocCcog8Yz4bZ7v5kuiTPhCFw1nm4ebdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2GoH/v7; arc=none smtp.client-ip=10.30.226.201
+	bh=L2WGN7X2JUviaBc60J76R20EMSD9EzQJaZPVXw+rN/E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JVuYhRYke43Po6tPZd8/QFztygUQsDo3/gYlZouFtFXBZU8x08coNzIE6RroSTb5jInCXpvIUWRul8GCAHdOq1QBi0GOvRLaQXTIM8C1QsY8Caf69vCe7g8wLkDWeg+44ScLkQzVivO0y8dSbBmS46L4DvIvN7Aa8R+oR0BqiME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLsllN57; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2GoH/v7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 00428C4CEE4;
-	Wed, 21 May 2025 19:35:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLsllN57"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B90EC4CEED;
+	Wed, 21 May 2025 19:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1747856151;
-	bh=YCdymVDth/prPqkIK7W4QDnBSw+ChQ0vJvm38czsFpg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=a2GoH/v7NCUwJStHohhcwr7SDmdK+nqKj00Ld255vw6AaGS7s2evcP2kdLUZ/05SL
-	 2g20KNGo37e6VbYkYB8+46wQLYBrmvwRYRgISjAdK9QIWeB1RBluxINAWT9FOpiPUY
-	 kRjkkFJrwjzJHhgV3ecyN1rt1LnPgR5+YEQharZlZqTIuEqvy0JEdq5VgKS8bDW8m3
-	 8dBIuQQHgdFjnPZ08lcAqhEzv8dDOZTzmLdJG/HX8F00S0t0uENuDlxDe4r5jAWz9n
-	 itthYIeR1peS47wUKaIaftFlSc5D60TnvetGhfh9pjCzprCVbNPWXb7xlasEzHFSf5
-	 23F8xhPYlCSfA==
+	bh=L2WGN7X2JUviaBc60J76R20EMSD9EzQJaZPVXw+rN/E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=MLsllN57CyodCPgX15zGM2Jd3ZOX7Fz7e+htMd/6mQXdlX9Zf7Mk8OK4OYrOu0uyl
+	 gMPV+Wzy8MDq8YlfE9DSlWnDdsFZOcac4du8Gfa/vjr4kUoI+paZ7F+Avt/jwYnWxk
+	 WYSR3ZPhWuIBovlLsKo6jOWCczpAB38H1oMF+DqX1ioh3mO/FKM2L5n1JY4G0gtSIv
+	 uS3v/OWQ4FlboNQJaboZlMFXh2Q4LsjeNArrep6zeVfpthHEZe/s5aa/WkOel6KCSD
+	 uvoc4MgDWJwTN+K8T56pkFGY79gG90/V9nt9iWI/kYrQnf7VuveKpmUm8V2qdNioZ8
+	 ZIt49M75SuR4g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0E08C54E90;
-	Wed, 21 May 2025 19:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09F02C54EDA;
+	Wed, 21 May 2025 19:35:51 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Subject: [PATCH v3 0/5] media: i2c: imx214: Add support for more clock
- frequencies
-Date: Wed, 21 May 2025 21:34:23 +0200
-Message-Id: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
+Date: Wed, 21 May 2025 21:34:25 +0200
+Subject: [PATCH v3 2/5] media: i2c: imx214: Prepare for variable clock
+ frequency
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAL8qLmgC/2XM0QqCMBTG8VeRXbfY5qbVVe8RIbad5QHTsdmwx
- HdvShAV5+p/4PtNJIBHCOSQTcRDxIB9lyLfZEQ3dXcFiiY1EUwoJllB8TYKLiutQ+XaloKswTD
- Yg8oFSSPnweK4gqdz6gbD0PvH6ke+fN8UV79U5JRRk5uylDtQ9mKOtcPhGXSzhTtZsCg+QLo/Q
- CTAJlsJVnBr+Tcwz/MLkEYpUO8AAAA=
-X-Change-ID: 20250406-imx214_ccs_pll-e4aed0e9e532
+Message-Id: <20250521-imx214_ccs_pll-v3-2-bfb4a2b53d14@apitzsch.eu>
+References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
+In-Reply-To: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
  Sakari Ailus <sakari.ailus@linux.intel.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -62,11 +60,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
  Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747856148; l=1895;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747856148; l=3684;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=YCdymVDth/prPqkIK7W4QDnBSw+ChQ0vJvm38czsFpg=;
- b=syVQLuePuGfp3dACqYgN2W+Ayfo4zcFv5KgkcjstEAWtm0hlQX+CxxZbPIZe6GwMN6KyO86Ns
- /0lOZW8RTyTAklCrce5sVjlA8tuwqb/AzmNUrP5MyZOt5LtV/+4+vuG
+ bh=ddkeGCuuPcPPzIbz+qwlV4L+uKUvrwzDr+fPplJy9lU=;
+ b=m0lrNrvqVmU0Mlud7HafGfd4RWckGidy15oW8sEPRDz+xylJVNPL3iedrBj3EJZUMtnUCuh4d
+ FairHJgObh8BJa+vQT6lWdFpguJdiBOriNzAzltFbbDMX4oKZZg4kLF
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -74,51 +72,113 @@ X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
 X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 Reply-To: git@apitzsch.eu
 
-The imx214 driver currently supports only a 24 MHz external clock. But
-there are devices, like Qualcomm-MSM8916-based phones, which cannot
-provide this frequency. To make the sensor usable by those devices, add
-support for additional clock frequencies.
+From: André Apitzsch <git@apitzsch.eu>
 
-This series supersedes
-https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu/
+Move clock frequency related parameters out of the constant register
+sequences, such that the hard coded external clock frequency can be
+replaced by a variable in the upcoming patches.
 
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
-Changes in v3:
-- Limit range of pll_ip_clk_freq_hz (Sakari)
-- Drop unneeded 'ret'
-- Use pll.pixel_rate_csi for bit rate calculation
-- Add patch that deprecates the clock-frequency property
-- Link to v2: https://lore.kernel.org/r/20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu
+ drivers/media/i2c/imx214.c | 54 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 23 deletions(-)
 
-Changes in v2:
-- Add A-b tags
-- Switch to v4l2_ctrl_s_ctrl_int64() to acquire the control handler mutex
-- Add error handling for v4l2_ctrl_s_ctrl_int64() and
-  imx214_pll_update()
-- Replace "read clock frequency from dt" patch by "remove hard-coded
-  external clock frequency" patch
-- Link to v1:
-  https://lore.kernel.org/r/20250415-imx214_ccs_pll-v1-0-d3d7748e5fbd@apitzsch.eu
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 0199195dcb7d12dc2ff253fe3eb77ddbcd0812a9..3aca6ebb02d649c1b7f0b6a6049c1e3aa3d08951 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -299,16 +299,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
+ 	{ IMX214_REG_DIG_CROP_WIDTH, 4096 },
+ 	{ IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+ 
+-	{ IMX214_REG_VTPXCK_DIV, 5 },
+-	{ IMX214_REG_VTSYCK_DIV, 2 },
+-	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
+-	{ IMX214_REG_PLL_VT_MPY, 150 },
+-	{ IMX214_REG_OPPXCK_DIV, 10 },
+-	{ IMX214_REG_OPSYCK_DIV, 1 },
+-	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+-
+-	{ IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) },
+-
+ 	{ CCI_REG8(0x3A03), 0x09 },
+ 	{ CCI_REG8(0x3A04), 0x50 },
+ 	{ CCI_REG8(0x3A05), 0x01 },
+@@ -362,16 +352,6 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
+ 	{ IMX214_REG_DIG_CROP_WIDTH, 1920 },
+ 	{ IMX214_REG_DIG_CROP_HEIGHT, 1080 },
+ 
+-	{ IMX214_REG_VTPXCK_DIV, 5 },
+-	{ IMX214_REG_VTSYCK_DIV, 2 },
+-	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
+-	{ IMX214_REG_PLL_VT_MPY, 150 },
+-	{ IMX214_REG_OPPXCK_DIV, 10 },
+-	{ IMX214_REG_OPSYCK_DIV, 1 },
+-	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+-
+-	{ IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) },
+-
+ 	{ CCI_REG8(0x3A03), 0x04 },
+ 	{ CCI_REG8(0x3A04), 0xF8 },
+ 	{ CCI_REG8(0x3A05), 0x02 },
+@@ -405,9 +385,6 @@ static const struct cci_reg_sequence mode_table_common[] = {
+ 	/* ATR setting */
+ 	{ IMX214_REG_ATR_FAST_MOVE, 2 },
+ 
+-	/* external clock setting */
+-	{ IMX214_REG_EXCK_FREQ, IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 1000000) },
+-
+ 	/* global setting */
+ 	/* basic config */
+ 	{ IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
+@@ -777,6 +754,24 @@ static int imx214_entity_init_state(struct v4l2_subdev *subdev,
+ 	return 0;
+ }
+ 
++static int imx214_configure_pll(struct imx214 *imx214)
++{
++	int ret = 0;
++
++	cci_write(imx214->regmap, IMX214_REG_VTPXCK_DIV, 5, &ret);
++	cci_write(imx214->regmap, IMX214_REG_VTSYCK_DIV, 2, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PREPLLCK_VT_DIV, 3, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PLL_VT_MPY, 150, &ret);
++	cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV, 10, &ret);
++	cci_write(imx214->regmap, IMX214_REG_OPSYCK_DIV, 1, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PLL_MULT_DRIV,
++		  IMX214_PLL_SINGLE, &ret);
++	cci_write(imx214->regmap, IMX214_REG_EXCK_FREQ,
++		  IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 1000000), &ret);
++
++	return ret;
++}
++
+ static int imx214_update_digital_gain(struct imx214 *imx214, u32 val)
+ {
+ 	int ret = 0;
+@@ -1020,6 +1015,19 @@ static int imx214_start_streaming(struct imx214 *imx214)
+ 		return ret;
+ 	}
+ 
++	ret = imx214_configure_pll(imx214);
++	if (ret) {
++		dev_err(imx214->dev, "failed to configure PLL %d\n", ret);
++		return ret;
++	}
++
++	ret = cci_write(imx214->regmap, IMX214_REG_REQ_LINK_BIT_RATE,
++			IMX214_LINK_BIT_RATE_MBPS(4800), NULL);
++	if (ret) {
++		dev_err(imx214->dev, "failed to configure link bit rate\n");
++		return ret;
++	}
++
+ 	ret = cci_write(imx214->regmap, IMX214_REG_CSI_LANE_MODE,
+ 			IMX214_CSI_4_LANE_MODE, NULL);
+ 	if (ret) {
 
----
-André Apitzsch (5):
-      media: i2c: imx214: Reorder imx214_parse_fwnode call
-      media: i2c: imx214: Prepare for variable clock frequency
-      media: i2c: imx214: Make use of CCS PLL calculator
-      media: dt-bindings: sony,imx214: Deprecate property clock-frequency
-      media: i2c: imx214: Remove hard-coded external clock frequency
-
- .../devicetree/bindings/media/i2c/sony,imx214.yaml |  29 ++-
- drivers/media/i2c/Kconfig                          |   1 +
- drivers/media/i2c/imx214.c                         | 263 ++++++++++++++++-----
- 3 files changed, 217 insertions(+), 76 deletions(-)
----
-base-commit: ae0384b772a260975af192746d900c328392e525
-change-id: 20250406-imx214_ccs_pll-e4aed0e9e532
-
-Best regards,
 -- 
-André Apitzsch <git@apitzsch.eu>
+2.49.0
 
 
