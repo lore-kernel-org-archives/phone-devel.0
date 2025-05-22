@@ -1,163 +1,93 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA07621E082;
-	Wed, 21 May 2025 20:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CF4291144;
+	Thu, 22 May 2025 15:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747860445; cv=none; b=mbFbp9uZCJ5W5Uv/tqEQB78wLgD4nubt4+TOwRvWUxmI7VoGwQpm7Nqe4zr8KiU9dUF8J1yXbeuLKbaoDgYZ0WQDAey7741gA9auayEqz6wSqE0+sbMX1ok4Wq+qfiRrnAACjJfk0khNIrriLrO5OkZZYsB8KzSpEe1MY2QmkOY=
+	t=1747927538; cv=none; b=TG74gOqtbhnYiliZ9KE/yRI7B03xKAXNKQ1ps40s9KQnBbVtYOR5wtVka+qJ2usY+H0kPIIH75UXIlz1mlfrw9FsNLAEs+5pVfqhFO9WDct3OH/7Rpym9+2VBQPdz/u05FJwUf9iK5r8gjdyfa7Jpgx2xaAyVczhzPErrADk6DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747860445; c=relaxed/simple;
-	bh=R5UrvnJSbJbZMQwpQnUujUXpVO4b+CbB3tii1mKba+Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KN3YbrzLLIf9CZIRTo2VmEBx0JBqiOdEDptyBkI+/PNis0FbEkUSlgwn1sEykc71OO15rMK7+6ypzLu2sS+QviJG3mEUj6BFetd+86Uz9YwUxfRsDT1QOHSAfKhF0C5iGHnIIPamYSG+GAJ7T1HCgyQ+sQ8Ae/kuO4ISA6+oh9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=EzuXmvb+; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1747927538; c=relaxed/simple;
+	bh=PcuhumX6z7OaQzA6jK/bl3lCDvqH5Kb6Vjig2je/8Io=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LjVM0D197UttfWJYTBHW7jMnXB37PhjBxI/d0OV3Q0rIqHEH36qvDkRNvnI3bBgB0g3mH0DXPz7DSJd6o3p19UVPYDT9AYBpj+IjBvFcVpPe5k6wPjx88kXk66+BFjAMx/WNY8tnlsfuIkd9n4/3QsxB/Q2xgp3D2DmTUN8DIZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKMRvHxR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="EzuXmvb+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=R5UrvnJSbJbZMQwpQnUujUXpVO4b+CbB3tii1mKba+Q=; b=EzuXmvb+oCLBNU2dzGpKU3FikY
-	bUgCN1gXpYtI2o5euipuEqyAdvJ1RTzF4K8HB6eXZKMpTm9ZF+ul69S9xYxFmm3bQW6wxZGp7COQi
-	aTVC2dlGRZ0qHmBjMXC5rtiLmF22MtK4Xpeuk7XRG6aFf7Ul1rdC2e5oyyO9yt6RCaYRK/uoCQKJb
-	CCYy9V/Z0nxjoRADi7zKTixzy+JvzYZxGVhTWRM1D2kSyfDkCv6pOYXElN/KPVOh8WMQmPV0Tajtt
-	q9BHHmFHKNX44hxIFLVbE0GANkoD7uQF7aLrQxR3n+WsD1XcLOgnJYP3TeIlS7yDYSrCl+ec64lRG
-	hML1XtJA==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uHqLG-0004fB-26;
-	Wed, 21 May 2025 22:47:10 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uHqLG-0000Jl-0v;
-	Wed, 21 May 2025 22:47:10 +0200
-Message-ID: <3eb4769eac757428d6ff2bd82f16834c46344ac6.camel@apitzsch.eu>
-Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: Add DW9719 and DW9761
- VCM
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Daniel Scally <djrscally@gmail.com>, Mauro Carvalho Chehab
-	 <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Wed, 21 May 2025 22:47:08 +0200
-In-Reply-To: <Z6nMl7vXPkICysSJ@kekkonen.localdomain>
-References: <20250209-dw9761dts-v3-0-14d3f00f0585@apitzsch.eu>
-	 <20250209-dw9761dts-v3-1-14d3f00f0585@apitzsch.eu>
-	 <Z6nMl7vXPkICysSJ@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKMRvHxR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABE9C4CEE4;
+	Thu, 22 May 2025 15:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747927537;
+	bh=PcuhumX6z7OaQzA6jK/bl3lCDvqH5Kb6Vjig2je/8Io=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uKMRvHxRtmKr/lsNQjPKEPbn5xtQ8GLH/P5w6I/obPN9BZDaP6jX4qyqkkFnkgZpP
+	 RKl0fiXqKKWmtxABF6dauelGdWPCF0s4W+p1y0oThdHlQ2bywos076ZckVCYGyWTTD
+	 hW/BhUvoVnjimEOu7CdiYeJ+MpixAo6UEUlUwwDpG2r4UvAz9AsIBweCmR+4GgtAtn
+	 QQDW90Fhm/g0JMYn5EwIYcbHJqVt77ZL46PJzTPjB3ZR7WjRQdM4W6dMFbNQ+T+wGY
+	 jlHjMRseTDEEBQnmuCr1BFv1Be+m4MQmacQZCUFY9fUjhcax087qbXcuv2j5wjSMFv
+	 xSFysuTPSkRBg==
+Date: Thu, 22 May 2025 16:25:32 +0100
+From: Conor Dooley <conor@kernel.org>
+To: git@apitzsch.eu
+Cc: Ricardo Ribalda <ribalda@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 4/5] media: dt-bindings: sony,imx214: Deprecate
+ property clock-frequency
+Message-ID: <20250522-coexist-quarry-46351c8ae247@spud>
+References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
+ <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Authenticated-Sender: andre@apitzsch.eu
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27644/Wed May 21 10:56:21 2025)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fZTA2xJO3DxnrYMl"
+Content-Disposition: inline
+In-Reply-To: <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
 
-Hi Sakari,
 
-Am Montag, dem 10.02.2025 um 09:53 +0000 schrieb Sakari Ailus:
-> Hi Andr=C3=A9,
->=20
-> Thanks for the update.
->=20
-> On Sun, Feb 09, 2025 at 10:51:57PM +0100, Andr=C3=A9 Apitzsch via B4 Rela=
-y
-> wrote:
-> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> >=20
-> > Document Dongwoon DW9719 and DW9761 VCM devicetree bindings.
-> >=20
-> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > ---
-> > =C2=A0.../bindings/media/i2c/dongwoon,dw9719.yaml=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 45
-> > ++++++++++++++++++++++
-> > =C2=A01 file changed, 45 insertions(+)
-> >=20
-> > diff --git
-> > a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> > b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> > new file mode 100644
-> > index
-> > 0000000000000000000000000000000000000000..b38d22bf09713a7999e1f9ce6
-> > 553de7587dbe5d2
-> > --- /dev/null
-> > +++
-> > b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> > @@ -0,0 +1,45 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9719.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Dongwoon Anatech DW9719 Voice Coil Motor (VCM) Controller
-> > +
-> > +maintainers:
-> > +=C2=A0 - devicetree@vger.kernel.org
-> > +
-> > +description:
-> > +=C2=A0 The Dongwoon DW9719 is a 10-bit digital-to-analog (DAC)
-> > converter. The DAC
-> > +=C2=A0 is controlled via a 2-wire (I2C-compatible) serial interface.
-> > +
-> > +properties:
-> > +=C2=A0 compatible:
-> > +=C2=A0=C2=A0=C2=A0 enum:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - dongwoon,dw9719
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - dongwoon,dw9761
-> > +
-> > +=C2=A0 reg:
-> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > +
-> > +=C2=A0 vdd-supply:
-> > +=C2=A0=C2=A0=C2=A0 description: Regulator providing power to the "VDD"=
- pin.
->=20
-> The driver uses dongwoon,sac-mode and dongwoon,vcm-freq properties.
-> Could you document them as well, please, including the defaults? Are
-> the values the same for both chips?
->=20
-It is difficult to say, because I couldn't find the datasheet for any
-of the chips. Maybe someone could provide them.
+--fZTA2xJO3DxnrYMl
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Andr=C3=A9
+On Wed, May 21, 2025 at 09:34:27PM +0200, Andr=E9 Apitzsch via B4 Relay wro=
+te:
+> From: Andr=E9 Apitzsch <git@apitzsch.eu>
+>=20
+> Deprecate the clock-frequency property in favor of assigned-clock-rates.
+>=20
+> While at it, re-order properties according to coding style and fix the
+> link-frequency in the example.  See commit acc294519f17 ("media: i2c:
+> imx214: Fix link frequency validation").
+>=20
+> Signed-off-by: Andr=E9 Apitzsch <git@apitzsch.eu>
 
-> > +
-> > +required:
-> > +=C2=A0 - compatible
-> > +=C2=A0 - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +=C2=A0 - |
-> > +=C2=A0=C2=A0=C2=A0 i2c {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 camera-lens@c {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 com=
-patible =3D "dongwoon,dw9761";
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg=
- =3D <0x0c>;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vdd=
--supply =3D <&pm8916_l10>;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> > +=C2=A0=C2=A0=C2=A0 };
-> >=20
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--fZTA2xJO3DxnrYMl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaC9B7AAKCRB4tDGHoIJi
+0oFdAQCfMg4K/R8gS988QZ2UFRXB7uW8XASfY+zm2n8l+MnquwEAh+VKDGZfQ5eo
+YqZMQl0W5DZWDVKngAmXodEUexISTA8=
+=iPFE
+-----END PGP SIGNATURE-----
+
+--fZTA2xJO3DxnrYMl--
