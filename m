@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD63F18BC3B;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43D13FE7;
+	Sun, 25 May 2025 19:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748078083; cv=none; b=pN0TuIA+rYWStuvU3TjdEtgjvcFjR+NbUeU54AlLBB3CxpmJ/KXEmbKtU5wLvTNwRf1GU4+Kswv7UGX113s6htTVQNZcLJ9sCzlQ/Fik8oGhaq7NDDRq0ba9wpMGlbtZeP+1iJW8KWwfjfEOhYSKAgaUl2D18zZgNivYFJSRmOk=
+	t=1748201105; cv=none; b=OOj8E5ppAlXGRO4RfCW+d+BukaCug+I8yhYwKw/0i40FTIGKzCyVEaNBvEH1F61BVGF0EHE9tZdA+g82XfulJlH4aUtVQDkx+XFNqnPHxUvfvxoE3MwA9c7vke8b6uYNguhRSJuCRKZQytPBs7bGLTywHW/q2x6/qJXi4uJ4bck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748078083; c=relaxed/simple;
-	bh=QmJJzXeg74/tDMm21ZE8ew95kEfbtH/qiljqYhp4/+A=;
+	s=arc-20240116; t=1748201105; c=relaxed/simple;
+	bh=gwVSZHOezvIuHvqg12Oh4+wg71HgnypnT7cUcFA9Bgc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I0jDyqfspKOPuveJFwDSO5V5+qDOFXjrGhFettD044GlQrCp0JApmVD5dlxzMNx+99HzHa9gK6lPC8pkmyJ2UPLNr/ouko24RHJf37Ou1as/9zT73b1Fwo5d4P0PlyaLl5O7ex9ASeFZuOl5iHLfnfsyDJRwNeG/x/Sf7TYx8XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5w5otD/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Pg/9OOaJi56ykgsqTiqlgi7N0m/z/RZ57KQEP7C43nn1AdqBWBtbdvrXzJPNjg9SkSg7Slk1zez5iiCXc77ykGa7vsNtVaXMxJo6E1AWozDqJubpxVU+g2Q25AnPGwB81/0f4+5NcBsGAoYRD9RDrxncm9nt+OkmbEvDAxGSszo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqU2xycK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5w5otD/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1EF20C4CEFC;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqU2xycK"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 955C1C4CEEF;
+	Sun, 25 May 2025 19:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748078083;
-	bh=QmJJzXeg74/tDMm21ZE8ew95kEfbtH/qiljqYhp4/+A=;
+	s=k20201202; t=1748201104;
+	bh=gwVSZHOezvIuHvqg12Oh4+wg71HgnypnT7cUcFA9Bgc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=V5w5otD/CRTFSQT6LRbqQUyYXhWIrYu8GOpFp+H3QRDL53u/r+j+qTNdgqX41IcCH
-	 5pXFsdrZa4I0lN0aeP/qw3MUDWQBZMqLUGKhRqPVD/jJO1mEEYmDBTWiAn5pIaMgX9
-	 m82zAL3yVYYEz9hFhhgCI4W3hIIkUrCt7woODA20+wfDrgHu0JuzKCES7EtXOuVT7/
-	 EtsoODSUPWXlCuMd8CVGtys+b4l7yze3NYpmLnFqkvMrqUj9scMy6bNp/AtxUUlive
-	 8UZRpHcF7LHsSRbR/nfVym2Dzn3mJkc9/lZr03FFpZfD9kPtDJVY9tHDnBtCle336u
-	 XZLPbRLF1A4yg==
+	b=aqU2xycKor+q/oZmhHaVzJhOVJV+OTy2YToKgHy4xWKEn8G7oeiA1I/PCln9QLciT
+	 fYFyG3Adt1bHDqFvAZvSSndk9BnQG2eR4MgyOGLpQ48f5k14ctkArAzfeAl5zh0pr9
+	 njWfBTMTkpaHJcEIi3hnt8W8PrWVbv4w9KNBzC85Wa2hZrDBo3GweT1KEnkxivw93t
+	 8Rxo2gjm4lGVRSIk5vJ9kM3T+tkzaOOqJJ7tQGY1PgOrUEv0QHVzfTVpQN4bpwFbvC
+	 yaOqxiamISlCNvK5m23lJx9q7/rbg+ytiTU0axC3fXXYFbka4ehb03OFndWjwGw20r
+	 Qc8HenV41a0wA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15F2FC54F30;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sat, 24 May 2025 11:14:40 +0200
-Subject: [PATCH v4 5/5] media: i2c: imx214: Remove hard-coded external
- clock frequency
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82D13C54F30;
+	Sun, 25 May 2025 19:25:04 +0000 (UTC)
+From: Vincent Knecht via B4 Relay <devnull+vincent.knecht.mailoo.org@kernel.org>
+Date: Sun, 25 May 2025 21:25:01 +0200
+Subject: [PATCH v2 1/4] media: qcom: camss: vfe: Add VBIF setting support
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,72 +39,199 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250524-imx214_ccs_pll-v4-5-f7dc22e5255b@apitzsch.eu>
-References: <20250524-imx214_ccs_pll-v4-0-f7dc22e5255b@apitzsch.eu>
-In-Reply-To: <20250524-imx214_ccs_pll-v4-0-f7dc22e5255b@apitzsch.eu>
-To: Ricardo Ribalda <ribalda@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250525-camss-8x39-vbif-v2-1-6d3d5c5af456@mailoo.org>
+References: <20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org>
+In-Reply-To: <20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org>
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Vincent Knecht <vincent.knecht@mailoo.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748078081; l=1261;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=roC/yqnwu/rypBv0AK9sWLYwwI91i9Cg/QD5HFxyhEk=;
- b=oS74+YSuz1SReKw3CMPcyGgH0e39XipgsbpyBEb7LbIsCW4gVPPvUkf++YOdCF/KRixS3ghIm
- a69VX8DNsnlDw2IRx/LvZUf5NkbElBqrVMM54PUja1q8jDL+6CoClTd
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748201103; l=5690;
+ i=vincent.knecht@mailoo.org; s=20250414; h=from:subject:message-id;
+ bh=W7qSyl2dInincNPV8Uy2QP7zqsKo/T/nicDeLaiEMYY=;
+ b=5Y277YL52LqpiubaoGzgnXH4qdS7b+iXv06KWr4RPVc4lA1Ro6MwxHqDk2//7rddP07LbCLTY
+ ZfVN+7eXJI5B3q3KK+1KpFbkwjHubz/xjNOwOv5dKRhfMYmDmyMIcuG
+X-Developer-Key: i=vincent.knecht@mailoo.org; a=ed25519;
+ pk=MFCVQkhL3+d3NHDzNPWpyZ4isxJvT+QTqValj5gSkm4=
+X-Endpoint-Received: by B4 Relay for vincent.knecht@mailoo.org/20250414
+ with auth_id=377
+X-Original-From: Vincent Knecht <vincent.knecht@mailoo.org>
+Reply-To: vincent.knecht@mailoo.org
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Vincent Knecht <vincent.knecht@mailoo.org>
 
-Instead rely on the rate set on the clock (using assigned-clock-rates
-etc.)
+Some devices need writing values to VFE VBIF registers.
+Add helper functions to do this.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 ---
- drivers/media/i2c/imx214.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/media/platform/qcom/camss/Makefile         |  1 +
+ drivers/media/platform/qcom/camss/camss-vfe-4-1.c  | 11 ++++++++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.c | 30 ++++++++++++++++++++++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.h | 19 ++++++++++++++
+ drivers/media/platform/qcom/camss/camss-vfe.c      |  9 +++++++
+ drivers/media/platform/qcom/camss/camss-vfe.h      |  3 +++
+ 6 files changed, 73 insertions(+)
 
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index fd03650a5b2bbdbbc677d5797380285f1832baa5..a0cef9e61b41be8ea76a6d6e4b8c9fc4060cfa0f 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -32,7 +32,6 @@
+diff --git a/drivers/media/platform/qcom/camss/Makefile b/drivers/media/platform/qcom/camss/Makefile
+index d26a9c24a430a831e0d865db4d96142da5276653..4c66d29ae505ae5adc717ae98f77fb736a6e15b9 100644
+--- a/drivers/media/platform/qcom/camss/Makefile
++++ b/drivers/media/platform/qcom/camss/Makefile
+@@ -21,6 +21,7 @@ qcom-camss-objs += \
+ 		camss-vfe-680.o \
+ 		camss-vfe-780.o \
+ 		camss-vfe-gen1.o \
++		camss-vfe-vbif.o \
+ 		camss-vfe.o \
+ 		camss-video.o \
+ 		camss-format.o \
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-4-1.c b/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
+index 901677293d971cf761944a660ef719af38203f22..520bc16f2a05e34f457a828ecdb1f9502a0470c1 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
+@@ -15,6 +15,7 @@
+ #include "camss.h"
+ #include "camss-vfe.h"
+ #include "camss-vfe-gen1.h"
++#include "camss-vfe-vbif.h"
  
- #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
+ #define VFE_0_HW_VERSION		0x000
  
--#define IMX214_DEFAULT_CLK_FREQ	24000000
- #define IMX214_DEFAULT_LINK_FREQ	600000000
- /* Keep wrong link frequency for backward compatibility */
- #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
-@@ -1402,11 +1401,6 @@ static int imx214_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
- 				     "failed to get xclk\n");
+@@ -733,6 +734,7 @@ static void vfe_set_qos(struct vfe_device *vfe)
+ {
+ 	u32 val = VFE_0_BUS_BDG_QOS_CFG_0_CFG;
+ 	u32 val7 = VFE_0_BUS_BDG_QOS_CFG_7_CFG;
++	int ret;
  
--	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "failed to set xclk frequency\n");
--
- 	ret = imx214_get_regulators(dev, imx214);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "failed to get regulators\n");
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_0);
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_1);
+@@ -742,6 +744,15 @@ static void vfe_set_qos(struct vfe_device *vfe)
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_5);
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_6);
+ 	writel_relaxed(val7, vfe->base + VFE_0_BUS_BDG_QOS_CFG_7);
++
++	/* SoC-specific VBIF settings */
++	if (vfe->res->has_vbif) {
++		ret = vfe_vbif_apply_settings(vfe);
++		if (ret < 0)
++			dev_err_ratelimited(vfe->camss->dev,
++					    "VFE: VBIF error %d\n",
++					    ret);
++	}
+ }
+ 
+ static void vfe_set_ds(struct vfe_device *vfe)
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-vbif.c b/drivers/media/platform/qcom/camss/camss-vfe-vbif.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..2ae61b7baa148f0ad63fe3b8751aeb7b8fc12d81
+--- /dev/null
++++ b/drivers/media/platform/qcom/camss/camss-vfe-vbif.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * camss-vfe-vbif.c
++ *
++ * Qualcomm MSM Camera Subsystem - VFE VBIF Module
++ *
++ * Copyright (c) 2025, The Linux Foundation. All rights reserved.
++ *
++ */
++
++#include <linux/io.h>
++
++#include "camss.h"
++#include "camss-vfe.h"
++#include "camss-vfe-vbif.h"
++
++void vfe_vbif_reg_write(struct vfe_device *vfe, u32 reg, u32 val)
++{
++	writel_relaxed(val, vfe->vbif_base + reg);
++}
++
++int vfe_vbif_apply_settings(struct vfe_device *vfe)
++{
++	switch (vfe->camss->res->version) {
++	default:
++		break;
++	}
++
++	return 0;
++}
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-vbif.h b/drivers/media/platform/qcom/camss/camss-vfe-vbif.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..cef1e17dba1f2335a2c8de070bcb6afde98eef87
+--- /dev/null
++++ b/drivers/media/platform/qcom/camss/camss-vfe-vbif.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * camss-vfe-vbif.h
++ *
++ * Qualcomm MSM Camera Subsystem - VFE VBIF Module
++ *
++ * Copyright (c) 2025, The Linux Foundation. All rights reserved.
++ *
++ */
++#ifndef QC_MSM_CAMSS_VFE_VBIF_H
++#define QC_MSM_CAMSS_VFE_VBIF_H
++
++#include "camss-vfe.h"
++
++void vfe_vbif_reg_write(struct vfe_device *vfe, u32 reg, u32 val);
++
++int vfe_vbif_apply_settings(struct vfe_device *vfe);
++
++#endif /* QC_MSM_CAMSS_VFE_VBIF_H */
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+index 4bca6c3abaff9b898ea879674a3ff8f3592d3139..3138562d399444c5cf2ae96bf16b75b85ff5c5ca 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -1807,6 +1807,15 @@ int msm_vfe_subdev_init(struct camss *camss, struct vfe_device *vfe,
+ 		return PTR_ERR(vfe->base);
+ 	}
+ 
++	if (vfe->res->has_vbif) {
++		vfe->vbif_base = devm_platform_ioremap_resource_byname(pdev,
++					vfe->res->vbif_name);
++		if (IS_ERR(vfe->vbif_base)) {
++			dev_err(dev, "could not map vbif memory\n");
++			return PTR_ERR(vfe->vbif_base);
++		}
++	}
++
+ 	/* Interrupt */
+ 
+ 	ret = platform_get_irq_byname(pdev, res->interrupt[0]);
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.h b/drivers/media/platform/qcom/camss/camss-vfe.h
+index a23f666be7531e0366c73faea44ed245e7a8e30f..614e932c33da78e02e0800ce6534af7b14822f83 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.h
++++ b/drivers/media/platform/qcom/camss/camss-vfe.h
+@@ -136,6 +136,8 @@ struct vfe_subdev_resources {
+ 	u8 line_num;
+ 	bool has_pd;
+ 	char *pd_name;
++	bool has_vbif;
++	char *vbif_name;
+ 	const struct vfe_hw_ops *hw_ops;
+ 	const struct camss_formats *formats_rdi;
+ 	const struct camss_formats *formats_pix;
+@@ -145,6 +147,7 @@ struct vfe_device {
+ 	struct camss *camss;
+ 	u8 id;
+ 	void __iomem *base;
++	void __iomem *vbif_base;
+ 	u32 irq;
+ 	char irq_name[30];
+ 	struct camss_clock *clock;
 
 -- 
 2.49.0
