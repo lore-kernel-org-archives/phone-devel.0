@@ -1,65 +1,65 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3531EB1AA
-	for <phone-devel@vger.kernel.org>; Mon, 26 May 2025 08:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5A91DE8A8
+	for <phone-devel@vger.kernel.org>; Mon, 26 May 2025 08:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748247185; cv=none; b=bFrJ73znbWl0qV7TrULyY9yj/dXRz5OQOUs5U1yklcuZz7HFHiRJYzwSiHNcQ7TjcaGKJwS8wBlKuoPeJQq3a/5IuLoAODMV9laaCVyoQs/pTW23KFxypwBA8LrKQ7AbJ5jFVipDridgwOnAld3+kef7+EwLCNp+LwWZ/aWMVA0=
+	t=1748247626; cv=none; b=VtFqpsfSoJPI0+bIcJg65F8gsh9dNLrU/FzFY/iIJxNIrDrHXYL5dDrQ7S8wvgFOlSHF27mrtrUBCDSJHwzvtjsI99z6Zh29POT+RBi3GJmlj5J+v7AAlANuLjLc/ij0PUXbmbSTd+VK6ulj+j+n05WN0zPAjkbe78by/eP4OUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748247185; c=relaxed/simple;
-	bh=6dMenWW9G9+jrd7FF1PAJg9qND6VwFxBlkOpgHYc29k=;
+	s=arc-20240116; t=1748247626; c=relaxed/simple;
+	bh=kiIkXPF0mzMsp0+vmMLj34FpGFqIHfWevMok9dqiXjA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mPQdPSXJFpTGf0dq03h0hOil4T+JFnNqnSAZ+Xyx5NCW7FNXtwNBjjzlstygeCS28Sj48+CAv5Et1I9G15TIM4daBZv1koti9a8ahGOkDnXo74LZIDErdtYuINr+Aw7b8DKoVGmnwebJzNVSqBO0qQWPSleZfe0ZqdtV1tC7pOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sd/xVPxS; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:Content-Type; b=i1sSPH7AZNVzb/w+X7ZyoQH17wU6U6DPGpZaANypoUaCmC1/bYjqkPRBukiHPshUoIyJ4J/Uv0VndR1kkCTYZuS+5j+qgsxlCMk5if3lcuPsMDyqCVvALu+38EnrkjEBPjX/MpJ0ILkEpA4/MtFdunKHfzqEFPvVyZPx5+YTxLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mL/Mozhh; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sd/xVPxS"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a4dba2c767so261910f8f.1
-        for <phone-devel@vger.kernel.org>; Mon, 26 May 2025 01:13:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mL/Mozhh"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-442d146a1aaso23937095e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 26 May 2025 01:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748247182; x=1748851982; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1748247622; x=1748852422; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6dMenWW9G9+jrd7FF1PAJg9qND6VwFxBlkOpgHYc29k=;
-        b=sd/xVPxSFGLvyz7LKqDzLZhGNXqoFKu7+ucNEgIKbRH+1hyeArcNCT1OW9VoVAOgBs
-         N/xwIHI8Ch9pwVEFXW7ipYS2B6ri0EWCAw4eUNQCZGZQz809wf5ucyl3k0yJPnJ60uFo
-         t04t3MssAPXRXu35rdMAM0bEhCNAFcR6UEKyugHhiw1Moj/5ERABN5JpgQ5P/kBoqVje
-         kVfyYvo9hg+JBhpNO+WvIx2svOYPVRaVZHRrU2QL+WF3ThXMTxyPep05ZVx2jXT+CTjV
-         HwL3+eQ1LDI/KNT+390leRj+lzUY6oj7Q6JTALTzmUvoJAGe3uj1V1OxNq7Mirv0aHCc
-         fUKg==
+        bh=iYw0GGZr4tuoIVzPkfyLk2cYyXtNoRutkozNOrmk44g=;
+        b=mL/MozhhkVuofUlbor+IFY+2NwW0ZELSrO8K+CBs/PwGDlRlzoB+q6m8IwEVyCNUVO
+         W3Sn2BV9YGJHWkqNRPUxL5I2Lwda7/z38Td17Q6OT7BPRFW6nHk+TUashFQTiNFuUJ8w
+         Mef3p7U/WyofrZEnMdnOF222b87UNcwidNq6z7P0GkrU9x5ZgKEGvccXAJup0DveNEYq
+         Izi62BwCIXfGfmk1SL3mKUeFcIqi1ddOnSXHg66Im28lYvJqLUeicfZggYB+pBiyWJuk
+         NbXgOPrfwRrZHDqsTU2x9jI5z/BR2uwA+vrUeE/9ajCxX9aEQeFBKUFTHral7BpaP2X9
+         bboQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748247182; x=1748851982;
+        d=1e100.net; s=20230601; t=1748247622; x=1748852422;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6dMenWW9G9+jrd7FF1PAJg9qND6VwFxBlkOpgHYc29k=;
-        b=l7XwVPjfFprmGzs7zydamzg0guS6fSN4M/euWKLCLXAafOd0xYMyrOBLpCVvIAZdP8
-         F1XgsKirAC1cxM/ASL9Qyt8ik34p/rH+QLcqBRVZB62Ue19l/SsBBLLmHpq4p34McC2P
-         lOt+Fde1GUJ9LrD4Zi8+bJm5YkwCoxuRrVem01jEgYIq2yWgvoy7N90P9fwtRDaKiNXX
-         xjRb6Nr5dP8mTn1WqpcUFQfCijMaip/B/bHpb2WFP7hWflX6AVTbHPxExQ7+DDtHb2GD
-         YSi5AD5TCt79AopbORh0ZpvXQn2/fm8XDo0Q3KR9Gg17/yHi14uC7wNlfBXH5lnldces
-         T5Cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVyMkFbdKluI8BKwgnctHHTLZwFxP7DwBg6RL6xQRAD+UkgfJgRVCNyTpxvZ2uBuQMiVfZb4/4PKVurkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwPuOtZJl1VSks3T+Nl2LUfMhCvsVyZmoSEihOPHzIRJ4qLT0O
-	gwYUZOxeQOGLbvNbiPHb4N+YdM6sSJ7TiyLVOZ0squ+86EcMtKu3+SrOotmRhrkbWrA=
-X-Gm-Gg: ASbGncuKKW0WJT3m3aUML8nMxxw7uyFhzr7O8bCn6f/PVnwu2O8f1lKgcmxrAfX0S/D
-	BJ4d4NdU659DTAL0YU10AgJZPO6BxWVv1HKSQBajDvu8U3jwr3CT7ewe6CkWz+2SqMGmLssr2ou
-	h5mFbYapCTd9jwPwTeSkH5frrsYLx0tpfJtUx7NfPeIrZlgNnCJw4/wsLJiA2qq6i8hXwqrKUaP
-	7g2CmCYFygB6u697T8ZCQ1onq7eScsDBWUv3FWl8Q44DxaaIYfsjLNVyea5+Q5OZ2IIjryolySR
-	y1b1jPVAIi9ALL4ZUNF76HLvcHbGuqEU11p/zWqjZ3ap+Ip15vqiT2JCIv0DMAhtFv5S7sVGluf
-	FYiuwP8OBPDlWsSHo
-X-Google-Smtp-Source: AGHT+IHGSsVUmWj3Jah1vKvr6sQDWVSDBSGyOlSKcnIVvmpIKC/Y46McYZjwHULPKpThDtSFgrrx3Q==
-X-Received: by 2002:a05:6000:1acb:b0:3a3:6434:5d34 with SMTP id ffacd0b85a97d-3a4ca413eafmr6970418f8f.17.1748247182279;
-        Mon, 26 May 2025 01:13:02 -0700 (PDT)
+        bh=iYw0GGZr4tuoIVzPkfyLk2cYyXtNoRutkozNOrmk44g=;
+        b=olfJmzQxIVXONdlJQP238EiEAobJOcOJj+3Pi+yNYpSfbI+4CuJK/d/TG40b7gbIhy
+         oup33KWJV0QNqLr1rCYpvn+HQ2j0md9IFWQGuTeCHTc/F3OUZXOlvTDnWb0FkKkpTALk
+         7l8BhdrtijXH1LauBQ5r43lLLazpOXqFqA4cl5r+t4Kc4CxSlFXDjlniX/mEJi1mIilq
+         YwZOLF9tDE+ERpBY33i6HdpJ1C9k2S3miizb/fZaNYGeVjXB0Jk3vDDugFlApeG6PEIK
+         161RD5z+L8c8Rqz+cFtSW/nx+qka194yymDuVpDX/r9kJBtewcb1k+ZsRZ1phnBMUYbT
+         eJCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMP1KdWwYGdk1jNK5Oc99EUKtzvjyRbP72kZT3nsExGPe1JM7vtfa2Ig+LvnkBdofUSGekzCSdmS9obQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypXOzbl+py/QLgUuogonDDIa7y8+AaXqwspWvWPDFL70i0M/OT
+	p/6m/7THK5zFPxg5sl3ZNJe6taZEHcJBwKaQwAtfq8i+VfCBO76bMJcTo+qokYhIHjc=
+X-Gm-Gg: ASbGnctET1cmO7XcBUjGCcdtN6igpnU9cPqitek11wAyLUUoXY1aucG/ivLdIxtyt2v
+	lAZJHxTkFkrTkIiSmvK+CbrtI10vd4kZ013WfRF81GCIhi1ljyxEaRHXNHRTOSvapVCn++rTAFn
+	ZrAW71V2ZufthN/ifLi8fCL9QI0jJHCDGDqkdtqKzL8a5V36DoMT+4CHeQNmYTsJzGoG4adSe7w
+	iAfNIFS7Tyd3CQ3sZk3SCjaS83PNw/zV7FKU4NINjK3IoeZI8VntezsowYFk7aXtLx7BX8fhSsa
+	pz8kZ1e2NIFoMX9T6cSf1zy7B2z42ORfBSVbdSIp1tMa8vzBE6F/0K8Suxs7zhfsyJZwjkCcA2W
+	nSuJ3LEV5PJGsjSak
+X-Google-Smtp-Source: AGHT+IFp4oweCau504HUSsYtRlu63mwxtFVBOtfguUvjdqDFiDjl115gPPjk6xM6N13cuUqyj7SIPA==
+X-Received: by 2002:a05:600c:5249:b0:442:f990:3ce7 with SMTP id 5b1f17b1804b1-44c9465cecfmr71103325e9.16.1748247622533;
+        Mon, 26 May 2025 01:20:22 -0700 (PDT)
 Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4d8ea9520sm2349448f8f.70.2025.05.26.01.13.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca4d1fasm16458356f8f.1.2025.05.26.01.20.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 May 2025 01:13:01 -0700 (PDT)
-Message-ID: <e8750bc1-11ab-480c-a0fb-262ff6a0dd22@linaro.org>
-Date: Mon, 26 May 2025 09:13:00 +0100
+        Mon, 26 May 2025 01:20:22 -0700 (PDT)
+Message-ID: <cc43d9b7-13ba-44ea-9b37-fc54c0d1f2e0@linaro.org>
+Date: Mon, 26 May 2025 09:20:21 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] media: qcom: camss: vfe: Add VBIF setting support
+Subject: Re: [PATCH v2 2/4] media: qcom: camss: Add support for MSM8939
 To: vincent.knecht@mailoo.org, Robert Foss <rfoss@kernel.org>,
  Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
  <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -79,17 +79,67 @@ Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
  =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
  phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org>
- <20250525-camss-8x39-vbif-v2-1-6d3d5c5af456@mailoo.org>
+ <20250525-camss-8x39-vbif-v2-2-6d3d5c5af456@mailoo.org>
 Content-Language: en-US
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20250525-camss-8x39-vbif-v2-1-6d3d5c5af456@mailoo.org>
+In-Reply-To: <20250525-camss-8x39-vbif-v2-2-6d3d5c5af456@mailoo.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 25/05/2025 20:25, Vincent Knecht via B4 Relay wrote:
-> +void vfe_vbif_reg_write(struct vfe_device *vfe, u32 reg, u32 val);
+> From: Vincent Knecht <vincent.knecht@mailoo.org>
+> 
+> The camera subsystem for the MSM8939 is the same as MSM8916 except with
+> 3 CSID instead of 2, and some higher clock rates.
+> 
+> As a quirk, this SoC needs writing values to 2 VFE VBIF registers
+> (see downstream msm8939-camera.dtsi vbif-{regs,settings} properties).
+> This fixes black stripes across sensor and garbage in CSID TPG outputs.
+> 
+> Add support for the MSM8939 camera subsystem.
+> 
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> ---
+>   drivers/media/platform/qcom/camss/camss-csiphy.c   |   1 +
+>   drivers/media/platform/qcom/camss/camss-ispif.c    |   8 +-
+>   drivers/media/platform/qcom/camss/camss-vfe-vbif.c |   7 +
+>   drivers/media/platform/qcom/camss/camss-vfe.c      |   1 +
+>   drivers/media/platform/qcom/camss/camss.c          | 157 +++++++++++++++++++++
+>   drivers/media/platform/qcom/camss/camss.h          |   1 +
+>   6 files changed, 173 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
+> index c622efcc92ff3781d7fc3ace0253c2d64c91e847..6311fc2975aa1345e430a477c8a6476f1d7e5663 100644
+> --- a/drivers/media/platform/qcom/camss/camss-csiphy.c
+> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
+> @@ -605,6 +605,7 @@ int msm_csiphy_subdev_init(struct camss *camss,
+>   		return PTR_ERR(csiphy->base);
+>   
+>   	if (camss->res->version == CAMSS_8x16 ||
+> +	    camss->res->version == CAMSS_8x39 ||
+>   	    camss->res->version == CAMSS_8x53 ||
+>   	    camss->res->version == CAMSS_8x96) {
+>   		csiphy->base_clk_mux =
+> diff --git a/drivers/media/platform/qcom/camss/camss-ispif.c b/drivers/media/platform/qcom/camss/camss-ispif.c
+> index 2dc585c6123dd248a5bacd9c7a88cb5375644311..aaf3caa42d33dcb641651e7f5bc0c2a564d85bfa 100644
+> --- a/drivers/media/platform/qcom/camss/camss-ispif.c
+> +++ b/drivers/media/platform/qcom/camss/camss-ispif.c
+> @@ -1112,6 +1112,8 @@ int msm_ispif_subdev_init(struct camss *camss,
+>   	/* Number of ISPIF lines - same as number of CSID hardware modules */
+>   	if (camss->res->version == CAMSS_8x16)
+>   		ispif->line_num = 2;
+> +	else if (camss->res->version == CAMSS_8x39)
+> +		ispif->line_num = 3;
 
-write_reg() / read_reg()
+> +		.interrupt = { "vfe0" },
+> +		.vfe = {
+> +			.line_num = 3,
+
+Hmm should we really be setting line_num inline in the code ?
+
+I don't believe we should.
+
+These parameters should be passed from the resources structures.
 
 ---
 bod
