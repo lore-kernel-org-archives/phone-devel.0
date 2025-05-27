@@ -1,65 +1,72 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E070E2475C3
-	for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 08:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0CB25EF9C
+	for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 11:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748333974; cv=none; b=uKhSY1Mk2DJFUou15TLM98qNc0rBhamGK0CRpNB5pSBU1BnoenSw3kA88Y6Kr1+Wqim9+Zff8YtWVCeTG1W8diPHBlrQcPN4ZJT9dSe3iOw/v18c1L2vmBr4JyQTECfSgBwIIsaV1wRG3aWNf/wj7DnvKyVW5K2i6073GNkupBA=
+	t=1748347077; cv=none; b=RgUM3OxtJV25rOa4CoyznfBjR0NJqcGuXGf8l/fynrXATMJ6CyifZlhMPe9HubVe8zPQiHF8NhHWVHSfrxpwAmy0HBQH+JfJdN23/ajiwxYVxdUpmaKb60jMf/1wZN2w3pRd00rG6/MRSbdz0zT1F7HGXdy0wPzr8MqANznU1Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748333974; c=relaxed/simple;
-	bh=ia8kZdP0HFoJkRuqfb9xYK3PP1X9WFdfCow4Ewno8P0=;
+	s=arc-20240116; t=1748347077; c=relaxed/simple;
+	bh=iG7alVLRQPBLu2uFDKDhWTHeOCuXazt6XYy1LINh6nM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iP6QtXdnHBoEPHzlexrampZaNF7/ldwE9V1YM2YRpKg2XvK0lPgg4y83OBsTGXNcGX1jKSV4WV3/7rFX71FmFbo3Zesf1LPOkAXBF4Z6r6esG3mGGRI9ivpXzj5yLy9OuhX2QJGE1ZTu98kA6s7wr29VvZtVGNnlyHepWxJpB2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pVTYCAhX; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=QlCECRkvA6ecW7LXp2v6T3awWEfKzxitm+Eh5tHj7Q8eeHr5HqpLjTMghmEWVrTXHmr2Bir6Ft7a0mmpGfiDhKz/x7fB6OCa/1fCjAkuwPmBQOkCfNWWxjkxiERiKEJJ8gD0UElCtM/NxL1IUjmrmTL5TuF97jvxA2yHXw5P7gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=d4YuzMjN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pVTYCAhX"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so36295275e9.1
-        for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 01:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748333971; x=1748938771; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dMOUzI+Rl9kCd96v3bJcE+T2pFM5Ij46/8q1c510Oug=;
-        b=pVTYCAhXK0P46qJjOhOoNjEwGWdy7Z6CbVLokeqZf5mbK9vDAB/ep6MskK6VIrTfQM
-         EcTNKvJs+jSB34M0oV7Na+ujMXdhffd4tDC/8qp063d2j4XOksNeFdgISMj/X30xiJty
-         gM+/hTM8P4rLkgm6gk2IOrhD/j7Ci+M7BfWzfv9DnF6kAqPTK2xRO1y0N6Ys3TGzHWo0
-         jvogReYJOQsXzrxW+qlqyBAHShL3nJ0lctCRC0DL2X8DM5+R6m5IQS9P03ZJenMhK1Zd
-         Uw4mVOIF5+8jAq/hpmbzULXJXPlhDQVhVoIvDYV/IacmYptdI0gtYpQbDqi5O1XyNlnJ
-         3w6Q==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="d4YuzMjN"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54R7ilfj028172
+	for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 11:57:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	00npxAYXcDwJtuc+WcPd16KMqvA6u6AGGT1iIUkKzfU=; b=d4YuzMjNLkLL7Obv
+	rM7H+uKqKDuoTIoO1SJatzsEv/fL6jUIPwgSmmy4WBUC57SXQg8kdnjeBbnPYg01
+	kRN4x1Pw3Zf31u6Vzu0PG5S6ThQtHm0KCKuRlsbcOYUOIy0gsd0FVoVP+/Iur2Gv
+	HK+fERjylqJsuHzUUnAER2/1G0XcBFM29E9qlvfesLfA4Db5TiQzoVCytd9OskmD
+	HbIJj8oU4PLYASb6Z93sC9dTugL76flTyUikUTw91PDZcbw+CDMxcn6fEuIqci2F
+	3AJHHr631utVLtXGEdKP6bO7i41vOcqbmwOfVjoX4PbaksQB3ljRkhs32TQ0r1Ut
+	7KdffA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46w992gq9r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 11:57:54 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-48f812db91aso11177041cf.0
+        for <phone-devel@vger.kernel.org>; Tue, 27 May 2025 04:57:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748333971; x=1748938771;
+        d=1e100.net; s=20230601; t=1748347073; x=1748951873;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dMOUzI+Rl9kCd96v3bJcE+T2pFM5Ij46/8q1c510Oug=;
-        b=JPYR/gjlnVokiq42Nw270e9qNSbYTCEuPYCeDenM7een9zsmfpk8G2fcDyaWLE/f/q
-         l1oKzmAIfUIBvpdA1aWiTgNnxqPf7nWGk+2oFPtXG+13hSWbXP+cPOsYtfxmPtNnhVkk
-         3PZPmchjJD1Ja/4ryhD+oZi3vLONH+ZcvUaiF60X4TJIaWLGvQNJKATQnbBb+V00PBHG
-         Eporxk7sVFEkXefyiqsR3RGyYFDPNeCW0lJd+LPridMo976LtCoZsop9P2A3Ob7ub1MB
-         sES00UPYHu0pE8oe8AcsBXc9Q/LeE+iJ3lF3QskoLElO5Fa0ucy6yhmcwBO5/+ZyM8Rb
-         4gmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQTJQOg04Fb30uSPe8i04YHE802mbzds94JU9axqYrX9+ubC+5ppwDFWTMLYBvfaSC7J/SpPuIyP8xhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsK2j6yc1CQXMoBJQ0DzHlHeasEAJX+/bnVNRocir3SPuou65/
-	gMbEu3tCtwGLfCdhUy09K3W8ysHsGCiqAqOfov7LHUD2xqz4LUIUSYxFJRhzFz/7JxQ=
-X-Gm-Gg: ASbGncuIH8Mqa2odxyRnWVsRABP8gSOWWsJHDHPF0id7y/YRkvXw4jBrJGglCeKZm1r
-	sIuj/B643BZ9F4s5YeeE+zZTrtfxBGAuxIFTHUuagiHR0QZlPCdAAZsVTSnlwS1jWcvY7CKgYDd
-	IKRYOKxcAJmm0hmE5ekUycIOz6M/DVofwXhYfbZcZhzHid+OfY+WQC77cgBF3N9t6MLQ++oZzdD
-	E+XHlv0jCSuwEQ3wCzsf0cmf1DzTtpM6I+G9e5dxRs7La1mGwAByN70efdw/g6tmNyBjsIOYX7L
-	esoW3rYj5tnY9uONl/vFxKu9tk7kRfd1jWxTHpMo/XaFTsf5qv+LNaQ5aNoJp1x9xhNAzcLP9Ut
-	2kWNSJIE+4ouIqC0W
-X-Google-Smtp-Source: AGHT+IFjTsGVi2CK4OkLJrI3Smdv4M+APjpCmrgDiR1D6zlgPXvjVIxxpzIlokGl7A7BbOpPT/vmFw==
-X-Received: by 2002:a05:600c:a13:b0:440:6852:5b31 with SMTP id 5b1f17b1804b1-44c91dd151amr132439605e9.10.1748333971167;
-        Tue, 27 May 2025 01:19:31 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4d53ce0b4sm6807921f8f.37.2025.05.27.01.19.30
+        bh=00npxAYXcDwJtuc+WcPd16KMqvA6u6AGGT1iIUkKzfU=;
+        b=WJaoS3Op5vC/hDB4aacJSPK1gvTOvPO8BBrNAAQcDAMGE9yxVgOkfwUXbvd2qB5J6g
+         GX0RtDTz46j041rjHyf2G+NiE3rQQNyjb/JW3I6vgMq68ImE/vo9i+bDyfNS740RW8Fg
+         7G8IQw0/jCBCIEMDfbbOlBxcp1ihVBpr5GkYbMbgn5dIgMPi7pjv68s3BdaQg7pfanTJ
+         qf0HQcupSzeqRLIRLxqoIfO1aFpHDycwvgMNgeygl8mqtjfaNhG37NZ6Qn1NnnvaZAvT
+         IEIQ6o/I131VnULredce3xrEwYjRjGGfrICFGDmGHit86yoC77NeQh6SDGHS1v464yWC
+         iuRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPgaD7JeOSgOlKS9tOMEtonKuyfs5LgCAu6nYLbBiT6SZduUG7yTi9YBBdFbMkJdhGRmN0b+45g6Ds2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3ydJU5gF0bprmfj+gr5x9h+4m6/YN6Udq7F23pijDfu2T6pZs
+	THkGruEMetXwGgGdrBkElKtnARwGjApH1yBFdxVtG7de+hJVekk068ZFwiie0NE8otWl4atM86a
+	3AKgSC1Zl3zfpTeblYuq5qU9dgq27jZcznbF6fTr5lVE7UxSpnxHUbCMBnssQKFzH9w==
+X-Gm-Gg: ASbGncsAXMuNkyVjDh82boELaDnt9pYGMkUaSiqQVPBZYT9Er1IsTeKDjadWrGa0fAZ
+	w93T8qkxf5NRE9LfB0sO05JDwCS7xt0HIxwxfwxSuj2KrWlMJ+QdzMAu9KeON0ASOARmKL9LsJ6
+	abOBXntniH5zsW/4SnsvurXnEX7lN+OU490/OHjqi2fPorMKXvaeklK9YIgkzg9fwTYDKFfRr7J
+	kZqgwl/lqD/hIJJjHLge8v7cgRipMadlz95p/sLL5SIDI0XXYUDczpBb1VQQ1kIZmgzd7bb5Nbc
+	0EJOVRLWPetreddd7T/LmQ4nKFdM1/Wt5mMPb4uN+qldOEmlXZwyFJf5HswqsnEKqQ==
+X-Received: by 2002:ac8:5f4c:0:b0:494:b4c4:8d7e with SMTP id d75a77b69052e-49f47631130mr73699121cf.12.1748347073307;
+        Tue, 27 May 2025 04:57:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IER2zMsxig6MWdo0BnCzVG0WnNdmIBLmV4Ag489VTpniSStMzoJwJoKznpWShclgNRbJnN9eQ==
+X-Received: by 2002:ac8:5f4c:0:b0:494:b4c4:8d7e with SMTP id d75a77b69052e-49f47631130mr73698861cf.12.1748347072756;
+        Tue, 27 May 2025 04:57:52 -0700 (PDT)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad5b192cb0asm1057955366b.170.2025.05.27.04.57.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 May 2025 01:19:30 -0700 (PDT)
-Message-ID: <b3d4b080-5a9e-4af0-bce7-41c06d1d27f0@linaro.org>
-Date: Tue, 27 May 2025 09:19:29 +0100
+        Tue, 27 May 2025 04:57:52 -0700 (PDT)
+Message-ID: <c2ede70b-41e3-4009-baf7-afc6c2c65949@oss.qualcomm.com>
+Date: Tue, 27 May 2025 13:57:49 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,46 +74,86 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] media: qcom: camss: vfe: Add VBIF setting support
-To: Vincent Knecht <vincent.knecht@mailoo.org>, Robert Foss
- <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
+Subject: Re: [PATCH v2 0/4] CAMSS support for MSM8939
+To: vincent.knecht@mailoo.org, Robert Foss <rfoss@kernel.org>,
+        Todor Tomov <todor.too@gmail.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org>
- <20250525-camss-8x39-vbif-v2-1-6d3d5c5af456@mailoo.org>
- <f2162241-6423-43b3-a6b5-74e373cd8834@linaro.org>
- <10c45ae1d2453f7c81dadeb132b6c2911ab7d95c.camel@mailoo.org>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <10c45ae1d2453f7c81dadeb132b6c2911ab7d95c.camel@mailoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI3MDA5NyBTYWx0ZWRfX5sp1fuOklVCu
+ VBWHdpJVIRbUAUw2G8iKxTGZl1QAz8jusioQQGB6PA8HsOsp3pLuVO0Vm31McwpCvVIhUCL/UKg
+ Q9EWAY1CU3jwPcuC5NHhRgxAOjuxe+5xnsIdLTT1/CAR082AdD5lDPxpKxur3u7iBdgKRsYn0C5
+ MgTxjCAZNlx4ODcYCIQADqhcN8GyyzIMJQxUGfKofEcEbWxbgGdYeyjc4auF5Ydre2LW0c67BJz
+ WqnsmAj4I+x1wP6A8IQUpZs+tiUuXlhEjm83ZqZwZ83bUCspjffDKWSizd18TCuUYd3+mHoH3qi
+ 5cTwdcI9vToHUkD6/u+xKZoMMpy9wh2ogYZow7jkrwoF4m7F74bf3eo14pqQ9b9Y0ghot96dDIa
+ EvQ48qthb/cFlKXJQECVAavFcXKMUxzs5gYmEfrdgIMJTmqceTs3F4Gwk5CwMNIZMvqlx2MS
+X-Authority-Analysis: v=2.4 cv=Fes3xI+6 c=1 sm=1 tr=0 ts=6835a8c2 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=TqukyxIwAAAA:8 a=G1DFoxIfSOwnDC_JHQgA:9
+ a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22 a=e_wvXvRcY2B3oMitRgDS:22
+X-Proofpoint-GUID: j5yWzKw3vPp8gQV0E9U6aJlweaA_N_bL
+X-Proofpoint-ORIG-GUID: j5yWzKw3vPp8gQV0E9U6aJlweaA_N_bL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-27_06,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
+ adultscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505270097
 
-On 26/05/2025 17:20, Vincent Knecht wrote:
->> You have both
->>
->> if (vfe->res->has_vbif) {
->>
->> and the above switch, there's no point in checking this twice in two
->> different ways.
->>
->> Choose one, suggest has_vbif is enough.
-> I think the switch is still needed, so that distinct settings
-> can be applied for different SoCs.
+On 5/25/25 9:25 PM, Vincent Knecht via B4 Relay wrote:
+> This series adds CAMSS support for MSM8939.
+> It's mostly identical to MSM8916, except for some clocks
+> and an additional CSI.
 > 
-> Or should I just apply the 8939 settings unconditionally, and keep it
-> as an exercice for the next dev who need other settings for another SoC
-> to deal with ? 🙂
+> To fix black stripes across sensor output, and garbage in
+> CSID TPG output, 2 VFE VBIF register settings are needed.
+> So the 1st patch adds helper functions to do just that.
 > 
-> Thanks
+> Patch 1: adds helper for VFE VBIF settings
+> Patch 2: adds CAMSS_8x39 version in CAMSS driver
+> Patch 3: documents qcom,msm8939-camss DT bindings
+> Patch 4: adds camss and cci in msm8939.dtsi
+> 
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> ---
+> Changes in v2:
+> - Patch 1:
+>   - Fix devm_platform_ioremap_resource_byname line to not end with
+>     opening parenthesis (media-ci/1-checkpatch)
+>   - Move camss-vfe-4-1.c handling of VBIF previously in patch 2 here
+>     (Dmitry)
+> - Patch 2:
+>   - Declare regulators in PHY entries, not CSID ones (Bryan)
+> - Patch 3: (bindings)
+>   - Fix bindings checks for new errors (Rob)
+>   - Fix properties ordering, code-style and example (Krzysztof)
+>   - Sort reg-names, clock-names and interrupt-names alphanumerically (Bryan)
+> - Patch 4: (dtsi)
+>   - Move #address/#size cells before status (Konrad)
+>   - Aligned CCI with msm8916, thus removing ispif_ahb mention (Konrad)
+>     If "camss_ahb should be unnecessary", it's still required by qcom,i2c-cci.yaml
 
-The flag should be enough.
+Give it a shot (with camss disabled so that the clock isn't on) - make
+sure it's off and see if you can still access i2c.
 
----
-bod
+If it turns out it's fine, we'll fix up the bindings instead
+
+Konrad
