@@ -1,135 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB8D215F53;
-	Thu, 29 May 2025 09:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1C1F03D4;
+	Fri, 30 May 2025 09:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748509459; cv=none; b=God/qLJ3evJTTwdLS7BF+y0iW/KfuSiAGDPqSM4Kme0kWauyzFTLJ2dYRsgJoXboAB6RVFJkO2d7O3xobqwF0QoSOmxWh8Ic+VdkOrMx8QjgLPaiC+AefCQ9YNFf5aDK85FsPmefnG74F52TCoTy8RuClA/drJ9nGorB0fzbsHE=
+	t=1748595609; cv=none; b=E0qged8domkxOVCveQtHkybv0CAj5IGiSBMxbKH4Nx9NzEUITpDj0SXPZkqd7Wg8bKy77m9R7b40HQn6QynOcJfPiDAUg+rH7AgwmPXsKJlYlWljg21vCFLjgCA8E0N6gpNXVs2WSSbquNlzmwyUkdBcwcfXegcrJVHxNlZ5qOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748509459; c=relaxed/simple;
-	bh=m8JIOAJjyQG/OknuJGeN0vkewi5sVDBo1PFDvRss9Oc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SlQCG4J4jLGuf4Krdi4ezgcYl6L0sAR7h4rBrhFxciJCaRvbt5RoGLNi5Co2lr5BvM6SLXnnL1PFEcGHE8Om3nk1M14zAN3AjC6T+TeewnWRP3ZlQSb2cSx+Fow34ZYV2q1NVvR8fzcYVTSS5ZZNBnsCWpv05I+p2Iajn17BBAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyvykenZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748595609; c=relaxed/simple;
+	bh=lo6cRx9o+drjhg7VDcWUgYxFCl5gvqd6ftI3ofIqaGo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=m6i7vQTjk8iZNoJPdaMtvVktNqj/A37ldYyX+bDSfq2OdCgsJL89cHEtBSIVtyTfeIHvANVKcT8vUhGs8R0kC1NeI9XuQRxw97j4IkWmUwUm/C1jQM3Dbk24/YXaN8HKXaZziHUixznvIXtfmBo1E6AQcJ2NIc+rS8syQGFXUic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jt5gQHGa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyvykenZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990BDC4CEE7;
-	Thu, 29 May 2025 09:04:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jt5gQHGa"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E7B6EC4CEE9;
+	Fri, 30 May 2025 09:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748509456;
-	bh=m8JIOAJjyQG/OknuJGeN0vkewi5sVDBo1PFDvRss9Oc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gyvykenZ2FwGcV/On66Cc7zvjQu/DhxfM8lfpQXhgXcW4RqZmfF4PSNibMWqcBM4v
-	 W7L7FbCJyUjOhBgfQNH0/kOeulHipWGOtC1jCbSdZ6BscHt25sVroLhM2rjbvn28u3
-	 N9Vu5koOtG5WwFp5a8C671spWHlfrnECc+oXmOJ4uYm6XrXy3J2Frc7z5IfnfLW3SP
-	 rYE3h8XK5sxuxBZ73zZm+FNvpND3TOU5olKtev+VIOvF7FJhcmWS88CJbk2eAx83Tl
-	 lY5lp+NpN7xasXNs1ap9lKMZRG0sZp5z5zzF6VagV0RdmQgmf0MCydwi3Rj8qJVRvm
-	 IAzeSQ6ZYtGzg==
-Message-ID: <0e10b7d2-b917-48b7-a3c0-eb265c82a974@kernel.org>
-Date: Thu, 29 May 2025 11:04:10 +0200
+	s=k20201202; t=1748595609;
+	bh=lo6cRx9o+drjhg7VDcWUgYxFCl5gvqd6ftI3ofIqaGo=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=jt5gQHGaXBbQi/9RGf3H/STesPZDyri1NAA5cXOsHHIrrrqahpQWG3HtkPBnSU7M9
+	 1+5VhX1UJPknpwWMGYRCe6jKoeCq73J3CGZZfkcAJa2z3yffp58GK1pb225RU6lsJH
+	 2sb20xI3uo0eILgJQiMoBg+J3w/7AZ0I5DcE012pgRwg6fJXLIkPU6gLORin5pvaot
+	 57LRvVYfrNLXqBhpmtYfN6KwPNPnb94W4pwS7tZsfmy0YAS9b3ixnmepS3lCQ+U7dl
+	 M3Alo09OfUHcf98ZlXZXEKO5sH5FPkiL3CqlrAGN/PG24S97nQtWiV6zU/1Dz3JJLj
+	 lg6zHmhKLDzuA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAFE0C5B552;
+	Fri, 30 May 2025 09:00:08 +0000 (UTC)
+From: Vincent Knecht via B4 Relay <devnull+vincent.knecht.mailoo.org@kernel.org>
+Subject: [PATCH v3 0/4] CAMSS support for MSM8939
+Date: Fri, 30 May 2025 11:00:03 +0200
+Message-Id: <20250530-camss-8x39-vbif-v3-0-fc91d15bb5d6@mailoo.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] dt-bindings: display: panel: Add Himax HX83112B
-To: Luca Weiss <luca@lucaweiss.eu>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org
-References: <20250225-fp3-display-v2-0-0b1f05915fae@lucaweiss.eu>
- <20250225-fp3-display-v2-2-0b1f05915fae@lucaweiss.eu>
- <20250226-speedy-dark-mushroom-5d7c4b@krzk-bin>
- <932d5cc223f8d1ff1bb09c68990e4a82@lucaweiss.eu>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <932d5cc223f8d1ff1bb09c68990e4a82@lucaweiss.eu>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJNzOWgC/2XNTQ7CIBCG4as0rMUAdWhx5T2MC+SnncQWA4bUN
+ L27tHGh6fL9knlmJslFdImcq5lElzFhGEvUh4qYXo+do2hLE8EEMOANNXpIibZTrWi+o6eqAe+
+ h5YqrlpSrZ3Qep0283kr3mF4hvrcHma/r1xJsZ2VOGdVcGCsZk9qry6DxEcIxxI6sWBa/AOwBU
+ QBpawsGtD+B/AOWZfkA7xH++vAAAAA=
+X-Change-ID: 20250517-camss-8x39-vbif-975ff5819198
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Vincent Knecht <vincent.knecht@mailoo.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748595607; l=3197;
+ i=vincent.knecht@mailoo.org; s=20250414; h=from:subject:message-id;
+ bh=lo6cRx9o+drjhg7VDcWUgYxFCl5gvqd6ftI3ofIqaGo=;
+ b=2X3nAXxC8dgDav+pjFV0VCY7vdzHiuDugWFeHPbY2DgmfB9LSI8gdoKUNb3qsZVgFxqhKThwg
+ U6UJ6gCc4WvDHphyHfTrmcYpV0wYiyI/4yNqtGFbleHytxoqh3jlTfs
+X-Developer-Key: i=vincent.knecht@mailoo.org; a=ed25519;
+ pk=MFCVQkhL3+d3NHDzNPWpyZ4isxJvT+QTqValj5gSkm4=
+X-Endpoint-Received: by B4 Relay for vincent.knecht@mailoo.org/20250414
+ with auth_id=377
+X-Original-From: Vincent Knecht <vincent.knecht@mailoo.org>
+Reply-To: vincent.knecht@mailoo.org
 
-On 14/05/2025 16:31, Luca Weiss wrote:
-> Hi Krzysztof,
-> 
-> On 2025-02-26 07:46, Krzysztof Kozlowski wrote:
->> On Tue, Feb 25, 2025 at 10:14:30PM +0100, Luca Weiss wrote:
->>> Himax HX83112B is a display driver IC used to drive LCD DSI panels.
->>> Describe it and the Fairphone 3 panel (98-03057-6598B-I) from DJN 
->>> using
->>> it.
->>>
->>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
->>> ---
->>>  .../bindings/display/panel/himax,hx83112b.yaml     | 75 
->>> ++++++++++++++++++++++
->>>  1 file changed, 75 insertions(+)
->>>
->>
->> Discussion is still going. Sending v2 after two days is hiding that
->> previous talk, so that makes me sad.
->>
->> I am still at v1 and I am not going to review this one here.
-> 
-> Apart from [0] there was also no other activity in v1, could you take 
-> another look now?
-> 
-Keep only one compatible, so no himax fallback. This patchset rolled out
-of my inbox, so please send v3 or resend with short explanation in
-commit msg (no init sequence for generic himax, like you described in v1
-discussion).
+This series adds CAMSS support for MSM8939.
+It's mostly identical to MSM8916, except for some clocks
+and an additional CSI.
+
+To fix black stripes across sensor output, and garbage in
+CSID TPG output, 2 VFE VBIF register settings are needed.
+So the 1st patch adds helper functions to do just that.
+
+Patch 1: adds helper for VFE VBIF settings
+Patch 2: adds CAMSS_8x39 version in CAMSS driver
+Patch 3: documents qcom,msm8939-camss DT bindings
+Patch 4: adds camss and cci in msm8939.dtsi
+
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+Changes in v3:
+- Patch 1:
+  - Use braces around multiline (Bryan)
+  - Rename vfe_vbif_reg_write to vfe_vbif_write_reg (Bryan)
+  - Get rid of switch block on CAMSS version (Bryan)
+- Patch 2:
+  - Get rid of switch block on CAMSS version (Bryan)
+- Patch 3: no change
+- Patch 4: no change
+  - Tried to get rid of CCI camss_ahb but this resulted in device
+    freeze+reboot (Konrad)
+- Link to v2: https://lore.kernel.org/r/20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org
+
+Changes in v2:
+- Patch 1:
+  - Fix devm_platform_ioremap_resource_byname line to not end with
+    opening parenthesis (media-ci/1-checkpatch)
+  - Move camss-vfe-4-1.c handling of VBIF previously in patch 2 here
+    (Dmitry)
+- Patch 2:
+  - Declare regulators in PHY entries, not CSID ones (Bryan)
+- Patch 3: (bindings)
+  - Fix bindings checks for new errors (Rob)
+  - Fix properties ordering, code-style and example (Krzysztof)
+  - Sort reg-names, clock-names and interrupt-names alphanumerically (Bryan)
+- Patch 4: (dtsi)
+  - Move #address/#size cells before status (Konrad)
+  - Aligned CCI with msm8916, thus removing ispif_ahb mention (Konrad)
+    If "camss_ahb should be unnecessary", it's still required by qcom,i2c-cci.yaml
+- Link to v1: https://lore.kernel.org/r/20250520-camss-8x39-vbif-v1-0-a12cd6006af9@mailoo.org
+
+---
+Vincent Knecht (4):
+      media: qcom: camss: vfe: Add VBIF setting support
+      media: qcom: camss: Add support for MSM8939
+      media: dt-bindings: Add qcom,msm8939-camss
+      arm64: dts: qcom: msm8939: Add camss and cci
+
+ .../bindings/media/qcom,msm8939-camss.yaml         | 253 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi       |   4 +
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              | 146 ++++++++++++
+ drivers/media/platform/qcom/camss/Makefile         |   1 +
+ drivers/media/platform/qcom/camss/camss-csiphy.c   |   1 +
+ drivers/media/platform/qcom/camss/camss-ispif.c    |   8 +-
+ drivers/media/platform/qcom/camss/camss-vfe-4-1.c  |  12 +
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.c |  31 +++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.h |  19 ++
+ drivers/media/platform/qcom/camss/camss-vfe.c      |  10 +
+ drivers/media/platform/qcom/camss/camss-vfe.h      |   3 +
+ drivers/media/platform/qcom/camss/camss.c          | 157 +++++++++++++
+ drivers/media/platform/qcom/camss/camss.h          |   1 +
+ 13 files changed, 644 insertions(+), 2 deletions(-)
+---
+base-commit: 8566fc3b96539e3235909d6bdda198e1282beaed
+change-id: 20250517-camss-8x39-vbif-975ff5819198
 
 Best regards,
-Krzysztof
+-- 
+Vincent Knecht <vincent.knecht@mailoo.org>
+
+
