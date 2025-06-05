@@ -1,266 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24430.protonmail.ch (mail-24430.protonmail.ch [109.224.244.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0297226D08;
-	Mon,  2 Jun 2025 17:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759F51E519
+	for <phone-devel@vger.kernel.org>; Thu,  5 Jun 2025 15:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748885257; cv=none; b=caNetKnWCf4vWccDmLzTUfi0Tv4bZ/m/a2t8S3Y7AR0rsqbe8zhKrBjGXEa42KVG+VeN/FeKRgVr5DdqwJPdWvWNtP4Z9/khBEWEa+mDn/SWcOqdTmGTggHtSc9S0FHRJOo52lgPHFlHJOhKZ7W5WZP2JDoOsU4wtSaD34wQdhY=
+	t=1749136654; cv=none; b=gC10El6YCs9fwJXgkqMFyrPGzHX7B4Pzr9gKmF6pksWv8nBEZxXKgTDdD9htffy9C9kQUJoXBBa7e+VLoUt/kqin2d23lOCcQlGsEYcWxL6RgvRJBloVOSm2G1F8KUCvwKA+vlxaU6eBIKYwJDz/x1JMCksRL5ahkW9T2R3eBEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748885257; c=relaxed/simple;
-	bh=BgMMUvS9Q9Xa000ALf5gCFzat6wStt2pvjoAG90wYeU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a2fUCLdqDx5Cpvt9Jdi0vX3CgXgx5vEmeUpMcDOVwBaV85bPpAh3Eaois9dUy6FSDZ+bMH74mgUioUBFeCbxMrpwToUpxebe2AH3yYetjzvcigifODYqKiVN1YXPPk9/tq59t+TyLpMzxJCjEA2YzCg0WI+rkd6fxETy4LoljVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+jggxlM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749136654; c=relaxed/simple;
+	bh=lXCSphqrx9mhQy/vL9fzdrKHvTTju0FS5NNH/yb/3cw=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=c9JmQ4y5Iz33YmtUJV2g3EHKesrTxtlZ0HGJQQ5amYITE+UwCZeun/vmM8mb7dAjPQjmjEPo22MBS+P/DevjB3sCnLAE3jOqs1oUtfZMyvnvCmOyi/ixwZ/eMRaoPkTp/3wrifdzeLOEnBy2stEIcyMHEbtlACif4FNYbD6fu8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=EJ6n9eeN; arc=none smtp.client-ip=109.224.244.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+jggxlM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 494CBC113CF;
-	Mon,  2 Jun 2025 17:27:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748885256;
-	bh=BgMMUvS9Q9Xa000ALf5gCFzat6wStt2pvjoAG90wYeU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=k+jggxlMudWxTw4p5llZqF1m2NQ7Oew32RYWrHLPbCaWHLkQ2CCdRlN3IeABl0qFY
-	 JIsSisDHnQmwRpfGCDOQ7jllriLHgg7Uq2iaxAioq5OnNMFr09Ao9A693Qop0+fhCn
-	 Xsym8WAl+OL70VZAzKfNBqoFdxAMvdkoW6o8tIZZcW8SLC+zVA6WIS88QxFRy8lmA5
-	 Dn/L+eNNevqUV7dNzEPbaTLH5IWh3QxNL9cnecQKUbUHg0Tr3FwaebxaPdzGfmURWe
-	 PIf0ivmztl3UUBttAieEf1wdrZBvkdvuPvJcLaeh2qduagPNQ6142jQ5rKTFZQsLh4
-	 c2pCvJ+Z0PCWA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E34DC5B559;
-	Mon,  2 Jun 2025 17:27:36 +0000 (UTC)
-From: Vincent Knecht via B4 Relay <devnull+vincent.knecht.mailoo.org@kernel.org>
-Date: Mon, 02 Jun 2025 19:27:30 +0200
-Subject: [PATCH v4 4/4] arm64: dts: qcom: msm8939: Add camss and cci
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="EJ6n9eeN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1749136645; x=1749395845;
+	bh=lXCSphqrx9mhQy/vL9fzdrKHvTTju0FS5NNH/yb/3cw=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=EJ6n9eeNd/QWJFjIkqaLZFF1JF10TwJS9mJ919wwFcPoEM/Dv01FjsbsxGGVAmhTE
+	 Cxy61gQD4KlA4pDteEKSXoSBFIlCiWq2is1AZA/3WXThEf4gohw7UuU/xSsG3+dJWm
+	 vG7UgREvJHBkDwTZGTnGkK51VG96y+KBU0hVPLsEveamdig3YZId+izz+GETrj5HWB
+	 tPtS6F6GxtD316IufKws37I/nV5PQwUOviLzFWmgEGsNDQx+7rffSnXcM19GYbVRet
+	 FC+TDEavy+rhtw7UB9JsfgMiBhsjRlYVtSmsjMboQ7RxStv2S9hiwHmc3H5YJxDtUS
+	 AWY4/VPZa+70g==
+Date: Thu, 05 Jun 2025 15:17:21 +0000
+To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: My friend gave me money to buy SGD$328 refurbished Oppo Reno10 Pro 5G Android phone on 5 June 2025 Thursday
+Message-ID: <I07uaRFGYdSkg4vwMdAWozmcEjnJVNBL3L81whNzu6i6FgH1MGINNXXV_sfDideKj_e2lIhaNamov6XNqRClrbdvn7DphJE7FS5kTAF3Hho=@protonmail.com>
+Feedback-ID: 39510961:user:proton
+X-Pm-Message-ID: 633c51986d6118abd8774f1d4d04bfe46926cc84
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250602-camss-8x39-vbif-v4-4-32c277d8f9bf@mailoo.org>
-References: <20250602-camss-8x39-vbif-v4-0-32c277d8f9bf@mailoo.org>
-In-Reply-To: <20250602-camss-8x39-vbif-v4-0-32c277d8f9bf@mailoo.org>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Vincent Knecht <vincent.knecht@mailoo.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748885254; l=5488;
- i=vincent.knecht@mailoo.org; s=20250414; h=from:subject:message-id;
- bh=5p1p0R/aaMrHpxB3z9krUa7Xk1pgghKa87CxjRkiJx4=;
- b=BGxkyb2SRP93XuRtoMHCjEVHnriU8nZ34ThRCTUrRAbq4CjNugtgaKi7uMEC+F6cq140J1Shp
- la6APvz4nwHDQkJjxo9hVlY7M4PdJ3dJNMEYl72G6hHtx8D9dzbeU6h
-X-Developer-Key: i=vincent.knecht@mailoo.org; a=ed25519;
- pk=MFCVQkhL3+d3NHDzNPWpyZ4isxJvT+QTqValj5gSkm4=
-X-Endpoint-Received: by B4 Relay for vincent.knecht@mailoo.org/20250414
- with auth_id=377
-X-Original-From: Vincent Knecht <vincent.knecht@mailoo.org>
-Reply-To: vincent.knecht@mailoo.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Vincent Knecht <vincent.knecht@mailoo.org>
+Subject: My friend gave me money to buy SGD$328 refurbished Oppo Reno10 Pro=
+ 5G Android phone on 5 June 2025 Thursday
 
-Add the camera subsystem and CCI used to interface with cameras on the
-Snapdragon 615.
+Good day from Singapore,
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
- arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi |   4 +
- arch/arm64/boot/dts/qcom/msm8939.dtsi        | 146 +++++++++++++++++++++++++++
- 2 files changed, 150 insertions(+)
+My friend gave me money to buy SGD$328 refurbished Oppo Reno10 Pro 5G Andro=
+id phone on 5 June 2025 Thursday. The phone is meant for our business initi=
+ative which we had discussed (group of 3 persons) on the evening of 4 June =
+2025 Wednesday.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-index adb96cd8d643e5fde1ac95c0fc3c9c3c3efb07e8..659d127b1bc3570d137ca986e4eacf600c183e5e 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-@@ -11,6 +11,10 @@
- #include "msm8939.dtsi"
- #include "pm8916.dtsi"
- 
-+&camss {
-+	vdda-supply = <&pm8916_l2>;
-+};
-+
- &mdss_dsi0 {
- 	vdda-supply = <&pm8916_l2>;
- 	vddio-supply = <&pm8916_l6>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 68b92fdb996c26e7a1aadedf0f52e1afca85c4ab..082542b54d96adaed3e6b49bc3682005ea018a72 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1434,6 +1434,145 @@ mdss_dsi1_phy: phy@1aa0300 {
- 			};
- 		};
- 
-+		camss: isp@1b08000 {
-+			compatible = "qcom,msm8939-camss";
-+			reg = <0x01b08000 0x100>,
-+			      <0x01b08400 0x100>,
-+			      <0x01b08800 0x100>,
-+			      <0x01b0ac00 0x200>,
-+			      <0x01b00030 0x4>,
-+			      <0x01b0b000 0x200>,
-+			      <0x01b00038 0x4>,
-+			      <0x01b00020 0x10>,
-+			      <0x01b0a000 0x500>,
-+			      <0x01b10000 0x1000>,
-+			      <0x01b40000 0x200>;
-+			reg-names = "csid0",
-+				    "csid1",
-+				    "csid2",
-+				    "csiphy0",
-+				    "csiphy0_clk_mux",
-+				    "csiphy1",
-+				    "csiphy1_clk_mux",
-+				    "csi_clk_mux",
-+				    "ispif",
-+				    "vfe0",
-+				    "vfe0_vbif";
-+
-+			clocks = <&gcc GCC_CAMSS_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0RDI_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1RDI_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2RDI_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PHYTIMER_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PHYTIMER_CLK>,
-+				 <&gcc GCC_CAMSS_CSI_VFE0_CLK>,
-+				 <&gcc GCC_CAMSS_ISPIF_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_TOP_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_VFE0_CLK>,
-+				 <&gcc GCC_CAMSS_VFE_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_VFE_AXI_CLK>;
-+			clock-names = "ahb",
-+				      "csi0",
-+				      "csi0_ahb",
-+				      "csi0_phy",
-+				      "csi0_pix",
-+				      "csi0_rdi",
-+				      "csi1",
-+				      "csi1_ahb",
-+				      "csi1_phy",
-+				      "csi1_pix",
-+				      "csi1_rdi",
-+				      "csi2",
-+				      "csi2_ahb",
-+				      "csi2_phy",
-+				      "csi2_pix",
-+				      "csi2_rdi",
-+				      "csiphy0_timer",
-+				      "csiphy1_timer",
-+				      "csi_vfe0",
-+				      "ispif_ahb",
-+				      "top_ahb",
-+				      "vfe0",
-+				      "vfe_ahb",
-+				      "vfe_axi";
-+
-+			interrupts = <GIC_SPI 51 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 52 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 153 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 78 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 79 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 55 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 57 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "csid0",
-+					  "csid1",
-+					  "csid2",
-+					  "csiphy0",
-+					  "csiphy1",
-+					  "ispif",
-+					  "vfe0";
-+
-+			iommus = <&apps_iommu 3>;
-+
-+			power-domains = <&gcc VFE_GDSC>;
-+
-+			status = "disabled";
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+				};
-+			};
-+		};
-+
-+		cci: cci@1b0c000 {
-+			compatible = "qcom,msm8916-cci", "qcom,msm8226-cci";
-+			reg = <0x01b0c000 0x1000>;
-+			interrupts = <GIC_SPI 50 IRQ_TYPE_EDGE_RISING>;
-+			clocks = <&gcc GCC_CAMSS_TOP_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CCI_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CCI_CLK>,
-+				 <&gcc GCC_CAMSS_AHB_CLK>;
-+			clock-names = "camss_top_ahb",
-+				      "cci_ahb",
-+				      "cci",
-+				      "camss_ahb";
-+			assigned-clocks = <&gcc GCC_CAMSS_CCI_AHB_CLK>,
-+					  <&gcc GCC_CAMSS_CCI_CLK>;
-+			assigned-clock-rates = <80000000>,
-+					       <19200000>;
-+			pinctrl-0 = <&cci0_default>;
-+			pinctrl-names = "default";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			cci_i2c0: i2c-bus@0 {
-+				reg = <0>;
-+				clock-frequency = <400000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
-+
- 		gpu: gpu@1c00000 {
- 			compatible = "qcom,adreno-405.0", "qcom,adreno";
- 			reg = <0x01c00000 0x10000>;
-@@ -1498,6 +1637,13 @@ apps_iommu: iommu@1ef0000 {
- 			#iommu-cells = <1>;
- 			qcom,iommu-secure-id = <17>;
- 
-+			/* vfe */
-+			iommu-ctx@3000 {
-+				compatible = "qcom,msm-iommu-v1-sec";
-+				reg = <0x3000 0x1000>;
-+				interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
-+			};
-+
- 			/* mdp_0: */
- 			iommu-ctx@4000 {
- 				compatible = "qcom,msm-iommu-v1-ns";
+I have bought a refurbished Oppo Reno10 Pro 5G Android phone for SGD$328 at=
+ a mobile phone shop near Marsiling MRT station on 5 June 2025 Thursday at =
+about 1 PM Singapore Time.
 
--- 
-2.49.0
+The refurbished device itself costs SGD$318.
+
+New screen protector costs SGD$10.
+
+Phone cover is given free, part of the bundle.
+
+At about 4.30 PM today, I went to McDonald's with AIR CON and began setting=
+ up the Oppo Reno10 Pro 5G Android phone from scratch, installing and confi=
+guring more than 100 Android apps.
+
+At about 8.30 PM tonight, I have more or less completed setting up the Oppo=
+ Reno10 Pro 5G Android phone.
+
+It took me about FOUR (4) hours to complete setting up the Oppo Reno10 Pro =
+5G Android phone, from scatch (factory reset condition).
+
+Serial number and IMEI numbers of Oppo Reno 10 Pro 5G Android Phone:
+
+IMEI (SIM slot 1)
+8699*******2799
+
+IMEI (SIM slot 2)
+8699*******2781
+
+Serial number
+****8062
+
+Regards,
+
+Mr. Turritopsis Dohrnii Teo En Ming
+Targeted Individuals in Singapore
+GIMP =3D Government-Induced Medical Problems
+5 June 2025 Thursday 11.16 PM Singapore Time
+
+
+
 
 
