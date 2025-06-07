@@ -1,135 +1,91 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailo.com (msg-2.mailo.com [213.182.54.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B9B156CA
-	for <phone-devel@vger.kernel.org>; Sat,  7 Jun 2025 14:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9401C84B6;
+	Sat,  7 Jun 2025 21:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.182.54.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749307440; cv=none; b=YbbxDVqCbQJ88OWIdkqsYEY+GFp52Ex5zoo3OWGFUMdLVyP4mysuhkQP2zcOJD4UiyykVeQ3mR2wtub05asPPgbTNMd6GEuOM+nwNe4QS3zzvV9KOxBRwbYoTApo2E/uZ1NFYKhlhBoUx/lGdFyra7EKLgCiYp+SyXKhDCq7s9k=
+	t=1749332621; cv=none; b=T7J2mxZCVuj4xKFU+JJtUQjqBrfccVPGFKITWpO9TLcVp4BYfLZGeFNfmFwvAKTdAtoWZIrWjpVyFezDM14ccL3iHJ/cr8XWoTUwu/wFLs3X88fP4FnZm+jezi8Dv0d3HnAUWLgMsCSwMDUGOc3QcDwI/tnnKs6A9ICOGaELPK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749307440; c=relaxed/simple;
-	bh=vV05sCeFpR0egI97lciX4iSzeYjP9TGXqiwcwA73mk4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=S8ILN5jh0z7kk+w0+JyZ8vPrcGzLHbOcY2QPgiUJrrohbqXZsGhDiDq3vkk0MCWK0XZSpv030YL342xt8JV95OZUhSOfxv3j9gxklhsYQHdIXdOoYj3C12+GkYbWeDh694aQ9Tna5zoBmZlJNlJSOYyYCXbYF337cqLgot9QfSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Z4cPxXT6; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1749332621; c=relaxed/simple;
+	bh=xI/OvOkoISAXRncaDWVm0qhOdTlzYGDe6owbkI0AdPE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZJ2CwC1l/3TJHn4NbeDBnpSdzhp0HkYNwE8ieBjtwYs1MamLmmLnfetozEJhiRriGb2uVMslWdlEohTARPJEAFJ/4XKo4mCsyaWJ5RSHtxMzWppas2u1J929fTZ1aH442yMUS92XwvV/ZH7M7HzbsQIJpVfXdEQrBv8G4GFgq0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailoo.org; spf=pass smtp.mailfrom=mailoo.org; dkim=pass (1024-bit key) header.d=mailoo.org header.i=@mailoo.org header.b=aEbKIoQO; arc=none smtp.client-ip=213.182.54.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mailoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailoo.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Z4cPxXT6"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 557EgwIm012802
-	for <phone-devel@vger.kernel.org>; Sat, 7 Jun 2025 14:43:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pzcxmCnV5pYzfiX15guSgFMIxLrLb3NYj+Ra6xjgQnA=; b=Z4cPxXT6LBUkradC
-	N9MnJk/8zLs8BDAqAUwa15Raw53GHEYgEBxhGfnZLYZdG4hrpKPO0bMALOQU9teC
-	pfB221wfUtBfYsOHMxzF39Q2zlLaCZZkwYxBq9dfQ/qp/A8Tqk9l69Ebx8BPE/lP
-	kFzHV0dLaX1gjRl3BK8/j0Cl7DelMUwiDDijvRCIL9q/YL7wMTv8sGwXw6DnOyCc
-	6CpsHZ9J1mqDS/Xdt0ZBzELZBXVEvsc8nNtACH1y274ZXk6c+Yl9ZT3VigDeL5lE
-	TQxWvFmQB4AcNyJB2mt8toylswPCx32x8zyIaGmBgDDVJO9LOPZocjz+FtfBlKLk
-	uMUB1g==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474asrgwgu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 07 Jun 2025 14:43:58 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2349498f00eso32783395ad.0
-        for <phone-devel@vger.kernel.org>; Sat, 07 Jun 2025 07:43:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749307437; x=1749912237;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pzcxmCnV5pYzfiX15guSgFMIxLrLb3NYj+Ra6xjgQnA=;
-        b=b78ZfXrK4PfUOS/HXh4pcZZE2DvA5qGx0hsiiqsAKmY/N3YgklOXwvo1wHmnQE96FX
-         LFbgwHbullisegjl9otnBIjEJZOtFWkKxAD+Jf4CTi867hxkuXVEZANdnjiV2l830ZQY
-         ZBvx/MWErbGG92RlkZba1DfdVgKYsJtSjR2Ufk3kQ8xUUBL5THzRAWGtqHKeV/9NJQ5j
-         oQpLktDYGmc5H0QHMWhbvI1s0wxfy6cptJGfYu7yM5WjeOsC8UE/x5zH5KDtoD1masgs
-         uSgd0Gr0jzIpEWNzv9QWrAaKnm5hRr5fZFYlLYahI17CTo3P+cVCrDcG1CshqKKnr9Gg
-         JA5w==
-X-Gm-Message-State: AOJu0YwHL2zVCUEtghXI5DFg0s4GAfESyVIjsInPIrNeY/QOXDJaj1vx
-	ap3oBD8ej4ttAAtxTO/UroFiX+WYhTo/OagplfKt9W8j9pPzdDraPCAVawynYzqmfVvP9pyVSfj
-	WZTFfoh8MKWghpRNM3HjHj2Ga94YbtdqC8T95+wWCjQpuOxvy1Q8L2pp9//5/R/5MIw==
-X-Gm-Gg: ASbGncsQtaO0vDJ94QCi94yj4eEEH0eScQdWVgJLXvZms+xj3NnOYxEB+tGIylUBGCr
-	XmVDKp61l4BacC6MfeEPH+dEZlFWSDn/xd0qgdz7821h4A//EMFYCoRxI85a+vuKDIIwCSrS89a
-	Ek+a6jHe606gaDimz/ryfkNFfL5Jqh3w6uBRxe2j2TCZHyy6XeJY7glr3rtImHjyrUjZbxEhFL2
-	QCsQelJD4HgevuWWWPzb+9naGolcEuvKZfjoeBPCV8re7nCnU86tktDGMogseqmCR5gULKztALI
-	q747bIMrdnv3vMp7UeanGOc6Jr0NxnxIWujvuS8gC1tknqgB
-X-Received: by 2002:a17:902:f688:b0:234:325:500b with SMTP id d9443c01a7336-236020e6e0fmr94478035ad.22.1749307436834;
-        Sat, 07 Jun 2025 07:43:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHtEwX+CYFF9tWBi8OSvwsaTfDq+qAz9M4ipDToqoJL56YkpTKX6fp9SV49PLNR9nRrd/51zQ==
-X-Received: by 2002:a17:902:f688:b0:234:325:500b with SMTP id d9443c01a7336-236020e6e0fmr94477825ad.22.1749307436453;
-        Sat, 07 Jun 2025 07:43:56 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236030969ebsm27626415ad.72.2025.06.07.07.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Jun 2025 07:43:55 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Rakesh Pillai <quic_pillair@quicinc.com>,
-        Surabhi Vishnoi <quic_svishnoi@quicinc.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>
-Cc: phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-In-Reply-To: <20250318205043.1043148-1-caleb.connolly@linaro.org>
-References: <20250318205043.1043148-1-caleb.connolly@linaro.org>
-Subject: Re: [PATCH] ath10k: snoc: fix unbalanced IRQ enable in crash
- recovery
-Message-Id: <174930743530.154748.10228995269580503920.b4-ty@oss.qualcomm.com>
-Date: Sat, 07 Jun 2025 07:43:55 -0700
+	dkim=pass (1024-bit key) header.d=mailoo.org header.i=@mailoo.org header.b="aEbKIoQO"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+	t=1749332607; bh=xI/OvOkoISAXRncaDWVm0qhOdTlzYGDe6owbkI0AdPE=;
+	h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=aEbKIoQO+l7C7MLt9a6SuB590DT46JFza4bQskV6NSOnACnFw81MauRawk2w4VwmZ
+	 /edbHScs3xZ106G02Pys8xBJEg6kcYH92+wTl3/JqKRRxTSb6Z6AEfmIDXNL4ghWJk
+	 ovF8eARkJWcLrWHhH0aAjYqG/4KCPWffCDVPRvqY=
+Received: by b221-6.in.mailobj.net [192.168.90.26] with ESMTP
+	via ip-22.mailoo.org [213.182.54.22]
+	Sat,  7 Jun 2025 23:43:26 +0200 (CEST)
+X-EA-Auth: tcnuv6EiHZjbchC6kmH0/Ii7nnvOoLM4TEin+CbKNq8wrSTgu1rvm6JumEmT79Enp2m+k7dPzaxOaWT47optlAuYenc93FDrPejq6nJgMP8=
+Message-ID: <e73d676ba1901437d471a2a633e94a07b19a3e05.camel@mailoo.org>
+Subject: Re: [PATCH v4 2/4] media: qcom: camss: Add support for MSM8939
+From: Vincent Knecht <vincent.knecht@mailoo.org>
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Robert Foss	
+ <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue	
+ <bryan.odonoghue@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,  Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?ISO-8859-1?Q?Andr=E9?= Apitzsch
+	 <git@apitzsch.eu>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht
+Date: Sat, 07 Jun 2025 23:43:26 +0200
+In-Reply-To: <877a72fa-cdae-4a66-9991-5ea86ef76aac@linaro.org>
+References: <20250602-camss-8x39-vbif-v4-0-32c277d8f9bf@mailoo.org>
+	 <20250602-camss-8x39-vbif-v4-2-32c277d8f9bf@mailoo.org>
+	 <877a72fa-cdae-4a66-9991-5ea86ef76aac@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42app2) 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: EqVMpuo3iIwQNVDRKUkVhbRS3h5TUBlP
-X-Proofpoint-GUID: EqVMpuo3iIwQNVDRKUkVhbRS3h5TUBlP
-X-Authority-Analysis: v=2.4 cv=AMUSjw+a c=1 sm=1 tr=0 ts=6844502e cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=NluFblzGRrdN37FGmV8A:9
- a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA3MDEwNiBTYWx0ZWRfXwumcl2XIE3ws
- 0e136sEEgZh15wYrZcXBrpTN1ddbFalurJ21A9PiZpdz/1PD1OGTg1rN/J7TISh773c8D79OII4
- YOLRwPbW1m5HjC9UxK82/zfCwRvgtsWpY2lK88SO5WiUJi0bee+a6dp8CB+4Mgs8niuLpJAWxaY
- 9lFb4I36dWrkcerzDRzwuttKNBKqQdIx+kGFciPgTRM6G04vnaGme9BcULCLfH8/MB/snyU9IDu
- fqelqEI89PUYQGx/eoAhppgg7LP3s/tChk91J95gQgSbplY3OgxEY2MVU8R3yWKMB7UzAocP9bu
- lqZz+Hi+CMPRrNlRS3TWs9OSyUrqCXEGjP5kM8ugOyD25tD3KaQU/G1JGK8gDUDl8MhnPLKyecn
- VbA6sRYxwiMcZTrTqXVUPTvS3twEhXzfU0GNrny7erCKGddeqAgXjHW9oDF4O5dZG123IWFl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-07_06,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 spamscore=0 adultscore=0 impostorscore=0
- bulkscore=0 mlxlogscore=576 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506070106
 
+Le vendredi 06 juin 2025 =C3=A0 13:59 +0300, Vladimir Zapolskiy a =C3=A9cri=
+t=C2=A0:
+> Hello Vincent.
+>=20
+> On 6/2/25 20:27, Vincent Knecht via B4 Relay wrote:
+> > From: Vincent Knecht <vincent.knecht@mailoo.org>
+> >=20
+> > The camera subsystem for the MSM8939 is the same as MSM8916 except with
+> > 3 CSID instead of 2, and some higher clock rates.
+> >=20
+> > As a quirk, this SoC needs writing values to 2 VFE VBIF registers
+> > (see downstream msm8939-camera.dtsi vbif-{regs,settings} properties).
+> > This fixes black stripes across sensor and garbage in CSID TPG outputs.
+> >=20
+> > Add support for the MSM8939 camera subsystem.
+> >=20
+> > Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> > Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+>=20
+> There was a preceding and partially reviewed changeset published on
+> linux-media [1] before v1 of the MSM8939 platform support in CAMSS,
+> due to a merge conflict this platform changeset should be rebased IMHO.
+>=20
+> [1] https://lore.kernel.org/all/20250513142353.2572563-4-vladimir.zapolsk=
+iy@linaro.org/
+>=20
+> --
+> Best wishes,
+> Vladimir
 
-On Tue, 18 Mar 2025 20:50:27 +0000, Caleb Connolly wrote:
-> In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-> recovery flow, but we still unconditionally call enable again in
-> ath10k_snoc_hif_start().
-> 
-> We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-> before hif_start() is called, so instead check the
-> ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-> recovery.
-> 
-> [...]
+Thank you, I'll look into it
 
-Applied, thanks!
-
-[1/1] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
-      commit: 1650d32b92b01db03a1a95d69ee74fcbc34d4b00
-
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
