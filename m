@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE6D41C69;
-	Mon,  9 Jun 2025 21:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632ED1E1C1A;
+	Mon,  9 Jun 2025 21:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749502830; cv=none; b=UqbfmDmDJH0LVI98xeZwsTeAFTZpqyguzB/KZzJNuz2UwkWXkbl3t66aHREYyWGYRQgipmc9jhjeeA1DDd8MypqPdmJMQAulSWnZTic/ARvY2ycmJlIbObn35o29AJDQ29UMgP8nQNYkb0nC83iGJL90GQG10gKoBySTeJBHqzI=
+	t=1749502838; cv=none; b=CyvzjHjfuLa48qQq6fpqQTwtXVe53pETM38+Ly6t+0MetgIJRy9GFqL6WNqPHgAlYKAom4q/5prE1+cvtpMzPvD2pMSkeWtZDsBi9nK15N1RGIHNwvV9DfffgJd5oGsP8D4SrTxJJrwYphemWl8wHFwt3ogZTi7wHS2Jfh+3//U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749502830; c=relaxed/simple;
-	bh=rb09KVoRgPYdj7QLHoMRO84NfQkj5PkMlvENQEQzbWI=;
+	s=arc-20240116; t=1749502838; c=relaxed/simple;
+	bh=zqrMe1sn7XHdZVE7LCOKTyfEo8TpwJkf0G8jdLXjznM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=J9ecIQYA9CziRZmKvXryrhgjd8d+yDPsCzgIkwWmX9zOnIPM02d5aIsqarFhHimuktvoCh3ifIQ6UsGfK82aTYi3EmAAHDI6U0qJa5Kl0KG7LEixqcMK7/rn2ubVDQ4hzrU8myEWmPtqeknjSPfHK7eiKX9XWwDlQx6YnIX+lLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzdhq/p/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fxwn9PJHo4gNH5l8rIc7FCgK127qF/3LH60Tmdmzftg5DCBh8x0Y5aZN40J3EgTnKnxJ1JSxNcxcLxeO+T2TJCYq5UiaeHoAVZioKnUBjp2x3hESm7WVuVQSUt2ANRCkACzaWHIJ+5S6qv12iSyk1y8mFwLTXCblyUvqAxEgTd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUPkIIyl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzdhq/p/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E586FC4CEEB;
-	Mon,  9 Jun 2025 21:00:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUPkIIyl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE7C4CEEF;
+	Mon,  9 Jun 2025 21:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749502829;
-	bh=rb09KVoRgPYdj7QLHoMRO84NfQkj5PkMlvENQEQzbWI=;
+	s=k20201202; t=1749502837;
+	bh=zqrMe1sn7XHdZVE7LCOKTyfEo8TpwJkf0G8jdLXjznM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=mzdhq/p/RMyPKICk+fpJ9eilkpF/nrEslcUp1ALKCKkfXoYpS6KLl907F41xBMv6f
-	 N1QepH13c/7A+qaST6XX9eekxghPv4vWMw8KJswYcBTDDxitumeFJdefSSzCgJJx6a
-	 R0wPVE8vRsyekCgxSmbJbzB5qPVSMpyIDMLkH6hpVB1MhXoKKtv6sn+AFQ1od4ZrDQ
-	 6j4Vc0fmoAGObXjw+fNvDfIKiYKAfSOJygYtBFw6mmGAijghElyqg6dd4yHrK4RXym
-	 XkS3JdPCSx/g/gjmR72DVYyk4Sj80QQrDwACFymmg1RU12n03tDOFpL0oLOXYzCgx7
-	 cg9vZIB5qRJxw==
+	b=KUPkIIyla7GStsdPfBCxwIp7zBZcKRNwfODNlQP68t8IhkD9BJKZ/FiALoJXLptA6
+	 +4cyStfaNISmp5STLNwFyfFhjYJH1rquAxXNX14e3H6tvnpAZFiABYqTQP8bSiS7MJ
+	 rpWpypO876E76VkRrsw7JsYtTX6wdnKcNgufLrihS79RAdwlqR3JCmnsA8e5bUXTLL
+	 azPyyEnaolGGbuJ/zdKLQXs6qnFq9uYe0R97005Wzen8+drUcMFB7JDwTuHh3Pb3bS
+	 mHmrxFYWBE1I1wwPpKe1KksyymrYu/vxQflKfBGGN4M3yzTzaCvO3jA3/4TxcZY6gF
+	 KXEXe/XveO+Ow==
 From: Mark Brown <broonie@kernel.org>
 To: Srinivas Kandagatla <srini@kernel.org>, 
  Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
@@ -40,12 +40,12 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
  Neil Armstrong <neil.armstrong@linaro.org>
-In-Reply-To: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
-References: <20250425-fp5-dp-sound-v3-0-7cb45180091b@fairphone.com>
-Subject: Re: (subset) [PATCH v3 0/5] Add DisplayPort sound support for
+In-Reply-To: <20250507-fp5-dp-sound-v4-0-4098e918a29e@fairphone.com>
+References: <20250507-fp5-dp-sound-v4-0-4098e918a29e@fairphone.com>
+Subject: Re: (subset) [PATCH v4 0/5] Add DisplayPort sound support for
  Fairphone 5 smartphone
-Message-Id: <174950282564.277844.4634804513095204160.b4-ty@kernel.org>
-Date: Mon, 09 Jun 2025 22:00:25 +0100
+Message-Id: <174950283411.277844.1603420608213566024.b4-ty@kernel.org>
+Date: Mon, 09 Jun 2025 22:00:34 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -56,7 +56,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-c25d1
 
-On Fri, 25 Apr 2025 10:07:24 +0200, Luca Weiss wrote:
+On Wed, 07 May 2025 10:01:36 +0200, Luca Weiss wrote:
 > Add the necessary sound card bits and some dts additions to enable sound
 > over DisplayPort-over-USB-C, e.g. to a connected TV or monitor.
 > 
