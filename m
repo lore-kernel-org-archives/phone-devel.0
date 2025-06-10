@@ -1,145 +1,96 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A06D20EB;
-	Tue, 10 Jun 2025 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AD4230BF5;
+	Tue, 10 Jun 2025 17:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749574633; cv=none; b=T/VLWEvhuqZVDgw86sAtcQLIxry7s47mFAikNp3xdL6fErgZs4KK/JWuceOcsxvjfq1nUx0uBYeA2CaSOVbOXfvdrZjgfWqA4Bw3skwUdGt/15mR7mX95UEu/0jB5a6RJftz2Uakt02Fbu4MUL/jOBOBywQoPejfD1iRlnln8jQ=
+	t=1749575046; cv=none; b=WoicnQNqHb5tfThhBN9JXzMy8Z1Y1/+ZdlPPkGwaOhJSpccrpjmhyMqmfOIyhpl4Qkq+ljBHI6h7vLJMZSdyiQLrNq2J1kYxsK8Ku7g2AYtarDIQcf6NvKDYuZZktNPKseZ6XrGOIGLSag5L6+aW8ii2swLZrerGdIaYzHx3chA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749574633; c=relaxed/simple;
-	bh=MftsZNiQbgGE0GcsfcImBHC7A8VKftL96OfEjX0rO7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lo49Wtb7+1xamlQECc90cRwgp+fYgvZPR7WBIzBCMUErYI9AmBgWLAb5ygr78s8PVd8LBwNbOYiuu0Upk7dlyd1A+vLLOCb3tZ3JNE9Xyb7+2hocWt6y82/5aphX95Zdtj8RO2pG6EoHdIvd57Tl32WE+hOXckm/eJozvjbT1Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=kKYZPsrC; arc=none smtp.client-ip=128.199.32.197
+	s=arc-20240116; t=1749575046; c=relaxed/simple;
+	bh=nEJHW4wNPzS2N/9ze+d/67j7fjzeMqQ+h8hJFz8lGgk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i4eCV+TWH67Sy/OFrxizgRWht+y8kkWI4ptBcRzhMs6LKzEewTeszRWG7odI04ao8+uTQwz7/mgrlrow5Rxcha5c30U4lsPB3QctUJZJQ1Vwm+nvlUZ3vWM0nvm8KwC9sfCSKH6GmjEdD6ZXFS1fN5PlQXUiTdwoyTSc/yi3x58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=12yg+hg6; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="kKYZPsrC"
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="12yg+hg6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1749574623; bh=MftsZNiQbgGE0GcsfcImBHC7A8VKftL96OfEjX0rO7M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kKYZPsrCBLMNFDfduZ/WSYo/8JR5Vu00iQcLz12xAQVuYE3f+X7RiUELXLGr9Kogz
-	 aYg9+gkIr1tvBJlzaAL24aeTOXACCLl3yuuCG0rbZZGSeywcWUg+Sp9iHJrNWPGMce
-	 e1A9yYpCTyOaNt1Qrm9Af+w2REPodQ56gTRauwFE=
-Message-ID: <28770566-ed85-4c8f-b01c-c4c14efee743@lucaweiss.eu>
-Date: Tue, 10 Jun 2025 18:57:03 +0200
+	t=1749575042; bh=nEJHW4wNPzS2N/9ze+d/67j7fjzeMqQ+h8hJFz8lGgk=;
+	h=From:Subject:Date:To:Cc;
+	b=12yg+hg6iP3lOx0fluDHlgUw9vADP2tweia/3DIkhtaMwh86gJgAiVqO/yAvFDgbf
+	 bFvTIXna2gzt5Ao6Bwk3bSFmwFMolLLhiPZLweXx5LWQb3iYdBFfPQurYo8E/+Wgsp
+	 EolK+u+i40/bnIeq0YH923ZxQvp41yOX+74TMjKo=
+From: Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH v2 0/3] Add devicetree aliases for mmc on multiple MSM8974
+ devices
+Date: Tue, 10 Jun 2025 19:03:48 +0200
+Message-Id: <20250610-msm8974-mmc-alias-v2-0-1d8808478fba@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] ARM: dts: qcom: msm8974-samsung-hlte: Add touchkey
- support
-Content-Language: en-US
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>
-References: <20250419-hlte-touchkey-v1-1-9d93c3e2b31f@lucaweiss.eu>
- <1e7afaab-e050-4376-8dde-07f09fb01e51@oss.qualcomm.com>
-From: Luca Weiss <luca@lucaweiss.eu>
-In-Reply-To: <1e7afaab-e050-4376-8dde-07f09fb01e51@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHRlSGgC/32NQQ6CMBBFr0K6dgxTEKgr72FYjGWUSaiYjqCGc
+ HcrB3D5XvLfX4xyFFZzzBYTeRaV8Z7A7jLje7rfGKRLbGxuD3mJDoKGxtUlhOCBBiGFxhUdurr
+ zFZJJu0fkq7y35rlN3Is+x/jZLmb82X+1GSGHxhJhgdaWl+o0TJ5eLKp7nky7rusXREb+6bUAA
+ AA=
+X-Change-ID: 20250419-msm8974-mmc-alias-893d197dc61a
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=nEJHW4wNPzS2N/9ze+d/67j7fjzeMqQ+h8hJFz8lGgk=;
+ b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoSGV7ISSA0IyU2p2m9XUCPIZLuDzvVsnnkVo7f
+ e9N5klOUGKJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaEhlewAKCRBy2EO4nU3X
+ Vj/EEADapAMGKuq7m3ob85I3BsTXxzWJEOEepHDOGhBUZPAwbIcS4ebUENsy/5kQSJ1zwpQMkN9
+ 1udZKH+jV4eqW7UVx4z7OXTY0XoPul0BJnZJt9PJUN2b6C5qoJcodPgVG+w9ngoTQu/ushYCoPW
+ SAjkU1VGgy95MusPQvFVmAophThCK5Qu+7tOvYrRHR7CBEVbpCMY3sS50dK2dlAjjTjS2V1IZC6
+ 1fdyhmrByDvQ1yHfyB2dFBfdABzLkcJydLViiobE0x+YFkb91xvwTH3haHHRAG1IT7P0nAlNFcW
+ DXeITubPH7xud+HvezBIy/r3zTkQt2pFmapd6InnRcRqBdWAW+Tfp5Icaz7N59lGszXvOaHQrpD
+ 2XrKFsZ0iFIjzDWq0b1eSRxxth93gJOuiTousJQbgOpZEm+5Iy/jFyZQfdQ6q9+DezmUYzYWp/v
+ QNzok4qe8tbh9kvqghBNZx47SPjoYSGupcQVYMwgueYYhd9RZnrsVnLTxqGCTEUDregvDSpgg33
+ EEGpP7VSFUCYz2o2ntCjpql3j94H+SsTN4kH/etXmtAHLW3rcsXBbk1LZVVOU78qHt5eaydm0kI
+ eeaReIiK2Q+1YZ3M5v39BVoqrAguu3NY3UI4HMmMRHEumgFp2pfCFEqmjg0MOVQa9N0RR2OTS68
+ HETEBVAKvHfj+fA==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 22-04-2025 9:43 p.m., Konrad Dybcio wrote:
-> On 4/19/25 11:08 AM, Luca Weiss wrote:
->> From: Adam Honse <calcprogrammer1@gmail.com>
->>
->> Add support for the touchkeys on the Samsung Galaxy Note 3 (hlte).
->>
->> Signed-off-by: Adam Honse <calcprogrammer1@gmail.com>
->> ---
->> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
->> ---
->>   .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 45 ++++++++++++++++++++++
->>   1 file changed, 45 insertions(+)
->>
->> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
->> index 903bb4d125135771504281df50aa11c9b6576a28..17d3e319941b8fd0363af600d93fc10127e4ab21 100644
->> --- a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
->> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
->> @@ -50,6 +50,34 @@ key-volume-up {
->>   		};
->>   	};
->>   
->> +	i2c-gpio-touchkey {
-> 
-> 'i2c'?
+Add an alias for the internal storage so it always becomes mmcblk0 and
+- where applicable - SD card becomes mmcblk1.
 
- From what I can tell, there's a few more i2c-gpio "busses" on this 
-device, like most Samsung devices
+This avoids issues with internal storage becoming mmcblk1 unexpectedly
+and aligns this board with other boards that use MMC storage.
 
-https://github.com/LineageOS/android_kernel_samsung_msm8974/blob/lineage-18.1/arch/arm/boot/dts/msm8974/msm8974-sec-hlte-r09.dtsi#L109-L132
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+Changes in v2:
+- Expand on commit messages (Bjorn)
+- Link to v1: https://lore.kernel.org/r/20250419-msm8974-mmc-alias-v1-0-82aa131224b6@lucaweiss.eu
 
-So I'd keep the name to not conflict with future with these other ones.
+---
+Luca Weiss (3):
+      ARM: dts: qcom: msm8974-oneplus-bacon: Add alias for mmc0
+      ARM: dts: qcom: msm8974-hammerhead: Add alias for mmc0
+      ARM: dts: qcom: msm8974-sony-xperia-rhine: Add alias for mmc0 & mmc1
 
-> 
->> +		compatible = "i2c-gpio";
->> +
->> +		sda-gpios = <&tlmm 95 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
->> +		scl-gpios = <&tlmm 96 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
->> +
->> +		pinctrl-0 = <&i2c_touchkey_pins>;
->> +		pinctrl-names = "default";
->> +
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		touchkey@20 {
->> +			compatible = "cypress,midas-touchkey";
->> +			reg = <0x20>;
->> +
->> +			interrupts-extended = <&pm8941_gpios 29 IRQ_TYPE_EDGE_FALLING>;
->> +
->> +			pinctrl-0 = <&touchkey_pin>;
->> +			pinctrl-names = "default";
->> +
->> +			vcc-supply = <&pm8941_lvs3>;
->> +			vdd-supply = <&pm8941_l13>;
->> +
->> +			linux,keycodes = <KEY_APPSELECT KEY_BACK>;
->> +		};
->> +	};
->> +
->>   	touch_ldo: regulator-touch {
->>   		compatible = "regulator-fixed";
->>   		regulator-name = "touch-ldo";
->> @@ -149,6 +177,14 @@ touch_ldo_pin: touchscreen-ldo-state {
->>   		power-source = <PM8941_GPIO_S3>;
->>   		qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
->>   	};
->> +
->> +	touchkey_pin: touchkey-int-state {
->> +		pins = "gpio29";
->> +		function = "normal";
->> +		bias-disable;
->> +		input-enable;
->> +		power-source = <PM8941_GPIO_S3>;
->> +	};
->>   };
->>   
->>   &remoteproc_adsp {
->> @@ -332,6 +368,9 @@ pm8941_l24: l24 {
->>   			regulator-min-microvolt = <3075000>;
->>   			regulator-max-microvolt = <3075000>;
->>   		};
->> +
->> +		pm8941_lvs1: lvs1 {};
-> 
-> LVS1 is unused by anything here - it's probably good to define it, so
-> that the driver picks it up and regulator_ignore_unused is aware of it
+ arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts | 1 +
+ arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi    | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts      | 1 +
+ 3 files changed, 4 insertions(+)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250419-msm8974-mmc-alias-893d197dc61a
 
-Yes, did you mean here to put the addition of lvs1 into a separate commit?
-
-Regards
-Luca
-
-> 
-> Konrad
+Best regards,
+-- 
+Luca Weiss <luca@lucaweiss.eu>
 
