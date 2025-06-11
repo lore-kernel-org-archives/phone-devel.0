@@ -1,120 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D8D21B9D6;
-	Wed, 11 Jun 2025 08:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF5817597;
+	Wed, 11 Jun 2025 16:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749629875; cv=none; b=smMqZXOcLcQmlWEAboDsO2UGCr2hroYOoPBwG5NxHPjq6ADnpGntKgDPi0KrQh1q+xVrxvT+4G3aJtIG8jbyb8zf6wYkDMqe4ycSIVHpxtHi4JxqU13mNdM+ta2DOOyzgz9nreXfQgFL0PFwe4vGZN5+MYoH0L8BE9clWZ+KzEI=
+	t=1749659642; cv=none; b=cTnOAqZXQjaPa2rLIhJNahEzbGkN3iU/w8Q1kyLAnJAfCmoHzQA7xRZ+HyP5zOBQgcJYTJ4fMcGxflkNluCnvPF+0hGktJ0/0hx5rMIyf6Fp2Bq7DwQEDp9dl4RYHVrI6pFDKVBVl5O33Ctn2UHhuLpCF3y4KdZQbRm0XZHg/30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749629875; c=relaxed/simple;
-	bh=2LzeeufXjEPMtFWp+PnoigkYYRqq/JI4VyA6/ujyTj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fLyfVpCmZ4ZdqCf/j8jlXutTLuoGL0LZRoavMwz4uKq8wvVutf1NbtHncCIlSvkB0dogSYGQKx5qDyxWndmOVTRfEtUFxxN7pbrpOEU3hj6K56JqFZKaX+/JLtV5cAbJklA4sfRI2w0HqWj2g4+pt2SNTulqiQXfLBz/VD3ZJWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDLg0h8U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749659642; c=relaxed/simple;
+	bh=MTf/rXDUfXQ+M0fFpjuXZS6A1tPRdx76oitjXzouatU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=A77W1VsFPEY1N3ar4bsuz+ICjCJf+tBZqpvLHC50mdNEiJaT2w2hEth9Cazj5p/iYMOekjw/E94J5/iwyHOVWx+pwfemoVe0pWy31+9KoicIK5wDTjWXH71AmtS3GVyrRc+cHKxRHyExHEKfQKB1PyITEZ+LTgYlnEx7Ts0Y4wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=ZhNMOlCS; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDLg0h8U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77972C4CEEE;
-	Wed, 11 Jun 2025 08:17:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749629874;
-	bh=2LzeeufXjEPMtFWp+PnoigkYYRqq/JI4VyA6/ujyTj0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iDLg0h8Upcqqqw/ysGdmxXHLCc0L5NQyV0Xw+jmN0z9GfWSdHXhl4EOFBIXG1NFeV
-	 MJ+c99W8I7t4f3nn4VhnvAcj2oGxtVzzL+fTzUCzUdu30IFL6hUCctm2aTQQ2iSCmq
-	 9fLJbqj3WeCOI4SX6Y3tHd0y593XBu1rYsiPkLOm6AUWAYUwA6btrDTlCdhs0UiFj+
-	 DYkUaR/utGAjzI/sh1mf2fV/Y4VvBa1XvNYqel5h8D2zsFDbZNtBZfmVYTYPgvadWa
-	 byurqs6M68AFiuA2FcnxHi1B7CHNMouwG+fkMUHv/clC9WkOOo462zz+GRazc4x31z
-	 fqzLxVWUbpDHA==
-Message-ID: <c9688c18-515d-4e5b-82d9-fcdcb468c634@kernel.org>
-Date: Wed, 11 Jun 2025 10:17:48 +0200
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="ZhNMOlCS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1749659638; bh=MTf/rXDUfXQ+M0fFpjuXZS6A1tPRdx76oitjXzouatU=;
+	h=From:Subject:Date:To:Cc;
+	b=ZhNMOlCS/TNaV5B6wJtvWtG6fguZt8tPfHYXXLoBB/L412OULYuHQystdTLX3C79a
+	 ycJD7N36yQnUi2JFsYFd5hKrybwCBDXpphNTNDUlJaTOu8BBMnKtSmV7beOzhhqVDm
+	 DTnlolGoh2o1GLZuPTxR8XegFoesG/Q2+Ld2Fx3w=
+From: Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH v4 0/4] Add display support for Fairphone 3 smartphone
+Date: Wed, 11 Jun 2025 18:33:14 +0200
+Message-Id: <20250611-fp3-display-v4-0-ef67701e7687@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] dt-bindings: display: panel: Add Himax HX83112B
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20250610-fp3-display-v3-0-e7e7561812e1@lucaweiss.eu>
- <20250610-fp3-display-v3-2-e7e7561812e1@lucaweiss.eu>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250610-fp3-display-v3-2-e7e7561812e1@lucaweiss.eu>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMqvSWgC/23OQQ6CMBCF4auQrq3pTG0RV97DuChlkCYESCsoI
+ dzdwkYxLN8k35+ZWCDvKLBLMjFPgwuubeI4HRJmK9M8iLsiboYClUBEXnaSFy50tRl5nmY2lzI
+ jrXIWReepdO+1drvHXbnwbP24xgdYrvudAbjg1hZnQAKdKbzWvTUvciEcqWdLasBfrrYcIxc5l
+ EJloEpDO1x+uQax5TJySilVGtYP/vg8zx+7qSVcJwEAAA==
+X-Change-ID: 20250222-fp3-display-b79cb339e65b
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Luca Weiss <luca@lucaweiss.eu>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1694; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=MTf/rXDUfXQ+M0fFpjuXZS6A1tPRdx76oitjXzouatU=;
+ b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoSa/OnS9o2peAoDaQ0ANIrY318cgpqfn0RiiNi
+ JE34aiFcb+JAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaEmvzgAKCRBy2EO4nU3X
+ VtD3D/9+GYx+hEjt37D/F8AUy7ISdiUfhSeAOK79GT4mAqKSnuHnpsQpk7OozqNhxMTbo2qemAl
+ MTu5AwyW9dWhSJ7aFhCvKn2Nw54rezkiAF3GXetOlq/qKTmUC4lzMd3DCSYKX2WcPIlqpujgdWc
+ 8Xc+p1eUkl4w3DmZUulCaAYdnC/mfbTlyLPfN4k8Uzj1fiipVoEf+OBmBgE5DhFOMgWnyJBzqUf
+ RQbdQWTZxkxjygaSYld0CAKWw+OhkW1gBX/I7tHranxi7cJU8dVLJ40eaN4rbm9J1RB6GJ8d7FO
+ QsrWBM7pCABzaGXXaM3jsPCTQnYcJpyLqDv28D/EuSjwm/TPGFS+kzjB+ENJzrcNBZ/ywTmPrVC
+ TBUtXYs5/9lTv9HJguxoL2jk75utW4+end+9BC/UYCQwNbeNJzW9LKAH8HzQw5nDDnuWp3SSoum
+ S+e090293NItavuB74d4KH7Y8qlHzGptQULpfO6PqiWJsgjnxkXWWVvUiK52XwxeynFesNpgVM4
+ jJ7KM+K62J/XbWZo6Ri0ILL1f8FNaEvQTqppGqIonal+6E8qEVWq1gtZ2YxW2hJzQOTwpudR0wP
+ SaspRmRoCWVUEF8YlEKles+soqr6fx04/gkcwn+l6amZwla/dT/hCzTvKoJ/iNVLalAsI9YrDhA
+ 1U+jHXAoFtfeD/g==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 10/06/2025 21:09, Luca Weiss wrote:
-> +  iovcc-supply:
-> +    description: I/O voltage rail
-> +
-> +  vsn-supply:
-> +    description: Positive source voltage rail
-> +
-> +  vsp-supply:
-> +    description: Negative source voltage rail
-> +
-> +  port: true
+Add a driver for the HX83112B-based panel, and enable it on Fairphone 3
+to enable display output, and enable GPU as well.
 
-if you are going to resend, then drop port here.
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+Changes in v4:
+- Drop "port: true" from bindings (Krzysztof)
+- Use devm_drm_panel_alloc (Dmitry)
+- Pick up tags
+- Link to v3: https://lore.kernel.org/r/20250610-fp3-display-v3-0-e7e7561812e1@lucaweiss.eu
 
+Changes in v3:
+- Pick up tags
+- Rebase on v6.16-rc1
+- Link to v2: https://lore.kernel.org/r/20250225-fp3-display-v2-0-0b1f05915fae@lucaweiss.eu
 
+Changes in v2:
+- Change compatible to "djn,98-03057-6598b-i" based on other docs I
+  found
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250222-fp3-display-v1-0-ccd812e16952@lucaweiss.eu
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Luca Weiss (4):
+      dt-bindings: vendor-prefixes: document Shenzhen DJN Optronics Technology
+      dt-bindings: display: panel: Add Himax HX83112B
+      drm/panel: Add driver for DJN HX83112B LCD panel
+      arm64: dts: qcom: sdm632-fairphone-fp3: Enable display and GPU
+
+ .../bindings/display/panel/himax,hx83112b.yaml     |  73 ++++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/qcom/msm8953.dtsi              |   2 +-
+ arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts  |  62 +++
+ drivers/gpu/drm/panel/Kconfig                      |  10 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-himax-hx83112b.c       | 430 +++++++++++++++++++++
+ 7 files changed, 579 insertions(+), 1 deletion(-)
+---
+base-commit: c8a9a1ae369c60953b27c01162eb72b0422b9532
+change-id: 20250222-fp3-display-b79cb339e65b
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca@lucaweiss.eu>
+
