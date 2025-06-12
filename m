@@ -1,31 +1,48 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7635D213E78;
-	Wed, 11 Jun 2025 16:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048D3223321;
+	Thu, 12 Jun 2025 04:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749659645; cv=none; b=UXLKyRYuajp5gSd1gioyC1vziNP4RShxFvFptcmaxRNKUPaOJ9rvznrdFtxZxfE7/zR4vRsq2XX6u79smGUCOLUgLQmbPmdjOYUdWX+IpphB1oOdFs15xZeWDFwdyRz7o6bpVEJ+RBRLqkSE/OQH6rTXsofN7KNLrFQYChSPeXg=
+	t=1749700862; cv=none; b=aJgVKWt2kTxy58O0hQCjsXjFPynN7m62i0H3KSt9aBrqceRmNMdq57MbffsxrLlFEGiQn27aTVXXkZbdldiErArq5WqlXqrTG6f/3YDrx5lY6RyVdt6FBuLVxUYrptbrw5p7QRbJOVPtGINZjoes5ACHs9TdHOsQyE0S8y21Z3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749659645; c=relaxed/simple;
-	bh=9PghBU/VAIibPl4YWoEbxb+Vq7pSne0KImwxsb0T908=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vt5sqbI4Yc1U2KJAdaxvae2yhBAllk1QMjmuJ5iJAdXiDS5NfaHqVgu9e0F3DcOWES1t5CCHVfGo4KZjx0+EyIn4giDBi1ARG6XFO9F+6xdgoc4X+KvrsSHbE/Dbvsu1839zRA04tn8qiBaHphUWZmD3hdV+KWmbHuvM4UkEHro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=F52v95jE; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1749700862; c=relaxed/simple;
+	bh=XrRnPW4i8g+EE6wExOMowCi5/zyzGT+vghLHGrMqlh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q2cvApz0oCi8Gi0hgmp6hpzbee8Gp3fWZzJOdvd5Tblfu2MBUkNYgJuHr/LMmDf6AOGthZcPhOIKMz2XjXZR9oNHxvvxKa75JK7ov1t629wlueSpnK32vNSQKy/YZ9EVTNFdPEDsURbLgbYUHbwanHS0VzWA41qCnGZfBTzjW0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4bpqTBM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="F52v95jE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1749659639; bh=9PghBU/VAIibPl4YWoEbxb+Vq7pSne0KImwxsb0T908=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=F52v95jEqDy6RoNLRnD+RLUwn8rapwmQP5bV7oDh1HxNwcxULvniTMwfndx682YRT
-	 MTCQBDBihwuHwpSHRXc2MxGWGHxBw/GO+B2Nq91PstepJCNavA0ulIovZ32+NVgUti
-	 UEWVJG4QidcWOgCrJO7EqpFwGhYPnb7OQRtFT2mg=
-From: Luca Weiss <luca@lucaweiss.eu>
-Date: Wed, 11 Jun 2025 18:33:18 +0200
-Subject: [PATCH v4 4/4] arm64: dts: qcom: sdm632-fairphone-fp3: Enable
- display and GPU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4bpqTBM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F98C4CEF2;
+	Thu, 12 Jun 2025 04:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749700861;
+	bh=XrRnPW4i8g+EE6wExOMowCi5/zyzGT+vghLHGrMqlh8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D4bpqTBMIk6s6SHw5Cq7AiRWLWE4DyEJXAkXXzk7BE8D3gKbnfyDJ0O57ykJuTbP0
+	 WPa9ApGBFAUetJeJ3jjU2CtJQm20zkztcJzbCRGe0oxv2GY9gCGh3S1ifRb0MqRpH6
+	 1WoxO38vWQA3H2GgqGB7l9U9viixieEtlE5iKqUlCmLxzJ4WDgi16zvEw2JrvoeWWT
+	 QlzQw9tbidhOoI9eNqgXmTtvuTeM0MqQFK63IX+EeGtQzmYV2dEByRsL6t60eR3igr
+	 qJaxJcQ5V0Q9IY36pUS7pOBcmZnw/Q1HJUtEe0CTPOY8YR2x0DEwEJTMDJkgIWpire
+	 pUFWQY1WZsX6A==
+From: Bjorn Andersson <andersson@kernel.org>
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca@lucaweiss.eu>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Add devicetree aliases for mmc on multiple MSM8974 devices
+Date: Wed, 11 Jun 2025 23:00:42 -0500
+Message-ID: <174970084206.547582.8116096585283415678.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250610-msm8974-mmc-alias-v2-0-1d8808478fba@lucaweiss.eu>
+References: <20250610-msm8974-mmc-alias-v2-0-1d8808478fba@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -33,165 +50,28 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-fp3-display-v4-4-ef67701e7687@lucaweiss.eu>
-References: <20250611-fp3-display-v4-0-ef67701e7687@lucaweiss.eu>
-In-Reply-To: <20250611-fp3-display-v4-0-ef67701e7687@lucaweiss.eu>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Luca Weiss <luca@lucaweiss.eu>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3280; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=9PghBU/VAIibPl4YWoEbxb+Vq7pSne0KImwxsb0T908=;
- b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoSa/0dZklWpKiHcLeocBA55qVH330Y6VmwhQt1
- FME+LsNK16JAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaEmv9AAKCRBy2EO4nU3X
- Vtc3D/sGEpreLVLjkNB9Q0671b/UlYCfku5noSUCU+kK7JT6IWI/st31bd33VQP8qe2xaXzKW+c
- feNsmmF25dB3Tht6FnF4xV4sTxFRyZF8H7+G1Tafw13AnX5NPFdKYvL1q7616wfl4GUFMzyqQhk
- mHyv2kvsbiRVCk0sN6pPgG6OL2ppAuGMGg/fbUQptmTsvavdLQw1ihufyr1H+PHyvNSOoyGsJeK
- OXCJ6EtKGXYgweQY3AYU6RfPjhOOp6qfdJBOr08b5LMhFrbP8Cl4+JHU2eqlAwTrUxgGU0MSY+n
- d9Z0U8dmr4md1mIj77Up5WdasPlZr+9QjEqtFsstvby5ouObwbgEdHpixy/FRIR50NFfA8iEsUO
- hDTZYyjlqbwZOSUGhIOS0hnwZhwO+j8r1Kx+X6I1BfKAr0PsQmbd9IkLEP8SDCk3RCLoal7Mxlo
- wjGoGCnVRiXTIOlRNr//IR8PWBmgzQ5xHRSIxruxZrHSJD/ou3IYB/l1Wyoqoeqw8ciZQhzJJKQ
- 6SNECSnMUNo7Z0swtCawhpZMEyqPXNTTGG/0W5kqqkx8ksh65xo8URojQEWfm1uad6oHQ0/OyyL
- n25vjtGumTJxc+eXAmgYdF7yG1SMZok+U58bkpJYeagmZlLKs3u82qmTTZKbZqQjluYfr1xzWgL
- URD3tSw0v8ZAAVw==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Transfer-Encoding: 8bit
 
-Add the description for the display panel found on this phone.
-Unfortunately the LCDB module on PMI632 isn't yet supported upstream so
-we need to use a dummy regulator-fixed in the meantime.
 
-And with this done we can also enable the GPU and set the zap shader
-firmware path.
+On Tue, 10 Jun 2025 19:03:48 +0200, Luca Weiss wrote:
+> Add an alias for the internal storage so it always becomes mmcblk0 and
+> - where applicable - SD card becomes mmcblk1.
+> 
+> This avoids issues with internal storage becoming mmcblk1 unexpectedly
+> and aligns this board with other boards that use MMC storage.
+> 
+> 
+> [...]
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
- arch/arm64/boot/dts/qcom/msm8953.dtsi             |  2 +-
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 62 +++++++++++++++++++++++
- 2 files changed, 63 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index 273e79fb75695af1fd7a6f77273b95fe3b913fac..c5205d09c442e45e4a0cc3e6d8ff7d9d7bda0034 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -1147,7 +1147,7 @@ &bimc SLV_EBI RPM_ALWAYS_TAG>,
- 
- 			status = "disabled";
- 
--			zap-shader {
-+			gpu_zap_shader: zap-shader {
- 				memory-region = <&zap_shader_region>;
- 			};
- 
-diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-index 31ed26c31e6ea381a8942ccf569513df3300cdeb..55a45b528bd3f1bf9b6fe7882753338b43c62271 100644
---- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-@@ -36,6 +36,14 @@ key-volume-up {
- 		};
- 	};
- 
-+	/* Dummy regulator until PMI632 has LCDB VSP/VSN support */
-+	lcdb_dummy: regulator-lcdb-dummy {
-+		compatible = "regulator-fixed";
-+		regulator-name = "lcdb_dummy";
-+		regulator-min-microvolt = <5500000>;
-+		regulator-max-microvolt = <5500000>;
-+	};
-+
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vph_pwr";
-@@ -44,6 +52,14 @@ vph_pwr: vph-pwr-regulator {
- 	};
- };
- 
-+&gpu {
-+	status = "okay";
-+};
-+
-+&gpu_zap_shader {
-+	firmware-name = "qcom/msm8953/fairphone/fp3/a506_zap.mbn";
-+};
-+
- &hsusb_phy {
- 	vdd-supply = <&pm8953_l3>;
- 	vdda-pll-supply = <&pm8953_l7>;
-@@ -87,6 +103,45 @@ &lpass {
- 	status = "okay";
- };
- 
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mdss_dsi0 {
-+	vdda-supply = <&pm8953_s3>;
-+	status = "okay";
-+
-+	panel@0 {
-+		compatible = "djn,98-03057-6598b-i";
-+		reg = <0>;
-+
-+		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
-+
-+		iovcc-supply = <&pm8953_l6>;
-+		vsn-supply = <&lcdb_dummy>;
-+		vsp-supply = <&lcdb_dummy>;
-+
-+		pinctrl-0 = <&mdss_te_default>;
-+		pinctrl-names = "default";
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&mdss_dsi0_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&mdss_dsi0_out {
-+	data-lanes = <0 1 2 3>;
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+&mdss_dsi0_phy {
-+	vcca-supply = <&pm8953_l3>;
-+	status = "okay";
-+};
-+
- &mpss {
- 	firmware-name = "qcom/msm8953/fairphone/fp3/mba.mbn",
- 			"qcom/msm8953/fairphone/fp3/modem.mbn";
-@@ -292,6 +347,13 @@ &tlmm {
- 	 * 135-138: fingerprint reader (SPI)
- 	 */
- 	gpio-reserved-ranges = <0 4>, <135 4>;
-+
-+	mdss_te_default: mdss-te-default-state {
-+		pins = "gpio24";
-+		function = "mdp_vsync";
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
- };
- 
- &uart_0 {
+[1/3] ARM: dts: qcom: msm8974-oneplus-bacon: Add alias for mmc0
+      commit: d9abbfd3212b5873e827e3760cc698686d7a8c3b
+[2/3] ARM: dts: qcom: msm8974-hammerhead: Add alias for mmc0
+      commit: 9dd98b0f7a646c08f357189e9d5e733df08f0430
+[3/3] ARM: dts: qcom: msm8974-sony-xperia-rhine: Add alias for mmc0 & mmc1
+      commit: fb84f0ec527c50c54ab662d45c441f6789ec3550
 
+Best regards,
 -- 
-2.49.0
-
+Bjorn Andersson <andersson@kernel.org>
