@@ -1,53 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE53227EA7;
-	Thu, 12 Jun 2025 04:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB56230D1E;
+	Thu, 12 Jun 2025 22:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749700864; cv=none; b=dUaLEapUKkyZRD9mbeY3XDGEM3lKIQWC5k62Y+3rU6dxJsXCn0pLRM6nkZchhSBBJsD4szs2SNHl15JMOKVamIVKIhCrr278bY+B6M68KRf1chplgpLa+kFewopODz4X5vXXH+banUri3qRK6s/5q/K32ma5EKSoQUTOQ/hQbAA=
+	t=1749767849; cv=none; b=supSMGmtGkxuqWRyOBWn/ZEJ57CuKVjLxw8GBg/T8/5YP61MCVOyg+/JOwq73WCpSWxG2w4KPvwQYauL84xPVNeQOQKCxlgmKes7P3NT1GTWMw0HiJYgIDTLtvm7PjWO8i50TfHD3EJiORwW1z/7Vm3j4X8BRmimtbDbJXFZ7JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749700864; c=relaxed/simple;
-	bh=agqZ4kwIFiAfv2mknwnH4MYpFMkhrcT3U+7UIHs/KXY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qTNCHZchzDkJ71mcaNdcnUuitxIbarI2lQQWROfmT3ma1a2x24M6lP1HZMbgM9Abv1+ypaqtHjwkkItP1aLUZy/+8DmDM/dXcCcksKUJbaLEpR4n28g42PxOOAzDY8vszZIOprs9B5scl+JQyNEvaHKbqPCU9TRtru1T4vJ/MYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fA/CU71+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749767849; c=relaxed/simple;
+	bh=GQ+Xtv/R4Cazn0jTLW14AKKOtVPMuLFroC6FY7/Wwwc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=g0YtstW4LEEiwYiYGdQ7pitYKgNu8/B9vu1S3HZ/VfCqLG0LS/ntj/1CyhoWpoGlLMh6aQIKYzHuIVmVkDo3Q3mqpyQnOAEksXCX1fWclUVpQapbt5Mo06pmzjBJl0bDTxxlRvYo3ln56KmFZ/BNeCSfMdrrDgcq15UmN8qOIj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7MFeE22; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fA/CU71+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20D8C4CEEA;
-	Thu, 12 Jun 2025 04:01:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7MFeE22"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 68A82C4CEEA;
+	Thu, 12 Jun 2025 22:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749700864;
-	bh=agqZ4kwIFiAfv2mknwnH4MYpFMkhrcT3U+7UIHs/KXY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fA/CU71+pyTlGOV9ThEDbuPOU4POnh+yIqgxUrTr5qtdHSxfL9GyMuqYza/yOcFDR
-	 Pgg+I7Gg5eOpUWM/c9uGy9ex+q80bZP0lX1mdx6bUAG69Hiy9CJfViamZD/M3mzeZZ
-	 TrknE85gBwtPmCK2d7ewu/1A6RALU5NvabNUxew79Yqafoa6mZ6qm6wpk5mOtWHbsc
-	 036mQ5VzpBanrT4yaZCvstQgteuL7OdjxfvggMj6P08uVAD+Q6bFCsjpWOj7AGTui/
-	 cyi955Ivh+ADidaM2Mo6aQQNT9t6HW0MQxUDJHYIUFiWFHMMDW4Z+iAZM/toj5geJd
-	 9jXS62XrQ1qnw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/4] Add video clock controller for SM6350
-Date: Wed, 11 Jun 2025 23:00:44 -0500
-Message-ID: <174970084196.547582.13141993457803698213.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
-References: <20250324-sm6350-videocc-v2-0-cc22386433f4@fairphone.com>
+	s=k20201202; t=1749767848;
+	bh=GQ+Xtv/R4Cazn0jTLW14AKKOtVPMuLFroC6FY7/Wwwc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=H7MFeE22n87q9NkuJhY1Dj4Yx1s2G8kuXAkWSzbBOK1QfS0CFILUJAmTaGoFedA28
+	 K92wgJb8rvhcWrCY5XDRMK1rxYgVCHHsisCXNDCE2sl32EuxtY8etHudJQcTleiWJj
+	 ZwNi+EMWYfhq0lv3ysGxZFotewKsqOkuWyOEIL1+0gXd8FIepzPsBxHyplstFrOjUc
+	 Q9FoO0ZENY+ae//PLpG3xTejHW45puGQ2a+V1o8udzozy2Gkhg1+r6p0kSgULHHob8
+	 uEXwYMPKTfoKNKZSQWhy0i0ZcQsrHsXNu8/pG5kZEOuIVI1EGGVo5czeC6+aHSK2qM
+	 hv/NjBBvxr8qw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BF7EC61CE8;
+	Thu, 12 Jun 2025 22:37:28 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH 0/3] arm64: dts: qcom: msm8976-longcheer-l9360: Add initial
+ device tree
+Date: Fri, 13 Jun 2025 00:37:17 +0200
+Message-Id: <20250613-bqx5plus-v1-0-2bc2d43707a6@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -56,20 +41,60 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJ1WS2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDM0Mj3aTCCtOCnNJi3RRzo1RDwzRTC3PzZCWg8oKi1LTMCrBR0bG1tQB
+ 7QwS5WgAAAA==
+X-Change-ID: 20250612-bqx5plus-d72e11f5877c
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749767846; l=936;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=GQ+Xtv/R4Cazn0jTLW14AKKOtVPMuLFroC6FY7/Wwwc=;
+ b=BtpIaq4MHJ8rHJvyS2zi/RJdzpn0Y5hUwKIBUabE0oANdzbtLtlnAFfyhN8FV0nA/zsmrtwIJ
+ mFDzJBdJFIMAItGto0WhQsmWZW+wMJfVb/cUtTWU1Eqz/JYjUrcoT6l
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
+This dts adds support for BQ Aquaris X5 Plus (Longcheer L9360) released
+in 2016.
 
-On Mon, 24 Mar 2025 09:41:00 +0100, Luca Weiss wrote:
-> The driver for the SM6350 videocc has been lying around in some branches
-> of my git tree for a long time, let's upstream it. It doesn't get any
-> better by letting it age!
-> 
-> 
+Add a device tree with initial support for:
 
-Applied, thanks!
+- GPIO keys
+- NFC
+- SDHCI
+- Status LED
+- Touchscreen
 
-[4/4] arm64: dts: qcom: sm6350: Add video clock controller
-      commit: 67081281bb0dffd09e5f11c991088e6ac546a4ae
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+André Apitzsch (3):
+      arm64: dts: qcom: msm8976: Make blsp_dma controlled-remotely
+      dt-bindings: arm: qcom: Add MSM8976 BQ Aquaris X5 Plus
+      arm64: dts: qcom: msm8976-longcheer-l9360: Add initial device tree
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   5 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../boot/dts/qcom/msm8976-longcheer-l9360.dts      | 532 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8976.dtsi              |   2 +
+ 4 files changed, 540 insertions(+)
+---
+base-commit: 0bb71d301869446810a0b13d3da290bd455d7c78
+change-id: 20250612-bqx5plus-d72e11f5877c
 
 Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+André Apitzsch <git@apitzsch.eu>
+
+
