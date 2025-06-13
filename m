@@ -1,153 +1,174 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05B22727F3
-	for <phone-devel@vger.kernel.org>; Fri, 13 Jun 2025 08:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BDC1ACEAF;
+	Fri, 13 Jun 2025 09:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749803394; cv=none; b=sRMwiFrsEU8zIVyfZraJan4Ilh9g1vR26bUWM78sz7r00jrmXlyJKDNTaXWjVpw+ll3MZxUqxwUpq208/j+Ag+IpHhB3kucB3UwjEzjf0ynXWlHuEZ/AxlQSmzGrbbI4Qohq2Lm9T18YGGeDWqzpHrm7Pz4cy646k6T+4bm6efk=
+	t=1749807218; cv=none; b=EBp6J11fJ2p7+T8gDC+jx2bkkMbL53l9lKNYXYobAHX5qC1SB2ptEPXUYXrsZOCbJ62l1eUC/vMNWEpGSNwZzosJW9dICC9HGUMs7T7NCrBjtr/ezsmtsR7bEn5gqANZefrgGpqap1mdV9lFpUg5QoYiHL+Rc9CugQRCrFOpcAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749803394; c=relaxed/simple;
-	bh=Ndaw6E/1DT8mCCAKumeuIusQOrCN2MR3mwrjjMC25I0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HX4Q5IW+M454VIGO0j5EGF8OvehxsTZyz8tgxefGt+WZnf5vCeZHj55zF4AhKCIkUvDiVmGwBPJh8JvGOEGvcjojhPw2BnQMs30fRUDdopyXQBwog/9r07n4Oe28TsHAS+QyRDT3uh/9rvH53+scErbVQHWS4T2p7SerB+lKGe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K/RR1W6w; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1749807218; c=relaxed/simple;
+	bh=i5Pf6Oznv55GrsWogxX5kmhEiTAMxh9TsID82AiML3Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o1H7p88zyq/EJLGDbSEekAMHAjNBoxHnv0XVprfYtWs7qpWb9dbXzEcY1SSnVAaUvNSozrrNo1Ehg+vS4zH5nFBh2gCpkBwGaZtZV8rDsIs6a+5dP9NISedDJADD0Q/nUAr4JzHNpAZ81KJhGuz7p43Zsp7vx3rjgeswxK8M8SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+6teXS1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K/RR1W6w"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a35c894313so1699047f8f.2
-        for <phone-devel@vger.kernel.org>; Fri, 13 Jun 2025 01:29:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749803390; x=1750408190; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2vw2wbUJHDF5FJbkrTPFuUAQyWojwex3GcPQ3V01XJY=;
-        b=K/RR1W6wc7ua4gF1hPXz1JMJNx1efcS69FStc5UtEmq5PYKLMvaPybNxeNUuGj6C/Q
-         u+h1Fm547CaIS7uU6uwFG6NSJDr+HA7YHCcs3kWuWKsNWrHiw3B7HijYCSennnQ6uGx2
-         nKlSMNU9BuS+n1N/YdLZC80YENNsNKqQjVLJ412cL6B/whMSaaCL2yJj1ZmL3e1YOKPg
-         VcqP+r4UXOqCNJf3qg3OU7ShlCrxmkhdOVN8vPrCK7gNASJlS69OLrOeUNGWn+gaB/e4
-         zsH28MD7RbpBa87BcjO0NfjeYA6TTxrCWzAZzXjI32w//heweHrZT9zS4lc0fBNYkO2l
-         cxeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749803390; x=1750408190;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2vw2wbUJHDF5FJbkrTPFuUAQyWojwex3GcPQ3V01XJY=;
-        b=euho6oGXzVuVvM4Kmx9x2mlZcRBHCaDR+FnyJ1b13UPPVSTsAYDSiJA3oJtQ+QNem1
-         TlMsXkxgeCR/Hn1s9M8wpQ1ILVpyJNPbJehr+hVeLiji4BTKGsKjsL2R2cZfn8aS1ZQt
-         OqIJrF0SfR3mbtGWhWBMztchQ0bgP4aviH0Dw4sR/pXpv6O+lhW0qD+pqL/mAFKbu7xQ
-         qaOddsw5+8LPdQEwtf6PqOtqmouiqur70ZBwd5HJ1uDR7FWJ9uG9OGblQV9KDfZV6NpO
-         WNwunA10rS/TPEs13rQefiCV7xYjKK+RDkHw6FB2Ry6m2vC/n/Mkfb2NIeFc7Rop9Lfv
-         DMIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1nIF8xAzBf9e+Pr6irCetemQAydUwSwHe/QgF5UCubWKblsF0exqvFj36oMZe1Rvt0saowUOe7b0BKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfC6+WiyYx2l0F/dpVMnygqNlYpWAyEuL7j/Dgb20dkmtFAUOg
-	r4v5MHDgKGAcbO+0oxi3Kl4kdMZjcjDeUcEVM6IR9dYHnO2zcmqVqthvcmQLRKs7AJM=
-X-Gm-Gg: ASbGnctyoPdtnU7cz7XZO/rkeR20KXkUe0MiXaau3cN11+6Gxtno0TiceAaqjxs0xj0
-	+o+Zb0G9HNyrpGrf80LZ14W0rl4YOLOMdQhyVLpS7eKkiY118FQYqTJ6bU2HIQoQKD6H3YukSOR
-	XNauZne3Wt+X4p8c70d2sCBGZZLFArb+3gpwVnGDyCWLPL4skTosHaL3HsYhEr6l6Y+4eGlpe6D
-	TrtF7fbWd5T4wq4PdOLCIWqbkl/JKiMhaiDG1Bu8S9AHaSsoKErQgCq0BEtkk0kYH8HGokxnXwO
-	aZR2zMgvY3r8GY3VSFmAy+ndkI7Y5qOaTWe/vglszdHq3zZEQQLrppNf8+WrvMM2xN+ywXuHC7w
-	OZfxRGcXOD7kA7sY1l/QxtreGKFg=
-X-Google-Smtp-Source: AGHT+IHi6SlBwjFJOsMDJVRnIHSeQtix9HOeS66GL6NI2gk448DXiXM8fUugtFC2s4okglYnJjCwFQ==
-X-Received: by 2002:a05:6000:178b:b0:3a4:f72a:b18a with SMTP id ffacd0b85a97d-3a5686da23dmr2067256f8f.26.1749803390030;
-        Fri, 13 Jun 2025 01:29:50 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e244392sm44568325e9.22.2025.06.13.01.29.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jun 2025 01:29:49 -0700 (PDT)
-Message-ID: <7f76c2df-24bb-486f-b68c-6ca61e7acc8b@linaro.org>
-Date: Fri, 13 Jun 2025 09:29:47 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+6teXS1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5F4ACC4CEE3;
+	Fri, 13 Jun 2025 09:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749807217;
+	bh=i5Pf6Oznv55GrsWogxX5kmhEiTAMxh9TsID82AiML3Q=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=L+6teXS1T5Unxh1aMNXnLi+T3Pf2YrRV3HC62I4vL0zzyMYohQQ8bS2d0dWaJiKGM
+	 FXSUJUaRb9y8JO232i40qyll6HPwRq7eL0x6Hx8NkrUXi2S9DZJ4EUQkmnfk5wVjT/
+	 KMnVS4HrpsFoDo7T7pe0sr5ggrt9p9EY302a+2RVPywsz6lUSEJIOmdTtr/RufaEtB
+	 eM1hc79qDUtBYvARqGZYbqs3Crc+Dyqr5UsN0upgNVPkVls2wEBKURHktRR4KWZeoL
+	 5Fd51UJJN7r/be4jIgC1r+746iuaBrrRP2gqWodtRaF5cRAaYNVvz9l9CP5t47FP3d
+	 eu+WfquKRA9IA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7E9C71136;
+	Fri, 13 Jun 2025 09:33:37 +0000 (UTC)
+From: Vincent Knecht via B4 Relay <devnull+vincent.knecht.mailoo.org@kernel.org>
+Subject: [PATCH v5 0/4] CAMSS support for MSM8939
+Date: Fri, 13 Jun 2025 11:33:26 +0200
+Message-Id: <20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] media: qcom: camss: Add support for MSM8939
-To: Vincent Knecht <vincent.knecht@mailoo.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGbwS2gC/23OwY4CIQyA4VcxnMVAmTKDJ99jswcGqJKoGNgQN
+ 2beXTQmumGPf5N+7Y2VkGMobLu6sRxqLDGdW+B6xdzBnveBR9+agQAUKEfu7KkUPl2V4XWOxM2
+ IRDhJI83E2tYlB4rXp/j13foQy0/Kv88DVT6mLwtEZ1XJBbcSnNdCaEtmd7LxmNIm5T17YBU+A
+ ewBaID2yqNDSwPqDlAfgPrnA9UAckZ6ifOMvgeGN6AF9MDQAAUOxtFPZGb6AyzLcgenXWBgcgE
+ AAA==
+X-Change-ID: 20250517-camss-8x39-vbif-975ff5819198
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20250602-camss-8x39-vbif-v4-0-32c277d8f9bf@mailoo.org>
- <20250602-camss-8x39-vbif-v4-2-32c277d8f9bf@mailoo.org>
- <877a72fa-cdae-4a66-9991-5ea86ef76aac@linaro.org>
- <e73d676ba1901437d471a2a633e94a07b19a3e05.camel@mailoo.org>
- <03f54bb4-ddbb-4be8-9f9b-8328fdb98443@linaro.org>
- <67022a6de185740fa482183f29d574298048d54f.camel@mailoo.org>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <67022a6de185740fa482183f29d574298048d54f.camel@mailoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Vincent Knecht <vincent.knecht@mailoo.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749807215; l=4058;
+ i=vincent.knecht@mailoo.org; s=20250414; h=from:subject:message-id;
+ bh=i5Pf6Oznv55GrsWogxX5kmhEiTAMxh9TsID82AiML3Q=;
+ b=2pRtnf6EQ/OQ0rv2g+LD7BCVUlddoVZtLWAlJgAXmQi/uvheBpGb5hAsvhNvE4i03Fsfcx0HD
+ H8/70EE2cIwAphRYXLu2fxtY96H0MxJveM8HjAycouveQS2GilaJeV3
+X-Developer-Key: i=vincent.knecht@mailoo.org; a=ed25519;
+ pk=MFCVQkhL3+d3NHDzNPWpyZ4isxJvT+QTqValj5gSkm4=
+X-Endpoint-Received: by B4 Relay for vincent.knecht@mailoo.org/20250414
+ with auth_id=377
+X-Original-From: Vincent Knecht <vincent.knecht@mailoo.org>
+Reply-To: vincent.knecht@mailoo.org
 
-On 13/06/2025 09:28, Vincent Knecht wrote:
-> Le vendredi 13 juin 2025 à 09:06 +0100, Bryan O'Donoghue a écrit :
->> On 07/06/2025 22:43, Vincent Knecht wrote:
->>> Le vendredi 06 juin 2025 à 13:59 +0300, Vladimir Zapolskiy a écrit :
->>>> Hello Vincent.
->>>>
->>>> On 6/2/25 20:27, Vincent Knecht via B4 Relay wrote:
->>>>> From: Vincent Knecht <vincent.knecht@mailoo.org>
->>>>>
->>>>> The camera subsystem for the MSM8939 is the same as MSM8916 except with
->>>>> 3 CSID instead of 2, and some higher clock rates.
->>>>>
->>>>> As a quirk, this SoC needs writing values to 2 VFE VBIF registers
->>>>> (see downstream msm8939-camera.dtsi vbif-{regs,settings} properties).
->>>>> This fixes black stripes across sensor and garbage in CSID TPG outputs.
->>>>>
->>>>> Add support for the MSM8939 camera subsystem.
->>>>>
->>>>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>>>> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
->>>>
->>>> There was a preceding and partially reviewed changeset published on
->>>> linux-media [1] before v1 of the MSM8939 platform support in CAMSS,
->>>> due to a merge conflict this platform changeset should be rebased IMHO.
->>>>
->>>> [1] https://lore.kernel.org/all/20250513142353.2572563-4-vladimir.zapolskiy@linaro.org/
->>>>
->>>> --
->>>> Best wishes,
->>>> Vladimir
->>>
->>> Thank you, I'll look into it
->>>
->>>
->>
->> I think I will take 8939, plus any of the other now 3 SoCs waiting to be
->> merged with RBs.
->>
->> Bindings consistent with the last 10 years can go ahead. Its not
->> reasonable or in the interests of the community and developers to gate
->> any further.
->>
->> ---
->> bod
-> 
-> Hi Bryan,
-> 
-> I've locally made the requested changes for bindings
-> (ordering, vdda voltage, style, clock-lanes removal),
-> just not gotten around to rebase on Vladimir series.
-> 
-> So I can still send a new version with just these changes today.
-> 
-> 
-> 
+This series adds CAMSS support for MSM8939.
+It's mostly identical to MSM8916, except for some clocks
+and an additional CSI.
 
-That sounds fine.
+To fix black stripes across sensor output, and garbage in
+CSID TPG output, 2 VFE VBIF register settings are needed.
+So the 1st patch adds helper functions to do just that.
+
+Patch 1: adds helper for VFE VBIF settings
+Patch 2: adds CAMSS_8x39 version in CAMSS driver
+Patch 3: documents qcom,msm8939-camss DT bindings
+Patch 4: adds camss and cci in msm8939.dtsi
+
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+Changes in v5:
+- Patch 1: no change
+- Patch 2: no change
+- Patch 3: (bindings)
+  - Fix alphanumerical ordering wrt. underscore (Vladimir)
+  - Add 1.2V mention to vdda-supply description (Vladimir)
+  - Correct vdda-supply regulator name for 1.2V in example
+  - Add empty line between properties and child node (Vladimir)
+  - Remove clock-lanes property in example (Vladimir)
+- Patch 4: (dtsi)
+  - Apply ordering and isp node unit address changes from patch 3.
+- Link to v4: https://lore.kernel.org/r/20250602-camss-8x39-vbif-v4-0-32c277d8f9bf@mailoo.org
+
+Changes in v4:
+- Picked up tags
+- Patch 1:
+  - Fix alignment to match opening parenthesis (Bryan)
+- Patch 2: no change
+- Patch 3:
+  - Wrap line at 80 chars (Krzysztof)
+- Patch 4: no change
+- Link to v3: https://lore.kernel.org/r/20250530-camss-8x39-vbif-v3-0-fc91d15bb5d6@mailoo.org
+
+Changes in v3:
+- Patch 1:
+  - Use braces around multiline (Bryan)
+  - Rename vfe_vbif_reg_write to vfe_vbif_write_reg (Bryan)
+  - Get rid of switch block on CAMSS version (Bryan)
+- Patch 2:
+  - Get rid of switch block on CAMSS version (Bryan)
+- Patch 3: no change
+- Patch 4: no change
+  - Tried to get rid of CCI camss_ahb but this resulted in device
+    freeze+reboot (Konrad)
+- Link to v2: https://lore.kernel.org/r/20250525-camss-8x39-vbif-v2-0-6d3d5c5af456@mailoo.org
+
+Changes in v2:
+- Patch 1:
+  - Fix devm_platform_ioremap_resource_byname line to not end with
+    opening parenthesis (media-ci/1-checkpatch)
+  - Move camss-vfe-4-1.c handling of VBIF previously in patch 2 here
+    (Dmitry)
+- Patch 2:
+  - Declare regulators in PHY entries, not CSID ones (Bryan)
+- Patch 3: (bindings)
+  - Fix bindings checks for new errors (Rob)
+  - Fix properties ordering, code-style and example (Krzysztof)
+  - Sort reg-names, clock-names and interrupt-names alphanumerically (Bryan)
+- Patch 4: (dtsi)
+  - Move #address/#size cells before status (Konrad)
+  - Aligned CCI with msm8916, thus removing ispif_ahb mention (Konrad)
+    If "camss_ahb should be unnecessary", it's still required by qcom,i2c-cci.yaml
+- Link to v1: https://lore.kernel.org/r/20250520-camss-8x39-vbif-v1-0-a12cd6006af9@mailoo.org
 
 ---
-bod
+Vincent Knecht (4):
+      media: qcom: camss: vfe: Add VBIF setting support
+      media: qcom: camss: Add support for MSM8939
+      media: dt-bindings: Add qcom,msm8939-camss
+      arm64: dts: qcom: msm8939: Add camss and cci
+
+ .../bindings/media/qcom,msm8939-camss.yaml         | 254 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi       |   4 +
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              | 146 ++++++++++++
+ drivers/media/platform/qcom/camss/Makefile         |   1 +
+ drivers/media/platform/qcom/camss/camss-csiphy.c   |   1 +
+ drivers/media/platform/qcom/camss/camss-ispif.c    |   8 +-
+ drivers/media/platform/qcom/camss/camss-vfe-4-1.c  |  12 +
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.c |  31 +++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.h |  19 ++
+ drivers/media/platform/qcom/camss/camss-vfe.c      |  10 +
+ drivers/media/platform/qcom/camss/camss-vfe.h      |   3 +
+ drivers/media/platform/qcom/camss/camss.c          | 157 +++++++++++++
+ drivers/media/platform/qcom/camss/camss.h          |   1 +
+ 13 files changed, 645 insertions(+), 2 deletions(-)
+---
+base-commit: 8566fc3b96539e3235909d6bdda198e1282beaed
+change-id: 20250517-camss-8x39-vbif-975ff5819198
+
+Best regards,
+-- 
+Vincent Knecht <vincent.knecht@mailoo.org>
+
+
