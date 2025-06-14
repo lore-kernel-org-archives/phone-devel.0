@@ -1,65 +1,73 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0D1F237D
-	for <phone-devel@vger.kernel.org>; Fri, 13 Jun 2025 16:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA84B2E2F00
+	for <phone-devel@vger.kernel.org>; Sat, 14 Jun 2025 18:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749832733; cv=none; b=dMFqr1Y+3jorf4BuVY1dWzLt/N992EpsrGwe4zO6D/JkhCHUatB2b/R7BAwJQMBoTzvklIo7NgUibdzdhv1zHiNfzSWTOTH7Rv8gdfca8Mly1uQ7dtywnbEgpPbyYiyTF7IhD5rT198c/ZuuiCJIONIm/4kUhR7ahqP1n7mmUFo=
+	t=1749926422; cv=none; b=rAOzccfVCG7OR/D0Jmd33242B5SvflhW8bmEso6Na06F37YukW0P/JyaYv2/aE561Z4K9C1YDsXJcQxXIBuD+9JbFySZ8MTHBy9AR5Cw9lyF+589NxXisnBof3l3/2SkCXimWGVtnjcO4FvE08tiOIG6x77ItNrvLT6V9fcAn6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749832733; c=relaxed/simple;
-	bh=z+N8jqjN/nASPdQ0iP1STfKAC3rAtGf71WFeCKFFe4g=;
+	s=arc-20240116; t=1749926422; c=relaxed/simple;
+	bh=Aqqj3hsO/jmsuYDF6kyqSVHKYE8WRUcDj2uljG5/E5Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Umin0UeldtqI3agfBwPDGx+1nweWiejHdM/vxrc9RowAWaaJBdkSMV3Zs6vKJqNvVr7ih4FrKpy4xhQt99i3ZeEd5DR7kQdRcxPDF+IZYORCTdENDViR/pFzjGGaCmhopKA1sSMzDdju4pJHFZtk1hpDFgwgDrPwJ71/mrdXiN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UrXvI2eT; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=BEDHgD07E4gkExmZsVRqCnlb3D88hynACdudpYHR0llRLtyiEoJJfaSRYHFFurv4AEPkv++Zr5Qt7K9DlFP7wzhzKToDDANA2rTEONAaXFPSfG8u9KUxELF/DVYJm7uKYBVNjpJtQ+cl8PtJqcTSjBNVXZgd48R7ywKwhG7yLd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dNwCkZkp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UrXvI2eT"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-553237a1931so195451e87.3
-        for <phone-devel@vger.kernel.org>; Fri, 13 Jun 2025 09:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749832728; x=1750437528; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cYUtT+6UfKx7Gs9aWpbJRe4xmbx/ClKSljdS1pnK8R4=;
-        b=UrXvI2eTdCBGACPLTStoFa8xEcUAVUfn08PBuPpbkf1o2OudeK+zyn4d7/uwR1kpr7
-         xY05abDosFePjvXdkjq3Z1G9R7cDDO1/abE1MGoIVo2Kynbdwyx9/pzTsXu+6ooDg4Mr
-         Yg+OCI+kQyTIK40or6RBfD73KsUYzD8O1Ly5AOG1WDienuUVAS1IrHjr5HztulybFshF
-         pSlyU7aFEnuL9ijCTk+5A5sbZ2FCCT1AT3/2XPa1tfqSse98akdr1To7MHDu2qMWjGuu
-         WmB/2TxoU74ABPrDg2gMovvypgfejojxyhoY8tHiKbrueSL9dinJMD1dFZMSNF2N0r/e
-         cTAQ==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dNwCkZkp"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55EGLvIp025059
+	for <phone-devel@vger.kernel.org>; Sat, 14 Jun 2025 18:40:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9f2szhxgh+UZzFbgJJqLUrD7R/OLDcb6sr57j8zYA/w=; b=dNwCkZkpjatgIpTX
+	yc9WY1d3XBNraP9LJazRkT0bNo/umaWQ/Kt7NBKrU7hC2W2HpSp5UZ39XZU1xDC7
+	uLnlI8g+Wybe4iv9Co8/BhNIPl2EOcFnIvhfihryEWx/5rPkIPgimQaZCj/yLbwF
+	zbL/UXZGNBUEx8T0z/s4eQqY1cWQUYH46rIRfuBpRrfV5J/vfnaVQBYnmxr9bdg5
+	OlkM96FB6ZHM7RiZ1gUtkVs2KggXyWiDz1MfRuonMSqaBokH6NYDW72cxiodto53
+	UetzdFD/L926Gn80ssXwp3TFXDdJADZSnUnrpcgRpNnal7sZ2s7PA5+GhvHyRhD0
+	m+cvBA==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791hc8wen-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 14 Jun 2025 18:40:19 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c76062c513so77130885a.3
+        for <phone-devel@vger.kernel.org>; Sat, 14 Jun 2025 11:40:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749832728; x=1750437528;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1749926418; x=1750531218;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cYUtT+6UfKx7Gs9aWpbJRe4xmbx/ClKSljdS1pnK8R4=;
-        b=sY7RrspUjdU2BOpiZ6p1pJg7BAiFnnqXnzX8Y+OagYNxODxM39SHP3OMHKOX7ZMuhQ
-         NyxV1aM640wWOc9p+Zlh6FGjJvhhKauLcoZO7w9k/rjKCWneWQSWOc+5h93gHbAoHGOw
-         u7wLHbmf2XJrVIUGAIvh9hMhUwOdf8a0g3DF1CWaY+j3czYXFyEL8wDThDT4Ci7+TSGp
-         mYv2KtG2CIKDX6t6k+QK52iJwJIZBtcXHfycQCF/tZpShyhLFrDldBj58PjUf8KU1kI7
-         pPH2UUYkaXEDevdT+RP1U2HTxsBPWrQMXgfFB6lbk70vQwa52/g88ZpjsjJQMtZG8/cC
-         vpYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHoigrYD+CxEAwnV5eJydeb3CbLQa2w8jfYBJLNFJ1+RspB767HE4P4TSzmDPqNVmD0cQ0TtXrpxVNvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmAp66ImS3VOelnX+o8RWO46ytWMzzz/n9+jxyKqmGTvWE00tW
-	aTUJQbXmIQIWv3Pms/xUeg2aRMW6OqeJ50bdEeGz7BkM/keTc/+ccJGWGDMw21RnK98=
-X-Gm-Gg: ASbGnctzbke6v2O9quRbkzewURe/VRvZ3f9qaFmExRF4ZRERsiCEF/UxcJuwRLUwfEY
-	k6fj3qoqN7u0Wz7t0jzpbFAYkQG7F1lad1120UaQpMOw15xfGdKiBjQ157SRiv2nBSchNso/FY/
-	q/k0zskPULuNH+SxyOX491vLZeZmoTIzuHfPeaChXz/hOSy6yAjxO41T8EvvL+93xNSRg4wJl+m
-	gDaoSCBvhiBf7ZdWmgGc6IazQzUdU3hq/yF38mb9+a/REWWJtaHPvXQ1iDchWegTjmlEiU/jCuj
-	SnPqcrIfP8AR6rdcyB7ISkWQY68LelkwagUYqCJUYD7CISb9aYk9YdUEqCvOAglrjgmqPiljxqZ
-	WMXh2+0MY0Dp5ZOh5kUrGkF95HcCcbCVCkKq3z1QVaKLMo74vCzI=
-X-Google-Smtp-Source: AGHT+IHj662g3SbQNpP4iPqUmNkvYX9U4szpKPW9FX5yhoIuara4ioYwpzJZkOyb7Ebp5gFoz9go2g==
-X-Received: by 2002:a05:6512:acf:b0:553:2421:f5e5 with SMTP id 2adb3069b0e04-553af991409mr356267e87.9.1749832728513;
-        Fri, 13 Jun 2025 09:38:48 -0700 (PDT)
-Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac1fd7aesm494781e87.258.2025.06.13.09.38.47
+        bh=9f2szhxgh+UZzFbgJJqLUrD7R/OLDcb6sr57j8zYA/w=;
+        b=nZsbeO7jNA0aRxXIDl1Y1WMIcVTCYNalxpmTFOwu085W76KAguQEcBw4kXwdAvOJYY
+         AUFiKizqs4HV5us253PiUsNr8z6hw1NdSVq+jOjy+AxAvinaNJ7Pz9TBjNi96jGfJ9Lj
+         Ptm10y3fUfZ/N9yjmJ8LnMQRi4KUq0VOIQVdncskpIBT7HD6rLl+yDayXuIv9EEBm8zV
+         UEYVtb9uzNd9WC4cdSjYOW2Q/bS0uMWDDDmndd4I0wDpammtY5hqvQ9NsBqnKaneOUYP
+         IeAF1C1edIFhTum52WPiMO6u9UDTxwYX3UDWrWEuEYm0xFO9hOMy9AN2DlpxI4QjPmgx
+         wAGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZR3Dj+2tQ9GiIxUkzeDWGRgNBlOnnE19RVVEa1Cb/UJcbFn7jM//nt6fT1SId+lGF5gggHyCKq3rSBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgEPa0FeuA/7CQ0Dbdv9QAFcBX1yfTA4VGqad8FinjAwTZK/WM
+	igQ2dEr+jWN2LnWrGK8DhNNZFNj9ZwGAg6+5iOLR0O0pu2/t4HTa2S+TnirwvB70qXqdO4W0zv4
+	F1Guc4X0Jrl4K3LFdoIFkucVkIP41lFx63AI51MSPQfnLBtcULsiPtjILswi9CY8zIA==
+X-Gm-Gg: ASbGnctr29dAgJxYjIOFAj9LhCGrJSW/sy5ln1AlpHhYDr70yYE+NzUv8Pg8EZ65NHA
+	IkfuXYTsg5txMCGOuDIQA5xuaW2LJ1beIAu6j5lcAX+8QovKJLUa6KY4P1nDfw5eTrjAHqLzPhv
+	KiIov6/mcesJaiqU2p4wjYgy/3Bqk4TjJwepNiTHRlUOgTsSfoNr8TwNuTO3FWmi6N9N4pKcOJp
+	vRtAsHq+gHiRJMgqvaSweVpSv8kCKaacrlLFGV4ykXi4U10W39JPxk2IQEo9qWRHOW9d6A0YXex
+	FzVhb59WVxWlzSwEPn8oHlFFCbOl0e52RvZuXYcs5Rs6KXEI/77z1lfCRc6uz8NgCKMSec/bP7n
+	pYUQ=
+X-Received: by 2002:a0c:f40b:0:b0:6fa:b8a1:abaa with SMTP id 6a1803df08f44-6fb473e4444mr25772906d6.0.1749926418568;
+        Sat, 14 Jun 2025 11:40:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFetMRfEEm8RJ8Ih0K2X0btyshx3cpumCJLSlApuu2heJsTbu/I1n9XNsB3b+VBct2vH6NE+A==
+X-Received: by 2002:a0c:f40b:0:b0:6fa:b8a1:abaa with SMTP id 6a1803df08f44-6fb473e4444mr25772686d6.0.1749926418150;
+        Sat, 14 Jun 2025 11:40:18 -0700 (PDT)
+Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec88fe7e0sm343611966b.76.2025.06.14.11.40.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jun 2025 09:38:48 -0700 (PDT)
-Message-ID: <0b94f65a-ec4c-44a1-8021-cbafe6beab31@linaro.org>
-Date: Fri, 13 Jun 2025 19:38:47 +0300
+        Sat, 14 Jun 2025 11:40:17 -0700 (PDT)
+Message-ID: <9a5130bf-dc1d-47de-9dc2-f2eab4faea17@oss.qualcomm.com>
+Date: Sat, 14 Jun 2025 20:40:15 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,38 +75,69 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] media: dt-bindings: Add qcom,msm8939-camss
-Content-Language: ru-RU
-To: vincent.knecht@mailoo.org, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org>
- <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: msm8976: Make blsp_dma
+ controlled-remotely
+To: git@apitzsch.eu, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20250613-bqx5plus-v1-0-2bc2d43707a6@apitzsch.eu>
+ <20250613-bqx5plus-v1-1-2bc2d43707a6@apitzsch.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250613-bqx5plus-v1-1-2bc2d43707a6@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE0MDE1NyBTYWx0ZWRfX2pS1PonHsw3f
+ 1En/XiKn34nF8rMJvSfLDVTMXuPeJnqfYeE7HvyNDhgywqMeywwdprfE/TJY4CR9kzykTVn8rcr
+ M4sbad3oLABY/mrxZPwTN8+xAYZ+5ioWBT0NSDUTJy1Qe4n+yLcA7QaZA/73IBV4H7rTDEZ6HXZ
+ MbbboopiGW2UF/uwUaNlOmGz0IbR11paBc4bWpmFVQB5EeXUc6Ike13AmlaMNfeRA5ZiLormDGn
+ LKN+2xqZStLs5exsmBTjewAZngkTk3DW1LzX5Jd87wi48nWVwG6HDReSMwLHAepQfV/Y1GHBUhw
+ z12DnKw/EVVHdsvp2KhG+8TymxQ/3Z6P+M1n+8RmUg+bmjsL7DsKTqgbl1dfhai61/p3vCNxUGW
+ iSiBBVPuUh11aU8ooT9hoeXGk5ostwMOOFTwfqfzf1XvccCDFKp1qchG/HlY0a2hL85DsZ+f
+X-Authority-Analysis: v=2.4 cv=CqK/cm4D c=1 sm=1 tr=0 ts=684dc213 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=qC_FGOx9AAAA:8 a=HDjIzE35AAAA:8
+ a=EUspDBNiAAAA:8 a=FqsyDp_bju1yIiuMhToA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=fsdK_YakeE02zTmptMdW:22 a=y3C0EFpLlIT0voqNzzLR:22
+X-Proofpoint-ORIG-GUID: tNWmcnllkngas7NZyv5uF6MGd1nc-Tyz
+X-Proofpoint-GUID: tNWmcnllkngas7NZyv5uF6MGd1nc-Tyz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-14_07,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 mlxlogscore=915 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ mlxscore=0 impostorscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506140157
 
-On 6/13/25 12:33, Vincent Knecht via B4 Relay wrote:
-> From: Vincent Knecht <vincent.knecht@mailoo.org>
+On 6/13/25 12:37 AM, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
 > 
-> Add bindings for qcom,msm8939-camss in order to support the camera
-> subsystem for MSM8939.
+> The blsp_dma controller is shared between the different subsystems,
+> which is why it is already initialized by the firmware. We should not
+> reinitialize it from Linux to avoid potential other users of the DMA
+> engine to misbehave.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> In mainline this can be described using the "qcom,controlled-remotely"
+> property. In the downstream/vendor kernel from Qualcomm there is an
+> opposite "qcom,managed-locally" property. This property is *not* set
+> for the qcom,sps-dma@7884000 and qcom,sps-dma@7ac4000 [1] so adding
+> "qcom,controlled-remotely" upstream matches the behavior of the
+> downstream/vendor kernel.
+> 
+> Adding this fixes booting Longcheer L9360.
+> 
+> [1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26/arch/arm/boot/dts/qcom/msm8976.dtsi#L1149-1163
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> ---
 
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
---
-Best wishes,
-Vladimir
+Konrad
