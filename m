@@ -1,54 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C92F3C26;
-	Tue, 17 Jun 2025 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FA8217660;
+	Wed, 18 Jun 2025 04:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750195905; cv=none; b=GXb4pvR8Pdt5Bku/tRcTK/uiX1zVqbD/U/fRhNOGnMOUQW0AexXmrJWv8dtTFTfAkHRuOp08fGDuMLKPpb4anrtwW5QFR5nHuDh5RXF8hJFrPFKYstHDky3t5J+4frhaEl9DyqWFkUnF/kO3/cr4APJ/9sapnNrOch7F6hRw8NY=
+	t=1750219780; cv=none; b=K5K7l0MXGPJOx5u507hU9zYU3Ijjv+p6//ra1jy2cTyNA5TXaslLqbWbYuNCa/h0cZcO7SUPGLgDGtBPEhBCViOOUF/AvXuGs9P7JCgE8Ai64idZISZxcd7hyRUbIVL97lSQGE7SVktcCEKhpAvF2EevGEoTG7MV3hSZiSRZ1y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750195905; c=relaxed/simple;
-	bh=NT7M7j9aB6aePj5CbZFLDDn7LGqCaV8n7k94j3/n5LA=;
+	s=arc-20240116; t=1750219780; c=relaxed/simple;
+	bh=064hywwsQNzbR3c8t7PfuutQNYtsxzltdoqUOLmuT74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rkaNe4uCs0kU9r31rWnaBJNFd5pFheUtXE6DWVICpgGqRwcVRYiUkbJxwnWnknaUBxZhg+C+j/SIsgT7bLX8ZvpvEIJiPAHxZceyCX2MwOJdtG5sbjcsWFXHsqW2DKaW3jeDi2Wq2Rh0RLWZeZMFCv9Dy2Hx1kIr2y6Fz4BO8M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dl3sYCKy; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ghDrSyojB+mOsjhZ3L6hIHeKv4pc0Kv2ZUt+tnbirW7X0pnCvXZgR9JflOeTVycAYkEn9nZIseHF0jZY7mY+1b3SlbUpaZPfEn+7hmdayqfrADaXG+UESmp14dNAyZnUZauPV3+3ZSsNUbGu5VYTQ3WKk/EB2f7zD4tykhKFiSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBDQ7Hsd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dl3sYCKy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753FDC4CEEE;
-	Tue, 17 Jun 2025 21:31:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBDQ7Hsd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086D1C4CEF1;
+	Wed, 18 Jun 2025 04:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750195904;
-	bh=NT7M7j9aB6aePj5CbZFLDDn7LGqCaV8n7k94j3/n5LA=;
+	s=k20201202; t=1750219779;
+	bh=064hywwsQNzbR3c8t7PfuutQNYtsxzltdoqUOLmuT74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dl3sYCKyUozT3U/2oJYxWUqfvullkcUJn6bX8BkD4PeFgZE1AuN3jOFPfODWsKspl
-	 4od+mwlDdn57MhH4M2rmASYW7gSUiuc8yTji9XoieYZqSFZF82gQxj/8jHeTw3f4SB
-	 kWZ45sbVFSSBlygyEgRV5cUcifyvN2iqObIworsqzODqQzpg4Q9RQmsiGNizenmS/u
-	 ZvhKtHdjqrTeJPRj8k9b6nuQt/DBozHmcAi5bWKxvD/JkV7e5bPKFaMOop0UnuvmSJ
-	 hZw4eZvSkQYXNZiDiP/RqChWNnXipJessF/YmItg0geO5D2F2wsryy4db9glrYXzbc
-	 u0j7U4z8YKBCA==
+	b=BBDQ7HsdDen+SahKJe8pbrtgnOcp7I+4zJ7cassl0KigILIdLyd63w1v+zRISQG7y
+	 Kvx+8zdl2sxemps+CpnRV7mKPJCZ88IwYWFpxjBmSvJzSfu1iF6yiAXNF/PiJKXec2
+	 2LzuRJhCf6zJa6PCA7p7RxM18a0pEGofa4Kd4aCOO+OsGgQ0djq+BqApF8kw+8q3e6
+	 e1swN1LQtnQkW3ejFa4+jGxk23Jie2rwYrhA/t7YKEV8FQ2pafR+kcckpQ1vGJKaLv
+	 KnuoUvu5/51N1FJDGOLgyWEy5QdWAqeqe3yuH+z4WnouogE28ML0345ywvCBQwxr3W
+	 CfaC6GUNItiXg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Luca Weiss <luca@lucaweiss.eu>
-Cc: linux-sound@vger.kernel.org,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/3] Add support for AW8898 Amplifier
-Date: Tue, 17 Jun 2025 16:31:28 -0500
-Message-ID: <175019588868.714929.11356929679548081810.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: add APR and some audio-related services
+Date: Tue, 17 Jun 2025 23:09:23 -0500
+Message-ID: <175021976642.732077.16252470040851608155.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250406-aw8898-v1-0-58a2d554693f@lucaweiss.eu>
-References: <20250406-aw8898-v1-0-58a2d554693f@lucaweiss.eu>
+In-Reply-To: <20250321-sm6350-apr-v1-1-7805ce7b4dcf@fairphone.com>
+References: <20250321-sm6350-apr-v1-1-7805ce7b4dcf@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -59,20 +53,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sun, 06 Apr 2025 15:03:14 +0200, Luca Weiss wrote:
-> Add devicetree bindings and a driver for the AW8898 Amplifier, and add
-> it to the devicetree for the Fairphone 3 smartphone.
+On Fri, 21 Mar 2025 09:12:57 +0100, Luca Weiss wrote:
+> Add the APR node and its associated services required for audio on
+> the SM6350 SoC.
 > 
-> Note, that this is the first audio driver I've worked on, so please
-> complain if something doesn't quite look right, it probably wasn't done
-> on purpose.
 > 
-> [...]
 
 Applied, thanks!
 
-[3/3] arm64: dts: qcom: sdm632-fairphone-fp3: Add AW8898 amplifier
-      commit: 87ab84799a90bb73f3f42ae636b213ac4564e237
+[1/1] arm64: dts: qcom: sm6350: add APR and some audio-related services
+      commit: a014ad1ae4ea1ec8c3ea3a66f09217f1bff937a8
 
 Best regards,
 -- 
