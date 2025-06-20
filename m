@@ -1,30 +1,37 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A431FBE80;
-	Wed, 18 Jun 2025 21:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F62B30E853;
+	Fri, 20 Jun 2025 19:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750283155; cv=none; b=UZFQbfg2hgN6YaY6O+MdRbwCSZ0DsRpX5RqwVbb3GDlYbi6rOdB+EDiJ9P/WrFXP1CV+b8qS1EQ+sQfVR5EskGpNrD7zQXC1s6TkVmzjGnemq0NEV4dFnR9UlQ/HSNN0TvjBORMc5VQhXomwrvbjCKC2zdoCnQZ5uHYqUQrDQtc=
+	t=1750449091; cv=none; b=kAVPoW8aPVep8LeFjj5geyUP09qUGwTKvKaEZ3hBJpFL2VpjwC4/QuemPRia4vInVN+ksPNL3mxtWFCasnowX8Lrwfm9BriFl8WZ1rnNJ0yE6oNtoP0xHJWcsXL4xg/EajtW43207OzD6x4kNCyl7CSuP2p9c4O3rkr2mTNu/d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750283155; c=relaxed/simple;
-	bh=rnH3rE3Rl7r5mitRGMgRRL9AGeiM3uqXWWvgGLIGLfk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZtRJwFmf4gA3syxolmFnS6GqnJeh0nL2/tuBsG/jEOGekIKNpXeg7qYBwF+7GajSY4VJMTU5RVaVfxBPBoRnznXgFpfkoxmE0htRUmJIfLe/anjJLg/ykneN6bQ+DOgkwwCOSc/vkzeld11Eqvk5cb1Q30WjuX544SpSSYnA404=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=RaDmgGbK; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1750449091; c=relaxed/simple;
+	bh=enGQ4aWwrJ6GnlC2/iNO0rknwLb2cAAwftwuvIy8kpA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XAXkRziJP9/krtMiFmFBJ/k10You+38aRHroyMjYg4FZ8D/2tSwOlv8Om7K/JgEm8sGnrZKk2yd6tGNi63v6xH5YSnxsleBJ7zRG6xc+lF1BzAJU+8qm3T2DCIuiRZeyh+cW5cSDVjirs8BFFdoXtFZiWJK73C7bQn8rDqe+jJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I75LGAVC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="RaDmgGbK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1750283151; bh=rnH3rE3Rl7r5mitRGMgRRL9AGeiM3uqXWWvgGLIGLfk=;
-	h=From:Date:Subject:To:Cc;
-	b=RaDmgGbKW9nXmVC5qShFgjvRAdF2Pdh6ztvPkcLJANIUxGKVvv0OAkwZQksVoW/ZV
-	 HYgRsNG1A38+Nbr3D5fD5DQMcZTQTYyMm+0uPpmR3lZKOfoNQ7y/DB/Yy9H81olY4y
-	 49UzPvMXgwvngTVT+W6vIceR99r063Tmic2iLYUc=
-From: Luca Weiss <luca@lucaweiss.eu>
-Date: Wed, 18 Jun 2025 23:45:44 +0200
-Subject: [PATCH v2] ARM: dts: qcom: msm8974-samsung-hlte: Add touchkey
- support
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I75LGAVC"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B3F31C4CEE3;
+	Fri, 20 Jun 2025 19:51:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750449090;
+	bh=enGQ4aWwrJ6GnlC2/iNO0rknwLb2cAAwftwuvIy8kpA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=I75LGAVCdRRQmJQME2cAaJFKFg/yfFWkcugyR5iLkTDKTUiAKWKMeSt6Zf2s5CXOn
+	 zflMCjdkFsj347U3hSLniQ/DQ0xR7s7ZQVW1SQaelsgnaKesaJDJrSSh7xFMsI63bZ
+	 6aeYTnd1MJz7hHFO7fuhDmxdW2/1cBSCh7dDMmciBK1/tIAqbZaVDkE/+WSJ9sfUaC
+	 MGV2y8no7njcZaKEC54cTq4jJrJoORgrA4u3GPNO56zuo/5GwCt4ONuA9JA9smlG6F
+	 phfOhcSjIYFHqiwcUTs7vDSbTLkFesH6Z0MoBCbc40m4HPsjgO6xLWWzXvqw2O8eLB
+	 gVcpezVatatVA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DFAC77B7C;
+	Fri, 20 Jun 2025 19:51:30 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Subject: [PATCH 0/3] Add initial device tree for Billion Capture+
+Date: Fri, 20 Jun 2025 23:51:38 +0200
+Message-Id: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -33,135 +40,59 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250618-hlte-touchkey-v2-1-2cf188b57e31@lucaweiss.eu>
-X-B4-Tracking: v=1; b=H4sIAIczU2gC/3XMyw6CMBCF4Vchs3ZMLxKsK9/DsKhlsBMJNS2gh
- PTdrexd/ic53waJIlOCS7VBpIUTh7GEOlTgvB0fhNyVBiVULU7SoB8mwinMzj9pxTNZ1evGisb
- UUD6vSD1/du/WlvacphDXnV/kb/0nLRIlms5op0ndteyvw+zsmzilI83Q5py/575u1a0AAAA=
-X-Change-ID: 20250419-hlte-touchkey-8ea2f37a0795
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>, 
- Luca Weiss <luca@lucaweiss.eu>
+X-B4-Tracking: v=1; b=H4sIAOrXVWgC/x3MywqDMBBG4VeRWXcgDSihryJd5DKpP9goEymC5
+ N0NXZ7Fdy6qopBKr+EilR8qttLj+RgoLr58hJF6kzV2NJM1rPhugVFwwK+cOolyqAgn7yY/hpy
+ jC9T5rpJx/tfzu7UbtZER4WoAAAA=
+X-Change-ID: 20250620-rimob-initial-devicetree-da86a5bffc8b
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2631; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=4RTcF4jhXLdqbx7OH71IWnZwd999TXwoC6vDZ1+Qcsc=;
- b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoUzOO59gKy0fQLQLm6+qhgjFlEDETlSgwHJyyV
- wI/iYQdKB6JAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaFMzjgAKCRBy2EO4nU3X
- VsXNEACQyeZsswMK4uUSxKN+2QM69Rzi2tMVdVZm+gc4FmKCVdS7aJDAjCK78BdCCMghPLX8Mq1
- pK2p92OEzWyQJTJUbIPYzoYnFbxj8EjIjNQ0D2lmxsHgO2OFqaQx/ScS6c+u42I39qiOxRSWI9l
- Dh4NTKjIDFdV7QYbVot5SMQPstkhxh3HLJVq3vZpBZD9DBF1krvyQ6tUcQIjijVAcWxHWyqBYwm
- 0hWCjTWXjUOCK29KjPVFJvpkYkqIlROw+bTRikhPjdcKFLmNo990DNhsbaQadT/t4RWL4xxqSid
- AK1DoQDdQdjJMvC7HuBmZlKTONl/DlR4G53QXow6qZGziRkWtkdPL6M+cr31fl0R2KyRzFUKtXK
- mtfLKNH4aLB50rrpo3/qsB774tWZaten9yLz89DIAZO7On07lUoZmdv3wuh7O4FkJbiAd66bABS
- xQHET3zHnDUIOTRmRE9dyl/qxxdH7NMAobBpDi4H7/yGZZscv7mE6CDuBf6BL+32+unc6OhFfk4
- fmGhOnIm6RAZlP0F6qjQfKPRVAl9NPaF52Vqepo25Ul4uwMUmw9akTke/BJ8KPXYLx2j6o4sdcF
- QOR+Ou8kmYvsDDms9leJM+VpdOMB8mnJn8vwSnRUQlsoCcGKl6B5BrOmicZoxR5Da6WIBM9Pmtw
- 7MJFq3/+AXEVyzA==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750456316; l=1013;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=enGQ4aWwrJ6GnlC2/iNO0rknwLb2cAAwftwuvIy8kpA=;
+ b=9txIvSHhHEff/6GqSaMoOwr+L9cgzhapHpcRzFbRMjtpQXNqtHkSJOJecH9NswPb+Y57xrruw
+ qSws9wi5tJfCTEzhu8K/JLW0WqiGoQM3klV98Gq1RQFD2gbc5CuloTx
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-From: Adam Honse <calcprogrammer1@gmail.com>
+Billion Capture+ is a handset using the MSM8953 SoC released in 2017
+and sold by Flipkart.
 
-Add support for the touchkeys on the Samsung Galaxy Note 3 (hlte).
+Add a device tree with initial support for:
 
-Signed-off-by: Adam Honse <calcprogrammer1@gmail.com>
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+- GPIO keys
+- SDHCI (internal and external storage)
+- USB Device Mode
+- Regulators
+- Simple framebuffer
+
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
-Changes in v2:
-- Fix schema validation failure, adjust i2c-gpio node name
-- Fix misplaced S-o-b (hopefully)
-- Link to v1: https://lore.kernel.org/r/20250419-hlte-touchkey-v1-1-9d93c3e2b31f@lucaweiss.eu
----
- .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 45 ++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+Cristian Cozzolino (3):
+      dt-bindings: vendor-prefixes: Add Flipkart
+      dt-bindings: arm: qcom: Add Billion Capture+
+      arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-index 903bb4d125135771504281df50aa11c9b6576a28..b7a1367d3470551de12af699ef150434dc0302b8 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dts
-@@ -50,6 +50,34 @@ key-volume-up {
- 		};
- 	};
- 
-+	i2c-touchkey {
-+		compatible = "i2c-gpio";
-+
-+		sda-gpios = <&tlmm 95 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&tlmm 96 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-0 = <&i2c_touchkey_pins>;
-+		pinctrl-names = "default";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		touchkey@20 {
-+			compatible = "cypress,midas-touchkey";
-+			reg = <0x20>;
-+
-+			interrupts-extended = <&pm8941_gpios 29 IRQ_TYPE_EDGE_FALLING>;
-+
-+			pinctrl-0 = <&touchkey_pin>;
-+			pinctrl-names = "default";
-+
-+			vcc-supply = <&pm8941_lvs3>;
-+			vdd-supply = <&pm8941_l13>;
-+
-+			linux,keycodes = <KEY_APPSELECT KEY_BACK>;
-+		};
-+	};
-+
- 	touch_ldo: regulator-touch {
- 		compatible = "regulator-fixed";
- 		regulator-name = "touch-ldo";
-@@ -149,6 +177,14 @@ touch_ldo_pin: touchscreen-ldo-state {
- 		power-source = <PM8941_GPIO_S3>;
- 		qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
- 	};
-+
-+	touchkey_pin: touchkey-int-state {
-+		pins = "gpio29";
-+		function = "normal";
-+		bias-disable;
-+		input-enable;
-+		power-source = <PM8941_GPIO_S3>;
-+	};
- };
- 
- &remoteproc_adsp {
-@@ -332,6 +368,9 @@ pm8941_l24: l24 {
- 			regulator-min-microvolt = <3075000>;
- 			regulator-max-microvolt = <3075000>;
- 		};
-+
-+		pm8941_lvs1: lvs1 {};
-+		pm8941_lvs3: lvs3 {};
- 	};
- };
- 
-@@ -378,6 +417,12 @@ sdhc3_pin_a: sdhc3-pin-active-state {
- 		drive-strength = <8>;
- 		bias-disable;
- 	};
-+
-+	i2c_touchkey_pins: i2c-touchkey-state {
-+		pins = "gpio95", "gpio96";
-+		function = "gpio";
-+		bias-pull-up;
-+	};
- };
- 
- &usb {
-
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 251 +++++++++++++++++++++
+ 4 files changed, 255 insertions(+)
 ---
-base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
-change-id: 20250419-hlte-touchkey-8ea2f37a0795
+base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+change-id: 20250620-rimob-initial-devicetree-da86a5bffc8b
 
 Best regards,
 -- 
-Luca Weiss <luca@lucaweiss.eu>
+Cristian Cozzolino <cristian_ci@protonmail.com>
+
 
