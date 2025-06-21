@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426EE1F3B97;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B77D1F4CA1;
 	Sat, 21 Jun 2025 09:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750498691; cv=none; b=b0nlVQC9iqFQi1x6oDdvKo0QT82C6/dfhxZVKRy16uAd5DtMj3GjOXT0yFLDV9aoZCYB1L1pc4Wl2/Chw4cC7yEWD8bX/XpWljzGl62ZHmXN+ZmOt1PvHIli9FUByG5oQZk9WV9N/hmbZ9Ws+lnZhYsg+k4yNGRGpjgKBXtEOVw=
+	t=1750498691; cv=none; b=rFpC+wYiilVC2X10pW7Uy+nfHsnfMjCKBIyCFcl4n/8cmXlE91EHFDL7Aq0R1xE1ktqZOr5Cey/NHdNRggM8+gjBiFJcqYp5eqOyUKFgM1eXxOwOdVJ3RkpxqbXfbY53Gn/6XLBTenkVd7pVhqTCijbGNIMumJ4KkjDEilQo3zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750498691; c=relaxed/simple;
-	bh=mMp2I93d5y9Pxfnd7gceLhOyED1ngQU2FPgBSXb3zEM=;
+	bh=Da1Gb2dZps+KwFdbPpKRqU3r4uC8hFgsfk35YLvidZU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NtSdgZ4t0uE2eRTmfVmBlgduI5OgOioNXld2uFzJDklTLugV86gFlLjcLnimfaVg73z8oYNS2VfXBikJw3jHWSzAfcrMhXC3ffT54S6KBq6KJdakXaxfPrJ7dd06CYA2D+l0NlR9+rg/4HG5Uc6ZBQgWL26gYOvM8pL5bnIhQDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ta0GWAdt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=sRmGeQQIyvhcZITf0wxFx2k1ovoalHo5EGKR1ezIENv3EjLjbb9QTFPs8Nsi40LLZFm7okKyCSjMqR/uqvkikl9AHuC4QzW/q2yIo0szE9MdLhBHp6HyTAzQt8GwcNnHbFdNARPvE49cf9ALnz49AvvTOy0ACbCJpyesE4gz4as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVNIkf1J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ta0GWAdt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5742C4CEEF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVNIkf1J"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E7A9FC4CEF9;
 	Sat, 21 Jun 2025 09:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750498690;
-	bh=mMp2I93d5y9Pxfnd7gceLhOyED1ngQU2FPgBSXb3zEM=;
+	s=k20201202; t=1750498691;
+	bh=Da1Gb2dZps+KwFdbPpKRqU3r4uC8hFgsfk35YLvidZU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ta0GWAdtYm/ep18ZcabBDsW1r9gjzdI/s8zUlgnnyW8AqO7SWE2MjLNgk1bd9oefm
-	 kKAo5/hgCbzmEBW9JKCfKQFlcA0H6/8irdxPUazQIaurjH9LfUIg9dcYjm1T4idlvJ
-	 LUrbUlu8Bo6lrgqZ4dksuxCi49n9uEkPRGTGF8ZooFPh2ukZuvDGIotxbOWzmCd9rN
-	 zkgMsHP/6VkvOv6lE0Lik9qT3qnqu6/ERLqKkuI5XDy5Oxah/LGduD4eUsLASDrkzM
-	 o5yjTQctcVhbt0ghFZBVYUlliIsFKvEKTzs7BDQnIM1SnrLJiiCcjgqzWqt6U9U1PW
-	 17IxuPkHDJxzg==
+	b=VVNIkf1Jg5OqdDEj2DepOGBdrmh3CdEq8mzKT04K66f5wXKta9wM4OgIC5oUQKttp
+	 9M6kK2YDuPfSlRhXBP/XbPc6hr/AhgKXpuG4TLxVWsJn3vVPqVNmLOrHt9nkpJfhC0
+	 Na0oNSQ1pTPXw1eqwl6tjbDriG3u6vaoDxBmI+/tTIBPT+/66ejOFI0bs+/rfSXLr8
+	 hDtAgbXU9IMQhosZDNxJ50P3MO+tV56Fm9iNDLyjs39WFoyKw1ihZ00uEMTF71JA0B
+	 yHxWUcOXyysxvShFi678sqMbz1LHkodKZ1s166SSQHBqXDPLJmRdEQ8ppY/Bi+jLXi
+	 zoz5V6SREVmrw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4025C71157;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB17CC71157;
 	Sat, 21 Jun 2025 09:38:10 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sat, 21 Jun 2025 11:37:25 +0200
-Subject: [PATCH RESEND v4 1/5] media: i2c: imx214: Reorder
- imx214_parse_fwnode call
+Date: Sat, 21 Jun 2025 11:37:29 +0200
+Subject: [PATCH RESEND v4 5/5] media: i2c: imx214: Remove hard-coded
+ external clock frequency
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250621-imx214_ccs_pll-v4-1-12178e5eb989@apitzsch.eu>
+Message-Id: <20250621-imx214_ccs_pll-v4-5-12178e5eb989@apitzsch.eu>
 References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
 In-Reply-To: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
 To: Ricardo Ribalda <ribalda@kernel.org>, 
@@ -57,14 +57,13 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
  devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- Ricardo Ribalda <ribalda@chromium.org>
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750498689; l=1268;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750498689; l=1261;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=ntHoZrzdn+wyAlRgU4WqQYfnIyIwLCluoNpZKfDKzr4=;
- b=WnIKyFErIOOENyE1vtsezAjFCgV4kcGnsmFsnzKid3TlAeD4yyo4uBZ1WV3JI9EYdN3sYNfuW
- FkZ2LRefSy/CMJDELtyq/0knO061v2IefJSVmW6vvoHPEtnev79x85L
+ bh=ZCk329jfG7imBAJxPQK2Y7DPdg0WFnmIjBabbY8xuwc=;
+ b=7u9/iEoHxGIF46EnZNgbPzTOeQMipucoawzdnk0Uu4+ERMs4QK/gbqXh6Ux3QTPvvLPnWHk0n
+ nUmvF7eV3MnAbUxpZe/RbDaXAbU31N/8oTZemUb3gdaFHgw8psuYmCI
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -74,44 +73,39 @@ Reply-To: git@apitzsch.eu
 
 From: André Apitzsch <git@apitzsch.eu>
 
-Reorder imx214_parse_fwnode call to reduce goto paths in upcoming
-patches.
+Instead rely on the rate set on the clock (using assigned-clock-rates
+etc.)
 
-No functional change intended.
-
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/imx214.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index dd7bc45523d8b5fcb3ec95728a6d32c4fddede72..0199195dcb7d12dc2ff253fe3eb77ddbcd0812a9 100644
+index fd03650a5b2bbdbbc677d5797380285f1832baa5..a0cef9e61b41be8ea76a6d6e4b8c9fc4060cfa0f 100644
 --- a/drivers/media/i2c/imx214.c
 +++ b/drivers/media/i2c/imx214.c
-@@ -1261,10 +1261,6 @@ static int imx214_probe(struct i2c_client *client)
- 	struct imx214 *imx214;
- 	int ret;
+@@ -32,7 +32,6 @@
  
--	ret = imx214_parse_fwnode(dev);
+ #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
+ 
+-#define IMX214_DEFAULT_CLK_FREQ	24000000
+ #define IMX214_DEFAULT_LINK_FREQ	600000000
+ /* Keep wrong link frequency for backward compatibility */
+ #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
+@@ -1402,11 +1401,6 @@ static int imx214_probe(struct i2c_client *client)
+ 		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
+ 				     "failed to get xclk\n");
+ 
+-	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
 -	if (ret)
--		return ret;
+-		return dev_err_probe(dev, ret,
+-				     "failed to set xclk frequency\n");
 -
- 	imx214 = devm_kzalloc(dev, sizeof(*imx214), GFP_KERNEL);
- 	if (!imx214)
- 		return -ENOMEM;
-@@ -1295,6 +1291,10 @@ static int imx214_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(imx214->regmap),
- 				     "failed to initialize CCI\n");
- 
-+	ret = imx214_parse_fwnode(dev);
-+	if (ret)
-+		return ret;
-+
- 	v4l2_i2c_subdev_init(&imx214->sd, client, &imx214_subdev_ops);
- 	imx214->sd.internal_ops = &imx214_internal_ops;
- 
+ 	ret = imx214_get_regulators(dev, imx214);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "failed to get regulators\n");
 
 -- 
 2.50.0
