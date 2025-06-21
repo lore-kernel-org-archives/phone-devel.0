@@ -1,137 +1,185 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9086D433B1;
-	Sat, 21 Jun 2025 09:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63E1459F6;
+	Sat, 21 Jun 2025 09:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750498038; cv=none; b=JxQkV1NDmgBtOFu9alH20qAQvTuM4KkikF4kW4jcUR7m7e7UxGPUm1OiHwC6Tz5FRc2/NWAHL1Vyr0QlK1IlUrT09emz3C0CqChDRfKV5EUxABWz+gA8zd3+aWBpz5LMWn7jRnEjAMW5MiMvmi1YAo9jqIPARmMhXyU6CDR2oDc=
+	t=1750498691; cv=none; b=HIuhKL8M1ipHVGc27UuJyL7EeWghjXN55h/D7o1U5LJ4Yj+oKJlFFeskh4x/xu5mOAPlxfuB+2DGvvxgw6axG+2/f9h0ByIumVaJsDOP2YaEbasEPIP9Qe9HjxJCm4tGQ1aTYbXhPgINUPP4MynhNKPVgCfgFpOrDuMuW35U57Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750498038; c=relaxed/simple;
-	bh=suMIZysjQ6LF75eaZIfOnmKKmcSh2/4O7O+gcUFifpA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aFegd01h2oIQkK8rEhiBDcpuMDOdGF8EpiEun1iR8dgI0cE5JQLD/PProoiq8AG3j91XJpoNneHtjJrxQ34rvxYu0PraLXkgZWdF/4bBrxwdLW3rFmUt8idEXt1/Mo8h+6deZ0fVVOgyWTyzgmzHAjS59lMInPfR6LpHcDB4a1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=P1CUcCdm; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1750498691; c=relaxed/simple;
+	bh=qcWmP9y2oaDcX0hejMQU1XLtrocO4/dhpgjNfgryp/c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Syb2chjDV/WzqJ34vsXtqtFjdcdV7n6iHQQ9Wfe22fOHRubyaQykdG0+O1OzuFpI6yGun4qWSWAZE0Jr1kXgzX27Ml0jxduH62qNq8wu9qZCYadLtj0DZLIE5au/Zi9tYtDq93H0+XDxvWzYDonvtkdwx3pEetUERY84nvsPra4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQ3cMKG0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="P1CUcCdm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1750498034; bh=suMIZysjQ6LF75eaZIfOnmKKmcSh2/4O7O+gcUFifpA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=P1CUcCdmmh/ibZ9xTCWBp4nd1numB+H7FWARmaR6h6hAOlq63pdjyWfRNEoOyuGk8
-	 msIrvqufovCzrN65F8kZz5kPmMx+YJUp7IfVS8dL4ZlQKB92BvLRZCYiICwhsztRG4
-	 IwfALq7/vt3xUEvHslxwg4NSRiFaFAC675o5FSqo=
-Message-ID: <ff29229c-5458-4500-9b11-8044a461cd36@lucaweiss.eu>
-Date: Sat, 21 Jun 2025 11:27:14 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQ3cMKG0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C7767C4CEF1;
+	Sat, 21 Jun 2025 09:38:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750498690;
+	bh=qcWmP9y2oaDcX0hejMQU1XLtrocO4/dhpgjNfgryp/c=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=OQ3cMKG0KdyKtXJl5EMaDezn3MNDYM6+SliUjxfELGsZXNylnF8V8zgFbfUnXiamm
+	 yhGRwrPTmhpCbqSSHjibkB9JKMZUmJRrRieHm41BNNaVgCa41RkPqaIJ1wUVT8CdpA
+	 ccuefinpS+VFrbNqhAd6wVfIhbvzNJ7AbqF7wmpUEzq9qNhrHma+0ocjlr3FgWEjn/
+	 HGrR1yw/jgDjkjuSaicvaJKtFRsQ2Sh60iaURVA8e8dA6FcD5hTCtWw1w0h6D0EGhx
+	 7SWZbZEwXjMW3QpEVy4vRUAae/Sg99a4xIB/R8bb0x6SiajMmAl0ySwf2LyKDqnAZl
+	 kpbiDXlyPDbTg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1B8FC7115C;
+	Sat, 21 Jun 2025 09:38:10 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Sat, 21 Jun 2025 11:37:26 +0200
+Subject: [PATCH RESEND v4 2/5] media: i2c: imx214: Prepare for variable
+ clock frequency
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for
- Billion Capture+
-To: cristian_ci <cristian_ci@protonmail.com>,
- "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "andersson@kernel.org" <andersson@kernel.org>,
- "konradybcio@kernel.org" <konradybcio@kernel.org>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
- "~postmarketos/upstreaming@lists.sr.ht"
- <~postmarketos/upstreaming@lists.sr.ht>,
- "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
-References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
- <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com>
- <d4564d4b-9510-47f8-9930-65d3c4e90e6c@lucaweiss.eu>
- <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
-Content-Language: en-US
-From: Luca Weiss <luca@lucaweiss.eu>
-In-Reply-To: <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250621-imx214_ccs_pll-v4-2-12178e5eb989@apitzsch.eu>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+In-Reply-To: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+To: Ricardo Ribalda <ribalda@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750498689; l=3752;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=Kdqt0JW5KAKlP5M0PrifLxHpTT1jIrEYH5jMhF/ZZZU=;
+ b=JFrj2VB0N5v95posrBw4+sv+622FBn0TnaONmOdX5+dil3q3E6lj0hNLW/MTe3R+/Gthz8N7l
+ S+Dg52NBaScDy8DVFqVA7VRItmmUf/57c2+tzB02pnKrN9AJgpS0WtW
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On 21-06-2025 9:07 a.m., cristian_ci wrote:
-> On Saturday, June 21st, 2025 at 00:20, Luca Weiss <luca@lucaweiss.eu> wrote:
-> 
->>> +
->>> + reserved-memory {
->>> + qseecom@0 {
->>
->>
->> qseecom@84a00000 ?
->>
->>> + reg = <0x00 0x84a00000 0x00 0x1900000>;
->>> + no-map;
->>> + };
-> 
-> Looking at downstream devicetree, every reserved-memory nodes with "removed-dma-pool" compatible has unit address 0. OTOH, kernel documentation [1] says:
-> "  Following the generic-names recommended practice, node names should
->    reflect the purpose of the node (ie. "framebuffer" or "dma-pool").
->    Unit address (@<address>) should be appended to the name if the node
->    is a static allocation."
-> 
-> In my case, downstream devicetree shows:
-> 
-> 		other_ext_region@0 {
-> 			compatible = "removed-dma-pool";
-> 			no-map;
-> 			reg = <0x00 0x84a00000 0x00 0x1e00000>;
-> 		};
-> 
-> which will be 'qseecom' reserved-memory node in mainline devicetree.
-> 
-> OTOH, 'qseecom' node in downstream devicetree also shows:
-> 
-> 		qseecom@84a00000 {
-> 			compatible = "qcom,qseecom";
-> 			reg = <0x84a00000 0x1900000>;
->                          ...
-> 
-> If you confirm what you suggest, 'qseecom' reserved-memory node will look like the following:
-> 
-> 		qseecom_mem: qseecom@84a00000 {
-> 			reg = <0x0 0x84a00000 0x0 0x1900000>;
-> 			no-map;
-> 		};
-> 
-> [1] https://www.kernel.org/doc/Documentation/devicetree/bindings/reserved-memory/reserved-memory.yaml
+From: André Apitzsch <git@apitzsch.eu>
 
-The name (qseecom@84a00000) mostly does not matter at runtime, it's just 
-a nice label we give it. The reg is the important bit that gets used in 
-reserved-memory.
+Move clock frequency related parameters out of the constant register
+sequences, such that the hard coded external clock frequency can be
+replaced by a variable in the upcoming patches.
 
-But actually re-checking, I don't think your reserved-memory works right 
-now, msm8953.dtsi has
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+ drivers/media/i2c/imx214.c | 54 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 23 deletions(-)
 
-	soc: soc@0 {
-		#address-cells = <1>;
-		#size-cells = <1>;
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 0199195dcb7d12dc2ff253fe3eb77ddbcd0812a9..c564c9ca82488dddd6b8f549749042ae44363c0d 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -299,16 +299,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
+ 	{ IMX214_REG_DIG_CROP_WIDTH, 4096 },
+ 	{ IMX214_REG_DIG_CROP_HEIGHT, 2304 },
+ 
+-	{ IMX214_REG_VTPXCK_DIV, 5 },
+-	{ IMX214_REG_VTSYCK_DIV, 2 },
+-	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
+-	{ IMX214_REG_PLL_VT_MPY, 150 },
+-	{ IMX214_REG_OPPXCK_DIV, 10 },
+-	{ IMX214_REG_OPSYCK_DIV, 1 },
+-	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+-
+-	{ IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) },
+-
+ 	{ CCI_REG8(0x3A03), 0x09 },
+ 	{ CCI_REG8(0x3A04), 0x50 },
+ 	{ CCI_REG8(0x3A05), 0x01 },
+@@ -362,16 +352,6 @@ static const struct cci_reg_sequence mode_1920x1080[] = {
+ 	{ IMX214_REG_DIG_CROP_WIDTH, 1920 },
+ 	{ IMX214_REG_DIG_CROP_HEIGHT, 1080 },
+ 
+-	{ IMX214_REG_VTPXCK_DIV, 5 },
+-	{ IMX214_REG_VTSYCK_DIV, 2 },
+-	{ IMX214_REG_PREPLLCK_VT_DIV, 3 },
+-	{ IMX214_REG_PLL_VT_MPY, 150 },
+-	{ IMX214_REG_OPPXCK_DIV, 10 },
+-	{ IMX214_REG_OPSYCK_DIV, 1 },
+-	{ IMX214_REG_PLL_MULT_DRIV, IMX214_PLL_SINGLE },
+-
+-	{ IMX214_REG_REQ_LINK_BIT_RATE, IMX214_LINK_BIT_RATE_MBPS(4800) },
+-
+ 	{ CCI_REG8(0x3A03), 0x04 },
+ 	{ CCI_REG8(0x3A04), 0xF8 },
+ 	{ CCI_REG8(0x3A05), 0x02 },
+@@ -405,9 +385,6 @@ static const struct cci_reg_sequence mode_table_common[] = {
+ 	/* ATR setting */
+ 	{ IMX214_REG_ATR_FAST_MOVE, 2 },
+ 
+-	/* external clock setting */
+-	{ IMX214_REG_EXCK_FREQ, IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 1000000) },
+-
+ 	/* global setting */
+ 	/* basic config */
+ 	{ IMX214_REG_MASK_CORR_FRAMES, IMX214_CORR_FRAMES_MASK },
+@@ -777,6 +754,24 @@ static int imx214_entity_init_state(struct v4l2_subdev *subdev,
+ 	return 0;
+ }
+ 
++static int imx214_configure_pll(struct imx214 *imx214)
++{
++	int ret = 0;
++
++	cci_write(imx214->regmap, IMX214_REG_VTPXCK_DIV, 5, &ret);
++	cci_write(imx214->regmap, IMX214_REG_VTSYCK_DIV, 2, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PREPLLCK_VT_DIV, 3, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PLL_VT_MPY, 150, &ret);
++	cci_write(imx214->regmap, IMX214_REG_OPPXCK_DIV, 10, &ret);
++	cci_write(imx214->regmap, IMX214_REG_OPSYCK_DIV, 1, &ret);
++	cci_write(imx214->regmap, IMX214_REG_PLL_MULT_DRIV,
++		  IMX214_PLL_SINGLE, &ret);
++	cci_write(imx214->regmap, IMX214_REG_EXCK_FREQ,
++		  IMX214_EXCK_FREQ(IMX214_DEFAULT_CLK_FREQ / 1000000), &ret);
++
++	return ret;
++}
++
+ static int imx214_update_digital_gain(struct imx214 *imx214, u32 val)
+ {
+ 	int ret = 0;
+@@ -1020,6 +1015,19 @@ static int imx214_start_streaming(struct imx214 *imx214)
+ 		return ret;
+ 	}
+ 
++	ret = imx214_configure_pll(imx214);
++	if (ret) {
++		dev_err(imx214->dev, "failed to configure PLL: %d\n", ret);
++		return ret;
++	}
++
++	ret = cci_write(imx214->regmap, IMX214_REG_REQ_LINK_BIT_RATE,
++			IMX214_LINK_BIT_RATE_MBPS(4800), NULL);
++	if (ret) {
++		dev_err(imx214->dev, "failed to configure link bit rate\n");
++		return ret;
++	}
++
+ 	ret = cci_write(imx214->regmap, IMX214_REG_CSI_LANE_MODE,
+ 			IMX214_CSI_4_LANE_MODE, NULL);
+ 	if (ret) {
 
-which means that you should only have one value for address, and one for 
-size, so "reg = <0x84a00000 0x1900000>;". This is different to most 
-other Qualcomm arm64 SoCs.
+-- 
+2.50.0
 
-Same for cont-splash below.
 
-> 
->>> + cont_splash_mem: cont-splash@90001000 {
->>> + reg = <0x0 0x90001000 0x0 (1080 * 1920 * 3)>;
->>> + no-map;
->>> + };
->>> + };
->>> +>>
->> Any ideas what's connected to these pins? If you do, good to document
->> this like in other devices.
->>
->> Regards
->> Luca
->>
-> 
-> Unfortunately, downstream devicetree's pinctrl (kernel sources not available) doesn't mention anywhere 'gpio0', 'gpio1', 'gpio2', 'gpio3', 'gpio135', 'gpio136', 'gpio137' and 'gpio138' (but, for example, 'gpio4' and 'gpio139' are shown, instead). So, I've no ideas what these reserved gpios are used for.
-That's fine from my side then.
-
-Regards
-Luca
