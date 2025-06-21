@@ -1,73 +1,73 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5479C30E826
-	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2036156C69
+	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750500357; cv=none; b=Z/qCTNBZLlXkPosGUk3smHOu92w3Ayzztdhwgu12AN4IcyTPKR4SzasF8AlmoL/po5HikTA/yARlEQGvJJPsGTKsj1VzVT99sZIf4cQkmL1WT7ii4ea38hjE2ebImPbW7vet1tvw1vQKQrG1zrpGKLEJn9tnSm2mi94hcaF9g38=
+	t=1750500669; cv=none; b=lOarU2WZRMJHB1xmU6lyN1zSLNCrCuSTZngq0rdWiA0yBm74Rv4edzdiLUtPgXsu8X/HcfmOykqJHJC/HSuj2YHlIghdlqLyemK3WPr3vZqZvw+itMz1cpeXSzfUA5JRHnbo9iGmbvpxV4fZTuZaGtyxr76v4KBjdRZDYmuhbTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750500357; c=relaxed/simple;
-	bh=Hn9VgER12ug63dZ6l8eYWyg1/ICuNU+YVIfUpFrL9jQ=;
+	s=arc-20240116; t=1750500669; c=relaxed/simple;
+	bh=CZZT3WEEDV87AgzVeppysTU0hqzypFYvVqQ6fABNIxA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aqc6ygbzxF2C/myIrnPvbcMGySZas8nGRghAV9KjqFzWkUsQ+/df1ysfxhr1SOzQDk5Nal5Q0yMZSqZVWxO/MqKAOnGPg2IC5QcS8fW9i8av0lik/lumWvxGl4xv2WYqFanA0v77a9HAani+ndoI9fwlXBQf7nxM9AGiLFXt22k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=a3Q/DNuB; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=BEMd/CFfpJEPiDM4WjsbM1DQ0rqcktJaXwqTdIlmPuIIAuWbInSeDh35UHENdltRvhnepAxWLUxIz/FR6WM1wypXWLd9m1AEpDp8Jx65vWWSlgQRFSmyyowgmVabkxom3Tjj0BEaFALr6M/DpVwkyxeZlO1PhsjmuUVDIRtbaiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cfUG2dFE; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="a3Q/DNuB"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cfUG2dFE"
 Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55L6Vw52017496
-	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:05:55 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55L5Q9pj030626
+	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:11:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qfJxwg+l2c3JiL0XNVJZZ9SeKhv9FqmZAUKpxuPv/eU=; b=a3Q/DNuBe4NsTALU
-	eHxGolCXqh/dU4eUoh4AwLwlidtt23wVf3Xd3BhkhJP+Wx8zWRZ3UhNBKkG2Rx75
-	WFS5MSQ/vdllx4LP7MfVYWCA5VhCX+3OFHs9mG2Iw8/xNmgquykjidWqbmcHm3tN
-	hPKEtXyFDuLnP116OrV7a/3UMz2wPz80rO7By/s4uqtlu0tTX83iL02ECjSUZTFf
-	6q0Ci+IkQbpsMT2sObNnq2d1Gf8QUCpIDYe+Ek3So2EaNBC35yiZO8PVnRvbF9+p
-	hu/CrQt4LfSzFnKRhO2GyXZBOdKz7aX8+nR5fsund8QNut/Fuw5F/JPjgQnk04Dt
-	/xY1gg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47dpg20b0e-1
+	Orq6xVb2NKaaLqSDAmeRwX94lHqJJdwkdgnmCDoC3WE=; b=cfUG2dFE/RicYKGs
+	Vc/QrdzjZphcahHjfuSO2/TQildoS4dWYV3saCC7BMGYEQNmMU3uVYJjPzMV06+N
+	PcmjPc4EZmFPiN18cPMjuDuP6XauQtmICkxqXNio6moUV/LFCBDHFaarsHLCFyeW
+	s+4jjVEdrB/Lilb2qfiUy8FfhigyhX6yuuF6HyizuNX5nWsFidMImN7G7u0YD2kD
+	RwP2sBkg7aQvSeQozvw8aR99P6mebg/WkvS600z1bP63iNl9tXFkSJfFJ/2WPnrN
+	2P2a1cX/uMeFwxNy6MQ4GhIUelA3FVaQ8Idee4UiTxuMRCSfyDL+TW/s2knXJChw
+	sj8ruw==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47dpg20b97-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:05:55 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7d09a3b806aso53986785a.0
-        for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 03:05:55 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 10:11:06 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6fd1dcf1c5bso516516d6.3
+        for <phone-devel@vger.kernel.org>; Sat, 21 Jun 2025 03:11:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750500354; x=1751105154;
+        d=1e100.net; s=20230601; t=1750500666; x=1751105466;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qfJxwg+l2c3JiL0XNVJZZ9SeKhv9FqmZAUKpxuPv/eU=;
-        b=mprmaQB0zfHfrOTv7UBAwI3GRXEYH+J/Dx7EI8EovLWe7G29A0p7YRmes605ak/WXW
-         27wVQbAgPAVFxiqfTzpxA4QbQDv4NptW5R9zDaSq82IGg0DqIgJE3e9ubVlCXtvY1x/0
-         uOXqnyFjnynVMO9Fg5siNLZEzKceVqxN9KswYwUxJERm8ihzwUMCUNiy8cMqGj//WotF
-         Qe6s2smoX6dL9eBgfJrCh+m4NsfMBIeU4rhQUz3mwUUp9rkSKGHMDo0rOmxva0J6n8Uj
-         mgMhMjPAbnPUIxbZK3u9yTl6fojyY/12cxCUTwXMxmmQ2+4O5yRkv7mEvRYpAQ2MTR7l
-         DmDw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5xpSKJL5NTG9cEX0a8sCbSCb2wwv9bBtx9PvoJYoQetFMV7QQ8jRWufQaj0PpsmEVqacJ8ZwKD3lJ/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqqZ+4NjHovVCbQxRqXsNQzxo9nq5+CEOKe0t/rvEocas1Xn5T
-	S30YzCz6HNacT1o1SYiN9W6LZM3FrdG2EoFBU0XGqy1ZqAmklZyZqkQY93X7WIuOFwDNB2hOSyC
-	fSybO0bzsdF5IdShoQstUsYkIcaPPxhfW2PjmlPV0YdeNAQ1sleePb43bEwiBtSlA6A==
-X-Gm-Gg: ASbGncvgjJWNysvFLAg7LwyGF+izmr4QbbfWIkU34rJ4tXQePJ51Ioa+56VcsjFz7Kq
-	B+FDbJx8PPb5/L/3Hk1mI2fU75DN7WE4F0Md9K2G0XxH9hoe7gCDdbb5WMYNvjnI2+008ZnIPsg
-	fRXAZiMdj5slJYYVUviTlhGSJh1PIHbkq8e3eZ0kchFl2wa90ZJFqpNsURajqqbtcPKWIDL814D
-	0BW0Ock19oWQfSH6M+N4nW9+0DyzQsC0IbUABNNmKjt2oxoCfEKoBhKHx3spbia1Yc0S3i6r9Jo
-	ipPTFvhzbfFjtC7lWURv3BPM7CIu993GIbfK5I9PY9YsvAgS6oO6ZUz5O1yDN5Md34Smqjyb+h+
-	EsKE=
-X-Received: by 2002:ac8:58c4:0:b0:4a7:64d1:1f63 with SMTP id d75a77b69052e-4a77a241458mr32278701cf.13.1750500354351;
-        Sat, 21 Jun 2025 03:05:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5pgyeeYbXGzNX2jYyLlrGsQtTqE6d4IrhZZQuJtWfMycA7fDBUtRHDWtlBfsYFyqCgifoZw==
-X-Received: by 2002:ac8:58c4:0:b0:4a7:64d1:1f63 with SMTP id d75a77b69052e-4a77a241458mr32278541cf.13.1750500353965;
-        Sat, 21 Jun 2025 03:05:53 -0700 (PDT)
+        bh=Orq6xVb2NKaaLqSDAmeRwX94lHqJJdwkdgnmCDoC3WE=;
+        b=A7HK8HOu7nOtjUiPVhilZvdCl6SlmETFzvu2Jfx6UXRpBFOZHnpXnSk6QM2cLu2VvB
+         0G42mZ9WDruAucKu+5W9dgdda60qruDicyAbKUb7cjLFKIy2LUbpnYQUrv0G3ZXQhcEk
+         Dc2nbtZv2OFlYki6KEL1m+Kk+gWxN/MToOmxyROuglKT09JgUSY6Q+AjJk7J6xlY9ad8
+         DngmLKaBG+8PJx6Iz7kz1oOb1+TasD2H87R66RsEGdbQzRwMr+ebsGSvYO6bqtfkgLDU
+         RYCrVH2BzoizUv74id99VaCchBB7LVwAsiSSL8RAbmpwCWxZf/7V0YgxLBFG9Y734Wx3
+         KC6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWD16kNw4WSE1+gU9VF67/E93ndWMyH6zOPN8CFr/BUnFQRyk1cIdXBYacu6CgBaywO+Q4o1qO3hVEwvw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxv1KbZ3/EvwiY1Aewi7wrWHgjYlONabpietWNQOvKLjhkkJhkf
+	ffWjeh/Nd79Cuj5rdvsbqo5gMMwdywk+Z1Bv3ZaVYND5v3fpxxlxBpmfdrnZbjyrqP0YAVzkraW
+	3Y/AMUbd7fgYFZNoUk2KnlahMm49xSkg6Lidvo0Y+Yume1Hky8GRrQREFSlqtUj9iyQ==
+X-Gm-Gg: ASbGncsEhQwXiK4A5GpR/8e6/mrJRZ0D/9MJUIxO9nUpRQIhgUUxOajLe5qHYR3BOFX
+	zMZPDUw78e+QGDfnnv3k9EDvvguHeGuFXh/JR1SswJO8gaijguywoqSlcV1blO8f+Q/qnTr7Z/1
+	lfsx9Ab4g4Da5Bc97i9Fv8ttqD5MQfxyr6ehpiI6sVHVEazAf/ZtgIjXqDAXSfIfXBjtyuNpZwd
+	sKskvaGL7GqkBkHsKoF1uGFEUFhSElBb+BmmtQ3sjKK/SXs1i8udXihMip1X5jxM+kKWXnrNHxi
+	HS449KqLJACk2GirKMFrEGngmXbuzSD1SNqieK23yZjnyvUkiSX0cva2pRrmJiFW1tIE2ZcFJHi
+	Xx6A=
+X-Received: by 2002:a05:620a:2981:b0:7d3:b0a3:6aa7 with SMTP id af79cd13be357-7d3f98b41f2mr366508385a.3.1750500665811;
+        Sat, 21 Jun 2025 03:11:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFI5hLRnCZ0sPSXDM3AR91gKrHB4k2pwB/s4SqmDLL498a11aGnE/v060gc2/bExJIzuAgw5Q==
+X-Received: by 2002:a05:620a:2981:b0:7d3:b0a3:6aa7 with SMTP id af79cd13be357-7d3f98b41f2mr366506185a.3.1750500665404;
+        Sat, 21 Jun 2025 03:11:05 -0700 (PDT)
 Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0541b6894sm334915966b.111.2025.06.21.03.05.52
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae05408300dsm339519466b.95.2025.06.21.03.11.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Jun 2025 03:05:53 -0700 (PDT)
-Message-ID: <6e39f8a0-c4fd-42d4-91e9-48ca1d154c6c@oss.qualcomm.com>
-Date: Sat, 21 Jun 2025 12:05:51 +0200
+        Sat, 21 Jun 2025 03:11:04 -0700 (PDT)
+Message-ID: <f83cc435-7736-4003-b5b2-a84e2fe725c6@oss.qualcomm.com>
+Date: Sat, 21 Jun 2025 12:11:00 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,35 +75,45 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ARM: dts: qcom: msm8974-samsung-hlte: Add touchkey
- support
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>
-References: <20250618-hlte-touchkey-v2-1-2cf188b57e31@lucaweiss.eu>
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for
+ Billion Capture+
+To: Luca Weiss <luca@lucaweiss.eu>, cristian_ci <cristian_ci@protonmail.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "andersson@kernel.org" <andersson@kernel.org>,
+        "konradybcio@kernel.org" <konradybcio@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        "~postmarketos/upstreaming@lists.sr.ht"
+ <~postmarketos/upstreaming@lists.sr.ht>,
+        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
+ <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com>
+ <d4564d4b-9510-47f8-9930-65d3c4e90e6c@lucaweiss.eu>
+ <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
+ <ff29229c-5458-4500-9b11-8044a461cd36@lucaweiss.eu>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250618-hlte-touchkey-v2-1-2cf188b57e31@lucaweiss.eu>
+In-Reply-To: <ff29229c-5458-4500-9b11-8044a461cd36@lucaweiss.eu>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIxMDA1OSBTYWx0ZWRfXw8qRYdO8S+8D
- QtekMaCE+nfpLAh+ptE8GpS/7iSRhqzGBfjtNPDZ2OCdiYq0CDVw8UHJe/LTzrURPddImu/1jlL
- CNrLXKUvSdGbpE+cqeqB5B5hMoCBM7YzjGmmndhuNmvNWr+4xTGFOCluVprgHEPZqOpxegYim87
- sAu0x/Z6p+CDKHWhfEr0Qm8YYvaZJiwD5PemFAZHV0EPp3J5CEy/qQvmDhvfTiWAPDVTUPZLs5y
- afhcyVFylLbu8gLjzQQU7sjFJVZlasFcxEIiWhQQeBDtE3mEjh0enZSMBubM8Bg6zKMo89J3jWn
- XXUZLIqQFng4UKiXaAlnzjI/l0F9oByjZ40TgfncB9QP0dvLkVk+yhRnSXxjxbFa5YPYYz7yqDl
- I2K9GcL/fanwL8CkboJKcti0GU+k+hRhjHYTGUV7At0m/7DzUzoD3LHU0ptBHuJq8nhvupCf
-X-Proofpoint-GUID: 37D8tik9nUWTeO0exhnsTxYZuXiHczcC
-X-Authority-Analysis: v=2.4 cv=fb6ty1QF c=1 sm=1 tr=0 ts=68568403 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIxMDA1OSBTYWx0ZWRfX2u606ddG/zTE
+ yOMvWXQfKjHUQ+k8XS0D2VK0BHZx4iPfN3msg9cOlbTzwrn0FEzTK6e4HkCOQ+gWq8fw44SmI2M
+ Eq0cDSKnXjly3d/6NdXFV0FRP1Z5dP6tXvU7G9qajyP9cynAzepYcw2fReO3DItvbzi1ZM2eLUQ
+ NpdcnW7jzoA4EYrs+qwca+fJSWA88rxxrKb3GM7chAcJ/rlfGohISMvajI5nIVjqrOMSmWdlR9M
+ Tp5gN5qPuDsJ+O11gLNfNusHlNFEh4kA4SS6SD3OCLot9jkVLoxx6G6IzfzkzZdoC8DfbrR+Do1
+ +rjUtjr7FdFRKMYKrziAf6uecFXjK1qXBLC7YHxy5o7+XANjOzpxB6baxBt3hRhBfUi36nhh1K5
+ D1HLM+wal3biIEs962HsOkshEKYIDAYrpVzeq4mzl8nLe7dO2JDpAo8vbbv8HRBWxTDoBs72
+X-Proofpoint-GUID: u05ZLbL2jax7my08btLTMiqrbzm4QOw_
+X-Authority-Analysis: v=2.4 cv=fb6ty1QF c=1 sm=1 tr=0 ts=6856853a cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
  a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=dlmhaOwlAAAA:8
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=wwgquuRBh95SaqRAEc8A:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22 a=y4cfut4LVr_MrANMpYTh:22
-X-Proofpoint-ORIG-GUID: 37D8tik9nUWTeO0exhnsTxYZuXiHczcC
+ a=1bQLa7EovWpukNELjvkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=pJ04lnu7RYOZP9TFuWaZ:22 a=y4cfut4LVr_MrANMpYTh:22
+X-Proofpoint-ORIG-GUID: u05ZLbL2jax7my08btLTMiqrbzm4QOw_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-21_02,2025-06-20_01,2025-03-28_01
@@ -114,20 +124,67 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506210059
 
-On 6/18/25 11:45 PM, Luca Weiss wrote:
-> From: Adam Honse <calcprogrammer1@gmail.com>
+On 6/21/25 11:27 AM, Luca Weiss wrote:
+> On 21-06-2025 9:07 a.m., cristian_ci wrote:
+>> On Saturday, June 21st, 2025 at 00:20, Luca Weiss <luca@lucaweiss.eu> wrote:
+>>
+>>>> +
+>>>> + reserved-memory {
+>>>> + qseecom@0 {
+>>>
+>>>
+>>> qseecom@84a00000 ?
+>>>
+>>>> + reg = <0x00 0x84a00000 0x00 0x1900000>;
+>>>> + no-map;
+>>>> + };
+>>
+>> Looking at downstream devicetree, every reserved-memory nodes with "removed-dma-pool" compatible has unit address 0. OTOH, kernel documentation [1] says:
+>> "  Following the generic-names recommended practice, node names should
+>>    reflect the purpose of the node (ie. "framebuffer" or "dma-pool").
+>>    Unit address (@<address>) should be appended to the name if the node
+>>    is a static allocation."
+>>
+>> In my case, downstream devicetree shows:
+>>
+>>         other_ext_region@0 {
+>>             compatible = "removed-dma-pool";
+>>             no-map;
+>>             reg = <0x00 0x84a00000 0x00 0x1e00000>;
+>>         };
+>>
+>> which will be 'qseecom' reserved-memory node in mainline devicetree.
+>>
+>> OTOH, 'qseecom' node in downstream devicetree also shows:
+>>
+>>         qseecom@84a00000 {
+>>             compatible = "qcom,qseecom";
+>>             reg = <0x84a00000 0x1900000>;
+>>                          ...
+>>
+>> If you confirm what you suggest, 'qseecom' reserved-memory node will look like the following:
+>>
+>>         qseecom_mem: qseecom@84a00000 {
+>>             reg = <0x0 0x84a00000 0x0 0x1900000>;
+>>             no-map;
+>>         };
+>>
+>> [1] https://www.kernel.org/doc/Documentation/devicetree/bindings/reserved-memory/reserved-memory.yaml
 > 
-> Add support for the touchkeys on the Samsung Galaxy Note 3 (hlte).
+> The name (qseecom@84a00000) mostly does not matter at runtime, it's just a nice label we give it. The reg is the important bit that gets used in reserved-memory.
 > 
-> Signed-off-by: Adam Honse <calcprogrammer1@gmail.com>
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
-> Changes in v2:
-> - Fix schema validation failure, adjust i2c-gpio node name
-> - Fix misplaced S-o-b (hopefully)
-> - Link to v1: https://lore.kernel.org/r/20250419-hlte-touchkey-v1-1-9d93c3e2b31f@lucaweiss.eu
-> ---
+> But actually re-checking, I don't think your reserved-memory works right now, msm8953.dtsi has
+> 
+>     soc: soc@0 {
+>         #address-cells = <1>;
+>         #size-cells = <1>;
+> 
+> which means that you should only have one value for address, and one for size, so "reg = <0x84a00000 0x1900000>;". This is different to most other Qualcomm arm64 SoCs.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+reserved-memory {
+                #address-cells = <2>;
+                #size-cells = <2>;
+                ranges;
+
 
 Konrad
