@@ -1,282 +1,137 @@
-Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8447530E841;
-	Sat, 21 Jun 2025 07:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9086D433B1;
+	Sat, 21 Jun 2025 09:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750489661; cv=none; b=FcVOphKhmvB8HZiT5jOnsk8haRDiffAYLcTpiMPHGljbLKHuEW2Sc5EgeDp9NCQ901g6LBvxXmVY5LDpfSNGIptmPGEvt7caIl1X7v+NH1PX/6Qr/5Lb5L4vvisoW7mRwMeUnUT3bcHPnzfgy30gchucbnwcxQ1W392/hNTIwl4=
+	t=1750498038; cv=none; b=JxQkV1NDmgBtOFu9alH20qAQvTuM4KkikF4kW4jcUR7m7e7UxGPUm1OiHwC6Tz5FRc2/NWAHL1Vyr0QlK1IlUrT09emz3C0CqChDRfKV5EUxABWz+gA8zd3+aWBpz5LMWn7jRnEjAMW5MiMvmi1YAo9jqIPARmMhXyU6CDR2oDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750489661; c=relaxed/simple;
-	bh=96zSTCit7Jr8EU5mbUWe0rSqS11+bPPmhWpuoBr06qI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KZk2qkVWv29a4MW9EdXrJH2V3KfiyqwC003ucwoo+uv6s2d337y8P2Vj7TK0V8tq2fYBPnZ/ZXqFxgckExsqxWj52HcmF/yc7XsKYE5MRIPVoTv8wes99LVneAsCG8aMv9/uX/Ig+w8PwEku0SxePMyesWTrCZQcqtV8WOeMhq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=xeQhI8zc; arc=none smtp.client-ip=185.70.43.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1750498038; c=relaxed/simple;
+	bh=suMIZysjQ6LF75eaZIfOnmKKmcSh2/4O7O+gcUFifpA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aFegd01h2oIQkK8rEhiBDcpuMDOdGF8EpiEun1iR8dgI0cE5JQLD/PProoiq8AG3j91XJpoNneHtjJrxQ34rvxYu0PraLXkgZWdF/4bBrxwdLW3rFmUt8idEXt1/Mo8h+6deZ0fVVOgyWTyzgmzHAjS59lMInPfR6LpHcDB4a1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=P1CUcCdm; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="xeQhI8zc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1750489656; x=1750748856;
-	bh=obItk7XiDSFuvyadkI1YtM3uHao6+KxIagO4SDlclFQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=xeQhI8zclnuRzNshWNH2SVMvCU4GXCv/+q95m0IKNKxqH6tOlyRU28p9iqTdE/8+a
-	 yRjlxjQHeVUaESVbnu+M50FsGK+W3NrioPsUYkHEf2A4qtNONa13xIAro5dCpUwWtm
-	 3FDDrXSjiteZwSd0PYxZ1nxhac8tawuiJq355+pqmlqFQaCZSQq0egLwGdgVmDvVFr
-	 6kLb9XN2yxyRokVv8SRqT6/zn4scd8IdCXZ7N4oydDthUP+BgbtO5L4gkrHwO6Jvk1
-	 4IQjQXL9Fp/V1XP1/lMwGKhCQlqeZa7iTceuoJESfDGoL257Kua5xXBZpsUTwmU8ih
-	 jFcjqJAE8rEUg==
-Date: Sat, 21 Jun 2025 07:07:33 +0000
-To: Luca Weiss <luca@lucaweiss.eu>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, "andersson@kernel.org" <andersson@kernel.org>, "konradybcio@kernel.org" <konradybcio@kernel.org>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>, "~postmarketos/upstreaming@lists.sr.ht" <~postmarketos/upstreaming@lists.sr.ht>, "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
-Message-ID: <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
-In-Reply-To: <d4564d4b-9510-47f8-9930-65d3c4e90e6c@lucaweiss.eu>
-References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com> <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com> <d4564d4b-9510-47f8-9930-65d3c4e90e6c@lucaweiss.eu>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 5e5c42a87c2bd67bc63aad9df28de1391b9b1ead
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="P1CUcCdm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1750498034; bh=suMIZysjQ6LF75eaZIfOnmKKmcSh2/4O7O+gcUFifpA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=P1CUcCdmmh/ibZ9xTCWBp4nd1numB+H7FWARmaR6h6hAOlq63pdjyWfRNEoOyuGk8
+	 msIrvqufovCzrN65F8kZz5kPmMx+YJUp7IfVS8dL4ZlQKB92BvLRZCYiICwhsztRG4
+	 IwfALq7/vt3xUEvHslxwg4NSRiFaFAC675o5FSqo=
+Message-ID: <ff29229c-5458-4500-9b11-8044a461cd36@lucaweiss.eu>
+Date: Sat, 21 Jun 2025 11:27:14 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for
+ Billion Capture+
+To: cristian_ci <cristian_ci@protonmail.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "andersson@kernel.org" <andersson@kernel.org>,
+ "konradybcio@kernel.org" <konradybcio@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+ "~postmarketos/upstreaming@lists.sr.ht"
+ <~postmarketos/upstreaming@lists.sr.ht>,
+ "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
+ <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com>
+ <d4564d4b-9510-47f8-9930-65d3c4e90e6c@lucaweiss.eu>
+ <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
+Content-Language: en-US
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <bWiyUA5cF4NjzEaUwhpDvfeqs0hEizZKFKxQpsfj6htES5mPGO2Yf2AHZQcUEyR4x7Zx9kVvwenpc2djbCN148IbjtgLh7Gq_1HXicp8kms=@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Saturday, June 21st, 2025 at 00:20, Luca Weiss <luca@lucaweiss.eu> wrote=
-:
+On 21-06-2025 9:07 a.m., cristian_ci wrote:
+> On Saturday, June 21st, 2025 at 00:20, Luca Weiss <luca@lucaweiss.eu> wrote:
+> 
+>>> +
+>>> + reserved-memory {
+>>> + qseecom@0 {
+>>
+>>
+>> qseecom@84a00000 ?
+>>
+>>> + reg = <0x00 0x84a00000 0x00 0x1900000>;
+>>> + no-map;
+>>> + };
+> 
+> Looking at downstream devicetree, every reserved-memory nodes with "removed-dma-pool" compatible has unit address 0. OTOH, kernel documentation [1] says:
+> "  Following the generic-names recommended practice, node names should
+>    reflect the purpose of the node (ie. "framebuffer" or "dma-pool").
+>    Unit address (@<address>) should be appended to the name if the node
+>    is a static allocation."
+> 
+> In my case, downstream devicetree shows:
+> 
+> 		other_ext_region@0 {
+> 			compatible = "removed-dma-pool";
+> 			no-map;
+> 			reg = <0x00 0x84a00000 0x00 0x1e00000>;
+> 		};
+> 
+> which will be 'qseecom' reserved-memory node in mainline devicetree.
+> 
+> OTOH, 'qseecom' node in downstream devicetree also shows:
+> 
+> 		qseecom@84a00000 {
+> 			compatible = "qcom,qseecom";
+> 			reg = <0x84a00000 0x1900000>;
+>                          ...
+> 
+> If you confirm what you suggest, 'qseecom' reserved-memory node will look like the following:
+> 
+> 		qseecom_mem: qseecom@84a00000 {
+> 			reg = <0x0 0x84a00000 0x0 0x1900000>;
+> 			no-map;
+> 		};
+> 
+> [1] https://www.kernel.org/doc/Documentation/devicetree/bindings/reserved-memory/reserved-memory.yaml
 
-> > +
-> > + reserved-memory {
-> > + qseecom@0 {
->=20
->=20
-> qseecom@84a00000 ?
->=20
-> > + reg =3D <0x00 0x84a00000 0x00 0x1900000>;
-> > + no-map;
-> > + };
+The name (qseecom@84a00000) mostly does not matter at runtime, it's just 
+a nice label we give it. The reg is the important bit that gets used in 
+reserved-memory.
 
-Looking at downstream devicetree, every reserved-memory nodes with "removed=
--dma-pool" compatible has unit address 0. OTOH, kernel documentation [1] sa=
-ys:
-"  Following the generic-names recommended practice, node names should
-  reflect the purpose of the node (ie. "framebuffer" or "dma-pool").
-  Unit address (@<address>) should be appended to the name if the node
-  is a static allocation."
+But actually re-checking, I don't think your reserved-memory works right 
+now, msm8953.dtsi has
 
-In my case, downstream devicetree shows:
+	soc: soc@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
 
-=09=09other_ext_region@0 {
-=09=09=09compatible =3D "removed-dma-pool";
-=09=09=09no-map;
-=09=09=09reg =3D <0x00 0x84a00000 0x00 0x1e00000>;
-=09=09};
+which means that you should only have one value for address, and one for 
+size, so "reg = <0x84a00000 0x1900000>;". This is different to most 
+other Qualcomm arm64 SoCs.
 
-which will be 'qseecom' reserved-memory node in mainline devicetree.
+Same for cont-splash below.
 
-OTOH, 'qseecom' node in downstream devicetree also shows:
+> 
+>>> + cont_splash_mem: cont-splash@90001000 {
+>>> + reg = <0x0 0x90001000 0x0 (1080 * 1920 * 3)>;
+>>> + no-map;
+>>> + };
+>>> + };
+>>> +>>
+>> Any ideas what's connected to these pins? If you do, good to document
+>> this like in other devices.
+>>
+>> Regards
+>> Luca
+>>
+> 
+> Unfortunately, downstream devicetree's pinctrl (kernel sources not available) doesn't mention anywhere 'gpio0', 'gpio1', 'gpio2', 'gpio3', 'gpio135', 'gpio136', 'gpio137' and 'gpio138' (but, for example, 'gpio4' and 'gpio139' are shown, instead). So, I've no ideas what these reserved gpios are used for.
+That's fine from my side then.
 
-=09=09qseecom@84a00000 {
-=09=09=09compatible =3D "qcom,qseecom";
-=09=09=09reg =3D <0x84a00000 0x1900000>;
-                        ...
-
-If you confirm what you suggest, 'qseecom' reserved-memory node will look l=
-ike the following:
-
-=09=09qseecom_mem: qseecom@84a00000 {
-=09=09=09reg =3D <0x0 0x84a00000 0x0 0x1900000>;
-=09=09=09no-map;
-=09=09};
-
-[1] https://www.kernel.org/doc/Documentation/devicetree/bindings/reserved-m=
-emory/reserved-memory.yaml
-
-> > + cont_splash_mem: cont-splash@90001000 {
-> > + reg =3D <0x0 0x90001000 0x0 (1080 * 1920 * 3)>;
-> > + no-map;
-> > + };
-> > + };
-> > +
-> > + vph_pwr: vph-pwr-regulator {
-> > + compatible =3D "regulator-fixed";
-> > + regulator-name =3D "vph_pwr";
-> > + regulator-always-on;
-> > + regulator-boot-on;
-> > + };
-> > +};
-> > +
-> > +
-> > +&hsusb_phy {
-> > + vdd-supply =3D <&pm8953_l3>;
-> > + vdda-pll-supply =3D <&pm8953_l7>;
-> > + vdda-phy-dpdm-supply =3D <&pm8953_l13>;
-> > +
-> > + status =3D "okay";
-> > +};
-> > +
-> > +&pm8953_resin {
-> > + linux,code =3D <KEY_VOLUMEDOWN>;
-> > + status =3D "okay";
-> > +};
-> > +
-> > +&rpm_requests {
-> > + regulators {
-> > + compatible =3D "qcom,rpm-pm8953-regulators";
-> > + vdd_s1-supply =3D <&vph_pwr>;
-> > + vdd_s2-supply =3D <&vph_pwr>;
-> > + vdd_s3-supply =3D <&vph_pwr>;
-> > + vdd_s4-supply =3D <&vph_pwr>;
-> > + vdd_s5-supply =3D <&vph_pwr>;
-> > + vdd_s6-supply =3D <&vph_pwr>;
-> > + vdd_s7-supply =3D <&vph_pwr>;
-> > + vdd_l1-supply =3D <&pm8953_s3>;
-> > + vdd_l2_l3-supply =3D <&pm8953_s3>;
-> > + vdd_l4_l5_l6_l7_l16_l19-supply =3D <&pm8953_s4>;
-> > + vdd_l8_l11_l12_l13_l14_l15-supply =3D <&vph_pwr>;
-> > + vdd_l9_l10_l17_l18_l22-supply =3D <&vph_pwr>;
-> > + vdd_l23-supply =3D <&pm8953_s3>;
-> > +
-> > + pm8953_s1: s1 {
-> > + regulator-min-microvolt =3D <870000>;
-> > + regulator-max-microvolt =3D <1156000>;
-> > + };
-> > +
-> > + pm8953_s3: s3 {
-> > + regulator-min-microvolt =3D <1224000>;
-> > + regulator-max-microvolt =3D <1224000>;
-> > + };
-> > +
-> > + pm8953_s4: s4 {
-> > + regulator-min-microvolt =3D <1900000>;
-> > + regulator-max-microvolt =3D <2050000>;
-> > + };
-> > +
-> > + pm8953_l1: l1 {
-> > + regulator-min-microvolt =3D <1000000>;
-> > + regulator-max-microvolt =3D <1000000>;
-> > + };
-> > +
-> > + pm8953_l2: l2 {
-> > + regulator-min-microvolt =3D <975000>;
-> > + regulator-max-microvolt =3D <1225000>;
-> > + };
-> > +
-> > + pm8953_l3: l3 {
-> > + regulator-min-microvolt =3D <925000>;
-> > + regulator-max-microvolt =3D <925000>;
-> > + };
-> > +
-> > + pm8953_l5: l5 {
-> > + regulator-min-microvolt =3D <1800000>;
-> > + regulator-max-microvolt =3D <1800000>;
-> > + };
-> > +
-> > + pm8953_l6: l6 {
-> > + regulator-min-microvolt =3D <1800000>;
-> > + regulator-max-microvolt =3D <1800000>;
-> > + };
-> > +
-> > + pm8953_l7: l7 {
-> > + regulator-min-microvolt =3D <1800000>;
-> > + regulator-max-microvolt =3D <1900000>;
-> > + };
-> > +
-> > + pm8953_l8: l8 {
-> > + regulator-min-microvolt =3D <2900000>;
-> > + regulator-max-microvolt =3D <2900000>;
-> > + };
-> > +
-> > + pm8953_l9: l9 {
-> > + regulator-min-microvolt =3D <3000000>;
-> > + regulator-max-microvolt =3D <3300000>;
-> > + };
-> > +
-> > + pm8953_l10: l10 {
-> > + regulator-min-microvolt =3D <2850000>;
-> > + regulator-max-microvolt =3D <2850000>;
-> > + };
-> > +
-> > + pm8953_l11: l11 {
-> > + regulator-min-microvolt =3D <2950000>;
-> > + regulator-max-microvolt =3D <2950000>;
-> > + };
-> > +
-> > + pm8953_l12: l12 {
-> > + regulator-min-microvolt =3D <1800000>;
-> > + regulator-max-microvolt =3D <2950000>;
-> > + };
-> > +
-> > + pm8953_l13: l13 {
-> > + regulator-min-microvolt =3D <3125000>;
-> > + regulator-max-microvolt =3D <3125000>;
-> > + };
-> > +
-> > + pm8953_l16: l16 {
-> > + regulator-min-microvolt =3D <1800000>;
-> > + regulator-max-microvolt =3D <1800000>;
-> > + };
-> > +
-> > + pm8953_l17: l17 {
-> > + regulator-min-microvolt =3D <2850000>;
-> > + regulator-max-microvolt =3D <2850000>;
-> > + };
-> > +
-> > + pm8953_l19: l19 {
-> > + regulator-min-microvolt =3D <1200000>;
-> > + regulator-max-microvolt =3D <1350000>;
-> > + };
-> > +
-> > + pm8953_l22: l22 {
-> > + regulator-min-microvolt =3D <2800000>;
-> > + regulator-max-microvolt =3D <2800000>;
-> > + };
-> > +
-> > + pm8953_l23: l23 {
-> > + regulator-min-microvolt =3D <975000>;
-> > + regulator-max-microvolt =3D <1225000>;
-> > + };
-> > + };
-> > +};
-> > +
-> > +&sdhc_1 {
-> > + vmmc-supply =3D <&pm8953_l8>;
-> > + vqmmc-supply =3D <&pm8953_l5>;
-> > +
-> > + status =3D "okay";
-> > +};
-> > +
-> > +&sdhc_2 {
-> > + vmmc-supply =3D <&pm8953_l11>;
-> > + vqmmc-supply =3D <&pm8953_l12>;
-> > +
-> > + cd-gpios =3D <&tlmm 133 GPIO_ACTIVE_HIGH>;
-> > +
-> > + pinctrl-0 =3D <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
-> > + pinctrl-1 =3D <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off>;
-> > + pinctrl-names =3D "default", "sleep";
-> > +
-> > + status =3D "okay";
-> > +};
-> > +
-> > +&tlmm {
-> > + gpio-reserved-ranges =3D <0 4>, <135 4>;
->=20
->=20
-> Any ideas what's connected to these pins? If you do, good to document
-> this like in other devices.
->=20
-> Regards
-> Luca
->=20
-
-Unfortunately, downstream devicetree's pinctrl (kernel sources not availabl=
-e) doesn't mention anywhere 'gpio0', 'gpio1', 'gpio2', 'gpio3', 'gpio135', =
-'gpio136', 'gpio137' and 'gpio138' (but, for example, 'gpio4' and 'gpio139'=
- are shown, instead). So, I've no ideas what these reserved gpios are used =
-for.
+Regards
+Luca
