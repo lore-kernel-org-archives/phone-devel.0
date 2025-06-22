@@ -1,88 +1,293 @@
-Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F5E30E841;
-	Sat, 21 Jun 2025 19:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB17128EA;
+	Sun, 22 Jun 2025 15:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750534270; cv=none; b=GwdDdRHpz0bT4+gqyXVVsDg2X4xBgtxcP+zl70pfRHXfG9NrI5XDxedU0kcuN8ZSws3AVGAQ/CB3cSEHUwYdPVFiFZN67TK3ICkqkMOTS1MB3nyijmFu7oIW5P1OP2WcL8ibksTI7pdB2Vc4jjZw7dJWRZQmZryxxcdPZ/p4ERo=
+	t=1750606516; cv=none; b=OIt05NatxMM6o2NwmwXGrvjejSxlp2KjLnbQLQc2Azw4iHTxlhimPhbwrBixW/qyJHCdoRi8w64zL5TtuuiUKGDq6xrEa04i5QISWXQCT+c5U6IS4Fhqu7A1aCrLkcgu0IYQthUneL8qGpdP1mCJNlZaqWnACXbTpt1Ze+veEGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750534270; c=relaxed/simple;
-	bh=8GUx0CFXgZvbQXHjRU4GIpNFxMcjxps2dflD5GrQv+g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EoDa5NXA3jkBM2G1V1uGZxbjx1MPI/mR2o143UBb+ZBQNtPd+LHqpYYOib2wGkvNfKyUM2yMvLlNqVJNQLWLaIS0utnZeEj+7AWSQVsZiabzfNMPLLm2o4FllRAkwkhi2lBCmZMNyYsBSObJjR6xAdtacc12dqZaOXc9ZvuQ2P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=HduF9m21; arc=none smtp.client-ip=185.70.43.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1750606516; c=relaxed/simple;
+	bh=MHu3SDxiSxccfrjer6526iwigLYCv39ZoRMVPnBGH6s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=S69OJTwNtc4JdqFcp/LSKbIiGWQAbDdIVsXA6zjfSuqHs8wGBckNCCIdvY5S/NtXevPFFxfL5QviIc7sHqqe3YiMUlB8jCg5OnNnDibER7iWkxKgxbWghd7QXnhyeWAxN1N6b0ePChG9t+HkY1Id5pPTLqza/HRP5bHArDkYyEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=ht5BuAWC; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="HduF9m21"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1750534265; x=1750793465;
-	bh=8GUx0CFXgZvbQXHjRU4GIpNFxMcjxps2dflD5GrQv+g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HduF9m21l/K79zE4ap77nzeXyKdalQiw6+opOnSaflFcjHm8nKdTYT2+rFFoaj4mW
-	 ld1RU0SPZb44WH86P8Mws8AHvgIFoyLDx9inR+HqIDnI8grVo3AgklsHghAwUrNUz5
-	 sL3F1tJlho634mWRjKJTtvhuqHr37a+GCIRgF+KfzK18Fnmlz6QsihL8ufuJvz4IIO
-	 1WuoiQN0todaSE+Vr4R6TT7H4o/VALHlphnNMOk+YAlngAdFJmuXXqwfSUZ5xji/EH
-	 /jWAJO0TTyrTctOefo3KI0yfaoohj2xyaWYjMavw6xAr4crZHiDbuE3ZhSIl+dEXIb
-	 FhiRvrkAI7tLg==
-Date: Sat, 21 Jun 2025 19:31:00 +0000
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
-Message-ID: <Fp48ghZvedurtk8ta0jccDkZvg7whZFgX0Ra7_AQuMwS12QxAxHqgcOMP_SbXsnLNme2LWWz6ZshoGFTQT6nVvfe-4B_v-2hkRxpgcb9bq0=@protonmail.com>
-In-Reply-To: <557166bd-cbe2-4a7b-bd6c-8daec1cecc3d@oss.qualcomm.com>
-References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com> <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com> <557166bd-cbe2-4a7b-bd6c-8daec1cecc3d@oss.qualcomm.com>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 15bc67b8a7af4ebeea515c3c4e5f83471731488c
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="ht5BuAWC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=bm69vQQYMGAsC6CQotbCgpq2n6vTrtAkzVloqlGnBZs=; b=ht5BuAWC19vvtWnN6JlAl2Z4PQ
+	Ws2G3b8/mLYeTjwIW5h/9EWv/aKiwP9Jh11F19Gulqon8mxai+LPwn7Yqg5MLJ2QImeaw8ZYuD+Mh
+	cfbMk+BSNqygDeBkAwTDRnTnS3ra/p0mRJOyd+jz0SokL6Btl+ViP0qVXvLQ85sTYd32gCNtqxZAr
+	9ts4BtRsP13xSIKeAKr2MNkpeSRRZNem4kHenslnl7pON86tcs9INZV1nCNU/p2g+mnSLJqWPxCzm
+	8DVa/gw3kfz58NNhkG/fdxH9eJNQ9v/YvWrf6PnitoGkHqkIJXqB9ymRDZA0mchIwfjX70KZUj5ey
+	oLjiPBtw==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uTMig-000B26-0u;
+	Sun, 22 Jun 2025 17:34:58 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uTMif-0008mM-1p;
+	Sun, 22 Jun 2025 17:34:57 +0200
+Message-ID: <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
+Subject: Re: [PATCH RESEND v4 3/5] media: i2c: imx214: Make use of CCS PLL
+ calculator
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Ricardo Ribalda <ribalda@kernel.org>, Sakari Ailus	
+ <sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,  Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team	
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Ricardo Ribalda <ribalda@chromium.org>
+Date: Sun, 22 Jun 2025 17:34:56 +0200
+In-Reply-To: <20250621181751.GA9125@pendragon.ideasonboard.com>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+		 <20250621-imx214_ccs_pll-v4-3-12178e5eb989@apitzsch.eu>
+		 <20250621181751.GA9125@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27677/Sun Jun 22 10:32:59 2025)
 
-On Saturday, June 21st, 2025 at 12:17, Konrad Dybcio <konrad.dybcio@oss.qua=
-lcomm.com> wrote:
+Hi Laurent,
+
+thanks for the review. Some comments below.
+
+
+Am Samstag, dem 21.06.2025 um 21:17 +0300 schrieb Laurent Pinchart:
+> Hi Andr=C3=A9,
+>=20
+> Thank you for the patch.
+>=20
+> On Sat, Jun 21, 2025 at 11:37:27AM +0200, Andr=C3=A9 Apitzsch via B4 Rela=
+y
+> wrote:
+> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> >=20
+> > Calculate PLL parameters based on clock frequency and link
+> > frequency.
+> >=20
+> > Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > ---
+> > =C2=A0drivers/media/i2c/Kconfig=C2=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0drivers/media/i2c/imx214.c | 213
+> > ++++++++++++++++++++++++++++++++++++---------
+> > =C2=A02 files changed, 175 insertions(+), 39 deletions(-)
+> >=20
+> > diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+> > index
+> > e68202954a8fd4711d108cf295d5771246fbc406..08db8abeea218080b0bf5bfe6
+> > cf82f1c0b100c4a 100644
+> > --- a/drivers/media/i2c/Kconfig
+> > +++ b/drivers/media/i2c/Kconfig
+> > [..]
+> > @@ -1224,42 +1336,52 @@ static int imx214_parse_fwnode(struct
+> > device *dev)
+> > =C2=A0 if (!endpoint)
+> > =C2=A0 return dev_err_probe(dev, -EINVAL, "endpoint node not found\n");
+> > =C2=A0
+> > - ret =3D v4l2_fwnode_endpoint_alloc_parse(endpoint, &bus_cfg);
+> > + bus_cfg->bus_type =3D V4L2_MBUS_CSI2_DPHY;
+> > + ret =3D v4l2_fwnode_endpoint_alloc_parse(endpoint, bus_cfg);
+> > + fwnode_handle_put(endpoint);
+>=20
+> ... drop this. Up to you.
+>=20
+> > =C2=A0 if (ret) {
+> > =C2=A0 dev_err_probe(dev, ret, "parsing endpoint node failed\n");
+> > - goto done;
+> > + goto error;
+>=20
+> You can return ret here.
+>=20
+> > =C2=A0 }
+> > =C2=A0
+> > =C2=A0 /* Check the number of MIPI CSI2 data lanes */
+> > - if (bus_cfg.bus.mipi_csi2.num_data_lanes !=3D 4) {
+> > + if (bus_cfg->bus.mipi_csi2.num_data_lanes !=3D 4) {
+> > =C2=A0 ret =3D dev_err_probe(dev, -EINVAL,
+> > =C2=A0 =C2=A0=C2=A0=C2=A0 "only 4 data lanes are currently supported\n"=
+);
+> > - goto done;
+> > + goto error;
+> > =C2=A0 }
+> > =C2=A0
+> > - if (bus_cfg.nr_of_link_frequencies !=3D 1)
+> > + if (bus_cfg->nr_of_link_frequencies !=3D 1)
+> > =C2=A0 dev_warn(dev, "Only one link-frequency supported, please review
+> > your DT. Continuing anyway\n");
+>=20
+> Now that the driver can calculate PLL parameters dynamically, it
+> would be nice to lift this restriction and make the link frequency
+> control writable, in a separate patch on top of this series.
+>=20
+Maybe this could be postponed, as I don't have any use for it at the
+moment and I don't want to further delay this series.
+
+> > =C2=A0
+> > - for (i =3D 0; i < bus_cfg.nr_of_link_frequencies; i++) {
+> > - if (bus_cfg.link_frequencies[i] =3D=3D IMX214_DEFAULT_LINK_FREQ)
+> > + for (i =3D 0; i < bus_cfg->nr_of_link_frequencies; i++) {
+> > + u64 freq =3D bus_cfg->link_frequencies[i];
+> > + struct ccs_pll pll;
 > > +
-> > +&sdhc_1 {
-> > + vmmc-supply =3D <&pm8953_l8>;
-> > + vqmmc-supply =3D <&pm8953_l5>;
+> > + if (!imx214_pll_calculate(imx214, &pll, freq))
+> > =C2=A0 break;
+> > - if (bus_cfg.link_frequencies[i] =3D=3D
+> > - =C2=A0=C2=A0=C2=A0 IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> > + if (freq =3D=3D IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> > =C2=A0 dev_warn(dev,
+> > =C2=A0 "link-frequencies %d not supported, please review your DT.
+> > Continuing anyway\n",
+> > =C2=A0 IMX214_DEFAULT_LINK_FREQ);
+> > + freq =3D IMX214_DEFAULT_LINK_FREQ;
+> > + if (imx214_pll_calculate(imx214, &pll, freq))
+> > + continue;
+> > + bus_cfg->link_frequencies[i] =3D freq;
+> > =C2=A0 break;
+> > =C2=A0 }
 >=20
+> How about separating the IMX214_DEFAULT_LINK_FREQ_LEGACY check from
+> the PLL calculation ? Something like
 >=20
-> you should add regulator-allow-set-load to these vregs
+>  u64 freq =3D bus_cfg->link_frequencies[i];
+>  struct ccs_pll pll;
+>=20
+>  if (freq =3D=3D IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+>  dev_warn(dev,
+>  "link-frequencies %d not supported, please review your DT.
+> Continuing anyway\n",
+>  IMX214_DEFAULT_LINK_FREQ);
+>  freq =3D IMX214_DEFAULT_LINK_FREQ;
+>  bus_cfg->link_frequencies[i] =3D freq;
+>  }
 
-So, do you mean I should add 'regulator-allow-set-load' property to 'pm8953=
-_l5' and 'pm8953_l8' regulators? If so, should I do that for 'pm8953_l11' a=
-nd 'pm8953_l12' regulators too (sdhc_2)?
+With PLL calculation, 480000000 (=3DIMX214_DEFAULT_LINK_FREQ_LEGACY)
+might be a valid link frequency explicitly set by the user. I'm not
+sure whether it is a good idea to overwrite the link frequency, before
+trying the PLL calculation. That's why I would keep the code the way it
+is.
 
-> [...]
 >=20
-> > +&tlmm {
-> > + gpio-reserved-ranges =3D <0 4>,
+>  if (!imx214_pll_calculate(imx214, &pll, freq))
+>  break;
 >=20
->=20
-> These GPIOs correspond to I2C/SPI_1
->=20
-> <135 4>;
->=20
->=20
-> And these correspond to I2C/SPI_7
->=20
-> Without much more knowledge, I would guesstimate one of them is
-> for a fingerprint reader and the other for NFC eSE
->=20
-> Konrad
+> It will then become easier to drop this legacy support from the
+> driver. What platform(s) are know to specify an incorrect link
+> frequency ?
 
-I made that check in past and, while it looks like 'gpio16' and 'gpio17' ar=
-e assigned to nfc pinctrl (though, nfc appears not to be implemented in thi=
-s device, considering also the lack of 'phandle' for such pinctrls) in down=
-stream dts, the devicetree pinctrl still doesn't mentions the gpios associa=
-ted with the fingerprint node (which is, instead, implemented in this devic=
-e). So, I'm not able to verify if gpios 0-3 and gpios 135-138 are related t=
-o fingerprint and secure element, respectively.
+I don't know.
+
+Best regards,
+Andr=C3=A9
+
+>=20
+> > =C2=A0 }
+> > =C2=A0
+> > - if (i =3D=3D bus_cfg.nr_of_link_frequencies)
+> > + if (i =3D=3D bus_cfg->nr_of_link_frequencies)
+> > =C2=A0 ret =3D dev_err_probe(dev, -EINVAL,
+> > - =C2=A0=C2=A0=C2=A0 "link-frequencies %d not supported, please review =
+your DT\n",
+> > - =C2=A0=C2=A0=C2=A0 IMX214_DEFAULT_LINK_FREQ);
+> > + =C2=A0=C2=A0=C2=A0 "link-frequencies %lld not supported, please revie=
+w your
+> > DT\n",
+> > + =C2=A0=C2=A0=C2=A0 bus_cfg->nr_of_link_frequencies ?
+> > + =C2=A0=C2=A0=C2=A0 bus_cfg->link_frequencies[0] : 0);
+> > =C2=A0
+> > -done:
+> > - v4l2_fwnode_endpoint_free(&bus_cfg);
+> > - fwnode_handle_put(endpoint);
+> > + return 0;
+> > +
+> > +error:
+> > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > =C2=A0 return ret;
+> > =C2=A0}
+> > =C2=A0
+> > @@ -1299,7 +1421,7 @@ static int imx214_probe(struct i2c_client
+> > *client)
+> > =C2=A0 return dev_err_probe(dev, PTR_ERR(imx214->regmap),
+> > =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 "failed to initialize CCI\n");
+> > =C2=A0
+> > - ret =3D imx214_parse_fwnode(dev);
+> > + ret =3D imx214_parse_fwnode(dev, imx214);
+> > =C2=A0 if (ret)
+> > =C2=A0 return ret;
+> > =C2=A0
+> > @@ -1310,7 +1432,9 @@ static int imx214_probe(struct i2c_client
+> > *client)
+> > =C2=A0 * Enable power initially, to avoid warnings
+> > =C2=A0 * from clk_disable on power_off
+> > =C2=A0 */
+> > - imx214_power_on(imx214->dev);
+> > + ret =3D imx214_power_on(imx214->dev);
+> > + if (ret < 0)
+> > + goto error_fwnode;
+>=20
+> This change seems to belong to a separate patch.
+>=20
+> > =C2=A0
+> > =C2=A0 ret =3D imx214_identify_module(imx214);
+> > =C2=A0 if (ret)
+> > @@ -1341,6 +1465,12 @@ static int imx214_probe(struct i2c_client
+> > *client)
+> > =C2=A0 pm_runtime_set_active(imx214->dev);
+> > =C2=A0 pm_runtime_enable(imx214->dev);
+> > =C2=A0
+> > + ret =3D imx214_pll_update(imx214);
+> > + if (ret < 0) {
+> > + dev_err_probe(dev, ret, "failed to update PLL\n");
+> > + goto error_subdev_cleanup;
+> > + }
+>=20
+> I would move this to imx214_ctrls_init().
+>=20
+> > +
+> > =C2=A0 ret =3D v4l2_async_register_subdev_sensor(&imx214->sd);
+> > =C2=A0 if (ret < 0) {
+> > =C2=A0 dev_err_probe(dev, ret,
+> > @@ -1366,6 +1496,9 @@ static int imx214_probe(struct i2c_client
+> > *client)
+> > =C2=A0error_power_off:
+> > =C2=A0 imx214_power_off(imx214->dev);
+> > =C2=A0
+> > +error_fwnode:
+> > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > +
+> > =C2=A0 return ret;
+> > =C2=A0}
+> > =C2=A0
+> > @@ -1378,6 +1511,8 @@ static void imx214_remove(struct i2c_client
+> > *client)
+> > =C2=A0 v4l2_subdev_cleanup(sd);
+> > =C2=A0 media_entity_cleanup(&imx214->sd.entity);
+> > =C2=A0 v4l2_ctrl_handler_free(&imx214->ctrls);
+> > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > +
+> > =C2=A0 pm_runtime_disable(&client->dev);
+> > =C2=A0 if (!pm_runtime_status_suspended(&client->dev)) {
+> > =C2=A0 imx214_power_off(imx214->dev);
