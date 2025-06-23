@@ -1,94 +1,84 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91BD248F5A;
-	Mon, 23 Jun 2025 13:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE80026B2C4;
+	Mon, 23 Jun 2025 14:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686912; cv=none; b=SBHA5b22bznPg8D/oso+TQRDczqS1GNB+BKGdUCDbFWgB8dJkfjKzdZppQ3Xu/nKGdKQWcGdBhfCeW7a65hriflYln6xqgMW8feIpESyw6UhCAcmjYGvgoJg0BbuMjaes3xUBBSXNfQwjV7VSmaSMmeunpe3LW8NXOJDYhT1xfU=
+	t=1750690204; cv=none; b=pFtVZTUjuYlO8zeahg6tlgTaPbLdltF3eWY2iMAupf05r+8nRIU9dcSs/EdZuKbr6qJQYW7LJvtqnPn5i1A3GSSnEv2YzkZ4msmwPa/2cWb9uEU+3EJySxemEdnCouaMbw9O7lYvd1YVoxbww6ic1GBSqOscMqq82517CXJWA98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686912; c=relaxed/simple;
-	bh=jLWJrmtgJQZJVJKqAox7BA1rst37kkty3zeUjLnbPQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IyBfCkMfbEo1FPzxj0CV0VpU6HibIHSk70TKLGF/B99uq9bTDRE0V2K8I2Q9xww6mQLGSi/XLrFmrMtF14edOtk37QH+VHEdah7l7Gyv9/chEEUPN3TjEn4dI7Bnc9hKMdpwKMKuoOdYUEUBEPOsmv3Oi0WHESt1zsK3gQAyzbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GDjV/Efc; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1750690204; c=relaxed/simple;
+	bh=TtNo+/+tyUtNoLQIqc1zZABemHwPcIubro1rF9vrPA0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fzSKg6KQ9Gg7YrLjwQfLaDOxysHAwkAysQw45qoWa2dienrs1am8aeyHmzZ2VwynJzZ9HFzUo8MB8vMA+DgBM4Em90JMM4oCTW2Juy+ywHlkw8wf1Cm/wRWVUeATgUWiTp/SezbO/0oXO80ZVmEzTyrhjqlyy2xjGpyX66WdvKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=gnTl0/vu; arc=none smtp.client-ip=185.70.43.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GDjV/Efc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750686911; x=1782222911;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=jLWJrmtgJQZJVJKqAox7BA1rst37kkty3zeUjLnbPQY=;
-  b=GDjV/Efceg5tiPMTAH1kChzm/gtguCbEhcSlCsBJGqCVkd2qOiqSbn1f
-   VztxJzRXRN0XqjJt+xhJyiWwV1r/t321ryguoTOKw0u3voBr2uveFBsHS
-   9sDi9dYPiFTL6ll00FJkOfP3eh1kYJqK7maL0+ik2AfzgIJr3evwloo7s
-   wgpKhjogsk6SE+AJ2FsRxtogrXumcGZtKXHWUVwoc5OgcgRmwcYrM00cK
-   dENgvNT6zckwra6QDar8B5dcjguXWrw77A7WRrmBlmbaHUyBEptZRL7kQ
-   raGLtRh3YnzbatuboVuwY5INPzCWAlOrvkSoEJTm5RrHF97f6CcN9QVgv
-   g==;
-X-CSE-ConnectionGUID: eaZc9i7ITpq8fVTfTUYEhQ==
-X-CSE-MsgGUID: veAbORtSR96GrQSllZrpBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="64326489"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="64326489"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:55:10 -0700
-X-CSE-ConnectionGUID: Kum29rmQTeCauBg3e0FQ0w==
-X-CSE-MsgGUID: miDSXAgITfqad7c96MLUUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="152287874"
-Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.8])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:55:06 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 3C08511FC36;
-	Mon, 23 Jun 2025 16:55:03 +0300 (EEST)
-Date: Mon, 23 Jun 2025 13:55:03 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda Delgado <ribalda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH RESEND v4 3/5] media: i2c: imx214: Make use of CCS PLL
- calculator
-Message-ID: <aFlctybsb-HM8Vzr@kekkonen.localdomain>
-References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
- <20250621-imx214_ccs_pll-v4-3-12178e5eb989@apitzsch.eu>
- <20250621181751.GA9125@pendragon.ideasonboard.com>
- <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
- <20250622171320.GA826@pendragon.ideasonboard.com>
- <CAPybu_2WF=t4jnwsrTSCiSZ4T7Sck4-fCoub33=P_6KvdZ5ePg@mail.gmail.com>
- <20250623114658.GB32376@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="gnTl0/vu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1750690199; x=1750949399;
+	bh=TtNo+/+tyUtNoLQIqc1zZABemHwPcIubro1rF9vrPA0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=gnTl0/vuX5ied98fmL550w4RNnLTcQa0gnffVWaw5w6b5LxzlZwdwsRvHaNHwD5t9
+	 THGF9aGY9nTkFjZcRd3AGYpxfQHYjUyq8wWE3zI7dJ3HWH/7CSqf50D/Sot25BPtFu
+	 PFjKkhr5BSmSeirndD359TWneLBGD7wjQcO6TIazIc/glW7rYIfTVUSaHD+XX58dlv
+	 IqsgLj/FmC7uJ8U+4DTnZWkjJe2WzIT5Dm+EfbxIPO+wLKyuib3RF9I8stu9o7BURv
+	 87JxXcc2gJU4Kl23hFbJ6Rdg7oD5PV/L1pKPon01YwRIpm/Zu/EYDMIuFNgel6U8TP
+	 jnI6lOc3HAMeg==
+Date: Mon, 23 Jun 2025 14:49:56 +0000
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
+Message-ID: <K0VOX_o4DQFENShBki5YS11cHp90jAhtOYFT62ycGgps8JLh6a_SyDqoXyVaPhMADabNwpGyn1px_sAgxeMCJFNSDjyagcqk6DrNh9AECE8=@protonmail.com>
+In-Reply-To: <92f1d1c1-e62d-4f77-b55d-110d8ad56a06@oss.qualcomm.com>
+References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com> <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com> <557166bd-cbe2-4a7b-bd6c-8daec1cecc3d@oss.qualcomm.com> <Fp48ghZvedurtk8ta0jccDkZvg7whZFgX0Ra7_AQuMwS12QxAxHqgcOMP_SbXsnLNme2LWWz6ZshoGFTQT6nVvfe-4B_v-2hkRxpgcb9bq0=@protonmail.com> <92f1d1c1-e62d-4f77-b55d-110d8ad56a06@oss.qualcomm.com>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: 3f74078256d045281d640df567f4ce31f5b3efff
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250623114658.GB32376@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-André: the set is already in my tree but Laurent had further comments. Can
-you post patch(es) on top of the set to address them?
+On Monday, June 23rd, 2025 at 12:11, Konrad Dybcio <konrad.dybcio@oss.qualc=
+omm.com> wrote:
 
--- 
-Regards,
+> On 6/21/25 9:31 PM, cristian_ci wrote:
+>=20
+> > On Saturday, June 21st, 2025 at 12:17, Konrad Dybcio konrad.dybcio@oss.=
+qualcomm.com wrote:
+> >=20
+> > > > +
+> > > > +&sdhc_1 {
+> > > > + vmmc-supply =3D <&pm8953_l8>;
+> > > > + vqmmc-supply =3D <&pm8953_l5>;
+> > >=20
+> > > you should add regulator-allow-set-load to these vregs
+> >=20
+> > So, do you mean I should add 'regulator-allow-set-load' property to 'pm=
+8953_l5' and 'pm8953_l8' regulators? If so, should I do that for 'pm8953_l1=
+1' and 'pm8953_l12' regulators too (sdhc_2)?
+>=20
+>=20
+> Yes
+>=20
 
-Sakari Ailus
+ACK, I'll do that in v2. BTW, since I've not such references in my downstre=
+am devicetree, IIUC what you mean, 'regulator-allow-set-load' property is n=
+ow required in mainline for regulators supplying sdhc_{1|2}.
+
+Also considering I've transferred every value _as_is_ (except for max and m=
+in microvolt values =E2=80=8B=E2=80=8Bof one regulator - after the kernel l=
+og complained =E2=80=8Babout =E2=80=8Bthat) for regulators/rpm_requests fro=
+m downstream
+devicetree to mainline devicetree, since other msm8953 devicetrees seem to =
+share the same situation of 'rimob' (I'm referring to
+'potter', 'daisy', 'mido', 'tissot' and 'vince'), I wonder if it's not the =
+case to standardize all these devicetrees in the same way. Any thoughts?
