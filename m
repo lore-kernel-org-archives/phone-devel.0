@@ -1,143 +1,94 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20577242D97
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 12:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91BD248F5A;
+	Mon, 23 Jun 2025 13:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750682384; cv=none; b=FiyK6yzx5erss3J0sKSbYoe7RvGryJoGgraHWfFlC7bHLTZoyoNAoH0jfc3UDSeAu9CHQaSuQbNuwZJibF3JoUa65yu6PA4X0qLy/Z6G63PpGAiR3gq/PnsMaLRyAXuCXODe9H5zhQOy6UdrlY3LKTj6VJUldLifD1ukES+UUbw=
+	t=1750686912; cv=none; b=SBHA5b22bznPg8D/oso+TQRDczqS1GNB+BKGdUCDbFWgB8dJkfjKzdZppQ3Xu/nKGdKQWcGdBhfCeW7a65hriflYln6xqgMW8feIpESyw6UhCAcmjYGvgoJg0BbuMjaes3xUBBSXNfQwjV7VSmaSMmeunpe3LW8NXOJDYhT1xfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750682384; c=relaxed/simple;
-	bh=Cu9jHf/ikY8NTIpPtIILN+lROMbPCSrdR9Xd8v8FLdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qFzHFOMtJUtucGY35iV85cGCK30JbRDlaOr0XDAKa2atcNq6Q4lH/Zx/AmVPX1gh1/lX93JmCPL0gqp3X2H7N9XrHqUUcgA7MdJsRjZiLF1TcZnOhm7QOcf90frHWdNubKRd6LlXxayGiKVgu3ESxZn3ZCP2k3qK0iC+R3xqL+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Z+t0h0WD; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1750686912; c=relaxed/simple;
+	bh=jLWJrmtgJQZJVJKqAox7BA1rst37kkty3zeUjLnbPQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IyBfCkMfbEo1FPzxj0CV0VpU6HibIHSk70TKLGF/B99uq9bTDRE0V2K8I2Q9xww6mQLGSi/XLrFmrMtF14edOtk37QH+VHEdah7l7Gyv9/chEEUPN3TjEn4dI7Bnc9hKMdpwKMKuoOdYUEUBEPOsmv3Oi0WHESt1zsK3gQAyzbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GDjV/Efc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Z+t0h0WD"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N8LfWq005903
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 12:39:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jogcupaRNgtSLcD/zdh/2effoHJ0lzN8HVzNy0f+7KU=; b=Z+t0h0WDpKpKqXL2
-	g6+2p6EFptin2q3B64PTIZ6rJtpCa3WxnmKiHk7ouLlSBmEtzWaUjENYfE4owF8/
-	DpqPmPjQiv+Epmo9CWNOkjAcZaAB6o7nZBOVvPA/ehLlmB7fxrjLSYN0DC79BBIg
-	FJzfP/Mpx9zLFnbZ9NHli7X7DtM+s5NYZzyuE9qBqB+3oe65orBBVN35gKyaXAeT
-	sFLD7tq3kyLMLNX1LTZDGt3K/UgCl2Rh0nzHGGCMTL76LQgRp/f7Y76Efs3cw3yb
-	y/4KLgnHkVqiOPJz4jRU2TnABVP2UPahkzPisO8ZzNePgOUzKX9H5Nljt50vcjLp
-	mXr0CA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f3bg8psm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 12:39:39 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6f539358795so4300896d6.3
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 05:39:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750682379; x=1751287179;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jogcupaRNgtSLcD/zdh/2effoHJ0lzN8HVzNy0f+7KU=;
-        b=UigvIrjoSXPjxNK04LsZsYiT+k3qTVhQZzcx9aSK3lJ9jOeM3Ng18tRNl9GgRe8hN+
-         LTG2ITan+aFXIjk8O82gEOPXSb8cvj7WfVSJT3PZk29ZAt4BihaSmi5nQAX0/248rFBZ
-         ETJl/NtxGfYvybVphYRhl8y7An00Dx7oFZiFobU1tksMKi3zCsneb0h8Xi9DZMfvEslg
-         xank+S2nZisGCs3T+KBXc7x8s9gXWHt8tZiLHeAGn7Do6Gan6kDDPpNizQwkQcjhVz/Q
-         rg7Ua+0rm4ofzKb6LWtwGKxBA4jzvU7MLvY5vP/GWAABHuEJmS2HY68bm/eRFuy57abQ
-         q0Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUutXVFLlZu4CoiRKoSs3XJWlrkVu4yrUtAuh2pU3HOQrRhMGGkRH8l4ZGM4emCde1w6pv8gTMgDbte9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEKYpuZqlX6KZ2ZlXorbAenw25/VaTXngLqhd+v5ml2yy7kVnJ
-	wUw84MLOukYI/mojDoaosjuUpVvIeJSUuPvDc9f5lzqQ1TV4WLEcZnPTHnwxlJZEoBwFcOhxg/R
-	F8eLN8zv8PozA8TQD5gMJLGWIkxrEp2WT83/lrC2E/i2lAtNjBntcS5tQrabEhz9+zQ==
-X-Gm-Gg: ASbGncsSK+RTCp92ueEagMvyGxe7nHVxLj3ZKmql9Hn88so2tjJVmIC48IyH0qJNgdY
-	Vf08EKgbbUbze/ZVxHMmpZ3Ny0gfn9cUjEN9ri1e1voPfowhg9vT/8W6WlH7ra3h71VqcpGUySr
-	8M/a+fZoLgpF83ZfVGTjM1LiQ8TykHjlRejpnLclglllxOU6lUe8PwDZxT9qsjMzTnujIZ9Xddq
-	eL3XenVh2rwzNAT+0YZXZHJXTQECBdkpYKD31wnauPgFAnlHEq2L2x5nMgsxsfvaDlJBojmLprg
-	JR32fB2y89UlDztI372zncTYI8M32/BAxI2YiDC5Q5Hefscn9nIGIaGHi9mrj8KUDCyZwZLStZ4
-	mycc=
-X-Received: by 2002:a05:622a:253:b0:47a:ecc3:296c with SMTP id d75a77b69052e-4a77a0b9c3emr72710151cf.0.1750682379050;
-        Mon, 23 Jun 2025 05:39:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEzLE5XIZwxXABQIRsBupydSEdmMwxw+uZsKhm0u2LXtGuTXdMotWQUEt+fgx8u5hMzuy3tA==
-X-Received: by 2002:a05:622a:253:b0:47a:ecc3:296c with SMTP id d75a77b69052e-4a77a0b9c3emr72709901cf.0.1750682378617;
-        Mon, 23 Jun 2025 05:39:38 -0700 (PDT)
-Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60a18cba668sm5900336a12.58.2025.06.23.05.39.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 05:39:38 -0700 (PDT)
-Message-ID: <50b0aa77-4ec5-412f-9ce5-6ec613dd0afb@oss.qualcomm.com>
-Date: Mon, 23 Jun 2025 14:39:34 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GDjV/Efc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750686911; x=1782222911;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jLWJrmtgJQZJVJKqAox7BA1rst37kkty3zeUjLnbPQY=;
+  b=GDjV/Efceg5tiPMTAH1kChzm/gtguCbEhcSlCsBJGqCVkd2qOiqSbn1f
+   VztxJzRXRN0XqjJt+xhJyiWwV1r/t321ryguoTOKw0u3voBr2uveFBsHS
+   9sDi9dYPiFTL6ll00FJkOfP3eh1kYJqK7maL0+ik2AfzgIJr3evwloo7s
+   wgpKhjogsk6SE+AJ2FsRxtogrXumcGZtKXHWUVwoc5OgcgRmwcYrM00cK
+   dENgvNT6zckwra6QDar8B5dcjguXWrw77A7WRrmBlmbaHUyBEptZRL7kQ
+   raGLtRh3YnzbatuboVuwY5INPzCWAlOrvkSoEJTm5RrHF97f6CcN9QVgv
+   g==;
+X-CSE-ConnectionGUID: eaZc9i7ITpq8fVTfTUYEhQ==
+X-CSE-MsgGUID: veAbORtSR96GrQSllZrpBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="64326489"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="64326489"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:55:10 -0700
+X-CSE-ConnectionGUID: Kum29rmQTeCauBg3e0FQ0w==
+X-CSE-MsgGUID: miDSXAgITfqad7c96MLUUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="152287874"
+Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.8])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:55:06 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 3C08511FC36;
+	Mon, 23 Jun 2025 16:55:03 +0300 (EEST)
+Date: Mon, 23 Jun 2025 13:55:03 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda Delgado <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Ricardo Ribalda <ribalda@chromium.org>
+Subject: Re: [PATCH RESEND v4 3/5] media: i2c: imx214: Make use of CCS PLL
+ calculator
+Message-ID: <aFlctybsb-HM8Vzr@kekkonen.localdomain>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+ <20250621-imx214_ccs_pll-v4-3-12178e5eb989@apitzsch.eu>
+ <20250621181751.GA9125@pendragon.ideasonboard.com>
+ <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
+ <20250622171320.GA826@pendragon.ideasonboard.com>
+ <CAPybu_2WF=t4jnwsrTSCiSZ4T7Sck4-fCoub33=P_6KvdZ5ePg@mail.gmail.com>
+ <20250623114658.GB32376@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974: Start using rpmpd for power
- domains
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
- <20250621-msm8974-rpmpd-switch-v1-4-0a2cb303c446@lucaweiss.eu>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250621-msm8974-rpmpd-switch-v1-4-0a2cb303c446@lucaweiss.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 3c3IQNkGGf9ilcNeofOWv4jlrUgRSp1W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA3NiBTYWx0ZWRfXyISOXfiQOnre
- PIZd5s/dPY029IxsPHf5+I69lfYJtddvcVG39JmG2KL5maoFivihjpwOVU1Om/+EZ42XtMKsuCE
- HKog9O4/nxbkmNqNMZDn7KnfG2xp4vi4+csCh+1RtWeR/Bo+bPh90MMVCuARO8SQBSIInQcUAac
- hsLzCrqmFgHIBmP68kos5L7+ddg5GU55e3JWhpFSOXrnHRxza1D/r3rgHPHY+AElnN3EjE6qPci
- c0n3oFBNaK+TZcZJQ653MZqIsSLXM6T6BLruKB2kf3uL5VT5SunXirFUtPBC8NHMCWJLqA3wMcc
- m643zX439Vf5A8MQH/LQI0+yIV/v5qWBMtI51vKW1TJawzPwVq4PTphXVkj7ctrjCn1Rfe/e9AA
- cutua/wmSgtRyukr7/1ya9ht2mJFiETovEZCkjVe1vJZXNySgKUdAJfLHD7nLbdAlSqqnw1u
-X-Authority-Analysis: v=2.4 cv=L4kdQ/T8 c=1 sm=1 tr=0 ts=68594b0c cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=dlmhaOwlAAAA:8 a=EUspDBNiAAAA:8
- a=obA5ZJVW5cAYRlcEQtoA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
- a=y4cfut4LVr_MrANMpYTh:22
-X-Proofpoint-GUID: 3c3IQNkGGf9ilcNeofOWv4jlrUgRSp1W
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0
- adultscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- spamscore=0 phishscore=0 mlxlogscore=992 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506230076
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250623114658.GB32376@pendragon.ideasonboard.com>
 
-On 6/21/25 3:19 PM, Luca Weiss wrote:
-> Due to historical reasons all msm8974 boards have used the CX power rail
-> as regulator instead of going through the power domain framework.
-> 
-> Since rpmpd has gained msm8974 support quite a bit ago, let's start
-> using it and replace all usages of pm8841_s2 (CX), pm8841_s4 (GFX) and
-> for the boards using pma8084 pma8084_s2 (CX), pma8084_s7 (GFX).
-> 
-> For reference, downstream is using GFX power rail as parent-supply for
-> mmcc's OXILI_GDSC GDSC which then is used for GPU, but nothing there is
-> modelled upstream.
+André: the set is already in my tree but Laurent had further comments. Can
+you post patch(es) on top of the set to address them?
 
-if you use an opp table with described rpmpd levels and bind the GFX
-domain to gpucc, it should propagate - check it out
+-- 
+Regards,
 
-> 
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-
-Konrad
+Sakari Ailus
