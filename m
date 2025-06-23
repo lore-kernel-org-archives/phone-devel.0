@@ -1,285 +1,115 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC04219E0;
-	Sun, 22 Jun 2025 17:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF81D1C3C14;
+	Mon, 23 Jun 2025 02:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750612424; cv=none; b=TeKyfoSKjOk5bReFTwknkiZwsszgH1eheFSiG2INvvagAngFn9pJnoWaDiksYmhNZRXX83XUrjZfM6V6qWhRgwcaOsTa5ocHDfndjf8xNra0wWD0gFtDxySGG0p0/HN8tOI9cOx1N9p3cks9+pv9XntD+GlNKOBzw+mYr6hYz00=
+	t=1750646350; cv=none; b=IMn4WrKb/WXLY8EhcKMoN9e5P4ELr43hqVozq5RJnQ5cDSNv1nKcNxMjHsnxGtSH18ce1RO/aTl2mCyQM7fBOiDpjmhrYZc91SLAuZeBGwWuKfXWKesXx9nSoXPIcotCYG4iSKGMJbEhLVgLg70uu7W6zvJtyx8G/KCiTErdpUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750612424; c=relaxed/simple;
-	bh=6gaotdYs5T6u+7YaMTuPEWhvY+gGSv3JWmSIX3Ru7tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rb5xYEbjxbyXJ8wmz8LesswrAc6rU7MUeViMyvIwblomopZU4RqUCTgedvxbiVnf0ScH66p/RgRGngm3MMUsbFfBChpL/aLhRLKcbyK/7jmnagjm6GDp6hWTo1fAqoZRAZAT699ysljVqgRJ4qJbUs6cJYD9S6XNB3zOP43SY4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GWZuNy/M; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1750646350; c=relaxed/simple;
+	bh=fs84C1G1+FmNn+OVT0EMKnIbg+clqFSAAki5rRyzH5U=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=E7A1WlWeA0bJZ7abzyBJFQ62ZTHKNXl0EPOE0wEU9IruYhk5rSV1CfA08tNbG3jN7J8VhKTCn2B3/7WJtQjyp6FWSrENVZvMXEVM5pOOYG03/QfLuWhOQKPs20wIlBuLI2EmU5WoeOIx5OIFyA6vGn3CMS9ZpUgxBfxYfXR2++Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZAV8Ynl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GWZuNy/M"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 17D6C55A;
-	Sun, 22 Jun 2025 19:13:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750612404;
-	bh=6gaotdYs5T6u+7YaMTuPEWhvY+gGSv3JWmSIX3Ru7tE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GWZuNy/Mdk69ngu/VXNSrWLO+5kEq17sV6lAdj0mnsXvF79fp4v5GrZA1aRA4dXGq
-	 3T5n/RVhMP7yc6bIBJB1EApv8veFsbvKLaPceEGAWzzKVm4d9Ge5/iWEFeSV4K5E56
-	 zD2G0hIU1BARuOyz+dAF5szibucUGFOyzio7Tn90=
-Date: Sun, 22 Jun 2025 20:13:20 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Ricardo Ribalda <ribalda@chromium.org>
-Subject: Re: [PATCH RESEND v4 3/5] media: i2c: imx214: Make use of CCS PLL
- calculator
-Message-ID: <20250622171320.GA826@pendragon.ideasonboard.com>
-References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
- <20250621-imx214_ccs_pll-v4-3-12178e5eb989@apitzsch.eu>
- <20250621181751.GA9125@pendragon.ideasonboard.com>
- <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZAV8Ynl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FD8C4AF0B;
+	Mon, 23 Jun 2025 02:39:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750646350;
+	bh=fs84C1G1+FmNn+OVT0EMKnIbg+clqFSAAki5rRyzH5U=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=lZAV8Ynl4FwWQyjryBNGwtOqvxp+ocDacsZzN2pRkLPXfpn70TBwnMzV/dUZbn1St
+	 3cA4i3dOaPOxgFNXmgeWw5J5j2KoqfKiIxbuulcFFsCn7M2jBIppNI2Ck0iwenLaYV
+	 NVhri0/5N3ykbbDVl6lnXWKT+rYIZn5ft+1Mn1y2aV2tzfO6s/wZfosLLAwRXrq0D7
+	 4oeavTGJbPy6IcS1IFtQAJo4Fi7AbjNdNJYwrWYn9NSlrC91RlTwjE11WidDyu0ZS6
+	 g1EBBNt9dpXWZ56FWc6T9wCLbs5nUF5xVEeqFnRqoC6bKOCLlaHxDa8FcAICAh28cu
+	 kpY5oKVyRvUWg==
+Date: Sun, 22 Jun 2025 21:39:09 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht, Conor Dooley <conor+dt@kernel.org>, 
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Konrad Dybcio <konradybcio@kernel.org>, linux-kernel@vger.kernel.org
+To: Cristian Cozzolino <cristian_ci@protonmail.com>
+In-Reply-To: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
+References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
+Message-Id: <175064594803.881117.14325620699553640752.robh@kernel.org>
+Subject: Re: [PATCH 0/3] Add initial device tree for Billion Capture+
 
-Hi André,
 
-On Sun, Jun 22, 2025 at 05:34:56PM +0200, André Apitzsch wrote:
-> Am Samstag, dem 21.06.2025 um 21:17 +0300 schrieb Laurent Pinchart:
-> > On Sat, Jun 21, 2025 at 11:37:27AM +0200, André Apitzsch via B4 Relay wrote:
-> > > From: André Apitzsch <git@apitzsch.eu>
-> > > 
-> > > Calculate PLL parameters based on clock frequency and link
-> > > frequency.
-> > > 
-> > > Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> > > ---
-> > >  drivers/media/i2c/Kconfig  |   1 +
-> > >  drivers/media/i2c/imx214.c | 213 ++++++++++++++++++++++++++++++++++++---------
-> > >  2 files changed, 175 insertions(+), 39 deletions(-)
-> > > 
-> > > diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
-> > > index
-> > > e68202954a8fd4711d108cf295d5771246fbc406..08db8abeea218080b0bf5bfe6
-> > > cf82f1c0b100c4a 100644
-> > > --- a/drivers/media/i2c/Kconfig
-> > > +++ b/drivers/media/i2c/Kconfig
-> > > [..]
-> > > @@ -1224,42 +1336,52 @@ static int imx214_parse_fwnode(struct
-> > > device *dev)
-> > >   if (!endpoint)
-> > >   return dev_err_probe(dev, -EINVAL, "endpoint node not found\n");
-> > >  
-> > > - ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, &bus_cfg);
-> > > + bus_cfg->bus_type = V4L2_MBUS_CSI2_DPHY;
-> > > + ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, bus_cfg);
-> > > + fwnode_handle_put(endpoint);
-> > 
-> > ... drop this. Up to you.
-> > 
-> > >   if (ret) {
-> > >   dev_err_probe(dev, ret, "parsing endpoint node failed\n");
-> > > - goto done;
-> > > + goto error;
-> > 
-> > You can return ret here.
-> > 
-> > >   }
-> > >  
-> > >   /* Check the number of MIPI CSI2 data lanes */
-> > > - if (bus_cfg.bus.mipi_csi2.num_data_lanes != 4) {
-> > > + if (bus_cfg->bus.mipi_csi2.num_data_lanes != 4) {
-> > >   ret = dev_err_probe(dev, -EINVAL,
-> > >       "only 4 data lanes are currently supported\n");
-> > > - goto done;
-> > > + goto error;
-> > >   }
-> > >  
-> > > - if (bus_cfg.nr_of_link_frequencies != 1)
-> > > + if (bus_cfg->nr_of_link_frequencies != 1)
-> > >   dev_warn(dev, "Only one link-frequency supported, please review
-> > > your DT. Continuing anyway\n");
-> > 
-> > Now that the driver can calculate PLL parameters dynamically, it
-> > would be nice to lift this restriction and make the link frequency
-> > control writable, in a separate patch on top of this series.
+On Fri, 20 Jun 2025 23:51:38 +0200, Cristian Cozzolino wrote:
+> Billion Capture+ is a handset using the MSM8953 SoC released in 2017
+> and sold by Flipkart.
 > 
-> Maybe this could be postponed, as I don't have any use for it at the
-> moment and I don't want to further delay this series.
-
-When I said "on top", I didn't mean in a new version of this series. We
-can merge this first, and then lift this restriction. I don't have an
-imx214-based device so I can't do it myself and test it :-/
-
-> > > - for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
-> > > - if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
-> > > + for (i = 0; i < bus_cfg->nr_of_link_frequencies; i++) {
-> > > + u64 freq = bus_cfg->link_frequencies[i];
-> > > + struct ccs_pll pll;
-> > > +
-> > > + if (!imx214_pll_calculate(imx214, &pll, freq))
-> > >   break;
-> > > - if (bus_cfg.link_frequencies[i] ==
-> > > -     IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-> > > + if (freq == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-> > >   dev_warn(dev,
-> > >   "link-frequencies %d not supported, please review your DT.
-> > > Continuing anyway\n",
-> > >   IMX214_DEFAULT_LINK_FREQ);
-> > > + freq = IMX214_DEFAULT_LINK_FREQ;
-> > > + if (imx214_pll_calculate(imx214, &pll, freq))
-> > > + continue;
-> > > + bus_cfg->link_frequencies[i] = freq;
-> > >   break;
-> > >   }
-> > 
-> > How about separating the IMX214_DEFAULT_LINK_FREQ_LEGACY check from
-> > the PLL calculation ? Something like
-> > 
-> >  u64 freq = bus_cfg->link_frequencies[i];
-> >  struct ccs_pll pll;
-> > 
-> >  if (freq == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-> >  dev_warn(dev,
-> >  "link-frequencies %d not supported, please review your DT.
-> > Continuing anyway\n",
-> >  IMX214_DEFAULT_LINK_FREQ);
-> >  freq = IMX214_DEFAULT_LINK_FREQ;
-> >  bus_cfg->link_frequencies[i] = freq;
-> >  }
+> Add a device tree with initial support for:
 > 
-> With PLL calculation, 480000000 (=IMX214_DEFAULT_LINK_FREQ_LEGACY)
-> might be a valid link frequency explicitly set by the user. I'm not
-> sure whether it is a good idea to overwrite the link frequency, before
-> trying the PLL calculation. That's why I would keep the code the way it
-> is.
-
-The current code accepts both IMX214_DEFAULT_LINK_FREQ (600 MHz) and
-IMX214_DEFAULT_LINK_FREQ_LEGACY (400 MHz), and programs the PLL with (as
-far as I understand) a 600 MHz clock frequency in either case. To avoid
-a change in behaviour, I think overriding the 400 MHz frequency with 600
-MHz in this patch would be best. We could then drop that in a later
-patch, possibly by patching the clock frequency in a platform-specific
-driver instead of the imx214 driver.
-
-> >  if (!imx214_pll_calculate(imx214, &pll, freq))
-> >  break;
-> > 
-> > It will then become easier to drop this legacy support from the
-> > driver. What platform(s) are know to specify an incorrect link
-> > frequency ?
+> - GPIO keys
+> - SDHCI (internal and external storage)
+> - USB Device Mode
+> - Regulators
+> - Simple framebuffer
 > 
-> I don't know.
+> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+> ---
+> Cristian Cozzolino (3):
+>       dt-bindings: vendor-prefixes: Add Flipkart
+>       dt-bindings: arm: qcom: Add Billion Capture+
+>       arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
+> 
+>  Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+>  .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+>  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+>  .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 251 +++++++++++++++++++++
+>  4 files changed, 255 insertions(+)
+> ---
+> base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+> change-id: 20250620-rimob-initial-devicetree-da86a5bffc8b
+> 
+> Best regards,
+> --
+> Cristian Cozzolino <cristian_ci@protonmail.com>
+> 
+> 
+> 
 
-Ricardo, do you have any information about this ?
 
-> > >   }
-> > >  
-> > > - if (i == bus_cfg.nr_of_link_frequencies)
-> > > + if (i == bus_cfg->nr_of_link_frequencies)
-> > >   ret = dev_err_probe(dev, -EINVAL,
-> > > -     "link-frequencies %d not supported, please review your DT\n",
-> > > -     IMX214_DEFAULT_LINK_FREQ);
-> > > +     "link-frequencies %lld not supported, please review your
-> > > DT\n",
-> > > +     bus_cfg->nr_of_link_frequencies ?
-> > > +     bus_cfg->link_frequencies[0] : 0);
-> > >  
-> > > -done:
-> > > - v4l2_fwnode_endpoint_free(&bus_cfg);
-> > > - fwnode_handle_put(endpoint);
-> > > + return 0;
-> > > +
-> > > +error:
-> > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
-> > >   return ret;
-> > >  }
-> > >  
-> > > @@ -1299,7 +1421,7 @@ static int imx214_probe(struct i2c_client
-> > > *client)
-> > >   return dev_err_probe(dev, PTR_ERR(imx214->regmap),
-> > >        "failed to initialize CCI\n");
-> > >  
-> > > - ret = imx214_parse_fwnode(dev);
-> > > + ret = imx214_parse_fwnode(dev, imx214);
-> > >   if (ret)
-> > >   return ret;
-> > >  
-> > > @@ -1310,7 +1432,9 @@ static int imx214_probe(struct i2c_client
-> > > *client)
-> > >   * Enable power initially, to avoid warnings
-> > >   * from clk_disable on power_off
-> > >   */
-> > > - imx214_power_on(imx214->dev);
-> > > + ret = imx214_power_on(imx214->dev);
-> > > + if (ret < 0)
-> > > + goto error_fwnode;
-> > 
-> > This change seems to belong to a separate patch.
-> > 
-> > >  
-> > >   ret = imx214_identify_module(imx214);
-> > >   if (ret)
-> > > @@ -1341,6 +1465,12 @@ static int imx214_probe(struct i2c_client
-> > > *client)
-> > >   pm_runtime_set_active(imx214->dev);
-> > >   pm_runtime_enable(imx214->dev);
-> > >  
-> > > + ret = imx214_pll_update(imx214);
-> > > + if (ret < 0) {
-> > > + dev_err_probe(dev, ret, "failed to update PLL\n");
-> > > + goto error_subdev_cleanup;
-> > > + }
-> > 
-> > I would move this to imx214_ctrls_init().
-> > 
-> > > +
-> > >   ret = v4l2_async_register_subdev_sensor(&imx214->sd);
-> > >   if (ret < 0) {
-> > >   dev_err_probe(dev, ret,
-> > > @@ -1366,6 +1496,9 @@ static int imx214_probe(struct i2c_client
-> > > *client)
-> > >  error_power_off:
-> > >   imx214_power_off(imx214->dev);
-> > >  
-> > > +error_fwnode:
-> > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
-> > > +
-> > >   return ret;
-> > >  }
-> > >  
-> > > @@ -1378,6 +1511,8 @@ static void imx214_remove(struct i2c_client
-> > > *client)
-> > >   v4l2_subdev_cleanup(sd);
-> > >   media_entity_cleanup(&imx214->sd.entity);
-> > >   v4l2_ctrl_handler_free(&imx214->ctrls);
-> > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
-> > > +
-> > >   pm_runtime_disable(&client->dev);
-> > >   if (!pm_runtime_status_suspended(&client->dev)) {
-> > >   imx214_power_off(imx214->dev);
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
--- 
-Regards,
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-Laurent Pinchart
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com:
+
+arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dtb: gpu@1c00000 (qcom,adreno-506.0): clock-names:5: 'alwayson' is not one of ['core', 'iface', 'mem', 'mem_iface', 'alt_mem_iface', 'gfx3d', 'rbbmtimer', 'rbcpr']
+	from schema $id: http://devicetree.org/schemas/display/msm/gpu.yaml#
+
+
+
+
+
