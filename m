@@ -1,153 +1,160 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C986B22F76E
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 10:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6380121ABCB;
+	Mon, 23 Jun 2025 11:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750673495; cv=none; b=GUSStsmYGiBmsDjQ1C7dZhHcwQorcSO2avEAaX5BiIvlI8UNnVN6yJFG8vMM/TfXfeRG0HdSl0xwIEPz62LttrohoP+0aKeU5AZaGpGgX7o61/TQxfP71whMaYJPsrhhnzjZy6aQ6+JQOxeM7jhIPaLvakmuabBgOAmv+iBEG7I=
+	t=1750678459; cv=none; b=CAZmeAH26IImRXqklhp4jkOwQU3tQ+OYupINxuTb3KP+Q6HycCJYIN/GV550leeGGYnSav6yp7aEqJL1AFmUqVvyzOGxMcqgzGWh09IJFSp3WyPFBocdfpyOXxK1BUU0F21j04h0VmG+Egh4DOu+W5vvn/V7v8NzPXZ03nwxkpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750673495; c=relaxed/simple;
-	bh=L4V8GDcixyWxkjchU/ASicNfTs7EbxX8xjgR4NFBHIk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=duScAr03OE+1Bc5XbAHlKgl8Qt8IVpTz47kG0araG821ESpxE2+qVj/okCJTFVWIuD9nPMLgBQGE1CM+JldHcRcjMd6AjpMyR0CDFMq6JqSJFq2WTKNW2KzPWfFNABur6EyKjEBDesJnrCrWOXThLT4b0AV4fEjW20ixxlXzmGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DH+9r/Gm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1750678459; c=relaxed/simple;
+	bh=tKcDIsLtDkJF8WnaZ9J4aPyfYmz76ZwgpoDVX5vadBE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TkOk6uKYAxjbKDJovvJxT+laZL2a0nEpZmySzLPOJTpxLv4xClmC4B3dLyutK3rxJ2Wq0PqCsvYWU4g2+9ENQxzHP048uoVmrl/j30i9NwxQ2L+62JDUKJn5xnP52VaWsFA7QvyhDH+0LowqcAjrgt1CT/BTwxjzIx7QRkI9jZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=MuSaY5n7; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DH+9r/Gm"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N9pI7X027634
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 10:11:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nsXHkEoSXnETEDfohe14zSaQ6QC7uPOSNPk17vEgzN4=; b=DH+9r/Gm7enpM+Q9
-	miBBmdz2aIUgb/NjLfy3ZAZM3bS7/n8lVMXVP1Jg0hEMow0Dn7gyDwEKrvBXEfUC
-	i3jl0ZXPPrLSOswg/9G5Y4vWQhiGNTTZ3t76db+l9ST2Uq2ZfqhcAYvy+Z9p1LC3
-	J+WfULCde68e5Gt7ICOu1LKx1V0Mp/BiduREIdd/OZHzcwJolXXPAhrpSuMAPA3P
-	pzcZyrr7yFJ/FfBOMA9HulgcQ2gCYG8W4zyLy2pJes8NNV4lUs2mfGDfTO3OKPaH
-	LwDW2Ozylb7tnKstrAz1KLVqATz1Sm7X7VdupL1hJUkO7Fvfw6+2FjDjLEpz4Qem
-	uxSFAQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47eccdjbmg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 10:11:32 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4a5a9791fa9so13400321cf.1
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jun 2025 03:11:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750673492; x=1751278292;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nsXHkEoSXnETEDfohe14zSaQ6QC7uPOSNPk17vEgzN4=;
-        b=VDOHDAJTT5JZlHBaJYIPHFv5fnO//UqXU5oSYm0rxQ8PbBl6kJTsXc5KVyR3NEh+kG
-         eN68+D+srC+SRR4e+BhvYqMU47iAnultDqlHvzBVpGeg14rQye2j7MDdx3QZA3yrVJax
-         ssHeiKhTLTDmNXHhahnsXE9E35MTP1FicRIgQe0tT95+Y4EqzZd8D3AXUKlXidWc7J3d
-         cfAmZjzfqimKbNGHLeTbclgZrTkTui1EoWuSBSaRB67ug5w1tUV06AQLsSUNR96zhHJe
-         gPZk0tK2BVehZo4BbfAq+oMtTmfwuVUdtiHbzd2+S8+xSo1h7R66UgkheFuKSrOrbff7
-         9Zxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvQChZUnDEGN3UQl/r4WH5eEVH7ZEbzBEfG1994q1rY4VU32lmsPDevHlH3feQ3STh1fcMvkqh60MRVg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydoM46VTOmzmHVR3nbT03jULXD+wX5XittNAVCLrin7wX2up18
-	q+DxbrEsGuc7uqNV/x3Teg3RTgMEquUK2saYXSpjJQyU2NLVx148nLSn4nN8mmSi2MD7MnSbdVt
-	upmUcqwnOONmL8iMPBT4nkJAli0vl58qjlFPH3zK5gcBYLum0TwwYmoQjf0NbAHUEaQ==
-X-Gm-Gg: ASbGncufgXayUDyTi52Rc8MpGWo7y94Q2n14jgvrBWzjF1CXKYuEMVULwxQ6qe7gLmW
-	Q6fy0Fd67QQ6Ni7j9r/yL9v4g+hY1KM0/lYr0C8cmslnhFlj4FcIOFGMfZfA/S/YJzQsmESwyVZ
-	+hnglMvE4LJEK2rSgeE6LhOlBLKNo30oyrybgS64Jh8/6eSTEM02o6f/PoIxqgeIV+8MIav+IAE
-	X+jIHPnqgAjR9KO5qMxRBsKd3Ehu4rqWqzVV+orLEyuMfLK4sMoGSMWlWR4XBCuVXnPKNrIunNI
-	xGPjxslqG/mcRHk4yFZhDCvPPeZVV5shpbZDJ8POPLQJnpQcjHhOKb61xV/CgQdbf8qzbFld9HX
-	pyDc=
-X-Received: by 2002:a05:622a:580b:b0:477:5f29:dbc9 with SMTP id d75a77b69052e-4a77a246084mr68884151cf.13.1750673491681;
-        Mon, 23 Jun 2025 03:11:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFy1oUWDRKcqfh0pSMxqJrFkq+zIxAO/Cnx7r1VMRo0FanZaDrJkBgm6J29KYYFk+KqUg20Cg==
-X-Received: by 2002:a05:622a:580b:b0:477:5f29:dbc9 with SMTP id d75a77b69052e-4a77a246084mr68884021cf.13.1750673491076;
-        Mon, 23 Jun 2025 03:11:31 -0700 (PDT)
-Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae053ee4c2bsm680996466b.71.2025.06.23.03.11.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 03:11:28 -0700 (PDT)
-Message-ID: <92f1d1c1-e62d-4f77-b55d-110d8ad56a06@oss.qualcomm.com>
-Date: Mon, 23 Jun 2025 12:11:24 +0200
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="MuSaY5n7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=tKcDIsLtDkJF8WnaZ9J4aPyfYmz76ZwgpoDVX5vadBE=; b=MuSaY5n74FI9fcbi6OCoUj2h6L
+	HCrKEel8kuCKkMraPu6hSn0aioGtpsMeoANQbEi05Fy14IFgoJxbT7PHgS6iFy7ZJivHtKa4vmOfX
+	HDb0aXCeQfAiJYqvkMaOHH9ltryHJpRUusEren5v5dZSFUhDP1ljSp16R4mwckW8/iWrkBrAaoxmm
+	Eiub8zq0wzFE0V6X1IHwxYyQvrPlmFgkVxQ6tzL3rrCUdxb6aJp3xgCC8LzbiTmDpF6vRsg7Xcjmw
+	LDFkgdZ4J9+rgAiSwtMQ0Il/O0WdaM4Nl4BeAB1cPWbqn33xIxk1SHbfUqSIX5+C1FkqG2JJ2FPF/
+	eUNcZ1Uw==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uTfR8-000P6I-1o;
+	Mon, 23 Jun 2025 13:34:07 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uTfR7-0002er-0U;
+	Mon, 23 Jun 2025 13:34:06 +0200
+Message-ID: <46a681a84a7493e2d0a6d3a4eedb6c86ccd9903f.camel@apitzsch.eu>
+Subject: Re: [PATCH RESEND v4 0/5] media: i2c: imx214: Add support for more
+ clock frequencies
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Ricardo Ribalda <ribalda@kernel.org>, Mauro Carvalho Chehab
+	 <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	 <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Laurent Pinchart
+	 <laurent.pinchart@ideasonboard.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Ricardo Ribalda
+	 <ribalda@chromium.org>, Conor Dooley <conor.dooley@microchip.com>
+Date: Mon, 23 Jun 2025 13:34:03 +0200
+In-Reply-To: <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+	 <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: msm8953: Add device tree for
- Billion Capture+
-To: cristian_ci <cristian_ci@protonmail.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-References: <20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com>
- <20250620-rimob-initial-devicetree-v1-3-8e667ea21f82@protonmail.com>
- <557166bd-cbe2-4a7b-bd6c-8daec1cecc3d@oss.qualcomm.com>
- <Fp48ghZvedurtk8ta0jccDkZvg7whZFgX0Ra7_AQuMwS12QxAxHqgcOMP_SbXsnLNme2LWWz6ZshoGFTQT6nVvfe-4B_v-2hkRxpgcb9bq0=@protonmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <Fp48ghZvedurtk8ta0jccDkZvg7whZFgX0Ra7_AQuMwS12QxAxHqgcOMP_SbXsnLNme2LWWz6ZshoGFTQT6nVvfe-4B_v-2hkRxpgcb9bq0=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=LOVmQIW9 c=1 sm=1 tr=0 ts=68592854 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=XdyHM9KW_fXSmfWyf6YA:9
- a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-GUID: nM8eQbD5TFuJ3BRnGvKs8_eo6tnAWJFc
-X-Proofpoint-ORIG-GUID: nM8eQbD5TFuJ3BRnGvKs8_eo6tnAWJFc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA2MCBTYWx0ZWRfX0uAMPGsSIOvT
- nOp14WdlXGV9YdS7slEaKdfSu8vVcvdP1TdEfFL8ByW3tc1cpD1nkSGLCwz8+Dcwe+BgSG4LcnC
- ozyGRheNzeEpTQYCSHhN5rRpboO3D3PZbcoFgz/rDwQsJHJT6R/wXE27adVZsFpLPpu6cJWRdR1
- tfsmXBEPHvuGI12HqtIh6sFC/sWjilgy3yfSD7gzYFQw1wpr4++KXDbsKi1DoduiXEXg38Qw/mw
- 2BxhfkAn3MAVm3GhnpEuTMDdTotgyw5DAHzw7sQwESwModI3e8m17liI8egWkw5ZXytuZZvfCQ+
- Sic5M2rJSzu9cJSwvqru5M0xuSMsi9cdnTnya52h0fHxid1XZp/bzkaL6jgDpwol21QxQ0wnE3y
- FZdeCyL0+JSlFVwbk9Bz9aU5dL22K+VbX/3Ep4+hty11rs88U/p2eEw1MIF9i4dPeAj/O4UK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 adultscore=0 mlxlogscore=822 phishscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 spamscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506230060
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27678/Mon Jun 23 10:34:34 2025)
 
-On 6/21/25 9:31 PM, cristian_ci wrote:
-> On Saturday, June 21st, 2025 at 12:17, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
->>> +
->>> +&sdhc_1 {
->>> + vmmc-supply = <&pm8953_l8>;
->>> + vqmmc-supply = <&pm8953_l5>;
->>
->>
->> you should add regulator-allow-set-load to these vregs
-> 
-> So, do you mean I should add 'regulator-allow-set-load' property to 'pm8953_l5' and 'pm8953_l8' regulators? If so, should I do that for 'pm8953_l11' and 'pm8953_l12' regulators too (sdhc_2)?
+Hi Sakari,
 
-Yes
+Am Montag, dem 23.06.2025 um 06:50 +0000 schrieb Sakari Ailus:
+> Hi Andr=C3=A9,
+>=20
+> On Sat, Jun 21, 2025 at 11:37:24AM +0200, Andr=C3=A9 Apitzsch via B4 Rela=
+y
+> wrote:
+> > The imx214 driver currently supports only a 24 MHz external clock.
+> > But
+> > there are devices, like Qualcomm-MSM8916-based phones, which cannot
+> > provide this frequency. To make the sensor usable by those devices,
+> > add
+> > support for additional clock frequencies.
+> >=20
+> > This series supersedes
+> > https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-467a4=
+c083c35@apitzsch.eu/
+>=20
+> Is there a difference in this set from the v4 you posted previously?
 
->>> +&tlmm {
->>> + gpio-reserved-ranges = <0 4>,
->>
->>
->> These GPIOs correspond to I2C/SPI_1
->>
->> <135 4>;
->>
->>
->> And these correspond to I2C/SPI_7
->>
->> Without much more knowledge, I would guesstimate one of them is
->> for a fingerprint reader and the other for NFC eSE
->>
->> Konrad
-> 
-> I made that check in past and, while it looks like 'gpio16' and 'gpio17' are assigned to nfc pinctrl (though, nfc appears not to be implemented in this device, considering also the lack of 'phandle' for such pinctrls) in downstream dts, the devicetree pinctrl still doesn't mentions the gpios associated with the fingerprint node (which is, instead, implemented in this device). So, I'm not able to verify if gpios 0-3 and gpios 135-138 are related to fingerprint and secure element, respectively.
+There is no difference to the v4 posted previously. This is a resend
+because there was no activity in the original v4.
 
-If we can't tell, then we can't tell, it's ok
-
-Konrad
+Best regards,
+Andr=C3=A9
+>=20
+> >=20
+> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > ---
+> > Changes in v4:
+> > - Add missing colon to error message
+> > - Add A-b, R-b tags
+> > - Link to v3:
+> > https://lore.kernel.org/r/20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@api=
+tzsch.eu
+> >=20
+> > Changes in v3:
+> > - Limit range of pll_ip_clk_freq_hz (Sakari)
+> > - Drop unneeded 'ret'
+> > - Use pll.pixel_rate_csi for bit rate calculation
+> > - Add patch that deprecates the clock-frequency property
+> > - Link to v2:
+> > https://lore.kernel.org/r/20250505-imx214_ccs_pll-v2-0-f50452061ff1@api=
+tzsch.eu
+> >=20
+> > Changes in v2:
+> > - Add A-b tags
+> > - Switch to v4l2_ctrl_s_ctrl_int64() to acquire the control handler
+> > mutex
+> > - Add error handling for v4l2_ctrl_s_ctrl_int64() and
+> > =C2=A0 imx214_pll_update()
+> > - Replace "read clock frequency from dt" patch by "remove hard-
+> > coded
+> > =C2=A0 external clock frequency" patch
+> > - Link to v1:
+> > =C2=A0
+> > https://lore.kernel.org/r/20250415-imx214_ccs_pll-v1-0-d3d7748e5fbd@api=
+tzsch.eu
+> >=20
+> > ---
+> > Andr=C3=A9 Apitzsch (5):
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Reorder imx214_parse=
+_fwnode call
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Prepare for variable=
+ clock frequency
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Make use of CCS PLL =
+calculator
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: dt-bindings: sony,imx214: Depreca=
+te property clock-
+> > frequency
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Remove hard-coded ex=
+ternal clock
+> > frequency
+> >=20
+> > =C2=A0.../devicetree/bindings/media/i2c/sony,imx214.yaml |=C2=A0 29 ++-
+> > =C2=A0drivers/media/i2c/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0drivers/media/i2c/imx214.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 263
+> > ++++++++++++++++-----
+> > =C2=A03 files changed, 217 insertions(+), 76 deletions(-)
+> > ---
+> > base-commit: 176e917e010cb7dcc605f11d2bc33f304292482b
+> > change-id: 20250406-imx214_ccs_pll-e4aed0e9e532
+> >=20
+> > Best regards,
