@@ -1,90 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2B0137923;
-	Mon, 23 Jun 2025 16:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9DA299ABF;
+	Mon, 23 Jun 2025 16:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750694420; cv=none; b=nCAJKRgX6S9wbkFC4N/o9GjXTOI+DVQ8TTAx2NHclx+NlpJJO/PT7EqaRBCi1DdzCh6s1p4AkRNGptJPJz0yQW7RqQxKnwz3KQ5pF/5TchrkUDWzv+ZdLCj4scUopnQQdkhjMWpb2usmotfz895/61so6bltYL9rHSTgIzSDNQg=
+	t=1750697075; cv=none; b=oyL8kiomqrR9FgKOfUlG2hfRr4dryrGrf/+HDMRrpc1f2DI3rh6qvmBzQXz3urtL9BHvT1liq0szNkPrxofNjshjbFHmfh6x/pVmGGstOlsa7SDUBqgXeOd64rMnuQJ4aw6HVBIzfNdkzvf4nCgJZimkneGUW7iRaCa+aH2K0To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750694420; c=relaxed/simple;
-	bh=RbdnKkPdChH9ud1EvbJKJWRbB02+2VVpJE72YYvelFY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nFEiofxDN0UebI3sPi1csiMpzS54l4JOGD4lrsQ0EpYS2BS+ShCYgou/E0M146xAuP1par5nPOtQJGmp+AqdJZaLb5qcH/KFPVBmZiMLMSEXvjqXazGfZVstDUM+jBUI9h4eFTS9RZgJlD4gXkpuf+dj6iojhauV3VhEsTD+HhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unXGBZPm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750697075; c=relaxed/simple;
+	bh=5mjnTZIf1798lzAG/42eHA/DYiBDORF3uK1JXlBMUEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QNPp9Pfuw0gTpBxgdh0XQmGL9igYRCO3EB0xKZTCBrTjU1Johl99lAE2fzDTuFK6aUKkcEZakuEMklgvAYiW6P2m1Nd5Sss63Marcl+OgEXlgXfJH1HU3TISA8PI1JRi4+hoMjZrcFdUvpiy4rSqZjy9Exezl9fXJbIfZ+9g0TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=FC94XtYp; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unXGBZPm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EACC4CEEA;
-	Mon, 23 Jun 2025 16:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750694419;
-	bh=RbdnKkPdChH9ud1EvbJKJWRbB02+2VVpJE72YYvelFY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=unXGBZPmhTFbshnjEYajp2YQWZGW4sm0YvdEj3VYhcxI35eptuB9j6JxVrNbxNxRT
-	 GFQo8ta/utIQQ6Z3UrT7ByG323qGgkdEBir61/NWNrcT9eYNoLY2DX9bEYd5JW2BZs
-	 ftBj0vPBt9S/uxan9HjMwG1yP6Xab4A3mvZV5UJ7uE5Tfe6Jv5p9VyJx6mX3sVbbow
-	 yP4I1XqLGNcpT09NsJQeoqbVpAtqz3/bwcVJpuMlTbK2s0pKKWVdYRAZUdDGr4xjA4
-	 PrL1h3AZ7bJYcOfBb73Pw6/m/VcvzK2aE3/Y17NlbGj+6/slWTmAEjPJrFb9yeEXn4
-	 iyW5xKFWj4Sow==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Wesley Cheng <quic_wcheng@quicinc.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Matthew Croughan <matthew.croughan@nix.how>
-In-Reply-To: <20250617-snd-sm8250-dep-fix-v1-1-879af8906ec4@fairphone.com>
-References: <20250617-snd-sm8250-dep-fix-v1-1-879af8906ec4@fairphone.com>
-Subject: Re: [PATCH] ASoC: qcom: sm8250: Fix possibly undefined reference
-Message-Id: <175069441422.140181.5569883866488657965.b4-ty@kernel.org>
-Date: Mon, 23 Jun 2025 17:00:14 +0100
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="FC94XtYp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1750697066; bh=5mjnTZIf1798lzAG/42eHA/DYiBDORF3uK1JXlBMUEk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FC94XtYpIZvQGC2aLDS6BufiUJtQGhD83KUrv82djouKhBztNbp9+CXqj5gCuRTqV
+	 NShVS126WpV6octVlHGgC0lG74uH3gIQiU5doTLrpXiTzuZbrrkRWnjEH4EIvxdG6v
+	 KVT/t7V/R4SlYi6Ahr0YzdSQfg3igiSiJZJ/3q4Q=
+Message-ID: <d31bf707-0f8c-4f55-927a-a08c5310b7be@lucaweiss.eu>
+Date: Mon, 23 Jun 2025 18:44:25 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974: Start using rpmpd for power
+ domains
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
+ <20250621-msm8974-rpmpd-switch-v1-4-0a2cb303c446@lucaweiss.eu>
+ <50b0aa77-4ec5-412f-9ce5-6ec613dd0afb@oss.qualcomm.com>
+Content-Language: en-US
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <50b0aa77-4ec5-412f-9ce5-6ec613dd0afb@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-08c49
 
-On Tue, 17 Jun 2025 14:20:12 +0200, Luca Weiss wrote:
-> With CONFIG_SND_SOC_SM8250=y and CONFIG_SND_SOC_QCOM_OFFLOAD_UTILS=m
-> selected in kconfig, the build will fail due to trying to link against a
-> symbol only found in the module.
+On 23-06-2025 2:39 p.m., Konrad Dybcio wrote:
+> On 6/21/25 3:19 PM, Luca Weiss wrote:
+>> Due to historical reasons all msm8974 boards have used the CX power rail
+>> as regulator instead of going through the power domain framework.
+>>
+>> Since rpmpd has gained msm8974 support quite a bit ago, let's start
+>> using it and replace all usages of pm8841_s2 (CX), pm8841_s4 (GFX) and
+>> for the boards using pma8084 pma8084_s2 (CX), pma8084_s7 (GFX).
+>>
+>> For reference, downstream is using GFX power rail as parent-supply for
+>> mmcc's OXILI_GDSC GDSC which then is used for GPU, but nothing there is
+>> modelled upstream.
 > 
->   aarch64-linux-gnu-ld: sound/soc/qcom/sm8250.o: in function `sm8250_snd_exit':
->   sound/soc/qcom/sm8250.c:52:(.text+0x210): undefined reference to `qcom_snd_usb_offload_jack_remove'
+> if you use an opp table with described rpmpd levels and bind the GFX
+> domain to gpucc, it should propagate - check it out
+
+I don't *really* understand what you mean here. I'd be happy if you 
+provided an example (or better yet, a patch) for this.
+
+Also msm8974 does not have gpucc, only gcc and mmcc.
+
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+>>
+>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>> ---
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
 Thanks!
 
-[1/1] ASoC: qcom: sm8250: Fix possibly undefined reference
-      commit: 999fb9d51f939ee23cbb9313ae558d29d6987804
+Regards
+Luca
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> 
+> Konrad
 
