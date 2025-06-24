@@ -1,116 +1,108 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11D82C15BE;
-	Mon, 23 Jun 2025 17:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C03D227EB9;
+	Mon, 23 Jun 2025 23:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750700132; cv=none; b=XmC12LqUOuu3Qh+tMtfHUQXvGs7pSC/nEtXEx61x/uRyQJBUYlZOETCSZ9n0T52dHml+B/Jg6Kxl4qmtiZvewgRiRRZjf+rg/gLECUs16ifZRwWzhvgdXMyo+t0qDc4fqK+T4NbaQ8w/GLEiKUXgsp+ynNmYBYqX6gTDhMHtu2g=
+	t=1750720817; cv=none; b=duQ92i/BkW7SQ4TMMalPhJwB8hlrL8KJDFrS5wc9KI6YWuLdP3e6jwFtDutPg/UWkm1chgQ4N9GhDZlworUrGLLGnBPYws5B55I0AxqNC5jVWgpp0gr276sJXUAJWXHlWzM3B26M3LhnsMwu9ZGjzwswapaWXP0+AfIBMBVcoME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750700132; c=relaxed/simple;
-	bh=mGFD+TEQmheZhWqHvHH/h1FUuzjuW8fcVIkD9mNsloo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YKmmfYZsyHxEqmhMs++ja71Fs9z6xks1SFfKfWZxN4sa6oVOGgfkDsl59gRA4aiejS5inomk6zp2t67DkorPAkpLrYMP1zqR1VijK2PTleiCCcrJCWBT34HIFijx7Vi4JdpHQ+B86GJePIn70KkIv85hOt1Px7z503/h8f50bWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=G1Uv5dqB; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1750720817; c=relaxed/simple;
+	bh=foJ2K/ZpjDvVVoJeKpVYHYwLURY6EEUJZt1ly5Hact8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I3Cw9SUPCxcxYK7dEh6On1si3xirnI5JDfp7+4CFvP2XP9T36iDAPESu6JeNyORj8oXg13Nh62fmKrb1l9yA15dbvpxjOkkUUDILivKfKUcCp8zMLQlHa04VGLNPdNRMAoORteUYy7UkYLxflFG4Gzk2qmcg/Ew0HPag0HjRi8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vM6R90f6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="G1Uv5dqB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mGFD+TEQmheZhWqHvHH/h1FUuzjuW8fcVIkD9mNsloo=; b=G1Uv5dqB5EuWkcfS4CSlHkTc4G
-	3IwxfpnGtWhHQxIrHjkqdFul2xigJfuo+PMSnRonHmQMif3Il9vFKBt4F/hUDuEjhYhgIg4d/w3s2
-	fbqq0TlaafplRZ02zoi6d8bIrst/zs6h1AQ6xpGtUBrKXR0Z6uDraQVohKkAkKaScAhod7xiVOCdq
-	QMV8z5VzxTmiLUCh8YJX8hBr+EUeupmu/oLYCrjKAK5qviCIhoyrrv3sqsSB/6Hg73teOqqFqcibo
-	L2JRnF3fBcjq9Al2+WOMvwgDP116B7EsvYbl+yzxKL0WAQcmUxQO4QxzUHbbhtL+uvuOI0RcUghxt
-	3jhPTARA==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uTl4c-0005Et-0z;
-	Mon, 23 Jun 2025 19:35:14 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uTl4b-0001FO-22;
-	Mon, 23 Jun 2025 19:35:13 +0200
-Message-ID: <c243b93675f8136e30abb7608b58badf4b1ada35.camel@apitzsch.eu>
-Subject: Re: [PATCH RESEND v4 0/5] media: i2c: imx214: Add support for more
- clock frequencies
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Ricardo Ribalda <ribalda@kernel.org>, Mauro Carvalho Chehab
-	 <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	 <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Laurent Pinchart
-	 <laurent.pinchart@ideasonboard.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Ricardo Ribalda
-	 <ribalda@chromium.org>, Conor Dooley <conor.dooley@microchip.com>
-Date: Mon, 23 Jun 2025 19:35:12 +0200
-In-Reply-To: <aFk-yTSOqzmEW1sz@kekkonen.localdomain>
-References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
-	 <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
-	 <46a681a84a7493e2d0a6d3a4eedb6c86ccd9903f.camel@apitzsch.eu>
-	 <aFk-yTSOqzmEW1sz@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vM6R90f6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 34E9AC4CEEA;
+	Mon, 23 Jun 2025 23:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750720817;
+	bh=foJ2K/ZpjDvVVoJeKpVYHYwLURY6EEUJZt1ly5Hact8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=vM6R90f6jYI2o7AQShy2ejHEZhD0woW+xrqbePt5qfFAXMF2iiQiMWqK4NLt734QV
+	 1IW2jk+UBQ6zZfimHFE9N904yTtlU7u4cLp5X19tdAPotx33M+LSBoSuO+jZoHKzf8
+	 ji7J5mhMODNmOfB0GFrWSi3Aee2uD6yyXKkC7mFt+cLx/NVufG8kywZ6tQQ/STOb0P
+	 rJDVwSJbIMmam9lEjrGEdS6JITGuPlsRvC3TfW0gFTfhf9lMLp/KGlbE6dxNyMgj31
+	 wtaXXcN9FlrMPfRNG7CFml6LAZTXEEAVykeG/wV1xfYuZPctwTKyAzvm1TdqAaMnTK
+	 Tmy9Dp/OXivpQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20B79C77B7F;
+	Mon, 23 Jun 2025 23:20:17 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Subject: [PATCH v2 0/3] Add initial device tree for Billion Capture+
+Date: Tue, 24 Jun 2025 03:20:04 +0200
+Message-Id: <20250624-rimob-initial-devicetree-v2-0-34f6045ebc30@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27678/Mon Jun 23 10:34:34 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAET9WWgC/42NQQqDMBBFryKz7pQYMA1d9R7FRYyTOqCJTIK0i
+ Hdv6gm6fB/e+ztkEqYM92YHoY0zp1hBXxrwk4svQh4rg1a6U0YrFF7SgBy5sJtxrIqnIkQ4Omt
+ cN4Tg7QBVX4UCv8/0s688cS5JPufT1v7WP6JbiwotGXMjp9tg9WOVVFJcHM9Xnxboj+P4Ahk7X
+ 5jFAAAA
+X-Change-ID: 20250620-rimob-initial-devicetree-da86a5bffc8b
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750728014; l=1437;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=foJ2K/ZpjDvVVoJeKpVYHYwLURY6EEUJZt1ly5Hact8=;
+ b=ZlOh7EirdRjDdQRdnpwH3jvcS6HklJ09V5r5PBOElv2NnZ+ZlhKZSCO14RRG3pdacvUTVvWdA
+ xxWwUH80wZeAPAiHjA8m1aYolbDjyH72QCxLH/rdg0Q0AnJ0Hh3ItkE
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-Hi Sakari,
+Billion Capture+ is a handset using the MSM8953 SoC released in 2017
+and sold by Flipkart.
 
-Am Montag, dem 23.06.2025 um 11:47 +0000 schrieb Sakari Ailus:
-> Hi Andr=C3=A9,
->=20
-> On Mon, Jun 23, 2025 at 01:34:03PM +0200, Andr=C3=A9 Apitzsch wrote:
-> > Hi Sakari,
-> >=20
-> > Am Montag, dem 23.06.2025 um 06:50 +0000 schrieb Sakari Ailus:
-> > > Hi Andr=C3=A9,
-> > >=20
-> > > On Sat, Jun 21, 2025 at 11:37:24AM +0200, Andr=C3=A9 Apitzsch via B4
-> > > Relay
-> > > wrote:
-> > > > The imx214 driver currently supports only a 24 MHz external
-> > > > clock.
-> > > > But
-> > > > there are devices, like Qualcomm-MSM8916-based phones, which
-> > > > cannot
-> > > > provide this frequency. To make the sensor usable by those
-> > > > devices,
-> > > > add
-> > > > support for additional clock frequencies.
-> > > >=20
-> > > > This series supersedes
-> > > > https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-4=
-67a4c083c35@apitzsch.eu/
-> > >=20
-> > > Is there a difference in this set from the v4 you posted
-> > > previously?
-> >=20
-> > There is no difference to the v4 posted previously. This is a
-> > resend because there was no activity in the original v4.
->=20
-> It's not useful to resend patches, especially those that already have
-> been merged somewhere. Please ping people instead.
+Add a device tree with initial support for:
 
-I wasn't aware that patches already had been merged. Maybe I missed it,
-when checking=C2=A0https://git.linuxtv.org/sailus/media_tree.git
-Next time I'll ping.
+- GPIO keys
+- SDHCI (internal and external storage)
+- USB Device Mode
+- Regulators
+- Simple framebuffer
+
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+---
+Changes in v2:
+- (patch 3/3):
+  - add unit address and label to qseecom (Luca);
+  - reorder properties alphabetically in gpio-keys node (Konrad);
+  - fix hex values in reg address and size cells: from 0x00 to 0x0 (Konrad);
+  - add regulator-allow-set-load property to regulators supplying sdhc1/sdhc2. 
+- Link to v1: https://lore.kernel.org/r/20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com
+
+---
+Cristian Cozzolino (3):
+      dt-bindings: vendor-prefixes: Add Flipkart
+      dt-bindings: arm: qcom: Add Billion Capture+
+      arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 255 +++++++++++++++++++++
+ 4 files changed, 259 insertions(+)
+---
+base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+change-id: 20250620-rimob-initial-devicetree-da86a5bffc8b
 
 Best regards,
-Andr=C3=A9
+-- 
+Cristian Cozzolino <cristian_ci@protonmail.com>
+
+
