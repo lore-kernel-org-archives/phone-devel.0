@@ -1,124 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE982C325B;
-	Tue, 24 Jun 2025 13:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4C423315A;
+	Tue, 24 Jun 2025 18:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750772855; cv=none; b=bsvMxiL0qruqCMp778z5ycOnB/WP/5NFuQBGkVMHtjLl3ZrvQQ5FZFEZl/ZKp06+it6SPKz9LNQ3YTiFRuxvH8ZHuv7R7v2CrkjTd5ql9n4vHnQtr/izY6yFX6q0hqujyE0p45ePAJWNxtN/bGph0/CQpXB6BGjMExewDXNjmm0=
+	t=1750790800; cv=none; b=qY3YqpxVGDajnz7XHyIMptEZNvk6/Oi4t4cwbabbr99bcsN3+LduSO8p79MIhBxJ9f6eIAX/6oJ7A225yz15K1PfHiwv5PR/EQhp5r/NeNjQTXh56dqeyc4AwL7kiipSRfLhZzvRRFdPecCWjMYhXTzMbCroDcSW4uLu3kTiSVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750772855; c=relaxed/simple;
-	bh=UEg6wQSAHePDtn5dg6MmJ4Z93KBz5q6wdT/Iwd0Dq8M=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=TOpnAt8s7K4/w3EhXllffEg/LZWUfopI1F+wB5O1u63ueQPv6cB/kMfWaJ5I2huqf6qAcpqddrlW6KqiZA4eXLdk9Jir6XwQBnyLq+301/mq1T1KdiIfh3QB8l0wwEbgB22GE5BR964xmltWVbH4snbLkd+zCxriJ+jwO+UmdQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aq7N0ZLd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750790800; c=relaxed/simple;
+	bh=7Kof3VsVQEwAhnIBqaWj3+BD5FpcbbRwilql5guZhTk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W+vQnTxzbxpMNvp3dVAP81KD0sbGx2MZCCqyn5HWRcGQn5hLrWtPBM3gi/23yvOJN4MV2wMyF68tO9JwZYqnHHg0mkktYOYxQh4LEBXVTVliJhZzkRtUAqdgWOgc+0xNVxn0t+uHaX4rEgTKoXIHQPIdvj+gh07PMuVEAniXAi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=fdAFfRwM; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aq7N0ZLd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674C5C4CEE3;
-	Tue, 24 Jun 2025 13:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750772854;
-	bh=UEg6wQSAHePDtn5dg6MmJ4Z93KBz5q6wdT/Iwd0Dq8M=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=aq7N0ZLd56t0DIMXduDxRGE2Ue3ycOz6dAm+8/tNr19JYWNOpvDVOQ4LmD9UDlX1W
-	 trAKW2P54up6emSPMPVeyy0ez6xbBnrTzFBMoZlDoEc1+kdCQVsKjUtzeLj/Xe1Pws
-	 iNmyZBtmGz/gRMNiQBmMt5d2e023yOLNhAL3PLJPv3i+EuP9XO14zICWwqZ968Qr1C
-	 Bz6tWa2myoOHoso+kZvrt3zk1ClAJjqkmDvFqAZASEGxKliPtax1EKeml13ed4VPN6
-	 +tshzurwrTD89fKRs+QTbIg89cdLCJnuMZRADsdPduQKrV3GocAaQcAAYl6IZ3ESZJ
-	 nOvUzqqzf5flA==
-Date: Tue, 24 Jun 2025 08:47:33 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="fdAFfRwM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1750790789; bh=7Kof3VsVQEwAhnIBqaWj3+BD5FpcbbRwilql5guZhTk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fdAFfRwM3z2AzSgyy9JisYCxm3OHDo3mBjcJ/1bWgLFPnkJ70qjvO3tEAUpyATx49
+	 4+f0FkeJ2XuE3V5iE3ydpuO47Uf1A6nOSxWOWPul8bbUUEk7X74HXrnClvE6zATtvK
+	 ifMNaQV5uDai3TZayC2pjf5Kz05OBJbZwnz/aXLE=
+Message-ID: <841c41cc-e44d-40c7-9431-a77feaa49b05@lucaweiss.eu>
+Date: Tue, 24 Jun 2025 20:46:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, phone-devel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org
-To: Cristian Cozzolino <cristian_ci@protonmail.com>
-In-Reply-To: <20250624-rimob-initial-devicetree-v2-0-34f6045ebc30@protonmail.com>
-References: <20250624-rimob-initial-devicetree-v2-0-34f6045ebc30@protonmail.com>
-Message-Id: <175077273896.3865908.3372427223791553913.robh@kernel.org>
-Subject: Re: [PATCH v2 0/3] Add initial device tree for Billion Capture+
+Subject: Re: [PATCH 0/4] Start using rpmpd for power domains on MSM8974
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
+ <amfgwjgstu4hoxz4lo7fqrqz5fqtf3r7o6wqvrrjkcfubwrjyz@5i75peprq3wn>
+Content-Language: en-US
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <amfgwjgstu4hoxz4lo7fqrqz5fqtf3r7o6wqvrrjkcfubwrjyz@5i75peprq3wn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi Dmitry,
 
-On Tue, 24 Jun 2025 03:20:04 +0200, Cristian Cozzolino wrote:
-> Billion Capture+ is a handset using the MSM8953 SoC released in 2017
-> and sold by Flipkart.
+On 24-06-2025 2:59 a.m., Dmitry Baryshkov wrote:
+> On Sat, Jun 21, 2025 at 03:19:55PM +0200, Luca Weiss wrote:
+>> Switch over the ADSP PIL to use power-domains instead of a regulator,
+>> and have one commit switching over the MSM8974 SoC plus all the devices
+>> to use power-domains.
+>>
+>> Note, that I'm aware that these changes are not backwards compatible and
+>> not really bisectable, but since it only affects the ADSP on these
 > 
-> Add a device tree with initial support for:
+> Why? The cx-supply is handled unconditionally. A single-domain usecase
+> is also handled via a special code path. I think this might be
+> backwards-compatible, by the pure luck.
+
+Honestly I have not tried and not looked much. I mostly added this 
+paragraph to avoid the response that this change might break and is not 
+really backwards compatible. If it does (by accident) work with the 
+updated dts without the driver and the other way around, then even better.
+
+Regards
+Luca
+
 > 
-> - GPIO keys
-> - SDHCI (internal and external storage)
-> - USB Device Mode
-> - Regulators
-> - Simple framebuffer
+>> pretty old boards, I say it's fine to have this. Get all the patches
+>> into the same release (6.17?) and then we're good again.
+>>
+>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>> ---
+>> Luca Weiss (4):
+>>        dt-bindings: remoteproc: qcom,adsp: Make msm8974 use CX as power domain
+>>        remoteproc: qcom_q6v5_pas: Use resource with CX PD for MSM8974
+>>        ARM: dts: qcom: msm8974: Sort header includes alphabetically
+>>        ARM: dts: qcom: msm8974: Start using rpmpd for power domains
+>>
+>>   .../devicetree/bindings/remoteproc/qcom,adsp.yaml  | 18 ++------
+>>   .../arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts | 13 ------
+>>   .../qcom/qcom-msm8974-lge-nexus5-hammerhead.dts    | 12 ------
+>>   .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 12 ------
+>>   .../dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi   | 12 ------
+>>   arch/arm/boot/dts/qcom/qcom-msm8974.dtsi           | 50 ++++++++++++++++++++--
+>>   .../dts/qcom/qcom-msm8974pro-fairphone-fp2.dts     |  8 ----
+>>   arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts  | 11 -----
+>>   .../dts/qcom/qcom-msm8974pro-oneplus-bacon.dts     |  9 ----
+>>   .../qcom/qcom-msm8974pro-samsung-klte-common.dtsi  | 11 ++---
+>>   ...qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 12 ------
+>>   drivers/remoteproc/qcom_q6v5_pas.c                 |  2 +-
+>>   12 files changed, 56 insertions(+), 114 deletions(-)
+>> ---
+>> base-commit: 7fa2fb97cd28e1d9670da538095565b6fba83977
+>> change-id: 20250621-msm8974-rpmpd-switch-b19b166c02be
+>>
+>> Best regards,
+>> -- 
+>> Luca Weiss <luca@lucaweiss.eu>
+>>
 > 
-> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> ---
-> Changes in v2:
-> - (patch 3/3):
->   - add unit address and label to qseecom (Luca);
->   - reorder properties alphabetically in gpio-keys node (Konrad);
->   - fix hex values in reg address and size cells: from 0x00 to 0x0 (Konrad);
->   - add regulator-allow-set-load property to regulators supplying sdhc1/sdhc2.
-> - Link to v1: https://lore.kernel.org/r/20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com
-> 
-> ---
-> Cristian Cozzolino (3):
->       dt-bindings: vendor-prefixes: Add Flipkart
->       dt-bindings: arm: qcom: Add Billion Capture+
->       arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
-> 
->  Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
->  .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
->  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
->  .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 255 +++++++++++++++++++++
->  4 files changed, 259 insertions(+)
-> ---
-> base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
-> change-id: 20250620-rimob-initial-devicetree-da86a5bffc8b
-> 
-> Best regards,
-> --
-> Cristian Cozzolino <cristian_ci@protonmail.com>
-> 
-> 
-> 
-
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250624-rimob-initial-devicetree-v2-0-34f6045ebc30@protonmail.com:
-
-arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dtb: gpu@1c00000 (qcom,adreno-506.0): clock-names:5: 'alwayson' is not one of ['core', 'iface', 'mem', 'mem_iface', 'alt_mem_iface', 'gfx3d', 'rbbmtimer', 'rbcpr']
-	from schema $id: http://devicetree.org/schemas/display/msm/gpu.yaml#
-
-
-
-
 
