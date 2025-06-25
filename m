@@ -1,67 +1,67 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A046029DB84
-	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 10:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CD61F1909
+	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 10:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846101; cv=none; b=cOgb9iCTgC8Sad7G0BqapQEjFRz4sHLUQC8ys/LpbxN0hyXiP0qk6aS0kvG0RZa7XoFDbdsx95a3bX5Ly58Nte9zdYgC3X95YGA8QHa1f3wC6kr582dO0pW+GBb6b4/UmC5PBnkmQy7SD3oU3q7UGMVir+wu02POI+xtZ0CQgQw=
+	t=1750846122; cv=none; b=GsIQXBCZrF2XO59fiGWyODLiYgnluNRe8Jp6bp1krCAdqFAJ6DH1zOeHPQZNRvGowk/YR5kE9zOoOnebyvOr2mSlNBY4C6DqZMiEbcZ7B8WQNoeVBChoabolJCZTroAh18bBVHoJdfZTU+LmYdRRgg0zEaHxvlAkaA/Lwcwt/1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846101; c=relaxed/simple;
-	bh=EnhD8mOkb8vGwBuN9rCeqH+YO0Rg5V/a885XDSetZww=;
+	s=arc-20240116; t=1750846122; c=relaxed/simple;
+	bh=LEktYiomA97kahVU9LB1E6S/iTgUI2I2o3Xo7BTo7hs=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=McK9KyzOy+usa93ZA4AynpSo0WcpvZOg/PMgCg4cGqRMN58tbX3YaAuxP+TNFDi4KuLYo9XW2GtqkL5OKs855sNqS4mTry1Qkfa3tI40Ddc6LV4AULm/M/XoUxFOR8xi4Lf7fHbuqbKxeX0SjYF01PTB9XIpRpqtvy88L4pxZHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c177Yd7A; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:Content-Type; b=S8DLeO9S4d0moaJOyK0zZjlNOuw8mILp0tEL7w9Pjn23L6FBBosZnkTPq0c/jsKVmUp4wkkyJeunkgRKCdDhHmP+O8oIqYYk0vkWMA8fyWbWWw3K54zgtIFZfyv18VM67T7bnwozU0Na+xmcwyZBAUC+ksPXC2SDo21LmCoyhY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VnxJDtaP; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c177Yd7A"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-453749aef9eso6139835e9.3
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 03:08:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VnxJDtaP"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-453398e90e9so43047815e9.1
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 03:08:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750846098; x=1751450898; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1750846118; x=1751450918; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+k3DzyWH4Jr6uupx7HYmyik+quFvCWjaPQqy+deeO10=;
-        b=c177Yd7At+eundCYnnuQlx4eRg/pGxSCJ1PEG8P+R7FdNUFBp0uZhGduviJMSa24pl
-         Pgjz1pnY4EG67edrNGTRYlyJML9QFS3W4NGTtb6mV/IKaqF/OolBe3mru7g/k3UoWxBN
-         rl+NrfiyEpFdjyW2TVtgjUXidqbuRKWRFbTEPyiGT3MuJ4d+vo+DyhWKrMuCBXXWVjtZ
-         LrJtSmijZxjTvWz1QjuHgIeFRVeWO4a8T4kn88lHKnl3wmLeujrV2/XqV2LvrxRj6H35
-         PzWBTP9c/2lUqN3my1W2irs1ZXOsrY7hUogQLKxMBeg7hmcGlfSiFg9OeFBl9tzbe5Tv
-         s8zQ==
+        bh=7JzupWL1XDYIRewec2SQsdiCKOY9Pec5DNEnhFtHIf8=;
+        b=VnxJDtaPu8nyTpzcKYBhhyUdkVXzp2fRTeergdWOv1+xsr8BQL+ORTaBYbJxEzTBbT
+         7W2QZRxpNTrF8MJb8afk3fIyP+vZE9gMoymHNEOOSCS24TUfylFIZvfaN1BXZB8NmvYa
+         Gddi3t87GMApMr95wOVLBJRZfxs+y6CvQ2zJTHLxsSS8UyQSZSkVa4TPTia0MOpfy9rA
+         VM977RA/8t0bkLf7gdvXAuTRqvVRXwVUt5ZtaqC6ymUZA25L5H9kDC9xDlOPbbPKVMt3
+         M7hXq7dX6hLZyDbF4A7J8cih2U3xv3F/pGNMAqzWLkaPTJFug4IrSqYh6U0y2DCKG7Z9
+         li5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750846098; x=1751450898;
+        d=1e100.net; s=20230601; t=1750846118; x=1751450918;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=+k3DzyWH4Jr6uupx7HYmyik+quFvCWjaPQqy+deeO10=;
-        b=GgUO+oZEyW5TN1+3RDdLgAC8ROAXNmqwGrulrI5/OESbRFSII84BPZKz0DIR+q71dq
-         ZqnVfZUcBulmzx2q4ANhGpIMSM6UME/+NdH49qEelwarQVL0qUnf49DOT5R60SvdxCfl
-         PhR6Ft6u7bUHWaQ2JjAanR5/MV9Myo5UIRsbZcusTrlrnk+AML9YjsgtxBMYAxj6xo8H
-         l7WOn+jX/H6MQzyplTt5f6NLb1urGapyugwoaBeZFrR0M3J3RlgQzJn5//J1uPGpi3cJ
-         o2c8h/QZXm9OQcWmyLG1gRE011y9tnst9iuIOQAjDkdtkiiFh7lRHv85ryToJZddp4Gs
-         9DUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV2RJ6jHF6RaBsRBiwnwt5RQVWSm3yQ2FQBTPfXixaAxRw2sDaQraHGnkTnkMgc8R8hQVuqeFgPMpBTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz92LDW9OR94sklSyaAeMNolDnWld4dlmjEKVuaB/fxY8UsgFVj
-	1YZwlj9nueT7skpvFKfNojudLE5S+mbgYkRhh12LY4B/VnkX+ZuWZ/avvlBcwEyGhsQ=
-X-Gm-Gg: ASbGncvSCEDTRJUdMBlnNgC30j9NXdr67U4yviqK+5x2yM1ADe16T1L56wwzGvB5dNF
-	nFgc7ZY6gEOUan+CQez6+xcBhAuj/RP8B73QlgStvhdhPfD9OWZt8qySsYLWXPOqhh0RodubhSc
-	JID/H4f9a3tSPt9XPytzY8ppm27aNWUDDNod6xENht7rMFcCuQxOBrl0qh/W23HLl4ACxfvRxoT
-	LSTZxBnvrrl/am0PzxfwunXSzBaJdtydfMebTUAom4+AL7tiJ6mUhP1iT/6mVmuPaB9zc5/WrSn
-	FA//gMS9gf2NvKqUKAkeahrot56Wawc7VN5+8FHB7l5pDN6KHREXyDckOeMzu3JJ4csRW+wLpYO
-	dycQPjHeUXutJq/9h4jwkR1u8NCJ7RfEXiPLB
-X-Google-Smtp-Source: AGHT+IHE2dgeNi21VwtuCTw9LobXMX+5LWnzJekdeuK7dtjJ4RTE1kui3tw6ljIYJ1F6E+CxyZr0zA==
-X-Received: by 2002:a05:600c:4e0c:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-45381a7651fmr22313705e9.0.1750846097926;
-        Wed, 25 Jun 2025 03:08:17 -0700 (PDT)
+        bh=7JzupWL1XDYIRewec2SQsdiCKOY9Pec5DNEnhFtHIf8=;
+        b=f9yACsB43UM5tmZ8f0g5fL6N66jU6ZuxaAY0wIszW33HL2wSryEgWkji8VwSJsLdDK
+         xR0t/pH+/OmStsXiaDynqh/TCv/3EISKZdbdz6t8hVyya2noOTACRnudaQkivG8vG91j
+         dI5TMl4rG3WFrLjSO1gNFk2Ok9LL8j/Pcxrpap4QHR1He9nQDwC4AhLsu7EzqrnwtZUx
+         r+QXLBFNwTTNdTZYI5+1ECqzDApnV5lA6/xpbQq11b7YegSdme+oMeP9NIE+pppbiKca
+         XWHxuKE7Pcvb2Y7CWmr8KBqvbwZaUZliDqS1sCm4rj400VrYuTFmwHDHinNyX/QSQKW2
+         rN6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUGvvNwQS3hwrozcFNNNc5nRVbfeBjPINDJpH6u79gL1cIHLc+i+YthaBVzv45R84tRpK+foEi+kqV81w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGxIyFrhbsQ4XItgUboe1QNi4vGvAwhA0owUS+yC+TAc/hnEVl
+	gUJWdMelT30+1qq1e949GMLJDqLOq1IdDlnf2pmEURX6PICXRUDDEZLv3cQLl3d2H1s=
+X-Gm-Gg: ASbGnct+uc2Ky7yvpPrV4roGz15NAUBatJj3QFpB3o3mTcwbc1lectuIv+jyJL3/F36
+	ib2qihMktMEw3/H6rQE9mTXxTMTg3+BKaCmF/ajOiYkWIW12Fzw2qpC9V0EtKrdwRsA585JZsWn
+	SezcWJofQ/VrCjmUgSQk1CoM1IXCx+x145PBcepKeGNqTYKG0qZvsiJynlweZyI8iiLBJsj5x3s
+	mqxaczz1QjQ2XqzRu0gYT+Wc+7i7IrH+bPqpGVILu0047FT4CQtRY9mpG0XL62FjzGdyukvEmgK
+	aX2oJrk896w4f9P9/qSga/R2ZJBU7WXtuZls/jlmGw15t/uc/Qc+xEmUJQUJ7PzlI8F+WR/9s8x
+	YtEa+b0EYA8I3pjsozuipXwk4in5Ib7Xp4env
+X-Google-Smtp-Source: AGHT+IG5LF4AWsLjPx/1089V2zva7Qrc3IalhvEwkT4jUmwXeJtLeU7OltxRai8wGL+rEMr7x8tcQQ==
+X-Received: by 2002:a5d:5c09:0:b0:3a5:8abe:a267 with SMTP id ffacd0b85a97d-3a6ed64b709mr1271789f8f.29.1750846118498;
+        Wed, 25 Jun 2025 03:08:38 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:3d9:2080:b3df:bee7:215:e1a4? ([2a01:e0a:3d9:2080:b3df:bee7:215:e1a4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f2274sm4137080f8f.48.2025.06.25.03.08.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538233a8bbsm15636395e9.6.2025.06.25.03.08.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jun 2025 03:08:17 -0700 (PDT)
-Message-ID: <38a0abf9-e52f-4e27-8ea2-eb885312a209@linaro.org>
-Date: Wed, 25 Jun 2025 12:08:16 +0200
+        Wed, 25 Jun 2025 03:08:38 -0700 (PDT)
+Message-ID: <ce935264-37fc-4073-aed1-0be2bc7aac99@linaro.org>
+Date: Wed, 25 Jun 2025 12:08:37 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,8 +71,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: neil.armstrong@linaro.org
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 3/4] phy: qcom: phy-qcom-snps-eusb2: Add missing write
- from init sequence
+Subject: Re: [PATCH 4/4] phy: qcom: phy-qcom-snps-eusb2: Add extra register
+ write for SM7635
 To: Luca Weiss <luca.weiss@fairphone.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -84,7 +84,7 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-phy@lists.infradead.org
 References: <20250625-sm7635-eusb-phy-v1-0-94d76e0667c1@fairphone.com>
- <20250625-sm7635-eusb-phy-v1-3-94d76e0667c1@fairphone.com>
+ <20250625-sm7635-eusb-phy-v1-4-94d76e0667c1@fairphone.com>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -111,36 +111,45 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20250625-sm7635-eusb-phy-v1-3-94d76e0667c1@fairphone.com>
+In-Reply-To: <20250625-sm7635-eusb-phy-v1-4-94d76e0667c1@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 25/06/2025 11:14, Luca Weiss wrote:
-> As per a commit from Qualcomm's downstream 6.1 kernel[0], the init
-> sequence is missing writing 0x00 to USB_PHY_CFG0 at the end, as per the
-> 'latest' HPG revision (as of November 2023).
-> 
-> [0] https://git.codelinaro.org/clo/la/kernel/qcom/-/commit/b77774a89e3fda3246e09dd39e16e2ab43cd1329
+> As per the downstream devicetree for SM7635, add a register write for
+> QCOM_USB_PHY_CFG_CTRL_1 as per the "eUSB2 HPG version 1.0.2 update".
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->   drivers/phy/phy-snps-eusb2.c | 3 +++
->   1 file changed, 3 insertions(+)
+> The downstream driver supports an arbitrary extra init sequence via
+> qcom,param-override-seq.
+> 
+> volcano-usb.dtsi has the following which is implemented in this patch:
+> 
+>      /* eUSB2 HPG version 1.0.2 update */
+>      qcom,param-override-seq =
+>              <0x00 0x58>;
+> ---
+>   drivers/phy/phy-snps-eusb2.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
 > diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
-> index b73a1d7e57b32cfdfbe314ab938ec54746ed53be..e232b8b4d29100b8fee9e913e2124788af09f2aa 100644
+> index e232b8b4d29100b8fee9e913e2124788af09f2aa..6122fc797c7fd3011936edc3ff4dafe6a58e6583 100644
 > --- a/drivers/phy/phy-snps-eusb2.c
 > +++ b/drivers/phy/phy-snps-eusb2.c
-> @@ -437,6 +437,9 @@ static int qcom_snps_eusb2_hsphy_init(struct phy *p)
->   	snps_eusb2_hsphy_write_mask(phy->base, QCOM_USB_PHY_HS_PHY_CTRL2,
->   				    USB2_SUSPEND_N_SEL, 0);
+> @@ -420,6 +420,12 @@ static int qcom_snps_eusb2_hsphy_init(struct phy *p)
+>   	/* set default parameters */
+>   	qcom_eusb2_default_parameters(phy);
 >   
-> +	snps_eusb2_hsphy_write_mask(phy->base, QCOM_USB_PHY_CFG0,
-> +				    CMN_CTRL_OVERRIDE_EN, 0);
+> +	if (of_device_is_compatible(p->dev.of_node, "qcom,sm7635-snps-eusb2-phy")) {
+> +		/* eUSB2 HPG version 1.0.2 update */
+> +		writel_relaxed(0x0, phy->base + QCOM_USB_PHY_CFG_CTRL_1);
+> +		readl_relaxed(phy->base + QCOM_USB_PHY_CFG_CTRL_1);
+> +	}
 > +
->   	return 0;
->   }
->   
+>   	snps_eusb2_hsphy_write_mask(phy->base, QCOM_USB_PHY_HS_PHY_CTRL2,
+>   				    USB2_SUSPEND_N_SEL | USB2_SUSPEND_N,
+>   				    USB2_SUSPEND_N_SEL | USB2_SUSPEND_N);
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
