@@ -1,65 +1,67 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D4929A9CD
-	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 09:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCE329AAE9
+	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 09:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750842839; cv=none; b=jC+ZKi9cSg964U0aHc3WWII+xUYwrygFndYgHjL39ZiIhJS2iReux+t5u2l8WAOZzIuGZDNmybKt3YwI21UqJTOCo+UbTmlvi1QmAkk2sqiOEUlcVsisfTGcoktcShubMPiXMuj9NH2hmquywWL70oMGhQHzwSUqKDBeiByOM60=
+	t=1750842841; cv=none; b=pcKk7nFDtKYMCuJ4j2Yaw7f/tspyKlMk1CocfXW63gbchuUq9s/sbGuPbtxohxB9gOP+q+SmNkp6w4908iDr9VmygNF1M/AFa2in94UGPKYyuNDp3iDGfxSJ+YrsgWNTuiGNBcCXaNxpjGPiZlcHCTh4pd9d9t46hFZ3s0p/zLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750842839; c=relaxed/simple;
-	bh=PKLM5z8HYLwWW1nVnJ8iYHU35YL96Qjrdd3whIJP6XA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oJDQ3Vl1qr9BjVCUhc1ozn+RnSA6f8wcRfvjAlbdB45rfNcXCmw/VtuXDjE/QZE6d7hCSo+n+2ZOEEaDy7ccLSePKR1819zIK/KUTIYqjtHdloPKi+Hddx0PgcuzKSBLdTWIKfPVdQzBDxo20NrkD/EUBBY+zOI5BDJ/1ZooSJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=PEAwIMFR; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1750842841; c=relaxed/simple;
+	bh=54t9W8bEFcos9T5d7Eu0wZ/vWvWROai7eof2tEZ2Zl0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DfWL0H6Q4HGI5k7b5THO6tW8jf3G5l9/9YRI0sOm93ctbmjxPyD79t7m8tv2BycOOcq+t6WsUMbX33MUcNFLkFdmrmUBO5zx4RSXud2OgJEb53DRgWbSIqMUFWAtMfY2GYmOI/3FjRVTlpmw6+YwpYW+McMnHDhfpksNYhgsYPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=xysRaBZH; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="PEAwIMFR"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-addcea380eeso1031458566b.0
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 02:13:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="xysRaBZH"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ade5a0442dfso242714766b.1
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 02:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1750842836; x=1751447636; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=B1K2B61uVyO/2lRhe5zWoehWYG2JsOIpk6BRaE/2jgA=;
-        b=PEAwIMFRguw/FYoVWC7uDAyQCtGDF4QjAXnNP3SjPE5UNdEbBJ6mJiEsGxj6SVYq6+
-         dXtZ/D319+jFFkowQx5zZ1tB06PObu11kECZTs8j5t6qG0lzeAYOjXOe1OHcyMhDMPE0
-         VsqI3gIM+huqY3s0Y59QtkRU60vrW7DHkMmi14zFuhr91iUU+ED6okFamYip8JjhT0ye
-         qU2tdepo6Jy7LQOQnXssEBsni9UHqehmTkxOeqVxOmZN2tKcQLWDqcrC8KMpcviYX3Mu
-         t/Sqd6kJ8XpMe/plLQy7Kcx+4C2fudrDmRYXuOCR65vA7Uh//XaJy40zN6NBjnkNNItW
-         044Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750842836; x=1751447636;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1750842837; x=1751447637; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=B1K2B61uVyO/2lRhe5zWoehWYG2JsOIpk6BRaE/2jgA=;
-        b=jGpqlj+2epPDwKY97Vb9O63alIJnsekNFvN2BQuQH94lPwC6e1u+MyRiIZReWGyFSO
-         A6YQ7AUNH5S7v8Bjn9bU4QGcZ2SlyxAGLcUqy/5Lny/F+r9vvkWUPbF3l3nC3DUTl+vM
-         442KpfGzEInRusSrjciE8nt++2IFo4eDZ4I+s1PxUco5M99zZIgTr0KJALXjrasKirr+
-         9SgXIm9xGUjipshgWE32w8BRsbU45rVNI1A/mmNOouqjG/OTpBAiqixfZq6zHmpUnjK4
-         5YheLpziqoLV41/2UZkGOqbgivRI344X9rCzx7WMZQDme0fM+x6eja8puwOvn5Dn+H18
-         EiFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQqQ3TFgJ1sdCUEzNrl63yrcmm5hOsr0osGsqGotWe+zMF6dwhYiWqsoxEZ7T7b7xRbyiZtvAABtnxTQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgEQbkyfFtj7SFJcYbuCa5bvMSG9oMGSyS8mTUL8aw4NnICz7L
-	Jemo7evnAjflNnppgQ3pIiT4TkVY/57oCPpbUQDNKxd5NokX0FtTOhWkwGwBcbzz26k=
-X-Gm-Gg: ASbGncv9WuVwNUtvtHO+5RMtD/vtxyFtcd6DzCgbxLthXyeGv3E/h1xCwk7SI8Ehi3z
-	7GqQmCVAIEWMMGRJbH/uwxZV2tYL6IEyqfNjqNgpLGza1ChS0IL7MXLVICe39k3zKXMfwCQKyWY
-	olEoj+9Y8V397N1NUiE0O3PcLAWEIouphpcRIxellz+m7ZGvDwouX3hDraz3mIoh8Lb/wNcsCZj
-	OdShZwWIBRAU932HAYagSge4cnWlES6uyTb345YIYLJi5hY6fa1dDC/S7y/6nK6VkjB+aTJe7Og
-	NJiT8bSH1WjTurn50RAWuWSGCqGStsB78lFfv2t5JlthDjGAcX4Nx9CH0tITE+e3Hd75swJLZTW
-	r+5yMd0F+8ZmkYifZ0fsxw+DOq8CyNqq0
-X-Google-Smtp-Source: AGHT+IEnvvlxg5zImm2CwlaXhVKngXovCQ34eglnTXqsp9GxyjoXHSBIovNct13ikzXkLc8ruauPZA==
-X-Received: by 2002:a17:906:cada:b0:ae0:1fdf:ea5c with SMTP id a640c23a62f3a-ae0be9bfb7emr229165066b.38.1750842836377;
-        Wed, 25 Jun 2025 02:13:56 -0700 (PDT)
+        bh=iDMeZfqbgmS9DRg6GUCqAw8Pfufq7fFLwuxZEey/WEM=;
+        b=xysRaBZHGIPK7kA85WOZHUaECkK+XwFZgo9Ez7F3Of62l4586uU/G2JiedPAklDU+T
+         C0Zh66QMxB5rBbuDDrg5sFg95+WFVXzaceqipYSvruT2SI9vsQd5o2yQ+WsqZ+XXs+kI
+         VSDbUUODoDdB9+AKkqQV/RxtdEGlgR/gmUxP4Dl05yd7LnJr3sSFNU6rtLCZaMkstMSy
+         bbgfjunffXH/TjQPb7vxsbnvz1IlToN6g97VEHZOdmkG3mL2cCkJxqbu/OrpEoW9v+sd
+         ZB0HdPlq3IuzJKK58rz9YyDnPNzMca7dfxzrPZrkOKPG52pPYQj3bWmUCdYffmXdNg5p
+         sVuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750842837; x=1751447637;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iDMeZfqbgmS9DRg6GUCqAw8Pfufq7fFLwuxZEey/WEM=;
+        b=GuHVxpXFbzUU+YFWASlk4evLV3zgrKfP+s8k+6qSHgLagw4Ww2VKg4hl+/l1yiTKZ6
+         txDnB+y75LxseFTQpkKzlGgv2robZQwXzJKYqcq1JUhDIY0rtMcH2aJcdJVewNNYcHda
+         Lymsc52TSzyvyVVR+bigdrZk3xypGuAVBq7m/CpwPzKU4vJO7lT0KVGphAtKJJiowVF6
+         YthRhH6oBji2mRkbrKjiB17HiqYvnO2UkO2O0jh5Amt+2dHk2uii5RJBaHUnoXGlIfV7
+         wHJB5q+TdU+4E5FC1NLWqBpvijcgsqBpEM9TUkcMOAyYXZydimCoqVC3grm13H24KxDT
+         7W2g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVVY5hSCihfMaej8d0pCBB8+pcPjZ1JGB0YePwqNa0Ar1Gg6TWqR4okeuSByJMOh7sei9EAdfPT38xAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlWLvbYii3fYryiBmbxDO+EyH4yRnMdycEIhiAhRergwXweit2
+	6rZTMtv0EtoEzJ5Ze4wa7GjbynhPRf3CMB+Lgijh2b0AUJWnasZyRjnYFPknDo5KKPY=
+X-Gm-Gg: ASbGncupAw3jG09eytrPZo0Chec1GlYBxL3PfZHhfpftwnodqZtQbH0/PiGslY8+r9G
+	t+RvdGH4eoDgcIBd59UoDOrb9YUtJ981Qx4kqAY9zskSxKUQ8WA50Fc+OxI7UXTP7vz6BDhj29V
+	8ckM5oAKebrAM7W0WQCQ9d8zxKRMTBPk2fRc3fFgJlb0CvFdvKe6LcphnzNbFyIcS614EXSulrD
+	GUjtq15dw/zLoXB2TVp0tffOGC0Wz75+IoTX0aisvOqQNm5sYEKQ2VhgT0n07VhUbKD1TaXNwSy
+	ydCrk6E8omKA3fIVo2v3lBi4D6sEXv/bLhqgkNfIA/sOEJu8c8Wvymmcg23muJE7se2vG1Rl9Bg
+	sDu9kxas3CfVS7HbIITT1Hxag+Fr5qsm0
+X-Google-Smtp-Source: AGHT+IE7ooPrQL/6cIG3At5M/uLWpwMiPmNYzKivvlwa8s+OaW0o78r8gXhnDqjzpDoteXXG+Lb7Jw==
+X-Received: by 2002:a17:907:d5a5:b0:ad5:74cd:1824 with SMTP id a640c23a62f3a-ae0bf154af5mr200684266b.38.1750842837339;
+        Wed, 25 Jun 2025 02:13:57 -0700 (PDT)
 Received: from otso.local (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0bf33b108sm106422566b.115.2025.06.25.02.13.55
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0bf33b108sm106422566b.115.2025.06.25.02.13.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 02:13:55 -0700 (PDT)
+        Wed, 25 Jun 2025 02:13:56 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/2] Add interconnect driver for SM7635
-Date: Wed, 25 Jun 2025 11:13:46 +0200
-Message-Id: <20250625-sm7635-icc-v1-0-8b49200416b0@fairphone.com>
+Date: Wed, 25 Jun 2025 11:13:47 +0200
+Subject: [PATCH 1/2] dt-bindings: interconnect: document the RPMh
+ Network-On-Chip Interconnect in Qualcomm SM7635 SoC
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,10 +70,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMq9W2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDMyMD3eJcczNjU93M5GTdVBNL01SDVDMzQwNLJaCGgqLUtMwKsGHRsbW
- 1AD48/rNcAAAA
-X-Change-ID: 20250620-sm7635-icc-e495e0e66109
+Message-Id: <20250625-sm7635-icc-v1-1-8b49200416b0@fairphone.com>
+References: <20250625-sm7635-icc-v1-0-8b49200416b0@fairphone.com>
+In-Reply-To: <20250625-sm7635-icc-v1-0-8b49200416b0@fairphone.com>
 To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
@@ -80,34 +81,312 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750842835; l=919;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750842835; l=8682;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=PKLM5z8HYLwWW1nVnJ8iYHU35YL96Qjrdd3whIJP6XA=;
- b=HbpQ0Bkh1IyDcOAGxoeQ21uGhUCyUGAG8vC/54JVr5dQDP2OIyzDXnLSG3Io6s8DO5yRhyWDk
- Q55InYHP23+ANw2V2XdGq09yqv8mxDao7fNamFOEsJ17aTeHy4vVYv/
+ bh=54t9W8bEFcos9T5d7Eu0wZ/vWvWROai7eof2tEZ2Zl0=;
+ b=+Q32DRtxbNr2uBXuELRfjUdwl4eKz+OBvEQ4psFS0JEAjjzGqlxbFe/0FkSgWk2bg2D72VL7V
+ GXvWDZM/wx2CJmxFKK7Urt2Xv4fWUYpNUQREbvRHgty3F0XBNE6Oirj
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Add documentation and driver for the interconnect on the SM7635 SoC.
+Document the RPMh Network-On-Chip Interconnect of the SM7635 platform.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (2):
-      dt-bindings: interconnect: document the RPMh Network-On-Chip Interconnect in Qualcomm SM7635 SoC
-      interconnect: qcom: Add SM7635 interconnect provider driver
+ .../bindings/interconnect/qcom,sm7635-rpmh.yaml    | 136 ++++++++++++++++++++
+ .../dt-bindings/interconnect/qcom,sm7635-rpmh.h    | 141 +++++++++++++++++++++
+ 2 files changed, 277 insertions(+)
 
- .../bindings/interconnect/qcom,sm7635-rpmh.yaml    |  136 ++
- drivers/interconnect/qcom/Kconfig                  |    9 +
- drivers/interconnect/qcom/Makefile                 |    2 +
- drivers/interconnect/qcom/sm7635.c                 | 1554 ++++++++++++++++++++
- drivers/interconnect/qcom/sm7635.h                 |  130 ++
- .../dt-bindings/interconnect/qcom,sm7635-rpmh.h    |  141 ++
- 6 files changed, 1972 insertions(+)
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250620-sm7635-icc-e495e0e66109
+diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm7635-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm7635-rpmh.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..6373399542d5728b4a4097876d2c4dffc4482038
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interconnect/qcom,sm7635-rpmh.yaml
+@@ -0,0 +1,136 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/interconnect/qcom,sm7635-rpmh.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm RPMh Network-On-Chip Interconnect on SM7635
++
++maintainers:
++  - Luca Weiss <luca.weiss@fairphone.com>
++
++description: |
++  RPMh interconnect providers support system bandwidth requirements through
++  RPMh hardware accelerators known as Bus Clock Manager (BCM). The provider is
++  able to communicate with the BCM through the Resource State Coordinator (RSC)
++  associated with each execution environment. Provider nodes must point to at
++  least one RPMh device child node pertaining to their RSC and each provider
++  can map to multiple RPMh resources.
++
++  See also:: include/dt-bindings/interconnect/qcom,sm7635-rpmh.h
++
++properties:
++  compatible:
++    enum:
++      - qcom,sm7635-aggre1-noc
++      - qcom,sm7635-aggre2-noc
++      - qcom,sm7635-clk-virt
++      - qcom,sm7635-cnoc-cfg
++      - qcom,sm7635-cnoc-main
++      - qcom,sm7635-gem-noc
++      - qcom,sm7635-lpass-ag-noc
++      - qcom,sm7635-mc-virt
++      - qcom,sm7635-mmss-noc
++      - qcom,sm7635-nsp-noc
++      - qcom,sm7635-pcie-anoc
++      - qcom,sm7635-system-noc
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    minItems: 1
++    maxItems: 2
++
++required:
++  - compatible
++
++allOf:
++  - $ref: qcom,rpmh-common.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm7635-clk-virt
++              - qcom,sm7635-mc-virt
++    then:
++      properties:
++        reg: false
++    else:
++      required:
++        - reg
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm7635-pcie-anoc
++    then:
++      properties:
++        clocks:
++          items:
++            - description: aggre-NOC PCIe AXI clock
++            - description: cfg-NOC PCIe a-NOC AHB clock
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm7635-aggre1-noc
++    then:
++      properties:
++        clocks:
++          items:
++            - description: aggre USB3 PRIM AXI clock
++            - description: aggre UFS PHY AXI clock
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm7635-aggre2-noc
++    then:
++      properties:
++        clocks:
++          items:
++            - description: RPMH CC IPA clock
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm7635-aggre1-noc
++              - qcom,sm7635-aggre2-noc
++              - qcom,sm7635-pcie-anoc
++    then:
++      required:
++        - clocks
++    else:
++      properties:
++        clocks: false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/qcom,sm7635-gcc.h>
++
++    interconnect-0 {
++        compatible = "qcom,sm7635-clk-virt";
++        #interconnect-cells = <2>;
++        qcom,bcm-voters = <&apps_bcm_voter>;
++    };
++
++    interconnect@16e0000 {
++        compatible = "qcom,sm7635-aggre1-noc";
++        reg = <0x016e0000 0x16400>;
++        #interconnect-cells = <2>;
++        clocks = <&gcc GCC_AGGRE_USB3_PRIM_AXI_CLK>,
++                 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>;
++        qcom,bcm-voters = <&apps_bcm_voter>;
++    };
+diff --git a/include/dt-bindings/interconnect/qcom,sm7635-rpmh.h b/include/dt-bindings/interconnect/qcom,sm7635-rpmh.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..d963780ddb540825672bc411eb106a298003b09f
+--- /dev/null
++++ b/include/dt-bindings/interconnect/qcom,sm7635-rpmh.h
+@@ -0,0 +1,141 @@
++/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
++/*
++ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
++ */
++
++#ifndef __DT_BINDINGS_INTERCONNECT_QCOM_SM7635_H
++#define __DT_BINDINGS_INTERCONNECT_QCOM_SM7635_H
++
++#define MASTER_QUP_1				0
++#define MASTER_UFS_MEM				1
++#define MASTER_USB3_0				2
++#define SLAVE_A1NOC_SNOC			3
++
++#define MASTER_QDSS_BAM				0
++#define MASTER_QSPI_0				1
++#define MASTER_QUP_0				2
++#define MASTER_CRYPTO				3
++#define MASTER_IPA				4
++#define MASTER_QDSS_ETR				5
++#define MASTER_QDSS_ETR_1			6
++#define MASTER_SDCC_1				7
++#define MASTER_SDCC_2				8
++#define SLAVE_A2NOC_SNOC			9
++
++#define MASTER_QUP_CORE_0			0
++#define MASTER_QUP_CORE_1			1
++#define SLAVE_QUP_CORE_0			2
++#define SLAVE_QUP_CORE_1			3
++
++#define MASTER_CNOC_CFG				0
++#define SLAVE_AHB2PHY_SOUTH			1
++#define SLAVE_AHB2PHY_NORTH			2
++#define SLAVE_CAMERA_CFG			3
++#define SLAVE_CLK_CTL				4
++#define SLAVE_RBCPR_CX_CFG			5
++#define SLAVE_RBCPR_MXA_CFG			6
++#define SLAVE_CRYPTO_0_CFG			7
++#define SLAVE_CX_RDPM				8
++#define SLAVE_GFX3D_CFG				9
++#define SLAVE_IMEM_CFG				10
++#define SLAVE_CNOC_MSS				11
++#define SLAVE_MX_2_RDPM				12
++#define SLAVE_MX_RDPM				13
++#define SLAVE_PDM				14
++#define SLAVE_QDSS_CFG				15
++#define SLAVE_QSPI_0				16
++#define SLAVE_QUP_0				17
++#define SLAVE_QUP_1				18
++#define SLAVE_SDC1				19
++#define SLAVE_SDCC_2				20
++#define SLAVE_TCSR				21
++#define SLAVE_TLMM				22
++#define SLAVE_UFS_MEM_CFG			23
++#define SLAVE_USB3_0				24
++#define SLAVE_VENUS_CFG				25
++#define SLAVE_VSENSE_CTRL_CFG			26
++#define SLAVE_WLAN				27
++#define SLAVE_CNOC_MNOC_HF_CFG			28
++#define SLAVE_CNOC_MNOC_SF_CFG			29
++#define SLAVE_NSP_QTB_CFG			30
++#define SLAVE_PCIE_ANOC_CFG			31
++#define SLAVE_WLAN_Q6_THROTTLE_CFG		32
++#define SLAVE_SERVICE_CNOC_CFG			33
++#define SLAVE_QDSS_STM				34
++#define SLAVE_TCU				35
++
++#define MASTER_GEM_NOC_CNOC			0
++#define MASTER_GEM_NOC_PCIE_SNOC		1
++#define SLAVE_AOSS				2
++#define SLAVE_DISPLAY_CFG			3
++#define SLAVE_IPA_CFG				4
++#define SLAVE_IPC_ROUTER_CFG			5
++#define SLAVE_PCIE_0_CFG			6
++#define SLAVE_PCIE_1_CFG			7
++#define SLAVE_PRNG				8
++#define SLAVE_TME_CFG				9
++#define SLAVE_APPSS				10
++#define SLAVE_CNOC_CFG				11
++#define SLAVE_DDRSS_CFG				12
++#define SLAVE_IMEM				13
++#define SLAVE_PIMEM				14
++#define SLAVE_SERVICE_CNOC			15
++#define SLAVE_PCIE_0				16
++#define SLAVE_PCIE_1				17
++
++#define MASTER_GPU_TCU				0
++#define MASTER_SYS_TCU				1
++#define MASTER_APPSS_PROC			2
++#define MASTER_GFX3D				3
++#define MASTER_LPASS_GEM_NOC			4
++#define MASTER_MSS_PROC				5
++#define MASTER_MNOC_HF_MEM_NOC			6
++#define MASTER_MNOC_SF_MEM_NOC			7
++#define MASTER_COMPUTE_NOC			8
++#define MASTER_ANOC_PCIE_GEM_NOC		9
++#define MASTER_SNOC_GC_MEM_NOC			10
++#define MASTER_SNOC_SF_MEM_NOC			11
++#define MASTER_WLAN_Q6				12
++#define SLAVE_GEM_NOC_CNOC			13
++#define SLAVE_LLCC				14
++#define SLAVE_MEM_NOC_PCIE_SNOC			15
++
++#define MASTER_LPASS_PROC			0
++#define SLAVE_LPASS_GEM_NOC			1
++
++#define MASTER_LLCC				0
++#define SLAVE_EBI1				1
++
++#define MASTER_CAMNOC_HF			0
++#define MASTER_CAMNOC_ICP			1
++#define MASTER_CAMNOC_SF			2
++#define MASTER_MDP				3
++#define MASTER_VIDEO				4
++#define MASTER_CNOC_MNOC_HF_CFG			5
++#define MASTER_CNOC_MNOC_SF_CFG			6
++#define SLAVE_MNOC_HF_MEM_NOC			7
++#define SLAVE_MNOC_SF_MEM_NOC			8
++#define SLAVE_SERVICE_MNOC_HF			9
++#define SLAVE_SERVICE_MNOC_SF			10
++
++#define MASTER_CDSP_PROC			0
++#define SLAVE_CDSP_MEM_NOC			1
++
++#define MASTER_PCIE_ANOC_CFG			0
++#define MASTER_PCIE_0				1
++#define MASTER_PCIE_1				2
++#define SLAVE_ANOC_PCIE_GEM_NOC			3
++#define SLAVE_SERVICE_PCIE_ANOC			4
++
++#define MASTER_A1NOC_SNOC			0
++#define MASTER_A2NOC_SNOC			1
++#define MASTER_APSS_NOC				2
++#define MASTER_CNOC_SNOC			3
++#define MASTER_PIMEM				4
++#define MASTER_GIC				5
++#define SLAVE_SNOC_GEM_NOC_GC			6
++#define SLAVE_SNOC_GEM_NOC_SF			7
++
++
++#endif
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.50.0
 
