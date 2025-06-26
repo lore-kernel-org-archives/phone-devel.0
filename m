@@ -1,169 +1,220 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639CA1C84DF
-	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 21:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E0C1891A9;
+	Thu, 26 Jun 2025 10:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750885417; cv=none; b=QnlAkn/YHztTRAGuhQdTatX3TBicb+IWCk0yoKCoGPzLdnM+JHvGdk0GrOT6MDYd5QsP5AjAbY5n3L/UjVE3UsPEzUhXk/+vlI88eAG83pYyjuatx1q8u8mYY8r7cXsSFUKeO0iWISePolE+JZvsXyYlPzkm//lMvyKg0VPXUbY=
+	t=1750932033; cv=none; b=N6zNoHdFcHQBrfv8jISIgV9RpxI3tIhuhwdkpZcoxL4LulYLUzEmDXoMYWVAmNUKrBelgtrLNlpFEI2ljRvusr86+7lJh4B7WLLFLGIejJvfu8/GkoyPtVI8CLiCVjbyRTQIlQql7jKP+SfKMuTOdgqKNKZcHq3KBf5Y8WOqQus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750885417; c=relaxed/simple;
-	bh=BA1SJ7BB+xjW15IIb8AKZyMEAqBjcfpDeU4wKnF9SNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KXyvk6SQZ0GElzvVn/Z+Cn2RgI+aioKYLKj8Mgp5hE/70zk/xyop5VGFCrxsu2nEbTPI/5nfr9fCOM8M+JhNcC2hLm9hdaAplyEtowBVf6VyVsYtgNc3LxXMOpe0jWEGgGYMVqhMI57TvsZ/vPVQf/SLcy6oeifqsC+TVUQGjwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jE5QY8OC; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1750932033; c=relaxed/simple;
+	bh=ztHG0MpcdbBlHhSE3ZNvUzBLdwqtfGKtg90w7ScL/pk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JhZp0q8EArCWApCa1SlKOlnIp/4rFH25KsWu8AixmUjL5KH9NbQLG2GbUBFZMgUbJGU0QOYBRt5V1Ko40YzzOjIaKycADB72yYDUNWpgyXxXlUrdh88UhsT1bSQ6MtRtphZ2g/Lywn82UR5/x3EWw+gxczTOq+tyhR+W5XZiRpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MozhqSKD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jE5QY8OC"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PAIEvr022517
-	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 21:03:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=6G8NazoQCjyeRDRCOe2NN6H/
-	BOfkB3FLygIjOlcUYwc=; b=jE5QY8OC95ET4xnGwB0hcpWGffIshWW7qDsJ7IbU
-	ODJMc6E7WrvkXfdg6/UTmUu/+QwSdIij1tBuUMI5fuM9jU5adiawiAb5P8k/Q1VL
-	oYggcBezPDsNBp/gx05kv/seoUZsbs0cbD8fdWYYbUe1ztlcvlI5FzXIQM8FE+Uv
-	kFheIsCpk4cT70gNQXsj4NzCuZ4/H0AEnPEUiqy+iatYPWx6X1BvoCGWTUzMxKue
-	9XcuZ8m1GnD7ovHobwgw649P3wOqRBYHoT4AjMf6JEIMi1VurFLHTznQdJlFqO2j
-	3vkLesROGNrUcSCNVHFZaSmywIlOcis53kzvuZVBHWOOmA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f2rq1cty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 21:03:30 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7c5bb68b386so76368285a.3
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jun 2025 14:03:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750885409; x=1751490209;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6G8NazoQCjyeRDRCOe2NN6H/BOfkB3FLygIjOlcUYwc=;
-        b=mxCk77TM9vCGVl67oGpVOWUpwkYYeoQZQ6EV+j2jv0jDnXUklI9z//sdy2QJ14cKG3
-         firY9Q2qDE8k4xT4Jd3z1NL3NwKKIa8apSEPuvL1HWQ0QdqWdpX8is3ICqWCL/dekF7V
-         d6c8iWcZq+3RgqXM3BjZXfDcH8RXc27+2XRwrmJnuWaqe1OI4fzMwzTnt36aA0mU+t3k
-         /vxldQi0Iv7YiUNX8mdY5EjnOWQcVTbyeksXW4itCtv8e4Osi2r+WDcEYDS26HW4Eq9f
-         PcvifUGZsg2rRqPFx5YTmErqtmNktrg11o4JzXTKhpugBW/bFSnKynlPFuJ2iL9rWVwP
-         1BCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKf23cIDsR0Zf1ulgOVNjz1SMG9b6Jj2FwCNkvc04S5MXIrY+GVlwrMugzAaAfXbL7hjBNJ+JmJ6RVFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySYUSH8hV8vNwuGNgngg2pyKPIe/ofrqxsfCyWBEuFvE3yplHB
-	8s/bhmMjKls+INcKERk3hbsDxdnTXXjGwm6CR1VtySrtc01FMz/PiWMKNDGi9ONySPvjQX7e07F
-	9s+PnhsvVDu0sliiRyqOHQejX0H/bddlZbWD9ItLVIphQjzSgDFDve36dXM9vG8319A==
-X-Gm-Gg: ASbGnctcnL4226VttQNazgJaM3gK6KJjkQxtxh0D7RNEJM0GIJcGs3tR3aZNBFvHxIV
-	MbZZUqa3SoGEh5gBu0pcn9jAN9gWkmqwJrbw0EvMdMBiY/oWVloeR6HeZkYbkYiXYHxUTacTbf+
-	d18DzGO+jp9/2Doz0ZCeHEKOZZ0qD9EI7YkqOd4wX/o0AKDChOK6oO4jnQVc5IQSF0qaVSCLB6E
-	7LxhcuJqMsZ24NHhBUgN8+LVciZkgBcLPsImrEQYhFn9VjlfnO4LrVBb/zmhmSdOv1AJzL6HMD/
-	4pP+9nJdxoMNhKtYQPwtyHZr02uMaFYSmSSSFxknfZnolpaAWX8AVvKDRgtN+TXkhFlk6qqlV9F
-	2DqSQWRKnKenwO3Y/qeA6T6j3xu7s0pwqOYA=
-X-Received: by 2002:a05:620a:6293:b0:7d3:8df8:cc04 with SMTP id af79cd13be357-7d429754e9cmr611509885a.35.1750885409407;
-        Wed, 25 Jun 2025 14:03:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7oKjmuvEEF1WQFmTjT2Ttz48tRtbggO2WDZJ3rR8g4bzcxgd7OZWfwRoKuiaa2MrZBIv4BA==
-X-Received: by 2002:a05:620a:6293:b0:7d3:8df8:cc04 with SMTP id af79cd13be357-7d429754e9cmr611504685a.35.1750885408782;
-        Wed, 25 Jun 2025 14:03:28 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b97f594e0sm20999961fa.23.2025.06.25.14.03.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 14:03:27 -0700 (PDT)
-Date: Thu, 26 Jun 2025 00:03:26 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Fenglin Wu <quic_fenglinw@quicinc.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add support for PMXR2230 PMIC
-Message-ID: <6zut6hiwig4qanrmloqvibx4tmpb6iv23s3hp7bb4ja6jzzia3@wnre6i3mukbp>
-References: <20250625-sm7635-pmxr2230-v1-0-25aa94305f31@fairphone.com>
- <zmqkdpmji2uodm3mxcteteyhfkef47kihola6vtxb4mhuynqwz@hvgfd2637mhz>
- <DAVPDN4U6FSJ.1MHMT5G04KSKA@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MozhqSKD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119BDC4CEEE;
+	Thu, 26 Jun 2025 10:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750932033;
+	bh=ztHG0MpcdbBlHhSE3ZNvUzBLdwqtfGKtg90w7ScL/pk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MozhqSKDFZ+NssA18e3FYHq21/3we0D4O+FYHMCeHOLifX9P0K30dQvLReNmsfOgi
+	 UhJ9h2X6sAShdeXhxmOemEd7I6o2BpWXYs3BbdzvBCa3VvrXmZp+Tje2pzib+PxScl
+	 iqXJEYe4jDVKXSGD5oMIjUnFf7eAlNlEOW7vDfbgVJ+9LqQ8yPQd5X9dVZQ47FS+ob
+	 bGkCf7OnQ1v2jk2/nhm9xJgQH3zzAaRzttU2t7yDFAs7BUmjcykywrpB9rXMzGCcur
+	 lPgLas4OJW7dXkhew6mkP/EfE9G2CFVzDTJTmBo2tlJHTzIYalGNqEY1wzs1iTmfiD
+	 mLZ5iTlxsxfYA==
+Message-ID: <50fa344c-d683-420c-a3b5-837ec6d8e93e@kernel.org>
+Date: Thu, 26 Jun 2025 12:00:24 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAVPDN4U6FSJ.1MHMT5G04KSKA@fairphone.com>
-X-Authority-Analysis: v=2.4 cv=NdDm13D4 c=1 sm=1 tr=0 ts=685c6422 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6IFa9wvqVegA:10 a=6H0WHjuAAAAA:8 a=TnUiieDH8m5hmC2EXGUA:9 a=CjuIK1q_8ugA:10
- a=PEH46H7Ffwr30OY-TuGO:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE2MSBTYWx0ZWRfX3asJrhfxCZ9V
- PfBz0CjOIThIfvociPzhC2hGkkHQa6f4DNiAy4dLwmZSTl03ILxmmXWmMUGTWpWZzxZvAk29ox6
- KRl9a2DxVOCTxukb6ku2jCVuD4ec+DxoruobBYdHmQ3QaSCxMm8dG5HmHnesun+Z/Q63A/ZJPFa
- lX7mKah9DxELc93U7JEnmigGECtX0LUikZSWMkn8WC1Z4sfCpykudJ2MUEt5Aha/nA8KTeE3PiS
- Yz+iK5T976MtQGS/yUe1ZqA75SRR2PdjlDlzXr31i6ndtbDqp1HLGORIO+ygl6bYT7cJ1zjgpLc
- suDt0Hxf7vjSNM+I4drY+1V1fd7O09v74opc08LuPQVxzlhisI5x8g/pof0QJ84Owdvd2yPB14u
- 0iwQMYBx9hwZBSz0xI36LaMXE0Z4LHQtkfWkHUbGou7Ul5p854o4OXCQgX355B3MGlz0yj9p
-X-Proofpoint-ORIG-GUID: rG7TEYbU1O-Nnbl7xZrbJCY0UCjGAsXn
-X-Proofpoint-GUID: rG7TEYbU1O-Nnbl7xZrbJCY0UCjGAsXn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-25_07,2025-06-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 adultscore=0
- clxscore=1015 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506250161
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/4] media: dt-bindings: Add qcom,msm8939-camss
+To: vincent.knecht@mailoo.org, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org>
+ <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 25, 2025 at 05:01:29PM +0200, Luca Weiss wrote:
-> On Wed Jun 25, 2025 at 4:25 PM CEST, Dmitry Baryshkov wrote:
-> > On Wed, Jun 25, 2025 at 11:18:36AM +0200, Luca Weiss wrote:
-> >> The PMXR2230 PMIC is used in conjuction with SM7635. Add binding docs
-> >> and the devicetree description for it.
-> >
-> >
-> > Please use PM7550 instead.
+On 13/06/2025 11:33, Vincent Knecht via B4 Relay wrote:
+> From: Vincent Knecht <vincent.knecht@mailoo.org>
 > 
-> I'm happy to not follow downstream naming conventions if being told, but
-> do you have any details whether PMXR2230 == PM7550, or PM7550 is just
-> another SW-compatible PMIC as PMXR2230.
-
-It is PM7550.
-
+> Add bindings for qcom,msm8939-camss in order to support the camera
+> subsystem for MSM8939.
 > 
-> Also we already have qcom,pmxr2230-gpio upstream, so that would need to
-> get updated for the PM7550 name.
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-No, leave it be. We should not change existing compats for no reason.
+Drop, you did here some unusual changes.
 
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> ---
+>  .../bindings/media/qcom,msm8939-camss.yaml         | 254 +++++++++++++++++++++
+>  1 file changed, 254 insertions(+)
 > 
-> Regards
-> Luca
-> 
-> >
-> >> 
-> >> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >> ---
-> >> Luca Weiss (3):
-> >>       dt-bindings: leds: qcom,spmi-flash-led: Add PMXR2230
-> >>       dt-bindings: mfd: qcom-spmi-pmic: Document PMXR2230 PMIC
-> >>       arm64: dts: qcom: Add PMXR2230 PMIC
-> >> 
-> >>  .../bindings/leds/qcom,spmi-flash-led.yaml         |  1 +
-> >>  .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |  1 +
-> >>  arch/arm64/boot/dts/qcom/pmxr2230.dtsi             | 63 ++++++++++++++++++++++
-> >>  3 files changed, 65 insertions(+)
-> >> ---
-> >> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-> >> change-id: 20250620-sm7635-pmxr2230-ee55a86a8c2b
-> >> 
-> >> Best regards,
-> >> -- 
-> >> Luca Weiss <luca.weiss@fairphone.com>
-> >> 
-> 
+> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..9fbb4b204ac8728b822864ad8336aa9d826d6b5b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/qcom,msm8939-camss.yaml
+> @@ -0,0 +1,254 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/qcom,msm8939-camss.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm MSM8939 Camera Subsystem (CAMSS)
+> +
+> +maintainers:
+> +  - Vincent Knecht <vincent.knecht@mailoo.org>
+> +
+> +description:
+> +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm platforms
+> +
+> +properties:
+> +  compatible:
+> +    const: qcom,msm8939-camss
+> +
+> +  reg:
+> +    maxItems: 11
+> +
+> +  reg-names:
+> +    items:
+> +      - const: csi_clk_mux
 
--- 
-With best wishes
-Dmitry
+No, I already provided arguments in two lengthy discussions - this is
+not sorted by name.
+
+Keep the same order as in previous device, so msm8916 for example. Or
+any other, but listen to some requests to sort it by some arbitrary rule
+which was never communicated by DT maintainers.
+
+
+> +      - const: csid0
+> +      - const: csid1
+> +      - const: csid2
+> +      - const: csiphy0
+> +      - const: csiphy0_clk_mux
+> +      - const: csiphy1
+> +      - const: csiphy1_clk_mux
+> +      - const: ispif
+> +      - const: vfe0
+> +      - const: vfe0_vbif
+> +
+> +  clocks:
+> +    maxItems: 24
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ahb
+> +      - const: csi0
+> +      - const: csi0_ahb
+> +      - const: csi0_phy
+> +      - const: csi0_pix
+> +      - const: csi0_rdi
+> +      - const: csi1
+> +      - const: csi1_ahb
+> +      - const: csi1_phy
+> +      - const: csi1_pix
+> +      - const: csi1_rdi
+> +      - const: csi2
+> +      - const: csi2_ahb
+> +      - const: csi2_phy
+> +      - const: csi2_pix
+> +      - const: csi2_rdi
+> +      - const: csi_vfe0
+> +      - const: csiphy0_timer
+> +      - const: csiphy1_timer
+> +      - const: ispif_ahb
+> +      - const: top_ahb
+> +      - const: vfe0
+> +      - const: vfe_ahb
+> +      - const: vfe_axi
+> +
+
+Also messed up order.
+
+
+> +  interrupts:
+> +    maxItems: 7
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: csid0
+> +      - const: csid1
+> +      - const: csid2
+> +      - const: csiphy0
+> +      - const: csiphy1
+> +      - const: ispif
+> +      - const: vfe0
+
+As well.
+
+
+
+Best regards,
+Krzysztof
