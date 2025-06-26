@@ -1,65 +1,65 @@
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A98222590
-	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 10:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5364926C3A9
+	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 10:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750934898; cv=none; b=cVMy0BWpajx/HZVZkSH42a2CUECU3oxRd4Xmeg1QPZkMBjnLIwgXM8KfWYxHQl3vFvwvHyyxo7vAgpWgGI++Ren0nyCgtFGyQzdrFE+1Ey3QdweA1OzFguBL78HFIo3WKJJQbz7Wgvla1mcDMX8BA79kAyo8TIPCM9k0yoWzKpc=
+	t=1750935409; cv=none; b=VN3f8g5Nj04y59phhYKjRCDCBWvJc/vpPnX2v/kgXOytSUk81TSkEAm1mLIv9KAHw3zzk59UX9pl/1orFMmAVFYbJ9FNjZfPFnG9sjC7/3DT1X/Rj7TyzD5VYF3F3/nkzoYyjJXcYsv+awh/iDVBx6tzLzprtm5kqNoEUGsOTSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750934898; c=relaxed/simple;
-	bh=iDPYcXFSHqv1aXfl8/YJ053KuD2moVV4g3YDzQAcxtc=;
+	s=arc-20240116; t=1750935409; c=relaxed/simple;
+	bh=unJVU3Xl3Wm7HDliPBmbf0uw3veqwlYT5BkTyANO19U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RR1GpPIzYEpurBfdSiBugK91Gn8dB8it7H13/DkLVsXwS+c3TolZPd+adpW8yBtuY//4c0VWfy+YWRhmFARDukAKoV8HucduCCjvNmxCkxLjSFvGDBSft3cZvzpQFq2rZlexiep0UFwbI5D8wG75xC2xeTkCVZ6FwEM0wPaX+IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z6YsGLt/; arc=none smtp.client-ip=209.85.128.66
+	 In-Reply-To:Content-Type; b=U0Q5+WKklOibt5oOzzZH0RbCMmSjIGoHGc8Eq/SH7SFRt6dPHdQTn9Earh1yBVV/5RhTArG4+AH0OSd94qWwEF9ejnPQFGwROKXBOVbmqDzOiQ14yE/bvQaMISW+/+uB5NZR4QkwyhP+5qzMmT65opQbcsrNvGtV8TfJQwYc6PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UEYEKqWd; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z6YsGLt/"
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-450ce3a2dd5so5834515e9.3
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 03:48:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UEYEKqWd"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b4b03e0a7so559761fa.0
+        for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 03:56:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750934894; x=1751539694; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1750935405; x=1751540205; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HUjw7qBE83HsX3Aeqbgt73oRkerz87TNCfkEGmj2ZvU=;
-        b=Z6YsGLt/8q+q8W5vV82LSVtbDK5gha9W0hqjDhIcqeSh5Dh8k1Gh4R/hqRSdw94aHe
-         euJPuorv3vsF/0ZJBbE2Tt4whDpaKAyRZcR6NM+IxTHUk9+BOlJALFNlhcXi/xU2G5XG
-         VbHz8E7yjx7RRf/nO/mlB5Ulkgn7L+Ppa5wqmUSzYA/4YhI0DEMJIl52eSBL5e1S4ZlZ
-         1VjDRIv2HS7twWHKqsgt1EXFl8q4XP/m91MhVyEFPuPAF3Gk65SQcjW9//8k1nXIUeE0
-         2p+JkYglpuFS7IC2K7f8YQTWDfqIatptlsSMA8p0nO3WndzbOfFOfqOMX0phQ8s0GNvC
-         gzmg==
+        bh=RrVEb7SOHXOjIaJsMr6PdsN8zJOeLk7RyAInvGFhJ0Q=;
+        b=UEYEKqWdJJgWuMFvBOsD4Q6B/UfuBOrxO0TvlXtnGGFC2fcQgqtvwC5yuFviBretQI
+         U5W6hcU9Lskj41m0iWJ59Supnxik4DeJ7Yb96UF9660zRiqfFTjIi0O+jJ0PCY6nq0pD
+         J/g4icH0y+p3xlKTqlbS7Nbi0iUcL2jWtfhuBywdLqZF/sdVfVLKrLx3TA3ZG4vo4f4I
+         Cn1evGDvVSE0KuJH33zrEmlYpEBQilUQj9ss6a11SUqfEZWnRFMppL4xEGMmBS+FIljU
+         wOqop6o9/fznGMq5qtWhULatKz9lDHxXqpV40EZCM2CCkbbr8bUVHK6qORgAhmN6aNZV
+         4S8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750934894; x=1751539694;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1750935405; x=1751540205;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HUjw7qBE83HsX3Aeqbgt73oRkerz87TNCfkEGmj2ZvU=;
-        b=JnzomQcnGeEsd8tAAjOb8ZM043Km09JH0jNI67Jt1+P+oZbaH9edKJ62qdbYoFVScz
-         ny5+0UasrKMWAw07ibmsIJxvINIl1GyOJ2aUJeOt7jrR8kU5kVyLvDBc3k9R7LdqIJWO
-         zaOn3m1eNSk7aHS2bq+ddYpckkqf+atghGdCTWXHwT2YmmiYjugGqNO0wqBr02O2XeTs
-         2RNcstFtI1z/5blUN3gCsw13sytck6diSkhY9xQUv2OODrWVklXZBW8o3K6xMYagg8nb
-         eqxjBTO2APrPf3iXyUaLCzRO0Ub88IqU/eLhibFNM1KxvrvfihuP+Qf5Xwfwgeouxgr/
-         ljZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVmDfIKfBmkQekHZZ6oIsLaIV7pdugV1xWVbeX9qtFD4mWcut7NnyTjjDw4qMCGonWcJYIGSw4f5usArw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0ed5t5sSXbcYz2NlGO800pf3NxR/g1VwH8lkdK7Ctp6V445kH
-	Lj8hKgi6g+mamAt0+xflf7ooGZRWDfdm1PKDcZanWD+rn6s7NMARTD6l66XkDpWFCWU=
-X-Gm-Gg: ASbGncuj8LdTU5Av6ZrQAh5wnhBXejK+ViuH42PBpanRXzjOxrRjJ1G1DSW1pyywXFT
-	C6n3/1h35ATThczYmX8Xy8pLFe3dgk3iwwCuyquomOwHjayQMJExsUKTa6b3SH/ckvpRQ8L1ZLF
-	VaaOGveT5CLhSLcEa6r1EM/3jl1mfqGjtUhpUewhkjMroOQYyXbZWP2p9A0kTkdqbiBBw8dl0TV
-	XnKsHLTJXP8mXTzLe7SH40BuMYhoEL8uqeXdPtM+rqKtcrAEDyWCHjMUJE5WQ6OrSTlkM0O9ugn
-	rogBGmljKKilCkbXUOA0yUozkFSe84DNjZ68/vVnuizrcFCEWgzhves176AotQjQu667Wdx7YFt
-	uujXLpS+fc7fGwVF8bJk109rEnK4=
-X-Google-Smtp-Source: AGHT+IGsQdj4iGv9FBGfoAWi9XRLBBqhbfDylK0ITEXpt4PSByT7nYhuvCMByEIesH6nO5RpBBlepQ==
-X-Received: by 2002:a05:600c:5490:b0:453:81a:2f3f with SMTP id 5b1f17b1804b1-45381afa899mr71269575e9.30.1750934894357;
-        Thu, 26 Jun 2025 03:48:14 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8114774sm7141630f8f.94.2025.06.26.03.48.13
+        bh=RrVEb7SOHXOjIaJsMr6PdsN8zJOeLk7RyAInvGFhJ0Q=;
+        b=j1jLDEgE8NPVsX82JqxWRPpyG5u0dLs9P8f9Nzbc8jwPnayqB+U4in/nJp7fSN/Wgq
+         0r9177RMMSYue/pBhOb1w7dHjLktRTJd9JKIg3RqpTWqKGKn61wsK0TxOEuDFKMOdqhZ
+         IvO++GNz94EpH2xEeEVWqIwdIyMG2yOjCxemYBdgXYpnX9nQCGQZLhu5Unzc+lSuJIMK
+         8HhkWINoloU2OGb83/ZLDRItrud5SVTJtgEqaqDGH4prCuwcHVE5rVV5Mjs++O2pbLrY
+         tyQeDeXLSFdRWzhNB13LV5fRa0/d9KeA+XgttB20jRhPgRsOFf1H1gRI/jQsgarwdshH
+         3GVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXK9LWzh9DMITALJ9BfAu3PFFlUEaV4dQLG28TCC6lJYlSlPirYBGyooMrNTEBc4/WSJSfUfl7x0v2GFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxODqhCF0Gx0+48LTEerN79mvmG4yQDl/Rv12co6HF6623ewx0M
+	WNV1qu93kXtjgXM2pkG9yMFRZuK1dT72m+X9y+Hrp6PKUh/AER5n+ytyYAPR3iAFcLc=
+X-Gm-Gg: ASbGnctBqxS8WBRyeg4Vpg5Lmh85StyQf/t0dLHCniB1rOhQmbdN03nylGx6HTxOZ2u
+	hZmy3wnnN0uDwUXatYI4dYD4VRfHVxuKbLD46sxgRYQ+UKxiLaF9eB8LGImWvtnyWxEpY11RxgY
+	vGOrUzO6gBnlcmWS2g9zf6p7dE2fQLAx5uwyyTYOIR0KSZ/igLuHhybnOQAHXcThNqwCiGMnwiE
+	1eNJNKjDKw+ZZDQItKvtXtU1KSOAfQ2HTX3+eSrHklHugnnBb7nVTLVewYORjxIfk183kqPz3Lw
+	JLYE1EIUsyUYxnQpTb9OJxth+8AmQHUUEB2AxbwK3/rzdGAimM+VgI3G4642kculgGeYABDjZdd
+	uz5KGydSmml9es+RDFyExjjaJyzzhmM0Sa/xv/TG6
+X-Google-Smtp-Source: AGHT+IH57sZpqtFwHoa4JW0LInHA8kw3WhTt17SJ6Qp+hkH5OY5V3UsY/0SWnVUa5DXSYTbv462qjA==
+X-Received: by 2002:a05:6512:234e:b0:554:f74e:9f0a with SMTP id 2adb3069b0e04-554fdd59ee7mr658062e87.14.1750935405424;
+        Thu, 26 Jun 2025 03:56:45 -0700 (PDT)
+Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553e41c2ef7sm2581675e87.144.2025.06.26.03.56.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 03:48:13 -0700 (PDT)
-Message-ID: <d1b0b5c1-a031-4429-bb4b-ad8bc914c971@linaro.org>
-Date: Thu, 26 Jun 2025 11:48:12 +0100
+        Thu, 26 Jun 2025 03:56:45 -0700 (PDT)
+Message-ID: <c4fc49d5-e946-4526-9100-0e891c4a5e4c@linaro.org>
+Date: Thu, 26 Jun 2025 13:56:44 +0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,9 +67,11 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] media: dt-bindings: Add qcom,msm8939-camss
-To: Krzysztof Kozlowski <krzk@kernel.org>, vincent.knecht@mailoo.org,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+Subject: Re: [PATCH v5 2/4] media: qcom: camss: Add support for MSM8939
+Content-Language: ru-RU
+To: vincent.knecht@mailoo.org, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -77,138 +79,61 @@ To: Krzysztof Kozlowski <krzk@kernel.org>, vincent.knecht@mailoo.org,
 Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org>
- <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
- <50fa344c-d683-420c-a3b5-837ec6d8e93e@kernel.org>
- <e928a7c5-56d5-4f2b-b667-bdbefb506d1f@linaro.org>
- <0e030c09-0a89-4883-b958-85ddd6831407@kernel.org>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <0e030c09-0a89-4883-b958-85ddd6831407@kernel.org>
+ <20250613-camss-8x39-vbif-v5-2-a002301a7730@mailoo.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20250613-camss-8x39-vbif-v5-2-a002301a7730@mailoo.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 26/06/2025 11:28, Krzysztof Kozlowski wrote:
-> On 26/06/2025 12:19, Bryan O'Donoghue wrote:
->> On 26/06/2025 11:00, Krzysztof Kozlowski wrote:
->>>> +  reg-names:
->>>> +    items:
->>>> +      - const: csi_clk_mux
->>> No, I already provided arguments in two lengthy discussions - this is
->>> not sorted by name.
->>>
->>> Keep the same order as in previous device, so msm8916 for example. Or
->>> any other, but listen to some requests to sort it by some arbitrary rule
->>> which was never communicated by DT maintainers.
->>
->> I don't think if you look through the history that you can find a
->> consistent rule that was used to arrange the registers.
->>
->> So we are trying to have a consistent way of doing that. Thats why the
->> last number of additions have been sort by name, because it seemed to be
->> the most consistent.
+Hello Vincent.
+
+On 6/13/25 12:33, Vincent Knecht via B4 Relay wrote:
+> From: Vincent Knecht <vincent.knecht@mailoo.org>
 > 
+> The camera subsystem for the MSM8939 is the same as MSM8916 except with
+> 3 CSID instead of 2, and some higher clock rates.
 > 
-> Why are we discussing it again? You asked me the same here:
-> https://lore.kernel.org/all/8f11c99b-f3ca-4501-aec4-0795643fc3a9@kernel.org/
+> As a quirk, this SoC needs writing values to 2 VFE VBIF registers
+> (see downstream msm8939-camera.dtsi vbif-{regs,settings} properties).
+> This fixes black stripes across sensor and garbage in CSID TPG outputs.
 > 
-> and I already said - not sorting by name. You take the same order as
-> previous.
+> Add support for the MSM8939 camera subsystem.
 > 
-> If you ever want to sort by name, answer to yourself:
-> NO. Take the same order as other existing device.
-> 
-> If you ever want to sort by value, answer to yourself:
-> NO.
-> 
-> You both came with some new, invented rules of sorting, applied it, and
-> now you claim that "existing devices were sorted like that". What? NO!
-> 
-> Best regards,
-> Krzysztof
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 
-OK.
+I would repeat my ask given previously:
 
-Discussed this on Slack with Krzysztof.
+https://lore.kernel.org/all/877a72fa-cdae-4a66-9991-5ea86ef76aac@linaro.org/
 
-8939 should be like 8916 because these are devices of a similar class.
+<snip>
 
-x1e has a particular order if a new device x1e+1 comes along with a new 
-register then
+>   
+> +static const struct camss_resources msm8939_resources = {
+> +	.version = CAMSS_8x39,
+> +	.csiphy_res = csiphy_res_8x39,
+> +	.csid_res = csid_res_8x39,
+> +	.ispif_res = &ispif_res_8x39,
+> +	.vfe_res = vfe_res_8x39,
+> +	.csiphy_num = ARRAY_SIZE(csiphy_res_8x39),
+> +	.csid_num = ARRAY_SIZE(csid_res_8x39),
+> +	.vfe_num = ARRAY_SIZE(vfe_res_8x39),
+> +	.link_entities = camss_link_entities
 
-reg-names:
-  23     items:
-  24       - const: csid0
-  25       - const: csid1
-  26       - const: csid2
-  27       - const: csid_lite0
-  28       - const: csid_lite1
-  29       - const: csid_wrapper
-  30       - const: csiphy0
-  31       - const: csiphy1
-  32       - const: csiphy2
-  33       - const: csiphy4
-  34       - const: csitpg0
-  35       - const: csitpg1
-  36       - const: csitpg2
-  37       - const: vfe0
-  38       - const: vfe1
-  39       - const: vfe_lite0
-  40       - const: vfe_lite1
+There shall be no more dragging of the .link_entities, it's gone
+a bit more than 6 weeks ago.
 
-reg-names:
-  23     items:
-  24       - const: csid0
-  25       - const: csid1
-  26       - const: csid2
-  27       - const: csid_lite0
-  28       - const: csid_lite1
-  29       - const: csid_wrapper
-  30       - const: csiphy0
-  31       - const: csiphy1
-  32       - const: csiphy2
-  33       - const: csiphy4
-  34       - const: csitpg0
-  35       - const: csitpg1
-  36       - const: csitpg2
-  37       - const: vfe0
-  38       - const: vfe1
-  39       - const: vfe_lite0
-  40       - const: vfe_lite1
-           - NEW ENTRY GOES HERE csid3
+https://lore.kernel.org/all/20250513142353.2572563-4-vladimir.zapolskiy@linaro.org/
 
-A new SoC with a significantly different architecture could have 
-different ordering of regs.
+> +};
+> +
 
-The main block should go first which means the above should look like:
+For sake of simplicty you may include that particular change preserving
+all its tags into your MSM8939 changeset, it will help a maintainer
+to resolve merge conflicts.
 
-reg-names:
-  23     items:
-  24       - const: csid_wrapper
-  25       - const: csid0
-  26       - const: csid1
-  27       - const: csid2
-  28       - const: csid_lite0
-  29       - const: csid_lite1
-  30       - const: csiphy0
-  31       - const: csiphy1
-  32       - const: csiphy2
-  33       - const: csiphy4
-  34       - const: csitpg0
-  35       - const: csitpg1
-  36       - const: csitpg2
-  37       - const: vfe0
-  38       - const: vfe1
-  39       - const: vfe_lite0
-  40       - const: vfe_lite1
-
-I think I personally haven't understood what was meant by "devices of a 
-class" but its clearer now.
-
-Appreciate the explanation.
-
----
-bod
+-- 
+Best wishes,
+Vladimir
