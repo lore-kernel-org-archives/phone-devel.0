@@ -1,65 +1,73 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CBE275847
-	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 11:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F1C2EF9B5
+	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 19:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750938072; cv=none; b=CJJzXlIFwxXMh1v1MSMalfQ3C5nEOSiPdThNha1Ns3h0Hr2FS2npvE8lSqq0M+ykqM1bj6ceiu8fBWYLqAhtcTGUSp4+4Lr1YPc69d1IBe3lMDJgoHh6Mfhir0/oYoHWf5ENL5cxnmW1fWFC7YZtFKKO34vmcG7O0rr5v8zATOA=
+	t=1750965635; cv=none; b=AV/mPqBVADgbxB8UeLH0PYyStqQGLuEZ7rpjWSu8INBeaf/Ddfc3LnnaUJRRwQJ3BMfeQwPfO2tI8Iha8Cv3W6Xyablk6e6zwOvrYivcM/tJu/WdM2TpJ2MHUI05yWX4Zkj4yvPCvX2oweyXYVKghtwpNC0KHQboesFp+04RFxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750938072; c=relaxed/simple;
-	bh=23sqk4v2eqYQR4dH0ahZ30jSvULJQQx9I0FVKFqv0Hc=;
+	s=arc-20240116; t=1750965635; c=relaxed/simple;
+	bh=5r6q7+0wAzu943Z2jyQlPtPeKr7oOGYM95kHKprWAYg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=II+pVO4RwrjRChng6BizrbI+ohw7T5NCU+kcs+/QvWdt32du62I76wFHypdNyxhUeLQpnTjHmjJXTLDJh6wHCdSrXJUorCPw8FjpzN4pNXiclHD2GTvPqRSMWCvFZGVzjBdSXBpk3axW+qmJYRsLANclD96fJfHc7M860kN0+vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k/bBJboM; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=MsvrUTP6fL9bNsrSU5Gek2ApdzrItw5PjAV7fyPhFcqRjQJsKQkgfRYMrlbMlVI9J3D8ZTivquPuWUSyPk4/nZ0ZkgwYM1BBkth4dIz+PqYeWgxIkce4+dsxfN8reCC745h3BZbLjCnQ/Q0M8+HuYf2ZPfpCefteWrcGQLnR1oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WRwBVy/B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k/bBJboM"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-450cb2ddd46so4601895e9.2
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 04:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750938069; x=1751542869; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P84028oJYeMHhuu45/JE+9IuzDSe16FA2FfJuutHg1I=;
-        b=k/bBJboMSoALuPjjYq5/Itd8MYr70oapxNIzIRTF9Kyp2NiznggJN0g7q16l+XKPAX
-         U6oGdAhZOQWpNfHHmaUzOmz8Chw8DjLKb8/UAAWh1EjQ8RaoKKPFqrdBF007HAyWJk/J
-         kkTVf++od09pmO3GFCz88q8ECvlZ6V6zmZcozGG5NGlC0aHQRy9PuC3CVhlALgT+6Da0
-         NwsYbpS6N4TFC1jFEPOdUW2wFGyxthVz8FspVsOpMqDhhmhyzTLRHXGkgzGB/EOo/TdG
-         Bf6a8/VzCwqhNnPbCFrPJ14hvyAGYGfcb7I7/vlVCjVwVG3jylLTuTso1e9a+a9Zl5ID
-         7kKw==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WRwBVy/B"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55QJ7BWA030208
+	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 19:20:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0zOww6azj3OZ8n4+GX4w7Xx36kLdO3U5ZZUI4FQRwdg=; b=WRwBVy/BtSis8QCO
+	+/YTVUH4/AFeUJ6+bhVkZHelz1uZGyqE4xdOZPVNtH8jZmnVxa5jGJcxnCWamE+7
+	HBd++lNOOkubJ+YLzLbZcMWIdzkPpq7QPqFRvvPJVwh6BYgZrNuM2xle0Z8tun1C
+	yvsn+g5n3fjdpFdpQPTHsxFXBNTsVLhq08jQCrcsrpUjc8vFIWlDVP2arWcJZpBK
+	pptfx20PTEbhP45gUMvi6QsCL+wT7YrhHLesFWt3+MJpaGZIb54m1Qe4WmD05oRS
+	doqv2ikFoLKbJMvDoRnPaxogFK3s/yDNGGZPAZ3ZcdSOMdOtOv/mivXnwLy4Fb6v
+	11zcVQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47esa4wpbk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 19:20:33 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4a58580a76eso611631cf.0
+        for <phone-devel@vger.kernel.org>; Thu, 26 Jun 2025 12:20:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750938069; x=1751542869;
+        d=1e100.net; s=20230601; t=1750965632; x=1751570432;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P84028oJYeMHhuu45/JE+9IuzDSe16FA2FfJuutHg1I=;
-        b=e8DsMfzPFrY8uM22V9wzG9ZbYZaTH7KbkTd2qdrKmgYDr4iRkURuj9VSRL60idDGOb
-         3Z/1/WFmLeqj5WBE0GBxqUG9ThM1GwdOkctTu3Lnv48M7IqAU8w4Np0ybEx/VrDOcfmf
-         OKAOZz/aWuPGECenIRYK6M1mpqTX+peznXPvfsB/V6Vf6m9I6gKkHgVr4yHKcfqJneDP
-         6R0asGbJobg9b5+cyMXZYYZqXSVvFF+C3r3F1Yuyg7NU9EKEDAVGHy+WLdvaklp5MI4d
-         yysg6zvro683nKpO7B2yHE/x5iUMKN3FWV5kMuX5koitoWw5pNqa9IqmI02mQ8tCQKHU
-         ws0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXCvCN1/LZSMX6vN4rExDWmabEsUUG/HfvFKvTgT4TPg/DDBPbO29mbCUHoMprBMFeLShZ3lbaGMkRBxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7TLXuBtQ3XTjF9VzPPNJAiqUN2494574a+CQP+Dc4UYmr1uNs
-	/7xxzZrakZs1XIoSnJWVj6IZDpycNj5juBoByUj0t5+Jel8vTd8IA+bmSoXlI24YJsY=
-X-Gm-Gg: ASbGncsmI3B+NgK/7QLE6Q9D94GHfJUrugcKjtnu1ztP+mIrMeEcbteeSq7Dbnc5Vst
-	0uSozLxC84usm84HTCvf6eTs21YkxGIrmMlEZOPZK6vsUgkGFyMsQ5d0ZvfmfchYlu1gYYmurf2
-	D5bRndPab637ClO+no4hvxxRyweR779ugtO1NAnDyK1psW52qSNYCU6HWkpYkFNLyrStKaCXp7F
-	lVbDFQ5cBbE3QXlXKaTJ+vz/SSb9UDaO6oJD37+PBkAT2mXbxnR5KylSj2J+iGZMEHpaLOOugBN
-	wFMjoWqzahC5PL18/KplBLauKv8P7qXOoNX09NzDWJb+Fa7MQbMOee3UW8lPTslJxJ8wd6XYcg8
-	D/bwEei+8KoESvuS4cVfP8vSYI70=
-X-Google-Smtp-Source: AGHT+IEAvEe3QKbPqlojOnT5cd4wj/eJjPvaq56kQ0jC31K9fVvjUgwpQpVgZdXHuSVMcKcEFAeyxA==
-X-Received: by 2002:a5d:64e5:0:b0:3a4:e844:745d with SMTP id ffacd0b85a97d-3a6ed675141mr5949708f8f.56.1750938068846;
-        Thu, 26 Jun 2025 04:41:08 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538233c523sm47204785e9.6.2025.06.26.04.41.07
+        bh=0zOww6azj3OZ8n4+GX4w7Xx36kLdO3U5ZZUI4FQRwdg=;
+        b=JPfqBo/+lLQRcIT6q7OxANuMI1yTMCI58g0PKC5wpBtwvPgwF7tNwY/yg/0mPKmi4Z
+         NU00EqhCRw45xqUwyIhmW8Kz8wImdf5yBfbZg5hMXurzYavVioTF6f7QhkRlYH2Cq7fH
+         Xq0KqInDCnad0oCF5Q4sfKyzpGdT2ovqe7+veUYPu1HRm7zflCru/GagV5USRcZP1z5e
+         RBgnGAHbk99klFhgAgiFaYeq4Y9KAcYtGmKlgTAmDRtO2xdo6mOnG00r/5DqbdKnoJOC
+         lUhNWlLiLnE1yBNl+RWAR3L9dfAiz7X5Co3Y2q3zscMhs2sjgKimiFECveLxG6/mr4hM
+         gCCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUieeWQDCsDJydAtOgS4rzKklBdFoaVAoVYWPrPkwaKXHEM8LDDUMOpMR2hOvGQgY27iBnJwef5kGuzYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzbD+yJD6csQyJgL75+dkjE/1X4H1o07oGWrp94yBNi/2Sk7QU
+	zJYmcRObocI+92RTbv3x7DEtf9pXOYI2qtv9r9BQpjQW8hcE42PDk/EtbzvYAznElDHp9ebPQaV
+	gcO18X5CHZYHSEdv5OkC7yuEl+qeQRnwh935UeGBbpTwCFG0yQl7akLfHqa8+qxwEuw==
+X-Gm-Gg: ASbGncuIXDxo1szszbzLTpwiXstlLRYGW1WULWuaB0nJoTKja9h9q9SaTgy21eI6nP1
+	vXdfRcUg0UngjM0CvH0m96WcrtUDoDyFOTYU6//cVY59qhn5p9O33QxH5uMsZzoh4zh90yF5TCf
+	SSVG+llzibPnM34yjADKkCdFz/zZ+6H8s+i6a/GWx6ZW5hXje3AZJ9/T71xbffJXPbsTTrpNYle
+	RzwkhS10Rgs5xA8yLZQsFiGtCYn8vHq5Fad2ZBfexkrkfH0no01m3GG6MWUYN1ZYPo4Aq9v0ZfD
+	7ZuR9aVNUA7ClawEHTyPFZ86HxyfAVopngsYEzjowdE6q1J8h2ykCgPshcpX08nt1ty7uFTMwqR
+	hbBM=
+X-Received: by 2002:a05:622a:178d:b0:475:820:9f6f with SMTP id d75a77b69052e-4a7fcab375amr4100651cf.9.1750965631713;
+        Thu, 26 Jun 2025 12:20:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpEZc+VDoThophGjf8eCV3b76cou4xRyhNwgBBJqRGzQLg/M6WUxJq4j+uB+jHeRoCTB1C6Q==
+X-Received: by 2002:a05:622a:178d:b0:475:820:9f6f with SMTP id d75a77b69052e-4a7fcab375amr4100491cf.9.1750965631159;
+        Thu, 26 Jun 2025 12:20:31 -0700 (PDT)
+Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae2140d91aasm44338966b.64.2025.06.26.12.20.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 04:41:08 -0700 (PDT)
-Message-ID: <8c83b5c1-b7ca-4fc8-9246-a950c356214c@linaro.org>
-Date: Thu, 26 Jun 2025 12:41:06 +0100
+        Thu, 26 Jun 2025 12:20:30 -0700 (PDT)
+Message-ID: <3dd39700-4fa7-44e6-8893-b46c601d772c@oss.qualcomm.com>
+Date: Thu, 26 Jun 2025 21:20:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,100 +75,70 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] media: dt-bindings: Add qcom,msm8939-camss
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, vincent.knecht@mailoo.org,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org>
- <20250613-camss-8x39-vbif-v5-3-a002301a7730@mailoo.org>
- <50fa344c-d683-420c-a3b5-837ec6d8e93e@kernel.org>
- <e928a7c5-56d5-4f2b-b667-bdbefb506d1f@linaro.org>
- <0e030c09-0a89-4883-b958-85ddd6831407@kernel.org>
- <d1b0b5c1-a031-4429-bb4b-ad8bc914c971@linaro.org>
- <ea5d7622-ef9d-4bfc-af64-87bd19664333@linaro.org>
+Subject: Re: [PATCH 3/3] remoteproc: qcom: pas: Add SM7635 remoteproc support
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250625-sm7635-remoteprocs-v1-0-730d6b5171ee@fairphone.com>
+ <20250625-sm7635-remoteprocs-v1-3-730d6b5171ee@fairphone.com>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <ea5d7622-ef9d-4bfc-af64-87bd19664333@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250625-sm7635-remoteprocs-v1-3-730d6b5171ee@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=eLYTjGp1 c=1 sm=1 tr=0 ts=685d9d81 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=6H0WHjuAAAAA:8 a=qm_u-Z9MdHEKZBNG23gA:9
+ a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-GUID: D40kcFbfZSxM2XW1IszBnS92RbGupAU3
+X-Proofpoint-ORIG-GUID: D40kcFbfZSxM2XW1IszBnS92RbGupAU3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDE2NSBTYWx0ZWRfX2ZSbyzC7hjXH
+ IQstZkbE+nJYFusqueHlhXfuKTeV1NiRi7GQFWDMSqn2EErtbNhpZ/+M+58TVSqXBaS9nYHOljJ
+ S0ccBnEkRGM7mq9s6YARis2B8pmL0VyU+cgHyopLijrrDFONCTlW/WRLA/MB14LnD1N+9gf10ep
+ bk2gl7+6/AomqDL8r5ofTp9dLTlXgQPKhMdlmxwUWJu8nc5UkMwNuT94klSCIPfdFFhXlflCPds
+ flbhIzZzMnU/wzZEuOOYPd7cIvtFcdVyvRxsVsMuv+ppe//gFnDiOqk5pWnGVebuqp2DV4rbs2c
+ LuYASoFy8hFanUpbsCX7SzfXohum+fZg/zbZWIDDaMInAYIxeRuzm3Ya6u1+1i5tc5UGgiye93i
+ ophwkseQOktaCEMfOrPf0GTuyr3DjUpH46594mk3rG4KnUqfzsQF6Igr7o5nIsMXDJR8Bl47
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-26_06,2025-06-26_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
+ suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ adultscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506260165
 
-On 26/06/2025 12:17, Vladimir Zapolskiy wrote:
-
-> What's about MSM8953 then?
-
-Should be fixed up to match 8916. We don't have an upstream user and we, 
-I, did the wrong thing.
-> Please see commit c830aff08d51 ("media: dt-bindings: Add qcom,msm8953- 
-> camss").
+On 6/25/25 11:15 AM, Luca Weiss wrote:
+> Add the different remoteprocs found on SM7635: ADSP, CDSP, MPSS and
+> WPSS.
 > 
->> x1e has a particular order if a new device x1e+1 comes along with a new
->> register then
->>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/remoteproc/qcom_q6v5_pas.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
->>
->> I think I personally haven't understood what was meant by "devices of a
->> class" but its clearer now.
->>
-> 
-> And I still didn't get it, how to read this "devices of a class"?
-> 
-> In particular why is MSM8939 a device of MSM8916 class and MSM8953 is
-> not?
-> 
-> For sake of simplicity I list only accepted CAMSS dt bindings:
-> 
-> qcom,msm8916-camss.yaml
-> qcom,msm8953-camss.yaml
-> qcom,msm8996-camss.yaml
-> qcom,sc7280-camss.yaml
-> qcom,sc8280xp-camss.yaml
-> qcom,sdm660-camss.yaml
-> qcom,sdm670-camss.yaml
-> qcom,sdm845-camss.yaml
-> qcom,sm8250-camss.yaml
-> qcom,sm8550-camss.yaml
-> qcom,x1e80100-camss.yaml
+> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+> index b306f223127c452f8f2d85aa0fc98db2d684feae..6aae61dea8d0dbb9cf3ce84b9dbebb77b5aa1d52 100644
+> --- a/drivers/remoteproc/qcom_q6v5_pas.c
+> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
+> @@ -1261,6 +1261,26 @@ static const struct adsp_data sdx55_mpss_resource = {
+>  	.ssctl_id = 0x22,
+>  };
+>  
+> +static const struct adsp_data sm7635_cdsp_resource = {
+> +	.crash_reason_smem = 601,
+> +	.firmware_name = "cdsp.mdt",
+> +	.dtb_firmware_name = "cdsp_dtb.mdt",
 
-I mean some old commits in Linux wouldn't make it through the 
-upstreaming process now.
+I wonder why we're not putting MBNs in here..
 
-8953 is not right and can be changed.
-
-8250, 845 may have bindings we wouldn't accept now but they have users 
-so we live with them.
-
-> I kindly ask to select a number of class defining IPs from the list,
-> so that all next ones will derive from those only, and not from
-> "another class". It's a task for a DT maintainer I presume.
-> 
-> Before completing this and getting a common understanding all next
-> work to provide CAMSS suppor for new platforms is not directed by
-> any policy, because the policy "do as it's been done before" is
-> applied inconsistently.
-> 
-I think I personally am clear on the rule from the DT people, even if I 
-may not get it right on subsequient submissions.
-
-The sort order thing is a red herring, in simple terms. We should be 
-consistent in device classes.
-
-For example TITAN 680 and 690 should look pretty similar, TITAN 340 and 
-990 probably can have greater divergence.
-
-Either way the sort order thing is a dead end, anything upstream on that 
-basis like x1e is probably fine because it is of its particular class of 
-device.
-
-8953 and 8939 should match their device class of 8916.
-
----
-bod
+Konrad
