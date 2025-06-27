@@ -1,131 +1,207 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A5A20AF87
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 19:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04022D9E6;
+	Fri, 27 Jun 2025 20:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751052414; cv=none; b=DUvKr0XMZtXRR/9gGosn4vpc7PflBjSdYEqkC0vmaoktM6Y57h4vGTaZN4S2cPZrOf/0+HDqoXGGSLBH/XxePfRKigj+r2ZfWLRd1VIiQLHscwTJx0mgJ2NmRgYUp9KCkLUFJiPePbOkc5aurCWdI+f70KLjkfPEbyRgaAi/6bA=
+	t=1751057073; cv=none; b=jz5vqTxRAs4XSJ6/onPNyXFd6NOgoz8wkYkDJ/pshJwsZpDseQCJC0YgTM/hlos0oZw28HH5jaZqR/Db5BF87h7ZkAkhUT5BOXqhSofPErLebshd0xUIWW+grQMbUheUSoxcL1/qCZRinRBrIYz+kVEreMrhPz3XcbY6vdqCU9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751052414; c=relaxed/simple;
-	bh=PgKJBp53dR2Ai67YO4V4HA071loDKNdxLue3b8RIr58=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=apevyIwB4jxCz7I0L1/OgcQA84ZSFieWyTbwF+O9LNqWZczqhGyhVTnhHeUdXgusvrZDiX34zoqONyDJdhl8ZLxAQGugKpN3PIGOwpcOWyqyaLq9pd1fgmJKYPwDwR1CkTseAhaijhHN5ZTp6brBMkBr8l2fAUP8lrevxEQVyQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fAvw9ewj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1751057073; c=relaxed/simple;
+	bh=5ybwmpFE7Qlupb6N5xt8amFVW1JpJnPiApvCG8fYQqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1klHhum042rdyemOdS0b11FNzJ/rbKyrjz8qAXxRsjFQoMbsGSbcwSgWNorbIzRCCFy5n16FruA1WrbLIxkJiHmEkQgDAYLIwwMV+FqgR6uroK8PPD9phyLU3Mu/RD7323ISa+sL974CK3wLlIxgYCc8q05YEiJNt9poyAGfSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BS/w/NCq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fAvw9ewj"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55RCHDDv027611
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 19:26:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	C34ONTM+joY3ACRb//NUdUTbM2c8N4wd1fosaRZcrkY=; b=fAvw9ewj+WXk6hsR
-	H7EEKDhYakCtAsWIFBtBE704V+9MVIFwgkjPJ8+ByILnTPMBhoHyLjXHyaSwHHY+
-	IHkBisTMnVksCJqHulekIir75GZ2VaWmMqFx1EfJ2Ko5YHW/k85gItEJnRMT/HPX
-	Tn2S/HQdebfWS+YHYrbAu5AhqdraMR8jQLpfw1e5VvOpNveO6+rDXIwdWEtnJR5P
-	vHUoOfLgbSNXQCBZwaDfnqVcxDryD4X4olYv2DRN9DEbzpK4n3H+IRZPFF3JB26V
-	gisA2Amo4581exSBsuQnRAGtivDoI4MC14M95n8FMm1RaQ69rdCzFqmFYmw4pzR5
-	AJqAtg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ec26j8hh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 19:26:51 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7d3eeb07a05so22710585a.2
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 12:26:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751052410; x=1751657210;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C34ONTM+joY3ACRb//NUdUTbM2c8N4wd1fosaRZcrkY=;
-        b=BJ9DxMZPmhfu6AaBzgPSo/VcCVlx4gbTuF1evkq+Ev6P+M6bew1UswywShGde6tfbn
-         XvAHOK0CuCz04BkLcf88CDlh1M+ztrEuBbtfLGIKb1v8v2wkBOVv5gVs4X96u2kPWW6I
-         Hyp4tK9aOyQodEMVz3uZMU32BTeNVO0qLvpmfYgfd4N4JnVZtJKEpWTPyItvKDqVqPag
-         +KeKfr7RKHdR70kDQCVbyDPkk4Svqq+NwVhoL13HjfyFmC64BkfChaVQv5NZavKwgyV9
-         A2RJ4HYmbWFv2B5GkFgVyoyKHcKaoffvgxnSQ4TXjN+6q1JIDrU+wWibHuysR6Rl0ISf
-         cJVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpYNKmq/sgZdSauzr0oXXwYTa7tyL5WqchSdLGnAsG9G1/TvuEW5FMM+YXkWc7Iewh5pSWJV8yMy4Wgw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUH5n5vjCeiRmv1SVuzSunreSCsdsa68VT0moyuxxglKsmU163
-	7S5zeMW269ujn2QNN5pmOrxN5bZds6yBoYmOyAwnkQoEqsYN5lx4994b9bKBsuh6jhbwPi6oRKP
-	x3ul/g+43h/kveW0vc1y2+1InmlW1gL7dQYXe3ZNhCnxpeVThNT4LgsVdcOnDED940A==
-X-Gm-Gg: ASbGncuePHi9BTQ/bqq/XOpbstH6Rw56h5TDPiCaN0xVdLNxs2ImM56PMB+Cweiyfiv
-	LFAAeK7/4G2wArDZ3wc5eHlCjkgxO+cHfWaO9jcYcKtb7RNn+kb45UrVGov0gmGmj1ykw0CkgoY
-	n7thR4zy+u0OiGJNPA5oP1isDjmEfpNiYxJ3q8rzpm+3OPA/NlMU9yYi+/xi4euffgHZUTgutWA
-	xFTA/N1++ze2YCdthUc4kqaTpyhMi0hBRztAlMLo8q7DTSRdWyPCTykT7/D9HWGw1iVmxJHpLF6
-	pq6h2CXqLTBN6jiKDgKCu/SaRpUxly8F/CCA0rUYPe1Jo7KXqcAkwtexY8QyqXTbZLxcj/PRpk2
-	hld4=
-X-Received: by 2002:a05:620a:4384:b0:7c3:cccc:8790 with SMTP id af79cd13be357-7d44c21acefmr18328485a.5.1751052410519;
-        Fri, 27 Jun 2025 12:26:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHDPYkLsnmO2nGzNZ10OMjymrNY7J2wqTDz4VWNzNFIV4cSvpU0BqsujQtneyalnxm/ShhOA==
-X-Received: by 2002:a05:620a:4384:b0:7c3:cccc:8790 with SMTP id af79cd13be357-7d44c21acefmr18326485a.5.1751052410034;
-        Fri, 27 Jun 2025 12:26:50 -0700 (PDT)
-Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c6bc2dsm181908766b.136.2025.06.27.12.26.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 12:26:49 -0700 (PDT)
-Message-ID: <18dddd39-6118-4b46-ba07-8304d1830798@oss.qualcomm.com>
-Date: Fri, 27 Jun 2025 21:26:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BS/w/NCq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3247CC4CEE3;
+	Fri, 27 Jun 2025 20:44:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751057073;
+	bh=5ybwmpFE7Qlupb6N5xt8amFVW1JpJnPiApvCG8fYQqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BS/w/NCqjH3hHE5sHfhxr0jVJSeRPB9XqdSFBvjLlmc9a2FiaPdaNFyEhkxYdwMnK
+	 l1yCNocVHitRQveBmK6BQTW1wMjFet/sfy/EvuN6nt/0I8xPGzKaQdzUzJf7CJORVq
+	 geyrk4nD1hg1OP8lGwq/TFZiYeb1GVXLurk2p6HWnnAfgm9J37E0U2xbBQ2BxAFOyl
+	 V5/CcjvwVuh2ez5E9RPhrm93ekxmicI3fHAgSrxF7nv9Pm5c2o3u45euAEtGi2lUvP
+	 bU5LI5hh8rrjq+cZKebh+OeKfHMIg5peSs8XYq8F96TVfYFDVNwe4pun4DHXp11cPz
+	 lVdeasbNuAHNQ==
+Date: Fri, 27 Jun 2025 15:44:32 -0500
+From: Rob Herring <robh@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: pinctrl: document the SM7635 Top Level
+ Mode Multiplexer
+Message-ID: <20250627204432.GA45217-robh@kernel.org>
+References: <20250625-sm7635-pinctrl-v1-0-ebfa9e886594@fairphone.com>
+ <20250625-sm7635-pinctrl-v1-1-ebfa9e886594@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] clk: qcom: rpmh: Add support for RPMH clocks on
- SM7635
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Taniya Das <quic_tdas@quicinc.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250625-sm7635-clocks-misc-v1-0-45fea645d39b@fairphone.com>
- <20250625-sm7635-clocks-misc-v1-2-45fea645d39b@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250625-sm7635-clocks-misc-v1-2-45fea645d39b@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDE1NyBTYWx0ZWRfX4IdRVy4pjilz
- lpxL2vuczxBd3UEaEH2F5Z9yBW4s5519e5YqgGv0/YkMxqydb0nA09IpUdB19B8gSGmdII354jI
- 1QGTUvVrTwzyJAjC3xikSZzkc6+L9RH1VJUaPLTqokTicZGR3E7RKtDMKvX2g2glIrL475kDvOI
- cN4S/Ntr7x5YiGqZ5LdHUJXv27mgtGQxBsm1bsYHW3ed2WWHxkUMGV3vpDSLwQOgJulFDGYfI+f
- 2+fEEkegpRBN9P+haYPYk6WtYatcXsr8NrpStI5dAVwPUfQW6Gg0T4eRdGlxmRt2B3JdjRtnat+
- saLPBQePKx5KSpVddxoSHwpGU9KVHRwikDaedZ8qxnykUkL0m740WQpHGjJHnKr9kMBH2w+GE25
- AJ0kGuL0wdQ4YfOKMeorfscnUJp/TJcWIjIbe6R44xxDdg5+mApYZJOHwHBN0OAFqhsGgP0O
-X-Authority-Analysis: v=2.4 cv=XPQwSRhE c=1 sm=1 tr=0 ts=685ef07b cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
- a=WWQFUNGd85j635JlVwcA:9 a=QEXdDO2ut3YA:10 a=AYr37p2UDEkA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: NNzFfKZC63FZ1lR6mgZNz2sIUmgqhqgf
-X-Proofpoint-ORIG-GUID: NNzFfKZC63FZ1lR6mgZNz2sIUmgqhqgf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-27_05,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0 mlxscore=0
- spamscore=0 phishscore=0 malwarescore=0 mlxlogscore=931 bulkscore=0
- priorityscore=1501 adultscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506270157
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625-sm7635-pinctrl-v1-1-ebfa9e886594@fairphone.com>
 
-On 6/25/25 11:12 AM, Luca Weiss wrote:
-> Add support for RPMH clocks on SM7635 SoCs.
+On Wed, Jun 25, 2025 at 11:12:01AM +0200, Luca Weiss wrote:
+> Document the Top Level Mode Multiplexer on the SM7635 Platform.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
+>  .../bindings/pinctrl/qcom,sm7635-tlmm.yaml         | 133 +++++++++++++++++++++
+>  1 file changed, 133 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,sm7635-tlmm.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,sm7635-tlmm.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..3f49239efb6e866015b40e3477a8bd0edd21b1fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,sm7635-tlmm.yaml
+> @@ -0,0 +1,133 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/pinctrl/qcom,sm7635-tlmm.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Technologies, Inc. SM7635 TLMM block
+> +
+> +maintainers:
+> +  - Luca Weiss <luca.weiss@fairphone.com>
+> +
+> +description:
+> +  Top Level Mode Multiplexer pin controller in Qualcomm SM7635 SoC.
+> +
+> +allOf:
+> +  - $ref: /schemas/pinctrl/qcom,tlmm-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: qcom,sm7635-tlmm
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  gpio-reserved-ranges:
+> +    minItems: 1
+> +    maxItems: 84
+> +
+> +  gpio-line-names:
+> +    maxItems: 167
+> +
+> +patternProperties:
+> +  "-state$":
+> +    oneOf:
+> +      - $ref: "#/$defs/qcom-sm7635-tlmm-state"
+> +      - patternProperties:
+> +          "-pins$":
+> +            $ref: "#/$defs/qcom-sm7635-tlmm-state"
+> +        additionalProperties: false
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Is there really value in continuing this complicated QCom pattern? Can 
+we just have 1 level or 2 levels only?
 
-Konrad
+> +
+> +$defs:
+> +  qcom-sm7635-tlmm-state:
+> +    type: object
+> +    description:
+> +      Pinctrl node's client devices use subnodes for desired pin configuration.
+> +      Client device subnodes use below standard properties.
+> +    $ref: qcom,tlmm-common.yaml#/$defs/qcom-tlmm-state
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      pins:
+> +        description:
+> +          List of gpio pins affected by the properties specified in this
+> +          subnode.
+> +        items:
+> +          oneOf:
+> +            - pattern: "^gpio([0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-7])$"
+> +            - enum: [ ufs_reset, sdc2_clk, sdc2_cmd, sdc2_data ]
+> +        minItems: 1
+> +        maxItems: 36
+> +
+> +      function:
+> +        description:
+> +          Specify the alternative function to be configured for the specified
+> +          pins.
+> +        enum: [ gpio, aoss_cti, atest_char, atest_usb, audio_ext_mclk0,
+> +                audio_ext_mclk1, audio_ref_clk, cam_mclk, cci_async_in0,
+> +                cci_i2c_scl, cci_i2c_sda, cci_timer, coex_uart1_rx,
+> +                coex_uart1_tx, dbg_out_clk, ddr_bist_complete, ddr_bist_fail,
+> +                ddr_bist_start, ddr_bist_stop, ddr_pxi0, ddr_pxi1, dp0_hot,
+> +                egpio, gcc_gp1, gcc_gp2, gcc_gp3, host2wlan_sol, i2s0_data0,
+> +                i2s0_data1, i2s0_sck, i2s0_ws, ibi_i3c, jitter_bist, mdp_vsync,
+> +                mdp_vsync0_out, mdp_vsync1_out, mdp_vsync2_out, mdp_vsync3_out,
+> +                mdp_vsync_e, nav_gpio0, nav_gpio1, nav_gpio2, pcie0_clk_req_n,
+> +                pcie1_clk_req_n, phase_flag, pll_bist_sync, pll_clk_aux,
+> +                prng_rosc0, prng_rosc1, prng_rosc2, prng_rosc3, qdss_cti,
+> +                qdss_gpio, qlink0_enable, qlink0_request, qlink0_wmss,
+> +                qlink1_enable, qlink1_request, qlink1_wmss, qspi0, qup0_se0,
+> +                qup0_se1, qup0_se2, qup0_se3, qup0_se4, qup0_se5, qup0_se6,
+> +                qup1_se0, qup1_se1, qup1_se2, qup1_se3, qup1_se4, qup1_se5,
+> +                qup1_se6, resout_gpio_n, sd_write_protect, sdc1_clk, sdc1_cmd,
+> +                sdc1_data, sdc1_rclk, sdc2_clk, sdc2_cmd, sdc2_data,
+> +                sdc2_fb_clk, tb_trig_sdc1, tb_trig_sdc2, tgu_ch0_trigout,
+> +                tgu_ch1_trigout, tmess_prng0, tmess_prng1, tmess_prng2,
+> +                tmess_prng3, tsense_pwm1, tsense_pwm2, uim0_clk, uim0_data,
+> +                uim0_present, uim0_reset, uim1_clk_mira, uim1_clk_mirb,
+> +                uim1_data_mira, uim1_data_mirb, uim1_present_mira,
+> +                uim1_present_mirb, uim1_reset_mira, uim1_reset_mirb, usb0_hs,
+> +                usb0_phy_ps, vfr_0, vfr_1, vsense_trigger_mirnat, wcn_sw,
+> +                wcn_sw_ctrl ]
+> +
+> +    required:
+> +      - pins
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    tlmm: pinctrl@f100000 {
+> +        compatible = "qcom,sm7635-tlmm";
+> +        reg = <0x0f100000 0x300000>;
+> +
+> +        interrupts = <GIC_SPI 208 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +        gpio-controller;
+> +        #gpio-cells = <2>;
+> +
+> +        interrupt-controller;
+> +        #interrupt-cells = <2>;
+> +
+> +        gpio-ranges = <&tlmm 0 0 168>;
+> +
+> +        gpio-wo-state {
+> +            pins = "gpio1";
+> +            function = "gpio";
+> +        };
+> +
+> +        qup-uart5-default-state {
+> +            pins = "gpio25", "gpio26";
+> +            function = "qup0_se5";
+> +            drive-strength = <2>;
+> +            bias-disable;
+> +        };
+
+Please make the example more complete showing the multiple levels of 
+states and pins if you are going to keep that.
+
+Rob
