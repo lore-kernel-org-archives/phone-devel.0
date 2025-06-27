@@ -1,118 +1,240 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7B22E88A2
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 15:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792002EA498
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 15:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751037277; cv=none; b=tavL1Uqy7yY6JMxX88Cz87D9tZkFTZOvu7Ar3vNDNSHIYEBxpGR2AQR4p8PgVZ8OTw7/K44KaCUu05lFdut63BgB5bDhrzjmFB1QQmmhntx5vGZcu8D5Nb/Yc/faVlcpiI2f9vi7vvofYtZGAL84BizfEC2t+yPdHc8kHOM8FkI=
+	t=1751038474; cv=none; b=FD0fRhYmheXhM5z+d8G39WZx42z78Q713a3aRStMgkmnpVIZovp00Ll/eby4cryh6YRu9a6mT/8KmYxGIleXgrLyjAk0FjEbupUm2SBv+PaRI0iK5/Cd/0iNrafdxZ6x+KPS+JNoZvOlUU1V2gItEy9m0iuVA76MC1f6B71PIPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751037277; c=relaxed/simple;
-	bh=9xXvH/B+/8ovxyiaGuMlHCWofUTZqieLqJyknmO4BWc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=g6vrFllj1jktPwBthsAPqBhIhSa6VLxIGlkFgK6gaspV5uj+Va5epzJNO3ZJy+HbeQiaeXwvQpO0Q53BgTSW51YYJG5UCcR9S/GTw488bYY5AaK6zwmy67r3fr+HbQmqhdQt9OBIBbtWc0hqUfz2ir/Hei4m0BqpqnsE43LAsPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=I2YkeXsc; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1751038474; c=relaxed/simple;
+	bh=Ew8lpjg2KGw8RUtsdIdGkXQu5umyWwe0BTLTaVIb67w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PubGX2aDgrRmuhYGKP0QwpsxOOT4npnJZ6PVtVxyV8qilBrGLaWA3APd/CFAhwfgJvmN151/ECY8mwH/MTmi+7l9u7r4SOPpZnqMZ5UL/9vXDCC+D1ms+n78TIwvKmhqJdygu85who9ikOXEhjKq3DUI5SkRtpPXd0WRyAHLTkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZIh7/9dP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="I2YkeXsc"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-607b59b447bso3547734a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 08:14:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1751037274; x=1751642074; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4YdwBq8x/9yTkh9TL6YeeP2ANBhnQ2yJ1UlsY3OJMpQ=;
-        b=I2YkeXscYPiN5DOWsol9nyFJ1uwD/uU109bB+OU8zaelyHH2VWoPjPmrhpNIw8Feff
-         +TYD95Q4jwbMd8jh5wC+f8tZ4P2kW7cKtHtDq2q3oZW6uLy+i7BC/ihEBlJbPeRWG1YJ
-         ZHVr2VXNytYyN3YvjxAKj4+2HJWy+hmsb9qhj1jglrigO40T1ABM8VhfX61Bb/9eowtd
-         oNjj3LTj4IdICvQHQ7s40CBDMh8geJsuoT0XTIFV/yflmcZFW/OINt59Ez4JfuAP9CdL
-         JjN8CyWCMPYbBHu1VrRPe0UsX4TnPbxGHzjzhzN6P6rD/3E4O88bJslKCmKbf1jp1kUk
-         Qn5g==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZIh7/9dP"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55RCKnBK011315
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 15:34:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fhpcGE0kY2U2qHSOUrNH4gIXVYCbpgzCRlKlqKyiksA=; b=ZIh7/9dPTaRIKAbz
+	qtcRTfYJUmfDMD/1CB8sEgyGGumkjtTwe+1FCskmH91irz9aLvC7+w8nrjV0yIl5
+	QB0xqTRmG3P3Ft7yR9hK7RMWZYwi2POUq3sly/dUJ48WJWKJ9oC/oYfZUNb7O7vm
+	LRWccN5ciTm5RhWLpEa4ACEx19S+i4nLKISatypp1vBgmGk4bGCx72jy9YNPJfE0
+	o0qY4acjP6oYf70tubxgG7+gVbaXm9gWVcLv0iapLnGrDbi7elYbdiW8YQARPy4E
+	GwNMvpxwKqqfzTXYEUxP9yi+/mXni1WFKeH7ELAXBg4/7DE74URNzH7E2BxvGiH2
+	99Dl+w==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f3bgq8rs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 15:34:31 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7d2038aae69so3721185a.0
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 08:34:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751037274; x=1751642074;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4YdwBq8x/9yTkh9TL6YeeP2ANBhnQ2yJ1UlsY3OJMpQ=;
-        b=MIUkoWZILEtzWItZitVRQ/hbPUMScEVvQGAu01OapNgDzl0FSsnktnxc8/smxwEIZl
-         m9nvo9QMBrql9j4fTHHRJgAIIhcUJLWpb3GasKJqXM9gl5vpbuNSTTLy8uEoZmYYE/jh
-         AigWoQKY8Hw6W2R5Xq12iCG9F6vwVk3G1owZ2DaiSFEqdOrIPihIIo1fJ93SShKqSQfP
-         xhjTKXctVBXLmyZFlX+QNhrtUoMwbtCKfnd43JRGorQfDIiYE0VYWYSKwAOk+6PdNKBs
-         uvOU/uHILDvbNRp2CNGM02XKihPVlj1i25GxJoLXMA6EF1Kq72LbPqZJ/PKcHmpiEmnX
-         S5Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXkbPnMc712y9jbu5Db1m0a0CP9ibSCJnYwqHpWc+HIvLpXHOpMbniIu54h/QvIPmIw19O+bN7R8wJFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqZgBE2e7yhD5b57VtuUJKwtN6XhYlD3oxOWAGaoc4Vj8qE6H3
-	R6/2azXldgP1Kakc5is4CisIK02ze1RNWrQoJsiNoR9sCJSL/WfG9OMRrUO16brwosg=
-X-Gm-Gg: ASbGncs4TdeieyMpSQQfWW4eHQ+cn/TU5K6ZJphRBzO9yEsU883Qgpm8quz0jJ4ki58
-	Gu7zvsnlsykgYIA15tQUKIqI2NVdZEQq/p/5gAy6s/+RV19nhS8cF0KSPn+mBYleE/aBb6ZccVq
-	jij9e00jzr0N6JE1wkSEqdqadIgky7+2nb8JKfl1WZnXhk/pdGfnkvVcrkbVgPFs4zmEL9GDFnh
-	NiRwWnBGLhk06mDsauT+/fwRz/8wHRWEANm8n2kV+S16etFKiGSaoLJcBhBuWVUCJZQn0jZdt6y
-	ISd5Ep+O54ZPU5gHKZ79clt6iDuNOF/hPbLoiRINslfMII2dipS6B4RdUirvImtM8Qu7OlVL6P8
-	YqNLMSLut/YW48ZTmss9i34XKNgQZrMw=
-X-Google-Smtp-Source: AGHT+IGXK10sOdRHQiQDlGMMOAu00b6+1HTHgeTGZsSXRorQQ5K4SHjAIMDlViazK5Rw9QI+EWq3mQ==
-X-Received: by 2002:a05:6402:2063:b0:602:36ce:d0e7 with SMTP id 4fb4d7f45d1cf-60c88dd63d7mr2289708a12.14.1751037274070;
-        Fri, 27 Jun 2025 08:14:34 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c828bbea9sm1617466a12.1.2025.06.27.08.14.33
+        d=1e100.net; s=20230601; t=1751038470; x=1751643270;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fhpcGE0kY2U2qHSOUrNH4gIXVYCbpgzCRlKlqKyiksA=;
+        b=XL1MTYADa+YCl/M9J7GxD3ynmZVmi6Pjxw/Bavg0HgC/IB6rMwDtruMjfNVTSr43dw
+         gqcn5VjjJ8GsjpyH5orHv9mTcgKQJx8SF3fvSJ+r2+ggkOyXmgKjTEX4wqvJOuIPR8zg
+         e5og0OBpjtiBxG8Y9VVXAJ+z0Thu+4d5sEDdbRbNRqPKLJxucNBWbUkK6CntHc52meR7
+         0fg64aukMvvCwHS0V0XLUnMGEGWt5ZgRneS3/2VxvZJG0gXJ7iqkQqXdh1ygmg42QZk8
+         bsvxQhnNuUwxwuSRMr98P3epologtPvo4G6DbFzlNVXtyzXCXtyHwXLOJDfjLf+Hphb5
+         a0cg==
+X-Forwarded-Encrypted: i=1; AJvYcCUC01+RkvwIt/N8dt7eOf433tUpO3rVDNEZFp9i/yU7OZIwjnweBveBxKZS63naTm9ZIHKI8L3pV/RvAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAvuZM1IAqg3WwNJWwH5r2czQAp6UpFpzf5cZNk6fUM+DalEq9
+	EwhauO5yEsCnQB6XdEH2S2y99Wo30neXMNeox2yE3YHry6IkTcXvNhd4MGk4mcQY04cHtM1tMCu
+	88iBHAzmBHTuOnh9Z0uXnxLmBF4qth+op6vzG54/ICXDlFFzvIwwTLyvxd7xqqVCYLA==
+X-Gm-Gg: ASbGncucY/17RayR73ZHm0O5Ylv1NYlkjjJ0tD7N1KoL/4q/ftOOYXwElhaA1sUoKHu
+	QOXuTr08aDT/+h7cpva2xOaofuPx7p3rjZ3MffuvMdXtszWLSAOET+bfJEPUBiW/WbVJppE06iG
+	8tJKQmRy9DYimI+oeiqaUhHyenVYpFwZJ98E94/1CPJsFBMQCiCOdr1QMI0p+lrA6SE4DU7N1/s
+	zcsJvJvoyajpQhjkfoNcPkAj2Lye08tDM4lDrnIzcSghg5KUGSvPGWGvHDhQCEgxv3x/G59URhw
+	+c2C/bTbM47QyNLAgWeWbwyDF09Gknm7LLUcwJQtU+KKl4DqUBEbYNghSiucDYGEkDGTszWyf2J
+	5rao=
+X-Received: by 2002:a05:620a:4390:b0:7c0:bc63:7b73 with SMTP id af79cd13be357-7d443966417mr201231785a.13.1751038470167;
+        Fri, 27 Jun 2025 08:34:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzOTtjkZGz3phOnalpunb7y20OgdgwVxcjlA9JNDAl2YYT7eAuxSBmhUwNsqtuPUIJtvAnnQ==
+X-Received: by 2002:a05:620a:4390:b0:7c0:bc63:7b73 with SMTP id af79cd13be357-7d443966417mr201228685a.13.1751038469653;
+        Fri, 27 Jun 2025 08:34:29 -0700 (PDT)
+Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35363b244sm142288066b.30.2025.06.27.08.34.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 08:14:33 -0700 (PDT)
+        Fri, 27 Jun 2025 08:34:28 -0700 (PDT)
+Message-ID: <3fbae47b-d20d-426b-a967-b584e32b8c6e@oss.qualcomm.com>
+Date: Fri, 27 Jun 2025 17:34:24 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/14] arm64: dts: qcom: Add The Fairphone (Gen. 6)
+To: Luca Weiss <luca.weiss@fairphone.com>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Das Srinagesh <quic_gurus@quicinc.com>,
+        Thomas Gleixner
+ <tglx@linutronix.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+References: <20250625-sm7635-fp6-initial-v1-0-d9cd322eac1b@fairphone.com>
+ <20250625-sm7635-fp6-initial-v1-14-d9cd322eac1b@fairphone.com>
+ <4200b3b8-5669-4d5a-a509-d23f921b0449@oss.qualcomm.com>
+ <DAXA7TKVM4GI.J6C7M3D1J1XF@fairphone.com>
+ <6d4e77b3-0f92-44dd-b9b0-3129a5f3785b@oss.qualcomm.com>
+ <DAXEA131KUXZ.WTO7PST1F3X6@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <DAXEA131KUXZ.WTO7PST1F3X6@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Jun 2025 17:14:33 +0200
-Message-Id: <DAXEWQ93VELV.3HJXPNWASYBT7@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/10] Add clock drivers for SM7635
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250625-sm7635-clocks-v1-0-ca3120e3a80e@fairphone.com>
- <68056b4a-b1c3-401f-8720-8e0c3cda6249@oss.qualcomm.com>
-In-Reply-To: <68056b4a-b1c3-401f-8720-8e0c3cda6249@oss.qualcomm.com>
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: pTUYEDttTWJ3HxOk8QsxY7s4Mcr82aoj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDEyNiBTYWx0ZWRfX/ZA6XNWJMY9x
+ MXrT6i9uml6tUCVqVwpV3x/xFjbQZVPax5ZV+22367vAx6y6hvHgAyPiRsiv6YFMsVfEeXDnBZY
+ 0okYxXRmJryibgveb9ktJ0L2QqIUVm27R4osw1nOa881qUftY4CoTTOzF61w9z7oWeDREZ9wG9P
+ ZETDsoDCjm1u0uHGdGT+y8ZqgqFP9Hc6ETO5J5dLrIFfXw1ryieJTDD5YeRKe4fAAnLLVFMM66f
+ ZsvZHFSsZzFCZAvwsEsxmPmZVpt6fPjplBMPtVPNYQ5XIDKDyRNkViji6NARhEXjzGi55/eFGCI
+ UQxf8DdN3sboINQGKgPWBbRRfP6os3vQ3A11nwCxsqj3nNF7Fpj5T9hVJNFPVSMWymLshvB6F6l
+ 8mUYogayY0OXN9xDlYINF1jRfCYAfzhQk0K3uMWkKT/5W1Walgh4fRj0m5fGFfirwET5q/3e
+X-Authority-Analysis: v=2.4 cv=L4kdQ/T8 c=1 sm=1 tr=0 ts=685eba07 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=huVnaSGCcg0LVUp1CDwA:9
+ a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-GUID: pTUYEDttTWJ3HxOk8QsxY7s4Mcr82aoj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-27_04,2025-06-26_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ spamscore=0 phishscore=0 mlxlogscore=999 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506270126
 
-On Fri Jun 27, 2025 at 5:10 PM CEST, Konrad Dybcio wrote:
-> On 6/25/25 11:12 AM, Luca Weiss wrote:
->> Document and add the clock drivers for GCC, CAMCC, DISPCC, GPUCC and
->> VIDEOCC on the SM7635 SoC.
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->> Luca Weiss (10):
->>       dt-bindings: clock: qcom: document the SM7635 Global Clock Control=
-ler
->>       clk: qcom: Add Global Clock controller (GCC) driver for SM7635
->>       dt-bindings: clock: qcom: document the SM7635 Camera Clock Control=
-ler
->>       clk: qcom: Add Camera Clock controller (CAMCC) driver for SM7635
->>       dt-bindings: clock: qcom: document the SM7635 Display Clock Contro=
-ller
->>       clk: qcom: Add Display Clock controller (DISPCC) driver for SM7635
->>       dt-bindings: clock: qcom: document the SM7635 GPU Clock Controller
->>       clk: qcom: Add Graphics Clock controller (GPUCC) driver for SM7635
->>       dt-bindings: clock: qcom: document the SM7635 Video Clock Controll=
-er
->>       clk: qcom: Add Video Clock controller (VIDEOCC) driver for SM7635
->
-> We had a massive yak shaving patchset go in this season, please move
-> the magic settings in .probe to qcom_cc_driver_data {}
+On 6/27/25 4:44 PM, Luca Weiss wrote:
+> On Fri Jun 27, 2025 at 4:34 PM CEST, Konrad Dybcio wrote:
+>> On 6/27/25 1:33 PM, Luca Weiss wrote:
+>>> On Wed Jun 25, 2025 at 4:38 PM CEST, Konrad Dybcio wrote:
+>>>> On 6/25/25 11:23 AM, Luca Weiss wrote:
+>>>>> Add a devicetree for The Fairphone (Gen. 6) smartphone, which is based
+>>>>> on the SM7635 SoC.
+>>>>
+>>>> [...]
+>>>>
+>>>>> +	/* Dummy panel for simple-framebuffer dimension info */
+>>>>> +	panel: panel {
+>>>>> +		compatible = "boe,bj631jhm-t71-d900";
+>>>>> +		width-mm = <65>;
+>>>>> +		height-mm = <146>;
+>>>>> +	};
+>>>>
+>>>> I haven't ran through all the prerequisite-xx-id, but have
+>>>> you submitted a binding for this?
+>>>
+>>> Actually not, kind of forgot about this. I believe I can create a
+>>> (mostly?) complete binding for the panel, but this simple description
+>>> for only width-mm & height-mm will differ from the final one, which will
+>>> have the DSI port, pinctrl, reset-gpios and various supplies.
+>>>
+>>> I think I'll just drop it from v2 and keep it locally only, to get the
+>>> simpledrm scaling right.
+>>
+>> Yeah I think that'd be best in general
+> 
+> Ack
 
-Okay cool, I found them
-https://lore.kernel.org/linux-arm-msm/174970084192.547582.61230540758298270=
-6.b4-ty@kernel.org/
+[...]
 
->
-> Konrad
+>>>>> +&pm8550vs_d {
+>>>>> +	status = "disabled";
+>>>>> +};
+>>>>> +
+>>>>> +&pm8550vs_e {
+>>>>> +	status = "disabled";
+>>>>> +};
+>>>>> +
+>>>>> +&pm8550vs_g {
+>>>>> +	status = "disabled";
+>>>>> +};
+>>>>
+>>>> Hm... perhaps we should disable these by deafult
+>>>
+>>> Do you want me to do this in this patchset, or we clean this up later at
+>>> some point? I'd prefer not adding even more dependencies to my patch
+>>> collection right now.
+>>
+>> I can totally hear that..
+>>
+>> Let's include it in this patchset, right before SoC addition
+>> I don't think there's any pm8550vs users trying to get merged in
+>> parallel so it should be OK
+> 
+> Okay, can do. Disable all of them (_c, _d, _e, _g), and re-enable them
+> in current users? I assume there might also be boards that only have
+> e.g. _d and no _c.
 
+I suppose it's only fair to do so, in line with
+
+d37e2646c8a5 ("arm64: dts: qcom: x1e80100-pmics: Enable all SMB2360 separately")
+
+
+>>>>> +&usb_1 {
+>>>>> +	dr_mode = "otg";
+>>>>> +
+>>>>> +	/* USB 2.0 only */
+>>>>
+>>>> Because there's no usb3phy description yet, or due to hw design?
+>>>
+>>> HW design. Funnily enough with clk_ignore_unused this property is not
+>>> needed, and USB(2.0) works fine then. Just when (I assume) the USB3
+>>> clock is turned off which the bootloader has enabled, USB stops working.
+>>
+>> The USB controller has two possible clock sources: the PIPE_CLK that
+>> the QMPPHY outputs, or the UTMI clock (qcom,select-utmi-as-pipe-clk).
+> 
+> So okay like this for you, for a USB2.0-only HW?
+
+Yeah, maybe change the comment to something like:
+
+/* USB 2.0 only (RX/TX lanes physically not routed) */
+
+to avoid getting this question asked again
+
+>> Because you said there's no USB3, I'm assuming DP-over-Type-C won't
+>> be a thing either? :(
+> 
+> Yep. I'd have preferred USB3+DP as well since it's actually quite cool
+> to have with proper Linux. On Android, at least on older versions it's
+> barely usable imo. Can't even properly watch videos on the big screen
+> with that SW stack.
+
+Bummer! Not something we can change though :(
+
+Konrad
