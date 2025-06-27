@@ -1,73 +1,73 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5256B275844
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 13:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14C11632C8
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 14:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751030222; cv=none; b=BP/7rt9kyeYgM1cuj3oDiGDj1VIu5pDU8dizmx2vAeIjh3L/Sg6Df1LWNDRCCCCfrNjf32479EUntSPaNFXvnq/4FW9FeXuyLNrA8XEWHYTXmvJ8PoS9TtAkmnJNRkGn97khe9DAFgUSl0zkGYVcjq5Bw0SDGuLwpU8CxA6QkGo=
+	t=1751034873; cv=none; b=qrXvJRA7yWTM64hOzapqiLPNpkgtpkUSn3lJmM0qHqc6tA3bo2qQmw561aPA6OH8gHfIA3mrrH5n+YbCWWq8HzHH0nQUyGl2sFA4a4+JLETf8/Sw7fU0w2fUF1cPdZk93HC8ZxQW2fBqhz1u1+k4FxnA+AWlL7WYow4NQBrsEts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751030222; c=relaxed/simple;
-	bh=yiyNdGeiM0/3rnsrP8u+xLmDAXJYg4VU9hp8H1v8Pvk=;
+	s=arc-20240116; t=1751034873; c=relaxed/simple;
+	bh=y8WWwQD7QAEbVl1ij6mKyN6rfl5lkj802t9FgCkxabI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rl8TWfF5o04qvu1cfXO1/mrc/OJv1duwSTPL0EgalTpmZs9Z36x/Onej+EWoFustDATqMmM0svYMV2Z/WHrp47WB87EfhEcdygdC+4Oabv7+LcPxwPrq2ztqCzAw1/XjcsL5lvtVZKkm/8bRJT7mJlK7I03bn1Z6NgZa2DwA5q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jSjtysg0; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=B2nQRyVpMe64aV5GET10PJ3Wq5XM+6GQbtBGVnPOzEUjwD8286Kcxyf85NQ9FRu+U57lrXZGY7E7PLQeQVT7Vri4a5D55Dow1d9ZQY3aRnKrxjX2Oy312enzunFUckf1nERCwiUIzZquCs4Dzj6PIobKgWgQIiRJQR9JH7UXHgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g9kGyX0S; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jSjtysg0"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55RC5YT4014245
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 13:17:00 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="g9kGyX0S"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55RCCKML009867
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 14:34:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	khTFytKeLrUqbhsKq7ecq567W1WVbzKKiaYL2pfTB64=; b=jSjtysg0jKrjOltv
-	oj+YJd+0uPzYj3WvNGEFQxvn2lQcPSLfGIqtco4rZrWbaWrsNgJqJZVBYJgpdIOd
-	BbBg7qatnGCFyztJqxfmlfWBSviachjBiC5tVwj8DlL+px5Ig1YQ2RnR5uswc3t5
-	D3MZ7tAITbcPE+43Ic2ylo1X7eluYRMP23xeA9OFspdYqXUSlpuKuMC40yuKYnjq
-	/u5EoltyjVBEb0ccqXEtXKppp2SxiJPwrxzOdaWkKL6gUUk/YxyPfAFWV3wIuWrQ
-	XDYZqI6tSI577IHKy2HTu8kZpRz1GgwK+IhLuaqhNt3aAWCR9mCvAHzMVrI1CCWY
-	9gELsA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47emcn0qrm-1
+	1E10iKKXP8Jigq9QsX9VmVPYxg5Fdzb0t1IfPqsxsEI=; b=g9kGyX0SrxzJSgxU
+	fMyEz0PRGbEHZKYpUIxtxM+1dkkupe9F8q5VSUopcAyD2dHWwX/T5DhqauMK5j3x
+	rd79ABHBHMsyA66zZ93D2n0IDS/Vi5+0Pv7CPABsXYICoBio3GICBQqZwT4aR6lm
+	h3aR21xuFGQaxn8dCCehwAy+4ZIttuZkbBknLk0BHFfhCrIobfeNZe+zEKFhyyN/
+	lDX/eXmoE7heITzvXuG3KR5bfOT6tbv08U9sYw36rBvuYCKK4lPfl7WdqJBV5ZaN
+	1WpGoI6JJ28uOcB1gMHM9dk1vdg1IBRlijSSB1FOYT3JmPQbuemcQ54DiSBko2Vj
+	D/liPA==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47g88fguk9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 13:17:00 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7d3ea727700so27401385a.3
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 06:17:00 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 14:34:30 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7d2038aae69so2757785a.0
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jun 2025 07:34:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751030219; x=1751635019;
+        d=1e100.net; s=20230601; t=1751034869; x=1751639669;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=khTFytKeLrUqbhsKq7ecq567W1WVbzKKiaYL2pfTB64=;
-        b=kZJKu4S9KMpiazrhsidgXYlJF5/Xpl+DMrfdcrpOgYrZ3TVMaHdIcLR/09+GWHR4s2
-         DVyNov1e3RMxDOxCP9uwGcxpGB6y+WRH9wnSjJP+7VR3oC6+6DFNOpp8myP4Dksh6fO1
-         aIxXEko8WlfCpwV5wHeyPHXf9G1lLswsQwrLPye2WvEKrXzHwmJZEwZUxcBJWVL9QBdw
-         NTihx4v5kXeWg65SjR6DRugwQm7amE9qpn0hsfuWtjGbFg4SxpVh//6oKaG4Lc4XKptU
-         t9/zvleC+l8hxSclt4VPANcLeoJkDwZOXQrFSXq4kXlOpVMEilfofKH9zC/9MHPhen+K
-         +mmA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2SwHALd4SBAvYS+bhjKrG4UulU5JT/aYyK9jpPYA0/qZU0Wdv6KzKZzljujGG5flFsO0k64JdgQSk2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgKyuk0d4olfX33i01L8SOzT2hZfi5GXQlDbeMfz1sM9v9/0Gl
-	yd7yH77ouPvWEbbScZlC0sBatZ3ByJZ0HlvygT0BiLAgskDIrOzRZ/hlEFzUwIzhsxyoyRv43Ep
-	LqCinWwKP+Py8SXx83XnrbdVkSIOY3Xxr9C7+IdnENpmSNK0Ze13fj4htFsTyi0cllQ==
-X-Gm-Gg: ASbGncss8+cwB634FqIlsqC3H86fENQx/bBC/GFzTpNicqfxedWwizw7JoTND1FrgT0
-	C5klp7NLjMsQoheweR8MV1b9W9JzyQo88i40eXYaFDYeP8uQalUzAea8sK1uxvwpakLOsIULwYE
-	SyWnA+lBgLOW72KA13Awjri6yuBx5zYX7KNyeZTrxJHUNXtHFcH0D3+WWTESUYeL26N6m2qSG4R
-	U502k6SXsphMVj0iVCf2ESFe2aqrW65BEztHAWQQcbK04DJXn9EDKQzfS+0i95E3+GA/O/ZxLIc
-	An/ipyLnsWcf4/DQR1R3zNf/T4icJvOLJVup5GEqKMAQFIvFVoirwDp+UbSoRYyCpa24ypvQN1P
-	xgPM=
-X-Received: by 2002:a05:620a:4251:b0:7d0:9ded:31e0 with SMTP id af79cd13be357-7d44388a2c1mr157389285a.0.1751030218720;
-        Fri, 27 Jun 2025 06:16:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGC61VItBRS1DDwdCG91Ja2xlvgLnLdWcajuTrRe6ZwgKpNp8cadb7nGVjQm2wEb5XU/R1Y5Q==
-X-Received: by 2002:a05:620a:4251:b0:7d0:9ded:31e0 with SMTP id af79cd13be357-7d44388a2c1mr157386985a.0.1751030218095;
-        Fri, 27 Jun 2025 06:16:58 -0700 (PDT)
+        bh=1E10iKKXP8Jigq9QsX9VmVPYxg5Fdzb0t1IfPqsxsEI=;
+        b=M1HOFltKJNsMM5VeQD1GH2TXTU4/t6VbVY/sFO0DYU6dA0Uj/W0nclV+G/5Amiz4NB
+         89VNif9/9JkKXBX7V8nH3mmj4h02GEg+HQAVQQmEz7W3OS3MwmniVFaM2VEkF51ZL56D
+         +2fYPJRACwQzdfttec0xZp33r5ixh2sr3s0DNYYIM427YQaGGa7w432i5BD2tK+vJDd7
+         pU25B9YKdrYQjWZVWDhvVxfGo7w9p+I60hzhPBLMqYdMkYNG+mPvLQ7JbjmefAnZ+/29
+         mnOy7Yg1I+2p2x9IvY//d3KlhQee8C6hAu0y8HTqCX52IB750EvTPxiIMIEgXZ+2YXgd
+         sAHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUniIqS5fUS/VboalpWlHXfL5P+f0FiBz9UQb0GK/dDrevkeb2iIHOiZbCebnaIN3C2noDl6GRhyHjrJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjZGzBlc4I6FLfkcphtR7TeQklvvYs0Q+TYX6rBJ5BBdfKKt6u
+	rXrw2bREUcp79TMfuyO9ZTITwzDYHRDuoJzOC2CYPsBLUFRNma1jO48NOn7odUNiAMyM9qSbRGZ
+	vT90LYqF5GeZcJCfRCe7pZznicFcAepErylHXW499bPAHQhsInc4pN+0Tr51wfjMz4Q==
+X-Gm-Gg: ASbGncuYEJiNiwksJ1fR0Dn35CHcW8Wy59F/9WfOveNTItVY+oUF5FLO8a8/lUbOBPz
+	G8X6b6qGYwU8BS1rPTMT2vPMz17a10XDAJpstJhwkw+UGdncplfZ0j8Zu7wox/lv+/3D4Opxh40
+	gam3iP3lv/IX7QL6RVLk4l68DxvJWRhsNQk/iJwSn5zDNbKKVZwHajBLD6BS+Y8lmM4ZOnUTj0J
+	FOKb9+2/qmFlN7cRn7xu8qgH8ykcE3DBpOm0LcVnYRwijdhVfMoFlQYM+0t1MJVHnuQrW+qOtT7
+	8GgTpZiL+Y3cWVH6KyA4F8BBxiZOC/bei6iooRsP4EXLOfCSwWR8cmily1jfOc9D7qOGlPNyOWN
+	EDic=
+X-Received: by 2002:a05:620a:684a:b0:7d3:c688:a590 with SMTP id af79cd13be357-7d4438f895dmr150829385a.4.1751034869345;
+        Fri, 27 Jun 2025 07:34:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGL+0Argf/YR+lQnOb5qAOTTQjAM3ncoqVGAETIjGQblJ3e07wKcIT22ODvigY7oQFVVuPf0Q==
+X-Received: by 2002:a05:620a:684a:b0:7d3:c688:a590 with SMTP id af79cd13be357-7d4438f895dmr150824885a.4.1751034868338;
+        Fri, 27 Jun 2025 07:34:28 -0700 (PDT)
 Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353ca1d1asm120934766b.154.2025.06.27.06.16.55
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c015c3sm132768266b.100.2025.06.27.07.34.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 06:16:57 -0700 (PDT)
-Message-ID: <b37e3aaa-e340-464d-badf-2ca014a88e20@oss.qualcomm.com>
-Date: Fri, 27 Jun 2025 15:16:55 +0200
+        Fri, 27 Jun 2025 07:34:27 -0700 (PDT)
+Message-ID: <6d4e77b3-0f92-44dd-b9b0-3129a5f3785b@oss.qualcomm.com>
+Date: Fri, 27 Jun 2025 16:34:23 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,121 +75,190 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: Add PMXR2230 PMIC
-To: Luca Weiss <luca.weiss@fairphone.com>, Lee Jones <lee@kernel.org>,
-        Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 14/14] arm64: dts: qcom: Add The Fairphone (Gen. 6)
+To: Luca Weiss <luca.weiss@fairphone.com>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+        Rob Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Fenglin Wu <quic_fenglinw@quicinc.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>,
-        Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>
+        Robert Marko <robimarko@gmail.com>,
+        Das Srinagesh <quic_gurus@quicinc.com>,
+        Thomas Gleixner
+ <tglx@linutronix.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250625-sm7635-pmxr2230-v1-0-25aa94305f31@fairphone.com>
- <20250625-sm7635-pmxr2230-v1-3-25aa94305f31@fairphone.com>
- <bced42f0-bc9a-47e6-bbdf-c49657d2e18b@oss.qualcomm.com>
- <DAXBXDDJAXDE.2V71E3E8F3GIH@fairphone.com>
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+References: <20250625-sm7635-fp6-initial-v1-0-d9cd322eac1b@fairphone.com>
+ <20250625-sm7635-fp6-initial-v1-14-d9cd322eac1b@fairphone.com>
+ <4200b3b8-5669-4d5a-a509-d23f921b0449@oss.qualcomm.com>
+ <DAXA7TKVM4GI.J6C7M3D1J1XF@fairphone.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <DAXBXDDJAXDE.2V71E3E8F3GIH@fairphone.com>
+In-Reply-To: <DAXA7TKVM4GI.J6C7M3D1J1XF@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: KBN7AukNDW1tQ03H6M0CbfVLamys1cN9
-X-Proofpoint-ORIG-GUID: KBN7AukNDW1tQ03H6M0CbfVLamys1cN9
-X-Authority-Analysis: v=2.4 cv=J+eq7BnS c=1 sm=1 tr=0 ts=685e99cc cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=6H0WHjuAAAAA:8 a=h56Vx8HxoSJ7g-UfYxsA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDExMCBTYWx0ZWRfX6uBtdgKWVoUZ
- jkLNHlv6hGt9sn6D7J7y0wMJ9dEaNqNZTWMqYOTGO31mbRpNQBG0HS42gPTJfR7tZRUB+IMJ0Ih
- JOv3b4g2dJXt6rcQdfxwOSafBXo4SgpDg6PbUUSsbiCGhP+QhaSVUq0hae7sR6wPUk1Br0WAYi0
- p6zgN/JASCC89rbTN0z01AWz67QRPnDHp89uAIyuGq85JoEmC6Hn06Rb5wlChMItO63QcbRUvoK
- uQeOFXM0LQwA7u/+Pkp1pXyB7uxLVoveJMCJ+BBZLwIYcKwawZuUt3HT8f8Va/PlwcGLwkG/9ff
- AWohZlwI1D2BvTlUTzFl2vURa2GvKfBl7pmAFNx+wQP53Rdlva1j9u0a7qJ2DVPRuYx3X/5ecru
- k0Vcl6PW4xjWmEn4n5VQNBLx0D1E/2sic7D4O/hIKGrED1Cndheumk0Rfq5/nKpI4XfSKSTq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDExOSBTYWx0ZWRfX5L6/hgL6I6ls
+ k6p+YRqWONQlIqKZlGCmaW5JP7RROan1vEYwr2RfLa1R6JbbLUy0pugb9qsOTflBzYPyNri+dvw
+ QwX0q75XHQxIsvXGN0iLXX2jgubcM+LEpxrbibNS33RflVKtru0truPt9Amd1YGfO2W1cRU1GOq
+ LiZ9FkAoAXyELEX24ZcKADfVwjVRK2ejWXl56up41E0R/te4CYRCwj3jfvmgUVX8UKqVTHEQQhf
+ dU8p6wBqAdh/gQGglb5WcZzafDf0wDPovOhlWa2HPq/M1FBRpoEy8e6VGiEpX8TzySP9zS1dgc0
+ 5DgKab3NwlhavPBZ2p2aFWHsfDpQvAW9z8YtzL2aZlAsr3YnHnS/fCbeoKgLlGehq/OeVnvA7sE
+ sxGamtkxhV68mTAoWApu2AhDW0KX54N4R6YcVNmH4NvirRYf5kfQxeShlp+K345MCOQQz1uG
+X-Proofpoint-ORIG-GUID: 5eKaxyj5fkyPu0VPGfsM7nFrOBdoqTjF
+X-Proofpoint-GUID: 5eKaxyj5fkyPu0VPGfsM7nFrOBdoqTjF
+X-Authority-Analysis: v=2.4 cv=LNNmQIW9 c=1 sm=1 tr=0 ts=685eabf6 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=Sqmq4kN4DPMvB5fHc-YA:9
+ a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-27_04,2025-06-26_05,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999 adultscore=0 impostorscore=0 clxscore=1015
- spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501 suspectscore=0
- mlxscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506270110
+ malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506270119
 
-On 6/27/25 2:54 PM, Luca Weiss wrote:
-> On Wed Jun 25, 2025 at 3:20 PM CEST, Konrad Dybcio wrote:
->> On 6/25/25 11:18 AM, Luca Weiss wrote:
->>> Add a dts for the PMIC used e.g. with SM7635 devices.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>>  arch/arm64/boot/dts/qcom/pmxr2230.dtsi | 63 ++++++++++++++++++++++++++++++++++
->>>  1 file changed, 63 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/pmxr2230.dtsi b/arch/arm64/boot/dts/qcom/pmxr2230.dtsi
->>> new file mode 100644
->>> index 0000000000000000000000000000000000000000..a7650f3230c01422b76ef78e897e5e7ae2f20cc6
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/qcom/pmxr2230.dtsi
->>> @@ -0,0 +1,63 @@
->>> +// SPDX-License-Identifier: BSD-3-Clause
->>> +/*
->>> + * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
->>> + */
->>> +
->>> +#include <dt-bindings/interrupt-controller/irq.h>
->>> +#include <dt-bindings/spmi/spmi.h>
->>> +
->>> +/ {
->>> +	thermal-zones {
->>> +		pmxr2230_thermal: pmxr2230-thermal {
->>> +			polling-delay-passive = <100>;
->>> +
->>> +			thermal-sensors = <&pmxr2230_temp_alarm>;
->>> +
->>> +			trips {
->>> +				pmxr2230_trip0: trip0 {
->>> +					temperature = <95000>;
->>> +					hysteresis = <0>;
->>> +					type = "passive";
->>> +				};
->>> +
->>> +				pmxr2230_crit: pmxr2230-crit {
+On 6/27/25 1:33 PM, Luca Weiss wrote:
+> On Wed Jun 25, 2025 at 4:38 PM CEST, Konrad Dybcio wrote:
+>> On 6/25/25 11:23 AM, Luca Weiss wrote:
+>>> Add a devicetree for The Fairphone (Gen. 6) smartphone, which is based
+>>> on the SM7635 SoC.
 >>
->> This name is "meh", please change to tripN
+>> [...]
 >>
->>> +					temperature = <115000>;
+>>> +	/* Dummy panel for simple-framebuffer dimension info */
+>>> +	panel: panel {
+>>> +		compatible = "boe,bj631jhm-t71-d900";
+>>> +		width-mm = <65>;
+>>> +		height-mm = <146>;
+>>> +	};
 >>
->> Unless there's some actual electrical/physical SKU differences,
->> downstream lists 145C as critical for a PMIC carrying the same
->> name
+>> I haven't ran through all the prerequisite-xx-id, but have
+>> you submitted a binding for this?
 > 
-> [    0.085990] spmi-temp-alarm c400000.spmi:pmic@1:temp-alarm@a00: No ADC is configured and critical temperature 145000 mC is above the maximum stage 2 threshold of 125000 mC! Configuring stage 2 shutdown at 125000 mC.
+> Actually not, kind of forgot about this. I believe I can create a
+> (mostly?) complete binding for the panel, but this simple description
+> for only width-mm & height-mm will differ from the final one, which will
+> have the DSI port, pinctrl, reset-gpios and various supplies.
 > 
-> Same for the PMIV0104:
+> I think I'll just drop it from v2 and keep it locally only, to get the
+> simpledrm scaling right.
+
+Yeah I think that'd be best in general
+
 > 
-> [    0.086556] spmi-temp-alarm c400000.spmi:pmic@7:temp-alarm@a00: No ADC is configured and critical temperature 145000 mC is above the maximum stage 2 threshold of 125000 mC! Configuring stage 2 shutdown at 125000 mC.
+>>
+>> [...]
+>>
+>>> +	reserved-memory {
+>>> +		/*
+>>> +		 * ABL is powering down display and controller if this node is
+>>> +		 * not named exactly "splash_region".
+>>> +		 */
+>>> +		splash_region@e3940000 {
+>>> +			reg = <0x0 0xe3940000 0x0 0x2b00000>;
+>>> +			no-map;
+>>> +		};
+>>> +	};
+>>
+>> :/ maybe we can convince ABL not to do it..
 > 
-> What shall I do?
+> Yes, we talked about that. I will look into getting "splash-region" and
+> "splash" also into the ABL (edk2) build for the phone. Still won't
+> resolve that for any other brand of devices.
 
-IIUC you'll need this series to achieve the full range
+Gotta start small! Maybe framebuffer@ would be more """idiomatic"""
+but potayto/potahto
 
-https://lore.kernel.org/linux-arm-msm/20250620001918.4090853-5-anjelique.melendez@oss.qualcomm.com/
+> 
+>>
+>> [...]
+>>
+>>> +		vreg_l12b: ldo12 {
+>>> +			regulator-name = "vreg_l12b";
+>>> +			/*
+>>> +			 * Skip voltage voting for UFS VCC.
+>>> +			 */
+>>
+>> Why so?
+> 
+> From downstream:
+> 
+> 		/*
+> 		 * This is for UFS Peripheral,which supports 2 variants
+> 		 * UFS 3.1 ,and UFS 2.2 both require different voltages.
+> 		 * Hence preventing voltage voting as per previous targets.
+> 		 */
+> 
+> I haven't (successfully) brought up UFS yet, so I haven't looked more
+> into that.
+> 
+> The storage on FP6 is UFS 3.1 though fwiw.
 
-Which makes me think the driver today may not be doing the greatest
-thing in the world for this gen of PMICs..
+Hm.. can you check what debugfs says about the voltage at runtime
+(on downstream)? I'd assume you won't be shipping two kinds anyway
 
-We can either set it to 125 and leave a comment (which I assume is
-sorta 'meh' because that's Linux specifics interfering with DT)
-or we can wait until that series gets in
+[...]
 
-Personally, I wouldn't mind option 1 since we ultimately don't want
-the PMIC to run at either 125 or 145 degC most of the time..
+>>> +&pm8550vs_d {
+>>> +	status = "disabled";
+>>> +};
+>>> +
+>>> +&pm8550vs_e {
+>>> +	status = "disabled";
+>>> +};
+>>> +
+>>> +&pm8550vs_g {
+>>> +	status = "disabled";
+>>> +};
+>>
+>> Hm... perhaps we should disable these by deafult
+> 
+> Do you want me to do this in this patchset, or we clean this up later at
+> some point? I'd prefer not adding even more dependencies to my patch
+> collection right now.
+
+I can totally hear that..
+
+Let's include it in this patchset, right before SoC addition
+I don't think there's any pm8550vs users trying to get merged in
+parallel so it should be OK
+
+[...]
+
+>>> +&usb_1 {
+>>> +	dr_mode = "otg";
+>>> +
+>>> +	/* USB 2.0 only */
+>>
+>> Because there's no usb3phy description yet, or due to hw design?
+> 
+> HW design. Funnily enough with clk_ignore_unused this property is not
+> needed, and USB(2.0) works fine then. Just when (I assume) the USB3
+> clock is turned off which the bootloader has enabled, USB stops working.
+
+The USB controller has two possible clock sources: the PIPE_CLK that
+the QMPPHY outputs, or the UTMI clock (qcom,select-utmi-as-pipe-clk).
+
+Because you said there's no USB3, I'm assuming DP-over-Type-C won't
+be a thing either? :(
 
 Konrad
