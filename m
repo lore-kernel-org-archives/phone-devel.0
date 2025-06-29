@@ -1,106 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF62233128;
-	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C747F22068D;
+	Sun, 29 Jun 2025 16:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751208575; cv=none; b=BzJOnIMeDIPim4FZR0LR4TPVRjSZt+vC/wZNof8z6owNRj8PM4p7SHnL9SsrfaOwu4GcyVe68KA4W4tIVCCr0icWlLp2XkwCtVIfUwwzHQmnj4xqUkVpq/DcyGWCSCaWlGsinGD6GR5IhH3Aw7CbNV3wFXUGkKSYXy5yx83DVx8=
+	t=1751216240; cv=none; b=Os1QHt7izvlpuUQ1+13kLFd66MuikTRnveG1TbJKz7zl1B3U962mJbrXfE5jJOMQ2bPO2pt0qxxI+BeVVhQiXxiiGIWKcmLQI8/q+K1ACjNEhSBCAz6Y0EdRmPbeQhfmNXI5rTB/XoAO+Gict98X4MAIrHRb0m1V8qYPC78yI7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751208575; c=relaxed/simple;
-	bh=jVm7InTmmzD8MKv7ev68okVLYkTPm5dp3cUiYjOZ1uE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ee7+aUkz4E0axHi8MeNLF5t4G5tgW4bpojcAW8EZ86wi+rPvLrEZXVz/JzxkpgaQPmTtho8ijEuIMDsGL/iNn4t7Gj980U2ePMvzLuj5UlmKcIkNv7Ggqbx4NMjGU04cXd7pdpdmVmvUcdP62hA416e3VrbWVm3Tm9OiSXUkYXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLZPlJs0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751216240; c=relaxed/simple;
+	bh=O2WUhZQwagXbY2UihWVnNmJrE/h0bilixFhKXaD22Mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpeSc4rCui3vRqj4w5laeMBJISCRlLcF+y2IhV+KC54lJAHh/2PE/pHRulNu3LfB7x/Cgv7kl7gN+0+3iSdJo/khE+TiKtDdrBB9rlOmUyPhRb5uaPVo3pnPMOWGT3bBsu31uK2eUqXpLN38wm2dSvOaqIuV7pTcyCEQ6X8c1Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uwd3ty0p; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLZPlJs0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 607DBC4CEF4;
-	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751208574;
-	bh=jVm7InTmmzD8MKv7ev68okVLYkTPm5dp3cUiYjOZ1uE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QLZPlJs0Vn36xlg4/cz6RhPUpwcfiPKObaoSA4VIW3j89trb67DD2+WrSP2HVTcLm
-	 JgPXOOaZfmF5U+qQZYpiLw08aA3fVC6p/e9GW1/mVXjmq2vGie0sQpRurDgSVGAThI
-	 6tNnqxVsNoY/qbz6zLko9/tKWfSXsqRW9EvSpyT8bURX6HCJVMcP8DYW9d5m9oCLtL
-	 GBFkCxWZ6BYmwNFtT+jAEsUP33xoz86z0463XBehUlk73lakV0qqYWNF7NkS+FOLAR
-	 2gpzeR7jf3+Lw4YTU8enoiAKEM3p6E94mfEk3NbPSqNRQEiumdLb0TCc9ng/bB+Bxc
-	 Ei56+JRjQ4RjQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5756AC83029;
-	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sun, 29 Jun 2025 16:49:24 +0200
-Subject: [PATCH 5/5] media: i2c: imx214: Separat legacy link frequency
- check from PLL calculation
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uwd3ty0p"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 26AC3C67;
+	Sun, 29 Jun 2025 18:56:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1751216210;
+	bh=O2WUhZQwagXbY2UihWVnNmJrE/h0bilixFhKXaD22Mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uwd3ty0pK1DRICvGUwNj5a95qXcg3Y3UwaPGIFsrSjwrJ/rR4ia0X7y31KrJwWBzm
+	 j6hEhJHx6puTd2PkG21SIfeQUkIE4Uug/9TdIHERSiZUOxWn3bxfy7VKrUGc8cxSxj
+	 QUiND6iz26zByDj55KJWEVhfgw227EIjygZjVd3k=
+Date: Sun, 29 Jun 2025 19:56:44 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: git@apitzsch.eu
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Ricardo Ribalda <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] media: i2c: imx214: Remove unneeded parentheses
+Message-ID: <20250629165644.GI24912@pendragon.ideasonboard.com>
+References: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
+ <20250629-imx214_fixes-v1-1-873eb94ad635@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250629-imx214_fixes-v1-5-873eb94ad635@apitzsch.eu>
-References: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
-In-Reply-To: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Ricardo Ribalda <ribalda@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751208572; l=1164;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=fAmGDmfadAfG2+q/PfRs357Eh8ZGt/KKlqJTNCdh9uA=;
- b=uTy7Vr/Wz2r8Keavv7B3f00oF7RQ7FpLgLFTJhRmo6PbYIKYRQRaqolNWwFhwB02ms5fT36hg
- Ge/EdJ4CWRTDi5tqC0TuF3R/r9PdImnqhA41F9GWjPXNmrncMFfKk8y
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+In-Reply-To: <20250629-imx214_fixes-v1-1-873eb94ad635@apitzsch.eu>
 
-From: André Apitzsch <git@apitzsch.eu>
+On Sun, Jun 29, 2025 at 04:49:20PM +0200, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
+> 
+> The parentheses are not needed to calculate bit_rate_mbps.
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
 
-This makes it easier to drop this legacy support from the driver later.
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- drivers/media/i2c/imx214.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 63cf30acdc241de2f9ab3db339590da4af3d5102..52433775e9baddd8ab988e866a83387d53c1fd5c 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -1362,18 +1362,16 @@ static int imx214_parse_fwnode(struct imx214 *imx214)
- 		u64 freq = bus_cfg->link_frequencies[i];
- 		struct ccs_pll pll;
- 
--		if (!imx214_pll_calculate(imx214, &pll, freq))
--			break;
- 		if (freq == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
- 			dev_warn(dev,
- 				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
- 				 IMX214_DEFAULT_LINK_FREQ);
- 			freq = IMX214_DEFAULT_LINK_FREQ;
--			if (imx214_pll_calculate(imx214, &pll, freq))
--				continue;
- 			bus_cfg->link_frequencies[i] = freq;
--			break;
- 		}
-+
-+		if (!imx214_pll_calculate(imx214, &pll, freq))
-+			break;
- 	}
- 
- 	if (i == bus_cfg->nr_of_link_frequencies)
+> ---
+>  drivers/media/i2c/imx214.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+> index a0cef9e61b41be8ea76a6d6e4b8c9fc4060cfa0f..8e9b5c9c93b0888f3d6be857168711edaf050db3 100644
+> --- a/drivers/media/i2c/imx214.c
+> +++ b/drivers/media/i2c/imx214.c
+> @@ -1029,8 +1029,8 @@ static int imx214_start_streaming(struct imx214 *imx214)
+>  		return ret;
+>  	}
+>  
+> -	bit_rate_mbps = (imx214->pll.pixel_rate_csi / 1000000)
+> -			* imx214->pll.bits_per_pixel;
+> +	bit_rate_mbps = imx214->pll.pixel_rate_csi / 1000000
+> +		      * imx214->pll.bits_per_pixel;
+>  	ret = cci_write(imx214->regmap, IMX214_REG_REQ_LINK_BIT_RATE,
+>  			IMX214_LINK_BIT_RATE_MBPS(bit_rate_mbps), NULL);
+>  	if (ret) {
 
 -- 
-2.50.0
+Regards,
 
-
+Laurent Pinchart
