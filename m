@@ -1,131 +1,365 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1444A3B1AB
-	for <phone-devel@vger.kernel.org>; Sat, 28 Jun 2025 15:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BFA29B0;
+	Sun, 29 Jun 2025 04:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751125818; cv=none; b=fRLf3vuX4omZYUdgnHxJZy9+C0+eh12HDSVcVFYJHcGDFoduOI5zsfv9Ooo32qFyZE6fJIP3s/2RpmNPL+l99RmZhflSbIiUSOgXvQ8Tp+G/QEp0L+2IzHQmlgfEc2tehVa4cwuisOb6oaQ+VkiHSYrLdG1Tys1VDY1suRuT7N8=
+	t=1751172311; cv=none; b=jPKLdTd33ipBo6x2JV6k4Yqv57u2M/ilI1foXW/vVbrgg5hKC+KsrhQwDkbbytswz8N2sSRIVqSLNaQSKXdBpU2/vrAhHtLKrerp2NWHzdUKs0o+PEEAr/hKN1Zec1kNJh4q4t0dLYpFv3Khowy9x6uQGqJ4QHTqHeSMWZIhS/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751125818; c=relaxed/simple;
-	bh=UhdyBvWUdTzq9Tt5CDP9Ck0AZU7LvAz9Un6yPjcW9Wk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RHzVTOaIHZPf+6rSQ8/Kf9FR2QFLTA2fSOHP8keZPbo+7p9qQahsYNNuAemHlq6YxQxvBn3QJAE7U5tPEUNIdEz5141txIGnoJTBYOzDBE9eU13ksVTc1n1kCc/ykruatl5TW6/BAYaIl54W+lqD9AIF0T6oq0uwN7FISftRycY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B7By2li1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1751172311; c=relaxed/simple;
+	bh=z9NgzLPdkixra/QUJxb+x6d8KoigZnVyhXR1Dq4delE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Dql7i6H2TdIqC3QjgMekk3ZxCTDX3+RFFi8mnHfXczUMnc5F+UrzRUy6Kt0Ema3CaPvthEetMVKimb4S2SbF4/N98NRoZcdKJ934nh8mr3znyQQDsijru3KE5CEDE2JCBfBV0sJzSdQgssQLaUsYsaefkPm4emuGw0iV01A9f88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnjC1mHO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B7By2li1"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55S6M7jh021685
-	for <phone-devel@vger.kernel.org>; Sat, 28 Jun 2025 15:50:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=eWdrwLiaH5wIgAqjHd2m4i/B
-	poO4mO4jKXqkdUUaYhU=; b=B7By2li1GNB72N13F0O4kwQ8l3hqREd2hocKNCAH
-	5F2Qnki+puRtJ+kshqMy6IvTc549shFPDBZhdsKudvNL+yArE4lnTyoC8hwF6Oet
-	OfzqAVt3ujL/tST/7m86L/C+lFysuqiL+K88jW6i/pehY0yCmv+yZkmHvw4Gkv+u
-	nnPq7XyJCCTVJqR+v9jL7+2sjNVBodfqhupiczCGD76XHB61psa6YauosrAfwDhk
-	VdIIAWsLnyVuyXl0Bb75VRG3kdzyYrD+r+kI4Rabb79V4fzzLOHGL2DmStqLw97B
-	KSiyXZeU/jZOh+YJXo++2ftVsAqj0IFcqhlie2AX81z5iQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8s98t12-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 28 Jun 2025 15:50:15 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7d09bc05b77so136272485a.1
-        for <phone-devel@vger.kernel.org>; Sat, 28 Jun 2025 08:50:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751125815; x=1751730615;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eWdrwLiaH5wIgAqjHd2m4i/BpoO4mO4jKXqkdUUaYhU=;
-        b=PoP45bz942fG3bic0X142wAc4XbzpQdCO03U/YCKe1HNBpnCKGzgMcjLqNnUwLYTV4
-         DXCGZewQyIOh8m8gBGTvIFCJzb7q3Ynxng24NHRRXh7JXGog0HNL176vUEFcoDUkew7O
-         pc/yDjnKPFTwiFS/FvtmHqvY6tWtNq8uQ7y3xPRLyiTLWqVNO6gMslcGNv4aRvnyaCkc
-         fac9W8jho64X+d3KEjorFuQMV7WtG9Q+Pn0Xa9LqAyCwWt4riDzRfqB9fcYvfHPYqGWu
-         zesK+aP4VrzYnVW6UVbwykLq63kg3zsmC0mfZ7CiyxbcxLYlMU3LnbLzVjmKf9emJIHh
-         omcw==
-X-Forwarded-Encrypted: i=1; AJvYcCV86pnjQJilkt4/FTTngEr/vQ29qFhMnWMKX8vQFMw0Ek5TDBAEFCKvbNiXY3ZzhCFX3FAXcWjqwqxZ9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0MR8f3e1UAxnySXw6MRve3av12etOT4qc/vC7ZIfT5iEwcY0A
-	NbqttCN/58Nz10wlz+WnT8/Bt5Af8f3mMs5BIJXjAUzPQei+sHa0Mlrn28vyjXPFui2aaIiODN0
-	+f2PcUM0GaFqaNpWxT0zkn1nPz+D5ks0XXmYhrP39qBCy0ob1Kxs9GGHr8Mntl+JBug==
-X-Gm-Gg: ASbGncvsZXPnYUObJC/ZlNOEmEA5FYgMUgoiE28EZMcuwCbMruQkG9cxyKjA/mtf493
-	2nI5xLmZJbzTV+I46ctyQWdi+moEVxaTaROv7Ymsx0mWg3PUpZgXI/O0cxJiadauGpC2ZcqpBTd
-	sgNycPGQFYtRVI8AcRU9iEGRLbhyX1yjGucE3jSin4hj8HrHBDF+yKrT8LIdsnHFjOdh2P4mxnF
-	TKN/t8wkiFdQHyZS6SPVPcFBfqXFYSkZ0fKAIvY4JYv4/t14ySfZfv8RzmcOmhAgfQVi0P/o9uh
-	Tnsqu52mgd5im7rgfbg7iO/eiMwj3/9gB47ZhoQ1te3jRd6p83Wp0bGzHUaneBotMxb9n+M+dwf
-	3ypKwhyZiezjz/NXntalicS/78onHjXHdOCQ=
-X-Received: by 2002:a05:620a:1b8d:b0:7d2:139b:a994 with SMTP id af79cd13be357-7d4439a65femr891492985a.34.1751125815018;
-        Sat, 28 Jun 2025 08:50:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXHeHAR3jro5JwVkyah1P0tVqO4Nod5yvizT9CIaPu13zn8ai+/6N0tztx2GTOOd7HbCGs/Q==
-X-Received: by 2002:a05:620a:1b8d:b0:7d2:139b:a994 with SMTP id af79cd13be357-7d4439a65femr891489885a.34.1751125814642;
-        Sat, 28 Jun 2025 08:50:14 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b2edcc2sm842664e87.238.2025.06.28.08.50.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 08:50:13 -0700 (PDT)
-Date: Sat, 28 Jun 2025 18:50:11 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/3] soc: qcom: socinfo: Add PM7550 & PMIV0108 PMICs
-Message-ID: <uzohbx6rzv5wmo3c45pczn5lory7qwhqc5ixx5wdnvdbzemhvl@edl7dddvruly>
-References: <20250625-sm7635-socinfo-v1-0-be09d5c697b8@fairphone.com>
- <20250625-sm7635-socinfo-v1-3-be09d5c697b8@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnjC1mHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 96982C4CEF2;
+	Sun, 29 Jun 2025 04:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751172310;
+	bh=z9NgzLPdkixra/QUJxb+x6d8KoigZnVyhXR1Dq4delE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=MnjC1mHON2KyGqNEvl+u72qTl6QXYqiMBrdnJUkNXXSYKklUETtx91muVvZPyGgDz
+	 pA1iZE2CMEr7WefaYAgXEiruWGIGqsnXytw80vd7TE3VN8JtyrdKSJ0+MK+kTwmirn
+	 /PRhxZ8Lwg/EcBPN/Xc661qIDmRy4eq6anThvGv3+yaNfPipmljQYd4d3daNM38/5I
+	 xZOaGnClIVe9b/lUVWU+si1r8W39xNC9eT12x1G1SCqXG3K7NjQYocF723QcE34RW7
+	 V5BPXmW9RzdRbqudR3yOSbCC9WMrp9IwoAcjg7pCZdIue1eRhioGN4uIWc1xh3cITQ
+	 mnQ4m2l0LTymw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81725C83029;
+	Sun, 29 Jun 2025 04:45:10 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Date: Sun, 29 Jun 2025 08:44:39 +0200
+Subject: [PATCH v4 3/3] arm64: dts: qcom: msm8953: Add device tree for
+ Billion Capture+
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250625-sm7635-socinfo-v1-3-be09d5c697b8@fairphone.com>
-X-Authority-Analysis: v=2.4 cv=H/Pbw/Yi c=1 sm=1 tr=0 ts=68600f37 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6IFa9wvqVegA:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=4BQ2PeVRA74-f4yG9uIA:9
- a=CjuIK1q_8ugA:10 a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-ORIG-GUID: wdIBDy6MnW-6wpLwtKis-CeQjsDqWy6G
-X-Proofpoint-GUID: wdIBDy6MnW-6wpLwtKis-CeQjsDqWy6G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI4MDEzMiBTYWx0ZWRfXxGV16tQNKeHA
- nOdCABkHh0NE2KFYFLHjLLMzFSp4GbkUts9RdpgnWA/9/tgpvPprBeS3uZSyhn7xjqk3i7eqCkc
- sCuaY6vKwN4RJ/bKKtqngq3KmM8UMHnf528ukpJ3mSY3bQl5Yn4Sftd1vFE8zjBRzeKTIrAQWyW
- CbRdBfcX6Ln9/h6T+utfr2P8LqaQ2NQJ5BkbGoY4nGjqvY77fQX6bNYncrsNXq1BMm8sNVnRPzg
- xBs6NPUCMWLxW/1r0lgIOYoHyawqD26wfW8Qk5IGqY9nQUVpkHxlEo2/8NZ9H0lzfsbhd2lIEb0
- cBm2LQYs8zluuhiuUppoqbH8/2gNRvdTi0PT56aL+EiIu0qThlYSDxDy7BsHIJfIUUU1NE+M2nQ
- LXoNmyIfJNS43iz/rg6wRXch84RiJg+n3p4ZTieP1Us1X1/t6v45NN03AniGJEiduD6BMZCS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-27_05,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 suspectscore=0 mlxlogscore=802
- priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 spamscore=0
- adultscore=0 bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506280132
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250629-rimob-initial-devicetree-v4-3-7cf84fa142af@protonmail.com>
+References: <20250629-rimob-initial-devicetree-v4-0-7cf84fa142af@protonmail.com>
+In-Reply-To: <20250629-rimob-initial-devicetree-v4-0-7cf84fa142af@protonmail.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751179514; l=7327;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=qtnuNmfCBsjsZNE4PsKOQQMDD+xe/GZt7WSU7ruu8fI=;
+ b=5yA7+++w5RU7ETfbg5nyySeTxnfeyV6K5ERETK1ZhYYjI06Gm3K2uY/tQ+aFD/j+PlXzkvwlP
+ mTdz4YFCWa+Cs2FXq36vsJQ8vtmh1TBOqBNOsMdnvG8rH3MlVsQ1jRv
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-On Wed, Jun 25, 2025 at 11:11:46AM +0200, Luca Weiss wrote:
-> Add the PM7550 and PMIV0108 to the pmic_models array.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  drivers/soc/qcom/socinfo.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Assuming that you've seen them in socinfo:
+Billion Capture+ (flipkart,rimob) is a smartphone released in 2017, based
+on Snapdragon 625 (MSM8953) SoC.
 
+Add a device tree with initial support for:
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+- GPIO keys
+- SDHCI (internal and external storage)
+- USB Device Mode
+- Regulators
+- Simple framebuffer
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+---
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 255 +++++++++++++++++++++
+ 2 files changed, 256 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 140b0b2abfb555b8ef61bd9ed0217d8997800809..af3757ca017b6e3d8c579e43f647a71fc64c62b3 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -70,6 +70,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-samsung-a7.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-sony-xperia-kanuti-tulip.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-wingtech-wt82918.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-wingtech-wt82918hd.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-flipkart-rimob.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-motorola-potter.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-xiaomi-daisy.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-xiaomi-mido.dtb
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..ef4faf7631327ba3f7d954cef57bb1ebfc09a1cc
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+@@ -0,0 +1,255 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2025, Cristian Cozzolino
++ */
++/dts-v1/;
++
++#include "msm8953.dtsi"
++#include "pm8953.dtsi"
++#include "pmi8950.dtsi"
++
++/delete-node/ &cont_splash_mem;
++/delete-node/ &qseecom_mem;
++
++/ {
++	model = "Billion Capture+";
++	compatible = "flipkart,rimob", "qcom,msm8953";
++	chassis-type = "handset";
++	qcom,msm-id = <293 0>;
++	qcom,board-id = <0x340008 0>;
++
++	chosen {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		framebuffer@90001000 {
++			compatible = "simple-framebuffer";
++			reg = <0 0x90001000 0 (1920 * 1080 * 3)>;
++
++			width = <1080>;
++			height = <1920>;
++			stride = <(1080 * 3)>;
++			format = "r8g8b8";
++
++			power-domains = <&gcc MDSS_GDSC>;
++
++			clocks = <&gcc GCC_MDSS_AHB_CLK>,
++				 <&gcc GCC_MDSS_AXI_CLK>,
++				 <&gcc GCC_MDSS_VSYNC_CLK>,
++				 <&gcc GCC_MDSS_MDP_CLK>,
++				 <&gcc GCC_MDSS_BYTE0_CLK>,
++				 <&gcc GCC_MDSS_PCLK0_CLK>,
++				 <&gcc GCC_MDSS_ESC0_CLK>;
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		pinctrl-0 = <&gpio_key_default>;
++		pinctrl-names = "default";
++
++		key-volume-up {
++			label = "Volume Up";
++			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEUP>;
++			debounce-interval = <15>;
++		};
++	};
++
++	reserved-memory {
++		qseecom_mem: qseecom@84a00000 {
++			reg = <0x0 0x84a00000 0x0 0x1900000>;
++			no-map;
++		};
++
++		cont_splash_mem: cont-splash@90001000 {
++			reg = <0x0 0x90001000 0x0 (1080 * 1920 * 3)>;
++			no-map;
++		};
++	};
++
++	vph_pwr: vph-pwr-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vph_pwr";
++		regulator-always-on;
++		regulator-boot-on;
++	};
++};
++
++
++&hsusb_phy {
++	vdd-supply = <&pm8953_l3>;
++	vdda-pll-supply = <&pm8953_l7>;
++	vdda-phy-dpdm-supply = <&pm8953_l13>;
++
++	status = "okay";
++};
++
++&pm8953_resin {
++	linux,code = <KEY_VOLUMEDOWN>;
++	status = "okay";
++};
++
++&rpm_requests {
++	regulators {
++		compatible = "qcom,rpm-pm8953-regulators";
++		vdd_s1-supply = <&vph_pwr>;
++		vdd_s2-supply = <&vph_pwr>;
++		vdd_s3-supply = <&vph_pwr>;
++		vdd_s4-supply = <&vph_pwr>;
++		vdd_s5-supply = <&vph_pwr>;
++		vdd_s6-supply = <&vph_pwr>;
++		vdd_s7-supply = <&vph_pwr>;
++		vdd_l1-supply = <&pm8953_s3>;
++		vdd_l2_l3-supply = <&pm8953_s3>;
++		vdd_l4_l5_l6_l7_l16_l19-supply = <&pm8953_s4>;
++		vdd_l8_l11_l12_l13_l14_l15-supply = <&vph_pwr>;
++		vdd_l9_l10_l17_l18_l22-supply = <&vph_pwr>;
++		vdd_l23-supply = <&pm8953_s3>;
++
++		pm8953_s1: s1 {
++			regulator-min-microvolt = <870000>;
++			regulator-max-microvolt = <1156000>;
++		};
++
++		pm8953_s3: s3 {
++			regulator-min-microvolt = <1224000>;
++			regulator-max-microvolt = <1224000>;
++		};
++
++		pm8953_s4: s4 {
++			regulator-min-microvolt = <1900000>;
++			regulator-max-microvolt = <2050000>;
++		};
++
++		pm8953_l1: l1 {
++			regulator-min-microvolt = <1000000>;
++			regulator-max-microvolt = <1000000>;
++		};
++
++		pm8953_l2: l2 {
++			regulator-min-microvolt = <975000>;
++			regulator-max-microvolt = <1225000>;
++		};
++
++		pm8953_l3: l3 {
++			regulator-min-microvolt = <925000>;
++			regulator-max-microvolt = <925000>;
++		};
++
++		pm8953_l5: l5 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-allow-set-load;
++		};
++
++		pm8953_l6: l6 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++
++		pm8953_l7: l7 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1900000>;
++		};
++
++		pm8953_l8: l8 {
++			regulator-min-microvolt = <2900000>;
++			regulator-max-microvolt = <2900000>;
++			regulator-allow-set-load;
++		};
++
++		pm8953_l9: l9 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3300000>;
++		};
++
++		pm8953_l10: l10 {
++			regulator-min-microvolt = <2850000>;
++			regulator-max-microvolt = <2850000>;
++		};
++
++		pm8953_l11: l11 {
++			regulator-min-microvolt = <2950000>;
++			regulator-max-microvolt = <2950000>;
++			regulator-allow-set-load;
++		};
++
++		pm8953_l12: l12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <2950000>;
++			regulator-allow-set-load;
++		};
++
++		pm8953_l13: l13 {
++			regulator-min-microvolt = <3125000>;
++			regulator-max-microvolt = <3125000>;
++		};
++
++		pm8953_l16: l16 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++
++		pm8953_l17: l17 {
++			regulator-min-microvolt = <2850000>;
++			regulator-max-microvolt = <2850000>;
++		};
++
++		pm8953_l19: l19 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1350000>;
++		};
++
++		pm8953_l22: l22 {
++			regulator-min-microvolt = <2800000>;
++			regulator-max-microvolt = <2800000>;
++		};
++
++		pm8953_l23: l23 {
++			regulator-min-microvolt = <975000>;
++			regulator-max-microvolt = <1225000>;
++		};
++	};
++};
++
++&sdhc_1 {
++	vmmc-supply = <&pm8953_l8>;
++	vqmmc-supply = <&pm8953_l5>;
++
++	status = "okay";
++};
++
++&sdhc_2 {
++	vmmc-supply = <&pm8953_l11>;
++	vqmmc-supply = <&pm8953_l12>;
++
++	cd-gpios = <&tlmm 133 GPIO_ACTIVE_HIGH>;
++
++	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
++	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off>;
++	pinctrl-names = "default", "sleep";
++
++	status = "okay";
++};
++
++&tlmm {
++	gpio-reserved-ranges = <0 4>, <135 4>;
++
++	gpio_key_default: gpio-key-default-state {
++		pins = "gpio85";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-pull-up;
++	};
++};
++
++&usb3 {
++	status = "okay";
++};
++
++&usb3_dwc3 {
++	dr_mode = "peripheral";
++};
 
 -- 
-With best wishes
-Dmitry
+2.49.0
+
+
