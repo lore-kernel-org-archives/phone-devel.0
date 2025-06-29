@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84662230BC3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472B230BE5;
 	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751208574; cv=none; b=QAsALJIREUyqCy0vP6OwSzG4hqA6ekXkomWI8HMyctyEB7H/4cQUOnviVx59BV8eRv7UWUMIDA1+KTQA68+C1r9bekYLJsiCljo5V1bn5WGf9TQtK4vdtes5KIqXahE/uDC1m1qTCmyDAPSvGXpcR19S9Y9iRbBpVLhSmkTuLko=
+	t=1751208574; cv=none; b=Itfg5kLR9m9T7HTmqHQt/+sqfZanVn44/tOc1S9uMocsyU3tAxFgF53cRc0C50s3auJ2FizGVvOT7IowfgtZKZikYqldKsdPQG/WJ9sSVJy2lTrdnFX/Za54rzJYr9bCsed6Zi1V88cFLcz5j5N9pv/UL7wMkh76cv6vNoL+cVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751208574; c=relaxed/simple;
-	bh=8RBuwyFX+i6bHp5zzF84JTuvvkCicfyrsCbN+9DU7Sg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pN+YJu3/P245WGNzXnUdlV9eZfdegMLBv+4Gkc/p+oU5JkBa13tLwgd+hFRRVKDE16VRP+PPeuYr3YePLINgyscVpD7KEYeplHtfWIaD+3HH1VkEjbIENf9eWkX4dykqabBAFeCwRpDXCX6uACcJBnYQhrQP1bhEuF5LWtZV+Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rXAdziQs; arc=none smtp.client-ip=10.30.226.201
+	bh=Qrm0HjuGR3bHxMm7TLB4FwO8uMQKo+bfdVF5GxtW79o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OC60o+Ek03jO134n66R77hcZSDm82jx1CF35iD2sr2NDP4tR7y1JfVeK5AGAOTJcbsQH6PMdqjMNVWRwBqwOpFnPY7LsuD5y52mABrDcphktWheWM3grSTJblF7aIPalDBSYX/O/cegLExlGvOgeT1Na6L1nvKMGygnL7AuOtJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIbWq39Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rXAdziQs"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 42E9CC4CEF1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIbWq39Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 27D87C4CEF0;
 	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1751208574;
-	bh=8RBuwyFX+i6bHp5zzF84JTuvvkCicfyrsCbN+9DU7Sg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rXAdziQs+YggUp3QD0cOrUjnmrz0D4N2nvdkuiqFZSkAeN8OecVuWLLoNZQHx1Cdn
-	 zCpqQmivSlGLXf8pR0syIBa9u1o0hVo9rhvQNlMps3ub0GzvSDuividIbUiMOJbpzR
-	 t01sPjMlRFL3Tk+oGTSW828bSIoZ6yoVQC+V4fS/cEoCKIKE/a8CQ24EtitR4dFo5w
-	 3iWiRo3oqhnzRcG+HUJiLzz32m4bdD2AuSd5CRDr1RCeZtIPAtpJyyDxv8kcArRTOZ
-	 qSbfnVX8IaxoRmz7D40tylWEQnWl0iRWx4vOVC/SC8HeErRRB5XyEerFMRC4U9ju1n
-	 xT7zPsV5LZD0g==
+	bh=Qrm0HjuGR3bHxMm7TLB4FwO8uMQKo+bfdVF5GxtW79o=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=XIbWq39ZcOcPz4chx3UH2vg/Hurcr9cGLsARHi4dcbmYwzVQhzyRXdEplsEUKnxG3
+	 ejEWC4Acst8ZFlhus9D/4nSkZUlCqkXLZX3HJtlIYg29sIY9PjNFMCNlqlGBfngyYP
+	 F2mGcov7REKac+SNdBL/ZfxTMOtGlTP/Xd0M+7wZ+oiyJ4mSE3kLGZmRjDa8m0skYW
+	 LAjsmLmsOBtbDzMwUygorypEu4bgm4BCbbkHKPZG05LZIOEdkJna582DeT4zZhm+vq
+	 D5wnrsaqClcc0tnzzP5pKnHzp3Cbhli2xVDumP5k7XJyyFAi0WoZyIqhpYm8UiwvG+
+	 fmeYtclt99mpg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1F0C83027;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15844C83026;
 	Sun, 29 Jun 2025 14:49:34 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sun, 29 Jun 2025 16:49:21 +0200
-Subject: [PATCH 2/5] media: i2c: imx214: Drop dev argument from
- imx214_parse_fwnode()
+Subject: [PATCH 0/5] media: i2c: imx214: Add some style improvements
+Date: Sun, 29 Jun 2025 16:49:19 +0200
+Message-Id: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +40,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250629-imx214_fixes-v1-2-873eb94ad635@apitzsch.eu>
-References: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
-In-Reply-To: <20250629-imx214_fixes-v1-0-873eb94ad635@apitzsch.eu>
+X-B4-Tracking: v=1; b=H4sIAG9SYWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMyNj3czcCiNDk/i0zIrUYl1DI+M0IwvTNNMkMyMloJaColSwBFBHdGx
+ tLQBbj4ZMXgAAAA==
+X-Change-ID: 20250623-imx214_fixes-123f285f5b62
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
  Ricardo Ribalda <ribalda@kernel.org>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -52,11 +52,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751208572; l=1136;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751208572; l=963;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=H8sbCYlOjaNz8MFSGRXI5+CWm2oj7b1ROZKZiNJw/+w=;
- b=EwHc5RkncTt1il5EMiaBdzTUq8h+sx9f1TwoYqosEzn6OZBYIkW//FTQ34PCkCHngr7JRVZbO
- u2pkNwFoWASAZITq5EHYyKlv9q3/QYXmrfq2mfTd7+iSW/EJkk/lOCr
+ bh=Qrm0HjuGR3bHxMm7TLB4FwO8uMQKo+bfdVF5GxtW79o=;
+ b=mdoLtV5SWyla4ObJye/fTmXTvFkEF1uQdtwjacG5Eii5Cr5bMPpjaraofCZA60PwaCvFLH6YI
+ f1BC7ZEWRhKCU1qdoC89TWcw02vqt4mM6G7mKjwhWUzJIT+XSkiyyXt
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -64,43 +64,29 @@ X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
 X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 Reply-To: git@apitzsch.eu
 
-From: André Apitzsch <git@apitzsch.eu>
+The following changes have be suggested by Laurent in [1]. But the
+related series had already be applied. That's why they are addressed in
+this series.
 
-The device can be accessed from struct imx214.
+[1] https://lore.kernel.org/linux-media/20250621181751.GA9125@pendragon.ideasonboard.com/
 
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/media/i2c/imx214.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+André Apitzsch (5):
+      media: i2c: imx214: Remove unneeded parentheses
+      media: i2c: imx214: Drop dev argument from imx214_parse_fwnode()
+      media: i2c: imx214: Use __free(fwnode_handle)
+      media: i2c: imx214: Move imx214_pll_update to imx214_ctrls_init
+      media: i2c: imx214: Separat legacy link frequency check from PLL calculation
 
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 8e9b5c9c93b0888f3d6be857168711edaf050db3..d9193bafa3cbb8fec2679200c38d30077d1b11bd 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -1324,10 +1324,11 @@ static int imx214_identify_module(struct imx214 *imx214)
- 	return 0;
- }
- 
--static int imx214_parse_fwnode(struct device *dev, struct imx214 *imx214)
-+static int imx214_parse_fwnode(struct imx214 *imx214)
- {
- 	struct v4l2_fwnode_endpoint *bus_cfg = &imx214->bus_cfg;
- 	struct fwnode_handle *endpoint;
-+	struct device *dev = imx214->dev;
- 	unsigned int i;
- 	int ret;
- 
-@@ -1415,7 +1416,7 @@ static int imx214_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(imx214->regmap),
- 				     "failed to initialize CCI\n");
- 
--	ret = imx214_parse_fwnode(dev, imx214);
-+	ret = imx214_parse_fwnode(imx214);
- 	if (ret)
- 		return ret;
- 
+ drivers/media/i2c/imx214.c | 245 ++++++++++++++++++++++-----------------------
+ 1 file changed, 121 insertions(+), 124 deletions(-)
+---
+base-commit: 5e2562c1e46d3623fbdef77693f374eade075840
+change-id: 20250623-imx214_fixes-123f285f5b62
 
+Best regards,
 -- 
-2.50.0
+André Apitzsch <git@apitzsch.eu>
 
 
