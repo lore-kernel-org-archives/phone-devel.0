@@ -1,83 +1,37 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB45C28CF44
-	for <phone-devel@vger.kernel.org>; Mon, 30 Jun 2025 15:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9033A20AF98;
+	Mon, 30 Jun 2025 19:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751298083; cv=none; b=GfLO19u+4vjBZ8IRTWknl7XG8fmEU8JtJ2oU5ct+f2c1TFP3grnfs6MGUusuGPOuri4gaHDrXtr9wWkv2o3WA3LwH0sP6k3QEmQs30dTkCw4OJu8JORqsX67oERifhde5+3wT7MCoBF6kikVfYF62zibfpZLGcBcXnXzFgh8uG8=
+	t=1751310421; cv=none; b=nE47C0bAcLNk/Vx4QD5xPRjEk/bc6gTuStiZxjbpmrZXiTeATErL8zBVNZcefNMsYaM38076Tp1YiarQQraH6OXPNq6t69IvmO/eRwDU2bkj0gj8m1sgYoFHarhVfAZqiq7fDD2N22yrllZWJgVCRxOtYkIQDJM9Hl/e66+UY0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751298083; c=relaxed/simple;
-	bh=TxdOtgVn7aBHw3u7r5Eza56bp9saXogFpjFjd1vydaA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=WbHuqul1WkF9VIrTir87SYjoLeBn4xDsodnJTmrTQDlowoilPjBulr2RZgS6T0grw5HZ3tzicoxi7UirjWZCjte853SbLrslZPAfSfibxLdq4ewQGy4UDltbdX7FmueGCXwDlg4OMe9BaVNJAg7CNl8LLmJKp82irSFqoj7+WbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l/bvYIwT; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751310421; c=relaxed/simple;
+	bh=NsEEdeaScrNvRlWgHTamA27d9Qr5O3nCYMeIbvgGo+g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GfjKlXYBiOgFYR/eaODazPii0abpR65SVVhz/1Tb1IZQoxoEnAyRR/jOMgOc5XBg5jtMRnnj9QPEKGJEOmvlhIaVw4vvYmtrZPB9QEfI2XEB28Z5io1DQ6wJz+p0sjocCG5odPJsuPWTya77BeV1pUCIRrj96u5EbVQ0W0aZyOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luyHbFhr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l/bvYIwT"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so30600135e9.1
-        for <phone-devel@vger.kernel.org>; Mon, 30 Jun 2025 08:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751298080; x=1751902880; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wIBoKnvqHm7jPzDveA9hy26/rZ1VMnuhsibGyxt03cs=;
-        b=l/bvYIwTLe+P/YxQ/fVthVLj/wfTXaueom7iYq9pGA7+Bvd4VgzG3PwqZ+lxILFWH7
-         hEGMmAd6MnVHwua0SxlkMHoKunanemfIY9O2nxdZD4SKsPBoDLP8YMsEG2jOiOzlE9fa
-         cKhdz14FkEtQen+0ydDmPnAYuzh/U3efxThxySe1s03BGkRizYEbjO3adrhWTZq/ruq5
-         vKUATi+Y4/8s0Hmk3OjrJr7FSvexq4nzkv421HRr1Gh6lA0kWpqgakO9qtJaXLbuzyph
-         BhFQ/jocYNXYRil7QSzNL7JcTqWIW+NhSK9PgAu7JeYdB8GPV3ztkB7N07npA+xLorDc
-         TBDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751298080; x=1751902880;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wIBoKnvqHm7jPzDveA9hy26/rZ1VMnuhsibGyxt03cs=;
-        b=L8HHFjW9Q3cPIuBhc8p9b7co31PnucKagF/hB4gZNfxE/kEjjBCzFcSg52hW1Om+W6
-         F91Q+L4Rz8z8tWuEmUFNcOYE7fpgT+nItVDIph8xZSBWmqkvjkErL2yZ5v/GGFGf40V9
-         kX8lZM3Hme9hsadBIA+Y2lhPHy3oiCwHi6g3hSfgD14tGN1jEdGXKe1pi6eln+EcQxUI
-         lAXgGYNmGmqZauhMS1sW8duoR+xVkj2aJ22Mh/swGSmiMCO3Xixofn2BTenw3MaSO679
-         /uRZp3hocSsL+cc36JzoHpsvgQrZVjv55AaXfdp7Qnmpsfy1mzFOGEx58GM5A1jBX2/0
-         IUaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqFw/AH0dZaB3mX0F//cCKFi7H7SD74S5QoODYLP+BcIBm12RsNoGo70GkQwD7P1GNZHvnjxYJHY58gA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiySjlavQanexqjkKvl6PzPCdB/C4GQDEHqXfUBOXLfBsqvDAQ
-	TvA08rQDMPp8+3TvuECKhgYJ8OsYtFpT5adaq7EdVzIMMQ0RAym8p2cItCwaFMVWoIM=
-X-Gm-Gg: ASbGncvb2TF0qcfd0lQ7GdD2oQS4Q9g27Iv8H3lyrXLRjjP62b3aG8Oq6atq+CKXUrV
-	/SMM7MtHL8q1IrBQlR+lgpKijThYJWqH/QFsyBnAXpZXsKB4TEIy14eFDhv2EzxVtHDl9sBlrVx
-	k2PVtznVbogtFntgG70tNPK1b6Z++VoIN4VjkeiaOMZvxSPsuB3ZcbG+uJGRmB22c9Feig9Uzym
-	odRfXrceK8lm96BsrH4WCESH9/5OFH2bd37tb7nNuQXOD+HoPEavhx4p6o4jQZsT4R/JrZKfI4N
-	m3itjoJcuX5o6oofHsDw6j1RazqJbfH2zJdbPOlY7jFGqdELLXHqm1t5NAHOlJIQPqRYjoi4R8a
-	9Xri2AhM=
-X-Google-Smtp-Source: AGHT+IE4551ep9ypNSyk+kUT7ORHBKsH3ZNJO70PmyyYi6i5YwLUZhV22aROUA+T9WDlUEHG+Ihrqw==
-X-Received: by 2002:a05:600c:5392:b0:445:1984:2479 with SMTP id 5b1f17b1804b1-45390bad330mr126646345e9.5.1751298079968;
-        Mon, 30 Jun 2025 08:41:19 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ad01csm170270975e9.22.2025.06.30.08.41.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 08:41:19 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Luca Weiss <luca@lucaweiss.eu>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>
-In-Reply-To: <20250611-fp3-display-v4-0-ef67701e7687@lucaweiss.eu>
-References: <20250611-fp3-display-v4-0-ef67701e7687@lucaweiss.eu>
-Subject: Re: (subset) [PATCH v4 0/4] Add display support for Fairphone 3
- smartphone
-Message-Id: <175129807911.2286551.14063311790282968036.b4-ty@linaro.org>
-Date: Mon, 30 Jun 2025 17:41:19 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luyHbFhr"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C686C4CEEF;
+	Mon, 30 Jun 2025 19:07:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751310421;
+	bh=NsEEdeaScrNvRlWgHTamA27d9Qr5O3nCYMeIbvgGo+g=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=luyHbFhrQTI2BbNS6Yx5cEal34x42vYxQlUB8lwNoFvayrso/kvieRt6Hmq4B3hym
+	 P1BQxvFWYW06hHaWRWxzp/o1vmB2rTzndQLEcVyaSenbAVTDO+6gg6pbaXj1QbgVHN
+	 ANez+Tsac7B/D7qINGeVNN1kSkOr2nTtihs36zR1ZRVLJxDwiXmRRG/Pft4bCEJId1
+	 NesFWo7hVxmVu22HcYgUUqkMbbR9uSBJx5ecHZ3txpwgrz62GIvMgnt1dHyWq3kgFt
+	 bHXMgCgZyiDEP4Vt/qHvVecxMxpmeO+1lXKgfMJJc+yeduebSQdmeaQewCjs8pB+WN
+	 1JyfwmSU8SaVw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64CA9C83029;
+	Mon, 30 Jun 2025 19:07:01 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Mon, 30 Jun 2025 21:05:21 +0200
+Subject: [PATCH v2 1/5] media: i2c: imx214: Remove unneeded parentheses
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -85,26 +39,58 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250630-imx214_fixes-v2-1-cd1a76c412c0@apitzsch.eu>
+References: <20250630-imx214_fixes-v2-0-cd1a76c412c0@apitzsch.eu>
+In-Reply-To: <20250630-imx214_fixes-v2-0-cd1a76c412c0@apitzsch.eu>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Ricardo Ribalda <ribalda@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Markus Elfring <Markus.Elfring@web.de>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751310420; l=950;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=e5+tRksV+Fgl0BxWMBz64V6Vf1Cb5OmGU/GImJC7m7A=;
+ b=8tixpZey59d010cuk2qUfM6JIln2FMlXURuGTGQANKhAnO3Kx+0wtuCINSlZn1eCDTxJsMsa1
+ FY2l+SxzSTxDcQlwMrxqCtdWjOyIemQ9rIFmFJom0R4PhbJa45ptRZ4
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-Hi,
+From: André Apitzsch <git@apitzsch.eu>
 
-On Wed, 11 Jun 2025 18:33:14 +0200, Luca Weiss wrote:
-> Add a driver for the HX83112B-based panel, and enable it on Fairphone 3
-> to enable display output, and enable GPU as well.
-> 
-> 
+The parentheses are not needed to calculate bit_rate_mbps.
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+ drivers/media/i2c/imx214.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-[1/4] dt-bindings: vendor-prefixes: document Shenzhen DJN Optronics Technology
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/978a84297371ac33a15c56a7d31fd1b125427dac
-[2/4] dt-bindings: display: panel: Add Himax HX83112B
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/54bd1390e98450a2c1cad99da3e2594e92c41a4c
-[3/4] drm/panel: Add driver for DJN HX83112B LCD panel
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/df401fa1b80775109e2a52360fcb0b2b2300525a
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index a0cef9e61b41be8ea76a6d6e4b8c9fc4060cfa0f..8e9b5c9c93b0888f3d6be857168711edaf050db3 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -1029,8 +1029,8 @@ static int imx214_start_streaming(struct imx214 *imx214)
+ 		return ret;
+ 	}
+ 
+-	bit_rate_mbps = (imx214->pll.pixel_rate_csi / 1000000)
+-			* imx214->pll.bits_per_pixel;
++	bit_rate_mbps = imx214->pll.pixel_rate_csi / 1000000
++		      * imx214->pll.bits_per_pixel;
+ 	ret = cci_write(imx214->regmap, IMX214_REG_REQ_LINK_BIT_RATE,
+ 			IMX214_LINK_BIT_RATE_MBPS(bit_rate_mbps), NULL);
+ 	if (ret) {
 
 -- 
-Neil
+2.50.0
+
 
