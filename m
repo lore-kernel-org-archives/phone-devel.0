@@ -1,135 +1,208 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF40273808
-	for <phone-devel@vger.kernel.org>; Tue,  1 Jul 2025 12:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF218274FE3
+	for <phone-devel@vger.kernel.org>; Tue,  1 Jul 2025 13:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751372041; cv=none; b=WGm0mdQze1CYjFZCAee4VpDN5DKPj46PHlUpTHRxz49nlG6cMVU0qwknKyCxZUQges8vvnwo+kkpHZa9nP1c0EX9lWMTH0YSMxIJXyNaIbe0uOdaIgAupYro9gxq1wVE8GQsaSBNpjlUncsSzMVB+9PFNuGbdjIFgGVYMBqsAKM=
+	t=1751377333; cv=none; b=YJQLnPd14Uugc7hv82MJM4rSp42zFkcQh6GkYexnpCAuRgrJNG46bimqoDUzTDho/ClxrjgWHdRc0GQCEKRNn5xp4up4jmnFywBS7/bvg8P4lI/WDEw6NdwsjCFU1iOjtWWP89Q8PLqIRtTRn/PhGt8jbPApDJ6VPz7KmPIgg44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751372041; c=relaxed/simple;
-	bh=fc+V5d2QW7CN+ykMr7bx8/ln9xdc8qfTLHTkKZZLnLE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TI7/lhrXD7d4E1YGx6H/AxgxOLR08pmU/lHGBCijuCKYOExrQ9j4YooRA8X4YWaDD/ZxCnGanLr5QUvUBHiYxuL3vupJH0DD4JSlI0r8estmlDLp6bqXiQle06FF51/yzL4wwcNUoiKc+0pq4Wf7Kj7wB9T5b90h15ELdkggIrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=adflSpn2; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1751377333; c=relaxed/simple;
+	bh=Mc1KTGp8AQ3igfQCX1fLG/VmxsuDuKRGSwcWZkGX5/c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=beEQDeQ2xc6894MqD8TCA72SH+p0wo55COPyhChgm4rl98vTMD1a3TNUZS5OLzTlzQZS37fCEL78p/mlUEE6TEZ/+CT5rFMyb6SdxBDOcySZlfYY9YeKqKp1hsg3zxMR0ByA6a04+qxozEGJN0jVJtWjf8CLkvBYAyTJ3qtBCZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=OBO6iTkd; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="adflSpn2"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561A7f9r024875
-	for <phone-devel@vger.kernel.org>; Tue, 1 Jul 2025 12:13:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	AVAZKe6MVUqSmIfEve8DecFvZqjhdtqfXn8WNkgPtPk=; b=adflSpn2QBv+mRfF
-	T9Kgjq27zZYwTvH/mIPtYnRLk/yvkQTMVRDKF2PY8vdNEyyyX7RTL9IJ7F2cNoRr
-	Sk93tMuVJbXBkIMEwt0/P2dUTtf6b+5Al8i/icQeg8lViSVA82M4RglDrKYC+fEl
-	CH5YsKnadCLo87N92Rp7repskwDFJwzFZECbR1XZajtCX/mbtxX+VxZIW5wvApBJ
-	zrk4YH6V9w31PfHRpN2MTMLYrELYjtxsW+Lk++TbKIkD4zCwSG7cIFP7JOHHBKyG
-	uUcrkfUgdTIEXAB2VAAWWeDq2sODEHc8TyGxkdLZVucUfOTqpgVCfP5pXng/EGwD
-	aj6qXA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8020qnt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 01 Jul 2025 12:13:57 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-702ad4ec207so407866d6.0
-        for <phone-devel@vger.kernel.org>; Tue, 01 Jul 2025 05:13:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="OBO6iTkd"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so5610373a12.2
+        for <phone-devel@vger.kernel.org>; Tue, 01 Jul 2025 06:42:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1751377328; x=1751982128; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K3NN3YOnZNPrDgXvyD2XIOWd2IQC6I9YUWFKOCRkpLE=;
+        b=OBO6iTkdmBRm4eMeS0Es6aAwNn7vMoDgC5DMUE0RyLrnT2Byx6S3YxDDL+AeDYspQP
+         Iop2DiV70VY40Svs8Tuik7W/uOlL9MyFR4y0qFtVT0oMUetOxjt3yScq8YyDTgSpxefC
+         rzbuZYHmIS+n0cK36GIR/kObpQQT1AXUGKlo8kQ87iKh3YA7CPNiWoXKrZzeW8a8HESc
+         5WN88aStwwvrEcJZfkuxlFFDjuSaAzfbpXfhA0vFvsk/eCGzqvodg7d6zmFVDzQXhDpn
+         LRZjpk7QJ/YJvXHCBLW9tfj6/7WQTvbsXKMIK11nvd8+zc6k4iBrA6r/JC7KaclhLrmt
+         anYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751372037; x=1751976837;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AVAZKe6MVUqSmIfEve8DecFvZqjhdtqfXn8WNkgPtPk=;
-        b=CqfkIgRRG3dwWL3ks06CaaZm7E6TGrsnHP+UNJXdzxUCtxX//IA0u8tE+hM/GlB9WZ
-         3JZrffkTNfzsGNdVDqt1xo+Zp49O2G0dtxAg0HVhnf4LGLjhPHxqMwRgucWqDdeDe3P9
-         6A/ATTQxV+VldW3gOCuMJuZ9ix0tVBxMnYAaNia7cb9SGVEOZQHZUmDM9y5oT8TOFt0W
-         6BimpAdYvrjSj+npoYwguJ1SbUhnR5w1djZNCIzKpHQrrCobfK5q1jFvgBy3fEkN7fby
-         61mO+gmlzCgAMnqPR738jqNDBlS4fyBFmCA7sRi9tj4dBDwtO4wDvOT5ODdTNUPs/Xc6
-         Mcpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpntOO0Y1CcRgismPCPWtXlnX9cmP4Zy495BPeWeA7XiIuws1Urqn+qk1Lk4CMrl7F8hJF/7aUheF8Hw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnB5utKiOIAo+piLdrTcNrs+yw+zCA7Fg0+arpTEok86w1oyhg
-	eZ3kRu9zDJwOm5ITGK5UDCzvCDX2XLZEElO8eJnlmkwiNhWdXedCFBEOZjl3oArW0cmS1x9wtJE
-	9tEW3OdcwX4vFPOkOY9WwIohnyGzITaCT4BtQkms7WPcrSk2sUIhc5SE8X+0hq7xUfg==
-X-Gm-Gg: ASbGncuaqqEo7bsLqK7E80WOjP7dbakiw91FSa9WLDajlVqvhdTBDGTN7NBgxuLmnJ2
-	9xgSG5y5K7l4SHG+9l2cZeXTpB6kWSQmt1DzxSd/PxEdCszB1qs417d6go9p3BLL73I9sxSMVRn
-	mvzUJjN3RIvDUfEM2RhXust2JMz64txUwr0nnh8WQlImAkgo1tfIrpfWreNZfj8ZUtx4xWXhmkz
-	ly0/lqUFOrZMmF5OK+fZoNLM+4FnY9P4/Mg5wP+0lFxDwHNCC+xrBeaGz7QKcDY5uXwpkwQ9Rdt
-	SGpydsnYB38mcG03RtiuddqeJUwKYluNAd5PcUQc2vhQVzg2z2k72oTE4KNAMX1rg7YNnHeGdPT
-	iZlbVqHj6
-X-Received: by 2002:a05:620a:43a1:b0:7d3:cad2:ea27 with SMTP id af79cd13be357-7d468a93f78mr96972985a.13.1751372037042;
-        Tue, 01 Jul 2025 05:13:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGDi3p+4z356QnL9luRZ4ca2//1Ovbgx/iA7XNkUbzWU0a4/W2qizB5Q3TbSGueW9e6IvS/8g==
-X-Received: by 2002:a05:620a:43a1:b0:7d3:cad2:ea27 with SMTP id af79cd13be357-7d468a93f78mr96971185a.13.1751372036558;
-        Tue, 01 Jul 2025 05:13:56 -0700 (PDT)
-Received: from [192.168.1.114] (83.9.29.190.neoplus.adsl.tpnet.pl. [83.9.29.190])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c6b407sm859796766b.117.2025.07.01.05.13.55
+        d=1e100.net; s=20230601; t=1751377328; x=1751982128;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=K3NN3YOnZNPrDgXvyD2XIOWd2IQC6I9YUWFKOCRkpLE=;
+        b=C9S2rxV95SYVF5klhKi26Mj7mPPqmSM/Ar70OoHlbfMCxtFlUSxRTcdErY/D/PYtVk
+         VEX6F+VWhtA5xpnx5xSJzf+TjdugOSU2sbAtywOk1atTCnC4q5gBCG9/BsVi9gDMdTJH
+         ZjyuojwykUKFljBaz7EeiPb/t2a+UEcJzsaBMKAGnXow53OJe1EkKHNHk6UurpYhY4Wo
+         304Jc2cNT+BH9vAIVlbGDcGwd2JGhYHY8NaS0GzRdPq1Eo7+uYEDefmRl2FyfggkYmTQ
+         dP8cJnVVOLi2+9eVJW9oaiv721FA0PrlxcSEsdNrqnqVCD7ogZvJuSQheH18UTvgqUVN
+         ar3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVMCD8BpUrmkYqCLOpXT7v4ojdjCq7V7O5sF2QO1bPKdhcbOKba/l0yeIi5DiypL/aj9uoyMipfJ/+4Vw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR/9cPeQcv5paNoB6+6V1n8ipzl/naCSOlUtGpoR3L5PyJ/4ve
+	fOeEGUoIve3ISvlwUP1BjJVIT0xgJdPiJEyQG05iI35izNoh95v/9o87Ev+t9l5Srb8=
+X-Gm-Gg: ASbGncssCS9rpG7Nub/sc3ipQZGXQh+23W3mbftimuHan1KA6czXqP5BOYODLQu6qgW
+	yFckk+2xKlo+koV/MP4uiQjv6S+2ujeoZ3Kmb/eD0SNV4SPoP4Takk8vh7BLVwY8PW5RIPbf19z
+	jtItQmWyTxc49yM4REEQ07J2oHOnOPDF24GJwLHDQhDq5FhYK5ybSkeGafKLFkqbQPfqyavGedR
+	Ch6u0bICoLHHS6QgyEcPIJWPkSyERRnNjl2oqd4EcOPfMJw7DAIpl8r8fbW+MI6JG888hS5/Ool
+	Ok02eOGGx/5Cki6ZiKYfiEs/SVIUWCMkmNYQ6yJiJ8Hm/Z/MMRS6jv7h49Sc5KDPG4L8SVdUipA
+	oKR9Fz0KqCh+vQlfX7ea3FXsZVg+Hv2Sgr447DbzrVeUyw54vTCzOLmrUelGDDyJm4Ms9rmk=
+X-Google-Smtp-Source: AGHT+IGgNsYenmtHtqlifsI+EKQi0fEzMyYD6xYkDkrtd/syyHWZIutfcBHdoTD2pZXazBORFz/1ew==
+X-Received: by 2002:a05:6402:26cb:b0:602:1b8b:2902 with SMTP id 4fb4d7f45d1cf-60c88dd6503mr16076177a12.15.1751377328145;
+        Tue, 01 Jul 2025 06:42:08 -0700 (PDT)
+Received: from localhost (2001-1c00-3b8a-ea00-c4de-d39d-05f4-c77a.cable.dynamic.v6.ziggo.nl. [2001:1c00:3b8a:ea00:c4de:d39d:5f4:c77a])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c8290fb73sm7382663a12.35.2025.07.01.06.42.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 05:13:56 -0700 (PDT)
-Message-ID: <bc805145-b63a-4528-9c59-973fbe4961d9@oss.qualcomm.com>
-Date: Tue, 1 Jul 2025 14:13:53 +0200
+        Tue, 01 Jul 2025 06:42:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] remoteproc: qcom: pas: Add SM7635 remoteproc
- support
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250627-sm7635-remoteprocs-v2-0-0fa518f8bf6d@fairphone.com>
- <20250627-sm7635-remoteprocs-v2-3-0fa518f8bf6d@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250627-sm7635-remoteprocs-v2-3-0fa518f8bf6d@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: HXEu4kw9HmVYy6bTLYyaleviwzB928J3
-X-Authority-Analysis: v=2.4 cv=YPWfyQGx c=1 sm=1 tr=0 ts=6863d105 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=fKQzr7EGRj+VoE0XNsDNvQ==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
- a=S-B96e1FEKnLoGXqiSkA:9 a=QEXdDO2ut3YA:10 a=AYr37p2UDEkA:10
- a=OIgjcC2v60KrkQgK7BGD:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-ORIG-GUID: HXEu4kw9HmVYy6bTLYyaleviwzB928J3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA3NiBTYWx0ZWRfX+KCequTcJItY
- nmimWrWxQsLh3y53/cxxQweu+1He2ZQOnuqVWhvhHeIaPUU5ypCU0i/IJ42SVngJOQ08N0Brh+f
- iWjCyV1H75WCL2Qt4S7qMMuzDwm5Sa4bb7zL90AWlijdVV5XJ7VcpJskBZsyohXJzgeFWms4LCc
- HDItThx8Hg2fzUtEeOQB2vJ9isxWkiDK6sJVjBotYAqXk5O6yaxSbBHb2nqqV/I3V2+8DIR4W7A
- EJTbgiJmUDITBbaaQM/Obunev+VE7jcoNoPSujtkyu7z+YnriTaZ+tSOWVuNVEOat/Df3BELuXJ
- dFthQpNwqMgy7SI8zLcfF9QrZ8E3XkYsTc5YovubAsmPfSZi5/QmQnp8YUBEoC5TQTq9sz0TPUN
- 6jdlLz2TVbGZJcP89PvuRAh0Iwr63eIcFBlPhm6cwKN5bAnpidqMTeLf8QDn34X5G5J9pedB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=931 mlxscore=0 malwarescore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507010076
+Date: Tue, 01 Jul 2025 15:42:06 +0200
+Message-Id: <DB0RG4PFFP4A.1BAZWWZU2TWJF@fairphone.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 00/10] Add clock drivers for SM7635
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250625-sm7635-clocks-v1-0-ca3120e3a80e@fairphone.com>
+ <68056b4a-b1c3-401f-8720-8e0c3cda6249@oss.qualcomm.com>
+ <DAXEWQ93VELV.3HJXPNWASYBT7@fairphone.com>
+ <DAZPKV5DQ1EK.2D4TQE5MIH4K9@fairphone.com>
+ <w4eujq72uqflqpsqshc7zhu6lkc7owufep2g2rjacvzgj44vmf@auonp4ugbgow>
+In-Reply-To: <w4eujq72uqflqpsqshc7zhu6lkc7owufep2g2rjacvzgj44vmf@auonp4ugbgow>
+
+On Tue Jul 1, 2025 at 1:16 PM CEST, Dmitry Baryshkov wrote:
+> On Mon, Jun 30, 2025 at 10:01:35AM +0200, Luca Weiss wrote:
+>> Hi Konrad,
+>>=20
+>> On Fri Jun 27, 2025 at 5:14 PM CEST, Luca Weiss wrote:
+>> > On Fri Jun 27, 2025 at 5:10 PM CEST, Konrad Dybcio wrote:
+>> >> On 6/25/25 11:12 AM, Luca Weiss wrote:
+>> >>> Document and add the clock drivers for GCC, CAMCC, DISPCC, GPUCC and
+>> >>> VIDEOCC on the SM7635 SoC.
+>> >>>=20
+>> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> >>> ---
+>> >>> Luca Weiss (10):
+>> >>>       dt-bindings: clock: qcom: document the SM7635 Global Clock Con=
+troller
+>> >>>       clk: qcom: Add Global Clock controller (GCC) driver for SM7635
+>> >>>       dt-bindings: clock: qcom: document the SM7635 Camera Clock Con=
+troller
+>> >>>       clk: qcom: Add Camera Clock controller (CAMCC) driver for SM76=
+35
+>> >>>       dt-bindings: clock: qcom: document the SM7635 Display Clock Co=
+ntroller
+>> >>>       clk: qcom: Add Display Clock controller (DISPCC) driver for SM=
+7635
+>> >>>       dt-bindings: clock: qcom: document the SM7635 GPU Clock Contro=
+ller
+>> >>>       clk: qcom: Add Graphics Clock controller (GPUCC) driver for SM=
+7635
+>> >>>       dt-bindings: clock: qcom: document the SM7635 Video Clock Cont=
+roller
+>> >>>       clk: qcom: Add Video Clock controller (VIDEOCC) driver for SM7=
+635
+>> >>
+>> >> We had a massive yak shaving patchset go in this season, please move
+>> >> the magic settings in .probe to qcom_cc_driver_data {}
+>> >
+>> > Okay cool, I found them
+>> > https://lore.kernel.org/linux-arm-msm/174970084192.547582.612305407582=
+982706.b4-ty@kernel.org/
+>>=20
+>> For camcc, gpucc and videocc it seems quite simple to follow these
+>> changes.
+>>=20
+>> For dispcc I don't know what to do with this line.
+>>=20
+>> 	/* Enable clock gating for MDP clocks */
+>> 	regmap_update_bits(regmap, DISP_CC_MISC_CMD, 0x10, 0x10);
+>
+> Use clk_regs_configure() callback to set this bit.
+
+Got it, found an example on the lists.
+
+>
+>>=20
+>> Do I just keep the regmap references in this probe function and just
+>> move the clk_lucid_ole_pll_configure & qcom_branch_set_clk_en to the
+>> config struct?
+>>=20
+>> And similar for gcc, I can move the qcom_branch_set_clk_en calls there
+>> but the qcom_cc_register_rcg_dfs needs to be kept.
+>
+> Would you mind extnding struct qcom_cc_desc with args to call
+> qcom_cc_register_rcg_dfs() and call it from qcom_cc_really_probe()?
+
+Something like this? Not quite sure when (in what order) this should be
+called, is that place fine?
+
+I'd include a patch then in the v2 of this series.
+
+diff --git a/drivers/clk/qcom/common.c b/drivers/clk/qcom/common.c
+index b3838d885db2..d53f290c6121 100644
+--- a/drivers/clk/qcom/common.c
++++ b/drivers/clk/qcom/common.c
+@@ -390,6 +390,14 @@ int qcom_cc_really_probe(struct device *dev,
+ 			goto put_rpm;
+ 	}
+=20
++	if (desc->dfs_rcgs && desc->num_dfs_rcgs) {
++		ret =3D qcom_cc_register_rcg_dfs(regmap,
++					       desc->dfs_rcgs,
++					       desc->num_dfs_rcgs);
++		if (ret)
++			goto put_rpm;
++	}
++
+ 	cc->rclks =3D rclks;
+ 	cc->num_rclks =3D num_clks;
+=20
+diff --git a/drivers/clk/qcom/common.h b/drivers/clk/qcom/common.h
+index 0f4b2d40c65c..dbe7ebe5b871 100644
+--- a/drivers/clk/qcom/common.h
++++ b/drivers/clk/qcom/common.h
+@@ -43,6 +43,8 @@ struct qcom_cc_desc {
+ 	size_t num_gdscs;
+ 	struct clk_hw **clk_hws;
+ 	size_t num_clk_hws;
++	const struct clk_rcg_dfs_data *dfs_rcgs;
++	size_t num_dfs_rcgs;
+ 	const struct qcom_icc_hws_data *icc_hws;
+ 	size_t num_icc_hws;
+ 	unsigned int icc_first_node_id;
 
 
+Regards
+Luca
 
-On 27-Jun-25 08:55, Luca Weiss wrote:
-> Add the different remoteprocs found on SM7635: ADSP, CDSP, MPSS and
-> WPSS.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+>
+>>=20
+>> Does that sound okay, or what exactly is the desired outcome of the
+>> requested changes?
+>>=20
+>> Regards
+>> Luca
+>>=20
+>> >
+>> >>
+>> >> Konrad
+>>=20
 
-With the agreed rename:
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-
-Konrad
