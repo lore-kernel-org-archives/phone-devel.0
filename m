@@ -1,550 +1,135 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A40E27F01C
-	for <phone-devel@vger.kernel.org>; Fri,  4 Jul 2025 07:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E05285CBC
+	for <phone-devel@vger.kernel.org>; Fri,  4 Jul 2025 11:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751613451; cv=none; b=Eqv9AWch/aF+1AuSpIZESQG86Xc2swYwWkJl7zHuQstetUyDZEEj4XRh9fpFT8cmL75VxqBRaisgbnliuPp18efjDtpvRf/kebib3xsfZYadC50ERYOV7dEb4RasMHfltyW3uu9yFJ/QY63lRmXSJ7wW2nkvNWoXb/uGqe62C08=
+	t=1751627180; cv=none; b=E5/muo+XG/PsBv030USb0YEv7kuSUqRVwAbDBf+5B2vucPwc+37ugIreqLkVC9GelBcoto0mOrQ8WxZR2RKBjU6OKVcepxqEKtMH4mJI5zLI8q+wQZjnLnlmODSq3OZmOCTKzx5vuYrXvqbaRyFszuIat8gIvG1TKVNC4Cs3pvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751613451; c=relaxed/simple;
-	bh=CFa5Xfk1nfkg6tUrH3CtcpwD24L3ZwFkIBoxbhnEYeY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ijjkLrF4GS4M0SXats+ePBI+s1oDXUYSYVUz2h2BLUV2M4emxsvL9DBMBIWfS3xw1oT8bsFvPx1tWj8DXasdTXdAtnOb+ZNz6Gt4xcDXYJPEvQTE6z7hDMH4TgJ+Ubi9QREdGDf8ffCVJJfTA9T1Euse0rN2H5tutevRK0/5Bf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=BWInGkUc; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1751627180; c=relaxed/simple;
+	bh=k3yRpHVV4mG8PD+9jKn9SDf4cJFDmVdprG2GMo1cjKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L1RnGZR42Kp2ZEFxwWLuyM1Ikw9z5DS+1aTK2/1hI7DBatO7TxZ2TqxT1bpACBWvYBg06k8WFDTQpFGrsqh8MAFAxNMuUU0H0AToXRi7r8pnBc58AO45GerF87UOSs6bVbaFQYqyFfsdckMRt6FLB6zfjevwCt0O1FAw016AX+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KEOiVfWe; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="BWInGkUc"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6088d856c6eso1247737a12.0
-        for <phone-devel@vger.kernel.org>; Fri, 04 Jul 2025 00:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1751613443; x=1752218243; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3mhU3d9i+l+k0Zt7wgwW/HST1zYHmeT8DSvYQtYcUOk=;
-        b=BWInGkUcfAmJtE5FEr+vI7Y/B4eAYqc6oNvPtHTLbL39WL0V/EpJpYkRLTJayVZAey
-         yKUp4KyBtP99JbUZ8pxc0nwYl/2+d3nL/oSqqmRmssL+OgWSu2rDj0WzThGc2l77ljNL
-         hv+PIJRJUHwjLVZrLegCLeLePBZZXRYIOFREAt26SZNXtnIS4eYVhu/gaQLlDyOQD/Dp
-         2wBSWZbhMRTA92CmLpk5GBbLGP0NaS4+bGFGKeRo4qJ3w6TCj33c32Ee6OwSWIaNk1c7
-         0lZg8OA8RTtxVKEK+XDMgdkoxNxxURbYCgZ801/eJWhyd3dkcFgVJCxCAerC8e7Ui8SK
-         L31w==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KEOiVfWe"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 564B69i3019942
+	for <phone-devel@vger.kernel.org>; Fri, 4 Jul 2025 11:06:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2XxqMM/RSUTF2mZkG2gocViLCUQzGXcwFWZuP+ol460=; b=KEOiVfWeA44SOaKc
+	6xYZn8C2V3e+4xKSoxAAbHrk58XEX9tJJOKUl8s64JK5RUgE/AAqRWONcvhPBOdQ
+	hmrMgLROzm4Mv6Ca4LCOkWwop1V3Oyf0WV5lJl73s7yHeFcM/3AReTWNYk6qHqgQ
+	TeFALwk5GfIJpbaK/QB392LjbHHSVISiCk6T1V+61HoBPTUwCa6isi2WVSMGf8oF
+	UezQGSf17DhbDnaSq8vJnL/WbdIdYcMyYMHUXywvMRbQLuJNCOeSh8JB74nUEgy3
+	c40wF1Y83sy88TSPyckG9u6irCEUJi0B5O1TGop/4hm5ZnhULOXxnkRQRgvP61wf
+	d76bSA==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pdsh800j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 04 Jul 2025 11:06:16 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4a5a9791fa9so2183351cf.1
+        for <phone-devel@vger.kernel.org>; Fri, 04 Jul 2025 04:06:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751613443; x=1752218243;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3mhU3d9i+l+k0Zt7wgwW/HST1zYHmeT8DSvYQtYcUOk=;
-        b=Kej882Aq3JuYTwJdzp+B4z19KiT4eegS/iT1B7CW+u49mZ2er8zytZd00JL0sLGU/J
-         wI8dUpSJpjBXor/YwwowZdhIvy7ebY7WZFNehkTL33WBBt19uAFnKNo7bjeFOY2q8dj1
-         jpePkMyDDlz4sunLAwI1p1kuc1cYKv17J8T3iCUU1AKXxwPoWc+HWZjkdBfG0+Qd/bw1
-         bbOeyOvZTUK4hhNtj4wu/Jn0CfjI8sGSPE3lbL4f9WPunzv5JBsqtF0X5sj2HtLVVrMu
-         3+yfSt9U7Si6L+YBAkIwCJqbSMBEdxm+G062eDJvcgu7MxQPC58mo/A0rgB3p5RCm6uA
-         GwGA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2BzUml/kv/vKZECs4NBTU0m2h+Xjd9PKS71HPDN3ep30CJsTxd1v+zGb27GiKw7NkqYEWHI38Cf0fmQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu4jxAonFapyoHX/qS0N/QfDC0BnVP4Y27QS7hCTeJfiYgUKc4
-	vt/2ZN4/sXPNcBpYieMoRftpP/1ieX1Kru0tucuM004Js9iUqXRUMLwB2TJaqSe/4hc=
-X-Gm-Gg: ASbGnctHRuEN9ecQPzG7pQ6wNBpEVHLS3cbkIVK6+7j1++hcqIP6SFaijISC9Mahen4
-	J3uSf+ob3BQSkP3go1qO4whAQcnowJGIq9/X03ioHE6WHTpTYPqSkXkQWLpc4trjSN929WUlqFq
-	F9i9oMCLWh6WoMdHKLwYJZy9gAyItzwRWF+MsunusCep4DW+84wZgz/xbIcfHnSWSUzDZaRF+y7
-	0sLVGzZXT5uOnQ0K9Px/XPR17EaHUCNAKc4cjVLvb6MrQvlFIzx1Ix8Ry+6z4TJN24l3BJPV/EI
-	n08Nuhv4I/FWCwVvkrarzdFCGolMA6+ytfrHt2piBg8mVgZcmWtTXd+VOtpd3pDEzoG3AH5/1+N
-	Aqfly7j0AsZ2D4V1AKa17txjQe8Esv0mY
-X-Google-Smtp-Source: AGHT+IFIUDgrjyqGiW8xl2LM81LcX/n7/fWAGdISPDsnVSWV2bhnTlDcMAJIxiDMSHwcAzcdbqoYKw==
-X-Received: by 2002:a17:906:ba87:b0:ae0:ad5c:4185 with SMTP id a640c23a62f3a-ae3fbdca6e0mr110431266b.57.1751613443066;
-        Fri, 04 Jul 2025 00:17:23 -0700 (PDT)
-Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d1ae3sm119401766b.7.2025.07.04.00.17.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jul 2025 00:17:22 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 04 Jul 2025 09:17:03 +0200
-Subject: [PATCH v2 11/11] clk: qcom: Add Video Clock controller (VIDEOCC)
- driver for Milos
+        d=1e100.net; s=20230601; t=1751627176; x=1752231976;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2XxqMM/RSUTF2mZkG2gocViLCUQzGXcwFWZuP+ol460=;
+        b=pxpWKxWSr6CniEYoL1Tak5lU5FbTQPtO3Kv7KAaKmnE/6HdrvNHMg4QVxWQmix7+4c
+         j4aS0CMR9QbyM8A0ytb7bHPAKgyZm/d6UGTm004sqIWrl7m3WNWndyb7mcA7JfeepUek
+         dypnSAh5TtqHA4LxFaHUumUTKM+YzsBIv1sN2LQFRGpeLPuwaukYbdm3h12kYBu+8P2N
+         BKro8VxrSYvno0YPRNAMoGOO8rvWWxYxSr8IrJK2LHtV7JBzcitDRmF5fSgw+OamS6UO
+         y85ZO3nGMsnxWH/DjP6ILHmtpYAnqi2/47RFXChruUWY3IU8OmOkYwM2ECbXPCeB4+xe
+         nZzg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7hvCRCcTxvRjzpJ+60YH8RCd5VrYoRtA//YdwIF08wo5SZIVYAC61ZSIA7n8T2/yKO0M7qKjfGI+rAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz02kCI0TrKmnRpcLO0rx6HIVD5qZJ14BqVtiZMJVQaraQWp9ur
+	eh242hL3TpViyGttTXIwsE3BXL0U/odZoHwyKneptJo4b/n7u9zEa9hrQdE9jDpR4lCf35omq1u
+	i+kiSjUJw1y8CrwkkbTArE+z6JTtkXJER9AdkhM3P4t0IfPi8cDE3SDBN7DWXavfEjw==
+X-Gm-Gg: ASbGncuT4j3XCXUJZaAa+LRRiS8xqS+2Lk7c0tkBhymDjYLn/zTRFmCzG/I9ZAJoUAt
+	7WaoTfVraOHRh4ii+mUvJpCdM2X+NOek5hP9zvyuMihgSDEKVX1tIWe8R6gzYedB8IDPyinwpu7
+	1XqOOXR1KLBmCHgj0Xo65RpdS1qgnjB6/eUBRosDsAnMBovnD0FBsWUPhiq37pSpiAZvFKqoArR
+	snWDq4MVat2FmMsGAU6jiiNnpay8q5HpB9r4DZUcaNGeUvFaHSJA7xys6xcnH0eXQ3iFA/KkPPF
+	oh9vB6GMyNTPjYoNbjh1X1ikc3IqrVeAwSYwS7/OaYqShWoIJMs4ve/iIm7DqQ0SlqdfgeXrEjN
+	Y9dI/Rw==
+X-Received: by 2002:ac8:5fd0:0:b0:4a7:bed9:524c with SMTP id d75a77b69052e-4a9975cf1eemr9429601cf.11.1751627175932;
+        Fri, 04 Jul 2025 04:06:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEL00AfasMKdltGMxGM974NBZd0imq6S1Dc9fbvd0ZKYoSfNqzbgVRMjgXDHONPutQiSOAFdQ==
+X-Received: by 2002:ac8:5fd0:0:b0:4a7:bed9:524c with SMTP id d75a77b69052e-4a9975cf1eemr9429321cf.11.1751627175516;
+        Fri, 04 Jul 2025 04:06:15 -0700 (PDT)
+Received: from [192.168.1.106] (83.9.29.45.neoplus.adsl.tpnet.pl. [83.9.29.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b02a23sm152666366b.112.2025.07.04.04.06.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Jul 2025 04:06:14 -0700 (PDT)
+Message-ID: <0e13833f-fc0c-4bb1-a1e4-fdba07c50768@oss.qualcomm.com>
+Date: Fri, 4 Jul 2025 13:06:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-sm7635-clocks-v2-11-9e47a7c0d47f@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/11] clk: qcom: common: Add support to register rcg
+ dfs in qcom_cc_really_probe
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250704-sm7635-clocks-v2-0-9e47a7c0d47f@fairphone.com>
-In-Reply-To: <20250704-sm7635-clocks-v2-0-9e47a7c0d47f@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751613431; l=13493;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=CFa5Xfk1nfkg6tUrH3CtcpwD24L3ZwFkIBoxbhnEYeY=;
- b=ZJrgAOVEfHeK1sBi1V9KCl62RuTcwhKwTHtQJreZasjO15h7Xbv7otjIlcvMKt9cT2t3/YTZz
- zwy7hwKGSG0BFBI3dedA/pnMyDuw2nowdUsCMPtHdSNmTJn1hy1mFfA
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+ <20250704-sm7635-clocks-v2-1-9e47a7c0d47f@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250704-sm7635-clocks-v2-1-9e47a7c0d47f@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA4NCBTYWx0ZWRfX4A86PR5+fYge
+ bXlRXLGG5aAhnh+KXuo2Yj4KO7gfgf0e71FZxHurshMouqsSx4kr2RQf0uOp+mi5acMw0N0UXOt
+ TftS/EeCwgMh32SFm5XPAKAwPRKP3uwwzmOJc2/IRkS2oPB9XAFvxHnM/hC8jrgPwN6jTMcDltN
+ CBKTRwaXzS+Bf/vkkUFs8EfNtAiV5prfNwi1jPrDIdwYvxIz6zMAK7IBedCrpvxyh54CDNz2CAP
+ Gxn155Xfd4Vlm/K4XmdwyV0W2HwQVF6/SbaaOvj4dtGhYi8vyPc+8kdT8LECwH+a9JNg9DKjt8K
+ 9pxSfCwCmcL1/xxYBqe/MhWLjh+NF40bUpL8UNX/r2exps6n5dKE8sXTs3j4DehbhQ9l0epLCUa
+ DkMrl4PLV54cOj/TcPXEGIvnbctFc9LgzGKf/CE8gPF07JJ2ZgKqaUKR5A6in8Lvpg0NaFjQ
+X-Authority-Analysis: v=2.4 cv=RJKzH5i+ c=1 sm=1 tr=0 ts=6867b5a8 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=qmfFy4ndMtQ753Zl/n/b/A==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
+ a=oQRPDSM0WpIYGLKzx8wA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+ a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-ORIG-GUID: YjTSypai5x0EvRCUFtamdxQDMw-3CwMh
+X-Proofpoint-GUID: YjTSypai5x0EvRCUFtamdxQDMw-3CwMh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-04_04,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015 suspectscore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507040084
 
-Add support for the video clock controller found on Milos (e.g. SM7635)
-based devices.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/clk/qcom/Kconfig         |  11 ++
- drivers/clk/qcom/Makefile        |   1 +
- drivers/clk/qcom/videocc-milos.c | 403 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 415 insertions(+)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 9063ee3831efd2dad99611cb90ea79e0cd04f8bf..774e152bc154293b8409e5af52ff944964ce73fb 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -1394,6 +1394,17 @@ config SM_VIDEOCC_7150
- 	  Say Y if you want to support video devices and functionality such as
- 	  video encode and decode.
- 
-+config SM_VIDEOCC_MILOS
-+	tristate "Milos Video Clock Controller"
-+	depends on ARM64 || COMPILE_TEST
-+	select SM_GCC_MILOS
-+	select QCOM_GDSC
-+	help
-+	  Support for the video clock controller on Qualcomm Technologies, Inc.
-+	  Milos devices.
-+	  Say Y if you want to support video devices and functionality such as
-+	  video encode/decode.
-+
- config SM_VIDEOCC_8150
- 	tristate "SM8150 Video Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
-index 07ab4128e9d30012127ba3a138c9f18d117cb787..cf978290516a05c999ff1a53e5d6820658bc4b6c 100644
---- a/drivers/clk/qcom/Makefile
-+++ b/drivers/clk/qcom/Makefile
-@@ -176,6 +176,7 @@ obj-$(CONFIG_SM_VIDEOCC_8250) += videocc-sm8250.o
- obj-$(CONFIG_SM_VIDEOCC_8350) += videocc-sm8350.o
- obj-$(CONFIG_SM_VIDEOCC_8450) += videocc-sm8450.o
- obj-$(CONFIG_SM_VIDEOCC_8550) += videocc-sm8550.o
-+obj-$(CONFIG_SM_VIDEOCC_MILOS) += videocc-milos.o
- obj-$(CONFIG_SPMI_PMIC_CLKDIV) += clk-spmi-pmic-div.o
- obj-$(CONFIG_KPSS_XCC) += kpss-xcc.o
- obj-$(CONFIG_QCOM_HFPLL) += hfpll.o
-diff --git a/drivers/clk/qcom/videocc-milos.c b/drivers/clk/qcom/videocc-milos.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..998301e0ba887e192b2a3873eb81fa88962834cf
---- /dev/null
-+++ b/drivers/clk/qcom/videocc-milos.c
-@@ -0,0 +1,403 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2023, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <dt-bindings/clock/qcom,milos-videocc.h>
-+
-+#include "clk-alpha-pll.h"
-+#include "clk-branch.h"
-+#include "clk-rcg.h"
-+#include "clk-regmap.h"
-+#include "clk-regmap-divider.h"
-+#include "common.h"
-+#include "gdsc.h"
-+#include "reset.h"
-+
-+/* Need to match the order of clocks in DT binding */
-+enum {
-+	DT_BI_TCXO,
-+	DT_BI_TCXO_AO,
-+	DT_SLEEP_CLK,
-+	DT_IFACE,
-+};
-+
-+enum {
-+	P_BI_TCXO,
-+	P_SLEEP_CLK,
-+	P_VIDEO_CC_PLL0_OUT_MAIN,
-+};
-+
-+static const struct pll_vco lucid_ole_vco[] = {
-+	{ 249600000, 2300000000, 0 },
-+};
-+
-+/* 604.8 MHz Configuration */
-+static const struct alpha_pll_config video_cc_pll0_config = {
-+	.l = 0x1f,
-+	.alpha = 0x8000,
-+	.config_ctl_val = 0x20485699,
-+	.config_ctl_hi_val = 0x00182261,
-+	.config_ctl_hi1_val = 0x82aa299c,
-+	.test_ctl_val = 0x00000000,
-+	.test_ctl_hi_val = 0x00000003,
-+	.test_ctl_hi1_val = 0x00009000,
-+	.test_ctl_hi2_val = 0x00000034,
-+	.user_ctl_val = 0x00000000,
-+	.user_ctl_hi_val = 0x00000005,
-+};
-+
-+static struct clk_alpha_pll video_cc_pll0 = {
-+	.offset = 0x0,
-+	.config = &video_cc_pll0_config,
-+	.vco_table = lucid_ole_vco,
-+	.num_vco = ARRAY_SIZE(lucid_ole_vco),
-+	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_LUCID_OLE],
-+	.clkr = {
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "video_cc_pll0",
-+			.parent_data = &(const struct clk_parent_data) {
-+				.index = DT_BI_TCXO,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_alpha_pll_lucid_evo_ops,
-+		},
-+	},
-+};
-+
-+static const struct parent_map video_cc_parent_map_0[] = {
-+	{ P_BI_TCXO, 0 },
-+};
-+
-+static const struct clk_parent_data video_cc_parent_data_0[] = {
-+	{ .index = DT_BI_TCXO },
-+};
-+
-+static const struct clk_parent_data video_cc_parent_data_0_ao[] = {
-+	{ .index = DT_BI_TCXO_AO },
-+};
-+
-+static const struct parent_map video_cc_parent_map_1[] = {
-+	{ P_BI_TCXO, 0 },
-+	{ P_VIDEO_CC_PLL0_OUT_MAIN, 1 },
-+};
-+
-+static const struct clk_parent_data video_cc_parent_data_1[] = {
-+	{ .index = DT_BI_TCXO },
-+	{ .hw = &video_cc_pll0.clkr.hw },
-+};
-+
-+static const struct parent_map video_cc_parent_map_2[] = {
-+	{ P_SLEEP_CLK, 0 },
-+};
-+
-+static const struct clk_parent_data video_cc_parent_data_2_ao[] = {
-+	{ .index = DT_SLEEP_CLK },
-+};
-+
-+static const struct freq_tbl ftbl_video_cc_ahb_clk_src[] = {
-+	F(19200000, P_BI_TCXO, 1, 0, 0),
-+	{ }
-+};
-+
-+static struct clk_rcg2 video_cc_ahb_clk_src = {
-+	.cmd_rcgr = 0x8030,
-+	.mnd_width = 0,
-+	.hid_width = 5,
-+	.parent_map = video_cc_parent_map_0,
-+	.freq_tbl = ftbl_video_cc_ahb_clk_src,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_ahb_clk_src",
-+		.parent_data = video_cc_parent_data_0_ao,
-+		.num_parents = ARRAY_SIZE(video_cc_parent_data_0_ao),
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_rcg2_shared_ops,
-+	},
-+};
-+
-+static const struct freq_tbl ftbl_video_cc_mvs0_clk_src[] = {
-+	F(604800000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	F(720000000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	F(1014000000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	F(1098000000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	F(1332000000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	F(1656000000, P_VIDEO_CC_PLL0_OUT_MAIN, 1, 0, 0),
-+	{ }
-+};
-+
-+static struct clk_rcg2 video_cc_mvs0_clk_src = {
-+	.cmd_rcgr = 0x8000,
-+	.mnd_width = 0,
-+	.hid_width = 5,
-+	.parent_map = video_cc_parent_map_1,
-+	.freq_tbl = ftbl_video_cc_mvs0_clk_src,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_mvs0_clk_src",
-+		.parent_data = video_cc_parent_data_1,
-+		.num_parents = ARRAY_SIZE(video_cc_parent_data_1),
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_rcg2_shared_ops,
-+	},
-+};
-+
-+static const struct freq_tbl ftbl_video_cc_sleep_clk_src[] = {
-+	F(32000, P_SLEEP_CLK, 1, 0, 0),
-+	{ }
-+};
-+
-+static struct clk_rcg2 video_cc_sleep_clk_src = {
-+	.cmd_rcgr = 0x8128,
-+	.mnd_width = 0,
-+	.hid_width = 5,
-+	.parent_map = video_cc_parent_map_2,
-+	.freq_tbl = ftbl_video_cc_sleep_clk_src,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_sleep_clk_src",
-+		.parent_data = video_cc_parent_data_2_ao,
-+		.num_parents = ARRAY_SIZE(video_cc_parent_data_2_ao),
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
-+static struct clk_rcg2 video_cc_xo_clk_src = {
-+	.cmd_rcgr = 0x810c,
-+	.mnd_width = 0,
-+	.hid_width = 5,
-+	.parent_map = video_cc_parent_map_0,
-+	.freq_tbl = ftbl_video_cc_ahb_clk_src,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_xo_clk_src",
-+		.parent_data = video_cc_parent_data_0,
-+		.num_parents = ARRAY_SIZE(video_cc_parent_data_0),
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
-+static struct clk_regmap_div video_cc_mvs0_div_clk_src = {
-+	.reg = 0x80c4,
-+	.shift = 0,
-+	.width = 4,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_mvs0_div_clk_src",
-+		.parent_hws = (const struct clk_hw*[]) {
-+			&video_cc_mvs0_clk_src.clkr.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_regmap_div_ro_ops,
-+	},
-+};
-+
-+static struct clk_regmap_div video_cc_mvs0c_div2_div_clk_src = {
-+	.reg = 0x8070,
-+	.shift = 0,
-+	.width = 4,
-+	.clkr.hw.init = &(const struct clk_init_data) {
-+		.name = "video_cc_mvs0c_div2_div_clk_src",
-+		.parent_hws = (const struct clk_hw*[]) {
-+			&video_cc_mvs0_clk_src.clkr.hw,
-+		},
-+		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
-+		.ops = &clk_regmap_div_ro_ops,
-+	},
-+};
-+
-+static struct clk_branch video_cc_mvs0_clk = {
-+	.halt_reg = 0x80b8,
-+	.halt_check = BRANCH_HALT_VOTED,
-+	.hwcg_reg = 0x80b8,
-+	.hwcg_bit = 1,
-+	.clkr = {
-+		.enable_reg = 0x80b8,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "video_cc_mvs0_clk",
-+			.parent_hws = (const struct clk_hw*[]) {
-+				&video_cc_mvs0_div_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
-+static struct clk_branch video_cc_mvs0_shift_clk = {
-+	.halt_reg = 0x8144,
-+	.halt_check = BRANCH_HALT_VOTED,
-+	.hwcg_reg = 0x8144,
-+	.hwcg_bit = 1,
-+	.clkr = {
-+		.enable_reg = 0x8144,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "video_cc_mvs0_shift_clk",
-+			.parent_hws = (const struct clk_hw*[]) {
-+				&video_cc_xo_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
-+static struct clk_branch video_cc_mvs0c_clk = {
-+	.halt_reg = 0x8064,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x8064,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "video_cc_mvs0c_clk",
-+			.parent_hws = (const struct clk_hw*[]) {
-+				&video_cc_mvs0c_div2_div_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
-+static struct clk_branch video_cc_mvs0c_shift_clk = {
-+	.halt_reg = 0x8148,
-+	.halt_check = BRANCH_HALT_VOTED,
-+	.hwcg_reg = 0x8148,
-+	.hwcg_bit = 1,
-+	.clkr = {
-+		.enable_reg = 0x8148,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "video_cc_mvs0c_shift_clk",
-+			.parent_hws = (const struct clk_hw*[]) {
-+				&video_cc_xo_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
-+static struct gdsc video_cc_mvs0c_gdsc = {
-+	.gdscr = 0x804c,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0x6,
-+	.pd = {
-+		.name = "video_cc_mvs0c_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
-+};
-+
-+static struct gdsc video_cc_mvs0_gdsc = {
-+	.gdscr = 0x80a4,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0x6,
-+	.pd = {
-+		.name = "video_cc_mvs0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &video_cc_mvs0c_gdsc.pd,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE | HW_CTRL_TRIGGER,
-+};
-+
-+static struct clk_regmap *video_cc_milos_clocks[] = {
-+	[VIDEO_CC_AHB_CLK_SRC] = &video_cc_ahb_clk_src.clkr,
-+	[VIDEO_CC_MVS0_CLK] = &video_cc_mvs0_clk.clkr,
-+	[VIDEO_CC_MVS0_CLK_SRC] = &video_cc_mvs0_clk_src.clkr,
-+	[VIDEO_CC_MVS0_DIV_CLK_SRC] = &video_cc_mvs0_div_clk_src.clkr,
-+	[VIDEO_CC_MVS0_SHIFT_CLK] = &video_cc_mvs0_shift_clk.clkr,
-+	[VIDEO_CC_MVS0C_CLK] = &video_cc_mvs0c_clk.clkr,
-+	[VIDEO_CC_MVS0C_DIV2_DIV_CLK_SRC] = &video_cc_mvs0c_div2_div_clk_src.clkr,
-+	[VIDEO_CC_MVS0C_SHIFT_CLK] = &video_cc_mvs0c_shift_clk.clkr,
-+	[VIDEO_CC_PLL0] = &video_cc_pll0.clkr,
-+	[VIDEO_CC_SLEEP_CLK_SRC] = &video_cc_sleep_clk_src.clkr,
-+	[VIDEO_CC_XO_CLK_SRC] = &video_cc_xo_clk_src.clkr,
-+};
-+
-+static struct gdsc *video_cc_milos_gdscs[] = {
-+	[VIDEO_CC_MVS0C_GDSC] = &video_cc_mvs0c_gdsc,
-+	[VIDEO_CC_MVS0_GDSC] = &video_cc_mvs0_gdsc,
-+};
-+
-+static const struct qcom_reset_map video_cc_milos_resets[] = {
-+	[VIDEO_CC_INTERFACE_BCR] = { 0x80f0 },
-+	[VIDEO_CC_MVS0_BCR] = { 0x80a0 },
-+	[VIDEO_CC_MVS0C_CLK_ARES] = { 0x8064, 2 },
-+	[VIDEO_CC_MVS0C_BCR] = { 0x8048 },
-+};
-+
-+static struct clk_alpha_pll *video_cc_milos_plls[] = {
-+	&video_cc_pll0,
-+};
-+
-+static u32 video_cc_milos_critical_cbcrs[] = {
-+	0x80f4, /* VIDEO_CC_AHB_CLK */
-+	0x8140, /* VIDEO_CC_SLEEP_CLK */
-+	0x8124, /* VIDEO_CC_XO_CLK */
-+};
-+
-+static const struct regmap_config video_cc_milos_regmap_config = {
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.max_register = 0x9f50,
-+	.fast_io = true,
-+};
-+
-+static struct qcom_cc_driver_data video_cc_milos_driver_data = {
-+	.alpha_plls = video_cc_milos_plls,
-+	.num_alpha_plls = ARRAY_SIZE(video_cc_milos_plls),
-+	.clk_cbcrs = video_cc_milos_critical_cbcrs,
-+	.num_clk_cbcrs = ARRAY_SIZE(video_cc_milos_critical_cbcrs),
-+};
-+
-+static struct qcom_cc_desc video_cc_milos_desc = {
-+	.config = &video_cc_milos_regmap_config,
-+	.clks = video_cc_milos_clocks,
-+	.num_clks = ARRAY_SIZE(video_cc_milos_clocks),
-+	.resets = video_cc_milos_resets,
-+	.num_resets = ARRAY_SIZE(video_cc_milos_resets),
-+	.gdscs = video_cc_milos_gdscs,
-+	.num_gdscs = ARRAY_SIZE(video_cc_milos_gdscs),
-+	.use_rpm = true,
-+	.driver_data = &video_cc_milos_driver_data,
-+};
-+
-+static const struct of_device_id video_cc_milos_match_table[] = {
-+	{ .compatible = "qcom,milos-videocc" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, video_cc_milos_match_table);
-+
-+static int video_cc_milos_probe(struct platform_device *pdev)
-+{
-+	return qcom_cc_probe(pdev, &video_cc_milos_desc);
-+}
-+
-+static struct platform_driver video_cc_milos_driver = {
-+	.probe = video_cc_milos_probe,
-+	.driver = {
-+		.name = "video_cc-milos",
-+		.of_match_table = video_cc_milos_match_table,
-+	},
-+};
-+
-+module_platform_driver(video_cc_milos_driver);
-+
-+MODULE_DESCRIPTION("QTI VIDEO_CC Milos Driver");
-+MODULE_LICENSE("GPL");
+On 04-Jul-25 09:16, Luca Weiss wrote:
+> Add support to register the rcg dfs in qcom_cc_really_probe(). This
+> allows users to move the call from the probe function to static
+> properties.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
--- 
-2.50.0
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
+Konrad
