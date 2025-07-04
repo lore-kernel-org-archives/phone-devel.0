@@ -1,110 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FACB2D46AC;
-	Fri,  4 Jul 2025 12:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2DC197A76
+	for <phone-devel@vger.kernel.org>; Fri,  4 Jul 2025 14:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751632239; cv=none; b=rr28O2QUX10XlRDFC+wriLAqwOcJ63D9a6rC8ICNSiUSYXt/Pva83mMZ6HFyXMjXRryA9nHGPjjrQJUvvwssqfUQC1aqd0tGeN9bmTqSGxlaSkG9bPqBoxv+lqlPUy81BkLrio0b4uw2fqfU8aCiPoVdXD9ULJRRIqmXIAO9b9s=
+	t=1751638417; cv=none; b=WPF5pri2hhV1KcGe+6HNAB2O7yL4j/Dogpc5yGXGOUv+l78N/FHhXr+ODAByUF7BEp+9X/Z6ahZU+//Cj18yMon5UBHuixw9Ov0Re+78EnvFz7bKu9P6j5mnj6fjRodV2rFrdwMrc+SzkMuWbjlMX1GX3l/mjbktErgmyheuBck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751632239; c=relaxed/simple;
-	bh=9rZiRzdv9CtJTFc6rhk2cR+OOMU0FF61Txdcw7HIcbA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SktkViYnqGj/Ir88vH5ffN9Hqk+hOLvUscfXTAZMoEkUk7gLXRW6Pfk/MlD2cAk2HYlb1BWFV6XKqVxQbu4pajTWps37a4+9Kaefik+iSRvqxJKNH3gDkb7zlC/binkLGQkL3jG0RvY3NTEqhCEOYTViuvhXQLpAHyhlhqSDh/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gu1+/i46; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751638417; c=relaxed/simple;
+	bh=uVBajTT2lSvw+Ur1hq0WlQKfumsobw7ctdnObFVhF5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEtynwZU0AbtZCzdbeSaVOHu/67+h5PwjOEVzY2Ryl6uSSOrtWxzaLmNKhrZ2gUxls0ecBW4xxj5Yg2rv6pcmiXwaKZOojv60HiwdOAAR++3BlDwIbNuPPrYK4EkJ5bQ8Ss6DA/kQXOSMMrqY2VdQwHhoT2DUz/pCsoOQv8c3jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PeyDfwkY; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gu1+/i46"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75547C4CEE3;
-	Fri,  4 Jul 2025 12:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751632237;
-	bh=9rZiRzdv9CtJTFc6rhk2cR+OOMU0FF61Txdcw7HIcbA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gu1+/i46XMKNQ6xNFRlzCovm6Nzzrc6XvBQshICMZ+70atFk9Z014eGcqKX6gTBe5
-	 dZUbjJW1r4Nc2AylOyLteMv0Wjps2ahM1mI4c8E8YeSdCIzcBEBw6Hb0dGfV2CAr3i
-	 D2y9Ch6xqd5JQW87kbsW3Y2sniw9G/LQsfKdT/ObSbDLXQ8anHEXhbrgAAlFLusSlX
-	 +QQoSTWEHn/U53HoEGYCT97+AGrwK5O81/diyinGC/wURzBpkhAwYSpx9SVrZXQVp3
-	 VbKacS440ehL6U6+HREuovwzsd/4TDVLPvSN3uuLYxVBQvP5YBccZovC/UYd9QWlDG
-	 w+n75aTREAhsg==
-Message-ID: <0191e184-7dd4-4dc3-957d-f045c5d8de93@kernel.org>
-Date: Fri, 4 Jul 2025 14:30:27 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PeyDfwkY"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 564EDYrk002484
+	for <phone-devel@vger.kernel.org>; Fri, 4 Jul 2025 14:13:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=YD7pRGBpQkYgS0oJMpIrXcLP
+	EFNPQFjZEJbaEoDadqo=; b=PeyDfwkY5pNipDMJLyYuhrfBfNdPTq+52K469xlq
+	5AEgLviN4MGDzs3DzMGJv32AvMOr2bfd2UqikCHIdMjfwv7exWdHlZp1hlVTsXWZ
+	t6S0SEle6xMweRqoxr1dvyf4Vv3/q7gO0NHQL4zFAXptQEORwGZbcsrpV0X1r0+9
+	40s04kOXjRNvIrbMwgXioCPR5DN6l6hB49tG0SHNZSpqvyNl6py8yUTSE3JjvBlL
+	ENohqWGpN4Yc0B1RkDray1q9b/Zsws5ojYE50zCIjeHak/rr3UQ17HNvW0nkd99z
+	U5/fre07ag215bQX1myuuHmgoSfFKyQ4cQinMXvhrP9HOg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j63kmht2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 04 Jul 2025 14:13:34 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7d460764849so349889685a.1
+        for <phone-devel@vger.kernel.org>; Fri, 04 Jul 2025 07:13:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751638413; x=1752243213;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YD7pRGBpQkYgS0oJMpIrXcLPEFNPQFjZEJbaEoDadqo=;
+        b=M/DGU//vQ2t0WpVW5OLvcdL2iwoQHgdsu3oZDbF1oQ4PQlXuoBTYuFEYcVFkJ+0SPs
+         7QWqMAkeY1Cr5Bp25iAaS5Gb9blnImMpkKIhH48DAzAmnl7R9s0PTEO7ubSOIjsrcRlh
+         /OGZNgkqQcMyKFh9AdZuP7Y0oRklpf5otzyJj3+9vq44ezBYAiPbJuOFamo/20cus/JP
+         5F48FvNvLhbXHpCCWfsQOBhc/f/h3eKs8zuE66E2Dc+ceqAoESQX/VXiIRda6pNpuTsD
+         m/grHhwVbEYH+KIgyIp60+dnaafqmjqapalfQnIN9NzDGUNMW/ojsBF5ZhjZFFxQ+nZE
+         wp2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVAXeBegHKcE7o17RcGDFyqXDAHywmpCwaoW0PySjoZnuGCXHIpoYrSgK/8ry4CyxCoQmHa/Gx9yw3J6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAUGZNxG7RxtCLY9Fp3roUHXHFzdSvSeifBYHaM1Jju73pIMR5
+	0vvwNJPSIX8ykIr7yPSLfZm4ORUX3l7fkrCocJKefCbTlx7BZw4BLk/9mxntwOgMLAzPtBgzd9o
+	CNhSnOOt1nNifBtNr9bDGs5uBWUGsQcHLCiRbtiuXZxEPbPO4Dpcer7luc8Hsm698dA==
+X-Gm-Gg: ASbGncsRPq8E1B9txIm+Y3Q2ykgoZy5X2t/elQMnCL2SywFZ0CV0qZ1KzGoKolC94Nm
+	TJrvrYufZLA159hmr+e2spaSp6mPSd0LL3KapZeezAsBIRRSIXhvZCSDoGywS50yTUak7AOkdXg
+	dfbpOB9jFpJRBVv4pBkgHF6p8pOv2NgI9XwKHGuMuaKjwuwEHSZWOM9xtdIK7ZKP1x1A6IGwx0F
+	ndXFV0OO+d+cVPFqFkJrZFrGlvDtIJHrvumEWOjCCU9IrWt6BiUzGk/vB6lY6ces7NtmgQQb8F5
+	4MIqVobHMc0/wDqtUCbfGOwPbo/3JHXPs4jsX56jo9B4tbzS/6ATt2kQSzGj9m1YmgXzvPUG3BD
+	ukLjOF/kR2rGVCmnQvED6EuElk5x6N+HPxK8=
+X-Received: by 2002:a05:620a:1a9d:b0:7d4:4b12:a39c with SMTP id af79cd13be357-7d5dc6b8a4amr450023485a.16.1751638412485;
+        Fri, 04 Jul 2025 07:13:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEu4sJ6opy4orpQRjMYZ1e4zAyxiuU2Gx/Jb2naX2Aa1H9ZNaTc56q7JfZ9aa/NrAcO8+wGkA==
+X-Received: by 2002:a05:620a:1a9d:b0:7d4:4b12:a39c with SMTP id af79cd13be357-7d5dc6b8a4amr450012485a.16.1751638410869;
+        Fri, 04 Jul 2025 07:13:30 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55638494bb0sm261178e87.104.2025.07.04.07.13.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 07:13:30 -0700 (PDT)
+Date: Fri, 4 Jul 2025 17:13:28 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 09/11] clk: qcom: Add Graphics Clock controller
+ (GPUCC) driver for Milos
+Message-ID: <22mwkfbddaqrmfnkccn4ogjxdiq5hvbkiieebcbjtyk34ihmov@cnjp7c57ij3k>
+References: <20250704-sm7635-clocks-v2-0-9e47a7c0d47f@fairphone.com>
+ <20250704-sm7635-clocks-v2-9-9e47a7c0d47f@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] dt-bindings: clock: qcom: document the Milos
- Video Clock Controller
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250704-sm7635-clocks-v2-0-9e47a7c0d47f@fairphone.com>
- <20250704-sm7635-clocks-v2-10-9e47a7c0d47f@fairphone.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250704-sm7635-clocks-v2-10-9e47a7c0d47f@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250704-sm7635-clocks-v2-9-9e47a7c0d47f@fairphone.com>
+X-Authority-Analysis: v=2.4 cv=ZKfXmW7b c=1 sm=1 tr=0 ts=6867e18e cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=RwypAz-qddAaXUw-r8QA:9
+ a=CjuIK1q_8ugA:10 a=PEH46H7Ffwr30OY-TuGO:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDEwOCBTYWx0ZWRfX7cqy6KXmtyF1
+ EZRHCjWO10kQmXukpkYEGn17qISMGMmeX+6JFGBeo+M7fOvVWfyLQtvOXmZP9ndyJOKU3/fbvqs
+ iV4nAqvOsicsF9SqzYa2f7eNiCx4t6ZmlWxlikuaCTnm0xBnG9A/tpnf8yU4bVVwGQdpUGwoWqc
+ hyka4rnMxRtR69zPPMVDk3ybGThZJdeecF59VoZ3j0qe0p07ChpOKAOq46jdTSkBkwNRNX5aIw3
+ QGQqZroyWfzRt2oQPaXT9J1I0jp90kB/VuqqBwWJzF17RUqnYudvtCbRVH/jwnh00Z82b0Z1BhG
+ agPHnv/D1upBV6bubavxhYl4VqEEJMe2gQ3/vM96DP3E+A3by9NUCp3k9khckZ3XNG7N7Xn8PNd
+ sM7W8+RmBVCUXq5P6TPC7c99HdtiUogKHciGcjhdlxYGLmfmi5H/hOsuLyi7iAWhwJn7IKuT
+X-Proofpoint-ORIG-GUID: dIcJeO6ZPV0HrcrvTkuVe0zcvXmvTdDv
+X-Proofpoint-GUID: dIcJeO6ZPV0HrcrvTkuVe0zcvXmvTdDv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-04_05,2025-07-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ impostorscore=0 malwarescore=0 clxscore=1015 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507040108
 
-On 04/07/2025 09:17, Luca Weiss wrote:
-> Add bindings documentation for the Milos (e.g. SM7635) Video Clock
-> Controller.
+On Fri, Jul 04, 2025 at 09:17:01AM +0200, Luca Weiss wrote:
+> Add support for the graphics clock controller found on Milos (e.g.
+> SM7635) based devices.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
+>  drivers/clk/qcom/Kconfig       |   9 +
+>  drivers/clk/qcom/Makefile      |   1 +
+>  drivers/clk/qcom/gpucc-milos.c | 562 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 572 insertions(+)
+> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Best regards,
-Krzysztof
+
+-- 
+With best wishes
+Dmitry
