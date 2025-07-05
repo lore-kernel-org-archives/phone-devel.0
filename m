@@ -1,113 +1,150 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3315E2441AA;
-	Sat,  5 Jul 2025 12:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2142E3715;
+	Sat,  5 Jul 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751717615; cv=none; b=BSwexOlGDtlgf5p1XzIgEDUXK5qmtp8W44ay5/wOZjEQFRzHD96zv8jPv9TgjfYEofJEtx4wP54X/VFlGKPiftt0myAsfdjrzVfm0ZJZlWIRudRA86lDblqslnOa0xIfKeGF+Pt3jtEISg5q60Mda0/KdeTBhoUwnMou1tFJxhw=
+	t=1751725008; cv=none; b=HaiSmoSJMMDPuGv1xHnNziIQP1/ksJIyJy8XcqO3dYN1OcmIRATVaRUSWL6aMicYeyxVV6RZZHefMgoLZPCnSkcUDiW87ppLTmA1MGJvtkgLsSFaqtkQPbnSd08sHzkVtpZ6JNAsf7F+K9WPwKYspJI/f345o8s/yqnt4NJ88GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751717615; c=relaxed/simple;
-	bh=XBsSA4lmonBD6F2b7rSW7gGkYuRB+Q0avmS+D4Z7QhI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BFhZNFkSyY58A6x+IC0i2azZFmAnEEri6xddy3x1WDqvpoU+e6WsUFBY8LLhBIB7FvTRT7pUTZZb+lEigggqzoae1RK7i4cS0QhxK+PHhvn7cmTYAY3xy/3Dd9Z66g6Bd95DxuV3aRBgUxnRsq39pU5bx58L6caK36sHW0IasoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=TzB+n9HE; arc=none smtp.client-ip=128.199.32.197
+	s=arc-20240116; t=1751725008; c=relaxed/simple;
+	bh=MDdJEYq2doyNGE6EUzPQJPJZ4ZXYPI7/XfL8g6ttZ08=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cvJT7/9hVoshbKB3FvZzr/x5/nELz6al8YB9Wg8WgoTSv6/FIUBmagP6p44qV09owXzaDyeOQnULeMa7b6KrzjowIav+AWKI9yaQemVvjN46ni4lw2KLppdpv4KucOW7bHDML61/O+uHUQRnjdry8sD6jwhzuEzIhAOu16Fgy9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=W9tbIoiG; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="TzB+n9HE"
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="W9tbIoiG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1751716994; bh=XBsSA4lmonBD6F2b7rSW7gGkYuRB+Q0avmS+D4Z7QhI=;
-	h=From:Subject:Date:To:Cc;
-	b=TzB+n9HETmBPTK/MHlQndbOC6eUUWO5L3RvwgC1F3zNYBuNnYHlFAeMwZ1biMHtI9
-	 R5c7MSMQP2/SgMmA8nyJgkhnZwWZGZUxk1c7xyRAUfUJ/b6IcADaQphZeH3zhAwjA4
-	 qjwIypDoldPMzNkZOrAthi3KeIHvZL5Z7zZHsalA=
-From: Luca Weiss <luca@lucaweiss.eu>
-Subject: [PATCH v2 0/3] Add support for AW8898 Amplifier
-Date: Sat, 05 Jul 2025 14:03:04 +0200
-Message-Id: <20250705-aw8898-v2-0-9c3adb1fc1a2@lucaweiss.eu>
+	t=1751725004; bh=MDdJEYq2doyNGE6EUzPQJPJZ4ZXYPI7/XfL8g6ttZ08=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W9tbIoiG1e2S9tK40GeYgJ4butdrSXEHCYu28e9Pm/ONj0v0D61e49sOgMjwvMrJ+
+	 nzBhoHvss2XXjv0TOuUeY627q+ra2b7K8YV/Zy4gG0n6Vjfu1t/vxjCO29RgW9kCak
+	 ToN5KKCkLW43lqKYxUxUIDNQRIL++tIsfga561x4=
+Message-ID: <2e338f72-c676-425c-a96b-1cfed466f9fc@lucaweiss.eu>
+Date: Sat, 5 Jul 2025 16:16:44 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHgUaWgC/2XMQQ6CMBCF4auQWVtTRtoMrryHYdHQQSYxYFooG
- tK7W9m6/F9evh0iB+EI12qHwEmizFMJPFXQj256sBJfGlCj0Y22ym1ELSltWyJD6JE1lPMr8CD
- vA7p3pUeJyxw+h5vq3/pHpFppZcihN6ax7WW4PdfebSwxnnmFLuf8BZPldJyfAAAA
-X-Change-ID: 20250406-aw8898-06988582d2e0
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Weidong Wang <wangweidong.a@awinic.com>
-Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Luca Weiss <luca@lucaweiss.eu>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1680; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=XBsSA4lmonBD6F2b7rSW7gGkYuRB+Q0avmS+D4Z7QhI=;
- b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoaRR7C+RBt0mbDKKD4fFi2an8AJzZkxWl3jqWj
- LNOu+pkliGJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaGkUewAKCRBy2EO4nU3X
- VlnzD/9ofkJEqr8PZOvscZ77IdrIrctTdV7+qVP1fNObu/yQXR4IcDwGe502ejdiF3SeX3AbWmR
- 1btGKopHU+VDM586o4Z6RyTShjBhStxMa6CZvWTnQFHd+m7d3qjij6g5bmQQ+pNZKiH/OOD+Z+i
- kPDh81FJDZ/E5POFXrFH7QloHKsL80Clpw14R96NsrjGDbw2AREhYf2Az4JAtfjzoyMwtOs/tfR
- 4Yv2CyVGP84Oj/FkdRNzq/SlCUNCCg1r2FdnekoebQfjkAbyjIbo+yTUKHzmitJro2tT1szc/aY
- SzClE0idp7S9wHQ4GRXspYt0EGXyAKFFQFoAgv+5L3z6cLkGIIJCoDGOkfJoDEniKNc4ekUbXzO
- IUPajQrluEM6ytjVa7sF3uKzJQE3zKMOExpU6x2LJQC/v42Xyp33SLsb3BIwUCqf0el2BRU192q
- oBJ23Wri0b7V26csIhsBv8ExE/4dhGDXGjYv0Wspuy/A8MpAiYYWgc6LsBaI9ry3h6cOl6Y57ZH
- QIPNM3zrZ3x/BLZX4Y2LajGXWS6Bc2JCb7/sS8Epmb1bnP2J0khveGn5Grp4p+HpVpbEFAq+XQa
- NZ/gE4Jw3oMSPO2f86+0CDch7diezgmFhvJc09rjZNkzlae4RZRqE+QHK999mJuhHlnuRvIPN8b
- NQGZ5LIfyu6XLNA==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Subject: Re: [PATCH 0/4] Start using rpmpd for power domains on MSM8974
+Content-Language: en-US
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
+ <amfgwjgstu4hoxz4lo7fqrqz5fqtf3r7o6wqvrrjkcfubwrjyz@5i75peprq3wn>
+ <841c41cc-e44d-40c7-9431-a77feaa49b05@lucaweiss.eu>
+ <225b94a0-eea5-4061-aebd-da497d349527@oss.qualcomm.com>
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <225b94a0-eea5-4061-aebd-da497d349527@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add devicetree bindings and a driver for the AW8898 Amplifier, and add
-it to the devicetree for the Fairphone 3 smartphone.
+Hi Dmitry,
 
-Note, that this is the first audio driver I've worked on, so please
-complain if something doesn't quite look right, it probably wasn't done
-on purpose.
+On 24-06-2025 11:03 p.m., Dmitry Baryshkov wrote:
+> On 24/06/2025 21:46, Luca Weiss wrote:
+>> Hi Dmitry,
+>>
+>> On 24-06-2025 2:59 a.m., Dmitry Baryshkov wrote:
+>>> On Sat, Jun 21, 2025 at 03:19:55PM +0200, Luca Weiss wrote:
+>>>> Switch over the ADSP PIL to use power-domains instead of a regulator,
+>>>> and have one commit switching over the MSM8974 SoC plus all the devices
+>>>> to use power-domains.
+>>>>
+>>>> Note, that I'm aware that these changes are not backwards compatible 
+>>>> and
+>>>> not really bisectable, but since it only affects the ADSP on these
+>>>
+>>> Why? The cx-supply is handled unconditionally. A single-domain usecase
+>>> is also handled via a special code path. I think this might be
+>>> backwards-compatible, by the pure luck.
+>>
+>> Honestly I have not tried and not looked much. I mostly added this 
+>> paragraph to avoid the response that this change might break and is 
+>> not really backwards compatible. If it does (by accident) work with 
+>> the updated dts without the driver and the other way around, then even 
+>> better.
+> 
+> I think it's worth checking that new kernel works with older DTS (that's 
+> the usual rule). The platform doesn't have many users upstream, but I 
+> think it has been used by some PmOS users, which might mean not-yet- 
+> upstreamed DT.
 
-Unfortunately we can't wire up the full audio stack yet since the SoC
-side is not upstream yet, the last revision from July 2024 can be found
-here:
+I was finally able to test this, but the patches except the dts patch 
+does not work.
 
-https://lore.kernel.org/linux-arm-msm/20240731-msm8953-msm8976-asoc-v3-0-163f23c3a28d@gmail.com/
+[  170.802573] qcom_q6v5_pas fe200000.remoteproc: probe with driver 
+qcom_q6v5_pas failed with error -61
+[  170.803127] remoteproc remoteproc0: releasing adsp
 
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
-Changes in v2:
-- Make supplies required & use unevaluatedProperties in dt-schema
-  (Krzysztof)
-- Implement many suggestions from Mark in the driver, quite a major
-  refactor, most of it is unraveling the initialization and using the
-  proper callbacks
-- Pick up tags
-- Link to v1: https://lore.kernel.org/r/20250406-aw8898-v1-0-58a2d554693f@lucaweiss.eu
+I didn't take much more of a look but probably adsp_pds_attach fails there.
 
----
-Luca Weiss (3):
-      ASoC: dt-bindings: Document Awinic AW8898 amplifier
-      ASoC: codecs: Add Awinic AW8898 amplifier driver
-      arm64: dts: qcom: sdm632-fairphone-fp3: Add AW8898 amplifier
+For postmarketOS users, all msm8974 mainline devices that are packaged 
+as part of postmarketOS, come from the github.com/msm8974-mainline/linux 
+fork, which included this patch already since a few releases. I'm taking 
+care that all out-of-tree dts that are in that repo are updated.
 
- .../devicetree/bindings/sound/awinic,aw8898.yaml   |  78 +++
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts  |  20 +
- sound/soc/codecs/Kconfig                           |  10 +
- sound/soc/codecs/Makefile                          |   1 +
- sound/soc/codecs/snd-soc-aw8898.c                  | 561 +++++++++++++++++++++
- 5 files changed, 670 insertions(+)
----
-base-commit: 1f5c752d94a7c3388dd562f5dd82f102ac7a3ffc
-change-id: 20250406-aw8898-06988582d2e0
+Fortunately this is just breaking adsp probe, bootup still works as 
+before. So from my side again: I think it's not worth the effort to add 
+a bunch of complexity to the driver code and support this use case. I'm 
+not aware of any msm8974 upstream users that would require that.
 
-Best regards,
--- 
-Luca Weiss <luca@lucaweiss.eu>
+Regards
+Luca
+
+> 
+>>
+>> Regards
+>> Luca
+>>
+>>>
+>>>> pretty old boards, I say it's fine to have this. Get all the patches
+>>>> into the same release (6.17?) and then we're good again.
+>>>>
+>>>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>>>> ---
+>>>> Luca Weiss (4):
+>>>>        dt-bindings: remoteproc: qcom,adsp: Make msm8974 use CX as 
+>>>> power domain
+>>>>        remoteproc: qcom_q6v5_pas: Use resource with CX PD for MSM8974
+>>>>        ARM: dts: qcom: msm8974: Sort header includes alphabetically
+>>>>        ARM: dts: qcom: msm8974: Start using rpmpd for power domains
+>>>>
+>>>>   .../devicetree/bindings/remoteproc/qcom,adsp.yaml  | 18 ++------
+>>>>   .../arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts | 13 ------
+>>>>   .../qcom/qcom-msm8974-lge-nexus5-hammerhead.dts    | 12 ------
+>>>>   .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 12 ------
+>>>>   .../dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi   | 12 ------
+>>>>   arch/arm/boot/dts/qcom/qcom-msm8974.dtsi           | 50 ++++++++++ 
+>>>> + +++++++++--
+>>>>   .../dts/qcom/qcom-msm8974pro-fairphone-fp2.dts     |  8 ----
+>>>>   arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts  | 11 -----
+>>>>   .../dts/qcom/qcom-msm8974pro-oneplus-bacon.dts     |  9 ----
+>>>>   .../qcom/qcom-msm8974pro-samsung-klte-common.dtsi  | 11 ++---
+>>>>   ...qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 12 ------
+>>>>   drivers/remoteproc/qcom_q6v5_pas.c                 |  2 +-
+>>>>   12 files changed, 56 insertions(+), 114 deletions(-)
+>>>> ---
+>>>> base-commit: 7fa2fb97cd28e1d9670da538095565b6fba83977
+>>>> change-id: 20250621-msm8974-rpmpd-switch-b19b166c02be
+>>>>
+>>>> Best regards,
+>>>> -- 
+>>>> Luca Weiss <luca@lucaweiss.eu>
+>>>>
+>>>
+>>
+> 
+> 
 
