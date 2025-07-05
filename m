@@ -1,127 +1,163 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC1A273F9;
-	Fri,  4 Jul 2025 15:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B011824BD02;
+	Sat,  5 Jul 2025 12:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751642678; cv=none; b=W9eW0LN0HrQgjLYhu/LdbwWB2/Y2O76LitdRi1fM6sTzgog+dIKnVSINIbcb4xOnwCdD+Q+rFhU+0avB9LD1/aGw86TZFZlXw3IWbCgB6Sk4F87ClZPAnjI5tHGwYZ6pKXtqfDRdX98klxtQpO3vp07BGZ0CPWVSpqU/CRrmjFw=
+	t=1751717313; cv=none; b=oSrTyFQbrgZsmkbhGkl4FoH913+Mkk53CObzSttun17WE2mz8kMvFp8fY3Q5rdTy2BvJM5m75JMyCh4Fi1dnZuQxGFnEAIllcq4sHcYh5iNSoku1g5f4J72wSMzwaNCa6rF4v3DMv9L5wDn/3+5fDv2KRU9qMtAjMfj7PWuutTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751642678; c=relaxed/simple;
-	bh=1RaZjBaFK4O9m2hUkR0ejRqsoogZr8wxydc4okUFd4k=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=sgNFiXAanOZmNttTNDJzKEC/vJykDJG6eW3Io8MBSzxjmidjbmDaLojmH5lGEgt7HLQkOh/qbX2Ds/9dwaySE3WmRmmhXANweOi9y85DEk7chDJzHBIfr4Ki4wTuv32737kj4qROfFcyzAxAX0D8XMwK2WGym2VbUjM6ygN/LkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Lza9JkLP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dxiUTf/1; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1751717313; c=relaxed/simple;
+	bh=A5J52sFRgcKLNS5QZzA4CrA9ofZsvR818bxqKCmdmeA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=F6ASi1qKFU6bhmYMahkyHnJafaThgUB3cFeLreriA5AEXsKbsmY/qUUspPP/486RmQa+C2ljJSM3uuOafe6sLEszZadgDIrxyNXHrdAQ8yq0PXhjQ0708N/QUf8zyllyZK6GA/3W9kGxmI+TDToG3XbD7yLYlQ/Lr4nCdiAfz2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=gHawPyyt; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Lza9JkLP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dxiUTf/1"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 5ABB2EC0B7C;
-	Fri,  4 Jul 2025 11:24:35 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Fri, 04 Jul 2025 11:24:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1751642675;
-	 x=1751729075; bh=OxkN8U0d6DLuyWGhk7/eLOhPT1m1WWG0eL9XC0pIFr0=; b=
-	Lza9JkLPgRTi72q0CeUE1aSO92cBDepyIq07HiZRYm49g0ed9gUJ5WwPIbg03Agx
-	ETl0ivARZlgi2RYninbmTmiJmbP4pCXjqVrW8cFUEMMe8tQ/Cyq0gEz7uBLn6Icg
-	Mi1k12uBxYwgsaL0v2FmBijBfYLNjBOiOAvq1Hpt9Ajw+a39wKnbePKYdLbmv6au
-	v2RIIEYMqfWQAYuO31E39j1KzAd2EGrvUQgoSZxqziEx2lJQ0+KbfqjZ0wmc7m/J
-	meqj5rmsGeyOuSsF9+Pwm/noCawjF2I4kRlmRnQMCM7/JfzDE5iyA3BMsA0yk3cz
-	R86QvRN9PYsxUavWRgzk1A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1751642675; x=
-	1751729075; bh=OxkN8U0d6DLuyWGhk7/eLOhPT1m1WWG0eL9XC0pIFr0=; b=d
-	xiUTf/1s9MLiP438ZHeuS+7xaEEutv9Mn3/TdWRxhYadPIaMe7EWFZXPZclHpqra
-	RKz6rmVnOKyO1GgbACZ6IlCdfoNhcjdsT4FUMUnjb4wDO6uWLuLeGsTr6/IyELim
-	ZpoZhm3wIHOi/E/LMRooNtxfO7yuOD+YC64iDzxQWX31EcrSB9Gl1wwPHnVZEXeF
-	9dYRW1v1Dzlprpa3tdCGrh14EshhswUvwhD6QYBC6dJ8Rc322PT4hBsJRIgWbtZP
-	83tMUkLiDSQRsy0LxCrSy00LrUEHZXYiCSghv5pMH5e+U0KubT45xqc+4MJxGcaa
-	rfNZ6rCQCW+0fXJTmfkAQ==
-X-ME-Sender: <xms:MfJnaNvN37HV7zgfq6jdTA8JpiW-nE2rx-WKJkpWyg7mvpap_M0SVA>
-    <xme:MfJnaGeEF8cn4ICmeJVjqmjyQZLiMCOScRoieyHFnp9MrngymApUVSrPFgsgQmbKt
-    Q1otTNuPvQW6D0aGGU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvfeehudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeekvdeuhfeitdeuieejvedtieeijeefleevffefleekieetjeffvdekgfetuefhgfen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
-    thhtohepvdegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegtrghtrghlihhnrd
-    hmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohepghhrvghgohhrhidrtghlvghm
-    vghnthessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguuhhjvgesughujhgvmhhihh
-    grnhhovhhitgdrgiihiidprhgtphhtthhopehsvggsrghsthhirghnrdhhvghsshgvlhgs
-    rghrthhhsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghhpihgttgholhhisehighgrlh
-    hirgdrtghomhdprhgtphhtthhopehtohhnhidrlhhutghksehinhhtvghlrdgtohhmpdhr
-    tghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvg
-    gvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghl
-    rdhorhhg
-X-ME-Proxy: <xmx:MfJnaAxCTD5GLVOvef9h-xijbwlCKGjDQPooOQ9DsoQJ0-bnQyfE8g>
-    <xmx:MfJnaENTwpkQ739gsNO-gNbeGdk_tRKEoXqiGjI-ufMAEDIpjF88eQ>
-    <xmx:MfJnaN9pkyb4X-XNQ35bfM296M3Ectl9NE9XYjtHFlkWMgdmYd9yzA>
-    <xmx:MfJnaEUKXVpOXcgkgxq-JQ0wG5cu-cG3-Cp1eCGhTUovMkmqfJ01fQ>
-    <xmx:M_JnaEPhlG2tNQv7xOmXCRaxq_6QiJPS3simNK2BQ7SokKX2A-erjzIr>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CBABA700065; Fri,  4 Jul 2025 11:24:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="gHawPyyt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1751716994; bh=A5J52sFRgcKLNS5QZzA4CrA9ofZsvR818bxqKCmdmeA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=gHawPyythyxiVvoTG6lpG12bZAsJxLZ5kyDEN4cN95sk0AfZ/mhCxCyRuhfliPn0L
+	 jWeA1sidC+SchqYBCvIB8bI7CdOXQUSE5pwqgGFfrLXM5odm5Obv9WGirDXbh1L912
+	 bFn7hYqWm4izM3ZG2EozoBK3joprGh2pynVssMPE=
+From: Luca Weiss <luca@lucaweiss.eu>
+Date: Sat, 05 Jul 2025 14:03:05 +0200
+Subject: [PATCH v2 1/3] ASoC: dt-bindings: Document Awinic AW8898 amplifier
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T2c71400495fa2685
-Date: Fri, 04 Jul 2025 17:24:13 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Lubomir Rintel" <lkundrak@v3.sk>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- "Andrew Lunn" <andrew@lunn.ch>,
- "Gregory Clement" <gregory.clement@bootlin.com>,
- "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
- "Kees Cook" <kees@kernel.org>, "Tony Luck" <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: "David Wronek" <david@mainlining.org>, "Karel Balej" <balejk@matfyz.cz>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- soc@lists.linux.dev, "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>
-Message-Id: <89072b80-09c0-418d-b104-668f7fdeae82@app.fastmail.com>
-In-Reply-To: <20250407-pxa1908-lkml-v15-0-e83ef101f944@skole.hr>
-References: <20250407-pxa1908-lkml-v15-0-e83ef101f944@skole.hr>
-Subject: Re: [PATCH v15 0/4] Initial Marvell PXA1908 support
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250705-aw8898-v2-1-9c3adb1fc1a2@lucaweiss.eu>
+References: <20250705-aw8898-v2-0-9c3adb1fc1a2@lucaweiss.eu>
+In-Reply-To: <20250705-aw8898-v2-0-9c3adb1fc1a2@lucaweiss.eu>
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Weidong Wang <wangweidong.a@awinic.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Luca Weiss <luca@lucaweiss.eu>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2397; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=A5J52sFRgcKLNS5QZzA4CrA9ofZsvR818bxqKCmdmeA=;
+ b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBoaRR/2kEQvxH8g3e8MdSMQTR0bAyhfHjK2YbZo
+ ad5dUvPhFiJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaGkUfwAKCRBy2EO4nU3X
+ Vvo0EADRfS09Is7VfHDbonsCmCU9DJwFZkSwZKnF/Ssk4NLfDY08PQ8yRJuj0dhBPQdLHDPzCp3
+ 4pomdPO+KMw6ABw/hkSdlRhf+6XUhzyVD14w9J6pz0Bsjb5YyYrtjVmIQ0tWAXWJSBCSGtbs8kO
+ U7MupektRi+OEAsqWzavyR6+jI2sYSluF1DkTJk22uJeV9JK2NK3QG9Fpw1/TsiLwGwvhZNU35u
+ 0m4d936SCABy41QdrFspR/nAbJ/nfIRq+UKoiOJ2VwExGU8d1P63gIaZVWXuretaF4y0JZ4wcTf
+ ZjydF5d4oPDzlodqCv6uBLHzv1JkuvgRZ+TikK2Ohe3SePnQYhJ2cEOQtT6eU1IhlAQ9+pu2dsU
+ dScCBojbPmHz9wyM1yelVwx+GHLqllSLKb5E+EH57eatyQjYxBwth1qQqVOiLSIu8bnQUzSLE5f
+ IY89nxIltDIcX7ZLH/uoXYZzA1rJ++X8CSO35ryjXKijdBCVPQLoNpnbY4MYr2dEd2YkMUKNBwn
+ VNiJm7L0XlpDKqMhXvtSeMlnv6eyDaFowZwOheNIgTkWAEFRf/TWr4A821xaCZzGQrXDIaPWnLn
+ AIOnskOCmKHLLznN8FbEmnlbIWPTALU0Q2KWKxPpfbcVe9aFAUpW428rWPfmzPz6j6tjzkkTrlH
+ 1afCJTmmlp2IOCg==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Mon, Apr 7, 2025, at 22:02, Duje Mihanovi=C4=87 via B4 Relay wrote:
->
-> This series adds initial support for the Marvell PXA1908 SoC and
-> "samsung,coreprimevelte", a smartphone using the SoC.
->
-...
->
-> Andreas F=C3=A4rber attempted to upstream support for this SoC in 2017:
-> https://lore.kernel.org/lkml/20170222022929.10540-1-afaerber@suse.de/
->
-> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+Add the bindings for the Awinic AW8898 amplifier.
 
-Hi Duje,
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+ .../devicetree/bindings/sound/awinic,aw8898.yaml   | 78 ++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-I see you last posted this a few months ago and there was only
-a small warning that Rob reported. Are you planning to send
-an updated v16 of the series for it?
+diff --git a/Documentation/devicetree/bindings/sound/awinic,aw8898.yaml b/Documentation/devicetree/bindings/sound/awinic,aw8898.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..38eb0ba506527ed9e4420f3dfa13283580e56d27
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/awinic,aw8898.yaml
+@@ -0,0 +1,78 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/awinic,aw8898.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Awinic AW8898 Audio Amplifier
++
++maintainers:
++  - Luca Weiss <luca@lucaweiss.eu>
++
++description:
++  The AW8898 is an I2S/TDM input, high efficiency digital Smart K audio
++  amplifier with an integrated 9.5V smart boost converter, sound quality
++  enhancement algorithms and speaker protection.
++
++allOf:
++  - $ref: dai-common.yaml#
++
++properties:
++  compatible:
++    const: awinic,aw8898
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  dvdd-supply:
++    description:
++      Digital power supply
++
++  vddio-supply:
++    description:
++      Digital IO power supply
++
++  vdd-supply:
++    description:
++      Battery power supply
++
++  "#sound-dai-cells":
++    const: 0
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++  - dvdd-supply
++  - vddio-supply
++  - vdd-supply
++  - "#sound-dai-cells"
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        audio-codec@34 {
++            compatible = "awinic,aw8898";
++            reg = <0x34>;
++            reset-gpios = <&tlmm 21 GPIO_ACTIVE_LOW>;
++            interrupts-extended = <&tlmm 20 IRQ_TYPE_LEVEL_HIGH>;
++            dvdd-supply = <&pm8953_l5>;
++            vddio-supply = <&pm8953_l5>;
++            vdd-supply = <&vph_pwr>;
++            #sound-dai-cells = <0>;
++        };
++    };
 
-       Arnd
+-- 
+2.50.0
+
