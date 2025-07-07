@@ -1,139 +1,127 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F417295D8F
-	for <phone-devel@vger.kernel.org>; Mon,  7 Jul 2025 10:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F65526057F
+	for <phone-devel@vger.kernel.org>; Mon,  7 Jul 2025 11:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751883506; cv=none; b=X5BZWPm51rrQEXVWe2nmcyBLDW5+ChRlyyvdqdfJrR1+PxJ+dI4wRthQaTwlNFOY1UB91MsUPosJ/UbZMPlNP+dkfNnZOVJgcA53ckib47nStRJg/N86/2WBANOcolFxqtcNkaheSQjTaIC0A5HOWBHFrOoqT+W4XsFcHN8Cixc=
+	t=1751887881; cv=none; b=RuWpqZ2zJAoZDDxe/lY50rIHiv2IVb9FbAgeodLpGWMsc2GKpTUKPJdMwGIZqPHvEci3OLtDb/Ljfm+5YKM9ik7LAdKUlSEd7ONh4yWEvjC2wR/BZqEZaTw+yugxIP6DLhcaCRhjHucRgCcq8v/dlXcCrtzoXWryuWDR4jNpTKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751883506; c=relaxed/simple;
-	bh=DMbrTGn2oiFCand2994EbbGqOk9oOogjgoWe7AhWgh4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NHr951B9avtFQl9HETVuG1G9RYga5Y2pytLCtMIAcK6eNDzHTyauc1oN9eFW/kzeS9d0nIM/2WsHqljlh09zjEDBfgIzCLatb80NkeSW7WFSaCV0Ven/eoa2dzHTEcJhJV8U8YZ+ri23pwwMAoFmDDZ2kPSOp1YWzPgwYrxtPVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vWJq6nMh; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1751887881; c=relaxed/simple;
+	bh=EHqNUQU89R3sore7iAI2H4xqVvujymPymPAR6GGY8Kw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LE4jE4tJyyff7yxPRhci1TUUEZw1I/edygT4/UBYKs7BBI+2hAfwmNTYuak5vikqRlwqBa0QFLHCdhDM0ff13qTfIbJIopqLVbcTTufv1S0OWx0vmPJ4ONNrT2+JoZPqC/b7HOTTez0ugnNjD7G2SS9bRi0lg3E4/UCLC9OMtsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CV28eBDt; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vWJq6nMh"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso542323266b.0
-        for <phone-devel@vger.kernel.org>; Mon, 07 Jul 2025 03:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1751883502; x=1752488302; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a8Ge20RgeK7ksHv2r52GDHh4NGxzRBjNBgwgR8RP7uA=;
-        b=vWJq6nMhQXIcIK3QbvkwT7KQVepZJmCJYUWQTx+ehyKb+8jaDxBssKf3K5x/T9tTo0
-         oGt81EuYyK4B2ljSd4G1nztAHO9NIjAc/Nb8zJ5PAFZJ6+I2xgfI/89O+J+VZxhVh5pr
-         AcZVE3yE7EL1mmGWOnANaxkn4fN3CjFsGhjSTiAFJYXKVAZGboH4EUGdgvMgmVcRXHQj
-         MIVMbEvWY3b2mLdGEMdJAHvl2GeaJae5IS/2gPPCqEuJhjwABl1kSoqpCmTfDo7/w57k
-         alwQXkgFriIPZwUOy2Y+i+2OJ9uBnT42Q1WMS445Q4VqfdJ7GDueRpwm15IedJgm01Mw
-         0Wdw==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CV28eBDt"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5676omT0013069
+	for <phone-devel@vger.kernel.org>; Mon, 7 Jul 2025 11:31:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	DWTeIruv+S7Tt3sFAKNHbEJ7BbFsYXgmX08CqCNfWkQ=; b=CV28eBDt1MmHCUvz
+	9jfUSDayPh7r516Y9xM0ovaJvXwfZ78AeFUW87DjxUISO96qc4qOkzO/iS9hrR18
+	9he3jmNF9p4jwQxpzHpsjGC2ZcTB5MpDLDnflcqdCtXonL50RWaFLMX3WrKMDLLb
+	jl/3own5ZwFZk1Qp0c7NYX+nZMqiNwb71cIEa/wEheS1tTdSV5CJvYjmD/GA/aRr
+	ATwdeekTIOwv4+tj8DwiYJgoo3w9/v8XNsYx5FDTzLYOZM3kzJ2LBD7jFLlpzJbz
+	jPEoIn4XjnmGFEV1I3TNboGsm7xsVBSNTTzQuyS3v//hAW7shmIEf8cjgpwQwNQH
+	PaMk2g==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47r9b0j43h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 07 Jul 2025 11:31:18 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6fafc0e703aso11178506d6.1
+        for <phone-devel@vger.kernel.org>; Mon, 07 Jul 2025 04:31:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751883502; x=1752488302;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a8Ge20RgeK7ksHv2r52GDHh4NGxzRBjNBgwgR8RP7uA=;
-        b=LYns0rTnm3NiLjw3ZsgVdy93d3CjgbGGJ0PHVJDWuOivqSzHvQIDrMwp7l/RJXFuB3
-         xqUEf3SzpOGZXIVSDUrJs51nL1bAyS9ItvrvqkSpGGLQwhrf8G/QTUun4BePTxSP1GZU
-         ss3nL7ixVjResGIxIONqNV3rWKGSGTWAZPIXG9K0bm7rRcnOSlT6G9b1TbhmdQ9ujfN3
-         ojYsKd0JTBpaV5JKO6pT3mH2YBLAC7v5wvHiXDL6xMlmwSqf2mEgXZiI2leZ6HXEvp5M
-         6xxk2IlxsJDKONVHZ+OsjWecCOrcFsFHhbTY5qr2FvlcuMQRX9wVO5s1irt1Wj2lUFqT
-         iasw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKwwhtsqnRVMcMK3J7h4FWgQpz2ZFvmLfEZoJAzipUoz9jkp6yo1sPRNb036yd3QdoKOdvGsnf3+SmUg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4zV96B4pCmgG9piR0h+YkrRcUP2wf85iUPEikJ+d2WJl45cCL
-	ILmJSJyz9XTOYllsY6PWCrMHFd+Tal5WE1N2g8AzpuIIQRsq980pDHRj4Yn3kGOWsNqBdvqNb/L
-	pMs+D
-X-Gm-Gg: ASbGncs7qjXh64RMib/6hInG3GawaMjvMLma67p/Fq4xn1+G78mMQbdKHNamk60n+5V
-	AeImLFglgnBa0cabD7lSdPsbtgZJHqxF079hC1hWeXH0swim3YleUgaWiHee02+38ZINKkgoGkv
-	2X36oKC9uz+wUDyo0r21MtYtlUcaknZt9YE2VVax+6DzEj752Q0GxxQAtNIgze9KRAQgwjd8+gg
-	+PZyTtalGg/pXdBUKqFPmVjFxPX87f+9vpwv+FTP41LCYL959kEfKJLfALaUsC3Vxnmi1STlwsp
-	7cX2sJLXMYoaOsazhU2aHghIlGOlVn6FLnhUB+UV82pzANKhKtQTr+ukBA0GLDHMmHv9Q0HVfiE
-	cEYlKf8/SKiQw2o7Ip/kWVTeYOWi2psmt
-X-Google-Smtp-Source: AGHT+IGG3uIPzMF+00PNjI0EwVgYviZWA+kJ/1ai7rBTaIQlV6W7t19T5/X/FqCEc5TjKLQfSV9xng==
-X-Received: by 2002:a17:907:d1c:b0:ae0:c1c4:645 with SMTP id a640c23a62f3a-ae3f830b8c0mr1056831866b.21.1751883502499;
-        Mon, 07 Jul 2025 03:18:22 -0700 (PDT)
-Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6bb1edfsm671711766b.180.2025.07.07.03.18.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 03:18:22 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 07 Jul 2025 12:18:11 +0200
-Subject: [PATCH v2 2/2] pmdomain: qcom: rpmhpd: Add Milos power domains
+        d=1e100.net; s=20230601; t=1751887877; x=1752492677;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DWTeIruv+S7Tt3sFAKNHbEJ7BbFsYXgmX08CqCNfWkQ=;
+        b=JYnbeFqFCBNRU4ejO2KS625UgfEcQOFyXRXgjd9PMQMlJd4y6b0dPFDl+rzFjssMpb
+         eBuzcIKpNg7ld1naML0Rx5ZRbHl7AaYiU/7KI37H+28SSTTi04yTM76eSlMiAdSpIyLB
+         zWe/mHWkYbwZjmtgj/6vRZz6eDMtInv9ZxlwFfLf5MMYRQDouvBkiz0s9CSoPIjERmAX
+         WFgKHaqWLYnHHk+Ld0ioZ4VUJb+4biGI4HinL1B8edN+ACf+FebVL85rOH1BiXg5fVI5
+         iYZI8CBmw/1/rsBhYYLDND6Pnu+Jvx0LRVKyQwdAuxLFwoZ4DOBJTK7lVtQKmkokclFs
+         x9xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXay2ia4dVNJhiQoOgKK4lW/jubhUagc7D+Qmuqp/cdC9eO1I6cGeEaVevfTvBFBsmIWm5TILtXVWvqDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlxsBDVNDca3sJTOAaL9JtfAumuATqA5W/iW+q3RY3+z8Ggpz/
+	5mRH7GJgtdFK+GvLv1R1JKZN3SjKDESIqCgrdMRAQrSjLPk8QLxVLkhvMpiIQlzX+hhir0vSSb1
+	qkmpoSfjB3BcO6pUqiItWrGeB6czyhUU8pFoiTDgTUb7wgQp4gsNGYWZkufQV40gTbg==
+X-Gm-Gg: ASbGncu1SErV1KosQCs1KsqN5uheltgO6YMVxI2p1k+Lqvkfno90yDUbrNzKxKIDLd/
+	4jjSKKmbdDW4MLjkCVBfD1OVAae2buMl98D/o5SIzWr9CvS3fRfhgI8aA14eeglJdXB8izYU3Is
+	yXrvLa9PqPrTri2BXqGFM0hHbo2/rJjlWb7O3Voiq0ogs+pzFibcYEkVeRYIHxKdcigZz95vNZN
+	TJh5teMo5FzvPgFeOEgh42L0+0dZtGN3nXtIPuO8+z4CfCkoD51wLycNzYMHCjDSQkCnIQskYHW
+	U1TJRPEEJOhwAroKox4tRk1XnOPkcUpmP7PI14sa0cFgLsxLVPN+vabf1akAerwMZmPmCUYxP4O
+	6OP0=
+X-Received: by 2002:a05:620a:440b:b0:7d4:5cdc:81e2 with SMTP id af79cd13be357-7d5ddc9bdd4mr594386185a.13.1751887876793;
+        Mon, 07 Jul 2025 04:31:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGpaw9CJeuBmYG3lV7sOgssLhggh0DGHOI8ZYixyktqQXpKdT92pvO9ZNob3HUzwHwWW0HtQg==
+X-Received: by 2002:a05:620a:440b:b0:7d4:5cdc:81e2 with SMTP id af79cd13be357-7d5ddc9bdd4mr594383685a.13.1751887876211;
+        Mon, 07 Jul 2025 04:31:16 -0700 (PDT)
+Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d93c8sm699187866b.11.2025.07.07.04.31.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Jul 2025 04:31:15 -0700 (PDT)
+Message-ID: <f2793909-4210-4ea0-9f26-af03e0200c5b@oss.qualcomm.com>
+Date: Mon, 7 Jul 2025 13:31:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250707-sm7635-rpmhpd-v2-2-b4aa37acb065@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] pmdomain: qcom: rpmhpd: Add Milos power domains
+To: Luca Weiss <luca.weiss@fairphone.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 References: <20250707-sm7635-rpmhpd-v2-0-b4aa37acb065@fairphone.com>
-In-Reply-To: <20250707-sm7635-rpmhpd-v2-0-b4aa37acb065@fairphone.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751883500; l=1514;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=DMbrTGn2oiFCand2994EbbGqOk9oOogjgoWe7AhWgh4=;
- b=XSqig1gqw6cfVF2o7Z7/eF5lh89rfbm1iux4bgA4bm5c0eWV+gPab1K/4ouMqwacD2UIW8onh
- eI1Xn9NWVtyCBxoKJIVmOn+JG8ROd7Oyu9UjQ+ZkkZ3+hoHgyRFenPP
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+ <20250707-sm7635-rpmhpd-v2-2-b4aa37acb065@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250707-sm7635-rpmhpd-v2-2-b4aa37acb065@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=dYuA3WXe c=1 sm=1 tr=0 ts=686bb006 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
+ a=WWQFUNGd85j635JlVwcA:9 a=QEXdDO2ut3YA:10 a=AYr37p2UDEkA:10
+ a=pJ04lnu7RYOZP9TFuWaZ:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA3MDA2NyBTYWx0ZWRfX0Kss4dCza+A2
+ 12D/dIaf++v1ngSRyH0AKLv5TEHXo5tMF0g8FE8Pp7V77l8lUuqjTQIdUV/4NTAj0LuL4uaYTJT
+ 9naEXK9dveUxsGdu1qez4/sSFznRKRRCw9d2/qBT2xYWnB/06Qc3WhRtEqnXs9JZygfZ56wXZTf
+ 8qQFRWwO6AKxmZrWflYJMOkQnOcIi0Fa5IrhTkrZDAXuiJzVj8o1Csiomn3icgHxNCrAgb96TE5
+ co2PS5DNp9onYzFTdLSoWB8IG8fGN2JFke+bnyL2D3ZSPlosn5fp4Q7uE6Pj1XyYxG23DjTz0xz
+ No0QH/MEi+QRVouJnNtK8mZIDO2iT9K6NuPGOx76lF1r15gQECoPFIcCi/nB9F96B196j7pFBHD
+ vfybaJpTxYiEzNR7+QKrLbzv4wbZiF+b4rghFQwsflu+c81Fmr6GDFdUwyJwzQ9yDqNMHMks
+X-Proofpoint-GUID: A79-VLniR3MJR5sDKy6ge4Hv4FgyEQnC
+X-Proofpoint-ORIG-GUID: A79-VLniR3MJR5sDKy6ge4Hv4FgyEQnC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-07_03,2025-07-07_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 mlxlogscore=973 malwarescore=0
+ mlxscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507070067
 
-Add the power domains exposed by RPMH in the Qualcomm Milos platform.
+On 7/7/25 12:18 PM, Luca Weiss wrote:
+> Add the power domains exposed by RPMH in the Qualcomm Milos platform.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/pmdomain/qcom/rpmhpd.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
-index 078323b85b5648e33dd89e08cf31bdc5ab76d553..e09552a469264f28952fc46c3ab8c125e87310da 100644
---- a/drivers/pmdomain/qcom/rpmhpd.c
-+++ b/drivers/pmdomain/qcom/rpmhpd.c
-@@ -217,6 +217,24 @@ static struct rpmhpd gmxc = {
- 	.res_name = "gmxc.lvl",
- };
- 
-+/* Milos RPMH powerdomains */
-+static struct rpmhpd *milos_rpmhpds[] = {
-+	[RPMHPD_CX] = &cx,
-+	[RPMHPD_CX_AO] = &cx_ao,
-+	[RPMHPD_EBI] = &ebi,
-+	[RPMHPD_GFX] = &gfx,
-+	[RPMHPD_LCX] = &lcx,
-+	[RPMHPD_LMX] = &lmx,
-+	[RPMHPD_MSS] = &mss,
-+	[RPMHPD_MX] = &mx,
-+	[RPMHPD_MX_AO] = &mx_ao,
-+};
-+
-+static const struct rpmhpd_desc milos_desc = {
-+	.rpmhpds = milos_rpmhpds,
-+	.num_pds = ARRAY_SIZE(milos_rpmhpds),
-+};
-+
- /* SA8540P RPMH powerdomains */
- static struct rpmhpd *sa8540p_rpmhpds[] = {
- 	[SC8280XP_CX] = &cx,
-@@ -723,6 +741,7 @@ static const struct rpmhpd_desc qcs615_desc = {
- };
- 
- static const struct of_device_id rpmhpd_match_table[] = {
-+	{ .compatible = "qcom,milos-rpmhpd", .data = &milos_desc },
- 	{ .compatible = "qcom,qcs615-rpmhpd", .data = &qcs615_desc },
- 	{ .compatible = "qcom,qcs8300-rpmhpd", .data = &qcs8300_desc },
- 	{ .compatible = "qcom,qdu1000-rpmhpd", .data = &qdu1000_desc },
-
--- 
-2.50.0
-
+Konrad
