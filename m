@@ -1,126 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C64211491;
-	Mon,  7 Jul 2025 16:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D2D2E3716;
+	Mon,  7 Jul 2025 19:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751904234; cv=none; b=B6l1bdRVsnoak83uZldmGLPThFhwV4ItTTeasEx1vkgx4iqzv5hCczsmycr+/3DQ6Uelna1viK3ImPv4ezmW1DeZ3Qd6ThdQX0CHi0RRmuTJ8KFjB82NQShcPNnc7GbdMmQRU6h2sAnwcCEhBfPJFs4NU9FMZap/WRcROR8tx1M=
+	t=1751918099; cv=none; b=M+fltHoDR0DY7Ty2dmwYmZRLnj1e2sePm+e3EJVUWYJeAC+w1ItHeWM4NfL586XSsrQo3JZlfIsWcPiQB8P8OE+pDzB98rYkVeD2Slio7IPqwWX7niSTGmq3Gbu/WdneBb8tJCrfNqzt/kh7DnVI5OsmoZh1Jb2lmxqr2O3DZt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751904234; c=relaxed/simple;
-	bh=aZEPBLhWLDylJXiAN1NSvtRKJNAlYSaZS3t4Hq+XDHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GHAxxiSb4AqsmW02LxQoQNnaElS2wCCvv8xB/QKT9gcx7Pm4pbDjM7PGrvafwJXRM/hI3MCeV31Wfjd5crg208iMWEA05HahLhSTaJydSZVy60MY5aInQg3f+4ABbCbNPMboklN1THR8h+ayDLIdQbfJtmPyySQsUxb2/EcymWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDTVQqBu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751918099; c=relaxed/simple;
+	bh=oF91pBiPsZSokRv+yeOUOLKFw0wkKXlMGWEA4NgRpRo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HRLiTrXieySMFkk2+DL6yUr69dbOKdxpswniBfzveAGNgZ7+193Iv1aQmNYMuo38fKW3ezSXFpKcNnGe8VQkE8VXGmpHMxArZRJWPYVtkuDN3BFNXbCDRPnUkWBS01un+YJ+PeRtXEMOP3xlSToDGr18gBoQjXCu4d4mOwbxwwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QwnAY5ta; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDTVQqBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7703FC4CEE3;
-	Mon,  7 Jul 2025 16:03:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QwnAY5ta"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 22FD2C4CEE3;
+	Mon,  7 Jul 2025 19:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751904232;
-	bh=aZEPBLhWLDylJXiAN1NSvtRKJNAlYSaZS3t4Hq+XDHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aDTVQqBurYrAo+NLimemlUd8FtEPxKSyh82B0IOZEVZEtXdfRC/9JZDbpJvrf+6+0
-	 SxNBXKImMbaVbaDpWy35+07u1aV5hn35zLgTKomLDyPPWeK45cJwaFzqYajMpFWGI7
-	 dM6cYR9s//2S1emQgQkA+9blvi06RBnqtUh01GxU2qluk3LreNZbvL/pGsGIshHgg+
-	 Y27uCyGfHoyMVxIZK9rqJdgt7CLeyiHFu9gayleOHQFo3YYTUfkQfNdPtcVEVoEdM+
-	 +hXo/tNeiTDHIkncjHVBb3w4sQOmZ2Yx+s1dL1MmdAwfc2XVywU8Uyer01Xa+OJGLg
-	 3sGxro2u8CvJg==
-Date: Mon, 7 Jul 2025 17:03:46 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Luca Weiss <luca@lucaweiss.eu>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] ASoC: codecs: Add Awinic AW8898 amplifier driver
-Message-ID: <9a2880e7-36eb-42c5-9ded-d171e0e6179f@sirena.org.uk>
-References: <20250705-aw8898-v2-0-9c3adb1fc1a2@lucaweiss.eu>
- <20250705-aw8898-v2-2-9c3adb1fc1a2@lucaweiss.eu>
- <57472ea1-a9c1-472b-a178-eae1cb207468@sirena.org.uk>
- <cb84e711-1169-4c12-b866-9dd4f06ea3d3@lucaweiss.eu>
+	s=k20201202; t=1751918099;
+	bh=oF91pBiPsZSokRv+yeOUOLKFw0wkKXlMGWEA4NgRpRo=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=QwnAY5ta7p/a/SRjSXn9iAk6BNZ3cbOfRfqm8+CTOschtjZNEYAydwtOEaA6oGiYR
+	 9eaVtguEoBXNGEvdzj+1JlMZfLAJDftnYNtQXmESq+S6I9IjIwa208v8+TxKMBa0GG
+	 IqYtBjO/YMh+krIt01kxzl5aRbaWPdnK3hEBv11B9pLSLj9PzUTxrIb8wcc1VAXWEu
+	 rDuvVmpNxMyY+O8vrxFUA4mmkwBg3DYCVALt6TdLHO4yk2nl5TtQhLjjqsnB4AYlWt
+	 D8mByO1GawCiYBbg35fpAVKFBoP142ziEp4nZYofaR7pCPJk9e1tci6xjUk+xQX9/A
+	 7wu84aKkCFPHg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11CADC83030;
+	Mon,  7 Jul 2025 19:54:59 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH 0/2] Input: synaptics-rmi4 - support capacitive keys
+Date: Mon, 07 Jul 2025 21:54:24 +0200
+Message-Id: <20250707-rmi4_f1a-v1-0-838d83c72e7f@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bFIL1ym+eouHtr/R"
-Content-Disposition: inline
-In-Reply-To: <cb84e711-1169-4c12-b866-9dd4f06ea3d3@lucaweiss.eu>
-X-Cookie: We are what we are.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPAlbGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDcwNz3aLcTJP4NMNEXXOjtJS05LSkVEMzEyWg8oKi1LTMCrBR0bG1tQA
+ yrW3yWgAAAA==
+X-Change-ID: 20250707-rmi4_f1a-72fdfcfbe164
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+ Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751918097; l=863;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=oF91pBiPsZSokRv+yeOUOLKFw0wkKXlMGWEA4NgRpRo=;
+ b=OFzkxImMWeQxuZDTo4mVWBh591E3DHDwdQJKBMJSwQAaSxdLc3bYjfvJ3sgQHx4wZOpuVNfpX
+ U9e730KsGKEBH9pGWTE6B7nTAhTEDWcuqVeIo2JIDhsc4nDrug+MTTX
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
+
+Add support for touch keys found in some Synaptics touch controller
+configurations.
+
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+André Apitzsch (2):
+      dt-bindings: input: syna,rmi4: Document F1A function
+      Input: synaptics-rmi4 - add support for F1A
+
+ .../devicetree/bindings/input/syna,rmi4.yaml       |  20 +++
+ drivers/input/rmi4/Kconfig                         |   7 +
+ drivers/input/rmi4/Makefile                        |   1 +
+ drivers/input/rmi4/rmi_bus.c                       |   3 +
+ drivers/input/rmi4/rmi_driver.h                    |   1 +
+ drivers/input/rmi4/rmi_f1a.c                       | 145 +++++++++++++++++++++
+ 6 files changed, 177 insertions(+)
+---
+base-commit: 26ffb3d6f02cd0935fb9fa3db897767beee1cb2a
+change-id: 20250707-rmi4_f1a-72fdfcfbe164
+
+Best regards,
+-- 
+André Apitzsch <git@apitzsch.eu>
 
 
---bFIL1ym+eouHtr/R
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Jul 07, 2025 at 05:52:08PM +0200, Luca Weiss wrote:
-> On 07-07-2025 2:02 p.m., Mark Brown wrote:
-> > On Sat, Jul 05, 2025 at 02:03:06PM +0200, Luca Weiss wrote:
-
-> > > +	aw8898_cfg_write(aw8898, aw8898_cfg);
-
-> > The "firmware" here is just a list of arbatrary register writes with no
-> > validation of addresses or anything...
-
-> Yes... Got any suggestions how to make it better? This "firmware" file is
-> the one that's also usable with the original driver from the amplifier
-> vendor.
-
-> I honestly haven't really checked whether all the registers that are written
-> there are documented well enough in the datasheet I have, so that this
-> sequence could be replaced by proper DT values. But for sure already I know
-> that some registers which are used and functional, are not documented at all
-> unfortunately.
-
-So this probably isn't actually firmware but rather tuning.  At the very
-least it'd be good to check for and handle attempts to configure
-registers that the driver manages itself.
-
-You'll also need to make the naming system specific so people can have
-different tunings for different machines.
-
-> > > +	err = regmap_read_poll_timeout(aw8898->regmap, AW8898_SYSST,
-> > > +				       val, val & AW8898_SYSST_PLLS,
-> > > +				       2000, 1 * USEC_PER_SEC);
-
-> > What's this actually checking?  You shouldn't rely on I2S being clocked
-> > prior to trigger...
-
-> I've also taken this from the original driver, so I do not know the original
-> purpose of it.
-
-> The register description is "System Status Register" "PLL locked status. 1:
-> locked, 0: unlocked", so presumably waiting for the amplifier itself to get
-> ready for playing audio.
-
-That sounds like it needs to be much later in proceedings then, you
-can't rely on all the clocks being ready that early in proceedings.
-Some devices will only start clocking when they start audio.  I'm going
-to guess the clocking configuration is part of the "firmware" here which
-is rather a mess.
-
---bFIL1ym+eouHtr/R
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhr7+EACgkQJNaLcl1U
-h9DsWgf9HpzTmK6p5zNczJxUTM0vdREBZpO52i4S1jXjj2/ktfZP4KU9eIQtUdNQ
-ItadH6P5VBzibnfxyXgE7Wu4fdFzkCLlffkH6GNNepqYWk3haa63nfkLqBuJz7us
-oEDU0e7Rs6kXM10IRGSbtPRpN1hhdMVhA2T81evjy4fAga2yZ214FcSGf2+vYzHr
-VbkfDF1+vdxnHFS8ytT8ZQ+S4iTw8z7BoMrfd64KwQBaSi4OPnxzt20tRXOCbhnO
-X8z6YhiyEA4RbXqINIoc7+PhPE83ndW+8p8KCjYTH0uPkYag6/KHZ1q0Y29s27Se
-rfOXKmX2/UEvjnw+GN3nL/zDsXkTgg==
-=GzED
------END PGP SIGNATURE-----
-
---bFIL1ym+eouHtr/R--
