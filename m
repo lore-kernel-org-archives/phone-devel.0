@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129DA10A1F;
-	Tue,  8 Jul 2025 08:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5689410A1F;
+	Tue,  8 Jul 2025 08:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751961658; cv=none; b=sgSgWDecpfxSZ5dCY9E9xLLDN3AS/0LR0O9HSo2v2UFESn5mWwVZbjbCQzBabDIXUCSOXr64/LwTJGodsWqo6xVZRHb7H9Qv1ixW+0gQ5LvSXe1TsNgdi+nXULZSaebXzIjtReXmfN61W7SmGQfcJ/XHXuJfuQsx13vFr9zcZsg=
+	t=1751961955; cv=none; b=ZgKvyCgBFCYnKFa/HgXr260zW1ZVHWbrFI1tnoW9ks/1s0OkTnqFwwPBfl9xUoclyH16Z3dPlF/OniGkLiDv2/ZxGQA4uhKHUTEtZumviVqsKGb2wMYWihF95kt8VsRAKIjCwsWEL0PrGok4bQUa8FdHzW5CQH0CDt4yT39A5o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751961658; c=relaxed/simple;
-	bh=jdS3BEKP95D3Rrf9pnCS5mK68sq8SKb7VurqMKU0HCo=;
+	s=arc-20240116; t=1751961955; c=relaxed/simple;
+	bh=pR61KyM+qKZt65tV9gRAUety3LIBktxJjUCMLek7X1k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=om+FJ5wjTzQL3mavAF2sYxZH0MFqfKUv42PjqGaDw9+yMwRKxJHr+mY34H2HTaUJ8OLmiif+NEZop3Bao6edMqfn4BKQ/Q0gV+BJ6zKANaopVfcqXsHjLgApzd7dlTiOtOqFLpI6+RLagCVqiT7IAK7b1hMpyHvGRdKTUhf8AUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oH6QrbS0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XF/ZrWTW/LhAwuZ6BCjCPDigQGVkoJA2eCDCUY+jfUsvWMWvSqPGpxcarwhEbEA6c6H/rZ4L9yzSO+NFAihrUNn0kU6jsikQjv1RCPBacp1/G9FjtLB/0fRJ53BDMIe2Lem4x5k3vqLAoqf/s1/R7Mzf6o86/JOf37aw9AOk8W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/M7ElAp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oH6QrbS0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BEDC4CEF0;
-	Tue,  8 Jul 2025 08:00:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/M7ElAp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6998FC4CEED;
+	Tue,  8 Jul 2025 08:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751961657;
-	bh=jdS3BEKP95D3Rrf9pnCS5mK68sq8SKb7VurqMKU0HCo=;
+	s=k20201202; t=1751961955;
+	bh=pR61KyM+qKZt65tV9gRAUety3LIBktxJjUCMLek7X1k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oH6QrbS0wvPdemLePIKRnzt7juvhMVuJNd23Dfrk2JaiMQvv06TjcD/rBKAqsg2VZ
-	 MFT4W9KIJD2RvWB9trBGxN+vMuFgZncAi/65cOoDrAWx5dE7RAZjpR9eejeq7Yit2O
-	 4Zq2WDNb2WCCOgnn8yUknYUyCImONw99yrTY7gpJcDi8hcXSJHQ2RnL7+ORA6sgJD+
-	 iO967RVsMxEzL6O3Y6laYkTNDE8Ts3HXUWFExdNB3dTAZsu5nFSJZWCMMhZalfwxo2
-	 gFc35rJIw9zW7IB8lsUaGxMULpV8pAoZeI5kJmSZ2RUoZVSENMf8fQ333F8pdahXgQ
-	 rWqCbfa1HRQ5A==
-Date: Tue, 8 Jul 2025 10:00:53 +0200
+	b=a/M7ElApJGkjJPAJa985F1T9IeZyU6zYLe2o+sxhfhsJOVEIQTBoQFPNGFxZhFi5d
+	 P4aacDA8eERYuUeUxhXX1RZLcHXYaTg57tbC6HqIhoCrTq/1td5JI+bugvXM5Re0s+
+	 BEuM9D/nGLB8h/AJ0LixKDhX0KwTeqNehCBqV7Xn/MnimZWSU1BslrpvlGG28xLFNZ
+	 ObK7qgzi2CEUZ34IcCH5qpbojRtlvum4A5ST+B07svkXnYvetS8SKBKejAWQxQ3Ht5
+	 2A5n34cbTokIKBJAllyGVivgtV25nv8YPiVn8MlMu+53YqY1bZpragoPGSbOI0QT0D
+	 pdYb1MTrg5RBA==
+Date: Tue, 8 Jul 2025 10:05:51 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+To: Casey Connolly <casey.connolly@linaro.org>
+Cc: Luca Weiss <luca.weiss@fairphone.com>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Taniya Das <quic_tdas@quicinc.com>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dt-bindings: clock: qcom: document the Milos TCSR
- Clock Controller
-Message-ID: <20250708-swinging-sly-pegasus-c31dbd@krzk-bin>
-References: <20250707-sm7635-clocks-misc-v2-0-b49f19055768@fairphone.com>
- <20250707-sm7635-clocks-misc-v2-3-b49f19055768@fairphone.com>
+	Bjorn Andersson <andersson@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] pmdomain: qcom: rpmhpd: Add Milos power domains
+Message-ID: <20250708-vengeful-bright-rhino-d8d5ea@krzk-bin>
+References: <20250707-sm7635-rpmhpd-v2-0-b4aa37acb065@fairphone.com>
+ <20250707-sm7635-rpmhpd-v2-2-b4aa37acb065@fairphone.com>
+ <06760125-4800-4068-8936-dddf27c28d17@linaro.org>
+ <DB5VDDKCAQQG.LDCMHXAZN17S@fairphone.com>
+ <fe454257-aa21-4304-868f-aefbea9963c4@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -48,18 +49,38 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250707-sm7635-clocks-misc-v2-3-b49f19055768@fairphone.com>
+In-Reply-To: <fe454257-aa21-4304-868f-aefbea9963c4@linaro.org>
 
-On Mon, Jul 07, 2025 at 11:56:39AM +0200, Luca Weiss wrote:
-> Add bindings documentation for the Milos (e.g. SM7635) TCSR Clock
-> Controller.
+On Mon, Jul 07, 2025 at 04:42:13PM +0200, Casey Connolly wrote:
+> > > > diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+> > > > index 078323b85b5648e33dd89e08cf31bdc5ab76d553..e09552a469264f28952fc46c3ab8c125e87310da 100644
+> > > > --- a/drivers/pmdomain/qcom/rpmhpd.c
+> > > > +++ b/drivers/pmdomain/qcom/rpmhpd.c
+> > > > @@ -217,6 +217,24 @@ static struct rpmhpd gmxc = {
+> > > >    	.res_name = "gmxc.lvl",
+> > > >    };
+> > > > +/* Milos RPMH powerdomains */
+> > > 
+> > > I can't find any public docs telling us which SoC is Milos (the only
+> > > relevant result is Bjorn's email asking you to use that name instead of
+> > > SM7635). So for the sake of future generations could you reference both
+> > > names in a comment somewhere? Or even the commit message would be enough
+> > > tbh.
+> > 
+> > I don't know the full list of model numbers for Milos. I assume it's
+> > SM7635, SM6650, SM6650P, QCM6690 and QCS6690 based on the info I could
+> > fine, but such info is hard to get. So this is not a definite list that
+> > all those are actually Milos, or that this is the full list of Milos
+> > chipsets.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  Documentation/devicetree/bindings/clock/qcom,sm8550-tcsr.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> oof, I see... that complicates things. It sure would be good if this list
+> was documented in the kernel though imo.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Kernel is not the place to store mappings or descriptions of some random
+company products and their names, so no.
+
+Also it's not a task of contributor of a new SoC to decipher Qualcomm
+model numbering and document it anywhere.
 
 Best regards,
 Krzysztof
