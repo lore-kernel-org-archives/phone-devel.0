@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A3E225A32;
-	Tue,  8 Jul 2025 08:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4102BCF6F;
+	Tue,  8 Jul 2025 08:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751962407; cv=none; b=LMFswBBkqJ8E3P3IGUWamM89Uk6lX7OVxyYQQdcQ2kV/i3BHltUYIYnHpdHEm/L5o9xvskieu6M9VoV6sri8p8D2rlsHclpS04+wgB+Bb4twTFmsIxySQm+6d9/PLtox+hE/+VSCqc3nsajhlBfHJ5lwcSjwV6uwA7ltLn1o6SQ=
+	t=1751962891; cv=none; b=Xqh26J9abkFPCN4rl/AGaw3Q4ZD47gv0huyXuX65xuRRt5phOj6OmJ2PqFL35KtlRBJt5C9Wh/4yPjUmuWtvmYYL2ZWKqEEqgcS2jMc6wqQFBvE/JetdR5ztl3GfyA32isLU8Iw6eywNcrmcnlDaK+1YdzsTpnpXiYpse73IRhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751962407; c=relaxed/simple;
-	bh=IdEEqJgpLKbcD7sTVbhaftdzJWqxKOBVJK3x+y+VwFk=;
+	s=arc-20240116; t=1751962891; c=relaxed/simple;
+	bh=8PN/PFOLCto+wJyr7ixRplnKv9QuyDqxu1RnCpRLIJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dSHngFEAJ7NFEYX1I5mv2BvXJjRXhN+njqIxYfz9Zh9ONwvFr8hLUAapaAGVb5Ef8fkVRJ61yRgU6baATXSaaH4kbhatAW114obFrnbk9182zxlmlRsmqwtVINauhETQG0Wf72tQ2PTOFyVnJf66iC0eLzDdp/ShR/lvE1sZtRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxvoE/46; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kl/7iI4uK9h4M+6KtRkfdjiDz6U5TiauwaDI46TOVA7m4s6+OracmRFPlqCiqnwBDWo0k3hGAp8wOf4EEph7apa5eZz6FshDICqBWvH2jYZEAwx3J4Gth3dqVoWvnq2BVmHoGUUh3BM9k+fIHU4XdeqvXpZ9b9x9vRXEeWoVK3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3003mvu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxvoE/46"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DF1C4CEED;
-	Tue,  8 Jul 2025 08:13:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3003mvu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7E0C4CEED;
+	Tue,  8 Jul 2025 08:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751962406;
-	bh=IdEEqJgpLKbcD7sTVbhaftdzJWqxKOBVJK3x+y+VwFk=;
+	s=k20201202; t=1751962891;
+	bh=8PN/PFOLCto+wJyr7ixRplnKv9QuyDqxu1RnCpRLIJE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QxvoE/464GhLEIcXv9+UpERUaYoXdEvY5UPkSzKbcXrTx1hpxW24jlLLzgUWdGNGJ
-	 T6Utld4A0nBBlZtsXZdssxrdGzUtWsxGRM6A1WnVucznAo0zsGriIMlmPw1WkGzT5p
-	 bmizdgE0azGBVtoFsBPuEA6N/A4+nyxnTFzqvxbkofa7AJRZsE3Jf4veoxO6+/0bSB
-	 lzTuZG06juX5Bmqp7LUQ3x9ep5pAwGUBcET9OASXXNVnmgRDwNIq2vy/YM0aBzPhhO
-	 5LL47dQFz2uTXpbw3WNKZmXPlFa6ZQ47Q4MNDZC0icjT0MZa9q8efKtuSE0Vc8bGUx
-	 qvkIUbkHb8PBw==
-Date: Tue, 8 Jul 2025 10:13:24 +0200
+	b=G3003mvuWma2TvBG0K8/VWpXIhlx4FnVnUWM1qerYmoXUDRdw2looXA7w1SbHFLZb
+	 j2OBaUKu0jFDD55kYynYdqYiMZsdwbUMeuSPwMM9OgfXxOae/aBnpze2Y4KlV1qGg6
+	 fPtHJnS9E9fZLpa2pHxTiN1D71kDfgs1vppAAdki9zQnJaHomqRa+xkPRqzrvLNEE/
+	 oFGb3oenSFbptvYk6ppJnt8ZaYnC4tiGBbEl7s+916aXUMGQ+ZGogMp7o7zZV4TuTR
+	 z3gI+gKpGPZ9VTPAuyEwjAcMmU64Tcczhu/WZQ+kZcN1j3w2dYVTQZ7m8T61jQVNEs
+	 GgSrGsmj4nHjQ==
+Date: Tue, 8 Jul 2025 10:21:27 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Luca Weiss <luca.weiss@fairphone.com>
 Cc: Vinod Koul <vkoul@kernel.org>, 
@@ -35,11 +35,11 @@ Cc: Vinod Koul <vkoul@kernel.org>,
 	Abel Vesa <abel.vesa@linaro.org>, ~postmarketos/upstreaming@lists.sr.ht, 
 	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: phy: qcom,snps-eusb2-repeater: Document
- qcom,tune-res-fsdif
-Message-ID: <20250708-unicorn-of-ancient-excellence-e8945c@krzk-bin>
+Subject: Re: [PATCH 3/4] dt-bindings: phy: qcom,snps-eusb2-repeater: Add
+ compatible for PMIV0104
+Message-ID: <20250708-analytic-misty-chital-3ddf86@krzk-bin>
 References: <20250625-sm7635-eusb-repeater-v1-0-19d85541eb4c@fairphone.com>
- <20250625-sm7635-eusb-repeater-v1-1-19d85541eb4c@fairphone.com>
+ <20250625-sm7635-eusb-repeater-v1-3-19d85541eb4c@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -48,32 +48,16 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250625-sm7635-eusb-repeater-v1-1-19d85541eb4c@fairphone.com>
+In-Reply-To: <20250625-sm7635-eusb-repeater-v1-3-19d85541eb4c@fairphone.com>
 
-On Wed, Jun 25, 2025 at 11:14:56AM +0200, Luca Weiss wrote:
-> Document the FS Differential TX Output Resistance Tuning value found on
-> the eUSB2 repeater on Qualcomm PMICs.
+On Wed, Jun 25, 2025 at 11:14:58AM +0200, Luca Weiss wrote:
+> Add a dt-bindings compatible string for the Qualcomm's PMIV0104 PMIC.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-> index 27f064a71c9fb8cb60e8333fb285f0510a4af94f..6bfd11657e2992735998063b3ca390e04a03930d 100644
-> --- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-> +++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-> @@ -52,6 +52,12 @@ properties:
->      minimum: 0
->      maximum: 7
->  
-> +  qcom,tune-res-fsdif:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    description: FS Differential TX Output Resistance Tuning
+>  Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml | 1 +
 
-Resistance is in Ohms, tuning could be in dB, so I wonder what are the
-actual units here. Neither commit msg nor this description helps me to
-understand that.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
