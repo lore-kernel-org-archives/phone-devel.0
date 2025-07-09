@@ -1,63 +1,63 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6592D780E
-	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 11:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6128FAAC
+	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 12:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752062174; cv=none; b=osGS+tE5JlNzG1KI0RC/10K3inKGDVeibS8i50GCI6OGLBMAPYTyZhSyMie1u7y2yOaNbwx6o2qxCfQ92VkQlRoWsQctVG3BD2frLtaAdNQvx08btatZgp47W4d4181fF6elzoxcndQOAGLS+QtJqiyWRkKiBqvho4q5brqqTw0=
+	t=1752063784; cv=none; b=lSxEtht9vxOCZxEbJIFSoN+pLUIgjakD02D948YxsO9p0XDsczbwnUp7UYxjp5m6c2IWgJ8Itpb3u11ENUBcVpzOAAGW9pUDWv1ocIyMBuDdozEF46pfHgI9uw0PInfXSGnjfMUZfDU3lgz8aOowprVgNuH4P6TrJH8X6W5qfek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752062174; c=relaxed/simple;
-	bh=vq5TdR2eOaZQq4wzgDb/MUODx9FACB9AhF7YRu/UXj8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Aad8LHmeXfFw3RM4Zp3XhuCWb/GLaq4IZacaKbIUd0LtdvO40Nkq85OkoyodPHZkri+dePoDxMc1QjUP9MnKKReLAv8ngIr8BCgsN+GcPwUnRxQe77qUfqYsyrm8MoM12ujn/HPAwHOcNVadh+6aMeC1NHjiflyx38zjZKg51E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Nk5LU/un; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1752063784; c=relaxed/simple;
+	bh=IvC2le71PqR6iklFWS+/lEeQnMsx53wFKpG61tQVWYM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=JwD912JaZz3ofvywkavISkPrNS3ua/gNfXHLtv9LlNT3UQrj27FzuB1x1Z8rDL2oMZ//7jMTSP4Sr04yBx84LYBRusX7356ZLFWbmMPiJ8q+UilxxF6KAdyqbzJdNEX3trKIBPlqdAnt94OwvZm+QYycm1OWCaoRBFlDa88JGMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=KaHYqS8i; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Nk5LU/un"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae0dd7ac1f5so1039016166b.2
-        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 04:56:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="KaHYqS8i"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-adfb562266cso879326566b.0
+        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 05:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752062170; x=1752666970; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=fairphone.com; s=fair; t=1752063780; x=1752668580; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vq5TdR2eOaZQq4wzgDb/MUODx9FACB9AhF7YRu/UXj8=;
-        b=Nk5LU/unA3B4/PoWsjaeQ0G84+QYetFfFXNnyM2xLEPwM5f44Ekf3SBvG97fEPruyw
-         D+RMfYu3yYQf5yl1InGmEwWF86oEw96mDQaHWLPDCrt3GwThX64lC/hG9HX3ke/nRj4k
-         JafEfprqmZRDsoRsQOD1orvsXmm85bKd/xZUHELyC9kjAMVsfx6SW1jYi89wiQO8ePp5
-         BuJG0Zb6RGPSz0+b7jLlZ93sJ0oAOpel6SDgiRlApvgYII1KBqQh+zvwIqrRB19Uocs0
-         2l6jMoFTI+wV/9XHm5PZW/mHKi6aDUFBMkk5Vh8xwfPPh0tDebuyjsnCvmakbZ++iWrJ
-         4GiA==
+        bh=ROuluNw4/vejFJBCXsSXIQySN8U2GYIufRUS7I5ilA8=;
+        b=KaHYqS8iqbxYPREL2TiI/9DugiMQb0I8r/Jyi/KW/07Ltalw27bZVDaS21nDSH4XJV
+         RYGKD/G0ayvLK65G2aX1u6zLOOtZowY5IgzvN3e8RbasHVviKHVMvBcfqTN9ZuKqqbRt
+         MiLxoIkQ/V5KcTDkwWIu+dY/i8jwm084Sao3eJ5WZoATuMhjlaH8FO2/exD5qk+ipu2A
+         REDTfvZHfvTkkXuS/p0Qo9G/IiUPsoqLQizC3OT+pYQkK+xN3ifSXHMRB6iuL0oxNA9A
+         zALRpDDEW5p0o1EAHgU7pIsXGkRDpNfwubyIQRrcIz26BJDsM0COmnyAAis6s3ledH0W
+         OI5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752062170; x=1752666970;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1752063780; x=1752668580;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=vq5TdR2eOaZQq4wzgDb/MUODx9FACB9AhF7YRu/UXj8=;
-        b=ag9ljLmKQTA4kJ31yYGYtfNVeiZntaPORQmtMaqrtfoSk9pGnlWxAWR3Pmr05SD287
-         pcBXfjMcUXC0a8B/8P2dA0HjV5Sy2jgA4OwafNgzflpvTQehZiryIP8MBa5OUFl6ar29
-         O7z5kCys1FMSA5sQk2BtPDXWOjVMQc3lPRnzMq5xMlyQVcemC0+4krFoAqVyYBVliZ4l
-         ZuckLTJMFBDi39DxVvzFkprsm9pMIhDmchB5Y952k24s6fVbMHd/nvsxHdoTIi5ha5Zv
-         A5HPSLnub7rlI4Rto1/EaWVYjamIT8Xl/MEZ8Hlm2VVO3CA1Dqcav436+uk9JWlNWQUG
-         /ZTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVPrGA3/BwVAG2nsrKqlnzeMKtDIitqU87P36P+pFeHrfqHe00pJmGcjrF7zWTqJIzHNbYR//cUbFsbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw16GpheSRv2KqVdPZ0BzcvW99xmbrnriiZWB9u99mvRfHiPPID
-	Lefx3jpkdQ3IEbk3l3Gm5xN6EW14o254BtF1hNmFA+q3fxdZzzgkasyizbiOAkRh+Fg=
-X-Gm-Gg: ASbGncvH4mwaF2QYOc+luf+Ptd5byHOwYxm4gV8p7CMVNaBl8f3w92/1RuOhI6vb0oD
-	qdpzSeSADbfL26MxETtDpjatBaiCGZ+rdkKpiUVmbDtM8RoOrKgtEmCPOLPBr0D2RCW7QFDjdSA
-	8G9cWnxnwqGd4xzRO4qKGh8rvbLLbVVUEVKiZjfzKcS06NweaesrZ+/qYJi461/9wH7BhQWuwXD
-	LZ5osn2hX4IceNeVerldeVjzcp7fLWSgfpEzl8pyqM+PWw9nT2jYFobT4vEct0RO1S4ktefBfJZ
-	SHPWZYkvjUF24DfonEwuUR5K8hG8iTNH+teT2ODoneP/w+kbEi6inqChPsUl/0hIOF/QsHWVbJU
-	S2zs4FuBOlr5E95B9B5YxCrw+rxQQbuQ=
-X-Google-Smtp-Source: AGHT+IE2lZBOcPVAhbCa9Rpom0DV95oxei90z5HkhH9xsj7T1YUJ++qd0fI4HdkMjuB4B5bxAz52+A==
-X-Received: by 2002:a17:906:c152:b0:adb:2e9f:5d11 with SMTP id a640c23a62f3a-ae6cfbe874bmr232648366b.37.1752062170333;
-        Wed, 09 Jul 2025 04:56:10 -0700 (PDT)
+        bh=ROuluNw4/vejFJBCXsSXIQySN8U2GYIufRUS7I5ilA8=;
+        b=ZCBa30AuZNV2Id7vI3PaAGQfenZHwyBZIe46CG4j3WRYodCmyHJI7JLX2ICjpewf0M
+         lmvS9GQ2UjIBSjBOOVID+ZrH5LmglfsZ+hYPl55zaBuoGUAhN7LfjcCWgzySkdDicS9v
+         xzLAwkcHVYw/2GqR1cEvYXX5v+MSWrr0M2MAbT3PGvFENtOwF/67PRri583cxjTFLnzT
+         6b8Bbni1++0xU+py5JP7h/2Y3As2lTO8OpVZ60cIV6D8vumncvpOl3BL97QKJUpfZKP2
+         eslQvQCurHTZFylMqbX3DglH93Rs3L0mO0if/RbXGjfoGKsl7raxyaZJGYrGGAPlGoKI
+         Z9Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCXybui5qPHQNtfY95Og4k2jUstE/2fmzRZ2xFlewI35lveklVFmToBOIBOzepLLSbbvN1NytAjTX3W97Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg1pdKa1wLKcV+OTt52P7nonNt3wJC1J2X3EBjhCFQYX+Jmxmq
+	NRvTuTH10xEZ0DmWl27pGvaxjsQw+ro3V9nLkcCi/ewo8xAycR8OZOsDhrwWeFsL4XM=
+X-Gm-Gg: ASbGnctk4A20OXetx1bZ6nrsOnHJwZf/mSyHgd2JIFHoUj08r5kuAQK2jLACPrzqvNb
+	wu08ZyrgR3/LeQCCZV8HyKHz/8hQ0afDp5RnpKEon4wAaC1nLAqvAEg51DWhQTD/aWO1hP7NhOO
+	C/ENzl4Xj0AJJcrahedIbKDvy0YUSvmmrctcjxZzMWXDuN20vB12VCmEVtkusUnrxjLFPbGtlSr
+	DsCmTMxwGEQcPmOJ7Acas9RHUHxpXGvQVqTN67OomaiGPu0mpdSLklz8NCZiVUfGHo4VLSpPc5O
+	L2aH1bQkdSmVQ16ga3S4TzmfR+fPJnOLLJqB5jaOwm+7kXY11oAcXhP8i4zWY/Anxfp6cyNIO9e
+	Yo47TfyMb+hnZzmj4sbNci+iIt3pmaFo=
+X-Google-Smtp-Source: AGHT+IFoNmrlnmfODsFWZlCW/cQmQ6VYP8ewayBQbqu+4gVzC+PMHw17LB0EaYf/AmeXCy2KQcHZJg==
+X-Received: by 2002:a17:906:c045:b0:ae0:d7c7:97ee with SMTP id a640c23a62f3a-ae6cf79a055mr227716066b.41.1752063780327;
+        Wed, 09 Jul 2025 05:23:00 -0700 (PDT)
 Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6ac460dsm1094703366b.106.2025.07.09.04.56.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b04d5csm1074482666b.120.2025.07.09.05.22.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jul 2025 04:56:10 -0700 (PDT)
+        Wed, 09 Jul 2025 05:23:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -66,64 +66,129 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Jul 2025 13:56:09 +0200
-Message-Id: <DB7I7D3P01FF.3T5WRSTJIWLVK@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 4/4] regulator: qcom-rpmh: add support for pm7550
- regulators
+Date: Wed, 09 Jul 2025 14:22:59 +0200
+Message-Id: <DB7IRWJ1AFCT.2CVF97683XYEO@fairphone.com>
 From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>
+To: "Krzysztof Kozlowski" <krzk@kernel.org>
+Cc: "Vinod Koul" <vkoul@kernel.org>, "Kishon Vijay Abraham I"
+ <kishon@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Abel Vesa"
+ <abel.vesa@linaro.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-phy@lists.infradead.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: phy: qcom,snps-eusb2-repeater:
+ Document qcom,tune-res-fsdif
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250625-pm7550-pmr735b-rpmh-regs-v1-0-cab8ef2e5c92@fairphone.com> <20250625-pm7550-pmr735b-rpmh-regs-v1-4-cab8ef2e5c92@fairphone.com> <bc27209a-e0f8-40bf-979f-3d747c501ae8@oss.qualcomm.com> <23ae6ddb-682a-4c4a-bd63-f0a1adb6f4f8@oss.qualcomm.com>
-In-Reply-To: <23ae6ddb-682a-4c4a-bd63-f0a1adb6f4f8@oss.qualcomm.com>
+References: <20250625-sm7635-eusb-repeater-v1-0-19d85541eb4c@fairphone.com>
+ <20250625-sm7635-eusb-repeater-v1-1-19d85541eb4c@fairphone.com>
+ <20250708-unicorn-of-ancient-excellence-e8945c@krzk-bin>
+ <20250708-stoic-slim-bison-ac55ee@krzk-bin>
+ <DB6J86NHFTNT.31MFYDTZ6B4O0@fairphone.com>
+ <DB7FBNQ0TYFZ.3GGPN8XXJXGRW@fairphone.com>
+ <1c7fdeca-d531-4f90-9e4c-4d8bfac67fae@kernel.org>
+In-Reply-To: <1c7fdeca-d531-4f90-9e4c-4d8bfac67fae@kernel.org>
 
-On Wed Jun 25, 2025 at 4:20 PM CEST, Konrad Dybcio wrote:
-> On 6/25/25 4:10 PM, Konrad Dybcio wrote:
->> On 6/25/25 11:18 AM, Luca Weiss wrote:
->>> Add RPMH regulators exposed by Qualcomm Technologies, Inc. PM7550 PMIC.
->>> It has 6 FTS525 (FT-SMPS) and 23 LDOs with 3 different types.
->>> L1-L11 are LDO515 LV NMOS, L12-L13 are LDO515 MV PMOS, L14-L23 are
->>> LDO512 MV PMOS.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
+On Wed Jul 9, 2025 at 12:16 PM CEST, Krzysztof Kozlowski wrote:
+> On 09/07/2025 11:40, Luca Weiss wrote:
+>> Hi Krzysztof,
 >>=20
->> FWIW everything you said in the commit message is correct, but I'm not
->> 100% sure how to map these LDO types to the existing definitions
+>> On Tue Jul 8, 2025 at 10:31 AM CEST, Luca Weiss wrote:
+>>> On Tue Jul 8, 2025 at 10:21 AM CEST, Krzysztof Kozlowski wrote:
+>>>> On Tue, Jul 08, 2025 at 10:13:24AM +0200, Krzysztof Kozlowski wrote:
+>>>>> On Wed, Jun 25, 2025 at 11:14:56AM +0200, Luca Weiss wrote:
+>>>>>> Document the FS Differential TX Output Resistance Tuning value found=
+ on
+>>>>>> the eUSB2 repeater on Qualcomm PMICs.
+>>>>>>
+>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>>> ---
+>>>>>>  Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml=
+ | 6 ++++++
+>>>>>>  1 file changed, 6 insertions(+)
+>>>>>>
+>>>>>> diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-r=
+epeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeat=
+er.yaml
+>>>>>> index 27f064a71c9fb8cb60e8333fb285f0510a4af94f..6bfd11657e2992735998=
+063b3ca390e04a03930d 100644
+>>>>>> --- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater=
+.yaml
+>>>>>> +++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater=
+.yaml
+>>>>>> @@ -52,6 +52,12 @@ properties:
+>>>>>>      minimum: 0
+>>>>>>      maximum: 7
+>>>>>> =20
+>>>>>> +  qcom,tune-res-fsdif:
+>>>>>> +    $ref: /schemas/types.yaml#/definitions/uint8
+>>>>>> +    description: FS Differential TX Output Resistance Tuning
+>>>>>
+>>>>> Resistance is in Ohms, tuning could be in dB, so I wonder what are th=
+e
+>>>>> actual units here. Neither commit msg nor this description helps me t=
+o
+>>>>> understand that.
+>>>>
+>>>> I checked and the values are in Ohms.
+>>>
+>>> Yes it's Ohms but not 0x00 =3D 0 ohms, and it's also an offset in ohms
+>>> from the nominal value according to the Hardware Register Description I
+>>> have, e.g. 0x7 =3D -12.1ohm from the default
+>>>
+>>> I can try and create bindings using these Ohm offset values, I didn't
+>>> worry about it too much since the other tuning values in these bindings
+>>> are also just register values, presumably from before Konrad had access
+>>> to the docs.
+>>=20
+>> I've taken some more looks, and checked how similar tuning is handled in
+>> qcom,usb-snps-femto-v2.yaml and phy-qcom-snps-femto-v2.c, and changing u=
+p
+>> the concept of tuning in the eUSB2-repeater bindings+driver is not a
+>> trivial task.
+>>=20
+>> Since this is adding just one more property in-line with the already
+>> supported properties in the bindings+driver, can we get this in as-is,
+>> and deprecate all 4 qcom,tune-* properties later with a replacement that
+>> describes the values better?
 >
-> OK so found another page (also made sure that the supply maps are
-> indeed OK)
+> This is a new property, so other existing properties do not matter here.
+> We cannot take new code which you already think should be deprecated.
 >
-> SMPS is OK
-> L1-L11 is OK
-> L14-23 is OK
+> register-like values are acceptable for vendor properties, but that does
+> not make them usually more readable. The question is whether this should
+> be more readable for hardware engineers or anyone writing/validating
+> DTS. Is the actual resistance important or no one ever cares because you
+> paste whatever qcom told you and you do not know what should be actually
+> there?
 >
-> L12/13 -> pmic5_pldo515_mv
+> I can imagine the first - that some document explains you should have
+> resistance of foo because of bar, which would mean the property should
+> be more readable. But I can also imagine the second. Make your claim in
+> commit msg.
 
-Based on what are you saying that?
+Would this text in the commit message work for you?
 
-Based on 80-62408-1 Rev. AG for the LDO515, the Output voltage range for
-MV PMOS is "programmable range 1.504-3.544" which matches "pmic5_pldo".
+---
+Document the FS Differential TX Output Resistance Tuning value found on
+the eUSB2 repeater on Qualcomm PMICs. The tuning values have special
+meanings, being different offsets of the resistance to the default value
+in Ohms but the exact meaning is not relevant here, as the correct
+tuning is determined by hardware engineers to make sure the electrical
+properties are as expected.
+---
 
-But yes, in the table next to it, it's saying 1.8-3.3V, which matches
-"pmic5_pldo515_mv".
-
-If you're sure, I can update it but the datasheet is a bit confusing.
-Let me know!
+I'm trying to avoid resending the whole series if we're not yet aligned
+on the wording.
 
 Regards
 Luca
 
 >
-> so please update that and add:
+>> We have enough people at Qualcomm by now that should be able to do that,
+>> and have the required resources to answer any potential questions.
+> They are busy sending vendor/downstream tree patches...
 >
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->
-> Konrad
+> Best regards,
+> Krzysztof
 
