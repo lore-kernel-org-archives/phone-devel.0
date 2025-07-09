@@ -1,175 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053D128B7F0;
-	Wed,  9 Jul 2025 10:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B7E28C5D8;
+	Wed,  9 Jul 2025 10:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752056187; cv=none; b=Pxe+sj1t562CFYYtLK5CszYVgpd5ILRIG7AwOPEBVPRlvF8xbV4CtYLHkdvteNmetpaxxBLY+OFPLLILhTViQIO+HohnCnXGFJhNIOk4Ru79JKlXYz1ISaEBj8fktOSXb4/NnF7DoETXGfnbZzvhqyQRuC9zLA28F+l1Ja7HlzE=
+	t=1752056609; cv=none; b=Lcq59jBTUY9mKfh2FpD50FdkefA9AHf+1EtSjdwdiOfqQm8QJGWbeCtKQ4nWlpJkoJbmzT731E9f2RGB/sIMqdMHZWQx3CPkH3lYRD/cJw7bXmJrtGKRxd2RdzV2D4JH0LwAh09HWEG93NANEFvRLMwckE9c6NXWiYgJeoFHZWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752056187; c=relaxed/simple;
-	bh=WU1rxoEN5qTryIgIVLvNxwFkuceff06Lwe4kPoXlgC4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YPasveM9+c2ToHg8Lc/m2l5ki4Pu5Aru/UDORSKXPLXaEJfJj963AFoD1weEwvi1DKYSbek9ozDbT/XVd5T9Fyr1Y3Ad1Xl5jNld3xwLSigDpufPzXmC7TNLrIpjLQhHuBTLfjAzICCiNZIjXWk50ePI51UzmUGp2u7IrEkCP3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyFDM1De; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752056609; c=relaxed/simple;
+	bh=2+N4smsYfrl5HTf8MH0tIEMC4qA9EcZ/1I6Yj3gLik4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A6uU6D6/EfQPPnpQ9qCD/H1TbkPU/hjcLROVnHLERWVCzJYHB0YmS0HNHulq4QDl2Xba94Ca/vtcSBvPdeOG/09f9FIJt7FQtsCUPTsJbO5DBczCQLQm/Ywk0b6d7zRAi11ozpf0gROzxqSNnkpMNBfh97YOu/LEMgvBoocNut4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KPmYOEA3; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyFDM1De"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D75C4CEEF;
-	Wed,  9 Jul 2025 10:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752056186;
-	bh=WU1rxoEN5qTryIgIVLvNxwFkuceff06Lwe4kPoXlgC4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lyFDM1DeGTIjOy6NpG5MKSX/cYOs/Xta57Tb8MAbFiOLsGgokVrlsI9crvwa3xBqT
-	 1MvGcz5Qm+jRZBKbaCvrgT41ifM3rTCmOriWm+DR7RF1Wvtu9pKOBG1K8yRTdME69X
-	 1c56b7DmtTiBkO5V7QYo33rwxxI6PPMF1EXV0JUCBJBUDCzDBRn0dFGXqN0Rh+6262
-	 C/RGmn7TrUiSH1cClo8uhJ1kMO5XyeVhrRppwLI0EqUcT92EwB5hpfHs0cgEe5cAZ6
-	 arQQohbHvRPr5DhP8gt1+usi0wS3TKVm3WiL2clx/WIYS4gQq0L1wtHsqvxiQLcKyj
-	 Rq3ADv0iEO7vQ==
-Message-ID: <1c7fdeca-d531-4f90-9e4c-4d8bfac67fae@kernel.org>
-Date: Wed, 9 Jul 2025 12:16:21 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KPmYOEA3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752056608; x=1783592608;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2+N4smsYfrl5HTf8MH0tIEMC4qA9EcZ/1I6Yj3gLik4=;
+  b=KPmYOEA3C2EUNRcAE6pvyo4RqCfqyqcfF6FO424jTCg9jjUQZe+qmg1D
+   1O0QF/N24/IRPaJHe4z8RKVMUNOpll6x768dHe3F2CjQQIMUwoilhm/Vy
+   p7WQ8/qkzq2Bw4DchNlhtP7DgNsgiigRYXTONf3QPengqPx1wEFyYLW+D
+   k4VYE6prNIBAn28eCz54VGE6oriG3RIPUMn2JYdfDzExJpqv7brFCrGFU
+   F8gnjxA+bnc3uYxC4RAZNfWNFq52TxBn9ag17rMBPSoPlLxQlG7x30zoi
+   +AYWGcYpv5WZzDoEWhikG2Rl1qH49c+UpneRyIjUX2+8m3b4v9hxoS2oY
+   g==;
+X-CSE-ConnectionGUID: WPpMwy6rRuKVdkHsEjdq+Q==
+X-CSE-MsgGUID: 0dE/07ZyQlGenSHCR7B4Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79750707"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="79750707"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 03:23:19 -0700
+X-CSE-ConnectionGUID: nA7HpcjlRkSUBS07mOfahw==
+X-CSE-MsgGUID: 2ZH4Zb0hTQCxpOErnia7Jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="160057178"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 09 Jul 2025 03:23:13 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZRxG-0003OT-0W;
+	Wed, 09 Jul 2025 10:23:10 +0000
+Date: Wed, 9 Jul 2025 18:22:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+	oe-kbuild-all@lists.linux.dev, David Wronek <david@mainlining.org>,
+	Karel Balej <balejk@matfyz.cz>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org, phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, soc@lists.linux.dev,
+	linux-mmc@vger.kernel.org
+Subject: Re: [PATCH v16 3/5] arm64: Kconfig.platforms: Add config for Marvell
+ PXA1908 platform
+Message-ID: <202507091803.RBsXE3aX-lkp@intel.com>
+References: <20250708-pxa1908-lkml-v16-3-b4392c484180@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: phy: qcom,snps-eusb2-repeater: Document
- qcom,tune-res-fsdif
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
- <kishon@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250625-sm7635-eusb-repeater-v1-0-19d85541eb4c@fairphone.com>
- <20250625-sm7635-eusb-repeater-v1-1-19d85541eb4c@fairphone.com>
- <20250708-unicorn-of-ancient-excellence-e8945c@krzk-bin>
- <20250708-stoic-slim-bison-ac55ee@krzk-bin>
- <DB6J86NHFTNT.31MFYDTZ6B4O0@fairphone.com>
- <DB7FBNQ0TYFZ.3GGPN8XXJXGRW@fairphone.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <DB7FBNQ0TYFZ.3GGPN8XXJXGRW@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250708-pxa1908-lkml-v16-3-b4392c484180@dujemihanovic.xyz>
 
-On 09/07/2025 11:40, Luca Weiss wrote:
-> Hi Krzysztof,
-> 
-> On Tue Jul 8, 2025 at 10:31 AM CEST, Luca Weiss wrote:
->> On Tue Jul 8, 2025 at 10:21 AM CEST, Krzysztof Kozlowski wrote:
->>> On Tue, Jul 08, 2025 at 10:13:24AM +0200, Krzysztof Kozlowski wrote:
->>>> On Wed, Jun 25, 2025 at 11:14:56AM +0200, Luca Weiss wrote:
->>>>> Document the FS Differential TX Output Resistance Tuning value found on
->>>>> the eUSB2 repeater on Qualcomm PMICs.
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>>  Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml | 6 ++++++
->>>>>  1 file changed, 6 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
->>>>> index 27f064a71c9fb8cb60e8333fb285f0510a4af94f..6bfd11657e2992735998063b3ca390e04a03930d 100644
->>>>> --- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
->>>>> +++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
->>>>> @@ -52,6 +52,12 @@ properties:
->>>>>      minimum: 0
->>>>>      maximum: 7
->>>>>  
->>>>> +  qcom,tune-res-fsdif:
->>>>> +    $ref: /schemas/types.yaml#/definitions/uint8
->>>>> +    description: FS Differential TX Output Resistance Tuning
->>>>
->>>> Resistance is in Ohms, tuning could be in dB, so I wonder what are the
->>>> actual units here. Neither commit msg nor this description helps me to
->>>> understand that.
->>>
->>> I checked and the values are in Ohms.
->>
->> Yes it's Ohms but not 0x00 = 0 ohms, and it's also an offset in ohms
->> from the nominal value according to the Hardware Register Description I
->> have, e.g. 0x7 = -12.1ohm from the default
->>
->> I can try and create bindings using these Ohm offset values, I didn't
->> worry about it too much since the other tuning values in these bindings
->> are also just register values, presumably from before Konrad had access
->> to the docs.
-> 
-> I've taken some more looks, and checked how similar tuning is handled in
-> qcom,usb-snps-femto-v2.yaml and phy-qcom-snps-femto-v2.c, and changing up
-> the concept of tuning in the eUSB2-repeater bindings+driver is not a
-> trivial task.
-> 
-> Since this is adding just one more property in-line with the already
-> supported properties in the bindings+driver, can we get this in as-is,
-> and deprecate all 4 qcom,tune-* properties later with a replacement that
-> describes the values better?
+Hi Duje,
 
-This is a new property, so other existing properties do not matter here.
-We cannot take new code which you already think should be deprecated.
+kernel test robot noticed the following build warnings:
 
-register-like values are acceptable for vendor properties, but that does
-not make them usually more readable. The question is whether this should
-be more readable for hardware engineers or anyone writing/validating
-DTS. Is the actual resistance important or no one ever cares because you
-paste whatever qcom told you and you do not know what should be actually
-there?
+[auto build test WARNING on d7b8f8e20813f0179d8ef519541a3527e7661d3a]
 
-I can imagine the first - that some document explains you should have
-resistance of foo because of bar, which would mean the property should
-be more readable. But I can also imagine the second. Make your claim in
-commit msg.
+url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi/dt-bindings-mmc-sdhci-pxa-restrict-pinctrl-to-pxav1/20250709-011510
+base:   d7b8f8e20813f0179d8ef519541a3527e7661d3a
+patch link:    https://lore.kernel.org/r/20250708-pxa1908-lkml-v16-3-b4392c484180%40dujemihanovic.xyz
+patch subject: [PATCH v16 3/5] arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
+config: arm64-kismet-CONFIG_I2C_GPIO-CONFIG_VIDEO_MMP_CAMERA-0-0 (https://download.01.org/0day-ci/archive/20250709/202507091803.RBsXE3aX-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20250709/202507091803.RBsXE3aX-lkp@intel.com/reproduce)
 
-> We have enough people at Qualcomm by now that should be able to do that,
-> and have the required resources to answer any potential questions.
-They are busy sending vendor/downstream tree patches...
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507091803.RBsXE3aX-lkp@intel.com/
 
-Best regards,
-Krzysztof
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for I2C_GPIO when selected by VIDEO_MMP_CAMERA
+   WARNING: unmet direct dependencies detected for I2C_GPIO
+     Depends on [n]: I2C [=y] && HAS_IOMEM [=y] && (GPIOLIB [=n] || COMPILE_TEST [=n])
+     Selected by [y]:
+     - VIDEO_MMP_CAMERA [=y] && MEDIA_SUPPORT [=y] && MEDIA_PLATFORM_SUPPORT [=y] && MEDIA_PLATFORM_DRIVERS [=y] && V4L_PLATFORM_DRIVERS [=y] && I2C [=y] && VIDEO_DEV [=y] && (ARCH_MMP [=y] || COMPILE_TEST [=n]) && COMMON_CLK [=y]
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
