@@ -1,96 +1,96 @@
-Received: from mx.olsak.net (unknown [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28CA2253AB;
-	Wed,  9 Jul 2025 17:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F641CAA85;
+	Wed,  9 Jul 2025 22:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752082507; cv=none; b=rohU++IQ6s2ip2CHGMLC2KapL+6mvfJfYlOPnMiaE73pSdK5ydKYIqN7PGn5skRPVT7e2w4hnIueU+66pfG8w2ZwtlkA44Jqt6YghMgkJyNXberUSCLpPIVK49rDRj0Og2rpSFeI2kyrkb/6XvR6St9DVvsCeUfJEm0v/0deIK8=
+	t=1752100211; cv=none; b=F6zSmKfNjhJQgkJGmBKIDMJIAaVF6FlOPX6I1jU4Y4il3RMNd0hkKsWtilnkvDOIq+oTEF3oWQDK9ET4Yx81YVhWdrc5h2PNqrmIH3Yxq28gStZOeg35fHGIYBRgPC4aWbRaYC+T5bQKR65Y38/QuX2zz7+OQdRH8mT4jWMDKxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752082507; c=relaxed/simple;
-	bh=+64fnXIXSgNnCIG6if9Uadk28NbjJVWxSfgeT94QG74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gF6q8gyTZEBXhwbOFTwHIYcQIUqMcTZ9JIFM7bddx/WOxV9RL1kRBxapVSUvYzGlM2RsBz98u90FyPPGcefcIQpyXdduzwElpETeoPkbmf+ety9S9Ta1nWHfpiIj5k8CJ9m6efEDq9+y+AWXKZGFj/WZWVSBzvPFQTiIYbD1cF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=Ot9uvKj8; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1752100211; c=relaxed/simple;
+	bh=xHr0SxcTTGeDN1ue6d/qY2D0xz+OPv9AcKajs1DQq90=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=gRrEJ3WDlKeYV+rAtOJCgKVYxaxwg47oXfkuvOdAyw133MDXVn5lElnhzwLTfKCdRo2rnssZx4XGf+24E4wD0fr9zLuaZDT7K1/YTEvFCO1Kr3NyotQOQXp0XIWtBL3GNa7Ugav1k5ml765fPAnej6UIil3QO0z/7Z22zB5rnjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTOuyLPK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="Ot9uvKj8"
-DKIM-Signature: a=rsa-sha256; bh=+64fnXIXSgNnCIG6if9Uadk28NbjJVWxSfgeT94QG74=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1752082383; v=1; x=1752514383;
- b=Ot9uvKj88SCNKZXhCwSLc7Mlc+19lqQn3riLUfvGUlHkwpR12dYtzxqtfXX5WgIcETyoHYb7
- 3zAcaawntNY5dakJuNcoE1wSv36nxkOGQeX3JcxmCalOcx9b7noP7k3FmYytVXu75jbrtsusvQ2
- B9ukt85xBF8QA8e7X0pQZTdQF37Slb82WPUM6haiBwPokSNNZNNYi6g0qG2RJnAia1gg02HeNAc
- +bbAWjg+znV+Km5vvE31WZ2KBKK/w0Pm3p/T8N4WCbfgnvTkBlbC/NoAmYOng2vON81cbUVH5ma
- 4sWmXdFHX1qlpqj/hc2csN530rcCW308NmGI7SLoylq9A==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 66672483; Wed, 09 Jul 2025 19:33:03 +0200
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, David Wronek <david@mainlining.org>,
- Karel Balej <balejk@matfyz.cz>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-hardening@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, soc@lists.linux.dev,
- linux-mmc@vger.kernel.org
-Subject:
- Re: [PATCH v16 1/5] dt-bindings: mmc: sdhci-pxa: restrict pinctrl to pxav1
-Date: Wed, 09 Jul 2025 19:33:01 +0200
-Message-ID: <3379810.44csPzL39Z@radijator>
-In-Reply-To: <20250709-spectacular-goat-of-tenacity-ced55a@krzk-bin>
-References:
- <20250708-pxa1908-lkml-v16-0-b4392c484180@dujemihanovic.xyz>
- <20250708-pxa1908-lkml-v16-1-b4392c484180@dujemihanovic.xyz>
- <20250709-spectacular-goat-of-tenacity-ced55a@krzk-bin>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTOuyLPK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E3CC4CEEF;
+	Wed,  9 Jul 2025 22:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752100211;
+	bh=xHr0SxcTTGeDN1ue6d/qY2D0xz+OPv9AcKajs1DQq90=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=PTOuyLPKEIvUR+suT8k+/1Ck2XqWrdas0m70vsOe6FMm5Og/ahHF0rQRSrcb14SnJ
+	 LMBvT+0iqFIbwI4vjH6c4giXZi8haH2E0bFdv+gbTkXsSrGlCmDMFW6ybv19i8+YYJ
+	 Zz9CDrMlNjkbBeep5UpnjlL2BuetozjIU0RZtYydCuwZnRQeGoAC8HuqAjUxfp+rt+
+	 B8kt3zUnn5ks84mSONbOczsJ38ndSunhqfdgTZ65h3ZrUWFHCLM9CCnjDpy9qgPFq/
+	 a7aOX4rEyyv3gzQ7UYzoxrvPAQBLn9nPjTvJXJj/SYCliMq6ctrBKHFLn/n9EPoeHU
+	 KX/MlRxnUQbqQ==
+Date: Wed, 09 Jul 2025 17:30:10 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, linux-remoteproc@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht
+To: Luca Weiss <luca.weiss@fairphone.com>
+In-Reply-To: <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
+References: <20250709-sm7635-remoteprocs-v3-0-c943be976180@fairphone.com>
+ <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
+Message-Id: <175210021011.3927964.2963774922041119366.robh@kernel.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: remoteproc: qcom,milos-pas:
+ Document remoteprocs
 
-On Wednesday, 9 July 2025 09:32:06 Central European Summer Time Krzysztof=20
-Kozlowski wrote:
-> On Tue, Jul 08, 2025 at 07:09:46PM +0200, Duje Mihanovi=C4=87 wrote:
-> > The current pinctrl properties apply only to the pxav1 controller.
->=20
-> Why they are not applicable for pxav3?
 
-state_cmd_gpio is used for working around a PXA168 SDIO erratum. That SoC u=
-ses=20
-the pxav1 controller and no such erratum exists on any of the other PXA SoC=
-s.
+On Wed, 09 Jul 2025 13:13:07 +0200, Luca Weiss wrote:
+> Document the bindings for the ADSP, CDSP, MPSS and WPSS PAS on the Milos
+> (e.g. SM7635) SoC.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  .../bindings/remoteproc/qcom,milos-pas.yaml        | 201 +++++++++++++++++++++
+>  1 file changed, 201 insertions(+)
+> 
 
-> > Adding one default pinctrl node to a pxav3 controller therefore causes
-> > a schema warning.
-> >=20
-> > Check the existing properties only on pxav1. pxav2 and pxav3 may add
-> > their own set of pinctrl properties if and when needed.
->=20
-> This should be rather made complete here, because properties should be
-> defined in top-level, not in allOf: block. Strictly speaking pinctrl-xxx
-> are defined in core schema, but still the binding should follow same
-> rule - define them in top.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Would it then be acceptable to declare the pinctrl properties in the top le=
-vel=20
-and define each controller's respective description: and items: in the allO=
-f:=20
-block?
+yamllint warnings/errors:
 
-Regards,
-=2D-
-Duje
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.example.dts:20:18: fatal error: dt-bindings/interconnect/qcom,milos-rpmh.h: No such file or directory
+   20 |         #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1519: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
 
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
