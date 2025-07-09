@@ -1,194 +1,173 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6128FAAC
-	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 12:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580BF19F13F
+	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 13:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752063784; cv=none; b=lSxEtht9vxOCZxEbJIFSoN+pLUIgjakD02D948YxsO9p0XDsczbwnUp7UYxjp5m6c2IWgJ8Itpb3u11ENUBcVpzOAAGW9pUDWv1ocIyMBuDdozEF46pfHgI9uw0PInfXSGnjfMUZfDU3lgz8aOowprVgNuH4P6TrJH8X6W5qfek=
+	t=1752066909; cv=none; b=rQHcN72P4zHYI790Si0bR/fwaHsp7UMUpQrgKaRz+gl/9NGJt+ajDNVreV2F/YbCS0Txo+4RhvmyrO6PSJsHV1iFVBFmJNzAaS/Jd8GC8vtHrd55Igb1Na7sIIDOHM1Npla3If9nOEud2TiXmDOyQGpKiJEpSjh8XcjyktQhcVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752063784; c=relaxed/simple;
-	bh=IvC2le71PqR6iklFWS+/lEeQnMsx53wFKpG61tQVWYM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=JwD912JaZz3ofvywkavISkPrNS3ua/gNfXHLtv9LlNT3UQrj27FzuB1x1Z8rDL2oMZ//7jMTSP4Sr04yBx84LYBRusX7356ZLFWbmMPiJ8q+UilxxF6KAdyqbzJdNEX3trKIBPlqdAnt94OwvZm+QYycm1OWCaoRBFlDa88JGMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=KaHYqS8i; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1752066909; c=relaxed/simple;
+	bh=qF5/J/fKeoC6YmWBNQFQm1tBXQuS+Li1RwOwwDSZj0A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jbUFrEfeyRRTL+36hbn9p4O6juQDVgCAsqlb0tuQvMLW0FAF6HmVYkknCk+7fJfF9O7/S0utPWl4iVgWKg0jGAVrli0OiJD/P2XSMt7ZGYt4nvR3ozglMIBcl3SIPgqYxuAu7ObhlPr7CrNP7d+wvDJQvls8kvA9KzKx1ab12II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=nvrEl5s7; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="KaHYqS8i"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-adfb562266cso879326566b.0
-        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 05:23:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="nvrEl5s7"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ae0c571f137so1073571566b.0
+        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 06:15:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752063780; x=1752668580; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ROuluNw4/vejFJBCXsSXIQySN8U2GYIufRUS7I5ilA8=;
-        b=KaHYqS8iqbxYPREL2TiI/9DugiMQb0I8r/Jyi/KW/07Ltalw27bZVDaS21nDSH4XJV
-         RYGKD/G0ayvLK65G2aX1u6zLOOtZowY5IgzvN3e8RbasHVviKHVMvBcfqTN9ZuKqqbRt
-         MiLxoIkQ/V5KcTDkwWIu+dY/i8jwm084Sao3eJ5WZoATuMhjlaH8FO2/exD5qk+ipu2A
-         REDTfvZHfvTkkXuS/p0Qo9G/IiUPsoqLQizC3OT+pYQkK+xN3ifSXHMRB6iuL0oxNA9A
-         zALRpDDEW5p0o1EAHgU7pIsXGkRDpNfwubyIQRrcIz26BJDsM0COmnyAAis6s3ledH0W
-         OI5w==
+        d=fairphone.com; s=fair; t=1752066905; x=1752671705; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GGKxqD4X4hA6oFFeMi+EohfBOVWp9WodiRasOeHtbtI=;
+        b=nvrEl5s7k4T7CeYHMNhe1IWmUAkfMTC8brJtejbXBO1VWIwyQWIorvOFFU7XrvA91n
+         O3uTKrKxnIBGKyv5jnSW6L0KctG/Fgn7NEhExS2WAGIBkleCd8iBZgrMRnBlnOsCWPj5
+         V6LLYjrtEVeVNyymR722269MwdBHyejlyTnL3bKwYZxXfIraOTORBsKY7S9VOJ2fAlUt
+         7hmqJmzkvgv1R0uwslTvrNVW5aA/A/zUW7i4r2Q2KE96KtTpQBFcGCuBLJdk/16v4mu3
+         LV7bDcmVgJeUwpLFTSUhd/YKWIUMO1Z9g3eitzZez+AbLOGdStiVUquacJQbqYmB5VU1
+         dkvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752063780; x=1752668580;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ROuluNw4/vejFJBCXsSXIQySN8U2GYIufRUS7I5ilA8=;
-        b=ZCBa30AuZNV2Id7vI3PaAGQfenZHwyBZIe46CG4j3WRYodCmyHJI7JLX2ICjpewf0M
-         lmvS9GQ2UjIBSjBOOVID+ZrH5LmglfsZ+hYPl55zaBuoGUAhN7LfjcCWgzySkdDicS9v
-         xzLAwkcHVYw/2GqR1cEvYXX5v+MSWrr0M2MAbT3PGvFENtOwF/67PRri583cxjTFLnzT
-         6b8Bbni1++0xU+py5JP7h/2Y3As2lTO8OpVZ60cIV6D8vumncvpOl3BL97QKJUpfZKP2
-         eslQvQCurHTZFylMqbX3DglH93Rs3L0mO0if/RbXGjfoGKsl7raxyaZJGYrGGAPlGoKI
-         Z9Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCXybui5qPHQNtfY95Og4k2jUstE/2fmzRZ2xFlewI35lveklVFmToBOIBOzepLLSbbvN1NytAjTX3W97Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg1pdKa1wLKcV+OTt52P7nonNt3wJC1J2X3EBjhCFQYX+Jmxmq
-	NRvTuTH10xEZ0DmWl27pGvaxjsQw+ro3V9nLkcCi/ewo8xAycR8OZOsDhrwWeFsL4XM=
-X-Gm-Gg: ASbGnctk4A20OXetx1bZ6nrsOnHJwZf/mSyHgd2JIFHoUj08r5kuAQK2jLACPrzqvNb
-	wu08ZyrgR3/LeQCCZV8HyKHz/8hQ0afDp5RnpKEon4wAaC1nLAqvAEg51DWhQTD/aWO1hP7NhOO
-	C/ENzl4Xj0AJJcrahedIbKDvy0YUSvmmrctcjxZzMWXDuN20vB12VCmEVtkusUnrxjLFPbGtlSr
-	DsCmTMxwGEQcPmOJ7Acas9RHUHxpXGvQVqTN67OomaiGPu0mpdSLklz8NCZiVUfGHo4VLSpPc5O
-	L2aH1bQkdSmVQ16ga3S4TzmfR+fPJnOLLJqB5jaOwm+7kXY11oAcXhP8i4zWY/Anxfp6cyNIO9e
-	Yo47TfyMb+hnZzmj4sbNci+iIt3pmaFo=
-X-Google-Smtp-Source: AGHT+IFoNmrlnmfODsFWZlCW/cQmQ6VYP8ewayBQbqu+4gVzC+PMHw17LB0EaYf/AmeXCy2KQcHZJg==
-X-Received: by 2002:a17:906:c045:b0:ae0:d7c7:97ee with SMTP id a640c23a62f3a-ae6cf79a055mr227716066b.41.1752063780327;
-        Wed, 09 Jul 2025 05:23:00 -0700 (PDT)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b04d5csm1074482666b.120.2025.07.09.05.22.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jul 2025 05:23:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752066905; x=1752671705;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GGKxqD4X4hA6oFFeMi+EohfBOVWp9WodiRasOeHtbtI=;
+        b=jUk62eZxijMTW9mHagd30DZ8JTYhe1OaCW/RhZ9R1Mn0jkiBsCURVY74qhlHV4o9tz
+         ACGq1a/eGv7YoHnnD55DdQCceAmvRO0zBJ4e0LE4xbe36j5QZj4LLLMWdfLanwsgDdnH
+         qKco6wTfi6QZcDUJjneWsmjlr+70zc9UBdGdFd0QCM/Tz2a7nqi1Yzo1QL5CXEhvxu47
+         4SySPMrtsNF+ixX7THOczvEnwTYiX3E33e5I9ilojv7+/J37nF1ImdRSMoyLdZw5kZ7R
+         gO9lzHUnc2FK9975/WaOOTAtlBZ39Z0MunrzhqzFvKbyJ1Fd/RBTE+f2cr6XRkIrNjQp
+         n7dg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu292Y/XhbdLqWesjgrp5mb0QHtzlHpOVBA++aCDmbXQVqn1jpY3ze7pplH1tG91cpAf/Z4GRFosKmOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFj9/pXM5US5xRd9i7l+3DHnbM6s4B8WGzrsEc36yuVOJMoDEe
+	BzIApjU4xOfM2m2nvwVVUB/3cexCzh+HN4hzxptA5nqVOutEF5JRBvFTZD0+nC7K/kHgqBhhV31
+	BA5P+
+X-Gm-Gg: ASbGncub3O889kyYyFZySKOFLC8Djh86PL15ZdTnQL0IKJf07bjSpgvzOvJlm8Y4g2S
+	M8Gw7H03i75iod0ZeyoVEp4r8sbUWx0aQrbFE6PEjeDhPHTuFOo3V0zPdcf4CcjIzuIQrB6eGKZ
+	pmw3EWfByIlwbeLCQyF42SrmMSCBCAs/OyP61Kln9FlUsDL2wGxyLx77XWtJmaP3ZhHzZiEIY5E
+	c/5lubPyeBNtpqMCsTQFzW6GaZdwF53B+IqDnJA4XiR1MpOdX2dvHZ1eopRzFtDDS1bGG94hSdi
+	NLPfBLTAUZEA8Dd9rroizlNoJFSRdpFT8AE1pLYyti3eD1Q2fstWOVVt8V5ZEK6PhVt1pwZVL2R
+	+kasUpHHISdAeeVpSLeDjiNW6iYORbvVnZuv6LI+pPfk=
+X-Google-Smtp-Source: AGHT+IE6E+JE7jXQBIIII1XxP3gfg7mqCW7aGQ/21aJ9MNh+dRqRpBS4qQwaX/36uvNFjS4QbYI0Nw==
+X-Received: by 2002:a17:907:a0d4:b0:ae0:a245:2fef with SMTP id a640c23a62f3a-ae6cf5c2c0bmr268677766b.20.1752066905085;
+        Wed, 09 Jul 2025 06:15:05 -0700 (PDT)
+Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d91ffsm1105542766b.14.2025.07.09.06.15.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 06:15:04 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v3 0/2] Add interconnect driver for Milos
+Date: Wed, 09 Jul 2025 15:14:48 +0200
+Message-Id: <20250709-sm7635-icc-v3-0-c446203c3b3a@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Jul 2025 14:22:59 +0200
-Message-Id: <DB7IRWJ1AFCT.2CVF97683XYEO@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>
-Cc: "Vinod Koul" <vkoul@kernel.org>, "Kishon Vijay Abraham I"
- <kishon@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Abel Vesa"
- <abel.vesa@linaro.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-phy@lists.infradead.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/4] dt-bindings: phy: qcom,snps-eusb2-repeater:
- Document qcom,tune-res-fsdif
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250625-sm7635-eusb-repeater-v1-0-19d85541eb4c@fairphone.com>
- <20250625-sm7635-eusb-repeater-v1-1-19d85541eb4c@fairphone.com>
- <20250708-unicorn-of-ancient-excellence-e8945c@krzk-bin>
- <20250708-stoic-slim-bison-ac55ee@krzk-bin>
- <DB6J86NHFTNT.31MFYDTZ6B4O0@fairphone.com>
- <DB7FBNQ0TYFZ.3GGPN8XXJXGRW@fairphone.com>
- <1c7fdeca-d531-4f90-9e4c-4d8bfac67fae@kernel.org>
-In-Reply-To: <1c7fdeca-d531-4f90-9e4c-4d8bfac67fae@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEhrbmgC/12Qy27DIBBFf8ViXaoBDBiv+h9VFzwmNUptEnDdV
+ FH+vcRJlDTLO9K5OneOpGCOWEjfHEnGJZaYphrES0P8YKdPpDHUTDhwCYoDLaNWQtLoPcXWSAR
+ UioEhFdhl3MTDWvb+UfMQy5zy79q9sPP1ViMfaxZGgXauNRygZcrB28bGvBvShK8+jeRctfA7r
+ qH7h/OKI5NdcDY4bvwzfrqoZdx/13nzxe++rm+et/mv5LeFamVMEKILXui+Cjy+5AYxQTP+pLx
+ dVSAIp7lWVpvuSjhbkFaNMc59M+FhptcNooqd/gDc24+ufwEAAA==
+X-Change-ID: 20250620-sm7635-icc-e495e0e66109
+To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752066904; l=4168;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=qF5/J/fKeoC6YmWBNQFQm1tBXQuS+Li1RwOwwDSZj0A=;
+ b=a2rdDMuj/zWtBX9Ig4xAZju41zNuBNaJxhYqCmZ3hGaBpcVMQ0dsF37faFlwLK65iyNEs8MzY
+ b1cnEDIWMLyBnKDPQIahww6PB9wzKc27Rod0x8ShVj442EabPPVP5XU
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On Wed Jul 9, 2025 at 12:16 PM CEST, Krzysztof Kozlowski wrote:
-> On 09/07/2025 11:40, Luca Weiss wrote:
->> Hi Krzysztof,
->>=20
->> On Tue Jul 8, 2025 at 10:31 AM CEST, Luca Weiss wrote:
->>> On Tue Jul 8, 2025 at 10:21 AM CEST, Krzysztof Kozlowski wrote:
->>>> On Tue, Jul 08, 2025 at 10:13:24AM +0200, Krzysztof Kozlowski wrote:
->>>>> On Wed, Jun 25, 2025 at 11:14:56AM +0200, Luca Weiss wrote:
->>>>>> Document the FS Differential TX Output Resistance Tuning value found=
- on
->>>>>> the eUSB2 repeater on Qualcomm PMICs.
->>>>>>
->>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>>> ---
->>>>>>  Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml=
- | 6 ++++++
->>>>>>  1 file changed, 6 insertions(+)
->>>>>>
->>>>>> diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-r=
-epeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeat=
-er.yaml
->>>>>> index 27f064a71c9fb8cb60e8333fb285f0510a4af94f..6bfd11657e2992735998=
-063b3ca390e04a03930d 100644
->>>>>> --- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater=
-.yaml
->>>>>> +++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater=
-.yaml
->>>>>> @@ -52,6 +52,12 @@ properties:
->>>>>>      minimum: 0
->>>>>>      maximum: 7
->>>>>> =20
->>>>>> +  qcom,tune-res-fsdif:
->>>>>> +    $ref: /schemas/types.yaml#/definitions/uint8
->>>>>> +    description: FS Differential TX Output Resistance Tuning
->>>>>
->>>>> Resistance is in Ohms, tuning could be in dB, so I wonder what are th=
-e
->>>>> actual units here. Neither commit msg nor this description helps me t=
-o
->>>>> understand that.
->>>>
->>>> I checked and the values are in Ohms.
->>>
->>> Yes it's Ohms but not 0x00 =3D 0 ohms, and it's also an offset in ohms
->>> from the nominal value according to the Hardware Register Description I
->>> have, e.g. 0x7 =3D -12.1ohm from the default
->>>
->>> I can try and create bindings using these Ohm offset values, I didn't
->>> worry about it too much since the other tuning values in these bindings
->>> are also just register values, presumably from before Konrad had access
->>> to the docs.
->>=20
->> I've taken some more looks, and checked how similar tuning is handled in
->> qcom,usb-snps-femto-v2.yaml and phy-qcom-snps-femto-v2.c, and changing u=
-p
->> the concept of tuning in the eUSB2-repeater bindings+driver is not a
->> trivial task.
->>=20
->> Since this is adding just one more property in-line with the already
->> supported properties in the bindings+driver, can we get this in as-is,
->> and deprecate all 4 qcom,tune-* properties later with a replacement that
->> describes the values better?
->
-> This is a new property, so other existing properties do not matter here.
-> We cannot take new code which you already think should be deprecated.
->
-> register-like values are acceptable for vendor properties, but that does
-> not make them usually more readable. The question is whether this should
-> be more readable for hardware engineers or anyone writing/validating
-> DTS. Is the actual resistance important or no one ever cares because you
-> paste whatever qcom told you and you do not know what should be actually
-> there?
->
-> I can imagine the first - that some document explains you should have
-> resistance of foo because of bar, which would mean the property should
-> be more readable. But I can also imagine the second. Make your claim in
-> commit msg.
+Add documentation and driver for the interconnect on the Milos SoC.
 
-Would this text in the commit message work for you?
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v3:
+- Add "SoC" to dt-bindings title
+- Add QoS settings
+- Remove empty bcm arrays
+- Update spacing around compatible entries
+- Link to v2: https://lore.kernel.org/r/20250708-sm7635-icc-v2-0-e158dbadb29c@fairphone.com
+
+Changes in v2:
+- Rebrand SM7635 to Milos as requested: https://lore.kernel.org/linux-arm-msm/aGMI1Zv6D+K+vWZL@hu-bjorande-lv.qualcomm.com/
+- Fix double colon in dt-bindings
+- Specify b4 dependency on gcc patches for dt-bindings example
+- Switch to using dynamic ICC IDs
+- Have .compatible+.data lines be one line
+- Link to v1: https://lore.kernel.org/r/20250625-sm7635-icc-v1-0-8b49200416b0@fairphone.com
 
 ---
-Document the FS Differential TX Output Resistance Tuning value found on
-the eUSB2 repeater on Qualcomm PMICs. The tuning values have special
-meanings, being different offsets of the resistance to the default value
-in Ohms but the exact meaning is not relevant here, as the correct
-tuning is determined by hardware engineers to make sure the electrical
-properties are as expected.
+Luca Weiss (2):
+      dt-bindings: interconnect: document the RPMh Network-On-Chip Interconnect in Qualcomm Milos SoC
+      interconnect: qcom: Add Milos interconnect provider driver
+
+ .../bindings/interconnect/qcom,milos-rpmh.yaml     |  136 ++
+ drivers/interconnect/qcom/Kconfig                  |    9 +
+ drivers/interconnect/qcom/Makefile                 |    2 +
+ drivers/interconnect/qcom/milos.c                  | 1837 ++++++++++++++++++++
+ include/dt-bindings/interconnect/qcom,milos-rpmh.h |  141 ++
+ 5 files changed, 2125 insertions(+)
 ---
+base-commit: b803ad80123e6efccfeeffa7cd37f98f642e37f4
+change-id: 20250620-sm7635-icc-e495e0e66109
+prerequisite-change-id: 20250620-sm7635-clocks-7699d338dc37:v2
+prerequisite-patch-id: 30b56c4075513c2b4a44b32a07f270b5cb08d098
+prerequisite-patch-id: 37be728e2df777fedd469f7da865e5a256a54b06
+prerequisite-patch-id: 32cc06fb5708d126263bc3ac132126e530f72d4a
+prerequisite-patch-id: d200c8de06976d3cfa9f1db896301019ab8a68d9
+prerequisite-patch-id: f13af5b3633a7969c35f3c1497c3968ff438aa7b
+prerequisite-patch-id: 70cc297fa29e022d4ffa74b0aad59f1ed1671e09
+prerequisite-patch-id: fb0950b5ebf9ebdbb4381762362f131544252bc7
+prerequisite-patch-id: c6593a406bcb7d9cb35bfa54b6fd8fbcaa58ae99
+prerequisite-patch-id: 6b126e92f96a5f2152d8ca296489aaf712bbaa17
+prerequisite-patch-id: 728eae32feac9247a5a822343f777ca678cd666c
+prerequisite-patch-id: 1c49368327e67c86e9e3523213c2d3f8469c226c
+prerequisite-change-id: 20250613-rework-icc-0d3b7276a798:v2
+prerequisite-patch-id: cfef14406349a8de35f9a9f52a94c27b9760c98d
+prerequisite-patch-id: 2a0f6625a75fc2672c5b5b8838daf4c1b84dae06
+prerequisite-patch-id: c43395b7274c6c4866e293378c2784e1ede5796b
+prerequisite-patch-id: dc669619c955d963b478e6c5bf691b09a9e87e5c
+prerequisite-patch-id: ec455ecaae1134984fab4ee9b0ced416c8388733
+prerequisite-patch-id: b610e2d9aab84dd752188235293267130a540363
+prerequisite-patch-id: de89fdb08c0e9794ea1c758bb8429cd8648d16e9
+prerequisite-patch-id: 50c1ce836eff66d606cb886a6e16ad09aa0c4d07
+prerequisite-patch-id: 893d74d96ade5999f853b37b46dbf45c2b602c61
+prerequisite-patch-id: 1af362b4eb70298089b1f407119831ed47d0e53a
+prerequisite-patch-id: 99fc9ac3f20c10960aeaf8f95fbab2299fc1299c
+prerequisite-patch-id: 719eac9c833b38f49f788d1f347f580523464ba5
+prerequisite-patch-id: e5897f2ff8c6a908cbf4424fe34782cdfd8e78f7
+prerequisite-patch-id: da0770cbea0b965c9cc1593f4f70316c1f06db74
+prerequisite-patch-id: 9850436dafbeb49b4046094c7cff430f8b156d18
+prerequisite-patch-id: 99f36df03d920c8e0735c6ff49b6ce24c64e1c4e
+prerequisite-patch-id: 0e282a1707f7d4daa0f997f0e908248797a085a0
+prerequisite-patch-id: a2c334a79e965882258455a9d0eaa90412ed66d4
+prerequisite-patch-id: d4ff7d798a7cf3260a91672dbabaca06e663651c
+prerequisite-patch-id: b9065de90a016b2cf7edb31a3bd1fe222344d406
+prerequisite-patch-id: 5e809c2603fb204d11a2bda4126df60ccbf46206
+prerequisite-patch-id: a5f457c883c17a5ea0f7226b4eeabc1354c965b7
+prerequisite-patch-id: fe9cbf613cf61082c75dfb358d0e362680849f17
+prerequisite-patch-id: 022a649bf46677564390068752121c6acf91cd74
+prerequisite-patch-id: 259e32af18576dbe8cff7f20633437a80f9a50f5
+prerequisite-patch-id: 76e0ce648c22ecd9e5a96d8c5c7b49d74c96fdb9
+prerequisite-patch-id: d39b4a58681c5e5699ba045d3a889d843d768262
+prerequisite-patch-id: 8e648304c8a8b21db26f1ae991abeb52a11d6ee8
 
-I'm trying to avoid resending the whole series if we're not yet aligned
-on the wording.
-
-Regards
-Luca
-
->
->> We have enough people at Qualcomm by now that should be able to do that,
->> and have the required resources to answer any potential questions.
-> They are busy sending vendor/downstream tree patches...
->
-> Best regards,
-> Krzysztof
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
