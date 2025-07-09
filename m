@@ -1,177 +1,160 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BFF2D8372
-	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 11:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7643A2C2AA5
+	for <phone-devel@vger.kernel.org>; Wed,  9 Jul 2025 11:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752061614; cv=none; b=JsHPO7q+GlmZSFBLmEg8Puj71LAOwFNf5Dy/HwgT8b7lLEq39TptsOb2QITeOQCElgD7pi0Xn49JHD2acf9SA8pgVHHpfBwfn0MlQvH1PHzMqumcjyr9PwjczLvjMACXFEHUPmTVo8na7hhMo9BzZyqZ9EKwN1ZYMh5LR2m3NZo=
+	t=1752061732; cv=none; b=i9oHAKnczM+XlhjZ/RyE12L/Zx1m8MfbHuFtFDj71buRppBlRcmxBABu8QIa73THjlVWphwJGgw5NX5avz3ucPlIYXk1/qZZpDrcqVV+w2S49pLifrd7snkKuhbrX2SrCL+GHakvyuhAqqvYcWPO9Vrk3f9bdr1KJ3k/lfYTyWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752061614; c=relaxed/simple;
-	bh=hC4XiUyCXvfKUfUdujggOXgHdLNV4lf1H8qLCscQ3Zg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y1o8JcPnU8sGnVFCp8HWVau4iGnsYeg1UjlPHoIefpd00d/a1VG6K9Z4+yJQaUIdHD188v6w/0wudyJ3RrGmaUIlgQuBirgslkfgZccDyU+hR59JxzdqNvs/FqeZN22hUAqIjxCvVFxUKDCOwmfANp0mWgVdP8LP0YhA84pBUj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=u+xMDE7L; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1752061732; c=relaxed/simple;
+	bh=LuFaLCJ0xTPoiWwHiRW6DMu6C4be3/3wdgnHwU5aw20=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Z/J3WnkG+zx+WRoxg8sQ75B4ax0i82OZJ1v75mwLc1lBKUJg/ajFWjU5RcJxTMTVCrlfFsPtrz5AqrEgOuynGgvLkwTEg8eAPnUcoHfdob9U5tUnajBFZuonSFuhdT2j8vf6Ss755k1qBToFRcjMSwb5BcVTc/74zOwKvgwDiTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=N6Qx6lO2; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="u+xMDE7L"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae0de1c378fso837389566b.3
-        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 04:46:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="N6Qx6lO2"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae223591067so909756466b.3
+        for <phone-devel@vger.kernel.org>; Wed, 09 Jul 2025 04:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752061609; x=1752666409; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9bpa1qe4qe1U2tW+ccEjSHAObelYY5h6LZZSGvF+pGw=;
-        b=u+xMDE7L0X3yoC4TxKZQvTud3oIy5LyXnoSeMEHz+v+9PjCqZnmkMHCSi4NTmBXxbU
-         6Z3GE2APvlyDmqvoIzH8ohA/qOxz1FBCAJz7yN637L4WAnSUImeL87RqZ0GnuX2mdT6v
-         AhPov5DkFGPPHXsQCRWiRajKyz0W+x7ZuXSCZUMSBIMvUaGUScJ6CG9xToal7gE8+k9p
-         5h+oAm72VIWgQnwS31O+AS1ezIYUudUNO03QVY2vROv4tyaPpHIKxUcLl3Q3FML6BFdY
-         LVlh0Q5za5gdLYYTXY5uyc5ZqFpmF65ma+J70yQi8yW2qlOx4gHC24JySM+UTeQGNcSr
-         8ZPA==
+        d=fairphone.com; s=fair; t=1752061729; x=1752666529; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R7251uwJfwlSq32A9Vp2rgzafVtiNna6bej3YLziW0U=;
+        b=N6Qx6lO2URXqxTheYpr0pbnhSDFAlFwTG/3+A0UDlh+TWi08qhFU7NLS4kHfJ5RkLc
+         fqRyFyyn0x4JezJj6FOUIThCMs/mSSa7+IVNYFO/dejS4h+iFB2f2euXiN/jJpJ77mDJ
+         n79c+jZGUU/mH7KnKAt/sJ/XW/eY6e616pUK+Y4m1F1gtljFQ5wsFy8r/JSUe8uaWx9l
+         apeqCUr1j11/vrv543D2c5eUWITRibL2488RJCAlN7r23isPhIPVIYdUL1nT4sDtmqAE
+         sne5ox5AjQzs9q3iDVt6MwYHfzlloI9WirB08iqZ5SMWr7qTg+hFeNWd3YcppJ8vH7Jn
+         FhZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752061609; x=1752666409;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9bpa1qe4qe1U2tW+ccEjSHAObelYY5h6LZZSGvF+pGw=;
-        b=lQ3a4SteSyEVAMwu2rqerG3FGcOyQ33JkLdQdvw274XJSsHaenMdk/dewbP6z3ryyi
-         yQtl5AaaMt0oRZbF8xURlo7YvueUHyqgDOZApiFIQnZ4ZlHuDmegngGMio+F24g1duDC
-         //0oehbVHXFEUlpDBfFkpJsObSJVNjHr/S8VJnis6b7kvSs6MI+1mIbcV81vYCHPnyz1
-         pwAA1b15QzGWqnm89O1YxKlJXBLJGL2chYgczAYp+0FaA1Lpx8JIZYx8F3V/XyTXe+ZF
-         s9KqyP2D+d6yv1lb8Ks+ragtBg6QpqP5td2SXBWyzLynih0dmF0f6iIbPGWBVXCmgz1y
-         HTtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYsc1zf1xh+ftXSwAgRZAvvq2XhVYwEUiC7ayAEizX5rmiLn9S480NfrCz2YR7LBSAJXLhFwwU/io7Pg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yznjsm8W+H3I0PBt969mQuSQDMBuUuKHbJ2N2BSBxE4GkkOCoGN
-	Lix9K4gwXO1UKXTXblMs+LQu/y/PAzvRFsxO6dzx/pDfJuRnekghQnZ6PF0dtAmiJVQ=
-X-Gm-Gg: ASbGncsfkxNmFD+U/4wdZhUtQAeS5ZejITXyZ45iFPBPV2monSEJp9X4TJ6nA4gvqUV
-	J2ttAZAAsthPOnqiJRpxnqZyYjY18Wdpd+Opy2Cl5xIgaJBvldyQ6LS7khrbboZctuRI5ZAqpcI
-	17BtbonHd6Ivuwy+GRgRr9JdReUs58uquswaPCWUb40RwVVv26USofa+EM/4iKArMwskZxA3zNI
-	63ffe7DVsKvcFWwMfz7whFZ5lDY9VrohYh0sDjt7wFQcHmVMaTx8IbwFjgYvMoahYv122mOxJCc
-	bmj658sgj2WYJnRK84F3bSDy/A6KV6tg81OkkNNA89vxO7GchuAvBnOvw9gDrTxLJP367gSIPj3
-	Miig9mh3hD8DNj3Qazb54K0u+jn26oPwl
-X-Google-Smtp-Source: AGHT+IEa3VxKGGtmpJqSqUpaGE5jivuUSxb7qkbnXKu41EclZPptdV4vVLyJP7ntg8X8h5wcm0ceXQ==
-X-Received: by 2002:a17:907:c283:b0:ae0:db23:e3e3 with SMTP id a640c23a62f3a-ae6cf5c0132mr248175366b.16.1752061609399;
-        Wed, 09 Jul 2025 04:46:49 -0700 (PDT)
-Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f692e4ecsm1102995266b.55.2025.07.09.04.46.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 04:46:49 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Wed, 09 Jul 2025 13:46:36 +0200
-Subject: [PATCH v2 5/5] arm64: dts: qcom: Add PM7550 PMIC
+        d=1e100.net; s=20230601; t=1752061729; x=1752666529;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=R7251uwJfwlSq32A9Vp2rgzafVtiNna6bej3YLziW0U=;
+        b=Ng9mcPXRG/H/HTLAnqj25lHyIqC49W6Ar/R5pn8F0C/NVc9F+4HjU0GIPxAjKKlv1I
+         kFvi3+zDeziFSqaUe3d1kQxl1skYwveqfmkNsuSdat+bKlC3q2iUmaPaheJ6OGN+ye3A
+         f6ePdsMA2fy6ii6MLQRktRcqI0y59OL1U4mUIYk5AT85qxpN9poieOBF+ljkdcQOzPRQ
+         k7U5sfxG/L68F21syT5IIxEej00htQDsw0LEUJrrR/sVy17mWkCsgupnu9Xd/v3ulUTJ
+         YYIciX0P7ov9Z30Kr1WKYdfk6BiVRzRilrpHOYSp1grec4uDAQWDHtpbpXynCEQuNN5b
+         N75Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWVto6h4CFdxpFTP1NE0v6Nf1fAdPKZnKOsg/kNCj23PVQWRaeww1l/78f/rs9syQtT582R7naqas12/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywyn3sg+s19hfT0kFvfShdZJkIqyt1TuHp3Krg6R/z0RbZlzGjp
+	O0oklmerD8ID+4njnV4hTfSm3569rLT1MNLTafA7PKW5V644BpWRenELD5o1Pn9P8No=
+X-Gm-Gg: ASbGncts7e9TvCJKk+v0DHnSE50Tec+adz25Rw9PPXnaPpcEg3fXgPUPL1tnp/g2Fh2
+	ueNkeDirROevqOe2gyUxS3sKeyy8w9hYEFG9FgQeAbF8pgdSdSix/fLyvOJ6nEm+BOHA0Monj82
+	MflAwv2WKKzfV69G4ioDTFdNxIKaTLi38wHsqZbfWDOzUWh758xamV8yR1Ur4+/3UlHljiyRTH5
+	yj1mdW/KXVBO0wkJLBj5/1zNcl7il3I+QKC1b/mdZDbUKCkEDtPn3L8KCQ5Cwmc9qCjo5Xm1a20
+	NsndkwLC94JQkSL0YWA+TY7tkaeRP7UQ8j/0xoBj7hh3dkyp7/xvkKiJliLkV4iNYGQwM3QgXU4
+	vvZ558JIqB8QzC6rvBl6GbNLlH5G6/oc=
+X-Google-Smtp-Source: AGHT+IFHTk7KUMsYqkCmoCKYDOQn2JjjlDGYad8nB1UbcgqlsPnK+ZRxIkDwhxTp1MQMCfkMx5xzIg==
+X-Received: by 2002:a17:907:f816:b0:ae0:a88e:6f20 with SMTP id a640c23a62f3a-ae6cf5b81dcmr253307366b.15.1752061728625;
+        Wed, 09 Jul 2025 04:48:48 -0700 (PDT)
+Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6ac5feasm1091150266b.107.2025.07.09.04.48.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jul 2025 04:48:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250709-sm7635-pmxr2230-v2-5-09777dab0a95@fairphone.com>
-References: <20250709-sm7635-pmxr2230-v2-0-09777dab0a95@fairphone.com>
-In-Reply-To: <20250709-sm7635-pmxr2230-v2-0-09777dab0a95@fairphone.com>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Fenglin Wu <quic_fenglinw@quicinc.com>, 
- Stephen Boyd <sboyd@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752061604; l=2089;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=hC4XiUyCXvfKUfUdujggOXgHdLNV4lf1H8qLCscQ3Zg=;
- b=h+IOj2hBQ3I6W+a+vQJaatA2VbxLX/L6dXEb4kRe5+aHbi3nsUWGLE9ZKVDSnGLxp5qWzVFcG
- c3PpiaHPXufAZcvursiA5Rs+k8oJGNcZ1iri5Kab6VB9Dbrbl1zMCRE
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Jul 2025 13:48:48 +0200
+Message-Id: <DB7I1Q9TD02L.2A18QMRU7VXHD@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Taniya Das"
+ <quic_tdas@quicinc.com>, "Ajit Pandey" <quic_ajipan@quicinc.com>, "Imran
+ Shaik" <quic_imrashai@quicinc.com>
+Subject: Re: [PATCH v2 01/11] clk: qcom: common: Add support to register rcg
+ dfs in qcom_cc_really_probe
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Jagadeesh Kona" <quic_jkona@quicinc.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250704-sm7635-clocks-v2-0-9e47a7c0d47f@fairphone.com>
+ <20250704-sm7635-clocks-v2-1-9e47a7c0d47f@fairphone.com>
+ <64e27035-d124-470a-bc5b-66d254b6ff4f@quicinc.com>
+In-Reply-To: <64e27035-d124-470a-bc5b-66d254b6ff4f@quicinc.com>
 
-Add a dts for the PMIC used e.g. with Milos SoC-based devices.
+Hi Jagadeesh,
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/pm7550.dtsi | 67 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+On Tue Jul 8, 2025 at 7:34 AM CEST, Jagadeesh Kona wrote:
+>
+>
+> On 7/4/2025 12:46 PM, Luca Weiss wrote:
+>> Add support to register the rcg dfs in qcom_cc_really_probe(). This
+>> allows users to move the call from the probe function to static
+>> properties.
+>>=20
+>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> ---
+>>  drivers/clk/qcom/common.c | 8 ++++++++
+>>  drivers/clk/qcom/common.h | 2 ++
+>>  2 files changed, 10 insertions(+)
+>>=20
+>> diff --git a/drivers/clk/qcom/common.c b/drivers/clk/qcom/common.c
+>> index b3838d885db25f183979576e5c685c07dc6a7049..d53f290c6121f31d06cf244f=
+72603b694966e216 100644
+>> --- a/drivers/clk/qcom/common.c
+>> +++ b/drivers/clk/qcom/common.c
+>> @@ -390,6 +390,14 @@ int qcom_cc_really_probe(struct device *dev,
+>>  			goto put_rpm;
+>>  	}
+>> =20
+>> +	if (desc->dfs_rcgs && desc->num_dfs_rcgs) {
+>> +		ret =3D qcom_cc_register_rcg_dfs(regmap,
+>> +					       desc->dfs_rcgs,
+>> +					       desc->num_dfs_rcgs);
+>> +		if (ret)
+>> +			goto put_rpm;
+>> +	}
+>> +
+>>  	cc->rclks =3D rclks;
+>>  	cc->num_rclks =3D num_clks;
+>> =20
+>> diff --git a/drivers/clk/qcom/common.h b/drivers/clk/qcom/common.h
+>> index 0f4b2d40c65cf94de694226f63ca30f4181d0ce5..dbe7ebe5b8710fb03c1671ac=
+9022e608a6aad35f 100644
+>> --- a/drivers/clk/qcom/common.h
+>> +++ b/drivers/clk/qcom/common.h
+>> @@ -43,6 +43,8 @@ struct qcom_cc_desc {
+>>  	size_t num_gdscs;
+>>  	struct clk_hw **clk_hws;
+>>  	size_t num_clk_hws;
+>> +	const struct clk_rcg_dfs_data *dfs_rcgs;
+>> +	size_t num_dfs_rcgs;
+>
+> Since all other probe configurations are added in qcom_cc_driver_data str=
+uct, it is better to
+> add rcg dfs data also to qcom_cc_driver_data struct instead of qcom_cc_de=
+sc.
 
-diff --git a/arch/arm64/boot/dts/qcom/pm7550.dtsi b/arch/arm64/boot/dts/qcom/pm7550.dtsi
-new file mode 100644
-index 0000000000000000000000000000000000000000..b886c2397fe735edc92f2c3f307eb4d206961f11
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/pm7550.dtsi
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
-+ */
-+
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/spmi/spmi.h>
-+
-+/ {
-+	thermal-zones {
-+		pm7550_thermal: pm7550-thermal {
-+			polling-delay-passive = <100>;
-+
-+			thermal-sensors = <&pm7550_temp_alarm>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					/*
-+					 * Current Linux driver currently only supports up to
-+					 * 125°C, should be updated to 145°C once available.
-+					 */
-+					temperature = <125000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&spmi_bus {
-+	pm7550: pmic@1 {
-+		compatible = "qcom,pm7550", "qcom,spmi-pmic";
-+		reg = <0x1 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		pm7550_temp_alarm: temp-alarm@a00 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0xa00>;
-+			interrupts = <0x1 0xa 0x0 IRQ_TYPE_EDGE_BOTH>;
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		pm7550_gpios: gpio@8800 {
-+			compatible = "qcom,pm7550-gpio", "qcom,spmi-gpio";
-+			reg = <0x8800>;
-+			gpio-controller;
-+			gpio-ranges = <&pm7550_gpios 0 0 12>;
-+			#gpio-cells = <2>;
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		pm7550_flash: led-controller@ee00 {
-+			compatible = "qcom,pm7550-flash-led", "qcom,spmi-flash-led";
-+			reg = <0xee00>;
-+			status = "disabled";
-+		};
-+	};
-+};
+Dmitry suggested to use struct qcom_cc_desc:
+https://lore.kernel.org/linux-arm-msm/w4eujq72uqflqpsqshc7zhu6lkc7owufep2g2=
+rjacvzgj44vmf@auonp4ugbgow/
 
--- 
-2.50.0
+I personally don't have a preference.
+
+Regards
+Luca
+
+>
+> Thanks,
+> Jagadeesh
+>
+>>  	const struct qcom_icc_hws_data *icc_hws;
+>>  	size_t num_icc_hws;
+>>  	unsigned int icc_first_node_id;
+>>=20
 
