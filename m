@@ -1,145 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8DB2749D1;
-	Thu, 10 Jul 2025 20:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A81623FC74;
+	Thu, 10 Jul 2025 21:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752178918; cv=none; b=m57m45OIXx8PtuWFNIehK8tjyFjRJm42LDXhJX95lZMqsNqmr4fRZiA/mAy1bDBZG6nceohT0jNZf9c8YgATB4DX4NNxBpeBteWLGEyViZ21LswOhtqwHpzM5AZcqw8w3cd/+9NrZ7NTh3tFajRS/fQwfRAy+N27t79M+VTXGfI=
+	t=1752184064; cv=none; b=VHTiWNudTXMutfiYVPsi3VSBi1YgJ16tQHjOrKwtziJvqTWFrA2aVxOwIvFgDJ05X834lqW9FADWcfd8t+912SgMZf+qmR5Qsd0BWI6e/zwKnm3TQ3chBBsu7EID3PLPB2D/uoF/pl+Lhzxrf3CzOh7TuRqwg4mBI0jnyMv3uoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752178918; c=relaxed/simple;
-	bh=I/H9BnWKae5+EgQRia3ov8/49jcWJjRuFEhnoiWa0Jc=;
+	s=arc-20240116; t=1752184064; c=relaxed/simple;
+	bh=38qOBtAa0la59Awj3HuO+ZqZhYtdC8Mzp5gPefGF6ME=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cLH/W7EsCeXklYaIdN1H/L41wlFINJpHtez4FR8xDvcQzid3Cb5dpGZSUs4221v5UNnrp/SFVQ1djBp/F7SDR5YEo3iQpbV6MQ0yfl6bLgmM8hV2O+M+qwQjsfFJ9Z683JmhQD5ElfEq7Qx0Oo0MN8B4lx22pkp0EQFq4Sw5PrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTF/m2jZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=MQ0J+0JI/z/sT1Km//ZRW9GxpgTuQz4H5R7jSvVd0gspgO3F2n/1ry2lTB85vNgeps78zG/fUi5we6PjHRbgVqdaf0blJMAYqGi272+pxa1jl/RuLKapSnh6x0mXc841ABCPOAn58H5OuT4P7NUnEp7D66wI2iJFiWnywbfqFdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uwehugbX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTF/m2jZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADB5C4CEE3;
-	Thu, 10 Jul 2025 20:21:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uwehugbX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9E1C4CEE3;
+	Thu, 10 Jul 2025 21:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752178918;
-	bh=I/H9BnWKae5+EgQRia3ov8/49jcWJjRuFEhnoiWa0Jc=;
+	s=k20201202; t=1752184064;
+	bh=38qOBtAa0la59Awj3HuO+ZqZhYtdC8Mzp5gPefGF6ME=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hTF/m2jZLQEOu/55eqFOHpdTzqZ3hmyLzgZlM/2jdH2T+yBOAZ/3FLgs4XSh4Jbm6
-	 EbJm+YE6HP/0V0OCFyyFrch0U01vnjN2LP9k1THmvGDKtOx/B7SCcDEYcMiPG0BgQ+
-	 gm+OetqlRYPcK33LVX4klARbtSRfTqYDY+jmNN0giJycUZJq40Esr+DuzGD+wD1i+p
-	 TQ0ot+LL14MZSzv8HZZtcYic/eYtaSAVN48vmFjv/8MPinyf01HhYkTGD1XrsTI+0u
-	 vbvw9XbEk1vZzzKShgqUz9yyqz3KKa/JSPuHDfVsa7bEx7SS6e/XgF8QB2bdTnXCe3
-	 DpsHArr/mRIPg==
-Date: Thu, 10 Jul 2025 15:21:56 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: pinctrl: document the Milos Top
- Level Mode Multiplexer
-Message-ID: <hdocf4qsja3i5qlj3qzzgfyibgbwytlkmdoc4n4lvryilez5uf@7bwnbnav3bui>
-References: <20250702-sm7635-pinctrl-v2-0-c138624b9924@fairphone.com>
- <20250702-sm7635-pinctrl-v2-1-c138624b9924@fairphone.com>
- <20250703-daring-burgundy-limpet-a1c97e@krzk-bin>
- <DB293G0PC5P8.13IW22M6DDESM@fairphone.com>
- <a453bd90-b7c7-42eb-b769-b4c87b6dac12@oss.qualcomm.com>
- <424285fb-14a0-452b-8d18-6165d2a78497@kernel.org>
- <3d3g2sq4r7pruu4c2sl2itclx7xuja6inasaicm67t4sx6u5fl@xq5g7h4rabno>
- <20250708171515.GA640511-robh@kernel.org>
+	b=uwehugbXDOU6yJ5ZmM+oDgTJsB44iLXjZMhjebZn2xddJt8rnpRIHszIsQEgU6CO5
+	 86/hbFQAmaCMjmIRPMKOTcNyscxwT0rpRI9faF3yw1Pc7+GRxZnNdWUiSt5J5qe39n
+	 N73liM7IoJqgczI82biIgSsXVAsK5KY/zac972yLIhoqx6RUSVdztA9mCmglGHgzNm
+	 HmJ5A84zVDVfYJyzvNJR4Oe8wRKZKEnGIKjpWHoVS56hLcoaeYOlkUaRaEYixZLAxL
+	 5FuYl3cRMtMa1mfX+Ved0n1m9bbqctuHC7so72JUmMwmOy8CzXlVfwdxb6pDTuz6vW
+	 xt2tmM3KAL27A==
+Date: Thu, 10 Jul 2025 16:47:43 -0500
+From: Rob Herring <robh@kernel.org>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org, phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, soc@lists.linux.dev,
+	linux-mmc@vger.kernel.org
+Subject: Re: [PATCH v16 1/5] dt-bindings: mmc: sdhci-pxa: restrict pinctrl to
+ pxav1
+Message-ID: <20250710214743.GA4021364-robh@kernel.org>
+References: <20250708-pxa1908-lkml-v16-0-b4392c484180@dujemihanovic.xyz>
+ <20250708-pxa1908-lkml-v16-1-b4392c484180@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250708171515.GA640511-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250708-pxa1908-lkml-v16-1-b4392c484180@dujemihanovic.xyz>
 
-On Tue, Jul 08, 2025 at 12:15:15PM -0500, Rob Herring wrote:
-> On Thu, Jul 03, 2025 at 12:31:46PM -0500, Bjorn Andersson wrote:
-> > On Thu, Jul 03, 2025 at 01:26:11PM +0200, Krzysztof Kozlowski wrote:
-> > > On 03/07/2025 12:04, Konrad Dybcio wrote:
-> > > > 
-> > > > 
-> > > > On 03-Jul-25 09:44, Luca Weiss wrote:
-> > > >> On Thu Jul 3, 2025 at 9:41 AM CEST, Krzysztof Kozlowski wrote:
-> > > >>> On Wed, Jul 02, 2025 at 05:56:16PM +0200, Luca Weiss wrote:
-> > > >>>> Document the Top Level Mode Multiplexer on the Milos Platform.
-> > > >>>
-> > > >>> What is Milos platform? Does it have some sort of model number how we
-> > > >>> usually expect? Wasn't this SM7325 or similar?
-> > > >>>
-> > 
-> > Milos is the actual name of the SoC.
-> > 
-> > > >>> The problem with such new naming that it awfully sounds like family
-> > > >>> names, so just expand the name and explain it.
-> > > >>
-> > > >> Please go argue with Bjorn/Konrad about this, wasn't my idea.
-> > > >>
-> > > >> https://lore.kernel.org/linux-arm-msm/aGMI1Zv6D+K+vWZL@hu-bjorande-lv.qualcomm.com/
-> > > >> https://lore.kernel.org/linux-arm-msm/b98d305b-247f-415b-8675-50d073452feb@oss.qualcomm.com/
-> > > > 
-> > > > Milos is the "real-est" name of this silicon. All the associated
-> > > > S[AM]|QC[MS]s are just variations of it, with different fusing.
-> > > > 
-> > > > You'll stumble upon it across e.g. firmware build strings, as
-> > > > well as in any documentation pieces.
-> > > > 
-> > > > There are various internal reasons for the switch, but the most
-> > > > obvious external-facing one is not to have the user buy a devkit
-> > > > and wonder whether they should use QCS9100 or QCS9075 DTB, and
-> > > > why there's zero drivers code for these magic numbers (they
-> > > > include SA8775P). We can simply point them to "codename" and
-> > > > all C code will refer to it as well.
-> > > 
-> > > These are different SoCs, optionally with different firmware, so they
-> > > cannot use the same top-level compatible chain. I hope you did not
-> > > propose that.
-> > > 
-> > 
-> > No they are not different SoCs, and that's the problem with the current
-> > naming scheme.
-> > 
-> > > For me list like "qcs9100, sa8775p" is clear enough, but if you want
-> > > "qcs9100, koala-bear" or "brown-bear, koala-bear" it is fine as well.
-> > > You just cannot use koala-bear for all of them.
-> > > 
-> > 
-> > It looks "clear enough", but it's wrong. The problem is that sa8775p,
-> > qca9100, and qcs9075 are the "same" hardware and firmware.
-> > 
-> > The difference between sa8775p and qcs9100 is the reserved-memory map,
-> > the difference between qcs9100 and qcs9075 is one IP block being status
-> > = "okay" vs "disabled", due to fuses.
-> > 
-> > It's exactly the same problem we first saw in QRB5165, but we let the
-> > problem explode. Now we use the names sc7280, sm7325, qcm6490, and
-> > qcs6490 for the same SoC.
-> > 
-> > Using the SoC's actual name here will remove the need for playing games
-> > with DT includes etc to try to map things to the current naming scheme.
-> > 
-> > 
-> > The one case that isn't being taking care of such naming is when there
-> > are differences in the firmware. But as can be seen in the "sc7280"
-> > familiy, those software differences doesn't align with the chosen names.
-> > And even within a given SoC, with a (overall) given firmware, the
-> > reserved-memory map ends up differing.
-> > 
-> > 
-> > So, the name of the SoC in this patch is "Milos". We already have ways
-> > of dealing with firmware and/or hardware variations within one SoC, we
-> > should use them (and refine them as necessary), rather than pretending
-> > that something like SM7325 will define those properties.
+On Tue, Jul 08, 2025 at 07:09:46PM +0200, Duje Mihanović wrote:
+> The current pinctrl properties apply only to the pxav1 controller.
+> Adding one default pinctrl node to a pxav3 controller therefore causes
+> a schema warning.
 > 
-> I for one prefer 1 compatible per die. We often don't know if that's 
-> the case, but in this case we do so let's take advantage of it. 
+> Check the existing properties only on pxav1. pxav2 and pxav3 may add
+> their own set of pinctrl properties if and when needed.
 > 
+> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+> ---
+> Changes in v16:
+> - New patch
+> ---
+>  .../devicetree/bindings/mmc/sdhci-pxa.yaml         | 36 ++++++++++++----------
+>  1 file changed, 20 insertions(+), 16 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml b/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
+> index 4869ddef36fd89265a1bfe96bb9663b553ac5084..e7c06032048a3a73eb3eb67a887e75db273ffa92 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
+> @@ -30,6 +30,26 @@ allOf:
+>            maxItems: 1
+>          reg-names:
+>            maxItems: 1
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: mrvl,pxav1-mmc
+> +    then:
+> +      properties:
+> +        pinctrl-names:
+> +          description:
+> +            Optional for supporting PXA168 SDIO IRQ errata to switch CMD pin between
+> +            SDIO CMD and GPIO mode.
+> +          items:
+> +            - const: default
+> +            - const: state_cmd_gpio
+> +        pinctrl-0:
+> +          description:
+> +            Should contain default pinctrl.
+> +        pinctrl-1:
+> +          description:
+> +            Should switch CMD pin to GPIO mode as a high output.
+>  
+>  properties:
+>    compatible:
+> @@ -62,22 +82,6 @@ properties:
+>        - const: io
+>        - const: core
+>  
+> -  pinctrl-names:
+> -    description:
+> -      Optional for supporting PXA168 SDIO IRQ errata to switch CMD pin between
+> -      SDIO CMD and GPIO mode.
 
-I like this definition, and to the best of my knowledge these are all
-examples of "it's the same die".
+       minItems: 1
 
-Regards,
-Bjorn
+Won't adding this 1 line here solve your whole problem?
+
+> -    items:
+> -      - const: default
+> -      - const: state_cmd_gpio
+> -
+> -  pinctrl-0:
+> -    description:
+> -      Should contain default pinctrl.
+> -
+> -  pinctrl-1:
+> -    description:
+> -      Should switch CMD pin to GPIO mode as a high output.
+> -
+>    mrvl,clk-delay-cycles:
+>      description: Specify a number of cycles to delay for tuning.
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> 
+> -- 
+> 2.50.0
+> 
