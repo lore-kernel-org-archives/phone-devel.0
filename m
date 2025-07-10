@@ -1,172 +1,186 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-qt1-f195.google.com (mail-qt1-f195.google.com [209.85.160.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65DE26B2A9
-	for <phone-devel@vger.kernel.org>; Thu, 10 Jul 2025 14:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D531E2EF9CD
+	for <phone-devel@vger.kernel.org>; Thu, 10 Jul 2025 16:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752156577; cv=none; b=hULgnh3xbJqIl4x/s6m8SDK9YK+qlNGjQ0Z2ydLNEKfDjhC3uixMjSEIZA3Ss4tMK2hiYSRwgMcfVBkoOsPUbiSEXpZsbimX9yCf19ttvY0PNGDHo/m71kG9F9/9piC0lZXz3+SwvZ6bkqs6C9BUTzKBszO7KfQBpqvAgCdUq5c=
+	t=1752163274; cv=none; b=EVtQCvjXSIzB3LtPievf6kq0H2qHsZBJYyqJqBpTHJC+QuGs+7vhIxMEjGrsGW0jwnrzIeXJXQ7p+e9St30+uoGXDaTv4Duj1pV93Wc1oYy4cI3BX/7w0jEYwiu9arjsb0CetBGjOq4Aj0jXH5lMrCf8OvRpQcSrAwTNScIu0d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752156577; c=relaxed/simple;
-	bh=2grR0mUlBz4k8clT2FNGCooSxKt52UcD68qKVQhldjU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=WApoUtI/joqJQE2/HSwkYpjvhGAN9elEJ2N1qqYyUweJ1Z23fbO9MJ5tQ+4iUMj23Pt/tBPUYzO8LhfnjOSnQmucKW2wMK6uhaT831DgVT7eYpLyPR6vHnRf8NhvOI1h9AGhIkeytq0qWMO/OFsmkpaZ6CAfbGP7owyhCOacdQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=qGEM3rnm; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1752163274; c=relaxed/simple;
+	bh=Yla3vwbjPx7zCNlMAs2BigvE7j7ziHcSYEcAkfhAQT8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T+QaXdtMzAOICMq7WFUshLT6jejK4FkhPA+CHT6nXgB6bKipWYE+QuP747ONtzhKgY+eIlglFD3g1odR63WUPLIkoz4P/Z14pCKT8RUR/jH0DakVzXUwENXscYByGF0yageMHF0uQ64GWVmF3kAEuVr4RPEyEipMXQ6owkJsT/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=zN6rUgEI; arc=none smtp.client-ip=209.85.160.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="qGEM3rnm"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so1617345a12.2
-        for <phone-devel@vger.kernel.org>; Thu, 10 Jul 2025 07:09:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="zN6rUgEI"
+Received: by mail-qt1-f195.google.com with SMTP id d75a77b69052e-4a585dc5f4aso14033301cf.2
+        for <phone-devel@vger.kernel.org>; Thu, 10 Jul 2025 09:01:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752156574; x=1752761374; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zQoCinxRRh/iq3oTutQRdNZV03mKs3O7qPm/FmODtXA=;
-        b=qGEM3rnmr3pYHyOtGRuhTp+UiuEvuktsPR41C3pDeprlC0oHjAZZtLmyjV7TcYcakX
-         4F9N06Nyvhda2jVoGPtTdnMONwslv2BKVfO1LKmO8Pft7aFWt7rEavG3wcACeF8BU3cE
-         7kAOBMPD2mlkUO2+hRpAzm1jcUl7PsUDT2iXGiW3wzIAOxTZrOEEpCrRIlvjVRekJAGU
-         yndxMBpd8OjlGh8ll22Trmrk0sO+m0kSsshMRHF8ZcfUP2PD6by86ndQSnXCLvsezilU
-         HX4TmFF6IGRRE4yBFXBtOgAzARBY8hGTQmEpAi80FjYxkLEJVyuDC1IWrMul+9iw0qA9
-         WBVw==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1752163272; x=1752768072; darn=vger.kernel.org;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=h2JvzJqEFY8FcNSNGs4AC4X799LbBQx2h7PFI9T2cfQ=;
+        b=zN6rUgEImTitTNkoQe4vqOu5RL8ve5vQnNHL4OXk00/jOT2rYtEZPstfmKm+4AwUWB
+         RVozOzkKCYRmmP7vPvT3tp0OwkVOblF1SYp7chtEKcfZcKhlmfr8xFKBU7NqzRWUHazB
+         BvujR0c1WXa7HsjeHAjyv509UGFhEamq0xvPtf0wzvvlOqhlh73eBenBrwaWohyaLtp0
+         XhxTdYOoXCrxZFGf5l9vpiOYpLMLth4eXRVctf8hFmPQ+qX9pCULte930+Muc102q3gH
+         Hz4KHbY95TTn0yXYKAaPycRZIMjZJLfJrU2faCgPVxCRRYPdbagfYydiMLFiYFqxVNK3
+         BjYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752156574; x=1752761374;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zQoCinxRRh/iq3oTutQRdNZV03mKs3O7qPm/FmODtXA=;
-        b=oQkMZ6eCc66AR5d758FTiqEUI3fBamfYofAn2zB2vVV0G0Jq9QR5g74y63M327/bY9
-         0KOvhchFr6C/ClaM1PNYH+FarU27eXtJEhOBwBHCCTismtJAtKjH2+bI6vkWpByU1bAq
-         JhKyiI7/HIoE1yaV2EaE9AS1LM2uN9lutKquX9K6bOqGLFHP2jDS265xEv+sfrqVQw8C
-         popEMeRhvQWpPqjyo4JhgYHoMgi+kzN3/rtW5IeObEAWqhksUg7+b3KJVhTq3wnFYpOM
-         O3Plp+J22TnZ2VOkXITLO+H4p4tIHS0mGiXWCmbmfkYhlos40X5FrgPCJwSuWTOyvcN8
-         R9dw==
-X-Forwarded-Encrypted: i=1; AJvYcCVE7edd3Qiw40LPNduEqE6AIHXiasJqqka+5QS1T8YjxAHMWpp6WiPvFMQwjST9ZXZoXpEoc7ATaCVd9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx2lrCKsJeVRBqYwQb/dyjV0/AuGxP37aB5Lnrn8X5+mjVdS6x
-	o8p8cfgx7ZEa+kTqh0yehjTlqzHDbX0EMvsuFGPGqZHmE0mkDspZtu3zzc5p0/iccNw=
-X-Gm-Gg: ASbGnctWVFzTVga6amKtKbEydjz12WaStfxYI2Dy3Y96nEMbJvB+ek8dGK4vD1ya+LR
-	m5Uvb1Og+FESoFK0C2M6STwP3bXFqQF1fcmjjtah2XX/5geFNpzWCqJK2swNZl95siBzGScemSQ
-	OPHcS2VvlYzgtcN4jO+dXmn4zhvwK2L0uVCIXBWrR/+oz1WDJn8JwsJqr59yHZTyRk6wDY7L7d3
-	K+tTedjHuWFgy/Up5wIuaDbrkpII/TedTZGeShK8oVgBY10AYtDqvrN6LTC/YuH5+/dH2v08YU6
-	6ijArjd7ITBDFkjwP8EGtxZF7h+2oROLDGwpSPVj3zgCHOX56JpLvezAU6Sg06Jja8VI3O04rd8
-	h3jRrdJmocJA48wghyjhITfPVWTESdOk=
-X-Google-Smtp-Source: AGHT+IG8YxUCUZJeWu7C8W4J27oyXKY2dGnFXQnEMhNeARIfZps63JGs0OVwIsREQQAKXy3KL4OREw==
-X-Received: by 2002:a17:906:9fce:b0:ae0:b49d:9cd with SMTP id a640c23a62f3a-ae6e70fee29mr278269666b.58.1752156573823;
-        Thu, 10 Jul 2025 07:09:33 -0700 (PDT)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e910e8sm140856366b.36.2025.07.10.07.09.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Jul 2025 07:09:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752163272; x=1752768072;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:to
+         :from:subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h2JvzJqEFY8FcNSNGs4AC4X799LbBQx2h7PFI9T2cfQ=;
+        b=Xwmx19RNB7OmKbtyvWt7bGIuu+tMupT1dNdbgcZdAl5vF3a7kpbOUPqRS9RoNLlewq
+         cB28JfV0fhz0l4IMZLAlmbluJ/XkcDxlJCG4uhaubvHq+pRmeDT4l/5KJv2XcQlOmFYR
+         l9m0KYRC5mJN/jWn8mDyeUTx/dnu+V48lDlO7hRhIXfyXqAv35tgd+cv3XAeeyNPpoUW
+         dRVbSNtGJBn1AqoqwlWlU/5w1TDOU6ZkkRQw7jvPF6X2U28rwMNbkO5YdRDvihM0piHO
+         qTe0MMiWEW3ki6AOh4+D2Jdmh4CIh6YLZ0cX6dX/fa9/mUWeW3jmAJ67pvZ65Eq3Rt0K
+         EQIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXR7ScD3tkweOSFPekPCEZzZBCH+Uw4dQFVv/KOOZ+8Iv0gflpCTQIyEX+uw5iQEDb0F3YXWBgJAFugTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvvgxmAj9oi7eZfv7q9zkQuYrlcBCVNL/32B1LAIGw/BKkboKI
+	50sT+q+pHYzyksf6lbtXF4rd1BwSnrGfEx93BPLghxtYA1G2Cb0FR8WA452oCzn158M=
+X-Gm-Gg: ASbGncvH9Vd7avWboldSaqKUlVZv5nsfAkbeJ+DUXF9hZcykoirwxgHUeSnZuOUPafQ
+	b3stwPcCjp/OLSfQNVzfqcqpE0jQoUSOXgVr5xpEzGi8em2VqWJylc8RFyUo7dk3pDNl1KSMFVx
+	flvn9Wkouoe84EXQHaVvbcAc5HPp9AaKozDjBd4qZEm4HsZSVk9P7yFP6SkooKls2nJ9Lq95njy
+	T3cb3Yl+1nm8FrP7OU+KlgWY+issFxI9Zi7B4Hn/g15MUiJFGSvL71/rqY/90v1LV5KJg/2iTqR
+	3jvCSrKWrH5W31Q4pBQaeQ+k8EHi+SxCOkONs97jEG2gC35EorqlelXzt2EUzhPjVEc=
+X-Google-Smtp-Source: AGHT+IFbQFapyLU2kvG8JwQQkxoFge/HX+KIphHVjcEQzpniLu173HdtuK79yftQGxLEwpJMC++ZBw==
+X-Received: by 2002:a05:622a:8cc:b0:4a4:30a0:39c0 with SMTP id d75a77b69052e-4a9f80b0c22mr23008391cf.28.1752163271437;
+        Thu, 10 Jul 2025 09:01:11 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:17:b699::5ac? ([2606:6d00:17:b699::5ac])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a9edefb55asm10028431cf.77.2025.07.10.09.01.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 09:01:09 -0700 (PDT)
+Message-ID: <775b0f527f365fa4217a5d9acfbb80e4f87078ef.camel@ndufresne.ca>
+Subject: Re: DMA-BUFs always uncached on arm64, causing poor camera
+ performance on Librem 5
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Pavel Machek <pavel@ucw.cz>, kraxel@redhat.com,
+ vivek.kasireddy@intel.com, 	dri-devel@lists.freedesktop.org,
+ sumit.semwal@linaro.org, 	benjamin.gaignard@collabora.com,
+ Brian.Starkey@arm.com, jstultz@google.com, 	tjmercier@google.com,
+ linux-media@vger.kernel.org, 	linaro-mm-sig@lists.linaro.org, kernel list
+ <linux-kernel@vger.kernel.org>, 	laurent.pinchart@ideasonboard.com,
+ l.stach@pengutronix.de, 	linux+etnaviv@armlinux.org.uk,
+ christian.gmeiner@gmail.com, 	etnaviv@lists.freedesktop.org,
+ phone-devel@vger.kernel.org
+Date: Thu, 10 Jul 2025 12:01:07 -0400
+In-Reply-To: <aG94uNDrL1MdHJPM@duo.ucw.cz>
+References: <aG94uNDrL1MdHJPM@duo.ucw.cz>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0MU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAY29sbGFib3JhLmNvbT6ImQQTFg
+ oAQQIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgBYhBO8NUoEVxMPCGgRvEtlBlFEpYHL0BQJ
+ oLLLGBQkJZfd1AAoJENlBlFEpYHL0BEkA/3qkWYt99myYFSmTJUF8UB/7OroEm3vr1HRqXeQe9Qp2
+ AP0bsoAe6KjEPa/pJfuJ2khrOPPHxvyt/PBNbI5BYcIABLQnTmljb2xhcyBEdWZyZXNuZSA8bmljb
+ 2xhc0BuZHVmcmVzbmUuY2E+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQ
+ TvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyy+AUJCWX3dQAKCRDZQZRRKWBy9FJ5AQCNy8SX8DpHbLa
+ cy58vgDwyIpB89mok9eWGGejY9mqpRwEAhHzs+/n5xlVlM3bqy1yHnAzJqVwqBE1D0jG0a9V6VQI=
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-Nzv40WcQzqiJQr2kcTPI"
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+
+
+--=-Nzv40WcQzqiJQr2kcTPI
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 16:09:33 +0200
-Message-Id: <DB8FO1H0LHQ0.2JBDBVE8JFJVC@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Wesley Cheng" <quic_wcheng@quicinc.com>, "Vinod Koul" <vkoul@kernel.org>,
- "Kishon Vijay Abraham I" <kishon@kernel.org>, "Abel Vesa"
- <abel.vesa@linaro.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-phy@lists.infradead.org>, "Neil Armstrong"
- <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2 4/4] phy: qcom: phy-qcom-snps-eusb2: Add extra
- register write for Milos
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250709-sm7635-eusb-phy-v2-0-4790eeee7ae0@fairphone.com>
- <20250709-sm7635-eusb-phy-v2-4-4790eeee7ae0@fairphone.com>
- <7d073433-f254-4d75-a68b-d184f900294a@oss.qualcomm.com>
- <DB8DGDEN23D2.1GFB8XI0P3YLR@fairphone.com>
- <a2567891-1dd4-44ff-9853-6f9a451f0a74@oss.qualcomm.com>
-In-Reply-To: <a2567891-1dd4-44ff-9853-6f9a451f0a74@oss.qualcomm.com>
 
-On Thu Jul 10, 2025 at 2:29 PM CEST, Konrad Dybcio wrote:
-> On 7/10/25 2:25 PM, Luca Weiss wrote:
->> On Thu Jul 10, 2025 at 2:10 PM CEST, Konrad Dybcio wrote:
->>> On 7/9/25 11:18 AM, Luca Weiss wrote:
->>>> As per the downstream devicetree for Milos, add a register write for
->>>> QCOM_USB_PHY_CFG_CTRL_1 as per the "eUSB2 HPG version 1.0.2 update".
->>>>
->>>> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
->>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>> ---
->>>> The downstream driver supports an arbitrary extra init sequence via
->>>> qcom,param-override-seq.
->>>>
->>>> volcano-usb.dtsi has the following which is implemented in this patch:
->>>>
->>>>     /* eUSB2 HPG version 1.0.2 update */
->>>>     qcom,param-override-seq =3D
->>>>             <0x00 0x58>;
->>>> ---
->>>>  drivers/phy/phy-snps-eusb2.c | 6 ++++++
->>>>  1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2=
-.c
->>>> index e232b8b4d29100b8fee9e913e2124788af09f2aa..87fc086424ba4d9fb3ce87=
-0aa7f7971a51d4a567 100644
->>>> --- a/drivers/phy/phy-snps-eusb2.c
->>>> +++ b/drivers/phy/phy-snps-eusb2.c
->>>> @@ -420,6 +420,12 @@ static int qcom_snps_eusb2_hsphy_init(struct phy =
-*p)
->>>>  	/* set default parameters */
->>>>  	qcom_eusb2_default_parameters(phy);
->>>> =20
->>>> +	if (of_device_is_compatible(p->dev.of_node, "qcom,milos-snps-eusb2-p=
-hy")) {
->>>> +		/* eUSB2 HPG version 1.0.2 update */
->>>> +		writel_relaxed(0x0, phy->base + QCOM_USB_PHY_CFG_CTRL_1);
->>>> +		readl_relaxed(phy->base + QCOM_USB_PHY_CFG_CTRL_1);
->>>
->>> Said HPG asks to clear bits [7:1] on all targets
->>=20
->> Okay, so make this unconditional and only update those bits instead of
->> writing the full register?
->
-> Yes
->
->>=20
->> Keep the write at this location, or move the code somewhere else in the
->> function?
-> Let's simply do this instead:
->
-> diff --git a/drivers/phy/phy-snps-eusb2.c b/drivers/phy/phy-snps-eusb2.c
-> index 87f323e758d6..6c44d0366f34 100644
-> --- a/drivers/phy/phy-snps-eusb2.c
-> +++ b/drivers/phy/phy-snps-eusb2.c
-> @@ -392,7 +392,7 @@ static int qcom_snps_eusb2_hsphy_init(struct phy *p)
-> =20
->         snps_eusb2_hsphy_write_mask(phy->base, QCOM_USB_PHY_CFG_CTRL_1,
->                                     PHY_CFG_PLL_CPBIAS_CNTRL_MASK,
-> -                                   FIELD_PREP(PHY_CFG_PLL_CPBIAS_CNTRL_M=
-ASK, 0x1));
-> +                                   FIELD_PREP(PHY_CFG_PLL_CPBIAS_CNTRL_M=
-ASK, 0x0));
-> =20
->         snps_eusb2_hsphy_write_mask(phy->base, QCOM_USB_PHY_CFG_CTRL_4,
->                                     PHY_CFG_PLL_INT_CNTRL_MASK
+Hi Pavel,
 
-Sounds reasonable, if the HPG suggests that...
+Le jeudi 10 juillet 2025 =C3=A0 10:24 +0200, Pavel Machek a =C3=A9crit=C2=
+=A0:
+> Hi!
+>=20
+> It seems that DMA-BUFs are always uncached on arm64... which is a
+> problem.
+>=20
+> I'm trying to get useful camera support on Librem 5, and that includes
+> recording vidos (and taking photos).
+>=20
+> memcpy() from normal memory is about 2msec/1MB. Unfortunately, for
+> DMA-BUFs it is 20msec/1MB, and that basically means I can't easily do
+> 760p video recording. Plus, copying full-resolution photo buffer takes
+> more than 200msec!
+>=20
+> There's possibility to do some processing on GPU, and its implemented her=
+e:
+>=20
+> https://gitlab.com/tui/tui/-/tree/master/icam?ref_type=3Dheads
+>=20
+> but that hits the same problem in the end -- data is in DMA-BUF,
+> uncached, and takes way too long to copy out.
+>=20
+> And that's ... wrong. DMA ended seconds ago, complete cache flush
+> would be way cheaper than copying single frame out, and I still have
+> to deal with uncached frames.
+>=20
+> So I have two questions:
+>=20
+> 1) Is my analysis correct that, no matter how I get frame from v4l and
+> process it on GPU, I'll have to copy it from uncached memory in the
+> end?
+>=20
+> 2) Does anyone have patches / ideas / roadmap how to solve that? It
+> makes GPU unusable for computing, and camera basically unusable for
+> video.
 
-Just asking myself why this wasn't updated in the driver but only added
-via the qcom,param-override-seq for some SoCs. But downstream is still
-downstream I guess.
+If CPU access is strictly required for your use case, the way forward is to
+implement=C2=A0V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINT in the capture driver.=
+ Very
+little drivers enable that.
 
-Regards
-Luca
+Once your driver have that capability, you will be able to set
+V4L2_MEMORY_FLAG_NON_COHERENT while doing REQBUFS or CREATE_BUFS ioctl. Tha=
+t
+gives you allocation with CPU cache working, but you'll get the invalidatio=
+n (or
+flush) overhead by default. When capture data have not been read by CPU, yo=
+u can
+always queue it back with the V4L2_BUF_FLAG_NO_CACHE_INVALIDATE. But for yo=
+ur
+use case, it seems that you want the invalidation to take place, otherwise =
+your
+software will endup reading old cache data instead of the next frame data.
 
->
->
-> Konrad
+Please note that the integration in the DMABuf SYNC ioctl was missing for a
+while, so make sure you have recent enough kernel or get ready for backport=
+s.
+The feature itself was commonly used with CPU only access, notably on Chrom=
+eOS
+using libyuv. No DMABuf was involved initially.
 
+regards,
+
+Nicolas
+
+[0] https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/vidioc-r=
+eqbufs.html#v4l2-buf-cap-supports-mmap-cache-hints
+
+>=20
+> Best regards,
+> 								Pavel
+
+--=-Nzv40WcQzqiJQr2kcTPI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaG/jwwAKCRDZQZRRKWBy
+9BRcAP404riqHZv877jAk3LeonpmR8YSE9c6bNWGPspAtHTMNAEAzVw7ScK+PCWl
+1/uUbQsGbqWd6r5mH47vDOU14pKwSQM=
+=wFFh
+-----END PGP SIGNATURE-----
+
+--=-Nzv40WcQzqiJQr2kcTPI--
