@@ -1,152 +1,121 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCF91DF268
-	for <phone-devel@vger.kernel.org>; Fri, 11 Jul 2025 07:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CFE1EB5E1
+	for <phone-devel@vger.kernel.org>; Fri, 11 Jul 2025 07:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752218170; cv=none; b=Hrsu5gufPkKtl57E33GwzJJRmdO7FUdMum3lWg8mv2NfPWDH5frRwTCtOmgpwmPlwf3Sh/IaT1LGCIYZZBJyqYzO2tHdm9JqWeyI2fttrzdhum6ox2LA33xQOgarhN39g501tYW6BILcLkwDvZ46v8asULrHOeWKc/IOvtgiBRI=
+	t=1752218932; cv=none; b=Sc1pu3cGAYl2m8LtvHuzfpxkgR3NLzrHiwruF+ppFF5qBKdo3DdPkxlcSrHMUNgNOMmychxvAvQYxLBlsNh/y1NzP6//Ljj82iAu3EXohODQ5r6X96Zs0ulqOaxNFyf0B31HXSSStzFr3yZaZ3+t6pyzvJzA7BHGOBrPKdg+/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752218170; c=relaxed/simple;
-	bh=mQN9mdk1zfE/Tq5fh19Uc5eXfQWbs21bpIrv8ogxK2Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=Y3hX9V5/E8nV6JHfjFqtwRsbTHV/cgwyhDNL3GMTjEEXuCOEFje6mQv76bqmhrwoH+zAlG7WxgR+cc2gDN6v/RoCBG8ffrzJN/MZTcF6tOUQc0no6h9O4JynsgsAw63/LLLs8hF0rC+livL4cWGMLG4u/SpGJFyUdrf84d2DHEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=MqndLE7P; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1752218932; c=relaxed/simple;
+	bh=5OC6pNsGYReu9joXH5h7Rf/JTtrwn+xwy7Hj9WpXny0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=diWza/qPHvJaBe/cpJ7dxTm0yKmxiDsQgCTtXDkZKVoGuG2SZrmMP+5g3Lh3TsUOr17rHVeWkB2aTrrgnD5Zr30+Q4ROd5F7KwfKEABuxiW95A937buuo2QqJKQW1uVh6Zkw0Gn2FxKR4kJRKb/KVzOgZzeHepWyDzzydezOvGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Eqbr0wAD; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="MqndLE7P"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae3703c2a8bso338793066b.0
-        for <phone-devel@vger.kernel.org>; Fri, 11 Jul 2025 00:16:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Eqbr0wAD"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae0df6f5758so323110666b.0
+        for <phone-devel@vger.kernel.org>; Fri, 11 Jul 2025 00:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752218166; x=1752822966; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mQN9mdk1zfE/Tq5fh19Uc5eXfQWbs21bpIrv8ogxK2Q=;
-        b=MqndLE7PKl9zzR0Rw+yxuQH9xRgcSWHu0Bj/CMeSKIjfBBTkvDDEWfrDTCXfLmOjtC
-         q928gjsdLd/k7BCARcEk4yd1Tx6yE2kLDq7Oo6ODDP80dxuPNrd5nCr3XygIoTHlGVZF
-         mQscZFbdEkjC7CwkiL/cwpZaKK5sBIlC/likUE+IbptK5En51OoQIkrh9Bn4U/adORgu
-         G/seUWpX++2qDiK662J4vh/SNklqxQ4LqQ4NLELTX5xmZ/38C+QBhh0PYpKwN0/7oOtp
-         Vz4kp0Yg4N7QmOQIuU5jpE96/2cS6s6fwfQg5flmgzZUSXHjj6JfEzpga36hd1qZdYLY
-         uOdw==
+        d=fairphone.com; s=fair; t=1752218929; x=1752823729; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=g5Djg5nQME5vYcmqvKhQyglqok2nNFSKPkcFvGfQlWU=;
+        b=Eqbr0wADPS+ux4wCPZ/91HAiOBohYE8E0LO8kfZwj6GY2NaqOE37zHke2Gte/8OeXd
+         dBwVAkA2KxAYQchsGQ0WKgESwI04Odl0gOnvuD5KIILXRR1g+gX1EiEGh541nTTJ/VCG
+         hFoguoF2iV255yUTc8HqzabVOc/jFDrb0OP3nBNNV5F8378ZX5BAw4hG/3WIxVS1ELXm
+         Ff0mSV7mujU/QZfRjK2AS2gpA6+PfqEFRDd2eYbnGMV4GJhOwPwKF/3sijdB6To/kG0o
+         4GQgagXkZe5tt+KcW1IyZSIwvu1j/TFpNPpwT9fuiwi2NOOVbT37u+KqaAG+KPPt5dDU
+         dcPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752218166; x=1752822966;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mQN9mdk1zfE/Tq5fh19Uc5eXfQWbs21bpIrv8ogxK2Q=;
-        b=TSc2vFy0ixd9gfza0wpsG4RA89zHhq/wqyoaYcCOkrGKtVRtf0zwanK4w338x0nJMm
-         QHZjCcKBSDrx6iRcJwn4f8ypKSrZ/Ci883AQ9SCkRb6PkyP6aYaZwWLcMd67u/e6zfzB
-         GC2LljRO6X4BlXojT52rlYuKLv53qrLN8xsNUn7jYP1+1RHK7OVxGXQLraJSbiOoVX9Y
-         DO9e8cVZeUd/gp+q7rsENICKIUxGiugOqqQhMc91bUjRaAcf+lKe/3w/ozyBMiILW5Q3
-         upJN9pBzZWyl40mj8londH6vKxsVj7IQ4FPRF5gG1IjEOvMxfjFAiPLShQ36Bs6tVKzA
-         UJwA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnxtErr97eZ06BCpL/LZ9EM7qSCF3cYvfuqeWGAg+mijvKhlxLgSi7FZvy1wMZQDoh5/uuSKjwrdvfQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMqo/LUNisw/ImC7mY4tXRt6Lar5QDkf9Z8Cq/gfrHSTKAvruw
-	FKus1BjWxnZCr8BDTkWVjdrlUn1ZqwI5vVvY/BlNmnCj91A3Z2KRpw9UX3jwfBK2FvQ=
-X-Gm-Gg: ASbGncsDYPIDUZUjUNdQL17sbW3GjDQtkSN3+syBGFz1MV7kLUqmx6bbLTCqhkbIz57
-	a4sqTACKmBxsMVETMeWuBBTUpD93hr8mWug9gNzAIC4QdkjS4VJKbn4ZninfmWMBEJwaZQwE+2s
-	abs+lAHLZWniRT8bUZqc8vfI9efJuQzBAgi4K7P6/pHuhNZwGhnypkYdYoQ6NUKnkig5WKm+8lO
-	UzH/jouHmuObpfiVra3T8/eRQeSpzTjxOOITjJp69Ijiq9V8vCfTdGvOmmgcF8pZXO/hCeL6OQF
-	f0owrCKsXShrlyBWQEG0hUAvOwO0VI2mt/r8dvFyzmDzV1CewW4aZp/VPSXGHqkVBVCPMi36lTH
-	OvDSzTI0I69akkM5FUm7/TALqrAg2Pa90Amycal9EEdPhJ8MYNwX6ZAZYm8mxA2PzqjE=
-X-Google-Smtp-Source: AGHT+IH2FGswcnzP9yBEATuhQDfW/yRMBsxTqQVMW57GBq/sG29jWT8g0652cQbAb2QfRokBgo4ULg==
-X-Received: by 2002:a17:907:cd07:b0:ae3:64ec:5eb0 with SMTP id a640c23a62f3a-ae6fbc55069mr219024266b.11.1752218165525;
-        Fri, 11 Jul 2025 00:16:05 -0700 (PDT)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8264613sm254810266b.91.2025.07.11.00.16.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Jul 2025 00:16:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752218929; x=1752823729;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g5Djg5nQME5vYcmqvKhQyglqok2nNFSKPkcFvGfQlWU=;
+        b=Rig4sHlyFRHYA6nZi/UmDldjPPD7afSZyWBheyyyd2sWwA+mb8epTvoGIJF5+UyFVm
+         DW1nvB1OH8LGTjIeHalT6Lyoarczrl0cBXafkAAzJTyPvbJHRUCOCA16tMbjn2A7fC+7
+         M9ftiZHj1ya5cYJ9W9HAlznANbX1MHPJpp3VljwwOjLf98i4XOxpAy40TwKHw6GBDYfr
+         e19fLIRqOpGQ6yk/C7lIG6nbwtFkpEBihTs2U2rOaKmMYTmHCm8hpaslnU2BNh7K/zhK
+         QBvDVf0ovyiU/1NBVlcB1SRamdlRZSNgqk9qbfk1V2k6rXA6Y+nDhgIFK27kBCnB0JRO
+         YTJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUF79X4gSyCjVO3JSd07ffonDoxw7k2qiyHtyyHkoy+vKIAAoaFhq+Xgspo5jtXYmHaMdSDa2KpIzUlUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxntpW/cSBNE+qCe8fZkowfVP9P0L9mm8IJxLSEqvm5OYyNFPb3
+	Hsu8mk5hhwvb+udy3bOVufLRq+xirdWouZrRk1llafV1mjxRiuoRJGtOopbcvsRt3t8=
+X-Gm-Gg: ASbGncuKm2eUvrgHWNfkwMAQUFvtt1w3Enl5ZjKRmVNtyQxzfL3Q58HqVkbLvn52QAg
+	OnOKpdgmuZO2akqtL4+ZckAww4JbYdwfdif4UGKG+CljFNsEDbmcPusbmapvrLB2PdxuA8Kfo/7
+	JCpQoP1WyxtRVoYO8S0Sf9qHpYR4VQ9cctL7en/+5J5YUdZVjFLN4LtJ2IjlU7BsLmC718ZnBLa
+	+9TAHMwyBnaQXm4ZSO4lE8Bo+uZBbbfWtIaaz43YA1/3XpA+aSfTCB34+wz341HC/PBBgYw99wT
+	M9xqeaFSOmoJR/iBuTumsiG74pJAl2aOWBHDggJc/euTAh/OTfl3Kb95Juv3yhDedeecuVOUihU
+	7RNnty9NcUSxPZBSMybhL9t5xWfbOOJSHaRe4MYyEtyd0FbULu8vaVbF+Y3WzT6QhKuCY
+X-Google-Smtp-Source: AGHT+IESgHYrJC+OdzlgHSAzNOcP6fy4JRfSY2wbcPvJRMMY/vEnmKTinb85fT9gtTl2Ni2GigiZmA==
+X-Received: by 2002:a17:907:3d51:b0:ae0:d1f3:f7f4 with SMTP id a640c23a62f3a-ae6fbfa5a2fmr207016766b.13.1752218928862;
+        Fri, 11 Jul 2025 00:28:48 -0700 (PDT)
+Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e90c1dsm252600966b.4.2025.07.11.00.28.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 00:28:48 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v2 0/4] Add RPMh regulator support for PM7550 & PMR735B
+Date: Fri, 11 Jul 2025 09:28:38 +0200
+Message-Id: <20250711-pm7550-pmr735b-rpmh-regs-v2-0-bca8cc15c199@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Jul 2025 09:16:03 +0200
-Message-Id: <DB91HZVOWORI.32382ZPLWQMOS@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 4/4] regulator: qcom-rpmh: add support for pm7550
- regulators
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250625-pm7550-pmr735b-rpmh-regs-v1-0-cab8ef2e5c92@fairphone.com> <20250625-pm7550-pmr735b-rpmh-regs-v1-4-cab8ef2e5c92@fairphone.com> <bc27209a-e0f8-40bf-979f-3d747c501ae8@oss.qualcomm.com> <23ae6ddb-682a-4c4a-bd63-f0a1adb6f4f8@oss.qualcomm.com> <DB7I7D3P01FF.3T5WRSTJIWLVK@fairphone.com> <c1a48230-c4f5-4c04-a53a-449bd90b1fd8@oss.qualcomm.com> <DB8FM0YYS9UL.JP6OVNZAXWBP@fairphone.com> <c57e130c-38a7-491d-945c-7d5530d4fb46@oss.qualcomm.com>
-In-Reply-To: <c57e130c-38a7-491d-945c-7d5530d4fb46@oss.qualcomm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACe9cGgC/3WNzQqDMBCEX0X23C0xsv705HsUDzFdTQ6asCnSI
+ r57U6HHnoZvYL7ZIbF4TnArdhDefPJhzaAvBVhn1pnRPzKDVppUrSuMS0OkckhT0YgSF4fCc0J
+ Vq7ZhGivTdZDnUXjyr1N9HzI7n55B3ufTVn7bn5T+S7cSFVoztjxpJtvpfjJeogsrX21YYDiO4
+ wM9o3hXxAAAAA==
+X-Change-ID: 20250623-pm7550-pmr735b-rpmh-regs-06087e5b3a99
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752218928; l=1136;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=5OC6pNsGYReu9joXH5h7Rf/JTtrwn+xwy7Hj9WpXny0=;
+ b=Vh8dM9rS4cRJ4mw0SRv1GCJrTOGSf2g2lykF7iWN1GB14UZcrbdwfr4dbRRoizqR0VWLy31j+
+ 20lVoDCl+ltC0ieh5zYxgD77yrYkZLaMtIC6utCzZk7fPNhzx0maYV9
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On Thu Jul 10, 2025 at 6:08 PM CEST, Konrad Dybcio wrote:
-> On 7/10/25 4:06 PM, Luca Weiss wrote:
->> On Thu Jul 10, 2025 at 3:03 PM CEST, Konrad Dybcio wrote:
->>> On 7/9/25 1:56 PM, Luca Weiss wrote:
->>>> On Wed Jun 25, 2025 at 4:20 PM CEST, Konrad Dybcio wrote:
->>>>> On 6/25/25 4:10 PM, Konrad Dybcio wrote:
->>>>>> On 6/25/25 11:18 AM, Luca Weiss wrote:
->>>>>>> Add RPMH regulators exposed by Qualcomm Technologies, Inc. PM7550 P=
-MIC.
->>>>>>> It has 6 FTS525 (FT-SMPS) and 23 LDOs with 3 different types.
->>>>>>> L1-L11 are LDO515 LV NMOS, L12-L13 are LDO515 MV PMOS, L14-L23 are
->>>>>>> LDO512 MV PMOS.
->>>>>>>
->>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>>>> ---
->>>>>>
->>>>>> FWIW everything you said in the commit message is correct, but I'm n=
-ot
->>>>>> 100% sure how to map these LDO types to the existing definitions
->>>>>
->>>>> OK so found another page (also made sure that the supply maps are
->>>>> indeed OK)
->>>>>
->>>>> SMPS is OK
->>>>> L1-L11 is OK
->>>>> L14-23 is OK
->>>>>
->>>>> L12/13 -> pmic5_pldo515_mv
->>>>
->>>> Based on what are you saying that?
->>>>
->>>> Based on 80-62408-1 Rev. AG for the LDO515, the Output voltage range f=
-or
->>>> MV PMOS is "programmable range 1.504-3.544" which matches "pmic5_pldo"=
-.
->>>>
->>>> But yes, in the table next to it, it's saying 1.8-3.3V, which matches
->>>> "pmic5_pldo515_mv".
->>>>
->>>> If you're sure, I can update it but the datasheet is a bit confusing.
->>>> Let me know!
->>>
->>> I was looking at the same datasheet as you and took into account both
->>> the LDO type from e.g. Table 3-12 and the output ranges from Table 3-24
->>=20
->> But why, looking at table 3-24, is there a mismatch between that text
->> "programmable range 1.504-3.544" and the table on the right saying
->> min 1.8 and max 3.3V?
->>=20
->> Programmable range sounds more like what we'd want? No clue...
->
->>>> (3.544 - 1.504) * 1_000_000 / 8_000
-> 255.0
->
-> I would asssume there's an 8-bit register that holds the value,
-> hence the >>>programmable<<< range may be larger
+Document and add support for the regulators on PM7550 and PMR735B, which
+can be paired with the Milos SoC.
 
-Okay thanks, you've convinced me enough :)
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+- Update pm7550 ldo12/13 type to pmic5_pldo515_mv
+- Rebrand SM7635 to Milos as requested: https://lore.kernel.org/linux-arm-msm/aGMI1Zv6D+K+vWZL@hu-bjorande-lv.qualcomm.com/
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20250625-pm7550-pmr735b-rpmh-regs-v1-0-cab8ef2e5c92@fairphone.com
 
-Will send v2 shortly with this updated!
+---
+Luca Weiss (4):
+      regulator: dt-bindings: qcom,rpmh: Add PM7550 compatible
+      regulator: dt-bindings: qcom,rpmh: Add PMR735B compatible
+      regulator: qcom-rpmh: add support for pmr735b regulators
+      regulator: qcom-rpmh: add support for pm7550 regulators
 
-Regards
-Luca
+ .../bindings/regulator/qcom,rpmh-regulator.yaml    | 35 +++++++++++++
+ drivers/regulator/qcom-rpmh-regulator.c            | 58 ++++++++++++++++++++++
+ 2 files changed, 93 insertions(+)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250623-pm7550-pmr735b-rpmh-regs-06087e5b3a99
 
->
-> Konrad
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
