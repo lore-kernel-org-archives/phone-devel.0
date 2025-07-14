@@ -1,140 +1,132 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C84313B7A3;
-	Sun, 13 Jul 2025 20:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D04222574;
+	Mon, 14 Jul 2025 06:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752436809; cv=none; b=bVO4hie8bys+mmPCHxcZ9CmqpdU24toRC7rwocEFfLXsNjetJQrGo+wCy+SbmUlCtrCUbSjansHogG0Ld5UV4F2QrgVrGzv3i8jPI9Z9GyB5y2XIlHoLXn0z3SOuPnJT4y68Egk7OwLhr3uXMecV9eXZVY4EqHFgeCUq/Qz9LKE=
+	t=1752473593; cv=none; b=Nt/+GU5MnS8zaxSM8ywnGkMAKTq4dYnp+qSclkY87/qMpn+otLns/xyBoANR6rG88CxFe7U4xBXeBIUMQGLDcvCzJsV8QPvWcMNqqkNxz027n2Ybt4TCg3xDYEKkgCF67PzQLECLjYkMqH7AG1k8skVbRE+bkTjuNceelmwUkFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752436809; c=relaxed/simple;
-	bh=3tZEHSMIe2JuKkcs+CjA58WHtgn0PycC8PnAWd1rh4k=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=rxRfxVoSOuPoxyXjiKBGjQl/FK1RxdTgq5buDVzUadI3lPKl//fyR9dXrSN92XfYu5YrFXjGhlWWb5Qy5G3iW26iaBQXMDzAKgL29ITMYXCL9yExJkh7kedu8W69lMTrmw3yOrADzHK64NXw/B7a1VnLNu2gUiLtmnoHPunA4Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZYlOmJi; arc=none smtp.client-ip=209.85.167.41
+	s=arc-20240116; t=1752473593; c=relaxed/simple;
+	bh=K6rTZa+mjUsFCcLD5fAui8r+wQYrBXhnTQ2dLU8CeRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k/VDA0grBrMvshtcQ1hdjGI9Gd/6mVK5X/WdZjK9v5oFRhm/9D4Q4+6EsUjrlRSFWNSIIm54UWIpAa+0onJzeiXqZAXNeoaGT1nlZQKqwH6zkdscxH75WBDbmZdFY1aptYbO1oeVLHpCO2eRS8b0zwnIAlnea9endxOiKjMIvHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALsZpZ5N; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZYlOmJi"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-553be4d2fbfso4140630e87.0;
-        Sun, 13 Jul 2025 13:00:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALsZpZ5N"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-60c3aafae23so10396899a12.1;
+        Sun, 13 Jul 2025 23:13:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752436805; x=1753041605; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Zgas8aX6pTElhKIx/IRpo2TOQqTHn8xnxc+EnP268I=;
-        b=bZYlOmJi69V2IE5XQeb418Ywi8XzFmGopXow4rpHcPjFQrZt89VlV8Cw3aLULn8uXP
-         DKSlciqYuZj/4qCU9nvdoTKE+MdtrX8xnXkjP9zFk5o39l9IBvc+lbzA4n90pJHZV9Vt
-         GhBk0Pr4D7g8+Ta5LrSBOFjlC+f4/MWyyolOR74qL/8zMGxxgms8OfngVssX95oUATJ9
-         lPDTIsRXOoAdRxtnO+I1Pcqf1LelFjnOdGEXC1CeRgTnqrkKQmLZKD1q7bdU7smZ03pq
-         41X1e5AxNtDhcyaALUGKPBqT0egagxxpcP0NYzIxuC2jqWUN8IC+jcDLDjL9mr3dR4YB
-         CWVg==
+        d=gmail.com; s=20230601; t=1752473590; x=1753078390; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Vvozbmvdghn0xuJhVjwu4pQc8eFowQW5vD9wXdzvh2E=;
+        b=ALsZpZ5Nwk0QPl9HEVXg0BgXgV/0oGOnzEJeNal2xZfLiTqtprh8NIc+B9yAZo3Iyw
+         8RY7AeH/stuMCjEmmJBgcQNCDqXHEmAro34tjiskjt9cEYBFJwvbf7XgPG0ChQca3Fp1
+         5nyF2HY1O19gIFwAV0iPuQVzMwWmV1ELLeVifNIiilV/LbQuRNHTAQOYlfeEPsHCaDJn
+         I+6gq0/NE/ae8enM3WsoDcD1N04Zua/PHYgx6iL4E1d11pz3fYmMtOmCeSiojBnqO8U9
+         rgvjfmvMU3pd6JG0ooHR70qlHpOQvXaATLeJs8Rd2oeSPIjF28ACBmEUxwortIYxArWK
+         4Wlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752436805; x=1753041605;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Zgas8aX6pTElhKIx/IRpo2TOQqTHn8xnxc+EnP268I=;
-        b=tzi5Bve/q0p8KGlhwxo/k1eFe6IhwEKpZZ6SV4Kmep9ssYdtjOwKiKFOOFOIHwlvRv
-         Ykx6tR2KwpwkHfmHzEo1FGadpReb/sfD+MOjvPh0Y/0lV6Z+9Y3067Bj3PVtP9ZG7x8K
-         e8D7RKNfsJQ0W5UTy++CVXADPwdju4FVDpNJYvT93aUScYkpEZ0Uol8qMnHLKoDHX2/8
-         fYJJP2kzOFQKvvHdElgat3QCKLpkBuoDs+EQXYX1gj4NLKM0zdp6nfLDupyzk+8BCvEF
-         gp6YCqtKNoInXO5qHFz1787YCbAdOEG28Io0lKQ0h4eptCp0TE08zHsz3nSBU7WZRic6
-         fm2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUN4DCR//gECCV+Z2YdccG5Tsm5SYVC/ylsiFZ/1C3pLHRkjvwl7MlyyNwSwqsnh3/945WtMB7/dDrgsAM=@vger.kernel.org, AJvYcCUjRD/nq7peEhdYy4et7jwXVFE7eXNXxqev7O883f5g6hVpyGFVw+aDu7+ZdwA6Ro01rtnZKBQnJHj2bz8=@vger.kernel.org, AJvYcCUyggjf6i+JBPDNz54vygU5cRnusGusCoPuQnsZV5dMeV1fdhkByiRAqogFGCi4Kfixhs0ppZG4wslnhVw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL45CQk7GLduX06QVYFTOKl2/9teC8GA1oT7DatCFvuEznX3gf
-	NQdOsmBov8VcsLCrh8ZMJ7faUBQLTSYYAIP710j8LFYrfCeLkNiRxPtL4X7OhsUqjqU=
-X-Gm-Gg: ASbGncvJQyAPHAKOJc+/Y0dz7XQkyQmz3nyWbpz9s0Nf7jzPCB8m7ct5ydoPVoFY3Dr
-	4BAUTU9SsX0JiSbc6QuUgk2FPiVKWgkQ2LTmYrbBIgoCujiOHCQ/mpFY46076/69WoTs0KbuQbe
-	RpiFRuS1lB0/vGEaEdS6DGKg0MytdvflbuNzN2c4O8Vx1gSTAPIHBVNwzurz428FVZHveyTQtiF
-	2WxSgsMMBqEBvWDGFG6xLXLI+V1vq7JwcX8H3Hqohp6AshmBW5wOuhMeOldrdqU55th6n0SVaxS
-	tFpF8GyGqcStqHPDa60NHNBNZQChr0bWcb5NUymEtcOPrO69DjyAyBCgb4HFE8ScLq7JHSGwXgL
-	mLRkXV9+Syqmk4eICh20=
-X-Google-Smtp-Source: AGHT+IFxABxaGZ89qBgwZDV7CxOPxSBDB3o9rA665o+Vy3jYVVk1Wdz6wBebAWa65+qQwprfYTupWA==
-X-Received: by 2002:a05:6512:3b9e:b0:553:510d:f46b with SMTP id 2adb3069b0e04-55a046095e7mr2800438e87.32.1752436804901;
-        Sun, 13 Jul 2025 13:00:04 -0700 (PDT)
-Received: from razdolb ([185.69.124.235])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55943b60827sm1689220e87.158.2025.07.13.13.00.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jul 2025 13:00:03 -0700 (PDT)
-References: <aG94uNDrL1MdHJPM@duo.ucw.cz>
-User-agent: mu4e 1.10.9; emacs 30.1
-From: Mikhail Rudenko <mike.rudenko@gmail.com>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: kraxel@redhat.com, vivek.kasireddy@intel.com,
- dri-devel@lists.freedesktop.org, sumit.semwal@linaro.org,
- benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
- jstultz@google.com, tjmercier@google.com, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, kernel list
- <linux-kernel@vger.kernel.org>, laurent.pinchart@ideasonboard.com,
- l.stach@pengutronix.de, linux+etnaviv@armlinux.org.uk,
- christian.gmeiner@gmail.com, etnaviv@lists.freedesktop.org,
- phone-devel@vger.kernel.org
-Subject: Re: DMA-BUFs always uncached on arm64, causing poor camera
- performance on Librem 5
-Date: Sun, 13 Jul 2025 22:54:14 +0300
-In-reply-to: <aG94uNDrL1MdHJPM@duo.ucw.cz>
-Message-ID: <87tt3fdfpg.fsf@gmail.com>
+        d=1e100.net; s=20230601; t=1752473590; x=1753078390;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vvozbmvdghn0xuJhVjwu4pQc8eFowQW5vD9wXdzvh2E=;
+        b=AX6KyacYKSsVmXSsn1BHeRqRMO2e7ZoQqLm0Q8MrjJ+MZXX3V3wqTVJlU4Un+cDXdh
+         0eHqOHe/iQKkWsA+P2wbl7XcS+tkxhMVmMKg5LCzRnAUK42krHN2Y4GYyhOM2TDn2dLq
+         +UkMql3hcqNxciNdjOES1jV+4T+goxrEyMrifUPxxW2d7Rh+SP7+EGGxStORcgQXvH+1
+         maimu5sfHNrUgdPBuueHHQdDHvFemDemJnziN7vCmgfZ8LU3rU4gDpCaEmIApDy+DTr/
+         FurycAhOqC3uVdiMEfDp5CLGRclM4iGZ5k4V9uiA9xpB5SgqMpJgFFXV2ht6awEJhWZK
+         AOkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUP9cCEGBtIfr4mj8xq/Eb9LeEOYHuQaWg7DecbOSeLyjmdGBsu89NKvBfOe5Mpxy2p0WMa5X3eB2OQ@vger.kernel.org, AJvYcCUStQ+kZD3RgEiqCqamDPHN0+V8U//75gB5aBA/VFf/8TxBwYmlbFOrNTmcls2xSkxfzTkJbh1izJUn@vger.kernel.org, AJvYcCUu/1mhYdj5sMEGBzzl15XoaiyAFFWhgEjtWzX76d2pShQ/mNzScoB3zBJvqR/9LZq31mqppD0IV70=@vger.kernel.org, AJvYcCVstpNyGdvuY73VnuNsfHVFZp+Ibrgrdw6r36tXAZ6bHdgKEM8rbl+dffkiBgU4ZIz3E4mae5bxw5CYU5w=@vger.kernel.org, AJvYcCW0SyBXuZZvd/xJRQljFHmZZeK27WVLgdkeC50Y0Ub2vYEcwxbkffKOuPuFt/NDDMfwKU0qSkr3+OOeV0V3zg==@vger.kernel.org, AJvYcCW9KUj+JjF5ly7puv2tvDzq8+x1Op4tL9Qp0opokzItOLrzzOp8nZDLBSMKCFsv8iGwfAi2VpTAbRT/@vger.kernel.org, AJvYcCWCJTujwin9rvVzkB2+pYTryRkQpYeQHH7hj/ZAtqaa7ztVx09K4xQ05d8TrssfdLgBtpiikUwl6k0mJaas@vger.kernel.org, AJvYcCWVojriAO944z+btF5GTxaZUZCinYblWnzszeAL3ErTaCzTc4dmv9W51Pv3w/UOIkrUDJwcXKXnKsMlID1S@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHYB1+qM4aL9I+xyEElR/MdHfEasVuCVboe38WY1xF0F4jbRQb
+	PJhr5OJpS0nyaUrTHjE5Xs4BO1IeOKlW234I8ekBlgq7OXfOqlDGmcfE
+X-Gm-Gg: ASbGncsVzO3u2eRRPkqHSExy4M7lF3/AqBCyho/g29LYpWj7iPq7+3VHbuJ8XUz5zUh
+	XvbjJPk9jXCfIQMiqT4i+CEEISiQpedpCb9vyjf4+7DDhq3Jmr1V5+R9ShnnbGf8lPp9ovCVb0V
+	GYnbTFIeLu6NoJa8NB/aWSzV8nXEtD8QXaTDsjm4Gqp6HfiEMSBw0ai8XTXG1R/XJDWQIlXTcAX
+	+fSzIIeS5RrvTPZ8v5iGi2aYialOjERouHKAYIZ0FmgAYr0nhCdDUo3ukisQ2vqqTlQsWm852eH
+	0qrys1fbQfL7XFpn13BhNOrFlQ2Mm06BX3zlOngHXilZmyDqgE5qIF902v/whLdVa5ROZxTfdHb
+	5a30NVO/tm5Y+56IaMLVGLbeVXbKPIfOCHJ6CsLZkQrLFCOQKU5vR7qFhQU5KyQZ7j5UtkII022
+	eawnCCt9xeeqWy3IrLPLA+zA==
+X-Google-Smtp-Source: AGHT+IHhpjs0q3mi1BpnwNvryChqNwp5/Dw+yK56vrj/BWwwZ/DXYC0z9I3eOOpItRqe5sk1H/USWg==
+X-Received: by 2002:a17:906:9f86:b0:ae3:a4a6:a32e with SMTP id a640c23a62f3a-ae6e253ddf4mr1701256366b.29.1752473589912;
+        Sun, 13 Jul 2025 23:13:09 -0700 (PDT)
+Received: from [192.168.0.124] (ip-37-248-155-42.multi.internet.cyfrowypolsat.pl. [37.248.155.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8294bc2sm766171566b.135.2025.07.13.23.13.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Jul 2025 23:13:09 -0700 (PDT)
+Message-ID: <ee0d148e-71cd-4136-b3cb-145566abdfbe@gmail.com>
+Date: Mon, 14 Jul 2025 08:13:05 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/14] Various dt-bindings for SM7635 and The Fairphone
+ (Gen. 6) addition
+To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Joerg Roedel <joro@8bytes.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Robert Marko <robimarko@gmail.com>,
+ Das Srinagesh <quic_gurus@quicinc.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Amit Kucheria <amitk@kernel.org>, Thara Gopinath <thara.gopinath@gmail.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-mmc@vger.kernel.org
+References: <20250625-sm7635-fp6-initial-v1-0-d9cd322eac1b@fairphone.com>
+ <aGMI1Zv6D+K+vWZL@hu-bjorande-lv.qualcomm.com>
+Content-Language: en-US
+From: Artur Weber <aweber.kernel@gmail.com>
+In-Reply-To: <aGMI1Zv6D+K+vWZL@hu-bjorande-lv.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 6/30/25 23:59, Bjorn Andersson wrote:
+> On Wed, Jun 25, 2025 at 11:22:55AM +0200, Luca Weiss wrote:
+>> Document various bits of the SM7635 SoC in the dt-bindings, which don't
+>> really need any other changes.
+>>
+>> Then we can add the dtsi for the SM7635 SoC and finally add a dts for
+>> the newly announced The Fairphone (Gen. 6) smartphone.
+>>
+>> Dependencies:
+>> * The dt-bindings should not have any dependencies on any other patches.
+>> * The qcom dts bits depend on most other SM7635 patchsets I have sent in
+>>    conjuction with this one. The exact ones are specified in the b4 deps.
+>>
+> 
+> Very nice to see the various patches for this platform on LKML!
+> 
+> 
+> Can you please use the name "milos" in compatibles and filenames instead
+> of sm7635.
+Hi, small half-related question - does this mean that future Qualcomm
+SoC additions should use the codename for compatibles instead of the
+model number as well?
 
-Hi, Pavel,
+I was working on SM7435 (parrot) patches a while back; when I get around
+to submitting those, will I have to use "parrot" or "sm7435" in the
+compatibles?
 
-On 2025-07-10 at 10:24 +02, Pavel Machek <pavel@ucw.cz> wrote:
-
-> [[PGP Signed Part:Undecided]]
-> Hi!
->
-> It seems that DMA-BUFs are always uncached on arm64... which is a
-> problem.
->
-> I'm trying to get useful camera support on Librem 5, and that includes
-> recording vidos (and taking photos).
-
-Earlier this year i tried to solve a similar issue on rkisp1 (Rockchip
-3399), and done some measurements, showing that non-coherent buffers +
-cache flushing for buffers is a viable approach [1]. Unfortunately, that
-effort stalled, but maybe patch "[PATCH v4 1/2] media: videobuf2: Fix
-dmabuf cache sync/flush in dma-contig" will be useful to you.
-
-[1] https://lore.kernel.org/all/20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com/
-
-> memcpy() from normal memory is about 2msec/1MB. Unfortunately, for
-> DMA-BUFs it is 20msec/1MB, and that basically means I can't easily do
-> 760p video recording. Plus, copying full-resolution photo buffer takes
-> more than 200msec!
->
-> There's possibility to do some processing on GPU, and its implemented here:
->
-> https://gitlab.com/tui/tui/-/tree/master/icam?ref_type=heads
->
-> but that hits the same problem in the end -- data is in DMA-BUF,
-> uncached, and takes way too long to copy out.
->
-> And that's ... wrong. DMA ended seconds ago, complete cache flush
-> would be way cheaper than copying single frame out, and I still have
-> to deal with uncached frames.
->
-> So I have two questions:
->
-> 1) Is my analysis correct that, no matter how I get frame from v4l and
-> process it on GPU, I'll have to copy it from uncached memory in the
-> end?
->
-> 2) Does anyone have patches / ideas / roadmap how to solve that? It
-> makes GPU unusable for computing, and camera basically unusable for
-> video.
->
-> Best regards,
-> 								Pavel
-
-
---
-Best regards,
-Mikhail Rudenko
+Best regards
+Artur
