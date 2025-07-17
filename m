@@ -1,66 +1,66 @@
 Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AF021A94F
-	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 06:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6045B21930B
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 06:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752735306; cv=none; b=Aw8xoYDkgXrwKYWxGl8Z7VUSnrk8LW86ZCcHr1K9X/ZQTbpL41ESI8XmGyWIHftn3JkP5WMU6C4Ol/9P8HciwQxG0jq2VavkyFj+HXuqM+/YeroGZLG1wwTOK2bJTks6HYt9GCTQlIhAHpg044kO6FGi/ZGRwfNLNTxoHjTO1zQ=
+	t=1752735307; cv=none; b=b1YkDSv0YGwbtdUiDkjt0ez5NrdsyQ3uoQu0aCK8NnueqpJM4VEBrGPRnuQb1mq3NVxFBA7Z/4ZAE7MrKBCfSGDWlmXaM51tf01XoYBr4GKLVDMM4quqVAgC98DQIumPKlX6V2OEcadnl6kWuUWSA+hUkYQegxKaL0WJ03/VKG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752735306; c=relaxed/simple;
-	bh=N4PEPS5UV8E5Y8cK3eBI2k1UD3y4Gy1ShHAsxsUM/Qg=;
+	s=arc-20240116; t=1752735307; c=relaxed/simple;
+	bh=ofhA9RZIk4qK/ObGD/C/ec3J4PZjgTsyOWqBjcz8540=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cITt2Xippzp2AeLybGRfiDOhMD79l3EZNyt7/Rx/Csp8iEFR8y0wtBUzBrTtA4o4M+pI6/oxqy9Kxl3KIVYZVI6Ju2UalfFE3Niu5R4yU8GJhW454LNhq0ik4NJGJy67qswRVTJ3CLYpX/uL1qb6GfIDNMdFNT5SmaghVcllvTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=CSbDskh3; arc=none smtp.client-ip=209.85.208.67
+	 In-Reply-To:To:Cc; b=dndkJK2TbvEYr2Uqp+XcjKcIrmyBQW2kKthhJ7IcBDM2IuhvKPSE7YT375lIGjXOPK/bJzGE9Guwt6iLPSuWYrXeB9z4NFZkC7FHW/pIA0C7v42vuWP3+GmddNvzz4g3MODdepbpeg1MLcWucPALqnDYp4hGq5UO5D+hM3QZVzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=gdcGCMAm; arc=none smtp.client-ip=209.85.208.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="CSbDskh3"
-Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-60bf5a08729so1202117a12.0
-        for <phone-devel@vger.kernel.org>; Wed, 16 Jul 2025 23:55:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="gdcGCMAm"
+Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-60c93c23b08so1109694a12.3
+        for <phone-devel@vger.kernel.org>; Wed, 16 Jul 2025 23:55:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752735303; x=1753340103; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1752735304; x=1753340104; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MB1OZtfGop0B4+NTVehCQkuCByfNf/kvNDqqQX1Bxo4=;
-        b=CSbDskh3cip4PsCOP5ZkUYc0jF+1xJizVGT5o1iqmdiny516pGQTYzG4eB5bti/KXb
-         8RhveVAQeKEO5y/BzRmQvP9r0oJjnYb2SBPvvh9cOJyZfFncAIC16ahu5D6kOz6MbjX0
-         sf0H1egbBeYLlQBc7CTvms7jhHcQO0RguxF8be/dRAxK4Qf8AXtcEHi6u8/Lngovb1Bp
-         Hph3f4qVadVFaY7ye+7bdPo1MfgUFw95ppn36dnWa8y7kZ1rtmX/wAN9iXsizENuVu+7
-         pFQ8H+wnCkfpkTR06QCvLtq+kfOziC7j1TQjYuXNUwNQVWV38/ew7MSDpOdhwpP+trf9
-         KFKw==
+        bh=rYbV51/nzoj2zUAYRNyGSsBe1Ra4KqNdW7VDa67aLhY=;
+        b=gdcGCMAmu3HA+GnekioSysSrnvPwDpese0Q5M64y5W7j5+kGoBTPvzz0h9f0r4nFIc
+         cywpXh4YmbVgLa7FlSmDvAm291eWV27XshYC3bt0/gTXLjZc6FAhhNIPv1/H7ZKNmLxI
+         xTWJuoR2iZCwmrPNOFMCDSrW+roskgHYwp1szf9ziVlvgzd+AkPutt+ha6tTi9FACsFa
+         n3ykVCzILQIXkZDL6Lq1QsenzRQwN7G/bSpD51GXFrGUhgK1HX8Po1boroa5fHoazqzF
+         AtFKiwrsTul+kGMUYXePLerDC2MdQ+rhTpxKy41SVbkqcf7cD6b+RlJIn0WrTWzRKm3i
+         AtkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752735303; x=1753340103;
+        d=1e100.net; s=20230601; t=1752735304; x=1753340104;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MB1OZtfGop0B4+NTVehCQkuCByfNf/kvNDqqQX1Bxo4=;
-        b=BQw7PirdvCm74eVBbclI6FG1YC6r7szwqT8R4PtAJg5j9ZqQww/h+rvMtNMV3gLo+G
-         77eEEqy920KB8wJmprcem9jWXm1w6sBlF8As0DN9tfn3XEB3FSRUExejeRMalWYhQ31s
-         BFzC7Yu5Q/MsTXOgRETFT394Z0Hdt12aADrGUylzR9cmXvoihD53li1kywVglxWhFuBe
-         dmZyvKjIcvIEn9uT9Nm73a64ar4Nv6QJeezutiLpFkflMpPII6RoeYEoSSEmQopQZ8ka
-         MDoRhOHPbLW+/zg7vBkbiVBkKdtd0Rrfw8ePGuwxBpqNezdjN6nSy983AjhQ4ez+mYTb
-         jETA==
-X-Forwarded-Encrypted: i=1; AJvYcCXE4g0YgueCQaLTVxxEUdrulernlUVvoE0NeI4X5QLxIbEqUY6y+aaNCIqT9gQGtsLde8MC86eB0nzH8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfwWHLHVt47h9m8b+dEDTEomDv2mCXYhC7LKJJBVxvzEAU0Vtz
-	991p0Cqxzqent506AKpfrvkpUfPIy1hZXXfx9fugd6TnGR6uAJ14HD+Ef7rwOiHsk8I=
-X-Gm-Gg: ASbGnct41E0ZM+5DNSThQa/UFO0/tbFPLDF2X3ZSGphplEeyoveCobH6qnG8gaKU9lN
-	Th0v7a97TYtcvxm7MFrFdbVXXdwL85mCcLjkR70/eTbxmu6RuUv65NtdCvfkYdwekOGqNkUG5+U
-	IW1oQh3mwj8PaQn0JFwvvM9EvCS0EA1kAwrpG2tx7W+6vlVURGa22zw/KD1n7u73Glpo76phr6r
-	Oq/FFPfLP4euv+MED31s7vvZURQn6Aa+f6DvYR1OYTLXNQAsSa0Xc9BrbWR5hSRhz6VUuDKyqfx
-	Aw7LE+BGQr4/aiuN1megeZy6Eg9Ml9i5/PDSpvLiwhp2AwBJt2XTE2Y1jgkOvBnq6Ql6CyhoHLk
-	PpfU+WLakei0uChdmRSSHDDqFEGXGuR5Ya0YX/cvD8H/ocInlmGDANytK3g==
-X-Google-Smtp-Source: AGHT+IFgudfT73jE+tHkRBTab/R2HTLvDU42kys3saWRSJACMm7Yq4B7sYeqMxn/ESUAlHeq0K0laQ==
-X-Received: by 2002:a05:6402:524e:b0:607:425c:3c23 with SMTP id 4fb4d7f45d1cf-6128590ba42mr4742628a12.5.1752735301278;
-        Wed, 16 Jul 2025 23:55:01 -0700 (PDT)
+        bh=rYbV51/nzoj2zUAYRNyGSsBe1Ra4KqNdW7VDa67aLhY=;
+        b=iTsKsIK63GmYhLb3tD244p+Eaz5Ka9mWcO0yaaTlFuBWatb85E40ro9jmuEZpuOtG2
+         LKTehriLPPLDuhFyghT8Y825ZslmnnWp31uoQIJkqYG3lMBhbjrK9WwNIms9m3+j8jH6
+         f4DPrSckhmlQ/eJ72L/rIiQabLqNpuU8RduP5nphWWYtR3t5i1cI14Z29aTT0Wx2ks5r
+         9ED+3Aw9OZ3rGE/ZIa4d/WXSJqOlnqZmHITr9UCG4SEDrFhVCGVsLCdSbQPq19954BpD
+         59mtfOtgzOACRT08bEQJTTQBA89azGXO1UP3KWwhUZMDI46UOIK6FXYJO4Mnc3kw9Xlq
+         rylA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjFjuTYRwDt/HingWwl5xMnEsPkNuKN74HBTRD+pnv+MxjHNu4BqIMfn+1SWkvhKkbbXQU1tYMig5XmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+NzuvLS80KYyrwWeWur4rSK9dMPTjTjP5BR6eVF9+nHyPrpOT
+	79gKzlN9zMnISYC9IAcoiayFgtvSQR6UYY6TSBly2tVhnXltZnz40TL0XBVkDLGdLTQ=
+X-Gm-Gg: ASbGncuBdcUUG6C6mt0RwJkV7AdyCfkQYgU5ObdXDdpP6oYV2nOeepfNM+QAVx9ZsFB
+	2xxH0lnYysGpgr6EF4v6HPHdONP4FVF8ux3p0qGaPJEVOZqOEUxLy7AArbH1+jNaRQWrpoG9oK/
+	YjVIdvgn+/QVhQ67H9p+UUF3OmPbNWMo1ZbEtvjDGU6NjJGVX/cZBQyupDiyOD+rxXpio5mfW6E
+	KA1zblwmSmq3gZbQ7r7IEgXtr/FYZSenLyZCRGB/bPBL5W6a32ILEtGLOS8i9AqgZx83+1cp/Xb
+	Z/b6NR/h5zX56CE6nE5zwBL8g+Cbw15l+iYXH01FNdy7ZvUZPPGGbPWKumW15Jd3+yDmPjPNwta
+	QgDp0TQpYoGWT3WfwlmC000x9d7dZgq7AGABUkUGyIQiPBN3gZ94ESAEFpBeA7P/unQ0z
+X-Google-Smtp-Source: AGHT+IGCMa79Ak/KZtDl4v+vAe363Fk1VViVdgQtd6Y0WVZGvhTIykL9Hsq6Biw3grMwr05Z3oUtyg==
+X-Received: by 2002:a05:6402:d0e:b0:607:ea0c:6590 with SMTP id 4fb4d7f45d1cf-61285bd4fcfmr4635510a12.24.1752735303707;
+        Wed, 16 Jul 2025 23:55:03 -0700 (PDT)
 Received: from otso.local (212095005146.public.telering.at. [212.95.5.146])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612477e1d2bsm4688882a12.34.2025.07.16.23.54.59
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612477e1d2bsm4688882a12.34.2025.07.16.23.55.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 23:55:00 -0700 (PDT)
+        Wed, 16 Jul 2025 23:55:03 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 17 Jul 2025 08:54:45 +0200
-Subject: [PATCH 2/3] dt-bindings: interconnect: qcom: Remove double colon
+Date: Thu, 17 Jul 2025 08:54:46 +0200
+Subject: [PATCH 3/3] dt-bindings: soc: qcom,rpmh-rsc: Remove double colon
  from description
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-bindings-double-colon-v1-2-c04abc180fcd@fairphone.com>
+Message-Id: <20250717-bindings-double-colon-v1-3-c04abc180fcd@fairphone.com>
 References: <20250717-bindings-double-colon-v1-0-c04abc180fcd@fairphone.com>
 In-Reply-To: <20250717-bindings-double-colon-v1-0-c04abc180fcd@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -98,163 +98,36 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752735293; l=8576;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752735293; l=1085;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=N4PEPS5UV8E5Y8cK3eBI2k1UD3y4Gy1ShHAsxsUM/Qg=;
- b=yeEzSpHjIpxpKmVkyd7AV4yj2hOTh0q2MSyZViu8cCy4pDypLBY3Wy4o7vzX6IDVzjzCCW2nE
- x9V4mNIY5jED/NWZLP+stsYuepVI2N+ardIwMakdaEIZ6JPPLybHBPw
+ bh=ofhA9RZIk4qK/ObGD/C/ec3J4PZjgTsyOWqBjcz8540=;
+ b=VJbUUQ0rCnBxTbImTmB/hVXOv7XbLDUVYLoJsKSS+TR2gyz2+Ol258xtVReyF40biRSlSSPz2
+ pmPtDCH1uODDNHkEuJpdy7Eb/+p1eRmo+VM2KO//CPgIZeIXd7ORQSJ
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-No double colon is necessary in the description. Fix it for all bindings
-so future bindings won't have the same copy-paste mistake.
+No double colon is necessary in the description. Fix it.
 
 Reported-by: Rob Herring <robh@kernel.org>
 Closes: https://lore.kernel.org/lkml/20250625150458.GA1182597-robh@kernel.org/
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/interconnect/qcom,sa8775p-rpmh.yaml  | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sar2130p-rpmh.yaml | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sc7280-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sc8280xp-rpmh.yaml | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sm7150-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sm8450-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sm8550-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sm8650-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,sm8750-rpmh.yaml   | 2 +-
- Documentation/devicetree/bindings/interconnect/qcom,x1e80100-rpmh.yaml | 2 +-
- 10 files changed, 10 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sa8775p-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sa8775p-rpmh.yaml
-index 2e0c0bc7a37659621f25a2a6c6487a7185ad83a3..db19fd5c570865535fabbe54a39183e2f493bb9f 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sa8775p-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sa8775p-rpmh.yaml
-@@ -13,7 +13,7 @@ description: |
-   RPMh interconnect providers support system bandwidth requirements through
-   RPMh hardware accelerators known as Bus Clock Manager (BCM).
+diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml
+index 036562eb5140c78c10d845fd6efe42470b41895c..26d9bc773ec5cd42c147c776d2865fa2b435bc24 100644
+--- a/Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml
++++ b/Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml
+@@ -28,7 +28,7 @@ description: |
+     SLEEP   - Triggered by F/W
+     WAKE    - Triggered by F/W
+     CONTROL - Triggered by F/W
+-  See also:: <dt-bindings/soc/qcom,rpmh-rsc.h>
++  See also: <dt-bindings/soc/qcom,rpmh-rsc.h>
  
--  See also:: include/dt-bindings/interconnect/qcom,sa8775p.h
-+  See also: include/dt-bindings/interconnect/qcom,sa8775p.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sar2130p-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sar2130p-rpmh.yaml
-index 4647dac740e9b8bf308470255ba92066fb2903c0..f5d3d0c5df7335911c4fbc92d5c97bc50f019e2e 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sar2130p-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sar2130p-rpmh.yaml
-@@ -18,7 +18,7 @@ description: |
-   least one RPMh device child node pertaining to their RSC and each provider
-   can map to multiple RPMh resources.
- 
--  See also:: include/dt-bindings/interconnect/qcom,sar2130p-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,sar2130p-rpmh.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sc7280-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sc7280-rpmh.yaml
-index 78210791496f84c49989d6cb99a328ad997025b1..81c3dff539926eead123f86c12426931de1f7463 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sc7280-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sc7280-rpmh.yaml
-@@ -14,7 +14,7 @@ description: |
-   RPMh interconnect providers support system bandwidth requirements through
-   RPMh hardware accelerators known as Bus Clock Manager (BCM).
- 
--  See also:: include/dt-bindings/interconnect/qcom,sc7280.h
-+  See also: include/dt-bindings/interconnect/qcom,sc7280.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sc8280xp-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sc8280xp-rpmh.yaml
-index 100c686369092687e78f7c039135d63b5a02343b..2a5a7594bafdc36c8a26eaca5a4b0548d3f23dc1 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sc8280xp-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sc8280xp-rpmh.yaml
-@@ -14,7 +14,7 @@ description: |
-   RPMh interconnect providers support system bandwidth requirements through
-   RPMh hardware accelerators known as Bus Clock Manager (BCM).
- 
--  See also:: include/dt-bindings/interconnect/qcom,sc8280xp.h
-+  See also: include/dt-bindings/interconnect/qcom,sc8280xp.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm7150-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm7150-rpmh.yaml
-index b565d1a382f65f7fee5c071f0a46f79e7d03fbbb..978930324bbf05adf1f1f7932b695cc418efe7f9 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sm7150-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sm7150-rpmh.yaml
-@@ -13,7 +13,7 @@ description: |
-   RPMh interconnect providers support system bandwidth requirements through
-   RPMh hardware accelerators known as Bus Clock Manager (BCM).
- 
--  See also:: include/dt-bindings/interconnect/qcom,sm7150-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,sm7150-rpmh.h
- 
- allOf:
-   - $ref: qcom,rpmh-common.yaml#
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm8450-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm8450-rpmh.yaml
-index 300640a533dd67e59aa9d16f06500c152b1510ef..6a46dc7d473ec39f95990fd30f39fe2bc6ed4c3f 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sm8450-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sm8450-rpmh.yaml
-@@ -14,7 +14,7 @@ description: |
-   RPMh interconnect providers support system bandwidth requirements through
-   RPMh hardware accelerators known as Bus Clock Manager (BCM).
- 
--  See also:: include/dt-bindings/interconnect/qcom,sm8450.h
-+  See also: include/dt-bindings/interconnect/qcom,sm8450.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm8550-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm8550-rpmh.yaml
-index 716bd21f6041404522d17c232c301cfa49eca042..5325ebe23c771d571ef7f80326632d4511c641b4 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sm8550-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sm8550-rpmh.yaml
-@@ -18,7 +18,7 @@ description: |
-   least one RPMh device child node pertaining to their RSC and each provider
-   can map to multiple RPMh resources.
- 
--  See also:: include/dt-bindings/interconnect/qcom,sm8550-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,sm8550-rpmh.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm8650-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm8650-rpmh.yaml
-index f9322de7cd61e677545f20ec913e21d541ff02f2..199fe7b232af39b96f9e0c97137cc9902f5062f0 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sm8650-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sm8650-rpmh.yaml
-@@ -18,7 +18,7 @@ description: |
-   least one RPMh device child node pertaining to their RSC and each provider
-   can map to multiple RPMh resources.
- 
--  See also:: include/dt-bindings/interconnect/qcom,sm8650-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,sm8650-rpmh.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm8750-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm8750-rpmh.yaml
-index a816acc301e1fe5dce9316ef7c44b62b7fbd6758..366f40d980c2af9918cd6f9436a1c8ba6c771beb 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,sm8750-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,sm8750-rpmh.yaml
-@@ -18,7 +18,7 @@ description: |
-   least one RPMh device child node pertaining to their RSC and each provider
-   can map to multiple RPMh resources.
- 
--  See also:: include/dt-bindings/interconnect/qcom,sm8750-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,sm8750-rpmh.h
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,x1e80100-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,x1e80100-rpmh.yaml
-index 08b0210e0e5960221c95177fe7e383d355096cb7..0840b0ec6e27619d87506f98c7e5c2dd17314cfd 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,x1e80100-rpmh.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,x1e80100-rpmh.yaml
-@@ -18,7 +18,7 @@ description: |
-   least one RPMh device child node pertaining to their RSC and each provider
-   can map to multiple RPMh resources.
- 
--  See also:: include/dt-bindings/interconnect/qcom,x1e80100-rpmh.h
-+  See also: include/dt-bindings/interconnect/qcom,x1e80100-rpmh.h
- 
- properties:
-   compatible:
+   The order in which they are described in the DT, should match the hardware
+   configuration.
 
 -- 
 2.50.1
