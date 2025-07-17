@@ -1,127 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8218219A79;
-	Thu, 17 Jul 2025 07:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F281521A420
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 07:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752735811; cv=none; b=nin8GNduMmkrc4+M/natYT4cX8fD71sjGU0Ue8p5KrWcdV9mY3zx0M2bpyiucpVGKlxKxlWfp5DrxrDzD8ZeMCaNAuOIbNWV2XBdd8dogbTMgXDnVxUib/vLymCgctOp5dxK0Y1PQFAl9DZEVUHI3Lmk9LHzP6mVfMFusAsRufY=
+	t=1752736808; cv=none; b=nx72CPLP1r703gsVtOuyJt5umz/Ll7VteJdIV23quVTz2VbyC9FH6x7qHLtjnEAZwBj+6fLCYOc+iVz3/XGMv41o5n5Mt1RU0whGkjBlRHqr9Py3yOB+Y/6zLYhoVF/7WQpxxp5W82R8kYJqEsA39J0XdLywdrUtgwdTe3NhA54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752735811; c=relaxed/simple;
-	bh=23GJ9/zRa9LgzsH1knHQ9SnAIrhpMVta/8Q9WVcfU5M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T/W+eyLUkYZxJw0a1M3ExoCs6FzA9Gw3pT4/rkwFdPtsNXBwbF8Ylx8R3X7oogjm9NHY48e7ROV8ZXljKAIymZAZewsZDsCsC/UBBGIZlrGoKkDs0R/hAys2tE37xEiK2Cy7n/2gRbyV+bLA8trLX3kLp/1TVhycqrvmAtxf9h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=okEFnM9T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752736808; c=relaxed/simple;
+	bh=1aZeis3vma/ediM1poNKu6JuGfB4CaNR4b2CAxnOIck=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=OSTEYO8idIgdf0OuzVrQFmKo+ObekUeKCynQGMQr/f3nE19Ec1hA9osp6uP0+s8UMbKCQkhI8K/yMd9IetT4Y1w8D19JKiB5ithKDaeX2/bZoaQxI9SApHDrWuWVnYXDRfH5tKkgHPsqOlN/yiQQIb1ZIKYyIxhmzmCbQZffNwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=GCNZBWW0; arc=none smtp.client-ip=209.85.208.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="okEFnM9T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADBFC4CEE3;
-	Thu, 17 Jul 2025 07:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752735811;
-	bh=23GJ9/zRa9LgzsH1knHQ9SnAIrhpMVta/8Q9WVcfU5M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=okEFnM9TeLOERng6C+Q8DpXEYk32i5fEl+AL1Azu6Mo90nWvrS4K3YLiaSVZNJlRM
-	 Re/vdGX9srjliBIpNQBoEZezFWDRjQk1T9udf6Qgz0lvdrFnvOohERbEyyesnEIEoD
-	 dG34+XQPQLn59Q9FnPbPkYV531y4GDR8B+q+fGXGYtWRa3DoBV9JOmR2rNSUbddxLh
-	 yPKZOt0CCKWmNIs9oeOUaQWT9HaDoywqHy93zggfStaBtWAbspSakWc0L8TZsnxcXe
-	 jDlm9Au/rowudMV5slOiS1UpYRS4HrauAYlBSeN2+l2g/3goRNJ5jYAL9j/hW1z+wD
-	 Jzt+DEFMfZX8g==
-Message-ID: <410f2bf2-de9b-421d-9ca5-26a3ec517ccf@kernel.org>
-Date: Thu, 17 Jul 2025 09:03:22 +0200
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="GCNZBWW0"
+Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so1143596a12.3
+        for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 00:20:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1752736805; x=1753341605; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ds0KxRVsVnCi5GTnUrpIjwbuU2zKD6tXzYfIxeDgpac=;
+        b=GCNZBWW0UIEi/Tde8UD5c03KWqNPqmCEdasTU+f/XNIGCV6uMCI/69L99gyXhoVp/w
+         iRVwRv/SZ3dLQVimlgxm9tRJzObiTGIY+AjmEuAkV8Q0+KpTK7aBJ6zcGOyWmykr0sH0
+         r/YVRZsMABhNlI6Ic34F0QKDILB/OIyW3YEcdgHmQH1t/cdTtM9X5uLWcyYUdeIsp3wW
+         aoqzH6hSQ0LjAGAXuQJlKTbjzAj2F10i0Lpl/5lNMM/u7Hp/5ClJWcd0bDw1CKYKd57K
+         dCJmClD8+KMgvxt4HJA5k6ZWfUFvX4lWwKsJX6ZlS8SJANCsiZRMSXOBHpw4UF8HalEi
+         6XWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752736805; x=1753341605;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ds0KxRVsVnCi5GTnUrpIjwbuU2zKD6tXzYfIxeDgpac=;
+        b=HAEDazPhsHQPDfLn1zs0IdxsWsYQmU9sTfq8adwSEORqO5Cg1cq+JnnGyk4fLApomU
+         m1+/qleDSrusPuc0Ga2KjrsigQrKBLyLa7b3a3RMHNA6hoQCSnxIxSfg9jA5+p8ranlB
+         4l/sReQkI2qYfRKBGiPb/oXI0yHlQLEoQe/bwyNUOLM3J/8zvkV3mjDMsl6qDybMVpuu
+         R5G9vXz+ErvvyaedZIgqfLWtVal7KDOUZSBY7n3G7qU6uS+1/MLGXINrQROHBHoE7/VX
+         +N1rLYnTdAWZapY8jJdmsLCOWb2v/Rj7DannFUvPFiqGp8tB6tysn+S2eYxK/V2wImJK
+         tzWw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+EYIt6Yelbzc+pBBwDyJ0yEMxHIEX2ajJFzxZuZYc4MS5+6AOehBPJ8vOViH0bUVlU7zAUX91v2UPQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+3KbW8KibJrdc1B9K0cAYy4MN3EVGJV05KjBu7qxT9Jdbt3hm
+	HeY+mJpcjpcmy9zH49UJAVaBEj62cOadczXCVnAG7Lbp232nb5QJAhf+meqdOqu/Gvc=
+X-Gm-Gg: ASbGncsRMHwzAV0/819Vrcf/XycDbciPVpWLALBjIugQkZ6jnACp15D1V4kB6Q2Xo8+
+	yq39TVWvgVMY3CpGJ1xEve8u/ai+6NbNxZkJnKwZVomALzciW3bYFnTMe0XfM4BvHSewvSROMB7
+	f1tBdBrrhwnmWIz8go0/MiyhH/j/GT7UTyfm4Nrw2o3wCHlWQpg5xAEff9kUh+BwMn4lmOVvqam
+	2+v0x3Vm++n+A0O3yBkecaNf2b+qCVK0XadgA8tmsnd/Q/9Te2jjmosbx5LyLaE65N2XiId/rDn
+	5pIT7x7TI2NJHWS9MkEJAJCMNXIOOTgXa2dYzGayQ1TvQJxjSkM/g+KnaRoXl1G7vM5I43RtbzC
+	uC3XPoQFkIEhC3/oLgqpPMZUzSato5/z6eXAprni0egCQwwiHLD8jje0I
+X-Google-Smtp-Source: AGHT+IG2hDv2K216WzVbMCe0wIlm1Ij0bAYvzV4KV/5gVYFra+yeIkTw2eBkNA6ZcZTCjmFQQ8r8DA==
+X-Received: by 2002:a05:6402:5243:b0:5f3:26bb:8858 with SMTP id 4fb4d7f45d1cf-61285bf5095mr5097862a12.34.1752736805170;
+        Thu, 17 Jul 2025 00:20:05 -0700 (PDT)
+Received: from localhost (212095005146.public.telering.at. [212.95.5.146])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611ee1716fcsm8066563a12.7.2025.07.17.00.20.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jul 2025 00:20:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: soc: qcom,rpmh-rsc: Remove double colon
- from description
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Marek <jonathan@marek.ca>,
- Martin Botka <martin.botka@somainline.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
- Robert Marko <robert.markoo@sartura.hr>, Shawn Guo <shawn.guo@linaro.org>,
- Vinod Koul <vkoul@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
- krishna Lanka <quic_vamslank@quicinc.com>, Iskren Chernev <me@iskren.info>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Imran Shaik <quic_imrashai@quicinc.com>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Ajit Pandey <quic_ajipan@quicinc.com>, Danila Tikhonov <danila@jiaxyga.com>,
- David Wronek <david@mainlining.org>, Jens Reidel <adrian@travitia.xyz>,
- Priya Kakitapalli <quic_skakitap@quicinc.com>,
- Dmitry Baryshkov <lumag@kernel.org>,
- Rajendra Nayak <quic_rjendra@quicinc.com>, Georgi Djakov
- <djakov@kernel.org>, Abel Vesa <abel.vesa@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20250717-bindings-double-colon-v1-0-c04abc180fcd@fairphone.com>
- <20250717-bindings-double-colon-v1-3-c04abc180fcd@fairphone.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250717-bindings-double-colon-v1-3-c04abc180fcd@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 17 Jul 2025 09:20:03 +0200
+Message-Id: <DBE5CBN6IUD7.B03MK0X9PDFS@fairphone.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: remoteproc: qcom,milos-pas:
+ Document remoteprocs
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: <devicetree@vger.kernel.org>, "Mathieu Poirier"
+ <mathieu.poirier@linaro.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>,
+ <linux-remoteproc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, <phone-devel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250709-sm7635-remoteprocs-v3-0-c943be976180@fairphone.com>
+ <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
+ <175210021011.3927964.2963774922041119366.robh@kernel.org>
+In-Reply-To: <175210021011.3927964.2963774922041119366.robh@kernel.org>
 
-On 17/07/2025 08:54, Luca Weiss wrote:
-> No double colon is necessary in the description. Fix it.
-> 
-> Reported-by: Rob Herring <robh@kernel.org>
-> Closes: https://lore.kernel.org/lkml/20250625150458.GA1182597-robh@kernel.org/
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+On Thu Jul 10, 2025 at 12:30 AM CEST, Rob Herring (Arm) wrote:
+>
+> On Wed, 09 Jul 2025 13:13:07 +0200, Luca Weiss wrote:
+>> Document the bindings for the ADSP, CDSP, MPSS and WPSS PAS on the Milos
+>> (e.g. SM7635) SoC.
+>>=20
+>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> ---
+>>  .../bindings/remoteproc/qcom,milos-pas.yaml        | 201 ++++++++++++++=
++++++++
+>>  1 file changed, 201 insertions(+)
+>>=20
+>
+> My bot found errors running 'make dt_binding_check' on your patch:
+>
+> yamllint warnings/errors:
+>
+> dtschema/dtc warnings/errors:
+> Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.example.dts:2=
+0:18: fatal error: dt-bindings/interconnect/qcom,milos-rpmh.h: No such file=
+ or directory
+>    20 |         #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
+>       |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I forgot to mark the milos interconnect series to be a dependency of
+this.
 
-Best regards,
-Krzysztof
+If a resend is necessary, I can add it in v4.
+
+Regards
+Luca
+
+> compilation terminated.
+> make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/binding=
+s/remoteproc/qcom,milos-pas.example.dtb] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1519: dt_bin=
+ding_check] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+>
+> doc reference errors (make refcheckdocs):
+>
+> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202507=
+09-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com
+>
+> The base for the series is generally the latest rc1. A different dependen=
+cy
+> should be noted in *this* patch.
+>
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>
+> pip3 install dtschema --upgrade
+>
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your sch=
+ema.
+
