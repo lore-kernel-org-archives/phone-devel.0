@@ -1,73 +1,73 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C3D2BDC2F
-	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 12:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172E32264CD
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 21:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752755221; cv=none; b=WvusNUIHOGglL9qGGgzcBWsFAS4ad5NIiOu605zQcOfUktl4AWY5C9+tp6fyxxEgkSm3jzP5vrBb9Yi6EKMS40+HjwftJgvlqI1oPnIfnDBl3YNwaG1hvMrkGlrifO2ZU4nhoBfntfLBsrFSrNEr+ROQWGs6syIosNWYZI0TsmY=
+	t=1752786406; cv=none; b=lmmkU8+SZqZhlSijli07Y/BFHSl7WPAHp+wkoLpPv7860cEIN6rEJ5f+sAi/cP0+6zHkgLmdYQYFabR1aGWiVNOm8u8sQIaejOOwcEHKlRfb+peHgLzsmMHYH4V28lb7nMR1Nrwb0tnudkG3oCqdYlaFuxYUc6nSlXwMksVw+60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752755221; c=relaxed/simple;
-	bh=k1AU9RHb0Kl7CzIBQsz15cpKEvQJw6GvReja3qw8EDQ=;
+	s=arc-20240116; t=1752786406; c=relaxed/simple;
+	bh=uhfsvd6ujR5IiuRkGHiGSpUgRbJAikw6tYn5QgEz+VY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E6Hw8fm61wLypLdcYYxEuRMQUuUcIG2ZIAFgb1U1HbWot3KTgguxgdXbOZh7A8FP9gx0dj7DM965he2E2R1WuD/jPq9wcaqRc7EVs9JAuAEigpXf4dfnv2BSKIiqR0C79+Do4DkTWQPbUQMJNcwHBGxtzb0VJSFhYOLP7L7QBLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TE25JG2V; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=XZPnVutYRFUUSYdY464zKSfX0MaahEpzWuGBUpsulYcACima/UDlKd4sx9w4A+mUaDlW1hcnk5C7LHJ5LsGJEkx9OrpPpzTaKmFKi6cSQq77I1swAxxq/7e8T2B7y1ZgcChumDgGhVMl2MgZ9YdADoLFsJFnnLovZJPl0QvNHGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fIMVvM1b; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TE25JG2V"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HBuXIx003716
-	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 12:26:59 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fIMVvM1b"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HJhHGE015664
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 21:06:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	IbmcROfOzVtWLlLwTUK701q3d6gz5yN28T/mfJ33MIw=; b=TE25JG2VN6qQdbFI
-	+EPMUOzIJpT9ZbN4ZIkZATeVvy4GwUPV5dCscItU/HZvCgO6zt8HQRfg2IkbcAT+
-	/bRkQgCwvhtEQkpUQScqWrWuB+LunPUpfuPEa9/YyBRJ5RWfX3dru0yV6Ck8UISD
-	QAoil+qyBsfyp0uBtBYRio7QFWo2/NrN7YMfHYntO4dGtjiBDS77+iZmAJKB8y6e
-	YY5aSsLonYn4nSw5GocPrVGB5jgSgad6gzeOGzIhTJX9yDqeuCq7Bma8SyfEsfks
-	Qfhx/IiDic3dsw1TEgmCJWQ8dpS53t20P6vudUZXZ9KFyP8FslENwvzt4Q2JV/IZ
-	SmDm4g==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47xsuksdgk-1
+	gjye/euzJtJqLLETvGURwJ94G0Q37cEw/XWFQryemcE=; b=fIMVvM1bN1hE4eUK
+	WGzlKQawrUeXo7QK+Ku6DfRkL9mijak+Krr7T78veaG/n+2cu3v93hVr3JsQ5ME3
+	cXLeCvcFfBgaodGi5fGCWH6LSu6KmvUVMrvzmNI3+sn0hvy/6RF4XsxtvDzY51m+
+	kjvLDcteG81VEZOwVTB5gkcp26i7buKXYdP3h4qqW9pDz67Wb1JaThOwzNAhVruR
+	SWd7LGbo5HkjnpTs0FRDOSyuVu1fSs1L4OaHU6uz1gm1ABKhY0RyXq6ZTeKy/6Kz
+	G3cl1nZNOWZ230vSSGE22EyN2fimf8eiLR1KADQOvSBbrwiZgqE/qaD2L5kdgJ5y
+	04lUug==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dyv5pu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 12:26:59 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6fac0b29789so3473236d6.2
-        for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 05:26:59 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 21:06:44 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7e344f333beso16511085a.2
+        for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 14:06:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752755218; x=1753360018;
+        d=1e100.net; s=20230601; t=1752786403; x=1753391203;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IbmcROfOzVtWLlLwTUK701q3d6gz5yN28T/mfJ33MIw=;
-        b=uaoEBPQngp71OsP7mcyo1S2k8iYa3d4wS1cp9qovBc+oqQqhZYo7/g04PNoYxOhy7L
-         n2k6dG9CjSHJID+BrkF3VcmT2vFFjMfyvWmk4dBhCSQinqTX23D7pMKdw0EiPHjPS6rR
-         cCZVNtqYhzsuaIm5yUgUB3D9CEr/D9WLnGsy2x1JcgROYVhoolhVEvbWsBzn/Qma/cn/
-         DdntmLgtDdrfXoiQWC4LvT3x74GW6Hs7abJiGsFeD3cZCdlnCLMrvMkFN2KHRg/vM+YE
-         4oac/sEcs9DzIyVxOs1thpjxeKV0SzTcDQRnmyqCAToz1oR4ikNmC3nu9N8DvAMQJw/y
-         YNSg==
-X-Forwarded-Encrypted: i=1; AJvYcCVT5RXqqJqosj/u8cIRSHnj+KhBRtt8WmLXQrjn/WlfTha2EET46l+2y88FHJ04Jz8xvhhhsP9qjQmUrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV+SnwUj5CZvf2jPZ4OUpwdFuIdwNPhJ8b3GUf1AN+0gEHSK0j
-	GCOXprBrEwI4XzkWmgK8wGQWannVcIZI+CG17tHfLVjM7V0vTFtGgnJcU/ZdzwdgcyNqbEGUodl
-	zbB87TTo5o5mpvRdH56IKlWdjrfEg14Hc2KE/pH7tbIlo2B00UMzBDDk19QZreiHS/Q==
-X-Gm-Gg: ASbGncuWf+2bVU128HUwDQdYcPl+O3vAEDKHE38kXftEdZDdYGKgcizypTvJYOLqsHg
-	c187qZiqd4gPOXOL1SPYlcGXkBvVoQt7ZH4Zv3mHaPtnFsfmGieGlq0TQxgsiGCa29t7SB+/zKu
-	w0pmPhdc0xBZpmXVce7LJ0ux0l0feCCAldOjSgziF3jV/nW00mTf8KLR8ppb+4T8fmxbD7k+A9b
-	KoUnOM6qmiZMEwe8WZUdMkHW0J4hEJVdj1FskDq0fusPduGvgYwsrH4A2xjtsqnKLLIhWCm1jav
-	GGUslvJQ/L7NUHHFrXb6KesOpI32r++kvzQTTNaBw4b452mmIgUrNK2YAhzgj8Q8DFJzsMqsxu1
-	udIxGNRCjiRndGqIcFzt3
-X-Received: by 2002:a05:620a:4093:b0:7e3:302a:3e9d with SMTP id af79cd13be357-7e342ad54e7mr401313285a.7.1752755217780;
-        Thu, 17 Jul 2025 05:26:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWMwBx+PyOHxTxgnaS5xzRvQae4iwC7dd8Cj0Sms6zoxQGp+IkrMAc/iJ+gLrK8J7XJbyIqA==
-X-Received: by 2002:a05:620a:4093:b0:7e3:302a:3e9d with SMTP id af79cd13be357-7e342ad54e7mr401311985a.7.1752755217290;
-        Thu, 17 Jul 2025 05:26:57 -0700 (PDT)
+        bh=gjye/euzJtJqLLETvGURwJ94G0Q37cEw/XWFQryemcE=;
+        b=HqzcJURRBaTJBv4LUVYLxkwvWN+u1B7u1Ki7IZqdrPnlU1A3C8NqE9OYmkX/fEPs4X
+         5lE9Jl0pjOV+1Exv1sDnrAYmrS5171HPH4R+Zw4uWfp5b17hoBQMhe5RV+53rnEqsbto
+         +vxQ4Xv9FSWlvz+d8t4wc055a3NnyDcc5k597dJwEx1YaWXcwaDMXbSEqfcgzidv8xr8
+         z0YMSvV/j2FYpzzX+NIq3Xg2owyP95ROGNwUKSFNEUTyLRIG/bC/FYthuh8oUaECzgS/
+         6Nv8Np5lFw6UTdUyScBx/LWc3RQdR7nc32XRIKwRUF5g3zv6z66DmEoMDzPbWTJLn/2w
+         HMKA==
+X-Forwarded-Encrypted: i=1; AJvYcCVn+bzEtnHoHmMSIpLsMDr2XIjPO2AMNdVtKATUEa8250BnDRypzpon+zWODwATGVypqevwb1wDaFUn4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6jB9xVsv7ADVPIOPT8yenctQ08EvK2J/tn11Qiqh/x0366Fjf
+	7cX+Ik8TOE4iPvsGbZtb/ucs5qeA4TPZLS3XSgOpEiCrEdeMGeXMlhtcgeKqXEuIf7dR1TdA+C7
+	GA5dLPh+TJr8P9XGoR7Dd/00MnqA86maE5Y9+UlZMdyyZbX/sITu6H++N0PbLTdqx8A==
+X-Gm-Gg: ASbGnctPu/HOKGtG4Me0QYZ/R6KFXgb9B3xZItmSOXvZCwEfnsw+uY3r7Hk5wZY5Car
+	ZmW5oitBrHHJ6xcMNCJ9klSmx1b+MRxDLFIkTXFAasAYFmhBrywXHELxVlVDw0EeCYF/V8VWc2y
+	kAwJAvz07iomTyJXXFe/Pd0kTu8MTHs/Sx7FiI+1ESQd7QFMkO/lmJ431G0KqjZwEskvHedbbqh
+	KSAQb6us7/qkOpjlQumBZC4QabCkJmEJuEs2koqDtAS/SHcFdk2Sgv9/hB2ZJ/uwvHoVMZjkgcw
+	9nzI+d77EI8Lhx8ExGEnvB2DbdLrNru6hJSnDEJWdYAMuGT0RX2pqy/Yv1ea8JMunkvBDLZbF/Y
+	8YRQ3v1Cr+YXRGnzCr/ia
+X-Received: by 2002:a05:620a:192a:b0:7e2:ee89:205a with SMTP id af79cd13be357-7e342abd519mr451825085a.5.1752786402692;
+        Thu, 17 Jul 2025 14:06:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuPa/yRCQICTQrA+jm+Q73xxpZUEJk2US/0cdFi63bdkyvw+FC7AgcXaKulKKmsTwOdsW8rg==
+X-Received: by 2002:a05:620a:192a:b0:7e2:ee89:205a with SMTP id af79cd13be357-7e342abd519mr451822985a.5.1752786402252;
+        Thu, 17 Jul 2025 14:06:42 -0700 (PDT)
 Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7ee8d9fsm1336084466b.46.2025.07.17.05.26.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e826461esm1427290566b.100.2025.07.17.14.06.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Jul 2025 05:26:56 -0700 (PDT)
-Message-ID: <d25c3f81-38c3-4559-a1e6-7b586c817d57@oss.qualcomm.com>
-Date: Thu, 17 Jul 2025 14:26:52 +0200
+        Thu, 17 Jul 2025 14:06:41 -0700 (PDT)
+Message-ID: <653da558-9dff-442d-acc7-65a1c0f84494@oss.qualcomm.com>
+Date: Thu, 17 Jul 2025 23:06:38 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,191 +75,58 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
-To: Luca Weiss <luca.weiss@fairphone.com>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH v2 5/5] arm64: dts: qcom: Add PM7550 PMIC
+To: Luca Weiss <luca.weiss@fairphone.com>, Lee Jones <lee@kernel.org>,
+        Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Fenglin Wu <quic_fenglinw@quicinc.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>,
-        Robert Marko <robimarko@gmail.com>,
-        Das Srinagesh <quic_gurus@quicinc.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
+        Linus Walleij <linus.walleij@linaro.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
- <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
- <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
- <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
+        linux-gpio@vger.kernel.org
+References: <20250709-sm7635-pmxr2230-v2-0-09777dab0a95@fairphone.com>
+ <20250709-sm7635-pmxr2230-v2-5-09777dab0a95@fairphone.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
+In-Reply-To: <20250709-sm7635-pmxr2230-v2-5-09777dab0a95@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: WQXtqsFIUCzWY77zakI6ptFyrNi9D7Yq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDEwOSBTYWx0ZWRfX8nilMuEdhzQF
- geWq0boaqzZUpyvZxZgUwOTxmq8Frebn/Y2nqIlXprpPPvfmsZhTZ01WLH43GlrRbid66eJ6rn4
- LVVtTaa/u4w/3HgZF3CTcSRBLY/72YqFh98C1jAQI3BoQSJUb07BFzCQT+QXthhnOulq8geRtDC
- p7CCNKQD7b5C0zWn242YhZFxL35LoJnq70m+ktnIPNqJT61yVZBK82Sl2q5cmobJLZ7Jrzy+49X
- dmEm1mCRMndy+hrENtHL8grcmZ9vfcZPhsJIGvBJ4CEJM94gQbLsmAFVobvHGsHZuiiQSm3292q
- /sCTAj3dPU24H5FhWk9R2fdjCS66coCRely0lXlXT0V7/eL/4DbvF++CdzXgDAakEPVGnMq1wky
- h8gCu9u7hMiKyfjiGLx5a1uc8vPe3YsmZdPHqevPjpegtDKlVRz/OHLlILltZ5YVHD5sYp7u
-X-Proofpoint-GUID: WQXtqsFIUCzWY77zakI6ptFyrNi9D7Yq
-X-Authority-Analysis: v=2.4 cv=JJk7s9Kb c=1 sm=1 tr=0 ts=6878ec13 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=7CQSdrXTAAAA:8 a=6H0WHjuAAAAA:8
- a=iHGpd6SFZaqAm2lpoLIA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
- a=a-qgeE7W1pNrGK8U0ZQC:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-ORIG-GUID: WCFKIcnNT06mxp_FiQiq8-L3p6Xn4yn3
+X-Authority-Analysis: v=2.4 cv=RtXFLDmK c=1 sm=1 tr=0 ts=687965e4 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
+ a=WWQFUNGd85j635JlVwcA:9 a=QEXdDO2ut3YA:10 a=AYr37p2UDEkA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE4NiBTYWx0ZWRfXzMxmqydkrqQo
+ z1u7ByNNZ2LeZeWOJlGZoJq189CzWmV/8wf+em3uY5E8JVdjttMbyZg7/cF0RhuoCDxqHoQfjey
+ sDdLi+X6dMnyyFBydk+XnvD+RWsRc6BR40NibYIYF2kPokz71RXbL6f4/vXIGU0d4Ij6wlVduhB
+ 1v2cyIrQVoNPFStXHy4Emi+WUMc8QxCW3cn36Ul3nfCSwuiWqvMvcbFLFnQAi0m/17Vft8QQdho
+ F4EyJCN7Bst32OFGT3ULprMB/YG1RdNTLLn9oskAeuwbzYu/QfxsmegEVfK74Klxxl2D2R7WM5p
+ w+OmnMtiIKxjkuVrPCkUs3zGXXii1ZLJDpjwalTNMCU2cuj7zVCfETE2f7lhPDaeX14FR3/+eUu
+ TE264Oo5ZxfmqhBw6U2riiK7x5PNSR3m3UMVAQhKWUuppn6x8Uj9enkh1dmuflQelBFq/4ZN
+X-Proofpoint-GUID: WCFKIcnNT06mxp_FiQiq8-L3p6Xn4yn3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-17_01,2025-07-17_01,2025-03-28_01
+ definitions=2025-07-17_04,2025-07-17_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507170109
+ adultscore=0 mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ impostorscore=0 malwarescore=0 clxscore=1015 mlxlogscore=931
+ priorityscore=1501 phishscore=0 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507170186
 
-On 7/17/25 10:29 AM, Luca Weiss wrote:
-> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
->> On 7/13/25 10:05 AM, Luca Weiss wrote:
->>> Add a devicetree description for the Milos SoC, which is for example
->>> Snapdragon 7s Gen 3 (SM7635).
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
-
-[...]
-
->>
->> [...]
->>
->>> +		cpu-map {
->>> +			cluster0 {
->>> +				core0 {
->>> +					cpu = <&cpu0>;
->>> +				};
->>> +
->>> +				core1 {
->>> +					cpu = <&cpu1>;
->>> +				};
->>> +
->>> +				core2 {
->>> +					cpu = <&cpu2>;
->>> +				};
->>> +
->>> +				core3 {
->>> +					cpu = <&cpu3>;
->>> +				};
->>> +			};
->>> +
->>> +			cluster1 {
->>> +				core0 {
->>> +					cpu = <&cpu4>;
->>> +				};
->>> +
->>> +				core1 {
->>> +					cpu = <&cpu5>;
->>> +				};
->>> +
->>> +				core2 {
->>> +					cpu = <&cpu6>;
->>> +				};
->>> +			};
->>> +
->>> +			cluster2 {
->>> +				core0 {
->>> +					cpu = <&cpu7>;
->>> +				};
->>> +			};
->>> +		};
->>
->> I'm getting mixed information about the core topology.. 
->>
->> What does dmesg say wrt this line?
->>
->> CPU%u: Booted secondary processor 0x%010lx [0x%08x]\n
+On 7/9/25 1:46 PM, Luca Weiss wrote:
+> Add a dts for the PMIC used e.g. with Milos SoC-based devices.
 > 
-> [    0.003570] CPU1: Booted secondary processor 0x0000000100 [0x410fd801]
-> [    0.004738] CPU2: Booted secondary processor 0x0000000200 [0x410fd801]
-> [    0.005783] CPU3: Booted secondary processor 0x0000000300 [0x410fd801]
-> [    0.007206] CPU4: Booted secondary processor 0x0000000400 [0x410fd811]
-> [    0.008206] CPU5: Booted secondary processor 0x0000000500 [0x410fd811]
-> [    0.009073] CPU6: Booted secondary processor 0x0000000600 [0x410fd811]
-> [    0.010406] CPU7: Booted secondary processor 0x0000000700 [0x410fd811]
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-Okay, so the cache topology that I can make out of docs matches your dt..
-
-As for the CPU map, we tended to simply throw all cores that are in
-the same "DSU cluster" [1] together, represented as a single CPU cluster.
-This is not what other vendors do though, it seems. And downstream has
-the same silver/gold/prime split as you did above.
-
-Looking at some docs, it seems like the prime core shares the cache
-bridge with the gold cluster so I'm not sure how separate it really is.
-
-There was a time when the MIDR_EL1 register would be more helpful, but
-according to [2], it would mean that each core is in its own cluster..
-For reference exynos2200.dtsi seems to have the very same MPIDRs (though
-with cores that are a little older). One would expect the small cores
-that share the L2 to be within the same cluster [3].
-
-All in all, I don't know what to tell you for sure..
-
-[1] https://developer.arm.com/documentation/100453/0401/Technical-overview/Components?lang=en
-[2] https://developer.arm.com/documentation/102517/0004/AArch64-registers/AArch64-Identification-registers-summary/MPIDR-EL1--Multiprocessor-Affinity-Register?lang=en
-[3] https://developer.arm.com/documentation/102517/0004/The-Cortex-A520--core/Cortex-A520--core-configuration-options?lang=en
-
-[...]
-
->> Does access control disallow accessing these on your prod-fused
->> device?
-> 
-> Hm, taking another look, this property should probably be moved to
-> device dts.
-> 
-> Downstream has this in volcano.dtsi but volcano6i.dtsi (QCM6690?) and
-> volcano6ip.dtsi (QCS6690?) have a /delete-property/ for this, because
-> they have PCIe available.
-> 
-> I don't think this has anything to do with secure boot fuses, but I
-> don't think I have tried enabling these clocks on my SB-off prototype.
-
-I wouldn't be so sure about sb-off being necessarily a difference, but
-I wouldn't object to a smoke test either ;)
-
-[...]
-
->>> +			interrupts = <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>,
->>
->> pdc 26
-> 
-> You mean replace <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH> with
-> <&pdc 26 IRQ_TYPE_LEVEL_HIGH> (plus interrupts-extended)?
-
-Yes
-
-> I assume you got this from internal docs, but just to mention,
-> volcano-thermal.dtsi contains GIC_SPI 506 (+ 507 for tsens1).
-
-Right, I found it in the docs (but we most likely want the device to
-wake up from sleep and try to power off if it's too hot/cold)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
 Konrad
