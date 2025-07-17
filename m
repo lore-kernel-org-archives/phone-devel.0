@@ -1,63 +1,63 @@
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F281521A420
-	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 07:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BDB2857DA
+	for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 08:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752736808; cv=none; b=nx72CPLP1r703gsVtOuyJt5umz/Ll7VteJdIV23quVTz2VbyC9FH6x7qHLtjnEAZwBj+6fLCYOc+iVz3/XGMv41o5n5Mt1RU0whGkjBlRHqr9Py3yOB+Y/6zLYhoVF/7WQpxxp5W82R8kYJqEsA39J0XdLywdrUtgwdTe3NhA54=
+	t=1752740982; cv=none; b=HE1eReUSJGlPIorHyuwUSzT83isLnuLLEzP2Xwgmm5Z56oboeOdn7f+Q/VktwTRy7wI6Pv50dIq4iB2Nk0zkDEqaGjCDbt7I+LNajhGP4l7tLd83eDv7QRrf0Qg6EznkS/o1bzCYVjcu77RzT+zTL5FsQvGr5s6T74G2Hn2qGFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752736808; c=relaxed/simple;
-	bh=1aZeis3vma/ediM1poNKu6JuGfB4CaNR4b2CAxnOIck=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=OSTEYO8idIgdf0OuzVrQFmKo+ObekUeKCynQGMQr/f3nE19Ec1hA9osp6uP0+s8UMbKCQkhI8K/yMd9IetT4Y1w8D19JKiB5ithKDaeX2/bZoaQxI9SApHDrWuWVnYXDRfH5tKkgHPsqOlN/yiQQIb1ZIKYyIxhmzmCbQZffNwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=GCNZBWW0; arc=none smtp.client-ip=209.85.208.68
+	s=arc-20240116; t=1752740982; c=relaxed/simple;
+	bh=UNunHUNkH+TN7AOcVml1jP+DpDLBcanyZCyw+pldQvE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=m25g90nBtEQ1CC/yE/ptOg2wdyI2a5o0qDswIQePdPPFWFKtI7OM46+9rRQLe58C9nIes/0CGovuxLJQCaDxoJqOmLClrY1fV/9yUwvM52PZFffHRoubMH4eLPu7KuXz4tSEBbhwceDmHFurZhxF/EwGIf47JA8EoPNWeNCSUyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=3zZO/bQw; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="GCNZBWW0"
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so1143596a12.3
-        for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 00:20:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3zZO/bQw"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so1137301a12.2
+        for <phone-devel@vger.kernel.org>; Thu, 17 Jul 2025 01:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1752736805; x=1753341605; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=fairphone.com; s=fair; t=1752740978; x=1753345778; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ds0KxRVsVnCi5GTnUrpIjwbuU2zKD6tXzYfIxeDgpac=;
-        b=GCNZBWW0UIEi/Tde8UD5c03KWqNPqmCEdasTU+f/XNIGCV6uMCI/69L99gyXhoVp/w
-         iRVwRv/SZ3dLQVimlgxm9tRJzObiTGIY+AjmEuAkV8Q0+KpTK7aBJ6zcGOyWmykr0sH0
-         r/YVRZsMABhNlI6Ic34F0QKDILB/OIyW3YEcdgHmQH1t/cdTtM9X5uLWcyYUdeIsp3wW
-         aoqzH6hSQ0LjAGAXuQJlKTbjzAj2F10i0Lpl/5lNMM/u7Hp/5ClJWcd0bDw1CKYKd57K
-         dCJmClD8+KMgvxt4HJA5k6ZWfUFvX4lWwKsJX6ZlS8SJANCsiZRMSXOBHpw4UF8HalEi
-         6XWQ==
+        bh=ry2yqY4fcB8r6JNTuIg6GJi9ZBAG4EVyeQwgDvrWgsM=;
+        b=3zZO/bQwku27icG21ERWuH7SL6EIVSr/97M3536zv5kGuN1/dmzOy026I6R+otzsH5
+         Qc3mBy9t96Arvk3yWMke97BdB7dQYwy7dLrXY+o2yzK/6TtsRMtWeuxqglzwGtjGATT2
+         6i5Pu+ZOft0LFimO+QgTH34kXDKPfwFYEF8eC9FtDDjg6+SXzK4pPC1wKrHB45rr4mxU
+         6FCzOlt1ocVWLVyHshdurd8ou39ppYsquQ4CFhYJ1b4jQT9PIzZ42DrrmZvJGF/ibyrA
+         KBDCT+kQj9g+O3Eeqnyu+IUo8l6XMTJRk6O3osvzCtGUAwwlIHSERKr9/naKhneiJ7HW
+         tgcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752736805; x=1753341605;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20230601; t=1752740978; x=1753345778;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ds0KxRVsVnCi5GTnUrpIjwbuU2zKD6tXzYfIxeDgpac=;
-        b=HAEDazPhsHQPDfLn1zs0IdxsWsYQmU9sTfq8adwSEORqO5Cg1cq+JnnGyk4fLApomU
-         m1+/qleDSrusPuc0Ga2KjrsigQrKBLyLa7b3a3RMHNA6hoQCSnxIxSfg9jA5+p8ranlB
-         4l/sReQkI2qYfRKBGiPb/oXI0yHlQLEoQe/bwyNUOLM3J/8zvkV3mjDMsl6qDybMVpuu
-         R5G9vXz+ErvvyaedZIgqfLWtVal7KDOUZSBY7n3G7qU6uS+1/MLGXINrQROHBHoE7/VX
-         +N1rLYnTdAWZapY8jJdmsLCOWb2v/Rj7DannFUvPFiqGp8tB6tysn+S2eYxK/V2wImJK
-         tzWw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+EYIt6Yelbzc+pBBwDyJ0yEMxHIEX2ajJFzxZuZYc4MS5+6AOehBPJ8vOViH0bUVlU7zAUX91v2UPQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+3KbW8KibJrdc1B9K0cAYy4MN3EVGJV05KjBu7qxT9Jdbt3hm
-	HeY+mJpcjpcmy9zH49UJAVaBEj62cOadczXCVnAG7Lbp232nb5QJAhf+meqdOqu/Gvc=
-X-Gm-Gg: ASbGncsRMHwzAV0/819Vrcf/XycDbciPVpWLALBjIugQkZ6jnACp15D1V4kB6Q2Xo8+
-	yq39TVWvgVMY3CpGJ1xEve8u/ai+6NbNxZkJnKwZVomALzciW3bYFnTMe0XfM4BvHSewvSROMB7
-	f1tBdBrrhwnmWIz8go0/MiyhH/j/GT7UTyfm4Nrw2o3wCHlWQpg5xAEff9kUh+BwMn4lmOVvqam
-	2+v0x3Vm++n+A0O3yBkecaNf2b+qCVK0XadgA8tmsnd/Q/9Te2jjmosbx5LyLaE65N2XiId/rDn
-	5pIT7x7TI2NJHWS9MkEJAJCMNXIOOTgXa2dYzGayQ1TvQJxjSkM/g+KnaRoXl1G7vM5I43RtbzC
-	uC3XPoQFkIEhC3/oLgqpPMZUzSato5/z6eXAprni0egCQwwiHLD8jje0I
-X-Google-Smtp-Source: AGHT+IG2hDv2K216WzVbMCe0wIlm1Ij0bAYvzV4KV/5gVYFra+yeIkTw2eBkNA6ZcZTCjmFQQ8r8DA==
-X-Received: by 2002:a05:6402:5243:b0:5f3:26bb:8858 with SMTP id 4fb4d7f45d1cf-61285bf5095mr5097862a12.34.1752736805170;
-        Thu, 17 Jul 2025 00:20:05 -0700 (PDT)
+        bh=ry2yqY4fcB8r6JNTuIg6GJi9ZBAG4EVyeQwgDvrWgsM=;
+        b=mAv0Aj1wjlUR6MpcX0xnsM4n4yS6flEKlFh+1fWFXzbSxgxPILgaF5UZZO0tAX6BV7
+         ZrlWFfRY9L3TdTAg5hmYHKGwGMzxUaO0aQWXwiZB5hYXNqOQa3fFV4Q/VFDRtVd18Atr
+         S/qFijUiiGyBFIV+ib6ZCO1uX20lbgf4WAZJ0opcr3D9AJLZJ+K8IAFWJ0XlQ3jYvcJX
+         Sej39lRxGgmJyZVlxz4gRwflRRcyCg01CSbGwTe7rsVtGCXAab63YGGlb/jZwCbQTykZ
+         CetNS7CzqoDQ8OW/fF1igpc9ik/ZEXgjuwDjjKgV9FSf+vPStAeGghEKZkXIuVZZGyRN
+         VMGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAhO0F/bIty0L0oxxxS5NsnPNxSvatxHEwsMjkif1yktVnFejboYDhXsDL5MyMLnShCEMqmOq5XSAi+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSu9shT58ONRN38fOQiqDoviprOU0KMcoGyQeQ5s+AIA+//k/L
+	ePXPWBuitqFlJhnXlG7s9y54/gAz/1T0cDfpQ6K47DaI2/zkINdjzVnVHVBj9q/blig=
+X-Gm-Gg: ASbGnctTo64YtabfUhVspefuMSuFcS5dF5gVvi7EhFRLBzaCjpDno6VZZcaiaZ0RG+7
+	iJSGPaJX3PKLOgdi9Pt9F01Gp93pSlyD6deWcQ79e6NEBAQvzLzBYOgw/keGqb+TG1w7NmhsZ/t
+	6H7qv6SrYZhp4I41YDhrjLR+YwEw3s0cpxJUITZH78FyQX8vG+EVX/30SZt8vreEDzy7zHvORwn
+	qQsrStjvL5tevLJpl2s6Gqxkgmj4jZLnjVNfXqd2Abi7TPqYVm4Uh9kfDZDiQBUzxhz/CxOzXg7
+	BCrgLwwNJ13LD7WcyEtN4cLUYsO/WBPwN2nWe8ETlsdzCnTgGJQO0X9gqCA1ZYjEOC149yDRGMS
+	rWOCrurGKusgKOCJ3hy50DISSJtlMEsuKjzn3pmZ870yyrZe7GCBshxSyxIfXRVLXKEM=
+X-Google-Smtp-Source: AGHT+IE+TdhlMPh+u91g6pE8N6/1/E6+tgQ36t4anhpy9DrzlSFmbhQrj6aJo6OAcbvrAeM2GDcPYg==
+X-Received: by 2002:a05:6402:35c4:b0:608:6501:6a1f with SMTP id 4fb4d7f45d1cf-61285916635mr4613521a12.1.1752740978021;
+        Thu, 17 Jul 2025 01:29:38 -0700 (PDT)
 Received: from localhost (212095005146.public.telering.at. [212.95.5.146])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611ee1716fcsm8066563a12.7.2025.07.17.00.20.03
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611c9796432sm9746425a12.73.2025.07.17.01.29.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Jul 2025 00:20:04 -0700 (PDT)
+        Thu, 17 Jul 2025 01:29:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -66,82 +66,356 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Jul 2025 09:20:03 +0200
-Message-Id: <DBE5CBN6IUD7.B03MK0X9PDFS@fairphone.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: remoteproc: qcom,milos-pas:
- Document remoteprocs
+Date: Thu, 17 Jul 2025 10:29:35 +0200
+Message-Id: <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+ <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
 From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: <devicetree@vger.kernel.org>, "Mathieu Poirier"
- <mathieu.poirier@linaro.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Manivannan Sadhasivam" <mani@kernel.org>,
- <linux-remoteproc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, <phone-devel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
- <~postmarketos/upstreaming@lists.sr.ht>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel"
+ <joro@8bytes.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Vinod Koul" <vkoul@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Robert Marko"
+ <robimarko@gmail.com>, "Das Srinagesh" <quic_gurus@quicinc.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Jassi Brar" <jassisinghbrar@gmail.com>,
+ "Amit Kucheria" <amitk@kernel.org>, "Thara Gopinath"
+ <thara.gopinath@gmail.com>, "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+ "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>,
+ "Ulf Hansson" <ulf.hansson@linaro.org>
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250709-sm7635-remoteprocs-v3-0-c943be976180@fairphone.com>
- <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
- <175210021011.3927964.2963774922041119366.robh@kernel.org>
-In-Reply-To: <175210021011.3927964.2963774922041119366.robh@kernel.org>
+References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
+ <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
+ <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
+In-Reply-To: <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
 
-On Thu Jul 10, 2025 at 12:30 AM CEST, Rob Herring (Arm) wrote:
->
-> On Wed, 09 Jul 2025 13:13:07 +0200, Luca Weiss wrote:
->> Document the bindings for the ADSP, CDSP, MPSS and WPSS PAS on the Milos
->> (e.g. SM7635) SoC.
+On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
+> On 7/13/25 10:05 AM, Luca Weiss wrote:
+>> Add a devicetree description for the Milos SoC, which is for example
+>> Snapdragon 7s Gen 3 (SM7635).
 >>=20
 >> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 >> ---
->>  .../bindings/remoteproc/qcom,milos-pas.yaml        | 201 ++++++++++++++=
-+++++++
->>  1 file changed, 201 insertions(+)
->>=20
 >
-> My bot found errors running 'make dt_binding_check' on your patch:
+> [...]
 >
-> yamllint warnings/errors:
+>> +		cpu-map {
+>> +			cluster0 {
+>> +				core0 {
+>> +					cpu =3D <&cpu0>;
+>> +				};
+>> +
+>> +				core1 {
+>> +					cpu =3D <&cpu1>;
+>> +				};
+>> +
+>> +				core2 {
+>> +					cpu =3D <&cpu2>;
+>> +				};
+>> +
+>> +				core3 {
+>> +					cpu =3D <&cpu3>;
+>> +				};
+>> +			};
+>> +
+>> +			cluster1 {
+>> +				core0 {
+>> +					cpu =3D <&cpu4>;
+>> +				};
+>> +
+>> +				core1 {
+>> +					cpu =3D <&cpu5>;
+>> +				};
+>> +
+>> +				core2 {
+>> +					cpu =3D <&cpu6>;
+>> +				};
+>> +			};
+>> +
+>> +			cluster2 {
+>> +				core0 {
+>> +					cpu =3D <&cpu7>;
+>> +				};
+>> +			};
+>> +		};
 >
-> dtschema/dtc warnings/errors:
-> Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.example.dts:2=
-0:18: fatal error: dt-bindings/interconnect/qcom,milos-rpmh.h: No such file=
- or directory
->    20 |         #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
->       |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> I'm getting mixed information about the core topology..=20
+>
+> What does dmesg say wrt this line?
+>
+> CPU%u: Booted secondary processor 0x%010lx [0x%08x]\n
 
-I forgot to mark the milos interconnect series to be a dependency of
-this.
+[    0.003570] CPU1: Booted secondary processor 0x0000000100 [0x410fd801]
+[    0.004738] CPU2: Booted secondary processor 0x0000000200 [0x410fd801]
+[    0.005783] CPU3: Booted secondary processor 0x0000000300 [0x410fd801]
+[    0.007206] CPU4: Booted secondary processor 0x0000000400 [0x410fd811]
+[    0.008206] CPU5: Booted secondary processor 0x0000000500 [0x410fd811]
+[    0.009073] CPU6: Booted secondary processor 0x0000000600 [0x410fd811]
+[    0.010406] CPU7: Booted secondary processor 0x0000000700 [0x410fd811]
 
-If a resend is necessary, I can add it in v4.
+>
+>> +	pmu-a520 {
+>> +		compatible =3D "arm,cortex-a520-pmu";
+>> +		interrupts =3D <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
+>> +	};
+>> +
+>> +	pmu-a720 {
+>> +		compatible =3D "arm,cortex-a720-pmu";
+>> +		interrupts =3D <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
+>> +	};
+>
+> See:
+>
+> 9ce52e908bd5 ("arm64: dts: qcom: sm8650: switch to interrupt-cells 4 to a=
+dd PPI partitions")
+> 2c06e0797c32 ("arm64: dts: qcom: sm8650: add PPI interrupt partitions for=
+ the ARM PMUs")
+
+Sure, will take a look.
+
+>
+> [...]
+>
+>> +		gcc: clock-controller@100000 {
+>> +			compatible =3D "qcom,milos-gcc";
+>> +			reg =3D <0x0 0x00100000 0x0 0x1f4200>;
+>> +
+>> +			clocks =3D <&rpmhcc RPMH_CXO_CLK>,
+>> +				 <&sleep_clk>,
+>> +				 <0>, /* pcie_0_pipe_clk */
+>> +				 <0>, /* pcie_1_pipe_clk */
+>> +				 <0>, /* ufs_phy_rx_symbol_0_clk */
+>> +				 <0>, /* ufs_phy_rx_symbol_1_clk */
+>> +				 <0>, /* ufs_phy_tx_symbol_0_clk */
+>> +				 <0>; /* usb3_phy_wrapper_gcc_usb30_pipe_clk */
+>> +			protected-clocks =3D <GCC_PCIE_1_AUX_CLK>, <GCC_PCIE_1_AUX_CLK_SRC>,
+>> +					<GCC_PCIE_1_CFG_AHB_CLK>, <GCC_PCIE_1_MSTR_AXI_CLK>,
+>> +					<GCC_PCIE_1_PHY_RCHNG_CLK>, <GCC_PCIE_1_PHY_RCHNG_CLK_SRC>,
+>> +					<GCC_PCIE_1_PIPE_CLK>, <GCC_PCIE_1_PIPE_CLK_SRC>,
+>> +					<GCC_PCIE_1_PIPE_DIV2_CLK>, <GCC_PCIE_1_PIPE_DIV2_CLK_SRC>,
+>> +					<GCC_PCIE_1_SLV_AXI_CLK>, <GCC_PCIE_1_SLV_Q2A_AXI_CLK>;
+>
+> Does access control disallow accessing these on your prod-fused
+> device?
+
+Hm, taking another look, this property should probably be moved to
+device dts.
+
+Downstream has this in volcano.dtsi but volcano6i.dtsi (QCM6690?) and
+volcano6ip.dtsi (QCS6690?) have a /delete-property/ for this, because
+they have PCIe available.
+
+I don't think this has anything to do with secure boot fuses, but I
+don't think I have tried enabling these clocks on my SB-off prototype.
+
+>
+> [...]
+>
+>> +		usb_1: usb@a600000 {
+>> +			compatible =3D "qcom,milos-dwc3", "qcom,snps-dwc3";
+>> +			reg =3D <0x0 0x0a600000 0x0 0x10000>;
+>
+> size =3D 0xfc_000
+
+Ack
+
+>
+> [...]
+>
+>> +
+>> +			clocks =3D <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
+>> +				 <&gcc GCC_USB30_PRIM_MASTER_CLK>,
+>> +				 <&gcc GCC_AGGRE_USB3_PRIM_AXI_CLK>,
+>> +				 <&gcc GCC_USB30_PRIM_SLEEP_CLK>,
+>> +				 <&gcc GCC_USB30_PRIM_MOCK_UTMI_CLK>,
+>> +				 <&rpmhcc RPMH_CXO_CLK>;
+>> +			clock-names =3D "cfg_noc",
+>> +				      "core",
+>> +				      "iface",
+>> +				      "sleep",
+>> +				      "mock_utmi",
+>> +				      "xo";
+>> +
+>> +			assigned-clocks =3D <&gcc GCC_USB30_PRIM_MOCK_UTMI_CLK>,
+>> +					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
+>> +			assigned-clock-rates =3D <19200000>, <133333333>;
+>
+> Set the latter to 200000000 - your device doesn't have USB3, but the
+> next person may lose their hair about tracking down why it doesn't
+> work on theirs
+
+Ah, I think I only checked the downstream reference which was patched to
+be qcom,core-clk-rate =3D <133333333>; for FP6. The original file does
+have:
+
+  qcom,core-clk-rate =3D <200000000>;
+  qcom,core-clk-rate-disconnected =3D <133333333>;
+
+>
+> [...]
+>
+>> +		pdc: interrupt-controller@b220000 {
+>> +			compatible =3D "qcom,milos-pdc", "qcom,pdc";
+>> +			reg =3D <0x0 0x0b220000 0x0 0x30000>, <0x0 0x174000f0 0x0 0x64>;
+>
+> 1 per line, please
+
+Ack
+
+>
+>> +			interrupt-parent =3D <&intc>;
+>> +
+>> +			qcom,pdc-ranges =3D <0 480 40>, <40 140 11>, <51 527 47>,
+>> +					  <98 609 31>, <129 63 1>, <130 716 12>,
+>> +					  <142 251 5>;
+>> +
+>> +			#interrupt-cells =3D <2>;
+>> +			interrupt-controller;
+>> +		};
+>> +
+>> +		tsens0: thermal-sensor@c228000 {
+>> +			compatible =3D "qcom,milos-tsens", "qcom,tsens-v2";
+>> +			reg =3D <0x0 0x0c228000 0x0 0x1ff>, /* TM */
+>> +			      <0x0 0x0c222000 0x0 0x1ff>; /* SROT */
+>
+> drop the comments
+>
+> the sizes are 0x1000 for both regions for both controllers
+
+Ack
+
+>
+>> +
+>> +			interrupts =3D <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>,
+>
+> pdc 26
+
+You mean replace <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH> with
+<&pdc 26 IRQ_TYPE_LEVEL_HIGH> (plus interrupts-extended)?
+
+I assume you got this from internal docs, but just to mention,
+volcano-thermal.dtsi contains GIC_SPI 506 (+ 507 for tsens1).
+
+>
+>> +				     <GIC_SPI 640 IRQ_TYPE_LEVEL_HIGH>;
+>> +			interrupt-names =3D "uplow",
+>> +					  "critical";
+>> +
+>> +			#qcom,sensors =3D <15>;
+>> +
+>> +			#thermal-sensor-cells =3D <1>;
+>> +		};
+>> +
+>> +		tsens1: thermal-sensor@c229000 {
+>> +			compatible =3D "qcom,milos-tsens", "qcom,tsens-v2";
+>> +			reg =3D <0x0 0x0c229000 0x0 0x1ff>, /* TM */
+>> +			      <0x0 0x0c223000 0x0 0x1ff>; /* SROT */
+>> +
+>> +			interrupts =3D <GIC_SPI 507 IRQ_TYPE_LEVEL_HIGH>,
+>
+> pdc 27
+
+same as above
+
+>
+>> +				     <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>;
+>> +			interrupt-names =3D "uplow",
+>> +					  "critical";
+>> +
+>> +			#qcom,sensors =3D <14>;
+>> +
+>> +			#thermal-sensor-cells =3D <1>;
+>> +		};
+>> +
+>> +		aoss_qmp: power-management@c300000 {
+>> +			compatible =3D "qcom,milos-aoss-qmp", "qcom,aoss-qmp";
+>> +			reg =3D <0x0 0x0c300000 0x0 0x400>;
+>> +
+>> +			interrupt-parent =3D <&ipcc>;
+>> +			interrupts-extended =3D <&ipcc IPCC_CLIENT_AOP IPCC_MPROC_SIGNAL_GLI=
+NK_QMP
+>> +						     IRQ_TYPE_EDGE_RISING>;
+>> +
+>> +			mboxes =3D <&ipcc IPCC_CLIENT_AOP IPCC_MPROC_SIGNAL_GLINK_QMP>;
+>> +
+>> +			#clock-cells =3D <0>;
+>> +		};
+>> +
+>> +		sram@c3f0000 {
+>> +			compatible =3D "qcom,rpmh-stats";
+>> +			reg =3D <0x0 0x0c3f0000 0x0 0x400>;
+>> +		};
+>> +
+>> +		spmi_bus: spmi@c400000 {
+>> +			compatible =3D "qcom,spmi-pmic-arb";
+>
+> There's two bus instances on this platform, check out the x1e binding
+
+Will do
+
+>
+> [...]
+>
+>> +		intc: interrupt-controller@17100000 {
+>> +			compatible =3D "arm,gic-v3";
+>> +			reg =3D <0x0 0x17100000 0x0 0x10000>,	/* GICD */
+>> +			      <0x0 0x17180000 0x0 0x200000>;	/* GICR * 8 */
+>
+> drop the comments please
+
+Ack
+
+>
+> [...]
+>
+>> +			clocks =3D <&rpmhcc RPMH_CXO_CLK>, <&gcc GCC_GPLL0>;
+>> +			clock-names =3D "xo", "alternate";
+>
+> 1 a line, please
+
+Ack
+
+>
+> [...]
+>
+>> +		cpuss0-thermal {
+>> +			thermal-sensors =3D <&tsens0 1>;
+>> +
+>> +			trips {
+>> +				cpuss0-hot {
+>> +					temperature =3D <110000>;
+>> +					hysteresis =3D <1000>;
+>> +					type =3D "hot";
+>> +				};
+>> +
+>> +				cpuss0-critical {
+>> +					temperature =3D <115000>;
+>> +					hysteresis =3D <0>;
+>> +					type =3D "critical";
+>> +				};
+>> +			};
+>> +		};
+>
+> See:
+>
+> 06eadce93697 ("arm64: dts: qcom: x1e80100: Drop unused passive thermal tr=
+ip points for CPU")
+>
+> (tldr drop non-critical trips for CPU)
+
+Will take a look.
 
 Regards
 Luca
 
-> compilation terminated.
-> make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/binding=
-s/remoteproc/qcom,milos-pas.example.dtb] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1519: dt_bin=
-ding_check] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
 >
-> doc reference errors (make refcheckdocs):
->
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202507=
-09-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com
->
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
+> Konrad
 
