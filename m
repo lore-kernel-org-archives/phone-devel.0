@@ -1,159 +1,344 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012060.outbound.protection.outlook.com [52.101.66.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D421CA02;
-	Fri, 18 Jul 2025 21:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752873212; cv=none; b=ZrKsHaC4WlNReervL+AB7x8x687BAfA1aXpUEgTpHmSCrRTcwfHSnGObKJzh56EMqJa3eO5Wol5qLaECtHsaVqtueIt1Qn3SBL06/TeUpJVbAGj25+99QXjKNd7qhjkZjFz7vqdWW6B8yo+hucsMPPb0aYzDM4vUZ7vH7tt+7+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752873212; c=relaxed/simple;
-	bh=3RYvkarqfHdoc1OgLllqlLng0i6a19ZDq3zI5M3B0aY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bn2khkIN24dGBZwXy4h1W6aG6y/QaT7t73jMtPwtEriTdsPI0XH4iU/DBOG02UsQXFQ9Mj4+OjEpPt+9/M9pxtgHttKfdGlNc31TspU32zA0oMWtXqfy4G5x8B9JTOXSajeIZ7bdHSoQ32pjpoRv5ap0KWoqCThe/afPeDaGvQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=DDfPeXbV; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1995D3D6D;
+	Mon, 21 Jul 2025 05:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753075955; cv=fail; b=IxITkNHIQ4c8+7zaCwJW+q4IG7m0QAQlTCPuswJoQVf2tjq1b+s21ip/9Yf0bRFZWt7i8VofDzU/3Z/grXo2bMs1mkCMOTImTxH+5bqcRemAmCP2pbBpcZOUyrrT4RUQk43Og/CmNnuL+CnSanBv4hIxlA1NRcD2YiAjD6adLy4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753075955; c=relaxed/simple;
+	bh=W1UT89R0qES9c4eSuS2c4hW5Y28X4AnedsE1fFYbGZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jqIGzkXCLsiSOwx9KU8Qvup8NImQoVxRyiV1SpybFEdamSsIhF9nGG6ykyRPR7XcrmPYYNhaeQj7rfvNmzS3Fe8yTXKZrXyeZYN+m5/M3lij9mLF8jaFEfNinfH1vM2xE/uPIU1PAOv8OwMC4Iw8M8LHnDSpcKHeQWvUQdpNPC4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dOqxPUjR; arc=fail smtp.client-ip=52.101.66.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="DDfPeXbV"
-DKIM-Signature: a=rsa-sha256; bh=gOjp3wQjJ3AE6k78BMHRLvaT8uRUMtnV0AD3Afp4oe8=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1752873185; v=1; x=1753305185;
- b=DDfPeXbVCBvhb7ZGTPiKJV+pOmX67OglQeZPg6nRg7KtNVqIzyCH9gUDE4+AjwnoDf55OlqK
- RPgFUJ5MvsIF16pfLEbtR3uvbLgh0kvLjmkIR5VSc2W5oIj6kblw3kkkFg+wWgoUEjV1SNKdBFK
- ffWpiz/pJGD/PeL8cVAUDbLS2OaMELidr2J5/Lc1tfDsLR9bdvqVxrmSZ7ruX6iOPQmvisbwDop
- +EF+REX2INqioiu/bnUO4IHU7HKLqx59KunJCiwArfrVfuXVxBs0DmBNXeAI+8xiNiAdSxzI7x2
- YtuxlzRzSJcVCz3jfSS7es+XAfldMPwhg0M+BFklwE5gw==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id e2145e2d; Fri, 18 Jul 2025 23:13:05 +0200
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Date: Fri, 18 Jul 2025 23:12:39 +0200
-Subject: [PATCH RFC 2/2] mmc: sdhci-pxav3: add state_uhs pinctrl setting
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dOqxPUjR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Un6m3wWkUOxv9BsVENFzKFfhVvSHds+W0nuq7/Ic/Inhaj/X93d6mgm5Z0Yrz2y5zeoYhb9DwpPc7qFUZ5u5iZBc+jRRFg9fNKO+JqOma61/jXdkZrN29bzSgOGSmybJJYL/XX66r8n5CDD+MTVLAnZ0A9oaPkCOTZV5ajXSE02cQYsz68s6TtrRHfPJKNSx5PYYhssZrByeknUHleZB72zivJrVQkGw4cDZg3NwdupeVJOLssd9ONGHEpr0bU41o/y6eG6VseciKSuOGqtQ3Yq1L++29ycnIno1VVpBSS/bFTbMEVMNGK4BhusSQym7uel/BdR7k79TcB8QDHl5XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=201JH3w8FKrWsEaxE2G+qc5V8OM82gEaufI+oS8kWh0=;
+ b=Hwkuhg27Y/MC7ms8hN5ItWmVMWpTBgiOy/7L3OiMB9p5hFB3wSyUKy4kYVTMvnuQWB/yegn5n1Y1swWMZqSw0GF8soQziklGpcUa4ZkLQkCMbiLhYVcKsihAKUvLHwQ7ZhilFMHdR/BxIwksNfpOwN+IY9YVuV4GCgrEvfJWJB0xv05J77PzRdqqLkuT5n8TKU8swj/0Cs2B/59h4XpT2VUNiWSOTDqx2lE/thqsWP+iCZqiad/Ls96WFy45XjkqweHcIPC6gNJK1j2CNLYkRU7g/qpdYW7D5+lAkKv3tywNXIJ8UsNo7SaX0kjK9IWRq+VPLJ9CHaZrVMDQupgMYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=201JH3w8FKrWsEaxE2G+qc5V8OM82gEaufI+oS8kWh0=;
+ b=dOqxPUjRROkGmeiWBKlTaKHbsymjUX4KfHkPrjhV+nAtVpWHVFLtxcFpOQHcUHhdym7w/2sdg54vRMoLIs7NF0VovihaDfoMW3uN/7yHAM3nNN4VH4IEusoKWuAKwaOOIyANtwbYW53YgtXonAi9fmlNAHmWmma9AmweBn8FwLFAIdgq6q90936hznzf/Cg42/rmDPX7JEEJAEXY1zUkpMOm5NbUWyFkL1b1b0tdktEuiqXaEiP7ScW03uhGCkSDzz8hOc3xYzhRH6z9YxzKgDoz4M4UzLQtSM0IfYcNabCjX8kbvyLVY88vZfOMrM7MkvUOImeT6s3uybWPC35ZjQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB9989.eurprd04.prod.outlook.com (2603:10a6:10:4ec::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Mon, 21 Jul
+ 2025 05:32:29 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8943.029; Mon, 21 Jul 2025
+ 05:32:29 +0000
+Date: Mon, 21 Jul 2025 14:42:56 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: remoteproc: qcom,milos-pas: Document
+ remoteprocs
+Message-ID: <20250721064256.GB4844@nxa18884-linux.ap.freescale.net>
+References: <20250709-sm7635-remoteprocs-v3-0-c943be976180@fairphone.com>
+ <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250709-sm7635-remoteprocs-v3-1-c943be976180@fairphone.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: MA0PR01CA0094.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::20) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250718-pxav3-uhs-v1-2-2e451256f1f6@dujemihanovic.xyz>
-References: <20250718-pxav3-uhs-v1-0-2e451256f1f6@dujemihanovic.xyz>
-In-Reply-To: <20250718-pxav3-uhs-v1-0-2e451256f1f6@dujemihanovic.xyz>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>
-Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
- linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3497;
- i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
- bh=3RYvkarqfHdoc1OgLllqlLng0i6a19ZDq3zI5M3B0aY=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBlVO+6zci4QbZHIm/DLQ1UoWInhAbP5s96Gp11mGqtzn
- c3SVvh0lLIwiHExyIopsuT+d7zG+1lk6/bsZQYwc1iZQIYwcHEKwERyJjMyzF7aNW3+irDTlkej
- evMVLc8F7jtoV91jpcxzdNZdCR3Gvwz/c9gc//4VqpPxuFljsruaics0fnZ4tppIfOCvIoHsRRf
- 4AQ==
-X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
- fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB9989:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bd9310b-421f-4755-9bd5-08ddc817fb91
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|19092799006|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?p4KnEeRW+1pOOwxq4+I3LkeU+bawLtzGTNHSsFDLe/bIf/tl5If8f9zVpMJ5?=
+ =?us-ascii?Q?2Fgci3TlfVwP113qEKFdk6zsnGYOHML17c32mgPadId4HYo0JTCEQT5q0y8g?=
+ =?us-ascii?Q?GWf56TxXN8/Ha4/qQkCnmD/hyT4tVOtqBz+AbC3txaQ+/O1FSlOd9dmpOABU?=
+ =?us-ascii?Q?U/QVYcsXcb62AG1vejkpGQ31gUAsQv0DvhSxL7ByqXXW7/XlwVseJMX4s6SA?=
+ =?us-ascii?Q?OOcJ3336GfcZ3NZrs7ULlDfXdAUgXj3+sqp78Wreke5rZ8Jfa/eYz5rgFi+v?=
+ =?us-ascii?Q?nvzk7Ay4YGYl1GjZjPNDZklyX4QLX9S1YRXQ94rJx78FtU214rsOpgi3UvIs?=
+ =?us-ascii?Q?ZmVxksOniI5IDocZt33ocS7jgII2UKGuUKO+/fmRQNwejpMkOP/N0Kzr+21s?=
+ =?us-ascii?Q?f8RmX6sCrfU8vkes8hX49yfunEIctpfQrHCftgEMdJ++eEKJPRU4ZCDAszcJ?=
+ =?us-ascii?Q?5HWDci+PUweEI+u7QOCOamW5WbonhD2d9O4ha+yYf/+DyNl7dpCg5t6nRF7Y?=
+ =?us-ascii?Q?8fLlmQuu35WmJxn+Gi8joTgrbrFfi1lcMpcab1lQ/1R02XwO+AsDCpSJC+nw?=
+ =?us-ascii?Q?MD5V+fJVPjvdeEM+WY8QeUhMgDfld6vW6OjBLvDLl/0pEB7DN9YSPZcn7G2z?=
+ =?us-ascii?Q?suji0OEKzfh4iu5zjolIWcVQy/Za/zUghVBgQunV8HTF/1hdXP+XhUQJvlO2?=
+ =?us-ascii?Q?th/AIIAIkobcDIvuNNPhM3f1aLuzkY7Dr1fV59uB7ruFlDIlouZKfAIJc/k5?=
+ =?us-ascii?Q?u6+e6CXcHW6fMpOZLtpuZ2d49EIKIakcJrAl/IYjXbV0Lk2LZpbueEJdMlex?=
+ =?us-ascii?Q?Rjy4X5JB74dqUsE2N5yXo8Erh2KDs1s7geJdkTaiSODbwR4Pjov+eECJeWBB?=
+ =?us-ascii?Q?0Enp8Mv8Fr6VT5/oZ2Dcut1n39tiJ1pldB2qFbeao1QH+sCJr9SQIbv5jOVL?=
+ =?us-ascii?Q?yFxgTwby9Dg6OwtBSJbPye4vPfT3htz/20D1AC2j1QvCtVtIxi1tKG4V9q4v?=
+ =?us-ascii?Q?oQ6EC115QqZzcM9JqO3CTFCvmhszsqZf32kqEUfp2GFW7Hpov3/W3BWJUaHF?=
+ =?us-ascii?Q?uQ37eF0zPYXPGVghOVzPEOlO2h+YVFuSz48l2ROZ/Dt/RbstqIM6xJYpfcFk?=
+ =?us-ascii?Q?g89PeeRxo9/P/R7bRJZIGYKI/LiuW0FkXgaD/rF+2TCzWUyBW0hsET3nXH7n?=
+ =?us-ascii?Q?Esbhlsb69yGvz0EWINEe+S/EUaxcZjxmALPs10MVc/KyC29uxDvPIRV3cj2D?=
+ =?us-ascii?Q?g0pPEv+TLxB750tj9hBy3EGhhMR2sV8Gnlt63ccHrRpt6s4ugCeuc2WVi4sy?=
+ =?us-ascii?Q?/QZvsvxTeEBdZ8fSaWy10K2hg+YglU8agFLdwq2v1fqfBi1WItAerHbi117q?=
+ =?us-ascii?Q?nw2epmO5sHmzPXWzPrIFlqDpQ9BVChGFkUG0s9I0TLr+jnbG4/09nlEYOrGU?=
+ =?us-ascii?Q?3WW4tjytWlCAd3Xas/TtM2+i66C5/yTe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?P0I2eproh4GIwKIPAwXj+4lOKwNSoZMwYeXO6xInIntfCqDI4iG77tfHLG69?=
+ =?us-ascii?Q?I980li28WQHNJjBI0qW86HammAmkB2HRwefq6vSjHkCTdaEJYMVOUqfGCAR2?=
+ =?us-ascii?Q?5GqVGGeJJpN6uq3Or9/aXHTIqOtU1wMwIedEp9KAhbubK+XZWbV72YR6gyvL?=
+ =?us-ascii?Q?LBACDZqYbwJm/E8OMNQJYf1ixteVTF8/YWqZhdjBxt038/WFWsu1JDYUwNtw?=
+ =?us-ascii?Q?isczSSOMrkiaOFcL+Nb6ZmEiq+9CybVoMwCbCk7d/jWjCUj3azopW2rXhc1y?=
+ =?us-ascii?Q?tGdMNu6qq02vfpuw1X3dfOYNn3F5BdKaDG+fV5fPxZsLo33xcAECLc+V/FQ5?=
+ =?us-ascii?Q?f0eEetXr+fEM6O738I5B1yoGzNJhC+z1vz/pdaiu488lK6mQyPyBA404A1jm?=
+ =?us-ascii?Q?kO27l6s2kgqhE58y+2l6YIkBrPzcl67qPSGAmTCJRRdqvOTYiBDT9NCe9svg?=
+ =?us-ascii?Q?V9fIoYicrA5+L5wcRUD2OYV0hDyxES7lqPySYhrmwAYJnXtx7QnM49wilnQ0?=
+ =?us-ascii?Q?32PcHD7Y1M7Z/5mCzlwZdNDx8a8xLg2jcV7j2JbkrKpc3WLzeNB9Jxl9SPOB?=
+ =?us-ascii?Q?Ay+87Dwb8ga82qd3CUzpugy+66YLO8CrsILVVqgXr6iXxg/e78PTAxR9zC2L?=
+ =?us-ascii?Q?0CLe7cnJ7X/0dHkhFXWErrDBhBS0aZ79B9yhxRiJXfbTabXiQ3BZ2Q/Tp/tP?=
+ =?us-ascii?Q?de8YXoB4vbLBAiIbevUKtcvHO5kTlQS0FuWwExuq+ciU51OE1HuWFsgzo50i?=
+ =?us-ascii?Q?DyN1Tz5ON4VckagEWU2ICT+fGDbOIc/M8rwv9Ld3zDaHq1XxEMQsooX1+t7z?=
+ =?us-ascii?Q?wGvGn59kgUxg5imEOtpPdeRcnUtW1QIxlZOb9x0YC6yebXPXZsyR8960OC7H?=
+ =?us-ascii?Q?/K3GPFGsSp1hvTQrc2wGnE84vh1W2aDC/e6cGFy80LdWLlERI/jpd70e6MAa?=
+ =?us-ascii?Q?Rx5bspUUx9/gMq+zBPGWS+f3lkHdNxyWm3M0zWlLuGJKt0krYCqCyGU8U3lZ?=
+ =?us-ascii?Q?oM47NmAqdTRNJaccXuB806KxfyTgxsWmR3O/m95utYx0qCsYcp50FqgIeI0r?=
+ =?us-ascii?Q?DlEPBjuUInq/7hh+VA4vmCRX7DjYx1Ad0hytxsATvK26OQB67f1H7nKZ4dtI?=
+ =?us-ascii?Q?wtM3TPtzjzQu9vgUeW5iAZt3/KZfCuIvvR9BeHlyxmhZrUYkRQ/D8GRKQHTs?=
+ =?us-ascii?Q?YJOoI2/LTTDbN0DBbdxz5cigb6ecsu8n0wx6xTlVv/mJGxFPTARcXJ0KkmYj?=
+ =?us-ascii?Q?nDn15ZkrGX0da33y/CQnvr9eTXSZ3H4hPhtDY3l4r9kifJDjDfYbI5AWkN5a?=
+ =?us-ascii?Q?Gj3EKXtcTelEcYd+xBz6Te/qK8a3wr+GL78xopYzuUF+9P+XMWnrazfBaH8m?=
+ =?us-ascii?Q?X0u8BBKnFaY+3Xt4xhf1QCE+MzzHoXfTGB5j5oEuJaa24b9kqhJ48CHUaMuK?=
+ =?us-ascii?Q?mrsjP7BA7d4sw/2ZahalmH1aq3uDhKOPWJ7TcZ/qV3Wafy2XWyVWtShBS3S8?=
+ =?us-ascii?Q?v5YweAbrvqnssb91Tf/YzVBmJp9/RfcPokbCgmGolUBRvi7UHP3wmXstH0qm?=
+ =?us-ascii?Q?VGlu6KjLjTJ0GtVw2oH1xgW2l464lVuZPUn6/WBJ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bd9310b-421f-4755-9bd5-08ddc817fb91
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 05:32:29.4656
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tu7W9jzUirubTfnzNkH/Bg/A11PfrqNCY+QF8rh37SUeYJ4xpclufdxPEG0XSb2aS/9L16Ng/SiCiE+Bi2Qgfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9989
 
-Different bus clocks require different pinctrl states to remain stable.
-Add support for selecting between a default and UHS state according to
-the bus clock.
+On Wed, Jul 09, 2025 at 01:13:07PM +0200, Luca Weiss wrote:
+>Document the bindings for the ADSP, CDSP, MPSS and WPSS PAS on the Milos
+>(e.g. SM7635) SoC.
+>
+>Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>---
+> .../bindings/remoteproc/qcom,milos-pas.yaml        | 201 +++++++++++++++++++++
+> 1 file changed, 201 insertions(+)
+>
+>diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml
+>new file mode 100644
+>index 0000000000000000000000000000000000000000..790ad38a0330bf81f6333e887522ddb97690edbc
+>--- /dev/null
+>+++ b/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml
+>@@ -0,0 +1,201 @@
+>+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+>+%YAML 1.2
+>+---
+>+$id: http://devicetree.org/schemas/remoteproc/qcom,milos-pas.yaml#
+>+$schema: http://devicetree.org/meta-schemas/core.yaml#
+>+
+>+title: Qualcomm Milos SoC Peripheral Authentication Service
+>+
+>+maintainers:
+>+  - Luca Weiss <luca.weiss@fairphone.com>
+>+
+>+description:
+>+  Qualcomm Milos SoC Peripheral Authentication Service loads and boots firmware
+>+  on the Qualcomm DSP Hexagon cores.
+>+
+>+properties:
+>+  compatible:
+>+    enum:
+>+      - qcom,milos-adsp-pas
+>+      - qcom,milos-cdsp-pas
+>+      - qcom,milos-mpss-pas
+>+      - qcom,milos-wpss-pas
+>+
+>+  reg:
+>+    maxItems: 1
+>+
+>+  clocks:
+>+    items:
+>+      - description: XO clock
+>+
+>+  clock-names:
+>+    items:
+>+      - const: xo
+>+
+>+  interrupts:
+>+    minItems: 6
+>+    maxItems: 6
 
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
----
- drivers/mmc/host/sdhci-pxav3.c          | 30 +++++++++++++++++++++++++++++-
- include/linux/platform_data/pxa_sdhci.h |  7 +++++++
- 2 files changed, 36 insertions(+), 1 deletion(-)
+If minItems and maxItems are same, just keep minItems.
 
-diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
-index 3fb56face3d81259b693c8569682d05c95be2880..0e1bd75a1252e5559deb0b3caabcdc75919aee3d 100644
---- a/drivers/mmc/host/sdhci-pxav3.c
-+++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -20,9 +20,11 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
- #include <linux/mbus.h>
-+#include <linux/units.h>
- 
- #include "sdhci.h"
- #include "sdhci-pltfm.h"
-@@ -313,8 +315,24 @@ static void pxav3_set_power(struct sdhci_host *host, unsigned char mode,
- 		mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, vdd);
- }
- 
-+static void pxav3_set_clock(struct sdhci_host *host, unsigned int clock)
-+{
-+	struct platform_device *pdev = to_platform_device(mmc_dev(host->mmc));
-+	struct sdhci_pxa_platdata *pdata = pdev->dev.platform_data;
-+
-+	if (clock < 100 * HZ_PER_MHZ) {
-+		if (!IS_ERR(pdata->pins_default))
-+			pinctrl_select_state(pdata->pinctrl, pdata->pins_default);
-+	} else {
-+		if (!IS_ERR(pdata->pins_uhs))
-+			pinctrl_select_state(pdata->pinctrl, pdata->pins_uhs);
-+	}
-+
-+	sdhci_set_clock(host, clock);
-+}
-+
- static const struct sdhci_ops pxav3_sdhci_ops = {
--	.set_clock = sdhci_set_clock,
-+	.set_clock = pxav3_set_clock,
- 	.set_power = pxav3_set_power,
- 	.platform_send_init_74_clocks = pxav3_gen_init_74_clocks,
- 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
-@@ -441,6 +459,16 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
- 			host->mmc->pm_caps |= pdata->pm_caps;
- 	}
- 
-+	pdata->pinctrl = devm_pinctrl_get(dev);
-+	if (IS_ERR(pdata->pinctrl))
-+		dev_warn(dev, "could not get pinctrl handle\n");
-+	pdata->pins_default = pinctrl_lookup_state(pdata->pinctrl, "default");
-+	if (IS_ERR(pdata->pins_default))
-+		dev_warn(dev, "could not get default state\n");
-+	pdata->pins_uhs = pinctrl_lookup_state(pdata->pinctrl, "state_uhs");
-+	if (IS_ERR(pdata->pins_uhs))
-+		dev_warn(dev, "could not get uhs state\n");
-+
- 	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, PXAV3_RPM_DELAY_MS);
-diff --git a/include/linux/platform_data/pxa_sdhci.h b/include/linux/platform_data/pxa_sdhci.h
-index 899457cee425d33f82606f0b8c280003bc73d48d..540aa36db11243719707bdf22db23a8e2035674d 100644
---- a/include/linux/platform_data/pxa_sdhci.h
-+++ b/include/linux/platform_data/pxa_sdhci.h
-@@ -35,6 +35,9 @@
-  * @quirks: quirks of platfrom
-  * @quirks2: quirks2 of platfrom
-  * @pm_caps: pm_caps of platfrom
-+ * @pinctrl: pinctrl handle
-+ * @pins_default: default pinctrl state
-+ * @pins_uhs: pinctrl state for fast (>100 MHz) bus clocks
-  */
- struct sdhci_pxa_platdata {
- 	unsigned int	flags;
-@@ -47,5 +50,9 @@ struct sdhci_pxa_platdata {
- 	unsigned int	quirks;
- 	unsigned int	quirks2;
- 	unsigned int	pm_caps;
-+
-+	struct pinctrl	     *pinctrl;
-+	struct pinctrl_state *pins_default;
-+	struct pinctrl_state *pins_uhs;
- };
- #endif /* _PXA_SDHCI_H_ */
+>+
+>+  interrupt-names:
+>+    minItems: 6
+>+    maxItems: 6
 
--- 
-2.50.1
+Ditto.
 
+Do you need to define the list?
+
+>+
+>+  qcom,qmp:
+>+    $ref: /schemas/types.yaml#/definitions/phandle
+>+    description: Reference to the AOSS side-channel message RAM.
+>+
+>+  smd-edge: false
+>+
+>+  firmware-name:
+>+    $ref: /schemas/types.yaml#/definitions/string-array
+>+    minItems: 1
+>+    items:
+>+      - description: Firmware name of the Hexagon core
+>+      - description: Firmware name of the Hexagon Devicetree
+>+
+>+  memory-region:
+>+    minItems: 1
+>+    items:
+>+      - description: Memory region for core Firmware authentication
+>+      - description: Memory region for Devicetree Firmware authentication
+>+
+>+required:
+>+  - compatible
+>+  - reg
+>+  - memory-region
+>+
+>+allOf:
+>+  - $ref: /schemas/remoteproc/qcom,pas-common.yaml#
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          enum:
+>+            - qcom,milos-adsp-pas
+>+            - qcom,milos-cdsp-pas
+>+    then:
+>+      properties:
+>+        memory-region:
+>+          minItems: 2
+>+          maxItems: 2
+>+        firmware-name:
+>+          minItems: 2
+>+          maxItems: 2
+
+Just keep minItems if maxItems is same value.
+
+>+    else:
+>+      properties:
+>+        memory-region:
+>+          maxItems: 1
+>+        firmware-name:
+>+          maxItems: 1
+>+
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          contains:
+>+            enum:
+>+              - qcom,milos-adsp-pas
+>+    then:
+>+      properties:
+>+        power-domains:
+>+          items:
+>+            - description: LCX power domain
+>+            - description: LMX power domain
+>+        power-domain-names:
+>+          items:
+>+            - const: lcx
+>+            - const: lmx
+>+
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          enum:
+>+            - qcom,milos-cdsp-pas
+>+            - qcom,milos-wpss-pas
+>+    then:
+>+      properties:
+>+        power-domains:
+>+          items:
+>+            - description: CX power domain
+>+            - description: MX power domain
+>+        power-domain-names:
+>+          items:
+>+            - const: cx
+>+            - const: mx
+>+
+>+  - if:
+>+      properties:
+>+        compatible:
+>+          enum:
+>+            - qcom,milos-mpss-pas
+>+    then:
+>+      properties:
+>+        power-domains:
+>+          items:
+>+            - description: CX power domain
+>+            - description: MSS power domain
+>+        power-domain-names:
+>+          items:
+>+            - const: cx
+>+            - const: mss
+>+
+>+unevaluatedProperties: false
+>+
+>+examples:
+>+  - |
+>+    #include <dt-bindings/clock/qcom,rpmh.h>
+>+    #include <dt-bindings/interconnect/qcom,icc.h>
+>+    #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
+>+    #include <dt-bindings/interrupt-controller/irq.h>
+>+    #include <dt-bindings/mailbox/qcom-ipcc.h>
+>+    #include <dt-bindings/power/qcom,rpmhpd.h>
+>+
+>+    remoteproc@3000000 {
+>+        compatible = "qcom,milos-adsp-pas";
+>+        reg = <0x03000000 0x10000>;
+>+
+>+        interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+>+                              <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+>+                              <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+>+                              <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+>+                              <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>,
+>+                              <&smp2p_adsp_in 7 IRQ_TYPE_EDGE_RISING>;
+
+This seems not defined in bindings, I am not sure on this. Just a question
+here.
+
+Regards
+Peng
