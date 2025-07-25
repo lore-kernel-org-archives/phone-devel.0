@@ -1,59 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965C42ECD3E;
-	Thu, 24 Jul 2025 19:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519A7224225
+	for <phone-devel@vger.kernel.org>; Fri, 25 Jul 2025 14:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753385341; cv=none; b=L5LZUwmkWiovRnIwaY0I3xAP/nPKnuKNpSHL/G7FK9MF8Nt9laRbRzthqn8WA2C2w1TcKKIdXNCwekXky7WbyUjiQdZZ2A+//ZsCJzFs3WnXjdDB4ZATkXz+dLA8Le628aUgLCMoJ4JIq7DVXLiltAkRERbF8XYBo8PEeRMLCRo=
+	t=1753452890; cv=none; b=Yf/O+Sv0qWSWIqifmmevjm+/y0lnPFVocLSr0ulI7b2jGy/UCk1w5AVCrIUtnU8zwTviq72VDukHd++2Cxwvck/TS/FpyYBZ+eXibmLqWm6VSD+6vbcskSrmZGBGKWdRX359p0vbW+rpucWtG5zmsSj+O9KQg8/Zna59ilGqHAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753385341; c=relaxed/simple;
-	bh=LhTJm0/lGmmaCK91nWxTC3cAo1Whxsr2o2C2BU6YW5w=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=Y+4itHcJlgaYWpsQkwo7Zkal8/k+qTspnHa2BWPhVinpvfo7LKk3SQNMlOgxMW+A8ELjGTJrlQ8RAl9z+d3WAEqbJFDVrhKS5hCYb84ohxsJMj9aP5Bx4rUdktIE+vB8KKdzLWtzPZg3S7/XPAnKqZOpws39hyZgp88wgb35dW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIjyTaKn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753452890; c=relaxed/simple;
+	bh=rNyAWlp56eBFvy36oX5YiZlPyIt11W/cxbD2Iyf2S4s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=q4BFbTHvqNegKSs3E4fQGmk74l9PlVNE7X4iqThQjwtpjuwkKtVc2nbzZXcSmFebn8S+uBsM2zGR28kSLF1P8+gRzbBj7b5WdXW3SB2WxNUpIynBoeoCrOovduJYz3Nvx5B6A3/myQzCLvtj82hrBqANCgJ1IeNhWkboktPEP9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=3GNcyl+V; arc=none smtp.client-ip=209.85.208.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIjyTaKn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16425C4CEED;
-	Thu, 24 Jul 2025 19:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753385341;
-	bh=LhTJm0/lGmmaCK91nWxTC3cAo1Whxsr2o2C2BU6YW5w=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=jIjyTaKn+xdcguz7TbJJlbdOLTrNbVaW4d0vj9sq0ao6zX8U+zU07fV2wzp4e+RN6
-	 CLKhoKTc087WqRUGb41kOnbgdtyDpeA6uELR4rq1/eGYzEbbIzEMWhbDGEDCo209vF
-	 XWrRh0sp5621iIY2H65hgPJmItmdDCjLKLOcxWY/1zQOMJFecERPzx4AJ+0qwF5i+F
-	 jWvcH+IK9aSzbT+IcXkJpDg+2yumt7z5sgElzvbuktLAxmsg1uOW104icblr+GBAnI
-	 QP8BttSzeZnQ0Yo2rOIU1Kc1x1Tva4a3rSiq3X8zjHYK1Bxmo/uUKU7T2JKKzV+SWB
-	 qlQ0bSat2jVHQ==
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3GNcyl+V"
+Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-60c5b8ee2d9so4456311a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jul 2025 07:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1753452886; x=1754057686; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iSkJyTrv6R3uiwv3q2J4zn3hDj1JQ7Rtyl+OeDRudNc=;
+        b=3GNcyl+VN56MLlLZZiFVdso3FYTMvxLqn0YicT4yjc3jDsdFduc6k8L2aJz+z7EMyB
+         MwmZZxlrU27kgawqJRkZm2zoQP2golw0YdBQEdxJg3OpVk1uIXLgbBiO2YEe9ssCeyfq
+         NEE3TiphHbKz1lK+XfH2G1qBUvZKPPaJv/znEj++VkWiLz9kiBcbgwmdKXKc/juZaz6n
+         UkHw63EKc8v0nhrOsyDsAZvXu1g8aeI0CtC6L22yQcvO5DjQdju5F0hof5CO4JJFhDKR
+         1va/awzeHy9uwa5YGsdaj0I5nvvekY+MC7BvqIZtc30xXJ7j4vpvZDgX2T5xHDb0Qfib
+         /0tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753452886; x=1754057686;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iSkJyTrv6R3uiwv3q2J4zn3hDj1JQ7Rtyl+OeDRudNc=;
+        b=u6Kp3+BeYLXGxh9k9Uq+N10lwBYhkphUDCko0i0kLNKPZYqC4CBsZ6f/vvVS3EkVHw
+         duXMMLkFSX3zPj/Cma+ksfoardtj2q4PqSivWLsrPaKPfe39DogmY7BR68eOrg90iSqW
+         1AhgfeBSJxqThriX09x81q+tmH/KKwVvQg9CDHBPBcVVFvuGUQeG+RJn0fYxgX32C4xo
+         vsGh608vxjSg3hW9NdMVeCTzI4kcuvvIWE7eqh6a/LpfkYw2NJpjxIx5Bipi7sj34UFX
+         6/nynoGkM+RbyvCwfIeRI/pukfa/ILSgTzeuFEVAnqB94SzCYofg7CE3eedhVWBU3aI2
+         DAUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/Pzmz+3WRH1K4oYdoYdrdrYvfooukIiEoHO/d5SVWKqXxDhP0GpQSLtGjCT4GV9tz4lm9/q32D54jlw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxERvAzPc7HfRvKcrlzgn0b52ESGDBMb4sW/donw4k0RTkraf7c
+	SLjTf+Xh9wwtBNnII9nqZER9lWb3t7gfODjGGV0cnPH8mv+uCoFoXve5xpFFDwqjwLI=
+X-Gm-Gg: ASbGncs82H8sf4DzbwVsZJk3CUz3Qh1la0tr6ZTbwoq4F67vMknlb7gJzE8VJec+bhL
+	/JCeS/x4KRgNZgAfRdMHHdcEHzyEFxPj4NcG/4kNC2djtWiv2PN0JWNQL0E7LMbBcAVgsMGhSkb
+	RMEnCYjd5GFc4ccskrQ9W7Gj8pDsjn6YoNFER0RtE4A/BCc0AGJHrwFxFRE+ix425HgGHo3+YUj
+	GEudaTL03TZ+nMZn8uUV/iDgVTr+a9fGLfqfZKYQwtJPV+DDA1LPhiFN2MhxK9pNZXCXvhSk4GX
+	D8w/KghE2Y67Na9UjEdlqOr946Tl4nRBt4yP/2AKRMee6JNhEH6cRjBK7QVLgH31zpB3n3Z5hko
+	LaR8s8G6KRe5nCpwvRwqBUJBr489OJAPhSxy1qD6Q5dwP+rfIrELu8u7VkZicAgCpJqE=
+X-Google-Smtp-Source: AGHT+IGz463msOz8qJcurxvgKtRb5VKMVkS2t8llkd59+2lECxEEVtdl6gBW3cfbqM7OYO38KYCWFg==
+X-Received: by 2002:a05:6402:3595:b0:604:e440:1d0b with SMTP id 4fb4d7f45d1cf-614f1a88810mr1744941a12.4.1753452885513;
+        Fri, 25 Jul 2025 07:14:45 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-614d907a40csm1635236a12.15.2025.07.25.07.14.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Jul 2025 07:14:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <175338519842.3513.7440958226312827195@lazor>
-References: <20250717-bindings-double-colon-v1-0-c04abc180fcd@fairphone.com> <20250717-bindings-double-colon-v1-3-c04abc180fcd@fairphone.com> <175338519842.3513.7440958226312827195@lazor>
-Subject: Re: [PATCH 3/3] dt-bindings: soc: qcom,rpmh-rsc: Remove double colon from description
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-To: Abel Vesa <abel.vesa@linaro.org>, Ajit Pandey <quic_ajipan@quicinc.com>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Danila Tikhonov <danila@jiaxyga.com>, David Wronek <david@mainlining.org>, Dmitry Baryshkov <lumag@kernel.org>, Georgi Djakov <djakov@kernel.org>, Imran Shaik <quic_imrashai@quicinc.com>, Iskren Chernev <me@iskren.info>, Jens Reidel <adrian@travitia.xyz>, Jonathan Marek <jonathan@marek.ca>, Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Loic Poulain <loic.poulain@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Manivannan Sadhasivam <mani@kernel.org>, Martin Botka <martin.botka@somainline.org>, Michael Turquette <mturquette@baylibre.com>, Neil Armstrong <neil.armstrong@linaro.org>, Priya Kakitapalli <quic_skakitap@quicinc.com>, Rajendra Nayak <quic_rjendra@quicinc.com>, Rob Herring <robh@kernel.org>, Robert Marko <robert.markoo@sartura.hr>, Shawn Guo <shawn.guo@linaro.org>, Taniya Das <quic_tdas@quicinc.com>, Vinod Koul <vkoul@kernel.org>, krishna Lanka <quic_vamslank@quicinc.com>
-Date: Thu, 24 Jul 2025 12:29:00 -0700
-Message-ID: <175338534025.3513.8075934399591002683@lazor>
-User-Agent: alot/0.11
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Jul 2025 16:14:44 +0200
+Message-Id: <DBL766O111UP.1IBG5Q30DCEQS@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+ <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH 06/14] dt-bindings: mailbox: qcom-ipcc: document the
+ SM7635 Inter-Processor Communication Controller
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Will Deacon"
+ <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel"
+ <joro@8bytes.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Vinod Koul" <vkoul@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Robert Marko"
+ <robimarko@gmail.com>, "Das Srinagesh" <quic_gurus@quicinc.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Jassi Brar" <jassisinghbrar@gmail.com>,
+ "Amit Kucheria" <amitk@kernel.org>, "Thara Gopinath"
+ <thara.gopinath@gmail.com>, "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+ "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>,
+ "Ulf Hansson" <ulf.hansson@linaro.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250625-sm7635-fp6-initial-v1-0-d9cd322eac1b@fairphone.com>
+ <20250625-sm7635-fp6-initial-v1-6-d9cd322eac1b@fairphone.com>
+In-Reply-To: <20250625-sm7635-fp6-initial-v1-6-d9cd322eac1b@fairphone.com>
 
-Quoting Stephen Boyd (2025-07-24 12:26:38)
-> Quoting Luca Weiss (2025-07-16 23:54:46)
-> > No double colon is necessary in the description. Fix it.
-> >=20
-> > Reported-by: Rob Herring <robh@kernel.org>
-> > Closes: https://lore.kernel.org/lkml/20250625150458.GA1182597-robh@kern=
-el.org/
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
->=20
-> Applied to clk-next
+Hi Jassi,
 
-Err scratch that.
+On Wed Jun 25, 2025 at 11:23 AM CEST, Luca Weiss wrote:
+> Document the Inter-Processor Communication Controller on the SM7635 Platf=
+orm.
+>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+I see you picked up this patch[0], but "qcom,sm7635-ipcc" should be
+dropped. Only "qcom,milos-ipcc" from v2 should land.
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/com=
+mit/?id=3D872798f61d8bfea857e54aa17baa7b0d3ee24b65
+
+Regards
+Luca
+
+> ---
+>  Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml b/D=
+ocumentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
+> index f69c0ec5d19d3dd726a42d86f8a77433267fdf28..6e86ec36a82254ebd73c3067d=
+e495795c36c6bee 100644
+> --- a/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
+> +++ b/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
+> @@ -34,6 +34,7 @@ properties:
+>            - qcom,sdx75-ipcc
+>            - qcom,sm6350-ipcc
+>            - qcom,sm6375-ipcc
+> +          - qcom,sm7635-ipcc
+>            - qcom,sm8250-ipcc
+>            - qcom,sm8350-ipcc
+>            - qcom,sm8450-ipcc
+
