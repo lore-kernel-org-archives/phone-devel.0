@@ -1,143 +1,166 @@
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DEB26FA76
-	for <phone-devel@vger.kernel.org>; Mon, 28 Jul 2025 15:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2640D264625
+	for <phone-devel@vger.kernel.org>; Tue, 29 Jul 2025 06:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753718035; cv=none; b=DuB46xkhMltNiiB4WqlOknHBwHmmAk6QAkoGpTRjdI6VtqQPcuzRCHfqWz6/rSkxG71lf0NY0z5RAI7lQsgd2Q3dswWL1Mt5r/JyIMdU7u/uFvUI53F2EacTNNQQGtaCRKF/riwSpTusYM1WJNWwEpz6r94aIzoGTvI+VQUx5gQ=
+	t=1753771796; cv=none; b=peb64+wd0GpkMh62TULUgfAJj/QLuCE5oLD34IQ6tvRGKlr/aOb/LHeZ1vjRwr//g0exR5TY35fScBnUzNg5znJhheuTuzY8Y64+Yo2OGk0BNUZCt2X96CIjmCCCDHk2K1KUMH1K7/bnMhOo0P7V3RmaALUZMTHQo9a3RAnW7Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753718035; c=relaxed/simple;
-	bh=Xb91t9iYll1tfZ8jj+Fe8p5aXdKrZAALX5hkvW1fTeg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sgwakr0jsKTmJUPmc7zdvnpHoqkRh64Odud4wZxGSwa6aJFsyC2UI3qRZHAvBBA0EZC7bTK4dOzsCwkhENinSWZPSO5/ssu5710MvtrJsfzIe7l6nGuZchNym+FDMym5HhFMFp2SM1lhxKcThTHdSljS88QMXgXBVggKcWobrHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=QzqD0FZ5; arc=none smtp.client-ip=209.85.166.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	s=arc-20240116; t=1753771796; c=relaxed/simple;
+	bh=EOhJI4XE7EmddrlB9TelXwBH+e7RrRI3HJn7pIRR/rk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Y7jcdELu8t0jwJ2j/LzhOhaMCiURoittpXoFWQt0TxuXkyfuJAcGCIzn8XsEwgnYy7xitUtNSzv3HZq4S8npk2pC/fxiEasoyhOFSIzi5b7kG2lW/xPlZbPX1SkaaLc1H1UrwPMjKT1Pxzfv7OOENuBc47SkAKiT1Z2A/SP4gcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=26X3Idx1; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="QzqD0FZ5"
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3e3e4c564ffso3151885ab.2
-        for <phone-devel@vger.kernel.org>; Mon, 28 Jul 2025 08:53:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="26X3Idx1"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-af66d49daffso244906266b.1
+        for <phone-devel@vger.kernel.org>; Mon, 28 Jul 2025 23:49:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1753718031; x=1754322831; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vA75icUEqF0I65qQDsqS6NAJyE6+tfqsXQddj1T3hko=;
-        b=QzqD0FZ5wI7lu2NkIvwIFmao1GeIhoz4wOYttjeBUAsUcda7XVBz6IY9FuMotXSTg0
-         +dWZdLza1wPctsyj3wONWIxoxcOB4t/+kgcM/EyUbdAzl55urT49QT5ox4/WMcitwraM
-         XIR5VqCNWiJMeN9Ur8xsgufuDFU8hLFRb2Q0w=
+        d=fairphone.com; s=fair; t=1753771792; x=1754376592; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0tvO0qmfUNC2jqa8M7kzzmnccGVoia4ygdONyDNCxVc=;
+        b=26X3Idx1BYDQEUjbe/WE12+rsByQkqNFRz9t0mlCCQMZcoOMcqWZUQPITGUIMcjFCT
+         kl5I5w2g7pXjhwftBtc7hLyZa8CRpe+QUDlYBvdklu30eZJu2CJTYVHQJIrYSo412gjH
+         5HJW8KmTF5XlVXAraB7W3dm/STPlocv5C0W4f/fuDkwq9fdi4B/EN3HwvmUODcqpSVUt
+         ScJcdmrKeVrOljbrRC6Y64732dH12RV/cuw3wZ3adkVhU5YuDCmE9CBGuvLP1hIffyzv
+         x++sHYcjLcoYCEGOCfwWjjNJjKQQgciew/AsTgBxb1s8gm0ClBaAIAUlth25CWEI+bfe
+         TR9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753718031; x=1754322831;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vA75icUEqF0I65qQDsqS6NAJyE6+tfqsXQddj1T3hko=;
-        b=m206ZPyv/VwrYIj7mZdizKhNBX7uqodcBYRRN7EZsJy0iO8UFG7h2OqPEpV7E0ZtAf
-         a1zMK1bPLicGYE3ljT/6s0XAyMe/gJECUHli95F+snc7cZHuGVjYznRUYmjn7A1VjD6G
-         jXISnrm0ozzbJBaeiOttpht3VaPehs26V8N5T2Q3908dmilmRwvvn5WtrFcAjDEbeqeT
-         OIFXQJkKbczyKt0StT9xTu3EkWOPv27o+lf2m3T4568qorVzbW1XU+yof6cJWohHwbwV
-         6s/m4UjfbP3zRAhHFJ2oD3faJqinKVwY4Yhd6c8FoIv8OjXRKmXVAYpFSOm8VCtV+8lV
-         UAkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbovtxl/pzNvTI6NdrBU3lICuHCyKwHwLnQLd6NE82mQ4pZw+Evo4jpablH/YWa05hgw12tYKzYJhoKw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymyq93vd3xDX5eGUwCjxmqhBXdHHd3KFQs0Tyq743NoTQQSCzc
-	QAC7BrP/GcqxvlkrtlRuccWrdAkgiVRgDK7lzeO8sVpIwnPFD+b9g8tZup9A2yk0FA==
-X-Gm-Gg: ASbGnctINJEw2nJvOezbXigRwTqZAXLVOJmx/M5egKyKwdggs02SrMV+LSV332ZTNMq
-	Qhnau12v7cEn+vaVWPiTy8M95cnmAvjlq+iCPvEtvwgfdLodBJOf0F8eLVbNtb6tpBebxP1FSx4
-	j0j53XzYFEcJnOxg46+XMPBlyax8HZ+MxOPrF/JOCJP3LRB9/qcIpu6xIXNHnXtXwstMxoJSdxu
-	RSmNrFkdkY3RbQD/XWYyKBY6/2nKVUzsqRpLd7aDSf62wq/cZFEIgSm0M3yfHdkDzVR0kvVUV2m
-	zwm5LAraBORqqOcwwTIgpwzwOq9EvlLlA4+iKqvHvKr3QZNRK876juyyIlKkTtC7tmw7pK/n+uf
-	EwZOM4qcyRbNV6KC3YrYIgPOrTWlqOPOa7R5sK6tasDazc9rLV12TCfLtUzsrO13mN+0Y
-X-Google-Smtp-Source: AGHT+IHGlI/3Pe8bkFG3tVYCr16gw07/QecOHAd3MsLl8dDS47dIcL8tDHYDVZgzeq/TKMa3hlOSsw==
-X-Received: by 2002:a05:6e02:3bc7:b0:3e2:9e61:433c with SMTP id e9e14a558f8ab-3e3c531061fmr180543925ab.15.1753718031332;
-        Mon, 28 Jul 2025 08:53:51 -0700 (PDT)
-Received: from [172.22.22.234] (c-73-228-159-35.hsd1.mn.comcast.net. [73.228.159.35])
-        by smtp.googlemail.com with ESMTPSA id 8926c6da1cb9f-508c9341e79sm1953738173.61.2025.07.28.08.53.49
+        d=1e100.net; s=20230601; t=1753771792; x=1754376592;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0tvO0qmfUNC2jqa8M7kzzmnccGVoia4ygdONyDNCxVc=;
+        b=dr5xSiYifcy6MhBCgBOzPkg1L75umsmsUxS6Bjsasmd6cPd5/64zx+BrH1tsffZDGw
+         u63t5Xi5faCBNb98wGH880SN7VTSiae7azbXIZAN3W533QAXrv4ImY7pX5Rl/9hZuHyp
+         45R5AS47veP9Hc02DXqvUFyLUSTZVE7hTO6YVaJd/yic+UkYsSil/QZJO6iWBJLP5xsZ
+         5PovdSXb1NOWN6SXRSBUaKfY8KDtf4vUgkuCPn0vWKn3j72CA5+kgrjDWWlbI71SSJqo
+         9Hr7aaUrNo9X/sCywc+IrImjl0qo3jhb7K1FyG4QnlsrjXi2Ixt16SwpyIS+aUpxKsFD
+         V4tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwXgXUfW0dPkvFHXBQYSp5+UBkhv0GDsbcOc7dlzUs4cbBiwPS63N+pr2IqOPc9N9u3+0P2R4Xqe673Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq1sps8Ymj7rw6a6iYltn56+hTANCztBcD35lx+SYafGzRa80/
+	PiebV+xbbx40/irqNKxNUxsryCUY8ZcFlX8g6mC5R+e4wvm3AqRaueCU+A/HHTnq5LA=
+X-Gm-Gg: ASbGncvXDb9kBDH1L8vQiJWgEvXD9aNanmdB6B8eQaL9/Tl5WhzoRvZVbYNE///jmCa
+	dDYUQYHjTetXKfS47eGwhXnXM6lNM0v/lQ1nyAaD7RtwKwTE5UTdPOdN3UpbuneZDT+hN+8vjrl
+	rmmNWr/CAjPJtfcXZektXc30ba+Ob1BEIu3s08RyE2kgVpT9FaN9zV52zM24afNH0LMVWhkMhMk
+	SofZD4KqoTX6Si+lSoda+mGTL9ifGCsYPrCEc+ulgsn4AobVJUC/o9yqaoUEHrXXsdJIXBxtHgu
+	nLBt/W0cXoKXpDhMIjGgRY6LzGPSwGoKVmLl6rJeK1y7/rFqCKZvatHwLE0FA/kUzVSO/JBCH/g
+	slMd1Gal+8ZcA5dEvkM8Sh1Giy5dPNi6uR89kx3mDpCHhr2osKZ+W9sshXArWE9/U0zw=
+X-Google-Smtp-Source: AGHT+IFY1cXRHhDZKmmaOPFoMzRlis7auiB0SY6wze0NFezD/noiXwvsAjKX3xVSDeubNvW/ghlrqg==
+X-Received: by 2002:a17:907:868c:b0:ae0:da16:f550 with SMTP id a640c23a62f3a-af619d062b6mr1776275666b.49.1753771792232;
+        Mon, 28 Jul 2025 23:49:52 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af6358600b1sm546209366b.7.2025.07.28.23.49.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 08:53:50 -0700 (PDT)
-Message-ID: <e07f0407-84e1-4efa-868d-5853b7e9ab4e@ieee.org>
-Date: Mon, 28 Jul 2025 10:53:49 -0500
+        Mon, 28 Jul 2025 23:49:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: ipa: add IPA v5.1 and v5.5 to ipa_version_string()
-To: Luca Weiss <luca.weiss@fairphone.com>, Alex Elder <elder@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Jul 2025 08:49:50 +0200
+Message-Id: <DBOC7QBND54K.1SI5V9C2Z76BY@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+ <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Konrad Dybcio"
+ <konrad.dybcio@oss.qualcomm.com>, "Will Deacon" <will@kernel.org>, "Robin
+ Murphy" <robin.murphy@arm.com>, "Joerg Roedel" <joro@8bytes.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Manivannan
+ Sadhasivam" <mani@kernel.org>, "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, "Vinod Koul" <vkoul@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Robert Marko" <robimarko@gmail.com>, "Das
+ Srinagesh" <quic_gurus@quicinc.com>, "Thomas Gleixner"
+ <tglx@linutronix.de>, "Jassi Brar" <jassisinghbrar@gmail.com>, "Amit
+ Kucheria" <amitk@kernel.org>, "Thara Gopinath" <thara.gopinath@gmail.com>,
+ "Daniel Lezcano" <daniel.lezcano@linaro.org>, "Zhang Rui"
+ <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>, "Ulf Hansson"
+ <ulf.hansson@linaro.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
+ <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
+ <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
+ <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
+ <DBE8G88CIQ53.2N51CABIBJOOO@fairphone.com>
+In-Reply-To: <DBE8G88CIQ53.2N51CABIBJOOO@fairphone.com>
 
-On 7/28/25 3:35 AM, Luca Weiss wrote:
-> Handle the case for v5.1 and v5.5 instead of returning "0.0".
+Hi Konrad,
 
-This makes sense for IPA v5.5.
+On Thu Jul 17, 2025 at 11:46 AM CEST, Luca Weiss wrote:
+> Hi Konrad,
+>
+> On Thu Jul 17, 2025 at 10:29 AM CEST, Luca Weiss wrote:
+>> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
+>>> On 7/13/25 10:05 AM, Luca Weiss wrote:
+>>>> Add a devicetree description for the Milos SoC, which is for example
+>>>> Snapdragon 7s Gen 3 (SM7635).
+>>>>=20
+>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>> ---
+>>>
+>>> [...]
+>>>> +
+>>>> +		spmi_bus: spmi@c400000 {
+>>>> +			compatible =3D "qcom,spmi-pmic-arb";
+>>>
+>>> There's two bus instances on this platform, check out the x1e binding
+>>
+>> Will do
+>
+> One problem: If we make the labels spmi_bus0 and spmi_bus1 then we can't
+> reuse the existing PMIC dtsi files since they all reference &spmi_bus.
+>
+> On FP6 everything's connected to PMIC_SPMI0_*, and PMIC_SPMI1_* is not
+> connected to anything so just adding the label spmi_bus on spmi_bus0
+> would be fine.
+>
+> Can I add this to the device dts? Not going to be pretty though...
+>
+> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm6=
+4/boot/dts/qcom/milos-fairphone-fp6.dts
+> index d12eaa585b31..69605c9ed344 100644
+> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+> @@ -11,6 +11,9 @@
+>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+>  #include "milos.dtsi"
+> +
+> +spmi_bus: &spmi_bus0 {};
+> +
+>  #include "pm7550.dtsi"
+>  #include "pm8550vs.dtsi"
+>  #include "pmiv0104.dtsi" /* PMIV0108 */
+>
+> Or I can add a second label for the spmi_bus0 as 'spmi_bus'. Not sure
+> other designs than SM7635 recommend using spmi_bus1 for some stuff.
+>
+> But I guess longer term we'd need to figure out a solution to this, how
+> to place a PMIC on a given SPMI bus, if reference designs start to
+> recommend putting different PMIC on the separate busses.
 
-I have comments below, but I'll do this up front:
+Any feedback on this regarding the spmi_bus label?
 
-Reviewed-by: Alex Elder <elder@riscstar.com>
+Regards
+Luca
 
-> Also reword the comment below since I don't see any evidence of such a
-> check happening, and - since 5.5 has been missing - can happen.
-
-You are correct.  Commit dfdd70e24e388 ("net: ipa: kill
-ipa_version_supported()") removed the test that guaranteed
-that the version would be good.  So your comment update
-should have done then.
-
-> Fixes: 3aac8ec1c028 ("net: ipa: add some new IPA versions")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->   drivers/net/ipa/ipa_sysfs.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
-> index a59bd215494c9b7cbdd1f000d9f23e100c18ee1e..a53e9e6f6cdf50103e94e496fd06b55636ba02f4 100644
-> --- a/drivers/net/ipa/ipa_sysfs.c
-> +++ b/drivers/net/ipa/ipa_sysfs.c
-> @@ -37,8 +37,12 @@ static const char *ipa_version_string(struct ipa *ipa)
->   		return "4.11";
->   	case IPA_VERSION_5_0:
->   		return "5.0";
-> +	case IPA_VERSION_5_1:
-> +		return "5.1";
-
-IPA v5.1 is not actually supported yet, and this won't be
-used until it is.  Only those platforms with compatible
-strings defined in the ipa_match array in "ipa_main.c" will
-probe successfully.
-
-That said...  I guess it's OK to define this at the same time
-things are added to enum ipa_version.  There are still too
-many little things like this that need to be updated when a
-new version is supported.
-
-Thanks for the patch.
-
-					-Alex
-
-> +	case IPA_VERSION_5_5:
-> +		return "5.5";
->   	default:
-> -		return "0.0";	/* Won't happen (checked at probe time) */
-> +		return "0.0";	/* Should not happen */
->   	}
->   }
->   
-> 
-> ---
-> base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-> change-id: 20250728-ipa-5-1-5-5-version_string-a557dc8bd91a
-> 
-> Best regards,
+>
+> Regards
+> Luca
 
