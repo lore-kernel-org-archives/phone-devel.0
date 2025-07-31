@@ -1,169 +1,209 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0942264AC
-	for <phone-devel@vger.kernel.org>; Thu, 31 Jul 2025 10:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DAC1C7013;
+	Thu, 31 Jul 2025 21:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753957872; cv=none; b=cUeuL97enpDaj8V9Rpcu0PogDqqSaDZbw/tLavFahWOm4N+EH2kAkTIrRg5kFau5k2sXc2twryDT8fruvGjL6oe74tNoERmJApP//VMaQmS6Gpeuu+DesNFs9u9XEg7i/CAYxd0Ep5XJ0EgHQEJODsiQLPOq4NOB1j0tLg2lhWU=
+	t=1753996034; cv=none; b=h4aCUZ5jIr6MsLfHMMJ7ck73KnhS0i0NLVGiJkR+uImdkyIAR9dk4sX3ltn3wo0Kw2r5FrPlCijHaBP6FcdzwcMdjGZRlxg2EDGuqyUfXa76oGBiqD8wb+LPwDd7n+aRHCTalBEXN8PLP9WHjP7SWQYUFE56P2qLHdGszon1kgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753957872; c=relaxed/simple;
-	bh=ZUDRaqnU24X+T7uVJpSv5R4hg3CFDsxJ4xG56N/y4Qg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=uPeV7J6FVkFLue7kZ7EusJkQunTodTNrKHLbPneZmqM218rkIe1NhCRlqi0HlFpmECI+yhMQWq31NAIpuHgYMH38Ap8LDrQFuo6H8PtmhnqAhpq6/xmWMZZ1o8U1EpirEfIRy/LZMjMv8mkvzLBWrgU9tdcC1kmdA9qBSNXgob0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=0bcLZnU3; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1753996034; c=relaxed/simple;
+	bh=8Wy6v2zEQbv4sE727EkXinUIUXS+RivX/F8LgeXpAlI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JtU8hgfqjFyIKXiF6CufG6AgbAHqvXYILD+95ckZ0D57XKU9lrltjBCuKIa5wmZG26KV2ti+BFprV/jZIP7vPxVjt3F4+DBjU7I24n3hrJYgsFK43CiOwsWDhqopCB6ylXFVGQpY+xYcSVLb/gI5dzRXTqsySXcdQ9f7tup+48k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQ9HW67n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="0bcLZnU3"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6156463fae9so3296656a12.0
-        for <phone-devel@vger.kernel.org>; Thu, 31 Jul 2025 03:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1753957868; x=1754562668; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L4guNMFO2mNbUVAujgFMPCeQwDaxzkTETmATTN/1vzk=;
-        b=0bcLZnU3r7oR3VeHpMNKjhZCr4QAam/3A7YxEhGTUYHWnkjIT9JTOfEJBRIpxMjkfW
-         D0mkWCxlYVSS4JfIC8MM6WBrzBZNCzrOS+BecYrKfvzPu2UIyh1pPgzyCIDtEUZvVd/e
-         UpNqjOZVzSl+xdLOEfr1d+sHMajDBmGPC/HIcDA4J/jCWeyWDZKJrUiQuTOGhkjT++T3
-         0mQsudHeb+EY2jZcOdX8MPll9k9iLMz31MI4BP34ObVUgDEaw32dg5foXOEMMqJf/vwP
-         7FtmkuVa8AFUrX5/EydyDNVXWz+fwQYDlIjp0we3zN/WKgYUjBAYKP8Z/nkhb5uf73pV
-         bWHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753957868; x=1754562668;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=L4guNMFO2mNbUVAujgFMPCeQwDaxzkTETmATTN/1vzk=;
-        b=dpUbhGfEa8u7mFRESx6FdvOZj76IUFmcp43HDd+E0pB2quhpzHd97Liv8wl9YGYaTD
-         ZqddY4WW42Ccr5V/v6LiNvOnDfArLNlGvVYiw7XnXaxfxn+QSwJKSr/tqdMKRgntvH+J
-         GNCgx55UMvgEvEFveg6/xXwwXqD36+G8bhmF7q7URWXayRpI2pqEfNj2haVO7pR9T8qk
-         Js1JVDpuz3LjK6RxpWsUcjHvExaDDdiuh3dBVjQI/gYbnZJk3wAqKKBkFv1hjvKIKm22
-         isaZNa+sFIXnqhnNJv9Zfc0jWQ+RFmy74QT//WPiH+YW7uUHnGhDjMH9UtGAD5nRigGm
-         s+OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVniu6Eks5NNVivPSXIPZDhMKGR33CvVNQTftpJyVwEn5MHIJmHOeHmr0E9x1LWrG/fUEZRN14W50fNRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy1sdz0vs61mhnKbNzYimSKqHSzwyebsWSfoHjT3LDRd8+a08I
-	jURJMlRUcBSP2Gi+SAbcBJLYszKPTDVs7hs/q2ChW6pf6W0rPZt4wxUIuWHzfNoLNcQ=
-X-Gm-Gg: ASbGncvJaS8YTOlgq0u6inUX5lh9aLz8z7MM0dcWW9mJpm6avsHwX+lMrpbSqTnW6Au
-	L9FeyIPPJnwjDHuxaEY7VbwCVSglBAni5elTnwB/1ZdjMS/jmHYwVGjQ6J7MLr/l/g4yVbfjXkX
-	CYEPUbxVTMJUeffPsQ3yX2sFgRfxeEioJ36BEPwZlyiFN4h8yycvjGTp31KuFel34i+jDNDxFil
-	zi0+o2phHSwNDmuKGlDnMmlTkDkA3/AxukIv2l+MWHjZlqQFrTP2uO/dgWg/XrTk8pXCU+OrXOx
-	45zaOsz2i7v+XCBqirFd8+262UZbjJWr0Kdgu9hNA/fd+fRM3uBqU7lVuequsB/aB+A2QdXt3CI
-	0dbfQgIHb8rcTMFJSfo+z2PMQ/xpToJqb86/uooYb3yyjM8CR0CITrZaAKPlXVsrizFQJtf3zGE
-	NiYg==
-X-Google-Smtp-Source: AGHT+IFmHbj//ifYv0ps4iK3o2MK/SZVcRme2djqmVaHUnfsmz5EX4ncIp+nUgle+xZrZADbwlYiEw==
-X-Received: by 2002:a17:907:2d28:b0:ae9:c8f6:bd3 with SMTP id a640c23a62f3a-af91bc55e14mr166781766b.7.1753957867841;
-        Thu, 31 Jul 2025 03:31:07 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f25739sm916887a12.21.2025.07.31.03.31.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Jul 2025 03:31:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQ9HW67n"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3571CC4AF0B;
+	Thu, 31 Jul 2025 21:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753996034;
+	bh=8Wy6v2zEQbv4sE727EkXinUIUXS+RivX/F8LgeXpAlI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=iQ9HW67n5LezlAL5uB8bjV8oaT3OfPg/1OQJYGdq4On1A9zd4NuK0iWKr6oykKtnS
+	 6BVggUdR7YxJubu71RFRlHbgR0d6nTXHNFOZX2PnLol1yGQIjXXzqbSJ7oLwaPZeAM
+	 EpYAC7hDk2q4fZyI1AXTKpuXhoS76khA3V9UPMRvwUYtIk0lP5bZoa1otACmKOd2tK
+	 jppqJRUtw+WoVHXJeryqzFkM17xZ8zItQovAZUQVYDk35MzhCL2ipxEDyWD8MTn5N/
+	 Set0/q3+3cwORzFNrbjCWkyHT1IfxuPBlq+Berw1isEwqUS0RK3EjFrZJD9S0EJZnt
+	 zL1g9czl5TlCA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26BF2C87FD3;
+	Thu, 31 Jul 2025 21:07:14 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 31 Jul 2025 23:06:52 +0200
+Subject: [PATCH RESEND v5 2/7] Input: synaptics-rmi4 - handle
+ duplicate/unknown PDT entries
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Jul 2025 12:31:07 +0200
-Message-Id: <DBQ668L792QL.2OV5Y4G1PDZLR@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: ipa: add IPA v5.1 and v5.5 to ipa_version_string()
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Alex Elder" <elder@ieee.org>, "Alex Elder" <elder@kernel.org>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com> <e07f0407-84e1-4efa-868d-5853b7e9ab4e@ieee.org>
-In-Reply-To: <e07f0407-84e1-4efa-868d-5853b7e9ab4e@ieee.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250731-synaptics-rmi4-v5-2-cd0d87d34afa@ixit.cz>
+References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+In-Reply-To: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+To: Kaustabh Chakraborty <kauschluss@disroot.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+ Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3909; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=F9hWc6iEWSUhrphcXba0Kd7/xUCyyQbMphuPjYrJ+MU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBoi9r/01ZjoHUNzKf1pAOvuFd4lomDhPPoItJBK
+ N2y/6kuuv6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaIva/wAKCRBgAj/E00kg
+ cixZEACkkm2d9FC8rr7Yw7k+JZ7wJwukDpiDuS1GpOt7qfUuU8H8oa440noemFd0MZIljnb3MeC
+ MuSvDH/rqKR4BSQTQ2okEEQjm/2OdpNIZkv9NzgfMHt78lUK+6MF8gwXGPjD0s/8C8rZHiyqnRD
+ RkG3QIlx0DV5Qn+tCqooXFdTvo6yManiBoU8e6N+mHpPvQk3iIxLTg40UnJ2aRMKJMxu847cs1g
+ dmG7/BljXVdhdT7bhf8Qkv07eZ2IbavHcs8GddWEsm4CuBEnFBk1KqBOIg8nHsUlTxe1OdFjPOx
+ 34Ji/iDIrK0sRmXp50yi9nS+mUX4eD/RQRk1JY9nZ/OdvllJ9/qfVOxl9jw9yNbFapboX2VbMuT
+ mlHPbECoTj54lqJv06EVveBFT3robZPBJ63XasTE3Uv16UlEZ1AilgXl2UzQ387H9mZxN3YMFIx
+ cVMKIzfwJtu3EDKZkQ11w1Sa2cSlPH+kVAkdB6YTt7pfz2/V9cv6yMHLSN0a1d4uPnKkRlacRzw
+ kJEMs8bhx7udi4NkVDl1bwYviW9M2Kg1j2QbpjIrrT72cu5jT2f07y07R/fwkTHZDNAjC2OFidB
+ +r+Bl8+UY3eNWmV703KIDpDmYx3o7SUYZjgNgGVYtX7qAktGNb0vahDdec9zMDi+7n1zCjsZ3qW
+ epD8BJjAiH8bqbg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Mon Jul 28, 2025 at 5:53 PM CEST, Alex Elder wrote:
-> On 7/28/25 3:35 AM, Luca Weiss wrote:
->> Handle the case for v5.1 and v5.5 instead of returning "0.0".
->
-> This makes sense for IPA v5.5.
->
-> I have comments below, but I'll do this up front:
->
-> Reviewed-by: Alex Elder <elder@riscstar.com>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-Thanks!
+Some third party rmi4-compatible ICs don't expose their PDT entries
+very well. Add a few checks to skip duplicate entries as well as entries
+for unsupported functions.
 
->
->> Also reword the comment below since I don't see any evidence of such a
->> check happening, and - since 5.5 has been missing - can happen.
->
-> You are correct.  Commit dfdd70e24e388 ("net: ipa: kill
-> ipa_version_supported()") removed the test that guaranteed
-> that the version would be good.  So your comment update
-> should have done then.
->
->> Fixes: 3aac8ec1c028 ("net: ipa: add some new IPA versions")
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>   drivers/net/ipa/ipa_sysfs.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
->> index a59bd215494c9b7cbdd1f000d9f23e100c18ee1e..a53e9e6f6cdf50103e94e496=
-fd06b55636ba02f4 100644
->> --- a/drivers/net/ipa/ipa_sysfs.c
->> +++ b/drivers/net/ipa/ipa_sysfs.c
->> @@ -37,8 +37,12 @@ static const char *ipa_version_string(struct ipa *ipa=
-)
->>   		return "4.11";
->>   	case IPA_VERSION_5_0:
->>   		return "5.0";
->> +	case IPA_VERSION_5_1:
->> +		return "5.1";
->
-> IPA v5.1 is not actually supported yet, and this won't be
-> used until it is.  Only those platforms with compatible
-> strings defined in the ipa_match array in "ipa_main.c" will
-> probe successfully.
->
-> That said...  I guess it's OK to define this at the same time
-> things are added to enum ipa_version.  There are still too
-> many little things like this that need to be updated when a
-> new version is supported.
+This is required to support some phones with third party displays.
 
-Yeah, my point in adding this as well was based on the comment there:
+Validated on a stock OnePlus 6T (original parts):
+manufacturer: Synaptics, product: S3706B, fw id: 2852315
 
-/**
- * [...]
- * Defines the version of IPA (and GSI) hardware present on the platform.
- * Please update ipa_version_string() whenever a new version is added.
- */
-enum ipa_version {
-    [...]
-}
+Co-developed-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Co-developed-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ drivers/input/rmi4/rmi_driver.c | 42 +++++++++++++++++++++++++++++++++++------
+ drivers/input/rmi4/rmi_driver.h |  8 ++++++++
+ 2 files changed, 44 insertions(+), 6 deletions(-)
 
-I previously only noticed 5.5 being missing, but before sending I double
-checked if anything else was missing and found 5.1. So perhaps if 5.1 is
-not going to be added anytime soon, we could remove the 5.1 definition
-and the rest.
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 2168b6cd7167334d44553c9c566f870a4e034179..0f6dbe586c652d641178f43ec27df3613126ca66 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -493,12 +493,39 @@ static void rmi_driver_copy_pdt_to_fd(const struct pdt_entry *pdt,
+ 	fd->function_version = pdt->function_version;
+ }
+ 
++static bool rmi_pdt_entry_is_valid(struct rmi_device *rmi_dev,
++				   struct pdt_scan_state *state, u8 fn)
++{
++	switch (fn) {
++	case 0x01:
++	case 0x03:
++	case 0x11:
++	case 0x12:
++	case 0x30:
++	case 0x34:
++	case 0x3a:
++	case 0x54:
++	case 0x55:
++		if (state->pdts[fn] == true)
++			return false;
++		break;
++	default:
++		rmi_dbg(RMI_DEBUG_CORE, &rmi_dev->dev,
++			"PDT has unknown function number %#02x\n", fn);
++		return false;
++	}
++
++	state->pdts[fn] = true;
++	state->pdt_count++;
++	return true;
++}
++
+ #define RMI_SCAN_CONTINUE	0
+ #define RMI_SCAN_DONE		1
+ 
+ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
+ 			     int page,
+-			     int *empty_pages,
++			     struct pdt_scan_state *state,
+ 			     void *ctx,
+ 			     int (*callback)(struct rmi_device *rmi_dev,
+ 					     void *ctx,
+@@ -521,6 +548,9 @@ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
+ 		if (RMI4_END_OF_PDT(pdt_entry.function_number))
+ 			break;
+ 
++		if (!rmi_pdt_entry_is_valid(rmi_dev, state, pdt_entry.function_number))
++			continue;
++
+ 		retval = callback(rmi_dev, ctx, &pdt_entry);
+ 		if (retval != RMI_SCAN_CONTINUE)
+ 			return retval;
+@@ -531,11 +561,11 @@ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
+ 	 * or more is found, stop scanning.
+ 	 */
+ 	if (addr == pdt_start)
+-		++*empty_pages;
++		++state->empty_pages;
+ 	else
+-		*empty_pages = 0;
++		state->empty_pages = 0;
+ 
+-	return (data->bootloader_mode || *empty_pages >= 2) ?
++	return (data->bootloader_mode || state->empty_pages >= 2) ?
+ 					RMI_SCAN_DONE : RMI_SCAN_CONTINUE;
+ }
+ 
+@@ -544,11 +574,11 @@ int rmi_scan_pdt(struct rmi_device *rmi_dev, void *ctx,
+ 		 void *ctx, const struct pdt_entry *entry))
+ {
+ 	int page;
+-	int empty_pages = 0;
++	struct pdt_scan_state state = {0, 0, {0}};
+ 	int retval = RMI_SCAN_DONE;
+ 
+ 	for (page = 0; page <= RMI4_MAX_PAGE; page++) {
+-		retval = rmi_scan_pdt_page(rmi_dev, page, &empty_pages,
++		retval = rmi_scan_pdt_page(rmi_dev, page, &state,
+ 					   ctx, callback);
+ 		if (retval != RMI_SCAN_CONTINUE)
+ 			break;
+diff --git a/drivers/input/rmi4/rmi_driver.h b/drivers/input/rmi4/rmi_driver.h
+index 3bfe9013043ef3dff46249095a5b3116c8f7d9a6..cb1cacd013a3f39db96935f705f18018bf15adff 100644
+--- a/drivers/input/rmi4/rmi_driver.h
++++ b/drivers/input/rmi4/rmi_driver.h
+@@ -46,6 +46,14 @@ struct pdt_entry {
+ 	u8 function_number;
+ };
+ 
++#define RMI_PDT_MAX 0x55
++
++struct pdt_scan_state {
++	u8 empty_pages;
++	u8 pdt_count;
++	bool pdts[RMI_PDT_MAX];
++};
++
+ #define RMI_REG_DESC_PRESENSE_BITS	(32 * BITS_PER_BYTE)
+ #define RMI_REG_DESC_SUBPACKET_BITS	(37 * BITS_PER_BYTE)
+ 
 
->
-> Thanks for the patch.
->
-> 					-Alex
->
->> +	case IPA_VERSION_5_5:
->> +		return "5.5";
->>   	default:
->> -		return "0.0";	/* Won't happen (checked at probe time) */
->> +		return "0.0";	/* Should not happen */
->>   	}
->>   }
->>  =20
->>=20
->> ---
->> base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
->> change-id: 20250728-ipa-5-1-5-5-version_string-a557dc8bd91a
->>=20
->> Best regards,
+-- 
+2.50.1
+
 
