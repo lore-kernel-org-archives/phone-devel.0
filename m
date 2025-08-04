@@ -1,228 +1,348 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2ACF221FAC
-	for <phone-devel@vger.kernel.org>; Sat,  2 Aug 2025 12:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754136272; cv=none; b=gxRYy59ar4KyKdyi1ygpHppzX6FgsQB3uW3Mzqlj2tApu5St9KhpyPzIhpWNLI7Q9o08BYM08WmrQSUprRKtPx3lmWZ8mOKS4GuTAgyrChYmtqj/e4kd++9DHWUNwaajB/QhpEd5oK+KQrj6YvSHBc5milZ6GHbExEt38kV5wig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754136272; c=relaxed/simple;
-	bh=1uzB9r6w4x1mX3RQ6Geex7yxzg322VObRaZu0yQ2zp4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CaZwdcTuDt+ga8HOiwdYYGUHI1pYJjlnKffZFeo45o6DKmclW+exYbBMC0LGWqEFj9YpXg2V9SCyF4sbfiTVuGRU9Z0091ZjKr5zkaja+zib8igi2KmWKbAubyjVdIbXR5iT2Edq95ei8q/UuVGkWxFyQ21caYtK7wrnS7Jln2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UWM3ocOQ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CD426B747;
+	Mon,  4 Aug 2025 13:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754314782; cv=fail; b=THqmy2YPYVR4b5AMrTWinCalS5yBYUvsIyIAWyGYc4Ql8md5E6EzRFECCfsyFSljPlRuzMrORXLjV6ejJZcptYk2huBu2HTmMobej2NbdO8hGOK53Q1FsusjtkvO1WyxsiOAuITAXfRhoqg7yiG8MEbZrsDl9NtJqEOoBS8uX4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754314782; c=relaxed/simple;
+	bh=R0/zIVCpiEvMWM28UgpNlt4bt+czQIi6xgvuDC3q3gY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=DfkmhpB3sZ0poxwu/xaRY2XWEkPAYh9Nl39/6JfgE78Q2Z1stsGh+60uEBTQIvNwifuCqVoQb3Uvlznvq3Dp2wPgzoXmx89ms6eZRctz6NEF06oXty+BjfVvhRp5iPVyGwkmrONHXQWNtVHfHk8ETOWoD1nmkgjexf1rwLmLKl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cDQTkz2K; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UWM3ocOQ"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5725evf1004327
-	for <phone-devel@vger.kernel.org>; Sat, 2 Aug 2025 12:04:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vCSAiNPoWEksGD85Y1vvHR/fUZ2hueivl1eXMSvDOnU=; b=UWM3ocOQ+HzZFmFm
-	EKT7uAZPdG3p6+e087FTZgXEGhjyrCSdKk7LDW4Pv42XZmfEHQxCZMMlSK3XbcXF
-	YVpuA6dgKz/WpXdNItfqKFZmlKBBQoaIpTUOf9s4Stt+xm2RMfeH35+U0IindvQu
-	CWhMJHMadNrtObCKFOOxWHaJg/2Wi24kiqARnlFXIFUaO7mS6inwdsF7H6wUFCMx
-	qrlgFHC5Sfys/6s4Sb3FHp5A+d7j2mDomWaDCqkJW71gHT0UQFG5ggv73vSWX635
-	OagCwra1zd8P9lWqXZSNqHIcnW6Oy169cI6QRXPwIC8HoM3HQCrk6PIlnCX2bfSU
-	iDCZmQ==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489buqgm9g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 02 Aug 2025 12:04:29 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-7073674bc2aso5519256d6.3
-        for <phone-devel@vger.kernel.org>; Sat, 02 Aug 2025 05:04:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754136268; x=1754741068;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vCSAiNPoWEksGD85Y1vvHR/fUZ2hueivl1eXMSvDOnU=;
-        b=KBLpmYWNZ7bvjdTu1lFmbntfeLeCmxoCEffwKrOEeIEDccxEoQ+CBeVZEhOAI+RMGV
-         4kTus7ZkV23fYfUQE29Y1EUoeN3T7iyrnko6K+Uj/o2Cmd3wAD4DtSAlyrG2l91qPvI6
-         BQAacE6ouf0ok2CoPyOfgIEAfwYSjSKbs5ZZHrGLz+VuC29/RTA0rQcfvKOys7O0WK1w
-         /OzewkaDCJhFjBBSUdZjvh8NVMurfleMozyQDhR25QDVfRw80zwum4VnpuYS64u8TEHk
-         mFzZ4xyDMWGfKkoKlJq86BUWKbIbP9lZCYvEFg5AKjYF4Abw4Z8eZRWLylfzS4KRGkzV
-         lGhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVWInwy1Qjb90j/jz8Xfljm46+2MZfoAgFFYBnym+4ilLFVkSr2FzslFUic1oCzBIRbq740Jmer8viF8g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7jSFPVWbCf2EpeB0ZswnAb9ykVaF6eIwVdRe6legSDpEzDIvj
-	ffiTnqkjaAHqjH9CIeFwz3x/zyoon9Wu8XS8xMaOfeNAJFEzvU3fZjGj+JTj5XbWUNHfmKlQJK+
-	ZzGAzGnq3i3pTqr/8QR+ye5/liU0hu/Oe95yc/Q9YdgfGBlTKcnyj4k8V/LqSpTjdxw==
-X-Gm-Gg: ASbGnctcvOL4sz3uAvgoMl7FrmKV+4kyZUW0yfA8aoByEPnvMM9lJ5A6qTQ6WsWKmKp
-	NkSqxPKrGBaAZps0BiwNoadu14dCEwH6wNDQtQHGqp1LsmKGAHtDZZ0Ks96a7jZiJoFFiou4hpa
-	qpdsHWcGc2ihasIko/Bp18FWuL50UbkKV5euJp15ruA2cETsJYI9RT6N+n3WgvEiPE/IYK/Ll8+
-	xTcb1Ch3Gp0avpzLSyo6PnEXrkfq9UQnnnuPoaL6KCPWDwM9JurWK/vs1mYG+58zg2wJfaUDfyY
-	O2jP4IqCy/u/hQA5BMNM6dtuSGESjYVhXpdL2NFWBl6XB7UFwTezuZ6SVDr55kTQGz0iGcYWowd
-	YSopinDDDAPqdL5LVGQ==
-X-Received: by 2002:a05:622a:1a27:b0:4ae:f8d8:b0fb with SMTP id d75a77b69052e-4af10978640mr22589981cf.5.1754136267948;
-        Sat, 02 Aug 2025 05:04:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHRqglWcLnh7BFuPTAQfd/4FrslPHxTGZAg9UU256erRSiEGc77z4U8yY2TghDqr4GcFIe7A==
-X-Received: by 2002:a05:622a:1a27:b0:4ae:f8d8:b0fb with SMTP id d75a77b69052e-4af10978640mr22589701cf.5.1754136267429;
-        Sat, 02 Aug 2025 05:04:27 -0700 (PDT)
-Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c099sm421786166b.108.2025.08.02.05.04.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Aug 2025 05:04:26 -0700 (PDT)
-Message-ID: <55420d89-fcd4-4cb5-a918-d8bbe2a03d19@oss.qualcomm.com>
-Date: Sat, 2 Aug 2025 14:04:20 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cDQTkz2K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754314779; x=1785850779;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=R0/zIVCpiEvMWM28UgpNlt4bt+czQIi6xgvuDC3q3gY=;
+  b=cDQTkz2KvWnqfcg8lEUT0T9ZoEt06kgNLclZFFEFBmG3e9XY4n2CsFl5
+   cO155On51iAEXf7t+ic+s8dkg96A4YM/QM69wR6TzrxlLLceZn2CHs4Np
+   PxtsTg3ReR3WCV7NPM1SJtwkeD+csaEOIzFDvLAG3ROwSCfskFi7JBRgY
+   jKDp1VeXm/33Gyhd/KW906cyUo1/dp5CLP9Tb/WSEPFDBp8hucmrSCA+z
+   j/ZKxzMxKyn4lR2R72AIB/UXoAC8ATHzuocF2+fLQcS3cYuWZzXlUy/Ff
+   qwrIdoX31PMAPWh+kMoWJ5x52GzqaofThAhar/l9yxgVQV0aF0iVisZgW
+   g==;
+X-CSE-ConnectionGUID: fZ476WUyQr+pzbmHsrZM9Q==
+X-CSE-MsgGUID: m5/jj27xQOST6mH2HKPm1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11512"; a="60387888"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="60387888"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 06:39:38 -0700
+X-CSE-ConnectionGUID: pZ47YZD7SDSf2KGab4zh3w==
+X-CSE-MsgGUID: l+BKQdegQw+7f16QJq17fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="163427300"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 06:39:39 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 4 Aug 2025 06:39:38 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Mon, 4 Aug 2025 06:39:37 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.84)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 4 Aug 2025 06:39:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PQEDx0+hAvF7pL2j02BVdtUoQnmlGLTLPWzzClcl9LxfpnRKtz6rsf4RkF1oSR/a+ZhlZMUy6c0lcRF72q7dfOSnA7cvPUquh9EE3HOfCZ/42xIepyW3VS5GqM7J7It18OXdN6HVRXEuPWLA7KtoPSwYFb0Aduw4ZKyLlJ/Oe79shDFK4RhJHeg/d7sdYA3kn46i/nDkWbeUa+BYWyV1hKokGIo1+NriYz7TpjRRZvamCOmVpdzmJL7JaNKs0aknOzOi5x8oRl0NqlOCPqW2jT0m0iGXmy/7M6HoGFG3+vIUco2G2z2FIFOP5owxEhPGfddhVttTpEfqbUuVHZsMiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SPz7k4+R3hiBi1jE6bTqtsxUYChRekOYe3+xMUUP+9M=;
+ b=rXfRfJO9jJHk7h7BWdzjZFwqaGOZX4nRmpJe0QICVkdZGfs5BiHZEJF6Q3DaUy0Sg7wsS9Li6Nt/Bxp7qUA0Sxsb+r5uzreaqpl//kmrAtBUqOSjdFc06x2aK9zFDAzFGS7xVF1/MsCRh69RUMXo8HbCeOQmmh4WEuJ6we+9D7iUgrd7egYC3UlJvcapvc43hyOUhvsJZifSdy+FC3Jc4wrQnAteHFG+TAEL7E1vZJ/SvzXAj83jnra+mEGuzIdNlYpTQG8xoBCa0c3ckQ3FyJHfZQV6mWF+Bra4lwTzIMZLhhLbVwaBZcGq7rONWO9e5JmCGMvbdzaSeKxxrAOgnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
+ by SA1PR11MB6991.namprd11.prod.outlook.com (2603:10b6:806:2b8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Mon, 4 Aug
+ 2025 13:39:35 +0000
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
+ 13:39:35 +0000
+Message-ID: <b863c8f0-1a2f-43b7-a89e-5e0801ef7815@intel.com>
+Date: Mon, 4 Aug 2025 16:39:29 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 2/2] mmc: sdhci-pxav3: add state_uhs pinctrl
+ setting
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, Ulf Hansson
+	<ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
+	<linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <phone-devel@vger.kernel.org>,
+	<~postmarketos/upstreaming@lists.sr.ht>
+References: <20250801-pxav3-uhs-v2-0-afc1c428c776@dujemihanovic.xyz>
+ <20250801-pxav3-uhs-v2-2-afc1c428c776@dujemihanovic.xyz>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
+ 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
+ 4, Domiciled in Helsinki
+In-Reply-To: <20250801-pxav3-uhs-v2-2-afc1c428c776@dujemihanovic.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DU7P191CA0008.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:54e::12) To IA1PR11MB7198.namprd11.prod.outlook.com
+ (2603:10b6:208:419::15)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
-To: Luca Weiss <luca.weiss@fairphone.com>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Robert Marko <robimarko@gmail.com>,
-        Das Srinagesh <quic_gurus@quicinc.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
- <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
- <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
- <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
- <DBE8G88CIQ53.2N51CABIBJOOO@fairphone.com>
- <DBOC7QBND54K.1SI5V9C2Z76BY@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <DBOC7QBND54K.1SI5V9C2Z76BY@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: tWZQXwzYFSEjjkpsI_Is78np8Na2Xw2X
-X-Authority-Analysis: v=2.4 cv=VZT3PEp9 c=1 sm=1 tr=0 ts=688dfecd cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=6H0WHjuAAAAA:8 a=GauJToF0qxMHlBv3vicA:9
- a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDA5OSBTYWx0ZWRfX5ZKaMA9nbhU8
- i/W0XRO+xFCCrHuoTfa0q2rDcj1R/qrQ+PB4hfM5gi0X5Qbu00Kgv9PavWWkIpJs9mcblDqz1u6
- ltRGuH1oQuwaWM2rACFtfowBNG73F2lPa1yB/BJ0Y7g2QJqMa8dfVDvai2K5A4s+0TTO8e4QKdq
- MdAGC7iekQH/+VsAYAgv6B2SeLL2gYcORYO130VuO9FT3UGsiGXb62xM0qv77lFzgBMkUANb18N
- 3waPrAPvuMx31q07O2Hv4Kf7Hw9fzgQdWNWwdAWfNkiffG/Epe7vhpHyNEh4Wc3yBEZg1ZZUNue
- x8tbIViALWVpXDVPh7OuRX546e3e37NVAFU1k037YPyqWjXq1PwEx9HmqlnBXmABoZOtNpl0nx0
- JKld5ZtjKutvLtlS/woAQC3gJoLCqEyWVEXQu/wrjKQEOcqSv/AMIHV3xN3AuRJWHkqNn/ID
-X-Proofpoint-ORIG-GUID: tWZQXwzYFSEjjkpsI_Is78np8Na2Xw2X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-01_08,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 phishscore=0
- spamscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2508020099
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|SA1PR11MB6991:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4017822-5881-4a8e-a484-08ddd35c5960
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?THVOMDdYN1JWeEJodm9uWDFkUXMrYmFvTG9VcFoxeU9pdjM1V2lSelZCTU9T?=
+ =?utf-8?B?dWt4R2FmUVRheXBEaGYwUGxGc2RuRlQ4b004ckJMbEMzR2JGcXNuRTUrVUNq?=
+ =?utf-8?B?M1BSUnIxUXpjeWsrTzdjTVRIOS9kajB4RlhDck5lRWJLd2dBR1o2dlcrZWRn?=
+ =?utf-8?B?SlZmcEgxMUUwV0FpMmJ6Vi94N0FBTGFQNXQwKzA5eEVKODZwcEdCc2VsRzdQ?=
+ =?utf-8?B?ZEZzNThmY1Z3ZWhwY3VrQlZwQ0JDbENwZXYvWHVFRHNQQTBjN29TQjFHZlFk?=
+ =?utf-8?B?QVU5a013eFRKQlFXK1RpWXlTV0NUK050Mnk4MHpNK05zNE02RjZLVFNKei9E?=
+ =?utf-8?B?RmtOcEcyQmFQZ1pQRmNHUEZsYUcwaWxrdnVNWm45RkhHUG9GWmpVVUZqUWJi?=
+ =?utf-8?B?WFZLMlJzWjMzL04rWkd2KzN3dlIxVDRzcUhyMXd5MWs5eFY1MFl2U1MxbSty?=
+ =?utf-8?B?Szc0aXRZM3AwVWU3K3NMbVJBUnVIbVpJUnk3YWFjR0k2UW1BeWNLQ0lTRWoz?=
+ =?utf-8?B?YVMrQVp5QkN4Tkp3TlZJNUFla0dTOTJJTmxLU2ZDalpldWc2M0pWUnRKbnJE?=
+ =?utf-8?B?SlpsV0FNSm90UDhISTRRR1lzUzViMkFPY29tc3B4UlBvSGtlTUI2Rk9JKzFS?=
+ =?utf-8?B?N3pWTHEwRFh6eDE3YS9vaVcrbDhkTGNPczMzTlpUcm5ZdG5US3RjSllFUkdy?=
+ =?utf-8?B?cm5OL3RadGRBbUgwbjNLVUgzTTl5ODB6aFJIMFl3Rnd0MUJNN3o3bytXYy9y?=
+ =?utf-8?B?UFJkOTQ4MVhhWmh5QUlWeDI5azdkSGtVeitLdFg3dm9EcWxqTzZVY2dGTzB4?=
+ =?utf-8?B?dzNqVlV0ZU9DOGdjcktVcEVPNGhObGpIMnFPZUNQT3crS2xDTGREbnVvNWEy?=
+ =?utf-8?B?aHdNRVNPSXp6dVVIUjUvaGkwOTVseVN4ZElyRE1wcW1ERjFyRVhGRUVEVUZY?=
+ =?utf-8?B?QVVxQml5RC9kOEs0NUtzSlJlWXdIM0IvOTYxTGVUTTF4K3MrZmtGZTAvUVA5?=
+ =?utf-8?B?TTcwNVl2WFB3QjRiRGlrM1dRek1YMkZ3a2p2WGNmaGNseEs1WXk3SWxYdGpT?=
+ =?utf-8?B?RW1HOUlNREJydjNlR2pGY21Jamxtc1hJeEZoNFVKWElZdlAwdmxOSzhSaXY1?=
+ =?utf-8?B?ZEZQWVROeG1zbGhNN3d0R1NVa3JRTEVSbzFmSTVJTFMxdXZiQkJkcTIvVzRn?=
+ =?utf-8?B?L2R0OFRxS3JUeVk2SExwcmlHVGExcC9UNDRoQ3lCd1FieEUxYlN5UUZ6TzhK?=
+ =?utf-8?B?eXJqRzYzeDVMWmFpSFA3SHNDU2YvL3RVTWNwU3dQbnZkZGIrKy9hWGp5dVVo?=
+ =?utf-8?B?cXZ2WHIwOXAwcGplMFVtN1Y0ZUM2U0k1SVV4TUhhN0FIZnZFdSs3NnY1NXZO?=
+ =?utf-8?B?V1Jid3FTRStTM0lWcG9lSlpVRzhVNTZVNkRDZGkyMWtOenJWbGlGaGpYYXQz?=
+ =?utf-8?B?NHl2ekdDdG44dXFXcmRiVXkvSXZSanh0QkxiMFBCa1NmVE1pdzIvRnB2djRw?=
+ =?utf-8?B?SjRwa3RQRXFIdzBnZkx1eVQvODNlMUhnNHB0ZFE3KzJJYjF5M3lKckNGTGth?=
+ =?utf-8?B?OEg2VTJmbENMSUlPaEFRUlEvSzQybHBUYjBVV1pmUkMvdjFFYUltYTE4SkZO?=
+ =?utf-8?B?MU5mZld0RzVRa0FDK1hWbDJmcDlmUC9KdzBFY0JhS0psb1BkWFFPTE5Sc3dm?=
+ =?utf-8?B?MG1TZXA4SzZ6Nlpjc0tzdm4zb3pPWTJhdEJpejkxTCtoZWgrYmd2ZkJFczNv?=
+ =?utf-8?B?VzZabXNUVURtRnBZYU9KMVNzaVlMWU5RcjEvRTBVZllRZ1lVRnk0TmsvL2ZV?=
+ =?utf-8?B?NHVFcUtITXJ1eDVoMmxqMGt3S3ErVmlneGlYQmxCZjUyM1h3aTJ4ZVMwcHg2?=
+ =?utf-8?B?NkhPSVhQeVEraTBMZnNpcWhEOU9yMWJnbWlLRW1kRUlGZW5UTGxSUExoRUta?=
+ =?utf-8?Q?HmIKsPBsBQU=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T2RONEpUa0FwRjcxOHpEYkkvRXNaYi9jOHlrclpQZXpVREZYa1pzOEI3bkZQ?=
+ =?utf-8?B?azFQOHVjMm1ZZGNVNE9vZWhCV3lncEJ6T1ZDdEhYSERmVHBhcXo2Sk5HbVZV?=
+ =?utf-8?B?Z3JHL2RVTDBmK3Eyc0VEUUdYOVFCYTRtRVpBY3BSUVZ5YStOeXNUUHNnZmZU?=
+ =?utf-8?B?Y3lmTWR5elV4MDMzUzdMdlZKWmhUNlU3eFNFQlFOR0lqRG1CMm9oaXh3dHdS?=
+ =?utf-8?B?Z0lRUjZxeS95Y3JnNVp6aGloOUh6SUNkbkZJelM2TlNMVUR4WkFxUHRtWmln?=
+ =?utf-8?B?YlZhbUJOQS9rcy8wcU54SE84Zk9FR2dPUFY5Q2lSVjBNaEZrZHJXejkzMTU4?=
+ =?utf-8?B?K3dWbENjWXpjRG9XUlFlSDFnZmloVEdFOEExM2xINFcxa1hOV2pQTFhKUlNq?=
+ =?utf-8?B?MDhzVWZ3bGRySGE3K1ozcHdwK0NoY2ZhNVU3cVBzeFdObEhPQmVJSFVuSmp5?=
+ =?utf-8?B?c0Z0c21aQ0JFSE5wWHo1MzdmSnVSL1hrZVNpRndBSFZOVmdFWXZ2ZHpkZGtl?=
+ =?utf-8?B?N2ZqUGUySTE4THpZL2haUXBBZ0JUMXdHRS9BVENIZWlkVGhITXl6c01MSXNw?=
+ =?utf-8?B?NnpteTVZMlVySVpKeEIwN3JXRTdtNFhneG9VUFFRQ1M3a1BnVTZMRWp2YlhY?=
+ =?utf-8?B?YlM4ZndNMkxtWGhtWnZzVTU1enBKcERTeW5BWmROQTUwTVpiYTZIVUFxOUVn?=
+ =?utf-8?B?MzErcDdjTkNUYWpBaEd5cy9tdm9RMytqMXRqY2pXKzZvS2MxcWxjOFVNYlhp?=
+ =?utf-8?B?M3JyVXA0bjVqR2h4WGh1a1lHb0cwb1ZYV01jNW13VHFETWpFcmNUVTNsK0k4?=
+ =?utf-8?B?czNBSVVFMWRlYmRFRi9vYXl4bThiWVJqTGpTazlFRmlXOUxZcFNuckYzbWtX?=
+ =?utf-8?B?MkpjMWhJZ2JkUHFLZlUvb0VpejZGRnJMOGxQdzloenVrSTN6Vk9LUVNWR3Fo?=
+ =?utf-8?B?QUxQeTAyUzlBTUZDY3NVeTcvN1ZsSUZ6bENMcHdXVzZrdVVhTDhESTFRT3ZF?=
+ =?utf-8?B?Sm5mY1lsY1NLQlRGbDF5OTBILzhZQVhHOFU3L1NuWWFDODMyZFdublF5MGM3?=
+ =?utf-8?B?RVR3blVQcWd5YlBPQzFsWS81TW5SK1pTMHFrZzI2SnQ2M3l5NFhZZ0RtWWxZ?=
+ =?utf-8?B?bFBBc3BaZ1RBT01BRWtDdkpqZUppNjhha2ExaHZkaXhJTDB2MnYraGlDT3R1?=
+ =?utf-8?B?OUJVc2xWb3NVVVdVRXJqSkVwVXNYQ1VWSzZBaXZyVzR2MnRETTBnbFd0WkZJ?=
+ =?utf-8?B?dG9sUmZuU2w4ZnJKWDVBQ1BOc0NIc1ZQSDdJOVhBRURLYzZDMU1WeVcrYk44?=
+ =?utf-8?B?WjVVLy9hMFpNUmd2d2hhSnFZMmU1SENqbm9MeEQzNEc1Y2ZwRXp1N2VqbFhr?=
+ =?utf-8?B?eEt1SE1NdnVoRjlXQmx4OEFlV3NlTCs3SkhLK1dVTlZvTVI4Zi9MeHB1bEhr?=
+ =?utf-8?B?WklXZXRhaDJmM0dBdnRkVC9TT0pWdGZRcDlLdWp4WnFSQWpzSUVVRW9NTy9h?=
+ =?utf-8?B?amZad3JIU3RsZFo5NzBtM2xaTkQ1aUJiaHVISnpCTVBkNVRnZzF1V2xiMGIx?=
+ =?utf-8?B?VDBhc05xRGNDQllCTWtRZ0doMHp6Q1MzZVBKOGhOd1drWVRqSlpESVcvZ0xt?=
+ =?utf-8?B?SXBzSHBxdkxrTE8rMDdUdk1HRzQyWi9rcWtxeGx4aUw3MENMM3dKTXYxN05B?=
+ =?utf-8?B?WjdCcGVoYlAwQUpCMFFHZ3FvSFlHZ0pXcUFKdERlbUlZZ0VhN0lrK0NRYVNz?=
+ =?utf-8?B?bzFuWnlVRWFSaDNpQ0h3WXRjSWpOZ3RRUEQ5aldlY3ZnQllSY0c4MTJUQTJS?=
+ =?utf-8?B?ditxV2xHVHdmbWtoc2pNbkt1dDFrd0lpWExYTHV4dDlNNndJanhSdEdpK0pk?=
+ =?utf-8?B?M1BmVjNxMHBlV2UvQ1pDbjE1dGo1TUpOci9vWUoySWdaZ1daS3NHM3kwUXBN?=
+ =?utf-8?B?V1V5QWZzYUhNYjY5TkY4c1dOU2Fwbjd1RUhoRjczT0JwZit2TXFTL0xkSGRo?=
+ =?utf-8?B?SlZYSHFNZE1yVVJqV2FJRm9FOVFMQWd2ZVZJcG8zV2Y5dkFYaFhHQWJOWkxK?=
+ =?utf-8?B?WS9uVVZCOFJtdWU4cGx5RFEyOEtuYWdqbTY0dkZRL2ZIODZsbDFmOHA5TEIy?=
+ =?utf-8?B?NENNRnZlQnB5TytSdmFrMC9odCs2R2tJQzNhTU4vUUdQcUxyUllpNjlOenpx?=
+ =?utf-8?B?Zmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4017822-5881-4a8e-a484-08ddd35c5960
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 13:39:34.9567
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BWzreIjNxDdyeCJblNm+S+kNP9hPfADht8iA9uu9qTjvxAwUHg3Sx9v3NDIXbXlTRyw/p3/ba5gWYXPuT2V0jw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6991
+X-OriginatorOrg: intel.com
 
-On 7/29/25 8:49 AM, Luca Weiss wrote:
-> Hi Konrad,
+On 01/08/2025 17:14, Duje Mihanović wrote:
+> Different bus clocks require different pinctrl states to remain stable.
+> Add support for selecting between a default and UHS state according to
+> the bus clock.
 > 
-> On Thu Jul 17, 2025 at 11:46 AM CEST, Luca Weiss wrote:
->> Hi Konrad,
->>
->> On Thu Jul 17, 2025 at 10:29 AM CEST, Luca Weiss wrote:
->>> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
->>>> On 7/13/25 10:05 AM, Luca Weiss wrote:
->>>>> Add a devicetree description for the Milos SoC, which is for example
->>>>> Snapdragon 7s Gen 3 (SM7635).
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>
->>>> [...]
->>>>> +
->>>>> +		spmi_bus: spmi@c400000 {
->>>>> +			compatible = "qcom,spmi-pmic-arb";
->>>>
->>>> There's two bus instances on this platform, check out the x1e binding
->>>
->>> Will do
->>
->> One problem: If we make the labels spmi_bus0 and spmi_bus1 then we can't
->> reuse the existing PMIC dtsi files since they all reference &spmi_bus.
->>
->> On FP6 everything's connected to PMIC_SPMI0_*, and PMIC_SPMI1_* is not
->> connected to anything so just adding the label spmi_bus on spmi_bus0
->> would be fine.
->>
->> Can I add this to the device dts? Not going to be pretty though...
->>
->> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> index d12eaa585b31..69605c9ed344 100644
->> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> @@ -11,6 +11,9 @@
->>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
->>  #include "milos.dtsi"
->> +
->> +spmi_bus: &spmi_bus0 {};
->> +
->>  #include "pm7550.dtsi"
->>  #include "pm8550vs.dtsi"
->>  #include "pmiv0104.dtsi" /* PMIV0108 */
->>
->> Or I can add a second label for the spmi_bus0 as 'spmi_bus'. Not sure
->> other designs than SM7635 recommend using spmi_bus1 for some stuff.
->>
->> But I guess longer term we'd need to figure out a solution to this, how
->> to place a PMIC on a given SPMI bus, if reference designs start to
->> recommend putting different PMIC on the separate busses.
+> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+> ---
+> Changes in v2:
+> - Don't attempt to lookup pinstates if getting pinctrl fails
+> - Only select pinstates if both of them are valid
+> - dev_warn() -> dev_dbg()
+> ---
+>  drivers/mmc/host/sdhci-pxav3.c          | 31 ++++++++++++++++++++++++++++++-
+>  include/linux/platform_data/pxa_sdhci.h |  7 +++++++
+>  2 files changed, 37 insertions(+), 1 deletion(-)
 > 
-> Any feedback on this regarding the spmi_bus label?
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+> index 3fb56face3d81259b693c8569682d05c95be2880..fc6018de92fb19f028b776df0f87937846621e95 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -20,9 +20,11 @@
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+> +#include <linux/pinctrl/consumer.h>
+>  #include <linux/pm.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/mbus.h>
+> +#include <linux/units.h>
+>  
+>  #include "sdhci.h"
+>  #include "sdhci-pltfm.h"
+> @@ -313,8 +315,23 @@ static void pxav3_set_power(struct sdhci_host *host, unsigned char mode,
+>  		mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, vdd);
+>  }
+>  
+> +static void pxav3_set_clock(struct sdhci_host *host, unsigned int clock)
+> +{
+> +	struct platform_device *pdev = to_platform_device(mmc_dev(host->mmc));
+> +	struct sdhci_pxa_platdata *pdata = pdev->dev.platform_data;
+> +
+> +	if (!(IS_ERR(pdata->pinctrl) || IS_ERR(pdata->pins_default) || !IS_ERR(pdata->pins_uhs))) {
+> +		if (clock < 100 * HZ_PER_MHZ)
+> +			pinctrl_select_state(pdata->pinctrl, pdata->pins_default);
+> +		else
+> +			pinctrl_select_state(pdata->pinctrl, pdata->pins_uhs);
+> +	}
+> +
+> +	sdhci_set_clock(host, clock);
+> +}
 
-I had an offline chat with Bjorn and we only came up with janky
-solutions :)
+Really pinctrl et al should be in struct sdhci_pxa not pdata.  Also
+it is neater to set pinctrl_state pointers to NULL when there is no
+valid value, so this could become:
 
-What you propose works well if the PMICs are all on bus0, which is
-not the case for the newest platforms. If some instances are on bus0
-and others are on bus1, things get ugly really quick and we're going
-to drown in #ifdefs.
+static void pxav3_set_clock(struct sdhci_host *host, unsigned int clock)
+{
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_pxa *pxa = sdhci_pltfm_priv(pltfm_host);
+	struct pinctrl_state *pins = clock < 100 * HZ_PER_MHZ ? pxa->pins_default : pxa->pins_uhs;
 
+	if (pins)
+		pinctrl_select_state(pxa->pinctrl, pins);
 
-An alternative that I've seen downstream is to define PMIC nodes in
-the root of a dtsi file (not in the root of DT, i.e. NOT under / { })
-and do the following:
+	sdhci_set_clock(host, clock);
+}
 
-&spmi_busN {
-	#include "pmABCDX.dtsi"
-};
+> +
+>  static const struct sdhci_ops pxav3_sdhci_ops = {
+> -	.set_clock = sdhci_set_clock,
+> +	.set_clock = pxav3_set_clock,
+>  	.set_power = pxav3_set_power,
+>  	.platform_send_init_74_clocks = pxav3_gen_init_74_clocks,
+>  	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
+> @@ -441,6 +458,18 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
+>  			host->mmc->pm_caps |= pdata->pm_caps;
+>  	}
+>  
+> +	pdata->pinctrl = devm_pinctrl_get(dev);
+> +	if (!IS_ERR(pdata->pinctrl)) {
+> +		pdata->pins_default = pinctrl_lookup_state(pdata->pinctrl, "default");
+> +		if (IS_ERR(pdata->pins_default))
+> +			dev_dbg(dev, "could not get default state: %ld\n",
+> +					PTR_ERR(pdata->pins_default));
+> +		pdata->pins_uhs = pinctrl_lookup_state(pdata->pinctrl, "state_uhs");
+> +		if (IS_ERR(pdata->pins_uhs))
+> +			dev_dbg(dev, "could not get uhs state: %ld\n", PTR_ERR(pdata->pins_uhs));
+> +	} else
+> +		dev_dbg(dev, "could not get pinctrl handle: %ld\n", PTR_ERR(pdata->pinctrl));
+> +
 
-Which is "okay", but has the visible downside of having to define the
-temp alarm thermal zone in each board's DT separately (and doing
-mid-file includes which is.. fine I guess, but also something we avoided
-upstream for the longest time)
+To make the code neater, perhaps add a helper like:
 
+static struct pinctrl_state *pxav3_pinctrl_state(struct device *dev, struct pinctrl *pinctrl,
+						 const char *name)
+{
+	struct pinctrl_state *pins = pinctrl_lookup_state(pinctrl, name);
 
-Both are less than ideal when it comes to altering the SID under
-"interrupts", fixing that would help immensely. We were hoping to
-leverage something like Johan's work on drivers/mfd/qcom-pm8008.c,
-but that seems like a longer term project.
+	if (IS_ERR(pins)) {
+		dev_dbg(dev, "could not get pinctrl state '%s', error %ld\n", name, PTR_ERR(pins));
+		return NULL;
+	}
 
-Please voice your opinions
+	return pins;
+}
 
-Konrad
+Then it could be like:
+
+	pxa->pinctrl = devm_pinctrl_get(dev);
+	if (IS_ERR(pxa->pinctrl)) {
+		dev_dbg(dev, "could not get pinctrl handle: %ld\n", PTR_ERR(pxa->pinctrl));
+	} else {
+		pxa->pins_default = pxav3_pinctrl_state(dev, pxa->pinctrl, "default");
+		if (pxa->pins_default)
+			pxa->pins_uhs = pxav3_pinctrl_state(dev, pxa->pinctrl, "state_uhs");
+	}
+
+>  	pm_runtime_get_noresume(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+>  	pm_runtime_set_autosuspend_delay(&pdev->dev, PXAV3_RPM_DELAY_MS);
+> diff --git a/include/linux/platform_data/pxa_sdhci.h b/include/linux/platform_data/pxa_sdhci.h
+> index 899457cee425d33f82606f0b8c280003bc73d48d..540aa36db11243719707bdf22db23a8e2035674d 100644
+> --- a/include/linux/platform_data/pxa_sdhci.h
+> +++ b/include/linux/platform_data/pxa_sdhci.h
+> @@ -35,6 +35,9 @@
+>   * @quirks: quirks of platfrom
+>   * @quirks2: quirks2 of platfrom
+>   * @pm_caps: pm_caps of platfrom
+> + * @pinctrl: pinctrl handle
+> + * @pins_default: default pinctrl state
+> + * @pins_uhs: pinctrl state for fast (>100 MHz) bus clocks
+>   */
+>  struct sdhci_pxa_platdata {
+>  	unsigned int	flags;
+> @@ -47,5 +50,9 @@ struct sdhci_pxa_platdata {
+>  	unsigned int	quirks;
+>  	unsigned int	quirks2;
+>  	unsigned int	pm_caps;
+> +
+> +	struct pinctrl	     *pinctrl;
+> +	struct pinctrl_state *pins_default;
+> +	struct pinctrl_state *pins_uhs;
+
+Move to struct sdhci_pxa
+
+>  };
+>  #endif /* _PXA_SDHCI_H_ */
+> 
+
