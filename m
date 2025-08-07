@@ -1,119 +1,122 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456218F6E;
-	Thu,  7 Aug 2025 04:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDB26562A;
+	Thu,  7 Aug 2025 15:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754540959; cv=none; b=Ny1r9HS5nB193ztwGUmfqaN2xGntMMYnf0nenYAkqmhQQoJ2JRWYo3ysyLgcUE6kCUAfgQter5OCKnLMKPuBOcC7M29RoJonxaL+UdlHQr7YcWi6gc8/KosGI1D3LvKLaTr6KNZsUXFiCBHYCiFiNWe9SmkXu8TAaBPG9qXchpk=
+	t=1754581237; cv=none; b=Q3aA16kdoywiNXcGYjamafsOZwfbOn+ipAfoSKsSj3CBP807y69PGwLUkacOpYaEbV+43ROCy9QTyJ4RIrndcCvTrbsXp+45/HwQJoWWsqNl9WBM+Zu1zwCdeSt+IVkDRgMb8lXNygxD04aCB2lohorEDDrGPzjqqO10YV/1NrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754540959; c=relaxed/simple;
-	bh=Rqs7qqQtk1AFIV8i5FvyH/sbeMnqewCvwMdL0VhH/Vs=;
+	s=arc-20240116; t=1754581237; c=relaxed/simple;
+	bh=oxkXLZvPp3BqQEgtA6OlLjO1pulHs/NQGwamKgBjikQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SvGxYaMXpKVIU37fQihbT7wc0WLcytmiHbThk9jEzeGKGgoOvYdFra3Ww5/pd+MotTiAqQtQt0Zd5M7L9XAOkknUbo0itk+IVQCxOc0vmqxj+D53KiicCtNMCV3SyY7U+UXijU6eQbgXNxWZOG6ALy/pDa4NI8IXdBolu1fTFpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0DJwjlL; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=R7xumc6mtPahNAR0h+jX3S5hH28CttGlEaOJneAyg9Q69eDoUcdQauA+1qi4rGzo91x0zclgxmEB7fp0CTu9/IaB9kufcsUVTsexFirQvNeyIKj4hcxDDUumGKmSox1eFNdO0j/mj6+4pZfZd4zxngLs2mttj1JxdmtunLOp/ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDdnwW0D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0DJwjlL"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2407235722bso5529485ad.1;
-        Wed, 06 Aug 2025 21:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754540957; x=1755145757; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLjoW/JR7SYyN82M64yJPv3/KhQEznxNWUu4jcinAK4=;
-        b=T0DJwjlL0FhR0Jkb5i5uY63i5XL9Fdv7K4xSeTxePdjgWdSW9xQPj6SHLesMnnx1A7
-         +ebeJA8GGCbCmXIEIXpygKdFN7fz1TBUV58APF63zjQOOlvexYxuOhYMD15N5Ex9iAbY
-         1SlwBx+oW/soCDY4cZSix7i9B5ALwd1gr04O/vRUdGLoYG1EECu3vluHOGAyRSANCLTT
-         as00y3Z62IqhW5jVtkLKj9Jq3GiOk6PcyTkKrt+n6+hZn1nr27oaFnClo3ZqE3pK38CU
-         YUc+O6STXtBSAGceE/E2quOURXpuEODLI7D/Z4OS2OScJCRMKcOytcSiOU98Xfjp/6Y7
-         IslQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754540957; x=1755145757;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fLjoW/JR7SYyN82M64yJPv3/KhQEznxNWUu4jcinAK4=;
-        b=dfnNRfeKxpnJ9pJBPdxg+A0lgffWjyG4uKJPYpHwTaS0OSprhI0J8kypacGd46neIC
-         Qn8puJ61FcTwmPA6CgKbyezn+Tf3+VbSbKHD6XFqZVA8orvzbRY+5BR0bmuCcuuJkmtn
-         OvsCpOuZZmBES1g8paXQuiCqkRgkGrnXzbjpnvORvE70u4wwQQQjxM6HdGu+t3zB3Hqb
-         PC53IZeQD3Ymi6lWWZl8kyZkElwp4tnjecwE6n1BMxJeB3brkj4wghwDQEvJtDdtN2vS
-         k7+x1U1QwTaoF2dllg7yfbq6+lIB8bu1RpnD0yfz3He81EvQm2vXDTvAEZrhYwshgaee
-         K7ug==
-X-Forwarded-Encrypted: i=1; AJvYcCW0n5qnNEWF7Eog1WxY2QbsgIv0v2Jkmfbso4Djgzjaa/YOqwLja5gBOMuhRCkTaUftTZV+Un5Kulo4BWU=@vger.kernel.org, AJvYcCWPb6UmkJ6ubzKqzDLjN3+lLaSOPqM9kXnpERVjpcV33waoCXTBTpDPkLHM2iWq+uiRostVsvJ1QKvW@vger.kernel.org, AJvYcCWXInNj2BS9NnxUe8KdkgciT/Za+UOTvzC4SOwuZE7eV2WBwYhotzC2aK7w/FmH5tQkTwjY45r/V5zsmK5L@vger.kernel.org, AJvYcCXXKrxtvlUQcflBHojyns4jeEmICzq24lMtOzDLk/k5HgOXdjWLdeh4CUj7t5ed4+h+jkvxa2br6uRMRYo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNovoiL2TjtK0+h0n9DgJCmG9JjBvj1WZbfHwxyFchyI+K2Ciw
-	yGdpdJ4inik8+wRczwG9jiW8hXWRxVI046+2iGLSzIc2h7WUGzCfPViN
-X-Gm-Gg: ASbGncuA06lNrWDmQ1bErR52/CzCij01Qat5/T499SW6C+XYSdqU7SD0L1u7qhukDtH
-	Cy/FjJHFlT55FjsWd5DDr5Tvc0i5PlItTFzggIJGnJRTj1lDYdFhbCgxxBt+JUbBbz70A2BIRHt
-	YtRU880pyi/aio3GMH2e+IcD2Vj+iFF10xbQ4Z87TfjqxoiH3Om7W9D8HShzxbTjg4q7jqurdPC
-	wzbcB9va5qO9zheYP4GhaGM872Ww+fpt5vcLsoUJge/R4K2r88namNvm/xrW1oxchkGJmP2+a16
-	N1TNVhuEtGhX4h/n7VNWWDqTOHd7fORs3RH6PkGIT3GPCA5Lv6I+92YmcEVBj/KWOWjKorI9iSI
-	qcrxLoGbXfjgg/zs3hFCiAYM=
-X-Google-Smtp-Source: AGHT+IH7Ykgv5OaxQo1cMX7bcE1ucqXXe+QxvHYtt8i6uHT6Rug4kEWpU6ysRLV/oIs0MlSvGS3Yag==
-X-Received: by 2002:a17:902:ec92:b0:238:120:134a with SMTP id d9443c01a7336-2429f4380d2mr84511455ad.22.1754540957372;
-        Wed, 06 Aug 2025 21:29:17 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:1dc7:76a8:a227:b1c7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aaaf05sm173046435ad.162.2025.08.06.21.29.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 21:29:16 -0700 (PDT)
-Date: Wed, 6 Aug 2025 21:29:14 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: david@ixit.cz
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Vincent Huang <vincent.huang@tw.synaptics.com>, 
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	Casey Connolly <casey.connolly@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RESEND v5 0/7] Input: synaptics-rmi4 - add quirks for
- third party touchscreen controllers
-Message-ID: <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
-References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDdnwW0D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B39CC4CEEB;
+	Thu,  7 Aug 2025 15:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754581234;
+	bh=oxkXLZvPp3BqQEgtA6OlLjO1pulHs/NQGwamKgBjikQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rDdnwW0DKcf/KVyf/uUqQ8cftSD+Xa9fB2BIXHgOnz7NdndcxH2o+EPXPHUVwwAeb
+	 CEPycnxuWPsTGUfG3cL65ht6RKlV99cwxjQUTRmqEbZ9uJ40mxPS6CKA8EKyXQ+6Cb
+	 uJag1T1BbVniRqyZuK3rXvJpSWiR70+E3WkXllCLdHFZB0dsElwF37SsTNpf96w8Kz
+	 NdolM9USSXP1YkV/ehKsWaHmVypfFMkXVQ/+1J+gTT4i6M0OzQ9KKSb1fEpMy7J1Ce
+	 bvtImt3bohQcqn2mUV4blTq6Z/dw/PjdX/7qEfhs1wyO4nlfz8L+dNYEce1yOkSeqg
+	 xhj1OqNdeEPqw==
+Date: Thu, 7 Aug 2025 16:40:28 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>,
+	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH RFC 0/5] Marvell PXA1908 power domains
+Message-ID: <20250807-avatar-comply-30aa8001aa82@spud>
+References: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="61gm189z7gN5234q"
 Content-Disposition: inline
-In-Reply-To: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+In-Reply-To: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
 
-Hi David,
 
-On Thu, Jul 31, 2025 at 11:06:50PM +0200, David Heidelberg via B4 Relay wrote:
-> With the growing popularity of running upstream Linux on mobile devices,
-> we're beginning to run into more and more edgecases. The OnePlus 6 is a
-> fairly well supported 2018 era smartphone, selling over a million units
-> in it's first 22 days. With this level of popularity, it's almost
-> inevitable that we get third party replacement displays, and as a
-> result, replacement touchscreen controllers.
-> 
-> The OnePlus 6 shipped with an extremely usecase specific touchscreen
-> driver, it implemented only the bare minimum parts of the highly generic
-> rmi4 protocol, instead hardcoding most of the register addresses.
-> 
-> As a result, the third party touchscreen controllers that are often
-> found in replacement screens, implement only the registers that the
-> downstream driver reads from. They additionally have other restrictions
-> such as heavy penalties on unaligned reads.
-> 
-> This series attempts to implement the necessary workaround to support
-> some of these chips with the rmi4 driver. Although it's worth noting
-> that at the time of writing there are other unofficial controllers in
-> the wild that don't work even with these patches.
-> 
-> We have been shipping these patches in postmarketOS for the last several
-> years, and they are known to not cause any regressions on the OnePlus
-> 6/6T (with the official Synaptics controller), however I don't own any
-> other rmi4 hardware to further validate this.
+--61gm189z7gN5234q
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry for not handling the patches in the last few submissions. I am
-planning on addressing them once merge window opens.
+On Wed, Aug 06, 2025 at 07:33:19PM +0200, Duje Mihanovi=C4=87 wrote:
+> Hello,
+>=20
+> This series implements support for the power domains found in Marvell's
+> PXA1908 SoC. The domains control power for the graphics, video and image
+> processors along with the DSI PHY.
+>=20
+> The series is based on master as the MAINTAINERS and device tree patches
+> depend on the very recently merged initial Marvell PXA1908 support series.
+> That series can be found at the following link:
+> https://lore.kernel.org/all/20250708-pxa1908-lkml-v16-0-b4392c484180@duje=
+mihanovic.xyz
 
-Thanks.
+It's not clear to me, nor mentioned anywhere I could see, why this is an
+RFC. What are you actually soliciting feedback on?
 
--- 
-Dmitry
+>=20
+> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> ---
+> Duje Mihanovi=C4=87 (5):
+>       dt-bindings: clock: marvell,pxa1908: Add simple-mfd, syscon compati=
+ble to apmu
+>       dt-bindings: power: Add Marvell PXA1908 domains
+>       pmdomain: marvell: Add PXA1908 power domains
+>       MAINTAINERS: PXA1908: Add power domain controller
+>       arm64: dts: marvell: pxa1908: Add power controller
+>=20
+>  .../devicetree/bindings/clock/marvell,pxa1908.yaml |  36 ++-
+>  .../power/marvell,pxa1908-power-controller.yaml    | 105 +++++++
+>  MAINTAINERS                                        |   5 +
+>  .../marvell/mmp/pxa1908-samsung-coreprimevelte.dts |   1 +
+>  arch/arm64/boot/dts/marvell/mmp/pxa1908.dtsi       |  36 ++-
+>  drivers/pmdomain/Kconfig                           |   1 +
+>  drivers/pmdomain/Makefile                          |   1 +
+>  drivers/pmdomain/marvell/Kconfig                   |  16 +
+>  drivers/pmdomain/marvell/Makefile                  |   3 +
+>  .../pmdomain/marvell/pxa1908-power-controller.c    | 347 +++++++++++++++=
+++++++
+>  include/dt-bindings/power/marvell,pxa1908-power.h  |  17 +
+>  11 files changed, 561 insertions(+), 7 deletions(-)
+> ---
+> base-commit: cca7a0aae8958c9b1cd14116cb8b2f22ace2205e
+> change-id: 20250803-pxa1908-genpd-15918db5260c
+>=20
+> Best regards,
+> --=20
+> Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+>=20
+
+--61gm189z7gN5234q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaJTI7AAKCRB4tDGHoIJi
+0qRUAPsGIBNq7EJeNjCewk/s7WezXIszK4j07CCitkja8bCHUQD/QUq7puCrhLyP
+vAJwA5dguhkavA4C1I5FPJDQbUdK5gM=
+=rOfT
+-----END PGP SIGNATURE-----
+
+--61gm189z7gN5234q--
