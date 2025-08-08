@@ -1,117 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4DD1D54C2;
-	Fri,  8 Aug 2025 07:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6878C285CA1;
+	Fri,  8 Aug 2025 19:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754638547; cv=none; b=NUmtGmRGE1mP6ltM/6Wg4Ng8FjB9ws0cZdq6Wjh7yvUaGNxx6A/hYlWNi2If01hKfc9RZmK/fbVjHamKJsrKoT24g0CqyNQJIovXmDhYC1VptxdUCHdZ6F8CgXCHeI9ngWE5689fDci0+sX+jalEFQBi51aRdmUF1c94v3Z9Vys=
+	t=1754682719; cv=none; b=WA5MFbg44TcXr+ALovn1YVHKnRd5iJ3rsHcJpoysaDEM4TKsH6ZHGg4ycpIwgekIgArq94PJVkHbzTtMd05/WhqzzFoeOsnH7E2v76KeAKyVrb9m39oGSrcB6krEq1K4uX/VJ5mwOmKKiQAYC+ZsF02J2xquiMWBnS7WiAUIJ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754638547; c=relaxed/simple;
-	bh=fSFQ4BFpgAzz0JTLtrpfPT919diDmGwK+Dw9OkWmuBw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gb6joYMHuEw3olicibi3l5pzwT0bbmTFalmi8NJ6XUe1AHJrr2zgv30v7IVIvI2a+6aboMcT3Mm7kBzBZuZxVCDvgoBmI8MFFbNn1zFXuqr5f9icvvIUiKxBhqIhWRvxSGTUEyEpXpIhO7WHGLHq3BppUUOwL5983UxmWHB6vrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZy8Mme7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754682719; c=relaxed/simple;
+	bh=qdUpktaT2gX2CFPhryadTKFXcXwjP0lNYT9ptGL5Ero=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bCIQLTYJ+k8T8ZwsNGdLjOEK2PRYrCEDs8fqYJGDD+sp+mNErQQcZwVBTGcXYBi7cwvc36N3Wh9/2bf2+6cMPbs0goQ5QQUBIjLQ2lEmXGc/Xc6KjkruXeVH9s9gIzzL3dBN7FuYo2zI4O1iWfe2Le5QhYMmGYuh5Jla4rvbtMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=FwqlN8NA; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZy8Mme7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1E7C4CEED;
-	Fri,  8 Aug 2025 07:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754638546;
-	bh=fSFQ4BFpgAzz0JTLtrpfPT919diDmGwK+Dw9OkWmuBw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OZy8Mme7TpW+NGxATpczCzeRM6bqUT5ztLWouhxQrAQQ29h9gpy4Efhg9SvkfZ86Y
-	 Jk/Y60NKWGoRpxKrKAn/gYvH9JDy+jqeUQdckwhWK/+NoJVphBCR+FxAqCCfUoyj6i
-	 meBtj4HyISCka6PY43NN1jLZiqLazDBiihwTP8gZRWFA3Sc5oqVHnFp1DMpYUNXOBc
-	 hsKvtpVvdhFG++wPnQ5GLIjl5oeZHn36yw8Gq/+ehwBCsL3zxXW6W3CaUpOQNag2Kg
-	 BCzpIBrdztWJbwAVvFRVxun9GjgHOg/+bCVwefGxcZ/L67C0yT9A2gweRTeiC9lAm8
-	 P22Evj6X/7TPQ==
-Date: Fri, 8 Aug 2025 09:35:44 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, David Wronek <david@mainlining.org>, 
-	Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH RFC 1/5] dt-bindings: clock: marvell,pxa1908: Add
- simple-mfd, syscon compatible to apmu
-Message-ID: <20250808-amusing-ladybug-of-joviality-3fb371@kuoka>
-References: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
- <20250806-pxa1908-genpd-v1-1-16409309fc72@dujemihanovic.xyz>
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="FwqlN8NA"
+DKIM-Signature: a=rsa-sha256; bh=qdUpktaT2gX2CFPhryadTKFXcXwjP0lNYT9ptGL5Ero=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1754682705; v=1; x=1755114705;
+ b=FwqlN8NAHSWMHPWImW/qCeBBypphh29Fvae2amh997SZV8FG1egAwUkT8FL1GgXqTn4q2iwQ
+ /kyfnHPdWEAbwqgvMeqnP/LgTJs9LhXgdtelqkz4VIlyPZ0vqk7CjDNBjLrAq8lWoEuSE4SgJ5j
+ 2xgL0xif2573ngFwGRjxWB7cbN8+IKMbrjQfJfr8g/TCj9k3DlIL9CDxp5XuKYv2KWjWfJBkUoQ
+ osu1EaE7Yi6W3z4EScUg2i6ALlRfcwRiyYptDRcTJ31iv3eJfx3yS3XS/VrGmcbKjZffQOYNWD/
+ g1U0jMCC6FxYWCqR7LS9XiECNiF+Ix7GYD1AdvFDLdT9Q==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id be47afdb; Fri, 08 Aug 2025 21:51:45 +0200
+From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
+To: Conor Dooley <conor@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, David Wronek <david@mainlining.org>,
+ Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH RFC 0/5] Marvell PXA1908 power domains
+Date: Fri, 08 Aug 2025 21:51:44 +0200
+Message-ID: <3650391.iIbC2pHGDl@radijator>
+In-Reply-To: <20250807-avatar-comply-30aa8001aa82@spud>
+References:
+ <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
+ <20250807-avatar-comply-30aa8001aa82@spud>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250806-pxa1908-genpd-v1-1-16409309fc72@dujemihanovic.xyz>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Aug 06, 2025 at 07:33:20PM +0200, Duje Mihanovi=C4=87 wrote:
-> Add required syscon and simple-mfd compatibles to the APMU controller.
-> This is required for the SoC's power domain controller as the registers
-> are shared. The simple-mfd compatible allows devices whose registers are
-> completely contained in the APMU range (such as the power domain
-> controller and potentially more) to be children of the clock controller
-> node.
->=20
-> Also add an optional power-controller child node to the APMU controller
-> to accommodate the new power domain driver.
->=20
-> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
-> ---
->  .../devicetree/bindings/clock/marvell,pxa1908.yaml | 36 ++++++++++++++++=
-++----
->  1 file changed, 30 insertions(+), 6 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml=
- b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> index 4e78933232b6b925811425f853bedf6e9f01a27d..5e924ebd97e6457191ac021ad=
-dafd22caba48964 100644
-> --- a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> +++ b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> @@ -19,11 +19,15 @@ description: |
-> =20
->  properties:
->    compatible:
-> -    enum:
-> -      - marvell,pxa1908-apbc
-> -      - marvell,pxa1908-apbcp
-> -      - marvell,pxa1908-mpmu
-> -      - marvell,pxa1908-apmu
-> +    oneOf:
-> +      - enum:
-> +          - marvell,pxa1908-apbc
-> +          - marvell,pxa1908-apbcp
-> +          - marvell,pxa1908-mpmu
-> +      - items:
-> +          - const: marvell,pxa1908-apmu
-> +          - const: simple-mfd
-> +          - const: syscon
-> =20
->    reg:
->      maxItems: 1
-> @@ -31,18 +35,38 @@ properties:
->    '#clock-cells':
->      const: 1
-> =20
-> +  power-controller:
-> +    description: |
-> +      Optional power domain controller node.
-> +    type: object
-> +    additionalProperties: true
-> +    properties:
-> +      compatible:
-> +        const: marvell,pxa1908-power-controller
+On Thursday, 7 August 2025 17:40:28 Central European Summer Time Conor Dool=
+ey wrote:
+> On Wed, Aug 06, 2025 at 07:33:19PM +0200, Duje Mihanovi=C4=87 wrote:
+> > Hello,
+> >=20
+> > This series implements support for the power domains found in Marvell's
+> > PXA1908 SoC. The domains control power for the graphics, video and image
+> > processors along with the DSI PHY.
+> >=20
+> > The series is based on master as the MAINTAINERS and device tree patches
+> > depend on the very recently merged initial Marvell PXA1908 support seri=
+es.
+> > That series can be found at the following link:
+> > https://lore.kernel.org/all/20250708-pxa1908-lkml-v16-0-b4392c484180@du=
+jemih
+> > anovic.xyz
+> It's not clear to me, nor mentioned anywhere I could see, why this is an
+> RFC. What are you actually soliciting feedback on?
 
-I commented on next patch, so oly to re-iterate here: no, don't create
-nodes just to instantiate drivers. You do not have any resources here.
+Apologies for that, should have mentioned it right away. I was unsure
+whether I was handling domain clocks correctly, which is one of the
+things Krzysztof since commented on.
 
-Best regards,
-Krzysztof
+Regards,
+=2D-
+Duje
+
 
