@@ -1,122 +1,181 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDB26562A;
-	Thu,  7 Aug 2025 15:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2AF222578;
+	Fri,  8 Aug 2025 07:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754581237; cv=none; b=Q3aA16kdoywiNXcGYjamafsOZwfbOn+ipAfoSKsSj3CBP807y69PGwLUkacOpYaEbV+43ROCy9QTyJ4RIrndcCvTrbsXp+45/HwQJoWWsqNl9WBM+Zu1zwCdeSt+IVkDRgMb8lXNygxD04aCB2lohorEDDrGPzjqqO10YV/1NrU=
+	t=1754638497; cv=none; b=IWmsPi3JLXqP2WJSv7YVvyr39WcZmnvJfrTUzO1Bvb/ZjhJyaMFvawSWu8I7UhHZec60Idx6cpDvVCYrRni1mAXa0AgzAr0Ew2vinlLK2jgrTcWiuvBpNMs5RnXZyJBC51jWexS5pZIqo2SAgKzxgfo06+dv0RY3pP0O3CDvAiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754581237; c=relaxed/simple;
-	bh=oxkXLZvPp3BqQEgtA6OlLjO1pulHs/NQGwamKgBjikQ=;
+	s=arc-20240116; t=1754638497; c=relaxed/simple;
+	bh=htYYTMvBIoJF3AsCajNAqmICTBXqJVYTEKxD4QMF3D4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R7xumc6mtPahNAR0h+jX3S5hH28CttGlEaOJneAyg9Q69eDoUcdQauA+1qi4rGzo91x0zclgxmEB7fp0CTu9/IaB9kufcsUVTsexFirQvNeyIKj4hcxDDUumGKmSox1eFNdO0j/mj6+4pZfZd4zxngLs2mttj1JxdmtunLOp/ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDdnwW0D; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6Esjua4Cnr/8+9ANbYc2tfPHS9x3Gos/7dz220THmnX0BtvnLI+xEt17+eG0286M2AYDVDypzcmQqryFKpUWfz34oEwBrewtgvHUVFkM5IekTxPSc9O5/lEe1eyDTfjb3aa8PeBuOZfiFTZge9cb47kU6f2Pf15euJII09Vapc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANxjiPOe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDdnwW0D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B39CC4CEEB;
-	Thu,  7 Aug 2025 15:40:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANxjiPOe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB82C4CEED;
+	Fri,  8 Aug 2025 07:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754581234;
-	bh=oxkXLZvPp3BqQEgtA6OlLjO1pulHs/NQGwamKgBjikQ=;
+	s=k20201202; t=1754638496;
+	bh=htYYTMvBIoJF3AsCajNAqmICTBXqJVYTEKxD4QMF3D4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rDdnwW0DKcf/KVyf/uUqQ8cftSD+Xa9fB2BIXHgOnz7NdndcxH2o+EPXPHUVwwAeb
-	 CEPycnxuWPsTGUfG3cL65ht6RKlV99cwxjQUTRmqEbZ9uJ40mxPS6CKA8EKyXQ+6Cb
-	 uJag1T1BbVniRqyZuK3rXvJpSWiR70+E3WkXllCLdHFZB0dsElwF37SsTNpf96w8Kz
-	 NdolM9USSXP1YkV/ehKsWaHmVypfFMkXVQ/+1J+gTT4i6M0OzQ9KKSb1fEpMy7J1Ce
-	 bvtImt3bohQcqn2mUV4blTq6Z/dw/PjdX/7qEfhs1wyO4nlfz8L+dNYEce1yOkSeqg
-	 xhj1OqNdeEPqw==
-Date: Thu, 7 Aug 2025 16:40:28 +0100
-From: Conor Dooley <conor@kernel.org>
+	b=ANxjiPOewS3527iiBY1Trtv9QJ/OmWTljS3mBn4JNASVq1ZMOxzVTWGSS+spxi8O/
+	 bJKqyUNR9Bfs/23ShbX4Zitb0Uollq10bGEygmjL0K/JfHRE1j1xSoX9r5GsoXt5CF
+	 FrHsHcd9Z7gqNmYa7wSJXIk92MSMx15EYPaL8ZOFDQfSrn0Hl8dKfdTTIZQoNraF6W
+	 vw9MUHVy4A6XNzl6fvrtbp1I6FzyeK0P8ao3L0QJuy5wNmj0qXlWxM0xxowolkFUYD
+	 h6O+02wMdAm032dr7mnIApf41xcyr20RtNTlFQE8RD0gTTVmNwJ6xDzc+N8wymXp7P
+	 cR8JYDBFoLRHw==
+Date: Fri, 8 Aug 2025 09:34:54 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH RFC 0/5] Marvell PXA1908 power domains
-Message-ID: <20250807-avatar-comply-30aa8001aa82@spud>
+Cc: Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, David Wronek <david@mainlining.org>, 
+	Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH RFC 2/5] dt-bindings: power: Add Marvell PXA1908 domains
+Message-ID: <20250808-portable-expert-turkey-4f8f19@kuoka>
 References: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
+ <20250806-pxa1908-genpd-v1-2-16409309fc72@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="61gm189z7gN5234q"
-Content-Disposition: inline
-In-Reply-To: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
-
-
---61gm189z7gN5234q
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250806-pxa1908-genpd-v1-2-16409309fc72@dujemihanovic.xyz>
 
-On Wed, Aug 06, 2025 at 07:33:19PM +0200, Duje Mihanovi=C4=87 wrote:
-> Hello,
->=20
-> This series implements support for the power domains found in Marvell's
-> PXA1908 SoC. The domains control power for the graphics, video and image
-> processors along with the DSI PHY.
->=20
-> The series is based on master as the MAINTAINERS and device tree patches
-> depend on the very recently merged initial Marvell PXA1908 support series.
-> That series can be found at the following link:
-> https://lore.kernel.org/all/20250708-pxa1908-lkml-v16-0-b4392c484180@duje=
-mihanovic.xyz
-
-It's not clear to me, nor mentioned anywhere I could see, why this is an
-RFC. What are you actually soliciting feedback on?
-
+On Wed, Aug 06, 2025 at 07:33:21PM +0200, Duje Mihanovi=C4=87 wrote:
+> Add device tree bindings for Marvell PXA1908's power domains.
 >=20
 > Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
 > ---
-> Duje Mihanovi=C4=87 (5):
->       dt-bindings: clock: marvell,pxa1908: Add simple-mfd, syscon compati=
-ble to apmu
->       dt-bindings: power: Add Marvell PXA1908 domains
->       pmdomain: marvell: Add PXA1908 power domains
->       MAINTAINERS: PXA1908: Add power domain controller
->       arm64: dts: marvell: pxa1908: Add power controller
->=20
->  .../devicetree/bindings/clock/marvell,pxa1908.yaml |  36 ++-
->  .../power/marvell,pxa1908-power-controller.yaml    | 105 +++++++
->  MAINTAINERS                                        |   5 +
->  .../marvell/mmp/pxa1908-samsung-coreprimevelte.dts |   1 +
->  arch/arm64/boot/dts/marvell/mmp/pxa1908.dtsi       |  36 ++-
->  drivers/pmdomain/Kconfig                           |   1 +
->  drivers/pmdomain/Makefile                          |   1 +
->  drivers/pmdomain/marvell/Kconfig                   |  16 +
->  drivers/pmdomain/marvell/Makefile                  |   3 +
->  .../pmdomain/marvell/pxa1908-power-controller.c    | 347 +++++++++++++++=
+>  .../power/marvell,pxa1908-power-controller.yaml    | 105 +++++++++++++++=
 ++++++
->  include/dt-bindings/power/marvell,pxa1908-power.h  |  17 +
->  11 files changed, 561 insertions(+), 7 deletions(-)
-> ---
-> base-commit: cca7a0aae8958c9b1cd14116cb8b2f22ace2205e
-> change-id: 20250803-pxa1908-genpd-15918db5260c
+>  include/dt-bindings/power/marvell,pxa1908-power.h  |  17 ++++
+>  2 files changed, 122 insertions(+)
 >=20
-> Best regards,
-> --=20
-> Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
->=20
+> diff --git a/Documentation/devicetree/bindings/power/marvell,pxa1908-powe=
+r-controller.yaml b/Documentation/devicetree/bindings/power/marvell,pxa1908=
+-power-controller.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..1cf3a45d56cbb7b75f7204d65=
+6016a9a569da186
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/marvell,pxa1908-power-contr=
+oller.yaml
+> @@ -0,0 +1,105 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/marvell,pxa1908-power-controlle=
+r.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Marvell PXA1908 Power Domain Controller
+> +
+> +maintainers:
+> +  - Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> +
+> +description: |
+> +  The Marvell PXA1908 SoC includes multiple power domains which can be p=
+owered
+> +  on/off to save power when different IP cores are not in use.
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: '^power-controller$'
+> +
+> +  compatible:
+> +    const: marvell,pxa1908-power-controller
+> +
+> +  '#power-domain-cells':
+> +    const: 1
 
---61gm189z7gN5234q
-Content-Type: application/pgp-signature; name="signature.asc"
+So this is power domain controller?
 
------BEGIN PGP SIGNATURE-----
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^power-domain@[0-9a-f]+$":
+> +    type: object
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaJTI7AAKCRB4tDGHoIJi
-0qRUAPsGIBNq7EJeNjCewk/s7WezXIszK4j07CCitkja8bCHUQD/QUq7puCrhLyP
-vAJwA5dguhkavA4C1I5FPJDQbUdK5gM=
-=rOfT
------END PGP SIGNATURE-----
+And this is as well?
 
---61gm189z7gN5234q--
+You duplicated them.
+
+> +
+> +    description: |
+> +      Represents a power domain within the power controller node as docu=
+mented
+> +      in Documentation/devicetree/bindings/power/power-domain.yaml.
+
+We do not represent individual power domains, just like we do not
+represent individual clocks.
+
+
+
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          Power domain index. Valid values are defined in:
+> +              "include/dt-bindings/power/marvell,pxa1908-power.h"
+> +        maxItems: 1
+
+So no address space, thus this is not a separate device node.
+
+> +
+> +      clocks:
+> +        description: |
+
+Drop everywhere |
+
+> +          A number of phandles to clocks that need to be enabled during =
+domain
+> +          power up.
+
+This does not exist in your example, so it is just confusing.
+
+> +
+> +      '#power-domain-cells':
+> +        const: 0
+> +
+> +    required:
+> +      - reg
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/power/marvell,pxa1908-power.h>
+> +
+> +    clock-controller@d4282800 {
+> +      compatible =3D "marvell,pxa1908-apmu", "simple-mfd", "syscon";
+> +      reg =3D <0xd4282800 0x400>;
+> +      #clock-cells =3D <1>;
+> +
+> +      power-controller {
+> +        compatible =3D "marvell,pxa1908-power-controller";
+
+No address space, so this should be folded into the parent.
+
+Best regards,
+Krzysztof
+
