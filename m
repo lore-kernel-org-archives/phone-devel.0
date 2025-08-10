@@ -1,97 +1,124 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9191A3167;
-	Fri,  8 Aug 2025 20:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B661C6FE5;
+	Sun, 10 Aug 2025 15:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754683425; cv=none; b=aCD7RTWOXLgy2X7T++FTUcOk4TRp9ERMer5K78qnbBvbIW3ArE0MeHl7Z218eg4aYD3XEm3Vjo7Q4VIHmr183vLei8GnRrCJayR729TVwqYmfe7ftYfe7YjeTK2WcduZJRAFcADFgvLRoK/zSUcKfjzhK5/w24y2cVrfxUgsJr4=
+	t=1754840317; cv=none; b=nnhpMYUQ2MRBGCRD3OyhZreGCTIuhrvPiTlerfxu4Kxw39HfkaecL0fMiOe1afr9r1BGWHw2UnEcJqSsIC/Wo8V9aCWrupbzs8ertdZDs4iv3PIzaZasu1RA6AWYZ7bXgVvPpjFHPOOYWQilEnAW4WjRcAhaUTn0XBxZXvH+0mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754683425; c=relaxed/simple;
-	bh=gKRagEStvgjsGqBz58+tTFcCLr9nfkR8v6kbDBTUNds=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hMse1ui8jx4KhzooVDYSd023148miG0sI7klNiGMUgCbwdHz780M/+gjvi7UF2JuKRKo+A41xf7dTmhGRYAY2W66M1W4UvyEaY1uTILOg7y2RChdw7zaVOvSkmQqxkUhqerPunRwf6AbYrOPcym4qQFKFTP6mA7jDS0FHavC4GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=Gr2Alh4h; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1754840317; c=relaxed/simple;
+	bh=zLFTjE8QnKZwWG/D1SAu/9ASzpx5Bt+Yj/0b2vUINAk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bNc2gAfY9AN9eZbF8mdZByTz9fQibqtxvw7P71YKz49cPYwLbh9KwOe8lbxxYEZ4lomqQPLr/09tbZj+J8+oJTgUTdG7fEVW/x/gDuOUPk9vDc7X/EhmJQWAvmjHVJjzdc3KAWloZwYxmRKQJI456q96tllUOifY46bnmNWlZg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=WchrqbDX; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="Gr2Alh4h"
-DKIM-Signature: a=rsa-sha256; bh=rm/KaI4gS5txCax60X3cOFqmUOa0+shLoOnPWo3LZg4=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1754682419; v=1; x=1755114419;
- b=Gr2Alh4hi11EAN9rear4dDOE8QlaR46SNQPsFD1ooegKRm0HJHYnFWdUO9dBzTAtGiENCnPM
- huKFchm21m8KKgRpiQItKnlXXQDpE80TXeVrwL2HUT8EpOrgrv2g2D3/zqdBH3cPO/qFaOEtuKk
- oY7LL1TFJB9sCPodsO66g3HWZeR+Tv1Len1w/BvMvToZbblZG4k3kJQY8n//8yTuBFcwHdikJUN
- ssJk/LQlEjCXtiG/hpDsFSVMqhJPwPf1tlX++/avZQObwj3Oibn5qL4bFFm2HQ0LRDzFeRj4UmC
- kkzB0oBE0bugbMVT1WJnhN5pklZ8atDGCn8ZRWUbwzF6w==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id ca151574; Fri, 08 Aug 2025 21:46:59 +0200
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, David Wronek <david@mainlining.org>,
- Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH RFC 2/5] dt-bindings: power: Add Marvell PXA1908 domains
-Date: Fri, 08 Aug 2025 21:46:58 +0200
-Message-ID: <2017616.PYKUYFuaPT@radijator>
-In-Reply-To: <20250808-portable-expert-turkey-4f8f19@kuoka>
-References:
- <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
- <20250806-pxa1908-genpd-v1-2-16409309fc72@dujemihanovic.xyz>
- <20250808-portable-expert-turkey-4f8f19@kuoka>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="WchrqbDX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1754840307; bh=zLFTjE8QnKZwWG/D1SAu/9ASzpx5Bt+Yj/0b2vUINAk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=WchrqbDXk4cupywSwIxDh2Oq8k3tHaEYWZR6EW3lZwlDhWLEJi6p8iwU1acFh4Q2h
+	 ZvPZphkTa5kiTvzHTnN1jxf/STwQEYHS4v8ta7InR7lTub2N+UcDDe9cTIAk/FbBGD
+	 qfoT3qULRl13SEenxKYlfef6j8+l4Gqrr732j/u4=
+From: Luca Weiss <luca@lucaweiss.eu>
+Date: Sun, 10 Aug 2025 17:37:57 +0200
+Subject: [PATCH 6/7] arm64: dts: qcom: sdm632-fairphone-fp3: Add camera
+ fixed regulators
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250810-msm8953-cci-v1-6-e83f104cabfc@lucaweiss.eu>
+References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+In-Reply-To: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1700; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=zLFTjE8QnKZwWG/D1SAu/9ASzpx5Bt+Yj/0b2vUINAk=;
+ b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBomLzvLPHz7E03g+c7KQ1BFlZFMfkrWpPWaWwXO
+ 9FEZVty13qJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaJi87wAKCRBy2EO4nU3X
+ VnD8EACPNWNvvNbQXDAwWhbLYp5kxvW3WuUCc/MuWCUcYhJtSrXifD6bHG47PG3UJFoeNJXEC9X
+ JNUEIhgbwhNM2IFAT8084VmbVwalyibF93BjF2/VHZ6Nvnh4KhyHoRVB6r30WHYsF0ay5SwgGLx
+ m34SGfu6vVywzBQIeWwf71xlY2HKeF8eGrX/x8EHyrdbMGBOSSc5WemYKJljXxKcxhR8MUXSAkB
+ fmvgDeifr3jgwNzvVFTSR1MXfaAMbJveGj9hv8Z/rR+XOeTP0k6JCjivcXymXW5sh5RDgU6cU4i
+ e8u3yN8nfnUhgS29aoF4VjpI1wl2/NsLdZIIzK9BWYuK25miOaDvBw/MAygwU0yzL/Y7c421KNM
+ wSqc2KU6xqOVvlEdfQgta384FF7v33JfxUvpkJo8Nyj+zQQldxhjaWqKZBsTq7vxIWKlYVdV2bi
+ JptpMb3m/3T/1hVDVy1vxfiHTaJ4NYtvPRM/Ah8s8kUWXN6W7gJSj82mekTBLzjW2rIL0Ddcjvw
+ b8m2aBwsb/qejyNvbPoj6eb9WiHj933WcZEOjbkG49WOMFcjOp7CUl1B1D2XjK2BBcrOaVLdhIl
+ vM5Tm+noY3/zsrhWOVDAv9PsCfENimHApHioE3fKt3XBVlRu6vxqwk+Mctyiissa6VixBzCc5W5
+ +6Os9BU4gEHx/QA==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Friday, 8 August 2025 09:34:54 Central European Summer Time Krzysztof Ko=
-zlowski wrote:
-> On Wed, Aug 06, 2025 at 07:33:21PM +0200, Duje Mihanovi=C4=87 wrote:
-> > +          A number of phandles to clocks that need to be enabled during
-> > domain +          power up.
->=20
-> This does not exist in your example, so it is just confusing.
+Add the definitions for a few fixed regulators found on the Fairphone 3.
 
-This is because I have not implemented any of the clocks used by the
-domains at this moment.
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+ arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 36 +++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Actually, I am not sure anymore whether it is necessary to assign
-clocks to the domains as I have just yesterday successfully brought up
-the GPU with some out-of-tree code and that did not require giving the
-domains any clocks even though the vendor kernel does this. Should I
-just go with that and drop all clock handling from the power domain
-driver, at which point there would be no need for the individual domain
-nodes? If not, how should I in the future assign clocks to the domains?
+diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+index 55a45b528bd3f1bf9b6fe7882753338b43c62271..557925a6627665614caefed65d86a42c1e55ab8d 100644
+--- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
++++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+@@ -36,6 +36,42 @@ key-volume-up {
+ 		};
+ 	};
+ 
++	vreg_cam_af_2p85: regulator-cam-af-2p85 {
++		compatible = "regulator-fixed";
++		regulator-name = "cam_af_2p85";
++		regulator-min-microvolt = <2850000>;
++		regulator-max-microvolt = <2850000>;
++
++		gpio = <&tlmm 128 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		vin-supply = <&vph_pwr>;
++	};
++
++	vreg_cam_io_1p8: regulator-cam-io-1p8 {
++		compatible = "regulator-fixed";
++		regulator-name = "cam_io_1p8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++
++		gpio = <&tlmm 130 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		vin-supply = <&vph_pwr>;
++	};
++
++	vreg_cam2_dig_1p2: regulator-cam2-dig-1p2 {
++		compatible = "regulator-fixed";
++		regulator-name = "cam2_dig_1p2";
++		regulator-min-microvolt = <1200000>;
++		regulator-max-microvolt = <1200000>;
++
++		gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		vin-supply = <&vph_pwr>;
++	};
++
+ 	/* Dummy regulator until PMI632 has LCDB VSP/VSN support */
+ 	lcdb_dummy: regulator-lcdb-dummy {
+ 		compatible = "regulator-fixed";
 
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/power/marvell,pxa1908-power.h>
-> > +
-> > +    clock-controller@d4282800 {
-> > +      compatible =3D "marvell,pxa1908-apmu", "simple-mfd", "syscon";
-> > +      reg =3D <0xd4282800 0x400>;
-> > +      #clock-cells =3D <1>;
-> > +
-> > +      power-controller {
-> > +        compatible =3D "marvell,pxa1908-power-controller";
->=20
-> No address space, so this should be folded into the parent.
-
-By this, do you mean that the clock driver registers the power domain
-controller through devm_mfd_add_devices()?
-
-Regards,
-=2D-
-Duje
-
+-- 
+2.50.1
 
