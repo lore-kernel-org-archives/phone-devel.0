@@ -1,95 +1,116 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE07210F2;
-	Sun, 10 Aug 2025 15:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9957B1B0F19;
+	Sun, 10 Aug 2025 22:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754840815; cv=none; b=gfwUiQ9vjBNed3N8HGjBtgwe0TAW8H1iJ6apR3Oy9UrUkqlfGQ9wSWaPvnxixbtmS1/3L8uEjWO3kJw7IYNrnwexBcwNcYPh5teXHGCCEKJVH7SS6Iwj4DWoZJ55i80z4KHW0tIBxhzLflBmBxYGnLzYBlp8ybG5ecjHiFiP9Xo=
+	t=1754863672; cv=none; b=Ivx8gUTDBHO9TnCH0R4APAdQvzHgEfEt1bHqpDnYSXkUxZPeFIy+p9umi4qUS2oIQCe8JnvYaRAJ+1Kxr1tYt7+ZFSAQpOpD2ec3+hSd8pW+zFFffEFwZ1lo8T/1+p20J+S5Vs9lwMMUcDonDGdN7yJDuG9f3Kp0MmggEO6uViI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754840815; c=relaxed/simple;
-	bh=SztCsm1msowR5xsvSwwPc7wLorBM3lMk1jkr9nMFfMY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Spwmn9lYCXbzQupv/D9EJEyvw+nHAX25WMumEgiriw56ud5LlYPKjeOTLVs8l7Io+Q+HWnV5uCDWpnejfb942ZUh1+9+AjJuJ7LAt1g56KqovmSRjWQPt494iKkT74ZUun2U/Tf2gcQzoxVVQcY+6IGHi/whrq7YsjddrsOmF78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=D4O7k3pP; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1754863672; c=relaxed/simple;
+	bh=CDN90bCC1qPfKH3VcQqpxLM8FpV2+jQZduZTlVhDc5o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sdgPCg2nZFeCfK7ApGEeaPS2sTrpTnGChLg5M1OBk4ZU2RPPOyuVYJyWTr4A42+jsQYq5+TrgL98d6WUepVAf1pzwpixogSZy+dJQ029HzUxfaOus5K+PKrgIDMN8Mn7HWNDr5IweyXNQH0ILczHSBqZt8ZegKheAKIQ4whk4Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=K/ocHRIU; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="D4O7k3pP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1754840305; bh=SztCsm1msowR5xsvSwwPc7wLorBM3lMk1jkr9nMFfMY=;
-	h=From:Subject:Date:To:Cc;
-	b=D4O7k3pPM/+kxfbe0DDagjodDCUQ+nOwspe5SWg0HXcMAPOd0ofg5xC3w/gqZkO0j
-	 4ngDrZzRwx8+sYlpSLGegSX9oGew0RRNKHgysHS196y/JkAeMy/DIlm/e4r+Yft7Gd
-	 kgvV1DFE9QHW/4tPGqbVXGQx/UYdbkKLZLI8poMw=
-From: Luca Weiss <luca@lucaweiss.eu>
-Subject: [PATCH 0/7] Camera I2C (CCI) enablement on MSM8953 and Fairphone 3
-Date: Sun, 10 Aug 2025 17:37:51 +0200
-Message-Id: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="K/ocHRIU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=CDN90bCC1qPfKH3VcQqpxLM8FpV2+jQZduZTlVhDc5o=; b=K/ocHRIUCZ+l4jxIc3Ysa0aIn1
+	1klUPbwn35szYJXKCEt2g1ewWgZaxp3M67vuB8afvqYSUgk7ouwboV4I5kasRw5WdVBoURphSB8Gr
+	AVYXhwN+BTy5q8bt0BN3YwGsjnoxy7KB5HTsW9PKhqekqFoIu1Q6lklyEL6U4f3LJ2R2cRSjhhUTH
+	gEfQ7YsyrPTnpBWNIhkO6Ekg+53x0uSdGe6B0F5cZjYd/tKZgsP90QEzskkfTl6KXsDbFVfxnfs+T
+	d3fRURu1z4hSeQqp6Bk68v2diKnoueZMKRpzMgan9IIBtyo6lCxVo4pP2/5gEplUDHyDKLkUs0at8
+	OtaSenog==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1ulDto-0001jP-1N;
+	Sun, 10 Aug 2025 23:48:16 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1ulDtn-0000cY-34;
+	Sun, 10 Aug 2025 23:48:15 +0200
+Message-ID: <3a12312d37abe53cbd1a374d9cda81801f3f37e8.camel@apitzsch.eu>
+Subject: Re: [PATCH v2 0/5] media: i2c: imx214: Add some style improvements
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, Ricardo Ribalda
+	 <ribalda@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 10 Aug 2025 23:48:14 +0200
+In-Reply-To: <20250630-imx214_fixes-v2-0-cd1a76c412c0@apitzsch.eu>
+References: <20250630-imx214_fixes-v2-0-cd1a76c412c0@apitzsch.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAM+8mGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDCwML3dziXAtLU2Pd5ORMXVMLc1NLs5Q0C+OURCWgjoKi1LTMCrBp0bG
- 1tQBl2NT3XQAAAA==
-X-Change-ID: 20250808-msm8953-cci-587596df83da
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca@lucaweiss.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1212; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=SztCsm1msowR5xsvSwwPc7wLorBM3lMk1jkr9nMFfMY=;
- b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBomLznu9T00T5IlS+RJ61zYbKq2yoDx5MZiu5DC
- 9zHL86Fg9CJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaJi85wAKCRBy2EO4nU3X
- Vn9RD/4w73tConoUTyK9RKN0rLFpAeWwDDb634IGH1X9IoDKO8webKYnCGQWyuMasbLboFctcJu
- INHjeSMoJDvvG+tw97DZ/SESrTgIyoPM+q/4ARE7Q7QAeFuM1wo+JI9Qbhgg3mn1f2BuGTLwSAq
- k6wIhAdRBS14NblkJZiPwYKcnBoNrLMSSD+LXVVJ6lDiwi1VLzjaWn1yIHV8SRQQFgABV80lw6V
- JWaYJBpm5Ans0XrrCyjZOxZW6tbfItkOd2vz+3BlvLBK4fUMj40OR1TPvCqWNFk3+nhAhTr7HMD
- ga19GOVzam2n0HW5HjQxlyRa7RlkRFEAdFLOBt+RC0datEb7qtLLlMClGYGHwKE2hdyXFIkVWtO
- kgLukHdJKMSK9MqmlH3UUNC2OKWtFOeN1NX19nYQq0VJIXIBT4JyFWTpX8URc1g5O/l5TQ0SeMj
- mUHdzT2rkE+ve485Bz7K+6WPRs7u/TywKddY5poF+gD6pnkDC/FlTUtnHDILfNd3fgnROaN+8V6
- hOV9lrh57F86VRPJLnGotaHEyfb46knvpcIjTKakug/dw/HvjgjVYGALwqy4lw+eWzwk93d3y86
- TwZsJw1swhnT2KzfVoZc6L572hIed/Rm73468Ua1VVw2th3rEtf2VIb+GoLfj3AiN+HmtNJd0eg
- r5HRM/4XmKie9Ww==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27728/Sun Aug 10 10:32:45 2025)
 
-Add the compatibles and config for CCI on MSM8953, then enable these I2C
-busses on Fairphone 3 and configure the EEPROM found with one of the
-camera modules.
+Am Montag, dem 30.06.2025 um 21:05 +0200 schrieb Andr=C3=A9 Apitzsch via B4
+Relay:
+> The following changes have be suggested by Laurent in [1]. But the
+> related series had already be applied. That's why they are addressed
+> in this series.
+>=20
+> [1]
+> https://lore.kernel.org/linux-media/20250621181751.GA9125@pendragon.ideas=
+onboard.com/
+>=20
+> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> ---
+> Changes in v2:
+> - Drop unnecessary sentence from commit message (patch 3/5)
+> - Fix typo in summary (patch 5/5)
+> - Use imperative mood for commit message (patch 5/5)
+> - Add R-b tags
+> - Link to v1:
+> https://lore.kernel.org/r/20250629-imx214_fixes-v1-0-873eb94ad635@apitzsc=
+h.eu
+>=20
+> ---
+> Andr=C3=A9 Apitzsch (5):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Remove unneeded parent=
+heses
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Drop dev argument from
+> imx214_parse_fwnode()
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Use __free(fwnode_hand=
+le)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Move imx214_pll_update=
+ to imx214_ctrls_init
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Separate legacy link f=
+requency check from
+> PLL calculation
+>=20
+> =C2=A0drivers/media/i2c/imx214.c | 245 ++++++++++++++++++++++------------=
+-
+> ----------
+> =C2=A01 file changed, 121 insertions(+), 124 deletions(-)
+> ---
+> base-commit: 5e2562c1e46d3623fbdef77693f374eade075840
+> change-id: 20250623-imx214_fixes-123f285f5b62
+>=20
+> Best regards,
 
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
-Luca Weiss (7):
-      dt-bindings: i2c: qcom-cci: Document msm8953 compatible
-      i2c: qcom-cci: Add msm8953 compatible
-      dt-bindings: eeprom: at24: Add compatible for Belling BL24S64
-      arm64: dts: qcom: msm8953: Re-sort tlmm pinctrl states
-      arm64: dts: qcom: msm8953: Add CCI nodes
-      arm64: dts: qcom: sdm632-fairphone-fp3: Add camera fixed regulators
-      arm64: dts: qcom: sdm632-fairphone-fp3: Enable CCI and add EEPROM
+Hi Sakari,
 
- Documentation/devicetree/bindings/eeprom/at24.yaml |   1 +
- .../devicetree/bindings/i2c/qcom,i2c-cci.yaml      |   2 +
- arch/arm64/boot/dts/qcom/msm8953.dtsi              | 496 ++++++++++++---------
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts  |  57 +++
- drivers/i2c/busses/i2c-qcom-cci.c                  |  46 ++
- 5 files changed, 382 insertions(+), 220 deletions(-)
----
-base-commit: 1ad00588bc181aad8d76d86420d03042bc7e9acf
-change-id: 20250808-msm8953-cci-587596df83da
+kind reminder, that this series is still pending.
+
+Is there anything left to do from my side?
 
 Best regards,
--- 
-Luca Weiss <luca@lucaweiss.eu>
-
+Andr=C3=A9
