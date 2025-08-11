@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB4E28467D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABB5284B25;
 	Mon, 11 Aug 2025 19:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754939251; cv=none; b=qWLHspJzozJs8l3GoR7cKNzMOyILdVA25KnGdIrquOShXv0+MKsqsIhIh4z0VrbBCgla1Za+31w/4COBsjSrLlQ5w+BLtbSBvG24VL63qaYDINGM77U5ZBmGBNI3p2QnNrZOAcU/vWMW5D6hNC3Q6dBi9IeuKahNVkP3RvIFBRg=
+	t=1754939251; cv=none; b=b00j8ym5JrFszACuEkPVWM5vPXCKcNIp+kkOVjdGU3YIyrSCiFu7pQAPC2yLB2aikYxd0/LtuPH7ZrL22OatxstcZ+vv0NDhnINrThgysc3+p8695zAO+kExDl5Y1Li0vWvO/XDLmOvAgufSx4O1bptfmXdI/uCWg1HZfKiQ7Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754939251; c=relaxed/simple;
-	bh=iGpOrPiTcjSqjaJKYglayvOHuHZxT9a26u3piPV43Cc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uNbCwycfX/XzKt+IOvy2V29Rv5GOIwNofab6+i9ih6uTJGGxm4Ml1lR3QGYJKUJFIYHXJGq2mlypkqCWWWyysMshtrDLBf7Ty+k/oixtIGht/UyILXphwLkqDe9NitHIs1yxcH9ARkjNhcB25NsfmSyrjl4aC/sZod8NVQV4FWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loxe7TVv; arc=none smtp.client-ip=10.30.226.201
+	bh=IT9CfwXtx+8CDN35iEzS9Tir4HmMJGHSAmGC+WIZImU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Cm3VefEjHOWcnHHp+6b0dewCLn4Kgo/SQZ4pBUnq34AGnIxJ0BdszD8xioclFHLab4VHjRrX0QCRWWzSw1CqWUOXfK+gBfkB2KjnUyt3AMrhGcHcSkiHXfPNFkuFTa0if0h5pdep5qWCOj/aG0SMehbAVzRsz/pGRpnBiFxsjFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pp6XP8nH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loxe7TVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 89E69C4CEED;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp6XP8nH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A389EC4CEF7;
 	Mon, 11 Aug 2025 19:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1754939250;
-	bh=iGpOrPiTcjSqjaJKYglayvOHuHZxT9a26u3piPV43Cc=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=loxe7TVv6lBBvMW0+RtpvQ/F17Y/icZv2CPmnWb6d2If7AXHqNYTm9+l6roWHyaXU
-	 SWkz2IoqMcAJRGuh44t7yRAtP7nBuNGoDq+uC3jnYoEopUfNTNsgkWqn0sMqbkqkOh
-	 gTnOaTk9GxFtAsUzVhRH59oLE8FEyWVSZ3+h4X4e3lFUmXc6GTB03S8Gr5e798FSUH
-	 zI/li8KobgXqlXFuVsOYo6398DUO37q+cJWHKtHDZM8jyWBxcfs8iu1wLTbayvLUJy
-	 F5v+FLoihElRpDQyi9E0agt4ceWg6Wib7MH9tOpxOtV4L8rMNbPDz0hEgH6DxPTvGX
-	 lZAo8UYCLc0iw==
+	bh=IT9CfwXtx+8CDN35iEzS9Tir4HmMJGHSAmGC+WIZImU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pp6XP8nHzsB7zyLsmXpDObs+/yAqTCwxo9Dq0WLkxF7dTahtrqvlGAoiEVwBVy/+u
+	 E0hh3AhezbOKckejXfgk0xv9w2Y7x9M3LmslB3D261zFx6TNL1v/DBQyVgFwun1Sox
+	 I439PN4wE3sKFrofF52FQwqM3oprido2ipNmW7q31tmSYzLiwD0d8xIHonCf+vlINx
+	 8ggXvjx9Gnp1TZr4keiTAZsfRfZNDahpcS5S+agiITBmmo88iGArJxp8Xnuw0dmpdY
+	 ecC/4y4SyvqrpjIjbBAu6apOf+H4tMh5GNRX5JhJIvHNR0lp0bidlUUPgbK+KA7Jid
+	 6UbfJUHGl4uwQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73DDECA0ED3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 909F6CA0EC4;
 	Mon, 11 Aug 2025 19:07:30 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Subject: [PATCH RESEND v4 0/3] Add initial device tree for Billion Capture+
-Date: Mon, 11 Aug 2025 23:08:08 +0200
-Message-Id: <20250811-rimob-initial-devicetree-v4-0-b3194f14aa33@protonmail.com>
+Date: Mon, 11 Aug 2025 23:08:10 +0200
+Subject: [PATCH RESEND v4 2/3] dt-bindings: arm: qcom: Add Billion Capture+
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,20 +40,22 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250811-rimob-initial-devicetree-v4-2-b3194f14aa33@protonmail.com>
+References: <20250811-rimob-initial-devicetree-v4-0-b3194f14aa33@protonmail.com>
+In-Reply-To: <20250811-rimob-initial-devicetree-v4-0-b3194f14aa33@protonmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  phone-devel@vger.kernel.org, 
- Cristian Cozzolino <cristian_ci@protonmail.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+ Cristian Cozzolino <cristian_ci@protonmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754946504; l=1749;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754946504; l=840;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=iGpOrPiTcjSqjaJKYglayvOHuHZxT9a26u3piPV43Cc=;
- b=oa3QBVoZJAN/3rVhLcTZ0V7gnSVN1N86UmgFi3RK8fR+G6jrEQxwN7ELV8pDcO38mOmjDAVCu
- ZjcZPYShCtsBeEaYCOSj/kxEG9WyAgA8XY1R4BIBBGIqfK6bQLNQy89
+ bh=K11gJ9Fb8+1ali2kCYD7nje9AvLP+FV8erJhSLF+Ad4=;
+ b=yyaeOmzDqjsMYNO6ZmiidroLAmXuFo8YhZiNNh/IaP9PMk2TmsgPurpq6aEOHRKOt/33sNtGS
+ uwPWTIzVJYSBGHaZ+d8r+exDxMHfDnc/+Kg0CJwx2lWjqlwOxjXFP/Z
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -61,52 +63,31 @@ X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
 X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
 Reply-To: cristian_ci@protonmail.com
 
-Billion Capture+ is a handset using the MSM8953 SoC released in 2017
-and sold by Flipkart.
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Add a device tree with initial support for:
+Billion Capture+ (flipkart,rimob) is a smartphone based on Qualcomm
+Snapdragon 625 (MSM8953).
 
-- GPIO keys
-- SDHCI (internal and external storage)
-- USB Device Mode
-- Regulators
-- Simple framebuffer
-
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
-Changes in v4:
-- pick up tags (Rob);
-- Link to v3: https://lore.kernel.org/r/20250626-rimob-initial-devicetree-v3-0-4017ac9fd93d@protonmail.com
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v3:
-- (patch 3/3): pick up tag (Konrad);
-- Link to v2: https://lore.kernel.org/r/20250624-rimob-initial-devicetree-v2-0-34f6045ebc30@protonmail.com
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 618a87693ac1dc32b40a2201bc219a4f12e9f3e8..dbe605557af82c2382702011276e920ea18d3bb8 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -274,6 +274,7 @@ properties:
+ 
+       - items:
+           - enum:
++              - flipkart,rimob
+               - motorola,potter
+               - xiaomi,daisy
+               - xiaomi,mido
 
-Changes in v2:
-- (patch 3/3):
-  - add unit address and label to qseecom (Luca);
-  - reorder properties alphabetically in gpio-keys node (Konrad);
-  - fix hex values in reg address and size cells: from 0x00 to 0x0 (Konrad);
-  - add regulator-allow-set-load property to regulators supplying sdhc1/sdhc2.
-- Link to v1: https://lore.kernel.org/r/20250620-rimob-initial-devicetree-v1-0-8e667ea21f82@protonmail.com
-
----
-Cristian Cozzolino (3):
-      dt-bindings: vendor-prefixes: Add Flipkart
-      dt-bindings: arm: qcom: Add Billion Capture+
-      arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
-
- Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
- .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 255 +++++++++++++++++++++
- 4 files changed, 259 insertions(+)
----
-base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
-change-id: 20250620-rimob-initial-devicetree-da86a5bffc8b
-
-Best regards,
 -- 
-Cristian Cozzolino <cristian_ci@protonmail.com>
+2.49.0
 
 
