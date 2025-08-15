@@ -1,144 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20512580CC;
-	Fri, 15 Aug 2025 06:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61544299A87;
+	Fri, 15 Aug 2025 07:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755238110; cv=none; b=MfaEnZ04IEtk1Gxx6/FcMsP0J/nhL3NoL0/slnX63nrQkyPwUtIXQ0IBXgeNZKKMDDXATCOFEXxNjmj9vv1Ym0hW0liGH3y9ijiTwGAF5elm6IiRi3DO6AtQGGJqVivCZn+GTJdaE0b+//5HXNiyEDq0SbSGc0R/wv1cMiF9aGE=
+	t=1755241978; cv=none; b=Yq3bM94nQOK4BCfoZzNYU1n2UCKFgO+7PWAYKLQLLAyvZPcVbo4fTaEoXXtg01UKByiLf8cmGM6q156fc/ZztkzWmcxfjg4VrEeeeVyWr2IQGxZMSmOSrbQRd1qCMGctTJ6ZAn2D46NBJ0lgQeCitBAT5LgjqFMNVygOslAwpec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755238110; c=relaxed/simple;
-	bh=bG2c4T+pSmpVev0zsHpv/hBpG9AoZxYK5gAarWih2dI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M3z5/rKxmG5N+OSK6cmTkaDAPlSfdB7Soek6nw9LO2FI+/USyzw/oI8W5P0epOqfmuWluPraURRfmVGSMkVr7LLJOlsN55FE/75bBLxUaRgAkIdSya6CgTSzMu7w45iuf9p97QCkcVR88ONciX/sByXmiHTktUv19ugFmFCGgsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5fZdyXJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755241978; c=relaxed/simple;
+	bh=ItP3ixg7wyy1eeySa6KTxiwdsmmcboYuWfIAZxlgxiM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=ZMiNCYMzf/TcB23TJvIJleuVgZzayMqNSVon1Sosyx2PFzdtunywpoxO3raDly/rf0oU7GAbgvfSJ75I6TmGe1xrpyyS6orgazjihOkZSFgLWZspCX95/fGTEdaOU6AViyyRXCMk3pTdzoZs1hr/+7HfHiLZiTu8IY3d++KvDX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=KpSAij3Z; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5fZdyXJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAE2C4CEEB;
-	Fri, 15 Aug 2025 06:08:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755238110;
-	bh=bG2c4T+pSmpVev0zsHpv/hBpG9AoZxYK5gAarWih2dI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l5fZdyXJhS8IEJAfL3VjqchEOe+rhQv0EZoG6QCbD7+kZvA41gkQV4W4aQxpWjJRc
-	 S/eoPz/XhvMT1lMHnj4SEflOXoqKOwSSvDSdKWeXiFiem7OJ45DdP3yr/a+zu22QOw
-	 zr505omg93vnFg5bYhmuC7fDOVS1D3+aQwD+LPMLWGkB+bob1OyXcbQ/7wLlI6CRFI
-	 dit5sIFz5D38vqthkxy0dJAkiJkoS7DnDffI+e0xDhHaoZtAsmB9mr8G6DGVBW1Gao
-	 h6ocfLUxsxfd2VzbTcVkGNFART4sR3800DCOeifAG0y2cRtCHxo480tUhHcFoFeZLp
-	 fJXwuhShJspUw==
-Message-ID: <5e79b123-b29a-4edb-8e70-3b7fa6cd3674@kernel.org>
-Date: Fri, 15 Aug 2025 08:08:24 +0200
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="KpSAij3Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1755241968; bh=ItP3ixg7wyy1eeySa6KTxiwdsmmcboYuWfIAZxlgxiM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=KpSAij3ZjMqIiZ4+mkxGD3Msoe/G8KHbYwBQG0xPhZhqU6sckGNopMbc5tARt50gE
+	 +/w6TCliaBL8GgSHgDbZsqee/4aFlW3gl44JierJcFAMXhyXbTmNT3HqneR+Ocbz1x
+	 i5i/xkvZMhHfiYAz8pr/ZUX+mdBThbbX8M0KrK/k=
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/5] dt-bindings: power: Add Marvell PXA1908 domains
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
- <2017616.PYKUYFuaPT@radijator>
- <dfaa36d6-41b2-46c1-ba14-e2fb5c9815e6@kernel.org>
- <1950265.tdWV9SEqCh@radijator>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <1950265.tdWV9SEqCh@radijator>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 15 Aug 2025 09:12:48 +0200
+From: Luca Weiss <luca@lucaweiss.eu>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Robert Foss
+ <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
+ <konradybcio@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/7] i2c: qcom-cci: Add msm8953 compatible
+In-Reply-To: <aJnefpETGJm_cuRY@shikoro>
+References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+ <20250810-msm8953-cci-v1-2-e83f104cabfc@lucaweiss.eu>
+ <aJnefpETGJm_cuRY@shikoro>
+Message-ID: <f956eccec6b8ae2737b1e758b8357051@lucaweiss.eu>
+X-Sender: luca@lucaweiss.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 15/08/2025 00:08, Duje Mihanović wrote:
-> On Monday, 11 August 2025 08:38:15 Central European Summer Time 
-> Krzysztof Kozlowski wrote:
->> On 08/08/2025 21:46, Duje Mihanović wrote:
->>> On Friday, 8 August 2025 09:34:54 Central European Summer Time Krzysztof 
->>> Kozlowski wrote:
->>>> On Wed, Aug 06, 2025 at 07:33:21PM +0200, Duje Mihanović wrote:
->>>>> +          A number of phandles to clocks that need to be enabled during
->>>>> domain +          power up.
->>>>
->>>> This does not exist in your example, so it is just confusing.
->>>
->>> This is because I have not implemented any of the clocks used by the
->>> domains at this moment.
->>>
->>> Actually, I am not sure anymore whether it is necessary to assign
->>> clocks to the domains as I have just yesterday successfully brought up
->>> the GPU with some out-of-tree code and that did not require giving the
->>> domains any clocks even though the vendor kernel does this. Should I
->>> just go with that and drop all clock handling from the power domain
->>> driver, at which point there would be no need for the individual domain
->>> nodes? If not, how should I in the future assign clocks to the domains?
->>
->> I am asking to see complete binding with complete DTS in example and
->> submitted to SoC maintainer.
+Hi Wolfram,
+
+On 2025-08-11 14:13, Wolfram Sang wrote:
+> On Sun, Aug 10, 2025 at 05:37:53PM +0200, Luca Weiss wrote:
+>> Add a config for the v1.2.5 CCI found on msm8953 which has different
 > 
-> Hm, so if in the example (and the actual DTS) each domain is assigned a clock, 
-> can I then keep the domain and domain controller nodes like Mediatek and 
-> Rockchip have?
+> Given the above version number...
+> 
+>>  static const struct of_device_id cci_dt_match[] = {
+>>  	{ .compatible = "qcom,msm8226-cci", .data = &cci_v1_data},
+>> +	{ .compatible = "qcom,msm8953-cci", .data = &cci_msm8953_data},
+> 
+> ... why don't we use it here to stay consistent? cci_v1_2_5_data?
 
-You would need to point me to specific files or show some code.
+I don't think the existing 'v2' or 'v1' configs have much to do with the 
+actual
+HW_VERSION of the IP block. For example on of the newer Qualcomm SoCs 
+has HW
+version 1.7.0 and is many years newer than the msm8996 which was called 
+'v2'.
+
+I'm also not sure what these parameters depend on, if it's CCI HW 
+version, or
+something else. So naming it after the SoC should be a safer bet. Also 
+the
+msm8974-cci was only named 'v1.5' because it's an inbetween mix of the 
+v1 and
+v2 that were already upstream so arguably that one shouldn't have been 
+called
+v1.5 in the first place either.
+
+Let me know what you think. Maybe also someone from Qualcomm/Linaro can 
+jump
+in and share their thoughts, if someone knows more what these params 
+depend on.
+
+Regards
+Luca
 
 > 
-> Does SoC maintainer here mean the SoC mailing list or the maintainer of the 
-> particular SoC family in question?
-
-I meant rather post complete DTS to mailing lists (so maintainer of
-given SoC family can see it as well), does not have to be the same patchset.
-
-
-
-Best regards,
-Krzysztof
+>>  	{ .compatible = "qcom,msm8974-cci", .data = &cci_v1_5_data},
+>>  	{ .compatible = "qcom,msm8996-cci", .data = &cci_v2_data},
