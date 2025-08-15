@@ -1,94 +1,117 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61544299A87;
-	Fri, 15 Aug 2025 07:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361802836F
+	for <phone-devel@vger.kernel.org>; Fri, 15 Aug 2025 08:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755241978; cv=none; b=Yq3bM94nQOK4BCfoZzNYU1n2UCKFgO+7PWAYKLQLLAyvZPcVbo4fTaEoXXtg01UKByiLf8cmGM6q156fc/ZztkzWmcxfjg4VrEeeeVyWr2IQGxZMSmOSrbQRd1qCMGctTJ6ZAn2D46NBJ0lgQeCitBAT5LgjqFMNVygOslAwpec=
+	t=1755246695; cv=none; b=kWjOj0Dacb4+c1DaW4ouN9JQ2956e5o5GyYvljd8NvW5wxe6LnM7HeW3bAEg7XvbOwKRArk92cmmofaEf2OaE+MRteW0/O8no5PAWsDgXYksjVYAbloLYZ55xMOsGKtvRNtj05JcYoqJD8e35TSBEXTIOe57Um9wDBBZGiJXaug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755241978; c=relaxed/simple;
-	bh=ItP3ixg7wyy1eeySa6KTxiwdsmmcboYuWfIAZxlgxiM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ZMiNCYMzf/TcB23TJvIJleuVgZzayMqNSVon1Sosyx2PFzdtunywpoxO3raDly/rf0oU7GAbgvfSJ75I6TmGe1xrpyyS6orgazjihOkZSFgLWZspCX95/fGTEdaOU6AViyyRXCMk3pTdzoZs1hr/+7HfHiLZiTu8IY3d++KvDX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=KpSAij3Z; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1755246695; c=relaxed/simple;
+	bh=F7TgtDIVeJHmJbdmhVsLQz8ZXqh8PmvpMqqRRdkM3Hc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YBDulH5of78351CrZHgWqvhOJk7Fbn2t8tP7GebwyPwMxqDj+N2C63q4ati4VXmy8r1oEP9MH3NTJPajNwbOCZWm9Nni33eAxO3uYgd18ytrw5w8zSTU7EpDnEkDtkh3j/UO+hRuunFlhfLCK9+dZQX3MKJuJbO7UZ0Hi/+6K8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=NWzdE3iX; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="KpSAij3Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1755241968; bh=ItP3ixg7wyy1eeySa6KTxiwdsmmcboYuWfIAZxlgxiM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KpSAij3ZjMqIiZ4+mkxGD3Msoe/G8KHbYwBQG0xPhZhqU6sckGNopMbc5tARt50gE
-	 +/w6TCliaBL8GgSHgDbZsqee/4aFlW3gl44JierJcFAMXhyXbTmNT3HqneR+Ocbz1x
-	 i5i/xkvZMhHfiYAz8pr/ZUX+mdBThbbX8M0KrK/k=
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="NWzdE3iX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=hr2q
+	1UFu4n5c+NUsYTOIsmm+4qw3eig0S8Zk3qsF2Qo=; b=NWzdE3iXg9eNG8b5vB41
+	E/wcyWSlko7QcPzDFSSQ2kUn2lUfw7i1xfOmpe501mGG6ylioIqQTvM4nMNUspFh
+	9AplZT9ZCBTfvs1AU1Ww6FZmeD/sxciigvdwVHb0PyzCnZLQetnvV5pwEVer74HO
+	rC+c9UgIqJ+FYCTWon4Auyw1kiFHQ0pB23QWj2cbK66FBChyHLuzZLA1pe+a7yae
+	K59Iy4YY26YWdJEGHJfQxZR6kZ0N01UaepbWBTJkYq9Fr2ySglOchyi3kekGB0aF
+	teC7y+iWkyhlaRvxdnGhJXpk/L+6FSdwgPZsumv5wPhIxtV+ZLLr+cH25E4dhtNF
+	EA==
+Received: (qmail 1330456 invoked from network); 15 Aug 2025 10:31:22 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 15 Aug 2025 10:31:22 +0200
+X-UD-Smtp-Session: l3s3148p1@TOH1NmM8Rs9tKLK5
+Date: Fri, 15 Aug 2025 10:31:20 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Luca Weiss <luca@lucaweiss.eu>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/7] i2c: qcom-cci: Add msm8953 compatible
+Message-ID: <aJ7wWDejA0KDarIE@shikoro>
+References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+ <20250810-msm8953-cci-v1-2-e83f104cabfc@lucaweiss.eu>
+ <aJnefpETGJm_cuRY@shikoro>
+ <f956eccec6b8ae2737b1e758b8357051@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 15 Aug 2025 09:12:48 +0200
-From: Luca Weiss <luca@lucaweiss.eu>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Robert Foss
- <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
- <konradybcio@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/7] i2c: qcom-cci: Add msm8953 compatible
-In-Reply-To: <aJnefpETGJm_cuRY@shikoro>
-References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
- <20250810-msm8953-cci-v1-2-e83f104cabfc@lucaweiss.eu>
- <aJnefpETGJm_cuRY@shikoro>
-Message-ID: <f956eccec6b8ae2737b1e758b8357051@lucaweiss.eu>
-X-Sender: luca@lucaweiss.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TQXPwgYOVAqGLFm1"
+Content-Disposition: inline
+In-Reply-To: <f956eccec6b8ae2737b1e758b8357051@lucaweiss.eu>
 
-Hi Wolfram,
 
-On 2025-08-11 14:13, Wolfram Sang wrote:
-> On Sun, Aug 10, 2025 at 05:37:53PM +0200, Luca Weiss wrote:
->> Add a config for the v1.2.5 CCI found on msm8953 which has different
-> 
-> Given the above version number...
-> 
->>  static const struct of_device_id cci_dt_match[] = {
->>  	{ .compatible = "qcom,msm8226-cci", .data = &cci_v1_data},
->> +	{ .compatible = "qcom,msm8953-cci", .data = &cci_msm8953_data},
-> 
-> ... why don't we use it here to stay consistent? cci_v1_2_5_data?
+--TQXPwgYOVAqGLFm1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I don't think the existing 'v2' or 'v1' configs have much to do with the 
-actual
-HW_VERSION of the IP block. For example on of the newer Qualcomm SoCs 
-has HW
-version 1.7.0 and is many years newer than the msm8996 which was called 
-'v2'.
+Hi Luca,
 
-I'm also not sure what these parameters depend on, if it's CCI HW 
-version, or
-something else. So naming it after the SoC should be a safer bet. Also 
-the
-msm8974-cci was only named 'v1.5' because it's an inbetween mix of the 
-v1 and
-v2 that were already upstream so arguably that one shouldn't have been 
-called
-v1.5 in the first place either.
+> I'm also not sure what these parameters depend on, if it's CCI HW version,
+> or
+> something else. So naming it after the SoC should be a safer bet. Also the
+> msm8974-cci was only named 'v1.5' because it's an inbetween mix of the v1
+> and
+> v2 that were already upstream so arguably that one shouldn't have been
+> called
+> v1.5 in the first place either.
+>=20
+> Let me know what you think. Maybe also someone from Qualcomm/Linaro can j=
+ump
+> in and share their thoughts, if someone knows more what these params depe=
+nd
+> on.
 
-Let me know what you think. Maybe also someone from Qualcomm/Linaro can 
-jump
-in and share their thoughts, if someone knows more what these params 
-depend on.
+Thanks for the heads up. I agree that it needs someone from Qualcomm for
+definite answers. But if nobody chimes in, your patch is good as is from
+my side.
 
-Regards
-Luca
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-> 
->>  	{ .compatible = "qcom,msm8974-cci", .data = &cci_v1_5_data},
->>  	{ .compatible = "qcom,msm8996-cci", .data = &cci_v2_data},
+Thanks,
+
+   Wolfram
+
+
+--TQXPwgYOVAqGLFm1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmie8FUACgkQFA3kzBSg
+KbbvTQ/9ElCikIoyrJsjc7KJ2KX/PRWCsQmCcW6yAyFK/XmNcw4I7XspRIHrTJ6K
+h80bO5zcB0ki4bTyFxIKcDgVF6txxg2/x4nXm9bQW+sbb+RtuHo28EeodxakO44a
+YqbACbIZ+KQj0dGWp8PB0iaSeTJnxdhhgmx03UU3nMDs/C09EXSQS8xyjgRlcWI6
+nrWSfxhKBxkYpii91HNrv4QPZx+slvJKN0vGIWcjMopXvEfn42fkQ52K94aRH4Dz
+u0HE90AGKjOITswJunyt4grA8hPzXiGZC+fgenrC/a5kJUarrjGJb72BX27dKOa1
+CNAucY/bPhlaWWI4ZEh2e0M1FRVLXWfZPBgX3MX98aGZEdWJO0DGK/2d332d3NYS
+KFp1g1SR23x0Z2lLbFBmtpCMusMVSYslirF/4nESLCiQV804Y7jUd0koMbI7rQuf
+54mHAGpZTouQHBx1ITYquBu9VFfxWneLU78hN+Ja29eGe2tRiOzmPWkXso+h/E0i
+JB5KZ87W0L6tvbCCHbvz3pO95zeS4E5q82XHYITqTJSrjgmNWuFQyRtnc3XW3Pj5
+qQ1i74WTPu3CJRhHBgOZJeE1bDc/dcWS0ZlDhJxL4h3dI62432o1kPYaCLqEMTjx
+J11Wj3/4i54MbuCRi9cTqStmWUYJM8f5NiEQYfbDEhKfqWTnOGs=
+=9FHa
+-----END PGP SIGNATURE-----
+
+--TQXPwgYOVAqGLFm1--
