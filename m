@@ -1,120 +1,208 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8429E1C75E2;
-	Sun, 17 Aug 2025 06:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABA617BB21;
+	Sun, 17 Aug 2025 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755411289; cv=none; b=gqAEwUSW5rUnFNZNqDynH/ChwrsSjkVhtHiAivxZ6XZhl2WlTv3zBtM8yZdU6BnCPydmGNDdCCV3RYYC6RT33ravYXOk+czUBKivPVjEMMtfPnBnXtATQenNMUEBq/jJLzuprlR+501r1YXWE5YpBJ1vEnCiVV2mhyv9NcY5V3g=
+	t=1755450584; cv=none; b=Z+GOq+n87LYBafweH8KFNk3sKw0ZBVypU5JUHTuT10/wZNOWFqNlNAGjCS8mH601NkSYUwhiGcEauMrC6FMYqGA1WWkqsN957r33e5B89pzd1QNPWHDbYqbRuXl8kl0JsMkWYfA2HFS3ZPPsZhkMHoslN120ApuZHdUlHYu8ydY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755411289; c=relaxed/simple;
-	bh=FjnyjISls+IwhhvqV3CdP32QGr0K26AOzU5vLlgcAsE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mdaOB3DaIShm9LSEXqxk1dymixOU7T7ZbZG/iIfQAR8O/aldf8lW2wEq+V1T/RzmOPddOhzTkxxzKCS6BqpOlLg+khZMSlcUcf+7HFQnqRD7jXfRR+w4hzfyFKB9nlQ+d6RlH+v2fdp8aqd4suCAx+afLbfPYpE4poy4KxdIss4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqjcg51b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755450584; c=relaxed/simple;
+	bh=COo3AY6pdjE+8kF28sRx10wI/ohSiKeJKJJYJqxHSfY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uaRIwXPX4824W5OAf+E4kvxun9r0Tm4lUk4sLNPag3Pq+VkhyFwEPYgJA3P7buM9wqqzgWjzfcd/Z7eLmNE5MUxEFJVv5Ps1o2zOwxJtHQlPMdoNqiKMx8+2pFSqJRWJ6vvtuwg2L5q+9gmLM85CRDoBVjG40OI38nL79KrAefA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKdNdwg0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqjcg51b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E41C4CEEB;
-	Sun, 17 Aug 2025 06:14:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKdNdwg0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 41FF1C4CEF1;
+	Sun, 17 Aug 2025 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755411289;
-	bh=FjnyjISls+IwhhvqV3CdP32QGr0K26AOzU5vLlgcAsE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dqjcg51bwM8xslcGuw5W8w163m6q+bpK9eHvBLTK/sBTx5s5j/E0UcRGz2j6uRh15
-	 B09ChBfZE4kB6QnA9NmnU+4jA0CXefpx1bOQ2HMSlU5oP8gFjclxljQuV2GcLskZ1p
-	 AqvMSLeyyfxb+hgc4O60d/2HE3bCwQFOay4qmlqXzTOdvSNkEaKF0U1U9IwUoNfZQ3
-	 M1FFk+V47LYnAIrqBKjeQF+YwrhqOMYAG9jwwWs8NLqKTCbEg79TxAEUcNUa4JVLYC
-	 UKegg4k7CCSfRPNsopgrKFi64rgL6jkLfKtxa/Xr8DbUYd52fCSwkK0lCka84rSDVM
-	 Z8dgxsP9kUO1A==
-Message-ID: <49858742-8850-44bf-a844-9e26210515c5@kernel.org>
-Date: Sun, 17 Aug 2025 08:14:44 +0200
+	s=k20201202; t=1755450584;
+	bh=COo3AY6pdjE+8kF28sRx10wI/ohSiKeJKJJYJqxHSfY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=VKdNdwg0kYwJZ4jEc8SctlFKMfZWAXkkEbZ/C5pZPZFxQ2j97EczWXN65735TOUdx
+	 BbaCCSGa2Odp98m3n0VKQ9AFMgnfu3kY34lvtB+ULnMJlOEu8Y+kksXa9YDbT1hIhR
+	 mE3FSsVVgdCP0aEPwXgrS6zeZ5DRZPxPJxfsnRPo3OVPHMfH8XZhceinvg2AuFFKGt
+	 oNs24LfGyG6CSUOPwRh9IN4T6G7fInRVn7onGtIiT0aX5IsIRM9IrvhXcQ68lpwr5T
+	 URyvQ97QvMes7rAvYVxf2DljppHYyuEK1lJjuAmfHleENRskU0e9yREXGRVl2u79hi
+	 cXADonDDxEwVw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BC5DCA0EDC;
+	Sun, 17 Aug 2025 17:09:44 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Sun, 17 Aug 2025 19:09:20 +0200
+Subject: [PATCH 1/7] dt-bindings: media: i2c: Add DW9718S, DW9719 and
+ DW9761 VCM
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/5] dt-bindings: power: Add Marvell PXA1908 domains
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20250806-pxa1908-genpd-v1-0-16409309fc72@dujemihanovic.xyz>
- <1950265.tdWV9SEqCh@radijator>
- <5e79b123-b29a-4edb-8e70-3b7fa6cd3674@kernel.org>
- <6196438.lOV4Wx5bFT@radijator>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <6196438.lOV4Wx5bFT@radijator>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20250817-dw9719-v1-1-426f46c69a5a@apitzsch.eu>
+References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
+In-Reply-To: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Val Packett <val@packett.cool>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755450582; l=3802;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=uotT9zX/NyzbQ5ZP2dvOeAvtz2yUFcyTvMlfBKstnHQ=;
+ b=H/CLKgAntzvZCcxKzMvVNrEb2+3T4O+GFwO6Oe/DcDOL1te1R7KMaafFTugwXS5sdH2NjG5mL
+ 3iBwVze/E3UAYwYb5wqfOz7K4eQSS6u7bUW3uz0ZajR3UV+IfI86xdJ
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On 16/08/2025 17:13, Duje Mihanović wrote:
-> On Friday, 15 August 2025 08:08:24 Central European Summer Time Krzysztof Kozlowski wrote:
->> On 15/08/2025 00:08, Duje Mihanović wrote:
->>>> I am asking to see complete binding with complete DTS in example and
->>>> submitted to SoC maintainer.
->>>
->>> Hm, so if in the example (and the actual DTS) each domain is assigned a
->>> clock, can I then keep the domain and domain controller nodes like Mediatek
->>> and Rockchip have?
->>
->> You would need to point me to specific files or show some code.
-> 
-> Sure, mediatek,power-controller.yaml and rockchip,power-controller.yaml
-> in Documentation/devicetree/bindings/power.
+From: André Apitzsch <git@apitzsch.eu>
 
-I see, but your DTS is nothing like that.
+Document Dongwoon DW9718S, DW9719 and DW9761 VCM devicetree bindings.
 
-Best regards,
-Krzysztof
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+
+--
+
+The possible values for sac-mode and vcm-prescale of DW9719 and DW9761
+are missing because there is no documentation available.
+---
+ .../bindings/media/i2c/dongwoon,dw9719.yaml        | 115 +++++++++++++++++++++
+ 1 file changed, 115 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..80fd3fd42327fcafe3ff209d1cd6bbe17b8a211b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
+@@ -0,0 +1,115 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9719.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Dongwoon Anatech DW9719 Voice Coil Motor (VCM) Controller
++
++maintainers:
++  - devicetree@vger.kernel.org
++
++description:
++  The Dongwoon DW9718S/9719/9761 is a single 10-bit digital-to-analog converter
++  with 100 mA output current sink capability, designed for linear control of
++  voice coil motors (VCM) in camera lenses. This chip provides a Smart Actuator
++  Control (SAC) mode intended for driving voice coil lenses in camera modules.
++
++properties:
++  compatible:
++    enum:
++      - dongwoon,dw9718s
++      - dongwoon,dw9719
++      - dongwoon,dw9761
++
++  reg:
++    maxItems: 1
++
++  vdd-supply:
++    description: VDD power supply
++
++  dongwoon,sac-mode:
++    description: |
++      Slew Rate Control mode to use: direct, LSC (Linear Slope Control) or
++      SAC1-SAC6 (Smart Actuator Control).
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum:
++      - 0   # Direct mode
++      - 1   # LSC mode
++      - 2   # SAC1 mode (operation time# 0.32 x Tvib)
++      - 3   # SAC2 mode (operation time# 0.48 x Tvib)
++      - 4   # SAC3 mode (operation time# 0.72 x Tvib)
++      - 5   # SAC4 mode (operation time# 1.20 x Tvib)
++      - 6   # SAC5 mode (operation time# 1.64 x Tvib)
++      - 7   # SAC6 mode (operation time# 1.88 x Tvib)
++    default: 4
++
++  dongwoon,vcm-prescale:
++    description:
++      Indication of VCM switching frequency dividing rate select.
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: dongwoon,dw9718s
++    then:
++      properties:
++        dongwoon,sac-mode:
++          default: 4
++        dongwoon,vcm-prescale:
++          description:
++            The final frequency is 10 MHz divided by (value + 2).
++          minimum: 0
++          maximum: 15
++          default: 0
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: dongwoon,dw9719
++    then:
++      properties:
++        dongwoon,sac-mode:
++          default: 4
++        dongwoon,vcm-prescale:
++          default: 96
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: dongwoon,dw9761
++    then:
++      properties:
++        dongwoon,sac-mode:
++          default: 6
++        dongwoon,vcm-prescale:
++          default: 62
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        actuator@c {
++            compatible = "dongwoon,dw9718s";
++            reg = <0x0c>;
++
++            vdd-supply = <&pm8937_l17>;
++
++            dongwoon,sac-mode = <4>;
++            dongwoon,vcm-prescale = <0>;
++        };
++    };
+
+-- 
+2.50.1
+
+
