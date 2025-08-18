@@ -1,166 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79CF280035;
-	Mon, 18 Aug 2025 07:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A825725FA13;
+	Mon, 18 Aug 2025 15:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755503079; cv=none; b=BS3tvKq/ecL0s0v4kqylLettQaNZXaEf0YKvU/M8tFExb+9dZSmbgpdnO5+9vbyCU8Zs83pGBuT71CxUTENlHasjTmZRWCo7oyV1q61c9gZMGVAx+pNz7zTElgBOqYhHMeAlqdQuhGcuW9xf74LHJiSQm8vGUar2ANQOqdFZ9oA=
+	t=1755531427; cv=none; b=rC2S/c3K52YOom0SOZKKm5vaqQZlKXqPMst0P4jLSG58FOAOHqnZiwxzFX0oY4bMPJcBgZBlUdLSjBPSKRRHlpHKNa32w/6n4qtuqgHvrMv2aEFtO4In/a6URlf62nzFJO0j/sdMWEwGeTlTJ1ziR41vSRxL/pw1pwTqIffgsEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755503079; c=relaxed/simple;
-	bh=IKEc1I2OJR13oC2ScvzhXBsU1/PrtRAkuEoIy4Zrdis=;
+	s=arc-20240116; t=1755531427; c=relaxed/simple;
+	bh=h2jMzXsrdLhcRVYsIHxcAZjoHTNjv1iL4iICT9J8AbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pQ+dNYQclGj2m/Ke+48P3/5KgZ/4Emxa9SE4CVTew87P+BQ/p8WVOky5F4O1KKEqhInRGIe3AEz5GXPOU79GbU9pGhBZ2q9sVtojxGYkP0FtTvo0nYn7r8UxKrljPjOJCfekd8xS8F+1Xb3Xo7w4fY7f5ask8pvyPJR5e2EPqZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Thtj8RMQ; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUrH0tLiOb28NXDCRXCcoa/3dtQ40CyiQr/GlxLQUpcQoKSC/WTd3JRoWz2OQ25hIcMscKaghnNUF9yLeooFJrj+07UpwONfjbIJa55obcs9q2HWv+ePXEIPixGRyhQ7tYT/uJ5D4SHrwmFDM1G+iZW2ZjxYUPQ2h5RBDl+2X1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/jeC3FS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Thtj8RMQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755503078; x=1787039078;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=IKEc1I2OJR13oC2ScvzhXBsU1/PrtRAkuEoIy4Zrdis=;
-  b=Thtj8RMQjkRni1o9M7w49Yk0xENJz4ziYoz6nI88LycYcN6uMSygyJi7
-   xUfykDfiHYrjpmQ5sXfD11n1yajx7hnDkfmYolP4wLqll+t2t4s7NbYhR
-   iymE3z9fJDz5F9j1UBBUliTaI3f0yQO9wQxGsO8xlxHFdS1DWgVtmxDdN
-   WOI9l1rr/2ttb14w3KsFly0s9Kva/nlz8ijEhzGMg2YnTEvQX16u3l+jW
-   mR5+bNpVO8VMSnDt88Bnvl1FZ1QrM5cJDnK0t/E09zDB1lOZ4Mm+7+NOD
-   sSUQ6E6yzAXKJzSNPpZ9Bc+cg9l/E/LwKowmY4YPFU7Wggd+ZhQ+vIMIf
-   w==;
-X-CSE-ConnectionGUID: 3POw+fskSzi6Tln5GN8F+g==
-X-CSE-MsgGUID: a7ww4TX0RnqisCaPl4+Kng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="61556165"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="61556165"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 00:44:37 -0700
-X-CSE-ConnectionGUID: zECi+cTeSkK5bfgNY2VcPQ==
-X-CSE-MsgGUID: 7UKN+WePTdCrQSRSOwb8Qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="198522267"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.152])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 00:44:34 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id A159012031D;
-	Mon, 18 Aug 2025 10:44:31 +0300 (EEST)
-Date: Mon, 18 Aug 2025 07:44:31 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: git@apitzsch.eu
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/jeC3FS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2B7C4CEF1;
+	Mon, 18 Aug 2025 15:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755531427;
+	bh=h2jMzXsrdLhcRVYsIHxcAZjoHTNjv1iL4iICT9J8AbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e/jeC3FSqUYoEbLprmY8nBJBik/VMnt8fS4ljlO/zMI9wds2uCVADNTy+mvgKA48W
+	 MeG12AgqiQVyQsQ0EJ2Ksk8sE5o/J3+apMckImO6t3eNyikHoYsTYxWJUn2EytOr0B
+	 MPmHLiLYmNp7zipF12yRDEWmfLp9uDFgKrK+7yASi2MAb3aRfRUV/XsE9e2bJklikL
+	 +70IRtD2rnyHhg07fmu70SMoEhZ4kuqfo33p4uOFa8fUCtkenANREsGyN0oTG5Jr6R
+	 Pc+DaRtxVAMlGZrS9DMS/XKxSa9lZqsAdc8ouqYfaqhoFTavBaU3grOCtay1P4abIM
+	 RV7NaICgEgGAg==
+Date: Mon, 18 Aug 2025 10:37:06 -0500
+From: Rob Herring <robh@kernel.org>
+To: Luca Weiss <luca@lucaweiss.eu>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Val Packett <val@packett.cool>
-Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-Message-ID: <aKLZ39IzI_azrDIu@kekkonen.localdomain>
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
- <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
+	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/7] dt-bindings: i2c: qcom-cci: Document msm8953
+ compatible
+Message-ID: <20250818153706.GA1238481-robh@kernel.org>
+References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+ <20250810-msm8953-cci-v1-1-e83f104cabfc@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
+In-Reply-To: <20250810-msm8953-cci-v1-1-e83f104cabfc@lucaweiss.eu>
 
-Hi André,
-
-On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4 Relay wrote:
-> From: Val Packett <val@packett.cool>
+On Sun, Aug 10, 2025 at 05:37:52PM +0200, Luca Weiss wrote:
+> Add the msm8953 CCI device string compatible.
 > 
-> The "jiggle" code was not actually expecting failure, which it should
-> because that's what actually happens when the device wasn't already woken
-> up by the regulator power-on (i.e. in the case of a shared regulator).
-> 
-> Also, do actually enter the internal suspend mode on shutdown, to save
-> power in the case of a shared regulator.
-> 
-> Also, wait a bit longer (2x tOPR) on waking up, 1x is not enough at least
-> on the DW9718S as found on the motorola-nora smartphone.
-> 
-> Signed-off-by: Val Packett <val@packett.cool>
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
->  drivers/media/i2c/dw9719.c | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
+>  Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/media/i2c/dw9719.c b/drivers/media/i2c/dw9719.c
-> index 63c7fd4ab70a0e02518252b23b89c45df4ba273d..dd28a0223d6ac980084b1f661bd029ea6b0be503 100644
-> --- a/drivers/media/i2c/dw9719.c
-> +++ b/drivers/media/i2c/dw9719.c
-> @@ -95,12 +95,19 @@ struct dw9719_device {
+> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> index 73144473b9b24e574bfc6bd7d8908f2f3895e087..be6cebc4ee054d3100e5c4c676f1a0c4fd8d2e1e 100644
+> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> @@ -15,6 +15,7 @@ properties:
+>      oneOf:
+>        - enum:
+>            - qcom,msm8226-cci
+> +          - qcom,msm8953-cci
+>            - qcom,msm8974-cci
+>            - qcom,msm8996-cci
 >  
->  static int dw9719_power_down(struct dw9719_device *dw9719)
->  {
-> +	u32 reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD : DW9719_CONTROL;
-
-Extra parentheses.
-
-> +
-> +	/*
-> +	 * Worth engaging the internal SHUTDOWN mode especially due to the
-> +	 * regulator being potentially shared with other devices.
-> +	 */
-> +	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, NULL);
-
-I'd still complain if this fails as we don't return the error.
-
->  	return regulator_disable(dw9719->regulator);
->  }
+> @@ -128,6 +129,7 @@ allOf:
+>                  enum:
+>                    - qcom,msm8916-cci
 >  
->  static int dw9719_power_up(struct dw9719_device *dw9719, bool detect)
->  {
-> -	u32 reg_pwr;
-> +	u32 reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD : DW9719_CONTROL;
+> +            - const: qcom,msm8953-cci
 
-Extra parentheses.
+This should be added to the enum above.
 
->  	u64 val;
->  	int ret;
->  	int err;
-> @@ -109,13 +116,15 @@ static int dw9719_power_up(struct dw9719_device *dw9719, bool detect)
->  	if (ret)
->  		return ret;
->  
-> -	/* Jiggle SCL pin to wake up device */
-> -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD : DW9719_CONTROL;
-> -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
-> -	fsleep(100);
-> +	/*
-> +	 * Need 100us to transition from SHUTDOWN to STANDBY.
-> +	 * Jiggle the SCL pin to wake up the device (even when the regulator
-> +	 * is shared) and wait double the time to be sure, then retry the write.
-
-Why double? Isn't the datasheet correct when it comes to the power-on
-sequence?
-
-> +	 */
-> +	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
-> +	ret = 0; /* the jiggle is expected to fail, don't even log that as error */
-> +	fsleep(200);
->  	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
-
-Just pass NULL instead of ret as we don't check the value and the ret
-assignment above becomes redundant. Please spare the comment though.
-
-> -	/* Need 100us to transit from SHUTDOWN to STANDBY */
-> -	fsleep(100);
->  
->  	if (detect) {
->  		/* This model does not have an INFO register */
+>              - const: qcom,msm8996-cci
+>      then:
+>        properties:
 > 
-
--- 
-Regards,
-
-Sakari Ailus
+> -- 
+> 2.50.1
+> 
