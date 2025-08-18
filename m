@@ -1,184 +1,324 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E8F15A85A;
-	Sun, 17 Aug 2025 20:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755462575; cv=none; b=Mr+azAlYwJ+PbnIZFbte6rhYeJQaM/7jB4Ar/bmyp7rTmdHWCL+4w8ZhZj2/1e3mT7EhLyGgWoSF815Umo5lHsChLMuWpvvYfjT2PGsz8jlVxFxpjIilRWsrMdkxBoqraVhOCPqw1mchS2ol19UBgrEr8VM9zYEE1WdguYSvXI0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755462575; c=relaxed/simple;
-	bh=ppWZMewiso+fXL0z37LmHVHmRMB25oWTq/xd6pZnMmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jt5heyp42/Y/j/ecY+c0MPt0klgYcjDIIQsA4EjDgngn2mrELjGZcMoK1EptXxaxzKyttTzBnvwx8vHrm85FGz2m8A4MznNNCVBQl+zqDcZOHl0qw/V3R7IWI+V44gyzQ9fVoYoSresHCGWat6J+ytARjmZODUeKaGJElNpstuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mYKRLUAG; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3214B5FDA7;
+	Mon, 18 Aug 2025 07:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755501969; cv=fail; b=Te+OYX3YcPlXA7IPsEI8pI+zFAqsfPfh/F+jcpmzPLzA+wtCLa4vj6phyVniL2bxnzg5eGBk0XrOGdXflc9q6ouL84ujxNYGO/62JRQJ9f9ZflbM+9t4g8nQLSTLNsKb9E/DXZ4mJ0Cfo0Qbh2Ony4f6RYzOa8m7nsYOuJ1Sjvc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755501969; c=relaxed/simple;
+	bh=/GK8T69fSK2wb5NU2UpolVebdu50hb8Zc4i6Anl+/yI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=liZ50H3kilCsnllpX8WdIspdSHD9256iFXD9194P8mFhzYsaR03Xv095rkCqd7r++8Yh15voMXoxAFJNJGlRCOXaISR/nLpLfEJbLEeqGvIqm0HY5sdcKBcXBBhtTSEN3VS7S7YKodpe2fAt9VIZVQE38S5RSBr4f4CMMRBlSF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iZSh9vyO; arc=fail smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mYKRLUAG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iZSh9vyO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755462574; x=1786998574;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ppWZMewiso+fXL0z37LmHVHmRMB25oWTq/xd6pZnMmM=;
-  b=mYKRLUAGRop7kM17ss7nCm0jGtRjHmiqD0A6NwwGRddXLman7sTPBSE4
-   qj4IvInut9kI87L0StkwI/zk9yDwMOsBkyvS4xgM7DwhBfM/k+XmKCfqz
-   UB0PUwy4r7k32xvDLPXa46jp6bLX+NJZEb0kYcvOf7BmybZf4JBZqTpay
-   AOlRYxpopfTdeCnrLu8yA49UA9TrRDuRW3RSekDG5KvamAx8WlsFdXHcK
-   tkSucsQE8/6ozJ7dw+A/7wGAUcle6JmfPIP1WLKVhT+kyPy9FteHqOgzt
-   MHjE08diTlaILSR1Ja5alTZG8F2r++W23I4IcEzhibUyA8nbp57SbWAvf
-   g==;
-X-CSE-ConnectionGUID: 5BZsBsRYSIyH2F6MO1aIVg==
-X-CSE-MsgGUID: 5VjZAqmUSqG2J7xwxTFD2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="57620823"
+  t=1755501969; x=1787037969;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/GK8T69fSK2wb5NU2UpolVebdu50hb8Zc4i6Anl+/yI=;
+  b=iZSh9vyO7MEn6/suyjIeVPPOajjwHQkB1FescFdyBN3i8vnyYtgl/yVT
+   enIAfTjtUk/qCApMRl6bgXWFlJqVRI5y2HEmodMz2UXtyuBDP0CcFhqMF
+   OMxvIsBb2PHrNo7ly24SOiYEAO0rBMr5WsEwnPFmFnxmsQLwuUvhYPonn
+   DDRjmue5d8e0I8BUkq8ChTHGT/yNUyoLtICRUQe6zsxSbj/1bt2Fpzc7z
+   MMu9UOyP6aq7TYH3hNsvABlBGWY/ZfPqjdcvJCRZQhAu325Ny71xNXe8+
+   D7XapRd4ZW9bRr2pj9SYxlIrdU0LuIuMjklAQj0ipJnIOqiVwHI6a8zlw
+   Q==;
+X-CSE-ConnectionGUID: 8GMeqCFvTu6B0/1XBafsLw==
+X-CSE-MsgGUID: wk71EH/1S9W3ggA6Ei7FhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="57865292"
 X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="57620823"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2025 13:29:33 -0700
-X-CSE-ConnectionGUID: cAhd+sPWTESoXWboyK1riA==
-X-CSE-MsgGUID: Dycyod70SVmv5SFUT1hY+A==
+   d="scan'208";a="57865292"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 00:26:05 -0700
+X-CSE-ConnectionGUID: WhXZZ8MNQ+iOrIwZNPJ4eQ==
+X-CSE-MsgGUID: P1AzUshRRJuk6zNNspIWAg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="167336299"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Aug 2025 13:29:30 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1unk0A-000Di7-22;
-	Sun, 17 Aug 2025 20:29:25 +0000
-Date: Mon, 18 Aug 2025 04:28:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch via B4 Relay <devnull+git.apitzsch.eu@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-media@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Val Packett <val@packett.cool>,
-	=?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Subject: Re: [PATCH 3/7] media: i2c: dw9719: Add driver_data matching
-Message-ID: <202508180429.GKdrjNK9-lkp@intel.com>
-References: <20250817-dw9719-v1-3-426f46c69a5a@apitzsch.eu>
+   d="scan'208";a="167856837"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 00:26:04 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 18 Aug 2025 00:26:03 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Mon, 18 Aug 2025 00:26:03 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.44) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 18 Aug 2025 00:26:03 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zGjJceH75fZ8Z8IdkfvYHWokmtcD5KrIwrsUqpA2geE/o3rVTlkckDhdN79eKyDNevv4vB1F1qQ07E4g7SC2x2Ul82kN67qTCXURYYxqpwvH7OovqtO76AiS8WvmLXxPmFV0/IrpSrhnYBQEuyjiKDO4zKJ4/XiqaoMv7kpIJn2RMBYw0qG/PJfpM1b4Ab4SiTY39h+m704fxlcnoW95bzsFH4qP/zTOldn5Z1K/1AnTkvNdemGzy84WKiMPtG+rLFEAize4FW0lLInkQpzmU+m9jGcGkQOUbo6dyZpzl6+75E/Pgrgt5fHpp/YimciueEeobFcchZYhZlqNmgyZtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RbpNj2zBzOTQXKrgfFVAWp6YssvxQSDkJEBdiQn093U=;
+ b=cVyc8iz3Gv4VvF6Oahp9jNbCSuIJi8wJshpN33qUpFbJe7ATiXssoyHyaEQVT3XUPLK70I099pq7Gb36EtWlFo2V09L36NrZ0H5gcybhRgHaq+qfaG0vWLB9hpcTUtBFsQeSUa3mlTzc0t3ejTZ3DiEF2Sct0wilE1wckL3AVJBObxEABOMKUbcZdrDZkNevz42xAIigqEykSgDcMdM8a/z1/YpP+H8rGs/jd9fXZWEuiHxYbKXqx90h8bvgTD9vh1z0mI0Utx5ZSRCWJUKG7wFQhZH1wN7kSTBasQAwm4SghBjKlGHaWrLXfjUnnISrJEJ+vL/tURbNP9/8qtXRdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
+ by PH3PPFFA27DACA6.namprd11.prod.outlook.com (2603:10b6:518:1::d63) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Mon, 18 Aug
+ 2025 07:26:01 +0000
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.9031.021; Mon, 18 Aug 2025
+ 07:26:01 +0000
+Message-ID: <7bddc691-df7a-430a-b7e7-01ad85c27cbe@intel.com>
+Date: Mon, 18 Aug 2025 10:25:56 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] mmc: sdhci-pxav3: add state_uhs pinctrl setting
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, Ulf Hansson
+	<ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
+	<linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <phone-devel@vger.kernel.org>,
+	<~postmarketos/upstreaming@lists.sr.ht>
+References: <20250806-pxav3-uhs-v3-0-2f03fee380b0@dujemihanovic.xyz>
+ <20250806-pxav3-uhs-v3-2-2f03fee380b0@dujemihanovic.xyz>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
+ 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
+ 4, Domiciled in Helsinki
+In-Reply-To: <20250806-pxav3-uhs-v3-2-2f03fee380b0@dujemihanovic.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DB7PR05CA0051.eurprd05.prod.outlook.com
+ (2603:10a6:10:2e::28) To IA1PR11MB7198.namprd11.prod.outlook.com
+ (2603:10b6:208:419::15)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250817-dw9719-v1-3-426f46c69a5a@apitzsch.eu>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|PH3PPFFA27DACA6:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fff7b8f-80d0-43b8-096e-08ddde287b93
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UnNSNXp0UDl0VURTcGhjMUNXMEpSa3gyM1hOUko1Q1hJNmxDVWI4Yk9RYlN4?=
+ =?utf-8?B?NHBXZDZVbU9iamhXbVVGc08vNHdyenU1Q0dJd05HT01OaTJ4ZXBLQmNSOUsx?=
+ =?utf-8?B?S2oyNnZ6WHRMckttb1ZpNEFhMk5QTmFsRlg4aklJSkJiUldBd25Tdzh2VmNQ?=
+ =?utf-8?B?WEt2WXU3a2MyMXJSZjI1dlhQbnFiUTYvRmpqb0NVVjFCaDBVeGN3NlZ3eVFX?=
+ =?utf-8?B?UTZ6NENZOENsRW5aUzdLQ2ZXRTF2Z25IVXZ5cEpVc1BuK3g0RjBRblR4b3A3?=
+ =?utf-8?B?LzZIaGZLNG9SQlBYbkk5R2M3b3ZHdUVCb3IvbWxqV0JQelRMNXZ3ZzFtcCtr?=
+ =?utf-8?B?MlhOaFhGZ2k5aGpKRUpTNlN0WFMzMlVJeUYzQ0RTY2xyTnZqTW5qaWxkcEt6?=
+ =?utf-8?B?NjRPQ3NYTFdMQTNvSVBRWWRkdjR4THdnRFUwZ0pvWW9LL3Jxb3NGTkRFZFA5?=
+ =?utf-8?B?NHc3V1ZiUkh6b05JYUFTQ1JlREU2aTZlV3F2UHVnYWZMRjR1dHhQWVpBem5B?=
+ =?utf-8?B?cFRTbXdtZjZZUjhwem0zR0FuSkJJZVg0d1dQakwrbkhSVE9wbWFQY0dBNXNw?=
+ =?utf-8?B?aFJVeXVRSW5nbWN3bzA3eWo5NzNSUDZ4MVNxNTRIUlJpQkZxcnFVMDFYaDRz?=
+ =?utf-8?B?eUVaVXhsYzhUK1h3REt3RDd6R3NjUmkrK0oxTVl1YUdHRngvOG1aelBHaG5U?=
+ =?utf-8?B?VUFIOHdYN2tOa0tNaTRaZmdRT21GS051SjdIbWIvZ0RIeUppWXA3Qm9uOXIw?=
+ =?utf-8?B?YjJGMHpvZzlpdXFwS1F6TGpmM1BkOHV6VzhYdWJDN0JDMEh0bnZKd3l3Y3M0?=
+ =?utf-8?B?N0VPZ1NQR3c5S1pNUDUza2xidGNUUU1Uc0lRdHl2UmZCZi9KQkoyamo4ZXU4?=
+ =?utf-8?B?QkovaWxHT3kyRjViaHBybGZzL1EyTEI4UFBYdCs0dU1iZktxWm56bmw3WFpO?=
+ =?utf-8?B?SlVnL3UyaTdSeVpRTTlVQXB3aUhCcDZMdGgrZUZCTFJDMzVtNkkyOGw1QVhN?=
+ =?utf-8?B?Rzd4SFlhQ2lTNEdWRDJYYWRsZHUwakFtd0JzbTMyWkhtV0dTa0R1Y3psblpW?=
+ =?utf-8?B?cWVxZU1GMEdoN2NHL0hDUmMzNUQ1RzdCUDdMaDFveGwzemJiMUIwQ1oxMVd4?=
+ =?utf-8?B?akt2OGh5VGtyWHd5NEFDN1FaTW4xQmRZRFZiVmsxeThMRVprakFKMERRQnJL?=
+ =?utf-8?B?dFU0VVRyQWplN3NvaVYvbEowbUJZdmlScVVMSjVYeDd1b2F1YWNKYmczRUNW?=
+ =?utf-8?B?b2lYNVRsdjlQb1lMOCs0Z1RMSkNSbWVQKy9ONTFWeGMrVnI2VW84d0x1Mk1O?=
+ =?utf-8?B?dHJER1U2Z0g5OCtwNUFzQVF1NW5IdENRSWlMYW9XeUtqSjJzNkU2Y1g1N3py?=
+ =?utf-8?B?eE1tWU11bVFVRnEyTjBUZ3Zna1A4eC81cXVxWTBpRE9jcEhyNlYvM0RVdFJx?=
+ =?utf-8?B?Qlp6WUMwZ2JsNWFIb09EQThlajMvZGxLc2xKRExlK3lhOWsxM3Q2QnNDZGRT?=
+ =?utf-8?B?VHRrYjNxcjEwZ09RVkt6RUlReDFFY2ZGempkQmpZeEZjaVhUQ09HVUhNM2tC?=
+ =?utf-8?B?enp1ZkNYaVd4TUdjbjJlMnptY1k2c0dFc0VUSlMzbkFLcTFLM2tUYTFQM2JF?=
+ =?utf-8?B?RU9zc2N1cHZhUzJIQThSanZnYkxoZFB2dnFWYVNKdzVKdHJCZjh6RnV0K3Nq?=
+ =?utf-8?B?eFV1SzBJV0YxNVN5VFpGeW1OVTE2MWpZSDFodi9uVXJHem54cDFqN3ZYTVQ4?=
+ =?utf-8?B?ZzlIcm56aE1nN1ppZkR1SEwrL2piMVNqSWtqUDJrb1FuOVBWSHI1K3JkcEVB?=
+ =?utf-8?B?S2dtZnJ3Wm56NkFQSkdYUUpiVnF6TFJZUTM0SEtXWkcyTzV2dExKdlA3YW5L?=
+ =?utf-8?B?VktLR3lQOGJlcTkwZ3B3RWN6Ti84aUpFTTNkTnROYTFHaFkwUE80NWw0VDRm?=
+ =?utf-8?Q?Rd4A/WEhWWQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MzBrUjlKZEdYa2l4SGNiL1BUb0pNaEkyY0ZUNkVjVitYZkIycFVhMDd0MVV6?=
+ =?utf-8?B?aHpuck1xNFFJQU1aWkJ6WklpVVlyTFNxZWJWbWZQRm1MYkZtbFc0WDdPVlRr?=
+ =?utf-8?B?OW9La201RXJEd3lPNFVSMUI4bmU4Z1BmejhZdDhRVGpDbWNVTmpGTUQ2a2J3?=
+ =?utf-8?B?dWIxQ09lMTBLVmpneDU0TG50N2sxYjB2bG5kUklKM1dvL2FLM2lBaUJWeUI2?=
+ =?utf-8?B?RDdoZDBqcFBvR1BndkZka0ltVmJZRkNKTzFMVzVjODIyTTJKZXB1dFJuR3VH?=
+ =?utf-8?B?cC9zSzcrMWN1WEs0Zll4bkRXUnJPMEIrRGxKbE9BT2NBVnRqNWxycnNldFlX?=
+ =?utf-8?B?ZkJZUDRJNUxiRHE0SFBiakQyR3ExMnhMaVdFVHJCWkZ4ck8vUkxoYTZQNFd1?=
+ =?utf-8?B?THJsaWJOMnViMnhka0lHdE9IRnpKTGV0ODg5ak91MmxoQjd1NzBOcVNsY0Vj?=
+ =?utf-8?B?TWhEWHZVam1xekVrSjIxZjVsY1dkQmZ2SmNVc1dZRzhNTGZMMGpxeWFXZEx2?=
+ =?utf-8?B?Q1YzK0FzR2JUalJPK2pCNGV6bCtwSnV1dlBmM2krcklvaWRjMmlVeUgzeWJw?=
+ =?utf-8?B?QWJxU1g0T2Nvb2pjL3pBOGRzV05kSXNkejVvQ2NuUEx3RmRaZ2c3eFoxL1lU?=
+ =?utf-8?B?czdIV3Vtd1I2bU16WVcrYi9Ea0p3bUpkV3ZLTGdoclpxWnN5akJCUW9TNXNB?=
+ =?utf-8?B?N2x2N1Z4bTJBSUlReVprc3M1Nml4QWQ1V1FKZTdmaythSHBmcU5RNVlxWDdJ?=
+ =?utf-8?B?MlAvdjFZTjR3RnNzM0RLbmZmSTdYdlppTFNTMS9tc2FlR3lQQmZjVWR4NUFo?=
+ =?utf-8?B?TTJnUlY0a21DMWtaK2oyaWhYck9YRWlTOVZDSEhGMDR3Z0JvUVJ3REY2Rkt4?=
+ =?utf-8?B?aDhIc3VZM0ZrTHkxZEJsWTE2QXpSWHY5MkpjN2ZhTzkrWU9zVnNOeE5LRTdh?=
+ =?utf-8?B?VVoyNmo5SXVYM2h0NHdhRkVCTG1nZmFYcDd5TUduYXByZmtEUFduVHRFNWNB?=
+ =?utf-8?B?bU9lWjRnTzE0U0FyWjB1SjB6RmNOa0ZMMTdjekFyTnp1RXpFWHdjZmtLY2Jr?=
+ =?utf-8?B?STBBTGI5bHNSUzVxcTdjV1Q2UkNiR2t3VkttZ2FUd0Iwa25XeS85QUhJditS?=
+ =?utf-8?B?TWcyeXB6S1htVUJFR0NMek9CUGZsaFk1cWZpM0prbUpWSVdZNWtRSk5TOVpV?=
+ =?utf-8?B?bXo1ZEw5SVNBSDAraVd3UGtzRzdJTVdIRmVOa0MxZE8vTkY2d1BXOXMvZnhS?=
+ =?utf-8?B?R1VvdjVYd29naHpzSjh6bmgxNUQ2QTVoS0FPVmJBb3gxb3NQTzQ0K3NaYkNy?=
+ =?utf-8?B?K1ROd1VlZWhoUTVFejd6NytJZERYZ3ZQSnJUQjh5ZjZUa2d6K2ZraFZsSjlB?=
+ =?utf-8?B?YWh5cnBnb21WSk9hWUhFbW9HbWxkMVVBQVZZQ1QyUW1CUUdtekhXNFQySzg1?=
+ =?utf-8?B?MVV0OGF5dmNDQTgveUNwTkxVS2c2QnpsV3N1eFF3SDlXc2lMQWlGWk9nbVJw?=
+ =?utf-8?B?Z3N3T3k5eXN1L1RpcytvWW5HbFIxc04vM2RHZ0VjMkR4ZGJnZEU4Qk5VdndW?=
+ =?utf-8?B?OHFVZG5VbzdoRGp1aTVveHA2cFh6YVlna1BvMXF1ZDByUW5WNkVRb1dMVEk3?=
+ =?utf-8?B?ZUpFZlhGbnJ5K2I4KzFXRkNRbkozV1owaTdrSHl2TlVyRGRRNFhGdkEwTXNo?=
+ =?utf-8?B?cTVPODU1VHRQQ2JaYVVJQ0ZsY29iUGx5aXlqV0N5YlRLQlZlOFJpVHZCL2Vi?=
+ =?utf-8?B?aUZibnVIS1FlZDJjTjQzdytEYi9PYTV2QVI0cStpRWlvYm5qL2ZTcjFVRWJE?=
+ =?utf-8?B?TW5xTWFrMlhqTUh5OVVYM0VXanhsNnpqSWx0MDA2N3RpeFJ2b0YwWkdoUURI?=
+ =?utf-8?B?NmJPdHZQeEpuSC8wODUrRURPbDJXcm01MkR1M3BFbU8rYTNyWUJqYm8wM1pC?=
+ =?utf-8?B?TWhxSmhLdWNmUUR2R2xTN213blczd3dLU1o1VEJqc3BHWFYyR0FIWXR5NGJ0?=
+ =?utf-8?B?cXRzYWdlVzJ3cWVQT3crWEhtSnJIRzRDQ2tnMC9jZjQzVi96d2NjUmx1c0xB?=
+ =?utf-8?B?eGlkQ21RbGdGYU1TQUllOEFWN0FyM0VpY3hGalNmaDc0cE42UVBMRU1jS0VU?=
+ =?utf-8?B?QXdCSEpNSWgreTUyWWhCTURsWEdkMDZ2UUZ3K2l2ZGZCQTZVRjJWZzkzRG5W?=
+ =?utf-8?B?TEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fff7b8f-80d0-43b8-096e-08ddde287b93
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 07:26:01.2495
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HqIsHCDf5rG3LwPa+fI4/QULLc3JcXRNps9Mzskz1EnJLmC+mLTn/qUc+IE9AEx3M45s+qC5JMJrExKZFmncsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPFFA27DACA6
+X-OriginatorOrg: intel.com
 
-Hi Andr�,
+On 06/08/2025 12:43, Duje Mihanović wrote:
+> Different bus clocks require different pinctrl states to remain stable.
+> Add support for selecting between a default and UHS state according to
+> the bus clock.
+> 
+> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 
-kernel test robot noticed the following build warnings:
+One minor cosmetic issue below.  Address that and add:
 
-[auto build test WARNING on 1357b2649c026b51353c84ddd32bc963e8999603]
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Apitzsch-via-B4-Relay/dt-bindings-media-i2c-Add-DW9718S-DW9719-and-DW9761-VCM/20250818-011316
-base:   1357b2649c026b51353c84ddd32bc963e8999603
-patch link:    https://lore.kernel.org/r/20250817-dw9719-v1-3-426f46c69a5a%40apitzsch.eu
-patch subject: [PATCH 3/7] media: i2c: dw9719: Add driver_data matching
-config: riscv-randconfig-002-20250818 (https://download.01.org/0day-ci/archive/20250818/202508180429.GKdrjNK9-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250818/202508180429.GKdrjNK9-lkp@intel.com/reproduce)
+> ---
+> Changes in v3:
+> - Move pinctrl stuff out of platdata
+> - Add helper for pinstate lookup
+> - Thanks to Adrian for the suggestions
+> 
+> Changes in v2:
+> - Don't attempt to lookup pinstates if getting pinctrl fails
+> - Only select pinstates if both of them are valid
+> - dev_warn() -> dev_dbg()
+> ---
+>  drivers/mmc/host/sdhci-pxav3.c | 40 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 39 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+> index 3fb56face3d81259b693c8569682d05c95be2880..ceb06f1c18146eac296c6d20483a9f006567a978 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -20,9 +20,11 @@
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+> +#include <linux/pinctrl/consumer.h>
+>  #include <linux/pm.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/mbus.h>
+> +#include <linux/units.h>
+>  
+>  #include "sdhci.h"
+>  #include "sdhci-pltfm.h"
+> @@ -51,6 +53,9 @@ struct sdhci_pxa {
+>  	struct clk *clk_io;
+>  	u8	power_mode;
+>  	void __iomem *sdio3_conf_reg;
+> +	struct pinctrl *pinctrl;
+> +	struct pinctrl_state *pins_default;
+> +	struct pinctrl_state *pins_uhs;
+>  };
+>  
+>  /*
+> @@ -313,8 +318,20 @@ static void pxav3_set_power(struct sdhci_host *host, unsigned char mode,
+>  		mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, vdd);
+>  }
+>  
+> +static void pxav3_set_clock(struct sdhci_host *host, unsigned int clock)
+> +{
+> +	struct sdhci_pltfm_host *phost = sdhci_priv(host);
+> +	struct sdhci_pxa *pxa = sdhci_pltfm_priv(phost);
+> +	struct pinctrl_state *pins = clock < 100 * HZ_PER_MHZ ? pxa->pins_default : pxa->pins_uhs;
+> +
+> +	if (pins)
+> +		pinctrl_select_state(pxa->pinctrl, pins);
+> +
+> +	sdhci_set_clock(host, clock);
+> +}
+> +
+>  static const struct sdhci_ops pxav3_sdhci_ops = {
+> -	.set_clock = sdhci_set_clock,
+> +	.set_clock = pxav3_set_clock,
+>  	.set_power = pxav3_set_power,
+>  	.platform_send_init_74_clocks = pxav3_gen_init_74_clocks,
+>  	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
+> @@ -366,6 +383,19 @@ static inline struct sdhci_pxa_platdata *pxav3_get_mmc_pdata(struct device *dev)
+>  }
+>  #endif
+>  
+> +static struct pinctrl_state *pxav3_lookup_pinstate(struct device *dev, struct pinctrl *pinctrl,
+> +						   const char *name)
+> +{
+> +	struct pinctrl_state *pins = pinctrl_lookup_state(pinctrl, name);
+> +
+> +	if (IS_ERR(pins)) {
+> +		dev_dbg(dev, "could not get pinstate '%s': %ld\n", name, PTR_ERR(pins));
+> +		return NULL;
+> +	}
+> +
+> +	return pins;
+> +}
+> +
+>  static int sdhci_pxav3_probe(struct platform_device *pdev)
+>  {
+>  	struct sdhci_pltfm_host *pltfm_host;
+> @@ -441,6 +471,14 @@ static int sdhci_pxav3_probe(struct platform_device *pdev)
+>  			host->mmc->pm_caps |= pdata->pm_caps;
+>  	}
+>  
+> +	pxa->pinctrl = devm_pinctrl_get(dev);
+> +	if (!IS_ERR(pxa->pinctrl)) {
+> +		pxa->pins_default = pxav3_lookup_pinstate(dev, pxa->pinctrl, "default");
+> +		if (pxa->pins_default)
+> +			pxa->pins_uhs = pxav3_lookup_pinstate(dev, pxa->pinctrl, "state_uhs");
+> +	} else
+> +		dev_dbg(dev, "could not get pinctrl handle: %ld\n", PTR_ERR(pxa->pinctrl));
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508180429.GKdrjNK9-lkp@intel.com/
+Kernel style is to have braces here.  ./scripts/checkpatch.pl --strict
+can tell about that kind of thing:
 
-All warnings (new ones prefixed by >>):
+CHECK: braces {} should be used on all arms of this statement
+#92: FILE: drivers/mmc/host/sdhci-pxav3.c:474:
++       if (!IS_ERR(pxa->pinctrl)) {
+[...]
++       } else
+[...]
 
->> drivers/media/i2c/dw9719.c:285:18: warning: cast to smaller integer type 'enum dw9719_model' from 'const void *' [-Wvoid-pointer-to-enum-cast]
-     285 |         dw9719->model = (enum dw9719_model)i2c_get_match_data(client);
-         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
+CHECK: Unbalanced braces around else statement
+#96: FILE: drivers/mmc/host/sdhci-pxav3.c:478:
++       } else
 
 
-vim +285 drivers/media/i2c/dw9719.c
+> +
+>  	pm_runtime_get_noresume(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+>  	pm_runtime_set_autosuspend_delay(&pdev->dev, PXAV3_RPM_DELAY_MS);
+> 
 
-   275	
-   276	static int dw9719_probe(struct i2c_client *client)
-   277	{
-   278		struct dw9719_device *dw9719;
-   279		int ret;
-   280	
-   281		dw9719 = devm_kzalloc(&client->dev, sizeof(*dw9719), GFP_KERNEL);
-   282		if (!dw9719)
-   283			return -ENOMEM;
-   284	
- > 285		dw9719->model = (enum dw9719_model)i2c_get_match_data(client);
-   286	
-   287		dw9719->regmap = devm_cci_regmap_init_i2c(client, 8);
-   288		if (IS_ERR(dw9719->regmap))
-   289			return PTR_ERR(dw9719->regmap);
-   290	
-   291		dw9719->dev = &client->dev;
-   292	
-   293		dw9719->regulator = devm_regulator_get(&client->dev, "vdd");
-   294		if (IS_ERR(dw9719->regulator))
-   295			return dev_err_probe(&client->dev, PTR_ERR(dw9719->regulator),
-   296					     "getting regulator\n");
-   297	
-   298		v4l2_i2c_subdev_init(&dw9719->sd, client, &dw9719_ops);
-   299		dw9719->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
-   300		dw9719->sd.internal_ops = &dw9719_internal_ops;
-   301	
-   302		ret = dw9719_init_controls(dw9719);
-   303		if (ret)
-   304			return ret;
-   305	
-   306		ret = media_entity_pads_init(&dw9719->sd.entity, 0, NULL);
-   307		if (ret < 0)
-   308			goto err_free_ctrl_handler;
-   309	
-   310		dw9719->sd.entity.function = MEDIA_ENT_F_LENS;
-   311	
-   312		/*
-   313		 * We need the driver to work in the event that pm runtime is disable in
-   314		 * the kernel, so power up and verify the chip now. In the event that
-   315		 * runtime pm is disabled this will leave the chip on, so that the lens
-   316		 * will work.
-   317		 */
-   318	
-   319		ret = dw9719_power_up(dw9719, true);
-   320		if (ret)
-   321			goto err_cleanup_media;
-   322	
-   323		pm_runtime_set_active(&client->dev);
-   324		pm_runtime_get_noresume(&client->dev);
-   325		pm_runtime_enable(&client->dev);
-   326	
-   327		ret = v4l2_async_register_subdev(&dw9719->sd);
-   328		if (ret < 0)
-   329			goto err_pm_runtime;
-   330	
-   331		pm_runtime_set_autosuspend_delay(&client->dev, 1000);
-   332		pm_runtime_use_autosuspend(&client->dev);
-   333		pm_runtime_put_autosuspend(&client->dev);
-   334	
-   335		return ret;
-   336	
-   337	err_pm_runtime:
-   338		pm_runtime_disable(&client->dev);
-   339		pm_runtime_put_noidle(&client->dev);
-   340		dw9719_power_down(dw9719);
-   341	err_cleanup_media:
-   342		media_entity_cleanup(&dw9719->sd.entity);
-   343	err_free_ctrl_handler:
-   344		v4l2_ctrl_handler_free(&dw9719->ctrls.handler);
-   345	
-   346		return ret;
-   347	}
-   348	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
