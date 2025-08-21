@@ -1,206 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F07335BD0;
-	Wed, 20 Aug 2025 21:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4D52D97A9;
+	Thu, 21 Aug 2025 07:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755726980; cv=none; b=ZeJV9swUdD1YHlsuu+DHugcwM65Ac+h8+n6CXEb/JMlikpavDtDlSuka2zFLhG0hRvem7A37cZoS5nyjrYwsHydOJjvcviictkTl9HhYSXJutVPTyUUisdM9xC6OR1Mj/Qv4oy6XMJbaU86B65cdw3hsFZ+aMbfMbJtPi/ONWfc=
+	t=1755760817; cv=none; b=hHQsCw7wcmmqOIwknK329aCkWMw89g6KfLg6/hfV9Sjbq1ZQIzgMvZGgQpdp/P4sIkxdhthlRMUZTy+LkjTqJ6Mj58a6q94I0HDlbXjr7ENKxxPMwrKCjeXqOO4bPzMBc6zqTJa9I0d9YFaDwF4rfHp0atKe5DZZj/fuZ+uxqk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755726980; c=relaxed/simple;
-	bh=0rUHM2uemlukqAn2SUAopv8MRbyIeZpCqjQQeDYDJaQ=;
+	s=arc-20240116; t=1755760817; c=relaxed/simple;
+	bh=9O0+HGOwcJkxqZ1P78CUIzkeBXGNDQ1uxZXdRSbeMAs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k2QzK7goOG2l74pxc+IXK5Qk9yYl/MvzVMLX6JisyEUWs4tA0Mgf9myFNKS44mWgZ1dLBgbZOxzXk2fZ/pjlCwClQCaB5jJya13+BtrVYfE6Cp+MRg8SF49swj18g5QvCtaT3JPzUebftOJyETTGNBdvArd/k7DsOwvKvrxBti0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABF/DvJb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOp/HzmmQrXydl7Aq5GzuOHoN5ehlVuVVUHK5mqtljpAfjcDeGiPYkiHVVTaUCGvO3lA+8VwmwtG9oTSqjE/HtLIrg3J68iEoGU2GrOHbabj0GvnfE+m1rLCIWxof/1x7tWxSRj6E6jYXzlo3B8rA3Jz/+zfy9qVjthAULj3RuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLNlOioW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABF/DvJb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3ABC4CEE7;
-	Wed, 20 Aug 2025 21:56:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLNlOioW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44595C4CEED;
+	Thu, 21 Aug 2025 07:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755726980;
-	bh=0rUHM2uemlukqAn2SUAopv8MRbyIeZpCqjQQeDYDJaQ=;
+	s=k20201202; t=1755760814;
+	bh=9O0+HGOwcJkxqZ1P78CUIzkeBXGNDQ1uxZXdRSbeMAs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ABF/DvJbxqGXza3FxFbixGqKBqH73e+JPH6xVycVidOenOqzumdOqzd2Dr0PFeLkk
-	 C9Cua9MvYGWHo8FmJEzkyJ0MQlPchKQQLmsyB1392ZtTi6Fk+nJwlgp+g1OcYPVMhq
-	 kWR4uV63i7/cDt0wzhlX3PGtLAk0ZNERXS1Tkj1ekAYLaa7pLSKAoKQJ923zhtA0Ml
-	 lE/uJHY4GAyKDaUptb/2A9ZNieQ+W3e8XH3KzOJU6SnXHlE8pK2tp7qFpN02Dga5Dt
-	 WqfDOU6evwGNrqnUHdMzZxW8HOXEF72EM3HeETMhP3TzL4qlDDLWWEIwRn3A3OXFcy
-	 6JYQv5PLl22Jw==
-Date: Wed, 20 Aug 2025 16:56:19 -0500
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Val Packett <val@packett.cool>
-Subject: Re: [PATCH 1/7] dt-bindings: media: i2c: Add DW9718S, DW9719 and
- DW9761 VCM
-Message-ID: <20250820215619.GA1381920-robh@kernel.org>
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
- <20250817-dw9719-v1-1-426f46c69a5a@apitzsch.eu>
+	b=PLNlOioWd7Cfj3B2W6thbArq8HOHjn6MlGUcBz11xtXrMHPxTm8VuqA0RWPOBEmnu
+	 Z+IY+j30jV+3rq88jbtN0QDR1TsDUAplSqeoEL/YpnQWyJhKmUFYGTAsxjdZdi1B88
+	 mcoP6aXuLVmwu7M//aVyZUO0SQnU1UnJ//15jA2bY9oc68nD6tbbETX7R+VgvLmYJl
+	 mpzjNoZPeoihqPcNFl0xJqDI+LhKDJjYeYZxWMrf72zRoYwhajp2tjt8UClarsHD+f
+	 Hy0J2E20inHBbjyLScBDv/w0uKb74GLYCuia3eOcuawGQEMX+FNxblUH/XrQGWwWrR
+	 nUDRYhnpEKLtQ==
+Date: Thu, 21 Aug 2025 09:20:12 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephan Gerhold <stephan@gerhold.net>, Otto =?utf-8?Q?Pfl=C3=BCger?= <otto.pflueger@abscue.de>, 
+	Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Adam Skladowski <a_skl39@protonmail.com>, Sireesh Kodali <sireeshkodali@protonmail.com>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Srinivas Kandagatla <srini@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, iommu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org
+Subject: Re: [PATCH v6 3/6] dt-bindings: display/msm/gpu: describe A505 clocks
+Message-ID: <20250821-radiant-squirrel-of-prowess-f9ea27@kuoka>
+References: <20250820-msm8937-v6-0-b090b2acb67e@mainlining.org>
+ <20250820-msm8937-v6-3-b090b2acb67e@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250817-dw9719-v1-1-426f46c69a5a@apitzsch.eu>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250820-msm8937-v6-3-b090b2acb67e@mainlining.org>
 
-On Sun, Aug 17, 2025 at 07:09:20PM +0200, André Apitzsch wrote:
-> Document Dongwoon DW9718S, DW9719 and DW9761 VCM devicetree bindings.
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> 
-> --
-> 
-> The possible values for sac-mode and vcm-prescale of DW9719 and DW9761
-> are missing because there is no documentation available.
+On Wed, Aug 20, 2025 at 01:37:47AM +0200, Barnab=C3=A1s Cz=C3=A9m=C3=A1n wr=
+ote:
+> Descirbe A505 clocks it is using same clocks like A506.
+>=20
+> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlining=
+=2Eorg>
 > ---
->  .../bindings/media/i2c/dongwoon,dw9719.yaml        | 115 +++++++++++++++++++++
->  1 file changed, 115 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..80fd3fd42327fcafe3ff209d1cd6bbe17b8a211b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9719.yaml
-> @@ -0,0 +1,115 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9719.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Dongwoon Anatech DW9719 Voice Coil Motor (VCM) Controller
-> +
-> +maintainers:
-> +  - devicetree@vger.kernel.org
+>  Documentation/devicetree/bindings/display/msm/gpu.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/display/msm/gpu.yaml b/Doc=
+umentation/devicetree/bindings/display/msm/gpu.yaml
+> index 7ef80f9fac8b2927b2a69100a7f6c729d9d188ab..478ae6e7e55a405d9443dda97=
+486b6abfa05e22b 100644
+> --- a/Documentation/devicetree/bindings/display/msm/gpu.yaml
+> +++ b/Documentation/devicetree/bindings/display/msm/gpu.yaml
+> @@ -252,7 +252,9 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            pattern: '^qcom,adreno-506\.[0-9]+$'
 
-No. Must be someone that has the h/w or cares about it. If there is no 
-one, then we don't need the binding.
+50[56] would work, still simple pattern.
 
-> +
-> +description:
-> +  The Dongwoon DW9718S/9719/9761 is a single 10-bit digital-to-analog converter
-> +  with 100 mA output current sink capability, designed for linear control of
-> +  voice coil motors (VCM) in camera lenses. This chip provides a Smart Actuator
-> +  Control (SAC) mode intended for driving voice coil lenses in camera modules.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - dongwoon,dw9718s
-> +      - dongwoon,dw9719
-> +      - dongwoon,dw9761
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: VDD power supply
-> +
-> +  dongwoon,sac-mode:
-> +    description: |
-> +      Slew Rate Control mode to use: direct, LSC (Linear Slope Control) or
-> +      SAC1-SAC6 (Smart Actuator Control).
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum:
-> +      - 0   # Direct mode
-> +      - 1   # LSC mode
-> +      - 2   # SAC1 mode (operation time# 0.32 x Tvib)
-> +      - 3   # SAC2 mode (operation time# 0.48 x Tvib)
-> +      - 4   # SAC3 mode (operation time# 0.72 x Tvib)
-> +      - 5   # SAC4 mode (operation time# 1.20 x Tvib)
-> +      - 6   # SAC5 mode (operation time# 1.64 x Tvib)
-> +      - 7   # SAC6 mode (operation time# 1.88 x Tvib)
-> +    default: 4
-> +
-> +  dongwoon,vcm-prescale:
-> +    description:
-> +      Indication of VCM switching frequency dividing rate select.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: dongwoon,dw9718s
-> +    then:
-> +      properties:
-> +        dongwoon,sac-mode:
-> +          default: 4
-> +        dongwoon,vcm-prescale:
-> +          description:
-> +            The final frequency is 10 MHz divided by (value + 2).
-> +          minimum: 0
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-That's already the minimum being unsigned.
+Best regards,
+Krzysztof
 
-> +          maximum: 15
-> +          default: 0
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: dongwoon,dw9719
-> +    then:
-> +      properties:
-> +        dongwoon,sac-mode:
-> +          default: 4
-> +        dongwoon,vcm-prescale:
-> +          default: 96
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: dongwoon,dw9761
-> +    then:
-> +      properties:
-> +        dongwoon,sac-mode:
-> +          default: 6
-
-At the top-level you already said the default is 4. The if/then is an 
-AND operation. 'default' is just an annotation and has no effect on 
-validation. I would just drop it from the if/then altogether. It's not 
-worth the complexity.
-
-> +        dongwoon,vcm-prescale:
-> +          default: 62
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        actuator@c {
-> +            compatible = "dongwoon,dw9718s";
-> +            reg = <0x0c>;
-> +
-> +            vdd-supply = <&pm8937_l17>;
-> +
-> +            dongwoon,sac-mode = <4>;
-> +            dongwoon,vcm-prescale = <0>;
-> +        };
-> +    };
-> 
-> -- 
-> 2.50.1
-> 
