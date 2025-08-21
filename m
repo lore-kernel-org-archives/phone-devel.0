@@ -1,36 +1,35 @@
 Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7EA2DC334;
-	Thu, 21 Aug 2025 11:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024D02367AE;
+	Thu, 21 Aug 2025 11:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755775175; cv=none; b=rd6h6jWSUe29Cs1g9DfMvuCJFjpumw1Qflnz/D+SbPoef4iTdkC7MoJxfkS/lXQd4+RYagmLqC8vg4loCFOfQYgiU1I51xART+sfdoaqAKM3XC06+OYh67jRZP1S9aVIJRqHth74X+EKwCbHbKvQxHHqRVmxs8EqvbkMvrJ6YSM=
+	t=1755775253; cv=none; b=cNzNne90XK9KXAEZJFYKAlQqTFRFTUTdTAkbZXQ47yV0eSymUXpLELxpWIOGTosqdHlvxzL3MmAfg+Z4bYhdp6ySsDkgS6UVxL8MOZYXPbAi71fJirwwSngC/LBd7uc2e3cImxyhvNqd4UuEZ2LQi7YSiZ7EkCaYdshxFhNmneU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755775175; c=relaxed/simple;
-	bh=qV8PLaqeW9hgJT+405ZgED/JzPTXaQoHO4G+xKSnioI=;
+	s=arc-20240116; t=1755775253; c=relaxed/simple;
+	bh=v7iuef6GPf6tu0R2yla7tAMIgPcdtUQT6XnIxy5KK94=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q7m8c9bVxnAMOkxdTH5qJfLoQxTSRyq8xHkYf7vFh7x2HNoedx9kOWi4EUEiI/3EVcMwzp3014V2zLMypOIc0aMarzKGNnOe9/Utn6fEpzpWOSoQkgWcEFlafJfUFU+VCUm7V1LZx/Lu2MXIBKkll4SYWvcEdIEl5kbcnPazX/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=saFAjhys; arc=none smtp.client-ip=37.205.8.231
+	 In-Reply-To:To:Cc; b=uMrAXlDCUsq6A3g2dmD3S0mYdQ8Bu/25HCbUgwJjA4H9hOOnmqFiVCNdx2CnihXKl9fW6sra4QXH0J/Rz1ieZezjtPgmFouBRShFcUiUH8SWG7fE5q4NqhZjMSmIPEfoSRnk6LBVy1hFr3TQbeXwBCgZblVguT5Flexak1YigNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=PgLKE6p2; arc=none smtp.client-ip=37.205.8.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="saFAjhys"
-DKIM-Signature: a=rsa-sha256; bh=84JybEFawvEnVDJfX1degPru+BtEANRZCQyoOyQXNDA=;
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="PgLKE6p2"
+DKIM-Signature: a=rsa-sha256; bh=9rNIDpDoTdLh2E6jhEYhac+912Izr531qbk98L0qxyM=;
  c=relaxed/relaxed; d=dujemihanovic.xyz;
  h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1755775104; v=1; x=1756207104;
- b=saFAjhys+SAA5w1z6HmhRdMrqBXNWCYwA8VV09AXOYV/8+MSQT0YKeKKqx1Nf92fGzfkcVvA
- 71w51cxD3ZndMX34Wg71IUm5odEer/pSah2LLw4KGMsCkQd5otdbvgBnVdlJ22B4Goy18v4lKQ6
- WBrCMf8/xj6C/vDbSgHh55vaGo1pkWaad4lkYch8F8bGVGmtKVB84LqNiqnzcfnVUsLj/yBlUY4
- +IgCJG7NseBgTqByYsAxJgZebrXyR/Lq5wtksQQR+7XT2f5b9jp+Ub9XWqgh23vuRjrN+d0aTc6
- WcqMvZdkJvRuyvUPBnO3y2ZTeXpJAXFteMlUjCZOuFGfQ==
+ i=@dujemihanovic.xyz; s=default; t=1755775245; v=1; x=1756207245;
+ b=PgLKE6p23+eJpEo1O7wM6plSrqI7O8LsjQBO1/jJ+dsXnqzewhuFtrbzIO8qDtmmZaPnMMmC
+ pQvJdwwlddW6EMaw7a6XgxFzdpzJ60kp6ehC11YRsQ3IcNqh8RkFCbW5QQVWIHgwEQo18ZI7tbM
+ JdWZc0PVm1N2f6BGiyvpjoIR2t2rrhLth1kPdblx4iQnvpWCzKaMYCudyqwt2Gx/Pb7AkQCKjbs
+ 0G10187Z4qdbvKl0t7cnHlccwqkOh1hSSSKcj7tvae5EKNvcARO28LnKiSZzVmOHH51pemCtyqW
+ SqvI/AclLHFZrIsdu9TFLjMQIHvd/XQcM6GOy7xpd5mMw==
 Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 4562db5e; Thu, 21 Aug 2025 13:18:24 +0200
+ ESMTPS id 22348194; Thu, 21 Aug 2025 13:20:45 +0200
 From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Date: Thu, 21 Aug 2025 13:17:43 +0200
-Subject: [PATCH v2 1/4] dt-bindings: clock: marvell,pxa1908: Add syscon
- compatible to apmu
+Date: Thu, 21 Aug 2025 13:20:35 +0200
+Subject: [PATCH v4 1/2] dt-bindings: mmc: sdhci-pxa: add state_uhs pinctrl
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,104 +38,96 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250821-pxa1908-genpd-v2-1-eba413edd526@dujemihanovic.xyz>
-References: <20250821-pxa1908-genpd-v2-0-eba413edd526@dujemihanovic.xyz>
-In-Reply-To: <20250821-pxa1908-genpd-v2-0-eba413edd526@dujemihanovic.xyz>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+Message-Id: <20250821-pxav3-uhs-v4-1-bb588314f3c3@dujemihanovic.xyz>
+References: <20250821-pxav3-uhs-v4-0-bb588314f3c3@dujemihanovic.xyz>
+In-Reply-To: <20250821-pxav3-uhs-v4-0-bb588314f3c3@dujemihanovic.xyz>
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>
+Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
  =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2011;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2265;
  i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
- bh=qV8PLaqeW9hgJT+405ZgED/JzPTXaQoHO4G+xKSnioI=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBnLGep6WF9r3Zs+31QsVqBe4MOVhtn5MZJxbudNHn9ac
- WrHK5a9HaUsDGJcDLJiiiy5/x2v8X4W2bo9e5kBzBxWJpAhDFycAjAR0V5Ghk/nfsbwdLxoVX//
- Tj3vjdV/CY5XM/6Hb1VbNmWTW1fonVSG/zXZt4KVp+o9XusWpJ/JllDybr3ivdMeJ+NuCTnt151
- 7jhkA
+ bh=v7iuef6GPf6tu0R2yla7tAMIgPcdtUQT6XnIxy5KK94=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBnLGbktWDVLP11Oiq+/feFsibuhi2DVZoeaGWtcr6d2v
+ v0/c+XWjlIWBjEuBlkxRZbc/47XeD+LbN2evcwAZg4rE8gQBi5OAZiI7V+G/z7qTSXGNoyaM2/M
+ +mbKeK5pa+/vyZbPFF3m8i9TdjlTOY+R4TfLm5n/fe+2PZczf/j927e/RZ/zrwjH1ySJGx07bTT
+ rICsA
 X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
  fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Add required syscon compatible to the APMU controller. This is required
-for the SoC's power domain controller as the registers are shared.
+On the pxav3 controller, increasing the drive strength of the data pins
+might be required to maintain stability on fast bus clocks (above 100
+MHz). Add a state_uhs pinctrl to allow this.
 
-Also add a #power-domain-cells property as the node will serve as the
-power domain phandle.
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 ---
-v2:
-- Drop simple-mfd
-- Add #power-domain-cells
----
- .../devicetree/bindings/clock/marvell,pxa1908.yaml | 30 +++++++++++++++++-----
- 1 file changed, 24 insertions(+), 6 deletions(-)
+Changes in v4:
+- Rebase on v6.17-rc2 (That version has essentially had a part of this
+  patch merged, causing the potentially weird diff. The end result is
+  the same as in the previous versions of the series though.)
 
-diff --git a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-index 4e78933232b6b925811425f853bedf6e9f01a27d..6f3a8578fe2a6810911fec5879c07c9ddb34565a 100644
---- a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-+++ b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-@@ -19,11 +19,14 @@ description: |
+Changes in v2:
+- Newlines between properties in if:
+---
+ .../devicetree/bindings/mmc/sdhci-pxa.yaml         | 29 +++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml b/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
+index e7c06032048a3a73eb3eb67a887e75db273ffa92..fba1cc50fdf07cc25d42f45512c385a9b8207b9b 100644
+--- a/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
++++ b/Documentation/devicetree/bindings/mmc/sdhci-pxa.yaml
+@@ -44,12 +44,27 @@ allOf:
+           items:
+             - const: default
+             - const: state_cmd_gpio
+-        pinctrl-0:
+-          description:
+-            Should contain default pinctrl.
++
+         pinctrl-1:
+           description:
+             Should switch CMD pin to GPIO mode as a high output.
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: mrvl,pxav3-mmc
++    then:
++      properties:
++        pinctrl-names:
++          description:
++            Optional for increasing stability of the controller at fast bus clocks.
++          items:
++            - const: default
++            - const: state_uhs
++
++        pinctrl-1:
++          description:
++            Should switch the drive strength of the data pins to high.
  
  properties:
    compatible:
--    enum:
--      - marvell,pxa1908-apbc
--      - marvell,pxa1908-apbcp
--      - marvell,pxa1908-mpmu
--      - marvell,pxa1908-apmu
-+    oneOf:
-+      - enum:
-+          - marvell,pxa1908-apbc
-+          - marvell,pxa1908-apbcp
-+          - marvell,pxa1908-mpmu
-+      - items:
-+          - const: marvell,pxa1908-apmu
-+          - const: syscon
+@@ -82,6 +97,14 @@ properties:
+       - const: io
+       - const: core
  
-   reg:
-     maxItems: 1
-@@ -31,6 +34,9 @@ properties:
-   '#clock-cells':
-     const: 1
- 
-+  '#power-domain-cells':
-+    const: 1
++  pinctrl-names: true
 +
- required:
-   - compatible
-   - reg
-@@ -38,11 +44,23 @@ required:
- 
- additionalProperties: false
- 
-+if:
-+  not:
-+    properties:
-+      compatible:
-+        contains:
-+          const: marvell,pxa1908-apmu
++  pinctrl-0:
++    description:
++      Should contain default pinctrl.
 +
-+then:
-+  properties:
-+    '#power-domain-cells': false
++  pinctrl-1: true
 +
- examples:
-   # APMU block:
-   - |
-     clock-controller@d4282800 {
--      compatible = "marvell,pxa1908-apmu";
-+      compatible = "marvell,pxa1908-apmu", "syscon";
-       reg = <0xd4282800 0x400>;
-       #clock-cells = <1>;
-+      #power-domain-cells = <1>;
-     };
+   mrvl,clk-delay-cycles:
+     description: Specify a number of cycles to delay for tuning.
+     $ref: /schemas/types.yaml#/definitions/uint32
 
 -- 
 2.50.1
