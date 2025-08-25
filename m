@@ -1,102 +1,99 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD942FE58F
-	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 16:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15F230101F
+	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 16:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756139828; cv=none; b=NIqSCkKMBx5STIj4db7rZWl8vD6RsT6L26oakI0NS7R1nm35DCPaSlR2Tf6G75gE9THw3qAJmwlaho2lezLK9MfapVFmK9pFKCriONfneFBHnZHNTRE/gba0iADSuNewCGYEOa/CMN7GBfY4ZvbT8FxHvwHTGyAwRUSrDkYjapw=
+	t=1756140048; cv=none; b=tLxymGetHTNz8oUTAKT6EPWsxgf4pRUulKu8IIi7ScEOuUTwTtrqvvWAImji58kELO4kfbeh3RWOPpoo9En9f7tB5iJoVH8/qmaWjPDVFZzle8J2Cswm9c8mAy2E/9Jc+PEIk1pYJq3yWJ0UGvLLaPoiwRS1qt79JOcWJgoDBdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756139828; c=relaxed/simple;
-	bh=dRjkmQyr4AfxMzpp6Q0dVQT0/GVtdEmvI6FnZNiPJBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sCoc44h1gFNqIUS+g7ei6CCTgTfkYmk7iRfkJOmS6eLgOW5r5F5MOuSG1ina5xz3OaE8F+7dGltnvnX0N76lCm/NaYs4mqI/Az6yDt9ROEUDN+3cE2gUbwY6cnPJQQrm+W53+UWG3JjqDdL7j0/Q8HoFaYeK0WT7yeuSsWSRw3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Tpp/9r6e; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1756140048; c=relaxed/simple;
+	bh=4prFTVsDmktsxECVHpJDZoTv8Pciq628dyvSUG8lB50=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=SpS3tPzcl+JxFbEFt6jZK5zHATFZgDLqINnEju4AKbUdcgXQB7ee/+RfG3BYaEiDjNXojZATDDlDqRiTQJEVT/rI43NymhxYmdKyT9kLzJl/D/8GRxkVnvNPJb732/+Plc5+rjbb0dKacQhJgjmVd3/+2je65VCT04ceov1ofDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=1VXKRipO; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Tpp/9r6e"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57P8S6PK002161
-	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 16:37:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=4Al2oxJOnZAhMVrumUKzRD+a
-	SFJQBCgWk6dRAYaPpVI=; b=Tpp/9r6erYjYxFvSDtVS1EHSMQ7r7P1p+7XgImpu
-	p9E8nV6tEzXhU8ps79T3GkLxQJ5FrQHuGXDuM8XVnN3ajP95nS7JI9gPofyzAZgG
-	fdHWplV1TgKbrp02TPwTGD3ZYASObfY9JsHts8Eb/l8cEtZBitxF3DsSzbEVBy9W
-	gy5XW/XQk5MN2ExO3s9uoj0IOcgaTwti86HjOen0FFrvL0JkMLjf+4Aj1GyrRXYe
-	1jjd7mEwG3nIPTDxu2wAKz1xMC2aNkqYwxQ9eaoJEyaMXqqqAb2DW3ZF4oYuYUes
-	TCMuJF4Fu9hAovIdeoYurt8ruSHbyoy1z2f5992dz6f7rg==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5y5dp04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 16:37:04 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b10993f679so125797891cf.0
-        for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 09:37:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756139823; x=1756744623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="1VXKRipO"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61c7942597fso1578472a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 09:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1756140043; x=1756744843; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4Al2oxJOnZAhMVrumUKzRD+aSFJQBCgWk6dRAYaPpVI=;
-        b=KAnp9OAUBj7I4ojeOB9+/hjtmWH23zJt/TMwE0v5Vfvg2jrkxTj1MyZzAo3qsBWTHk
-         804rwtpHXb5KF0/xG6NGosxqBngIPUxCd8jZSbA7OS1P61kqck3P/FpQlJPozXivstxc
-         YKtYgdAolXvz0HRqEXLC9B0JIiLUJVlUeQWF0AnoaRBG5mgAbmZtBImYEx1p7+SKJzxn
-         32mVUqjgRFI4CTJWQzvqKO3Q7HPt5gwCbVRCmkvLpJ4OhrOdz/PBrjRaLf5ZAn0sjkc/
-         /1ypnACy+0Mfl7tCHLo3PaaXQDSfkEsyaHo6wmjyp5d3+Hf+JKv0aqDlTDuUwEtOq1ef
-         QbcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJLO0FibkaJP1eoHlyssJg9/ht9U3w5qJpb45P6lJeYHTe5qeO83KZmJgH9/qlOgIZnWz6JTVtdTQssQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu/6WuDoyLz9mreC39y3wMUoFwaHumO57/oLKZXDCu32UrQOX8
-	zBlPBViwZxb4He9o7n+n/i6cykWb4+uPkT660NimM1XpiFhATNyUzzxbp91lepn5vlgKZ3SC8XI
-	NUtktJAa9+GTb6g6udNLKchDsb+l7wjlylRUn6qpfiFjsNWLfZioq/95LQypyaZk7pA==
-X-Gm-Gg: ASbGncuXRdCyV/MwZXIQ50IZKlsNPjxbORzJ25++F6SfyWbbV2vN0b4+05VVabYiyRB
-	Y00bg0FphPAQqRynofAZNntVx2AAMRapDSeotoRlGyjlUFU0zBe4A/+IKGXnPj5RpUiYk14XgwI
-	7floMSutgcewCLi+TZet3TtYu3kch+zqahx4y4TWwl4M4GhYo7A8x5SvJfGI5a0RmcQtUF8yVnS
-	qGgMgARoST+WT3qCulEnkz9rZonIcbUBVfAJ8ctH7GZ7fbnGJAoSRf96OWpVIV4PQfDOLjCWAV3
-	AK0aiK2XmozM4uigy+2dg+CkkZGVSo0PQYsW9wE6UXJhen/9hTRizilPYpBig9cx4EQyXdUfjxV
-	cnwJw4KT/nAqmjyOUenxN0J7vlDT2TE6uJnNtfLcDXZJJ25TOlVSb
-X-Received: by 2002:a05:622a:1e8f:b0:4b2:9d9c:22ce with SMTP id d75a77b69052e-4b2aaa02db4mr139300131cf.5.1756139823267;
-        Mon, 25 Aug 2025 09:37:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNgiczK9+T3+uY/OhSYAxvKM+2ASxtJBa+l/N+Chl24BMoQAUqd3jpLe8WyWI7QUA8L3jfgQ==
-X-Received: by 2002:a05:622a:1e8f:b0:4b2:9d9c:22ce with SMTP id d75a77b69052e-4b2aaa02db4mr139299501cf.5.1756139822521;
-        Mon, 25 Aug 2025 09:37:02 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c99ff5sm1666507e87.117.2025.08.25.09.37.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 09:37:01 -0700 (PDT)
-Date: Mon, 25 Aug 2025 19:36:59 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, Vinod Koul <vkoul@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Robert Marko <robimarko@gmail.com>,
-        Das Srinagesh <quic_gurus@quicinc.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org
+        bh=FG91uI45uUKeGliVzdh96+GHkDD0Of8ZnOcLCRVdh4U=;
+        b=1VXKRipO7WEgLUDn403b2/beI6fZaWvLg1VAh096wZTbkQIXfjWaqNzIwv63eRXjiA
+         zTs16GWTffLbmd7NK2kqxb21tT7jkuq2yYjvhKOVVeBfkWq7cUytKpjMDl3FJY5XMHv2
+         LwMd4upjxurprqIFcEc7S/Vcv1Be6MaSIMpcDpaldrBeNsSX6W6FpxMBjNjvC85iZBz1
+         3wr95KYYCmM9Sw87SQ9+6K2J0fN4v7BIXvEeLujKojJZsCPCHJjjyoLpIsU4uQDQzNWD
+         ebdGtQhAvdHB9XimprT/mShlzkikIoHxbtn8KccgJhMum/hxsUuQYakpLT4VimCJ2OIr
+         AKzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756140043; x=1756744843;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FG91uI45uUKeGliVzdh96+GHkDD0Of8ZnOcLCRVdh4U=;
+        b=eszevItr9SlSRvL8+m3iJnSrGUnZ7TnST7ADuPd7CcMG3FhQrczpD4SMlOnXnrXZ4p
+         CztV8ZeRAxy+EuOk8mDMEup7wAxReQx32WeBpawS53OmwYc8KZYJ78TzMGRx3EaKytFf
+         FydyAm3Kua0PHELjCMTxC16iflXMz6O1xDWK0zyuqh923XSSAGfPTb7EDu1XK9WAkZzi
+         3nvIw4df83B0Z161Ee6O7WQDeA4ylWJkEpeLdIik5jhDx9Ug7q7CTBTeUbqiapytggbp
+         FNXRushv7LewdXnbk/BCiMnvDGp1lfogNCyzEEStbn4SV5IiacA5zufL0wENB8UJwH2d
+         y9wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXU9qujrK0bLL5G/39raRykOHcTcAZRTSFmWoUDqTsqAdjdFD2Fp4U1nV0ADuBhXkyLM5xPz0LF8SjjQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBoLIb0r4JhhRiLoZ4oXUZzv8IRkDF0/ri3lLEVFAhKPIU8yzk
+	foDB09x00UIowGpUTPCekvLVl21Qe/Q6cr/QgDAQ2viZ12u1uJSYi39GP0O2DADL6mQ=
+X-Gm-Gg: ASbGnctg/B3kQk1r3O+l/t7N+D/GQ53X5g0Jgvohre7WCViZNUTS6roi65YFJ3Dj2QX
+	qdo7M9RbzZvpHXqirZGejNtx+ydxd98hxpCodpxIGldogtYH3ERo04bq8XlpYk1xW4hfJ/jXhml
+	WYKEtrvjLOxgG8GhdjPAgMfk9VvxLs3j15QuIJoDxk7xzPYvn8J8vrIQ0HeTKtTYY0XHHSOWOdc
+	dOQrQyE9hCUJ280Np98Au8x3Vzn84G1BNdgZIjU8pJ3UoKk+G4vY09rnITt5F05Jz19Q90IiRKb
+	4Kz6gCRow89b0937Jig2imILipi9mzdzCkY/qStyWY1jN+lUlLsn6u4gy2mofgo8TqbuBavkE+l
+	vUDghLL0ll2ltHgBcpWeP//vRD4MLypLAX/f2MY+AAr27R3xYlNrcMdbz/N6/J5EpEgifq8rDBU
+	dmb0I=
+X-Google-Smtp-Source: AGHT+IFV4UU2TtRx1l7OIqQ1JFPaW34gENjDAO9Ve5xixYInhHmsQvVFhIsO1C/Qynf9MIpQCOZJoA==
+X-Received: by 2002:a17:907:d8a:b0:afe:6648:a243 with SMTP id a640c23a62f3a-afe9cb1b5e3mr24664366b.3.1756140042823;
+        Mon, 25 Aug 2025 09:40:42 -0700 (PDT)
+Received: from localhost (83-97-14-181.biz.kpn.net. [83.97.14.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe9c908431sm11361366b.92.2025.08.25.09.40.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 09:40:42 -0700 (PDT)
+Precedence: bulk
+X-Mailing-List: phone-devel@vger.kernel.org
+List-Id: <phone-devel.vger.kernel.org>
+List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 Aug 2025 18:40:41 +0200
+Message-Id: <DCBNOTQVTDWB.EH08W10NACXL@fairphone.com>
 Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
-Message-ID: <2bk7s43nrkmhhgsqq65mxhbmrapyjejyjugnae7wfbttqjmtbf@dk2fe64qrmwx>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel"
+ <joro@8bytes.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Vinod Koul" <vkoul@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Robert Marko"
+ <robimarko@gmail.com>, "Das Srinagesh" <quic_gurus@quicinc.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Jassi Brar" <jassisinghbrar@gmail.com>,
+ "Amit Kucheria" <amitk@kernel.org>, "Thara Gopinath"
+ <thara.gopinath@gmail.com>, "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+ "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>,
+ "Ulf Hansson" <ulf.hansson@linaro.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+ <linux-mmc@vger.kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
 References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
  <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
  <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
@@ -107,162 +104,169 @@ References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
  <DC74DPI8WS81.17VCYVY34C2F9@fairphone.com>
  <2hv4yuc7rgtglihc2um2lr5ix4dfqxd4abb2bqb445zkhpjpsi@rozikfwrdtlk>
  <DCBMOZQ7BFI9.2B3A3PEZ0DTYD@fairphone.com>
-Precedence: bulk
-X-Mailing-List: phone-devel@vger.kernel.org
-List-Id: <phone-devel.vger.kernel.org>
-List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCBMOZQ7BFI9.2B3A3PEZ0DTYD@fairphone.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX0GeddXznXfS5
- lGBOZ96g9iZs7fSxJcN2wlp9c6dJD84A5b7tf/PN/qowGbEm0TgLdSJbJzXKBQLVmvsshMv3wNP
- RLLmXSgeefEgY16zVUBrGY3ccwMJOmJWDhHVIc3sqDbghi9H+RGOjQNuC1Gb/gunsD0UxBt+GOn
- sf3rdDVhF6hOj41/En+n96ntuqs8xFeOA+JzPaPnDIX0lzVO/2O6QpAiAlq3wTZF1k/xE4BHqro
- f3dSTsmn2LL82jhEZULuNKHkY2E1F4cDa5kEh6I3wg27lFs82VIeNiDyIodOwWuMnlRoRB3aOHp
- vsRh78oS7tdie+BvIJeb1eEZcUdfFCikId6RGq43sfcLmlhtNB5/He+D3qBH7JmRIAqHiyqlWm0
- yWSrEvff
-X-Authority-Analysis: v=2.4 cv=Lco86ifi c=1 sm=1 tr=0 ts=68ac9130 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=6H0WHjuAAAAA:8 a=HmU3_siD3n1fRUalNNUA:9 a=CjuIK1q_8ugA:10
- a=kacYvNCVWA4VmyqE58fU:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: 4d8-zXPOvbGj_jPL0093T_wxzqgftbF8
-X-Proofpoint-ORIG-GUID: 4d8-zXPOvbGj_jPL0093T_wxzqgftbF8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-25_08,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 clxscore=1015 malwarescore=0 spamscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
+ <2bk7s43nrkmhhgsqq65mxhbmrapyjejyjugnae7wfbttqjmtbf@dk2fe64qrmwx>
+In-Reply-To: <2bk7s43nrkmhhgsqq65mxhbmrapyjejyjugnae7wfbttqjmtbf@dk2fe64qrmwx>
 
-On Mon, Aug 25, 2025 at 05:53:53PM +0200, Luca Weiss wrote:
-> Hi Dmitry,
-> 
-> On Wed Aug 20, 2025 at 1:52 PM CEST, Dmitry Baryshkov wrote:
-> > On Wed, Aug 20, 2025 at 10:42:09AM +0200, Luca Weiss wrote:
-> >> Hi Konrad,
-> >> 
-> >> On Sat Aug 2, 2025 at 2:04 PM CEST, Konrad Dybcio wrote:
-> >> > On 7/29/25 8:49 AM, Luca Weiss wrote:
-> >> >> Hi Konrad,
-> >> >> 
-> >> >> On Thu Jul 17, 2025 at 11:46 AM CEST, Luca Weiss wrote:
-> >> >>> Hi Konrad,
-> >> >>>
-> >> >>> On Thu Jul 17, 2025 at 10:29 AM CEST, Luca Weiss wrote:
-> >> >>>> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
-> >> >>>>> On 7/13/25 10:05 AM, Luca Weiss wrote:
-> >> >>>>>> Add a devicetree description for the Milos SoC, which is for example
-> >> >>>>>> Snapdragon 7s Gen 3 (SM7635).
-> >> >>>>>>
-> >> >>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >> >>>>>> ---
-> >> >>>>>
-> >> >>>>> [...]
-> >> >>>>>> +
-> >> >>>>>> +		spmi_bus: spmi@c400000 {
-> >> >>>>>> +			compatible = "qcom,spmi-pmic-arb";
-> >> >>>>>
-> >> >>>>> There's two bus instances on this platform, check out the x1e binding
-> >> >>>>
-> >> >>>> Will do
-> >> >>>
-> >> >>> One problem: If we make the labels spmi_bus0 and spmi_bus1 then we can't
-> >> >>> reuse the existing PMIC dtsi files since they all reference &spmi_bus.
-> >> >>>
-> >> >>> On FP6 everything's connected to PMIC_SPMI0_*, and PMIC_SPMI1_* is not
-> >> >>> connected to anything so just adding the label spmi_bus on spmi_bus0
-> >> >>> would be fine.
-> >> >>>
-> >> >>> Can I add this to the device dts? Not going to be pretty though...
-> >> >>>
-> >> >>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-> >> >>> index d12eaa585b31..69605c9ed344 100644
-> >> >>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-> >> >>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-> >> >>> @@ -11,6 +11,9 @@
-> >> >>>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> >> >>>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> >> >>>  #include "milos.dtsi"
-> >> >>> +
-> >> >>> +spmi_bus: &spmi_bus0 {};
-> >> >>> +
-> >> >>>  #include "pm7550.dtsi"
-> >> >>>  #include "pm8550vs.dtsi"
-> >> >>>  #include "pmiv0104.dtsi" /* PMIV0108 */
-> >> >>>
-> >> >>> Or I can add a second label for the spmi_bus0 as 'spmi_bus'. Not sure
-> >> >>> other designs than SM7635 recommend using spmi_bus1 for some stuff.
-> >> >>>
-> >> >>> But I guess longer term we'd need to figure out a solution to this, how
-> >> >>> to place a PMIC on a given SPMI bus, if reference designs start to
-> >> >>> recommend putting different PMIC on the separate busses.
-> >> >> 
-> >> >> Any feedback on this regarding the spmi_bus label?
-> >> >
-> >> > I had an offline chat with Bjorn and we only came up with janky
-> >> > solutions :)
-> >> >
-> >> > What you propose works well if the PMICs are all on bus0, which is
-> >> > not the case for the newest platforms. If some instances are on bus0
-> >> > and others are on bus1, things get ugly really quick and we're going
-> >> > to drown in #ifdefs.
-> >> >
-> >> >
-> >> > An alternative that I've seen downstream is to define PMIC nodes in
-> >> > the root of a dtsi file (not in the root of DT, i.e. NOT under / { })
-> >> > and do the following:
-> >> >
-> >> > &spmi_busN {
-> >> > 	#include "pmABCDX.dtsi"
-> >> > };
-> >> >
-> >> > Which is "okay", but has the visible downside of having to define the
-> >> > temp alarm thermal zone in each board's DT separately (and doing
-> >> > mid-file includes which is.. fine I guess, but also something we avoided
-> >> > upstream for the longest time)
-> >> >
-> >> >
-> >> > Both are less than ideal when it comes to altering the SID under
-> >> > "interrupts", fixing that would help immensely. We were hoping to
-> >> > leverage something like Johan's work on drivers/mfd/qcom-pm8008.c,
-> >> > but that seems like a longer term project.
-> >> >
-> >> > Please voice your opinions
-> >> 
-> >> Since nobody else jumped in, how can we continue?
-> >> 
-> >> One janky solution in my mind is somewhat similar to the PMxxxx_SID
-> >> defines, doing something like "#define PM7550_SPMI spmi_bus0" and then
-> >> using "&PM7550_SPMI {}" in the dtsi. I didn't try it so not sure that
-> >> actually works but something like this should I imagine.
-> >> 
-> >> But fortunately my Milos device doesn't have the problem that it
-> >> actually uses both SPMI busses for different PMICs, so similar to other
-> >> SoCs that already have two SPMI busses, I could somewhat ignore the
-> >> problem and let someone else figure out how to actually place PMICs on
-> >> spmi_bus0 and spmi_bus1 if they have such a hardware.
-> >
-> > I'd say, ignore it for now.
-> 
-> You mean ignoring that there's a second SPMI bus on this SoC, and just
-> modelling one with the label "spmi_bus"? Or something else?
-> 
-> 
-> I have also actually tried out the C define solution that I was writing
-> about in my previous email and this is actually working, see diff below.
-> In my opinion it just expands on what we have with the SID defines, so
-> shouldn't be tooo unacceptable :)
+On Mon Aug 25, 2025 at 6:36 PM CEST, Dmitry Baryshkov wrote:
+> On Mon, Aug 25, 2025 at 05:53:53PM +0200, Luca Weiss wrote:
+>> Hi Dmitry,
+>>=20
+>> On Wed Aug 20, 2025 at 1:52 PM CEST, Dmitry Baryshkov wrote:
+>> > On Wed, Aug 20, 2025 at 10:42:09AM +0200, Luca Weiss wrote:
+>> >> Hi Konrad,
+>> >>=20
+>> >> On Sat Aug 2, 2025 at 2:04 PM CEST, Konrad Dybcio wrote:
+>> >> > On 7/29/25 8:49 AM, Luca Weiss wrote:
+>> >> >> Hi Konrad,
+>> >> >>=20
+>> >> >> On Thu Jul 17, 2025 at 11:46 AM CEST, Luca Weiss wrote:
+>> >> >>> Hi Konrad,
+>> >> >>>
+>> >> >>> On Thu Jul 17, 2025 at 10:29 AM CEST, Luca Weiss wrote:
+>> >> >>>> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
+>> >> >>>>> On 7/13/25 10:05 AM, Luca Weiss wrote:
+>> >> >>>>>> Add a devicetree description for the Milos SoC, which is for e=
+xample
+>> >> >>>>>> Snapdragon 7s Gen 3 (SM7635).
+>> >> >>>>>>
+>> >> >>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> >> >>>>>> ---
+>> >> >>>>>
+>> >> >>>>> [...]
+>> >> >>>>>> +
+>> >> >>>>>> +		spmi_bus: spmi@c400000 {
+>> >> >>>>>> +			compatible =3D "qcom,spmi-pmic-arb";
+>> >> >>>>>
+>> >> >>>>> There's two bus instances on this platform, check out the x1e b=
+inding
+>> >> >>>>
+>> >> >>>> Will do
+>> >> >>>
+>> >> >>> One problem: If we make the labels spmi_bus0 and spmi_bus1 then w=
+e can't
+>> >> >>> reuse the existing PMIC dtsi files since they all reference &spmi=
+_bus.
+>> >> >>>
+>> >> >>> On FP6 everything's connected to PMIC_SPMI0_*, and PMIC_SPMI1_* i=
+s not
+>> >> >>> connected to anything so just adding the label spmi_bus on spmi_b=
+us0
+>> >> >>> would be fine.
+>> >> >>>
+>> >> >>> Can I add this to the device dts? Not going to be pretty though..=
+.
+>> >> >>>
+>> >> >>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/a=
+rch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >> >>> index d12eaa585b31..69605c9ed344 100644
+>> >> >>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >> >>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >> >>> @@ -11,6 +11,9 @@
+>> >> >>>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>> >> >>>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+>> >> >>>  #include "milos.dtsi"
+>> >> >>> +
+>> >> >>> +spmi_bus: &spmi_bus0 {};
+>> >> >>> +
+>> >> >>>  #include "pm7550.dtsi"
+>> >> >>>  #include "pm8550vs.dtsi"
+>> >> >>>  #include "pmiv0104.dtsi" /* PMIV0108 */
+>> >> >>>
+>> >> >>> Or I can add a second label for the spmi_bus0 as 'spmi_bus'. Not =
+sure
+>> >> >>> other designs than SM7635 recommend using spmi_bus1 for some stuf=
+f.
+>> >> >>>
+>> >> >>> But I guess longer term we'd need to figure out a solution to thi=
+s, how
+>> >> >>> to place a PMIC on a given SPMI bus, if reference designs start t=
+o
+>> >> >>> recommend putting different PMIC on the separate busses.
+>> >> >>=20
+>> >> >> Any feedback on this regarding the spmi_bus label?
+>> >> >
+>> >> > I had an offline chat with Bjorn and we only came up with janky
+>> >> > solutions :)
+>> >> >
+>> >> > What you propose works well if the PMICs are all on bus0, which is
+>> >> > not the case for the newest platforms. If some instances are on bus=
+0
+>> >> > and others are on bus1, things get ugly really quick and we're goin=
+g
+>> >> > to drown in #ifdefs.
+>> >> >
+>> >> >
+>> >> > An alternative that I've seen downstream is to define PMIC nodes in
+>> >> > the root of a dtsi file (not in the root of DT, i.e. NOT under / { =
+})
+>> >> > and do the following:
+>> >> >
+>> >> > &spmi_busN {
+>> >> > 	#include "pmABCDX.dtsi"
+>> >> > };
+>> >> >
+>> >> > Which is "okay", but has the visible downside of having to define t=
+he
+>> >> > temp alarm thermal zone in each board's DT separately (and doing
+>> >> > mid-file includes which is.. fine I guess, but also something we av=
+oided
+>> >> > upstream for the longest time)
+>> >> >
+>> >> >
+>> >> > Both are less than ideal when it comes to altering the SID under
+>> >> > "interrupts", fixing that would help immensely. We were hoping to
+>> >> > leverage something like Johan's work on drivers/mfd/qcom-pm8008.c,
+>> >> > but that seems like a longer term project.
+>> >> >
+>> >> > Please voice your opinions
+>> >>=20
+>> >> Since nobody else jumped in, how can we continue?
+>> >>=20
+>> >> One janky solution in my mind is somewhat similar to the PMxxxx_SID
+>> >> defines, doing something like "#define PM7550_SPMI spmi_bus0" and the=
+n
+>> >> using "&PM7550_SPMI {}" in the dtsi. I didn't try it so not sure that
+>> >> actually works but something like this should I imagine.
+>> >>=20
+>> >> But fortunately my Milos device doesn't have the problem that it
+>> >> actually uses both SPMI busses for different PMICs, so similar to oth=
+er
+>> >> SoCs that already have two SPMI busses, I could somewhat ignore the
+>> >> problem and let someone else figure out how to actually place PMICs o=
+n
+>> >> spmi_bus0 and spmi_bus1 if they have such a hardware.
+>> >
+>> > I'd say, ignore it for now.
+>>=20
+>> You mean ignoring that there's a second SPMI bus on this SoC, and just
+>> modelling one with the label "spmi_bus"? Or something else?
+>>=20
+>>=20
+>> I have also actually tried out the C define solution that I was writing
+>> about in my previous email and this is actually working, see diff below.
+>> In my opinion it just expands on what we have with the SID defines, so
+>> shouldn't be tooo unacceptable :)
+>
+> I think we tried previously using C preprocessor to rework SID handling
+> and it wasn't accepted by DT maintainers.
 
-I think we tried previously using C preprocessor to rework SID handling
-and it wasn't accepted by DT maintainers.
+I don't know anything about that, but yeah...
 
-I'd say, ignore the second bus for now, unless it gets actually used for
-major PMICs.
+>
+> I'd say, ignore the second bus for now, unless it gets actually used for
+> major PMICs.
 
--- 
-With best wishes
-Dmitry
+The only 'problem' with this is once we do figure out a solution, the
+SoC bindings will change, so both dt-bindings and dtsi needs to be
+updated. But that's the case also for sm8550 and friends that currently
+ignore the second SPMI bus upstream.
+
+On FP6 again, it's definitely not a problem since everything's just on
+the first SPMI bus anyways.
+
+So then I'll revert the change to compatible =3D "qcom,milos-spmi-pmic-arb"=
+, "qcom,x1e80100-spmi-pmic-arb";
+plus associated subnodes for the next revision.
+
+Regards
+Luca
