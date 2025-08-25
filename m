@@ -1,77 +1,322 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198CE1D63CD;
-	Sun, 24 Aug 2025 16:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2D62FF144
+	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 15:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756053730; cv=none; b=lwzWKmDaSLoGWcWkuDaUFVF5W2ZQirzQ3V4HO3xc6W1O/11icZHbrWG8FA4Uwu3dvV3ONztyevOumkU1dK9dpnmX+XGMXgAtI31Z4vQN2A95T9OM6amhlIbxqhsLotElbqAyfq9bFMPoj8q2ypn1cLn5mHwn4ap3trHcKzg3zIA=
+	t=1756137239; cv=none; b=vDKr/oWgZCMN5FFi+RYEt7qoH8S3FFKyv+t97nHd/zoEtdKN2lD+BCPag8VeOhWfKM0Ge7+WN8Bsf7HAXmihouXeGNbujM5MDzOWuIUZk1vca815hK0OFKiofz314ECGSxbxPcw7l93TkUCN4I0zEh9AFBXotmwKbeUuf/oUuIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756053730; c=relaxed/simple;
-	bh=g0dsBv+tZKoLLuVmXNG3YPHgvwDEQRIwt+zROqJGaUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p58KScBDRiuGJTEk5YNcCdLFhVQG3woUeV/tak+s0eqh4jvR4GmUJneya+nzRg6c8U/dDtxIEFh4YpLclmXx7ghkcdFVCan/m5X1AYBSy6rShZCt3N0BMZxVJnmg1JzkwYcvG/dk0x668rlhn+T1asuKqRMjpU387E7CI66hu1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=FqGZ5J1b; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1756137239; c=relaxed/simple;
+	bh=iDIMFaPmP6Ptap4BSySC5MxVV+P3d+K2pyIekorzzbo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=UUXC3HH67Ij8ZC4bGe62fakaK44W1/Fdw56e8UhFdCiqBY3bOfuKO1fhlNYq4ypVN/YU46keFOdeVLWqBRTIpJnii6hKgWWt3C0TkJTpS3YanNZZhNRn+bN2ZOPs67CCKUfCr0ymylSm07jxD+y4efEcdqmE/vUxfsJsVYhl72g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=o0SLw+wP; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="FqGZ5J1b"
-DKIM-Signature: a=rsa-sha256; bh=ysizyDV1UE87HUIt7ZRiS1yeJatz3bjdvsDuraJC0sE=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1756053719; v=1; x=1756485719;
- b=FqGZ5J1b5tJ9wpjENynkSsp3flST81ymQP3gVZTq7KLZr1N3j5diukQb3EJ1AWNZ+Bd/fhOJ
- JONJKTOw6apCmTTTT0XAbCFzE1PwfFwDAsqmsaxaCxRGQShmlbc8YOt1ru4Sdn1i+xJk90FTmJB
- QvtC4s8Fn0HDHwjOkaINvRLUv8PT6Bap4jBdnxbTV24jFGJ8+mS9C3+rkolJ7Kjy7B7gEoDeHG6
- 2xRQH5rcEB8GHMbQW295UhSpYMgOJtk178OlZvBbx9JfvTr2bKysn8soVW9IbUqDg/dQQc4iVAq
- UphxzeWON+RRwWb/UJNRtmBCwauQBJpjLHk3jVHUGe0oA==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 6acb09e9; Sun, 24 Aug 2025 18:41:59 +0200
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Karel Balej <balejk@matfyz.cz>
-Cc: linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH mmc/next 3/3] arm64: dts: samsung,coreprimevelte: add SDIO
-Date: Sun, 24 Aug 2025 18:41:58 +0200
-Message-ID: <13858228.uLZWGnKmhe@radijator>
-In-Reply-To: <20250824110039.28258-4-balejk@matfyz.cz>
-References:
- <20250824110039.28258-1-balejk@matfyz.cz>
- <20250824110039.28258-4-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="o0SLw+wP"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb732eee6so793164966b.0
+        for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 08:53:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1756137235; x=1756742035; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3HqowhwKhilGiIPsPTFLVOfvfqilXqLVrLNuX0vYRl8=;
+        b=o0SLw+wPAtkVA9cVDuec/zje+HDAOCIO1NrveoFG195mCQpM9erUKFUZ81uhSvlFpc
+         Laf8qKGtVqBxXsfR3AVXuDf+XXB2xusNPIG5W26KP/xcmtRxpMZ1ic6TshUJTdFiKa/A
+         UwHIIATPuxcsf/hFud1Z4Z/TzB711ipM1B3Z+1wQGu3Y9/Pa9rL1uscKEzAw0vzqLrkF
+         cc3N82hq+7MmmdWhoYaWm9MK/Q3qt/vbvSdtpoddAaBuaWwye3ai6EDx7mJaMZ3ghHgG
+         EzKPBQTTfMgsLWkmONelIVDpKX5rLH5OFUHvw8Cm1S9TycB/EtLvevHkjEyD/ST1iMw+
+         DHLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756137235; x=1756742035;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3HqowhwKhilGiIPsPTFLVOfvfqilXqLVrLNuX0vYRl8=;
+        b=pvLo7dvO0N2aTHPJyMcMdIY+9sISt2phTurTqv5RGqxHQQKat4qqhuLaPkD9pdWFpO
+         tP0lftl2YrI5uAlfFLMW8CN0X3E6wGRk3ZOyNvYKR1sx7L/3YmUwWwm+gMSdFGiiTJSx
+         3cOD84/ndGC6wZtrthpG3c4OPpOIncUet2b9h3Wpbh5J7uP8PJiaPY/B6uzgi5399jjT
+         NMgzh1urogOMCrQIgiFB3KBdkTCIa7Bh+xxcorQ/rYF3yGTF4zLA2fCy+ZN/ZFqiwGMg
+         tzWo1c9RbaPQBGA83optUi/bBSPFXUDNYvrRRYwa1GDem4LoJDUC9wNv0lJilX2wbdsS
+         x1rA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqK9UkDWPQjdb7z/+4q5vpNgjdXTTZGugTDA4ZSL2iQhrD2lpikblIUhgibcWKy6bRuvmRthX2aaboLw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGJ9qcfFoyCSGaA7TUIPFBI2i5GDrO3JGVp/GIv6kx6Ka1Ayf3
+	5G+rAAyLp1cUZWU15B0nbtcFhSu7B57OWv0AgEgP94HPcvaLykHIrNpNrGELFFijy98=
+X-Gm-Gg: ASbGnctvFVLWzT2KHQOPrDKFCJVlc6A+mkiFc0W4wKQfN/AqZMXBGnpykbif7FOuFwl
+	sayFSO6522+s81+Qbsaksp5jlakEwqcBiw6hZELP7IcPNqxc5puR1I63A85DvhtBCgU2DizUWbE
+	utbga+ChCLlbu+ycnQakU9VgNx/bg01Zfr3Uo6Qtg2Jm4+dXbyTY4e94CpqEqJNrlKp1Gdw+ZVx
+	MeerMD4NidX8PuhB26BbvD1V5kSTJ4KRnI6G49D03ruzajqU45pZ/5HNnaJuDbx2Xk4gV3ZZjyn
+	VYxLdzVtpLgCQ2lYlwRjxWn9P5fayLMEirpWbd4301vpvxEpv+RHoT7hXHOdIsBTb4aTCpLDCoK
+	0bvSa+9EP/aQemWbqDJK1+y57mBTyLGRaUIchayRuNy7sE/Jl5v7mTZLv44VlEO1pt51MPvk9ok
+	AE+94=
+X-Google-Smtp-Source: AGHT+IEDOv6gprEj6Ksbmo7p57Z4tZTNEHhZ9DTRLeOqT0HCwoH6lmCXLeF8Wklr2ttI5zxfbuX7Eg==
+X-Received: by 2002:a17:906:7943:b0:ae3:b2b7:7f2f with SMTP id a640c23a62f3a-afe296e74c2mr1283531066b.40.1756137234813;
+        Mon, 25 Aug 2025 08:53:54 -0700 (PDT)
+Received: from localhost (83-97-14-181.biz.kpn.net. [83.97.14.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe8b5fbc8dsm139360466b.1.2025.08.25.08.53.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 08:53:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 Aug 2025 17:53:53 +0200
+Message-Id: <DCBMOZQ7BFI9.2B3A3PEZ0DTYD@fairphone.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel"
+ <joro@8bytes.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Vinod Koul" <vkoul@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Robert Marko"
+ <robimarko@gmail.com>, "Das Srinagesh" <quic_gurus@quicinc.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Jassi Brar" <jassisinghbrar@gmail.com>,
+ "Amit Kucheria" <amitk@kernel.org>, "Thara Gopinath"
+ <thara.gopinath@gmail.com>, "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+ "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>,
+ "Ulf Hansson" <ulf.hansson@linaro.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+ <linux-mmc@vger.kernel.org>
+Subject: Re: [PATCH v2 14/15] arm64: dts: qcom: Add initial Milos dtsi
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250713-sm7635-fp6-initial-v2-0-e8f9a789505b@fairphone.com>
+ <20250713-sm7635-fp6-initial-v2-14-e8f9a789505b@fairphone.com>
+ <3e0299ad-766a-4876-912e-438fe2cc856d@oss.qualcomm.com>
+ <DBE6TK1KDOTP.IIT72I1LUN5M@fairphone.com>
+ <DBE8G88CIQ53.2N51CABIBJOOO@fairphone.com>
+ <DBOC7QBND54K.1SI5V9C2Z76BY@fairphone.com>
+ <55420d89-fcd4-4cb5-a918-d8bbe2a03d19@oss.qualcomm.com>
+ <DC74DPI8WS81.17VCYVY34C2F9@fairphone.com>
+ <2hv4yuc7rgtglihc2um2lr5ix4dfqxd4abb2bqb445zkhpjpsi@rozikfwrdtlk>
+In-Reply-To: <2hv4yuc7rgtglihc2um2lr5ix4dfqxd4abb2bqb445zkhpjpsi@rozikfwrdtlk>
 
-On Sunday, 24 August 2025 12:53:45 Central European Summer Time Karel Balej 
-wrote:
-> @@ -368,3 +505,12 @@ &sdh0 {
->  	vmmc-supply = <&ldo14>;
->  	vqmmc-supply = <&ldo6>;
->  };
-> +
-> +&sdh1 {
-> +	pinctrl-names = "default", "state_uhs";
-> +	pinctrl-0 = <&sdh1_pins_0 &sdh1_pins_1 &sdh1_pins_2>;
-> +	pinctrl-1 = <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
-> +	bus-width = <4>;
-> +	broken-cd;
-> +	non-removable;
+Hi Dmitry,
 
-non-removable overrides broken-cd, drop the latter.
+On Wed Aug 20, 2025 at 1:52 PM CEST, Dmitry Baryshkov wrote:
+> On Wed, Aug 20, 2025 at 10:42:09AM +0200, Luca Weiss wrote:
+>> Hi Konrad,
+>>=20
+>> On Sat Aug 2, 2025 at 2:04 PM CEST, Konrad Dybcio wrote:
+>> > On 7/29/25 8:49 AM, Luca Weiss wrote:
+>> >> Hi Konrad,
+>> >>=20
+>> >> On Thu Jul 17, 2025 at 11:46 AM CEST, Luca Weiss wrote:
+>> >>> Hi Konrad,
+>> >>>
+>> >>> On Thu Jul 17, 2025 at 10:29 AM CEST, Luca Weiss wrote:
+>> >>>> On Mon Jul 14, 2025 at 1:06 PM CEST, Konrad Dybcio wrote:
+>> >>>>> On 7/13/25 10:05 AM, Luca Weiss wrote:
+>> >>>>>> Add a devicetree description for the Milos SoC, which is for exam=
+ple
+>> >>>>>> Snapdragon 7s Gen 3 (SM7635).
+>> >>>>>>
+>> >>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> >>>>>> ---
+>> >>>>>
+>> >>>>> [...]
+>> >>>>>> +
+>> >>>>>> +		spmi_bus: spmi@c400000 {
+>> >>>>>> +			compatible =3D "qcom,spmi-pmic-arb";
+>> >>>>>
+>> >>>>> There's two bus instances on this platform, check out the x1e bind=
+ing
+>> >>>>
+>> >>>> Will do
+>> >>>
+>> >>> One problem: If we make the labels spmi_bus0 and spmi_bus1 then we c=
+an't
+>> >>> reuse the existing PMIC dtsi files since they all reference &spmi_bu=
+s.
+>> >>>
+>> >>> On FP6 everything's connected to PMIC_SPMI0_*, and PMIC_SPMI1_* is n=
+ot
+>> >>> connected to anything so just adding the label spmi_bus on spmi_bus0
+>> >>> would be fine.
+>> >>>
+>> >>> Can I add this to the device dts? Not going to be pretty though...
+>> >>>
+>> >>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch=
+/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >>> index d12eaa585b31..69605c9ed344 100644
+>> >>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> >>> @@ -11,6 +11,9 @@
+>> >>>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>> >>>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+>> >>>  #include "milos.dtsi"
+>> >>> +
+>> >>> +spmi_bus: &spmi_bus0 {};
+>> >>> +
+>> >>>  #include "pm7550.dtsi"
+>> >>>  #include "pm8550vs.dtsi"
+>> >>>  #include "pmiv0104.dtsi" /* PMIV0108 */
+>> >>>
+>> >>> Or I can add a second label for the spmi_bus0 as 'spmi_bus'. Not sur=
+e
+>> >>> other designs than SM7635 recommend using spmi_bus1 for some stuff.
+>> >>>
+>> >>> But I guess longer term we'd need to figure out a solution to this, =
+how
+>> >>> to place a PMIC on a given SPMI bus, if reference designs start to
+>> >>> recommend putting different PMIC on the separate busses.
+>> >>=20
+>> >> Any feedback on this regarding the spmi_bus label?
+>> >
+>> > I had an offline chat with Bjorn and we only came up with janky
+>> > solutions :)
+>> >
+>> > What you propose works well if the PMICs are all on bus0, which is
+>> > not the case for the newest platforms. If some instances are on bus0
+>> > and others are on bus1, things get ugly really quick and we're going
+>> > to drown in #ifdefs.
+>> >
+>> >
+>> > An alternative that I've seen downstream is to define PMIC nodes in
+>> > the root of a dtsi file (not in the root of DT, i.e. NOT under / { })
+>> > and do the following:
+>> >
+>> > &spmi_busN {
+>> > 	#include "pmABCDX.dtsi"
+>> > };
+>> >
+>> > Which is "okay", but has the visible downside of having to define the
+>> > temp alarm thermal zone in each board's DT separately (and doing
+>> > mid-file includes which is.. fine I guess, but also something we avoid=
+ed
+>> > upstream for the longest time)
+>> >
+>> >
+>> > Both are less than ideal when it comes to altering the SID under
+>> > "interrupts", fixing that would help immensely. We were hoping to
+>> > leverage something like Johan's work on drivers/mfd/qcom-pm8008.c,
+>> > but that seems like a longer term project.
+>> >
+>> > Please voice your opinions
+>>=20
+>> Since nobody else jumped in, how can we continue?
+>>=20
+>> One janky solution in my mind is somewhat similar to the PMxxxx_SID
+>> defines, doing something like "#define PM7550_SPMI spmi_bus0" and then
+>> using "&PM7550_SPMI {}" in the dtsi. I didn't try it so not sure that
+>> actually works but something like this should I imagine.
+>>=20
+>> But fortunately my Milos device doesn't have the problem that it
+>> actually uses both SPMI busses for different PMICs, so similar to other
+>> SoCs that already have two SPMI busses, I could somewhat ignore the
+>> problem and let someone else figure out how to actually place PMICs on
+>> spmi_bus0 and spmi_bus1 if they have such a hardware.
+>
+> I'd say, ignore it for now.
 
-Regards,
---
-Duje
+You mean ignoring that there's a second SPMI bus on this SoC, and just
+modelling one with the label "spmi_bus"? Or something else?
 
 
+I have also actually tried out the C define solution that I was writing
+about in my previous email and this is actually working, see diff below.
+In my opinion it just expands on what we have with the SID defines, so
+shouldn't be tooo unacceptable :)
+
+diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/=
+boot/dts/qcom/milos-fairphone-fp6.dts
+index 9fb174592e2d..96e1b5df4f65 100644
+--- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
++++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+@@ -7,6 +7,12 @@
+=20
+ #define PMIV0104_SID 7
+=20
++#define PM7550_SPMI spmi_bus0
++#define PM8550VS_SPMI spmi_bus0
++#define PMIV0104_SPMI spmi_bus0
++#define PMK8550_SPMI spmi_bus0
++#define PMR735B_SPMI spmi_bus0
++
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+diff --git a/arch/arm64/boot/dts/qcom/pm7550.dtsi b/arch/arm64/boot/dts/qco=
+m/pm7550.dtsi
+index b886c2397fe7..08d7969128c2 100644
+--- a/arch/arm64/boot/dts/qcom/pm7550.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm7550.dtsi
+@@ -34,7 +34,7 @@ trip1 {
+ 	};
+ };
+=20
+-&spmi_bus {
++&PM7550_SPMI {
+ 	pm7550: pmic@1 {
+ 		compatible =3D "qcom,pm7550", "qcom,spmi-pmic";
+ 		reg =3D <0x1 SPMI_USID>;
+diff --git a/arch/arm64/boot/dts/qcom/pm8550vs.dtsi b/arch/arm64/boot/dts/q=
+com/pm8550vs.dtsi
+index 7b5898c263ad..3c8c5f3724a2 100644
+--- a/arch/arm64/boot/dts/qcom/pm8550vs.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm8550vs.dtsi
+@@ -91,7 +91,7 @@ trip1 {
+ };
+=20
+=20
+-&spmi_bus {
++&PM8550VS_SPMI {
+ 	pm8550vs_c: pmic@2 {
+ 		compatible =3D "qcom,pm8550", "qcom,spmi-pmic";
+ 		reg =3D <0x2 SPMI_USID>;
+diff --git a/arch/arm64/boot/dts/qcom/pmiv0104.dtsi b/arch/arm64/boot/dts/q=
+com/pmiv0104.dtsi
+index 85ee8911d93e..bf0c02974e74 100644
+--- a/arch/arm64/boot/dts/qcom/pmiv0104.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmiv0104.dtsi
+@@ -40,7 +40,7 @@ trip2 {
+ 	};
+ };
+=20
+-&spmi_bus {
++&PMIV0104_SPMI {
+ 	pmic@PMIV0104_SID {
+ 		compatible =3D "qcom,pmiv0104", "qcom,spmi-pmic";
+ 		reg =3D <PMIV0104_SID SPMI_USID>;
+diff --git a/arch/arm64/boot/dts/qcom/pmk8550.dtsi b/arch/arm64/boot/dts/qc=
+om/pmk8550.dtsi
+index 583f61fc16ad..f1c34f0a2522 100644
+--- a/arch/arm64/boot/dts/qcom/pmk8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmk8550.dtsi
+@@ -18,7 +18,7 @@ reboot-mode {
+ 	};
+ };
+=20
+-&spmi_bus {
++&PMK8550_SPMI {
+ 	pmk8550: pmic@0 {
+ 		compatible =3D "qcom,pm8550", "qcom,spmi-pmic";
+ 		reg =3D <0x0 SPMI_USID>;
+diff --git a/arch/arm64/boot/dts/qcom/pmr735b.dtsi b/arch/arm64/boot/dts/qc=
+om/pmr735b.dtsi
+index 09affc05b397..91b53348a4ae 100644
+--- a/arch/arm64/boot/dts/qcom/pmr735b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
+@@ -30,7 +30,7 @@ pmr735b_crit: pmr735a-crit {
+ 	};
+ };
+=20
+-&spmi_bus {
++&PMR735B_SPMI {
+ 	pmr735b: pmic@5 {
+ 		compatible =3D "qcom,pmr735b", "qcom,spmi-pmic";
+ 		reg =3D <0x5 SPMI_USID>;
