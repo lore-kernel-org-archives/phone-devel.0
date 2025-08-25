@@ -1,99 +1,110 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279C2279DB6;
-	Mon, 25 Aug 2025 18:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D49285C90
+	for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 19:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756148305; cv=none; b=itxKtyKPHlX1rvMoE5pBCbLPhG0mXtpSN5iRstDFJHG67Oz0hUeonrIpvHOmT2t4JdwNBKV0r9t6NnReHb05ymDfYlOsycLUucYbx6GDKddkkfF6vJ9Eq1oXbL/r/XJzHYAElKHuBjaJfrdsDix+8ansGupS8A5c7N0DYNZftgg=
+	t=1756151491; cv=none; b=K6sjjW8exQCvYeOXMK/sUF3Y46cx352f7jhgYWyC8JXbGM5kluGDIEz98qS3Oxq3B++5FEWY/duUCLI1nDr8TcvtY6CAh6qpRY8Mz/uj5qE0IfXC/WhpxL7QtxJiOmf2lOgfBV9IdvitssaoH4DNtTwp7KnNhM9seDebIL9MXKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756148305; c=relaxed/simple;
-	bh=1/zuFivZomsPME8/8+PeCrrHoyCcc8gLbHYb+qnZXpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oy9Buwn/+uudXWAk7/7184HSpSInp43kVVARAKBetpbe7x3hajQ64oOkP0H6Hw4A0elIshTW2gaS3NHexNbKdZ0oyQ4/ealo+dfHxFtH/y1aCwrj2KCLrQ5NywjUHi/YvqREfYpZvNWQnGn+l5navyZc0Dw7mmxMNGUzJ28D0Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=Y0lW4Ohd; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1756151491; c=relaxed/simple;
+	bh=y79/LUE75+gAdZKPm7Wiii17xZyHOsbF+TjITNREJtA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N7zWmqdX10OUvBcMvtd6RSsliUB7jnt9CAr3YD27cQ/dGwL6D3/0zvs+25ymA6fDLSpRtMD9VuGEZ0vo4KBO40UGPp0dUWovhCkS2rNroHWkOnpmo+ilBARnvTHJAZpU0+l/qzTPLLa62m8V0xcvJoKnAnK4xEHaWjnpUcpagHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=HaGKZuLE; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="Y0lW4Ohd"
-DKIM-Signature: a=rsa-sha256; bh=lut+2nMqBPAZwhskUcYSHcIkgN0GFw27ibGnIZuPDy0=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1756148278; v=1; x=1756580278;
- b=Y0lW4OhddN5bU3GtpzfzWj3Cp3q851aMj2UyIjCl2QsLSIGJ2BZUlPBXxkVcuPmeBnq+6tU/
- VTuv5qfcS+A7XceSP3EwTg1ehAYoBuwTAHHGkZQn05W0SBzFx9Om42mLaekWcyjU1qc+QG4dgar
- v52VyqSF02Du60oaS68kpn1y/Sa4fRqkj0V6e0AAUCFBnIce7/PWaQ84uj+VLP09ECbnUXdsB6J
- x6vK/wJYRPO7iir6fl8uZL14Ra604p2BlYnG+LVDaB96ljHl3BdkkJzIpLcS85tTGCHThF0fwSM
- WIdCMh8MKgIDlFj8uE/JUVbkaJgJViYMBoWGVDSlxjJwg==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 21d610d7; Mon, 25 Aug 2025 20:57:58 +0200
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Conor Dooley <conor@kernel.org>
-Cc: Markuss Broks <markuss.broks@gmail.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-input@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH] dt-bindings: input: touchscreen: imagis: add missing minItems
-Date: Mon, 25 Aug 2025 20:57:57 +0200
-Message-ID: <5917367.DvuYhMxLoT@radijator>
-In-Reply-To: <20250825-capillary-viral-b7448ca6a57e@spud>
-References:
- <20250824-imagis-minitems-v1-1-cea9db55e87f@dujemihanovic.xyz>
- <20250825-capillary-viral-b7448ca6a57e@spud>
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="HaGKZuLE"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55f42e4c3ebso1522858e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 25 Aug 2025 12:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756151488; x=1756756288; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y79/LUE75+gAdZKPm7Wiii17xZyHOsbF+TjITNREJtA=;
+        b=HaGKZuLE6ZJf5NweBqUmIuGwifT6BYS2i4BLg5mx+ZgR+ON4KD3FyeG291qmjdDpfJ
+         +RoEEvKdCiiXxd6ubXNVO2mpJWzfELIb9KZAOMAKunk8HTjxaguQ2pyzhtaDrTWU91n4
+         ZswiXHqVFhmkzU+40FgYuatK/oVikkgvdgbL9jh6kuZvumDtxLQUAXwRiokdo5M9ItHA
+         d/SLxabybgDP2HfHgo6lu/P7iyEMaQr5wvx4VOtw3BczFU0LG/NHP0YKpuJwkYF4P3gg
+         uweGCHAom57JbmfDHLpB/xFQLaFR/hRk5IkNdaoxBhAXINddVrPKkf/6U6VqwrmahyqY
+         tdvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756151488; x=1756756288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y79/LUE75+gAdZKPm7Wiii17xZyHOsbF+TjITNREJtA=;
+        b=N4BWqaowC5UxEJM+XZpSpvpFLqRYyOVUsgpJnQfxAIlO41G62dCP1pu8N752NKqv4R
+         unZK6ZTM6nJwjNkR9CU77wE9RP4o8+GJrEKMXzLRZGZJHzANumeZNGe6pkAPubxwa5aa
+         bNFzUBN07gxReFNfzi/PlLZkhsSucps2A2gp1cLnNt4EoCHix7STc2Hf6MWP4u/bqE0+
+         TaXB9Ad85LAmJAV37UnvVSC3VcToFfDh+/67l9Hb8vYiYUFcDIPx1xC1Cd4g6POyjeTT
+         sVclEymhoKlEd2k70PvU/OMVtpeDh8JwHnLIBoFwgCsi0mS2KlM3OIoKjrgL5rdkV94/
+         vo0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWrUlPVvFVBNKViUCG++y9hJZvk7VBkkTaKuWZbv3e0esIpcV5aL9590kwzj7VDU9HJHCGsDgAnx7PIyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy488lH37N92Mw+qQn6pRjRU7BRt6FnGlkjcoqBzLqV+B5X+j/F
+	ycuyO1wL0BogXpQbN2udqL1pdF0mEESFI3/+OVMmSGBjcKycaaB8RhLed2CGw/UtfXB3+qzA60b
+	vObfjtYGxvioa86jWwN/fCdI5kSimHsaCuBdgECPbRw==
+X-Gm-Gg: ASbGncv7989FXbDad+zVUaKafN2XRdVBIgqlnVbbF6ZJ5nah2K9VFH/G6UAozud2PsQ
+	Pi8Lu9lqgn7Xa02wlUdPn8HhqOFWQyyEjlo8yBft1GB3OcaZpbYfoio5enAqIz5HNQyIexZIo6B
+	IGu1QOpOE/N1C61fsizVI/+rs06Z2S+vHGkEORla9Zgj7nKT0YM4JZIQk8yKxP5OXpwVFkKr8Jg
+	UFoMaTmC8rOULoCwIW9rFcLeYLUBPH5g8co
+X-Google-Smtp-Source: AGHT+IHCixJ3swy46ayk8UZ8ky9sJlMNCw4ccH8gYjaEf6aBpjGfhfoC4qmGYIEYeYDaVuoFN7bhmFqiGNvLwJvOuWM=
+X-Received: by 2002:a05:6512:440e:b0:55f:42ca:cc03 with SMTP id
+ 2adb3069b0e04-55f42cacd56mr2238491e87.56.1756151487746; Mon, 25 Aug 2025
+ 12:51:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250810-msm8953-cci-v1-0-e83f104cabfc@lucaweiss.eu>
+ <20250810-msm8953-cci-v1-3-e83f104cabfc@lucaweiss.eu> <20250818155103.GA1272375-robh@kernel.org>
+ <d6159eb6-7777-478a-8bb0-298bfa607c06@lucaweiss.eu>
+In-Reply-To: <d6159eb6-7777-478a-8bb0-298bfa607c06@lucaweiss.eu>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 25 Aug 2025 21:51:16 +0200
+X-Gm-Features: Ac12FXzo7Xcs_f8LKjnis--6Fc7OlBNtr01kDZozGbXhIE3-aXJaLXGWXFJlZYg
+Message-ID: <CAMRc=Mf5+3KvKKrVJhx9_CmQ-tN69cahkHgjVgL5M7XCZHuNSg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] dt-bindings: eeprom: at24: Add compatible for Belling BL24S64
+To: Luca Weiss <luca@lucaweiss.eu>
+Cc: Rob Herring <robh@kernel.org>, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
 
-On Monday, 25 August 2025 18:42:38 Central European Summer Time Conor Doole=
-y wrote:
-> On Sun, Aug 24, 2025 at 06:12:05PM +0200, Duje Mihanovi=C4=87 wrote:
-> > The binding currently expects exactly 5 keycodes, which matches the
-> > chip's theoretical maximum but probably not the number of touch keys on
-> > any phone using the IST3032C. Add a minItems value of 2 to prevent
-> > dt-validate complaints.
->=20
-> Does this mean that there are devicetrees in the wild that use < 5
-> keycodes?
+On Mon, Aug 18, 2025 at 7:46=E2=80=AFPM Luca Weiss <luca@lucaweiss.eu> wrot=
+e:
+>
+> Hi Rob,
+>
+> On 18-08-2025 5:51 p.m., Rob Herring wrote:
+> > On Sun, Aug 10, 2025 at 05:37:54PM +0200, Luca Weiss wrote:
+> >> Add the compatible for an 64Kb EEPROM from Belling.
+> >
+> > It is generally not required to add a compatible here assuming
+> > "atmel,24c64" is enough to identify the specific device (i.e. read the
+> > device's ID registers). If it is not sufficient, then some details here
+> > about why would be useful.
+>
+> I thought DT was meant to describe the hardware, and this specific
+> EEPROM on the device is a Belling BL24S64, and it's software-compatible
+> to this generic atmel compatible.
+> That's why we have compatible =3D "belling,bl24s64", "atmel,24c64";
+>
+> Am I missing something, or misunderstanding how DT is meant to be written=
+?
+>
 
-Indeed.
+Right, this is what we've been doing historically which is evident by
+the number of compatibles we have in the schema that are never
+mentioned in the driver C code.
 
-> >=20
-> > +  - |
-> > +    #include <dt-bindings/input/linux-event-codes.h>
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    i2c {
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <0>;
-> > +      touchscreen@50 {
-> > +        compatible =3D "imagis,ist3032c";
-> > +        reg =3D <0x50>;
-> > +        interrupt-parent =3D <&gpio>;
-> > +        interrupts =3D <72 IRQ_TYPE_EDGE_FALLING>;
-> > +        vdd-supply =3D <&ldo2>;
-> > +        touchscreen-size-x =3D <480>;
-> > +        touchscreen-size-y =3D <800>;
-> > +        linux,keycodes =3D <KEY_APPSELECT>, <KEY_BACK>;
->=20
-> Does this really need a dedicated example? Why can't the property go
-> into the existing one?
-
-Only the IST3032C is currently known to support these keys and this is enfo=
-rced
-by the binding, so it wouldn't really make sense to add it to the 3038C
-example.
-
-Regards,
-=2D-
-Duje
-
-
-
+Bartosz
