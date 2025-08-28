@@ -1,111 +1,104 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5712ED85E
-	for <phone-devel@vger.kernel.org>; Thu, 28 Aug 2025 09:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736071F9F73;
+	Thu, 28 Aug 2025 20:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756374664; cv=none; b=dNhgoUGNRPDmNHoblPAKN62Hgu9P0u06duO+OKJjKlU8G0VIqcJMsNCSVoprcuGf9NgZxeJCIjUDm3lEOZ+DDOSCa3/ndWtkSjSazobkAvB7jMfVTUnySPjbHRMGJF1yslNYeoZM8XUjUnYGU6jzMWt3XY17bmAF2UnppQ3emyM=
+	t=1756412795; cv=none; b=R4C5oB9lk/e2Cx6kG2iEJowH5uvmQyh/3Z/V9bqCTg9M648136VeJoMX7lz5y7LCbNjAoq9gAQJ7Fsqs5iaDmkqnCo77pct7mlbX7OiINVvdZRaOzZk6LCH48//wsPqoUBNJzcZXHHN2mVaAd2f+jzEeo/1xOeOpZkdZAtGsr40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756374664; c=relaxed/simple;
-	bh=WJI7Nd2+jQ7AaubXsM8kTP+G3+wwCUgpfmopC+FK8tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbvZ1ndJG3TY8b5U8kTec1SKgXq/5/mwwF6mW1lGTU3dzj/tlMhjdsIDiitSX3AHT0nnyW2RGtwYK3F0DravAv6l4g10YRBzm8wes8wbh95ySIu1rH2KaNng45ubZai34law4+rQPIJ/HY+Ekf1LcItPtgVrY/EFRI13OL8P6zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=R53Ja39T; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1756412795; c=relaxed/simple;
+	bh=m/nsddc4nPf/B0CgUAyW3H9nyVylmSsD2eP8jYGRCxs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pTkMpzg8Ry+EDqCCWTnQK4hJUDUMcZwSxQdwz/eUVHtgKoI6pWFWoLW7kiAVaw9auaaB2GDsmSLzfP9oGxM0W14tAlqKQrO4+Z0k4SdWdSf66gvGJHkM7B+m7Zf4eWLxlljuyu1p6kZEZ7QI/ghWWMxklBZUz9uyQk8K94pZRmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utlkZaQQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="R53Ja39T"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1756374653; x=1757674653;
-	bh=jgSVyNvKT8tyvT/0XuoEo9brNM1Cm43Vrq9buFP014k=; h=From;
-	b=R53Ja39T30QOM1NlhT7e/7bA2JxalQbl0TlvpE5eVDx3h8RYX+YmMfQ0LBIIrKYqD
-	 pLhj0hGeLDy089hgAZNBuDRBpi72pQTsgqr5j6++/zKaA3zQedSCYONaN9FYnbmsQs
-	 e/VcHUXb/DjlStD2gxnqcZz5RP4Mz6WVTyd1zxHPO5EVj4+zk1HxeOqkJ5/AiXSiMW
-	 eHZZw3n9q0nW2CoY8R9ww3DneGrDepqsYowyUxeurxYPh8kRkNdX8qWGjX5pX7Dvgt
-	 8G4/pFsYzf72/NkNQFO2iXVLBtfQYUjkAlNUph+bRscAJaK2jVQnskxT3oFUHbJ0/W
-	 ZkD7ymMSPFtAg==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 57S9oqFd046278
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 11:50:53 +0200 (CEST)
-	(envelope-from balejk@matfyz.cz)
-From: Karel Balej <balejk@matfyz.cz>
-To: linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
-        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Karel Balej <balejk@matfyz.cz>
-Subject: [PATCH v2 2/3] arm64: dts: samsung,coreprimevelte: add touchscreen
-Date: Thu, 28 Aug 2025 11:49:03 +0200
-Message-ID: <20250828095028.24503-3-balejk@matfyz.cz>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250828095028.24503-1-balejk@matfyz.cz>
-References: <20250828095028.24503-1-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utlkZaQQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EAB68C4CEEB;
+	Thu, 28 Aug 2025 20:26:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756412795;
+	bh=m/nsddc4nPf/B0CgUAyW3H9nyVylmSsD2eP8jYGRCxs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=utlkZaQQzU/yLL6yuV6iZekAuvYETsnDxd4qjswtY6g294wMvAEPS46HKPCHRTWOl
+	 VOJ58b1K36I19mDxkyFNS/gfjahJiBY9noltWC2ODWP4fbf/c0Zt3YtY/bLgJOCRbw
+	 kTH3NwtGlzqOvOrnD9BEE/bS2d33x2aibroW4xHqLRY5vA06QqhX0QvlKSZ9gIHoYe
+	 EHaGCFgkwZCDZBE1yLOV9GHKaJPlQ239xoz3c8vCqcU1UE+9XEnXEfQLeSL7pK618S
+	 RDE646T3/vihaTis4zMZVdUky97xTTIT4otBj6IlgMLxX5cz1McIMmeqsKdYmesdZz
+	 MsYeU4KIZ4DRQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9769CA0FF6;
+	Thu, 28 Aug 2025 20:26:34 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Thu, 28 Aug 2025 22:25:50 +0200
+Subject: [PATCH] arm64: dts: qcom: msm8976-longcheer-l9360: Add touch keys
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20250828-l9360_touch_keys-v1-1-1ce5a279c399@apitzsch.eu>
+X-B4-Tracking: v=1; b=H4sIAE27sGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDCyML3RxLYzOD+JL80uSM+OzUymJdC7MUY8uk1KQ0czMjJaC2gqLUtMw
+ KsJHRsbW1AHibYtBiAAAA
+X-Change-ID: 20250828-l9360_touch_keys-86d39bebf762
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756412793; l=1031;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=vTTtjCb8Z411MNaWmMrf5RO0vPAzikIEIVbV7jqgHjA=;
+ b=GQmcnVaxe4XlTIV3hXAuGd8f+NaEBGwQTFW/0HdMjpWDp5q3CDOIExKIPF8y1k3AhkRvvnfpM
+ TqM3LRDbUVEA1GeM0Il7ypAMDopRVre7eGirUKhVpETU1iXjVDpEdn0
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-Bind touchscreen for the samsung,coreprimevelte smartphone. The
-downstream code sets the VDD voltage to the exact value of 3.1 V,
-however it's been empirically verified that the lower bound used here
-sufficies for the proper operation of the chip and is thus used for
-power-saving purposes.
+From: André Apitzsch <git@apitzsch.eu>
 
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+The phone has three capacitive buttons on the screen bezel. Enable them
+by adding the keycodes in the dt.
+
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- .../mmp/pxa1908-samsung-coreprimevelte.dts        | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8976-longcheer-l9360.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-index 54131b0e5617..0ac1a24dc410 100644
---- a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-+++ b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-@@ -311,6 +311,11 @@ pmic@30 {
- 		wakeup-source;
- 
- 		regulators {
-+			ldo2: ldo2 {
-+				regulator-min-microvolt = <1900000>;
-+				regulator-max-microvolt = <3100000>;
-+			};
+diff --git a/arch/arm64/boot/dts/qcom/msm8976-longcheer-l9360.dts b/arch/arm64/boot/dts/qcom/msm8976-longcheer-l9360.dts
+index e524d58cf0a4b7693741036e3988700559a507f0..18832a3b9a1c37d1c891bce64d1a9372e5be439e 100644
+--- a/arch/arm64/boot/dts/qcom/msm8976-longcheer-l9360.dts
++++ b/arch/arm64/boot/dts/qcom/msm8976-longcheer-l9360.dts
+@@ -190,6 +190,12 @@ rmi4-f12@12 {
+ 			reg = <0x12>;
+ 			syna,sensor-type = <1>;
+ 		};
 +
- 			ldo6: ldo6 {
- 				regulator-boot-on;
- 				regulator-min-microvolt = <1200000>;
-@@ -328,6 +333,16 @@ ldo14: ldo14 {
- 
- &twsi3 {
- 	status = "okay";
-+
-+	touchscreen@50 {
-+		compatible = "imagis,ist3032c";
-+		reg = <0x50>;
-+		interrupt-parent = <&gpio>;
-+		interrupts = <72 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&ldo2>;
-+		touchscreen-size-x = <480>;
-+		touchscreen-size-y = <800>;
-+	};
++		rmi4-f1a@1a {
++			reg = <0x1a>;
++			/* Keys listed from right to left */
++			linux,keycodes = <KEY_APPSELECT KEY_HOMEPAGE KEY_BACK>;
++		};
+ 	};
  };
  
- &usb {
+
+---
+base-commit: 8cd53fb40a304576fa86ba985f3045d5c55b0ae3
+change-id: 20250828-l9360_touch_keys-86d39bebf762
+
+Best regards,
 -- 
-2.51.0
+André Apitzsch <git@apitzsch.eu>
+
 
