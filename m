@@ -1,39 +1,39 @@
 Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E422ED141
-	for <phone-devel@vger.kernel.org>; Thu, 28 Aug 2025 09:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5712ED85E
+	for <phone-devel@vger.kernel.org>; Thu, 28 Aug 2025 09:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756374661; cv=none; b=MrNPjoZ56gmVt0/DAOrKPnC+kgvViImIlc43LF7gTATaGl1le5lLAJW6dMTfyERe5c2jMeEjsKchdNLcRmMBzhqrBvDOiuRa6aB7PE4y+XzJyvDH5SbDY93YOT6pqYKq++n3BClenbxETMWP3ygxTMZfNucFPLqcML5aKzE3B+U=
+	t=1756374664; cv=none; b=dNhgoUGNRPDmNHoblPAKN62Hgu9P0u06duO+OKJjKlU8G0VIqcJMsNCSVoprcuGf9NgZxeJCIjUDm3lEOZ+DDOSCa3/ndWtkSjSazobkAvB7jMfVTUnySPjbHRMGJF1yslNYeoZM8XUjUnYGU6jzMWt3XY17bmAF2UnppQ3emyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756374661; c=relaxed/simple;
-	bh=slP7/60xw9V0znMJSY4CskRnp7DU5hJfO5poLMUYqmE=;
+	s=arc-20240116; t=1756374664; c=relaxed/simple;
+	bh=WJI7Nd2+jQ7AaubXsM8kTP+G3+wwCUgpfmopC+FK8tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUmKYYo8FVEIZj0sePkQLPuGjzFC64Vx8AKCYGvQrSlwMCYQVWa8oSPLWsf8QXNwHKL298UL4ZgVG6/dIz0XUmG7qYxNGZjIPMX/BDvPxgLQqE3kmUitSTTTOE/jS3j5x8VVvDraFM8BnGJD7aytHy+gTX9+d4XDzQDHYxwZ8AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=EakrUBza; arc=none smtp.client-ip=195.113.20.234
+	 MIME-Version; b=IbvZ1ndJG3TY8b5U8kTec1SKgXq/5/mwwF6mW1lGTU3dzj/tlMhjdsIDiitSX3AHT0nnyW2RGtwYK3F0DravAv6l4g10YRBzm8wes8wbh95ySIu1rH2KaNng45ubZai34law4+rQPIJ/HY+Ekf1LcItPtgVrY/EFRI13OL8P6zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=R53Ja39T; arc=none smtp.client-ip=195.113.20.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="EakrUBza"
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="R53Ja39T"
 X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
 	serial F5FD910E8FE2121B897F7E55B84E351D
 	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
 	auth type TLS.CUNI
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1756374651; x=1757674651;
-	bh=6s9hYIjQmXy/YswNdLVOWz53M6iEE/junj0ih+puxqY=; h=From;
-	b=EakrUBzaiTa4DNuBYMRKZqjOMdWIZXEliyTklD2kMNCBmz+ZZ5FFsF1P/hk2THyH9
-	 YAcHOe1q0PSdihR/lAmkT1aobCR/XV8bGRGfAAbgkNenAR/brZhQO/xBfsg7uy6ZHN
-	 5BBzQP2JGSvprrdkmSJlGsC7d8emUks4P2z/f/pLJN5dB3MqpUmJuL3Qy9W2HONS4G
-	 Zfczrc4tUuKQ1LfOFqsWBVc1Kc1wpbIPK2QUJqShFihOCT3tTDJVw1Tq4B6PMMwHkU
-	 CE4WOLhZxsSSqtwy8hZ4rOlX86O3vyXQvRRsJcxVwWzQVZiPGGq2tn5IW4PV5aG9i1
-	 CDwnWtYk6P5Tg==
+	s=submission; t=1756374653; x=1757674653;
+	bh=jgSVyNvKT8tyvT/0XuoEo9brNM1Cm43Vrq9buFP014k=; h=From;
+	b=R53Ja39T30QOM1NlhT7e/7bA2JxalQbl0TlvpE5eVDx3h8RYX+YmMfQ0LBIIrKYqD
+	 pLhj0hGeLDy089hgAZNBuDRBpi72pQTsgqr5j6++/zKaA3zQedSCYONaN9FYnbmsQs
+	 e/VcHUXb/DjlStD2gxnqcZz5RP4Mz6WVTyd1zxHPO5EVj4+zk1HxeOqkJ5/AiXSiMW
+	 eHZZw3n9q0nW2CoY8R9ww3DneGrDepqsYowyUxeurxYPh8kRkNdX8qWGjX5pX7Dvgt
+	 8G4/pFsYzf72/NkNQFO2iXVLBtfQYUjkAlNUph+bRscAJaK2jVQnskxT3oFUHbJ0/W
+	 ZkD7ymMSPFtAg==
 Received: from localhost (internet5.mraknet.com [185.200.108.250])
 	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 57S9on5X046274
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 57S9oqFd046278
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 11:50:51 +0200 (CEST)
+	Thu, 28 Aug 2025 11:50:53 +0200 (CEST)
 	(envelope-from balejk@matfyz.cz)
 From: Karel Balej <balejk@matfyz.cz>
 To: linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
@@ -48,9 +48,9 @@ To: linux-mmc@vger.kernel.org, ulf.hansson@linaro.org,
         linux-kernel@vger.kernel.org
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Karel Balej <balejk@matfyz.cz>
-Subject: [PATCH v2 1/3] arm64: dts: samsung,coreprimevelte: add PMIC
-Date: Thu, 28 Aug 2025 11:49:02 +0200
-Message-ID: <20250828095028.24503-2-balejk@matfyz.cz>
+Subject: [PATCH v2 2/3] arm64: dts: samsung,coreprimevelte: add touchscreen
+Date: Thu, 28 Aug 2025 11:49:03 +0200
+Message-ID: <20250828095028.24503-3-balejk@matfyz.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250828095028.24503-1-balejk@matfyz.cz>
 References: <20250828095028.24503-1-balejk@matfyz.cz>
@@ -62,59 +62,50 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Bind power management chip to the samsung,coreprimevelte smartphone.
-This enables support for onkey and RTC as well as for regulators two of
-which are explicitly bound here to the SD card.
+Bind touchscreen for the samsung,coreprimevelte smartphone. The
+downstream code sets the VDD voltage to the exact value of 3.1 V,
+however it's been empirically verified that the lower bound used here
+sufficies for the proper operation of the chip and is thus used for
+power-saving purposes.
 
 Signed-off-by: Karel Balej <balejk@matfyz.cz>
 ---
-
-Notes:
-    v2:
-    - Modify interrupt properties as advised by Duje (thanks!).
-
- .../mmp/pxa1908-samsung-coreprimevelte.dts    | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ .../mmp/pxa1908-samsung-coreprimevelte.dts        | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-index 47a4f01a7077..54131b0e5617 100644
+index 54131b0e5617..0ac1a24dc410 100644
 --- a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
 +++ b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-@@ -303,6 +303,27 @@ &twsi1 {
+@@ -311,6 +311,11 @@ pmic@30 {
+ 		wakeup-source;
  
- &twsi2 {
+ 		regulators {
++			ldo2: ldo2 {
++				regulator-min-microvolt = <1900000>;
++				regulator-max-microvolt = <3100000>;
++			};
++
+ 			ldo6: ldo6 {
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <1200000>;
+@@ -328,6 +333,16 @@ ldo14: ldo14 {
+ 
+ &twsi3 {
  	status = "okay";
 +
-+	pmic@30 {
-+		compatible = "marvell,88pm886-a1";
-+		reg = <0x30>;
-+		interrupts = <GIC_SPI 4 IRQ_TYPE_LEVEL_HIGH>;
-+		wakeup-source;
-+
-+		regulators {
-+			ldo6: ldo6 {
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1200000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			ldo14: ldo14 {
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1200000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+		};
++	touchscreen@50 {
++		compatible = "imagis,ist3032c";
++		reg = <0x50>;
++		interrupt-parent = <&gpio>;
++		interrupts = <72 IRQ_TYPE_EDGE_FALLING>;
++		vdd-supply = <&ldo2>;
++		touchscreen-size-x = <480>;
++		touchscreen-size-y = <800>;
 +	};
  };
  
- &twsi3 {
-@@ -328,4 +349,6 @@ &sdh0 {
- 	cd-inverted;
- 	bus-width = <4>;
- 	wp-inverted;
-+	vmmc-supply = <&ldo14>;
-+	vqmmc-supply = <&ldo6>;
- };
+ &usb {
 -- 
 2.51.0
 
