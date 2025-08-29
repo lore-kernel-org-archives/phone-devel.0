@@ -1,217 +1,101 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03948314B82;
-	Fri, 29 Aug 2025 15:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F62C322A3B;
+	Fri, 29 Aug 2025 15:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756480837; cv=none; b=NvDm6OOu6jKzrStuy1WzVEZRZ7cZsYqGbbUhU3KrwCNM9GA9LjrZzN1FSdDSUb5hp8ZjiP7ABKVLLPBt4v2mLMjyqLa9GAKEESZPV904UbfHGASS09gDKDxilfskZFFRdCOeEZryPn97NaML8NT1ZM6YDwqyDsl0vh2GK0JvlaI=
+	t=1756482479; cv=none; b=gaN+BwV/Ib1takpV8SiFGf2F6Kf7KWpw564Rs2zYCBWPSbwW5jFPIXhsbIyx7CVd4kd68FGYTH8yW83M+rvonp1WnaqBc6WyhlmSDwA82gOluVYalcMymV2tbIRSwc5LKn3qWGLvMKi0fGtpxjTHTgPtNoiZOvOvekR9LzJLpao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756480837; c=relaxed/simple;
-	bh=T8VUd2JD/kzWzvbmfVYvtWKcNtsmaPwe0r8nEevSY7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWnkVYbRt+wz/5Ydt3sv/un01FZIGi9yXvewCG4Vt55QR1BL0pyuCNGWexZKIBJ+3SY8GzRLYn/KjbRYV4n8UDxbJBZ/q7luoM0buAhqdS4NPGNsua3EzxGF/1qq+o5j+aVUYpjtXHjSl5j0n6hTTweKG/8CGx86O6SssoYGqgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=ubHKogH3; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1756482479; c=relaxed/simple;
+	bh=lnwOaQYRQcYYMVH8ncbgN/sEc5KTSu1MghIcOaktWoI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C8xFqjViqIKi9gDUaXTVVIAdpPh0N6YDLFAvpIM77xRp5k7+4RfwPPnnge2tbSANFGmnBDvEK/AxO4YXlwZfKLlDQNCSm+alEMP6SeEE6jGhJAz0cp4oNrUwJRR5DqCP+i0fTGKdR2lkQylpkzZ9BgvNgXhA6KZ6cAKzI3gmxgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZLywLSEx; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="ubHKogH3"
-DKIM-Signature: a=rsa-sha256; bh=3QQYotBOPK5tBpX1HJ+fA7Ibti4EjTziQULJn+9wQ7U=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1756480818; v=1; x=1756912818;
- b=ubHKogH3XFmdIwW+4CYDv5zm6Wb2oh3E0UxOVTJOLksZWi6RjnTuK4pLiULN01kU9CgK+aKv
- vLjc+o5dr2AyEeecwWfFm/Wu2LUWAyuPI/65m36+BykzucvygmGXO8ojGlEA8d5VcvNmRqf0xk/
- qpciPB4AkkssIfQueAql7RybLWcLe44TNQ1DxcMO+3sciAGwaSfE4mKsgtlGJjji17CFGSkX7QH
- 0gW8pzBcc7Z6gXSg6uLTOg3wE5qR+UZqmnx5z4jCvK/lJq7rnKbMC5I1OO+v9xsqr7/W1T4da42
- 1jGXtmk6ZzMme4QtBA3aViRYn6ydWDD8uBHCIHOu/W+aw==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id e6b3fbc8; Fri, 29 Aug 2025 17:20:18 +0200
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
- Lee Jones <lee@kernel.org>, David Wronek <david@mainlining.org>,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-Date: Fri, 29 Aug 2025 17:20:17 +0200
-Message-ID: <2250556.Mh6RI2rZIc@radijator>
-In-Reply-To: <4f93d53a-3dfa-4b9f-8c09-73703888d263@baylibre.com>
-References:
- <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz>
- <20250829-88pm886-gpadc-v1-1-f60262266fea@dujemihanovic.xyz>
- <4f93d53a-3dfa-4b9f-8c09-73703888d263@baylibre.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZLywLSEx"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb72d5409so384651066b.0;
+        Fri, 29 Aug 2025 08:47:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756482476; x=1757087276; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cAJIIWls01qcbdO+Zw0VxcPwlrsbBbyxT5nPcRBFdos=;
+        b=ZLywLSEx6h/sVFfSbp99BbtqFA9WOCA/FY+VZwox1dzlDneAb35o0Nd/XznWzPRDBy
+         KFujILIC1eRQf/SSUOVSjZqbY3cU6os2xuLPDl25kR2o7vBwqW1btxI3y8Yz5wS9yMV+
+         asAU5U972Idsqi7pr/Lio3Xz6WVcg/HlEnWjeDad7zj9Nn3I93cdUEGbgOL1EEE7IsJd
+         oqFwi4fsQ9zVp0wYk51R6308+YRUssi7DK1Nb480lDuS4apC16pNRzgS7LEz+vyWNDrE
+         B1B8A8Xa/DYoSh0me199h15ZCNb6NCy1gf++edCRv790RalpbKnADFhI4lpSs84y6rsJ
+         L7dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756482476; x=1757087276;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cAJIIWls01qcbdO+Zw0VxcPwlrsbBbyxT5nPcRBFdos=;
+        b=S/fkhr0is2uWswl15whDvgOIVtJ/C/koSDwb1jDhlh5AkBJZqVM2e2cM3/EMjAtgUI
+         EZXpZwRonvkijUcG6U/oKh9j91YDuTey/vgOQt8GOaefhCl9wMJaiaTSVfsqMOTeaLnT
+         8a8nWOtPnqpJzsQ5hgkndoc2Om+0bdLZB+X5w1galtjxJhoMaFZrrKkTRe21C0tdqDaU
+         LONMWnsyPbGgGulDqHHVhAJEsuVbSjJX/WdRfSd0asACdSJ0UdduOERFMoXZJAxQGsxs
+         z65ngc44VgOaqx9jvZ4N3uQKrdHfr+wtmP2dcuiIFDYtgUgBodBZMpP/Gx0tGWM4nye/
+         1arQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV548k3xBrnAXiNh96q9XJp075een6JjcvVXf8iFp74RJpwF6chmGoJAxHAAJlW1DEJL5Pa+3mbnEwb02U=@vger.kernel.org, AJvYcCVW4OUKK4SADxwv5i1liqP8jHdH4XoyPSXobCHj3/y07Y5YSueKSSunMY9c7Vi8MSKGCD63qZYL/kI=@vger.kernel.org, AJvYcCW4FgsN9oc1qq3hkwGJCgx9xOTCdjC8Ti2rFZIH4i7FLZAEjQ7m+a3zdWIboT6s5l1LGPHG+F6ALoAPoHnX@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqZNC2w45x6fHljSYAQ1asvmY2YREPQXnyZ/7CDKt5mme3iw31
+	HkHBo0PKzCliVIt/BlD6N0GSIO5NnRn1TJIiageDTB1agJcOJIDC2zIfWxIrnBPmAyewxhz0hAz
+	jY/XWUJVg8UA3cfBlwFH4I8Ne6NEPwB0=
+X-Gm-Gg: ASbGncuwxdWQXhOXnIhMwriizzEDholLfQcbZijr/lXXwZcHODq4MjoGp6LJVmvRvM7
+	V59uA85iqFCjSeXR82Q4qmHWmoygiLWjrUqY0p4lx2TNPlI2NgR1i72RgOdGgvkOeE4VEWy8sjd
+	n6p9OWQx1BLRbRLh62rWQkppOj3uhmE/OcwUoDQEQ3X65j/0YPHWtwBqMYqUV3bk4XS1F9hq360
+	RPzp32qegIpQ+lRsA==
+X-Google-Smtp-Source: AGHT+IFJq4hKgpclpLAzxMbJKPxkfTuTBk+yeSHiyUHSoi5ySksUHWMjTOQ/E9rzP4cQzVNVXKhPw9IIS83Ir4FS3n0=
+X-Received: by 2002:a17:907:948a:b0:aff:1719:a477 with SMTP id
+ a640c23a62f3a-aff171a7dbamr84852466b.31.1756482475759; Fri, 29 Aug 2025
+ 08:47:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+References: <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz> <20250829-88pm886-gpadc-v1-2-f60262266fea@dujemihanovic.xyz>
+In-Reply-To: <20250829-88pm886-gpadc-v1-2-f60262266fea@dujemihanovic.xyz>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 29 Aug 2025 18:47:19 +0300
+X-Gm-Features: Ac12FXwHNw5zWhs_BHazXdsjfePEaiLMfI77QMptP_oixXXRAfk8XbUX9VDuX3c
+Message-ID: <CAHp75VdxGs-tifyD+T+H+TPq9ZY0Oz5zfKsoqf2uuekZCnfizA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mfd: 88pm886: Add GPADC cell
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
+	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Friday, 29 August 2025 01:40:56 Central European Summer Time David Lechner wrote:
-> > +#define ADC_CHANNEL(index, lsb, _type, name) {	\
-> > +	.type = _type, \
-> > +	.indexed = 1, \
-> > +	.channel = index, \
-> > +	.address = lsb, \
-> > +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-> > +			      BIT(IIO_CHAN_INFO_PROCESSED), \
-> > +	.datasheet_name = name, \
-> 
-> Do you have a link for the datasheet?
+On Fri, Aug 29, 2025 at 1:18=E2=80=AFAM Duje Mihanovi=C4=87 <duje@dujemihan=
+ovic.xyz> wrote:
+>
+> Add a cell for the PMIC's onboard General Purpose ADC.
 
-No, unfortunately. The only reference I have for the ADC itself is this
-vendor driver:
-https://github.com/acorn-marvell/brillo_pxa_kernel/blob/master/drivers/iio/adc/88pm88x-gpadc.c
+...
 
-> > +	ADC_CHANNEL(VSC_CHAN, 1367, IIO_VOLTAGE, "vsc"),
-> > +	ADC_CHANNEL(VCHG_PWR_CHAN, 1709, IIO_VOLTAGE, "vchg_pwr"),
-> > +	ADC_CHANNEL(VCF_OUT_CHAN, 1367, IIO_VOLTAGE, "vcf_out"),
-> > +	ADC_CHANNEL(TINT_CHAN, 104, IIO_TEMP, "tint"),
-> > +
-> > +	ADC_CHANNEL(GPADC0_CHAN, 342, IIO_VOLTAGE, "gpadc0"),
-> > +	ADC_CHANNEL(GPADC1_CHAN, 342, IIO_VOLTAGE, "gpadc1"),
-> > +	ADC_CHANNEL(GPADC2_CHAN, 342, IIO_VOLTAGE, "gpadc2"),
-> > +
-> > +	ADC_CHANNEL(VBAT_CHAN, 1367, IIO_VOLTAGE, "vbat"),
-> > +	ADC_CHANNEL(GNDDET1_CHAN, 342, IIO_VOLTAGE, "gnddet1"),
-> > +	ADC_CHANNEL(GNDDET2_CHAN, 342, IIO_VOLTAGE, "gnddet2"),
-> > +	ADC_CHANNEL(VBUS_CHAN, 1709, IIO_VOLTAGE, "vbus"),
-> > +	ADC_CHANNEL(GPADC3_CHAN, 342, IIO_VOLTAGE, "gpadc3"),
-> > +	ADC_CHANNEL(MIC_DET_CHAN, 1367, IIO_VOLTAGE, "mic_det"),
-> > +	ADC_CHANNEL(VBAT_SLP_CHAN, 1367, IIO_VOLTAGE, "vbat_slp"),
-> > +
-> > +	ADC_CHANNEL(GPADC0_RES_CHAN, 342, IIO_RESISTANCE, "gpadc0_res"),
-> > +	ADC_CHANNEL(GPADC1_RES_CHAN, 342, IIO_RESISTANCE, "gpadc1_res"),
-> > +	ADC_CHANNEL(GPADC2_RES_CHAN, 342, IIO_RESISTANCE, "gpadc2_res"),
-> > +	ADC_CHANNEL(GPADC3_RES_CHAN, 342, IIO_RESISTANCE, "gpadc3_res"),
-> 
-> Is it safe (or sensible) to have both voltage and resistance channels
-> for the same input at the same time? It seems like if a voltage
-> channel was connected to an active circuit, we would not want to be
-> supplying current to it to take a resistance reading (this doesn't
-> sound safe). Likewise, if a voltage input has a passive load on it,
-> wouldn't the voltage channel always return 0 because no current was
-> supplied to induce a voltate (doesn't seem sensible to have a channel
-> that does notthing useful).
-> 
-> It might make sense to have some firmware (e.g. devicetree) to describe
-> if the input is active or passive on the voltage inputs and set up the
-> channels accordingly.
-> 
-> I'm also wondering if the other channels like vbat and vbus are always
-> wired up to these things internally or if this channel usage is only for
-> a specific system.
+>  static const struct mfd_cell pm886_devs[] =3D {
 
-Looking at the vendor kernel, I am fairly confident that the channels
-labeled gpadc are indeed general-purpose and connected to arbitrary
-resistances (thermistors and battery detection depending on the board),
-while the rest are fixed-function as their names imply.
+>         MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
+>         MFD_CELL_NAME("88pm886-regulator"),
+>         MFD_CELL_NAME("88pm886-rtc"),
+> +       MFD_CELL_NAME("88pm886-gpadc"),
 
-The above most likely is safe as my board is still functional, but it
-probably doesn't make sense to keep the voltage channels so I suppose
-I'll drop these in v2.
+List seems ordered, please prevent it.
 
-> > +	int val, ret;
-> > +	u8 buf[2];
-> > +
-> > +	if (chan >= GPADC0_RES_CHAN)
-> > +		/* Resistor voltage drops are read from the corresponding voltage channel
-> > */ +		chan -= GPADC0_RES_CHAN - GPADC0_CHAN;
-> 
-> Does this actually work for GPADC3_RES_CHAN?
-> 
-> GPADC3_RES_CHAN == GPADC0_RES_CHAN + 3 but GPADC3_CHAN != GPADC0_CHAN + 3
-
-Good catch. Upon closer inspection, the order of the channel enum
-doesn't matter much and I'll fix this by simply ordering the enum more
-wisely.
-
-> > +		     long mask)
-> > +{
-> > +	struct device *dev = iio->dev.parent;
-> > +	int raw, ret;
-> > +
-> > +	ret = pm_runtime_resume_and_get(dev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (chan->type == IIO_RESISTANCE) {
-> > +		raw = gpadc_get_resistor(iio, chan);
-> > +		if (raw < 0) {
-> > +			ret = raw;
-> > +			goto out;
-> > +		}
-> > +
-> > +		*val = raw;
-> > +		dev_dbg(&iio->dev, "chan: %d, %d Ohm\n", chan->channel, *val);
-> > +		ret = IIO_VAL_INT;
-> > +		goto out;
-> > +	}
-> > +
-> > +	raw = gpadc_get_raw(iio, chan->channel);
-> > +	if (raw < 0) {
-> > +		ret = raw;
-> > +		goto out;
-> > +	}
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> 
-> If there is IIO_CHAN_INFO_RAW, then we also should have IIO_CHAN_INFO_SCALE.
-> 
-> > +		*val = raw;
-> > +		dev_dbg(&iio->dev, "chan: %d, raw: %d\n", chan->channel, *val);
-> > +		ret = IIO_VAL_INT;
-> > +		break;
-> > +	case IIO_CHAN_INFO_PROCESSED: {
-> 
-> Unusual to have both raw and processed. What is the motivation?
-
-I was following what ab8500-gpadc does, no particular motivation.
-Considering the above, to me it makes the most sense to limit it to
-processed.
-
-> > @@ -67,6 +68,35 @@
-> > 
-> >  #define PM886_REG_BUCK4_VOUT		0xcf
-> >  #define PM886_REG_BUCK5_VOUT		0xdd
-> > 
-> > +/* GPADC enable/disable registers */
-> > +#define PM886_REG_GPADC_CONFIG1		0x1
-> > +#define PM886_REG_GPADC_CONFIG2		0x2
-> > +#define PM886_REG_GPADC_CONFIG3		0x3
-> > +#define PM886_REG_GPADC_CONFIG6		0x6
-> 
-> Could just write this as:
-> 
-> #define PM886_REG_GPADC_CONFIG(n)		(n)
-> 
-> > +
-> > +/* GPADC bias current configuration registers */
-> > +#define PM886_REG_GPADC_CONFIG11	0xb
-> > +#define PM886_REG_GPADC_CONFIG12	0xc
-> > +#define PM886_REG_GPADC_CONFIG13	0xd
-> > +#define PM886_REG_GPADC_CONFIG14	0xe
-> > +#define PM886_REG_GPADC_CONFIG20	0x14
-> 
-> which covers these too.
-> 
-> Most of these aren't used anyway.
-> 
-> Also suspicious that there are 5 registers listed here
-> but only 4 channels for resistance.
-
-The last one is used to enable the bias generators, the rest only set
-the bias current for their respective channel.
-
-Regards,
---
-Duje
+>  };
 
 
-
+--=20
+With Best Regards,
+Andy Shevchenko
