@@ -1,90 +1,179 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A0A230BDF;
-	Fri, 29 Aug 2025 20:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE722D781;
+	Fri, 29 Aug 2025 21:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756499988; cv=none; b=MvRghaLbwm6F8bdVT7sSe6TPMRLuSC0CR3HzFvFF1RLGYIDteBgIh6gIR7AHuqE2vaKNkWdMDZQmdKp46o74YhFY8vaECGZIeAd47NYgY6Hm4KrCvszz2vqbw1AG6NfUqpSkzrXoz5rUim3e/+n5/8ejtCNIm/gFPb42gnd2ubU=
+	t=1756501739; cv=none; b=mZoNs2XYORZ2IAKDdUzoFWPvfut6YVR0q3DoAF1WZiOliTgjoCtB7WLjuBsiFcEfAufP/lpjfGIq6SGbYStr/+9e1yLH+AgvWTtretdOoWCan0Udlz3cV8cUHIuwsdvgKwHlNYAW5WgTrY109690LsHXq88zJlbOdoqH0PbMiC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756499988; c=relaxed/simple;
-	bh=owOHG9Dtik4l2LIvHIKjqkBxu8PNRXBqKXdys1DJXN8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:Subject:To:
-	 References:In-Reply-To; b=Yz/9LoSY6e+iRzxqgClV5UGEj85lfsAt6+cW/OSrvK++OTXMp9Wx+TA2WfEePb5ZcxKkZ/FaIOK02pHNIHDhu1SUZ5+qUuASBsbREyA4AJidaBAZHbMc2KY6xT7DqCpbroN2u9IbcZUsv6XxMC1/1hUaFYDDL8NgDfLdgT8UG7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=E6nrgv6T; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1756501739; c=relaxed/simple;
+	bh=/g7uhxTJwTuv6kJjIciNp687E586ETI/5wgGWb0iAv0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ia8tEbebpoqiKkxXL3Rle9X+iBxv0N0VFKHqJYGJgS93fdqM5DUFFhDqcLdxbup6swwwcqa55TG97jtg65vfN+dVR3yIm+smt/Bv70qUktAV4TTPJ1eU+fvdpxX+7lJhKrCOTv3zcrnRcBozUeRzywAFBxXSFc4h3MEZZoa5erc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=MSPyfQ2h; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="E6nrgv6T"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1756499938; x=1757799938;
-	bh=B9Iadrj2XMnTaLp/weUdPBYM3YQOWVmBQ2WC25/x1Xw=; h=From;
-	b=E6nrgv6TX6vRgxC3Fh2GrT6I/FkU1wW3vGscL8OZmmfFuSnDFjkHC10bc2sgYCgDR
-	 g7+4yGswrbYFq1sjV6SqMU8KMk9FWcsQi2MCJjsf8HPpDgIH+bIbBKrb9Mw9odvO/5
-	 FZkj/2D2Mk5A2UuID/Mk6L6WYXnOEbCAEUyFzLJuQg6zjHG6Gb6zfw5Hiey6p7gKum
-	 9lOQIWPpTM6Nqo9ZuHATEuIvgTvJUT3UcjLv2up4Ou2pquHCVztjn8pKMC2i08T030
-	 IoOgQ0l6DvU9Fa0XIdfiWYrbwdbAykgHHCOLfwSLGi38ps7WvvIWnviVAXQH7LdQ0y
-	 iFFrzCAf9m2gg==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 57TKcv1i021646
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 22:38:58 +0200 (CEST)
-	(envelope-from balejk@matfyz.cz)
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="MSPyfQ2h"
+DKIM-Signature: a=rsa-sha256; bh=vdUcNBNCDhTlcLQRDxjszAS5UV0iteX6t45svXjmwJ0=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1756501725; v=1; x=1756933725;
+ b=MSPyfQ2hC19gOl9TRHQgp63BfHIogUu1ATIHtAv18crMl+0fXRJujP7RDJGzKRSjr11skeGf
+ Cp0Zr7Hn/o80EgHP30hcbpoWhHSceJlOYybmWQI34zzF9WaIDhqpuzOwHDPk/evEOwuNUFkKAyi
+ 4xt7ZEBN10ZJD5WWkGRFpwVzewvZVSqW5Mz2oZ/Td+gC6K8NZYbVTMwnrY2D4ChxtxYVVYk9L5D
+ 2sLYuOsOBhtKlBRuRa5Os8MwVYFUcMejRjpClvCVVqgsIXc3zmpA5lxczv77Iq4YPFP+kx2gQMq
+ amQmassObkerGSV0F0hDbEQVhEufBMWDNTKn5HzgwX3CQ==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 33cf7737; Fri, 29 Aug 2025 23:08:45 +0200
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Date: Fri, 29 Aug 2025 23:08:30 +0200
+Subject: [PATCH] leds: expresswire: Fix chip state breakage
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 Aug 2025 22:38:57 +0200
-Message-Id: <DCF79FFP6NJS.J73DD94U1ZNK@matfyz.cz>
-From: "Karel Balej" <balejk@matfyz.cz>
-Cc: "Jonathan Cameron" <jic23@kernel.org>,
-        "David Lechner"
- <dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        "Andy Shevchenko" <andy@kernel.org>, "Lee Jones" <lee@kernel.org>,
-        "David
- Wronek" <david@mainlining.org>, <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-        "Jonathan
- Cameron" <jonathan.cameron@huawei.com>
-References: <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz>
- <20250829-88pm886-gpadc-v1-1-f60262266fea@dujemihanovic.xyz>
- <20250829172730.000079b5@huawei.com> <2453108.NG923GbCHz@radijator>
-In-Reply-To: <2453108.NG923GbCHz@radijator>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250829-expresswire-fix-v1-1-f8c8c6ad6c5f@dujemihanovic.xyz>
+X-B4-Tracking: v=1; b=H4sIAM0WsmgC/x2MQQqAIBBFrxKzTjAlqa4SLUynmo2FAyVId29o+
+ f7jvwqMmZBhaipkvInpTAJd20A4fNpRURQGo02vBzMqLFdG5ocyqo2Kcs7GbrXBGu9BXmJl/ov
+ z8r4fozBghmEAAAA=
+X-Change-ID: 20250829-expresswire-fix-663d1b3c32aa
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
+Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4326;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=/g7uhxTJwTuv6kJjIciNp687E586ETI/5wgGWb0iAv0=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBmbxO7G3uw9tihHzZH/kE7YvSspbVv2Tmd6GK3Uefrpt
+ QkSB59O7ShlYRDjYpAVU2TJ/e94jfezyNbt2csMYOawMoEMYeDiFICJPD3ByHCqsXmJo9bXfOEv
+ 1/7NnMZ3aOv6E1a5i69ae4nVuMyYJLqCkeGy35c3/VMMe3yPdxncknt5lHlVcL/kq5vVpoI2Soa
+ C/fwA
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Duje Mihanovi=C4=87, 2025-08-29T19:40:41+02:00:
-> On Friday, 29 August 2025 18:27:30 Central European Summer Time Jonathan =
-Cameron wrote:
->> On Fri, 29 Aug 2025 00:17:41 +0200
->>=20
->> Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz> wrote:
->> > +	iio->name =3D "88pm886-gpadc";
->> > +	iio->dev.parent =3D dev;
->> > +	iio->dev.of_node =3D parent->of_node;
->>=20
->> Done in core code.
->> https://elixir.bootlin.com/linux/v6.16.3/source/drivers/iio/industrialio=
--core.
->> c#L2044 __iio_device_register() so unless you use it before that call
->> shouldn't need this.
->>=20
->> I'm not sure what it is used for though.
->
-> It was to explicitly bind the ADC (specifically, its IO channels) to
-> the PMIC devicetree node. However, since the core does this already,
-> will drop.
+It is possible to put the hardware state of the KTD2801 chip in an
+unknown state by rapidly changing the brightness for a short period of
+time (for example, with a brightness slider). When this happens, the
+brightness is stuck on max and cannot be changed until the chip is power
+cycled.
 
-I believe the PMIC binding should probably be updated with the
-#io-channel-cells property then, isn't that so?
+Fix this by disabling interrupts while the chip is being programmed.
+While at it, make expresswire_power_off() use fsleep() and also unexport
+some functions meant to be internal.
+
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+ drivers/leds/leds-expresswire.c  | 24 +++++++++++++++++-------
+ include/linux/leds-expresswire.h |  3 ---
+ 2 files changed, 17 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/leds/leds-expresswire.c b/drivers/leds/leds-expresswire.c
+index bb69be228a6d3c7a8f2abc7fa75bd473d4c7c79c..25c6b159a6ee93210bf8239388b5cdc434872240 100644
+--- a/drivers/leds/leds-expresswire.c
++++ b/drivers/leds/leds-expresswire.c
+@@ -9,6 +9,7 @@
+ #include <linux/delay.h>
+ #include <linux/export.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/irqflags.h>
+ #include <linux/types.h>
+ 
+ #include <linux/leds-expresswire.h>
+@@ -16,37 +17,41 @@
+ void expresswire_power_off(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value_cansleep(props->ctrl_gpio, 0);
+-	usleep_range(props->timing.poweroff_us, props->timing.poweroff_us * 2);
++	fsleep(props->timing.poweroff_us);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_power_off, "EXPRESSWIRE");
+ 
+ void expresswire_enable(struct expresswire_common_props *props)
+ {
++	unsigned long flags;
++
++	local_irq_save(flags);
++
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.detect_delay_us);
+ 	gpiod_set_value(props->ctrl_gpio, 0);
+ 	udelay(props->timing.detect_us);
+ 	gpiod_set_value(props->ctrl_gpio, 1);
++
++	local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_enable, "EXPRESSWIRE");
+ 
+-void expresswire_start(struct expresswire_common_props *props)
++static void expresswire_start(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.data_start_us);
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_start, "EXPRESSWIRE");
+ 
+-void expresswire_end(struct expresswire_common_props *props)
++static void expresswire_end(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value(props->ctrl_gpio, 0);
+ 	udelay(props->timing.end_of_data_low_us);
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.end_of_data_high_us);
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_end, "EXPRESSWIRE");
+ 
+-void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
++static void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
+ {
+ 	if (bit) {
+ 		gpiod_set_value(props->ctrl_gpio, 0);
+@@ -60,13 +65,18 @@ void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
+ 		udelay(props->timing.short_bitset_us);
+ 	}
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_set_bit, "EXPRESSWIRE");
+ 
+ void expresswire_write_u8(struct expresswire_common_props *props, u8 val)
+ {
++	unsigned long flags;
++
++	local_irq_save(flags);
++
+ 	expresswire_start(props);
+ 	for (int i = 7; i >= 0; i--)
+ 		expresswire_set_bit(props, val & BIT(i));
+ 	expresswire_end(props);
++
++	local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_write_u8, "EXPRESSWIRE");
+diff --git a/include/linux/leds-expresswire.h b/include/linux/leds-expresswire.h
+index a422921f4159f2f51e40f50ad5c9d89d9070511a..7f8c4795f69fa0337bd3b201279652c8e353c6d4 100644
+--- a/include/linux/leds-expresswire.h
++++ b/include/linux/leds-expresswire.h
+@@ -30,9 +30,6 @@ struct expresswire_common_props {
+ 
+ void expresswire_power_off(struct expresswire_common_props *props);
+ void expresswire_enable(struct expresswire_common_props *props);
+-void expresswire_start(struct expresswire_common_props *props);
+-void expresswire_end(struct expresswire_common_props *props);
+-void expresswire_set_bit(struct expresswire_common_props *props, bool bit);
+ void expresswire_write_u8(struct expresswire_common_props *props, u8 val);
+ 
+ #endif /* _LEDS_EXPRESSWIRE_H */
+
+---
+base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+change-id: 20250829-expresswire-fix-663d1b3c32aa
+
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
+
