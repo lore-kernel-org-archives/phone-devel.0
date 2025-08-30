@@ -1,87 +1,104 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D677B26980B;
-	Sat, 30 Aug 2025 15:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5AE2D24A5;
+	Sat, 30 Aug 2025 16:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756569493; cv=none; b=pjmQJxLo+DQbIxdTg6audwyRJPdjS0rH6t7f7wcGWrhGOysNqObXsBppKwxA7jzyLsk0r78VrM3b3bSaleBmUmtPgg3hCIEoDuDpWD3V2GBCa0TF9CEHBG3lr2E8+te/eUeD2qqTtGjCcwT3MmcRLhDc8Gq0WEn61wDWq5r8VKY=
+	t=1756571367; cv=none; b=a/4YalXi1lcNnEg4LkZHS8pU61lfQTYWl3DJVRJFPlzsIxtu3uly/zxRKD7sX5JISiCNbJUcMa7KpGfrS8o7g4nsats34QLWaBj96b2YWAfy74bkbNEUbbyudQuSRaZN/OxK3rWE+Vru3V0QvchyeE1TOkmhFFLa4GJux00WMrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756569493; c=relaxed/simple;
-	bh=2NYra8bevS3woikAQuBf3T0J2BxLCqPEXnPzpCmkJ84=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uBIzis+sP8lU0qbEkySjHnwmIdRWwjSeIRZmVmm6q6sAVo4H9Ve/wVGxyBgH3Fmh+guPOOUoQooNl5s7eayflJ3QHnou8naRQdlyXuEmUR8dps+Ax6fwvc3V9eJPz8Fw6jNvvXt/Q3pSYS78+t+whCRF+ka+6sHirOalAU3P+Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=LcBJ+zK+; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=LcBJ+zK+; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1756571367; c=relaxed/simple;
+	bh=uE4LBUrOK8Zfb9RWv7X/lsQaqJGhS2HzCZ8KaQqfhJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iq9/CxgtmISp8wMfgicukiJ/pilOnnJzUL5T0SQX1/aPNchYNLQlK2H+9Uswja5sRp2yHIFVgBxYmj+Awgb3DQx5NcF8S5jlNkTj9Po7PGUEXFrih+tmAo2ZBpnk8HNiK/AnuK+Ikdx32ZVotRIJaIGnyY4tSukG9ImjfiQrgrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=YMiKrohF; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="LcBJ+zK+";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="LcBJ+zK+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1756569488; bh=2NYra8bevS3woikAQuBf3T0J2BxLCqPEXnPzpCmkJ84=;
-	h=From:To:Subject:Date:From;
-	b=LcBJ+zK+1Xgkae7qRTSxGsugwr61QxR9A0cBw39itcEC+wx/crrKUjV4ASMUjSo/C
-	 iXZpD5RzbMMFpufVQ5cbnBDgZKMSLxVeIE0SLC6jbvwkQrvqKdHX3LvI5NqLdtj7qs
-	 yqeRJaGGoLBhDCl4Vqf1Gqg+hSTNcyyWpyXfZfvh9B1c27/cgRv/YWyo+4/v7Nd+rk
-	 gyqLwuDaY9mFdElTxlZCAFfwhwVWJKlaNE9/HXrca8HAq0jJB8E8FJb59MMisck8IA
-	 zuGwSjgAl4mEiOBtgWQ/yexo7NBgrwQwoaf53GsiolD8RM9AhdwaES1vvkBYsl7kQu
-	 dE2LdSOdSQxlA==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id B9175FB05;
-	Sat, 30 Aug 2025 17:58:08 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cvm6FoYYZI8z; Sat, 30 Aug 2025 17:58:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1756569488; bh=2NYra8bevS3woikAQuBf3T0J2BxLCqPEXnPzpCmkJ84=;
-	h=From:To:Subject:Date:From;
-	b=LcBJ+zK+1Xgkae7qRTSxGsugwr61QxR9A0cBw39itcEC+wx/crrKUjV4ASMUjSo/C
-	 iXZpD5RzbMMFpufVQ5cbnBDgZKMSLxVeIE0SLC6jbvwkQrvqKdHX3LvI5NqLdtj7qs
-	 yqeRJaGGoLBhDCl4Vqf1Gqg+hSTNcyyWpyXfZfvh9B1c27/cgRv/YWyo+4/v7Nd+rk
-	 gyqLwuDaY9mFdElTxlZCAFfwhwVWJKlaNE9/HXrca8HAq0jJB8E8FJb59MMisck8IA
-	 zuGwSjgAl4mEiOBtgWQ/yexo7NBgrwQwoaf53GsiolD8RM9AhdwaES1vvkBYsl7kQu
-	 dE2LdSOdSQxlA==
-From: =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: [PATCH] arch: arm64: dts: qcom: sdm845-shift-axolotl: set chassis type
-Date: Sat, 30 Aug 2025 17:57:29 +0200
-Message-ID: <3e04efc06a795a32b0080b2f23a138e139057b02.1756569434.git.agx@sigxcpu.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="YMiKrohF"
+DKIM-Signature: a=rsa-sha256; bh=J7oKY9aeWRA54ISXN0P4ha3epQPBP25dKfwt7/+vG4k=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1756571349; v=1; x=1757003349;
+ b=YMiKrohFsXZ26eryhi+eVM2XFJU+gARHgwtsRlX2HsR9SEu6LIajNBurRBQuIRJFXNLZsstB
+ f+YH+QdxYz9utStWm2wDDMiRLrnwaX+uzS+fMc44Ez7geSLFKd/F75nry13b4A3d/6I9W2pYzVN
+ JY5/Q/j90f22u2kniGRrZtr8DifAqOsdmHfXzlRvmH66jhMpKx3cLCZfw7w1M1eKrz0O/rjU6fR
+ YddZhTIeOKMt89CiZk/+as0a28drDA0eU0K9+e77duzTPgzXrmdFoSwbzouNk1bkh6dT7BIHv6F
+ AjBSt2i3mTL1cWj7aZPXABYTV8wky1mU5GDQEMU9jeWMQ==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id cfcca67f; Sat, 30 Aug 2025 18:29:09 +0200
+From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
+ Lee Jones <lee@kernel.org>, David Wronek <david@mainlining.org>,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
+Date: Sat, 30 Aug 2025 18:29:08 +0200
+Message-ID: <6191915.lOV4Wx5bFT@radijator>
+In-Reply-To:
+ <CAHp75VcU-AbfRfMZUanV8eHb5oatQPhGS-ntyWuDFtUgKc-OLA@mail.gmail.com>
+References:
+ <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz>
+ <10724132.nUPlyArG6x@radijator>
+ <CAHp75VcU-AbfRfMZUanV8eHb5oatQPhGS-ntyWuDFtUgKc-OLA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-It's a handset.
+On Saturday, 30 August 2025 16:53:48 Central European Summer Time Andy Shev=
+chenko wrote:
+> On Sat, Aug 30, 2025 at 4:04=E2=80=AFPM Duje Mihanovi=C4=87 <duje@dujemih=
+anovic.xyz> wrote:
+> > On Saturday, 30 August 2025 06:37:27 Central European Summer Time Andy =
+Shevchenko wrote:
+> > > On Fri, Aug 29, 2025 at 2:41=E2=80=AFAM David Lechner <dlechner@bayli=
+bre.com> wrote:
+> > > > On 8/28/25 5:17 PM, Duje Mihanovi=C4=87 wrote:
+> > > > > +config 88PM886_GPADC
+> > > > > +     tristate "Marvell 88PM886 GPADC driver"
+> > > > > +     depends on MFD_88PM886_PMIC
+> > > > > +     default y
+> > >=20
+> > > Really? Why tristate then?
+> > > I would expect default MFD_88PM886_PMIC instead,
+> > >=20
+> > > > > +     help
+> > > > > +       Say Y here to enable support for the GPADC (General Purpo=
+se
+> > > > > ADC)
+> > > > > +       found on the Marvell 88PM886 PMIC. The GPADC measures var=
+ious
+> > > > > +       internal voltages and temperatures, including (but not li=
+mited
+> > > > > to)
+> > > > > +       system, battery and USB.
+> > >=20
+> > > Please, add a line about the module name if one chooses 'm'. Or see
+> > > above =E2=80=94 drop the "tristate" and explain why this driver may n=
+ot be a
+> > > module in the commit message.
+> >=20
+> > 'default MFD_88PM886_PMIC' would make it y as that one is a bool. How
+> > about 'default m if MFD_88PM886_PMIC' or, since this already depends on
+> > _PMIC, 'default m'?
+>=20
+> I didn't get it. Why? defaulting to MFD is okay, otherwise one needs
+> to explain 'y' (and even explicit 'm' choice) for the _leaf_ driver.
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
----
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 1 +
- 1 file changed, 1 insertion(+)
+I just wanted to keep the driver as modular as possible, including by
+default. Regardless, this sounds OK to me.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 2cf7b5e1243ca..2b04adcb53ee0 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -17,6 +17,7 @@
- / {
- 	model = "SHIFT SHIFT6mq";
- 	compatible = "shift,axolotl", "qcom,sdm845";
-+	chassis-type = "handset";
- 	qcom,msm-id = <321 0x20001>;
- 	qcom,board-id = <11 0>;
- 
--- 
-2.51.0
+Regards,
+=2D-
+Duje
+
 
