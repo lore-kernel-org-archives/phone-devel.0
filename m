@@ -1,162 +1,108 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604EA45029;
-	Sun, 31 Aug 2025 12:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E238E2701D8;
+	Sun, 31 Aug 2025 16:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756644397; cv=none; b=Ddg4HCx4+OOxg2sNR++bw7qSyq7mzXbY/3lTJ2vqEBp6Lj6/Wmt1wqYjPmf6FBNbpBupTj5J5DMDAyx1WxSY/RRLjd9WtfCSQqERYpLEEfeh+pjublfaEP1t3+3iwNnr5utiFAcyEtZGqmaTU4pvvJtICtc4WMTMM5KcdRDwPdE=
+	t=1756658968; cv=none; b=nxpwphirKIp84ZCH5Ium77lteGXU0ThwoieQc7urdm21uGowrwLbHUTgMdLn2SPJ/FEisluZk7d6B7OzT1e8M+g5XJDgaZoOEDsRT6zK3DbQX28fInTGqUbcdQEilPCa9wHCkwKegn3qqQyNh3cqnQYBBlY9p3D5T3fjNHL/XpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756644397; c=relaxed/simple;
-	bh=wtKe9H6U+LhS2f603AlELwNS+homIUhNUwT6Z3ZM8hU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KT75Bo32SAagUiSKNdQPh1IrnAKA+lv3zVShqgY7Co9eVSZu1oGtkQSVrHQK2oI3EHGY1jd51E/l6R6QURyOjXYfYRGVfw6EW2S/hYMlgvsGQsksMf9JjBX0oL4hSoq6jPoape5ucUPLSCmJGbHqYSSkaNPZzRlxNz21daMgReA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=ov45dU1p; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=CY413ftE; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1756658968; c=relaxed/simple;
+	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LA/SecWBgt7p4MsAXp9tBR/xfPDXfDxqj/au4OxsNQwGElTjNXKC2c5GPDgH9LLlx++wvgadIgqUkaCDKG9tGT9SBxUE7+kiM1A+27X3eFDHjJJHdhwsrlwv978sw04GC70k/JMvFHZWW4Sd4Z2RM3otL7G8KJvaMW3W95cOPO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmd8d66u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="ov45dU1p";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="CY413ftE"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1756643370; bh=75jbWC6rzZi0qzMwWHXrcn6
-	GuZQp+Mi+3zTPjxiaEug=; b=ov45dU1pyTfipssKly3Wo6HbmoEqklclEB3vjkStFPKI58m3it
-	QPsXzjObrVkcLwcTPvx9Dt8ZpN988GzeuDWt5BeW8pR2u4M49+5qfriEBYq1xmx0R/5QMmKBXUN
-	joZGv864Z8/DUTevIQHGcN6eApnuwSi/SpPx79B7Hg5kOvLwlugCvivmIxAAVXN3Yw1bp18XPEK
-	16X8gQ+6ztoEbP83iQ2kEVi8Si5IhV80FxFj3Wpap3LEftWYB2Vrel7gkzNoxmAP7zxuVdYC8y+
-	yLcbRcscOkoWjSnKg1Q+kka74uSeoiLEmEE8NMsACoPy2Y/3PgRXMWJzwBPKsxJXOkw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1756643370; bh=75jbWC6rzZi0qzMwWHXrcn6
-	GuZQp+Mi+3zTPjxiaEug=; b=CY413ftEpGdrGc2YR6hmicv9wenoD8tTx2JNk+uUbeD87xHQoq
-	k+3tVuf8rj38idhohfVVs7VIZ71p6ssBpYDQ==;
-From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Sun, 31 Aug 2025 14:29:24 +0200
-Subject: [PATCH v8 1/7] dt-bindings: clock: qcom: Add MSM8937 Global Clock
- Controller
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmd8d66u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AB0C4CEED;
+	Sun, 31 Aug 2025 16:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756658967;
+	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pmd8d66ups72nzH0C6pVm3GZY93jIJ3i5M5MIaPeJXuU2hzwzZWOwEdUkUe8gq/vW
+	 dOklp0lvl0Dns3KNPdtpweyezbHQnyiEZWDX8g9tEO8FZ7UAArN3DteJxmajyNju39
+	 bURYTJPm3wwktRJszAR0+dSEJXReymmhXpbXyJKxfYPKmg4AsyZwKCTHwg/BOS0E+1
+	 QST5r1YNd/MbMY/WGIvbu83NWTTXXMypchd2qv3Ez4UShWLrfsQHBGrhyMkzEdk1rU
+	 1lXjof4pPhwgAIYG/bnm8KwbfbM45UOmR0kffTGeyFgYrsf5UAa95pf84R3B9R1m7r
+	 J8lpvy366pFQQ==
+Message-ID: <b460d65a-8bce-4f5d-892b-39e05fbcd0a2@kernel.org>
+Date: Sun, 31 Aug 2025 18:49:21 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dt-bindings: mfd: 88pm886: Add #io-channel-cells
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
+ Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
+ <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250831-msm8937-v8-1-b7dcd63caaac@mainlining.org>
-References: <20250831-msm8937-v8-0-b7dcd63caaac@mainlining.org>
-In-Reply-To: <20250831-msm8937-v8-0-b7dcd63caaac@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, 
- =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>, 
- Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>, 
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
- Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Robert Marko <robimarko@gmail.com>, Das Srinagesh <quic_gurus@quicinc.com>, 
- Srinivas Kandagatla <srini@kernel.org>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, iommu@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- linux@mainlining.org, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756643366; l=3026;
- i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=wtKe9H6U+LhS2f603AlELwNS+homIUhNUwT6Z3ZM8hU=;
- b=92EZ3ek69QF+JXNJZCUMqPFNCG6oXM9SrVT2zRtD0aMPiUxLAZRvLj5NOikGsXngeEbqQ6BwU
- cYc1zpaEDA0Cvuij6vhSyCDbdNQoTYDaq9GH2mp/A6Oa2mDKZ+edRmN
-X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
- pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-Add device tree bindings for the global clock controller on Qualcomm
-MSM8937 platform.
+On 31/08/2025 12:33, Duje Mihanović wrote:
+> Add an #io-channel-cells property to the Marvell 88PM886 PMIC binding to
+> allow referencing the IO channels exposed by its GPADC.
+> 
+> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
----
- .../devicetree/bindings/clock/qcom,gcc-msm8953.yaml   | 11 ++++++++---
- include/dt-bindings/clock/qcom,gcc-msm8917.h          | 19 +++++++++++++++++++
- 2 files changed, 27 insertions(+), 3 deletions(-)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,gcc-msm8953.yaml b/Documentation/devicetree/bindings/clock/qcom,gcc-msm8953.yaml
-index fe1f5f3ed992453a347062a556b1ddb2a011db6f..f2e37f439d28b3ec066f407927955b3b82b5c10a 100644
---- a/Documentation/devicetree/bindings/clock/qcom,gcc-msm8953.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,gcc-msm8953.yaml
-@@ -9,16 +9,21 @@ title: Qualcomm Global Clock & Reset Controller on MSM8953
- maintainers:
-   - Adam Skladowski <a_skl39@protonmail.com>
-   - Sireesh Kodali <sireeshkodali@protonmail.com>
-+  - Barnabas Czeman <barnabas.czeman@mainlining.org>
- 
- description: |
-   Qualcomm global clock control module provides the clocks, resets and power
--  domains on MSM8953.
-+  domains on MSM8937 or MSM8953.
- 
--  See also: include/dt-bindings/clock/qcom,gcc-msm8953.h
-+  See also::
-+    include/dt-bindings/clock/qcom,gcc-msm8917.h
-+    include/dt-bindings/clock/qcom,gcc-msm8953.h
- 
- properties:
-   compatible:
--    const: qcom,gcc-msm8953
-+    enum:
-+      - qcom,gcc-msm8937
-+      - qcom,gcc-msm8953
- 
-   clocks:
-     items:
-diff --git a/include/dt-bindings/clock/qcom,gcc-msm8917.h b/include/dt-bindings/clock/qcom,gcc-msm8917.h
-index 4b421e7414b50bef2e2400f868ae5b7212a427bb..4e3897b3669d9149b61a6feec31ca35e2058dcb9 100644
---- a/include/dt-bindings/clock/qcom,gcc-msm8917.h
-+++ b/include/dt-bindings/clock/qcom,gcc-msm8917.h
-@@ -170,6 +170,23 @@
- #define VFE1_CLK_SRC				163
- #define VSYNC_CLK_SRC				164
- #define GPLL0_SLEEP_CLK_SRC			165
-+/* Addtional MSM8937-specific clocks */
-+#define MSM8937_BLSP1_QUP1_I2C_APPS_CLK_SRC		166
-+#define MSM8937_BLSP1_QUP1_SPI_APPS_CLK_SRC		167
-+#define MSM8937_BLSP2_QUP4_I2C_APPS_CLK_SRC		168
-+#define MSM8937_BLSP2_QUP4_SPI_APPS_CLK_SRC		169
-+#define MSM8937_BYTE1_CLK_SRC				170
-+#define MSM8937_ESC1_CLK_SRC				171
-+#define MSM8937_PCLK1_CLK_SRC				172
-+#define MSM8937_GCC_BLSP1_QUP1_I2C_APPS_CLK		173
-+#define MSM8937_GCC_BLSP1_QUP1_SPI_APPS_CLK		174
-+#define MSM8937_GCC_BLSP2_QUP4_I2C_APPS_CLK		175
-+#define MSM8937_GCC_BLSP2_QUP4_SPI_APPS_CLK		176
-+#define MSM8937_GCC_MDSS_BYTE1_CLK			177
-+#define MSM8937_GCC_MDSS_ESC1_CLK			178
-+#define MSM8937_GCC_MDSS_PCLK1_CLK			179
-+#define MSM8937_GCC_OXILI_AON_CLK			180
-+#define MSM8937_GCC_OXILI_TIMER_CLK			181
- 
- /* GCC block resets */
- #define GCC_CAMSS_MICRO_BCR			0
-@@ -187,5 +204,7 @@
- #define VENUS_GDSC				5
- #define VFE0_GDSC				6
- #define VFE1_GDSC				7
-+/* Additional MSM8937-specific GDSCs */
-+#define MSM8937_OXILI_CX_GDSC				8
- 
- #endif
-
--- 
-2.51.0
-
+Best regards,
+Krzysztof
