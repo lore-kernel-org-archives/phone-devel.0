@@ -1,127 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2866818E25;
-	Sun, 31 Aug 2025 17:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41E34C9D;
+	Sun, 31 Aug 2025 18:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756661201; cv=none; b=sYXou4D/A0EUVwHSJoGAQEn1pV6/HSPlG74zkcaQcEiZ7r+dkGobUtY34AtWfRjDj+S/EwPXuUcBE3L9FMGQd+Xu9xFHKylV3TCyIx0O6rJXOQgjX2rMWH8AOedI+JHvPYDo1sbPBAaeVuQVfWJEP73kyhGcGXObD0UaGuFMXmU=
+	t=1756665682; cv=none; b=KfSWqpVRkgEJegO8JhQXQgn5Pb/DK0l0nWi/2dfXB2sL/qICy8RvaGSyuoOSzbmfP7G335oLh5GDTA6aPlHL67Ste2859NNoRSjBRZvVjGiNeIxVc//gOfWLCiRYxPlYlEGYRf3tzfcwU2uzpkwXGc9cMV8L9rWQf3WSQzjncN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756661201; c=relaxed/simple;
-	bh=RRtiXiS/TOWMt2m/o+Byy9dAyID/y4LX9MHvorsPaJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=safV+/s2ayHuSE8es2nln67HH65qXLxlF2o1Zgg1j7DxEL0aybc7OGBe+Ctj5cFc8W9Gbr+Qive6ksIOaPbjKwY458lSQ7A8cRWQ+gMiHi82DhU2oQPM9lS5VIjA6VonBy6W2Re2bKuNurqo8/pNVVLpTujG48auwI1VRM5Hxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ty1p/t1y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756665682; c=relaxed/simple;
+	bh=3ulaAUwLjKwyirPYXg5KB2tvJFbgLTNO5Xg197tWOhE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=pVMs8rU9KzSubKwfZwb/gbYTbtCc8d0RiPcMG2KNl3O8JbMEgI+7ElvrZoLYi60sCsXslv/ygXUlf2NRa6VjwnpNnijv/MdQ65UiQTUCRwbylco8OL4sHaXtFMEWIeXaHue+ExhwNOqVvcU5DpsnLpq/oR0+i5IgOJau4txZaTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=YuhJeQBX; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ty1p/t1y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460ADC4CEED;
-	Sun, 31 Aug 2025 17:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756661200;
-	bh=RRtiXiS/TOWMt2m/o+Byy9dAyID/y4LX9MHvorsPaJk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ty1p/t1ymjGws9pPzqegwv9izBVk+ZO349PTvsl05400ObmEAdxlLB4GLTXF5wwmC
-	 5h+TW60rnnRXvrF2E0zq0Kr3Bcukeg/1WwlLtgY6R+a+qE1h4wsttzKuKiZsu0iZ1M
-	 eBw1mZebhOzOmKTAO5rSiKuwT16JI94QSMcmJsWhKTVEGQji1F5MhgKkiJ+N8IYdHK
-	 xu2QJ/V/eMMZuWTZZkaIk/EMQtoKJqJWDMqdy9HUpqfMdQfn6+c3xrXvasl/Sidmiq
-	 t4uxqkZzek7PxVR7ouQ7D4t8IJUFaNPPvGvUmpCD5vPLgzAiLS2JgXRe49zlU/PeaK
-	 edLEBEPkCrT7g==
-Message-ID: <f6b6a19a-1671-437c-8e49-9fc832c84931@kernel.org>
-Date: Sun, 31 Aug 2025 19:26:29 +0200
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="YuhJeQBX"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1756665626; x=1757965626;
+	bh=kvp+m2IH/Nu6Y42XqPQWfeU/misOBGTiGvTueZWq9fw=; h=From;
+	b=YuhJeQBXypTcdoTq1uBWERCZH61av7OFmbSbmz+z05qiVnTU5dDJTDuXvJpePf1zC
+	 w26pzbxLrQoKEGOAAz7oAsj++fZo1M4Skj0aTt77MyjI8lWaxZ/i/08X/Bbr7YbSph
+	 ygaRyUlzi9Z+OXPLYVIdDKZFOZBM2gV0OKH2vjUUGVuOVn+D3zvuVCDpFlpdsgtKbN
+	 /LLZtQPvgSVXtM4XUF1KLoFyRIvHKm+nR+qdLDwGx8e/6pxfU7XKG3xlhbE1+0m7gJ
+	 f4NFlqRpLmvvgqYrm8/TMgBF5jKPFIXTJl1MpjwHh5KfI54M/q3+YbvBL58lM3Idqs
+	 uLH4LLV+ON/YQ==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 57VIeOFW022739
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sun, 31 Aug 2025 20:40:26 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/7] dt-bindings: firmware: qcom,scm: Add MSM8937
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
- =?UTF-8?Q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
- Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>,
- Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Dmitry Baryshkov <lumag@kernel.org>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Robert Marko <robimarko@gmail.com>, Das Srinagesh <quic_gurus@quicinc.com>,
- Srinivas Kandagatla <srini@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux@mainlining.org
-References: <20250831-msm8937-v8-0-b7dcd63caaac@mainlining.org>
- <20250831-msm8937-v8-3-b7dcd63caaac@mainlining.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250831-msm8937-v8-3-b7dcd63caaac@mainlining.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Sun, 31 Aug 2025 20:40:24 +0200
+Message-Id: <DCGTZR10GTDE.2XI873Z676C08@matfyz.cz>
+Cc: "David Wronek" <david@mainlining.org>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] dt-bindings: mfd: 88pm886: Add #io-channel-cells
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+        "Jonathan
+ Cameron" <jic23@kernel.org>,
+        "David Lechner" <dlechner@baylibre.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        "Andy Shevchenko"
+ <andy@kernel.org>, "Lee Jones" <lee@kernel.org>,
+        "Rob Herring"
+ <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
+ <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
+In-Reply-To: <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
 
-On 31/08/2025 14:29, Barnabás Czémán wrote:
-> Add compatible for MSM8937.
-> 
-> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Duje Mihanovi=C4=87, 2025-08-31T12:33:04+02:00:
+> Add an #io-channel-cells property to the Marvell 88PM886 PMIC binding to
+> allow referencing the IO channels exposed by its GPADC.
+>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
 > ---
->  Documentation/devicetree/bindings/firmware/qcom,scm.yaml | 3 +++
->  1 file changed, 3 insertions(+)
+> v2:
+> - New patch
+> ---
+>  Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
