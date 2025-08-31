@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E238E2701D8;
-	Sun, 31 Aug 2025 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2866818E25;
+	Sun, 31 Aug 2025 17:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756658968; cv=none; b=nxpwphirKIp84ZCH5Ium77lteGXU0ThwoieQc7urdm21uGowrwLbHUTgMdLn2SPJ/FEisluZk7d6B7OzT1e8M+g5XJDgaZoOEDsRT6zK3DbQX28fInTGqUbcdQEilPCa9wHCkwKegn3qqQyNh3cqnQYBBlY9p3D5T3fjNHL/XpA=
+	t=1756661201; cv=none; b=sYXou4D/A0EUVwHSJoGAQEn1pV6/HSPlG74zkcaQcEiZ7r+dkGobUtY34AtWfRjDj+S/EwPXuUcBE3L9FMGQd+Xu9xFHKylV3TCyIx0O6rJXOQgjX2rMWH8AOedI+JHvPYDo1sbPBAaeVuQVfWJEP73kyhGcGXObD0UaGuFMXmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756658968; c=relaxed/simple;
-	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
+	s=arc-20240116; t=1756661201; c=relaxed/simple;
+	bh=RRtiXiS/TOWMt2m/o+Byy9dAyID/y4LX9MHvorsPaJk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LA/SecWBgt7p4MsAXp9tBR/xfPDXfDxqj/au4OxsNQwGElTjNXKC2c5GPDgH9LLlx++wvgadIgqUkaCDKG9tGT9SBxUE7+kiM1A+27X3eFDHjJJHdhwsrlwv978sw04GC70k/JMvFHZWW4Sd4Z2RM3otL7G8KJvaMW3W95cOPO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmd8d66u; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=safV+/s2ayHuSE8es2nln67HH65qXLxlF2o1Zgg1j7DxEL0aybc7OGBe+Ctj5cFc8W9Gbr+Qive6ksIOaPbjKwY458lSQ7A8cRWQ+gMiHi82DhU2oQPM9lS5VIjA6VonBy6W2Re2bKuNurqo8/pNVVLpTujG48auwI1VRM5Hxqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ty1p/t1y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmd8d66u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AB0C4CEED;
-	Sun, 31 Aug 2025 16:49:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ty1p/t1y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460ADC4CEED;
+	Sun, 31 Aug 2025 17:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756658967;
-	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
+	s=k20201202; t=1756661200;
+	bh=RRtiXiS/TOWMt2m/o+Byy9dAyID/y4LX9MHvorsPaJk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pmd8d66ups72nzH0C6pVm3GZY93jIJ3i5M5MIaPeJXuU2hzwzZWOwEdUkUe8gq/vW
-	 dOklp0lvl0Dns3KNPdtpweyezbHQnyiEZWDX8g9tEO8FZ7UAArN3DteJxmajyNju39
-	 bURYTJPm3wwktRJszAR0+dSEJXReymmhXpbXyJKxfYPKmg4AsyZwKCTHwg/BOS0E+1
-	 QST5r1YNd/MbMY/WGIvbu83NWTTXXMypchd2qv3Ez4UShWLrfsQHBGrhyMkzEdk1rU
-	 1lXjof4pPhwgAIYG/bnm8KwbfbM45UOmR0kffTGeyFgYrsf5UAa95pf84R3B9R1m7r
-	 J8lpvy366pFQQ==
-Message-ID: <b460d65a-8bce-4f5d-892b-39e05fbcd0a2@kernel.org>
-Date: Sun, 31 Aug 2025 18:49:21 +0200
+	b=ty1p/t1ymjGws9pPzqegwv9izBVk+ZO349PTvsl05400ObmEAdxlLB4GLTXF5wwmC
+	 5h+TW60rnnRXvrF2E0zq0Kr3Bcukeg/1WwlLtgY6R+a+qE1h4wsttzKuKiZsu0iZ1M
+	 eBw1mZebhOzOmKTAO5rSiKuwT16JI94QSMcmJsWhKTVEGQji1F5MhgKkiJ+N8IYdHK
+	 xu2QJ/V/eMMZuWTZZkaIk/EMQtoKJqJWDMqdy9HUpqfMdQfn6+c3xrXvasl/Sidmiq
+	 t4uxqkZzek7PxVR7ouQ7D4t8IJUFaNPPvGvUmpCD5vPLgzAiLS2JgXRe49zlU/PeaK
+	 edLEBEPkCrT7g==
+Message-ID: <f6b6a19a-1671-437c-8e49-9fc832c84931@kernel.org>
+Date: Sun, 31 Aug 2025 19:26:29 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,18 +35,34 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: mfd: 88pm886: Add #io-channel-cells
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
- <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
+Subject: Re: [PATCH v8 3/7] dt-bindings: firmware: qcom,scm: Add MSM8937
+To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
+ =?UTF-8?Q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+ Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Dmitry Baryshkov <lumag@kernel.org>, Rob Clark
+ <robin.clark@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Robert Marko <robimarko@gmail.com>, Das Srinagesh <quic_gurus@quicinc.com>,
+ Srinivas Kandagatla <srini@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux@mainlining.org
+References: <20250831-msm8937-v8-0-b7dcd63caaac@mainlining.org>
+ <20250831-msm8937-v8-3-b7dcd63caaac@mainlining.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,15 +108,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
+In-Reply-To: <20250831-msm8937-v8-3-b7dcd63caaac@mainlining.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 31/08/2025 12:33, Duje Mihanović wrote:
-> Add an #io-channel-cells property to the Marvell 88PM886 PMIC binding to
-> allow referencing the IO channels exposed by its GPADC.
+On 31/08/2025 14:29, Barnabás Czémán wrote:
+> Add compatible for MSM8937.
 > 
-> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> ---
+>  Documentation/devicetree/bindings/firmware/qcom,scm.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
