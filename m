@@ -1,996 +1,696 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BECC25785E;
-	Sat, 30 Aug 2025 22:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F002A22154B
+	for <phone-devel@vger.kernel.org>; Sun, 31 Aug 2025 10:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756594293; cv=none; b=mb6VAd9XZDhpWbsqMLyT3rHjBxV1bnVqWoXUcdFCpNvRd3jpRdAwos2eWrea13dLOmQc1sgt3kaqkhgBdHob9W0DcYkBAMKgwh58JjGx9OBNOEs6J9rpLetvLvTDMgexFvffUNoHDOrAB7PFmL+mJMOENAfW9F70yt16pRK6wH8=
+	t=1756634432; cv=none; b=sDJGBI8UJChuATNdU75NzYWRIY4ls6bITAZqOQtvtP7LRuTfB1T7/giZ17+wLitZAaCeOVWBFC8gc6PR+7Be+Z3WZpp3CS5bSmWsOLbS9PhTja5Fbrn4P2Zblmis8HRp62H7xwqf+8o4udf4T3ZEMnKJTaHNrv1wQzuFTZRfVmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756594293; c=relaxed/simple;
-	bh=+ChvnVhjDrbC8X6g4Idij7M6cRCI6ZD/pyjFHoiiod0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s78Gam6GRECy1Q5m+fddNbAqvEfGApiJas8hOFk/ph1pEDWVDHv9v7O8Pl1k0gvoLFtE3yJx9OHYEvWiF5qLyHUWfsy2wVCXmhzwlxLLIpuhcfJcUQVURzcOMQNnAtI8kv01upMUW/DZTn7p6OWXzn8PBDyYjl2uAxd7Yl3poa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=g3cu9yVk; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=3nxQIofJ; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1756634432; c=relaxed/simple;
+	bh=iFmbQb9JSPT9Qnq1c89NuEhFG4tIwLVQr7w8umJhtYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SVn+qaEHFGaaOhGCNQEP8IfbicTvHsQI/h47I3hnIidWcdQKtc9J09F8JGphxi7NuOzmgRboa9A/zQQyG5xPed/sPjo4lBVRK+cqsmj8mTTFkIZ3gW4oYsfY0RzjfwWT+LaYc39nZ3PlB6dI9xb4NoO5JINo4cSa+5eW2PU4VLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kg/QekD6; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="g3cu9yVk";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="3nxQIofJ"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1756593504; bh=Xsd7+bBBC8QfJD56Rt5bDFh
-	lGwWmileHCwDuLOnT9k8=; b=g3cu9yVkR8pRBru5IknV75CjHQM/uLJooEGI4juzLH71610pYP
-	eF2pQS4JNRZ3usIWCb4oaz+Uhcs0wjdwhP1c/VoMsET8HEsUIG/xXxECX2FbSuKJsVXt5XddEKg
-	iN2lBnDle0fMvX5+9cJedEttFOrX2HbXp7JlqkNO/EtAxFVYCsAmTGEy+L44NQQy82zYI8wiDVJ
-	RrmA571755oJkxIDkVO+JD4fFnKNrXkGnKjkTwHdF0MqQUejnUQ8KT029+fZBASrmQZ9zKMJjvc
-	4dOMmrj3ObRFgqxcPWSLSzzfHLKEc7j6x/Gu4muACtznx1S1ZC4M30MY4W3W4F/yrsw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1756593504; bh=Xsd7+bBBC8QfJD56Rt5bDFh
-	lGwWmileHCwDuLOnT9k8=; b=3nxQIofJrGSpzArgIEpZHwyW8cI24Q2NdUUQ4IeUSlMV/Djopc
-	mGoDGJ3ogrKXK3TZv25Aa1G3whZdApw8nYCQ==;
-From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Sun, 31 Aug 2025 00:38:14 +0200
-Subject: [PATCH v7 2/6] clk: qcom: gcc: Add support for Global Clock
- controller found on MSM8937
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kg/QekD6"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57V9LaZc000811
+	for <phone-devel@vger.kernel.org>; Sun, 31 Aug 2025 10:00:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qD5oRl6PaN2DjJNUuUSysf512mj6mjwHEypDav6WIT4=; b=kg/QekD6M8g46WOp
+	Ex/OpvguNct1GPmddlTPxc0VbSNcgUL1OUGaOQ1UKSspO/dLtVwW27H/oIQFn0oV
+	3iTHam2elpP1qaggWIkGaiYRcp29t3jX47YAHmk3vpb2SRYg1KbfOfapGsjlwb92
+	M26mbUsLRojMQH/Wx1BSKqOzCIAY01SJ0uxlEljF22YI6NR/OLvNYJauNst8LZbZ
+	6AagqSqgaFZlj//rR+CFLVXbgO+rfVMZYyUatbWIZQUfOR0sLrP6gx4bHx+TXn1u
+	5bBD0RDjnMkbJp+8io56Mqf2ca0A/wSizlD0UgeaXuqmDr13lziooGXMS45bv1IO
+	le1Wuw==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urvysw0p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sun, 31 Aug 2025 10:00:29 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b32d323297so5811031cf.1
+        for <phone-devel@vger.kernel.org>; Sun, 31 Aug 2025 03:00:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756634428; x=1757239228;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qD5oRl6PaN2DjJNUuUSysf512mj6mjwHEypDav6WIT4=;
+        b=ghmeerh2BS5x44CO5uMPvvzNSErw1IzqDutrkOM06S2Tl6WvB0VbYRXNiVgz9q49xx
+         sxHHFNLFYOxstBgii3dXbfeZ4lW7H5yKSnC65bFsFgit0rtPO1ZOCEjNta3vEwRSpQ/K
+         Tm7+BRiSPg6+gLRG5UyBUGsCDaOI7Nk9grd+QYNQyMy9ZMYTtRMe+rEPbzBihI9DeTau
+         vupcMtdlGtTO7LQZhbi8cevExixD4OXJeu1YwyetB8+syHwNEg894H/TG+zjih5cpI53
+         B+ey4TwBNx679hq3Z4tA+qKIspl65Tgd2nsY9HxEbJWYspBUP58/0Rd6++c5ZNrEZLBd
+         pOeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0I4N/0aMBbdRENgwJpM69qCqIWUE07PLtL9ZO9SuoRZwzZP8s4xjz2dvObc/niUOVZ2otVwr7/MzApA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBZDMiyiYD6CedYSI2WzZE2rZinAMlLb90zLnm1E/WuKDkdbdt
+	rgmUv4uLkRjg3TQ3NmWZ3bJZWtZilslvloI9kMcZSmSFjtXTTMKaZwjPYKkUlHhUtgd8GL27DTL
+	R5xPaw47FeSTNKYW6kF4kQsQZGIUVRIyqlg2dPUcQQnnCHD8CJzXWCsDIzFKY70f7Ag==
+X-Gm-Gg: ASbGncucga//4IdtxyjjBNhhMIbVpCFSVUxesx2nflfrUbbp065pibL4FeaGCX4Nhv/
+	zyGvzeFa8KtIe0X45dIr+v6Ew9Td6fF0XEft6fUFmDmC9H5eFPRR/FNi67bD4nwdmp5Vw9jIZZo
+	AVRNGE4YcnQ5Ab+zgv15ZpLfXFaV0hoqsRxjOEJ2Y7+ekP28npI7axR4oPv6FFYVxlLII9BRD13
+	n/I8BAsCbO5MfwVD0DTdYenhqkuck0G94D/xbyrwrxmGYQ76/xewc86rmgMxCO8cgPVfrKNAZTS
+	s2zTcNa2vjVM5OL+UHyPuJnpbJI8lTZ9EfzhE/6lXKp4txmu9p/CT0MP4SgoPqREmgsNfHwgw4F
+	PmbFjRG9rFUGZ4PXbmPErYM3hy4Ed0DQIfdp2eH279Fkm9jz0cKr6
+X-Received: by 2002:a05:622a:1812:b0:4b2:94e5:9847 with SMTP id d75a77b69052e-4b31dcac538mr59712711cf.74.1756634428124;
+        Sun, 31 Aug 2025 03:00:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFpiHqGgSFYOFPDu7JwQJBWckE87BwsT8u/A9LiwCj49Zah2l6SdAxeMKGdwGN9bMfC2Cr/A==
+X-Received: by 2002:a05:622a:1812:b0:4b2:94e5:9847 with SMTP id d75a77b69052e-4b31dcac538mr59711811cf.74.1756634427339;
+        Sun, 31 Aug 2025 03:00:27 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f79801b2csm257066e87.117.2025.08.31.03.00.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 03:00:26 -0700 (PDT)
+Date: Sun, 31 Aug 2025 13:00:23 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Otto =?utf-8?Q?Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+        Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Adam Skladowski <a_skl39@protonmail.com>,
+        Sireesh Kodali <sireeshkodali@protonmail.com>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+        Srinivas Kandagatla <srini@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        iommu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
+        Dang Huynh <danct12@riseup.net>
+Subject: Re: [PATCH v7 4/6] arm64: dts: qcom: Add initial support for MSM8937
+Message-ID: <fv4jz6unxpncqazgptet4ie67vdrqqnq3owpjuh7huqvepoozd@yelivqgci2om>
+References: <20250831-msm8937-v7-0-232a9fb19ab7@mainlining.org>
+ <20250831-msm8937-v7-4-232a9fb19ab7@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250831-msm8937-v7-2-232a9fb19ab7@mainlining.org>
-References: <20250831-msm8937-v7-0-232a9fb19ab7@mainlining.org>
-In-Reply-To: <20250831-msm8937-v7-0-232a9fb19ab7@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, 
- =?utf-8?q?Otto_Pfl=C3=BCger?= <otto.pflueger@abscue.de>, 
- Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>, 
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
- Sean Paul <sean@poorly.run>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Adam Skladowski <a_skl39@protonmail.com>, 
- Sireesh Kodali <sireeshkodali@protonmail.com>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Srinivas Kandagatla <srini@kernel.org>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, iommu@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- linux@mainlining.org, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
- Daniil Titov <daniilt971@gmail.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756593498; l=30637;
- i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=6PPGqcunREI/Dc6bwQw/3mJ+6PxNgSLlxJYGDC1bq+c=;
- b=Zfoo6dBN0OZZ5oYne+j7VTy4BM/dc8AKMyev5TAZO1Ki0E3E9rcp/gLIv2dHY6QJl0c6UJxUI
- gAyqmYXEXA+CjZ9Zo3oZyIdQhyn3Pfg5i34EtB11E+m59hMIU5Jd9YQ
-X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
- pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
+In-Reply-To: <20250831-msm8937-v7-4-232a9fb19ab7@mainlining.org>
+X-Proofpoint-GUID: g7Fa6edYCUeCJy10cTvXpJgZHfe53-2H
+X-Proofpoint-ORIG-GUID: g7Fa6edYCUeCJy10cTvXpJgZHfe53-2H
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfXyx1YsXYJkWem
+ weJG+KYA8GTbUw9dwqRBLPPCte+Ht7NAUX6YOw42GgY6A1HRcDWtf1zBnhJ7DWhUPqm0SVRszFK
+ xa2ifvBsCa6QRq6avEQgABW/rveogtiV1gvzJ8mj4GdIWMy1bDoggbxZCBM0qIG7j0fIGBsODBS
+ aoDoPuu1LWuTggyPo1pxt41qBxBLZC0cl8K2ONHpS25Kx/bJ+JaozR80srKKx+xEDCQ2lHDLzQN
+ gZjrQezy6ADQbocHvRS8nsW9k6sfwjurFsgS7t1ssi9s9/1+0+r7KuN3kDlZpI31exa2ILUyKSS
+ qC+iyI+B8aGcHzvf3EEzOU35EdLsWDJjPbhSKVqOe5CffZ+VlA5atZeeT6zJvBWjQHcGqs2UGQG
+ QUfnnkr4
+X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b41d3d cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=2OwXVqhp2XgA:10 a=bBqXziUQAAAA:8 a=OuZLqq7tAAAA:8 a=BfrjIcddtau6jJL3F9YA:9
+ a=r_sqX3LX-aZnKoI4:21 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=a_PwQJl-kcHnX1M80qC6:22 a=BjKv_IHbNJvPKzgot4uq:22 a=AKGiAy9iJ-JzxKVHQNES:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-31_04,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300027
 
-From: Daniil Titov <daniilt971@gmail.com>
+On Sun, Aug 31, 2025 at 12:38:16AM +0200, Barnab·s CzÈm·n wrote:
+> From: Dang Huynh <danct12@riseup.net>
+> 
+> Add initial support for MSM8937 SoC.
+> 
+> Signed-off-by: Dang Huynh <danct12@riseup.net>
+> Co-developed-by: Barnab·s CzÈm·n <barnabas.czeman@mainlining.org>
+> Signed-off-by: Barnab·s CzÈm·n <barnabas.czeman@mainlining.org>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8937.dtsi | 2134 +++++++++++++++++++++++++++++++++
+>  1 file changed, 2134 insertions(+)
 
-Modify existing MSM8917 driver to support MSM8937 SoC. Override frequencies
-which are different in this chip. Register all the clocks to the framework
-for the clients to be able to request for them. Add new variant of GDSC for
-new chip.
+> +	};
+> +
+> +
+> +	firmware {
+> +		scm: scm {
+> +			compatible = "qcom,scm-msm8916", "qcom,scm";
 
-Signed-off-by: Daniil Titov <daniilt971@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Barnab√°s Cz√©m√°n <barnabas.czeman@mainlining.org>
----
- drivers/clk/qcom/Kconfig       |   6 +-
- drivers/clk/qcom/gcc-msm8917.c | 617 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 616 insertions(+), 7 deletions(-)
+"qcom,scm-msm8937", "qcom,scm"
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index aeb6197d7c902098459c9b2cba75072bd519b0f3..e5de50354125445edcfdcfa03aa218ee66859b9a 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -332,12 +332,12 @@ config MSM_GCC_8916
- 	  SD/eMMC, display, graphics, camera etc.
- 
- config MSM_GCC_8917
--	tristate "MSM8917/QM215 Global Clock Controller"
-+	tristate "MSM89(17/37)/QM215 Global Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
- 	select QCOM_GDSC
- 	help
--	  Support for the global clock controller on msm8917 and qm215
--	  devices.
-+	  Support for the global clock controller on msm8917, msm8937
-+	  and qm215 devices.
- 	  Say Y if you want to use devices such as UART, SPI i2c, USB,
- 	  SD/eMMC, display, graphics, camera etc.
- 
-diff --git a/drivers/clk/qcom/gcc-msm8917.c b/drivers/clk/qcom/gcc-msm8917.c
-index 3e2a2ae2ee6e9e647fb68c493ae7b0e49af79968..0a1aa623cd49af55d9d81148df7809b170fea60b 100644
---- a/drivers/clk/qcom/gcc-msm8917.c
-+++ b/drivers/clk/qcom/gcc-msm8917.c
-@@ -37,6 +37,8 @@ enum {
- 	DT_SLEEP_CLK,
- 	DT_DSI0PLL,
- 	DT_DSI0PLL_BYTE,
-+	DT_DSI1PLL,
-+	DT_DSI1PLL_BYTE,
- };
- 
- enum {
-@@ -48,6 +50,8 @@ enum {
- 	P_GPLL6,
- 	P_DSI0PLL,
- 	P_DSI0PLL_BYTE,
-+	P_DSI1PLL,
-+	P_DSI1PLL_BYTE,
- };
- 
- static struct clk_alpha_pll gpll0_sleep_clk_src = {
-@@ -102,7 +106,11 @@ static const struct pll_vco gpll3_p_vco[] = {
- 	{ 700000000, 1400000000, 0 },
- };
- 
--static const struct alpha_pll_config gpll3_early_config = {
-+static const struct pll_vco gpll3_p_vco_msm8937[] = {
-+	{ 525000000, 1066000000, 0 },
-+};
-+
-+static struct alpha_pll_config gpll3_early_config = {
- 	.l = 63,
- 	.config_ctl_val = 0x4001055b,
- 	.early_output_mask = 0,
-@@ -273,6 +281,19 @@ static const struct freq_tbl ftbl_blsp_i2c_apps_clk_src[] = {
- 	{ }
- };
- 
-+static struct clk_rcg2 blsp1_qup1_i2c_apps_clk_src = {
-+	.cmd_rcgr = 0x0200c,
-+	.hid_width = 5,
-+	.freq_tbl = ftbl_blsp_i2c_apps_clk_src,
-+	.parent_map = gcc_xo_gpll0_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "blsp1_qup1_i2c_apps_clk_src",
-+		.parent_data = gcc_xo_gpll0_data,
-+		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_data),
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
- static struct clk_rcg2 blsp1_qup2_i2c_apps_clk_src = {
- 	.cmd_rcgr = 0x03000,
- 	.hid_width = 5,
-@@ -351,6 +372,19 @@ static struct clk_rcg2 blsp2_qup3_i2c_apps_clk_src = {
- 	}
- };
- 
-+static struct clk_rcg2 blsp2_qup4_i2c_apps_clk_src = {
-+	.cmd_rcgr = 0x18000,
-+	.hid_width = 5,
-+	.freq_tbl = ftbl_blsp_i2c_apps_clk_src,
-+	.parent_map = gcc_xo_gpll0_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "blsp2_qup4_i2c_apps_clk_src",
-+		.parent_data = gcc_xo_gpll0_data,
-+		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_data),
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
- static const struct freq_tbl ftbl_blsp_spi_apps_clk_src[] = {
- 	F(960000, P_XO, 10, 1, 2),
- 	F(4800000, P_XO, 4, 0, 0),
-@@ -362,6 +396,20 @@ static const struct freq_tbl ftbl_blsp_spi_apps_clk_src[] = {
- 	{ }
- };
- 
-+static struct clk_rcg2 blsp1_qup1_spi_apps_clk_src = {
-+	.cmd_rcgr = 0x02024,
-+	.mnd_width = 8,
-+	.hid_width = 5,
-+	.freq_tbl = ftbl_blsp_spi_apps_clk_src,
-+	.parent_map = gcc_xo_gpll0_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "blsp1_qup1_spi_apps_clk_src",
-+		.parent_data = gcc_xo_gpll0_data,
-+		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_data),
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
- static struct clk_rcg2 blsp1_qup2_spi_apps_clk_src = {
- 	.cmd_rcgr = 0x03014,
- 	.hid_width = 5,
-@@ -446,6 +494,20 @@ static struct clk_rcg2 blsp2_qup3_spi_apps_clk_src = {
- 	}
- };
- 
-+static struct clk_rcg2 blsp2_qup4_spi_apps_clk_src = {
-+	.cmd_rcgr = 0x18024,
-+	.mnd_width = 8,
-+	.hid_width = 5,
-+	.freq_tbl = ftbl_blsp_spi_apps_clk_src,
-+	.parent_map = gcc_xo_gpll0_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "blsp2_qup4_spi_apps_clk_src",
-+		.parent_data = gcc_xo_gpll0_data,
-+		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_data),
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
- static const struct freq_tbl ftbl_blsp_uart_apps_clk_src[] = {
- 	F(3686400, P_GPLL0, 1, 72, 15625),
- 	F(7372800, P_GPLL0, 1, 144, 15625),
-@@ -525,11 +587,19 @@ static struct clk_rcg2 blsp2_uart2_apps_clk_src = {
- static const struct parent_map gcc_byte0_map[] = {
- 	{ P_XO, 0 },
- 	{ P_DSI0PLL_BYTE, 1 },
-+	{ P_DSI1PLL_BYTE, 3 },
-+};
-+
-+static const struct parent_map gcc_byte1_map[] = {
-+	{ P_XO, 0 },
-+	{ P_DSI0PLL_BYTE, 3 },
-+	{ P_DSI1PLL_BYTE, 1 },
- };
- 
- static const struct clk_parent_data gcc_byte_data[] = {
- 	{ .index = DT_XO },
- 	{ .index = DT_DSI0PLL_BYTE },
-+	{ .index = DT_DSI1PLL_BYTE },
- };
- 
- static struct clk_rcg2 byte0_clk_src = {
-@@ -545,6 +615,19 @@ static struct clk_rcg2 byte0_clk_src = {
- 	}
- };
- 
-+static struct clk_rcg2 byte1_clk_src = {
-+	.cmd_rcgr = 0x4d0b0,
-+	.hid_width = 5,
-+	.parent_map = gcc_byte1_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "byte1_clk_src",
-+		.parent_data = gcc_byte_data,
-+		.num_parents = ARRAY_SIZE(gcc_byte_data),
-+		.ops = &clk_byte2_ops,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+};
-+
- static const struct freq_tbl ftbl_camss_gp_clk_src[] = {
- 	F(100000000, P_GPLL0, 8, 0, 0),
- 	F(160000000, P_GPLL0, 5, 0, 0),
-@@ -642,6 +725,17 @@ static const struct freq_tbl ftbl_cpp_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_cpp_clk_src_msm8937[] = {
-+	F(133330000, P_GPLL0, 6, 0, 0),
-+	F(160000000, P_GPLL0, 5, 0, 0),
-+	F(200000000, P_GPLL0, 5, 0, 0),
-+	F(266666667, P_GPLL0, 3, 0, 0),
-+	F(308570000, P_GPLL6, 3.5, 0, 0),
-+	F(320000000, P_GPLL0, 2.5, 0, 0),
-+	F(360000000, P_GPLL6, 3, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 cpp_clk_src = {
- 	.cmd_rcgr = 0x58018,
- 	.hid_width = 5,
-@@ -655,6 +749,13 @@ static struct clk_rcg2 cpp_clk_src = {
- 	}
- };
- 
-+static struct clk_init_data vcodec0_clk_src_init_msm8937 = {
-+	.name = "vcodec0_clk_src",
-+	.parent_data = gcc_cpp_data,
-+	.num_parents = ARRAY_SIZE(gcc_cpp_data),
-+	.ops = &clk_rcg2_ops,
-+};
-+
- static const struct freq_tbl ftbl_crypto_clk_src[] = {
- 	F(50000000, P_GPLL0, 16, 0, 0),
- 	F(80000000, P_GPLL0, 10, 0, 0),
-@@ -730,6 +831,13 @@ static const struct freq_tbl ftbl_csi_phytimer_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_csi_phytimer_clk_src_msm8937[] = {
-+	F(100000000, P_GPLL0, 8, 0, 0),
-+	F(160000000, P_GPLL0, 5, 0, 0),
-+	F(200000000, P_GPLL0, 4, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 csi0phytimer_clk_src = {
- 	.cmd_rcgr = 0x4e000,
- 	.hid_width = 5,
-@@ -774,6 +882,19 @@ static struct clk_rcg2 esc0_clk_src = {
- 	}
- };
- 
-+static struct clk_rcg2 esc1_clk_src = {
-+	.cmd_rcgr = 0x4d0a8,
-+	.hid_width = 5,
-+	.freq_tbl = ftbl_esc0_1_clk_src,
-+	.parent_map = gcc_xo_gpll0_out_aux_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "esc1_clk_src",
-+		.parent_data = gcc_xo_gpll0_data,
-+		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_data),
-+		.ops = &clk_rcg2_ops,
-+	},
-+};
-+
- static const struct parent_map gcc_gfx3d_map[] = {
- 	{ P_XO, 0 },
- 	{ P_GPLL0, 1 },
-@@ -817,6 +938,25 @@ static const struct freq_tbl ftbl_gfx3d_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_gfx3d_clk_src_msm8937[] = {
-+	F(19200000, P_XO, 1, 0, 0),
-+	F(50000000, P_GPLL0, 16, 0, 0),
-+	F(80000000, P_GPLL0, 10, 0, 0),
-+	F(100000000, P_GPLL0, 8, 0, 0),
-+	F(160000000, P_GPLL0, 5, 0, 0),
-+	F(200000000, P_GPLL0, 4, 0, 0),
-+	F(216000000, P_GPLL6, 5, 0, 0),
-+	F(228570000, P_GPLL0, 3.5, 0, 0),
-+	F(240000000, P_GPLL6, 4.5, 0, 0),
-+	F(266670000, P_GPLL0, 3, 0, 0),
-+	F(300000000, P_GPLL3, 1, 0, 0),
-+	F(320000000, P_GPLL0, 2.5, 0, 0),
-+	F(375000000, P_GPLL3, 1, 0, 0),
-+	F(400000000, P_GPLL0, 2, 0, 0),
-+	F(450000000, P_GPLL3, 1, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 gfx3d_clk_src = {
- 	.cmd_rcgr = 0x59000,
- 	.hid_width = 5,
-@@ -973,21 +1113,29 @@ static struct clk_rcg2 mdp_clk_src = {
- 	}
- };
- 
--static const struct parent_map gcc_pclk_map[] = {
-+static const struct parent_map gcc_pclk0_map[] = {
- 	{ P_XO, 0 },
- 	{ P_DSI0PLL, 1 },
-+	{ P_DSI1PLL, 3 },
-+};
-+
-+static const struct parent_map gcc_pclk1_map[] = {
-+	{ P_XO, 0 },
-+	{ P_DSI0PLL, 3 },
-+	{ P_DSI1PLL, 1 },
- };
- 
- static const struct clk_parent_data gcc_pclk_data[] = {
- 	{ .index = DT_XO },
- 	{ .index = DT_DSI0PLL },
-+	{ .index = DT_DSI1PLL },
- };
- 
- static struct clk_rcg2 pclk0_clk_src = {
- 	.cmd_rcgr = 0x4d000,
- 	.hid_width = 5,
- 	.mnd_width = 8,
--	.parent_map = gcc_pclk_map,
-+	.parent_map = gcc_pclk0_map,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "pclk0_clk_src",
- 		.parent_data = gcc_pclk_data,
-@@ -997,6 +1145,20 @@ static struct clk_rcg2 pclk0_clk_src = {
- 	}
- };
- 
-+static struct clk_rcg2 pclk1_clk_src = {
-+	.cmd_rcgr = 0x4d0b8,
-+	.hid_width = 5,
-+	.mnd_width = 8,
-+	.parent_map = gcc_pclk1_map,
-+	.clkr.hw.init = &(struct clk_init_data){
-+		.name = "pclk1_clk_src",
-+		.parent_data = gcc_pclk_data,
-+		.num_parents = ARRAY_SIZE(gcc_pclk_data),
-+		.ops = &clk_pixel_ops,
-+		.flags = CLK_SET_RATE_PARENT,
-+	},
-+};
-+
- static const struct freq_tbl ftbl_pdm2_clk_src[] = {
- 	F(64000000, P_GPLL0, 12.5, 0, 0),
- 	{ }
-@@ -1108,6 +1270,14 @@ static const struct freq_tbl ftbl_usb_hs_system_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_usb_hs_system_clk_src_msm8937[] = {
-+	F(57142857, P_GPLL0, 14, 0, 0),
-+	F(100000000, P_GPLL0, 8, 0, 0),
-+	F(133333333, P_GPLL0, 6, 0, 0),
-+	F(177777778, P_GPLL0, 4.5, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 usb_hs_system_clk_src = {
- 	.cmd_rcgr = 0x41010,
- 	.hid_width = 5,
-@@ -1132,6 +1302,15 @@ static const struct freq_tbl ftbl_vcodec0_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_vcodec0_clk_src_msm8937[] = {
-+	F(166150000, P_GPLL6, 6.5, 0, 0),
-+	F(240000000, P_GPLL6, 4.5, 0, 0),
-+	F(308571428, P_GPLL6, 3.5, 0, 0),
-+	F(320000000, P_GPLL0, 2.5, 0, 0),
-+	F(360000000, P_GPLL6, 3, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 vcodec0_clk_src = {
- 	.cmd_rcgr = 0x4c000,
- 	.hid_width = 5,
-@@ -1160,6 +1339,23 @@ static const struct freq_tbl ftbl_vfe_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_vfe_clk_src_msm8937[] = {
-+	F(50000000, P_GPLL0, 16, 0, 0),
-+	F(80000000, P_GPLL0, 10, 0, 0),
-+	F(100000000, P_GPLL0, 8, 0, 0),
-+	F(133333333, P_GPLL0, 6, 0, 0),
-+	F(160000000, P_GPLL0, 5, 0, 0),
-+	F(177777778, P_GPLL0, 4.5, 0, 0),
-+	F(200000000, P_GPLL0, 4, 0, 0),
-+	F(266666667, P_GPLL0, 3, 0, 0),
-+	F(308571428, P_GPLL6, 3.5, 0, 0),
-+	F(320000000, P_GPLL0, 2.5, 0, 0),
-+	F(360000000, P_GPLL6, 3, 0, 0),
-+	F(400000000, P_GPLL0, 2, 0, 0),
-+	F(432000000, P_GPLL6, 2.5, 0, 0),
-+	{ }
-+};
-+
- static struct clk_rcg2 vfe0_clk_src = {
- 	.cmd_rcgr = 0x58000,
- 	.hid_width = 5,
-@@ -1269,6 +1465,24 @@ static struct clk_branch gcc_blsp2_ahb_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_blsp1_qup1_i2c_apps_clk = {
-+	.halt_reg = 0x02008,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x02008,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_blsp1_qup1_i2c_apps_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&blsp1_qup1_i2c_apps_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_blsp1_qup2_i2c_apps_clk = {
- 	.halt_reg = 0x03010,
- 	.halt_check = BRANCH_HALT,
-@@ -1377,6 +1591,42 @@ static struct clk_branch gcc_blsp2_qup3_i2c_apps_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_blsp2_qup4_i2c_apps_clk = {
-+	.halt_reg = 0x18020,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x18020,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_blsp2_qup4_i2c_apps_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&blsp2_qup4_i2c_apps_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
-+static struct clk_branch gcc_blsp1_qup1_spi_apps_clk = {
-+	.halt_reg = 0x02004,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x02004,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_blsp1_qup1_spi_apps_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&blsp1_qup1_spi_apps_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_blsp1_qup2_spi_apps_clk = {
- 	.halt_reg = 0x0300c,
- 	.halt_check = BRANCH_HALT,
-@@ -1485,6 +1735,24 @@ static struct clk_branch gcc_blsp2_qup3_spi_apps_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_blsp2_qup4_spi_apps_clk = {
-+	.halt_reg = 0x1801c,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x1801c,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_blsp2_qup4_spi_apps_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&blsp2_qup4_spi_apps_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_blsp1_uart1_apps_clk = {
- 	.halt_reg = 0x0203c,
- 	.halt_check = BRANCH_HALT,
-@@ -2521,6 +2789,24 @@ static struct clk_branch gcc_mdss_byte0_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_mdss_byte1_clk = {
-+	.halt_reg = 0x4d0a0,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x4d0a0,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_mdss_byte1_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&byte1_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_mdss_esc0_clk = {
- 	.halt_reg = 0x4d098,
- 	.halt_check = BRANCH_HALT,
-@@ -2539,6 +2825,24 @@ static struct clk_branch gcc_mdss_esc0_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_mdss_esc1_clk = {
-+	.halt_reg = 0x4d09c,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x4d09c,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_mdss_esc1_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&esc1_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_mdss_mdp_clk = {
- 	.halt_reg = 0x4d088,
- 	.halt_check = BRANCH_HALT,
-@@ -2575,6 +2879,24 @@ static struct clk_branch gcc_mdss_pclk0_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_mdss_pclk1_clk = {
-+	.halt_reg = 0x4d0a4,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x4d0a4,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_mdss_pclk1_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&pclk1_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_mdss_vsync_clk = {
- 	.halt_reg = 0x4d090,
- 	.halt_check = BRANCH_HALT,
-@@ -2632,6 +2954,24 @@ static struct clk_branch gcc_oxili_ahb_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_oxili_aon_clk = {
-+	.halt_reg = 0x5904c,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x5904c,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_oxili_aon_clk",
-+			.parent_hws = (const struct clk_hw*[]){
-+				&gfx3d_clk_src.clkr.hw,
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+			.flags = CLK_SET_RATE_PARENT,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_oxili_gfx3d_clk = {
- 	.halt_reg = 0x59020,
- 	.halt_check = BRANCH_HALT,
-@@ -2650,6 +2990,19 @@ static struct clk_branch gcc_oxili_gfx3d_clk = {
- 	}
- };
- 
-+static struct clk_branch gcc_oxili_timer_clk = {
-+	.halt_reg = 0x59040,
-+	.halt_check = BRANCH_HALT,
-+	.clkr = {
-+		.enable_reg = 0x59040,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_oxili_timer_clk",
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_pdm2_clk = {
- 	.halt_reg = 0x4400c,
- 	.halt_check = BRANCH_HALT,
-@@ -3027,6 +3380,28 @@ static struct gdsc oxili_gx_gdsc = {
- 	.flags = CLAMP_IO,
- };
- 
-+static struct gdsc oxili_gx_gdsc_msm8937 = {
-+	.gdscr = 0x5901c,
-+	.clamp_io_ctrl = 0x5b00c,
-+	.cxcs = (unsigned int []){ 0x59000 },
-+	.cxc_count = 1,
-+	.pd = {
-+		.name = "oxili_gx_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = CLAMP_IO,
-+};
-+
-+static struct gdsc oxili_cx_gdsc = {
-+	.gdscr = 0x59044,
-+	.cxcs = (unsigned int []){ 0x59020 },
-+	.cxc_count = 1,
-+	.pd = {
-+		.name = "oxili_cx_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+};
-+
- static struct gdsc cpp_gdsc = {
- 	.gdscr = 0x58078,
- 	.cxcs = (unsigned int []){ 0x5803c, 0x58064 },
-@@ -3207,6 +3582,188 @@ static struct clk_regmap *gcc_msm8917_clocks[] = {
- 	[GCC_VFE_TBU_CLK] = &gcc_vfe_tbu_clk.clkr,
- };
- 
-+static struct clk_regmap *gcc_msm8937_clocks[] = {
-+	[GPLL0] = &gpll0.clkr,
-+	[GPLL0_EARLY] = &gpll0_early.clkr,
-+	[GPLL0_SLEEP_CLK_SRC] = &gpll0_sleep_clk_src.clkr,
-+	[GPLL3] = &gpll3.clkr,
-+	[GPLL3_EARLY] = &gpll3_early.clkr,
-+	[GPLL4] = &gpll4.clkr,
-+	[GPLL4_EARLY] = &gpll4_early.clkr,
-+	[GPLL6] = &gpll6,
-+	[GPLL6_EARLY] = &gpll6_early.clkr,
-+	[APSS_AHB_CLK_SRC] = &apss_ahb_clk_src.clkr,
-+	[MSM8937_BLSP1_QUP1_I2C_APPS_CLK_SRC] = &blsp1_qup1_i2c_apps_clk_src.clkr,
-+	[MSM8937_BLSP1_QUP1_SPI_APPS_CLK_SRC] = &blsp1_qup1_spi_apps_clk_src.clkr,
-+	[BLSP1_QUP2_I2C_APPS_CLK_SRC] = &blsp1_qup2_i2c_apps_clk_src.clkr,
-+	[BLSP1_QUP2_SPI_APPS_CLK_SRC] = &blsp1_qup2_spi_apps_clk_src.clkr,
-+	[BLSP1_QUP3_I2C_APPS_CLK_SRC] = &blsp1_qup3_i2c_apps_clk_src.clkr,
-+	[BLSP1_QUP3_SPI_APPS_CLK_SRC] = &blsp1_qup3_spi_apps_clk_src.clkr,
-+	[BLSP1_QUP4_I2C_APPS_CLK_SRC] = &blsp1_qup4_i2c_apps_clk_src.clkr,
-+	[BLSP1_QUP4_SPI_APPS_CLK_SRC] = &blsp1_qup4_spi_apps_clk_src.clkr,
-+	[BLSP1_UART1_APPS_CLK_SRC] = &blsp1_uart1_apps_clk_src.clkr,
-+	[BLSP1_UART2_APPS_CLK_SRC] = &blsp1_uart2_apps_clk_src.clkr,
-+	[BLSP2_QUP1_I2C_APPS_CLK_SRC] = &blsp2_qup1_i2c_apps_clk_src.clkr,
-+	[BLSP2_QUP1_SPI_APPS_CLK_SRC] = &blsp2_qup1_spi_apps_clk_src.clkr,
-+	[BLSP2_QUP2_I2C_APPS_CLK_SRC] = &blsp2_qup2_i2c_apps_clk_src.clkr,
-+	[BLSP2_QUP2_SPI_APPS_CLK_SRC] = &blsp2_qup2_spi_apps_clk_src.clkr,
-+	[BLSP2_QUP3_I2C_APPS_CLK_SRC] = &blsp2_qup3_i2c_apps_clk_src.clkr,
-+	[BLSP2_QUP3_SPI_APPS_CLK_SRC] = &blsp2_qup3_spi_apps_clk_src.clkr,
-+	[MSM8937_BLSP2_QUP4_I2C_APPS_CLK_SRC] = &blsp2_qup4_i2c_apps_clk_src.clkr,
-+	[MSM8937_BLSP2_QUP4_SPI_APPS_CLK_SRC] = &blsp2_qup4_spi_apps_clk_src.clkr,
-+	[BLSP2_UART1_APPS_CLK_SRC] = &blsp2_uart1_apps_clk_src.clkr,
-+	[BLSP2_UART2_APPS_CLK_SRC] = &blsp2_uart2_apps_clk_src.clkr,
-+	[BYTE0_CLK_SRC] = &byte0_clk_src.clkr,
-+	[MSM8937_BYTE1_CLK_SRC] = &byte1_clk_src.clkr,
-+	[CAMSS_GP0_CLK_SRC] = &camss_gp0_clk_src.clkr,
-+	[CAMSS_GP1_CLK_SRC] = &camss_gp1_clk_src.clkr,
-+	[CAMSS_TOP_AHB_CLK_SRC] = &camss_top_ahb_clk_src.clkr,
-+	[CCI_CLK_SRC] = &cci_clk_src.clkr,
-+	[CPP_CLK_SRC] = &cpp_clk_src.clkr,
-+	[CRYPTO_CLK_SRC] = &crypto_clk_src.clkr,
-+	[CSI0PHYTIMER_CLK_SRC] = &csi0phytimer_clk_src.clkr,
-+	[CSI0_CLK_SRC] = &csi0_clk_src.clkr,
-+	[CSI1PHYTIMER_CLK_SRC] = &csi1phytimer_clk_src.clkr,
-+	[CSI1_CLK_SRC] = &csi1_clk_src.clkr,
-+	[CSI2_CLK_SRC] = &csi2_clk_src.clkr,
-+	[ESC0_CLK_SRC] = &esc0_clk_src.clkr,
-+	[MSM8937_ESC1_CLK_SRC] = &esc1_clk_src.clkr,
-+	[GFX3D_CLK_SRC] = &gfx3d_clk_src.clkr,
-+	[GP1_CLK_SRC] = &gp1_clk_src.clkr,
-+	[GP2_CLK_SRC] = &gp2_clk_src.clkr,
-+	[GP3_CLK_SRC] = &gp3_clk_src.clkr,
-+	[JPEG0_CLK_SRC] = &jpeg0_clk_src.clkr,
-+	[MCLK0_CLK_SRC] = &mclk0_clk_src.clkr,
-+	[MCLK1_CLK_SRC] = &mclk1_clk_src.clkr,
-+	[MCLK2_CLK_SRC] = &mclk2_clk_src.clkr,
-+	[MDP_CLK_SRC] = &mdp_clk_src.clkr,
-+	[PCLK0_CLK_SRC] = &pclk0_clk_src.clkr,
-+	[MSM8937_PCLK1_CLK_SRC] = &pclk1_clk_src.clkr,
-+	[PDM2_CLK_SRC] = &pdm2_clk_src.clkr,
-+	[SDCC1_APPS_CLK_SRC] = &sdcc1_apps_clk_src.clkr,
-+	[SDCC1_ICE_CORE_CLK_SRC] = &sdcc1_ice_core_clk_src.clkr,
-+	[SDCC2_APPS_CLK_SRC] = &sdcc2_apps_clk_src.clkr,
-+	[USB_HS_SYSTEM_CLK_SRC] = &usb_hs_system_clk_src.clkr,
-+	[VCODEC0_CLK_SRC] = &vcodec0_clk_src.clkr,
-+	[VFE0_CLK_SRC] = &vfe0_clk_src.clkr,
-+	[VFE1_CLK_SRC] = &vfe1_clk_src.clkr,
-+	[VSYNC_CLK_SRC] = &vsync_clk_src.clkr,
-+	[GCC_APSS_TCU_CLK] = &gcc_apss_tcu_clk.clkr,
-+	[GCC_BIMC_GFX_CLK] = &gcc_bimc_gfx_clk.clkr,
-+	[GCC_BIMC_GPU_CLK] = &gcc_bimc_gpu_clk.clkr,
-+	[GCC_BLSP1_AHB_CLK] = &gcc_blsp1_ahb_clk.clkr,
-+	[MSM8937_GCC_BLSP1_QUP1_I2C_APPS_CLK] = &gcc_blsp1_qup1_i2c_apps_clk.clkr,
-+	[MSM8937_GCC_BLSP1_QUP1_SPI_APPS_CLK] = &gcc_blsp1_qup1_spi_apps_clk.clkr,
-+	[GCC_BLSP1_QUP2_I2C_APPS_CLK] = &gcc_blsp1_qup2_i2c_apps_clk.clkr,
-+	[GCC_BLSP1_QUP2_SPI_APPS_CLK] = &gcc_blsp1_qup2_spi_apps_clk.clkr,
-+	[GCC_BLSP1_QUP3_I2C_APPS_CLK] = &gcc_blsp1_qup3_i2c_apps_clk.clkr,
-+	[GCC_BLSP1_QUP3_SPI_APPS_CLK] = &gcc_blsp1_qup3_spi_apps_clk.clkr,
-+	[GCC_BLSP1_QUP4_I2C_APPS_CLK] = &gcc_blsp1_qup4_i2c_apps_clk.clkr,
-+	[GCC_BLSP1_QUP4_SPI_APPS_CLK] = &gcc_blsp1_qup4_spi_apps_clk.clkr,
-+	[GCC_BLSP1_UART1_APPS_CLK] = &gcc_blsp1_uart1_apps_clk.clkr,
-+	[GCC_BLSP1_UART2_APPS_CLK] = &gcc_blsp1_uart2_apps_clk.clkr,
-+	[GCC_BLSP2_AHB_CLK] = &gcc_blsp2_ahb_clk.clkr,
-+	[GCC_BLSP2_QUP1_I2C_APPS_CLK] = &gcc_blsp2_qup1_i2c_apps_clk.clkr,
-+	[GCC_BLSP2_QUP1_SPI_APPS_CLK] = &gcc_blsp2_qup1_spi_apps_clk.clkr,
-+	[GCC_BLSP2_QUP2_I2C_APPS_CLK] = &gcc_blsp2_qup2_i2c_apps_clk.clkr,
-+	[GCC_BLSP2_QUP2_SPI_APPS_CLK] = &gcc_blsp2_qup2_spi_apps_clk.clkr,
-+	[GCC_BLSP2_QUP3_I2C_APPS_CLK] = &gcc_blsp2_qup3_i2c_apps_clk.clkr,
-+	[GCC_BLSP2_QUP3_SPI_APPS_CLK] = &gcc_blsp2_qup3_spi_apps_clk.clkr,
-+	[MSM8937_GCC_BLSP2_QUP4_I2C_APPS_CLK] = &gcc_blsp2_qup4_i2c_apps_clk.clkr,
-+	[MSM8937_GCC_BLSP2_QUP4_SPI_APPS_CLK] = &gcc_blsp2_qup4_spi_apps_clk.clkr,
-+	[GCC_BLSP2_UART1_APPS_CLK] = &gcc_blsp2_uart1_apps_clk.clkr,
-+	[GCC_BLSP2_UART2_APPS_CLK] = &gcc_blsp2_uart2_apps_clk.clkr,
-+	[GCC_BOOT_ROM_AHB_CLK] = &gcc_boot_rom_ahb_clk.clkr,
-+	[GCC_CAMSS_AHB_CLK] = &gcc_camss_ahb_clk.clkr,
-+	[GCC_CAMSS_CCI_AHB_CLK] = &gcc_camss_cci_ahb_clk.clkr,
-+	[GCC_CAMSS_CCI_CLK] = &gcc_camss_cci_clk.clkr,
-+	[GCC_CAMSS_CPP_AHB_CLK] = &gcc_camss_cpp_ahb_clk.clkr,
-+	[GCC_CAMSS_CPP_CLK] = &gcc_camss_cpp_clk.clkr,
-+	[GCC_CAMSS_CSI0PHYTIMER_CLK] = &gcc_camss_csi0phytimer_clk.clkr,
-+	[GCC_CAMSS_CSI0PHY_CLK] = &gcc_camss_csi0phy_clk.clkr,
-+	[GCC_CAMSS_CSI0PIX_CLK] = &gcc_camss_csi0pix_clk.clkr,
-+	[GCC_CAMSS_CSI0RDI_CLK] = &gcc_camss_csi0rdi_clk.clkr,
-+	[GCC_CAMSS_CSI0_AHB_CLK] = &gcc_camss_csi0_ahb_clk.clkr,
-+	[GCC_CAMSS_CSI0_CLK] = &gcc_camss_csi0_clk.clkr,
-+	[GCC_CAMSS_CSI1PHYTIMER_CLK] = &gcc_camss_csi1phytimer_clk.clkr,
-+	[GCC_CAMSS_CSI1PHY_CLK] = &gcc_camss_csi1phy_clk.clkr,
-+	[GCC_CAMSS_CSI1PIX_CLK] = &gcc_camss_csi1pix_clk.clkr,
-+	[GCC_CAMSS_CSI1RDI_CLK] = &gcc_camss_csi1rdi_clk.clkr,
-+	[GCC_CAMSS_CSI1_AHB_CLK] = &gcc_camss_csi1_ahb_clk.clkr,
-+	[GCC_CAMSS_CSI1_CLK] = &gcc_camss_csi1_clk.clkr,
-+	[GCC_CAMSS_CSI2PHY_CLK] = &gcc_camss_csi2phy_clk.clkr,
-+	[GCC_CAMSS_CSI2PIX_CLK] = &gcc_camss_csi2pix_clk.clkr,
-+	[GCC_CAMSS_CSI2RDI_CLK] = &gcc_camss_csi2rdi_clk.clkr,
-+	[GCC_CAMSS_CSI2_AHB_CLK] = &gcc_camss_csi2_ahb_clk.clkr,
-+	[GCC_CAMSS_CSI2_CLK] = &gcc_camss_csi2_clk.clkr,
-+	[GCC_CAMSS_CSI_VFE0_CLK] = &gcc_camss_csi_vfe0_clk.clkr,
-+	[GCC_CAMSS_CSI_VFE1_CLK] = &gcc_camss_csi_vfe1_clk.clkr,
-+	[GCC_CAMSS_GP0_CLK] = &gcc_camss_gp0_clk.clkr,
-+	[GCC_CAMSS_GP1_CLK] = &gcc_camss_gp1_clk.clkr,
-+	[GCC_CAMSS_ISPIF_AHB_CLK] = &gcc_camss_ispif_ahb_clk.clkr,
-+	[GCC_CAMSS_JPEG0_CLK] = &gcc_camss_jpeg0_clk.clkr,
-+	[GCC_CAMSS_JPEG_AHB_CLK] = &gcc_camss_jpeg_ahb_clk.clkr,
-+	[GCC_CAMSS_JPEG_AXI_CLK] = &gcc_camss_jpeg_axi_clk.clkr,
-+	[GCC_CAMSS_MCLK0_CLK] = &gcc_camss_mclk0_clk.clkr,
-+	[GCC_CAMSS_MCLK1_CLK] = &gcc_camss_mclk1_clk.clkr,
-+	[GCC_CAMSS_MCLK2_CLK] = &gcc_camss_mclk2_clk.clkr,
-+	[GCC_CAMSS_MICRO_AHB_CLK] = &gcc_camss_micro_ahb_clk.clkr,
-+	[GCC_CAMSS_TOP_AHB_CLK] = &gcc_camss_top_ahb_clk.clkr,
-+	[GCC_CAMSS_VFE0_AHB_CLK] = &gcc_camss_vfe0_ahb_clk.clkr,
-+	[GCC_CAMSS_VFE0_AXI_CLK] = &gcc_camss_vfe0_axi_clk.clkr,
-+	[GCC_CAMSS_VFE0_CLK] = &gcc_camss_vfe0_clk.clkr,
-+	[GCC_CAMSS_VFE1_AHB_CLK] = &gcc_camss_vfe1_ahb_clk.clkr,
-+	[GCC_CAMSS_VFE1_AXI_CLK] = &gcc_camss_vfe1_axi_clk.clkr,
-+	[GCC_CAMSS_VFE1_CLK] = &gcc_camss_vfe1_clk.clkr,
-+	[GCC_CPP_TBU_CLK] = &gcc_cpp_tbu_clk.clkr,
-+	[GCC_CRYPTO_AHB_CLK] = &gcc_crypto_ahb_clk.clkr,
-+	[GCC_CRYPTO_AXI_CLK] = &gcc_crypto_axi_clk.clkr,
-+	[GCC_CRYPTO_CLK] = &gcc_crypto_clk.clkr,
-+	[GCC_DCC_CLK] = &gcc_dcc_clk.clkr,
-+	[GCC_GP1_CLK] = &gcc_gp1_clk.clkr,
-+	[GCC_GP2_CLK] = &gcc_gp2_clk.clkr,
-+	[GCC_GP3_CLK] = &gcc_gp3_clk.clkr,
-+	[GCC_JPEG_TBU_CLK] = &gcc_jpeg_tbu_clk.clkr,
-+	[GCC_MDP_TBU_CLK] = &gcc_mdp_tbu_clk.clkr,
-+	[GCC_MDSS_AHB_CLK] = &gcc_mdss_ahb_clk.clkr,
-+	[GCC_MDSS_AXI_CLK] = &gcc_mdss_axi_clk.clkr,
-+	[GCC_MDSS_BYTE0_CLK] = &gcc_mdss_byte0_clk.clkr,
-+	[MSM8937_GCC_MDSS_BYTE1_CLK] = &gcc_mdss_byte1_clk.clkr,
-+	[GCC_MDSS_ESC0_CLK] = &gcc_mdss_esc0_clk.clkr,
-+	[MSM8937_GCC_MDSS_ESC1_CLK] = &gcc_mdss_esc1_clk.clkr,
-+	[GCC_MDSS_MDP_CLK] = &gcc_mdss_mdp_clk.clkr,
-+	[GCC_MDSS_PCLK0_CLK] = &gcc_mdss_pclk0_clk.clkr,
-+	[MSM8937_GCC_MDSS_PCLK1_CLK] = &gcc_mdss_pclk1_clk.clkr,
-+	[GCC_MDSS_VSYNC_CLK] = &gcc_mdss_vsync_clk.clkr,
-+	[GCC_MSS_CFG_AHB_CLK] = &gcc_mss_cfg_ahb_clk.clkr,
-+	[GCC_MSS_Q6_BIMC_AXI_CLK] = &gcc_mss_q6_bimc_axi_clk.clkr,
-+	[GCC_OXILI_AHB_CLK] = &gcc_oxili_ahb_clk.clkr,
-+	[MSM8937_GCC_OXILI_AON_CLK] = &gcc_oxili_aon_clk.clkr,
-+	[GCC_OXILI_GFX3D_CLK] = &gcc_oxili_gfx3d_clk.clkr,
-+	[MSM8937_GCC_OXILI_TIMER_CLK] = &gcc_oxili_timer_clk.clkr,
-+	[GCC_PDM2_CLK] = &gcc_pdm2_clk.clkr,
-+	[GCC_PDM_AHB_CLK] = &gcc_pdm_ahb_clk.clkr,
-+	[GCC_PRNG_AHB_CLK] = &gcc_prng_ahb_clk.clkr,
-+	[GCC_QDSS_DAP_CLK] = &gcc_qdss_dap_clk.clkr,
-+	[GCC_SDCC1_AHB_CLK] = &gcc_sdcc1_ahb_clk.clkr,
-+	[GCC_SDCC1_APPS_CLK] = &gcc_sdcc1_apps_clk.clkr,
-+	[GCC_SDCC1_ICE_CORE_CLK] = &gcc_sdcc1_ice_core_clk.clkr,
-+	[GCC_SDCC2_AHB_CLK] = &gcc_sdcc2_ahb_clk.clkr,
-+	[GCC_SDCC2_APPS_CLK] = &gcc_sdcc2_apps_clk.clkr,
-+	[GCC_SMMU_CFG_CLK] = &gcc_smmu_cfg_clk.clkr,
-+	[GCC_USB2A_PHY_SLEEP_CLK] = &gcc_usb2a_phy_sleep_clk.clkr,
-+	[GCC_USB_HS_AHB_CLK] = &gcc_usb_hs_ahb_clk.clkr,
-+	[GCC_USB_HS_PHY_CFG_AHB_CLK] = &gcc_usb_hs_phy_cfg_ahb_clk.clkr,
-+	[GCC_USB_HS_SYSTEM_CLK] = &gcc_usb_hs_system_clk.clkr,
-+	[GCC_VENUS0_AHB_CLK] = &gcc_venus0_ahb_clk.clkr,
-+	[GCC_VENUS0_AXI_CLK] = &gcc_venus0_axi_clk.clkr,
-+	[GCC_VENUS0_CORE0_VCODEC0_CLK] = &gcc_venus0_core0_vcodec0_clk.clkr,
-+	[GCC_VENUS0_VCODEC0_CLK] = &gcc_venus0_vcodec0_clk.clkr,
-+	[GCC_VENUS_TBU_CLK] = &gcc_venus_tbu_clk.clkr,
-+	[GCC_VFE1_TBU_CLK] = &gcc_vfe1_tbu_clk.clkr,
-+	[GCC_VFE_TBU_CLK] = &gcc_vfe_tbu_clk.clkr,
-+};
-+
- static const struct qcom_reset_map gcc_msm8917_resets[] = {
- 	[GCC_CAMSS_MICRO_BCR]		= { 0x56008 },
- 	[GCC_MSS_BCR]			= { 0x71000 },
-@@ -3234,6 +3791,18 @@ static struct gdsc *gcc_msm8917_gdscs[] = {
- 	[VFE1_GDSC] = &vfe1_gdsc,
- };
- 
-+static struct gdsc *gcc_msm8937_gdscs[] = {
-+	[CPP_GDSC] = &cpp_gdsc,
-+	[JPEG_GDSC] = &jpeg_gdsc,
-+	[MDSS_GDSC] = &mdss_gdsc,
-+	[OXILI_GX_GDSC] = &oxili_gx_gdsc_msm8937,
-+	[MSM8937_OXILI_CX_GDSC] = &oxili_cx_gdsc,
-+	[VENUS_CORE0_GDSC] = &venus_core0_gdsc,
-+	[VENUS_GDSC] = &venus_gdsc,
-+	[VFE0_GDSC] = &vfe0_gdsc,
-+	[VFE1_GDSC] = &vfe1_gdsc,
-+};
-+
- static const struct qcom_cc_desc gcc_msm8917_desc = {
- 	.config = &gcc_msm8917_regmap_config,
- 	.clks = gcc_msm8917_clocks,
-@@ -3254,6 +3823,41 @@ static const struct qcom_cc_desc gcc_qm215_desc = {
- 	.num_gdscs = ARRAY_SIZE(gcc_msm8917_gdscs),
- };
- 
-+static const struct qcom_cc_desc gcc_msm8937_desc = {
-+	.config = &gcc_msm8917_regmap_config,
-+	.clks = gcc_msm8937_clocks,
-+	.num_clks = ARRAY_SIZE(gcc_msm8937_clocks),
-+	.resets = gcc_msm8917_resets,
-+	.num_resets = ARRAY_SIZE(gcc_msm8917_resets),
-+	.gdscs = gcc_msm8937_gdscs,
-+	.num_gdscs = ARRAY_SIZE(gcc_msm8937_gdscs),
-+};
-+
-+static void msm8937_clock_override(void)
-+{
-+	/* GPLL3 750MHz configuration */
-+	gpll3_early_config.l = 47;
-+	gpll3_early.vco_table = gpll3_p_vco_msm8937;
-+	gpll3_early.num_vco = ARRAY_SIZE(gpll3_p_vco_msm8937);
-+
-+	/*
-+	 * Set below clocks for use specific msm8937 parent map.
-+	 */
-+	vcodec0_clk_src.parent_map = gcc_cpp_map;
-+	vcodec0_clk_src.clkr.hw.init = &vcodec0_clk_src_init_msm8937;
-+
-+	/*
-+	 * Set below clocks for use specific msm8937 freq table.
-+	 */
-+	vfe0_clk_src.freq_tbl = ftbl_vfe_clk_src_msm8937;
-+	vfe1_clk_src.freq_tbl = ftbl_vfe_clk_src_msm8937;
-+	cpp_clk_src.freq_tbl = ftbl_cpp_clk_src_msm8937;
-+	vcodec0_clk_src.freq_tbl = ftbl_vcodec0_clk_src_msm8937;
-+	csi0phytimer_clk_src.freq_tbl = ftbl_csi_phytimer_clk_src_msm8937;
-+	csi1phytimer_clk_src.freq_tbl = ftbl_csi_phytimer_clk_src_msm8937;
-+	usb_hs_system_clk_src.freq_tbl = ftbl_usb_hs_system_clk_src_msm8937;
-+}
-+
- static int gcc_msm8917_probe(struct platform_device *pdev)
- {
- 	struct regmap *regmap;
-@@ -3261,8 +3865,12 @@ static int gcc_msm8917_probe(struct platform_device *pdev)
- 
- 	gcc_desc = of_device_get_match_data(&pdev->dev);
- 
--	if (gcc_desc == &gcc_qm215_desc)
-+	if (gcc_desc == &gcc_qm215_desc) {
- 		gfx3d_clk_src.parent_map = gcc_gfx3d_map_qm215;
-+	} else if (gcc_desc == &gcc_msm8937_desc) {
-+		msm8937_clock_override();
-+		gfx3d_clk_src.freq_tbl = ftbl_gfx3d_clk_src_msm8937;
-+	}
- 
- 	regmap = qcom_cc_map(pdev, gcc_desc);
- 	if (IS_ERR(regmap))
-@@ -3276,6 +3884,7 @@ static int gcc_msm8917_probe(struct platform_device *pdev)
- static const struct of_device_id gcc_msm8917_match_table[] = {
- 	{ .compatible = "qcom,gcc-msm8917", .data = &gcc_msm8917_desc },
- 	{ .compatible = "qcom,gcc-qm215", .data = &gcc_qm215_desc },
-+	{ .compatible = "qcom,gcc-msm8937", .data = &gcc_msm8937_desc },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, gcc_msm8917_match_table);
+> +			clocks = <&gcc GCC_CRYPTO_CLK>,
+> +				 <&gcc GCC_CRYPTO_AXI_CLK>,
+> +				 <&gcc GCC_CRYPTO_AHB_CLK>;
+> +			clock-names = "core",
+> +				      "bus",
+> +				      "iface";
+> +			#reset-cells = <1>;
+> +
+> +			qcom,dload-mode = <&tcsr 0x6100>;
+> +		};
+> +	};
+> +
+> +	memory@80000000 {
+> +		/* We expect the bootloader to fill in the reg */
+> +		reg = <0 0x80000000 0 0>;
+> +		device_type = "memory";
+> +	};
+> +
+> +	reserved-memory {
+> +		ranges;
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +
+> +		qseecom_mem: reserved@85b00000 {
+> +			reg = <0x0 0x85b00000 0x0 0x800000>;
+> +			no-map;
+> +		};
+> +
+> +		smem@86300000 {
+> +			compatible = "qcom,smem";
+> +			reg = <0x0 0x86300000 0x0 0x100000>;
+> +			no-map;
+> +
+> +			hwlocks = <&tcsr_mutex 3>;
+> +			qcom,rpm-msg-ram = <&rpm_msg_ram>;
+> +		};
+> +
+> +		reserved@86400000 {
+> +			reg = <0x0 0x86400000 0x0 0x400000>;
+> +			no-map;
+> +		};
+> +
+> +		rmtfs@92100000 {
+> +			compatible = "qcom,rmtfs-mem";
+> +			reg = <0x0 0x92100000 0x0 0x180000>;
+> +			no-map;
+> +
+> +			qcom,client-id = <1>;
+> +		};
+> +
+> +		adsp_mem: adsp {
+> +			size = <0x0 0x1100000>;
+> +			alignment = <0x0 0x100000>;
+> +			alloc-ranges = <0x0 0x86800000 0x0 0x8000000>;
+> +			no-map;
+> +			status = "disabled";
+> +		};
+> +
+> +		mba_mem: mba {
+> +			size = <0x0 0x100000>;
+> +			alignment = <0x0 0x100000>;
+> +			alloc-ranges = <0x0 0x86800000 0x0 0x8000000>;
+> +			no-map;
+> +			status = "disabled";
+> +		};
+> +
+> +		wcnss_mem: wcnss {
+> +			size = <0x0 0x700000>;
+> +			alignment = <0x0 0x100000>;
+> +			alloc-ranges = <0x0 0x86800000 0x0 0x8000000>;
+> +			no-map;
+> +			status = "disabled";
+> +		};
+> +
+> +		venus_mem: venus {
+> +			size = <0x0 0x400000>;
+> +			alignment = <0x0 0x100000>;
+> +			alloc-ranges = <0x0 0x86800000 0x0 0x8000000>;
+> +			no-map;
+> +			status = "disabled";
+> +		};
+> +	};
+> +
+> +	cpu_opp_table_c0: opp-table-c0 {
+> +		compatible = "operating-points-v2";
+> +		opp-shared;
+> +
+> +		opp-768000000 {
+> +			opp-hz = /bits/ 64 <768000000>;
+> +		};
+> +
+> +		opp-902400000 {
+> +			opp-hz = /bits/ 64 <902400000>;
+> +		};
+> +
+> +		opp-998400000 {
+> +			opp-hz = /bits/ 64 <998400000>;
+> +		};
+> +
+> +		opp-1094400000 {
+> +			opp-hz = /bits/ 64 <1094400000>;
+> +		};
+> +	};
+> +
+> +	cpu_opp_table_c1: opp-table-c1 {
+> +		compatible = "operating-points-v2";
+> +		opp-shared;
+> +
+> +		opp-960000000 {
+> +			opp-hz = /bits/ 64 <960000000>;
+> +		};
+> +
+> +		opp-1094400000 {
+> +			opp-hz = /bits/ 64 <1094400000>;
+> +		};
+> +
+> +		opp-1209600000 {
+> +			opp-hz = /bits/ 64 <1209600000>;
+> +		};
+> +
+> +		opp-1248000000 {
+> +			opp-hz = /bits/ 64 <1248000000>;
+> +		};
+> +
+> +		opp-1344000000 {
+> +			opp-hz = /bits/ 64 <1344000000>;
+> +		};
+> +
+> +		opp-1401600000 {
+> +			opp-hz = /bits/ 64 <1401600000>;
+> +		};
+> +	};
+> +
+> +	pmu {
+> +		compatible = "arm,cortex-a53-pmu";
+> +		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
+> +	};
+> +
+> +	psci {
+> +		compatible = "arm,psci-1.0";
+> +		method = "smc";
+> +	};
+> +
+> +	rpm: remoteproc {
+> +		compatible = "qcom,msm8937-rpm-proc", "qcom,rpm-proc";
+> +
+> +		smd-edge {
+> +			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
+> +			qcom,ipc = <&apcs1 8 0>;
+> +			qcom,smd-edge = <15>;
+> +
+> +			rpm_requests: rpm-requests {
+> +				compatible = "qcom,rpm-msm8937", "qcom,smd-rpm";
+> +				qcom,smd-channels = "rpm_requests";
+> +
+> +				rpmcc: clock-controller {
+> +					compatible = "qcom,rpmcc-msm8937", "qcom,rpmcc";
+> +					#clock-cells = <1>;
+> +					clocks = <&xo_board>;
+> +					clock-names = "xo";
+> +				};
+> +
+> +				rpmpd: power-controller {
+> +					compatible = "qcom,msm8937-rpmpd", "qcom,msm8917-rpmpd";
+> +					#power-domain-cells = <1>;
+> +					operating-points-v2 = <&rpmpd_opp_table>;
+> +
+> +					rpmpd_opp_table: opp-table {
+> +						compatible = "operating-points-v2";
+> +
+> +						rpmpd_opp_ret: opp1 {
+> +							opp-level = <RPM_SMD_LEVEL_RETENTION>;
+> +						};
+> +
+> +						rpmpd_opp_ret_plus: opp2 {
+> +							opp-level = <RPM_SMD_LEVEL_RETENTION_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_min_svs: opp3 {
+> +							opp-level = <RPM_SMD_LEVEL_MIN_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_low_svs: opp4 {
+> +							opp-level = <RPM_SMD_LEVEL_LOW_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_svs: opp5 {
+> +							opp-level = <RPM_SMD_LEVEL_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_svs_plus: opp6 {
+> +							opp-level = <RPM_SMD_LEVEL_SVS_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_nom: opp7 {
+> +							opp-level = <RPM_SMD_LEVEL_NOM>;
+> +						};
+> +
+> +						rpmpd_opp_nom_plus: opp8 {
+> +							opp-level = <RPM_SMD_LEVEL_NOM_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_turbo: opp9 {
+> +							opp-level = <RPM_SMD_LEVEL_TURBO>;
+> +						};
+> +					};
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	smp2p-adsp {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <443>, <429>;
+> +
+> +		interrupts = <GIC_SPI 291 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		mboxes = <&apcs1 10>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <2>;
+> +
+> +		adsp_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		adsp_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smp2p-modem {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <435>, <428>;
+> +
+> +		interrupts = <GIC_SPI 27 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		mboxes = <&apcs1 14>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <1>;
+> +
+> +		modem_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		modem_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smp2p-wcnss {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <451>, <431>;
+> +
+> +		interrupts = <GIC_SPI 143 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		mboxes = <&apcs1 18>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <4>;
+> +
+> +		wcnss_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		wcnss_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smsm {
+> +		compatible = "qcom,smsm";
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		mboxes = <0>, <&apcs1 13>, <0>, <&apcs1 19>;
+> +
+> +		apps_smsm: apps@0 {
+> +			reg = <0>;
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		hexagon_smsm: hexagon@1 {
+> +			reg = <1>;
+> +			interrupts = <GIC_SPI 26 IRQ_TYPE_EDGE_RISING>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +
+> +		wcnss_smsm: wcnss@6 {
+> +			reg = <6>;
+> +			interrupts = <GIC_SPI 144 IRQ_TYPE_EDGE_RISING>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	soc: soc@0 {
+> +		compatible = "simple-bus";
+> +		ranges = <0 0 0 0xffffffff>;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +
+> +		qfprom: qfprom@a4000 {
+> +			compatible = "qcom,msm8937-qfprom", "qcom,qfprom";
+> +			reg = <0x000a4000 0x1000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			tsens_base1: base1@1d8 {
+> +				reg = <0x1d8 0x1>;
+> +				bits = <0 8>;
+> +			};
+> +
+> +			tsens_s5_p1: s5-p1@1d9 {
+> +				reg = <0x1d9 0x1>;
+> +				bits = <0 6>;
+> +			};
+> +
+> +			tsens_s5_p2: s5-p2@1d9 {
+> +				reg = <0x1d9 0x2>;
+> +				bits = <6 6>;
+> +			};
+> +
+> +			tsens_s6_p1: s6-p1@1da {
+> +				reg = <0x1da 0x2>;
+> +				bits = <4 6>;
+> +			};
+> +
+> +			tsens_s6_p2: s6-p2@1db {
+> +				reg = <0x1db 0x1>;
+> +				bits = <2 6>;
+> +			};
+> +
+> +			tsens_s7_p1: s7-p1@1dc {
+> +				reg = <0x1dc 0x1>;
+> +				bits = <0 6>;
+> +			};
+> +
+> +			tsens_s7_p2: s7-p2@1dc {
+> +				reg = <0x1dc 0x2>;
+> +				bits = <6 6>;
+> +			};
+> +
+> +			tsens_s8_p1: s8-p1@1dd {
+> +				reg = <0x1dd 0x2>;
+> +				bits = <4 6>;
+> +			};
+> +
+> +			tsens_s8_p2: s8-p2@1de {
+> +				reg = <0x1de 0x1>;
+> +				bits = <2 6>;
+> +			};
+> +
+> +			tsens_base2: base2@1df {
+> +				reg = <0x1df 0x1>;
+> +				bits = <0 8>;
+> +			};
+> +
+> +			tsens_mode: mode@210 {
+> +				reg = <0x210 0x1>;
+> +				bits = <0 3>;
+> +			};
+> +
+> +			tsens_s0_p1: s0-p1@210 {
+> +				reg = <0x210 0x2>;
+> +				bits = <3 6>;
+> +			};
+> +
+> +			tsens_s0_p2: s0-p2@211 {
+> +				reg = <0x211 0x1>;
+> +				bits = <1 6>;
+> +			};
+> +
+> +			tsens_s1_p1: s1-p1@211 {
+> +				reg = <0x211 0x2>;
+> +				bits = <7 6>;
+> +			};
+> +
+> +			tsens_s1_p2: s1-p2@212 {
+> +				reg = <0x212 0x2>;
+> +				bits = <5 6>;
+> +			};
+> +
+> +			tsens_s2_p1: s2-p1@213 {
+> +				reg = <0x213 0x2>;
+> +				bits = <3 6>;
+> +			};
+> +
+> +			tsens_s2_p2: s2-p2@214 {
+> +				reg = <0x214 0x1>;
+> +				bits = <1 6>;
+> +			};
+> +
+> +			tsens_s3_p1: s3-p1@214 {
+> +				reg = <0x214 0x2>;
+> +				bits = <7 6>;
+> +			};
+> +
+> +			tsens_s3_p2: s3-p2@215 {
+> +				reg = <0x215 0x2>;
+> +				bits = <5 6>;
+> +			};
+> +
+> +			tsens_s4_p1: s4-p1@216 {
+> +				reg = <0x216 0x2>;
+> +				bits = <3 6>;
+> +			};
+> +
+> +			tsens_s4_p2: s4-p2@217 {
+> +				reg = <0x217 0x1>;
+> +				bits = <1 6>;
+> +			};
+> +
+> +			tsens_s9_p1: s9-p1@230 {
+> +				reg = <0x230 0x1>;
+> +				bits = <0 6>;
+> +			};
+> +
+> +			tsens_s9_p2: s9-p2@230 {
+> +				reg = <0x230 0x2>;
+> +				bits = <6 6>;
+> +			};
+> +
+> +			tsens_s10_p1: s10-p1@231 {
+> +				reg = <0x231 0x2>;
+> +				bits = <4 6>;
+> +			};
+> +
+> +			tsens_s10_p2: s10-p2@232 {
+> +				reg = <0x232 0x1>;
+> +				bits = <2 6>;
+> +			};
+> +
+> +			gpu_speed_bin: gpu-speed-bin@601b {
+> +				reg = <0x601b 0x1>;
+> +				bits = <7 1>;
+> +			};
+> +		};
+> +
+> +		usb_hs_phy: phy@6c000 {
+> +			compatible = "qcom,usb-hs-28nm-femtophy";
+> +			reg = <0x0006c000 0x200>;
+> +			#phy-cells = <0>;
+> +			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+> +				 <&gcc GCC_USB_HS_PHY_CFG_AHB_CLK>,
+> +				 <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
+> +			clock-names = "ref",
+> +				      "ahb",
+> +				      "sleep";
+> +			resets = <&gcc GCC_QUSB2_PHY_BCR>,
+> +				 <&gcc GCC_USB2_HS_PHY_ONLY_BCR>;
+> +			reset-names = "phy",
+> +				      "por";
+> +			status = "disabled";
+> +		};
+> +
+> +		rng@e3000 {
+> +			compatible = "qcom,prng";
+> +			reg = <0x000e3000 0x1000>;
+> +			clocks = <&gcc GCC_PRNG_AHB_CLK>;
+> +			clock-names = "core";
+> +		};
+> +
+> +		tsens: thermal-sensor@4a9000 {
+> +			compatible = "qcom,msm8937-tsens", "qcom,tsens-v1";
+> +			reg = <0x004a9000 0x1000>,
+> +			      <0x004a8000 0x1000>;
+> +			interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "uplow";
+> +			nvmem-cells = <&tsens_mode>,
+> +				      <&tsens_base1>, <&tsens_base2>,
+> +				      <&tsens_s0_p1>, <&tsens_s0_p2>,
+> +				      <&tsens_s1_p1>, <&tsens_s1_p2>,
+> +				      <&tsens_s2_p1>, <&tsens_s2_p2>,
+> +				      <&tsens_s3_p1>, <&tsens_s3_p2>,
+> +				      <&tsens_s4_p1>, <&tsens_s4_p2>,
+> +				      <&tsens_s5_p1>, <&tsens_s5_p2>,
+> +				      <&tsens_s6_p1>, <&tsens_s6_p2>,
+> +				      <&tsens_s7_p1>, <&tsens_s7_p2>,
+> +				      <&tsens_s8_p1>, <&tsens_s8_p2>,
+> +				      <&tsens_s9_p1>, <&tsens_s9_p2>,
+> +				      <&tsens_s10_p1>, <&tsens_s10_p2>;
+> +			nvmem-cell-names = "mode",
+> +					   "base1", "base2",
+> +					   "s0_p1", "s0_p2",
+> +					   "s1_p1", "s1_p2",
+> +					   "s2_p1", "s2_p2",
+> +					   "s3_p1", "s3_p2",
+> +					   "s4_p1", "s4_p2",
+> +					   "s5_p1", "s5_p2",
+> +					   "s6_p1", "s6_p2",
+> +					   "s7_p1", "s7_p2",
+> +					   "s8_p1", "s8_p2",
+> +					   "s9_p1", "s9_p2",
+> +					   "s10_p1", "s10_p2";
+> +			#qcom,sensors = <11>;
+> +			#thermal-sensor-cells = <1>;
+> +		};
+> +
+> +		rpm_msg_ram: sram@60000 {
+
+This node is wrongly placed.
+
+> +			compatible = "qcom,rpm-msg-ram";
+> +			reg = <0x00060000 0x8000>;
+> +		};
+> +
+> +		restart@4ab000 {
+> +			compatible = "qcom,pshold";
+> +			reg = <0x004ab000 0x4>;
+> +		};
+> +
 
 -- 
-2.51.0
-
+With best wishes
+Dmitry
