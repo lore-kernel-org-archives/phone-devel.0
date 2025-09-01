@@ -1,49 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421D8260563;
-	Mon,  1 Sep 2025 19:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A83324B36;
+	Mon,  1 Sep 2025 19:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756755972; cv=none; b=Rrv7fCi2snV2qr2rPEv/FlDSRHlX4HUHEtHZ0D7/oUEVSu0NlGrFh5RcIZ/8Vgnng+8qqM4aB+g+q4plVILPD0EoCiFVhd/86QDvL8xgX1Um+r7ndo7tgHp+rocnxXigkRDK+xb4Vl/emRKeiB9pFR1jCMdTfSsxirPy4anyJP4=
+	t=1756755975; cv=none; b=tSyHmGtXvnHdU7B8FPK2uoQMYMK2aTz/Y8FHhFzqWymBBKLINoziWc3lGogtF0FS0i6HrR9Xszsq76pIH6Zeara04/EqXfZmQu11kM2SnLZp2HliJ59kaYqLcT39reOfkYAj6ymlVGRyQ4s5y8w6m5CrxkrPrxj8cbYk4haPHqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756755972; c=relaxed/simple;
-	bh=38k8K536dsthoyMzV/LOIf3lYjYi0pnAj3RkyV5TFjI=;
+	s=arc-20240116; t=1756755975; c=relaxed/simple;
+	bh=F22kYAKgLZQ9BzqKk9Bh58QyWlMuwhhBGTyHW9QZS/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mzixaqAPuiSVu1V4FGiYriDOGvQj8rFnA3L0bijdrj7ORa0hg+MreOnkDOt+Fs75ySqo/WzSYjTdsDmbAOBsfma/OromuiyUSq5m+f+ZntPzWINpgoR/QuGrZtAOpgHjQ26Xf6yXZl9BMZVKA9cgyj3bwJaSUFO+uuohTzw5+sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcvXdx94; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YYIoiKIG5T8s1te4GA4Ka8dHD8UEPfr9pz5BNMCMw3qRIGe816PvdmLFMBuL2AYB0nfo3Qi7fd8AQWdKFY0Az6ZLsIhZEmLBCfaDUDJrc6TqqMPt9Zy0Bm1HA0pSOm6VWE3FPWc7ReV+Su0b20MkAX6FL98lBOjZUw56c6w/Klw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDZ1V7s9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcvXdx94"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C9AC4CEFC;
-	Mon,  1 Sep 2025 19:46:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDZ1V7s9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038CFC4CEF9;
+	Mon,  1 Sep 2025 19:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756755972;
-	bh=38k8K536dsthoyMzV/LOIf3lYjYi0pnAj3RkyV5TFjI=;
+	s=k20201202; t=1756755974;
+	bh=F22kYAKgLZQ9BzqKk9Bh58QyWlMuwhhBGTyHW9QZS/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcvXdx94gntZHdJDGRuJGGX34evaH0rhaHcOiBMXzFuY/xoY2w+XZetCFGtUl/BRh
-	 IqDzxnVNlthIbRcwIUFC2R73vrymzhELFRxfV6kdgKCq2WFP9JchQBGTdbAr2RNVzY
-	 L2+hJQwsyYOHUP+O3q/V/FiqC2fCgxzXX8Vfb/5E8+j+eqpDf0nJj/Y9nLcemRqcfI
-	 OdaM3iFFL25bStXGZ2+dpb08ufNIP5rfK50BxH2jiRzu0iCI6ppaU9ATViR2r1EQfr
-	 +gsTAPazBjQH0Hp3+cX5CUMjF71IsqpH24DQl5kkTc+TN0Qnduuvq0fJXNufjhxH3q
-	 5RCBrCwNl+fXQ==
+	b=aDZ1V7s92xDoRZDuS6cGe5taT/5RfifxySh0LafQ/h7iG7P7BxcB9gnPY3H+y04Bm
+	 1wEoTCcLlb/rj806jqxm+Jj8icnhZdl6v/PqH3vrp3fNp7QI709qEKuAX1kuEzeX00
+	 uxEluC2HT1ItuiVqj5zOMcnucdfKocoUOU25x3+dcG8oxCylhppnmbCtNF6l7r3N4C
+	 379Dwd1a+EDYVC/wWCiYXwnKwutpqwKDmzVI2FRDnOMHr9Y2kcpN6y9vVukvj83X+q
+	 hF1UnPJOXaYM06bzH9gzjUf4p5uGmDkSa0BBfXSvET0xiCWWWENkq2Yx8QmDmcY7gA
+	 4ySruMXtCyL9g==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Rob Herring <robh@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Cristian Cozzolino <cristian_ci@protonmail.com>
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH RESEND v4 0/3] Add initial device tree for Billion Capture+
-Date: Mon,  1 Sep 2025 14:45:53 -0500
-Message-ID: <175675595930.1796591.10706801069353985032.b4-ty@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: msm8976-longcheer-l9360: Add touch keys
+Date: Mon,  1 Sep 2025 14:45:56 -0500
+Message-ID: <175675595913.1796591.10885468488042934130.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250811-rimob-initial-devicetree-v4-0-b3194f14aa33@protonmail.com>
-References: <20250811-rimob-initial-devicetree-v4-0-b3194f14aa33@protonmail.com>
+In-Reply-To: <20250828-l9360_touch_keys-v1-1-1ce5a279c399@apitzsch.eu>
+References: <20250828-l9360_touch_keys-v1-1-1ce5a279c399@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,28 +53,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Mon, 11 Aug 2025 23:08:08 +0200, Cristian Cozzolino wrote:
-> Billion Capture+ is a handset using the MSM8953 SoC released in 2017
-> and sold by Flipkart.
+On Thu, 28 Aug 2025 22:25:50 +0200, André Apitzsch wrote:
+> The phone has three capacitive buttons on the screen bezel. Enable them
+> by adding the keycodes in the dt.
 > 
-> Add a device tree with initial support for:
 > 
-> - GPIO keys
-> - SDHCI (internal and external storage)
-> - USB Device Mode
-> - Regulators
-> - Simple framebuffer
-> 
-> [...]
 
 Applied, thanks!
 
-[1/3] dt-bindings: vendor-prefixes: Add Flipkart
-      commit: 922e16d1770624e25e2c751a257c88690f121b1c
-[2/3] dt-bindings: arm: qcom: Add Billion Capture+
-      commit: ba4857cc649a7a113252e849fbf12bc282399480
-[3/3] arm64: dts: qcom: msm8953: Add device tree for Billion Capture+
-      commit: a2dd7cf8477e825b8028b4e36c787cee0f00a033
+[1/1] arm64: dts: qcom: msm8976-longcheer-l9360: Add touch keys
+      commit: 6605a07f441cf1e056ec8ea6e553c893151d5527
 
 Best regards,
 -- 
