@@ -1,123 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A0D2F49EE;
-	Tue,  2 Sep 2025 11:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8502DAFB8
+	for <phone-devel@vger.kernel.org>; Tue,  2 Sep 2025 14:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756812295; cv=none; b=uI9l42IuRZJZru49BjzLMuQ7iz9MsricLO+mVTCT6TOJT/qmXMLiTfow9rMSx0tl4+xNJTTtV2qYLfxzKPrnMRk51MZXH4ibp1aqhVGtLQx6Ux/z3eDp1MIGMcOQxRZn0za2uC40XhX0uzlX9uHDqMNMgAZ/u9Q3gqVYNUtFxwI=
+	t=1756822541; cv=none; b=eUjGeLnMioBi7MtdSM1GJMqtxIF8pJPTD4t2szNhHLRc4nSoalTD4UbgmflvOEpzIusyPR4DZQGVOMRVgjX+pmlupr0RmrsXBspQ9il7BQqpJu0PWItNUW1B/hN7vW62ONpiT2BBAUHi6e7TtyHisjJTVP9KuxKBwkh4fjqTarQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756812295; c=relaxed/simple;
-	bh=rnzaOQuxTScDn7ysIBToMNNj9BiNuSVPElmId2+/0Xo=;
+	s=arc-20240116; t=1756822541; c=relaxed/simple;
+	bh=akGpi+QtTCgfYTofF4Pk4tpeZByYbVJ+RjDKLpVnM6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=us4OKhhOPSRR8MPqFKdVypQxJGbNB3THwS+qyi0IMuErioF36j0aRy878UlOPzB+J1hro3NIkyWzv4O0cbrc2CXXX8aooueqUgxsTzm8Wg2jcxT+Et6kURhwY+EJYHCrBWhFu8ZVFfUPycaFwjTfRPS+TDwh6Iaz9hQVTfHJUZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H9xYIMU4; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fhfcw+QbfI/xlL3YRBPaVdAW/hNDP/CT6DWtI/ODT+7DMeiea985OO64L9HXV/BUru6uk/xt0SIvDTh3eRy4wnCtQE4rRZA0YA7BRRDNpAMh0mP97YpwJuG5AUHfYHwy7yLbMnXPaBWqHMSRZq7U+3JBiFYfl5R3mH16dqZDwaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=idsb4DJV; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H9xYIMU4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756812294; x=1788348294;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rnzaOQuxTScDn7ysIBToMNNj9BiNuSVPElmId2+/0Xo=;
-  b=H9xYIMU43nMhibphcLxFfhAPIBRp1jqbDyh+TrR/jPkNITZe4YcwhLHG
-   ukx15zov4Hnwqu3Q3ifb/UVIeE8u3zTpAsDOueYOyN+WBVhinKg8aKaSP
-   kxtYGZgvFaenqM2Y8cccrF5FeJWYt9pxPFkJhDwpvD9d1xOGVjP3fmmet
-   RbZDQWJM/TNPqSY2IFY7WeQ742XhloXGFZ4L3yHiy0OSY1eHs9BZHpY4T
-   FEHKN2dM4if/UsEjCaaCWVXi0lE8Rn355QZaBiqDm0OLyutOdl14STGLA
-   wBfGnWxxn5KFweIJTKRm3C7gKbBz97Eddc31Fdnnukpafhg+7MlrHAmqY
-   w==;
-X-CSE-ConnectionGUID: HIDeFqr1QnKWSoNDil26KA==
-X-CSE-MsgGUID: YGciWsesQwSQKXpEmEPxGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="59017753"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="59017753"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 04:24:53 -0700
-X-CSE-ConnectionGUID: OPoOrR7OTGCtVWqxtm+8pg==
-X-CSE-MsgGUID: 60cEhCt6QYqf1a2wIiS0kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171411846"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 02 Sep 2025 04:24:51 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utP83-0001tb-2j;
-	Tue, 02 Sep 2025 11:24:47 +0000
-Date: Tue, 2 Sep 2025 19:23:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: oe-kbuild-all@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-Subject: Re: [PATCH 3/3] drm/panel: visionox-rm69299: Add backlight support
-Message-ID: <202509021907.mZZ38HtR-lkp@intel.com>
-References: <20250901-shift6mq-panel-v1-3-444b4abbfaea@sigxcpu.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="idsb4DJV"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582AGivf021595
+	for <phone-devel@vger.kernel.org>; Tue, 2 Sep 2025 14:15:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Mlie5F52Ht3HYOWTj4ogGL6rzgMYQ/jMzQdCkcJA/LM=; b=idsb4DJVLCwHX/wd
+	dLBEgRWQ5XfjnjoPCs7vnuCRGJDdRCLaAbT5T9svXWbSJnjAlyb3/SWGWuOXj3nU
+	Qf062q356QCUP7EggKRkCFJpFN80p5bOLKePqvMQ+knYwQUYRK4AOeYvjlNkcp0B
+	Mc0bbXRe13v93zHGHvugMaUGyLlbRd+iWqVdOTLObCSNW4oStfcXJFow81/iP6hy
+	oTt7Qq42AOjVxo4tLmcNly88otHG5A1q5+jjW/t6ic29337YqqsxkJ8cJ8NkDG21
+	ReeAlq5PVBOhG5ubWXO+i1jNO66SVUvqRx9IF/hi/OGahlLGwyFigblyPUyCj8B9
+	XN0p8A==
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8s0562-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 02 Sep 2025 14:15:39 +0000 (GMT)
+Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-52dae4447a7so124729137.3
+        for <phone-devel@vger.kernel.org>; Tue, 02 Sep 2025 07:15:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756822537; x=1757427337;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mlie5F52Ht3HYOWTj4ogGL6rzgMYQ/jMzQdCkcJA/LM=;
+        b=sOjiirXEXQwBwrdFtalHTmPvyYwE/WeuLWqV2ctQMZpzcm9Y73MOgGyIakBFBfk0RO
+         GmNUBSi+CI0OjZ6UE1D8et7Ldwkad7JJT+34lVkJvjNZtOQCo/WcYwUqtu9PmQsPykK8
+         mMuRQt3ulkYep+szWB5CLA21Yxj9QxGtvFzKXKJ2RchxtbKHpuKOpgZGpDuv8SvCWkui
+         w5Nza6rW5VGD3gVI2BObDKiiWdkrobmRNLM2Ln20P7Iy7fLtboSh+mH/Lc/4pC9yBTbi
+         MaHW/D9JgsxT2we/wVRwjdTcaM1MUDvk9JlCufp+lAhxLTf5ysY000mUJ8+gX0qFZjhI
+         XSQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUP4jg/XgC8DbTKDIPJRbYUa8Y7q7rFuHkPddfOqk44f0cGryhsQL/0er+MK64VG4Q3Kzj2/I/oUAsb3g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFcprbbL0w/r7l9uiR1VZ8Qcxys5xgPW/34UpSiFHMXQjDDfmv
+	pNlEmToa8hrzr4+1Y7LlgZ0rQuOgN54DfnIgfXUMVTj/t8hWbiCcmc2NlLt4Vw7KxYL4DNPrxBt
+	EaeFr6hB7BOTqIyvyikXjtZBPq9ekLlH1Qb3r32nH4YZy8I3xccFcTQw3ZVMVqv3/nA==
+X-Gm-Gg: ASbGncu+eQeHfEc8n6f5orEGy+U0dHRjLPNMUBRaxru+WSZPTQDxy3V5CLc0ZUawEVq
+	ox4bqYI/FFAS6onb2Lrv+/EmWm6c69Wzpq5OJt3lXMb8KFdWnHKMNuDqNNsUV42hRWhbDey+Ta5
+	vLTdq19eF1xVI7QGMZ2BNPWGgyZMp9L8AIPrSAmCwfrJohEpPaFHe4XsqsjxWCsePZzfR41eLjH
+	UdgHkOhwP0WjbLD5eGu9GzhkBimI6Zj5AELnA/SDK9WUYdjXGo29KOjbqhUkvodXQWvuJmuyiyY
+	CT3xqJiD5SYj5QVJoe0v61+I9A85PfzYEY2aOlv+EKdLGe9ztJW6b/gIGJKsSzibHZ1ZkYH3Htj
+	WhPpHbIeQ/fPhzWEtVKjylAl2n/yrcsz5Zx2ko6ppseU92FTwY4fM
+X-Received: by 2002:a05:6102:4613:b0:530:f657:c5d with SMTP id ada2fe7eead31-530f666561bmr570509137.20.1756822537061;
+        Tue, 02 Sep 2025 07:15:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNjsqepLP76zUIqTQQBX9Us4UoXPo5VPCLW3VzTnrFgAj+u/0dS6AteoLKyMgNUBFdMU3pqQ==
+X-Received: by 2002:a05:6102:4613:b0:530:f657:c5d with SMTP id ada2fe7eead31-530f666561bmr570468137.20.1756822536291;
+        Tue, 02 Sep 2025 07:15:36 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-560827b1df6sm730194e87.143.2025.09.02.07.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 07:15:35 -0700 (PDT)
+Date: Tue, 2 Sep 2025 17:15:33 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Otto =?utf-8?Q?Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+        Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+        Robert Marko <robimarko@gmail.com>,
+        Das Srinagesh <quic_gurus@quicinc.com>,
+        Srinivas Kandagatla <srini@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        iommu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
+        Dang Huynh <danct12@riseup.net>
+Subject: Re: [PATCH v8 5/7] arm64: dts: qcom: Add initial support for MSM8937
+Message-ID: <gkkxxd45xclwjs6cp2loj4male7wobeacbshvjasolr4accz64@vux2ou4wa2wa>
+References: <20250831-msm8937-v8-0-b7dcd63caaac@mainlining.org>
+ <20250831-msm8937-v8-5-b7dcd63caaac@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250901-shift6mq-panel-v1-3-444b4abbfaea@sigxcpu.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250831-msm8937-v8-5-b7dcd63caaac@mainlining.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfX2tB22du6CwGU
+ Jxu8cKh9dtiTX5G049pRpj4X2jx7UItfzEMYN3zJh1BVDP3CO2Ra1gPn8ORJ+ihDqcqA/oYFaaS
+ My4M0BqfuGEaKBq8KJ8p8v6tAZVG2Ik9M/lzhHU4cZ9/e6+A0YwJmGdJTCFJLiyy8t4VkEDgm81
+ 1EtQx2OFAPLw29AlfHuXGTy+vJoN4pmyiOMXmBUBKPj+h2rLKTe5T1ndHWkhAieNVGa2gYB7zy2
+ BGH+qyucVEVVFx8ghR8CZizPzv7CI1a78QonTnR3exP+mZRsMZNTlyqsqHv8ivBjOijDCIRdqKS
+ YDvpQuSW4r2FQhbx6dOEvJEIxlF/G+P8G5FDwN9ZkEQ2mlXmsmW6RXHohCtOCxt6or718bPAuT/
+ QL1vDEIm
+X-Proofpoint-GUID: SOZ53YIPM1GixPS8HfST-LxrR-qX4sPh
+X-Proofpoint-ORIG-GUID: SOZ53YIPM1GixPS8HfST-LxrR-qX4sPh
+X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b6fc0b cx=c_pps
+ a=N1BjEkVkxJi3uNfLdpvX3g==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=yJojWOMRYYMA:10 a=bBqXziUQAAAA:8 a=OuZLqq7tAAAA:8 a=EUspDBNiAAAA:8
+ a=9HHfay7fNgEZ8udxRwkA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=crWF4MFLhNY0qMRaF8an:22 a=BjKv_IHbNJvPKzgot4uq:22 a=AKGiAy9iJ-JzxKVHQNES:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_04,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300019
 
-Hi Guido,
+On Sun, Aug 31, 2025 at 02:29:28PM +0200, Barnabás Czémán wrote:
+> From: Dang Huynh <danct12@riseup.net>
+> 
+> Add initial support for MSM8937 SoC.
+> 
+> Signed-off-by: Dang Huynh <danct12@riseup.net>
+> Co-developed-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8937.dtsi | 2134 +++++++++++++++++++++++++++++++++
+>  1 file changed, 2134 insertions(+)
+> 
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[auto build test WARNING on b320789d6883cc00ac78ce83bccbfe7ed58afcf0]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Guido-G-nther/drm-panel-visionox-rm69299-Fix-clock-frequency-for-SHIFT6mq/20250901-222400
-base:   b320789d6883cc00ac78ce83bccbfe7ed58afcf0
-patch link:    https://lore.kernel.org/r/20250901-shift6mq-panel-v1-3-444b4abbfaea%40sigxcpu.org
-patch subject: [PATCH 3/3] drm/panel: visionox-rm69299: Add backlight support
-config: x86_64-randconfig-123-20250902 (https://download.01.org/0day-ci/archive/20250902/202509021907.mZZ38HtR-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250902/202509021907.mZZ38HtR-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509021907.mZZ38HtR-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/gpu/drm/panel/panel-visionox-rm69299.c:341:24: sparse: sparse: Using plain integer as NULL pointer
-   drivers/gpu/drm/panel/panel-visionox-rm69299.c:411:42: sparse: sparse: symbol 'visionox_rm69299_1080p_display_desc' was not declared. Should it be static?
-   drivers/gpu/drm/panel/panel-visionox-rm69299.c:417:42: sparse: sparse: symbol 'visionox_rm69299_shift_desc' was not declared. Should it be static?
-
-vim +341 drivers/gpu/drm/panel/panel-visionox-rm69299.c
-
-   329	
-   330	static struct backlight_device *
-   331	visionox_rm69299_create_backlight(struct visionox_rm69299 *ctx)
-   332	{
-   333		struct device *dev = &ctx->dsi->dev;
-   334		const struct backlight_properties props = {
-   335			.type = BACKLIGHT_RAW,
-   336			.brightness = ctx->desc->initial_brightness,
-   337			.max_brightness = ctx->desc->max_brightness,
-   338		};
-   339	
-   340		if (!ctx->desc->max_brightness)
- > 341			return 0;
-   342	
-   343		return devm_backlight_device_register(dev, dev_name(dev), dev, ctx->dsi,
-   344						      &visionox_rm69299_bl_ops,
-   345						      &props);
-   346	}
-   347	
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With best wishes
+Dmitry
