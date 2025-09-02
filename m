@@ -1,68 +1,68 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15FF3D987
-	for <phone-devel@vger.kernel.org>; Tue,  2 Sep 2025 07:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D611F428C
+	for <phone-devel@vger.kernel.org>; Tue,  2 Sep 2025 07:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756798410; cv=none; b=kspr/sru8YozssPmq9JgWFZ250jtLVYnNSuHUU3th68+UT/HFV6AXxQqzTbYsLBquktiLu0L3MOiV7mhtiVmYHGhwq7moIVs+bNZk1ZGZs6q1JWgYcdP8KRchp7yqIlzv2Ld9N4kN+4SG98kOY/Q0sLhO6ih0aRdwpr6bHlDdP0=
+	t=1756798453; cv=none; b=LiIO4MeEZgIwn759lHwV4hmnnbpnrQx6g/7smcH+7pLkFBtUoEgzcRs8jPP+Z8XinIuv997Zdv1NgcfkvRjuZAWr1QAvGUGuekE+WPF2YwbyMbsbx+YgTDbhQ1I5rknOlq7BCBhz0nUT5JMwu0+Ns6zO07Ag8MXp1t6NWfUhi24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756798410; c=relaxed/simple;
-	bh=D4V+odKYeGr6EvtL8HDmeKNp13epht8jRQKStbKvYR8=;
+	s=arc-20240116; t=1756798453; c=relaxed/simple;
+	bh=QExWaTGE2vxWmLeNo5O+limUoL+4ru1Std4bISfnAJg=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=i0atk60JBdyYeWCPaRxGAWsjU+rqePCHTJe7bI5w473x0/4dDlb8LhLfnqSndPOX8pym4QrWAVrzguo0hRfJFeb6uNhVxKGPljvYTWmU103JPbduTLWB0kkSv49xZ+fKkANSEPhw6xWEwVmeqzdgdDWukjAvozO7oB1mDcl1qfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Tmx1MBDU; arc=none smtp.client-ip=209.85.221.41
+	 In-Reply-To:Content-Type; b=GudApFC/9nSpSsD0hiiw+1Tn22UaVz8bvTKSNaRPf/pBF6c2blj0nkambvqggS7jM3E9Ia1xgVT5XmkmHvlUe4iC+63STyUS939LH86bzuBE8iZl8ffBTewvBIgNnN4ij1bQAR2/1tgKI6aH/5gaBIhd4TKyP3SKXyVJJBVbjAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RpIy7DQA; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Tmx1MBDU"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3d17f24d42fso2073779f8f.1
-        for <phone-devel@vger.kernel.org>; Tue, 02 Sep 2025 00:33:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RpIy7DQA"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3dad6252eacso82080f8f.1
+        for <phone-devel@vger.kernel.org>; Tue, 02 Sep 2025 00:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756798407; x=1757403207; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756798450; x=1757403250; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zzGEH5SzoJb0QREXsJ+codvGvPzyIv09C4e6DjWnFbs=;
-        b=Tmx1MBDUYh/Ox+qMe+U76L3e6cRvGRNpqPbI+OjhtUwGeJSw2roBVrDtB8mQhhL5Ip
-         1JGxcckCKjt635WMR0UxHfyGow5nQJ3PyaLdUGJFFEn7tHvGSldfhyaKJoozuG65O8jG
-         rLTshLi4J1GUfB0O3pPeD9Wxe7/suzYUpIM0UrFK+xx9LjSmgHpJcMNtuumpVezKzeoo
-         7my0eI5Hss41b258IcA5J9O/0ubo9Q5jWhhuFmL/mRRKiFBh2crIXEUXnCdq29ZI3XG+
-         /pBwxKstrg6Ga1RUU4lDCmstq+uf2NGgeGrnPuEo8d5yuFk4UCynco9WibMGIun5wRi+
-         2dxw==
+        bh=I32gN7OFjznQLzjzVHId6kppg+GjM4YqrgK6h7SJVJE=;
+        b=RpIy7DQAAi3I3+D1eUHITEXlXcrTNd/PyyZbhebDn9asF/UMdVwX3mg58VfrCszjjP
+         otJHkVczGYKXvGx1NFubQBionCosnA12s7dgmnuni+9yb6Cg33DWBtGkm7goi96DodpB
+         kpWTCtcjGIeMfFO+T9qU2WRZzWOXbi6hulL0QtQXJl383rxexMkGEjk5Stk7oH26o4X0
+         c24t6/mqjcaBmlbASExcbWze92TMbMQx7pY+MRsDkPdDLme/NS97+sTNaXxGKaNOuNDE
+         WPaaCKp5F8EJj/uRBLQuAIlvAJlDmdaTDaC9HlirbhSL0TJJ91+RgSB3RtDrUOUgvXhK
+         elkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756798407; x=1757403207;
+        d=1e100.net; s=20230601; t=1756798450; x=1757403250;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=zzGEH5SzoJb0QREXsJ+codvGvPzyIv09C4e6DjWnFbs=;
-        b=rUT5Aq1U0t1fNs0KdJ5HUL4OKrYnHlppuJXXj3vcldFxTW1bRRNtkU5YqR2ZJi6BSC
-         RAirZXIdaIQV2bP+uhxTQ3jHgpd68SeyrPH4T6XOYFI2up3JsFfJ7a2ZDU2//ujTW5Ee
-         9i+/No6Cy4WB4cf4hHmVTSOYGlIse4CUiM2tomRJ9dWX8eqlisXRHcPa1Ipp4GPStuxT
-         q2OngqaY4toU62MqydvcVXaUOyW01TVXaogDnP1VlkDUln8RIS5THsljdz+hTmhvjyJd
-         4fg1OH5lukJ3JgdVsVDLs5Y/I5DNENz8y0L8nI1gNnoi82omOzC6fw0lRMFV5qKYh9nM
-         IScA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7XDvaNZhWaRCKQMob7krVyXHnM3Ajl1O53pIt3l1/SWS/6Z6837GcBpk0hMIy+sDfxrQPGIJqTCdjQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YypKUiLtulZgVBCXOHJFLHCwgNgfnLbliG0rfuBS/XVlqWTwiHV
-	5Fq6scEMpp0cSCKptS8VgnRqqCyjWKHKN9ivzzoVy4Qrf0QqyDIy9nTOZ8cyIa6x7CM=
-X-Gm-Gg: ASbGncv/kVIvVYMN1+cUmnjEKtakMZ49DP6uCXBD+QlKpTmZiFVI3SjCsb9pP9WgQEF
-	3DmLFQB5iDg++DPUBwHE2OoCgrycvfZLXkAxl0Fj0muFahf4tx/AQg9S/LGVELPxmAgfKn6Ajol
-	y463+6xQZ6qglKf1wWh47n5+y1Xle3N3WiwfzoCEI8TqmcP9GXFSjpuz/p+P05rNb4PGbmkV0vL
-	8XN1SpZYeDfxWXGz7UykeBFw4Vba9Y549PSnVhlnzNF/dtxNMwjq6hmRX7bw2MiRqdYQTlXiCQo
-	LcLEqnC/mrAYj9vUJkPNk0vyRO/6XxLDLheSDdD+haibx5AaYHelm7ZD6wQwmebivDmi0ozht6r
-	GpI9r9x53KuzjZS90LenzONkZ1UaQJm2n7zESmV4G+wyykQdUNK9mQ4cILXnhkZ+p4TvIVc8MJM
-	rOy48vABt2vA==
-X-Google-Smtp-Source: AGHT+IFE/+Dwxh2SBZShvvP5BRxfoJkpvnPruwR5LDCLB7pxR9NVHiJHNxUuG89GACIWOjRNGeP2PA==
-X-Received: by 2002:a05:6000:430a:b0:3d7:4e2d:1e41 with SMTP id ffacd0b85a97d-3d74e2d22efmr3577647f8f.40.1756798406910;
-        Tue, 02 Sep 2025 00:33:26 -0700 (PDT)
+        bh=I32gN7OFjznQLzjzVHId6kppg+GjM4YqrgK6h7SJVJE=;
+        b=M/X7c7BoyPgDL8R0k2EMcm2YfDqJDLeMK12Y7biH2sNMLpmrOu0E4/9BeeozmG/dd+
+         N/gV1K6EFUE1fkLa/BlCnYuHjkrNSOduvMFvc+AYIddFlz7CXRhcweUe96ynE5Xa997k
+         UOv4/5Fgn8F+qWZtL6ait4EogG0LHcyPYH0h2MLNYRxz9+dk8bLd0/zMUv8moUS07H48
+         O3Pm5zsyfErslF6A5e8HgYfhl/uswdXcC3zS4Xao+wu9jOo40+8nM3OKvg4AE3wGes5G
+         N/rXP4Y4DjkPrWIc96pd40cTVCDQGVR9Q8mgRCr9mvi6dHWSzQzAKKLO7VXv56v02Mjw
+         Pnig==
+X-Forwarded-Encrypted: i=1; AJvYcCU15r0rQQyz2p7wv76b+cNFBTNJxIfsxNVexVQwOIhys9gA/lJsSaYzNCUzDtpSV1V7Am6pNP67V4QK2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiPiKcJcS3cFnR0TcfM/2PlaIsiQdgJbABzimha+PQTgxlfomY
+	CjzbGq7RD1sbLMk1WTH1MHjOIh8/NZAdzooP7aXxgzevOl7sGYA+DxR2QV/p+jSfIic=
+X-Gm-Gg: ASbGncsuquclLsAVBJaH7wf7TKLT4G5xbcBss3hcrPCzhxUG63e4j5rjQ1mztTaNn4F
+	rUn8vph9f44HiEofr/PZz+2C8u8mBdY+Usw7EU4k+V5NE0qzBy0aokZKc0znaj4CQPWU+k4ptYZ
+	J+3iVyce+BJA1M35OJD2paKL7EuYLadr+MmXBEcYaIbuoQIYPVa+88H8BRlevxfhpeYkNpIBvL8
+	8TPu2isqWRNDi9eGcv2Q/erNyTEYrv+PDuut9ln9rKt1yhyJ5RyuzY9r16Acb+9GrO+QEY5Cjb4
+	1YiinLV4/ttKnidEZuWzRwmnrcjaViHBf9h7TC+okSrJ/mMFV1myYfr324A1aDOHXzon75xwbWD
+	3q4nnlT5cHdeolIDCdzY5T9DQWe4cJxqdkYX5B99fqiSu9vswLB0vG4dV2ji1JYuYTHndTGlhM4
+	0lMoFfco0Ydg==
+X-Google-Smtp-Source: AGHT+IFvYs68Buuceqmom9cK+b3tmxRcvwX+RCf/RKksGGfS++c275PvWsJMjWEvnt8iSrFclv8Jzw==
+X-Received: by 2002:a5d:64e9:0:b0:3c8:d236:26bd with SMTP id ffacd0b85a97d-3d1dc5a29d4mr7689830f8f.11.1756798450078;
+        Tue, 02 Sep 2025 00:34:10 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:3d9:2080:5c8d:8a1e:ea2b:c939? ([2a01:e0a:3d9:2080:5c8d:8a1e:ea2b:c939])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34491a7fsm18044897f8f.57.2025.09.02.00.33.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8ab093sm192349435e9.22.2025.09.02.00.34.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 00:33:26 -0700 (PDT)
-Message-ID: <3c8571cc-ab41-4231-9950-45d3e207927e@linaro.org>
-Date: Tue, 2 Sep 2025 09:33:25 +0200
+        Tue, 02 Sep 2025 00:34:09 -0700 (PDT)
+Message-ID: <b49e2a94-695e-42ec-99de-aed42e62572d@linaro.org>
+Date: Tue, 2 Sep 2025 09:34:09 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,8 +72,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 2/3] drm/panel: visionox-rm69299: Don't clear all mode
- flags
+Subject: Re: [PATCH 3/3] drm/panel: visionox-rm69299: Add backlight support
 To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
  Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -82,7 +81,7 @@ To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20250901-shift6mq-panel-v1-0-444b4abbfaea@sigxcpu.org>
- <20250901-shift6mq-panel-v1-2-444b4abbfaea@sigxcpu.org>
+ <20250901-shift6mq-panel-v1-3-444b4abbfaea@sigxcpu.org>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -109,32 +108,126 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20250901-shift6mq-panel-v1-2-444b4abbfaea@sigxcpu.org>
+In-Reply-To: <20250901-shift6mq-panel-v1-3-444b4abbfaea@sigxcpu.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 01/09/2025 16:22, Guido Günther wrote:
-> Don't clear all mode flags. We only want to maek sure we use HS mode
-> during unprepare.
+> The shift6mq's variant supports controlling the backlight via DSI
+> commands. Use that if a max_brightness is set in the device specific
+> data.
 > 
 > Signed-off-by: Guido Günther <agx@sigxcpu.org>
 > ---
->   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 67 ++++++++++++++++++++++++++
+>   1 file changed, 67 insertions(+)
 > 
 > diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-> index e65697ce6f51c7d64b786da18cf44b16de5d6919..2216d38366ea37368d15480f9d8a8ccbfe77ba3b 100644
+> index 2216d38366ea37368d15480f9d8a8ccbfe77ba3b..5e5ff6056c80e67a5bf8fe4911cdbc588db5d03b 100644
 > --- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
 > +++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-> @@ -192,7 +192,7 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
->   	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
->   	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+> @@ -3,6 +3,7 @@
+>    * Copyright (c) 2019, The Linux Foundation. All rights reserved.
+>    */
 >   
-> -	ctx->dsi->mode_flags = 0;
-> +	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +#include <linux/backlight.h>
+>   #include <linux/delay.h>
+>   #include <linux/module.h>
+>   #include <linux/property.h>
+> @@ -20,6 +21,8 @@ struct visionox_rm69299_panel_desc {
+>   	const struct drm_display_mode *mode;
+>   	const u8 *init_seq;
+>   	unsigned int init_seq_len;
+> +	int max_brightness;
+> +	int initial_brightness;
+>   };
 >   
->   	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+>   struct visionox_rm69299 {
+> @@ -285,6 +288,63 @@ static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
+>   	.get_modes = visionox_rm69299_get_modes,
+>   };
 >   
+> +static int visionox_rm69299_bl_get_brightness(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness;
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return brightness;
+> +}
+> +
+> +static int visionox_rm69299_bl_update_status(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness = backlight_get_brightness(bl);
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct backlight_ops visionox_rm69299_bl_ops = {
+> +	.update_status = visionox_rm69299_bl_update_status,
+> +	.get_brightness = visionox_rm69299_bl_get_brightness,
+> +};
+> +
+> +static struct backlight_device *
+> +visionox_rm69299_create_backlight(struct visionox_rm69299 *ctx)
+> +{
+> +	struct device *dev = &ctx->dsi->dev;
+> +	const struct backlight_properties props = {
+> +		.type = BACKLIGHT_RAW,
+> +		.brightness = ctx->desc->initial_brightness,
+> +		.max_brightness = ctx->desc->max_brightness,
+> +	};
+> +
+> +	if (!ctx->desc->max_brightness)
+> +		return 0;
+> +
+> +	return devm_backlight_device_register(dev, dev_name(dev), dev, ctx->dsi,
+> +					      &visionox_rm69299_bl_ops,
+> +					      &props);
+> +}
+> +
+>   static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
+>   {
+>   	struct device *dev = &dsi->dev;
+> @@ -316,6 +376,11 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
+>   		return PTR_ERR(ctx->reset_gpio);
+>   	}
+>   
+> +	ctx->panel.backlight = visionox_rm69299_create_backlight(ctx);
+> +	if (IS_ERR(ctx->panel.backlight))
+> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
+> +				     "Failed to create backlight\n");
+> +
+>   	drm_panel_add(&ctx->panel);
+>   
+>   	dsi->lanes = 4;
+> @@ -353,6 +418,8 @@ const struct visionox_rm69299_panel_desc visionox_rm69299_shift_desc = {
+>   	.mode = &visionox_rm69299_1080x2160_60hz,
+>   	.init_seq = (const u8 *)visionox_rm69299_1080x2160_60hz_init_seq,
+>   	.init_seq_len = ARRAY_SIZE(visionox_rm69299_1080x2160_60hz_init_seq),
+> +	.max_brightness = 255,
+> +	.initial_brightness = 50,
+>   };
+>   
+>   static const struct of_device_id visionox_rm69299_of_match[] = {
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
