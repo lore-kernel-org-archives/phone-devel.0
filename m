@@ -1,107 +1,111 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885A71C6B4;
-	Thu,  4 Sep 2025 14:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5A130F557;
+	Thu,  4 Sep 2025 14:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756996415; cv=none; b=nUq2egIXp5T/TkBIqcvAXPO2fryItITuBHish361+ziuswDbYFh+KBXF7Pr31cj9I6tVtxnpD0ipN11yn67IqNzmnbIjEAtnwcjNpqMjvvEaC+08da4K66U2/NBw+nV9HjDbZF3/0MySs3QsFMpmdHBBCRboNraFiQYwb0ZGItk=
+	t=1756996521; cv=none; b=kcrn+NU5MT7lxRwh1CSo4c1z1fJMNpPmsa2BXtY9enzdKfkO0eTzmBXUo48LrZFPQDRHG+QjpIF4lHDi+GTRBiyEKR1mYFKcuT6ywIbaT7REouAsMpidIgv/k98O1aHepstYJ7oPoZFF4HFk7YwBalM3d3IbR8oIcOo4YfQaDEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756996415; c=relaxed/simple;
-	bh=CQqjUVu5trE6dpsmbJAfD1hwuOiRBQjUEFPaOuht6vw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=REVjEoNVJ7Gn6fy62ZP9lTGonoSaNcIs2TbldWomny12ewPNp8BedGZwiR9gWf4zc9ofpEo6QwCgLYTz+vc6JXGCCNoinJ78oNmA1xiXuOVBOxxcTxI+QNMG3tzmGs4PxJ92jE/w9gegMv0rPW9SWMkWNgSHzSOWq8ykly7CU2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmtWJS6N; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756996521; c=relaxed/simple;
+	bh=8kIGznDy+yBjtOzEZBMp/gYRmqnIWETZTPphA2eOkh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jPCrzasyYqYONFINqhggIVJE0flifYOLfb1a1E+DWN6ipI/PbRlFuUdMVmnDH+N4l3JYlPifElhmc1y3L8S2HynPyB8SeNiz9OFmjutseQcHULbpbZfPM9+t0+d+2UYvygzYMoj48Xjhw8Owukody/EOTnLHSwBe/RVPq4pcTWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o92AJnVr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmtWJS6N"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b476c67c5easo740905a12.0;
-        Thu, 04 Sep 2025 07:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756996414; x=1757601214; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4+1JbGw0fGpmxtwsSOst12cbU1swEnfv/zomaJdL8Ys=;
-        b=HmtWJS6NLuytzbnKeVyeOr0yyAxjMVw75nbOG0SRivfeSwaKndl5XyftrzzPI0TW1B
-         jjuZsp6xbq4JJ+8nrnS4/i39lhEp/G4uehB8WxsX7nUDkh8fvj06WLiyrdZXAhPmQNH1
-         tV7KrFTfV7RdfvtVg4PCkdfziy3IckSRfC9KxXJlqJurzVRuQNEf7U/BqSncD/pX752q
-         3gu/Zx0jL9jXV0A2Pse70Uy9ygPDEIWaraeX/01lVvPLhMwpoRAlQB+wQD4rAIYrPCPb
-         c3SoaRbLWKLJ5SJin20h8rkSak2lJRrFAm0+HZMWv9RZXH5P6PBzMz4mkyZfe/3Eg+X1
-         OZqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756996414; x=1757601214;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+1JbGw0fGpmxtwsSOst12cbU1swEnfv/zomaJdL8Ys=;
-        b=BlzlebB9S2mwhWaG/b/cMLVbYw40iTa5g6/yr9WF4QxYtjOWE95rJ74ZtyHj9zxi3v
-         GcDVKS5X59kUXucGti9wKMdZ3dJjgRzV5m2ZwOKUQrJeVy4XdiBCZAalSygM8HAIqleH
-         LxUEDo7DwiL3nBEt+Hly0SH8ezgaVJhcD+9/mlCkrQQ1bMGKDKwcsp7IZfu4t61402u/
-         8Jfygrgr44wJR7R5mJXo2ezbfCMOql8tJVbPVDtSLJ3J0yGG3Y09cTkanVaooKWmuKMO
-         Ve9px23jWkxLcXHJsOst8XAGYetIHn1k0FIMzAEqULCNAxUT9OcXQDSZyh7DBGIpIboK
-         DSIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyXHrJ6RvNqVA+r/z8zgJeHuwcDCAQUXbB5CpsS3pzCui+QCPgBElTPIE063pws+6hFpnsklfZKLeWpHs=@vger.kernel.org, AJvYcCW2il9gT2KhYDZi0Y76ZBdd7yQuNnxckV5vaJoBf4RjCOE8boKiZ94Gax7FpQadpwu4TYMHXbeATdbF@vger.kernel.org, AJvYcCW5O2F2zwabQMgqMs18sbseHP1HKL+fS904xtI8nMsP+H0p++MMS0oR5A6xXR8oJvxAf9USC/tv8HAeUWCp@vger.kernel.org, AJvYcCXFgfID5mmFPDN7tNpYNWPmf2Rihvr8ypgu0lsaJiiMMdDWeoTE8T4cBehO1ACe+oAXu8l8Hrb+BLkkxpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXTz7Q/gAWiV81V5hebK4OK3ahEl2H9iR7aJN/kc+1IY/3byQB
-	GU0Qfqbeuisna+1Wlg+8oiQmaVcymml28qvyp6M7tZggWrBiz5FOSaWXTaS7kdjC
-X-Gm-Gg: ASbGnct7vSAYwI15eu4ORlFDaoUngbJFawO7hWLVtXWZK4No6yQ/jGha+X/qaV9Iv7i
-	l7Qm6LwVEoYnn+IF6Ll/81GSrxhXP7XAek+3hK31v1Dx7n5PMaTMOB6PYnEE3yTOXuD2gnfPUqp
-	gwyBYaWFmSfYzmf+5GWTjyGuxb8htqXojUX307/g/tdF5hOVFzF1LP4mVs8BKxSczfJG/FDbvrW
-	AQ4NCjzJ8eD+lmk5YkMK8Olm8OHVPlRFWbmW7HboSPxxT4BSzym9qd0iLKBx6UPCprGRHWfF3Gp
-	Qu6mvHEkWW6UJXuDPsfNhLxPmEKXpZRdqhj9tYQlkb5QKtx+ZyvFO/ZazGJfUddTpebKiInTmXH
-	wSWq0QlEoxkMbmnAQJDW3JyY=
-X-Google-Smtp-Source: AGHT+IEvA5/WDKDSgUCUGgs9+T+B+p4SGxVG84q25Rng25L/tfZ509AI7QBBg7Y+27zKK3A3L3aQ4A==
-X-Received: by 2002:a17:902:db01:b0:24c:cdc0:52a7 with SMTP id d9443c01a7336-24ccdc054dbmr29353105ad.24.1756996413792;
-        Thu, 04 Sep 2025 07:33:33 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:463b:8ef9:3432:4c09])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cac814a10sm33364705ad.133.2025.09.04.07.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 07:33:33 -0700 (PDT)
-Date: Thu, 4 Sep 2025 07:33:30 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, 
-	Markuss Broks <markuss.broks@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: input: touchscreen: imagis: add missing
- minItems
-Message-ID: <23olm2vbdiuliejmwfzhr75xyj3na2mczztvno4rkbi4mdl7xr@uu3br7ucdydp>
-References: <20250824-imagis-minitems-v1-1-cea9db55e87f@dujemihanovic.xyz>
- <20250825-capillary-viral-b7448ca6a57e@spud>
- <5917367.DvuYhMxLoT@radijator>
- <20250826-yippee-tamper-5439f104769b@spud>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o92AJnVr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7651AC4CEF0;
+	Thu,  4 Sep 2025 14:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756996520;
+	bh=8kIGznDy+yBjtOzEZBMp/gYRmqnIWETZTPphA2eOkh8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o92AJnVroMgO0xyUlw5zPy+0SOqoU8a73BKt5yk4HJ/rA6ZxM/Z4lnFBvkqCTCcUt
+	 g55GxGyJ4kUwstKETLKrzHpfRrXg1HXAFoT0g4qT6YMWzAA+sBlDYUwQKIxp3EWIAq
+	 qSjq8hUsOGyVnMDYJl6+EUFw/w0owqY6Wo9+MsgUIRgAJ5+NY8nrN2n+lOZRu8+feE
+	 eoTkxkplcOyrx0yLVoCoIHziOC/DHMYyRGcfgYBUVwTa4aZJwEGv9m6LNB7YRSjOhS
+	 PhPBCM5x3ORKjDJK7txAcwIKaho+KEKGM9LQ5AvnsrOOD6SmUSh3mB3CpmVsRjSDhP
+	 EgaYwvQIsFwSQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	=?UTF-8?q?Otto=20Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Robert Marko <robimarko@gmail.com>,
+	Adam Skladowski <a_skl39@protonmail.com>,
+	Sireesh Kodali <sireeshkodali@protonmail.com>,
+	Das Srinagesh <quic_gurus@quicinc.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	iommu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux@mainlining.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Daniil Titov <daniilt971@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Dang Huynh <danct12@riseup.net>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v9 0/7] Initial support of MSM8937 and Xiaomi Redmi 3S
+Date: Thu,  4 Sep 2025 09:35:13 -0500
+Message-ID: <175699650574.2182703.5262816788916742029.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250903-msm8937-v9-0-a097c91c5801@mainlining.org>
+References: <20250903-msm8937-v9-0-a097c91c5801@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250826-yippee-tamper-5439f104769b@spud>
 
-On Tue, Aug 26, 2025 at 06:38:05PM +0100, Conor Dooley wrote:
-> On Mon, Aug 25, 2025 at 08:57:57PM +0200, Duje Mihanović wrote:
-> > On Monday, 25 August 2025 18:42:38 Central European Summer Time Conor Dooley wrote:
-> > > On Sun, Aug 24, 2025 at 06:12:05PM +0200, Duje Mihanović wrote:
-> > > > The binding currently expects exactly 5 keycodes, which matches the
-> > > > chip's theoretical maximum but probably not the number of touch keys on
-> > > > any phone using the IST3032C. Add a minItems value of 2 to prevent
-> > > > dt-validate complaints.
-> > > 
-> > > Does this mean that there are devicetrees in the wild that use < 5
-> > > keycodes?
-> > 
-> > Indeed.
+
+On Wed, 03 Sep 2025 23:08:20 +0200, Barnabás Czémán wrote:
+> This patch series add initial support for MSM8937 SoC
+> and Xiaomi Redmi 3S (land).
 > 
-> oke, Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> The series is extending the MSM8917 gcc and pinctrl drivers
+> because they are sibling SoCs.
+> MSM8937 have 4 more A53 cores and have one more dsi port then
+> MSM8917.
+> It implements little-big architecture and uses Adreno 505.
+> 
+> [...]
 
-Applied, thank you.
+Applied, thanks!
 
+[3/7] dt-bindings: firmware: qcom,scm: Add MSM8937
+      commit: cf13bed78c90b2c0fc65774e86d564c868fa2a23
+
+Best regards,
 -- 
-Dmitry
+Bjorn Andersson <andersson@kernel.org>
