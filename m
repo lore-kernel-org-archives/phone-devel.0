@@ -1,206 +1,133 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB7335690A;
-	Fri,  5 Sep 2025 13:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F7A145329
+	for <phone-devel@vger.kernel.org>; Fri,  5 Sep 2025 13:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757079586; cv=none; b=aUziD3ur6LRFX8xS7WVOTJmBnnPezUTrLENXvGGtSq3IxgcuECfOj6p5/n0a/4rq97jlPU222LLSRt+/8yZgrgPc8RyDuu9nqtJWBLMcTiK4nXpe67FXBde1OVC1+67bMJQOQddlbhe7pPfcV8GCygQ97NWukEu4JOzdxGYsnYA=
+	t=1757080025; cv=none; b=BxNiDuhCgi1/X5Amd99x2PfVggV99ROokxitH9v6K5tx0yVrbCB66wSqhWmUmmD3muHW2dIreJn4FFmQOtTd3c5SZTWXBzG1Lz6M0ydNcx9U7aGTopZwaR5+uPJtMGKJ7gBjhJ8IcqilY2xy0aweKzfB6YCqDRS7BZLV3NDQgdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757079586; c=relaxed/simple;
-	bh=vx2kCaHAa3+46zkf1gF5gTvLik0KcTAA2xzJVsF3BLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FdjtzMKiz+IhgW9hG9gWr5BtDo8isGlw4RaS/JEA9czPVpHk8t3VKpIY2PziB+jIttx2c1D/XHcTssoTM0GqUOsLqqLcN7B5Rsx7qpz7kl/VFWEpWiicRp7HCoojhGlIzd4N7orS6UWCyzECDP9Bd/ywYOv4EJH1ZRFYx/J6Ri0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGT+3Pxa; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757080025; c=relaxed/simple;
+	bh=h0O09iRsf9dHfeMthnJk999pMS5aMUcInRudkzUILkY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IyqyIxKusYJV7XNed6PJG3XYnjMBPW7AJxfniSrFfYmna7yye3NDyI3LzKyFCn5kc3F/RdeONXxUjxOFggH79Y5lXTXJZuFUPnofUizNYLD065K4jbqQEPhz5g5855sz8rVg9/EUvNQZ/3/01dq/zs0a59q527Fex39gknKNk5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=d8bULyHx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGT+3Pxa"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b042ec947e4so292003166b.0;
-        Fri, 05 Sep 2025 06:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757079583; x=1757684383; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JcBwWlHZB5a2uZGoWcZFaGIFJ/aB0IZuklQOtG7SMIs=;
-        b=ZGT+3PxaSUZUpOWZ5JxrvW1bBRqN96tqo+ct81Rad+wkyvjCN6xpc20JvMcRU3apdD
-         kFPdlKxE2jiYNfGWlcCYkPD34FMZxwWpErNYW7ibQZOmxG9ck9bcgNmdMAh2+aaFEhfE
-         lGZ4wTifd6wHV71R4Bdxdn/BhcfvsMI9Q6QRVrmTaH3BCYc9DdR3D3elh7iivolviQlr
-         52dj3M8CDM/zyCWgCiokV4iKH94YhWainypxMxIESkPlS6phjBhILxOWfMhe9sVzy+tx
-         9CEIAzhijO/TGVmGJ9Gs5e0lE+J1uZS/o70azE4U7VyPCZqC3WnXru5pAlM/E0VU0DmD
-         xpvw==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="d8bULyHx"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5856wnqi023218
+	for <phone-devel@vger.kernel.org>; Fri, 5 Sep 2025 13:47:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=LEqUXc5cbwTjOkkBL1dldf4G
+	sxuKtt2JT9JVdaymvUY=; b=d8bULyHxtMyy4qKNiXFY3gFBjl+3oJl1y6bSpPD/
+	QcfaJvpSj4Fsoa2XWuNo3HoorvWL+qCd7f/DVfvWB6pE7hh7zQ8WEeCIfQ+wwT6S
+	w5Al1qefwhoV0WxtQWY5pqjLdtiureWuFqmAKyXstBrp2dp1qDJYhvSyTuReedqR
+	QPzK1VztV7pciEa4bzqorSv3m0fhDnmusvYtD39dgKuA9Eu0yslelaT9KamiRY2Y
+	SIEvqfeULowexsIbINxuoiJzfvNrMaTGFAgaCPcsN3DI3U3+cMuWVOgZCZntgp34
+	MUxKXsh8yERd3uqUR3OgyO4ifCxgEnyjP5MZ00gIhdlQfg==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uq0euf4w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 05 Sep 2025 13:47:02 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-7222232866aso43707866d6.0
+        for <phone-devel@vger.kernel.org>; Fri, 05 Sep 2025 06:47:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757079583; x=1757684383;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JcBwWlHZB5a2uZGoWcZFaGIFJ/aB0IZuklQOtG7SMIs=;
-        b=Fe81wayuoLzidji4vYY6QZQ2NEOpVx0HxHOL4K2i6dT+6GmkVFsT/1Hm9IduTouFAO
-         PUvBmBSKKXvphWfvVIhWr1l8O4aXil8C1jJ0Kc7lCGeBK5q0rMGGNPWs3XCflEx8Mphm
-         Api91dzDNd+XIw7h3yGBKdf0dmxTC5XZ64b+37fuaCjgNgPOOQFUSYsBZU4AZc1PKqmn
-         +YfFih/fQRjCfw3jQlj8jKO4T6vc38rvp86ntWFMTJJRM7lO7uKRKilFdkwtY4iO+D7P
-         XX8Kt4dCgN6fijs7juQJ3e9TXTeNHmAlgaLL76f1kBF+XDYVCm/MxAIhPJE6NVaScuCo
-         gz4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUxsBWnApSTCLIENw+zhgKqDEOfZzV0y3YX3HeCRnXw/Ic/hK3Rejz9wrW9CF71BLNL+h4VyJR7otKwNJOu@vger.kernel.org, AJvYcCWfQKHlAVyEE/XqK/OBvUAS2jF9ZPEj+JqnOWrAgWm8dupAmpyTta/iOEM1ZpZygp5tGLzF5nRBnYpx@vger.kernel.org, AJvYcCXSJDCpsketTqWEOPLWPaz7FfSwjq90MgRNDzTMbaMDTJwg8vv/ccfUrVY6CdUkWlwp8JTd6IG8hNXQhCY=@vger.kernel.org, AJvYcCXtolWt9qxITBoea87ukGdIh61NdFiBKqiSG+DMfpD3ZIGmv+RwR262L37gOvBr1l5sMYvpfp205quL@vger.kernel.org
-X-Gm-Message-State: AOJu0YzodTwfVaJQh5c65+HT85DCAGCK3MO8W68LE2cumItN/1RxK7AN
-	AZT+jmcIuLCMtKGuMOGYVY+ktDvqeaCvX5FwNFVOPDT51uGXR7ljSzFZoQZlHsJgPWTAGNTp4oO
-	cMOGNe9OHfuh3LMx3ckD69Uu45cTpJXM=
-X-Gm-Gg: ASbGncsOwOddAjuldUeYjqY5PE0cWqKFUPN1+5KHCeYSdLLfm0KDzDKhF1tr2bcfJC+
-	gkMCguD3NufwEW11SI/LE1cBcFjCJ6kGOdCsG4uSoAehSWRag1xJIWm7h0oUlrPY+sJbhC54STU
-	s+zveiHRWgt5vZByzSPuhnQmqMhHtDFecLbrA/ygWuKvH4nGVM+FhW5GBsP0GjE541FVY5QSzWV
-	wgE/DYilhEaaAfwAFnp
-X-Google-Smtp-Source: AGHT+IE+5+0V34pgQChWQaQfEdYgH1kutkm+wEpWLjqg5Kc4kXcPbb7Glfuj8Fu2iyCt8sHQUcgaZkstmrrmQRzXtdE=
-X-Received: by 2002:a17:907:948a:b0:afe:b2be:6109 with SMTP id
- a640c23a62f3a-b01f20cc03emr2012717966b.59.1757079582723; Fri, 05 Sep 2025
- 06:39:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757080021; x=1757684821;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LEqUXc5cbwTjOkkBL1dldf4GsxuKtt2JT9JVdaymvUY=;
+        b=fAUyf2p6ilQoXXL/89nyqKOr1sNCyhRDPMc8vMnAc7bkB1M9d4UB+zsW2yMV4M0TQo
+         ORcUgwAjJUjYWTzPmIdf9nbydS5xEv41Bjd1BzDIkmMIONNKHMoEZxRDufQrGai1pLDi
+         M0IeGDy/05SGD/F4UXeKImn+muMTkSUvBufoTZko1sgPfk19Co9QkexrCKHTt9X/QwIW
+         EK9IwvlbRs7iITgptQRVPClUIwkcvtTWCyYYT3KbzghJae1EQmAStEGRI9k2x1ve5b3f
+         1iDsyZQR97AqI0pjSyGDzhPyZ3ORaOtejMgxZPk3S0/sReOpDqYS3GbSCBXCsLmgPcIb
+         6rFg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ13EBc10fupc8areVQHD9Tu6BoAJ1o1zqI6PQ0zHCckOrYzBCjZGb3EMigl327rVTChU3+arf82mD5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI+tedtg95nmACoSzyDzPQkM1Rs++zrLDCtpFR2cPu3YA9jl4S
+	FvxKWlGhLxI4UFzUSRMRTWjEQmPAZy4oVZuNun53kHC7MFcU4xDqMx03kjaPjVsXQwyObdywkFd
+	TWDC+YKy/h5DmcQ2UNFU/jQDwn4RhSDZDjlvALDFSjt18carZ2I1I1mCEFKf5XXSzgA==
+X-Gm-Gg: ASbGncuuBdYNWYZNIdtV5eNw4Ej02we5lbHAOT5FF5GVVe9SgZQh64jongKGI9wT/sg
+	wm1jLroJnpY9mY9d5e47Is2pkeHpMVhR7BucF0Jmns724OXLp0QLL+xRmQAKs2JS50F30WqNbYy
+	sYUGZJGIJti7wo2tubpN+ioVhn5WMAb9m7nMpKsbhS6X6rDEBqwnVUD2+/iGlrA77QHCj0fZjq6
+	Bg1ZT0byClK3uplYGAoax2uKGbx695BSgRvGb/sxJH1H7jAw8878kICvSkZe5CIjwfkJ9YXGijd
+	paeeTNoZqXGxgxvlzw1+hGURANied6E6HpPr8A48XPAG/Jll1Ph1KaCpDKKZFZVslE732yPLhUR
+	ZgfHwmA5TEriD+Xv0p8VqC8zgxHu2rvq8Qayeg4wJx9rpcrqtDKI+
+X-Received: by 2002:a05:6214:1948:b0:716:fdea:db16 with SMTP id 6a1803df08f44-72bbf3fb1eamr41244646d6.12.1757080020541;
+        Fri, 05 Sep 2025 06:47:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF99i4+ZgNHpEENrXMMJgwJoCqpA1mmRHdqXIu/OPhQnChIfbPSAVcT15ZOYrUVmX+skG5VYQ==
+X-Received: by 2002:a05:6214:1948:b0:716:fdea:db16 with SMTP id 6a1803df08f44-72bbf3fb1eamr41244306d6.12.1757080019748;
+        Fri, 05 Sep 2025 06:46:59 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608abc63c8sm1812504e87.61.2025.09.05.06.46.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 06:46:58 -0700 (PDT)
+Date: Fri, 5 Sep 2025 16:46:57 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v4 2/2] remoteproc: qcom: pas: Add Milos remoteproc
+ support
+Message-ID: <nxhx4ocjpeeyyttqqbzwfax2kf3qd27cbfurvggzgds5utplyr@zt3vk4zpmy6g>
+References: <20250905-sm7635-remoteprocs-v4-0-9e24febcb246@fairphone.com>
+ <20250905-sm7635-remoteprocs-v4-2-9e24febcb246@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz> <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
-In-Reply-To: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Sep 2025 16:39:05 +0300
-X-Gm-Features: Ac12FXxrKIZYXKtYgH3JI0EqCq4jorFjsWgU2LlwYrGTdm8tQwoMyi-wjVbijSY
-Message-ID: <CAHp75VewzAN+tcJ9GrWESY38Uq+qeA4QH=qeaEV8g35H67GcMg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250905-sm7635-remoteprocs-v4-2-9e24febcb246@fairphone.com>
+X-Proofpoint-GUID: CMqE-B5DlK39Az8bS3pQM-hKhLup3FQZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAwNCBTYWx0ZWRfXwDSh6d7DzQjg
+ NaFC6DoebmiKQPXndUJopFS/0jQK30mQfkiPuyTA2ta3Ub1fZ8B9ImnCjcK7cG+j0WF4I/aWfhB
+ gpwiEX6XWsq0g19CyBPnurqwnRkkQfY1vFc1DmCZ07nPrbNTncnKijVeYLQp8vlwps4+8jky4ei
+ LlZQQwrBXavlMQuw9HBs0xZAeDwgVN7J5UwCOuRLr6Ta4U+mExnqqWTLMFPEMX5bXLWsaT9dclr
+ K7CykqvVO80TsAMxdjf+vtbkDW+ipuHwGX5uLqsrmS2lTLPOxIMDuasTHF8gwDaSwGgidavHD9B
+ OZqjct1cMeha7fCe4+SXsCLg5fjmUk9g2v34r87gZecOpEt/P/qEy09RbflopI0g1hgCIXj2sW8
+ hqAChVGM
+X-Proofpoint-ORIG-GUID: CMqE-B5DlK39Az8bS3pQM-hKhLup3FQZ
+X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68bae9d6 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=6H0WHjuAAAAA:8 a=ENn5GrddmNxYPxOGv5YA:9
+ a=CjuIK1q_8ugA:10 a=pJ04lnu7RYOZP9TFuWaZ:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_04,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300004
 
-On Fri, Sep 5, 2025 at 2:01=E2=80=AFPM Duje Mihanovi=C4=87 <duje@dujemihano=
-vic.xyz> wrote:
->
-> Marvell's 88PM886 PMIC has a so-called General Purpose ADC used for
-> monitoring various system voltages and temperatures. Add the relevant
-> register definitions to the MFD header and a driver for the ADC.
+On Fri, Sep 05, 2025 at 11:37:05AM +0200, Luca Weiss wrote:
+> Add the different remoteprocs found on the Milos SoC: ADSP, CDSP, MPSS
+> and WPSS.
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/remoteproc/qcom_q6v5_pas.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> 
 
-Jonathan et al. The Q here is do we want to somehow make values
-spelling (in the comments and documentation) be unified with the
-Scientific Style [1]? Personally I find the article very useful and
-one style for the whole subsystem would be good to enforce (in my
-humble opinion). Thoughts?
-
-[1]: https://poynton.ca/notes/units/
-
-...
-
-> +static int gpadc_get_raw(struct iio_dev *iio, enum pm886_gpadc_channel c=
-han)
-> +{
-> +       struct pm886_gpadc *gpadc =3D iio_priv(iio);
-> +       __be16 buf;
-> +       int ret;
-> +
-> +       ret =3D regmap_bulk_read(gpadc->map, pm886_gpadc_regs[chan], &buf=
-, sizeof(buf));
-> +       if (ret)
-> +               return ret;
-> +
-> +       return be16_to_cpu(buf) >> 4;
-
-+ asm/byteorder.h (after linux/* but before linux/iio/*)
-
-> +}
-
-...
-
-> +               /*
-> +                * Vendor kernel errors out above 1.25V, but testing show=
-s that
-
-1.25 V
-
-> +                * the resistance of the battery detection channel (GPADC=
-2 on
-> +                * coreprimevelte) reaches about 1.4Mohm when the battery=
- is
-
-1.4 MOhm or even 1.4 M=CE=A9
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
 
-> +                * removed, which can't be measured with such a low upper
-> +                * limit. Therefore, to be able to detect the battery wit=
-hout
-> +                * ugly externs as used in the vendor fuelgauge driver,
-
-fuel gauge
-
-> +                * increase this limit a bit.
-> +                */
-> +               if (WARN_ON(*raw_uV > 1500 * (MICRO / MILLI)))
-
-+ bug.h
-
-> +                       return -EIO;
-
-...
-
-> +               /*
-> +                * Vendor kernel errors out under 300mV, but for the same
-
-300 mV
-
-> +                * reason as above (except the channel hovers around 3.5k=
-ohm
-
-3.5 kOhm / 3.5 k=CE=A9
-
-> +                * with battery present) reduce this limit.
-> +                */
-> +               if (*raw_uV < 200 * (MICRO / MILLI)) {
-> +                       dev_dbg(&iio->dev, "bad bias for chan %d: %duA @ =
-%duV\n", chan->channel,
-
-Also add spaces before units.
-
-> +                               *raw_uA, *raw_uV);
-> +                       continue;
-> +               }
-> +
-> +               dev_dbg(&iio->dev, "good bias for chan %d: %duA @ %duV\n"=
-, chan->channel,
-> +                       *raw_uA, *raw_uV);
-
-Ditto.
-
-> +               return 0;
-> +       }
-> +
-> +       dev_err(&iio->dev, "failed to find good bias for chan %d\n", chan=
-->channel);
-> +       return -EINVAL;
-> +}
-
-...
-
-> +       ret =3D DIV_ROUND_CLOSEST(raw_uV, raw_uA);
-
-+ math.h
-
-...
-
-> +       page =3D devm_i2c_new_dummy_device(dev, client->adapter,
-> +                                        client->addr + PM886_PAGE_OFFSET=
-_GPADC);
-> +       if (IS_ERR(page))
-
-+ err.h
-
-> +               return dev_err_probe(dev, PTR_ERR(page), "Failed to initi=
-alize GPADC page\n");
-
-
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+With best wishes
+Dmitry
