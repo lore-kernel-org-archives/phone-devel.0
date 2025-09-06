@@ -1,208 +1,152 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C931224240;
-	Sat,  6 Sep 2025 15:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FA325F799
+	for <phone-devel@vger.kernel.org>; Sat,  6 Sep 2025 19:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757171917; cv=none; b=QluF/rk3vqF9DDoc7AXOc+DjlqhriBfyzePqL0fIUA6mnYPCL6wIJuI3npEOl2KEcY41Ab2fzi7bhbt1eSWukF9HFULjnFk7ZwdJxeKeIbUOeWChoLc3/iYyVe4g3lwomomlJ5LRnqgwWVeON+YuHXR/wVtoWx7fghYNxgxEKG8=
+	t=1757185722; cv=none; b=eOFOzEdtVGBFaUJ6IIyW18kEFagakJa3THDEZmr0zo6dvosz/P/eDICC+zqID0uLwcoW8Ya1wtCiEC3ib7svgJjbggLVCIDCsunuBXWhPhvLbbB/wbOauvdtdNRQ0t2/05Ano6SanZmlRpo1u2H4TF83ycWz9P0Ak3b5t6l2lz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757171917; c=relaxed/simple;
-	bh=ifqCx8unph7aTJwnUP4w6DR157Jzj/htkEOxOLpHPec=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=stE7r+XI/j/VA2Dj9Rym1FM6UxAOt9Wxx5J2Kd5hC3vRAh862RBoOhi6ur6ijipTkEznK4Qkhn0L3jggPcJ/XQ5HVM4xkEhuPkL/JeqMa68TvILbD4LbnOEUenkweMJMmPUpiUc2L1IPn+piUush/Q3ijGy6leP1Jd0KXK2Q1PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=omvFoEId; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=O6rumKYe; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1757185722; c=relaxed/simple;
+	bh=2xJWhaYgpSKQWvTe3MLOGJATxs85lH7JLh9YBdcAAyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W34SMvrfDiF7JaSicEQ6GQKiuiJZlM6maw9kVerRa4nvkymxW72rtzLYAWQm/8+DtLSES3yzsmIaIlhldhYkbf8baHBgIcTutLoBDVFqJxyJyBjtwiB15JRAIPj10NBfO88+qOZnnd+ZBIs46/i9sP7B1R4/VqoK/t97jsJu+S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T/QNNA34; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="omvFoEId";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="O6rumKYe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1757171907; bh=ifqCx8unph7aTJwnUP4w6DR157Jzj/htkEOxOLpHPec=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=omvFoEIduChhwvEruxrKKxi3TXHgTm9iyZLUX3nhW3guLFk48bkYfrLdLK8UKc3KP
-	 jD08uswziFk9hfPowJ2P3qkOTh3qAKpKN7cUpfmOG9tVotxF2s7qo32ZbxEUasLpxi
-	 t25ANMHcYB12YC9MKkcVqhXMqt7b0pnjQasKW7lLQrwKanFRQoE+ZvjLPztOVZmMXF
-	 i11TKCTaOLpwwURVplHHZaSvSiKzk43q4I3bWTheHzxqJmRPmNDcjUSuZ00k5V5uVe
-	 xKoqgR+QYUB+3Jzg6obTY66foRmNhhlC9cnbmhVep6dSvGGw2mdQywRyyhtEQfwupy
-	 o12pkRVG9JBLA==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 853EBFB05;
-	Sat,  6 Sep 2025 17:18:27 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id nFC-YZS6P2uS; Sat,  6 Sep 2025 17:18:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1757171901; bh=ifqCx8unph7aTJwnUP4w6DR157Jzj/htkEOxOLpHPec=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=O6rumKYexiAYjeiLc3bx0nPB3+0qYQaUK5Of/eSM3Zs2eZiMyiXapunFNm3CQXXML
-	 JANxI/SXkxYzNNy6SwQgcgx2DicdakBO6rvOcFZqKUkY3iwRzGiF7VlaRSPWOguJQl
-	 E9fAJkgVYTYRjofoyFvMFF68+Iva1PWx7NjCK5glBW+574J/+OQroqpYAa9u6YPtLK
-	 aUsxC5eTnhkdsakNTwPZqtMzUTgctg+/JibUuMg1AlJ+bqzasnfQ9qfCBTMAuxLvbO
-	 S7yFEYevUaWdUJy+53197NPNcEq3qk/QvN0FQUimleYzjzyeX3Q+8m/dcdF+MU2kvl
-	 wOHfED0h78UDA==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Sat, 06 Sep 2025 17:17:27 +0200
-Subject: [PATCH v2 3/3] drm/panel: visionox-rm69299: Add backlight support
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="T/QNNA34"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 586GPDLH009024
+	for <phone-devel@vger.kernel.org>; Sat, 6 Sep 2025 19:08:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hpuRj8cMaFi7F8+GiXH5kkLiGalrpmEGijsR/b2FsOY=; b=T/QNNA34UXV+oc4U
+	zg/44aeJB6/7Un3krZfISTO2zQl6xjPkV3AMRNP6VrqycF27kA7PSkk5LRrXNhWU
+	fKuJBMWuC+aYN6TI6q8PNAcZg7UhmWmgm4JoJZwqqkmjFfNhUXcENCKWxABzITFR
+	3nU2+f1r+m1nAbl3uHHHs6+GVNga1Le5t+dRpm0EGMKqHIVoAXnJGwD87BWPOnDz
+	qYgGP23CQopguDDJDzNwspEyl7maCLcXDz1P48BuJmqx3WMxv8IzfecC3Gyj0H5+
+	uuU/odbe7JyWp+Cd+N06dqjdlh36VhmEyce0oxOXM6qBc+xUaFox0+EgjKs+hbwN
+	OpTUfQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490anf99q6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 06 Sep 2025 19:08:39 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b5e9b60ce6so58706591cf.2
+        for <phone-devel@vger.kernel.org>; Sat, 06 Sep 2025 12:08:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757185718; x=1757790518;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hpuRj8cMaFi7F8+GiXH5kkLiGalrpmEGijsR/b2FsOY=;
+        b=lZ8jwd4xfQRgXx9SB83OID9WXLJ8Em9xthViJRcVSuEDoQr3zrTN/DllTjPaVbgCpP
+         ubdO8D3bisqVmrrhckNpgRwFdEkbTdrNnlRsukNaA0UQ9tspF3bZ1a7JkNjfTMGcRM2H
+         SeoWCdLxPRyncvtj/1qxIPCrFJAzMoKNl+z4GuhEFFTk0yp0r97XUzJngLsk835oee2N
+         WM147PT/uF63laCUvhm6zcRTySUeijtLV/qMhzEduxQAnhQ3zas7C4/muuSw8035aFDw
+         FLJEWFWxoaH20hbsFHDaw+qP2/a784d901Ta5l/Y09kva33fDD0uF2sK7VY0wNIGknJ2
+         z9tA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKcdcGiINGByYg6Ayi8FgKsQPbT4vHOlMq/bdkArUkahWGT3oKxUu/sYg2lNESwg44pUa9ZoqhTQ5ZUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzHD4BhwfHs9Y64GJASiyGErrejbZEpGwsrqDNJyyeyWJuLye+
+	CjsH8g2flu04TTHWw7PojI6oBkYeq305ujFN5F3mcrj+KgCX6T+xCFy0DhIxoiiHO99bWhEnfxl
+	nnlkEGsfo5SWU6x325Cxrc8cwTSKlU1ivEQHB/95W24imLz+ckt3RW52pqwDWnmrV8w==
+X-Gm-Gg: ASbGncvfoivc9XMITOrp67vJkigNpNBlFd+vJE2Ak5cNj6fBxIa/7FOm9LcDL6QY1vJ
+	l3Ced1F4K8l27xVXSDPMT7h3CY45c26IGXXwP8nGmr4C497LkqnQ5hxKI+f1BkVBUFU8w0u/m7z
+	HRuLShBj7DTsFdC56gTIyIVHC6A9sTpALMn/BoMjT7BLIGlFMVW83kVdjEwFeps1X7SH9orBMwp
+	sriBioOdw7JQqfzdy7sNqDWDC3vTGtn9eA9WcyfpgBORBGSqY6gqk5rquWdBVCJrhmb6Wr2QK+O
+	md8vrlpwmDzfM05DpjCjIobFNH4m0UUiQtcvGIWd59lujH4u8F16/+GcZHq7liYlipkvpWGiDFV
+	Fy5Cludqxdq/OztPRwWbJhJZEgERhB3jG/ax9ee/b4ZIiXBA9k2jE
+X-Received: by 2002:a05:622a:15c8:b0:4b3:50b0:d80 with SMTP id d75a77b69052e-4b5f8569a7bmr30141781cf.57.1757185718448;
+        Sat, 06 Sep 2025 12:08:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBHVkE+CeoTO/j4tRuQhgwEhDnLJtNxMuvyvwILGNlEC4co/sjVDfyLwdcTLZ4+MKJhjWWLA==
+X-Received: by 2002:a05:622a:15c8:b0:4b3:50b0:d80 with SMTP id d75a77b69052e-4b5f8569a7bmr30141421cf.57.1757185717959;
+        Sat, 06 Sep 2025 12:08:37 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-56340b91bfesm204716e87.22.2025.09.06.12.08.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Sep 2025 12:08:37 -0700 (PDT)
+Date: Sat, 6 Sep 2025 22:08:35 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] drm/panel: visionox-rm69299: Fix clock frequency
+ for SHIFT6mq
+Message-ID: <ba7y3qcuzkx7hinxraimuem6xnrrfxbj3giz56nq5qbmg76uno@kr6dezsumy2s>
+References: <20250906-shift6mq-panel-v2-0-aa5e585d8717@sigxcpu.org>
+ <20250906-shift6mq-panel-v2-1-aa5e585d8717@sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250906-shift6mq-panel-v2-3-aa5e585d8717@sigxcpu.org>
-References: <20250906-shift6mq-panel-v2-0-aa5e585d8717@sigxcpu.org>
-In-Reply-To: <20250906-shift6mq-panel-v2-0-aa5e585d8717@sigxcpu.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3690; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=ifqCx8unph7aTJwnUP4w6DR157Jzj/htkEOxOLpHPec=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQm92RkMwT0hrMFhSemRPVEROa1puYmpUVzBMY1czCldLK2I5QnloTjdPQkdKMWN4
- UldKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYUx4UXRBQUt
- DUkFsdjRaU1N2ekI0NGtBRC80am5teHY5L0srOFE1WkZ5am1aL0FLWk1haFRxYjJNbWlzMnVHcg
- ptcWVnNkhVcnJINzRGY0hEMTZBMUpYSFVRZmNOT0haTFVLd1ArMU1qak9NUVY4NVlkbXQ2NDAxe
- Hg0Zm5vazlSCk5HQWZxVFJta2dZUkhiZDRXMXlYWmFYNjd6eWhHZ3ZGczBGQWJ4Z2lDNXRtZWNU
- U1V1SUdCMTJCR3gwc3JLSkIKMzdVTG01cHZXOWNXdFV1VkxPY0hqQVRuZld3cytJRi9nbjRrOFl
- sZ2p3SWgyMW11NFdLTGs1S0J5NXJVSVYzdAo2ODRkMmRXU1M1RmhOeld3RTRxTWNKaDd1TTI5SW
- RNc0l2YlhWczFiZEt5MHdaVXlydFNBZWJ6WEVKMDVCQkVvCkNpQmNqWldsd1Nia3BvV1dRWTBGa
- XhvNG1KODR6QzJIQ25GSDkwMVZTWVBUU0hydnBpdHBCdndaL2E1VjZkTGMKaXV4YjVuOTFDL1k5
- VkUrRmEzQ25iRFdoZHM4cEdmdmhwQzZHRTdOM09rVGdtVzU0RTcwVk4vb3J0VGI3M2UzQgp2cEM
- yN2VtZnF6OFp1anZGb2tXemxJb2s1NnJDUU83dkRDSTMwQmpzQVYyUTcvSXE3dkpQVzBEbGpPTC
- 9YV0ptCk5nTktnT1BlNlIrWXd5eXdSdktlNEFIN01FVVY3d2RTRk5CODdxWkFyYXc0MllIeWVIN
- 2JCanFRb0lXajVIczIKcHVYTUpsY3dYYUR2eUsxbUkyQ3NDWW04Z2QzSGJYVWFHZUlOaGtUNGVo
- QkRWODJpK0RhOWI3TjA1Q1hxSEIwKwpMeWxhUTd5OWptWVFDRW9jMW9IVGNJUmt0RjFaaGJyclN
- uQWVUQ0RNM29nWFovRTFjRkpGY21sMmhrS1JKTEtFCkZENkFJdz09Cj1BMlk0Ci0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+In-Reply-To: <20250906-shift6mq-panel-v2-1-aa5e585d8717@sigxcpu.org>
+X-Proofpoint-ORIG-GUID: qpp0jSucuqD5lO9QK0vkPdVFDhAB5S23
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwNCBTYWx0ZWRfXx7HH6aPwqPYX
+ 81q68a7anBtyqM3NYC8Dff643JAv0GdbifRZc0lJ2OhHhFZ/mw6OiZQg18pbYiN2WbfOoTRxWpw
+ dsIK8lY0wCttWq9KjbJky4I6zqkkmKfd5r03v0zJVGhTsvq/J+4o1/1udqnDBls0JlV2RWNC4V0
+ C8nsidZljyM6bWe5iZfeAT6REqo8Nh/knNYbhP924Og+v/3lNBGWUU2OSp26F5QzZ48k+HGIaSi
+ vVfeFPooclWF39PuSttVlw01O/FKcWmSHUHLGa6olck8/Sp6gRMprdbIr2u+bTeVA1gZqgfalsi
+ t+5ThJamWp/gZrhdAGVKTOHq+wiMjOTXNsAJBnHOembgowoJRPw3MXm9o/hLru3ObPniUPTagNS
+ UtXNVq5J
+X-Proofpoint-GUID: qpp0jSucuqD5lO9QK0vkPdVFDhAB5S23
+X-Authority-Analysis: v=2.4 cv=CaoI5Krl c=1 sm=1 tr=0 ts=68bc86b8 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=yJojWOMRYYMA:10 a=ze386MxoAAAA:8 a=KKAkSRfTAAAA:8 a=4ZTaGgF3X-K9GTDKzvQA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+ a=iBZjaW-pnkserzjvUTHh:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-06_06,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 clxscore=1015 malwarescore=0 adultscore=0
+ impostorscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060004
 
-The shift6mq's variant supports controlling the backlight via DSI
-commands. Use that if a max_brightness is set in the device specific
-data.
+On Sat, Sep 06, 2025 at 05:17:25PM +0200, Guido Günther wrote:
+> Make the clock frequency match what the sdm845 downstream kernel
+> uses. Otherwise the panel stays black.
+> 
+> Fixes: 783334f366b18 ("drm/panel: visionox-rm69299: support the variant found in the SHIFT6mq")
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> ---
+>  drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> index 909c280eab1fb408a713d84051a1afbb252c45e8..e65697ce6f51c7d64b786da18cf44b16de5d6919 100644
+> --- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> +++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> @@ -247,7 +247,7 @@ static const struct drm_display_mode visionox_rm69299_1080x2248_60hz = {
+>  };
+>  
+>  static const struct drm_display_mode visionox_rm69299_1080x2160_60hz = {
+> -	.clock = 158695,
+> +	.clock = 149360,
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Guido GÃ¼nther <agx@sigxcpu.org>
----
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 67 ++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+clock = (2160 + 8 + 4 + 4) * (1080 + 26 + 2 + 36) * 60 / 1000 ?
 
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index 2216d38366ea37368d15480f9d8a8ccbfe77ba3b..5e5ff6056c80e67a5bf8fe4911cdbc588db5d03b 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2019, The Linux Foundation. All rights reserved.
-  */
- 
-+#include <linux/backlight.h>
- #include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/property.h>
-@@ -20,6 +21,8 @@ struct visionox_rm69299_panel_desc {
- 	const struct drm_display_mode *mode;
- 	const u8 *init_seq;
- 	unsigned int init_seq_len;
-+	int max_brightness;
-+	int initial_brightness;
- };
- 
- struct visionox_rm69299 {
-@@ -285,6 +288,63 @@ static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
- 	.get_modes = visionox_rm69299_get_modes,
- };
- 
-+static int visionox_rm69299_bl_get_brightness(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	u16 brightness;
-+	int ret;
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
-+	if (ret < 0)
-+		return ret;
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	return brightness;
-+}
-+
-+static int visionox_rm69299_bl_update_status(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	u16 brightness = backlight_get_brightness(bl);
-+	int ret;
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
-+	if (ret < 0)
-+		return ret;
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	return 0;
-+}
-+
-+static const struct backlight_ops visionox_rm69299_bl_ops = {
-+	.update_status = visionox_rm69299_bl_update_status,
-+	.get_brightness = visionox_rm69299_bl_get_brightness,
-+};
-+
-+static struct backlight_device *
-+visionox_rm69299_create_backlight(struct visionox_rm69299 *ctx)
-+{
-+	struct device *dev = &ctx->dsi->dev;
-+	const struct backlight_properties props = {
-+		.type = BACKLIGHT_RAW,
-+		.brightness = ctx->desc->initial_brightness,
-+		.max_brightness = ctx->desc->max_brightness,
-+	};
-+
-+	if (!ctx->desc->max_brightness)
-+		return 0;
-+
-+	return devm_backlight_device_register(dev, dev_name(dev), dev, ctx->dsi,
-+					      &visionox_rm69299_bl_ops,
-+					      &props);
-+}
-+
- static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
- {
- 	struct device *dev = &dsi->dev;
-@@ -316,6 +376,11 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
- 		return PTR_ERR(ctx->reset_gpio);
- 	}
- 
-+	ctx->panel.backlight = visionox_rm69299_create_backlight(ctx);
-+	if (IS_ERR(ctx->panel.backlight))
-+		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
-+				     "Failed to create backlight\n");
-+
- 	drm_panel_add(&ctx->panel);
- 
- 	dsi->lanes = 4;
-@@ -353,6 +418,8 @@ const struct visionox_rm69299_panel_desc visionox_rm69299_shift_desc = {
- 	.mode = &visionox_rm69299_1080x2160_60hz,
- 	.init_seq = (const u8 *)visionox_rm69299_1080x2160_60hz_init_seq,
- 	.init_seq_len = ARRAY_SIZE(visionox_rm69299_1080x2160_60hz_init_seq),
-+	.max_brightness = 255,
-+	.initial_brightness = 50,
- };
- 
- static const struct of_device_id visionox_rm69299_of_match[] = {
+>  	.hdisplay = 1080,
+>  	.hsync_start = 1080 + 26,
+>  	.hsync_end = 1080 + 26 + 2,
+> 
+> -- 
+> 2.51.0
+> 
 
 -- 
-2.51.0
-
+With best wishes
+Dmitry
