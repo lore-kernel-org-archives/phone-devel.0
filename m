@@ -1,151 +1,121 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CDC288CB5;
-	Sat,  6 Sep 2025 12:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EE61DA4E;
+	Sat,  6 Sep 2025 15:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757162543; cv=none; b=k+wh2Dw0xGYt3BsXJDFAj9mGLHkHPMrScgvXHek0mKnCZderNLNySIhv+gIZIXf6RVzYjo5WbFb1svumoRXl0j6BuvLN4eFnX4zCLYxv6ow6fKdym4griacsiOXnH3VlYSZs13yX2RQzOFXtLXUXt9P+8qbLV1xWSUhLX874kW8=
+	t=1757171913; cv=none; b=ZlOWg0qFDJ6tAs5ejjTZ1eK43VtkMQ2LlQ/FN5MCPs5geR3n9dUXdWnEPgD1PTWH0+qdRa6z5aDRpSidqIhstx4kgE6alNiDpepSxS12aKDW9jRne8tZqOtfm/lmOKBtd4lIWVd3loo9J4LlRUHNRP/K7j+7/VbUbcB6arBJ8GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757162543; c=relaxed/simple;
-	bh=Hm+GKKIWpg7dScyTlBsTiigjsE8UtZG9+Pr/DPZd9D8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=qlVCS7DIXnEHsZx7/XweVeXwJOVFcnq/pnDVVi2cIXhhNX3XuvJeJ5PbYHrJZss6G8siHM7oq9QJyZzfvEk6kDxCoRDfn4erqa3m/Qiatl3t+j4pL5QBil34oF0BcEZsjs0uv0DJq9k6vFu2kThEhEMNhyntsP30CZACXRLI8UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=PBOyjgc7; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1757171913; c=relaxed/simple;
+	bh=2NShP4uBgORUvxG5QGzRXtYvh7uD9S9t3XI9Ql28qFY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P0LbC4t4uZiqAmpJePPIM51XcEVYlsLuiF7dB9bRpF8K/6moZBM+pyyZbwxDEl05stasZ6fGkmKs7xGF3v+6iGK6jDf8yFEIPSCTh0tIZ1PFY9GASGMUbCefwRjTWFm36qLQMJaHusUot4HjmHip7ebvDpup0Qey1J32LSrvlkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=CF5xJ0q/; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=QD0yosu0; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="PBOyjgc7"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1757162486; x=1758462486;
-	bh=v5ScnZ66jzFrHMw7Qn6lJeXlTaGjvDkyhTW+naUdbVU=; h=From;
-	b=PBOyjgc7eBDCwad7MZRGBSbnX5lnoC5TWsEecCuJ9TT5sxH9IR7WvZjA31Z6opVzk
-	 EwgbZkYodj21gps4eF62vqAXLDNnac4dvVAHjuh85dE0any8k8uFWZBmSoeVuilojA
-	 3WucvzgNqewIG3xZhRDwxS4/902OTn2yUNOgrXURk75bAk39PTkEuPyLVpucmxUD2B
-	 9RsbZP7XtS54/WzNBbkvy8exntCo963iGDCJz4tj9Ukp3IJGWd2g+gVHhh4UaCpBUL
-	 sFFlhumE4mHhjQ3alSa0ZkXJAhrNHZh5xl1Jv4+mmonQi0+BEzX+heHtN0qfmVaiMG
-	 WEwPP/ZxyA14Q==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 586CfHUQ082029
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sat, 6 Sep 2025 14:41:26 +0200 (CEST)
-	(envelope-from balejk@matfyz.cz)
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="CF5xJ0q/";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="QD0yosu0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1757171900; bh=2NShP4uBgORUvxG5QGzRXtYvh7uD9S9t3XI9Ql28qFY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=CF5xJ0q/+izVUqCxlLTHcTqCZ7AeHvbqVsjsn/vl83PxS0BzIW0Cqr+Nr+Y1pTtpu
+	 /StldoKefd6K5u5TBRBQm9MYxYgrnKQiYydhRjq90ivMq8T03vt3UoBhiqXuUhclNU
+	 /QPJNZlFkv6RRMOytkJXHoF1DUuBUo/kDt6F+WeFCJYsPezEWeDWo3KCrZcYlwC1Qu
+	 gSoezUSPtggkOZfmC1BWmit8xrqrS6A/P/YQjo8x3z6AlvGcO4dzXO8N/SJMuwc4sp
+	 flMyMT6e0c4IOv3C/woJYxCxfpsFaA7a7YA7YMYPDIXiDvfvQFFf2zWfBV564elF/S
+	 FQCrjsQkz7MFw==
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 51829FB06;
+	Sat,  6 Sep 2025 17:18:20 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id gPxJSbNr_dvx; Sat,  6 Sep 2025 17:18:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1757171898; bh=2NShP4uBgORUvxG5QGzRXtYvh7uD9S9t3XI9Ql28qFY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=QD0yosu00PNYZvsHsE/30TcpMQSULUlY/oHTAE+BZqipSUW104KA6eZphc96kQgqs
+	 NiRoexNqYz2RFt9oP1up0HwHw71KDySt5Rc2rGBhX/flB8L6W0nmlRhjhJOEHJ1lUe
+	 f1QIH/3KU2Rvoa74sRsDjQ5eksqhTRuMB/1bL4AhX+8W9NAV4nluyqr93RlMEYsZNz
+	 NkbVgzT8iIBPNmw0JZlVDVBO/fXQCR7zFKs9UEIdO1VFmjHX4txX1AlxxGIxd7hT9X
+	 P19u1RsOWMOlYp+7ppYkXtocghr/zojnIjJ62XZfcbVdW5ShAL7QIE1QOiPAgwvUbD
+	 UNneVEosH4Kqw==
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Subject: [PATCH v2 0/3] drm/panel: visionox-rm69299: Add backlight support
+ and small fixes
+Date: Sat, 06 Sep 2025 17:17:24 +0200
+Message-Id: <20250906-shift6mq-panel-v2-0-aa5e585d8717@sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Sep 2025 14:41:17 +0200
-Message-Id: <DCLQ427JYUS9.3EKILJ8O80RU1@matfyz.cz>
-Cc: "David Wronek" <david@mainlining.org>, <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC
- ADC
-To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-        "Jonathan
- Cameron" <jic23@kernel.org>,
-        "David Lechner" <dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        "Andy Shevchenko"
- <andy@kernel.org>, "Lee Jones" <lee@kernel.org>,
-        "Rob Herring"
- <robh@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz>
- <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
-In-Reply-To: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIRQvGgC/3XMQQ7CIBCF4as0sxZDkap05T1MF9AOdBIFhNrUN
+ L272L3L/yXvWyFjIszQVisknClT8CXEoYJ+1N4ho6E0CC4arnjN8kh2Oj9fLGqPD6YaZU78esF
+ +EFBOMaGlZQfvXemR8hTSZ/fn+rf+peaacSalNFIbYzXqWya39PF9DMlBt23bF11O45WuAAAA
+X-Change-ID: 20250901-shift6mq-panel-959b3087ecd2
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1067; i=agx@sigxcpu.org;
+ h=from:subject:message-id; bh=2NShP4uBgORUvxG5QGzRXtYvh7uD9S9t3XI9Ql28qFY=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
+ UhqQWNzbVlnQm92RkNqWk9TOFAvb3Vzd2RwS01jV0ZhMkxjVGwzCjRiMXltS2Q1QXpuYi9vZGpo
+ ODZKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYUx4UW93QUt
+ DUkFsdjRaU1N2ekI0N3llRC85UmZMZnhIeGpCOG4yL1BFSXovQ1JDelZNc1dLa1UySmpZTmMrOQ
+ pkMnhIakQ1bXJmYlVZM2tja3NRZ1dZL29GdTdCQjl4MmZqNFNacy9FLzBKT0JzdlBqM2tySlhVR
+ UtWYjg0d0lCCjlKZ2tmMUYzNjdNSndqaWViWmt5UUU0b0xTdXZnVnFGTWtpbS9GNzJFdHloUU5s
+ SllYSStrV1NvYU5vVzV3WWcKcHBCRy95OHZmOEEvVjdiRGYzK0oyT1AzT3JaMVFGTXpPK1RHQVE
+ 1UlBpV0QyQ3Ryb1REK2E3ejBUUTFWTVIwdQppdEV2M3VmM0VDbkhIQzU1d3ZOMnpRZ214R3lrL2
+ JxUUhXV2dZMkdkY1FwWlFnVEM5Tmd1akRHamFNVVZLZGw0CjlIVlN0b2hGMG1HbmZ3cHlScmxwN
+ GZxN2JOMjQ1V0cyWUk4NFlsT04rbkl0RlpqbVBpZlF2UGUzOHdSSmhLQkgKNUI1RkJQYVZhSXNy
+ ck15N1I5VTB4dEhhZWhkRE9YMllsVWZ5clc1T1ZrdlgvTk96UERhUVhoakNBc29mQ3RaZgpDajh
+ ZRkkza3F6WXVnek8yandTTTR5OXpNMzZCT3ZsN3RxV1VBR3puNEZ6UHp2QnBHUFF4S0gzT1ovSl
+ VPT1dTClJObnhrWEIyQlhMUVkzcWZVTEpCRjRNTll6a0g2OHFTMS9hQTA0d0pzMGhhU2dDS0ptN
+ Hl2dFFGR3B3Umo1elkKNW90ci90TFFOOVJad3VjS3Bmbi95WlBVbjRzV2QvZVN0MndVQXhGUjVG
+ VXFOR21UVUJRSWwydHNDekpnTWJRRApRZm9WQ1hhdWN5NUtqcWJoNXRUbmFDUGVSd3RrWGFRTlN
+ oTzZ6VGFMOURGVWVkK0Urd1VMMDE0dk5QU3ltWDgyCkg2QzE5Zz09Cj1GaWsyCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
+ fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
 
-Duje Mihanovi=C4=87, 2025-09-05T13:00:55+02:00:
-> diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
-> index 85eca44f39ab58ba4cb9ec4216118ee9604d021f..38892ba7b8a42bbecb53621a8=
-91a52a2fd70fd43 100644
-> --- a/include/linux/mfd/88pm886.h
-> +++ b/include/linux/mfd/88pm886.h
-> @@ -10,6 +10,7 @@
->  #define PM886_IRQ_ONKEY			0
-> =20
->  #define PM886_PAGE_OFFSET_REGULATORS	1
-> +#define PM886_PAGE_OFFSET_GPADC		2
-> =20
->  #define PM886_REG_ID			0x00
-> =20
-> @@ -70,6 +71,63 @@
->  #define PM886_LDO_VSEL_MASK		0x0f
->  #define PM886_BUCK_VSEL_MASK		0x7f
-> =20
-> +/* GPADC enable/disable registers */
-> +#define PM886_REG_GPADC_CONFIG(n)	(n)
-> +
-> +#define PM886_GPADC_VSC_EN		BIT(0)
-> +#define PM886_GPADC_VBAT_EN		BIT(1)
-> +#define PM886_GPADC_GNDDET1_EN		BIT(3)
-> +#define PM886_GPADC_VBUS_EN		BIT(4)
-> +#define PM886_GPADC_VCHG_PWR_EN		BIT(5)
-> +#define PM886_GPADC_VCF_OUT_EN		BIT(6)
-> +#define PM886_GPADC_CONFIG1_EN_ALL	\
-> +	(PM886_GPADC_VSC_EN |		\
-> +	 PM886_GPADC_VBAT_EN |		\
-> +	 PM886_GPADC_GNDDET1_EN |	\
-> +	 PM886_GPADC_VBUS_EN |		\
-> +	 PM886_GPADC_VCHG_PWR_EN |	\
-> +	 PM886_GPADC_VCF_OUT_EN)
-> +
-> +#define PM886_GPADC_TINT_EN		BIT(0)
-> +#define PM886_GPADC_PMODE_EN		BIT(1)
-> +#define PM886_GPADC_GPADC0_EN		BIT(2)
-> +#define PM886_GPADC_GPADC1_EN		BIT(3)
-> +#define PM886_GPADC_GPADC2_EN		BIT(4)
-> +#define PM886_GPADC_GPADC3_EN		BIT(5)
-> +#define PM886_GPADC_MIC_DET_EN		BIT(6)
-> +#define PM886_GPADC_CONFIG2_EN_ALL	\
-> +	(PM886_GPADC_TINT_EN |		\
-> +	 PM886_GPADC_GPADC0_EN |	\
-> +	 PM886_GPADC_GPADC1_EN |	\
-> +	 PM886_GPADC_GPADC2_EN |	\
-> +	 PM886_GPADC_GPADC3_EN |	\
-> +	 PM886_GPADC_MIC_DET_EN)
-> +
-> +/* No CONFIG3_EN_ALL because this is the only bit there. */
-> +#define PM886_GPADC_GND_DET2_EN		BIT(0)
-> +
-> +/* GPADC channel registers */
-> +#define PM886_REG_GPADC_VSC		0x40
-> +#define PM886_REG_GPADC_VCHG_PWR	0x4c
-> +#define PM886_REG_GPADC_VCF_OUT		0x4e
-> +#define PM886_REG_GPADC_TINT		0x50
-> +#define PM886_REG_GPADC_GPADC0		0x54
-> +#define PM886_REG_GPADC_GPADC1		0x56
-> +#define PM886_REG_GPADC_GPADC2		0x58
-> +#define PM886_REG_GPADC_VBAT		0xa0
-> +#define PM886_REG_GPADC_GND_DET1	0xa4
-> +#define PM886_REG_GPADC_GND_DET2	0xa6
-> +#define PM886_REG_GPADC_VBUS		0xa8
-> +#define PM886_REG_GPADC_GPADC3		0xaa
-> +#define PM886_REG_GPADC_MIC_DET		0xac
-> +#define PM886_REG_GPADC_VBAT_SLP	0xb0
-> +
-> +/* VBAT_SLP is the last register and is 2 bytes wide like other channels=
-. */
-> +#define PM886_GPADC_MAX_REGISTER	(PM886_REG_GPADC_VBAT_SLP + 1)
-> +
-> +#define PM886_GPADC_BIAS_LEVELS		16
-> +#define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
-> +
->  struct pm886_chip {
->  	struct i2c_client *client;
->  	unsigned int chip_id;
+This adds optional backlight support via DSI commands. If
+a max_brightness is set in the panel description the backlight
+is created.
 
-Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
+While at that we fold in the already sent out clock fix and
+a fix that prevents us from clearing all mode flags when we
+only want HS mode.
+
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+Changes in v2:
+- Add Fixes: to the first two commits to make backports simpler
+- Collect Reviewed-by:, thanks Neil!
+- Link to v1: https://lore.kernel.org/r/20250901-shift6mq-panel-v1-0-444b4abbfaea@sigxcpu.org
+
+---
+Guido Günther (3):
+      drm/panel: visionox-rm69299: Fix clock frequency for SHIFT6mq
+      drm/panel: visionox-rm69299: Don't clear all mode flags
+      drm/panel: visionox-rm69299: Add backlight support
+
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 71 +++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 2 deletions(-)
+---
+base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+change-id: 20250901-shift6mq-panel-959b3087ecd2
+
+Best regards,
+-- 
+Guido Günther <agx@sigxcpu.org>
+
