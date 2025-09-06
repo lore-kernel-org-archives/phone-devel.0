@@ -1,283 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8711F4622;
-	Fri,  5 Sep 2025 23:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CDC288CB5;
+	Sat,  6 Sep 2025 12:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757114300; cv=none; b=cndM3bATkV5kMpgUg1v76BSuowKrJxTq4Tq3SmhST17/g9r9tOdQy7oQ+yIPXGwen3I86dZrodMmIF30d4Si2Ngf+8GlyI9QY5dIVi24bpbXyKVxzUdGwhxOgQfDkrgKgoX4u4X+QYZu5AQXLQc3b8xEYNEbqTP16g/yLV0BOPA=
+	t=1757162543; cv=none; b=k+wh2Dw0xGYt3BsXJDFAj9mGLHkHPMrScgvXHek0mKnCZderNLNySIhv+gIZIXf6RVzYjo5WbFb1svumoRXl0j6BuvLN4eFnX4zCLYxv6ow6fKdym4griacsiOXnH3VlYSZs13yX2RQzOFXtLXUXt9P+8qbLV1xWSUhLX874kW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757114300; c=relaxed/simple;
-	bh=J9WEIa+VV0+QVsnt8Ym5PX6MCPZuNTIbHrVfBa7z+wY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y6k4eNtEGyuj5DXdj3QH1iEbTe3i4w4Zy3nrcjrHvOGiQ96F/t3pf0WRj4KzYtRbBn3acsAm9nAh+G7R/5khUvVJw80zX2q8yrhDoj4u/6WpK2/BmvI+XPPgMzqwLwjjDRKBT5fXK5PLantAEpVNCVoXLmGmltcjI4Dgt+DGCZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sly972OZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757162543; c=relaxed/simple;
+	bh=Hm+GKKIWpg7dScyTlBsTiigjsE8UtZG9+Pr/DPZd9D8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=qlVCS7DIXnEHsZx7/XweVeXwJOVFcnq/pnDVVi2cIXhhNX3XuvJeJ5PbYHrJZss6G8siHM7oq9QJyZzfvEk6kDxCoRDfn4erqa3m/Qiatl3t+j4pL5QBil34oF0BcEZsjs0uv0DJq9k6vFu2kThEhEMNhyntsP30CZACXRLI8UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=PBOyjgc7; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sly972OZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38E6C4CEF1;
-	Fri,  5 Sep 2025 23:18:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757114300;
-	bh=J9WEIa+VV0+QVsnt8Ym5PX6MCPZuNTIbHrVfBa7z+wY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sly972OZKjGVPtM0/0oy4e80y36ZqOj9wlbDQWxdlzl6I0e/OsuQd5q/ULITS8SLv
-	 +6CzeXIOFhWm5Jc4NrGuwofQx2+fVFlVKUZ0UB/lcR3VjxLWRhPT+IoeQ5hvV2k2om
-	 Wi2GQqnLE9OnMo2o0vnU/c0YTZOln7K1IC2sHqTR9LecmffgcUeu1LXaNySGkuIs1q
-	 dPLQ78Mp0VrIpk7inTNgfWvRWyqYzX0EMqJq9ikhftdDFa7Dwscl3ZKZwQc3jQ5Miv
-	 McNRvtIUQaWxYr4Hsee6wIPEOR3atfQ5+FSDTOmSV8YDtcvHhMz5gvnRW0j2V13Kxk
-	 hUTS4wWQSdttQ==
-Date: Fri, 5 Sep 2025 18:18:19 -0500
-From: Rob Herring <robh@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: remoteproc: qcom,milos-pas: Document
- remoteprocs
-Message-ID: <20250905231819.GA1484997-robh@kernel.org>
-References: <20250905-sm7635-remoteprocs-v4-0-9e24febcb246@fairphone.com>
- <20250905-sm7635-remoteprocs-v4-1-9e24febcb246@fairphone.com>
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="PBOyjgc7"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1757162486; x=1758462486;
+	bh=v5ScnZ66jzFrHMw7Qn6lJeXlTaGjvDkyhTW+naUdbVU=; h=From;
+	b=PBOyjgc7eBDCwad7MZRGBSbnX5lnoC5TWsEecCuJ9TT5sxH9IR7WvZjA31Z6opVzk
+	 EwgbZkYodj21gps4eF62vqAXLDNnac4dvVAHjuh85dE0any8k8uFWZBmSoeVuilojA
+	 3WucvzgNqewIG3xZhRDwxS4/902OTn2yUNOgrXURk75bAk39PTkEuPyLVpucmxUD2B
+	 9RsbZP7XtS54/WzNBbkvy8exntCo963iGDCJz4tj9Ukp3IJGWd2g+gVHhh4UaCpBUL
+	 sFFlhumE4mHhjQ3alSa0ZkXJAhrNHZh5xl1Jv4+mmonQi0+BEzX+heHtN0qfmVaiMG
+	 WEwPP/ZxyA14Q==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 586CfHUQ082029
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 6 Sep 2025 14:41:26 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905-sm7635-remoteprocs-v4-1-9e24febcb246@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 06 Sep 2025 14:41:17 +0200
+Message-Id: <DCLQ427JYUS9.3EKILJ8O80RU1@matfyz.cz>
+Cc: "David Wronek" <david@mainlining.org>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC
+ ADC
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+        "Jonathan
+ Cameron" <jic23@kernel.org>,
+        "David Lechner" <dlechner@baylibre.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        "Andy Shevchenko"
+ <andy@kernel.org>, "Lee Jones" <lee@kernel.org>,
+        "Rob Herring"
+ <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz>
+ <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
+In-Reply-To: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
 
-On Fri, Sep 05, 2025 at 11:37:04AM +0200, Luca Weiss wrote:
-> Document the bindings for the ADSP, CDSP, MPSS and WPSS PAS on the Milos
-> (e.g. SM7635) SoC.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../bindings/remoteproc/qcom,milos-pas.yaml        | 201 +++++++++++++++++++++
->  1 file changed, 201 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..790ad38a0330bf81f6333e887522ddb97690edbc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,milos-pas.yaml
-> @@ -0,0 +1,201 @@
-> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/remoteproc/qcom,milos-pas.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+Duje Mihanovi=C4=87, 2025-09-05T13:00:55+02:00:
+> diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
+> index 85eca44f39ab58ba4cb9ec4216118ee9604d021f..38892ba7b8a42bbecb53621a8=
+91a52a2fd70fd43 100644
+> --- a/include/linux/mfd/88pm886.h
+> +++ b/include/linux/mfd/88pm886.h
+> @@ -10,6 +10,7 @@
+>  #define PM886_IRQ_ONKEY			0
+> =20
+>  #define PM886_PAGE_OFFSET_REGULATORS	1
+> +#define PM886_PAGE_OFFSET_GPADC		2
+> =20
+>  #define PM886_REG_ID			0x00
+> =20
+> @@ -70,6 +71,63 @@
+>  #define PM886_LDO_VSEL_MASK		0x0f
+>  #define PM886_BUCK_VSEL_MASK		0x7f
+> =20
+> +/* GPADC enable/disable registers */
+> +#define PM886_REG_GPADC_CONFIG(n)	(n)
 > +
-> +title: Qualcomm Milos SoC Peripheral Authentication Service
+> +#define PM886_GPADC_VSC_EN		BIT(0)
+> +#define PM886_GPADC_VBAT_EN		BIT(1)
+> +#define PM886_GPADC_GNDDET1_EN		BIT(3)
+> +#define PM886_GPADC_VBUS_EN		BIT(4)
+> +#define PM886_GPADC_VCHG_PWR_EN		BIT(5)
+> +#define PM886_GPADC_VCF_OUT_EN		BIT(6)
+> +#define PM886_GPADC_CONFIG1_EN_ALL	\
+> +	(PM886_GPADC_VSC_EN |		\
+> +	 PM886_GPADC_VBAT_EN |		\
+> +	 PM886_GPADC_GNDDET1_EN |	\
+> +	 PM886_GPADC_VBUS_EN |		\
+> +	 PM886_GPADC_VCHG_PWR_EN |	\
+> +	 PM886_GPADC_VCF_OUT_EN)
 > +
-> +maintainers:
-> +  - Luca Weiss <luca.weiss@fairphone.com>
+> +#define PM886_GPADC_TINT_EN		BIT(0)
+> +#define PM886_GPADC_PMODE_EN		BIT(1)
+> +#define PM886_GPADC_GPADC0_EN		BIT(2)
+> +#define PM886_GPADC_GPADC1_EN		BIT(3)
+> +#define PM886_GPADC_GPADC2_EN		BIT(4)
+> +#define PM886_GPADC_GPADC3_EN		BIT(5)
+> +#define PM886_GPADC_MIC_DET_EN		BIT(6)
+> +#define PM886_GPADC_CONFIG2_EN_ALL	\
+> +	(PM886_GPADC_TINT_EN |		\
+> +	 PM886_GPADC_GPADC0_EN |	\
+> +	 PM886_GPADC_GPADC1_EN |	\
+> +	 PM886_GPADC_GPADC2_EN |	\
+> +	 PM886_GPADC_GPADC3_EN |	\
+> +	 PM886_GPADC_MIC_DET_EN)
 > +
-> +description:
-> +  Qualcomm Milos SoC Peripheral Authentication Service loads and boots firmware
-> +  on the Qualcomm DSP Hexagon cores.
+> +/* No CONFIG3_EN_ALL because this is the only bit there. */
+> +#define PM886_GPADC_GND_DET2_EN		BIT(0)
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - qcom,milos-adsp-pas
-> +      - qcom,milos-cdsp-pas
-> +      - qcom,milos-mpss-pas
-> +      - qcom,milos-wpss-pas
+> +/* GPADC channel registers */
+> +#define PM886_REG_GPADC_VSC		0x40
+> +#define PM886_REG_GPADC_VCHG_PWR	0x4c
+> +#define PM886_REG_GPADC_VCF_OUT		0x4e
+> +#define PM886_REG_GPADC_TINT		0x50
+> +#define PM886_REG_GPADC_GPADC0		0x54
+> +#define PM886_REG_GPADC_GPADC1		0x56
+> +#define PM886_REG_GPADC_GPADC2		0x58
+> +#define PM886_REG_GPADC_VBAT		0xa0
+> +#define PM886_REG_GPADC_GND_DET1	0xa4
+> +#define PM886_REG_GPADC_GND_DET2	0xa6
+> +#define PM886_REG_GPADC_VBUS		0xa8
+> +#define PM886_REG_GPADC_GPADC3		0xaa
+> +#define PM886_REG_GPADC_MIC_DET		0xac
+> +#define PM886_REG_GPADC_VBAT_SLP	0xb0
 > +
-> +  reg:
-> +    maxItems: 1
+> +/* VBAT_SLP is the last register and is 2 bytes wide like other channels=
+. */
+> +#define PM886_GPADC_MAX_REGISTER	(PM886_REG_GPADC_VBAT_SLP + 1)
 > +
-> +  clocks:
-> +    items:
-> +      - description: XO clock
+> +#define PM886_GPADC_BIAS_LEVELS		16
+> +#define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
 > +
-> +  clock-names:
-> +    items:
-> +      - const: xo
-> +
-> +  interrupts:
-> +    minItems: 6
-> +    maxItems: 6
-> +
-> +  interrupt-names:
-> +    minItems: 6
-> +    maxItems: 6
-> +
-> +  qcom,qmp:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: Reference to the AOSS side-channel message RAM.
-> +
-> +  smd-edge: false
-> +
-> +  firmware-name:
-> +    $ref: /schemas/types.yaml#/definitions/string-array
+>  struct pm886_chip {
+>  	struct i2c_client *client;
+>  	unsigned int chip_id;
 
-Drop. Already has a type.
-
-> +    minItems: 1
-> +    items:
-> +      - description: Firmware name of the Hexagon core
-> +      - description: Firmware name of the Hexagon Devicetree
-> +
-> +  memory-region:
-> +    minItems: 1
-> +    items:
-> +      - description: Memory region for core Firmware authentication
-> +      - description: Memory region for Devicetree Firmware authentication
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - memory-region
-> +
-> +allOf:
-> +  - $ref: /schemas/remoteproc/qcom,pas-common.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - qcom,milos-adsp-pas
-> +            - qcom,milos-cdsp-pas
-> +    then:
-> +      properties:
-> +        memory-region:
-> +          minItems: 2
-> +          maxItems: 2
-
-Max is already 2. Drop.
-
-> +        firmware-name:
-> +          minItems: 2
-> +          maxItems: 2
-
-Max is already 2. Drop.
-
-> +    else:
-> +      properties:
-> +        memory-region:
-> +          maxItems: 1
-> +        firmware-name:
-> +          maxItems: 1
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,milos-adsp-pas
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          items:
-> +            - description: LCX power domain
-> +            - description: LMX power domain
-> +        power-domain-names:
-> +          items:
-> +            - const: lcx
-> +            - const: lmx
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - qcom,milos-cdsp-pas
-> +            - qcom,milos-wpss-pas
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          items:
-> +            - description: CX power domain
-> +            - description: MX power domain
-> +        power-domain-names:
-> +          items:
-> +            - const: cx
-> +            - const: mx
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - qcom,milos-mpss-pas
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          items:
-> +            - description: CX power domain
-> +            - description: MSS power domain
-> +        power-domain-names:
-> +          items:
-> +            - const: cx
-> +            - const: mss
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/qcom,rpmh.h>
-> +    #include <dt-bindings/interconnect/qcom,icc.h>
-> +    #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/mailbox/qcom-ipcc.h>
-> +    #include <dt-bindings/power/qcom,rpmhpd.h>
-> +
-> +    remoteproc@3000000 {
-> +        compatible = "qcom,milos-adsp-pas";
-> +        reg = <0x03000000 0x10000>;
-> +
-> +        interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
-> +                              <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-> +                              <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-> +                              <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-> +                              <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>,
-> +                              <&smp2p_adsp_in 7 IRQ_TYPE_EDGE_RISING>;
-> +        interrupt-names = "wdog",
-> +                          "fatal",
-> +                          "ready",
-> +                          "handover",
-> +                          "stop-ack",
-> +                          "shutdown-ack";
-> +
-> +        clocks = <&rpmhcc RPMH_CXO_CLK>;
-> +        clock-names = "xo";
-> +
-> +        power-domains = <&rpmhpd RPMHPD_LCX>,
-> +                        <&rpmhpd RPMHPD_LMX>;
-> +        power-domain-names = "lcx",
-> +                             "lmx";
-> +
-> +        interconnects = <&lpass_ag_noc MASTER_LPASS_PROC QCOM_ICC_TAG_ALWAYS
-> +                         &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
-> +
-> +        memory-region = <&adspslpi_mem>, <&q6_adsp_dtb_mem>;
-> +
-> +        firmware-name = "qcom/milos/vendor/device/adsp.mbn",
-> +                        "qcom/milos/vendor/device/adsp_dtb.mbn";
-> +
-> +        qcom,qmp = <&aoss_qmp>;
-> +
-> +        qcom,smem-states = <&smp2p_adsp_out 0>;
-> +        qcom,smem-state-names = "stop";
-> +
-> +        glink-edge {
-> +            interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
-> +                                         IPCC_MPROC_SIGNAL_GLINK_QMP
-> +                                         IRQ_TYPE_EDGE_RISING>;
-> +            mboxes = <&ipcc IPCC_CLIENT_LPASS
-> +                            IPCC_MPROC_SIGNAL_GLINK_QMP>;
-> +
-> +            label = "lpass";
-> +            qcom,remote-pid = <2>;
-> +
-> +            /* ... */
-> +        };
-> +    };
-> 
-> -- 
-> 2.51.0
-> 
+Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
