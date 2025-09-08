@@ -1,267 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56848285054;
-	Sun,  7 Sep 2025 22:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A6F21FF35
+	for <phone-devel@vger.kernel.org>; Mon,  8 Sep 2025 04:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757282676; cv=none; b=eZwWC+AclUKbfWpLEWldJmIn/UTGm0/0OMbE9zaU5UtnmigdwJcDiQhgprQtyQ4WitrKvuIQPVDe7nqk8P5BjdsgVPbQxmhMPgT82Cy81SCIyrl+FNjq4ANLS6dcX2YFSMVT+2M2fRJmcxOzCaOKQDx511hwWVgvqnOnts1m2xg=
+	t=1757307103; cv=none; b=MyhTUprQevr6kzSSSZa4HWw0G9gjig+VaNesQCnZmQNpGTbosEs/fPmceaUjsuGvhPuQuM64eUX0hyRqX6HfPIFsUQ8wNRC8KxAqj1O0ffzR3Kg6SJu5fEyOlwrNy0Vb+GlmghMGHmwRonRCgAdOZaxcdLJyqxk1ucgs5pEm0oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757282676; c=relaxed/simple;
-	bh=xfSGdSUAHfJ17ErfSSYDf9SpQbYAL3T8i7Whc1WvAa0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RV3kVCt0YHSiBLGzD9qYzW/0s/A2vuEWwPwzoLoDA7nzw6A4x5zgEmMqeJK8Dx8CniaePF9qrbJhI0yv7QJLOonLtatQEPznxXCUafB+3HBko4L5XphPOH0x4IRo07Hql4H2c1gwZ3hraX5PNHolrLzgJ6t+qfEwP1w1svHirf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BMpmzOHF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757307103; c=relaxed/simple;
+	bh=PiTMXDeB+RZXXFHBE8pp2cblxqqUufgT3jQ3N1Z0SZA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eCGXKCxGauKe/G/8U0YkPAkTJ+VftnIQju+NMz/nsW4EJeDbP+EAunPI8B9GxV5CQsOaR58jWTA2GG+BShWmm1wWhQntF+6nev9a0Le7HoaCkMuY60Wt+EffJL3GX7ET9I0mDUVZLCjC8ZF6KurlwAem2jBD+Zpj226OYioV5DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B3KEIGdp; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BMpmzOHF"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 98E1EC116B1;
-	Sun,  7 Sep 2025 22:04:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757282675;
-	bh=xfSGdSUAHfJ17ErfSSYDf9SpQbYAL3T8i7Whc1WvAa0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BMpmzOHFJpJDt20N/gskOcPHAk+rDSdXwx2izSpMSGbsWAfuj0Nq4zNnQtu67y5by
-	 LAUWN8cHG5DP86dcjZ0jwXvn3fsdUnzqXI16XyqQYTx9fa77WZNqhRr60jTq+dbdO0
-	 LKs4XEf+yCmsQhGS4NFQcJXF69l9WF9MJ/xPaaYNx20ul503bhpNhy2hxravN5Yzkv
-	 Z1GycV8dUWNeOgIITKvwqSto1oyRQflSuW1k86F5cJvTrANi4h86tlCNF5uvLZgJfI
-	 ThEYVs5cNiVq3jQZGIe5x7IO4iGKTiZC4b9a98ewR2amHNYp1c9qLkxbe27Oh5MC4c
-	 TvtfIQs2NRVDw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ED85CAC581;
-	Sun,  7 Sep 2025 22:04:35 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Mon, 08 Sep 2025 00:04:18 +0200
-Subject: [PATCH 4/4] arm64: dts: qcom: msm8939: Add camss and cci
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B3KEIGdp"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45de64f89a9so3449785e9.1
+        for <phone-devel@vger.kernel.org>; Sun, 07 Sep 2025 21:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757307100; x=1757911900; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QH42QsL0Brv8nCGOlCqNoHb4KURJ5994q00eblEx34A=;
+        b=B3KEIGdpLfpaf+LLLjOGaI5Lub25lSQiE1twEu89X9FYq784/ODGT1kQwrpB+2p1yo
+         GxcqovRrHBHmgYJ/byhfOqDwqe+1aDpBAxeasc8ZScp4I10GHJpE/2eKSHXTHwjbowzM
+         XBSeHmd/y4KRt/bu+bLn/L5t4CK/i9XtnAoOns1EPkHHOTo0BXmU7R3tE/+PmM+fknCF
+         yWcfauWP5LPDLLQh27cLLDEFXkU0c7559ZvduXPVQxsjrSnIVlFNF/u6fjUae5DUNnCE
+         AsS6h7srseG+ElmdCfZL0ZHzD9OGHegAFQ2BA3hcGPa0Y+mws5/V0l70R0OKqMXvLWoM
+         Hx/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757307100; x=1757911900;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QH42QsL0Brv8nCGOlCqNoHb4KURJ5994q00eblEx34A=;
+        b=F2nIHnxBo+N/WGaBlnN0JXnNQlfwN5b1BADr5Ms9UtEQR1pTjRr5BkuDcG/8CecEPi
+         c7RZZWc6mtOmK6KyJfPjk2LhZq53LEt4GeQqKRldJ80BTk0TWvZmn2ZjG9vnnhkXLuW3
+         ENerhyUqYNog4CENMhnoxO8dVHnj5K97I5VwUAFFMAgj2+oUk+s3EKaQ5tGZERZ6bYSV
+         2m3s0/xrrOCRLXmM6DBpQMSo6P7vBQIRD/T3xMqeukw2q0JND4nRWd/hoHSCXi80MJIw
+         /SdBweFJz0hUEe2uyejJ368xotxwM1O1epV38DP/GNyYu4W03Y39E6JU2/eM8hwiYfxE
+         1NFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXf23AwYeO6a52rvaAvurEKfp1u/+/x8UaDew+Imlv/UdGP6m7/DSdrPlzCKBpG40QvtjNz87IrO1y98Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPL6tU98CxtrXZ59I3dWi1WLbCZ0+nJqif/ixOUpFEcVh3VBBM
+	cpm5gUbgbDLL8Rm85oJAG+nJlHyqJRs+P6iCiuw/RR8swQrrG4BQLqYPQqRE1/U8AEM=
+X-Gm-Gg: ASbGncsjeuC5wJeJEg1MYQ+U8EUmHI0pBx6R7DR8ikXa9dMw4rN7nsn0e7XazFFvkRR
+	g8G/X4a5jc1L60OaTUUp86cBY04tf1GVVudNw0ZbSQAkQGkc9REv3ftpGVtn3+TGNgonIMqF6G0
+	RIlLzQQ0DqL1k8G7X7FwhAuqCRmn8oIyNYJMfCE3Stvg3H7xR/aZMEsBdZ8dDyJUDCwEAbGdtlY
+	r1WMBw4PYgQuUD0CwBhJ1xjBlZambH8MZpNwEOLtC3+zejZiE2xz5tZy5EsjXqqxKHwyFzlBiDX
+	0Sayu9/IUKnlmgz9g6zt4SoJc/WTd/NG+XSnTj/63E4tHsSHHUXQtNDACuXAshtKIytRZrhSgCO
+	wGXqbXhYuuOdc4+g8vPs0EFRSE1b3/8JCN5bYfdY5yq9PDIMkOIVR/A5GsgJkgosVqamSUb6WzM
+	nc4DcjqLWzCqBtjwFlzgc=
+X-Google-Smtp-Source: AGHT+IHJUG3UxrigQCdKhJJdmiAwf+H3VfZ4m5MK0YKe4/GVGBasirbK5SoRbuR1aXJTIQEIhs4uiA==
+X-Received: by 2002:a05:600c:c0c5:b0:45d:e531:99df with SMTP id 5b1f17b1804b1-45de64869d9mr12553795e9.3.1757307100364;
+        Sun, 07 Sep 2025 21:51:40 -0700 (PDT)
+Received: from [192.168.0.19] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9a6ecfafsm271826825e9.21.2025.09.07.21.51.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Sep 2025 21:51:39 -0700 (PDT)
+Message-ID: <e0e1827f-aa8b-4337-b26c-dc2ac43e0e2a@linaro.org>
+Date: Mon, 8 Sep 2025 05:51:36 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250908-camss-8x39-vbif-v1-4-f198c9fd0d4d@apitzsch.eu>
-References: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
-In-Reply-To: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] Add CAMSS support for MSM8939
+To: git@apitzsch.eu, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vincent Knecht <vincent.knecht@mailoo.org>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757282673; l=5528;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=Lwz747jRCUvpyRjQGDYnWcOgT3CYQhxSZ9w8lZX4jnE=;
- b=qFI80c15/O9BWbEQVlMk6+1LUZEJPKZJAYARQuykB2uZKjb22gy81TeCwjBwtyyFAwFar9Yg/
- FXyNjOrjXjmDBH04B0UbwRXLd3jl09B7fJwIC3ShSzaXN5V6mXLojLl
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Vincent Knecht <vincent.knecht@mailoo.org>
+References: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Vincent Knecht <vincent.knecht@mailoo.org>
+On 07/09/2025 23:04, André Apitzsch via B4 Relay wrote:
+> (This series resumes [1].)
 
-Add the camera subsystem and CCI used to interface with cameras on the
-Snapdragon 615.
+Thank you for following up on this.
 
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-[André: Make order of items the same as in 8916]
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Could you give a brief synopsis what changed between this series and the 
+previous series ?
+
+> [1] https://lore.kernel.org/all/20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org/
+Good series submission style would have something in the coverletter like.
+
+"Here is my awesome series of patches which do X
+
+v2:
+- Fixed everything wise and benevolent kernel community asked for
+
+v1:
+- Enabled cool stuff
+"
+
+I recall we were pretty close to picking these patches up previously so 
+thank you for re-upping your effort.
+
+A brief bit of guidance on what if anything changed from your last 
+submission is appreciated and good practice so that we can review and 
+apply quicker.
+
 ---
- arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi |   4 +
- arch/arm64/boot/dts/qcom/msm8939.dtsi        | 146 +++++++++++++++++++++++++++
- 2 files changed, 150 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-index adb96cd8d643e5fde1ac95c0fc3c9c3c3efb07e8..659d127b1bc3570d137ca986e4eacf600c183e5e 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi
-@@ -11,6 +11,10 @@
- #include "msm8939.dtsi"
- #include "pm8916.dtsi"
- 
-+&camss {
-+	vdda-supply = <&pm8916_l2>;
-+};
-+
- &mdss_dsi0 {
- 	vdda-supply = <&pm8916_l2>;
- 	vddio-supply = <&pm8916_l6>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 68b92fdb996c26e7a1aadedf0f52e1afca85c4ab..15ca28ed21ca80f9b35b5e64d3b704d14c9174f5 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1434,6 +1434,145 @@ mdss_dsi1_phy: phy@1aa0300 {
- 			};
- 		};
- 
-+		camss: isp@1b0ac00 {
-+			compatible = "qcom,msm8939-camss";
-+			reg = <0x01b0ac00 0x200>,
-+			      <0x01b00030 0x4>,
-+			      <0x01b0b000 0x200>,
-+			      <0x01b00038 0x4>,
-+			      <0x01b08000 0x100>,
-+			      <0x01b08400 0x100>,
-+			      <0x01b0a000 0x500>,
-+			      <0x01b00020 0x10>,
-+			      <0x01b10000 0x1000>,
-+			      <0x01b08800 0x100>,
-+			      <0x01b40000 0x200>;
-+			reg-names = "csiphy0",
-+				    "csiphy0_clk_mux",
-+				    "csiphy1",
-+				    "csiphy1_clk_mux",
-+				    "csid0",
-+				    "csid1",
-+				    "ispif",
-+				    "csi_clk_mux",
-+				    "vfe0",
-+				    "csid2",
-+				    "vfe0_vbif";
-+
-+			clocks = <&gcc GCC_CAMSS_TOP_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_ISPIF_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PHYTIMER_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PHYTIMER_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI0RDI_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI1RDI_CLK>,
-+				 <&gcc GCC_CAMSS_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_VFE0_CLK>,
-+				 <&gcc GCC_CAMSS_CSI_VFE0_CLK>,
-+				 <&gcc GCC_CAMSS_VFE_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_VFE_AXI_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2PHY_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2PIX_CLK>,
-+				 <&gcc GCC_CAMSS_CSI2RDI_CLK>;
-+			clock-names = "top_ahb",
-+				      "ispif_ahb",
-+				      "csiphy0_timer",
-+				      "csiphy1_timer",
-+				      "csi0_ahb",
-+				      "csi0",
-+				      "csi0_phy",
-+				      "csi0_pix",
-+				      "csi0_rdi",
-+				      "csi1_ahb",
-+				      "csi1",
-+				      "csi1_phy",
-+				      "csi1_pix",
-+				      "csi1_rdi",
-+				      "ahb",
-+				      "vfe0",
-+				      "csi_vfe0",
-+				      "vfe_ahb",
-+				      "vfe_axi",
-+				      "csi2_ahb",
-+				      "csi2",
-+				      "csi2_phy",
-+				      "csi2_pix",
-+				      "csi2_rdi";
-+
-+			interrupts = <GIC_SPI 78 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 79 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 51 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 52 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 55 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 57 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 153 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "csiphy0",
-+					  "csiphy1",
-+					  "csid0",
-+					  "csid1",
-+					  "ispif",
-+					  "vfe0",
-+					  "csid2";
-+
-+			iommus = <&apps_iommu 3>;
-+
-+			power-domains = <&gcc VFE_GDSC>;
-+
-+			status = "disabled";
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+				};
-+			};
-+		};
-+
-+		cci: cci@1b0c000 {
-+			compatible = "qcom,msm8916-cci", "qcom,msm8226-cci";
-+			reg = <0x01b0c000 0x1000>;
-+			interrupts = <GIC_SPI 50 IRQ_TYPE_EDGE_RISING>;
-+			clocks = <&gcc GCC_CAMSS_TOP_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CCI_AHB_CLK>,
-+				 <&gcc GCC_CAMSS_CCI_CLK>,
-+				 <&gcc GCC_CAMSS_AHB_CLK>;
-+			clock-names = "camss_top_ahb",
-+				      "cci_ahb",
-+				      "cci",
-+				      "camss_ahb";
-+			assigned-clocks = <&gcc GCC_CAMSS_CCI_AHB_CLK>,
-+					  <&gcc GCC_CAMSS_CCI_CLK>;
-+			assigned-clock-rates = <80000000>,
-+					       <19200000>;
-+			pinctrl-0 = <&cci0_default>;
-+			pinctrl-names = "default";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			cci_i2c0: i2c-bus@0 {
-+				reg = <0>;
-+				clock-frequency = <400000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
-+
- 		gpu: gpu@1c00000 {
- 			compatible = "qcom,adreno-405.0", "qcom,adreno";
- 			reg = <0x01c00000 0x10000>;
-@@ -1498,6 +1637,13 @@ apps_iommu: iommu@1ef0000 {
- 			#iommu-cells = <1>;
- 			qcom,iommu-secure-id = <17>;
- 
-+			/* vfe */
-+			iommu-ctx@3000 {
-+				compatible = "qcom,msm-iommu-v1-sec";
-+				reg = <0x3000 0x1000>;
-+				interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
-+			};
-+
- 			/* mdp_0: */
- 			iommu-ctx@4000 {
- 				compatible = "qcom,msm-iommu-v1-ns";
-
--- 
-2.51.0
-
-
+bod
