@@ -1,145 +1,117 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2F82264C0
-	for <phone-devel@vger.kernel.org>; Mon,  8 Sep 2025 10:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27E421B8F7;
+	Mon,  8 Sep 2025 20:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757329029; cv=none; b=Vg7aLs9y3rtQ8U/gb4j6gyN2QYTWndd/wZ6vsIl46LWU7xgQlh8rkM1LaW8GMEV85oT7PlSgw+R8eIHskWkrrHJFZ6bgu1lQwAYnE4IYLQtKPdyXKTfbRgKWCFaJYeyvKYVheLhxBw0FdvIlo7JJs45ix1AJrrpheIJkZzaRsOM=
+	t=1757361823; cv=none; b=XsS4g3qFpmG1c6zm8347RPs/mpY742Qw13yw+AzEZqbvn9s9LA+toMSVO3wOi8+SjM9940P+ksAiO7SVUG3wVgxQEV4XpHWiR7LTVLCX5N83ZaTsIK2CaCg1igpLvV2uiZIEXMK8jZFzvYIdni+4yArPJKbN38xxP3P9497cutY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757329029; c=relaxed/simple;
-	bh=H4GKqV9vKQYnuJ8t0TV9btzVLh6ocsYYvcT3DTkijw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kUPbOn18rk54JRBrXh1iatljishb20kKjeEibvSDmR217JUDP3+TRPGtJ232pPcIw5E2g+9fNrr0nQCuu2C7KaxoGBh31fRa+mN8X3A9VypxhOFU0CqLyjcfOvrTOpXBhXt1K9Gp2Ph3JM/xcEVbT7tL/OYQOJ+DpyurgM1XMfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TVzGj2vO; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757361823; c=relaxed/simple;
+	bh=ZAfY4nHqfgM8AK0O863nf5QpKC7p+HQ/dzofmqi7a2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cbpvv1CEx9+ewhgBWmhcmrUO+Rwy+hubEB7PzyAGgfju3lhuA7NpD2yPOhmeFUR4HdxGap+XICWiWmg6sqhlJJfSQlugZauo74BwHxHrZScma3O7FgCSHI+s0uQCHbfjhP5RGrWYw2UZ/d8xVaIHmqjDDj556YD3Xf6Scuu7oRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HG6RzaS+; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TVzGj2vO"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3e5190bca95so1255820f8f.0
-        for <phone-devel@vger.kernel.org>; Mon, 08 Sep 2025 03:57:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HG6RzaS+"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b042eb09948so934509166b.3;
+        Mon, 08 Sep 2025 13:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757329024; x=1757933824; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lXcNKb7eAeUSAOD3P9kbauHvQhJ/T5mYxvtqvBukuQM=;
-        b=TVzGj2vOOi0iJTRHBf+JjlEVlcLFofPEc0ysXPC92iHoIMR3ld7KIeIkcnxAY1lSI5
-         EUle7uLJIyN1lJ+Bor89QzHObAQ3/zf1ibdu4FrEqn5ZeSZx4KCcQO31SdIc26BpxZVD
-         2/mludSs1DYd4YtOfamP3vkfZRyoS1D/gGaD8tiprRyKvXzbtKK7TlPMcFOsmUn7hfB0
-         QAK8eqhADN19p1opLcJMzpuUOwRkaaIiJb+dXK6SlN6MMDiB53Kfz3Ck53fjRaeOfr6X
-         5KwR80sHC1NtRDiuuMHkiLbY+AQnvBEXAEnuwdoHUcVqGmLP8DXWerS5h2R/DOe1HC/5
-         mmkA==
+        d=gmail.com; s=20230601; t=1757361820; x=1757966620; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ida/lmq2CvCaVRtbfZQogEzqIEvpKI5nNSXM2BB/1b8=;
+        b=HG6RzaS+MWOzFBd8mu5lR2chilSQRVhQVzFMVhDf41LYzS9IbZsRtZZpn0P6X/ZH34
+         tI3yemQX3fw6Y+payFjyyDMLZXIsJLn55FM+SVJ35D+UVqS+ZWPTZLSBkaS11JmaQdsR
+         oOqa7c0RfinVXakZVVtYDonTTU+KsrN4ceoWuowswRDsa/lKQMcuQz0QSQW4zPdZTpMs
+         XjyEAPaDQ7LACL4Zo/EJQZ4IUe6qinpxFlmcHUjr9qqD9i1TZr/IwOM+JCjooTH1NP4s
+         vhkx81Vv0Sz+GjK+kyfDPfg44GuT/wFvJzFEswkfNxXv0R5TrSYbumeQG26itIdgOJUs
+         3QPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757329024; x=1757933824;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lXcNKb7eAeUSAOD3P9kbauHvQhJ/T5mYxvtqvBukuQM=;
-        b=YjbuhHm5W5him6K3WMGCl6jZr3OyXjYE3Yd3ZoK/5A0B8dxmmgLFez1zU+KL5QIN94
-         5z8xGzC8S4i/ZAbHcU+Tby8F+iWD8H6gx+FbzFcDd9LjFXDSbCCR8RaFdpCmBjfBnoxh
-         X8tn1IB4wug4B8swZlXcR7h93CIAbr7SgHrqGDXHyC1DHd2pReFne5fjONCmcu9ZZ8eE
-         xbSxhHJd4EAKrCBaR4WgzSMAi2t5vgOOF63Jv6ZDSwVjhLGviZeB7JkxWPpv/i66/WTe
-         odAA1uM77RhSwCTYRoT5MAjOszbqFqFjPcq4JEPS24jN/2rpfAIAPrYHqul4C6G1qN4a
-         66CA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNO504dC+7y4P4iUaVm1rfv3i6PJNSOeej07UTO1wbFHQDyv7TkeQehnb3K0slW4x360oJKrbed7T1qg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMrGz25MOmXMM1dLTXKk2bJPhS8khlhtXkuYyFyQDW2Hkhbsxd
-	QOiaaWUnH3gzAo3WVk9izxSpwJ28vGKBhoBygWtayLK9xrxFR8e/R+HTlaR7fvFAmuo=
-X-Gm-Gg: ASbGncuQH4XOiDoeDipumL28qZUuU+vn3tYx2wsdJ3jjYd2pq+oqG9Qyrb/Rqg4evDP
-	u0+GWBYPcran2U8MlgdIunfuKUt7rf3N6VZHik3+PkPYp17nDWOL5VISjqlM92nDFop4Rrd0wm6
-	j7g3p82T1F8/cvczNNZmHenIOswh6VXI3eJQ4FL0jNXgNTvK+M0sD786I5xB3iWQql4lRK0UnuK
-	Itm+clNwKGRI7bnfz8E3/INCy5sD2fhBPic1nWR2gCEMRUQT82kfMjWmWv1bX/pDdxd8VV97zUD
-	1CrYl+pi/WbDe86sAkpA6zU0qWYxsiFaVm+W5tAmZbeYgKU9cXQXpxg/BFhpBmudiEAX6zNj25x
-	3rLZ3ggs8Bzbrhh9UNxYCfGBdyQKVHtiptw9cRme0UWcXQMEblDX5mICIMrAMQvT7xabAJotC/E
-	TnkMB4IQPMWVshYGcKrCA=
-X-Google-Smtp-Source: AGHT+IHJenZkBnBqX5JJGGi8QCqzH35vWp8fn9f5als83N3CMmj4jtZhM8xY4+BhMYtweIKXzuwxjA==
-X-Received: by 2002:a05:6000:24c9:b0:3e2:4a3e:d3ee with SMTP id ffacd0b85a97d-3e64ca75db9mr5387379f8f.58.1757329024396;
-        Mon, 08 Sep 2025 03:57:04 -0700 (PDT)
-Received: from [192.168.0.19] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8879cesm440740795e9.12.2025.09.08.03.57.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 03:57:03 -0700 (PDT)
-Message-ID: <bfc3838c-b2fe-40c9-a1bf-f5269b48dca9@linaro.org>
-Date: Mon, 8 Sep 2025 11:56:59 +0100
+        d=1e100.net; s=20230601; t=1757361820; x=1757966620;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ida/lmq2CvCaVRtbfZQogEzqIEvpKI5nNSXM2BB/1b8=;
+        b=vBlUtbojPi7pSy3sF198cTjaeMg0MQKhmaEYivUBjlhY7ZoEyweP70gKgjc3apLgYm
+         V54is81fER61FdlaY4nPvat75ltCpZ8LP/IUblYCtHScLOmu8kmc0CBYF/R9wtZpt1Dm
+         J0p5l9bb/huTydITeNIw56FCqu/o9k5V2YKFfBgM0iDQ62r4o/7JAxvtZ4wkhltSJ/kE
+         ABeF2jgJLUz6M2NoYA1uNLqsbr8OxjteNv84CwKCjph+Mbc2TtkHiBLN9YwHRzwmfTz3
+         DCyXL2Hze1lhnhnGTXJDxMhbTngIyi084Ia6cwmvxIpZrYP5g57t6sMwb5W35O9/pVeo
+         SrSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmmCqDgBjrumVSCzuvWoJ/F9/5EPQBSpWFxJh1lG7A6axAZf8tdoNUtDfbFVm/IBMg6X/cMNSVNZub3E88@vger.kernel.org, AJvYcCWqTgMyK3J0GwMniIEVC09FWwsk9cU13rbMya78VPVC5FSjGPlqffXqy/PDTXMCwpSYF7Cjjul3U13hrzk=@vger.kernel.org, AJvYcCXTLKwgiA7FTP88+iR+AbMcR/LUFqxMQ2U8fDW7DBf7y/HXYdcap75sCMg1dlFaOZ4NImV6LBe+7MNU@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcUC67mcSkM4myWgnB7Iem94DEKxCCxKYwLi0akHmkYsgokuqi
+	5m9RMV9G9oFf7KGdQPmPzDQSB1b+hU7kusemnbJkRUET5qjHX+G883+lLkUbWLQq
+X-Gm-Gg: ASbGncvykFCoy8PagZTpMNqtUrVnULEpmvj98KZ/x/fESsDl1QsRtXQLC/vnl11XqdA
+	8o3PjEbyzR6Zqj8q22X18sz63DP3dC0RqKq77fZjOoZiI4i6uFE0ceO+WgUCJdC9qkTj1OWcNNZ
+	m+demssBYq02VCq8lywYg2SMIvRR6VzzCDCHIqWKGz3mYFEFSnUrFHzK69k2wOvDgophMer6Xrb
+	ol99cWPFAi2WESKNO4z3gw19lM+xr2kZSY49JP3qHlT5cvNLE907ZmFKzDWpNMxoOh4MQCIcRZQ
+	CAn3g9VLRZ+oeC1tqRuWkfqwnIkQKRLPmhVTKTzThrdg3HJ3Jp/krQdQTXSbr+6nY5SKPrVi64X
+	lxpNduQA9d6kguMqEUastBtrl3qzBR6J7YKz3Mx5/tJ++NQ+2wW3UYK1VBouT3q9eielAzwlvxw
+	==
+X-Google-Smtp-Source: AGHT+IFqGWzlEZtQOk/UnWNlOkrNxSCMaLPJApJMoATfCsdd8Y1r8qxaW7hfuJYJTHH4C3WtzjR3aA==
+X-Received: by 2002:a17:907:3d90:b0:af9:eace:8a52 with SMTP id a640c23a62f3a-b04b1712177mr802551966b.50.1757361819694;
+        Mon, 08 Sep 2025 13:03:39 -0700 (PDT)
+Received: from localhost (93-140-134-186.adsl.net.t-com.hr. [93.140.134.186])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0466a962c4sm1440182366b.71.2025.09.08.13.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 13:03:38 -0700 (PDT)
+From: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
+To: linux-mmc@vger.kernel.org,
+	ulf.hansson@linaro.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Karel Balej <balejk@matfyz.cz>
+Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] samsung,coreprimevelte enhancements
+Date: Mon,  8 Sep 2025 22:03:20 +0200
+Message-ID: <175735302650.4660.10666700905284639683.b4-ty@dujemihanovic.xyz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250828095028.24503-1-balejk@matfyz.cz>
+References: <20250828095028.24503-1-balejk@matfyz.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Add CAMSS support for MSM8939
-To: git@apitzsch.eu, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Vincent Knecht <vincent.knecht@mailoo.org>
-References: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250908-camss-8x39-vbif-v1-0-f198c9fd0d4d@apitzsch.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On 07/09/2025 23:04, André Apitzsch via B4 Relay wrote:
-> (This series resumes [1].)
-> 
-> This series adds CAMSS support for MSM8939.  It's mostly identical to
-> MSM8916, except for some clocks and an additional CSI.
-> 
-> To fix black stripes across sensor output, and garbage in CSID TPG
-> output, 2 VFE VBIF register settings are needed.  So the 2nd patch adds
-> helper functions to do just that.
-> 
-> Patch 1: documents qcom,msm8939-camss DT bindings
-> Patch 2: adds helper for VFE VBIF settings
-> Patch 3: adds CAMSS_8x39 version in CAMSS driver
-> Patch 4: adds camss and cci in msm8939.dtsi
-> 
-> Changes compared to [1]:
-> - Move bindings patch to the beginning
-> - Make the order of {reg, clock, interrupt} items the same as in 8916 +
->    append additional items
-> - Drop R-b tags from bindings and dts patches as order of items was
->    changed
-> 
-> [1] https://lore.kernel.org/all/20250613-camss-8x39-vbif-v5-0-a002301a7730@mailoo.org/
-> 
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> [André: Apply reviewer comments]
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> ---
-> Vincent Knecht (4):
->        media: dt-bindings: Add qcom,msm8939-camss
->        media: qcom: camss: vfe: Add VBIF setting support
->        media: qcom: camss: Add support for MSM8939
->        arm64: dts: qcom: msm8939: Add camss and cci
-> 
->   .../bindings/media/qcom,msm8939-camss.yaml         | 254 +++++++++++++++++++++
->   arch/arm64/boot/dts/qcom/msm8939-pm8916.dtsi       |   4 +
->   arch/arm64/boot/dts/qcom/msm8939.dtsi              | 146 ++++++++++++
->   drivers/media/platform/qcom/camss/Makefile         |   1 +
->   drivers/media/platform/qcom/camss/camss-csiphy.c   |   1 +
->   drivers/media/platform/qcom/camss/camss-ispif.c    |   8 +-
->   drivers/media/platform/qcom/camss/camss-vfe-4-1.c  |  12 +
->   drivers/media/platform/qcom/camss/camss-vfe-vbif.c |  31 +++
->   drivers/media/platform/qcom/camss/camss-vfe-vbif.h |  19 ++
->   drivers/media/platform/qcom/camss/camss-vfe.c      |  10 +
->   drivers/media/platform/qcom/camss/camss-vfe.h      |   3 +
->   drivers/media/platform/qcom/camss/camss.c          | 157 +++++++++++++
->   drivers/media/platform/qcom/camss/camss.h          |   1 +
->   13 files changed, 645 insertions(+), 2 deletions(-)
-> ---
-> base-commit: be5d4872e528796df9d7425f2bd9b3893eb3a42c
-> change-id: 20250517-camss-8x39-vbif-975ff5819198
-> 
-> Best regards,
+From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
+On Thu, 28 Aug 2025 11:49:01 +0200, Karel Balej wrote:
+> here are a few patches adding some of the stuff that have accumulated
+> since the support for the samsung,coreprimevelte smartphone was first
+> introduced and before it made it into the mainline tree.
+> 
+> The patches are based on mmc/next because it contains the new support
+> for state_uhs in the sdhci-pxav3 driver.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/3] arm64: dts: samsung,coreprimevelte: add PMIC
+      commit: 9d5f358e797c87c304a8b0af5cd43f08218dfa2f
+[2/3] arm64: dts: samsung,coreprimevelte: add touchscreen
+      commit: 081ff07146ba5fc752843a389cf68a10c8047a73
+[3/3] arm64: dts: samsung,coreprimevelte: add SDIO
+      commit: 51d00644986b750d54e58aa3dd5eb5fb0e6040e8
+
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
