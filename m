@@ -1,126 +1,529 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B908322DB7;
-	Thu, 11 Sep 2025 12:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA0A33CE83
+	for <phone-devel@vger.kernel.org>; Thu, 11 Sep 2025 14:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594636; cv=none; b=RVEJdzBUUYvPSuQ8HXgfXTVriLtXR2CQUIwJZV09KxMjJ9HSs7PIKMo9V1LnftGxZ6th1hNA0lCvUd2te/2CzS0Pgv9jd4i4/hD/X2G0I6vc7CsriF9R992g1w7RKf7PJnBt8BENSHXk+g7C5UoiP0J589WyKzwR0fjl+Qail4k=
+	t=1757601155; cv=none; b=izOZ2LSL0h+7+hnkKgseqUQgyY7HEkzgNR+M7WX1SRCyQnD2pBB2ogqfMAj3kKJUZOa+CACX4EPek2qPU98XpEmvQWu2suzrB1XHc8dYz+xiRzM0HIQYwJBs5J8q6FSXtIv0I0Lcud7WhwnManpzWs+9tehi56+ZLFYSbhuNfHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594636; c=relaxed/simple;
-	bh=xe9Gywa0nrV57XMMQehx9rCXvTi1V7YVWIVSt+PJfi0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SXpRJbaE4N4Qd1LHhCRS418Cair9SceVmBlcFcwlAtrFuU8hUT2Qkwbb/CxPg+T0bTUF1p05KwKxC6WRP+SFF4B1Y+odz1KXewvAiQHW/3VrtB9Gf27VmuhAgn+IH20dvM1/OEM6Z/XU96VSdmDfAXQAUvEdmj9PyHjTVNe/PGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/ZfSOA4; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757601155; c=relaxed/simple;
+	bh=eCZcmRvkeBZItFAG3mOym3+dfp8SxuJgpD5cNHuveIU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=noO41sEp7RpuCUfCOaDtqDOuj1FuK+xSL5cC7MVJGVghyG6ykfv3AYlqZFXpztZ3ioCN9lY0cm0e/AUiUA54CxvW/TKXFM5VZG4YU/A/hz/1ylBklmKx1ZVt/H++G6DublkJcRMWvV02AM4QmI35b7pZxEIXAk+pHrckSdV/oss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SOXre/iX; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/ZfSOA4"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3df3be0e098so482732f8f.1;
-        Thu, 11 Sep 2025 05:43:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SOXre/iX"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e96dc26dfa2so619551276.1
+        for <phone-devel@vger.kernel.org>; Thu, 11 Sep 2025 07:32:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757594633; x=1758199433; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ffstATfAOIYcJlHHnicc/Ajw/zJxaIpci9UFmXyAMeo=;
-        b=m/ZfSOA4i6JwaZtVe0X8vsbmVMQCJklHAfVlEDSFYh/y2AActfVUX0FF47m5M1uV38
-         o1+k6YPxVle4sdrQDMV8ONfH+WJLXN3wmahZ6ic+jNlfGiaj9inlKFPgBRiEfHV3gBqU
-         IjpCeJxeVqDZ7d2//eILa+JA+cdGsCRU/GWbW6EE//0aOmDOoabmIG82npQ5drYSV2Wb
-         Ztr+SVjiXLmtNRDmjxDUbb7j7fINPrxBZBm5//wbsk3uPh1xrl75kG4Xod+DCftREeoG
-         BEyv423tUhGVi0K0EaZe5/ig2nyVgI0ojEOm+PXAwmri2ZHxg4oxL0BbCFyJKDBTeTb9
-         bNAA==
+        d=linaro.org; s=google; t=1757601151; x=1758205951; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m3G1Q8trf1KrPeh7JRBVP/u6wl+tP3n7DRT+geP906w=;
+        b=SOXre/iXppfTNsYCBLL1ZXefoz+sx8eOHLylq+WfkLQxqIoqbpZ+yNFwyj4sSRp3dr
+         0dJXB78mCFKVTXKtp1l/prnnacSu5LBRJDo5mFJnUYplYG9BXaSIVE6ar+f8gJ84m4lH
+         0jL8LfqsbThN2V0Z45qB1xv/nJcYXXxFvjbRjL6XoMB4n/kf9Tt1cRdtechU5iizm+Zn
+         O9XmLtmUVJ4Y2h5TAD7LJY6pmom9/iSrxQwg3VpIAKapmULuk8dOWsvhFS0DXYlqspJt
+         X7zxAir4DTiDliOqjAwhEzzjt4DZ7aXPK0trmiADp8R7cadQO3p+D/15g+yDkxYjz7Ce
+         b08Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757594633; x=1758199433;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757601151; x=1758205951;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ffstATfAOIYcJlHHnicc/Ajw/zJxaIpci9UFmXyAMeo=;
-        b=I0to3CdtnwQ2mGpH/CzNL+OVUdNb+jFoj1RsOPgsB4lKIO8KnFkhmUHfUC2MOIwmfj
-         D3ef6vE+cUl8P4IQ7BIVeR2f0r7gx5JxFaSSwPuf/yduT4d1A2NRL5ElsG7AL7T+Gk7H
-         JDcJjobWIQbUuBBLBhxTNfkQu1SXKmiAEZ9fP5mXKC+hp8bA6BKrYz8YcLvX+arws6XC
-         rmIklx3+CG1+Guev9pWRnTV1+gmBCqfDIhqbvu/t+KuMQMwsivQOFDIbJhsQS0kteazl
-         xUdzjw52F/KhV3K3WoaaTcCGbrrgaq19J3L083wHPVXJ4b0Rrx4z7bWLtk4loi6ylRXv
-         USrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdALz3eWSpYNPqigNUW2A7UjsqqopqngTfpjhbX/3XSed8kKJOl9jAo0acfMjRwYW+BCbXNLa9mr7jRb4b@vger.kernel.org, AJvYcCW/WeF58Ww5T+VNFXQzGgIlWVvTLYOQdFP72fHBAmYrrR5CGr0Afkx9UAZh79Hz6vGAXGIKplcC4fRb@vger.kernel.org, AJvYcCWYg5fLsU4CstDyL5jU9+pINYT+Qy+Q4GMee9o7M6UNMVZwWXqgUmdbHwka1lghU+dnxqUGDXsuWzej@vger.kernel.org, AJvYcCWyoSXcEg8/73Fsu/lVV2gjVb8d73DUvAVIZ7E+YNJHmLPGoPuu/EmHlStqIAJ9N2rMJDIJM5E3nF5IPe8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLsM/RrwheygXcjoJZTVXkGl6qdj8lLAd/wyWghkP6+J64YKWb
-	A+jDiQ/MQarfdfzaAcLRcMjFjaBFQvocMwB+3/9hwE/S3KYvytm/PP3m
-X-Gm-Gg: ASbGnct6m+gXJiga/7cwEi4/UdT8oWCOLinmFjFI53aFMIvAwI/7yO1EZBucjOJI8E7
-	Y6BQXGlOH+Re6ust18iS8VlFnvWsplM3HttD7mPxfIZ91hrlKHyFMo8B4eWsRVPHC+VYhI29OC1
-	cA/2tjmKcTtO2KNxuefXpLcZcymj/aVsgVBla+sR52BFhsCmaLUOELZGjnr1+v6hBoeNt51JG97
-	2lQ7Kld7oKSxL5C9i1dsP3TElVz5zEFZwULgtv6az0HJJoXuk0+ehqXRtpHZVmktexhMgnhWcz0
-	nF5831uOR3zB4E6tSQuUqVkDJU8uCjcwWy1LYZ3K9E1EuMODeCL3Ihe2wczGomZN10cDi1fdB4M
-	jcxiphIu0NLGP0KVeRLgNXH6xYUB+/ty0O1DhexEN5SJ36Iss2p9aCnuWa8ZruYJEIKMGix9qQd
-	ua
-X-Google-Smtp-Source: AGHT+IHMo/U3BdX8IVk6itPiCLbgeG+HLRPTKaSeSv6yYfTnMgD79N39xh4sXUrfzCHQln7ROZ0dMg==
-X-Received: by 2002:a5d:5f96:0:b0:3e0:43f0:b7ad with SMTP id ffacd0b85a97d-3e6425eb809mr13914249f8f.18.1757594633350;
-        Thu, 11 Sep 2025 05:43:53 -0700 (PDT)
-Received: from Radijator.localdomain (93-143-13-188.adsl.net.t-com.hr. [93.143.13.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e03729c76sm22591495e9.6.2025.09.11.05.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 05:43:52 -0700 (PDT)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Date: Thu, 11 Sep 2025 14:43:46 +0200
-Subject: [PATCH v4 3/3] mfd: 88pm886: Add GPADC cell
+        bh=m3G1Q8trf1KrPeh7JRBVP/u6wl+tP3n7DRT+geP906w=;
+        b=UiKr8ODDszSFnj7yqihWbKwhSEC6VpDLpHsZuEwt3FlUddQAI4pmdyPiQBLEOEah0E
+         IaCpbWx69GUYMqWtHpBjAUMl9HM0FWMK4duGoJmFKvbKAQi9Y/cIKAzrmW0kweD9MGJu
+         4cIpLtdXjjuBRHzIul5QkZJm7k24xNsZs1/EAfuiyLNhI8uW36z91nuisSNCqHHW9VF4
+         5TJ750cYs21pqaGzvEuMIICpKavdJFSaxqbnbyQgv6mIaqwiLCAhUYTtBiuLqck68qof
+         y422ivCyHCMQRHO7w7UtdnOhKYHk/OpxF9tdG3NHwQT8b27yJ6wU8q+ibHCETEQCmLOb
+         mZOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXejEe8aCK3r67UgoGb6ZPABI2oXqZQO2GA2+N5ui/IP7ZIO3duOkssDHDnuHihDUvWsCzqTJL13awIxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFuCcxer1tQGjdE7IYHvqVIAateE0COSLF54EkKb+0W087obE0
+	EFZ7c0IjxWuipWj2rPvW22fBQGvl2+9iYNBUGLWhKoAV4LZNk5xu+qE4khTs+EyGulrZk5v4XFY
+	cpEQINUbWejTwdxqLi/9Gm+URDCEoD1LNFwEw5Rmz6A==
+X-Gm-Gg: ASbGnctCxEXG4AFDuuTBJZZAAmhjFP9/YhlkZcwXDnsBA3DhERavS8FkXQyx7uQZkgG
+	4uOv0uL8lpcT/zMoRA3ovZhOYfQ9FPL+QGgnogB3b4lNt5hNb+hV+9OpvK+xQ6gvUAoUds3LcED
+	RavI9022KUSV9kYdRzWrsTjD22vXw/bNHdZnkZXuBqDHziqXivozw68QfXJ8ZFvDHmjEV6FwV4p
+	AIX1FZBaCUwe+1c9XI=
+X-Google-Smtp-Source: AGHT+IHk66zPIbwvGUfliID4rNwdavLJX3B1E/zwo4X1IyK21WKvR0Vm876Pd397O+CLNkNssnCw0oVSGGUIeIlQnHA=
+X-Received: by 2002:a05:6902:1892:b0:ea3:d40a:2563 with SMTP id
+ 3f1490d57ef6-ea3d40a2737mr1135991276.41.1757601150819; Thu, 11 Sep 2025
+ 07:32:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250911-88pm886-gpadc-v4-3-60452710d3a0@dujemihanovic.xyz>
-References: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
-In-Reply-To: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=797; i=duje@dujemihanovic.xyz;
- s=20240706; h=from:subject:message-id;
- bh=9JhG6l9aYXd0tr5rpMP/JH7+4zmVZlrSGb616SvhYjU=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBmHjjDWzL4o6v6r5sgz0TdidX4tMufuzUvnuGqQwDVLX
- +t/e+GFjlIWBjEuBlkxRZbc/47XeD+LbN2evcwAZg4rE8gQBi5OAZhIbw0jwwZHC3/Hx2lHXuQ5
- c1qom1wreretz323vIxBVk+JsXbFVIa/Arfv1LXV3VFzepunHDJTqvhgd/fHrsMvPz+dyH6icIY
- qPwA=
-X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
- fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
+References: <20250829-pxa1908-genpd-v3-0-2aacaaaca271@dujemihanovic.xyz> <20250829-pxa1908-genpd-v3-2-2aacaaaca271@dujemihanovic.xyz>
+In-Reply-To: <20250829-pxa1908-genpd-v3-2-2aacaaaca271@dujemihanovic.xyz>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 11 Sep 2025 16:31:55 +0200
+X-Gm-Features: Ac12FXxKrX9P2Lh17PZPTTUHZfR9xq35WTK20siD_z-ekoywxELI_UvNVL-MSOI
+Message-ID: <CAPDyKFqTVUZn5F7ss7qCtNktCGfSaXCB+cGOnN9rH0hjTwJkhw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] pmdomain: marvell: Add PXA1908 power domains
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Duje Mihanović <duje@dujemihanovic.xyz>
+On Fri, 29 Aug 2025 at 18:22, Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz> =
+wrote:
+>
+> Marvell's PXA1908 SoC has a few power domains for its VPU, GPU, image
+> processor and DSI PHY. Add a driver to control these.
+>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> ---
+> v3:
+> - Move driver back to pmdomain subsystem, use auxiliary bus to
+>   instantiate the driver
+> - Drop redundant 'struct device' pointer in 'struct pxa1908_pd'
+> - Fix pxa1908_pd_is_on() for DSI domain
+> - Replace usleep_range() with fsleep()
+> - Use dev_err_probe() where sensible
+>
+> v2:
+> - Move to clk subsystem, instantiate the driver from the APMU clock
+>   driver
+> - Drop clock handling
+> - Squash MAINTAINERS patch
+> ---
+>  MAINTAINERS                                        |   1 +
+>  drivers/pmdomain/Kconfig                           |   1 +
+>  drivers/pmdomain/Makefile                          |   1 +
+>  drivers/pmdomain/marvell/Kconfig                   |  18 ++
+>  drivers/pmdomain/marvell/Makefile                  |   3 +
+>  .../pmdomain/marvell/pxa1908-power-controller.c    | 268 +++++++++++++++=
+++++++
+>  6 files changed, 292 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 88f7bd50686eb1f6bcd4f34c6827f27ad44ea4e8..34e5e218e83e0ed9882b111f5=
+251601dd6549d4e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2871,6 +2871,7 @@ L:        linux-arm-kernel@lists.infradead.org (mod=
+erated for non-subscribers)
+>  S:     Maintained
+>  F:     arch/arm64/boot/dts/marvell/mmp/
+>  F:     drivers/clk/mmp/clk-pxa1908*.c
+> +F:     drivers/pmdomain/marvell/
+>  F:     include/dt-bindings/clock/marvell,pxa1908.h
+>  F:     include/dt-bindings/power/marvell,pxa1908-power.h
+>
+> diff --git a/drivers/pmdomain/Kconfig b/drivers/pmdomain/Kconfig
+> index 91f04ace35d4b024fafdf6af4e26a179640eb82f..23076ae90e6641dea8e5dbc85=
+1d041cd7929cee6 100644
+> --- a/drivers/pmdomain/Kconfig
+> +++ b/drivers/pmdomain/Kconfig
+> @@ -7,6 +7,7 @@ source "drivers/pmdomain/apple/Kconfig"
+>  source "drivers/pmdomain/arm/Kconfig"
+>  source "drivers/pmdomain/bcm/Kconfig"
+>  source "drivers/pmdomain/imx/Kconfig"
+> +source "drivers/pmdomain/marvell/Kconfig"
+>  source "drivers/pmdomain/mediatek/Kconfig"
+>  source "drivers/pmdomain/qcom/Kconfig"
+>  source "drivers/pmdomain/renesas/Kconfig"
+> diff --git a/drivers/pmdomain/Makefile b/drivers/pmdomain/Makefile
+> index 7030f44a49df9e91b1c9d1b6d12690a6248671fb..ebc802f13eb953db750f5a950=
+7caa64c637a957a 100644
+> --- a/drivers/pmdomain/Makefile
+> +++ b/drivers/pmdomain/Makefile
+> @@ -5,6 +5,7 @@ obj-y                                   +=3D apple/
+>  obj-y                                  +=3D arm/
+>  obj-y                                  +=3D bcm/
+>  obj-y                                  +=3D imx/
+> +obj-y                                  +=3D marvell/
+>  obj-y                                  +=3D mediatek/
+>  obj-y                                  +=3D qcom/
+>  obj-y                                  +=3D renesas/
+> diff --git a/drivers/pmdomain/marvell/Kconfig b/drivers/pmdomain/marvell/=
+Kconfig
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..6c4084c826670266b7d948438=
+f6e6d76acb416e2
+> --- /dev/null
+> +++ b/drivers/pmdomain/marvell/Kconfig
+> @@ -0,0 +1,18 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +menu "Marvell PM Domains"
+> +       depends on ARCH_MMP || COMPILE_TEST
+> +
+> +config PXA1908_PM_DOMAINS
+> +       tristate "Marvell PXA1908 power domains"
+> +       depends on OF
+> +       depends on PM
+> +       default y if ARCH_MMP && ARM64
+> +       select AUXILIARY_BUS
+> +       select MFD_SYSCON
+> +       select PM_GENERIC_DOMAINS
+> +       select PM_GENERIC_DOMAINS_OF
+> +       help
+> +         Say Y here to enable support for Marvell PXA1908's power domani=
+s.
+> +
+> +endmenu
+> diff --git a/drivers/pmdomain/marvell/Makefile b/drivers/pmdomain/marvell=
+/Makefile
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..22c25013f6c856a2ca01a121e=
+830279ee88eb0ed
+> --- /dev/null
+> +++ b/drivers/pmdomain/marvell/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +obj-$(CONFIG_PXA1908_PM_DOMAINS) +=3D pxa1908-power-controller.o
+> diff --git a/drivers/pmdomain/marvell/pxa1908-power-controller.c b/driver=
+s/pmdomain/marvell/pxa1908-power-controller.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..29134629861abcf46959f9dcc=
+98d3f05a4cc5b72
+> --- /dev/null
+> +++ b/drivers/pmdomain/marvell/pxa1908-power-controller.c
+> @@ -0,0 +1,268 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright 2025 Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> + */
+> +
+> +#include <linux/auxiliary_bus.h>
+> +#include <linux/container_of.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_domain.h>
+> +#include <linux/regmap.h>
+> +#include <linux/units.h>
+> +
+> +#include <dt-bindings/power/marvell,pxa1908-power.h>
+> +
+> +/* VPU, GPU, ISP */
+> +#define APMU_PWR_CTRL_REG      0xd8
+> +#define APMU_PWR_BLK_TMR_REG   0xdc
+> +#define APMU_PWR_STATUS_REG    0xf0
+> +
+> +/* DSI */
+> +#define APMU_DEBUG             0x88
+> +#define DSI_PHY_DVM_MASK       BIT(31)
+> +
+> +#define POWER_ON_LATENCY_US    300
+> +#define POWER_OFF_LATENCY_US   20
+> +
+> +#define NR_DOMAINS     5
+> +
+> +struct pxa1908_pd_ctrl {
+> +       struct generic_pm_domain *domains[NR_DOMAINS];
+> +       struct genpd_onecell_data onecell_data;
+> +       struct regmap *base;
+> +};
+> +
+> +struct pxa1908_pd_data {
+> +       u32 reg_clk_res_ctrl;
+> +       u32 pwr_state;
+> +       u32 hw_mode;
+> +       bool keep_on;
+> +       int id;
+> +};
+> +
+> +struct pxa1908_pd {
+> +       const struct pxa1908_pd_data data;
+> +       struct generic_pm_domain genpd;
+> +       bool initialized;
+> +};
+> +
+> +static inline bool pxa1908_pd_is_on(struct pxa1908_pd *pd)
+> +{
+> +       struct pxa1908_pd_ctrl *ctrl =3D dev_get_drvdata(&pd->genpd.dev);
 
-Add a cell for the PMIC's onboard General Purpose ADC.
+The genpd.dev is owned by the genpd core and must not be used like this.
 
-Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
----
-v2:
-- Sort cell names
----
- drivers/mfd/88pm886.c | 1 +
- 1 file changed, 1 insertion(+)
+Please find another way to derive the needed data.
 
-diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-index 39dd9a818b0f0e1e5839f76768ff54940f4cefa5..e411d8dee55420e10b6d7ad7069576c681360de1 100644
---- a/drivers/mfd/88pm886.c
-+++ b/drivers/mfd/88pm886.c
-@@ -35,6 +35,7 @@ static const struct resource pm886_onkey_resources[] = {
- };
- 
- static const struct mfd_cell pm886_devs[] = {
-+	MFD_CELL_NAME("88pm886-gpadc"),
- 	MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
- 	MFD_CELL_NAME("88pm886-regulator"),
- 	MFD_CELL_NAME("88pm886-rtc"),
+> +
+> +       return pd->data.id !=3D PXA1908_POWER_DOMAIN_DSI
+> +               ? regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->d=
+ata.pwr_state)
+> +               : regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MA=
+SK);
+> +}
+> +
+> +static int pxa1908_pd_power_on(struct generic_pm_domain *genpd)
+> +{
+> +       struct pxa1908_pd *pd =3D container_of(genpd, struct pxa1908_pd, =
+genpd);
+> +       struct pxa1908_pd_ctrl *ctrl =3D dev_get_drvdata(&genpd->dev);
 
--- 
-2.51.0
+Ditto.
 
+
+> +       const struct pxa1908_pd_data *data =3D &pd->data;
+> +       unsigned int status;
+> +       int ret =3D 0;
+> +
+> +       regmap_set_bits(ctrl->base, data->reg_clk_res_ctrl, data->hw_mode=
+);
+> +       if (data->id !=3D PXA1908_POWER_DOMAIN_ISP)
+> +               regmap_write(ctrl->base, APMU_PWR_BLK_TMR_REG, 0x20001fff=
+);
+> +       regmap_set_bits(ctrl->base, APMU_PWR_CTRL_REG, data->pwr_state);
+> +
+> +       fsleep(POWER_ON_LATENCY_US);
+
+I assume the fsleep here is intentional and should be combined with
+the poll-timeout below. Although I wonder why we can't just poll
+immediately and by using some reasonable period+timeout instead?
+
+> +
+> +       ret =3D regmap_read_poll_timeout(ctrl->base, APMU_PWR_STATUS_REG,=
+ status,
+> +                                      status & data->pwr_state, 6, 25 * =
+USEC_PER_MSEC);
+
+Please avoid hardcoding periods/timeouts here.
+
+> +       if (ret =3D=3D -ETIMEDOUT)
+> +               dev_err(&genpd->dev, "timed out powering on domain '%s'\n=
+", pd->genpd.name);
+> +
+> +       return ret;
+> +}
+> +
+> +static int pxa1908_pd_power_off(struct generic_pm_domain *genpd)
+> +{
+> +       struct pxa1908_pd *pd =3D container_of(genpd, struct pxa1908_pd, =
+genpd);
+> +       struct pxa1908_pd_ctrl *ctrl =3D dev_get_drvdata(&genpd->dev);
+> +       const struct pxa1908_pd_data *data =3D &pd->data;
+> +       unsigned int status;
+> +       int ret;
+> +
+> +       regmap_clear_bits(ctrl->base, APMU_PWR_CTRL_REG, data->pwr_state)=
+;
+> +
+> +       fsleep(POWER_OFF_LATENCY_US);
+
+Ditto.
+
+> +
+> +       ret =3D regmap_read_poll_timeout(ctrl->base, APMU_PWR_STATUS_REG,=
+ status,
+> +                                      !(status & data->pwr_state), 6, 25=
+ * USEC_PER_MSEC);
+
+Ditto.
+
+> +       if (ret =3D=3D -ETIMEDOUT) {
+> +               dev_err(&genpd->dev, "timed out powering off domain '%s'\=
+n", pd->genpd.name);
+> +               return ret;
+> +       }
+> +
+> +       return regmap_clear_bits(ctrl->base, data->reg_clk_res_ctrl, data=
+->hw_mode);
+> +}
+> +
+> +static inline int pxa1908_dsi_power_on(struct generic_pm_domain *genpd)
+> +{
+> +       struct pxa1908_pd_ctrl *ctrl =3D dev_get_drvdata(&genpd->dev);
+> +
+> +       return regmap_set_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
+> +}
+> +
+> +static inline int pxa1908_dsi_power_off(struct generic_pm_domain *genpd)
+> +{
+> +       struct pxa1908_pd_ctrl *ctrl =3D dev_get_drvdata(&genpd->dev);
+> +
+> +       return regmap_clear_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK=
+);
+> +}
+> +
+> +#define DOMAIN(_id, _name, ctrl, mode, state) \
+> +       [_id] =3D { \
+> +               .data =3D { \
+> +                       .reg_clk_res_ctrl =3D ctrl, \
+> +                       .hw_mode =3D BIT(mode), \
+> +                       .pwr_state =3D BIT(state), \
+> +                       .id =3D _id, \
+> +               }, \
+> +               .genpd =3D { \
+> +                       .name =3D _name, \
+> +                       .power_on =3D pxa1908_pd_power_on, \
+> +                       .power_off =3D pxa1908_pd_power_off, \
+> +               }, \
+> +       }
+> +
+> +static struct pxa1908_pd domains[NR_DOMAINS] =3D {
+> +       DOMAIN(PXA1908_POWER_DOMAIN_VPU, "vpu", 0xa4, 19, 2),
+> +       DOMAIN(PXA1908_POWER_DOMAIN_GPU, "gpu", 0xcc, 11, 0),
+> +       DOMAIN(PXA1908_POWER_DOMAIN_GPU2D, "gpu2d", 0xf4, 11, 6),
+> +       DOMAIN(PXA1908_POWER_DOMAIN_ISP, "isp", 0x38, 15, 4),
+> +       [PXA1908_POWER_DOMAIN_DSI] =3D {
+> +               .genpd =3D {
+> +                       .name =3D "dsi",
+> +                       .power_on =3D pxa1908_dsi_power_on,
+> +                       .power_off =3D pxa1908_dsi_power_off,
+> +                       /*
+> +                        * TODO: There is no DSI driver written yet and u=
+ntil then we probably
+> +                        * don't want to power off the DSI PHY ever.
+> +                        */
+> +                       .flags =3D GENPD_FLAG_ALWAYS_ON,
+> +               },
+> +               .data =3D {
+> +                       /* See above. */
+> +                       .keep_on =3D true,
+> +               },
+> +       },
+> +};
+> +
+> +static void pxa1908_pd_remove(struct auxiliary_device *auxdev)
+> +{
+> +       struct pxa1908_pd *pd;
+> +       int ret;
+> +
+> +       for (int i =3D NR_DOMAINS - 1; i >=3D 0; i--) {
+> +               pd =3D &domains[i];
+> +
+> +               if (!pd->initialized)
+> +                       continue;
+> +
+> +               if (pxa1908_pd_is_on(pd) && !pd->data.keep_on)
+> +                       pxa1908_pd_power_off(&pd->genpd);
+> +
+> +               ret =3D pm_genpd_remove(&pd->genpd);
+> +               if (ret)
+> +                       dev_err(&pd->genpd.dev, "failed to remove domain =
+'%s': %d\n",
+> +                               pd->genpd.name, ret);
+> +       }
+> +}
+> +
+> +static int
+> +pxa1908_pd_init(struct pxa1908_pd_ctrl *ctrl, int id, struct device *dev=
+)
+> +{
+> +       struct pxa1908_pd *pd =3D &domains[id];
+> +       int ret;
+> +
+> +       ctrl->domains[id] =3D &pd->genpd;
+> +
+> +       ret =3D pm_genpd_init(&pd->genpd, NULL, !pd->data.keep_on);
+> +       if (ret)
+> +               return dev_err_probe(dev, ret, "domain '%s' failed to ini=
+tialize\n",
+> +                                    pd->genpd.name);
+> +
+> +       dev_set_drvdata(&pd->genpd.dev, ctrl);
+
+As stated above, please don't abuse the genpd.dev like this.
+
+> +
+> +       /* Make sure the state of the hardware is synced with the domain =
+table above. */
+> +       if (pd->data.keep_on) {
+> +               ret =3D pd->genpd.power_on(&pd->genpd);
+
+This should be managed before pm_genpd_init() is called.
+
+> +               if (ret)
+> +                       return dev_err_probe(dev, ret, "failed to power o=
+n domain '%s'\n",
+> +                                            pd->genpd.name);
+> +       } else {
+> +               if (pxa1908_pd_is_on(pd)) {
+> +                       dev_warn(dev,
+> +                                "domain '%s' is on despite being default=
+ off; powering off\n",
+> +                                pd->genpd.name);
+> +
+> +                       ret =3D pd->genpd.power_off(&pd->genpd);
+
+Ditto.
+
+> +                       if (ret)
+> +                               return dev_err_probe(dev, ret,
+> +                                                    "failed to power off=
+ domain '%s'\n",
+> +                                                    pd->genpd.name);
+> +               }
+> +       }
+> +
+> +       pd->initialized =3D true;
+> +
+> +       return 0;
+> +}
+> +
+> +static int
+> +pxa1908_pd_probe(struct auxiliary_device *auxdev, const struct auxiliary=
+_device_id *aux_id)
+> +{
+> +       struct pxa1908_pd_ctrl *ctrl;
+> +       struct device *dev =3D &auxdev->dev;
+> +       int ret;
+> +
+> +       ctrl =3D devm_kzalloc(dev, sizeof(*ctrl), GFP_KERNEL);
+> +       if (!ctrl)
+> +               return -ENOMEM;
+> +
+> +       auxiliary_set_drvdata(auxdev, ctrl);
+> +
+> +       ctrl->base =3D syscon_node_to_regmap(dev->parent->of_node);
+> +       if (IS_ERR(ctrl->base))
+> +               return dev_err_probe(dev, PTR_ERR(ctrl->base), "no regmap=
+ available\n");
+> +
+> +       ctrl->onecell_data.domains =3D ctrl->domains;
+> +       ctrl->onecell_data.num_domains =3D NR_DOMAINS;
+> +
+> +       for (int i =3D 0; i < NR_DOMAINS; i++) {
+> +               ret =3D pxa1908_pd_init(ctrl, i, dev);
+> +               if (ret)
+> +                       goto err;
+> +       }
+> +
+> +       return of_genpd_add_provider_onecell(dev->parent->of_node, &ctrl-=
+>onecell_data);
+> +
+> +err:
+> +       pxa1908_pd_remove(auxdev);
+> +       return ret;
+> +}
+> +
+> +static const struct auxiliary_device_id pxa1908_pd_id[] =3D {
+> +       { .name =3D "clk_pxa1908_apmu.power" },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(auxiliary, pxa1908_pd_id);
+> +
+> +static struct auxiliary_driver pxa1908_pd_driver =3D {
+> +       .probe =3D pxa1908_pd_probe,
+> +       .remove =3D pxa1908_pd_remove,
+> +       .id_table =3D pxa1908_pd_id,
+> +};
+> +module_auxiliary_driver(pxa1908_pd_driver);
+> +
+> +MODULE_AUTHOR("Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>");
+> +MODULE_DESCRIPTION("Marvell PXA1908 power domain driver");
+> +MODULE_LICENSE("GPL");
+>
+> --
+> 2.51.0
+>
+
+Kind regards
+Uffe
