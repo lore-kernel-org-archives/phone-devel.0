@@ -1,231 +1,112 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506C933EB00
-	for <phone-devel@vger.kernel.org>; Thu, 11 Sep 2025 14:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39F72EA468;
+	Sat, 13 Sep 2025 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601353; cv=none; b=M+4aSy1wwY556R3HVAO9Jw+9adNdQbkYUuys0sy7q9glvktr8iUfyAza1Yh/MDKXpKqEQfp1X/TWOqY02DY1bRwGFaA3K4jPQgWoBl1NNgvj0sCeBnR2sbnm2ZBD8teH8oSE390E3L8Q6/fzKO7rkkb5Q6Cy2JyBw75462lRVYk=
+	t=1757771288; cv=none; b=afHJJSuDbLS5Ful+00MGz6IN8rU1e5X/CHCroQVgJZ9VCRuxT4GduYvxgGNYV9a1HbahAQ4zc7zO3oSnMQnAWwkzgyJaiMYn5sK13Txfd1q+ZNzmZ3kMgN22FCHembyYLYNjSP/8eh5wv3IrHfvjA98NIVXU7vyt16J50LqAsEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601353; c=relaxed/simple;
-	bh=ESnN9Qcq6l1yCzPzaK6lvWPHzemlXDh7SS20QlmOJhw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kn14Qowz41Z3G8ZdkJsOt1y7565JKSs3NZXDyAdzP6fZ+jDvWcpgZU1G/XTJ9WC54ONlTmSuufGCWGtQVRjuswxybTBvuxgpzEoI+h18bHkbF8QpO9YnwHRnthZ6QScWE83aj9Wv1HTvVWmzWbMqAUUDLxK46xP7Iv4Kpaqn5uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ur3E4I/l; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757771288; c=relaxed/simple;
+	bh=kAb/6Q3HAUctmHWVedyL+l7FRRMhD0STnVCd1l+573o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rBeS5jbGOtLzOjH4AdLQalSvytfxNh63LoVjCL6c/MGRU4xGwky7wnlQKNXgo5TEK7OlYDwme3Z6OHkWRibRnwsPieBpPdKUAEMyhV8oQb3/t/2OrxYefnKlb/guOzytIEwZ0HcCOADAvEfaZ5e9drJ975WDBDcIxUEWYE1wQ9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+2VFjXs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ur3E4I/l"
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e96eb999262so487306276.2
-        for <phone-devel@vger.kernel.org>; Thu, 11 Sep 2025 07:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757601349; x=1758206149; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KSlk+fROaTKkWUJzIAo9K1awGf90OVjnNrt1yoqzdVE=;
-        b=Ur3E4I/lQa4ZBL4va329+8YDzhQQOhTe/fMbdX1NgyoHQpE7OkLd/20ElkeQ0UdH0L
-         KPJUtzr2cM5NwX/tsEaoMwhK3cpnDo9WofSFknUMcRP5cAYEBiibkQ9/UOGPNIwone6I
-         511h3gd3yr9M4B3tjA0nDbFzDrzQu1CQvpeUZH6STqIwou0vh+Q7F7i2cR1k2fVqeIe4
-         4mr8JeuuQlUlQuNvDxHXMc00UOA4TdnfWGFZV4x4021hO87lmyJ4HoBj6csk5yzv64aa
-         ae4p6jmWoAUwXibEvRKtItwC9KSMh1Z7+rHSNNWte7XUnvNwwWJneGswcze+eLRvVpfB
-         NG1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757601349; x=1758206149;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KSlk+fROaTKkWUJzIAo9K1awGf90OVjnNrt1yoqzdVE=;
-        b=ACfa9fUmUvSC1PKeltxRh4uO+jIBoa2hCiJCtWU7njTPrUVMFm3+ueaS9nPsd4HlFG
-         W95vQHw2SjHRr7YFB6HzV1eGEYW2yS88jqTqBwGcBnn9G/IXh/L4yluhqBfcCGuOIfXQ
-         abN5dJV8ulvS0VaZrVLoPpmeXDEd+G9MqYEkL5+H+P41bPSPQxWAm3M/tatZqwIW10Us
-         K5Y+XFp6FwlvcoZiLhJMVan8J8twznDVx+EPa2HVGpK3osfdHYHvOxEtG74QQGo3r7QO
-         0ahbgViv3Z/bMZriJ/Z7K6dR9MDgyxZ/0H7ufSSpXXTXkx5YZKoO/KifF9GjapmT9UH2
-         FnIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWljalEha5wpLjE9W5wtHnj7QkT2VJRKYoWn73WdD+SV9PNTLksZVqMQ8Lmj1OvWjzM8T57Nnl4POVpbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyp6Fek4xkNerj5yunY6wFuwKF3kSA0Rlzu7v6VOuEKKpCb29X1
-	fltcceJT7z0jawwXEuWUxu83EBqaidCdUQ2oypt0lXZ/wXa4l5+LE6e6x7QO43x56aXu35tNhtv
-	muQcWt5UJakBwbaSEw9CmLO3FJUIuYhPmltOnpiUgbg==
-X-Gm-Gg: ASbGnctIDWyJLZymFVzaYUorylQb95OM6XSUAWV4mj6qynpGCUqCObGVUNhiSwp2iw/
-	fkAOitxVHxCqMZGDu1f7umCJ533qUDLn5/9ymeUFoSrX22NvgX7aMFXIRLjNMFOAbMinot+hRFS
-	QSi9ZH1yZV0NA7ChsrOUFL4hNJY8GmuFniLnMfgRxnqiWrASWJOV9m1njUWjloaLBT0Co1/K3L7
-	AbKye6T
-X-Google-Smtp-Source: AGHT+IGfSKuM4c5fjR8Nmf/V6K6MW1d3ILicNhe4YrtpVSYxylfgXPVxzTMrmlTzxu1IKCMOAlIVCi0BHvOdfqFeTg8=
-X-Received: by 2002:a05:6902:400e:b0:e9d:6e8b:da82 with SMTP id
- 3f1490d57ef6-e9f67f9d18dmr12808394276.40.1757601349146; Thu, 11 Sep 2025
- 07:35:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+2VFjXs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C87C4CEEB;
+	Sat, 13 Sep 2025 13:48:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757771288;
+	bh=kAb/6Q3HAUctmHWVedyL+l7FRRMhD0STnVCd1l+573o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=j+2VFjXsDTIF3DKC4SqTxcxbvMJIFJITs9ZvWPmOcZrkY30AFypLg53BaVBso8k/j
+	 QkvN2VEo0UuU0OdszGVr/KNAwQMopvKHshdLhHMMD3mgJrK/qfeAeqsLllOzsC45Gv
+	 IDwHjK4i2EiKonx9qJQT9NWtde41aHl4gMM0eMhqBbyNzxeUfufSJVVBTwhqf1htyJ
+	 9VjhYCfH6/uBm6UiCpNbJFU5fs4tBQ8oQJXGmJanXOOySjps8HxkLPo1wRvhWJnLvg
+	 Yqned5wlFc3WT2gKdyfQsNvyyyt332Lj5K7czTcDEbgdXJ8jrClg98tjWorEyVH6RE
+	 ygLZNFVPs3O7w==
+Date: Sat, 13 Sep 2025 14:47:57 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <dujemihanovic32@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Karel Balej
+ <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, David Wronek <david@mainlining.org>,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Duje =?UTF-8?B?TWloYW5vdmnEhw==?=
+ <duje@dujemihanovic.xyz>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v4 0/3] Marvell 88PM886 PMIC GPADC driver
+Message-ID: <20250913144757.4c8cf0b5@jic23-huawei>
+In-Reply-To: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
+References: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250829-pxa1908-genpd-v3-0-2aacaaaca271@dujemihanovic.xyz> <20250829-pxa1908-genpd-v3-3-2aacaaaca271@dujemihanovic.xyz>
-In-Reply-To: <20250829-pxa1908-genpd-v3-3-2aacaaaca271@dujemihanovic.xyz>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 11 Sep 2025 16:35:13 +0200
-X-Gm-Features: Ac12FXyuZ1jlXdj7-cEMF06sp4rqvDpYW1ns4WDjO-d3d9EX_Txs7Y_tLPOHUVM
-Message-ID: <CAPDyKFpcCCUi4nKNmvvtnXs1OdUz3aHK7G+Jbi9LzLt=o=+QTQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] clk: mmp: pxa1908: Instantiate power driver
- through auxiliary bus
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 29 Aug 2025 at 18:22, Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz> =
-wrote:
->
-> The power domain driver shares the APMU clock controller's registers.
-> Instantiate the power domain driver through the APMU clock driver using
-> the auxiliary bus.
->
-> Also create a separate Kconfig entry for the PXA1908 clock driver to
-> allow (de)selecting the driver at will and selecting
-> CONFIG_AUXILIARY_BUS.
->
+On Thu, 11 Sep 2025 14:43:43 +0200
+Duje Mihanovi=C4=87 <dujemihanovic32@gmail.com> wrote:
+
+> This series adds a driver for the GPADC found on the Marvell 88PM886
+> PMIC. The GPADC monitors various system voltages and is a prerequisite
+> for battery monitoring on boards using the PMIC.
+>=20
 > Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+Applied patches 1 and 2. I'm assuming the mfd cell will
+patch (3) will go through MFD.
+
+Thanks,
+
+Jonathan
+
 > ---
-> v3:
-> - Move driver back to pmdomain subsystem, use auxiliary bus to
->   instantiate the driver
->
-> v2:
-> - Move to clk subsystem, instantiate the driver from the APMU clock
->   driver
-> - Drop clock handling
-> - Squash MAINTAINERS patch
+> Changes in v4:
+> - More refactoring
+> - Update trailers
+> - Rebase on v6.17-rc5
+> - Link to v3: https://lore.kernel.org/r/20250905-88pm886-gpadc-v3-0-4601a=
+d9ccb51@dujemihanovic.xyz
+>=20
+> Changes in v3:
+> - Refactor driver according to comments
+> - Update trailers
+> - Rebase on v6.17-rc4
+> - Link to v2: https://lore.kernel.org/r/20250831-88pm886-gpadc-v2-0-759c1=
+e14d95f@dujemihanovic.xyz
+>=20
+> Changes in v2:
+> - Refactor driver according to comments
+> - Add binding patch
+> - Link to v1: https://lore.kernel.org/r/20250829-88pm886-gpadc-v1-0-f6026=
+2266fea@dujemihanovic.xyz
+>=20
 > ---
->  MAINTAINERS                        |  2 ++
->  drivers/clk/Kconfig                |  1 +
->  drivers/clk/mmp/Kconfig            | 10 ++++++++++
->  drivers/clk/mmp/Makefile           |  5 ++++-
->  drivers/clk/mmp/clk-pxa1908-apmu.c | 20 ++++++++++++++++++++
->  5 files changed, 37 insertions(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 34e5e218e83e0ed9882b111f5251601dd6549d4e..88c0df09d7b354f95864f5a48=
-daea3be14a90dc4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2869,7 +2869,9 @@ ARM/Marvell PXA1908 SOC support
->  M:     Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
->  L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscribe=
-rs)
->  S:     Maintained
-> +F:     Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
->  F:     arch/arm64/boot/dts/marvell/mmp/
-> +F:     drivers/clk/mmp/Kconfig
->  F:     drivers/clk/mmp/clk-pxa1908*.c
->  F:     drivers/pmdomain/marvell/
->  F:     include/dt-bindings/clock/marvell,pxa1908.h
-> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-> index 4d56475f94fc1e28823fe6aee626a96847d4e6d5..68a9641fc649a23013b2d8a9e=
-9f5ecb31d623abb 100644
-> --- a/drivers/clk/Kconfig
-> +++ b/drivers/clk/Kconfig
-> @@ -511,6 +511,7 @@ source "drivers/clk/imx/Kconfig"
->  source "drivers/clk/ingenic/Kconfig"
->  source "drivers/clk/keystone/Kconfig"
->  source "drivers/clk/mediatek/Kconfig"
-> +source "drivers/clk/mmp/Kconfig"
->  source "drivers/clk/meson/Kconfig"
->  source "drivers/clk/mstar/Kconfig"
->  source "drivers/clk/microchip/Kconfig"
-> diff --git a/drivers/clk/mmp/Kconfig b/drivers/clk/mmp/Kconfig
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..b0d2fea3cda5de1284916ab75=
-d3af0412edcf57f
-> --- /dev/null
-> +++ b/drivers/clk/mmp/Kconfig
-> @@ -0,0 +1,10 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +config COMMON_CLK_PXA1908
-> +       bool "Clock driver for Marvell PXA1908"
-> +       depends on ARCH_MMP || COMPILE_TEST
-> +       depends on OF
-> +       default y if ARCH_MMP && ARM64
-> +       select AUXILIARY_BUS
-> +       help
-> +         This driver supports the Marvell PXA1908 SoC clocks.
-> diff --git a/drivers/clk/mmp/Makefile b/drivers/clk/mmp/Makefile
-> index 062cd87fa8ddcc6808b6236f8c4dd524aaf02030..0a94f2f0856389c8e959981cc=
-afbb02140a7733d 100644
-> --- a/drivers/clk/mmp/Makefile
-> +++ b/drivers/clk/mmp/Makefile
-> @@ -11,4 +11,7 @@ obj-$(CONFIG_MACH_MMP_DT) +=3D clk-of-pxa168.o clk-of-p=
-xa910.o
->  obj-$(CONFIG_COMMON_CLK_MMP2) +=3D clk-of-mmp2.o clk-pll.o pwr-island.o
->  obj-$(CONFIG_COMMON_CLK_MMP2_AUDIO) +=3D clk-audio.o
->
-> -obj-$(CONFIG_ARCH_MMP) +=3D clk-of-pxa1928.o clk-pxa1908-apbc.o clk-pxa1=
-908-apbcp.o clk-pxa1908-apmu.o clk-pxa1908-mpmu.o
-> +obj-$(CONFIG_COMMON_CLK_PXA1908) +=3D clk-pxa1908-apbc.o clk-pxa1908-apb=
-cp.o \
-> +       clk-pxa1908-mpmu.o clk-pxa1908-apmu.o
-> +
-> +obj-$(CONFIG_ARCH_MMP) +=3D clk-of-pxa1928.o
-> diff --git a/drivers/clk/mmp/clk-pxa1908-apmu.c b/drivers/clk/mmp/clk-pxa=
-1908-apmu.c
-> index d3a070687fc5b9fb5338f377f82e7664ca0aac29..eab02c89c9153619ac53f7486=
-ed811f2cae12a43 100644
-> --- a/drivers/clk/mmp/clk-pxa1908-apmu.c
-> +++ b/drivers/clk/mmp/clk-pxa1908-apmu.c
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/auxiliary_bus.h>
->  #include <linux/clk-provider.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> @@ -85,6 +86,8 @@ static void pxa1908_axi_periph_clk_init(struct pxa1908_=
-clk_unit *pxa_unit)
->  static int pxa1908_apmu_probe(struct platform_device *pdev)
->  {
->         struct pxa1908_clk_unit *pxa_unit;
-> +       struct auxiliary_device *adev;
-> +       int ret;
->
->         pxa_unit =3D devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERN=
-EL);
->         if (!pxa_unit)
-> @@ -94,6 +97,23 @@ static int pxa1908_apmu_probe(struct platform_device *=
-pdev)
->         if (IS_ERR(pxa_unit->base))
->                 return PTR_ERR(pxa_unit->base);
->
-> +       adev =3D devm_kzalloc(&pdev->dev, sizeof(*adev), GFP_KERNEL);
-> +       if (!adev)
-> +               return -ENOMEM;
-> +
-> +       adev->name =3D "power";
-> +       adev->dev.parent =3D &pdev->dev;
-> +
-> +       ret =3D auxiliary_device_init(adev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret =3D auxiliary_device_add(adev);
-> +       if (ret) {
-> +               auxiliary_device_uninit(adev);
-> +               return ret;
-> +       }
-> +
+> Duje Mihanovi=C4=87 (3):
+>       dt-bindings: mfd: 88pm886: Add #io-channel-cells
+>       iio: adc: Add driver for Marvell 88PM886 PMIC ADC
+>       mfd: 88pm886: Add GPADC cell
+>=20
+>  .../bindings/mfd/marvell,88pm886-a1.yaml           |   4 +
+>  MAINTAINERS                                        |   5 +
+>  drivers/iio/adc/88pm886-gpadc.c                    | 393 +++++++++++++++=
+++++++
+>  drivers/iio/adc/Kconfig                            |  13 +
+>  drivers/iio/adc/Makefile                           |   1 +
+>  drivers/mfd/88pm886.c                              |   1 +
+>  include/linux/mfd/88pm886.h                        |  58 +++
+>  7 files changed, 475 insertions(+)
+> ---
+> base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+> change-id: 20250827-88pm886-gpadc-81e2ca1d52ce
+>=20
+> Best regards,
 
-I think the above can be simplified with devm_auxiliary_device_create().
-
->         mmp_clk_init(pdev->dev.of_node, &pxa_unit->unit, APMU_NR_CLKS);
->
->         pxa1908_axi_periph_clk_init(pxa_unit);
->
-> --
-> 2.51.0
->
-
-Kind regards
-Uffe
