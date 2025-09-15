@@ -1,150 +1,183 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC9F2D0C98
-	for <phone-devel@vger.kernel.org>; Mon, 15 Sep 2025 11:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019D29D27A;
+	Mon, 15 Sep 2025 21:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757934940; cv=none; b=FUpJYFp45JMpI9k5hnTg9w5jxsDGvG0T2s23w3Brly3fOU9vAqznQjitAQ/yvY1DHnQrFeUPGvgYdAq2YqVvjuVMNXYePmiy0C0Qh8ry172JoUrFBAv67vuT6v9Yud8+QaaqhsAHqTUEbXDX6PqQzes6b2DpBLZbzBeP8KCw87A=
+	t=1757970550; cv=none; b=VLw1L8jfynmq5wXFF/vqO2xvjP18qWRWeC0FyvVY6jU9HvfKOa7nreEquFzvPftxQghn2JUdhchSNiA81KOyI/7mUuzBYb+LETGrZtalhLGdNaj2/er+3hn++QdEmQnNV83PQD/xm4NlmnGZ51fK375KDqp/R91vywKw5JTKSzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757934940; c=relaxed/simple;
-	bh=+N860jjILz9WjHBmzobR6cwMMc5hddgDbocup4wZWZU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tqhM3ZTWQUlRotBWaw0iOetDSJxNOB6Gl87IOuy5AdqL15yUoQ6tWtP1IkoOTTPINdnUT5RP1jTlcSkeSxYsHpd97qU3mrBywof0EuZM72VH36llP1LByiqpHSeFICP8yGQx1TfcJfg0Fem0TLriVVrAGJao22Z/g0Zq8wUxuA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=MWK5OpOa; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1757970550; c=relaxed/simple;
+	bh=ShGiyXLyx3jm+KuG+IC5eD9uMmaQRpPiVQwMFDqxLr4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Kv3KOayrwUB+fV8rK9YPl/YNEiqW8B9iuc2O5YcQKMvVeaM+AZn/Mgt61nv+uOuueMgQskYPIDro4ZV4uRvlUFVoMNdATM8MP0etgjv2fMsLyDY7sLr9VkRepHuDKB+eDPd0YglsKqgDhph70ZFKDR5NxTDHnvMcEVT1NwKOnUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=uHubSila; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="MWK5OpOa"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b07c28f390eso520011866b.2
-        for <phone-devel@vger.kernel.org>; Mon, 15 Sep 2025 04:15:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1757934936; x=1758539736; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0bwrK+W/kVJgy2ql0Fi6gGVV6KZbMNKdsTPaoo3b7DQ=;
-        b=MWK5OpOaIlc1OEADg7O9mJxX2UG99rpTo5ip+3avrMeahnidtn6WmAdYPmNRQRSwqq
-         zlwBwS5Yz38B6ragbRRG33mNEAXvOg6C+lmpeoK4qhscaqzezgITxvZ4uRe+zbUBfmPi
-         9HJR1o4FOuFEoRMVM1CB0qmbUBc7ZjWa7DuBcX+M1ClRYQEP0r5d7CIEB5lyel+NFtA/
-         4n5uGaAPSN73J8zR8uQp0vsiwKfQA++wcsa0LvohFmOuNiTd47Qoo5NCEnZ7+OpUwd2M
-         MM1nJ+LNljPBlyaoR/j8MwGf4wZT1xnHnrwlskI5idfdGELMoAlmbeQr8AIjS4drUx6H
-         q2xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757934936; x=1758539736;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0bwrK+W/kVJgy2ql0Fi6gGVV6KZbMNKdsTPaoo3b7DQ=;
-        b=dIMYnRY42D0TDKa2aHf9ja3tac0HAWPmlqQHtC7fQSD4CyfgW90WPPzFwjmGFjyp80
-         5LNyt2q/t45WRLQ5AKWqqCyFBirlM4S1ORsweVFl/I5FMCLyjIhfUQ9xQ8LgifxaEPk6
-         UAnuVg3C9eZgMtZdNqiW6dooiyZ5IVt2mrpwr3RuSd/4XdISItE+Vgd1P6qX1CM33jDe
-         vl3ARDsivYdbIlSrCusDvOUZ8DU7k8lo+y07CONde94xshms5Cnv/SasvU2UpfBSTCqk
-         d0blfKZjo3JL51/NcnzZVjKmGkQV2Hcg9M2LWRBaALf3V1m//9//ycw4JnZE1lcsgCGy
-         Cx7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWt7NydNsmE60jAcONBhwVOxdohFEHavo+TePfb5gsTzmCNsyvAEoQNW0MaSJ11j0509/7tPIUjR2a+Mg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7OLCAnk/inszWhPE6Z0iQcET55BJBjvXubWervYEn3BOFTmfm
-	goLGrZvTdiDAA+jlhyrP+csTgUMlWseb0181ygWXjEXV589PYQrQ0PURpehWK+sCeZY=
-X-Gm-Gg: ASbGncsUqITC5B96s7IDbneiIN8COKKLqu8TS1r6KS1gf6YaXmxFJcP3h/8PdgY1YVG
-	CDkcw0eLTmDiAMlvI47DqHQ3T8gY6GfIzyb8o602scEIRUqD0GlnYglkvUp/P3X9uhpYviQPJQE
-	ujJfWHgcr6/OZmCXo0pcuS2ezQAB9CAFrgySc477ydlZj/rfSCwbf9o78uDzrZ0L/lA/hQf3gtE
-	dCM4rpkucH04znRw9Y+9Vt12mJexjY8s6HfyjlJgQ5G2CjYZX0/CtRi7RWJ1z5VUdy4cJyJKtaC
-	/a85qa8hi032EMdaQo81cYHUm8u5u/hE/AOkarcHi1ofNEfR5J8OFuAsCJrEuvRjTosQKdJioAz
-	g1wzZQPzieSYzohPd6yH7MjtyV3Nk9Sq6pHUV9ZUFgDYTdlJOMRV75J5gbHJngFkUyKSbhDGx9p
-	EgsMas
-X-Google-Smtp-Source: AGHT+IEmXxvaJJ9Thsbd/yEZn6zSBCmcT2cqQGQCUUMD42XZdQIGQ90LE23Fm93l8b7j1T6PqUPG3g==
-X-Received: by 2002:a17:907:983:b0:b0c:a265:c02c with SMTP id a640c23a62f3a-b0ca265c314mr699765966b.12.1757934936083;
-        Mon, 15 Sep 2025 04:15:36 -0700 (PDT)
-Received: from otso.local (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07d9e18c24sm561851366b.61.2025.09.15.04.15.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 04:15:35 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 15 Sep 2025 13:15:19 +0200
-Subject: [PATCH v5 2/2] remoteproc: qcom: pas: Add Milos remoteproc support
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="uHubSila"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zhS7w4nBBZscnyjH8JgikhDYqJC/dkSKTQJL0yNFz8Y=; b=uHubSilac/r1athKzfXc25awmt
+	GD5yPjnn86yZU69V8cKLg/Si95RZMDQXVIz3knKr4bKrwWoQKLjC7BMUT1uoYSNqC54/7v33zi86V
+	icRGP1eNRdOPI2qZHXar09/vB79fMpFh67rPSuuWVpQprvDJGe5III4Hpi5ASzmPBLcxmn+033cqP
+	YotWB2ZbH6dANoJbXZ7pU7Fnd06yJz5Rg0EG+EKqbmX5Fg3FbFoB3aglO1/qTbDGf/B2zqLTFdvwH
+	wiv6s7CUsvvfqwkxD3QEIZs4jmmZGrOTWAZbZ/rE7Psw8+KdOzQ7+/1HQ7qh29muVGOyHKqgm4TPo
+	1kg230qA==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uyG7d-000OQt-2o;
+	Mon, 15 Sep 2025 22:48:25 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1uyG7e-000FkJ-03;
+	Mon, 15 Sep 2025 22:48:25 +0200
+Message-ID: <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
+Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, Val Packett
+ <val@packett.cool>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, 	devicetree@vger.kernel.org, Daniel Scally
+ <djrscally@gmail.com>, 	~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, 	linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 15 Sep 2025 22:48:23 +0200
+In-Reply-To: <aKLZ39IzI_azrDIu@kekkonen.localdomain>
+References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
+	 <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
+	 <aKLZ39IzI_azrDIu@kekkonen.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-sm7635-remoteprocs-v5-2-96526cac59c6@fairphone.com>
-References: <20250915-sm7635-remoteprocs-v5-0-96526cac59c6@fairphone.com>
-In-Reply-To: <20250915-sm7635-remoteprocs-v5-0-96526cac59c6@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757934933; l=2001;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=+N860jjILz9WjHBmzobR6cwMMc5hddgDbocup4wZWZU=;
- b=wAZfi6x3+OqVADm1Ao+uS/Jrnveeo2PlNBkQppNDqF9qOMZo9JF1bMv9l3fr+CP7PWOz1RDX1
- PXsvGtR/STLDD+3hxmpvTuZpyv1TDlU4uNIyCwOSNjyvtA+yloZOjtS
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+X-Virus-Scanned: Clear (ClamAV 1.0.9/27764/Mon Sep 15 10:26:33 2025)
 
-Add the different remoteprocs found on the Milos SoC: ADSP, CDSP, MPSS
-and WPSS.
+Hi Sakari,
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/remoteproc/qcom_q6v5_pas.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+@Val, please see below.
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 55a7da801183d54569452dbb48041fdc52bf9234..be4edd0c3eeefb80d3b25a48f6dfe0b7590bc624 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -1255,6 +1255,26 @@ static const struct qcom_pas_data sdx55_mpss_resource = {
- 	.ssctl_id = 0x22,
- };
- 
-+static const struct qcom_pas_data milos_cdsp_resource = {
-+	.crash_reason_smem = 601,
-+	.firmware_name = "cdsp.mbn",
-+	.dtb_firmware_name = "cdsp_dtb.mbn",
-+	.pas_id = 18,
-+	.dtb_pas_id = 0x25,
-+	.minidump_id = 7,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"cx",
-+		"mx",
-+		NULL
-+	},
-+	.load_state = "cdsp",
-+	.ssr_name = "cdsp",
-+	.sysmon_name = "cdsp",
-+	.ssctl_id = 0x17,
-+	.smem_host_id = 5,
-+};
-+
- static const struct qcom_pas_data sm8450_mpss_resource = {
- 	.crash_reason_smem = 421,
- 	.firmware_name = "modem.mdt",
-@@ -1429,6 +1449,10 @@ static const struct qcom_pas_data sm8750_mpss_resource = {
- };
- 
- static const struct of_device_id qcom_pas_of_match[] = {
-+	{ .compatible = "qcom,milos-adsp-pas", .data = &sm8550_adsp_resource},
-+	{ .compatible = "qcom,milos-cdsp-pas", .data = &milos_cdsp_resource},
-+	{ .compatible = "qcom,milos-mpss-pas", .data = &sm8450_mpss_resource},
-+	{ .compatible = "qcom,milos-wpss-pas", .data = &sc7280_wpss_resource},
- 	{ .compatible = "qcom,msm8226-adsp-pil", .data = &msm8996_adsp_resource},
- 	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8996_adsp_resource},
- 	{ .compatible = "qcom,msm8974-adsp-pil", .data = &adsp_resource_init},
+Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
+> Hi Andr=C3=A9,
+>=20
+> On Sun, Aug 17, 2025 at 07:09:26PM +0200, Andr=C3=A9 Apitzsch via B4 Rela=
+y
+> wrote:
+> > From: Val Packett <val@packett.cool>
+> >=20
+> > The "jiggle" code was not actually expecting failure, which it
+> > should because that's what actually happens when the device wasn't
+> > already woken up by the regulator power-on (i.e. in the case of a
+> > shared regulator).
+> >=20
+> > Also, do actually enter the internal suspend mode on shutdown, to
+> > save power in the case of a shared regulator.
+> >=20
+> > Also, wait a bit longer (2x tOPR) on waking up, 1x is not enough at
+> > least on the DW9718S as found on the motorola-nora smartphone.
+> >=20
+> > Signed-off-by: Val Packett <val@packett.cool>
+> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > ---
+> > =C2=A0drivers/media/i2c/dw9719.c | 23 ++++++++++++++++-------
+> > =C2=A01 file changed, 16 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/drivers/media/i2c/dw9719.c
+> > b/drivers/media/i2c/dw9719.c
+> > index
+> > 63c7fd4ab70a0e02518252b23b89c45df4ba273d..dd28a0223d6ac980084b1f661
+> > bd029ea6b0be503 100644
+> > --- a/drivers/media/i2c/dw9719.c
+> > +++ b/drivers/media/i2c/dw9719.c
+> > @@ -95,12 +95,19 @@ struct dw9719_device {
+> > =C2=A0
+> > =C2=A0static int dw9719_power_down(struct dw9719_device *dw9719)
+> > =C2=A0{
+> > +	u32 reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
+> > DW9719_CONTROL;
+>=20
+> Extra parentheses.
+>=20
+> > +
+> > +	/*
+> > +	 * Worth engaging the internal SHUTDOWN mode especially
+> > due to the
+> > +	 * regulator being potentially shared with other devices.
+> > +	 */
+> > +	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, NULL);
+>=20
+> I'd still complain if this fails as we don't return the error.
+>=20
+> > =C2=A0	return regulator_disable(dw9719->regulator);
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static int dw9719_power_up(struct dw9719_device *dw9719, bool
+> > detect)
+> > =C2=A0{
+> > -	u32 reg_pwr;
+> > +	u32 reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
+> > DW9719_CONTROL;
+>=20
+> Extra parentheses.
+>=20
+> > =C2=A0	u64 val;
+> > =C2=A0	int ret;
+> > =C2=A0	int err;
+> > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
+> > dw9719_device *dw9719, bool detect)
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
+> > =C2=A0
+> > -	/* Jiggle SCL pin to wake up device */
+> > -	reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
+> > DW9719_CONTROL;
+> > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
+> > -	fsleep(100);
+> > +	/*
+> > +	 * Need 100us to transition from SHUTDOWN to STANDBY.
+> > +	 * Jiggle the SCL pin to wake up the device (even when the
+> > regulator
+> > +	 * is shared) and wait double the time to be sure, then
+> > retry the write.
+>=20
+> Why double? Isn't the datasheet correct when it comes to the power-on
+> sequence?
+>=20
+I haven't noticed any problems during power-up of DW9761. However,
+according to the commit message, there seems be an issue with DW9718S.
+But I don't own the device and cannot test it.
 
--- 
-2.51.0
+Maybe Val can provided some additional information.
 
+Best regards,
+Andr=C3=A9
+
+> > +	 */
+> > +	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
+> > +	ret =3D 0; /* the jiggle is expected to fail, don't even log
+> > that as error */
+> > +	fsleep(200);
+> > =C2=A0	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
+>=20
+> Just pass NULL instead of ret as we don't check the value and the ret
+> assignment above becomes redundant. Please spare the comment though.
+>=20
+> > -	/* Need 100us to transit from SHUTDOWN to STANDBY */
+> > -	fsleep(100);
+> > =C2=A0
+> > =C2=A0	if (detect) {
+> > =C2=A0		/* This model does not have an INFO register */
+> >=20
