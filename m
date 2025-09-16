@@ -1,183 +1,117 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019D29D27A;
-	Mon, 15 Sep 2025 21:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B14C81
+	for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 02:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757970550; cv=none; b=VLw1L8jfynmq5wXFF/vqO2xvjP18qWRWeC0FyvVY6jU9HvfKOa7nreEquFzvPftxQghn2JUdhchSNiA81KOyI/7mUuzBYb+LETGrZtalhLGdNaj2/er+3hn++QdEmQnNV83PQD/xm4NlmnGZ51fK375KDqp/R91vywKw5JTKSzw=
+	t=1757989961; cv=none; b=hcctehMpPcUUqKLhLcLPt+g+pEgMeNSKyZQrOuEW1O20hQ4yATM/I8PAjZjffen7CjSWMopzE387ccTK7HMwe8jPDZE+89NpU9P/MgvpMtGSycfLkawrQjZgZKau37aTArtUG3qJCJdiRe72mS3affRtqau14TCnH7VzYOw1l+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757970550; c=relaxed/simple;
-	bh=ShGiyXLyx3jm+KuG+IC5eD9uMmaQRpPiVQwMFDqxLr4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kv3KOayrwUB+fV8rK9YPl/YNEiqW8B9iuc2O5YcQKMvVeaM+AZn/Mgt61nv+uOuueMgQskYPIDro4ZV4uRvlUFVoMNdATM8MP0etgjv2fMsLyDY7sLr9VkRepHuDKB+eDPd0YglsKqgDhph70ZFKDR5NxTDHnvMcEVT1NwKOnUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=uHubSila; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1757989961; c=relaxed/simple;
+	bh=xtXOrVDKWq9hItYsvRgoikFPE/gt5zgc/6CnhlgNlqI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ICvTecHIJwu+J0RrZRjUC+zBgTBOofrqluecKbPL+T6O1XW/Kr4h3p8jcj4hJmWULa9Ju1K0QGhz9Y0M/7XrUaA2Jb8HUkb98/X/A7XHcgCBu6Ffsr2aUVYh/fFACmMXaudOuarp1miPvSKi3hSJbh/wv21PflVw/uC3OVjrMVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=BUzvrCc9; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="uHubSila"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=zhS7w4nBBZscnyjH8JgikhDYqJC/dkSKTQJL0yNFz8Y=; b=uHubSilac/r1athKzfXc25awmt
-	GD5yPjnn86yZU69V8cKLg/Si95RZMDQXVIz3knKr4bKrwWoQKLjC7BMUT1uoYSNqC54/7v33zi86V
-	icRGP1eNRdOPI2qZHXar09/vB79fMpFh67rPSuuWVpQprvDJGe5III4Hpi5ASzmPBLcxmn+033cqP
-	YotWB2ZbH6dANoJbXZ7pU7Fnd06yJz5Rg0EG+EKqbmX5Fg3FbFoB3aglO1/qTbDGf/B2zqLTFdvwH
-	wiv6s7CUsvvfqwkxD3QEIZs4jmmZGrOTWAZbZ/rE7Psw8+KdOzQ7+/1HQ7qh29muVGOyHKqgm4TPo
-	1kg230qA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uyG7d-000OQt-2o;
-	Mon, 15 Sep 2025 22:48:25 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uyG7e-000FkJ-03;
-	Mon, 15 Sep 2025 22:48:25 +0200
-Message-ID: <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
-Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, Val Packett
- <val@packett.cool>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, 	devicetree@vger.kernel.org, Daniel Scally
- <djrscally@gmail.com>, 	~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, 	linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 15 Sep 2025 22:48:23 +0200
-In-Reply-To: <aKLZ39IzI_azrDIu@kekkonen.localdomain>
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
-	 <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
-	 <aKLZ39IzI_azrDIu@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.0 
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="BUzvrCc9"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1757989957;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4icW8A4a35n6WvR9rcmkx2CYARUOFbnRrSBlDazcjz8=;
+	b=BUzvrCc9XmxkNzPz77iaEPBr/iMAZjMf1QlFs/jRpEg12PHPbKKbDPxm45EjieO5Z/G4MX
+	OxmF+0rigSpIeVWoff06a+RPqorVk6X/BCDWR9WLDkei30iYnxLc6h2ekCGOV+rxMbd876
+	H0OdNHVKl4gNWwliwtlByPTQJSdA1UxVUKGGilIiQ51jcx4lueKEePZEW66TXtZvtfd1pR
+	mDWDxOpDMaJY1e/IhZ1WQvuw/Dk9OG77GEreBOyMsv5ea9XaAxROklgfks5GSfMzSrVqzg
+	HXHC2UjGq4axgNKXc1Wo/o1fHtpkZEvJ4xmTwtb1qmjL6/Za/bY6M/ap1LeRDQ==
+From: Paul Sajna <sajattack@postmarketos.org>
+Subject: [PATCH v2 0/3] Add LG SW49410 Panel Driver
+Date: Mon, 15 Sep 2025 19:32:11 -0700
+Message-Id: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27764/Mon Sep 15 10:26:33 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACvMyGgC/3WMQQ6DIBQFr2L+ujRANWpXvUfjAvCrtBYIUFJju
+ Hup++at5iUzOwT0GgNcqx08Jh20NQX4qQK1CDMj0WNh4JQ3tGeUPN7jthrihMGV9HU3sbZVTRk
+ UxXmc9OfI3YfCiw7R+u2oJ/Z7/4QSI5R0vFFtXdOLlPLmbIgv4Z8YbThbP8OQc/4Cd4REWK8AA
+ AA=
+X-Change-ID: 20250910-judyln-panel-948f177c5c5c
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ phone-devel@vger.kernel.org, Amir Dahan <system64fumo@protonmail.com>, 
+ Paul Sajna <sajattack@postmarketos.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757989951; l=1894;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=xtXOrVDKWq9hItYsvRgoikFPE/gt5zgc/6CnhlgNlqI=;
+ b=Zpqt7mmrtm6w48ZT7caipO8SieSLsxOXVq91KU7AxSl5YiS9Zu/lxFz7NzpZg82s20/7mDYBz
+ JMhR7ssVOpJC44T4oUUGnKXmtqKneCC+njGNHAr5WxT9181EAj1MTcu
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
+X-Migadu-Flow: FLOW_OUT
 
-Hi Sakari,
+This patch series adds a drm panel driver for the LG SW49410 panel found
+in the LG G7 ThinQ (codename judyln).
 
-@Val, please see below.
+The basic driver skeleton was generated by https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+from the vendor device-tree.
 
-Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
-> Hi Andr=C3=A9,
->=20
-> On Sun, Aug 17, 2025 at 07:09:26PM +0200, Andr=C3=A9 Apitzsch via B4 Rela=
-y
-> wrote:
-> > From: Val Packett <val@packett.cool>
-> >=20
-> > The "jiggle" code was not actually expecting failure, which it
-> > should because that's what actually happens when the device wasn't
-> > already woken up by the regulator power-on (i.e. in the case of a
-> > shared regulator).
-> >=20
-> > Also, do actually enter the internal suspend mode on shutdown, to
-> > save power in the case of a shared regulator.
-> >=20
-> > Also, wait a bit longer (2x tOPR) on waking up, 1x is not enough at
-> > least on the DW9718S as found on the motorola-nora smartphone.
-> >=20
-> > Signed-off-by: Val Packett <val@packett.cool>
-> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > ---
-> > =C2=A0drivers/media/i2c/dw9719.c | 23 ++++++++++++++++-------
-> > =C2=A01 file changed, 16 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/drivers/media/i2c/dw9719.c
-> > b/drivers/media/i2c/dw9719.c
-> > index
-> > 63c7fd4ab70a0e02518252b23b89c45df4ba273d..dd28a0223d6ac980084b1f661
-> > bd029ea6b0be503 100644
-> > --- a/drivers/media/i2c/dw9719.c
-> > +++ b/drivers/media/i2c/dw9719.c
-> > @@ -95,12 +95,19 @@ struct dw9719_device {
-> > =C2=A0
-> > =C2=A0static int dw9719_power_down(struct dw9719_device *dw9719)
-> > =C2=A0{
-> > +	u32 reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
-> > DW9719_CONTROL;
->=20
-> Extra parentheses.
->=20
-> > +
-> > +	/*
-> > +	 * Worth engaging the internal SHUTDOWN mode especially
-> > due to the
-> > +	 * regulator being potentially shared with other devices.
-> > +	 */
-> > +	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, NULL);
->=20
-> I'd still complain if this fails as we don't return the error.
->=20
-> > =C2=A0	return regulator_disable(dw9719->regulator);
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static int dw9719_power_up(struct dw9719_device *dw9719, bool
-> > detect)
-> > =C2=A0{
-> > -	u32 reg_pwr;
-> > +	u32 reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
-> > DW9719_CONTROL;
->=20
-> Extra parentheses.
->=20
-> > =C2=A0	u64 val;
-> > =C2=A0	int ret;
-> > =C2=A0	int err;
-> > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
-> > dw9719_device *dw9719, bool detect)
-> > =C2=A0	if (ret)
-> > =C2=A0		return ret;
-> > =C2=A0
-> > -	/* Jiggle SCL pin to wake up device */
-> > -	reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
-> > DW9719_CONTROL;
-> > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
-> > -	fsleep(100);
-> > +	/*
-> > +	 * Need 100us to transition from SHUTDOWN to STANDBY.
-> > +	 * Jiggle the SCL pin to wake up the device (even when the
-> > regulator
-> > +	 * is shared) and wait double the time to be sure, then
-> > retry the write.
->=20
-> Why double? Isn't the datasheet correct when it comes to the power-on
-> sequence?
->=20
-I haven't noticed any problems during power-up of DW9761. However,
-according to the commit message, there seems be an issue with DW9718S.
-But I don't own the device and cannot test it.
+The panel driver works but during testing we noticed sometimes the
+display goes blank. Source of this problem is unknown but seems to be external.
+i.e. It could be a conflict with another driver or an issue with
+aftermarket panels.
 
-Maybe Val can provided some additional information.
+Comments were added explaining magic numbers, and devicetree
+documentation was also added
+
+Once this patch has been accepted, I'll follow up with
+a devicetree update for sdm845-lg-judyln
+that includes this driver, along with several other improvements
+
+Co-authored-by: Amir Dahan <system64fumo@protonmail.com>
+Signed-off-by: Amir Dahan <system64fumo@protonmail.com>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+Changes in v2:
+- use "multi" versions of functions
+- remove DRM_DISPLAY_DP_HELPER
+- change dt-bindings to panel-simple
+- Link to v1: https://lore.kernel.org/r/20250910-judyln-panel-v1-0-825c74403bbb@postmarketos.org
+
+---
+Amir Dahan (1):
+      drm: panel: Add LG SW49410 Panel
+
+Paul Sajna (2):
+      Update MAINTAINERS for lg,sw49410
+      dt-bindings: display: panel: panel-simple: Add lg,sw49410 compatible
+
+ .../bindings/display/panel/panel-simple.yaml       |   2 +
+ MAINTAINERS                                        |   5 +
+ drivers/gpu/drm/panel/Kconfig                      |  13 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-lg-sw49410.c           | 502 +++++++++++++++++++++
+ 5 files changed, 523 insertions(+)
+---
+base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
+change-id: 20250910-judyln-panel-948f177c5c5c
 
 Best regards,
-Andr=C3=A9
+-- 
+Paul Sajna <sajattack@postmarketos.org>
 
-> > +	 */
-> > +	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
-> > +	ret =3D 0; /* the jiggle is expected to fail, don't even log
-> > that as error */
-> > +	fsleep(200);
-> > =C2=A0	cci_write(dw9719->regmap, reg_pwr, DW9719_STANDBY, &ret);
->=20
-> Just pass NULL instead of ret as we don't check the value and the ret
-> assignment above becomes redundant. Please spare the comment though.
->=20
-> > -	/* Need 100us to transit from SHUTDOWN to STANDBY */
-> > -	fsleep(100);
-> > =C2=A0
-> > =C2=A0	if (detect) {
-> > =C2=A0		/* This model does not have an INFO register */
-> >=20
