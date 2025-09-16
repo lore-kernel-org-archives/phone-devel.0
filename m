@@ -1,124 +1,155 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07315287271
-	for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 09:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFEB28467B;
+	Tue, 16 Sep 2025 09:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758013678; cv=none; b=DaKbyp/Hy2tSM/AxihYfZpbCrrWXCKQzRHAK+WvwmAolzE0OLpumopO8OMx3NX3feCdAnnrWZ5rnhV1rIhUrwwpYvGjvlGUCNvkR0z/wbBdhSsQzxriG9s36tAUNqrS/eGHlYoe9UaNn4rMPQTgBQlX8/+wiM1kZfsDSGLO/Bgs=
+	t=1758014992; cv=none; b=KBoHvTqkvq7Yg6Y8sc+m53Fbh+Mu4pCkbrAoP+ugqHfHlfPJXGFY+BJv3Kc598poCfvqT3AFyJUI6teMYeMI0pDww8nNbX2C2xPmEwz0R+jmKkpXCUfrq6CaR1zubgYrbv9+vDFhMcJiZI1Ft/4Fir1XI78bdYIOLTpbQG7QxBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758013678; c=relaxed/simple;
-	bh=fM1QW+UFz5zHOwXNyLvYeTnh6QmXecM50gjhKcitTM4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WngR7bkk+Vi1cSYBeordDeI9s4sr7t7WdZbIy8w6tjTbKe2DeiSkJGofw+mIpMBQx3UhbpxSFnzcGff15PKEjpXabDeJSoRJ9riyDAUUDxakXK5nDDglABur+bCCD2M4rDQZCZ7yGS7eRSP/eSGbOUl/youkOSJ9eWqS/neDa3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=FT/W+ex6; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1758014992; c=relaxed/simple;
+	bh=pN3BP6YuPc8dinCC142EZnQ6btd+OPo8nyHYWbARw3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fbZ8bNVB/+KDdytKvB4XKXbvBssvyA0DrfMlMHVlKLitSSua7Pj9RvcocKy2ikAKSHCARruMInilbisC7EI7813rt1qig6OKGCjU8clQpEkAo2pP0RQBW7h4VznPp7UTSWlXG/SbtdVWbpKC1B2eh/XdEjhCePiJxdncQ7aGcao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=GzKxFp5r; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="FT/W+ex6"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7a16441so778415166b.2
-        for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 02:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1758013673; x=1758618473; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wGPJfwEdnpfBh17k0uP4IdtgceOjAvM9dH/m5dD76YA=;
-        b=FT/W+ex663OkQapBdsdZfiqLbYPbkbzVnog3Xs3mpz4Xgconp9x/dpGRHaPDtPNLW9
-         ixh2cYtm4JWK60nHEFL7C90FMizD4O9NDpm0XgjKKbAKa6MQGVYIZKXtIyVNXEvXdPll
-         xO78MacI3EikAFs5oCbgOJss/QVWcWRQP37/48n+Z1+GtSUaCGDnsrnrlVrWG8si7O1r
-         94TOul6Ohbll7vJbAvAdeUmX/1lwebJ6Um7OcSVt28412nyHT+Czd6S3q0zXW3S+rlON
-         zm0+nbxhnU6V+vNzOee64mcGan0mFlRda++wgZ4vaBj70pcHlZQrlVQPf/U9b0edpf2T
-         khMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758013673; x=1758618473;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wGPJfwEdnpfBh17k0uP4IdtgceOjAvM9dH/m5dD76YA=;
-        b=pv8iELxI59QlvMyq4Ra3lpe1dliN2tVM2pPZzbPGD7uVIBc9CvmaNQcOu8cqX3An7E
-         NHWv22w9pun8HzehvP1N/n+DSXBW7LiN2m/0Rwd87DI440JQu5cgg/kYyrmo7Jpw9GjX
-         RguD/vqreSLS2sEQpOu/zxofPoG1sIOew3U3+mKmNwlcsDSDeltiOgDrRIuZf3B/A9yR
-         qGTDJfbhL4EaD37GcFJy96ehJX9wQ0aOHLdaCdIKnmcqYQfYJkdHU6jvDKr/UbnSWIKg
-         m3+ps+HridItzqVVdKYL6bByaKK3IDeOs6m4NRpqBkfgnETPGFDfwti/NbBn1MsDLs56
-         D6Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnKR7NMjN5qNTgXWk3XEta8eAwhoE4YynEefK24Ut7Wgcltk0hQQ72LMyq9f2bKDw8w2xkQzxazlqwxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsK7mi8Ta+DvJZst+STav0iJgSE2XJvoNtbZAyeNe67PgXWR2y
-	C3hiNstpNJHiVSzqQgHHnj3S1uP9OFAG+/PfFDQKbIJOMKiqkXNkOO3c+Cjo5UlM3bY=
-X-Gm-Gg: ASbGnctfFBMBEoUxZ0SCe56kcpAxCCss6T48PUjZe69Q1vaosiGL8g+4RaDLy7IwVCW
-	R2CkQdVAIRcwQ5ug1SgGCwE+muuUlniIwWO+LvRxJCjMBROqYm/qLvR34/E6vPXILQcHCd+mEOZ
-	GcjVqSCZEgKVZuvQ116rGuIBFSbkvMnzhwxzwl5bXfRnXf8ATR3Fp1lFEUqO68dbC0EoG9YgokE
-	RGowucJkabrc05y2jwabCvHgMZIS64NOf7yjb0lgfMCb30uCUULeducFRQYpm/iQb8XU8Z+PLog
-	FL9vETfmG4afRoaUP6ONYwiO/SiabH3dVjspf84uXqrU5HhqsT9WcdqmDehVaNFZ6qFTUnvAr9R
-	C0qxhS15LXXyfeTgZ4cfuz++tzMLLiRW2xkDQWoegGOO9zn5AUYzH5899myzinAXhk1jA
-X-Google-Smtp-Source: AGHT+IEnV71DLjZiRWk5j6jXx0pnqls19vN1Qen2T1tQxSI6t57/t1s9FzfJ1We13UaEvDdr4m6msw==
-X-Received: by 2002:a17:906:6d13:b0:b09:c230:12dc with SMTP id a640c23a62f3a-b09c23013dbmr778396666b.8.1758013673277;
-        Tue, 16 Sep 2025 02:07:53 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07c7159e6csm899506666b.33.2025.09.16.02.07.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Sep 2025 02:07:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="GzKxFp5r"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id D5E15534076E;
+	Tue, 16 Sep 2025 11:29:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1758014985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nImdRmsvWqLFfWBLK4h18lVd6Gvsyn5jqNa6GLW2IIM=;
+	b=GzKxFp5rNVxZL6RFWLGzNiRy4EFM9lxYUOd4J2Z54J4m0bvmNcn2sPHXBi7MI/L6E/j6lC
+	Xvzaxr1XXlwj7W5GjzzTqeb2MU3lGSwol3sre/DbAI32ElGSgeu4qXTMfASvuqFaLT5tgW
+	ADpw/ohIh4dU5BL5beMY3CZv4BWzbRg=
+Message-ID: <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
+Date: Tue, 16 Sep 2025 11:29:45 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Sep 2025 11:07:52 +0200
-Message-Id: <DCU3U3SF3ZRT.ATK17JG93309@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH 0/3] Fixes/improvements for SM6350 UFS
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
- <DBDAMGN9UQA0.J6KJJ48PLJ2L@fairphone.com>
-In-Reply-To: <DBDAMGN9UQA0.J6KJJ48PLJ2L@fairphone.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v5 0/7] Input: synaptics-rmi4 - add quirks for
+ third party touchscreen controllers
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vincent Huang <vincent.huang@tw.synaptics.com>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+ <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Bjorn,
-
-On Wed Jul 16, 2025 at 9:15 AM CEST, Luca Weiss wrote:
-> Hi Bjorn,
->
-> On Fri Mar 14, 2025 at 10:17 AM CET, Luca Weiss wrote:
->> Fix the order of the freq-table-hz property, then convert to OPP tables
->> and add interconnect support for UFS for the SM6350 SoC.
+On 07/08/2025 06:29, Dmitry Torokhov wrote:
+> Hi David,
+> 
+> On Thu, Jul 31, 2025 at 11:06:50PM +0200, David Heidelberg via B4 Relay wrote:
+>> With the growing popularity of running upstream Linux on mobile devices,
+>> we're beginning to run into more and more edgecases. The OnePlus 6 is a
+>> fairly well supported 2018 era smartphone, selling over a million units
+>> in it's first 22 days. With this level of popularity, it's almost
+>> inevitable that we get third party replacement displays, and as a
+>> result, replacement touchscreen controllers.
 >>
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->> Luca Weiss (3):
->>       arm64: dts: qcom: sm6350: Fix wrong order of freq-table-hz for UFS
->>       arm64: dts: qcom: sm6350: Add OPP table support to UFSHC
->>       arm64: dts: qcom: sm6350: Add interconnect support to UFS
->
-> Could you please pick up this series? Konrad already gave his R-b a
-> while ago.
-
-Another ping on this series, haven't heard anything in the last 2 months
-on this.
-
-Regards
-Luca
-
->
-> Regards
-> Luca
->
+>> The OnePlus 6 shipped with an extremely usecase specific touchscreen
+>> driver, it implemented only the bare minimum parts of the highly generic
+>> rmi4 protocol, instead hardcoding most of the register addresses.
 >>
->>  arch/arm64/boot/dts/qcom/sm6350.dtsi | 49 ++++++++++++++++++++++++++++-=
--------
->>  1 file changed, 39 insertions(+), 10 deletions(-)
->> ---
->> base-commit: eea255893718268e1ab852fb52f70c613d109b99
->> change-id: 20250314-sm6350-ufs-things-53c5de9fec5e
+>> As a result, the third party touchscreen controllers that are often
+>> found in replacement screens, implement only the registers that the
+>> downstream driver reads from. They additionally have other restrictions
+>> such as heavy penalties on unaligned reads.
 >>
->> Best regards,
+>> This series attempts to implement the necessary workaround to support
+>> some of these chips with the rmi4 driver. Although it's worth noting
+>> that at the time of writing there are other unofficial controllers in
+>> the wild that don't work even with these patches.
+>>
+>> We have been shipping these patches in postmarketOS for the last several
+>> years, and they are known to not cause any regressions on the OnePlus
+>> 6/6T (with the official Synaptics controller), however I don't own any
+>> other rmi4 hardware to further validate this.
+> 
+> Sorry for not handling the patches in the last few submissions. I am
+> planning on addressing them once merge window opens.
+
+Hello Dmitry, kind reminder about the patch series as the window is open.
+
+If you'll find a time, there is also one small, but important patchset 
+improving the Linux phones/tablets experience here:
+
+https://patchwork.kernel.org/project/linux-input/list/?series=987495&state=*&archive=both
+
+David
+
+> 
+> Thanks.
+> 
+
+-- 
+David Heidelberg
 
