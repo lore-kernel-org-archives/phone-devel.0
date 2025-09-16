@@ -1,93 +1,124 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5076E2309B2
-	for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 02:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07315287271
+	for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 09:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757989973; cv=none; b=FRPdcHoRiUCI9S3ygHFAAYtK/B5Y/HQ49KYHwSRLmM+5J/mnOKSVDY9N5TSv0ln6Ewt/uxW3MgTuEJIX82ngtFPGas6PHQ3gIRFOUj75Xepu0w2d9WKzcW8mVtACj2Xhb0D7znRI+q8LSR1YxF5imG+rQ4/3qpFy5oidTBLeSQQ=
+	t=1758013678; cv=none; b=DaKbyp/Hy2tSM/AxihYfZpbCrrWXCKQzRHAK+WvwmAolzE0OLpumopO8OMx3NX3feCdAnnrWZ5rnhV1rIhUrwwpYvGjvlGUCNvkR0z/wbBdhSsQzxriG9s36tAUNqrS/eGHlYoe9UaNn4rMPQTgBQlX8/+wiM1kZfsDSGLO/Bgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757989973; c=relaxed/simple;
-	bh=QD1XD3QJwg8gYDvPbGitDD65uZYS6EXeZGVw1RunVLA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LF9b/m6LHgyVCJhmVdTfkjbk1muxCm7tFE0vQ/RX0YnUWy2o6S+MSmoAt6SwyPep8QQ+/8XKZgcCcxnD+REUts+Ilyp+HXFcs3Zw/uIlpOJcCJ+WXGuoimfzVDLOvGtIMN6/z3vzCwDJ6u2a/5lpAJF5X74YWd6aclyUXdwO4Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=UHY+pnKN; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1758013678; c=relaxed/simple;
+	bh=fM1QW+UFz5zHOwXNyLvYeTnh6QmXecM50gjhKcitTM4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=WngR7bkk+Vi1cSYBeordDeI9s4sr7t7WdZbIy8w6tjTbKe2DeiSkJGofw+mIpMBQx3UhbpxSFnzcGff15PKEjpXabDeJSoRJ9riyDAUUDxakXK5nDDglABur+bCCD2M4rDQZCZ7yGS7eRSP/eSGbOUl/youkOSJ9eWqS/neDa3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=FT/W+ex6; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="UHY+pnKN"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1757989969;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7Hzxy2RMl64sno71Oz0iZau+iz12mHomuQMmhuu/ZxI=;
-	b=UHY+pnKNGZ7w/n//LaJI1spaDsWHnh6bAx6fhAAVOiz1mL6cuQScAMJmq/yGA+Wz2GSODJ
-	Lbfj0vBxKb4ioKXTkexunIqrP/JtJIw07Kvmli8t6JH9nn1hxh6Sdz5n1qb04pDKyz+qWa
-	Iu02CcLEDsBnoBS0TiWHMgrGF6z3PW1nKiUSmu2XJAgoHMrAUVkcUfEq9k3M1XAU/rNJkT
-	MDzjEFLhn1EZsoQAE2TVbOasVG+GEoo8903RyFJY+VH4CASnRlYlSaNV4nz2yuQzM7f2wZ
-	XWL5GAoM9aCAUW5X9p/7MiKlOYdPnCQuTvr//RODLYBl9C8P05qoZlA4o6shgQ==
-From: Paul Sajna <sajattack@postmarketos.org>
-Date: Mon, 15 Sep 2025 19:32:14 -0700
-Subject: [PATCH v2 3/3] dt-bindings: display: panel: panel-simple: Add
- lg,sw49410 compatible
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="FT/W+ex6"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7a16441so778415166b.2
+        for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 02:07:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1758013673; x=1758618473; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wGPJfwEdnpfBh17k0uP4IdtgceOjAvM9dH/m5dD76YA=;
+        b=FT/W+ex663OkQapBdsdZfiqLbYPbkbzVnog3Xs3mpz4Xgconp9x/dpGRHaPDtPNLW9
+         ixh2cYtm4JWK60nHEFL7C90FMizD4O9NDpm0XgjKKbAKa6MQGVYIZKXtIyVNXEvXdPll
+         xO78MacI3EikAFs5oCbgOJss/QVWcWRQP37/48n+Z1+GtSUaCGDnsrnrlVrWG8si7O1r
+         94TOul6Ohbll7vJbAvAdeUmX/1lwebJ6Um7OcSVt28412nyHT+Czd6S3q0zXW3S+rlON
+         zm0+nbxhnU6V+vNzOee64mcGan0mFlRda++wgZ4vaBj70pcHlZQrlVQPf/U9b0edpf2T
+         khMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758013673; x=1758618473;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wGPJfwEdnpfBh17k0uP4IdtgceOjAvM9dH/m5dD76YA=;
+        b=pv8iELxI59QlvMyq4Ra3lpe1dliN2tVM2pPZzbPGD7uVIBc9CvmaNQcOu8cqX3An7E
+         NHWv22w9pun8HzehvP1N/n+DSXBW7LiN2m/0Rwd87DI440JQu5cgg/kYyrmo7Jpw9GjX
+         RguD/vqreSLS2sEQpOu/zxofPoG1sIOew3U3+mKmNwlcsDSDeltiOgDrRIuZf3B/A9yR
+         qGTDJfbhL4EaD37GcFJy96ehJX9wQ0aOHLdaCdIKnmcqYQfYJkdHU6jvDKr/UbnSWIKg
+         m3+ps+HridItzqVVdKYL6bByaKK3IDeOs6m4NRpqBkfgnETPGFDfwti/NbBn1MsDLs56
+         D6Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnKR7NMjN5qNTgXWk3XEta8eAwhoE4YynEefK24Ut7Wgcltk0hQQ72LMyq9f2bKDw8w2xkQzxazlqwxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsK7mi8Ta+DvJZst+STav0iJgSE2XJvoNtbZAyeNe67PgXWR2y
+	C3hiNstpNJHiVSzqQgHHnj3S1uP9OFAG+/PfFDQKbIJOMKiqkXNkOO3c+Cjo5UlM3bY=
+X-Gm-Gg: ASbGnctfFBMBEoUxZ0SCe56kcpAxCCss6T48PUjZe69Q1vaosiGL8g+4RaDLy7IwVCW
+	R2CkQdVAIRcwQ5ug1SgGCwE+muuUlniIwWO+LvRxJCjMBROqYm/qLvR34/E6vPXILQcHCd+mEOZ
+	GcjVqSCZEgKVZuvQ116rGuIBFSbkvMnzhwxzwl5bXfRnXf8ATR3Fp1lFEUqO68dbC0EoG9YgokE
+	RGowucJkabrc05y2jwabCvHgMZIS64NOf7yjb0lgfMCb30uCUULeducFRQYpm/iQb8XU8Z+PLog
+	FL9vETfmG4afRoaUP6ONYwiO/SiabH3dVjspf84uXqrU5HhqsT9WcdqmDehVaNFZ6qFTUnvAr9R
+	C0qxhS15LXXyfeTgZ4cfuz++tzMLLiRW2xkDQWoegGOO9zn5AUYzH5899myzinAXhk1jA
+X-Google-Smtp-Source: AGHT+IEnV71DLjZiRWk5j6jXx0pnqls19vN1Qen2T1tQxSI6t57/t1s9FzfJ1We13UaEvDdr4m6msw==
+X-Received: by 2002:a17:906:6d13:b0:b09:c230:12dc with SMTP id a640c23a62f3a-b09c23013dbmr778396666b.8.1758013673277;
+        Tue, 16 Sep 2025 02:07:53 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07c7159e6csm899506666b.33.2025.09.16.02.07.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Sep 2025 02:07:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-judyln-panel-v2-3-01ab2199fea5@postmarketos.org>
-References: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
-In-Reply-To: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- phone-devel@vger.kernel.org, Amir Dahan <system64fumo@protonmail.com>, 
- Paul Sajna <sajattack@postmarketos.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757989951; l=1102;
- i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=QD1XD3QJwg8gYDvPbGitDD65uZYS6EXeZGVw1RunVLA=;
- b=wL3tL2/cfg5Ck1aaiCinCBhOdqlZRIl2EziBGq2b2R8O16EAVl7b+SBwXX4IkFj6HuFZ7lWwD
- 6VicQihU1ZrA+9WhKTycQwFdb3mOatbB5Lik2zWK9I1R0m66EZrDkYh
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Sep 2025 11:07:52 +0200
+Message-Id: <DCU3U3SF3ZRT.ATK17JG93309@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 0/3] Fixes/improvements for SM6350 UFS
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
+ <DBDAMGN9UQA0.J6KJJ48PLJ2L@fairphone.com>
+In-Reply-To: <DBDAMGN9UQA0.J6KJJ48PLJ2L@fairphone.com>
 
-LG SW49410 is the display panel used by sdm845-lg-judyln (LG G7 ThinQ).
+Hi Bjorn,
 
-It supports all the same properties as panel-simple.
+On Wed Jul 16, 2025 at 9:15 AM CEST, Luca Weiss wrote:
+> Hi Bjorn,
+>
+> On Fri Mar 14, 2025 at 10:17 AM CET, Luca Weiss wrote:
+>> Fix the order of the freq-table-hz property, then convert to OPP tables
+>> and add interconnect support for UFS for the SM6350 SoC.
+>>
+>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> ---
+>> Luca Weiss (3):
+>>       arm64: dts: qcom: sm6350: Fix wrong order of freq-table-hz for UFS
+>>       arm64: dts: qcom: sm6350: Add OPP table support to UFSHC
+>>       arm64: dts: qcom: sm6350: Add interconnect support to UFS
+>
+> Could you please pick up this series? Konrad already gave his R-b a
+> while ago.
 
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Another ping on this series, haven't heard anything in the last 2 months
+on this.
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 5542c9229d54a000a6493ed64f03eda59c7efb02..ce6bcb95fb9efe19066e26927e068514a37ba6b9 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -192,6 +192,8 @@ properties:
-       - lemaker,bl035-rgb-002
-         # LG 7" (800x480 pixels) TFT LCD panel
-       - lg,lb070wv8
-+        # LG 6.1" (1440x3120) IPS LCD panel
-+      - lg,sw49410
-         # Logic Technologies LT161010-2NHC 7" WVGA TFT Cap Touch Module
-       - logictechno,lt161010-2nhc
-         # Logic Technologies LT161010-2NHR 7" WVGA TFT Resistive Touch Module
+Regards
+Luca
 
--- 
-2.51.0
+>
+> Regards
+> Luca
+>
+>>
+>>  arch/arm64/boot/dts/qcom/sm6350.dtsi | 49 ++++++++++++++++++++++++++++-=
+-------
+>>  1 file changed, 39 insertions(+), 10 deletions(-)
+>> ---
+>> base-commit: eea255893718268e1ab852fb52f70c613d109b99
+>> change-id: 20250314-sm6350-ufs-things-53c5de9fec5e
+>>
+>> Best regards,
 
