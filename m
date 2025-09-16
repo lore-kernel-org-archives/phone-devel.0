@@ -1,69 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED09341ADC;
-	Tue, 16 Sep 2025 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6619032D5D4;
+	Tue, 16 Sep 2025 19:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758033630; cv=none; b=m5bXq4NGH/J8Oz/iM8pXjXHrbNOdh2UZADTjFpTUeDDEL4vU/HdGwO3jnpw6+ViUJdrJPEl6u3otY7t3gHs84yfWRMprWlv1F94NFfoLWaxMyXFHMp22e6kP8ufZiyPT482yjlinev8hu6Z9kAKdXBBcK59B7+Da9NheKQ3e9QU=
+	t=1758049908; cv=none; b=PzihxJFzIChuiYQmUunrx1e9rNwVkQXXiqaCsWZ9bQTlzYhzPOrUk02PEU986LPCCDmrN4eBtE/WnMHJ34asRjfbKOtnwmLXm4HZcNQ/h9KLvJ9g60/AfYojNdfqS1P/m5cYVpiBJy1l7FrgPTHhaCJ84ekH/8zG6DJdi8AcfbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758033630; c=relaxed/simple;
-	bh=Sxui93Lb4TKePQ7FNUp2DMIuwMIzlLbOgP1AEoAGFrk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kMhIGez479LIPhfS2HelSSpJqK2/AKy/wKsagXQOmb0HSrsM/Nx3sfsGEiWk1nMlZfQh1YnJ9JOqDgKXwUjH7d/3uxKAgDnJl5RMLkAiHUtQ5Jcpa20A4utUqxqVmmxZaiv/t0xQ6o30dy2mgfU+cwbPTzqxc/T8NF6dAm1B6vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3YsHRCc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758049908; c=relaxed/simple;
+	bh=77LfXigEtGlbgD9o+XCEovUBSCV7wv0QPbV2QyOTQ74=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dl0ktaAx2G2qbE37WTSBuF9Jc2VW8zC53JOl5QjQoxFtAJLuof+KyCICUaqMDaFdgySI+MY/FEHwrNMvsTJW4WS5JLF0bQXRuCN1ysjSBqLTfM/7uVYwl2DWcctpnNUgWORgwGf3e0RIjeEYYksi1YOGqaRQZAaK02dxITkRZ6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xpoy/I++; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3YsHRCc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D355C4CEF0;
-	Tue, 16 Sep 2025 14:40:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xpoy/I++"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F31C4CEEB;
+	Tue, 16 Sep 2025 19:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758033629;
-	bh=Sxui93Lb4TKePQ7FNUp2DMIuwMIzlLbOgP1AEoAGFrk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=d3YsHRCcSWtkIv0o6206LG9NwOhE28QCPw6pJTOy0e+yZlfW5RvrbaUvrWx9s3p5M
-	 faJQ6YypDriNartZXHrPytytRcRGKZ14UvBZ4cGwh4BqehbXo3VxsO2qO3COQI+Olt
-	 6zGqzoz9R6wQxpZijnR1kCm8J4anK/7d+hMb8EDvfyRYVCBHqHnh4Lvq++Jry5cSNh
-	 Mn8pt+0kiiXMUc9zOck3zgeFDr4Y0Rpoy98kWojSliuwCMrgPPB+uo8m51oONxG2gx
-	 6Lawqf4ATJuhBKBRceqov1L3eQIpbP9ZTu20KNJy+iqvz83PzA4b68qcsCCh/5P39J
-	 eX9Mhps1OugLQ==
-From: Lee Jones <lee@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-In-Reply-To: <20250911-88pm886-gpadc-v4-3-60452710d3a0@dujemihanovic.xyz>
-References: <20250911-88pm886-gpadc-v4-3-60452710d3a0@dujemihanovic.xyz>
-Subject: Re: (subset) [PATCH v4 3/3] mfd: 88pm886: Add GPADC cell
-Message-Id: <175803362620.3837642.9201115290344817931.b4-ty@kernel.org>
-Date: Tue, 16 Sep 2025 15:40:26 +0100
+	s=k20201202; t=1758049908;
+	bh=77LfXigEtGlbgD9o+XCEovUBSCV7wv0QPbV2QyOTQ74=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xpoy/I++lGP4rRlLa+mbG+YXAQcVFWba92OSiuz6fksltvX59u6uUZiU0MqRbTAK4
+	 1bBEGJ5alG/ARQintuFBaRx1v6jb4L3uM0Go0xzo/kVYZPPhRDst4UV6WSA/dwwTdP
+	 nO/PhE/kIHj66LcLqrfIG9I69x00Qs6nB+oQL8/7weTODHjg/H9m19IYSzU5DXpntC
+	 3iAK7sufS9Bm5+zkzenff1IJb57AJMbWOqgRjtRQl4H0wFjNqDh6rITBoFnlV4tTvU
+	 SHnrlYB+kV0ZGUOSKCU/ypaBBNX7DPRuLSXUtdHglNa/v74nG7lyib5pNTq//6E5Is
+	 01JquE6PHMfuA==
+Date: Tue, 16 Sep 2025 20:11:42 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Paul Sajna <sajattack@postmarketos.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
+	Amir Dahan <system64fumo@protonmail.com>
+Subject: Re: [PATCH v2 3/3] dt-bindings: display: panel: panel-simple: Add
+ lg,sw49410 compatible
+Message-ID: <20250916-lazily-postage-f673a5cc6a26@spud>
+References: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
+ <20250915-judyln-panel-v2-3-01ab2199fea5@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-c81fc
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0DFJbOukSxWiYyHE"
+Content-Disposition: inline
+In-Reply-To: <20250915-judyln-panel-v2-3-01ab2199fea5@postmarketos.org>
 
-On Thu, 11 Sep 2025 14:43:46 +0200, Duje Mihanović wrote:
-> Add a cell for the PMIC's onboard General Purpose ADC.
-> 
-> 
 
-Applied, thanks!
+--0DFJbOukSxWiYyHE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[3/3] mfd: 88pm886: Add GPADC cell
-      commit: 5a30f3de5b458f335b49523e72010078b2c22923
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---
-Lee Jones [李琼斯]
+--0DFJbOukSxWiYyHE
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMm2bgAKCRB4tDGHoIJi
+0saIAP0Se5/ZuR1n68jiyM3j4srO+TBLhsWyZ2N+aqiYkKml6gEA2nMhDo+He3bJ
+NbVdDObz6e5yqG1+j59AkbmHVZCkuwk=
+=rbRy
+-----END PGP SIGNATURE-----
+
+--0DFJbOukSxWiYyHE--
