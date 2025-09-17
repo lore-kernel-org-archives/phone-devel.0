@@ -1,107 +1,134 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FB82C15A3
-	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 01:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5BA299949;
+	Wed, 17 Sep 2025 10:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758071486; cv=none; b=JYjKIJqDgvHC6RyHE3sa72ke+PvCZ7BCSrltYZi9o5klhkBVAFgpl2o8f3YFc4E0Sa0dE3a0hUlqwVAke1FEEhMDAoYhUPkAaF2hME77hD6kMqx9bi4ZjAIYwncZpPj1IT1rZsNFunA+dgCb9NngqIq7nk84XTwXbRmUyfUfot4=
+	t=1758103810; cv=none; b=FQIvQ+grOMpHR1+2YGbqYH9bkOfT+xKK1rAsgv7IOC53BaknYDhq6Mi5fD9F/Haf0sntLivdAJkP5/XznG6mLB2YC+hQdE9wGgC1vjMq1r0EIVqGe8PclLfuoBG4s8UU1sAQyE5xzg/shqomdNx76ovX1m/XBdaIl0bgTYo2eL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758071486; c=relaxed/simple;
-	bh=4A0pTY/r00iXG0eCKZOKSizZtOQKUJ6iVrZvAnx3Soo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DwYYSUZ1RJEZs6SUhw3aimpHPOeqsSgvFBZYUtMssmgGllNOmiDGnIT+mcIS32Qb+MW/vGwXapg2poaFu7b57Jwx3hBkI2NvhKXMn6dMevtCevCis+Y+LSQ3OG9DLOq9t7wyX1xqQ/UTmY3cS85kZXPsyXFWlSGhE7SYKh0uRjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=aw2RRCax; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1758103810; c=relaxed/simple;
+	bh=2BpR/sbRSS7JegXJBjXVzWbl6vChgq/HKCHbYvwrI7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rKbwJT9et+dd9t8CF4HGZGH7jGH2SOxMH7uuV0ib8SS7BLvlTyhMZJNaM4xK547IO5qisQmrKZTIZcJN8gkjSkeOU5t75KTj7cPp+0SQacAwcFSr1eFdm7RB9aQZFrCdd/WbqnZq3owwkbrNDCIKcrrm5bij7aSCgNrCQJP3xEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k14ze+iu; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="aw2RRCax"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1758071483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K5LsA6788TohTMhJyMFVGJXUVKzjVvS4nvp3+t+5CR4=;
-	b=aw2RRCaxjd0tn7HYqhtEIG3Ptzo5SqzP5Y15s2g8p9Xnf5hG5XDCZMCsED1aEWUpB9fNtz
-	MlCMWMmkEjkApP7a9KUynOJZ3MyWPruNnDAjdET/vz7Kw+N1l6LNYUMzmmmjhfoF3IVOjm
-	lJCCO33lEZ06scwFVt3WrVSOt7kFcw73iPODKmHHFh7dbVYDkeYH553523paJq5+pEZD4y
-	q65fR4Wr7iRXJ+/e9WY4sZmzaJS2JQwHRSbf8O4t3fKkK7XZiEWQBeBKKYSw3AaQZfRPBu
-	PB0oDsCShWDqgS5n/e7NmiVrYCh6JEWDZuCbxgrVYw6rtzmroHfqV8mGKbqAHA==
-From: Paul Sajna <sajattack@postmarketos.org>
-Date: Tue, 16 Sep 2025 18:09:59 -0700
-Subject: [PATCH v2 13/13] arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k14ze+iu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758103809; x=1789639809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=2BpR/sbRSS7JegXJBjXVzWbl6vChgq/HKCHbYvwrI7U=;
+  b=k14ze+iumj9o32ZKto+4r/sdLeBwGsc5kCaQGVl6Oq0gWTGoL6zaU7qS
+   rimwdpfYE21h14DkUedkQahaDQlGwoll26pNVxASR/jW4mufpIPPC2IOs
+   TXwr01K1N9IP2iv+1JPH8yRBYHV5qPaCX3xzPI9z1RJhoD7R/Mg8YwvwT
+   wchFpjeo8XkNjrxpzRZFFbH5rngAZBIlCxkBUFMstSjsn5l5x+y6AnC0Y
+   2XgtLFAilhuoqSGktjmia9v3ShoPaClRfHrgcTddW2lvQOvPSVv+2VYi8
+   52ODjq4soVdyn39BgmRZa+YR7k5GXVSrQXRcNEgocxKD5KuvLEM5DPnC7
+   w==;
+X-CSE-ConnectionGUID: 2ppPnF1nRRK1bOab9oygBQ==
+X-CSE-MsgGUID: DV8LeAXhQAmpfFZOEBN6Cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="60273889"
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
+   d="scan'208";a="60273889"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 03:10:08 -0700
+X-CSE-ConnectionGUID: C+/Qdhs4RR+Xg+pgupSnIw==
+X-CSE-MsgGUID: 2vCrjiHCSjOEzB3SgWbGbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
+   d="scan'208";a="175980728"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.41])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 03:10:04 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6911511FC22;
+	Wed, 17 Sep 2025 13:10:02 +0300 (EEST)
+Date: Wed, 17 Sep 2025 13:10:02 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Val Packett <val@packett.cool>
+Cc: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
+Message-ID: <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
+References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
+ <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
+ <aKLZ39IzI_azrDIu@kekkonen.localdomain>
+ <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
+ <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250916-judyln-dts-v2-13-5e16e60263af@postmarketos.org>
-References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
-In-Reply-To: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Amir Dahan <system64fumo@protonmail.com>, 
- Christopher Brown <crispybrown@gmail.com>, 
- Paul Sajna <sajattack@postmarketos.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758071415; l=1151;
- i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=4A0pTY/r00iXG0eCKZOKSizZtOQKUJ6iVrZvAnx3Soo=;
- b=zmhOGULntOrTwQvWewxGiOMTDxAebMYCnVHxCWd19YUqDtBTfcJQxax28nZIMokbi8GhPUfAd
- 5wPrYZRGB/ICSX+dSlg7rf14j64eVnH/njEKC7ns1eyJ5QG0fF2ibG/
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
 
-`regulator-always-on;` in ibb improves display blanking issue
+Hi André, Val,
 
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+On Tue, Sep 16, 2025 at 05:08:44PM -0300, Val Packett wrote:
+> 
+> On 9/15/25 5:48 PM, André Apitzsch wrote:
+> > Hi Sakari,
+> > 
+> > @Val, please see below.
+> > 
+> > Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
+> > > Hi André,
+> > > 
+> > > On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4 Relay
+> > > wrote:
+> > > >   	u64 val;
+> > > >   	int ret;
+> > > >   	int err;
+> > > > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
+> > > > dw9719_device *dw9719, bool detect)
+> > > >   	if (ret)
+> > > >   		return ret;
+> > > > -	/* Jiggle SCL pin to wake up device */
+> > > > -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD :
+> > > > DW9719_CONTROL;
+> > > > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
+> > > > -	fsleep(100);
+> > > > +	/*
+> > > > +	 * Need 100us to transition from SHUTDOWN to STANDBY.
+> > > > +	 * Jiggle the SCL pin to wake up the device (even when the
+> > > > regulator
+> > > > +	 * is shared) and wait double the time to be sure, then
+> > > > retry the write.
+> > > Why double? Isn't the datasheet correct when it comes to the power-on
+> > > sequence?
+> > > 
+> > I haven't noticed any problems during power-up of DW9761. However,
+> > according to the commit message, there seems be an issue with DW9718S.
+> > But I don't own the device and cannot test it.
+> > 
+> > Maybe Val can provided some additional information.
+> 
+> I haven't had access to the datasheet for the DW9718S, so this was all
+> deduced experimentally. By "to be sure" I meant that I literally raised the
+> timeout "just in case", not based on actual issues.
+> 
+> The actually important change was expecting the failure on the write and not
+> erroring out.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-index beb1372dc6c17f5f06c2044412ee1c8165858cd1..44ab98964ffe722144e01efc41e135dc7700fe95 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-@@ -69,10 +69,28 @@ zap-shader {
- 	};
- };
- 
-+&ibb {
-+	regulator-min-microvolt = <4600000>;
-+	regulator-max-microvolt = <6000000>;
-+	regulator-over-current-protection;
-+	regulator-pull-down;
-+	regulator-soft-start;
-+	regulator-always-on;
-+	qcom,discharge-resistor-kohms = <300>;
-+};
-+
- &ipa {
- 	firmware-name = "qcom/sdm845/LG/judyln/ipa_fws.mbn";
- };
- 
-+&lab {
-+	regulator-min-microvolt = <4600000>;
-+	regulator-max-microvolt = <6000000>;
-+	regulator-over-current-protection;
-+	regulator-pull-down;
-+	regulator-soft-start;
-+};
-+
- &mdss {
- 	status = "okay";
- };
+Ack.
+
+André: could you add this information to the comment as well?
 
 -- 
-2.51.0
+Kind regards,
 
+Sakari Ailus
