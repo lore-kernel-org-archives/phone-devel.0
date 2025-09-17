@@ -1,149 +1,152 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4263632BBE7
-	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 14:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7D22ED141
+	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 14:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758117758; cv=none; b=tTP6uZ4eY8ryywgW9+WQgCOXrYAy97bZOOFicxaEg4wn6QWVNdhDJsuxZeN4pUBuHn7gMuBRBvwDkzB9/YkU74hYb7wRpfUkor/2oCalzILnqTOXSRwEZ+9LmTARbA9CN+hGuxCbexzNg3ufBjsRwUioSsR5IFHIfe1XOFNx+ps=
+	t=1758119590; cv=none; b=sjwAIMQcMniwsiVv2n7Zcr26JfWz9w+ciGglSYTI62jibL4vFkacLrcFn6K2EGWSBGQSz/KAXmOK1vW16CDh3kGw/wA+TkrbJx9kefrndtsR2c3pk7AQVeAvgKH8Pf94shePbQCrc8EUsXqhOcV4RYToUuLH66GtrMcLkPjbm6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758117758; c=relaxed/simple;
-	bh=RefTj2LFec46dsJYSPZ8tEBm1+3mD1JsxhEJXrBH8b8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GgaVL9QNghetbOn6Visi9FsnWF9uIelp/zRonXa977UC1sxVYDhQTAVgfvnZAbVOvmOXMkj9zhH9ZyUy68Dnb+20FV0LuyC4h15+eaNfcDt79Y/+qomQVf+30kes1pOtdTv7mmT4lMU1IMQE2cm26+B0B2e9zUC3/4LW+mhLaSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jzGEKl2l; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1758119590; c=relaxed/simple;
+	bh=RKaFL/f/x+BpU4Xk7oekVWLIrBOIODf0tIBd2+YRAto=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p0+3LthRa4nlJquBGNsa7IdHteLYpBE4P46zdoiGG+koNvDEoooGMGtPyrtzYpHjbo8fea/jxitGQ1/xd2Y8sm+wLlbvgRORVlSUg715urMVuLS+csIkkqnlBRCek+TcihQj0A5cPMxU7fL1w39qXSD2zv6YMyh/Iz78mmfUKjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C3UUbFRm; arc=none smtp.client-ip=209.85.219.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jzGEKl2l"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b042cc39551so1119430966b.0
-        for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 07:02:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C3UUbFRm"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e96eb999262so4140557276.2
+        for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 07:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758117754; x=1758722554; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aI0KZC1S6i6KZFgi+7mCnlg3sWeGuC+L+mdTKqHXWA=;
-        b=jzGEKl2ldjQhOOSsKb06Fha6LgYoyLdKgQ3A4Jx6N9aXyL25JkKSdHMv3WQPzK44Jk
-         2e2A/q4FWpYAEoco41Qr6Fg/vwnaX2gEb7tp/l5+6uXdPDdptI4Pesl5xHH4cg7APoDM
-         xXr7IWGz569kWGi6atos85QR0WvnEdd4S1KRvyYLfeGlvWeUptRQx2C+hTl4q8K2moYJ
-         KCrg8a9zN4bbWJ6l03a7dIFkqLljT/+rnYA0N4ceMuPNoy+7K/CiANyoHDZf26G4JbY1
-         GpdzsZ05mW2cHfUkf910zsCe55jgTVY5t7IEGWbZmWjdYhFdhCAngArPksI90WX4Wf3q
-         np0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758117754; x=1758722554;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1758119588; x=1758724388; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+aI0KZC1S6i6KZFgi+7mCnlg3sWeGuC+L+mdTKqHXWA=;
-        b=YzhnWkPz9HnzjNtuAL1347y9krOzmQseWwXi9t3z41Z+bi64vTbdOI9VJW3m+6n3zL
-         MAyZ5SGQpVplPjouWrRMjvPjve+ApiB3ln2ETTYbqfMSmAtVH88TZBXA2rGaJU4U9XGU
-         yCuFilrOf4stcBkubut8ZkPqrYYKnbfPUypWWJf9SnFrOPfsv/GAOG5w2W0Ny3JcxdH+
-         w2CrSMGQlpTVaIAn5l6r2pAqwG9E082Bt8mLauJLCgALz5ksId53B4pGvQOh0Jpzn9fx
-         lqTJSNMHC24dNRNz6ByPaVw6k6VXieMu8cTKwRHBGic9EGDFosh9OxxfO92LHOpLBkxu
-         LTOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuBPYic8ZXFT64VnALA2C0B9UB2FwGUHwe2dYb+VHM1zK9pYdmuJlCMob7rvGf7akeRC+V9PFMgfZxKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLr5JWCSLYTZ+9v3myrGDEpvvyE5ZqSoDwS3hlD7EIeLBaiuJf
-	X89IzyeRbh2IoCq3VctPzYteS7ogvdO0TBVymFkFTLnWrSpRgNVYZqKG/LUI4oduv/s=
-X-Gm-Gg: ASbGncttH4X87jTyjbqcc+kAhvkERFJWGyjFcRrMjTxzn2CdsazpZ95M240A32KkaW5
-	J7lHKbRAknaQb6MnUaBOafiYImHNrsRD0BKq9/IwcKlu5YxlSglsu6H8i/EE4kMIC5KXe8PJO6t
-	vaWh2OTiPWePylOOQjQsTSPYioR25GZlcBe+U9r2NdseWo3vM2OplwHV3tlp54SIPZlMC8UzpQ3
-	y/NuarxleZdcaSQnemOhmKNTKvqetHk5qpQhnQaF9zuUXt3TohqxsPYFtxZg6JJKujcn3OJqYEt
-	o8/faQl7YPMW0mbcvAyMl2NxFwRZhbuvkZtZtDcQUspOHVUwtcSp+PdRV2o3VEeP1vrrqRXmMnN
-	Oubj6EAYM8vFlDJtBlNYPCCzFQwjMZA==
-X-Google-Smtp-Source: AGHT+IG4Gian2+1eYXK+LJPiJ/IOk7YXX7BNAP8tJbijpr4j+Tg2SNRKcI5T/sLwoI+EVC41Iboriw==
-X-Received: by 2002:a17:907:9691:b0:b04:3b97:f965 with SMTP id a640c23a62f3a-b1bc1168641mr281451566b.49.1758117754340;
-        Wed, 17 Sep 2025 07:02:34 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff21:30:96c4:427:30f:64da])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b3347a4fsm1352382866b.103.2025.09.17.07.02.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 07:02:33 -0700 (PDT)
-Date: Wed, 17 Sep 2025 16:02:29 +0200
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Paul Sajna <sajattack@postmarketos.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Heidelberg <david@ixit.cz>, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Amir Dahan <system64fumo@protonmail.com>,
-	Christopher Brown <crispybrown@gmail.com>
-Subject: Re: [PATCH v2 11/13] arm64: dts: qcom: sdm845-lg-common: Add
- bootloader-compatible board and MSM IDs
-Message-ID: <aMq_dbLRShTVLlc8@linaro.org>
-References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
- <20250916-judyln-dts-v2-11-5e16e60263af@postmarketos.org>
- <acb4f8a2-ff08-4a90-a7ad-7b25a7f4b6b0@oss.qualcomm.com>
+        bh=cjiYB/uowYFXiRivyJJw9KQxslDZjaml/1h2OkBzYY8=;
+        b=C3UUbFRm3acP+0gd7vxBXz6Z3ef402pRo2XadWFzpB/mpXuKLW7vRWbB4zfivlFst8
+         GoFZp1CMYZq2QABwCDUoiOSiBoZr10VhVEneXxJPE6qF7z8tJSamZikSv2lyZRwq34i8
+         WnSbeTp9SjJ+zGRONoG3aiK0lATCddxAxq6ypvl9zWUwTUCTxj+IoJDZwAex5ACmyGdB
+         l4aEfSz0+2npRMBWyEz7AHjfwhcvD/ioeyfpfBktFQE+sDh6dM/iNu3MIoCCXpmWOp5u
+         BxOWT6HUdbUBzBO7QgWUWG6Pr3QtzNoSjAfRk+X7xQiUEo5bNCB3O9uYHiLHsg+AcmUJ
+         FJwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758119588; x=1758724388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cjiYB/uowYFXiRivyJJw9KQxslDZjaml/1h2OkBzYY8=;
+        b=UlBCo46QfuDBBrn/l/4mo+yKDss/lxDZw2XMCGRDKwjoVykY8LxT9MR/kolwFhQbKe
+         uTuVcswOfYBVQg065uIisBwOEGV2kCKd0oES33JtcmA5Bjihog8ddOyzuX61aVRjwd2b
+         +G2C5NBBzZirdsdNK4Quk2LMsS8u2rRSOmLHduXhqJxYYboWwTQFACY1Z3Piuj6DtF0P
+         NYJjyE86Jrjf21ohD5jleB2AwKFQfYow0gnm2184xpEWjBulN31liM6WaaTTaczToCVx
+         r24fJ9XTBoAjtNz5Z+g36K7lav3SF4ZbKqkkOgb5VHby0do1gymR3mdErGJdm6133pPq
+         y2Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAMvm+g40l2zjhsBq5wkkaep6NFS061A9H+GTJwvy99aa/syBPgeQGXtNB5iExFrf3DUpB+ygPMFCO/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQaaKXKFAL/xH2rgZY2t/s+4R+EozqosP01kHS5aWz/F5cvKDx
+	/+i1JKpdACVqUF22kkns2Bz1GoiXtW3qrGp80/E3Z3ppXHguWycbfxLSYz4+nKJmbyrG7ppulNn
+	Zdk1ViuRBobfVzZJvAQpY0+LgvitVHSYxQozygHhnPg==
+X-Gm-Gg: ASbGnctFbUqiPI58KIJdqBf4sjHkg/MSfkSwJyrlari9leWBKJ6/hFxj5PU3ogHgct3
+	+KB68BiUZebzx8NhbYeXAe6EZ5OKUlvgh8PKxhi1TbpZiBXYFCXHy6OnF/2yJ4yLjyxBHPDt6eo
+	FqZNfOBr0fXYbMJw23ti/v6VRooSsowEUpEG+oWFU04cteUaSZ/2YiUNnKFFd+qL075rtTkkufU
+	RpCC45z
+X-Google-Smtp-Source: AGHT+IFQl4sxW4LUcoi3bIXsptHrliwBwP5f8RO+yo+IAgyckDyrm2VPVmx1uys1O5NAXNsLjZqsLa4xcMjhuXJl5zs=
+X-Received: by 2002:a05:6902:3101:b0:ea4:6:9024 with SMTP id
+ 3f1490d57ef6-ea5c03aecffmr2119553276.8.1758119587602; Wed, 17 Sep 2025
+ 07:33:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acb4f8a2-ff08-4a90-a7ad-7b25a7f4b6b0@oss.qualcomm.com>
+References: <20250913-pxa1908-genpd-v4-0-55e4cf32f619@dujemihanovic.xyz>
+In-Reply-To: <20250913-pxa1908-genpd-v4-0-55e4cf32f619@dujemihanovic.xyz>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 17 Sep 2025 16:32:30 +0200
+X-Gm-Features: AS18NWB4VWSVduLAS3dHprEYP38MnWvLvmP0MGgnFO0V0b-XHaevM6W4A6ssrDo
+Message-ID: <CAPDyKFri+vsC9U7hhPukgWR2sRec5M0i8XtmyA7dVgJ-8Ewe_A@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] Marvell PXA1908 power domains
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	=?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 17, 2025 at 03:55:47PM +0200, Konrad Dybcio wrote:
-> On 9/17/25 3:09 AM, Paul Sajna wrote:
-> > The original bootloader (fastboot) requires board and MSM IDs in order
-> > to boot the kernel, so these have been added. When re-using the same
-> > files to chainload U-Boot, these compatibles are also needed to ensure
-> > proper booting.
-> > 
-> > Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> > ---
-> >  arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
-> >  arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 1 +
-> >  2 files changed, 3 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> > index 1baec758c7d881026bf6001a0a305687d7a14b40..a513cd931b3a984443183ee4e8df7b0e45732630 100644
-> > --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> > @@ -5,6 +5,7 @@
-> >   * Copyright (c) 2022, The Linux Foundation. All rights reserved.
-> >   */
-> >  
-> > +#include <dt-bindings/arm/qcom,ids.h>
-> >  #include <dt-bindings/gpio/gpio.h>
-> >  #include <dt-bindings/leds/common.h>
-> >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> > @@ -29,6 +30,7 @@
-> >  
-> >  / {
-> >  	chassis-type = "handset";
-> > +	qcom,msm-id = <QCOM_ID_SDM845 0x20001>;
-> >  
-> >  	aliases {
-> >  		serial0 = &uart9;
-> > diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> > index 8c1692f86e6ceea7b718361965e78f95d39373bb..beb1372dc6c17f5f06c2044412ee1c8165858cd1 100644
-> > --- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> > +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> > @@ -12,6 +12,7 @@
-> >  / {
-> >  	model = "LG G7 ThinQ";
-> >  	compatible = "lg,judyln", "qcom,sdm845";
-> > +	qcom,board-id = <0x020C0008 0>;
-> 
-> This is almost QCOM_BOARD_ID(MTP, 12, 0), except for the odd BIT(25)
-> which the dt-binding promises should be left unused..
-> 
-> +Stephan maybe you know more?
-> 
+On Sat, 13 Sept 2025 at 23:16, Duje Mihanovi=C4=87 <dujemihanovic32@gmail.c=
+om> wrote:
+>
+> Hello,
+>
+> This series implements support for the power domains found in Marvell's
+> PXA1908 SoC. The domains control power for the graphics, video and image
+> processors along with the DSI PHY.
+>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> ---
+> Changes in v4:
+> - Address maintainer comments
+> - Rebase on v6.17-rc5
+> - Link to v3: https://lore.kernel.org/r/20250829-pxa1908-genpd-v3-0-2aaca=
+aaca271@dujemihanovic.xyz
+>
+> Changes in v3:
+> - Move driver back to pmdomain subsystem
+> - Instantiate using auxiliary bus
+> - Small fixes and refactors
+> - Rebase on v6.17-rc3
+> - Link to v2: https://lore.kernel.org/r/20250821-pxa1908-genpd-v2-0-eba41=
+3edd526@dujemihanovic.xyz
+>
+> Changes in v2:
+> - Move driver to clk subsystem (domains are instantiated by clock
+>   driver)
+> - Drop power controller schema
+> - Drop RFC prefix
+> - Rebase on v6.17-rc2
+> - Link to v1: https://lore.kernel.org/r/20250806-pxa1908-genpd-v1-0-16409=
+309fc72@dujemihanovic.xyz
+>
+> ---
+> Duje Mihanovi=C4=87 (4):
+>       dt-bindings: clock: marvell,pxa1908: Add syscon compatible to apmu
+>       pmdomain: marvell: Add PXA1908 power domains
+>       clk: mmp: pxa1908: Instantiate power driver through auxiliary bus
+>       arm64: dts: marvell: pxa1908: Add power domains
+>
+>  .../devicetree/bindings/clock/marvell,pxa1908.yaml |  30 ++-
+>  MAINTAINERS                                        |   4 +
+>  .../marvell/mmp/pxa1908-samsung-coreprimevelte.dts |   1 +
+>  arch/arm64/boot/dts/marvell/mmp/pxa1908.dtsi       |   5 +-
+>  drivers/clk/Kconfig                                |   1 +
+>  drivers/clk/mmp/Kconfig                            |  10 +
+>  drivers/clk/mmp/Makefile                           |   5 +-
+>  drivers/clk/mmp/clk-pxa1908-apmu.c                 |   7 +
+>  drivers/pmdomain/Kconfig                           |   1 +
+>  drivers/pmdomain/Makefile                          |   1 +
+>  drivers/pmdomain/marvell/Kconfig                   |  18 ++
+>  drivers/pmdomain/marvell/Makefile                  |   3 +
+>  .../pmdomain/marvell/pxa1908-power-controller.c    | 274 +++++++++++++++=
+++++++
+>  include/dt-bindings/power/marvell,pxa1908-power.h  |  17 ++
+>  14 files changed, 369 insertions(+), 8 deletions(-)
+> ---
+> base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+> change-id: 20250803-pxa1908-genpd-15918db5260c
+>
+> Best regards,
+> --
+> Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
 
-I'm not sure what BIT(25) is exactly, but I think you can generally give
-up any hope of trying to make sense of the board IDs of large vendors
-like LG, Samsung, Motorola etc. It's a pity that Qualcomm has never
-created a board ID scheme with enough room for customization for
-vendors. The qcom,board-id scheme seems to be entirely focused just
-around Qualcomm's own boards (MTP, QRD, SBC etc). That is why we ended
-up with every vendor using their own incompatible approach. :-(
+Patch 1 -> 2 applied for next, thanks!
 
-Sorry, I wish I had a better explanation. :-)
+Note, the DT patch (patch 1) is available on the immutable dt branch
+too for clock/soc maintainers to pull, if needed.
 
-Stephan
+Kind regards
+Uffe
