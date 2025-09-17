@@ -1,108 +1,132 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DB283FE1
-	for <phone-devel@vger.kernel.org>; Tue, 16 Sep 2025 20:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AFB21255E
+	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 01:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758053348; cv=none; b=g6t0LCoUkfsJIV69sjGN6v7lUIvhdC/pFaOYo4deYIxfeUQFBxllN+csH5/5TNrE0YWejZlzUnlz5YEVTR1TVVDQhX6jQvjJgz5e+M8ATu0y1A/RhMuWYEBhkqOzdCrB04CGepJbSNS6qnhH4pPNcKvTSTjipyVRwE24AvQsLto=
+	t=1758071426; cv=none; b=M/tCbJZX3eqayC5Hi5MeDIYbPv8c3mpdl0OI4AdSSGNlst9cIonSWRbiCze6eQytM+8FF+IKw+FR8nChmbNN+47LVF4Wc4vDCFotugMmYf7QnyZlkmomgpO7YG1Yh85m6HvvkC+v9fHAEUfLcCb4hjjoKmSZQokMbwAekCMpwaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758053348; c=relaxed/simple;
-	bh=CV94P1G6PAbXUYBZXtbDVt4H7gF8ZfJUS0/eyqgvHFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zc5M6DJ/zTK13RZIwG/Y8F2oT0T9L7jNQqD9/75eBVZl/bk+NXZUIeMXOBkuqV3zYw//ORZKxCPfvxrBfTzoKqurrKFte86USt1OCZCOaHTEPIm8LBZHrhktpzC9G68jxpmAsB11ove+n9eWKMRe5bstm/XovpqcXaLVxRgdTpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=ckISlrv+; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1758071426; c=relaxed/simple;
+	bh=83hlTojNpMHUMhNQlSYHxajM36tMhM0Trd8zSojDxFA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gfd9zcxBD90n3aCrZ+WDsa2XBiwihOjQ9xTJSbugUl9e2GF8VDO1JCKT8i2lsT1tlNgH8agxLUVSIcuUgAvaaziCCgBWhlnPSO7QUpGN6gBaWIAYwQmWdBNrWBsJ0hUeNDqGTWTRuokwdlHbTTD9bmrWOx/hS2i7sRwbnY0rE5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=rByKNAjH; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="ckISlrv+"
-Message-ID: <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1758053331;
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="rByKNAjH"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1758071420;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SHtwMr5+ZMiaqfj6m6kVuvNj2Y2evNdPg6uV1F0bJNA=;
-	b=ckISlrv+FoQ3Emync9HM87QOztyL5MLDKkY9+yDg5rpd1E6Ww3PwuRJm35Ehia4bkKowAd
-	RN0gXd09gfVm7wC+5FpJgFB+HgT28UfsW3g75d1QknnRK8+uns/q/PGJYyHQLmfKPq1vkq
-	87mSGmNshUirOiW4awpGJ+a/q5DVsBBqyiJMROJo1ksT0v8QHUPId4nzqd/V3UyLZh5u3p
-	5+E0wGCmSFFhfDIEltrosZZz+EQqVhAnDxVBLTWHpJu1hochZ4wlZDQ2MF1Y8KBnx2CGQf
-	TMZ5S6k0dNsy0MBDpEu2GcEMwxuV2wQpqtRzNNENGSA3HAy4PPma1btuMNbVVg==
-Date: Tue, 16 Sep 2025 17:08:44 -0300
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nGEaWmxy+OrwGhatLDdMArPdkkpGy3vthm4epzwHO1Y=;
+	b=rByKNAjHmpq181LQG1zlOYpLWxF/snRF6a6mwqMbZAgmRMvLRBLgdg6RTcRSMpG5PQ0k4v
+	QllJD4oSzhSYzB3lKIgKChoaFoPVRD4/AI1KGYSMtUN0JwddGHnJilSI06DwXGB7gHK2L6
+	EUjIoKtfEnV91tM5++bUn6tfqQ82bZ1Tnv/u/xSPEKiAUG/KNKVMVhLcIjmfxTc7s3ceRw
+	7G2ysqTkew3CJZuAorjM/utT/8bR+6NsWfLXbW1LlMkCNzI3n9cwTeHBwkWFTVz/CIiN2b
+	Cc3lLemLicRgy9aA9JAwlNHNkcgJDIQVpBAUG3Jg+oSFzn2PfVuZOlgIZ4nOrQ==
+From: Paul Sajna <sajattack@postmarketos.org>
+Subject: [PATCH v2 00/13] arm64: dts: qcom: sdm845-lg-{common, judyln}:
+ Improve HW support in dts
+Date: Tue, 16 Sep 2025 18:09:46 -0700
+Message-Id: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- Daniel Scally <djrscally@gmail.com>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
- <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
- <aKLZ39IzI_azrDIu@kekkonen.localdomain>
- <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFsKymgC/2XO0QqCMBTG8VeRc91im4opEb1HdOG2k63U2c6SI
+ nz3lhUEXf4PnB/fAwi9RYIqeYDH0ZJ1fQy5SEAf675BZk1skFzmvBSCna7m3vbMBGKi0JnAvDS
+ aHyA+DB4P9jZju/27PV6u0QzvI3RIVM9mlaw/JP+SQ91jy0bBBFvJXBdZxlOl1HZwFLranzE4W
+ jrfbOCFHy0F5+/z8FHM+gdMfzdGjjOZqkwVRcmNxj8O9tM0PQEStQDVCAEAAA==
+X-Change-ID: 20250911-judyln-dts-17c41e59dc0f
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Amir Dahan <system64fumo@protonmail.com>, 
+ Christopher Brown <crispybrown@gmail.com>, 
+ Paul Sajna <sajattack@postmarketos.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758071415; l=2827;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=83hlTojNpMHUMhNQlSYHxajM36tMhM0Trd8zSojDxFA=;
+ b=KfxKLPGB1FMZwZ+v6MCQ7koPkTwUCKP70sPR06U0BdyQCmKKwigxluK6151GzMz0GEToL7q5Z
+ hfqEGe5L8oxBaJt6cHqE5JA3YnOg6+KLFlu4eDoxaIBB/eIKt43lJTH
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
+Rollup of improved hardware support via devicetree for LG G7 ThinQ 
+(judyln) from sdm845-mainline kernel fork
 
-On 9/15/25 5:48 PM, André Apitzsch wrote:
-> Hi Sakari,
->
-> @Val, please see below.
->
-> Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
->> Hi André,
->>
->> On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4 Relay
->> wrote:
->>>   	u64 val;
->>>   	int ret;
->>>   	int err;
->>> @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
->>> dw9719_device *dw9719, bool detect)
->>>   	if (ret)
->>>   		return ret;
->>>   
->>> -	/* Jiggle SCL pin to wake up device */
->>> -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD :
->>> DW9719_CONTROL;
->>> -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
->>> -	fsleep(100);
->>> +	/*
->>> +	 * Need 100us to transition from SHUTDOWN to STANDBY.
->>> +	 * Jiggle the SCL pin to wake up the device (even when the
->>> regulator
->>> +	 * is shared) and wait double the time to be sure, then
->>> retry the write.
->> Why double? Isn't the datasheet correct when it comes to the power-on
->> sequence?
->>
-> I haven't noticed any problems during power-up of DW9761. However,
-> according to the commit message, there seems be an issue with DW9718S.
-> But I don't own the device and cannot test it.
->
-> Maybe Val can provided some additional information.
+Notably, this patch-series enables full DRM acceleration and wifi,
+among other small improvements in individual commits
 
-I haven't had access to the datasheet for the DW9718S, so this was all 
-deduced experimentally. By "to be sure" I meant that I literally raised 
-the timeout "just in case", not based on actual issues.
+after this patch-series the main things that remain to be worked
+on include touchscreen, audio, and modem.
 
-The actually important change was expecting the failure on the write and 
-not erroring out.
+Depends upon panel driver patch-series https://lore.kernel.org/all/20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org/T/#r9a976ca01e309b6c03100e984a26a0ffc2fe2002
 
-Thanks,
-~val
+Co-developed-by: Amir Dahan <system64fumo@protonmail.com>
+Co-developed-by: Christopher Brown <crispybrown@gmail.com>
+Signed-off-by: Amir Dahan <system64fumo@protonmail.com>
+Signed-off-by: Christopher Brown <crispybrown@gmail.com>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+Changes in v2:
+- sort at the start
+- drop unnecessary labels
+- drop unnecessary gmu
+- multi-led
+- split fb-panel changes
+- expand upon firmware commit message
+- use qcom,calibration-variant instead of
+  qcom,ath10k-calibration-variant
+- change firmware paths to include "LG"
+- remove framebuffer reservation
+- add lab/ibb
+
+- Link to v1: https://lore.kernel.org/r/20250913-judyln-dts-v1-0-23b4b7790dce@postmarketos.org
+
+---
+Amir Dahan (1):
+      arm64: dts: qcom: sdm845-lg-common: Add leds
+
+Christopher Brown (1):
+      arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
+
+Paul Sajna (11):
+      arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
+      arm64: dts: qcom: sdm845-lg-common: Add uarts and Bluetooth
+      arm64: dts: qcom: sdm845-lg-judyln: Add display panel
+      arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes
+      arm64: dts: qcom: sdm845-lg-{common, judyln}: Add wifi node
+      arm64: dts: qcom: sdm845-lg-common: Add chassis-type
+      arm64: dts: qcom: sdm845-lg-judyln: Add fb_panel dimensions
+      arm64: dts: qcom: sdm845-lg-common: Add camera flash
+      arm64: dts: qcom: sdm845-lg-common: Add bootloader-compatible board and MSM IDs
+      arm64: dts: qcom: sdm845-judyln-common: Remove framebuffer reserved-mem
+      arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 222 ++++++++++++++++++-------
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 136 ++++++++++++++-
+ 2 files changed, 296 insertions(+), 62 deletions(-)
+---
+base-commit: 8394712bc1340df993cb167199568f44013b45d3
+change-id: 20250911-judyln-dts-17c41e59dc0f
+prerequisite-message-id: <20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org>
+prerequisite-patch-id: e51151ea7f8fdad6ad7d90713febc5c6b6fc4f9c
+prerequisite-patch-id: b3dd44250da9cd12bc5b2d0d7e865dbe19ceed92
+prerequisite-patch-id: fd6c8077806cb03fcf37d0e0d730314c2760e334
+
+Best regards,
+-- 
+Paul Sajna <sajattack@postmarketos.org>
 
