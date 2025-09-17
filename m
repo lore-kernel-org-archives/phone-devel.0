@@ -1,134 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5BA299949;
-	Wed, 17 Sep 2025 10:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6461C32341C
+	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 13:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758103810; cv=none; b=FQIvQ+grOMpHR1+2YGbqYH9bkOfT+xKK1rAsgv7IOC53BaknYDhq6Mi5fD9F/Haf0sntLivdAJkP5/XznG6mLB2YC+hQdE9wGgC1vjMq1r0EIVqGe8PclLfuoBG4s8UU1sAQyE5xzg/shqomdNx76ovX1m/XBdaIl0bgTYo2eL8=
+	t=1758116340; cv=none; b=Dz9pOS012hZsRRl53EePK6VR1Vc1ZCNeDyGZKjEEVGjW6EofrSZg2Gqtr8nKruYHOSHOei2Zzy5kPXFcEKiEbEm/am1EzmwpqmzhsVO7TBqpmkb7wnjAUfVuvQ+QoVnwyRu5H4FjBCISHjs8l33WgffCgGFRW6JdcuSOAeISguQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758103810; c=relaxed/simple;
-	bh=2BpR/sbRSS7JegXJBjXVzWbl6vChgq/HKCHbYvwrI7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKbwJT9et+dd9t8CF4HGZGH7jGH2SOxMH7uuV0ib8SS7BLvlTyhMZJNaM4xK547IO5qisQmrKZTIZcJN8gkjSkeOU5t75KTj7cPp+0SQacAwcFSr1eFdm7RB9aQZFrCdd/WbqnZq3owwkbrNDCIKcrrm5bij7aSCgNrCQJP3xEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k14ze+iu; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1758116340; c=relaxed/simple;
+	bh=wmnaUoeLg54xR4kD8RVtS7d/+a4+fnfXhWXtZ54xcWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t8SfURZD8Gj1omI92b3VbS81NN7F40skwc+BCuX++7aTY/Yu0hFWhe72G9XHpGSfVebDDUndhM+oM3jBqEc1MzWZYvkE5ns2IFf4xMqPQ46dpx0UrWIusD/VFOtXgwpwjyIvGt1URZh2azbf0oHjrRRo/6lic0zDRRa2cjZDs5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T1F1gnen; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k14ze+iu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758103809; x=1789639809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2BpR/sbRSS7JegXJBjXVzWbl6vChgq/HKCHbYvwrI7U=;
-  b=k14ze+iumj9o32ZKto+4r/sdLeBwGsc5kCaQGVl6Oq0gWTGoL6zaU7qS
-   rimwdpfYE21h14DkUedkQahaDQlGwoll26pNVxASR/jW4mufpIPPC2IOs
-   TXwr01K1N9IP2iv+1JPH8yRBYHV5qPaCX3xzPI9z1RJhoD7R/Mg8YwvwT
-   wchFpjeo8XkNjrxpzRZFFbH5rngAZBIlCxkBUFMstSjsn5l5x+y6AnC0Y
-   2XgtLFAilhuoqSGktjmia9v3ShoPaClRfHrgcTddW2lvQOvPSVv+2VYi8
-   52ODjq4soVdyn39BgmRZa+YR7k5GXVSrQXRcNEgocxKD5KuvLEM5DPnC7
-   w==;
-X-CSE-ConnectionGUID: 2ppPnF1nRRK1bOab9oygBQ==
-X-CSE-MsgGUID: DV8LeAXhQAmpfFZOEBN6Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="60273889"
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="60273889"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 03:10:08 -0700
-X-CSE-ConnectionGUID: C+/Qdhs4RR+Xg+pgupSnIw==
-X-CSE-MsgGUID: 2vCrjiHCSjOEzB3SgWbGbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="175980728"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.41])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 03:10:04 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6911511FC22;
-	Wed, 17 Sep 2025 13:10:02 +0300 (EEST)
-Date: Wed, 17 Sep 2025 13:10:02 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Val Packett <val@packett.cool>
-Cc: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-Message-ID: <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
- <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
- <aKLZ39IzI_azrDIu@kekkonen.localdomain>
- <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
- <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="T1F1gnen"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58H8XZ0h027214
+	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 13:38:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4FR8amwe27Ylu/pUP+vY72tN0Ut6/tbsNkz8y6d1L3c=; b=T1F1gnen/pG2HG6Z
+	EKF3zowmzP0ugVBn1c2uzcxqi8lff66lKgjVIFJK62pTeSOPXR90ohiYIl6/Hnxj
+	yQHrtzv24MnltrHmmpmYy/pSB8+DHtYbrVKAVMVlT9zt092i5DERdRZmsqSsoqVZ
+	XhgsB/ro8WrCGujQ9XtCl4pkzky+GWJ5MBclBZpxGRo8QBEH3mN4I4ovwfR/vKk6
+	jWYdXgt42FziZhR+GsBq+mNaaaLa78R/MlIa0ZIt671PwvBdHccuWCn5+nD2cxj1
+	Ohjegv5Cro7+P7obqgaa2vuCHfwaJPZwrUZXUibOcz3aIbBXYx7PsGaITJ4ooCyF
+	T2qpbA==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 497fxwjj01-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 13:38:57 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-80e91c02c8cso163634185a.1
+        for <phone-devel@vger.kernel.org>; Wed, 17 Sep 2025 06:38:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758116336; x=1758721136;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4FR8amwe27Ylu/pUP+vY72tN0Ut6/tbsNkz8y6d1L3c=;
+        b=rRT929a2a/Qo6Jcf/ABFr43DDKH7lrIfiPt5p45ThnTv36OfX0/axbUddhZrajQ9lw
+         VAZdVjcsiUMlAFvsGddc642cOAlHqeQpqSFwjyy39ANRphcvRMZKsb1mlROSZLngkIgp
+         VuiqNb0Vi95oriYEc2UtRiszQCchQbqGsGwgdwAWUCWfZkuZf4EQFf6fc6ieBKsTDgLl
+         1OaSwhHnCxx/OA/34KOWFnE/qTXNZGtU9b+GSwL7zwVM7uV8kk9i70if8yoGksVkNEd6
+         c3yy6OzwI0HA3aFDMEFHDxNcY95i8NHNndsl+n4ZiD+RUyCZBRumgMMjA3OKDn+TunLQ
+         zl6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXeaFWQ33lDxoSX+l4LTeIlLTAMjg8vxU+cTpwr+QdgK1gaCa0htZhN3dV09b64XpKuuFLmJg26cDM3Nw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVoAvSM0xJTNt9lQXm7AKvAyKi1g2fwuPAw3xlsE4jYnIJgoFS
+	AUInHxWCnc1424sQ68sxsW5vkFZwD2Esmo3xkqokhxuLwoqUQvue6PgCestkeTMc7d/eV2nb40B
+	fq4Vt65a/88vL8EUUauqS6v7Ya6nM/YZSutop6AtmRB7cwOSYbsZr0JeaxYJ2CSwhjQ==
+X-Gm-Gg: ASbGnctSPaxENL2MemLYJjkV/1aSkUSHHZRYhmIAozURfy5L7vO4taoDGlCaC5MRh10
+	5hHKipMw45FPirZnzvQ66fWQWQT1EYWIZ/gasulw2ep9qdkf4sTO8VTHXRMYrBgffWyl2aeHIF6
+	yCLV55W71XlgMB9aUlVnWeCKMgOLrT7q2PtyUTxqMgWVuhEM40eyEttT4Q5SeCcTt60SlvXGUQo
+	tXbVN+P4pyOdB/zE/i4BKrz4wE9Oo3TKEdNGHhZu+b8J2OwyHXHRK0Hmtf2OQE4/4EPoGClIvT9
+	rXeNoLWGlaUsIB3o22ufU7hxyU8F7Ev+v3N0/IsRMQZ7Y1wluuVgvuSlNMN8N/cftBDNNaUyfCT
+	VJ6tAZiChFM+oKIPaOI50Aw==
+X-Received: by 2002:a05:622a:34e:b0:4b2:b591:4602 with SMTP id d75a77b69052e-4ba6a201826mr17337421cf.9.1758116336286;
+        Wed, 17 Sep 2025 06:38:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmQ7zvxYEQCcz1LV/ubwUUWJATtIDKSxIlQFAS7llfXEprD3GrYMvTESV9fbgINseDhj8YWw==
+X-Received: by 2002:a05:622a:34e:b0:4b2:b591:4602 with SMTP id d75a77b69052e-4ba6a201826mr17337101cf.9.1758116335644;
+        Wed, 17 Sep 2025 06:38:55 -0700 (PDT)
+Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b3128506sm1379313066b.28.2025.09.17.06.38.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 06:38:54 -0700 (PDT)
+Message-ID: <324327b3-7773-4abe-9628-c191685ea646@oss.qualcomm.com>
+Date: Wed, 17 Sep 2025 15:38:51 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] arm64: dts: qcom: sdm845-lg-common: Sort nodes
+ and properties
+To: Paul Sajna <sajattack@postmarketos.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        Amir Dahan <system64fumo@protonmail.com>,
+        Christopher Brown <crispybrown@gmail.com>
+References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
+ <20250916-judyln-dts-v2-1-5e16e60263af@postmarketos.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250916-judyln-dts-v2-1-5e16e60263af@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfXwcJ7vgqWC25a
+ UEbHTnAMdMPWDv8lqnOe3cyldy6Tp+MmOoXLkj5tjqOmVOtoOEaWEWTXSR5jJ322sA0foWXDUaK
+ XjEYNXnJ7o9ucsZXE4aWlJMC2qMGdMw6JNroKsS0B4OnOKWMdbqVqIX1dj76+ujshdfF+XsablD
+ WlhxffplpQf9tU+fF4dOX3STH2yv7Kx6r851+54yE8EKnumPSDiGyGWoQRgO2uIOTHq19vSzPZ8
+ xqF/jh5w4SHYjA1gxRBOOhM3eAtj1PMKd4jAmt+oMpDdcmwLVaBCvnHv3VSFxswfsdm63MHbS5Y
+ AjtQrrjXB2DcT6o9UcDIWT42vhWMx2zrqL6nUxp42OoIp9Ku11vuZUoPgIBoTgocsd+Y/YZxhql
+ XTpOqBm7
+X-Proofpoint-GUID: SnHCWq-m8u87xXT2Oisv9RIVqlNhdg3D
+X-Authority-Analysis: v=2.4 cv=ROezH5i+ c=1 sm=1 tr=0 ts=68cab9f1 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=Gbw9aFdXAAAA:8
+ a=EUspDBNiAAAA:8 a=JkoFm2tBDPzt1COVDkcA:9 a=QEXdDO2ut3YA:10 a=5XHQ0vS7sDUA:10
+ a=IQdlk4_VRkkA:10 a=NFOGd7dJGGMPyQGDc5-O:22 a=9vIz8raoGPyDa4jBFAYH:22
+X-Proofpoint-ORIG-GUID: SnHCWq-m8u87xXT2Oisv9RIVqlNhdg3D
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 bulkscore=0 spamscore=0 phishscore=0
+ malwarescore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160202
 
-Hi André, Val,
-
-On Tue, Sep 16, 2025 at 05:08:44PM -0300, Val Packett wrote:
+On 9/17/25 3:09 AM, Paul Sajna wrote:
+> in accordance with:
+> https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
 > 
-> On 9/15/25 5:48 PM, André Apitzsch wrote:
-> > Hi Sakari,
-> > 
-> > @Val, please see below.
-> > 
-> > Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
-> > > Hi André,
-> > > 
-> > > On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4 Relay
-> > > wrote:
-> > > >   	u64 val;
-> > > >   	int ret;
-> > > >   	int err;
-> > > > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
-> > > > dw9719_device *dw9719, bool detect)
-> > > >   	if (ret)
-> > > >   		return ret;
-> > > > -	/* Jiggle SCL pin to wake up device */
-> > > > -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD :
-> > > > DW9719_CONTROL;
-> > > > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN, &ret);
-> > > > -	fsleep(100);
-> > > > +	/*
-> > > > +	 * Need 100us to transition from SHUTDOWN to STANDBY.
-> > > > +	 * Jiggle the SCL pin to wake up the device (even when the
-> > > > regulator
-> > > > +	 * is shared) and wait double the time to be sure, then
-> > > > retry the write.
-> > > Why double? Isn't the datasheet correct when it comes to the power-on
-> > > sequence?
-> > > 
-> > I haven't noticed any problems during power-up of DW9761. However,
-> > according to the commit message, there seems be an issue with DW9718S.
-> > But I don't own the device and cannot test it.
-> > 
-> > Maybe Val can provided some additional information.
-> 
-> I haven't had access to the datasheet for the DW9718S, so this was all
-> deduced experimentally. By "to be sure" I meant that I literally raised the
-> timeout "just in case", not based on actual issues.
-> 
-> The actually important change was expecting the failure on the write and not
-> erroring out.
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> ---
 
-Ack.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-André: could you add this information to the comment as well?
-
--- 
-Kind regards,
-
-Sakari Ailus
+Konrad
