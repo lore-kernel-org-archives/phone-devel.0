@@ -1,155 +1,167 @@
-Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082AA32E756;
-	Wed, 17 Sep 2025 14:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.31.198.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C203333AB6;
+	Wed, 17 Sep 2025 15:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120911; cv=none; b=MY9rUnCZkWHc7K+nPqWJmorNEwh0icOJ0klTETqEmIpccJmWELO07u5cND6VD42SdckNOytD5I2tZBQQ83rZ1smFJbfY4O3xVmYwv1WZLWaCTQElEeKBT96COtyBFEHQ3t/044ujcU+V+K7mfNuybGqcQROesKKXK8IIDLtWse8=
+	t=1758121243; cv=none; b=ljwlsU9JldhiePKBungNqptbABCjWb3eczbkIkz2CFRdPg7UrxgP+2EwUGIr0HGxwKR0a6KcjAOdQFeZ0OPcGYxJsTTJTWjIPG49eriDkvCTWW8jvUwsI4n08srV9wvhHLiU+1tcJq21KqaYVzz+2APyFOopdaj+D+y7ahAi1es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120911; c=relaxed/simple;
-	bh=nJA8GDTU8VBse67HgpuXXx2PRQZBrnDPF8MjpbI7u/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IBXocLnhHSG5ucUTx0fb3Mzi5C4HZaFeUbz6lKeSWxB4LazCLsqsNecg0TX4eTxpnEhJObOzBFVG1GtwFnv4cEMZZQUuQGdXglQzyx/Bg4fOFKkhFb0jpifxV1SZ9L8sgVD4vyxgWk/oLiw4NmhBRjbMfH5ir4YB8t/Le1xvEcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minlexx.ru; spf=none smtp.mailfrom=minlexx.ru; dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b=Kr+SmylE; arc=none smtp.client-ip=31.31.198.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minlexx.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
+	s=arc-20240116; t=1758121243; c=relaxed/simple;
+	bh=uKTzGagGhtTrXiBZUakEIOCIX+NG+7SQ5Y4JJ+cUDsU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=PYJH65qChf1bybMR/6sqQpx1GMZznOuyF8dBeqxXeGr6Uqw+x3VmR6tPyB73yPh8hPw/BEiIQKEBcl+hP1ZtBzTEJVFbFBbuplOfyO33UD2u3oaXcCTyFLDjopSciFRHys5dKhgdHUQdzKbEtWrbaOu73huYv0AlO6k0JLsfIU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eyxr26a/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b="Kr+SmylE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
-	s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
-	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=lr//MT3EvIZWtAnrp9YlJUSITHvIatxfg7SqJqzZ7kk=; b=Kr+SmylEfF+MJMWOSPBbWNMKYr
-	yuRnejpuyr871uTaZv+METHqtUEcbcuqSEt8SHgBDulqYpcCrUkcDLpggI7zl90F3tRG8sxxFURnm
-	FKNNlGCuv5646s7BXRtrcNLxq6lGOqC1WF48duEkhJLnS15I7N1ESnSVMhcBF0k/ccCs=;
-Received: 
-	by sm24.hosting.reg.ru with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(envelope-from <alexeymin@minlexx.ru>)
-	id 1uytYd-000000000nG-2HQ1;
-	Wed, 17 Sep 2025 17:54:55 +0300
-Message-ID: <ac2d419d-a1b4-4b3f-a07a-4f5d047901aa@minlexx.ru>
-Date: Wed, 17 Sep 2025 17:54:55 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eyxr26a/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA32C4CEF0;
+	Wed, 17 Sep 2025 15:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758121242;
+	bh=uKTzGagGhtTrXiBZUakEIOCIX+NG+7SQ5Y4JJ+cUDsU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=Eyxr26a/Rt2KgGizbTuCA2IUVZrVVuRqbvmp5/HB46TnrhJjoaS1XiCgpsy1jf/Dj
+	 x/AMKfw3rxqmADP0Dl4eTN7KKfF+cmtv0VXAtlGM5qL1X7jpPFkVikhJcwwmaDa9jU
+	 cZf/0lVYVhLKpzKHn28CrVjtCkGxC630FMJsaOmMQou1rjraFT8OoRaBhp8A+LZUef
+	 k4Qocg0FSHWgg4ZYg+KR5aX5jTMRvvct7QBoKzraeez73o4it6FqoaA6JIjm+HS8CX
+	 TKuH1IftkU2oAVoj2VsKCN0xGVkhMFW1dAEF4RWy9W7Ht5ql5+fyoRZldBAey5qDec
+	 R2/nUG3wlipEA==
+Date: Wed, 17 Sep 2025 10:00:36 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/13] arm64: dts: qcom: sdm845-lg-judyln: Add fb_panel
- dimensions
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Paul Sajna <sajattack@postmarketos.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Amir Dahan <system64fumo@protonmail.com>,
- Christopher Brown <crispybrown@gmail.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Amir Dahan <system64fumo@protonmail.com>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ David Heidelberg <david@ixit.cz>, Christopher Brown <crispybrown@gmail.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org
+To: Paul Sajna <sajattack@postmarketos.org>
+In-Reply-To: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
 References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
- <20250916-judyln-dts-v2-9-5e16e60263af@postmarketos.org>
- <de1a7ecb-924d-4ed2-8034-721b8dce69d4@oss.qualcomm.com>
-Content-Language: en-US
-From: Alexey Minnekhanov <alexeymin@minlexx.ru>
-In-Reply-To: <de1a7ecb-924d-4ed2-8034-721b8dce69d4@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-Id: <175812100543.2051686.13703690250183906386.robh@kernel.org>
+Subject: Re: [PATCH v2 00/13] arm64: dts: qcom: sdm845-lg-{common, judyln}:
+ Improve HW support in dts
 
-On 17.09.2025 16:59, Konrad Dybcio wrote:
-> On 9/17/25 3:09 AM, Paul Sajna wrote:
->> Add display dimensions for proper scaling
->>
->> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
->> ---
->>   arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
->> index e84b45ed82fd13850ea7ec1f34ddac5b59fc1434..8c1692f86e6ceea7b718361965e78f95d39373bb 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
->> @@ -23,6 +23,13 @@ framebuffer@9d400000 {
->>   			format = "a8r8g8b8";
->>   			lab-supply = <&lab>;
->>   			ibb-supply = <&ibb>;
->> +
->> +			panel = <&fb_panel>;
->> +
->> +			fb_panel: fb-panel {
->> +				width-mm = <65>;
->> +				height-mm = <140>;
+
+On Tue, 16 Sep 2025 18:09:46 -0700, Paul Sajna wrote:
+> Rollup of improved hardware support via devicetree for LG G7 ThinQ
+> (judyln) from sdm845-mainline kernel fork
 > 
-> It'd be nicer if you moved these properties to the actual panel
-> node (the DSI one) and referenced that one instead (I think that
-> should work)
+> Notably, this patch-series enables full DRM acceleration and wifi,
+> among other small improvements in individual commits
 > 
-> Konrad
+> after this patch-series the main things that remain to be worked
+> on include touchscreen, audio, and modem.
+> 
+> Depends upon panel driver patch-series https://lore.kernel.org/all/20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org/T/#r9a976ca01e309b6c03100e984a26a0ffc2fe2002
+> 
+> Co-developed-by: Amir Dahan <system64fumo@protonmail.com>
+> Co-developed-by: Christopher Brown <crispybrown@gmail.com>
+> Signed-off-by: Amir Dahan <system64fumo@protonmail.com>
+> Signed-off-by: Christopher Brown <crispybrown@gmail.com>
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> ---
+> Changes in v2:
+> - sort at the start
+> - drop unnecessary labels
+> - drop unnecessary gmu
+> - multi-led
+> - split fb-panel changes
+> - expand upon firmware commit message
+> - use qcom,calibration-variant instead of
+>   qcom,ath10k-calibration-variant
+> - change firmware paths to include "LG"
+> - remove framebuffer reservation
+> - add lab/ibb
+> 
+> - Link to v1: https://lore.kernel.org/r/20250913-judyln-dts-v1-0-23b4b7790dce@postmarketos.org
+> 
+> ---
+> Amir Dahan (1):
+>       arm64: dts: qcom: sdm845-lg-common: Add leds
+> 
+> Christopher Brown (1):
+>       arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
+> 
+> Paul Sajna (11):
+>       arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
+>       arm64: dts: qcom: sdm845-lg-common: Add uarts and Bluetooth
+>       arm64: dts: qcom: sdm845-lg-judyln: Add display panel
+>       arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes
+>       arm64: dts: qcom: sdm845-lg-{common, judyln}: Add wifi node
+>       arm64: dts: qcom: sdm845-lg-common: Add chassis-type
+>       arm64: dts: qcom: sdm845-lg-judyln: Add fb_panel dimensions
+>       arm64: dts: qcom: sdm845-lg-common: Add camera flash
+>       arm64: dts: qcom: sdm845-lg-common: Add bootloader-compatible board and MSM IDs
+>       arm64: dts: qcom: sdm845-judyln-common: Remove framebuffer reserved-mem
+>       arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+> 
+>  arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 222 ++++++++++++++++++-------
+>  arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 136 ++++++++++++++-
+>  2 files changed, 296 insertions(+), 62 deletions(-)
+> ---
+> base-commit: 8394712bc1340df993cb167199568f44013b45d3
+> change-id: 20250911-judyln-dts-17c41e59dc0f
+> prerequisite-message-id: <20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org>
+> prerequisite-patch-id: e51151ea7f8fdad6ad7d90713febc5c6b6fc4f9c
+> prerequisite-patch-id: b3dd44250da9cd12bc5b2d0d7e865dbe19ceed92
+> prerequisite-patch-id: fd6c8077806cb03fcf37d0e0d730314c2760e334
+> 
+> Best regards,
+> --
+> Paul Sajna <sajattack@postmarketos.org>
+> 
+> 
 > 
 
-Hi!
 
-First of all this code doesn't work well for upstream, because it causes
-errors with dtbs checks like:
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-   framebuffer@9d400000 (simple-framebuffer): 'fb-panel' does not match 
-any of the regexes: '^[a-zA-Z0-9-]+-supply$', '^pinctrl-[0-9]+$'
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-^^ The subnode is not allowed by bindings.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-The whole reasoning for this little hack is that the upstream
-recommended approach to solve the "unknown DPI" for framebuffer issue
-is to put width-mm, height-mm into real panel node and and reference it
-in simple-fb node - sonds very nice in theory, but also doesn't work
-well in practice, and explanation why will take a bit longer, please
-bear with me for a minute.
+  pip3 install dtschema --upgrade
 
-If we do as recommended, device tree structure will look like this:
 
-  framebuffer@9d400000 {
-      ...
-      panel = <&display_panel>;
-  };
+This patch series was applied (using b4) to base:
+ Base: base-commit 8394712bc1340df993cb167199568f44013b45d3 not known, ignoring
+ Base: attempting to guess base-commit...
+ Base: tags/next-20250916 (exact match)
+ Deps: looking for dependencies matching 3 patch-ids
+ Deps: Applying prerequisite patch: [PATCH 1/3] drm/panel: Add LG SW49410 Panel
+ Deps: Applying prerequisite patch: [PATCH 2/3] dt-bindings: display: panel: Add devicetree documentation for lg,sw49410
+ Deps: Applying prerequisite patch: [PATCH 3/3] Update MAINTAINERS for lg,sw49410
 
-  soc@0 {
-      ....
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
 
-      mdss {
-          ...
-          dsi0 {
-              ...
-              display_panel: panel@0 {
-                  reg = <0>;
-                  compatible = "lg,sw49410";
-                  ...
-                  width-mm = <65>;
-                  height-mm = <140>;
-              };
-          ...
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org:
 
-Then, to my understanding, due to how fw-devlink works, the panel=<&..>
-link from simplefb node to display_panel node creates a probe-time
-dependency, so that the whole display stack probes first: MDSS, DSI
-controller, maybe even Adreno GPU, *AND* panel all probe first, thus
-making the mere existence of simple-framebuffer pointless.
+arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dtb: displayport-controller@ae90000 (qcom,sdm845-dp): clocks: [[206, 0], [206, 28], [206, 32], [206, 34], [206, 37]] is too short
+	from schema $id: http://devicetree.org/schemas/display/msm/dp-controller.yaml#
+arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dtb: wifi@18800000 (qcom,wcn3990-wifi): 'qcom,snoc-host-cap-skip-quirk' does not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
+arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dtb: framebuffer@9d400000 (simple-framebuffer): 'fb-panel' does not match any of the regexes: '^[a-zA-Z0-9-]+-supply$', '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/display/simple-framebuffer.yaml#
+arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dtb: displayport-controller@ae90000 (qcom,sdm845-dp): clocks: [[209, 0], [209, 28], [209, 32], [209, 34], [209, 37]] is too short
+	from schema $id: http://devicetree.org/schemas/display/msm/dp-controller.yaml#
+arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dtb: wifi@18800000 (qcom,wcn3990-wifi): 'qcom,snoc-host-cap-skip-quirk' does not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
 
-Additionally, simple-framebuffer probes succesfully after that,
-creating "second GPU" entry in as /dev/dri/card1 making it look like
-system has 2 GPUS, which confuses almost every window manager in
-userspace later. Normally, if simplefb probes first, it gets unloaded
-and replaced by MDSS and does not cause any chaos. In the end the whole
-situation looks even more silly than the fake panel subnode hack.
 
-Therefore for upstream I'd recommend to just drop any fb-panel hacks and
-to not use panel=<&...> with reference to real panel either.
 
-It would all be much much easier if we could just specify width-mm/
-height-mm directly in simplefb node, but DT maintainers rejected that idea.
 
----
-Regards,
-Alexey Minnekhanov
+
