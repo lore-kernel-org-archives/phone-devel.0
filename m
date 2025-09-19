@@ -1,172 +1,133 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D3314D09
-	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 14:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D525925F79A
+	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 17:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758293121; cv=none; b=kROfa2IjkkM6GrDtWW+uNBTPOA3E7zRtk2Idcq8eQfhiUJzjluWjOrxtqG9xPzedghhHtPJh70QDNT/tNTZlD+0KzUK9mwiJlKBrftBEGKfqzD/cu14hi8gsUF+q3sAss6Kh9gdf+ARUhZI8L+715LhZhWVsw0saSBGIXEo/KQo=
+	t=1758301268; cv=none; b=Gf6MJ0tvGhk287ByCpm0RTChQpE5GKGz4FGZOYojo5LS5ZzVir13reMrcHwCeCCul23YlLdKvAAViXyMTvzmPWaJzxEI6DuQk1XlRxloX7hQgeZcQhXPGgNpGRKpAt/04KCEDnZi9o2MOzdYIwIFoA2uCWpFQ64MlmetJt/Tctc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758293121; c=relaxed/simple;
-	bh=q5GTIDOH6nNGTWtSpjuk6PU/ndO/Nf+ZFH5Pj5u31/o=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fbMV+061cwhhjXNnOcRu5Y50Kn/zfKjaFxbSvjvfAyWhLuBmxXCgt66FVQLKumWh94REnBwcIlBrfJcXwybYns6bSNfo/deB3n8SGTUoI1NQ4nYQ6lY9jxiwFEJTMAv7EIb8yJHHlJAiqkF9qU4UbmqOdkWG3olMHg0VMbjalyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FuHlC55X; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1758301268; c=relaxed/simple;
+	bh=Y7DKAZiT2YZkSJp2XiHhkr0pQT76qG9tSnaVyBpEkpA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qdRjIPUH/7/GbC0D4Lo3RQ14FshX3cjWvL1ybb2Rd7S7/BOwKLjzTyogOydJ+hEN7yfNMr9XmNA6q0BwGPTX0zok4OjuWP7Y4KvMoOD/4mpGYxxsGTsVv3PwCui9QF05PDn8abnbp7SDMs69vF5p0k9COuzWjS600Vr9Dtx8YDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LkwbJwgr; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FuHlC55X"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-468973c184bso4180485e9.3
-        for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 07:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758293118; x=1758897918; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EJj1y8HqXNnf98ADR5kQhDmwOZyt1Xf4VxjtZZ9P8no=;
-        b=FuHlC55XGE75NnFuxZVpJ777sqLFZ1zXbQz4WSo3bPUwTAlN/cWYS4zUUjyU1w8137
-         MeGYn34Cbr9xe4Acyp/hl6mJBu9aHq8Dnb/bmd6GTyWNWX0FVC4O42/oc3hTTre34RGb
-         a7Trd73WhQbtnRb4eLCMNhjqi22/Te7jHOksXqn0eZGDxgGRn30FGzM3uXzfv80upgQt
-         68RzV9ELz/HRC8tIhtNzPTTgR6wGXCQfMtILjm6eoE97OPt2F/ELSap/sZOME8iZ6AbS
-         pS6/cQ+DKOsysiMXjsEPxAfqjYVuaDwDmX0RNmslr+Sc128vqtCUA7kXVBAVvwNWnyET
-         2oGQ==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LkwbJwgr"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58J8k4ME028290
+	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 17:01:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=gfDFATVzLHxL3rjSBMcDlDZ8
+	Gmp6IwIJVpR9vdm9I3I=; b=LkwbJwgr9Nasieem7nMvMqGZuqoKPJzLMKGtKtZi
+	xoLeuGbUNfp9NSB6BFl63dMtv6IDP9XNObPSL7h2aqn25iKIsWammaMm6LkfCl3L
+	mtenuHbSwyGmsvtkYAGIbjn5a70ogViaR7aGlTtTM9W1CXFce+n3Sj57X99FG3Y1
+	A+S6AQCHpYkSxZIksL0VwX1LusPR+9ysUt2Xvbhw6z0p0UWVgpOiT7+3zHLshKDF
+	+KlLiuOfEeVGX0dnfk5T/Me5FyWHnbVne25Y5SSjQfeAth6goPKf8lAxM0zpKL97
+	uXy1G63RiY8WOwr3v8WaOR+Swn7kqBhGZhkOj09WCFV+6Q==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 497v1jh62h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 17:01:05 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b5f31ef7dfso60575341cf.1
+        for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 10:01:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758293118; x=1758897918;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EJj1y8HqXNnf98ADR5kQhDmwOZyt1Xf4VxjtZZ9P8no=;
-        b=N1GCsUhSe9XoBG/o2CrgIC1eB6RJPmOZ+nUaisPgZxulKmuRIm4+6Gh8EG6OJXcvBg
-         iEgoximiRZRhkU+F2oyvTD0Y8EOCKH6kVlruh3t+43htmGeJNvYiQY+mjso850pPio9Z
-         MranH4Puhcb/w/zsW3mN644sJp1ysa84b0b3FVuCU6DMwPjpwEfneqfYOlYrk0m/B3Fm
-         QMuorVpwM8ll8VBIiwMGR4A3P+HUVCfNeolWU5zF17CsuBhv4jyicRfO+iHDFSNlLvoD
-         WcYaaAo4nKZhTcINycenAKRfB5rHF4taS1zMt2Bku8FxFIdBwWKdSGPE4iZ+OhbZxaI0
-         Olcg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7tp5Xlszd2rUMARLMxN6LCZxxP//bBabEJsQhPCh089NQn4/0YBbstHLRV4ej/xGyNTN3+ImraS6LLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Bro4Ce2XKCE1Xq8Nq2Vpsy8joAVBR1b/900VTDVi07LhUtWi
-	+HKG8+5ZMxf16UpOZe44hOfi60k9gQJrty2fibLUWkSGIV3J10uL9xXCpxip0rsfuko=
-X-Gm-Gg: ASbGnctcRB+c96YGb7oLZbwh4IjO8XEFShq1+HCpqH/thliaQXAaB8XdSlla1eesshZ
-	xvHiA4V25z1gnWLkZu7uUhK/DEOMThiEBx/ZBMTinUiHXY6YhMMZvSrNqSE0sg8bdLp3V4dPwdi
-	ApWtrqS5oBY3ScV1SdifXlRAXcIc8Gl64fqLWE2ANFQ6PH+FFh4H/2UhnIVmAW1TgBzKqR7A6It
-	97uwhdYrSYWdz0E4bT3HGdsPrVYsW+c9PwIDfRQR9t5od+QPIgOLglOUZrytnL/LyXc8VAtDAt0
-	cH6JFPUH/pRZa+hQb1edWPT2L/Z00pNwKhiD47ktCL+AHrceuu/Ls+vRb7jsyu+Dbqj4AIxuyuz
-	VElA4l4jZmY6bUseHRi0STBgRujEAMd4+0GfQ8PdSAxf96j8YbOcKxOmpDyW4BYORH5hmqQJ0
-X-Google-Smtp-Source: AGHT+IFxWL+PQqZanQNlYmC61Jl0EglExICuzzye9odcz+14oOJKf1NTLs6pstSwIMChvW2GI7XGEw==
-X-Received: by 2002:a05:600c:468a:b0:45d:e326:96e7 with SMTP id 5b1f17b1804b1-467eaa86e42mr31110285e9.29.1758293118114;
-        Fri, 19 Sep 2025 07:45:18 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:3d9:2080:77b3:66a:b2a0:c20f? ([2a01:e0a:3d9:2080:77b3:66a:b2a0:c20f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee073f3d73sm8046942f8f.8.2025.09.19.07.45.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Sep 2025 07:45:17 -0700 (PDT)
-Message-ID: <272d8cd6-e151-4bab-b8fb-438182a575be@linaro.org>
-Date: Fri, 19 Sep 2025 16:45:16 +0200
+        d=1e100.net; s=20230601; t=1758301264; x=1758906064;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gfDFATVzLHxL3rjSBMcDlDZ8Gmp6IwIJVpR9vdm9I3I=;
+        b=X4wp7Ia5GjhoFsylCVh4+Vog5n2UsS8WPMJ/WNitYxSwgR7P77270UyjT2WabTdCDB
+         ZkgiwVqeeP+4RpL4gASpabmPs53SJ5gKOFirXWJlKv7D0pZe+GemKqEHh9VjqDkmh/DI
+         EZx10Hd0TMBDC1dyrOlYhYTBqh3l/sLaaxXRJLa2iqBCIcCjN+IVH4Jm+r+OwjtfoFMn
+         AKrMoYiHZvK8gx7D+gkGLUxvkcyT+/Dyd2mwixZzq8gSGyDbOxIHYlTGnBs3B3vhMO10
+         qxvNWgBldiXdvAh/jWcPWFNVbQsScMOV2S1BCyyuWuD0ppYl8lBKZBLBmXPNLT+EJqiL
+         wo2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWJJWxdwIi1O7MY0QH8fdvaPKWdh9B6hwC8nhcsBxnhzLHqb7LQhfV9dIvQoTFYv8oCJS+HL/sXTFzGFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7daItA+69kbifP39HL6BVrK0OM0HvGiTSOSu8Z3pyNiOEwc8y
+	+NZA0Hc9ApxIB/GRsWnCXPyJysIPUdyMG+HJRBXqLTXqZXwswmw4DapBzAjSd4WA10uffzEwLdz
+	JmERelcuwlD9L87g+7Bu48GMX62E1mLJ9SJibQtJd+7aE2ppAocHtodg97v5QfWgBkw==
+X-Gm-Gg: ASbGncv22j2LCe5JHgSmmzgbtvNsfRZomM4WcPj8NejaBNm+xgMX+LWh5fpgHAAAjcp
+	TayHipIs6BJXSwLa11t7R02q25YNrm0+LktYPfzMn2DkjaTpdFlnRITDjrQIhbea2Yr4/iXye9T
+	aFnKyYfMF91wTf0/CKyeMvTDJUwGvUS0brRw6KUhK4IJj33x/jsDZy3gADVcqwgbsnKqGXUls0X
+	yxYL3aWw2fagTquDHa0lwuYAzWXUP3Uqx1EduVIkyK+w/IlerfyQcbxlv48sw5v0f5hxxjjbQCy
+	tSyrfP3dTDzvFTPHvF7MLiXaX2fYmJ1agnIyPramq4/Jru9QeMZIQxJUAWC1KXQiAsCx2Tqu4EY
+	/mTZygfwTshXHqG/axihp+g2OZ80m3IolOFttQnRWhNapiZnE0kBc
+X-Received: by 2002:a05:622a:1994:b0:4b7:9b0d:11ac with SMTP id d75a77b69052e-4bda971d81amr84082131cf.8.1758301264008;
+        Fri, 19 Sep 2025 10:01:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGvIhD0JxWZnIagFrRbczAgFfT70uY1KVYP/SGm+8WArapSfq67kdLR7qEtf5eIC6XHqkQLg==
+X-Received: by 2002:a05:622a:1994:b0:4b7:9b0d:11ac with SMTP id d75a77b69052e-4bda971d81amr84080841cf.8.1758301263027;
+        Fri, 19 Sep 2025 10:01:03 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a5f44a3dsm1523174e87.29.2025.09.19.10.01.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 10:01:02 -0700 (PDT)
+Date: Fri, 19 Sep 2025 20:01:00 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Jens Reidel <adrian@mainlining.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Danila Tikhonov <danila@jiaxyga.com>,
+        David Wronek <david@mainlining.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux@mainlining.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 3/3] clk: qcom: dispcc-sm7150: Fix
+ dispcc_mdss_pclk0_clk_src
+Message-ID: <z6v7vi5kiudvfc7es5whzkfhn6c7ozhxw5u7onp66u7qd7utnx@cwit27ppu4c5>
+References: <20250919-sm7150-dispcc-fixes-v1-0-308ad47c5fce@mainlining.org>
+ <20250919-sm7150-dispcc-fixes-v1-3-308ad47c5fce@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2 0/3] Add LG SW49410 Panel Driver
-To: Paul Sajna <sajattack@postmarketos.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>,
- phone-devel@vger.kernel.org, Amir Dahan <system64fumo@protonmail.com>
-References: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919-sm7150-dispcc-fixes-v1-3-308ad47c5fce@mainlining.org>
+X-Proofpoint-ORIG-GUID: QuMEYP1-SKqisdVwXxz-4SExEQiVLR1y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE3MDExMCBTYWx0ZWRfX5MTOsvx6HDLZ
+ KreLsgg07LtH+lmVoO2kwOYAU+qNk91UWgmFBL1roy5lwReNBCOBm63dJ3uomPvJ7WI8d1n1rzj
+ yduMtoPFs9C+dKOJeB+NjTOCQYmNo/BeMCCyGuJjXxIzzMU2AF9KUCMoAl7f/aI8+ONwYBz7B1D
+ unaJcwSqhfaXVyjVp1skcqA2JjVSanDdtd/8aYHxUFQquk+ZdAco98O+t0VF3KH3ohq/Ln38lxX
+ TTxQnGZQgOE91cXCpD4wILbmMtwkA2GgnmDK1eVo05E64eS8E/5yCYbs3NNEYKcr7jwoEWaNz/k
+ jiCy9/xnc/VYLJsqIsNHDo/0yTyG6QCQGLruFV+eNXLAfm7v4kLQyOvQoJVQqfHJSJCXl81eEfR
+ DSSmdiPv
+X-Authority-Analysis: v=2.4 cv=AeqxH2XG c=1 sm=1 tr=0 ts=68cd8c51 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=OuZLqq7tAAAA:8 a=EUspDBNiAAAA:8 a=vcgiYtMqkSy1wNhQ1XQA:9
+ a=CjuIK1q_8ugA:10 a=dawVfQjAaf238kedN5IG:22 a=AKGiAy9iJ-JzxKVHQNES:22
+X-Proofpoint-GUID: QuMEYP1-SKqisdVwXxz-4SExEQiVLR1y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-19_01,2025-09-19_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 suspectscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509170110
 
-On 16/09/2025 04:32, Paul Sajna wrote:
-> This patch series adds a drm panel driver for the LG SW49410 panel found
-> in the LG G7 ThinQ (codename judyln).
+On Fri, Sep 19, 2025 at 02:34:32PM +0200, Jens Reidel wrote:
+> Set CLK_OPS_PARENT_ENABLE to ensure the parent gets prepared and enabled
+> when switching to it, fixing an "rcg didn't update its configuration"
+> warning.
 > 
-> The basic driver skeleton was generated by https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
-> from the vendor device-tree.
-> 
-> The panel driver works but during testing we noticed sometimes the
-> display goes blank. Source of this problem is unknown but seems to be external.
-> i.e. It could be a conflict with another driver or an issue with
-> aftermarket panels.
-> 
-> Comments were added explaining magic numbers, and devicetree
-> documentation was also added
-> 
-> Once this patch has been accepted, I'll follow up with
-> a devicetree update for sdm845-lg-judyln
-> that includes this driver, along with several other improvements
-> 
-> Co-authored-by: Amir Dahan <system64fumo@protonmail.com>
-> Signed-off-by: Amir Dahan <system64fumo@protonmail.com>
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> Signed-off-by: Jens Reidel <adrian@mainlining.org>
 > ---
-> Changes in v2:
-> - use "multi" versions of functions
-> - remove DRM_DISPLAY_DP_HELPER
-> - change dt-bindings to panel-simple
-> - Link to v1: https://lore.kernel.org/r/20250910-judyln-panel-v1-0-825c74403bbb@postmarketos.org
+>  drivers/clk/qcom/dispcc-sm7150.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> ---
-> Amir Dahan (1):
->        drm: panel: Add LG SW49410 Panel
-> 
-> Paul Sajna (2):
->        Update MAINTAINERS for lg,sw49410
 
-This patch hasn't been reviewed, and anyway the subject is wrong, it should start with MAINTAINERS:
-please fix ans send a v3.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Thanks,
-Neil
 
->        dt-bindings: display: panel: panel-simple: Add lg,sw49410 compatible
-> 
->   .../bindings/display/panel/panel-simple.yaml       |   2 +
->   MAINTAINERS                                        |   5 +
->   drivers/gpu/drm/panel/Kconfig                      |  13 +
->   drivers/gpu/drm/panel/Makefile                     |   1 +
->   drivers/gpu/drm/panel/panel-lg-sw49410.c           | 502 +++++++++++++++++++++
->   5 files changed, 523 insertions(+)
-> ---
-> base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
-> change-id: 20250910-judyln-panel-948f177c5c5c
-> 
-> Best regards,
-
+-- 
+With best wishes
+Dmitry
