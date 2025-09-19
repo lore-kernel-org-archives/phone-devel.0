@@ -1,65 +1,67 @@
 Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE672F533A
-	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 09:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F4E2F39C3
+	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 09:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758275963; cv=none; b=JJu0VbTliTWgf3Fj1y7uBHgQujSwrqgCV3JF4RRh1VJqHzZmeXP0Bh2hJkQhYv/tyWDVQh405h+413tX7BlSeoV4y42+kH4rMVHcBP3Q5Rgqx7ehHrMNGk8HPiHydclBkLipQlkeGtp+5j1V7ZSljRV7TDuk0pO4IDgfKtSuUUs=
+	t=1758275966; cv=none; b=njaKFalCZDDfWSvMpQGdvWqtu9uzN/zAp87KJXjXUeAfljaw37kutGLPwnQjxejTz+sT8t1C3zweMaVB0ROs1rxLFXhy64hnu4rXLvgVPKvlPQsys+5rIgi5vygTCbAo8myhkW5xzjG+uRlKVJjcz5/wb/HlpHbvUHCNUAGeXXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758275963; c=relaxed/simple;
-	bh=mMraxz1KfXDhOa4Lp6riixVKju0PQI0TmWYwlUzbwRI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MeHFvGjPj7DBNfYEtt1B46lDC51e/+xhRnqWFAeG1gSje7o3wnQEKdafA4KidC8OW4J1wFPf8v5Qgn1a+kaxJhnh2eHhcHh+Mn3wFOFXwDT/Hd09tRZ+Wpa4DizV9bVY8bFGP9sFE9SGY2uZwTfkmJGdBHS/eFb15g2XvuxrQOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yfjJbs8z; arc=none smtp.client-ip=209.85.208.52
+	s=arc-20240116; t=1758275966; c=relaxed/simple;
+	bh=vbP03XlE1h7xnXHsE6YxSmU4t7foc5GMAXHOnth1Kak=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fW4CeGv1F8m1J01ZKpH7lllWDQPR0/0ycq/17i1wUQq6ArOCtRgawQNQYyw2BbwE7LjZMM5tFlMOQN7Dke+y4Yuqqcry3o9FRxDmO/O8/WGOgpzBwlDOewr30VoFh/vZ0jOcEQD6T6Q44+J69Lf4TmHqbJ2BQOTWbtlKqiepJ4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ljLPR3hH; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yfjJbs8z"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-62fd0d29e2bso287424a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 02:59:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ljLPR3hH"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-62f4273a404so5593933a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 02:59:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1758275958; x=1758880758; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xJg7U22MK1JiQA5LO5CM9bHHIrHca1NYKtGFQsxP4r4=;
-        b=yfjJbs8zJsQGgpDtUh+/DhjEBnUciTKP4fenL/W/StDYTtrH1s01OgdQ3nIlhvowS8
-         T4RWct+vVfttatWB3xNrqwyebq4K2v44o4Ta3a/Kd42FKQhI7d66eMjw0N0AtxsWRLMh
-         a2Xp32jmSJMVkMlVZ+ErCkdLErJWasksYy3gM7UiBUV9f0UPAChKDJrB0NQwTUGgfTS5
-         YZVYKNvgZWx+GssTNrCc1JrQgGD6A+t8j4g+yNJoRgusmhOsvsYMzE9wEYL7dxB5R/Y9
-         Z4KOW8N4NW+Tt4tgpMRWu8+vvF/hYjwa/4IPmQ3eEGxAe65aCv0iOmzQVY15B3On1TdW
-         ZC6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758275958; x=1758880758;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1758275960; x=1758880760; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xJg7U22MK1JiQA5LO5CM9bHHIrHca1NYKtGFQsxP4r4=;
-        b=k97tf+g1KBjpnzUqIF3FFNxctWt2GGwf7f9DmJeq0Un77L5ag3kT2QykoRcohJhSzp
-         SIKaSXRQSudc3vLoJ1i2UXuckezd94Vqd4Oh8NCOpUH6QmFoNcCZxx4CFtFyGOamXE6z
-         +itacHZj7bPDyTowu63UiXYsH2NXDOL2rnlmlfKGyQ6hIbEbYnSrtNK34p5G43spgUQV
-         t179SjDMs+w9picagZnomUPyhdb9m+L9iMy1XoFzWaSH7RJn9WA/rGnHjRHrEd9ce9Yu
-         qFje/Su6pVthOQiNQ2WJa3cfaa3tq0yKRIX+bb7Q20R4XhqWhiWNrE5s9x2GhoT+aAg+
-         xcFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXfEaGZ+BuNl6vAZhagrBtP9vRP8/oFZJy7GkX1r+DJaiww0lmM7j4+e9oYb3agpGiV4sxmhvIOaoIB6A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh/OcNyoCrd6hXSdIW+srK17AH2n1jsiht/kMZvXqyKDqCwNYD
-	IVpBPe7KmQtwHCQp/ZcRPH59PJWYX7/8yZ2KiJucxubLgvyXc/SJ1GsU+gvUWDw3J28=
-X-Gm-Gg: ASbGncs3Oq/rRjGZFDvIjCT0QwSuuk0cx5+H17sLjzrrxX24ygycIjdNWZAdTDW7mhA
-	2MW+hiHvKZ0RNmeWRyW/2EwQPad/tlO1tBx/8Sctkv1uysKcNzCjEKsRgU8FaTE6mHlkNHSfeIU
-	pBqNUXCloevj/zn0e1VQJPCi/cgbrl20t51FIqs1uClBn8x1o6crlpegZ2HNlYDnxFz+fbWT3z1
-	BUk32p7DJoFrxlj678oLS5aQ+r/Qdm5WqGIxu2GCYsmERHNX/R9a1WhnmD8IpF+2jruKAUcpHq8
-	nSVudS/7uBCR1Z3tfPezgBj/NFqefgmaUCS5uou452oMUU+13uvUUw+vXPW/w0nA8YLlUDc2TmE
-	+PZh0cH4mxjSdNOj/Hf8qJNMt8VgKB0LAJDM/8xBSb9AsGKcT/WWTNOsiXlnni0ibf9TZDQ==
-X-Google-Smtp-Source: AGHT+IGVYm9E/cx1SKKQgvlhctnWTkhe6Z+JABeK/WVkRlVG4Nq2CQ/rYTfusBlwv0oZAUdV2jr6XA==
-X-Received: by 2002:a05:6402:23c2:b0:627:f3b4:c01a with SMTP id 4fb4d7f45d1cf-62fc0a5a09fmr2234196a12.17.1758275958517;
-        Fri, 19 Sep 2025 02:59:18 -0700 (PDT)
+        bh=HRCjBM+UZmtDkzaHBLv8yNwvYcdqAmpzBt7Gyq2DkH8=;
+        b=ljLPR3hHzSJXcJkUGL+iM62KIUPeW37CxYkOshGTYxeCiUOHiN9PY2r0PrSwCj1cUh
+         BAphtPA3BKJcN6atFC39OCHXAjVU29ubGTvrG87/BziM4hAMHrlCqcjInisWvVR2XwL5
+         yqHi0sEgurQ89N8rRfSrF9T2VEYRNiKIWw0seIcrQbMl5zg2/BhOyFlpNbzPKl9kDTzv
+         6R60C2qXmWR5QJsOsuWeJ+m5Iw6koacaRCu31tM4HDPCZM+hGze3B2ABpoXIFfpf0OGT
+         l22Kyrh1XkJP4oY9XUbVC/gX+m0dYMwqOvj7e5Mtns9wpwHwyg/Mf0KmMlUcANqq2apD
+         I/mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758275960; x=1758880760;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HRCjBM+UZmtDkzaHBLv8yNwvYcdqAmpzBt7Gyq2DkH8=;
+        b=tebLngYuHHo9GExE4BtlPEhdfZUq+paAoUvqFvQjREaYTkn8CiJOtvFeedLXoyMxu0
+         3YfQSfyyeCckVsCdspoDdWslssq+Dto43GGjbrcDvF8tF5T4mxsc+Nx7YFrLMhapwMll
+         6NaIm8CvJKA4Ei/hpt/IqDtm8PBA2/tJv9T2f0ERwOzbgG5T0QC53GY7M7B5F92poA2v
+         xvusV7wBQd7rApNXU/OwhI5OZqynD9tZ2pVtxwAvvLEXGCO9XPNz2UIvt1iYBOMbSE/g
+         j3qpaRcRwtZivUUOrW6En/O/9OzNWOXENCVYHzjLRcnEYbXyrRvqloyw1u6i8GMsETq8
+         ltXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqCIMPrs25S9L7yUIPjuqAUNz9WlsRxlMtnvRYbB6BmlsKe2X005P9MhHVwyXV6YoCKaR3WfKDJ27Hxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWt37zQPJYH+53el+/8vYYssOv217q+xFgq+FP1VqRNtsJr7dC
+	X3uswKAAMTfjqANRxZrlBHr6+glznN1vwv2pu8wog4uS63cd0YuTfRazV65XHGZsujU=
+X-Gm-Gg: ASbGncteypgPYwu71yU/zJ3bs4f1QYVsGEljPp0q4RQhCSPz2utH4lY2kx0QbzMYQSZ
+	iB/AkMHuiMMQ2k1PFnKLNJ+5O1dgThveufroTDxNdxOfcuyfrLeuTlBuQiGh/3D//R/FIaTGHJ2
+	RmUxd/xMisZkB9eFeTr/jmZeyfYV2GxGttwvmsd/z3zcoaD8rI9w5JaqanMczGp/EsolpGUYtP9
+	8eVlAxkGG6v3hOUVpbynmv1aZwn1bontX6cqgK7an/i0MHMqxdKv2LQ+1QvEvzigjfEeuxM4bE7
+	MZqKfwnAERyVnFO8rZZygRVF+RfTobY/vQP6Y759AuJsrv3nw3JElXckPN2m8hgvJGPEyLe8z1w
+	J1OoKumwDxL2agfwG/F5PJIvIqc8w9RcbBkINsWsT0spHIWT5u9H6SmnIQbakciXbiWalIw==
+X-Google-Smtp-Source: AGHT+IFgmVd41y35n12dNNDHlT8B0lvOLEpxp28IQxQRb5l7rrryU13J2m4N5veYjKoNAlTvU8u3FA==
+X-Received: by 2002:a05:6402:20cd:b0:62f:a06a:5359 with SMTP id 4fb4d7f45d1cf-62fbe458ab3mr2516436a12.11.1758275959599;
+        Fri, 19 Sep 2025 02:59:19 -0700 (PDT)
 Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa6f03008sm2972107a12.7.2025.09.19.02.59.18
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa6f03008sm2972107a12.7.2025.09.19.02.59.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 02:59:18 -0700 (PDT)
+        Fri, 19 Sep 2025 02:59:19 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/3] Add MDSS_CORE reset for SM6350 MDSS
-Date: Fri, 19 Sep 2025 11:57:22 +0200
-Message-Id: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
+Date: Fri, 19 Sep 2025 11:57:24 +0200
+Subject: [PATCH 2/3] clk: qcom: dispcc-sm6350: Add MDSS_CORE & MDSS_RSCC
+ resets
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,10 +70,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAIpzWgC/x3MPQqAMAxA4atIZgNt/aNeRRyqjZrBKo2IULy7x
- fEb3ksgFJkE+iJBpJuFj5ChywLmzYWVkH02GGUaZbVF2duqUbh7EYwkdKHv3FRr43WnHOTujLT
- w8z+H8X0/9sPIj2MAAAA=
-X-Change-ID: 20250919-sm6350-mdss-reset-d7ab412d170a
+Message-Id: <20250919-sm6350-mdss-reset-v1-2-48dcac917c73@fairphone.com>
+References: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
+In-Reply-To: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Michael Turquette <mturquette@baylibre.com>, 
  Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -82,35 +83,47 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758275958; l=860;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758275958; l=1177;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=mMraxz1KfXDhOa4Lp6riixVKju0PQI0TmWYwlUzbwRI=;
- b=nEOvSMIjb1EJx8t/h3B9Qt+6O9RQANHQ/rfdz2FT+zMFtNxpXQ4F4ptH5JHP5tdcBoV5FrGri
- a3q1vhC481vCmbBR9Tm/W2lJACJtJCfDyKcCaIy9h921kC4lQ2W+72x
+ bh=vbP03XlE1h7xnXHsE6YxSmU4t7foc5GMAXHOnth1Kak=;
+ b=oKNSfmdNf301nQfc/PDdXbR7+ZlQdp0XSLyKqYLiOBuBW9hrNj940/clNKq7jd1x61ljxPbO4
+ 4Zuv5gmqejyAEbeikZjWbZe8LVq/5JdMsfAnMcmLjFGp5mtmJrE06iX
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-With v6.17-rc kernel, the display stack needs reference to the
-MDSS_CORE, otherwise display init becomes quite broken.
-
-Add the resets into the dispcc driver and add a reference to the dts.
+Add the offsets for two resets inside the dispcc on SM6350 SoC.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (3):
-      dt-bindings: clock: dispcc-sm6350: Add MDSS_CORE & MDSS_RSCC resets
-      clk: qcom: dispcc-sm6350: Add MDSS_CORE & MDSS_RSCC resets
-      arm64: dts: qcom: sm6350: Add MDSS_CORE reset to mdss
+ drivers/clk/qcom/dispcc-sm6350.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- arch/arm64/boot/dts/qcom/sm6350.dtsi           | 2 ++
- drivers/clk/qcom/dispcc-sm6350.c               | 7 +++++++
- include/dt-bindings/clock/qcom,dispcc-sm6350.h | 4 ++++
- 3 files changed, 13 insertions(+)
----
-base-commit: f83ec76bf285bea5727f478a68b894f5543ca76e
-change-id: 20250919-sm6350-mdss-reset-d7ab412d170a
+diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
+index b0bd163a449ccd2b27751e32eb17a982facf07d8..5b1d8f86515f251d90e01a4f3cb3b5582b5db683 100644
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -679,6 +679,11 @@ static struct clk_branch disp_cc_xo_clk = {
+ 	},
+ };
+ 
++static const struct qcom_reset_map disp_cc_sm6350_resets[] = {
++	[DISP_CC_MDSS_CORE_BCR] = { 0x1000 },
++	[DISP_CC_MDSS_RSCC_BCR] = { 0x2000 },
++};
++
+ static struct gdsc mdss_gdsc = {
+ 	.gdscr = 0x1004,
+ 	.en_rest_wait_val = 0x2,
+@@ -746,6 +751,8 @@ static const struct qcom_cc_desc disp_cc_sm6350_desc = {
+ 	.num_clks = ARRAY_SIZE(disp_cc_sm6350_clocks),
+ 	.gdscs = disp_cc_sm6350_gdscs,
+ 	.num_gdscs = ARRAY_SIZE(disp_cc_sm6350_gdscs),
++	.resets = disp_cc_sm6350_resets,
++	.num_resets = ARRAY_SIZE(disp_cc_sm6350_resets),
+ };
+ 
+ static const struct of_device_id disp_cc_sm6350_match_table[] = {
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.51.0
 
