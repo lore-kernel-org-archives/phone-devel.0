@@ -1,147 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A88278761;
-	Fri, 19 Sep 2025 06:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2EF2F3C32
+	for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 09:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758262693; cv=none; b=GLts3XySGhIOEBWkMreNATi+6aXiMWmae5BtZgsEsqcescag2g2/3WszgbVc0thEC7S7YTTTdHDn5iQ1GW0xsA1SpKtILbKu8XOhZOh00CqcF1ms3FeP5Q1KGuOyqN7yQv/kwHLOfS+hicsl0YEyLfOFFe19nkvLZUwLdSFjKqw=
+	t=1758275963; cv=none; b=EHSsbmCXmRtOnjg8kn18F1l2WkaPYwoDjV0KHO+cK2IYYxaVRnOQozcydJrvndfVeT/ooxaAGwYRTyN97RsZSHXqjvTcmvDixGdUqKx4lpj3UhTtYHzokGzYuHVspBLm3DDEGD5/FatXsUtzfP/PhjmDjt49qOVQSL3mECcJGms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758262693; c=relaxed/simple;
-	bh=0/QC8YWC4+0v7OdKZoApTs030liBQ5uEFJmwWVZ6ut8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CoTDi4uLAc5VNUM/6aDX391njcw8U1vb3TtprmCvyCmHz1OhOl97xUvc+7/oFiEKC0G0bYiE6G9eoKO6v+RFZ9UN4Lv4DIqp7V2yJFQ0ADo7/wiv39QO3f/Jqt1cK9G6hIr9bmkf7sCuBaDccNwrYoQZR0HyiHNKrekOiPg+wUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nAMmvPum; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1758275963; c=relaxed/simple;
+	bh=DzHjTfe+PvsMShionbNF9cKGgZXDYYuDcp3aGm7pFps=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KSxMQAYZmyo7kqJWebZ83iF4GayDQ62efRen7hOoG4reiK/gKbuwSRIDUE3c5vuyKGhUoTlvjWWlY1QJUMPtPsWNLIcJnoWOtKvKc791HUpDBjmdDRTvo2URyh9PIIRK9J8Pisg6QNAaWBqhk1GV6/mpZVMRJdKJa93JQGPaD9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vEoqylhK; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nAMmvPum"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758262689; x=1789798689;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=0/QC8YWC4+0v7OdKZoApTs030liBQ5uEFJmwWVZ6ut8=;
-  b=nAMmvPum4i0iuLru18px0zj79UgDQHPs6gOqjvOOhBMoaCSSaitTwBQ4
-   yomNdbDvLSyeshY/19ZxN5i36oBYn7RB6kTUznOb2RC3z5D1otXi6oetL
-   leF6XKKMA4fQIozm6QH44dUyqEm6pNVXyDTVj75BzIREsSs7H7zpUcqcr
-   yH3QgUO3duREC2W5twwLB+EJvdUcAZmZHtgR/obqcFFzG/dQel9kvwNJE
-   VE1TqIsnbMAiDTawe50UmVL/tp1vJx01VMXcrUhD8vmWbCgQpDp+a+cUS
-   KTbvBGeBKGLn8BZmBAGmTNGQiSbSQjlKQFfAWWh6pYNt1ek7WXfaMUOSA
-   Q==;
-X-CSE-ConnectionGUID: LrOoh5HaQFelrZD0oE/hbg==
-X-CSE-MsgGUID: 5eexzdSHS1CdcqZM67MQsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="71978628"
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
-   d="scan'208";a="71978628"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 23:18:08 -0700
-X-CSE-ConnectionGUID: w9Myn/mvTEi4V2WfCcL8aQ==
-X-CSE-MsgGUID: VA6/VX+CTgac/s8lyjtaLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
-   d="scan'208";a="180013732"
-Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.105])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 23:18:07 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 46E2211FC22;
-	Fri, 19 Sep 2025 09:18:03 +0300 (EEST)
-Date: Fri, 19 Sep 2025 09:18:03 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Val Packett <val@packett.cool>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-Message-ID: <aMz1m2gM_fX_51Xo@kekkonen.localdomain>
-References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
- <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
- <aKLZ39IzI_azrDIu@kekkonen.localdomain>
- <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
- <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
- <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
- <048dd9a2d3257ddea4e4223b023bde9747469083.camel@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vEoqylhK"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so2280406a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 19 Sep 2025 02:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1758275959; x=1758880759; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=skAcju7YKAn8s/A/GRR4ZrH/gmSwELGHRwczNOae0t8=;
+        b=vEoqylhK3QJazf5NhrcZZt3WNxESyRdy3QXc0hxN6SGRoaxH3SNzqSmBa1JyVyq0DP
+         mko20UlB9PDTJ2eosrlbF3FymXdOxdz7pgZO0I4QmttIYO5EtDBK+gqXI78gEeHR4PVL
+         +qqtU/jZ1m6y/wfLsfe6/I6PQc1bFKh0iym8MpzEcIal8PjyBuxTvBEz2qfNqxmtgMZw
+         Te/QECiym/Nd1OGb2iqcgZGFuI2BYeZ3ptR1lfnzXWZ55qHsOddu9hBci4kh2nFy4cBn
+         739fSdi4roOOUYk5NNtQvuyA9VhRtgBI+G3uXFldoiDbYH9++6a/EBPLs2L+klDpgvA5
+         ZOvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758275959; x=1758880759;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=skAcju7YKAn8s/A/GRR4ZrH/gmSwELGHRwczNOae0t8=;
+        b=Xm9DWoRmboUILPCnqpDiRdQNUic6lSThBV9gyiXCCdw0jT5GYOuNxCdyAWMbYdgj2z
+         xwxdNKcL7LNZzzxJD+R+QLzuqemDj475nfrW0hzLHzzA3aZzWh4ZMhxTA2Mzv+F2BCZK
+         GJ+d4/O/xXDn/V2Sp4iYCdqSjCAme6Wo52z5ND9RDAnClnrXwtEdcC9k1WR9iwLbr7Ou
+         96baAeVadgr5lzDscuOrynqPPBjfAgBHAsQmCD+BDRsZYrLFdEyiFRT1MdpBd9exGH8u
+         pljm9cJUtiEfCAqWWbpokmGe/NuVtJrbAPy+lMwk2KG2gcyJW5ESm6VCb0Coe+ybKhc5
+         xu2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVbO3AEbTOVHL5mM6LTPqSBI66v5hb5APsna96GzdAS0qQqUuUZACNdal3Xk34kF+TouNdx4t0KYvotTw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWdDCXfEwnQURc2JtpujMR6cpaD8K+dpRhtxoPptFiUgHTb2MA
+	Y2QjB+UjiP8+f/eEuAkG52n4kVjioNakPRLlhRT5236wkE+xJ+rxNS5Py1CvdHhH+Ks=
+X-Gm-Gg: ASbGncuByq5S7nlAMQEN7Qd5JcaK/HF4tDUpN+n8OqbdYD+zhzAd1BnOjBG033GCHow
+	8ErmLPPM5ItwXuufIgL/vtooBhGinyid2o35cWDTr7HyWE0oz0JRk1AcQxcOpzQsjPHnNL2UAW3
+	zyY8e+wuSnKl2eJACZjscszg2ScbbME1uluxQF9OesuFLfBA46O99mqv7y4N8DIgMFB277vC254
+	QE/uWsABapYNVjc9qkNt5wj/ZRebNTKKtvaeCqo87HyIWHHEbzmSTdF8iizPM3Sne7efHTEmfiC
+	pa58E7Dew/fs1EkgVIHS/q0mr4ZM1aWAoOehBR2/PFXS6Mrqo4JUJuHoJRINXX4B/yUQEKh7C8u
+	VKI6bjwcOZfUxm+ppJNnGQfH/6xr0VjehCsjCrK2nlIbkbZqjZq5XuiIOY4PETDoNd3t+HA==
+X-Google-Smtp-Source: AGHT+IGcg73bZYLri35zpeSxGcbf84lNjzcJ9lVXYFxYS+H77YE64UdSEUtkMOObdzMncpDcwGV+LA==
+X-Received: by 2002:a05:6402:4590:b0:62f:af:60a0 with SMTP id 4fb4d7f45d1cf-62fc0ae770fmr2120994a12.28.1758275959086;
+        Fri, 19 Sep 2025 02:59:19 -0700 (PDT)
+Received: from otso.local (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa6f03008sm2972107a12.7.2025.09.19.02.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 02:59:18 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 19 Sep 2025 11:57:23 +0200
+Subject: [PATCH 1/3] dt-bindings: clock: dispcc-sm6350: Add MDSS_CORE &
+ MDSS_RSCC resets
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <048dd9a2d3257ddea4e4223b023bde9747469083.camel@apitzsch.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250919-sm6350-mdss-reset-v1-1-48dcac917c73@fairphone.com>
+References: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
+In-Reply-To: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758275958; l=769;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=DzHjTfe+PvsMShionbNF9cKGgZXDYYuDcp3aGm7pFps=;
+ b=9VFYR0Pqu1iH5ar5ZlAGzd8yitkjjLnajYHWb6JRqnUWIorerIbWE+NyUoFK9xsMG83xD7v2s
+ JFGROYBycauB8OiG9vpOylV18dL8CshQCYTm9MAqYN8hlrRs+EK1Eh+
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On Thu, Sep 18, 2025 at 11:31:18PM +0200, André Apitzsch wrote:
-> Hi Sakari,
-> 
-> Am Mittwoch, dem 17.09.2025 um 13:10 +0300 schrieb Sakari Ailus:
-> > Hi André, Val,
-> > 
-> > On Tue, Sep 16, 2025 at 05:08:44PM -0300, Val Packett wrote:
-> > > 
-> > > On 9/15/25 5:48 PM, André Apitzsch wrote:
-> > > > Hi Sakari,
-> > > > 
-> > > > @Val, please see below.
-> > > > 
-> > > > Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
-> > > > > Hi André,
-> > > > > 
-> > > > > On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4
-> > > > > Relay wrote:
-> > > > > >   	u64 val;
-> > > > > >   	int ret;
-> > > > > >   	int err;
-> > > > > > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
-> > > > > > dw9719_device *dw9719, bool detect)
-> > > > > >   	if (ret)
-> > > > > >   		return ret;
-> > > > > > -	/* Jiggle SCL pin to wake up device */
-> > > > > > -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD :
-> > > > > > DW9719_CONTROL;
-> > > > > > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN,
-> > > > > > &ret);
-> > > > > > -	fsleep(100);
-> > > > > > +	/*
-> > > > > > +	 * Need 100us to transition from SHUTDOWN to
-> > > > > > STANDBY.
-> > > > > > +	 * Jiggle the SCL pin to wake up the device (even
-> > > > > > when the
-> > > > > > regulator
-> > > > > > +	 * is shared) and wait double the time to be sure,
-> > > > > > then
-> > > > > > retry the write.
-> > > > > Why double? Isn't the datasheet correct when it comes to the
-> > > > > power-on sequence?
-> > > > > 
-> > > > I haven't noticed any problems during power-up of DW9761.
-> > > > However, according to the commit message, there seems be an issue
-> > > > with DW9718S. But I don't own the device and cannot test it.
-> > > > 
-> > > > Maybe Val can provided some additional information.
-> > > 
-> > > I haven't had access to the datasheet for the DW9718S, so this was
-> > > all deduced experimentally. By "to be sure" I meant that I
-> > > literally raised the timeout "just in case", not based on actual
-> > > issues.
-> > > 
-> > > The actually important change was expecting the failure on the
-> > > write and not erroring out.
-> > 
-> > Ack.
-> > 
-> > André: could you add this information to the comment as well?
-> 
-> Could you clarify which information.
+Add the indexes for two resets inside the dispcc on SM6350 SoC.
 
-What you now have in the commit message. It's relevant for the driver.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ include/dt-bindings/clock/qcom,dispcc-sm6350.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/dt-bindings/clock/qcom,dispcc-sm6350.h b/include/dt-bindings/clock/qcom,dispcc-sm6350.h
+index cb54aae2723e8f20ff3eebde3e15e862be750712..61426a80e620ac795b6f0ccda173654d7e47e59d 100644
+--- a/include/dt-bindings/clock/qcom,dispcc-sm6350.h
++++ b/include/dt-bindings/clock/qcom,dispcc-sm6350.h
+@@ -42,6 +42,10 @@
+ #define DISP_CC_SLEEP_CLK			31
+ #define DISP_CC_XO_CLK				32
+ 
++/* Resets */
++#define DISP_CC_MDSS_CORE_BCR			0
++#define DISP_CC_MDSS_RSCC_BCR			1
++
+ /* GDSCs */
+ #define MDSS_GDSC				0
+ 
 
 -- 
-Sakari Ailus
+2.51.0
+
