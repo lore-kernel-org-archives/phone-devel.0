@@ -1,136 +1,147 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D8B86342;
-	Thu, 18 Sep 2025 21:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A88278761;
+	Fri, 19 Sep 2025 06:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758231094; cv=none; b=ntPhaEmlPV5psGgnjCcf5Sd1VTWI2O4hq7Zk65RBylTYlgGjdbKxr06RCr7fNGc7yRrpLwtqL8CoPA0RSaVcl0AQeREeMyB3iuMUKCT+XUH5oJqo2AD2Zb4vj/JbM/0BtGgF7j43atUCU3rfay9ESjoHhQeb5lP8nVJbmBFpGiE=
+	t=1758262693; cv=none; b=GLts3XySGhIOEBWkMreNATi+6aXiMWmae5BtZgsEsqcescag2g2/3WszgbVc0thEC7S7YTTTdHDn5iQ1GW0xsA1SpKtILbKu8XOhZOh00CqcF1ms3FeP5Q1KGuOyqN7yQv/kwHLOfS+hicsl0YEyLfOFFe19nkvLZUwLdSFjKqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758231094; c=relaxed/simple;
-	bh=XRP3BRzw4PTthp+BvbIBnXlgMbZK3cuX60MpXQlz+jo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B/SMyjn1AnkgtjbZZG4MoEGDw/0PlNhIjrarZTotSZqIxQxyXFzXoVUYzr84saee2ALUpstILjbkUVt5HxxqFw+Wy1cPcklLjdUAKPWwEg1yA9zE0NGTnFMzBBnGmTvnV1JSoQAaCOS+FfeSx1Lv6id2gx1qjCDPAhmi/uLDvvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=tUKiFPM1; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1758262693; c=relaxed/simple;
+	bh=0/QC8YWC4+0v7OdKZoApTs030liBQ5uEFJmwWVZ6ut8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CoTDi4uLAc5VNUM/6aDX391njcw8U1vb3TtprmCvyCmHz1OhOl97xUvc+7/oFiEKC0G0bYiE6G9eoKO6v+RFZ9UN4Lv4DIqp7V2yJFQ0ADo7/wiv39QO3f/Jqt1cK9G6hIr9bmkf7sCuBaDccNwrYoQZR0HyiHNKrekOiPg+wUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nAMmvPum; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="tUKiFPM1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=9k36Yx116Uyq432ZKnjyvbWAnWv4qokj8porc2uvnG8=; b=tUKiFPM1F4JeTCYVBYkZfj96MR
-	fTvSJnfCrD6bBIxqjd0x7PpdFVR2X6+pToTsTfLGYgHPO3eHpJzpKA6HUZ/oJnKAcj2BQR0/tEBVE
-	TvDymarobfc5gMHoss9dIT1tZCGPMlBnDsAMOK/UoII2e0Y6I36e/P+LkWd5LRveTzKQXIyrmCYO0
-	QZJzkFOAnd2mM5aVTAGia5O/7WljdJo91SdrgkBaBAI+4UEYf1uGqQWlKri/pkSCVTbdKOmnbWzAC
-	VXZr4AK/HNN1FWcGuz0dnLnFdl20ZWgke4BAscqHl/JgL4srI/69dTMtMY+W9K6WQDw9Pgjx8SPIV
-	9T213Bcw==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uzMDo-0003xr-1L;
-	Thu, 18 Sep 2025 23:31:20 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uzMDn-000NGJ-1l;
-	Thu, 18 Sep 2025 23:31:19 +0200
-Message-ID: <048dd9a2d3257ddea4e4223b023bde9747469083.camel@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nAMmvPum"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758262689; x=1789798689;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=0/QC8YWC4+0v7OdKZoApTs030liBQ5uEFJmwWVZ6ut8=;
+  b=nAMmvPum4i0iuLru18px0zj79UgDQHPs6gOqjvOOhBMoaCSSaitTwBQ4
+   yomNdbDvLSyeshY/19ZxN5i36oBYn7RB6kTUznOb2RC3z5D1otXi6oetL
+   leF6XKKMA4fQIozm6QH44dUyqEm6pNVXyDTVj75BzIREsSs7H7zpUcqcr
+   yH3QgUO3duREC2W5twwLB+EJvdUcAZmZHtgR/obqcFFzG/dQel9kvwNJE
+   VE1TqIsnbMAiDTawe50UmVL/tp1vJx01VMXcrUhD8vmWbCgQpDp+a+cUS
+   KTbvBGeBKGLn8BZmBAGmTNGQiSbSQjlKQFfAWWh6pYNt1ek7WXfaMUOSA
+   Q==;
+X-CSE-ConnectionGUID: LrOoh5HaQFelrZD0oE/hbg==
+X-CSE-MsgGUID: 5eexzdSHS1CdcqZM67MQsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="71978628"
+X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
+   d="scan'208";a="71978628"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 23:18:08 -0700
+X-CSE-ConnectionGUID: w9Myn/mvTEi4V2WfCcL8aQ==
+X-CSE-MsgGUID: VA6/VX+CTgac/s8lyjtaLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
+   d="scan'208";a="180013732"
+Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.105])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 23:18:07 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 46E2211FC22;
+	Fri, 19 Sep 2025 09:18:03 +0300 (EEST)
+Date: Fri, 19 Sep 2025 09:18:03 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Cc: Val Packett <val@packett.cool>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 7/7] media: i2c: dw9719: Fix power on/off sequence
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, Val Packett
- <val@packett.cool>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, 	devicetree@vger.kernel.org, Daniel Scally
- <djrscally@gmail.com>, 	~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, 	linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 18 Sep 2025 23:31:18 +0200
-In-Reply-To: <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
+Message-ID: <aMz1m2gM_fX_51Xo@kekkonen.localdomain>
 References: <20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu>
-	 <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
-	 <aKLZ39IzI_azrDIu@kekkonen.localdomain>
-	 <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
-	 <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
-	 <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.0 
+ <20250817-dw9719-v1-7-426f46c69a5a@apitzsch.eu>
+ <aKLZ39IzI_azrDIu@kekkonen.localdomain>
+ <550f28a9aa82a28beb35fd3490dbe08928ba9eed.camel@apitzsch.eu>
+ <fad5cb33-0e7c-499b-bad7-bbdacca8076a@packett.cool>
+ <aMqI-lElZsWV-Hrl@kekkonen.localdomain>
+ <048dd9a2d3257ddea4e4223b023bde9747469083.camel@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27766/Thu Sep 18 10:27:50 2025)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <048dd9a2d3257ddea4e4223b023bde9747469083.camel@apitzsch.eu>
 
-Hi Sakari,
+On Thu, Sep 18, 2025 at 11:31:18PM +0200, André Apitzsch wrote:
+> Hi Sakari,
+> 
+> Am Mittwoch, dem 17.09.2025 um 13:10 +0300 schrieb Sakari Ailus:
+> > Hi André, Val,
+> > 
+> > On Tue, Sep 16, 2025 at 05:08:44PM -0300, Val Packett wrote:
+> > > 
+> > > On 9/15/25 5:48 PM, André Apitzsch wrote:
+> > > > Hi Sakari,
+> > > > 
+> > > > @Val, please see below.
+> > > > 
+> > > > Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
+> > > > > Hi André,
+> > > > > 
+> > > > > On Sun, Aug 17, 2025 at 07:09:26PM +0200, André Apitzsch via B4
+> > > > > Relay wrote:
+> > > > > >   	u64 val;
+> > > > > >   	int ret;
+> > > > > >   	int err;
+> > > > > > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
+> > > > > > dw9719_device *dw9719, bool detect)
+> > > > > >   	if (ret)
+> > > > > >   		return ret;
+> > > > > > -	/* Jiggle SCL pin to wake up device */
+> > > > > > -	reg_pwr = (dw9719->model == DW9718S) ? DW9718S_PD :
+> > > > > > DW9719_CONTROL;
+> > > > > > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN,
+> > > > > > &ret);
+> > > > > > -	fsleep(100);
+> > > > > > +	/*
+> > > > > > +	 * Need 100us to transition from SHUTDOWN to
+> > > > > > STANDBY.
+> > > > > > +	 * Jiggle the SCL pin to wake up the device (even
+> > > > > > when the
+> > > > > > regulator
+> > > > > > +	 * is shared) and wait double the time to be sure,
+> > > > > > then
+> > > > > > retry the write.
+> > > > > Why double? Isn't the datasheet correct when it comes to the
+> > > > > power-on sequence?
+> > > > > 
+> > > > I haven't noticed any problems during power-up of DW9761.
+> > > > However, according to the commit message, there seems be an issue
+> > > > with DW9718S. But I don't own the device and cannot test it.
+> > > > 
+> > > > Maybe Val can provided some additional information.
+> > > 
+> > > I haven't had access to the datasheet for the DW9718S, so this was
+> > > all deduced experimentally. By "to be sure" I meant that I
+> > > literally raised the timeout "just in case", not based on actual
+> > > issues.
+> > > 
+> > > The actually important change was expecting the failure on the
+> > > write and not erroring out.
+> > 
+> > Ack.
+> > 
+> > André: could you add this information to the comment as well?
+> 
+> Could you clarify which information.
 
-Am Mittwoch, dem 17.09.2025 um 13:10 +0300 schrieb Sakari Ailus:
-> Hi Andr=C3=A9, Val,
->=20
-> On Tue, Sep 16, 2025 at 05:08:44PM -0300, Val Packett wrote:
-> >=20
-> > On 9/15/25 5:48 PM, Andr=C3=A9 Apitzsch wrote:
-> > > Hi Sakari,
-> > >=20
-> > > @Val, please see below.
-> > >=20
-> > > Am Montag, dem 18.08.2025 um 07:44 +0000 schrieb Sakari Ailus:
-> > > > Hi Andr=C3=A9,
-> > > >=20
-> > > > On Sun, Aug 17, 2025 at 07:09:26PM +0200, Andr=C3=A9 Apitzsch via B=
-4
-> > > > Relay wrote:
-> > > > > =C2=A0=C2=A0	u64 val;
-> > > > > =C2=A0=C2=A0	int ret;
-> > > > > =C2=A0=C2=A0	int err;
-> > > > > @@ -109,13 +116,15 @@ static int dw9719_power_up(struct
-> > > > > dw9719_device *dw9719, bool detect)
-> > > > > =C2=A0=C2=A0	if (ret)
-> > > > > =C2=A0=C2=A0		return ret;
-> > > > > -	/* Jiggle SCL pin to wake up device */
-> > > > > -	reg_pwr =3D (dw9719->model =3D=3D DW9718S) ? DW9718S_PD :
-> > > > > DW9719_CONTROL;
-> > > > > -	cci_write(dw9719->regmap, reg_pwr, DW9719_SHUTDOWN,
-> > > > > &ret);
-> > > > > -	fsleep(100);
-> > > > > +	/*
-> > > > > +	 * Need 100us to transition from SHUTDOWN to
-> > > > > STANDBY.
-> > > > > +	 * Jiggle the SCL pin to wake up the device (even
-> > > > > when the
-> > > > > regulator
-> > > > > +	 * is shared) and wait double the time to be sure,
-> > > > > then
-> > > > > retry the write.
-> > > > Why double? Isn't the datasheet correct when it comes to the
-> > > > power-on sequence?
-> > > >=20
-> > > I haven't noticed any problems during power-up of DW9761.
-> > > However, according to the commit message, there seems be an issue
-> > > with DW9718S. But I don't own the device and cannot test it.
-> > >=20
-> > > Maybe Val can provided some additional information.
-> >=20
-> > I haven't had access to the datasheet for the DW9718S, so this was
-> > all deduced experimentally. By "to be sure" I meant that I
-> > literally raised the timeout "just in case", not based on actual
-> > issues.
-> >=20
-> > The actually important change was expecting the failure on the
-> > write and not erroring out.
->=20
-> Ack.
->=20
-> Andr=C3=A9: could you add this information to the comment as well?
+What you now have in the commit message. It's relevant for the driver.
 
-Could you clarify which information.
-
-Best regards,
-Andr=C3=A9
+-- 
+Sakari Ailus
