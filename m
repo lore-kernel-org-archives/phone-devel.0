@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D11310E3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1412AE90;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758385493; cv=none; b=blQBBA8MW8q2ryntoqMo5ZPaqM+Gw/mOpNItGaagz/VXW+A3inxueGvODEeJiC1mSqufIrqMNEwWqxTW62V+CpcD9zt/h/zqbUTgBOCPyxTabLClpCqiVlb4lVg9oItJ3pTNcE/uAekam0Z8M67pUUz+MwLzlmNcg6z5bNJyCyg=
+	t=1758385493; cv=none; b=LfNLV0trYIKFY0IF9vPJOTEivxRL8Z1NI+qcIrA6DhvNSx9zG+9FDpGywCU6UvOc4idWI7O2agaTKLUl5NlWzcZORetTavMtaTsiDas+jbQ34Q9E2dHtvcEkraeJbmr50+eRKpbwukEtNJAygZXgnzRWBJxGbvgaIUiu41SaL4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758385493; c=relaxed/simple;
-	bh=PAEbSGe1wIOU1VKhTsFGw4i3kezoEQ7HO0g02DBBGic=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lQEfuhJSxRHC5CrmRz0mDY9cQnJPxUDh3UT8IKah6kUyccwTOdxxkfKSe8dLdRH+d8bE5Jo3oMnd0BK6fEz45j77G1Ovq9XzYYnGpr2FIGS17vbMCJ0TNZliAK+nsNdLR3vOBiiBxFuH5bC6464J3t862XW0t+Pn7nDX/nHvvks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPoqBo9P; arc=none smtp.client-ip=10.30.226.201
+	bh=u840vuSdNA238eaEpBUXCICkOP9msH1ZivtGlgxyhXY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XPXQWl/MJL64qDODQmmMu6/umNRp6tEITqC/FXCIetNRlda8nnjlRNBlv4xmq1PhWB1QDa+ZHZNwDnDbAubZ3ltXHdjthUrAyugqQ3MeaPRS2lMwKcATHTfoxo97DlxSMwl0bOqOHFRMSAiVpgWefdIQdEjX3fKK+p9+rb2KIzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErmjTj1f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPoqBo9P"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29646C4CEF9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErmjTj1f"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B18EC4CEEB;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758385493;
-	bh=PAEbSGe1wIOU1VKhTsFGw4i3kezoEQ7HO0g02DBBGic=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kPoqBo9PkEIpeYKdsrGhqwwHJL5OMHsElMvH2vvivU8Pyj2PZxule376bxZnJkwNU
-	 Tw4xgugwq5gkQtp+NSjclN5LiU5ACYNg9gzUYgdNSrYt9MaG2DcVzc3SiHiZF5PgIO
-	 APJh8w0YsR3gnnjp1/aHvGZTGzYSQOQmHmslCy/r1TOaV6KjIfM7yebTrVOe+RwW+U
-	 gfNk6ymVv2Nu9aN0lnO+ez0IB/c9ZybZQ/zbH/s7inMr9LkOPvgXOLUCrhAH6yxGiR
-	 7WdcFxlxAPYxoSg7j4VJE6WNzvl2NGSRkJcFG3xgjSlL3/lPoEi9JpoU2XQkT0CApB
-	 P1FJxdrOWdC2g==
+	bh=u840vuSdNA238eaEpBUXCICkOP9msH1ZivtGlgxyhXY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ErmjTj1foKcF6UARGZ7AW6uu0wLM47I32cf9nhIsCczl91jF2Y4j23rU5+Tjm+GEg
+	 o9JQUxeC/hDe9CqDAXQi458yOguDzop/ETBLbqBjp9zy6JYAAHeu4W4gBMAMw7A80Q
+	 P2a2uu9G+yaWF0z98iS10aPFLA8/5L0/k3eKUPH71cRWFrn58GWAySNA3SG0wsndUa
+	 zua3NWit+RK+vWKT9bC+NPrWXyQi/QQgNfNYCFk1jvF0+JATpuBl/T/jvdq9SIw2s5
+	 5SJxhaMdNxhwHMNAq5edahRzAT1OGVyPdnlhBIj/+DDG4kV/N3vtUIMCYrJnc3M91f
+	 RYNeqzhSaKGTg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1863CCAC5A7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A418CAC5A0;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Sat, 20 Sep 2025 20:23:26 +0200
-Subject: [PATCH 01/10] ARM: mediatek: add board_dt_compat entry for the
- MT6582 SoC
+Subject: [PATCH 00/10] ARM: Add support for yarisxl mt6582 board
+Date: Sat, 20 Sep 2025 20:23:25 +0200
+Message-Id: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +40,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250920-mt6582-v1-1-b887720f577d@protonmail.com>
-References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
-In-Reply-To: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
+X-B4-Tracking: v=1; b=H4sIAB7xzmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDSyMD3dwSM1MLI11LY2PLFPO05NQkYxMloOKCotS0zAqwQdGxtbUAIVX
+ EO1gAAAA=
+X-Change-ID: 20250920-mt6582-9339d7fceb34
 To: Matthias Brugger <matthias.bgg@gmail.com>, 
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
  Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
@@ -54,11 +54,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  phone-devel@vger.kernel.org, 
  Cristian Cozzolino <cristian_ci@protonmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=726;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=1921;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=rPW5X0dJhrkjRCNNcYv6faj1inNTS9fRmw61VUQKL+w=;
- b=sk3kgTpc2Yx2+z5wdsgMX0XRjqoO+k8vc8osDkRpQFyJa/JHqcBSNo/vrm8lBDnIOJq4DyTco
- DiaGwpso9ZNBl0PDGiYXz4Q63P8uiDz5rqVgpgW0C9YVonlimW/SX20
+ bh=u840vuSdNA238eaEpBUXCICkOP9msH1ZivtGlgxyhXY=;
+ b=f4PxI5rxzmphfC3mJqHuJLLtu74mC8xdE0jGsQiiZDg3Bhahc+aOijqzXFUCItKAZYB1hMVMj
+ lXU7DXzkgbVBmoqDQ6RZfAdU6e6CAmTqrrYb1ssoPVQofruMMy5o98c
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -66,29 +66,43 @@ X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
 X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
 Reply-To: cristian_ci@protonmail.com
 
-From: Cristian Cozzolino <cristian_ci@protonmail.com>
-
-Add a compatible string for the MT6582 SoC.
+This series adds support for Alcatel Pop C7 (OT-7041D) smartphone
+board, named yarisxl, based on MT6582 SoC. It also includes some
+preliminary patches. More in detail:
+- patches 1 and 2 add support for mt6582 to platform code 
+  (verified by looking at generic mt6582 downstream source code)
+- patches 3-6 do some maintenance work to mt6582.dtsi 
+  (I was unsure if squashing timer node patches into one)
+- patches 7 and 8 add devicetree and dt-bindings support for yarisxl
 
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- arch/arm/mach-mediatek/mediatek.c | 1 +
- 1 file changed, 1 insertion(+)
+Cristian Cozzolino (10):
+      ARM: mediatek: add board_dt_compat entry for the MT6582 SoC
+      ARM: mediatek: add MT6582 smp bring up code
+      ARM: dts: mediatek: mt6582: move MMIO devices under soc node
+      ARM: dts: mediatek: mt6582: sort nodes and properties
+      ARM: dts: mediatek: mt6582: remove compatible property from root node
+      ARM: dts: mediatek: mt6582: add mt6582 compatible to timer
+      ARM: dts: mediatek: mt6582: add clock-names property to uart nodes
+      ARM: dts: mediatek: mt6582: add enable-method property to cpus
+      dt-bindings: arm: mediatek: Add MT6582 yarisxl
+      ARM: dts: mediatek: add basic support for Alcatel yarisxl board
 
-diff --git a/arch/arm/mach-mediatek/mediatek.c b/arch/arm/mach-mediatek/mediatek.c
-index 5c28124bd0078b31665fef647e496f4131b82c8d..fd3a8834fc4fd47adcc91c0d9371d4a1e9c0a7e6 100644
---- a/arch/arm/mach-mediatek/mediatek.c
-+++ b/arch/arm/mach-mediatek/mediatek.c
-@@ -39,6 +39,7 @@ static void __init mediatek_timer_init(void)
- static const char * const mediatek_board_dt_compat[] = {
- 	"mediatek,mt2701",
- 	"mediatek,mt6572",
-+	"mediatek,mt6582",
- 	"mediatek,mt6589",
- 	"mediatek,mt6592",
- 	"mediatek,mt7623",
+ .../devicetree/bindings/arm/mediatek.yaml          |   1 +
+ arch/arm/boot/dts/mediatek/Makefile                |   1 +
+ .../boot/dts/mediatek/mt6582-alcatel-yarisxl.dts   |  61 +++++++++
+ arch/arm/boot/dts/mediatek/mt6582.dtsi             | 142 +++++++++++----------
+ arch/arm/mach-mediatek/Kconfig                     |   4 +
+ arch/arm/mach-mediatek/mediatek.c                  |   1 +
+ arch/arm/mach-mediatek/platsmp.c                   |   1 +
+ 7 files changed, 142 insertions(+), 69 deletions(-)
+---
+base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
+change-id: 20250920-mt6582-9339d7fceb34
 
+Best regards,
 -- 
-2.49.0
+Cristian Cozzolino <cristian_ci@protonmail.com>
 
 
