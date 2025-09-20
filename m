@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE2427B329;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01C22F7AC6;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758385493; cv=none; b=IRSyeQKDJQ7oYmB7wws0rQmWjK6eRd8E1onVTGURbyEPQlX0UXVlqldNqfZ5LH7ChCYn4NYgChcqEe7URHwhXjTBCZ2jNA8TVzhjk8a+iuro5C2HuaBDI0k8gG6H1XEfmuLJKEh8wuDuf+99Z2UUqEZtdzzFgL1YpIp6b0tLxlU=
+	t=1758385493; cv=none; b=BjnoEY0laGQI2mRQ5SRmjcMpR3yuD/DlIYhOrf9k7jcnYvqobFC0DKeappiGB3i/2dqabWx/oqhi3hnrOlpZc/4loVqdJYWkw/gGZ965gzjHjYPeKY4//Pmq/dThG2NqT3VS3eEnGmmZj2DLugo3QRZAYgo7WWjYy973o93Einc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758385493; c=relaxed/simple;
-	bh=qb2+EkBXp7Hgrg+P1wF5GIqdIOe/IYDimtrwxuCDjmY=;
+	bh=wmglTdOzvnu1osT4KrcPRK2F9+u7HUzFQhkD3GLaJoM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UGmCMO69RAW+nta9BptTfvTULCb/0oMmD3wFCf8E+wTQnsSwMq6EE3Jci0agMd3mVwVA1p5JMrpxrW6Vc3kzxMnPz/eoOCKXgU+MmnavnGgaOEy0wfI9IprR2BPPZG6BeKxT1EHjZCm71ar98g94YXIrkD+LfBcEDnL61mt2Mss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/qrcZPW; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E2nTpA4UBZYxErQL3nuYS+BfW7kPkBIMNOimyGOQCscJK38wv0bviJlaLYUdEkHOGhZ9j6nraMjFDtBAkHyscPb+pJbj3v7/nSDrRcoOQaqGWBxLgRB6sZ5m+Nl2KM7Pth9+eIgcws2/qMC++Sza+vhAofqGaYbWUVsa4oT1W60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdpzhaRE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/qrcZPW"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D867C113CF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdpzhaRE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 664E6C4CEFA;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758385493;
-	bh=qb2+EkBXp7Hgrg+P1wF5GIqdIOe/IYDimtrwxuCDjmY=;
+	bh=wmglTdOzvnu1osT4KrcPRK2F9+u7HUzFQhkD3GLaJoM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=F/qrcZPWLw7tQe9MPG1XnGMnfhs3LFogPoB66NSxfnupZ4kB94+6FTQTT2mT4JRYh
-	 9yVbrZfDqcMfULLP/ge8vdGq9hVNtM3IlDRDJQl8B2vKuVpBWvBDpY9mV9yKRz7yR4
-	 onxgpfZW3wNPPfNbr5SBplumk0d85wg2y2F03s6C49lihE9WAT397Ig1fZEZYx7xIF
-	 3NmZZfpDLU0N7D/3ubbfUVgx+w/4CfI+OYnqBObXTImN2DMfp9pAiTvnrOD99286IN
-	 cRgkvfkZLtCirrvEeKVynuAWy7o36/Dvc3XC4SwGSEyJhcd6TRO6U1D0CnQukiHMYs
-	 B9IqE6Nud0xSg==
+	b=IdpzhaREvgAq/lTr4gTriUHIyxCA3wqGmRdDHZSvTQatSslcjFkb5ur8pnBWSxY6h
+	 JJhWA+W6+ABPPkryP6N5+e3VSr6s/egFk5uY7dcJ7PhtigMejK88LhOCxoYrEfrXuc
+	 umY7loUIaCUZZQj/REdDP1gktzuOIhHHFyR3M/WpAnZcwyUOaPbxcgf2c/Bd4u8V58
+	 1SbwTGMT2ihdEFabJstE8mUaHgJ89KFCESLZQg4ent4JnDpe/Oi7KIqBjrilMF6h2+
+	 tkMYGWtKFtbIllPovDExgiuqe3fGYb/bNl1H0zgfDCYavbG2XvkNg4Gl1yWR7kjD3c
+	 mjbIaqBp4XVOQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41A34CAC5AD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D4A5CAC5A7;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Sat, 20 Sep 2025 20:23:29 +0200
-Subject: [PATCH 04/10] ARM: dts: mediatek: mt6582: sort nodes and
- properties
+Date: Sat, 20 Sep 2025 20:23:31 +0200
+Subject: [PATCH 06/10] ARM: dts: mediatek: mt6582: add mt6582 compatible to
+ timer
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250920-mt6582-v1-4-b887720f577d@protonmail.com>
+Message-Id: <20250920-mt6582-v1-6-b887720f577d@protonmail.com>
 References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
 In-Reply-To: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
 To: Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -54,11 +54,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  phone-devel@vger.kernel.org, 
  Cristian Cozzolino <cristian_ci@protonmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=3996;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=1128;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=Z1S2PzSFTRUHdm6e5KvQH8f0VJGVi1iLBc3KX94/HbU=;
- b=FQWueJz6fpe77OaZh5ItLntT/nNPCZOu63nJSRYJV7jq1NjhxWRXdvUnJxw9UR4CUIP3IznxY
- UHp1qlhmqfVCmY0/5UixAQOQI4bbNxzXkG2hfTt/7J2KCsgnT8JYP8a
+ bh=r6SXHQbEHcaMnuM7G635DvBb4GqKr2d885SMc7iqSiQ=;
+ b=z6YTtrGMN5Tgfi5hnkCwEdqfPbpmjia5G5oRbA2+IRGF5mPfUNLHlgAQk0ZuNJvauGoo5Me3t
+ R8K3WtIxkAJCQdUJ9uVrnv16xY0b3iunHZm/GNJ2V73/uCjtEtDAHBq
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -68,143 +68,34 @@ Reply-To: cristian_ci@protonmail.com
 
 From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Sort fixed clocks nodes by clock frequency and memory mapped device
-nodes by reg address. Also, sort properties as shown in dt-bindings
-examples.
+Bindings already have mt6582 compatible for timer, so add that to DTSI.
+While at it, remove clock-names property (which is not required by timer
+node) and fix node address.
 
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- arch/arm/boot/dts/mediatek/mt6582.dtsi | 46 +++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 26 deletions(-)
+ arch/arm/boot/dts/mediatek/mt6582.dtsi | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/boot/dts/mediatek/mt6582.dtsi b/arch/arm/boot/dts/mediatek/mt6582.dtsi
-index 37d2b8786188aecb65c0a6e0d31aabc3b66e2bd7..8ada8c6518661509ebee647367064187f4376ab9 100644
+index 8a14dc1759d6f65fa75accddab83c1b6424d1632..54d675ecb390c52c7ca0f406155bfc59e32137ec 100644
 --- a/arch/arm/boot/dts/mediatek/mt6582.dtsi
 +++ b/arch/arm/boot/dts/mediatek/mt6582.dtsi
-@@ -13,8 +13,8 @@ / {
- 	interrupt-parent = <&sysirq>;
- 
- 	cpus {
--		#address-cells = <1>;
- 		#size-cells = <0>;
-+		#address-cells = <1>;
- 
- 		cpu@0 {
- 			device_type = "cpu";
-@@ -38,22 +38,22 @@ cpu@3 {
+@@ -66,12 +66,11 @@ watchdog: watchdog@10007000 {
+ 			reg = <0x10007000 0x100>;
  		};
- 	};
  
--	system_clk: dummy13m {
-+	uart_clk: dummy26m {
- 		compatible = "fixed-clock";
--		clock-frequency = <13000000>;
- 		#clock-cells = <0>;
-+		clock-frequency = <26000000>;
- 	};
- 
--	rtc_clk: dummy32k {
-+	system_clk: dummy13m {
- 		compatible = "fixed-clock";
--		clock-frequency = <32000>;
- 		#clock-cells = <0>;
-+		clock-frequency = <13000000>;
- 	};
- 
--	uart_clk: dummy26m {
-+	rtc_clk: dummy32k {
- 		compatible = "fixed-clock";
--		clock-frequency = <26000000>;
- 		#clock-cells = <0>;
-+		clock-frequency = <32000>;
- 	};
- 
- 	soc {
-@@ -62,6 +62,11 @@ soc {
- 		compatible = "simple-bus";
- 		ranges;
- 
-+		watchdog: watchdog@10007000 {
-+			compatible = "mediatek,mt6582-wdt", "mediatek,mt6589-wdt";
-+			reg = <0x10007000 0x100>;
-+		};
-+
- 		timer: timer@11008000 {
- 			compatible = "mediatek,mt6577-timer";
+-		timer: timer@11008000 {
+-			compatible = "mediatek,mt6577-timer";
++		timer: timer@10008000 {
++			compatible = "mediatek,mt6582-timer", "mediatek,mt6577-timer";
  			reg = <0x10008000 0x80>;
-@@ -71,18 +76,17 @@ timer: timer@11008000 {
+ 			interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_LOW>;
+ 			clocks = <&system_clk>, <&rtc_clk>;
+-			clock-names = "system-clk", "rtc-clk";
  		};
  
  		sysirq: interrupt-controller@10200100 {
--			compatible = "mediatek,mt6582-sysirq",
--				     "mediatek,mt6577-sysirq";
-+			compatible = "mediatek,mt6582-sysirq", "mediatek,mt6577-sysirq";
-+			reg = <0x10200100 0x1c>;
-+			interrupt-parent = <&gic>;
- 			interrupt-controller;
- 			#interrupt-cells = <3>;
--			interrupt-parent = <&gic>;
--			reg = <0x10200100 0x1c>;
- 		};
- 
- 		gic: interrupt-controller@10211000 {
- 			compatible = "arm,cortex-a7-gic";
--			interrupt-controller;
- 			#interrupt-cells = <3>;
-+			interrupt-controller;
- 			interrupt-parent = <&gic>;
- 			reg = <0x10211000 0x1000>,
- 			      <0x10212000 0x2000>,
-@@ -91,8 +95,7 @@ gic: interrupt-controller@10211000 {
- 		};
- 
- 		uart0: serial@11002000 {
--			compatible = "mediatek,mt6582-uart",
--				     "mediatek,mt6577-uart";
-+			compatible = "mediatek,mt6582-uart", "mediatek,mt6577-uart";
- 			reg = <0x11002000 0x400>;
- 			interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&uart_clk>;
-@@ -100,8 +103,7 @@ uart0: serial@11002000 {
- 		};
- 
- 		uart1: serial@11003000 {
--			compatible = "mediatek,mt6582-uart",
--				     "mediatek,mt6577-uart";
-+			compatible = "mediatek,mt6582-uart", "mediatek,mt6577-uart";
- 			reg = <0x11003000 0x400>;
- 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&uart_clk>;
-@@ -109,8 +111,7 @@ uart1: serial@11003000 {
- 		};
- 
- 		uart2: serial@11004000 {
--			compatible = "mediatek,mt6582-uart",
--				     "mediatek,mt6577-uart";
-+			compatible = "mediatek,mt6582-uart", "mediatek,mt6577-uart";
- 			reg = <0x11004000 0x400>;
- 			interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&uart_clk>;
-@@ -118,18 +119,11 @@ uart2: serial@11004000 {
- 		};
- 
- 		uart3: serial@11005000 {
--			compatible = "mediatek,mt6582-uart",
--				     "mediatek,mt6577-uart";
-+			compatible = "mediatek,mt6582-uart", "mediatek,mt6577-uart";
- 			reg = <0x11005000 0x400>;
- 			interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&uart_clk>;
- 			status = "disabled";
- 		};
--
--		watchdog: watchdog@10007000 {
--			compatible = "mediatek,mt6582-wdt",
--				     "mediatek,mt6589-wdt";
--			reg = <0x10007000 0x100>;
--		};
- 	};
- };
 
 -- 
 2.49.0
