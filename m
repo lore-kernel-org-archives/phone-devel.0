@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEAC2FB0BB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D622FE076;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758385493; cv=none; b=Fi7WKWLzCD3IjFirRWWlLseGSiHdfvL2VZLeMv7VZkq6lEvjR7FJCArIqYDCTkXltgwiXnKYICRKlfXmQMxkKKHMhHIVfNS+M0RnLfIXu5QAPTAIds3fyBcjCtxMODjl3xwgHyQwFmABaWEyA4bOAA3aAinBoJZq6X1ntcuKCj8=
+	t=1758385493; cv=none; b=o1XJdDtgyZTCklYM0nPi7FeO9Eht8WgJvo29+IYLEGjYGdYcW9i2BidD52uzqziAF3zwpw6iC7ODdBmtzT2M14YCZ3rGkUF6J5IO4Vraeg/juylQyPnNxxwsid2iyzUZJEnR7Ray0ktgcrR/3edDgdVIsNca4z7wM401fN0NDyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758385493; c=relaxed/simple;
-	bh=nIOQJydUgpMwH1Y2vny+oU81K/MwcYWcirq+RS+j7e0=;
+	bh=8AVmMZ4i5vlJy4yy6ArsXwdN8LZl6h2LuSGyZF1y3pQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AJL9HlpWXotGDui86thdnNf41JtY6bkFy/nYdW7SjLfzE38Xh4MjEmYg0E7mc4KeuoHJufVvME/6NEci15VheNuLGoYrTfOPyHi4L+quL99Z0z2GmCPbzVljSJou7jreScVCIR8f8x13yoe/oPUZCHNfdOu6vcjnMiUm8YHOl9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpznskuK; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=BoM+CAf6l667ZBOr54oUccBNyOsvLGWBn42XVL43o1u8yd/C9hXE9sZI+/l2Luo/wBHcKDEve71HtSCPmrGd37yItSpNJR5IhsZHshOrR2/jOSOqFwljs3lzlEebnR3wdcPMN5LYaQZANXGTspT1tj8xI0n4YamX9H7bRd9bi4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hU719B0Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpznskuK"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9EAA1C116D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hU719B0Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 73CC6C19422;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758385493;
-	bh=nIOQJydUgpMwH1Y2vny+oU81K/MwcYWcirq+RS+j7e0=;
+	bh=8AVmMZ4i5vlJy4yy6ArsXwdN8LZl6h2LuSGyZF1y3pQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rpznskuK9AgChkGKaCX1AMVIJOFxNkwIDslxKa3phYZ5f2KcZyBaS0XivX612+tms
-	 HUaGpJgnPyR/8jNhLiQkAFTACejVBoxgHpt+0KQf2Y/m01e9jJnKXLqDt8L860OeM0
-	 sKsDe643oaLzOMzZ2peI7OH5ddEWU5/3EZp903VnoDlRU8a9VyI8s03K3iga3GKaBn
-	 DLaDQBPma80TqZdTzM8PYzD/c7gKNaA2dj73B9t9BpxQcLxFo3cvBLEzVzsioCNjZ1
-	 HXTvZt+6g7KFWSYmPuJXE42QFR6p/N9Y4f3Gh70eMzj9vW+rXQPONNWFBMCdYAxXpw
-	 ynDE6RhruyExg==
+	b=hU719B0YQ4LUE0/+mPl3T6HjAIxuI8g5AadgBId1wj+jXt9njbl/pTqdrjBpnoJ37
+	 HUWKaZMGrORG3k1Da4mYpLVz+25MDZvqyQ4zDjfgEQxKOISriLOmF6cj73I02LRk0W
+	 qd0wwPIJzPDbzmHl9vdeLPV6+V7v/Ci1T/wBM1gzTJ9/5caS2v18NX/LdtoSVEUQH8
+	 MI7pNy1ldUbJg6k/F+X1HdMnBkGYftAnX8298BA66DG8AEUz5nB7yjUjbu7NqZmpKK
+	 m6aZlyicPKWZCbgVQa0Oi8+IC4BrG5jXaunDCPv9C0ygXE6TIfP0a+T2Qg2xFZSwRN
+	 9fF7Fm8nqMqyg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9594ACAC5A8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BB4BCAC5A0;
 	Sat, 20 Sep 2025 16:24:53 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Sat, 20 Sep 2025 20:23:35 +0200
-Subject: [PATCH 10/10] ARM: dts: mediatek: add basic support for Alcatel
- yarisxl board
+Date: Sat, 20 Sep 2025 20:23:32 +0200
+Subject: [PATCH 07/10] ARM: dts: mediatek: mt6582: add clock-names property
+ to uart nodes
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250920-mt6582-v1-10-b887720f577d@protonmail.com>
+Message-Id: <20250920-mt6582-v1-7-b887720f577d@protonmail.com>
 References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
 In-Reply-To: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
 To: Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -54,11 +54,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  phone-devel@vger.kernel.org, 
  Cristian Cozzolino <cristian_ci@protonmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=2470;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758392693; l=1434;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=iyYcAwIUuKoaf3t5Jk0wP9oO6VHUo1cct77WwDYuJAM=;
- b=42iTG8Igz4PcR3ipNH7H+GmAzf51vDO+8qD+UElOPoElp7HJMwL0bq4MpcxPzJCGvRv2LIHbF
- 2nbdRJ2sa3LBtNJhUSvcN5kR9O7qmc/NFrxPCjYJ+ya/hTKaMKjRVbh
+ bh=IJ2WpBgydGyDmriFnyhyzls81B4aPjYb5NY6k/JiK2Y=;
+ b=VAp6w9Z5osx1mLNbqsginU96nD8BYUh3ydYdVzHCMjEzRr/CrmZ2ZHQ8JbulRfNn5Th37kQyh
+ n5+6W4naoVNCBrFrIuWqNaARBOwLiUqEpeQMwx9EANcZGw5ZhO4CPwF
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -68,95 +68,50 @@ Reply-To: cristian_ci@protonmail.com
 
 From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-This smartphone uses a MediaTek MT6582 system-on-chip with 512MB of RAM.
-It can currently boot into initramfs with a working UART and
-Simple Framebuffer using already initialized panel by the bootloader.
+Other SoC DTSI files define this property for their uart nodes.
+Do the same here too, to be consistent.
 
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- arch/arm/boot/dts/mediatek/Makefile                |  1 +
- .../boot/dts/mediatek/mt6582-alcatel-yarisxl.dts   | 61 ++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
+ arch/arm/boot/dts/mediatek/mt6582.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/mediatek/Makefile b/arch/arm/boot/dts/mediatek/Makefile
-index e48de3efeb3b9ab00108cc28afa8da525d0ec14a..37c4cded0eae8cfcdc61c58fd1d986ae14c3de93 100644
---- a/arch/arm/boot/dts/mediatek/Makefile
-+++ b/arch/arm/boot/dts/mediatek/Makefile
-@@ -4,6 +4,7 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += \
- 	mt6572-jty-d101.dtb \
- 	mt6572-lenovo-a369i.dtb \
- 	mt6580-evbp1.dtb \
-+	mt6582-alcatel-yarisxl.dtb \
- 	mt6582-prestigio-pmt5008-3g.dtb \
- 	mt6589-aquaris5.dtb \
- 	mt6589-fairphone-fp1.dtb \
-diff --git a/arch/arm/boot/dts/mediatek/mt6582-alcatel-yarisxl.dts b/arch/arm/boot/dts/mediatek/mt6582-alcatel-yarisxl.dts
-new file mode 100644
-index 0000000000000000000000000000000000000000..f55d8edad1acfe316ea139e76858833dcdae24fe
---- /dev/null
-+++ b/arch/arm/boot/dts/mediatek/mt6582-alcatel-yarisxl.dts
-@@ -0,0 +1,61 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Cristian Cozzolino <cristian_ci@protonmail.com>
-+ */
-+
-+/dts-v1/;
-+#include "mt6582.dtsi"
-+
-+/ {
-+	model = "Alcatel One Touch Pop C7 (OT-7041D)";
-+	compatible = "alcatel,yarisxl", "mediatek,mt6582";
-+
-+	aliases {
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		stdout-path = "serial0:921600n8";
-+
-+		framebuffer: framebuffer@9fa00000 {
-+			compatible = "simple-framebuffer";
-+			memory-region = <&framebuffer_reserved>;
-+			width = <480>;
-+			height = <854>;
-+			stride = <(480 * 4)>;
-+			format = "r5g6b5";
-+		};
-+	};
-+
-+	memory@80000000 {
-+		device_type = "memory";
-+		reg = <0x80000000 0x20000000>;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		connsys@9f900000 {
-+			reg = <0x9f900000 0x100000>;
-+			no-map;
-+		};
-+
-+		modem@9e000000 {
-+			reg = <0x9e000000 0x1800000>;
-+			no-map;
-+		};
-+
-+		framebuffer_reserved: framebuffer@9fa00000 {
-+			reg = <0x9fa00000 0x600000>;
-+			no-map;
-+		};
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
+diff --git a/arch/arm/boot/dts/mediatek/mt6582.dtsi b/arch/arm/boot/dts/mediatek/mt6582.dtsi
+index 54d675ecb390c52c7ca0f406155bfc59e32137ec..82564c740c2182448f8f88bbc2b22c4fef1fdeef 100644
+--- a/arch/arm/boot/dts/mediatek/mt6582.dtsi
++++ b/arch/arm/boot/dts/mediatek/mt6582.dtsi
+@@ -97,6 +97,7 @@ uart0: serial@11002000 {
+ 			reg = <0x11002000 0x400>;
+ 			interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_LOW>;
+ 			clocks = <&uart_clk>;
++			clock-names = "baud";
+ 			status = "disabled";
+ 		};
+ 
+@@ -105,6 +106,7 @@ uart1: serial@11003000 {
+ 			reg = <0x11003000 0x400>;
+ 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_LOW>;
+ 			clocks = <&uart_clk>;
++			clock-names = "baud";
+ 			status = "disabled";
+ 		};
+ 
+@@ -113,6 +115,7 @@ uart2: serial@11004000 {
+ 			reg = <0x11004000 0x400>;
+ 			interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_LOW>;
+ 			clocks = <&uart_clk>;
++			clock-names = "baud";
+ 			status = "disabled";
+ 		};
+ 
+@@ -121,6 +124,7 @@ uart3: serial@11005000 {
+ 			reg = <0x11005000 0x400>;
+ 			interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_LOW>;
+ 			clocks = <&uart_clk>;
++			clock-names = "baud";
+ 			status = "disabled";
+ 		};
+ 	};
 
 -- 
 2.49.0
