@@ -1,135 +1,112 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134A4C83
-	for <phone-devel@vger.kernel.org>; Mon, 22 Sep 2025 06:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF291B808;
+	Mon, 22 Sep 2025 11:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522628; cv=none; b=bOuE7Flj6WyiGG4gaciaS4YxfLjPmBI7nsbgM1MHHwhF7UFJ6ej07DSdZEC7Pqdmnks+pbzETRJvZghkh/yVLrGO4ETk1G+N4CAVuzP5NCz4oXxXLy/VrxTRmI5g6m+4ctTfNJIoZt5tuNIc3mvCD5eK1hHVuPLNMa1g3GnNGsI=
+	t=1758539154; cv=none; b=PjWAg+E6lFy8ZDxCfrOL2V/QdVGG3JWj3j4wlYbatJbDWE524uWNaACw03yLJf+ZZ+lU0Qxht29T+Jh/b6h5cIXxJ1qEI/q2MqvsuOyJvRqZtrIwR4S7apAv4L3u2fcKD8nxxa8nagr/cKC6taN7oCkaNbV7+qCip8WLYKeW4Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522628; c=relaxed/simple;
-	bh=LNhTlnBiDZt2lVpQ7PMmnZIkpHHdCtz2DcozfcDgh9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hW/IIhEDz6EjgVVP7vNV/EBp6Co0WH0BRMt37BPQZZbv1HixJLEieah46+D/sjLvFavS5HSQn2Svzcm5lvyl4ClTqeeR2nLbXV5JoDEH1skipK8ltKXbfwLJrgcRASnx+mHWQhiEq0dgJ2i6EKSMa5P7qIQ4TSnwI/WmOC1eDcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0JKCLHd; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758539154; c=relaxed/simple;
+	bh=R4tlWJgzes/Y4DKi4qcXXpLirntdDRaHq2QxnEkO0WI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=duVgiidZjugGEE/XHijP43GAPSVi/vR2A/JUohxlQjYsaQhOYGq0F17cSNZnUoYWBmJeHiisny9ciUAmpZsKokyGLqt/++ZUkxIaLXIcnV9W78aboZp6c6Gk1qKBzRw0TEhfgOxirQ/0qONzkql499NMS5SzoN7ULZaDcEkvwp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=K3A1IcUS; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0JKCLHd"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-77f2e621ef8so848009b3a.0
-        for <phone-devel@vger.kernel.org>; Sun, 21 Sep 2025 23:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758522626; x=1759127426; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EWPs0O+PpJeDxSEciw3RIzwQywDcizw1sWF+i7zbwU0=;
-        b=N0JKCLHdSknj/V96nEbrltNDlqeIMmWO8zMEL+4WHow3wsh1lQ5Hevzt0aMOc+sq7D
-         Hrhj8fjmgJoPK89o6qshbSuYn4PPItSXXzK6g2/yfYX1Sx3SBReu56tpiAyWjp4xdQj9
-         1XQK5smuWuGTwY1OqiGgYcorRAU/QUuC/3vBYNjkX2WpHvFJRozVi83uB6mU+yyRG/OM
-         lli9XvTEv89VKoHJaHUbHStyLVQnN3NxbnsyicFGE+PMk5ma0nChFioJgB+SHb+0IUj2
-         uohGQlfHIyZCV633ERjcD6dGPu9baKvRV+ly5mJ5w9Mhts3uGYLRTGz8VY5MPU8On+Cn
-         4yZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758522626; x=1759127426;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EWPs0O+PpJeDxSEciw3RIzwQywDcizw1sWF+i7zbwU0=;
-        b=P32hggnDHpsTC6hr/yyGWNFgaiqc5/uiO52eC9Bt3fU+7TEl0vyRN4aZRz53r/f8/E
-         ZYwoZoo4o/INOm0R75SqTQrDiFiHkvuJUzoI6f1N35p58PalFrvvnqNuWwd0Dq/ORclV
-         0h8kEgb+tU+aLuWEMWV87SBgyWljcGDzjs3t1GNffL5ZfQpzO/wN80q7ZI8MB1k8oMrB
-         TuB/9kIGtJdldu2X5k1PM4jo0KBYIEgRLjGzISechxwcTFeCRClMQ16H3sGdrCqM+2Gg
-         0ZNImrUeWhK+yZrvh1zRdnuTdTWr7Ny8IKBu3dKEFli7+LJ3kjdnpwkufiqqondm2Pwx
-         uqXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqTD1JtxQEVr1BUPM3IBLRs1HKy9IraUluKgmB4wLemyn7jyMbeY3zpAjzwZLjcBOwVDJJFnZGVyxbuA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjgQbfuCDQ0EdOZ58yZJPLRJiHCVcN2x0wvZmdGNrpYXyUkxEu
-	hEoh9fplQd9ntzyjh+eyHEUeCqP5+mBB/Phcgz7K+FFEwRR5GqCOaI5i
-X-Gm-Gg: ASbGncviCFxBHsdfvxHTTUoKf8Jes42w/FhGJKtA1zL9443glrbidejSY4VQu+8r2cM
-	DLzVn24OSsdiRNjHjOzUHtxGmD/R1FPTpyn0c8AfYw3z3TJysvhsXWTed0e8uC+gn/fi3S7j+Sb
-	RhOM4RhbFuZTlmcmlROT2JvWsQdyOjT1WPjOTz+L1liBXaQ8yyWY01ASxFGasScIb/x01Cw9x3d
-	L32wpgVsVuFwWKQq2YVURaqbqqnLjsdXEkjE07Tp3UzF3fTtQZV7qO7ujL5ZtBowPxoR40fhxFh
-	pd5dWcuCZwhgt/LoPNbevNf/Wg0MgWMd0Bcmj9DbWBR6Mq1gnkaDM59Cst1MoIpFLyUnUvgihU8
-	1aix1SGOTzPX0l+/eTl8DxUA=
-X-Google-Smtp-Source: AGHT+IHCr80+p0HUXpiN0kUWu6aXyizO6B94WEmeGsdFME4p+j/Pv5y4cgnsVE/m2JUndDzORffBIw==
-X-Received: by 2002:a05:6a00:3c91:b0:772:59d2:3a49 with SMTP id d2e1a72fcca58-77e4d31f18emr14939602b3a.13.1758522626022;
-        Sun, 21 Sep 2025 23:30:26 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:e948:4db8:6798:ed8c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f2d414457sm3324170b3a.30.2025.09.21.23.30.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Sep 2025 23:30:25 -0700 (PDT)
-Date: Sun, 21 Sep 2025 23:30:22 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Vincent Huang <vincent.huang@tw.synaptics.com>, 
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	Casey Connolly <casey.connolly@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RESEND v5 0/7] Input: synaptics-rmi4 - add quirks for
- third party touchscreen controllers
-Message-ID: <5gcq5xsurdp24o7wndo2fm7pjsc3khco52ji34jjmeet2nidl4@rkbh4a2c4d3q>
-References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
- <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
- <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="K3A1IcUS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1758539151;
+	bh=R4tlWJgzes/Y4DKi4qcXXpLirntdDRaHq2QxnEkO0WI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K3A1IcUS1C5LiZIFZkICC+3I+uhRd2Cudsmvef2QmWxJO3L+1ZokRE0lFf82kKr2G
+	 qMluh0T5op0YcZ9KAZ+oAMQpwxGTAqXwfIiU3Fcbq9+6X6xVxhAeayQsyE0ajcFpSF
+	 0PvrwtfkyU6ZFXDYxHCOK92w4EpZjCQar3nK/6XzvzFtQGVpcBhaM7w6UNj912elWv
+	 arwFBKwPCvUF9xlkKy7wS6p9SGaKSkMDjMdy8bf4vLNbH9vCJonQICrSjPCdC73Qkk
+	 BqxfRVgbPebd85Vu9utTqJygdc4IbZ6fnM46A+JQ3QkT8PzugjWzGL4WVPXT7FPo69
+	 MVqQLhk3iy4vQ==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id C3E5417E0125;
+	Mon, 22 Sep 2025 13:05:50 +0200 (CEST)
+Message-ID: <6657bfa7-9a6e-49a1-890f-81cf655940a7@collabora.com>
+Date: Mon, 22 Sep 2025 13:05:50 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] ARM: Add support for yarisxl mt6582 board
+To: cristian_ci@protonmail.com, Matthias Brugger <matthias.bgg@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sean Wang <sean.wang@mediatek.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi David,
-
-On Tue, Sep 16, 2025 at 11:29:45AM +0200, David Heidelberg wrote:
-> On 07/08/2025 06:29, Dmitry Torokhov wrote:
-> > Hi David,
-> > 
-> > On Thu, Jul 31, 2025 at 11:06:50PM +0200, David Heidelberg via B4 Relay wrote:
-> > > With the growing popularity of running upstream Linux on mobile devices,
-> > > we're beginning to run into more and more edgecases. The OnePlus 6 is a
-> > > fairly well supported 2018 era smartphone, selling over a million units
-> > > in it's first 22 days. With this level of popularity, it's almost
-> > > inevitable that we get third party replacement displays, and as a
-> > > result, replacement touchscreen controllers.
-> > > 
-> > > The OnePlus 6 shipped with an extremely usecase specific touchscreen
-> > > driver, it implemented only the bare minimum parts of the highly generic
-> > > rmi4 protocol, instead hardcoding most of the register addresses.
-> > > 
-> > > As a result, the third party touchscreen controllers that are often
-> > > found in replacement screens, implement only the registers that the
-> > > downstream driver reads from. They additionally have other restrictions
-> > > such as heavy penalties on unaligned reads.
-> > > 
-> > > This series attempts to implement the necessary workaround to support
-> > > some of these chips with the rmi4 driver. Although it's worth noting
-> > > that at the time of writing there are other unofficial controllers in
-> > > the wild that don't work even with these patches.
-> > > 
-> > > We have been shipping these patches in postmarketOS for the last several
-> > > years, and they are known to not cause any regressions on the OnePlus
-> > > 6/6T (with the official Synaptics controller), however I don't own any
-> > > other rmi4 hardware to further validate this.
-> > 
-> > Sorry for not handling the patches in the last few submissions. I am
-> > planning on addressing them once merge window opens.
+Il 20/09/25 20:23, Cristian Cozzolino via B4 Relay ha scritto:
+> This series adds support for Alcatel Pop C7 (OT-7041D) smartphone
+> board, named yarisxl, based on MT6582 SoC. It also includes some
+> preliminary patches. More in detail:
+> - patches 1 and 2 add support for mt6582 to platform code
+>    (verified by looking at generic mt6582 downstream source code)
+> - patches 3-6 do some maintenance work to mt6582.dtsi
+>    (I was unsure if squashing timer node patches into one)
+> - patches 7 and 8 add devicetree and dt-bindings support for yarisxl
 > 
-> Hello Dmitry, kind reminder about the patch series as the window is open.
 
-I was looking at the patch series again and with the exception of patch
-#5 they make little sense for sensors other than ones used in OnePlus 6.
+That's simply great! Nice cleanup and nice addition - the only thing I can say here
+is that seeing simple-framebuffer is a pity, and that I hope that your plans are to
+continue with systimer, clocks, spi, i2c, apdma, mediatek-drm components, etc :-)
 
-I wonder if we could key it off of something, maybe a distinct
-compatible or a property? Rob, Krzysztof, any suggestions on how to deal
-with devices that do not properly implement the protocol for which they
-claim compatible?
+In the meanwhile, for the whole series
 
-Thanks.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
--- 
-Dmitry
+Keep up the good work!
+
+Cheers,
+Angelo
+
+> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+> ---
+> Cristian Cozzolino (10):
+>        ARM: mediatek: add board_dt_compat entry for the MT6582 SoC
+>        ARM: mediatek: add MT6582 smp bring up code
+>        ARM: dts: mediatek: mt6582: move MMIO devices under soc node
+>        ARM: dts: mediatek: mt6582: sort nodes and properties
+>        ARM: dts: mediatek: mt6582: remove compatible property from root node
+>        ARM: dts: mediatek: mt6582: add mt6582 compatible to timer
+>        ARM: dts: mediatek: mt6582: add clock-names property to uart nodes
+>        ARM: dts: mediatek: mt6582: add enable-method property to cpus
+>        dt-bindings: arm: mediatek: Add MT6582 yarisxl
+>        ARM: dts: mediatek: add basic support for Alcatel yarisxl board
+> 
+>   .../devicetree/bindings/arm/mediatek.yaml          |   1 +
+>   arch/arm/boot/dts/mediatek/Makefile                |   1 +
+>   .../boot/dts/mediatek/mt6582-alcatel-yarisxl.dts   |  61 +++++++++
+>   arch/arm/boot/dts/mediatek/mt6582.dtsi             | 142 +++++++++++----------
+>   arch/arm/mach-mediatek/Kconfig                     |   4 +
+>   arch/arm/mach-mediatek/mediatek.c                  |   1 +
+>   arch/arm/mach-mediatek/platsmp.c                   |   1 +
+>   7 files changed, 142 insertions(+), 69 deletions(-)
+> ---
+> base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
+> change-id: 20250920-mt6582-9339d7fceb34
+> 
+> Best regards,
+
+
