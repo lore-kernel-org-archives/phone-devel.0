@@ -1,61 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76214258CE5;
-	Sun, 21 Sep 2025 17:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134A4C83
+	for <phone-devel@vger.kernel.org>; Mon, 22 Sep 2025 06:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758477066; cv=none; b=AP+8zv4kKdo7O/PJUWEoEn+9UERfzS+QHTAa89vd1iZJhCs+qI6NCwKZRx4BHe2i7LIiLMYrjC99TNZa2tdTBMbZkOoeG2m9Fl4xJjhB2Q92VAAWR8I3s6r6dIn3dA6WBwMZhsdOeGScii1yWo2yMuaQQd6LjxVgfG2jWn1ug4g=
+	t=1758522628; cv=none; b=bOuE7Flj6WyiGG4gaciaS4YxfLjPmBI7nsbgM1MHHwhF7UFJ6ej07DSdZEC7Pqdmnks+pbzETRJvZghkh/yVLrGO4ETk1G+N4CAVuzP5NCz4oXxXLy/VrxTRmI5g6m+4ctTfNJIoZt5tuNIc3mvCD5eK1hHVuPLNMa1g3GnNGsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758477066; c=relaxed/simple;
-	bh=e/lBJw/pvOeOhA+TnoE8B9EgHverZBvwU1Z9gNAbIbE=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=a+pUn6mln5ePyDeXlR51sagMuNqOxnSv1/9UkdlDG4udvGw2CZ2klTHFWet4nZbyLgaF2jupgNYkcK4oOPxbu7wWdnOYyY+fExR00P+8gH4/L4fVYPygQcwpHC16S4UjzM7OWDlEAK3+FxXai7Zn77p8idiA/qZu6hjHgpdPM6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utnWX05/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758522628; c=relaxed/simple;
+	bh=LNhTlnBiDZt2lVpQ7PMmnZIkpHHdCtz2DcozfcDgh9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hW/IIhEDz6EjgVVP7vNV/EBp6Co0WH0BRMt37BPQZZbv1HixJLEieah46+D/sjLvFavS5HSQn2Svzcm5lvyl4ClTqeeR2nLbXV5JoDEH1skipK8ltKXbfwLJrgcRASnx+mHWQhiEq0dgJ2i6EKSMa5P7qIQ4TSnwI/WmOC1eDcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0JKCLHd; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utnWX05/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E615CC4CEE7;
-	Sun, 21 Sep 2025 17:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758477066;
-	bh=e/lBJw/pvOeOhA+TnoE8B9EgHverZBvwU1Z9gNAbIbE=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=utnWX05/rsIn1ShsYYQQjUjEpkqzGWCNfoKPCRIbfgNZyHfKxFOZtvWJppj6U6cvC
-	 WMvyP9nTRqm4EEonMC8BI0pZLyktz5kDMjV7s4f4TxO5iu5GORbRq8Avv9+wL/dr/z
-	 MCp/Olzf7wjDJSJEIwsWjIL6CkTIdojhXUPG8kksZYbk7txcQwdfV2DVbbE+m5noyu
-	 OGIUOk7ORLhJX9Z3ACX5VXJqhvg7Djc1/3rdkKVJtpflAWzlBPivFRoSqyc6ZbUpQV
-	 8gWRng22bVbrlLSuLGf/emRwdTfSaZALXmyjkcHzgXOpV7e3KPYzQjl7yNUos1/Kgu
-	 5A2cX9kHttFVA==
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0JKCLHd"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-77f2e621ef8so848009b3a.0
+        for <phone-devel@vger.kernel.org>; Sun, 21 Sep 2025 23:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758522626; x=1759127426; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EWPs0O+PpJeDxSEciw3RIzwQywDcizw1sWF+i7zbwU0=;
+        b=N0JKCLHdSknj/V96nEbrltNDlqeIMmWO8zMEL+4WHow3wsh1lQ5Hevzt0aMOc+sq7D
+         Hrhj8fjmgJoPK89o6qshbSuYn4PPItSXXzK6g2/yfYX1Sx3SBReu56tpiAyWjp4xdQj9
+         1XQK5smuWuGTwY1OqiGgYcorRAU/QUuC/3vBYNjkX2WpHvFJRozVi83uB6mU+yyRG/OM
+         lli9XvTEv89VKoHJaHUbHStyLVQnN3NxbnsyicFGE+PMk5ma0nChFioJgB+SHb+0IUj2
+         uohGQlfHIyZCV633ERjcD6dGPu9baKvRV+ly5mJ5w9Mhts3uGYLRTGz8VY5MPU8On+Cn
+         4yZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758522626; x=1759127426;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EWPs0O+PpJeDxSEciw3RIzwQywDcizw1sWF+i7zbwU0=;
+        b=P32hggnDHpsTC6hr/yyGWNFgaiqc5/uiO52eC9Bt3fU+7TEl0vyRN4aZRz53r/f8/E
+         ZYwoZoo4o/INOm0R75SqTQrDiFiHkvuJUzoI6f1N35p58PalFrvvnqNuWwd0Dq/ORclV
+         0h8kEgb+tU+aLuWEMWV87SBgyWljcGDzjs3t1GNffL5ZfQpzO/wN80q7ZI8MB1k8oMrB
+         TuB/9kIGtJdldu2X5k1PM4jo0KBYIEgRLjGzISechxwcTFeCRClMQ16H3sGdrCqM+2Gg
+         0ZNImrUeWhK+yZrvh1zRdnuTdTWr7Ny8IKBu3dKEFli7+LJ3kjdnpwkufiqqondm2Pwx
+         uqXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqTD1JtxQEVr1BUPM3IBLRs1HKy9IraUluKgmB4wLemyn7jyMbeY3zpAjzwZLjcBOwVDJJFnZGVyxbuA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjgQbfuCDQ0EdOZ58yZJPLRJiHCVcN2x0wvZmdGNrpYXyUkxEu
+	hEoh9fplQd9ntzyjh+eyHEUeCqP5+mBB/Phcgz7K+FFEwRR5GqCOaI5i
+X-Gm-Gg: ASbGncviCFxBHsdfvxHTTUoKf8Jes42w/FhGJKtA1zL9443glrbidejSY4VQu+8r2cM
+	DLzVn24OSsdiRNjHjOzUHtxGmD/R1FPTpyn0c8AfYw3z3TJysvhsXWTed0e8uC+gn/fi3S7j+Sb
+	RhOM4RhbFuZTlmcmlROT2JvWsQdyOjT1WPjOTz+L1liBXaQ8yyWY01ASxFGasScIb/x01Cw9x3d
+	L32wpgVsVuFwWKQq2YVURaqbqqnLjsdXEkjE07Tp3UzF3fTtQZV7qO7ujL5ZtBowPxoR40fhxFh
+	pd5dWcuCZwhgt/LoPNbevNf/Wg0MgWMd0Bcmj9DbWBR6Mq1gnkaDM59Cst1MoIpFLyUnUvgihU8
+	1aix1SGOTzPX0l+/eTl8DxUA=
+X-Google-Smtp-Source: AGHT+IHCr80+p0HUXpiN0kUWu6aXyizO6B94WEmeGsdFME4p+j/Pv5y4cgnsVE/m2JUndDzORffBIw==
+X-Received: by 2002:a05:6a00:3c91:b0:772:59d2:3a49 with SMTP id d2e1a72fcca58-77e4d31f18emr14939602b3a.13.1758522626022;
+        Sun, 21 Sep 2025 23:30:26 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:e948:4db8:6798:ed8c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f2d414457sm3324170b3a.30.2025.09.21.23.30.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Sep 2025 23:30:25 -0700 (PDT)
+Date: Sun, 21 Sep 2025 23:30:22 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Vincent Huang <vincent.huang@tw.synaptics.com>, 
+	linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	Casey Connolly <casey.connolly@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH RESEND v5 0/7] Input: synaptics-rmi4 - add quirks for
+ third party touchscreen controllers
+Message-ID: <5gcq5xsurdp24o7wndo2fm7pjsc3khco52ji34jjmeet2nidl4@rkbh4a2c4d3q>
+References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
+ <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
+ <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250913-pxa1908-genpd-v4-3-55e4cf32f619@dujemihanovic.xyz>
-References: <20250913-pxa1908-genpd-v4-0-55e4cf32f619@dujemihanovic.xyz> <20250913-pxa1908-genpd-v4-3-55e4cf32f619@dujemihanovic.xyz>
-Subject: Re: [PATCH v4 3/4] clk: mmp: pxa1908: Instantiate power driver through auxiliary bus
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: David Wronek <david@mainlining.org>, Karel Balej <balejk@matfyz.cz>, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, Duje =?utf-8?q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-To: Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <dujemihanovic32@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>
-Date: Sun, 21 Sep 2025 10:51:04 -0700
-Message-ID: <175847706450.4354.2268547686521833352@lazor>
-User-Agent: alot/0.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
 
-Quoting Duje Mihanovi=C4=87 (2025-09-13 14:12:50)
-> From: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
->=20
-> The power domain driver shares the APMU clock controller's registers.
-> Instantiate the power domain driver through the APMU clock driver using
-> the auxiliary bus.
->=20
-> Also create a separate Kconfig entry for the PXA1908 clock driver to
-> allow (de)selecting the driver at will and selecting
-> CONFIG_AUXILIARY_BUS.
->=20
-> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
-> ---
+Hi David,
 
-Applied to clk-next
+On Tue, Sep 16, 2025 at 11:29:45AM +0200, David Heidelberg wrote:
+> On 07/08/2025 06:29, Dmitry Torokhov wrote:
+> > Hi David,
+> > 
+> > On Thu, Jul 31, 2025 at 11:06:50PM +0200, David Heidelberg via B4 Relay wrote:
+> > > With the growing popularity of running upstream Linux on mobile devices,
+> > > we're beginning to run into more and more edgecases. The OnePlus 6 is a
+> > > fairly well supported 2018 era smartphone, selling over a million units
+> > > in it's first 22 days. With this level of popularity, it's almost
+> > > inevitable that we get third party replacement displays, and as a
+> > > result, replacement touchscreen controllers.
+> > > 
+> > > The OnePlus 6 shipped with an extremely usecase specific touchscreen
+> > > driver, it implemented only the bare minimum parts of the highly generic
+> > > rmi4 protocol, instead hardcoding most of the register addresses.
+> > > 
+> > > As a result, the third party touchscreen controllers that are often
+> > > found in replacement screens, implement only the registers that the
+> > > downstream driver reads from. They additionally have other restrictions
+> > > such as heavy penalties on unaligned reads.
+> > > 
+> > > This series attempts to implement the necessary workaround to support
+> > > some of these chips with the rmi4 driver. Although it's worth noting
+> > > that at the time of writing there are other unofficial controllers in
+> > > the wild that don't work even with these patches.
+> > > 
+> > > We have been shipping these patches in postmarketOS for the last several
+> > > years, and they are known to not cause any regressions on the OnePlus
+> > > 6/6T (with the official Synaptics controller), however I don't own any
+> > > other rmi4 hardware to further validate this.
+> > 
+> > Sorry for not handling the patches in the last few submissions. I am
+> > planning on addressing them once merge window opens.
+> 
+> Hello Dmitry, kind reminder about the patch series as the window is open.
+
+I was looking at the patch series again and with the exception of patch
+#5 they make little sense for sensors other than ones used in OnePlus 6.
+
+I wonder if we could key it off of something, maybe a distinct
+compatible or a property? Rob, Krzysztof, any suggestions on how to deal
+with devices that do not properly implement the protocol for which they
+claim compatible?
+
+Thanks.
+
+-- 
+Dmitry
