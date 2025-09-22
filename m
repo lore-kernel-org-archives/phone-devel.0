@@ -1,67 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D049E1DE3AC;
-	Mon, 22 Sep 2025 19:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD032AE68;
+	Mon, 22 Sep 2025 20:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569231; cv=none; b=K8IaMrrz6lA683zf39iP1eBGPrDkQ3dq8OfwFYh3lWwAfCCAM1y65gyYV29gstFSUHJBdik50H0cP7D+KfLADHfBlUMJcYpcVetsoTbqU8D1w2PKFouAZZ+wTc4hu3ejozejmwXxwv4jgZbs7JnEPun9M4eQK0lfG6a5Pjeb3Zk=
+	t=1758572729; cv=none; b=nxI4fNwPWKqEhft2fu+zfnPRwkpN8665HnA/75m8aqqI3ix0LsKEITjxHwsLwCht1s8Wz6Ecyx3wLzAof7Kdn6SaA0gYwqzKLuPB2LgfJIL8GedzupbpZA6ckMY/P+YcXChXN8X8eY1atkLY4log2TsIDT4FI8ZS9DQDPP1ssTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569231; c=relaxed/simple;
-	bh=ywrd1KKck6bPh6zOwROXdRwybYcsMLOnA7qGs+xm55A=;
+	s=arc-20240116; t=1758572729; c=relaxed/simple;
+	bh=33P7EYy8b2xhtI5WN0lnv5DDfqZ1xQyv4S8UZazIl50=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cjUXCyfa5WFxrXQuEe/8UUQh4gg2e9ueQ5tOedv8o9E/Bg2ZzpvxxNPV62/7V3ubmq4BRXkoji8NQ385kXu4d6ZdTo6B39Uc90nuCNMVjF2rr6UW5iX2H/PKFgzRzrDz/D09QdVKNX6hd36Ahkf9LASGlYD0uFhfmGbf8yB/reA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClYCiVN2; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rG3HGh+2CG/bTK1H7bRBEigkUzTshM8blEqJMkbMUVTS2SeVreoV20YXudNjyNoEJWYzPv2FdBoAD0Nn9giuH356UT3JRSs+lPtIz5/jcZai8tMQZDphOJQxmBaDjuh44pS00ITvAU6+ws1etxtUrfYg+bhOio3hCvbt1hlycds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uORVKCxb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClYCiVN2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D487C4CEF0;
-	Mon, 22 Sep 2025 19:27:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uORVKCxb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DF3C4CEF0;
+	Mon, 22 Sep 2025 20:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758569230;
-	bh=ywrd1KKck6bPh6zOwROXdRwybYcsMLOnA7qGs+xm55A=;
+	s=k20201202; t=1758572728;
+	bh=33P7EYy8b2xhtI5WN0lnv5DDfqZ1xQyv4S8UZazIl50=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ClYCiVN2ew1t6L0jzuvN8xoBKuEaxl5bkmn5nx+5Y+E5dSaKpq313iVoBQGCSw+Pq
-	 HzyxI5Homtln1D4sifWdsTORikIulp4EadNh8Qdm0EDjobqBNeBEnGfYPozLc6eRwo
-	 /WIR0CDbLzagdlfoIl68pTkLUET+5+fg1cTNKMqxoC/hUJNDJilq1sD4XWWDwjTzsr
-	 q0zQUgB9y8exSeVkEEMkFgJvCWKOvdShnUodAO6jFPLP5pCNQKIndwtz8cJGCl1Mxc
-	 GPXY+WNwa3f4MlFmjk+psgPcnyeDc/fP7yf/KGm0tX7ahkLfuMnNHvaklRBesDTpaa
-	 u6uWyfbwORVNA==
-Date: Mon, 22 Sep 2025 14:27:04 -0500
+	b=uORVKCxb5/U++PIX+zKZ7/ZDND+ou2WJqQBJMaSWFzrJUSUBskGZEWZedK4nLHiaV
+	 EJInRQ0qLexQ4uAeUnoKzzuZ/zdsc5LCRfm3W9fJiplbDY6pDhhzdss4MM2uePZlp+
+	 JrX0jrIMCHLBSjh+xKfnM7G6bKaZ+e2ReZetzrER09IjzYo91HtEW0EI/fLdRhS6Qf
+	 McpI90mV9LsJfPwO5vC58zBh0SbdATnDwQ728EeXJoxnGMv6ZoWkZgZmADBrOlJl9N
+	 G3zC7xEaAFrldarAoxfRlSR3n8yUxT+PcgiHc+EKJoR2ksvc6VIoHziAuf+QkO13DQ
+	 lLX5NnKXfi4+Q==
+Date: Mon, 22 Sep 2025 15:25:27 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jens Reidel <adrian@mainlining.org>
-Cc: Stephen Boyd <sboyd@kernel.org>, linux@mainlining.org,
-	phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-clk@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-arm-msm@vger.kernel.org, David Wronek <david@mainlining.org>,
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Cc: Val Packett <val@packett.cool>, linux-kernel@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	~postmarketos/upstreaming@lists.sr.ht,
-	Danila Tikhonov <danila@jiaxyga.com>
-Subject: Re: [PATCH 1/3] dt-bindings: clock: sm7150-dispcc: Add MDSS_CORE
- reset
-Message-ID: <175856922409.903995.288649430908180602.robh@kernel.org>
-References: <20250919-sm7150-dispcc-fixes-v1-0-308ad47c5fce@mainlining.org>
- <20250919-sm7150-dispcc-fixes-v1-1-308ad47c5fce@mainlining.org>
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Conor Dooley <conor+dt@kernel.org>, phone-devel@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] dt-bindings: media: i2c: Add DW9718S, DW9719 and
+ DW9761 VCM
+Message-ID: <175857272737.1273170.8254529909120957681.robh@kernel.org>
+References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
+ <20250920-dw9719-v2-1-028cdaa156e5@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250919-sm7150-dispcc-fixes-v1-1-308ad47c5fce@mainlining.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250920-dw9719-v2-1-028cdaa156e5@apitzsch.eu>
 
 
-On Fri, 19 Sep 2025 14:34:30 +0200, Jens Reidel wrote:
-> Add the index for a reset inside the dispcc on SM7150 SoC.
+On Sat, 20 Sep 2025 14:03:40 +0200, André Apitzsch wrote:
+> Document Dongwoon DW9718S, DW9719 and DW9761 VCM devicetree bindings.
 > 
-> Signed-off-by: Jens Reidel <adrian@mainlining.org>
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> 
+> --
+> 
+> The possible values for sac-mode and vcm-prescale of DW9719 and DW9761
+> are missing because there is no documentation available.
 > ---
->  include/dt-bindings/clock/qcom,sm7150-dispcc.h | 3 +++
->  1 file changed, 3 insertions(+)
+>  .../bindings/media/i2c/dongwoon,dw9719.yaml        | 88 ++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
 > 
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
