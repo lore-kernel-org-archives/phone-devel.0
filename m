@@ -1,75 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDEA19E96D;
-	Mon, 22 Sep 2025 14:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47578310779;
+	Mon, 22 Sep 2025 17:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758549630; cv=none; b=E1RCQ9ERK2a+ES9rKdflc8JiyLcjhIfmIl2bQGKkR1wa/ThhajCWG+1Zxukt794YL7LDJxuN56/c3ZJD8GcdljJW1ypXfkus+sa+xErhIka7kuG2zbwz6rxEFt6dLWL7WRaq2WHBkoimix87iBjQrKaCPecGs6FQwW3Pe6BFLNg=
+	t=1758562533; cv=none; b=Gd8eYA6jUiKdDQLIs369+a4YtUl68EyHSLMnjvqZ3iBkPv0fXsmBxY1zVv0OLZ1OSQcK8OsHfmSatExmTVZuaTEj/KD1CjmjnyvQ+l39uctNFDgf/8O8sY0aivrdYR6eltHGewrVRbHvFpeC4DpG3uU+tmz+wiNKrwDxfyow/98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758549630; c=relaxed/simple;
-	bh=ot5gDs3uWkRALVnz+D+awLfgmWq2/BB15HPR7a9xRHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J4CYsODOJIMyb6jfxJu8fwu7IS6wwMpuuB2Xdxi6K/+hAdshdOiaeV2JZbyvt6h18ytubVQUTHd7LSn9Nw40Mgyj1jvDvbrSzb435Lnoyzt+ANDnx/kOZROzUoARHslVJsSVwp9pWUmxxXnNmVqVg7syCzarxlrd9raxHBKmFkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJgPTcWJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758562533; c=relaxed/simple;
+	bh=SjLMRdgFLtjEhMZhVwZ+8di8xB9TzPTbN6TSdIpLCTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m8yXZWVXQnKiyZMZ9gPrSWXXxC+tdphN6/ziNHFImvN9DLqaUeKaFDWuWlgoB3hmVOMRhxTR4MTFARxzc6wBT1wsJrrKKlUTlYOvs07WZ6ZA+ZACJSUaMpYeMNGXXgu76zyo7BwC1y9TnCcJE6VqxB+d21VVYukWNqq6wIXgkgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cvxuy2Od; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJgPTcWJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395E5C4CEF7;
-	Mon, 22 Sep 2025 14:00:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cvxuy2Od"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E1AC4CEF0;
+	Mon, 22 Sep 2025 17:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758549629;
-	bh=ot5gDs3uWkRALVnz+D+awLfgmWq2/BB15HPR7a9xRHM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJgPTcWJ79YRYc8fyVQfzA9WO51HxkAAkipic4wiQdRZGE4PGnJyw0PNw2I+SFkxQ
-	 gsCzYLdpQxtunXbrSxOjA+GPFeTRVVr/xBSakEMgeszVa0aciitD8bY83RPX8/+5FN
-	 noB8NFHCLiAdsVgT99Og3QTeGLCtrQimPD17u/n4rAtfgTmkwo48b0GkbFWIM6R47g
-	 A/OvDyaqCImpc9s1vrNOGU9Sc3g5ohwm1fxPZccpX+BdXJST/x0yVSyoMGu6gnB75q
-	 MGELkyabon82uNdt22X9JuWH53r0cz/fJ2RoDfHJs229jwN3TLyXQrpMkUkEsv5j8S
-	 +ZvXZo9rZEWSw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
+	s=k20201202; t=1758562532;
+	bh=SjLMRdgFLtjEhMZhVwZ+8di8xB9TzPTbN6TSdIpLCTk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cvxuy2Odkf2OfzoH9IYRfasU6uRmJPYkGcgSs3m4jB1USAVSQ/rAUiV0oI2CCA9Uq
+	 oi0lYVhfEobvVfedpOX0y/8wFWXrjdNvyNvrbQW4/M9XzNJCvqTecFnCXn4jO+joZQ
+	 nYCm8vjGGqWv64zMooed457CfOuRew8yqgPvjjvCraCOpYMq3+k6B2Jpno1qQctqoJ
+	 dD0eojmtR37FhLQxPXpS2GYophr43FHe5OMfiQotjJ40mDuSupLfH48iSlPNbXuECa
+	 gcbqK4srue3RDwlG/hX0IX0LmCeqBblyTTLYY4pOdR2YWrB0c1RrlxOXmISlsfIHue
+	 5p2X4ytw6fy1w==
+Date: Mon, 22 Sep 2025 12:35:31 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Jens Reidel <adrian@mainlining.org>
+Cc: Hans de Goede <hansg@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v5 0/2] Add support for remoteprocs on Milos SoC
-Date: Mon, 22 Sep 2025 09:00:22 -0500
-Message-ID: <175854961650.817693.4199511918479024240.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250915-sm7635-remoteprocs-v5-0-96526cac59c6@fairphone.com>
-References: <20250915-sm7635-remoteprocs-v5-0-96526cac59c6@fairphone.com>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH RFC 1/3] dt-bindings: input: document Goodix GTX8
+ Touchscreen ICs
+Message-ID: <175856252870.514028.9418085581607326906.robh@kernel.org>
+References: <20250918-gtx8-v1-0-cba879c84775@mainlining.org>
+ <20250918-gtx8-v1-1-cba879c84775@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918-gtx8-v1-1-cba879c84775@mainlining.org>
 
 
-On Mon, 15 Sep 2025 13:15:17 +0200, Luca Weiss wrote:
-> Add the bindings and driver for the ADSP, CDSP, MPSS and WPSS on the
-> Milos SoC.
+On Thu, 18 Sep 2025 16:02:48 +0200, Jens Reidel wrote:
+> Document the Goodix GT9886 and GT9896 which are part of the GTX8 series
+> of Touchscreen controller ICs from Goodix.
 > 
+> Signed-off-by: Jens Reidel <adrian@mainlining.org>
+> ---
+>  .../bindings/input/touchscreen/goodix,gt9886.yaml  | 71 ++++++++++++++++++++++
+>  1 file changed, 71 insertions(+)
 > 
 
-Applied, thanks!
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-[1/2] dt-bindings: remoteproc: qcom,milos-pas: Document remoteprocs
-      commit: 24723d7c09ddac90bdd9e9864f92eb43ed70a083
-[2/2] remoteproc: qcom: pas: Add Milos remoteproc support
-      commit: ef575ff2054ceb2bd6701630db2f3d33f5c1a1cf
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
