@@ -1,67 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E628D2AE68;
-	Mon, 22 Sep 2025 20:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4C631158A;
+	Tue, 23 Sep 2025 07:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758572904; cv=none; b=WqCXvpt3Ay7Vb9HDI3/BfGhV2j9X/iYa3Q1iBq7/JBaEL/Jnjjtij214L//ekWDs7fYw4f/SuXJ2f6j8rJTAPiblaUHfk/pvOJFsCrQs/vHDpbzx6Qm/jT2k6vNd5Bmt23yqf8vCRyJ1WUzPyDOeI3f4eBhJuNYGF/mkBdw27do=
+	t=1758612133; cv=none; b=IUWaBoK94Ccq0EW1te+N+1ny6S+wJ6664fa+MrZoab0ljtRxQx4tWohCaYZwOAeJs+UL5tRa7EZ9D1K8K2qu9inYN7t+i8z4Yo9ZvgWjrthWCdwBUYQBENbqqE3aVyf8bxyzG5vsPketDQWmVb18wUJoLvve1Z/1BxRWFThnM+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758572904; c=relaxed/simple;
-	bh=Aa9Zejc4i8sog0iYwcjJT4xP56rN2qZlLPTRblqZAaE=;
+	s=arc-20240116; t=1758612133; c=relaxed/simple;
+	bh=UXWIhJQT0UWxMfY/+J9fpbJB9h4hs4LLSoJ3ohNFBv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k4XDNkYrACPOh/r6Wbifr2fVi6Ca/cfmvzE+VZtsZFPxAQQ0YcUUOxQj2Ps4O9Uxk9VEklo1I/+4TVMP4SkHKyMJPBlTs02FQNLnWljC4kCGgm2cgT95fvio6XNgvDXk/fvL6UxCvMwENkQQCewGAWsiHv/CY4VLe1aE2UpYmEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBSC9QF6; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=smcRhb2ZtNw0nYSwmiN8CWyg2+6olJtj2jOFEaPQd49rMSfP7utWJO+Z/AD0sZVj+N21Idylc+9xH4YxDjcdTJH295CosSjiZxYq6XfES6FmQKNHZzuoyS7lgIsnRtW5mirur3QNZKBNI4gdD3QJ9EDvv7xHEOfRILcT3yKridw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=sTTBQf/a; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBSC9QF6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE159C4CEF0;
-	Mon, 22 Sep 2025 20:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758572903;
-	bh=Aa9Zejc4i8sog0iYwcjJT4xP56rN2qZlLPTRblqZAaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PBSC9QF6pqsF2+zLfwkVCsjWpG9lrQ+2r7K9dhgeW/Oz+a66ouHDvYJQYo9UbYFNi
-	 iC8Qr7RqS/KWNqi/S/JTu+eSHT4+jxF2wOnUlKKEeLt8LJ6TEH1URHf9aA9P/QDoMR
-	 YQICxbkZtfWfFN1oLx4lvP7y6WJL5eqc+k50FcM/qYfhuizowaos2Tde2vS4CyVgCS
-	 UDYY3HK2tC2lGyzBvaOSpXTn0IJ6wJtw/wapQUQ57f8fo9rln2M9AM/78zuWfTbEMT
-	 /Td5RZCgDGe80DoZSETUywfRnsoPNnzMsk12XPPCmaEFHzo3ZD1cN55be1seiNTR1L
-	 zwf4fNDHbF68Q==
-Date: Mon, 22 Sep 2025 15:28:21 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Cristian Cozzolino <cristian_ci@protonmail.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>, linux-kernel@vger.kernel.org,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="sTTBQf/a"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 0CBDD1C01D7; Tue, 23 Sep 2025 09:22:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1758612127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hwzWkQrBN4TucShSte7+gBBGke3z5o+Bkhkg05nMEo4=;
+	b=sTTBQf/a2nzDFGyFnuAvY+ZoWD8Hosb9TzAxDaZiDAvOEHBXFt2Ry+MnJvCHTHajjKDe30
+	+6esiaJNy6v6yDUz49gjYVaUeMw3Eoiy4/0gLL1s/YKgW31/ZpI0TrH8W7O7EFLug/Kc3m
+	TK/E85C8luh+gvffde677ZQ3AhTp++0=
+Date: Tue, 23 Sep 2025 09:22:06 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: barnabas.czeman@mainlining.org
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>, devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH 09/10] dt-bindings: arm: mediatek: Add MT6582 yarisxl
-Message-ID: <175857289696.1276760.5254518096401967149.robh@kernel.org>
-References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
- <20250920-mt6582-v1-9-b887720f577d@protonmail.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Otto =?iso-8859-1?Q?Pfl=FCger?= <otto.pflueger@abscue.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Adam Skladowski <a_skl39@protonmail.com>,
+	Sireesh Kodali <sireeshkodali@protonmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+	linux@mainlining.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 6/6] arm64: dts: qcom: Add Xiaomi Redmi 3S
+Message-ID: <aNJKniJ46YuUsbQ+@duo.ucw.cz>
+References: <20250831-msm8937-v7-0-232a9fb19ab7@mainlining.org>
+ <20250831-msm8937-v7-6-232a9fb19ab7@mainlining.org>
+ <aNGLPdmOyh/pfroq@duo.ucw.cz>
+ <97ee369f6ffbe42c72c57ebd72887b23@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="iO6C/R28FEPs1Luw"
+Content-Disposition: inline
+In-Reply-To: <97ee369f6ffbe42c72c57ebd72887b23@mainlining.org>
+
+
+--iO6C/R28FEPs1Luw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250920-mt6582-v1-9-b887720f577d@protonmail.com>
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
+> > Hi!
+> >=20
+> > > +	led-controller@45 {
+> > > +		compatible =3D "awinic,aw2013";
+> > > +		reg =3D <0x45>;
+> > > +		#address-cells =3D <1>;
+> > > +		#size-cells =3D <0>;
+> > > +
+> > > +		vcc-supply =3D <&pm8937_l10>;
+> > > +		vio-supply =3D <&pm8937_l5>;
+> > > +
+> > > +		led@0 {
+> > > +			reg =3D <0>;
+> > > +			function =3D LED_FUNCTION_STATUS;
+> > > +			led-max-microamp =3D <5000>;
+> > > +			color =3D <LED_COLOR_ID_RED>;
+> > > +		};
+> > > +
+> > > +		led@1 {
+> > > +			reg =3D <1>;
+> > > +			function =3D LED_FUNCTION_STATUS;
+> > > +			led-max-microamp =3D <5000>;
+> > > +			color =3D <LED_COLOR_ID_GREEN>;
+> > > +		};
+> > > +
+> > > +		led@2 {
+> > > +			reg =3D <2>;
+> > > +			function =3D LED_FUNCTION_STATUS;
+> > > +			led-max-microamp =3D <5000>;
+> > > +			color =3D <LED_COLOR_ID_BLUE>;
+> > > +		};
+> > > +	};
+> > > +};
+> >=20
+> > That's single, 3-color LED, right? Please see LED multicolor support.
+> As far as i know aw2013 driver does not have multicolor support.
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/=
+Documentation/devicetree/bindings/leds/leds-aw2013.yaml
 
-On Sat, 20 Sep 2025 20:23:34 +0200, Cristian Cozzolino wrote:
-> Add an entry for Alcatel Pop C7 (OT-7041D) smartphone board, named
-> yarisxl, based on MT6582 SoC.
-> 
-> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> ---
->  Documentation/devicetree/bindings/arm/mediatek.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+I believe that needs to be fixed before more bugs are added on top to
+work around that problem...
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+=2E..and before that bug is cemented in the ABI.
 
+Best regards,
+								Pavel
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
+
+--iO6C/R28FEPs1Luw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaNJKngAKCRAw5/Bqldv6
+8rwwAKCAEqvmxyif1M2EfR+OkPL1Yc+kKACfXIQxtdTTJxoVlwLVcRR2GW3coKg=
+=tPlv
+-----END PGP SIGNATURE-----
+
+--iO6C/R28FEPs1Luw--
