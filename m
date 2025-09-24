@@ -1,171 +1,130 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5E61B9831;
-	Tue, 23 Sep 2025 13:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E862DE6EF
+	for <phone-devel@vger.kernel.org>; Wed, 24 Sep 2025 10:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758635501; cv=none; b=sYYbJjpaLZazX4F6tcufmLmixwjl2R7oUHpE4oYjgCsGzezaIruJPH2wkz5gxpMCwvoORvlI+cxeKgm+2M8v/jP3GUFno0Z4vwJ7n1C7YdtcUCaOEoQyPmKigyxjsy560NAoNbSAlaQiFB3NgvfCmNaxBuDewxwhmntSk71saks=
+	t=1758709756; cv=none; b=omFMfbjKO2Q7WVGnD00Bv1ZquBg8Sr8KmI/XxttmYodLj8j6CtVvDIlX0O8Y8KLVDnH7+Gc5y3DAnjZXecmiZ6B3FTn1LwTi78hukuxskVhr/M3iu9Y9z0Kh/fg3vYfVEx9EofBSxXdNbtIXLuhlImFbeMO1DYkU+x8yqW0//BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758635501; c=relaxed/simple;
-	bh=jOTfBBuhp4/KXUmQRg6f3HjP0MtVrb5Hzovk33nxhfQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pVWNlqRTeJwllRsw8AyIuWN5gpvElEmOYNYVn2neijRs8iBO6qpBcgX7e2LRsu3ibsd8KHsy1/Sn5r2B5Tm2Xb8LbpHFnVLLV2eX1hTPwFhBdry4ZsGZKW1vOrZM1A5DeGDWF0UkFOzl9BlxdF/ak6AyMCXWPqbHSzDC1+iOo/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=qHAxEBYK; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=Vngn7Hv+; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1758709756; c=relaxed/simple;
+	bh=/9hL9612Gn0CJSgidmnFRkESRP8UBsfv5LMScs4CM38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vdw1g+vV5PJldJBqJBeI5uLAaLj3619JGOUgdt4Ge1T4/LpQi0jLBcZcKsN51EgDq1cyuCn9SjKacNybAC+pj6X6J5d4iK4CEG9EGBQMHkk76ukVY76dfhI+c4dSzaGlDC+lFg9X/8FgBMGGNHVSj8SPtb4m1flVBymBL6Wz1fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lDs3QR4+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="qHAxEBYK";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="Vngn7Hv+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1758634954; bh=jOTfBBuhp4/KXUmQRg6f3HjP0MtVrb5Hzovk33nxhfQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=qHAxEBYKHjks72BqCNQ+G5xfgrM/gXCbUAOnkdslE3sv59JX7kwK4qACkeMJIFvxP
-	 04tDkTnbyO+jRauXBthoPt3BBZjstGTNzc5/qZQ9B+nVVsBIPfe/iXBmmBd8T1kuNh
-	 1NShXaa1in5wH+gbLL+nGyDzkPoP1coTrDhng6/moiRQwhITyKEa/7Ru2QSVraffPK
-	 VqZ3blcFYqnzKIfenJA0fiadC60D9DwmDD6CRC/7TrMj2ivEEMRoUlb9j3K8gmQ0jK
-	 0GPr9Ih2JXxMefsBr47BUemtoNOOzUKzLoQQrM+hhpG6SD6KvUijmzYE4wZGr8sVSO
-	 pLRQKKKXIoAKg==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id B3709FB03;
-	Tue, 23 Sep 2025 15:42:34 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ufJNWvGsT0oV; Tue, 23 Sep 2025 15:42:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1758634953; bh=jOTfBBuhp4/KXUmQRg6f3HjP0MtVrb5Hzovk33nxhfQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Vngn7Hv+T1WTNZWUBsVdmYRczXjmN8VFfA9+Fp+kf6Yz9roQ+phC2BDeSQ4olzng0
-	 CqNm+J2Zew4gFXQo5GO0LteHpnUGCWAPY7FQXIz5f78cfGyQC4HesOE/5naYq9cT+R
-	 5IrUhZCggwSvHbF2CvUFag8AfixZ0XXaXSR0HSLNI+LwQrf7mcnINNfQPbngWpvmf2
-	 mqxz056qrQXtkBuMZGT8wSHs1/PhoqOexuWHvBVWnlTuaoeyvy/Dz46DVqpYbQW3yg
-	 4Aqy+An+EGOmrhSHCVrRO/bOUDlGCB//Stg7HgiKMREY956T6UqkAiEIkQYZ+OxnXP
-	 oZIZec1foGEHQ==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Tue, 23 Sep 2025 15:42:09 +0200
-Subject: [PATCH] Input: edt-ft5x06 - Detect ft5452
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lDs3QR4+"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58O4iL5K027919
+	for <phone-devel@vger.kernel.org>; Wed, 24 Sep 2025 10:29:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Zjk1j5ULWEzsfJ1pudMsCTDGZ9oTBcQfVxDwzmzjuXI=; b=lDs3QR4+DKETWGb+
+	Qf5XIKiPb7zV6rCF4dM9vt4xj8iNGH7wINBX+P/09KvG1bm124czm9571qRlr9Ih
+	ueZfE6/WbZE1ldWRvafRBpExP1cTZSwlIJHsH8F9g60JsTUZqQhj2B69EC2JDcho
+	He1T5vH4dpfxZ2pxE6s9KJPjvpXkP6SGGCYuNs0oL6JEvouD9nNy9UK3jZsz+6zT
+	d2HPJGI18CVTFAofx3b+5R3iRza3HGK90RGM7kbV7iqMQDNIm7O38mZo43pS3il4
+	0ps2uaawxqUT/4uYIXlEp2carI+LTFCaZUXkOHCnL04PzQy652nzhYoi8eRUx8Jo
+	0C8+Cw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499hmnv9qg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 24 Sep 2025 10:29:09 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-85345eb36easo45347785a.3
+        for <phone-devel@vger.kernel.org>; Wed, 24 Sep 2025 03:29:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758709749; x=1759314549;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zjk1j5ULWEzsfJ1pudMsCTDGZ9oTBcQfVxDwzmzjuXI=;
+        b=S5Q+bX6oV7mxaMIxmSw8i/S/ytpdnMvxvxShuKSyf5WfCSlFR6JM+baXKAyDrxSTZ+
+         vJA4YPV/XEPAoE/c1DxUEco9I35KhmPXC3BITG3xg3Wb6uEyNjd/p+4JqzyeVe55Me4u
+         1X0BK5RPS5LGEirk61+0Zj4tUAHiN0CnAABZeyoPxSR2vaVI/IQk8usLhp7d75VGX9O7
+         sJXkpvDx+X/B+52ah6IRmB6h/WnK9BDPMBB4JuQyTAw3tWP9wQSdlWY/VBBdgxpY8xRg
+         kcS8KfFW80w1ZDgwowwQ3E9cFTLlMuDOZ4BdyAQ/MSQsfVQl1cBipL+YVcW4cfhzpWe7
+         BHQA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcHAkiCrZlz+TzT8CO3LXKqPUjPdyCUVSB7EIZEwRV2hvFffmyfhxi01TT7CLf2gtSCbPHZJuBIlcjDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs4ysz/URmMdZ7H8Bb6cqm5rM4DWF2IbhlUF/av9M+SqPA71vh
+	frOetsbWOL+YXrTTiu2a96+dVE+rDqZA9b1+NAXSb9HiSqrKDBMCApFbofG1pySbxXhCwmtzuCE
+	9MXV8bzzmqTSAqlaYcn4zsf1N6VHdm+DCGe5AZaK6q4xZYSmG6/w/HplkkfUmSbW91g==
+X-Gm-Gg: ASbGncsvx7iebevfh4Gl0oQhVpKqQax9IR3rsIM3IJ1Ubtv8f1aSjXQEKKvlJUMYPLY
+	7J5nIWACokKxwawuP/1K/SNjwfamkZ7IGw+7782bePTj6ZwGUkbSXINPgW8b0RgGPaRssP6lNY4
+	mik3cK454WoQ/NLLTlxRK5gznpqkrWdJOczyGiGc8j7Q2wMbOXQ2kw0s/i02KT4ILMPKIXvvF3Q
+	olMMbj1ZQ5atqTsdhPHRA9Hrf2eBemcriObJfh9s61wBA1VprYiSR1RJWxGld3tmFj6fkdmfe17
+	t6yJfX/fLVL39AHKxMLWJW/3ePN+FetYLq4hLu/RzI4dLgC49+OxIuVaZU4u+2RcJYdCTWGyGUZ
+	bO1DJ5vg5HaV8NalOMtvlEQ==
+X-Received: by 2002:a05:620a:9444:b0:851:b083:37e9 with SMTP id af79cd13be357-851b0833b27mr305214185a.7.1758709749066;
+        Wed, 24 Sep 2025 03:29:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRzIWeKgyhxXr/t44Dh/z5B9dbWTC8JKuLuTfE3DKhzEiNCFnlBYfyCkI4J25I5SqB0lq0GQ==
+X-Received: by 2002:a05:620a:9444:b0:851:b083:37e9 with SMTP id af79cd13be357-851b0833b27mr305212485a.7.1758709748562;
+        Wed, 24 Sep 2025 03:29:08 -0700 (PDT)
+Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b290caba5a6sm935424766b.65.2025.09.24.03.29.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 03:29:08 -0700 (PDT)
+Message-ID: <9edd7057-8330-4d1a-97c6-e9bf05dbb722@oss.qualcomm.com>
+Date: Wed, 24 Sep 2025 12:29:05 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250923-ft5452-v1-1-c9bc51608b7f@sigxcpu.org>
-X-B4-Tracking: v=1; b=H4sIALCj0mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDSyNj3bQSUxNTI13zJKO0JHPTpDRjCwMloOKCotS0zAqwQdGxtbUAwMY
- a6VgAAAA=
-X-Change-ID: 20250923-ft5452-7b2fb75bf380
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2618; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=jOTfBBuhp4/KXUmQRg6f3HjP0MtVrb5Hzovk33nxhfQ=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQm8wcVBCOVFzeEp6cWhuZFdYenQwb0Z2dGVSdDFyClhGL2hNWnRvZ1NHODZVcC9M
- ZjZKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYU5LandRQUt
- DUkFsdjRaU1N2ekI0K2tHRC85L1NTSHdMZzVGK0pFTktTc0lJa1FuTHNOY0E1ZmdJVldWT3BxRw
- pMemZOdWxPWTNQQ1dseG5iYkVOeXFrcW43eWtKaW9GbTNRdUVDSjNoV0hPaStTUTFaNldYeVBsS
- EZVbDA2YkMyCmo2aUlnOURVdWxGblR3VlFNVDFoeWtkMWZldGluWWR1SWxyaGw3a2tla1ZYQ2RX
- ZE5veklhMlluQjAwOWlFcEYKYXdqVzJjZWFSNkI4WjViWGwrRmxmaDJJc2dMdUxQa2Fpd29UQnM
- 5WVBtTnRZN3NGWDBDeVFaME9wN3h1VHE4eQpGd21Eb2VxRlRvajh0cUlpSVJ1VjRvU0t3YnBXR0
- pvMmsvN3BWa3BRKzViSWExSkNuOFN6SkRDWU1KQjMycCtkCjdRaGo4QWtVU3hEdWo1dDJMelE3b
- m1oVlhaL09Mck4xYW1nT25ZQzFaRy9RQ3VZdFFRT3N3azlQRXpIZnZkWjQKWVlmZUNVRU9GV1Qv
- WXB3RnZzMk5kNUVCVk1ERFVtWDBLRmRqQ2NiaU5OS2c0RkNSaUgwSnN0WERLck9BNXRVTQozTmY
- yNlkrSHFyMURuMm5Kb1A5NFdCM0I2ODN3MHpvVnVvZDVzdnp1ZFVtNWhxaE1lK1NhS3grVE9idF
- R0Ni9PCkhPOHAwdkprTm1pVzB1R251dUJIUEtqUUhZRGlRdVQ3a3gzTytyTEs1b2c5RnE5YlhDS
- FhtVHoyZHo4MjE4OXkKOEloc1U1emJUVFlxT1JINmxVcDA1R0NuQVc3N1Z0TnFpMnhMWGRwNzVi
- R1RsRlNMMFEyakdsZXRxNzJlZXRDNAp5bmcyd3h6OXFBUm0wNDJ2bmZ5ckU2TlNKampYZVVDbGd
- DRjk1dVJxVWZSQ2pZT28ya3ZTdVVDREhScEQzYUlBCmhrbFFhdz09Cj1HbEZhCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] clk: qcom: dispcc-sm6350: Add MDSS_CORE & MDSS_RSCC
+ resets
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250919-sm6350-mdss-reset-v1-0-48dcac917c73@fairphone.com>
+ <20250919-sm6350-mdss-reset-v1-2-48dcac917c73@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250919-sm6350-mdss-reset-v1-2-48dcac917c73@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=YPqfyQGx c=1 sm=1 tr=0 ts=68d3c7f6 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
+ a=WWQFUNGd85j635JlVwcA:9 a=QEXdDO2ut3YA:10 a=AYr37p2UDEkA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-ORIG-GUID: iDamd2TojG8mAxKbVXdIXoMFeRJkrLNq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAwMCBTYWx0ZWRfX4Z/0fatu2wud
+ N0pOEgR0hHDV5qhj2zXnV4xANTHbrKNBfQBQhTD8YBbi0LqFCLlIqghGbVwD0mHlhKP/fdRUMzE
+ 51q1EQM+UwCRUpxxt8ugqon6LMivaDy+qQGYtAjmG8Z3koPOxq+pVuaZc+osMcDAzH2dUrL+WED
+ 3va2OOQiunjfgkmuUaJ6mZtwRO+3gG8V9LM45mLkzvYlxhmdfK++g+ugovkQ4OP8Ry14LMKvkPP
+ AGwt3nylObgHZELzbPJKVaYqZD9LhUzTxAy3D+1D1kb1Vl21ZtOqFHsn+b2H984znluLpv+5ZmL
+ wr1W3fgOaWJPUWImDdyWwqKnvSQFH8qMorcZyGTfqnJLYkqvHui2a4SdIPSJ7on3LI+92K5aTAj
+ BtvKMEKK
+X-Proofpoint-GUID: iDamd2TojG8mAxKbVXdIXoMFeRJkrLNq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-24_03,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200000
 
-Detect the chip that is used in lots of smart phone models
-by different vendors (e.g. Xiaomi and SHIFT).
+On 9/19/25 11:57 AM, Luca Weiss wrote:
+> Add the offsets for two resets inside the dispcc on SM6350 SoC.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-We don't derive any properties from it yet but spare lots of people
-adding this code to figure out if their panel actually uses this chip.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
----
-I hope we can add more values to the chip-id switch once we identify
-them.
----
- drivers/input/touchscreen/edt-ft5x06.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
-index bf498bd4dea9651ac939fe137b1c0f05e8557962..c0f98d622970846f47a61afa7ec042886a7b95d5 100644
---- a/drivers/input/touchscreen/edt-ft5x06.c
-+++ b/drivers/input/touchscreen/edt-ft5x06.c
-@@ -57,6 +57,9 @@
- #define EV_REGISTER_OFFSET_Y		0x45
- #define EV_REGISTER_OFFSET_X		0x46
- 
-+#define EV_REGISTER_CHIP_ID_H		0xA3
-+#define EV_REGISTER_CHIP_ID_L		0x9F
-+
- #define NO_REGISTER			0xff
- 
- #define WORK_REGISTER_OPMODE		0x3c
-@@ -849,6 +852,18 @@ static void edt_ft5x06_ts_teardown_debugfs(struct edt_ft5x06_ts_data *tsdata)
- 
- #endif /* CONFIG_DEBUGFS */
- 
-+static int edt_ft5x06_ts_check_chip_id(struct edt_ft5x06_ts_data *tsdata)
-+{
-+	int val, id;
-+
-+	regmap_read(tsdata->regmap, EV_REGISTER_CHIP_ID_H, &val);
-+	id = val << 8;
-+	regmap_read(tsdata->regmap, EV_REGISTER_CHIP_ID_L, &val);
-+	id |= val;
-+
-+	return id;
-+}
-+
- static int edt_ft5x06_ts_identify(struct i2c_client *client,
- 				  struct edt_ft5x06_ts_data *tsdata)
- {
-@@ -857,6 +872,7 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
- 	int error;
- 	char *model_name = tsdata->name;
- 	char *fw_version = tsdata->fw_version;
-+	int chipid;
- 
- 	/* see what we find if we assume it is a M06 *
- 	 * if we get less than EDT_NAME_LEN, we don't want
-@@ -962,9 +978,18 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
- 				 "EVERVISION-FT5726NEi");
- 			break;
- 		default:
--			snprintf(model_name, EDT_NAME_LEN,
--				 "generic ft5x06 (%02x)",
--				 rdbuf[0]);
-+			chipid = edt_ft5x06_ts_check_chip_id(tsdata);
-+			dev_dbg(&client->dev, "Chip ID = 0x%x", chipid);
-+			switch (chipid) {
-+			case 0x5452:
-+				snprintf(model_name, EDT_NAME_LEN,
-+					 "ft%04x", chipid);
-+				break;
-+			default:
-+				snprintf(model_name, EDT_NAME_LEN,
-+					 "generic ft5x06 (%02x)",
-+					 rdbuf[0]);
-+			}
- 			break;
- 		}
- 	}
-
----
-base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
-change-id: 20250923-ft5452-7b2fb75bf380
-
-Best regards,
--- 
-Guido Günther <agx@sigxcpu.org>
-
+Konrad
