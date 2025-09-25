@@ -1,146 +1,134 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DBF1D6DDD;
-	Thu, 25 Sep 2025 13:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211D72C15BC;
+	Thu, 25 Sep 2025 14:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758808190; cv=none; b=kIPOffvGQzn96HgzizjhxWuC06BMktIdIQ2Xe9dcCnXfYiJ5MKeApP78WPVz/iamFnxpRhs/2w+p3T0zpm7/vPF20b6a3uKBEbj7ir9uHI1MbwDCwmLwe0BoEKeQ8qRXY7+6Gg57pevuOqx1v0kPubDX0WHeuGgqmL3cEe1Gu/E=
+	t=1758809555; cv=none; b=T4WVUKBKwHjJAIAf9LKclZt+cq8BFyP49D0qRaRB8VBr6kEB4nSBUgy4nAm9MzE1dKe3HgkqjV9Tcam88GSCzJOwnKiS9c4TNRN2pfs9QH2p3k5hKMx1f0wGoO1VtdqlIcvUcbqXn1xBaTxJFKfBTwH25k0lsWEnnq20wDzdMCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758808190; c=relaxed/simple;
-	bh=fQlu4S1Xpfp+OjsU8aoZiqJX/wsJnC+sYNgxE5Ve1Z0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rroMfLSuOUYdF4/hUZmYPJawH8YWyLl4ISxfNqfpPySpET90M3gzCw+D1zOBuPx2ymmKZ0fWGyWPFVenCyT/lMRe8wtCo89kEhMyAQo9yiSIACYkEOjeNj2HUQL/s3MujfjAKk+Ox313YxCa9js4HYjk1AB5F24v4l+0HnB5Mjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=mqR4TSd7; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1758809555; c=relaxed/simple;
+	bh=1vyxGwtjiGL2rnIKM6Bn8m6jVXq/TnHR8oRRcP/oPJk=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=qWXt2i4YJplleP50Bzcp0qrHpw3IZCr4NczMbVG0N4YC+mQoaF3vbJpiTqQeKT2Kjfrm/bcTrj/HtJ8MY51nSZ7fV7CkD8KzfSa6ehlnY7+dzMTJbu2AyaaikyCFlRxB1cCZi9pOd3R/C2tVehMvcuco6L5D9hZfPtc2nUrusEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UU0T3pc0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="mqR4TSd7"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 6A2D2534011B;
-	Thu, 25 Sep 2025 15:41:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1758807694;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uy252oP/86BgCE/4KMshl0UWHD/Fva5QoCb2a0Z/n04=;
-	b=mqR4TSd7t1ah2KuuyTGFMvdZc0EWgCvD1q4g7xBMnRwMCtK/jyQtPkVwwOJlJLzZKmimBF
-	2C6IHvJtbOTagHghIy3LanewyZBuT+qUpjLmdFPaYWcnrz9APaPjHpB9XA5YCPJ1gKCACE
-	pCXBMGMubJ9NZUCnT1vJ5ibYqd0yYZo=
-Message-ID: <7282a888-e550-4d75-838c-0fb242fefdf6@ixit.cz>
-Date: Thu, 25 Sep 2025 15:41:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UU0T3pc0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB9CC4CEF7;
+	Thu, 25 Sep 2025 14:12:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758809554;
+	bh=1vyxGwtjiGL2rnIKM6Bn8m6jVXq/TnHR8oRRcP/oPJk=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=UU0T3pc0FF2wFfPhEKXpDoO4w8nYaCrUtjVf70Pa44wSxk8fBHg56SaET3X4tOaBq
+	 PnOkMCB87iPNPQTC7OdoziohljObnYjhcirEUzoi2B7KJxGAxe5eL4UkekJIVw1h3b
+	 y5DnlDt5qw/CUxmTrbDvdReJVrNIGzwXeI98zwY+YkqSCvy0G/aZpq7tmFJZfIISU0
+	 taP8MTsn6JA3NPFpFEp5cD645iJ6VUYQo80pPgNxHEs5R8KCwnlxjgciwdTqEKB3II
+	 Lvl5FeXi8rAFWZp0rHj+RgHTeLGaAdm9pg4GHm7rCvTMbhEy8UEt78eryhcVRUUkDg
+	 15OBR0plyNQhw==
+Date: Thu, 25 Sep 2025 09:12:34 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC with
- AMS641RW panel)
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Casey Connolly <casey.connolly@linaro.org>, 
+ Sam Ravnborg <sam@ravnborg.org>, Simona Vetter <simona@ffwll.ch>, 
+ devicetree@vger.kernel.org, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Thomas Zimmermann <tzimmermann@suse.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, Maxime Ripard <mripard@kernel.org>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ David Airlie <airlied@gmail.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, dri-devel@lists.freedesktop.org, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, linux-kernel@vger.kernel.org
+To: David Heidelberg <david@ixit.cz>
+In-Reply-To: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
 References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
- <a078c6a0-5a54-4ad5-8e3a-c676783e68a3@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <a078c6a0-5a54-4ad5-8e3a-c676783e68a3@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-Id: <175880949068.820285.11045140052982213642.robh@kernel.org>
+Subject: Re: [PATCH 0/8] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC
+ with AMS641RW panel)
 
-On 25/09/2025 11:37, Konrad Dybcio wrote:
-> On 9/25/25 11:12 AM, David Heidelberg via B4 Relay wrote:
->> This patchset enables display on the OnePlus 6T smartphone.
->>
->> Minor adjust to the device-tree of OnePlus 6 had to be done
->> to properly document reset GPIO used. Also same adjustments
->> had been done to the sofef00 panel driver (used by OnePlus 6).
->>
->> In the last step new DDIC driver is introduced together with AMS641RW
->> panel sequences.
+
+On Thu, 25 Sep 2025 11:12:46 +0200, David Heidelberg wrote:
+> This patchset enables display on the OnePlus 6T smartphone.
 > 
-> I think you skipped the elephant in the room - some of these patches
-> break panel for the phone intermittently..
-
-Thank you for the review Konrad. I plan to incorporate all your 
-suggested changes in the next revision.
-
-To clarify, while sofef00 has been introduced as supporting OnePlus 6T 
-too, but it never did (and the compatible was removed later).
-
-All the changes CAN'T BREAK anything for OnePlus 6T display as it's not 
-supported yet by mainline.
-
-All the changes SHOULDN'T CHANGE anything for the OnePlus 6, as both 
-sides (device-tree and the driver) is changed at once to correct reset 
-polarity.
-
-David
-
+> Minor adjust to the device-tree of OnePlus 6 had to be done
+> to properly document reset GPIO used. Also same adjustments
+> had been done to the sofef00 panel driver (used by OnePlus 6).
 > 
-> Konrad
+> In the last step new DDIC driver is introduced together with AMS641RW
+> panel sequences.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Casey Connolly (1):
+>       arm64: dts: qcom: sdm845-oneplus: Describe panel vci and poc supplies
+> 
+> David Heidelberg (7):
+>       dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
+>       dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible
+>       arm64: dts: qcom: sdm845-oneplus-fajita: Reflect used panel in compatible
+>       arm64: dts: qcom: sdm845-oneplus: Correct panel reset gpio polarity
+>       arm64: dts: qcom: sdm845-oneplus: Document TE gpio
+>       drm/panel: samsung-sofef00: Invert reset gpio polarity
+>       drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
+> 
+>  .../bindings/display/panel/panel-simple-dsi.yaml   |   2 -
+>  .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  77 ++++
+>  MAINTAINERS                                        |   6 +
+>  .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi |  31 +-
+>  arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
+>  drivers/gpu/drm/panel/Kconfig                      |  13 +
+>  drivers/gpu/drm/panel/Makefile                     |   1 +
+>  drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 404 +++++++++++++++++++++
+>  drivers/gpu/drm/panel/panel-samsung-sofef00.c      |  10 +-
+>  9 files changed, 536 insertions(+), 10 deletions(-)
+> ---
+> base-commit: ce7f1a983b074f6cf8609068088ca3182c569ee4
+> change-id: 20250923-s6e3fc2x01-f9550b822fe5
+> 
+> Best regards,
+> --
+> David Heidelberg <david@ixit.cz>
+> 
+> 
+> 
 
--- 
-David Heidelberg
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit ce7f1a983b074f6cf8609068088ca3182c569ee4
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz:
+
+arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dtb: panel@0 (samsung,sofef00): 'poc-supply', 'te-gpios', 'vci-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-simple-dsi.yaml#
+
+
+
+
 
