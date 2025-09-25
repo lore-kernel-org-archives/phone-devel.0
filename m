@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272B128134F;
-	Thu, 25 Sep 2025 09:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7AF2D5940;
+	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758791572; cv=none; b=Pm+vtfaTbUPtk9jbhdJbKvJZEm68dUYXj6BnYFShSb+k1bbjywENuS+8mKEEQa6njPADxGVliYRJQZIpf3JWH01jc74SbWm/8qPN5h3uM100sMY2XFr52AC/lXrkxt7M5OphxR4RhPWAvC/5EviZyLi8CogytzuEttvMZxbEo5g=
+	t=1758791572; cv=none; b=kw040+IIxuL6bE6YB/DAdWyMzycasjTtjlumU69q48B3psCKpEUMEnR1Fid1CBFWSWo68JfYMecgeWM6tz07VKMyBpRXVqRaZZB3UZ9gPla8vrCkSKFNbXnU5HzDrO/sCD+y2vXgOpGg0zgOIDkcvS7pIcue93Yl6Y+GTj1fK1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758791572; c=relaxed/simple;
-	bh=r2MWutD4euracaMJI2vFx6Ta5QNYNNW/pyKdAw/nlcs=;
+	bh=wZ+kYf//hjrbQ0knwcLNvJW260i2ZDxw8gma/2MTEQw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lLiKMz4+Nmc2wTsAZWKoOIWrMz9iuXxmwp0pbMzQpJ8OC6wg2dp/t+UEJ1ZfgnxVPStczngES7vHZSrfXwpWPHxsu5XYOncGATmkvKR2zQfHTVMJk0CQDABljigseUsFblTId2RKEhjSPaDX5Bz03QliG8evPEBb09CiCjpD7IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqPX6vlk; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=uJaDpdE70hOg4Xa330E/yEE79cBu+H/WE8HaE4Wu3HdQmSzvNqUTdCuO9gHuFMbJRgZCoc3A3paYW4dSQjM0zppMcoW6b3OGTZkMffZ0oju3Oro5F7jPlh/puMvNntS6frGwb4Ll/anok9MFSJqZVCFwsIm35fxFJBetnkPoBLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DE7OIRlz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqPX6vlk"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E8FB1C19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DE7OIRlz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C3F0DC113CF;
 	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758791572;
-	bh=r2MWutD4euracaMJI2vFx6Ta5QNYNNW/pyKdAw/nlcs=;
+	s=k20201202; t=1758791571;
+	bh=wZ+kYf//hjrbQ0knwcLNvJW260i2ZDxw8gma/2MTEQw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rqPX6vlkJka/mUFsu3G7mWI92+2l1j596twkEdg+rzaSHb3bm9Oaoo/WPtte4f2vL
-	 OeQGtwgZ9Zb0QKN08ZOX2by6nRz6oNdPwR3mvorBbYTfnh0Ue3kSjg3mLRz6Lf5Cfn
-	 KVKedCyaBsY2Wfn4RsjgvQ2n3vhR8SpUQxrPyNUHWPRslz/3ev2lfSp8aAAXkM75RX
-	 io85cixX4TAm6nU+2VHlI/NEkFBov5o8GttL7xvgCQUN/7pCOJwerWWbZ1jYDKO1S0
-	 o27xY1IGorbJsOGhGbm1roMFbNqRxNII5a0vFhABZf+EtJUjCrM2MYGAtTEXkC0m9C
-	 zWIw/dBbjee3w==
+	b=DE7OIRlzVyAS3LS3ZDQpApDZy9noIvlcDz2kbFv4oJY9NcKWJrhanZObGPnzc5iOU
+	 fAGpJdo3k4SmsiLvO1h8dMP4b/K7ZPkQcHVcV3C9uE44Y8flqRn/vCs6/OmrlvBqnA
+	 xTck3zgfxfV+EgFU6Inv3rgskn+zII8qmA9LUpiBihNe73rarxxwg0rTJK1RALsfnt
+	 S61diRNs1KbBvVbbCODt03aF+PZ0eJRdtDw+jTgKHs2zxYWSiLLm3wYnZoDcJhlqQS
+	 r4JbzTqJsvpF9ZoehrSf/rl1rD7otf73pInUT9vrYBJxisoOVHPDSLh1mpxyZ2NRG1
+	 EkMIelTdcCl6w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE857CAC5B0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8D30CAC5A7;
 	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 25 Sep 2025 11:12:53 +0200
-Subject: [PATCH 7/8] drm/panel: samsung-sofef00: Invert reset gpio polarity
+Date: Thu, 25 Sep 2025 11:12:51 +0200
+Subject: [PATCH 5/8] arm64: dts: qcom: sdm845-oneplus: Correct panel reset
+ gpio polarity
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-s6e3fc2x01-v1-7-9293016768f7@ixit.cz>
+Message-Id: <20250925-s6e3fc2x01-v1-5-9293016768f7@ixit.cz>
 References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
 In-Reply-To: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -58,21 +59,21 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1882; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=995; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=ZfoMesL62ioUNjBQKPO8CHzPTpBtCCT4BPeRvoqMncU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo1QeR4cBqvSN+51Lv7PCudNw9nbZ0mitaGklLE
- SqMQmY4lKeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaNUHkQAKCRBgAj/E00kg
- csbbEACtZdtzis8MWoxBI3kf5nqgfdG96sQtuvLU4KxUApxNzaNgCdf0UQhSpBjzhhdSWLOUUHn
- flFARW4JcyvzKY61z2WuCYIgY7Po1i0uaYm4DL3rGFXqAhGkovvTeowzyMi6oq5kvzXnOwUuCFX
- k4K4NLhkD97UGx5ReC6RQAntQ9jUk1ecrSKYx4RHN7kKdp6UXw/IbE9VWK/I75cfVZtmoNG9LfP
- MLomOL5HJrjRH2XundWmzULOhDshRdJVGf3vlj3/TOdoZAy+KYCpepXLPUU4phX5U/TWHFIHL4g
- NeUvVndCheZfJfw8PXOuk6jRClH3wrfO8wGgXLhXjGUSTxFJq5tcujHGf4UIYTbQJ1ATuw+dm57
- QSIlX+nQmaZg7SIu+BLFAsZbDVNKTcZY7xn+UH3vf1Br5mBeSTOVApczvFhOk/RDT4jsu2J/LBl
- /5EdNXCawMbgh03KXtHrPBdtI6EmedgGOQ+Ra29J8Qb3gnSKWNjqSo4oZEdftlQE7gHQ1/hTZe0
- dDRIAKtJU3wk32aepsSDP/h0b7R5qm+QxPwqLenaJ7xTKx8eEuIwTA18eaq7SSb7HuOvMt55tOL
- SGVGHnZdPaFUT3aaPYte/xDP69n9XfHpgQXh1ivW6RAbdHhy7e4bd8oPld3pvscWk0VOXBTu8uK
- iXU+Zi0sne/KMng==
+ bh=Mx+pkd2/AobEUeDku67R/7xYkAIay2Af2+Zb8hbtf9w=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo1QeR0uPmmIGKjO2LdfReaBRqvbkanfhCyQCCP
+ S0Tgv5YyMGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaNUHkQAKCRBgAj/E00kg
+ cuG3D/9klNUUR62Vi0zv8Cduyq9ByQYN5uEdD8bw9MyRDRkbAkbTk7KVrGiXtoyBYd1DxdYlhOu
+ Y6cCYooM0H9vtclG0W0AD/khhzOgdWIvCmEI0ImNG9Ismfb7tLxb5QvmLAytbGsKC4LGUit/xzU
+ QwSNhLjnOaFX+NA7Rv8RThIrP/rRW0+Qq7xa14bGWo2a9D8y2lqcp5eoeg3i3grm99MuXv07UFx
+ Uef2mzl+/+TAVkm8NG1acC/MHmhQLygjntueAm6e3mbfZ5A2uQaYEo6N5O7UVKjogxOrkNcrG83
+ sTI3xOuTOzz1eDs6Tlomw3qxI+wF8vTfOBn9KuzkxEcbFr3i2aR8vY5TN/6B9H7QRduxej2fi84
+ p11oNmovPJzKkn9+eo+tjHwY2S1su7IJqzQeOdgQaoanXAo60YuncHxxtqkG6mVwAgzq/J7XKzU
+ 3k/qLe3ZUc1dSQSH7B+QHNgM6N7vZEoqJUlO54PxJuwsjscp37lBITCXwqZbEc0loBpdNSIdjrE
+ mGJAylPknP2DYMgEfDHm4K+3WY5cPF6BTL7J/89KGUd83uvaZp0255ZJ+O0UmToD/IQcS6gAHIU
+ FMo4xZdN+SENhckp7vvt6j68eHoLsU2GRb49Zo92OTDM6TRB1JooLCL3pvOksi0IUwmN7+5M9FG
+ axt/aQmt25HlKkg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -81,52 +82,28 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Follow the device-tree change for OnePlus 6/6T and invert the reset
-polarity in the driver.
+Reset GPIO should be active in high state as usually the board doesn't
+invert the polarity.
 
-Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index 064258217d50ad6f02d27a97f8aff2e298260d4b..e29badbdb6b9ee0c63167d452d62ecb96e9caef8 100644
---- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -32,11 +32,11 @@ struct sofef00_panel *to_sofef00_panel(struct drm_panel *panel)
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index aff5e80c1eba43e830991c2afd53b6322893cd27..7f968f90a83b869395bedd5de510ba96de3c4e94 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -456,7 +456,7 @@ display_panel: panel@0 {
+ 		vci-supply = <&panel_vci_3v3>;
+ 		poc-supply = <&panel_vddi_poc_1p8>;
  
- static void sofef00_panel_reset(struct sofef00_panel *ctx)
- {
--	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
--	usleep_range(5000, 6000);
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
--	usleep_range(2000, 3000);
-+	usleep_range(5000, 6000);
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	usleep_range(2000, 3000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
- 	usleep_range(12000, 13000);
- }
+-		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
  
-@@ -99,7 +99,7 @@ static int sofef00_panel_prepare(struct drm_panel *panel)
- 
- 	ret = sofef00_panel_on(ctx);
- 	if (ret < 0) {
--		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
- 		return ret;
- 	}
- 
-@@ -202,7 +202,7 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
- 		return dev_err_probe(dev, PTR_ERR(ctx->supply),
- 				     "Failed to get vddio regulator\n");
- 
--	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(ctx->reset_gpio))
- 		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
- 				     "Failed to get reset-gpios\n");
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&panel_reset_pins &panel_te_pin &panel_esd_pin>;
 
 -- 
 2.51.0
