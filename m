@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26A2367BF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A3D279795;
 	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758791571; cv=none; b=qMbFvvOZwT80/WiWz1aDLIo99ZylFFZuXBueyotehzvcrZZFmnKgM1AmrA2Yvrhq9IMCbkOW3XPzJdRXiRSoyP8reKinI8zbSD2WKVi28h5JR2i78VVufk5p7WdwZjNh79NP2JC/GYZW+gnWf7gnN7gMSokv6WM5T28xsAAZD5A=
+	t=1758791572; cv=none; b=l6KkgxDT69CpB4AX5zfmkq4TZZs0nA9mlMNRzmRDaa/ms1rH9T8MZjUTuNIxmiVWh4m26bFam6Xjf+wblXYHgPaHM+mPGaVQAeRZ1pXkUEfYRkiE29kng1vgvwxTKtzuQ39HTUaUmN0n9PNzRYr93CXKvpYhmLk8o7Diidvoxtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758791571; c=relaxed/simple;
-	bh=w2h021jMD9GsalBB3ADdOMlEjXOVX1XyaFvRU6+ecZI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=u/NTS0B3kCMNUjmIL7nlATn5kwNxkWdda6Gd6UaQPsspMbwRU5EI41SdZKBfSr8u9JIJHAptXjIh0dof1twqLfLeGB94mcSdmphed0suYssdNVTp+7HiJY1VvKdpJl/lG6L3ZNrI8BeJzVkAiQGSTYLMXd5gr/8L8XeQk0/Z84w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKbH5RJH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758791572; c=relaxed/simple;
+	bh=OVZdLNzU8JMu9ax5m0rVrkbR3c+sAVUJmeagTRbt6aQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=r5v8I17h+NQQ8aiPPPwQI/j6AoMAlPS8IGWJxRv0C556wLKiu9GfxnTkaQpVImms4wZMQE8ImwMjyQWDCmvHPQP6aiBoJTdT5jR/fscUwlqPD/zx1pISUBWVUaZgmGbAipMEWzp1EbJ8moEvXdbbFEujVU+AY5EUDa37AcnZ/1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0wtzazF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKbH5RJH"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 70E8CC4CEF0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0wtzazF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AC972C113D0;
 	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758791571;
-	bh=w2h021jMD9GsalBB3ADdOMlEjXOVX1XyaFvRU6+ecZI=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=dKbH5RJHQHW1RgTdRXzYy3rquYIplWD4iF3X9cXALr3WQm5iqIKVFY4XPvzgkLnXb
-	 jlWpjPBxi99OdNziyT9e1mXm0t2kzr1tMqUD28mbc+ssW2JNrSUVAiupXLDIKcmvhv
-	 CYkaSb5ywMpua58n3SsQA3rpYSYzmgRf6ShVJbwmjZMzpUb0R6E9J7lDvm97NyXyXH
-	 v93s1owXyg0jQ+ynXCJfqLB9KPUBY64JoYR7+uzO1aOZJGa2KoVXOK52L4/WpX4NTr
-	 WO5ZOhNAPvs2PkTIDxYd8zZ3g4HQHfkCbht8EnVEWnn96syPnmKJaPy9oB3l8XfZ73
-	 vvipOAOnHs2MA==
+	bh=OVZdLNzU8JMu9ax5m0rVrkbR3c+sAVUJmeagTRbt6aQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=P0wtzazFPoQFJmaqhnFcSfZ137mU4N3PO9XiChYC8v5OiTyl8JMyO0irCxFnKGgNu
+	 3klL1osFyA963O12Hjpo6o/NQxCETgEPHNdn6VW5n2R8poT3xomI2N0z42ygWA86cf
+	 4zHqnRdNAwuqmaUE9YjU46DQtAe3MraQT+R9DvHmEh8hPn8jFTmUAZXgg+hZc7NSDl
+	 jY9mty+2MnI6cs+gjNbvuGktSQW3lMj1HQQL4l5/OIpDwZf2NlJmIfxU953vFkcMcS
+	 xPYtK1DgpF9NsPl7wNEpJJgiEJXPkFdob00ZZgDgrq35v3Z/pPlzaK22FQ1mUI2hiv
+	 MUDkqSRu2iqOg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58942CAC5A7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3ADACAC5B7;
 	Thu, 25 Sep 2025 09:12:51 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 0/8] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC with
- AMS641RW panel)
-Date: Thu, 25 Sep 2025 11:12:46 +0200
-Message-Id: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
+Date: Thu, 25 Sep 2025 11:12:50 +0200
+Subject: [PATCH 4/8] arm64: dts: qcom: sdm845-oneplus-fajita: Reflect used
+ panel in compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAI4H1WgC/x3MQQqAIBBA0avIrBN0xMiuEi3KxpqNhUII4t2Tl
- m/xf4VMiSnDLCokejnzHTv0IMBfWzxJ8tENqNAqh0bmkUzwWJSWwVmr9gkxkIUePIkCl3+2rK1
- 9d2mGnVwAAAA=
-X-Change-ID: 20250923-s6e3fc2x01-f9550b822fe5
+Message-Id: <20250925-s6e3fc2x01-v1-4-9293016768f7@ixit.cz>
+References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
+In-Reply-To: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -60,66 +59,53 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1800; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=861; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=w2h021jMD9GsalBB3ADdOMlEjXOVX1XyaFvRU6+ecZI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo1QeRbo/2hmfLGDqLFdrUixqM5/mVi8/CFahBd
- 9U//pQ1aSyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaNUHkQAKCRBgAj/E00kg
- cgz+EACLEFfyyaze7JqKF3k9hOiOSWTJoexB38nGRUvr0km2RFSrI7+TtZMbd7N5uanhHCerasM
- HUV4yxMt1kMmT/1gn/+IoWLHuRCXc4EBef9dLSV7vBhso05eVS7qYHyg0NaZ6uGQyhlEbafuLHQ
- nbmskpvjZnmUEcyGHTegWkgY1EK/erUfgJzZNo8yvLAvzKFDdhT7KvCdhfNRa9uOqQP2PM8zkQI
- tuAQ4h2FzdmQNHeQoG0Ie6mi3G3YbnHexRP2/5MaEP+WSRRn5gcTcRgzTjLO022b4SzsAyK286T
- OJv2vhYd+2FM3hNt8+iFriMvwH36GvCBEeHVj/F9lOI3A7vFa0Zb5W2T6J5nrrVmO9R4xQgiHMw
- PfLZdPqnkxqPpDoDKrA7JM1vKS8Drxt3BAKMmkg/9W/PRyZMTFEaocSbO5Y4ERdJjHL6THVs1uO
- VOJNlYKfBhnGWdDryD++mdcI58goV06Yrb0/yzcj+u7MRrwCp5ThR0BgD8o872HPhKygPjaeXDJ
- mZMRr13bZvlc9g6rJ+5CTgaa1xUREI3cvlrOKrhZk2j+dhwg6qmB50+lK/IwlNtAAVNCCyxyAXR
- s0e7WdQA3GHQ6XuZR4Sw+5epDNdyXML2kdW9e6DKkIWEPmfN+K6Azp4GFHpJqaxYgoiqmRj6h00
- MTX3CYPWBuf1zug==
+ bh=eLKrJy3MogmhhzpVb+BH02zF400XocWMS6U/eaonSM0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo1QeRvxwxJYI6TOR7wTwyUD5kobLbzqgYHQ6Bf
+ KDUTcTuVRiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaNUHkQAKCRBgAj/E00kg
+ cks1EAC0dCaWnmAeauXa5CENO03e6DcEb5ymfAs7+BmwY/Eg99hTreAcR+VvwTSF4Bij8gWiRqa
+ Bi+mHh+j72BSu4ATwbriE1RWPelaH9qCP8LKX25jayeI0mJ0cavNd3rtl+0CSFXCNKsHAOwYMW5
+ 6i3q2H6pSF2sCPwWLOeu1cp4qA8rRt869uSJ0w/xYVVVlm0FUFVZZrzWT/PzpnLP03d7QPKlPT6
+ fTIL8ONvJxIDfKria6ZZd1AxJYjZYngfOAbhLUWkUruedf7MRg9tBQ4L8haHAznC01CGuOKS4PE
+ tJBm6WiFCZarlTQiO/r8NTZDSRriyc73pmgSPRMIfiiOJlODWyorfRwo1ukw79gahhnWW1Ly5lM
+ tLrzgmHqjMzqRvWO8OrXRtbDmVM12mDgmj1Js/FPjaGYzdhk5plEEGB/TcGKOcP9JtAFEmo235R
+ pZJp1LeOKYMXhhmJedmHLp/R4lbH4YkNC1Xo6h+e5kdNeFnpHTN1KpLyxmUXKoyEzsLXXwUb4AS
+ noViG4wRIaBKcBfA/YuSJ4eo+7K/O4XKhAkpQu/mMiZdnCp1upI0Rd/NLxy1K5nWJv5kF5PXMhA
+ CS1MqxPSWK9yeHwmsXIpnbYSBQ7LH8PIHJcUsJ7T8Y8Dx9QrQ5F8QMlaYR0ZUdVlq+FH9xctss1
+ 9XK2tKJoVXsWF/g==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This patchset enables display on the OnePlus 6T smartphone.
+From: David Heidelberg <david@ixit.cz>
 
-Minor adjust to the device-tree of OnePlus 6 had to be done
-to properly document reset GPIO used. Also same adjustments
-had been done to the sofef00 panel driver (used by OnePlus 6).
+Currently compatible was only reflecting DDIC used, but now it also
+describe the panel itself.
 
-In the last step new DDIC driver is introduced together with AMS641RW
-panel sequences.
-
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Casey Connolly (1):
-      arm64: dts: qcom: sdm845-oneplus: Describe panel vci and poc supplies
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-David Heidelberg (7):
-      dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
-      dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible
-      arm64: dts: qcom: sdm845-oneplus-fajita: Reflect used panel in compatible
-      arm64: dts: qcom: sdm845-oneplus: Correct panel reset gpio polarity
-      arm64: dts: qcom: sdm845-oneplus: Document TE gpio
-      drm/panel: samsung-sofef00: Invert reset gpio polarity
-      drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+index 7e75decfda052b9639f2c0ecdac5a71196fc702f..55b3e94dd97262c765165b01b07bf7052e9ffcfb 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+@@ -32,7 +32,7 @@ battery: battery {
+ &display_panel {
+ 	status = "okay";
+ 
+-	compatible = "samsung,s6e3fc2x01";
++	compatible = "samsung,s6e3fc2x01-ams641rw";
+ };
+ 
+ &i2c4 {
 
- .../bindings/display/panel/panel-simple-dsi.yaml   |   2 -
- .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  77 ++++
- MAINTAINERS                                        |   6 +
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi |  31 +-
- arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
- drivers/gpu/drm/panel/Kconfig                      |  13 +
- drivers/gpu/drm/panel/Makefile                     |   1 +
- drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 404 +++++++++++++++++++++
- drivers/gpu/drm/panel/panel-samsung-sofef00.c      |  10 +-
- 9 files changed, 536 insertions(+), 10 deletions(-)
----
-base-commit: ce7f1a983b074f6cf8609068088ca3182c569ee4
-change-id: 20250923-s6e3fc2x01-f9550b822fe5
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.51.0
 
 
