@@ -1,143 +1,138 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1340F233707
-	for <phone-devel@vger.kernel.org>; Thu, 25 Sep 2025 21:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248341C8629;
+	Fri, 26 Sep 2025 11:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758834018; cv=none; b=fAdfFuGBPeI138hjCCsbeA/dlaL8GArYEiHGASdgRMMafvEWqhNWE0TIFvtjfmi31f5I1EJ/UcANOW6MfnJfqoP5xSDI22H7rZTAy6VlHnyXeJ2ma2xIDdmp/fBegQryKKLog9AICBka5fa3vj/8OzH73JBL7+YwVLKuqrRxEh4=
+	t=1758887151; cv=none; b=W6OPNqJCfp5vfMPMBFijNKjQjip1zVzDaLqEFMhFhPcLgECxSonqEEgtvVFPCVEyFk6HV9TUwctqEtL5r5vLrJLsZPNopXnhasiZW8gvVzx03t/Hhp/E8bUxiivw2iySR3nObVsqN75d3VtenNOlSnllmQLk60W2lXNT2xTW+p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758834018; c=relaxed/simple;
-	bh=T4iNv5cr2miRA9ws/Q/OPuwuH/G+wg5LNI8CS99kHMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DYVHMBiLNW7ckYcDx3zAk8v1R/x2AEPGFHZ1CR4Zhp8e01oNIC+fel3BmiT9KsU8YV4tsoNrq+DsefVViS8xrzHbaGblGuDb3dlrwrTFthpnE3GvG8r7h40u1sD+5RdoZILO+GukVp9Idyz/saTiK12XSwnawySmcV6aTBb0tTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=M0VOHOhW; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1758887151; c=relaxed/simple;
+	bh=qaaPocrM5brCsxW/SLoRxadDHG+48wJddHhlLbcYn/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EGy1t43APfkarZQNRFMGYlHNadb/SbS7f0dNjPOu63FW9e1cvy75nZws9xNVRf/hvnYA+rs68HRV+/bcliSWcGcuf4W+lmsFra0iBD35tHiHsGuKagZwHw210CppVaKTPV1R1Ho7FY+2aLM+7pNLnpf9bHgCdnAPIMQ6v+v0g5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=oak0N9IQ; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="M0VOHOhW"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58PIPpjc000866
-	for <phone-devel@vger.kernel.org>; Thu, 25 Sep 2025 21:00:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=J0Sf/sBWadKXsMJGTZZ12sEI
-	LrsGXuVR6yrh2onEh/I=; b=M0VOHOhWE/Cx9fVGigWqZ3bYbPn0y1apqtVbeGMd
-	lnrnbt8IQaVzwyMIw+itSBFXgJJ0XYnavQSHF/Vrmd8aqExIL/6rW03dZcfulQAv
-	f23oJXiTbEI3W3VbDrBT2G8PPgXwNxKUnHTKLKkRJaFW0qaaGaLy0q07AM/rMH8e
-	/eOeSiWuZQzRBwm4cR8yqWqHOaOrVleQ753l8Fe7BYKuA9X73d1EoPp8iIUX64hz
-	zQ7M8Wirx4vT94oRenIRmOUOH0Gf0FW92p6lC3XgoUv6f/IENciZXOnJy2rK9cfV
-	vD5fNIxK8JDKaxVBuSw0AjB4L9KPJQTmo+N2xxTZAT/pwg==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49db0trd4h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 25 Sep 2025 21:00:13 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4d77ae03937so39246431cf.3
-        for <phone-devel@vger.kernel.org>; Thu, 25 Sep 2025 14:00:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758834007; x=1759438807;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J0Sf/sBWadKXsMJGTZZ12sEILrsGXuVR6yrh2onEh/I=;
-        b=CqExX9CS52GhaXrjQslCn4dk8vnVy9ZBd1UcsF05ZP9ryO1bjtyZ3hphTzbdL3gd/n
-         ApE+POnRkXDcgHXpTqW46eK46JDK7buQQE4D3beiHT2y6VzG+EfIsvaZRoPvVu5wAGmj
-         nQecYRROCLKz9CsslEzbzZSbWmZ7reSsAanJyiaXvu7Ji4diPIaGJEtaPvW7oE725WMB
-         Q0iYFU1xRJwR9+9e429PeYf4fvCzdbXX71rfhA6i5F3ykvejMT35SMoCDFHylCCs/i2I
-         kK5zJtzpdzazUhlk1mzrlsqzhdOMNXydVdy+hsW0MAbcMJ6VAVjX7JpokKNxx+JtbWsp
-         cyqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXfp4FAN4EqQoK6zVd9/5CPFOTtRLe2iYuzZtszyQcVNX6RrkBnChLCK133RqTqd7+/aKeQIlpM/cFIHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycaBHYp8XWIXl0zVAVtL5rAQmTT+Xjbsn9toLVA+u5vvDSZSa5
-	1PFs87XEuOEISsmHVfOXOiOHZzgefOyH8CYe9BbYZLhZblAUvGxvK0U0vgxnALTVFiWc2jJrDCs
-	ksdickw6GmNNvhS+yLlCaouGeUnHxdTraGGhRuCQjV3Yxeq1PfaM7u7b2GlfFfEQpow==
-X-Gm-Gg: ASbGncsYgBKdmMyJUzux0rIjbCNW3Yo53+00aIFTGWL16+0W7zNtb3VJ8MVlp/4N4k5
-	Ic/WtTxOwJ89YCyamKaKETkAOPgXmj+aPuTJbg8SEY7CfO+VNU7D/0gekIH1OMG1jjY+QMtZ6aZ
-	cWwSnFE+6A7OOcRLElNfhKu+qiwMeei5n5MCvZKQDwqcctQdtT5cX6N2YxpvCfNAR1kw8OIVFsG
-	D/9KhpACnbg4z0xTdxN1HRhwrPp1Ixl/BM8WPh31fK7Rn9YSppUA7Pfgy2EY/4IJizHcSl2zNTg
-	+SE4n2sUNsfI6PqE0r4bgTcukLK5SIKGb8HAg6xpSebBlnzmgQjvTGNRIFWreHyeBFjlMTruSiJ
-	fy/+P7ryfYcYtH83ywVLKP6ZaxVbW4oUyW+X/vfPp4Uv6OtHScySL
-X-Received: by 2002:a05:622a:a94a:20b0:4db:16f6:9049 with SMTP id d75a77b69052e-4db16f69d23mr37264801cf.70.1758834006855;
-        Thu, 25 Sep 2025 14:00:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSqyJMyZZeC0SdYv6VOMpLT31YAW82OV1CV5+LhKhpeDE/XPG6jushTLuxUA1OesOxbqQQ/g==
-X-Received: by 2002:a05:622a:a94a:20b0:4db:16f6:9049 with SMTP id d75a77b69052e-4db16f69d23mr37264331cf.70.1758834006373;
-        Thu, 25 Sep 2025 14:00:06 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58313dd66fesm1110678e87.54.2025.09.25.14.00.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 14:00:05 -0700 (PDT)
-Date: Fri, 26 Sep 2025 00:00:03 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Casey Connolly <casey.connolly@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 7/8] drm/panel: samsung-sofef00: Invert reset gpio
- polarity
-Message-ID: <anrdocs56hbunj7ga573kopcol34pw5cklrwneqevpfhhlm2bc@qvih2y7vm7q7>
-References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
- <20250925-s6e3fc2x01-v1-7-9293016768f7@ixit.cz>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="oak0N9IQ"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 109115340A9A;
+	Fri, 26 Sep 2025 13:45:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1758887145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hmc0nO62D+pcYqSViTefHG7TcYqYnck8bqXIMVd1kKA=;
+	b=oak0N9IQ/UvJ12dhJ7KgMNhriNmWE4XFw+ThYT4HUVO4r/KiXPtUiUfaoNzPXCS3Wbi3Wb
+	2WBnD6YTv6JUl2qeN+rz0DHES4lNMR5qxfHNxSTitsrYWXcLnyfzMFEV+8VfZzH1nFkbQe
+	gwAiMbkmmDQWCYSK4nMpTtXs1l43cIo=
+Message-ID: <541bc30a-f5b6-47e3-8185-163b8ee4d5a1@ixit.cz>
+Date: Fri, 26 Sep 2025 13:45:44 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250925-s6e3fc2x01-v1-7-9293016768f7@ixit.cz>
-X-Authority-Analysis: v=2.4 cv=I9Vohdgg c=1 sm=1 tr=0 ts=68d5ad5d cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=RX7N6JFfHuZ5v-HjQggA:9 a=CjuIK1q_8ugA:10
- a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: d7QcCnR8mLVtlCAIXt--jAtpg2d4uA4X
-X-Proofpoint-ORIG-GUID: d7QcCnR8mLVtlCAIXt--jAtpg2d4uA4X
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MSBTYWx0ZWRfX8o66lECdqtnK
- RjqcGEwIbWWDBRkk7m57FQjQALpCuWBqUU601CSAhGI4LZk3eiaIIpmXC8uNcQo8kGicwKAquXu
- wRPpH4N+xCZvN/X21KjJllsGjt6wdykfDA0T303WsNyO3C7ZoxnJUbp+YWH0H9fKucXOnzg7Elh
- E99+XGL/YO/GOLzaPzUR4nbkW5CDMbQSb26Fk0003WRys9E60fkuDzir71GRUONY+8HOkUX5NRS
- sr/rhMN7QMI1+cEizn1uumUzwHrro0/RHbAB8p20LRWgY55c5TFILeU09/vOp48mEcuEsDE5cwh
- +hzMvJi3rwG2PNjiJcBqS6eBYRU6CDRnsjoFsoXpUe0+0r4qAqPmim0el9PpZysqGalCZozNUEM
- urphvaDXXOCSE39Tvr37eWtsBpN0wQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-25_02,2025-09-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250171
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] drm/panel: samsung-sofef00: Invert reset gpio
+ polarity
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
+ <20250925-s6e3fc2x01-v1-7-9293016768f7@ixit.cz>
+ <anrdocs56hbunj7ga573kopcol34pw5cklrwneqevpfhhlm2bc@qvih2y7vm7q7>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <anrdocs56hbunj7ga573kopcol34pw5cklrwneqevpfhhlm2bc@qvih2y7vm7q7>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 25, 2025 at 11:12:53AM +0200, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+Thank you, in v2 I'll drop the invert and revert polarity in the 
+S6E3FC2X01. Jens confirmed that GPIO should stay as is.
+
+David
+
+On 25/09/2025 23:00, Dmitry Baryshkov wrote:
+> On Thu, Sep 25, 2025 at 11:12:53AM +0200, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Follow the device-tree change for OnePlus 6/6T and invert the reset
+>> polarity in the driver.
 > 
-> Follow the device-tree change for OnePlus 6/6T and invert the reset
-> polarity in the driver.
-
-Reset is usually active-low. On most of the boards it is described as
-RESET#.
-
+> Reset is usually active-low. On most of the boards it is described as
+> RESET#.
 > 
-> Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/gpu/drm/panel/panel-samsung-sofef00.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   drivers/gpu/drm/panel/panel-samsung-sofef00.c | 10 +++++-----
+>>   1 file changed, 5 insertions(+), 5 deletions(-)
+>>
 > 
 
 -- 
-With best wishes
-Dmitry
+David Heidelberg
+
