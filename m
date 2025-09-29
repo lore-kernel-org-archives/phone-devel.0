@@ -1,172 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F01284663;
-	Mon, 29 Sep 2025 15:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D35B30B535;
+	Mon, 29 Sep 2025 15:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759159739; cv=none; b=RSYWIwGWcly0E77NynCQjS2DHOYbJt9f2SerisklCTlCQ4A3ZjztpJrE1snnUC4XtnnlGNvraFLhcK9QkDhzUMshirYrQOg1DWyowV2xJLEHFPzTNLxnUw25hLp7E5oWNhgpvanN9Lxv5zTM+amN35GdHBkbhjB4jEls77Erg+M=
+	t=1759161186; cv=none; b=j9RK7s2f/jY1FJNGed/XmHKrId6lt+HI2WAn70FV5+1th/UfBFoEAnEKYReSaqVHtts48RHRFFvnrXG/f5hUjOvnB1rOWRrmM4bjTmhU916gxfiSzGR5ci3cmKxtly74edJy6KANP8vdDmptoaVUx/bmirEAReSK5JsNY5D1x8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759159739; c=relaxed/simple;
-	bh=7oZnqyq14webUvB+RE2KVjar1tQcsKEssUnIT9ldzTw=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=VpPAOjWrb5eM+Cx6XmlsjJAzGssFQNkBgC59vLP+S6hoeDwaSvBi1C6qreEaEkslq/X6MtuunOFn9OSZoqC6Jvk2Elgi8fx9DhYFAvi63N3Xnud5rZw+MWVobEt1wW9klQxt775/ufZ+CtNZJCOCSC3jfdS8hyES6eHPiiS2Ob4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8NMy3rJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759161186; c=relaxed/simple;
+	bh=G8YzWykcN+7T3iq/TApLviOykadfZk2GMFlz7NLHNAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FRjeW+oTt3FTPgJ8RehoS/s3BZCf2gcfNkKtcS1dt9IYCDLbEJbpa01DdReq3da2xn8ksaEst9j3mU3CKqYfU9UYE2zdL42SmqmGscO9PVXMaNOl/Iz8Yus38IbWX9IBC4H4YZjwmUXojueHnN+aswUIEGmCeFmBFHi6JxP/5gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=Nk3rY9CJ; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8NMy3rJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC88C4CEF4;
-	Mon, 29 Sep 2025 15:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759159738;
-	bh=7oZnqyq14webUvB+RE2KVjar1tQcsKEssUnIT9ldzTw=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=f8NMy3rJ5T/3h2RaJpG0sJkWJXij76T8ItkilqkvhEPnQcxiMQP7MKZmMY/8aAnPP
-	 MvPsxxvwEVtyQ4ohtpdR5DUsb1dX/g+x8zX//aaoM1Vlzc0DHmWwYv6twCVGJ87Bax
-	 Aj41fRrWE3jxL4gTDd+BfWI/T35ubMYJCXzCmNvu8c5MJtB2uhWFSSomb7J6+5z3ie
-	 3JVEbzMJVF7lJOm2MKWUvK8pPxSvLtAb3M2ezvX/rKVn+0jn0wZiPfOczEr9aZO9tZ
-	 1IvZwl5dDQdxLGfmdpkZq1tQ7Xc+y0exqUHntDi+MWQwz12Fvj8/2zWRiwZFSqNAs7
-	 aTztIHPEe9R2g==
-Date: Mon, 29 Sep 2025 10:28:57 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="Nk3rY9CJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1759160696; bh=G8YzWykcN+7T3iq/TApLviOykadfZk2GMFlz7NLHNAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Nk3rY9CJqqbOqA28siTjvRRJPZoK+Q/2666t0BH6DGvk2GussB1dqO7MLLsb0+rx/
+	 Kkkcej8mYS+fr8tXMylFLYkbjl5XmSZMzQerr8mOsA6OmftZRaL3bXc+Ri3Wym3Mw6
+	 Nh0zaYM9T+ovew8WBhJDB7WRL6kDYH2r4MDsvkSo=
+Message-ID: <f0539620-87f8-4efd-b27e-443100bc92cc@lucaweiss.eu>
+Date: Mon, 29 Sep 2025 17:44:55 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- phone-devel@vger.kernel.org, Konrad Dybcio <konradybcio@kernel.org>, 
- Amir Dahan <system64fumo@protonmail.com>, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Christopher Brown <crispybrown@gmail.com>, David Heidelberg <david@ixit.cz>
-To: Paul Sajna <sajattack@postmarketos.org>
-In-Reply-To: <20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org>
-References: <20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org>
-Message-Id: <175915953133.54369.5423928834702362900.robh@kernel.org>
-Subject: Re: [PATCH v3 00/11] arm64: dts: qcom: sdm845-lg-{common, judyln}:
- Improve HW support in dts
+Subject: Re: [PATCH 1/2] dt-bindings: input: pm8941-pwrkey: Document
+ wakeup-source property
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Courtney Cavin <courtney.cavin@sonymobile.com>,
+ Vinod Koul <vkoul@kernel.org>, Bhushan Shah <bshah@kde.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250909-resin-wakeup-v1-0-46159940e02b@lucaweiss.eu>
+ <20250909-resin-wakeup-v1-1-46159940e02b@lucaweiss.eu>
+ <efb03993-0481-45ed-8f7e-8b65519a55cb@kernel.org>
+ <phctwoxml7hscwcgaipl233lotnrkgcpe7rxvhm5syoiadu3lv@ibgeib4kjyhs>
+ <9e39f1b4-63b2-4c6a-8b31-6360be1952e6@kernel.org>
+ <dcdbc6424db6953dfc39fc05e0e050ab@lucaweiss.eu>
+ <kxgvebizxvlflu4qen3cb5v4lcuydmdixvi7624hrggo7f5u5f@zbengtjkekfj>
+ <3kww5et2q2mqddpvtqzuj3jqzvfds66qrufawcmumamrqoaugk@tiq6zoe5psom>
+Content-Language: en-US
+From: Luca Weiss <luca@lucaweiss.eu>
+In-Reply-To: <3kww5et2q2mqddpvtqzuj3jqzvfds66qrufawcmumamrqoaugk@tiq6zoe5psom>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-On Sun, 28 Sep 2025 22:05:23 -0700, Paul Sajna wrote:
-> Rollup of improved hardware support via devicetree for LG G7 ThinQ
-> (judyln) from sdm845-mainline kernel fork
+On 25-09-25 7:45 atm, Dmitry Torokhov wrote:
+> On Tue, Sep 09, 2025 at 07:54:33AM -0700, Dmitry Torokhov wrote:
+>> On Tue, Sep 09, 2025 at 04:41:26PM +0200, Luca Weiss wrote:
+>>> On 2025-09-09 16:33, Krzysztof Kozlowski wrote:
+>>>> On 09/09/2025 16:08, Dmitry Torokhov wrote:
+>>>>>>>     compatible:
+>>>>>>>       enum:
+>>>>>>> @@ -36,6 +33,11 @@ properties:
+>>>>>>>              pin should be configured for pull up.
+>>>>>>>       $ref: /schemas/types.yaml#/definitions/flag
+>>>>>>>
+>>>>>>> +  wakeup-source:
+>>>>>>> +    description: |
+>>>>>>> +           Button can wake-up the system. Only applicable
+>>>>>>> for 'resin',
+>>>>>>> +           'pwrkey' always wakes the system by default.
+>>>>>>
+>>>>>>
+>>>>>> I'll fix existing code, so don't repeat that style.
+>>>>>
+>>>>> If you ack I can reformat on my side to match the patch you just sent.
+>>>>
+>>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>
+>>> Thanks for fixing that up Krzysztof! I noticed but didn't want to deviate
+>>> from the style just for this description. Of course better to fix the
+>>> formatting in the first place.
+>>>
+>>> @Dmitry: Maybe give this patch some time (1-2 weeks?) to gather more
+>>> feedback,
+>>> given the reasons outlined in the cover letter. Also on the driver patch.
+>>
+>> OK, I'll hold on to this for a couple of weeks.
 > 
-> Notably, this patch-series enables full DRM acceleration and wifi,
-> among other small improvements in individual commits
-> 
-> after this patch-series the main things that remain to be worked
-> on include touchscreen, audio, and modem.
-> 
-> Depends upon panel driver patch-series https://lore.kernel.org/all/20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org/T/#r9a976ca01e309b6c03100e984a26a0ffc2fe2002
-> 
-> Co-developed-by: Amir Dahan <system64fumo@protonmail.com>
-> Co-developed-by: Christopher Brown <crispybrown@gmail.com>
-> Signed-off-by: Amir Dahan <system64fumo@protonmail.com>
-> Signed-off-by: Christopher Brown <crispybrown@gmail.com>
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> ---
-> Changes in v3:
-> - change firmware paths to lowercase 'lg' (matching dt-bindings)
-> - fix signoffs
-> - add wifi dmesg to commit message
-> - remove regulator-always-on from ibb
-> - remove framebuffer
-> - remove msm ids
-> - don't continue commit subject into commit messages
-> - split bluetooth node
-> - add sbu uart details to commit message
-> - change ipa gsi-loader to self
-> - Link to v2: https://lore.kernel.org/r/20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org
-> 
-> Changes in v2:
-> - sort at the start
-> - drop unnecessary labels
-> - drop unnecessary gmu
-> - multi-led
-> - split fb-panel changes
-> - expand upon firmware commit message
-> - use qcom,calibration-variant instead of
->   qcom,ath10k-calibration-variant
-> - change firmware paths to include "LG"
-> - remove framebuffer reservation
-> - add lab/ibb
-> 
-> - Link to v1: https://lore.kernel.org/r/20250913-judyln-dts-v1-0-23b4b7790dce@postmarketos.org
-> 
-> ---
-> Amir Dahan (1):
->       arm64: dts: qcom: sdm845-lg-common: Add leds
-> 
-> Christopher Brown (1):
->       arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
-> 
-> Paul Sajna (9):
->       arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
->       arm64: dts: qcom: sdm845-lg-common: Add uarts and Bluetooth
->       arm64: dts: qcom: sdm845-lg-judyln: Add display panel
->       arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change path
->       arm64: dts: qcom: sdm845-lg-{common, judyln}: Add wifi node
->       arm64: dts: qcom: sdm845-lg-common: Add chassis-type
->       arm64: dts: qcom: sdm845-lg-common: Add camera flash
->       arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
->       arm64: dts: qcom: sdm845-lg-common: Change ipa gsi-loader to 'self'
-> 
->  arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 222 ++++++++++++++++++-------
->  arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 140 ++++++++++++++--
->  2 files changed, 289 insertions(+), 73 deletions(-)
-> ---
-> base-commit: 8394712bc1340df993cb167199568f44013b45d3
-> change-id: 20250911-judyln-dts-17c41e59dc0f
-> prerequisite-message-id: <20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org>
-> prerequisite-patch-id: e51151ea7f8fdad6ad7d90713febc5c6b6fc4f9c
-> prerequisite-patch-id: b3dd44250da9cd12bc5b2d0d7e865dbe19ceed92
-> prerequisite-patch-id: fd6c8077806cb03fcf37d0e0d730314c2760e334
-> 
-> Best regards,
-> --
-> Paul Sajna <sajattack@postmarketos.org>
-> 
-> 
-> 
+> Nobody voiced any objections so far, so applied both.
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: base-commit 8394712bc1340df993cb167199568f44013b45d3 not known, ignoring
- Base: attempting to guess base-commit...
- Base: tags/next-20250926 (exact match)
- Deps: looking for dependencies matching 3 patch-ids
- Deps: Applying prerequisite patch: [PATCH 1/3] drm/panel: Add LG SW49410 Panel
- Deps: Applying prerequisite patch: [PATCH 2/3] dt-bindings: display: panel: Add devicetree documentation for lg,sw49410
- Deps: Applying prerequisite patch: [PATCH 3/3] Update MAINTAINERS for lg,sw49410
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org:
-
-arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dtb: wifi@18800000 (qcom,wcn3990-wifi): 'qcom,snoc-host-cap-skip-quirk' does not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
-arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dtb: wifi@18800000 (qcom,wcn3990-wifi): 'qcom,snoc-host-cap-skip-quirk' does not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
-
-
-
-
-
+Thanks Dmitry!
