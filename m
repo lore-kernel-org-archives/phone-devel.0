@@ -1,187 +1,245 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C5816A956;
-	Sat, 27 Sep 2025 19:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1011217F27
+	for <phone-devel@vger.kernel.org>; Mon, 29 Sep 2025 05:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759001881; cv=none; b=Za7YaRSPULjbKv/Bq5DCk/Y1eC3LQOqtzT65AkDk7pxg176yBzkRSwtrl2PGmJhL3hLXlOb1YpezEeDRNuOXpBIrY0I7RQbGMFMYEV3Q2JvB9/RqUrrVt/X6klgkBfcQ5o6rnH5Gify+cU0P7hG/wJ1mZ9SwlV+RVIbIYGbskU8=
+	t=1759122340; cv=none; b=qt/5ALfJkseEJUVTAbkLXk0wgPXk9uorlTrPzgqDHNDnqVDJwJqrUwESbvugbxn+H60lePEa6G0pBt6w+a2QWVCVN050TCHOdaDlaSp4M0MiNJkGMC/djb+KmiIFkMkw/MqaAhJ3p3FmgqxqIlJ/9SKuC7U97ERZvnv/ef4Fu6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759001881; c=relaxed/simple;
-	bh=v4tYuKq23IFkP5pTX5xVWeK6wNj4TsUt3W+E4QEibj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwSVBYAjYbExZ7pxno192NVt+yiXkseAat94BWCG8Kkv3tTV+z5QgGBxYwTi6NZPILC97NBGOR763UZxOycf/nZrqnVm6aHY5ykA61kiAue2RNjjbntOe4oIbD29iCy6ThWd6IzpG90TprD4Q1mHBWOzMnPHvztkPc67c8oefS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UB4OS5rq; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1759122340; c=relaxed/simple;
+	bh=kgQH3Fdo+5ytX6kJZFcIRgT5WhQkKGBDZNDs9aXclVg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mmJh/Tzq+IMe/AmHxJJmbUlNX6+PTpVbeU428H39kCi/1Fkdqi4FfW7T705a4/cSFlANdh+zmPAdHFcYlLtHz5AiQSADyBXg+m2rY+NgmjG5IgSnnzkInJjeI73mkGfzvWfS3WxoVpyRbeODYeBshv7Wn4mH5TPC+H/yNSoEFBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=JDxk2y49; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UB4OS5rq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759001880; x=1790537880;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v4tYuKq23IFkP5pTX5xVWeK6wNj4TsUt3W+E4QEibj8=;
-  b=UB4OS5rqC9UKfOfsmDTbDCxhsexNF+DlbV9RyulG0ApDkt3HgOymBl5w
-   ZLu++sat8F7QFS1Yc9Uj+CrpU9lQrgHhuPD9CT3Y+/R7oRzEGnUwb0ytK
-   it/K8fHRHDhiEERXPEH+u7yLVHl6FOz/dx1dhk5k1ujHRDZ6p3NJYK2Kw
-   xKfWEXM1fZRMXkJe2Zo776BezLJffN3x1DEyOorvgnQGNuCUJnENri3Mh
-   GRNb9hiJfI1d6a0sCEo5g+9WoCYYYEhGgedGS4GWElEKS88N9AiliCMdT
-   k4IEEwwHrOVlVTwijLkw0jlWFvs6yyz2F2Z7tyz78MaSw6he0HrqHzy4a
-   g==;
-X-CSE-ConnectionGUID: LXGPSR7mR8qBnohnPmh9WA==
-X-CSE-MsgGUID: levRUB3ZTmWsJw4UJg9tMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="83908958"
-X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
-   d="scan'208";a="83908958"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2025 12:37:59 -0700
-X-CSE-ConnectionGUID: FJxBiAB5RyqbSrOb7oISQg==
-X-CSE-MsgGUID: T0kuUb2QSoG4qQMy8NQM9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
-   d="scan'208";a="208615280"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 27 Sep 2025 12:37:54 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v2ajv-0007IB-1o;
-	Sat, 27 Sep 2025 19:37:51 +0000
-Date: Sun, 28 Sep 2025 03:37:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Casey Connolly <casey.connolly@linaro.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH 8/8] drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW
- panel
-Message-ID: <202509280303.sWeQi4ks-lkp@intel.com>
-References: <20250925-s6e3fc2x01-v1-8-9293016768f7@ixit.cz>
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="JDxk2y49"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1759122336;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=97JOMISSZ0I8Eqg0bwKIFtfyrO4sCuNK8uOfno3G4Xo=;
+	b=JDxk2y49FjF9HDfnBoMmObwKFo4bd1aSq+gVG6bb7jNEOVLZHr3CfFmjX6OJFXuht6R++K
+	cuoEshZx9dW8WtZ6gQLmTSA8pmqQ19cxZH6uCU5kO4vuMQpIEDv/8g73xw+Onsm3NJ0myO
+	wJNH0WaXvgG5T/XlqqVmhHTx930ip1am0QCTC/ZXr8fAxkMUjgc2wcNiS3KSVa6EO537cK
+	PQvRbYnvjQRScq34mSKKVoUBIBuEJKrZHvW8WoPo9RG+mNzXFHsyMFJ+AkL7B4gtIl+P8I
+	CqGkf+vfepsSI/L4uce+o8SNYLUTwqIk1obLT4wt+KCzVKy9XYAQ0z6WSHDvRA==
+From: Paul Sajna <sajattack@postmarketos.org>
+Date: Sun, 28 Sep 2025 22:05:24 -0700
+Subject: [PATCH v3 01/11] arm64: dts: qcom: sdm845-lg-common: Sort nodes
+ and properties
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250925-s6e3fc2x01-v1-8-9293016768f7@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250928-judyln-dts-v3-1-b14cf9e9a928@postmarketos.org>
+References: <20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org>
+In-Reply-To: <20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Amir Dahan <system64fumo@protonmail.com>, 
+ Christopher Brown <crispybrown@gmail.com>, 
+ Paul Sajna <sajattack@postmarketos.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759122330; l=4173;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=kgQH3Fdo+5ytX6kJZFcIRgT5WhQkKGBDZNDs9aXclVg=;
+ b=N5PVvsx/ZKDVGUD4k38N9sApVIY0SJxmrZxNBxwgql41Gc2VhHqoznS8Cbc874DSLGiIaH/tL
+ 0V8ZTf+pIzNDzfnaUgBVjDlyQudh4aL6cJUUS8ba3/bGsVZJBvHwDda
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
+X-Migadu-Flow: FLOW_OUT
 
-Hi David,
+Improve adherance to style guidelines below:
+https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 124 ++++++++++++-------------
+ 1 file changed, 62 insertions(+), 62 deletions(-)
 
-[auto build test WARNING on ce7f1a983b074f6cf8609068088ca3182c569ee4]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Heidelberg-via-B4-Relay/dt-bindings-panel-Add-Samsung-S6E3FC2X01-DDIC-with-panel/20250925-171444
-base:   ce7f1a983b074f6cf8609068088ca3182c569ee4
-patch link:    https://lore.kernel.org/r/20250925-s6e3fc2x01-v1-8-9293016768f7%40ixit.cz
-patch subject: [PATCH 8/8] drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250928/202509280303.sWeQi4ks-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250928/202509280303.sWeQi4ks-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509280303.sWeQi4ks-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c:210:17: warning: unused variable 'dev' [-Wunused-variable]
-     210 |         struct device *dev = &ctx->dsi->dev;
-         |                        ^~~
->> drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c:256:29: warning: unused variable 'ctx' [-Wunused-variable]
-     256 |         struct samsung_s6e3fc2x01 *ctx = to_samsung_s6e3fc2x01(panel);
-         |                                    ^~~
-   2 warnings generated.
-
-
-vim +/dev +210 drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c
-
-   206	
-   207	static int s6e3fc2x01_prepare(struct drm_panel *panel)
-   208	{
-   209		struct samsung_s6e3fc2x01 *ctx = to_samsung_s6e3fc2x01(panel);
- > 210		struct device *dev = &ctx->dsi->dev;
-   211		int ret;
-   212	
-   213		ret = regulator_bulk_enable(ARRAY_SIZE(s6e3fc2x01_supplies), ctx->supplies);
-   214		if (ret < 0)
-   215			return ret;
-   216	
-   217		s6e3fc2x01_reset(ctx);
-   218	
-   219		ret = s6e3fc2x01_on(ctx);
-   220		if (ret < 0) {
-   221			gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-   222			regulator_bulk_disable(ARRAY_SIZE(s6e3fc2x01_supplies), ctx->supplies);
-   223			return ret;
-   224		}
-   225	
-   226		return 0;
-   227	}
-   228	
-   229	static int s6e3fc2x01_unprepare(struct drm_panel *panel)
-   230	{
-   231		struct samsung_s6e3fc2x01 *ctx = to_samsung_s6e3fc2x01(panel);
-   232	
-   233		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-   234		regulator_bulk_disable(ARRAY_SIZE(s6e3fc2x01_supplies), ctx->supplies);
-   235	
-   236		return 0;
-   237	}
-   238	
-   239	static const struct drm_display_mode ams641rw_mode = {
-   240		.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
-   241		.hdisplay = 1080,
-   242		.hsync_start = 1080 + 72,
-   243		.hsync_end = 1080 + 72 + 16,
-   244		.htotal = 1080 + 72 + 16 + 36,
-   245		.vdisplay = 2340,
-   246		.vsync_start = 2340 + 32,
-   247		.vsync_end = 2340 + 32 + 4,
-   248		.vtotal = 2340 + 32 + 4 + 18,
-   249		.width_mm = 68,
-   250		.height_mm = 145,
-   251	};
-   252	
-   253	static int s6e3fc2x01_get_modes(struct drm_panel *panel,
-   254						struct drm_connector *connector)
-   255	{
- > 256		struct samsung_s6e3fc2x01 *ctx = to_samsung_s6e3fc2x01(panel);
-   257		struct drm_display_mode *mode;
-   258	
-   259		mode = drm_mode_duplicate(connector->dev, &ams641rw_mode);
-   260		if (!mode)
-   261			return -ENOMEM;
-   262	
-   263		drm_mode_set_name(mode);
-   264	
-   265		mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-   266		connector->display_info.width_mm = mode->width_mm;
-   267		connector->display_info.height_mm = mode->height_mm;
-   268		drm_mode_probed_add(connector, mode);
-   269	
-   270		return 1;
-   271	}
-   272	
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+index 99dafc6716e76e25aad0755e6004dc952779689f..82d6543835324ed92300c4ed24c51f4b79321f99 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+@@ -38,11 +38,6 @@ reserved-memory {
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		qseecom_mem: memory@b2000000 {
+-			reg = <0 0xb2000000 0 0x1800000>;
+-			no-map;
+-		};
+-
+ 		gpu_mem: memory@8c415000 {
+ 			reg = <0 0x8c415000 0 0x2000>;
+ 			no-map;
+@@ -99,6 +94,11 @@ memory@9d400000 {
+ 			no-map;
+ 		};
+ 
++		qseecom_mem: memory@b2000000 {
++			reg = <0 0xb2000000 0 0x1800000>;
++			no-map;
++		};
++
+ 		/* rmtfs lower guard */
+ 		memory@f0800000 {
+ 			reg = <0 0xf0800000 0 0x1000>;
+@@ -482,14 +482,22 @@ &mss_pil {
+ 	status = "okay";
+ };
+ 
++&pm8998_gpios {
++	vol_up_pin_a: vol-up-active-state {
++		pins = "gpio6";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
++	};
++};
++
+ &pm8998_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
+ 	status = "okay";
+ };
+ 
+ &sdhc_2 {
+-	status = "okay";
+-
+ 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
+ 
+ 	pinctrl-names = "default";
+@@ -497,55 +505,8 @@ &sdhc_2 {
+ 
+ 	vmmc-supply = <&vreg_l21a_2p95>;
+ 	vqmmc-supply = <&vddpx_2>;
+-};
+-
+-/*
+- * UFS works partially and only with clk_ignore_unused.
+- * Sometimes it crashes with I/O errors.
+- */
+-&ufs_mem_hc {
+-	status = "okay";
+-
+-	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
+-
+-	vcc-supply = <&vreg_l20a_2p95>;
+-	vcc-max-microamp = <600000>;
+-};
+-
+-&ufs_mem_phy {
+-	status = "okay";
+-
+-	vdda-phy-supply = <&vdda_ufs1_core>;
+-	vdda-pll-supply = <&vdda_ufs1_1p2>;
+-};
+-
+-&usb_1 {
+-	status = "okay";
+-};
+-
+-&usb_1_dwc3 {
+-	/* TODO: these devices have usb id pin */
+-	dr_mode = "peripheral";
+-};
+-
+-&usb_1_hsphy {
+-	status = "okay";
+-
+-	vdd-supply = <&vdda_usb1_ss_core>;
+-	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
+-	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
+-
+-	qcom,imp-res-offset-value = <8>;
+-	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
+-	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
+-	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
+-};
+ 
+-&usb_1_qmpphy {
+ 	status = "okay";
+-
+-	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
+-	vdda-pll-supply = <&vdda_usb1_ss_core>;
+ };
+ 
+ /* PINCTRL - additions to nodes defined in sdm845.dtsi */
+@@ -586,12 +547,51 @@ sd_card_det_n: sd-card-det-n-state {
+ 	};
+ };
+ 
+-&pm8998_gpios {
+-	vol_up_pin_a: vol-up-active-state {
+-		pins = "gpio6";
+-		function = "normal";
+-		input-enable;
+-		bias-pull-up;
+-		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
+-	};
++/*
++ * UFS works partially and only with clk_ignore_unused.
++ * Sometimes it crashes with I/O errors.
++ */
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
++
++	vcc-supply = <&vreg_l20a_2p95>;
++	vcc-max-microamp = <600000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vdda_ufs1_core>;
++	vdda-pll-supply = <&vdda_ufs1_1p2>;
++
++	status = "okay";
++};
++
++&usb_1 {
++	status = "okay";
++};
++
++&usb_1_dwc3 {
++	/* TODO: these devices have usb id pin */
++	dr_mode = "peripheral";
++};
++
++&usb_1_hsphy {
++	vdd-supply = <&vdda_usb1_ss_core>;
++	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
++	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
++
++	qcom,imp-res-offset-value = <8>;
++	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
++	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
++	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
++
++	status = "okay";
++};
++
++&usb_1_qmpphy {
++	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
++	vdda-pll-supply = <&vdda_usb1_ss_core>;
++
++	status = "okay";
+ };
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
