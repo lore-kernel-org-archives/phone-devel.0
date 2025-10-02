@@ -1,53 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26934BA57;
-	Thu,  2 Oct 2025 01:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1658A9463;
+	Thu,  2 Oct 2025 01:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759366835; cv=none; b=bfp8AAWJZF1ADZ57oSSKntSHBb05/Zxcvb6qDlveEo+E0hSwRC7S9jVPbbYf8k8PYgMs+vce2Y+FMJRIRvmImoi0b4NYvSllAoMoM1MgjyduNxxrgoxkz5H+bvRZCaFuDI3QMEVcVGiKjACUv5EJ8kaUIJAdRFIbO9oLZPQx45M=
+	t=1759367115; cv=none; b=G9HT3DzpWXDdyFJSQmNpM8sGk2mNan/xo+QJGXA8L/uFHE/V3MMytis17aqhkarhPWhLn+nCwRhIce44tCUujCe9fZ4iLSc/pokUnSAytcYGClARb7jcDF6+lpJDIbbJl3h0UH9yFHTU8O7IPinG5CUA9VIVrkei3HORdH5LxeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759366835; c=relaxed/simple;
-	bh=pjPnjlspczDRAF5pe/F+7pe+bZIvPBL5uhCJyWOQgPo=;
+	s=arc-20240116; t=1759367115; c=relaxed/simple;
+	bh=9+VYVFxox0DL0YYyNv3hqViaZYhr3vK3YfN8lCChz+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ek+znhXrv5kaPQBcCC9qs/PObFR01zyPVXc3A9G3kHb7i1i0WBAL9Y3yzEBg2cn03zsF2qJ7LGl+sFQFrD10bArJproqi7TITNiClLsMzwDo1ZFUEXNtZWuwR4byJMCYM+2SyuOp15hH39bhKGX9jcMksdKTlAwUGJbVWSuit+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iKwizORP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=c6qn0oiXbIN9Ilz7plEGXReA2csdtWkR1MVF4N3aBqm3P1i1B/ID8s5T48if18KSgzMUQwybQ6O5cWBM6E2AOd3frV6P/4zyFf5xfYGYkxWjudN5Sm05Dtj5IWy11ATUY6FevQhuRyjo2ounetUl+jwwFhXIJMNRebZAkYodMiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3LkUMBa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iKwizORP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81FEC4CEF1;
-	Thu,  2 Oct 2025 01:00:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3LkUMBa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BBCC4CEF1;
+	Thu,  2 Oct 2025 01:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759366835;
-	bh=pjPnjlspczDRAF5pe/F+7pe+bZIvPBL5uhCJyWOQgPo=;
+	s=k20201202; t=1759367114;
+	bh=9+VYVFxox0DL0YYyNv3hqViaZYhr3vK3YfN8lCChz+I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iKwizORPZ3bybzpXw8WDhuWw+ZtXR15IsHQmV/WPGp7+YWpVoEcuyaUgnuaCHkAQS
-	 nJRM8kHq8d9mJlLIpqJ5zpbrh14SZhS1QEm/mrQV8bXwiT/hprxclWKR/b0GRAiok4
-	 V+uQFOKKlz6rcTy7XQykm+s1/jWP//9/pLpk63QLHQr4rqQYwehtq5pE/9rShuHvBS
-	 Q3PKWUiSAWzYbai0Fc8uuFF3DpPK+1S9CRhZwNkk9Vyb3Vlpqp8SDKXr5gTyHcfU0Q
-	 t+GL7EmdvJ9WpFAtltg4GnON/V9Q7r7n+fTiGOc6s2jfFrJh7PMEFL6CA0o2TTGoSB
-	 CUbn9mK1KC3RQ==
-Date: Wed, 1 Oct 2025 20:00:33 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>, linux-arm-msm@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Simona Vetter <simona@ffwll.ch>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	b=R3LkUMBaWfiGaUeocLQ9ZHgJsWqC23FDt/jKC9VzhyeflCo8u8isn9HykMpCe1a89
+	 JweeqDPSNQdKXgLeq7VzsJjgSe05hQYOIUg6wQfec9mpDhv+UhIhjz19ZFKoACvHLG
+	 9ZlZQWJFsCD7XEMKMRMV/QsZazTsLKxTWK83CTC9j8MX6G8E73oNsGPb8sM51yj/Vb
+	 1sW3QGPFRkMqcNpQ3TWrwu2ZTW7t4ppTBiXeHRyMtlj1oynQBLIij3O1y/OZXQ8Z5Z
+	 gI9qv9Xew6a+nRcKgm3kQa98pgka50dpOtvgxgCOM783Ar185p52+aAN2dtHTXk6m4
+	 4jsZUJV++rLaQ==
+Date: Wed, 1 Oct 2025 20:05:12 -0500
+From: Rob Herring <robh@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: david@ixit.cz, Neil Armstrong <neil.armstrong@linaro.org>,
 	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
 	Casey Connolly <casey.connolly@linaro.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, Conor Dooley <conor+dt@kernel.org>,
-	phone-devel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH 1/8] dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with
- panel
-Message-ID: <175936683208.2810010.4903153430543479196.robh@kernel.org>
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/8] dt-bindings: display: panel-simple-dsi: Remove
+ Samsung S6E3FC2 compatible
+Message-ID: <20251002010512.GA2810258-robh@kernel.org>
 References: <20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz>
- <20250925-s6e3fc2x01-v1-1-9293016768f7@ixit.cz>
+ <20250925-s6e3fc2x01-v1-2-9293016768f7@ixit.cz>
+ <mdgdqm4qurstamxyt4nvkrabf2k57sf6so7qp7plmhtpqh4qtk@vohj4ofwhyt7>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -56,18 +59,35 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250925-s6e3fc2x01-v1-1-9293016768f7@ixit.cz>
+In-Reply-To: <mdgdqm4qurstamxyt4nvkrabf2k57sf6so7qp7plmhtpqh4qtk@vohj4ofwhyt7>
 
-
-On Thu, 25 Sep 2025 11:12:47 +0200, David Heidelberg wrote:
-> Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
+On Thu, Sep 25, 2025 at 11:51:47PM +0300, Dmitry Baryshkov wrote:
+> On Thu, Sep 25, 2025 at 11:12:48AM +0200, David Heidelberg via B4 Relay wrote:
+> > From: David Heidelberg <david@ixit.cz>
+> > 
+> > Follow up commit introduce the proper device tree definition for the DDIC.
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  .../bindings/display/panel/samsung,s6e3fc2x01.yaml | 77 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 82 insertions(+)
+> And the reason being?
 > 
+> > 
+> > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > ---
+> >  Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml | 2 --
+> >  1 file changed, 2 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
+> > index 9b92a05791ccf99061ab7a1e01937bb832a96fe6..6c1249a224c8a170b33fd3f331f985f16914cb2c 100644
+> > --- a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
+> > +++ b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
+> > @@ -56,8 +56,6 @@ properties:
+> >        - panasonic,vvx10f034n00
+> >          # Samsung s6e3fa7 1080x2220 based AMS559NK06 AMOLED panel
+> >        - samsung,s6e3fa7-ams559nk06
+> > -        # Samsung s6e3fc2x01 1080x2340 AMOLED panel
+> > -      - samsung,s6e3fc2x01
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+If this is already in use, you can't just remove it. In the end, 
+compatible is just a unique id. So if this referred to a specific panel 
+used, then we are stuck with it even if the naming is not ideal.
 
+Rob
