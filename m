@@ -1,73 +1,73 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8825F2E11C8
-	for <phone-devel@vger.kernel.org>; Tue,  7 Oct 2025 13:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3145F1DE887
+	for <phone-devel@vger.kernel.org>; Tue,  7 Oct 2025 13:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759845233; cv=none; b=hNsFHHIMTpeTPoNu157uWqebeIQyHsSJzfS/KNQ+YkYk3Q6lt+QoQ0kAdYYz97f/mgR3TIXjbISUlurEQY3z44UpINogIcC/w6azvQmUdsB4qQF8kq91wVXKW+4NGgj9PaehVHdRKg7DaboER/y1O3VrPJO3tUmc+oU4UZQxQus=
+	t=1759845344; cv=none; b=uYDto20/WP7Af7fAPcAlZw7s1Z+yxzFisD7tW4boHOoErMCJYSINbft6pwjZBX/ZCU9WD7Kh0B5QU1xRHDKZUhaDG318GogxYANKjfz70OlmTK2pJr4cGl9nNvtbvG3hlUtRrUKBCCBvX3O/KSZLU5VTrTQMeavYHVgN/CcGnV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759845233; c=relaxed/simple;
-	bh=cdt+xIUTUY+JbHEpPzEj8o59T1ECMCeqF+g9xZCYiJM=;
+	s=arc-20240116; t=1759845344; c=relaxed/simple;
+	bh=N9qdfaqqehWWuUI73ra8Uu9gFKR3Pihqz6Oy79KUWl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jefcwTgMK7mYCvQVqNES3uAioSNX+VvpaxXuQ66gM/DfAlMMq5bUlF+6mmiXYeh/9RTwisliSLvGmYqeC4+zy3/5rHgeSEs5p0jkU8fnxH1rPB0WhdprrjcqTo6JaVGl9BQAo/p5KT7cYXVriVPGQTEipNHGLWk7j472aMlrA1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZJJLtJ4S; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=Wx1YQXCJKe8jo31R5tP3fmMt3SRehvgkAY9AeiglRWYlBSp+6ScfxBw0pHxrct8Rej9NOO7V3bBsR9vxM2jMKrwUMH8CbFAYE4dM6OEQxuMniKkhU/4ScgzOYjf4YOPpetxEL43gPl9/Uqf2FI0jKnYQdl3NEYprBZiLRYhfzXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Rv9836Hx; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZJJLtJ4S"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5977hiLI020044
-	for <phone-devel@vger.kernel.org>; Tue, 7 Oct 2025 13:53:51 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Rv9836Hx"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597C0Te5003197
+	for <phone-devel@vger.kernel.org>; Tue, 7 Oct 2025 13:55:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fiNc/ZDld9lHBOfROmDO6f0b35mQryE6GaNus4HaVTU=; b=ZJJLtJ4Sa6IzdQP5
-	iOCwOhtwN/oa6v65lFuwMLp6viOO2qJQCR1u9n4wsFGej5IO66wSfYpLEIvDU3x9
-	sfEFpIzL9WlAgKKFx1p/YNpZjGplIHMmklsCIFa/A/gnxoPMNGdolZoG+bn6sf8W
-	ukOH0mGEWNe+WD5K9qtQJU6Vm7XtP54CJjd5lgLGD4k9irY6rYGS89bTNwWrBr9D
-	r70G1YpWIXf5Jh1l9DGm8owSPNqz7SM1hDANDMADWp7Bx5az9+uSRZWltKpFL1sl
-	QXxNoLSNEVfIqQJ29d1tfkVaPm9Rp0wabvOXfA3uAJsJYOmKnzsSSV17uLmiQFZy
-	Z8shlA==
+	ZawunH39fsjLdjYkyzjOOeRauXShTP9A+eqv2749nhA=; b=Rv9836HxAh0K16UA
+	RT5Fg1NE5UBd4f7azIwbcPwjlzC3WLWStME7D3uRAHaX3QqU1BzQ4GACSY5quRW9
+	txeNwzrePS+NA58J713RFPUXKbQ7Awfhra33g9I9UFf9NroG2gCs/QnVHkjTmFY0
+	dyp+wwytoYY4zwKiXtTN0vMThKT+3s+TjBc43sw+Yku82WIIpgdPNdwQBjyYFoWL
+	p0/gYITcccsdudY6YY/Zb/V4wBw5D5s/PVBYtmF1JQCldKkdws3+wLdIoAh3Lq8m
+	K0wTjIkHXyUDW4KPvYi9uHcgrBMw/pqLkn+ZLJ6OlEQFNZ2gxa4TM5uLPtpxGz5F
+	tfaB5g==
 Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49mnkpt7p9-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jtk6yemh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 07 Oct 2025 13:53:51 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4d880ce17bbso6495051cf.0
-        for <phone-devel@vger.kernel.org>; Tue, 07 Oct 2025 06:53:51 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Tue, 07 Oct 2025 13:55:39 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4e231785cc3so26197741cf.1
+        for <phone-devel@vger.kernel.org>; Tue, 07 Oct 2025 06:55:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759845230; x=1760450030;
+        d=1e100.net; s=20230601; t=1759845339; x=1760450139;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fiNc/ZDld9lHBOfROmDO6f0b35mQryE6GaNus4HaVTU=;
-        b=QGJAh82safFiiSXczQeOEE2nohQOZyoBRNppjnzEppM73eMuBkvopxUCaFHWYkmT2s
-         v9Zx6L+kyQznTfIzfUP1DxjG6yYjcw+2yJxWw43XmbYGw3M8ZdU8XRc1UYLrjbTEh3Ks
-         wX2pPD1tADFv6dRNJIaNZtKMJpl/YCTvQaK0I/fSs9/iGW9vGnDgOy5cON5SCAu+I3x8
-         H8DrTP+nuOtp6s33nzHAR56gvSMh0UTXZxSxM9Z9qywmPMj6tKFY6ZBWNwqBNwzf6IEr
-         JCWPE2jwO53BY3SShu2FSB8fAVclIIKEKQuhsXoCx2YAKSIpfIEi4sxFdxSbO+uu/Fyn
-         c/oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRapavs/O1VZKHgGPif9AEFHTSwiwGYXCgfr3uyR/NU7PoARO9c80gcChtdholpBahN7R1Sx1OaTTXEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIw9kz/iXXXTFvTR0yGAl/mh0gmIvQ+CZs2M1s7BRD85YrReKw
-	dvqRtyrI9pvJwq6f/9Z+2oHVGUCN3jQJckRrdgt5PEvOKEaeL1smapxAT/1f7yJ/eF24AOVPeZ9
-	SGROtTXwymFnl1anylLonX5SkQiPFnR1+xIvT6OZxia5iWROtECz4FAYgV29B9jZCvA==
-X-Gm-Gg: ASbGncu5cNTl1WDqWjtabIuHWUEuccWaXp9/lV4/uOJDacepKDzBm7y85U11c+iPWw9
-	hETRj24A2UkzgErwRZ4paCsbBeW+FAFJNK3Byqs9hHQUDLO3X3xZbs8GBFlRWgSqkkrt3vhfHNx
-	6s3WJDKeo3RWzwzBHg4Cm31/RKoe5i1MRF61qf6gJH+ORHjomgFXwNtP1ztQGwvgqlyobHuemca
-	gBnjxE5FmwLqxAcySgsCqy97IFJrF5GRE6fzl3/EwqCIajpIwAI7xt/Bv62QzMC4JP++ljDmb+5
-	Y0Ycpx2WFmnGgFCGDIViUA56gGNnGABeN5yOyc1msCgVMrpVxNjYFV26/uJbHDvInjshwWMhP2N
-	cSuDAIMGzS3c8WUdFgq81PyKsl1A=
-X-Received: by 2002:ac8:7f87:0:b0:4dd:3948:3380 with SMTP id d75a77b69052e-4e576ac46b6mr127531691cf.11.1759845230222;
-        Tue, 07 Oct 2025 06:53:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZXrDJuWwO6h54DXmE2fdQYzL8QfITc/WlKY36C1qhe93i2ttKGEhMEDPLcHC8FVYGtfGAqA==
-X-Received: by 2002:ac8:7f87:0:b0:4dd:3948:3380 with SMTP id d75a77b69052e-4e576ac46b6mr127531481cf.11.1759845229682;
-        Tue, 07 Oct 2025 06:53:49 -0700 (PDT)
+        bh=ZawunH39fsjLdjYkyzjOOeRauXShTP9A+eqv2749nhA=;
+        b=cMBDT+RRg0C/eyyRy3ab3Wv8q28AdrUhcI1f+PC87LBylNhhwS7zqnyzac5npL3rzo
+         E023yr7mbyp4C3sp8ikLxXDU3Rrf04WWSVPjjMmNFRvM6S5uscTJedSr5wTZbJWR4wb3
+         Fr0hpzG9NiI0EL6d0YBHj8dxWR0Bfupr0XOnbctGrKnAD4I4Z1+7KSztjXrkyVcMSrAf
+         LarBaEyrWIBO1minXbF6Bifp/bvs15hlT0reNR+es7P6vyVQCduexRK2PEc/VsdParIY
+         7+QUMQ5y+QuuVa5sBbRIF143p64TGAb3S839RNK4BsZX6Wfc05yke1ScuzAMt+dUdMbQ
+         LgtA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfTM4U894iB5kNQnbYrQGNh3ZtNt6ngDmxoNHzXGjssJb3rv91TesLEVlZo9tJ7IczN+U0aHW6Ws+hMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX/bQNqRcD0uPLkkPv7+vrUfqMXzm9Mw5SBPVenWLYBq79fcZ/
+	eoN+1n6LvG5Y4XqwLhy5S4O0NGrGw02b/dnX2Kz2zWjeTfY8N0fVKPxvAo4LVj96/j7tdtO0PRw
+	+tkR40fh1Vbw/FCN57Sha2eEIzdAyTmiv++NAlkbWXY4ZysoEhDPJPoTihSxicqUfUA==
+X-Gm-Gg: ASbGncsgWTyEqhKKByWUvxlrlHje4JH8yyFay/MzTIueGmT8YzfRAh5Rl4ckCh3FqM4
+	Wkz0p6SQd4IT26s9O4iCTYvr6v3byBtjC0poO4AkLjJbJxZPMt8PNhSBBxeJcsv0vzsValh0tgM
+	p/teFaxwQlJcEMjd+Eh1Pv6ztWvV5pzMIchkSIwID5b7dfeSaSWYbj9w47UBIONgpce8wZr8z5r
+	cx8gioiCobjSoz9dbjuP4pPoSTDnPNDn5p17UsQRVJqYt/TAFpOEY516GuseRDbYb+qZCPDza39
+	shLWN56cBi216QFwyq/YmHWnQnC3cC13IMCJz8uhmLJvzxegfSb1ofq0hkAARM7FdJSbfZhx1gV
+	4p5gLFFPD55sjKOH21B9A+JSH7bg=
+X-Received: by 2002:ac8:5a96:0:b0:4d2:c24f:8495 with SMTP id d75a77b69052e-4e576ab6f37mr148761091cf.10.1759845339098;
+        Tue, 07 Oct 2025 06:55:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/aNH7N1c2ZiYNPq20l0pNGWjN0O/b0Y5a0V5Yj5aczYTN0tC9/XNNjnxTio4u3+gGdP2blA==
+X-Received: by 2002:ac8:5a96:0:b0:4d2:c24f:8495 with SMTP id d75a77b69052e-4e576ab6f37mr148760601cf.10.1759845338476;
+        Tue, 07 Oct 2025 06:55:38 -0700 (PDT)
 Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b48652a9f50sm1393040366b.9.2025.10.07.06.53.47
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486970a4bdsm1403765466b.49.2025.10.07.06.55.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Oct 2025 06:53:49 -0700 (PDT)
-Message-ID: <fd8bf93e-f6e5-45a3-8e7c-7e63a918809a@oss.qualcomm.com>
-Date: Tue, 7 Oct 2025 15:53:46 +0200
+        Tue, 07 Oct 2025 06:55:37 -0700 (PDT)
+Message-ID: <e58978d6-dc6a-468f-91d5-29d7b0755e79@oss.qualcomm.com>
+Date: Tue, 7 Oct 2025 15:55:35 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,9 +75,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/13] arm64: dts: qcom: sdm845-lg-judyln: Add display
- panel
-To: Paul Sajna <sajattack@postmarketos.org>,
+Subject: Re: [PATCH v2 09/13] arm64: dts: qcom: sdm845-lg-judyln: Add fb_panel
+ dimensions
+To: Alexey Minnekhanov <alexeymin@minlexx.ru>,
+        Paul Sajna <sajattack@postmarketos.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -88,66 +89,127 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Amir Dahan <system64fumo@protonmail.com>,
         Christopher Brown <crispybrown@gmail.com>
 References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
- <20250916-judyln-dts-v2-5-5e16e60263af@postmarketos.org>
- <6145be40-3b2b-4554-9d5e-c1f9fab0363b@oss.qualcomm.com>
- <da2f17a144374f326de9e0c5bec638829a31cd1e@postmarketos.org>
+ <20250916-judyln-dts-v2-9-5e16e60263af@postmarketos.org>
+ <de1a7ecb-924d-4ed2-8034-721b8dce69d4@oss.qualcomm.com>
+ <ac2d419d-a1b4-4b3f-a07a-4f5d047901aa@minlexx.ru>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <da2f17a144374f326de9e0c5bec638829a31cd1e@postmarketos.org>
+In-Reply-To: <ac2d419d-a1b4-4b3f-a07a-4f5d047901aa@minlexx.ru>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: FN4GNyY1kgY9UPyW-37jsDNVFAhz8fVx
-X-Proofpoint-ORIG-GUID: FN4GNyY1kgY9UPyW-37jsDNVFAhz8fVx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA2MDE2OCBTYWx0ZWRfX1jp2OHedr+pT
- fmt4rgqZAlRscNM9fz1vrST4ALXup31bCAyLtZX++dVBhoikL8K9FLd79eKt6xIKHiowI62DsA7
- flJ05diOPsUxiqWw/VRpaeOyBxksRTUBzwO+9rP11vQFB0cplbPo+EwPXg3/nOnN6OXftnqPwk0
- Tm7dJjS8QPJnSLJgs7cKGiZVBPEPx4x/TTKJYI+zK5lbGKQPi21i2FddhVCUjcLmOaUx8xQrLtu
- IkkUppKx6URlouyuHOcc0c53DX5SVn7F6YWUu9O5ja0uD/XtwTZrffJLM2r32u/sCbhfRVvV7nh
- 7ku3Jk2bIUtO1OdB8sVwMhq7zQkh8JjocHEJ2wj/o+8ggRUMWRlKTa5K0edoOZsHHYvmj//at8U
- Eg0WsLjtMm3pJiDu1/Ia5WJ8TEqvOw==
-X-Authority-Analysis: v=2.4 cv=BuCQAIX5 c=1 sm=1 tr=0 ts=68e51b6f cx=c_pps
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxNyBTYWx0ZWRfX9r7ekQ8HPHKp
+ czuowOoqm+ic2HjZHbLlMQANuuOGKi08/HsOD/ymSO2qXfnjzYBNFkg229k58TtxgbNorWaXv2F
+ STEBNrD37lLkRsM+JhFG+nSD7GI6ZZB73ctWQdrBoW67Baxx15rVHgTQUZz2DyMOCUFAL0fi+bY
+ YawJkWIVKxDZ352dTy48EaoA+DhUM7F06PVSAo1tu8VxG/9y95brKjSTmMltn34Gixq1230BcSu
+ 9ojUmQaJql1BoYRuydtj+u91Y3g9G+uMIECNlTRMAlC9pCQw8mEO0XxcRcrtQnG6iCrggrn0Lem
+ SxzecjWfNy2ozS8EFqPsSqVL5B1kWNqC6749WNkrcu8L/WIgQLosTV93FOcGH2lG53i+5dL88cE
+ 6wtsKNcydtoO3NcPD44KgIYV9WBJSA==
+X-Authority-Analysis: v=2.4 cv=do3Wylg4 c=1 sm=1 tr=0 ts=68e51bdc cx=c_pps
  a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=EUspDBNiAAAA:8 a=NEAV23lmAAAA:8
- a=XKEg-W0rSRFBAHshmuIA:9 a=lqcHg5cX4UMA:10 a=QEXdDO2ut3YA:10
- a=kacYvNCVWA4VmyqE58fU:22
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=Gbw9aFdXAAAA:8 a=k_tMZpwa-Rke7L9fme8A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
+ a=9vIz8raoGPyDa4jBFAYH:22
+X-Proofpoint-GUID: TrmTSNd34fP2Q06WNJGyYAAkcY70AOtv
+X-Proofpoint-ORIG-GUID: TrmTSNd34fP2Q06WNJGyYAAkcY70AOtv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-07_01,2025-10-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 clxscore=1015 spamscore=0 suspectscore=0 malwarescore=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510060168
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040017
 
-On 9/18/25 3:38 AM, Paul Sajna wrote:
-> September 17, 2025 at 1:50 PM, "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com mailto:konrad.dybcio@oss.qualcomm.com?to=%22Konrad%20Dybcio%22%20%3Ckonrad.dybcio%40oss.qualcomm.com%3E > wrote
-> 
-> 
+On 9/17/25 4:54 PM, Alexey Minnekhanov wrote:
+> On 17.09.2025 16:59, Konrad Dybcio wrote:
+>> On 9/17/25 3:09 AM, Paul Sajna wrote:
+>>> Add display dimensions for proper scaling
+>>>
+>>> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+>>> ---
+>>>   arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 7 +++++++
+>>>   1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+>>> index e84b45ed82fd13850ea7ec1f34ddac5b59fc1434..8c1692f86e6ceea7b718361965e78f95d39373bb 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+>>> @@ -23,6 +23,13 @@ framebuffer@9d400000 {
+>>>               format = "a8r8g8b8";
+>>>               lab-supply = <&lab>;
+>>>               ibb-supply = <&ibb>;
+>>> +
+>>> +            panel = <&fb_panel>;
+>>> +
+>>> +            fb_panel: fb-panel {
+>>> +                width-mm = <65>;
+>>> +                height-mm = <140>;
 >>
->> The vendor kernel (for Sony phones at least) does pull-down on both
->> active and sleep, making them the same
+>> It'd be nicer if you moved these properties to the actual panel
+>> node (the DSI one) and referenced that one instead (I think that
+>> should work)
 >>
 >> Konrad
 >>
->>>
->>> + };
->>>  +
->>>  + sde_te_sleep: sde-te-sleep-state {
->>>  + pins = "gpio10";
->>>  + function = "mdp_vsync";
->>>  + drive-strength = <2>;
->>>  + bias-pull-down;
->>>  + };
->>>  };
->>>  
->>>  &uart6 {
->>>
->>
 > 
-> https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judy_common/sdm845-judy_common-pinctrl.dtsi#L109-L148
+> Hi!
+> 
+> First of all this code doesn't work well for upstream, because it causes
+> errors with dtbs checks like:
+> 
+>   framebuffer@9d400000 (simple-framebuffer): 'fb-panel' does not match any of the regexes: '^[a-zA-Z0-9-]+-supply$', '^pinctrl-[0-9]+$'
+> 
+> ^^ The subnode is not allowed by bindings.
+> 
+> The whole reasoning for this little hack is that the upstream
+> recommended approach to solve the "unknown DPI" for framebuffer issue
+> is to put width-mm, height-mm into real panel node and and reference it
+> in simple-fb node - sonds very nice in theory, but also doesn't work
+> well in practice, and explanation why will take a bit longer, please
+> bear with me for a minute.
+> 
+> If we do as recommended, device tree structure will look like this:
+> 
+>  framebuffer@9d400000 {
+>      ...
+>      panel = <&display_panel>;
+>  };
+> 
+>  soc@0 {
+>      ....
+> 
+>      mdss {
+>          ...
+>          dsi0 {
+>              ...
+>              display_panel: panel@0 {
+>                  reg = <0>;
+>                  compatible = "lg,sw49410";
+>                  ...
+>                  width-mm = <65>;
+>                  height-mm = <140>;
+>              };
+>          ...
+> 
+> Then, to my understanding, due to how fw-devlink works, the panel=<&..>
+> link from simplefb node to display_panel node creates a probe-time
+> dependency, so that the whole display stack probes first: MDSS, DSI
+> controller, maybe even Adreno GPU, *AND* panel all probe first, thus
+> making the mere existence of simple-framebuffer pointless.
+> 
+> Additionally, simple-framebuffer probes succesfully after that,
+> creating "second GPU" entry in as /dev/dri/card1 making it look like
+> system has 2 GPUS, which confuses almost every window manager in
+> userspace later. Normally, if simplefb probes first, it gets unloaded
+> and replaced by MDSS and does not cause any chaos. In the end the whole
+> situation looks even more silly than the fake panel subnode hack.
+> 
+> Therefore for upstream I'd recommend to just drop any fb-panel hacks and
+> to not use panel=<&...> with reference to real panel either.
+> 
+> It would all be much much easier if we could just specify width-mm/
+> height-mm directly in simplefb node, but DT maintainers rejected that idea.
 
-Take a look at these lines instead
-
-https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judy_common/sdm845-judy_common-pinctrl.dtsi#L137-L161
+Would adding post-init-providers = <&real_panel> help?
 
 Konrad
