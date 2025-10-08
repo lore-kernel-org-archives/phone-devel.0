@@ -1,180 +1,147 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747CF19D082
-	for <phone-devel@vger.kernel.org>; Wed,  8 Oct 2025 11:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D5A2853F3;
+	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759923531; cv=none; b=cW/J90atDni0vZol4NBWUFGddXEERoJni9n0YbIf6sfhULRANzce/m6pFCQL7shXxk6szv4DWUpGfbB1AhN55xyOBUGRrEgigYpv0eIpXGmF2bBP3MqNXMH4NG+cyGpu26W4Od3qG+V7ppsVQawjtl0UD2qLPkTA7UAbJM+PHR4=
+	t=1759932330; cv=none; b=UtKebtzBPbdxSwPJhlVt4HuTwQJeSXjqQ5Q+d7Nht9VMHRLcKyqeegl8aIk+2j+sCdMDfaci13M9GqyIgJhwOvlbAqJsnvGz7UanxDK5IQFA9uRov3AgZafw6dUx1htqK3tGwba6bqL0bDjwM78AdR2bM4w518305p2lAEVL8lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759923531; c=relaxed/simple;
-	bh=6cCF2LvbGpbslhl10HwoVuuROYSKzmo8yAWwSaQlewY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OyJVOV3OiuwMHrsGNAOJdmAoUPBD4qJ5100c6CbdQ/8bhS/I8JsNotfelFsfegdzdcGkbJYAUlVfP/wiTyVxQJn6t76IIoSMhejwuMKEoifRH8hg9wIArfTIj2NRAxoEJwNNH/ZD7jg+gfJs0DwvIcFkVeA41o40ARaVPDGbFuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cWBYwcD9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1759932330; c=relaxed/simple;
+	bh=agTZVVmdqx9pobjeJ46jC9gSHyxn89Ywa2Q1fCm/NhM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hFJBKZPoQqie1mEEsZ2pZ+M0xB6mNd4uKq9NkuYSCXXiW+iX33m8JZRC+fyToEFlfUYpzm30GczWG5hvMz6gf2gs79S4CG6URdXCcsLzQkfZoPjxdxKHMkz393gh3o/gvFcY0qwUkvDordkzAcF02Qy3pLmQGlhof61Ls0wmQ54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnQzdlN3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cWBYwcD9"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59890P9L014221
-	for <phone-devel@vger.kernel.org>; Wed, 8 Oct 2025 11:38:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ktF9PzCzZcJEY3eWTWWmqTdv5VI7UzhEYtnCUHGqeRM=; b=cWBYwcD941nJAH5m
-	5tJXXvUAOqWfhkRWM2SV8Xiib7SYanDX7hnzdxjAsa4kgC3aylWwMNroFJpPwxCm
-	b7fCISias3S6C1jHuspaPpVuecVm5kB5X+3Yn/klDd+1jRg8zQGloPg9l3zwHIL2
-	2vcQJy49UXuNOJOGSvIOpuSoE7EGbenEZo/Y/PGiBRrwEjQ4+bLs3fXBB3pRLjzn
-	Mv9bO9QEiaIYb7eu7IXGtWWBDGyD9qunX8vLxyXKfB4x3s/hi5FXe/HwF614C+nT
-	MzHLLQ68qMXSDYL+KAitM3fqKv8WksE2g5q15VVI/yIUZpxV+UlgEi7oqiI0mjRv
-	RRL/gg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49mgd0nyuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 08 Oct 2025 11:38:49 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4e6d173e2a2so9981751cf.2
-        for <phone-devel@vger.kernel.org>; Wed, 08 Oct 2025 04:38:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759923528; x=1760528328;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ktF9PzCzZcJEY3eWTWWmqTdv5VI7UzhEYtnCUHGqeRM=;
-        b=sUbKBZrRBsi6SfScmsvjaTCFqFZ/uhCNkBEb2DGVE1j329R3Q42ejrHLQotJNZCMuH
-         z5Tou0QIDYi9MtWrheq9OXkQpK0nb1uFo25uzw9fkpiD7bOPI8CkHtaft/JUzkcxih6X
-         J5afBVzBPnFpd8XWRXE1ciKrk/QtWXyYvE7PixFkH/Ms1hKOW6q/k/VqNY+hPju/kRXH
-         /hNLo/1ZApkUH0gJ00JzYQ+8emESEPj0zppkDzdI7peYKACg/i2nYVQ8jVkemg79SEqZ
-         IOu+FxJqJHHXvte30t0Ntu8WL5rIKoYoj51TYNcPyd/iIvGq1szYSGYrr9uCdSE1+ptU
-         zGRA==
-X-Gm-Message-State: AOJu0YzhJxz43KUu9hns8fuuPKPQIK3tUzhoM1tRUOZluakgHqj16xav
-	FngIezfTAw1RZqOu3xxjIlvfNQcmK4n/aIsFDimxH/w4M8WV1rvvaNAkF3E2SvsE/3uqNAyjIuv
-	bWuAiIpCRfni5OPW9uQ+CMng2Lpg9qGa7CjoEtRm3+iIfflR+G2yxrE+PuOs2miR7/A==
-X-Gm-Gg: ASbGncvkQ8ORFZ8ylfp9cG0YhO+KJNfvcbk0vwvgkG5YRr45oZ8nJV2tv7HXRChtHww
-	dMSnZYqH8/OCZFhWLIl+YZRfwhxpvje8fj5TbQuFmUKgXJxySUQ1f2igDUQoZZaEsHaA5tm+tSI
-	BVenBWoRj5kHQts/GpZfw3eokhIk8UK63GBAK5MyZq0r5O661WxoirJMAGVNgticEIjAea9ElIh
-	XsJqtTAYoefBAHbMvfHjU7hf/FaJAU0jo0SNyQVNXzFKL1GDKdDzEVgq4O4JmlPtyJqWmJXBjWn
-	QDFWDz789cFpQVZ9TQXlmrWxZSkmmsizpcMdSkVQV8Bq2khOmt3GT206JoV1tuSzmVbOfh0oL8k
-	2KfSUQJt9E0UAEdCMnJQzUb/2+b0=
-X-Received: by 2002:ac8:7d8d:0:b0:4e5:7716:53f2 with SMTP id d75a77b69052e-4e6ead4d187mr28105521cf.8.1759923528370;
-        Wed, 08 Oct 2025 04:38:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxXdxXLKV4c4vK741eJCYPaC0LrPYDOhy1QH4L6lPiyVX/KVRS60uwDKYl774T/rgeiZSNvQ==
-X-Received: by 2002:ac8:7d8d:0:b0:4e5:7716:53f2 with SMTP id d75a77b69052e-4e6ead4d187mr28105351cf.8.1759923527915;
-        Wed, 08 Oct 2025 04:38:47 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-637881011e9sm14525558a12.25.2025.10.08.04.38.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 04:38:47 -0700 (PDT)
-Message-ID: <7abe83dc-5469-48e1-8964-ce3377d82a4d@oss.qualcomm.com>
-Date: Wed, 8 Oct 2025 13:38:45 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnQzdlN3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 93E58C4CEE7;
+	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759932330;
+	bh=agTZVVmdqx9pobjeJ46jC9gSHyxn89Ywa2Q1fCm/NhM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mnQzdlN3AlOGcEXBdjL/Er5d0CuVA6tnB9E/JIN42U9+e3XIYArMVNy2Qrww12j2P
+	 SNnorfrpvctBCqvjuZCEYhkCMNLurWGSHrEq/2W39VsSXQjBOe7AakOIzhf36ckbDh
+	 mnhdqZuAcxgfNizWnrIzF9wAdahuOw05o7sngm1iRxXwvKQ8fvbt15eyeh7sbs5qYC
+	 0nm66zxkuyNzZ/KkXhDL0N1D8MnJ0+JBMRH/Ht4/pUOKDPxYdKmOX+jDdnw3I9zc0E
+	 j/d0FdTq5fJAeDswCUQc9q4q53aGibjGI2L/9un9hB2qsajXh7FdJQbg553dEi7BtZ
+	 5orQ9wYADFx/g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8932BCCA470;
+	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v2 0/7] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC
+ with AMS641RW panel)
+Date: Wed, 08 Oct 2025 16:05:27 +0200
+Message-Id: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8939-asus-z00t: add initial
- device tree
-To: Erikas Bitovtas <xerikasxx@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20250930132556.266434-1-xerikasxx@gmail.com>
- <20250930132556.266434-3-xerikasxx@gmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250930132556.266434-3-xerikasxx@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: -fqf-AlLt8vNe4Y1hCFOg3gnbUXi7Gr-
-X-Authority-Analysis: v=2.4 cv=T8aBjvKQ c=1 sm=1 tr=0 ts=68e64d49 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=EUspDBNiAAAA:8 a=wSXgXpi4_rt3d5ynXFgA:9 a=QEXdDO2ut3YA:10 a=5XHQ0vS7sDUA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: -fqf-AlLt8vNe4Y1hCFOg3gnbUXi7Gr-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA2MDEyMyBTYWx0ZWRfXwXGF2m8aIroq
- iNiXazZ8wcrEZRwIzIc0MIIi78X8O+n3MqjmKmYFFHrr4fTbGCRswVwBNLKESCDVttIrw/KfmnW
- xrpGiBqUV2faOmUHyu1US9G+aSL3n2Ya2Q48F1s2sIl1vHkoB/uNJhj9P2vC571MoNNHM+Jjh02
- NU6VkrMFld8yaqyx+UPWVYvS1MAJaHaYZ0sOfrZdx9SCEhaJkfJ3kBajnWS4zPYXawEZsXozLCe
- HdtCAUcBt5p7Evejdnc80jZn2est3XGRUGKAOtoqb3e2a2fTF1KVTsmAIgSKt7ahl3soUO2jjt5
- QngRNn2Ha9p6zx7zdqJBQebqYZYaS/FaCcli8V2SDjKNq72VkkU6NUD31qG+10CHJDAZ5eLqeS3
- 5hwfZdm8i0JBbd1T4PCFJnlZnz4f8w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-08_03,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510060123
+X-B4-Tracking: v=1; b=H4sIAKdv5mgC/03MQQ7CIBCF4as0sxYDQ6DFlfcwXSgOdjatgYagD
+ XcXm5i4/F/yvg0SRaYEp26DSJkTL3MLPHTgp+v8IMH31oASjXSoRbKkg8cilQjOGHkbEAMZaId
+ npMBlxy5j64nTusTXbmf1XX+M+WeyElI4dFoq29sh9GcuvB79G8Za6we7/hzYogAAAA==
+X-Change-ID: 20250923-s6e3fc2x01-f9550b822fe5
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2718; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=agTZVVmdqx9pobjeJ46jC9gSHyxn89Ywa2Q1fCm/NhM=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo5m+oaZnPSmruAyRfu3d01fCRQiEN17hyQnmfG
+ xIMnIZs67mJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaOZvqAAKCRBgAj/E00kg
+ ctejEACEfmutlZ1j+l8Po12Swx8lJu/R3b5592nUbUYS+908mR5Bt6VMStvUQ0eapAX0MxScMSc
+ urNyLa7UGIeNzYiQP4QzAoQZTF3GjVQY1q9Azeces8CkZx3+EIj9EPI7nb/V2IEVUijUxKQV0kp
+ tchSHPzH4yfDLfpqy+UXksUZ8LjhhbCKZUQdjTEIzpEfgOsUpXbnJD+RSxtgnqfXBcm+AZq/Ufc
+ ClOgnxfikRxj5rJdNJgaDIVvbaKx3ADteKSy7ksD+UqDrnsAc5V5LR1ir1V+D1gHk8vfSS+VRZi
+ guW4MWr9LtDY9D6NunkoePGKR6D+fiYXsAEh99TSIRGzL/FhQbXAcZMfzLhXVAkT3P7YUy/wljJ
+ AxWC06UiXIQ53PxeyqxPGNYv2zB7HVtfZHJgaLN3aznHgVh5kUpYwyHVj6OTuLqIQSUUqqTcpSP
+ YzcTBr2zA6C9Ry/7SmkjqN6plkaaVW9BoNltsFQs3+Qos2hRjRDHqzHlV5BJZKMGIv+zwTRKl08
+ HkpcC/H9yvnbggJN/kMNWeX5jduc1IZqHUiYu2kPuv3sxgg6sLekkgyBnelx0saz/HjtSs9nI04
+ GM/29JG+zCGaLsnUu+Je/6qgIF3U+4TswyTv8Y9Mdn1WG1JCi9+Xkrk6ysVxvDUicTn9zt1aIsg
+ tDhHrhGdKzm5epw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 9/30/25 3:20 PM, Erikas Bitovtas wrote:
-> Add an initial device tree for Asus ZenFone 2 Laser/Selfie. This
-> includes support for:
-> - UART
-> - USB
-> - Internal storage
-> - MicroSD
-> - Volume keys
-> - Touchscreen: Focaltech FT5306
-> - Accelerometer: Invensense MPU6515
-> - Magnetometer: Asahi Kasei AK09911
-> - Vibrator
-> - Audio input and output
-> - Modem
-> 
-> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> ---
+First, proper bindings for the DDIC and panel are added.
 
-[...]
+Next, the VCI and POC supplies are introduced for the OnePlus 6 and 6T
+phones, and the OnePlus 6T device tree is updated with the new compatible
+string.
 
-> +&blsp_uart2 {
-> +	pinctrl-0 = <&blsp_uart2_console_default>;
-> +	pinctrl-1 = <&blsp_uart2_console_sleep>;
-> +	pinctrl-names = "default", "sleep";
-> +	status = "okay";
+This series also documents the tearing-effect GPIO line.
 
-nit: a newline before 'status' is customary
+Finally, a new DDIC driver is introduced along with the AMS641RW panel
+initialization sequences.
 
-[...]
+This patchset enables the display on the OnePlus 6T smartphone.
 
-> +&tlmm {
-> +	gpio_keys_default: gpio-keys-default-state {
-> +		pins = "gpio107", "gpio117";
+Since the display node is shared between the OnePlus 6 and 6T,
+the following warning appears:
 
-pin configuration nodes are best sorted by their pin number, please
-reshuffle them
+..sdm845-oneplus-enchilada.dtb: panel@0 (samsung,sofef00): 'poc-supply', 'te-gpios', 'vci-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
 
-https://docs.kernel.org/devicetree/bindings/dts-coding-style.html#order-of-nodes
+This will be addressed in a follow-up patch, as the SOFEF00 DDIC also
+requires additional overhaul to properly initialize and function in mainline.
 
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +
-> +	imu_default: imu-default-state {
-> +		pins = "gpio36";
-> +		function = "gpio";
-> +
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
-> +	mag_reset_default: mag-reset-default-state {
-> +		pins = "gpio112";
-> +		function = "gpio";
-> +
-> +		drive-strength = <2>;
-> +		bias-disable;
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v2:
+- Dropped the gpio reset polarity change as suggested (Jens and Dmitry).
+- Fixed unused warnings (kernel test robot).
+- Added a pinctrl config for the VCI and POC supply.
+- Removed patch "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
+  while the compatible is used in device-tree, but without any driver
+  serving it, do not touch it (Rob)
+- Added more details into the device-tree about the OnePlus 6T panel properties
+- Put display gpio -pins into one -state block.
+- Link to v1: https://lore.kernel.org/r/20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz
 
-odd \n-s in some entries, please remove them
+---
+Casey Connolly (1):
+      arm64: dts: qcom: sdm845-oneplus: Describe panel vci and poc supplies
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+David Heidelberg (6):
+      dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
+      arm64: dts: qcom: sdm845-oneplus-fajita: Use the freshly introduced driver
+      arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
+      drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
+      arm64: dts: qcom: sdm845-oneplus: Group panel pinctrl
+      arm64: dts: qcom: sdm845-oneplus: Implement panel sleep pinctrl
 
-Konrad
+ .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  78 ++++
+ MAINTAINERS                                        |   6 +
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 113 ++++--
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
+ drivers/gpu/drm/panel/Kconfig                      |  13 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 402 +++++++++++++++++++++
+ 7 files changed, 593 insertions(+), 22 deletions(-)
+---
+base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
+change-id: 20250923-s6e3fc2x01-f9550b822fe5
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
+
