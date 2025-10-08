@@ -1,161 +1,111 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E52E2BD034;
-	Wed,  8 Oct 2025 16:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D922BE62B
+	for <phone-devel@vger.kernel.org>; Wed,  8 Oct 2025 18:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759939772; cv=none; b=hqOgZCE08A3fS7VT0mh9U7UTTCvTzaigwdaAtgLogvf3tnfnWxYYlwqb1Zr0YHlv1stPhGZj51O08KogA/3sdjbWwAFEbyG1DOOk6UbFmnP01Th3aoSP06TtcyCpQVJgimH6tegBYFz/uVfmLISzX0TkxFrCI6Su7gcsTDD/+VI=
+	t=1759947674; cv=none; b=LrQhpKL8A7YFHGCmB0rh1vZ4fX9V93cBpEVm76ju97HjGXCgTu9JKrcUqD+/WZ7iT4y+NuRhZiGtbbwvO8N/zjdhyExZ5SPy8ndaoOEEGt4J/dz6eyS1RGHj0rB4fGj+5eQY6pLGgP+cqFLoKhwpXckV9ohfB8/9HmQ+T1BPcGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759939772; c=relaxed/simple;
-	bh=STZBVQBoJr7K8pb+2+JhLZoKXcZ8jOaRxZp1jL+p6JA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ly80YNIGp2j21UftQk7He5Lr1IsDmiz1kRQsc1DThOcNfvKpPkkg/xEvTVOqlco2Qp8R13byDecxvETbbw5U01T3DO5Y3bPij0W9BK1xxVau0IG2oeIKO7mU47c1m8VxeznH+jMZ2NuF8rjRZ1qGmHZORDprVwC5e9eNqdpxeQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=MgoJ1EsJ; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1759947674; c=relaxed/simple;
+	bh=AQqdMa04vXC2piy9UqiS53/4Xv5soFhx22ppyv1jBes=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aSOUSZyF3E6numYNVEMK7/3/W24xdG2QJnlrO1ssHwYHVW5+P3V4mB0Ust0LzSwNXnKn9t9OPQ2UGjFUxvmV1zb6+4NHbaYuqF49OIbMh+QhSR3cKVnnP/OO++PPgWt1TL7lrJQAPbbNe0Z3yaEgoYux1P7rfYP5xEu8D4rYVKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtdGpqsl; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="MgoJ1EsJ"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 1CCF853406A3;
-	Wed, 08 Oct 2025 18:09:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1759939760;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOgG961E7N9spfp9K8oULCnB39OlXHniOAgWijfU3wo=;
-	b=MgoJ1EsJrJNeYlVN3d/ZnuTzyCJ6AB5iuap1mEZzKg91/TUYsXEZJphU/+LGBnBKZg99zo
-	aj3osmYX/GvGVuj0CWMP4GrI9K95HVsFfznMKUR1aOD706OTjKtkzgji6UBhXujXCAI3/l
-	LTn3KAL5LaeV9uXMmr/31AZrT9p4n9A=
-Message-ID: <17b5977b-d0e6-4027-98f9-171b9e18b1bc@ixit.cz>
-Date: Wed, 8 Oct 2025 18:09:19 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtdGpqsl"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-57ea78e0618so204414e87.0
+        for <phone-devel@vger.kernel.org>; Wed, 08 Oct 2025 11:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759947671; x=1760552471; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r0xvqxT6obqyR1rkhpk/b1maW+DJaEvwFyv59TGQqp8=;
+        b=dtdGpqsl7xzMq6wwN8mtt7OPO1nW7jtDoeXMbdVau17W3agQq7cl35HSsP7xlJGS8b
+         P0tIfUiIJKaordFfrYx1SKJaCJRbVYfqnYftLSZIGdUEiLlDw1n+LN9/Qwm2K53qDAjz
+         crQYjZLsaj6scjY81/xFilYdQw3xwu5NXunDgK39Aj1sTrnrmEzz3NWNcmOC8N0UP79n
+         601NSe9BylRIvauZDB34N+hkwspROl6QMrS/54k6nop/dFFCi5a46ZNBUp5qOsQERXy4
+         iB0G4mFRe13L9Fz1oXD67bm/os9sRsZHStb/ZeVDh9WopGVXmxjkhbsXMI8za4dXVfnZ
+         b5qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759947671; x=1760552471;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r0xvqxT6obqyR1rkhpk/b1maW+DJaEvwFyv59TGQqp8=;
+        b=CkNZPRTyepNdMDxlP3G+h7aif1Jkhw+suHWC/jbqJKZRmAPf/p4XHEaB1hb4bGY6bg
+         iG16qK7I9rL1t3Uvl9UpEDbwQxTe9DkXj18VQpKbFdydiI8bG3nIKFDvmm+89aGLvbj3
+         m0Kx/8nnRglD82kWwpAHnSJ9bgsqIsNxRvFq0baHkOImCWUOrzd6/GNn48Y5LoUr6FAM
+         2v5kZ0WA7wmYkcfvwM04PWabaOssbFY020c6DnMRAHbQQZ3qWd4Q4cRWizDGRctqL/CH
+         D2v8msx7/KXd5L3pijgBSfIa1pnpDLzBAbAiOdtATjAIpQaRsSQembiaMF1lD7JINhKS
+         3XIw==
+X-Gm-Message-State: AOJu0YxttXc3KWFprRjZfCrcMQRIcIHFAuBiEMJ7Uypyv+zqq4ugKY7f
+	93qOh+pio1O53AH8p4JrAQ96oVH1gvs2lwLHfQJYShRZ6YrSpYgErk28
+X-Gm-Gg: ASbGncu9HYW325v97ugP9mj7Mvpkw9XWwDv1EmDuR50AF0PqbTqcEGsRHAwQptNtFBf
+	hSxoaQLYZ6GNaIXhckTYLI0Nf6HsyFAbxwEiD2xXRmHlx/eGoRtjCW7ENyD1rptRhCl3ZDzotjJ
+	bbxGmFvIQxFUzouoWqHokxMy7yf2g7vV0Wzf7CPkIywzNWyhNXIJB/BSJeUgeB1f5qDSA5815nQ
+	kc88NsHUNeDw6JPeB7kro0r6DJXDmZgDbe2GMngds5GdadAcR0SKG9STZKUZ3LWfc2FZrVn/wQu
+	pcY+21bNsThomxLhMg1nxpcEhruu99VpKtVdsnPYjgSIF8rhKp32uWZudDHLvsj9W0Qvrs7g+Yf
+	LfAeQjnY1DON8339tpYdhD6BrGWVeepGIJ2osjTGATIJR0WXL/K91FaM=
+X-Google-Smtp-Source: AGHT+IGUmDxJhLMmq3olsZ1CaUePrJF77nqg1cSWJUcN+Jh1SFYb8Y4RqO/vHveCQONc5FBDfJj4vw==
+X-Received: by 2002:a05:6512:230c:b0:57d:77a1:715d with SMTP id 2adb3069b0e04-5906dd527a6mr1407474e87.32.1759947670361;
+        Wed, 08 Oct 2025 11:21:10 -0700 (PDT)
+Received: from crusty-box ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5907adb1268sm223930e87.90.2025.10.08.11.21.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Oct 2025 11:21:09 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v2 0/2] arm64: dts: qcom: msm8939-asus-z00t: add initial device tree
+Date: Wed,  8 Oct 2025 21:20:18 +0300
+Message-ID: <20251008182106.217340-1-xerikasxx@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] arm64: dts: qcom: sdm845-oneplus-fajita: Use the
- freshly introduced driver
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
- <20251008-s6e3fc2x01-v2-3-21eca1d5c289@ixit.cz>
- <visvxwdwh2mcympwre6kx7xesvsysdjw6j33kewwibzfbgrbsi@dkcilnw7gk7c>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <visvxwdwh2mcympwre6kx7xesvsysdjw6j33kewwibzfbgrbsi@dkcilnw7gk7c>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/10/2025 17:54, Dmitry Baryshkov wrote:
-> On Wed, Oct 08, 2025 at 04:05:30PM +0200, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Switch from older effort to support different panels within one driver
->> (which already dropped support for the HW) to the freshly written one.
-> 
-> Please disconnect the driver and the DT description. DT can be used by
-> other instances (U-Boot, OpenBSD, etc.).
+This dts adds support for Asus ZenFone 2 Laser/Selfie (1080p) smartphone released in 2015.
 
-Just to note, there are no users (anywhere) for this compatible.
+Add an initial device tree support for Z00T with support for:
+- GPIO keys 
+- SDHCI (Internal and external storage)
+- WCNSS (WiFi/BT)
+- Sensors (accelerometer and magnetometer)
+- Touchscreen 
+- Audio input and output
+- Vibrator
+---
+Changes in v2:
+- added customary newline before 'status' properties
+- removed odd newlines in pin configuration nodes
+- reordered pin configuration nodes by their 'pins' properties
+Link to v1: https://lore.kernel.org/linux-arm-msm/20250930132556.266434-1-xerikasxx@gmail.com/
 
-Would be the change of the commit wording enough in this case?
+Erikas Bitovtas (2):
+  dt-bindings: arm: qcom: Add Asus ZenFone 2 Laser/Selfie
+  arm64: dts: qcom: msm8939-asus-z00t: add initial device tree
 
-If not, I would then propose to use for OnePlus 6T just an extension as
-
-compatible = "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01";
-
-Thank you
-
-> 
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
->> index 7e75decfda052..55b3e94dd9726 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
->> @@ -32,7 +32,7 @@ battery: battery {
->>   &display_panel {
->>   	status = "okay";
->>   
->> -	compatible = "samsung,s6e3fc2x01";
->> +	compatible = "samsung,s6e3fc2x01-ams641rw";
->>   };
->>   
->>   &i2c4 {
->>
->> -- 
->> 2.51.0
->>
->>
-> 
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 256 ++++++++++++++++++
+ 3 files changed, 258 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
 
 -- 
-David Heidelberg
+2.51.0
 
