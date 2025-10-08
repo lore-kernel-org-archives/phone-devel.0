@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D0828D8F1;
-	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F529346F;
+	Wed,  8 Oct 2025 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759932331; cv=none; b=Uw+iX54U4ctPNXHB9fgsDEaYeenumN8FUcbLUSFhiUhRvj9XOeNoM7/72DuAdQguV4zAKUrDEJOV/4DDkMdZrl2BDAYqt0dll+caeDqKnnh/tYtbAvw72rRsms837BjdpZop8EGueb2O6FN6dyH8OoXybIyVchsjnprbUB7idEY=
+	t=1759932331; cv=none; b=oXxeFGajoqTMwnjetaA753XksFLNLdppLj9tuDYjPo4uax0rz+Gefs4w98kPILBKqlQ4A29OSVHqT4xhGl3eJv3u3S827ZT/aOpbtDqQ4CJ0h46M2vNK/LYRpB7NqUBJuF02qRPdmQyH/ANZb4T4LE1HLT04ciGV9W75xNE1+Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759932331; c=relaxed/simple;
-	bh=fAswzPV9nMqsv7sYEBsIdB1TES3apuonI/p0V1BpQPw=;
+	bh=HSYJCjE24K+57IxjnTOBA3vYmKAgeNl1JgEZHnukAHQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lH3Y0pGKdUx8ZkSjDILBLgECkqoKB7NorXuDxV1qIhWMOhD8GX8oQJBjMn3okPbRK7s0yFlImoYTaUAmjAhBmkpmIhntdu1Mdh9vPoGR0gib7JZ0FiHUMA0lhjdKDDOpHIwm9tRK/D0vvI3dUjp5ptd706QNFQWLsM7IfbsSA3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e407VxQ0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UGVJKIQiQugaDSNcnTODwuKwMV1VdeH3IIBbRvbKRpcnn30rOCpBSiGT+opA1i3E83sigSEa1X6eRAV93SHLlqeoWRQeHKVLDElI4RnEGnU0bZobKtzIrKO31Qc7BAdnfNOsLnEc/gzSRZmDd65wwKn6RUlZk8TjEdwD7EVZ3KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHkFArTi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e407VxQ0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B3D90C4CEF4;
-	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHkFArTi"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16D2BC19422;
+	Wed,  8 Oct 2025 14:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759932330;
-	bh=fAswzPV9nMqsv7sYEBsIdB1TES3apuonI/p0V1BpQPw=;
+	s=k20201202; t=1759932331;
+	bh=HSYJCjE24K+57IxjnTOBA3vYmKAgeNl1JgEZHnukAHQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=e407VxQ0oaLWTQenTBVvoskctGhibB8j/T7lwWStZo24tU/7Rs21olM4ZTsO9Xrfc
-	 i7XxEqGG3bsPHVk6jW9f3rcQUBek6GBvYkKiLQWuaISOHvWhNpWbZHqgPap3CJLrlJ
-	 pCkaUX+IWTEtnT//FzCuS4iPNUefx+gQ5miLeFkuEm7kHroTReP+YXNRYeVsT/DkR5
-	 PRq00bQPKPz5G5E6ZmC4vDmhaKRojAtSQpuq5W+WXwzVSnOiB41S97OEM7d1QFsz58
-	 14/tHdI/MNlQqDwX+Ywnd6A++U697bXo1Q/MDEayo5aBecE1pJNzXv3ZIfkWSPqM7y
-	 UvLVFu446TMRA==
+	b=FHkFArTiqLjHtD8UBeA9BjDpTEDP/ze8wv76kxhwQ5ee+Z/LQ5l+TxLM/T5Uje6S3
+	 ZzZ+MnVufUO4SVls5xUeaS9ZzEmaUEk1NqKXcowndG6T7HACqYHUdFoV1vTW4Kc3K2
+	 T0BYjAcmdJPuGQg1tMmGFVqpiFRSY4J0CiGBGaqUGH0EV5rF/g5MbJMXX2clr8uy3x
+	 wjMylQ24HaRr5QaaCSBqLBiU800+UlMIq5LL5W5xl8suoBoTM8VGwIIBcNHTowg8zi
+	 j1oynPpClm7CgY76SZifUR2vWQMwfPB4utrUlQ66QhstJsbf1v4Zy7lXJxI3oKasmj
+	 2nYBBBLTxpmCQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAC5CCCD183;
-	Wed,  8 Oct 2025 14:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ACB3CCA470;
+	Wed,  8 Oct 2025 14:05:31 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 08 Oct 2025 16:05:29 +0200
-Subject: [PATCH v2 2/7] arm64: dts: qcom: sdm845-oneplus: Describe panel
- vci and poc supplies
+Date: Wed, 08 Oct 2025 16:05:34 +0200
+Subject: [PATCH v2 7/7] arm64: dts: qcom: sdm845-oneplus: Implement panel
+ sleep pinctrl
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251008-s6e3fc2x01-v2-2-21eca1d5c289@ixit.cz>
+Message-Id: <20251008-s6e3fc2x01-v2-7-21eca1d5c289@ixit.cz>
 References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
 In-Reply-To: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -59,121 +59,83 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2735; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1489; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=wyoU9d3slp1a80oxXbHjL+liib53t7o67lGGsu4UofI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo5m+o/N70RMmKbpya5C49r3Zhi+XRA9f3ThwXQ
- xw4DfoQ1XOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaOZvqAAKCRBgAj/E00kg
- cm4oD/9veQ1Fva2ST9eui0bvKdUa3yIQjbTIlupsMfsYRwVRJiy+AMQVlXeTmb5s5Clc4Kqw2VR
- mhZ8TFW9bwbX69RbbC5QiSloR8cb/NEULUatLEmL3+OT0bFBCy4LRxKRRarJFuAxTDEYvadOKsk
- /Xl/mFNx8L6gBiuMiRhSq15eHnG0F9Ava5jbv2DEKBPDdVQcrspodv0bMOqOhLmWhWcmutF4J/9
- Tm4yPSodpBAEorQO48ZAR+MYnn0YuQrCyNBFW73QGGEip7A32TZeo6+UgUSCssMUT1O6hIE6cMe
- EzJKUwG/4+ujeglV+1f8ntdJU9KTu/GJS8HnTUHzArGJlz/Dy9+RqGDTOBNElrYZ+Oh3apJpcyC
- dxOna3pBwP/f0I+kcox1DnL3m1Zy+cUYAUtJL0/cNbiWPGz1YwOx78f2ZUGfju5ZYqPhpm5wnzU
- QFV9uHjEf7eTADmViz+jbRuHR9gifNqVsn5L7kRw0SbzPnhYz67WRBMuW/7QsTPoj/EBtsW/8l2
- Cd43rbRGc85bvz150fB1xY0h9NTugM7CN3B++69JDhHnyik7N9dvFXbxmTxbKQSGmIDSykqlwTz
- 7ud14j7J+zw36PYfBQsy6WhAYgIEVtoTqoGbn6mLc3C+wC1ARfX2CLJy00mm4mG0PYIQjA7q44p
- cOGmjhf1xYDpJ3A==
+ bh=mp3HRjBZ7F75KJMOIKY0ujssyiub4Jy/WN4kGAY5j8g=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo5m+piiWLIGs1xMLHjYcw1Kxi+dVr02ZH7Mmqu
+ OeABLuKSjSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaOZvqQAKCRBgAj/E00kg
+ ctV3D/9lubFbmrou5+gTBa2JMEdcOKJUmBFaw+Vy/vJFor0U3Uxr5rhDtLdAK9/eQ3o2dfZ9LUM
+ MJRT5qoA3SorlFBSrV5nVa5HdxdW5b+3hqIupb45Dhr0dm2DfAzT8UFHE1fj60Z57LgEEkVhFVq
+ xVY9s9zGXToPHmA1QCvS5RDXCIMyQY76fKWEkKfB5e59hMJHTk0OsE2bbsyRwlMt1u9IWPArgrn
+ hzRdI5DQerHDgdav/UHwrw83n/nS2t5R69n3BRGX0inbVaBiTtJZ7AzcDx6dN2sK00TyqYcRRiY
+ FN680Vy6dXpP3Hbm6d07dFJbJ3Fm852k4Wc05+8bb0C693tE2JN5XjzFxDxCCggx+yGmhkrMuxo
+ v6DqgVAlC1Xt33L0TXhFkslf5ULO1g/dMX3m4Dj7FGdT372tyY4n1J07zXihjgmsjMtZ0SkQTfF
+ j1sfS2Q9TVq/f7gHXHhNvUysJitJXJeY7uneJ2ZxJvisOGJHWPh3ljoeOQdlD6350h3WAcgzSAZ
+ 86felmyHVVn3k08JiNEwuvnD+pb0kJSyzuYhc9235+xO35LPjEXTWmNKgnh3EF1ziQm9m27xrbm
+ HtL7grNbnYgi29vGxCd8+pZUUCDMhhzsaDgYLIEMrxxUkV6MBpcuOCKXuehVmMkSwQdDcq/L4qT
+ 6H3nus+UNFuUMBA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: David Heidelberg <david@ixit.cz>
 
-There are two additional supplies used by the panel, both are GPIO
-controlled and are left enabled by the bootloader for continuous splash.
+We can DSI pin from 8mA to 2mA while suspend, do it.
 
-Previously these were (incorrectly) modelled as pinctrl. Describe them
-properly so that the panel can control them.
+In theory, should give us extra 2 hours of idle battery life.
 
-Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Co-developed-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 46 +++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 26 +++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index dcfffb271fcf3..1cf03047dd7ae 100644
+index c216369fae237..fa538b37ef25b 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -162,6 +162,34 @@ ts_1p8_supply: ts-1p8-regulator {
- 		enable-active-high;
- 		regulator-boot-on;
- 	};
-+
-+	panel_vci_3v3: panel-vci-3v3-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "LCD_VCI_3V";
-+
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&tlmm 26 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		pinctrl-0 = <&panel_vci_default>;
-+		pinctrl-names = "default";
-+		regulator-boot-on;
-+	};
-+
-+	panel_vddi_poc_1p8: panel-vddi-poc-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDI_POC";
-+
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+
-+		gpio = <&tlmm 25 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		pinctrl-0 = <&panel_poc_default>;
-+		pinctrl-names = "default";
-+		regulator-boot-on;
-+	};
- };
- 
- &adsp_pas {
-@@ -429,6 +457,8 @@ display_panel: panel@0 {
- 		reg = <0>;
- 
- 		vddio-supply = <&vreg_l14a_1p88>;
-+		vci-supply = <&panel_vci_3v3>;
-+		poc-supply = <&panel_vddi_poc_1p8>;
- 
+@@ -463,8 +463,9 @@ display_panel: panel@0 {
+ 		te-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
  
-@@ -803,6 +833,20 @@ hall_sensor_default: hall-sensor-default-state {
- 		bias-disable;
+-		pinctrl-names = "default";
++		pinctrl-names = "default", "sleep";
+ 		pinctrl-0 = <&panel_default>;
++		pinctrl-1 = <&panel_sleep>;
+ 
+ 		port {
+ 			panel_in: endpoint {
+@@ -871,6 +872,29 @@ te-pins {
+ 		};
  	};
  
-+	panel_vci_default: vci-state {
-+		pins = "gpio26";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-disable;
-+	};
++	panel_sleep: panel-sleep-state {
++		esd-pins {
++			pins = "gpio30";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
 +
-+	panel_poc_default: poc-state {
-+		pins = "gpio25";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-disable;
++		reset-pins {
++			pins = "gpio6";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
++
++		te-pins {
++			pins = "gpio10";
++			function = "mdp_vsync";
++			drive-strength = <2>;
++			bias-disable;
++		};
 +	};
 +
  	tri_state_key_default: tri-state-key-default-state {
  		pins = "gpio40", "gpio42", "gpio26";
  		function = "gpio";
-@@ -818,7 +862,7 @@ ts_default_pins: ts-int-state {
- 	};
- 
- 	panel_reset_pins: panel-reset-state {
--		pins = "gpio6", "gpio25", "gpio26";
-+		pins = "gpio6";
- 		function = "gpio";
- 		drive-strength = <8>;
- 		bias-disable;
 
 -- 
 2.51.0
