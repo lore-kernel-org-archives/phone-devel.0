@@ -1,111 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1504F1991CA;
-	Thu,  9 Oct 2025 14:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C7E219A81;
+	Thu,  9 Oct 2025 15:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760021749; cv=none; b=Ch6bQxoqzKcJgYsf3J/O1hwhge5d7vBUJnnSxmokG53/8ermrAnnyNvPlfTAQDJiX/ustMg9pbLRqRaLQWRUgUyQYycClvvmorKAclCdxQFHU71QU7hCyztRUZ4Tbi+s/E3vMtIWXF7NUziqLDeznfFc87D/g9t1zr2CXOHfarA=
+	t=1760024694; cv=none; b=S9EvaMGTLnHthmeE3TSn6MFKBTl7e9YNdnstf9cMcz9KV9nw5ec+dCbg34K7cfNINOWvbRQHY63v+tFta7pVMAP4IZRbusxiu7dHGtbOJMapZurCcbIgevCWsy3/6rLglv/RDVcIuBsDwvSEz9pOqGUz1G5K5INMZb6asIpxDcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760021749; c=relaxed/simple;
-	bh=q+cWlPxPDE8w96Y2CQiXS0aKtBuOa6+DcXpQ8Qum6rQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PP8seWsBgOMTYQ0nKQe+Pylhz4ZjV/++cgqbdLE6yf5nmcP8JUKD4YMCVzeuz+IEbzd84iNJo0jkfPuF+ptsKM8WKr26RXOyQJRXCax3tO6gs48/Yv/T58U11XjR5UqobDIbCelC2BdDB4zxCWSDYXdTyRZ3MfX+Cym552jSDUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHixODJU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760024694; c=relaxed/simple;
+	bh=lz2RoRq8dMXVVMF/BjB62HJ3nhm69wwuaZ/4FoZRm9U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jcs4kdJKoPe0QXzpQV3wn7kKadIbDkCoaQf5OWSKnA6XpjPYB42Ee4uRYl/L6NgP8cWfA4KZlDu7MjopIN0TYiZVNX71CID2HjhoOJB3TQMfy2cyzIsXWne1z9nvWIgsNZAy9Q6Cl70uVy9/WOVOImEeyzvI5ezxzkBpBit5/g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=pJhhgz9a; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHixODJU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A351C4CEE7;
-	Thu,  9 Oct 2025 14:55:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760021747;
-	bh=q+cWlPxPDE8w96Y2CQiXS0aKtBuOa6+DcXpQ8Qum6rQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bHixODJUsitR6IpUo6GQStTTREA5/WabWR38jQveeKcOr4kdofCnwy6bKURsTK1ic
-	 29NprL8jWIyQCVC5QVKwv+t+PVQ0FJkVEZ9bLt1j+JbRCXw+RH6ktrKFTh2ISEgNBE
-	 keAx/jIskZ6EuBNnVOOF8RMfX5u+RRm1vRMAm8QXPnCM9te/5VxfYLb0YacvR1WmWT
-	 JI4VTznSI3F9mLzlRtvC0NTObI4mfovm/g9+GR2tke3FHvgwPJ+XrZSe6CGkqZgTMV
-	 21Rn2gZMNwnb/4P2KXKpEwNZzUeNjT6KhbZZs38aGfbxSK6M81U6HnzSWzmmCYAKTl
-	 Dt33KSJzLA0Ww==
-Date: Thu, 9 Oct 2025 09:55:46 -0500
-From: Rob Herring <robh@kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Vincent Huang <vincent.huang@tw.synaptics.com>,
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RESEND v5 0/7] Input: synaptics-rmi4 - add quirks for
- third party touchscreen controllers
-Message-ID: <20251009145546.GA2124773-robh@kernel.org>
-References: <20250731-synaptics-rmi4-v5-0-cd0d87d34afa@ixit.cz>
- <aggtzmlxvj4so6t7trlo5ianjcbq2jrsodv6hlkhtrvgl2qpqj@gflvqocxjckb>
- <b223a48e-952c-4825-bf82-e8922434e3c1@ixit.cz>
- <5gcq5xsurdp24o7wndo2fm7pjsc3khco52ji34jjmeet2nidl4@rkbh4a2c4d3q>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="pJhhgz9a"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 1902353410C1;
+	Thu, 09 Oct 2025 17:44:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1760024687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VknUNOTw077T/hHFg/PJCZOVDrouyCYB8zJKFGPpu9c=;
+	b=pJhhgz9a7K2FmI6ulgkRYtbSgyvCoFFLQIWNTlWoC8HGHDZQgm/Ltt9Thf5N2V8Vt7NDfM
+	vMpWlmLbzShvR3VK9+utnkoFy+2ZIZftIGDanmVawvAZVvKbg70y2MSLNP0H3o82jY/FXm
+	HiZHg+Ykv1XWVVyOJsUWctW7MUGbv6k=
+Message-ID: <9018af52-1c81-4d2d-8717-44e5372dbffa@ixit.cz>
+Date: Thu, 9 Oct 2025 17:44:46 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5gcq5xsurdp24o7wndo2fm7pjsc3khco52ji34jjmeet2nidl4@rkbh4a2c4d3q>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC
+ with panel
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
+ <20251008-s6e3fc2x01-v2-1-21eca1d5c289@ixit.cz>
+ <7askbazrkbny5jlw6cpxcpjyw5nyiozmksoyj5b5momcc7w5hn@r3x6kddatf3u>
+ <74893f76-1b7d-4cfb-ba7a-9fd64427762b@oss.qualcomm.com>
+ <bmsxmwfdwx7wlmngaqpvz7c2nudcoukspkxgq6zqh2mdlolfxg@fsdbafotp5q2>
+ <75011ead-8bd8-4939-ae7b-1c127eba8aa8@ixit.cz>
+ <3mbngf2r3rvbn5fr4vxbk64ouvm3voo5o2r63vg3clyswnceoh@64r6ujb5qr65>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <3mbngf2r3rvbn5fr4vxbk64ouvm3voo5o2r63vg3clyswnceoh@64r6ujb5qr65>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Sep 21, 2025 at 11:30:22PM -0700, Dmitry Torokhov wrote:
-> Hi David,
+On 09/10/2025 16:26, Dmitry Baryshkov wrote:
+> On Thu, Oct 09, 2025 at 03:32:22PM +0200, David Heidelberg wrote:
+>>
+>>
+>> On 09/10/2025 15:21, Dmitry Baryshkov wrote:
+>>> On Thu, Oct 09, 2025 at 10:51:31AM +0200, Konrad Dybcio wrote:
+>>>> On 10/8/25 8:57 PM, Dmitry Baryshkov wrote:
+>>>>> On Wed, Oct 08, 2025 at 04:05:28PM +0200, David Heidelberg via B4 Relay wrote:
+>>>>>> From: David Heidelberg <david@ixit.cz>
+>>>>>>
+>>>>>> Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
+>>>>>>
+>>>>>> Samsung AMS641RW is 6.41 inch, 1080x2340 pixels, 19.5:9 ratio panel
+>>>>>>
+>>>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>>>>> ---
+>>>>>>    .../bindings/display/panel/samsung,s6e3fc2x01.yaml | 78 ++++++++++++++++++++++
+>>>>>>    MAINTAINERS                                        |  5 ++
+>>>>>>    2 files changed, 83 insertions(+)
+>>>>>>
+>>>>>
+>>>>> Please also describe, why it's not enough to use defined compatible,
+>>>>> samsung,s6e3fc2x01. Why do we need a separate schema and can't use the
+>>>>> panel-simple-dsi.yaml
+>>>>
+>>>> panel-simple works for 'dumb' (perhaps a harsh word for 'made with
+>>>> just the in-spec DCS commands in mind') panels, but Samsungs are
+>>>> widely known to require a ton of vendor magic
+>>>
+>>> The question is about the _schema_. I think it's fine to have a driver
+>>> for a panel covered by panel-simple-dsi.yaml.
+>>
+>> see display/panel/samsung,amoled-mipi-dsi.yaml
+>> the OLED display don't fit well, but I wouldn't mind consolidating at some
+>> point, but since we know very little (no datasheets), it's hard to do for
+>> now. Maybe in the future when there will be more panels schemas, we can find
+>> a way to consolidate into one big?
 > 
-> On Tue, Sep 16, 2025 at 11:29:45AM +0200, David Heidelberg wrote:
-> > On 07/08/2025 06:29, Dmitry Torokhov wrote:
-> > > Hi David,
-> > > 
-> > > On Thu, Jul 31, 2025 at 11:06:50PM +0200, David Heidelberg via B4 Relay wrote:
-> > > > With the growing popularity of running upstream Linux on mobile devices,
-> > > > we're beginning to run into more and more edgecases. The OnePlus 6 is a
-> > > > fairly well supported 2018 era smartphone, selling over a million units
-> > > > in it's first 22 days. With this level of popularity, it's almost
-> > > > inevitable that we get third party replacement displays, and as a
-> > > > result, replacement touchscreen controllers.
-> > > > 
-> > > > The OnePlus 6 shipped with an extremely usecase specific touchscreen
-> > > > driver, it implemented only the bare minimum parts of the highly generic
-> > > > rmi4 protocol, instead hardcoding most of the register addresses.
-> > > > 
-> > > > As a result, the third party touchscreen controllers that are often
-> > > > found in replacement screens, implement only the registers that the
-> > > > downstream driver reads from. They additionally have other restrictions
-> > > > such as heavy penalties on unaligned reads.
-> > > > 
-> > > > This series attempts to implement the necessary workaround to support
-> > > > some of these chips with the rmi4 driver. Although it's worth noting
-> > > > that at the time of writing there are other unofficial controllers in
-> > > > the wild that don't work even with these patches.
-> > > > 
-> > > > We have been shipping these patches in postmarketOS for the last several
-> > > > years, and they are known to not cause any regressions on the OnePlus
-> > > > 6/6T (with the official Synaptics controller), however I don't own any
-> > > > other rmi4 hardware to further validate this.
-> > > 
-> > > Sorry for not handling the patches in the last few submissions. I am
-> > > planning on addressing them once merge window opens.
-> > 
-> > Hello Dmitry, kind reminder about the patch series as the window is open.
-> 
-> I was looking at the patch series again and with the exception of patch
-> #5 they make little sense for sensors other than ones used in OnePlus 6.
-> 
-> I wonder if we could key it off of something, maybe a distinct
-> compatible or a property? Rob, Krzysztof, any suggestions on how to deal
-> with devices that do not properly implement the protocol for which they
-> claim compatible?
+> I'm looking for a simple answer ATM: it doesn't fit
+> panel-simple-dsi.yaml because it needs foo bar baz, which is not a part
+> of that schema.
 
-A compatible is "the way" as David has done. Once again, generic 
-compatibles have proven inadequate.
+v3 will have:
 
-Rob
+     dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
+
+     Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
+
+     Samsung AMS641RW is 6.41 inch, 1080x2340 pixels, 19.5:9 ratio panel
+
+     panel-simple-dsi cannot be used because it's limited to one
+     power-supply, while we use three.
+
+> 
+>>
+>>>
+>>>>
+>>>> Perhaps the original change was made with an "oh it just works
+>>>> surely there's no drawbacks possible" attitude, as the panel
+>>>> was left initialized by the bootloader
+> 
+
+-- 
+David Heidelberg
+
