@@ -1,88 +1,120 @@
-Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715C0A31;
-	Thu,  9 Oct 2025 18:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.31.198.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B3E283FFD;
+	Thu,  9 Oct 2025 22:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760036308; cv=none; b=pSNjP9c+AHkDtDfSuBEN7c9biDWGqGQttHvmce7BC59DxweNiPzXZq4HZtGa9pkOoy4U61zVEjrO8wi4vPXX316VGQlttfcv3LvbIUoZOqxwcRLXfBZPDfhsPcmTcoH3kijshKvEVb+Ss9Q1W8pXHYXTVNuCxcH0Hf6CCCjq3ao=
+	t=1760047423; cv=none; b=dtuPtHrcgm04lZFsI+12aK7tHKIhuzgLrIUFQHdeloWFHH6j7hTur0wrNyA/TKrcw8LXbIUo7XTcV8YxoyK9z0yE7zKjoIuUH0QYSVK0atWowML3rR+aWnPd/HIFnp/YfMpRhvluEGyC5a0+x/oNYwa/myTOOpYI5IlbNJhmneo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760036308; c=relaxed/simple;
-	bh=53IsFJzxWMMzkLYYiPkY/Tnkn8LYqqQNK+5NClvvDsA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HqKEwe8sWLzOdDeQOFSwDX57DrE90+BOZ9lpBu+zQ9nw4DIgHNfCSCzCQVHhDn4PcoHQFyXz1OORfYZHQNWzJtT0LjSn1hcTFrMZejPVFVRnuDoTJR0+HHi15BYk6CH4LuI1+dP35EvW1qkPdoZxNftljf2dFFOvug+KUnX7puQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minlexx.ru; spf=none smtp.mailfrom=minlexx.ru; dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b=V6pGM0mx; arc=none smtp.client-ip=31.31.198.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minlexx.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
+	s=arc-20240116; t=1760047423; c=relaxed/simple;
+	bh=Naant3+DVN5aKIknLH/h0l05Wkcr6CNf2egBKXHt1Fg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=RudETkvBQPaLSXb63wH/LJZDZGOK17qedXx70bBYi4HgvZMLg2NcoUx/4gJHjtP+VnOuW3KRRa7N/rjFLk9iOCECeLaaw3DrgZU8BveuxKQBejbwnf1IbDLFMqyRj54rW1iucUHk0OWSR2sI2+TWhf0wGuNDuhCnCRKkTT2TOCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geM3ZBad; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b="V6pGM0mx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
-	s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
-	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=sx163Q/gDcDwLx9ge5Ng5N0+91L1RQp4JmKODFf4mnM=; b=V6pGM0mx5cjSI85VCugECNBUyB
-	xFJ2h7e6mZnw7ETMED0qJvFAJjwWnbLNXNuPM4WXa6+2j6fg14ioNDj46godWlzTL379AMr2ee8bb
-	wG+wR9AepAIbMhJDAMjD7hYROpOBw404Ay/ngu6A2EnuRUne7rbXhWcHBQrCkog7ist0=;
-Received: 
-	by sm24.hosting.reg.ru with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(envelope-from <alexeymin@minlexx.ru>)
-	id 1v6uy5-000000003N5-2qya;
-	Thu, 09 Oct 2025 21:02:21 +0300
-Message-ID: <6bc54f43-63c4-4523-9dfd-d74cdaceef58@minlexx.ru>
-Date: Thu, 9 Oct 2025 21:02:19 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geM3ZBad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A45C4CEF5;
+	Thu,  9 Oct 2025 22:03:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760047423;
+	bh=Naant3+DVN5aKIknLH/h0l05Wkcr6CNf2egBKXHt1Fg=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=geM3ZBadakY68lqNrnzv2rvFUGrTp0gdXIY7QM5cMcViEKc2X/47wLd+rTcaqOaUi
+	 5II/k3kEOnQJXoXcbgTq6b+2K9c/TKHZKITdwotshVDYFbaP9545ZATnoBapwXHZjL
+	 uF9qmjH7G5SfnFINnvUYwE7BFwF2Ipy3MdVIpWmQ03XcJf5HTbUc6N4PAxikRcVCz4
+	 8nHAE4Y3H64dwhosJn1ScPVrRZo4v4AA5t9cYm1At0G00BI5mDQltr9QFnMNKeCmfu
+	 YsaH5XQtGXkmBjpDwrVhndqOXaO+R6cIF81aPU1QOCsw1UF23aghSvLNYkFmUSrxuZ
+	 Zq6YtJOMmxz2Q==
+Date: Thu, 09 Oct 2025 17:03:42 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/13] arm64: dts: qcom: sdm845-lg-judyln: Add fb_panel
- dimensions
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Paul Sajna <sajattack@postmarketos.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Amir Dahan <system64fumo@protonmail.com>,
- Christopher Brown <crispybrown@gmail.com>
-References: <20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org>
- <20250916-judyln-dts-v2-9-5e16e60263af@postmarketos.org>
- <de1a7ecb-924d-4ed2-8034-721b8dce69d4@oss.qualcomm.com>
- <ac2d419d-a1b4-4b3f-a07a-4f5d047901aa@minlexx.ru>
- <e58978d6-dc6a-468f-91d5-29d7b0755e79@oss.qualcomm.com>
-Content-Language: en-US
-From: Alexey Minnekhanov <alexeymin@minlexx.ru>
-In-Reply-To: <e58978d6-dc6a-468f-91d5-29d7b0755e79@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+In-Reply-To: <20251008182106.217340-1-xerikasxx@gmail.com>
+References: <20251008182106.217340-1-xerikasxx@gmail.com>
+Message-Id: <176004726783.3398685.3709173362814048798.robh@kernel.org>
+Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: msm8939-asus-z00t: add
+ initial device tree
 
-On 07.10.2025 16:55, Konrad Dybcio wrote:
 
-> Would adding post-init-providers = <&real_panel> help?
+On Wed, 08 Oct 2025 21:20:18 +0300, Erikas Bitovtas wrote:
+> This dts adds support for Asus ZenFone 2 Laser/Selfie (1080p) smartphone released in 2015.
 > 
-> Konrad
+> Add an initial device tree support for Z00T with support for:
+> - GPIO keys
+> - SDHCI (Internal and external storage)
+> - WCNSS (WiFi/BT)
+> - Sensors (accelerometer and magnetometer)
+> - Touchscreen
+> - Audio input and output
+> - Vibrator
+> ---
+> Changes in v2:
+> - added customary newline before 'status' properties
+> - removed odd newlines in pin configuration nodes
+> - reordered pin configuration nodes by their 'pins' properties
+> Link to v1: https://lore.kernel.org/linux-arm-msm/20250930132556.266434-1-xerikasxx@gmail.com/
+> 
+> Erikas Bitovtas (2):
+>   dt-bindings: arm: qcom: Add Asus ZenFone 2 Laser/Selfie
+>   arm64: dts: qcom: msm8939-asus-z00t: add initial device tree
+> 
+>  .../devicetree/bindings/arm/qcom.yaml         |   1 +
+>  arch/arm64/boot/dts/qcom/Makefile             |   1 +
+>  .../arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 256 ++++++++++++++++++
+>  3 files changed, 258 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
+> 
+> --
+> 2.51.0
+> 
+> 
+> 
 
 
-I suppose it should, as means to break devlink dependency, but I
-personally haven't tried it yet.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-It's easier to just have "msm" and "panel-*" modules in initramfs and
-leave simpledrm node be with invalid scaling, because it doesn't live
-long enough to display anything (maybe a fraction of a second) due to
-being quickly replaced by msm drm framebuffer emulation.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-Framebuffer-only display with proper scaling is only needed for devices
-without display/panel drivers, perhaps temporarily during early porting
-stage, so this all is minor issue.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-Still would be nice to have a proper solution for this of course.
+  pip3 install dtschema --upgrade
 
--- 
-Regards,
-Alexey Minnekhanov
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: remotes/arm-soc/qcom/dt64-51-gc11645afb0e2 (best guess, 1/2 blobs matched)
+ Base: remotes/arm-soc/qcom/dt64-51-gc11645afb0e2 (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20251008182106.217340-1-xerikasxx@gmail.com:
+
+arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dtb: iommu@1f08000 (qcom,msm8916-iommu): clock-names: ['iface', 'bus', 'tbu'] is too long
+	from schema $id: http://devicetree.org/schemas/iommu/qcom,iommu.yaml#
+arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dtb: iommu@1f08000 (qcom,msm8916-iommu): clocks: [[31, 129], [31, 140], [31, 175]] is too long
+	from schema $id: http://devicetree.org/schemas/iommu/qcom,iommu.yaml#
+
+
+
+
+
