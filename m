@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7E434BA2F;
-	Thu,  9 Oct 2025 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B42D9EDF;
+	Thu,  9 Oct 2025 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760016750; cv=none; b=t+G1XDrRiSpWbhkvJQCYgfFDSvrnuaIUTOYk5ukB/cg5hZdnaggl4QStku0hVhr3eKmFaUkk7cO9KEFG6hXyvGS1CX7PAji+YPjHNVGBLZwkeYcv3snBBbsfVRr1xBOUGSdybogxnJ6tkG8sUrQiS239oQPUnEKMwe/99XRukQg=
+	t=1760017130; cv=none; b=l8fOTOV+1o35CrqfKYLkf2fYWkdffIKzG1iz2YkZlZ3oubD7hzGaig+e9coP27HQa1bzxhFCslA/14twhKncstIgMt+B2XvXbBaUXsiQ4YJPi4KRJlKgP9PGYQHMAFk+dXAwhgUbCUzoSf48icchADkEt4GnN0yb+aZmz+q/H9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760016750; c=relaxed/simple;
-	bh=0MnHaz2jRsiG4OST2/i1Xd92d3R7OcfJuRzdlOCS8pk=;
+	s=arc-20240116; t=1760017130; c=relaxed/simple;
+	bh=CpylmkcX0Uwb0oh0JVuno4lRR5uvP5mrx0c2VotvN8g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W5rUI9uqunElHmXPcDVXW1HaF+9l7/XsTD/p+quK5lOzeahxN2IJ3TrmP771EnirsDX7RaPg3dMVj+xttfDXwvbldaeolPJh3Av0ZUubpf/Pscp4dTavBJ3mYHXUUEUFBh5LXHlD585aAZ4qPUXS35aoF+K+TrLrQexxnPtW/zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=ONQ0BY3k; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=P1r3afWhKuXFIOy2L9TD6g3PLFRRoHeZWrGKFavC4Jxy0mq7/5GFAbbdXrzlMEjV0E6+rXt+ZFTfe9nb85mTa00yl7L4fPtxMZ2BTwR0hKoHxqU6jZF3qoOst1boMlW773+RuOw6Ic/jMa9P4oA74DJ7bHe9xNQRJ5aibEG9dhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=k3WpSNn8; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="ONQ0BY3k"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="k3WpSNn8"
 Received: from [10.59.7.204] (unknown [193.86.240.59])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id B1DEF5340E37;
-	Thu, 09 Oct 2025 15:32:22 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 497EC5341173;
+	Thu, 09 Oct 2025 15:38:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1760016743;
+	t=1760017125;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ATlpDgDGus44HKVxZig/RhiWvD1mhFf+WkmRvNApL08=;
-	b=ONQ0BY3kzvaUb5sYWGg4E5xkhvvM+Y1M+CvkNEkwmb1gzBMXwHFEeWv/0Sq4IKobsrVdSR
-	ZQksu/gEr5zzwi67IJYqI6/LduEgo0imRysktnlVSp8PNOhknc/vyBGSoRvNs/hnTlut4D
-	1VIF8i0YeVRVxajfWVGNKE2DWok3VLY=
-Message-ID: <75011ead-8bd8-4939-ae7b-1c127eba8aa8@ixit.cz>
-Date: Thu, 9 Oct 2025 15:32:22 +0200
+	bh=XlnzkuebGGT9/FA8dDB4u+rfWyPNwzNC3qtitZmMTMg=;
+	b=k3WpSNn8ImhYXkslG9+iSc8SQ6ZfJrMe9h5k0lOypoJlj2XKrEqVPrGRuS28ePSSBZOeEz
+	BmhXMaxrlSKKShxeVPKx/7PxH1MF0+VET/uoxvLMyF+1qIACHLf15guIL9KuVl2iRsdBdH
+	iSMWo7EOghiHvTmQoz7zVZCisAQvc8k=
+Message-ID: <2ab48275-37bd-4a04-bce3-769aa635451d@ixit.cz>
+Date: Thu, 9 Oct 2025 15:38:45 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC
- with panel
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+Subject: Re: [PATCH v2 4/7] arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
  Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
@@ -55,14 +53,13 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
  <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
  Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+ Casey Connolly <casey.connolly@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
 References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
- <20251008-s6e3fc2x01-v2-1-21eca1d5c289@ixit.cz>
- <7askbazrkbny5jlw6cpxcpjyw5nyiozmksoyj5b5momcc7w5hn@r3x6kddatf3u>
- <74893f76-1b7d-4cfb-ba7a-9fd64427762b@oss.qualcomm.com>
- <bmsxmwfdwx7wlmngaqpvz7c2nudcoukspkxgq6zqh2mdlolfxg@fsdbafotp5q2>
+ <20251008-s6e3fc2x01-v2-4-21eca1d5c289@ixit.cz>
+ <6b9ae65c-08f0-4b13-94cb-b899764bfc8c@oss.qualcomm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -108,52 +105,44 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <bmsxmwfdwx7wlmngaqpvz7c2nudcoukspkxgq6zqh2mdlolfxg@fsdbafotp5q2>
+In-Reply-To: <6b9ae65c-08f0-4b13-94cb-b899764bfc8c@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 09/10/2025 15:21, Dmitry Baryshkov wrote:
-> On Thu, Oct 09, 2025 at 10:51:31AM +0200, Konrad Dybcio wrote:
->> On 10/8/25 8:57 PM, Dmitry Baryshkov wrote:
->>> On Wed, Oct 08, 2025 at 04:05:28PM +0200, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
->>>>
->>>> Samsung AMS641RW is 6.41 inch, 1080x2340 pixels, 19.5:9 ratio panel
->>>>
->>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>> ---
->>>>   .../bindings/display/panel/samsung,s6e3fc2x01.yaml | 78 ++++++++++++++++++++++
->>>>   MAINTAINERS                                        |  5 ++
->>>>   2 files changed, 83 insertions(+)
->>>>
->>>
->>> Please also describe, why it's not enough to use defined compatible,
->>> samsung,s6e3fc2x01. Why do we need a separate schema and can't use the
->>> panel-simple-dsi.yaml
+On 09/10/2025 14:54, Konrad Dybcio wrote:
+> On 10/8/25 4:05 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
 >>
->> panel-simple works for 'dumb' (perhaps a harsh word for 'made with
->> just the in-spec DCS commands in mind') panels, but Samsungs are
->> widely known to require a ton of vendor magic
-> 
-> The question is about the _schema_. I think it's fine to have a driver
-> for a panel covered by panel-simple-dsi.yaml.
-
-see display/panel/samsung,amoled-mipi-dsi.yaml
-the OLED display don't fit well, but I wouldn't mind consolidating at 
-some point, but since we know very little (no datasheets), it's hard to 
-do for now. Maybe in the future when there will be more panels schemas, 
-we can find a way to consolidate into one big?
-
-> 
+>> Describe panel Tearing Effect (TE) GPIO line.
 >>
->> Perhaps the original change was made with an "oh it just works
->> surely there's no drawbacks possible" attitude, as the panel
->> was left initialized by the bootloader
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> index 1cf03047dd7ae..75989b377f8bc 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> @@ -460,6 +460,7 @@ display_panel: panel@0 {
+>>   		vci-supply = <&panel_vci_3v3>;
+>>   		poc-supply = <&panel_vddi_poc_1p8>;
+>>   
+>> +		te-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
 > 
+> Wait, I just noticed nothing consumes this..
+
+It's well defined in the
+display/panel/panel-common.yaml and the device-tree should be 
+independent on the driver, so that seems perfectly fine.
+
+sdm845-samsung-starqltechn.dts have it exactly same way.
+
+David
+
+> 
+> Konrad
 
 -- 
 David Heidelberg
