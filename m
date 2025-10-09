@@ -1,149 +1,179 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B42D9EDF;
-	Thu,  9 Oct 2025 13:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502452E8DF5
+	for <phone-devel@vger.kernel.org>; Thu,  9 Oct 2025 14:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760017130; cv=none; b=l8fOTOV+1o35CrqfKYLkf2fYWkdffIKzG1iz2YkZlZ3oubD7hzGaig+e9coP27HQa1bzxhFCslA/14twhKncstIgMt+B2XvXbBaUXsiQ4YJPi4KRJlKgP9PGYQHMAFk+dXAwhgUbCUzoSf48icchADkEt4GnN0yb+aZmz+q/H9c=
+	t=1760020013; cv=none; b=NxZ5Ojf3VAWQfHrwHOYMVeOVy8v/s5LgtA9gRiQhp/K4EvCGooZRm3oYzgV1S+8yVnBqT3HUNC5rNEwP4JNhUa7QuzAPFEwgVq3s0MUIvscBL/yQGZDKU09te1hee23pbGMSNZwyX89ZM8jRtk2F2xB9m8nPbpmId5HENM8iTao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760017130; c=relaxed/simple;
-	bh=CpylmkcX0Uwb0oh0JVuno4lRR5uvP5mrx0c2VotvN8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P1r3afWhKuXFIOy2L9TD6g3PLFRRoHeZWrGKFavC4Jxy0mq7/5GFAbbdXrzlMEjV0E6+rXt+ZFTfe9nb85mTa00yl7L4fPtxMZ2BTwR0hKoHxqU6jZF3qoOst1boMlW773+RuOw6Ic/jMa9P4oA74DJ7bHe9xNQRJ5aibEG9dhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=k3WpSNn8; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1760020013; c=relaxed/simple;
+	bh=8hvdupc+LZK/iN+CW4zbSmj8G9FzomotMvequinYfSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BGOeULd+Fu3jf63Cvo7P9J+T6HI+g8uglkqOv/e6PGPLnMuxdev+3pVf67UZTFWX96Qzefji2gaSSSIcGOnMBLRsMXngFwT25fu3cZnOL9jskKJxex3FHFEKWTSxnLQC7GmbCKlDqZJqGdgXPw/MN4LpgB8QKxWO0+ULi+8rXMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YR8u+Gs/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="k3WpSNn8"
-Received: from [10.59.7.204] (unknown [193.86.240.59])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 497EC5341173;
-	Thu, 09 Oct 2025 15:38:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1760017125;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XlnzkuebGGT9/FA8dDB4u+rfWyPNwzNC3qtitZmMTMg=;
-	b=k3WpSNn8ImhYXkslG9+iSc8SQ6ZfJrMe9h5k0lOypoJlj2XKrEqVPrGRuS28ePSSBZOeEz
-	BmhXMaxrlSKKShxeVPKx/7PxH1MF0+VET/uoxvLMyF+1qIACHLf15guIL9KuVl2iRsdBdH
-	iSMWo7EOghiHvTmQoz7zVZCisAQvc8k=
-Message-ID: <2ab48275-37bd-4a04-bce3-769aa635451d@ixit.cz>
-Date: Thu, 9 Oct 2025 15:38:45 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YR8u+Gs/"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5996EQIw019239
+	for <phone-devel@vger.kernel.org>; Thu, 9 Oct 2025 14:26:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=G2KvXnwbuscjouOeX9M2xhbN
+	j+kin2y5TQrFozgduvU=; b=YR8u+Gs/wtwLU58ZURivOsxW92bTU+ngTcRJDdn6
+	ZT/eU6WoX5YaoxxHNjuTJDjBKUj+rqCxM6EdVLaLxxr4cCP984JzbUP0kiKJrEw9
+	9uzHclNOl6GuTNUt+7C/bFvMJH37oEAe1qbuDg7eLOuaKnv6h+kJyhgLmER9g8ja
+	5hJNLuV2OSVu8yVHQsxnV0W61H2fLrtR8lD+pFyfJZQQ48r419N7pX+Lm81VY3IV
+	wKC2GhXO6ORGFm5eoMYHQg31fOyiNwcpObEW8SfbzIJbV/gH2FcGVlTvMVjnm4Nz
+	HxI8mDhBhy+Z2hFnDceypl06uTyHHBRsZ/qZYmdtp2aTuQ==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49nv4nu4wp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 09 Oct 2025 14:26:51 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8776a952dd4so35022386d6.3
+        for <phone-devel@vger.kernel.org>; Thu, 09 Oct 2025 07:26:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760020010; x=1760624810;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G2KvXnwbuscjouOeX9M2xhbNj+kin2y5TQrFozgduvU=;
+        b=E5ED1PLBclsBd8zMQGWcWc286CmGWKPh6U8vjaAoWdd+WvqBAou5nJrB6iRbsJpzOC
+         AD8J86r4DxxVF98lQ92o5ARt0QmYypkUAfa0GuEpI6gWTu3LSWVardZGzsZHMd+liAjd
+         8a9/1XpIzEUr5ggVyq8mRyzM5Fp9PsNH4uOkoXAv6ZwBd2zCVTy4TyhTxQ0g55qfP/S8
+         xiBp/19gTOv1135g2/OckpZYmykV6xsp9VU8XJf349jC/OUCLbxe27SQdU/PCOIkqatY
+         wHqcg3N9RXCIIksXzyukSDnbX0k7n+7IvAFgcHBrNsr0jSZEfFYm1IypenFAg40oq+Ci
+         s3MA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3sBd3CCPMTjtgjfavir9aD4/4BnPIv9bgPc7Ah2CB50kKenqPV6TZKR+KLlUWxi9jNTI8leRf70NzFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTfWzwEkqlNCDGYQntPTQXy6UAHvzJutaesJpmIbT3ccrf3V6i
+	h9K1UtzP97On19YfbmPomW/HHiJBaTJcCOPtkJeBWH5vKVsc4ebMx/DYlBk/l6BoDP488U2uvJK
+	JCvBnCz63lyIbg4ZlvWT4QUplW7/WjLD4gh54fY4L8vHZTfEIyAVFlqKHiJfEqHlyrA==
+X-Gm-Gg: ASbGnctt73njtZ0U8EKLzpILnLaPk/noN5zsE6nyCs3N7h4UBHfgnEnT4mxXQSbvWO1
+	eVfpDABQ+G/6ODtmSq+NZXEZdtI5/oX2ltGog29vOuY9YUipd67ooH22SYKyl8wEYkXSuJlCTbi
+	Tcj+AhS0D/rn54s9YBBdNU8Y4T20BDxP3uDbclyPxGIxjNfZ3dDC2duzWpexy8QDPNqNbUclawL
+	fiLMKqXEI2eT3nsOSC3i0y3JtISFAQWx4sjCmfMRCpKlw7ER4rYZXwhuCpvTsV+3sRb2RiraH7b
+	2OzQgKNdclI+tbqlqFZFCKArRhUmQDCgoHAH9iS60ipgtXtqG4QgXiFql70RxLCdqot4am1FgfG
+	Y2ERgp0RwYxrjfIYUuoXml41NMT2tifD/G0kbwM24XLLJDIWj39thWLICjA==
+X-Received: by 2002:a05:6214:2aac:b0:783:2157:5a34 with SMTP id 6a1803df08f44-87b2f02ba73mr98394076d6.65.1760020007807;
+        Thu, 09 Oct 2025 07:26:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdTWGuZxMQcCYadLFdJmdthwUCJVxPbcp/MQRks6lOTZwcbWtf0yNa8g4UdjMUG53579SmMg==
+X-Received: by 2002:a05:6214:2aac:b0:783:2157:5a34 with SMTP id 6a1803df08f44-87b2f02ba73mr98390956d6.65.1760020003398;
+        Thu, 09 Oct 2025 07:26:43 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-375f3b63f1bsm28387511fa.31.2025.10.09.07.26.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 07:26:42 -0700 (PDT)
+Date: Thu, 9 Oct 2025 17:26:40 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Casey Connolly <casey.connolly@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC
+ with panel
+Message-ID: <3mbngf2r3rvbn5fr4vxbk64ouvm3voo5o2r63vg3clyswnceoh@64r6ujb5qr65>
+References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
+ <20251008-s6e3fc2x01-v2-1-21eca1d5c289@ixit.cz>
+ <7askbazrkbny5jlw6cpxcpjyw5nyiozmksoyj5b5momcc7w5hn@r3x6kddatf3u>
+ <74893f76-1b7d-4cfb-ba7a-9fd64427762b@oss.qualcomm.com>
+ <bmsxmwfdwx7wlmngaqpvz7c2nudcoukspkxgq6zqh2mdlolfxg@fsdbafotp5q2>
+ <75011ead-8bd8-4939-ae7b-1c127eba8aa8@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz>
- <20251008-s6e3fc2x01-v2-4-21eca1d5c289@ixit.cz>
- <6b9ae65c-08f0-4b13-94cb-b899764bfc8c@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <6b9ae65c-08f0-4b13-94cb-b899764bfc8c@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <75011ead-8bd8-4939-ae7b-1c127eba8aa8@ixit.cz>
+X-Proofpoint-ORIG-GUID: BJT1e9oKZ1EPbp1HcnybdCWGRRl2fGlT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX3UUqGdzypV8B
+ oPi3fKqjv2UuBwXNg6zopG+kGgp0u11K+hXBIEgcRr0yVZLJFRj7ylXWzHhIaUDZjB4v/dLD3u/
+ CRD5+ybgdeFk+vUDGItCWNBvSMsF+pFCpi6/Gwj12CWWS60U9U5lqJm7k8Ysx7AXGjbrCElCRrP
+ krpgLZ/+kqB+At836SyCGyAxKTsRxcJtRQglNXaXrzVuHI8MXA3aKNb2o8DoZTki7cqGkcTqKrL
+ qBpZIp2EbWsukEfYKLtankQScadSJig2T8kC899m6x9lKvq4fr2tDU7VL2/MGEtrMNIw47lsGr0
+ V9lWX5ULhNg+gNYiMr8ErXcrgIpD9daeKDrcOK45DDUemj+Wf8koyIAqhXns8CfOyHfEb5zFGxX
+ mlveK7soMYqMYZ+kXpmKSgleDuJ5aQ==
+X-Proofpoint-GUID: BJT1e9oKZ1EPbp1HcnybdCWGRRl2fGlT
+X-Authority-Analysis: v=2.4 cv=b6a/I9Gx c=1 sm=1 tr=0 ts=68e7c62b cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=df2SJZlNlAcoaDSKSIcA:9 a=CjuIK1q_8ugA:10
+ a=pJ04lnu7RYOZP9TFuWaZ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_04,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
 
-On 09/10/2025 14:54, Konrad Dybcio wrote:
-> On 10/8/25 4:05 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Describe panel Tearing Effect (TE) GPIO line.
->>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> index 1cf03047dd7ae..75989b377f8bc 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> @@ -460,6 +460,7 @@ display_panel: panel@0 {
->>   		vci-supply = <&panel_vci_3v3>;
->>   		poc-supply = <&panel_vddi_poc_1p8>;
->>   
->> +		te-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
+On Thu, Oct 09, 2025 at 03:32:22PM +0200, David Heidelberg wrote:
 > 
-> Wait, I just noticed nothing consumes this..
+> 
+> On 09/10/2025 15:21, Dmitry Baryshkov wrote:
+> > On Thu, Oct 09, 2025 at 10:51:31AM +0200, Konrad Dybcio wrote:
+> > > On 10/8/25 8:57 PM, Dmitry Baryshkov wrote:
+> > > > On Wed, Oct 08, 2025 at 04:05:28PM +0200, David Heidelberg via B4 Relay wrote:
+> > > > > From: David Heidelberg <david@ixit.cz>
+> > > > > 
+> > > > > Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
+> > > > > 
+> > > > > Samsung AMS641RW is 6.41 inch, 1080x2340 pixels, 19.5:9 ratio panel
+> > > > > 
+> > > > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > > > ---
+> > > > >   .../bindings/display/panel/samsung,s6e3fc2x01.yaml | 78 ++++++++++++++++++++++
+> > > > >   MAINTAINERS                                        |  5 ++
+> > > > >   2 files changed, 83 insertions(+)
+> > > > > 
+> > > > 
+> > > > Please also describe, why it's not enough to use defined compatible,
+> > > > samsung,s6e3fc2x01. Why do we need a separate schema and can't use the
+> > > > panel-simple-dsi.yaml
+> > > 
+> > > panel-simple works for 'dumb' (perhaps a harsh word for 'made with
+> > > just the in-spec DCS commands in mind') panels, but Samsungs are
+> > > widely known to require a ton of vendor magic
+> > 
+> > The question is about the _schema_. I think it's fine to have a driver
+> > for a panel covered by panel-simple-dsi.yaml.
+> 
+> see display/panel/samsung,amoled-mipi-dsi.yaml
+> the OLED display don't fit well, but I wouldn't mind consolidating at some
+> point, but since we know very little (no datasheets), it's hard to do for
+> now. Maybe in the future when there will be more panels schemas, we can find
+> a way to consolidate into one big?
 
-It's well defined in the
-display/panel/panel-common.yaml and the device-tree should be 
-independent on the driver, so that seems perfectly fine.
-
-sdm845-samsung-starqltechn.dts have it exactly same way.
-
-David
+I'm looking for a simple answer ATM: it doesn't fit
+panel-simple-dsi.yaml because it needs foo bar baz, which is not a part
+of that schema.
 
 > 
-> Konrad
+> > 
+> > > 
+> > > Perhaps the original change was made with an "oh it just works
+> > > surely there's no drawbacks possible" attitude, as the panel
+> > > was left initialized by the bootloader
 
 -- 
-David Heidelberg
-
+With best wishes
+Dmitry
