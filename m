@@ -1,68 +1,68 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB77E2EDD6C
-	for <phone-devel@vger.kernel.org>; Fri, 10 Oct 2025 11:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0CF2EFDAF
+	for <phone-devel@vger.kernel.org>; Fri, 10 Oct 2025 11:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760095438; cv=none; b=muirvT8k2le9nadEBtbDtY4S53V60WcDfBXpSIUtZ7EuK7Kk3WkinRl2hTXI/Rd9KOnPUtga27kpRCpgvQEvjMrucNFm0v8ganKYyAEUTCx1PhV2DIJFSLlWbO92YVNgW+g9lrT43YrYB0pdJyvyx4dw+hhP4IAMdKfEoqX+wzw=
+	t=1760095439; cv=none; b=b1yoB0bPZ/JDUdfF08qbfv7VQ2JMlmOgG65IocJMLKLq+BCG07AymEifysEtDbPvX5wM0ftK9zeDz+NYOKvQhQp6MZTSrLGVgwxTIr5WV/IyPgGR9+ayB9yEkZhf1uKiPOSBaiQ2b2ZBQEh/5zcwJe1QZBWZlmLndVuy6tFPT5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760095438; c=relaxed/simple;
-	bh=rybSxxhw1JotC0EVvnPnvDxaGD0GBvkGpkXdb1a1CO8=;
+	s=arc-20240116; t=1760095439; c=relaxed/simple;
+	bh=JpYLHBppDURESW3oGd0+8XBXaU0yfTl1Z8DessSgdAI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dG0B/0z0bcICf+B5DCnAc6W2z12TYQJ26z9MKn4n8noFX/f9riNg2RUlwSXLPRl7ROnhx+oHXwPN67Lw4gJXhhM7DSh+EgrN44TaeuEkld5HxRWJS9SGkOsdF7wRSPUoNroqHiNQGp4iWjwUWMfYeLEjm+g36wxV77SkGj46mc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vlNOeGig; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:To:Cc; b=S86WdTJN+MpVDYWtAe0VDHiQH1VGeQmc30+AMe77MvGfBD6yzgTeH9dRLxtlaKBKCmCUZnCKQ4iOv3lLQenIuwAh0w5Uh6jP06FQZTekmZhcDV69VdRjF+Ip430NHU/BoFVQWNiy/N9QlNPhZ29jEzbxcxsiBubuE62M1ZAts1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Du9tIdLH; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vlNOeGig"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b50206773adso550607366b.0
-        for <phone-devel@vger.kernel.org>; Fri, 10 Oct 2025 04:23:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Du9tIdLH"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b463f986f80so442775266b.2
+        for <phone-devel@vger.kernel.org>; Fri, 10 Oct 2025 04:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1760095433; x=1760700233; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1760095435; x=1760700235; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JR1QbCUpiXRUCwLKLdHPO8x+lkjmFTnSPPaWi/d3ZRE=;
-        b=vlNOeGigQ4qhYttAwAyDs+DLpQsokD7pjZ1ROsEYA/Yy+w/2LIecSmts+rkyT/1cWH
-         kRLa/UX7Z7JUQRNNN7Ormu7dwXDJlJuCgYSSbfpBWDp7HAdiGkkxV4JMOpYOEb14v49O
-         ethk+l/8dEMnnDQavUIyGMDByCbUy+CSlSFtf/GPqMdTaJpWoS+6TGMa9d/50ZqTxdrN
-         W1/DI9HP6Yr2x3Pv7VS7GpWpwskIAwAxzMsboOFWjPp1xnFUuJEzfGbruxeKGQIsS6Hs
-         K367uW091ssZ2ZwzAI+v7tXkiYXlDvXTA0QynKdOqKdW9qo/S2DqkQTWaUodGq/KZ5gq
-         IUEQ==
+        bh=YlEbSwGOzNwkU6KFYMavrAYJ9rwkM5KnTfqRG4W7Yk0=;
+        b=Du9tIdLHG5n4hWQXmqD0J6mBBfrCWf/jb6B1w6jPHyGyHRSzvgc/z8feaARj6l5HxQ
+         omxK+ZpiYmBqoJJI0Bg0svNuDlP6jGDVTZLyODbX1Al6udzzX2QgfJII4qoqreE3m+nv
+         F6Q55cRHMADNPFKFYjtz4yUwC8rWC0KawqnDBY8m4aloVevW3E0ZbTUJcqQof1O+FHTP
+         sTo7d644fpYr04nG0eHGVjrRTTLHGKk45ZHCLtIvqmIwvZv0JdOh5/evT+3WQYI5HWbp
+         M0Wd1tvrzlUTPiIdC7aluYE6CgknPtPX1jNsmi39O6Tt4yvIZ5KcuiNE7G+BukJQdk2x
+         fcQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760095433; x=1760700233;
+        d=1e100.net; s=20230601; t=1760095435; x=1760700235;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JR1QbCUpiXRUCwLKLdHPO8x+lkjmFTnSPPaWi/d3ZRE=;
-        b=qcdrqzd34hxZSUp9WgXGxj3nfXbYvl/ixhA0hMVtYgQ1ASvCpw0aOFwp7MhX/Nf6g6
-         d81RMTsDhFyLs5n/hAmKOA564LXPWTgruCYWYnVc/Tl3Qiyvgzh7Pl2PA+55vaUMW2xd
-         lEmuDfLCf65dhFAdbODXcHvp8ormiXJFguyjM6Vq9ZpcA4X5M8Wel35VuGzXHIYbhKGu
-         5ncbLTnE/ibVO0h4/aVu4K2P8iuxutjFrzomnmDsTuJI9GpZ5dlhjmV2VhEiNUmXenNR
-         Wfnw+lbB8DNU5D9Uy8D92J0f9YcE+0oJgyILsBstE+cPHUVx4wK2UsHGp2m5WL6B+bMn
-         7GsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWK+GXOtp+m1FFzRiSKcHBG5SGxk/WED8gSRgbmboPavjl1mOMQDpShRH3YjsLFSzT57c1NNiEM5vHHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc5XHl9yCYqYhUiQJ9ZhCaujocSC/KQWlbQi2DlZDaJQw4dM00
-	c2eCfd9B0ENPWjXhivdCkoDipoq8AzKRBv6ahx5swb6gCHpEWSy1xoBcNURy+H6SCig=
-X-Gm-Gg: ASbGncvvb5D1H19apqyqOOKfc/OwqsF8N9SAIKSKOXuRZlqwjuklQM2wreeOu2kKkB+
-	MyJvkVzaq/SUW3wY79FNmbAWQFjw3oknf3JIVfsm1NbuwbD4wM4Nvnyv1ikD3ntfpWHhtJD6H8N
-	sYn2WCrBHXXMvldd/EdKe+qh/H4KRUcN2D0C1p/U5E0XJ1lklV92OfhR5kEntJHCt8zz7Fjs6FE
-	XxFLq/SNG+L+3jX11hCMvlFVDyqaZ9G+/4ZhBWTDQZgOh9Aqyp+xnekp7EZgvq4/9aXj8XXvsrR
-	3bt3ruq2s/Ii2bdpz1tc/pSPV4u8NTZwCZpCSFsr6OcivQkuse/gLIB2GWuWiSvLl3TH2YOI9Lf
-	C2CR/j+rXXAxXME5OPH6uSVxWpuBsEpxpc2iwiHhCxLdqHAa0d3Uy3nf/1LFmSmtlH3/ZrWS7dq
-	/9zEADQ8BG6B3vXHiQeAk=
-X-Google-Smtp-Source: AGHT+IFLrf/4N+O+0nhBGG1lU67A0rcFh0CE0ABq2ryOs2uijVAnZxJ+WemBal4mL43bCWhHez8qkw==
-X-Received: by 2002:a17:906:794b:b0:b41:8ad3:1b5c with SMTP id a640c23a62f3a-b50bd23ebebmr1530935566b.13.1760095433066;
-        Fri, 10 Oct 2025 04:23:53 -0700 (PDT)
+        bh=YlEbSwGOzNwkU6KFYMavrAYJ9rwkM5KnTfqRG4W7Yk0=;
+        b=jR+RlP0+XGYON7jnFIpoFbLWnXXcXJ5NPrsBN+gPnGsUENKinPxdGfNSw7ceSW/cfP
+         T8KidjXMouEOU4z/bYwpiWUdgEuuDOc4cvppLfngeZCRESj0PgaNOFS10ILQHuTaP/fC
+         +/bCOOFnLe1vG5TLnH+x+afRvWq9bSTMPu2/meiv0nlM3FgOH11C9mXINQb85riCJGJq
+         wDvA35/Bx1FRB+KrIABWUS5NeBz44Fz5EjPvU1CSMA72tgtZaVxwSYj/gvgDosLG3atI
+         YjrlKcsPaCqDV3HRYRCAUefK6TRALitB24+WMdKRf1ej5aS+0+As2glg/0epB0NyOvl6
+         CwHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXskbIJQV04k42A85NppGb3b3kINVdaxD7dB6N0RwzMO+s+64QwOvN/UYCYt/8rtrtcmB4fnkphidNNpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPSXYWEOHVny1T8dQMiTN5Es6x7ZDa0919zQ8gBFm6woAXQoyX
+	Lj4NcIL1FGaSor0OgG+9fbxrmlen4UJSZl0G+Klz7E+IMjFgvJ5RFVAVVtLzba9YRd4=
+X-Gm-Gg: ASbGnctDq+WI18g80O60Y19dy1iznPbtykKJ8eIh4YsX4GC+WnEEpChkqM3ZocY72oF
+	kkh5p/H5PulhWiSMDgBYfjfYCQ2M3h3aoiaE9Reu9Og1BeH0E0VWOmCNQ829MZnr8zUoM2chU5l
+	EIzzmJsr3j5MNRxcUNzaObQ6EJEebDSg/NAQ5xqhqAnFW/6vYdAyeGNu9Efq4+dAoM7/tkVKtGN
+	ZlI1lxNZluNJy8tGXejBzQYgo+njodbsCef4R4r0Gy9VIqDmff+jjJdmaj20l1fmtPBZ/1vzR/w
+	Dg4KEmKPekSwTOcURBtboUwwx9XSJSSmtlwblEYM9xxwyVIzjWdrOIB3HzhE5gwVnmQTAGhJhKN
+	T2vMMVR3yy5SdogLBAA+sr1r6nELxLkDcjwyMJ8XG1A4hRIs3GzkHSftsHupmYn/6Xa+GbUo7Cl
+	kLXTGV+xW6RUdJQ0+7ub+olY7q4SUUgQ==
+X-Google-Smtp-Source: AGHT+IFtOKOdgJ4dWifHMxzpmdJ6iqSE5R85wkeuGb0qbSbozu5nIiJKB5e4xe1EX1wTlhX9Ev6i4w==
+X-Received: by 2002:a17:907:3f1c:b0:b47:2be3:bc75 with SMTP id a640c23a62f3a-b50ac5d1dd9mr1201041566b.60.1760095434892;
+        Fri, 10 Oct 2025 04:23:54 -0700 (PDT)
 Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d900bf8csm209905766b.59.2025.10.10.04.23.52
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d900bf8csm209905766b.59.2025.10.10.04.23.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 04:23:52 -0700 (PDT)
+        Fri, 10 Oct 2025 04:23:54 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 10 Oct 2025 13:22:01 +0200
-Subject: [PATCH RFC 3/6] thermal/drivers/generic-adc: Register as IIO
- device
+Date: Fri, 10 Oct 2025 13:22:03 +0200
+Subject: [PATCH RFC 5/6] arm64: dts: qcom: pm7250b: Define battery
+ temperature ADC channels
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-bat-temp-adc-v1-3-d51ec895dac6@fairphone.com>
+Message-Id: <20251010-bat-temp-adc-v1-5-d51ec895dac6@fairphone.com>
 References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
 In-Reply-To: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -91,114 +91,63 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
  devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760095429; l=2769;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760095429; l=1351;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=rybSxxhw1JotC0EVvnPnvDxaGD0GBvkGpkXdb1a1CO8=;
- b=3PsVEzygrJHYdPvkcHsM4cNpPtkZ6H6GZeqjAfQBvgyjpuGjMffNHRlKsNnJiWIsW72DwVl+4
- tJVfZBOE+MdB3TU+4/hGB+hucyEo+AFPGN0Ut3L21wrUf4hpyVs05hK
+ bh=JpYLHBppDURESW3oGd0+8XBXaU0yfTl1Z8DessSgdAI=;
+ b=qaGcfuqMeIg0Gum2+/UPS5v4Y9LiQtlhFI2337haSWnu56uZivPuiS4BHaj9sRq1e3k7jqyHN
+ I7QA72rmAs+AefjACqzZcd5Wft8+6p0hD4VGXSrzyDehfZ0EKOjSYQp
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Register an IIO channel to allow reading the temperature using the IIO
-interface.
+Add the definition for these ADC channels to the PM7250B definition.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/thermal/thermal-generic-adc.c | 56 +++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/thermal-generic-adc.c
-index ee3d0aa31406..14aef682e0fb 100644
---- a/drivers/thermal/thermal-generic-adc.c
-+++ b/drivers/thermal/thermal-generic-adc.c
-@@ -7,6 +7,7 @@
-  * Author: Laxman Dewangan <ldewangan@nvidia.com>
-  */
- #include <linux/iio/consumer.h>
-+#include <linux/iio/iio.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -23,6 +24,10 @@ struct gadc_thermal_info {
- 	int nlookup_table;
- };
+diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+index 0761e6b5fd8d..c96089520548 100644
+--- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+@@ -156,6 +156,22 @@ channel@1e {
+ 				label = "chg_mid";
+ 			};
  
-+struct gadc_iio {
-+	struct gadc_thermal_info *gti;
-+};
++			channel@2a {
++				reg = <ADC5_BAT_THERM_30K_PU>;
++				qcom,hw-settle-time = <200>;
++				qcom,pre-scaling = <1 1>;
++				qcom,ratiometric;
++				label = "bat_therm_30k";
++			};
 +
- static int gadc_thermal_adc_to_temp(struct gadc_thermal_info *gti, int val)
- {
- 	int temp, temp_hi, temp_lo, adc_hi, adc_lo;
-@@ -115,10 +120,44 @@ static int gadc_thermal_read_linear_lookup_table(struct device *dev,
- 	return 0;
- }
++			channel@4a {
++				reg = <ADC5_BAT_THERM_100K_PU>;
++				qcom,hw-settle-time = <200>;
++				qcom,pre-scaling = <1 1>;
++				qcom,ratiometric;
++				label = "bat_therm_100k";
++			};
++
+ 			channel@4b {
+ 				reg = <ADC5_BAT_ID_100K_PU>;
+ 				qcom,hw-settle-time = <200>;
+@@ -164,6 +180,14 @@ channel@4b {
+ 				label = "bat_id";
+ 			};
  
-+static int gadc_adc_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
-+{
-+	struct gadc_iio *data = iio_priv(indio_dev);
-+	int iio_val;
-+	int ret;
++			channel@6a {
++				reg = <ADC5_BAT_THERM_400K_PU>;
++				qcom,hw-settle-time = <200>;
++				qcom,pre-scaling = <1 1>;
++				qcom,ratiometric;
++				label = "bat_therm_400k";
++			};
 +
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = iio_read_channel_processed(data->gti->channel, &iio_val);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = gadc_thermal_adc_to_temp(data->gti, iio_val);
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info gadc_adc_info = {
-+	.read_raw = &gadc_adc_read_raw,
-+};
-+
-+static const struct iio_chan_spec gadc_adc_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+	},
-+};
-+
- static int gadc_thermal_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct gadc_thermal_info *gti;
-+	struct iio_dev *indio_dev;
-+	struct gadc_iio *data;
- 	int ret;
- 
- 	if (!dev->of_node) {
-@@ -153,6 +192,23 @@ static int gadc_thermal_probe(struct platform_device *pdev)
- 
- 	devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
- 
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->gti = gti;
-+
-+	indio_dev->name = pdev->name;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &gadc_adc_info;
-+	indio_dev->channels = gadc_adc_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(gadc_adc_channels);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register IIO device\n");
-+
- 	return 0;
- }
- 
+ 			channel@83 {
+ 				reg = <ADC5_VPH_PWR>;
+ 				qcom,pre-scaling = <1 3>;
 
 -- 
 2.51.0
