@@ -1,138 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D1723B62C;
-	Sat, 11 Oct 2025 09:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9933283FFB;
+	Sat, 11 Oct 2025 18:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760176371; cv=none; b=XtbTuOG12BssWPGSj5Yc0p3N17emZf2jKhcVgGTrrH3v9nop3ajYu+4CT71U5tiIjOh4RnjTVvqcBFr61oEqFlZBGE3oTfYanen7TGe6SCI0h5aBHed5PXZxA8kFR9xm8C9Qgvombvctwucofxuf7wcNE5aaqU8BzJ+uLkWxlfo=
+	t=1760209105; cv=none; b=czxt/1rZjGVc7jBzb66AzbXsfmg2SBDrKm+I9lZNrpeOCdwRfkBWl+rCqS9zfq1WEs9727NZbFvXJaA/x47I3OLtAEM3ibsjjI9V0Kj7pQIsyAz66vTCdyjC09wcfC8p5tHTuUHZSQy26CybQ0FdQxRVWSf3rqaJFEWeGhmRPlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760176371; c=relaxed/simple;
-	bh=jc9YZsle3WLAtfJzis9aeE92ql/1xDWBDtwmj5gNJAA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fig4F6yQuHU5qOTW3pUXvu4SZUFZCZpwfVqedPbA183eQ7QcSUfLrAyRlHjJ6qnq4Wm7lR3Navg4d0mMuCpbwuTrv97B5eA463UVCOw70Umpcwbd5Dc4YMJT9g+JxsMpuu5OZALjnQ2q02oDK4x3V8fAN2wiiWPxGaV/JO+toLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKIp3WXP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760209105; c=relaxed/simple;
+	bh=1v8nHY4EpqYJa5+tPbItKCvOHDogDdxlqBPb40TYXvI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=U4cvBSywi4DvzaL8XNOT8vTuKvuhCqI7dqJls6OuiepmnbA3Xxm11eGQBnzcNYZ1gwmm6jMi3TuTVpbBNsqLl8e2BioAxCLFJDPtFy2a4i0h18BD47L5GteMXAfIJjy9w3EPitFBeJn1bnGQ+a0Ve0Bvsu0t50s0isHAE+/rxpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=r6xpKVio; arc=none smtp.client-ip=57.129.93.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKIp3WXP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29EEC4CEF8;
-	Sat, 11 Oct 2025 09:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760176370;
-	bh=jc9YZsle3WLAtfJzis9aeE92ql/1xDWBDtwmj5gNJAA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HKIp3WXPyfB84fp5zyGifttUxZkr0IRSM8nxihrtsvt7E6XHkmbbAnNWInWsXujB5
-	 qEjcRPqrWHlTRdfwShTF9rntiupGS24f4CZPNQqT3U9OqDxsZch6q6dYr9Wy+XICyt
-	 QVa2XvBCsQwYGtHpwTpvyFTr2d4dMZ5VBQ6l4yfUkirsva0UBaOg9TRE5UNdCDx7ua
-	 Dqq6nYx46JrPIF2RBClntQI1JNg0e5R7RWuKKiPWOIVrM7JdaFYuWcWGx2Mkwzs5Jt
-	 dMQA9xuobUFlt7sfiatKA8LtVFFAQ9+Y9zOmfn8IJ4QXK/q5S3BpWt0SbWZYYWo/J+
-	 NYexfH06tu+xg==
-Message-ID: <0beae4dd-2feb-4891-b7b0-0f63db8f5615@kernel.org>
-Date: Sat, 11 Oct 2025 11:52:43 +0200
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="r6xpKVio"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1760209087; x=1760468287;
+	bh=cnHuHQrVVXZKpXeZNEipH+LyE/5HXlwHBeSny7rKcS8=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=r6xpKVioJXUbvIl1i6WAq3wRqejMRWv1E5J3nSlAqgNUHjoIhn5dfQyAnOWIb/FjG
+	 8UlvDnG3+C5GGJyDHzcau4UymBQe1L2+Vw56pOfngCEs5qxCcjr3Y1SPAZH6V6V29P
+	 awxabGRdGXfh2RoJV6l9foia+PNb4W+iz3hoaUi57135lsgFPDu7/dMhniLfYOjMd6
+	 lFRwtby3Kf0uH950Nbsgx4rcISoLKmPhY7KQUvHAl0hbDQW/lmeleyTT0WbPO7Sm8C
+	 AU3GylGEkOIaLBSUevRMQooGO9SWrM95fQJQ+cFMt/wHlB4Fc9sIzUHDYqdZvTEH9S
+	 qSVi7z6UpVk9Q==
+Date: Sat, 11 Oct 2025 18:58:00 +0000
+To: linux-kernel@vger.kernel.org
+From: Raymond Hackley <raymondhackley@protonmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Raymond Hackley <raymondhackley@protonmail.com>
+Subject: [PATCH] ARM: dts: qcom: qcom-msm8226-samsung-ms013g: add simple-framebuffer
+Message-ID: <20251011185750.743615-1-raymondhackley@protonmail.com>
+Feedback-ID: 49437091:user:proton
+X-Pm-Message-ID: c3fd6412242376b6324f202df282fc65579a2ae6
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/6] Battery temperature ADC plumbing on Qualcomm
- platforms
-To: David Lechner <dlechner@baylibre.com>,
- Luca Weiss <luca.weiss@fairphone.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Laxman Dewangan <ldewangan@nvidia.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Jens Reidel <adrian@mainlining.org>,
- Casey Connolly <casey.connolly@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
- <c770c799-4318-4c40-bd62-3cefbbbef731@baylibre.com>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <c770c799-4318-4c40-bd62-3cefbbbef731@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi All,
+Add simple-framebuffer, necessary power-domains and clocks for ms013g.
 
-Luca thank you for Cc-ing me.
+Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+---
+ .../dts/qcom/qcom-msm8226-samsung-ms013g.dts  | 31 ++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-On 10-Oct-25 10:56 PM, David Lechner wrote:
-> On 10/10/25 6:21 AM, Luca Weiss wrote:
->> This is an RFC which implements a potential solution to get battery
->> temperature readings working on for example smartphones with Qualcomm
->> SoCs.
->>
-> 
-> ...
-> 
->> 3. Add temperature-lookup-table as property to simple-battery
->>
->> Since the NTC is a part of the battery pack, adding a
->> temperature-lookup-table property to simple-battery would make sense
->> instead of having this lookup table be standalone in the
->> generic-adc-thermal node. However being able to re-use the existing code
->> in generic-adc-thermal lead me to the current proposal.
->>
-> Did you consider creating a specific compatible string for the battery pack?
-> Then the battery node could have the io-channels property for the ADC
-> connected to the temperature sensor. Then a specific battery driver could
-> handle the conversion as needed rather than filling the devicetree with
-> conversion tables.
-
-That will require a driver update, filling the driver (and thus memory)
-with conversion tables each time a new battery model (one model phone
-can have multiple battery revisions) comes out.
-
-That seems undesirable. To me these conversion tables are very much
-something which belongs in DT rather then being hardcoded in
-the driver.
-
-Also contrast this to ACPI where there actually is a mechanism defined
-for thermal lookup tables and there all these things typically just
-work when the ACPI tables are written properly. IMHO we want to move
-more towards this direction where things just work without requiring
-kernel code changes for every new model.
-
-And we already have a mechanism in DT to map an ADC voltage to
-a temperature in the generic-adc-thermal driver.
-
-So all that is left to do really is to come up with a clean way
-to export the temperature from the generic-adc-thermal driver
-to the generic-adc-battery driver.
-
-> The simple-battery bindings are already far from simple! So I would not
-> be inclined to add more to it.
-
-I think we all agree on this and we also don't want to duplicate
-the generic-adc-thermal bindings + code implementing that functionality.
-
-IMHO not wanting to duplicate the bindings + functionality applies to
-both: a) directly exporting an IIO temp channel from the ADC driver and
-b) adding volt -> temp mapping functionality to the simple-battery bindings.
-
-So that basically leaves us with coming up with a way for
-the generic-adc-battery code to consume the temperature coming out of
-the generic-adc-thermal code and there are 2 ways to do this:
-
-1. Modify the generic-adc-thermal driver to export an IIO channel
-2. Modify the thermal-zone core to allow referencing to a thermal-zone
-   with a phandle *and* modify generic-adc-battery to be able to
-   optionally get the temperature from a thermal-zone instead of
-   from an IIO-channel
-
-Of these two options 1. clear is the most KISS option. SO I agree with
-Luca that 1. as implemented in this series is the best way forward.
-
-Regards,
-
-Hans
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts b/arch/=
+arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
+index 08b50dc63923..80fe2916501a 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
+@@ -13,13 +13,37 @@ / {
+ =09chassis-type =3D "handset";
+=20
+ =09aliases {
++=09=09display0 =3D &framebuffer0;
+ =09=09mmc0 =3D &sdhc_1; /* SDC1 eMMC slot */
+ =09=09mmc1 =3D &sdhc_2; /* SDC2 SD card slot */
+ =09=09serial0 =3D &blsp1_uart3;
+ =09};
+=20
+ =09chosen {
+-=09=09stdout-path =3D "serial0:115200n8";
++=09=09#address-cells =3D <1>;
++=09=09#size-cells =3D <1>;
++=09=09ranges;
++
++=09=09stdout-path =3D "display0";
++
++=09=09framebuffer0: framebuffer@3200000 {
++=09=09=09compatible =3D "simple-framebuffer";
++=09=09=09reg =3D <0x03200000 0x800000>;
++=09=09=09memory-region =3D <&cont_splash_region>;
++
++=09=09=09width =3D <720>;
++=09=09=09height =3D <1280>;
++=09=09=09stride =3D <(720 * 3)>;
++=09=09=09format =3D "r8g8b8";
++
++=09=09=09clocks =3D <&mmcc MDSS_AHB_CLK>,
++=09=09=09=09 <&mmcc MDSS_AXI_CLK>,
++=09=09=09=09 <&mmcc MDSS_BYTE0_CLK>,
++=09=09=09=09 <&mmcc MDSS_MDP_CLK>,
++=09=09=09=09 <&mmcc MDSS_PCLK0_CLK>,
++=09=09=09=09 <&mmcc MDSS_VSYNC_CLK>;
++=09=09=09power-domains =3D <&mmcc MDSS_GDSC>;
++=09=09};
+ =09};
+=20
+ =09gpio-hall-sensor {
+@@ -93,6 +117,11 @@ reg_vdd_tsp_a: regulator-vdd-tsp-a {
+ =09};
+=20
+ =09reserved-memory {
++=09=09cont_splash_region: cont-splash@3200000 {
++=09=09=09reg =3D <0x03200000 0x800000>;
++=09=09=09no-map;
++=09=09};
++
+ =09=09smem_region: smem@fa00000 {
+ =09=09=09reg =3D <0x0fa00000 0x100000>;
+ =09=09=09no-map;
+--=20
+2.47.3
 
 
