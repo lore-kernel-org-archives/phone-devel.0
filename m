@@ -1,143 +1,160 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C854D599
-	for <phone-devel@vger.kernel.org>; Sun, 12 Oct 2025 06:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1292EFDA2;
+	Sun, 12 Oct 2025 18:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760249220; cv=none; b=ocmGwPyip1xBcuwYf6B4bOzi6FP5Ndb2X5KAAjaBWVUB44QOU3I9IRhNGbuxV+a7AULGaeIczNkf70FJyZYlo4sRhzKpmaGDJWxURvNvLTA7XkL1yoZMdaD5VSnWHn4mc1o87I3jUCeCqHiH946y7RLkAqBBYPxSWyd1IhGhwFE=
+	t=1760293474; cv=none; b=imHd9OPqi2hEGcJGk80ct1RXVsTKMRPIv4PWyGGr/R/xkyqEsUE/AajLNT+arUQFhqgZGE+i4D7Cj8ROuaxy9UxzjPrmTrHOzJfUVqmAkU6SinzvoedrqKBBJsnjsbbEjuiYheCqJlounoY/0BHdkBEmclySyI8PDUvKbiXx2Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760249220; c=relaxed/simple;
-	bh=J4GE7EyQXEOo3w5bDh2vhnigRy0tlpj7MlJXIT6c3eo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wf3uLJhsi1oxt6nYRdzhPRkUp7QNY8RkQHAKP6KqR4Y8wgBdCg96LqqDESPtViIVrf64Dcp+o8ZlxjbOL/YHmta23QUfvSHUzuMfJnWE7uvZIoRkQnRWyvXSW5U38SiV0G5CFjXo1OBWianfm5hqSBhy+mm/47icJHDF2utKFOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=me.ssier.org; spf=pass smtp.mailfrom=me.ssier.org; dkim=pass (2048-bit key) header.d=me-ssier-org.20230601.gappssmtp.com header.i=@me-ssier-org.20230601.gappssmtp.com header.b=iojdxx85; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=me.ssier.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.ssier.org
+	s=arc-20240116; t=1760293474; c=relaxed/simple;
+	bh=txxPlbpyx3vQKhi9nz3pfg6ck8R1K4SwlLeAQZv2X7c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cDzjkSxTo71Q7WR8ddH2sqa8MIJA27luqrenJh+iSLUgGlbkgbbAzNYjKUj1ZNMRkTgkRNiBHJ53HUuCvf5+Ea32zkQaDI3uy+LcNIBivb+xQXjA1YWj4KEXpTvZAJ+CshSv0BmdKxWslEbihHjrAlC2DYTDGye2hwj0lkx18oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zy4G4+OC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me-ssier-org.20230601.gappssmtp.com header.i=@me-ssier-org.20230601.gappssmtp.com header.b="iojdxx85"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-855d525cd00so558909485a.2
-        for <phone-devel@vger.kernel.org>; Sat, 11 Oct 2025 23:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=me-ssier-org.20230601.gappssmtp.com; s=20230601; t=1760249218; x=1760854018; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rMI7wRbzRfPNICl70mUsYJErke1tBJAXXVxBPXEiK5c=;
-        b=iojdxx854spNBqH/HxnpIPwpC/h7rVVJCPnjnb+tpWTJwstzlc78XyyT61COZ+gBry
-         gNJpEijjsakKSXbee13g3nnlo1X3ZdfmwNdbyTBEn2/e7On60E+J21s3c3E2fg+tJj5Z
-         YgjySyNIXXZ4jRBmVxraHVHwkJfL4tNn5M/P3Jij/vfpPRK/09KamSLr4pg19I/C0ONY
-         YvzaGftOSKNIlbhnZZz86H8m7AKorFDZgnGzeQ6fH8qDpqU5CSinYEAePRDw4PYb2539
-         Lyx+3Cbicbba+T7jL2eg/3tsWGs1ByUo+3Qg1z3gjXdOxlzwlc2J5OjvV4X3nZwovWjk
-         fKMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760249218; x=1760854018;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rMI7wRbzRfPNICl70mUsYJErke1tBJAXXVxBPXEiK5c=;
-        b=gopwuehR6kBi2wFfFrfxINJVZofsoBHPA6Nn+jht5B0ahtk6WdcrQ9Q38tvkXPeiyO
-         am9fRk/uslnNN/21PUEM18MshZ9CYY3TuNPKFf7VpTcj5OgjqR4i6hCaYPRfkVYkSVyb
-         L7vf9AHgI7tLn60FC9TpRXxRPes6qgfl+erMxpNoVT2pTLe0R8lx5/aALiBL1qhG3BOq
-         3L6hRtE8vNJwBkQKZf+xvoAOu02HSRASdi6MUFlz6XlZkhgTgIQdP1U/XW+iWfkCtqbL
-         B3ZBiPjFWCUMoVuItCGZzNA4Eu67/LQLgzXRngaIHsyFnMPkzf9TxzbZNx9PsdmEVtIm
-         0PCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVh6HhCW9A11dhAfjWSftIrpfQsD5qnOZm+khTj7RpO18y2xp+RU0flnPLHGYe9E3irmrlqNJr3GnVvtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmb+1GdWBMntUibNxIGejbuLlB/t5V/KmAPnuGzRdBvgJkREkT
-	iRRz/9SXjx0lOrRyRCcB7g4LiTxeMW3gCiP9z2KMgFwCNLkyMCLnurCCVndS1GGZqSA=
-X-Gm-Gg: ASbGncs9yuJ29OODHqE1Do6SO+0S1D+i5uhoXSbnLqEUGiBAOanxfGRGh8cooTbWKPk
-	iMNJ57hxAZZQsd47zmN21ujm5sEzo+fptEh1L5fW0R9zJPIgENe+su4HLNxHHYVABluYh/8vgRh
-	Urf+yDM+TX/oV5832xmll8BKyoYdFVRA4fxAu80mMXinGrYWOH7kWm/kXuPZUrzqlQhrCjLR6GP
-	L5ATFV+suCYPpZSi/fC3MRIQCkq4wv6F/RzGUeMVP2NDnr/1SmOPIqtQzP+erGAOF6Xm06xhkQX
-	fR3ui4TYyLAOM892IUZ9B5MKxFJk8deGqTG2+jrsHjopRF4rNLtW586XQSUX1tIMOZM+xVqufm/
-	QB8yvRq0E9wJrBJ41M11pgVOX+id8uk6FpUNeC7Medo16WSWbM1BONJQVH4ZAFP76ezA4LCR/0k
-	TOYb1mJywuBzavVaGJNEeeO0tsaJ5vexsYGW+zRz+ePcdGLaadqA==
-X-Google-Smtp-Source: AGHT+IEMl4hzF79Bq4DCeP0JM3aR8UtTQq0FlGDLXT7cxwwHa5K+nkf//3379/x4FHU0neaf3KpzLg==
-X-Received: by 2002:a05:620a:a901:b0:886:17fb:9436 with SMTP id af79cd13be357-88617fb9445mr508393185a.71.1760249217775;
-        Sat, 11 Oct 2025 23:06:57 -0700 (PDT)
-Received: from [192.168.2.8] (bras-base-stggpq3702w-grc-09-74-14-126-215.dsl.bell.ca. [74.14.126.215])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a1ca17dcsm738639285a.36.2025.10.11.23.06.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Oct 2025 23:06:56 -0700 (PDT)
-Message-ID: <458ba722-ab52-4b30-b020-30039102ce57@me.ssier.org>
-Date: Sun, 12 Oct 2025 02:06:55 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zy4G4+OC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED81C4CEE7;
+	Sun, 12 Oct 2025 18:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760293474;
+	bh=txxPlbpyx3vQKhi9nz3pfg6ck8R1K4SwlLeAQZv2X7c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Zy4G4+OCIG/0CdyakHTuZLbFC5q8C1zoD6N1vQKl/4OOToHtevVoYp+TepcMqz5pP
+	 HzU+blhg+y7/Y1DeKvV8l2bC4epgP9muK5dnGDQPadfeKmvLrHnZLXT+ZI+AW/Tz+2
+	 A0c6Vu+FKUqrmV+1HQjp+LakYH2czp6R6GGbOqQZ58PVhtKvENAdeLfneVeQUIamWg
+	 SS75X3zojQIC7ieqk4MVS4eQY4LOhDxYhrDBG5A0YTjezW3Jms+F0H2CF83u0sm+Vs
+	 JmlBysNay4kFAWBGvoEHSBL8LP8DIUGYgF1Zkn8qXW0jiicWDIwPWmX+ZEQY+B6d+4
+	 Wf3TQ+DbDZWzw==
+Date: Sun, 12 Oct 2025 19:24:22 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Hans de Goede <hansg@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Luca Weiss
+ <luca.weiss@fairphone.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui
+ <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Laxman Dewangan <ldewangan@nvidia.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Jens Reidel <adrian@mainlining.org>, Casey Connolly
+ <casey.connolly@linaro.org>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 0/6] Battery temperature ADC plumbing on Qualcomm
+ platforms
+Message-ID: <20251012192422.46775ad1@jic23-huawei>
+In-Reply-To: <0beae4dd-2feb-4891-b7b0-0f63db8f5615@kernel.org>
+References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
+	<c770c799-4318-4c40-bd62-3cefbbbef731@baylibre.com>
+	<0beae4dd-2feb-4891-b7b0-0f63db8f5615@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974pro-htc-m8: add touchscreen
-Content-Language: en-US
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Luca Weiss <luca@lucaweiss.eu>, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251007-m8-dts-additions-v1-0-53d7ab3594e7@me.ssier.org>
- <20251007-m8-dts-additions-v1-4-53d7ab3594e7@me.ssier.org>
- <5a9a2ed9-9e95-4bb0-b5b9-e4e0edcfa8d8@oss.qualcomm.com>
- <1d60b78e-136f-4051-8296-245d111ca49f@me.ssier.org>
- <84d7ab07-4026-4313-8919-b5f9205132c6@oss.qualcomm.com>
-From: Alexandre Messier <alex@me.ssier.org>
-In-Reply-To: <84d7ab07-4026-4313-8919-b5f9205132c6@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 2025-10-09 05:30, Konrad Dybcio wrote:
-> On 10/9/25 7:50 AM, Alexandre Messier wrote:
->> On 2025-10-07 06:04, Konrad Dybcio wrote:
->>> On 10/7/25 7:55 AM, Alexandre Messier via B4 Relay wrote:
->>>> From: Alexandre Messier <alex@me.ssier.org>
->>>>
->>>> Add the touchscreen device node for the HTC One (M8).
->>>>
->>>> Signed-off-by: Alexandre Messier <alex@me.ssier.org>
->>>> ---
->>>>  arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts | 36 +++++++++++++++++++++++
->>>>  1 file changed, 36 insertions(+)
->>>>
->>>> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
->>>> index 36eb42f0f3d9..040a256f9465 100644
->>>> --- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
->>>> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
->>>> @@ -65,6 +65,35 @@ vreg_vph_pwr: vreg-vph-pwr {
->>>>  	};
->>>>  };
->>>>  
->>>> +&blsp1_i2c2 {
->>>> +	clock-frequency = <384000>;
->>>
->>> This is not a valid I2C frequency
->>>
->>> You're looking for 100/400/1000 kHz
->>
->> Hello Konrad,
->>
->> This frequency value is used in the vendor kernel [1], hence why I used it.
->>
->> I did a test at 400 kHz, and the I2C devices (touchscreen here, and NFC in the
->> other patch) are still detected, with basic functions still working.
->>
->> Let me know if I should still update to use 400 kHz. I would prefer to keep
->> the value from the vendor kernel (and in that case, I will update the commit
->> message to add that information).
-> 
-> Hm, I grepped around in old vendor trees, and it seems like there was
-> a period of horrid wild west wrt this..
-> 
-> I see 355 kHz, 384 kHz, next to "normal" values of 100/400..
-> 
-> Let's just keep it as-is, but please note in the commit message that this
-> is intended and that's what the downstream sets too
+On Sat, 11 Oct 2025 11:52:43 +0200
+Hans de Goede <hansg@kernel.org> wrote:
 
-Got it, for V2, I will add a note in the commit message, for this patch and the
-other one (for the NFC support).
-
+> Hi All,
 > 
-> Konrad
+> Luca thank you for Cc-ing me.
+> 
+> On 10-Oct-25 10:56 PM, David Lechner wrote:
+> > On 10/10/25 6:21 AM, Luca Weiss wrote:  
+> >> This is an RFC which implements a potential solution to get battery
+> >> temperature readings working on for example smartphones with Qualcomm
+> >> SoCs.
+> >>  
+> > 
+> > ...
+> >   
+> >> 3. Add temperature-lookup-table as property to simple-battery
+> >>
+> >> Since the NTC is a part of the battery pack, adding a
+> >> temperature-lookup-table property to simple-battery would make sense
+> >> instead of having this lookup table be standalone in the
+> >> generic-adc-thermal node. However being able to re-use the existing code
+> >> in generic-adc-thermal lead me to the current proposal.
+> >>  
+> > Did you consider creating a specific compatible string for the battery pack?
+> > Then the battery node could have the io-channels property for the ADC
+> > connected to the temperature sensor. Then a specific battery driver could
+> > handle the conversion as needed rather than filling the devicetree with
+> > conversion tables.  
+> 
+> That will require a driver update, filling the driver (and thus memory)
+> with conversion tables each time a new battery model (one model phone
+> can have multiple battery revisions) comes out.
+> 
+> That seems undesirable. To me these conversion tables are very much
+> something which belongs in DT rather then being hardcoded in
+> the driver.
+> 
+> Also contrast this to ACPI where there actually is a mechanism defined
+> for thermal lookup tables and there all these things typically just
+> work when the ACPI tables are written properly. IMHO we want to move
+> more towards this direction where things just work without requiring
+> kernel code changes for every new model.
+> 
+> And we already have a mechanism in DT to map an ADC voltage to
+> a temperature in the generic-adc-thermal driver.
+> 
+> So all that is left to do really is to come up with a clean way
+> to export the temperature from the generic-adc-thermal driver
+> to the generic-adc-battery driver.
+> 
+> > The simple-battery bindings are already far from simple! So I would not
+> > be inclined to add more to it.  
+> 
+> I think we all agree on this and we also don't want to duplicate
+> the generic-adc-thermal bindings + code implementing that functionality.
+> 
+> IMHO not wanting to duplicate the bindings + functionality applies to
+> both: a) directly exporting an IIO temp channel from the ADC driver and
+> b) adding volt -> temp mapping functionality to the simple-battery bindings.
+> 
+> So that basically leaves us with coming up with a way for
+> the generic-adc-battery code to consume the temperature coming out of
+> the generic-adc-thermal code and there are 2 ways to do this:
+> 
+> 1. Modify the generic-adc-thermal driver to export an IIO channel
+
+Other than the fact this is embedded in an existing driver, this is just
+a case of modelling an analog sensor in IIO. There's an ancient accelerometer
+that does this and the analog fronted ends handle things like potential dividers
+which are similar but with far simpler DT than this.
+
+So conceptually I have no problem with the approach.
+
+If we were starting from scratch we might have had an explicit representation
+of the thermal sensor analog part (like our accelerometer), and then done
+
+Generic temperature device sensor driver is consumer of the ADC channel.
+generic-adc-thermal is consumer of the generic temp device sensor.
+
+But retrofitting that split may be a pain (I haven't looked at this though so
+maybe not!)
+
+
+
+> 2. Modify the thermal-zone core to allow referencing to a thermal-zone
+>    with a phandle *and* modify generic-adc-battery to be able to
+>    optionally get the temperature from a thermal-zone instead of
+>    from an IIO-channel
+> 
+> Of these two options 1. clear is the most KISS option. SO I agree with
+> Luca that 1. as implemented in this series is the best way forward.
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
 
