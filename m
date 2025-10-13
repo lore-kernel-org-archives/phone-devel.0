@@ -1,109 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE9375809;
-	Sun, 12 Oct 2025 18:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E1C199BC;
+	Mon, 13 Oct 2025 09:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760294488; cv=none; b=OU+wXTuElifw4g9KppFVpnqcBKbV1THoVvRRRtY0QljIaL8ozV6bsiIBgJ3jVIKpNzl3jP5yiknzq7J7so3a8jrLxGKfQRiFnYVXK1FU6fkkWRZ/AFCVZZrY+i6H+uXyFAE3KQR4kMeXxlKP5FgpV2ONO7Ek/Rz6SWsrx5Pljfo=
+	t=1760348845; cv=none; b=Q85UdeZBNlqOWMyfOzhaHfVVEn6VzLzdMkcl8a7mhaxAt1zzUEpf/e7r33tKwwBNgJTUnhwgt9dOcZHl3ghMvpl1RHr65nxoRRp3D2wsC3PWT1I8OAmt7tMbFQakcaUd4tYmV4odHAsuVZjdB0MfsW8DL4P8Tnjx9+ru510pnvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760294488; c=relaxed/simple;
-	bh=PoUFRD1yzrjYJCi3ArphUQMDmoTrK9yIQsCtPXBJOks=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UMJCV/GKkRbcHc6ojUOeMzve3NAhRzJ/0gO4oCf3xmhz8ab+MvrsNXmivATvE3pQ5pvF4OPufTKQu9ECXXxINKEInbuDiaSkxPqWE3bOmAiR6woDeptLBlxJTs4WBz/eUVR3KLoc/E6LWxyeWCmqT6J52v1MnvwuWT4Q55IaKhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=krOIPd4f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760348845; c=relaxed/simple;
+	bh=yyzWwMTNAcACtaKwTd+Hy6q4Ei9iZX7sevim4Y9MBwQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pZ0ZtmStOvpg3Oq/BD0ppn51BvrI6zD5KUajeFqkHDcFbDudzlbwe4NliWWRUfBv9PttQrvqlbcH0nHmD/aERsK9RUv7/DenqSPpISOuZjPO9xuq0oVOmyB9q+8X9Rle8AaBsqixJEEnZ9Jyy5zJB04G6KpLs8Lz2oF63oFF854=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=QMtTVT32; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="krOIPd4f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDB7C4CEE7;
-	Sun, 12 Oct 2025 18:41:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760294487;
-	bh=PoUFRD1yzrjYJCi3ArphUQMDmoTrK9yIQsCtPXBJOks=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=krOIPd4f4lyc27ACoYSnNCwCsujV1k6HK7G8mhBaU8D+fmiS+vu7emBKFtr+9Q9gQ
-	 C5MHEabrspBaERkLsNUHpszwwGT6gCzCUyzIx+8e461sNDdO5fJ2uVkuG8+1LJuH9P
-	 2fTucsdyNWjDEe7GzmpyKNGUWLzzIL7VsDshJNDQK+Y5U/XanapgdNbYb/gfmzB8N/
-	 /CIm+68VaDiByKwhKevpvQm7I+1PvR8tKHp+MagE/hj6T0CplhxbH1hGe30WYxED42
-	 T2RI7qfx7r8s+Z1H615AF9JCEMMtfuVSOa4SbmUo4Mk51H11xzd+60HO8HwUsoWeY2
-	 ziBIH32MkxkWw==
-Date: Sun, 12 Oct 2025 19:41:14 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Laxman Dewangan <ldewangan@nvidia.com>, Bjorn
- Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
- Hans de Goede <hansg@kernel.org>, Jens Reidel <adrian@mainlining.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC 3/6] thermal/drivers/generic-adc: Register as IIO
- device
-Message-ID: <20251012194114.094a61a3@jic23-huawei>
-In-Reply-To: <20251010-bat-temp-adc-v1-3-d51ec895dac6@fairphone.com>
-References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
-	<20251010-bat-temp-adc-v1-3-d51ec895dac6@fairphone.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QMtTVT32"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760348842;
+	bh=yyzWwMTNAcACtaKwTd+Hy6q4Ei9iZX7sevim4Y9MBwQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=QMtTVT32or9zRYbwMlw5rv+zn4LgwybdfZUUMR5Mq4w4ULIvbGqHh58Kh1A+1449T
+	 4NBk84QL3LzzZMy3aJoKoLNLO2AAlBwKgKZKRrZ0NKrtT0v+V4JRBWmwFALc1HWuPI
+	 yrXDSaa2vSUhTlIEGln7vUPtwe0qa+ok6Iidn/bf+Rqb7GlZf7TzKH+fl24mAaD5Ik
+	 OOVHwvhQgBV58RBOcmViOitrOYWCcFuuY67vmIcxPWBiEFXimiQQmjRwQG5nc5M/Tf
+	 hWWAkOlvEUIMkfmTl8lp0Twl1oxe1uShMgdSdMGshpB/QNDZ6gOfr52etu4ET69aME
+	 3G5iTa8sGT5Yg==
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9E40417E1292;
+	Mon, 13 Oct 2025 11:47:19 +0200 (CEST)
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: Matthias Brugger <matthias.bgg@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sean Wang <sean.wang@mediatek.com>, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org, 
+ phone-devel@vger.kernel.org
+In-Reply-To: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
+References: <20250920-mt6582-v1-0-b887720f577d@protonmail.com>
+Subject: Re: (subset) [PATCH 00/10] ARM: Add support for yarisxl mt6582
+ board
+Message-Id: <176034883956.23045.13247529000134209670.b4-ty@collabora.com>
+Date: Mon, 13 Oct 2025 11:47:19 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Fri, 10 Oct 2025 13:22:01 +0200
-Luca Weiss <luca.weiss@fairphone.com> wrote:
-
-> Register an IIO channel to allow reading the temperature using the IIO
-> interface.
+On Sat, 20 Sep 2025 20:23:25 +0200, Cristian Cozzolino wrote:
+> This series adds support for Alcatel Pop C7 (OT-7041D) smartphone
+> board, named yarisxl, based on MT6582 SoC. It also includes some
+> preliminary patches. More in detail:
+> - patches 1 and 2 add support for mt6582 to platform code
+>   (verified by looking at generic mt6582 downstream source code)
+> - patches 3-6 do some maintenance work to mt6582.dtsi
+>   (I was unsure if squashing timer node patches into one)
+> - patches 7 and 8 add devicetree and dt-bindings support for yarisxl
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Just one question below.
+> [...]
 
->  static int gadc_thermal_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct gadc_thermal_info *gti;
-> +	struct iio_dev *indio_dev;
-> +	struct gadc_iio *data;
->  	int ret;
->  
->  	if (!dev->of_node) {
-> @@ -153,6 +192,23 @@ static int gadc_thermal_probe(struct platform_device *pdev)
->  
->  	devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
->  
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->gti = gti;
-> +
-> +	indio_dev->name = pdev->name;
-what does this end up as?
+Applied to v6.18-next/arm32, thanks!
 
-obviously we don't really care what name the user space interface we
-aren't using advertises but this should be something part number like.
+[01/10] ARM: mediatek: add board_dt_compat entry for the MT6582 SoC
+        commit: a9ad357fb2104cc07a64d7e642f6c35b72b16405
+[02/10] ARM: mediatek: add MT6582 smp bring up code
+        commit: 7f637d718752f1b821f90170bf841c4d924b382b
 
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &gadc_adc_info;
-> +	indio_dev->channels = gadc_adc_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(gadc_adc_channels);
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to register IIO device\n");
-> +
->  	return 0;
->  }
->  
-> 
+Cheers,
+Angelo
+
 
