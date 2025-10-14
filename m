@@ -1,68 +1,37 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1A3090C7
-	for <phone-devel@vger.kernel.org>; Mon, 13 Oct 2025 13:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E823F294;
+	Tue, 14 Oct 2025 09:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760362931; cv=none; b=PvP3P+whoTCiQP4jKyY9CPvm5nFQ0udGkTvWynCIyFETRILSXz8UqNjoXJ5yoOQ12E4RQoyMqdpFihtabkNLh1LZ7OEhvEcXyl4pEChbCgUImPGyxnOYkjR7cXDbmfhVmzjjy0Z8UIJdKRh5m7AimfVkxWcb/pjyLwTL3S0mzEQ=
+	t=1760433641; cv=none; b=HhdkNUtmLOcUR0w2JFi4VyB5+dqkMsgmA1x4x81oBjcEymlNCMuEvjPNFtQCLLnkDNZv+OOcIcTeGUyTWGzXijHJtaSYvSigdkx2afjHrTgbeY8dwy++QaCgQO3/abN+oTD+yzhPAUuPBpH7eZ6AlaqYQO1uH5slRpVBejOfzA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760362931; c=relaxed/simple;
-	bh=BKr8nVscrBQotunl8u3eUCru7U4bR7e46blB/UH7zYk=;
+	s=arc-20240116; t=1760433641; c=relaxed/simple;
+	bh=4viXq0Ak1dSFsTCWo3WHd5sjRdKeR+JKhmrn8uAKos8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sji+Rrj387YMFO7N/uuGb771dCuzVLnNLYGCACvye0e8ZiXC/416nAE0KdJrlG4eAQtVKGdBea25Ej3W24Ew+cXdbt3/aKrbogguMRQT9zMUDyptygXHZVMi4tx428GDeNd5JRkY13Y6HM1SxPfsBG/gqDMpKO9qKZfHcACRuro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFHvPTOF; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:To:Cc; b=noELvQX3MsfybPTwKLh2/Q5nLs1OKwPU0QBIfN5YHCxblwr7oSlF77gXDLfAhbLYNmI88PSBy7TNK1mi/9jWCv0bzoROYDHKseI25MVAZRwWloQVqaUvUkoUvF0Il8XhZxBucuvwweCH1nRP8Z6RJZ7IdO97EFrrGGcZ5dR9JwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moPjs0/k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFHvPTOF"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62fc28843ecso6378024a12.1
-        for <phone-devel@vger.kernel.org>; Mon, 13 Oct 2025 06:42:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760362927; x=1760967727; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rrxn5V2ZLraaXqN1UhOIzjX1yimKmGYY2iP8b/c23xI=;
-        b=RFHvPTOFEazrnVZ+d+wAmKPdyUftHbrsiQOggoftM7nAcEICLrkkcMd4yxSQ5Fcy+K
-         ZxNIr5QtYgr7Ve9mNYaEVqKqGuOFm2KSJmdUzrekrU6Tb4sLBSzMClH1mIhey3/3cgWR
-         DKDrAzhb4qziZXj5XeokfIpxrwiIau/B4etYK321aFyPC0gUef2yh/zfxEh9X0UlNmhH
-         woGDOa39vTUACPGFDyLFosYEM/pRnukFYWaTlisr3AdVGrDkgT8VlzRypgEJw8ru41a+
-         LhzWXt+QPWG9lMgtXfNorqWlTbXF9GjkP/ZvgzM2UO7JPffi+6/4KkMDQp5pqzteOzg+
-         zkYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760362927; x=1760967727;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rrxn5V2ZLraaXqN1UhOIzjX1yimKmGYY2iP8b/c23xI=;
-        b=rHW1+dukC04f+wCKumzjvoIdokVwqp4XCldqpGXr2kMJrAAEXk6EZvTROy2nT/UCkO
-         7RW7PG8V8UU/dcn6TF8kHO3LKD2I5ExnRn5cvqLP4NdPaxNyf2oxF3bfT9IIXSPHq3dd
-         kdA8twvamb+VPhPxn2GLnayWe4W1H20e9YbcyodB3za5d8QLH+vsQSymJwrTzEr1WIiD
-         D/LIqBoQ/Bm9/gvXqWWa8Jpi5R2DcMCjdARET+ZkmUaEDz7a9x5ck97D7PHhiAor8BZe
-         ns8ot6XmVR9RQZjyhkzM8PQ7BkErb0ETXrSUy9ggpLIJjigkjelET+wW75+4ydjQB9M8
-         b1rg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcvEPzOe4KdaIOnsZ3nFRq2BG/jNlvnGqsRDNRAvlkDN6p6Ao25tdrUYQAgNR6SGPU4KE0jqCq4fA3LQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2/7DJknI2i1h7vtMQXSXn+JXU60ndtP1zSAAcHGbwyT35oBp8
-	Fz30ln3bUXYX0hdrAbCvakbgQgS7rAzMf+4U5nGk6Rhzs0A5fUW8VcKS
-X-Gm-Gg: ASbGncuS6LZNIYcDo8+thnGIEAvEc0YWsM808WubTJ6o+8g1Sg4ozI2cSc9PurdH5k+
-	HygbRZJZoMe6IF/4qCRJutTnNU3SuTDyBMasMYuxTL+dYI7qb5rB26ITcDAJHpkjRZzQXN028xM
-	Hdzwaz5mX31aBYlY+PZeIz8oYCCcMbKfb0CC9U7dMVKfzQdJersZ73Szx8wFPpEv9RYrl0yezjg
-	N5e8rE71ijzhRvx6pD1u428dYRToLy5ylSWH+M3KlsoLwKKhVvjC3VG7mydLw5Gs4osml4XaSjk
-	cGujPqgji5UhPMqBy3fINAoEm8y+aPpebR6ciNQRfj26pVYeruL9Q/4dgERZ/mbA/ELN9c9rbWo
-	ILNXd/9+goK53Ekq6liFiUVG3qWhgyUNmiRtOA18aVFPUsq/lE1dJiOd5VZBMj1LDhTQ55dXKq6
-	aCqxzAFxkS2MHF
-X-Google-Smtp-Source: AGHT+IHW8B7vpbCVSo6VA1fn0F5FpN2EF++GQ7/3RSyeUuDyDe6Te8GkuSpOBf62mr76lPkgAINLng==
-X-Received: by 2002:a05:6402:40d1:b0:639:ef26:a01d with SMTP id 4fb4d7f45d1cf-639ef26a47emr15112262a12.11.1760362927050;
-        Mon, 13 Oct 2025 06:42:07 -0700 (PDT)
-Received: from tablet.my.domain (83.21.75.22.ipv4.supernova.orange.pl. [83.21.75.22])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a5c32249esm8729019a12.41.2025.10.13.06.42.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 06:42:06 -0700 (PDT)
-From: Artur Weber <aweber.kernel@gmail.com>
-Date: Mon, 13 Oct 2025 15:41:54 +0200
-Subject: [PATCH v7 7/7] clk: bcm281xx: Add corresponding bus clocks for
- peripheral clocks
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moPjs0/k"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EE195C116C6;
+	Tue, 14 Oct 2025 09:20:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760433641;
+	bh=4viXq0Ak1dSFsTCWo3WHd5sjRdKeR+JKhmrn8uAKos8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=moPjs0/kj1Mu6TiEy3JndTOIpgRUFp7ssafmAXf5UppdcRR12tdbucy6oqImdJNaY
+	 xs0P79mRl7LS1Z6YAvSQwsckqHURoO3BTN+BK/itmaS12pant5/pD7EaM4XtctPbL4
+	 7C7hNKHq9vHatKmaH71yS5D51f6qrtppmW+wuGXQWEue/k91tAYHWr0lq38A63Vup+
+	 nEkq1zd/CVOSyQoK+8feH8SaNiyMcgLrqHwjuZbwkN8H5vBHhpjF4uKJpwm4YiI5o8
+	 wTjOk2faa0ot6v21XC23GcpVTYoo1xt0zJI3ziPrugB7efKh7RRddCiCnDrw5VmbAC
+	 6cRdW62VzAPZA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAAF2CCD192;
+	Tue, 14 Oct 2025 09:20:40 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 14 Oct 2025 11:20:35 +0200
+Subject: [PATCH v7 3/3] arm64: dts: qcom: sdm845-oneplus: Add alert-slider
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,232 +40,109 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251013-kona-bus-clock-v7-7-8f473d99ae19@gmail.com>
-References: <20251013-kona-bus-clock-v7-0-8f473d99ae19@gmail.com>
-In-Reply-To: <20251013-kona-bus-clock-v7-0-8f473d99ae19@gmail.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Alex Elder <elder@kernel.org>, 
- Stanislav Jakubek <stano.jakubek@gmail.com>, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, 
- phone-devel@vger.kernel.org, Artur Weber <aweber.kernel@gmail.com>
+Message-Id: <20251014-op6-tri-state-v7-3-938a6367197b@ixit.cz>
+References: <20251014-op6-tri-state-v7-0-938a6367197b@ixit.cz>
+In-Reply-To: <20251014-op6-tri-state-v7-0-938a6367197b@ixit.cz>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>, 
+ Benjamin Tissoires <bentiss@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Gergo Koteles <soyer@irl.hu>, Casey Connolly <casey@connolly.tech>, 
+ David Heidelberg <david@ixit.cz>, Konrad Dybcio <konradybcio@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6005;
- i=aweber.kernel@gmail.com; h=from:subject:message-id;
- bh=BKr8nVscrBQotunl8u3eUCru7U4bR7e46blB/UH7zYk=;
- b=owEBbQKS/ZANAwAKAbO7+KEToFFoAcsmYgBo7QGg6q+Yc21Ig+afa32iNWFNzvHv7ZkWVlH2N
- 0Em92Ym7byJAjMEAAEKAB0WIQTmYwAOrB3szWrSiQ2zu/ihE6BRaAUCaO0BoAAKCRCzu/ihE6BR
- aMTLEACdZNtR5aTmug+rai2D1xBgUuBhee96uc7gCs6JjvgMPMffeAChVUIytsllR71lj74m9mf
- g5X6AS9hbUWdkzNGZl8jslulemey9NH8A9W19Ld9XejQDTWGQtv9RTZ4mAHagi0m/pCoBf8b9H4
- vfM+34HRFfV05296MrCfT1kFibzDvgCKHZzEgvvM/B0J+X6hDtwezVfRi9tlarMvORZEUhaY9xu
- dM+WKd1ZUpvyc+oaFMSpxtEfkmhCR3fk8P7EANYZ/D/HOf17SiSA3Cw386UdyFoiESu43w35qlo
- zGFooOq+OowrQDWkutSUHsQrMGes5RP5twZL+9EpOIBcsesKO7mtOMxwAcbE9f35Ey91Q/kwL2R
- WzwoecopMZZB2Hcim6Qw6zZNFUyB1Z+5likC1QeAON1Gd2uGbKo+n31B9sXk0Af3vuYErD6ZqZj
- fxUBic+06J2pgC4tWVDQ+hp9H/dOeGxAUnD/G6DlFiYHJjrCIKbynMWNsecBhKPg0oA5+XUh+aZ
- yY66HmUc7Tcma0giwX2YK6SpQ/sDjOaAZWjkTiVJqr2nChHDthpLFt9/b1FvoDVgCJ6LWOCzlCp
- pFrMW7Q6KqHQUq4M/QLCWwICtIy+qvpOE2q7WDv4NRyMsdQtt6ClLslQy7E1MLymsEztaHR3oNH
- Ks8sp5Chwqk+k3Q==
-X-Developer-Key: i=aweber.kernel@gmail.com; a=openpgp;
- fpr=E663000EAC1DECCD6AD2890DB3BBF8A113A05168
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=L6s7O1s8v/Sby4jirhhYQ1ffxzp8BzROoJRus6IJ3N0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo7hXniF18Aacb9/oEkiWJMPXVtusl336X6/LAy
+ 8/OTZ0iBAaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaO4V5wAKCRBgAj/E00kg
+ ciNrEACnITmXN760aW8eSm4YI+2YbwuumfXairfYu0xa9bLKypn/P2K3Xq9c7P+t0d/9CCH32YX
+ icqmpy17hZBHfQ/EkKTD0SpHttYXXEkwB83IeuI90KpycNQeIBMLfbZeMjZVxsFGJy3IxCy6FO7
+ stDxhhOa0/biOj62UTReNoKNHyQb+1+ML6Bx3f3ADvPPEKBC8tmZpHLePGH4R0rj7dGAS6eRbfG
+ ofxPqRe52eVoymurikB+/nzi9MDKoI87QQ44Led6O9b9+P+mHuOJzYce+45WjqvbdBzP37PdHcW
+ V1o4iQhqFocdcMDB5VWlIxh1PR+vCvTQFsJgav/z6gGnIu8RkrHPO8gmelR9R5AJVpBOct51Ru9
+ FGGEriYD3C7IGOt+AMu7GbqfyBVLBRJXsaTddJgejLxwYtIp2UwJ2grc9cDRSHn56O2ikx67eXs
+ q1s6cJl08bY6IX6n2cVwoiZhvnbG0JjYHvOzceZuxHUvBZR7SyQQog5x2Sa5qEd+TdVNmjGSiEl
+ DU8i1tFGYqCMcR+O0cAZGrkaM7ctnhUpYg5LPJwJPKc+6koEo4WtHZ4+LFWf+BzN1V7uhrLeCwW
+ 9/RPEZ+542rSS8opmI5pa3h8Tw1OhQMpUT9xyzUx6SvjjO1sZ1oKtifvyJm6WSMKhq+vg2zdhUK
+ o0WDTA8Kl0UY5/Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Add bus clocks corresponding to peripheral clocks currently supported
-by the BCM281xx clock driver.
+From: Gergo Koteles <soyer@irl.hu>
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+The alert-slider is a tri-state sound profile switch found on the
+OnePlus 6, Android maps the states to "silent", "vibrate" and "ring".
+Expose them as ABS_SND_PROFILE events.
+The previous GPIO numbers were wrong. Update them to the correct ones.
+
+Co-developed-by: Casey Connolly <casey@connolly.tech>
+Signed-off-by: Casey Connolly <casey@connolly.tech>
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v4:
-- Adapt to CLOCK_COUNT -> CLK_COUNT rename
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 35 ++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-Changes in v3:
-- Adapt to CLOCK_COUNT defines being moved
-
-Changes in v2:
-- Add this patch (BCM281xx bus clocks)
----
- drivers/clk/bcm/clk-bcm281xx.c | 127 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 124 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/clk/bcm/clk-bcm281xx.c b/drivers/clk/bcm/clk-bcm281xx.c
-index 62c3bf465625..13fd8a5ea8fa 100644
---- a/drivers/clk/bcm/clk-bcm281xx.c
-+++ b/drivers/clk/bcm/clk-bcm281xx.c
-@@ -59,7 +59,17 @@ static struct peri_clk_data pmu_bsc_var_data = {
- 	.trig		= TRIGGER(0x0a40, 2),
- };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 51a9a276399ac..98f5e4c8237a0 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -25,6 +25,41 @@ / {
+ 	chassis-type = "handset";
+ 	qcom,msm-id = <QCOM_ID_SDM845 0x20001>;
  
--#define BCM281XX_AON_CCU_CLK_COUNT	(BCM281XX_AON_CCU_PMU_BSC_VAR + 1)
-+static struct bus_clk_data hub_timer_apb_data = {
-+	.gate		= HW_SW_GATE(0x0414, 18, 3, 2),
-+	.hyst		= HYST(0x0414, 10, 11),
-+};
++	alert-slider {
++		compatible = "gpio-keys";
++		label = "Alert slider";
 +
-+static struct bus_clk_data pmu_bsc_apb_data = {
-+	.gate		= HW_SW_GATE(0x0418, 18, 3, 2),
-+	.hyst		= HYST(0x0418, 10, 11),
-+};
++		pinctrl-0 = <&alert_slider_default>;
++		pinctrl-names = "default";
 +
-+#define BCM281XX_AON_CCU_CLK_COUNT	(BCM281XX_AON_CCU_PMU_BSC_APB + 1)
- 
- static struct ccu_data aon_ccu_data = {
- 	BCM281XX_CCU_COMMON(aon, AON),
-@@ -70,6 +80,10 @@ static struct ccu_data aon_ccu_data = {
- 			KONA_CLK(aon, pmu_bsc, peri),
- 		[BCM281XX_AON_CCU_PMU_BSC_VAR] =
- 			KONA_CLK(aon, pmu_bsc_var, peri),
-+		[BCM281XX_AON_CCU_HUB_TIMER_APB] =
-+			KONA_CLK(aon, hub_timer_apb, bus),
-+		[BCM281XX_AON_CCU_PMU_BSC_APB] =
-+			KONA_CLK(aon, pmu_bsc_apb, bus),
- 		[BCM281XX_AON_CCU_CLK_COUNT] = LAST_KONA_CLK,
- 	},
- };
-@@ -178,7 +192,36 @@ static struct peri_clk_data hsic2_12m_data = {
- 	.trig		= TRIGGER(0x0afc, 5),
- };
- 
--#define BCM281XX_MASTER_CCU_CLK_COUNT	(BCM281XX_MASTER_CCU_HSIC2_12M + 1)
-+static struct bus_clk_data sdio1_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0358, 16, 1, 0),
-+};
++		switch-top {
++			label = "Silent";
++			linux,input-type = <EV_ABS>;
++			linux,code = <ABS_SND_PROFILE>;
++			linux,input-value = <SND_PROFILE_SILENT>;
++			gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
++			linux,can-disable;
++		};
 +
-+static struct bus_clk_data sdio2_ahb_data = {
-+	.gate		= HW_SW_GATE(0x035c, 16, 1, 0),
-+};
++		switch-middle {
++			label = "Vibrate";
++			linux,input-type = <EV_ABS>;
++			linux,code = <ABS_SND_PROFILE>;
++			linux,input-value = <SND_PROFILE_VIBRATE>;
++			gpios = <&tlmm 52 GPIO_ACTIVE_LOW>;
++			linux,can-disable;
++		};
 +
-+static struct bus_clk_data sdio3_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0364, 16, 1, 0),
-+};
++		switch-bottom {
++			label = "Ring";
++			linux,input-type = <EV_ABS>;
++			linux,code = <ABS_SND_PROFILE>;
++			linux,input-value = <SND_PROFILE_RING>;
++			gpios = <&tlmm 24 GPIO_ACTIVE_LOW>;
++			linux,can-disable;
++		};
++	};
 +
-+static struct bus_clk_data sdio4_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0360, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data usb_ic_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0354, 16, 1, 0),
-+};
-+
-+/* also called usbh_ahb */
-+static struct bus_clk_data hsic2_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0370, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data usb_otg_ahb_data = {
-+	.gate		= HW_SW_GATE(0x0348, 16, 1, 0),
-+};
-+
-+#define BCM281XX_MASTER_CCU_CLK_COUNT	(BCM281XX_MASTER_CCU_USB_OTG_AHB + 1)
- 
- static struct ccu_data master_ccu_data = {
- 	BCM281XX_CCU_COMMON(master, MASTER),
-@@ -197,6 +240,20 @@ static struct ccu_data master_ccu_data = {
- 			KONA_CLK(master, hsic2_48m, peri),
- 		[BCM281XX_MASTER_CCU_HSIC2_12M] =
- 			KONA_CLK(master, hsic2_12m, peri),
-+		[BCM281XX_MASTER_CCU_SDIO1_AHB] =
-+			KONA_CLK(master, sdio1_ahb, bus),
-+		[BCM281XX_MASTER_CCU_SDIO2_AHB] =
-+			KONA_CLK(master, sdio2_ahb, bus),
-+		[BCM281XX_MASTER_CCU_SDIO3_AHB] =
-+			KONA_CLK(master, sdio3_ahb, bus),
-+		[BCM281XX_MASTER_CCU_SDIO4_AHB] =
-+			KONA_CLK(master, sdio4_ahb, bus),
-+		[BCM281XX_MASTER_CCU_USB_IC_AHB] =
-+			KONA_CLK(master, usb_ic_ahb, bus),
-+		[BCM281XX_MASTER_CCU_HSIC2_AHB] =
-+			KONA_CLK(master, hsic2_ahb, bus),
-+		[BCM281XX_MASTER_CCU_USB_OTG_AHB] =
-+			KONA_CLK(master, usb_otg_ahb, bus),
- 		[BCM281XX_MASTER_CCU_CLK_COUNT] = LAST_KONA_CLK,
- 	},
- };
-@@ -309,7 +366,51 @@ static struct peri_clk_data pwm_data = {
- 	.trig		= TRIGGER(0x0afc, 15),
- };
- 
--#define BCM281XX_SLAVE_CCU_CLK_COUNT	(BCM281XX_SLAVE_CCU_PWM + 1)
-+static struct bus_clk_data uartb_apb_data = {
-+	.gate		= HW_SW_GATE(0x0400, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data uartb2_apb_data = {
-+	.gate		= HW_SW_GATE(0x0404, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data uartb3_apb_data = {
-+	.gate		= HW_SW_GATE(0x0408, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data uartb4_apb_data = {
-+	.gate		= HW_SW_GATE(0x040c, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data ssp0_apb_data = {
-+	.gate		= HW_SW_GATE(0x0410, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data ssp2_apb_data = {
-+	.gate		= HW_SW_GATE(0x0418, 16, 1, 0),
-+};
-+
-+static struct bus_clk_data bsc1_apb_data = {
-+	.gate		= HW_SW_GATE(0x0458, 16, 1, 0),
-+	.hyst		= HYST(0x0458, 8, 9),
-+};
-+
-+static struct bus_clk_data bsc2_apb_data = {
-+	.gate		= HW_SW_GATE(0x045c, 16, 1, 0),
-+	.hyst		= HYST(0x045c, 8, 9),
-+};
-+
-+static struct bus_clk_data bsc3_apb_data = {
-+	.gate		= HW_SW_GATE(0x0484, 16, 1, 0),
-+	.hyst		= HYST(0x0484, 8, 9),
-+};
-+
-+static struct bus_clk_data pwm_apb_data = {
-+	.gate		= HW_SW_GATE(0x0468, 16, 1, 0),
-+	.hyst		= HYST(0x0468, 8, 9),
-+};
-+
-+#define BCM281XX_SLAVE_CCU_CLK_COUNT	(BCM281XX_SLAVE_CCU_PWM_APB + 1)
- 
- static struct ccu_data slave_ccu_data = {
- 	BCM281XX_CCU_COMMON(slave, SLAVE),
-@@ -334,6 +435,26 @@ static struct ccu_data slave_ccu_data = {
- 			KONA_CLK(slave, bsc3, peri),
- 		[BCM281XX_SLAVE_CCU_PWM] =
- 			KONA_CLK(slave, pwm, peri),
-+		[BCM281XX_SLAVE_CCU_UARTB_APB] =
-+			KONA_CLK(slave, uartb_apb, bus),
-+		[BCM281XX_SLAVE_CCU_UARTB2_APB] =
-+			KONA_CLK(slave, uartb2_apb, bus),
-+		[BCM281XX_SLAVE_CCU_UARTB3_APB] =
-+			KONA_CLK(slave, uartb3_apb, bus),
-+		[BCM281XX_SLAVE_CCU_UARTB4_APB] =
-+			KONA_CLK(slave, uartb4_apb, bus),
-+		[BCM281XX_SLAVE_CCU_SSP0_APB] =
-+			KONA_CLK(slave, ssp0_apb, bus),
-+		[BCM281XX_SLAVE_CCU_SSP2_APB] =
-+			KONA_CLK(slave, ssp2_apb, bus),
-+		[BCM281XX_SLAVE_CCU_BSC1_APB] =
-+			KONA_CLK(slave, bsc1_apb, bus),
-+		[BCM281XX_SLAVE_CCU_BSC2_APB] =
-+			KONA_CLK(slave, bsc2_apb, bus),
-+		[BCM281XX_SLAVE_CCU_BSC3_APB] =
-+			KONA_CLK(slave, bsc3_apb, bus),
-+		[BCM281XX_SLAVE_CCU_PWM_APB] =
-+			KONA_CLK(slave, pwm_apb, bus),
- 		[BCM281XX_SLAVE_CCU_CLK_COUNT] = LAST_KONA_CLK,
- 	},
- };
+ 	aliases {
+ 		serial0 = &uart9;
+ 		serial1 = &uart6;
 
 -- 
 2.51.0
+
 
