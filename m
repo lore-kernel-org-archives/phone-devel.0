@@ -1,137 +1,299 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158162E7623
-	for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 09:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B432131282D
+	for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 12:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760433777; cv=none; b=ain8MeGf9KOZOZoNI5T+uaJnwhrhjSyrNBt1uBgV32Hj3UAQiDBNUW1lU0bLEBLJfcJMEdCrgwn0G9Gpsu9s68oxrp6l6l10V3hmlYE+h2oxgbJPbMf4ySlXD3PMNxpEbAGhDs/VJfUjrpIL+5cw38xOzmJpKsehwJ1oDHJ+lIM=
+	t=1760443895; cv=none; b=lX4YXz15dM3aCr6R/dmNEO7e1klaaBXa5IFz2ib/KdronLkmzwC5FEBYMl6HjhhmqxEy6zijV5J62/ut5BvrBXo/fSXpJrEY58Y+Nm6VLxoK/ySU4GzdixQenOV/VxvoFbWx7AdLHt58xrgwZGB7Eg1omtH5/iqQezNUGbU1Qj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760433777; c=relaxed/simple;
-	bh=4kdH9JwWn5BUz8jMj6r/TaxLP/NSVJU/tJpy1sBaGwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jMh0eYGO1wKxSHIeK/FcM+XY+U+4Ah5z5G/uV7jpwWH+U0hhIU+d7wOuLR6xaCtwXnt1I58rXF5S/B5ojCmJlhHmux6lhw/hU7MGjYbe3h/IZjKjaAvbxICqj570dMOdaxyLf36HJAVBkBtmzxtLpq1KPhLZRQkojMVmp8mexM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QQW0d/3+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1760443895; c=relaxed/simple;
+	bh=h5OUnC0qS1XyOkwz0rbMd9zjA2g5kjfcThDxR8eek/Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q4TpsMraTjuUwNd/4ZEHthk4zUQEDTgfoOc/H/5xJVeWst33PsQyCAytwIuuthyID1c4mUoFmx4T8q78WN5YilJO74hLjk0ro2wNrWegfit3BFQRIRE6e27t0AbEec+X1aI+EYxI22zmByOVYClz1DHtZoVvBRUz4oMXaYZ4Nsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=oXzcrXgm; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QQW0d/3+"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59E87H7W018085
-	for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 09:22:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pBRR5H2TkKxKF7H4pKihb9Oc+NcrIbt0tfqa5n/nEGc=; b=QQW0d/3+8jWCiqK9
-	aXFu4NReDnyno1hQnDd9X1Jx11vJXCyQNNBumCgDiKLY0VZq6lJdEpMTmqI6cQRM
-	uU/vTq3EwIHSOWzJj//TDDADPs5EtVlvLL7uyRRYkmvRv9hDI4qf2QyanIPc+S3p
-	PP+n9huZ3z6atcPsfZS7gpelklaTApv4fjkZf4OKKEyE9j5k8GsSndCw0R9fcPOG
-	Lgdam1Fl81MDIF3bSFYnnJIjdk5b4Oux7IVOvSEhUnjcSgZNygKhi0jhyGokAsxW
-	Re/i48Izy0xnUje6crVmv+HE5mSiJdwZqZFpTD+WpOR06Q7qOmS8bm9kgr0xsER/
-	ZSUiCw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49qferywfm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 09:22:53 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-85e23ce41bdso291744385a.3
-        for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 02:22:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="oXzcrXgm"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-639fe77bb29so8239958a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 14 Oct 2025 05:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1760443889; x=1761048689; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TMsvvNxUXmnvKGYayr5xM294MMb/IoJ0IjM92sbPoFI=;
+        b=oXzcrXgmrCDRGvmrRSJnHHbOZjifFYFc2o7Kk22vmURU5q12kV78QS5VrZzpjMNV9y
+         ooz9XAxpDwOrOGA58LlAgk8JXm+pQRyleGm/a4f5pBXP3/0zDHfw53+SS0VvsTCWstxx
+         xar22NpEZL3O7gmq0ymKttCDxga/wz9nP6xSmNPoovWlrnC1HRQjXq4ytUkhmOpkssA8
+         /PrEnnY90J7tJGNYv5kdbmFKJdpXOcwXXyhpfaTt/ew1phTUMk++SvptRldAQS3ycDW3
+         SGWEVX4uVA4xAkAS+37VYguKuJNndx6P3qjFKiujQUkTLmgKNMVSqgg9AN0uPlR5hiLF
+         ewBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760433773; x=1761038573;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBRR5H2TkKxKF7H4pKihb9Oc+NcrIbt0tfqa5n/nEGc=;
-        b=bsFllt9Nwf+XDh8CQDs/8Fy22JUl8PJaewbkAXapC4cxAmfAVV7FlR2v2rTX4YdCiw
-         Guw4ENBqmDuWvFGrZ0NAwRPza2Qiqg4IuzWRfQ2OLVDefxcOx6IOkS1SvqH7ZBV8d0DC
-         dpnNAHYsC5mfrsMWMmsWYXWCDhZOUVIE61NkTI4x+cPsfCwBkCfdOnEBec11xkNjwJFf
-         5Ljpfg9M0f7ogh/9Kxg4JUbW9uDp3gcoA1QfxJy2vx2pVK3XIaO4vBUn1WeI9u31eddQ
-         tK6X7yNTmghYH5cB7+cWpauvJdfjglp/xby7bM2R5y38nI3G9H7RBlNZwilQWjnB54Lq
-         jY5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVREjL1pHWb8QtLpU/mSUTxeu3NL7WLGOVD126fs2sDSF0ZCvcUsis5hSjBsgSNGEYheODk0Dymng2i2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxa++z15ZciX3hanwJVrjbrqw81h/fKOHQwkuhE6X6s66m2f5IK
-	cRzlc1dkeNrKHoDyoDylXS5JOWksh67AfSnucNDUKilsB52HPRhAdJk5iAIQHZf8Qny7nMy7Q6Y
-	L80B38h+ePuE2jZXCCi+snj0lPh4oi69CfrKQ1MOeWJOnM84UDSIuqRZ6nM26drLrNQ==
-X-Gm-Gg: ASbGncssezRh7vA7CrDQw6cFrjHkMkt447pyLYb289PAVzw+HwbNA6iOpP68rIbo56q
-	y8hrmx5Cg8W77v9ZAGojq35HAelDhjroiIM4+cR7M1qYkE2Xzw8u4YhiYQBLHvVB6hFjb3Cbai/
-	v6n+Buek7LHF7POhXHdAMgUkwOwiUIzfW87+8QrKQ9zz4MJ1yFJPYAClujd989peLKC8gbVASbX
-	3OTe01PkC4IzY8/dEhMnvdsiaDkoT4S2qb8ZMrnAr5GBKbgHuUzHjJa+REEb3rSslbhJ9FYLqtm
-	9PS2n/F6JIXQJTO+HvaovyxO2NGWwS38JEC0cLJCxBp4CfMY6xtwD/Z71ralm8qBSpiGWBE3UMC
-	V2ysYHkbR1N3xFYxOCSg/VA==
-X-Received: by 2002:a05:620a:bca:b0:862:dc6c:e7f3 with SMTP id af79cd13be357-88352e8e8eamr2066567985a.5.1760433773145;
-        Tue, 14 Oct 2025 02:22:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6lBPtCjgj5B0ks8xM4dqV/qBR4R1q23vBYNJs1dE8aUXN8FmTT9yYWz5xoRUNmm6qC74jzw==
-X-Received: by 2002:a05:620a:bca:b0:862:dc6c:e7f3 with SMTP id af79cd13be357-88352e8e8eamr2066565785a.5.1760433772666;
-        Tue, 14 Oct 2025 02:22:52 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d63c9a3csm1127034066b.23.2025.10.14.02.22.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Oct 2025 02:22:51 -0700 (PDT)
-Message-ID: <87650853-3b4e-4a05-b3f3-4fcb8820ea9f@oss.qualcomm.com>
-Date: Tue, 14 Oct 2025 11:22:48 +0200
+        d=1e100.net; s=20230601; t=1760443889; x=1761048689;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TMsvvNxUXmnvKGYayr5xM294MMb/IoJ0IjM92sbPoFI=;
+        b=NsZzhFQzTz/O+RN3Q0cP3rm/WoJAJ4zpfACPbUo4iYqkE6YO3RzMamGwo/CeVv/KJu
+         wyNC91JCNy2pAAZ4Cf2a7jSqJ54kgSs4XUIH5qMqyebRl7mBPUmeMlmJRbktrsVcK+8l
+         Gj6il3xKzy74kw4lugdatR4zlaZNkt68xArkxeRzjP+CB6csJmJ6gwrCjjFg7jKafH+H
+         0tblskcbKxYl6s4CM/8BuXvbO4gq88VY8ik3vD/4/m5HLLmwZZGknmPU8RxleLRK9jT0
+         zWojIAGrhmF+8t19zD8vlUn46abAgXXVZ49HEVSqezPx+8+iU/A3UBWX8vH+TsCZp0yn
+         677A==
+X-Forwarded-Encrypted: i=1; AJvYcCXHAEbfEDQlvob5NdKdeUmzkl0fRx0lVWjjqZkJWde27Asq31A8v5cmp4nzbliMMiipiEP0+1/d2LPimg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YySnoEL9PgcigsyZ037JJybHCLuHr5ArJQX42QOHrKgtHIptnAN
+	S4BXspYsqBBtid2W3yYP7OZ7nzKYKdzFXQVX2OQM/GMUkIYP05uY/YIJFHHbvIGkWnQ=
+X-Gm-Gg: ASbGncuHHyr7E6ODIwNsRqFTsJntO3owdBI/abMII1sU2QcdAqdR3h7rPDrQALvbuf4
+	mhFRF+3UwmzOQ4diBzZXaRcs+eymh1OjbiOWFh+wJJ/6wRazoqPwY5q5DccPlKjMQ+RPFYKr1Xo
+	jTriry7H6g5OJ7nw+l55N5VOmxz/7WY+mWGrunlHDGJgJSpWJqZejfpUeMrBRMaJmfifAZ/Fxvw
+	85KrAiVWL1hl4oSUGfmIcE7LmO7538wHbG9FUR0RZ/QzlQZNzIBVhlJf636NDdh7kLdUbtv4FvS
+	O0wos6NBV8d6XPfPZC41GKOTDqZLv3jOXq+Wys7y3OST3cepQT2szfKusu2ge3v31wSEnGf5Gdn
+	GxODN+DVmWpGfy5WctBOTG2bBSPi9RvQsPHn2VE26+yGGjnNZsR9gFPL3P+Uvlx+P3k5YqrZjSm
+	4BZTbWI2NU2wmOaDarWWKd9eg=
+X-Google-Smtp-Source: AGHT+IELJS/VgypvwZW3x15YFnjuVZsztTcNQMZAL82gjJINOSASLLTt97YgOiFDqSjEkK/zD14XKQ==
+X-Received: by 2002:a17:906:4788:b0:b0c:fdb7:4df5 with SMTP id a640c23a62f3a-b50aa08f7f4mr2795931866b.18.1760443888992;
+        Tue, 14 Oct 2025 05:11:28 -0700 (PDT)
+Received: from otso.local (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d8c124a8sm1137870666b.51.2025.10.14.05.11.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 05:11:28 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Tue, 14 Oct 2025 14:11:18 +0200
+Subject: [PATCH] arm64: defconfig: Enable configs for Fairphone 3, 4, 5
+ smartphones
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] arm64: dts: qcom: sdm845-oneplus: Correct gpio
- used for slider
-To: david@ixit.cz, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <bentiss@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Casey Connolly <casey.connolly@linaro.org>,
-        =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Gergo Koteles <soyer@irl.hu>
-References: <20251014-op6-tri-state-v7-0-938a6367197b@ixit.cz>
- <20251014-op6-tri-state-v7-2-938a6367197b@ixit.cz>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251014-op6-tri-state-v7-2-938a6367197b@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=R64O2NRX c=1 sm=1 tr=0 ts=68ee166e cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=b_3gLtI3ev4ASzC4froA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: lntQ6Mg_lLAKmmeA5qe7ihdFTbfv2izf
-X-Proofpoint-ORIG-GUID: lntQ6Mg_lLAKmmeA5qe7ihdFTbfv2izf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxOCBTYWx0ZWRfX1g/3JLKFfWJf
- DUhVHeF8d4ixkKF3oDZEEm0VoZrCaJETvBDf23peTlFOJUPnlU+1iCsEH0B7xM2Vs5q8xcQnali
- KQnqJct3tNNgbAsIz5zSLe5vJ5SDpi1tE9iDTfrZon13/Mb2anCatNEzttd9RGJTqzC9MSxspst
- /KkEN2zK6TPLNmzZh52aJDOvjap/S7wvdWC8PjHM9QWlHC1IDDLyu9sFonxbRAiKUA/FHJcZdVH
- q0ucEcPxkP45X33ZztlPxgnoVAXjDwV7YziTuuAD9r0wfDEbOGmDPQW6CVfLIC0bCbJYvkH57lY
- +LlyzRGUUxUZUB3XQEPu6FOZFMqwDP1g3sIaD/4IwJ4wbwBi9nWikBcV5WoHOdTdl8nLmEoLw/K
- 6ZYJM9fJ0XRYshDejsU+Sd1oD8ytSQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-14_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110018
+Message-Id: <20251014-arm64-defconfig-fp345-v1-1-53fe1eeb598d@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAOU97mgC/x3MQQqAIBBA0avIrBtQs5CuEi1iHGsWWShEIN09a
+ fkW/1conIULTKpC5luKnKnBdApoX9PGKKEZrLaD0cbhmo/RYeBIZ4qyYbx6N2DomVjTaMh7aO2
+ VOcrzf+flfT+w4o5PZwAAAA==
+X-Change-ID: 20251014-arm64-defconfig-fp345-d3ece0c61c88
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760443887; l=6339;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=h5OUnC0qS1XyOkwz0rbMd9zjA2g5kjfcThDxR8eek/Y=;
+ b=deFmsDMb3hA9OV2nip8NJEM7jqpCU5NQmHJss5z5D0EMbjhCjVDZl1lJyk+DKb/IyHzUXSsJ1
+ wDYP1Z7dINBCr0OdBz/nIfkdIwjViGrHtogISKWU3DfEOipM+LpvVf4
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On 10/14/25 11:20 AM, David Heidelberg via B4 Relay wrote:
-> From: Gergo Koteles <soyer@irl.hu>
-> 
-> The previous GPIO numbers were wrong. Update them to the correct
-> ones and fix the label.
-> 
-> Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
+Enable base options for MSM8953 and SM6350 SoCs and device-specific
+options which are used on the Fairphone 3, Fairphone 4 and Fairphone 5.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+* MSM8953 SoC
+    MSM_GCC_8953, INTERCONNECT_QCOM_MSM8953
+* Fairphone 3
+    NFC_NXP_NCI*, TOUCHSCREEN_HIMAX_HX83112B, DRM_PANEL_HIMAX_HX83112B
 
-Konrad
+* SM6350 SoC
+    SM_CAMCC_6350, SM_DISPCC_6350, SM_GCC_6350, SM_GPUCC_6350,
+    SM_VIDEOCC_6350, INTERCONNECT_QCOM_SM6350
+* Fairphone 4
+    DRM_PANEL_HIMAX_HX83112A
+
+* Fairphone 5
+    DRM_PANEL_RAYDIUM_RM692E5, TYPEC_MUX_PTN36502, INPUT_AW86927
+
+* QCOM PMICs (used on multiple of the devices)
+    BACKLIGHT_QCOM_WLED, MFD_QCOM_PM8008, REGULATOR_QCOM_PM8008,
+    LEDS_CLASS_FLASH, LEDS_QCOM_FLASH
+
+* USB audio offloading (enabled on Fairphone 4 & 5)
+    SND_USB_AUDIO*, SND_SOC_USB, SND_SOC_QDSP6_USB, USB_XHCI_SIDEBAND
+
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/configs/defconfig | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index e3a2d37bd104..90a26dce8639 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -211,6 +211,8 @@ CONFIG_NET_9P=y
+ CONFIG_NET_9P_VIRTIO=y
+ CONFIG_NFC=m
+ CONFIG_NFC_NCI=m
++CONFIG_NFC_NXP_NCI=m
++CONFIG_NFC_NXP_NCI_I2C=m
+ CONFIG_NFC_S3FWRN5_I2C=m
+ CONFIG_PCI=y
+ CONFIG_PCIEPORTBUS=y
+@@ -465,7 +467,9 @@ CONFIG_TOUCHSCREEN_GOODIX=m
+ CONFIG_TOUCHSCREEN_GOODIX_BERLIN_SPI=m
+ CONFIG_TOUCHSCREEN_ELAN=m
+ CONFIG_TOUCHSCREEN_EDT_FT5X06=m
++CONFIG_TOUCHSCREEN_HIMAX_HX83112B=m
+ CONFIG_INPUT_MISC=y
++CONFIG_INPUT_AW86927=m
+ CONFIG_INPUT_BBNSM_PWRKEY=m
+ CONFIG_INPUT_PM8941_PWRKEY=y
+ CONFIG_INPUT_PM8XXX_VIBRATOR=m
+@@ -803,6 +807,7 @@ CONFIG_MFD_STM32_LPTIMER=m
+ CONFIG_MFD_STM32_TIMERS=m
+ CONFIG_MFD_WCD934X=m
+ CONFIG_MFD_KHADAS_MCU=m
++CONFIG_MFD_QCOM_PM8008=m
+ CONFIG_REGULATOR_FIXED_VOLTAGE=y
+ CONFIG_REGULATOR_AXP20X=y
+ CONFIG_REGULATOR_BD718XX=y
+@@ -828,6 +833,7 @@ CONFIG_REGULATOR_PCA9450=y
+ CONFIG_REGULATOR_PF8X00=y
+ CONFIG_REGULATOR_PFUZE100=y
+ CONFIG_REGULATOR_PWM=y
++CONFIG_REGULATOR_QCOM_PM8008=m
+ CONFIG_REGULATOR_QCOM_REFGEN=m
+ CONFIG_REGULATOR_QCOM_RPMH=y
+ CONFIG_REGULATOR_QCOM_SMD_RPM=y
+@@ -934,11 +940,14 @@ CONFIG_DRM_PANEL_LVDS=m
+ CONFIG_DRM_PANEL_SIMPLE=m
+ CONFIG_DRM_PANEL_EDP=m
+ CONFIG_DRM_PANEL_HIMAX_HX8279=m
++CONFIG_DRM_PANEL_HIMAX_HX83112A=m
++CONFIG_DRM_PANEL_HIMAX_HX83112B=m
+ CONFIG_DRM_PANEL_ILITEK_ILI9882T=m
+ CONFIG_DRM_PANEL_KHADAS_TS050=m
+ CONFIG_DRM_PANEL_MANTIX_MLAF057WE51=m
+ CONFIG_DRM_PANEL_NOVATEK_NT36672E=m
+ CONFIG_DRM_PANEL_RAYDIUM_RM67191=m
++CONFIG_DRM_PANEL_RAYDIUM_RM692E5=m
+ CONFIG_DRM_PANEL_SAMSUNG_ATNA33XC20=m
+ CONFIG_DRM_PANEL_SITRONIX_ST7703=m
+ CONFIG_DRM_PANEL_STARTEK_KD070FHFID015=m
+@@ -992,6 +1001,7 @@ CONFIG_FB=y
+ CONFIG_FB_EFI=y
+ CONFIG_FB_MODE_HELPERS=y
+ CONFIG_BACKLIGHT_PWM=m
++CONFIG_BACKLIGHT_QCOM_WLED=m
+ CONFIG_BACKLIGHT_LP855X=m
+ CONFIG_LOGO=y
+ # CONFIG_LOGO_LINUX_MONO is not set
+@@ -1001,7 +1011,10 @@ CONFIG_SND=m
+ CONFIG_SND_ALOOP=m
+ CONFIG_SND_HDA_TEGRA=m
+ CONFIG_SND_HDA_CODEC_HDMI=m
++CONFIG_SND_USB_AUDIO=m
++CONFIG_SND_USB_AUDIO_QMI=m
+ CONFIG_SND_SOC=m
++CONFIG_SND_SOC_USB=m
+ CONFIG_SND_BCM2835_SOC_I2S=m
+ CONFIG_SND_SOC_FSL_ASRC=m
+ CONFIG_SND_SOC_FSL_MICFIL=m
+@@ -1025,6 +1038,7 @@ CONFIG_SND_MESON_AXG_SOUND_CARD=m
+ CONFIG_SND_MESON_GX_SOUND_CARD=m
+ CONFIG_SND_SOC_QCOM=m
+ CONFIG_SND_SOC_APQ8016_SBC=m
++CONFIG_SND_SOC_QDSP6_USB=m
+ CONFIG_SND_SOC_MSM8996=m
+ CONFIG_SND_SOC_SDM845=m
+ CONFIG_SND_SOC_SM8250=m
+@@ -1117,6 +1131,7 @@ CONFIG_USB_OTG=y
+ CONFIG_USB_XHCI_HCD=y
+ CONFIG_USB_XHCI_PCI_RENESAS=m
+ CONFIG_USB_XHCI_RZV2M=y
++CONFIG_USB_XHCI_SIDEBAND=y
+ CONFIG_USB_XHCI_TEGRA=y
+ CONFIG_USB_BRCMSTB=m
+ CONFIG_USB_EHCI_HCD=y
+@@ -1188,6 +1203,7 @@ CONFIG_TYPEC_MUX_GPIO_SBU=m
+ CONFIG_TYPEC_MUX_IT5205=m
+ CONFIG_TYPEC_MUX_NB7VPQ904M=m
+ CONFIG_TYPEC_MUX_PS883X=m
++CONFIG_TYPEC_MUX_PTN36502=m
+ CONFIG_TYPEC_MUX_WCD939X_USBSS=m
+ CONFIG_TYPEC_DP_ALTMODE=m
+ CONFIG_MMC=y
+@@ -1232,12 +1248,14 @@ CONFIG_SCSI_UFS_EXYNOS=y
+ CONFIG_SCSI_UFS_ROCKCHIP=y
+ CONFIG_NEW_LEDS=y
+ CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_CLASS_FLASH=m
+ CONFIG_LEDS_CLASS_MULTICOLOR=m
+ CONFIG_LEDS_LM3692X=m
+ CONFIG_LEDS_PCA9532=m
+ CONFIG_LEDS_GPIO=y
+ CONFIG_LEDS_PWM=y
+ CONFIG_LEDS_SYSCON=y
++CONFIG_LEDS_QCOM_FLASH=m
+ CONFIG_LEDS_QCOM_LPG=m
+ CONFIG_LEDS_TRIGGER_TIMER=y
+ CONFIG_LEDS_TRIGGER_DISK=y
+@@ -1386,6 +1404,7 @@ CONFIG_IPQ_GCC_8074=y
+ CONFIG_IPQ_GCC_9574=y
+ CONFIG_IPQ_NSSCC_9574=m
+ CONFIG_MSM_GCC_8916=y
++CONFIG_MSM_GCC_8953=y
+ CONFIG_MSM_MMCC_8994=m
+ CONFIG_MSM_GCC_8994=y
+ CONFIG_MSM_GCC_8996=y
+@@ -1425,22 +1444,26 @@ CONFIG_SDM_VIDEOCC_845=y
+ CONFIG_SDM_DISPCC_845=y
+ CONFIG_SDM_LPASSCC_845=m
+ CONFIG_SDX_GCC_75=y
++CONFIG_SM_CAMCC_6350=m
+ CONFIG_SM_CAMCC_8250=m
+ CONFIG_SM_CAMCC_8550=m
+ CONFIG_SM_CAMCC_8650=m
+ CONFIG_SM_DISPCC_6115=m
+ CONFIG_SM_DISPCC_8250=y
++CONFIG_SM_DISPCC_6350=m
+ CONFIG_SM_DISPCC_8450=m
+ CONFIG_SM_DISPCC_8550=m
+ CONFIG_SM_DISPCC_8750=m
+ CONFIG_SM_GCC_4450=y
+ CONFIG_SM_GCC_6115=y
++CONFIG_SM_GCC_6350=y
+ CONFIG_SM_GCC_8350=y
+ CONFIG_SM_GCC_8450=y
+ CONFIG_SM_GCC_8550=y
+ CONFIG_SM_GCC_8650=y
+ CONFIG_SM_GCC_8750=y
+ CONFIG_SM_GPUCC_6115=m
++CONFIG_SM_GPUCC_6350=m
+ CONFIG_SM_GPUCC_8150=y
+ CONFIG_SM_GPUCC_8250=y
+ CONFIG_SM_GPUCC_8350=m
+@@ -1451,6 +1474,7 @@ CONFIG_SM_TCSRCC_8550=y
+ CONFIG_SM_TCSRCC_8650=y
+ CONFIG_SM_TCSRCC_8750=m
+ CONFIG_SA_VIDEOCC_8775P=m
++CONFIG_SM_VIDEOCC_6350=m
+ CONFIG_SM_VIDEOCC_8250=y
+ CONFIG_SM_VIDEOCC_8550=m
+ CONFIG_QCOM_HFPLL=y
+@@ -1719,6 +1743,7 @@ CONFIG_INTERCONNECT_IMX8MQ=m
+ CONFIG_INTERCONNECT_IMX8MP=y
+ CONFIG_INTERCONNECT_QCOM=y
+ CONFIG_INTERCONNECT_QCOM_MSM8916=m
++CONFIG_INTERCONNECT_QCOM_MSM8953=y
+ CONFIG_INTERCONNECT_QCOM_MSM8996=y
+ CONFIG_INTERCONNECT_QCOM_OSM_L3=m
+ CONFIG_INTERCONNECT_QCOM_QCM2290=y
+@@ -1734,6 +1759,7 @@ CONFIG_INTERCONNECT_QCOM_SC8280XP=y
+ CONFIG_INTERCONNECT_QCOM_SDM845=y
+ CONFIG_INTERCONNECT_QCOM_SDX75=y
+ CONFIG_INTERCONNECT_QCOM_SM6115=y
++CONFIG_INTERCONNECT_QCOM_SM6350=y
+ CONFIG_INTERCONNECT_QCOM_SM8150=y
+ CONFIG_INTERCONNECT_QCOM_SM8250=y
+ CONFIG_INTERCONNECT_QCOM_SM8350=y
+
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251014-arm64-defconfig-fp345-d3ece0c61c88
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
