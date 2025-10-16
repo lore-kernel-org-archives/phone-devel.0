@@ -1,112 +1,111 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6A82E36E9;
-	Thu, 16 Oct 2025 11:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760615531; cv=pass; b=eKeRZ55fa/HznnvH6B1BxNC5oCLDnXi3L27L/qsUmHFoau2V87Qxp7zKXzQ+JeU2FFpOiJhXmK9y6drZGO/ie4agOo6/En8mFMofoCeebc3Z0z2xyzMAdCHzRaysSvJzJC23z7HbIp/PwFcM+9aJKbiLksHxyNOm1GAxECECJa4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760615531; c=relaxed/simple;
-	bh=j66SJQar5QnOrEar4/L1Jfi7zP89uDDu8qt/3YJRtrY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=aYVCq45Vst00SKEcbfcM2uw0umr5mQ3xWW74rSHm8eJt+5uI1Zcitf2ajifDZouXlwIacySpvYjE1lxy/N0eWpjBC9fjknxqeF3GvKh0AXQhqKqXG8/WnXf7KatWVbklyfDymZaMxOX1Z4QXkGUv4biwR0VuWWH3SX1esF2nv7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=bREvLixJ; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BC32E54B3;
+	Thu, 16 Oct 2025 16:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760631420; cv=none; b=K+sqMPt0dkJPivjKCAAHO4+14IEziMOQTl+jcShrtKPpZDfeVVRjc4MYtUheLM27NFcZLmEp324qgTTupv+kaBzASpeCUNJEuFn35+XG1thonoaoVAMDDgAcA2+vUt9QuoJRCV5HlDBCwlPBGt0ZF+cZHVJU/zwRpnOqruug9CU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760631420; c=relaxed/simple;
+	bh=bnBK6gQXArLuqQ7PsSO5Q8xoCk11qgz4xqMAxigrWp4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=U04aA272u4xLG+uyb9S1oX4cNnTCgyGuq1IU/pTVGJshmG1mqFDYgAYL45O2vB2StJ35rQTl+WmHQMktpsgPKEjPFa6K+Hyt78t7HmtVFrnT3PgDh4qBbfWc3PuZhj4JLLzZrLbdGxdT8ROwJXQzJaiOgCOSbrOp3gicav+Un7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBfsoMsj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="bREvLixJ"
-ARC-Seal: i=1; a=rsa-sha256; t=1760615509; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kbUQO9XOk4YmvZgzkU0biflnf9kHyUt7JA6W8uNi4aZt5RXXs9laCNE4mTAUgmFQxbY9CjZ4A4+v/dcN6iDrSR9DuL2RhXWe9V6EYBXkVCUwe3Gfm4nOiE+GEbLDE/mXhcCKshRceftQWjKRdI9n2hlp2WlGzYiWY/NI5WSHmmM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760615509; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yCzFxbn7GJVSCGZwCm5WpUYtn8vecoWWAu+Ddkx7Aoc=; 
-	b=OZm2uPVUrcaAtJ7BALZXlKlLf+S1ZSzqLfCbjlLLiGFmE7aasX2Yzcdy++fiegpx5Xes+skEpsaOdofwN7CRf8kLdUshDAf4veDpPcTokkQUZkNNVmf6I6y17T8M/sGRsWLNmtEAHCGsyH5bdhINdCgDTauSn84scS2NWTtVX8c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760615509;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=yCzFxbn7GJVSCGZwCm5WpUYtn8vecoWWAu+Ddkx7Aoc=;
-	b=bREvLixJ7TS1jfVDhk/0b2WbKp/HbS/nHJbPgAohsKIrlKFOW3dOzGCGPDcwJ5Sg
-	fy1YkekZzLwebvUiqg14IEkDJzvEbS3bynjEYylaVIaD8gUfnqx28rUrvOEoXyX/ALj
-	RL8Nxt+KWW/HyF2d3ouk3XYIrTI2DQdFaTRcWJXY=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1760615506978686.2189466745768; Thu, 16 Oct 2025 04:51:46 -0700 (PDT)
-Date: Thu, 16 Oct 2025 08:51:46 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: =?UTF-8?Q?=22Guido_G=C3=BCnther=22?= <agx@sigxcpu.org>
-Cc: "Neil Armstrong" <neil.armstrong@linaro.org>,
-	"Jessica Zhang" <jessica.zhang@oss.qualcomm.com>,
-	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-	"Maxime Ripard" <mripard@kernel.org>,
-	"Thomas Zimmermann" <tzimmermann@suse.de>,
-	"David Airlie" <airlied@gmail.com>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>,
-	"dri-devel" <dri-devel@lists.freedesktop.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"phone-devel" <phone-devel@vger.kernel.org>
-Message-ID: <199ecdca3d9.3341649c978102.7928576754342044908@collabora.com>
-In-Reply-To: <20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org>
-References: <20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org>
-Subject: Re: [PATCH] drm/panel: visionox-rm69299: Depend on
- BACKLIGHT_CLASS_DEVICE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBfsoMsj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C4F26C16AAE;
+	Thu, 16 Oct 2025 16:16:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760631419;
+	bh=bnBK6gQXArLuqQ7PsSO5Q8xoCk11qgz4xqMAxigrWp4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=WBfsoMsjYv8n54e9df80eI9HFjHyudKk7oJGQxwitlkpU+eo8SYnX1Sx/vt7hZtTE
+	 g2Aqw/oXeM2eHooc7rxHW+icwCv1E+toJQQ+8JfoaUD0gGhvNdXJFkyhuWFAYJg8lE
+	 O/HP1l9HEw6R1dHPtqLRFjmA4clI7F/t1mszwG2KCz+wJGHyZ8SfV2Doi7CPpmSbvy
+	 o1dFk3GvmgEKkCDb5wFPJUibKpk3UsGCFSp9th2nVROSPxa3oRZjOvStbWjNQHWbsw
+	 tY3U6BwBXlQKotwnqEz6xdf67caE9ayn1ikBrWYMZ5ddn2yzxAU/EFfPgol8BcPr9w
+	 oJWL47EusXdpw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9194CCD1A1;
+	Thu, 16 Oct 2025 16:16:59 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 16 Oct 2025 18:16:58 +0200
+Subject: [PATCH v3 3/8] arm64: dts: qcom: sdm845-oneplus-fajita: Compatible
+ describing both DDIC and panel
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251016-s6e3fc2x01-v3-3-ce0f3566b903@ixit.cz>
+References: <20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz>
+In-Reply-To: <20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=860; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=Mdaar2hgWJbOqSL6WtOcpPiawiVPmyRpa3cF3G5hBoI=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo8Rp57dX7ERbtZtzUrmaWGhO+aGlrVwvoenRp9
+ A1HmNyxuGiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPEaeQAKCRBgAj/E00kg
+ cjYwD/43O/OAxwTC9/HG211kyEcuYIlgg7oCSb3+0B/WhuGKVrsmUHI6cJ+RN600JacTLU5NbeO
+ t+w3U+GuuYRc9Lp22XmFaOBDtoUaawhILNdVZ6LBD0bYoVFGP6MB84FvQBesQcutUpFE4NuBXPG
+ d6dw/Ke0SvQYQKuKmwn5+NoZgrdyQBL3oyIhM1ZPSCJrg/bzofPcd6zT50p7+2SDIgC0BcRQDT3
+ RVz/+smDnF520VbKvFxxgdd6kzzCYtEox52FGm41l+b9q9erplPpLHxJJvZys2z5aN/bRafxkNQ
+ CUcHiZ20SS1Y6AFi8Dl+FpS+Tm6slPbtrr93I5gy98z7Hyfcra6HHTV3GZIXUsq8AL74NcJVbdB
+ bXqbIU/B3mZ9TW5X9mkje9i8D20bwWK1XuHdqLyUqA65pOOxZgop74qAd3g8RsMEeA01KEqTv91
+ UIQ3ul1Tctg4FkiiWzqUSAiqWVywdy2Sb5JCnAfhEOYjWmbVBpDHL4/wiqapiK7xX3R7U96lOx7
+ HWHC9oQ8ic4o+6x8no/uIfE2UulfJCUbxK6cPOeYSiLqNr9sINupQ8o22sn97Fdiykm3niS2ZOt
+ Bchyh99+Jv3itFzzcV0kMbgLpyTTvmsSP3/4CjipaDGezxBEE1jehByVFlSsYn5ktvRgHX2PF3d
+ PE42kB15glEDjig==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Hello,
+From: David Heidelberg <david@ixit.cz>
 
----- On Thu, 16 Oct 2025 08:41:27 -0300 Guido G=C3=BCnther <agx@sigxcpu.org=
-> wrote ---
+Compatible should precisely describe the hardware used.
+Original compatible describing only the DDIC used, but omit describing
+the panel used (Samsung AMS641RW), which we have no way to detect.
 
- > We handle backlight so need that dependency.=20
- > =20
- > Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support=
-")=20
- > Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>=20
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Missing the KernelCI report tag:
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+index 7e75decfda052..d6cd873aef0de 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+@@ -32,7 +32,7 @@ battery: battery {
+ &display_panel {
+ 	status = "okay";
+ 
+-	compatible = "samsung,s6e3fc2x01";
++	compatible = "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01";
+ };
+ 
+ &i2c4 {
 
-Reported-by: kernelci.org bot <bot@kernelci.org>
+-- 
+2.51.0
 
- > ---=20
- >  drivers/gpu/drm/panel/Kconfig | 1 +=20
- >  1 file changed, 1 insertion(+)=20
- > =20
- > diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconf=
-ig=20
- > index 407c5f6a268b..59f5a31f3381 100644=20
- > --- a/drivers/gpu/drm/panel/Kconfig=20
- > +++ b/drivers/gpu/drm/panel/Kconfig=20
- > @@ -1112,6 +1112,7 @@ config DRM_PANEL_VISIONOX_RM69299=20
- >      tristate "Visionox RM69299"=20
- >      depends on OF=20
- >      depends on DRM_MIPI_DSI=20
- > +    depends on BACKLIGHT_CLASS_DEVICE=20
- >      help=20
- >        Say Y here if you want to enable support for Visionox=20
- >        RM69299  DSI Video Mode panel.=20
- > =20
- > ---=20
- > base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a=20
- > change-id: 20251016-visionox-rm69299-bl-7e6a2e30626d=20
- > =20
- > Best regards,=20
- > --=20
- > Guido G=C3=BCnther <agx@sigxcpu.org>=20
- > =20
- >=20
 
