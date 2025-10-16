@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB1D2580FF;
-	Thu, 16 Oct 2025 20:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C192E175F;
+	Thu, 16 Oct 2025 21:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760647624; cv=none; b=CO9gQjmt28or0LxxogAaNLFoM1Azn9XB0wKjtUKHpmdfFR2meI8X7z/I7gyaAm0qrQzdwN0bcE/UDPjrMjxw1vtG30jg/3TtVWuHAMZyA/m6pkcJWreJ3/jGWx970JFGaz9sHCjTK/N0hJUA+rB+V/CNwCq7xS6tHXk5eH5VB7k=
+	t=1760648411; cv=none; b=mVkREQnxHxwG4lRtz+j6TmK5vdDcnVmGI63Kp3NEEl1G3Kd4eCzLUkQ5ADHhcsUt32ijiSfpCZ6Xl6csTV6jU49p11Ic4NUUfbnSLeDN0KntK63+65eDkyrcJ5CZuVygUfMAbdnuqCXeI2N6m0wSv1vUnLL+dE3c9H9nX50hfpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760647624; c=relaxed/simple;
-	bh=FvjPKaHy3uDCE3u2I9fXIEVxKeqvzoRXv8edK6A3fXY=;
+	s=arc-20240116; t=1760648411; c=relaxed/simple;
+	bh=HkuOkxyB2m/+D/rJgqkrVVupVYZ0tLZ0vgu0chsz3qI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GllMx0fwqO+wfZkBLMOl3di5zDWSSr6sOtQggtxbK9xwVbr1Y1nGbFNSPrQldp3fDJhpT7hbyLYzTvruef94Ort1EGXOp7HlA5dFxnzJigQ4NJ/MBw6um1rkKtRTsgj0ZR0uHxz9QybUM/xsh+QBPePBAht8XIRe8jFO3qSV3io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=EOLV7BGd; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=g6zWadnw6xfcGL5ksSfAMBw4ALP7jHRDRiUu0yiiHqFqIjYKtim9gzpxUDH3XKpjbv6/1awKfgH9ky/E0WwrI+SlAHbECUjdDcb6xRWnrFFPyzdtelJrE9j2igX2uZecSqXVthJYUeAPaOgOr0jLufdqzUn+RJ2X16mH1fGCx3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=NNhEyqKN; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="EOLV7BGd"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="NNhEyqKN"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id DC1B95340895;
-	Thu, 16 Oct 2025 22:46:56 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 3160F53410CB;
+	Thu, 16 Oct 2025 23:00:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1760647616;
+	t=1760648406;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2M4RQrRAYPrPAzAkQd7q+bC/wmwzYAp1UUQk/QFp0Q8=;
-	b=EOLV7BGd2fd5HoW/dYJBg22hfbmcGU/636unV509PgYFMA8Om9XbAiqifmFmVBpd/aZOyh
-	0zAWfPcqwx/jcIslQuFtEV78bCcc/cURaEq6GrF3VhhWuJbpUa+D2I79pqn1abx3+dtnk+
-	MUYHKWdxeE6DxUZ2BxbG8L1QGDSSqd0=
-Message-ID: <d13cdf83-22df-4a24-a711-2db4abe3a0a8@ixit.cz>
-Date: Thu, 16 Oct 2025 22:46:56 +0200
+	bh=S5/vuvOPT4+EkrbEoZhHfRioInqnLB9uxTYVw4dXlMg=;
+	b=NNhEyqKNFf72k3lhO8+mHcjh/IPLFh/OHq+uWPf3/dVjVP8DPKb1oz8d+xtjaEkajTWVEX
+	WWfLU5zGlZMdAKb1Y/YMoDT1ryPXhI3IFS8ykoCOvZCCP0fGGiArS3uiiiRJMLgag8BgEx
+	ZxNFN/K2/085vjXED7pZEPDt1Mom0J0=
+Message-ID: <e230521b-02f5-4219-a196-eaede1a31cf6@ixit.cz>
+Date: Thu, 16 Oct 2025 23:00:05 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/8] drm/panel: Add Samsung S6E3FC2X01 DDIC with
- AMS641RW panel
+Subject: Re: [PATCH v3 7/8] arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
 To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -56,10 +55,11 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
  Casey Connolly <casey.connolly@linaro.org>,
  Jessica Zhang <jesszhan0024@gmail.com>, dri-devel@lists.freedesktop.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 References: <20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz>
- <20251016-s6e3fc2x01-v3-4-ce0f3566b903@ixit.cz>
- <didkbltadu4ql6xcqtjrtf2iguody5bgy6mqlwtbyfgbambaii@mzofzymnfbju>
+ <20251016-s6e3fc2x01-v3-7-ce0f3566b903@ixit.cz>
+ <rung7om2fvwmfyihgsnn7j2b6pak7sjt2ayzy42ovugroti4jy@wt6chj662llr>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -105,96 +105,55 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <didkbltadu4ql6xcqtjrtf2iguody5bgy6mqlwtbyfgbambaii@mzofzymnfbju>
+In-Reply-To: <rung7om2fvwmfyihgsnn7j2b6pak7sjt2ayzy42ovugroti4jy@wt6chj662llr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 16/10/2025 22:12, Dmitry Baryshkov wrote:
-> On Thu, Oct 16, 2025 at 06:16:59PM +0200, David Heidelberg via B4 Relay wrote:
+On 16/10/2025 22:15, Dmitry Baryshkov wrote:
+> On Thu, Oct 16, 2025 at 06:17:02PM +0200, David Heidelberg via B4 Relay wrote:
 >> From: David Heidelberg <david@ixit.cz>
 >>
->> Add panel driver used in the OnePlus 6T.
+>> Describe panel Tearing Effect (TE) GPIO line.
 >>
->> No datasheet, based mostly on EDK2 init sequence and the downstream driver.
->>
->> Note: This driver doesn't use previously mentioned "samsung,s6e3fc2x01"
->> by OnePlus 6T device-tree.
->> The reason is because DDIC itself without knowing the panel type used
->> with it will not give the driver enough information about the panel used,
->> as the panel cannot be autodetected.
->> While would be more practical to support the original compatible,
->> I would like to avoid it, to prevent confusing devs upstreaming DDICs.
->>
->> Based on work of:
->>    Casey Connolly <casey@connolly.tech>
->>    Joel Selvaraj <foss@joelselvaraj.com>
->>    Nia Espera <a5b6@riseup.net>
->>
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 >> Signed-off-by: David Heidelberg <david@ixit.cz>
 >> ---
->>   MAINTAINERS                                      |   1 +
->>   drivers/gpu/drm/panel/Kconfig                    |  13 +
->>   drivers/gpu/drm/panel/Makefile                   |   1 +
->>   drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c | 399 +++++++++++++++++++++++
->>   4 files changed, 414 insertions(+)
+>>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
+>>   1 file changed, 1 insertion(+)
 >>
->> +
->> +static const struct drm_display_mode ams641rw_mode = {
->> +	.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
->> +	.hdisplay = 1080,
->> +	.hsync_start = 1080 + 72,
->> +	.hsync_end = 1080 + 72 + 16,
->> +	.htotal = 1080 + 72 + 16 + 36,
->> +	.vdisplay = 2340,
->> +	.vsync_start = 2340 + 32,
->> +	.vsync_end = 2340 + 32 + 4,
->> +	.vtotal = 2340 + 32 + 4 + 18,
->> +	.width_mm = 68,
->> +	.height_mm = 145,
->> +};
->> +
->> +static int s6e3fc2x01_get_modes(struct drm_panel *panel,
->> +					struct drm_connector *connector)
->> +{
->> +	struct drm_display_mode *mode;
->> +
->> +	mode = drm_mode_duplicate(connector->dev, &ams641rw_mode);
->> +	if (!mode)
->> +		return -ENOMEM;
->> +
->> +	drm_mode_set_name(mode);
->> +
->> +	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
->> +	connector->display_info.width_mm = mode->width_mm;
->> +	connector->display_info.height_mm = mode->height_mm;
->> +	drm_mode_probed_add(connector, mode);
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> index a8e87507d667b..b663345de0214 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> @@ -460,6 +460,7 @@ display_panel: panel@0 {
+>>   		vci-supply = <&panel_vci_3v3>;
+>>   		poc-supply = <&panel_vddi_poc_1p8>;
+>>   
+>> +		te-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
 > 
-> drm_connector_helper_get_modes_fixed()
+> Isn't it GPIO 10?
 
-Thanks, next version will have it.>
->> +
->> +	return 1;
->> +}
->> +
->> +
->> +static const struct of_device_id s6e3fc2x01_of_match[] = {
->> +	/* samsung,s6e3fc2x01 will default to the AMS641RW mode (legacy) */
->> +	{ .compatible = "samsung,s6e3fc2x01", .data = &ams641rw_mode },
-> 
-> Is there a need to probide this kind of legacy?
+The datasheet says that both 10 and 30 are TE GPIOs.
 
-I don't know. I don't see the need to provide it, but I understood you 
-may want to have it. If not, please tell me and I'll happily remove it 
-from next version.
+The downstream and mainline code describes gpio 30 as ESD check and as 
+you write. So generally it seems to be confirmed that 10 is TE (same as 
+for other sdm845 devices as Samsung S9).
 
-David
+Will be fixed in the next patchset version.
+
+Thank you
+
+
 
 > 
->> +	{ .compatible = "samsung,s6e3fc2x01-ams641rw", .data = &ams641rw_mode },
->> +	{ /* sentinel */ }
->> +};
->> +MODULE_DEVICE_TABLE(of, s6e3fc2x01_of_match);
->> +
+>>   		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+>>   
+>>   		pinctrl-0 = <&panel_default>;
+>>
+>> -- 
+>> 2.51.0
+>>
+>>
 > 
 
 -- 
