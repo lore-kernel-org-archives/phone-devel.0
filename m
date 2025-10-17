@@ -1,127 +1,150 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEFA1D554;
-	Fri, 17 Oct 2025 08:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835712DA77E
+	for <phone-devel@vger.kernel.org>; Fri, 17 Oct 2025 09:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760689698; cv=none; b=f7/u3ShGZajfmgCuhw94sIY6oAgsPWMX9UTYuOu3zK+7flIBZxgJivj/ZHPJS1HvDZd8Yc261gRGG8ECEAXNVtWTKixZroHlVZ5twJ+nLYd47dGZI2ZSS6hDBSCq0K1NoI5mjYLR2iarj/W6pfeqlBftr+mv/H4v/cMAqKmiNcg=
+	t=1760694565; cv=none; b=RX1TCT5+2jURdEzzojX1oBeQc6/FSPM+Cnnr8dqhjfuRPlS3F7UEOHTnpt2R6bXFJig9g0taSzs6GLsM/4RMj7DBmPTF0/MA7o+PSP2utHKnAaWSfSL703U5QC7/srelbKxyaqc7uiAJhFj/SoH4a5x+MGSHNYbmcfS2pzmsbUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760689698; c=relaxed/simple;
-	bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Cgqvi9aSl2W9VH6be4cLaAvpw82GUhSwVG3JBMo4UbpXdW+BUM1K6DDqPqxpa03bWNh9GF/OXzRvKjZn20bl9LvlfmHwjarqmTkU5tXGr3MNZjvXkdFDeauzkyIbMTONfL3aYAaZNQdVSp2W2aT0sgs0Y/zCQYPTRdbRyAJ8YEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=JOed2Jl5; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=MJdawN3Z; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1760694565; c=relaxed/simple;
+	bh=p1l1EMB0E/1R3B7t2iBpGx6TGq5LupRC6wvL5LvYLCg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QnZjzHHtzSmHtFqy4B0Jxp8f87a4hEkcuoe2izvoMr3HksY0mzWHgepnwfn/Cle3Oe0fvYRjYVVQIrJ8YDLViB6A79iBMc6MUyGuNPTia6Wd+/xXZqPwKmksy3jzoGEi3HC6JEf+dHpHXX2R7k2wkRh41XvEu67Xf0iPsQolTvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hMnG4GUl; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="JOed2Jl5";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="MJdawN3Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1760689692; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
-	h=From:Date:Subject:To:Cc:From;
-	b=JOed2Jl5w5O8oKrfp80pNCtAPHaBwlEkxiw6BDuC6S+oS4UggBAH64MAr5AzaWoi7
-	 IbWdKSGwklfUBtCy5cGV2xMrPC5qjCLJjTjdZurqVk8gcSDvies2+MD321lLDvpGeI
-	 0oXT++vpnSZ9K8MpoAulQfStJkvIn4OfoxXI83BXU0DQ6PBEdNyFAnMZLG9qVH+zC2
-	 vlu9c8lm8XFa3MwY9gjJgsZeXQGfLzD0iaFjA+8CLaAcZ95nF60uXZq+K13Ft1Q0Ny
-	 bC1+Qd1zwYW9iyfvsMxdS+AVxEpf0NhJxw7NuVBOhRT7Lk2qRj8NUojdH5CRT7ecuG
-	 yQUS6niz5Zlpg==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 1FE08FB03;
-	Fri, 17 Oct 2025 10:28:12 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id DVy3VHxS0P9I; Fri, 17 Oct 2025 10:28:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1760689690; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
-	h=From:Date:Subject:To:Cc:From;
-	b=MJdawN3ZhI76o167EpanWP/eB65PwH5DtEhCqgvQrlawmNNovbYjzl7uxXssu+vqU
-	 OeCS9xEKn7tf+lbVm/dcAKBLDG+BpQxqMKC++9R4SRUnsYoye6ExvyQlAawj/KR5zV
-	 HtHhnVdBDVckOvvWUjXExVow9LUEF4Z8vbAsYy9ABKSQhgpjgjMjVK34jzzSIrR7Gb
-	 4Ocr195uBDlaNtTpfJlEDI+Bddxr5MUKteRMNE2UV2eXy30K/szswo34n3JpIUc6l7
-	 P85hYHN664qpND0JB/91EnRJujZdp7sV+iGOxBONGMZ0RtvF50GJ7kv08vnevBhPf5
-	 ImuZ4DSLS7YKQ==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Fri, 17 Oct 2025 10:27:59 +0200
-Subject: [PATCH v2] drm/panel: visionox-rm69299: Depend on
- BACKLIGHT_CLASS_DEVICE
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hMnG4GUl"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-427091cd4fdso136122f8f.1
+        for <phone-devel@vger.kernel.org>; Fri, 17 Oct 2025 02:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1760694562; x=1761299362; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S8JPhxrGotYF3QDvlp9yLVE5fcIkI/cq1aRqnIuBpzQ=;
+        b=hMnG4GUlywoqU8535YK7M3Vzg+6NGJa0qYGfLYHqYlMAd52ZREmBrJ8s8cFZpTLwpM
+         +45Qsh2kXHPxtIMWmDtYtxcEs2LY/3IFlNS8xAHzuD1KEOycmLyhtYy8UBn9Zw7itbmy
+         ptmwa8vMdSlL+Q1vTL9bmz208kuubqauxTPYXoQMG3nsx73c/OHFzyUnMm+Ot3imbldA
+         ZACxUX2GVkh73S7AsPDJxJ0rqDU3eV8bHEKyF0NXxrSbgisW928ZlSnWmLHymyJ1izn2
+         qTb+h+D2UEBkJlQy+M7w4ORljCqcgKOvJBHBP/8/V6rKL27vzpjZQ1FZsJOaSsXFEtwA
+         vyuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760694562; x=1761299362;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=S8JPhxrGotYF3QDvlp9yLVE5fcIkI/cq1aRqnIuBpzQ=;
+        b=N6+EmzNsNa430IlBWZw7nMQPKTJcLiCfU070pjdTIIElZ8/n+lbVBhGRIBNsyUV08y
+         MR+oO/QFy+FaOH2YV6MoMHtOQEXXubaJNNbGYM22YMux30ErCeTyCCqrLErmy/mKGcSt
+         PIzO+HQ+9Zu677BWEd9I0lu6KjOh4h+XASReddP9u8QPWtxR68Zw7jf7nuYXbsa8G0u1
+         CRbRuqYvAKPpbLgEgmgVP8OVyU82ANN5PBoeNIwD5gqYu/jo9x80EfwApf1sHdVHr1ZM
+         Qn0xlCSWahZCqkD2iZ6fQMTDv35yO9kygV7/f9LUwbA0y7S5LIVqvqgiJ9/xyX9/9hBh
+         03BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXSTeuDnvwEBoag51Z/V8DaOFv59sOZiNk0Qwv/qSib1IgD2u0Guhb6riFSr0oHWhSZoRszq3CAFj5sXw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpQGTytAFPM2f+ZSieHX1aJIOa8bsTbjD84pvJPrgPL5SUK29x
+	FDObnTHYpTbD/LF+4D9cJtm0uJ1RX4RTap+VUdAiZSLpV8+eARRfebyPGPwl4uh91n8=
+X-Gm-Gg: ASbGncu/2rFm8nJvpPH2z9KQK5ejWxQ28iS5lC8JbyheSD4xMQ8JpXeeldQg0EDn31d
+	wwyWAdXFq1Nd4Nfbxx3eP4msREIM9idKIs9hCO0tchVHR6nwgoMNwULzpOzg3K3uNCIf6VSUvj2
+	A2wYNKYEOUUkW1BzgKVuHsB/4i0lkWu89LIVCm09FXojwdZ8mAF9XuXAiKlO+ani6rSVkTASwaY
+	pOJKWHcmAdUJPSehu6W8cDwDHh3FJW2//WpoDRqA/hD7NUYbq611qmJ2tWKiBLtZayvh1Ej25mC
+	T3JfpU2F1ZtpVK8+8qFBzWJU7n/OGqFDg1XQYkM3prQDm1fJ7fcVBUlAGx9J+/CLXuYbyK3olqB
+	OU3s5eekPfANC93Kojml8SJuqkDlU1wUMM5VxAbQKNUM5ENCOM4s330HVPQsKmK3+9PhRbwhq9E
+	9EatfBOIxEVIEnl2zJOsIw9GdIJqDZi1HI2oDDrQHJoVQLW3HTmlDd
+X-Google-Smtp-Source: AGHT+IGYXVXXR9soou2QlY5fvmDy0emyM8wDru5hxk0Z/Fux+gUxcfzTmBtEgW/PNyfNdNzJPuVz6g==
+X-Received: by 2002:a05:6000:186a:b0:3ec:db13:89e with SMTP id ffacd0b85a97d-42704d1441cmr1773044f8f.7.1760694561592;
+        Fri, 17 Oct 2025 02:49:21 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:5849:4623:6b2a:2be9? ([2a01:e0a:3d9:2080:5849:4623:6b2a:2be9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4710ed57cedsm43662085e9.2.2025.10.17.02.49.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 02:49:21 -0700 (PDT)
+Message-ID: <dff86c02-996b-4aba-9f6b-013d1fcb040f@linaro.org>
+Date: Fri, 17 Oct 2025 11:49:20 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
-X-B4-Tracking: v=1; b=H4sIAA7+8WgC/32NwQ6CMBBEf4Xs2TV0CcV68j8MhwIrbKKUtEpqS
- P/dinePbzLzZoPAXjjAudjA8ypB3JyBDgX0k51HRhkyA5VUq1Jp/FVcRP/QhozB7o4Na0tclZr
- 0AHm5eL5J3K3XNvMk4en8ez9Z1Tf971sVKhyq7qQay7UlfQkyxn55HZ0foU0pfQDJlfSFuAAAA
- A==
-X-Change-ID: 20251016-visionox-rm69299-bl-7e6a2e30626d
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v2] drm/panel: visionox-rm69299: Depend on
+ BACKLIGHT_CLASS_DEVICE
+To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel <phone-devel@vger.kernel.org>, 
- Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1113; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQm84ZjRUY3JuRHc0RnArbEY2RTNvMEcyaDd3SWlYCjJ0TzRZRmFOcWp3R0dtK01T
- YTJKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYVBIK0V3QUt
- DUkFsdjRaU1N2ekI0L3YxRUFDV2Y2R2p5YTlLMkJ4MUJLSU1BL21McTVIcm0zOERuVE9aY3l3Qw
- pKWnRibkJUdVBpQkRQdmlxaG9uODRzbG1GVzRZZUlISGdhTkRBdEp4MjdrZE1iSmhQbDhwZXhnb
- 0xxc3JJWFJ2CkhSdjBOZ096cVN5Vkx3b25mbjBkQTUwdmRXZWdadVZ5bjFKczJMOW03cis3NkpP
- dndGTXUwSitKMHp5U1FXV00KbmZ0ZTROSWRaZlB0eTRiNHl4QWRZZVdkbWE4V2dmR2pnMzUrRzR
- 6RjRmUE9Rb3ZTRUNLdWo1dDlrbEM4TUdVbApoK0FNWUVuR0JOazdPeHY5SVphVFI3YVhqbnc3NH
- lrWWRDSWJOSC9FbVNGQU1UU3lpWkVkcEtNN3JFT08wbU9XCnZ6NHU3ams4d3hpaWtKcTBHUjA4e
- lBBRm1XU3k4c1VTTmtTM29SbVg2K1p3ajBtZFUzYmUwZWFuMFc3V3pPSk8KZEdDRTZ2a01Na0pl
- dE0remduWFlvenJOVUc3VzQ1WkZhNHRnamNuREN6bFplUy8vazlSQmFWSjNDOTIraFJCUwp4QU4
- wZDA3WjZkelFZN3NSMFZUeVRDQWZrZ3hYcyszRDBHWXFDRjJJSGNsZnU2Y2hxbkllVEFEODBFR3
- htenJNCnN5Ty9qbi80cFpuYzFzazdMTDN0d0Zydi81VEZNQjZ6VTZ4VlhxOGlROWszU1lGUFdyY
- TFtdzVvbzVKOUp6SlYKS3NqQ3VqcXRVVDBINEU3RXRmMXVnUnRLNkhGNURCQ0s3bXpJQ0F1aWNU
- OHMzSEpUWDBmWkZ2RlNJeDF5UFFOdwphRitiNVBFRDhKV0VBQmVaUGpwRUNQZTUxOTZOSWpYbDF
- BVlNEWk9xS1FuRG9UWkV3bFJ3VFd2ckpubGhBTHlGCmd1aWo2QT09Cj1vcUhqCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel <phone-devel@vger.kernel.org>,
+ Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>
+References: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-We handle backlight so need that dependency.
+On 10/17/25 10:27, Guido Günther wrote:
+> We handle backlight so need that dependency.
+> 
+> Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support")
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> ---
+> Changes in v2:
+> - Add Reported-by: kernelci.org bot <bot@kernelci.org>
+> - Link to v1: https://lore.kernel.org/r/20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org
+> ---
+>   drivers/gpu/drm/panel/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+> index 407c5f6a268b..59f5a31f3381 100644
+> --- a/drivers/gpu/drm/panel/Kconfig
+> +++ b/drivers/gpu/drm/panel/Kconfig
+> @@ -1112,6 +1112,7 @@ config DRM_PANEL_VISIONOX_RM69299
+>   	tristate "Visionox RM69299"
+>   	depends on OF
+>   	depends on DRM_MIPI_DSI
+> +	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for Visionox
+>   	  RM69299  DSI Video Mode panel.
+> 
+> ---
+> base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a
+> change-id: 20251016-visionox-rm69299-bl-7e6a2e30626d
+> 
+> Best regards,
 
-Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support")
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
----
-Changes in v2:
-- Add Reported-by: kernelci.org bot <bot@kernelci.org>
-- Link to v1: https://lore.kernel.org/r/20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org
----
- drivers/gpu/drm/panel/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 407c5f6a268b..59f5a31f3381 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -1112,6 +1112,7 @@ config DRM_PANEL_VISIONOX_RM69299
- 	tristate "Visionox RM69299"
- 	depends on OF
- 	depends on DRM_MIPI_DSI
-+	depends on BACKLIGHT_CLASS_DEVICE
- 	help
- 	  Say Y here if you want to enable support for Visionox
- 	  RM69299  DSI Video Mode panel.
-
----
-base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a
-change-id: 20251016-visionox-rm69299-bl-7e6a2e30626d
-
-Best regards,
--- 
-Guido Günther <agx@sigxcpu.org>
-
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
