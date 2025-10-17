@@ -1,161 +1,127 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C192E175F;
-	Thu, 16 Oct 2025 21:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEFA1D554;
+	Fri, 17 Oct 2025 08:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760648411; cv=none; b=mVkREQnxHxwG4lRtz+j6TmK5vdDcnVmGI63Kp3NEEl1G3Kd4eCzLUkQ5ADHhcsUt32ijiSfpCZ6Xl6csTV6jU49p11Ic4NUUfbnSLeDN0KntK63+65eDkyrcJ5CZuVygUfMAbdnuqCXeI2N6m0wSv1vUnLL+dE3c9H9nX50hfpc=
+	t=1760689698; cv=none; b=f7/u3ShGZajfmgCuhw94sIY6oAgsPWMX9UTYuOu3zK+7flIBZxgJivj/ZHPJS1HvDZd8Yc261gRGG8ECEAXNVtWTKixZroHlVZ5twJ+nLYd47dGZI2ZSS6hDBSCq0K1NoI5mjYLR2iarj/W6pfeqlBftr+mv/H4v/cMAqKmiNcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760648411; c=relaxed/simple;
-	bh=HkuOkxyB2m/+D/rJgqkrVVupVYZ0tLZ0vgu0chsz3qI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g6zWadnw6xfcGL5ksSfAMBw4ALP7jHRDRiUu0yiiHqFqIjYKtim9gzpxUDH3XKpjbv6/1awKfgH9ky/E0WwrI+SlAHbECUjdDcb6xRWnrFFPyzdtelJrE9j2igX2uZecSqXVthJYUeAPaOgOr0jLufdqzUn+RJ2X16mH1fGCx3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=NNhEyqKN; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1760689698; c=relaxed/simple;
+	bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Cgqvi9aSl2W9VH6be4cLaAvpw82GUhSwVG3JBMo4UbpXdW+BUM1K6DDqPqxpa03bWNh9GF/OXzRvKjZn20bl9LvlfmHwjarqmTkU5tXGr3MNZjvXkdFDeauzkyIbMTONfL3aYAaZNQdVSp2W2aT0sgs0Y/zCQYPTRdbRyAJ8YEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=JOed2Jl5; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=MJdawN3Z; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="NNhEyqKN"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 3160F53410CB;
-	Thu, 16 Oct 2025 23:00:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1760648406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=S5/vuvOPT4+EkrbEoZhHfRioInqnLB9uxTYVw4dXlMg=;
-	b=NNhEyqKNFf72k3lhO8+mHcjh/IPLFh/OHq+uWPf3/dVjVP8DPKb1oz8d+xtjaEkajTWVEX
-	WWfLU5zGlZMdAKb1Y/YMoDT1ryPXhI3IFS8ykoCOvZCCP0fGGiArS3uiiiRJMLgag8BgEx
-	ZxNFN/K2/085vjXED7pZEPDt1Mom0J0=
-Message-ID: <e230521b-02f5-4219-a196-eaede1a31cf6@ixit.cz>
-Date: Thu, 16 Oct 2025 23:00:05 +0200
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="JOed2Jl5";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="MJdawN3Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1760689692; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JOed2Jl5w5O8oKrfp80pNCtAPHaBwlEkxiw6BDuC6S+oS4UggBAH64MAr5AzaWoi7
+	 IbWdKSGwklfUBtCy5cGV2xMrPC5qjCLJjTjdZurqVk8gcSDvies2+MD321lLDvpGeI
+	 0oXT++vpnSZ9K8MpoAulQfStJkvIn4OfoxXI83BXU0DQ6PBEdNyFAnMZLG9qVH+zC2
+	 vlu9c8lm8XFa3MwY9gjJgsZeXQGfLzD0iaFjA+8CLaAcZ95nF60uXZq+K13Ft1Q0Ny
+	 bC1+Qd1zwYW9iyfvsMxdS+AVxEpf0NhJxw7NuVBOhRT7Lk2qRj8NUojdH5CRT7ecuG
+	 yQUS6niz5Zlpg==
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 1FE08FB03;
+	Fri, 17 Oct 2025 10:28:12 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DVy3VHxS0P9I; Fri, 17 Oct 2025 10:28:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1760689690; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=MJdawN3ZhI76o167EpanWP/eB65PwH5DtEhCqgvQrlawmNNovbYjzl7uxXssu+vqU
+	 OeCS9xEKn7tf+lbVm/dcAKBLDG+BpQxqMKC++9R4SRUnsYoye6ExvyQlAawj/KR5zV
+	 HtHhnVdBDVckOvvWUjXExVow9LUEF4Z8vbAsYy9ABKSQhgpjgjMjVK34jzzSIrR7Gb
+	 4Ocr195uBDlaNtTpfJlEDI+Bddxr5MUKteRMNE2UV2eXy30K/szswo34n3JpIUc6l7
+	 P85hYHN664qpND0JB/91EnRJujZdp7sV+iGOxBONGMZ0RtvF50GJ7kv08vnevBhPf5
+	 ImuZ4DSLS7YKQ==
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Date: Fri, 17 Oct 2025 10:27:59 +0200
+Subject: [PATCH v2] drm/panel: visionox-rm69299: Depend on
+ BACKLIGHT_CLASS_DEVICE
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/8] arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz>
- <20251016-s6e3fc2x01-v3-7-ce0f3566b903@ixit.cz>
- <rung7om2fvwmfyihgsnn7j2b6pak7sjt2ayzy42ovugroti4jy@wt6chj662llr>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <rung7om2fvwmfyihgsnn7j2b6pak7sjt2ayzy42ovugroti4jy@wt6chj662llr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
+X-B4-Tracking: v=1; b=H4sIAA7+8WgC/32NwQ6CMBBEf4Xs2TV0CcV68j8MhwIrbKKUtEpqS
+ P/dinePbzLzZoPAXjjAudjA8ypB3JyBDgX0k51HRhkyA5VUq1Jp/FVcRP/QhozB7o4Na0tclZr
+ 0AHm5eL5J3K3XNvMk4en8ez9Z1Tf971sVKhyq7qQay7UlfQkyxn55HZ0foU0pfQDJlfSFuAAAA
+ A==
+X-Change-ID: 20251016-visionox-rm69299-bl-7e6a2e30626d
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel <phone-devel@vger.kernel.org>, 
+ Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1113; i=agx@sigxcpu.org;
+ h=from:subject:message-id; bh=bv0MFcUJUgE4Ccd0jdtsICdcdAGTrf3WNaZSSKtj3Xg=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
+ UhqQWNzbVlnQm84ZjRUY3JuRHc0RnArbEY2RTNvMEcyaDd3SWlYCjJ0TzRZRmFOcWp3R0dtK01T
+ YTJKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYVBIK0V3QUt
+ DUkFsdjRaU1N2ekI0L3YxRUFDV2Y2R2p5YTlLMkJ4MUJLSU1BL21McTVIcm0zOERuVE9aY3l3Qw
+ pKWnRibkJUdVBpQkRQdmlxaG9uODRzbG1GVzRZZUlISGdhTkRBdEp4MjdrZE1iSmhQbDhwZXhnb
+ 0xxc3JJWFJ2CkhSdjBOZ096cVN5Vkx3b25mbjBkQTUwdmRXZWdadVZ5bjFKczJMOW03cis3NkpP
+ dndGTXUwSitKMHp5U1FXV00KbmZ0ZTROSWRaZlB0eTRiNHl4QWRZZVdkbWE4V2dmR2pnMzUrRzR
+ 6RjRmUE9Rb3ZTRUNLdWo1dDlrbEM4TUdVbApoK0FNWUVuR0JOazdPeHY5SVphVFI3YVhqbnc3NH
+ lrWWRDSWJOSC9FbVNGQU1UU3lpWkVkcEtNN3JFT08wbU9XCnZ6NHU3ams4d3hpaWtKcTBHUjA4e
+ lBBRm1XU3k4c1VTTmtTM29SbVg2K1p3ajBtZFUzYmUwZWFuMFc3V3pPSk8KZEdDRTZ2a01Na0pl
+ dE0remduWFlvenJOVUc3VzQ1WkZhNHRnamNuREN6bFplUy8vazlSQmFWSjNDOTIraFJCUwp4QU4
+ wZDA3WjZkelFZN3NSMFZUeVRDQWZrZ3hYcyszRDBHWXFDRjJJSGNsZnU2Y2hxbkllVEFEODBFR3
+ htenJNCnN5Ty9qbi80cFpuYzFzazdMTDN0d0Zydi81VEZNQjZ6VTZ4VlhxOGlROWszU1lGUFdyY
+ TFtdzVvbzVKOUp6SlYKS3NqQ3VqcXRVVDBINEU3RXRmMXVnUnRLNkhGNURCQ0s3bXpJQ0F1aWNU
+ OHMzSEpUWDBmWkZ2RlNJeDF5UFFOdwphRitiNVBFRDhKV0VBQmVaUGpwRUNQZTUxOTZOSWpYbDF
+ BVlNEWk9xS1FuRG9UWkV3bFJ3VFd2ckpubGhBTHlGCmd1aWo2QT09Cj1vcUhqCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
+ fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
 
-On 16/10/2025 22:15, Dmitry Baryshkov wrote:
-> On Thu, Oct 16, 2025 at 06:17:02PM +0200, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Describe panel Tearing Effect (TE) GPIO line.
->>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> index a8e87507d667b..b663345de0214 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> @@ -460,6 +460,7 @@ display_panel: panel@0 {
->>   		vci-supply = <&panel_vci_3v3>;
->>   		poc-supply = <&panel_vddi_poc_1p8>;
->>   
->> +		te-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
-> 
-> Isn't it GPIO 10?
+We handle backlight so need that dependency.
 
-The datasheet says that both 10 and 30 are TE GPIOs.
+Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support")
+Reported-by: kernelci.org bot <bot@kernelci.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+Changes in v2:
+- Add Reported-by: kernelci.org bot <bot@kernelci.org>
+- Link to v1: https://lore.kernel.org/r/20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org
+---
+ drivers/gpu/drm/panel/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-The downstream and mainline code describes gpio 30 as ESD check and as 
-you write. So generally it seems to be confirmed that 10 is TE (same as 
-for other sdm845 devices as Samsung S9).
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 407c5f6a268b..59f5a31f3381 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -1112,6 +1112,7 @@ config DRM_PANEL_VISIONOX_RM69299
+ 	tristate "Visionox RM69299"
+ 	depends on OF
+ 	depends on DRM_MIPI_DSI
++	depends on BACKLIGHT_CLASS_DEVICE
+ 	help
+ 	  Say Y here if you want to enable support for Visionox
+ 	  RM69299  DSI Video Mode panel.
 
-Will be fixed in the next patchset version.
+---
+base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a
+change-id: 20251016-visionox-rm69299-bl-7e6a2e30626d
 
-Thank you
-
-
-
-> 
->>   		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
->>   
->>   		pinctrl-0 = <&panel_default>;
->>
->> -- 
->> 2.51.0
->>
->>
-> 
-
+Best regards,
 -- 
-David Heidelberg
+Guido Günther <agx@sigxcpu.org>
 
