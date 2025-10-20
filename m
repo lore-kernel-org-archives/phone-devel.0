@@ -1,39 +1,33 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A61684B0;
-	Mon, 20 Oct 2025 14:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59042E090C;
+	Mon, 20 Oct 2025 20:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760969040; cv=none; b=F/4kL/yvil0oclp6UhjVlMM6Xo4vhainyqW89OSyBaLVzzNWk21J37Bvip2X1Yja3cPbq3AFrP6aMIGf5v+A5KMRbNoL7p01j1jIw1wmKDo1R/vr+WV6P/bW0R5Sb4wYDpywbdKpuBNg3bMPfw6xxkHhEiaz5vMZmAQ8Qb6yYa8=
+	t=1760993095; cv=none; b=LMjPM3cehQvxuLGvtTN3frMSAqK5NvvCymy3FW28v4ro1qB7vEbrqRYsWc4t0CiGe5FVrkmpF7tNVjTR/P7tpj//ERZ/x9DwuzhH8ovXYeL+KZwADBBSf8XhRY5WyGFxPBN7qh48D0gmekqbWfb4G3Yf1RuDGqdI9i0XLmrLCdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760969040; c=relaxed/simple;
-	bh=btjEQO5WGFEITSL2Qu0TwJo19bxva8VXFu4dsNQmnr0=;
+	s=arc-20240116; t=1760993095; c=relaxed/simple;
+	bh=jsADbGFPwpIEm3CtocwDFbKnclX1oF8+uRhUlGUfYRA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kOg6Qctw5drBsEO8ueYBLe5xpAs5PNFhLqbmqHb0O+61eQpLQ+8hoKDUdI/f/AxDETXULIINbwofd4S5OapeIjb85iAgq5BSufbDWUHP/FhJpxlECVlbsGk7Jq0Hm0sbZFzAiNNwVPkDteSt/XAcRgaK3DDoPFPKv6RgNZ9v7IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=JogvuJnh; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=n+KAMGdZCuoeWEg3gsBzeS6TB2612iXCS5YULJ5wHbkrjvoO0pNX8LNc3JQaD76NsHRN77Ac7KUIfYFnVss0a/vgzVpPdENHALFsq94H1viffllKQaPENCsCOHVb+S+tEvrHMnvEQJECHE4NDXEEKm1m9THr1xaZkLoWy0S03cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+fWBEvX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="JogvuJnh"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 63DA1534109C;
-	Mon, 20 Oct 2025 16:03:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1760969027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wDhqgp76WpC+4iEmVhkxCNYgjRz0pZYukTW/oudD/PA=;
-	b=JogvuJnhkU7w8xxRuUmAQBjfEORbVkv37sZTFxQkyvzh2Hc6RTPWa/st4Des27rWcGGjpn
-	AU9w+fqEXCb9+tsr64v/s2jEC0OxoBYlDTWL/aiv1ZhtTct2pfrf6xs6FwPR3VUd9sE1hX
-	6A/nyE02wP4t7wlOlBaJbWl6JGPdWHg=
-Message-ID: <d3603461-c6ef-4385-9574-b708ae8ddcb4@ixit.cz>
-Date: Mon, 20 Oct 2025 16:03:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+fWBEvX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31301C113D0;
+	Mon, 20 Oct 2025 20:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760993095;
+	bh=jsADbGFPwpIEm3CtocwDFbKnclX1oF8+uRhUlGUfYRA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a+fWBEvXeUU0G0qPOGIRqhqMKEu0N73GqEqJBpyOMxVqbHSwjNhrc53P6T+D4bt1b
+	 1wClEWqL08CPuryHNGMh+L9gsYDZ0fVAA5Zuqhc0uHpem0vEiGBA9j0aG6vhdF6TJd
+	 faxzCFXfTRUqsMVfn4aJCpIge1oNCanxBOgeJ0NcWT/izftD4KoRO6Je+lvyzq8JJe
+	 QIcS1fMPaVsrRRz/B3qbJQ1DflilosUWo3Ora9FK1WyWnTjQi8GRWxYhpbJTj/w1v/
+	 eng0WcCJT+8QBJ1/gTzcbwskV4j2dR2/aKF2WjXskcVBTsDBxFzJZ5nvGX9ltiJgWA
+	 CdwIImcCJrIdA==
+Message-ID: <e1b845a5-9cb9-4843-9285-2b14efd290a4@kernel.org>
+Date: Mon, 20 Oct 2025 22:44:50 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,196 +35,86 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] arm64: dts: qcom: sdm845-oneplus: Describe panel
- vci and poc supplies
-To: Casey Connolly <casey.connolly@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+Subject: Re: [PATCH v2 1/8] dt-bindings: media: i2c: Add DW9718S, DW9719 and
+ DW9761 VCM
+To: git@apitzsch.eu, Mauro Carvalho Chehab <mchehab@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Jessica Zhang <jesszhan0024@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz>
- <20251016-s6e3fc2x01-v3-2-ce0f3566b903@ixit.cz>
- <aeb9a34a-d9ea-4027-9f61-beae73498266@linaro.org>
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Val Packett <val@packett.cool>
+References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
+ <20250920-dw9719-v2-1-028cdaa156e5@apitzsch.eu>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <aeb9a34a-d9ea-4027-9f61-beae73498266@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250920-dw9719-v2-1-028cdaa156e5@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 20/10/2025 15:45, Casey Connolly wrote:
+On 20/09/2025 14:03, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
 > 
+> Document Dongwoon DW9718S, DW9719 and DW9761 VCM devicetree bindings.
 > 
-> On 16/10/2025 18:16, David Heidelberg via B4 Relay wrote:
->> From: Casey Connolly <casey.connolly@linaro.org>
->>
->> There are two additional supplies used by the panel, both are GPIO
->> controlled and are left enabled by the bootloader for continuous splash.
->>
->> Previously these were (incorrectly) modelled as pinctrl. Describe them
->> properly so that the panel can control them.
->>
->> Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
 > 
-> This Fixes: is not correct, it should be the commit that first added the
-> panel to the DT since it was added after the initial DT.
+> --
 
-I double checked, it's the right commit, the panel node was added in the 
-initial commit (it's also mentioned in the commit itself)
-...
-  * Display
-...
+This is not a correct separator, making the patch corrupted.
+
+Try it yourself - apply this patch and check the result with checkpatch.
 
 > 
-> The driver changes also need to be backported and may not apply properly
-> to stable kernels, so we should be careful with this.
-But the OnePlus 6T driver never worked before, that's why I assume the 
-backport here play very small role.
+> The possible values for sac-mode and vcm-prescale of DW9719 and DW9761
+> are missing because there is no documentation available.
+> ---
 
-If no other objection, I'll keep the Fixes tag in next version, but if 
-maintainers decides to remove it, I'm fine with it too.
 
-David
 
->> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
->> Co-developed-by: David Heidelberg <david@ixit.cz>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 46 +++++++++++++++++++++-
->>   1 file changed, 45 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> index dcfffb271fcf3..1cf03047dd7ae 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> @@ -162,6 +162,34 @@ ts_1p8_supply: ts-1p8-regulator {
->>   		enable-active-high;
->>   		regulator-boot-on;
->>   	};
->> +
->> +	panel_vci_3v3: panel-vci-3v3-regulator {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "LCD_VCI_3V";
->> +
->> +		regulator-min-microvolt = <3300000>;
->> +		regulator-max-microvolt = <3300000>;
->> +
->> +		gpio = <&tlmm 26 GPIO_ACTIVE_HIGH>;
->> +		enable-active-high;
->> +		pinctrl-0 = <&panel_vci_default>;
->> +		pinctrl-names = "default";
->> +		regulator-boot-on;
->> +	};
->> +
->> +	panel_vddi_poc_1p8: panel-vddi-poc-regulator {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "VDDI_POC";
->> +
->> +		regulator-min-microvolt = <1800000>;
->> +		regulator-max-microvolt = <1800000>;
->> +
->> +		gpio = <&tlmm 25 GPIO_ACTIVE_HIGH>;
->> +		enable-active-high;
->> +		pinctrl-0 = <&panel_poc_default>;
->> +		pinctrl-names = "default";
->> +		regulator-boot-on;
->> +	};
->>   };
->>   
->>   &adsp_pas {
->> @@ -429,6 +457,8 @@ display_panel: panel@0 {
->>   		reg = <0>;
->>   
->>   		vddio-supply = <&vreg_l14a_1p88>;
->> +		vci-supply = <&panel_vci_3v3>;
->> +		poc-supply = <&panel_vddi_poc_1p8>;
->>   
->>   		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
->>   
->> @@ -803,6 +833,20 @@ hall_sensor_default: hall-sensor-default-state {
->>   		bias-disable;
->>   	};
->>   
->> +	panel_vci_default: vci-state {
->> +		pins = "gpio26";
->> +		function = "gpio";
->> +		drive-strength = <8>;
->> +		bias-disable;
->> +	};
->> +
->> +	panel_poc_default: poc-state {
->> +		pins = "gpio25";
->> +		function = "gpio";
->> +		drive-strength = <8>;
->> +		bias-disable;
->> +	};
->> +
->>   	tri_state_key_default: tri-state-key-default-state {
->>   		pins = "gpio40", "gpio42", "gpio26";
->>   		function = "gpio";
->> @@ -818,7 +862,7 @@ ts_default_pins: ts-int-state {
->>   	};
->>   
->>   	panel_reset_pins: panel-reset-state {
->> -		pins = "gpio6", "gpio25", "gpio26";
->> +		pins = "gpio6";
->>   		function = "gpio";
->>   		drive-strength = <8>;
->>   		bias-disable;
->>
-> 
-
--- 
-David Heidelberg
-
+Best regards,
+Krzysztof
