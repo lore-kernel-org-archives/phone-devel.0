@@ -1,73 +1,73 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127C1208D0
-	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CFB2F657A
+	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760961756; cv=none; b=c5raC0eA/CvFgsb1RQgAu9LEATGHX2S9FKqQXtPz60Smq6h9hFqcFaED+whoSQceqLhw7+oZC/WHXsBUx/e+3SfisdBWv8WVae0R7hXnTn9UqSeaClXdvHvEl7P9bLJT7HD6OFaty8F2RWvvE2hJhe3T6BSXpy7NAF5xSL+i0AE=
+	t=1760962093; cv=none; b=aMVEzJjtltcr4lQ7tZ4MKH1Xy8BBIfHOJ3ONT5L9CsfFm7OzmeMQwWbG2i2OUcr1+3pfT0jZ2ZEuDEhJSDhArqt9qwDLVqazWVL9XZNiGQbmZcwzSgxRd7vsqZrRqkeGnkdUG90YhFNbABBue9aSZaaWV15gpFDxYNtqv/pHfjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760961756; c=relaxed/simple;
-	bh=PH78YdDSnzwxCHJgRiRybJMbpOqlc4brc9B+cBQ8knI=;
+	s=arc-20240116; t=1760962093; c=relaxed/simple;
+	bh=33LPI6E72AMQx+gYv5kCkz5RE96g9h/zUVadmF0GT5E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J4Y1XXFSvss/+Lk6CWriYN08gRkDp0txV9XgAv6opK96izC9ClLnaP0YlmU+RTwcXlzw2tG4GL1Qm8MtcEACbJKrXJr72DZx2RszvJU96+Mnw7/47syvvhKdLQLA2TWyQ+64jFVFY+HMQyBkhLywTO02JZn9Vh5ibnXTi6aT4P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k1lm7zi8; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=PAfTondq/snumBWbbui/XvMBrgviczk3q73ds/BMRncp4LS3WKcxYmJSUkuP1uXl04lI5XU0cyPqXPbuVXwY8kuznM2J4HXVQN8tWSns7BqwoVfORIGyvgEFoS2gLybkorMBo/J+x3iedO6pWIytm1Dj/1/zMK0vpT3ZvJkY4l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YIzjiTLJ; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k1lm7zi8"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KBFHWe004912
-	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:02:34 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YIzjiTLJ"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KAl45J010759
+	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:08:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	oIG694y6bAFJewqTAATkKo0qZg41tPW6hp12LV4gekY=; b=k1lm7zi8ubgptaZY
-	JLhGvPqwvs/nB1B4ubs+IFCzETjhma39eF1OCc2WY/KcVz6r3GvJ2pxxjAbjm4mk
-	OQhmVq+YAjWp4/u1P5ACrVZKjEyfRzHMdtu1WuA9Y92FHgT1Th1UOikmKCZD455P
-	URQ0G2SN+nGvuCZVFR1PPzPoQR5W9lVLiLGzkdCOKcaQJxK2uBbzwkUgXjC+jxxX
-	vlz7dtOdNRjkYDrNhN2Qdz5Ww1oQePNQLl1MMDz/Sqz3njU64D/OQfmyXYp7OkC3
-	K3rxaxGBtSpzXyr1obmn2sALFFWEdiUMapm/OS1jB57Q5jYt6zLlkPwTQlLSdHuO
-	mbDXkA==
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v1w7vqt2-1
+	RXN6fotSa04gUPgCl+hHGvVwZiaZT4vBN793iStPbuU=; b=YIzjiTLJYy6NmBWA
+	Lbg0A8UCxuNJDuP2MW8ZDKqe1BNOjphfkz4Vb0tlXcgHkbma7tZRG6hGfFUzucK2
+	e18hdFnZ/EhACrSw788nr/MhJuGjj1rGcWuPoZsTCgOFi3olInhA4guNbHLpTr9d
+	2sqpP+ZmR8XI/QoKeeQAy+5FvUJeKkFf7pNjLZde/EswePY4W4wHNLh4np0qrmdk
+	z/mMJfAGvlhkvwl292P/yYc/keZ2GqCHm5R3OOD36MqUwmTE4WXad9nN9/YfbeYk
+	IGIp0BEC9jRM3b7ORjX/LhbZPjArDisDV/dFk9FTe0fWu5PPGRfFuyi0WVM0maqI
+	PcAnHQ==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v3nfcmy3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:02:33 +0000 (GMT)
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-5562b30f35aso243116e0c.0
-        for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 05:02:33 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 12:08:10 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-873eac0465eso15894286d6.3
+        for <phone-devel@vger.kernel.org>; Mon, 20 Oct 2025 05:08:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760961753; x=1761566553;
+        d=1e100.net; s=20230601; t=1760962088; x=1761566888;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oIG694y6bAFJewqTAATkKo0qZg41tPW6hp12LV4gekY=;
-        b=ohodRbYTM+1P/w5rRfid2fv7VZrHBmaLQTaEEnTl8Rzm5SphZwnPkNU9O69r5hoyjX
-         C4j0mFlvefkFa4gg5v9hYy0r6tyX6r2KFHf2wsvjulxbV7BOuc/8uv83ZQwRyGGN0IPl
-         lTFEp1I09T+Bz6v8JsrpzCa8wIazO6szYBVqHhv03iB5K+PCvYiInOlhQa5SnNKNAqim
-         Xnxhf5u9PlnANq/R5lJuEXJjfDGLAv0J8gWzWVmm8F5KmbT0MgCXgYZ7crnBvI65qG1v
-         sHkOrxGXMLZOUw4GJHMLJh+WHGaV1qBdGi3GdcUSQ1VuGWiryuuVTdQVF0Ohr1UJ4ZXU
-         1mBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbWRunlLobTAmlGCxX8eCpRJ7oy3EGdEIYz53S2BZ0e0BdTj4c9gZTA9XCCu21a1DD87tnOPhKckO9ZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGVv9GPQoms70HB0oPae6GA4Ltv/x/0dHCflzDAslfyN8fBp1i
-	FFoQOK+Jj0n0ESWx4x4drmAbnly48ys63q5LnJHWW6daeOGGRl0SDLmwTd04IVZtZ3tdBlwA28+
-	/V0hZdcvvHVc2oAqvCqHwLaVGfF3rujiMBIJcBlxV2eZK5eUGUq26ms+UH0l34ISxfQ==
-X-Gm-Gg: ASbGncveMGZQhawtg65LEqtHVfR374aFMiCysem7ADy2K7LXCgYPTUViw3475ypEgFO
-	eHtlZEdsxVpqn3Re7bho/MB99NVdPeUdBcWs4V+mII3GvZpwwnFofurOn6bxmCYIcHPQPzEo5AD
-	l0cuNdibAT6WHa3r5yVLR2G5OKI4TDWtAF/vNg1aLEVyq78PaYWWN8ILLbTC31OA9WhqGzoyczr
-	X9e1hVsfUYwTDQzoK7rVJmFW7NsXzmnfKtwzsNNO5mAlWSAgsv/qkaDFILdLrqab0+ZDrcgH9D7
-	an6Oxo38JHBMMoj0K4Vnsnxkr9DYNlQiom3jrkeIyVgokawoO213JIVN5gx6CyO1ggLf8euxlvW
-	xNLe4uvr1SHI7KD/X9XO300LY4EXP/n9+sCsqNASMhtNpM5Pn/c009QM4
-X-Received: by 2002:a05:6122:3293:b0:544:6d56:eef1 with SMTP id 71dfb90a1353d-5564ee8267amr1600192e0c.2.1760961752960;
-        Mon, 20 Oct 2025 05:02:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExb3d7wrCskvILwjadrYZ35oU1mcZoo+ieMX1KAj9vst3Hy1cKTiA0tq+qNgeFvEo1O8fu3Q==
-X-Received: by 2002:a05:6122:3293:b0:544:6d56:eef1 with SMTP id 71dfb90a1353d-5564ee8267amr1600161e0c.2.1760961752579;
-        Mon, 20 Oct 2025 05:02:32 -0700 (PDT)
+        bh=RXN6fotSa04gUPgCl+hHGvVwZiaZT4vBN793iStPbuU=;
+        b=N0wWDbHBggHGxURebPjIcCmC5uC4Qap7LNeppzMSJz1gYvaybH223eVXtUt3G1KSRA
+         kyxGlx+ztNf5rVb2DAhGdKXFdA5JDKraaQqgT3r755qHQwfaLBIx9gYzifTAXHaBOz1w
+         x1iLokuIGsQ1bczD848t83GNdqdnt628aTN2czi+C+gK6gdZN4GIwsbYX2T7CUmEFgVs
+         UYeYecg7NAczw3unQ2OD5Dj/egaNGAeBZ6dKvCnn1ugNBiZt6+ISRt4HlGLxKLqMCHzn
+         OMLkzJL6/iVfe0d5VLgLWt3oeUZMmip9Qw9hWKSrDCofGUnHb8IpgWF2QYK+qxsChax6
+         djEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWA7w+74U5TbyKcdxzsZhp9naFNgNoYsJwI36kN1gMOAPSUzn2Gt6UwIvUNRqnicZQHZx3+Z9wbP3WdCg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqcEsy1sQ1u1K9HZJRh0jNTxDhEAHBOdjoguhagHI9KRQwb9wY
+	lTIULBKC66eVi8EpWBiVvOt9+aLoFOjaVt0mSAboKPto7Obrd2X3sFPqQP0/6gNIMuxAC0iD7ut
+	bfYsWdsCrUYrkjIhSocN2q/uWuqNe01LjEgvmIyZxbpEj27v9BvXXbmVO4x/G1jZsqQ==
+X-Gm-Gg: ASbGncuOoCslFAsaKCUMJFhfgHWJS5jQWrU1jnTfb6FD0XCA+XcjQd8hJZxRvlvoKPs
+	gEARmKmHh+N4BPBnksh6I49OVx6ZzO9HEN4a65HmH/MPC5kt27EvYwq4m7eC2z56TsV8qJ3NrXF
+	7mit1PmcCpeP7fuat28OOE/2TZ22sl5NHPDJvxkam8/bpcfGCgMqgOdbVMEzO7jZn224jzbImBo
+	YQJHtCQRFqyv7I3yHlodQkEf9Yxn/gj3RqszLWAUScjtDEVcOojtZohTtQig721Lqp88OOCToRH
+	YMldqg8Tcerzsh9w2f5yoaw0kUn5+bq6gKajKxhnGp4WycE6QVuwOiXdbtjkVvv6YbaAnja4OGm
+	xje6UjSZ3RLuUkeyOPqGxG7nYQvetG0e/PZCrNpfjB29k2tArzoqls5U8
+X-Received: by 2002:a05:622a:2c9:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4e89d30dfccmr115733501cf.4.1760962088522;
+        Mon, 20 Oct 2025 05:08:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAxgKzIAcFSpHxOq4gtrj/4OH9lLOlq/BGeVVwcOTFLyLCTJYBxkyYpkGmaHl8NF/KFdtpCw==
+X-Received: by 2002:a05:622a:2c9:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4e89d30dfccmr115733091cf.4.1760962087934;
+        Mon, 20 Oct 2025 05:08:07 -0700 (PDT)
 Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65eb036b2bsm790493166b.49.2025.10.20.05.02.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65eb0366casm787927966b.47.2025.10.20.05.08.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 05:02:31 -0700 (PDT)
-Message-ID: <41c63020-9226-45d9-979d-429b7299da41@oss.qualcomm.com>
-Date: Mon, 20 Oct 2025 14:02:29 +0200
+        Mon, 20 Oct 2025 05:08:07 -0700 (PDT)
+Message-ID: <36928f42-3603-4e01-a31d-8f9e60f54009@oss.qualcomm.com>
+Date: Mon, 20 Oct 2025 14:08:05 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -75,93 +75,113 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] ARM: dts: qcom: msm8974pro-htc-m8: add status LEDs
-To: Alexandre Messier <alex@me.ssier.org>,
+Subject: Re: [PATCH 2/5] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
+ VTOF_LDO_2P8 regulator
+To: Luca Weiss <luca.weiss@fairphone.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley
- <conor+dt@kernel.org>, Pavel Machek <pavel@kernel.org>
-Cc: Luca Weiss <luca@lucaweiss.eu>, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+ <conor+dt@kernel.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20251007-m8-dts-additions-v1-0-53d7ab3594e7@me.ssier.org>
- <20251007-m8-dts-additions-v1-1-53d7ab3594e7@me.ssier.org>
- <6c791f05-70e7-49c9-a3ce-50fb82b0c894@oss.qualcomm.com>
- <fef52764-3092-4375-b9c7-793d85adc102@me.ssier.org>
+References: <20250930-sc7280-dts-misc-v1-0-5a45923ef705@fairphone.com>
+ <20250930-sc7280-dts-misc-v1-2-5a45923ef705@fairphone.com>
+ <ac1c0d1a-36a9-4542-b879-06c017f7f2c4@oss.qualcomm.com>
+ <DDDOF3F8K5WQ.FTJ0F6E6DLPG@fairphone.com>
+ <8e452e51-3a95-49e6-91e3-53aa46fcfe2e@oss.qualcomm.com>
+ <DDDPKMMSAMJR.1JIQMK3W2Y40V@fairphone.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <fef52764-3092-4375-b9c7-793d85adc102@me.ssier.org>
+In-Reply-To: <DDDPKMMSAMJR.1JIQMK3W2Y40V@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAxNSBTYWx0ZWRfX4cP8PyDm9IDs
- xjzU0nVMyFwmjb5IBoxojX/T2z+u4r8dRewXhVY4O3juMifpviqgw5tUaHJNCWHYL54ubgxOFYy
- G91npp0EDPBYa6fMAkZg2GaMzkJy+5EHtGhPnoeXH+eTE+AvE3cMEBXtzZzHAdvRjzEN8siOtr4
- K+qPuwzadceQkNGhw90Vgc8j7nXnwOB7fBWJ7jsXTzzArsBIayVcmVeQTHtW9vIvHvX+CKsSgrn
- cnVR30ovkvMbmXQFxqdg7I4TxjhRB7g/L0iPNcAF6bXjSYHFmxCZ63ZLWWPN69aKqPoAGsd7FBi
- 8w8yBEEDQd1uMDS/1NfgazZl3ycx+WWos7myxHZEmidGH2lza6uLOo4qEdLEpaYD3RYMiuTW7WW
- 8qBhvKaVyOJT3X9cglrIZxCbc5/sJQ==
-X-Authority-Analysis: v=2.4 cv=bNUb4f+Z c=1 sm=1 tr=0 ts=68f624d9 cx=c_pps
- a=+D9SDfe9YZWTjADjLiQY5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+X-Proofpoint-ORIG-GUID: KrPpevjucELJt1f0a9lNEDChdXjhm5LA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyNyBTYWx0ZWRfX4nIvfksXf4KX
+ trY5Isgnp4R6C4d56gUUAcB4QM2azYMPjCLtB02ddVWSuPrfYtO3FmtxEIzXErlJl5QDT4AaJu6
+ kGS0AkFogSwOSgUzTZkfqtEmQ6gt/9iXpkKNRG+mmEFwZkqnK1xIRx9eUxjiRBpxXYZTISUEuP+
+ enNJO+j0EcVNs//06Tm4smsDQiqU0cdF7niJP5TGFnPq4BavLWhmtyN/8kLtma/WGfoRYGSrLXk
+ gAH6CvzfUmol9MW3Y5wQl+tc8seES/ywp362KFiKHFzjrozXVIsjabuXOpMVxbkTfn+xw3JINxB
+ gDAtTaFXoHcLP5NENEhPfZ7kIn0xsFlst5iPPqGcO5AdryGEJ3h0+KgrPH8+JdxprIoeBkeqepU
+ Z+phDv9fvw3rua7fMQ642IkGuOSuXA==
+X-Proofpoint-GUID: KrPpevjucELJt1f0a9lNEDChdXjhm5LA
+X-Authority-Analysis: v=2.4 cv=EYjFgfmC c=1 sm=1 tr=0 ts=68f6262a cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=8poMKPHdAAAA:8 a=glctJ2XmOvm0yIQHyQsA:9 a=QEXdDO2ut3YA:10
- a=vmgOmaN-Xu0dpDh8OwbV:22 a=fyZPtLC9JlAwSkJ5-iUD:22
-X-Proofpoint-GUID: fE2tCERtS5AT6UC95y6oe9BMfNdbmgRB
-X-Proofpoint-ORIG-GUID: fE2tCERtS5AT6UC95y6oe9BMfNdbmgRB
+ a=6H0WHjuAAAAA:8 a=xF4_qlAILLPsp1LD694A:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22 a=Soq9LBFxuPC4vsCAQt-j:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_02,2025-10-13_01,2025-03-28_01
+ definitions=2025-10-20_03,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180015
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180027
 
-On 10/12/25 8:03 AM, Alexandre Messier wrote:
-> On 2025-10-07 06:03, Konrad Dybcio wrote:
->> On 10/7/25 7:55 AM, Alexandre Messier via B4 Relay wrote:
->>> From: Alexandre Messier <alex@me.ssier.org>
+On 10/9/25 12:10 PM, Luca Weiss wrote:
+> On Thu Oct 9, 2025 at 11:22 AM CEST, Konrad Dybcio wrote:
+>> On 10/9/25 11:16 AM, Luca Weiss wrote:
+>>> Hi Konrad,
 >>>
->>> Add support for the notification LEDs on the HTC One M8.
+>>> On Wed Oct 1, 2025 at 10:30 AM CEST, Konrad Dybcio wrote:
+>>>> On 9/30/25 3:57 PM, Luca Weiss wrote:
+>>>>> Describe yet another regulator-fixed on this board, powering the ToF
+>>>>> sensor.
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 13 +++++++++++++
+>>>>>  1 file changed, 13 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> index 36d5750584831d66b4c2faf6042e4cbb3274eca7..0a64e5721e092d1f3e4bb7329335704eee567761 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> @@ -195,6 +195,19 @@ vreg_usb_redrive_1v8: regulator-usb-redrive-1v8 {
+>>>>>  		pinctrl-names = "default";
+>>>>>  	};
+>>>>>  
+>>>>> +	vreg_vtof_ldo_2p8: regulator-vtof-ldo-2p8 {
+>>>>> +		compatible = "regulator-fixed";
+>>>>> +		regulator-name = "VTOF_LDO_2P8";
+>>>>> +		regulator-min-microvolt = <2800000>;
+>>>>> +		regulator-max-microvolt = <2800000>;
+>>>>> +		regulator-enable-ramp-delay = <233>;
+>>>>> +
+>>>>> +		gpio = <&tlmm 141 GPIO_ACTIVE_HIGH>;
+>>>>
+>>>> You may want to define the pincfg/mux config for this gpio too
 >>>
->>> Two LEDs are available, one amber and one green.
+>>> While I wouldn't say it's not good to have it, there's plenty of GPIOs
+>>> that have no pinctrl for it. Downstream doesn't set anything for gpio141
+>>> either.
+>>>
+>>> I honestly wouldn't even know what the 'default' for a GPIO is in the
+>>> first place, or could I query the runtime state from the kernel? Is
+>>> /sys/kernel/debug/pinctrl/f100000.pinctrl/pinconf-groups trustworthy to
+>>> solidify this in the dts?
 >>
->> Do they form a single notification led, or are they supposed
->> to act separately?
+>> I normally use /sys/kernel/debug/gpios
 > 
-> Good point, I had to check the phone user manual to confirm. Indeed, it is
-> referred to as a one logical notification LED. It also mentions the color can
-> be either green or orange, it does not mention using the combined color of
-> the two LEDs.
+> Oh, if that works at least the path is a bit more memorable. I needed to
+> check quite some files in this directory to find the correct one.
 > 
-> So I would say they are supposed to act separately.
+>>
+>>>
+>>> 141 (gpio141): input bias disabled, output drive strength (2 mA), output enabled, pin output (0 level)
+>>
+>> but this seems to be formatted very similarly if not identically
+>>
+>> Generally it reads out HW state, via (among other things)
+>> msm_config_group_get()
 > 
-> Hope this answers your question, and let me know if more details are needed.
-> 
-> BTW: I will be sending a V2 to update the color name, since the user
-> manual says the color is orange, not amber.
+> So, you recommend setting a pinctrl for every single GPIO that's
+> referenced in the dts? Shall I send a patch to add all the missing ones?
 
-Let's describe it as a single LED then:
-
-multi-led {
-        color = <LED_COLOR_ID_MULTI>; // notice it's not RGB
-        function = LED_FUNCTION_STATUS;
-
-        #address-cells = <1>;
-        #size-cells = <0>;
-
-        led@6 {
-                reg = <6>;
-                color = <LED_COLOR_ID_GREEN>;
-        };
-
-        led@7 {
-                reg = <7>;
-                color = <LED_COLOR_ID_ORANGE>;
-        };
-};
-
-+ Pavel the LED maintainer, please take a look if you think it makes sense
+That would make the state always deterministic and it's probably
+desirable yeah
 
 Konrad
