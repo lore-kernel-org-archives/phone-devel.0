@@ -1,158 +1,177 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2D0333737;
-	Mon, 20 Oct 2025 20:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA41258ECB;
+	Mon, 20 Oct 2025 21:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760993817; cv=none; b=tuzEaq86M0n529LTpd534IK+lLVzrWKahFAdTBZIbzGCXPC6rFPmR+hL3JiVrosFAnHirldMJRUhiAcosLOIpJ45z254dB/iQ1m+CNrX96nnCxtjew3d6wys9w7qtsX9M/q3cxS9UwDM/XUmC+BjFmuq4Bijuc4Blx12dFi0zi8=
+	t=1760994783; cv=none; b=St0+veJ/G0UzTAmzEjkr/MkrUHrcWjpPpW1TIhmsSFt20pF5AcSWnPb8SLv56VxtITbRzGM6m7NYAkfocsOjv0iQznr2t2OLLYYR9zVSkSVzLm23eRl3QIenrV1RlvsB18mATn6CM2ri2okYoRHQ60YLHK+EwixyF8Hnpa5v9cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760993817; c=relaxed/simple;
-	bh=McGfNh7ciF5ksFu2NwbJt5zEbKC5VtUeVzsub6mNoyU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gXMC0IAwoeVHCCS5IxInCcPMrRqjTZrQA6VS750WH6AVBoovJDFHTKSefm1ryiBicfVnW/78jg/GF6GARLGaNQvMx8W6PeNo0OiiFM2McPHXvRGkvKzBlmlGFplBCoUdnX6JuHlh8LUWhRkiRj2bwgXpUVsUj65cwqPvycAJ2uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=duFjPyBH; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1760994783; c=relaxed/simple;
+	bh=tfk6qX8NCv5KhgKGHT4nhdjDwIFmULmDydrvZ0XRVvw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XcWrUdsNY6gM6rxsni5hJGJJfBx232W3wahZjH/cTl/ECTuu235BLBGmijfoTYUFEAlCqgoaetJjy8wpvxXSwjtFblySzPuQvU+UM2gDlyGI0A0ABEa/kzKFlfmWx07CfBugqkDK0Hn979CA8sXIOYeJvuaFWqm7SCEOOeTS8dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co1KxcnQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="duFjPyBH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=McGfNh7ciF5ksFu2NwbJt5zEbKC5VtUeVzsub6mNoyU=; b=duFjPyBHVlXnmjSb8UEBUN7+2l
-	bkrdtG+JT+oOjh8Xzk25DYAspxQv78pdrBh1Gkl2gkaIhBhJ+iK31Bk7il7KE9kG/O7BfGjjOkzl+
-	8NuF5z+l+/ByATShiQb9q6Yo1XmGuNrQa+wkfWjN+9mmqCzPhz10pUXWEkFyT81L1WQSqsLEgoRmy
-	CBjre/IRiEXvBuTG9FbbwRokxeWZVYenV6c3NcZnvvsqBgRPx0+QGZg9qShsL4gi1o/7bjhtnPFgi
-	N8gjzLWl6oNx0VOYxGWeb9Z76g/H+ODQyvS9gfI+TLF+cQBYP60sTs3Lab7Ro3f/YTZob2Zm66a6h
-	+ZYGoVRA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1vAwgZ-0008mw-0b;
-	Mon, 20 Oct 2025 22:40:55 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1vAwgY-00021J-2E;
-	Mon, 20 Oct 2025 22:40:54 +0200
-Message-ID: <790fd7d05fa03f788f0a628a99b2e127db824207.camel@apitzsch.eu>
-Subject: Re: [PATCH v2 0/8] media: i2c: dw9719: add DT compatible and
- DW9718S support
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, 	devicetree@vger.kernel.org, Sakari Ailus
- <sakari.ailus@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Val Packett
-	 <val@packett.cool>
-Date: Mon, 20 Oct 2025 22:40:53 +0200
-In-Reply-To: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
-References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co1KxcnQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A8276C113D0;
+	Mon, 20 Oct 2025 21:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760994782;
+	bh=tfk6qX8NCv5KhgKGHT4nhdjDwIFmULmDydrvZ0XRVvw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Co1KxcnQqo1WvkCxtL6n/WsWCughHHLPM6+s2NInRacU2XLUYtilJ5O2BA+RerSHx
+	 A+bySGldTuH9E8oUzNXR8LvbZAYZZ8jPJcfEZl3Ev0xG5B32o28e2JtyctfyMQrj6Q
+	 7/AaMDZMdYshNlXy49MlsftTz2QjAvKf8qgHnIb8ERfK1sdF0qSf+fWKIF46WY8+1X
+	 J1r3E+HhOiJoWwnk0QXW2fgUCQwZ8nX49bwH38BS5rnYcryxCFhalvG+XZiFdtDlJT
+	 vrSySID5YtP6L3fLkD+Mh4iMAySpLgHFLhktwvRvbpjWrortZ3/rKJMzQfmpQY+Hk3
+	 zdzyCEbTvH54A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94145CCD19F;
+	Mon, 20 Oct 2025 21:13:02 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Mon, 20 Oct 2025 23:12:56 +0200
+Subject: [PATCH] arm64: dts: qcom: sdm845: Define guard pages within the
+ rmtfs region
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27798/Mon Oct 20 11:37:28 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251020-sdm845-use-guard-pages-v1-1-64d714f8bd73@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIANel9mgC/x3MSQqAMAxA0atI1gbaoDhcRVy0NtYsHGhQBPHuF
+ pdv8f8DyklYoS8eSHyJyr5l2LKAaXFbZJSQDWSotoYMaljbqsZTGePpUsDDRVbsJvI0O+Mby5D
+ jI/Es9z8exvf9ANN3t0RoAAAA
+X-Change-ID: 20251020-sdm845-use-guard-pages-9c2b2fa0b71e
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Sajna <sajattack@postmarketos.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2915; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=E2eVtp9CZo235rNLq7eCdbNC0gKfjdqyqcrfaduc4TA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo9qXdl3mY7plSvTx0oldYpigYKjtk6zobkvdyJ
+ cbZnG1oJDuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPal3QAKCRBgAj/E00kg
+ chXkD/9f5U607VemeAM2+jdhdbFPYzpHwX7OZtx3hLqgJkBJN1dC0xGvHiG8H0K4EUHbCQkhRxv
+ QwdSeKNbcJmUs8xH8KxYUiLo3jHCeaAyp1keRtpIdDlFBZ5L1pR+vK9LN4blahQM4bLI7ZB1W0b
+ MxurXBTOm3AGlwAhRpBv0kV7b/4N+gQnbI646YbQtobSx3glV46lXUj3BmbsLC6OcFAuRnpFU+7
+ OzNOkX2Zc9nd+ftZ1nCr4IWACQ2xXxjJWJ3upw7pk5SoLc+mrJmo0+7rpZxDtVJ0SyFsb1xoBLs
+ PaqkliW6Ncalr4WSghdwrVJ1E6n52lD3Pw5n553/CG1JD6TM5YWSCAZaeVOgXhlIdoquZL7ATeC
+ YT5jTDo0C8O4sSsvBSfgW28XtNFZJvP8EIshF1KTww8/fo+v5pxkgvpdHJVO8hG1IVgeHJC2eck
+ EYR9wcVX35nG4YQ4OyOsAX6zDrIBRhgq9C/yRJtj4kSYiNdbTFfkzU2oFQ3Q3WVSEzASkxsQtNc
+ pa/Hce6ETuvOEHLJWDk5rRfjvt/Y/BuNCAZgYU6wvHNx7ghZFuWFZJ5qffWsiJLLwIndUeH3Dpr
+ 5qbOA7GXDqXdkN0uQe5lajrqiopiU6fwLCXlCGzfzrdD2TcWftF9oCuUybgIamLwQgZzOxuAz/6
+ 1Fw6sSftNiMU1ew==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Hi,
+From: David Heidelberg <david@ixit.cz>
 
-Am Samstag, dem 20.09.2025 um 14:03 +0200 schrieb Andr=C3=A9 Apitzsch via B=
-4
-Relay:
-> The DW9718S voice coil motor is found on various smartphones like
-> motorola-nora that are currently being worked on in the postmarketOS
-> community. Since the way it operates is very similar to DW9719, this
-> patch series adds support for it to the existing dw9719 driver.
-> Because
-> that driver did not yet support DT, we also add DT bindings and the
-> dongwoon,dw9719 ofw compatible. With DW9718S, the driver was
-> tested fully, including runtime PM.
->=20
-> This is a follow-up of [1] and [2].
->=20
-> Changes compared to previous submission:
-> * Deprecate dongwoon,vcm-freq in favor of dongwoon,vcm-prescale
-> * Instead of per-device config struct use model ID to handle cases
->=20
-> [1]
-> https://lore.kernel.org/linux-media/20250210082035.8670-1-val@packett.coo=
-l/
-> [2]
-> https://lore.kernel.org/linux-media/20250209-dw9761dts-v3-0-14d3f00f0585@=
-apitzsch.eu/
->=20
-> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> ---
-> Changes in v2:
-> - Add patch (3) which removes i2c device table
-> - Restructure patches because of that
-> =C2=A0 - keep patches 1 and 2
-> =C2=A0 - add patch 3
-> =C2=A0 - patch 6 becomes patch 4
-> =C2=A0 - patch 3 becomes patch 5
-> =C2=A0 - patch 4 becomes patch 6
-> =C2=A0 - patch 5 becomes patch 7
-> =C2=A0 - patch 7 becomes patch 8
-> - Patch 1 (bindings)
-> =C2=A0 - Remove unneeded 'minimum: 0'
-> =C2=A0 - Remove if/then that handles 'default' to reduce complexity
-> =C2=A0 - Add myself as maintainer
-> - Patch 5
-> =C2=A0 - Fix void-pointer-to-enum-cast warning
-> - Patch 7
-> =C2=A0 - Drop pm_runtime_mark_last_busy(); it is already called by
-> =C2=A0=C2=A0=C2=A0 pm_runtime_put_autosuspend()
-> - Patch 8
-> =C2=A0 - Remove extra parentheses
-> =C2=A0 - Print error if writing to power register fails
-> =C2=A0 - Add reason for doubled waiting time during power up to comment
-> =C2=A0 - Pass NULL instead of unused 'ret' to cci_write()
-> - Link to v1:
-> https://lore.kernel.org/r/20250817-dw9719-v1-0-426f46c69a5a@apitzsch.eu
->=20
-> ---
-> Andr=C3=A9 Apitzsch (3):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dt-bindings: media: i2c: Add DW9718S, DW97=
-19 and DW9761 VCM
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Deprecate dongwoon,vcm=
--freq
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Remove unused i2c devi=
-ce id table
->=20
-> Val Packett (5):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Add an of_match_table
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Add driver_data matchi=
-ng
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Add DW9718S support
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Update PM last busy ti=
-me upon close
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: dw9719: Fix power on/off seque=
-nce
->=20
-> =C2=A0.../bindings/media/i2c/dongwoon,dw9719.yaml=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0 88
-> +++++++++++++++++
-> =C2=A0drivers/media/i2c/dw9719.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 110
-> +++++++++++++++++----
-> =C2=A02 files changed, 178 insertions(+), 20 deletions(-)
-> ---
-> base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
-> change-id: 20250709-dw9719-8a8822efc1b1
->=20
+Use qcom,use-guard-pages property instead of polluting device-tree with
+lower and upper rmtfs guard nodes.
 
-Gentle ping.
+No functional change intended.
+
+cosmetic: set name the node rmtfs-region.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Tested on OnePlus 6T.
+---
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi      | 17 +++--------------
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 18 +++---------------
+ 2 files changed, 6 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+index 99dafc6716e76..83b98bad19dd2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+@@ -99,26 +99,15 @@ memory@9d400000 {
+ 			no-map;
+ 		};
+ 
+-		/* rmtfs lower guard */
+-		memory@f0800000 {
+-			reg = <0 0xf0800000 0 0x1000>;
+-			no-map;
+-		};
+-
+-		rmtfs_mem: memory@f0801000 {
++		rmtfs_mem: rmtfs-region@f0800000 {
+ 			compatible = "qcom,rmtfs-mem";
+-			reg = <0 0xf0801000 0 0x200000>;
++			reg = <0 0xf0800000 0 0x202000>;
++			qcom,use-guard-pages;
+ 			no-map;
+ 
+ 			qcom,client-id = <1>;
+ 			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
+ 		};
+-
+-		/* rmtfs upper guard */
+-		memory@f0a01000 {
+-			reg = <0 0xf0a01000 0 0x1000>;
+-			no-map;
+-		};
+ 	};
+ 
+ 	gpio-keys {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index dcfffb271fcf3..61d63003fa371 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -75,32 +75,20 @@ key-vol-up {
+ 	};
+ 
+ 	reserved-memory {
+-		/*
+-		 * The rmtfs_mem needs to be guarded due to "XPU limitations"
+-		 * it is otherwise possible for an allocation adjacent to the
+-		 * rmtfs_mem region to trigger an XPU violation, causing a crash.
+-		 */
+-		rmtfs_lower_guard: rmtfs-lower-guard@f5b00000 {
+-			no-map;
+-			reg = <0 0xf5b00000 0 0x1000>;
+-		};
+ 		/*
+ 		 * The rmtfs memory region in downstream is 'dynamically allocated'
+ 		 * but given the same address every time. Hard code it as this address is
+ 		 * where the modem firmware expects it to be.
+ 		 */
+-		rmtfs_mem: rmtfs-mem@f5b01000 {
++		rmtfs_mem: rmtfs-region@f5b00000 {
+ 			compatible = "qcom,rmtfs-mem";
+-			reg = <0 0xf5b01000 0 0x200000>;
++			reg = <0 0xf5b00000 0 0x202000>;
++			qcom,use-guard-pages;
+ 			no-map;
+ 
+ 			qcom,client-id = <1>;
+ 			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
+ 		};
+-		rmtfs_upper_guard: rmtfs-upper-guard@f5d01000 {
+-			no-map;
+-			reg = <0 0xf5d01000 0 0x1000>;
+-		};
+ 
+ 		/*
+ 		 * It seems like reserving the old rmtfs_mem region is also needed to prevent
+
+---
+base-commit: 606da5bb165594c052ee11de79bf05bc38bc1aa6
+change-id: 20251020-sdm845-use-guard-pages-9c2b2fa0b71e
 
 Best regards,
-Andr=C3=A9
+-- 
+David Heidelberg <david@ixit.cz>
+
+
