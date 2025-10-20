@@ -1,105 +1,135 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A1B2EBDD3
-	for <phone-devel@vger.kernel.org>; Sun, 19 Oct 2025 16:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3531E2D780C;
+	Mon, 20 Oct 2025 07:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760890568; cv=none; b=J6v8xdgx3T4KjDiobnIiB8k7JrLMB5g3iTHU3AU1wUYLTX0dysYmFIcHA4bEz4L+lrf9OadzkL33kMPSQw4mCS+Tifx4m2QniXWVmPWs55CHdRqtsrYuZr3m1kamaN/hlgvdAKdtFmXu2KuGFsLSCWxIj9HAtZ4bFOrgC2B2txU=
+	t=1760946952; cv=none; b=KMSYGFG3YdhKzAglJyyNs2Eiss+MBnGnloGEH9Gv4twKbVOSyoJXK4KMIc2k4cx7qyrOv7fPCi7xPjWzvkpmxt6hA2Xdb0KmHmzigWGLAVQI51/D/rofxfzrevbhSuG8AqvDeFnRb0N8D4vhvOcTLx7qhdWrPdDz7gEQZpwYLKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760890568; c=relaxed/simple;
-	bh=w65OdgmpV8I1cxj2sfq4rK12q9mD/l6u6jCluPLlwTY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMFd+3HvYrpEYgQr1FdsdXXsZ7rL9rl5UfA6aP1h2KWT8CI+rJToFcDxwvquntesunmfJoOwKCkPsOjpaGyMSIMbh7PIx818jkGpwup9BedBfuJfgKc6ljk0BlEygTTtYnnCw3pelDpA5zk4zNJ+HOZjr22OdQBuDmKFGXqJQcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kGjOPPP3; arc=none smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760946952; c=relaxed/simple;
+	bh=HoLScURiP3Pv6o4YbIiJloOE/qlQmDATtnSmzjOgiO0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UDSDVR5GobHpmMDSlmmQy41qYyF1c+MDpSVlfaJEajAdHyuvk230dzWst319FemiRKVzM7i5GdpVTkDkg61v5u6emLuSitmGwjvbeuFJgIUzmECusH34oP5hzlSOZwSSWhB0nw4Aj+TADxSbE2/g1e6OIjvIzTT9JsfMn1lzZcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=JD7Q1NRv; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=eyOd3mB5; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kGjOPPP3"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-63e0fa0571fso3313078d50.3
-        for <phone-devel@vger.kernel.org>; Sun, 19 Oct 2025 09:16:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760890566; x=1761495366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w65OdgmpV8I1cxj2sfq4rK12q9mD/l6u6jCluPLlwTY=;
-        b=kGjOPPP3AV4B15oNWUCh7zjCvw1lMZxc8GWcUcYppse9Tmq0p9m5dEEqeOh4hDgt+6
-         /U8YQXEAb+Oh4B3Iwycd2esArczN3zTEW8zGLdmFUdIiFHxQnfm6mFIk/rsnQaSRxm9V
-         XyKIBb1EpGzuMX0m+VYww5SehqGqwf2L1zToNiBNNp0IMY+YJALiPgoSRjiXVsgiIRQ4
-         5V+LdS1AupKh1LVlChSCR/RN+xxWQpiVAwfAnJ8LbaknNmuf0jGfp1sxSqTKpKzll3MI
-         HQutE1Wcnaa2JEdO64lPH3Q/e4F3UMhL1wq0cou3TetKULGj0YaMuGNahwZJwTEmXHS/
-         EyzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760890566; x=1761495366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w65OdgmpV8I1cxj2sfq4rK12q9mD/l6u6jCluPLlwTY=;
-        b=jpyqit9gqC1QkMsF2J940y7j3MuqkC7mIcdLIc3WSQHUa/HkxqU6b9iSqEuFjOhZnJ
-         Civzklnftd3JHiLZ4mnSl705o9HRsrXC5ortc3UkFwnYhkSHDiWvYltewtvdB5rl7v/T
-         NqrhKwIRWcYfO729rdM7PydvEcodyaiwhmQnVcCZ14OcnSfv32OjG1uKltFiB1Lr9nIH
-         Um+R9osF8hv9Cx+mO5z1B1/vKfZjTyAOwvYRGNizrvX836p34bbjRJYiUUD8dbnKoQGH
-         dfqmqrTWE3lLQ+v71ruXAzqWJ0ZNAMhN6HpbpqFnixUIesNhEJvT9Mav1qkrtjEVvhoU
-         a1Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcu2lYV6cCv6K5zqqIAj5OmLGO/etzyqfYuznbzZ8eJ9WfUX7ZibRptQAoEpcBamyB0Hci+dTyLk0A3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsfvM44ZC0e6FJOwUMKlhkCUFe/7ZE1xK8tHngdz6asLANv5eC
-	0NzKSaOgj+MrQcvOHEXV3peg5D2XXgaTnc8FnQ6pDZGL4dB9PAbT5YdF
-X-Gm-Gg: ASbGncuironui9reTnhzJLA9LMkIAzISFQU4tunwZxgzTThrbXNc6TsuKzXHxrf2jgI
-	sW8ad7QS+sMybGILQHy8ijhmR4lNvZQZT4YjRsMl94x/P+oVM1pYZg9C4Rqqh9fhCd6PCjOXp0X
-	Y1vdDoyVpwe82vM49BFDgvuuE/DZw+xPlRl53UXHV9q7pAHmFa+/iDMkrsis4xdQy7A8ioIh/8C
-	gFdRGUGGp2uv2KgomkfTawbKOS4qrYNNeyW0x61IstZBcw75yYdEKpcZt9XI6TMA4TJzz1jQk5x
-	jh4AN9m9qdr0ZeNcnlaAekexqq/XejWFoX0CKWgeOF+cd83DlySwFkHD61Y31K7h4JQ0RFqF83x
-	POODb2sPTykf8PYDTDsd68cV6e8/3lVB3SN3VNkKpvxr/SkTh+kX6NjWh5b7H2fptAT2FmoZhvY
-	+MF11yYCjHUoPHrdhC8+a6ZjvuMftr4rj9J6t8hzdQVgWc3dOVzrVXvuf3bUA=
-X-Google-Smtp-Source: AGHT+IElWfzAepNqK3LlpQymTFB+dnzq6dId0s4n8cc9tbggmQJHdM08XYTf6C3f7CI5MrGaIVI7tg==
-X-Received: by 2002:a05:690e:168c:b0:63c:f5a6:f30f with SMTP id 956f58d0204a3-63e1626157bmr8254979d50.57.1760890566174;
-        Sun, 19 Oct 2025 09:16:06 -0700 (PDT)
-Received: from localhost (104-48-214-220.lightspeed.snantx.sbcglobal.net. [104.48.214.220])
-        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-63e266bc09csm1738354d50.11.2025.10.19.09.16.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Oct 2025 09:16:05 -0700 (PDT)
-From: Steev Klimaszewski <threeway@gmail.com>
-To: devnull+federico.izzo.pro@kernel.org
-Cc: abhinav.kumar@linux.dev,
-	agx@sigxcpu.org,
-	airlied@gmail.com,
-	david@ixit.cz,
-	dri-devel@lists.freedesktop.org,
-	federico@izzo.pro,
-	freedreno@lists.freedesktop.org,
-	jesszhan0024@gmail.com,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lumag@kernel.org,
-	marijn.suijten@somainline.org,
-	nicola@corna.info,
-	phone-devel@vger.kernel.org,
-	robin.clark@oss.qualcomm.com,
-	sean@poorly.run,
-	simona@ffwll.ch,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Steev Klimaszewski <threeway@gmail.com>
-Subject: Re: [PATCH v3] drm/msm/dpu: Add DSPP GC driver to provide GAMMA_LUT DRM property
-Date: Sun, 19 Oct 2025 11:15:59 -0500
-Message-ID: <20251019161559.6731-1-threeway@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251019-dpu-add-dspp-gc-driver-v3-1-840491934e56@izzo.pro>
-References: <20251019-dpu-add-dspp-gc-driver-v3-1-840491934e56@izzo.pro>
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="JD7Q1NRv";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="eyOd3mB5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1760946938; bh=HoLScURiP3Pv6o4YbIiJloOE/qlQmDATtnSmzjOgiO0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JD7Q1NRvW3vFmjply4D6KKNGm+B4qS3jQN4+E1g7O8fF1on6bhO6s5SUc4mSTA71o
+	 FORai1167OInQNI9kV6l6AWGhrqSG968JOk+T6WvchPs97ejlCNy4N8Lu437Zxa9Jx
+	 vzNcgt4m3MZ2M4j1eSJJeK73nq8R+FWGM7sZQRSVWYanvZ1nj84AevL+HUQ+lckcYN
+	 zaPjOznvJtIehzjCMeqd09f1EYvT6Y9UouQtk3UuHLCM0aIE9juZK4rKzlVqPQGUr4
+	 KWNiml4ARJnxzKCvm2SnVJ8s19ruARZhVpwucbAmlQm062K/MGwfRCYJYMOQj+tRAP
+	 5Ig8dJBd/alhw==
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id CECA3FB03;
+	Mon, 20 Oct 2025 09:55:38 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id gbHSv5zJ0Xt5; Mon, 20 Oct 2025 09:55:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1760946936; bh=HoLScURiP3Pv6o4YbIiJloOE/qlQmDATtnSmzjOgiO0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=eyOd3mB5kR3pv/tKI+etKBa/Eph3aV0CGExpzJ8axSPLGyJ8FUNXQXwDYXzPyujwA
+	 4tbpxBxPW258RlzE5KZVVL+iyshAuE6uBei3pGF1wDMA5bz2pbpc7JHsbASBSAzL/p
+	 nA443Kfm1Jh/uf0TF27xWnktZJ+F9KSGixnhJlwaFNDnlM//cDwc7/hHGR4qBd67tl
+	 M0/Jo6xA8SgwizcH5oTGd0BEk2U4J3BImmvcvX69TTne0PB4tnnmCorwI9Y6lrR/Zs
+	 wQH4X25R8NTHUinpqKH7MO8uTTDofIpiV3ZgG9IiBllyR6ZQbnXuyNcKdv+yKRXYv3
+	 qCuNX7nxgqyIA==
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Date: Mon, 20 Oct 2025 09:55:13 +0200
+Subject: [PATCH] arm64: dts: qcom: sdm845-shift-axolotl: Move address and
+ size cells upwards
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20251020-shift6mq-dt-v1-1-8714087118b8@sigxcpu.org>
+X-B4-Tracking: v=1; b=H4sIAODq9WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0NL3eKMzLQSs9xC3ZQS3VSTJMtU85Rkc0MzSyWgjoKi1LTMCrBp0bG
+ 1tQAoCiiYXQAAAA==
+X-Change-ID: 20251019-shift6mq-dt-e4b9e7dc7169
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1349; i=agx@sigxcpu.org;
+ h=from:subject:message-id; bh=HoLScURiP3Pv6o4YbIiJloOE/qlQmDATtnSmzjOgiO0=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
+ UhqQWNzbVlnQm85ZXJ4N1ZWbTJLcyt2cmFQWDd2WHdmb3dJRTZ1CjVtaVVoQUF5Qk5lcXMxcUVm
+ TnVKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYVBYcThRQUt
+ DUkFsdjRaU1N2ekI0L0xCRC8wWmZucVNUN0swQUFuTitXdEtEY011djIwUFUzZzdycld3OHZnUw
+ pXWmhUWWxsVFVLYUxSamRNdTRnOEdYdU9OZVJyaGxOSFdKOGhKY29Fd1cycVpLd1VSVkJvaXQwR
+ kZJWFVxQ2JJCmNBeUhvZ0FDYlhrT0pvYzFiYUhlaXFHSkV5YWlIaG13cmdVcHRtL0tHWEZsSWVW
+ QndKb25ZeWxPK1VBNis2SkIKelIwS1ptNTJsWnh4R1Yvbm5SOUR1ak9TbjRVWkdlb0I5Rk9PSHR
+ vdlRhQUY2SGhDc3pjUWZNbXV0c2t4UmE5VQppZkNCc2pBNkFnU3JnYnJMRFgwblhCVUdXNDIvdE
+ x5czVGeDBHdGIrM3VlbnlkUkczNlMxcnh4dUZZb3ZGR3kwCkNzQ0kxNU8rUTJ0NHphWElkNjROL
+ zh0c2dzMnMzWkI2Q3FjK2F4WVNmaE4wVGNNZ0xHcm4xNm9FdFdJbDNGVVIKQ2lsSkRpVTNSaDJo
+ MzVXNVdtNmVmMjlycms1YjZKTFFqR3hyNlppekpZdW4vZEFCajdUbGI0WmxjSVcrU1AzTQpQYnN
+ qTlB1bnBKUmYxaDY0UFZleC9OdEV0UzhHT2dNRkVhNGRkM200NWJiRm42L2JhVDNXMHgvRjBlan
+ lYSDBpCms2V1ZRUEJFT2JFei9ZY29pOGMrWmwwSENva1pUMHBmMExJN041WW1lYTBYZXpPNTJJM
+ UFmUmZoVmhXazdidVYKQ1hVcUo1dTRrQUtTc2R4VGtYM3NjRFhJZnkwaGNyZGZEaVhyRUYvdWht
+ S3dIdFpWMVM5VTU5KzBpU09aRHlqVQoxcHlNRFQwOEJKQTA4ck5ya1YwNkNhNUVoR0VieHQ4T0d
+ hZ01HZlhMTUpheTRlbjZHdk1iWVB1a3hNM3JrMW9qCkE4TWk1QT09Cj11aTk0Ci0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
+ fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
 
-Hi Federico,
+They're used in the parent to describe the panel's reg property.
 
-With this patch applied this also works on the Thinkpad X13s (SC8280XP), thank
-you for this, I know a lot of end users have been asking about this for quite a
-long time, so nice to see that we might finally get it.
+Fixes the
 
-Tested-by: Steev Klimaszewski <threeway@gmail.com>
+linux/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dtb: panel@0 (visionox,rm69299-shift): '#address-cells', '#size-cells' do not match any of the regexes: '^pinctrl-[0-9]+$'
 
--- steev
+warning.
+
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 89260fce6513..44e7b5015d26 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -472,6 +472,9 @@ &mdss_dsi0 {
+ 	status = "okay";
+ 	vdda-supply = <&vdda_mipi_dsi0_1p2>;
+ 
++	#address-cells = <1>;
++	#size-cells = <0>;
++
+ 	panel@0 {
+ 		compatible = "visionox,rm69299-shift";
+ 		status = "okay";
+@@ -479,9 +482,6 @@ panel@0 {
+ 		vdda-supply = <&vreg_l14a_1p88>;
+ 		vdd3p3-supply = <&vreg_l28a_3p0>;
+ 
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+ 		reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
+ 
+ 		pinctrl-names = "default", "sleep";
+
+---
+base-commit: f406055cb18c6e299c4a783fc1effeb16be41803
+change-id: 20251019-shift6mq-dt-e4b9e7dc7169
+
+Best regards,
+-- 
+Guido Günther <agx@sigxcpu.org>
+
