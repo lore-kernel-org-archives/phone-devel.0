@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3201F2B88;
-	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1926032E745;
+	Tue, 21 Oct 2025 11:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761047588; cv=none; b=ldlyW7DKEuB3rlICcGdaySs7GgzpVjEeP4CwIqmOJKAVaLVe5ehd1r7i24rc6Y1Lemr9157XoivadJpZizEjw0tWuJ75CIcZMwAMfuc0z4K9/tAUbz8wpC35Ucp9huQPv50txXY9N5FZ+4yGJithwEhnrekubcgJ0W6ilgXlsxo=
+	t=1761047588; cv=none; b=uyeN1yEIZHbQ0jMwBYrhKTObV3h5z7FLKjSPlBnOcrkDmSbPNhr2AK70O+Bu9/4sbijr3MxsHkIM7vgoOuY+I3wskbso58uI4FSWQvI6pVbsV46xfeOiZOq/PvgNI0UCb7kncNmLJa/9D+jLNDq77xWzhnfo+/pMXNhnlGpMNXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761047588; c=relaxed/simple;
-	bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bFgPzuDgjXlUlfTZkw/cGiM62JJy8zIsZ/HAliSBDLjYa6TMhs3HCXzWSJd8p3OTKS6AeTgzJi6131jWVrrewZr3Z7KX1FTWERkNa+90EEgXbuoM/5yLgsoWqCPlo4BdUleV42JtW32WHzMhZQZERnHNfp9jdeaHNUgrvTM+udw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRszY6hf; arc=none smtp.client-ip=10.30.226.201
+	bh=w69+lORHLBk1YdMhMA8T+HNY3dQ1RRGhVGhjM7xFxkw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=AW+ow5/JVQsCFf62r2/OU9j00ZXpJAgfwk/N3OGQEiIK5CXgyxARSCxxXHtjL/2TZ9Oe9w7eBUvsvg5nEKDxDVJMkEJmEVzzs8RGYBj1riEmZVv1OZdNyChBJ6jXD5KDLANVJLTQHsY9H0PFhRpx3eX0jt1UQ+SzTN4v1RB9Y34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtGgwXDd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRszY6hf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B42DDC4CEF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtGgwXDd"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DF486C4CEFF;
 	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761047587;
-	bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=rRszY6hfcEdp+PtctmpjxP7ov+6pUDiRB07YU6SQ1YZ8okt3q7yBc9IbYz+yIt8Nn
-	 euGxSzrh12BkhJp4MWlwKpTBzX6Jc8nSgDx2r75vuCmJSJsmnLgVgAkbV3m0qZOlTm
-	 iDjKaUlzs8lNRQg9dP10HXB88wDvXXe1RXmwtw0KAPbKCE0kDw33WgRtSLkmDjDenD
-	 BFRBlNVkgcTFPDv5Y22Kb40vL8iGknGB35kPfkS56zeFTfRiW6vDC5sfRhO15q0cJ/
-	 SCR5hpc0yKLNzfxIxkc0MIQGf9Z+mqSYtUzMn+bYRFAATyKiuRP4xzjKIfXoVIBx/j
-	 Um2qXB89duhuw==
+	s=k20201202; t=1761047588;
+	bh=w69+lORHLBk1YdMhMA8T+HNY3dQ1RRGhVGhjM7xFxkw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=KtGgwXDdmEQAztjrM0tUFxj+1JmkBBwLmEBesggWOnzekhJDYSKJM0zDdSlmwlg/r
+	 M9ZsncaUGEjyAwdqIX3m6JwrrTY1UgHUr/XYsd/j5bdtf3RCB2uWn9OTa5LAR90lfl
+	 Qq9Z1LbCax1wiTfE9l4m4AoL8e9OGk1vFchvU2xZoIJNqjlmU3mAw7sQqbJbZrbI5Q
+	 orRFe5FrCeJDjZyL/oTf4arzkDQ2j+PBL1qdu4RrZq42Naqo85DUjQdbpt24FijdUA
+	 Rr65uwJpGv2uY2TU6cpMvE0kSkU3AbURElMvXae+2dEnkqOlDCm7hoEUnmhjRxwKDH
+	 1SCpb/NQMIyfw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A215CCCD1AA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3655CCD1B0;
 	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v4 0/7] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC
- with AMS641RW panel)
-Date: Tue, 21 Oct 2025 13:53:00 +0200
-Message-Id: <20251021-s6e3fc2x01-v4-0-5e3ee21c688a@ixit.cz>
+Date: Tue, 21 Oct 2025 13:53:03 +0200
+Subject: [PATCH v4 3/7] arm64: dts: qcom: sdm845-oneplus: Update
+ compatbible and add DDIC supplies
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABx092gC/1XMQQ6CMBCF4auYrq2ZTm2hrryHcQFlKt2AaUmDE
- u5uIVFh+V7y/ROLFDxFdjlMLFDy0fddHufjgdm26h7EfZM3Q0AFBiWPmqSzOILgzigFdYnoSLE
- MnoGcH9fY7Z536+PQh9faTmJ5vxm1zSTBgRs0EoQudOmKqx/9cLJvtkQS/qAAKHcQM0RBthKNs
- liaPZQbKPQOygwtgZNK69qA/MN5nj+JGJNQFAEAAA==
-X-Change-ID: 20250923-s6e3fc2x01-f9550b822fe5
+Message-Id: <20251021-s6e3fc2x01-v4-3-5e3ee21c688a@ixit.cz>
+References: <20251021-s6e3fc2x01-v4-0-5e3ee21c688a@ixit.cz>
+In-Reply-To: <20251021-s6e3fc2x01-v4-0-5e3ee21c688a@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
@@ -62,98 +60,143 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3382; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3556; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo93Qh3FPzNbk+JxqhgQdlfcVYFIdEF2EHd7ELL
- TRtADqcSFiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPd0IQAKCRBgAj/E00kg
- ctkjEADNUBvs+NxZnOwNAZwk86zOFwp0a16dxx05NpX/5At4jHxdWbsxoBt34OfItoomBxZKm9p
- XQqo5vMG/5i8YWOByEe7aotWghqpyTIU8fCGqXI4rMQJ2yJZst/FAlNnRFZFQI2wMAmdY3fkSFJ
- Sawc+6V53Uzryn567OwBc/c15EYf5ieAKAuXIictpduLpKrHegnB1yMcMnskwPaICFxWWroEj6G
- uRyJ64jR/m/r4lyHK8ls+rr7r3sBWzX0Lk4DVi9MZTqvLqI8sjwzH6Ft3dlz5IRWhtwtavmgog9
- kR8y9YW8HeT3T9d78YtubjQFANx/GqCOmV1f1/nyeIvOd6n5jjww+eNw0rF9M8p4d1cIlEBREEY
- qctt9fRYVhtTMhJaEWHQqHirBMDioBp5TddDw5PPdmcbMrV+/1fTbURFgyKUFp6NXvWg2y3W22w
- q5EocidMjTyfF1y1O0BZfcwqrOqzALLndv9lcbjjTFubcAbDUh2jf1N14IX3JFq4KVpt2B0XJ/p
- ng6R+FgWH5fFUlqCL6Rj8ubyGulUxazCJzrMdXMBiZ8oVUtR9IVgYEI3Aofk6sZn9l4NXkBPT/5
- bRvjRZVMOplRoBiZT91rZXv3ldrspcOZGBKEncMoU59KOMbGv2U3E74IpwPMJeiyoQuNRIz0W9D
- /TN1mtmvYosKJMg==
+ bh=5dCLbwr33VzKhLnq/J0O1v2W9AA33R5EWabu34Rbafs=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo93Qhsaotx4/EuvX6eblhCyscFpkXCwOWWmsRo
+ 3inlH1OfniJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPd0IQAKCRBgAj/E00kg
+ cvkIEACNAQnLzL7pPu1zgNkra79JhYJg3shkb4SULdSqtRdDrbG56r2672ZwzPHPWECzlcCxN6q
+ QWCvJjWGQp95vs+13TDKJVDghttYOWRw53fjGR3q7W3rYC4ADdHwLSXZBMdPsRHSelJbKvw+JoG
+ pxt4xW/uLPvmtEHbi5/RQzMwCXWl7V3t85N2z+Brna5y4Gc3q0xMvWz4akCWhiYqEiYHM9UlC4b
+ sKsfFDBcuht7aLtr6L5/9xOARs1GVocNyF7/tB5lPhkGHNBa0v+3gcA66iWRHmI57YnOWb7Yb3N
+ w7mXCmY+aE9UAuGgHr8Z7t3E9oBLiNOjTqQnBnye70ibtlZPtqR2Ic+ww5H6g9COWBd6JS+4gax
+ nZFDbU259SaI0zVHqVteYfK1f41XGzWhIzy43h9qQmqNM0KLszdu8rx+pbGm48qIdcj32dZsLE0
+ um7w4PDcDFM2AuwAEbFwFxWzo+lZCxscmeQ2aAA95Qs95YHjk/LAOR7jF9NURvPYBPGnMGFVJge
+ 5vczSnZlwySzSV8DpqmgDkJlL7BsFpR2B/oiVPLKxB1Jl97VHyXN3k+x2FapWsJ0BUSde3vX9Xj
+ m7Z8MdDEvnjTB4noXqPHjcrZ03vstEqdeB5HlO0Q0Fhd2nm1LUqnlIzt2Qpdbg2zXfJQ1qKesl0
+ FgzoOq0UYd6JlSQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This patchset enables the display on the OnePlus 6T smartphone.
+From: Casey Connolly <casey.connolly@linaro.org>
 
-Patches 1-2 add the bindings and the panel driver.
-Patches 3-6 document the panel, pinctrls, and GPIOs.
-Patch 7 removes the compatible entry from the simple DSI panel.
+Update the compatible to reflect combination of DDIC and panel.
 
-Since the display node is shared between the OnePlus 6 and 6T,
-the following warning appears:
+Original compatible describing only the DDIC used, but omit describing
+the panel used (Samsung AMS641RW), which we have no way to detect.
 
-..sdm845-oneplus-enchilada.dtb: panel@0 (samsung,sofef00): 'poc-supply', 'te-gpios', 'vci-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
+There are two additional supplies used by the panel, both are GPIO
+controlled and are left enabled by the bootloader for continuous splash.
 
-This will be addressed in a follow-up patch, as the SOFEF00 DDIC also
-requires additional overhaul to properly initialize and function in mainline.
+Previously these were (incorrectly) modelled as pinctrl. Describe them
+properly so that the panel can control them.
 
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Co-developed-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v4:
-- Use refcounted allocation in place of devm_kzalloc()
-- Added include drm_probe_helper (Raihan)
-- Corrected te-gpio value from 30 to 10.
-- Removed legacy compatible samsung,s6e3fc2x01 from the driver (Dmitry)
-- Removed old compatible also from panel-simple-dsi enum.
-- Link to v3: https://lore.kernel.org/r/20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 46 +++++++++++++++++++++-
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |  2 +-
+ 2 files changed, 46 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Use mipi_dsi_dcs_set_display_brightness_large (Konrad)
-- added legacy compatible samsung,s6e3fc2x01 into the driver (Dmitry)
-- extended compatible string to
-  "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01" (Dmitry)
-- Brought back
-  "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
-- Link to v2: https://lore.kernel.org/r/20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index dcfffb271fcf3..1cf03047dd7ae 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -162,6 +162,34 @@ ts_1p8_supply: ts-1p8-regulator {
+ 		enable-active-high;
+ 		regulator-boot-on;
+ 	};
++
++	panel_vci_3v3: panel-vci-3v3-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "LCD_VCI_3V";
++
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++
++		gpio = <&tlmm 26 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		pinctrl-0 = <&panel_vci_default>;
++		pinctrl-names = "default";
++		regulator-boot-on;
++	};
++
++	panel_vddi_poc_1p8: panel-vddi-poc-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "VDDI_POC";
++
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++
++		gpio = <&tlmm 25 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		pinctrl-0 = <&panel_poc_default>;
++		pinctrl-names = "default";
++		regulator-boot-on;
++	};
+ };
+ 
+ &adsp_pas {
+@@ -429,6 +457,8 @@ display_panel: panel@0 {
+ 		reg = <0>;
+ 
+ 		vddio-supply = <&vreg_l14a_1p88>;
++		vci-supply = <&panel_vci_3v3>;
++		poc-supply = <&panel_vddi_poc_1p8>;
+ 
+ 		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+ 
+@@ -803,6 +833,20 @@ hall_sensor_default: hall-sensor-default-state {
+ 		bias-disable;
+ 	};
+ 
++	panel_vci_default: vci-state {
++		pins = "gpio26";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-disable;
++	};
++
++	panel_poc_default: poc-state {
++		pins = "gpio25";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-disable;
++	};
++
+ 	tri_state_key_default: tri-state-key-default-state {
+ 		pins = "gpio40", "gpio42", "gpio26";
+ 		function = "gpio";
+@@ -818,7 +862,7 @@ ts_default_pins: ts-int-state {
+ 	};
+ 
+ 	panel_reset_pins: panel-reset-state {
+-		pins = "gpio6", "gpio25", "gpio26";
++		pins = "gpio6";
+ 		function = "gpio";
+ 		drive-strength = <8>;
+ 		bias-disable;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+index 7e75decfda052..d6cd873aef0de 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+@@ -32,7 +32,7 @@ battery: battery {
+ &display_panel {
+ 	status = "okay";
+ 
+-	compatible = "samsung,s6e3fc2x01";
++	compatible = "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01";
+ };
+ 
+ &i2c4 {
 
-Changes in v2:
-- Dropped the gpio reset polarity change as suggested (Jens and Dmitry).
-- Fixed unused warnings (kernel test robot).
-- Added a pinctrl config for the VCI and POC supply.
-- Removed patch "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
-  while the compatible is used in device-tree, but without any driver
-  serving it, do not touch it (Rob)
-- Added more details into the device-tree about the OnePlus 6T panel properties
-- Put display gpio -pins into one -state block.
-- Link to v1: https://lore.kernel.org/r/20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz
-
----
-Casey Connolly (1):
-      arm64: dts: qcom: sdm845-oneplus: Update compatbible and add DDIC supplies
-
-David Heidelberg (6):
-      dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
-      drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
-      arm64: dts: qcom: sdm845-oneplus: Group panel pinctrl
-      arm64: dts: qcom: sdm845-oneplus: Implement panel sleep pinctrl
-      arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
-      dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible
-
- .../bindings/display/panel/panel-simple-dsi.yaml   |   3 -
- .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  81 +++++
- MAINTAINERS                                        |   6 +
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 113 ++++--
- arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
- drivers/gpu/drm/panel/Kconfig                      |  13 +
- drivers/gpu/drm/panel/Makefile                     |   1 +
- drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 385 +++++++++++++++++++++
- 8 files changed, 579 insertions(+), 25 deletions(-)
----
-base-commit: 606da5bb165594c052ee11de79bf05bc38bc1aa6
-change-id: 20250923-s6e3fc2x01-f9550b822fe5
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.51.0
 
 
