@@ -1,132 +1,159 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978AE328B7B
-	for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 08:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3201F2B88;
+	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761036973; cv=none; b=q+hhNZGD8WhRLTYXlcWzjgf6pBYQoboPsUD3/GN/ryLgUgY8+coNIhKM7plcrCp92Z6L4IjLBoQ8wT48mYStDfYfg0Q1+NLibYnleRwAi4W4QVzqfKstB58mx6nE3kvJarpWF7D4GyToCR6jqTkvYA2mlHHTuFzmldhEVMGsKpY=
+	t=1761047588; cv=none; b=ldlyW7DKEuB3rlICcGdaySs7GgzpVjEeP4CwIqmOJKAVaLVe5ehd1r7i24rc6Y1Lemr9157XoivadJpZizEjw0tWuJ75CIcZMwAMfuc0z4K9/tAUbz8wpC35Ucp9huQPv50txXY9N5FZ+4yGJithwEhnrekubcgJ0W6ilgXlsxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761036973; c=relaxed/simple;
-	bh=p1HMLQCAtIqg0gUPotjCohNGE4o5HyZj/UP6M6hYo+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gojjY8QgoWS2z7xEOVgAZYBY9Y1cHrR6gxSrxQm9ODNeq2aQqVO/r/lnXm3M6h/Vv1NXtjClN4cIZqTJiwQBA2XSFJjh++Yf0frnPTPAVP7H603ujdCsbMdCI/0Mu3jTRdkbNQTPYLH+Fbf34sdXbbqb4ukFVJC51flVMgNiAMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=el53CvSw; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1761047588; c=relaxed/simple;
+	bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bFgPzuDgjXlUlfTZkw/cGiM62JJy8zIsZ/HAliSBDLjYa6TMhs3HCXzWSJd8p3OTKS6AeTgzJi6131jWVrrewZr3Z7KX1FTWERkNa+90EEgXbuoM/5yLgsoWqCPlo4BdUleV42JtW32WHzMhZQZERnHNfp9jdeaHNUgrvTM+udw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRszY6hf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="el53CvSw"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L8Pfhe031269
-	for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 08:56:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gPkYKty+NWUtDKsrjdBKt0tpiMSu2WxnR7dA7Llh8jc=; b=el53CvSw1pdSqS7z
-	6YzG+RHH5ma05ImFxOFA1bfe+NPfH8OAQUR77mLGhAbqkg+X+22lB51L0EtmgTrA
-	Q1kEzFMVsZd4ogv88YXlwCzRFZJSmR4wlVqFQJNL7/P4ck4UVMT2pnb+AaJUmQua
-	5nC/0koNF3dqAjIPvryzkkGGkksiMRzBJzYD5jGUyp4v484WypVKweauPP1Z9E6N
-	VN632yiSGRQ7wPh2mI0VKZfUjAS378Rs6SPE6hpDpTYtyUcNFjsYdB6b6W5w3c1Q
-	IbC+yHEsgvdsCGGEoZSkxygzaT7YvWgZeQN6lexm3NsTzzMSm+HYNjwYpZ7C6szM
-	BkZYuw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v42k7ve8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 08:56:10 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-88f3a065311so199108885a.0
-        for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 01:56:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761036969; x=1761641769;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gPkYKty+NWUtDKsrjdBKt0tpiMSu2WxnR7dA7Llh8jc=;
-        b=ZzuF8qkK+Uk+QgsZe+eEQRMWRnoWwzEvEG15FFfuHxQE7FJqhsmMMns9uhQU0UYKRC
-         M0RDup3TDfar29eFs3/i1+kGW5exPPV1HNH41QIGIt6JIWzPwzi2GN1YnZKb8HULpI8x
-         iK+++7Su4J6AUN8I33idIT2p5VeRMpxUGfRbiGc4AflZJAggIJcBKWnHyqjSVr4md+Yq
-         vuCA2CLLZEsekWpP3cVLQ0RjvetxiCbF4aDLFHi/SjUO0k5aZCTPljkLMIg1hhvlaIBP
-         xsYUYymXsvi9/rqnErKtrhj2M8RepQFc+aX7NpLpm/yk99vpa4cyUVpMSrau76NeFBD9
-         q3iw==
-X-Forwarded-Encrypted: i=1; AJvYcCW7uqYoMgltOKLCMtFo8mTRX7fgadn1MXOIpMpGa31AYV1fa4LMq0UJGLFoJ6bIWzo5XsTtdLeF3vjlcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVG9HqgZp5DmsqeIDA/5t80iGb46C3kQG6qXqBpaqF1iGaVfae
-	5dh1r8h8CBUuMB1M0YHXJaNdBNAxrmJcwqMOid6HR5O8lVCuCHAdIheGB09rUuwdkoEMklkLJ5k
-	NWU72H8n2wwlayXmfa6j9UPpitr5i4/PqlLbkR2XN61hJOK8emCrmswRq+aUCaqTppw==
-X-Gm-Gg: ASbGncvhCljhusItDfNuGMQVFTjNw9BmRWKPzKZ/MGXMrH5iJDg+yP8NmXtND6Ei/Rv
-	fe3bXfUIdXya9afarG/dttzvH6pz/HCw5CP0r6j1oboR+5d9DEeq2x26Ghy1HH4Z+OvfULXhRiT
-	7frjTd+xYmzZQ/miauzNSazItNT8YzaHP8PCQA0JtwPYynkghmxXHKBcrgln603Z2Nvz2ISpHdU
-	8cITuDVWyn+E2KWkb9eT/P9WZ8YMpBdgYq/ToyWa3T0+qaeo9rgQlc3TU0y7PLzgHHxzwEFv8Gn
-	0h8tCMtDu4ssRytIXZvZ1dw53X93sZE+0No6PpwWP7UI1PqMrUCaCRI9O/rwKyC4+DbphYz7TeW
-	pBAGzEXrb7WvHbNidaFKAWx9q7SFYwe2ecfQJIkh0KndFC9gvJUAnm2Qp
-X-Received: by 2002:a05:622a:245:b0:4e8:97b1:2f00 with SMTP id d75a77b69052e-4e89d07b665mr125492441cf.0.1761036969340;
-        Tue, 21 Oct 2025 01:56:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwBLXqTI6f+Bzi2R6wECJZwkz+yvm9ue+XiJIYIwB6PxHU0f52M5+P+xVtyMO9HaSWzM+hQA==
-X-Received: by 2002:a05:622a:245:b0:4e8:97b1:2f00 with SMTP id d75a77b69052e-4e89d07b665mr125492291cf.0.1761036968808;
-        Tue, 21 Oct 2025 01:56:08 -0700 (PDT)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65e89713ffsm1022412766b.36.2025.10.21.01.56.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 01:56:08 -0700 (PDT)
-Message-ID: <f284c279-a283-4cae-b405-02d7a0c44348@oss.qualcomm.com>
-Date: Tue, 21 Oct 2025 10:56:06 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRszY6hf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B42DDC4CEF5;
+	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761047587;
+	bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=rRszY6hfcEdp+PtctmpjxP7ov+6pUDiRB07YU6SQ1YZ8okt3q7yBc9IbYz+yIt8Nn
+	 euGxSzrh12BkhJp4MWlwKpTBzX6Jc8nSgDx2r75vuCmJSJsmnLgVgAkbV3m0qZOlTm
+	 iDjKaUlzs8lNRQg9dP10HXB88wDvXXe1RXmwtw0KAPbKCE0kDw33WgRtSLkmDjDenD
+	 BFRBlNVkgcTFPDv5Y22Kb40vL8iGknGB35kPfkS56zeFTfRiW6vDC5sfRhO15q0cJ/
+	 SCR5hpc0yKLNzfxIxkc0MIQGf9Z+mqSYtUzMn+bYRFAATyKiuRP4xzjKIfXoVIBx/j
+	 Um2qXB89duhuw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A215CCCD1AA;
+	Tue, 21 Oct 2025 11:53:07 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v4 0/7] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC
+ with AMS641RW panel)
+Date: Tue, 21 Oct 2025 13:53:00 +0200
+Message-Id: <20251021-s6e3fc2x01-v4-0-5e3ee21c688a@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845: Define guard pages within the
- rmtfs region
-To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Paul Sajna <sajattack@postmarketos.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251020-sdm845-use-guard-pages-v1-1-64d714f8bd73@ixit.cz>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251020-sdm845-use-guard-pages-v1-1-64d714f8bd73@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: QlDrDkntscjDP9WvC93b697rgltnBkmX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAzMSBTYWx0ZWRfX0cS0q9623G85
- sNDSs55aL9WoWezPLgQM8XZBMZw3cF842ixpPqd0kPoTk+tEvo1NFWO4i4WRIxrjMm1jY9ox1lD
- xtSClSUC6yUGxyWhiJNzjSsqJ6NanIlmaSOkleBZeCGF0KDzQKi7XNRokW7LWSbmd/dZry7Pd87
- gePDl4IP34W5AYsAGvNemX4V5XBztjou5gqxsTknt9fHdzf/lJ+/n3lHeA+hJIaUGz5aKdCeBA9
- f81OCM38aSy5izJPRzgC05Ji4rB1wAXd8xWF16hbdGdttsZpgujsTGwIQW0qlE8T+rRnnO4YSro
- +A9+/MdzjMUuV4CvfC4kGRv8SXrOkRmVgTfGjcxUir1LGWpmU7NuVI/h8hVwjOVLm7wMB6L6XJF
- Y+cb4uucQYaCQpFof87LsPMwqDjBmA==
-X-Authority-Analysis: v=2.4 cv=QYNrf8bv c=1 sm=1 tr=0 ts=68f74aaa cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=WIiUZGVdasX2BrCbfdgA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: QlDrDkntscjDP9WvC93b697rgltnBkmX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- spamscore=0 bulkscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180031
+X-B4-Tracking: v=1; b=H4sIABx092gC/1XMQQ6CMBCF4auYrq2ZTm2hrryHcQFlKt2AaUmDE
+ u5uIVFh+V7y/ROLFDxFdjlMLFDy0fddHufjgdm26h7EfZM3Q0AFBiWPmqSzOILgzigFdYnoSLE
+ MnoGcH9fY7Z536+PQh9faTmJ5vxm1zSTBgRs0EoQudOmKqx/9cLJvtkQS/qAAKHcQM0RBthKNs
+ liaPZQbKPQOygwtgZNK69qA/MN5nj+JGJNQFAEAAA==
+X-Change-ID: 20250923-s6e3fc2x01-f9550b822fe5
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3382; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=blLYQzw7Fm/i30T1vjILSnrxGfqml6yfu8ONDXj51Y4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo93Qh3FPzNbk+JxqhgQdlfcVYFIdEF2EHd7ELL
+ TRtADqcSFiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPd0IQAKCRBgAj/E00kg
+ ctkjEADNUBvs+NxZnOwNAZwk86zOFwp0a16dxx05NpX/5At4jHxdWbsxoBt34OfItoomBxZKm9p
+ XQqo5vMG/5i8YWOByEe7aotWghqpyTIU8fCGqXI4rMQJ2yJZst/FAlNnRFZFQI2wMAmdY3fkSFJ
+ Sawc+6V53Uzryn567OwBc/c15EYf5ieAKAuXIictpduLpKrHegnB1yMcMnskwPaICFxWWroEj6G
+ uRyJ64jR/m/r4lyHK8ls+rr7r3sBWzX0Lk4DVi9MZTqvLqI8sjwzH6Ft3dlz5IRWhtwtavmgog9
+ kR8y9YW8HeT3T9d78YtubjQFANx/GqCOmV1f1/nyeIvOd6n5jjww+eNw0rF9M8p4d1cIlEBREEY
+ qctt9fRYVhtTMhJaEWHQqHirBMDioBp5TddDw5PPdmcbMrV+/1fTbURFgyKUFp6NXvWg2y3W22w
+ q5EocidMjTyfF1y1O0BZfcwqrOqzALLndv9lcbjjTFubcAbDUh2jf1N14IX3JFq4KVpt2B0XJ/p
+ ng6R+FgWH5fFUlqCL6Rj8ubyGulUxazCJzrMdXMBiZ8oVUtR9IVgYEI3Aofk6sZn9l4NXkBPT/5
+ bRvjRZVMOplRoBiZT91rZXv3ldrspcOZGBKEncMoU59KOMbGv2U3E74IpwPMJeiyoQuNRIz0W9D
+ /TN1mtmvYosKJMg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 10/20/25 11:12 PM, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> Use qcom,use-guard-pages property instead of polluting device-tree with
-> lower and upper rmtfs guard nodes.
-> 
-> No functional change intended.
-> 
-> cosmetic: set name the node rmtfs-region.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
+This patchset enables the display on the OnePlus 6T smartphone.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patches 1-2 add the bindings and the panel driver.
+Patches 3-6 document the panel, pinctrls, and GPIOs.
+Patch 7 removes the compatible entry from the simple DSI panel.
 
-Konrad
+Since the display node is shared between the OnePlus 6 and 6T,
+the following warning appears:
+
+..sdm845-oneplus-enchilada.dtb: panel@0 (samsung,sofef00): 'poc-supply', 'te-gpios', 'vci-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
+
+This will be addressed in a follow-up patch, as the SOFEF00 DDIC also
+requires additional overhaul to properly initialize and function in mainline.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v4:
+- Use refcounted allocation in place of devm_kzalloc()
+- Added include drm_probe_helper (Raihan)
+- Corrected te-gpio value from 30 to 10.
+- Removed legacy compatible samsung,s6e3fc2x01 from the driver (Dmitry)
+- Removed old compatible also from panel-simple-dsi enum.
+- Link to v3: https://lore.kernel.org/r/20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz
+
+Changes in v3:
+- Use mipi_dsi_dcs_set_display_brightness_large (Konrad)
+- added legacy compatible samsung,s6e3fc2x01 into the driver (Dmitry)
+- extended compatible string to
+  "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01" (Dmitry)
+- Brought back
+  "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
+- Link to v2: https://lore.kernel.org/r/20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz
+
+Changes in v2:
+- Dropped the gpio reset polarity change as suggested (Jens and Dmitry).
+- Fixed unused warnings (kernel test robot).
+- Added a pinctrl config for the VCI and POC supply.
+- Removed patch "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
+  while the compatible is used in device-tree, but without any driver
+  serving it, do not touch it (Rob)
+- Added more details into the device-tree about the OnePlus 6T panel properties
+- Put display gpio -pins into one -state block.
+- Link to v1: https://lore.kernel.org/r/20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz
+
+---
+Casey Connolly (1):
+      arm64: dts: qcom: sdm845-oneplus: Update compatbible and add DDIC supplies
+
+David Heidelberg (6):
+      dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
+      drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
+      arm64: dts: qcom: sdm845-oneplus: Group panel pinctrl
+      arm64: dts: qcom: sdm845-oneplus: Implement panel sleep pinctrl
+      arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
+      dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible
+
+ .../bindings/display/panel/panel-simple-dsi.yaml   |   3 -
+ .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  81 +++++
+ MAINTAINERS                                        |   6 +
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 113 ++++--
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
+ drivers/gpu/drm/panel/Kconfig                      |  13 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 385 +++++++++++++++++++++
+ 8 files changed, 579 insertions(+), 25 deletions(-)
+---
+base-commit: 606da5bb165594c052ee11de79bf05bc38bc1aa6
+change-id: 20250923-s6e3fc2x01-f9550b822fe5
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
+
