@@ -1,110 +1,162 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916D1A3029;
-	Tue, 21 Oct 2025 20:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A925E2E8DE8
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761077295; cv=none; b=cRG47bdNoOTSeUr1FJRbV9QBjT3Imv+8DJM9Mj7lKScEMJ06myq2lm8KVjS9hjKp94gPj3ikRZEVt3kdpOx4ifyPXfMwtZDplXxS1ysChBTySM0H+ef1lUtwTKR83o2n/kwHoiF56gXRcnCkqzs4Tz7yMrenbBuKYyjzFJKW0Tc=
+	t=1761115034; cv=none; b=BzLwgIFrLgZXDM1nbUiPT0IwcXS6kYwI8Rnn6H4MJa5ZamC78O+k7my1RwP9/OAUeNLiBytV5LZJdvsSNd4/YVTLL8PDXARsNIqKU74uDQlOblZU/PS0oltY7fjgdqLD7upYJDAcPaxcmuIoO7KovACto4BeDdxDq0LtRWiLIJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761077295; c=relaxed/simple;
-	bh=TUB/VZTmJJXD0FPrRlFoDDfruAv+34ZNsor9AkJ/vdw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r18+jeQ/PMMtWWLEcUP1MTmmwvvF715AxiG8uKCobXPS4vAIDsQxpCGSD1hIMJ8LKDNQNhIeeEMiRYQvDe9QoaoykXfiOi9ttwvD0KzdwRie1oIvUTbTcqRHp+gqDnIwXGpuEm4dSnYgmw/EMb3TYmGmiHtZvSAYXTlJZhaIKQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=njuoKusr; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1761115034; c=relaxed/simple;
+	bh=iJ1uktF/2GWrsG1i/Ztq1ODfIsEIJ8TPn2k68folgJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VM+1UYRu7Jc6W5P+Zzmu/sLFsvqoOeriUT9IZrfQCueGnA12iplOe7Fuf/mpmp494bLO/WmoNIOsbvOrC1XBx0o6Y8xRV6TatpNcf1rLebsmthFI3REw9VQOtd6iOrixYBguMfWhsFN5Iw9h22mfLzLKTn1iBO59VuTXLci+HqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CB0sWIT4; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="njuoKusr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=TUB/VZTmJJXD0FPrRlFoDDfruAv+34ZNsor9AkJ/vdw=; b=njuoKusrNZnb2b26Cv3hUOX5rN
-	RafPZjMwxeQJGBXwBicwjIgXRIO+udGSQNrEKUFdQjilRP15uiUF53rePm1/L1Qq1M2hcf+68hQ9U
-	LhkjiVce0iH6DsJDQ6FA8Mqs3q/4HSDPumXF+ohz7yVSikKmiLrJ/uyELT2aZUTr6FCfbliOLOjhX
-	ygcfPhoqUlv0fUwXRkpiTtBZgygsjadRrptNBToDGoksRn9Y6p8g/6XmFa2Mo8BXn8Onn1CtGa+LI
-	XSfQ+nc49fB/zirjkWHaxQGZNGW7uRaKZLx6IjOj8wn9Er12sWznjFeCnKDsPdWeFVZf+dDvvyQDr
-	T/7F4p+A==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1vBIeO-000JfS-1f;
-	Tue, 21 Oct 2025 22:08:08 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1vBIeO-0002CK-0M;
-	Tue, 21 Oct 2025 22:08:08 +0200
-Message-ID: <2232bf5e29f04b3af7ceb5f5d2a9edda295691f9.camel@apitzsch.eu>
-Subject: Re: [PATCH v2 0/8] media: i2c: dw9719: add DT compatible and
- DW9718S support
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Mauro Carvalho Chehab
-	 <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	devicetree@vger.kernel.org, Daniel Scally <djrscally@gmail.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Val Packett
-	 <val@packett.cool>
-Date: Tue, 21 Oct 2025 22:08:06 +0200
-In-Reply-To: <aPc2PoGa8mTx7KT1@kekkonen.localdomain>
-References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
-	 <790fd7d05fa03f788f0a628a99b2e127db824207.camel@apitzsch.eu>
-	 <750398e8-1781-47be-bccd-e2679a58d449@kernel.org>
-	 <aPc2PoGa8mTx7KT1@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CB0sWIT4"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M3Sslq004439
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	phYYPHpmFAc5t3rQjDklKkr3KZqV3jpdRFmpgMO7EiE=; b=CB0sWIT4dGesmZr3
+	VblF5Nyh4oTrrS85MkDKXBLlVOZT8m8BGZex3n2lQH3w+gJXz458mxwFRbzOY/53
+	WzwqV+5w+dzTdQLKDzJiq1mOJ74gzKfmFfbkK3Ttk4AswoUFcQ4cOkNifAuyL0Sr
+	eXkp7IFg40NRMMryJDYBWKxd839bW4UPkBdRVez2X6iMDF52X6RU8ccO1K/d1sgb
+	Y+yFIRi8+dia5KJdpBG7yyT0bkriEabFzVWLuggTRIJQhe+cLsUGYVQmplePgpNs
+	eghiIiARZ1kr++uLXOPUd4fzZgKS//IntqCYJtWhDkTiZ+BnzF2TW8woDddJIhDF
+	oLbPQA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v3nfkfdn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:10 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-78102ba5966so6044357b3a.2
+        for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 23:37:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761115030; x=1761719830;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=phYYPHpmFAc5t3rQjDklKkr3KZqV3jpdRFmpgMO7EiE=;
+        b=lET0YZaDgwkHqPWyizsyGvcmasmEm9gmccn/M6sey7mr/Rk+F4C7A1QYUrHQO/auQz
+         EhS1ZfeLIBISQcO6kDzlEXkP/AFELd0vKnRQNpT2O7r494XtPkt+G6dd+N5kYM8R3lTc
+         i3OWufsZ5V8HxJAc8Ze9fD60UOx870mvyQTw0h69efutGZauShkHYhgEaF/K/6DPdT+Q
+         hTW1O9Omj8Z/7+HHgys3Rf5fMGaFDSvOxQ5PGjgCyRdo9iVN9PLEBQJSCnt/9aurj1S+
+         zgP0w/UbveSL54JcRe5tcDmgDuoposME0EjjF0BFYrzfncqoik/p3+wDHMTrPLEYG+1C
+         ajrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNc1EYxdoeZFv4h7RgEFy2oMOxnV0QgqN26FINe3xBDdU3JRJvagkB7qva2LMdiDtLoyd6wpetXjq2zA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqHRaHKfpqhNXMkHL6UFGZ7UKIfLo06ZMvibd7sqpnI7Sineoo
+	2hGEvE+2vwPeqVfuaOgWf3GNCLgsyp2i/FoAB5hNS5uaJaZ+y8pm4YnzERiduYRy/FeSa84klWY
+	7CoBbX2bYoJ5hvmk+2fM4rntoNkUksgf03RHx/8gtQ5vnsIwlpKuKPteTXryQjVHpjA==
+X-Gm-Gg: ASbGncvQ9OjhRTTkkEs7IUIe2dxG3hdNfMMfdEyrWZTv0yADk2MXjxsTAjue2TqT537
+	FRGhwI1CYGOiqwplZqo/inDRtU1aPvA92fha1FOKftEgDTWmOOBOBK/jy/iyGdBdYYo2i42+3JJ
+	5Uufe52MkmfHxxjebVrYxKYDf2FvmjpUGbF3yHC2Xm1Annu0EUzSFeUj7jjkg2Zgz5i3kdo1j12
+	GcxiTWfHguK7kp9lW+yVWM6hvEoH+1MxEiKJUr+yHFaddyuyshPQ6xtf+jAG+/XaxnZum1g88nt
+	QvWhRNA6yK3wQ/x4vVZURMc8AV8cjbiYglTjAhT7Ud1na1IQT1ATZRU2SC9b8uK9QAD/U2v6hii
+	NT/8GqjPxQoEpruJMq8aWGuqBqtM=
+X-Received: by 2002:a05:6a00:1493:b0:77f:3149:3723 with SMTP id d2e1a72fcca58-7a220d3464dmr24153368b3a.29.1761115029937;
+        Tue, 21 Oct 2025 23:37:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7vtPwGZMKsrymbcxu9zzkrZlyJC25po4kInazwlIOlZKWVgmxbQJbd5FeFHB1tY35PDWVlA==
+X-Received: by 2002:a05:6a00:1493:b0:77f:3149:3723 with SMTP id d2e1a72fcca58-7a220d3464dmr24153330b3a.29.1761115029486;
+        Tue, 21 Oct 2025 23:37:09 -0700 (PDT)
+Received: from [10.217.217.147] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a26c3026aesm74721b3a.24.2025.10.21.23.37.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 23:37:09 -0700 (PDT)
+Message-ID: <d453ddaf-aa44-4125-b86a-4a51f2c23ac5@oss.qualcomm.com>
+Date: Wed, 22 Oct 2025 12:07:04 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27799/Tue Oct 21 11:30:25 2025)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] clk: qcom: camcc-sm7150: Fix PLL config of PLL2
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Danila Tikhonov <danila@jiaxyga.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20251021-agera-pll-fixups-v1-0-8c1d8aff4afc@fairphone.com>
+ <20251021-agera-pll-fixups-v1-2-8c1d8aff4afc@fairphone.com>
+Content-Language: en-US
+From: Taniya Das <taniya.das@oss.qualcomm.com>
+In-Reply-To: <20251021-agera-pll-fixups-v1-2-8c1d8aff4afc@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: KQN4bbPcb9DYmScbotfemPz2UTKZQt9S
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyNyBTYWx0ZWRfX4tmj6Tm5yKwq
+ 0yg+9mV8VHaFH8XfV4tKbhkL8GluApTUM9PiNTGYh2qUcyhpaqYOtjiiTD6x0cMzd3/K/1h8y6b
+ zeo7U49oDdqyozC+twha0SbunuMeChEwgDHCPsxSuLCD4sjnAbB/pr9MFC5MIE7T72cxCgjEY1V
+ 0OkRHC65mtkmBoL+dvTsPvla3u4R63R0FO+23zmn2992ypNwICbUFlNuI21ePH8Dn1WCixg3Z2P
+ XbDw4t0789SrBoz+sytq5eMEBZy1DlArsIzRF7g44sryS5CEpKFgLRI4SbVwvP+ET2NOmfrV0W9
+ OUD8YSAJa2UpuGW9VA2YqtJgyDrQKrDcFewzfmBQsreWesKAd4HCqt2uNHRnQcjToiQSw4seA27
+ e9i/iT6DI7QV04YIVIaufqIQsdR+xg==
+X-Proofpoint-GUID: KQN4bbPcb9DYmScbotfemPz2UTKZQt9S
+X-Authority-Analysis: v=2.4 cv=EYjFgfmC c=1 sm=1 tr=0 ts=68f87b96 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=6H0WHjuAAAAA:8 a=rHO35cIvbrFS-cT-sPwA:9 a=QEXdDO2ut3YA:10
+ a=OpyuDcXvxspvyRM73sMx:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 spamscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180027
 
-Hi Sakari,
-
-Am Dienstag, dem 21.10.2025 um 10:29 +0300 schrieb Sakari Ailus:
-> Hi Krzysztof, Andr=C3=A9,
->=20
-> On Mon, Oct 20, 2025 at 10:45:51PM +0200, Krzysztof Kozlowski wrote:
-> > On 20/10/2025 22:40, Andr=C3=A9 Apitzsch wrote:
-> > > > =C2=A0.../bindings/media/i2c/dongwoon,dw9719.yaml=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 88
-> > > > +++++++++++++++++
-> > > > =C2=A0drivers/media/i2c/dw9719.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 110
-> > > > +++++++++++++++++----
-> > > > =C2=A02 files changed, 178 insertions(+), 20 deletions(-)
-> > > > ---
-> > > > base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
-> > > > change-id: 20250709-dw9719-8a8822efc1b1
-> > > >=20
-> > >=20
-> > > Gentle ping.
-> >=20
-> > Please apply the patch and run checkpatch. Probably you received
-> > checkpatch warnings from media patchwork, no?
->=20
-> I've fixed it this time while applying it.
-
-Thanks.
-
-It seems you forgot to add the R-b tag from Rob [1] while applying the
-patch [2].
-
-Best regards,
-Andr=C3=A9
 
 
-[1] https://lore.kernel.org/linux-media/175857272737.1273170.82545299091209=
-57681.robh@kernel.org/
-[2] https://git.linuxtv.org/sailus/media_tree.git/commit/?id=3Dab8656612129=
-46413ae4eecb3dddc5e98c9d0a3d
+On 10/21/2025 11:38 PM, Luca Weiss wrote:
+> The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
+> parameters that are provided in the vendor driver. Instead the upstream
+> configuration should provide the final user_ctl value that is written to
+> the USER_CTL register.
+> 
+> Fix the config so that the PLL is configured correctly.
+> 
+> Fixes: 9f0532da4226 ("clk: qcom: Add Camera Clock Controller driver for SM7150")
+> Suggested-by: Taniya Das <taniya.das@oss.qualcomm.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/clk/qcom/camcc-sm7150.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/drivers/clk/qcom/camcc-sm7150.c b/drivers/clk/qcom/camcc-sm7150.c
+> index 4a3baf5d8e85..590548cac45b 100644
+> --- a/drivers/clk/qcom/camcc-sm7150.c
+> +++ b/drivers/clk/qcom/camcc-sm7150.c
+> @@ -139,13 +139,9 @@ static struct clk_fixed_factor camcc_pll1_out_even = {
+>  /* 1920MHz configuration */
+>  static const struct alpha_pll_config camcc_pll2_config = {
+>  	.l = 0x64,
+> -	.post_div_val = 0x3 << 8,
+> -	.post_div_mask = 0x3 << 8,
+> -	.early_output_mask = BIT(3),
+> -	.aux_output_mask = BIT(1),
+> -	.main_output_mask = BIT(0),
+>  	.config_ctl_hi_val = 0x400003d6,
+>  	.config_ctl_val = 0x20000954,
+> +	.user_ctl_val = 0x0000030b,
+>  };
+>  
+>  static struct clk_alpha_pll camcc_pll2 = {
+> 
+
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+
+-- 
+Thanks,
+Taniya Das
+
