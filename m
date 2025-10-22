@@ -1,172 +1,133 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3651C32F751;
-	Wed, 22 Oct 2025 11:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8A63431E9
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761132229; cv=none; b=m7L7FwEsmcw77qmXhqG1nIxovfwy1ajtui/nIEwICIQkrT+xdM3McOsYnpav9ozAPzgojf/rJGgq9wQ7dp/mwuqFVl92gJKHYYJz0U/rt0WG3of1oxDDpZ7JW9D0TSH7V1i4nLBUN7W5fXzICHj1X2j2L39D6AMQO1ahJI9XNhc=
+	t=1761145772; cv=none; b=OTLRgiwHkGWcqOt9FZ0c2fh698efE8hRKhNu1x5BYWTN3nH7qjHuwCWXeTDtaeNSGrg76uwUaVnBZ8QyqfdDf8RfDy04IUN/NUctGd/S8p3v0nj5XHz0CKDL61EOCieB3ZzAZl7Wx6AkKqaEvkLz+6jofdCUjutNBnNrPSPFXiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761132229; c=relaxed/simple;
-	bh=Sto90th+ZCJpEnfp/VcT4pT9JuOxd6d1o8AqSToBMrg=;
+	s=arc-20240116; t=1761145772; c=relaxed/simple;
+	bh=WMIMwGu7v18FDKKJiIcw68EOolnjXiaG0jHWCuQ5J18=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=loPT4Qxor/o7F9GLujvoz/2drxL1Oys2W/gLgImbKIT7Z463OWTdk14mKRwRlyN2nDsKX92ijMRoovHUZSxPTR7WAIW9QrIldE+aZEoqBgbkB8SHE0aZZKtdB7SVxaCL8IFwQgusMsE5RHEX1QgO7gvZokNvjWHDnYsZM/jrxhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=pqCbupnN; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=iDgzQt2MGf3Bk6OZ5LHh3HYs9Kj8hCgl9xbAefOFy5uL+y2o7BeQJDib9CtQHgvQIuS2oiogXaBMgo5v0K8Pxf5s48gcEVC+NUdiWHhQFLIldn1YUOc3bd8SPEh5xuXOJKohH7UqGiFRVPIIYFsN+qrjtk3kmA2n4f7jW1QmK8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PucaDMBY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="pqCbupnN"
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 15D481C0088; Wed, 22 Oct 2025 13:23:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1761132225;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lJy21XbWgHp7MjGSXfr0/SiKeaKudWY5JLr70CDGgKg=;
-	b=pqCbupnNygoqjhYdJh+SCZh/oNfOBS94VpWGG/hzyei2HcK3MabOx5SFCwkpVC61xwOs7u
-	kBUNEPVa2OaVIxl0U8f+ElyReralUEauxeyeryR+9Oj0aktXucB7Nk4gKyZZy19G+bIB/Z
-	IPRgNPTEJp/FXhjKBa218zWpoFhtef4=
-Date: Wed, 22 Oct 2025 13:23:44 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: barnabas.czeman@mainlining.org, Bjorn Andersson <andersson@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Otto =?iso-8859-1?Q?Pfl=FCger?= <otto.pflueger@abscue.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Konrad Dybcio <konradybcio@kernel.org>, Sean Paul <sean@poorly.run>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Adam Skladowski <a_skl39@protonmail.com>,
-	Sireesh Kodali <sireeshkodali@protonmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	linux@mainlining.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 6/6] arm64: dts: qcom: Add Xiaomi Redmi 3S
-Message-ID: <aPi+wIY/bUuZl9hv@duo.ucw.cz>
-References: <20250831-msm8937-v7-0-232a9fb19ab7@mainlining.org>
- <20250831-msm8937-v7-6-232a9fb19ab7@mainlining.org>
- <aNGLPdmOyh/pfroq@duo.ucw.cz>
- <97ee369f6ffbe42c72c57ebd72887b23@mainlining.org>
- <aNJKniJ46YuUsbQ+@duo.ucw.cz>
- <DD038IVOWESM.24X3EZZXH3UE@fairphone.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PucaDMBY"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MA62la025019
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:09:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=OdkI0P3aHIPeVo9m2/RE25vv
+	O4vI7yj29ODppPkFbYw=; b=PucaDMBYv1WK0qPWpZF2Va/3Q8GuClfUVNvyCe53
+	LpBRo8eaLnoTy5QP6Exyow+c2KjQR9xooGIIYxHbZqlubcJNQPv1fjjz5q4AAy1D
+	Y519D9hwHpMZNafATAmPUBw4xHcAarkkZDy6rga/c4+U3Q07hiOM1YCuVCX19kFj
+	/Onty8pKYGqa2/lOdSSTITDNEes4Gc/12DXwncaq+LXkOs7n74o4TyJWDv0I8Nde
+	ekb6BcK88JJx6Congmc9y5HsA9F62IRoFHEK4YVYLBwSfKspLFIqtWkJfvIiJQlL
+	X72I0OIDhq2phzCU6LajcodLH3qfqF+QOlX15sOIWa9HYg==
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49wsws7fjx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:09:29 +0000 (GMT)
+Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-8df9aec6084so15254611241.0
+        for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 08:09:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761145769; x=1761750569;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OdkI0P3aHIPeVo9m2/RE25vvO4vI7yj29ODppPkFbYw=;
+        b=NTVaTVmRE2E2xNAm84b8p0lPc7nxm1AO9sBN43G8WGxX78lFSpTd8AFHhkocprAgrf
+         ibYoM67zyuvduO+sFWEEpGzQ9sNPDh1LF7DqDRLIK+fpd6F2vdYVkE879/4RrQFLsQpn
+         EUEOZYpI75CpkyID4t+IueRvd7TmYFYSGGf76vXGJsLe0H+oxOlfQmkfmVgTlSr8Klc3
+         hv1d4fol6jLdFA1CIZ0Jcf4qAVOnnFMa+3CA5iQPh+x3z8n1KJcmQkyXsXDoEz7zcUbu
+         /QgRO22j9ymhL8wTbW0/kz7nhNqsJjO9nwGVAXXN+pP+rVkGpNaWo5zR+yFaXO7gIlzA
+         WTRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWNOBOoksXE0RpVmvMyTI2mRTjJ6AoG69vcDQdJ6VnOKmsB8sRcvQfvJUWdVtKLQSaZUqBQzLAZKxcIRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCHbFwgbl/dM38Y27PgSvmfhBbq5GYNaN3/z/uxrEx7oYdLN7h
+	NmvmVuuNuOLm2eyrgdjo1ijdSWGlV/OQWbwXHjlSR8FttYXreLSTRlJRBXTGe/YWDH+YrubMIeh
+	zoZaHv+mILdbEJw0nlM3dn5Eqs2HCVOo1d5oOMRifXXEiwzBOecA1SSKTKSaeRocbDg==
+X-Gm-Gg: ASbGnctNR+zqQ5r6ofmmWkZNNWys23sX+UOog2QxioaW2/KcMzeoWKjbLkjeV7K+Zgd
+	tbTVlWNYCYTX+wCsKiWPV0QeKLpteYJR+xYr+KTQ2DOG1BkW2vDhlgp6RSbJb+ZotiD4U3PxFxW
+	/6u+g/iNkZtFXMtbeQgGd+ANGEvwehEkfx43M0QB0uC+pikW+Svh4yyqPsN4p+IsO1GJ+vThxoi
+	olt7FyanaWXRpzrFh6sVxfqMuzSP0qLJLYTwN7DpsWCRP2lfn2895ZgLybaeda9q7jkXCz2j55+
+	VjMhWnkgSjjjzqutYiSLrxiZJMvIq5R6g/ckt3BrVrO6PCBc3W9nQzC16eHokfZ20qulDcr7Ds7
+	p0OA8yss6cDKWxAcWod3dnpr/UH6A+qiGQJAqIwr4G47TaMfsGoMR/DF0njRaAHN1axblRQ/JbY
+	Et5RS5JFFTvro=
+X-Received: by 2002:a05:6122:459a:b0:54a:a048:45ae with SMTP id 71dfb90a1353d-5564edeeb7dmr6086309e0c.1.1761145769065;
+        Wed, 22 Oct 2025 08:09:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTW7Za3xYid8rhr6v4z3vSiXm/haXNAQidSfHTGA4CeMN+hQb2XyvJwGutTkYmU9r6673nbw==
+X-Received: by 2002:a05:6122:459a:b0:54a:a048:45ae with SMTP id 71dfb90a1353d-5564edeeb7dmr6086265e0c.1.1761145768577;
+        Wed, 22 Oct 2025 08:09:28 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-591def1ecb3sm4735512e87.95.2025.10.22.08.09.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 08:09:26 -0700 (PDT)
+Date: Wed, 22 Oct 2025 18:09:24 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Danila Tikhonov <danila@jiaxyga.com>,
+        Taniya Das <taniya.das@oss.qualcomm.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] clk: qcom: camcc-sm6350: Fix PLL config of PLL2
+Message-ID: <qanawqrk6izypwmmuvezzff37k66ptv2vlbdwxs62dqx7igop4@wzkz76376jli>
+References: <20251021-agera-pll-fixups-v1-0-8c1d8aff4afc@fairphone.com>
+ <20251021-agera-pll-fixups-v1-1-8c1d8aff4afc@fairphone.com>
+ <06aec134-4795-4111-801a-469afdd8977d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="afFovrNgGG7Vhs2p"
-Content-Disposition: inline
-In-Reply-To: <DD038IVOWESM.24X3EZZXH3UE@fairphone.com>
-
-
---afFovrNgGG7Vhs2p
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <06aec134-4795-4111-801a-469afdd8977d@oss.qualcomm.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIwMDE0OCBTYWx0ZWRfX5HTPHsOnYRW5
+ zyUl5TJjfGp7jfoiIeuz1MQM7PHueg1cQ/LCTv/aa546rKM1+GHIjUTEwPAQEzrcmV3LpsLlSzU
+ vyVhn5Sb0q/ZNG2W5hmssetflwbDOj2znjEuRuKBzTaVMoBpUA8gI+paUJKh8sYbeyy+QdOi2Wa
+ iivfBmu57e70NQ2c9W0fMIynxetJzMggTH+hBDyjRITe418cvP1cYeDlHNoz20ZaxBbUkJyvSue
+ ZFcxId34F6As+toK+98rx9fnpo02Wk+AKP2dx8Mc4BZUJro0aFdRxD6enulQDs6+1EW6Cpt7Vrr
+ kehfVhWWa5d/BiQZP1n9+fptQo7VZeQIUUFf4qjUCgQKP/YlkGWX7Hevk9iirVj75HMm4fdlzG9
+ uloP+++6LAwEYzfK/qHMuWdAnu2NQg==
+X-Proofpoint-GUID: f7s4Ru6_IZiCJI6aOokcW3U8Csxr3rSw
+X-Proofpoint-ORIG-GUID: f7s4Ru6_IZiCJI6aOokcW3U8Csxr3rSw
+X-Authority-Analysis: v=2.4 cv=a+E9NESF c=1 sm=1 tr=0 ts=68f8f3a9 cx=c_pps
+ a=UbhLPJ621ZpgOD2l3yZY1w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VhJX9ptpD_-VFgrJVx0A:9
+ a=CjuIK1q_8ugA:10 a=TOPH6uDL9cOC6tEoww4z:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_06,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510200148
 
-Hi!
+On Wed, Oct 22, 2025 at 01:19:16PM +0200, Konrad Dybcio wrote:
+> On 10/21/25 8:08 PM, Luca Weiss wrote:
+> > The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
+> > parameters that are provided in the vendor driver. Instead the upstream
+> > configuration should provide the final user_ctl value that is written to
+> > the USER_CTL register.
+> 
+> This is perhaps wishful thinking due to potential complexity, but maybe
+> we could add some sanity checks to make sure that putting things in
+> unused fields doesn't happen
 
-> On Tue Sep 23, 2025 at 9:22 AM CEST, Pavel Machek wrote:
-> > Hi!
-> >> > Hi!
-> >> >=20
-> >> > > +	led-controller@45 {
-> >> > > +		compatible =3D "awinic,aw2013";
-> >> > > +		reg =3D <0x45>;
-> >> > > +		#address-cells =3D <1>;
-> >> > > +		#size-cells =3D <0>;
-> >> > > +
-> >> > > +		vcc-supply =3D <&pm8937_l10>;
-> >> > > +		vio-supply =3D <&pm8937_l5>;
-> >> > > +
-> >> > > +		led@0 {
-> >> > > +			reg =3D <0>;
-> >> > > +			function =3D LED_FUNCTION_STATUS;
-> >> > > +			led-max-microamp =3D <5000>;
-> >> > > +			color =3D <LED_COLOR_ID_RED>;
-> >> > > +		};
-> >> > > +
-> >> > > +		led@1 {
-> >> > > +			reg =3D <1>;
-> >> > > +			function =3D LED_FUNCTION_STATUS;
-> >> > > +			led-max-microamp =3D <5000>;
-> >> > > +			color =3D <LED_COLOR_ID_GREEN>;
-> >> > > +		};
-> >> > > +
-> >> > > +		led@2 {
-> >> > > +			reg =3D <2>;
-> >> > > +			function =3D LED_FUNCTION_STATUS;
-> >> > > +			led-max-microamp =3D <5000>;
-> >> > > +			color =3D <LED_COLOR_ID_BLUE>;
-> >> > > +		};
-> >> > > +	};
-> >> > > +};
-> >> >=20
-> >> > That's single, 3-color LED, right? Please see LED multicolor support.
-> >> As far as i know aw2013 driver does not have multicolor support.
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tr=
-ee/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
-> >
-> > I believe that needs to be fixed before more bugs are added on top to
-> > work around that problem...
-> >
-> > ...and before that bug is cemented in the ABI.
->=20
-> Honestly I don't think it's reasonable to expect people contributing dts
-> to then first start patching existing LED drivers and adding support for
-> x y or z to it, and block dts addition on that.
+Should we just drop those fields and always write the register value?
 
-Well, the dts is wrong, it describes three leds when you only have
-one.
-
-> At least in postmarketOS the user space components we have (e.g.
-> feedbackd) detect the LED things (and most others) automatically since
-> various devices have various different setups. So once/if aw2013 gets
-> multicolor support, the dts can be updated without problems.
-
-> Sure, maybe today changing something on the N900 which would change
-> sysfs paths is not the best idea because people will probably have 10+
-> years of random shell scripts lying around, but nowadays we usually have
-> better ways of abstraction that can handle that.
-
-I'm pretty sure someone, somewhere will have shell scripts.
-
-BR,
-							Pavel
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
-
---afFovrNgGG7Vhs2p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaPi+wAAKCRAw5/Bqldv6
-8k0GAJkB+A1MYLsaFrYi7NQtR20dd9gtSwCfTNIAA7o2+c88KcU2rXh0E4whh1s=
-=m2+z
------END PGP SIGNATURE-----
-
---afFovrNgGG7Vhs2p--
+-- 
+With best wishes
+Dmitry
