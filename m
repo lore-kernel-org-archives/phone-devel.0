@@ -1,165 +1,115 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B832ED14C
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CF224AEF;
+	Wed, 22 Oct 2025 06:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761115055; cv=none; b=mjTgPX3DFgvi4eUnJlOd1QBPngJybWrSGEupTmkQtKdKXbC31W4y73q+JR0QL4AEmr7pNNs4EqIjPGnaeLEva3A51M8upaKvrzYp1v4qNYhl1J7AcTmgGe5bslMjuEBrgpgJfjaX+uWBC5h/n9RgERoPAFzXaJQlMD/zEOfAmDE=
+	t=1761115429; cv=none; b=rjh7IgTRqM/nlEYMzpfL2IhncQ0JR7SLHoe/iVFLHYHmfOMrCjqMQMdRFjj0CNyJdLAQOqkXLl4dtobrTjHaX0l4nld2rojIkVenHM/jToBBkpVV54XQeGDZnuxbg4Tr2ZCf1/b7i1rCJfCUT0vpL2nByP/oLG1KO+PVy7D2WDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761115055; c=relaxed/simple;
-	bh=Z93iExCuX37UgKDIobpphLKj+O6LG5mSUkFFapNzyWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s6DAxI71BFxf1FnO8Ci94yeUXlt9aOLT/ZgYO453jjenBFm6mxigY0146cd5vtEr3gLn+AfqUfYwtU2rw2i7dfXRuXnvA4wUItLUb06eTLV3JnL7Qlqhqbt7Nw78AykaNk6traV/Flm273hZSEnOiHkQMXGyWLMxnd+f9KX8Ggk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HI6z4vNV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1761115429; c=relaxed/simple;
+	bh=MhzvnFVmPRiQtq/rW0RZfyHbgqu43fsyooR80W/iQqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=luwqT1ztIQJsNsyTeYghKYGsVNAHI8hjOeMESNWRrKyS3IQGoAPayAfUqHwUL/I3K63rE9A2ZDVI2Ay0z94TE9/WRHvAcwYoXjzsoirpS2Q8cUJ0pPfpjoJvGO1yVqj5HLMIS9GMXI2glsBtMuh6rJViKls5HyGVs+E1c3bzAuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eplp/Jif; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HI6z4vNV"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LNGVm3004680
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	y4z02VyJPB20nRWI46YB1ucXp1h69CUNixWswsOxZ3E=; b=HI6z4vNVOcFAQ66h
-	PZENWWeLelCbHuvi4KjSDG+1j4Penfya81jnrgFEO+IyK1ae1gmFFjag1KHuuGTc
-	L81eO/Og8XPcHXwmm1nDbVGoo/ykA2Qbd7r8kS5Vst44kizpEA/XIZlHrBHfk+AE
-	9kS/SPLkFAoXWjbgHcQhoPnFu6OLKp3pHyq9sF91PXE6k4AiHYbe+vyyi22xTzbA
-	N9Bzm0m1pkYYUhkyc1k6leaofSS6lsmGXJsOqtpmgFXGPZTuzIPrPmbz0HzDynkD
-	1eB4vzPdV36U8BogocJTOoVSsaA1fEvAZJrRWw8+mldGFGqwFJFEBvt2jQxKixjW
-	7tj/gA==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49xkps91qn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 06:37:33 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b62ebb4e7c7so4938616a12.3
-        for <phone-devel@vger.kernel.org>; Tue, 21 Oct 2025 23:37:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761115052; x=1761719852;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y4z02VyJPB20nRWI46YB1ucXp1h69CUNixWswsOxZ3E=;
-        b=N1gXx1cKahRINOsr2zt/Nf1ypCdH459HpEICYind4hxZkEkjjiaYwjXk+ZctrDlIbT
-         ewO96u4EmYDhuPuSg0yZHYqxI2okOezpOhQp7N2qu61XBV6ylSwle6o0W52ND0ni/lHJ
-         F2PnpxJTpuapgeOD+MMlM3vWAc1TXm9jJvhXY51+jl7no+nuJL9Aixq8WxLybruUDflz
-         FAGCP81lBbC1gfZuzycRpMP8/YezBIJbQpAMA2gXi7b4t2vhJqmj9Qg0vtsXdRdR4yhM
-         FBy+yV486wzk4s3a7PytXo6V/9cYUZ+l3Fkwe1GT8Rz3sRoIcLam3uijenXO4/1zVx/v
-         URRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSFG6m8nPp8vMM6noZsetcSvFBzkxhX6tYjaiU1USscAy5QovA0ZeqA9yCXY1D+eGkhQEu0jXnXPpixw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDuCha5VYiVfFaEzpqarTlL4EzlZPYbvazoS7tZ5ni8as30D/m
-	lix+Z5OaWSufeopi0ksPQxFDdBhuOdnG1zJf4/qdYmzApLFX1yGEE0qtQhOXnfMQXl0DChB2R3V
-	vGSVW4exSeeUbVM8geyh97TXVroZ6J2qSl2u2bGY77Q9TpRXczbaPIKHo6rtanl1Lrw==
-X-Gm-Gg: ASbGncurMn9QJNXDb1p1V2qL0d9Fw9ndiSFYLPFnlv8pXAfI3w3EWOwKFHSYJf9OAQ6
-	CK7bAaNHrcdpXiplq4vwEXLRutwtEOFC+fY5NA5uxzOwwKVEHIrpuH5RLsOsEnrZwQ9SbCtXT4P
-	6haj4uHnhQxBisQD9Zen4TD1itS2UKtqEeOQoycyNyjP46BbXy+ltk//fqB6ptZwUivdzRNqxAd
-	BdBl6f2EKvvyLK20+IRok7156kzgGhOlEg5j5zuBWeDdcTjJNeS8JsglY41Y9ytl6U7PsIotMY+
-	MQbMGswrQ3qCVHricX30zQKyVDMhZs2o8lGkt3hXo4Dg7/zVRzi1uYjhtnEfyArhN3cbNU+QMuh
-	Tf5ri208/wPec3PLUOLMz7IJk/sk=
-X-Received: by 2002:a17:90b:52d0:b0:33b:bed8:891e with SMTP id 98e67ed59e1d1-33bcf8fa427mr25385863a91.19.1761115052463;
-        Tue, 21 Oct 2025 23:37:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7joNkznR+XIabkzzijhQowA5ro5PMScYqcqH+x0jynIzXiNCgZ6De5048CiOYXQThklmRMQ==
-X-Received: by 2002:a17:90b:52d0:b0:33b:bed8:891e with SMTP id 98e67ed59e1d1-33bcf8fa427mr25385841a91.19.1761115052001;
-        Tue, 21 Oct 2025 23:37:32 -0700 (PDT)
-Received: from [10.217.217.147] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff34adasm13339717b3a.19.2025.10.21.23.37.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 23:37:31 -0700 (PDT)
-Message-ID: <50cee7dc-330b-4a4d-a49e-27f872e6556d@oss.qualcomm.com>
-Date: Wed, 22 Oct 2025 12:07:27 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eplp/Jif"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761115427; x=1792651427;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=MhzvnFVmPRiQtq/rW0RZfyHbgqu43fsyooR80W/iQqA=;
+  b=eplp/JifYgcY0SRmC8toAML55CQ01ipU3FhIh0kcsWJoYZhp5WNqQYdN
+   mk20iMA2+B2/sWcL6DaaPEOvJjPNmt/jMxSna5tW5XIy9rgU8/babHzTK
+   0Cil7ZyXeJM8h8SaLoCFoLnjSZ9BOdOE2EUD3MC911AGwTuvNxNJk7FGz
+   SWC5+C1n2EI/0/V09jSL4XvjalVBOndf0auZYJVVBxp3ewu6NJJ9fMh+n
+   Km2Epotk4SCpfdIokx4oZ5/xIS/W8WFjn7VBJeBAPhywdgROBAW4YfJzK
+   XrY8Y2JfMS+CxjGd0AiAoeUiuNwWAm5vFSzo8N1FGw9lv2phEQZ5d7OJc
+   w==;
+X-CSE-ConnectionGUID: txFWC6gnTLqda7i/dThukg==
+X-CSE-MsgGUID: q649Jod2TSeQhyWeD5ORmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80877816"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="80877816"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 23:43:46 -0700
+X-CSE-ConnectionGUID: UJ+WENF2QCWznUc8A/NHoQ==
+X-CSE-MsgGUID: aSUB8PRTQgGdyezSV5jx3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="182957991"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.28])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 23:43:44 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 8222311F87B;
+	Wed, 22 Oct 2025 09:43:40 +0300 (EEST)
+Date: Wed, 22 Oct 2025 09:43:40 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Val Packett <val@packett.cool>
+Subject: Re: [PATCH v2 0/8] media: i2c: dw9719: add DT compatible and DW9718S
+ support
+Message-ID: <aPh9HDN-z4VsNz5_@kekkonen.localdomain>
+References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
+ <790fd7d05fa03f788f0a628a99b2e127db824207.camel@apitzsch.eu>
+ <750398e8-1781-47be-bccd-e2679a58d449@kernel.org>
+ <aPc2PoGa8mTx7KT1@kekkonen.localdomain>
+ <2232bf5e29f04b3af7ceb5f5d2a9edda295691f9.camel@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clk: qcom: camcc-sm6350: Fix PLL config of PLL2
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Danila Tikhonov <danila@jiaxyga.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20251021-agera-pll-fixups-v1-0-8c1d8aff4afc@fairphone.com>
- <20251021-agera-pll-fixups-v1-1-8c1d8aff4afc@fairphone.com>
-Content-Language: en-US
-From: Taniya Das <taniya.das@oss.qualcomm.com>
-In-Reply-To: <20251021-agera-pll-fixups-v1-1-8c1d8aff4afc@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIxMDE5MCBTYWx0ZWRfX3KQOWEi4j7o8
- 3GCNYhuF010RFmV7r47l8LpkJSV3Kszpkg2/+bxzQOLjipElMmAKr3HxhO9hD2uU4JBfi1jV+9I
- EP4hiOfyhN0Xp5utvgQBvmoIM7mDnbLtkAyU9BREGUDEZSjmDV72dg0H5Pr9cJ3riXq/uiGRwTG
- qGg3o/j2NlXEzLdcCpaXj5BlEz1aP+3t+cQeDaO5ZoByPowOvgQyer7csA7K0blBB4JU3GRsMTR
- Bu3+K8ZYvuheSa2WJAba9TX38Ie+IltWfmlgAt6TA5rcgBnrN+SXmDVxCGgS6riH4iviNSpTlNB
- 4MNL5QkwfSE+aVckN2oPDHDZd5C+RH08pQOQwveeEGiknfn/GPNjyMxjB/jKIkF3xmC/ARUkMhU
- M7zjtDJPFbMlpdQHhrdBM+d1bXn98w==
-X-Authority-Analysis: v=2.4 cv=FbM6BZ+6 c=1 sm=1 tr=0 ts=68f87bad cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=6H0WHjuAAAAA:8 a=rHO35cIvbrFS-cT-sPwA:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: O6eydylCMjP-h4KmXC8d1eMBLzSJROGv
-X-Proofpoint-ORIG-GUID: O6eydylCMjP-h4KmXC8d1eMBLzSJROGv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 impostorscore=0 clxscore=1011 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510210190
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2232bf5e29f04b3af7ceb5f5d2a9edda295691f9.camel@apitzsch.eu>
 
+On Tue, Oct 21, 2025 at 10:08:06PM +0200, André Apitzsch wrote:
+> Hi Sakari,
+> 
+> Am Dienstag, dem 21.10.2025 um 10:29 +0300 schrieb Sakari Ailus:
+> > Hi Krzysztof, André,
+> > 
+> > On Mon, Oct 20, 2025 at 10:45:51PM +0200, Krzysztof Kozlowski wrote:
+> > > On 20/10/2025 22:40, André Apitzsch wrote:
+> > > > >  .../bindings/media/i2c/dongwoon,dw9719.yaml        |  88
+> > > > > +++++++++++++++++
+> > > > >  drivers/media/i2c/dw9719.c                         | 110
+> > > > > +++++++++++++++++----
+> > > > >  2 files changed, 178 insertions(+), 20 deletions(-)
+> > > > > ---
+> > > > > base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
+> > > > > change-id: 20250709-dw9719-8a8822efc1b1
+> > > > > 
+> > > > 
+> > > > Gentle ping.
+> > > 
+> > > Please apply the patch and run checkpatch. Probably you received
+> > > checkpatch warnings from media patchwork, no?
+> > 
+> > I've fixed it this time while applying it.
+> 
+> Thanks.
+> 
+> It seems you forgot to add the R-b tag from Rob [1] while applying the
+> patch [2].
 
-
-On 10/21/2025 11:38 PM, Luca Weiss wrote:
-> The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
-> parameters that are provided in the vendor driver. Instead the upstream
-> configuration should provide the final user_ctl value that is written to
-> the USER_CTL register.
-> 
-> Fix the config so that the PLL is configured correctly, and fixes
-> CAMCC_MCLK* being stuck off.
-> 
-> Fixes: 80f5451d9a7c ("clk: qcom: Add camera clock controller driver for SM6350")
-> Suggested-by: Taniya Das <taniya.das@oss.qualcomm.com>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  drivers/clk/qcom/camcc-sm6350.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
-> index 8aac97d29ce3..87806392a59d 100644
-> --- a/drivers/clk/qcom/camcc-sm6350.c
-> +++ b/drivers/clk/qcom/camcc-sm6350.c
-> @@ -145,15 +145,11 @@ static struct clk_alpha_pll_postdiv camcc_pll1_out_even = {
->  static const struct alpha_pll_config camcc_pll2_config = {
->  	.l = 0x64,
->  	.alpha = 0x0,
-> -	.post_div_val = 0x3 << 8,
-> -	.post_div_mask = 0x3 << 8,
-> -	.aux_output_mask = BIT(1),
-> -	.main_output_mask = BIT(0),
-> -	.early_output_mask = BIT(3),
->  	.config_ctl_val = 0x20000800,
->  	.config_ctl_hi_val = 0x400003d2,
->  	.test_ctl_val = 0x04000400,
->  	.test_ctl_hi_val = 0x00004000,
-> +	.user_ctl_val = 0x0000030b,
->  };
->  
->  static struct clk_alpha_pll camcc_pll2 = {
-> 
-
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Thanks, I've fixed that now. I guess I accidentally while removing the
+extra lines.
 
 -- 
-Thanks,
-Taniya Das
-
+Sakari Ailus
