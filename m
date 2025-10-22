@@ -1,115 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CF224AEF;
-	Wed, 22 Oct 2025 06:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2923E2F39A5
+	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 07:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761115429; cv=none; b=rjh7IgTRqM/nlEYMzpfL2IhncQ0JR7SLHoe/iVFLHYHmfOMrCjqMQMdRFjj0CNyJdLAQOqkXLl4dtobrTjHaX0l4nld2rojIkVenHM/jToBBkpVV54XQeGDZnuxbg4Tr2ZCf1/b7i1rCJfCUT0vpL2nByP/oLG1KO+PVy7D2WDg=
+	t=1761116416; cv=none; b=Lvb/tfyB0v0yN5ijLru9qVhozipP6w4khSXKMETJMe651O+sGWL1fBA9Gv9f7NbO5YWLOhO2L+F91qmvFgmH55AHLlU3nEvCi2WVtR4CkA9r52Lx8sFs7wAxTHh7ejarvoraCygdYKsAa+fPJjAa8ryLuPzTPLUKvWWEdRuzVq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761115429; c=relaxed/simple;
-	bh=MhzvnFVmPRiQtq/rW0RZfyHbgqu43fsyooR80W/iQqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=luwqT1ztIQJsNsyTeYghKYGsVNAHI8hjOeMESNWRrKyS3IQGoAPayAfUqHwUL/I3K63rE9A2ZDVI2Ay0z94TE9/WRHvAcwYoXjzsoirpS2Q8cUJ0pPfpjoJvGO1yVqj5HLMIS9GMXI2glsBtMuh6rJViKls5HyGVs+E1c3bzAuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eplp/Jif; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1761116416; c=relaxed/simple;
+	bh=2ovcfzW0TZxfflXJ1CWAc3hKGj0ELxUHga64V8M6ot4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VIuWvvuC+a28EMPj4QJ7Mp28Q8M2UVSG3nrKHwSjypb5JPFvwMnwx9/Y6wbzntfJpx8fnDcNUoUKlHR1Gz12RURp/EoY/DN1FRgVuBB/+N8xNwFq8w94DLs78P4mjFWuMB3E++6CZWqdEj7EgzxkFcc+k0sJvK5Potv+2YvcZF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=me.ssier.org; spf=pass smtp.mailfrom=me.ssier.org; dkim=pass (2048-bit key) header.d=me-ssier-org.20230601.gappssmtp.com header.i=@me-ssier-org.20230601.gappssmtp.com header.b=lOKW89gt; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=me.ssier.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.ssier.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eplp/Jif"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761115427; x=1792651427;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MhzvnFVmPRiQtq/rW0RZfyHbgqu43fsyooR80W/iQqA=;
-  b=eplp/JifYgcY0SRmC8toAML55CQ01ipU3FhIh0kcsWJoYZhp5WNqQYdN
-   mk20iMA2+B2/sWcL6DaaPEOvJjPNmt/jMxSna5tW5XIy9rgU8/babHzTK
-   0Cil7ZyXeJM8h8SaLoCFoLnjSZ9BOdOE2EUD3MC911AGwTuvNxNJk7FGz
-   SWC5+C1n2EI/0/V09jSL4XvjalVBOndf0auZYJVVBxp3ewu6NJJ9fMh+n
-   Km2Epotk4SCpfdIokx4oZ5/xIS/W8WFjn7VBJeBAPhywdgROBAW4YfJzK
-   XrY8Y2JfMS+CxjGd0AiAoeUiuNwWAm5vFSzo8N1FGw9lv2phEQZ5d7OJc
-   w==;
-X-CSE-ConnectionGUID: txFWC6gnTLqda7i/dThukg==
-X-CSE-MsgGUID: q649Jod2TSeQhyWeD5ORmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80877816"
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="80877816"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 23:43:46 -0700
-X-CSE-ConnectionGUID: UJ+WENF2QCWznUc8A/NHoQ==
-X-CSE-MsgGUID: aSUB8PRTQgGdyezSV5jx3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="182957991"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.28])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 23:43:44 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 8222311F87B;
-	Wed, 22 Oct 2025 09:43:40 +0300 (EEST)
-Date: Wed, 22 Oct 2025 09:43:40 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Val Packett <val@packett.cool>
-Subject: Re: [PATCH v2 0/8] media: i2c: dw9719: add DT compatible and DW9718S
- support
-Message-ID: <aPh9HDN-z4VsNz5_@kekkonen.localdomain>
-References: <20250920-dw9719-v2-0-028cdaa156e5@apitzsch.eu>
- <790fd7d05fa03f788f0a628a99b2e127db824207.camel@apitzsch.eu>
- <750398e8-1781-47be-bccd-e2679a58d449@kernel.org>
- <aPc2PoGa8mTx7KT1@kekkonen.localdomain>
- <2232bf5e29f04b3af7ceb5f5d2a9edda295691f9.camel@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=me-ssier-org.20230601.gappssmtp.com header.i=@me-ssier-org.20230601.gappssmtp.com header.b="lOKW89gt"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-891208f6185so658466885a.1
+        for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 00:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=me-ssier-org.20230601.gappssmtp.com; s=20230601; t=1761116413; x=1761721213; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UZ0zLiQMjHfWfIrETWEpgf86vfPQWqa3rEBNo24tR5I=;
+        b=lOKW89gtGbwipcluEaEJlQSRPk4HOVPDoeTtBsPgzX4VBK4WR0IppUMuRypIaDitkE
+         zYz+C3PQ0ZOjl4CeieIT7XgNO90JKwkkn44aUQAlXM/ugqZ0qflvyOYA+LEJPaIYfsSC
+         orcFnv0bhf7u6vAlHN6ySJjTQvffohW85jgxpvVcq6zvEiGZRyEguUA3hZfa2GISSJVK
+         pmn51Aiu0yGX6Ysj64T7ntOim463s8mqk48IwzDjoEqb5KiRgNRKph7RT6Bm/+LBD2/M
+         RFjFlfVMkTNon2LMLAoCc5pSrzXLUZMNff/J9Q+YCciS8hDfv6WCvV1zhvL7EuKNUIoj
+         /eaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761116413; x=1761721213;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UZ0zLiQMjHfWfIrETWEpgf86vfPQWqa3rEBNo24tR5I=;
+        b=Hl5NXxj6RkFFRXk2hAn60bBCmHD+wu8x2nD2Uoy5dFwEYKbsy3oY2MuvYaomGoNF8C
+         mKYAoRx7BWTVrBo4Icm2AJX5nLrQoGSvwQK3oFEM/H0kGtgz/rbPBWxK/e2HuaGN22Ml
+         u2Dke433rZwzPaqqy0jovPYnXTOz/dOKRhlv1WT9hn6NL1VBVTjTyQW4LQjAzy3gVohj
+         307JJiWqb50SRYxLFd6LUflJpyc14H9yCo5ebUTYa1DuY+35KMhVDxSWHozSPezzO/Xe
+         LUA8heXXcj3cD0CM6NG7S4eCCvMtZ7bwZPxbHvvrWXgOodFYWABFCZdq25iGyQUUI4Z5
+         CJSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJYcVQXfydVFMivaXr7U6rdGgFZHcfbjRYx27R6OBiVgcklrQTOd/tMTocatjQrs8/qyPPtUK9ruCK0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTc543dpjzSCMr3CkW94hHbPNfe/pSASdco3i8+rGOhHb7A8u1
+	3rOVXZCNg8VEP7hPVNZejSAV8BomqECFhOf5Vh6AQJ6Z5VRuObeE/iC1sO5vHBynG9Y=
+X-Gm-Gg: ASbGncuJ+Ow39Hp3GelIFnBDBrT8uRXABeMS2mT1BUc0agLGyqmO9DpI1HMm+uic+v9
+	xfK0aswXvCkc0XIsVvjCIGo6T7yj3dsrc6W70x9wWURKjez4HB0dVKOhWnAE6mPO1pI77EiA3n/
+	Onoi7khUFugw20DQreo4z1/n7GAlcJ9tvmWxULoXA/DuTyAFKUvP4tU8ozYo0zRCwge9ovYJwvr
+	asVCsOTz9mal1agL3gy9eg95iz2Lk174r/DuQmAuOUOqKk9J/bs2IjCpy4Zdx3LTMWynCmRYvFX
+	FbK2xdGTM77kGCrAd5rZ/wffnf98qvgy1ZNRYr52448TXRhjQmPND6JrQ36hJp5w3oYu/zTTK6h
+	Tf8V8LjoX1g21P1dlKDZu9fkertcb+2rLAPBzjjLYLpbBd3PcFMzl7U8VGX2CfJAXE+cXCALctJ
+	T+oTw5nVAFCA==
+X-Google-Smtp-Source: AGHT+IFP1Egld4e4M3O9ldes+hPt4it1nCGP1bODqWck6WjBakPWZGeujTTjHQoGUKEqPL4vEcQSIw==
+X-Received: by 2002:a05:620a:4621:b0:88f:228c:c6a0 with SMTP id af79cd13be357-8906e8af048mr2096261085a.24.1761116412834;
+        Wed, 22 Oct 2025 00:00:12 -0700 (PDT)
+Received: from [192.168.2.8] ([74.14.126.215])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cd6717desm915892985a.26.2025.10.22.00.00.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 00:00:12 -0700 (PDT)
+Message-ID: <77efe2a2-ee81-4096-9145-a76e35954e84@me.ssier.org>
+Date: Wed, 22 Oct 2025 03:00:01 -0400
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2232bf5e29f04b3af7ceb5f5d2a9edda295691f9.camel@apitzsch.eu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] ARM: dts: qcom: msm8974pro-htc-m8: add status LEDs
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Pavel Machek <pavel@kernel.org>
+Cc: Luca Weiss <luca@lucaweiss.eu>, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251007-m8-dts-additions-v1-0-53d7ab3594e7@me.ssier.org>
+ <20251007-m8-dts-additions-v1-1-53d7ab3594e7@me.ssier.org>
+ <6c791f05-70e7-49c9-a3ce-50fb82b0c894@oss.qualcomm.com>
+ <fef52764-3092-4375-b9c7-793d85adc102@me.ssier.org>
+ <41c63020-9226-45d9-979d-429b7299da41@oss.qualcomm.com>
+Content-Language: en-US
+From: Alexandre Messier <alex@me.ssier.org>
+In-Reply-To: <41c63020-9226-45d9-979d-429b7299da41@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 21, 2025 at 10:08:06PM +0200, André Apitzsch wrote:
-> Hi Sakari,
+On 2025-10-20 08:02, Konrad Dybcio wrote:
+> On 10/12/25 8:03 AM, Alexandre Messier wrote:
+>> On 2025-10-07 06:03, Konrad Dybcio wrote:
+>>> On 10/7/25 7:55 AM, Alexandre Messier via B4 Relay wrote:
+>>>> From: Alexandre Messier <alex@me.ssier.org>
+>>>>
+>>>> Add support for the notification LEDs on the HTC One M8.
+>>>>
+>>>> Two LEDs are available, one amber and one green.
+>>>
+>>> Do they form a single notification led, or are they supposed
+>>> to act separately?
+>>
+>> Good point, I had to check the phone user manual to confirm. Indeed, it is
+>> referred to as a one logical notification LED. It also mentions the color can
+>> be either green or orange, it does not mention using the combined color of
+>> the two LEDs.
+>>
+>> So I would say they are supposed to act separately.
+>>
+>> Hope this answers your question, and let me know if more details are needed.
+>>
+>> BTW: I will be sending a V2 to update the color name, since the user
+>> manual says the color is orange, not amber.
 > 
-> Am Dienstag, dem 21.10.2025 um 10:29 +0300 schrieb Sakari Ailus:
-> > Hi Krzysztof, André,
-> > 
-> > On Mon, Oct 20, 2025 at 10:45:51PM +0200, Krzysztof Kozlowski wrote:
-> > > On 20/10/2025 22:40, André Apitzsch wrote:
-> > > > >  .../bindings/media/i2c/dongwoon,dw9719.yaml        |  88
-> > > > > +++++++++++++++++
-> > > > >  drivers/media/i2c/dw9719.c                         | 110
-> > > > > +++++++++++++++++----
-> > > > >  2 files changed, 178 insertions(+), 20 deletions(-)
-> > > > > ---
-> > > > > base-commit: 846bd2225ec3cfa8be046655e02b9457ed41973e
-> > > > > change-id: 20250709-dw9719-8a8822efc1b1
-> > > > > 
-> > > > 
-> > > > Gentle ping.
-> > > 
-> > > Please apply the patch and run checkpatch. Probably you received
-> > > checkpatch warnings from media patchwork, no?
-> > 
-> > I've fixed it this time while applying it.
+> Let's describe it as a single LED then:
 > 
-> Thanks.
+> multi-led {
+>         color = <LED_COLOR_ID_MULTI>; // notice it's not RGB
+>         function = LED_FUNCTION_STATUS;
 > 
-> It seems you forgot to add the R-b tag from Rob [1] while applying the
-> patch [2].
+>         #address-cells = <1>;
+>         #size-cells = <0>;
+> 
+>         led@6 {
+>                 reg = <6>;
+>                 color = <LED_COLOR_ID_GREEN>;
+>         };
+> 
+>         led@7 {
+>                 reg = <7>;
+>                 color = <LED_COLOR_ID_ORANGE>;
+>         };
+> };
 
-Thanks, I've fixed that now. I guess I accidentally while removing the
-extra lines.
+Using multi-led is fine for me.
 
--- 
-Sakari Ailus
+But currently, the "qcom-lpg" driver doesn't support LED_COLOR_ID_MULTI, only
+LED_COLOR_ID_RGB. Adding support for LED_COLOR_ID_MULTI is trivial, I tested it
+and it works.
+
+Or I can also use the "leds-group-multicolor" driver, using the two individual
+LEDs. I also tested this method and it works.
+
+> 
+> + Pavel the LED maintainer, please take a look if you think it makes sense
+
+If Pavel agrees using multi-led makes sense, I think the first option is the
+best. I will separate the LED patch into a new series, along with the change to
+the qcom-lpg driver to support LED_COLOR_ID_MULTI.
+
+Thanks
+Alex
+
+> 
+> Konrad
+
