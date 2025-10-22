@@ -1,140 +1,109 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59E533EB0D
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BA3347FEC;
+	Wed, 22 Oct 2025 15:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761146389; cv=none; b=PZ5s7PvanR1QxwqjqBpUq9Nn/3vXZqtMlT/1DRZfEXw+LH4z6vKx3SyMsvd3iWHo36Ula4EESuI7OQTty5H/BAO/17iiZvJb/uAoKGacuosQ2JUQQjLSxVTn16wiYzkQIZEXekye8m8SjalM9cBOEuChYRT6DdOMsqKT8wDbwoc=
+	t=1761146613; cv=none; b=djb9fQZ2sOLMdV6+njk92ojnQ/uEJNlzN+PUNVZds1ZuFds4xpv7mX86uB0bbcAX+YBf8ESD2i0e9zUxRCF01tRjRgQx3ZkumRp0geXH3/I1MsNHZ/MEWUqxmqrHvqPuI3/sn012XDs0qhtuHofeGFcpG9ys1XAS1eiUwIN6jhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761146389; c=relaxed/simple;
-	bh=AOPCbuZwYDb6Dpjxmn73PLplRI5HptZK9i3IrS9xvQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jl0Gfzq27rKIV+ewjKh6Cve3KWE3Bn0j32rCWVAWqzI4tGxt8IuwgiS7Fyog0s3jp9YXS2nQVydH7RKKmjPpcELtmEMC2w9wn9/xEgph+FGdX4o4Al66j+buV8VkpB2IzaFW4Gkff/m3xerYTYg/mWXCUyc6zV+IIXwrpsHoXPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jXr42Zhy; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1761146613; c=relaxed/simple;
+	bh=ANQm8fWq/p+Z/WnKkV5WnEXtHhhWdDQapOL77j2cw5Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T9/foiJzxUgWUIDaRlBgHuNZkf8mNsV4jGQg3vVAlacbBwMTjQQR9ec+y75AYgk7WOxDP/mGUz9VdwVyvRbpeFNmd4eg6rg5pUN5rkUAICd+77rHHKtNcG7ipmzMbtAyeJc48Jv1SH9sT9M477mSmKH5t40cF+9eZ7FP/jl7a9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=Z6C7Wgut; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jXr42Zhy"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M8rok1024879
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:19:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EFJjV6ZS3dp82z3JjMux6bhTskobUNBVC36CDY6FPjw=; b=jXr42ZhyNhaVEDqc
-	fV/59OWVO3iy1FJlmO04R7rOE1No/5fJWFuVd3Jk1c1gaNpLD3giL+96Tdy+rCu7
-	M3EcFYR03VzPyqGGST3ck+gfanRm+wkXYtBjrUAwZ3SFtHQnfgubDtDJx/m5KDOc
-	oxJlQZFmIzeYmjNzGcEDqeJge9Vh29dEZwxIHuxZ1YhGPtOL1QPzuOUtVusTMpi4
-	+9cd4y7HOi2xuxGRK/ZH6FUvTpvc7wwQLrLf4DQqWZdNoEGM8VsY6unURVUqvMSD
-	nrv3FQMtNHOhmU7VLMmoeUQj69RtsFK7Ajrpl+tMvhek3m3zcaLeFW2/m0tJ+7Xt
-	S6fkcQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49wsws7gtk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 15:19:46 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4dee3f74920so3034241cf.3
-        for <phone-devel@vger.kernel.org>; Wed, 22 Oct 2025 08:19:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761146386; x=1761751186;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFJjV6ZS3dp82z3JjMux6bhTskobUNBVC36CDY6FPjw=;
-        b=O+dXx9DyR6bKFDdzBKugnJhwcFaFCZUUMTKQKnrMpr96hBiouloQgj5MzPMvx5FMRq
-         JnFfp0D6EvP2sYV5aglsLIAoLFKhIp/hkZs465r2kEjQCgxpEn4a/ZCNQRhlAmQY7Hgb
-         ijhf01bkUyD0gbqpqn2zbFLAlQ7AWpONGqLPXctl28s8YdhzOVA2esAcOta5byRxCSBB
-         VrQUOWzxDi//1Idjk6eyolrBZUwIajlGLOAaavuWgA012Hzx5EBviBErW+xKQeHP40h+
-         jbD5IMQbB+gK4dLywea9C3Aj8xZmSSze5aA0K1WtyGBbwCAGFMd0F3NFTqCDIGS5StAM
-         eD9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVhp5jN3emiPNXCRuBUksj/zUDBUbDtUJ302PLAkwkMyf8VjRKotcnkZ4iXLm17mHO7VihevzFxlNZRsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGpJ44u9s5tRg794SUKr1fnfclXpTl/hb4WN3ut7ZRmy2hVkk/
-	zhI2ekj9dAJroeEdtQIMZoFl+wQ4iGLRXWQBnuTeVBEvrQE7h9y5Si18a33YtDRHFb+OyfGRFpQ
-	ZaRLuLitwLmJVM1xG+4rnfr/JbP0Ct5MWq8dMHx/WZnp44nOjD0Q74c3WNmnsz7nLSw==
-X-Gm-Gg: ASbGnctQFV55gaf4GkZJFU5Xcp60ZMUBTMGrLn5yM9bKyduFtyk08xg+bi0vdKGIo0o
-	2agysWvCLK9f9Voh5/5FwNRgnSMjz/bpMnCTR/cP8f+7n+yhckg1h7CTUJyHxIKjF20fkxa6Zzb
-	lydFBNex7wE9uvaSad2ScqdtlpP5DC9FG1e0tEBjl+pa24uwiYSqrtKoDYKY7a/WpOaHQrn2s5Q
-	bI5eoqwsUvHS5UXzCRor1s0uzVD2l0ua+SZwDvnZcIYC1g16+vAz1TwtGQZhHkHKXHWShHmBwxp
-	ZB+Sp1uyfx3EmjvCaURvzJap69S0fMTITHrtJdFbkLQPWVGi0IYCRcW9tvQBi4IEhhcu19DowCN
-	/IN0RYZtK/vnhpF4wg46F/gjp8vCeqVZ7+qj2/9cv9NzwS6jMK9Vpg6Go
-X-Received: by 2002:ac8:5a05:0:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4ea116d889bmr62265211cf.4.1761146385926;
-        Wed, 22 Oct 2025 08:19:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKXvCIbB2pLB6SjAv7Ty58xdlLb8zP8xTswFS1vxWoJjM0mXPHI55XPzjSk0aLd8Oz/JxG/A==
-X-Received: by 2002:ac8:5a05:0:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4ea116d889bmr62264671cf.4.1761146385272;
-        Wed, 22 Oct 2025 08:19:45 -0700 (PDT)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c48ab5553sm12255949a12.16.2025.10.22.08.19.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 08:19:44 -0700 (PDT)
-Message-ID: <f859d423-32b9-4aa1-8468-c2e9ef006669@oss.qualcomm.com>
-Date: Wed, 22 Oct 2025 17:19:42 +0200
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Z6C7Wgut"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 14A4E1C007C; Wed, 22 Oct 2025 17:23:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1761146605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sTPnzWhHyeueBFfOlDmvPtS5n8v0m//b2f9NJlRltOM=;
+	b=Z6C7WgutqaVI5CazTrkU1H4soTywmUzKbH/1YU8Llowuof/Dy6EkNVUtJxUerpqseT0tBd
+	To6E0zXObsGF5g2EH0uOcjVYBw2blp3K8t66SHco9Z7br1C1IogtRdiMZ3pc7n/OZM0fVd
+	DNEIxyMC46Yav/rUXpc7vQNjUwLhGHk=
+Date: Wed, 22 Oct 2025 17:23:24 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Alexander Martinz <amartinz@shiftphones.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/6] arm64: dts: qcom: qcm6490-shift-otter: Enable flash
+ LED
+Message-ID: <aPj27KKCVN9Tn9qi@duo.ucw.cz>
+References: <20250930-otter-further-bringup-v1-0-7fe66f653900@fairphone.com>
+ <20250930-otter-further-bringup-v1-4-7fe66f653900@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clk: qcom: camcc-sm6350: Fix PLL config of PLL2
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Danila Tikhonov <danila@jiaxyga.com>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20251021-agera-pll-fixups-v1-0-8c1d8aff4afc@fairphone.com>
- <20251021-agera-pll-fixups-v1-1-8c1d8aff4afc@fairphone.com>
- <06aec134-4795-4111-801a-469afdd8977d@oss.qualcomm.com>
- <qanawqrk6izypwmmuvezzff37k66ptv2vlbdwxs62dqx7igop4@wzkz76376jli>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <qanawqrk6izypwmmuvezzff37k66ptv2vlbdwxs62dqx7igop4@wzkz76376jli>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIwMDE0OCBTYWx0ZWRfX6nle4w7fNuxA
- PO81UbuVfMgSbYpZfiZpRwvtyCKDhLQ3JOUII6jgNg2j3e2o5X1HR4GEGSBgw26annIQSCf3gQL
- +QWAhNagVeGP4BEHDleDB+UG/9LZKts90MK/4pxRmhxSnkr1uo5nC+X8jEWoKHHdNHWqt19VmFX
- nhjIeIgmhP6IpG+cCZErK3MPgAKaxgu3yWErOqe+sTQcu395q+BPBg9+Df604ogvLZdTZ0A9x8v
- eOlgKim1uMyCh90TqB7K9DeajebH3OCo3OKSub71a6wl6D/1sKc76wnanV4A1CsJSGYxtdiPENo
- 11ifBnr2STPKcp8fc2hvwgRzadXJl9DYT9FjbGVqG9hyaBUIH9QB7QTR1NaezdgWbPAPrc3vumk
- bKNVRMEGTNCyfNtIUW2/oVAOnwr2hA==
-X-Proofpoint-GUID: o9MOzJUIZAwQQae3MXjcTl3X6AYJzCPk
-X-Proofpoint-ORIG-GUID: o9MOzJUIZAwQQae3MXjcTl3X6AYJzCPk
-X-Authority-Analysis: v=2.4 cv=a+E9NESF c=1 sm=1 tr=0 ts=68f8f612 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=3hiQA3MbAuwmldFtFxQA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_06,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510200148
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Fhbu73dSOXUJXCHg"
+Content-Disposition: inline
+In-Reply-To: <20250930-otter-further-bringup-v1-4-7fe66f653900@fairphone.com>
 
-On 10/22/25 5:09 PM, Dmitry Baryshkov wrote:
-> On Wed, Oct 22, 2025 at 01:19:16PM +0200, Konrad Dybcio wrote:
->> On 10/21/25 8:08 PM, Luca Weiss wrote:
->>> The 'Agera' PLLs (with clk_agera_pll_configure) do not take some of the
->>> parameters that are provided in the vendor driver. Instead the upstream
->>> configuration should provide the final user_ctl value that is written to
->>> the USER_CTL register.
->>
->> This is perhaps wishful thinking due to potential complexity, but maybe
->> we could add some sanity checks to make sure that putting things in
->> unused fields doesn't happen
-> 
-> Should we just drop those fields and always write the register value?
 
-They're used in other_kind_of_alpha_pll_configure.. and we have a lot
-of drivers using either of these approaches, so converting that and
-not breaking anything sounds a little difficult
+--Fhbu73dSOXUJXCHg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Konrad
+On Tue 2025-09-30 16:32:22, Luca Weiss wrote:
+> From: Casey Connolly <casey.connolly@linaro.org>
+>=20
+> Describe the flash LED on this phone.
+>=20
+> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
+
+>  };
+> =20
+> +&pm8350c_flash {
+> +	status =3D "okay";
+> +
+> +	led-0 {
+> +		function =3D LED_FUNCTION_FLASH;
+> +		color =3D <LED_COLOR_ID_WHITE>;
+> +		led-sources =3D <1>, <2>;
+> +		led-max-microamp =3D <500000>;
+> +		flash-max-microamp =3D <1500000>;
+> +		flash-max-timeout-us =3D <1280000>;
+> +	};
+> +};
+> +
+>  &pmk8350_adc_tm {
+>  	status =3D "okay";
+> =20
+>=20
+
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
+
+--Fhbu73dSOXUJXCHg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaPj27AAKCRAw5/Bqldv6
+8kmFAJ4rJ8Tx4NMizkzVOiSWmcIENrA1CQCgsmG9w0ObK7yegGZ+HvSxbkhoevE=
+=HJ8o
+-----END PGP SIGNATURE-----
+
+--Fhbu73dSOXUJXCHg--
