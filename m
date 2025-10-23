@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3896326E719;
-	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588CA28489B;
+	Thu, 23 Oct 2025 20:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761251070; cv=none; b=YLDuC5M/xFz8jvY/PuEJ6Hr3cFoqU10VTBAkjle1oKyf7lGAmKBN/yqVEMPNdr3eLNWu1hHpoOzKZKHMNbMPeHoUzyua6L4QLbziwpIOAm8UGDPgPxOnR49rb9jsP8x7wJXHThE1mC77xSt7AMYtyMC7sFWBNLnw1dApOCu5qQU=
+	t=1761251070; cv=none; b=B6bcU/gTtYMnutg54AqqorEFMb+/NlxH72rXG5ytgAdi9uKx0zYjhQEcJH3Yju0hvp9Nw7xfA3cwugi7epwPLVaQn8/B8eE1SAVYkmJK1iaggVsPkch+IhHdXsd9CCMMZa8or87zBKplK47/4ls6J5jKCAczS0OvFHAOFNBZEq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761251070; c=relaxed/simple;
-	bh=hrSoxz9CH1kqDv6Ri64XokVQtRLQxRMmwtpqzsOFQ2Q=;
+	bh=fj87h6fHhPiKSl6C5poX504gv/9y/218PwQyedWdhg8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RIvnXe5UCbtDUUzcyDtixwcoCReZQDij2K8GF+kKKfrOZ/jPovxH9ozCsoJsry0i8YsbjFdgrozbN1f4qs5wA4e/uqKrUNUzEU36jwG2RlXrGTjO8dDQS3d571ERoRdxbdnBuiKtBYLHBSA7/TkwEvFZz98ukuBWIWXyA86Dz8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmHvhy4Z; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Y2lleZ0LGfOOfwFb/9RXxfdKZSvY1UF0sTKDx0nxxoEWzo/oBlGomJoGT1Lu/eJiHg3LPR+s+5nLLvckYGEa1jb+oWIHb6gfO3/XkV4TW9NpsVDB5a8y0KnZGd0pdSs+0btq463ckc1Upzfdy+sT+k06eLmxvZlSUG9FLIkJ4Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHJSLV5+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmHvhy4Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9891CC4CEFF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHJSLV5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BD837C19421;
 	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761251069;
-	bh=hrSoxz9CH1kqDv6Ri64XokVQtRLQxRMmwtpqzsOFQ2Q=;
+	bh=fj87h6fHhPiKSl6C5poX504gv/9y/218PwQyedWdhg8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PmHvhy4ZXJUp2Xu476TWgEp5x7jsmvy1yeMdusPH++WTN8fwsXTxL76Iedg+SS6PK
-	 FBLx/95tMxAb/9KxiAlJ8yg514sNnAd+uPxDIf1Dx4VLklXDafiBTkr0SE3ZGIbJWO
-	 sVnS1tMNd7fOo1Gg931RiVUc65tH6CcjyIQYNww6GE1PFLQ5Vl4TzKNd6+WiUxVOJz
-	 +d++BcvBhaiJorhu2JYYywU0r8XMAWzxNkT2TBMmQ3mqTyV0ZVJFDXNfs/dAkFF2AO
-	 zaBBtJ1hiFUm4+3NvHvNDTHpcawZKj4/BNoL9tZhh3FQZ+xvRRTl8b4lTSfkLKVSPo
-	 +UAaAZzU5WfBg==
+	b=NHJSLV5+88kZwCR8iJcmWJRCHAko+rMx2Ljp3gDX1+ln0pXXR1/PWHuP8eI6Sv/1z
+	 hg2g7Q/ZD/DWLGXso8OGHZhEYOhoFfW3Zv2OY26uipQJf056nklKuxrDOOC9CqnxUU
+	 q5nX1LjCHNQw6jsY8RiyrsSZHqar3/yqHMUfXxUwBpvbVrogftNIvL41YedhMwudyV
+	 B+rVcEiwNqII+pry7aujARPsu+iJWP3quyvkrbuw7oIYFOGTvWgbLrpBVJxrg+Xfrj
+	 CdwJsQbO6UA74I1B73j0xUNB6gcJ2KFKvOpOsCwwHt03UXNmklqgMZw74Us2uQT2LN
+	 JK0k7MSG+XWUg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87308CCD1BF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B25AFCCF9E8;
 	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 23 Oct 2025 22:24:25 +0200
-Subject: [PATCH v5 1/6] dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC
- with panel
+Date: Thu, 23 Oct 2025 22:24:28 +0200
+Subject: [PATCH v5 4/6] arm64: dts: qcom: sdm845-oneplus: Group panel
+ pinctrl
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-s6e3fc2x01-v5-1-8f8852e67417@ixit.cz>
+Message-Id: <20251023-s6e3fc2x01-v5-4-8f8852e67417@ixit.cz>
 References: <20251023-s6e3fc2x01-v5-0-8f8852e67417@ixit.cz>
 In-Reply-To: <20251023-s6e3fc2x01-v5-0-8f8852e67417@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -57,23 +57,24 @@ To: Neil Armstrong <neil.armstrong@linaro.org>,
  Jessica Zhang <jesszhan0024@gmail.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4403; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2066; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=kqa+wQ3/DjHfL2kOwlvKST0xezyy2KSPY0tFwprPaRs=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo+o77zml2ozlxbZtplQ7KuU1DF4M5F1lokxsh1
- WqYPxB9u5yJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPqO+wAKCRBgAj/E00kg
- ciZKD/kBB+PKuluUUI4inB3vv85zAsu095I/BCBaBm0XwIYbs1dKPdpS8zcqjvVtEJHmCV6+3kJ
- QytoGMRoQF7TQlwWe0wePZs1Y6+rgyM+tzBN+0TJHXjBS4Ycwi0oNEKehncvn5WVdq9hFbrsHdm
- xKjhPJXZZW3aRgdY+rpSxn39biDilQuxqUtYfJIkusa1qv5wPVc/VkD2qbeXK5JESKKqaK8aBvB
- mMaZfHrdf1Q9i+rILRJEpUrnu/v9JkHn2tP9AwwDkGW6UMtzFIVCDO/RpTxOvH2hoowqgjkICP5
- EX3SelH43uraZ4aKV79Sf0pFyFsJ5VzFH60PVnwsaAi0H0hbXQkN2o/5TzkZCPrBLEjz04nFxRp
- bVeyPlEN3JtPFsEwXaK2u+JtUCSLcOSWVlaRi0y2gBqAVeT27Uya25DJuWIvnYIMCAfqsyIaMw/
- Hl0Dlt5je69Pz5b4ONIahN8sjN5xUnZYxNiqt5Hx1FC+hEIDn/A240dFfo+MCDAHjCpTSWpWLKM
- 4O4Ek9b5owQAFby9cK3Z2lRlobMt8lfsWiuEbMbDmgPHw6gWHG//eyRitvMMsjDsqS2LW88FXe3
- D65BuMMvNSxeZfWQqmOn/03eI5p0fc/pwEP6k9w/K9hHOslaWnN940zUtNqpAy0OwgSz0gCeBIE
- nShUbDcLUtr4wLA==
+ bh=KTrLESxmqDJURSGJs44NIqxmLK4hwbD8ph2DGEQH+CE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo+o77uujFsltfqo96ZmYTTpTKudcPgXAiLNZMK
+ 57CyEoqosuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPqO+wAKCRBgAj/E00kg
+ cvKDD/4uAgtvDiH/ltiaHqvj7IFbcebHfyl00hQgCIjDDd8AMrsrWD5yt9QOnN0QtlGtevy18Ea
+ aIPh3tMoC2sNfXog6tWKoUg8FJRkyGHB4WuJi8dCAdfFCf71Fz63dBhVd27cClPSZWGJf6+fs7K
+ +LCtVV5WDNAUvQxAfMg96ykmgStd1DVh589zCxofIK2HfEKFIu5wI0844olnVcTXkoIXNss1A2M
+ lL/Npa9uqDajLv8ONLrTN3N9oRi6PiNy/e8vSZHSb0bNVLQv943lGhPv46f3KJVDH2SHZvIffD6
+ lgCU6qmT6HNsZC/46LfoW0VTMAlo9eEw1CVEEHz9PCtnjGygLIkZxRWa4m4a+1xY3PWihG5iZFj
+ zsrXKnemAjqM3mxx+MTx97+BklvqvdibBBJMcbVBqXLSWDw/h/dbYSGlHQp6nUGyTtezL+40Ju2
+ 6ra0th6kdSHYgCwPbUIrJsOLDJ3jqKDEVkvHviTJKTOobGw+cRr3tv3WA8/+2kbtAx1sYDz63Ss
+ CIiMNmzV+OYzAHtw/f75YVFXsaT9qoKpBlv4uUXvJy36tSvTtv1Gg7gm8Ex253GkeZliTJwhkeX
+ 7o0vLn/6J8SYpX7X6pDOfDFs+8lly2rZk1SPjDPwbNxnYIbjFEBTKmCmOXDWPez9+y5gg4sMWzQ
+ lTJb0ZpFzVxDTUA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -82,145 +83,85 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Basic description for S6E3FC2X01 DDIC with attached panel AMS641RW.
+As these pins won't be used outside the group, let's group them.
 
-Samsung AMS641RW is 6.41 inch, 1080x2340 pixels, 19.5:9 ratio panel
-
-This panel has three supplies, while panel-simple-dsi is limited to one.
-There is no user of this compatible, nor the compatible make sense.
-Remove it from simple DSI panel definitions.
-
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../bindings/display/panel/panel-simple-dsi.yaml   |  3 -
- .../bindings/display/panel/samsung,s6e3fc2x01.yaml | 81 ++++++++++++++++++++++
- MAINTAINERS                                        |  5 ++
- 3 files changed, 86 insertions(+), 3 deletions(-)
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 46 +++++++++++-----------
+ 1 file changed, 24 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-index 9b92a05791ccf..ac2db8cf5eb76 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-@@ -56,8 +56,6 @@ properties:
-       - panasonic,vvx10f034n00
-         # Samsung s6e3fa7 1080x2220 based AMS559NK06 AMOLED panel
-       - samsung,s6e3fa7-ams559nk06
--        # Samsung s6e3fc2x01 1080x2340 AMOLED panel
--      - samsung,s6e3fc2x01
-         # Samsung sofef00 1080x2280 AMOLED panel
-       - samsung,sofef00
-         # Shangai Top Display Optoelectronics 7" TL070WSH30 1024x600 TFT LCD panel
-@@ -80,7 +78,6 @@ allOf:
-       properties:
-         compatible:
-           enum:
--            - samsung,s6e3fc2x01
-             - samsung,sofef00
-     then:
-       properties:
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
-new file mode 100644
-index 0000000000000..d48354fb52ea0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
-@@ -0,0 +1,81 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/samsung,s6e3fc2x01.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Samsung S6E3FC2X01 AMOLED DDIC
-+
-+description: The S6E3FC2X01 is display driver IC with connected panel.
-+
-+maintainers:
-+  - David Heidelberg <david@ixit.cz>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+            # Samsung 6.41 inch, 1080x2340 pixels, 19.5:9 ratio
-+          - samsung,s6e3fc2x01-ams641rw
-+      - const: samsung,s6e3fc2x01
-+
-+  reg:
-+    maxItems: 1
-+
-+  reset-gpios: true
-+
-+  port: true
-+
-+  vddio-supply:
-+    description: VDD regulator
-+
-+  vci-supply:
-+    description: VCI regulator
-+
-+  poc-supply:
-+    description: POC regulator
-+
-+required:
-+  - compatible
-+  - reset-gpios
-+  - vddio-supply
-+  - vci-supply
-+  - poc-supply
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01";
-+            reg = <0>;
-+
-+            vddio-supply = <&vreg_l14a_1p88>;
-+            vci-supply = <&s2dos05_buck1>;
-+            poc-supply = <&s2dos05_ldo1>;
-+
-+            te-gpios = <&tlmm 10 GPIO_ACTIVE_HIGH>;
-+            reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+
-+            pinctrl-0 = <&sde_dsi_active &sde_te_active_sleep>;
-+            pinctrl-1 = <&sde_dsi_suspend &sde_te_active_sleep>;
-+            pinctrl-names = "default", "sleep";
-+
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint = <&mdss_dsi0_out>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index be1861bd6f4e3..42be36b42c29b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8061,6 +8061,11 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/display/panel/samsung,s6d7aa0.yaml
- F:	drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 1cf03047dd7ae..9b571fab9c80c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -463,7 +463,7 @@ display_panel: panel@0 {
+ 		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
  
-+DRM DRIVER FOR SAMSUNG S6E3FC2X01 DDIC
-+M:	David Heidelberg <david@ixit.cz>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&panel_reset_pins &panel_te_pin &panel_esd_pin>;
++		pinctrl-0 = <&panel_default>;
+ 
+ 		port {
+ 			panel_in: endpoint {
+@@ -847,6 +847,29 @@ panel_poc_default: poc-state {
+ 		bias-disable;
+ 	};
+ 
++	panel_default: panel-default-state {
++		esd-pins {
++			pins = "gpio30";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
 +
- DRM DRIVER FOR SAMSUNG S6E3HA8 PANELS
- M:	Dzmitry Sankouski <dsankouski@gmail.com>
- S:	Maintained
++		reset-pins {
++			pins = "gpio6";
++			function = "gpio";
++			drive-strength = <8>;
++			bias-disable;
++		};
++
++		te-pins {
++			pins = "gpio10";
++			function = "mdp_vsync";
++			drive-strength = <2>;
++			bias-disable;
++		};
++	};
++
+ 	tri_state_key_default: tri-state-key-default-state {
+ 		pins = "gpio40", "gpio42", "gpio26";
+ 		function = "gpio";
+@@ -861,27 +884,6 @@ ts_default_pins: ts-int-state {
+ 		bias-pull-up;
+ 	};
+ 
+-	panel_reset_pins: panel-reset-state {
+-		pins = "gpio6";
+-		function = "gpio";
+-		drive-strength = <8>;
+-		bias-disable;
+-	};
+-
+-	panel_te_pin: panel-te-state {
+-		pins = "gpio10";
+-		function = "mdp_vsync";
+-		drive-strength = <2>;
+-		bias-disable;
+-	};
+-
+-	panel_esd_pin: panel-esd-state {
+-		pins = "gpio30";
+-		function = "gpio";
+-		drive-strength = <2>;
+-		bias-pull-down;
+-	};
+-
+ 	speaker_default: speaker-default-state {
+ 		pins = "gpio69";
+ 		function = "gpio";
 
 -- 
 2.51.0
