@@ -1,67 +1,66 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4948130DEAE
-	for <phone-devel@vger.kernel.org>; Thu, 23 Oct 2025 11:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393BD30DD2C
+	for <phone-devel@vger.kernel.org>; Thu, 23 Oct 2025 11:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761218960; cv=none; b=tUrvFz/WxW+mOxLp+D1XEExhoXKaearStqOvqoWSFjbbUvz6/O6fl/eoODGIpD146SwutJQXOBRRJrx69HenyYV5PKHJkv62p8lNlBpzplCKP/7JLfYTsk3VFdo6RE93xs+Uch5ff3NIAS3GrGSxbiHMsu4FRhHPBBRqiCEzsUc=
+	t=1761219157; cv=none; b=MS4a6WBlLCOlkPSUwy0hR7SPvDhsXcvs8DwwbPRLZ6yBNKglMUvFrMatJgPXmmGRHyJVWtoPsjPqcw5VNjSJI2ZoMpI8NnGKSPjnN1YFiwAocc1TKUzS2pJZ3humujOc2VOzY+RaJ47Dg5pA/KONqge6MOCDlxwAy8oGAhV+7GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761218960; c=relaxed/simple;
-	bh=x8UThgThW8sgU+bTtRpNm6v4HS71/1MoGY1+mjSdEZc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kvuTCNiGVovFYGtYyMD1LstItMwxF6Q6/Gb6Kkz/AvkFo/rLeMqisk7dPXCs1AX7CjBmVkdLPlbs2GDPVWKtmXhLu9MkB0OjdnRaphQRELHeR/ZFLFsyLWnTwanafd23nCmnHW/CEoD1m1OkATNmizkqlopB8K+B2/1izkH7Ils=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=JyzJJslw; arc=none smtp.client-ip=209.85.218.46
+	s=arc-20240116; t=1761219157; c=relaxed/simple;
+	bh=219+BGs1UMALEmF9FQsgxxO0c15R/d1CEwwPyrjWbBc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EURRuWUMZx46YU2PioxitYB4uzqIEvHMF0vYueQGrbhnWy43iXlgF1HGAUmVoqeklstfsWbrIiF2W07eyI9tiSa3gFAP/+50M4PCSk9HfrR90bG5lK3ZM5NhOKcxKU3XE4ZSEQsqwWB/iaXg7HGz9JOOCHfAWgwH19zCp863a0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ktL680r+; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="JyzJJslw"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b5e19810703so115611766b.2
-        for <phone-devel@vger.kernel.org>; Thu, 23 Oct 2025 04:29:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ktL680r+"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b457d93c155so146139766b.1
+        for <phone-devel@vger.kernel.org>; Thu, 23 Oct 2025 04:32:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1761218956; x=1761823756; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2VcPDDfMA6ig8zCBApRX9ed3uOSim2Fm642DnrpLTL8=;
-        b=JyzJJslw+1ZNKt2ExU5pTZPdI2BWRyNk0FmNliGwXcQbs6MGFWly/WbcwaMCucE11l
-         mQ86woddhnaUHUDo6Iq+QqaRGf1SrtaMDg5St+v8K9HnACA2rO/sQ3DVsXm7YQ4yTUWt
-         TXaJcnzfG/NmMS3rhWWj7xOV54ja9X0jmfPZywEQTLiEERSodj6dKFwPfeWb+c8PLuPv
-         oaypWf+EnKMybZee/xolU2g4Y3fA0iqiBs2Txii5oqHeJD8ToN7gJPCKfk35qruxsUsz
-         NfJ3mEeE7Fmz+e9UjYVj8A3b/nYcdBjaUbutCMnlDPYmj39cwWVYie7MTaoLX38BUifp
-         lwCQ==
+        d=fairphone.com; s=fair; t=1761219153; x=1761823953; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TpNnWkJiOscmYGyhJWmloy2afAm2NS3i4xqcjYsWoMA=;
+        b=ktL680r+/bGgwGfs4iM0LEBCWDdZ32JB+LxxFGpNUDTzCbU7BA4QG/Csj7MfCja42d
+         wAjctRN9HgOhtWy7bQXL+UnkZG0Y3toczckaJvFJsKBGUOidcftbNpveewu2/5A+oG+3
+         cUk/81ju7PXHhANcU3+vxUvg+i/EerIsqF/uOC9M4Vltl5+lNZsd0m45UoFlP8V7FSYg
+         DjUlyKnXfDTzxjnimqkMwAjuzTFo+MoGAnIInFHr7AGVWl5o29W1JWTaikRaKMQ6fCBa
+         E8mM085LibO3TaxOrPQnyhhR4mQx/W12oDbsUgNr0dLAi/wJAqmpJePoryh7ChC60Buu
+         /OXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761218956; x=1761823756;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2VcPDDfMA6ig8zCBApRX9ed3uOSim2Fm642DnrpLTL8=;
-        b=nJqoDgPrGhohb19lmDmUogsufBQcqTJJiLfcdJJq+veLBlOlv8USXtWAQ6Zq0F91RY
-         J9HnCK088tMcN02sGrzsT1hcNSgEn1YdgnheQ7Dfsn5B6GjsRDGgAXjJFwbASRXJO6wM
-         7sCwG08eNr3pucLfFHtE2wY/kjaSSCr7ZHQO+cPsmB3JINAxRKOtRq5ZIxJkx2ztjviq
-         ct/ojTuVkGrlYVsT1uga+hz+48syNW1NPW9ETBw037ITCsIq6S5rygx/oapsCr2ezMv2
-         fWMGLjiBqBBTZI976zXpkcb8+KigS7HZ/ugkP+WhCChHH+jOSGUZlC9M3l1fsZzBoQ1W
-         9IPg==
-X-Forwarded-Encrypted: i=1; AJvYcCW14Tqm9peNZ7CUemTaWh/S5kRxE1jIwmxRBAjyv1a+75rPuYPAPSCsx17izjLpYNFsla+mN1s7AjSSXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YybzZEaw4pZ1mGD0dsdqwFsddechHlyBH0TWppedu151FcKXDoD
-	GLqeiQHZU052plfpI7lU6ETPlga9BkJtQf098B3pXhQRslSpcBKqvta3xtGWLr1KHRE=
-X-Gm-Gg: ASbGncvzQt05qzVJ5jqa1PK5PVrtapPwSTZvl6VUj2U+NfPxNqAfEwf6wLF8RQZpBZo
-	OrZY3dYOqkkjNDoWv7d9VPOQYjHaAmZxZQyRRRfZmNZcgkNmXCOlh9V8CRTmCQQH+Y//DCdYHun
-	1ycNRODxVNTRuEObDcEN+FhkjXBhHKHyLOTCYQnaos/abrWgheEK746O45Xrl1oFWRkiI9FKfTV
-	M7Kql8ZRdj7WhJd1jdahQjM/jZQjZo0MXpDFaF/k3IV1tFLRLzJMiE+7e4PMbvsqkIbXC4ZLwEq
-	nAZ6vU3ttF/1EaQ/Fiqxpe8IAGRfj34FlnuCdrE9dX3NVJcCH9KQaQptkrCKI9DLkXmKg7u4NQI
-	BhSeeCUvEC6T8CydxVIsnK3oiNMaKPyqrtfU4IKmZrPbsdxRjcUNuIw+FXngdc0qXNilaQGK0jT
-	e8MjwXXnfi8T1t0pD1Rjngp/PrYETHto7nX8NtJ9w8yuJjVNQ3sJonFuYw
-X-Google-Smtp-Source: AGHT+IGx1IekfgAK1nsvkYIbewkd7/Kp9LHUEp2UQobF//6DrQaUqt2l8HG+IxLZVRXH/rfq8SBPxQ==
-X-Received: by 2002:a17:907:3daa:b0:b50:d6a7:d6b2 with SMTP id a640c23a62f3a-b647443b9e9mr3287099266b.32.1761218956516;
-        Thu, 23 Oct 2025 04:29:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761219153; x=1761823953;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TpNnWkJiOscmYGyhJWmloy2afAm2NS3i4xqcjYsWoMA=;
+        b=Wf1vY8jhYhf4b+8nWBAqiviQqZCx3SeLYTS3x5L5tOmll+hGCCaXhs6GGsqsHym90t
+         zHasgKeU2oQYjZFtmuS/+LWWIu9irV/y23svPsPaLzo5FBsLTht3KfX+PmL7gZo7Awq/
+         aBA/VUDTj+FM4Ac3hZPSaXOVfNFaiE+osmmqU/KuoOZmjwsWqimXCJ6/ipvdrKqGUbh0
+         PZvmpG5ENPZYDTNekNDY00DFmDEu10YKo9emt1X1CMVyxMaBoZi8XEInZPGyiZLbEMwc
+         4mnjHzKlbPicLN2SEiIpAUyBAKvX9en3ARF+73rjJLq5iwPWg10psrR8XsM/tQFGNIPG
+         e6Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXth8kzayhmL4kRtuWAviAHKCEhdU37EAFbkGMkVb9hlB8k6Qju24iVZlaAtIDdt6iPDspFnOcQSzrX0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqTiRWJP+tccUjp//+h3NAk7BPGDbDwDWj/achiiRYEzvDPrTS
+	W4AU3uuVMP9O2JQyCJ7VR131x2E0bEn+70oqmZQzyC7/MSY0c4V8/9alGDjfnKq0muQ=
+X-Gm-Gg: ASbGncs3eYSpLb3Ec6x/Dn6GmXZnwIrHMC0vXWskeeT2JftTakf1WC2dxWzWCY6rJ/d
+	6WNjU++NU3oHNO7fIjnIxo6SdSe7qGov36E+qbwaL5K3412d2b3y+AjICSv7tqUKCs3mNlT632F
+	HU1pTLdb2KRY3onmbcH5wfZSp3+L3Arlghx83S0j5n9OaBpT+FxrlrigPY4VzVaL5OpLvkST/Ix
+	rshP6lTll7qEykwMUOyYqK6+vksxU9RyPs/urSgtSGaAPj7bWpVtRNjjbwpIIb+X3m2lxZ5WglR
+	+PaqmnvN8MHtPDBx6V+SP9LDakJGQgIANnP/wBStsozvteijWYMv2OfJ0kfWM3HkoY+m7Wgy8AM
+	/7xbdBd9DyUqx+txqaJ8SRYbrddLJpFmH5L0OXcxFn2elRFgCrjTLK/W4XiCgnJkw62wJOv23oo
+	GZ5XdYkPfYPyKzAFnqYOUE9n44mG7zyJqWCY3VcZdhke1oqg==
+X-Google-Smtp-Source: AGHT+IEl7Syzf5Uc2BCfVDgfWGyxkVxFH1O6RZyXcvt5BTepLqPH++866mvbvp1k50rggkWKyblRuA==
+X-Received: by 2002:a17:907:94c9:b0:b6d:5524:5a01 with SMTP id a640c23a62f3a-b6d55246423mr234261766b.31.1761219153462;
+        Thu, 23 Oct 2025 04:32:33 -0700 (PDT)
 Received: from [192.168.178.36] (046124199085.public.t-mobile.at. [46.124.199.85])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e3ebb328esm1439098a12.5.2025.10.23.04.29.15
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d51471ef6sm183087866b.72.2025.10.23.04.32.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 04:29:16 -0700 (PDT)
+        Thu, 23 Oct 2025 04:32:32 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 23 Oct 2025 13:29:02 +0200
-Subject: [PATCH v3 2/2] arm64: dts: qcom: Add PMIV0104 PMIC
+Subject: [PATCH v3 0/3] Add support for PM7550 PMIC
+Date: Thu, 23 Oct 2025 13:32:24 +0200
+Message-Id: <20251023-sm7635-pmxr2230-v3-0-f70466c030fe@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,118 +68,63 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251023-sm7635-pmiv0104-v3-2-27f1c417376d@fairphone.com>
-References: <20251023-sm7635-pmiv0104-v3-0-27f1c417376d@fairphone.com>
-In-Reply-To: <20251023-sm7635-pmiv0104-v3-0-27f1c417376d@fairphone.com>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEgS+mgC/2XPzQ6CMAwH8FchOztTOsfAk+9hPBQosgMfbkgwh
+ nd3QIyJHP9t+mv7Fp6dZS/O0Vs4Hq23XRuCOkSiqKm9s7RlyAIBNSQI0jcmUVr2zeQQFUhmrSl
+ NKC0wF2Gqd1zZaRWvt5Br64fOvdYFY7xUv5beWWMsQaImyk4KdKXiS0XW9XXX8rHoGrF4I/4MA
+ 9newGBAZowpKQfK9L8xb0c6fjzDt8N2qcjJswz9xg7nqOVpkMuGGFCFifkDtCF9CScBAAA=
+X-Change-ID: 20250620-sm7635-pmxr2230-ee55a86a8c2b
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Fenglin Wu <quic_fenglinw@quicinc.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
+ linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761218951; l=2204;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761219151; l=1162;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=x8UThgThW8sgU+bTtRpNm6v4HS71/1MoGY1+mjSdEZc=;
- b=w6EEnHkhKTsqJFMyAkXpi9sGxV4XUKIWR9ijRcHthZK0m2PNY1je19oM6FvpfkHthQ15P+ZXg
- xiGwrDZfbmVCtvl3U6DaVeuqEeQJF0qj7BqGR0Cfgv8YkioiGcUqQqU
+ bh=219+BGs1UMALEmF9FQsgxxO0c15R/d1CEwwPyrjWbBc=;
+ b=zH1fNZh/BMIxM2WZik6d13jMLDkIgAarWlV81IJDL95GT5KmmymH99mNmTFVHd/xG9gNYYOxA
+ S/NOJRtqIW3C3kWZE3tKqErequGzTZoV6oz/GHqEHB+/qR+6UwUclrz
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Add a dts for the PMIC used e.g. on devices with the Milos SoC.
+The PM7550 PMIC is used in conjuction with the Milos SoC. Add binding
+docs and the devicetree description for it.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/pmiv0104.dtsi | 73 ++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+Changes in v3:
+- Resend, drop applied patches
+- Pick up tags
+- Link to v2: https://lore.kernel.org/r/20250709-sm7635-pmxr2230-v2-0-09777dab0a95@fairphone.com
 
-diff --git a/arch/arm64/boot/dts/qcom/pmiv0104.dtsi b/arch/arm64/boot/dts/qcom/pmiv0104.dtsi
-new file mode 100644
-index 000000000000..85ee8911d93e
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/pmiv0104.dtsi
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2025, Luca Weiss <luca.weiss@fairphone.com>
-+ */
-+
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/spmi/spmi.h>
-+
-+/ {
-+	thermal-zones {
-+		pmiv0104-thermal {
-+			polling-delay-passive = <100>;
-+
-+			thermal-sensors = <&pmiv0104_temp_alarm>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <115000>;
-+					hysteresis = <0>;
-+					type = "hot";
-+				};
-+
-+				trip2 {
-+					/*
-+					 * Current Linux driver currently only supports up to
-+					 * 125°C, should be updated to 145°C once available.
-+					 */
-+					temperature = <125000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&spmi_bus {
-+	pmic@PMIV0104_SID {
-+		compatible = "qcom,pmiv0104", "qcom,spmi-pmic";
-+		reg = <PMIV0104_SID SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		pmiv0104_temp_alarm: temp-alarm@a00 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0xa00>;
-+			interrupts = <PMIV0104_SID 0xa 0x0 IRQ_TYPE_EDGE_BOTH>;
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		pmiv0104_gpios: gpio@8800 {
-+			compatible = "qcom,pmiv0104-gpio", "qcom,spmi-gpio";
-+			reg = <0x8800>;
-+			gpio-controller;
-+			gpio-ranges = <&pmiv0104_gpios 0 0 10>;
-+			#gpio-cells = <2>;
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		pmiv0104_eusb2_repeater: phy@fd00 {
-+			compatible = "qcom,pmiv0104-eusb2-repeater";
-+			reg = <0xfd00>;
-+			#phy-cells = <0>;
-+		};
-+	};
-+};
+Changes in v2:
+- PMXR2230 -> PM7550 (Dmitry)
+- Replace some SM7635 references with Milos
+- Update critical temperature trip
+- Link to v1: https://lore.kernel.org/r/20250625-sm7635-pmxr2230-v1-0-25aa94305f31@fairphone.com
 
+---
+Luca Weiss (3):
+      dt-bindings: leds: qcom,spmi-flash-led: Add PM7550
+      dt-bindings: mfd: qcom-spmi-pmic: Document PM7550 PMIC
+      arm64: dts: qcom: Add PM7550 PMIC
+
+ .../bindings/leds/qcom,spmi-flash-led.yaml         |  1 +
+ .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |  1 +
+ arch/arm64/boot/dts/qcom/pm7550.dtsi               | 67 ++++++++++++++++++++++
+ 3 files changed, 69 insertions(+)
+---
+base-commit: a92c761bcac3d5042559107fa7679470727a4bcb
+change-id: 20250620-sm7635-pmxr2230-ee55a86a8c2b
+
+Best regards,
 -- 
-2.51.1
+Luca Weiss <luca.weiss@fairphone.com>
 
