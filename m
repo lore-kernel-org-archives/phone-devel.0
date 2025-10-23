@@ -1,662 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B88313E1E;
-	Thu, 23 Oct 2025 13:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2151026D4E5;
+	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761224620; cv=none; b=iXefdhppQdTjTigNSP5GYWeYCTokbV6hzu7FhCP/fSv21bRoMGnHuT4eIa+QjUqtbklIR+NvcWZspW+eFyndtdX/RyC6+8y4xmR4dxXDPgttdmMvNAftJKyH+Ton8wWr+hOn31Uhou2x2b1y+U2yItiF8oHYLQVII3P5KaT/WUY=
+	t=1761251070; cv=none; b=IXuOrOVLnGuTw/1r1dPofSnq9KqrATaglBOr/6qC1ihHapsmu1Ce5CtQzGQCjZZ56C7lQcMTjcu6dliDICWDR6m36cv0zhYrJEnNSMG0CpufPBPHpi/dfSjVkGukB4jzPJ+uG4LopzQ7ZBkH6X4LKA50QJPrGGG3rs354UObHgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761224620; c=relaxed/simple;
-	bh=98TdVZ0QY4NDJCyUmfL8j3vPquXYCTOvnPUcqt5BsoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qCgyVTZ4lScJ/JdBzAaU7bOeS5rXCjWf+/N+BWBgxlW8FW0lb4XjFzNQ1zPPUY6mMgXC/L3odwHvgFomg8gtUxYJWkg3qHbOBIHg1OQsD7SXCS81vnePe4lwZAqM2i8fI51bEwzFrYCP9XDcjejWI1BqrSPFwDXfV3VwY72Dbuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjPEvMAg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761251070; c=relaxed/simple;
+	bh=G79ir8utLb9umTKYTzv7I1+PuyJXEzDtEHANXl0nmDc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=a6Anu6O9IwBDvj1CelvPHdrTDhdymha7UnY/U/+52ycoNfEKR8+6Ex2caaiTPZb6RWQGvbWSM9+CbIkcBehQnE22SdBOAHS0N7LyvzxP1aaX78s7wdEwDJMpYpjOtJ+WUwIdFc6FWgewPraWnF/ICpolbHg3/IGhg/RntLabWlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucVLIOJE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjPEvMAg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B53C4CEE7;
-	Thu, 23 Oct 2025 13:03:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucVLIOJE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A695C4CEE7;
+	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761224619;
-	bh=98TdVZ0QY4NDJCyUmfL8j3vPquXYCTOvnPUcqt5BsoI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BjPEvMAgHtnFWlmlQThGm2FbebLOl17z7Yj0xHh1qPMCWlZ/B8x4P4hudn1SVt+vT
-	 Z6Mw4p+WKrnvZA2ebGWIIfhclTEge7MGC+ezk7qfDRG8QHC18PTx59qDI62A1XN/12
-	 9zQsFa1ZQVclJYZKBeTXmyUl+Xm6H+h8Dzi4xnygfP2HzTxSfh7LVyU9fA/oGf3O4L
-	 jRPYyeL+Hswj5I/MPps87vf+9I01CowQsJEeL9U54vXOkzGCa8MiaASq46i9w19syJ
-	 WLmLpx/2DcKkzVNCasBfspcbakUPMK93YaHWRP50Gl+ESXKXMs2jTonFzycBE6YSvm
-	 quAVz3zoq6Vwg==
-Date: Thu, 23 Oct 2025 14:03:35 +0100
-From: Lee Jones <lee@kernel.org>
-To: Artur Weber <aweber.kernel@gmail.com>
-Cc: linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Stanislav Jakubek <stano.jakubek@gmail.com>
-Subject: Re: [PATCH v3] mfd: bcm590xx: Add support for interrupt handling
-Message-ID: <20251023130335.GM475031@google.com>
-References: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
+	s=k20201202; t=1761251069;
+	bh=G79ir8utLb9umTKYTzv7I1+PuyJXEzDtEHANXl0nmDc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ucVLIOJEus0Vpw0lfgQkbf4eBhq2tz8jBe5ROHCwOtL/JcXOHHRAGpFge1DQVbxOz
+	 Ec1rzKIiTM4wIeonmTql82Ur4Okg3ryJfdeaGFFYcfJ8KYL/ZdYYbDskMXLCmEBwTp
+	 JtAwEHQAAiqFG0CDPwUYg5PpWCGpN5sH4W/ZW6kLm++tgugitDSxRLWZEG+uj84GzJ
+	 sktXiMsIzIxzNaC3UsGpX3C3unr2LC4fIFwKTQ85Sd4p1WEC5qfN6NWAP4KE3eoZky
+	 P0euXTOn3r5DoGRmXoMENWneenRNexPd5P36zbqkND8G/PO4AfWRWM8pS/KgtYqRl3
+	 oT+Giqjg9FheA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 747EBCCF9E3;
+	Thu, 23 Oct 2025 20:24:29 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v5 0/6] Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC
+ with AMS641RW panel)
+Date: Thu, 23 Oct 2025 22:24:24 +0200
+Message-Id: <20251023-s6e3fc2x01-v5-0-8f8852e67417@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPmO+mgC/1XMQQ7CIBCF4asY1mJmBoeCK+9hXFQ6KBs1xTRV0
+ 7uLJmpZvpd8/1Nl6ZNktVk8VS9DyulyLoOXCxVO7fkoOnVlKwJi8GR0tmJioBFQR88MB0cUhVU
+ B115iGj+x3b7sU8q3S3//tAd8v98MzzMDatCevAG0jXWx2aYx3Vbhod6RgX4QAVwFqUBCCS12H
+ Mj5GpoZRFtBU2AQiIatPXgwNVzPIGEF1wWyGBHCYJ1r/3CaphdfAOU0TQEAAA==
+X-Change-ID: 20250923-s6e3fc2x01-f9550b822fe5
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3452; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=G79ir8utLb9umTKYTzv7I1+PuyJXEzDtEHANXl0nmDc=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBo+o77fC7m5Z0llmrkxux/zMuGv3Ru9hivzCwnc
+ S+ywSf8j0GJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaPqO+wAKCRBgAj/E00kg
+ cq5lD/4nIxT+jFu+qVETxI06L4ZmjZC3faaia8pMYt1ZpyV+gz3fTF0PPiat8BVCX5jZpbYAgXy
+ jDOgNUyC/10F8Gjt3Uh3hLuyNUwTUFSMTkS/JcCYZoEnb/0UtBrcOzBiFHoGvz6m0xfJtKZlIGD
+ 8DBNjSzKdvI2LQ9HHjwz30Bp2ga/IGkP3igGFol0fC7XzJFv6EwAqv7pX2u65XLS4Y+UHBNXM3D
+ ya0yuYnzycoTxZdHvCBn1/WI8q58xe6CuREExWj83NV2h48BpkKmDS1QJXREhXA0eKwl3qhJzf4
+ WIK1msdOiN6vCFUgcMjdPhu/ofRdS2MlUuL6EA99gSfyKpRI/nSvxAObkyTDoFkT60yMm0mpgcl
+ /c5pC0iwgGNY79uQ6nK2oPGzKeAaI+9BMr5PG6qY83isdw78GSNIbFEhXUAj7AEfvdQ5oBScNR7
+ nkVg7OLqaseZI0U7y9UXlyWF25FbkYpATKnyJqlkwWkOqMwjvaMRv9PZI/eQhEaT6nxrQSazaHr
+ VnMz85lgEW3Y6bd5NH956I2nK7X1hxdLGBK3BJ0NBrcXUcUzQsDZRdc3GTPeWqLV3MR4t0yBS24
+ OF8jtmjq3VaAwERi7kpwCoxCacEgrGvZjGW2kt18fPypp7omq2kUjmmUr8QFfc3UXJ7RAfORhya
+ Hi7m0PlPMqBbiCA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Mon, 13 Oct 2025, Artur Weber wrote:
+This patchset enables the display on the OnePlus 6T smartphone.
 
-> The BCM590XX supports up to 128 internal interrupts, which are used by
-> various parts of the chip. Add regmap_irq-based interrupt handling and
-> helper functions to allow subdevice drivers to easily use the interrupts.
-> 
-> Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-> ---
-> This patch is a prerequisite for future subdevice additions, since
-> many of them rely on the interrupts; I have a power-on key driver and
-> an RTC driver ready which both use the IRQ data/helper functions included
-> in this patch (they will be sent in subsequent patch series), and more
-> are on the way.
-> ---
-> Changes in v3:
-> - Address review comments from Lee Jones
-> - Link to v2: https://lore.kernel.org/r/20250901-bcm590xx-irq-v2-1-c593ca23b63c@gmail.com
-> 
-> Changes in v2:
-> - Rename xSROVRI IRQs to xSR_OVRI to match LDO_OVRI naming
-> - Link to v1: https://lore.kernel.org/r/20250816-bcm590xx-irq-v1-1-ccbb490628dd@gmail.com
-> ---
-> Changes in v3:
-> - Rename REG_IRQ1_MASK to REG_IRQ1MASK, to make it more obvious
->   that it's a register name, not a mask
-> - Drop bcm590xx_devm_request_irq and bcm590xx_devm_free_irq
-> - Unwrap some lines to adjust to 100 character line lengths
-> - Drop useless comments
-> 
-> Changes in v2:
-> - Rename xSROVRI IRQs to xSR_OVRI to match LDO_OVRI naming
-> ---
->  drivers/mfd/Kconfig          |   1 +
->  drivers/mfd/bcm590xx.c       | 270 +++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/bcm590xx.h | 206 +++++++++++++++++++++++++++++++++
->  3 files changed, 477 insertions(+)
-> 
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 6fb3768e3d71..e76b18e29dbc 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -175,6 +175,7 @@ config MFD_BCM590XX
->  	tristate "Broadcom BCM590xx PMUs"
->  	select MFD_CORE
->  	select REGMAP_I2C
-> +	select REGMAP_IRQ
->  	depends on I2C
->  	help
->  	  Support for the BCM590xx PMUs from Broadcom
-> diff --git a/drivers/mfd/bcm590xx.c b/drivers/mfd/bcm590xx.c
-> index 5a8456bbd63f..fb6afe277ebf 100644
-> --- a/drivers/mfd/bcm590xx.c
-> +++ b/drivers/mfd/bcm590xx.c
-> @@ -26,16 +26,29 @@
->  #define BCM590XX_PMUREV_ANA_MASK	0xF0
->  #define BCM590XX_PMUREV_ANA_SHIFT	4
->  
-> +#define BCM590XX_REG_IRQ1		0x20
-> +#define BCM590XX_REG_IRQ1MASK		0x30
+Patches 1-2 add the bindings and the panel driver.
+Patches 3-6 document the panel, pinctrls, and GPIOs.
 
-This isn't better.
+Since the display node is shared between the OnePlus 6 and 6T,
+the following warning appears:
 
-And now the nomenclature is inconsistent with the one above.
+..sdm845-oneplus-enchilada.dtb: panel@0 (samsung,sofef00): 'poc-supply', 'te-gpios', 'vci-supply' do not match any of the regexes: '^pinctrl-[0-9]+$'
 
-What is a mask register?  I don't understand.
+This will be addressed in a follow-up patch, as the SOFEF00 DDIC also
+requires additional overhaul to properly initialize and function in mainline.
 
->  static const struct mfd_cell bcm590xx_devs[] = {
->  	{
->  		.name = "bcm590xx-vregs",
->  	},
->  };
->  
-> +static bool bcm590xx_volatile_pri(struct device *dev, unsigned int reg)
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v5:
+- Squashed removal of compatible from simple DSI panel with introduction
+  of the panel definition. (Konrad)
+- Link to v4: https://lore.kernel.org/r/20251021-s6e3fc2x01-v4-0-5e3ee21c688a@ixit.cz
 
-If I've asked a question or showed uncertainty about something, it
-usually means that changes need to be made.  Asking what "pri" meant
-wasn't a one time thing.  It shows that something is not clear and if
-I'm asking, others will wonder too.
+Changes in v4:
+- Use refcounted allocation in place of devm_kzalloc()
+- Added include drm_probe_helper (Raihan)
+- Corrected te-gpio value from 30 to 10.
+- Removed legacy compatible samsung,s6e3fc2x01 from the driver (Dmitry)
+- Removed old compatible also from panel-simple-dsi enum.
+- Link to v3: https://lore.kernel.org/r/20251016-s6e3fc2x01-v3-0-ce0f3566b903@ixit.cz
 
-Can we change 'sec' to 'secondary' and 'pri' to 'primary' please?
+Changes in v3:
+- Use mipi_dsi_dcs_set_display_brightness_large (Konrad)
+- added legacy compatible samsung,s6e3fc2x01 into the driver (Dmitry)
+- extended compatible string to
+  "samsung,s6e3fc2x01-ams641rw", "samsung,s6e3fc2x01" (Dmitry)
+- Brought back
+  "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
+- Link to v2: https://lore.kernel.org/r/20251008-s6e3fc2x01-v2-0-21eca1d5c289@ixit.cz
 
-> +{
-> +	/*
-> +	 * IRQ registers are clear-on-read, make sure we don't cache them
-> +	 * so that they get read/cleared correctly
-> +	 */
-> +	return (reg >= BCM590XX_REG_IRQ1 && reg <= (BCM590XX_REG_IRQ1 + 15));
-> +}
-> +
->  static const struct regmap_config bcm590xx_regmap_config_pri = {
->  	.reg_bits	= 8,
->  	.val_bits	= 8,
->  	.max_register	= BCM590XX_MAX_REGISTER_PRI,
-> +	.volatile_reg	= bcm590xx_volatile_pri,
->  	.cache_type	= REGCACHE_MAPLE,
->  };
->  
-> @@ -46,6 +59,258 @@ static const struct regmap_config bcm590xx_regmap_config_sec = {
->  	.cache_type	= REGCACHE_MAPLE,
->  };
->  
-> +#define BCM590XX_REGMAP_IRQ_REG(id)	REGMAP_IRQ_REG_LINE(id, 8)
+Changes in v2:
+- Dropped the gpio reset polarity change as suggested (Jens and Dmitry).
+- Fixed unused warnings (kernel test robot).
+- Added a pinctrl config for the VCI and POC supply.
+- Removed patch "dt-bindings: display: panel-simple-dsi: Remove Samsung S6E3FC2 compatible"
+  while the compatible is used in device-tree, but without any driver
+  serving it, do not touch it (Rob)
+- Added more details into the device-tree about the OnePlus 6T panel properties
+- Put display gpio -pins into one -state block.
+- Link to v1: https://lore.kernel.org/r/20250925-s6e3fc2x01-v1-0-9293016768f7@ixit.cz
 
-It looks like this may benefit more than just this driver.
+---
+Casey Connolly (1):
+      arm64: dts: qcom: sdm845-oneplus: Update compatbible and add DDIC supplies
 
-Please create a generic helper in include/linux/regmap.h.
+David Heidelberg (5):
+      dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel
+      drm/panel: Add Samsung S6E3FC2X01 DDIC with AMS641RW panel
+      arm64: dts: qcom: sdm845-oneplus: Group panel pinctrl
+      arm64: dts: qcom: sdm845-oneplus: Implement panel sleep pinctrl
+      arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
 
-Perhaps REGMAP_IRQ_REG_LINE_BYTE, or whatever the 8 represents.
+ .../bindings/display/panel/panel-simple-dsi.yaml   |   3 -
+ .../bindings/display/panel/samsung,s6e3fc2x01.yaml |  81 +++++
+ MAINTAINERS                                        |   6 +
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 113 ++++--
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts |   2 +-
+ drivers/gpu/drm/panel/Kconfig                      |  13 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c   | 385 +++++++++++++++++++++
+ 8 files changed, 579 insertions(+), 25 deletions(-)
+---
+base-commit: 606da5bb165594c052ee11de79bf05bc38bc1aa6
+change-id: 20250923-s6e3fc2x01-f9550b822fe5
 
-> +static const struct regmap_irq bcm59054_regmap_irqs[] = {
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBINS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBRM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_BATINS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_BATRM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBC_CV_LOOP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBC_CV_TMR_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_EOC),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RESUME_VBUS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBTEMPLOW),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBTEMPHIGH),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBOV),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBOV),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHGERRDIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBOV_DIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBOV_DIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBC_TF),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHG_HW_TTR_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHG_HW_TCH_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHG_SW_TMR_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHG_TCH_1MIN_BF_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USB_PORT_DIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USB_CC_REDUCE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VBUSLOWBND),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_UBPD_CHG_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VBUS_VALID_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_OTG_SESS_VALID_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VB_SESS_END_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ID_RM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VBUS_VALID_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VA_SESS_VALID_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VB_SESS_END_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ID_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_IDCHG),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RIC_C_TO_FLOAT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHGDET_LATCH),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CHGDET_TO),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ADP_CHANGE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ADP_SNS_END),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ADP_PROB),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_ADP_PRB_ERR),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_PRESSED),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_RELEASED),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_WAKEUP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_BIT_VLD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_RESTART),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_T1),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_T2),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_T3),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_I2C_RESTART),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GBAT_PLUG_IN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SMPL_INT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUX_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUX_RM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_XTAL_FAILURE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBWV_R_10S_WAIT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MBWV_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTC_ALARM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTC_SEC),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTC_MIN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTCADJ),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_FGC),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_BBLOW),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_DIE_OT_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_DIE_OT_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTM_DATA_RDY),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTM_IN_CON_MEAS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTM_UPPER),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTM_IGNORE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RTM_OVERRIDDEN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUD_HSAB_SHCKT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUD_IHFD_SHCKT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_POK_NOP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_LEN_ERR),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_RCV_ERR),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_BUSQ_RESP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_BUSQ_POS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_EOT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_XMT_END),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MIPI_INT_POS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_LOWBAT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDSR1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDSR2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_IOSR1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_IOSR2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RESERVED),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RFLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUDLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBLDO_OVR),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDXLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MICLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SIMLDO1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SIMLDO2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MMCLDO1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CAMLDO1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CAMLDO2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VIBLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO3_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_RFLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_AUDLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_USBLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDXLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MICLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SIMLDO1_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SIMLDO2_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MMCLDO1_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_MMCLDO2_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CAMLDO1_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_CAMLDO2_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VIBLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_SDLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO1_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO2_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_GPLDO3_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_TCXLDO_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_LVLDO1_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_LVLDO2_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_TCXLDO_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_LVLDO1_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_LVLDO2_SHD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VBOVRV),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59054_IRQ_VBOVRI),
-> +};
-
-Wow!  These lists are intense.
-
-It's a shame we don't support ranges!
-
-> +static const struct regmap_irq_chip bcm59054_irq_chip = {
-> +	.name = "bcm59054-irq",
-> +	.irqs = bcm59054_regmap_irqs,
-> +	.num_irqs = BCM59054_IRQ_MAX,
-> +	.num_regs = 16,
-> +	.status_base = BCM590XX_REG_IRQ1,
-> +	.mask_base = BCM590XX_REG_IRQ1MASK,
-> +	.clear_on_unmask = true,
-> +};
-> +
-> +static const struct regmap_irq bcm59056_regmap_irqs[] = {
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTC_ALARM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTC_SEC),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTC_MIN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTCADJ),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_BATINS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_BATRM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_GBAT_PLUG_IN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_SMPL_INT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_USBINS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_USBRM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_USBOV),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_EOC),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RESUME_VBUS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHG_HW_TTR_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHG_HW_TCH_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHG_SW_TMR_EXP),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHGDET_LATCH),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHGDET_TO),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBTEMPLOW),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBTEMPHIGH),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBOV),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBOV_DIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_USBOV_DIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CHGERRDIS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VBUS_1V5_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VBUS_4V5_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VBUS_1V5_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VBUS_4V5_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBWV_R_10S_WAIT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_BBLOW),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_LOWBAT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VERYLOWBAT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTM_DATA_RDY),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTM_IN_CON_MEAS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTM_UPPER),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTM_IGNORE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_RTM_OVERRIDDEN),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_AUD_HSAB_SHCKT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_AUD_IHFD_SHCKT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_MBC_TF),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_CSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_IOSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_SDSR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ASR_OVRI),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_UBPD_CHG_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ACD_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ACD_RM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_PONKEYB_HOLD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_PONKEYB_F),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_PONKEYB_R),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_PONKEYB_OFFHOLD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_PONKEYB_RESTART),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_IDCHG),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_JIG_USB_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_UART_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ID_INS),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ID_RM),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ADP_CHANGE),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_ADP_SNS_END),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_SESSION_END_VLD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_SESSION_END_INVLD),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_VBUS_OVERCURRENT),
-> +	BCM590XX_REGMAP_IRQ_REG(BCM59056_IRQ_FGC),
-> +};
-> +
-> +static const struct regmap_irq_chip bcm59056_irq_chip = {
-> +	.name = "bcm59056-irq",
-> +	.irqs = bcm59056_regmap_irqs,
-> +	.num_irqs = BCM59056_IRQ_MAX,
-> +	.num_regs = 16,
-> +	.status_base = BCM590XX_REG_IRQ1,
-> +	.mask_base = BCM590XX_REG_IRQ1MASK,
-> +	.clear_on_unmask = true,
-> +};
-> +
-> +static int bcm590xx_irq_init(struct bcm590xx *bcm590xx)
-> +{
-> +	const struct regmap_irq_chip *irq_chip;
-> +	int ret;
-> +
-> +	if (!bcm590xx->irq) {
-> +		dev_err(bcm590xx->dev, "No IRQ configured\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	switch (bcm590xx->pmu_id) {
-> +	case BCM590XX_PMUID_BCM59054:
-> +		irq_chip = &bcm59054_irq_chip;
-> +		break;
-> +	case BCM590XX_PMUID_BCM59056:
-> +		irq_chip = &bcm59056_irq_chip;
-> +		break;
-> +	default:
-> +		dev_err(bcm590xx->dev, "Unknown device type %d\n", bcm590xx->pmu_id);
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = devm_regmap_add_irq_chip(bcm590xx->dev, bcm590xx->regmap_pri,
-> +			bcm590xx->irq, IRQF_TRIGGER_FALLING, 0,
-> +			irq_chip, &bcm590xx->irq_data);
-> +	if (ret) {
-> +		dev_err(bcm590xx->dev, "Failed to add IRQ chip for IRQ: %d: %d\n",
-> +			bcm590xx->irq, ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  /* Map PMU ID value to model name string */
->  static const char * const bcm590xx_names[] = {
->  	[BCM590XX_PMUID_BCM59054] = "BCM59054",
-> @@ -98,6 +363,7 @@ static int bcm590xx_i2c_probe(struct i2c_client *i2c_pri)
->  
->  	i2c_set_clientdata(i2c_pri, bcm590xx);
->  	bcm590xx->dev = &i2c_pri->dev;
-> +	bcm590xx->irq = i2c_pri->irq;
->  	bcm590xx->i2c_pri = i2c_pri;
->  
->  	bcm590xx->pmu_id = (uintptr_t) of_device_get_match_data(bcm590xx->dev);
-> @@ -132,6 +398,10 @@ static int bcm590xx_i2c_probe(struct i2c_client *i2c_pri)
->  	if (ret)
->  		goto err;
->  
-> +	ret = bcm590xx_irq_init(bcm590xx);
-> +	if (ret)
-> +		goto err;
-> +
->  	ret = devm_mfd_add_devices(&i2c_pri->dev, -1, bcm590xx_devs,
->  				   ARRAY_SIZE(bcm590xx_devs), NULL, 0, NULL);
->  	if (ret < 0) {
-> diff --git a/include/linux/mfd/bcm590xx.h b/include/linux/mfd/bcm590xx.h
-> index 5a5783abd47b..96c7b1066365 100644
-> --- a/include/linux/mfd/bcm590xx.h
-> +++ b/include/linux/mfd/bcm590xx.h
-> @@ -50,6 +50,212 @@ struct bcm590xx {
->  	/* Chip revision, read from PMUREV reg */
->  	u8 rev_digital;
->  	u8 rev_analog;
-> +
-> +	/* Interrupts */
-> +	int irq;
-> +	struct regmap_irq_chip_data *irq_data;
-> +};
-> +
-> +/* BCM59054 IRQs */
-> +
-> +enum bcm59054_irq {
-> +	BCM59054_IRQ_USBINS = 0,
-> +	BCM59054_IRQ_USBRM,
-> +	BCM59054_IRQ_BATINS,
-> +	BCM59054_IRQ_BATRM,
-> +	BCM59054_IRQ_MBC_CV_LOOP,
-> +	BCM59054_IRQ_MBC_CV_TMR_EXP,
-> +	BCM59054_IRQ_EOC,
-> +	BCM59054_IRQ_RESUME_VBUS,
-> +	BCM59054_IRQ_MBTEMPLOW,
-> +	BCM59054_IRQ_MBTEMPHIGH,
-> +	BCM59054_IRQ_USBOV,
-> +	BCM59054_IRQ_MBOV,
-> +	BCM59054_IRQ_CHGERRDIS,
-> +	BCM59054_IRQ_MBOV_DIS,
-> +	BCM59054_IRQ_USBOV_DIS,
-> +	BCM59054_IRQ_MBC_TF,
-> +	BCM59054_IRQ_CHG_HW_TTR_EXP,
-> +	BCM59054_IRQ_CHG_HW_TCH_EXP,
-> +	BCM59054_IRQ_CHG_SW_TMR_EXP,
-> +	BCM59054_IRQ_CHG_TCH_1MIN_BF_EXP,
-> +	BCM59054_IRQ_USB_PORT_DIS,
-> +	BCM59054_IRQ_USB_CC_REDUCE,
-> +	BCM59054_IRQ_VBUSLOWBND,
-> +	BCM59054_IRQ_UBPD_CHG_F,
-> +	BCM59054_IRQ_VBUS_VALID_F,
-> +	BCM59054_IRQ_OTG_SESS_VALID_F,
-> +	BCM59054_IRQ_VB_SESS_END_F,
-> +	BCM59054_IRQ_ID_RM,
-> +	BCM59054_IRQ_VBUS_VALID_R,
-> +	BCM59054_IRQ_VA_SESS_VALID_R,
-> +	BCM59054_IRQ_VB_SESS_END_R,
-> +	BCM59054_IRQ_ID_INS,
-> +	BCM59054_IRQ_IDCHG,
-> +	BCM59054_IRQ_RIC_C_TO_FLOAT,
-> +	BCM59054_IRQ_CHGDET_LATCH,
-> +	BCM59054_IRQ_CHGDET_TO,
-> +	BCM59054_IRQ_ADP_CHANGE,
-> +	BCM59054_IRQ_ADP_SNS_END,
-> +	BCM59054_IRQ_ADP_PROB,
-> +	BCM59054_IRQ_ADP_PRB_ERR,
-> +	BCM59054_IRQ_POK_PRESSED,
-> +	BCM59054_IRQ_POK_RELEASED,
-> +	BCM59054_IRQ_POK_WAKEUP,
-> +	BCM59054_IRQ_POK_BIT_VLD,
-> +	BCM59054_IRQ_POK_RESTART,
-> +	BCM59054_IRQ_POK_T1,
-> +	BCM59054_IRQ_POK_T2,
-> +	BCM59054_IRQ_POK_T3,
-> +	BCM59054_IRQ_I2C_RESTART,
-> +	BCM59054_IRQ_GBAT_PLUG_IN,
-> +	BCM59054_IRQ_SMPL_INT,
-> +	BCM59054_IRQ_AUX_INS,
-> +	BCM59054_IRQ_AUX_RM,
-> +	BCM59054_IRQ_XTAL_FAILURE,
-> +	BCM59054_IRQ_MBWV_R_10S_WAIT,
-> +	BCM59054_IRQ_MBWV_F,
-> +	BCM59054_IRQ_RTC_ALARM,
-> +	BCM59054_IRQ_RTC_SEC,
-> +	BCM59054_IRQ_RTC_MIN,
-> +	BCM59054_IRQ_RTCADJ,
-> +	BCM59054_IRQ_FGC,
-> +	BCM59054_IRQ_BBLOW,
-> +	BCM59054_IRQ_DIE_OT_R,
-> +	BCM59054_IRQ_DIE_OT_F,
-> +	BCM59054_IRQ_RTM_DATA_RDY,
-> +	BCM59054_IRQ_RTM_IN_CON_MEAS,
-> +	BCM59054_IRQ_RTM_UPPER,
-> +	BCM59054_IRQ_RTM_IGNORE,
-> +	BCM59054_IRQ_RTM_OVERRIDDEN,
-> +	BCM59054_IRQ_AUD_HSAB_SHCKT,
-> +	BCM59054_IRQ_AUD_IHFD_SHCKT,
-> +	BCM59054_IRQ_POK_NOP,
-> +	BCM59054_IRQ_MIPI_LEN_ERR,
-> +	BCM59054_IRQ_MIPI_RCV_ERR,
-> +	BCM59054_IRQ_MIPI_BUSQ_RESP,
-> +	BCM59054_IRQ_MIPI_BUSQ_POS,
-> +	BCM59054_IRQ_MIPI_EOT,
-> +	BCM59054_IRQ_MIPI_XMT_END,
-> +	BCM59054_IRQ_MIPI_INT_POS,
-> +	BCM59054_IRQ_LOWBAT,
-> +	BCM59054_IRQ_CSR_OVRI,
-> +	BCM59054_IRQ_VSR_OVRI,
-> +	BCM59054_IRQ_MSR_OVRI,
-> +	BCM59054_IRQ_SDSR1_OVRI,
-> +	BCM59054_IRQ_SDSR2_OVRI,
-> +	BCM59054_IRQ_IOSR1_OVRI,
-> +	BCM59054_IRQ_IOSR2_OVRI,
-> +	BCM59054_IRQ_RESERVED,
-> +	BCM59054_IRQ_RFLDO_OVRI,
-> +	BCM59054_IRQ_AUDLDO_OVRI,
-> +	BCM59054_IRQ_USBLDO_OVR,
-> +	BCM59054_IRQ_SDXLDO_OVRI,
-> +	BCM59054_IRQ_MICLDO_OVRI,
-> +	BCM59054_IRQ_SIMLDO1_OVRI,
-> +	BCM59054_IRQ_SIMLDO2_OVRI,
-> +	BCM59054_IRQ_MMCLDO1_OVRI,
-> +	BCM59054_IRQ_CAMLDO1_OVRI,
-> +	BCM59054_IRQ_CAMLDO2_OVRI,
-> +	BCM59054_IRQ_VIBLDO_OVRI,
-> +	BCM59054_IRQ_SDLDO_OVRI,
-> +	BCM59054_IRQ_GPLDO1_OVRI,
-> +	BCM59054_IRQ_GPLDO2_OVRI,
-> +	BCM59054_IRQ_GPLDO3_OVRI,
-> +	BCM59054_IRQ_RFLDO_SHD,
-> +	BCM59054_IRQ_AUDLDO_SHD,
-> +	BCM59054_IRQ_USBLDO_SHD,
-> +	BCM59054_IRQ_SDXLDO_SHD,
-> +	BCM59054_IRQ_MICLDO_SHD,
-> +	BCM59054_IRQ_SIMLDO1_SHD,
-> +	BCM59054_IRQ_SIMLDO2_SHD,
-> +	BCM59054_IRQ_MMCLDO1_SHD,
-> +	BCM59054_IRQ_MMCLDO2_SHD,
-> +	BCM59054_IRQ_CAMLDO1_SHD,
-> +	BCM59054_IRQ_CAMLDO2_SHD,
-> +	BCM59054_IRQ_VIBLDO_SHD,
-> +	BCM59054_IRQ_SDLDO_SHD,
-> +	BCM59054_IRQ_GPLDO1_SHD,
-> +	BCM59054_IRQ_GPLDO2_SHD,
-> +	BCM59054_IRQ_GPLDO3_SHD,
-> +	BCM59054_IRQ_TCXLDO_OVRI,
-> +	BCM59054_IRQ_LVLDO1_OVRI,
-> +	BCM59054_IRQ_LVLDO2_OVRI,
-> +	BCM59054_IRQ_TCXLDO_SHD,
-> +	BCM59054_IRQ_LVLDO1_SHD,
-> +	BCM59054_IRQ_LVLDO2_SHD,
-> +	BCM59054_IRQ_VBOVRV,
-> +	BCM59054_IRQ_VBOVRI,
-> +	BCM59054_IRQ_MAX,
-> +};
-> +
-> +/* BCM59056 IRQs */
-> +
-> +enum bcm59056_irq {
-> +	BCM59056_IRQ_RTC_ALARM = 0,
-> +	BCM59056_IRQ_RTC_SEC,
-> +	BCM59056_IRQ_RTC_MIN,
-> +	BCM59056_IRQ_RTCADJ,
-> +	BCM59056_IRQ_BATINS,
-> +	BCM59056_IRQ_BATRM,
-> +	BCM59056_IRQ_GBAT_PLUG_IN,
-> +	BCM59056_IRQ_SMPL_INT,
-> +	BCM59056_IRQ_USBINS,
-> +	BCM59056_IRQ_USBRM,
-> +	BCM59056_IRQ_USBOV,
-> +	BCM59056_IRQ_EOC,
-> +	BCM59056_IRQ_RESUME_VBUS,
-> +	BCM59056_IRQ_CHG_HW_TTR_EXP,
-> +	BCM59056_IRQ_CHG_HW_TCH_EXP,
-> +	BCM59056_IRQ_CHG_SW_TMR_EXP,
-> +	BCM59056_IRQ_CHGDET_LATCH,
-> +	BCM59056_IRQ_CHGDET_TO,
-> +	BCM59056_IRQ_MBTEMPLOW,
-> +	BCM59056_IRQ_MBTEMPHIGH,
-> +	BCM59056_IRQ_MBOV,
-> +	BCM59056_IRQ_MBOV_DIS,
-> +	BCM59056_IRQ_USBOV_DIS,
-> +	BCM59056_IRQ_CHGERRDIS,
-> +	BCM59056_IRQ_VBUS_1V5_R,
-> +	BCM59056_IRQ_VBUS_4V5_R,
-> +	BCM59056_IRQ_VBUS_1V5_F,
-> +	BCM59056_IRQ_VBUS_4V5_F,
-> +	BCM59056_IRQ_MBWV_R_10S_WAIT,
-> +	BCM59056_IRQ_BBLOW,
-> +	BCM59056_IRQ_LOWBAT,
-> +	BCM59056_IRQ_VERYLOWBAT,
-> +	BCM59056_IRQ_RTM_DATA_RDY,
-> +	BCM59056_IRQ_RTM_IN_CON_MEAS,
-> +	BCM59056_IRQ_RTM_UPPER,
-> +	BCM59056_IRQ_RTM_IGNORE,
-> +	BCM59056_IRQ_RTM_OVERRIDDEN,
-> +	BCM59056_IRQ_AUD_HSAB_SHCKT,
-> +	BCM59056_IRQ_AUD_IHFD_SHCKT,
-> +	BCM59056_IRQ_MBC_TF,
-> +	BCM59056_IRQ_CSR_OVRI,
-> +	BCM59056_IRQ_IOSR_OVRI,
-> +	BCM59056_IRQ_SDSR_OVRI,
-> +	BCM59056_IRQ_ASR_OVRI,
-> +	BCM59056_IRQ_UBPD_CHG_F,
-> +	BCM59056_IRQ_ACD_INS,
-> +	BCM59056_IRQ_ACD_RM,
-> +	BCM59056_IRQ_PONKEYB_HOLD,
-> +	BCM59056_IRQ_PONKEYB_F,
-> +	BCM59056_IRQ_PONKEYB_R,
-> +	BCM59056_IRQ_PONKEYB_OFFHOLD,
-> +	BCM59056_IRQ_PONKEYB_RESTART,
-> +	BCM59056_IRQ_IDCHG,
-> +	BCM59056_IRQ_JIG_USB_INS,
-> +	BCM59056_IRQ_UART_INS,
-> +	BCM59056_IRQ_ID_INS,
-> +	BCM59056_IRQ_ID_RM,
-> +	BCM59056_IRQ_ADP_CHANGE,
-> +	BCM59056_IRQ_ADP_SNS_END,
-> +	BCM59056_IRQ_SESSION_END_VLD,
-> +	BCM59056_IRQ_SESSION_END_INVLD,
-> +	BCM59056_IRQ_VBUS_OVERCURRENT,
-> +	BCM59056_IRQ_FGC,
-> +	BCM59056_IRQ_MAX,
->  };
->  
->  #endif /*  __LINUX_MFD_BCM590XX_H */
-> 
-> ---
-> base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-> change-id: 20250816-bcm590xx-irq-2d4c1cbe00b1
-> 
-> Best regards,
-> -- 
-> Artur Weber <aweber.kernel@gmail.com>
-> 
-
+Best regards,
 -- 
-Lee Jones [李琼斯]
+David Heidelberg <david@ixit.cz>
+
+
