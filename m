@@ -1,136 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C72130BBA2;
-	Mon, 27 Oct 2025 17:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3FF2E092D;
+	Mon, 27 Oct 2025 22:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761584727; cv=none; b=tNFfNN7ubcQi2KLl0KRwLo3G80aHU3OYsswNr/ub3qZR+Rmty4pbo4aTODD5+jx26vZr9rxZazfYNItSu27fppL7u3y7JMrybSbK42fdIEARKZdcHwrF4ooByt6cT2Q4Mt8krYz+1cPJNx5JTSCm5L9tET7oeVVrHqIY6Bop1gA=
+	t=1761604488; cv=none; b=pq2f1VCyJUnc88YqYphcjDjgyrl2C1QDWvqZfIHqoFX7BXuGMN95Sfr43g3yPHtDL4WmwaneczcgRMZsWTthdJPNHSag4aM8wjv9F4ALbMkEadLGiNxFWTOKTJpuwa9aisKaMFQV/ORR6HSslyLbzZvaCR4Rh/nRzB8w15x2p7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761584727; c=relaxed/simple;
-	bh=AO2mJ/+tjiSaEhQl/oIQeLy2Ernp7A4F4bsWfQ7Hwug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ujh9jCuQuHudbPFHYxj9zhRkCYZxv3fRkHKiFPjxX3G4RFXwk0v4A8jbT1f5vh5Gn3bjirndUeM6tnga3jIlT1CjMEgIrrwFmxJqSIzkFkOorBePFfGUtPdF4Nohsaov4mkhtbmIvnXRboOS42NalfymDXniArzxuqTTzqaTK6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etsx/zfb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761604488; c=relaxed/simple;
+	bh=WVzoQ4T5tjNO2wwWWJJz9uek8sy6pYVxznCab4CF78s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vwq/qGbHrDkew+pWiMc/+rJTNSmW+q8/RhX+s9c63fSYh9emsbGtaj7v2vZzpPo4mqat5et0h9rfFBZ7nYuutLKuNa160vYgGysAajR5SztCna7+wlhWlqwd2hnzz15a/xPocOG8wkmkZj5JTQpLSSQ9ubKQlZp8N+fnq4qjNPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4h/TiqF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etsx/zfb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E012C4CEF1;
-	Mon, 27 Oct 2025 17:05:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4h/TiqF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AACC4CEFB;
+	Mon, 27 Oct 2025 22:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761584726;
-	bh=AO2mJ/+tjiSaEhQl/oIQeLy2Ernp7A4F4bsWfQ7Hwug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=etsx/zfb1G5MuzgmsCQ8tvw7iX0SmmEOYLlF5Q1Cj8tSVGUaTUCsLWcH+la8PVO3j
-	 Vd/vLwiZYi1+aILtGPrPzk9DHQNfDX5I0NCs2266vJVJZvtqBWnll6jbeVM/R2ZO9K
-	 3717tNds0/vcV2stdN8tIptnmjPWjZdB6xvOe47VHn8wUrl7WG/dI1d64a/HLfnpQ9
-	 pvTtyQcy5vJiuNU+lRXXVypm4AqI02JPGES/Jnmw1oNFk7BQTpOeXDLRSv+jZSWQPF
-	 Atmwk7NCG09biz3B6AzBL0IufBpHDAEbzlJItvy9/GO5SGxI10bxSRnlC97pjYPeAi
-	 9rXkdPyEdIaKg==
-Date: Mon, 27 Oct 2025 12:08:19 -0500
+	s=k20201202; t=1761604487;
+	bh=WVzoQ4T5tjNO2wwWWJJz9uek8sy6pYVxznCab4CF78s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q4h/TiqFD6LhMFp/+duK4Beh6Ympyrg3QLhOK0OReJQXZXf74li7ZJi/I0/Bo8p0b
+	 bh6YvESerzmxlu01wNO4KP16m02DsdDR78AxKotyKK3Wpob4UFhKNnvRplqNY9kqLX
+	 aMZ8K8OmcBhg/PEu5FvJQRJdWhKSH5sytc0bIKASU5YKEUKa+o7ecPyRENqbW9MDg2
+	 CYaAiQDYPS7d+3rTsUnKedfUJzk3WenC/A2VDqNgtHQI3LI9XklcrmWa5u8vb9y7g1
+	 qYWXimwAAqu071vw7pyEHrDI16p+vzE74I54Cy+C7WPNjmWWQ19otdDnAzV0dHvCM4
+	 C4Od7L96ZH18w==
 From: Bjorn Andersson <andersson@kernel.org>
-To: david@ixit.cz
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>, 
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>, linux-input@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	phone-devel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>
-Subject: Re: [PATCH v7 1/3] Input: add ABS_SND_PROFILE
-Message-ID: <vdnfmgtfclntb2xnvv7gdj65235aa2nufcsnssrkrsbdwr5wfc@ppkldnwzrtjy>
-References: <20251014-op6-tri-state-v7-0-938a6367197b@ixit.cz>
- <20251014-op6-tri-state-v7-1-938a6367197b@ixit.cz>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-shift-axolotl: Drop address and size cells from panel
+Date: Mon, 27 Oct 2025 17:36:43 -0500
+Message-ID: <176160465241.73268.10255088091286075326.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251020-shift6mq-dt-v2-1-d8fc3ec71281@sigxcpu.org>
+References: <20251020-shift6mq-dt-v2-1-d8fc3ec71281@sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014-op6-tri-state-v7-1-938a6367197b@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 14, 2025 at 11:20:33AM +0200, David Heidelberg via B4 Relay wrote:
-> From: Gergo Koteles <soyer@irl.hu>
-> 
-> ABS_SND_PROFILE used to describe the state of a multi-value sound profile
-> switch. This will be used for the alert-slider on OnePlus phones or other
-> phones.
-> 
-> Profile values added as SND_PROFLE_(SILENT|VIBRATE|RING) identifiers
-> to input-event-codes.h so they can be used from DTS.
-> 
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+On Mon, 20 Oct 2025 13:58:24 +0200, Guido Günther wrote:
+> They're set in the parent to describe the panel's reg property already.
+> 
+> Fixes the
+> 
+> linux/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dtb: panel@0 (visionox,rm69299-shift): '#address-cells', '#size-cells' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> 
+> warning.
+> 
+> [...]
 
-Regards,
-Bjorn
+Applied, thanks!
 
-> ---
->  Documentation/input/event-codes.rst    | 6 ++++++
->  drivers/hid/hid-debug.c                | 1 +
->  include/uapi/linux/input-event-codes.h | 9 +++++++++
->  3 files changed, 16 insertions(+)
-> 
-> diff --git a/Documentation/input/event-codes.rst b/Documentation/input/event-codes.rst
-> index 1ead9bb8d9c64..e4f065dd5a1da 100644
-> --- a/Documentation/input/event-codes.rst
-> +++ b/Documentation/input/event-codes.rst
-> @@ -241,6 +241,12 @@ A few EV_ABS codes have special meanings:
->      emitted only when the selected profile changes, indicating the newly
->      selected profile value.
->  
-> +* ABS_SND_PROFILE:
-> +
-> +  - Used to describe the state of a multi-value sound profile switch.
-> +    An event is emitted only when the selected profile changes,
-> +    indicating the newly selected profile value.
-> +
->  * ABS_MT_<name>:
->  
->    - Used to describe multitouch input events. Please see
-> diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
-> index 7107071c7c516..c58500d8b94b5 100644
-> --- a/drivers/hid/hid-debug.c
-> +++ b/drivers/hid/hid-debug.c
-> @@ -3513,6 +3513,7 @@ static const char *absolutes[ABS_CNT] = {
->  	[ABS_DISTANCE] = "Distance",	[ABS_TILT_X] = "XTilt",
->  	[ABS_TILT_Y] = "YTilt",		[ABS_TOOL_WIDTH] = "ToolWidth",
->  	[ABS_VOLUME] = "Volume",	[ABS_PROFILE] = "Profile",
-> +	[ABS_SND_PROFILE] = "SoundProfile",
->  	[ABS_MISC] = "Misc",
->  	[ABS_MT_SLOT] = "MTSlot",
->  	[ABS_MT_TOUCH_MAJOR] = "MTMajor",
-> diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-> index 4a9fbf42aa9fa..962168c661ccd 100644
-> --- a/include/uapi/linux/input-event-codes.h
-> +++ b/include/uapi/linux/input-event-codes.h
-> @@ -879,6 +879,7 @@
->  
->  #define ABS_VOLUME		0x20
->  #define ABS_PROFILE		0x21
-> +#define ABS_SND_PROFILE		0x22
->  
->  #define ABS_MISC		0x28
->  
-> @@ -988,4 +989,12 @@
->  #define SND_MAX			0x07
->  #define SND_CNT			(SND_MAX+1)
->  
-> +/*
-> + * ABS_SND_PROFILE values
-> + */
-> +
-> +#define SND_PROFILE_SILENT	0x00
-> +#define SND_PROFILE_VIBRATE	0x01
-> +#define SND_PROFILE_RING	0x02
-> +
->  #endif
-> 
-> -- 
-> 2.51.0
-> 
-> 
+[1/1] arm64: dts: qcom: sdm845-shift-axolotl: Drop address and size cells from panel
+      commit: 720ebcc3e6b46fe4e01f4ecf1a8a899af213e433
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
