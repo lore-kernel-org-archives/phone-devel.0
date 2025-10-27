@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7917FEAE7;
-	Mon, 27 Oct 2025 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C72130BBA2;
+	Mon, 27 Oct 2025 17:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761583375; cv=none; b=BoVuvVqs2QDIdOSKVayLbQXpjiMp6kx92CqScnD7KyqBDrQwEk/Vr7mfI+OqbnOuc+NIDrJgCIwgXJNv9GBidRx1N3+6SFRSYo65lGvDJzdg3SNFOzubIo58g7IKlqzX1nimGKCNlT0wSx0CWm+hqnX5KSFg5l1zQRkvej5J1c8=
+	t=1761584727; cv=none; b=tNFfNN7ubcQi2KLl0KRwLo3G80aHU3OYsswNr/ub3qZR+Rmty4pbo4aTODD5+jx26vZr9rxZazfYNItSu27fppL7u3y7JMrybSbK42fdIEARKZdcHwrF4ooByt6cT2Q4Mt8krYz+1cPJNx5JTSCm5L9tET7oeVVrHqIY6Bop1gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761583375; c=relaxed/simple;
-	bh=xi3p1plspiMb+oEZCo7OhEMYcKsZn5qpqNZLgN6rP+o=;
+	s=arc-20240116; t=1761584727; c=relaxed/simple;
+	bh=AO2mJ/+tjiSaEhQl/oIQeLy2Ernp7A4F4bsWfQ7Hwug=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjTmJEueUtPK+7EsTsq48iNXS/YUx/qqbjtGr8CIiCs012ZUQw3I8RooqmjNYH07khnmpZxTzESIjl6XbaW5cYAPpGtwkjcY3bTO9FrJLJIvd8tbZnCI09g23McOTUzIncrdQ9XtsNVRwiAd/RUKdRT1pLNxZA1YmNbHg3R44ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ec5NEWwt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ujh9jCuQuHudbPFHYxj9zhRkCYZxv3fRkHKiFPjxX3G4RFXwk0v4A8jbT1f5vh5Gn3bjirndUeM6tnga3jIlT1CjMEgIrrwFmxJqSIzkFkOorBePFfGUtPdF4Nohsaov4mkhtbmIvnXRboOS42NalfymDXniArzxuqTTzqaTK6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etsx/zfb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ec5NEWwt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5A6C4CEF1;
-	Mon, 27 Oct 2025 16:42:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etsx/zfb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E012C4CEF1;
+	Mon, 27 Oct 2025 17:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761583375;
-	bh=xi3p1plspiMb+oEZCo7OhEMYcKsZn5qpqNZLgN6rP+o=;
+	s=k20201202; t=1761584726;
+	bh=AO2mJ/+tjiSaEhQl/oIQeLy2Ernp7A4F4bsWfQ7Hwug=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ec5NEWwtwvUCT6XBtM30FRyNeTIbKbBWMFgtw9LzwDx6ZWi9+5AyNzOBc9X4f3Z+V
-	 FusgcgRRSvXTxBGeqihCsRuqODvJmiE+oLrCxAAeewIh2Q1v/WAYIBWga/f3BxqKdy
-	 xrzezf2wCOQHlSrtEMj7cB4IuL2TQOXaKRFDFPj8yttzu5m8WY2ZHlZZf6wlNqigIT
-	 tXpRdMBVlZJhqpjbwSIQoYy3vecXuCBik9BeYYGYKvMkB2gNjLa0VP8Te1muHXG636
-	 yR8w7cbtkqQScQd0OzqEWxve8Q26aJ3J4cP2ytwzw2oikUj6WWRsWXwtA0uZIZAYAN
-	 XDpq4uZ6/lLrg==
-Date: Mon, 27 Oct 2025 11:45:48 -0500
+	b=etsx/zfb1G5MuzgmsCQ8tvw7iX0SmmEOYLlF5Q1Cj8tSVGUaTUCsLWcH+la8PVO3j
+	 Vd/vLwiZYi1+aILtGPrPzk9DHQNfDX5I0NCs2266vJVJZvtqBWnll6jbeVM/R2ZO9K
+	 3717tNds0/vcV2stdN8tIptnmjPWjZdB6xvOe47VHn8wUrl7WG/dI1d64a/HLfnpQ9
+	 pvTtyQcy5vJiuNU+lRXXVypm4AqI02JPGES/Jnmw1oNFk7BQTpOeXDLRSv+jZSWQPF
+	 Atmwk7NCG09biz3B6AzBL0IufBpHDAEbzlJItvy9/GO5SGxI10bxSRnlC97pjYPeAi
+	 9rXkdPyEdIaKg==
+Date: Mon, 27 Oct 2025 12:08:19 -0500
 From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Casey Connolly <casey.connolly@linaro.org>, Alexander Martinz <amartinz@shiftphones.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 3/6] arm64: dts: qcom: qcm6490-shift-otter: Add
- missing reserved-memory
-Message-ID: <3ryhntdf52cukvcbfad5prlggqsee54nsf7us6hdd5h5f73pog@yrgo6o6j22gw>
-References: <20251009-otter-further-bringup-v2-0-5bb2f4a02cea@fairphone.com>
- <20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com>
+To: david@ixit.cz
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>, 
+	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>, linux-input@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	phone-devel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>
+Subject: Re: [PATCH v7 1/3] Input: add ABS_SND_PROFILE
+Message-ID: <vdnfmgtfclntb2xnvv7gdj65235aa2nufcsnssrkrsbdwr5wfc@ppkldnwzrtjy>
+References: <20251014-op6-tri-state-v7-0-938a6367197b@ixit.cz>
+ <20251014-op6-tri-state-v7-1-938a6367197b@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -48,47 +49,88 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com>
+In-Reply-To: <20251014-op6-tri-state-v7-1-938a6367197b@ixit.cz>
 
-On Thu, Oct 09, 2025 at 11:06:33AM +0200, Luca Weiss wrote:
-> From: Alexander Martinz <amartinz@shiftphones.com>
+On Tue, Oct 14, 2025 at 11:20:33AM +0200, David Heidelberg via B4 Relay wrote:
+> From: Gergo Koteles <soyer@irl.hu>
 > 
-> It seems we also need to reserve a region of 81 MiB called "removed_mem"
-> otherwise we can easily hit memory errors with higher RAM usage.
+> ABS_SND_PROFILE used to describe the state of a multi-value sound profile
+> switch. This will be used for the alert-slider on OnePlus phones or other
+> phones.
 > 
+> Profile values added as SND_PROFLE_(SILENT|VIBRATE|RING) identifiers
+> to input-event-codes.h so they can be used from DTS.
+> 
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-If you make sure CONFIG_MEMTEST is enabled, you can boot with memtest=1
-on the command line to catch such issues, without relying on "higher RAM
-usage" (or randomness).
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
 Regards,
 Bjorn
 
-> Fixes: 249666e34c24 ("arm64: dts: qcom: add QCM6490 SHIFTphone 8")
-> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 5 +++++
->  1 file changed, 5 insertions(+)
+>  Documentation/input/event-codes.rst    | 6 ++++++
+>  drivers/hid/hid-debug.c                | 1 +
+>  include/uapi/linux/input-event-codes.h | 9 +++++++++
+>  3 files changed, 16 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-> index 0d331bda4a82..31650c29b1ca 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
-> @@ -118,6 +118,11 @@ cdsp_mem: cdsp@88f00000 {
->  			no-map;
->  		};
+> diff --git a/Documentation/input/event-codes.rst b/Documentation/input/event-codes.rst
+> index 1ead9bb8d9c64..e4f065dd5a1da 100644
+> --- a/Documentation/input/event-codes.rst
+> +++ b/Documentation/input/event-codes.rst
+> @@ -241,6 +241,12 @@ A few EV_ABS codes have special meanings:
+>      emitted only when the selected profile changes, indicating the newly
+>      selected profile value.
 >  
-> +		removed_mem: removed@c0000000 {
-> +			reg = <0x0 0xc0000000 0x0 0x5100000>;
-> +			no-map;
-> +		};
+> +* ABS_SND_PROFILE:
 > +
->  		rmtfs_mem: rmtfs@f8500000 {
->  			compatible = "qcom,rmtfs-mem";
->  			reg = <0x0 0xf8500000 0x0 0x600000>;
+> +  - Used to describe the state of a multi-value sound profile switch.
+> +    An event is emitted only when the selected profile changes,
+> +    indicating the newly selected profile value.
+> +
+>  * ABS_MT_<name>:
+>  
+>    - Used to describe multitouch input events. Please see
+> diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
+> index 7107071c7c516..c58500d8b94b5 100644
+> --- a/drivers/hid/hid-debug.c
+> +++ b/drivers/hid/hid-debug.c
+> @@ -3513,6 +3513,7 @@ static const char *absolutes[ABS_CNT] = {
+>  	[ABS_DISTANCE] = "Distance",	[ABS_TILT_X] = "XTilt",
+>  	[ABS_TILT_Y] = "YTilt",		[ABS_TOOL_WIDTH] = "ToolWidth",
+>  	[ABS_VOLUME] = "Volume",	[ABS_PROFILE] = "Profile",
+> +	[ABS_SND_PROFILE] = "SoundProfile",
+>  	[ABS_MISC] = "Misc",
+>  	[ABS_MT_SLOT] = "MTSlot",
+>  	[ABS_MT_TOUCH_MAJOR] = "MTMajor",
+> diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+> index 4a9fbf42aa9fa..962168c661ccd 100644
+> --- a/include/uapi/linux/input-event-codes.h
+> +++ b/include/uapi/linux/input-event-codes.h
+> @@ -879,6 +879,7 @@
+>  
+>  #define ABS_VOLUME		0x20
+>  #define ABS_PROFILE		0x21
+> +#define ABS_SND_PROFILE		0x22
+>  
+>  #define ABS_MISC		0x28
+>  
+> @@ -988,4 +989,12 @@
+>  #define SND_MAX			0x07
+>  #define SND_CNT			(SND_MAX+1)
+>  
+> +/*
+> + * ABS_SND_PROFILE values
+> + */
+> +
+> +#define SND_PROFILE_SILENT	0x00
+> +#define SND_PROFILE_VIBRATE	0x01
+> +#define SND_PROFILE_RING	0x02
+> +
+>  #endif
 > 
 > -- 
 > 2.51.0
+> 
 > 
