@@ -1,52 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A548345CDF;
-	Mon, 27 Oct 2025 22:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CE334FF63;
+	Mon, 27 Oct 2025 22:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761604521; cv=none; b=d0xodzKiRfNQM5dNICra8ojblweAJn68BsEeD86y7if0LoRpHYJJsOdLGcfQlvu2lZ7zual0GiEaEPyYfZ9Ys/p8v9Or+Tv0l+RTgnB8r4DXgdoYmjrm5j0Ql6VE4KZxS3a07StKe0dE0QRyPHUoANCcPv9XJpJf7W9upfxEejY=
+	t=1761604542; cv=none; b=mxLclnZisCWPaCvM6Yv/fUjJb7F8Qr72XyWXp075Xm+eK4vcVnNwQDtBMAFbF/xaid7S8/mdcnyd0Gno6dczvXZIpTHXLS2oDvkkDvUuM6Pq+PxPExyIraXwgt9JTXjTGBlwUZBlWcx05H08eSS3SdMHFD+RtR0hCEHZWteoXzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761604521; c=relaxed/simple;
-	bh=EjEo0KoqrRx7hm0J0GCQTp0mKLkIGffDJHupLvSE5OU=;
+	s=arc-20240116; t=1761604542; c=relaxed/simple;
+	bh=8MrOJ8hm/M+OvYV6HKO1FumNIs9f4/QJGUqkXKe9x7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QqgIhOkRPJAcQ3T2/Sm1zBSYp3rd8vWe98iuHtVi+VfXBIphVXeKA2yR9HbHdpPNN+4VEMfpxx0swfAciGRr1/HdGlgvWVA+t1UAOC+e9po5AQp30TmsteOoQHJkjGHQkLpWHiT+FPgnj1w6/a7+xlI3vjAAMiCzwgGGqebmQC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lK82TLR1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=MbDHLqRoqwDgLqBG3jOUc3MfZSiX1knuolpVDEl1AAuaPwhExXrttLpEyG+1SmGBL42W3zWHAPUJyQt/cSOgA/CE1fgbP+Sz7resT6br36zTcBckL0pRf0yiMLgeSJS3fgJoD/U6CZuW5Sg8dRN7eUqw2qS3wAgs3/a9v3X8C0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TXPLt8Ql; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lK82TLR1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B01BC116B1;
-	Mon, 27 Oct 2025 22:35:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TXPLt8Ql"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA480C4CEFB;
+	Mon, 27 Oct 2025 22:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761604521;
-	bh=EjEo0KoqrRx7hm0J0GCQTp0mKLkIGffDJHupLvSE5OU=;
+	s=k20201202; t=1761604542;
+	bh=8MrOJ8hm/M+OvYV6HKO1FumNIs9f4/QJGUqkXKe9x7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lK82TLR1Ed3JbQZIAbPPcgic+9nyfH2dsTyGBwpCWEqqlDYqkBgQLmhG6HN6usepd
-	 0J6tMdnct0ShBMmhsZb59bJEv0+jMQVl9sS84q+MXA7oApuWum1uVo1blPal04ANmQ
-	 ag7ULdJqxyuhBD8OStQAzV8WoC29zuSLqJDCz6VS0f5dpxMoUD8NTkQv1QpPcpb9KJ
-	 qS+sMlUAkbuXoMGAh1SR3RZ17ly8RONoM/f8iss7WqjauHFRSPEJKQwl1JfGe7ZQ8s
-	 y3vpbJsLJdpl83hkaNqQffmYSpQw65kHgKJ9Hvd8O19zpC8T8CVxommtzAfKSh8zxs
-	 KeAUH3jtQc5CA==
+	b=TXPLt8QljP2Wfu85K7CA27WEkDlxi3ZE1BOeLBEDtLpC/6h0XLsXGvyPtvrjH7Rt3
+	 jUBgvAm5kLyrcG0bgpJmMuNwCTMSefOWz24cArlO9qUUw4Oa6CNcoI3XMsAvoQQ7PA
+	 lqts+LOsw/Cg7q1oMkEYxigNQD8M121mdmWZDEH+3z4LVpVKAtyWa0Tr4xjn2+AJHd
+	 4evCsCQZ6hKWVTSqmmtXSNmz4/eb6aKGM4COwSIJNxeWVXbPk+UBOv98TElIK9Rfg/
+	 qX5OtT71qyM3KoC6bwT5j03rvcJRZnnD4DvH1Khb08nbAJaC+ZgYjzhCqeJ8hlyMDo
+	 opO5N8Nptp7pQ==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 0/3] Fixes/improvements for SM6350 UFS
-Date: Mon, 27 Oct 2025 17:37:14 -0500
-Message-ID: <176160465254.73268.8815685950018576928.b4-ty@kernel.org>
+	Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: msm8939-asus-z00t: add initial device tree
+Date: Mon, 27 Oct 2025 17:37:35 -0500
+Message-ID: <176160465208.73268.15556003473353414195.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251023-sm6350-ufs-things-v3-0-b68b74e29d35@fairphone.com>
-References: <20251023-sm6350-ufs-things-v3-0-b68b74e29d35@fairphone.com>
+In-Reply-To: <20251008182106.217340-1-xerikasxx@gmail.com>
+References: <20251008182106.217340-1-xerikasxx@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -57,20 +53,26 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 23 Oct 2025 13:39:25 +0200, Luca Weiss wrote:
-> Fix the order of the freq-table-hz property, then convert to OPP tables
-> and add interconnect support for UFS for the SM6350 SoC.
+On Wed, 08 Oct 2025 21:20:18 +0300, Erikas Bitovtas wrote:
+> This dts adds support for Asus ZenFone 2 Laser/Selfie (1080p) smartphone released in 2015.
 > 
+> Add an initial device tree support for Z00T with support for:
+> - GPIO keys
+> - SDHCI (Internal and external storage)
+> - WCNSS (WiFi/BT)
+> - Sensors (accelerometer and magnetometer)
+> - Touchscreen
+> - Audio input and output
+> - Vibrator
 > 
+> [...]
 
 Applied, thanks!
 
-[1/3] arm64: dts: qcom: sm6350: Fix wrong order of freq-table-hz for UFS
-      commit: ec9d588391761a08aab5eb4523a48ef3df2c910f
-[2/3] arm64: dts: qcom: sm6350: Add OPP table support to UFSHC
-      commit: 06d262bcdb3bc86805739de1c484761f0a59a453
-[3/3] arm64: dts: qcom: sm6350: Add interconnect support to UFS
-      commit: c1a45887a36ef7ded3fb4bac59d4a3445098b04b
+[1/2] dt-bindings: arm: qcom: Add Asus ZenFone 2 Laser/Selfie
+      commit: bc42d98593535ccca739f67d9b9cb859f4e13304
+[2/2] arm64: dts: qcom: msm8939-asus-z00t: add initial device tree
+      commit: 42621cbb3afd47e1e3000abe2da8ac33286fff4f
 
 Best regards,
 -- 
