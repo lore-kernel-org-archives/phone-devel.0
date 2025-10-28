@@ -1,248 +1,98 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D774F1D63F0
-	for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 09:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CF030149C
+	for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 09:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761643453; cv=none; b=dveqcqsDmqg+L/wQo6gD3rGUIs4+aB9UbFtAM8Srev8HEjLdGMe7C0MtoifaZ9F5V/FPGwyHHGN4rD636cxK9u27zfDuTvpmvwMaITf/CX9kjoDtAfnhLybRKKbJ88bxZDwLKduF63VWoIcTp01cdJuCGHvfAeKZsLmEAE6DdV8=
+	t=1761643567; cv=none; b=IXP1/bgOpdVBNwqKROFOxC8OJMnhwVYhQeNsHQGsdpCXlKCGY4VP50tbPM2x3EKMQC2bR7JQImUvZfaitNnP3TxOJNI2++NoIgRFe2bPhT6dsq8B96stSXH1/M3L0CJw6XjWKN6AnVeFkbtb5kgEUH+HfvUQtZUnlRPHo17Wkag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761643453; c=relaxed/simple;
-	bh=s3V4ysK9VBeEHsI6usIIzKqsRASnw3Y4wlawsulPdaw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=VWNaF5ORnTHUOom+6RFVj3Ach0m8M8lA2DwThk565UggyRueDJCKDe39cjLLGSizi9cUwE/uVAoysCbVYk+sDR1IxQmk2Idn5cEjxEAYD9G16u59nDGBulTb68mJXjn17GccAZtRjL+tD7pCLwSrsiNk9LUAi5oFM4stZhHSm2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=VRz8I+Ws; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1761643567; c=relaxed/simple;
+	bh=G3fa4DEKYJsrbjpYbG8l1S+0+U7oaIpFhApn3v9mVok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RGQZ/4ZEYTQtyJxBlal43k6aR40NzqmfaRDJpFXIKjcX78NFltLtFQ/B8kRMCecWsWMthA0uxrUfHtNbOwOIugiMeRQCf0q1XAaILUnAuM18TC/57iFRwVsvza3VSfb/2YjuWPEkVvoOJLaFUt4L/+0kQ5FjVYzHYoaMwGm63bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i4wEuk65; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="VRz8I+Ws"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63e11cfb4a9so10458380a12.2
-        for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 02:24:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i4wEuk65"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-475dd559b0bso41620155e9.1
+        for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 02:26:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1761643450; x=1762248250; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0tCQxocYdhckVFualS/ORMJEwcZ+WPRq+V/HGiNgJY4=;
-        b=VRz8I+WsT4jSb+oysOLBJe2kthiqvrD5JrWgXb5iCnH0jMnSKE4nSzqmgJoPZfJ4cs
-         LLIAofzbTCnyVP7bzYZd/rUtSGiJmlKjqJGJYc16/HHSDMngNctKXWQr5xnwCfO38Nyj
-         u2KpzwdfOiCu6hcHOJJ/b9enkYuX9UY5zKFTsw8B9XONRblihNEyWs+FatwVT5yR68qq
-         Nvn2mWbFEhBeUuqsTB45ub7c9J6oAc93ABa8UkiTO50Z7FRBSRhYmBTWySfRKMOYe+mG
-         FRB0jG+VepfqS3o4LjyTYhULfvuNH5h3VDpNROhJIT8lw9urLEG1gR1ac0utQOYJECbl
-         sjXA==
+        d=linaro.org; s=google; t=1761643564; x=1762248364; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6WIhNUyRI0kZl2LUkLnytvQqzIt3iG3+keT/4POrd5A=;
+        b=i4wEuk65Uva9JyllG5C3QAYlNH4CN9Ckyf3TnlnzuwawRg/lQIuwBvSboDw89RtB8j
+         DrRkpo+XKGbDGzW342mx807zqrdPXxbPl3z150+96RbmE+VMnaxftxuNVg69bmCcKDHi
+         b5MQV3sUliY/GOUPsn7/sXQtEs9CwwJEAzWHlzrUFPZW8vF14WGE2emLog1az3rmohVU
+         4QC8GTHe2vqw2Oa31KkhnoqLCdx68gXonYBuJFuJG5Nwihqfn8dXj3p4ZH2kMSJ70jFD
+         gOpOLdDhOWqGtvUfdawcU1sHQsTLLZaq9w1c7FzAqVU3CLuQgHkt7pn+VjWNOyXIcSTq
+         MCQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761643450; x=1762248250;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0tCQxocYdhckVFualS/ORMJEwcZ+WPRq+V/HGiNgJY4=;
-        b=IhQ/bw2WvN+F73NSjVaf0wjA5fj2xEGI+JjM4WDN1Ofk23kleaYPZadEzSUY7PZsk9
-         oBctQ4tr0pNhlRiNu3oYigCwOvv9wx0mzd/1mKY01w8gom1uEKWNgSEEIjBSs/5eyWXA
-         foFwuDoqch9/HWeYD8oZlf1RUHYrzxrS39M1VZyop7YEl66mJZ01sgIfekU2WOQEOl7T
-         Bl4Y3TlDuwDdJYgxyqWwYUCcrSKgt8PeBTGkMqgK302kyaX+hszyY1HkNfbt9wM0l4bQ
-         RjoG0qNA89lYEJ9OXKZe95NMwKY+KFkkZTUXfcGhrOk0eqjF/7BGpBL7ipZ61meIx4SA
-         Ry1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXwBKeNMAmaN5ZcRO/ZxHdW+VU8S3O/gUc6sHDIpYpVdCJaALI2HVvTI04CflDZ4spJ7sGuD4Fu+Pdw2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBZVs9LUkSMYoy49WNtwJqEr0L+FQYlsBdL/aQecEsInxadFjd
-	uImZz02AE7flgj23HYNSd3+dEKoLNgyrhlds8z6TYSkZOstkB/I6Nzg/r8JbSNtQSPc=
-X-Gm-Gg: ASbGncut6Va+vDDsrENAv7Jzu/OdI+TRgtUaMn1ZH5naOE5ttj1gPBVUq3ggnd1lnUY
-	0N6imc01jvk8lMnOvebddW9l3cDhJ767YOAKtpKnEL6RkfBpzc/G+AqelUaF4999VtJOpDfkepi
-	uggiHoyTmIzNCUuX5y4f1n0ps7j+r2WpscWkil4qZQ5CGv7PgnKti8mjzZcmiIT4v0BaimFPv3y
-	VJdrYZggjJAiDG8UyDQxGkhh8pq8yMBlpC4mvWlBDzCa9/8BqJyMkg8ELcPk5fak3IlfVdYQ58o
-	j8ZsNggoYRm3FBfOwWM3CnR74oG/a4fpBQk+z515D3MCMSUtVmsPuZqOd+SqU55Y2pStqkOzlu0
-	w5ldrcqrIXOOJc2eXKQiYgtUdTg5a5qhiSma6S1FscGmf+dquzg4igO0FdgZ82X7RzbQnDC2Ial
-	LQs2GvJ42l9vEnnjTXPSLIjTM83HYlzaLRQ6Wow11nZWrxoGd+/k/cw3GuelK4h+1CJs3QcfloE
-	TsZpXNb9jvSGpEUSyHU+19+420=
-X-Google-Smtp-Source: AGHT+IGfDUGtMbK3LaipFusfcvhLMXyePNby/HE4OT8IWmTabw5qM3H/CNIe1K6Q4Ny3QldX+OWr2g==
-X-Received: by 2002:a05:6402:847:b0:63e:1e6a:5a88 with SMTP id 4fb4d7f45d1cf-63ed849e9f1mr2513657a12.24.1761643450214;
-        Tue, 28 Oct 2025 02:24:10 -0700 (PDT)
-Received: from localhost (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef82865sm8450241a12.9.2025.10.28.02.24.08
+        d=1e100.net; s=20230601; t=1761643564; x=1762248364;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WIhNUyRI0kZl2LUkLnytvQqzIt3iG3+keT/4POrd5A=;
+        b=WY7MXkF1wEeP8m/SI7DDyUv25M8ei1ws6sSOT5tARK4QqY2sFKIwQ+EjQqpFhle3ZO
+         QfNI+y1K3YU8W2CzUb9fFJzghNkQYhIvnVsEKMVq2O+GjQmJIoCBISjKM55Sm4sPLePD
+         7dLUxYaEtG7Cy5UW7e24AnqkhP4nOvaqxziNZ8EvH/4jmXamMEmeJ1hue0ELiIP1eCQF
+         JcQlLgwSamD02m3dVJb1OXm+YBLPDnfvnIlHNhxCzabUk9tW11H88UI/ZQptuFwxjF7E
+         lOehZeibB4rIZXcIiclSArVmhmAauezx0h+dHUpQjsO5kdkz5o9WzFSH5glPF6XfLavW
+         TxWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCz2gqFSWBl5WSRaMaEcFlUdTDhm3WCK1y6XCIwhfKQAFzZama5AGNX/3rN6viiH4Ht+hTJ3+ONMMYgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgIrsacRqvParypm8T1+yW33kzqnCHJcn3vy11E2GxKlrYRzQ/
+	A/9KjKS0fpYIDGYmrUw8sfZ9ev+jxt8YzwXzy0pAXPdr4A1e6cUiQRHbd7BUZHasrrs=
+X-Gm-Gg: ASbGncurYQpbaC0bkCJX2pDjJGSBsmicdfppmOmzdA4/cIYicueOicSQAVlqxV2CDdu
+	iSPJuALlXBe7rxka0Y7HKoMwHYOoTOW5tRUvUKjoYebjyAbL1jwuAoNf9qxTBsWXH4rOn+hDRnE
+	egngOL9zypX7zPqb4Jn8gC5W746FHzTuG/Jf7s81+xqqQ1RCwoTHcJIthFLacQ1rB4mTSqZGuWG
+	wuE9t5iWMES62bcSr2g4xmD4gu4HwwG+OLvQyJISFOjhJp6izMM9kD6aQ6PYtO+PwUTHgg8kPCm
+	NfZSM5hHwcT//IO8rAijHqMAN0X17lECQZGY+O4Imt2nC7jO9DRdtTri4CyZmu8FKGfJdOfZOLY
+	MLfvTqjahTiJ5w3Ssv5BimsPh7CyokZuQrmShYV+pRvhVZSOjz7qIquxHvnPW1Q15XbpvdYBm3E
+	2vXFqxD8DGxlllBanjBNCMKx6HOi6rTlNgMHySuTMs08WLfr6Vio5xbQ==
+X-Google-Smtp-Source: AGHT+IG7SGjSk8s/DTqkizgYBNEXizsx92+JaKgr3Y3fQprN5gLYg9kJPcLa3kFS/x+7fFwVaMqF7g==
+X-Received: by 2002:a05:600c:470b:b0:46e:32a5:bd8d with SMTP id 5b1f17b1804b1-47717df9dc0mr25845305e9.3.1761643564349;
+        Tue, 28 Oct 2025 02:26:04 -0700 (PDT)
+Received: from [192.168.0.163] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd035dc2sm188343505e9.5.2025.10.28.02.26.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Oct 2025 02:24:09 -0700 (PDT)
+        Tue, 28 Oct 2025 02:26:03 -0700 (PDT)
+Message-ID: <7e7e35f3-82b6-4757-bbcd-38e0e867b184@linaro.org>
+Date: Tue, 28 Oct 2025 09:26:02 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Oct 2025 10:24:07 +0100
-Message-Id: <DDTUHFIN3IEK.3FY5IS9S73ASO@fairphone.com>
-Subject: Re: [PATCH 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-Cc: "Bryan O'Donoghue" <bod@kernel.org>, "Robert Foss" <rfoss@kernel.org>,
- "Todor Tomov" <todor.too@gmail.com>, "Vladimir Zapolskiy"
- <vladimir.zapolskiy@linaro.org>, "Mauro Carvalho Chehab"
- <mchehab@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] media: qcom: camss: Add SM6350 support
+To: Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20251024-sm6350-camss-v1-0-63d626638add@fairphone.com>
- <20251024-sm6350-camss-v1-1-63d626638add@fairphone.com>
- <20251028-defiant-visionary-rottweiler-f97cda@kuoka>
-In-Reply-To: <20251028-defiant-visionary-rottweiler-f97cda@kuoka>
+ <20251024-sm6350-camss-v1-2-63d626638add@fairphone.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251024-sm6350-camss-v1-2-63d626638add@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Krzysztof,
+On 24/10/2025 13:24, Luca Weiss wrote:
+> +		.regulators = { "vdda-0.9", "vdda-1.25" },
 
-On Tue Oct 28, 2025 at 9:54 AM CET, Krzysztof Kozlowski wrote:
-> On Fri, Oct 24, 2025 at 02:23:59PM +0200, Luca Weiss wrote:
->  +
->> +  clock-names:
->> +    items:
->> +      - const: cam_ahb_clk
->> +      - const: cam_axi
->> +      - const: soc_ahb
->> +      - const: camnoc_axi
->> +      - const: core_ahb
->> +      - const: cpas_ahb
->> +      - const: csiphy0
->> +      - const: csiphy0_timer
->> +      - const: csiphy1
->> +      - const: csiphy1_timer
->> +      - const: csiphy2
->> +      - const: csiphy2_timer
->> +      - const: csiphy3
->> +      - const: csiphy3_timer
->> +      - const: slow_ahb_src
->> +      - const: vfe0_axi
->> +      - const: vfe0
->> +      - const: vfe0_cphy_rx
->> +      - const: vfe0_csid
->> +      - const: vfe1_axi
->> +      - const: vfe1
->> +      - const: vfe1_cphy_rx
->> +      - const: vfe1_csid
->> +      - const: vfe2_axi
->> +      - const: vfe2
->> +      - const: vfe2_cphy_rx
->> +      - const: vfe2_csid
->> +      - const: vfe_lite
->> +      - const: vfe_lite_cphy_rx
->> +      - const: vfe_lite_csid
->> +
->> +  interrupts:
->> +    maxItems: 12
->> +
->> +  interrupt-names:
->> +    items:
->> +      - const: csid0
->> +      - const: csid1
->> +      - const: csid2
->> +      - const: csid_lite
->> +      - const: csiphy0
->> +      - const: csiphy1
->> +      - const: csiphy2
->> +      - const: csiphy3
->> +      - const: vfe0
->> +      - const: vfe1
->> +      - const: vfe2
->> +      - const: vfe_lite
->> +
->> +  interconnects:
->> +    maxItems: 4
->> +
->> +  interconnect-names:
->> +    items:
->> +      - const: cam_ahb
->> +      - const: cam_hf_0_mnoc
->> +      - const: cam_sf_0_mnoc
->> +      - const: cam_sf_icp_mnoc
->
-> Please share the list with the previous generation of this device. Which
-> one was used here as "previous"? For example x1e has quite different
-> names - nothing with "cam". No "cam" in qcs8300, either.
+I'd like a little bit more consistency with the regulator names.
 
-sm8250 is the big sibling for sm6350, so it's matching the names from
-there upstream. These exact names are also used downstream for
-"qcom,msm-bus,name".
+0p9 1p2 instead of 0.9 and 1.25
 
-I don't think there's anything preventing removing the cam_ prefix though.
-
->
->
->> +
->> +  iommus:
->> +    maxItems: 4
->
-> I was told iommus might differ. Are you sure all of them represent the
-> same (e.g. not specific iommus for specific purposes)?
-
-I don't really know.
-
-These 4 iommus are labelled 'msm_cam_smmu_ife' downstream. There's still
-more iommus for more hardware blocks: jpeg, icp, cpas_cdm and lrme.
-
-Maybe someone from Qualcomm/Linaro can explain this further if
-necessary?
-
->
->> +
->> +  power-domains:
->> +    items:
->> +      - description: IFE0 GDSC - Image Front End, Global Distributed Sw=
-itch Controller.
->> +      - description: IFE1 GDSC - Image Front End, Global Distributed Sw=
-itch Controller.
->> +      - description: IFE2 GDSC - Image Front End, Global Distributed Sw=
-itch Controller.
->> +      - description: Titan Top GDSC - Titan ISP Block, Global Distribut=
-ed Switch Controller.
->> +
->> +  power-domain-names:
->> +    items:
->> +      - const: ife0
->> +      - const: ife1
->> +      - const: ife2
->> +      - const: top
->
-> Uh, not your fault, but who came with this list in previous generations?
-> Instead of simple and obvious "top+ifeX" which allows growing/shrinking,
-> someone put "top" at the end which means this cannot follow same order
-> as X1E for example... Heh, it follows at least sm8550.
-
-Shall we put top as first power-domain? I don't think it's an issue to
-change the order.
-
->
->
->> +
->> +  vdda-0.9-supply:
->
-> There are no dots in property names. Are you sure these are called
-> VDDA_0.9 in the device datasheet (not schematics)? Please look at other
-> bindings how this is being named, depending whether this is PHY or PLL
-> supply (or only PHY).
-
-The following power supplies are mentioned:
-
-* VDD_CAMSS_PLL_0P9 - Camera SS PLL 0.9 V circuits
-    (not referenced in downstream kernel, connected to vreg_s5a in
-    schematics)
-* VDD_A_CSI_x_0P9 - MIPI CSIx 0.9 V circuits
-    With pad names VDD_A_CSI_0_0P9 to VDD_A_CSI_3_0P9
-* VDD_A_CSI_x_1P25 - MIPI CSIx 1.25 V circuits
-    With pad names VDD_A_CSI_0_1P25 to VDD_A_CSI_3_1P25
-
-Regards
-Luca
-
->
->
->> +    description:
->> +      Phandle to a 0.9V regulator supply to a PHY.
->> +
->> +  vdda-1.25-supply:
->> +    description:
->> +      Phandle to a 1.25V regulator supply to a PHY.
->
-> Best regards,
-> Krzysztof
-
+---
+bod
