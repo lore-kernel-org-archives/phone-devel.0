@@ -1,196 +1,238 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A18E355021
-	for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 21:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC3A2E22A3;
+	Tue, 28 Oct 2025 21:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761686625; cv=none; b=FqMBnOaK9xv0tY7b7UDXqr4kS5AZwb1vj/Hb3V6v4JJS1xdfr/ASMeLhQrdt9W81RWBYt3mojzEsZeR8Jga1E3vPN9R1QCCa3I8pGhpPeioA2nIsNWE4mQlRxcFOqN4p98UoPObEhr7RUidFwK7cXnqNp4YCgyURr7byRrUH8yk=
+	t=1761687134; cv=none; b=QGt3d22WauFG+HFu808WlcsKu0EnYInltaw+9gya2g3wePKUJjw8O4SqkIODtKBQJdI7OJ61/Pg/folukmQtzEJlICi7pzaorrduEkVrQi4z+lidO76CD2dKydsc6aqAcpBsAJWvVM6aM+H3fq7fYWoc+36xAUTZuJz4f0G7v0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761686625; c=relaxed/simple;
-	bh=WngYaf9I9c2jzvtYx4c/BLYwQWN7XC1wBLWZHDIqVpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C0OZslvFzTvzQetadL0hgkeyYbwD+2V9u9Z+uD61+Co+Mk3ln3+GrIlmt+2V6DWmmN4wLccf0A6nKcPhGui7gMWJYnyFdw4/oLYBt+ItyL6ICaTQBjj/qETmdJWWrVbGmUJLc12i+r3+i44mFKRVTwmQZJNBLtXgM8AITqZ+2f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=G7nBaMX2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jvuTF4Pc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1761687134; c=relaxed/simple;
+	bh=m1jQgGTt6zJDUfj3/5LcwXIsSTC6xfUWjIy900n/kiI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J9YKAYCe4OobIiQTgEJuCEQjxAz/pCOWB5D+QKnQ4KEXivmRevQuMT4JdvONm0nuSci1zWVWtgBhG+MGrJYTb/12eM/n3u6KSZ/YxQII4XcsN6Sn5o8L40owH7AA3w+UnOG8WF/NP0g6dQvwOLypljl1l9JbIqiMvY7UC1yjN8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vdv8dZuy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="G7nBaMX2";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jvuTF4Pc"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59SJlc402503464
-	for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 21:23:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7WqiEnjAgMfmsuJ0ixstPssdOKbvkewqIqpstd+r89s=; b=G7nBaMX2wopTqieT
-	FOuyo9eyoR2LoFSFbXdxnJSnyIK/gpHEg0nKoO8jmyBe2pEvVkBYmhBo5bd8vMg8
-	srXwJ9KT7g1LW1oWa2JfIcip74CVBe6NhZ1PH1SywrMmz6sN+8MaLUH8J0Z3S19b
-	vqSIboFmODQRGPBMXEo6hWW1N+bfyLZKP08rHjCvkkRsp5jaIrsIK9VZHy6a6HKk
-	AJ7DrYyPJOGUZZnywXiLqhyeCVokPe/+P5zcOx8UJ0tBgUu9Emm+EVHhIdFKPIHP
-	AtQ5lzY3Z9c8XzMd3OtsN9+HX+wq6tdFYSnjTGlmYEManY6r5bgK0zYqjT76F36W
-	c2y2+Q==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a34a1g736-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 21:23:42 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4e89f4a502cso196933681cf.2
-        for <phone-devel@vger.kernel.org>; Tue, 28 Oct 2025 14:23:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1761686622; x=1762291422; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7WqiEnjAgMfmsuJ0ixstPssdOKbvkewqIqpstd+r89s=;
-        b=jvuTF4PcZ2WAEsKjEn5LHD3D6LHoi0mMjrauIaDJ2tynfqMSLzheoV56G3kaXOQ5ei
-         J0QWfg5NiwvVtNbUzTZp+Js6Qfdl90ipKPzOiyg6dVBVAvetbHCcNP1l5Mc7KLZMMUC5
-         soh2fQyjx3T60/Ri9goGaHZBWxdt017HQo+Jxhw0EsDMpYlIVu1dTX1UvQQb3BflYzSx
-         80/BSvpkMxDhbarEE9Hf+fxM+p1WHGdLsbFEYLH4LMwdJ9xljZaw1kRSNq/TwhHxyZ/j
-         ynr6a+AgAK7kO+RhcncnotFOrsShzJkTpNIlFluysPFSQv6ElYsQ7U5cu42MiuHr/jul
-         Bkww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761686622; x=1762291422;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7WqiEnjAgMfmsuJ0ixstPssdOKbvkewqIqpstd+r89s=;
-        b=uWeFxF8Giq0LAtyNgxwM2LW3dU7mtauftbkOFBrNa+T4G3UJoJi6GMUI89YE/QkAgQ
-         U16xsEsZlCv5kcImlgZNQdShZ+j1uMNj9LBdauFLhUR/qPbWbyf77JfRjIYFBxhyjXSN
-         XiZdFf40wdTs+emL2ixMaQsvFr98iakSiA6pWu+Numd7OECD/4hpeqyt1EXRzvnqpupZ
-         7SPTfq8jNzYsLRvOiL8XWUOYfqRqHorKn6EmvXvoa5rmbp4xmaVSvv1GLN94nvmYi96Z
-         RNusNZ+0NMVe0hrghEmPVZEf8vMI0mjrb4wbTEcAsWtl8zv8txyRx4tw4+S1mf5iHR7+
-         Pr0A==
-X-Forwarded-Encrypted: i=1; AJvYcCU+0h98nr6s7dZaK+XprFF8kxSoyp3X8cl3JNLHdb1MAVgEfi+Fcg+s18wpRC07HxVehJloBq3XVxMdwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHoXRts77ok7OM4cNFkQUnfPeMrkKAcZZfEPu2Gxkt4H0nZm28
-	bFUyE3peSC2DSyozdJR7cY66lSim7O2m971bPcHnsIoZ+QgKIEAv2rDa2ZFCyBE20PECl6JXLDv
-	jakzl5I7wWnjNz/1FsGGWzCXwaP1FSLF8C4BhuQMri7s9u1p04rfjSv7Oqa84vL+1MQ==
-X-Gm-Gg: ASbGnctRNocus1uHXMtSA7RxSw14GIaz8QERMVwsD2eBv9uC6lghiU8K/O203sJSocQ
-	Beft6eyi+G19QoZfAjoUgheNoqHgNIzqYTLSDcSCRnwnRgEedavQvBnOqOi9ePIWMAlqSTZL6hB
-	NMD8q0FA47tEYpOEypP8aIVT/7mP1J4i1Tbug9gPFfD4Hnp/T97IBzgHLE6D714hrXXkaAa5MPc
-	WZYUzzrhOCPOyVFpHuaBwGasVC8GPbeYM5AbAULp7jPtSmt6P5179gVs+mRf72F/vQ3iF616qeH
-	027VX3XzECp13UVIiITxWF1H2t7KtA/MItB14Mq99X/hjGkZdBqSuOKe1FXIjiD0ARJ6s6y3aho
-	D5+L8j6r7vyLSos3Xut+U1mfqrN4SMbyXQqRkfLDv+5oeS2YhIqhzRGBcyDhaHxxSGpDS+dE5yU
-	Xc34UzrAkDFRJw
-X-Received: by 2002:a05:622a:4a13:b0:4e8:afdb:6f56 with SMTP id d75a77b69052e-4ed15c4caa1mr10464121cf.74.1761686621628;
-        Tue, 28 Oct 2025 14:23:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIxBrdIO7mfWQKtvDvRPRtB9L8H/kLm56MKcuYi7AAbrvZ0yHrj06ejtcwIC3X95uJDXxrIg==
-X-Received: by 2002:a05:622a:4a13:b0:4e8:afdb:6f56 with SMTP id d75a77b69052e-4ed15c4caa1mr10463691cf.74.1761686621070;
-        Tue, 28 Oct 2025 14:23:41 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f749easm3402826e87.89.2025.10.28.14.23.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 14:23:40 -0700 (PDT)
-Date: Tue, 28 Oct 2025 23:23:38 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: federico@izzo.pro
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        nicola@corna.info, David Heidelberg <david@ixit.cz>,
-        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>
-Subject: Re: [PATCH v3] drm/msm/dpu: Add DSPP GC driver to provide GAMMA_LUT
- DRM property
-Message-ID: <gmk7aho74xb2wwlc27t6qaozfnqsjjyccmzm5moe53tyzuwm4o@ri7cfoqz23ks>
-References: <20251019-dpu-add-dspp-gc-driver-v3-1-840491934e56@izzo.pro>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vdv8dZuy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F1F71C116D0;
+	Tue, 28 Oct 2025 21:32:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761687134;
+	bh=m1jQgGTt6zJDUfj3/5LcwXIsSTC6xfUWjIy900n/kiI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Vdv8dZuyjTkhzInIOX+0OhW4Ii0BzPKxKsRd+urTwH2ap19aoWP+T7B2F5/gP1N9i
+	 w054/LalEjh2P3N08NRz/GOYifNmiVAUmurPTFbsgGly96smDcS9jm2C8TUdMjEddg
+	 C+hCNFoglKSH7+fPOLt133RamMHf3j0+AtLpV5TxvPSXpljTUgxGjRe9qIUKzWSZ7V
+	 h0dycdhUs5XgQPwa+rlIIgdyQT/uHRyNJe84pTjcdwEju4WyrLwTxPLTB7EpCXpWf9
+	 wcZr0eA3UWqsBrD7j7eOGa6ULZZVVXrm+COx2UG50WNhnZvGW90zZ64KIy16FgMOYw
+	 Z/2AhVp+Z1oag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6A61CCF9F1;
+	Tue, 28 Oct 2025 21:32:13 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Tue, 28 Oct 2025 22:30:43 +0100
+Subject: [PATCH v7 2/4] media: qcom: camss: vfe: Add VBIF setting support
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251019-dpu-add-dspp-gc-driver-v3-1-840491934e56@izzo.pro>
-X-Authority-Analysis: v=2.4 cv=dbiNHHXe c=1 sm=1 tr=0 ts=6901345e cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=p0WdMEafAAAA:8 a=VwQbUJbxAAAA:8 a=ze386MxoAAAA:8 a=EUspDBNiAAAA:8
- a=WrUPyqytC3nuxuxCNLkA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=kacYvNCVWA4VmyqE58fU:22 a=iBZjaW-pnkserzjvUTHh:22 a=poXaRoVlC6wW9_mwW8W4:22
- a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-ORIG-GUID: 9xeS2K5j3fzdgH_HemLS-wXqp51ZhF5i
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE4MCBTYWx0ZWRfXzEpcZJID5NtC
- TITQoGMPPa46FSQgXmHyiDH77eKTe8fxoI+MFxKc6piImk/5yMGpaflxS1Fb1x8D42BZXwVcZjS
- Mtr4gzEu2c/z1AYdJgMZxWQWJQpJkTRIWbr2i2CSQaraRnOZaiu2J1/c+tU/a6AB1R/gbFW8Uev
- Ln/PuPbXvg/BD2KZNeFWAMRrHFtmCO56FVMIhG02ARPfVFdy2mWh7JB5S+4RH3pp2Vp9ijfck35
- SaCz5MIY+QdmKn15aM6CC5W4uKt8yPQEZiI9WjfXQslJMQCqtRkxTHu1izpHtM3Ps6vsxxHqMx4
- SqUhCR2oRO4L2M/BTgm3/44J1wSjOFJ1Jw755hVYJ3h9fcKLStLoZwqqAudo3MC3cVa+EWeI0AL
- TvLGt0DamYz25SdmWw/cMy4n+J3DXQ==
-X-Proofpoint-GUID: 9xeS2K5j3fzdgH_HemLS-wXqp51ZhF5i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510280180
+Message-Id: <20251028-camss-8x39-vbif-v7-2-91ee8becda85@apitzsch.eu>
+References: <20251028-camss-8x39-vbif-v7-0-91ee8becda85@apitzsch.eu>
+In-Reply-To: <20251028-camss-8x39-vbif-v7-0-91ee8becda85@apitzsch.eu>
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vincent Knecht <vincent.knecht@mailoo.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761687132; l=5419;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=LUWA6d1W5yZjmia9pSTmWz7Fms+vfBEZ+ggLf0ICA8s=;
+ b=1lOYK06uQ4SROphgI3LwCXFiZGzfejoWRzjBo8b4spalRbRU60WSrfmfJIC0xe2340ZpokhI6
+ MbuUehnwT+JDXprA2AeowtTzYPgMay3LrPwagVf6ORXUsAbuEL5oF3Q
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On Sun, Oct 19, 2025 at 12:06:32PM +0200, Federico Amedeo Izzo via B4 Relay wrote:
-> From: Federico Amedeo Izzo <federico@izzo.pro>
-> 
-> Add support for DSPP GC block in DPU driver for Qualcomm SoCs.
-> Expose the GAMMA_LUT DRM property, which is needed to enable
-> night light and basic screen color calibration.
-> 
-> I used LineageOS downstream kernel as a reference and found the LUT
-> format by trial-and-error on OnePlus 6.
-> 
-> Tested on oneplus-enchilada (sdm845-mainline 6.16-dev) and xiaomi-tissot
-> (msm8953-mainline 6.12/main).
-> 
-> Tested-by: David Heidelberg <david@ixit.cz>  # Pixel 3 (next-20251018)
-> Tested-by: Guido Günther <agx@sigxcpu.org> # on sdm845-shift-axolotl
-> Signed-off-by: Federico Amedeo Izzo <federico@izzo.pro>
-> ---
-> DRM GAMMA_LUT support was missing on sdm845 and other Qualcomm SoCs using
-> DPU for CRTC. This is needed in userspace to enable features like Night
-> Light or basic color calibration.
-> 
-> I wrote this driver to enable Night Light on OnePlus 6, and after the
-> driver was working I found out it applies to the 29 different Qualcomm SoCs
-> that use the DPU display engine, including X1E for laptops.
-> 
-> I used the LineageOS downstream kernel as reference and found the correct 
-> LUT format by trial-and-error on OnePlus 6.
-> 
-> This was my first Linux driver and it's been a great learning
-> experience.
-> 
-> The patch was reviewed by postmarketOS contributors here: 
-> https://gitlab.com/sdm845-mainline/linux/-/merge_requests/137
-> During review the patch was tested successfully on hamoa (X1E).
-> ---
-> Changes in v3:
-> - Remove memset() after kzalloc() in dpu_crtc.c
-> - Simplify error messages in dpu_crtc.c and dpu_hw_dspp.c
-> - Use 0 for DPU_REG_WRITE() instead of reg = 0 in dpu_hw_dspp.c
-> - Link to v2: https://lore.kernel.org/r/20251019-dpu-add-dspp-gc-driver-v2-1-30c8cb79cb17@izzo.pro
-> 
-> Changes in v2:
-> - Fix gc register .len and .version in dpu_hw_catalog.c
-> - Apply coding style suggestions
-> - Link to v1: https://lore.kernel.org/r/20251018-dpu-add-dspp-gc-driver-v1-1-ed0369214252@izzo.pro
-> ---
->  drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c       | 86 +++++++++++++++++++++-----
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c |  4 ++
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h |  4 ++
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c     |  3 +
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dspp.c    | 54 ++++++++++++++++
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dspp.h    | 26 ++++++++
->  6 files changed, 163 insertions(+), 14 deletions(-)
-> 
+From: Vincent Knecht <vincent.knecht@mailoo.org>
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Some devices need writing values to VFE VBIF registers.
+Add helper functions to do this.
 
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+Signed-off-by: AndrÃ© Apitzsch <git@apitzsch.eu>
+---
+ drivers/media/platform/qcom/camss/Makefile         |  1 +
+ drivers/media/platform/qcom/camss/camss-vfe-4-1.c  | 12 +++++++++++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.c | 25 ++++++++++++++++++++++
+ drivers/media/platform/qcom/camss/camss-vfe-vbif.h | 19 ++++++++++++++++
+ drivers/media/platform/qcom/camss/camss-vfe.c      |  9 ++++++++
+ drivers/media/platform/qcom/camss/camss-vfe.h      |  3 +++
+ 6 files changed, 69 insertions(+)
+
+diff --git a/drivers/media/platform/qcom/camss/Makefile b/drivers/media/platform/qcom/camss/Makefile
+index 23960d02877d..5e349b491513 100644
+--- a/drivers/media/platform/qcom/camss/Makefile
++++ b/drivers/media/platform/qcom/camss/Makefile
+@@ -23,6 +23,7 @@ qcom-camss-objs += \
+ 		camss-vfe-680.o \
+ 		camss-vfe-gen3.o \
+ 		camss-vfe-gen1.o \
++		camss-vfe-vbif.o \
+ 		camss-vfe.o \
+ 		camss-video.o \
+ 		camss-format.o \
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-4-1.c b/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
+index 901677293d97..9cf1ccdb2fe7 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-4-1.c
+@@ -15,6 +15,7 @@
+ #include "camss.h"
+ #include "camss-vfe.h"
+ #include "camss-vfe-gen1.h"
++#include "camss-vfe-vbif.h"
+ 
+ #define VFE_0_HW_VERSION		0x000
+ 
+@@ -733,6 +734,7 @@ static void vfe_set_qos(struct vfe_device *vfe)
+ {
+ 	u32 val = VFE_0_BUS_BDG_QOS_CFG_0_CFG;
+ 	u32 val7 = VFE_0_BUS_BDG_QOS_CFG_7_CFG;
++	int ret;
+ 
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_0);
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_1);
+@@ -742,6 +744,16 @@ static void vfe_set_qos(struct vfe_device *vfe)
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_5);
+ 	writel_relaxed(val, vfe->base + VFE_0_BUS_BDG_QOS_CFG_6);
+ 	writel_relaxed(val7, vfe->base + VFE_0_BUS_BDG_QOS_CFG_7);
++
++	/* SoC-specific VBIF settings */
++	if (vfe->res->has_vbif) {
++		ret = vfe_vbif_apply_settings(vfe);
++		if (ret < 0) {
++			dev_err_ratelimited(vfe->camss->dev,
++					    "VFE: VBIF error %d\n",
++					    ret);
++		}
++	}
+ }
+ 
+ static void vfe_set_ds(struct vfe_device *vfe)
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-vbif.c b/drivers/media/platform/qcom/camss/camss-vfe-vbif.c
+new file mode 100644
+index 000000000000..691335f231a6
+--- /dev/null
++++ b/drivers/media/platform/qcom/camss/camss-vfe-vbif.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * camss-vfe-vbif.c
++ *
++ * Qualcomm MSM Camera Subsystem - VFE VBIF Module
++ *
++ * Copyright (c) 2025, The Linux Foundation. All rights reserved.
++ *
++ */
++
++#include <linux/io.h>
++
++#include "camss.h"
++#include "camss-vfe.h"
++#include "camss-vfe-vbif.h"
++
++void vfe_vbif_write_reg(struct vfe_device *vfe, u32 reg, u32 val)
++{
++	writel_relaxed(val, vfe->vbif_base + reg);
++}
++
++int vfe_vbif_apply_settings(struct vfe_device *vfe)
++{
++	return 0;
++}
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-vbif.h b/drivers/media/platform/qcom/camss/camss-vfe-vbif.h
+new file mode 100644
+index 000000000000..502db629e961
+--- /dev/null
++++ b/drivers/media/platform/qcom/camss/camss-vfe-vbif.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * camss-vfe-vbif.h
++ *
++ * Qualcomm MSM Camera Subsystem - VFE VBIF Module
++ *
++ * Copyright (c) 2025, The Linux Foundation. All rights reserved.
++ *
++ */
++#ifndef QC_MSM_CAMSS_VFE_VBIF_H
++#define QC_MSM_CAMSS_VFE_VBIF_H
++
++#include "camss-vfe.h"
++
++void vfe_vbif_write_reg(struct vfe_device *vfe, u32 reg, u32 val);
++
++int vfe_vbif_apply_settings(struct vfe_device *vfe);
++
++#endif /* QC_MSM_CAMSS_VFE_VBIF_H */
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+index dff8d0a1e8c2..6e28b672b1fa 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -1827,6 +1827,15 @@ int msm_vfe_subdev_init(struct camss *camss, struct vfe_device *vfe,
+ 		return PTR_ERR(vfe->base);
+ 	}
+ 
++	if (vfe->res->has_vbif) {
++		vfe->vbif_base = devm_platform_ioremap_resource_byname(pdev,
++								       vfe->res->vbif_name);
++		if (IS_ERR(vfe->vbif_base)) {
++			dev_err(dev, "could not map vbif memory\n");
++			return PTR_ERR(vfe->vbif_base);
++		}
++	}
++
+ 	/* Interrupt */
+ 
+ 	ret = platform_get_irq_byname(pdev, res->interrupt[0]);
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.h b/drivers/media/platform/qcom/camss/camss-vfe.h
+index 0300efdb1c46..ae9dad353a37 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.h
++++ b/drivers/media/platform/qcom/camss/camss-vfe.h
+@@ -136,6 +136,8 @@ struct vfe_subdev_resources {
+ 	u8 line_num;
+ 	bool has_pd;
+ 	char *pd_name;
++	bool has_vbif;
++	char *vbif_name;
+ 	const struct vfe_hw_ops *hw_ops;
+ 	const struct camss_formats *formats_rdi;
+ 	const struct camss_formats *formats_pix;
+@@ -145,6 +147,7 @@ struct vfe_device {
+ 	struct camss *camss;
+ 	u8 id;
+ 	void __iomem *base;
++	void __iomem *vbif_base;
+ 	u32 irq;
+ 	char irq_name[30];
+ 	struct camss_clock *clock;
 
 -- 
-With best wishes
-Dmitry
+2.51.2
+
+
