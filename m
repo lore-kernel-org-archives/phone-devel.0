@@ -1,114 +1,165 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38872FF661
-	for <phone-devel@vger.kernel.org>; Wed, 29 Oct 2025 10:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C2C347BD6
+	for <phone-devel@vger.kernel.org>; Wed, 29 Oct 2025 12:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761734523; cv=none; b=tXL7BX5Oumu39vWp5JDCv2WHqzNryep7KeKY+P8+vxg285JRT0Y/s9Gr6mc5+ro6Vs7hOaVlFyfkcXWunbhaLgr3Nfu2mfkI/7PYSkDj9ZigfjYwiusl1pv7arYK9ET0LsI/vIN0xyagaAIvH+qNc3z60GOaJ4exprjnQjtoYIo=
+	t=1761741296; cv=none; b=WbHmFHYZSv+YCVUExDi0Z4XrYiigxrSg3+aGxP3GGUtwmQcyeIMOqlCKZtS5psqmfr/UW/hqpZu5pfw6/U0+zjPGU/kXwBjl7lc8A6h9egZm/M9gmx+5KrK9MGoG9MWK5DJPRWXJI4PLsp9DmuNg6OkDmI+D2NHj1X4Dkgb9nCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761734523; c=relaxed/simple;
-	bh=AUDqFfVw/6OEV65Z6YZ8rdLCW3TA1z/nedV4oyotdPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SfDtIH2sZpX151sf7aFUJ0A43HF9mgoulyIGuBF0Si5HtSSx55IXHETPxGXyaGqnKM1jlPpC2W0dJc4LJk473BfiNvw3jtvwjXQRm/tkW5qF0PhSLIX9zYtoXxOHfj6fIm0oz1D9WQNRWg3trNNGzvIc5MUTwuex0RtqSlF1RSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=R2PZTCn8; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1761741296; c=relaxed/simple;
+	bh=HNtCmirIHk+sh+voOIV9GTRqfZiI3FU2VFpp1LNOBD0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YEqIhZZP9bx+bfMkm0Ls77oRluMi0Kjj1g8TsWu5Fse54Jr3rY5sI6djdeDU+CkFVAfh4UD1Dh+7mZwQnJRvNYi1oy4f7XbQEgL/AdHBiUzP350Qmcqp9+VY9nrPPHvVnzMeRJMTcDzkv4NDmAqM2FO+Km7WNw300yJz0EAH9Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QeyXunuZ; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="R2PZTCn8"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4711b95226dso89153595e9.0
-        for <phone-devel@vger.kernel.org>; Wed, 29 Oct 2025 03:42:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QeyXunuZ"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b6dbb4a209aso448822666b.1
+        for <phone-devel@vger.kernel.org>; Wed, 29 Oct 2025 05:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761734520; x=1762339320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b3X4E3hHQ4vm0fEjCZ5UPCa76r6tX7WxRSfwf39l4Uw=;
-        b=R2PZTCn8Vxye1cwzPwcvsrc+w83i+sfM+Ny3gEMZoKT6XhJB9jY48Dkpb/LSg/QUvJ
-         D6fpevYhbnAjX431AnxdDnZqyrq7XaDKwQTSRGdzzf7jsa83oGDJd42mQBvDcgHuX0nM
-         IQPBqE5nju71NUNhZo+4kseVQTh0qsT58h5WlCUT7YF2OkR5x6F4olpRCQOvA38rw0Dl
-         pqISNDaaE1oR7j4ji3PnAICgqdv0cckNx8n96Qa1jvM/FjYGb1f96RWaGPeeecO+0/Qt
-         BV17vFTHxIQr0H4VQDeDTMZmaro4UVMmeWkIGG5aaq71LH4i1DBSWX7wMxI0GKqB01il
-         Hq5Q==
+        d=gmail.com; s=20230601; t=1761741293; x=1762346093; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/8DZoPJ8aqVOkZWIQZ+0wffxazBftDICjqU1ayLbAL0=;
+        b=QeyXunuZb02utMUa34oymzu2d0V8XSPRf6yg27clHxLqBWurfmfUIYMaHq5AoE9zye
+         DxhGRLAXSTBq53VuxzOqgu0f/JSacEmONQuM4nQXifXNHKQpxv/nZQqDMQbD8Y8TgAtT
+         1f1dw0eujpDHo8JauxLRIDjk7BkBf4Q7IuOQm6dO402qZeE5j+yRRH/dl3kjTdciBlrk
+         Axt77hz3SUfXSVK2U2CYDSi/K7W+N2v4yZJ1vA7IwtCRqygqxSClq7gzZglIyruXMOT/
+         O9BAWXmSN6xgmIJkFjmWGMHReRbqWlxx6wvdDFPgvkNhdrWgOZ6GkWq5WIvXFBTJI7Uv
+         LIdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761734520; x=1762339320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b3X4E3hHQ4vm0fEjCZ5UPCa76r6tX7WxRSfwf39l4Uw=;
-        b=Grhe6698FRCf2Hq3PMDElKd11WcoRHl9+lQAUKcjOCuj0OEn9BGA+51coP/lnqqes1
-         z6n51bBzSCs1KQbdvS7I3QKk2nXnXjOtZp0Von1jQo5nj8+oVp4YY5es2BVdpBnXAane
-         Cdp5vgEWU9GpMV06PYFJVDeHyf4qea6vK7bXxFhn1SWsB5OXP61fKHGkePp7vvz4hgwr
-         uuezTRtslQ6lDBaUXLCgdLJoz2DRcP6BJUKRcmi+obqcdrpLfL7MOFVzwLnMM3wtAEJd
-         Gg4apjvX8JC0CfFDbBoPCMuc0JAei59rM034dE06VyNnn+dtcC7RMR4zS2ikbBT0xVWw
-         FjlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrRqifQ/D4fSwALzZkI0F7CXuJshy2Key/c2TpzkCWNcFsSTCUJbxYrm5ozv1A+JdwlQ1oYLRngKyEow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh9axvWr5ydrJWlNUWDkG1n6fyK7FcWmD85VRbUhMvtX9IJdAK
-	syKTYVQdRqJQKnJpQBWrefy0Lj8d6hv0csT/4NDB8jIdWmJOpDamy1acyk5EBAPEUgQ=
-X-Gm-Gg: ASbGncsINeP7rs3LQZV23wDF+ReekyFXJPgorr7T5rEw7uIvD9x89IKE4RlOrXE4vxU
-	/d03MhQzrp8zn99t34dZ80xbigooexEKm7yD3xagKtZt3ZwuocGu9IVGC/2UceSBhQcXyQWKib9
-	rABTCtMw1Y6NGuAsHt/SJP+wlXVl/RgtPcgoaIyPWPJ4Fo8OCrqfzZn8lET7e5J3vwuTGjiwi3J
-	nr69nbIAS2Og2nmRbYRq/fhmhEd5qAoEY0uDQ2JPr79Lr42wH6XHWUauT3udRMxs8w9hvwAKELn
-	D+Fzmg1BvV1c95NgiVMEe87Lyf2tKHFhwferw8EHkC/NrZQdstrES0J3s5LLrfzIOFExiayD/Ud
-	JZzsVbfdrHoSh5ybCHKBLzg4lg645N+coAQ5nNtP0ggl5wL72YnXuUmSE4n/S3HNjW2+AGmrVoY
-	AyWKBhaUTBDw4O
-X-Google-Smtp-Source: AGHT+IEr0/AZFy2/29X+tk87HEM/p5Fa5fWpVSnd5/YgcWtERKefh8/xi2PyHwwU7M4yWjRk//ZiAA==
-X-Received: by 2002:a05:600c:3e07:b0:46e:48fd:a1a9 with SMTP id 5b1f17b1804b1-4771e3fbdcemr21558395e9.33.1761734520102;
-        Wed, 29 Oct 2025 03:42:00 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:69f2:5f2d:9ffc:a805])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b7ce1sm25165417f8f.0.2025.10.29.03.41.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 03:41:59 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca@lucaweiss.eu>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/7] Camera I2C (CCI) enablement on MSM8953 and Fairphone 3
-Date: Wed, 29 Oct 2025 11:41:58 +0100
-Message-ID: <176173451403.17889.9951642355826230455.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251028-msm8953-cci-v2-0-b5f9f7135326@lucaweiss.eu>
-References: <20251028-msm8953-cci-v2-0-b5f9f7135326@lucaweiss.eu>
+        d=1e100.net; s=20230601; t=1761741293; x=1762346093;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/8DZoPJ8aqVOkZWIQZ+0wffxazBftDICjqU1ayLbAL0=;
+        b=QlHp8lUIAQgwbBeAggDzj+i7F5MNT9NpcpNBJq8luMyaQBrVB/NowcyB0h4YrkePIO
+         kCd5NMV5YpJjOLHLIkau/CKYIJCDs051A71K0dBXlz1VMhIu7KnaTtsmwkdw99/pcNd3
+         55fDnZnkEZ05pig+UaAWC91mdq4Nwx1k2LHE3aqE+ftUN3iqBYrZMfu3SFojW/sxhPI9
+         OccAjoisGoxedkHk1G7o22NGv9DMg5yLFUL0k6RLYknT3IbcTiQVUMbuSp6M+oUgHwNF
+         Eciew4TefDJ3PkrkL7sMBb4KwrkTFHNohA2f52KKfvBSmD1F399Et7KADNYQrCjiOkF+
+         ibZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMsQdN8jr3ATupblxQnx2BakQkqu/+4PDjG7X1w1WV8VxAvUmqJcTWlkUtZ14rWmRr6OHsX1jEk1X4LA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9PQ6mEM2wr8qxB5UidBoW5D3Q5aJ3fVE4dlpLY362uGOYNSN/
+	sqrEXzHXnU5CdwO0ty7+yX3CK7wLAQlKUE3m36KTFqntmSvC+febNrZE4nrR6A==
+X-Gm-Gg: ASbGncty4xhDyr5YWESyRFJvf52+PkT6yEXvfNj9nChb+GNN+9XAGweHNOUpt7CuNtq
+	b/zGPw31FyNibyxvdCNz6nNfSdHIx3GXdmoBjtnJBLoLet44Gsqa0hPDaYUAyVwrPgbA3mOHRk3
+	9depcjZIaTU07gPl32EY86CSLvyP6OMTfhNOi+9R8B0LTycBEgMbs9rKJhrri+Iz1VFzyMTJ+6H
+	pRceWytUoSI/thgIRcGTF8gT5+7uxoK3+zgD0/Ne9d/BDiGl/4pUkZQAdj1jluzUqVV2RDFmaYj
+	ZEJS5ViDWmadMyDYAKusbtZC/t9VaNy3E9BD2Sfx9Qq3qXTUlO+Nw99yGUfdW8anyNQIOTe4xKi
+	rEERUCs9xtTGGJfBeyQv4gJvXRcu+otsX4EyrOo7jzefWba6FxO/22CCsHETqUYMFogkzDevLkP
+	CNjvV2hwLOuaw=
+X-Google-Smtp-Source: AGHT+IEm/jQ9FpLLfVE96+QdjuVUzD0Ukqy8zEutOY7AHNQJYGiK4J4IQ0uCzx5/Ly7C0dEvCYJ5kQ==
+X-Received: by 2002:a17:907:5ce:b0:b6d:5c4e:b0b8 with SMTP id a640c23a62f3a-b703d2bba1bmr254091266b.8.1761741293116;
+        Wed, 29 Oct 2025 05:34:53 -0700 (PDT)
+Received: from [150.254.44.155] ([150.254.44.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d85398463sm1377869766b.34.2025.10.29.05.34.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Oct 2025 05:34:52 -0700 (PDT)
+Message-ID: <b0cffa2f-6ad2-40a3-a5ee-5df6b2918524@gmail.com>
+Date: Wed, 29 Oct 2025 13:34:51 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Artur Weber <aweber.kernel@gmail.com>
+Subject: Re: [PATCH v3] mfd: bcm590xx: Add support for interrupt handling
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht,
+ Stanislav Jakubek <stano.jakubek@gmail.com>
+References: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
+ <20251023130335.GM475031@google.com>
+Content-Language: en-US
+In-Reply-To: <20251023130335.GM475031@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-
-
-On Tue, 28 Oct 2025 17:40:45 +0100, Luca Weiss wrote:
-> Add the compatibles and config for CCI on MSM8953, then enable these I2C
-> busses on Fairphone 3 and configure the EEPROM found with one of the
-> camera modules.
+On 23.10.2025 15:03, Lee Jones wrote:
+> On Mon, 13 Oct 2025, Artur Weber wrote:
 > 
+>> The BCM590XX supports up to 128 internal interrupts, which are used by
+>> various parts of the chip. Add regmap_irq-based interrupt handling and
+>> helper functions to allow subdevice drivers to easily use the interrupts.
+>>
+>> Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+>>
+>> (...)>>
+>> diff --git a/drivers/mfd/bcm590xx.c b/drivers/mfd/bcm590xx.c
+>> index 5a8456bbd63f..fb6afe277ebf 100644
+>> --- a/drivers/mfd/bcm590xx.c
+>> +++ b/drivers/mfd/bcm590xx.c
+>> @@ -26,16 +26,29 @@
+>>   #define BCM590XX_PMUREV_ANA_MASK	0xF0
+>>   #define BCM590XX_PMUREV_ANA_SHIFT	4
+>>   
+>> +#define BCM590XX_REG_IRQ1		0x20
+>> +#define BCM590XX_REG_IRQ1MASK		0x30
 > 
+> This isn't better.
+> 
+> And now the nomenclature is inconsistent with the one above.
+> 
+> What is a mask register?  I don't understand.
 
-Applied, thanks!
+The IRQxMASK registers store the interrupt masks for each interrupt. To
+explain this more clearly:
 
-[3/7] dt-bindings: eeprom: at24: Add compatible for Belling BL24S64
-      https://git.kernel.org/brgl/linux/c/aef72ebe9c86b516c6e126d4b453c96496547f0b
+The BCM590xx chips have up to 128 internal interrupts (the exact number
+is different between the BCM59054 and BCM59056, but both reserve the
+exact same amount of registers for them).
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The status of each interrupt is stored in the IRQx registers
+(0x20-0x2f), and each bit represents a single interrupt.
+
+The interrupt masks (that is, whether the interrupt is enabled or
+disabled) are stored in the IRQx_MASK registers (0x30-0x3f), and each
+bit represents the mask for a single interrupt, in the same order as the
+IRQx registers. (...would IRQMASKx be more consistent?)
+
+Each register stores 8 bits of data, meaning the {status, mask} for 8
+interrupts can fit into one {status, mask} register.
+
+> 
+>> +{
+>> +	/*
+>> +	 * IRQ registers are clear-on-read, make sure we don't cache them
+>> +	 * so that they get read/cleared correctly
+>> +	 */
+>> +	return (reg >= BCM590XX_REG_IRQ1 && reg <= (BCM590XX_REG_IRQ1 + 15));
+>> +}
+>> +
+>>   static const struct regmap_config bcm590xx_regmap_config_pri = {
+>>   	.reg_bits	= 8,
+>>   	.val_bits	= 8,
+>>   	.max_register	= BCM590XX_MAX_REGISTER_PRI,
+>> +	.volatile_reg	= bcm590xx_volatile_pri,
+>>   	.cache_type	= REGCACHE_MAPLE,
+>>   };
+>>   
+>> @@ -46,6 +59,258 @@ static const struct regmap_config bcm590xx_regmap_config_sec = {
+>>   	.cache_type	= REGCACHE_MAPLE,
+>>   };
+>>   
+>> +#define BCM590XX_REGMAP_IRQ_REG(id)	REGMAP_IRQ_REG_LINE(id, 8)
+> 
+> It looks like this may benefit more than just this driver.
+> 
+> Please create a generic helper in include/linux/regmap.h.
+> 
+> Perhaps REGMAP_IRQ_REG_LINE_BYTE, or whatever the 8 represents.
+
+I would rather avoid modifying the regmap code if possible.
+
+I've seen another driver (drivers/power/supply/max77705_charger.c) use
+REGMAP_IRQ_REG_LINE(id, BITS_PER_BYTE), which is more descriptive than
+just leaving the raw number of bits. Would that be a good alternative?
+
+Best regards
+Artur
