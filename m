@@ -1,87 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B1B2F7ABE;
-	Wed, 29 Oct 2025 18:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE79C233722;
+	Wed, 29 Oct 2025 20:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761761022; cv=none; b=NCai6uhjHHK5EcG62ttn/8vUQklix/GSfMd8lNy1rYhBRXjrkDTCvdSp9s+btCcQ95SxHC1PgZb7H8foQSbeQ3446IWgqiLE9XZp/Rndf+g1yZATngiEF1tBHHq/3CwnhLYck1uful1LmGHUUs4JinFVrAZ/35ArWWMIzZFaZtk=
+	t=1761770531; cv=none; b=BhPjmMdDDwi8ta1e2gTKgtFzYdJmpZ46sVN2L6T4a/wrtlM9aGimsc32B+ZEPrfuZLrNPLX2UVPJZGjZtGpzZj6iv/UpQbv2soNmCCSiWb+ljpOC3gUCXe08LSVO4goQ+3skmfmlxqWMo8Oeo2j0I1bL4k6bWVNcyLFri/Un/pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761761022; c=relaxed/simple;
-	bh=p2p1mExq+VbfFKSn6yZ7QGZN0xXJpJitifw6k/WPVOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=drVcAaUhFzhEsna+DLZhyXF9y9qbzx2DfVBw9bPT4us91ge5nB22K9pxVsogEbnp344fuCJiYH4/h/KuuS9h+pt8OswXg0c/Fw/dMDV/XWMhSVSNqkPC02JW+q3HWJ9QEhCK4LbFN6ZV0MHai+kwXeJdAmvYx4MFdxwmVpOKrUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWs0dk9C; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761770531; c=relaxed/simple;
+	bh=dd4SM7BwxuoKzk9cX2Jzy3ZaJaOvLZ8a2URgk9Z7MeE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dpoI8KMPRsaEDPXGS/OO/6EZrb0dQqJt3794YNGJfjPykCnJXLCbGk5i8Y4sdJsWVMu9lQ5lqFKL+GCbwAZ+rJv1AzJZE5yO57uRd6DY3RtXSrnG7ha4W88z0ZBqXJtFnKbt4BQzMt/6CGSLKWyCKW7k7zjVi/v3MF1UFKxII4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=wvdDg+mn; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWs0dk9C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BECC4CEF7;
-	Wed, 29 Oct 2025 18:03:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761761022;
-	bh=p2p1mExq+VbfFKSn6yZ7QGZN0xXJpJitifw6k/WPVOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mWs0dk9CVveUACfVBHLnH0vvLET//9eyp2+mEZOh0A3qXzZ5Xj487wNb//CtU6nsM
-	 MA7Gzw6qCg3Av8DOuxrluoQSF9/pGWc7D6gaS742ePZ285RAKm0AxTfFZCXUieNM/v
-	 6VAr3hlQUI5DT/RbH6LK/QlzdXUYiXpVMvSJKzksFmhznx6BL7V+5ROyZF7C05X4iN
-	 ldvUO9Fqjq1xtHRuB0xP1Uf59f6gRIgSkhWaGN1jCUjpdakgDgbx1PfQcC7TKFhGgb
-	 E8eJ2PrOrmLvefy1cxgoFrMVBvvrQZtjIELEoBcC3QEGKzDJl7RkJ8Xff7heUvEngZ
-	 lUSIHtZaRw+qQ==
-Date: Wed, 29 Oct 2025 19:03:35 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] dt-bindings: i2c: qcom-cci: Document msm8953
- compatible
-Message-ID: <wgxgjhzbkkzbjz64bshooo7mstnpm7ames66e4ctjwjyx3p52i@j6db4r2x64nm>
-References: <20251028-msm8953-cci-v2-0-b5f9f7135326@lucaweiss.eu>
- <20251028-msm8953-cci-v2-1-b5f9f7135326@lucaweiss.eu>
- <48a217db-b85a-411c-81f2-3106b60da86f@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="wvdDg+mn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1761770520; bh=dd4SM7BwxuoKzk9cX2Jzy3ZaJaOvLZ8a2URgk9Z7MeE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=wvdDg+mnSGQ6ENctiqZyFYxGJ6tJ3NyEYbLn/HIAvFk92SjWjeT3DrcSkgunLtZB4
+	 jBh4iFiVbVsAW2ooFqd1FIoAIb86tpXSOaJBjMTY1yDacj80mSb/zk+/KKlJ8OaXMO
+	 Fzq6HhJhxugYCVo5OsUX0vvJJH4b4DKbOnnBpnH0=
+Message-ID: <76f108e7-2ec6-4edd-8640-a82fc99f7dbc@lucaweiss.eu>
+Date: Wed, 29 Oct 2025 21:41:57 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Subject: Re: [PATCH v2 1/7] dt-bindings: i2c: qcom-cci: Document msm8953
+ compatible
+Content-Language: en-US
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, Robert Foss
+ <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251028-msm8953-cci-v2-0-b5f9f7135326@lucaweiss.eu>
+ <20251028-msm8953-cci-v2-1-b5f9f7135326@lucaweiss.eu>
+ <48a217db-b85a-411c-81f2-3106b60da86f@oss.qualcomm.com>
+From: Luca Weiss <luca@lucaweiss.eu>
 In-Reply-To: <48a217db-b85a-411c-81f2-3106b60da86f@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Konrad,
 
-On Wed, Oct 29, 2025 at 10:36:16AM +0100, Konrad Dybcio wrote:
+On 29-10-2025 10:36, Konrad Dybcio wrote:
 > On 10/28/25 5:40 PM, Luca Weiss wrote:
-> > Add the msm8953 CCI device string compatible.
-> > 
-> > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> > ---
-> >  Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> > index 9bc99d736343..ef8f5fe3a8e1 100644
-> > --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> > +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> > @@ -15,6 +15,7 @@ properties:
-> >      oneOf:
-> >        - enum:
-> >            - qcom,msm8226-cci
-> > +          - qcom,msm8953-cci
-> >            - qcom,msm8974-cci
-> >            - qcom,msm8996-cci
-> >  
-> > @@ -146,6 +147,7 @@ allOf:
-> >              - contains:
-> >                  enum:
-> >                    - qcom,msm8916-cci
-> > +                  - qcom,msm8953-cci
-> >  
-> >              - const: qcom,msm8996-cci
+>> Add the msm8953 CCI device string compatible.
+>>
+>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+>> ---
+>>   Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> index 9bc99d736343..ef8f5fe3a8e1 100644
+>> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> @@ -15,6 +15,7 @@ properties:
+>>       oneOf:
+>>         - enum:
+>>             - qcom,msm8226-cci
+>> +          - qcom,msm8953-cci
+>>             - qcom,msm8974-cci
+>>             - qcom,msm8996-cci
+>>   
+>> @@ -146,6 +147,7 @@ allOf:
+>>               - contains:
+>>                   enum:
+>>                     - qcom,msm8916-cci
+>> +                  - qcom,msm8953-cci
+>>   
+>>               - const: qcom,msm8996-cci
 > 
 > Sorry for only bringing it up now - could you check whether
 > all the clocks that you defined are actually necessary?
@@ -89,6 +88,13 @@ On Wed, Oct 29, 2025 at 10:36:16AM +0100, Konrad Dybcio wrote:
 > It may be that you can do without CAMSS_AHB_CLK and/or
 > TOP_AHB_CLK
 
-I was about to merge this. I'll wait for Luca's confirmation.
+Removing either GCC_CAMSS_AHB_CLK or GCC_CAMSS_TOP_AHB_CLK from dts 
+leads to an instant reboot during bootup - presumably during cci (or 
+eeprom) probe.
 
-Andi
+Regards
+Luca
+
+> 
+> Konrad
+
