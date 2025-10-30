@@ -1,130 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE95021ABAC;
-	Thu, 30 Oct 2025 03:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4D019E99F;
+	Thu, 30 Oct 2025 07:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761795629; cv=none; b=GxsIhFbVfPdGKDIi0Q0Y7kZNRS4NtZZDvOhuEA0dOnOIIA2IuFnJEDRFsvKZkIFRWrleXPPsm87swQH2m9dpfiJKXn4X807WQc5UOgF0+dWwxjJEArBmnWCUn8nZWrd7Sw0rDy2rO9smGrRAnOcuJlx0XhchHUIv37/QdcX2iMk=
+	t=1761809075; cv=none; b=GgserRE91kpFL+MKO9kQ1bk0ppWCLvct/vr7+zXfo8yVnzyTNwNZIJXSpSfzbhQeD8sTu04ha0mn7nOUcqDnPtQa23gf1attZBp5nrBqKYLtYCaQlCf9I0cGl07UAp+RH2DhJ/l76w3SqlRlH1LK/+EMQK8qnh0tRvrhqFjZImg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761795629; c=relaxed/simple;
-	bh=eP+v44bFnQV6pzfjh1fsjAmhu/NjG8eSqtbS6lHqGyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=progKE2uBwQf8Oa6v783LuBMr5ECTL14Pc9l7BPhjrGP/WSF+vIYXzEVC1fK+pgy7b5CXN8gXrZGCv8SkdOCAMWuwdQfdRUWYm1yuNv6eKikLGfC+NsZBIegnNJ5nmVp5B6y/kLVKxFmx1zcvcJBl5YWnzGgEr0GrITyg++clrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LMN0IIwW; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761809075; c=relaxed/simple;
+	bh=8aOZFPFTflbkscTIWZBhClsCIM9o4GWwmg9TXIcb2zo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=p4ZaPpkHiBHhJefQ1nOgVRMRgs7zNyRuXVEWgbTm0OEiD8hP/G8FF319tDt5AKQlbQvsbFomEXivSKhH5acVVnW7SYxZdaZGOVpwEq1U1P6oxj0GYGLrbEeVBwtdrRnoUP+sAHJaIP81QQCnyNtOovlRkGH9v1Z0N/cUn33BulQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bv5q+2pm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LMN0IIwW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761795626; x=1793331626;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=eP+v44bFnQV6pzfjh1fsjAmhu/NjG8eSqtbS6lHqGyo=;
-  b=LMN0IIwWIa4r8Bfe+VJqkoh+xIvfELrc4DCSOEauIp+Hh7Tzqm6R1+JU
-   UcD+k4HLxE+5j/bXnNduQbzqBRR/hXJpI5eLv5JJdUAMzg3BshDujZcjT
-   6CXBGbIQqlJjNUYNtP+05/Ra19+OdiZ4BxgwT+tWjc+DIKq7VZdrPebz/
-   Rs8naQZa9Ki0NApf3IsP22mv4+V89lkU/JcB3I6cNK/L5r9Xqq2lFA+1G
-   iiVXgHcApgppvV9TwC7FhFYyHFwtPOEyOycZ5y9ULnVEm3d+zPlgB77O3
-   zH1yu7u+tL1nd/DwkpitSUhvK3jbqKiMVtkbhDC8s1fStruX0LsZxbA6t
-   w==;
-X-CSE-ConnectionGUID: Q6PUKDdhR7e+31tYN6x1qw==
-X-CSE-MsgGUID: LeCEIcaZTLacXzEAaGLPNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="74528614"
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="74528614"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 20:40:25 -0700
-X-CSE-ConnectionGUID: IXqawMBZRs6YZejWKU1Vmw==
-X-CSE-MsgGUID: 4mtAaMg5T9eoMBdWxPoang==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="216694173"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 29 Oct 2025 20:40:22 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vEJUw-000LQF-12;
-	Thu, 30 Oct 2025 03:39:33 +0000
-Date: Thu, 30 Oct 2025 11:38:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch via B4 Relay <devnull+git.apitzsch.eu@kernel.org>,
-	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vincent Knecht <vincent.knecht@mailoo.org>,
-	=?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Subject: Re: [PATCH v7 3/4] media: qcom: camss: Add support for MSM8939
-Message-ID: <202510301103.9EJIzPFp-lkp@intel.com>
-References: <20251028-camss-8x39-vbif-v7-3-91ee8becda85@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bv5q+2pm"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D51EEC4CEFB;
+	Thu, 30 Oct 2025 07:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761809074;
+	bh=8aOZFPFTflbkscTIWZBhClsCIM9o4GWwmg9TXIcb2zo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Bv5q+2pmPcsi3F2BCg2gHy2HIOVw4b9FKgXsNcJKyJrS2ib1onF9Jd3Vs8SaNvI72
+	 dMikeWhYcPZ6KS585ztnmaKN+TZGopb5DTtjwLiMdjAzwVv4NAmgcHj5umpEmBSc4X
+	 cr8FtAFDjUMavoEWNWGTAe3uYHrbEKiPtYydt/ReOmRQb2JLJNiNOQiK4yaLkM1+TA
+	 gCxDwsGmgYif8Wbj3cNzTGB6b2za30rzR/O0Xp3rI3bsCoHLrIPm5de5+PGMQeyeIp
+	 /aDvvsOqK4XOWAf/LjSIS67R5Boc9YLOlYVD5EGEW7K/HUPbhvEVoze6qGMXx+3Ufp
+	 PDMFL8RxAPztQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C800BCCF9FA;
+	Thu, 30 Oct 2025 07:24:34 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 30 Oct 2025 08:24:29 +0100
+Subject: [PATCH v2 1/2] Documentation: dt-bindings: arm: qcom: Add Pixel 3
+ and 3 XL
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251028-camss-8x39-vbif-v7-3-91ee8becda85@apitzsch.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251030-pixel-3-v2-1-8caddbe072c9@ixit.cz>
+References: <20251030-pixel-3-v2-0-8caddbe072c9@ixit.cz>
+In-Reply-To: <20251030-pixel-3-v2-0-8caddbe072c9@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=716; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=DlXm2VUp7Ijt8uTzaBaBxliSbXJ4DoxMqfa5a4LztB0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpAxKxVrFT1VwZwJfehm2IryQgQOjZpqH+tViW1
+ WYBJWhGs2KJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQMSsQAKCRBgAj/E00kg
+ cs4YD/9qzawViIzkeuR6ctXUpYb+EpmYU5qpFlWeAUVuEnPSB7NgEML7I6C2/ZbSqteCao63Uf9
+ KzddLsDWszBcyO7Yz6FxU21ZsDGEmGa8WQChHUGx2mexka5q+yYkK4m89T28PRKafIy2BGTD64N
+ B8anhGaNFhItMQNfKGdrkHQ1oZ7MDK6u2Z5N3FRSMDaNGDTxhvdIJaCNw86jfdb5GlNwmTkISh7
+ YZyA7KKePdnWkhrPJd6K8LMGEKsvxHbCoPCVndKnzmNqR9f11OxlYRVL5uM6HssybKy2u/XzQvK
+ 6iwLUeeU3irxdLJsXOME8cbTOsAmyhT3SX9oh5sGidkN88oQsAYKGPjqRbWICnqopKyYCpH1WMt
+ zEB6TlYjEVi/hZPTmf0zTMI7hbLpSx0+xFO6hUcPYx7EqChU/TVmyTvSAZtznW40ugDMoZd7xuX
+ UkIiTG0dd5EzA5VaExF+jKx6Y93N4jNzfHPCcb8x8bEZc0PFeYC+bh7fhx/nMccjMZ9ZI5PInPM
+ 65+0Lc+kzKK+gQsg0bOrZTtm43EKdT/3a6cW1LShmAoMSQ7GvAOTKUPCCMZLTU1BZdOnNzV3FQl
+ e3Lvtre7KF6Awzd07ZhF4QeB7037yT6AvMQPwX7EnMIqEXL43nhBGcfa35QxDQZrvhaNpjNhtQW
+ xTAGnjPYz02nFcA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Hi André,
+From: David Heidelberg <david@ixit.cz>
 
-kernel test robot noticed the following build warnings:
+Document the bindings for the Pixel 3 and 3 XL.
 
-[auto build test WARNING on f7d2388eeec24966fc4d5cf32d706f0514f29ac5]
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andr-Apitzsch-via-B4-Relay/media-dt-bindings-Add-qcom-msm8939-camss/20251029-053926
-base:   f7d2388eeec24966fc4d5cf32d706f0514f29ac5
-patch link:    https://lore.kernel.org/r/20251028-camss-8x39-vbif-v7-3-91ee8becda85%40apitzsch.eu
-patch subject: [PATCH v7 3/4] media: qcom: camss: Add support for MSM8939
-config: parisc-randconfig-001-20251030 (https://download.01.org/0day-ci/archive/20251030/202510301103.9EJIzPFp-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251030/202510301103.9EJIzPFp-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510301103.9EJIzPFp-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/media/platform/qcom/camss/camss.c:4458:3: error: 'const struct camss_resources' has no member named 'link_entities'
-     .link_entities = camss_link_entities
-      ^~~~~~~~~~~~~
->> drivers/media/platform/qcom/camss/camss.c:4458:19: warning: excess elements in struct initializer
-     .link_entities = camss_link_entities
-                      ^~~~~~~~~~~~~~~~~~~
-   drivers/media/platform/qcom/camss/camss.c:4458:19: note: (near initialization for 'msm8939_resources')
-
-
-vim +4458 drivers/media/platform/qcom/camss/camss.c
-
-  4448	
-  4449	static const struct camss_resources msm8939_resources = {
-  4450		.version = CAMSS_8x39,
-  4451		.csiphy_res = csiphy_res_8x39,
-  4452		.csid_res = csid_res_8x39,
-  4453		.ispif_res = &ispif_res_8x39,
-  4454		.vfe_res = vfe_res_8x39,
-  4455		.csiphy_num = ARRAY_SIZE(csiphy_res_8x39),
-  4456		.csid_num = ARRAY_SIZE(csid_res_8x39),
-  4457		.vfe_num = ARRAY_SIZE(vfe_res_8x39),
-> 4458		.link_entities = camss_link_entities
-  4459	};
-  4460	
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index d84bd3bca2010..760b6633b7a55 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -900,6 +900,8 @@ properties:
+ 
+       - items:
+           - enum:
++              - google,blueline
++              - google,crosshatch
+               - huawei,planck
+               - lenovo,yoga-c630
+               - lg,judyln
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
+
