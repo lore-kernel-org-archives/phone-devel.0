@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6C2D2481;
-	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6102730BB8C;
+	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762294575; cv=none; b=HfaUaVUSfC0kKRtYnkpbEUd9fBZiwK0GzNh++gOxFpJDj7Fxmk+aB8J26pr6Zw6hyiuM/INTsd6TrXKAJa5bFJ+7Y/WabAUaRTqLXz/5qzupo5i8mY4Kg/YuwtfpU6/QGatKKHJX7y+jukM3Vc2/zdjYTaBtIyOIYIbFt+8XTW0=
+	t=1762294575; cv=none; b=U6IEMGQP1yN/DPySaljMgaiDTU2slgQySk8/VzEqhC4YK7Xxyd0XwYIhdBCbzt4O4TDVPjZsKA22KveCDVx/tT/26daNXwzcKialJthhfE0lv4athU+0Z0SfD05XB0PF5vdm6GhjZ6bGTmEua1N7Uiyvr0fl6AIz42maWvroFUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762294575; c=relaxed/simple;
-	bh=W8AFvq4nPlynSNPii3uZ58RgvdVO7lLIvRxVluTsVZY=;
+	bh=38ck5RCR0LO2rWCNSIq2uzpHXbhEGR1CpmwmHrfKicM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hWzzhsaCHisNupgMc0jRmRTLDriXjE+cw5eBHDClgIkfOggzJF+mIDPxGO4vAWL1iBSv6RSHlemEgjTqDbE7SKFCQWTuVHGd2y/Z8L4p2vn6FzKJjv7ZEr3S7fntHSooaBdHWaTBDfOfXQ56tU9KVcmZgUSGWwtyX5BYZgOiIXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW5wGZVc; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=IbG+OseB0w1+QPi7Pb4v70Ojlus394LyhcYG3SR2whhbAXqY/QlOnkhJDx52/0jqr96wRI9FWgw3klJxuoRX4OQNYtdfvdtyINJUQV/5Ze2uGWoZZFw4FStnT8wPvr7oo+jS8GXvmcGV4LeuVuiUJfCZAewQkADIzjHqLs3GQiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp+4EEng; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW5wGZVc"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5AD0C2BC86;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rp+4EEng"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D5A8BC2BCB6;
 	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762294574;
-	bh=W8AFvq4nPlynSNPii3uZ58RgvdVO7lLIvRxVluTsVZY=;
+	bh=38ck5RCR0LO2rWCNSIq2uzpHXbhEGR1CpmwmHrfKicM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UW5wGZVckGK0GKF668EgLOhR40cPbdEtXAASH8clVwkw/O1jf1mi8AkXaT2aVVBDJ
-	 QinM/jZmkilQgaFaPoG4LP6Xk+xW24he/PXiAfQvLX/WdQtKRDnBpS6v2uijn/fmza
-	 j/pzPkrvmJ02PMmbzvjb8cfla1tUqrQUax8H/RqaH+pY3rVj01Qypqh9w+JdJfkLzi
-	 gwiqSNbHEDkDrlCfzHRL+48PranDsVgQL2NEB3KL38syyA3AcDhFCkpl2+C+UwQWlz
-	 CfS/GVhYXWKqquoV+AZT3lpoOU6amEwMacF4ngjCT/giiZBWPnrjQqYFkRmh1kJHLC
-	 Q3i7uGrCr4fUA==
+	b=Rp+4EEng/p6YDPtSUCCc0N1DfXz61Wa8XvHZ315SneWGEJDSm0ZvQua0oOkUUoz3j
+	 Zlu0g1jVzigV7sxJcEE5ho4J9p4KUhfteTF10Q42OeDv/7MVEvJ3QE/cql66skR4NT
+	 vic1tXG5YbkcoNxb2gVUIz0SVvGDvRsRAzth2xW8XjDZTncncorYH2nnRMTRCGxScm
+	 yMXL+C68w3tnlIXgwrdKBW66D7Fw/20UIIg0qHi5iSM8KMD3fWSPm6hI4WesBE1Cqj
+	 uRVtvmkHNDMmwYN3Q8xxGlF51EBEICs8S9l9xCA8wdKSbHTTojoZ5Pt8XkwMfT4Eoo
+	 RmMtcrH14DPWQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6D4CCFA07;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB048CCFA0D;
 	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 04 Nov 2025 23:16:12 +0100
-Subject: [PATCH 04/12] drm/panel: sofef00: Handle all regulators
+Date: Tue, 04 Nov 2025 23:16:14 +0100
+Subject: [PATCH 06/12] drm/panel: sofef00: Introduce page macro
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-sofef00-rebuild-v1-4-dfcfa17eb176@ixit.cz>
+Message-Id: <20251104-sofef00-rebuild-v1-6-dfcfa17eb176@ixit.cz>
 References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 In-Reply-To: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -58,21 +58,21 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2667; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2024; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=mwo54CYnw7MO3Xycn85wubPyOShFMxI9iCM2JhaFHcY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnssiWzEUYXzfPzUG+DAUG0W0WdxEhSI7H1YW
- 2IlnexEXQmJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
- ctB2D/90SCTjo1p9cHBtAqaK+mOEBhbtYlwQ4rtVT98t/Vjt5AGeRi378dC1fgJ6C3onmmFagh2
- WbRWCFA1mH3fIqf3mBPo4/FB9rdSFtGvCsEiG5n7ek5ZwgGXeQQTtigWUfSGwb/zBSejVG8aYxJ
- qtijRxjHaN44V8YdY/ki2pONEIsn9krZkekeLxtrAq6XHyTCYNy8cqacXDyC6EmHhh5MRIHG67I
- sM6Sn+k2yq/I3Nci38H6GInWtqgCHvMibDbD5IQjo9hLoFpZ+IdQgeyQ3jvJo67csMsS6Gx3J3x
- PTtR2mPW2J+JT+E/pVBPEOE2mSmui1y/ltIAkSFfLAQDbRNIrRarYy/mDsErMLV1Khz1t6VThe1
- vhvSJwpPMWIFdyJJ/YRv5WMb7Aez/bLM08NasIY5Zi04NkBIcgimj4mTNykq4T5z+tCBVCTFLaD
- DaBpq2zIwofhkDsfOcNNGFTQ+RzHdtbdkv2gZyo0qzGOyfRvwzUkrnK04j2Cyqs/eDMh0Bfd/nS
- y7Qsm8nYEwlm+oQULb+dMkJEpZZH4OoVCbU+R0lco4f9udlNurWVcgZGZf23dWnce7bZ807MIRd
- 7fX6IcOdKlxqmKbh8Z8AeE/z/16ZKY1t2+rfDWReQwZvfBCL/QSkHwHp/4PQnYSpCCMVwh97P/g
- Z7BuA5nEe7FahEA==
+ bh=KFWwy/+TPv3o+Pr2om1zoaTzQ1nmZjY1fcOyZY+O5S8=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnssKl2JvbVAIAyvYQM8vZGahsnkSpWb0WPDy
+ bQmljI0h2mJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
+ cq75EACDoWk8cQdRNuWiIq4qRV4qTj5eVnUk0PlrGaMWjvlDvDF2A5RHr/DOSLn79g5posLE15Q
+ AobRHXayu/Mdr+dk4z2BYsekvbPY9FIc1b2UoZuvZqeIgRnM71uJF0b1MHcxkA/Hu7a9Rqa8zkS
+ Ej/96tBjjiDUnOfivFei4Wm5B648h7juKTT+S2qYzvWP/iJr7Tm665JD6Zjbfdgqzz8O0R7x9KQ
+ FUG6T4Xm5ZIoeudOB1Pb3KuRnzgdc8JW9Ccr4BIKxgG66vdj+bjXXaAylml6rtZHAfsrJ10MAu2
+ lfPXUbkWvRAS+RLEYMrr4JJmTpAoBvept3BNSmtB2e5a2P4F+KPXTxaV6DWhdoF6dE0gUqXH9Jb
+ qSFVmvHuIUlrrGrHVf1gsVp7AmxRKypKV/BzvRgXhpjVBV9o2pixpun8ACQq3tXQYwJ/7RaGR4f
+ WHobmCOZnSly5ORn37GUGjNzMUwCh5wAJYfH5j4PC12RHkkCfh7F03/W9FnUI2E/PUC9oBSvyf7
+ CCi01iViD6zDbn+ADIvIRhS+P1uFGNwbth3D+TLVYE6llaVT0eVXDNtiBrJNoSwyOOUlwLU4pH9
+ sDTapc+kudSIRPhuowQW1NNfF4LLqvN4z92tGZUSb0YGpqfqB14XDJM5jubZMGGAmBfg+Q8UO7E
+ /xpx+xeQ9NWv2XA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -81,86 +81,53 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Recently we documented, there is more than vddio regulator, adapt the
-driver to work with VCI and POC regulator.
+Introducing the macro make the code a bit clearer.
+
+Looking at other Samsung drivers, I assume it's lvl2, thou due to not
+available documentation it's only educated guess.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 28 ++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index c88574ea66e1c..3097040e6bfa0 100644
+index a3651f0060bde..97122ec8872a1 100644
 --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
 +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -20,10 +20,16 @@
- struct sofef00_panel {
- 	struct drm_panel panel;
- 	struct mipi_dsi_device *dsi;
--	struct regulator *supply;
-+	struct regulator_bulk_data *supplies;
- 	struct gpio_desc *reset_gpio;
- };
- 
-+static const struct regulator_bulk_data sofef00_supplies[] = {
-+	{ .supply = "vddio" },
-+	{ .supply = "vci" },
-+	{ .supply = "poc" },
-+};
-+
- static inline
- struct sofef00_panel *to_sofef00_panel(struct drm_panel *panel)
- {
-@@ -86,20 +92,18 @@ static int sofef00_panel_off(struct sofef00_panel *ctx)
- static int sofef00_panel_prepare(struct drm_panel *panel)
- {
- 	struct sofef00_panel *ctx = to_sofef00_panel(panel);
--	struct device *dev = &ctx->dsi->dev;
- 	int ret;
- 
--	ret = regulator_enable(ctx->supply);
--	if (ret < 0) {
--		dev_err(dev, "Failed to enable regulator: %d\n", ret);
-+	ret = regulator_bulk_enable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	sofef00_panel_reset(ctx);
- 
- 	ret = sofef00_panel_on(ctx);
- 	if (ret < 0) {
- 		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+		regulator_bulk_disable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
- 		return ret;
- 	}
- 
-@@ -111,7 +115,7 @@ static int sofef00_panel_unprepare(struct drm_panel *panel)
- 	struct sofef00_panel *ctx = to_sofef00_panel(panel);
- 
- 	sofef00_panel_off(ctx);
--	regulator_disable(ctx->supply);
-+	regulator_bulk_disable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
- 
- 	return 0;
+@@ -36,6 +36,11 @@ struct sofef00_panel *to_sofef00_panel(struct drm_panel *panel)
+ 	return container_of(panel, struct sofef00_panel, panel);
  }
-@@ -197,10 +201,12 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
- 	if (IS_ERR(ctx))
- 		return PTR_ERR(ctx);
  
--	ctx->supply = devm_regulator_get(dev, "vddio");
--	if (IS_ERR(ctx->supply))
--		return dev_err_probe(dev, PTR_ERR(ctx->supply),
--				     "Failed to get vddio regulator\n");
-+	ret = devm_regulator_bulk_get_const(dev,
-+					    ARRAY_SIZE(sofef00_supplies),
-+					    sofef00_supplies,
-+					    &ctx->supplies);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get regulators\n");
++#define sofef00_test_key_on_lvl2(ctx) \
++	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0x5a, 0x5a)
++#define sofef00_test_key_off_lvl2(ctx) \
++	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0xa5, 0xa5)
++
+ static void sofef00_panel_reset(struct sofef00_panel *ctx)
+ {
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+@@ -56,15 +61,15 @@ static int sofef00_panel_on(struct sofef00_panel *ctx)
+ 	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+ 	mipi_dsi_usleep_range(&dsi_ctx, 10000, 11000);
  
- 	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(ctx->reset_gpio))
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0, 0x5a, 0x5a);
+-
++	sofef00_test_key_on_lvl2(&dsi_ctx);
+ 	mipi_dsi_dcs_set_tear_on_multi(&dsi_ctx, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
++	sofef00_test_key_off_lvl2(&dsi_ctx);
+ 
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0, 0xa5, 0xa5);
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0, 0x5a, 0x5a);
++	sofef00_test_key_on_lvl2(&dsi_ctx);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x07);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb6, 0x12);
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0, 0xa5, 0xa5);
++	sofef00_test_key_off_lvl2(&dsi_ctx);
++
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x20);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
+ 
 
 -- 
 2.51.0
