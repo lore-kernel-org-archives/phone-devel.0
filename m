@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B8530CDB5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0E2303CAF;
 	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762294575; cv=none; b=TAbU78QLq8uelfcKYn3Azbw7B38kJcXPsr4eh3jlmtI3UQ70QgIm5QJccdNQLv41JzYzbuiPnlk6SQoBPjXNKy+jxIOR+KzLXWj7VRCLkXer3GCR3bOKx/yHBlF5rr/GUBwfMOpHakg/d77jKfqoCeag7WTeELfJDLcGuDdQUEc=
+	t=1762294575; cv=none; b=ADFEUyIz1CH8aLz07zwxMyz4AkXTjuZ6QV1ZQTyxxGFz2SVmQotDj2Xp0AbsZD0/fYHFcFIHcdgtfbLzg67BNRPKc4cCrqGyCwF2zPnzHtR6ZX/NBImIno9ZvSTozKQVcGOrn2an15Eec7pEshE3sMmoFumFAHX/4NeWo+PFVUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762294575; c=relaxed/simple;
-	bh=7kVUuFepyL1nqefy7/RVz/fzVOVxrSJ4iaI+ek8pJSU=;
+	bh=h8mvhLF2NQpOEhwrwGAXO5y7raG5Pj5KKGwO1xu0Ls4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=laFOwPVSWBNZzzsGygfWTMpLdSFfGpsT6WzRquvbk9E07uKcRtq71jnlSboTltGo7NuC8OMH1bf39+lbpG+S1CA4ZeYc9z/wue3RXGsvQqhkA9dHijbq+RhAD6SUXgPC9umCyscpoqD6cmBcfeLnnh9T99bKlVt/C6UXBKuyUOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtOeuKsj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gaZDtsRp4UAYx2n4OjRNp+LCGeFprLTuiFKKyLq0DoTROfexC/sMvfqEIiSE1mgSXT00BIgT/ntpbW58Zaxvn/VUyFnoVnvzLxb1La/Bl+yn4lBBFKHw1e6o2dO/BEtM9W59Mm4o4pNDab+9oddeMm9kYGNqWskKCxrKKCh0cLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0aFKOZv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtOeuKsj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 254B6C4CEF7;
-	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0aFKOZv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C47E0C2BCB2;
+	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762294575;
-	bh=7kVUuFepyL1nqefy7/RVz/fzVOVxrSJ4iaI+ek8pJSU=;
+	s=k20201202; t=1762294574;
+	bh=h8mvhLF2NQpOEhwrwGAXO5y7raG5Pj5KKGwO1xu0Ls4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FtOeuKsjrUfQ808ka0As0INPyczTyCWSDAgoX+Gyb/lbJfu0nfdcD5AHHtWtFIVIl
-	 K0c4S2KUQH8Q11G5vS0Q/REUwJQAiU1iqZARYyeNifWy+/ftvkhdfsaGntTpIzWi6H
-	 2zzXkZWDr3bJDs0oihuHkr6CZvHKskiJq8Ro4g7YN6qvoRyZIYDTWmlKpwyk98iiCC
-	 HPAOnC2FGaTP5gmaklh+2+qwc1CiOZmI9NfEw9vLVsf43ED3JlChN3MDB5VZsftNGX
-	 yhiUWgRv8nFpCapqB5cs7wIv6QuD0yRV5o7L5ugvD+30rzqUKrXh5fJ/G7HIOFxo1O
-	 iDnHzIKY9IynA==
+	b=a0aFKOZvkvhEDlTa5cMFRL9rusxny15Xlhj1RPtrxNGgST3jYqYo0AMKpNFaIBhFN
+	 Yr5pAzvC0wvBoMbbzLVfjqdIt8aQAFdcD8XYLQms8LJsDIEGw3+f77UrtJbatHfNPc
+	 a5TCKh/pOiVB1r6fQU6poGoNNCn7Ggw0VtIbE/ef8KKFLvb82PTLCIQxkNgj9bHQVs
+	 JGPXS5iODIpGbNMW1TXAzruk8dQ4QGMwOUh19x8do8nF8/NYlu40gNWLPtx5a8IKX1
+	 LXkVQ5WUKyJk7gRDvaBEOFXG6LzNgr6nNfdFuXzonekOvyg+T5EOPw+MKmzDnwP5fE
+	 DaR4EJFZUYHhA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C6BECCF9E3;
-	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC52BCCF9E3;
+	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 04 Nov 2025 23:16:18 +0100
-Subject: [PATCH 10/12] drm/panel: sofef00: Simplify get_modes
+Date: Tue, 04 Nov 2025 23:16:13 +0100
+Subject: [PATCH 05/12] drm/panel: sofef00: Split sending commands to the
+ enable/disable functions
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-sofef00-rebuild-v1-10-dfcfa17eb176@ixit.cz>
+Message-Id: <20251104-sofef00-rebuild-v1-5-dfcfa17eb176@ixit.cz>
 References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 In-Reply-To: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -58,21 +59,21 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1958; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2045; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=8diXpj4flXvL6PBJCymDKTVmS7jlHjaf2gFdGCxh2WA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnssTJrYITqvXoSfOpO1N/xmq6B/uzeG9TnlS
- DqYQuDIxfeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
- csOfD/92fqAeLGJR+XZi2fUT8DBSLFFuuY+d02H9N1VyZMdNS49uTPInJ2tXxfoaPXH6okErM6c
- jAhM9x4Jc12U+BA6h3RrWMseOYi4cdusav8PngmIbRCX1xHqrgmCVuFq08k71IFo5VWGsVw9nSz
- NSGLIFi+9JNr0uNXatGNHziS/31y4aiU+qDIWooJni1IHpYIILL+1dI32t41gqdAzT80rNi89kM
- E61JOFvwez//Cbu6a7i1rEFAp/sI2BTs6966n0i99mL2a5DdX5dW5g082+QgNJ5oP1r1k8uaHC9
- 4QVYgOwusiCgd7FnHg7KVVxkmfJ83AjcnjGPImLPeeTVx46iTkHAYieD9umEBPJ8he8wVw+Hz1D
- LPQTxG5Hm1tcoOUT59XHBboB5cF5u0JNFgX6lbCA87B/uGa75uzgplwH3lKMz7AbAcOXqyGntOc
- fKZwFXGAvZEsUxEAzdKR9Xe2BugFoO5uQWsgJ2+nJC1KYCDIAgYJPxNHPEgCfmqls0zGbqk4g18
- 3ugHyWRctJtD013BG82UTU2r6b9oNCSkViKwcoRAf2Wb0mdPHKBA8pC/HKXKrLZwPnCtUd85WVu
- otN8XtLJoiHtLRRr4d1Y48C0kB49ns1guGqlMuV5EcIFO7t8w+KBe3lKA+GsOb73Onbikb3q9MR
- 88oF6RPjtYEyjCQ==
+ bh=xfG4W9ai59WdRLt2V9HKjqKsc6sEspLbINOP0a9yxjE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnssyU0Ni6Uz+R6/hYInvMj5WikMvIXDn67Vb
+ yQm+YBjgL2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
+ coB1D/0cpWD2B+LMcgXVvUPQMqkVqVc06siMY4PtpSKd6OWRRvzz/OLtwJpn7+UlibB87rpFPJi
+ EzT9BnqVPLOETuAJsqSRqP5Q/CF6vJ5kBE2OVFOHwQ2++nZcSF+Xl2+sBI/+83n9C500R0KY6Em
+ 0aGGrzsbnssImazgCb+3Y7kjfkqQwexffvqzwNDb4al7Mc63zqu+lSv8/S/kuF0KC2v2g34LIwG
+ LDlVDPCo83YCHnVgi8mLquAJePnyLUXFv2sQhYTh7ppjamCcns8/rgkOY1jX1zOQG2cNM4DAOVv
+ hcJCwC5aoALX3kYdibRjbmaDNAlJrae2rxfHlEkScwlFuA7aNy1Z2O/nPYiBJLjFo6/Zv44A3oW
+ MlD1gq5of1+NLTOPn5539JPeVWGG9OoJyUXWaVrMlyrYnpUtMTDFrnm9MrBfrfHztkFUx5rpaUl
+ hIOZb9iDtaYCnvfWJaqouyfG5o9yYTQzZ8EMKCfQiih7hkN1869wCtky/rn7a8HSEWuQpXTRHtW
+ 40lOWVHCrCJyHFtPzweLLJlZeqgHwiubY59h7UXNlgJZX5s6RUpxw8dhMU5EOQY/37AL2vSgdty
+ tnTBuTYwvVozyPknK/snmdXxnQC08bgyjH1RTClMdJRBpoDl1CpSahYiuVA03SbM6NVZGU1vPEq
+ zvWllsL4Y9wlKvQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -81,66 +82,64 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Levearage drm_connector_helper_get_modes_fixed helper function.
+It's not possible to send DSI panel commands in the .unprepare. Move it
+to .disable and do similar for prepare, where we move the display on to
+the .enable.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index 7947adf908772..e69a28628b656 100644
+index 3097040e6bfa0..a3651f0060bde 100644
 --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
 +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -16,6 +16,7 @@
- #include <drm/drm_mipi_dsi.h>
- #include <drm/drm_modes.h>
- #include <drm/drm_panel.h>
-+#include <drm/drm_probe_helper.h>
+@@ -68,6 +68,14 @@ static int sofef00_panel_on(struct sofef00_panel *ctx)
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x20);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
  
- struct sofef00_panel {
- 	struct drm_panel panel;
-@@ -143,34 +144,26 @@ static int sofef00_panel_unprepare(struct drm_panel *panel)
++	return dsi_ctx.accum_err;
++}
++
++static int sofef00_enable(struct drm_panel *panel)
++{
++	struct sofef00_panel *ctx = to_sofef00_panel(panel);
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
++
+ 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
  
- static const struct drm_display_mode ams628nw01_panel_mode = {
- 	.clock = (1080 + 112 + 16 + 36) * (2280 + 36 + 8 + 12) * 60 / 1000,
-+
- 	.hdisplay = 1080,
- 	.hsync_start = 1080 + 112,
- 	.hsync_end = 1080 + 112 + 16,
- 	.htotal = 1080 + 112 + 16 + 36,
-+
- 	.vdisplay = 2280,
- 	.vsync_start = 2280 + 36,
- 	.vsync_end = 2280 + 36 + 8,
- 	.vtotal = 2280 + 36 + 8 + 12,
-+
- 	.width_mm = 68,
- 	.height_mm = 145,
-+
-+	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
- };
- 
- static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector *connector)
- {
--	struct drm_display_mode *mode;
--
--	mode = drm_mode_duplicate(connector->dev, &ams628nw01_panel_mode);
--	if (!mode)
--		return -ENOMEM;
--
--	drm_mode_set_name(mode);
--
--	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
--	connector->display_info.width_mm = mode->width_mm;
--	connector->display_info.height_mm = mode->height_mm;
--	drm_mode_probed_add(connector, mode);
--
--	return 1;
-+	return drm_connector_helper_get_modes_fixed(connector, &ams628nw01_panel_mode);
+ 	return dsi_ctx.accum_err;
+@@ -110,11 +118,19 @@ static int sofef00_panel_prepare(struct drm_panel *panel)
+ 	return 0;
  }
  
+-static int sofef00_panel_unprepare(struct drm_panel *panel)
++static int sofef00_disable(struct drm_panel *panel)
+ {
+ 	struct sofef00_panel *ctx = to_sofef00_panel(panel);
+ 
+ 	sofef00_panel_off(ctx);
++
++	return 0;
++}
++
++static int sofef00_panel_unprepare(struct drm_panel *panel)
++{
++	struct sofef00_panel *ctx = to_sofef00_panel(panel);
++
+ 	regulator_bulk_disable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
+ 
+ 	return 0;
+@@ -154,6 +170,8 @@ static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector
+ 
  static const struct drm_panel_funcs sofef00_panel_panel_funcs = {
+ 	.prepare = sofef00_panel_prepare,
++	.enable = sofef00_enable,
++	.disable = sofef00_disable,
+ 	.unprepare = sofef00_panel_unprepare,
+ 	.get_modes = sofef00_panel_get_modes,
+ };
 
 -- 
 2.51.0
