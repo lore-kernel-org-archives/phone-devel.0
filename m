@@ -1,59 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEC623ABBB;
-	Tue,  4 Nov 2025 01:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61993346A9
+	for <phone-devel@vger.kernel.org>; Tue,  4 Nov 2025 14:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762221289; cv=none; b=iWxn+M+dxA/uuxezHaU0ABdRdu9FRd69DL6qULJ4p2ePZZqD3OpXr9YuDrLCvo33Mu3FJAUQyLbhhSiDspvp8onGe8lQpa2hBCoCY1QpWpxLVQ041agejqw5b3PpBIpb8olGoMtH09Gwq3J3N2COMUYfJ1oPYaTzt1EVONdY7mI=
+	t=1762268309; cv=none; b=DZngMpVfuzXJHkbpUI1cEizYk4K/6g/UTpNeDEhhM1P1qqQ3aOUyWXY4aX1szPOhsIqFauF6GoNy4mCSwxIqvHYgrSAa5KUSFyIR/mmJh5rjphjWApTtTQofipM4ydXJpVdhG7z9GRHAkMU8QTL94mSLH461mY+Sd9+ZMcfOMmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762221289; c=relaxed/simple;
-	bh=EFH8iZ/G2w8bUIhBezkXWpFBQbj4f9VLSoXOG3u/BPI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R2yqhBBWtGLVi3qagDnIo3GFJPcHdMsU6wG0k5WiGCru/ZJqNzsm53rwjga1LERGo4kIOQQxAkhV0OrFCCOk05ecvK0L3XPPjkuSznhmV0mxApkhveRtuBIQEcZMUdo/92A+mhQ0QLJGqZ/t8Ccb4JXGEMzFwiGeLocMqRY2tMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHCHWg78; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762268309; c=relaxed/simple;
+	bh=jofWWnwmoG4Nrm+u2R6rEX8xNv7yEnOjBBXdOGfBxTY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W6RCuUw2kyRaZx3c8tBRPs4ZFJQv1dHQWOPlbU0KvZpRLYKSxNNz2pRTWFCx3Jc4arCBuNJ4MhSX9m/mV0iG5vC9e4CCFKxCU5WhWYnje/wg3bHkKru0QxwwK7oQXoJcT7pqv3Thd34uC0NNNHFyYJenhyQqS2irDQCtdye6UL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NH3KqUC4; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHCHWg78"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7B7C4CEE7;
-	Tue,  4 Nov 2025 01:54:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762221288;
-	bh=EFH8iZ/G2w8bUIhBezkXWpFBQbj4f9VLSoXOG3u/BPI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHCHWg78fFwg10Ibsbz8T+L3pQu8RwbXz52JXBPvCCG5gqqGsuvts3lAfPlIAW3yh
-	 aADcxh+Ts2vEgQ1Qx1JEI40p4YjPHE55SXTd7sMdS2GuRltqyW0cLWvzkn4yPnPE8y
-	 BI3mPT6fr5vUOreFJAFMGBli0WUodN+Vz23+isDdpGD4r7SNUzcTWy+8zw3WVigQS8
-	 tGbw7afmeif/reBzT09R5e+a/r4x/hZfapiOgIVb55mXvgctbYwq9DVC2hZC34tVo3
-	 zivWg5uc4H0HFmVBNohGUtTKRoqlqQN99/3kknto6nQlC8wxRoJqxLGv/6YTyiOjTX
-	 Q+drWpv0D8+YQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	David Heidelberg <david@ixit.cz>
-Cc: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v6 0/4] (subset) Add OnePlus 6T display (Samsung S6E3FC2X01 DDIC with AMS641RW panel)
-Date: Mon,  3 Nov 2025 19:58:14 -0600
-Message-ID: <176222149546.1132260.16054473586834002338.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251103-s6e3fc2x01-v6-0-d4eb4abaefa4@ixit.cz>
-References: <20251103-s6e3fc2x01-v6-0-d4eb4abaefa4@ixit.cz>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NH3KqUC4"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so4388195a12.3
+        for <phone-devel@vger.kernel.org>; Tue, 04 Nov 2025 06:58:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762268305; x=1762873105; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4pEYynqLlf97tqquz7gBzDn5fbpmeV4yt44zAz5u1qM=;
+        b=NH3KqUC4M5jMP9sD0dDu3QZfAqYyRwTUrw2F0b7M8T3N1likkpBoRiPByQfMTbX+fx
+         iQZ5bNrzTeqk9+DbNb4m/7efA6EcrkW9MiSSWHdQ73FEsJzspwFNsEnY7JsawFnoYibK
+         4ISwSW+wSJW78DOYpG6V2avuFGY+mcNM5qJ0RzsqfzmQgprDBNBWPfnziBYKfdMhlU5t
+         c8x3jn6nI3EqpF+qhe/KULm+L2IOQ8ragVRy9Xp+gZqKa3jHVkm4E61Y4N0l9TImSbrF
+         qpzaFYWS/XgpUAjICj1fAJNkBSAxLxpivbyLrSNsw2GNjCdKPS1UGhz3OpCsflW2kxMi
+         etOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762268305; x=1762873105;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4pEYynqLlf97tqquz7gBzDn5fbpmeV4yt44zAz5u1qM=;
+        b=k9GWQgPHzPtfmYEolSsfqIf3c2tQyGLjFiiQHlVkJL8JUvF+GZA9XFUvjTl1WH0RkV
+         YzJR7P1LOo7KDCZvIO+KmO/HsmX+cqUIMbtjtdPEjTAawKVRC4VHGcpCzfLsrFmUpvO5
+         XRbUNIv+m9bnmf0cdE4W8/SSQq7d9PKGPKloIU4b1zkTCGjrCuX/TLnd8szc/fImwp6N
+         DuV4dNh7RV03EGKBB+0pzVKuAdBNwU+c7CGtPNsmpANunGQy0Ppq+E8TCi+2zneEckRn
+         ZaV2/5iTs8KP9BNohEPN3t/0P/2VyjtQ+xkqyde23trXjNSyrh0W4GgPQ26FUcyo7Trc
+         cXWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2afbP2YBWjLX+a1lBty6+HCYyYG6ImSVBhGEFhy6bdr6rEUKLSp+nvv9IRDpJq4bV5jyG89APlFpXEw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuCquwn1zpwzy/5cHkvVcZzpJb7hu57X2chQFzIeJp2Ys+pwvO
+	NvI6eQNgw9eS8Ik933mGDzXiA7RT0MQ/YZsFi0ZRfZBZpabhLNJGzbk1
+X-Gm-Gg: ASbGncuvXjy7k0WaZKB3hXNc2pML03hRjfOsb5aecAHVFvphFqoH7eE/c3RrKG/e307
+	3oqwNacfWzVqf6BGbpYwQfvyDwbKWLpAgbcQzmIfJj+1GTdT9gw3y6Ee+L4dxQ6PZpu8QkbaG7u
+	vlPcsffZGp5ftOzKNFonvDd8rn56qalmNozL9cxV6vDem7iia6soTYirqjU8/94RUchNI/fCv40
+	XTNlah54zMGWhMDuOjH8Ul+6zSss3MiAPB3ScOc0+L47vYYzXEXItO6wtwIzM1mi4Zrf/GZHbax
+	Sd1nQdu+l+YP2zf8Ni10Ys5qzELflSalW8fHY29B+S0qrMDvWY9zDTjOOz0nt7hLgLSJCOxXSLu
+	iyawxluAjsdfXz9+0HmOKKwLFEAHGtvJnFhi7TTMgwkNECwQatuOsDKPP/wGvaverpIECM8m04Z
+	jdyVMs80HyPS3JWH4zhorgGxdwSgtjMnbBeGH0Hs7AmOZqNy4=
+X-Google-Smtp-Source: AGHT+IFCrq3nCnD3LeMjo88kUj+iYOsaxz83hK9DRyJQvnnXwEepxp0u4Czy8i8uiy1jj1mUE1acXQ==
+X-Received: by 2002:a05:6402:5114:b0:640:f041:c7c6 with SMTP id 4fb4d7f45d1cf-640f041ca48mr1477907a12.21.1762268304776;
+        Tue, 04 Nov 2025 06:58:24 -0800 (PST)
+Received: from tablet.my.domain (83.21.17.47.ipv4.supernova.orange.pl. [83.21.17.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640e6a7fcd7sm2288874a12.37.2025.11.04.06.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 06:58:24 -0800 (PST)
+From: Artur Weber <aweber.kernel@gmail.com>
+Subject: [PATCH RESEND v7 0/7] clk: bcm: kona: Add bus clock support, bus
+ clocks for BCM21664/BCM281xx
+Date: Tue, 04 Nov 2025 15:58:18 +0100
+Message-Id: <20251104-kona-bus-clock-v7-0-071002062659@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,30 +69,108 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Alex Elder <elder@kernel.org>, 
+ Stanislav Jakubek <stano.jakubek@gmail.com>, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, linux-arm-kernel@lists.infradead.org, 
+ phone-devel@vger.kernel.org, Artur Weber <aweber.kernel@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Alex Elder <elder@riscstar.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3090;
+ i=aweber.kernel@gmail.com; h=from:subject:message-id;
+ bh=jofWWnwmoG4Nrm+u2R6rEX8xNv7yEnOjBBXdOGfBxTY=;
+ b=owEBbQKS/ZANAwAKAbO7+KEToFFoAcsmYgBpChSNG1jE7pGayE9k2YeIEYEceIZhdRQbjRVvf
+ c+4M2DM7p2JAjMEAAEKAB0WIQTmYwAOrB3szWrSiQ2zu/ihE6BRaAUCaQoUjQAKCRCzu/ihE6BR
+ aDg2EACPQfLq3G9R87y8E6cISkzuRCn0I42CEz+TaLiFTXrXAIRNojHo/LdGDTz/kRnGRi0WpYn
+ 0cCm5clirUWqzMJ9c+ifTT6OOs6412rzwPIZfBrDikH/jQDNQml0N2BMkws4yT5Q0D7chgtzgzt
+ jpDz6oIHJ6kIv50ZEewPZn+/ufxFnmIn6JCElW8WN6/NBT/01FTbafOUzNqikpZw82IvP3qH0HQ
+ 7sNz7f79BaBFE88LN03h0eze5i0AQ4FoYyQfLUs2zJtFWinTfzglhfRxgAWO34meuiSt5M0O/lQ
+ h+xQhlR4mQ+5QiwOjikfQUuzhUlipswVgraOCfbgq4gchs8wTMr9leseDbZQPGL+pqEhjOtGKEQ
+ sfbHEC34K7ycd3gUUm/H5rojBylUXJ9avCQWCDXaFDqqD0RAbxnsiWYoTbgjCNExH6WaLCDwyRb
+ X5fkDnPxnWO9RGifbFG3kgCYqqZDQFEDMFxUbdlKAWTzgLAzaIQRH8PvbSf0u9cNw3I8gI+s9lT
+ vHWI6tgOesxEfXfHSQrxTmV3QQyieWoCLfsB/B3a5+qxZF0or/1FVG31aJaubgFGTnJCSGCoz4M
+ UPKMvKuyAg54i6hS4MK0LiCPzwI83mbS8RyIhBrSZTFSO7OpzVGORzx2zT7ceRHBvdpfrcXODts
+ 7i3OXHOAZld/E6Q==
+X-Developer-Key: i=aweber.kernel@gmail.com; a=openpgp;
+ fpr=E663000EAC1DECCD6AD2890DB3BBF8A113A05168
 
+This patchset does the following:
 
-On Mon, 03 Nov 2025 12:45:49 +0100, David Heidelberg wrote:
-> This patchset enables the display on the OnePlus 6T smartphone.
-> 
-> (subset) Patches document the panel, pinctrls, and GPIOs.
-> 
-> Since the display node is shared between the OnePlus 6 and 6T,
-> the following warning appears:
-> 
-> [...]
+- Introduce support for bus clocks. These are fairly similar to
+  peripheral clocks, but only implement policy, gate and hyst.
 
-Applied, thanks!
+- Add matching bus clocks for BCM21664 and BCM281xx peripheral clocks
+  and update device tree bindings to match.
 
-[1/4] arm64: dts: qcom: sdm845-oneplus: Update compatbible and add DDIC supplies
-      commit: 69b8bbde238a1503ac45998a911ea56ddb7610cf
-[2/4] arm64: dts: qcom: sdm845-oneplus: Group panel pinctrl
-      commit: 6c55c3c261ed7c17fa7823daf4d8f716504ad46e
-[3/4] arm64: dts: qcom: sdm845-oneplus: Implement panel sleep pinctrl
-      commit: 8dda2fecf76b6c4db5f4c1b81a765b73a7a878ed
-[4/4] arm64: dts: qcom: sdm845-oneplus: Describe TE gpio
-      commit: a3da84c36b1a6b80814b5a72ca1546648aba9e75
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+---
+Changes in v7:
+- Drop DTS patches to make merging into the clock tree easier. They will be re-sent
+  in a subsequent patchset.
+- Link to v6: https://lore.kernel.org/r/20250813-kona-bus-clock-v6-0-f5a63d4920a4@gmail.com
+
+Changes in v6:
+- Rebase on v6.16
+- Make kona_bus_clk_ops const, add a new commit to make kona_peri_clk_ops const as well
+- Link to v5: https://lore.kernel.org/r/20250430-kona-bus-clock-v5-0-46766b28b93a@gmail.com/
+
+Changes in v5:
+- Pick up Reviewed-by trailer from Krzysztof on patch 3
+- Rebase on v6.14
+- No code changes since v4
+- Link to v4: https://lore.kernel.org/r/20250318-kona-bus-clock-v4-0-f54416e8328f@gmail.com
+
+Changes in v4:
+- Rename moved CLOCK_COUNT defines to CLK_COUNT to avoid redefinition
+- Squash BCM21664/BCM281xx bus clock DT bindings commits together
+- Link to v3: https://lore.kernel.org/r/20250308-kona-bus-clock-v3-0-d6fb5bfc3b67@gmail.com
+
+Changes in v3:
+- Fix DT schema example in BCM281xx bus clock bindings
+- Move CLOCK_COUNT defines from dt-bindings header to the driver
+- Fix BCM21664 UARTBx_APB IDs being out of order compared to clock
+  driver
+- Link to v2: https://lore.kernel.org/r/20250303-kona-bus-clock-v2-0-a363c6a6b798@gmail.com
+
+Changes in v2:
+- Drop prerequisite clock patch
+- Move clock/bcm21664.h dt-bindings header change to dt-bindings patch
+- Add BCM281xx bus clocks
+- Link to v1: https://lore.kernel.org/r/20250216-kona-bus-clock-v1-0-e8779d77a6f2@gmail.com
+
+---
+Artur Weber (7):
+      clk: bcm: kona: Move CLOCK_COUNT defines into the driver
+      dt-bindings: clock: brcm,kona-ccu: Drop CLOCK_COUNT defines from DT headers
+      dt-bindings: clock: brcm,kona-ccu: Add BCM21664 and BCM281xx bus clocks
+      clk: bcm: kona: Make kona_peri_clk_ops const
+      clk: bcm: kona: Add support for bus clocks
+      clk: bcm21664: Add corresponding bus clocks for peripheral clocks
+      clk: bcm281xx: Add corresponding bus clocks for peripheral clocks
+
+ .../devicetree/bindings/clock/brcm,kona-ccu.yaml   |  49 ++++++-
+ drivers/clk/bcm/clk-bcm21664.c                     |  99 ++++++++++++++-
+ drivers/clk/bcm/clk-bcm281xx.c                     | 141 ++++++++++++++++++++-
+ drivers/clk/bcm/clk-kona-setup.c                   | 116 +++++++++++++++++
+ drivers/clk/bcm/clk-kona.c                         |  64 +++++++++-
+ drivers/clk/bcm/clk-kona.h                         |  14 +-
+ include/dt-bindings/clock/bcm21664.h               |  17 ++-
+ include/dt-bindings/clock/bcm281xx.h               |  24 +++-
+ 8 files changed, 499 insertions(+), 25 deletions(-)
+---
+base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
+change-id: 20250212-kona-bus-clock-4297eefae940
 
 Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Artur Weber <aweber.kernel@gmail.com>
+
