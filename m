@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1A8307489;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8730CD94;
 	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762294575; cv=none; b=UlU/HYext6/mbfESbRld8xWA03GLyHTEg7Dev0WlFMxWwm6Et8PVUmMOXjbaPvV8wnFcUf2GbhajWy66JZdg4t5eb7vuR3JPjLVDODcuPa9CbvnCbzHzUVt24PfRtolrlvrwpKijeJF1PpXSf+xd/kKHKkfVmnP98QASqob+h7o=
+	t=1762294575; cv=none; b=PcjBkSaqMqvdxCnXcPlTS/2j180urZycvUHxcTb/0SMsH3GmhO30RzyqYc2sR1bmHdmIkJ1tFJQsx7aJYoscZWSGRFjZa9M/7z4jdHPYPw06Yo/U0legCMNkdgNrcMt4ojbRJmJk/Mhba4jbs8iDbdTlMkggReUBM6BKHIbZVqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762294575; c=relaxed/simple;
-	bh=Bx37k0L1IbjcU9mqRIdk43KBpDeg4zmaNkPRXHOD9Wg=;
+	bh=sx3FdITHyUsho2TuXz9tyb+nFy6gs9cRfJfgUm1fuoE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iaaF/73tr518JNT3TdGvFxgTCiBDlL8NYX0vsUwCzKIc1NmFo1gqe+eGEC6W23SD5RXNI+AM6oRe4dd8ZxcEf0h5Eyj5OH5P57Wz+W5IIoClV8yvtUB1dlgWzPbgId9wJdqZeRdzWJAecoCrS9yGql1yg07JtMyuqSrb8JWHi6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMGXr2iJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YElEgrMfsVOXGb6AdQrn+hXqdgu9f7VtOepiKsNCQdztKOubcSQYO0f+ifat/wRoLz5ftncROh98Fk2Xx0sywdO1679+Nm0oU6teTBxa0bliE6ZNng7ya7L1vCL0vr3vbtRFu+D7mp/VOZsMq+okxx/rzI1HSByMbW2Pupjfzhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgAnnyCz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMGXr2iJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E2C0DC2BCB3;
-	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgAnnyCz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 44B8BC19422;
+	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762294574;
-	bh=Bx37k0L1IbjcU9mqRIdk43KBpDeg4zmaNkPRXHOD9Wg=;
+	s=k20201202; t=1762294575;
+	bh=sx3FdITHyUsho2TuXz9tyb+nFy6gs9cRfJfgUm1fuoE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OMGXr2iJf/8rsWuWsRkQEUCt+QG848alhmv3H82egl+ikPpaD+geGALpMg533n1tR
-	 b5KshPhiU9pnog0sUP4pd2HD2Z9fVsksteHP1zLrX0ErslHeZIBdjbvQM8VFxq1R4j
-	 kSHUDwUV82/NcdO4f8CYrMqwpQWLCQC6A15cOlInEJrAV5uDJEqqTjA/ZnVP7UXh3d
-	 6w+r0F5BnlhuN0jkAWYVtFZ9uDWEfhHeoxFeNW5XrlXg8ysDAiDM32WbHy5LMmOzik
-	 yHrxdsESXox1uNyvJg1D08VVy7MrRD8+yZvLXsqVoCyxBAWZeF9YwLQ+w3Tf8KvsZ6
-	 ZDgVi4+VuIy6g==
+	b=WgAnnyCznasY3yysDSgfV8OnW+n2hqaS++bEjWzRm9c13sWp3b/KTRdXNcF3fguXb
+	 sRZMwyNRoOggYDYNfsjcCxiMxZYgEkncETOFjDAACXOXEUTa17HYKdZ8EHZmHHf6b+
+	 /yWdEth8y3mQHuq2rIy0N0Wd6ucBBZMRJrbkdOO2fZzeIvAansrH4Zed390m8gY9yD
+	 i9GxWklJph+NU/sl9Zwzbq8LQTcac2TKGrzCA28CtDtbpCvDxbx0bHNft/RINWCpi1
+	 MyQTo8NxoDwnRT+OPWTBKBvZClS+tth49WzHk0bYdOduj7MB7qtSvx1q3uDqs/MM1s
+	 JUl7XUFggCKVQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAABECCFA04;
-	Tue,  4 Nov 2025 22:16:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AB8CCCFA04;
+	Tue,  4 Nov 2025 22:16:15 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 04 Nov 2025 23:16:15 +0100
-Subject: [PATCH 07/12] drm/panel: sofef00: Add prepare_prev_first flag to
- drm_panel
+Date: Tue, 04 Nov 2025 23:16:20 +0100
+Subject: [PATCH 12/12] drm/panel: sofef00: Non-continuous mode and video
+ burst are supported
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-sofef00-rebuild-v1-7-dfcfa17eb176@ixit.cz>
+Message-Id: <20251104-sofef00-rebuild-v1-12-dfcfa17eb176@ixit.cz>
 References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 In-Reply-To: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -59,51 +59,50 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=918; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=802; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=4SM9hcft9HxR/OcdKpSF5Ee1W0Jyu8dLyBp//WZCcbk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnss+C9hk8uD4rNM/1XSy6pPmwJAizKBdA2Tk
- +J08t4NnMOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
- ckpzD/sGiOdjJOm67e/IWCJRiB70hkmMzwyd7d2X1z27QAASZbQDVydTNZ6yBZPkWcYHqe+a7PG
- qE4V4j27CFp3Ks7KZKWcqBw+la5eWDawaBHsOrgxgEUoBFj2WOsOdLjGfSaotZMjwXVh6w9/qpY
- EboGao+eScyFL0p3wP/DNJ15mmbIJvRZ/D5jxNjNvrPoVmrTIb//y5Fi8nVZMU8P5Vc0UIbgpvo
- zniS3Vs8zxet5f++N/VEs8MeSG3kI2qSZ7c9/17NQmGizFjojUd0LqpBkJ89OPJNKPkLxbRoQpT
- gwBchZoh18w7tnfhVFEdhvM0gIQjdN2FMRxMJKAzNBDMEc16gQ1da34gEFfaA7J0zlJawO5Ok+7
- SLGEySIfPvat/echxOdjop+X8H4Mjhnk4XPjI/xIVmXYbhbYHoE6pRKWm++sIAEDourhE06vr34
- jdgDtjJe6g08+7dFznx4A6HxkPemJR8NqY0WYD9X7hH2zjVkIgdE7Lr5BTraQwPayCuSPPMrcFC
- jtf/6a2sUlStigVdz83Z1Yd7edf/gpKuyFwZ48aJVK/WHz1E2oMP2ZkmifyTU3YU3VgI+xk2qFW
- 6S0WcWoI2rnaH7YNLOmB3LGy/va8bKB71QsAr7l4nOg1TdsDnR0mXYloCgWqAzXWIg1A3EFvPnY
- tzxRrQfx8vbCrkQ==
+ bh=OE1UAGoiypb8yw70x3xMaGL61XZlHwmG/9vzbFRjYK8=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpCnssHwg8Lskik0Sixi0f0lMdo/NU6KJS+qhtl
+ c+BcqyrhcGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQp7LAAKCRBgAj/E00kg
+ coP3EACq2H5LzaMgEuOSQdBm5V1/Z0IrgpWiiHh00ZeFLGXhSzhNbJyT4zifpu9FOMDE2JKiHwK
+ e7kvGVDLhKE+e2bKTOF4xgW2gx9HoQcqHbuZyu2uuKASiT58GD50SDuWQk6hUHVB8rQRFuOrnzC
+ 8Y7xnppScEJhsgHbf4hM4qWwptHFsL9IJY32cusiD2Y4vqsLz4WAasilNxd1xYNUjzqq5WiHTOS
+ 7k6JGFPmZkPHvuFWaPN2HVIak8OxcEL21w6/lFdwRjROjDl5yDn6EwISDjmVgauAaAMXxZbg0tY
+ Eza2y0tCWO3K4WLQN0kL7TWF8lcFx7PWJ7n9NtivduDJgnKUCVRQ1wMMFnO22+bIwRjElM9VSkk
+ Vzmjk8nNAjXg1HKnrGKNNae6pf0H7ZSb2NGQFGqXB9fN54KEBUx9SamPh7CQaT5WGih+SVMj7SG
+ 0XlTY/jkpXkLmDWPIlatE+jOQxwRfwpY/m3eybnCjHYx6ONZqt82WbFrl0IdLwwyfo1yQIJh8Bt
+ zn7A3VVUrnWbpvbRoxuTaFFb0j9jpsGkTkGiEDScYxR+4QSZo39WUIPkSIEtWc5jIkPYn7VhxP5
+ XAsBYLWaW0bMfx+GXH4eD7TEgF4PjUdWas3prmx0BeWDzSdunxvHegoiUtrhg0DvNj5GOqmGkUq
+ yb5CdZWYqCESkXw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: David Heidelberg <david@ixit.cz>
 
-This corrects the host initialisation sequence so that we can send
-DSI/DCS commands in prepare().
+The panel supports both modes.
 
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index 97122ec8872a1..0d3ae0689a19b 100644
+index 8286cad385738..b330c4a1ad19d 100644
 --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
 +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -242,6 +242,8 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
+@@ -236,7 +236,8 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
+ 
  	dsi->lanes = 4;
  	dsi->format = MIPI_DSI_FMT_RGB888;
+-	dsi->mode_flags = MIPI_DSI_MODE_LPM;
++	dsi->mode_flags = MIPI_DSI_MODE_VIDEO_BURST |
++			  MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM;
  
-+	ctx->panel.prepare_prev_first = true;
-+
- 	ctx->panel.backlight = sofef00_create_backlight(dsi);
- 	if (IS_ERR(ctx->panel.backlight))
- 		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
+ 	ctx->panel.prepare_prev_first = true;
+ 
 
 -- 
 2.51.0
