@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D202C08BC;
-	Thu,  6 Nov 2025 11:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BED134DCEC;
+	Thu,  6 Nov 2025 17:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762426822; cv=none; b=pu4I23IG43bO8TLbUeRlj03eZPjMj8f8UvLFK4gtRHyNDqayMVgcvgq9/x5T1k9OFriOQ93zC41glILVwRvgFfA9jTckRt8Eg8wtZs6Ky/7qbBTlsKs4pJ9KHTARCGcMwPaqAKGEkAn1vFcIOAp4el+BlqP0W/Ig2Pqsnvh7PXw=
+	t=1762450058; cv=none; b=VPu7pc/34ymN4OWLxetbgDWxjifsYbCyswehb8d01P11ajKykfbgMsHbiWdpbl5KiPzk1neM4Ezex7Xw5Qc7kK6YpLH+xPFbfGiINYY/C5l7PP6hLxNox5c2DcTgdISqhsAPXvZja8nojEgObA28DOxQjOoGewGhIBqDbHsCdws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762426822; c=relaxed/simple;
-	bh=ieFZnRmVQUv9lhqM00sRW/TGW0i17dmBGaZLhJDtdZs=;
+	s=arc-20240116; t=1762450058; c=relaxed/simple;
+	bh=dQ6qVI/Jgm4flAL7dKFPdSN8C4jmffqy5LApJAZ0YPQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lFToFUjzdk45e0t9UUioFYP9Ao+v03bdP8H2/g0U4A80dL4YFGN78wOdqHjIPebDEIBoIIjajN+SQkvSKgInSx5IRCM0eyS4lZYHprfH3mF/SwwrpocgIgIPOpxNVKXwoYZPkJvLPJRvUpjEEXnf9usOWhE9y9IeFVLhJ4p/BuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dV9awx52; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Wjdhmm44/RgkEAm0u62sqyXosj2aFHDS/tntll+ONjvjx+VloqKgN8hmD5ibMzjwk8lwaAqk0qrtjD57n63qLomcemJPnx2weFDoL7FE3gX+L8xT7CgocJoq+RY4gF9fJ2GRciuAbvw6EdSEdDeNb0nFxr588nnoGQNVM7xYonc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfP2xyHq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dV9awx52"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD5DC116C6;
-	Thu,  6 Nov 2025 11:00:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfP2xyHq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9232C19421;
+	Thu,  6 Nov 2025 17:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762426821;
-	bh=ieFZnRmVQUv9lhqM00sRW/TGW0i17dmBGaZLhJDtdZs=;
+	s=k20201202; t=1762450057;
+	bh=dQ6qVI/Jgm4flAL7dKFPdSN8C4jmffqy5LApJAZ0YPQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dV9awx52ZJzq/TNU4aoS8lEAiSDSrYBp0e9U9u0uKaonpqeYUxmj2OVo9+xWFzZk3
-	 8tpZLTdDpN5KwWESMlWFtu9nHM1s1ULH62NOZrK4g6y2B4V7wUV/OvcWKlsPCsaImj
-	 0JoGJ1tr2KgNZQe7eGT7FnBpg3TDmDkqvVIig3FLJGzZGgwl9CBYXWOsQpYkVsCx6f
-	 k6W7hYpp14tTxeFN4IwdZH4T5sa7zR2B/DUcD6xPDuJjP7FrInMAn6xcUA0rnrBoTb
-	 7DfeRY6eGngjKklAW72JP9+HydBIY0+w5KO7QMKES4rB0/DVKJe9vFusLIZGBuYWID
-	 sdKWSu3YyfWfQ==
-Message-ID: <304df095-b40f-42f6-bb6b-d0502a4c4e87@kernel.org>
-Date: Thu, 6 Nov 2025 12:00:16 +0100
+	b=gfP2xyHqjkWz5FxReJkpI9Hj7CcVVhr7v/lVx8kWGgq0zhICCL+DRuQrUzIILHlRn
+	 mnYbIOmwtGIShPcws6birSJguP3TAR/lgfhlpkQyahMZffagz6xsvo5h3KY7XJAxnl
+	 +N18HNc8I4ZVZOxo1ONgV2Du+v/DIWjB0P1YOk4Tzt0J13iHm1vly3Wi9Arq/AqAyf
+	 3r8aTGWdoGN0OltiDyPu+HSDSI//kF2QOPNBwd/vc9g0If0caey0nPIS/dbRUSfxJj
+	 dLvwpYWNuml4DurEJFMSlQuIeCjxv4X0PHUVLZLOGj2NBK3ppYgEszuAfbpty0C54+
+	 zvF44Td3cSGnA==
+Message-ID: <f389bdbd-4739-48a8-9d77-31fec5580e06@kernel.org>
+Date: Thu, 6 Nov 2025 18:27:30 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,18 +35,25 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: panel: s6e3fc2x01: Sort and remove
- unnecessary properties
-To: david@ixit.cz, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
+Subject: Re: [PATCH 02/12] arch: arm64: qcom: sdm845-enchilada: Specify panel
+ name within the compatible
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, david@ixit.cz
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251106-dt-s6e3fc2x01-v2-1-deb87727152e@ixit.cz>
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
+ <20251104-sofef00-rebuild-v1-2-dfcfa17eb176@ixit.cz>
+ <neykh5ldiksowcyqomqlx7wwdo3jrofpn7cyndgsic5ckcemik@gngyem6bmdsy>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,22 +99,46 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251106-dt-s6e3fc2x01-v2-1-deb87727152e@ixit.cz>
+In-Reply-To: <neykh5ldiksowcyqomqlx7wwdo3jrofpn7cyndgsic5ckcemik@gngyem6bmdsy>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 06/11/2025 11:53, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 05/11/2025 01:55, Dmitry Baryshkov wrote:
+> On Tue, Nov 04, 2025 at 11:16:10PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> sofef00 is name of the DDIC, it doesn't contain name of the panel used.
+>> The DDIC is also paired with other panels, so make clear which panel is
+>> used.
+>>
+>> cosmetic: sort the node.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>  arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
+>> index a259eb9d45ae0..8aead6dc25e00 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
+>> @@ -31,9 +31,9 @@ battery: battery {
+>>  };
+>>  
+>>  &display_panel {
+>> -	status = "okay";
+>> +	compatible = "samsung,sofef00-ams628nw01", "samsung,sofef00";
 > 
-> Properties are now sorted, reset-gpio and port property dropped because
-> they are already accepted here as part of panel-common and usage of
-> unevaluatedProperties.
+> This breaks the ABI. Please describe, why it is sensible. Other patches
+> should describe whether the old DTs will continue to work or not.
 > 
-> Suggested-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
+>>  
+>> -	compatible = "samsung,sofef00";
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+If I read the hunk correctly, I do not see any ABI break here. What
+exactly stops working or is negatively affected that it is called an ABI
+break?
 
 Best regards,
 Krzysztof
