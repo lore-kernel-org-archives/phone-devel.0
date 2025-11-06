@@ -1,157 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBBA3002C5;
-	Thu,  6 Nov 2025 08:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E12DC339;
+	Thu,  6 Nov 2025 10:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762418902; cv=none; b=V5w2A1EGVJbCAXbNv+xo0Mx21Ycuhn+5I5ZyRI7B2oGmrLeKqoe4OQZ4TfEQEtIn3GhBw/OUBAmMaGX0f4FfSsi4lDUDmuUAM55N65gtpx/idA/8BAyYiZzQp63hLauFm+sZTZrV4CPU42NI93wc7llXZ3KDGAGX/lxzDd97Mu4=
+	t=1762425431; cv=none; b=VJQaVjuzb/f7U+dH54Kavq9pDD8CwET/z7SDZUJ4ilbF27/dAMB96tpOXWQ0C1hCwzKKzBUmDG1Tb/hBE0M3jt066Qe0k0JvLgqtoZZYkEnFVlNX/Zti42Z5Vhq7tq62C89OvMzAiLxY9n0sG1FvmbI3sfiDOgqE4bKEVftXLLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762418902; c=relaxed/simple;
-	bh=zckLRNukcp03dx43dCWtDB8En+8nFsNdYJbK7sYTUZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=reEWf5nRptwLUhwrLHuBEieiFGJkA/qo4lvWsztjfg0uQeTqXWBQqS+30PMkbsZe+u4hMT9zLEGdUE9WmUj26IM3UU38Wy/mi20iglDsNFUVC4SMljqIlg6i4PXjGeQt8EVcFRb8Qic0NUnfe3aM4OvNwqQhqIabLIuJn84YCQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tmDL8kr5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762425431; c=relaxed/simple;
+	bh=oRcxtDkMnpRFX3GYMYD2PAG21EFt6th384KfP0a89wM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oFwybyszQq+l0DJ0a7h5AJ/lMY8xewlL+k7W/QMB+QERNKBa4LYPRaM1vX3t4rL0C5vPDD7lFRlvv/OSGiQGEeUykygsZk9zhsUK5UuKtIwflWog81HT6AfGEXj8DByexj0HqbEUvwj1QvvkywnDO6DyBfUJ20vMITIkSvbvy2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8yc6LZu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tmDL8kr5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870F6C116C6;
-	Thu,  6 Nov 2025 08:48:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8yc6LZu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EA153C4CEFB;
+	Thu,  6 Nov 2025 10:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762418902;
-	bh=zckLRNukcp03dx43dCWtDB8En+8nFsNdYJbK7sYTUZM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tmDL8kr51DyTy99fAvpjF42DJxyl9vb9C54R2cbSW/SrQCkL/yd26tEj/EqR5fJUg
-	 GBHKPly/rLMv1rz9xGwfnq1EIZGOty1sDFIzq5GJjH3MjsM6mkcgUXLwIK+eGnJimU
-	 4L+dI2D4MkmrqmigeBJbKcM1H4D6hs1lapYS61EYLJl2GdkBZjFjOieGcYW4UE+Z8n
-	 Jpl7mYbIC9qarWF7+lkGeyNPyAMrIijFJ01JyE23AtC3U+yYD234NQGhEN2j+NLw9W
-	 fWIcCkq/IHRZ4HzBSFFu0NwlMBxU38UlyGd0M7bvi36oiBo7EfRitObQbAy04zx329
-	 wKfQ72AQCzBww==
-Date: Thu, 6 Nov 2025 09:48:19 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Casey Connolly <casey.connolly@linaro.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 01/12] dt-bindings: panel: Add Samsung SOFEF00 DDIC with
- panel
-Message-ID: <20251106-enlightened-centipede-of-tempering-3cfa50@kuoka>
-References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
- <20251104-sofef00-rebuild-v1-1-dfcfa17eb176@ixit.cz>
+	s=k20201202; t=1762425431;
+	bh=oRcxtDkMnpRFX3GYMYD2PAG21EFt6th384KfP0a89wM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=V8yc6LZu5IJgjyn/Tp66dY+u63w0yeX12uAjeKd/F8MGPkqanTP9lfWtQIuDgy1gm
+	 vMlZ1wUJEZMJv5ECrtkDISygU1S7CMrKIvy32YzN3oPjW2ur2OCxd8tSZjyc4Ucwfi
+	 BGiLAdrr/WxAcRgUs3RY/BviekqZN6utdgmO1Q1j/JOwRTZd7Q6tkqTsrnYL5BgXFr
+	 1yRdLt/hF8ZLvyjvo8XElDN9C7WAA8wnNOG90LP3vaBPaQa1LZFABUj3TA+vdWhwbJ
+	 hvPP7qP85pt2X/5GrVaNPCWPDlMU+9mBHDorsAQHkYACOHPsjUFciYPRq/nWR6MslA
+	 MP5XnS6Vx5cnQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D551CCCFA05;
+	Thu,  6 Nov 2025 10:37:10 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 06 Nov 2025 11:36:59 +0100
+Subject: [PATCH] dt-bindings: panel: s6e3fc2x01: Sort and remove
+ unnecessary properties
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251104-sofef00-rebuild-v1-1-dfcfa17eb176@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251106-dt-s6e3fc2x01-v1-1-0479f2d8b53f@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAEp6DGkC/x3MPQqAMAxA4atIZgNNxRa8ijj0J9UsKq1IQby7x
+ fEb3nugcBYuMHUPZL6lyLE3UN9B2Ny+MkpsBq30SKQMxguL4SEFXRVhtM7GwbAnH6A1Z+Yk9f/
+ Ny/t+ZW1ET18AAAA=
+X-Change-ID: 20251106-dt-s6e3fc2x01-d7a7d36eb1bc
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1829; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=1KDAH+YpEy+rZDz3Q9O9UwxUiZX+yY2cR18RR7GgY04=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpDHpVj6JEO0HK+rGxbwLrFh6Q5T+5Su7vWvL6Q
+ YB4nrdnyaCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaQx6VQAKCRBgAj/E00kg
+ ctirD/sFPN0KSNSsj6NjI0HjAusuMkskUFWozdEH0DEJzGpPp5FXfvb1yiwv4TMxUXvIM7flRvF
+ z7y/NUWcL16HBT/UJlHMWMkcd+55OQd1VCysHfS7b1q1+KxQeO7y2EghSP84zxpP8/NR6rDJ4bg
+ lETYEbTkMNwNcqh1hWlUZ2gLgRmkQwf3TeoCoInrAL8AHgsU3Vtc4Ny6879DHE9+e4L5rLrE5EQ
+ lDp33CeG1S2/DzTBjhiBV8K4Oa+HL+CiQtDh6pWMTvn4LY1FRFLxUfpPTy+kbdKnK/xN7OYHXhn
+ t/4TPSH49yqSzyCHKLwnwi9RxC8jmgyVxBY5x6IloN3AJ29BTHY+kcaU03fK+0LC4rOL6HGguEW
+ muOErDYBn4LuLO6xVGqDZsSk3AsnLPTP7/ApvIkP/fBM+XUFLKmqqe4BllNPDjVCR7IYNRDyEfC
+ ai1Es6Oe50TOcI2vFEK6pabYAgKLC8JdaBUpHDNqX8uChHhqbmR8yyBsfgX0cZu7ph/kwJBqOSJ
+ Ogi3oRWErubwyxPvRvdLrZ3g/DJtCFdm+wfNW2lJysXMBRXyzm73HWI1yYe6SXv+ym6XU0o2zOr
+ SMFwtCsolWmapxkyeWAPn6hU0yeXrokWCNO504tYPXww9oRt1iCPH3LENGCIUnS/VFPm4fcmEOd
+ pfwfTRMsIP8v5Tw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Tue, Nov 04, 2025 at 11:16:09PM +0100, David Heidelberg wrote:
-> Basic description for S6E3FC2X01 DDIC with attached panels
-> 
->  - Samsung AMS601NT22 6.01 inch, 1080x2160 pixels, 18:9 ratio
->  - Samsung AMS628NW01 6.28 inch, 1080x2280 pixels, 19:9 ratio
-> 
-> This panel has three supplies, while panel-simple-dsi is limited to one.
-> There is no user of this compatible, nor the compatible make sense.
+From: David Heidelberg <david@ixit.cz>
 
-There are. git grep samsung,sofef00, gives me two users.
+Properties are now sorted, reset-gpio and port property dropped.
 
-> Remove it from simple DSI panel definitions.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+Fixes: 986f28f3a71e ("dt-bindings: panel: Add Samsung S6E3FC2X01 DDIC with panel")
+Suggested-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../bindings/display/panel/samsung,s6e3fc2x01.yaml   | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-..
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
+index d48354fb52ea0..fd4388f5fb118 100644
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fc2x01.yaml
+@@ -6,11 +6,11 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Samsung S6E3FC2X01 AMOLED DDIC
+ 
+-description: The S6E3FC2X01 is display driver IC with connected panel.
+-
+ maintainers:
+   - David Heidelberg <david@ixit.cz>
+ 
++description: The S6E3FC2X01 is display driver IC with connected panel.
++
+ allOf:
+   - $ref: panel-common.yaml#
+ 
+@@ -25,25 +25,21 @@ properties:
+   reg:
+     maxItems: 1
+ 
+-  reset-gpios: true
+-
+-  port: true
+-
+-  vddio-supply:
+-    description: VDD regulator
++  poc-supply:
++    description: POC regulator
+ 
+   vci-supply:
+     description: VCI regulator
+ 
+-  poc-supply:
+-    description: POC regulator
++  vddio-supply:
++    description: VDD regulator
+ 
+ required:
+   - compatible
+   - reset-gpios
+-  - vddio-supply
+-  - vci-supply
+   - poc-supply
++  - vci-supply
++  - vddio-supply
+ 
+ unevaluatedProperties: false
+ 
 
->  additionalProperties: false
->  
->  required:
->    - compatible
-> +  - power-supply
->    - reg
->  
->  examples:
-> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,sofef00.yaml b/Documentation/devicetree/bindings/display/panel/samsung,sofef00.yaml
-> new file mode 100644
-> index 0000000000000..527a10e3b798e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/samsung,sofef00.yaml
-> @@ -0,0 +1,83 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/samsung,sofef00.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Samsung SOFEF00 AMOLED DDIC
-> +
-> +description: The SOFEF00 is display driver IC with connected panel.
-
-Description goes below maintainers, see example-schema.
-
-> +
-> +maintainers:
-> +  - David Heidelberg <david@ixit.cz>
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +            # Samsung 6.01 inch, 1080x2160 pixels, 18:9 ratio
-> +          - samsung,sofef00-ams601nt22
-> +            # Samsung 6.28 inch, 1080x2280 pixels, 19:9 ratio
-> +          - samsung,sofef00-ams628nw01
-
-These were not in the old binding, so please explain in the commit msg
-reasons for adding new front compatibles.
-
-> +      - const: samsung,sofef00
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios: true
-
-Drop, not needed. It can stay required, though.
-
-> +
-> +  port: true
-
-Drop
-
-> +
-> +  vddio-supply:
-> +    description: VDD regulator
-> +
-> +  vci-supply:
-> +    description: VCI regulator
-> +
-> +  poc-supply:
-> +    description: POC regulator
-
-1st poc, then vci then vddio to keep it more-or-less sorted. Same in
-required list.
-
-> +
-> +required:
-> +  - compatible
-> +  - reset-gpios
-> +  - vddio-supply
-> +  - vci-supply
-> +  - poc-supply
-> +
-> +unevaluatedProperties: false
+---
+base-commit: df5d79720b152e7ff058f11ed7e88d5b5c8d2a0c
+change-id: 20251106-dt-s6e3fc2x01-d7a7d36eb1bc
 
 Best regards,
-Krzysztof
+-- 
+David Heidelberg <david@ixit.cz>
+
 
