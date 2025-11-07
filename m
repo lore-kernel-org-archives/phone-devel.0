@@ -1,146 +1,144 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617BF2C3258
-	for <phone-devel@vger.kernel.org>; Fri,  7 Nov 2025 13:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AF629ACFD
+	for <phone-devel@vger.kernel.org>; Fri,  7 Nov 2025 16:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762521051; cv=none; b=QCflgv1BeXLIFT/2urpo6bgkVT9wDyHTNB8Po0QCfAHJDsGraSOb0yJoYcFGRRfGZYYmtSNy8EGI4mQmVdlvH2bhcXi4TQswr5VU7Y6f6fX6+sXPHUklvPJRu19oXKUf9wb6KYZeSWqGe/lVJ4hX9vtEEnth036nD0H0HRTiil4=
+	t=1762531734; cv=none; b=VHLUX9spghYdmUAvZGA1RpWjjGe6Tz4v9BMmTHXW0WnWUP5O+gj9YOcFwC0q60ciqxHLLJHVW8WC80APFaJzhTf01w9NMTWYOWEjxhbN9H4F/VbRydkN/l7RMqSU4pq7/xK47/Xq+BNUvF3Kx8clOxPXOaPT0qtgzTW/lCVnvjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762521051; c=relaxed/simple;
-	bh=X9iTnwju2qFdxCnEg0NR9GAe26HVn4rmc+Xg59b/xTQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tvn/KGpwXrVe7LNcOcASdchD4LGb/JccNhcSGdQx/eCjc9N4L4Qe8TXD0OprwMs5PGN7xkHVGanw93Ci209Pbgv4R+tEtcBZbXEpqu1v+sfdFPQCGovWUeyKsnikfd4q9h96IG4hqO9DSC8gWyDWWy0YchhQB61ioE9dX3cfmBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ic3s8Zsr; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1762531734; c=relaxed/simple;
+	bh=1UB7MjUKjWV6747T2U48We331jDJpIjDCkO4sdbS0zo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z9W2N+SqRGZIrirN+9hj/0U6iys3xtkSogYRFFhNeBC5WI7CxlXSuPZWOxP/vQEQ6RtdcEnIRcTcOhcEFnK8HIpCU5tLD8Wz6FBIPbo75Ppea2bKxS7dWJNy6i8qR7OQH/2XfPSxCaQY14O45j54y+8l7FZd46DInp5s87+DCTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=kiH0DTPg; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ic3s8Zsr"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6407e617ad4so775304a12.0
-        for <phone-devel@vger.kernel.org>; Fri, 07 Nov 2025 05:10:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="kiH0DTPg"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640f0f82da9so1809792a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 07 Nov 2025 08:08:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762521047; x=1763125847; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gYHHRwUPFMx2o7hSDNrrgKGsA3wEJmqOL2og+5hJ+F4=;
-        b=ic3s8Zsrq/cpSWPimMQl7eXeyy7bURpkZUATf/NTYwHwXoHDzY5lr03vozTpwbOVFd
-         n84WUEsWfs+PSzjpBeJGdJcRmKb+t1fHx9jXXcoqfVGZ0WdYOnuG7UXxvoEDmWhBTiXY
-         zYjAbRzvKUkKKqDqVPZv6lSjRfVHAobhdj957364p4mtfXn9e79Scq4G4AlGVT5LBcE3
-         Hb5KdxI5WKe8TvkS6pvnv+3ci+FulVJK+FXNu8Chn3x1uR690jFaKrFkbQG1MGIzqghS
-         RxQ9emH7WgYdIIiHqNgcePT6jj6tl7aGpMhtuZ4u2WwaGMneJ7QTfDTYc4xJjkut4W34
-         Dm7A==
+        d=fairphone.com; s=fair; t=1762531730; x=1763136530; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vi4OlyDfrFyMuA//87+yq4v93Npa9bmKSRfzlMv2g0g=;
+        b=kiH0DTPgOyugBgO2kpcmOOvWRpvp6FJwy3XPbkaPqjdEyjZGJNaqviyfUNYcHJ5m5n
+         vayYwe+yuCYPjb+0yyqQkRi98h0bPAiLrn/AdVJ07s5nUNM7rfb+8470OCya/dBtpREm
+         /scTBslkqV2sqIiAEX7iMgVz+wxIZBTzS5kb1AJS0XDrUis0O/628kSHdhXmtZ9lmHT/
+         BoO5NDeheK0sey2W6XL/OKRQcCp17BC8YIN2+eDvK4rRBDQnxLENi+AynKag+oxjRl3p
+         fWJSSdJseCTofkryqXOjnkuQwgumbwuHTvxtNlP9t0HthBZPY0SVa3r6GPNIe3MZVG5D
+         bx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762521047; x=1763125847;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gYHHRwUPFMx2o7hSDNrrgKGsA3wEJmqOL2og+5hJ+F4=;
-        b=OUuBSt7uCDzboxZ53CGt4uNzz5IVjLf4NBL8BxDxwAASaB3WullXAMfn7kolMQXAgE
-         9WJz6VjtPtr4ZaJnw42R8DbnvW6bqdToFAUHGBg1t93mRT5AtM4/y0jZJLVVHb0kCIYi
-         55jQDcCrFxkp9dmTic7t8hDvvye3SHj9Nh/Vs9Q41TDIdEAcwv00u0e5H+qRhmRm7cdq
-         Xvhrj4dMu0qjTzcAFdYigAwcQCTf8KbOVw+XiBG8FcQaBRz6oaivSyOKLEoqox3KDodn
-         aOfypJnRNcXaU/EVnDGyjJsFr1zHyzNZ4H51yj9rZLqYKi1WufH5dRTuvxc0W05MjpEu
-         fgNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRfjskBRvl3bd7rcGori00d3vqoJ8IMo0euGble7QUkJEEqx62J18EoG3ObKtc5kW6+GDxrwdFZJpzgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2VY9zrXu6Hzv96qHkFNeWp5/jgk4WXU9siRH+kAm9AMxRGoto
-	Gq/IH8l5yUWmBDDKZLXRpVTK4S3a/Xd3A4whsIRgXTdQs3aY89MzSe6NNeOVp7zi63s=
-X-Gm-Gg: ASbGnct3pBDtQQGZw3M8U6VnE1q8gxqEWgC7lB6bWxXXHLPxTmpuC5yMViG+1V+jVMj
-	XuLCUfG2vQOydRA8zqep9pO6tLpztIj/beCJtxZKbsIn06dNoPXz1RMxL6avbd71gkFfrqeRctv
-	ZWI0l3ZKBp1MukrjT72Da6krt7D+gopn6Ff7DUSI51U1fLxlkOSbYaJ6AoUklboTwm/pModUt1Y
-	6Xks0OLWx00kVGzomX7ohQ0jPX9YQyfimQHhiLigmTHrS/K2OzFj6mdpF3ec6USgTONcnU9kXUb
-	0rsRlsyPzkOFnIJggJCThrozdC57AzGy3v69OYduwceVHsKbKKuTqpVyUBXN8QGZksYm4DMLTpG
-	mq7M8gr7pADoFdQQ90xJ8Po4uFEoex26c8uIWIngnPCkzQ3vkIEoQKLEMCT0TwkyZLl98WXYvry
-	4gF7eEm3gECkdjNnD/Guph0WsD
-X-Google-Smtp-Source: AGHT+IGg1Zbnws8cxX7orORuWlbhSBF5v/XmuMbF1BaB1hdo3oYtaWYVQbZOezZs+ceawiJZq7x26A==
-X-Received: by 2002:a05:6402:461b:10b0:641:1cbe:a5bf with SMTP id 4fb4d7f45d1cf-64147094e1fmr1299694a12.9.1762521046750;
-        Fri, 07 Nov 2025 05:10:46 -0800 (PST)
-Received: from [172.20.148.153] ([87.213.113.147])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f813e9fsm3999374a12.16.2025.11.07.05.10.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 05:10:46 -0800 (PST)
-Message-ID: <db9ea6f8-810e-4143-9e09-84536145999a@linaro.org>
-Date: Fri, 7 Nov 2025 14:10:45 +0100
+        d=1e100.net; s=20230601; t=1762531730; x=1763136530;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vi4OlyDfrFyMuA//87+yq4v93Npa9bmKSRfzlMv2g0g=;
+        b=Hfyww0fzolAhL7WzTZfZVIUopm7gBfSAqsdbIlEVsG/FZAoXmly8Mmlqjf9tPylNVP
+         n39LIQrONFJFsmIDGXq7tNz5ee7Kb6L9x2uz8/2o37BYiwEx1CWJt5IZgasKQL9tg7AR
+         q1JSCjslSuRWmlFY0abQF16YVmXRgz35kxa089JYeZZXy8XgHA2vS7UtnrtUzOieYMA0
+         1f0px5FCydF5GrJpDa2iDyYRQVvhw4FcNuS9vBW5Ngv+PsZugJwwjYu9+xrJV9QHthQH
+         NcOmMKAZ4m5p3VwW314BY3PirTAGD+UbIf/8NFv0kt7AI+fGuZd/GpbtDe2npussUdLX
+         kcsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMmT1qNG9g/2BNb9r5FUzLaVnSzBw4eQLAx8nSzyAnb5DmzOSisfaUlbWnLFJNd5vhOxJtwSs6QvX32w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxXB9Pz/6bbi6vkji8Td/pKPF30vsg1jOXwaLnBUPMmIaM+BrD
+	JRBaJlcusB6E9B+MjCN7gXFU13e+mpMRWtbUatu7HSG03rWsicN7CIP5ltcunJL3J1E=
+X-Gm-Gg: ASbGncukG+o638NQVW4DwL3EahezYQGInYT1EdKwUY3kqR8GwIRQ8h7O5jDiA4tMfSv
+	ytVFu/oNaYNipqpJLXo99QdYJtXx9pCBUiKcC6nE2gLF+JTdDk5AqQvThrnaOd7BLxf8m1qaSPY
+	ME7kBT7QW6UyWCEfU65+KpEpuP4GR778VUcfiilCSokv7QiM+qsjgmXAkQRafXd8C4Cex1sphmS
+	0W6yA4Q+BMVDeEFdw8AWxYOYbLbskTximaNcL7MUfRdfj0xRnDU9rPrMLdfjQ5HrkphDnN5GERD
+	b0tx9OdqghCVBsUF/M1uh8Xr9rkmBT3OxY30IOo2MCvrPQv4WrcTwGBUnMR4EsMRFjpbz/gYNuc
+	EH+C7Shgk1/4qbVXDNlzLtA7ZDTz2TonPFjU9ZWN+Tvni92RMtQ6nd4R+iwmK4Btek0X+RlMIhK
+	7v/3gnaDmJYuxT332UwgzgHJzpcj8mTRONgtsfTOHqKyaXhHex51dz8zo=
+X-Google-Smtp-Source: AGHT+IGT7CaeEz6g3FtTP8c/NtDzRQa7iR2B6l8J10WYQFcAMOVl4hOnUuV2ukorx8UFB+TFYGU87g==
+X-Received: by 2002:a05:6402:35c3:b0:640:bb20:41c7 with SMTP id 4fb4d7f45d1cf-6413f059b62mr3497605a12.7.1762531730417;
+        Fri, 07 Nov 2025 08:08:50 -0800 (PST)
+Received: from [172.16.220.100] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f713959sm4444376a12.5.2025.11.07.08.08.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 08:08:50 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/5] Enable QoS configuration for SM6350
+Date: Fri, 07 Nov 2025 17:08:46 +0100
+Message-Id: <20251107-sm6350-icc-qos-v1-0-8275e5fc3f61@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] dt-bindings: panel: Add Samsung SOFEF00 DDIC with
- panel
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, David Heidelberg <david@ixit.cz>
-Cc: Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz>
- <20251104-sofef00-rebuild-v1-1-dfcfa17eb176@ixit.cz>
- <20251106-enlightened-centipede-of-tempering-3cfa50@kuoka>
- <be1b6e34-40ab-4587-8dbe-84e08bf83dcb@linaro.org>
- <108b8631-6d92-4b2f-a59d-3c9e0c607e5d@kernel.org>
-Content-Language: en-US, en-GB
-From: Casey Connolly <casey.connolly@linaro.org>
-In-Reply-To: <108b8631-6d92-4b2f-a59d-3c9e0c607e5d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI8ZDmkC/02Nyw6CMBBFf4XM2kn6CC30VwwLWqbaGKi2iCSEf
+ 7fCxuU5yT13g0wpUAZTbZBoCTnEqQC/VODu/XQjDENhEEzUnDONeVSyZhicw1fMOEjeem8lKeu
+ hjJ6JfFiP4LU7OdHrXbrzKcH2mdDFcQyzqSZaZzzaTDTwf2qqn2aKS0z0ielxXLJBWi206nXbm
+ EVCt+9fyLdVBcMAAAA=
+X-Change-ID: 20251107-sm6350-icc-qos-d319ffb3e6bf
+To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762531729; l=2705;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=1UB7MjUKjWV6747T2U48We331jDJpIjDCkO4sdbS0zo=;
+ b=7mpYa6QY9OFMGZX59eWyR/bGGqlpm0cTZ2rZeg4gqwW2L/pDo3zmdposoVlJ/5J4/B0Y6VqqF
+ 8M6lLN3Ar3xA+DqZB5IsIbN52MtSNhpgNhytT26zJHBmDsSzdOqs7Kb
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
+Update dt-bindings, driver and dts in order to configure the QoS
+registers for the various SM6350 interconnects.
 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (5):
+      dt-bindings: interconnect: qcom,sm6350-rpmh: Add clocks for QoS
+      interconnect: qcom: icc-rpmh: Get parent's regmap for nested NoCs
+      interconnect: qcom: sm6350: Remove empty BCM arrays
+      interconnect: qcom: sm6350: enable QoS configuration
+      arm64: dts: qcom: sm6350: Add clocks for aggre1 & aggre2 NoC
 
-On 11/7/25 12:27, Krzysztof Kozlowski wrote:
-> On 07/11/2025 12:23, Neil Armstrong wrote:
->> On 11/6/25 09:48, Krzysztof Kozlowski wrote:
->>> On Tue, Nov 04, 2025 at 11:16:09PM +0100, David Heidelberg wrote:
->>>> Basic description for S6E3FC2X01 DDIC with attached panels
->>>>
->>>>    - Samsung AMS601NT22 6.01 inch, 1080x2160 pixels, 18:9 ratio
->>>>    - Samsung AMS628NW01 6.28 inch, 1080x2280 pixels, 19:9 ratio
->>>>
->>>> This panel has three supplies, while panel-simple-dsi is limited to one.
->>>> There is no user of this compatible, nor the compatible make sense.
->>>
->>> There are. git grep samsung,sofef00, gives me two users.
->>
->> Hmm, on -next I only see a single one:
->>
->> $ grep samsung,sofef00 arch/*/boot/dts/ -R
->> arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts:  compatible = "samsung,sofef00";
->>
-> 
-> These are the users:
-> 
-> arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-> drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> 
->>>
->>>> Remove it from simple DSI panel definitions.
->>
->> Can't you mark is deprecated at first ?
-> 
-> Not sure what would be the benefit here. There is no negative ABI impact
-> here.
+ .../bindings/interconnect/qcom,sm6350-rpmh.yaml    |  65 ++++-
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               |   3 +
+ drivers/interconnect/qcom/icc-rpmh.c               |  12 +-
+ drivers/interconnect/qcom/sm6350.c                 | 298 ++++++++++++++++++++-
+ 4 files changed, 356 insertions(+), 22 deletions(-)
+---
+base-commit: 33b5a67d76ce575ea38bc3de55719a6cdf42287d
+change-id: 20251107-sm6350-icc-qos-d319ffb3e6bf
+prerequisite-change-id: 20250613-rework-icc-0d3b7276a798:v3
+prerequisite-patch-id: dc49cf2810a33db590997c9e9969f09fcbba207e
+prerequisite-patch-id: bd229a10bfd7485726f341f1bbc179fa032e4beb
+prerequisite-patch-id: ea3e9a509dc2d590f647560df3fa773165d5df48
+prerequisite-patch-id: 95b82df224ac0515c56d41cad8547099248697c1
+prerequisite-patch-id: c793efccb33da5b78d634fc0f7259c01854c7da2
+prerequisite-patch-id: b25a3cc84427ed3d321575d32dee239aa6dcfa65
+prerequisite-patch-id: 8262f845f906a575f9ee06c002d8626c7b25a87e
+prerequisite-patch-id: f3b9493e64d90665d7093c7f7af335452010cf13
+prerequisite-patch-id: 4e05eb6178064d4b4541fccbff31e18d4e5ae258
+prerequisite-patch-id: 4c169d0f54fb39999cf62eaba98208fd94e0d250
+prerequisite-patch-id: 91f18aff5b2cc765964c8991647dd53e75e97648
+prerequisite-patch-id: 7749a4cc2e2e8e2ac191844f8c42f338d0a80392
+prerequisite-patch-id: 75a9009c7cdbeb94b2c7528f6ecc54d7a4b7a6be
+prerequisite-patch-id: 9566648a76666548a85084664ba6fd4a240fe602
+prerequisite-patch-id: c2ba63308bedf78640d64d9662ebfe2ceb7e6d26
+prerequisite-patch-id: a08ad34a60042b2693b91f24712ccc10e0d5666b
+prerequisite-patch-id: 8227a4926c64a28215b6c03d43df5518d72094e8
+prerequisite-patch-id: 15ece9c03dbae75dbfb1b16a2e2c1d2ed1766c82
+prerequisite-patch-id: e69ae611580f951450269b4a7df8789f6b2e2c89
+prerequisite-patch-id: 5e54f850197bc33dc581ff8907fcad1dccef20a8
+prerequisite-patch-id: 73caecb9e342117c2a83832f0d2346119466a899
+prerequisite-patch-id: 79abd6d335f0bdd8725c27797d4fbc7ffc017007
+prerequisite-patch-id: faa043f224857fad9bd8368d83d5154e3f7013c1
+prerequisite-patch-id: 5d7fdb3ea01a6066079dd89a4e494165b75159db
+prerequisite-patch-id: 0234857c8f0119652dcf3fd6e7e1fe051f40a6ea
 
-If we want to acknowledge the potential scenario where someone is 
-booting a newer kernel with an older DT then we should keep the old 
-compatible in the driver right? And marking it deprecated in bindings 
-would make sense.
-
-It could be removed from the driver in the future if there is another 
-variant of the panel added or we decide to cleanup.
-
-It's still not entirely clear to what extent we care about DT/kernel 
-backwards compatibility though.
-> 
-> Best regards,
-> Krzysztof
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
