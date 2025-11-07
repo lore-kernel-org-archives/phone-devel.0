@@ -1,68 +1,67 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6431D36C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C9332AADC
 	for <phone-devel@vger.kernel.org>; Fri,  7 Nov 2025 16:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762531736; cv=none; b=B3cJ2xbZXlKcTi3xIv38ujpkA/B964JWM6kzuuIb+oqc9o8X3WgJ+UUEd/l0Jf0ARHZFdYPpLmy5fuArIH1jpsCyQx+BeGHsVEBeTdyqeZMqFRGDJo7uhq7mt8/ctRnAbTEiFcazDT4XPUbXBIRdftFSrJafoETQWQwxxaS73DU=
+	t=1762531737; cv=none; b=TT44lIOYtQTo38poWvZr5loZJwpYcD5Uqxk5xlM4vgJj6IGs4eA/SkLoT1fFZwgDy8PrvX9lQ9nWrbBKzEs4kTKnQBslxceaMeCdQGSYzH5lt1/oG9hcdXUHfTkgU2+ZZyRRxSM59fUPzA0uohSvSKXiafLBoH6/DW8dbfNicLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762531736; c=relaxed/simple;
-	bh=FrKylvjtIbykfg6BNRKjScYknFwVxGFQEfuD+JLYCCg=;
+	s=arc-20240116; t=1762531737; c=relaxed/simple;
+	bh=yWJZX5pTtTBbyY/nQH9wW9jtpKcujH2KDm9MV6WcgRE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ChZirhOHCoDRl6EpAKa/WKeNgH8tXTSYCmr9046e6Sh4ueEw4xU9cQz6JL14xYqETWJRy9yQ0023yyCy94EsJn99pBiL14PCqq4rbWhQEJHMzHp7xWNEBRrWd9TD2rdVS6oaDA7mXUUjuWeCkrL7Q+p6XH4ezARtJ6z7tr1R/08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=mLw/fGot; arc=none smtp.client-ip=209.85.208.45
+	 In-Reply-To:To:Cc; b=Ws4RnWZzSPh/t6L9h6Yw0icQ1XC0ALL/0xrkJ2r+IwpetW6ZqX9q/cGBhCWenrSyfGkk2WEllRVHX6LFInfaGK5U84BNfLGumPlpFlnrssdEY1JsEDlQWmseGhCf2c3hLuiWjRsLvlwtMPv5HuUlaR+N4luxl/XHmurRZocTf7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=mfuKlY07; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mLw/fGot"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640c1fda178so1641036a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 07 Nov 2025 08:08:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mfuKlY07"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so1644886a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 07 Nov 2025 08:08:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1762531731; x=1763136531; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1762531732; x=1763136532; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=M6OFyEM0mwtoBUd6fjbO6FrIz0k/kDLhqnCZDGR6L50=;
-        b=mLw/fGotcCQwPOCJGVL+xuq/OAELVkU5YcmAVQmghR2VUtWG9qU9Yesn2UaapGPOUA
-         ZstY427FF26r8ErT5jQkcVUAcug9cXJZXM339I6ruD3as7frY7Mv/i/bH9Plmvr50xul
-         SQgDvIaaVS0s6LGS/uLY5r/mQBis2Qn0EmCgoNa7tW3enNqyS8opyuIPgfqkEQ739lpO
-         tN1YbKYDu0Bx8yPcybmN7ufzJPkz0GpWrSV4B7aLaJTE+QLC3GUkKSenLtxVlgz4IIax
-         IUfjKNz905l525j50YXexlLsIe7TSMunug6FVkBUuAxjWjXQSGt1iZl79gWudU6hws+6
-         FY3Q==
+        bh=i36NG4+CnxJdtK2RZ//DyiotcskYlbpoGKFREpNJxY8=;
+        b=mfuKlY07mc0etW1I6eSk8U2W497mQOF56sZ6VDWpJWEWRVSSGdyqOZbivlWLtybwZc
+         tiIAkg3/HcV4f1Qo/qNh8y5OJrKzLnpaE+uzHohQAqyJDjEPm7EQwX/Mou/w2bl2U+4c
+         mQ6hag13gzApHl/dCXqaZ7mJ1eFc1W8k/tB6t4QVPWxRIwjT4sAvG+CYjClTvGnMa4Fh
+         g4eRv26Qf4b2UmrWBoFI8RG8aXeCoNRl3mZhm+Xbbgh32MGzktsKB28k+opWnyxajyT1
+         B4H7efETIHotGR1ULbJ+5BfYtml5GXQQ8TXRTqa6i07fr9neskaX8bz/qWHI/KFue9lh
+         aL0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762531731; x=1763136531;
+        d=1e100.net; s=20230601; t=1762531732; x=1763136532;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=M6OFyEM0mwtoBUd6fjbO6FrIz0k/kDLhqnCZDGR6L50=;
-        b=IkKcr3ign6ECJZiWEduPuQW2VnSovq3YHNMeHKNur1ibE6QTuCkGzZ+zoAHdg6vRHH
-         K/vmsb9AwSNPwpEqKQDIwr61xlvqPpMVl8wFp9Ns2NKcXB/+VUcgdsHMLrE+OpO4IFXC
-         M9ACgSaRS/+SwCG1Q6AwdFpYOwB+0JpiOuHRQ1Gq1qR7XpQwIv99jpyUJSTS39anHg/Q
-         u1ZhJhBLjl24C3GKjD/a9n04fLCIwI9YX+HSDPG8MVj6gAfrRjHzQjkE8rmfBvtto+b3
-         dKuT480JJr71dT3MuYMY29CXwW48TBL5UQrbT3NSdHv6beZ9GZF6DxOxtYtXkjSVIw4u
-         DhCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWk16EyM758PylVbX11OEok0MrFOuWyiHj1grEx6tL/xyiGn+vKFrKUp6ZYA5eBnUCd6Q3UXlk0YssKcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFbL4SXBcmKsi02pRCLL3l0LdQliBJOfKTBSq8/EHxrfFpK7Fb
-	J0MAJx7KuvdN/Efvf2tbfYgNc+RXefIW0+qGrnk/ays8Mt3eU4ggoFMbKsN/zPkPBHM=
-X-Gm-Gg: ASbGncseFyFKtTtW9HWrJQjcYxvSHAcDyvipfI60qJ+WS742XzqKsTmlkXFUf7pZZyI
-	/p97SJj7eT6M/rXqixUFWWJ6NZOYpucz/UNHieIFkyVvLUZmIS4i9b5x+xqdXKrrisq6FNaheZG
-	3gouoQ8OBZVG13z2AGIBp6RfqK1jnBaSE2rg/gvGDdm9QExEnLPeW+gg4tQ1JMCN2sHhLEvuKxi
-	yUSsO0llOk7MAV8kCkF1a/m4IjPRkcKJhO6TN2Ycr1yo0bI+HsVMYmNfNfnblVjS9mqmGPNxIUG
-	6Y/vZey1ReMYYP4Ev5go3qJYd4Z2SryNSKZ3/nOUpJAM3KQ1BB9b0nkVNbtRuHF36z2X68eQbkv
-	HnY+2t90eiUn4Pw9ywyFe2b6JrzV0zriisiI3T/nfaZsEJ1HJLj2yvaYaglhLn83VxA4RRsAREK
-	H0dfrYNCcCwN/THJc5zl2bFSkNQe9kS16yHmov++U+ZKkRatLSl+9dZUc=
-X-Google-Smtp-Source: AGHT+IFc5yHu64pZOVzhmSiW9o358Hhl91qRFBo7frY9TOt1voWJpvXX8q8w1oYhoIzDVymNV/t2pA==
-X-Received: by 2002:a05:6402:3513:b0:640:e791:df67 with SMTP id 4fb4d7f45d1cf-6413ef03618mr3463236a12.10.1762531731544;
-        Fri, 07 Nov 2025 08:08:51 -0800 (PST)
+        bh=i36NG4+CnxJdtK2RZ//DyiotcskYlbpoGKFREpNJxY8=;
+        b=tcSxtfwcTL7Cn+Ish58njFdgJvVJT94xGIQytOPxKsWgsKE0CWlMsQTxLuWb17BA99
+         IX2A7PNXJ1IG1CJIZmCR3hrAfx69v90rd2ylhaRQhpSt+y7CEjv5zMfXXY9G2Fh7vaaF
+         vEEo3S3RBbW5St+Zv7k6WG0GlMRrcRk+SGoEaR8QC4/PwU+PA0ZdNg1mm3Oz/ljwSk0w
+         82clqmhadrQPjg6sdvf91+UP5x6/upcfivjz8ZPcVQLqLz8CSEYMvSvoI77EBA2oHqZR
+         GeXza6lkm+YO675PDbGj/9T968KJh7Wyx5IrRth0JkPbyI/Oeh5ah6qqmkRfpC9aRdd3
+         vijw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmy4EAjFk60osK6VemwKlYncUi0/ulYMrC1BS5XpuhrS45U0rOxKkyrXE6hDvf085md1GOqP5WJkgOqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB7Eq8zJSSKQww6H+2H+49iWGoAtCbD4LRndkR8oVPyUE7Xfpa
+	jOo3IlAL+f+eUqRB7I3FtY+j2SwLiPvz+3vSEqfsDEfn/xGv08U7rvqNGwIdS0UltcI=
+X-Gm-Gg: ASbGncuotMvyAc6vJzHTj65+icIng4VEUIpeMZC9h1nKuq0f1PdwbtRNCJDsocH5GP3
+	g3Q91tOAu3Zhg3YwkB/51OqEXg1F1f4e89mbnbznfYU7rge7NDDV9OWVXVzswTBzZEb2HF3Rryf
+	rQSN6zeK2Nt6gepMpSiZAFippq6KT4qVhiGtrbaw0hpVqfbAfbZkYtTRuJkB0gyNhJWn91s+iKP
+	b/XrFpnp4RNZqgaQn/7cBIPmsY966QKxs98QfDwSAM+ECsiFUeo4MuN89M0uh2mgiLfc5XOv9ka
+	X0Qtv6T0dgmT/YE2g0RZjtQLJH5aLVgsQMaRFMVXJWsqk27mUmWvdUHmQFLwtPUJmr+0ODB6rwl
+	z6GWmIEfjqZ6+LyfwqDsETAibKkz8s/NrzMA6Fup9fxyKXOF4i210pX/VuBj3WYBiaENBV66rfc
+	wpxyVBh4Yq1ouo4pmUoGoDIYFC8PdTA00uVXfIujMf3YT8JkQbw0B7rwA=
+X-Google-Smtp-Source: AGHT+IGwHC2zxo64CyGp8N6bbrIrT2S27jAM1f/m55hZJrxyvSql7IEb3+1EIi003K3x3H4dGc2jlg==
+X-Received: by 2002:a05:6402:146e:b0:640:7529:b8c7 with SMTP id 4fb4d7f45d1cf-6413f059981mr3730411a12.1.1762531732054;
+        Fri, 07 Nov 2025 08:08:52 -0800 (PST)
 Received: from [172.16.220.100] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
         by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f713959sm4444376a12.5.2025.11.07.08.08.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 07 Nov 2025 08:08:51 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 07 Nov 2025 17:08:48 +0100
-Subject: [PATCH 2/5] interconnect: qcom: icc-rpmh: Get parent's regmap for
- nested NoCs
+Date: Fri, 07 Nov 2025 17:08:49 +0100
+Subject: [PATCH 3/5] interconnect: qcom: sm6350: Remove empty BCM arrays
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251107-sm6350-icc-qos-v1-2-8275e5fc3f61@fairphone.com>
+Message-Id: <20251107-sm6350-icc-qos-v1-3-8275e5fc3f61@fairphone.com>
 References: <20251107-sm6350-icc-qos-v1-0-8275e5fc3f61@fairphone.com>
 In-Reply-To: <20251107-sm6350-icc-qos-v1-0-8275e5fc3f61@fairphone.com>
 To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -83,56 +82,63 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762531729; l=1554;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762531729; l=1767;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=FrKylvjtIbykfg6BNRKjScYknFwVxGFQEfuD+JLYCCg=;
- b=nTRGQyYmySEkpmasdBUmEaPB51ISRGLTYkLSIUcHDR8tbweZYP3kljRlJhHKqSeem9gQeqLRC
- DHVQ5/NTu3BDPGZMEfeU2PpcIDxP74CA8UJEXfBUhruv7IqiClWTtIv
+ bh=yWJZX5pTtTBbyY/nQH9wW9jtpKcujH2KDm9MV6WcgRE=;
+ b=4zcbiYwJD4C2WWOQVJKpY7aqjPmWPTB217iJUU4vwEVsg9ocL9+9WFfA/TmTJ8b8SF0q7EKHn
+ 2vYniMUYxWGCIsvid0N4wRR0KUrob3/8yWJHfXYAAoNxwUcqme5i21c
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Since commit 57eb14779dfd ("interconnect: qcom: icc-rpmh: Support child
-NoC device probe") the icc-rpmh driver supports initializing child NoCs,
-but those child NoCs also need to be able to get the parent's regmap in
-order to enable QoS.
-
-Change the driver to support that and support programming QoS register.
+Clean up the code by removing empty BCM arrays to save some lines.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/interconnect/qcom/icc-rpmh.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/interconnect/qcom/sm6350.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/icc-rpmh.c b/drivers/interconnect/qcom/icc-rpmh.c
-index f90c29111f48..2103185a44a5 100644
---- a/drivers/interconnect/qcom/icc-rpmh.c
-+++ b/drivers/interconnect/qcom/icc-rpmh.c
-@@ -308,7 +308,16 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
- 		struct resource *res;
- 		void __iomem *base;
+diff --git a/drivers/interconnect/qcom/sm6350.c b/drivers/interconnect/qcom/sm6350.c
+index 99c435a5968f..246549cb761e 100644
+--- a/drivers/interconnect/qcom/sm6350.c
++++ b/drivers/interconnect/qcom/sm6350.c
+@@ -1526,9 +1526,6 @@ static const struct qcom_icc_desc sm6350_config_noc = {
+ 	.num_bcms = ARRAY_SIZE(config_noc_bcms),
+ };
  
--		base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+		if (!res) {
-+			/* Try parent's regmap */
-+			qp->regmap = dev_get_regmap(dev->parent, NULL);
-+			if (qp->regmap)
-+				goto regmap_done;
-+			goto skip_qos_config;
-+		}
-+
-+		base = devm_ioremap_resource(dev, res);
- 		if (IS_ERR(base))
- 			goto skip_qos_config;
+-static struct qcom_icc_bcm * const dc_noc_bcms[] = {
+-};
+-
+ static struct qcom_icc_node * const dc_noc_nodes[] = {
+ 	[MASTER_CNOC_DC_NOC] = &qhm_cnoc_dc_noc,
+ 	[SLAVE_GEM_NOC_CFG] = &qhs_gemnoc,
+@@ -1538,8 +1535,6 @@ static struct qcom_icc_node * const dc_noc_nodes[] = {
+ static const struct qcom_icc_desc sm6350_dc_noc = {
+ 	.nodes = dc_noc_nodes,
+ 	.num_nodes = ARRAY_SIZE(dc_noc_nodes),
+-	.bcms = dc_noc_bcms,
+-	.num_bcms = ARRAY_SIZE(dc_noc_bcms),
+ };
  
-@@ -318,6 +327,7 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
- 			goto skip_qos_config;
- 		}
+ static struct qcom_icc_bcm * const gem_noc_bcms[] = {
+@@ -1600,9 +1595,6 @@ static const struct qcom_icc_desc sm6350_mmss_noc = {
+ 	.num_bcms = ARRAY_SIZE(mmss_noc_bcms),
+ };
  
-+regmap_done:
- 		qp->num_clks = devm_clk_bulk_get_all(qp->dev, &qp->clks);
- 		if (qp->num_clks == -EPROBE_DEFER)
- 			return dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
+-static struct qcom_icc_bcm * const npu_noc_bcms[] = {
+-};
+-
+ static struct qcom_icc_node * const npu_noc_nodes[] = {
+ 	[MASTER_NPU_SYS] = &amm_npu_sys,
+ 	[MASTER_NPU_NOC_CFG] = &qhm_npu_cfg,
+@@ -1620,8 +1612,6 @@ static struct qcom_icc_node * const npu_noc_nodes[] = {
+ static const struct qcom_icc_desc sm6350_npu_noc = {
+ 	.nodes = npu_noc_nodes,
+ 	.num_nodes = ARRAY_SIZE(npu_noc_nodes),
+-	.bcms = npu_noc_bcms,
+-	.num_bcms = ARRAY_SIZE(npu_noc_bcms),
+ };
+ 
+ static struct qcom_icc_bcm * const system_noc_bcms[] = {
 
 -- 
 2.51.2
