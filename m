@@ -1,197 +1,191 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089352EBDCD
-	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 20:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE714223DD4
+	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 20:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762806246; cv=none; b=LRGeyq1ILt4JOY+kaqFikCsfNzxVDbItlbI+62gaPf0fvk8RACmLVhBYT1PKBM5e+EdDc5K+c5ySMRm3ZRk1HXOczNPW3bdbLd80dzUOZ49cD28/+078PzUAD3aDxM5UastsspZX5X+eLN9AT7Sn/x6o6/eB/A0rVuWcqBrXQ/g=
+	t=1762806702; cv=none; b=TWOxPaM9DFMopiKCTzU0ipOnhnEbgd39e+rjnEsiUU1FjsTfQeCu33HPLlII5CMXTnmDIIvlS6eiOwlGG/6CPv4RVdi0e2E6efBAJE1AyTm/cuXPf8pYeWHHTCuWkZ1leoYrvLZlUxT86tC+rDhWFOfQV5CxX3ZIoOcVnoNhVbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762806246; c=relaxed/simple;
-	bh=avENlQ35BzgI6tLMYtHuimKSX5F3uSHgrD8IvoL218c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B1MHTmC1sCVHRYlnh8v8/tHl5yciippoFIr1+ogJvlX0UfHpkgLGqgrFnLQiYArWBCDXCAqgKgvuvHJhGrgfD77OrNWotJDebBdIeBTeGkHhc4/g56P1+7LTrS5aipHWb5/8YJ+x94IIjGx4FLkKIJHleGujbrG71psR7SiLdrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mts42I+x; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1762806702; c=relaxed/simple;
+	bh=YE6PuNDtpQDapq03SWpJdSQuLlfFhMnJC90bI0n3BiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLH0RfaEFHPcpl33Ge8XGngQN0ICgkSzzYNv3nSauislo2ZTujoNqupfW7xPpb159oq6ns8SPz6CwAX1uG0ad2AfJvyYDsyMw7pxVyXnoRTNM0QNUn/7GZnsvYbywJ4KfyoDMOcDLxqa7xplU8ELkRz38upa+D6VBGW4SeXtRoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xri2h24q; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CiGlFDqc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mts42I+x"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59425b1f713so450944e87.0
-        for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 12:24:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xri2h24q";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CiGlFDqc"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AAGF1lj2993175
+	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 20:31:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=bIdT5At54DZoymEfDUiwR7h4
+	Ocq8orpRWmJMZbcs1fE=; b=Xri2h24q+2MyT9XbcNYp5uUoakuMlmxSRkINmbfl
+	wP1Rah4R74hwrw2N5lXsA+ZYK03HZOYndVsaq996VRMCUsO7ftiT5dsdrVz5RVHq
+	vmdFljS0ZbsUN7ZZDLoV2vhQ/Iw6BTXJMziUjn8ylic9tQcVwlPSAk+6mEjIzOme
+	BuhvgXW8xBpp6iKkNi0YaQXMmQ3yaRrpMpaZ6drxKF0GuQWTb4QFvIv+8VWTp6JB
+	ZsGKdQMAu/PFInWyQbWZFvJJFIP0bT0B6hXtH7oZWEtB/FwSWvCvYzj/7VYLi+TW
+	CGe+MayQiKVNueU/Mqs1YBqk9Xkm4F1bEBalqhVufohLww==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4abd88t145-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 20:31:39 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ed846ac283so4687771cf.0
+        for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 12:31:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762806242; x=1763411042; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GaNjgHiC4lYNLgJR1dvbSFLh/5KALMDQ9SZCFN88ta8=;
-        b=mts42I+xAsgv8eZE4+D5iwBfrt6505Gw+8ie43Jwc4Uzp8+eVtfzmeMalW/SBDv1pl
-         qyxEiUxi3qo6goc42iJ9vLKPEh6hGdcH3tBlkI7vnceyhz5Q9jAENVhhDY+FTgRkUw6k
-         DhVBDZ+ZwRtwyOu21RIMMBAtv3DuMV6FPLuMq5HjKfCW77HLhO8WycCrjy6f1exvn8EE
-         N9Hf0poSaaHl8rIusXBOvtFAL5YGqInPg9XbMI0C/vtNP8NOYUgF80uvujHE8T0CFuq7
-         ogybdERSxRHTkOOK3JaOCB/1r9uZp7+gHGIruaO0e5nfH9R0D81R9NuZqv5oyGRDf/iU
-         ERMw==
+        d=oss.qualcomm.com; s=google; t=1762806699; x=1763411499; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bIdT5At54DZoymEfDUiwR7h4Ocq8orpRWmJMZbcs1fE=;
+        b=CiGlFDqcpyzvywIflRzieMSfSAYI5rq3xJp8Bg+QXLCvrDtFEQF+fWNVFjnFrHWR7v
+         lzsW7EBfwD0pkcnVqNHoMdKpdTznshYf3MuKZEvXJ/bo7yMs518slyU7MoOMUV6nG4HT
+         iBy/E/AmfBMEazZGV4a7uXoro5cILHale+KBWuVt09VNroGQtJMH0ogpMUFqfKkAeA0f
+         O5gzlNDz9si4TNaXuaFP4AZ3YoymNHE5O30LR9Be/1x5FIbui6qfWupTuHII4tPRjs1R
+         91x4WzZNX8SAvOw1NdeUfUxJIM++3hSVBPS2x7vXY4GCQMMBPfo9lLRp13WGu8YzozVV
+         7p1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762806242; x=1763411042;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GaNjgHiC4lYNLgJR1dvbSFLh/5KALMDQ9SZCFN88ta8=;
-        b=A4j6Dq3rwMV5W95rqKC9sGr5uhn94rXPfU36cLAlZQtc3B8c75/k+eZSXpkMhY6UBE
-         FaINmqgc1krKapD/50XzCnLvxM8U0qEE3S9Wjc6nZoTBeu+4ICglt9JCsD0rUkklKyQ/
-         vquIu2xpme2gU4aVN5r/U8sWljxlAHJPo3Vxz3Tpw1LFzkzfRau5h0XL0eafcqOAoYWg
-         I24iLgaF0/HknPa2/wwlzYFQoByKlG6wQ/cKt9jd9TrA6OJbuup8tRWSeJ5Zo8Hn34G8
-         grCJxvYKOiu7idzwSfqaLyvisnaTHSmwSPdTdWzhA0Rl2kd2WrV3y1+VUhj/XsWLHNTd
-         k7ag==
-X-Forwarded-Encrypted: i=1; AJvYcCWql5GTrfWO/C8jUTs71cDL+53jMKrR4vZ4tciFkkY7zSKqY3aZEW21fsaKwCURW4vjtBa/9xmr5uZsjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxvm9ynwOfuukVBhJOs900SfhQEepMff3DzPlGZF7hUfFzJri7U
-	m6b6UT64jxk0HdWTU7M5Z3QSDLfheehKdQj21Dzv61c+bLsJWrr+CG39M1ot2SxgBCc=
-X-Gm-Gg: ASbGncuedbn4QyFQjFQCaZCN4HYf0hpWpeqyRysqI89/5NMGmmRyJAPjjrfOCLvcHlD
-	9EnXST2rX5y4jDcKTqQV35DL4cfPWUqJo3pQEBnNum3od/gbR6HcE4goJ5C4adW++LA54feM8Mu
-	Q4I6ApLFsTTx2lA/hVlhrzrVUwFZTNLW+LYEHHvklHV+LQHGgbIRxr7rabo2yxIenov/F/XI1Qy
-	0NmrWE/cMPTs6IxgUkflofUAMjeg7g2UTFXms+sQVPJnbto0mCS86DJLRKDTZJfpaFBLu8189pW
-	j4IjQ6Os4v2onXpfPueRFWnkQyMLTIBZu3Vj43FsyTtuWtq0wb336DkgihTF97LwbYAJTpaVwwG
-	bNaG/1zOsoB9Z6tCDQo6goSasMFaoRRK0LmiRtCnnCrX935IzxNUO8gHX2LOfgtCtMqOgfvo3pJ
-	pFC8ChOgIIIOKjslsbM4FZOx81sqGZ2uuDDVY7AOEiFkLRqqL99KuNR9o=
-X-Google-Smtp-Source: AGHT+IH8eu2yFwyQ/7LEhVqdgKoEtPLjRlteAv+Gq5Xpiwbyk2U8UW/TW9k1sGKDpmscx/ao2kCmVA==
-X-Received: by 2002:a05:6512:3c8c:b0:594:2d0d:a3dc with SMTP id 2adb3069b0e04-5945f1dc4f9mr1551360e87.6.1762806242080;
-        Mon, 10 Nov 2025 12:24:02 -0800 (PST)
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-594549b4cd1sm3681566e87.8.2025.11.10.12.23.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 12:24:01 -0800 (PST)
-Message-ID: <df209178-2871-4317-bfb6-d6605fb9f19b@linaro.org>
-Date: Mon, 10 Nov 2025 22:23:52 +0200
+        d=1e100.net; s=20230601; t=1762806699; x=1763411499;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bIdT5At54DZoymEfDUiwR7h4Ocq8orpRWmJMZbcs1fE=;
+        b=XzgP3MPhBa/jmcMSo2YsH11JYN1DMZXwRrDWu7AOCZJdd0/lG4sXM5p+t5j8JfeOkQ
+         pMPdQFO8I7CY+tsPySUNyCJg+p8r6s11bJoe3y6szPqYOMXYQSywF2khizK99krIPcUP
+         reVQ8KiR5JM3Xl2Mm1VCHgdvG1NA7uGtT9fxaM6203vpwdQDHbUzMaUw1nC11lECyz6b
+         6ZENfCKdyO79TiufFg4MVIyUdUeQ1b04NWht44vWWHTx5WKvIbiKgPswzwBdiYR6fdpr
+         O7K/tNBm5/iP/pAS/KEH1t5Xj+9jXOZVIRJN897VTwjnjkVb1W2P/Ym+++PY/nQU1MFT
+         deIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFxJtU/t7qxffoYY1wnFg/kSWYWn6v5Bd7hmUiXNHHjP303Lgl4H4Olb8Ui3z9cYWIYT9+3UGOl18JcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPStrNiyJXp7a3GW/xubVsbLjE6ynPtjo6AEFiml4h50TI70cR
+	PjBk6fWmPNw8hLNg5H7SpXRsbVeeEFQ/jJdRIRguH6wtHenQk+vDUeW6XcX7SC8YDRtkfdru8g7
+	H3/oBY4Q8onHGvqJFG8hokEHKrmr99KQNmceZ4KketDr2Q4BZSV8aE0Cj9cNV53DX8Q==
+X-Gm-Gg: ASbGncuFpUTTSBpdtfzNnpShJUpKZXCxzTO+/QnbFEi01H6ZllDSAPU0evE6jPF9Gb3
+	CeUu/9RxgrkRgNkAwTGpzPZFRkP5ciVhoKd91D1wnJYCtndSZk+CTs5+9LlMFhRY3bbplaocxZX
+	tPIGxR/iyaZkKSuLM64vue7RgDZRLUQw8bOCZrvS8xbYXlAXqaUGlb0Lnli3UPmmwIG/kvuZXHo
+	QFznQHf6KITksp+lINboVmY2jiFvDUOTUATcn49+gz1rjmxftMmtd7ufhEaeiV5dcbNWx7F8rYT
+	KS7WznJD9Zd0YDHD+XYV8I5cShh+qq5E5y5NwF5w0Uk3ilu1RooULU52NRnoPt5o0l7rosL27bX
+	RAgWZ1Pk/+AYpKLqYN3EX+rIGspOqBVOOyXMIBd5Wi+tNx31AuowhRwDtgpBDDSkHRwUJXH55py
+	OaOkF4Wsmq4C9M
+X-Received: by 2002:ac8:7f89:0:b0:4ed:5f73:f82c with SMTP id d75a77b69052e-4edcaaca4ecmr10918741cf.11.1762806698780;
+        Mon, 10 Nov 2025 12:31:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHIZbcmmVUaYDitCUIFZPjdhrCzCbtSzSkTsWaMEcYAfRyoi2LFGBk+O42E4nfXG+YHNcdP/Q==
+X-Received: by 2002:ac8:7f89:0:b0:4ed:5f73:f82c with SMTP id d75a77b69052e-4edcaaca4ecmr10918211cf.11.1762806698332;
+        Mon, 10 Nov 2025 12:31:38 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a59c4e6sm4254424e87.102.2025.11.10.12.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 12:31:37 -0800 (PST)
+Date: Mon, 10 Nov 2025 22:31:35 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Dylan Van Assche <me@dylanvanassche.be>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: sdm845-oneplus: add ath10k
+ calibration variant
+Message-ID: <oufiptvhpgr47xekpex45wyp3ysoz27ko2jlygoeho5u7e7n5r@maz7m7wmwkm3>
+References: <20251110-sdm845-calibration-variants-v1-0-2c536ada77c2@ixit.cz>
+ <20251110-sdm845-calibration-variants-v1-1-2c536ada77c2@ixit.cz>
+ <wqjil4hhrbsozvhwdf355dqpwu736z4x2nwnurug2bpx23ed3g@c4shkwfyohky>
+ <5fbe9d10-5d6d-404c-8f47-e4a12ebe7eeb@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1
- MIPI CSI-2 CPHY init
-To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz>
- <20251109-qcom-cphy-v1-1-165f7e79b0e1@ixit.cz>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20251109-qcom-cphy-v1-1-165f7e79b0e1@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5fbe9d10-5d6d-404c-8f47-e4a12ebe7eeb@ixit.cz>
+X-Proofpoint-GUID: ateASmR3kffHCy6ZY9wwMx_ZropYw29u
+X-Authority-Analysis: v=2.4 cv=PL4COPqC c=1 sm=1 tr=0 ts=69124bab cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=uFkZ6A_fq3OJCtIxTy8A:9 a=CjuIK1q_8ugA:10
+ a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDE3NSBTYWx0ZWRfX4+jjo43q2Bef
+ 3jJfoD7gD0dPWVl0hz1WUXHtnMhVUUb00R3AKFdcLJVC3wgTMyFYQo1SSZIxDt/Vt8AhXqcmLsh
+ 4+GqThWN6RbcKFIT0AIlEE/h0P6OtcmD7so78m2wy4cwjvYjk4HtM7+QpLWq5cI/ek3E/ciAFC0
+ fBwGHhFUcaCkBx2xpNmYn8yiXn5Co7virfO6l2Kt20prtbdfGFejkhvLspPzYIj55hH9+WgBg6k
+ lQPe+EUzcS5ni+/ypWPtwRqz5URIXq9y5X/pR29aslgF8CWpHqmJt2yvwiBWkONk4eeSKtoNP37
+ ZhFqaSTjb7uyeokSUbL4dU2/pxWEnca+NjbkrJZA0yFOx6ghPirpGPRCgPT+u7B2jArXsXf6FOg
+ hRpkYtXdOd10F1R9AK8RovCxzzmlgg==
+X-Proofpoint-ORIG-GUID: ateASmR3kffHCy6ZY9wwMx_ZropYw29u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-10_07,2025-11-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511100175
 
-On 11/9/25 11:39, David Heidelberg via B4 Relay wrote:
-> From: Casey Connolly <casey.connolly@linaro.org>
+On Mon, Nov 10, 2025 at 05:04:35PM +0100, David Heidelberg wrote:
+> On 10/11/2025 16:58, Dmitry Baryshkov wrote:
+> > On Mon, Nov 10, 2025 at 04:37:46PM +0100, David Heidelberg via B4 Relay wrote:
+> > > From: Dylan Van Assche <me@dylanvanassche.be>
+> > > 
+> > > SDM845-based Oneplus 6 and 6T have their own calibration files
+> > > for the WCN3990 WiFi/Bluetooth radio with the ath10k driver.
+> > > Add the calibration variant name to the DTS to reflect this to
+> > > allow using the calibration files from linux-firmware.
+> > > 
+> > > [David] Adjust the compatible as ath10k-calibration-variant is deprecated
+> > > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > ---
+> > >   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
+> > >   1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> > > index db6dd04c51bb5..a0c2f6efec59d 100644
+> > > --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> > > +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> > > @@ -929,5 +929,6 @@ &wifi {
+> > >   	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+> > >   	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
+> > > +	qcom,calibration-variant = "oneplus_sdm845";
+> > 
+> > oneplus_sdm845_6? or oneplus_6_6t? SDM845 is too broad.
 > 
-> Add a PHY configuration sequence for the sdm845 which uses a Qualcomm
-> Gen 2 version 1.1 CSI-2 PHY.
+> I verified with https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath10k/WCN3990/hw1.0/board-2.bin
 > 
-> The PHY can be configured as two phase or three phase in C-PHY or D-PHY
-> mode. This configuration supports three-phase C-PHY mode.
+> $ strings board-2.bin | rg oneplus
+> bus=snoc,qmi-board-id=ff,qmi-chip-id=30214,variant=oneplus_sdm845mmm
 > 
-> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 64 ++++++++++++++++++++++
->   1 file changed, 64 insertions(+)
+> $ ./ath10k-bdencoder -e ~/Downloads/board-2.bin
+> ...
+> bus=snoc,qmi-board-id=ff,qmi-chip-id=30214,variant=oneplus_sdm845.bin
+> created size: 19152
+> ...
 > 
-> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> index 619abbf607813..f28c32d1a4ec5 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> @@ -144,6 +144,7 @@ csiphy_lane_regs lane_regs_sa8775p[] = {
->   };
->   
->   /* GEN2 1.0 2PH */
-> +/* 5 entries: clock + 4 lanes */
->   static const struct
->   csiphy_lane_regs lane_regs_sdm845[] = {
->   	{0x0004, 0x0C, 0x00, CSIPHY_DEFAULT_PARAMS},
-> @@ -218,6 +219,69 @@ csiphy_lane_regs lane_regs_sdm845[] = {
->   	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
->   };
->   
-> +/* GEN2 1.0 3PH */
-> +/* 3 entries: 3 lanes (C-PHY) */
-> +static const struct
-> +csiphy_lane_regs lane_regs_sdm845_3ph[] = {
-> +	{0x015C, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0168, 0xA0, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x016C, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0104, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x010C, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-> +	{0x0108, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
-> +	{0x0114, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0150, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0118, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x011C, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0120, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0124, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0128, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x012C, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0144, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0160, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x01CC, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0164, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x01DC, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x035C, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0368, 0xA0, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x036C, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0304, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x030C, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-> +	{0x0308, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
-> +	{0x0314, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0350, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0318, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x031C, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0320, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0324, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0328, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x032C, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0344, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0360, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x03CC, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0364, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x03DC, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x055C, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+> Since OP6/6T should have same WiFi.
 
-You may find it be more structured, if the array is split between
-0x01zz, 0x03zz and 0x05zz blocks by new lines, each of those three
-blocks is a configuration of one of three lanes in total.
+If it's in, then we dont have other choice.
 
-> +	{0x0568, 0xA0, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x056C, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0504, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x050C, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
-> +	{0x0508, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
-> +	{0x0514, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0550, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0518, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x051C, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0520, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0524, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0528, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x052C, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0544, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0560, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x05CC, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x0564, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +	{0x05DC, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
-> +};
-> +
->   /* GEN2 1.1 2PH */
->   static const struct
->   csiphy_lane_regs lane_regs_sc8280xp[] = {
 > 
-
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> David>
+> > BTW: Were those board files sent to the ath10k ML for inclusion?
+> > 
+> > >   	qcom,snoc-host-cap-8bit-quirk;
+> > >   };
+> > > 
+> > > -- 
+> > > 2.51.0
+> > > 
+> > > 
+> > 
+> -- 
+> David Heidelberg
+> 
 
 -- 
-Best wishes,
-Vladimir
+With best wishes
+Dmitry
