@@ -1,149 +1,161 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A772571DD
-	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 15:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADB9274B32;
+	Mon, 10 Nov 2025 16:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762790352; cv=none; b=sNSCQhfHV84vP9/S0sqopdfHGjba/M0LjiE+zMvtO5+zGzN7qA0mjGk5gWu3Gv7QE5ZoSJlrCWoiJoGCiCSA0ZtqwHnDci5TbwDWO0quLWx+KwV82XKwZO2dYlD48y+sFjVyiE4gr8LqM1qMB1FgxkYNPXm4O8EEpRU2lu5XINY=
+	t=1762790688; cv=none; b=SrvP3LuCxedv+TwxN9eGl0/Wo8+PbOFt7/AO4WaEHJPtzwZpUUq1X620NZqEEg3ddghAYDxYyKAsBOi9hTYrJ2PeM0APCQPyr0woeRpsUkvRr9FJPatxbQEN4AJmt2qwJsDXCL/LOy/Iielyx6z8p+qps9umJF7JQhSsRVa8sOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762790352; c=relaxed/simple;
-	bh=MRx0liLxwwjdaqyTRdesnQ7CY2LbmOfssXBSH9YMeyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EWTNRgxsaOKHcga7NHX74M1PKeyiw7gYha6Ni6twv/J4gGMDhcDFUaBdN3NitY8XrIleR2KZJ6R1Q0VZ7Pbc6t/w9ZbBwPZlpLbcmKo0eak9Zgh0M3rjO/oT0oYP45UoC6KKzCKtgKAkPpIpg4HQs+mq64XxWQKsI7F18hVy+FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OIehK0CL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QJiZejO+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1762790688; c=relaxed/simple;
+	bh=kv4Vq5wtS3JRrjbQqkk4nTAvEfRYYDNfg2iKngv5+Kc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bZho2gKO11uBJIxEBQP3BGDKU6GTRC1r/TYhmVwMH1FAJFyInbuNpkRO4Lr/EMQcyoLwlMWU2NM/sWjk7JuWEgYNUllskOBW3HYMO2ScOPKismsTGS7j1a39AZ6pzfRwvRWtbi+1EBc10Slv82Cay88yI+rZl/710pPhgM0L5mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=OWoTnNo+; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OIehK0CL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QJiZejO+"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AACMuH13306789
-	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 15:59:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=t44ZoX+OCNSqApq3I3ABJHbi
-	eiUu0iSqHG34zLANGOQ=; b=OIehK0CLRG0uaZdEa2h0EyqOKPKYYgur28MTqYFv
-	DLIMJaq9w0RsEFJgw3qYbBWRdtkMfm6ta6+sd0KG1kSQnKdXe4iKatb8hz78uFbI
-	kqgS7KiYf62njySyApWs1mJlFLI85dUXG7exAnUjkSBPfVcHVXdS4vhhz2fP1F2w
-	A2yoGRR1HgX+5UJm6cH+Mw2ZkZI5YnpaFDmKJZFBqd0hFv9CjLIDTdjPwlSaCmQp
-	l2hwzM3aFNhsutHpBM1HnBh/xpsIL2+YEH2XmodANjOuNQVqgeMsUB9/9ZdgxY78
-	xz9ZOEkhn3H5V2XjmgEhse9LBo4EnixiNLQUY1gKaXVebA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4abg0q8mav-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 15:59:10 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4edb31eed49so36260261cf.2
-        for <phone-devel@vger.kernel.org>; Mon, 10 Nov 2025 07:59:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762790350; x=1763395150; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=t44ZoX+OCNSqApq3I3ABJHbieiUu0iSqHG34zLANGOQ=;
-        b=QJiZejO+5B9kY/5X2RMI1fDhH14jalupka0PeayZAI6vO6WQWeSbhH53pfD36otqKk
-         AW6eBc3hSxnrqqnVewVIKU5lVV7d7XR+43oIUiHo2H/U9pW9oU4t3JlSvG1bNdIc6UsF
-         guLpEY872+42FhNu4lYBl4s8J8gRDySZDbv9OWfeLhRidqkNPoyECtYGk+6VLY0t8RCA
-         u/IC+dCgsdI78jI45OkpsURugT6H/znmjBztrfGqBQF4k5jUcX8f+MNQlliI1MnJYKF+
-         04FIH5wMsVwdxIyGm+WV2ETN4OQ81ORkqROobyQT5qYJlD7eTinD21EsEX6/QtxY8Wv+
-         mcDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762790350; x=1763395150;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t44ZoX+OCNSqApq3I3ABJHbieiUu0iSqHG34zLANGOQ=;
-        b=ULwIK0vhpYHrWuln3yXc21bA+y8OQlTW8czIKsMmmJ19147tRUIctopL3NbtjZkwWY
-         lNhipz/8YIpyMGMlUCu9b/IGlHGeykwXJBY2CGOqxoCPdDw4QRqDx2ul+/yiCC5VBL/9
-         VyBCR4CMGpF3zceoONa6MPz1bjM5a+hufVVUfAZvqekIPSrkK0c58u9VscXts5GCQE97
-         V3v5Ww30ctFB4PIC7CE/7wlMMMLX9iw3RIy4dca2BhN9YkzEU7FUMM1xvaq/mg+QpD5y
-         BuMdCXtjY3dJyVnzYT3er56HJOr9aA5hVKN4nfg8RpHLmrOG/UaTG6Ilo4oYZK0VVEK7
-         2jeA==
-X-Forwarded-Encrypted: i=1; AJvYcCXV4NTfUgtlEadAvFov/jmWN71yhZwZLYBXQ/ZwGr2VV+mBnE5Fuhjl1eBZ46fwdk3/vq7uZ1beOcwK5A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0JbKMyT9VFfZcIA/dNs7I3r6URho6I7wKZXwjrv+dE7WN1iAF
-	ikCtli6/xnCA4xTVjjvOCKC5xxgV2R8i3/63OE3aL3etuCM5X5WfyWvWeEcI4yb9Q96Zr34Dr1U
-	9BZ+c4Cl1wFPOU593IuE03J6pI6A1XncvgZh1KcifdS2DdZX/3QLpQC5svuAmw2Rp/w==
-X-Gm-Gg: ASbGncsToGc7WuR4eCAmGfpRcmQkd8e693oJx7X181+FOIz6riKnSqtVDYUKHK3jO/n
-	/1uWSgc/17zK9RXMQqffmD5JKF7quigYzX3aAKNDeP75dzW+Hq+9y63THAOqsUDWZKTrWw0otHk
-	zYh1EZqQPP7tzTAH/2F3qiWQN/aDjuWpCxpGaEsNH1HOM7R6YZYBp/LNjpHLjql0E31WZWgEAoi
-	0EpUXthKgqJGV90MYWv5+ItOj7b6RVysxQCZYwsJ7DeBAMG8PWJTz4syJcxs/6bKktgDJHXsLGt
-	8yV1XqpznsofXTSAprZnN06KqjMLuoWfLquUxGFlvxbqg0jnGoarQVPF1Wtb9B0uWfRT7VW55eF
-	IDmY+K2/PUAoK5wE2tCZ14EOflfF/q4ZBSmRl88mNySPjp7w3JzuFmJVwOAMIuDZQV6P5Z6f/hQ
-	0vcdPKWGruxI6F
-X-Received: by 2002:ac8:7fd3:0:b0:4ed:635c:17dd with SMTP id d75a77b69052e-4eda4e9fae0mr109401531cf.21.1762790349675;
-        Mon, 10 Nov 2025 07:59:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGyG1JLLeUFIOUuxfZXg9+JKwbDXX/NfxH3k4+DgtgJPW110VLxhoWxeZqyBAiRTf2OAuPWlw==
-X-Received: by 2002:ac8:7fd3:0:b0:4ed:635c:17dd with SMTP id d75a77b69052e-4eda4e9fae0mr109401161cf.21.1762790349240;
-        Mon, 10 Nov 2025 07:59:09 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a5930edsm4080456e87.94.2025.11.10.07.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 07:59:07 -0800 (PST)
-Date: Mon, 10 Nov 2025 17:59:05 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Dylan Van Assche <me@dylanvanassche.be>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: sdm845-shift-axolotl: Add ath10k
- calibration variant
-Message-ID: <wbe6z6z4q6xnbw4otq3vy62iepgsb6rf42sldkrsap3n547abk@ako6cd4tzryu>
-References: <20251110-sdm845-calibration-variants-v1-0-2c536ada77c2@ixit.cz>
- <20251110-sdm845-calibration-variants-v1-3-2c536ada77c2@ixit.cz>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="OWoTnNo+"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 143AE5341253;
+	Mon, 10 Nov 2025 17:04:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1762790676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zO8m+PMVGX7GOfax0A/1JrTYsgZuiAvHWe2nRQ/tu5w=;
+	b=OWoTnNo+q8W5cqAnQpq53M8qrztwUTo4afiD3TcwTbjIUl16MdTmEfaqzNpY68GS3RjeVA
+	KUHMobhG1g3oYsdkBLbWR8lchCc1pMK9j6CDoRCgsjUuWKFw/pdDnSk1/BaO8CApPpQT2V
+	AfsKKH26lfvUs77lgbIM22Hrvl5LXig=
+Message-ID: <5fbe9d10-5d6d-404c-8f47-e4a12ebe7eeb@ixit.cz>
+Date: Mon, 10 Nov 2025 17:04:35 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110-sdm845-calibration-variants-v1-3-2c536ada77c2@ixit.cz>
-X-Authority-Analysis: v=2.4 cv=D6JK6/Rj c=1 sm=1 tr=0 ts=69120bce cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=VnAOb1fkWFh9DQKIKVgA:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDEzNSBTYWx0ZWRfX3fMLg5xN0xnx
- iN0gU1aoWD7CRee3hv3l9tI5BQSMuBALyPmbDRN0RzY5PP5kFQsWe6h8CBeNxbg+hBdjD59njl3
- axeefRxaWqENOXO7Uj6W0l3aAZfMPg+KvEblhYxZq7lb70IgRjhOv66dpwVT1S2uRQMs6gFGxiz
- aeR2I0DAamx45Z1ce+kv09YNA00miqcsvSyIDCIsZCYw5GHtVvi4bb/saMh2RL1khk7JaU9zN+6
- KcSVe8dWG1yL5DSU+71+oaJOXZdsTPvYNf19Y/v37/HitoL/qmONhYfU394ou+lZJJuNXZJdAAY
- zIAVo/4+4sp4e5FktKskuHiAfjUkai5B+1GBl2PgsD5Y/CPP7+tnhaKTVfzwd1yYSqaZAZs46Vb
- 84Suay+FJwCFMG7TWLqDUuBwwWANPQ==
-X-Proofpoint-GUID: VE6mYfes6I0BvH0C4AAhPEtZj-ZFhMcg
-X-Proofpoint-ORIG-GUID: VE6mYfes6I0BvH0C4AAhPEtZj-ZFhMcg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_05,2025-11-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1015 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511100135
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: sdm845-oneplus: add ath10k
+ calibration variant
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Dylan Van Assche <me@dylanvanassche.be>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251110-sdm845-calibration-variants-v1-0-2c536ada77c2@ixit.cz>
+ <20251110-sdm845-calibration-variants-v1-1-2c536ada77c2@ixit.cz>
+ <wqjil4hhrbsozvhwdf355dqpwu736z4x2nwnurug2bpx23ed3g@c4shkwfyohky>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <wqjil4hhrbsozvhwdf355dqpwu736z4x2nwnurug2bpx23ed3g@c4shkwfyohky>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 10, 2025 at 04:37:48PM +0100, David Heidelberg via B4 Relay wrote:
-> From: Dylan Van Assche <me@dylanvanassche.be>
+On 10/11/2025 16:58, Dmitry Baryshkov wrote:
+> On Mon, Nov 10, 2025 at 04:37:46PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: Dylan Van Assche <me@dylanvanassche.be>
+>>
+>> SDM845-based Oneplus 6 and 6T have their own calibration files
+>> for the WCN3990 WiFi/Bluetooth radio with the ath10k driver.
+>> Add the calibration variant name to the DTS to reflect this to
+>> allow using the calibration files from linux-firmware.
+>>
+>> [David] Adjust the compatible as ath10k-calibration-variant is deprecated
+>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> index db6dd04c51bb5..a0c2f6efec59d 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>> @@ -929,5 +929,6 @@ &wifi {
+>>   	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+>>   	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
+>>   
+>> +	qcom,calibration-variant = "oneplus_sdm845";
 > 
-> SDM845-based SHIFTPHONES SHIFT6mq has its own calibration files
-> for the WCN3990 WiFi/Bluetooth radio with the ath10k driver.
-> Add the calibration variant name to the DTS to reflect this to
-> allow using the calibration files from linux-firmware.
+> oneplus_sdm845_6? or oneplus_6_6t? SDM845 is too broad.
+
+I verified with 
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath10k/WCN3990/hw1.0/board-2.bin
+
+$ strings board-2.bin | rg oneplus
+bus=snoc,qmi-board-id=ff,qmi-chip-id=30214,variant=oneplus_sdm845mmm
+
+$ ./ath10k-bdencoder -e ~/Downloads/board-2.bin
+...
+bus=snoc,qmi-board-id=ff,qmi-chip-id=30214,variant=oneplus_sdm845.bin 
+created size: 19152
+...
+
+Since OP6/6T should have same WiFi.
+
+David>
+> BTW: Were those board files sent to the ath10k ML for inclusion?
 > 
-> [David] Adjust the compatible as ath10k-calibration-variant is deprecated
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 1 +
->  1 file changed, 1 insertion(+)
+>>   	qcom,snoc-host-cap-8bit-quirk;
+>>   };
+>>
+>> -- 
+>> 2.51.0
+>>
+>>
 > 
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-
-
 -- 
-With best wishes
-Dmitry
+David Heidelberg
+
