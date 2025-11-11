@@ -1,243 +1,114 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6A2FE050
-	for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 09:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7F83A8D6F;
+	Tue, 11 Nov 2025 12:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762854929; cv=none; b=N1lkjAWTutNSfgOYl8jleqB/uWVyE1bSeA94rQ0gk+so1L/Dz4nnjRBF+a/fGkMEbqNKxPjzUUZTl2Og029DUtwoqs77FZDfCnx7UX6KNyAv9Hpk9F+nYudWFu05Anyn0tBK8lCXru1v9B+NdwAh2TfTtN6CmYi4McBxNthhbYk=
+	t=1762864464; cv=none; b=Clzqump8helcoFZAzJIDRwIZ80sMmqMdtwkrTEC2wTk4WMQjR1ndGX3SQr2cWprC2fn9W82vMf5L22sU0QQPwCkrP0ZHWOyHi43e//CcAY1kGoXsHM/CBv8re2zAKmF1WJ5NjF+tsL2L1UYAUyT1gCpF+9ICI875VVi2tJfsP2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762854929; c=relaxed/simple;
-	bh=ikmwxJCg1ZLSESW1vFDYmoPNouGfZa1iKRO+80wj/dI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=bmHGwhMoZyntA4zaLEMhOQRXVwF1rI7mMfCuCXm3xzOCXUDpMsIZV7MT4VyuhNdi8LmuGLt+52SYAVUU9oBJkqBjKPIGfisjS+1RGyc4O7wtaAKcrr0jxlUB0yMbUul9mpkre8ocB+jhr73rj5xDznL4P9rwwVqDbK67qJBDsZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=NKa8NKkh; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1762864464; c=relaxed/simple;
+	bh=oJHHP/sCumz0LK6v3+qYS89WnkQEB+RP1IS+56P1ZN4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k8q1FWzcVHg6mFkA9hpO5LGFKvXxHTdCOle1f+6JRj+h6TPEmTa+wXzCbV/En/UEva+eOpskya+KgZAQ/SCX2fUK2FIR66WfCqczUDSnqywoQU3gDWPf7utCaSpqV3sl+PU6zj4K87qxjR/K+ZWsTvzNKhWHarS/dsFouKC5+Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oc6cH8e7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="NKa8NKkh"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b72b495aa81so473197966b.2
-        for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 01:55:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1762854926; x=1763459726; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M2ATN+bGUhg0lzB7rPv/DY/EzdDRNtMpVBUFmN1EQDQ=;
-        b=NKa8NKkhV/aQr8RU2FU4ajOF1C1LYrn0mVMhMBWfMla72BJUwKGX/kmRC+YHRKU/v4
-         tUtmpnwhslkoiU8XivnpgDLO3Hmxj/QM6fINzPqH3RLvOJi4pjGVdwL0pnEUgNKEmwl/
-         7tbzu6MqQmLkaNdQHteRAlk6ID49fCZifrGchvtmw4BTIbjWcZ0dbkgggpmg7Sq/IiBN
-         ObR8ZLXHm9w/XPJ2pXQZr8tSWztIPTkZcUtSezYR04NWG5yHBW9vfDTbMtHyLeWvANh7
-         AWaa1QUBTgFWhm1GXgc7t+GkLfW1vPLSkBYzxgGEE4EQwwYPib9rsMzRYr4hcDFpVu9l
-         hPAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762854926; x=1763459726;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M2ATN+bGUhg0lzB7rPv/DY/EzdDRNtMpVBUFmN1EQDQ=;
-        b=SfmPlfINY04ANzbVhGwVJGWmKz5jFKJNUFb3HQJCUTzUgCWtquBUBhnfnMQ+K35uvk
-         hUXKMzyxiQsbs+XJccEgbZvtHfi0ZIC0lO88lu6tJlcbBTCO6XGr/9rJ3J2Ue/OpP7Ao
-         XsAFaxjEoi0uBE89mIJ1xiff3bH3eICtpl0mvbtPgICzTIDD0bGonxRrJr3yvFy2y5sW
-         ENZUcXBVaYRw0GzXFch4iq4j3HjojKtzu4sq37EJztvGL9vbM04c2/DkgaaTYZ8ZN946
-         H8k8ZKgmRiPcnblT05aAiPp9PTIfmA7io5W7LGHvBgG0SQwrdzigaP8Hj63HyXwXj5WF
-         DEqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvLIqSTetexBhGv5RDhaFiIQUbDPLcneLbFPCCNXJc6rdrr1YMWcRdVpe5UEyPgDw0MusD2bl/RdEJjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDYPkEtUoms1Vp1wedWdu2WTvMjzWZIvfWGk/b5yxJNx05LEAg
-	1yHaSSD5C7zkomVmaecMYK18YdjB6LlNShj1hPWIl0cE9tUXX/9DmRXrg0ikFJ5tz28=
-X-Gm-Gg: ASbGncumJYuumUJHxwbRhrqCOREdcCj8bSTIAScZ2SFKP1JGiwEJ5Juc57vhQQgDsgR
-	QmiU+HNazcncFxB4JZ+ylRcx3oxbtxOMs5JwEEIU0A21hA3twYwXzxwFktLYHvUB8Rd0mdWxf2z
-	MrIn8xlrYHfkSoEWru/SoIFtbTRN/vEZwPopMTLy8KbKMym1CfJDQKxihfli/CQht4JXKecv7gX
-	SGaQzhVIGy/BaUk7n9mCTBZrqH+PqrK0WRVbUk/v5jDtMg0/RnUTENUkMFx5MsA2UHgFd3IzuMf
-	BIiYtUMbeFzQ84jdS41eXvc6OZBwzMDFpbuNhhOWmDTHnJgF1TXbRd15tiwfuDWrJeO8C5fUYcS
-	Pb1sZ+aea2X/C4MoHFQ1d6WXyVGTdDxul/il8U2jp5UJaEZsTl8cwOEKXvhU8QCl34rOdPZSFsd
-	kqNOMpHfRZqbiPWdtlivLm+p2I0hr/FLfiuJI1c7EPXqZzHg==
-X-Google-Smtp-Source: AGHT+IFd7IWB5Eka+rG7ifQ3BCS7qWlZKrkijP0KIzSAfFqPdX40qriRD00IqCgbFvUrI4yU9T8osA==
-X-Received: by 2002:a17:907:a0c8:b0:b3f:9b9c:d49e with SMTP id a640c23a62f3a-b72e053f2b5mr1175658066b.57.1762854925879;
-        Tue, 11 Nov 2025 01:55:25 -0800 (PST)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bfa24d14sm1302472966b.74.2025.11.11.01.55.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Nov 2025 01:55:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oc6cH8e7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B7A4EC116D0;
+	Tue, 11 Nov 2025 12:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762864463;
+	bh=oJHHP/sCumz0LK6v3+qYS89WnkQEB+RP1IS+56P1ZN4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Oc6cH8e7DPj0WRd5lF6kMjyhTnXrbZ0cFAuJQ2CoPz4pAHTJ6extkgRWGELdsWDY2
+	 M+/35dCCMndnfmELsptsWRWxxa/55ZCXZ3dxQuaRyUrGdd50UABnUqf3+53QOoW/cN
+	 KG3mTIi/m+dZAcxmJPbJf8v3WHVOT+2SzJmZflkMO7Dgrs7vYqLP3n4Rf8nBht1BDY
+	 aegu8EJTVWblyh2Zj0Vdu8Dr4EU+dNmgad76qCfKmTeZrofAWHnC+m06P7055NVzD4
+	 YMueVXdzAdaNfCHcHtimhT8w9LGongayuoubOmYGoZ6/dX8AgONWbdHGs+u1WrfBkm
+	 2nRiyxZBLbJgw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9204CCFA18;
+	Tue, 11 Nov 2025 12:34:23 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH 0/2] ath10k: Introduce a firmware quirk to skip host cap
+ QMI requests
+Date: Tue, 11 Nov 2025 13:34:21 +0100
+Message-Id: <20251111-xiaomi-beryllium-firmware-v1-0-836b9c51ad86@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Nov 2025 10:55:25 +0100
-Message-Id: <DE5RX0J5U1NY.UA143VCNT9IE@fairphone.com>
-Cc: "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Casey Connolly"
- <casey.connolly@linaro.org>, "Alexander Martinz"
- <amartinz@shiftphones.com>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Konrad
- Dybcio" <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 3/6] arm64: dts: qcom: qcm6490-shift-otter: Add
- missing reserved-memory
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Bjorn Andersson" <andersson@kernel.org>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251009-otter-further-bringup-v2-0-5bb2f4a02cea@fairphone.com>
- <20251009-otter-further-bringup-v2-3-5bb2f4a02cea@fairphone.com>
- <3ryhntdf52cukvcbfad5prlggqsee54nsf7us6hdd5h5f73pog@yrgo6o6j22gw>
-In-Reply-To: <3ryhntdf52cukvcbfad5prlggqsee54nsf7us6hdd5h5f73pog@yrgo6o6j22gw>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE0tE2kC/x2MQQ6CMBQFr0L+2p9QVDRexbio5RVeQsH8BsUQ7
+ m7j7GYxs0mGEVlu1SaGNzPnqYg7VBIGP/VQdsWlqZuzK+hKPyfqE/YdRy5JIy19vEG7qzueAtp
+ LRJDSvwyR6/99f+z7D62fNEJrAAAA
+X-Change-ID: 20251111-xiaomi-beryllium-firmware-d8134ce67fec
+To: Jeff Johnson <jjohnson@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Joel Selvaraj <foss@joelselvaraj.com>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1304; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=oJHHP/sCumz0LK6v3+qYS89WnkQEB+RP1IS+56P1ZN4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpEy1OwcfWAIeMvcoH7yTxn6/FgW06G7MYu7TJ9
+ 3Wdp4Q589SJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRMtTgAKCRBgAj/E00kg
+ cvrkEACqwypCmP83LT1ayifRqq1ffXXYD3H3G5YV2cGif21zY5CAORRr4/wJpFuiwuyjT6/NZXy
+ /ejAlrVl321fcHwDGZBKjdnWfckKbbS9CQlfWiCjfO4AtEemlMXr5pkSqx95KzX1CdFKyVxofqt
+ dTut69E0VaYPwx5epvtVlBWpBZMym6h3x4kKguwRg34za1d2PKu6J/vT2O2Hgo57y/hsnasQELe
+ qjA2y36mo0pxc9KvjZJcFX3RCbUSi+rJGsEglSKPo0fqmfBmzxcvLZNwz3UIyZoZ6qlvgspH5FF
+ DclCcuAwl68HaSLxqi3ZM+QtZY1IJUEyRBVqZH7xu65bzKAUJlQ1w4Okx66Mu1IlVOrNYcarggS
+ frzdCVSi6QtTCSa6FhOQwAmCgoM77DqFnFZ0IeOoncU8Ul34GPsZEA1Muc3MkYNr7Ukj/gSwZNg
+ kRnlKjBxUU5HzUmypt2ai6UbbG6Yb3UFDMvlIoUnA5GiLycUPWqmwuo8syHZvdYOyBn4ZRmcqDu
+ WiJzK251OOXpU2p/lBNfniLKr5Q1L4k+PUIZDG9r71kDnNrjvYLj8L3pTR5fhKFCjBtaL36Pxgx
+ py/Y+oAhfY41AiU9MT+wuLT9+1tCM1EYfTiSWwzAGCg0ix3TIzc2yqa1e6Oe/8xRtjcoLsRwxKp
+ q/9mhNW7f+Drgtw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Mon Oct 27, 2025 at 5:45 PM CET, Bjorn Andersson wrote:
-> On Thu, Oct 09, 2025 at 11:06:33AM +0200, Luca Weiss wrote:
->> From: Alexander Martinz <amartinz@shiftphones.com>
->>=20
->> It seems we also need to reserve a region of 81 MiB called "removed_mem"
->> otherwise we can easily hit memory errors with higher RAM usage.
->>=20
->
-> If you make sure CONFIG_MEMTEST is enabled, you can boot with memtest=3D1
-> on the command line to catch such issues, without relying on "higher RAM
-> usage" (or randomness).
+It's follow up of recent discussion from
 
-Good idea, ran it now and no issue seen.
+https://lore.kernel.org/all/20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz/
 
-[    0.000000] Machine model: SHIFT SHIFTphone 8
-     <...>
-[    0.000000] early_memtest: # of tests: 1
-[    0.000000]   0x0000000080880000 - 0x0000000080884000 pattern 0000000000=
-000000
-[    0.000000]   0x0000000080894000 - 0x00000000808ff000 pattern 0000000000=
-000000
-[    0.000000]   0x0000000081800000 - 0x0000000086700000 pattern 0000000000=
-000000
-[    0.000000]   0x000000008ad00000 - 0x000000008b200000 pattern 0000000000=
-000000
-[    0.000000]   0x000000008b710000 - 0x000000008b71a000 pattern 0000000000=
-000000
-[    0.000000]   0x000000008b71c000 - 0x000000008b800000 pattern 0000000000=
-000000
-[    0.000000]   0x000000009c700000 - 0x00000000a0080000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000a18b0000 - 0x00000000af41e000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000af43fe53 - 0x00000000af61f000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000affff000 - 0x00000000b7100000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000c5100000 - 0x00000000e1000000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000e3300000 - 0x00000000f8500000 pattern 0000000000=
-000000
-[    0.000000]   0x00000000f8b00000 - 0x000000037e857c78 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857ca7 - 0x000000037e857ca8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857cd7 - 0x000000037e857cd8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857d04 - 0x000000037e857d08 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857d34 - 0x000000037e857d38 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857d64 - 0x000000037e857d68 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857d94 - 0x000000037e857d98 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857dc4 - 0x000000037e857dc8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857df4 - 0x000000037e857df8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857e24 - 0x000000037e857e28 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857e54 - 0x000000037e857e58 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857e84 - 0x000000037e857e88 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857eb4 - 0x000000037e857eb8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857ee4 - 0x000000037e857ee8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857f14 - 0x000000037e857f18 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857f44 - 0x000000037e857f48 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857f74 - 0x000000037e857f78 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857fa4 - 0x000000037e857fa8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e857fd4 - 0x000000037e857fd8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858004 - 0x000000037e858008 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858034 - 0x000000037e858038 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858064 - 0x000000037e858068 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858094 - 0x000000037e858098 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8580c4 - 0x000000037e8580c8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8580f4 - 0x000000037e8580f8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858124 - 0x000000037e858128 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858154 - 0x000000037e858158 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858184 - 0x000000037e858188 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8581b4 - 0x000000037e8581b8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8581e4 - 0x000000037e8581e8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858214 - 0x000000037e858218 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858244 - 0x000000037e858248 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858274 - 0x000000037e858278 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8582a4 - 0x000000037e8582a8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e8582d4 - 0x000000037e8582d8 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858304 - 0x000000037e858308 pattern 0000000000=
-000000
-[    0.000000]   0x000000037e858334 - 0x000000037e858338 pattern 0000000000=
-000000
+doing the workaround directly in firmware, so we don't pollute
+device-tree.
 
-Regards
-Luca
+I added the change needed to be done in Xiaomi Poco F1, so it's grouped,
+but I'm open to getting in first commit and sending the second later,
+when all firmwares and tools changes land.
 
->
-> Regards,
-> Bjorn
->
->> Fixes: 249666e34c24 ("arm64: dts: qcom: add QCM6490 SHIFTphone 8")
->> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>  arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 5 +++++
->>  1 file changed, 5 insertions(+)
->>=20
->> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm=
-64/boot/dts/qcom/qcm6490-shift-otter.dts
->> index 0d331bda4a82..31650c29b1ca 100644
->> --- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
->> +++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
->> @@ -118,6 +118,11 @@ cdsp_mem: cdsp@88f00000 {
->>  			no-map;
->>  		};
->> =20
->> +		removed_mem: removed@c0000000 {
->> +			reg =3D <0x0 0xc0000000 0x0 0x5100000>;
->> +			no-map;
->> +		};
->> +
->>  		rmtfs_mem: rmtfs@f8500000 {
->>  			compatible =3D "qcom,rmtfs-mem";
->>  			reg =3D <0x0 0xf8500000 0x0 0x600000>;
->>=20
->> --=20
->> 2.51.0
->>=20
+References:
+ - https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/780
+ - https://github.com/qca/qca-swiss-army-knife/pull/13
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+David Heidelberg (2):
+      ath10k: Introduce a firmware quirk to skip host cap QMI requests
+      arm64: dts: qcom: xiaomi-beryllium: Add firmware-name qualifier to WiFi node
+
+ .../arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi |  2 ++
+ drivers/net/wireless/ath/ath10k/core.c                      |  1 +
+ drivers/net/wireless/ath/ath10k/core.h                      |  3 +++
+ drivers/net/wireless/ath/ath10k/qmi.c                       | 13 ++++++++++---
+ 4 files changed, 16 insertions(+), 3 deletions(-)
+---
+base-commit: 2666975a8905776d306bee01c5d98a0395bda1c9
+change-id: 20251111-xiaomi-beryllium-firmware-d8134ce67fec
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
 
