@@ -1,163 +1,150 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D43E3246F8
-	for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 12:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5353C3AA188;
+	Tue, 11 Nov 2025 14:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762865223; cv=none; b=qOxx4Pxp8xM/JfL3vu3Rc8WMIZ2hj9Ciz67b+YXQEX9qMHg2OB+pWBk261S1gOcVG/vdtSGxXvZkia8LQP8Dn0S9eYtbz/1oYqie7fN0DXvhvBD8sPxG5z7krmyTUmWPulgyJChvb4hJrQ3OTjF4jfJG5lBU+f7zSEAnXcFQzec=
+	t=1762870992; cv=none; b=KJA01hVvX6OEJ4nq7D/Qb4W2mjIHOYNkQAAmD/A7TY0tzAk6uXKSatL92QWbICHMeCXpA0LmrA8zvxqFtg+nmw+48hjwXuAxY3TIdoDO5H/4uxSzZIpDV22lltOoMnIESJ1tm1p9ZfRzf9lH7dqHbT0nEeADhW908mA/2AnUMlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762865223; c=relaxed/simple;
-	bh=vI2c24xcDfLO+jj774i6XGCsjUpNaRMZS3K8xPM2Qr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tmXSzWEU3Cf/h+6TbI6W73Edu0Jkp6vOSw/frobzT4sbOkjZv+0Q2N1/6OMl+47ZmQTLq+khBHNcypHC/Xjx7pgluH4zqWP+oxcW4eQ3RoepBBlweqyDUyq0jIkwH290EuJz035fiNY39xoVAlrkiuwrptty3EofyLZ5tvcxzi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OQfOSgYR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=isCtypYe; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1762870992; c=relaxed/simple;
+	bh=JXf8KnlTQnnhWOmDcUTb33mz6JrZoKL/Nq7iglCzVL0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aJz2NO+GrzJ7BW8Maf6Ij8vxgaRfoUZPmBeFGBF4cIZ0bE2bB3iLKT6hdiAdcskQTgOI06LflReWRMxd2ii8i5NlHzMY6f08TF6ltvV/brF2d3WOxrcOQUT7pw5OdChx7BolAkFQZKH3ig8WH8mutzPdPOFCYzhX3yfxAWeE0rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=i8ayxMi3; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OQfOSgYR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="isCtypYe"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ABBGFpV2051440
-	for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 12:47:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=gcgrCPztTJBR65GQBdHRM8vG
-	IBP891DcZKanjQPvZlk=; b=OQfOSgYRI409fge3xzAPl1zyGh1B5qggKlE8dJ9t
-	7tGU0Iy6M3IpsQ7petXXseFGlD8E2Fjzu1/UXXq1xmotBXJ5PEtsxTlwh+OpV69g
-	Jd2CqZlRGXOD85TNRmKFGa6jgJYlo4dTgpQzM0kN51g6l01LlZbs9nJgpmTbTEOz
-	oYFhm6zy30mLObmBJyMilSLomeqaFxxlToA2AzNdqKBQSei/1kKkOr1TJHhaQZNk
-	E9It9O4+VrxAYgj151rDfZvzTmVsj+kMyPO+vGzD7/jnRhEGQRwS4bIvJnM71qtB
-	2AZsIUQWQt319t/kgHlprzALrj7ARmEAacxX0voP7QALMg==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ac11x0u03-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 12:47:00 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4edb927e4deso64392301cf.3
-        for <phone-devel@vger.kernel.org>; Tue, 11 Nov 2025 04:47:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762865220; x=1763470020; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gcgrCPztTJBR65GQBdHRM8vGIBP891DcZKanjQPvZlk=;
-        b=isCtypYewDqx3Xqp1Bie+YA2n4Eyke+4xOIX/aZFBsD3gA2z4Wk4IF9y5QCwDaLbis
-         UGU4ja2rWyGTu/6AHSU6wfIiOiy49fgQwZzW0kswmv+LIgHNgR02BRX1cSAzSyZqSLsU
-         72C/z79D8CbBbOBaVbtj71iYPW5eAhH3Mbajr63n34e9xvRDY7PAaE68vMmV3VJ64edK
-         UuswBH/pW5E91NcDS2IX9j9qFXVofF6ZrIKCoD13f83xhWo00FIX/aIoSgaOkG9GoVzy
-         uFb1vNMLvk5CX2A2GVttLGMionkbk6q5l25JZaafK4DyjtQr7velDN8kYt87Gss3V+D8
-         JS5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762865220; x=1763470020;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gcgrCPztTJBR65GQBdHRM8vGIBP891DcZKanjQPvZlk=;
-        b=NnfcuSedvJZ4WYd4CZu5TLP3Jpc2zuXEssINV5u5NflncGE167zdqRvE5jWNRI9rdt
-         1CDRRg9cv2rAMSw9LugZwzU3kUR1Jagab+M1RewtL07yFU5RXygbYvaMZUg3yCoUQ0g+
-         f1uJUszwfk/8hcn37aXxfAFduqaLDHLVqwMEcw4WpLTMBWOFJ7knrMC3/nLqWdy9GPne
-         iM/WGsn1PwMWQ9A/lincF+U9zi9cVWIDTX3IKkv0Omzxvv7cuPumb+BR2EVIUpbJfd3D
-         iAUAGHB3fv18sLecniye/whH4TqAUhqGq/z4kXOrQXlC9pO76yyhGI0BbJEGbZ1FPwQ3
-         X4Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUteRZ/a5LZc+930Dm8grgLmCSwEiFKWW19qDKNsSgJmcGNrK5wrtef//D4Xe0AMuFjTDXH0hNNbKMhew==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/g4n4iS1aLsjgnA+1EeImDJEqzPAdplBRr52nlohVdOnnQacb
-	2s5DborKcbty74mER0f0dKDmoymf9Wm4fJ0QAA4XACCdnQDPhAY8JCvHgVt2rkkr2IdPTwAdWZP
-	12S/J5A5zg9z3hbmtflW7K0HC5YehhCbQPfnN2NRHPKHRXgF2LBIg6LR7+iwylXih6w==
-X-Gm-Gg: ASbGncsOy1fmcBbYaiZWKrCA2d9Q5V3gfPHOX0Tpw0B9/JnnORFR+V4BnqBir4wa/zP
-	RRnr2QBLipGhkcxeBf2UHj8WXcFdOo0UNTdtsFRBTBJf/Imzdmv8eJfp8OWMB5Sdvwnf1SAwc+e
-	uwukyn7f6qsqXv6V/74LeZpSRFoYOEhci4praYyabiyb/DV1hYGzzqnUQlybkG8U40+p3BXBVWG
-	KgtqS7iNttBkFOix58zWrhntKM+j7wHy1BBfMX36v1yVsMQjlIKPRNdzaW7gG757kHEaHV1qDcB
-	YZBvJrMOKOMaASsgZKfR3YO3mFMs/PUHdT0plw3ZoyAP/Sm6YNtm6GMGf0STOTSgkyU0bvaqe0B
-	xOD04ViS6Y2XOp4R1/57o4DcORhOyzU2BJk5RECM6zi/+m/AJ0p2fA/I56/1giVmadcMXzzbdls
-	2WIzqjCtRxXjvD
-X-Received: by 2002:a05:622a:14cf:b0:4ed:5f45:448a with SMTP id d75a77b69052e-4eda4e8ca02mr155999711cf.6.1762865219514;
-        Tue, 11 Nov 2025 04:46:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhAlncYp5HpdTxD1HrQnjF1b0//yHkzKS+jDNKrjtjAklFMPHNI+T7aD4cdfUGmuDLd6rdcg==
-X-Received: by 2002:a05:622a:14cf:b0:4ed:5f45:448a with SMTP id d75a77b69052e-4eda4e8ca02mr155999401cf.6.1762865219022;
-        Tue, 11 Nov 2025 04:46:59 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a39eb32sm5013667e87.82.2025.11.11.04.46.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 04:46:58 -0800 (PST)
-Date: Tue, 11 Nov 2025 14:46:56 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Joel Selvaraj <foss@joelselvaraj.com>, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: xiaomi-beryllium: Add
- firmware-name qualifier to WiFi node
-Message-ID: <wxvtfyfdso3ngqvnhvryeo2w6udoolfp46smv2r3qny2cl7n4o@iawxfnj7qtrw>
-References: <20251111-xiaomi-beryllium-firmware-v1-0-836b9c51ad86@ixit.cz>
- <20251111-xiaomi-beryllium-firmware-v1-2-836b9c51ad86@ixit.cz>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="i8ayxMi3"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 6E2605340EF2;
+	Tue, 11 Nov 2025 15:23:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1762870985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fdk0kWYHlnURAj9xQ3vEcSRUSriPwv1YtYVjEkVAE8c=;
+	b=i8ayxMi3ozUSGACtQIvkKQ0trLl18d0PTcM1AX1Ta2WLy6LUDsaRwN9eekEZuaW4YQIs66
+	1XkdTLitNYaZN+2k1C4fIzbMHwWx+V5qsrEyG+nCimi5RuqvnJ7sCnhUgFYlRwWKsxRSNv
+	uu4CgiCPkwp0BgB00328FoZj9G5eh0c=
+Message-ID: <5c6a1434-1f43-4434-b6ed-0c5b98ee8d2b@ixit.cz>
+Date: Tue, 11 Nov 2025 15:23:05 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111-xiaomi-beryllium-firmware-v1-2-836b9c51ad86@ixit.cz>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDEwMiBTYWx0ZWRfXzV+0MSgLl7xX
- aO/SVLWRdPMlnozha/zK2kilnMQkmM/m63oW67HkKD/53f1B4sWbLfcry4BO0LEbtH+ZEin3Pqk
- yAyeoX0EGH+k400jYmSx3YMy3XeyvBMXFluxss/WYbR6W0h4kIHp0Tf2bX1ydJInaiWwE7hXMGN
- 1uB0O8AmM1XfP2KEiynIUYMdfXzwEIGLEfjZ2agd78J1BI4L8aFF669gSAqL9z9mfoEOrb6pKfY
- Jz0wVJKazlgz/L2FJSNAdi7e7BD0dVNsz9jbBSH9FeTScxxxRCXWA7GJOrdn3zR8OqdB2HYGklU
- uhEkgOK0KaOI6FO2Q5BMb5d2gUe7hpOrxwqGlFhE9IvURJqeNepUT1TbISGLKv1EliD0hsbBn2K
- 6hvGGCFIDLR7X20tEmFWnwCDegO4YQ==
-X-Proofpoint-ORIG-GUID: 3g_MF3wMJE3Iw96JcRRnh1Way44DNX67
-X-Authority-Analysis: v=2.4 cv=L94QguT8 c=1 sm=1 tr=0 ts=69133044 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=qG9Bp93c0gXLeqlDJoQA:9 a=CjuIK1q_8ugA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: 3g_MF3wMJE3Iw96JcRRnh1Way44DNX67
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_02,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- clxscore=1015 priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511110102
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: xiaomi-beryllium: Add firmware-name
+ qualifier to WiFi node
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Joel Selvaraj <foss@joelselvaraj.com>,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251111-xiaomi-beryllium-firmware-v1-0-836b9c51ad86@ixit.cz>
+ <20251111-xiaomi-beryllium-firmware-v1-2-836b9c51ad86@ixit.cz>
+ <wxvtfyfdso3ngqvnhvryeo2w6udoolfp46smv2r3qny2cl7n4o@iawxfnj7qtrw>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <wxvtfyfdso3ngqvnhvryeo2w6udoolfp46smv2r3qny2cl7n4o@iawxfnj7qtrw>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 11, 2025 at 01:34:23PM +0100, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 11/11/2025 13:46, Dmitry Baryshkov wrote:
+> On Tue, Nov 11, 2025 at 01:34:23PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Add firmware-name property to the WiFi device tree node to specify
+>> board-specific lookup directory.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> index 785006a15e979..9b0b0446f4ad3 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> @@ -631,6 +631,8 @@ &wcd9340 {
+>>   &wifi {
+>>   	status = "okay";
+>>   
+>> +	firmware-name "sdm845/Xiaomi/beryllium";
 > 
-> Add firmware-name property to the WiFi device tree node to specify
-> board-specific lookup directory.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> index 785006a15e979..9b0b0446f4ad3 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> @@ -631,6 +631,8 @@ &wcd9340 {
->  &wifi {
->  	status = "okay";
->  
-> +	firmware-name "sdm845/Xiaomi/beryllium";
+> This wasn't build-tested
 
-This wasn't build-tested
+Sorry, I wanted to send it more like RFC to get initial feedback, I got 
+user with Foco F1 who is willing to test the changes, so I should have 
+new version with T-b until EOD.
 
-> +
->  	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
->  	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
->  	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+David
+
 > 
-> -- 
-> 2.51.0
-> 
+>> +
+>>   	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+>>   	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+>>   	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+>>
+>> -- 
+>> 2.51.0
+>>
+>>
 > 
 
 -- 
-With best wishes
-Dmitry
+David Heidelberg
+
