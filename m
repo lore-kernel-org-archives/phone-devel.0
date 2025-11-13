@@ -1,117 +1,140 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A00727B359
-	for <phone-devel@vger.kernel.org>; Thu, 13 Nov 2025 09:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA6351FC1;
+	Thu, 13 Nov 2025 13:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763026082; cv=none; b=TornuD7IYReF7KHQZYGlxtoX6wutq831HLI2I90YO9pRrt5tUrOphmmX/E8s020N6iPIBvA3Jz8490qq4nW/MF5PguwU5curVPONUczRvXo9TUwK0IXpNi+eOM6XM7EsncfvsLonKborzdzmCvQY73XPsLcSy5wR1saSKWfjdxQ=
+	t=1763040412; cv=none; b=XGd8Gqg/FJl8xZPF+uS0mWdeEBbg4YHKeRcKaXmec1xjDvsnFhwVg9hCkAEmMkgtu2RPeZJiT2JRAUCcegmz4jTGSDEEeTFRWEfMQm0frPjAJAAFbENplrDBkcaOPnezYM9uZ8Vxbx2BDcbDyvfarFQDxTAoR+tHxLaR2NTUl5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763026082; c=relaxed/simple;
-	bh=HMyGCJqQYh9ujkqmTBAdu4RGNFwSTELIZpj6aYBe4go=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YZJitED35OyfCVwUjz+GjvjpIALyOnUsObJgHE55Xt7WP97WTPUAH3srMs5YysJrX7dZYkAEB2rC4SJJGUIKJ1WxhZxX/+Q/tYSKI3aI05a22nngayutO5AzoA8kjY9PXFmktWrf7FVVmLnIPqsm4ocNBO8qzHJ7LfymB/2vGL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hU7cUOsA; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1763040412; c=relaxed/simple;
+	bh=YsSWLV8vBSY4DDYcpolN8qsPMCj2Pn3CnBgTIOuCk/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F5koMHj6MbQiDZR5agtORNty76Vbmmjqz1jXMQ0HHG9h2YuP6b2E8dlclw0YPTQhmBSZrxrG/QOzkXk6O9ve6UKBC5ImrvzUnpnUV2JnN52OSqtwO2KyIPtc89MbBMBlRPr9Or+qrBlas//Nv2oF1PQV6eC+6hErnY+jSRGcvrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u7xX8AZY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hU7cUOsA"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47774d3536dso4821345e9.0
-        for <phone-devel@vger.kernel.org>; Thu, 13 Nov 2025 01:28:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763026079; x=1763630879; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GUQ8rfJZk6stmc9Nrz3QsiJ1sN+nWeofSODQ5AvFLg0=;
-        b=hU7cUOsAMH4e6B81GtNyfTRHKV4ib1Hv1JlOZ3xrNriVG+s67XNrQcyRSnZAl0vuX6
-         nJt+9+lWMyoHna4b1KEtDnKlhFNfM3NUxfmehzGnO/vAzrE8Sv5Uh4N7cWb3PAlJhKVW
-         XGW+G+cVgYexV3gbLvYCQVGfjv745ebCofeKhPvqTKPAEkKoLi7+w9srI2Yu86u6vIlD
-         Zp6X1q5dNd9yO7l3Gr4aJO0kB03Wrfx77sq0NIZ64FcJhDJypM9byecx+nIsG+QUQn02
-         nL2kxARBNUoZ89Wf0ARRcQSSyxybjSXU5PyAbXksc8zuk4IxFfWDhP7nOWqp8W+fkIvJ
-         j/7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763026079; x=1763630879;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GUQ8rfJZk6stmc9Nrz3QsiJ1sN+nWeofSODQ5AvFLg0=;
-        b=G9ZKAj/FR+ltOnl1xJcEyMYSsw2RtVVaOkPOnVf0BGqQll78dWSiLayqZKcQlfLXae
-         7HJP1i9I+jTxwhkjAgf1L51DheqN06KH6bteaqiHH65RNFHMz4clcntTpn6obACtpaJs
-         PIELsuHgMx3VZvp3qfaDAqNJ7l+9fqwv0y7QqxszuxxwvmDVKy5uep2D7osuHjaRM/ZV
-         qhp5UHCv1N0PYJ1vexnn5XQb0TWNpuK9Sn63nTwZKuhnji4K+REnMW0A/I3yW2ZScaCG
-         ceSswS99Ap5s7VkD4mwRnFMsGUHhcaEtnmmuvZY+tOJAWLTwXh/oOA5txTIHIo+bf9do
-         Gptw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0KuPZx48eiCbZDFNV6Tffdcxw+Cg6qjLcJ7aBoBsjWFdynDYlbSIzbPY+hiyCw+0102Lavpr7ITcsGA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMZyezIqKhVJj3j9eLQ5WEeJ5QsruiGy7ucHHkgdQqW7Eo6gOu
-	/z34KkhwttTDTFmmgr7+A8pnTxqqp5QoYD7FrGnRZQlRsDG7nkXAwJfnk14V7eoKGqU=
-X-Gm-Gg: ASbGncupdTdcSsi5nAgDjRc0fZaRkHFBCCyosiUYnNEdB0o1bY7+SWs6EoXGNy6Npz9
-	bWrvzBxbUsYrSriSWm4Q1/JeFs7Z91aoWvY0QGgcshA3SMJySv2dF5Wqrr2BZUVaPU8lmGq8aZq
-	4BwkkN4/qf3aEBnCPUjRjVarD2iI8yf7Yx0x9WxakRRnoiOVdD6HT+RcWTpDDTQW8hvbOWbSjyH
-	MaFfpRo3bmSP+PdUQrAv5qoJTN5XufKqxvDlFuqtyeesGKZySH9T4Amk86hWNoK2mYmTDd63DSD
-	41WI/pE/sIWHjbeQyIL/FAfGocR3QTULyie0ShXH+tkSXAK1Wdb+LWgmIRzFTfwUEZ4GMBGVJdH
-	EubfWcXj8RqSFJmN8TvThgAZ7Ukhpx4hGWCL8Ji3SMhGriSxndOTl43RLkOpuCVPf4KhByZDQR5
-	ZGQn/6tZHcv0gf6cyF+StsUyudSu9pRT+lJEwoKm1RGhIQgdQtJjNm
-X-Google-Smtp-Source: AGHT+IHw7L3XGmJDpxEV8oddbi9Yd4/43abEC2dbuAVSkqiGZ0o9fEeGz0V3OqaYUe1ZOfohrMWy9w==
-X-Received: by 2002:a7b:c350:0:b0:45f:29eb:2148 with SMTP id 5b1f17b1804b1-4778ca11b6cmr8011965e9.7.1763026078746;
-        Thu, 13 Nov 2025 01:27:58 -0800 (PST)
-Received: from [192.168.0.21] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4778c850ca6sm23687815e9.6.2025.11.13.01.27.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Nov 2025 01:27:58 -0800 (PST)
-Message-ID: <b1dc3644-8df0-4147-94ae-1cfed835b9a0@linaro.org>
-Date: Thu, 13 Nov 2025 09:27:57 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u7xX8AZY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42359C2BC87;
+	Thu, 13 Nov 2025 13:26:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763040412;
+	bh=YsSWLV8vBSY4DDYcpolN8qsPMCj2Pn3CnBgTIOuCk/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u7xX8AZYC7TeYFP47BxYfARY0zHy/hq3oaHOmk4H9t0SJoRNm335CDEgREZ3ToG7z
+	 +s1EvuEs8/IYUwamzMeP9s+QA5LshygsQ4PP8vklnybiaYVEUrYIuS9yuiGUvb1u5N
+	 DwpSKW/jkVQlx6CBH9MaNBZSCcqkjWyHCIi34G1FoG/VAf2RR5F2t/C1nzWe1N1OcF
+	 jHVoovWLxGagO0c6V2HW57SXjoDzbvcz/TJESRDntRPLoLQUMbeaU8wnwmHFPTsE80
+	 PfYASnrLzUG8/8jfaHw4wdZUOFGmS9MmsiUql06L74t2ftoinWioBwlk+paIMLT3Vq
+	 8EB10CKduT3FA==
+Date: Thu, 13 Nov 2025 13:26:48 +0000
+From: Lee Jones <lee@kernel.org>
+To: Artur Weber <aweber.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Stanislav Jakubek <stano.jakubek@gmail.com>
+Subject: Re: [PATCH v3] mfd: bcm590xx: Add support for interrupt handling
+Message-ID: <20251113132648.GG1949330@google.com>
+References: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
+ <20251023130335.GM475031@google.com>
+ <b0cffa2f-6ad2-40a3-a5ee-5df6b2918524@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/8] media: qcom: camss: csiphy: Introduce C-PHY
-To: David Heidelberg <david@ixit.cz>, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz>
- <20251109-qcom-cphy-v1-2-165f7e79b0e1@ixit.cz>
- <26bc458f-1db1-44e3-937a-f3ee7c1027be@linaro.org>
- <cf9fcb8e-b346-4589-910f-09bbcc58f9b7@ixit.cz>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <cf9fcb8e-b346-4589-910f-09bbcc58f9b7@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b0cffa2f-6ad2-40a3-a5ee-5df6b2918524@gmail.com>
 
-On 12/11/2025 16:15, David Heidelberg wrote:
->> Should be an integer from
->>
->> include/dt-bindings/phy/phy.h
->>
->> - PHY_TYPE_DPHY
->> - PHY_TYPE_CPHY
->>
->> this should be indicated in the dt and latched here.
-> 
-> Would it make sense to rather use the int from:
-> 
-> include/dt-bindings/media/video-interfaces.h
-> 
->   - MEDIA_BUS_TYPE_CSI2_CPHY
->   - MEDIA_BUS_TYPE_CSI2_DPHY
->   - ...
-> 
-> ?
-Maybe, but surely you need to get the mode of the PHY from DT ?
+On Wed, 29 Oct 2025, Artur Weber wrote:
 
-I'm fine with the MEDIA_BUS_TYPE but, I do think the logic must be DT 
-driven.
+> On 23.10.2025 15:03, Lee Jones wrote:
+> > On Mon, 13 Oct 2025, Artur Weber wrote:
+> > 
+> > > The BCM590XX supports up to 128 internal interrupts, which are used by
+> > > various parts of the chip. Add regmap_irq-based interrupt handling and
+> > > helper functions to allow subdevice drivers to easily use the interrupts.
+> > > 
+> > > Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+> > > 
+> > > (...)>>
+> > > diff --git a/drivers/mfd/bcm590xx.c b/drivers/mfd/bcm590xx.c
+> > > index 5a8456bbd63f..fb6afe277ebf 100644
+> > > --- a/drivers/mfd/bcm590xx.c
+> > > +++ b/drivers/mfd/bcm590xx.c
+> > > @@ -26,16 +26,29 @@
+> > >   #define BCM590XX_PMUREV_ANA_MASK	0xF0
+> > >   #define BCM590XX_PMUREV_ANA_SHIFT	4
+> > > +#define BCM590XX_REG_IRQ1		0x20
+> > > +#define BCM590XX_REG_IRQ1MASK		0x30
+> > 
+> > This isn't better.
+> > 
+> > And now the nomenclature is inconsistent with the one above.
+> > 
+> > What is a mask register?  I don't understand.
+> 
+> The IRQxMASK registers store the interrupt masks for each interrupt. To
+> explain this more clearly:
+> 
+> The BCM590xx chips have up to 128 internal interrupts (the exact number
+> is different between the BCM59054 and BCM59056, but both reserve the
+> exact same amount of registers for them).
+> 
+> The status of each interrupt is stored in the IRQx registers
+> (0x20-0x2f), and each bit represents a single interrupt.
+> 
+> The interrupt masks (that is, whether the interrupt is enabled or
+> disabled) are stored in the IRQx_MASK registers (0x30-0x3f), and each
+> bit represents the mask for a single interrupt, in the same order as the
+> IRQx registers. (...would IRQMASKx be more consistent?)
+> 
+> Each register stores 8 bits of data, meaning the {status, mask} for 8
+> interrupts can fit into one {status, mask} register.
 
----
-bod
+Okay, so the "MASK" thing is just silly naming by the H/W designers?
+
+STATUS or ENABLE sounds like it would be better, since a "mask" to me is
+a software term which describes the methods for manipulating these kinds
+of groups of bits.
+
+> > > +{
+> > > +	/*
+> > > +	 * IRQ registers are clear-on-read, make sure we don't cache them
+> > > +	 * so that they get read/cleared correctly
+> > > +	 */
+> > > +	return (reg >= BCM590XX_REG_IRQ1 && reg <= (BCM590XX_REG_IRQ1 + 15));
+> > > +}
+> > > +
+> > >   static const struct regmap_config bcm590xx_regmap_config_pri = {
+> > >   	.reg_bits	= 8,
+> > >   	.val_bits	= 8,
+> > >   	.max_register	= BCM590XX_MAX_REGISTER_PRI,
+> > > +	.volatile_reg	= bcm590xx_volatile_pri,
+> > >   	.cache_type	= REGCACHE_MAPLE,
+> > >   };
+> > > @@ -46,6 +59,258 @@ static const struct regmap_config bcm590xx_regmap_config_sec = {
+> > >   	.cache_type	= REGCACHE_MAPLE,
+> > >   };
+> > > +#define BCM590XX_REGMAP_IRQ_REG(id)	REGMAP_IRQ_REG_LINE(id, 8)
+> > 
+> > It looks like this may benefit more than just this driver.
+> > 
+> > Please create a generic helper in include/linux/regmap.h.
+> > 
+> > Perhaps REGMAP_IRQ_REG_LINE_BYTE, or whatever the 8 represents.
+> 
+> I would rather avoid modifying the regmap code if possible.
+
+Why not?
+
+> I've seen another driver (drivers/power/supply/max77705_charger.c) use
+> REGMAP_IRQ_REG_LINE(id, BITS_PER_BYTE), which is more descriptive than
+> just leaving the raw number of bits. Would that be a good alternative?
+
+Sounds fine to me.
+
+-- 
+Lee Jones [李琼斯]
