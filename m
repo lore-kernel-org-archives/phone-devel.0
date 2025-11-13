@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1935A125;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A5635A126;
 	Thu, 13 Nov 2025 17:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763056664; cv=none; b=pL6+gAYm6WqsygJojOqXE4oFPSCA3g2LNwvR6yDUvQcDEg0mrcO+BH8wte6Y68leklo5kEzGkfu1gjnMt5e92zP3mzd+4PVStrbdvFCW8JDfeiX/F7TaTb2oMPPy2pSE3HAFFhQ6BkG5zkgO6LgWcfgCj3bXCW8xTbk+EUf6244=
+	t=1763056664; cv=none; b=keP/z8Gzs5M82xLMYy6VZ0yWMcEQxEenFM7rqwXV8qWkKLIppkMO819+pSAZS745ftZ5rHTMhTwfM6HWlwMcuvv2BcTstXP5lksMhbZaOaIoI8VMOkAmBsLGwOkYN/d4laRu/O2r/CaB0kGPOkk5IGt7fkVjHt4XoAroZPx/x5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763056664; c=relaxed/simple;
-	bh=10XNWDQ1dULf+P9kZ2dHmDwf8V4xwRtNb2eTtETPwsg=;
+	bh=Bx37k0L1IbjcU9mqRIdk43KBpDeg4zmaNkPRXHOD9Wg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Wa8gA0tcoIHcbEMYlYTTCfVbLxGcgz0hlFWz6MeX/x7oi7BUxXhJBKdLFi27v0HPVeVNldQO5gibBMo61GYNnP82T2IeqiRo99HbyykmxBku8t5KA4DmwA5pCawnaY5ZY1C33JpRcZRoHJahvm9wNXOMWiywx84B9hYIj7ZSFXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lD4gdqjN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gwS44tRO3bL/8YhZt5NzCIVIE1OItg0EHep+RCcPnrJSS2EAhV6jcWmufiitKynRmGGPcvS9J7NE1DBIIAAn/kHDThY7Wbnua0A3RwEdshAjxsfDp1AKIzjiPwi45dZaFeC+iLN/v/mCtKcqSHde8BnTUaIf21zY6NRvlMh+o5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/KQ27u4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lD4gdqjN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BE4E8C2BCB5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/KQ27u4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9BC60C4AF17;
 	Thu, 13 Nov 2025 17:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763056663;
-	bh=10XNWDQ1dULf+P9kZ2dHmDwf8V4xwRtNb2eTtETPwsg=;
+	bh=Bx37k0L1IbjcU9mqRIdk43KBpDeg4zmaNkPRXHOD9Wg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lD4gdqjNewhyihAZYlTrRCj35GOYfToGv+06B1OPySAFTM0Jx82a4M++RGURm45bF
-	 05f75x69UnJzHdYlu8SpX113s/bwSViAaivmdBkNaVrenJslPY6XOcJDZ2iu4eaiOw
-	 HVUw0OKIOiCAoJH7xhRdpUg8l89/dtDzBELvERmaHkiA+ME3GwXAJF26qXhjboYCPB
-	 nf2HD5QPbx8hxjWrSzbKVdWuh90IeE6zDvc5oWvpBe/R22Ryyw4ExfinoCgcBBo30P
-	 9Oq5PPZa/aDW/m13M0DC+M5OZe1d0RdViFuBiFHa6WDW7Rfy2wdDi5OltDDFqxpMqV
-	 bl5KHNZEiqiAA==
+	b=Q/KQ27u4zTv29m+MjdXPAhf9lJ7mo56Y1KNWGUZ1sgEUplZw5YefEy5xlO+W1a0mP
+	 1VbwwqJhH0mgkLteNOM4dkZCob1578VS9UZ6O7IEZ9cAdvLyxNoGoO1s/Acka6bjQm
+	 CuuBMf+AX+WLJkMJkWHf+0A+DuVjVvNhoc+PsyXfx/E9mUxJ/gaY49RsFE+wJvGE6X
+	 uj6QlQDHysv88ZUe8l5vnrJc8c8qR10M1/uHUxVHI2oQrtAkkBSRNX80urrrslUxYu
+	 we9ura+z492bJ0/9qNnlRjzH4iMCPdAxtVIO84D1tNTgYDUwJxs4vArZ/CJemGnZ4U
+	 4uFOaq/OvVsnQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1DE1CD8CBD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79CA9CD8CBF;
 	Thu, 13 Nov 2025 17:57:43 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 13 Nov 2025 18:57:45 +0100
-Subject: [PATCH v2 11/12] drm/panel: sofef00: Mark the LPM mode always-on
+Date: Thu, 13 Nov 2025 18:57:41 +0100
+Subject: [PATCH v2 07/12] drm/panel: sofef00: Add prepare_prev_first flag
+ to drm_panel
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251113-sofef00-rebuild-v2-11-e175053061ec@ixit.cz>
+Message-Id: <20251113-sofef00-rebuild-v2-7-e175053061ec@ixit.cz>
 References: <20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz>
 In-Reply-To: <20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -58,73 +59,51 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1446; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=918; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=dv4mgLKU6V9KA5Q8a78znnVTuWL2bX0IVKAwUPXHk8E=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpFhwVWR0DhH3x/QekF3rJ8kiBp445Bbqdsqmu0
- DdyTzmWe7yJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRYcFQAKCRBgAj/E00kg
- cpEdD/9kDTBHwwsLMzCluvZCQG+MVWx7VHsDr/2TaORCXi68pKGY8svhOAB48NGv5nUCWkQbEHc
- Kep8Qx+rf3Ht1JHdpUoDJ5FwNbeYlPaXJhsQv967lwvTt5sAloZk8j4FYxxCP+HqbZ0oXVDmqNp
- ErPs5Y8tbiFkgUVjFiQ41LrPc8Shl7R9aIw0DKrmTQFSkfpRurb36KC4I8cE3bVD38+k/cEhuy7
- JHq0mH/1PKntoxIm+T7XPQ1tQSwlRCSuXlrnIRcwjvs3/T052qaJXNC1RkM8a51WIGLiHZR7cvK
- de0wjvU35VOGe97oA0JoqYgpQhLRkDjvbO5Wgah2pijoPq1l5pWezoxDTOU91TpC6bdQFRyCLtP
- rLISelPF7lCoUmiJeImxd5y9eEXMDMYLQcJ4Uz1aBuJbha+ki4bW0hR2jwcEdJ8BPTCobiHt24I
- PYR3XAF+4oKRyNz5ciwXz1RVH5drEQpzwOqFuFOENyc9HQ/9GtYriexYuNhrNfnhbxwCyigaIfs
- d+gbrJslaKwhbOEEp6dFOuN1oEkM1FJGBygGVTdI1GBUH+5UFae1d1Tk5R3g2HwWvJ3XIZnQO1P
- /IqDJz9Hq5/fYK5kqOz33UkK9zUidF1ewOpnoJTRfiKcAinFz3bN21ZbcqYmaN72MDgPHZMsJ9M
- /BTsijqnJE+U7QA==
+ bh=4SM9hcft9HxR/OcdKpSF5Ee1W0Jyu8dLyBp//WZCcbk=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpFhwUfInDpnot2Lif7w3ILqlTPGJJ3Br0iShCu
+ 3feEgt+KOeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRYcFAAKCRBgAj/E00kg
+ cnYBEACQAwA9BeyyljPq7HJOHrhvZh9FYpzIvYsmzMx3dCPmLQ/Uuw3LgrnfNRZkC+Pw3exppn8
+ jzW7JJE8SQTfdIpZ9KegVyMdvSGzayBPe/vya5/rpDatH1qHs2LDN1lWS1V2ZC64dqQjue/33nG
+ Dupj+36uT2MTYklpig2tboB0osJHbvpPNPRLKkE3avGtHppiH7mVkA//heK4AEKvpFmAITJc0Qg
+ D3vFzVAe5efNs2HDairb2vJSrMHPG9oevbvRhREYdQ7Iy1StCr6qaL/6lzkIDr/Boh1JdKb0zEg
+ RDh3RTAHI4x7CrvIPy5MEHVx36S0ZDY90NDxQoOOW4QVNho2HUkrsT8lMImL/yUP7xz6hiCIdiD
+ 9SIgjrNey5IpWRhMOjKArSiwlVxxOB2t4QHqc64/cdNAf+6WYQSwBHnmox2t71YR4Ydhc0Yydy7
+ wbCi6RffWzZOOK8fsLd9Q31rvBKAhzsk2RaSo4cX0EOwlY32dCQXqefs1uMh20IrUJWfHLEoGLh
+ N3HWjT+TwPCtVeO/SBd1DZkef9+Utm+ks75ibtQ99W83nr3yyT3qfnZrILqV6n+tCUJgFEfRzNL
+ QNYr2U7UuKm0a7SWVZaeYmPUEK1nAPoVUzrvOmiW/kn9LUPwUChXDnoccGnvvkCE8E5B98VFI+h
+ CYW5lWzbe6JxS7w==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-The panel operated in low-power mode, with exception of changing the
-brightness levels.
+This corrects the host initialisation sequence so that we can send
+DSI/DCS commands in prepare().
 
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index e69a28628b656..8286cad385738 100644
+index 97122ec8872a1..0d3ae0689a19b 100644
 --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
 +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -92,8 +92,6 @@ static int sofef00_panel_off(struct sofef00_panel *ctx)
- 	struct mipi_dsi_device *dsi = ctx->dsi;
- 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
- 
--	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
--
- 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
- 	mipi_dsi_msleep(&dsi_ctx, 40);
- 
-@@ -180,10 +178,14 @@ static int sofef00_panel_bl_update_status(struct backlight_device *bl)
- 	int err;
- 	u16 brightness = (u16)backlight_get_brightness(bl);
- 
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
- 	err = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
- 	if (err < 0)
- 		return err;
- 
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
- 	return 0;
- }
- 
-@@ -234,6 +236,7 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
- 
+@@ -242,6 +242,8 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
  	dsi->lanes = 4;
  	dsi->format = MIPI_DSI_FMT_RGB888;
-+	dsi->mode_flags = MIPI_DSI_MODE_LPM;
  
- 	ctx->panel.prepare_prev_first = true;
- 
++	ctx->panel.prepare_prev_first = true;
++
+ 	ctx->panel.backlight = sofef00_create_backlight(dsi);
+ 	if (IS_ERR(ctx->panel.backlight))
+ 		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
 
 -- 
 2.51.0
