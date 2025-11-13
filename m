@@ -1,39 +1,67 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25BF344046;
-	Wed, 12 Nov 2025 16:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A00727B359
+	for <phone-devel@vger.kernel.org>; Thu, 13 Nov 2025 09:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762964145; cv=none; b=sr7xyVSZ68Kcoh4SeO8g3XON7PwnIo4t3AFobeP0p275FzsPv56316JYnX473JqjKliKAbBKjuaGiuYmmZy5YRMJ8lHedyp8jCgowoBk2s/UNcHPMaHn7sEwaBD3yWwJA7JMZJIL7gp3eYZSMHY2gozcx0oKboTXSzojz2fwmN4=
+	t=1763026082; cv=none; b=TornuD7IYReF7KHQZYGlxtoX6wutq831HLI2I90YO9pRrt5tUrOphmmX/E8s020N6iPIBvA3Jz8490qq4nW/MF5PguwU5curVPONUczRvXo9TUwK0IXpNi+eOM6XM7EsncfvsLonKborzdzmCvQY73XPsLcSy5wR1saSKWfjdxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762964145; c=relaxed/simple;
-	bh=olkpgCKh03uV3grXvuaSmg3bzEMBr5UCSAdtuIEK/bE=;
+	s=arc-20240116; t=1763026082; c=relaxed/simple;
+	bh=HMyGCJqQYh9ujkqmTBAdu4RGNFwSTELIZpj6aYBe4go=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bz7ouL3uYYMgkOf2SgyQcUuAMxyWmP2uI8BpDa9saCmKA5WopD9wHq7AriUG51nU2ISxw4yozYfJlBVxN3Vl0jZGEJKJQyPa1VTNxpmtoQ/dn021h2Qq457EFon9IMjsRwryHH17V1omN1n4QggbftxwlWW8/3jBceVbMRV8Hjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=dFZT/x2j; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=YZJitED35OyfCVwUjz+GjvjpIALyOnUsObJgHE55Xt7WP97WTPUAH3srMs5YysJrX7dZYkAEB2rC4SJJGUIKJ1WxhZxX/+Q/tYSKI3aI05a22nngayutO5AzoA8kjY9PXFmktWrf7FVVmLnIPqsm4ocNBO8qzHJ7LfymB/2vGL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hU7cUOsA; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="dFZT/x2j"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id ACED2534013D;
-	Wed, 12 Nov 2025 17:15:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1762964132;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jnJ2LHnU8lNAnR/8HhL/GIj/kbcJUDrcfUT2I3tCpLM=;
-	b=dFZT/x2joLPys2+3yv3mNHqtQG3By0ql7V2emLnijLW/GjGsFYrkq2sYq/g1nETS5ups/g
-	ZGqgjVc7X+4jlSDda8SkbSUuzFso1M7NssjB8A9lYwAsq2tQI2mkQAwpkRERYeHau4/kgm
-	VdsmX9hWDJgg/2eZw5Gmvs1FAROqcSE=
-Message-ID: <cf9fcb8e-b346-4589-910f-09bbcc58f9b7@ixit.cz>
-Date: Wed, 12 Nov 2025 17:15:32 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hU7cUOsA"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47774d3536dso4821345e9.0
+        for <phone-devel@vger.kernel.org>; Thu, 13 Nov 2025 01:28:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763026079; x=1763630879; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GUQ8rfJZk6stmc9Nrz3QsiJ1sN+nWeofSODQ5AvFLg0=;
+        b=hU7cUOsAMH4e6B81GtNyfTRHKV4ib1Hv1JlOZ3xrNriVG+s67XNrQcyRSnZAl0vuX6
+         nJt+9+lWMyoHna4b1KEtDnKlhFNfM3NUxfmehzGnO/vAzrE8Sv5Uh4N7cWb3PAlJhKVW
+         XGW+G+cVgYexV3gbLvYCQVGfjv745ebCofeKhPvqTKPAEkKoLi7+w9srI2Yu86u6vIlD
+         Zp6X1q5dNd9yO7l3Gr4aJO0kB03Wrfx77sq0NIZ64FcJhDJypM9byecx+nIsG+QUQn02
+         nL2kxARBNUoZ89Wf0ARRcQSSyxybjSXU5PyAbXksc8zuk4IxFfWDhP7nOWqp8W+fkIvJ
+         j/7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763026079; x=1763630879;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GUQ8rfJZk6stmc9Nrz3QsiJ1sN+nWeofSODQ5AvFLg0=;
+        b=G9ZKAj/FR+ltOnl1xJcEyMYSsw2RtVVaOkPOnVf0BGqQll78dWSiLayqZKcQlfLXae
+         7HJP1i9I+jTxwhkjAgf1L51DheqN06KH6bteaqiHH65RNFHMz4clcntTpn6obACtpaJs
+         PIELsuHgMx3VZvp3qfaDAqNJ7l+9fqwv0y7QqxszuxxwvmDVKy5uep2D7osuHjaRM/ZV
+         qhp5UHCv1N0PYJ1vexnn5XQb0TWNpuK9Sn63nTwZKuhnji4K+REnMW0A/I3yW2ZScaCG
+         ceSswS99Ap5s7VkD4mwRnFMsGUHhcaEtnmmuvZY+tOJAWLTwXh/oOA5txTIHIo+bf9do
+         Gptw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0KuPZx48eiCbZDFNV6Tffdcxw+Cg6qjLcJ7aBoBsjWFdynDYlbSIzbPY+hiyCw+0102Lavpr7ITcsGA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMZyezIqKhVJj3j9eLQ5WEeJ5QsruiGy7ucHHkgdQqW7Eo6gOu
+	/z34KkhwttTDTFmmgr7+A8pnTxqqp5QoYD7FrGnRZQlRsDG7nkXAwJfnk14V7eoKGqU=
+X-Gm-Gg: ASbGncupdTdcSsi5nAgDjRc0fZaRkHFBCCyosiUYnNEdB0o1bY7+SWs6EoXGNy6Npz9
+	bWrvzBxbUsYrSriSWm4Q1/JeFs7Z91aoWvY0QGgcshA3SMJySv2dF5Wqrr2BZUVaPU8lmGq8aZq
+	4BwkkN4/qf3aEBnCPUjRjVarD2iI8yf7Yx0x9WxakRRnoiOVdD6HT+RcWTpDDTQW8hvbOWbSjyH
+	MaFfpRo3bmSP+PdUQrAv5qoJTN5XufKqxvDlFuqtyeesGKZySH9T4Amk86hWNoK2mYmTDd63DSD
+	41WI/pE/sIWHjbeQyIL/FAfGocR3QTULyie0ShXH+tkSXAK1Wdb+LWgmIRzFTfwUEZ4GMBGVJdH
+	EubfWcXj8RqSFJmN8TvThgAZ7Ukhpx4hGWCL8Ji3SMhGriSxndOTl43RLkOpuCVPf4KhByZDQR5
+	ZGQn/6tZHcv0gf6cyF+StsUyudSu9pRT+lJEwoKm1RGhIQgdQtJjNm
+X-Google-Smtp-Source: AGHT+IHw7L3XGmJDpxEV8oddbi9Yd4/43abEC2dbuAVSkqiGZ0o9fEeGz0V3OqaYUe1ZOfohrMWy9w==
+X-Received: by 2002:a7b:c350:0:b0:45f:29eb:2148 with SMTP id 5b1f17b1804b1-4778ca11b6cmr8011965e9.7.1763026078746;
+        Thu, 13 Nov 2025 01:27:58 -0800 (PST)
+Received: from [192.168.0.21] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4778c850ca6sm23687815e9.6.2025.11.13.01.27.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Nov 2025 01:27:58 -0800 (PST)
+Message-ID: <b1dc3644-8df0-4147-94ae-1cfed835b9a0@linaro.org>
+Date: Thu, 13 Nov 2025 09:27:57 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -42,8 +70,8 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 2/8] media: qcom: camss: csiphy: Introduce C-PHY
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+To: David Heidelberg <david@ixit.cz>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
  Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
@@ -54,113 +82,36 @@ Cc: Joel Selvaraj <foss@joelselvaraj.com>, linux-media@vger.kernel.org,
 References: <20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz>
  <20251109-qcom-cphy-v1-2-165f7e79b0e1@ixit.cz>
  <26bc458f-1db1-44e3-937a-f3ee7c1027be@linaro.org>
+ <cf9fcb8e-b346-4589-910f-09bbcc58f9b7@ixit.cz>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <26bc458f-1db1-44e3-937a-f3ee7c1027be@linaro.org>
+In-Reply-To: <cf9fcb8e-b346-4589-910f-09bbcc58f9b7@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/11/2025 12:35, Bryan O'Donoghue wrote:
-> On 09/11/2025 09:39, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
+On 12/11/2025 16:15, David Heidelberg wrote:
+>> Should be an integer from
 >>
->> Read C-PHY from the device-tree bus-type and save it into the csiphy
->> structure for later use.
+>> include/dt-bindings/phy/phy.h
 >>
->> For C-PHY, skip clock line configuration, as there is none.
+>> - PHY_TYPE_DPHY
+>> - PHY_TYPE_CPHY
 >>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/media/platform/qcom/camss/camss-csiphy.h | 2 ++
->>   drivers/media/platform/qcom/camss/camss.c        | 8 ++++++--
->>   2 files changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.h b/ 
->> drivers/media/platform/qcom/camss/camss-csiphy.h
->> index 895f80003c441..8f7d0e4c73075 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy.h
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.h
->> @@ -28,11 +28,13 @@ struct csiphy_lane {
->>   /**
->>    * struct csiphy_lanes_cfg - CSIPHY lanes configuration
->> + * @cphy:     true if C-PHY is used, false if D-PHY is used
->>    * @num_data: number of data lanes
->>    * @data:     data lanes configuration
->>    * @clk:      clock lane configuration (only for D-PHY)
->>    */
->>   struct csiphy_lanes_cfg {
->> +    bool cphy;
+>> this should be indicated in the dt and latched here.
 > 
-> Should be an integer from
+> Would it make sense to rather use the int from:
 > 
-> include/dt-bindings/phy/phy.h
+> include/dt-bindings/media/video-interfaces.h
 > 
-> - PHY_TYPE_DPHY
-> - PHY_TYPE_CPHY
+>   - MEDIA_BUS_TYPE_CSI2_CPHY
+>   - MEDIA_BUS_TYPE_CSI2_DPHY
+>   - ...
 > 
-> this should be indicated in the dt and latched here.
+> ?
+Maybe, but surely you need to get the mode of the PHY from DT ?
 
-Would it make sense to rather use the int from:
+I'm fine with the MEDIA_BUS_TYPE but, I do think the logic must be DT 
+driven.
 
-include/dt-bindings/media/video-interfaces.h
-
-  - MEDIA_BUS_TYPE_CSI2_CPHY
-  - MEDIA_BUS_TYPE_CSI2_DPHY
-  - ...
-
-?
-
-This one is always used with the endpoint bus-type.
-
-David
-
-> 
-> ---
-> bod
-
--- 
-David Heidelberg
-
+---
+bod
