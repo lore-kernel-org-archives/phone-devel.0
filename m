@@ -1,100 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9262FE04B;
-	Thu, 13 Nov 2025 20:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F2720F079;
+	Fri, 14 Nov 2025 00:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763065475; cv=none; b=f57lzngICpH/iHiVpj/M9ZKtgsBNn1XWKg5AEbM9nEd0aoAgjpXeOJ8/GU2hKeLHdAP5u5lsVKYlV4uE5ZwpPyxDibM/WsZLWU8KeTx7KbmTYnD+iv6tQdknbygT+6DGEZIUnCGJnpI9FoDwXMhnhMTlPcT3zur+t5jAOr119x4=
+	t=1763079277; cv=none; b=kvYROABqPGrHfOeetYSgH57SoD1uslQzKrcTiYEUiESTHzGm9sBWvXVX4vV14spA5k4xSEADPMZGdXWreVjtBDhNAvh3cqYngjGQAryPO2fxV9SB1/AilQ38oh4DZcTEJoSBwuoHGUrrjEW+A1GCnkNrvIsKXH+gHkRbwC96tRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763065475; c=relaxed/simple;
-	bh=4NO2Xdkz+jSDa61SzpnaLxD87yK+fJMEQl6hv5p3foU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p9y9VN1qmvBMZbK/+GpK0E5Kt7tZqo7NxBuTf9sH2eBZEzpb/yBAQ7wuwEpy20utswhIb1KJnHqf+y2eapmD5kbcy0xNz7f15IQt5koHEJUCihm3/P2LrhdXBnA27CUuzRydWyQ/9beYTiK4y83BNTebYJMh2mxu3w+68urcask=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kANWmNZt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763079277; c=relaxed/simple;
+	bh=MHwNLI/pLkI9zz0fyDQfEii43uTT524o9ApM6CwAYaY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Pf8mRAILE+beKM6ICJRTGe2bAGmniRM6RZ5VlQLhQaQRW/tPFahAsTBhKXl2ohBm8KumjRJ/kojTKVRdlXYkYUX1r3GQJr04y0X7f9zhbwwjtK5PLt6J4MeR8XrtX8iGQD/eAg5el/4TlbB/x1VaH7Moo9qk0KvnXIWJe3dh3og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pc/DvTI/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kANWmNZt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A4AC4CEFB;
-	Thu, 13 Nov 2025 20:24:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pc/DvTI/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 13D49C4CEF5;
+	Fri, 14 Nov 2025 00:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763065475;
-	bh=4NO2Xdkz+jSDa61SzpnaLxD87yK+fJMEQl6hv5p3foU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kANWmNZt1Ib/MEjszjq3IIn1PYr6mCiLIBAhiqYeog6m2ahduTP9W0j9Wjdh98b94
-	 5NwldTDIdGZvV/ZnR3ppFS5bn1vWpQ/cKeSHou9697vZZGaCGDRdn+YCA1rEjU4Unw
-	 X3S7a45nV5XpczwpLG9uvQhr5SxrhtLOc3iy/rtBEZwNWxHH2TTRJC8oHasptjG6ZG
-	 HvqBE6U5UyhUwN3H5UcQhgs+ueZMDM/DIIWhhiBQDDNYu+ho+SnBhvm0CsZzuWXW/o
-	 4MnZIqnYisZWY7Kv4N+JVQIhEofCUwYqwSxCqwJIqWDkYg01Lrd5GgtOaf96FAJvIB
-	 firhIZDFs8TUg==
-Date: Thu, 13 Nov 2025 14:28:58 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: david@ixit.cz
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Casey Connolly <casey.connolly@linaro.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 02/12] arch: arm64: qcom: sdm845-enchilada: Specify
- panel name within the compatible
-Message-ID: <mccbyhok747hjopkigm7rj7y6564bhnqxzcpo5yqjhbfffa4z4@5odvenhhsh3p>
-References: <20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz>
- <20251113-sofef00-rebuild-v2-2-e175053061ec@ixit.cz>
+	s=k20201202; t=1763079277;
+	bh=MHwNLI/pLkI9zz0fyDQfEii43uTT524o9ApM6CwAYaY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Pc/DvTI/+vaeSjXs5FnRKb3g+DcfRh5gEpMgjsEgJaFq/Up1aYG+btnMkrMCgUr82
+	 1KExUg/6D1u1G/gWeE5yNZKAa1mrc+Z5pZqOxk+olq8YhUvt3k4cSMJ2Df95wjccZl
+	 cabD77tiSWFZS3yG8y8MRji9bTQZjMz9lUigLPpvyysnbeYiQtuhVzm7DO8iiayjBT
+	 sqw2tD2HcldtMRuLoku9kxQiBKpM0IbzqjGqzm7V+OSQ21NWB0cXymQm9po8P06OLT
+	 vmB98HrtFtkgtTusqYaeetAMkBdWvHWn4GYLRsDX7xwBDVbnKKv+4t9ZVL6foA68bw
+	 drn3+lo9EwKTw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BA80CD98C3;
+	Fri, 14 Nov 2025 00:14:37 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 14 Nov 2025 01:14:34 +0100
+Subject: [PATCH v2] ASoC: qcom: sdm845: set quaternary MI2S codec DAI to
+ I2S format
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113-sofef00-rebuild-v2-2-e175053061ec@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251114-sdm845-quaternary-v2-1-9d803bf5f7c9@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAGl0FmkC/z3MQQ7CIBBA0as0rJ0GEGxx5T2MCwrTlgRBh2psm
+ t5d4sLlW/y/sYIUsLBzszHCdyghpwp5aJibbZoQgq9mkksthFBQ/L1XGp4vuyAlSyug8SfPBy2
+ OzrDaPQjH8Pk9r7fqkfIdlpnQ/k9c8k5o2WnVKtObDgQ4G3FoXU4px7heYqjv3Gaa2L5/AdCv5
+ G6mAAAA
+X-Change-ID: 20251114-sdm845-quaternary-e9d6d0b513c9
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ "Dr. Git" <drgitx@gmail.com>, Casey Connolly <casey.connolly@linaro.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1341; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=ARxpTeY9kNYvN6EYXKNHS5nPtDvu8Qayi+gAEHyLru4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpFnRseuDCJsmzLI7IxIXZzk7++Dy8Mqn2plbaN
+ 3Nb4kuFfNWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRZ0bAAKCRBgAj/E00kg
+ crilEACvkZu3ZgsuyqRA7SUxj5lMfVN9pu0+B8ucn1W91euBRLxMlqDmLhPILRJAeOZEwwpwaxm
+ QLtms3kWoOfpJMBdYLUsvZP43Ke+sVIE7zSPv81i/WRlXSw0TNiHMsFkumBt4whyj011GKkZz18
+ wCg8WVbgr1cQBrukb+STxfK83dxBRxsSdHLtYDMtDaNpSYIeVkiqmedSYXGal0BpaQgxLHhZ+cc
+ tJqsM+Y1A7J5s3incrmDwXLtIbVH7aA9KteN+ExgZtg5ttBcE/T8O+CFJMMHey7EZgKH3fVNImE
+ 4Dz87fOPKWHmCRMw5FMfnUu6dZYa4/EzVh8fi7o6sSTjjSyVEBLSKf4y6CKieDvTpfzD5Fu13f3
+ V0j9iu3hSElsc8QmBF5LhpSFdCnA5xc3FBYS/lNLI0SQjNRH9A2tAzP3K+VOpr0l3h0k6cixxIx
+ 5YNxv1aP9bWE4f95Qr9CgtdvpJpybuyEBsRSCjtZuQiEQ0O7hZERNazyFo0YUN4AWQRl7+SmhpB
+ Z5n1VYX7wjSiMtRYJ0AQG7yetDQsoaDMvPFRwEkdTgdTY69p+p7qkGSWgWw+ezyZD8cBxvEsfrH
+ 8sFFsBU37JfeBLtU/xkRkxZffd05B8h/1K/5M3KvbwCYSsMkkd+u6yVGW+1tvSGPZEAENLegYdw
+ rFaokJukicQI+Qg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Thu, Nov 13, 2025 at 06:57:36PM +0100, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+From: "Dr. Git" <drgitx@gmail.com>
 
-No "arch: " prefix on these files, please. (If patch 1 is picked in the
-current form, I can fix it up for you) 
+We configure the codec DAI format for primary and secondary but not the
+quaternery MI2S path. Add the missing configuration to enable speaker
+codecs on the quaternary MI2S like the MAX9827 found on the OnePlus 6.
 
-Regards,
-Bjorn
+Signed-off-by: Dr. Git <drgitx@gmail.com>
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v2:
+ - Rebased on top of next-20251113
+---
+ sound/soc/qcom/sdm845.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> 
-> sofef00 is name of the DDIC, it doesn't contain name of the panel used.
-> The DDIC is also paired with other panels, so make clear which panel is
-> used.
-> 
-> New device-tree will work with old driver as expected, due to secondary
-> compatible.
-> 
-> cosmetic: sort the node.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-> index a259eb9d45ae0..8aead6dc25e00 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-> @@ -31,9 +31,9 @@ battery: battery {
->  };
->  
->  &display_panel {
-> -	status = "okay";
-> +	compatible = "samsung,sofef00-ams628nw01", "samsung,sofef00";
->  
-> -	compatible = "samsung,sofef00";
-> +	status = "okay";
->  };
->  
->  &bq27441_fg {
-> 
-> -- 
-> 2.51.0
-> 
-> 
+diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
+index e18a8e44f2db5..0ce9dff4dc525 100644
+--- a/sound/soc/qcom/sdm845.c
++++ b/sound/soc/qcom/sdm845.c
+@@ -365,10 +365,12 @@ static int sdm845_snd_startup(struct snd_pcm_substream *substream)
+ 		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+ 		break;
+ 	case QUATERNARY_MI2S_RX:
++		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
+ 		snd_soc_dai_set_sysclk(cpu_dai,
+ 			Q6AFE_LPASS_CLK_ID_QUAD_MI2S_IBIT,
+ 			MI2S_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+ 		snd_soc_dai_set_fmt(cpu_dai, fmt);
++		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+ 		break;
+ 
+ 	case QUATERNARY_TDM_RX_0:
+
+---
+base-commit: 6d7e7251d03f98f26f2ee0dfd21bb0a0480a2178
+change-id: 20251114-sdm845-quaternary-e9d6d0b513c9
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
+
