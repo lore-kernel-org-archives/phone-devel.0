@@ -1,174 +1,125 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C92FC895;
-	Fri, 14 Nov 2025 23:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D8D1D416E;
+	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763161581; cv=none; b=lEVhDikDbEXdj71EJUFM/Faa4Ir+qivrKYtu5P6o5WSmBmLdnQVPoGqYMp1eks1LIkmc6nWTdMhOeWYcTSr9oM6EHZGqPqC9LjM3Lvx3wm5eb9IX+a1FMH/KjqB4LjK6D3N2k3Jrqb7XRj6wxAXih025u4C7+/GKM+OKSI0hruE=
+	t=1763232241; cv=none; b=RajPN5gowrF+VIVuM73MPIrcg0nasF7k0Cv0NB+H6sRtCJ8iVxD4B3vbMiND60zOuDc/iSxOVJCStkn6vDTgr2t6/YHAycBCbxGsKCQjiB0h52ZwiLq135ccas+Up4uJ+BsZoGhUiUEBvy1SoAGAnxUXvTl/h6menlzGwRigJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763161581; c=relaxed/simple;
-	bh=OQLFujAGNJiSe+OzzPtzGgNIXidudSMeqJk+2L8Qwbo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=q+nrpf2LPgnc3g9GaBLP8ztzHm1otBNCKB425yu6h/v9nYNekKMtEabY4MeK4vwnnEEyBnsAVHA+xq6f+ngvSUdFbdnrM/LUMrEgDEtAl0YdPGNOk1naQOxRPRnkpPWuRfnCC6v2ijC57QL+y4k7zjIVw62DyPm0H1ApUBNQl4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=kf6KVbiH; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1763232241; c=relaxed/simple;
+	bh=8+8Spqc+Y8cAtfdVTw19oi3jqO7D/khUhFyak0s1Hqo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gYHNUaGbdGXX0fMXCxki5uNwC/Fj7gPx7oUpKLZJTPrPk4ATd0LWpUX9aoaGDLY7VolQTJ2DK7FaKTCU5dxWnx0LTRCSliM8SmTsQyj/WmTZEb0vRH2E+ihAfnMqFLxW2A1AA/3TyiCkGSMsBAiM+/yg4DSBOmfbk9lueUHZoHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhYb+XLE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="kf6KVbiH"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D7D0B534259C;
-	Sat, 15 Nov 2025 00:06:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1763161568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uU6emxqHEXXgbBsrJsfwXTCtYf7YvIH4EtIjrW81U1U=;
-	b=kf6KVbiHuOTSFhkASGridJRT3uFQDVQrydNuoAq7dHGkbZ2365zEp2NGzLXRYtRjIMgGRb
-	RcjbtZwXlKSMqZGs3VuPyrmeWBI8ypO8wFdZIxluTH/1a/vmS/H1wYja49ytMjhFCiZyPd
-	ttbuQW6qI5uW9utd7Pomg4loleL2Utk=
-Message-ID: <76bf2299-bc1f-4cc5-987a-6c7e441e47c0@ixit.cz>
-Date: Sat, 15 Nov 2025 00:06:08 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhYb+XLE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 992ABC19423;
+	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763232240;
+	bh=8+8Spqc+Y8cAtfdVTw19oi3jqO7D/khUhFyak0s1Hqo=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=IhYb+XLE0ArfhJvU03/OWt0HCSjVlt5NsD64vy9K9NPSE2+qDlHLxHQLSwgxG0wW0
+	 Ug6FucibIS7Yji7maS8bShCtZqWVfdh+4REgps75nK+8dp+DX+XZhkFmOfPvkOoiUk
+	 VDfFwaoa/6lmMaKdaURw/+BBKq+AxIM8CDTuSzy6DqFLKTspibxd5MIc53kaBEV1UA
+	 lSMqqZSr4kqNsl7e0seCYHZiM1N8AYNU98trSH1zfYvzzOs4RQJIif+bhgj/nHygYP
+	 3dJn7goYPR1eIRwoypmJeUTfZpf8A0xFIIwGZW59Lq5nhrVRFJpal3PgmWfIgUZPte
+	 tTaysskyde5pQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8649DCE7B1E;
+	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 15 Nov 2025 19:43:58 +0100
+Subject: [PATCH v3] ASoC: qcom: sdm845: set quaternary MI2S codec DAI to
+ I2S format
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH v2] ASoC: qcom: sdm845: set quaternary MI2S codec DAI to
- I2S format
-To: Srinivas Kandagatla <srini@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- "Dr. Git" <drgitx@gmail.com>, Casey Connolly <casey.connolly@linaro.org>
-References: <20251114-sdm845-quaternary-v2-1-9d803bf5f7c9@ixit.cz>
- <789ca70c-c9ac-4290-8a24-1f83febe498f@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <789ca70c-c9ac-4290-8a24-1f83febe498f@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251115-sdm845-quaternary-v3-1-c16bf19128ac@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAO3JGGkC/33OsQ6CMBSF4VcxnS1pCxXq5HsYh9Je5CbY6i0Sk
+ PDuVgdHx384X87KEhBCYsfdyggmTBhDjnK/Y6634QocfW6mhNJSyoonf2sqzR9POwIFSwsH4w9
+ etFqWzrC8uxN0OH/N8yV3R/HGx57A/iShRC21qnVVVKYxNZfc2QHawsUQ4jAspwGzHYtI1w/ZY
+ xojLd+Xk/rA/w5NKnvGN6JsO93VzpxwxrFwL3bZtu0NDFAJtPMAAAA=
+X-Change-ID: 20251114-sdm845-quaternary-e9d6d0b513c9
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Robert Oscilowski <drgitx@gmail.com>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1499; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=PHx2oXpAkKgIFICWfAbsH+E/7ElM+CcL2wslsUfnDDc=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpGMnvkMOhmQGMZfc9yygG3wSWhLGXXFps+EK6U
+ dYBprr6drGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRjJ7wAKCRBgAj/E00kg
+ cu9lEACxO+7i0H+nj3YGNeIJ7WxlabxhZHlSgl6KOnCkGrifVMOkAxG+wFCjF3xwy8UXZJj+N+f
+ d41fmnrxOKjqO0JfwAM3UYWre9Ig/QR0t9VfB9eYdQBNnuX+kPLU44hDFjKSJFIO+Uro9ylNGKZ
+ vJtbkqTlxzSvI0xxMnfc+Bjf/oEkqHj5v5MMAd6UcEUjlTHfYXqcrwX1cOO5S7mdFPAmfvCeyEZ
+ /FLXLBz0C7ExgfrxrnvynDdCFHnR/nYxl/eS8ncF6gc+i9FIcVBnb17Bg+fAiD9WGwhgiJ+O2D+
+ 5Jw1SgrVDFuWgH4HKdIfA0CxXqBvpS1Y+06gumqoDPhQnBUHdaIEcGCgX4/Wk4q57i4tgEy6TPM
+ V1EVIoDItvpNv/05xqzpnyDm4uzqaQ+lWqu5ousD8akzt8wN6agkPaFTeYUR/K/K7GmWQ7HSegR
+ CIvzfVFIYN+Bbk96g05GPEAxg5HzU4oqLXMv2R0WkVnHoTBOwTSXBEdjeZmJoR7nWoNrggvTXXr
+ D+PGokXhp8+TEpYC9RaPNqCkEvuODCTTUOjeYMqZaY9Pl0P/6H7O5MfMENVUbi36sW7zvhjC99R
+ qfPEv+rxau+Vk/LzMA1Ef+fkQigvXvY2QKwOklgD9Lfp6NxalyJqIXatPZR/D6CA4kl6KZcOMjH
+ Lh/NyPlltdPaw0Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 14/11/2025 13:33, Srinivas Kandagatla wrote:
-> 
-> 
-> On 11/14/25 12:14 AM, David Heidelberg via B4 Relay wrote:
->> From: "Dr. Git" <drgitx@gmail.com>
->>
->> We configure the codec DAI format for primary and secondary but not the
->> quaternery MI2S path. Add the missing configuration to enable speaker
->> codecs on the quaternary MI2S like the MAX9827 found on the OnePlus 6.
->>
->> Signed-off-by: Dr. Git <drgitx@gmail.com>
-> 
-> Please fix your git user.name, looks like "Dr. Git" is not your real name.
+From: Robert Oscilowski <drgitx@gmail.com>
 
-Dr. Git is author of the patch. He's known contributor to the Snapdragon 
-845 close to mainline tree. I'll ask, if he'd like to provide different 
-name.
+We configure the codec DAI format for primary and secondary but not the
+quaternery MI2S path. Add the missing configuration to enable speaker
+codecs on the quaternary MI2S like the MAX9827 found on the OnePlus 6.
 
-If not, I would be glad if known identity could be used for this patch 
-[1] (consider my S-off-by as confirmation of known identity).
+Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v3:
+- Updated DrGit name to real name.
+- Link to v2: https://lore.kernel.org/r/20251114-sdm845-quaternary-v2-1-9d803bf5f7c9@ixit.cz
 
-David
+Changes in v2:
+ - Rebased on top of next-20251113
+---
+ sound/soc/qcom/sdm845.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d4563201f33a022fc0353033d9dfeb1606a88330
+diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
+index e18a8e44f2db5..0ce9dff4dc525 100644
+--- a/sound/soc/qcom/sdm845.c
++++ b/sound/soc/qcom/sdm845.c
+@@ -365,10 +365,12 @@ static int sdm845_snd_startup(struct snd_pcm_substream *substream)
+ 		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+ 		break;
+ 	case QUATERNARY_MI2S_RX:
++		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
+ 		snd_soc_dai_set_sysclk(cpu_dai,
+ 			Q6AFE_LPASS_CLK_ID_QUAD_MI2S_IBIT,
+ 			MI2S_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+ 		snd_soc_dai_set_fmt(cpu_dai, fmt);
++		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+ 		break;
+ 
+ 	case QUATERNARY_TDM_RX_0:
 
-> 
-> 
-> Other than that patch itself looks sane to me.
-> 
-> --srini
-> 
-> 
-> 
->> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->> Changes in v2:
->>   - Rebased on top of next-20251113
->> ---
->>   sound/soc/qcom/sdm845.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
->> index e18a8e44f2db5..0ce9dff4dc525 100644
->> --- a/sound/soc/qcom/sdm845.c
->> +++ b/sound/soc/qcom/sdm845.c
->> @@ -365,10 +365,12 @@ static int sdm845_snd_startup(struct snd_pcm_substream *substream)
->>   		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
->>   		break;
->>   	case QUATERNARY_MI2S_RX:
->> +		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
->>   		snd_soc_dai_set_sysclk(cpu_dai,
->>   			Q6AFE_LPASS_CLK_ID_QUAD_MI2S_IBIT,
->>   			MI2S_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
->>   		snd_soc_dai_set_fmt(cpu_dai, fmt);
->> +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
->>   		break;
->>   
->>   	case QUATERNARY_TDM_RX_0:
->>
->> ---
->> base-commit: 6d7e7251d03f98f26f2ee0dfd21bb0a0480a2178
->> change-id: 20251114-sdm845-quaternary-e9d6d0b513c9
->>
->> Best regards,
-> 
+---
+base-commit: 0f2995693867bfb26197b117cd55624ddc57582f
+change-id: 20251114-sdm845-quaternary-e9d6d0b513c9
 
+Best regards,
 -- 
-David Heidelberg
+David Heidelberg <david@ixit.cz>
 
 
