@@ -1,67 +1,39 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D211FE471
-	for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 14:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26052DC34E;
+	Sun, 16 Nov 2025 14:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763303433; cv=none; b=YDAbEi6Bk0wfaopObMkfR3zgGfuPURQGGFW0zAv0K5vxAPl3BhNQRP8c1p2kP3uZ1eBZjazLtQqR6soxDhTLSmTiH1umdI/bGj2+/MOBYWtd4b7yYJ3q79+RyDtn7mFXBaVugytFpu5RJpgo1az7hziiHfpQbBU8kTWdd5Jd6GI=
+	t=1763304133; cv=none; b=aVowmTDlKfM+uGTnpH6FIoCTCUpqRnI25hT8uLRduo3wfPXFq6KGDFAJjbKLxvTQQo2ZLqoeCU26a+ncwwUc8dmam4w7iHtHYN/zfTN9/ngQ8Wg/NvmS/Z8FG4B0f623xww9oV2L4qDc5tfyCnC5h5Kh7yg2q8FkRjDvwz5GNAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763303433; c=relaxed/simple;
-	bh=cKfwNVXUaXw3bJO+IzX0argy2DWs0KoFFvj0/LYhR1w=;
+	s=arc-20240116; t=1763304133; c=relaxed/simple;
+	bh=Oo4FLQbmKK9z2H4gqvqF8dWs7cja2Rym2AqBnAD4nkM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZT/3TitHRTjwIAnMP7dECHxwkzXvN0titCaEevs1tCkoroIYZstbHL2lV3hGqynnHZdG5J2Df5BBn/cLJHV40RCUPpm9OhxFnUNtddTNgHNdV1zcuDeaQh3CBertQbeEHfNAqgU4t9Rx42I7BTY7Cw5v462eLLKMV94EEFQKUwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LbNGIqJN; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=GMpF333MjB9/n+EGR809augOBDPXbtF9sj5la0LOINGrrVDqTp2irv83cBJhoFW504VOQmL7jwTgt1c+tsfzAGzRzCDPGJvC7Lh6HkSqafi8fS/oKfaHae+qFd+m/cMSD83myUz8fkxn4xZtJs80+rEhlSVWx2DwIDUJQelgQxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=b14NR+8M; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LbNGIqJN"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-429c82bf86bso1898487f8f.1
-        for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 06:30:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763303429; x=1763908229; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ICly7sZCAzATlOBf/FaB2qKaAu95N0j13h8tQwyhW4A=;
-        b=LbNGIqJN1fUSQv3hrhvdT5K6dvjS2eea0mF+9v+Npsn8CfGfdufTskxXV47uJ3s5oS
-         JzfZNFPv/GCZ+82ZgwdOR2FxzAai9YUlnmsZ9FYya1jxHL14K0+xJEyfe6XiKwX6z8tw
-         YnG13a5yNKadpXZ8gVPx2M8z6SNDRAYgKaFsriTCzaXjybmy2LDEEBQR+u+InaZzCUVB
-         fslTYj2pj12rfLx8iO7VUow8NxaHL4uVqP03NIbntwGly8k7PtlApahdj/uc16eYSPZA
-         mcVJ6EZX80uWOq8QHFYKOYuMtUrcMGW2RqgukNl3EjCmxEX8LZvpK5PqlZXQ0bcc4krm
-         LbNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763303429; x=1763908229;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ICly7sZCAzATlOBf/FaB2qKaAu95N0j13h8tQwyhW4A=;
-        b=IOroNvfZkpLPcPO4WTjRkK2x54xf2y7adwqMTaDCcMvkRtXU7bg9saa7eluk/IKFxK
-         yLpg55WtqKDXLYfBn6bHT+lshPcPSI5ZOiWPLTCrf8byN5McICCXr5I2AIEiSSSdSIJl
-         6KEVFeBiEXsL6rKkn5kYoqoJeoKmR1BulugmmTm7QqqbtEmfmJ090WPVN5kGuy0tnNyL
-         1ELs1ORmMLUpuTEAyGJi562E3pBI8T9XGM/fktiIGiqVFWQ8HRS0CrPmACk3QQV1Arze
-         BjHcocAM1KiLM+l0gWrd8jmFGbn+OTnpJeZhPZ5cnDCXlfNH+UBh6Udnyog7/ZLqkt7h
-         D8eA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaPQugZ7/0NeSh4zbXePDxZmdNPaVsqzweGtWY+uVAWK8GKGhOGkz0A2bWgf+Wohq9r33dEV60K2QKRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4TIk/xEiWEdd4wf/znmTt8P6y+p0BN07uiGs1d84eEdM6dMqH
-	OezKoFurFKfHkv6cg61y9UtHuKSWkk3bBLVxQxj5YX6aXh4E20oMk+fLNMk6FytXDsI=
-X-Gm-Gg: ASbGnct2s79LbpUbZg1TgeYY188MS56ucaItH+HiFmMQDjp77HOS98g8kspJXeq004T
-	YEDccPLNAMu0bqS3E+hFo2bZuHJKhP+AkfMxE8np68aNhTsWsL0LUphkhgd3RzDM537ja5uJ9gu
-	TeASifDgne2XSdkWqpmY76uCbNat54cINVFzrFzsQ9pQzT33w6JBZCuIIT+WtHLw1X+Vatm9NPC
-	wTaNfUM7VIlWnMnDreM4L/jvJLOcFhIt7fQh3YIr5WLflEs/RysxQfCAJUXwOu1qMfDv+BkaHbm
-	6IPbv1yxQQ8Y97iYjqyLMA+gRKfODqo6oihvPQBwD9tmFxpTfpNCMoskXxudUoVsEuD36S2r8vV
-	3M8XrCZAhpd07V/sZxRI7AcMnmnABWPkN5BgVbpDS/cbKfnkPY0pphwbpfmV1Xybjbq1SDKGl//
-	dKPLjJNdVo0lHt21IHYW2xPiq86jcbZN1kvDXGXHMIQA==
-X-Google-Smtp-Source: AGHT+IEfYLpYpa20g5wtNTk5jZFkM5xmSMDzaYixuhuIpmallSrBBPr8uUgJe9xMGpqXeRcYfT73jQ==
-X-Received: by 2002:a05:6000:3108:b0:42b:3ee9:4775 with SMTP id ffacd0b85a97d-42b593394a9mr9581497f8f.11.1763303428862;
-        Sun, 16 Nov 2025 06:30:28 -0800 (PST)
-Received: from [192.168.0.27] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e85cc0sm21886040f8f.17.2025.11.16.06.30.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Nov 2025 06:30:28 -0800 (PST)
-Message-ID: <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org>
-Date: Sun, 16 Nov 2025 14:30:27 +0000
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="b14NR+8M"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id EE08C53412A2;
+	Sun, 16 Nov 2025 15:42:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1763304126;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LjYOWtCffzgNMebgJlMNfWTh/7EezeDBlJxB3iE8iTM=;
+	b=b14NR+8M108ri2ILOwLsagkVEWsICtRkqyyOOjEZLraOmy7XWPNgsBnlNZT6h7JIhPHyGB
+	chPTHurujUpkqDqTKMRiexidclkxXtQMQugXVJTscD9hLSdUCQcELbRcsHAROMTnrJe8rx
+	cNcq2jnNDnc9UIUKJ7ybSJqln8oorCI=
+Message-ID: <babcd7be-40f6-4023-8781-0b7203faf662@ixit.cz>
+Date: Sun, 16 Nov 2025 15:42:05 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,80 +41,118 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Add CAMSS support for SM6350
-To: Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+Subject: Re: [PATCH v2 01/12] dt-bindings: panel: Convert Samsung SOFEF00 DDIC
+ into standalone yaml
+To: Casey Connolly <casey.connolly@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3ph8XeidoxkUIsK7qiOH29pde94sdwa3ReWKVVrPabgS5enIAmwVAC5plyFnBMJGKQBnxFB6df6j69OMFIeavw==@protonmail.internalid>
- <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com>
- <df4a6a77-9004-4dbe-9b11-7af2bea7e068@kernel.org>
- <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz>
+ <20251113-sofef00-rebuild-v2-1-e175053061ec@ixit.cz>
+ <9ef0e4f9-7594-4c26-ab45-38e62a7d0e37@linaro.org>
 Content-Language: en-US
-In-Reply-To: <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <9ef0e4f9-7594-4c26-ab45-38e62a7d0e37@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 14/11/2025 15:59, Luca Weiss wrote:
-> On Fri Nov 14, 2025 at 4:51 PM CET, Bryan O'Donoghue wrote:
->> On 14/11/2025 11:15, Luca Weiss wrote:
->>> Add bindings, driver and dts to support the Camera Subsystem on the
->>> SM6350 SoC.
->>>
->>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
->>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
->>> far as I can tell.
->>>
->>> Though when stopping the camera stream, the following clock warning
->>> appears in dmesg. But it does not interfere with any functionality,
->>> starting and stopping the stream works and debugcc is showing 426.4 MHz
->>> while the clock is on, and 'off' while it's off.
->>>
->>> Any suggestion how to fix this, is appreciated.
->>>
->>> [ 5738.590980] ------------[ cut here ]------------
->>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
->>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
+On 16/11/2025 14:55, Casey Connolly wrote:
+> Hi David,
+> 
+> I may not have added myself to MAINTAINERS when I submitted this driver, 
+> but a heads-up would have been appreciated before just taking it over!
+> 
+> On 11/13/25 18:57, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+> 
+> [...]> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 7e015dcbac732..a4b16812d5a0c 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -8117,6 +8117,12 @@ S:    Maintained
+>>   F:    Documentation/devicetree/bindings/display/panel/ 
+>> samsung,s6e3ha8.yaml
+>>   F:    drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
+>> +DRM DRIVER FOR SAMSUNG SOFEF00 DDIC
+>> +M:    David Heidelberg <david@ixit.cz>
+> 
+> M:    Casey Connolly <casey.connolly@linaro.org>
+
+Sure, I'll add you in next patch version.
+
+Could you review the patches not authored by you within the patchset too?
+
+Thank you
+David
+
+> 
+> Please and thanks!
+> Casey (she/they)
+> 
+>> +S:    Maintained
+>> +F:    Documentation/devicetree/bindings/display/panel/ 
+>> samsung,sofef00.yaml
+>> +F:    drivers/gpu/drm/panel/panel-samsung-sofef00.c
+>> +
+>>   DRM DRIVER FOR SHARP MEMORY LCD
+>>   M:    Alex Lanzano <lanzano.alex@gmail.com>
+>>   S:    Maintained
 >>
->> Do you have a full and complete kernel tree we could look at here ?
 > 
-> Sure, this branch has everything in:
-> 
-> https://github.com/sm6350-mainline/linux/tree/sm6350-6.17.y/
-> 
-> For further refence, at least two other people have tested this branch
-> in postmarketOS, nothing particularly exciting to report from there,
-> apart from that the sdm-skin-thermal thermal zone (thermistor right next
-> to SoC) is currently configured with 55 degC as critical trip, which is
-> quickly achieved when starting a video recording, but that's not really
-> an issue with camss, but will need some tweaking regardless.
-> 
-> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/7281
 
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index a4d6dff9d0f7f..229629ef82809 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -908,9 +908,7 @@ static struct clk_branch gcc_camera_ahb_clk = {
+-- 
+David Heidelberg
 
-  static struct clk_branch gcc_camera_axi_clk = {
-         .halt_reg = 0x17018,
--       .halt_check = BRANCH_HALT,
--       .hwcg_reg = 0x17018,
--       .hwcg_bit = 1,
-+       .halt_check = BRANCH_VOTED,
-         .clkr = {
-                 .enable_reg = 0x17018,
-                 .enable_mask = BIT(0),
-
-?
-
----
-bod
