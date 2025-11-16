@@ -1,68 +1,67 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9AD15539A
-	for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 14:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D211FE471
+	for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 14:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763301928; cv=none; b=d9byStAxPv/nx/zklPV7WiliX9N/bAFD6MGE1VMOIOISYvQBgrRhhG0nTAvAqlQuEFiWDrB5EqXLTLO75BWYjnoesJOiSEcAYl5dpbJRnMxWMkIyJQ+1ThpwX/NVvdoOk5cwPZO+xRlC9J6pdqrnzg6LlJm+mT9zqdUqp5Zc61w=
+	t=1763303433; cv=none; b=YDAbEi6Bk0wfaopObMkfR3zgGfuPURQGGFW0zAv0K5vxAPl3BhNQRP8c1p2kP3uZ1eBZjazLtQqR6soxDhTLSmTiH1umdI/bGj2+/MOBYWtd4b7yYJ3q79+RyDtn7mFXBaVugytFpu5RJpgo1az7hziiHfpQbBU8kTWdd5Jd6GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763301928; c=relaxed/simple;
-	bh=33PsQ/AUwCz47Q2ktn9ehaEhowKUCamtoyxGLZNVHbg=;
+	s=arc-20240116; t=1763303433; c=relaxed/simple;
+	bh=cKfwNVXUaXw3bJO+IzX0argy2DWs0KoFFvj0/LYhR1w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tXK8BeAGsyAMp0ZW/IoCqJsrP4ep65tpjevssCW5wHNLf2mu7jtJFv6BdEx5qoiUG0PeGQe5paUPi35+WcHYFv8xheLylBmiRhrT6Be56FPbqd+JrViXeCFSMGe3gC8yUMEu/E9ZzV1exkNoCv/p4UZxI/mRSZfLlikFUqipTRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K5Xx6azY; arc=none smtp.client-ip=209.85.128.45
+	 In-Reply-To:Content-Type; b=ZT/3TitHRTjwIAnMP7dECHxwkzXvN0titCaEevs1tCkoroIYZstbHL2lV3hGqynnHZdG5J2Df5BBn/cLJHV40RCUPpm9OhxFnUNtddTNgHNdV1zcuDeaQh3CBertQbeEHfNAqgU4t9Rx42I7BTY7Cw5v462eLLKMV94EEFQKUwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LbNGIqJN; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K5Xx6azY"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477770019e4so39879445e9.3
-        for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 06:05:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LbNGIqJN"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-429c82bf86bso1898487f8f.1
+        for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 06:30:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763301924; x=1763906724; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1763303429; x=1763908229; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=esnGEzkzX0sNjqmrcTq8CE3mLuOzfAPZ58BKs3L8zSY=;
-        b=K5Xx6azY6CiiLH3TyMOB1jAjRN8zh9DpVd9pRVJbgGdq0n0k98XNHIU4IwjezrQINz
-         0zGsad18mM8WjiLWKEUnF1XAobDBZC1S8BpxyG6y+p97BlPiWkZpq2u6dB16RUYtwW10
-         Yvb3/hOzuqjgjUjeIkhYhPlo9ZuDSTKN9n+16rAwkfhygMP+zENg/T4cg+NngPY46qxu
-         PpteisL6ZIAR/coCqBXKbsaO+xXf27PEwBQ6WxLmdHSN4EJrS2RZRsPvN9bhid2kLDBU
-         uj2Noa3ICf6Rx6+IgBIV0N2gTGUOrWLcp7Cmo/Nuw9Oegck0jorx2ELC78Uq1QAKZPjr
-         mSMQ==
+        bh=ICly7sZCAzATlOBf/FaB2qKaAu95N0j13h8tQwyhW4A=;
+        b=LbNGIqJN1fUSQv3hrhvdT5K6dvjS2eea0mF+9v+Npsn8CfGfdufTskxXV47uJ3s5oS
+         JzfZNFPv/GCZ+82ZgwdOR2FxzAai9YUlnmsZ9FYya1jxHL14K0+xJEyfe6XiKwX6z8tw
+         YnG13a5yNKadpXZ8gVPx2M8z6SNDRAYgKaFsriTCzaXjybmy2LDEEBQR+u+InaZzCUVB
+         fslTYj2pj12rfLx8iO7VUow8NxaHL4uVqP03NIbntwGly8k7PtlApahdj/uc16eYSPZA
+         mcVJ6EZX80uWOq8QHFYKOYuMtUrcMGW2RqgukNl3EjCmxEX8LZvpK5PqlZXQ0bcc4krm
+         LbNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763301924; x=1763906724;
+        d=1e100.net; s=20230601; t=1763303429; x=1763908229;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=esnGEzkzX0sNjqmrcTq8CE3mLuOzfAPZ58BKs3L8zSY=;
-        b=vVRo7qp9OFjioP3oteVUWoFrQ61uFftvdH6w4Ny1QcSmamLSkl/Qb6e9x7ieOoNfOy
-         ysxCQX58WAvqjM+4eaLOX0gjnzFM6Ny+OFLK6eESJFuSJ9n1hmH/PX2acIhUBzwRnPep
-         jyWMLO3712rg13T3xmvT5BDK5VSrt0VHCp17TszOOr6CDbMQmK73rqV4g90/fbuHVVjB
-         4ZdzvoC5OSMywGsg//FLEx2zNVHHsIy63bCa0lfZfysL8UBh4+kCV79jm1jGHuyLEOVz
-         yvM0Ckn5RJSos4vrLB6BUK6dJOIPsvb5RICNqb5ztm3jv1hBKvcrrHWRKj/iDwZbW2GY
-         bgYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCGqiW6hUjPBod+mz9xhHY2H3wcfceNwtMUzzwdTM8oPdLNVm04fJ5gKt0C4rr4SGuopYB8WQhsoCodg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPvr/RhTCzKvQBEw7ZN+AGrYiooRZU5o8ZImEWrkIbcXNeilyv
-	5PcgAD+3n6DuagWvZ+ctn7CpOFwdI/ob9LHwyHo37Hw5h8iUObgC/rrnX7SFz2hbrFI=
-X-Gm-Gg: ASbGncvq/MerafZfUgHJkJlCNkEzoAEKG/WrnUgm3+wb+tbjERC9RnFceGn+3GKCSmE
-	rVcQdxTR5fBE0aXPWZ/BQvGqKkI9CKc/DEn6tk9niBHM17PqEn1Wo/SkqzHaeRvvAjVWpi/WvjQ
-	IQnV2ZWEku8a8caKIbUq8LfWwBTFObOjsExDOki6sy97EHHRvngcbkcuf60l7kqsHZaOmPkHZCg
-	4FKVYS8v5Fi484wBD8XIgau/u3ahkxsSY3TnBOKJ0vOel3hEGFfGRFQUaBwaOV20MonZ8rT16ri
-	RILHvPufM527T5N8Ebzdp6IQ0vzich6jW6KKIbxpt4qyVxNUGiUUCD2JksncSVcUZ+RXqKTxVj0
-	rZp0avzGbLiO3BJq73RyEVOI3WyvMLiEauwFyJ1nvwl1Bi1SGCo+xE60tFrC+lyObWLSci7xv92
-	VWhLAAIoYcfu3gCYs+YDsJRQI9y7FVJ94cIXWxrebPTJj9um77Ct1sLYSCZVngO92MPmSVu72kG
-	A==
-X-Google-Smtp-Source: AGHT+IE3mxx6tPSCmtFXKoJKqSi4TG4BM2tsrg1pYC1GBPuLQl9xVgLREUBWwVTx+ulT9jDCuzJmog==
-X-Received: by 2002:a05:600c:1c16:b0:476:4efc:8ed4 with SMTP id 5b1f17b1804b1-4778fe49c3bmr92644605e9.11.1763301923841;
-        Sun, 16 Nov 2025 06:05:23 -0800 (PST)
+        bh=ICly7sZCAzATlOBf/FaB2qKaAu95N0j13h8tQwyhW4A=;
+        b=IOroNvfZkpLPcPO4WTjRkK2x54xf2y7adwqMTaDCcMvkRtXU7bg9saa7eluk/IKFxK
+         yLpg55WtqKDXLYfBn6bHT+lshPcPSI5ZOiWPLTCrf8byN5McICCXr5I2AIEiSSSdSIJl
+         6KEVFeBiEXsL6rKkn5kYoqoJeoKmR1BulugmmTm7QqqbtEmfmJ090WPVN5kGuy0tnNyL
+         1ELs1ORmMLUpuTEAyGJi562E3pBI8T9XGM/fktiIGiqVFWQ8HRS0CrPmACk3QQV1Arze
+         BjHcocAM1KiLM+l0gWrd8jmFGbn+OTnpJeZhPZ5cnDCXlfNH+UBh6Udnyog7/ZLqkt7h
+         D8eA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaPQugZ7/0NeSh4zbXePDxZmdNPaVsqzweGtWY+uVAWK8GKGhOGkz0A2bWgf+Wohq9r33dEV60K2QKRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4TIk/xEiWEdd4wf/znmTt8P6y+p0BN07uiGs1d84eEdM6dMqH
+	OezKoFurFKfHkv6cg61y9UtHuKSWkk3bBLVxQxj5YX6aXh4E20oMk+fLNMk6FytXDsI=
+X-Gm-Gg: ASbGnct2s79LbpUbZg1TgeYY188MS56ucaItH+HiFmMQDjp77HOS98g8kspJXeq004T
+	YEDccPLNAMu0bqS3E+hFo2bZuHJKhP+AkfMxE8np68aNhTsWsL0LUphkhgd3RzDM537ja5uJ9gu
+	TeASifDgne2XSdkWqpmY76uCbNat54cINVFzrFzsQ9pQzT33w6JBZCuIIT+WtHLw1X+Vatm9NPC
+	wTaNfUM7VIlWnMnDreM4L/jvJLOcFhIt7fQh3YIr5WLflEs/RysxQfCAJUXwOu1qMfDv+BkaHbm
+	6IPbv1yxQQ8Y97iYjqyLMA+gRKfODqo6oihvPQBwD9tmFxpTfpNCMoskXxudUoVsEuD36S2r8vV
+	3M8XrCZAhpd07V/sZxRI7AcMnmnABWPkN5BgVbpDS/cbKfnkPY0pphwbpfmV1Xybjbq1SDKGl//
+	dKPLjJNdVo0lHt21IHYW2xPiq86jcbZN1kvDXGXHMIQA==
+X-Google-Smtp-Source: AGHT+IEfYLpYpa20g5wtNTk5jZFkM5xmSMDzaYixuhuIpmallSrBBPr8uUgJe9xMGpqXeRcYfT73jQ==
+X-Received: by 2002:a05:6000:3108:b0:42b:3ee9:4775 with SMTP id ffacd0b85a97d-42b593394a9mr9581497f8f.11.1763303428862;
+        Sun, 16 Nov 2025 06:30:28 -0800 (PST)
 Received: from [192.168.0.27] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e8e6acsm265181565e9.9.2025.11.16.06.05.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e85cc0sm21886040f8f.17.2025.11.16.06.30.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Nov 2025 06:05:23 -0800 (PST)
-Message-ID: <272d039c-25a0-4db5-96a3-c28907882cd2@linaro.org>
-Date: Sun, 16 Nov 2025 14:05:20 +0000
+        Sun, 16 Nov 2025 06:30:28 -0800 (PST)
+Message-ID: <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org>
+Date: Sun, 16 Nov 2025 14:30:27 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,10 +69,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>,
+Subject: Re: [PATCH v2 0/3] Add CAMSS support for SM6350
+To: Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
  Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -81,226 +80,69 @@ To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com>
- <20251114-sm6350-camss-v2-1-d1ff67da33b6@fairphone.com>
- <de7ad562-80bc-498e-a6fb-cc26bb6343f0@linaro.org>
- <r6EgtiSu8pqs2ouFERTw7fx8kYZ3RcSbGklwd17UPxNGGd3sbRDl2BPyplkABZVu3qyfrIzRMisa0qTSrm89BA==@protonmail.internalid>
- <DE8FV81S45S5.CH6K1QAX940D@fairphone.com>
- <a428f8b9-c338-4404-8dc1-da6daae37d5c@kernel.org>
- <d7dfeb7e-c0b2-426e-8572-023715c33674@linaro.org>
+References: <3ph8XeidoxkUIsK7qiOH29pde94sdwa3ReWKVVrPabgS5enIAmwVAC5plyFnBMJGKQBnxFB6df6j69OMFIeavw==@protonmail.internalid>
+ <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com>
+ <df4a6a77-9004-4dbe-9b11-7af2bea7e068@kernel.org>
+ <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Content-Language: en-US
-In-Reply-To: <d7dfeb7e-c0b2-426e-8572-023715c33674@linaro.org>
+In-Reply-To: <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 14/11/2025 17:06, Vladimir Zapolskiy wrote:
-> On 11/14/25 18:09, Bryan O'Donoghue wrote:
->> On 14/11/2025 13:06, Luca Weiss wrote:
->>> Hi Vladimir,
+On 14/11/2025 15:59, Luca Weiss wrote:
+> On Fri Nov 14, 2025 at 4:51 PM CET, Bryan O'Donoghue wrote:
+>> On 14/11/2025 11:15, Luca Weiss wrote:
+>>> Add bindings, driver and dts to support the Camera Subsystem on the
+>>> SM6350 SoC.
 >>>
->>> On Fri Nov 14, 2025 at 1:40 PM CET, Vladimir Zapolskiy wrote:
->>>> Hi Luca.
->>>>
->>>> On 11/14/25 13:15, Luca Weiss wrote:
->>>>> Add bindings for the Camera Subsystem on the SM6350 SoC.
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>>     .../bindings/media/qcom,sm6350-camss.yaml          | 349 ++++++ 
->>>>> +++++++++++++++
->>>>>     1 file changed, 349 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sm6350- 
->>>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm6350- 
->>>>> camss.yaml
->>>>> new file mode 100644
->>>>> index 000000000000..d812b5b50c05
->>>>> --- /dev/null
->>>>> +++ b/Documentation/devicetree/bindings/media/qcom,sm6350-camss.yaml
->>>>> @@ -0,0 +1,349 @@
->>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>>>> +%YAML 1.2
->>>>> +---
->>>>> +$id: http://devicetree.org/schemas/media/qcom,sm6350-camss.yaml#
->>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>>> +
->>>>> +title: Qualcomm SM6350 Camera Subsystem (CAMSS)
->>>>> +
->>>>> +maintainers:
->>>>> +  - Luca Weiss <luca.weiss@fairphone.com>
->>>>> +
->>>>> +description:
->>>>> +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm 
->>>>> platforms.
->>>>> +
->>>>> +properties:
->>>>> +  compatible:
->>>>> +    const: qcom,sm6350-camss
->>>>> +
->>>>> +  reg:
->>>>> +    maxItems: 12
->>>>> +
->>>>> +  reg-names:
->>>>> +    items:
->>>>> +      - const: csid0
->>>>> +      - const: csid1
->>>>> +      - const: csid2
->>>>> +      - const: csid_lite
->>>>> +      - const: csiphy0
->>>>> +      - const: csiphy1
->>>>> +      - const: csiphy2
->>>>> +      - const: csiphy3
->>>>> +      - const: vfe0
->>>>> +      - const: vfe1
->>>>> +      - const: vfe2
->>>>> +      - const: vfe_lite
->>>>> +
->>>>> +  clocks:
->>>>> +    maxItems: 30
->>>>> +
->>>>> +  clock-names:
->>>>> +    items:
->>>>> +      - const: cam_ahb_clk
->>>>> +      - const: cam_axi
->>>>> +      - const: soc_ahb
->>>>> +      - const: camnoc_axi
->>>>> +      - const: core_ahb
->>>>> +      - const: cpas_ahb
->>>>> +      - const: csiphy0
->>>>> +      - const: csiphy0_timer
->>>>> +      - const: csiphy1
->>>>> +      - const: csiphy1_timer
->>>>> +      - const: csiphy2
->>>>> +      - const: csiphy2_timer
->>>>> +      - const: csiphy3
->>>>> +      - const: csiphy3_timer
->>>>> +      - const: slow_ahb_src
->>>>> +      - const: vfe0_axi
->>>>> +      - const: vfe0
->>>>> +      - const: vfe0_cphy_rx
->>>>> +      - const: vfe0_csid
->>>>> +      - const: vfe1_axi
->>>>> +      - const: vfe1
->>>>> +      - const: vfe1_cphy_rx
->>>>> +      - const: vfe1_csid
->>>>> +      - const: vfe2_axi
->>>>> +      - const: vfe2
->>>>> +      - const: vfe2_cphy_rx
->>>>> +      - const: vfe2_csid
->>>>> +      - const: vfe_lite
->>>>> +      - const: vfe_lite_cphy_rx
->>>>> +      - const: vfe_lite_csid
->>>>
->>>> The sorting order of this list does not follow the sorting order 
->>>> accepted
->>>> in the past.
+>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
+>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
+>>> far as I can tell.
 >>>
->>> What file should I best reference?
->>
->> Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
->>
->>>>
->>>> I'm very sorry for the vagueness, but I can not pronounce the accepted
->>>> sorting order name, because it triggers people.
->>>>
->>>>> +
->>>>> +  interrupts:
->>>>> +    maxItems: 12
->>>>> +
->>>>> +  interrupt-names:
->>>>> +    items:
->>>>> +      - const: csid0
->>>>> +      - const: csid1
->>>>> +      - const: csid2
->>>>> +      - const: csid_lite
->>>>> +      - const: csiphy0
->>>>> +      - const: csiphy1
->>>>> +      - const: csiphy2
->>>>> +      - const: csiphy3
->>>>> +      - const: vfe0
->>>>> +      - const: vfe1
->>>>> +      - const: vfe2
->>>>> +      - const: vfe_lite
->>>>> +
->>>>> +  interconnects:
->>>>> +    maxItems: 4
->>>>> +
->>>>> +  interconnect-names:
->>>>> +    items:
->>>>> +      - const: ahb
->>>>> +      - const: hf_mnoc
->>>>> +      - const: sf_mnoc
->>>>> +      - const: sf_icp_mnoc
->>>>
->>>> Please remove sf_mnoc and sf_icp_mnoc, they are not needed for enabling
->>>> IP to produce raw images, and one day you may use them somewhere else.
+>>> Though when stopping the camera stream, the following clock warning
+>>> appears in dmesg. But it does not interfere with any functionality,
+>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
+>>> while the clock is on, and 'off' while it's off.
 >>>
->>> Ack, will give it a try.
->>
->> Disagree with this.
->>
->> See the Kanaapali patches. I'm asking new submissions to be as complete
->> as possible, instead of limiting the hardware description to the RDI.
->>
->> So listing the ICP noc is the right thing to do.
->>
->> So please include register banks for
->>
->> - bps
->> - cdm
->> - icp
->> - ipe
->> - jpeg
->> - lrme
-> 
-> This suggests to get a DT backward compatibility lock forever, 
-
-I'm not entirely sure what this comment means.
-
-The objective here is to get a full and complete DT describing camera 
-hardware that can be consumed by
-
-- CAMSS RDI
-- CAMSS RDI + future goodness
-- FreeBSD
-- Any other DT consumer of upstream data perhaps even CamX
-which
-> makes it
-> a very bad advice, which is favourable for just the single interested 
-> party,
-> which offers an alternative to the upstream CAMSS.
-> 
-> Anybody who wants to get support of any CAMSS ISP functionality above RAW
-> images shall not add anything unrelated and unsupported.
-> 
-> The asked inclusion shall be done later on safely, if ever needed.
-
-As I say the objective is to fully describe the hardware in DT, not to 
-describe only the RDI path.
-
->>>> I believe this clock is critical, and it is set so in the SM6350 GCC 
->>>> driver,
->>>> therefore it should not be added here.
+>>> Any suggestion how to fix this, is appreciated.
 >>>
->>> True, gcc_camera_ahb_clk has CLK_IS_CRITICAL in gcc-sm6350.c
+>>> [ 5738.590980] ------------[ cut here ]------------
+>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
+>>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
 >>
->> DT describes hardware, not the happenstance of Linux driver setup.
->>
->> On that basis omitting <&gcc GCC_CAMERA_AHB_CLK> from the clock list is
->> not correct.
+>> Do you have a full and complete kernel tree we could look at here ?
 > 
-> This has been already discussed, an enumerous amount of Qualcomm/MSM
-> specific resourced like clocks enabled in ABL, Linux etc. are considered
-> critical and not described in the dtb.
+> Sure, this branch has everything in:
+> 
+> https://github.com/sm6350-mainline/linux/tree/sm6350-6.17.y/
+> 
+> For further refence, at least two other people have tested this branch
+> in postmarketOS, nothing particularly exciting to report from there,
+> apart from that the sdm-skin-thermal thermal zone (thermistor right next
+> to SoC) is currently configured with 55 degC as critical trip, which is
+> quickly achieved when starting a video recording, but that's not really
+> an issue with camss, but will need some tweaking regardless.
+> 
+> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/7281
 
-I still think the argument for that is tenuous wrong in fact but, I know 
-you are right, this is a lost argument.
+diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+index a4d6dff9d0f7f..229629ef82809 100644
+--- a/drivers/clk/qcom/gcc-sm6350.c
++++ b/drivers/clk/qcom/gcc-sm6350.c
+@@ -908,9 +908,7 @@ static struct clk_branch gcc_camera_ahb_clk = {
 
-@Luca please _do_ include the full array of registers/clocks/nocs as you 
-find them and yeah drop the AXI clock from that description because reasons.
+  static struct clk_branch gcc_camera_axi_clk = {
+         .halt_reg = 0x17018,
+-       .halt_check = BRANCH_HALT,
+-       .hwcg_reg = 0x17018,
+-       .hwcg_bit = 1,
++       .halt_check = BRANCH_VOTED,
+         .clkr = {
+                 .enable_reg = 0x17018,
+                 .enable_mask = BIT(0),
 
-https://lore.kernel.org/linux-arm-msm/20251113-add-support-for-camss-on-kaanapali-v6-1-1e6038785a8e@oss.qualcomm.com/
+?
 
-  ---
+---
 bod
