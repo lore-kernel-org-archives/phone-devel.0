@@ -1,125 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D8D1D416E;
-	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8114B30ACF1
+	for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 13:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763232241; cv=none; b=RajPN5gowrF+VIVuM73MPIrcg0nasF7k0Cv0NB+H6sRtCJ8iVxD4B3vbMiND60zOuDc/iSxOVJCStkn6vDTgr2t6/YHAycBCbxGsKCQjiB0h52ZwiLq135ccas+Up4uJ+BsZoGhUiUEBvy1SoAGAnxUXvTl/h6menlzGwRigJnk=
+	t=1763301338; cv=none; b=oLdILmow6S9ANWxEb5nRozlUyaYeKNKHW+g6MAMztACOxxwatc97mb4zQcKjOKp1FefTWeUT5fWOyYtz48A8J9hQZqNrBU09B1824ttFqTw+s+cEAyNzgMUlD79TXuQou6p9+flmMaRD223PiQn797Odpwh/z4EwxTLWPOLTWHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763232241; c=relaxed/simple;
-	bh=8+8Spqc+Y8cAtfdVTw19oi3jqO7D/khUhFyak0s1Hqo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gYHNUaGbdGXX0fMXCxki5uNwC/Fj7gPx7oUpKLZJTPrPk4ATd0LWpUX9aoaGDLY7VolQTJ2DK7FaKTCU5dxWnx0LTRCSliM8SmTsQyj/WmTZEb0vRH2E+ihAfnMqFLxW2A1AA/3TyiCkGSMsBAiM+/yg4DSBOmfbk9lueUHZoHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhYb+XLE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763301338; c=relaxed/simple;
+	bh=FMGplgNJzN/pBx0afIYEUB+527NtkSI5GGeIgMmBILg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YyyM8juVr/g53LLq5SPIIeWsQtWeUUjeTpE2ykVXk68ysTyggLZd0zFTCTAaDqD13mwKUCoEZOw48aQR3l8w4MZlVdEYAhO5QhY+UvGk7m3l2Az8R1A2OGXHOHzfLMGabhfiU06gGjdhwdDZ50cCZ2iB0oa2TYfgY8uWKqY7aks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dyybtAKY; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhYb+XLE"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 992ABC19423;
-	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763232240;
-	bh=8+8Spqc+Y8cAtfdVTw19oi3jqO7D/khUhFyak0s1Hqo=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=IhYb+XLE0ArfhJvU03/OWt0HCSjVlt5NsD64vy9K9NPSE2+qDlHLxHQLSwgxG0wW0
-	 Ug6FucibIS7Yji7maS8bShCtZqWVfdh+4REgps75nK+8dp+DX+XZhkFmOfPvkOoiUk
-	 VDfFwaoa/6lmMaKdaURw/+BBKq+AxIM8CDTuSzy6DqFLKTspibxd5MIc53kaBEV1UA
-	 lSMqqZSr4kqNsl7e0seCYHZiM1N8AYNU98trSH1zfYvzzOs4RQJIif+bhgj/nHygYP
-	 3dJn7goYPR1eIRwoypmJeUTfZpf8A0xFIIwGZW59Lq5nhrVRFJpal3PgmWfIgUZPte
-	 tTaysskyde5pQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8649DCE7B1E;
-	Sat, 15 Nov 2025 18:44:00 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 15 Nov 2025 19:43:58 +0100
-Subject: [PATCH v3] ASoC: qcom: sdm845: set quaternary MI2S codec DAI to
- I2S format
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dyybtAKY"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4775638d819so19524525e9.1
+        for <phone-devel@vger.kernel.org>; Sun, 16 Nov 2025 05:55:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763301331; x=1763906131; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iqaGRJ1GY2x6l8dXoAfBLP7/ee6T2P1cW9IpZWUq/iA=;
+        b=dyybtAKYugn55tSdk0ejJ5x/CPbkHH0TpHuUIMeesN2v01un2BHFcRRcpt/KfQCuu/
+         xJL68JC5nQc8fkOIP5TQ3n38Vj5Md5usePN5bSF4yc+FNJxwxXakH59yQW9B40EMQweq
+         KwwOK7r8Z4bNn8BbWUEpw1YvcDvH2SdSp/tLvjWclv5ZUjGDRW5mGIDakS57YT72hPTC
+         lzqODhASxpVxaAF/Z58A0hVZGBoSwu4tvItt7vFxrQo2+p3S0wNqkX349MC82reXZQwJ
+         AA4nLPYLj3r0JhyDj0BkyYrp2lTkh+i1DXyb+8018UTsJWzfu4DueV2WJD8A7nxk22Hr
+         Dl/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763301331; x=1763906131;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iqaGRJ1GY2x6l8dXoAfBLP7/ee6T2P1cW9IpZWUq/iA=;
+        b=utu/BSy2K6HuY4wR0iE/v+2ueh0VEWRO0AQX+7yDcxJ4ebPbiz+FD5UUvwqwLdgXHW
+         ltmwMaWPySx3q4XPCeWXUbBzLSOiHVo0pmYqKy1LekBQSDsRxmhDKV/z6o5fca/6Xz+G
+         noUSDMzlqb53oZzx1TMmT5CGroxKqRrapodMfL8jNIBwrK1xL3lMd41E7i0H1v5zFuqM
+         GynI5pEFyIjx3m+jX/6ygBtJaVYQQf48AL+pTULDG5q6MBxUu/kyx+MP+NoLuYrT+3EY
+         rjRrST43Z3gT/NP/Oe9FTmYlLvozilVaxjS7PJl/cBJkcrPPhZDxJOFM6tQHoddqPwva
+         weLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVm+fUIZObT+mZIi47KN1OsSNLyUBNifFWj52rDpimnDv/bCgP3K22Ug1srlu/LwyY+Sr/lbpvQFf48Sg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBgzZ1mOTFwAIQ3ILyQYYIvGqxMXBWvwx6rRQ9ygib/O+MoGQp
+	P/EOAIhHrwoJX6b+A0152fDT0aWK3xY8Y842rvo0Jn9cy0ULH2cZft0mewzNFHgiPpY=
+X-Gm-Gg: ASbGncu7jy9AGsSiV8Jlsfl0M8dvaYeQbinhzdiVY523XZyE2zu1NKmXrF4yQFq3SMI
+	+UKlQ8NrrxMhK7hRpf3f694Yn5YTnyOpg34OTBS8+4Xx1WWnLExpInQnJXYrhwyHjOQZC/5tpa3
+	IHATlpIHUz8S7jbrzvYpR43K89ddjDGRyTXf9FmYqc0SI+cdVa+PytgpIwlyDoArntYoQ3GgaFE
+	Tn5ybvujBY8mpI/EyN5IT4SV6WX2Ejl+z6WHThgWBVYfDTvKJLxiEVlJbPwXSS8CD9T0tCqU3Kf
+	2+LGF7+Hfef57RLP5M754dzklwhUpkxWQkOF+uugf/GM5Usa8oyXyfkM0rmFHZzw1Yjh6M0d8AR
+	DKOZ2e+UgoXAWovyGkAOtKU/vdS/PFwvutGIfeLhSffij/XlO1AqrKGvS0I8NJmKJatqft478AN
+	RlInyNb3D9iLRBW8D2znboR547Oy1ejpT4gRZbsVRBZGw+
+X-Google-Smtp-Source: AGHT+IEUk3DdqvvTuoPw2svj7P8n3jQB7qQ0jl0BLgq51a3AoZNXsza4PugKS3KBfdWLmwJrvek4kA==
+X-Received: by 2002:a05:600c:c178:b0:458:a7fa:211d with SMTP id 5b1f17b1804b1-4778feb2401mr84649915e9.29.1763301331148;
+        Sun, 16 Nov 2025 05:55:31 -0800 (PST)
+Received: from [192.168.1.160] (p4fc3ddd7.dip0.t-ipconnect.de. [79.195.221.215])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47796a8a695sm94835955e9.13.2025.11.16.05.55.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Nov 2025 05:55:30 -0800 (PST)
+Message-ID: <9ef0e4f9-7594-4c26-ab45-38e62a7d0e37@linaro.org>
+Date: Sun, 16 Nov 2025 14:55:29 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/12] dt-bindings: panel: Convert Samsung SOFEF00 DDIC
+ into standalone yaml
+To: david@ixit.cz, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz>
+ <20251113-sofef00-rebuild-v2-1-e175053061ec@ixit.cz>
+Content-Language: en-US, en-GB
+From: Casey Connolly <casey.connolly@linaro.org>
+In-Reply-To: <20251113-sofef00-rebuild-v2-1-e175053061ec@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251115-sdm845-quaternary-v3-1-c16bf19128ac@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAO3JGGkC/33OsQ6CMBSF4VcxnS1pCxXq5HsYh9Je5CbY6i0Sk
- PDuVgdHx384X87KEhBCYsfdyggmTBhDjnK/Y6634QocfW6mhNJSyoonf2sqzR9POwIFSwsH4w9
- etFqWzrC8uxN0OH/N8yV3R/HGx57A/iShRC21qnVVVKYxNZfc2QHawsUQ4jAspwGzHYtI1w/ZY
- xojLd+Xk/rA/w5NKnvGN6JsO93VzpxwxrFwL3bZtu0NDFAJtPMAAAA=
-X-Change-ID: 20251114-sdm845-quaternary-e9d6d0b513c9
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Robert Oscilowski <drgitx@gmail.com>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1499; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=PHx2oXpAkKgIFICWfAbsH+E/7ElM+CcL2wslsUfnDDc=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpGMnvkMOhmQGMZfc9yygG3wSWhLGXXFps+EK6U
- dYBprr6drGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRjJ7wAKCRBgAj/E00kg
- cu9lEACxO+7i0H+nj3YGNeIJ7WxlabxhZHlSgl6KOnCkGrifVMOkAxG+wFCjF3xwy8UXZJj+N+f
- d41fmnrxOKjqO0JfwAM3UYWre9Ig/QR0t9VfB9eYdQBNnuX+kPLU44hDFjKSJFIO+Uro9ylNGKZ
- vJtbkqTlxzSvI0xxMnfc+Bjf/oEkqHj5v5MMAd6UcEUjlTHfYXqcrwX1cOO5S7mdFPAmfvCeyEZ
- /FLXLBz0C7ExgfrxrnvynDdCFHnR/nYxl/eS8ncF6gc+i9FIcVBnb17Bg+fAiD9WGwhgiJ+O2D+
- 5Jw1SgrVDFuWgH4HKdIfA0CxXqBvpS1Y+06gumqoDPhQnBUHdaIEcGCgX4/Wk4q57i4tgEy6TPM
- V1EVIoDItvpNv/05xqzpnyDm4uzqaQ+lWqu5ousD8akzt8wN6agkPaFTeYUR/K/K7GmWQ7HSegR
- CIvzfVFIYN+Bbk96g05GPEAxg5HzU4oqLXMv2R0WkVnHoTBOwTSXBEdjeZmJoR7nWoNrggvTXXr
- D+PGokXhp8+TEpYC9RaPNqCkEvuODCTTUOjeYMqZaY9Pl0P/6H7O5MfMENVUbi36sW7zvhjC99R
- qfPEv+rxau+Vk/LzMA1Ef+fkQigvXvY2QKwOklgD9Lfp6NxalyJqIXatPZR/D6CA4kl6KZcOMjH
- Lh/NyPlltdPaw0Q==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-From: Robert Oscilowski <drgitx@gmail.com>
+Hi David,
 
-We configure the codec DAI format for primary and secondary but not the
-quaternery MI2S path. Add the missing configuration to enable speaker
-codecs on the quaternary MI2S like the MAX9827 found on the OnePlus 6.
+I may not have added myself to MAINTAINERS when I submitted this driver, 
+but a heads-up would have been appreciated before just taking it over!
 
-Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Changes in v3:
-- Updated DrGit name to real name.
-- Link to v2: https://lore.kernel.org/r/20251114-sdm845-quaternary-v2-1-9d803bf5f7c9@ixit.cz
+On 11/13/25 18:57, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 
-Changes in v2:
- - Rebased on top of next-20251113
----
- sound/soc/qcom/sdm845.c | 2 ++
- 1 file changed, 2 insertions(+)
+[...]> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7e015dcbac732..a4b16812d5a0c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8117,6 +8117,12 @@ S:	Maintained
+>   F:	Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+>   F:	drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
+>   
+> +DRM DRIVER FOR SAMSUNG SOFEF00 DDIC
+> +M:	David Heidelberg <david@ixit.cz>
 
-diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
-index e18a8e44f2db5..0ce9dff4dc525 100644
---- a/sound/soc/qcom/sdm845.c
-+++ b/sound/soc/qcom/sdm845.c
-@@ -365,10 +365,12 @@ static int sdm845_snd_startup(struct snd_pcm_substream *substream)
- 		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
- 		break;
- 	case QUATERNARY_MI2S_RX:
-+		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
- 		snd_soc_dai_set_sysclk(cpu_dai,
- 			Q6AFE_LPASS_CLK_ID_QUAD_MI2S_IBIT,
- 			MI2S_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
- 		snd_soc_dai_set_fmt(cpu_dai, fmt);
-+		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
- 		break;
- 
- 	case QUATERNARY_TDM_RX_0:
+M:	Casey Connolly <casey.connolly@linaro.org>
 
----
-base-commit: 0f2995693867bfb26197b117cd55624ddc57582f
-change-id: 20251114-sdm845-quaternary-e9d6d0b513c9
+Please and thanks!
+Casey (she/they)
 
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/display/panel/samsung,sofef00.yaml
+> +F:	drivers/gpu/drm/panel/panel-samsung-sofef00.c
+> +
+>   DRM DRIVER FOR SHARP MEMORY LCD
+>   M:	Alex Lanzano <lanzano.alex@gmail.com>
+>   S:	Maintained
+> 
 
