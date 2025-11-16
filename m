@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26052DC34E;
-	Sun, 16 Nov 2025 14:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54232D6E74;
+	Sun, 16 Nov 2025 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763304133; cv=none; b=aVowmTDlKfM+uGTnpH6FIoCTCUpqRnI25hT8uLRduo3wfPXFq6KGDFAJjbKLxvTQQo2ZLqoeCU26a+ncwwUc8dmam4w7iHtHYN/zfTN9/ngQ8Wg/NvmS/Z8FG4B0f623xww9oV2L4qDc5tfyCnC5h5Kh7yg2q8FkRjDvwz5GNAs=
+	t=1763315176; cv=none; b=ftqJ8SQEDO+MuDgQkS71eQPCwfwgmSuq7i5uX+nWtNUAWFKQNMQOO1dStidVXVGCK0pZ3gfu4IXbz/l2DKxk038CG6OTfKSrzKIUjcbGmcUMdS88Ln3qr9c1LiFlWz7IdTaGql6r9SySSuEMaoMOGJv7yBXijkVHh1GfaXJJG14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763304133; c=relaxed/simple;
-	bh=Oo4FLQbmKK9z2H4gqvqF8dWs7cja2Rym2AqBnAD4nkM=;
+	s=arc-20240116; t=1763315176; c=relaxed/simple;
+	bh=8weLOxj8Wlz4C1yVkA8GZ3u3/tK4Dg1gYxi6RXZpYj4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GMpF333MjB9/n+EGR809augOBDPXbtF9sj5la0LOINGrrVDqTp2irv83cBJhoFW504VOQmL7jwTgt1c+tsfzAGzRzCDPGJvC7Lh6HkSqafi8fS/oKfaHae+qFd+m/cMSD83myUz8fkxn4xZtJs80+rEhlSVWx2DwIDUJQelgQxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=b14NR+8M; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=tx7KLci1eIGZXkWgepL0Z1esAtbuq95eqXuU4Bf+zhx83QceAsNik9R1N8Sp6F/Al+TJenN6Ynpgumi91Kp6eVRsLWFGg4EcnbfDuQmcunEe8YUbTeRQXZ3KmcXVVL3SVg0FYP1u58LfS13Fe2zBl62FRj9q3+kKA4xATVnDHDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=hJS2cFjl; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="b14NR+8M"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="hJS2cFjl"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id EE08C53412A2;
-	Sun, 16 Nov 2025 15:42:05 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id F31685340FCD;
+	Sun, 16 Nov 2025 18:46:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1763304126;
+	t=1763315170;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=LjYOWtCffzgNMebgJlMNfWTh/7EezeDBlJxB3iE8iTM=;
-	b=b14NR+8M108ri2ILOwLsagkVEWsICtRkqyyOOjEZLraOmy7XWPNgsBnlNZT6h7JIhPHyGB
-	chPTHurujUpkqDqTKMRiexidclkxXtQMQugXVJTscD9hLSdUCQcELbRcsHAROMTnrJe8rx
-	cNcq2jnNDnc9UIUKJ7ybSJqln8oorCI=
-Message-ID: <babcd7be-40f6-4023-8781-0b7203faf662@ixit.cz>
-Date: Sun, 16 Nov 2025 15:42:05 +0100
+	bh=dmSTYZcJD3kr6AbFuIQiAa0536twYODkxO7OVk9gi0M=;
+	b=hJS2cFjljLTnR7CsBpvxhnqDuYKpu/CsInLu8yhv3qHhnpdBz9738xDwttaaMnHER9Pdl6
+	rGcpqzqmOSpc0yh9TMQGTRPk/Hkv7dGVDuLjH2PiAsyUQW8bJog76yBvTgpOm3EfHAXP3W
+	eg+Ua+PkHCAd2u1/sWfpJG3gwN9vxnc=
+Message-ID: <0792c7a7-1bbd-4156-a73c-5060e5612dfc@ixit.cz>
+Date: Sun, 16 Nov 2025 18:46:09 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -114,6 +114,20 @@ On 16/11/2025 14:55, Casey Connolly wrote:
 > 
 > I may not have added myself to MAINTAINERS when I submitted this driver, 
 > but a heads-up would have been appreciated before just taking it over!
+
+I missed this part in first reaction to your email.
+
+Since the driver was broken in mainline and you didn't upstream any 
+patches you had in sdm845-mainline tree for more than year, I assumed 
+you don't have time to maintain the driver.
+
+I'm very happy you got back and you're going to maintain the driver 
+again thou.
+
+I didn't feel I'm taking over from you, so sorry about that!
+
+David
+
 > 
 > On 11/13/25 18:57, David Heidelberg via B4 Relay wrote:
 >> From: David Heidelberg <david@ixit.cz>
@@ -130,14 +144,6 @@ On 16/11/2025 14:55, Casey Connolly wrote:
 >> +M:    David Heidelberg <david@ixit.cz>
 > 
 > M:    Casey Connolly <casey.connolly@linaro.org>
-
-Sure, I'll add you in next patch version.
-
-Could you review the patches not authored by you within the patchset too?
-
-Thank you
-David
-
 > 
 > Please and thanks!
 > Casey (she/they)
