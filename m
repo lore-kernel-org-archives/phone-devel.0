@@ -1,87 +1,39 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAD2328B75
-	for <phone-devel@vger.kernel.org>; Mon, 17 Nov 2025 12:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702CE285406;
+	Mon, 17 Nov 2025 18:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763384016; cv=none; b=RBSLwuzpEFB7VbkEKviOqU/XEANJw5v9O8Kykn7E7Ex39luYfLpUh79hUvJsNIdSG34zjlA5ptBbW6JeZ5gIe52VHS9bcf+2G1uzbomPo3i2E4cjq+kG8oKUwvtKLiNNv7xTsr0gm3lX5ZBUL5YK1HloAQvySztVUxV9PkbMBvE=
+	t=1763404507; cv=none; b=mEBrO+E1uMKSNFHPHWrtmF1Hh+mTUwe2n/c3MI6YlYqJHaF9u5yZBeUJ5f9qeIIx8KIlQp5QdTFit3MvHIS6rdp6b6StozKKigUrFEEf2SihkGEIQQK1akXnKb1uktToqlIkAMNFsNeZFWOV5Joo+l0ANPtOer1WiufjLErjIkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763384016; c=relaxed/simple;
-	bh=n0eh/NtDf/nYf0LwlhPqDDAQ+7UTxU/Qm/qJqghRnYI=;
+	s=arc-20240116; t=1763404507; c=relaxed/simple;
+	bh=klUIHIdEGJ8vZqyKVst8JE5uctAFbAvJn0+6f4Hu/yA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sDwn6j46va5xHPce58CUYzRVsntDuKEywDeooy+WoJRINUmTAI74bSg73kLcE59UT4aIPNT9ZrrdBkj2IQbmSGvLlXptmeIYgILxTx7eTaNpu6k4DMRy8DJ0VLJtLbduafWYonexc+NbiL7UqU9ms8Em/K2wJZQ9Nyis+LehLos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BjG/BDks; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=M1dCxlvO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=FKuB66H6+H/w28ervMeCW/72RRgOz+YLCU6HNtXUtIfLqxeOzH4M7xIFgVMBiOikdLJOz9h9cbXC1vU2ZuCtoNouLkWMFFYcawmxBUo9xt5U333Km2uJOMtxztS8q0BWTu5/GkmwVtxQQZFLtJkfPkU7/Y0i1dzxEFQH5S+6DuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=wt6YibAx; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BjG/BDks";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="M1dCxlvO"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AHAC2c33571507
-	for <phone-devel@vger.kernel.org>; Mon, 17 Nov 2025 12:53:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	v7eCMvYSrDmmZnV36o1pJlusI4kswM1CDbztYSeOKW4=; b=BjG/BDksUtN+3j2t
-	VRWtx96peGyQqvvacO3zhnieBK1y6dgRsPl/7LYwY/3Ww4DXZaPk8Mw7Fg7xQAyX
-	ionLGFf+K+/WHIEE93lFnVxFbm5TCNd4RqvjS2jhQsX+vd6KnSK7KIowDpPI8s/a
-	pWWZPE20R4pvYREXnn0ZwzDXoYLKk5kBHgEQZY5E7VS6HuSC6xTSlWu7Ikg2vsP2
-	t1GOy/2ej1ZsaFJbZNHdsPvKI157hFywzPjvuVkyLcNpZNqRYP5xti+JhunA7JCZ
-	Pj1++N1I7oDtC4MQLK36HAsciXQyxvN4y6l1PLL5Js6oRZLpbQdGvE0Wsnxl1XFE
-	2FnTfQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ag1rbrec6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 17 Nov 2025 12:53:34 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ed767bf637so4242431cf.1
-        for <phone-devel@vger.kernel.org>; Mon, 17 Nov 2025 04:53:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763384013; x=1763988813; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v7eCMvYSrDmmZnV36o1pJlusI4kswM1CDbztYSeOKW4=;
-        b=M1dCxlvOuV3wghjuo5SbDIPG0gZEef8Ey5BHOZrkktFentS7LBTEs9jbT4ZPOyvCTb
-         fr71D3NwSB0rDYjqwRaIHsT7f54GdzBguQ8OG1Lluc8wFshuGKrQehJ6dcll8tsolXRU
-         NghzOFUnCZAkOazUMpTtjVDIhSjOxrfCVIiEXBmxKAFwfELe+kFvZG8+JUr8kfJgFqNh
-         FmMD4ffnwpFBk5j1x0uepTBI4krW7fltmMMhcBiLFU6TqH9+/SJiYZI8Q4TFfLnAe1B7
-         0qOiYg+NuQaSe6S6DvfKQx3z+Dmtx8gu7j80hA/LHsWlGcNs4agnAC8GY81iLyUmNX1e
-         cryA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763384013; x=1763988813;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v7eCMvYSrDmmZnV36o1pJlusI4kswM1CDbztYSeOKW4=;
-        b=L+dJm3LhtJ9w9uQmcS/28P1bBHzP55H+Vn0QA2M9zatxgR9J8pYTz+1R3CMKIKb47p
-         1JVMvXzJxlXCARpWteY6+K8yefn8OJWFUSqF6Q9DU7owwky/kFwQg202kKfZn/e7P+jW
-         HwEQWaL2j8ZHEl4KYe2rewIgXZF/JWAj3cm4gTD+CjRCCvapk9PWeOv1MDXSCw1d8nEL
-         I4kOSXOlxEdq8xpRNTJLZ8u8QrfjY3F8kSA3c/jLH+RNn+P3P12cs/ulUjr4GFmhdCm5
-         62eZP9zluvcyld6GW45dcsT9Rtg8HTaE7Ii6FOF4mWifqWbgyvsjV7LqLEZD5rdqSciY
-         WPMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyQmNRl4QTGHbmyq302bCrLrQ806WIRAXQBA+1zZq2pQQ//r9I+PKAMZK8Q7kwy4x8+Sds7s7b+ofY9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtJYPHpweNfKxlsv7QTepSuSew2Nek6Y+QeAQkyONWTNtEKbxx
-	Ed8H89frsGJrdMS6xWrBLBbj3uDo1IwlRQGcTn0qi/G0/9iRKEU4LCAjSR21OR6b8LuanJIwVbh
-	rvtD8Vdhb98PiICChPwGdzBSRBc+xtWePLwA0jxSxRyifjdPndAUPw21W/K6ca25NnA==
-X-Gm-Gg: ASbGncsZK/OFO1+0x/QqoyRy07Sgf9yQDCc1GPYxBYW+vQhmdh7M9SYAdFXTBnOTFAa
-	eFfzi4vrOf1ZuWXg+7bXeV/Oad09RmI8tqnMDdSvllw48VyDY39zAtXtTZvl8so3sy+6zQIKxMU
-	axsjC4WaYsY/j0Kq3nJ62T0099FoJjXwg0IoKUv8Mb1APiWtS3JLrrHj97nHRJPJe//KbMVbLXM
-	GsoI1pT0HxEjGOqzYxyaB9HyCle51ukeBibMIOS0WcqSAmUU0qmpYimfv462A2BcnLzcFjbTv9+
-	kgQulJIdelOkfarrk7Km3CT7HaogByofcc4XYH1iDaLqHJEPZ+pX4mjfENqwNyf4vxyMyO5ibNR
-	3gqkWSAeAl6IBaophH3lV9bD/Y7Rwku81pPIrfctmZdmaZ3O4NpjiABXF
-X-Received: by 2002:ac8:5d49:0:b0:4ed:6862:cdd0 with SMTP id d75a77b69052e-4edf36e32acmr108017861cf.10.1763384013358;
-        Mon, 17 Nov 2025 04:53:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcT0L5Dx/YiL8NZATdQikVgImZJ8zfUUN40OB1IZPnLg8TY3yZ8A4iHR4J5qVSr+Dbqwsp4g==
-X-Received: by 2002:ac8:5d49:0:b0:4ed:6862:cdd0 with SMTP id d75a77b69052e-4edf36e32acmr108017571cf.10.1763384012954;
-        Mon, 17 Nov 2025 04:53:32 -0800 (PST)
-Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a3f96e2sm10089790a12.16.2025.11.17.04.53.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Nov 2025 04:53:32 -0800 (PST)
-Message-ID: <893b97ad-7d2b-4408-bab5-2cd63fdaa33b@oss.qualcomm.com>
-Date: Mon, 17 Nov 2025 13:53:29 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="wt6YibAx"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 785625341045;
+	Mon, 17 Nov 2025 19:35:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1763404500;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EI3tvPTFkOkFOiLHLMduD3MlquFdC7E7ljJZMvp14Fk=;
+	b=wt6YibAxYJbTFHww6uaSX41O6qv21cweh1bMKUUejqcifueFbsbDzsC5rH3nExTC6ZLMQ8
+	3gyzYbrq519UaP5+ZXtwfy1/sS9eAy6i68eE2gV8tyEHbJhW36/fALuA5r0rkAO3rmB6ac
+	xYOySuCjweoLIVujlbuSHfgRy11Zyhg=
+Message-ID: <f15c4ed1-5997-48a1-a0a1-1b0113645517@ixit.cz>
+Date: Mon, 17 Nov 2025 19:35:00 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,114 +41,123 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Add CAMSS support for SM6350
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Bryan O'Donoghue <bod@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3ph8XeidoxkUIsK7qiOH29pde94sdwa3ReWKVVrPabgS5enIAmwVAC5plyFnBMJGKQBnxFB6df6j69OMFIeavw==@protonmail.internalid>
- <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com>
- <df4a6a77-9004-4dbe-9b11-7af2bea7e068@kernel.org>
- <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
- <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org>
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: Add support for Pixel 3 and
+ Pixel 3 XL
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>,
+ Casey Connolly <casey@connolly.tech>, Joel Selvaraj <foss@joelselvaraj.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Vinod Koul <vkoul@kernel.org>
+References: <20251030-pixel-3-v2-0-8caddbe072c9@ixit.cz>
+ <20251030-pixel-3-v2-2-8caddbe072c9@ixit.cz>
+ <8d32460d-894b-472a-a262-4c6a60fbcef1@oss.qualcomm.com>
+ <7f686f1b-7cc7-428d-941d-82883decee49@ixit.cz>
+ <259477b9-0e14-4785-91d4-67c5a94331eb@oss.qualcomm.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <259477b9-0e14-4785-91d4-67c5a94331eb@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: _gyY9ym9i_q8utbR1BIUOm3kAg3egQW7
-X-Proofpoint-ORIG-GUID: _gyY9ym9i_q8utbR1BIUOm3kAg3egQW7
-X-Authority-Analysis: v=2.4 cv=FPAWBuos c=1 sm=1 tr=0 ts=691b1ace cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=Gbw9aFdXAAAA:8
- a=zgB8h5vYSv3AeE4VIxkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=a_PwQJl-kcHnX1M80qC6:22 a=9vIz8raoGPyDa4jBFAYH:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE3MDEwOSBTYWx0ZWRfXyJjbxnzDlUEs
- UPy8NdVqDKAqXyalVVZlVrXbvNc+hHXJG19KHE1J3LK13gKyVoNi8MHyO6VEHRXnGW2uleruY8y
- jUIW2OQIHh14nEqbB6aBlmVB1KyGwR2hTipbfKNmYPbCPIvyXFQA+nOpex2tjywEIQME8dhHhPP
- elbWEPrE7eEmjmPSerMJq3Wm7hWgu0dNXczM9wiHanWQei721CxRZt49NZlgAX89ftmrfdXX8bs
- eLwPYC4/ECZbrp3NP/ZfKOTQtKYHOnRQLu3iDhuF+IZyEPtPMsebEk34n+Mg7w8qc8u/qL1veaR
- ghmQJY/FlR2OJTfFzpjQNED8y8jFDhlFlTMCC/gUF8P2N3MbuKX5zd23AOaL51ZV7PjH4gqlHJs
- Zud23vKqB3bcaHgGUAsRADs1FSVctQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511170109
 
-On 11/16/25 3:30 PM, Bryan O'Donoghue wrote:
-> On 14/11/2025 15:59, Luca Weiss wrote:
->> On Fri Nov 14, 2025 at 4:51 PM CET, Bryan O'Donoghue wrote:
->>> On 14/11/2025 11:15, Luca Weiss wrote:
->>>> Add bindings, driver and dts to support the Camera Subsystem on the
->>>> SM6350 SoC.
->>>>
->>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
->>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
->>>> far as I can tell.
->>>>
->>>> Though when stopping the camera stream, the following clock warning
->>>> appears in dmesg. But it does not interfere with any functionality,
->>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
->>>> while the clock is on, and 'off' while it's off.
->>>>
->>>> Any suggestion how to fix this, is appreciated.
->>>>
->>>> [ 5738.590980] ------------[ cut here ]------------
->>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
->>>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
+On 30/10/2025 13:10, Konrad Dybcio wrote:
+> On 10/30/25 1:03 PM, David Heidelberg wrote:
+>> On 30/10/2025 12:32, Konrad Dybcio wrote:
+>>> On 10/30/25 8:24 AM, David Heidelberg via B4 Relay wrote:
+>>>> From: David Heidelberg <david@ixit.cz>
+> 
+> [...]
+> 
+>>>> +    battery: battery {
+>>>> +        compatible = "simple-battery";
+>>>> +
+>>>> +        status = "disabled";
 >>>
->>> Do you have a full and complete kernel tree we could look at here ?
+>>> You added support for both non-proto boards based on this platform,
+>>> there is no usecase for you to disable the battery, remove this line
 >>
->> Sure, this branch has everything in:
->>
->> https://github.com/sm6350-mainline/linux/tree/sm6350-6.17.y/
->>
->> For further refence, at least two other people have tested this branch
->> in postmarketOS, nothing particularly exciting to report from there,
->> apart from that the sdm-skin-thermal thermal zone (thermistor right next
->> to SoC) is currently configured with 55 degC as critical trip, which is
->> quickly achieved when starting a video recording, but that's not really
->> an issue with camss, but will need some tweaking regardless.
->>
->> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/7281
+>> Should I keep the status = "okay" in the board files or drop it too?
 > 
-> diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-> index a4d6dff9d0f7f..229629ef82809 100644
-> --- a/drivers/clk/qcom/gcc-sm6350.c
-> +++ b/drivers/clk/qcom/gcc-sm6350.c
-> @@ -908,9 +908,7 @@ static struct clk_branch gcc_camera_ahb_clk = {
+> Drop it, nodes are enabled unless they're explicitly disabled
 > 
->  static struct clk_branch gcc_camera_axi_clk = {
->         .halt_reg = 0x17018,
-> -       .halt_check = BRANCH_HALT,
-> -       .hwcg_reg = 0x17018,
-> -       .hwcg_bit = 1,
+> [...]
+> 
+>>>> +&tlmm {
+>>>> +    gpio-reserved-ranges = <0 4>, <81 4>;
+>>>
+>>> Could you add a comment (like in x1-crd.dtsi) mentioning what these
+>>> pins correspond to? Usually it's a fingerprint scanner or things like
+>>> that
+>>
+>> Sure, I looked into it, but I haven't found (so far) information about the assigned blocks. In next revision it'll be addressed :)>
+> 
+> Thanks, you can usually correlate them to a QUP instance based on the pinctrl
 
-No reason to drop the hwcg description
+For now I verified that 0 - 4 is SPI (Intel MNH Pixel Visual Core), but 
+81 - 84 is at best educated guess SPI (Fingerprint Cards FPC1075).
 
-> +       .halt_check = BRANCH_VOTED,
+The information about 81 - 84 are generally nowhere to be found.
 
-It'd be useful to explain why we should ignore the hw feedback in this case
+The downstream device-tree
 
->         .clkr = {
->                 .enable_reg = 0x17018,
->                 .enable_mask = BIT(0),
+qupv3_se15_spi: spi@a9c000
 
-Konrad
+thou it's disabled, so I assume there is external properietary 
+user-space driver handling all of this.
+
+I could fill the guess, if that's good enough.
+
+David
+
+> 
+> Konrad
+
+-- 
+David Heidelberg
+
