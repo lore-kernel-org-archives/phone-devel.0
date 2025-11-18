@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45CC2D4B66;
-	Tue, 18 Nov 2025 12:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C143313E36;
+	Tue, 18 Nov 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763469262; cv=none; b=j7ETaFHVuPRRM2hbsi72K3GuNhMR329UIAU3aUJBKwuyr83AWhHjnfWvTuO9FDCvd7qY7D/hAASlwg7LJwW3uNF8IFn7oH/+f/41Wg/4yQh4apFMRNy+wZXfpkUMzmO/2EODOIzHx4gqlOFgo+iymmLhKyjKDz+u9gbMSzszm1U=
+	t=1763472680; cv=none; b=HyfNl1wzmythdhgiuQ5UdAIyKIjfXCaWN9o5M8TC5N8Uegzu0WUMLG2Us4heImVGalMMPs7KTDCzUMcP5+JY8/zI+oQONPFkx2cFswSUnshQ3jzx9JFBYP63v51tXboBGH00yk8wJRGFEe603NDcmJfi86ecDKVlBk6bQ7RjsrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763469262; c=relaxed/simple;
-	bh=ojtkXToY1uSxLu42dlhrTeh4SXS2ROK1gCNE/jOssi4=;
+	s=arc-20240116; t=1763472680; c=relaxed/simple;
+	bh=9ugQIvvJz7zikbAFPH6IUMIqsSAchpy+YXvO5z6zCtQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ruut4bW2711wj7iItKLaKQdaY7FQn1P3nY1NcZ53pa76Fr9OGkauo4raGdM+rUeu8yKcP9Qxhh+GIGe+DrAyzsNUYs/0d8uMHzUv/rwkfz3nyqFjIZzltMWjiLMSfhetUfF7pX6HGcq+HYdNp32iFd30PPxsI2jAEi44If9h97U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=htDw2Bgg; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=gXF4kl6Plt3jVHTIjZz87Kj4AFLbwoOGl5Ou6wcITdyv2ICKTXbQXtbAWYo1IlRMiSVsRl6zc4/QE3DvXxYJR7EmbfU9I3dg7qxk9F4MAQmnAYW06/tq852ZNriwVE6nkNhJH0knT6dO3MdMtnoXVLnBfPJKSogfmcGL3W9DybY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Ui9e2rg4; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="htDw2Bgg"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Ui9e2rg4"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id C776D5340B4C;
-	Tue, 18 Nov 2025 13:34:15 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 43F0A534146A;
+	Tue, 18 Nov 2025 14:31:12 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1763469256;
+	t=1763472672;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AqKItSbNBg0rTA7GzgF445S5K6uusvDHoO+8ekmP/rk=;
-	b=htDw2BggSDu2mhuqeAuVxeUYHm8EA57oFTYOA6e4/VtQo4fz0xwj7zsDv/COj3SCtuSX7a
-	ORQ6UbexduNc+hGapELkzD9S9hzYXBuBTgjVoyN1DoYVLABOKbjJoW6uXuzB/ZnP0Sl6Qc
-	1KL/x3LIyEj9GupgbtYEA1SRZgE38V0=
-Message-ID: <eb75f5c7-18ef-4eda-a28f-6efde9df03e4@ixit.cz>
-Date: Tue, 18 Nov 2025 13:34:15 +0100
+	bh=w0PqZr/fldf/EvmdNDcZnMhCxCGAlnzGVmppfsica5Q=;
+	b=Ui9e2rg4oSC3Gmhvv7nOWuvFSKScX+hqI38VhddPR1TphYTHl/wmG4/uZYsyhhpeYxgR4G
+	kbnnqO1cOuspW0XQq2NGH0MeRjIGNMZt/24fmbZk1/7eFgYMZWn6jrDPy9I0bX8BU+y9o5
+	d7VUqzUCl1dJG0espP2pFaCQG7mTJoY=
+Message-ID: <d9c91625-a829-474f-9fda-5e39342bb4af@ixit.cz>
+Date: Tue, 18 Nov 2025 14:31:11 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,26 +41,27 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] dt-bindings: panel: sw43408: adjust to reflect the
- DDIC and panel used
+Subject: Re: [PATCH v3 8/8] arm64: dts: qcom: Add support for Pixel 3 and
+ Pixel 3 XL
 To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- "Rob Herring (Arm)" <robh@kernel.org>
-Cc: phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, dri-devel@lists.freedesktop.org,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Casey Connolly <casey.connolly@linaro.org>, linux-arm-msm@vger.kernel.org,
- phodina@protonmail.com, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Amit Pundir <amit.pundir@linaro.org>, Casey Connolly <casey@connolly.tech>,
+ Joel Selvaraj <foss@joelselvaraj.com>, Vinod Koul <vkoul@kernel.org>
 References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
- <20251118-pixel-3-v3-2-317a2b400d8a@ixit.cz>
- <176346899005.2610273.2055455026150162691.robh@kernel.org>
- <715ea6b0-a8d7-4ecf-b0c7-f4469c94b969@oss.qualcomm.com>
+ <20251118-pixel-3-v3-8-317a2b400d8a@ixit.cz>
+ <d81b0e70-5e3f-4e33-a268-e8b903904e9b@oss.qualcomm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -106,41 +107,167 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <715ea6b0-a8d7-4ecf-b0c7-f4469c94b969@oss.qualcomm.com>
+In-Reply-To: <d81b0e70-5e3f-4e33-a268-e8b903904e9b@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-yup, saw, consider it solved in next version! :)
-
-Also hopefully I'll fire ut the dt_bindings_check and dtbs_check in our CI.
-
-David
-
-On 18/11/2025 13:33, Konrad Dybcio wrote:
-> On 11/18/25 1:29 PM, Rob Herring (Arm) wrote:
+On 18/11/2025 13:32, Konrad Dybcio wrote:
+> On 11/18/25 12:30 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
 >>
->> On Tue, 18 Nov 2025 12:30:37 +0100, David Heidelberg wrote:
->>> Add compatible for used LG panel.
->>> SW43408 is not panel, but DDIC. The panel itself is the
->>> LG LH546WF1-ED01, so introduce combined compatible for it.
->>>
->>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>> ---
->>>   .../devicetree/bindings/display/panel/lg,sw43408.yaml         | 11 ++++++++---
->>>   1 file changed, 8 insertions(+), 3 deletions(-)
->>>
+>> This adds initial device tree support for the following phones:
 >>
->> My bot found errors running 'make dt_binding_check' on your patch:
+>>   - Google Pixel 3 (blueline)
+>>   - Google Pixel 3 XL (crosshatch)
 >>
->> yamllint warnings/errors:
->>
->> dtschema/dtc warnings/errors:
->> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/lg,sw43408.example.dtb: panel@0 (lg,sw43408): compatible:0: 'lg,sw43408' is not one of ['lg,sw43408-lh546wf1-ed01']
->> 	from schema $id: http://devicetree.org/schemas/display/panel/lg,sw43408.yaml
->> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/lg,sw43408.example.dtb: panel@0 (lg,sw43408): compatible: ['lg,sw43408'] is too short
+>> Both phone boards use the same identifiers and differ only slightly
+>> in their connected peripherals.
 > 
-> You got this error because you didn't fix the example DT (which would be
-> validated with `make dt_binding_check`
+> [...]
+> 
+>> +&cont_splash_mem {
+>> +	reg = <0 0x9d400000 0 0x02400000>;
+>> +};
+> 
+> You override it to the same value on both devices, keep it in common
+
+Done.
+
+> 
+>> +
+>> +&framebuffer0 {
+>> +	width = <1080>;
+>> +	height = <2160>;
+>> +	stride = <(1080 * 4)>;
+>> +	format = "a8r8g8b8";
+> 
+> The format is mandated by the UEFI specification and won't change too
+> 
+
+Done.
+
+> [...]
+> 
+>> +&tlmm {
+>> +	panel_te_pin: panel-te-state {
+>> +		pins = "gpio12";
+>> +		function = "mdp_vsync";
+>> +		drive-strength = <2>;
+>> +		bias-pull-down;
+>> +	};
+>> +
+>> +	panel_reset_pins: panel-active-state {
+>> +		pins = "gpio6";
+> 
+> Pin entries would be best sorted by the GPIO index:
+> 
+> https://docs.kernel.org/devicetree/bindings/dts-coding-style.html#order-of-nodes
+> 
+> 
+
+Done.
+
+>> +		function = "gpio";
+>> +		drive-strength = <8>;
+>> +		bias-disable;
+>> +	};
+>> +
+>> +	panel_suspend: panel-suspend-state {
+>> +		pins = "gpio6";
+>> +		function = "gpio";
+>> +		drive-strength = <2>;
+>> +		bias-pull-down;
+>> +	};
+>> +
+>> +};
+> 
+> Stray \n above
+> 
+> [...]
+> 
+>> +&adsp_pas {
+>> +	firmware-name = "qcom/sdm845/Google/blueline/adsp.mbn";
+> 
+> Sorry if I asked this before, but are the binaries identical for
+> both devices?
+
+Yes, there is only one firmware, which crosshatch has different, but all 
+listed in the initial bringup are used for both.
+
+To add, crosshatch was somehow not that popular device, so as I've been 
+suggested in u-boot discussion, I would love to keep blueline everywhere.
+
+One exception is LineageOS kernels, where they go by name crosshatch, 
+but again for the both phones.
+
+> 
+> [...]
+> 
+> 
+>> +		vreg_l14a_1p88: ldo14 {
+>> +			regulator-min-microvolt = <1800000>;
+>> +			regulator-max-microvolt = <1800000>;
+>> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>> +			regulator-boot-on;
+>> +			/*
+>> +			 * We can't properly bring the panel back if it gets turned off
+>> +			 * so keep it's regulators always on for now.
+>> +			 */
+>> +			regulator-always-on;
+> 
+> Is that still the case with your fixes to the panel driver?
+> 
+> [...]
+
+Sadly yes, but I think Petr Hodina has idea what needs to be addressed, 
+so likely before 6.19 this will get addressed.
+
+> 
+>> +
+>> +		vreg_l28a_3p0: ldo28 {
+>> +			regulator-min-microvolt = <2856000>;
+>> +			regulator-max-microvolt = <3008000>;
+>> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_LPM>;
+>> +			regulator-boot-on;
+>> +			/*
+>> +			 * We can't properly bring the panel back if it gets turned off
+>> +			 * so keep it's regulators always on for now.
+>> +			 */
+>> +			regulator-always-on;
+> 
+> ditto
+> 
+> [...]
+> 
+>> +	regulators-1 {
+>> +		compatible = "qcom,pmi8998-rpmh-regulators";
+>> +		qcom,pmic-id = "b";
+>> +
+>> +		vdd-bob-supply = <&vph_pwr>;
+>> +
+>> +		vreg_bob: bob {
+>> +			regulator-min-microvolt = <3312000>;
+>> +			regulator-max-microvolt = <3600000>;
+> 
+> This is a very broad range, what voltage does it need to be?
+
+I think it's possible, I just randomly picked bob regs, and f.e. 
+qcs6490-radxa-dragon-q6a.dts has even greater range.
+
+Downstream set it also this way on blueline/crosshatch.
+
+> 
+> [...]
+> 
+> [...]
+> 
+>> +&tlmm {
+>> +	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
+> 
+> stray space before '0'
+
+done
+
 > 
 > Konrad
 
