@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF436357A3B;
-	Tue, 18 Nov 2025 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3084A34EF10;
+	Tue, 18 Nov 2025 11:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763465446; cv=none; b=kgeUNBZbwjO6cOOitz2EW4rNGlQZMoqshN8jBMyVT0FzuKDrzkQEEp6HV/6i0/K/F6GKJYoZrtWmevNGu/Vqg2xUvr0PNH9/Vh7MoftPz6exB9Y6+niIVxEW6kFZeF8u5koQGlTnLIzKl4cOxlEyX5OKkVGWt2Vi0bUNUJJNqfM=
+	t=1763465841; cv=none; b=Xbm89iYxDkelqxZ+jkBEdakdK0N0gQVCFHJmEQjIakgx7PqVIA1d5arDv3E9GInVfWSzFvEiGy0AiH6p/xN85iQf7iBhCyck7KwhSqrDtg7UBWpstNxxB3SMNY5n0fLR8jDeJYtwJ7gOkVc6/nv6HTbff/CtFyh+V7Io5UlgKUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763465446; c=relaxed/simple;
-	bh=YPkrjqTExnmXyz72mhe83qf9A4d8byZe0uhtC05FeFY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mZM9LltDz4wd7wSs9E/9jd83laqPFA72bDx67o0QnzZUD3GmPe4RV58zAIWckkaowhuBocCKCtowYkPmnRWVp7051G7QzbvJTBIayW4ILpSGzTQjjsaFTswdrjf/elhbDsCDqshauBAG+itlPx8AsZp6HjXXTu2rYGWlqgRMk1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnnXGXnT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763465841; c=relaxed/simple;
+	bh=szJd34lUBHLNu9S3WWAy5BrQumAvduXH2t3XIhEX5zw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PzahXVQELHWyvJOHvUoPdVYnvktFBY86yzZuTccUy/8Ip69k7ImIoTT3jR3Dj8J3XZQ2vBYrPTAkmho7gkRal4uWK98ZODy8JaCwmkbZEv84nu0qF1ANDWJvXQc84M3j83gsLsHuOoMiRC7QwVQdn51S78RIFzk+FgEZp7Yp73Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3/oj6Kt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnnXGXnT"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D397C4AF49;
-	Tue, 18 Nov 2025 11:30:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3/oj6Kt"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A69FC19425;
+	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763465445;
-	bh=YPkrjqTExnmXyz72mhe83qf9A4d8byZe0uhtC05FeFY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UnnXGXnTxVWX3OBUyZY7wIxUgobESPXJJmb3PN0UDONzpvhpd2xDWIidaMK2C51B2
-	 aYNgQWBZxjioKr6Lcu8TB5Ayvvv95Csg/qes0i3jRSJeyyX7uPQV9pwG2+4zoN+uJM
-	 xF2zyG9WIjrifL92JX/9lX22f7Fax54jP95+8Hg3cRWxGd/QBzcRE98JiUsGTS8dOu
-	 NykM+5eP9hno4HdiqmEZG5yfYNztzgfdmL7ECFuBv2peauo76KqH/rHQtCUzfXWuME
-	 ikMPtRXEWdm1QmYoXNYutMuE0w/1fSWMekNIS9ktSTZymxrXbMuY9oSCcvhnruN//C
-	 y5V13GmPQ0D1A==
+	s=k20201202; t=1763465839;
+	bh=szJd34lUBHLNu9S3WWAy5BrQumAvduXH2t3XIhEX5zw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=m3/oj6KtwbQaKH8dDXYgw5VwU3rbHBxx+7P3iMX8UaxPoH9oMPkZdKDkUKWE6ajed
+	 AStKA3jRiKg1GsomdZklQmZZcH+RR/bZIP1znZlVdlepZih71RKf6AxV3bUdMdAiEr
+	 qc6IDq1AGUK1DBVvOIQ/69L1jYVf/eXNImv/+JVcHw90L/iVn0iDD17HGjnmbINYBo
+	 1GIZqsG/XpHNtf9Ais8br4WO2fwdVqeMYDn7GC2PYS02+nnkbFRT9tXMHq6Gp9+718
+	 5SFA23FAw5CiRR5bL81vV8C9l588TMwdUVgBjgDXal2EH48DXOAMeVxqRP+bXUPahM
+	 dq/PtlluM8lpg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25234CED62C;
-	Tue, 18 Nov 2025 11:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42487CED624;
+	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 18 Nov 2025 12:30:41 +0100
-Subject: [PATCH v3 6/8] drm/panel: sw43408: Switch to
- devm_regulator_bulk_get_const
+Date: Tue, 18 Nov 2025 12:37:16 +0100
+Subject: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect invalid
+ gfp flags
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,39 +40,32 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251118-pixel-3-v3-6-317a2b400d8a@ixit.cz>
-References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
-In-Reply-To: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- David Heidelberg <david@ixit.cz>
+Message-Id: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAGtaHGkC/32NQQqDMBBFryKzbooTtJqueo/iQuNYB9JEEglay
+ d2beoBuPrwP//0DAnmmAPfiAE+RAzubQV4K0HNvXyR4zAyylDUitsJZs+cgEd+9MU6LoR2Vasq
+ qbhRCni2eJt5O5bPLPHNYnd/Ph4i/9o8sokAh1dRSr4fqVtYP3ni96g90KaUvfHYjVa4AAAA=
+X-Change-ID: 20251118-only-one-vmalloc-b8d997045791
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2649; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=RmiIuFd1oStd80sm8454mAMk0dIbubgWeKUm8l8QqhA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFjgrqhBwSznXUBgsLBDos7WSQjI6FB+X4BNp
- TiiJ21SYSGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxY4AAKCRBgAj/E00kg
- ckPgEAC4QvJiHi82H9WX98rZgG3EZKf3hzr1ZM29Lc46woQVC/9o0HyGndPjx28x1d1EHHmHClG
- cpYscBUuWrJWWpCfiICfBD1woiKANzcLB9E1MAO5krNqaelISEpoGB0VVBZFRH7cDviZ+eRhNLy
- AdDl03TtFP69P7/AZpJm0t+fAxbzOrsvTD5BakKp/P76zuAHQHYBIRCu0qceaos81S7yT8a45/L
- 5UfOaV1egHoGEoE5S89JvgZnYMNXYZdrLdhdRIfANgozBwFubRmXDxo65kUnwqRJ3ULXKExuvld
- zjCJt+MlozJ3gSz7LfkKQ6tIokQxEEUXRyJ0/ufFq1YWJ6MMmXltLUfhTIThlEHCjB9EcnJUbFi
- WKg/EtOLq4xDSZCwqiCtb/kQMV0D+uBXQ3aFGUIN0e7m9ym149J9yjiPTk0TdadVgrG8GpbsXKx
- 2/rcglNeM46QFdPhzbwduH5UYPluwA/HscJ8sHv0uFomaaXVIFS/6GrvFoe01W+Xm6lFu6Tj6Rm
- b+0ZzqPIkGMxMdoERmxBwL9mwDQGYwdJruNhSx0aCb+sT37ZqvbvqjUgIQJLZUVaxBflatCJCpn
- ZRTFElrnwgutwc8S90QHD2I+/16kARvOXbDt7bajPbRfV16J2Q8g36JL/hY0D4M7GTzMfGXaIcu
- DFhwydPNAJ9zXFw==
+ bh=54i1YH3FbEzkceweElaDmkfgd6gmC6hf5zbFIJvmoD0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFpuJ+ejYSTUfSbADLtP9gVRTjv696wsmMt5H
+ LWLalPK7qOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxabgAKCRBgAj/E00kg
+ cqaeEACisQrL/b2MB5OMb7gMPoBEJzUnsNF3Y6KJ1b8zABV832iROP4kQ71qBkGr2GUG7olBzyY
+ 09YY/DGfZrUcnUnAuf/lhBrqg4WXBznjJDudhxk/zLK3Zv8TYmpysA4KLJquV4sJA2mP/em3O40
+ yKgJjcuwotuyV8Qe8ofP8tcxCSl2jbA/wcOC93prPbxh/0x9u2lLaj7Tm/wti6iMo7hjVZLr60Z
+ 4jsMUKGxJy5/wqr+5e2oN9mzZcce7bGtNw7VKQNqyxpZTFbrqmNmoYdWM5d21B5vuY70I/U9ko6
+ 7mhMDCTIIQeoYiQ1bTrL6hPK1aG4KeLcul2EojTGaVyGAtcYDb7E9u3bLioYJCPJbvgYH27oQHY
+ 8mO4dfzh1g6EO568QqW6+rBbE95s5Rr+puKLSEyI9DPjl1Ynhzw/Sn5MMXX3jWLlv+4s4wePHu0
+ R8NgtmSBOYw8IrwFrbAMk+DYn+6D9pEN81st9xMi3d/f3GaHb5/bVQyh5LgfALbWzDZxWtsUvBM
+ o1jIHhbwodFsYTlx6vEP9YzOozUNDf3JDR0txNSvYHqprZgmsXb30+whk4n3eVUYAqBqIcXwRWO
+ UB4YC+nqOVcCmAoXMFU0JcfCaUyiMcrUA380gFqUUpMB5rs5Lnix3VDAd2saEUNW9T9N0wjilTe
+ khx4navcxX8ASLA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -82,86 +74,43 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Switch to devm_regulator_bulk_get_const() to stop setting the supplies
-list in probe(), and move the regulator_bulk_data struct in static const.
+Without WARN_ONCE, the logs get spammed immediately after the boot,
+on devices as OnePlus 6T (Snapdragon 845).
 
+Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+Resend as requested.
+---
+Changes in v2:
+- Fixed accidentally removed comma.
+- Link to v1: https://lore.kernel.org/r/20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz
+---
+ mm/vmalloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-index d8481bdafd6dd..0a902470e03fa 100644
---- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-+++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -20,13 +20,18 @@
- #include <drm/display/drm_dsc.h>
- #include <drm/display/drm_dsc_helper.h>
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 49e0b68768d73..59a4ea8b7f91f 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+ 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
  
--#define NUM_SUPPLIES 2
-+static const struct regulator_bulk_data sw43408_supplies[] = {
-+	{ .supply = "vddi", /* 1.88V */
-+	  .init_load_uA = 62000 },
-+	{ .supply = "vpnl", /* 3.0 V */
-+	  .init_load_uA = 857000 },
-+};
- 
- struct sw43408_panel {
- 	struct drm_panel base;
- 	struct mipi_dsi_device *link;
- 
--	struct regulator_bulk_data supplies[NUM_SUPPLIES];
-+	struct regulator_bulk_data *supplies;
- 
- 	struct gpio_desc *reset_gpio;
- 
-@@ -59,7 +64,7 @@ static int sw43408_unprepare(struct drm_panel *panel)
- 
- 	gpiod_set_value(sw43408->reset_gpio, 1);
- 
--	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408->supplies), sw43408->supplies);
-+	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies), sw43408->supplies);
- 
- 	return ret;
- }
-@@ -152,7 +157,7 @@ static int sw43408_prepare(struct drm_panel *panel)
- 	struct sw43408_panel *ctx = to_panel_info(panel);
- 	int ret;
- 
--	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	ret = regulator_bulk_enable(ARRAY_SIZE(sw43408_supplies), ctx->supplies);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -166,7 +171,7 @@ static int sw43408_prepare(struct drm_panel *panel)
- 
- poweroff:
- 	gpiod_set_value(ctx->reset_gpio, 1);
--	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies), ctx->supplies);
- 	return ret;
+ 	flags &= GFP_VMALLOC_SUPPORTED;
+-	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+-			invalid_mask, &invalid_mask, flags, &flags);
++	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
++		  invalid_mask, &invalid_mask, flags, &flags);
+ 	return flags;
  }
  
-@@ -249,13 +254,10 @@ static int sw43408_add(struct sw43408_panel *ctx)
- 	struct device *dev = &ctx->link->dev;
- 	int ret;
- 
--	ctx->supplies[0].supply = "vddi"; /* 1.88 V */
--	ctx->supplies[0].init_load_uA = 62000;
--	ctx->supplies[1].supply = "vpnl"; /* 3.0 V */
--	ctx->supplies[1].init_load_uA = 857000;
--
--	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
--				      ctx->supplies);
-+	ret = devm_regulator_bulk_get_const(dev,
-+					    ARRAY_SIZE(sw43408_supplies),
-+					    sw43408_supplies,
-+					    &ctx->supplies);
- 	if (ret < 0)
- 		return ret;
- 
 
+---
+base-commit: 0c1c7a6a83feaf2cf182c52983ffe330ffb50280
+change-id: 20251118-only-one-vmalloc-b8d997045791
+
+Best regards,
 -- 
-2.51.0
+David Heidelberg <david@ixit.cz>
 
 
