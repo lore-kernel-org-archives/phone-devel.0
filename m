@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C923570B8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB03570B9;
 	Tue, 18 Nov 2025 11:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763465445; cv=none; b=a56mMxIX1VwltKjlv8ZpmTL0KP+nQ39UwU+NHVCsEshBZAack6QIIZgzX5PmXeWpDIpMXA7Gt8M+Z8EoNcKIK39WOq35XYHG4BOPwYNPm/KACLcs+NFWfFqQ4XKsnUTZaFGFPikeHdYZ8zsPjFR11iYysqqD62+4V8PAJNNObiw=
+	t=1763465445; cv=none; b=sBuyZcXJnj7/3RtyCcKqofB3jly9y5uvjufU9jZPZaMG0Kv0hzdVfYCLa3fyvbeIRiuOrLSs/SqBjX7znKnFviXw0M2h2WYnis8MBEzj/yGjrleWCr9YpihdZo94WZ0LdyXSNZ7hfm52wLi0GI29kbvmGsh9mTlZkjaJjpGVrjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763465445; c=relaxed/simple;
-	bh=Nn/edi8RqD+VO7nxTYObHDtKorWy8GLRG5Rx1vx4iNk=;
+	bh=AK6BcBpco0zrDLs6yFA7LN08SizzfSM6DcS8jocisPc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cLD861Uye2n5tG4MFIpF6Bm/xQ7CJGCmPLpNkgeB+BQI1Yp5Bcv7tTJesVfZCMrF1k2JIdwydtIRuJ17CaDUj4CLSttaeg6UOFkNOvMYnI8W6QRZ3M9t1UIIBhDeYrQiILVnF4Dmz27I6QzhPpFk8o6fTxiYGCUVWDlS3MRXwBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unSph2id; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=aI7vO6S+0Qy3r/BWFVWM1FaxPj/MlY9RbKb+ZtRSi6wA7tHrW8ZbR5gX4/oAzk61jlc7CdDlvKE7yzlbna4AWTZIp0eV8iUSgtO0Rz6ra4lwV8va50XQL4KoR5UFP6ANoEEjexlrJcX3XpJ6lYIHZER8us9rT1ZEoyantP1lb44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fl3TONNY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unSph2id"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 453FAC19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fl3TONNY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D0EDC4AF48;
 	Tue, 18 Nov 2025 11:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763465444;
-	bh=Nn/edi8RqD+VO7nxTYObHDtKorWy8GLRG5Rx1vx4iNk=;
+	bh=AK6BcBpco0zrDLs6yFA7LN08SizzfSM6DcS8jocisPc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=unSph2idFkUjafH1Rak53X6EsCzlgl7dmL42GUBuJV6ivWEa6WyA0E4LFk9oWhJZ0
-	 0Coh079ChhBo5E+ikNw9ro28qpoG7VILXDsqWRYzts8PImKvYSsfcf+e5t1ytbS+8z
-	 RGAhTX82blurWlqaI24AujCnIAeQpllOqp80zBINLNoeb0+W1MpIfVIfZo+BhBzbtJ
-	 WT5Cxddm9H2oljBjk5qrqRHqcZccxo6yJEWvfVstAc+3iJdStKlSZ6qEYIJZrRGaAC
-	 QCzSWiS9a06BvVyAu07Hxyr1hPH/bwNBRPe9ohl6JUYDZDuXvziNCzzH6oh8eu+yPI
-	 PmINYYUuSHHTw==
+	b=fl3TONNYmapCcstJ+2JZdflzPFkgTv2u3tloHyvqkG3JAUvzd8dJn+CRtyIEaK92n
+	 /fk+dxMOTp7RS8yDH7LGGgI6PyUPM6D5E6nillcJKi0WfH6xQw29VU1JMqqtPOoxt0
+	 lOncd/nSVv7KrMK5tpVXZH1qDvLrpp3xZ5ftxr8LPkitWw01s+c7k5TOsnAkSjs4ZX
+	 5dkT3+FhE2ivAErnbJCOo0aRcL5cUxRyq+EFZUX6mUTYgOAXUVA2Iv6MGoYnhQafS/
+	 W3ebT06WUO/D6vp5/ejcJSsyP6ecKrTjqWB0NDAwwxnM+//JH2sWjIonihmiovPFO+
+	 zcNaWOGbrUrQg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBFE6CED62B;
-	Tue, 18 Nov 2025 11:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39DE5CED62A;
+	Tue, 18 Nov 2025 11:30:43 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 18 Nov 2025 12:30:40 +0100
-Subject: [PATCH v3 5/8] drm/panel: sw43408: Remove manual invocation of
- unprepare at remove
+Date: Tue, 18 Nov 2025 12:30:42 +0100
+Subject: [PATCH v3 7/8] drm/panel: sw43408: Improve wording when
+ reset-gpios aren't available
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251118-pixel-3-v3-5-317a2b400d8a@ixit.cz>
+Message-Id: <20251118-pixel-3-v3-7-317a2b400d8a@ixit.cz>
 References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
 In-Reply-To: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -59,21 +59,21 @@ Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
  phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=904; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=888; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=InL4IEJK9SCfpvLnrH751SzB3QvgsZ1MDVnoJ5xWIq0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFjgYbn0WPWPCSGgCqAi80SoSxWT3vZwegAVa
- OXROI5fxDiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxY4AAKCRBgAj/E00kg
- cs05D/4oJJX22556aW4MvjAKcBubbkD6X06QIGWjSeo5Nr9LdeIfakO56jEXd918axdJD/qg5kx
- cJKmfnmeQdFSSilK51YTcviXAjTmXHmYqn94jU42AuYGfhcPjA0PpND+n8dFa95n/++GUL4ufRD
- 4I/odGbC+cRw1p1YeIf7xCh0rS0O3ma8UdMWhqPX1Hd8BtEyN7ZzA/rE2GSgO+qD/30SNNOI/4p
- 9K9jerDo83mdhc9g+CzXqFgU5pTgY8Fe5afYbTB9pg3nCPwOetcytpHM7hX0bRJXQZctoj9oQ7z
- ZHAhEgrVVfIWn7Lj/Oexdb8sEN2unpSLrItDNFKvZzOd3T08F5AYRbNpfKeOY/k0I6XZz9O3KYh
- t0A1NBGFgn/Lfd1BCPqg908Z65RlqxhMYWV4HNgRRUtVhBtSqlOxu4RY2mVKGmjGA2evxdeEPxn
- fXCmIUxuHbux6TocNwEbJRMfnp64dNNgyyO2dr6ooIgsQRho3VvLS3ijKHeNrZJIv3gZV2KboV+
- T1vj7y6oKDRvob8GqRX2/sOiw+tkR2s0nU4jDx+VICk4Jd5zN4tixNBi7vXj7yu5eXJQ7wmSWx9
- uZBdeq5gNHOdW7bLFLAfyvEnIc2iPQusJ2e0NGfKyXySQ1dxj6oWeBiyWig3G1xwRaBW7LbD+Uc
- Hbj4I8BllB3gA6A==
+ bh=8fVwgWqCGU7w+oJi2TYX9Izrr0MTwJdRKSSnkPCDAys=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFjgUmW12FFOQu2z9uADlg6NtyR+JOBgxeGUs
+ 8Wuexd0XUWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxY4AAKCRBgAj/E00kg
+ ckRxD/kBWDXfBnu+s/6DqmpwnnqSlPRFdU7CPa13G24FFu8JnT3hqzP/Bo0GSuCUkO7WGxNdisH
+ FQFFZqfjq8KuO5txNGNrOgFCfQUlqNjP/WuTCDwWcleJxXj6I7plpYbD1dSpFiVzDBcCpr/Dw40
+ nA/HlE/BIwkiTKvw2uukXOKSA2cEgffyPfLNmoTtp4Ecs+w/f6Px7Ulacz+/zwWC/KmYwsDwptK
+ iSI/bBa4qyxEuUDLnTrWf57/fa1GXpkBugpCi5PTGIiigiTJPNb7SR52CTxYovCTGc2YTqCt6Dp
+ XywKGJEPA6ygBUUJuThluNMWAoOO5u1YuBiqaq9wbRZpZGnnMMKStRK706/VyTejPwRNik7MuYN
+ fTNHfaA2b+V4yz0VbQXzd6UQU0khyI2LlHhReIguG2il+7EZmb0oJHcrW/c5ph31vhkDGIaIaEV
+ X1o/tMb2Kg9SE5uJjsyekKB98X1mWCmDetLWPcWAHen2zLiuMWhsSJ2KjI/G8Z6UBR6HqY58MJ3
+ GEvpiJhOYEKf3c6V8QcA6i4/I5HjOc9RrtJoRGfI150K0Q7en4oHQRj/EUR83tEAkYBOofNdl/2
+ xsrbnyQGnk7H9aw7tw06ZpdBI55yO+RREHT45aARIGxlvp08z5dVFP7HOQVc8s1JjoVGIywgSTK
+ fa7l2FyVhqKntMw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -82,29 +82,30 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-The drm_panel_remove should take care of disable/unprepare. Remove the
-manual call from the sw43408_remove function.
+Choose better wording.
+
+Cosmetic: also inline PTR_ERR.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/panel/panel-lg-sw43408.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-index e5a8a9bb8d15c..d8481bdafd6dd 100644
+index 0a902470e03fa..5f5f013a4da75 100644
 --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
 +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -319,10 +319,6 @@ static void sw43408_remove(struct mipi_dsi_device *dsi)
- 	struct sw43408_panel *ctx = mipi_dsi_get_drvdata(dsi);
- 	int ret;
+@@ -263,8 +263,8 @@ static int sw43408_add(struct sw43408_panel *ctx)
  
--	ret = sw43408_unprepare(&ctx->base);
--	if (ret < 0)
--		dev_err(&dsi->dev, "failed to unprepare panel: %d\n", ret);
--
- 	ret = mipi_dsi_detach(dsi);
- 	if (ret < 0)
- 		dev_err(&dsi->dev, "failed to detach from DSI host: %d\n", ret);
+ 	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(ctx->reset_gpio)) {
+-		ret = PTR_ERR(ctx->reset_gpio);
+-		return dev_err_probe(dev, ret, "cannot get reset gpio\n");
++		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
++				     "Failed to get reset-gpios\n");
+ 	}
+ 
+ 	ret = sw43408_backlight_init(ctx);
 
 -- 
 2.51.0
