@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7AA2F99BC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B72A2ECD1D;
 	Tue, 18 Nov 2025 14:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763475098; cv=none; b=oTJ7k0OVtCUtJaCSmH4Jjh6ONw3tkgVVeZYsktseCEAuRQumV2sUN0uuh8gsMuYqcPCuA3SR2TH2NhnmLBFac0E/PicFfzguuOedJvFvZY2qMaNn1JHhug3h5Mzrk9TjzkXmyo/ql9v4BlamdeDvbfMpJ7Jif8bT8Y0Kb3NDv74=
+	t=1763475098; cv=none; b=ByRbIQRSAYKPKvCGNP9WHRqVhGurZgE6Y8FG7/HGcYIOVqkZm+DK5yt7mmcwZLaseqvcWeGD5x5i5QrukJF7+o+zLmAyTrYCvlVZgwob+e1Gi9RfjI6gBNjee9lQtHoNxeLKRkLSFDA/oPeST+oeD8KVjDNWvyWfUcLzEMowUt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763475098; c=relaxed/simple;
-	bh=zEEZ+tgbupnE8MuYxfeIaw3voCncjbXCdXviXkL1Ya0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jZjmJnRXZ52OQk4dFpEwsdpjPzoPCpbQRJCjMMRHeJKUeJ4qwIQLopu+SbPYgUUn0U/CI+DUnO4Epf9GNZ9hBLdeYFgxl6qTzal3zuHJt2JaoETwQJ54tRv1cVcozAhgmOL2EQOaOFztxqk7wZpWTayFEuym2GN0XBYdza5h32c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnbrBhWA; arc=none smtp.client-ip=10.30.226.201
+	bh=4sKg01mKYY4IN/9DqdD4Vcc/A2cLVE2h/aQKWhL7kGU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TSdVfea3K59WGp20pdvofhzEFygjLylXBvaWh0CV8XwBGShkDGWL8kWWt7N1C3Llo0pcba1aF7yaX++q7Rp1o+2mzeuSnvGXyArwvJv2BgYXNQp6A/i1vE+sYV1ApLgg+0PmazqxgQIF51qrd4Y3opaIwAvgpGLU6TPZHatHW9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIXvYX3h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnbrBhWA"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9509CC19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIXvYX3h"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B1B82C4CEF5;
 	Tue, 18 Nov 2025 14:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763475097;
-	bh=zEEZ+tgbupnE8MuYxfeIaw3voCncjbXCdXviXkL1Ya0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=jnbrBhWAGOoX8tIuDjGeceLjAcngEKzmyziUaMifbu1W9SXLfQGlm0d44/aOGfHE2
-	 eJtv3vRMuJNq2+kH4nDsf+B3pnM9Qtb4Yp7dHlHvciTEO3oblhu8Or2QCe/enWPF6Q
-	 XJEBIxqRchXe/VTh8iWjHmYAlDpQOd+egyOtcsy1fic4MMUVgzyFy9nf92Aco749Fl
-	 CKB/ZzWELpUA/la45KWiVbFzFX4D/R8dQNNgaOOWAHDuw9/RVcdwOr69SES/GYITG8
-	 BA8cwWvRRmjdpiS4CFXkzXVCkO4ZG2M173z5m0CPWlScSJtJ4swN+tM74xzAbUXV2P
-	 gRNZi+h6SjD+A==
+	bh=4sKg01mKYY4IN/9DqdD4Vcc/A2cLVE2h/aQKWhL7kGU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=LIXvYX3hTBupuLen1XaHw27sBOihxn8wPhewMVOLy/ccqWgJRJRX4AMluwHMXwKDF
+	 uc8Pd2LDIDxzQ9SasE9cn8Ithhs9DE9oJU8jb9YmDYs27c29v3DQCEi12JLbgnEgZv
+	 vBgAdvYJcfNuUveY1hIHAnG6Tp67jfY7FvIbJWcFhST+MjmaQd/kzwG6AkIUgx243k
+	 AQygtR9sLtOsrcvSjFzYVQGwpKE72kUjCVc8JSgHKdMd19SmerVW1p48N4bseWG7t5
+	 lLfKvsD7b6LT0eRgOasLaYExhwOd01JYYYkpEUBBxL6a4xK31ebkFHZRr9lH6MmIUo
+	 21RejprDurCmA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BA63CED620;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8BCDCEDD97;
 	Tue, 18 Nov 2025 14:11:37 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 0/3] Regulator adjustments for OnePlus 6 and 6T
-Date: Tue, 18 Nov 2025 15:11:34 +0100
-Message-Id: <20251118-dts-oneplus-regulators-v1-0-79fb2f0f253b@ixit.cz>
+Date: Tue, 18 Nov 2025 15:11:36 +0100
+Subject: [PATCH 2/3] arm64: dts: qcom: sdm845-oneplus: Don't keep panel
+ regulator always on
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJZ+HGkC/x3MMQqAMAxA0atIZgOtIhSvIg5BowZKK4mKIN7d4
- viG/x8wVmGDvnpA+RKTnAp8XcG0UVoZZS6GxjWd9z7gfBjmxHs8DZXXM9KR1dAFIgrdMlEboMS
- 78iL3Px7G9/0AH9nPPmgAAAA=
-X-Change-ID: 20251118-dts-oneplus-regulators-08aaa85fca38
+Message-Id: <20251118-dts-oneplus-regulators-v1-2-79fb2f0f253b@ixit.cz>
+References: <20251118-dts-oneplus-regulators-v1-0-79fb2f0f253b@ixit.cz>
+In-Reply-To: <20251118-dts-oneplus-regulators-v1-0-79fb2f0f253b@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -53,45 +53,52 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  David Heidelberg <david@ixit.cz>, 
  Casey Connolly <casey.connolly@linaro.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=715; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=831; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=zEEZ+tgbupnE8MuYxfeIaw3voCncjbXCdXviXkL1Ya0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHH6YHpLoRgCilp9CegCwUfGbv+grpz3AFEeEy
- /ZxAj2F4a6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRx+mAAKCRBgAj/E00kg
- ch6aD/492aZ6/9Mu1d9NDkM4vpGB8G9iS/nyBg9g62iLjsvczeZTHNG0jkmYbkhB/4WEA7Nlhot
- AmBXPm3FUBU/6bmlo97+daI6LSzlYzkgsZ+hPKqGGnuZ78jiahA1YjUQuWA7xi1XEY4UgX7ORlY
- XF98Q49LxOjPnvqtHXW3pUu6xsZGU3CMd0s868zFtQOsqpLUX2zJ8zpcw/TvPozx9ex7K65T5GQ
- xElWHn7eqChBF99IIq36G7kBKOufI3sUTx38zvRxkoCCQMkm71cVg9ZVa9WPS8ZkMgwwapp523I
- nrA5CNuuukReulHAIukqbq+gwnK0m2p2VUiwKt63BHjl0jE+qs9r7aWeFLxdEFz5Pp9lAdNp5pr
- EoQ6QNGzt3UICjp3JmUM0VbE6WHV3qbTBO96fok1lNjp2oUyrhi+BmiruXM4Edj3U3xGF9ysrDX
- qvX+sGynJQGlkCpreijK98/pVwoAfha0e7oTV9nDqcwnWQOMEWKxASYvKFezxgWqXUgAcrYp+sb
- bDIcOKlrFgU4jXMsWA9PKdigML04hy6TQfOy4NV0mWA0Srpbxmqdi7o7ObEd+NUsGdm1CVYt1cU
- dLn68SErFLSJ7dwN6KzTKTiVLRuH7NMdqx9Nwvn5a5svep0jkqWLiCYsl3k3XupNUdMVQ2hUle6
- jlKggiTCgm5xwBw==
+ bh=fSwmAdAODVY3a5d8qwwfw9ZcbtoqAA/tA2uqDntufkQ=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHH6YOyXwIcpUQpnj4K3a3ZhIFRPBzu5KIsbrS
+ WLpQ7R4FtOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRx+mAAKCRBgAj/E00kg
+ coZaD/912SaSI4kHNtF+1bWXzh8FR1R2aLvkTetShH97LGXknswcn4fvvnR0QxromIb5KBMx/Jp
+ RIIxunxebJ8dbaqMkLdDdpLPCRivKUknLQcwqLpVnXE7hzCMot1FJPYb4CjZ0jtxbjPN7EdP8BW
+ IFBV7pOVmkvGaFJBDGcl98jZ4JaVb2hu4hcSFiAw10L7mItvjmkmmXMDoSRg+BoklrBXcFzc5Tt
+ /AaKXxUNfOLzlld5OgqaDI6/yI1Z2kuNc+KY0I46xBHyLxBKAsJzXWNBQVr98HswcyJ+FxO0yKa
+ rEnWVUnICd9CSeS5fzyYsupO+LSH07aYh+kXQJaYSPM46uw5rb/OBTiEH9MHCPiQUgUdxAgMXHS
+ kUMVWHO0BZ8q5MrqgtaQjvG2x3OvHqgVf8M9inT+vfcG3UcZPXaid/Mmf1ZEInBDo84xuy/EgJf
+ nSLtHLNhEqsFcwbyO0jxcB2tUfJxhByi+RBLb1obJM7WW+7HAnUkGGXnCMcXDyVoTkpLAzKt+dl
+ LOOxVrT/wox1CKrj0YqsibFVcULNUA+bBRxLQBmUAFNDqKQwZWsMM6poEvgxCo6iNJVm5yawqPY
+ raxuTgKp4XT413XlCc/IziMUpPlpmjX0qvyKUTIuSpkpEjyAj4dN/nj1PRiMuFz/uO6lAdOiqgO
+ 8jDk0kJm6KLW3ZQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Small regulators adjustments, tested on sdm845-mainline and sdm845-next
-tree with recently fixed (6) and upstreamed (6T) drivers.
+From: Casey Connolly <casey.connolly@linaro.org>
 
+The panel regulator doesn't need to be always on, so remove this
+property.
+
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Casey Connolly (3):
-      arm64: dts: qcom: sdm845-oneplus: Don't mark ts supply boot-on
-      arm64: dts: qcom: sdm845-oneplus: Don't keep panel regulator always on
-      arm64: dts: qcom: sdm845-oneplus: Mark l14a regulator as boot-on
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
----
-base-commit: 187dac290bfd0741b9d7d5490af825c33fd9baa4
-change-id: 20251118-dts-oneplus-regulators-08aaa85fca38
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index ee62adfa6af0b..5845bc3bb80b2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -272,7 +272,6 @@ vreg_l14a_1p88: ldo14 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-always-on;
+ 		};
+ 
+ 		vreg_l17a_1p3: ldo17 {
 
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.51.0
 
 
