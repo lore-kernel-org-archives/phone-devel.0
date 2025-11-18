@@ -1,140 +1,242 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B373218CF;
-	Tue, 18 Nov 2025 00:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2142FC876;
+	Tue, 18 Nov 2025 00:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763427090; cv=none; b=OPPAryW0Sd5txVsoh2ikxbfYvdsFHy1NfV04DOH6w68rkYFZIHangtudo57Oucm+DK32YGOlRa+9ZJ9NpXod5/sz5jfkVoxMr4pgBiriXpgjY1+7pYs4Yz5UMBLe5LE7r2H980xvrn8/Mj23Rt5hk4//FFUbHnEvnNPgpV3ZuEw=
+	t=1763427256; cv=none; b=Vu1jxe0sIUbnXkMUDNmznhOyvq32gnWJVGDI4ueIQ6gKCPD9NgAgstSW/DrG2vdODVHFkJwblfj+Ql16SfCZ/YWrL8Ly5lhezxBLc+S2QS4/Pvn+0E9LUKmf3NWjh4GIr0TNsdQYTMnmOc0yOqXZiJBhQ4HHUwhgI04W5Z+BXHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763427090; c=relaxed/simple;
-	bh=46XQpLPmC5eldb9b74m/FREpe3fKlD5ghLaKOZclZVk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dh5wSTVWOzBOXG1SC2QiZL5Tkyy6KfW2H3b04/1db+561rFkvmNcrv+VJuzYFDB3eY7OeurxwxMSQ5ScMLUWacLkDQtMW2BkHkDGgL3Zt4eYNFlHrlKsluwhL2G18PeMiNPVQ/pQIaPsy4R3KuxCY3ErtlnwLVag2jLm6YeH0no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=t7m1kMkw; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1763427256; c=relaxed/simple;
+	bh=eGWvO7D5EM7ECyIrHX4ktygWBzTzotYEXHtgcB10f5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PdxLz6JtTo8Mm5GURI40ssezl83UMoiwh9OwcEaGVSmw+Y5FF4y/tq3RuXvvLAOQ9vRtGhjLh4fkspn115JQkDmLH6LXY0mh2JP5qZfCJB2/LVG9/JNbIL17ls8x4ae0skgJ1mf2nu2CWOkIWcfK1GgnNkP//WLR4YGbq4csUpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kwvdGA6x; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="t7m1kMkw"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 6E17B5340E39;
-	Tue, 18 Nov 2025 01:51:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1763427083;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QQ6yeTSaXJizIP0593yA3ttDqBZkO2cbbadAprisC8c=;
-	b=t7m1kMkwJZ0EawX0LehLPAGPulF7WZuYIVARwpd+BoUzAVs2x64L1j3EIX1MjSW6q5opm+
-	9l5XvH2Nu48teU0t+g6l8+G62muNIf90ZIddZBR9M8bgfdmKQmcz8P7+dUKOmPooFrV4M9
-	mUihumBx7WHIiFLu1mIXntA/DaEVAd8=
-Message-ID: <b7e215ee-fce6-4a7c-995d-8ea6625b1ae8@ixit.cz>
-Date: Tue, 18 Nov 2025 01:51:23 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kwvdGA6x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763427255; x=1794963255;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eGWvO7D5EM7ECyIrHX4ktygWBzTzotYEXHtgcB10f5k=;
+  b=kwvdGA6xAeSAY72ZWueYKqE7hJCLGevQWkU6xqZ0Xk03q9ZF9WCheIj7
+   NiLb7H9eYTbuMLBqAktUBMPF4+RIBgrVgNnqVVz5rYT/Xi7gRtQ4KzZwC
+   sylsPoWAubVmO/AqCHO5QG/SmqWuBIhHLMGDuYFhmCyV04L1G5bXRlGyP
+   4vZuirhDpk5yUCX0qYrmUua04i4ICACq/3FA1lqfp4whM/wHR/sWg3vPe
+   YhQpozEDw2csJ/3xnSScx8iFtKthdfi58aO2XULi8OYZwJvoPlj5ARhuj
+   k1OpgJ5Pnm5fvok98zljUMG+VK283t1objsGDWPV+jp1hQiQt5YAX8QnY
+   Q==;
+X-CSE-ConnectionGUID: KGEmJqo+Ss67Pm5liMnXWw==
+X-CSE-MsgGUID: Uy/v+DZ2R9u9HEeX+Sum8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65470807"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="65470807"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 16:54:14 -0800
+X-CSE-ConnectionGUID: OfzuSc/sTqagsxQEJnRKhA==
+X-CSE-MsgGUID: ZRBnWoAVTR28HjN0L0qnsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="213994704"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 17 Nov 2025 16:54:10 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vL9yy-0001CF-2d;
+	Tue, 18 Nov 2025 00:54:08 +0000
+Date: Tue, 18 Nov 2025 08:53:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+	David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
+ gfp flags
+Message-ID: <202511180838.vEBLp7Hm-lkp@intel.com>
+References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
- <aRu--sVhXRWthmhe@fedora>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <aRu--sVhXRWthmhe@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
 
-On 18/11/2025 01:34, Vishal Moola (Oracle) wrote:
-> On Tue, Nov 18, 2025 at 01:05:57AM +0100, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Without WARN_ONCE, the logs get spammed immediately after the boot,
->> on devices as OnePlus 6T (Snapdragon 845).
-> 
-> Do you have any snippets of the logs? There'll be a particularly helpful
-> section that says "Unexpected gfp:"...
+Hi David,
 
-I didn't save it, thou I'll run the kernel with all logs again tomorrow, 
-what I remember it was "__GFP_ACCOUNT" in unexpected section.
+kernel test robot noticed the following build errors:
 
-> 
->> Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> 
-> For some context, this patch begins enforcing the gfp flags passed into
-> vmalloc(). If the logs are getting spammed, that means the device is
-> calling vmalloc() with some unsupported gfp flag, many many times.
+[auto build test ERROR on 0c1c7a6a83feaf2cf182c52983ffe330ffb50280]
 
-Yes, it was full dmesg buffer just after the boot and I think ongoing.
-> 
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->> I'm not 100% sure this is the right solution, but having WARN_ONCE or
->> rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
-> 
-> Can you check if it still happens on today's mm-new?
-> I just sent a new version earlier today that also masks off
-> __GFP_ACCOUNT, and had an iteration earlier that added
-> __GFP_HARDWALL.
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Heidelberg-via-B4-Relay/mm-vmalloc-warn-only-once-when-vmalloc-detect-invalid-gfp-flags/20251118-080722
+base:   0c1c7a6a83feaf2cf182c52983ffe330ffb50280
+patch link:    https://lore.kernel.org/r/20251118-only-one-vmalloc-v1-1-29f8eacb4605%40ixit.cz
+patch subject: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
+config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20251118/202511180838.vEBLp7Hm-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251118/202511180838.vEBLp7Hm-lkp@intel.com/reproduce)
 
-I can try tomorrow, any chance it'll bubble into next-20251118?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511180838.vEBLp7Hm-lkp@intel.com/
 
-Thank you
-David
+All error/warnings (new ones prefixed by >>):
+
+   In file included from arch/alpha/include/asm/bug.h:23,
+                    from include/linux/bug.h:5,
+                    from include/linux/alloc_tag.h:8,
+                    from include/linux/vmalloc.h:5,
+                    from mm/vmalloc.c:11:
+   mm/vmalloc.c: In function 'vmalloc_fix_flags':
+>> mm/vmalloc.c:3938:19: error: expected ')' before 'invalid_mask'
+    3938 |                   invalid_mask, &invalid_mask, flags, &flags);
+         |                   ^~~~~~~~~~~~
+   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                                              ^~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+   include/asm-generic/bug.h:105:34: note: to match this '('
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                  ^
+   include/asm-generic/bug.h:141:17: note: in expansion of macro '__WARN_printf'
+     141 |                 __WARN_printf(TAINT_WARN, format);                      \
+         |                 ^~~~~~~~~~~~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+>> mm/vmalloc.c:3937:22: warning: format '%x' expects a matching 'unsigned int' argument [-Wformat=]
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                                              ^~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+   mm/vmalloc.c:3937:41: note: format string is defined here
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                                       ~~^
+         |                                         |
+         |                                         unsigned int
+>> mm/vmalloc.c:3937:22: warning: format '%p' expects a matching 'void *' argument [-Wformat=]
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                                              ^~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+   mm/vmalloc.c:3937:45: note: format string is defined here
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                                            ~^
+         |                                             |
+         |                                             void *
+>> mm/vmalloc.c:3937:22: warning: format '%x' expects a matching 'unsigned int' argument [-Wformat=]
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                                              ^~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+   mm/vmalloc.c:3937:71: note: format string is defined here
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                                                                     ~~^
+         |                                                                       |
+         |                                                                       unsigned int
+>> mm/vmalloc.c:3937:22: warning: format '%p' expects a matching 'void *' argument [-Wformat=]
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
+     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+         |                                                              ^~~
+   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
+      31 |                         func(__VA_ARGS__);                              \
+         |                         ^~~~
+   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
+     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
+         |         ^~~~~~~~~~~~~~~
+   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |         ^~~~~~~~~
+   mm/vmalloc.c:3937:75: note: format string is defined here
+    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+         |                                                                          ~^
+         |                                                                           |
+         |                                                                           void *
+>> mm/vmalloc.c:3934:15: warning: unused variable 'invalid_mask' [-Wunused-variable]
+    3934 |         gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+         |               ^~~~~~~~~~~~
+
+
+vim +3938 mm/vmalloc.c
+
+^1da177e4c3f41 Linus Torvalds        2005-04-16  3921  
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3922) /*
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3923)  * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3924)  * This gfp lists all flags currently passed through vmalloc. Currently,
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3925)  * __GFP_ZERO is used by BPF and __GFP_NORETRY is used by percpu. Both drm
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3926)  * and BPF also use GFP_USER, which is GFP_KERNEL | __GFP_HARDWALL.
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3927)  */
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3928) #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3929) 				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3930) 				__GFP_HARDWALL)
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3931) 
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3932) static gfp_t vmalloc_fix_flags(gfp_t flags)
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3933) {
+7179b225631532 Vishal Moola (Oracle  2025-11-12 @3934) 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3935) 
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3936) 	flags &= GFP_VMALLOC_SUPPORTED;
+bf791000a32caf David Heidelberg      2025-11-18 @3937  	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+7179b225631532 Vishal Moola (Oracle  2025-11-12 @3938) 		  invalid_mask, &invalid_mask, flags, &flags);
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3939) 	return flags;
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3940) }
+7179b225631532 Vishal Moola (Oracle  2025-11-12  3941) 
 
 -- 
-David Heidelberg
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
