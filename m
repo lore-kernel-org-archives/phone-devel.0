@@ -1,121 +1,165 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C56314B79
-	for <phone-devel@vger.kernel.org>; Tue, 18 Nov 2025 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89256317701
+	for <phone-devel@vger.kernel.org>; Tue, 18 Nov 2025 09:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763458306; cv=none; b=mWDzSM/5JaC/FfUhLT8yfgh2oPYBVMlNX+Y64sSBBgPUkG9NurcVKXkgs2VHQXCVfk3kM4DO+1bcptbinwWaFvdMwqqpSbRP7GK/U6k07Ef8F4y1xclT1Nsaq4DfWk7RrfAa0ojgaHm2TW+w8Ie6eHYirhzlBakX37Ss4nz/Kl8=
+	t=1763458423; cv=none; b=fwzuS+EI7NZoP+qlnYNYZsHJOqImot3/MI9Ee/bJuDxE1ZYv4n5bmcUywdn91QWaOhCkKUe9E+rLwxG5U5LsM12iFahfNETfN0ercKArhzPNinjvmBwJN7B2pBhj4NY5nAaMV90dRv7wU4xFlsG3rC8U2SLGUScYW0dwvP3+sUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763458306; c=relaxed/simple;
-	bh=hg7HqJHy/6wXnNtLNKdDSkUJwtD80loCerrYasnmgvM=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cqh4/0hWmWMp6PApJl6pJFrzJ9PxXAGoNx1iTQ7B41SOSgFLNa9ebJBQiGXLB/0iCo69LRVgNEsZ3QJtwXVdeTtWFEg8D3TOCI6f4WrsOqefI82vioM7RWVp7Wv6W/TkwQn52hi66NaKJ7ycLWBNhRt34Z8AuLxOvtdLB3aDtYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ce0dm+1a; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763458423; c=relaxed/simple;
+	bh=+50Ey2th+tvNWLHYjF3fekOQvXPxWkgWTW4J+kjkuuI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dcdOPTPX0WgIaVLtjVGf8gssseSrKfi3+gM/Icwh4/bX93wDIevcoEFoPWBY9oGER2SrA0WIkl3gw98bmUJ7B6/v5E19wvjJ6HjWt3mX9bYRWETiR348idiNyJIH+Y6AOG5OUY1ZOuQuuP2MDahlJNlGtkCEuERYl93ylPk1evM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y+2GtTlk; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ce0dm+1a"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5945510fd7aso4444087e87.0
-        for <phone-devel@vger.kernel.org>; Tue, 18 Nov 2025 01:31:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y+2GtTlk"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-475ca9237c2so28970475e9.3
+        for <phone-devel@vger.kernel.org>; Tue, 18 Nov 2025 01:33:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763458302; x=1764063102; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
-        b=Ce0dm+1aB4axQ9jq8GvIxqbjgydLNxOaQyUEq2CujvaEhJR6SYM0yghXT558aYNjam
-         9oKzyzKYqyn4p73Wo5qh0pbAWd7vBfBa1XIhzjnc9RG1z+EsR98bHLiaf1tHk7McNIw6
-         oePbknn1xfFsdLhv7/UGEpDX6W8ynBnuuu0DPUTCFjIGaSb4GadZgA8HWkUPYp+beSi5
-         tH0rHRerlM52VW4Ee3iUwOzVhFrzOuEMSCmURjC15epPncBEhtsZ000++fWc6Rpu/l8Q
-         Mxqpj8KPgwbCX1u0kyeUV2CD0kiCgVr+uojga1TJpjv6w/iR1FnPhoaK0BhO8Q26CvDa
-         mIeQ==
+        d=linaro.org; s=google; t=1763458419; x=1764063219; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lTOCRDtXGRsyXp0u8jNTz0TfJTFFmawtdeFt+8GZM68=;
+        b=Y+2GtTlkNQxatit+63DAyzp440oXvf+KzxiB5+dz9/PGKW5mAQa6emkJG4aBVaL4na
+         NtHlFYbXEl3qsbfF59W7vq8Ls++edU5LajSij7+f7MB/c+X2bdJJ+8Kj4rOVihpYaxWx
+         BsM9vOWPBcsaJ+Xo44z2msIr/jk5DjkAEWsbwte4CxeBKGvdxme2MjCK8qPo7N3zZXFY
+         hznAhrA98Q9NdvZh/0pV1tjrlDgukY4boCOdn6kkw5WspKYpSGv9F/Yc5Xt4i4H8L3fl
+         N9VMro/eyoXpDHHKJZHtZBHOvhVG9KDzknz6FggTTob3S3RKtcQ4s/oi6nk8ztMjRE/H
+         7d2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763458302; x=1764063102;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
-        b=vkj8mqaMpXCQEvw2qFK+A9Ax9sL/ZPCURDXY/Pc+0udKr1cJE3dMTRwQYIytw8TQAW
-         7jXCHp1/fVUx10kG9RXb/PM1c0gB7iEVS90oxzzKgsNBHxipLwBywhZPyHmIVzy0Imaa
-         CHQ21JVq6G8yVLLxvaJeA5NZnXeoec1QH1CpTFU8hr8+k50/a8j9XIffg+POMSUtcRNK
-         MmgTLQfieSAsIUu4J42UrBEKcTusPJ/L45N9Yz9omQYOhUgj9WS7DsERoW86LIwnsT80
-         8GFpfFnWTyVDR2Gu/ItFQEhyajC9QHKi6k4lcy4RSw9IUpZlGTUHN+X0iH/PdrtZkqoq
-         vjQA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7rD+2ukJasAYOUGEilQl4TJyotFSJB3dwxJ69rcMV1NgrqZ1SCoSIhJ5YcNUEurO7WCKmAMDZNoHcEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMuwiGAIPH5ZMgaL244fiT0mulmmrNgPotgQk1Z+IERMEdD5zc
-	0E4poANQbVxlxDWl1JNzT4wyu402vERAlNDl+ezPJoGTjyvybrzHg896
-X-Gm-Gg: ASbGnctayFGhq4H6lsjYUdYyHMX43Job8Gvi2ZIXhtTCuQHVEwEIPjfP2Sax42Y8/n/
-	w096tdGAQyligxfR9ZVMWk178QO8XkyVfAQuqvbOmSNGZX8QLzn1B6Uk58jyS2pGaAPwEqg1uA0
-	jPsN2sNkA4EK7BEHBblkUSPOkHxMpZgTPBEO4Y+UxU4Ubw9GevZoxwQ32dnWAsRtqOyBY+aelEC
-	4MvI6wEb3JqBzrnS93At4GSd5vaAvYSnlIDj3FbJR5mFn5zQXTdFJZddv23qZ083zw6yOIQMCtc
-	moREVn/MifuZ02LqIWycJEHN+tdEkaH06OXosVhap+DzaVFOyW8mAComRb5z6ykD52xmuto2F1z
-	i7srXxiUapX3rzQPSH6vPFYsR0MSrqkt6qFZBDOC89Lk=
-X-Google-Smtp-Source: AGHT+IGnlKspAS2We2FABx815t9bNQvFsXJy6XwUcpIvRdQFlzF9XlXS5jEyZ/AKjBb0WZzRlZkYAg==
-X-Received: by 2002:a05:6512:3b0d:b0:594:314d:ac53 with SMTP id 2adb3069b0e04-595841ba374mr5520844e87.23.1763458301885;
-        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37b9cef2bb2sm34960441fa.46.2025.11.18.01.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 18 Nov 2025 10:31:39 +0100
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: david@ixit.cz, Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
-Message-ID: <aRw8-7Ox5TPewpw_@milan>
-References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
- <aRvI_VU3NOUaxfvk@fedora>
+        d=1e100.net; s=20230601; t=1763458419; x=1764063219;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lTOCRDtXGRsyXp0u8jNTz0TfJTFFmawtdeFt+8GZM68=;
+        b=PKn74OaPY/UxEIKworfWPagQSq0G9zhWzmIBBXwWYmXdojx82evnks+8Yvm/O7IfcR
+         qoxQkczDL1CBSbh+8YqEWBkoxLLBQl4fyOh3xp4zCEOHKoE2hnlT+lF+/4Lwrs/ol+Ds
+         Nsb1idf4nY456fkqHxzjXMYKarYwWiSb7TxULKmtL1WSvJzgUJE5kixMIumZRNJjUHeK
+         LOnvY/cq2XfKYgQWXWSTr1KzzmaZqiHcJe45uP6C41krBmT9O8W3edKSjpThglFbuib0
+         bSJQaPW7J+3hWTlt5AAkwkAMkXpqrN2LwLb0a9xqi42x3aKtElbsTVt1+WMqRhVLn39y
+         OWMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsmiKUMclCwebkhdtsnoEi0mRm/gjoJW5Nc8jRZMxs39MAPx+hjAvXRCNOgO/tgcsO4DnShbHgblB4og==@vger.kernel.org
+X-Gm-Message-State: AOJu0YygbD7dMLyMqoNeo3BAQ4aJtX6mZdpquSw4mWwXhe1BUXZdsYCX
+	cT/MMUb0JhyKUBZikvzMZd0+ng0EM0GLvaNnecEpm/A2zJuwefiXQyCE1JatugiG0Ao=
+X-Gm-Gg: ASbGncuSxlvoW+TWNVzvBfINuq6Vy8NiN6f3uKA4jMiMwAF00t0ayZLNSL5ndlmBQhQ
+	nr4+SLw0f0jBdtCtk83xKEOXz9SDWhTqhXr7UFQ6H05OE4i/KJpATe/gvK4/YyTZV4aOWlR+W4f
+	L2jvzIzQA4Frvf6TXH9O7UKlUAfioL4Xybo26XqePJuIKgyAVk5np5yQuI4EmS33TT8vl75pQAf
+	vmzzLpgDsQUdBpIoCPTF1iuubdAnkYZKLXcknAEYKBbkk2Dch+BPMH4uSRSezgWFlRa+B4LJKau
+	cG2YkTOyjOBF7jlaAzXZTcTqHvcVg2g5+96SQ2tOYLYtSgs+80phsmuP0GiGrwtYPKRwWTURIlU
+	4v6fuhllXbIDnqSraTPNY2KOlgjOTcc3eEJ2Mu7iJrIkWRrnPgYD+EnLZawtaIIA8tDvy41aet8
+	ViVyQCMW+t0E3EfTy7v/bUuDzsuMy54K1KpB28yjzf9S2jPMcaYpuQRAwucGSHEuauDZzHV6/l3
+	A==
+X-Google-Smtp-Source: AGHT+IGjvYXGcM8w+Yy+Mw51ltxXu22tj1ZNHWr9tLZbYKT9LQg2FaVpLbb1z4I+LQJU8q7Yzr3yiA==
+X-Received: by 2002:a05:600c:1caa:b0:477:76cb:4812 with SMTP id 5b1f17b1804b1-4778fe0694amr165159625e9.0.1763458418772;
+        Tue, 18 Nov 2025 01:33:38 -0800 (PST)
+Received: from [192.168.0.27] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9df99d3sm11797575e9.12.2025.11.18.01.33.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 01:33:38 -0800 (PST)
+Message-ID: <28f33d3a-6866-4bdb-a1e5-d193dcb7d4d1@linaro.org>
+Date: Tue, 18 Nov 2025 09:33:35 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRvI_VU3NOUaxfvk@fedora>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] Add CAMSS support for SM6350
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3ph8XeidoxkUIsK7qiOH29pde94sdwa3ReWKVVrPabgS5enIAmwVAC5plyFnBMJGKQBnxFB6df6j69OMFIeavw==@protonmail.internalid>
+ <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com>
+ <df4a6a77-9004-4dbe-9b11-7af2bea7e068@kernel.org>
+ <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com>
+ <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org>
+ <893b97ad-7d2b-4408-bab5-2cd63fdaa33b@oss.qualcomm.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <893b97ad-7d2b-4408-bab5-2cd63fdaa33b@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 17, 2025 at 05:16:45PM -0800, Vishal Moola (Oracle) wrote:
-> On Tue, Nov 18, 2025 at 01:05:57AM +0100, David Heidelberg via B4 Relay wrote:
-> > From: David Heidelberg <david@ixit.cz>
-> > 
-> > Without WARN_ONCE, the logs get spammed immediately after the boot,
-> > on devices as OnePlus 6T (Snapdragon 845).
-> > 
-> > Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > ---
-> > I'm not 100% sure this is the right solution, but having WARN_ONCE or
-> > rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
-> > 
-> > Please let me know what you think.
-> > ---
-> >  mm/vmalloc.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 49e0b68768d73..2a3ee17093d6e 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
-> >  	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
-> >  
-> >  	flags &= GFP_VMALLOC_SUPPORTED;
-> > -	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
-> > -			invalid_mask, &invalid_mask, flags, &flags);
-> > +	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+On 17/11/2025 12:53, Konrad Dybcio wrote:
+> On 11/16/25 3:30 PM, Bryan O'Donoghue wrote:
+>> On 14/11/2025 15:59, Luca Weiss wrote:
+>>> On Fri Nov 14, 2025 at 4:51 PM CET, Bryan O'Donoghue wrote:
+>>>> On 14/11/2025 11:15, Luca Weiss wrote:
+>>>>> Add bindings, driver and dts to support the Camera Subsystem on the
+>>>>> SM6350 SoC.
+>>>>>
+>>>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
+>>>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
+>>>>> far as I can tell.
+>>>>>
+>>>>> Though when stopping the camera stream, the following clock warning
+>>>>> appears in dmesg. But it does not interfere with any functionality,
+>>>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
+>>>>> while the clock is on, and 'off' while it's off.
+>>>>>
+>>>>> Any suggestion how to fix this, is appreciated.
+>>>>>
+>>>>> [ 5738.590980] ------------[ cut here ]------------
+>>>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
+>>>>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
+>>>>
+>>>> Do you have a full and complete kernel tree we could look at here ?
+>>>
+>>> Sure, this branch has everything in:
+>>>
+>>> https://github.com/sm6350-mainline/linux/tree/sm6350-6.17.y/
+>>>
+>>> For further refence, at least two other people have tested this branch
+>>> in postmarketOS, nothing particularly exciting to report from there,
+>>> apart from that the sdm-skin-thermal thermal zone (thermistor right next
+>>> to SoC) is currently configured with 55 degC as critical trip, which is
+>>> quickly achieved when starting a video recording, but that's not really
+>>> an issue with camss, but will need some tweaking regardless.
+>>>
+>>> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/7281
+>>
+>> diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+>> index a4d6dff9d0f7f..229629ef82809 100644
+>> --- a/drivers/clk/qcom/gcc-sm6350.c
+>> +++ b/drivers/clk/qcom/gcc-sm6350.c
+>> @@ -908,9 +908,7 @@ static struct clk_branch gcc_camera_ahb_clk = {
+>>
+>>   static struct clk_branch gcc_camera_axi_clk = {
+>>          .halt_reg = 0x17018,
+>> -       .halt_check = BRANCH_HALT,
+>> -       .hwcg_reg = 0x17018,
+>> -       .hwcg_bit = 1,
 > 
-> You accidentally deleted the comma here. 
+> No reason to drop the hwcg description
 > 
-> Once we've found all gfp the callers currently use, we should never be
-> hitting this warning, so ratelimiting won't matter. Either way is fine
-> by me though if you still want to fix and resend this.
+>> +       .halt_check = BRANCH_VOTED,
 > 
-IMO, it is worth to use ONCE variant to suppress spamming.
+> It'd be useful to explain why we should ignore the hw feedback in this case
+> 
+>>          .clkr = {
+>>                  .enable_reg = 0x17018,
+>>                  .enable_mask = BIT(0),
+> 
+> Konrad
 
---
-Uladzislau Rezki
+vfe170 is what we have on sdm845
+
+So I'm just asking Luca to try the sdm845 method of waggling this clock 
+since what we have doesn't work.
+
+---
+bod
