@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06CD274B5F;
-	Wed, 19 Nov 2025 14:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EAD32A3C1;
+	Wed, 19 Nov 2025 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763562101; cv=none; b=YqJr0MODHmTi/ALzcloRy3oNfTlxcHdSI3o1fjiBtwnchDrPhF/WruTVq3We3DzIezjFsO7NW3dF3z0hM5PpjARieiTk9Bsf3KREIkbZ9WvxLPCNyRHK5N5/wBkQdeNd7rw+WqfYVRgSlv0HMzpvXSsFNOjy+wzxCCQlFfXQxhs=
+	t=1763562102; cv=none; b=iZYDjRPuJywMM9Rsbf6tSyQUPAo/NjER3KndS4aWq58W+Altatl7cjT59Ocv4sposATBZEV5Ye5QuZR3luIUAr2KZx8eQSelNEIFFGRrWEEgiJZXeAxuPiUuWcLnjz3SaM0XbkWL2rBEg4O1V3D7ZJ4fpShXcsPDZ6vTOiNwkdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763562101; c=relaxed/simple;
-	bh=W8AFvq4nPlynSNPii3uZ58RgvdVO7lLIvRxVluTsVZY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r+oA3cphiBXyswMJoXPvLBIPL8GRVKDz8SWR6jPQO4Hsb/88x8ciQsGqD+ipZmjR/b4138q71gqVY0+3kOh96ILutNMdoS1qaUq3eUWkd9VyS0IVolNQSRckgVOqV+bvHdwpggDnj7fdi0rYQWWnP9p4IskX6cW4dRP0O+10egE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNEBUWlj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763562102; c=relaxed/simple;
+	bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pFbsokbAoeOtTkkVJsRqF4aCWoq9IC3qZAWbh5xFUq9170Qjey2b6K6Q3zQdO+0yXSsED0906ce5JUwpjSurfit5RRXk+4DyLy9mg3AC2mKC5nGeDmRV6iT0RNEAEydLbyBKCskBDozXnAtVPx6b8/pjJ2sWHKr0ZWEoX5DLtp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MkQQbDBu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNEBUWlj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D2189C4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MkQQbDBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BA3B5C2BCAF;
 	Wed, 19 Nov 2025 14:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763562101;
-	bh=W8AFvq4nPlynSNPii3uZ58RgvdVO7lLIvRxVluTsVZY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eNEBUWlj7cKXQAmn6BRhEPvy9hmojwCXj/jDVUxxAyYNLHsyRsQsakGIYxKnwyc8M
-	 ntRWMC+vUQqmA95q1IFeFwq+EIMvs2wCDTssWJP72Mv9lW/GL1Dq3b0uVnjS1M6fVD
-	 EbmpE5+YJ3bPxgBGksDwKN6skDEsNQPPa+LjscRjDx+z2PeY2mIFDZrtFq6ftMCHGp
-	 8eMwBt5RQ4DKsGS7PuqCR16NYo9voijVAO8Ube4BDShWNvxxYYGGMNWLechEs50qI2
-	 h14OFKgT+YdxKcYvLbcINmHF3+0j1kQWVJ1XHqNPqmpcraV3SmsRmr5g62bq0Iktwy
-	 ZE/cyKthJtEkA==
+	bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=MkQQbDBulixDf7rwtVL1NJQxyL1D2A7qyKVI863DLalhC8eDronb5O1i9jRQxXjG+
+	 EfG5hhAfZ4pydJSNalTR4DiA5/n5cB2CaXJi6ZhWK6VRsu3lXPcEXWrRN/N2ByZrTS
+	 VjGn11bQcFO+K+YmOrH0DDmzQPaYcv0gU3GoqDZJmqTbiKSktw7bpG/TcaMwTIEaQn
+	 lEUKWExsp7Tch5sckjU0zhaUe78mN6ZHOvxyuol2tsIxStLwdB47AVXXJNjudwBNTR
+	 yByPslUFJNwrfbNpssGQTm5VU2KmoiW/jrWSX2U6S6c6ZxsXVqqCxjoRId4sJb1LHG
+	 KFKIbC7etQGcw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1D85CF34BA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53ABBCF2598;
 	Wed, 19 Nov 2025 14:21:40 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 19 Nov 2025 15:21:29 +0100
-Subject: [PATCH v3 04/12] drm/panel: sofef00: Handle all regulators
+Subject: [PATCH v3 00/12] Make Samsung SOFEF00 DDIC and panel work
+Date: Wed, 19 Nov 2025 15:21:25 +0100
+Message-Id: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,9 +40,11 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-sofef00-rebuild-v3-4-6cd55471e84e@ixit.cz>
-References: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
-In-Reply-To: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAGXSHWkC/3WNyw6CMBBFf4V0bc1MedS48j+MCyhTmcSAttCgh
+ H+34AIT4/Lc5Jw7CU+OyYtjMglHgT13bYR0lwjTlO2VJNeRhQKVI0ImfWfJAkhH1cC3WkJmrCm
+ oOJBGEa27I8vjWjxfPuzoMcRwv40N+75zz/U14LL+PwgoQdbW2BI1VaiLE4/c781LLKWgvmxMf
+ 20VbUKdQ55CgWQ2e57nN9Ax3mn/AAAA
+X-Change-ID: 20251104-sofef00-rebuild-04cfc6e68e71
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -57,113 +59,89 @@ To: Neil Armstrong <neil.armstrong@linaro.org>,
  Jessica Zhang <jesszhan0024@gmail.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Krzysztof Kozlowski <krzk@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2667; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2672; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=mwo54CYnw7MO3Xycn85wubPyOShFMxI9iCM2JhaFHcY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHdJyykQQjBPv/D6e3UV4rkYUeeOAS1ybhrMlJ
- 37M8wKsmZaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaR3ScgAKCRBgAj/E00kg
- cp3SD/4kVvwnsf4KPZEdZ0I+Tq4vfMsljqvPEQkD7U6imv9aaIBzs1GLrLqdDvaEHhaNfkNUEv5
- pW9Y8V1Z05iFkRt74VKl8sD5vSL8hK6/WQLzElQAjBYc7PFihMmbS8JntFa8XVVqlfS71JNo6p5
- kn4+3OOKOcy+HIVqHEq62tFVZ9v2x9eZxCmZNsGTZq9IZ5EiC6zJ8gwjFkTFCaacq6B0e1J1My6
- y63S1QliRT5eHgdyZd5TwPI/oLzWIJCtCjPpfcdc/LQoWh9fOI05gT05XzvyjVgRuuMEPk9NJj1
- wRq0qo64isIAp4GCRV2q8mgIFqTWMKu8a2tjjwA+r1LAYhnnX6UD5xvHNZTelA2IbSTH7Uadycg
- Q8BRg78HK17Ss1JIE7HYDtDVhjnb5SkpfCE4qjgI3WW3erLazI5y7wszT0PrC0qBgiTEy44lmFW
- 7gGG8Xr+t6vZD8V14EotaUZg+9/cFs25Ht4v3PJXaV3GdwzJutPDZqiYLaeVEDRQO2iGSbDyOBI
- xLjmnW23s/8phTns4YhhA2uGtUmAu1ZtOhHlevTx08jBmNXgbWW0kiC/GBQBo4B/gPv1agaBM4x
- yglKS5Wldkms26ex6fjW0JkoVAoWyPM1340zxemoAx6eZyFnvfgZQ+3qaYIdkaShtbEmvfGZOyO
- SwmQSo9Ozwj+PZQ==
+ bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHdJxCvV6m5YJzmboX2MJ3rsvOYNmpY0I/N9qe
+ qp6mD33FnyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaR3ScQAKCRBgAj/E00kg
+ cs+4D/9HKugFefH70tsVLJ0YUo21AB/Lx+KhnQL0uFXMgzIoq5TY+ez5QDGbAKJGRSjX4nBYst0
+ Y379l6+hvpaLs3kY2+jNAm2j+IEzF0P/3RXxUNCmv8CBsk1jtMsxcJz1e3uXVU5ShJZYEe70sLa
+ puuOi07P4WTzlYtqG8SywmhzPPELdVY2vGD423hFzjSck4cdtNXYsUkUh9bh8voq1/AuLRDmgYP
+ P/N6HMOwW79paMyDifuOYSEEw6b76+x4qlcero/t8GNmGd2N3DAEu4iuNZrKssrqd/itMrRcada
+ ntcFrwdg2evJ1c+K5rC8Jm93xoJ2YOFTnGU+pB7Ivp1DIQ8nOop2HacvfDVhb/zSkbmi39IMgt9
+ Pf02dIQeo80CxqpZCZC7tw6zmwx2LUKerGk4K/eaiDSVQOlAOYQVhCcolj/FMWxtQCg9JJsz3jy
+ YN4hWg+L0q8oeYUDtoUWZp9xht0kPo9gLRhkzRoJd9TMLhIckNyo05gmb5UtLNppspjEkMrjBh7
+ vcXHseO/ejimV3/ChOChQNGqDjgFRNIM1x3dRoD/D86WRdNGYjnsXofFB4rxyXrdHmuEUH9H4/s
+ wXM0WetyjgKmgFO//scrW4GsKOPswleBaVKnfY9wEBjVQ92QHXUgVwFc1Ql7YhITpmJ/zU9sV8o
+ 1rC845UWm/IW+zw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+This DDIC is essential for panels used in OnePlus 6 and Pixel 3a XL
+(SDC variant). With proper support, all downstream patches in
+sdm845-mainline and sdm670-mainline can be dropped.
 
-Recently we documented, there is more than vddio regulator, adapt the
-driver to work with VCI and POC regulator.
+The mainline driver was broken so far, and with my recent introduction
+of S6E3FC2X01 driver, I had to "break it even more" due to OnePlus 6
+common device-tree changes which defined all the regulators and
+corrected properties.
+
+At this moment the first version of the patchset will not include
+Pixel 3a XL (SDC) as no testers yet volunteered.
+
+The code, including the Pixel 3a XL enhancement can be found at
+  https://gitlab.com/sdm845/sdm845-next/-/commits/b4%252Fsofef00-rebuild
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 28 ++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+Changes in v3:
+- Drop arch prefix from the commit. (Bjorn)
+- Added Casey into MAINTAINERS file. (Casey)
+- Moved compatible legacy comment inline.
+- Link to v2: https://lore.kernel.org/r/20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz
 
-diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index c88574ea66e1c..3097040e6bfa0 100644
---- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -20,10 +20,16 @@
- struct sofef00_panel {
- 	struct drm_panel panel;
- 	struct mipi_dsi_device *dsi;
--	struct regulator *supply;
-+	struct regulator_bulk_data *supplies;
- 	struct gpio_desc *reset_gpio;
- };
- 
-+static const struct regulator_bulk_data sofef00_supplies[] = {
-+	{ .supply = "vddio" },
-+	{ .supply = "vci" },
-+	{ .supply = "poc" },
-+};
-+
- static inline
- struct sofef00_panel *to_sofef00_panel(struct drm_panel *panel)
- {
-@@ -86,20 +92,18 @@ static int sofef00_panel_off(struct sofef00_panel *ctx)
- static int sofef00_panel_prepare(struct drm_panel *panel)
- {
- 	struct sofef00_panel *ctx = to_sofef00_panel(panel);
--	struct device *dev = &ctx->dsi->dev;
- 	int ret;
- 
--	ret = regulator_enable(ctx->supply);
--	if (ret < 0) {
--		dev_err(dev, "Failed to enable regulator: %d\n", ret);
-+	ret = regulator_bulk_enable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	sofef00_panel_reset(ctx);
- 
- 	ret = sofef00_panel_on(ctx);
- 	if (ret < 0) {
- 		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+		regulator_bulk_disable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
- 		return ret;
- 	}
- 
-@@ -111,7 +115,7 @@ static int sofef00_panel_unprepare(struct drm_panel *panel)
- 	struct sofef00_panel *ctx = to_sofef00_panel(panel);
- 
- 	sofef00_panel_off(ctx);
--	regulator_disable(ctx->supply);
-+	regulator_bulk_disable(ARRAY_SIZE(sofef00_supplies), ctx->supplies);
- 
- 	return 0;
- }
-@@ -197,10 +201,12 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
- 	if (IS_ERR(ctx))
- 		return PTR_ERR(ctx);
- 
--	ctx->supply = devm_regulator_get(dev, "vddio");
--	if (IS_ERR(ctx->supply))
--		return dev_err_probe(dev, PTR_ERR(ctx->supply),
--				     "Failed to get vddio regulator\n");
-+	ret = devm_regulator_bulk_get_const(dev,
-+					    ARRAY_SIZE(sofef00_supplies),
-+					    sofef00_supplies,
-+					    &ctx->supplies);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get regulators\n");
- 
- 	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(ctx->reset_gpio))
+Changes in v2:
+- General fixes to device-tree binding (Krzysztof)
+- Add myself as a maintainer
+- Updated commits wording
+- Link to v1: https://lore.kernel.org/r/20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz
 
+---
+Casey Connolly (2):
+      drm/panel: sofef00: Add prepare_prev_first flag to drm_panel
+      drm/panel: sofef00: Initialise at 50% brightness
+
+David Heidelberg (10):
+      dt-bindings: panel: Convert Samsung SOFEF00 DDIC into standalone yaml
+      arm64: qcom: sdm845-enchilada: Specify panel name within the compatible
+      drm/panel: sofef00: Clean up panel description after s6e3fc2x01 removal
+      drm/panel: sofef00: Handle all regulators
+      drm/panel: sofef00: Split sending commands to the enable/disable functions
+      drm/panel: sofef00: Introduce page macro
+      drm/panel: sofef00: Introduce compatible which includes the panel name
+      drm/panel: sofef00: Simplify get_modes
+      drm/panel: sofef00: Mark the LPM mode always-on
+      drm/panel: sofef00: Non-continuous mode and video burst are supported
+
+ .../bindings/display/panel/panel-simple-dsi.yaml   |  25 +----
+ .../bindings/display/panel/samsung,sofef00.yaml    |  79 ++++++++++++++++
+ MAINTAINERS                                        |   7 ++
+ .../boot/dts/qcom/sdm845-oneplus-enchilada.dts     |   4 +-
+ drivers/gpu/drm/panel/Kconfig                      |   7 +-
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c      | 105 +++++++++++++--------
+ 6 files changed, 163 insertions(+), 64 deletions(-)
+---
+base-commit: fe4d0dea039f2befb93f27569593ec209843b0f5
+change-id: 20251104-sofef00-rebuild-04cfc6e68e71
+
+Best regards,
 -- 
-2.51.0
+David Heidelberg <david@ixit.cz>
 
 
