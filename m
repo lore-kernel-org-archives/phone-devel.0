@@ -1,198 +1,153 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606002E8B8D
-	for <phone-devel@vger.kernel.org>; Wed, 19 Nov 2025 07:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11BB34B18C;
+	Wed, 19 Nov 2025 10:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763537785; cv=none; b=qpu/9WL+RQdK/oBjaGHYQ5EBkU3aER3NNzHRHsNaZGNZN/d3b8rartmNOh3/yJhZNfKZp5Xg0q0Bxr31XKG3FzcWpFCXr1eIOB75MvehJ7k32tA0DxrvS9mWd+l+szUg74aDOYyX76AIwcQOeiLrFnRCFPaJ95761xU5K+XHOio=
+	t=1763547653; cv=none; b=UllCrPFaKhX/RRAoJsPv6goC54mUE4ChN2rRDOk+u9FRj95bTzJgJDMQTI+oNvXITHUe1cabhO2BgRXv9BZJ2xtmPwbX3zDj5qWBQqdRSDUNlS7XEi90H+gaScb5mwLPO7+5eU8gycMYkchk6hlVb0aCdsqqxLCQPl5WF2knFvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763537785; c=relaxed/simple;
-	bh=CeKza4z7f+gCmqjYhUrhMKPiHZJ6Ib1KoSXfggBRBl8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pxk3AQPx+ZPbl0i3YAUMlRk7VRopsJLkVTXnFtH+57+hr1ukmRLZOpTtz5UjJSGSspd21CxyVps9/rD8FRzrv4boLVxe/TuEXGEH4WChJ/K0bm8aart2pS2sxrQCQGSaSu4Wwc6KY3n+yUgTyIQLOVrfSun1k+IwTvQ1ec/Z0KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CmA+dQ8C; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JQ7XQC1V; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1763547653; c=relaxed/simple;
+	bh=ibuXeGnYMXvdyPPXz9oykBnyHweXZDdLoF/u38xUJKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IPbAEetbsiXTRlP3edfM+g+Kx9COSSEngpp9kJ+JLkXpPt2NuNg6LDxrqRF1eBWKnIOAIQMM1Gwi2sM6DEUGVyAQuE3epJjZKva+rfxyMftzvYlgM+Fxw8T9f9Ja/3Z1Vq8yTUjWYlFFpqVj9BZSSfPxzDlh45Sd0NgHe0onygU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TVX23NZB; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CmA+dQ8C";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JQ7XQC1V"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AJ1tLls3165137
-	for <phone-devel@vger.kernel.org>; Wed, 19 Nov 2025 07:36:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=b2fJw1Fwo1X18bw+iFRPNcjg
-	skw8RlhaPnqMy2U+zDk=; b=CmA+dQ8C28DdnSv9JWNVNc8+2UzqdTunaSWniQxQ
-	h2Rdqug3UdbGHETbZQP9dkFAjzz3Xi5rej0aUU5/NadLklP3jccJgRGDKBuKTsQY
-	Fl2HxA/zKo1x+Esxinr4hteVaYGM8uhwdkThJbl8xiybl6MOyW3H6WbPCNWeBuVr
-	mTuVhFPAMO1JBGwZPB0jGih+mKR716g+kdoBaJHWgYQntJU47wlxE00cbaI9ZgJI
-	WyOjK4aiEzVeMEJMbU+TjEB95j7vudDo22kEGVJz5ErP8j+bAOOksjjYpmCwhoWn
-	otowhVUDkQUlnvcC4mbZVuf25zOFR0luo7BWigFSM3914A==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4agvqgt8pv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 19 Nov 2025 07:36:22 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b24383b680so987194385a.0
-        for <phone-devel@vger.kernel.org>; Tue, 18 Nov 2025 23:36:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763537782; x=1764142582; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b2fJw1Fwo1X18bw+iFRPNcjgskw8RlhaPnqMy2U+zDk=;
-        b=JQ7XQC1Vwl11ttMFjmbgWXEvyvW4v0a6w8gMz1LBURdB+Ayh6PPnSjQ69GHkb9O+4P
-         XuDsnkkRXD2YlgwMYIbKeb3CzOorXeGPPtdkJiOsa00HgGvXlYwZBkgDQQD3DgsBuyug
-         +iSqgTTfST1QE0sITZSfr41Y2OGxOYj8eds7KxcHBj+0MZ3ol7GeVvKrndirS23rB6oE
-         dfiSJ1Y6LHFINkekkgj/CKjlJXwzTZnMaORe5Jx4NxwB2n4n4E06jDOeK3XnR4AoczWp
-         mhJvpKnIJw8lSZ9oSCvBtWwYhV6C3ZudbINq5cvQLzh9nkQQV2DAO0m91ni/Aj5nUXZh
-         4uTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763537782; x=1764142582;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b2fJw1Fwo1X18bw+iFRPNcjgskw8RlhaPnqMy2U+zDk=;
-        b=GOT96ujYKD/SO12R6B1uZCej5D3wIYA9wJb9QoImDsRwsuwbhecpa0FWy7GpQnHu45
-         gvLIgS96H72PFKQpAryY+/srzSBsar1fRnbO/6s2/YIHNjX3n97hWh8/u66XutFHF0iQ
-         0viPncJTWmUMmGfD1QS7ll6Dshi+f5NPQCLFImUYC6t47CwNFkx3zsGjdsOODXGINF32
-         NlThXLE3B38/KchenmXMlPvkRYEvInjm7nGzIai/hNCThViEf5dopSjxAaKbOHhfXwen
-         OIfB22qIDpqyXEIsiTWsPXde9hPKQpIe5f2VDiqw3UTNtNAX4t/o/rl+UmGLqhLQSMZA
-         fw7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWe1rip0wATS5ARHmItIo5AdroKW8HIV3aAzhx4Sc4cIsYNi11SwsdKmkwrAFRGzSDWFKw6WRB2W4IO+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXiKycuppmVCI3ooMiccNdEyDGes9Me15/f0qpQWSLMhmz5LP9
-	Yweo4AyfsZY5k8PI2F32aqdYvsTzCcAEc5+paspCN3L30bBA4Vi54HJmiqi5lMW7rNHNZWWk4zo
-	QVp014Sn8M0o4X5KwFcZt1lxJaN0SbfpVtUubi+qHgHzo2TuuBmMAzZwbVRc1OatAXA==
-X-Gm-Gg: ASbGncsgFDVzJLX1OiU2D2Q4z7ikdNd4ruTJXvWSjchK3mPo+SpAFhcI/v2tWUpiSdv
-	h9CInOhn9gbYN18Kgb3spo/7ALzE+pBI7l5aDDb08XAcRYHS6WaSHzJRUpqk5JbR08ew8pzHaeA
-	7ugv7+CEtGCYwaYF6YpynbMRXAJ5MQRIRlQUcM9q3zUqpBo9D4jevKW7QdT4BhL21NKOqIaRqdB
-	gG5aY/aYbq75xaTXTZ6zqt69Mv9k+lDS/Gi8kKPc5CLpQbGgX3QUXk9NLE3dIuh3YMMEpsSM+c2
-	cauH3lWStMcgDlghaAvBaVFqAFkJGt7l6NFE2wDgXArRy7+1/+6NCPMwA+5Z9cuCrFQZ9xpmlB0
-	aHhaQ7FFcwK6+IUjUCZO39o17v2KP51XXSR/QAPD6XcQcgzk9pwcuc5hkJfm304F9DPFrzEzxr9
-	09fkcOy2zjeh0ldwnQq0UmGRc=
-X-Received: by 2002:a05:620a:1990:b0:8b2:730f:134b with SMTP id af79cd13be357-8b2c31af190mr2305952685a.50.1763537781439;
-        Tue, 18 Nov 2025 23:36:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFUkKb4mpp8eMpxhGiHmlERrpybKBET9nRQckVHp59VNmMM7vOmHFeS0Znq6PQENMcfVRvoNw==
-X-Received: by 2002:a05:620a:1990:b0:8b2:730f:134b with SMTP id af79cd13be357-8b2c31af190mr2305949585a.50.1763537781003;
-        Tue, 18 Nov 2025 23:36:21 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-595803b8bc7sm4426694e87.46.2025.11.18.23.36.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 23:36:20 -0800 (PST)
-Date: Wed, 19 Nov 2025 09:36:18 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Casey Connolly <casey.connolly@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 3/8] drm/panel: sw43408: Introduce LH546WF1-ED01 panel
- compatible
-Message-ID: <mhybllmkinoaa5z4de5wxrcu5oudg3xyxsnktfn57u7ryas74d@cph7cfasciyi>
-References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
- <20251118-pixel-3-v3-3-317a2b400d8a@ixit.cz>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TVX23NZB"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 1EADD53404F0;
+	Wed, 19 Nov 2025 11:20:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1763547640;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GeIDyqGrqNpCpxL9QF10toBtSLL2nnxmXSjpUB8MJl4=;
+	b=TVX23NZBl/Av8gkJubg44sSjbg6Txy/7PE7iYyX/rUVGKmr6KCx6r6RaSZ/Xvey4zNitrv
+	BhQBkTgZej/wBRhZ8kcoO8vNXvZ1bzHMIr5QgFE77ugSfyb6OOAGFajRkFmYg7f8srZ9zq
+	q4SgscB/eUbTHcnxfkUKxhICAYYx474=
+Message-ID: <bbc3662c-8622-4667-90d7-02b7d66cad71@ixit.cz>
+Date: Wed, 19 Nov 2025 11:20:39 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118-pixel-3-v3-3-317a2b400d8a@ixit.cz>
-X-Proofpoint-ORIG-GUID: 6LeduN2GXIBKNybNwvvp3ia3_WLD7nYV
-X-Proofpoint-GUID: 6LeduN2GXIBKNybNwvvp3ia3_WLD7nYV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE5MDA1OCBTYWx0ZWRfX5EKUrfhWi+W8
- qtChQd6Jo4qyoLAF5Whx0AOVM8m1rNFljIehVsDIJ/5xPE0U2MHiIVbvvyeCUV7/zUF27+88SPz
- t/NLEYjSyuCM0WUefqo8KUTq5R61AIzPyoDydlNdTRy2qWl5kFoOOj7iT7bxlJe0nq1Xtu+bLSR
- LeJSix2YZ5bzUHkv7JN4GnMYzls5ZqeHkPw6k29TCSmOouGRtGkgD/7agQShwppdctZ1rIv+8En
- J3keRiNuSSueclGF7Lmpx7XMfl/2e/mHCjJQZqOsBvaK+qle22YYBeTZY2wCCe4F2+a+8V8J6pF
- zgsT5rfaL7/UG9iJXeRDQ7T8UOYODnB9qXWEWC9wA5Resn68Q7L8E7AZgVw7ggOXka5UJW1verH
- n+Hqn0q05Y7nB8RCf3cHrhmy3U4fgg==
-X-Authority-Analysis: v=2.4 cv=LMJrgZW9 c=1 sm=1 tr=0 ts=691d7376 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=-kFX126oTHwKP8aA0KsA:9 a=CjuIK1q_8ugA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-19_01,2025-11-18_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511190058
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] drm/panel: sw43408: Introduce LH546WF1-ED01 panel
+ compatible
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz>
+ <20251118-pixel-3-v3-3-317a2b400d8a@ixit.cz>
+ <mhybllmkinoaa5z4de5wxrcu5oudg3xyxsnktfn57u7ryas74d@cph7cfasciyi>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <mhybllmkinoaa5z4de5wxrcu5oudg3xyxsnktfn57u7ryas74d@cph7cfasciyi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 18, 2025 at 12:30:38PM +0100, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 19/11/2025 08:36, Dmitry Baryshkov wrote:
+> On Tue, Nov 18, 2025 at 12:30:38PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> The supported panel is LH546WF1-ED01, add compatible and adjust the
+>> struct name to reflect that.
+>>
+>> The standalone compatible lg,sw43408 will continue to work, even thou
+>> there are no users yet.
 > 
-> The supported panel is LH546WF1-ED01, add compatible and adjust the
-> struct name to reflect that.
-> 
-> The standalone compatible lg,sw43408 will continue to work, even thou
-> there are no users yet.
+> .. no users _left_ ?
 
-.. no users _left_ ?
+The compatible users wasn't introduced in the first place (the driver is 
+written for Pixel 3, but the device-tree didn't got in back then).
+
+[...]
+
+>>   static int sw43408_backlight_update_status(struct backlight_device *bl)
+>> @@ -214,7 +214,9 @@ static const struct drm_panel_funcs sw43408_funcs = {
+>>   };
+>>   
+>>   static const struct of_device_id sw43408_of_match[] = {
+>> +	/* legacy */
+> 
+> Nit: I'd read this comment in a way that both entries are legacy. Would
+> it be possible to adjust this somehow (e.g. put legacy on the same line
+> or extend it, explaining that only lg,sw43408 is legacy).
+
+Sure, I'll inline it.
+
+Thanks
+David
 
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/gpu/drm/panel/panel-lg-sw43408.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>>   	{ .compatible = "lg,sw43408", },
+>> +	{ .compatible = "lg,sw43408-lh546wf1-ed01", },
 > 
-> diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> index 46a56ea92ad9f..bd55f6d8f2771 100644
-> --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> @@ -149,7 +149,7 @@ static int sw43408_prepare(struct drm_panel *panel)
->  	return ret;
->  }
->  
-> -static const struct drm_display_mode sw43408_mode = {
-> +static const struct drm_display_mode lh546wf1_ed01_mode = {
->  	.clock = (1080 + 20 + 32 + 20) * (2160 + 20 + 4 + 20) * 60 / 1000,
->  
->  	.hdisplay = 1080,
-> @@ -171,7 +171,7 @@ static const struct drm_display_mode sw43408_mode = {
->  static int sw43408_get_modes(struct drm_panel *panel,
->  			     struct drm_connector *connector)
->  {
-> -	return drm_connector_helper_get_modes_fixed(connector, &sw43408_mode);
-> +	return drm_connector_helper_get_modes_fixed(connector, &lh546wf1_ed01_mode);
->  }
->  
->  static int sw43408_backlight_update_status(struct backlight_device *bl)
-> @@ -214,7 +214,9 @@ static const struct drm_panel_funcs sw43408_funcs = {
->  };
->  
->  static const struct of_device_id sw43408_of_match[] = {
-> +	/* legacy */
-
-Nit: I'd read this comment in a way that both entries are legacy. Would
-it be possible to adjust this somehow (e.g. put legacy on the same line
-or extend it, explaining that only lg,sw43408 is legacy).
-
->  	{ .compatible = "lg,sw43408", },
-> +	{ .compatible = "lg,sw43408-lh546wf1-ed01", },
-
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, sw43408_of_match);
-> 
-> -- 
-> 2.51.0
-> 
-> 
-
--- 
-With best wishes
-Dmitry
+>>   	{ /* sentinel */ }
+>>   };
+>>   MODULE_DEVICE_TABLE(of, sw43408_of_match);
+>>
+>> -- 
