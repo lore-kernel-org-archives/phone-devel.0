@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EAD32A3C1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B134F2749F2;
 	Wed, 19 Nov 2025 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763562102; cv=none; b=iZYDjRPuJywMM9Rsbf6tSyQUPAo/NjER3KndS4aWq58W+Altatl7cjT59Ocv4sposATBZEV5Ye5QuZR3luIUAr2KZx8eQSelNEIFFGRrWEEgiJZXeAxuPiUuWcLnjz3SaM0XbkWL2rBEg4O1V3D7ZJ4fpShXcsPDZ6vTOiNwkdI=
+	t=1763562102; cv=none; b=jfuz77mDkhQUpOZizKOI8QIm/0DiW6rftY0RorO+u1FfolnDIYBV8NCV1w05AmEy/wQjBuPEy7Rf1waM6VD4fWKdLAOGuh/H6hhWyMiUyjzPHNZLnFQjw1qeOdXjmW+rTn6iTBpuiOLYjNV4BK4cYBmHIQWiKeAEoTs8/voKzYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763562102; c=relaxed/simple;
-	bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pFbsokbAoeOtTkkVJsRqF4aCWoq9IC3qZAWbh5xFUq9170Qjey2b6K6Q3zQdO+0yXSsED0906ce5JUwpjSurfit5RRXk+4DyLy9mg3AC2mKC5nGeDmRV6iT0RNEAEydLbyBKCskBDozXnAtVPx6b8/pjJ2sWHKr0ZWEoX5DLtp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MkQQbDBu; arc=none smtp.client-ip=10.30.226.201
+	bh=GVLBLculdCKnhAiFJ2ef4yLpdlinMTlal7/JRCLg0f0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LCc2G1FMYJCA33qm23SL5EQeFKWxVEQsQS4G4oi0gRU58eOXy204eg7pLv+RWBpB8NRjmp6di8noxfbXnOQU2qum3hvGb5zxqEwXMXeSBJ6/1a4Fpkn5xiRZ4MPzinaOVxhJdH78mK7br2oKniwu06W+LPwYFHUhr4WSsS34KpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKJbEeMo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MkQQbDBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA3B5C2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKJbEeMo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3AF85C4CEF5;
 	Wed, 19 Nov 2025 14:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1763562101;
-	bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=MkQQbDBulixDf7rwtVL1NJQxyL1D2A7qyKVI863DLalhC8eDronb5O1i9jRQxXjG+
-	 EfG5hhAfZ4pydJSNalTR4DiA5/n5cB2CaXJi6ZhWK6VRsu3lXPcEXWrRN/N2ByZrTS
-	 VjGn11bQcFO+K+YmOrH0DDmzQPaYcv0gU3GoqDZJmqTbiKSktw7bpG/TcaMwTIEaQn
-	 lEUKWExsp7Tch5sckjU0zhaUe78mN6ZHOvxyuol2tsIxStLwdB47AVXXJNjudwBNTR
-	 yByPslUFJNwrfbNpssGQTm5VU2KmoiW/jrWSX2U6S6c6ZxsXVqqCxjoRId4sJb1LHG
-	 KFKIbC7etQGcw==
+	bh=GVLBLculdCKnhAiFJ2ef4yLpdlinMTlal7/JRCLg0f0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=kKJbEeMok/XcZxgmDFRbs2KqBhT12CurirfxbcECcHTn/P0cWY28W/KBDguEnX2fz
+	 uFbm+aso9nyKB6a1vqa7MG8rRAeBDYAqsglJlUoHg5tfVvcN3F/CJmIVbaHoxun0St
+	 /Lep877OREMm8Ow+8k9jku+/HBDW4yfNIRjXY0DhySIKQzodzRbDTCYCVgP9o5FoJK
+	 ZjreqV47VukHubQMRuD+c6anv9H4exLbFVTWI6RERwDjeJ2eYm4+/ZLwZLdvHx0JPs
+	 G3N2YMhsfdH6I3JP4sR2bByFv+/AbCGlb2xC63pA1Rvn0tXiTmFoWFRDvhALvfv3H/
+	 Aly6CW5sn1NyA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53ABBCF2598;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91BF6CF34B5;
 	Wed, 19 Nov 2025 14:21:40 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v3 00/12] Make Samsung SOFEF00 DDIC and panel work
-Date: Wed, 19 Nov 2025 15:21:25 +0100
-Message-Id: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
+Date: Wed, 19 Nov 2025 15:21:28 +0100
+Subject: [PATCH v3 03/12] drm/panel: sofef00: Clean up panel description
+ after s6e3fc2x01 removal
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGXSHWkC/3WNyw6CMBBFf4V0bc1MedS48j+MCyhTmcSAttCgh
- H+34AIT4/Lc5Jw7CU+OyYtjMglHgT13bYR0lwjTlO2VJNeRhQKVI0ImfWfJAkhH1cC3WkJmrCm
- oOJBGEa27I8vjWjxfPuzoMcRwv40N+75zz/U14LL+PwgoQdbW2BI1VaiLE4/c781LLKWgvmxMf
- 20VbUKdQ55CgWQ2e57nN9Ax3mn/AAAA
-X-Change-ID: 20251104-sofef00-rebuild-04cfc6e68e71
+Message-Id: <20251119-sofef00-rebuild-v3-3-6cd55471e84e@ixit.cz>
+References: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
+In-Reply-To: <20251119-sofef00-rebuild-v3-0-6cd55471e84e@ixit.cz>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -59,89 +58,90 @@ To: Neil Armstrong <neil.armstrong@linaro.org>,
  Jessica Zhang <jesszhan0024@gmail.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- Krzysztof Kozlowski <krzk@kernel.org>
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2672; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2398; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=30zdp00ssHhIY0HNpB1mEZhkfA29GQGRCgBxkHTNKNQ=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHdJxCvV6m5YJzmboX2MJ3rsvOYNmpY0I/N9qe
- qp6mD33FnyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaR3ScQAKCRBgAj/E00kg
- cs+4D/9HKugFefH70tsVLJ0YUo21AB/Lx+KhnQL0uFXMgzIoq5TY+ez5QDGbAKJGRSjX4nBYst0
- Y379l6+hvpaLs3kY2+jNAm2j+IEzF0P/3RXxUNCmv8CBsk1jtMsxcJz1e3uXVU5ShJZYEe70sLa
- puuOi07P4WTzlYtqG8SywmhzPPELdVY2vGD423hFzjSck4cdtNXYsUkUh9bh8voq1/AuLRDmgYP
- P/N6HMOwW79paMyDifuOYSEEw6b76+x4qlcero/t8GNmGd2N3DAEu4iuNZrKssrqd/itMrRcada
- ntcFrwdg2evJ1c+K5rC8Jm93xoJ2YOFTnGU+pB7Ivp1DIQ8nOop2HacvfDVhb/zSkbmi39IMgt9
- Pf02dIQeo80CxqpZCZC7tw6zmwx2LUKerGk4K/eaiDSVQOlAOYQVhCcolj/FMWxtQCg9JJsz3jy
- YN4hWg+L0q8oeYUDtoUWZp9xht0kPo9gLRhkzRoJd9TMLhIckNyo05gmb5UtLNppspjEkMrjBh7
- vcXHseO/ejimV3/ChOChQNGqDjgFRNIM1x3dRoD/D86WRdNGYjnsXofFB4rxyXrdHmuEUH9H4/s
- wXM0WetyjgKmgFO//scrW4GsKOPswleBaVKnfY9wEBjVQ92QHXUgVwFc1Ql7YhITpmJ/zU9sV8o
- 1rC845UWm/IW+zw==
+ bh=bCUObjPE6sND+pIgM/wutRNG+EBQRl07BHTzasDZhH4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHdJyyre2YbJbCWgb/t9aDqoEt/8YTa5GBezgU
+ ro/WdhEc/WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaR3ScgAKCRBgAj/E00kg
+ cmUoD/9wPQvQ4yOEbaf4EQ6WJDuk2dQEMVA0cR9bovkgOZseBZDUlFFIUNjxEU+WNi+fVKjJ4ME
+ de1tnYUW3io2mifxkIn4U7OTL2R5H+yXGazhF8LyaJSVEc4Wm3N0bU1gieo5i36J7W/r2aeJYLU
+ qt49I+/ykCLZzIidWT1HUvH5UxJYAdrl3O7I6SjcoWSj0zBKeabXD4TNamhe5YAxpfVMndS4Trg
+ a5L9guVqcpQN8ltSAZuyh70D+/f52m4dreg7MRsdP6146buSrlIeI0BX5DE83IS4/+LBoAljkKE
+ Q5XAaUJWMj2ERh4CiM9Wn0tKxEe6FlECaE87wX17JynDlNQ7P/oQqdjFc8cW0mN63O+GnKXUV+b
+ 1qDw3Pckn6v16Anb/rDSPSto7q9AkcmEThcdayq6NtNxv4I5SRqr5FnGz3adkqFo2bJ1J4jxW9f
+ 0JlYcAlE2b6l29l/ufy0b+SlKZLmSrgv+b++rZb/z1hs3YxaBhXFRq24Vnxm3B7tMaHVGD+32Up
+ VqojuhTr1S1Nm+aloXbX8FB6hH6UblmbAQUU1z5tlvbVekUnXDPIhQ/aRX/5UfzlXBRFwrAca2I
+ PbS9Qhg3MSLIyywHFABzqrHQpCCAK3F3ipE2KEUc/WFumIU6q3OHc+ogMzc42zaL6578vj6gqxH
+ /mZX7RxbKUAJv8Q==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This DDIC is essential for panels used in OnePlus 6 and Pixel 3a XL
-(SDC variant). With proper support, all downstream patches in
-sdm845-mainline and sdm670-mainline can be dropped.
+From: David Heidelberg <david@ixit.cz>
 
-The mainline driver was broken so far, and with my recent introduction
-of S6E3FC2X01 driver, I had to "break it even more" due to OnePlus 6
-common device-tree changes which defined all the regulators and
-corrected properties.
+Remove leftover from s6e3fc2x01 support drop and clarify supported panel.
 
-At this moment the first version of the patchset will not include
-Pixel 3a XL (SDC) as no testers yet volunteered.
+The Samsung SOFEF00 DDIC is used in multiple phones, so describe it
+properly and generalize.
 
-The code, including the Pixel 3a XL enhancement can be found at
-  https://gitlab.com/sdm845/sdm845-next/-/commits/b4%252Fsofef00-rebuild
-
+Fixes: e1eb7293ab41 ("drm/panel: samsung-sofef00: Drop s6e3fc2x01 support")
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v3:
-- Drop arch prefix from the commit. (Bjorn)
-- Added Casey into MAINTAINERS file. (Casey)
-- Moved compatible legacy comment inline.
-- Link to v2: https://lore.kernel.org/r/20251113-sofef00-rebuild-v2-0-e175053061ec@ixit.cz
+ drivers/gpu/drm/panel/Kconfig                 | 7 ++++---
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 4 ++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-Changes in v2:
-- General fixes to device-tree binding (Krzysztof)
-- Add myself as a maintainer
-- Updated commits wording
-- Link to v1: https://lore.kernel.org/r/20251104-sofef00-rebuild-v1-0-dfcfa17eb176@ixit.cz
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index ad54537d914a4..4a0b4da0fea46 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -881,16 +881,17 @@ config DRM_PANEL_SAMSUNG_S6E8AA5X01_AMS561RA01
+ 	  DSI protocol with 4 lanes.
+ 
+ config DRM_PANEL_SAMSUNG_SOFEF00
+-	tristate "Samsung sofef00/s6e3fc2x01 OnePlus 6/6T DSI cmd mode panels"
++	tristate "Samsung SOFEF00 DSI panel controller"
+ 	depends on OF
+ 	depends on DRM_MIPI_DSI
+ 	depends on BACKLIGHT_CLASS_DEVICE
+ 	select VIDEOMODE_HELPERS
+ 	help
+ 	  Say Y or M here if you want to enable support for the Samsung AMOLED
+-	  command mode panels found in the OnePlus 6/6T smartphones.
++	  panel SOFEF00 DDIC and connected panel.
++	  Currently supported panels:
+ 
+-	  The panels are 2280x1080@60Hz and 2340x1080@60Hz respectively
++	    Samsung AMS628NW01 (found in OnePlus 6, 1080x2280@60Hz)
+ 
+ config DRM_PANEL_SEIKO_43WVF1G
+ 	tristate "Seiko 43WVF1G panel"
+diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
+index 064258217d50a..c88574ea66e1c 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
++++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
+@@ -252,7 +252,7 @@ static struct mipi_dsi_driver sofef00_panel_driver = {
+ 	.probe = sofef00_panel_probe,
+ 	.remove = sofef00_panel_remove,
+ 	.driver = {
+-		.name = "panel-oneplus6",
++		.name = "panel-samsung-sofef00",
+ 		.of_match_table = sofef00_panel_of_match,
+ 	},
+ };
+@@ -260,5 +260,5 @@ static struct mipi_dsi_driver sofef00_panel_driver = {
+ module_mipi_dsi_driver(sofef00_panel_driver);
+ 
+ MODULE_AUTHOR("Casey Connolly <casey.connolly@linaro.org>");
+-MODULE_DESCRIPTION("DRM driver for Samsung AMOLED DSI panels found in OnePlus 6/6T phones");
++MODULE_DESCRIPTION("DRM driver for Samsung SOFEF00 DDIC");
+ MODULE_LICENSE("GPL v2");
 
----
-Casey Connolly (2):
-      drm/panel: sofef00: Add prepare_prev_first flag to drm_panel
-      drm/panel: sofef00: Initialise at 50% brightness
-
-David Heidelberg (10):
-      dt-bindings: panel: Convert Samsung SOFEF00 DDIC into standalone yaml
-      arm64: qcom: sdm845-enchilada: Specify panel name within the compatible
-      drm/panel: sofef00: Clean up panel description after s6e3fc2x01 removal
-      drm/panel: sofef00: Handle all regulators
-      drm/panel: sofef00: Split sending commands to the enable/disable functions
-      drm/panel: sofef00: Introduce page macro
-      drm/panel: sofef00: Introduce compatible which includes the panel name
-      drm/panel: sofef00: Simplify get_modes
-      drm/panel: sofef00: Mark the LPM mode always-on
-      drm/panel: sofef00: Non-continuous mode and video burst are supported
-
- .../bindings/display/panel/panel-simple-dsi.yaml   |  25 +----
- .../bindings/display/panel/samsung,sofef00.yaml    |  79 ++++++++++++++++
- MAINTAINERS                                        |   7 ++
- .../boot/dts/qcom/sdm845-oneplus-enchilada.dts     |   4 +-
- drivers/gpu/drm/panel/Kconfig                      |   7 +-
- drivers/gpu/drm/panel/panel-samsung-sofef00.c      | 105 +++++++++++++--------
- 6 files changed, 163 insertions(+), 64 deletions(-)
----
-base-commit: fe4d0dea039f2befb93f27569593ec209843b0f5
-change-id: 20251104-sofef00-rebuild-04cfc6e68e71
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.51.0
 
 
