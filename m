@@ -1,128 +1,109 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CF242D60
-	for <phone-devel@vger.kernel.org>; Thu, 20 Nov 2025 01:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75332EFD9C
+	for <phone-devel@vger.kernel.org>; Thu, 20 Nov 2025 23:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763601090; cv=none; b=Wm91l02VOFze2DpqCG96qXDVQZf8TBwX81UwR/mFWvRgfxrGu06LN8Ig3belUXPN0zTgXOb8OcYMX6cNWWotxxeWBI96GieV7sR3NCtIfUqsxZLJXyqyArPzw1ChlspHw3JCbkZTKscUqYzjh6flTwyidfi0h6fXywYNnq6L7/o=
+	t=1763680273; cv=none; b=NdUX6tK4OOLAfyorXvqzExQBe94gA3/O2o8lFQ31lvcmPN6pF6/Oap5v4pqpUEcbnEOLm7lsIVgcDof6JFWupEJQePkMivPMeV6cIw6uKiaHf+c9Sny/txG3UsyOZCpvkFGZ9S+H711YcL/LG9meTU2h8R0hMws5C4HL2MEBUVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763601090; c=relaxed/simple;
-	bh=HNKStvuc0XB3JshjhPWn5gZkIa6YpjmT/QSv6jmE+eg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MhAqfCD3H8xBKYlQA9+/2G6zx7HRMjtj3UA2wh66yTA2lHlV7ztdyW0jAF/v8Z44dXwPhS/ld3NkRtzdku+W19dyzpB/rxtRjdBCAyxanw+S8n0pTcyR/gFid/jqNjKvCC8a6qZ7hbBGwLiEZqEtpNaTDHtLSCWo8QbF+ZpAt54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mLh2eKTl; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1763680273; c=relaxed/simple;
+	bh=f09Ph1eIgetZWHLJK7FoNd8ccKR+tymPGV+3sp1g5K8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KSSwvIzM+ByCUND+5D1AIdAC8bAJRHpeqrInu5NggZL4S8nRQRI8Q/HewWtoin9r0gaRSQTM9c6oazpMMfG1f4IzkAUSRYlhcg9rEkxOWxZnOgQh65SOQScgE44qK+re3kH4H0zmL3IkjScyreGrRNskT0d2ag+AETMYIvzw0rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iLsnBm3H; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mLh2eKTl"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b71397df721so66683966b.1
-        for <phone-devel@vger.kernel.org>; Wed, 19 Nov 2025 17:11:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLsnBm3H"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-78802ac2296so14994987b3.3
+        for <phone-devel@vger.kernel.org>; Thu, 20 Nov 2025 15:11:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763601086; x=1764205886; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HNKStvuc0XB3JshjhPWn5gZkIa6YpjmT/QSv6jmE+eg=;
-        b=mLh2eKTlu3k0oik+cic8c4gqT/M9C4CQpBMHpGtb5TijP1XPBqAJuQ7DwuCKhbic/e
-         /MaAFDs/1F+2dJFvpRUDhlDp6BHmnbtj/AnCsSwp/XnzynFjgJJFlKeCxa30lIrYAjHb
-         5IJCrWSL9aPXF3u19+HCx3eY7uhQF2UCpFIjw=
+        d=gmail.com; s=20230601; t=1763680270; x=1764285070; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OIBL9zhNeDx90fnwrwztaJK024OToElBIomfLRD7cbw=;
+        b=iLsnBm3H5b/SPaiMATkAyU7mViaLc8kVHebiqeI0wKMK7svUPKfIE/UwEDOF/CSwQU
+         XPGDCU3zhIEWogtX06y2lW1n6YQGDHlZSreIDTW6pGukl5VSLXh8eoOd7WwdG6aLueZR
+         Vaa4AWWJ/ySaDyR4Qls1iMtNOxJpjhrh25yJu0xLGWrFurUgQtgSDapUe0/5I77iypl9
+         1Ydi9HXTsrbRA7N3XNNJVN1tmWL8Tjrq4YUv8vUBZ2qYzHnDs0NgJJBCWI4SiyuDnEAI
+         5bM9w6aOVRvS8vlPYkzONWBQLL3H4ZVyxKOyIOF6giuGFp9z3EAbAwk2NZg3nRWEr9OZ
+         +71g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763601086; x=1764205886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HNKStvuc0XB3JshjhPWn5gZkIa6YpjmT/QSv6jmE+eg=;
-        b=Mv80IiRD3v92oMcZOxMiReQ5FuLD9m9MFmBpUOs5lcmLTBP5/OqcUv/8iOAR7xMKhl
-         Z51jfMUofI5odiqK77Wjh6+UmtUlmUMxV6n9w5D4in44PZHiPiOaDJCKpQ+pXa0xiz33
-         CE98qUkeN6k8Rf6bMLrVnWVIjxtV3ufChocRnB0cPDH5d52mC1rh/shd2G6/4G4KSmst
-         OP/6NtnqJP5vqZVMtpYad4chwnqYKMVeEVhAgRqfu6k7XkGAjBJ3FVR1ua/BSS3Fi8Fi
-         RXWD/ZgGKopqj2yfHWiY9K1sZ2oaALnJkfuKNGfdZ2XR/q9Me46VJbKRaZmK3ZLpVwGc
-         1FIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpb8234MD3wB/xpKeH8ALB1CBKGVTu/G23N7JaOg98Ok07+G9youiNrEXAea8snkoS4AojXrH0+G1iMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4gA3utjpDSVYeaga2i5FaLAERFx1MrslBUo3xhP9RqCFArupN
-	YE4vM3uEX3slnHx3E9+trTcH9WSOxZ4NLXeafkIKZMCXjkI/Y/9JYXMRRletsaPV6YJIzmiG7uh
-	weFaBOLGq
-X-Gm-Gg: ASbGncsw8s9a1c+1NBU7/qsD1mTTyfAQSvbu2k9AkoeFRVa5RAEQFUiFQ5SahRq87Id
-	TAv7sNRN4jWEjaR0negz//5YD//r/aoRx7sob5gKEVtODR3aFYJfKmOjRMht8FvmdgrnJwDkBw7
-	EaGb02HyBJSjTXv1MjOYxUzHLW2LZBxrCSIoS7+KYL30B2xGpS6YsazOoVJTCHhbegc0Z+C/XCA
-	3ZK6jpMhcu4jpjAhCc5KBANQQpIEmND61baUT/SURvI9TQ2Qzw3V+mospT8AMEUg4aCWr2QToIV
-	KnEHg8N6upH2Po+4il4KwZRRCQ7tecnTQJlAcimlFjGOYbjOUG49KsWde8CoF8Dz02Jp0b4ycH/
-	BUZeJU6P/FXq/7iRdabOL2o+ca8skjvR/2sWxwIlnjr4XIexqrd3WbdXHrwSURrMwmsRxCVz4YB
-	rGGf0n9HAE7UGTdIQ2w/5cjJ1wOeDv+QXEjvk/pPK9SPP7TdAN2qyqxmppZkVi4sHymLVYfhM=
-X-Google-Smtp-Source: AGHT+IEsNa8HLOjSvcMPZRrgljKqHJbApNW0fpcJ4j4YcmSRbJVDOJmLjPIN5wFDOT27YNi+v6BKug==
-X-Received: by 2002:a17:907:3da3:b0:b72:d117:1a29 with SMTP id a640c23a62f3a-b7654fe99abmr127052266b.51.1763601086408;
-        Wed, 19 Nov 2025 17:11:26 -0800 (PST)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654ff3c6asm74107866b.52.2025.11.19.17.11.26
-        for <phone-devel@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Nov 2025 17:11:26 -0800 (PST)
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b737502f77bso51897066b.2
-        for <phone-devel@vger.kernel.org>; Wed, 19 Nov 2025 17:11:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVqXUVcUE/GVEeNERgmISxf4p/n1R4mWZqNjht2wsuoMEc+adc4sge/0qGz0mBA/ulmhn5t1HdauoXYcg==@vger.kernel.org
-X-Received: by 2002:a05:600c:3ba8:b0:475:dd7f:f6cd with SMTP id
- 5b1f17b1804b1-477b8d8eec1mr10748455e9.35.1763600661833; Wed, 19 Nov 2025
- 17:04:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763680270; x=1764285070;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OIBL9zhNeDx90fnwrwztaJK024OToElBIomfLRD7cbw=;
+        b=tdGXM8iBUfIa6suQXopnuw2GsiPzrIjcMThy4IDDFFQDHG7v3a3vYGrJWhFCwOaMan
+         iscgFHYK7QhQaqMsReW81gMhoYi0HVKfG0E3lE4ea5dqp8k6K4OtTNp6NP4nZZpM0BMn
+         MEA30nHZeL1YxNXP2vzNNidlG4ibUFjWu7GtlYfR1zHQOZoNYhJhh3t3sggg5qrgIYdK
+         9I5lnB8NUBYe9pO1l5SStGSQHf9EzSTR6fvkuGAV569UiKKvWM78ybpVNiOP0hqAMhaX
+         DBYvIK36cJkcswJJm1biXv2CsoE5sXYPEmknjH2OPg/pKe0rw1DBr8qk4Iox748JgXy+
+         eciw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOFHTck4arB2C0vumYQlCPzNN8zhWPuxsy0C3mpy6h9zrgMtsgLNeQZwLGJqxk0hE6B55Iw4l6BBpq7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSs1mJIUIeo2LyB6BwGaftC/SVeNYyYgIaC1jGUeWg/T9w67vl
+	4heJ43e472VMVUD6DuscDEYoFP+XFGkYkeHSyZFV06l0fg279lTvKSvC
+X-Gm-Gg: ASbGncuL+nfxdsN9RqZ9LiwiK+HdiJbdQOwIU0M9yFK/xYt9rZIX8ssxUm4vqkxWy3t
+	FKURUyIyOxFp8BPZaZm+Sv4pXHc1dpH3FL1XmvcV3e39ZxD6OA54DrqMSSjzoWKOun5BoPtUExz
+	+yWNCasB5ygiEcbtn5MFNvoDbR9x4fJPV0VRLe+tVwWuemr7daEXr2/cpzRp9ss1k874MjYosnb
+	xGUbZiY8WAb8hILLerbGtKk/i0YCc2mPqptfXoocSBCnhDvp84MCMF1aSfnff2FdYdtxjquet7l
+	GMlBdvj98T/sf3auS+BrK7m6NI6WB2QAd6kl2SeYebxIyxIALXAu7EnB0rRxtKaeZ2HL+0NsgTL
+	CcUDvXJN0Ph7sjyqVN4QVKPTyLB1HJe6Tcoj6ZYox/bOE/+DyJ2K2DjG6XKqqGE4FNKgaLhjZxf
+	Nr2OrkY7pM3eUK1g==
+X-Google-Smtp-Source: AGHT+IHQW4azgv81UpzbgS0IYJMpaV8AqndCImbd1VY7yIzNWeXySfqUd/IcqRYt3Qox3ks+I9+JOw==
+X-Received: by 2002:a05:690c:688a:b0:784:841e:c044 with SMTP id 00721157ae682-78a8b5672ddmr904707b3.59.1763680269837;
+        Thu, 20 Nov 2025 15:11:09 -0800 (PST)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a798a7f19sm11356807b3.20.2025.11.20.15.11.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Nov 2025 15:11:09 -0800 (PST)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v2 0/2] Asus ZenFone 2 Laser/Selfie includes a battery
+ measured by voltage mode BMS and a simple GPIO hall effect sensor. The
+ following commits include support for these components.
+Date: Fri, 21 Nov 2025 01:10:47 +0200
+Message-Id: <20251121-battery-hall-v2-0-d29e0828f214@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz> <20251118-pixel-3-v3-8-317a2b400d8a@ixit.cz>
- <d81b0e70-5e3f-4e33-a268-e8b903904e9b@oss.qualcomm.com> <d9c91625-a829-474f-9fda-5e39342bb4af@ixit.cz>
- <96673da0-d8be-4b82-9e8c-2263f752881c@oss.qualcomm.com>
-In-Reply-To: <96673da0-d8be-4b82-9e8c-2263f752881c@oss.qualcomm.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 19 Nov 2025 17:04:10 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=VrB8FycxF+SFpP0-LBuRh00q6ecQ14fJj5fBKcFqsdCA@mail.gmail.com>
-X-Gm-Features: AWmQ_bmyj5sGx4tyY9L7h2oSdpAiPgC3_696WJh5bzTVt6VHuCNSI8LWrwUfgrE
-Message-ID: <CAD=FV=VrB8FycxF+SFpP0-LBuRh00q6ecQ14fJj5fBKcFqsdCA@mail.gmail.com>
-Subject: Re: [PATCH v3 8/8] arm64: dts: qcom: Add support for Pixel 3 and
- Pixel 3 XL
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: David Heidelberg <david@ixit.cz>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Casey Connolly <casey.connolly@linaro.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	phodina@protonmail.com, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Amit Pundir <amit.pundir@linaro.org>, Casey Connolly <casey@connolly.tech>, 
-	Joel Selvaraj <foss@joelselvaraj.com>, Vinod Koul <vkoul@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPefH2kC/3XMQQqDMBCF4avIrJviRKLSVe9RXCRx1AE1JQmhI
+ rl7U/dd/g/ed0IgzxTgUZ3gKXFgt5eQtwrsoveZBI+lQdZSIaISRsdI/hCLXlfR1GS6yRjdSgv
+ l8vY08efiXkPphUN0/rj0hL/1D5RQ1AJV38q+GbGz3XPeNK936zYYcs5faFGvgKgAAAA=
+X-Change-ID: 20251115-battery-hall-30eb7fbba62c
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
+X-Mailer: b4 0.14.3
 
-Hi,
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Changes in v2:
+- Reworded the battery commit to include a link to the downstream code
+  on which it was based.
+- Separated hall sensor pin configuration from gpio-keys.
+- Link to v1: https://lore.kernel.org/r/20251115-battery-hall-v1-0-1586283d17c7@gmail.com
 
-On Tue, Nov 18, 2025 at 5:41=E2=80=AFAM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> > Yes, there is only one firmware, which crosshatch has different, but al=
-l listed in the initial bringup are used for both.
-> >
-> > To add, crosshatch was somehow not that popular device, so as I've been=
- suggested in u-boot discussion, I would love to keep blueline everywhere.
-> >
-> > One exception is LineageOS kernels, where they go by name crosshatch, b=
-ut again for the both phones.
->
-> Google seems to suggest crosshatch is the 'base'
->
-> https://android.googlesource.com/device/google/crosshatch/+/refs/heads/ma=
-in
->
-> Ultimately if none of the Googlers (hello +Doug) care that much, it's up
-> to you to choose
+---
+Erikas Bitovtas (2):
+      arm64: dts: qcom: msm8939-asus-z00t: add battery
+      arm64: dts: qcom: msm8939-asus-z00t: add hall sensor
 
-I haven't dug into this patch series and don't personally know a lot
-of the history of older Pixel code names before ~Pixel 6, but in
-general I wouldn't expect Google to have much of an opinion about
-Pixel 3 support upstream. I'd say leaving it up to the people doing
-the work sounds good to me. :-)
+ arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 43 +++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
+---
+base-commit: 0f2995693867bfb26197b117cd55624ddc57582f
+change-id: 20251115-battery-hall-30eb7fbba62c
 
--Doug
+Best regards,
+-- 
+Erikas Bitovtas <xerikasxx@gmail.com>
+
