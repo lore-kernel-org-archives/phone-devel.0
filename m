@@ -1,141 +1,143 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F930BBA3
-	for <phone-devel@vger.kernel.org>; Thu, 20 Nov 2025 23:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97FD34C150
+	for <phone-devel@vger.kernel.org>; Fri, 21 Nov 2025 14:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763680277; cv=none; b=hLIXyHZzyC51qbRpnHQ6jX3haV0oRR1vvRjprfDTcm7YhTjJda1vZgXcHQYuVozsLgv94vB6NwTUkcEK5vAfbla81G03Az3IZ/DX8AB2emqEgru54oKiNjThOKBNHFffYrCwoSQBAhj/CJnYAf4BLoAOkykaVA/AsuxX4jIQ7BI=
+	t=1763733890; cv=none; b=syQogXXO1kPfgRRvHVbuL9fwQTuro+l7xJoyTBvk2ofB/vA5cXx0bfHftBjb6NQd0XUJJ+vxXYi2oZmbAsYdxQh7IQ+BmLGoQlDwpWnLfi1T3unQ11ZnnGtV7QGPOqregPJuXE72eyuKAb/cS2/oPGFGgltscKroGHrBIGwuTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763680277; c=relaxed/simple;
-	bh=RWbkz0FLNAqiFbTIDMPZWfStC9RZXbov6DV0vU/FWDI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KzYmrX8E+HdwEwJD/2EYoFzfUZAzGVGmji7uglaW0URd6OdHdEyruRHsJfvVg46T2qtXwS04ZCgygtndNYxyz2T9Z8Zpd6UXlkMtlcCQgffAxFueh56x0FkVoCPEKQubB88Qu4hokTG8hkOMTJ55jbAbJiArpEPfiIYQPkeM7yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPS7EjBc; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763733890; c=relaxed/simple;
+	bh=b1n4XA4q/KqpuYmnAOUEofeqlH64gZhHPubQOI/0Elg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IICAygsjwfvLfqZHvJQXj3NlrfoOweieiMbfwAXATUtcRdl4CjbL9GKYgWeBa3gjMBEmAp+xR2v38/IKy58pEDNNvgE6glDZrG6HP4lHGwfDEe6i0zonYKcdH9JLwn3S9aqb2iL1LiOve6+yTxVEgsje23zslc/DPR1oinNzK2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PG2Jcnt2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Yjn3NbsQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPS7EjBc"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-78a76afeff6so16047507b3.0
-        for <phone-devel@vger.kernel.org>; Thu, 20 Nov 2025 15:11:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PG2Jcnt2";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Yjn3NbsQ"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ALCd4CF2831879
+	for <phone-devel@vger.kernel.org>; Fri, 21 Nov 2025 14:04:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Q2vS7u/JIbX7qlMBiy/pib9mbwHRZ6mTK+QLsUGd4KA=; b=PG2Jcnt2u8iTs6bP
+	mZr0EiwyMoyFnoLOhUoTV/+IzfH2pUYw3hNRP16PlJF8H+k01/Ocnv9t8cGmvY9p
+	J/lJ1piK7o65Q51sMCelEevDtZQ2sdHOoN6mAthP8paLIOmpgaciWqJ+KOoR5+yD
+	rI3WCp35mi1TgJ4gX8Qpnq10luxwNUQcIYT4RYP+1URhDEclC4dAOJlRUP8hF05I
+	2GD/cKozc4jZWZWOqzG55CWCjTF4nL5tV3mXJ7+d5iaUhdJQHGBTDR7PV50jJo7u
+	ZFQp5tV04+y+v4yp5PAI+7eNLX9RH4OIHcAm9lHaA9LhJ4RMv+hItyoKMsoFp+4l
+	V3S+Yw==
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ajhyq1m6q-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 21 Nov 2025 14:04:47 +0000 (GMT)
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-559590c663bso54408e0c.3
+        for <phone-devel@vger.kernel.org>; Fri, 21 Nov 2025 06:04:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763680275; x=1764285075; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ByHN86RKXbbjzL7Ln3obHD3GU9SMY5OMdZPiBZnxHUA=;
-        b=TPS7EjBcboNVZe72bKawkMHSU3gQUHQ0ip1aX8M5+UqLIst3R42q1gKHE+KIBWzxVt
-         ECOmJQ4M20+ZdO+knkAIRki92tFMGXt4dPVbW4QSCs1q04qAFgBEAmAxeR9TQ9SfTdJe
-         xYBok/kataXs8QeJ+f3XaLd9986+nQgz/IZykPCA7m18XD4fH1wS7NiCMomgj1dEN3TM
-         rrHlwgM8dpSmKMblBZQu04gTNd9Tq/gdis7Rccv3lvd2LtWpe/ujPA6rnQhrhNnxmteX
-         TSr1L/yrIIL039jY/Rod7n4GxnTTPBnkZKF1NZX9zMqhmwUWkspao1AoGXxnfv1mdY6k
-         wL6w==
+        d=oss.qualcomm.com; s=google; t=1763733887; x=1764338687; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2vS7u/JIbX7qlMBiy/pib9mbwHRZ6mTK+QLsUGd4KA=;
+        b=Yjn3NbsQHGHwy86/Hbmkzx2X6NWaFPqegXZ0JGLoZHVScF7Jiap2NrGr94Sma8yFSW
+         TQDwkz9eJ0gvOxJ07v6uk4ID7ARHqzX08DpN/fzZ1kTpjIdsZ7qdWSUrqFuqpWr0Y6xu
+         vR1tqNSFFSfrG0M4zCbhRbgUkC7mRlbNFSp1RI8TM91Ao1MzGzWUftEDswspxYhOrdwt
+         s9aBDcJ63FVI7sLdk/olYj3lV8Gah8EDCkC99Gys7nCkrgL4Ys8TSieH8lvwqOFImNeR
+         WUXyn/u5tqnECx8h2Jvd/qK+t+/6rW864cL6UXy/EbkeI+Om0JR1Lna7Q1sK0sD7dueU
+         b2eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763680275; x=1764285075;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ByHN86RKXbbjzL7Ln3obHD3GU9SMY5OMdZPiBZnxHUA=;
-        b=hh2YOFwPNhCkckUv4kMCSlmLVp3oeIHd2Y3YSFQX08BgCNEUAMjF4v36+q+KfYjlkH
-         9hFnIZsv3/YssEdvLueZs7E1s1F0rksz82kIiMUmtPxaKd15m3AD8mFJifS5y+AgLMdo
-         hG4Gb7ZukZY47f8B0JTqSMHGhJ5KtAiXdVlgq9uBPG2xtzVqi0RibV/AsH+CsD80uGzL
-         fEE3RY+0GoJrwEy+KlDdi1bYH0FayHXsczfBzlHSFEBkH/opKCv4q/51px/CEN4ig4La
-         VJQ9acygObEbEUHBLvph+B0JznwgwAssG194w7J/XjSsEWvyPBvZWz/+x05/SVDHRrxC
-         ZPzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPk4m45uLT9LDNLJyXkEmFnGNg/Uf1WF5UOkRPLqLM784Dlvf1VNNkjxMtQ9aOJoVVOD8CMexivcHBaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdRF+qPLTiWkNy3FIhX3fIrCIoua+jQKwNU/Fv+94Mg1i+XjkK
-	NfAP3HATxFpv+om1ElsgOAcSZIAebTPBcJOx0c8zi+KvN6VbTUQWtiTS
-X-Gm-Gg: ASbGncuD8DN9ty76y5oiGZV/1e0ObTwUQkPFVTROk3uF0YT+YZW23Wg7J1m7hLrn5IE
-	qmlaUrHJWB/idLqczwowoptjZ2zI2lEbDTHqZRxHH4oYHCkpcgwXJ+QLERCdkvTnjW4gFvH20DA
-	dRqscborUeuEi/D3K1ZGkV0PdK82wAV2BGS/aUULiS0otQ2WukfS1GAk6buOP+1+q+aNTUqPtLa
-	rxWHoO2lbQwPHhJRmlLRs4pk28sRtj1tU55X6f2UoEGuVg+dIu9Pmgn/LKrErd81LUd6fAUWgXS
-	GNE00hYd7k3yDmTjuHFfM7jpPE2/5UA/jqV/jKJYS2MLZVtL5ti2UOjb83MbXkQpFI3OiXfHAy2
-	9OXJ4lAJYKuPQKsbdxMXUELnUC9bZlzCF57npOmGIpPMJTRm5tL/vVBeItzKTc4GmWxctURf8Ox
-	yaIfEowVTa1xZROA==
-X-Google-Smtp-Source: AGHT+IHAqrI4OKxe6x7HzMwP3ZGJuM+Wn2lQgIYDF8LTfS7H2cC7/bDnF1Smik688KfunshhtI7BPw==
-X-Received: by 2002:a05:690c:4c12:b0:786:68da:26d6 with SMTP id 00721157ae682-78a8b47f539mr1457147b3.2.1763680274745;
-        Thu, 20 Nov 2025 15:11:14 -0800 (PST)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78a798a7f19sm11356807b3.20.2025.11.20.15.11.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 15:11:14 -0800 (PST)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Fri, 21 Nov 2025 01:10:49 +0200
-Subject: [PATCH v2 2/2] arm64: dts: qcom: msm8939-asus-z00t: add hall
- sensor
+        d=1e100.net; s=20230601; t=1763733887; x=1764338687;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q2vS7u/JIbX7qlMBiy/pib9mbwHRZ6mTK+QLsUGd4KA=;
+        b=GbTSX7CJYETJdKuOrGg6kscqiVhLb4Ybngy9ucCYvfSOcyPO5tLJYL1WryD3mpA6Mo
+         MqD1ev1wrNGPWOjjG/lGoG0dww9832T2etl929fR6gvIlH1uO7sA0QzEQJM/C3Ye/ufu
+         cSpVf5wJsmMnrdsZzhNSq96cxStVS0qi6/T4aMrhwTgQ1LkrhfvAgGP0a7PnSv2kU06s
+         p2aS0hKhj2X0jUAw5gpWL5mzvYhBOaHq9nX309tDeCGNPjBkuV1BRfmSjYX/KI+QE+QB
+         5Y5/1yYobcY+5uiKnzx4Hwywv6uhV+phCGfUP8PylBznoUVgpaRLlfqcuggqgbcaZ/fl
+         LsOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxghSPNKUmz9ox49OE69C1roOxmyfB5H1WPedHPgXH2jCX3OaKdZJScABga4dNZuoFmhBdwC1NwehhcQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHGBZ9gC5nQQGaVbYbvLfV6bqFzZb3haGmDuSMILePtv67k/hb
+	MzSQM0UmGebnouRk4AMRjShicbaMbWwBx8TqhF7RrUo0muJPHXClGS+B+BiVXgFBd5dTCadZ6cr
+	YBsYawxKsEKfIt32dx37A/GWfIXbCoNH5DFlJrVmJMbIO+/50JofEGx9DuNZGVg7law==
+X-Gm-Gg: ASbGncvot9U0Qj0cumz1SBGQzmzdEdn0TPSAuUXH5PIMWf8/Bs4bOVpBuZZlVN4A4Kt
+	UnbSSJkebbIYVPZIjeOzPSpyNS/k5FdJsThkn4zNn1NH+jWHhakswCnNapwdMQ/JENr62SsshCh
+	AVRXcmy54FSZwIj61bcDmwYl/GkAkzJeqMMDbnnR8Y7U2XI6EjIbwaeTt0/b8nu/svEQzj6GGA+
+	MHvgjyEees2Fe9cXanqJKjlI5P6sUswfEEY8e3vL/JRSDA12cnBxhYOgq4ju4gyLr80kKA/fJyr
+	mEJ5hmhBhh5sC5j/jPKoXvIlenAML1zODCp0ivx/7gOVVr777q8foLYRKVFaWFukv7977wcbzGz
+	6OcBUi3YJdtk9xfAtNLFwNdIhgfSwB8KAzA03HcuSVM5fl48Ua0IF/zpwerHFRobErGg=
+X-Received: by 2002:a05:6102:4b88:b0:5de:93bb:c553 with SMTP id ada2fe7eead31-5e1de3cc795mr358843137.6.1763733886754;
+        Fri, 21 Nov 2025 06:04:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEI/tRwgX6vGWnRBfJHVtMU3u7QzjM5Hujztw5aFw4JnxlX/tG92uN0c9gIGQKoerIaW0+tFw==
+X-Received: by 2002:a05:6102:4b88:b0:5de:93bb:c553 with SMTP id ada2fe7eead31-5e1de3cc795mr358675137.6.1763733885046;
+        Fri, 21 Nov 2025 06:04:45 -0800 (PST)
+Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fcfd9fsm477643766b.40.2025.11.21.06.04.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Nov 2025 06:04:43 -0800 (PST)
+Message-ID: <d7525543-8fe8-48ca-8b35-a0d087578948@oss.qualcomm.com>
+Date: Fri, 21 Nov 2025 15:04:41 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251121-battery-hall-v2-2-d29e0828f214@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: msm8939-asus-z00t: add hall
+ sensor
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
 References: <20251121-battery-hall-v2-0-d29e0828f214@gmail.com>
-In-Reply-To: <20251121-battery-hall-v2-0-d29e0828f214@gmail.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
-X-Mailer: b4 0.14.3
+ <20251121-battery-hall-v2-2-d29e0828f214@gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251121-battery-hall-v2-2-d29e0828f214@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: N_l9rprXtBK4d7h7d2urg0n7v_Es_wes
+X-Proofpoint-ORIG-GUID: N_l9rprXtBK4d7h7d2urg0n7v_Es_wes
+X-Authority-Analysis: v=2.4 cv=N94k1m9B c=1 sm=1 tr=0 ts=6920717f cx=c_pps
+ a=+D9SDfe9YZWTjADjLiQY5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=sfumBXNNT5QrXeo5tVwA:9 a=QEXdDO2ut3YA:10 a=vmgOmaN-Xu0dpDh8OwbV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIxMDEwMiBTYWx0ZWRfX5lUG9Urqn2UO
+ jG+IHBnLpcTO9MLWTpC/R+nPCdKXXi8fMrV4d79ZK5oCcXDGeCoOYBWGtrVvGWTyt/cQoT8nWD5
+ dlwhKh+Vzl8xYKk3Jm/aeQG+w7E5u5bK2S2WgIf6hmP/uuq9XaM21I2SH02fofdDUFZcushCTBQ
+ fbddPc7X+KKV7P4SjZiHEGSxe9eedOUP0d04fXkCX0QfLdtV6/KEvMepK88TKSle0PJRZP5Bp/p
+ /l3qWjuhyRJYEGTnfnTXF1Uja2dQlKIFkhhCe/25WfDcBp7PGXlynItsmbg5b58f+e4nsiYxRgL
+ SYTyQPtgi3MteuBLCZa6PxQG0gtmk/0eViZUB6iXdIYLlxPqwdXfOML2+3GvDL1YDYq5lABfU6I
+ 8ayX/XCQ5wGqoQOtGJNeKc1Gny7shA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-21_03,2025-11-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 spamscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511210102
 
-This device uses ANPEC APX9131 hall sensor. It is a basic GPIO hall
-sensor for which a generic "gpio-keys" device tree node configuration
-suffices.
+On 11/21/25 12:10 AM, Erikas Bitovtas wrote:
+> This device uses ANPEC APX9131 hall sensor. It is a basic GPIO hall
+> sensor for which a generic "gpio-keys" device tree node configuration
+> suffices.
+> 
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
 
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
----
- arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-index b58f0a04abfd..7343fb00f986 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-@@ -46,7 +46,7 @@ chosen {
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 
--		pinctrl-0 = <&gpio_keys_default>;
-+		pinctrl-0 = <&gpio_hall_sensor_default>, <&gpio_keys_default>;
- 		pinctrl-names = "default";
- 
- 		button-volume-up {
-@@ -62,6 +62,15 @@ button-volume-down {
- 			linux,code = <KEY_VOLUMEDOWN>;
- 			debounce-interval = <15>;
- 		};
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 108 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+			debounce-interval = <150>;
-+		};
- 	};
- 
- 	reg_sd_vmmc: regulator-sdcard-vmmc {
-@@ -265,6 +274,13 @@ gpio_keys_default: gpio-keys-default-state {
- 		bias-pull-up;
- 	};
- 
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio108";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
- 	usb_id_default: usb-id-default-state {
- 		pins = "gpio110";
- 		function = "gpio";
-
--- 
-2.52.0
-
+Konrad
