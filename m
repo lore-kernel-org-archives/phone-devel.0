@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E2732FA32;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9332FA31;
 	Mon, 24 Nov 2025 21:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764021219; cv=none; b=hBQjsOQGnQZ5MCzOxtq0muJPXaIhab0XNvi63hglk8x6qMMBvd8xzw09/A26qit/5IP78hROp98OpkaVNvfKerwGQyP1BSTjBr6xcaWtMDD42U+HheKVb1/ivjyVtsFrxVwb/nH7zFL+ifqqQhbpDoipQGQI6HUXrsktGSB8QQM=
+	t=1764021219; cv=none; b=gvIcQjclTayDs1JXBvaC7AJgvliFOrpRhXOxX4MApS8Rvinxth3kVKbLiAH/Ynybqm+Udzfw5BwBcEc2ctu/FkW0QFJlvT6/P+lxETp9fsSFhz1Ov0JVW/SPQTsBZRhoTHtpGRTSx8/iIAgknYdZRm0cldb2hUCOd298pO4tjjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764021219; c=relaxed/simple;
-	bh=3IKw0nkX63RBBXH8cToT4cBaJzlDdChJSInpUsVpcyA=;
+	bh=iNnu8NdOtVkVeXBIGUy+//lZW2PoS4dtCcSNdHnk5KQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o9c26mA5ngu/Yhull065WHhITt5V8aVEC4eDhku4CKTwmip/ZtWEPqS5DuyB+GqPOY8Q40ZScFMrpflHbjQvE8Z8SlehQ/M+ANd6jCf+HsMaRwGY4yEd9ktz58lhAlLPe9UErYXbZVVPCfXcjayxIBHLt68Jefitp283jxumqXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDXdOcni; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UdFvZGnLuGfbgENbkW0Az5NZVGP40KG48ZjrmvU5K8hZW+oJEpuXjdAnXir+g2i5fWOp0JxTtO7pOUDyZHfFpTiAcd4N7zMbVArgR2i6Dw7oZia6Jgki+RJjscY4dXlh7NoLVQNXArBTSVfcaNa2OtUutETQgkX0zVXB8ZQjUVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RO5CXKCO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDXdOcni"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B76C1C19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RO5CXKCO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8F422C2BC87;
 	Mon, 24 Nov 2025 21:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764021218;
-	bh=3IKw0nkX63RBBXH8cToT4cBaJzlDdChJSInpUsVpcyA=;
+	bh=iNnu8NdOtVkVeXBIGUy+//lZW2PoS4dtCcSNdHnk5KQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RDXdOcni3FSC5b1r8qwe7fWzs8w/k1cc3XcJOA67qh+HB37tYBXn0LdBvjwvpPKMo
-	 rN1i0/hrd5gXDi0cnNWSkw4lGVOjWWqX4ubXjcMTOP4fppmJRt3RoeKjMK1utDybuF
-	 7PoXV4LGJISTG51fIvP3NM2mshUH/v8TlRgXhgljLQ87i9R/Z7MzOUAOqSfcmk5HND
-	 uDbHEu4aJoo3QEzNWs2sO4oPosUrx8HMv7KySqQyAmHjhljG4L8sqkRbUrQ5ZzacIy
-	 tu4qrA+NSG3GTR1rP+c4kh/FWuDCjcTSp+RMsMqeK5WKzbogNSHtWEHtHdvSzhfreO
-	 I3gsb4uJY2qSw==
+	b=RO5CXKCOC8cYEMuH61U9QH3lvY8aOdQDaEauJxwGURZJasL74yl0GNfQ6UHy8WMkP
+	 iZ/71tegWrQD2lvRURWXOgHzpyCweaeBrZUDfODvXie04Gqf0DO6gM8Ygjj7IMtLKT
+	 TLA+yIxM6K1n3v/Fvayj6t2S5xNyC8IRw9Y07fJ4aEchUrFZheaYqPas6IeEsc2HA+
+	 SWk1UZrz88ANVtYvAQwvJGk0IdAxlC2boxGG63Zq98KHjReNoaluYNV74q7LUJraaf
+	 /lUeelt3aKlyxJ0mR55cTy5WaDSJMorAUgVeeqDVKGEiU7Yc/ZDMPNKPsOl6Xbn1S1
+	 sIgoZEkBcEY8A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD6BDCFD360;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87C18CFD364;
 	Mon, 24 Nov 2025 21:53:38 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 24 Nov 2025 22:53:41 +0100
-Subject: [PATCH RFC 8/8] arm64: dts: qcom: sdm670-google-sargo: Enable fuel
- gauge
+Date: Mon, 24 Nov 2025 22:53:39 +0100
+Subject: [PATCH RFC 6/8] arm64: dts: qcom: sdm845-shift-axolotl: Enable
+ fuel gauge
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251124-pmi8998_fuel_gauge-v1-8-dd3791f61478@ixit.cz>
+Message-Id: <20251124-pmi8998_fuel_gauge-v1-6-dd3791f61478@ixit.cz>
 References: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz>
 In-Reply-To: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz>
 To: Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -60,56 +60,55 @@ Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=813; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=839; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=SyGBCL9VTEPA+aAWTUKzUH7OLMbCTKZV+KFoRbFN9oM=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpJNPgenmWLfuDKhq15mBg6v1tJzJPi9mONOtDK
- +nbgiB4RcSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaSTT4AAKCRBgAj/E00kg
- ct3+D/9FOzgDdTeSSuMnpUerlqxXHRc7EteoshYCabmOBQfZkQfTUgC+p7Nnbujn8EyVH35kHb2
- 04thXEH3bbZXwDcQ37886myN5Mtm7HRNkGg2/FzE3FYSClXrJoIo+9XdzSWRFTqh7jgLHGYW7bW
- IKK/9Qq3KPlvhlmiYyhegZSxWdKzhbxFMBprU2gcomvExFvuT9mFU4A8UjddL9SxgXLlmXhn1vC
- 7Mbvfvd7eBwQ3/n/T4jqKkb7mw5V5ZX3KaSade6jOq3tjcv9pVH/Ui8Ds8BenYgsOYKYPbyIGvT
- K4W6HBLQfUd3Y2CBEPSGB7wUZW58vhoRNjDUz26iBZ8ofu/gdimjAjo84FQtLpq89gvQpot+2do
- nJkFJVFN4uDf6Oh4/AaEk3bysrf2gZ0QaeGAMyL0yasVutQO2bELurmwmfVVBGvPVi1Ri0CpYF9
- dqxm8E8uvzWkxcRFsi9OymhD9I+WIUN5tdCFlvyihsMMlOSGpOyJoEVJ6kgfCmYBNbmPiWfPyHS
- xDH5NX8mvn0rQcchS2DL04az9PEzKLSgvyHVl/+StqKya6kPzZGnlsJteKA63dlWzhDCgg/hr2f
- ej8jQ1LL8+E+bTikNcpcJfR1nUt1P8VPgayWzBhDG2UHB7465QB9YCfpV2U8+zTqpCxJer7NCAF
- BVXLpg4Ve72CGEw==
+ bh=rWr9w6N0g0uoz/ni0a7604nlr6yXoa+VTp7KmyJxlrg=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpJNPgFlWsPm3iSNWe01qiE1zdx1ltKOFn190HJ
+ Ko0UM3Acv2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaSTT4AAKCRBgAj/E00kg
+ clyfD/97XwPy2exVdqPOI880Z1tW0zR9atPBY9VnosC07OH1VVQcky95MsrBcCE/fBhCW8aX7nj
+ RCOWtBkbF5zvq7wYDMQK36Y9VlXLgCdLDTGzWdF2rHsYgKNX38QqarS+H4ZsSF1Cm99ZDCoxbYd
+ meBvz/QARBVI6tbe7kZlRoGw1koasx1e666/IrVD7LxmnmwttuMHw6DIUiFqwOXyhUMZ2eVMS+y
+ mUjtlm52nsvAbIqjJKNAjjVDvZTsPOr5kFQeKEVnJSYkrZT363haXBlm4ej6j9KjoyO+iij5jOE
+ i5pnBtu/RU9IHSyqmeYK+JkyPLJJEeybhgXpB0Y5lP/iVmJUm4ULWXo95vM3yJROdrbxyMX8IGi
+ PXP1bfG7Q1Mu44WghOg9oE6c9Gx0GGhJKwF4h3Y8aHqrUwbbA2k+m9vj5+/a4WRLGAdhctrpBTm
+ nrVZ67rqaVGJnpBpdsd0NUnon9j9deQo3beU7q6wXl84gavQ1Ab+Og9/89oya9TgSM4d0ObMHeq
+ 3k/D4Saa3SACtsZht6Pbs6XQnVeVc0OC8y7i55pQwBrwPR3CPmPkIQVcGPZvv4MLA3TOxxvgogM
+ pPdAu59AadhcElCCa42nKLdlLJfJk8Z9F3VFjE02PAYMBIcp3zhbdvZOISrAKzlwa2uRO5jGbI4
+ YAQe9Eatm5bGZbg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-The PM660 fuel gauge determines the battery charge. Enable it for full
-battery support.
+Enable the fuel gauge and configure the associated charger and battery.
 
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts | 7 +++++++
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
-index ed55646ca419d..a8e0e85c42cd2 100644
---- a/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
-@@ -490,6 +490,13 @@ &pm660_charger {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index ddc2b3ca3bc57..f1fea39972e8c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -524,6 +524,13 @@ &pmi8998_charger {
  	status = "okay";
  };
  
-+&pm660_fg {
++&pmi8998_fg {
++	power-supplies = <&pmi8998_charger>;
 +	monitored-battery = <&battery>;
-+	power-supplies = <&pm660_charger>;
 +
 +	status = "okay";
 +};
 +
- &pm660_rradc {
+ &pm8998_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
  	status = "okay";
- };
 
 -- 
 2.51.0
