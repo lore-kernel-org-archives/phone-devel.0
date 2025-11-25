@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADDF33CE91;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE5833CE92;
 	Tue, 25 Nov 2025 20:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764102580; cv=none; b=lMed1c3Z/pCphb9iHkyD7Z2lWDCPLXNg0L78NX81zxXcmuhmuyvynvsLJ0OwT3xwJjKq0dVqRQWL3aX8Kr+D9YRroszyWaCuzrQLHpoAVw+Kgq7A5jyia1gM7ISO8DhNUA7UHZ7vVdAtOfOH5lSxsmcFzomjrmoKLREbxESUih4=
+	t=1764102580; cv=none; b=OzvkrVmpEDuyS3uuFiRP9PIUcPK2ZR7+1udJyMcwHkSrxCPD8BGmuEEmEZ9D79CKEFfBfMBSX3n9nbsftEocRbDny9r56+JgnphuxTg9Xk5wmuwO41pGPisDiFecGsCYrbphq7njpoPSCuE2C3pTGsfJ/9/kUMkwu35I0DlGiJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764102580; c=relaxed/simple;
-	bh=57iFOlJjHz5ySUzY0KG71UVGjXVyk+k7qQ/D/GZ+w9Q=;
+	bh=FvkesFKKe1PzWtmHl2GGOg0cRSIBJCYjHVmpS+N9lyI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QNsR1+OMVXCNcLcnKqg820gfshXz2xUjRFN5dwAUx7f76Os4VyOk7dEuJvq1u7ZPg338n5x8ay+AxgM8noQ51HMADBHrlBMoHBc4dHfUXQHSQ3Vrja+QUcSJSiKz399bu7/BivC4v9+FVjb5zHPYO30KiqFWpg6NjGFlIP4kuHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALARG1TR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=eS5wR4rrBAdZjhqGyT0Q9lcT0hZU+XDgnWxriw2JNZSLo1Ara7VxuE9jShrSWJBIFx6sAv22/pREfAprb1+hFwqedDF/xCd/ti3hV26W+lk6WjvqCxCmQ0Wn9JQz59ltfAnoMkFCucVyWKmN38xuBkWuS0gUEIOPXmhfRc0/JjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c05brCQy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALARG1TR"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 41E64C16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c05brCQy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D8C2C2BCB5;
 	Tue, 25 Nov 2025 20:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764102580;
-	bh=57iFOlJjHz5ySUzY0KG71UVGjXVyk+k7qQ/D/GZ+w9Q=;
+	bh=FvkesFKKe1PzWtmHl2GGOg0cRSIBJCYjHVmpS+N9lyI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ALARG1TRG9czMdZsHKmrdix52spMY3jRCtJCl9fpJXTHJKJZSy/gq6zrj093l+MHa
-	 l37xc8CrqtegACZ+2XUcdJlEbm42Al3xl/C39ZJUXrMVH5LKGX8342lHGoSKV2eagQ
-	 LB8ElAeQnXfbt6hr+r2eJcTG1Stl9tLW0QUiqGLN/KBF4CASytoHKjRwr4Qaaxuufi
-	 UCsT7njIF4onVazOoli4CgU5y5pWXSDfhcRgV1W9r/CjfRES7lRTsQ+btnvhY5Y2e2
-	 a63vy2gLc7xMG9+z2uqR9aAZUB8ZVIY1Q0QTJ09vNlTeC+k73QO9P6mJy4qspJ3997
-	 GVRORdNh3uljQ==
+	b=c05brCQyAXaYoDVve5H2cyU5lOZQuOW1VoD4yEgASgBIT/Qjgf1GwoG1Nd1/+90IL
+	 jjm/RyMUPqCu16BmISX3EhjgjenycjGW/GDYHcT5QgZNp1NsM9EdrgXr0g/A83GYfU
+	 RRiw/Zd9pcMFUHzqw1FANB40mwwx1Idy0z3nj92yOwLuk00Z7LVWbOhwsNThxIWcC/
+	 nBhjOIMuzDcyrWLoR9kpBxEYPQ/SxQ/UF90lW2bDwyo7X3DIIK8mAa322J8yG0jeOi
+	 u5XSwDc8xTGX4+0Uog4gh6nUT0JQtXAJmQKqtCXGjNWzGCfZqfE+8X5fNfsdXbxKRl
+	 qRlnNuyOL/Ywg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BB8ED0EE25;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52021D0EE1C;
 	Tue, 25 Nov 2025 20:29:40 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 25 Nov 2025 21:29:37 +0100
-Subject: [PATCH v4 2/8] dt-bindings: panel: sw43408: adjust to reflect the
- DDIC and panel used
+Date: Tue, 25 Nov 2025 21:29:39 +0100
+Subject: [PATCH v4 4/8] drm/panel: sw43408: Add enable/disable and reset
+ functions
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251125-pixel-3-v4-2-3b706f8dcc96@ixit.cz>
+Message-Id: <20251125-pixel-3-v4-4-3b706f8dcc96@ixit.cz>
 References: <20251125-pixel-3-v4-0-3b706f8dcc96@ixit.cz>
 In-Reply-To: <20251125-pixel-3-v4-0-3b706f8dcc96@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -61,21 +61,21 @@ Cc: phodina@protonmail.com, linux-arm-msm@vger.kernel.org,
  phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1875; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4880; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=NUtDhdxgm27JmLpy0LMIV+8SFYDHd5eqrKtd8gdhaI0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpJhGxa2kozTUZUMHAbh33k98FWegntz/YxT2q8
- RDgtZMm88WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaSYRsQAKCRBgAj/E00kg
- cql0EACzbJ7MRU5M/6U505fHRfvpRGxyfS9ImojQvXzjptKh6eHWy8N6ojZ50qxeoUMEE+XK6TE
- FEQYLma4Rj0pmaIJmwuI/J9+LuJ+wROdCMyG4f1GK2PZJwivSO5n+YdJX0XEbh9pm/NrAQ4xtIt
- YZNW5SIOGwG3jsw8Wo6jMPdHzmDv0qqtuku91wtwPAPSRtBgZK6tANumSRPKsVG7BJ8IMyYPP62
- m+Lc2DskktcooHk6y8gTAJs00BLLziJWCSw+RnLx2dj892Nor1S4I9+qoUKV5iKl4YCVMTLwqry
- awR9Ch1fIIZo54cIq2PhsDIYsY6cUzpVocf6rA/RZ4LYRuyAVJncxE0BEP9xW6mMqVk3V9UArfx
- 8qZBgQwKRNLOzOMEtHE3n0X0eWuKEkSVXdG0PaC8fBa3mDLc0umYtIlLxcKktVp0kCiHofBX6hl
- F/9J+POci51fxUaSCtmVroAIITkzzuFBDMY+2mpavahYndEoIQPe13/uj/SJoHM//M8b52X6RJE
- +wRmELkKGZrHujsaBJxe32+ado4rW8qA7tOwtjIek+pm6ib5sTnlcRZAp7cDyHREUnx2Bi49VkI
- LQRG/cIetrMjrSXVRURsISnMTnL0LauA8GWAJorF4saXLUFEumaOJDKK7yfDYHJPZAqc0yYAYYd
- 41r+0fSUKOs+x0w==
+ bh=YlQ6X/JDXJqBsYiKSkEnQvOJfhJFKMivKfC8vTnULQ4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpJhGy7DpqdrMysErdAcvvgd0lkis1gq+UapPrI
+ BaqwQAfYAGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaSYRsgAKCRBgAj/E00kg
+ ctBbD/9yRQdZ8Nz7y3zldNwFNDBW7OC7sNFuYXYFHHOxT5XquF865DZ/8PDYBKwypgmTew8rAA3
+ ZPjHLPQ6TDkyqhFBnAJQ1EJzoDQbdtRJSkAdWNHOJ9uudICo1KNxIx/zyuseAZ5xQz4p9Hm8Z5R
+ 4Qrx63j/MBaWcxQpyTrVtOZLzPbRc+2uN+Wmxzw5YgZxCLMXrP72amq0oVx31sEjnkfqnc/juZD
+ HAMLT1Lnn22euetdFoRmDKBKcPjNyAgxqX7UDWFRbsSK7+m5Qgr07RtPmvku8De0hAEZeqib7wr
+ xNonwZt1lhkR7Ma3tiwt/pa4ymedcT/DqJEtn0yJ0aTMM9+Vvczwinnwle5oeEyxyJfUf9R6uBX
+ yRhGCOibyeNFo2C1x9ZSWULy9yE+sNZ+Axep68GfJS5J+sG1jn/5yVNoNTidVJ6NJsyYsdzOwsH
+ pvkrNtowrELO8DO6a28+JXlyk0JWy7Swu+j6yHH1S3JR+8SUxxPinZxUR5A1DAEFVZbJ+qle8Wr
+ S10lSRQ2811t2kpitYLhkIJN2m0QGlYDabgTHXsm9weENFLzJCfFSBdouZDrbgKiwTamL3UymFW
+ JZLC5C0kts+aT7paA3YFm8zUL7tUkdv2qdY0la109s6wyEwOUfVaMliuT6l3MZSDmTw8B+OQU1U
+ irvUVE0qKjARYbg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -84,58 +84,160 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Add compatible for used LG panel.
-SW43408 is not panel, but DDIC. The panel itself is the
-LG LH546WF1-ED01, so introduce combined compatible for it.
+Introduce enable(), disable() and reset() functions.
+
+The enable() and disable() callbacks keep the symmetry in the commands
+sent to the panel and also make a clearer distinction between panel
+initialization and configuration.
+
+Splitting reset() from prepare() follows clean coding practices and lets
+us potentially make reset optional in the future for flicker-less
+takeover from a bootloader or framebuffer driver where the panel is
+already configured.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../devicetree/bindings/display/panel/lg,sw43408.yaml       | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-lg-sw43408.c | 83 ++++++++++++++++++++------------
+ 1 file changed, 53 insertions(+), 30 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml b/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
-index 2219d3d4ac43b..f641efaeb8b36 100644
---- a/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
-@@ -4,14 +4,16 @@
- $id: http://devicetree.org/schemas/display/panel/lg,sw43408.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+index dcca7873acf8e..20217877e107f 100644
+--- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
++++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+@@ -38,11 +38,10 @@ static inline struct sw43408_panel *to_panel_info(struct drm_panel *panel)
+ 	return container_of(panel, struct sw43408_panel, base);
+ }
  
--title: LG SW43408 1080x2160 DSI panel
-+title: LG SW43408 AMOLED DDIC
+-static int sw43408_unprepare(struct drm_panel *panel)
++static int sw43408_disable(struct drm_panel *panel)
+ {
+ 	struct sw43408_panel *sw43408 = to_panel_info(panel);
+ 	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
+-	int ret;
  
- maintainers:
-   - Casey Connolly <casey.connolly@linaro.org>
+ 	mipi_dsi_dcs_set_display_off_multi(&ctx);
  
- description:
--  This panel is used on the Pixel 3, it is a 60hz OLED panel which
--  required DSC (Display Stream Compression) and has rounded corners.
-+  The SW43408 is display driver IC with connected panel.
+@@ -50,19 +49,55 @@ static int sw43408_unprepare(struct drm_panel *panel)
+ 
+ 	mipi_dsi_msleep(&ctx, 100);
+ 
++	return ctx.accum_err;
++}
 +
-+  LG LH546WF1-ED01 panel is used on the Pixel 3, it is a 60hz OLED panel
-+  which required DSC (Display Stream Compression) and has rounded corners.
++static int sw43408_unprepare(struct drm_panel *panel)
++{
++	struct sw43408_panel *sw43408 = to_panel_info(panel);
++	int ret;
++
+ 	gpiod_set_value(sw43408->reset_gpio, 1);
  
- allOf:
-   - $ref: panel-common.yaml#
-@@ -19,6 +21,9 @@ allOf:
- properties:
-   compatible:
-     items:
-+      - enum:
-+            # LG 5.46 inch, 1080x2160 pixels, 18:9 ratio
-+          - lg,sw43408-lh546wf1-ed01
-       - const: lg,sw43408
+ 	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408->supplies), sw43408->supplies);
  
-   reg:
-@@ -46,7 +51,7 @@ examples:
-         #size-cells = <0>;
+-	return ret ? : ctx.accum_err;
++	return ret;
+ }
  
-         panel@0 {
--            compatible = "lg,sw43408";
-+            compatible = "lg,sw43408-lh546wf1-ed01", "lg,sw43408";
-             reg = <0>;
+-static int sw43408_program(struct drm_panel *panel)
++static int sw43408_enable(struct drm_panel *panel)
+ {
+ 	struct sw43408_panel *sw43408 = to_panel_info(panel);
+ 	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
+ 	struct drm_dsc_picture_parameter_set pps;
  
-             vddi-supply = <&vreg_l14a_1p88>;
++	mipi_dsi_dcs_set_display_on_multi(&ctx);
++
++	mipi_dsi_msleep(&ctx, 50);
++
++	sw43408->link->mode_flags &= ~MIPI_DSI_MODE_LPM;
++
++	drm_dsc_pps_payload_pack(&pps, sw43408->link->dsc);
++
++	mipi_dsi_picture_parameter_set_multi(&ctx, &pps);
++
++	sw43408->link->mode_flags |= MIPI_DSI_MODE_LPM;
++
++	/*
++	 * This panel uses PPS selectors with offset:
++	 * PPS 1 if pps_identifier is 0
++	 * PPS 2 if pps_identifier is 1
++	 */
++	mipi_dsi_compression_mode_ext_multi(&ctx, true,
++					    MIPI_DSI_COMPRESSION_DSC, 1);
++
++	return ctx.accum_err;
++}
++
++static int sw43408_program(struct drm_panel *panel)
++{
++	struct sw43408_panel *sw43408 = to_panel_info(panel);
++	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
++
+ 	mipi_dsi_dcs_write_seq_multi(&ctx, MIPI_DCS_SET_GAMMA_CURVE, 0x02);
+ 
+ 	mipi_dsi_dcs_set_tear_on_multi(&ctx, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+@@ -97,26 +132,19 @@ static int sw43408_program(struct drm_panel *panel)
+ 	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x04, 0x61, 0xdb, 0x04, 0x70, 0xdb);
+ 	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb0, 0xca);
+ 
+-	mipi_dsi_dcs_set_display_on_multi(&ctx);
+-
+-	mipi_dsi_msleep(&ctx, 50);
+-
+-	sw43408->link->mode_flags &= ~MIPI_DSI_MODE_LPM;
+-
+-	drm_dsc_pps_payload_pack(&pps, sw43408->link->dsc);
+-
+-	mipi_dsi_picture_parameter_set_multi(&ctx, &pps);
++	return ctx.accum_err;
++}
+ 
+-	sw43408->link->mode_flags |= MIPI_DSI_MODE_LPM;
++static void sw43408_reset(struct sw43408_panel *ctx)
++{
++	usleep_range(5000, 6000);
+ 
+-	/*
+-	 * This panel uses PPS selectors with offset:
+-	 * PPS 1 if pps_identifier is 0
+-	 * PPS 2 if pps_identifier is 1
+-	 */
+-	mipi_dsi_compression_mode_ext_multi(&ctx, true,
+-					    MIPI_DSI_COMPRESSION_DSC, 1);
+-	return ctx.accum_err;
++	gpiod_set_value(ctx->reset_gpio, 0);
++	usleep_range(9000, 10000);
++	gpiod_set_value(ctx->reset_gpio, 1);
++	usleep_range(1000, 2000);
++	gpiod_set_value(ctx->reset_gpio, 0);
++	usleep_range(9000, 10000);
+ }
+ 
+ static int sw43408_prepare(struct drm_panel *panel)
+@@ -128,14 +156,7 @@ static int sw43408_prepare(struct drm_panel *panel)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	usleep_range(5000, 6000);
+-
+-	gpiod_set_value(ctx->reset_gpio, 0);
+-	usleep_range(9000, 10000);
+-	gpiod_set_value(ctx->reset_gpio, 1);
+-	usleep_range(1000, 2000);
+-	gpiod_set_value(ctx->reset_gpio, 0);
+-	usleep_range(9000, 10000);
++	sw43408_reset(ctx);
+ 
+ 	ret = sw43408_program(panel);
+ 	if (ret)
+@@ -208,6 +229,8 @@ static int sw43408_backlight_init(struct sw43408_panel *ctx)
+ }
+ 
+ static const struct drm_panel_funcs sw43408_funcs = {
++	.disable = sw43408_disable,
++	.enable = sw43408_enable,
+ 	.unprepare = sw43408_unprepare,
+ 	.prepare = sw43408_prepare,
+ 	.get_modes = sw43408_get_modes,
 
 -- 
 2.51.0
