@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9031274FE3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF94827F727;
 	Tue, 25 Nov 2025 03:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764042421; cv=none; b=Jf6cDLY5ckJJ17lcFlZ6PJqdqA8gv5jAi45mNnibAwMrmZnbCeL45m2F+A8YOLb2XaMek3cgYH1ZHU/3guWwJyC13O1pbSVa5BnFfdvOFd4ff54bMhL6ZLJQtLLHU00pcNMj6NMQu6CCcL4eyekg1E8L+p1uZYNu/GoKUptkapM=
+	t=1764042422; cv=none; b=aX4Gb8O3xvNo1B1z3RJ5LzAwtqTlXO7y+7VjslJtPEbIytCxAw6To+7jG22V/3hDqduJ+28If+N1/aBxp2obe4IBmy+fy5anvC84F4QAV9ZbiWxshwr6EbeZUhy4++wiT1jcmblnAMC8zJP5Y9wedKarlxjN6t30IUqPf2OZjlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764042421; c=relaxed/simple;
-	bh=4J3g5j51PBpP7n9+7mbzEOrB/xPKifWDPpyCNDHAijs=;
+	s=arc-20240116; t=1764042422; c=relaxed/simple;
+	bh=5l7nup7DC0Y8dqHhsU6KY6mQSCmRILk4Zjbco+Fq9Jg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GU0iuiLBJL8ODV4Z4rVAsF6Gz0dfKrmnRb5sOLl9ISS9IyvsaSTw3OdYySjqFLcrV9SY51DgdSaaFCtzHkQvCffsJL0eHwn0V6OiY3ghm5eC2V7MBtUX8uMyM4YzuB7R8skR+Gmz89Dz0ju5DJ1Z6wJdFiSYIUkv16e/3mlZBtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgz7ubki; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=T0Ugx6gh+wQkQ4HNurHW/MAMtuIcjwMGFEpVDY+rA1taeGGbb9V5VGWao2hXCS6txio0ry8MIs8UypG2e/zBhHL6tEyneAKAHF2mCH3yg1LgslMPSEWpxi46d0xk24ytICPR4AL6rLRV5e22+T6wMGbqPay4pc17bMogL/13B7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7rQxDp6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgz7ubki"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4B8DDC116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7rQxDp6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6B11AC19425;
 	Tue, 25 Nov 2025 03:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764042421;
-	bh=4J3g5j51PBpP7n9+7mbzEOrB/xPKifWDPpyCNDHAijs=;
+	bh=5l7nup7DC0Y8dqHhsU6KY6mQSCmRILk4Zjbco+Fq9Jg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cgz7ubkiHQB+YPvJjBzXk4y4/EV4gcWAmbVLc9+A7mGlbLiAsHv00zS3SGuF2N9aF
-	 VyqXCQ6D7dw8cIQZaSQ4sG7u0t/E2pWBSYUP+Z8h/+drd8hCqLZ3+45dRJXZLSiuFh
-	 39gpW9CIX1/DW3yOiLAg4Dq8t93re1FqQqsdJ5XPGRSxLxnmqestJ4CyQt/DmxiEYg
-	 IOkTImNfBARJIkn887xFp6rMYtXOabmoRctYC5YcEEIw4BKmhOuAFLTNJF1KSQ51vh
-	 gG6qbhc6zS9xJf/GEr5dcms/AuZFvYUOk7foWfB2Z4IJKAJabJKIocxwHDmV9Z9kUq
-	 JdlA1ROCY5/Gw==
+	b=G7rQxDp6LFp6SImskkZNkYHvZPColq6OuCe6e4ZatPWGKyMNMwN6pTbMa5mc4UrL8
+	 JJfhHqaO99P9+y4crcXyUSo73vOwoOLudUyuqhazf0q7CQS8Jp0n5mVy0t/a3kUdBx
+	 b+5+c8gTQmWLEvQ/6lhxsplLxr53X+4Z39DX5y6BfGw5jXbV72FkR1b28GFXlWpXQO
+	 NvClOrdOYnW1Cn+v0cc4xmFq226HIfN2QLIe9QdTM6JXjHnfToPuQ3iEa01xGGnz5C
+	 LTSEEvim94ktPiCaakYMkpE3ttBexenN8dfJTp0K2d3midMmVyyzsL6E/TE3ooYyvH
+	 ks0APOMsFFlug==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 408A2CFD315;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F4CACFD37A;
 	Tue, 25 Nov 2025 03:47:01 +0000 (UTC)
 From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
-Date: Mon, 24 Nov 2025 19:47:00 -0800
-Subject: [PATCH v5 1/4] arm64: dts: rockchip: Add light/proximity sensor to
+Date: Mon, 24 Nov 2025 19:47:02 -0800
+Subject: [PATCH v5 3/4] arm64: dts: rockchip: Add magnetometer sensor to
  Pinephone Pro
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -40,8 +40,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251124-ppp_light_accel_mag_vol-down-v5-1-f9a10a0a50eb@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251124-ppp_light_accel_mag_vol-down-v5-3-f9a10a0a50eb@gmail.com>
 References: <20251124-ppp_light_accel_mag_vol-down-v5-0-f9a10a0a50eb@gmail.com>
 In-Reply-To: <20251124-ppp_light_accel_mag_vol-down-v5-0-f9a10a0a50eb@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -49,14 +49,14 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
- Ondrej Jirman <megi@xff.cz>, Martijn Braam <martijn@brixit.nl>, 
- =?utf-8?q?Kamil_Trzci=C5=84ski?= <ayufan@ayufan.eu>
+ Ondrej Jirman <megi@xff.cz>, "Leonardo G. Trombetta" <lgtrombetta@gmx.com>, 
+ Pavel Machek <pavel@ucw.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764042420; l=2100;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764042420; l=1356;
  i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
- bh=P3jxHkWmNKoMTa/ZH2mI0b285/Gcq9KBGUYb5ASdyDI=;
- b=ePPb+2twvyymvlXtx7y6tuGBD2TrnI06XJtJAi3RUVXg/E81weVnx5FMV9z0bHTAH20GUuxG9
- lLv17Ls0n5dAqqvlqB7pJBDa+PTWHU6QL7vHzdUvjEfz7SL7brgj+V+
+ bh=6kNPA+rufMDaioiLjzVrw3yC2YKarI4Xs7vCiBTyO0Y=;
+ b=mjYYXO4VbxbQzJyStmB8AZAeOSbBj75gjJppJVbTQOdHHt/2CWOeQhbgrytShK5eHi5ku4QNZ
+ fuP4qIKj7w2AxQqtJKaj3+ht/F8kA6jIf1mEFpB6PerrijUO2jTOo6z
 X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
  pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
 X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
@@ -66,70 +66,48 @@ Reply-To: guptarud@gmail.com
 
 From: Ondrej Jirman <megi@xff.cz>
 
-Pinephone Pro uses STK3311 according to the schematics.
+Pinephone Pro uses AF8133J according to the schematic.
 
-Tests:
-~ $ monitor-sensor --light
-    // When the sensor is exposed, it get's fluctating values such as
-    Light changed: 1.800000 (lux)
-    Light changed: 1.700000 (lux)
-    Light changed: 1.800000 (lux)
-    Light changed: 1.700000 (lux)
-    Light changed: 1.600000 (lux)
-    Light changed: 1.100000 (lux)
-    // When covering the sensor, it prints a low value and stops printing
-    Light changed: 0.200000 (lux)
+The mount-matrix was added by Leonardo on top of Ondrej's work of adding
+the magnetometer. It was verified with Leonardo's compass app:
 
-~ $ monitor-sensor --proximity
-    // When it goes away from an object
-    Proximity value changed: 0
-    // When it comes near an object
-    Proximity value changed: 1
+https://gitlab.com/lgtrombetta/compass
 
-Co-developed-by: Martijn Braam <martijn@brixit.nl>
-Signed-off-by: Martijn Braam <martijn@brixit.nl>
-Co-developed-by: Kamil Trzciński <ayufan@ayufan.eu>
-Signed-off-by: Kamil Trzciński <ayufan@ayufan.eu>
+Co-developed-by: Leonardo G. Trombetta <lgtrombetta@gmx.com>
+Signed-off-by: Leonardo G. Trombetta <lgtrombetta@gmx.com>
 Signed-off-by: Ondrej Jirman <megi@xff.cz>
 Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index 6f97e57f36f5..2d2858ee149e 100644
+index f8c74b43ae9f..03721d71766c 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -520,6 +520,16 @@ touchscreen@14 {
- 		touchscreen-size-x = <720>;
- 		touchscreen-size-y = <1440>;
+@@ -553,6 +553,21 @@ mpu6500@68 {
  	};
-+
-+	light-sensor@48 {
-+		compatible = "sensortek,stk3311";
-+		proximity-near-level = <300>;
-+		reg = <0x48>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <RK_PD3 IRQ_TYPE_EDGE_FALLING>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&light_int_l>;
-+	};
  };
  
- &i2c4 {
-@@ -689,6 +699,12 @@ vcc1v8_codec_en: vcc1v8-codec-en {
- 		};
- 	};
- 
-+	stk3311 {
-+		light_int_l: light-int-l {
-+			rockchip,pins = <4 RK_PD3 RK_FUNC_GPIO &pcfg_input_pull_up>;
-+		};
-+	};
++&i2c4 {
++	af8133j: compass@1c {
++		compatible = "voltafield,af8133j";
++		reg = <0x1c>;
++		reset-gpios = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
++		avdd-supply = <&vcc_3v0>;
++		dvdd-supply = <&vcc_1v8>;
 +
- 	wireless-bluetooth {
- 		bt_wake_pin: bt-wake-pin {
- 			rockchip,pins = <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
++		mount-matrix =
++			"0", "1", "0",
++			"-1", "0", "0",
++			"0", "0", "1";
++	};
++};
++
+ &io_domains {
+ 	bt656-supply = <&vcc1v8_dvp>;
+ 	audio-supply = <&vcca1v8_codec>;
 
 -- 
 2.52.0
