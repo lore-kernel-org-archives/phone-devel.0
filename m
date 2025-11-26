@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95AE2D9481;
-	Wed, 26 Nov 2025 22:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101552F362D;
+	Wed, 26 Nov 2025 23:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764196393; cv=none; b=PUekRIXyLtTnPKftM1qbZzCWlt5bTCz/t4o48wwBFMSUm7JD9VmUnu35OC6fqJILKrGtqx4LRnoc93CLs5y2is1/slIVXcCoX9F5b9pN6GnEUR67/3mlp0iGJp4qgvg4O2IL5TG0b6ZGXd5Fn1d2AnTwc2wgYW9tUI2hRdVSYNQ=
+	t=1764198624; cv=none; b=Hrxz1Xp9W3OCZMoXpwx0XL9DDsCElBzncCu69pFr5xpb3/7wCUKQ4gSlhG3tRL0T1dzUzFcCKNlPXf5qk7Dj1+24Gi5bKur5+3AYnMDU4isvCmSYIOfWAhUbpdYdxCGwdYm2/3thXxum7IaDKxChcMRrC/UWMPLhIk1Q73B0fCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764196393; c=relaxed/simple;
-	bh=5jYpPwv39ANEIe2sDLqiq5t/hf+CQpGo3B6zSITWUfc=;
+	s=arc-20240116; t=1764198624; c=relaxed/simple;
+	bh=5MWoLLwmgBn7F0grOP4JczgGeM+YNcb7bwTzftPtVks=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZPr+5i08C6XbisuOCXPVR7eN/ZCgLHkUztzXqhQeYGkqm8b6czOMuYlGsmzQK7m0iSkt7cR/CPa8kaFOVBZh7hs3Cjth8elOGlTZpI7ZgXrwl2qVONce2M48RxvZt/y2qAkY/wMXT64P7eGyXyc+5oMFcGauwKuFH8XId8fgRlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=coLOGpXu; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=Kjk6PL+6dU1G1qq2BcbOEqYc42qb/AszneAbdlZelFjRE9obHMXw7jMqnuWcGYn+KAJxo8dPK0ulqjF1ykhDwM9/z2P4rbuso4vbkNyJw7EIh9WkekAdncAoXDcvebp6P1b3JPFC2c8WpmVklY+67nS1F9oAAoGIs0DH2RpHoeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=tDHvVjlk; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="coLOGpXu"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="tDHvVjlk"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 73B195341212;
-	Wed, 26 Nov 2025 23:33:07 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 57F865340144;
+	Thu, 27 Nov 2025 00:10:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1764196387;
+	t=1764198614;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mDzAY5BQNTDP+ZymhsBaphBdvEkLLREriCn5MDuFOK4=;
-	b=coLOGpXuIFgIQyK824bTAuEq7YC6YLNMupKzK46/B5lSv8hlx0SG3v8vz5gKe3a4vGhDpQ
-	29W0N54doDNwfk6MHd8qmvRU9RU7thek7Na6t9qENDRiWcFHPrDEB7Q9MpiAVsMlqq7qdU
-	K3WWWvT7Uu5BasAHin6jV05kTMbin/U=
-Message-ID: <a243e024-c7df-4a3d-a855-4738a4970de2@ixit.cz>
-Date: Wed, 26 Nov 2025 23:33:07 +0100
+	bh=NPueFMP8zr9ixlLxuRFFtrM4qKgsXQNTW6I5E7fZYTk=;
+	b=tDHvVjlkoK/0Syp2CpMFQaIpJsH6m/6ARly12dyRYOO4ZqyLgWSiSaHrGSsuT8XNLaTvQx
+	s5bQwWwSdNgUFDs87aCmVEdNJb9D0m7o/Q7saD4fnCSm/zhj6hNzhLFSISNs1Bs/gMIP0A
+	Q1SERYTjnu5z/F/Jz2qeNOxDRU8yxYg=
+Message-ID: <3e808b6a-9dba-4b48-bc39-c0a8aa674d24@ixit.cz>
+Date: Thu, 27 Nov 2025 00:10:14 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,17 +43,19 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH QUESTION] arm64: configs: Add Snapdragon 845 config
  fragment
-To: Casey Connolly <casey.connolly@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Casey Connolly
+ <casey.connolly@linaro.org>, Casey Connolly <casey@connolly.tech>,
  Joel Selvaraj <foss@joelselvaraj.com>,
  Alexander Martinz <amartinz@shiftphones.com>,
  Dzmitry Sankouski <dsankouski@gmail.com>,
- =?UTF-8?Q?Pablo_Correa_G=C3=B3mez?= <ablocorrea@hotmail.com>
-Cc: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ =?UTF-8?Q?Pablo_Correa_G=C3=B3mez?= <ablocorrea@hotmail.com>,
+ =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
+ phone-devel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 References: <20251126-sdm845-config-question-v1-1-ffa91ed53095@ixit.cz>
- <9c3f64b4-adb3-450c-b1e6-d6731b723215@linaro.org>
+ <aSdCryMAOb7Qk-qq@arm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -99,42 +101,13 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <9c3f64b4-adb3-450c-b1e6-d6731b723215@linaro.org>
+In-Reply-To: <aSdCryMAOb7Qk-qq@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 26/11/2025 20:03, Casey Connolly wrote:
-> Hi David,
-> 
-> On 26/11/2025 17:19, David Heidelberg via B4 Relay wrote:
+On 26/11/2025 19:10, Catalin Marinas wrote:
+> On Wed, Nov 26, 2025 at 05:19:20PM +0100, David Heidelberg via B4 Relay wrote:
 >> From: Casey Connolly <casey.connolly@linaro.org>
-> 
-> It's not the first time you're sending patches with my authorship and
-> SoB upstream without even a heads up... fixes and minor feature
-> additions I can understand (particularly if you're doing the work to
-> polish them off and get them accepted), but frankly I think it's little
-> unprofessional to post a very clearly "never-intended-for-upstream"
-> patch verbatim to the list, particularly when it has someone elses name
-> on it.
-
-I wanted to use the patch as starting point for the discussion, not a 
-patch to get things upstreamed right away.
-
-I respect the original authorship. I wouldn't feel comfortable send code 
-someone else wrote with my name.
-Other remaining option here would be never send it, but I think people 
-could benefit from the config fragment.
-
-Here, I wanted to have a discussion (thus it's marked as [QUESTION]) 
-what is the best way how to address this fragment, while not end up 
-being separated from the mainline development.
-
-I and many others see a value to keep this file upstream and care about 
-the file there, as that would ease changes done to upstream defconfig to 
-be reflected onto sdm845 fragment, when bigger changes are introduced to 
-the Linux kernel.
-
-> 
 >>
 >> This fragment provides reasonable default for the mobile devices
 >> based on Snapdragon 845 architecture. While default config could be
@@ -146,13 +119,6 @@ the Linux kernel.
 >> It is designed to be fairly minimal and specific to the
 >> supported SDM845 devices whilst offering all the features you would
 >> expect.
-> 
-> I wrote this like 4+ years ago and it's even more wrong now than it was
-> then (not least because I eventually found the UART XD).
-
-Yeah, but since then people continue activelycontribute to it, so 
-generally it's pretty up-to-date =)
-
 >>
 >> It disables other arm64 architectures to speed up build times and
 >> decrease the size of the kernel image.
@@ -162,72 +128,45 @@ generally it's pretty up-to-date =)
 >> [David]
 >>   - Dropped distribution specific options.
 >>   - Added entry into the MAINTAINERS file.
->>
->> Signed-off-by: Casey Connolly <casey@connolly.tech>
->> Co-developed-by: Joel Selvaraj <foss@joelselvaraj.com>
->> Signed-off-by: Joel Selvaraj <foss@joelselvaraj.com>
->> Co-developed-by: Alexander Martinz <amartinz@shiftphones.com>
->> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
->> Co-developed-by: Dzmitry Sankouski <dsankouski@gmail.com>
->> Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
->> Co-developed-by: Pablo Correa Gómez <ablocorrea@hotmail.com>
->> Signed-off-by: Pablo Correa Gómez <ablocorrea@hotmail.com>
->> Co-developed-by: David Heidelberg <david@ixit.cz>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->> This patch is a question, if it would be viable to introduce this
->> configuration fragment as part of mainline kernel, so keeping it in sync
->> with recent kernel updates would be more straighforward.
->>
->> When this file is kept by distributions, it cannot be reused on latest
->> releases and for building latest kernels, as the options gets
->> desynchronized.>
->> I offer to maintain this file within the mainline kernel, and I believe
->> most likely some of the co-authors of the file will likely step up to
->> keep it up-to-date, so people who want to contribute can avoid fighting
+> [...]
+>>   MAINTAINERS                      |    5 +
+>>   arch/arm64/configs/sdm845.config | 1048 ++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 1053 insertions(+)
 > 
-> The same co-authors who knew you were going to post this??
-
-I assume people who made it may want this to become useful for others. 
-If not, I said I offer maintaining it.
-
+> I really don't think the kernel should carry configs other than the
+> generic ones used by developers. We had this on arm32 but mostly because
+> we didn't have a single kernel image for a long time (and when we got
+> it, it was mostly for v7 cores). I don't want to get back to hosting a
+> multitude of configs in mainline.
 > 
->> with old configuration file downloaded from downstream project and can
->> focus on fixing actual bugs.
->>
->> In case this fragment gets unmaintained status in the future, there
->> shouldn't be any issues to just remove it from the kernel.
->>
->> What do you think?
-> 
-> I don't think it makes sense to put a platform+distro-specific (read:
-> opinionated) config fragment into the kernel, any distro trying to use
-> this would likely always find themselves carrying patches (sending a
-> patch to enable a driver or whatever just doesn't scale very well),
-> nevermind if multiple distros with different requirements tried to use it.
 
-I tried to shave the distro specific bits to keep only the HW relevant 
-changes. I think each distro can apply the specific bits themselves and 
-keep here the sdm845 generics.
+On the arm32 it was custom defconfigs.
+Here we use default defconfig with the sdm845 fragment to accommodate 
+mobile devices (e.g. `make defconfig sdm845.config`).
 
-I would like to reduce the fragmentation and leverage good review 
-process of the mainline kernel.
+So far, I would say phones based on sdm845 are one of the most popular 
+for daily-driving, thus I think giving it extra care until the drivers 
+gets rock solid to work with default defconfig would make sense.
 
-Distributions should really apply only their custom changes, not some 
-version of sdm845.config fragment based on very different 
-sdm845-mainline versions (multiple currently) or sdm845-next version.
+We could have sdm845 config in a separate git tree and developers would 
+contribute to it, but why not have it inside the mainline itself?
+We have the SoC, drivers, most of stuff  needed to get the phones 
+running, why keep the latest piece of puzzle out of kernel?
 
-How can we version the sdm845.config, while keeping configs from:
-1. generic stable releases
-2. generic development / -next versions
-3. distributions optimized configs
+One of the best outcomes in long-term would be get rid of it, but we're 
+not there yet.
 
-IMHO would be nice to have one source of truth, at least for base option 
-related to one upstream kernel version which makes the hardware works.
+Example: In -next tree for sdm845, I recently had to enable 
+`REGULATOR_QCOM_REFGEN=y`, but that means I need to communicate with 
+everyone else trying to use sdm845.config that they need to enable it 
+with 6.19 or their -next tree experiments.
+If it was in mainline, people carrying custom changes on top of sdm845 
+fragment or combining it with distribution fragment would get it 
+together with 6.19 prior without effort with clear commit why this 
+option was enabled instead of fixing/squashing commits.
 
-With upstreaming the fragment, we can use mainline and `Fixes / Cc: 
-stable` tags to mark what should belong where without confusion.
+Do you think the fragment could cause some issues for people working on 
+things outside sdm845 phones area? Or the concert was more about 
+possible precedent?
 
 David
-
-[...]
