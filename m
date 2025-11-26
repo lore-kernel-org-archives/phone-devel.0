@@ -1,77 +1,82 @@
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87A6296BD6
-	for <phone-devel@vger.kernel.org>; Wed, 26 Nov 2025 16:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF7F30B51A;
+	Wed, 26 Nov 2025 18:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764174933; cv=none; b=dYUmF8Xnqgn2XJcuPExXF/nPdhZ2i4g49nhKK2Doai8NzOhQhxlroxkP6ZbLQw4UGj+yUrMz1fl3JFG+1pPGGWX7LghZndoZrbX5Ba8cmRsvrvOyhWy0Lv8MAAl0VoedPYL3PT+mDu/3YyEpMFSSqnIBVd9W9UXRflTYGYEf3yM=
+	t=1764180663; cv=none; b=MxrsQk2enLccjITP1ObAcMuwiVRDl78yp4LfvQgNSmXQeL83jMIbXmSYhXE3h9kLKhA2OnmebYNnyoshz+Hgi8DZBYjeU95ujCIiZDOwepSnA2i09BKHcINtCAc6ZDhqYiuS5C1wN7TuAKB5Ln3OKCXJ4GldUc/CEBsTEa172Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764174933; c=relaxed/simple;
-	bh=SPv2rlv4694kWserr515m5X22R0OFJNAUVWfTpVF1IM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AZVwbFd4Dy+xwHmQduJIooHAUA6L6VVJAJSSARzZFWWc3hAeByKHQZu88nvdDBeXg5sp8DvQ3R8pvdOXW1gdjRHcPQ4zZ0890XoEuXKi1zXBlb7GKVILABrJuKPNXRs8xSe6YDhKKXZoZRpn15D/twd0gVH/MAqBOAmlOq2+IrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=joelselvaraj.com; spf=pass smtp.mailfrom=joelselvaraj.com; dkim=pass (2048-bit key) header.d=joelselvaraj.com header.i=@joelselvaraj.com header.b=U9SIJXdA; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=joelselvaraj.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=joelselvaraj.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=joelselvaraj.com header.i=@joelselvaraj.com header.b="U9SIJXdA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=joelselvaraj.com;
-	s=protonmail3; t=1764174916; x=1764434116;
-	bh=SPv2rlv4694kWserr515m5X22R0OFJNAUVWfTpVF1IM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=U9SIJXdAd0u0p+XalHk4dLT9rQeuQmwG6ft+2t7aYNadeUweccPZlIABqKwLwevsK
-	 GViSkTctW++QeskucLKmgAo2AlrFOOVUQdmEqG82XBDv5bIMpb/8a9Kex1PirdihI3
-	 0CQ0IFPG7A2xyMsUx0QngEg74Fq+ZJpCfg6wSCJw/odWe16FTGJVzvQfjzJZvIn7Rv
-	 XplUG6S+vceTU03gHUy+hf56Y2rmVS8x5kVT4pyJkGcOeHO2kQ5V8eQNIgtheRAaYy
-	 Q+NUyS4y3Yw6El+vgCVJFeL/ULf3GE7TdNHWETLKrGufidcg6+9I8jieU5YEoSAzbR
-	 1QUUAcgUdEwkw==
-Date: Wed, 26 Nov 2025 16:35:09 +0000
-To: david@ixit.cz
-From: Joel Selvaraj <foss@joelselvaraj.com>
-Cc: Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>, Casey Connolly <casey@connolly.tech>, Yassine Oudjana <y.oudjana@protonmail.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Alexander Martinz <amartinz@shiftphones.com>, =?utf-8?Q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, Richard Acayan <mailingradian@gmail.com>, Alexey Minnekhanov <alexeymin@postmarketos.org>, linux-pm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH RFC 2/8] power: supply: Add driver for Qualcomm PMI8998 fuel gauge
-Message-ID: <af0e5a39-a4e7-4deb-b915-97a1d9bea19c@joelselvaraj.com>
-In-Reply-To: <jddpwqo4f4irukwc725b3c5dmsitjgupcvupvbe7fom7vx2p6r@ilfmls4fzrn7>
-References: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz> <20251124-pmi8998_fuel_gauge-v1-2-dd3791f61478@ixit.cz> <jddpwqo4f4irukwc725b3c5dmsitjgupcvupvbe7fom7vx2p6r@ilfmls4fzrn7>
-Feedback-ID: 113812696:user:proton
-X-Pm-Message-ID: 7af9eea5297f155a20bcc6f692fed3c7ab674861
+	s=arc-20240116; t=1764180663; c=relaxed/simple;
+	bh=icStHp6jzP9XcTYzSQTkyIf3tCmEj269ihIOEprRDKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hlt6BAJRloZEWCIaYsXGpyksd3iZOFVGR4CL1JEJLjOt5YB88Mbct2dBG2yON7B7amkYuLa58IpUOAwZQ3cerI9TzymofMYolUYcWaMWcag3BFOlwDjr7seQ0w+U+75dJBG+CeqCt+5enKYN3TBWSEUGxRRmVLW2/BodwrexhoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3E25168F;
+	Wed, 26 Nov 2025 10:10:52 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 569CC3F73B;
+	Wed, 26 Nov 2025 10:10:58 -0800 (PST)
+Date: Wed, 26 Nov 2025 18:10:55 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: David Heidelberg <david@ixit.cz>, Will Deacon <will@kernel.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Casey Connolly <casey@connolly.tech>,
+	Joel Selvaraj <foss@joelselvaraj.com>,
+	Alexander Martinz <amartinz@shiftphones.com>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Pablo Correa =?iso-8859-1?Q?G=F3mez?= <ablocorrea@hotmail.com>,
+	Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH QUESTION] arm64: configs: Add Snapdragon 845 config
+ fragment
+Message-ID: <aSdCryMAOb7Qk-qq@arm.com>
+References: <20251126-sdm845-config-question-v1-1-ffa91ed53095@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126-sdm845-config-question-v1-1-ffa91ed53095@ixit.cz>
 
-Hi David,
+On Wed, Nov 26, 2025 at 05:19:20PM +0100, David Heidelberg via B4 Relay wrote:
+> From: Casey Connolly <casey.connolly@linaro.org>
+> 
+> This fragment provides reasonable default for the mobile devices
+> based on Snapdragon 845 architecture. While default config could be
+> used, the reality is it brings many issues to the development workflows,
+> which are much harder to address than on generic boards or devices with
+> available UART console.
+> 
+> This config fragment produces the .config used by distributions.
+> It is designed to be fairly minimal and specific to the
+> supported SDM845 devices whilst offering all the features you would
+> expect.
+> 
+> It disables other arm64 architectures to speed up build times and
+> decrease the size of the kernel image.
+> 
+> To generate a .config use "make defconfig sdm845.config"
+> 
+> [David]
+>  - Dropped distribution specific options.
+>  - Added entry into the MAINTAINERS file.
+[...]
+>  MAINTAINERS                      |    5 +
+>  arch/arm64/configs/sdm845.config | 1048 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 1053 insertions(+)
 
-On 11/25/25 5:13 PM, Dmitry Baryshkov wrote:
-> On Mon, Nov 24, 2025 at 10:53:35PM +0100, David Heidelberg via B4 Relay w=
-rote:
->> From: Joel Selvaraj <foss@joelselvaraj.com>
->>
->> Ths driver supports the fuel gauge hardware available on PMICs known as
->> 3rd generation fuel gauge hardware available on PMI8998.
->>
->> Co-developed-by: Casey Connolly <casey@connolly.tech>
->> Co-developed-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlin=
-ing.org>
->> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlinin=
-g.org>
->> Co-developed-by: Yassine Oudjana <y.oudjana@protonmail.com>
->> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->=20
-> This can't be applied, there is no author's (Joel Selvaraj) SoB.
+I really don't think the kernel should carry configs other than the
+generic ones used by developers. We had this on arm32 but mostly because
+we didn't have a single kernel image for a long time (and when we got
+it, it was mostly for v7 cores). I don't want to get back to hosting a
+multitude of configs in mainline.
 
-Here is my signed-off-by. You can include them in future revisions.
-
-Signed-off-by: Joel Selvaraj <foss@joelselvaraj.com>
-
-Regards,
-Joel
-
+-- 
+Catalin
