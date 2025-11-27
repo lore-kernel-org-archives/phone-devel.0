@@ -1,39 +1,87 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101552F362D;
-	Wed, 26 Nov 2025 23:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D46932B987
+	for <phone-devel@vger.kernel.org>; Thu, 27 Nov 2025 10:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764198624; cv=none; b=Hrxz1Xp9W3OCZMoXpwx0XL9DDsCElBzncCu69pFr5xpb3/7wCUKQ4gSlhG3tRL0T1dzUzFcCKNlPXf5qk7Dj1+24Gi5bKur5+3AYnMDU4isvCmSYIOfWAhUbpdYdxCGwdYm2/3thXxum7IaDKxChcMRrC/UWMPLhIk1Q73B0fCM=
+	t=1764239558; cv=none; b=IFHErL2oYgymVlazuXR/gIu61Sx7geCbOlOX0TqldOaO3AXj6Lwk2q+Kg4po5YPvcXLxGEFSb9htCCDEoBQBywG2w1HvCXiH5Nrqdocj+FpySXUqrQcB+QGsPTSBEGTIz1TpbgqF05heeJGaxJaFy7tltASOy6aOOZPkl2x2BZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764198624; c=relaxed/simple;
-	bh=5MWoLLwmgBn7F0grOP4JczgGeM+YNcb7bwTzftPtVks=;
+	s=arc-20240116; t=1764239558; c=relaxed/simple;
+	bh=2CjRwBB9Yb5dLLTv5IaiNjJgQduCZZvkph0bLa59hH4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kjk6PL+6dU1G1qq2BcbOEqYc42qb/AszneAbdlZelFjRE9obHMXw7jMqnuWcGYn+KAJxo8dPK0ulqjF1ykhDwM9/z2P4rbuso4vbkNyJw7EIh9WkekAdncAoXDcvebp6P1b3JPFC2c8WpmVklY+67nS1F9oAAoGIs0DH2RpHoeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=tDHvVjlk; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=PauNYOPMec2hTXiWW7NqJM4P2Ma0HF/x5sBA7dEX2MGNTLk9Ys3CZTswEDdYw+V6H6ptbY4TwoB/ZKVlmEFOgEH4FrReN++qkFvIulrVkASw6jAqLouEDeyjI+H0+u3HAQYeeFhI2hoT0Bue7C7fSW5cRQlcnrI9Dijp3aYZq3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kF19TsBS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bRItMzpK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="tDHvVjlk"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 57F865340144;
-	Thu, 27 Nov 2025 00:10:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1764198614;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NPueFMP8zr9ixlLxuRFFtrM4qKgsXQNTW6I5E7fZYTk=;
-	b=tDHvVjlkoK/0Syp2CpMFQaIpJsH6m/6ARly12dyRYOO4ZqyLgWSiSaHrGSsuT8XNLaTvQx
-	s5bQwWwSdNgUFDs87aCmVEdNJb9D0m7o/Q7saD4fnCSm/zhj6hNzhLFSISNs1Bs/gMIP0A
-	Q1SERYTjnu5z/F/Jz2qeNOxDRU8yxYg=
-Message-ID: <3e808b6a-9dba-4b48-bc39-c0a8aa674d24@ixit.cz>
-Date: Thu, 27 Nov 2025 00:10:14 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kF19TsBS";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bRItMzpK"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AR9ULuI685782
+	for <phone-devel@vger.kernel.org>; Thu, 27 Nov 2025 10:32:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6xBzaMOhRUmv+QMOjmwVE14dkxJT4RBhHpsCsNUiky8=; b=kF19TsBSTllKIdK1
+	QvAdDam4lYKmnwttabaT8sIZu+d7ptgDSq8nhU8HlLOY7fPtwzfeTstPXFsr/en/
+	qzARb86jgR+MczUhNi10cFegBtG7Pu1iiSIfijv5rT33Gt0EqBwzHu8Vn3Jx6w1g
+	SeQ6yhLe/v4KaQEx5m5j6H/4+kE7bzKJXl5SUk7UlAvbePFKqCgi6fihQKHdKVnI
+	TOUjM1U2hppAJbUmYVQLjdNqldBDhb++3KVlFN55iYXEs8rmiJF9jE8qXqLmtYJ2
+	33nuZMzdYeUdWkd/4Cfs8zg4APNpn0RnT0+0YtNfK8+4AZ3wXq+UDMzCr5j+9qfr
+	b8ihgw==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4apm2rr65x-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 27 Nov 2025 10:32:35 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-88290612758so1508836d6.2
+        for <phone-devel@vger.kernel.org>; Thu, 27 Nov 2025 02:32:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764239554; x=1764844354; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6xBzaMOhRUmv+QMOjmwVE14dkxJT4RBhHpsCsNUiky8=;
+        b=bRItMzpKDh2RDw+ZLW8UYYnJiGqhjQDiPraZPGKDqXSt1fJmlcZmRUwqmHJ3PuZdsR
+         4/PDAeR4cpaSDb4Ls/i0nEANPes3lVUyrk4pOa3yTRtMwU9UNUOdb8iJFg3nlsE5Qntn
+         PHHN2OfXFoNpmjfflq18nwFu64qtNXv8Jr7GZ4xP8wS977HNeGYCjUf1a3q1cazIEg52
+         DwuPlolG6JTMzXg3ligPE8v0S5R2nLQ5agyEIqRKBxDC/4syCGqXlI6O2wNT49jnx7Ys
+         5mbHL6J1gFFy/1ZCTFcjEHWhILl+xT9H5AzepDHG+6glyYFmtV7AACYkYoDumIxaaA++
+         VYMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764239554; x=1764844354;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6xBzaMOhRUmv+QMOjmwVE14dkxJT4RBhHpsCsNUiky8=;
+        b=OiAJNqxyrl1IKNsId98mbepv3jVP4Cg7lM0kHytOO4jv2DVuqu1aMMmPtdBnHatUD6
+         nckDK3APDSv2OQ3L3O/5YBkYRGjGKucxs5CAopxYnTq2k/zWl7aictRFF+4kgzLKwswV
+         6hG6NkJ1x20LV8JQDDxrZcpx1pI6JXD6p+/4g2uLHAxym5N72n0yvyhA10NnDoGXRlC1
+         NopHDEbkCVg15PL+W63/P1EFm5fupPrYFnyhaKRQrLBfXn0P8KLL8IINkJvCP2nHeK5Z
+         6a+qsnTevXCVSJIU54YMCbkLtQ2j7tbmG0KOgGxxG/H9gsf0LUTWdzFbR2ae2MbmxZxg
+         sCqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUk5nFUqMIECcLh+/ApJFl/JB3MnfsIvVr/EP5VpqChc73YOdqDfWf/i5r369JQvaSx2Lu90S/uV8IB2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLAy9bU1asDmYrh/2kL+m5AimvolvJgWoN7+3tAHoN5GrJJVtR
+	EbysuMW2h5k8FCMhsHfOvyCorghEaRYY6wSVKh8X9ldWee0etjy4pxwFB9d/9jiz+dXkvtu6PxN
+	7y5+oZbM1PAlcsUs9rM+8kO9JsFnACCs+zU7MzkEoOk87GAQqO25xYLNW0NimrWLcIg==
+X-Gm-Gg: ASbGncvDLVklNDeBadPm47AI3r+MSShQTAhH09LSgceTjJYt9+nz20wbHQqfmFZ88im
+	QvHH7rX3TsO0pZHdxxscWhWmDnTyT3yYR8nWz7Sa0or8vytPdXqLhxCK4rzwwoWbFXSWqkLq/n4
+	HFzqFb/pmAIoewyW1meyGP0+osTUrQ8AT8n/vDe93LTWYUyLpECGuBGQ7p/wpov2Akpr5yBhPoW
+	bUpIDBSE9v8WFGw0D6a90Mgck6nR9Bei16lPwtxbZSawr8iaRhfAa9Tqa326in2fJCaDGhS5LEI
+	FeWWBTyqVo/U6qnOkf3A2UdNnM8fHWajMxnD1xNoRyLFxwn6B3ArrH9aQ3qtElHoEhnQOgE1Vzv
+	s77JNYTzlgZiGawkHwvC5YImv/XhYt2VLPMBGPm9IF42yNzhA7rQZneLvPvMHbFndf5Y=
+X-Received: by 2002:ac8:5d14:0:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4ee5b5eeeb3mr235846651cf.4.1764239554358;
+        Thu, 27 Nov 2025 02:32:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHvuanT/+hsUReTNJmLheq6TefU/W/FUzZJ2Xkcj7pCGcJhY8sxHtZhKpW0cam2ypvDgTBDTQ==
+X-Received: by 2002:ac8:5d14:0:b0:4e6:eaff:3a4b with SMTP id d75a77b69052e-4ee5b5eeeb3mr235846561cf.4.1764239553880;
+        Thu, 27 Nov 2025 02:32:33 -0800 (PST)
+Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59aeb45sm124438666b.40.2025.11.27.02.32.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Nov 2025 02:32:33 -0800 (PST)
+Message-ID: <d9822a0a-1256-46a0-9bbe-8b5c68efba4e@oss.qualcomm.com>
+Date: Thu, 27 Nov 2025 11:32:30 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,132 +89,95 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH QUESTION] arm64: configs: Add Snapdragon 845 config
- fragment
-To: Catalin Marinas <catalin.marinas@arm.com>,
- David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Casey Connolly
- <casey.connolly@linaro.org>, Casey Connolly <casey@connolly.tech>,
- Joel Selvaraj <foss@joelselvaraj.com>,
- Alexander Martinz <amartinz@shiftphones.com>,
- Dzmitry Sankouski <dsankouski@gmail.com>,
- =?UTF-8?Q?Pablo_Correa_G=C3=B3mez?= <ablocorrea@hotmail.com>,
- =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-References: <20251126-sdm845-config-question-v1-1-ffa91ed53095@ixit.cz>
- <aSdCryMAOb7Qk-qq@arm.com>
+Subject: Re: [PATCH RFC 1/8] dt-bindings: power: supply: Add schema for
+ Qualcomm pmi8998 fuel gauge
+To: david@ixit.cz, Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Casey Connolly <casey.connolly@linaro.org>,
+        Casey Connolly <casey@connolly.tech>,
+        Joel Selvaraj <foss@joelselvaraj.com>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Alexander Martinz <amartinz@shiftphones.com>,
+        =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Alexey Minnekhanov <alexeymin@postmarketos.org>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz>
+ <20251124-pmi8998_fuel_gauge-v1-1-dd3791f61478@ixit.cz>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <aSdCryMAOb7Qk-qq@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251124-pmi8998_fuel_gauge-v1-1-dd3791f61478@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI3MDA3NyBTYWx0ZWRfX+JgP/N9gRLte
+ F/gEdi1bN6uGOQbr6tMuJCZqJYU7ngYXGEHogiwYe6BUgdXvtl4j+jkY8XoVCOHf/lYis71id/K
+ eStwKz0YQzsKXyHSUto81+CeDxyPfotaprxjXbznqrA6YrL0/YbjOqbcS06jT5/VjZ1fqd3uGrS
+ DENHWN2jd8ruvwJUA/b9U6DwfDRzrD9R9mNg+eGOqP6WFOT6kJIA16J+4rscEiSDK4tLO6x0xEU
+ DhRmmhuEiMTrWVOY2tnHL3NBfdzsTKJ+tJGJdIlV+/6Yc4LNe5vaRWLKkXTlt6nGqI8omIWARDR
+ 6HLSMuX82+RjXYOMqEI1T+WavojmuZC1EJTFOPMm/5JdxTAGXhgbZX0CbVFDNLAl6+jA7FkE8G9
+ H+dVl5KxeGuelcRVZS+BY7upBLFYFQ==
+X-Proofpoint-ORIG-GUID: FEv9IkL_JK0wvnODOaKsfVH2J0pplfgf
+X-Authority-Analysis: v=2.4 cv=W941lBWk c=1 sm=1 tr=0 ts=692828c3 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=sfOm8-O8AAAA:8 a=OuZLqq7tAAAA:8
+ a=RJeynrtfwxJuRQOpeUsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=iYH6xdkBrDN1Jqds4HTS:22 a=TvTJqdcANYtsRzA46cdi:22 a=AKGiAy9iJ-JzxKVHQNES:22
+X-Proofpoint-GUID: FEv9IkL_JK0wvnODOaKsfVH2J0pplfgf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511270077
 
-On 26/11/2025 19:10, Catalin Marinas wrote:
-> On Wed, Nov 26, 2025 at 05:19:20PM +0100, David Heidelberg via B4 Relay wrote:
->> From: Casey Connolly <casey.connolly@linaro.org>
->>
->> This fragment provides reasonable default for the mobile devices
->> based on Snapdragon 845 architecture. While default config could be
->> used, the reality is it brings many issues to the development workflows,
->> which are much harder to address than on generic boards or devices with
->> available UART console.
->>
->> This config fragment produces the .config used by distributions.
->> It is designed to be fairly minimal and specific to the
->> supported SDM845 devices whilst offering all the features you would
->> expect.
->>
->> It disables other arm64 architectures to speed up build times and
->> decrease the size of the kernel image.
->>
->> To generate a .config use "make defconfig sdm845.config"
->>
->> [David]
->>   - Dropped distribution specific options.
->>   - Added entry into the MAINTAINERS file.
-> [...]
->>   MAINTAINERS                      |    5 +
->>   arch/arm64/configs/sdm845.config | 1048 ++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 1053 insertions(+)
+On 11/24/25 10:53 PM, David Heidelberg via B4 Relay wrote:
+> From: Yassine Oudjana <y.oudjana@protonmail.com>
 > 
-> I really don't think the kernel should carry configs other than the
-> generic ones used by developers. We had this on arm32 but mostly because
-> we didn't have a single kernel image for a long time (and when we got
-> it, it was mostly for v7 cores). I don't want to get back to hosting a
-> multitude of configs in mainline.
+> Add a device-tree schema for Qualcomm PMIC 8998 fuel gauge.
 > 
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> ---
 
-On the arm32 it was custom defconfigs.
-Here we use default defconfig with the sdm845 fragment to accommodate 
-mobile devices (e.g. `make defconfig sdm845.config`).
+[...]
 
-So far, I would say phones based on sdm845 are one of the most popular 
-for daily-driving, thus I think giving it extra care until the drivers 
-gets rock solid to work with default defconfig would make sense.
+> +    pmic {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      fuel-gauge@4000 {
+> +        compatible = "qcom,pmi8998-fg";
+> +        reg = <0x4000>;
+> +
+> +        interrupts = <0x2 0x40 0x4 IRQ_TYPE_EDGE_RISING>;
+> +        interrupt-names = "soc-delta";
 
-We could have sdm845 config in a separate git tree and developers would 
-contribute to it, but why not have it inside the mainline itself?
-We have the SoC, drivers, most of stuff  needed to get the phones 
-running, why keep the latest piece of puzzle out of kernel?
+A (much much older but still) similar in functionality, the PM8916
+BMS block has 6 interrupts.
 
-One of the best outcomes in long-term would be get rid of it, but we're 
-not there yet.
+pmi8998.dtsi on msm-4.4 defines a total of 16 under the fg-gen3
+megadevice. I would assume that at least a majority of them are useful
+and/or required for full functionality.
 
-Example: In -next tree for sdm845, I recently had to enable 
-`REGULATOR_QCOM_REFGEN=y`, but that means I need to communicate with 
-everyone else trying to use sdm845.config that they need to enable it 
-with 6.19 or their -next tree experiments.
-If it was in mainline, people carrying custom changes on top of sdm845 
-fragment or combining it with distribution fragment would get it 
-together with 6.19 prior without effort with clear commit why this 
-option was enabled instead of fixing/squashing commits.
+There's 8 under 'fg-batt-soc', 5 under 'fg-batt-info' and 3 under
+'fg-memif'
 
-Do you think the fragment could cause some issues for people working on 
-things outside sdm845 phones area? Or the concert was more about 
-possible precedent?
+The main node also consumes an IIO channel provided by the RRADC
 
-David
+I'm not asking you to implement all the feature delta in v2, but I
+will ask you to assess what the dt-bindings for a complete solution
+would look like and to fill in all the resources that will be necessary
+down the line, to the best of your knowledge, so that you won't have
+to wrestle with bindings updates with every new feature addition
+
+Konrad
