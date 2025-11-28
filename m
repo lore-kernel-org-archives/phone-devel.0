@@ -1,108 +1,106 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461922D46AF
-	for <phone-devel@vger.kernel.org>; Fri, 28 Nov 2025 20:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F73B274650;
+	Fri, 28 Nov 2025 21:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764361257; cv=none; b=A+zlwSmrnA45W/56JpUV0kTR09CZN9HIbvr7dwMdmT3OSurDWQMgXAjGwlnBco6clf2TYdHre/fbWr7fDBVsngpYC0lXdU9o294UxNQ6fTUdP+gyRtRhesiWnG1FN52G4CZEStdcXM245Yv+2xhDT9mDx4PIAdJOGUZEuJhFRLQ=
+	t=1764366514; cv=none; b=UcBP1JcNXelscWG/qNsrBY19jJ6vILnGyL+EhST/BlzVF/T+mCHAyOLjxMZsxujnvqpaJ3EdnS/CFmDTFoEPTBuP8ZRVxe9EFTLo7PhT1ISiLDsEWvhcfnuXvSj79d1H7TtbWwH6zbJjAzDLS2E10E0gvE4HPq+ZUw4jItQt8Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764361257; c=relaxed/simple;
-	bh=gYo416o9IIzWH09EnRsTCKup+QS2AuPBTASyfAf3lBs=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=TUCrh+zE9NYuKc7L/ba83LbCCqTUoCsR4nOHf//AWaLUnh8mHahDPSRBsA4wh5haDr0i65+eg+thX3aSkoIzHKeibKnmCiNMTpT0J3glqZP7t4oZgu40rPhxFABwQIwbnOW8KE4lSrbBMB5oo4oQvypXNOMamDDAl/mFzc8D2Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=c1CbRaqC; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1764366514; c=relaxed/simple;
+	bh=8J3YDjpYznPiRiy+EBBMfAiGasMqL72qxn8ycf9hKvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ufW1kR3ovIDs3mtjLqZAKOl1lKjeE78c6GogOh84A5QWn9mvNWcCIA4N8rOJRY+Ra4uuenImyEwXokubLZIT5x8a1QzBwVH+tG+OabHWeE8v32bRAtEzSBa293e3fClHfAmoFPZ6Zu+4nVSmhDfzD2dxextD11FlfWsjoNKQ4sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=AgY2i32M; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="c1CbRaqC"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="AgY2i32M"
+DKIM-Signature: a=rsa-sha256; bh=p2qtcpRq8efSAHaERqbxo76VCGb4u4RH+i4nykgh9AU=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1764365456; v=1; x=1764797456;
+ b=AgY2i32MfwrLjBId1IrPpncT+tqowE+QwxuR7ntoWP3V8c5Px3J7ADTQjstLIDuyQ1TV5Sbp
+ 5jb0Io14qPVxkm9MpOHzDo2WjXSqQIXalzeeoknH5rXOy6tygBNOGUc/a/Go+rqjSsQGgZV2SFH
+ ARbvDv22F3DK+Q4i2bDg8OYYxKwdsJq+V7lhUOf+fGa0u/mJQgbi/HyfEnq40EgOe/Lo6rtGwD7
+ CXTgYGjXKd2d5CuCY6WRwdjz+Kr3irAzm8QfFTdsPPCmHu71sedWfLtvqXI09rDUBHrvs7C+Lul
+ oA8GeHbPwWD2mRlKrgNaDH70Hm9HnRVd0P2ZHikCoX/GQ==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 43edb07d; Fri, 28 Nov 2025 22:30:56 +0100
+Message-ID: <51c9408e-45e7-4ce7-9e95-6e0a45bcc8fa@dujemihanovic.xyz>
+Date: Fri, 28 Nov 2025 22:30:55 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1764361243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dx+rQtRDLcWj+YM9GvZ9aZmUEN7f7LnjwZA1J3GYuzE=;
-	b=c1CbRaqCJnAKuRjgMufb3x1Hw3hnL4PUs4qrIRLgjLRBqmHgMts2MhKAMC24grCCw9Z/tt
-	aoCr7C27Q7qJ4equHb4oB+Pc7l7chh4jcbLkbO6PDECBkhYfwe3EJCBvdXQNrSOvMUtIMI
-	hsW7Gyhzfny5DyOGC1RW6y9Ktfu1YWijQaYNova7XSHyC/lbJndDzinKOFJL6jCccPthtf
-	QbVgaIWDmds0anS00V/m2LNRXRZhHVaV0aOJW1hU8+UZ8rfe8eO6KiWlVPnm8LXDqIBx+L
-	rzzVhn1hJkluCLX6sXlWYBBX3b/IB9g0xOkpp2ytgd/ecb3WEfVCJ/Oxx3EKHA==
-Date: Fri, 28 Nov 2025 20:20:40 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <62ce91326c0e1d5aef1ad5ecad9b99695f983347@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v4 09/12] arm64: dts: qcom: sdm845-lg-common: Add camera
- flash
-To: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "David Heidelberg" <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, "Amir Dahan"
- <system64fumo@protonmail.com>, "Christopher Brown"
- <crispybrown@gmail.com>, "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251125-judyln-dts-v4-9-a5a60500b267@postmarketos.org>
-References: <20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org>
- <20251125-judyln-dts-v4-9-a5a60500b267@postmarketos.org>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] pmdomain: add audio power island for Marvell PXA1908
+ SoC
+To: Karel Balej <balejk@matfyz.cz>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20251127190237.745-1-balejk@matfyz.cz>
+ <20251127190237.745-2-balejk@matfyz.cz>
+Content-Language: en-US
+From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+In-Reply-To: <20251127190237.745-2-balejk@matfyz.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-I did more testing on this, and the led only comes on if it's brightness =
-is set to approx 150/255 or lower. In that case, should I set led-max-mic=
-roamp to 60mA?
+On 11/27/2025 8:02 PM, Karel Balej wrote:
+> Define power domain which needs to be enabled in order for audio to work
+> on the PXA1908-based samsung,coreprimevelte smartphone. In the
+> downstream code, this power-on method is marked as specific to the ulcx
+> series which is likely some variant of the board or some part of it. No
+> other audio components needed for sound to work on this phone are
+> currently available mainline but some successful testing was performed
+> with the vendor variants of the respective drivers and with the domain
+> forced always-on.
 
+From what I know, ULCx is actually meant to be some SoC codename. ULC1
+happens to be PXA1908, but I couldn't find any such codename for the rest.
 
+Other than that, just a few nits:
 
-November 25, 2025 at 8:12 AM, "Paul Sajna" <sajattack@postmarketos.org ma=
-ilto:sajattack@postmarketos.org?to=3D%22Paul%20Sajna%22%20%3Csajattack%40=
-postmarketos.org%3E > wrote:
+> diff --git a/drivers/pmdomain/marvell/pxa1908-power-controller.c b/drivers/pmdomain/marvell/pxa1908-power-controller.c
+> index ff5e6e82d3f8..e32eb227f235 100644
+> --- a/drivers/pmdomain/marvell/pxa1908-power-controller.c
+> +++ b/drivers/pmdomain/marvell/pxa1908-power-controller.c
+> @@ -29,7 +29,10 @@
+>  #define POWER_POLL_TIMEOUT_US	(25 * USEC_PER_MSEC)
+>  #define POWER_POLL_SLEEP_US	6
+>  
+> -#define NR_DOMAINS	5
+> +#define APMU_AUD_CLK		0x80
+> +#define AUDIO_ULCX_ENABLE	0x0d
 
+I would group these with the other register definitions.
 
->=20
->=20Camera doesn't work yet (imx351), but we can use the flash as a flash=
-light.
->=20
->=20Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> ---
->  arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->=20
->=20diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/ar=
-m64/boot/dts/qcom/sdm845-lg-common.dtsi
-> index 93b9a0246510..fa664b5120d2 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> @@ -494,6 +494,19 @@ &pm8998_resin {
->  status =3D "okay";
->  };
->=20=20
->=20+&pmi8998_flash {
-> + status =3D "okay";
-> +
-> + led-0 {
-> + function =3D LED_FUNCTION_FLASH;
-> + color =3D <LED_COLOR_ID_WHITE>;
-> + led-sources =3D <1>;
-> + led-max-microamp =3D <100000>;
-> + flash-max-microamp =3D <500000>;
-> + flash-max-timeout-us =3D <500000>;
-> + };
-> +};
-> +
->  &pmi8998_lpg {
->  status =3D "okay";
->=20=20
->=20
-> --=20
->=202.52.0
->
+Also, it's probably better to be more consistent with the naming, so I'd
+prefer APMU_AUDIO_CLK.
+
+> @@ -59,9 +62,13 @@ static inline bool pxa1908_pd_is_on(struct pxa1908_pd *pd)
+>  {
+>  	struct pxa1908_pd_ctrl *ctrl = pd->ctrl;
+>  
+> -	return pd->data.id != PXA1908_POWER_DOMAIN_DSI
+> -		? regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state)
+> -		: regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
+> +	switch (pd->data.id) {
+> +	case PXA1908_POWER_DOMAIN_AUDIO:
+> +		return regmap_test_bits(ctrl->base, APMU_AUD_CLK, AUDIO_ULCX_ENABLE);
+> +	case PXA1908_POWER_DOMAIN_DSI:
+> +		return regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
+> +	}
+> +	return regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state);
+
+Perhaps this should go into the switch?
+
+Regards,
+--
+Duje
