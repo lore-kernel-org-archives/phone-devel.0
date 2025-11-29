@@ -1,88 +1,181 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D58F1EFF93;
-	Sat, 29 Nov 2025 20:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3D11F4606
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764448355; cv=none; b=cCH8m9kBn/vMtsjQF9PG28mWmInImUYvBbUiiuWCRxsCfpbKXYOguGGrSdFdDJerw+f53Hvv0n19hs0p0ZGxOfFAo7xLl0L/PJlt4NtEJ6RnKse/NbomhNNJNh1wLY9YhLdgGDxaWohRQ+hrgRW4jO4Ml0FIXYTPRrHMhhpbczo=
+	t=1764454972; cv=none; b=QSYuyFPlEbu12CE2wb7Np326/CQ26eCADrL7LhBdVoiW7TA9dZ85UVrFtoWewwWYlUAMLaO41f+EG7QQwwl5rLWhC6hgfbl5JTFRCiBz3t11OOxb/Q+HMy9lwz5Vt70aNv10uJed4Oz7NAo8Yaso3+oDneeIaZAbltkAFqlB3Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764448355; c=relaxed/simple;
-	bh=9VIrky/LnMu807LE95sXQsjpfQSpCJFC6T4hDWxJWI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fvU/x/m2Ai8NyWzWgeSyfzqZ8XNsZ+fXQi/b+zYkemn6RIur5l6mwsX+BPd0CQXEPdRwKNofKX//AnPG0OQLvfwVKuFKxv/C+lwjIhIqQpaeNgXyuDvGiD+iH5x6PXZKxgHFW5qT9MiWQxWsgmrkP1/aSr4qP8AYSrdovC3Br5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=BFQ4nHE/; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1764454972; c=relaxed/simple;
+	bh=BE4iF1qYdTW8dcx+Cn1INn01yGU14vjy2WHpax2KPYU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qs7nKHwrqI3k75WYH9PF4hy+fDnv9v4o5XNPmDiCXFBnnKM49LDOurJucXcJj0F1/ugpdiiVSNRvWYkCfL/w3qZHaHIqSVe0jHLxlut9kB0gTov0zhSzFO+AMbDWF5O4pAQNy2C/Lu+3cuq1OFNNA1FOieNv/eNA7vMm72Lswm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m3Ipb06M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=APITAn7v; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="BFQ4nHE/"
-DKIM-Signature: a=rsa-sha256; bh=+SALvQ1WKQOKgbvkBCd0ESc4r0VDqVsLEMufbJYstbA=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1764448341; v=1; x=1764880341;
- b=BFQ4nHE/cRtmTK4QTadzvMvUYDcy1sN9LBYXR7rMfNn9g0Ck1y0jTP1nGtacQiJ0LjR2j1zQ
- OmPYKsRjlUlz2L5yHCuWXGyljP2DISwTJgc8a+H7nvZ4MP6PGeebRLHcTzWnU/5gu5oj1VymaI3
- vpV126SghH1z3Ot6k6tt4GRYEergXPH+vAohULkckXwmpBFIODqCyLR9J0+7xNK0J4TzRflLenT
- kFl7Jz1FxWAG1ySAeFshMQPCRmQ3aOpZVdJxsUlm/OhhnV1Wail6bcNpW1QF7ocKCppkWUa1SoD
- SeXyM3JI6iGpaINSgQ+Ly8Ao0gz90+shfT1NSBZexAXrA==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 045234a5; Sat, 29 Nov 2025 21:32:21 +0100
-Message-ID: <4b22283d-3553-4e7f-9a50-a5b6e6d20155@dujemihanovic.xyz>
-Date: Sat, 29 Nov 2025 21:32:20 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m3Ipb06M";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="APITAn7v"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ATL1qlS3718481
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=wjwQhzHT9BVqC2zA4PkwVgYC
+	rw7KRmitIItefR9bGTM=; b=m3Ipb06MA1W5TOZuy4IH1Pbr4XtBhbiRBd3Pw2+f
+	7fKrlQiFVfdRBI3qwOjUmPZu5i+WoJeOmzHn4afE0IafTB+eBGbxRVjB+lzpSjqP
+	fAqqxXjnPHEwcC0T0AJksTScSBd7taVMa7Fa4WjrZz7JtMbjnbz1d/uMpcVPKZSd
+	7BOUjdlXPCcBBVUXqX+61T15cz4Qty8ySBmwZ9MJ9qldJuQi+lZE43pg+p6co86u
+	FgZBqCxhJq+eF0inR9fvs9S3qGkLtDHX3h0QvnmNphR3OswL3oFgMxJN2TtHkXV/
+	91E5CoEz6b0AoJTPb0aFQZXS56c3f51y3qblSCr0MbSlgQ==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aqphf9hrm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:49 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3438744f12fso7751668a91.2
+        for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 14:22:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764454969; x=1765059769; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wjwQhzHT9BVqC2zA4PkwVgYCrw7KRmitIItefR9bGTM=;
+        b=APITAn7vh6UsrWyj5KMU02XsSL5nw1RFPkWFyFdyHoUyUEgWruFq07t3mWPlA9z16s
+         MYc252wXFLu5Pco9iD3pm1AMWXa2K3GKGzknIvRPQU2ijRdXKtOK1n0EpkotcuygRZ5j
+         R5KsTI30DXRJgD8KW/Vjv31bjpVZsa0hlhLFIhd9PWCyjD80tTNWCCGWSWvVyOKuQjMf
+         Mr9saRsuJMliEJ7pWQJMZBMt18XcYx1yVmZ/MBEO5+cmvvN6MhbHRukvxSfFZMacsj0O
+         La6xAXGkNOlj2XMvFRID+yiL2xaV0YXc4kyyUl3wcYfQKV5Nb2V3t8+4TJPZMECiMjZ8
+         GoUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764454969; x=1765059769;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wjwQhzHT9BVqC2zA4PkwVgYCrw7KRmitIItefR9bGTM=;
+        b=wBb4awkDEiz2Ymh/azWkx6Pky2tZFUhAwBQt/jStxnxZEy7sDJw/39GucpXSNJsJem
+         K4K2EtJduhw3j2h752zK8CaJC1PKhZAFIB4/co42QsDDquKEQxqZCRz3qpP55evESyDR
+         47y4NGhDIRKmof7yC/DeTZK+V5jAKQAOBa2tmIV98lF+YGAYDbxjo6wQ+9ucsHVYycMT
+         arVArKxHaUgIkUWLSiaPwivgq+2B9JbCpDk/k+BPyJgvyHEhEC1UZTCKvO4BnbcqtdI/
+         D+mb6Nvy3dQVaBiceTUs0oGwR0nLsc/fHHdThcUP05mcfX0zNOQ0InOG9KVfSBtcrDf7
+         DECA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIJAzUKunuSFzDiM4kvHzigQPeQ4cRkWB3XiVrofGBCNh9s/cJzQUqbUC9k2kIWy9+LggIGwagTL8snA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJJlzQOh4BaVQ+hRHrPUI4RkTDSGE2yu/zj+3EEnKYTIrtGo0x
+	X6xu7NDoZ4i90bvi/Q+oDowTDtNCcySITuOhr14c/SYD/3tUPxFNaw00bg1O9Qfe6nKarJlnxce
+	l+lylvTVMpl4LT51/CVD8p+5stXvvQvn5QzNp8OrYYtihsIvSapDU3eAVBEj3AA6/25r8GAPqrN
+	43pLhwr7B1ruf7KN2XDckX/CkMl0CCe0M+0NMQGlYl
+X-Gm-Gg: ASbGnctbHc5j63lwtN/qtA9YvYMGwt2/TNSUuY7QQF2h6T+C/l5wfktiH2o6Z2Sv1dL
+	yO7roWMcdFmeyQe25QvInu4fHxcgPvVHokfE8YZg70+MSjKxHdp8rnJrL7R3p+LKiuBfOtP9kyb
+	0V0nIpVmAu/okfc6HciUrxRKFPFQwWYZg10TnulXDk2Zh/KKkmUOnsR/XWwKn1vMWopg==
+X-Received: by 2002:a17:90b:1802:b0:338:3789:2e7b with SMTP id 98e67ed59e1d1-3475ebe8350mr18298536a91.13.1764454969064;
+        Sat, 29 Nov 2025 14:22:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGAfJJiKsqxeMifoaqRLpI88E1sfmB8UrYGYLg8GAPopV5FYeDzqFmW0/WwkQLCfn+7ugJUSYOqrKvAQwwcELU=
+X-Received: by 2002:a17:90b:1802:b0:338:3789:2e7b with SMTP id
+ 98e67ed59e1d1-3475ebe8350mr18298520a91.13.1764454968602; Sat, 29 Nov 2025
+ 14:22:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] pmdomain: add audio power island for Marvell PXA1908
- SoC
-To: Karel Balej <balejk@matfyz.cz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20251127190237.745-1-balejk@matfyz.cz>
- <20251127190237.745-2-balejk@matfyz.cz>
- <51c9408e-45e7-4ce7-9e95-6e0a45bcc8fa@dujemihanovic.xyz>
- <DELFWFLO1M8G.1AMPX0VKEOJND@matfyz.cz>
-Content-Language: en-US
-From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-In-Reply-To: <DELFWFLO1M8G.1AMPX0VKEOJND@matfyz.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251126-slpi-v1-0-c101d08beaf2@gmail.com> <20251126-slpi-v1-1-c101d08beaf2@gmail.com>
+ <jxlq4fbtl5rkiyyaivoelynw5hjpb3xtg4klcyocyzbs6ncpqa@rhqcwbehisjv>
+ <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz> <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
+ <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
+In-Reply-To: <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Date: Sun, 30 Nov 2025 00:22:33 +0200
+X-Gm-Features: AWmQ_bkGfUo3owmNnmBkWC7NZ8BctNgfDdy_d7ejM7ruh6dnStGPqfNnfxjYRwk
+Message-ID: <CAO9ioeW9=TPde4P=AOcQANvPv90K-9MkcRRgb7HNwe8KiOpFjQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable SLPI
+To: David Heidelberg <david@ixit.cz>
+Cc: longnoserob@gmail.com, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-ORIG-GUID: NXXYcMFqAqTNdNm2aOqrN6hwSSjRKUQF
+X-Authority-Analysis: v=2.4 cv=FvwIPmrq c=1 sm=1 tr=0 ts=692b7239 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8
+ a=P38NquS9la7hg7DsUToA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDE4NSBTYWx0ZWRfXxkut+6n2zlAD
+ pSp0CqvRVp0neZO+kAuHmx4688acoz6cl2CF6W1QO5pPZ6dElvn+dylUEPdAgmuI8zmq2F3kKCN
+ cJnxYEuhjJPF2mVrJm2jLaeyIMoLBsB8LP2r/jfTcImLenV4P+vobgV/aTKXpsrtFNlfPP7BeTp
+ NYKh3JwH0xR2ohTUHkoJ1sGXJgnxq6LrT2ddzH5QMomIZZa3V2fgfWlXVYS3t4mi63877wCAs9l
+ LCWuatqNOjq7Rh4A55rnhmc/kcjgeF2FcB9BRTSQjZ3Def/WEXXGvo8iHLzWlWAE1TAf9OXUluU
+ qzIA8rC9ZiuXkGP/vIdo+slDjX1Z4yGSqkui86nLe7TFhre4YmIwWnYkBMjLHMVBLlgC8yDl1NW
+ Av3CcKGEUDDEIMhOl9OsNX2+UiYm6Q==
+X-Proofpoint-GUID: NXXYcMFqAqTNdNm2aOqrN6hwSSjRKUQF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 suspectscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511290185
 
-On 11/29/25 20:53, Karel Balej wrote:
-> Duje Mihanović, 2025-11-28T22:30:55+01:00:
->>> -#define NR_DOMAINS	5
->>> +#define APMU_AUD_CLK		0x80
->>> +#define AUDIO_ULCX_ENABLE	0x0d
->>
->> I would group these with the other register definitions.
->>
->> Also, it's probably better to be more consistent with the naming, so I'd
->> prefer APMU_AUDIO_CLK.
-> 
-> So would I, but this is how the downstream code calls it so my idea was
-> that it possibly matches the datasheet and it would seem preferable to
-> me to match that even though we don't have it available.
+On Sat, 29 Nov 2025 at 14:08, David Heidelberg <david@ixit.cz> wrote:
+>
+> On 29/11/2025 02:15, Dmitry Baryshkov wrote:
+> > On Wed, Nov 26, 2025 at 03:59:48PM +0100, David Heidelberg wrote:
+> >> On 26/11/2025 15:41, Dmitry Baryshkov wrote:
+> >>> On Wed, Nov 26, 2025 at 09:08:35PM +0900, Robert Eckelmann via B4 Relay wrote:
+> >>>> From: Robert Eckelmann <longnoserob@gmail.com>
+> >>>>
+> >>>> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
+> >>>>
+> >>>> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
+> >>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+> >>>> ---
+> >>>>    arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
+> >>>>    1 file changed, 7 insertions(+)
+> >>>>
+> >>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> >>>> index 785006a15e97..0fb1d7e724c4 100644
+> >>>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> >>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> >>>> @@ -425,6 +425,12 @@ &sdhc_2 {
+> >>>>            cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
+> >>>>    };
+> >>>> +&slpi_pas {
+> >>>> +  firmware-name = "qcom/sdm845/beryllium/slpi.mbn";
+> >>>
+> >>> qcom/sdm845/Xiaomi/beryllium/slpi.mbn
+> >>
+> >> Could be this change done for all the firmware files at once but later?
+> >>
+> >> Currently all the firmwares using this legacy path.
+> >
+> > I'd rather see the patch fixing firmware paths first and then the patch
+> > adding SLPI with the correct path from the day 0 (I feel sorry for
+> > causing pain to PmOS maintainers). Of course both patches can come as a
+> > part of the same series.
+>
+> Would it make sense as a follow up, I would changed "the whole sdm845"
+> to the new paths, so distros maintainers can update paths everywhere
+> with 6.19?
 
-AUDIO is indeed nicer, and IMO it doesn't matter if the names are 
-perfectly matched with downstream. Matching with the datasheet would be 
-a stronger argument, but it indeed isn't available so the whole point is 
-moot.
+I think so.
 
-> I could then do the reverse of what you say and call the other
-> definition AUD_ULCX_ENABLE but AUDIO seems nicer to me too and this one
-> is not defined in the downstream code.
-> 
-> What do you think?
+>
+> David
+>
+> >
+> >>
+> >> David
+> >>
+> >> [...]
+> >
+>
+> --
+> David Heidelberg
+>
 
-I'd still prefer AUDIO, but don't care about it that much, so up to you.
 
-Regards,
---
-Duje
+-- 
+With best wishes
+Dmitry
