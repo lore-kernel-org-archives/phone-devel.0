@@ -1,152 +1,157 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AD41A9F97
-	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 02:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA9430E0C2;
+	Sat, 29 Nov 2025 12:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764382130; cv=none; b=lQLzhwYupeSAiBjvWYLVpXCeVsnavBPaq3l00lXwP4TxP42Fdu9sfVFOwT2InBPxhLdVkCT4E03ve1PtVOfktCLKLcsQuF+wHH8NVCrcEa+xmJHeI1bhajbBloekyYqtXHR+8Me2QenQO8yaF9UvjRuPpAA6BJLpaBHGrJ/Gbuk=
+	t=1764418127; cv=none; b=FIgaYYJDoCzUDl1hWFMxM5x3ibEs/S/s7ktHB6ZT2FWpm1yquYNoeObQufYTLkSybB44AXLWBE8XRA9GdJcqYa6hbnZjcNm+A3g91/F2jJyOhk731NEZcjW74JCD3a9HyE3tb+iFpmbRBMXYY6rVv9WulcPAh6/w0PUtsOtbWxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764382130; c=relaxed/simple;
-	bh=oBxJ2w2VOtO0+57VyHYW6cgGEruyJXK9Hau4rzbWm/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C5aQcwFGeAge9HzMlVWGs4HkakHDIKQcT9AsRXQ76+p4vYbu8ITQ/emC0NBo4FM5VNb/1cJav5wlIBgOnKJ6BIoPdeGavGrkwWEtbonHKZs2oOKgn0Duk5707EJzNBor+5Ekp1IAFjCK6rptEIKj0MFTUrn0k7/76gdfwuA7K4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eRZkYE7b; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764418127; c=relaxed/simple;
+	bh=F7TDbjdAVWQZCDVxrnrDD1a0pJFx/Budnx4q5c0qVYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jHdgtsunSBvcft0jChntxbC8EkPV0iO3FdiKL8UDyQhUJ5ZYJV63Ze9+i819G0Dfh0CrNo/11A8Lh2SRHONww//ltI/RuHfl1vigq7r5JEwiuj85G1l7bSCo651BOWBxmWGRlPBAT8h7ro0OFKvLi15af3RuTnmMZiJhcru62Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=GX61FrAg; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eRZkYE7b"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee1fca7a16so20020421cf.3
-        for <phone-devel@vger.kernel.org>; Fri, 28 Nov 2025 18:08:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764382126; x=1764986926; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w4Vai8cPq+jOaSoz/hxjTO+wFvCmSXVlGUIKlR54toc=;
-        b=eRZkYE7binmHN8pBX3Gk019b9BrFLrbfz8viYkGayY4ukhe7lAy7bfAOj51SFIPvyM
-         Wulan5PXWbXTwNr8ywCgZpBlMupJ2gHEa78npI9b7ttw1linYOJ5akrgZNBNeKIsWAvw
-         MOjN7X1M6fMpE331WfeztmFEO3jD5gs31jINPthRg9rGjCrh32LwcuCoXKKJ5pWPVUNU
-         YP+GwxsTWuer48GZLKbnV0HNUclWtreVNUynnS8uPJUDnSd3daOrz0/dngtpeeGvf2rF
-         vt2OVOAudXW58VHzdfUXs9z7Q6JLw3UQJzb2M3sGy4nu8QP7HklaxQD071JJknto9JgS
-         92HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764382126; x=1764986926;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w4Vai8cPq+jOaSoz/hxjTO+wFvCmSXVlGUIKlR54toc=;
-        b=qqNFk8sa51IOgW+tUxBSwOPtiFK5LIw8ZVf1LvRwXMUOPCt4v54T7opFKIe/h7S1UF
-         Ssm00sHWpsQD0ENYB1Tefqcehvdq5xJaiwjTBHrp9iJvQh3aCW2CFRnrCT3FWyGyjwPH
-         RJ/1nxEWBWksqlFwzhPdKqOdqWiT/gjw9aX9cGc+xqlUwtrQ8VryU60CGZgW4SnPmPU3
-         aQgKWjR9nGRr203C9VQSqegy2+MpwlUNIW/qfGh9Q2lBWCbpIWodKxfs2XbC+2cKi/vf
-         fC1GDs40RDuhQCbnAqemK9qJg2L1XbrTZCAdAvjV3f0XLoZ3l9Feq6RxigM0u9FO0JzY
-         VG9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXtcDeY4VGgUd4DqP6vKd+srhOSLvXhmGHo6KN/qzrDYhAmPbW8y11221KwdRhA3iV5VAntdu4OmEC+Bw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2Uh/aXnPkjaWc0DBJjty9xILLW/EdyzpLd75rW/FTop6PIpkT
-	1NYNe6/GPzhL8VkJYvP48sjsOA/jBVDQUj85blTnW4vIyYOrWcCMiWCb
-X-Gm-Gg: ASbGncvJbbDS7rx3Mt3S78CDida+KU66r/OTKKpOZIHCggg1U/4hKdz625AfihGtn71
-	WmSn97b+ZVO7OTFgDVU6VZ8B27in6pUZTvYk2Sx54RvrS/Hd9TQURS2KozXSlKPoxjivbXMW00R
-	1N+w4NHL3m342cuRhnVFqYszgBL04B/6uE8+3J6Qv3xMh2Wn+sIc0O+6RP9DMGxa/ytYr418OBi
-	ORkcyl9QADIcVS0eE8ePT1FK58fdRY0IyIPY9fPBsghmh0t2gDemYAY3G8XWX+XF3gs9dwrh/bE
-	VZI1j0NqKwFmjsTvPml3lV2N4Jzob2a6rEjOqB/zyYVNdUFBjV+p21b2h3ODrhj0odQYzr5wnhn
-	GB/D9kt1iEfEZuhEzvqwAB191l5qMsWqt15fvzSImncoaDC35ysdh5mdA3v+kt5D2cM4rBk4zVH
-	K2qDTFyOorkGmzKlxPJG8s/T1VGkwlhv9wf5XX3+VjR9+se/8ftivwTGynNaC/8Gt4cJZp8HOr/
-	cM=
-X-Google-Smtp-Source: AGHT+IEZgPEjTcttOVwQuI2zaiEzMLw7Nq+/ixHEvgh4ba7Mmdm+GtjXkVRK7MvkYpKdURpuWdRJtg==
-X-Received: by 2002:a05:622a:256:b0:4ee:1527:cae0 with SMTP id d75a77b69052e-4efbd715e29mr244377011cf.0.1764382126117;
-        Fri, 28 Nov 2025 18:08:46 -0800 (PST)
-Received: from localhost (bras-base-toroon21-grc-75-184-144-58-243.dsl.bell.ca. [184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd2fbfa6csm35209561cf.11.2025.11.28.18.08.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 18:08:45 -0800 (PST)
-Date: Fri, 28 Nov 2025 21:09:03 -0500
-From: Richard Acayan <mailingradian@gmail.com>
-To: Casey Connolly <casey.connolly@linaro.org>
-Cc: david@ixit.cz, Sebastian Reichel <sre@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Casey Connolly <casey@connolly.tech>,
-	Joel Selvaraj <foss@joelselvaraj.com>,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexander Martinz <amartinz@shiftphones.com>,
-	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH RFC 3/8] arm64: dts: qcom: pmi8998: Add fuel gauge
-Message-ID: <aSpVv_a6uRhr8opu@rdacayan>
-References: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz>
- <20251124-pmi8998_fuel_gauge-v1-3-dd3791f61478@ixit.cz>
- <a9ba3370-ddff-4b69-b2b9-9244f759b6f0@linaro.org>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="GX61FrAg"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 224555341473;
+	Sat, 29 Nov 2025 13:08:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1764418113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=34B0N501jYNN+LlotxqNjJQFtw/C6RX7so410r3S7Ms=;
+	b=GX61FrAgou5f25N12/xaRSJPcgNTxqCgET3WiUF1uq556r7lhYcrdPP5CHIi9So1zEnBzJ
+	siHb+DdhgdgYv15iAc4/Jy5toOEHLpCYebASXzyfZ0ZGHXfhBWNmzG23oqA25uF70Kp3Tp
+	816jEX6i7IdAPJTtwd53Fd+yVo0dfHI=
+Message-ID: <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
+Date: Sat, 29 Nov 2025 13:08:32 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a9ba3370-ddff-4b69-b2b9-9244f759b6f0@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ SLPI
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: longnoserob@gmail.com, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251126-slpi-v1-0-c101d08beaf2@gmail.com>
+ <20251126-slpi-v1-1-c101d08beaf2@gmail.com>
+ <jxlq4fbtl5rkiyyaivoelynw5hjpb3xtg4klcyocyzbs6ncpqa@rhqcwbehisjv>
+ <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz>
+ <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 27, 2025 at 06:53:38PM +0100, Casey Connolly wrote:
-> On 24/11/2025 22:53, David Heidelberg via B4 Relay wrote:
-> > From: Casey Connolly <casey.connolly@linaro.org>
-> > 
-> > Introduce the fuel gauge node for pmi8998.
-> > 
+On 29/11/2025 02:15, Dmitry Baryshkov wrote:
+> On Wed, Nov 26, 2025 at 03:59:48PM +0100, David Heidelberg wrote:
+>> On 26/11/2025 15:41, Dmitry Baryshkov wrote:
+>>> On Wed, Nov 26, 2025 at 09:08:35PM +0900, Robert Eckelmann via B4 Relay wrote:
+>>>> From: Robert Eckelmann <longnoserob@gmail.com>
+>>>>
+>>>> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
+>>>>
+>>>> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
+>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>>> ---
+>>>>    arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
+>>>>    1 file changed, 7 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>>>> index 785006a15e97..0fb1d7e724c4 100644
+>>>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>>>> @@ -425,6 +425,12 @@ &sdhc_2 {
+>>>>    	cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
+>>>>    };
+>>>> +&slpi_pas {
+>>>> +	firmware-name = "qcom/sdm845/beryllium/slpi.mbn";
+>>>
+>>> qcom/sdm845/Xiaomi/beryllium/slpi.mbn
+>>
+>> Could be this change done for all the firmware files at once but later?
+>>
+>> Currently all the firmwares using this legacy path.
 > 
-> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> > ---
-> >  arch/arm64/boot/dts/qcom/pmi8998.dtsi | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> > index cd3f0790fd420..ab3bc66502657 100644
-> > --- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> > @@ -44,6 +44,17 @@ pmi8998_rradc: adc@4500 {
-> >  			reg = <0x4500>;
-> >  			#io-channel-cells = <1>;
-> >  		};
-> > +
-> > +		pmi8998_fg: fuel-gauge@4000 {
-> > +			compatible = "qcom,pmi8998-fg";
-> > +			reg = <0x4000>;
-> > +
-> > +			interrupts = <0x2 0x40 0x3 IRQ_TYPE_EDGE_RISING>;
-> > +			interrupt-names = "soc-delta";
-> 
-> I think it makes sense to add all the interrupts here, even if thr
-> driver only uses one of them currently.
-> 
-> 			interrupts = <0x2 0x40 0x0 IRQ_TYPE_EDGE_BOTH>,
-> 				     <0x2 0x40 0x1 IRQ_TYPE_EDGE_BOTH>,
-> 				     <0x2 0x40 0x2 IRQ_TYPE_EDGE_RISING>,
-> 				     <0x2 0x40 0x3 IRQ_TYPE_EDGE_RISING>,
-> 				     <0x2 0x40 0x4 IRQ_TYPE_EDGE_BOTH>,
-> 				     <0x2 0x40 0x5 IRQ_TYPE_EDGE_RISING>,
-> 				     <0x2 0x40 0x6 IRQ_TYPE_EDGE_BOTH>,
-> 				     <0x2 0x40 0x7 IRQ_TYPE_EDGE_BOTH>;
-> 			interrupt-names = "soc-update",
-> 					  "soc-ready",
-> 					  "bsoc-delta",
-> 					  "msoc-delta",
-> 					  "msoc-low",
-> 					  "msoc-empty",
-> 					  "msoc-high",
-> 					  "msoc-full";
-> 
-> https://github.com/LineageOS/android_kernel_oneplus_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/qcom/pmi8998.dtsi#L292
-> 
-> Not sure what the difference is between bsoc-delta and msoc-delta, maybe
-> Richard or Yassine can recall? DT bindings would need updating too.
+> I'd rather see the patch fixing firmware paths first and then the patch
+> adding SLPI with the correct path from the day 0 (I feel sorry for
+> causing pain to PmOS maintainers). Of course both patches can come as a
+> part of the same series.
 
-Well I don't remember, but the downstream kernel seems to reference bsoc
-as battery SOC and msoc (used for the battery percentage) as
-monotonic SOC. Maybe msoc is based on bsoc and scaled based on battery
-health, but that's just from skimming the downstream driver.
+Would it make sense as a follow up, I would changed "the whole sdm845" 
+to the new paths, so distros maintainers can update paths everywhere 
+with 6.19?
+
+David
+
+> 
+>>
+>> David
+>>
+>> [...]
+> 
+
+-- 
+David Heidelberg
+
