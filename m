@@ -1,157 +1,94 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA9430E0C2;
-	Sat, 29 Nov 2025 12:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5925785E;
+	Sat, 29 Nov 2025 19:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764418127; cv=none; b=FIgaYYJDoCzUDl1hWFMxM5x3ibEs/S/s7ktHB6ZT2FWpm1yquYNoeObQufYTLkSybB44AXLWBE8XRA9GdJcqYa6hbnZjcNm+A3g91/F2jJyOhk731NEZcjW74JCD3a9HyE3tb+iFpmbRBMXYY6rVv9WulcPAh6/w0PUtsOtbWxk=
+	t=1764446028; cv=none; b=eN6/gqBprXfytRpjhxZoIk3z3E1xVA4KIMJNcE58WKyA3C9AGmuqirRkcxYvf1iEFCxoZiTFs7VF56rSMb4W3HAlepr10xpydNIr98doBQQhsQzTthKtPyisGNEIlQTcnzQDeTnJWlBFvVH8qlZRlrHY2JMo+nCH58zeIgGJAog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764418127; c=relaxed/simple;
-	bh=F7TDbjdAVWQZCDVxrnrDD1a0pJFx/Budnx4q5c0qVYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jHdgtsunSBvcft0jChntxbC8EkPV0iO3FdiKL8UDyQhUJ5ZYJV63Ze9+i819G0Dfh0CrNo/11A8Lh2SRHONww//ltI/RuHfl1vigq7r5JEwiuj85G1l7bSCo651BOWBxmWGRlPBAT8h7ro0OFKvLi15af3RuTnmMZiJhcru62Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=GX61FrAg; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1764446028; c=relaxed/simple;
+	bh=MrhO1nc68GfeCMgWnvVqz/TZa6wly1L1saVWsed5rlA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=ru9uCl8X+LTClOzJaQXtddF0aRaS9tM7cvXr/Vy7qVUhgXebJAuFjICYaOZU5FPrguK0UIt2PulaYYu3QV0WNUrs9bfwLyjE2iEP/bZZOr8dppKDQZPxTbclMaxqM17vXHGBkPfF/JGu6ICpDvvZwVNqx7bjbmG1RGSbYY0adTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=hbJujqS6; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="GX61FrAg"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 224555341473;
-	Sat, 29 Nov 2025 13:08:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1764418113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=34B0N501jYNN+LlotxqNjJQFtw/C6RX7so410r3S7Ms=;
-	b=GX61FrAgou5f25N12/xaRSJPcgNTxqCgET3WiUF1uq556r7lhYcrdPP5CHIi9So1zEnBzJ
-	siHb+DdhgdgYv15iAc4/Jy5toOEHLpCYebASXzyfZ0ZGHXfhBWNmzG23oqA25uF70Kp3Tp
-	816jEX6i7IdAPJTtwd53Fd+yVo0dfHI=
-Message-ID: <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
-Date: Sat, 29 Nov 2025 13:08:32 +0100
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="hbJujqS6"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1764445987; x=1765745987;
+	bh=MQ3uT13n6qq7JkXGN76vfu9uM1WotpK8bIRwkXByhyw=; h=From;
+	b=hbJujqS6Ism7p3H8rRTZ68IE3mNac7tqLmvIL2l9Na3TfRMx4DmOECmVsJtPqzlVY
+	 cTgIqYvqt5PJZ54Rr3P031LjRgRQOUbhM7xLsQDaEv9Kix6eZQ9oNNxgnU7igun29M
+	 ibL801xOd7E4HtiKnuZQpDYXI6qip5W80YOH+s1xJndVCUN/ROyKwcoEEIt0e+AQ4s
+	 GqUdzuNoUEP8WxiQt6JdJbUxzQhm+63LfjgSODijNKHWBmLnqqajXAuKn4dkcZGJwh
+	 ZLdpUa+797t71bez1HjtAs6JxFE5Z5f/fHw88xeqj/oaLLgULyeNlHuBTmRTv61BL0
+	 uK8E69NWw0rtw==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5ATJr5HC007466
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 29 Nov 2025 20:53:07 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
- SLPI
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: longnoserob@gmail.com, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251126-slpi-v1-0-c101d08beaf2@gmail.com>
- <20251126-slpi-v1-1-c101d08beaf2@gmail.com>
- <jxlq4fbtl5rkiyyaivoelynw5hjpb3xtg4klcyocyzbs6ncpqa@rhqcwbehisjv>
- <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz>
- <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 29 Nov 2025 20:53:05 +0100
+Message-Id: <DELFWFLO1M8G.1AMPX0VKEOJND@matfyz.cz>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Rob Herring" <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor Dooley"
+ <conor+dt@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 2/2] pmdomain: add audio power island for Marvell
+ PXA1908 SoC
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251127190237.745-1-balejk@matfyz.cz>
+ <20251127190237.745-2-balejk@matfyz.cz>
+ <51c9408e-45e7-4ce7-9e95-6e0a45bcc8fa@dujemihanovic.xyz>
+In-Reply-To: <51c9408e-45e7-4ce7-9e95-6e0a45bcc8fa@dujemihanovic.xyz>
+X-Spam-Level: ****
 
-On 29/11/2025 02:15, Dmitry Baryshkov wrote:
-> On Wed, Nov 26, 2025 at 03:59:48PM +0100, David Heidelberg wrote:
->> On 26/11/2025 15:41, Dmitry Baryshkov wrote:
->>> On Wed, Nov 26, 2025 at 09:08:35PM +0900, Robert Eckelmann via B4 Relay wrote:
->>>> From: Robert Eckelmann <longnoserob@gmail.com>
->>>>
->>>> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
->>>>
->>>> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
->>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>> ---
->>>>    arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
->>>>    1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
->>>> index 785006a15e97..0fb1d7e724c4 100644
->>>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
->>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
->>>> @@ -425,6 +425,12 @@ &sdhc_2 {
->>>>    	cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
->>>>    };
->>>> +&slpi_pas {
->>>> +	firmware-name = "qcom/sdm845/beryllium/slpi.mbn";
->>>
->>> qcom/sdm845/Xiaomi/beryllium/slpi.mbn
->>
->> Could be this change done for all the firmware files at once but later?
->>
->> Currently all the firmwares using this legacy path.
-> 
-> I'd rather see the patch fixing firmware paths first and then the patch
-> adding SLPI with the correct path from the day 0 (I feel sorry for
-> causing pain to PmOS maintainers). Of course both patches can come as a
-> part of the same series.
+Duje Mihanovi=C4=87, 2025-11-28T22:30:55+01:00:
+> On 11/27/2025 8:02 PM, Karel Balej wrote:
+>> diff --git a/drivers/pmdomain/marvell/pxa1908-power-controller.c b/drive=
+rs/pmdomain/marvell/pxa1908-power-controller.c
+>> index ff5e6e82d3f8..e32eb227f235 100644
+>> --- a/drivers/pmdomain/marvell/pxa1908-power-controller.c
+>> +++ b/drivers/pmdomain/marvell/pxa1908-power-controller.c
+>> @@ -29,7 +29,10 @@
+>>  #define POWER_POLL_TIMEOUT_US	(25 * USEC_PER_MSEC)
+>>  #define POWER_POLL_SLEEP_US	6
+>> =20
+>> -#define NR_DOMAINS	5
+>> +#define APMU_AUD_CLK		0x80
+>> +#define AUDIO_ULCX_ENABLE	0x0d
+>
+> I would group these with the other register definitions.
+>
+> Also, it's probably better to be more consistent with the naming, so I'd
+> prefer APMU_AUDIO_CLK.
 
-Would it make sense as a follow up, I would changed "the whole sdm845" 
-to the new paths, so distros maintainers can update paths everywhere 
-with 6.19?
+So would I, but this is how the downstream code calls it so my idea was
+that it possibly matches the datasheet and it would seem preferable to
+me to match that even though we don't have it available.
 
-David
+I could then do the reverse of what you say and call the other
+definition AUD_ULCX_ENABLE but AUDIO seems nicer to me too and this one
+is not defined in the downstream code.
 
-> 
->>
->> David
->>
->> [...]
-> 
-
--- 
-David Heidelberg
-
+What do you think?
