@@ -1,64 +1,170 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C237F2DC334;
-	Fri, 28 Nov 2025 21:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543401547F2
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 01:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764366522; cv=none; b=l6wcHbsDlT5KsS+pvl0wRNYh4HwzymFuL1kdqYGS9yFwOznpCrnhkIzMJrApoNGrF+EOTnd1HdLm94N1AWLFb85IP+G9a5CS8MVu0nZ5xKiTVtXnz8ubcYZmqAwy/BQU5TpLEvUHSVgkDc8/tjB69AxUHGmsOC99pbwe27hHVEA=
+	t=1764378931; cv=none; b=RAV0wYDO+sLt855y6g/apUEsJu0m4D40+EEPloIFxEAizpojLuKe+O0vst66mfBVSJIdeA9g+QmDjsUG1ZCufnkjuYRRkH6rS2gP5y7sWtvCn05hZ9gp4wFLB3NgaGDgSg2BcXORP78Vivct4LY75P6QQUSSNyCeCxjWEK8r/0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764366522; c=relaxed/simple;
-	bh=Tx0Qw3xQh9++IV3pmMkC/NoM1bk28feF8F2RtIPrlR8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CmiKnfh6EvS8+UsQtWpTgqYzAidZ7un31SiwFbnCtRBKAPezCZucYRCpz/FUMeXF9KxUrpnRYNcIj/0F7oELVwmUZdwdKjKXwHb4N1hVs9eFDujVyLTXMEIMBjNR6gTp8Fb/vIK7k5NhLhGCjiJzUrLOvMArVfn4ptuklRy/Hd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=pOop7/G5; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1764378931; c=relaxed/simple;
+	bh=y9gqKIMs5NCRJ/ByHpgzoPAFxDlT6eQpDzeeuFgOFlE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mhzURgR/j+lLdLPxh4kEVECFyc54PlejGuK2HH9jkvG7jEOCQvVLEC5Fx55gPq29v9sEUlD+6KKPS3WUikQPPV3Tqi8FG1KgpjpIXshgh3UcDtLNCZHojfWlRL9FRcAtkw3Db9PlMLjc+sBeLScqHTm4Jx+9Vbv6o0fjTdihd7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EjVJwJwl; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UaXsas5+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="pOop7/G5"
-DKIM-Signature: a=rsa-sha256; bh=uolVDxZ9uNM6iJV67STmTU/q18EXFVQS2j96RNuR9Ic=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1764365527; v=1; x=1764797527;
- b=pOop7/G5LS5cpY5MSUX3qUDcOdPAycyzEdsXPPf7x67JCzZLV9ldpc0iMIFFEbLdlLoE4tbf
- eYmISdewALW/Cg7aNWmuKFSBAtLPeiGOwr+8JbnzHdwPUbElB5oLclYWGI+ZBhsE2lvS5vD95z4
- jfubpV2hCn2i327e2eQBm0qUW/KwPvK8GchqBmAi/AH2XZHLEyyziVSgB2iqYKLUzXUw8EPxbe3
- vJ14vBu4qVI1WbQoDgBTfuerEzkUrB5xvJtfuaikbeQAGFUJ+vJ39zlK30Z3dsI9O3+1eq9xBOI
- KbSksq5HOZi7ftCZipw+U9UjrbiEoOKQSOLeEGK0BHH6g==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 0e1da1da; Fri, 28 Nov 2025 22:32:07 +0100
-Message-ID: <8167f52b-0a2a-4f7f-8fc3-30673f7197b3@dujemihanovic.xyz>
-Date: Fri, 28 Nov 2025 22:32:06 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EjVJwJwl";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UaXsas5+"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AT0EeYp1890650
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 01:15:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=povCCUHvVvudmv1VHDTJtEKF
+	5pdkowtc8DNl7M/HVAM=; b=EjVJwJwlw8AkYuc9u/fNrQEhp5nKf3dTwz72R3bZ
+	ijysdFaGTPMYqhFXLbNvoXAE4BqoCFgrJwnWug13ABpRLc0DzjCSxd0r4dMfcl9Y
+	//YpuO9vZ/0oCVDhaNegAPjiLCOJDA8o5U17QiYBm9GvSZkl/rdh29fIUDcYNgXY
+	DaHsZQWHnC4Pmi0sIchoOFmGojDPXnWkwtsPhyRVyYMw9N7BzmUxg6866+eR1O8/
+	b0NYOJA2HdMJoxGrR0euoEkqiij5Ay582js8nrsDm43jED7GHypCiTwbUs8br9eY
+	K0KxOLu7Uy1MTldZxcmrUrd6VbdR+/LbtS9JWFSNt8F1pw==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aqdsfh0tc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 01:15:28 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b2dbd36752so428115085a.0
+        for <phone-devel@vger.kernel.org>; Fri, 28 Nov 2025 17:15:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764378928; x=1764983728; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=povCCUHvVvudmv1VHDTJtEKF5pdkowtc8DNl7M/HVAM=;
+        b=UaXsas5+CXB/asYumf0kntZ1huY+Bra9a2w8rGKBMduAqbFfS82QtU/LWm87cpyZmj
+         phaFxijIQKTXj7yml7HE3ZQthBf0cywebcgVB7KKp65OjwGCFjME3dLJjdAl6JN+nUdj
+         a6o8wSd8ZwP66BxNbFuuEIsvkArqSM/Mzf4cV40qvairlFHPeHi7vFhsU/MKCu6cl31m
+         3g1Ayquwhe154PufkM3hbQ9GBb5fErrH0zMo5A91giOIC9EhmZwln5mFpHPUyx8vvOkz
+         +raXm47GDr1NCaq2dNrRh7qMNUP0oHWlNiywzxsgcFXx8ppOj+3BSe7GWnvq1TfaxWag
+         brvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764378928; x=1764983728;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=povCCUHvVvudmv1VHDTJtEKF5pdkowtc8DNl7M/HVAM=;
+        b=LTs/vEwVeVQgzthQiiO8pTYqzWJI9HxL/Q3bFVMxXnL6j7SYMOwQ8vJ9VhIGL2bQrt
+         5mZfLLBR7mdqt1ETss9dhlrfVVqkMTQ0BQMKoEr8V2ulpYbizmX+M/YOtMQ01sXfSI3+
+         gIyGhUoBwRUCWJZ16nrOJpQqUN6CXlzZaG5YVyuIyZlkCY6RLuD9C1lvzM6A+5kHTl5j
+         DvsxsVM5RbCGTppSBFeYCaCMvMZ7n48Qz70Sg1plB9jBaXyKcmwljmi3tEsXRvcNL2vi
+         6MdzkU3McHJkG6MH6JHyeG7FT6bheZ/FJ2DdKTU3izeD8degatmS2v4H9jCYQP1zDiqK
+         s4Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvX1IIR0r+ulwQe+oEx8/qLr1NLxZWhk0BwIeHbgkvUZUmST6vCJB6GOqJQx9RArdKt/9hdZDNZlr5sQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw28WHdaaCSD2/LaUP8R71MGkO4I58lLFqvkymre+8M/BVy/uvH
+	QSJFI9pbv1mTepwk0YF5Gaum/Lm+8y244GqVc7DbL2EXYhrGgpSLojif+f4DE4zR8X8sNGEbhP/
+	3evbse6eIxLdWwSOjmGaSxOOHpIIY3jGWBIDAF9+BNObEZpZu+NsCrlu5BTq7ZuAH0g==
+X-Gm-Gg: ASbGncuS8M8qMY8lsnhFwhWFm8Z5BKsPfLkqR+B+s3w23oZYwQtBCOI54lPnV8GacHs
+	LzVt/KUGHUdMsVr7csen6gcF30Dhs2wWJRKd1BVpzGU3jdaUUXcOik/ApsF6qs07871ChK9sRiP
+	nE94Tw/RYpRnTmwvV2QYqTJUxvCikj5MJmapcHHnZwP9oHk7zXGKuZGEt0G3iHpl+kQXvBbuiDP
+	qwVBJn9N4h3YAdtbJzkMYEB9xLGcLhk3dJ41qMfRtqixrtgHiUW8KjhKYQWzGCgjFFiqrWiqH7A
+	J6zMOgUdkXS3Mm0eBYXWK3KxlrFk2KLKIyTvx0rNlUeDIL3WhFZsty9JA3vc/ABZrSXZZ+J9SLC
+	wuNIu5zrkqGRS4lmkXrfJ3ajeVMCbWQfDX4JiEAFduNKUtGx0Pj+7urF0oauAq3CfXyn1MCU04q
+	cM78EwJQalD9tOpmX9cDojwHs=
+X-Received: by 2002:a05:620a:1a8f:b0:8b2:e561:78c9 with SMTP id af79cd13be357-8b33d4cf925mr3728855585a.43.1764378927943;
+        Fri, 28 Nov 2025 17:15:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHlw82UBIj5O+kKPOMBnEozzsNfSI0NL2DqpgGaQJy/TUIMykdieWr6mLDGikzABdDfPvr+eg==
+X-Received: by 2002:a05:620a:1a8f:b0:8b2:e561:78c9 with SMTP id af79cd13be357-8b33d4cf925mr3728848785a.43.1764378927377;
+        Fri, 28 Nov 2025 17:15:27 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596bf8b0565sm1578279e87.32.2025.11.28.17.15.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 17:15:26 -0800 (PST)
+Date: Sat, 29 Nov 2025 03:15:24 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: longnoserob@gmail.com, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ SLPI
+Message-ID: <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
+References: <20251126-slpi-v1-0-c101d08beaf2@gmail.com>
+ <20251126-slpi-v1-1-c101d08beaf2@gmail.com>
+ <jxlq4fbtl5rkiyyaivoelynw5hjpb3xtg4klcyocyzbs6ncpqa@rhqcwbehisjv>
+ <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: power: define ID for Marvell PXA1908
- audio domain
-To: Karel Balej <balejk@matfyz.cz>, Ulf Hansson <ulf.hansson@linaro.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20251127190237.745-1-balejk@matfyz.cz>
-Content-Language: en-US
-From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-In-Reply-To: <20251127190237.745-1-balejk@matfyz.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwOCBTYWx0ZWRfX9yx1wOI2Qmqk
+ gSvaHyeK2O2S3/Lq/H2a0twYpqTL2i4abfyB78enFb3eCkMSs29z5CTDKtrIz0AXdFKCYa+S8ik
+ CjjI2Dqe3EmGP/bTpqP/PEkztHgmQ+8hE63OT5fPoST7dguoK4blPyev02wdSuWxBTIH0yNh4xo
+ 4QqzPv9zKZSGcSrZ9fh43uBnU1arL0C2R0f55olOeAR7Jj0C12Q9XHTyr4bHACVcMQu719mI9MS
+ 887Rc7A+xpPdCl4AR3gZbAbAJ+6Vy9XQVr5as2462lkwfFhtaKWPuhAON1uwoV8bY0oLme+P8Rj
+ jipsvHwe0vBrPkS5RPI81uzXN2rIhkV5ophnXfGLja5h7fAUkIYpK/Si66VdK6kIfERvLD0O8/h
+ i1yvGvXlvsWV+nqQwZ19YzefupAYEA==
+X-Proofpoint-GUID: QSBzeomZ6CmxHGu6U00hHUlIk_GUdQG4
+X-Authority-Analysis: v=2.4 cv=Qc5rf8bv c=1 sm=1 tr=0 ts=692a4931 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=6fcVbKO1MKpXv_-_8oMA:9 a=CjuIK1q_8ugA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-ORIG-GUID: QSBzeomZ6CmxHGu6U00hHUlIk_GUdQG4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 adultscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511290008
 
-On 11/27/2025 8:02 PM, Karel Balej wrote:
-> Define an identifier for the SoC's audio power island so that it can be
-> referenced through device tree.
+On Wed, Nov 26, 2025 at 03:59:48PM +0100, David Heidelberg wrote:
+> On 26/11/2025 15:41, Dmitry Baryshkov wrote:
+> > On Wed, Nov 26, 2025 at 09:08:35PM +0900, Robert Eckelmann via B4 Relay wrote:
+> > > From: Robert Eckelmann <longnoserob@gmail.com>
+> > > 
+> > > Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
+> > > 
+> > > Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
+> > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > ---
+> > >   arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
+> > >   1 file changed, 7 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> > > index 785006a15e97..0fb1d7e724c4 100644
+> > > --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> > > +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> > > @@ -425,6 +425,12 @@ &sdhc_2 {
+> > >   	cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
+> > >   };
+> > > +&slpi_pas {
+> > > +	firmware-name = "qcom/sdm845/beryllium/slpi.mbn";
+> > 
+> > qcom/sdm845/Xiaomi/beryllium/slpi.mbn
 > 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+> Could be this change done for all the firmware files at once but later?
+> 
+> Currently all the firmwares using this legacy path.
 
-Reviewed-by: Duje Mihanović <duje@dujemihanovic.xyz>
+I'd rather see the patch fixing firmware paths first and then the patch
+adding SLPI with the correct path from the day 0 (I feel sorry for
+causing pain to PmOS maintainers). Of course both patches can come as a
+part of the same series.
 
-Regards,
---
-Duje
+> 
+> David
+> 
+> [...]
+
+-- 
+With best wishes
+Dmitry
