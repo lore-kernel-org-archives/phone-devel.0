@@ -1,181 +1,132 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3D11F4606
-	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7770417D6;
+	Sun, 30 Nov 2025 00:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764454972; cv=none; b=QSYuyFPlEbu12CE2wb7Np326/CQ26eCADrL7LhBdVoiW7TA9dZ85UVrFtoWewwWYlUAMLaO41f+EG7QQwwl5rLWhC6hgfbl5JTFRCiBz3t11OOxb/Q+HMy9lwz5Vt70aNv10uJed4Oz7NAo8Yaso3+oDneeIaZAbltkAFqlB3Js=
+	t=1764461303; cv=none; b=cwWGKqfYpAG+MY56Eokwp696m9CQ1GF2LkPUxaUphztGQoRbFRC63LYrvwlhDcXSIj7C4PD79g7/eRhQb1lEXim8j56IEhWZp3n8VGuvlclG0ziG5+kT7WZPreVSnmRmiGSHIzkRRPLRsLNuhLhi0iuRogi+YvlVPArAgyVntvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764454972; c=relaxed/simple;
-	bh=BE4iF1qYdTW8dcx+Cn1INn01yGU14vjy2WHpax2KPYU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qs7nKHwrqI3k75WYH9PF4hy+fDnv9v4o5XNPmDiCXFBnnKM49LDOurJucXcJj0F1/ugpdiiVSNRvWYkCfL/w3qZHaHIqSVe0jHLxlut9kB0gTov0zhSzFO+AMbDWF5O4pAQNy2C/Lu+3cuq1OFNNA1FOieNv/eNA7vMm72Lswm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m3Ipb06M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=APITAn7v; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1764461303; c=relaxed/simple;
+	bh=cC21v9mFYe2j/770WeKb3fcKEuR/IXGavK5QB7A3kuI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CpPFLwJ7vNCtSmo7iw+b/USPPob5eywMEOfPb9lczJwVL9qN3JjLYE9kGOBuvi364to6khPQVckiCChEgTydvxp9U2Z5no8w1oksBi7bV074SgSEfWT2h58GwpTIwNPNsd9I27hRAIG3Z7VzVyK+4usszMl78nKcXRvTGSIPMA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvXffbns; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m3Ipb06M";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="APITAn7v"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ATL1qlS3718481
-	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=wjwQhzHT9BVqC2zA4PkwVgYC
-	rw7KRmitIItefR9bGTM=; b=m3Ipb06MA1W5TOZuy4IH1Pbr4XtBhbiRBd3Pw2+f
-	7fKrlQiFVfdRBI3qwOjUmPZu5i+WoJeOmzHn4afE0IafTB+eBGbxRVjB+lzpSjqP
-	fAqqxXjnPHEwcC0T0AJksTScSBd7taVMa7Fa4WjrZz7JtMbjnbz1d/uMpcVPKZSd
-	7BOUjdlXPCcBBVUXqX+61T15cz4Qty8ySBmwZ9MJ9qldJuQi+lZE43pg+p6co86u
-	FgZBqCxhJq+eF0inR9fvs9S3qGkLtDHX3h0QvnmNphR3OswL3oFgMxJN2TtHkXV/
-	91E5CoEz6b0AoJTPb0aFQZXS56c3f51y3qblSCr0MbSlgQ==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aqphf9hrm-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 22:22:49 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3438744f12fso7751668a91.2
-        for <phone-devel@vger.kernel.org>; Sat, 29 Nov 2025 14:22:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764454969; x=1765059769; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjwQhzHT9BVqC2zA4PkwVgYCrw7KRmitIItefR9bGTM=;
-        b=APITAn7vh6UsrWyj5KMU02XsSL5nw1RFPkWFyFdyHoUyUEgWruFq07t3mWPlA9z16s
-         MYc252wXFLu5Pco9iD3pm1AMWXa2K3GKGzknIvRPQU2ijRdXKtOK1n0EpkotcuygRZ5j
-         R5KsTI30DXRJgD8KW/Vjv31bjpVZsa0hlhLFIhd9PWCyjD80tTNWCCGWSWvVyOKuQjMf
-         Mr9saRsuJMliEJ7pWQJMZBMt18XcYx1yVmZ/MBEO5+cmvvN6MhbHRukvxSfFZMacsj0O
-         La6xAXGkNOlj2XMvFRID+yiL2xaV0YXc4kyyUl3wcYfQKV5Nb2V3t8+4TJPZMECiMjZ8
-         GoUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764454969; x=1765059769;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wjwQhzHT9BVqC2zA4PkwVgYCrw7KRmitIItefR9bGTM=;
-        b=wBb4awkDEiz2Ymh/azWkx6Pky2tZFUhAwBQt/jStxnxZEy7sDJw/39GucpXSNJsJem
-         K4K2EtJduhw3j2h752zK8CaJC1PKhZAFIB4/co42QsDDquKEQxqZCRz3qpP55evESyDR
-         47y4NGhDIRKmof7yC/DeTZK+V5jAKQAOBa2tmIV98lF+YGAYDbxjo6wQ+9ucsHVYycMT
-         arVArKxHaUgIkUWLSiaPwivgq+2B9JbCpDk/k+BPyJgvyHEhEC1UZTCKvO4BnbcqtdI/
-         D+mb6Nvy3dQVaBiceTUs0oGwR0nLsc/fHHdThcUP05mcfX0zNOQ0InOG9KVfSBtcrDf7
-         DECA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIJAzUKunuSFzDiM4kvHzigQPeQ4cRkWB3XiVrofGBCNh9s/cJzQUqbUC9k2kIWy9+LggIGwagTL8snA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJJlzQOh4BaVQ+hRHrPUI4RkTDSGE2yu/zj+3EEnKYTIrtGo0x
-	X6xu7NDoZ4i90bvi/Q+oDowTDtNCcySITuOhr14c/SYD/3tUPxFNaw00bg1O9Qfe6nKarJlnxce
-	l+lylvTVMpl4LT51/CVD8p+5stXvvQvn5QzNp8OrYYtihsIvSapDU3eAVBEj3AA6/25r8GAPqrN
-	43pLhwr7B1ruf7KN2XDckX/CkMl0CCe0M+0NMQGlYl
-X-Gm-Gg: ASbGnctbHc5j63lwtN/qtA9YvYMGwt2/TNSUuY7QQF2h6T+C/l5wfktiH2o6Z2Sv1dL
-	yO7roWMcdFmeyQe25QvInu4fHxcgPvVHokfE8YZg70+MSjKxHdp8rnJrL7R3p+LKiuBfOtP9kyb
-	0V0nIpVmAu/okfc6HciUrxRKFPFQwWYZg10TnulXDk2Zh/KKkmUOnsR/XWwKn1vMWopg==
-X-Received: by 2002:a17:90b:1802:b0:338:3789:2e7b with SMTP id 98e67ed59e1d1-3475ebe8350mr18298536a91.13.1764454969064;
-        Sat, 29 Nov 2025 14:22:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAfJJiKsqxeMifoaqRLpI88E1sfmB8UrYGYLg8GAPopV5FYeDzqFmW0/WwkQLCfn+7ugJUSYOqrKvAQwwcELU=
-X-Received: by 2002:a17:90b:1802:b0:338:3789:2e7b with SMTP id
- 98e67ed59e1d1-3475ebe8350mr18298520a91.13.1764454968602; Sat, 29 Nov 2025
- 14:22:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvXffbns"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DDC23C4CEF7;
+	Sun, 30 Nov 2025 00:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764461301;
+	bh=cC21v9mFYe2j/770WeKb3fcKEuR/IXGavK5QB7A3kuI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=nvXffbnsCF9ijv0wE5tEiZTEyuFfopo/fxRwAcwjiuUiWI5fij2y33j6re+SCf9vI
+	 UX20meBm/IGmic7+z1mXtZvKWy/J2D55pxbMfXDe7HW9o+FmvRXOxHi30alehaAyyL
+	 unYkYTQirrJwyu0GwfhVOcOUrkqWEdx48vfdGQC+O71E1w1aBZ7TzV8m9KjulHmG12
+	 lKtwivTQ12xSXyrLq9e7IGOrgLkRGikE4rJiVoFsBYMH4Mh8VDa8foYJYW/HDPWvZx
+	 eiTbb3GLnVbzwDGzMBVx2l1VyzaM5SQDWUeV8t49tuBHidawGeMcRuvBUuo9ubVoBV
+	 wkKFZXNMOxfuQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2950CFD2F6;
+	Sun, 30 Nov 2025 00:08:21 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sun, 30 Nov 2025 01:08:19 +0100
+Subject: [PATCH] arm64: dts: qcom: sdm845-oneplus: labibb is not used on
+ OnePlus 6/6T
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251126-slpi-v1-0-c101d08beaf2@gmail.com> <20251126-slpi-v1-1-c101d08beaf2@gmail.com>
- <jxlq4fbtl5rkiyyaivoelynw5hjpb3xtg4klcyocyzbs6ncpqa@rhqcwbehisjv>
- <2c7fc579-6d46-4821-9059-4ccce589ffdb@ixit.cz> <hw63nhhm4n5fngmrhy2pktztxq32ix4n2be5dycowglekee2rm@js3jyst2i5oz>
- <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
-In-Reply-To: <58e62b16-2056-470f-a868-1b958949c411@ixit.cz>
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Date: Sun, 30 Nov 2025 00:22:33 +0200
-X-Gm-Features: AWmQ_bkGfUo3owmNnmBkWC7NZ8BctNgfDdy_d7ejM7ruh6dnStGPqfNnfxjYRwk
-Message-ID: <CAO9ioeW9=TPde4P=AOcQANvPv90K-9MkcRRgb7HNwe8KiOpFjQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable SLPI
-To: David Heidelberg <david@ixit.cz>
-Cc: longnoserob@gmail.com, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-ORIG-GUID: NXXYcMFqAqTNdNm2aOqrN6hwSSjRKUQF
-X-Authority-Analysis: v=2.4 cv=FvwIPmrq c=1 sm=1 tr=0 ts=692b7239 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8
- a=P38NquS9la7hg7DsUToA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDE4NSBTYWx0ZWRfXxkut+6n2zlAD
- pSp0CqvRVp0neZO+kAuHmx4688acoz6cl2CF6W1QO5pPZ6dElvn+dylUEPdAgmuI8zmq2F3kKCN
- cJnxYEuhjJPF2mVrJm2jLaeyIMoLBsB8LP2r/jfTcImLenV4P+vobgV/aTKXpsrtFNlfPP7BeTp
- NYKh3JwH0xR2ohTUHkoJ1sGXJgnxq6LrT2ddzH5QMomIZZa3V2fgfWlXVYS3t4mi63877wCAs9l
- LCWuatqNOjq7Rh4A55rnhmc/kcjgeF2FcB9BRTSQjZ3Def/WEXXGvo8iHLzWlWAE1TAf9OXUluU
- qzIA8rC9ZiuXkGP/vIdo+slDjX1Z4yGSqkui86nLe7TFhre4YmIwWnYkBMjLHMVBLlgC8yDl1NW
- Av3CcKGEUDDEIMhOl9OsNX2+UiYm6Q==
-X-Proofpoint-GUID: NXXYcMFqAqTNdNm2aOqrN6hwSSjRKUQF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
- impostorscore=0 clxscore=1015 suspectscore=0 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511290185
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251130-oneplus-labibb-v1-1-bb3653e43120@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAPKKK2kC/x2MQQqAIBAAvxJ7TlDDDn0lOri51YKoKEUg/j2JO
+ c1hpkKhzFRgGSpkerhwDF3UOMB+2XCSYNcdtNRGqUmKGCj5uwhvkRGFNOjc3NGooEcp08HvP1y
+ 31j4EN6vBYAAAAA==
+X-Change-ID: 20251130-oneplus-labibb-05bdd6d6d2b1
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1552; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=yhGffhFUntOUCTMWNhgszqUC32ou/2+cER0uMXyFzY0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpK4r0rHKaYmKTRdO95a/fUctPZC2iZP8xj5/jy
+ oTgMJxYLYqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaSuK9AAKCRBgAj/E00kg
+ co+lD/4qrLRtW3r/YdjJ/A08QcH8fVokvjJ3shcfOyzgXlyXdIqhEDpYgPaaeVw+BNk6i7Qvl+x
+ sKpVv/hV3MAEPsiB6R3wabQJPHBqImSCrs+i9IS3xMv7icrTfMMOnltvZQRc2qexmHirMx9eetM
+ M+7XBqE7xsj46wiiyXISCB4riUGk3l38PX9yMGJeh2i8GxljWTPzUKgJ7ArjYx5TqrH/7AM5tWM
+ BugHLf4b6YGv/LCmQq3HqBRbah3qxoAo01yKRPrZudgkhFkTCFatLrJkcGpCFcu9H8q42c1rlbx
+ /xTHVwD/mAkfaGK3Xr3I3u/D2/fvJKFG6iMz59KBb5XFduvqzGfdGecnhlMt8DAAdDrCOLtfNct
+ yFNnDM8k0WvNdpxHXg8gHVQ5ALrWoTT+TdU24mcIoYQp/1EO/00yZPYLbOl5eip9ZKQHDXqf1j4
+ wpCUbhGbRmitVRWfk6l6LPX/5Adw4Daflj4MsaFUS0GkzgiUrmX/spD0GeF0Fr8o64Twei+xVhJ
+ U9zwvGXjfitYHN0EidZP6J4EDUXgiDF6S4UQICiK9hzM1ezB7qViKm1RVqMHKFe+pkt2eufXUuD
+ 0U06xuCt0v4sWMO8bPxpUjwHn+Ali4ClUgNEEO8QGHNtoXLv8mAET2c1IL8THKExB/Uw6h/xmZj
+ 48uUe6d0lYTAlGQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Sat, 29 Nov 2025 at 14:08, David Heidelberg <david@ixit.cz> wrote:
->
-> On 29/11/2025 02:15, Dmitry Baryshkov wrote:
-> > On Wed, Nov 26, 2025 at 03:59:48PM +0100, David Heidelberg wrote:
-> >> On 26/11/2025 15:41, Dmitry Baryshkov wrote:
-> >>> On Wed, Nov 26, 2025 at 09:08:35PM +0900, Robert Eckelmann via B4 Relay wrote:
-> >>>> From: Robert Eckelmann <longnoserob@gmail.com>
-> >>>>
-> >>>> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
-> >>>>
-> >>>> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
-> >>>> Signed-off-by: David Heidelberg <david@ixit.cz>
-> >>>> ---
-> >>>>    arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
-> >>>>    1 file changed, 7 insertions(+)
-> >>>>
-> >>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> >>>> index 785006a15e97..0fb1d7e724c4 100644
-> >>>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> >>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> >>>> @@ -425,6 +425,12 @@ &sdhc_2 {
-> >>>>            cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
-> >>>>    };
-> >>>> +&slpi_pas {
-> >>>> +  firmware-name = "qcom/sdm845/beryllium/slpi.mbn";
-> >>>
-> >>> qcom/sdm845/Xiaomi/beryllium/slpi.mbn
-> >>
-> >> Could be this change done for all the firmware files at once but later?
-> >>
-> >> Currently all the firmwares using this legacy path.
-> >
-> > I'd rather see the patch fixing firmware paths first and then the patch
-> > adding SLPI with the correct path from the day 0 (I feel sorry for
-> > causing pain to PmOS maintainers). Of course both patches can come as a
-> > part of the same series.
->
-> Would it make sense as a follow up, I would changed "the whole sdm845"
-> to the new paths, so distros maintainers can update paths everywhere
-> with 6.19?
+From: David Heidelberg <david@ixit.cz>
 
-I think so.
+The lab and ibb regulators aren't used here. Disable them.
 
->
-> David
->
-> >
-> >>
-> >> David
-> >>
-> >> [...]
-> >
->
-> --
-> David Heidelberg
->
+Removes following warnings:
+qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb: Failed to create device link (0x180) with supplier c440000.spmi for /soc@0/spmi@c440000/pmic@3/labibb/lab
+qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb: Failed to create device link (0x180) with supplier c440000.spmi for /soc@0/spmi@c440000/pmic@3/labibb/ibb
 
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+I assume this is right approach, as OLEDs on both devices are driven by
+different regulators.
 
+Question is, if should be labibb nodes enabled by default?
+---
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index db6dd04c51bb5..78a835bdfe3b4 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -419,6 +419,10 @@ rmi4_f12: rmi4-f12@12 {
+ 	};
+ };
+ 
++&ibb {
++	status = "disabled";
++};
++
+ &ipa {
+ 	qcom,gsi-loader = "self";
+ 	memory-region = <&ipa_fw_mem>;
+@@ -426,6 +430,10 @@ &ipa {
+ 	status = "okay";
+ };
+ 
++&lab {
++	status = "disabled";
++};
++
+ &mdss {
+ 	status = "okay";
+ };
+
+---
+base-commit: 7d31f578f3230f3b7b33b0930b08f9afd8429817
+change-id: 20251130-oneplus-labibb-05bdd6d6d2b1
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+David Heidelberg <david@ixit.cz>
+
+
