@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB87274671;
-	Mon,  1 Dec 2025 20:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E439F2773D9;
+	Mon,  1 Dec 2025 21:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764621027; cv=none; b=dDt2kUi5XSs1wPkoid7Hqt5ufDkHeL/2zwJyHMaR+Tw5DchUA4ddsbkYJqFM3OpJDJuV4fXJUSylT2kX8hGg+95YsfihForSFuFwFw1WSu8yqr1EN09XA8G3obYzaPAFHFell6ylWSWm4WMru+OSZaCbReiwXg4q/pes/+MWHOY=
+	t=1764626148; cv=none; b=ufGebDhm1pUNePuGI3mmhPDftRcresqr8jP3hk7ruZDkLZFd2loN/Jv1Br93o2iEvxy2utJSHaKPfAwpcES19NeojPVbVN6vX7zy+rF2sUaKcoGcYUjtfIWA4QOdh3PsPCvFHepT/2KGZ2CsxBEAcR5S8EMz1pb8jKGddlmfAis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764621027; c=relaxed/simple;
-	bh=X6hdQsH+ZZiPiysrk4XAZsfeIyf2idoUO4G0nds0+Gk=;
+	s=arc-20240116; t=1764626148; c=relaxed/simple;
+	bh=uBotYgWQ+nx+ouVU9ZBUFlMtI/r+PYbW0lsuUr98/qQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uN2PY55HS+SEJmoyV9WUbIJGRpkpLyWjst4S1lQ70GGBn+Ueg5qwa4vAGCbz4lrMaSxuPUQYR18aXkNqFtfPkTdJ4u2HWkBNvU+W2h5UfJDdyxqjcCDB3aSbjsGyyaUif0yeGgtEM5Fogsa42vjsfae6wdSN3OG2rc+dTiBh7NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=UcKyxYsz; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=Q9rq4GtAkddeDk6rIqgwGBSUWXGnRkp7QuMn8caJIzKyUgzr3qYVTqpC+LqpWIRNeWkPIT4mt18fQqWTiQmsGoKJkEbXQ4v5wl/dPA0IeOFVTB7GyJoVCzQ39fDg8NV0DItoeDXsFWK7Z+68iMgI8+bTELJNP+IJGgGJDdfvPzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=ObvHkTRH; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="UcKyxYsz"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="ObvHkTRH"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id E7BC15340F59;
-	Mon, 01 Dec 2025 21:30:14 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 394F95340E49;
+	Mon, 01 Dec 2025 22:55:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1764621015;
+	t=1764626141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Gvg1J67Y3jga9kWsJVUe+1pGfVC9eWJUE4oA+qnLBYg=;
-	b=UcKyxYszjKVous0knnFpjJpJohVpVMgoXaQh8hxkzZ/4teJqhuZrsKdaz13qJaSXxL/yIo
-	auHrvpZndgJhVzzSoQHOAG/PJg4eM3SzrseCmDKvzQ23eu/9HhMAhF0ZkfLP9D+E9Q9pH0
-	EUtvHiyJqPznMhjYrqoGSikoIT78Dxs=
-Message-ID: <c36134aa-a41d-47be-8eee-36cbe5435c7c@ixit.cz>
-Date: Mon, 1 Dec 2025 21:30:14 +0100
+	bh=nVQZ/mOTyntm6xDs1fWWvlyqtu62RDo9OfmZeXa06TA=;
+	b=ObvHkTRHxBGfVvBoVvC3xOf4u/YpAvEzbshh4kjwsXPvSIc7tUUVw9JBA/6zRwVn1DdLty
+	Ek9sqsTMN6KreBESgh7tbGeu2PrqrMHlKGbv8jMLaqUaxOle+k9WVAxxmgVEHe3Zkh4Cwu
+	v6bDNeE1BbYQ7buBwnh/sbSndhLZyBI=
+Message-ID: <63ad4e46-8450-4ec4-bb13-6701f5eec5f6@ixit.cz>
+Date: Mon, 1 Dec 2025 22:55:40 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,20 +41,20 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 4/8] media: qcom: camss: Prepare CSID for C-PHY
- support
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz>
- <20251109-qcom-cphy-v1-4-165f7e79b0e1@ixit.cz>
- <c65411c8-fe15-4cc4-9236-2232c55e4b86@linaro.org>
+Subject: Re: [PATCH] arm64: dts: qcom: sdm845-oneplus: labibb is not used on
+ OnePlus 6/6T
+To: Casey Connolly <casey.connolly@linaro.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251130-oneplus-labibb-v1-1-bb3653e43120@ixit.cz>
+ <3fcfc5b8-7509-4e4c-a1cd-e973d7e1d091@oss.qualcomm.com>
+ <f86267ee-ad70-43ef-8e48-b9f2e509c193@linaro.org>
+ <0d63bddf-7a88-4c59-8ba3-6655e7a8854e@oss.qualcomm.com>
+ <92c1609c-735d-4b5b-85ff-c40995aab813@linaro.org>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -100,79 +100,69 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <c65411c8-fe15-4cc4-9236-2232c55e4b86@linaro.org>
+In-Reply-To: <92c1609c-735d-4b5b-85ff-c40995aab813@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 10/11/2025 12:37, Bryan O'Donoghue wrote:
-> On 09/11/2025 09:39, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Inherit C-PHY information from CSIPHY, so we can configure CSID
->> properly.
->>
->> CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
->>   drivers/media/platform/qcom/camss/camss-csid.c      | 1 +
->>   drivers/media/platform/qcom/camss/camss-csid.h      | 1 +
->>   3 files changed, 3 insertions(+)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/ 
->> drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> index 2a1746dcc1c5b..033036ae28a4f 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> @@ -183,6 +183,7 @@ static void __csid_configure_rx(struct csid_device 
->> *csid,
->>       val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
->>       val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
->>       val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
->> +    val |= csid->phy.cphy << CSI2_RX_CFG0_PHY_TYPE_SEL;
->>       writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
->>       val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/ 
->> media/platform/qcom/camss/camss-csid.c
->> index 5284b5857368c..68adea33cc719 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csid.c
->> @@ -1287,6 +1287,7 @@ static int csid_link_setup(struct media_entity 
->> *entity,
->>           csid->phy.csiphy_id = csiphy->id;
->>           lane_cfg = &csiphy->cfg.csi2->lane_cfg;
->> +        csid->phy.cphy = lane_cfg->cphy;
->>           csid->phy.lane_cnt = lane_cfg->num_data;
->>           csid->phy.lane_assign = csid_get_lane_assign(lane_cfg);
->>       }
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid.h b/drivers/ 
->> media/platform/qcom/camss/camss-csid.h
->> index aedc96ed84b2f..a82db31bd2335 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid.h
->> +++ b/drivers/media/platform/qcom/camss/camss-csid.h
->> @@ -70,6 +70,7 @@ struct csid_phy_config {
->>       u32 lane_assign;
->>       u32 en_vc;
->>       u8 need_vc_update;
->> +    bool cphy;
->>   };
->>   struct csid_device;
->>
+On 01/12/2025 13:57, Casey Connolly wrote:
 > 
-> I'm not convinced you need another flag for this. It should be possible 
-> for the CSID to get a pointer to the PHY and interrogate the encoded mode.
+> 
+> On 01/12/2025 13:55, Konrad Dybcio wrote:
+>> On 12/1/25 1:50 PM, Casey Connolly wrote:
+>>>
+>>>
+>>> On 01/12/2025 13:48, Konrad Dybcio wrote:
+>>>> On 11/30/25 1:08 AM, David Heidelberg via B4 Relay wrote:
+>>>>> From: David Heidelberg <david@ixit.cz>
+>>>>>
+>>>>> The lab and ibb regulators aren't used here. Disable them.
+>>>>>
+>>>>> Removes following warnings:
+>>>>> qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb: Failed to create device link (0x180) with supplier c440000.spmi for /soc@0/spmi@c440000/pmic@3/labibb/lab
+>>>>> qcom-lab-ibb-regulator c440000.spmi:pmic@3:labibb: Failed to create device link (0x180) with supplier c440000.spmi for /soc@0/spmi@c440000/pmic@3/labibb/ibb
+>>>>
+>>>> These are only vaguely related, as there's nothing to be wary about that's
+>>>> specific to these devices - it's just devlink being grumpy
+>>>>
+>>>>> Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+>>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>>>> ---
+>>>>> I assume this is right approach, as OLEDs on both devices are driven by
+>>>>> different regulators.
+>>>>>
+>>>>> Question is, if should be labibb nodes enabled by default?
+>>>>
+>>>> They're onboard. I'd rather keep them predictably parked than left in
+>>>> whatever (potentially ON) state the bootloader may leave them at
+>>>
+>>> Shouldn't they be default disabled in the pmic dtsi and only enabled on
+>>> the devices that actually use them? Many SDM845 devices with OLED panels
+>>> don't use these regulators.
+>>
+>> As I said, I wouldn't be surprised if they were enabled by the bootloader
+>> as part of some reference/common routine and left hanging. Linux will
+>> switch them off if they're never used and I'm fairly sure the users won't
+>> mind the odd couple dozen bytes of runtime kernel memory usage (which if
+>> we go that route probably balance out with the added couple characters for
+>> status=disabled in the resulting DTB)
+> 
+> Ahh yeah I understand, the DT node has to be enabled for the driver to
+> load and actually turn off the regulators if they're unused. Makes sense.
+> 
+> Thanks,>
+>> Konrad
+> 
 
-I'm not seeing elegant way to do this, if you look below my change 
-above, others attributes are taken into csid_phy_config in similar way.
+Thank you both, now I also understand (and withdrawing the patch).
 
-Or maybe I'm not seeing some easy/clean way here?
+Should
 
+5dcc6587fde2 ("arm64: dts: qcom: sdm845-tama: Add display nodes")
+
+also get fixed up to not disable the lab & ibb node then?
+
+Thanks
 David
-
-> 
-> ---
-> bod
 
 -- 
 David Heidelberg
