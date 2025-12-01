@@ -1,115 +1,150 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E77531CA68
-	for <phone-devel@vger.kernel.org>; Mon,  1 Dec 2025 16:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2901288D2;
+	Mon,  1 Dec 2025 16:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764606344; cv=none; b=o2UsPWv2Tbxq2I/30lujYYlO40hVxwdH+xNVeKOuNf4GSZMDWwMizOzKz+MsBNSJeayAO1oX5ANl88tkv4/91ImMjCU8Jh46In094JWWB//5nEJHuDJqGVoitAgyd/H+a6TRhPnl9r3U8AbKLFTw0IhZyuvyoZr7XJZkQ4cX0/M=
+	t=1764606602; cv=none; b=oPMyd3m1QGtFo7ERX1vG1IFbDObePDvNERlO8dSNGWbABIdFzAfJ9562Q1nZEiJRxOhkHE7Q7Vn4fACqZsVDFtWszHXtFJeAjIW2LMw8topcVvpJdGtUWCuHwm/6bvOSRwa9Ykw/ZYIm1VihHQcqDBl0Vd9fyuKXBbQO3auv4Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764606344; c=relaxed/simple;
-	bh=xYjd7tbJoh2y06N1DtuzIzlxdeNR0195+Wn0hvKR0ic=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=JFPMwjO7a4q83MWHAb+WEy+jeAFnWujgDUYEkDXa2sPWISzPP1INiaPnBQszSX6T6rBdYm3o+Mic2izWulf8qw3kYu5+AQVkxQ6J56qnqppgBJ/Yv+kD3stUG7y+7o6INmp45W7M9GA0MdpuH/bOOG7sWbYacIErQ/HEkTUmOog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=Wh7fwvhJ; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1764606602; c=relaxed/simple;
+	bh=tkyO5p8LYYbNGz/+zu6mllYxkhDq9GTEjlu9HhYiUDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MRTZ8ZQvXlE9CcFot5Vkr46Xt3E96IVZ/4Fz44dLpTrVBFik2P9iaBOVm8m19Tc4xNImPZ34vFfyh/sQ/f0jdL5T093JiPDBQEtW4jeEeTUugZ1fTQALI90SE7AYE/8AzrxuMhEv141CQPt8dV7iUJZeLgjH3VNV/OPrpALWdPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=QNZJ9f0N; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="Wh7fwvhJ"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1764606330; x=1765906330;
-	bh=xYjd7tbJoh2y06N1DtuzIzlxdeNR0195+Wn0hvKR0ic=; h=From;
-	b=Wh7fwvhJEouVlTgDON3WupDZPYB7g4nvZwcCpS58k42c0vTl077ww5vK8jNWPhvEZ
-	 yZXxieNs7zDu7Gzwwfrq5qOcG5gse/vVohNJBOtHzbBNm6Kad04k/nsZdTtE7h7Ugg
-	 8yUk59ho8+vq2HHB5E6Z5LG4ZOKu2R4py1wYupLEusmu/8DA4nTUfuBHYoEO9BGTXe
-	 OKU0IeE3kFJw1EMdCiZF4YGtrztWrQkkIiXiQv11x42DZg9WTwi4RbT5Ju4KO6QLrc
-	 P/BMYHBe4f3B/+XU2wJvwvH6ZDba+5wrrKnB2WHf7sGW/AvnqRKkG8LozFOlwA85WB
-	 jF+cuEvPP8OEg==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5B1GPSs0006348
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 1 Dec 2025 17:25:29 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="QNZJ9f0N"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 2A8061C00AB; Mon,  1 Dec 2025 17:29:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1764606591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ys4fM5oxuac5BA8yXwPfUxu5XSYHVpba6xxZaqliwMw=;
+	b=QNZJ9f0NVkMN90sS7G6UbXXOErLvhTIW9qzPwO8ba1XpK64RGNMdA4zIDxxP7GCydNAumH
+	FKEj2dlLZhZJ2ewUXnP/wNGs7cXtycpaTYJi2781Ib4aYVsd6Vs1IqFEKV6AyxJ0sXRhIs
+	DDJTsV7FSPh7vM/rXrhueYudwFV8Dks=
+Date: Mon, 1 Dec 2025 17:29:50 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: david@ixit.cz
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
+	linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+	Gergo Koteles <soyer@irl.hu>, Casey Connolly <casey@connolly.tech>
+Subject: Re: [PATCH v8 2/2] arm64: dts: qcom: sdm845-oneplus: Add alert-slider
+Message-ID: <aS3Cfmx3gVyl/wTr@duo.ucw.cz>
+References: <20251113-op6-tri-state-v8-0-54073f3874bc@ixit.cz>
+ <20251113-op6-tri-state-v8-2-54073f3874bc@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FtYVekWiQ6/kXxDO"
+Content-Disposition: inline
+In-Reply-To: <20251113-op6-tri-state-v8-2-54073f3874bc@ixit.cz>
+
+
+--FtYVekWiQ6/kXxDO
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Dec 2025 17:25:27 +0100
-Message-Id: <DEN0QJT6O8BU.3INUCXH1I0P0F@matfyz.cz>
-Cc: "Johannes Berg" <johannes@sipsolutions.net>,
-        "Rob Herring"
- <robh@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje@dujemihanovic.xyz>,
-        "Andrew Lunn" <andrew@lunn.ch>,
-        "Gregory Clement"
- <gregory.clement@bootlin.com>,
-        "Sebastian Hesselbarth"
- <sebastian.hesselbarth@gmail.com>,
-        "Brian Norris"
- <briannorris@chromium.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>, "Frank
- Li" <Frank.Li@nxp.com>,
-        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>,
-        "Peng Fan" <peng.fan@nxp.com>, <david@ixit.cz>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
- samsung,coreprimevelte
-To: "Francesco Dolcini" <francesco@dolcini.it>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20251026182602.26464-1-balejk@matfyz.cz>
- <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
- <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
-In-Reply-To: <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
-X-Spam-Level: ****
 
-Hello, Francesco,
+Hi!
 
-Francesco Dolcini, 2025-11-28T18:05:37+01:00:
-> On Thu, Nov 27, 2025 at 04:29:12PM +0100, Karel Balej wrote:
->> To reiterate, the firmware is generally available but is not part of
->> linux-firmware and the entire process of upstreaming the chipset support=
- is
->> stuck on that.
->
-> I'll try to see if any of my contact in NXP Wi-Fi group is able to help. =
-Give
-> me a few days.
+> From: Gergo Koteles <soyer@irl.hu>
+>=20
+> The alert-slider is a tri-state sound profile switch found on the
+> OnePlus 6, Android maps the states to "silent", "vibrate" and "ring".
+> Expose them as ABS_SND_PROFILE events.
+> The previous GPIO numbers were wrong. Update them to the correct ones.
+>=20
+> Co-developed-by: Casey Connolly <casey@connolly.tech>
+> Signed-off-by: Casey Connolly <casey@connolly.tech>
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Tested-by: Guido G=FCnther <agx@sigxcpu.org> # oneplus,fajita & oneplus,e=
+nchilada
+> Reviewed-by: Guido G=FCnther <agx@sigxcpu.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-that's great, thank you very much!
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
 
-I have received a reply from Jeff in the meantime who has discussed the
-matter with his managers and unfortunately, they are not interested in
-supporting this chip as it's considered outdated and would pose
-maintainance burden.
+Best regards,
+     							Pavel=09
 
-Jeff however thinks that you as their customer may perhaps have more
-luck when talking to them.
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> @@ -25,6 +25,41 @@ / {
+>  	chassis-type =3D "handset";
+>  	qcom,msm-id =3D <QCOM_ID_SDM845 0x20001>;
+> =20
+> +	alert-slider {
+> +		compatible =3D "gpio-keys";
+> +		label =3D "Alert slider";
+> +
+> +		pinctrl-0 =3D <&alert_slider_default>;
+> +		pinctrl-names =3D "default";
+> +
+> +		switch-top {
+> +			label =3D "Silent";
+> +			linux,input-type =3D <EV_ABS>;
+> +			linux,code =3D <ABS_SND_PROFILE>;
+> +			linux,input-value =3D <SND_PROFILE_SILENT>;
+> +			gpios =3D <&tlmm 126 GPIO_ACTIVE_LOW>;
+> +			linux,can-disable;
+> +		};
+> +
+> +		switch-middle {
+> +			label =3D "Vibrate";
+> +			linux,input-type =3D <EV_ABS>;
+> +			linux,code =3D <ABS_SND_PROFILE>;
+> +			linux,input-value =3D <SND_PROFILE_VIBRATE>;
+> +			gpios =3D <&tlmm 52 GPIO_ACTIVE_LOW>;
+> +			linux,can-disable;
+> +		};
+> +
+> +		switch-bottom {
+> +			label =3D "Ring";
+> +			linux,input-type =3D <EV_ABS>;
+> +			linux,code =3D <ABS_SND_PROFILE>;
+> +			linux,input-value =3D <SND_PROFILE_RING>;
+> +			gpios =3D <&tlmm 24 GPIO_ACTIVE_LOW>;
+> +			linux,can-disable;
+> +		};
+> +	};
+> +
+>  	aliases {
+>  		serial0 =3D &uart9;
+>  		serial1 =3D &uart6;
+>=20
 
-I am also still trying to find out whether upstreaming the old firmware
-version (available as part of the stock Android) would be an acceptable
-compromise for them - I never really intended for this to be supported
-officially and I wasn't too hopeful about getting an up to date version
-of the firmware either (although it would be very useful as it would
-likely solve the issue I'm hacking around in the third patch of this
-series), I mainly just want to upstream the support for the chipset as
-far as possible.
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
 
-Please let me know when you have some news.
+--FtYVekWiQ6/kXxDO
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks again and best regards,
-K. B.
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaS3CfgAKCRAw5/Bqldv6
+8np0AJ4g37/E7yC1TFrIYjmX1lFqPyanagCfavl9NgqGe6YnRqOeqERMZWE2skE=
+=M3u4
+-----END PGP SIGNATURE-----
+
+--FtYVekWiQ6/kXxDO--
