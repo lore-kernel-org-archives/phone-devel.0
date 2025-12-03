@@ -1,61 +1,61 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D52DC349
-	for <phone-devel@vger.kernel.org>; Wed,  3 Dec 2025 21:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6E2D2490
+	for <phone-devel@vger.kernel.org>; Wed,  3 Dec 2025 21:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764798454; cv=none; b=AJhDyb1yAXn5HvqMc9bMsk5sebe5oe7CPxoHDcjK2K89omTnli6XzNu8nylB62Ya1gbwoiVyaiUnSbYmIO6jwT9ZP+lHeQMzrk+5JXOaUxUdXUidCnxWpnc3coNOSvCeLk/6Wo4fWVwraORSQPgTWI65xEZ4KB6Q8d8C/1ShsBQ=
+	t=1764798657; cv=none; b=eGLwt7NUn6Bd/5snJhOhmc72M2vhA7ZqOY+v5nLsBDwOG6wGtSLufUCWl3hxVwKHFFRnaOZAjz2EvvC5/e1mHGqXqVypyDl3rbAzBm5mh6JRWhdLXpDkMFhZSiyrAAdtg6Sq8Cu+zVt0fiAgqDYr/H5aFpc2+dk5R9V1T1WDWBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764798454; c=relaxed/simple;
-	bh=VZVdZ44lA0brLQX2RzHeYexOKxCAhiFjKkt9kwiarbM=;
+	s=arc-20240116; t=1764798657; c=relaxed/simple;
+	bh=PZj3jANR6/nSU6UkeOQuWgGLC3q5F/VtSyt7tbEpauE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=udEv5xtBgCNVaH864l+SeZMAMIl5p5zYAZUtwNgtCwbNaxrqlEtOkJ+j8FCE/1mYIPVg+/h3uOd1CAjQCvnF4dg57LgJP1hBL4gU6aOuSMt6mQbojy1ssDyyUS1g6xAf1AAO1kdxngg0X8+Y5TA9ovTeg3JrY6aLxzhu85cIlJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=O2Z8ZpuV; arc=none smtp.client-ip=209.85.216.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=k+n2Xn9UByKl+kq3jx/xQkIe7zac8Is4sF8xWn7uAiRbC3HRKxMaJd2MjGILorRmuhSaS7U1K/bYnbnx7vUAxMtYlMmLErqxZfgR57TXQpEodN1jOWFIaVi68yjPZygbVXUgwRzIwXPRuMlrpjmlGUqVOSXIzl3lf62tBcpJGRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TpsGPBE5; arc=none smtp.client-ip=74.125.82.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="O2Z8ZpuV"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-343ee44d89aso228204a91.2
-        for <phone-devel@vger.kernel.org>; Wed, 03 Dec 2025 13:47:31 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TpsGPBE5"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2a484a0b7cfso1708932eec.1
+        for <phone-devel@vger.kernel.org>; Wed, 03 Dec 2025 13:50:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1764798451; x=1765403251; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1764798655; x=1765403455; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qKeGTsD/DT+TUGUNxy2VzIns/N4h+6YktbT6beUiGo=;
-        b=O2Z8ZpuV8ycxjwkA+pLMJWenMdQAb+JyRRa6UxvQmtSp6ROtIaJ6plkjItzBou7rjJ
-         MN/Z/vt63WKG6WLo8sXOssSFEn6LOtzH8LAj4mD0dMTG1CBvpwhBRgq7KlIlSdvxbS61
-         CIyzdJRXWPjHAbknQsTe4JAFiPvS3+EBYP9Io=
+        bh=o6chODghEB4z80xHdOkemzEluE/IBI6XrITBvqfM7dE=;
+        b=TpsGPBE58rbo5KCTYqgujRkIIMkBKqs4f7u/+pa25FqLzR0iQEdN6Ey5UXF7eF/LAf
+         P0mYb4NZguqkp5XJDbG3yufvHhEewGXSKauLxZXmScxmytiaKSAKQTfce2RRpSrfvYYH
+         7yrLIw7FDmVwlDdo0eXJRDB+0RkQVbDVYKS5Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764798451; x=1765403251;
+        d=1e100.net; s=20230601; t=1764798655; x=1765403455;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+qKeGTsD/DT+TUGUNxy2VzIns/N4h+6YktbT6beUiGo=;
-        b=g4BPonGJ58kDgOZT8YKcC0U2oo4wLH2cFcO6vCabEFynEkb3kaBmX7hIKIBjgFr4LO
-         kVdo9H9K++76t4KSYNVuSahtoC6nDiEkwFPdO0E1ZNtJpaggGrs3FhneIKIHMO5GbvNa
-         Xgw7wxhNRUpPEEHtroLlwUEfmNpBTKdLMUS7+4ao6v5NVnYSWnKMNmHLKXCKWJLSGo0P
-         zQFig7BaMCnbzh5ZA5rQznSgfKBbdlCGntIQ+ZBoa6lVwa1+b6V9yNBDVVOQExeZ/1Ey
-         Lv3PafoI2RuGSxTeqxZj91tULuHqXMu7Xy5lDKfAoQFo7K2oJYn3zEcaYwWqi8yNGVMa
-         XVGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEI03WfWb2hcpk9d5zRpynWiVuNGm/pFV5L1/EJXOJ0Wq1fMOE1VjohMEP/0WlUXkHqwWKcbnvycUKbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx38n6L55T+sOQ4GchUAhCQJtigr9xw2qfWV0+TU7wIosf29lGT
-	JxOyjIGSYXdc7qBWxiSmbxmtRtVvyo6MHlm/ArVx4aw49+ouqpBPymYmaIDvDwhkFQ==
-X-Gm-Gg: ASbGnctYSWebrWEnOF8RDLrMoLlPNJ5/H5q019pwwtdgrvysUlMUSH0xFzaHsLBe1z0
-	/QgFNfaowpliNwfQGgur1sWKbHmXzFLzQ3Ty6LvT2VcBqvABlq8H/UQaCS+7cDzFNKgNPybFi/u
-	h7YJVvYuFow4K1yH19GD2RMzywiYZr9MLuIEgTTtAbrCWVNMsWUnW0z7brFxWWYLMSrWbvEg5Dp
-	aZd04XWUaYIibqPez8jQQMIt+3nMVXS0w2ZRtKIQRG3mApBHjxQjBEWQ5/CBo9iNnmw14Ovg4JN
-	lVq4YhZ2gWrNKA16fjugS9c8m60sJHeePhr6pSBc2TSInoqzzEIJ6jvMnAb1nNn/GNDLf8UT+Vl
-	h8/KCO6m0yeDNxL3rNKIkMz4kk8aVASt7rWibVwtjGuRJ9rViShwG/Wy8lxL+edJolPY/wwmbhu
-	Y7NFD8M/mHUr+PDdJDFrrJQc22goJN8eoQ/Pyspjg5SPn+Gy+R5w==
-X-Google-Smtp-Source: AGHT+IHYOL+UBYAVNBaexNp51zLW4j5ZRWtvPK/36fgfBgTEcmZyfDLkwf8DPOCYg9Guqcci0ODQoA==
-X-Received: by 2002:a05:7022:63aa:b0:11d:f464:38b3 with SMTP id a92af1059eb24-11df4643926mr1543335c88.2.1764798449474;
-        Wed, 03 Dec 2025 13:47:29 -0800 (PST)
+        bh=o6chODghEB4z80xHdOkemzEluE/IBI6XrITBvqfM7dE=;
+        b=Po1L77JCysV3aiFS/H/s4RVhiqKWDuvdgd5JJIijGrnKlz25zrK7xl5fovkePjmjmc
+         HJoLICqEGshDKPbS/yU51BRkTomBvIQk9zns0ToR493mcNUS68BXdXMiB6AtiaF04MNO
+         Er20QN8RPz9uDNk9ulZso2vb73c/OVNFCMJTE/b6nXb3MJeQq7zbDaws8bn7gbYxhYbG
+         zc6PMQFYPm1gy0aWYRyzHAiJm2kTC/RyBvd7F67WKUz13F4/HDZ4hskJxspssfe+2A14
+         c0kUO798A+R40+aCuOz9162fSlpkMPbY7QdhSLUKeut7+aUFdmE1A7bxFvjEgNAvAw9y
+         hV8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVMeyDI/8IevisVBlByiml4G5DZ3j3oXBAXtfILP/gXJFCyPf06akirqOE2stqi5XKpDbdIU6JkwsEwtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBerfs3vt3u83TSvxSOx/bJ6aRvWQ3maVrotiSiir1PK+XPBLU
+	GiaLjfxjJawid3kw7Mebr+qXMBXqR0RXflvuNtmZQEfMJyxEimc3Sy+vFmtj6f5/xg==
+X-Gm-Gg: ASbGncu9SaNo7QAtREYVvhthLnY++BEOwc5x56tWtes9qEJ+z0aZNoYohkF/0MKjmI/
+	YMbUPnFF6zwweTpogZmfOHpM36OVLy+JQvy7NelmVkTvZu5ctXh8UUhoI/E553ahrvEoY55zdlf
+	6pjrtBAeNqCJMa4WhPKhbJvnzRpV+v+5obvtTqDk/n5QsQ+cpAwSbDXiqXRDrBSzGTyZFVkq2Y3
+	1UKL38E3yeoUDSi/lEztjyOU9YxUFCWX//i7SoLCBXTdLMsiJZfopLlmgTLB++9Vuyk5yMzv4F2
+	aTBNlxwgsppud2r9k8XqkpvWR7OFO6EqgHp0NGHl07lca2d3FRbfaN4XQgogxTuL1tszmKJqmYe
+	uckE3OPN8aKT1Raj/niF1yuVk7TIQRv9/VMHcLBwruz3lh91BgGg4+sRjH41A9jNsneFE3f0cIT
+	rfWKJKZ+QI6A3SZY52K/qPDYlf8I5xwm5HcDh6DiKlAGW2O71V9w==
+X-Google-Smtp-Source: AGHT+IEIEIBW08OkV8WK/jMyO0yClG6Glkh0kZ5O3uJlxkndo5BOSqM+ZQ1/IXiO+9a7SW6sezHK1A==
+X-Received: by 2002:a05:7301:60e:b0:2a4:3593:cca7 with SMTP id 5a478bee46e88-2aba3394a44mr820588eec.4.1764798655218;
+        Wed, 03 Dec 2025 13:50:55 -0800 (PST)
 Received: from localhost ([2a00:79e0:2e7c:8:e953:f750:77d0:7f01])
-        by smtp.gmail.com with UTF8SMTPSA id a92af1059eb24-11dcb04a07bsm88741033c88.7.2025.12.03.13.47.28
+        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-2a965ae9d06sm69699431eec.4.2025.12.03.13.50.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 13:47:28 -0800 (PST)
-Date: Wed, 3 Dec 2025 13:47:27 -0800
+        Wed, 03 Dec 2025 13:50:54 -0800 (PST)
+Date: Wed, 3 Dec 2025 13:50:52 -0800
 From: Brian Norris <briannorris@chromium.org>
 To: Karel Balej <balejk@matfyz.cz>
 Cc: Johannes Berg <johannes@sipsolutions.net>,
@@ -73,11 +73,11 @@ Cc: Johannes Berg <johannes@sipsolutions.net>,
 	linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
 	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts:
- samsung,coreprimevelte: add wifi node
-Message-ID: <aTCv75hjdX5XvgCh@google.com>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 1/4] dt-bindings: mwifiex: document use
+ with the SD8777 chipset
+Message-ID: <aTCwvFBE6IF6WT1d@google.com>
 References: <20251026182602.26464-1-balejk@matfyz.cz>
- <20251026182602.26464-5-balejk@matfyz.cz>
+ <20251026182602.26464-2-balejk@matfyz.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -86,64 +86,39 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251026182602.26464-5-balejk@matfyz.cz>
+In-Reply-To: <20251026182602.26464-2-balejk@matfyz.cz>
 
-On Sun, Oct 26, 2025 at 07:20:41PM +0100, Karel Balej wrote:
-> Add a node for the phone's WiFi serviced by the Marvell SD8777 chip a
-> communication with which happens over the SDIO. Also enable a regulator
-> without which it is not possible to connect to networks although they
-> are discovered properly.
-> 
+On Sun, Oct 26, 2025 at 07:20:38PM +0100, Karel Balej wrote:
+> Document the corresponding compatible string for the use of this driver
+> with the Marvell SD8777 wireless chipset.
+
+Device tree bindings aren't supposed to be about "drivers". This can
+just be:
+
+  Document the compatible string for the Marvell SD8777 wireless chipset.
+
+On the bright side, it's totally legit to describe HW bindings even if
+there isn't driver support yet. So:
+
+Acked-by: Brian Norris <briannorris@chromium.org>
+
 > Signed-off-by: Karel Balej <balejk@matfyz.cz>
 > ---
->  .../mmp/pxa1908-samsung-coreprimevelte.dts        | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>  .../devicetree/bindings/net/wireless/marvell,sd8787.yaml         | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-> index b2ce5edd9c6a..36d6ae4e902e 100644
-> --- a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-> +++ b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
-> @@ -475,6 +475,14 @@ ldo14: ldo14 {
->  				regulator-min-microvolt = <1200000>;
->  				regulator-max-microvolt = <3300000>;
->  			};
-> +
-> +			/*
-> +			 * Needs to be enabled in order for the WiFi to be able
-> +			 * to connect to networks.
-> +			 */
-> +			ldo15 {
-> +				regulator-always-on;
-
-Do we have a min/max voltage for this regulator?
-
-> +			};
->  		};
->  	};
->  };
-> @@ -523,6 +531,13 @@ &sdh1 {
->  	pinctrl-1 = <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
->  	bus-width = <4>;
->  	non-removable;
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-
-I wonder if this should have:
-
-	vmmc-supply = <&ldo16>;
-
-rather than regulator-always-on above.
-
-Brian
-
-> +
-> +	wifi@1 {
-> +		compatible = "marvell,sd8777";
-> +		reg = <1>;
-> +	};
->  };
->  
->  &pwm3 {
+> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> index 930b700b73d0..d31ff38f57d1 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> @@ -18,6 +18,7 @@ description:
+>  properties:
+>    compatible:
+>      enum:
+> +      - marvell,sd8777
+>        - marvell,sd8787
+>        - marvell,sd8897
+>        - marvell,sd8978
 > -- 
 > 2.51.1
 > 
