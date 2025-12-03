@@ -1,110 +1,69 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724752D592A
-	for <phone-devel@vger.kernel.org>; Wed,  3 Dec 2025 08:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16D25B31D;
+	Wed,  3 Dec 2025 09:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764751340; cv=none; b=Rhb0/Ch9t56kc6gU8vY9YkhBq0sv/rw9I6l41V13XF6cQ4vA8NLjeLySC6scnOBAn7Gk2u1bLvQQNlM3FD5q0//yCWd/N5BohOR/2ylqFn6Q17+/CoRUACi9PndQXAdsyJzseOaEp9zNMm4YKAd6xG67nBNWadEuXpSh2ElnhY8=
+	t=1764753700; cv=none; b=KoM5PZYVd5QkTVXvk+CZLZitv2dqHxvNTWuveWOJESFYMAmsOLlYoxpVrWLr/ZcDpbWvhaORbC032uVHCkH8nbqC1EPQ6PUHV1taSv3oI4PrExdKFqjPAOTaJG4tFFzZLiBh/+UxpLnzDXw9MXCS82ou/YyGFVcliImxYqeGZck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764751340; c=relaxed/simple;
-	bh=9Gtg9yrrdOx9RykPQgYvPeDHdGSuTO70GsVTYKk97VA=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=dn/hlyLM7ubwnULFlhSIZtzLQPh8dd5fCSfmIA79I1FbgBPbAdEtQa5wBtFpLaEmoKhhRQVqpcP4VGpmg27hfjVvWoZUXiZR6gEoB4KhUGcVNychaMRIXhAkD+PqMJnF7jdlzV+SN053X248tirxG3wzA95R/dlEbwyayuDToWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=YiBP9WYk; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1764753700; c=relaxed/simple;
+	bh=8/DMKispPhVOB48ghh6Kz40cgrCCwGXbb/Q2gzGcmj0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RP5kaSFPzmQDcFPrqM6c95hh2sCjuBU+nZtfr5TYRileZC+AydIzSWXFCGKbN8J311+2rMvo4/6TYplLr+fzwqHNBFF4utTgQxoJv3Sy+SF4ijU+Nq+401g/C8hk2L2RB5UUOFa4NtwhENDMbceWJID/O4KHoiv8db7sKWqhgoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GvqY1b+q; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=EegJXA4R; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="YiBP9WYk"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GvqY1b+q";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="EegJXA4R"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1764753691; bh=U0/PwUkJsw6fA82odH8GggG
+	uGT/E7RXMkt0H6HrI1yI=; b=GvqY1b+qnYFHpoE2du+vVD/ygmhcu4YySyfDamMik5A70CCigt
+	2h68Ee+ZxC3GMM7BauMYT++gJmaRrlCC5+9CDvVEYixfZYVSL6h96HOzz69SM0pGzMKk+up5LEj
+	ZF2t4PTmhQOhFUh7CsQWQCN3lusYTaiviBh9n7EqAXXDroYE5m+bjzDepv1050egcnX5TFpIGQ8
+	R/UsxF3UQO4stvKTQsBYXcn0QCx633C3vldXDzpvGMWFvd/YIfR6V9XOb2I07h6ApGuwCDkkPL7
+	Nsz28dbiRJyBdizAyMqblqRRybJeYrV4jYv8zHFZjMIvFNjSpoSEJZhvf5/Y5R40OGQ==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1764753691; bh=U0/PwUkJsw6fA82odH8GggG
+	uGT/E7RXMkt0H6HrI1yI=; b=EegJXA4Rz3wO7qaGPXzLqokh0Fm+GKre2gyA+l9NtoDDyJq/48
+	rxzTVF4zAgH5cIPpQORCHVUEWvWSUUUBINDQ==;
+Message-ID: <dd83ca81-83eb-4347-b4cc-839e1a5a7f90@mainlining.org>
+Date: Wed, 3 Dec 2025 12:21:29 +0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1764751326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gKNtN35oFunegKJ9D5vKYukJNsyouuo6xWcGRsdsAOo=;
-	b=YiBP9WYkQoC8cLS/z0GOSoKnr+RC2XQbVROg2RZzG2uzhzXXzu8at2PxMYpOLYPqXfFQ6i
-	egxh7IaWIdmQvqmoWEYiRXqP37w1jPE0lpOdGRLNkcrMX+sl58OkOOI4Q30MhTaJyY+gpW
-	0jNqpf5PgJlkSQU2Es5fYY+6Tb+Go2l/bRKeTWLsXSsEdryOoKhDrSDn6SC+CzT4Lyy1RC
-	2jQhbRBOPOzwdF00svBinexahNUz4iEKCXKuKTpBzTT5O6umbzmfTMX71dlOtwwzyLCYUO
-	kMItNTu41+kEZP7BbW544kervk+CZ+oH+XY+VGWL7I3Jv6f2qJLelWUrxgryJw==
-Date: Wed, 03 Dec 2025 08:42:04 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <164f88c182ff8e17a0d544effc7d64cdd73cd4eb@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v4 12/12] arm64: dts: qcom: sdm845-lg-common: remove
- framebuffer reserved-mem
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "David Heidelberg" <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, "Amir Dahan"
- <system64fumo@protonmail.com>, "Christopher Brown"
- <crispybrown@gmail.com>
-In-Reply-To: <1d56eccf-1978-43c2-afcf-03ca88acc0e2@oss.qualcomm.com>
-References: <20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org>
- <20251125-judyln-dts-v4-12-a5a60500b267@postmarketos.org>
- <adcac270-3668-4b17-b430-d67ef311dd7c@oss.qualcomm.com>
- <803c48742755394d6eabc34ac73a42b36615cc01@postmarketos.org>
- <1d56eccf-1978-43c2-afcf-03ca88acc0e2@oss.qualcomm.com>
-X-Migadu-Flow: FLOW_OUT
-
-December 2, 2025 at 10:34 AM, "Konrad Dybcio" <konrad.dybcio@oss.qualcomm=
-.com mailto:konrad.dybcio@oss.qualcomm.com?to=3D%22Konrad%20Dybcio%22%20%=
-3Ckonrad.dybcio%40oss.qualcomm.com%3E > wrote:
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] media: i2c: Add driver for LC898217XC VCM
+To: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, david@ixit.cz,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ Vitalii Skorkin <nikroks@mainlining.org>,
+ Antonio Rische <nt8r@protonmail.com>
+References: <20251201-media-i2c-lc898217xc-initial-driver-v3-0-46e23897e921@mainlining.org>
+ <20251201-media-i2c-lc898217xc-initial-driver-v3-2-46e23897e921@mainlining.org>
+ <CAPY8ntCKfGX_5wCSnQz3YAmQD_pyeF+q3EoMDxyXA4Dgg9osmg@mail.gmail.com>
+Content-Language: en-US
+From: Vasiliy Doylov <nekocwd@mainlining.org>
+In-Reply-To: <CAPY8ntCKfGX_5wCSnQz3YAmQD_pyeF+q3EoMDxyXA4Dgg9osmg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
->=20
->=20On 12/2/25 5:41 AM, Paul Sajna wrote:
->=20
->=20>=20
->=20> December 1, 2025 at 12:41 PM, "Konrad Dybcio" <konrad.dybcio@oss.qu=
-alcomm.com mailto:konrad.dybcio@oss.qualcomm.com?to=3D%22Konrad%20Dybcio%=
-22%20%3Ckonrad.dybcio%40oss.qualcomm.com%3E > wrote:
-> >=20=20
->=20>=20=20
->=20>=20
->=20> >=20
->=20> > On 11/25/25 9:12 AM, Paul Sajna wrote:
-> > >=20
->=20>  It causes this warning
-> >=20=20
->=20>  [ 0.000000] OF: reserved mem: OVERLAP DETECTED!
-> >  framebuffer@9d400000 mailto:framebuffer@9d400000=20
->=20>  (0x000000009d400000--0x000000009f800000) overlaps with
-> >  memory@9d400000 mailto:memory@9d400000 (0x000000009d400000--0x000000=
-009f800000)
-> >=20=20
->=20>  Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> >  ---
-> >=20
->=20> >=20
->=20> > It's defined for both devices that include this dtsi.. perhaps yo=
-u
-> > >  could remove it from there
-> > >=20
->=20> >  Konrad
-> > >=20
->=20>=20=20
->=20>  I don't have a judyp to test with and prefer to limit scope.
-> >=20
->=20This is a mechanical change
->=20
->=20Konrad
->
+On 12/1/25 5:42 PM, Dave Stevenson wrote:
+> Do you not want to restore the current position after resuming power?
+> Potentially use  __v4l2_ctrl_handler_setup() to reset all controls
+> should any extra ones get added.
 
-Sorry, I tried to have a look at what you meant but didn't quite understa=
-nd. In this patch I changed the dtsi that is included by both already. I =
-don't see any other reserved-mem nodes in judyp. Do you mean I should rem=
-ove the framebuffer from judyp? I don't think that's wise since a panel d=
-river isn't added as far as I know.
+I want to.
+
+Should lc898217xc_runtime_resume fail if lc898217xc_set_dac fail?
+
+IMO, It should ignore this error, but other drivers returning errcode
+
