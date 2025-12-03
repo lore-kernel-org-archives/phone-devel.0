@@ -1,37 +1,38 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893672E3B07
-	for <phone-devel@vger.kernel.org>; Wed,  3 Dec 2025 09:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC32D2D5A16
+	for <phone-devel@vger.kernel.org>; Wed,  3 Dec 2025 09:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764754941; cv=none; b=CL/Mxiy1EXkIEu9MfMnYYCTJ90v1l55snILt5mb/IjsjJ0yBNr2jozVKa3FjItMaKv9smmGFIyHq2ffbEqwweam/Rr78t4TVLReOxj2Ydz/Cb2XTEgYirwtLxWFwg+MqUBAwIemjcUKoVg70KdP9IxofGSF8iqNDczew0iIsuIg=
+	t=1764754943; cv=none; b=LlUeW6NN8UNmLfIlvvLubtIhlFC4P7fziGxotItBbPO17d9kXGKRPmo5/4Dj4EpsHEidQL7EI7+05yz1bVtROfbZn/sLENwIzH2J4oGxN74jwvtNCrxbhCGIFQd0qbI5KXKnoT8R5aSLASKmnO23DaT8EsTTqbFcuqDbAkHs4aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764754941; c=relaxed/simple;
-	bh=4/YFbyLCZ7VP5m62rGS/d/v3As5XccEE1Csi7Qzr3vs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B0DKrc3kUnUv9AKwL6un2H9V4m3c+VoKA/n1/FBRTGIaxKICiwlp4STdWkjhNJp5qQ/PxvOvaDYEH7enu/qEQqpXarTANgrbk5Gml4ox2hD3p6plaTObom20AFN0uh4boYWw4sLL4Va+i4M26Vawa9EG26uJ0Mftz2KdrzQ7WM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=ZP2FGBEi; arc=none smtp.client-ip=91.218.175.170
+	s=arc-20240116; t=1764754943; c=relaxed/simple;
+	bh=+sat0IOyv7dYibuZzWaDTfnS78SGXYiAHyot4raeY3s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=spd/5FOVIQUVusL8UvlzxmNAp5kjxaXLVjIP4IbOUHg+2biHxvxSu+BqI8G0x6oEA7DRpmIaAz2X8qbnvpItWnZ7lqU27JlJReczPUgtOEROrdxVudjFBp4RLzOuc/Q3O4PMPIjKBEUtHcmy2XXSiORlKzBHtm/CfSGLiujleaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=a8Q6cpgK; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="ZP2FGBEi"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="a8Q6cpgK"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1764754927;
+	s=key1; t=1764754938;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AnEDzp4wv7gsykfEWXgbvBQGxTjPE7HkdMDhz041C08=;
-	b=ZP2FGBEiARImXukqjbrJVMC5kq2KChGXgHdsDi8bL3Ge9LD8KGSrqRSoncudr2t6GSMwua
-	3kcDRwhci655Rb4PWwEMSsQcnkXWwwWVsAeNzI4BztXGCt8UOo8KaVDstOVb5m7wrYwR9a
-	8xZikVRKRN5ZtA+kC7HHmh1NG8dK4XwdZO/C3wYCkTtAGBneu1ESI+hC8wzUv6bP1O5Erf
-	YGyETp0+SNSLTY47hrs2aD7uy1gpYpnGkrb95lhl/KqlY0n37JYorKgtbWXMZErQzIcG0Z
-	uTt56mOiEgnufRiDhwmUUcAjkqxz0B69GGvGHw7b/vA9Kb14l6e2IfRW9bMJRw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AR/mQ+VHrTE4fKWsWqOutsuZW/BoYfxy/HGFAzx2pPQ=;
+	b=a8Q6cpgKepQbcBt3kktHcakXZTz9Pv9HD+BPFWS68j+LoKgVksfT1tjbFNyCONqy2YuYhD
+	rGnca0vPrXvEHYZHQx+iiDqjT0oAzx1jsS1XMHPUYV1yJwOj7IfbmKs+UFsirWwvuF9btg
+	v4YHAm4PkHa8Qvr0FYeh8JARUhnrU0y2W7QZIAzNUrV9P+b41iLs2ZP5R88tadeFBQyWZu
+	v2D3CtcqBvUpSZwofv+qt0j3GNhxuouIkdgO98jECsBNhvi75oxQ7Nsk61gGuqBb45LR0X
+	GXNOA5p1yDTkaAa2KcxZxZ0bOIG4Zd/9YGXLcz/hNClLtxwQUG0G6AHWktTfyA==
 From: Paul Sajna <sajattack@postmarketos.org>
-Subject: [PATCH v5 00/12] arm64: dts: qcom: sdm845-lg-{common, judyln}:
- Improve HW support in dts
-Date: Wed, 03 Dec 2025 01:40:49 -0800
-Message-Id: <20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org>
+Date: Wed, 03 Dec 2025 01:40:52 -0800
+Subject: [PATCH v5 03/12] arm64: dts: qcom: sdm845-lg-judyln: Add battery
+ and charger
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,13 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XQ3W7CIBTA8VcxXO8YDoV+mMX4HssugJ4q034It
- dEZ331Y3WLjvDwUfvzpmQXyjgJbzM7M0+CCa5s4qLcZsxvdrAlcGWcmuFC8QISvQ3naNVD2ATC
- zEkkVpeUViwc6T5U7jtjH5232tD9Es78tsppC0KO5mL3fSf5LdrqhHQwICLlQNpOSJ8aYVdeGv
- tZ+S30b5q1fL693PUmIUQpb18Em7gera9jXDmIADAI48FJXMle6yDO9ckfXz+33kl0zNy70rT+
- Nv2DAsfOeljy+NoZxEImRJssKXlp6Chu1QTwK6US4dijClFIu0kRXL4TkQRD5REiiYFDaqqBCx
- 48vBPknIAo1EWQUtNIpV5wbkWb/CJfL5QcVSR6OGAIAAA==
-X-Change-ID: 20250911-judyln-dts-17c41e59dc0f
+Message-Id: <20251203-judyln-dts-v5-3-80c1ffca8487@postmarketos.org>
+References: <20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org>
+In-Reply-To: <20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -56,118 +53,62 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
  Christopher Brown <crispybrown@gmail.com>, 
  Paul Sajna <sajattack@postmarketos.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Amir Dahan <system64fumo@protonmail.com>, Pavel Machek <pavel@ucw.cz>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764754921; l=4254;
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764754921; l=1341;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=4/YFbyLCZ7VP5m62rGS/d/v3As5XccEE1Csi7Qzr3vs=;
- b=xTjQIr1En70Fzmnm2UQn00xh0gibh2VKvVw2UNYobJH2ZVG+0SczzS/Cs9lKaJZu956GfAZ16
- NmdcZX2rWnJBftD2Y+kdW0famSai6rFSq7HURQ4Jg/duG47yi0FYGMA
+ bh=/TDsTUZwCmIaaywK/fEl2z5Hc9nDVuyFYpoIyMntrUE=;
+ b=ITT/ys7inb4wVplB0QY+fs8/V+XdQvxM991A6MvHDQPzW6Sv3UGTHAeYWkmK9XMY/DqSebINQ
+ 9XZFZ5ypkMxDeCzGTWeAIFJqwGaaAG011wrr5pWKbWls3PxtHaS6pOG
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-Rollup of improved hardware support via devicetree for LG G7 ThinQ 
-(judyln) from sdm845-mainline kernel fork
+From: Christopher Brown <crispybrown@gmail.com>
 
-Notably, this patch-series enables full DRM acceleration and wifi,
-among other small improvements in individual commits
+Values based on lineageos kernel
 
-after this patch-series the main things that remain to be worked
-on include touchscreen, audio, and modem.
+https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-battery/LGE_BLT39_LGC_3000mAh.dtsi
 
-Depends upon panel driver patch-series https://lore.kernel.org/all/20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org/T/#r9a976ca01e309b6c03100e984a26a0ffc2fe2002
-
-Depends upon qcom,snoc-host-cap-skip-quirk https://lore.kernel.org/all/20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz/T/
-
-Co-developed-by: Amir Dahan <system64fumo@tuta.io>
-Co-developed-by: Christopher Brown <crispybrown@gmail.com>
-Signed-off-by: Amir Dahan <system64fumo@tuta.io>
 Signed-off-by: Christopher Brown <crispybrown@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
-Changes in v5:
-- update system64's email
-- reduce lab/ibb voltage range
-- status should go last
-- remove rebase leftovers
-- fix flashlight
-- Link to v4: https://lore.kernel.org/r/20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Changes in v4:
-- add panel identifier in addition to ddic
-- make sde_te pull-down
-- fixup flash current
-- remove framebuffer reserved-mem 
-- remove manual lower guard
-- depend upon https://lore.kernel.org/all/20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz/T
-- reword commits
-- Link to v3: https://lore.kernel.org/r/20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+index e530a08f5e27..55bfddab3afd 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+@@ -37,6 +37,14 @@ key-thinq {
+ 			interrupts = <89 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 	};
++
++	battery: battery {
++		compatible = "simple-battery";
++
++		charge-full-design-microamp-hours = <3000000>;
++		voltage-min-design-microvolt = <3200000>;
++		voltage-max-design-microvolt = <4400000>;
++	};
+ };
+ 
+ &adsp_pas {
+@@ -63,6 +71,12 @@ &mss_pil {
+ 	firmware-name = "qcom/sdm845/judyln/mba.mbn", "qcom/sdm845/judyln/modem.mbn";
+ };
+ 
++&pmi8998_charger {
++	monitored-battery = <&battery>;
++
++	status = "okay";
++};
++
+ &tlmm {
+ 	thinq_key_default: thinq-key-default-state {
+ 		pins = "gpio89";
 
-Changes in v3:
-- change firmware paths to lowercase 'lg' (matching dt-bindings)
-- fix signoffs
-- add wifi dmesg to commit message
-- remove regulator-always-on from ibb
-- remove framebuffer
-- remove msm ids
-- don't continue commit subject into commit messages
-- split bluetooth node
-- add sbu uart details to commit message
-- change ipa gsi-loader to self
-- Link to v2: https://lore.kernel.org/r/20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org
-
-Changes in v2:
-- sort at the start
-- drop unnecessary labels
-- drop unnecessary gmu
-- multi-led
-- split fb-panel changes
-- expand upon firmware commit message
-- use qcom,calibration-variant instead of
-  qcom,ath10k-calibration-variant
-- change firmware paths to include "LG"
-- remove framebuffer reservation
-- add lab/ibb
-
-- Link to v1: https://lore.kernel.org/r/20250913-judyln-dts-v1-0-23b4b7790dce@postmarketos.org
-
----
-Amir Dahan (1):
-      arm64: dts: qcom: sdm845-lg-common: Add LEDs
-
-Christopher Brown (1):
-      arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
-
-Paul Sajna (10):
-      arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
-      arm64: dts: qcom: sdm845-lg-common: Add uarts and Bluetooth
-      arm64: dts: qcom: sdm845-lg-judyln: Add display panel
-      arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change path
-      arm64: dts: qcom: sdm845-lg-{common, judyln}: Add wifi node
-      arm64: dts: qcom: sdm845-lg-common: Add chassis-type
-      arm64: dts: qcom: sdm845-lg-common: Add camera flash
-      arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
-      arm64: dts: qcom: sdm845-lg-common: Change ipa gsi-loader to 'self'
-      arm64: dts: qcom: sdm845-lg-common: remove framebuffer reserved-mem
-
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 238 ++++++++++++++++++-------
- arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 138 ++++++++++++--
- 2 files changed, 296 insertions(+), 80 deletions(-)
----
-base-commit: 3d53f9ca24dd7492fe88fd0f1a418e3dc8b03515
-change-id: 20250911-judyln-dts-17c41e59dc0f
-prerequisite-message-id: <20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org>
-prerequisite-patch-id: e51151ea7f8fdad6ad7d90713febc5c6b6fc4f9c
-prerequisite-patch-id: b3dd44250da9cd12bc5b2d0d7e865dbe19ceed92
-prerequisite-patch-id: fd6c8077806cb03fcf37d0e0d730314c2760e334
-prerequisite-message-id: <20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz>
-prerequisite-patch-id: 32934e043aa82e7dccdcb962037e78663eae24a6
-prerequisite-patch-id: 9c69ab29256c15a0e8ac1c3b9ef64b27661c7815
-prerequisite-patch-id: 8fce59716f5d0d873c3407937e4f852eb18c75f0
-
-Best regards,
 -- 
-Paul Sajna <sajattack@postmarketos.org>
+2.52.0
 
