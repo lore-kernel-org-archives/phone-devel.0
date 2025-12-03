@@ -1,91 +1,297 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255EF2DD5F6;
-	Wed,  3 Dec 2025 09:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E242D5A16;
+	Wed,  3 Dec 2025 09:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764754077; cv=none; b=to62yJTgkkeQqSG1MUIriy+OOIPSyoR1QIv1HlH4byJe3oXdsu6aJhwjLND2bEU/nH52YkR/Ys+Rhz/DHUKSkdLUFD4ek3G3BDWxMEjJqD8nSNHP+j+iuTsM9T3hzrB82xaJIdrp9hzskWwC2RvLAFfZJMqLdYZa8xWYOkuL4Xo=
+	t=1764754936; cv=none; b=b1jIXZHyUTWX133Dev414CHDyrtj7w0UB6WdMcdArrjD27gb6LcLjVLUsil5uzkvm+mVGdP3AN0KSU9P8EgkzCwDww44h0x15zbAChdyc8yyG00NrLtjG1+bB5R0O2gAD0+x3pAPzuauPsSDYnuOpdhbcHHVx2gbcBOkhQpiQXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764754077; c=relaxed/simple;
-	bh=lN4pUidHEfSwBA4u7DE6rOq94JjHsmvAT+sc92T9dZI=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=M/4jORGtmudmFCv11dLimdmdTuE2ftBXnpnhZy/qIKpu3gLN35A1w6wsk8pAw99rmSn2JESee/SL/4lToIkmBMTG1Zoed9lwZKUGZxSWS9rF4YW0LySay5XLvuWG4bfZ+joI+ocT1To16KpVWgSQBlHOQRmqw5e65uuzC3CdUkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=loiQjTLt; arc=none smtp.client-ip=91.218.175.180
+	s=arc-20240116; t=1764754936; c=relaxed/simple;
+	bh=iFv0nrEhL9liJFh7BySvOpEt1Dj4+JVZAjNKbc0wTcw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=pYTmYOB+CZ5s3C0hE8sc/ha5NZeiyb/OyGo8isRRcwUY1hLf25YvSeRLYUCzIgGmor0+qWMhjtrTWvwnbdxbIPaHZ2vt/kq3u+FuX/bHj6+YiCAgUBmaDBZe0aJOkBCnKbo5sB9ct5qj0L0oL+uyG91/9DvdP/4mWBmB0QkJyHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=dDCcHM4w; arc=none smtp.client-ip=91.218.175.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="loiQjTLt"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="dDCcHM4w"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1764754931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oBdZlhSgTwrx/IANe8eUJfLN+CwrcLL9TCtP3YpHQTg=;
+	b=dDCcHM4wG/fhOASbAkFQ2RUO/bCXl5Egvj9xgYkrFsd8lilYbvtwFkwtirZ3dd/Vj8jKav
+	XIRbh1GNEj/8lejLhfX5hSXDzIqNXu5UHJG3zbgUAeOeNfHAlMhAful1sE8tDlcI/lhQml
+	KRM0waiQowjyZghdvHHDjVQU2LNgzKmh/z6UXm1joBQlRRdqaduylKi3tYaCFb43vZpZaC
+	+kVawTOaLIdr84goFQb41FVZ5/eaESpOgjcxj0Many8S5FxV+B1M33g5EwC9xvOF3tfgya
+	Kl2l4Rqqgyd3+JbwTQWF3W/6ZHh2nqhmFw4JiM1KV23jwUnMuvv/s00VRn2Sqg==
+From: Paul Sajna <sajattack@postmarketos.org>
+Date: Wed, 03 Dec 2025 01:40:50 -0800
+Subject: [PATCH v5 01/12] arm64: dts: qcom: sdm845-lg-common: Sort nodes
+ and properties
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1764754063;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lN4pUidHEfSwBA4u7DE6rOq94JjHsmvAT+sc92T9dZI=;
-	b=loiQjTLt/dTCAn4zUxiLekEhMaxsCvpFn6g88/+jzS/UKDV8Xa4Yf3mq9s+yg9Y1rCbSHW
-	3ZhveVAc5m7Cyjcs8/t/q0n+bELOSdWQwtOazQeI86z3ET7I0jOJCbwFqNdXNjv9j2dLk3
-	lPqFu3UkRpd3nvVolnr5KPpbzlfThRqY+77X2S0xzVWBnKYUDSbFoJtDk5dRyGPirTU5+r
-	yUQTzLE62mo/3Bbrl+NHPWYrcQlyt9YDR0OZvDTCaSsNgqFFot67x/M/JE5qMwp1Pa7TRX
-	XaBlc+1K1xQvtQt5tFzuJWOYammHpuoTx8kBzGf0leUFPPDPNUb2BvBYaExDpA==
-Date: Wed, 03 Dec 2025 09:27:40 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <9cdccbb5a3fb10a2d7de1e1d17d36018f40b18a1@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v4 09/12] arm64: dts: qcom: sdm845-lg-common: Add camera
- flash
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "David Heidelberg" <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, "Amir Dahan"
- <system64fumo@protonmail.com>, "Christopher Brown"
- <crispybrown@gmail.com>
-In-Reply-To: <863db415-51e0-4c54-85bf-ac6a168758e0@oss.qualcomm.com>
-References: <20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org>
- <20251125-judyln-dts-v4-9-a5a60500b267@postmarketos.org>
- <62ce91326c0e1d5aef1ad5ecad9b99695f983347@postmarketos.org>
- <863db415-51e0-4c54-85bf-ac6a168758e0@oss.qualcomm.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251203-judyln-dts-v5-1-80c1ffca8487@postmarketos.org>
+References: <20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org>
+In-Reply-To: <20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
+ Christopher Brown <crispybrown@gmail.com>, 
+ Paul Sajna <sajattack@postmarketos.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764754921; l=5097;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=iFv0nrEhL9liJFh7BySvOpEt1Dj4+JVZAjNKbc0wTcw=;
+ b=6Ury9rJoWZerIfMlOPecp8ZzzTgwoJmBSnEmJKKqbqIhFNFDeoZgAvhAOYIUy+zDuZKsetvMJ
+ IbPfruB+a9cAnCa2IAOsIz5nJYZgDk0lTH7OHMqzb3yrP56+ZLTcne+
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-linux-postmarketos-qcom-sdm845-6.16.7_p20251203010632-r0.apk
+Improve adherance to style guidelines below:
+https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 144 ++++++++++++++-----------
+ 1 file changed, 82 insertions(+), 62 deletions(-)
 
-December 1, 2025 at 11:42 AM, "Konrad Dybcio" <konrad.dybcio@oss.qualcomm=
-.com mailto:konrad.dybcio@oss.qualcomm.com?to=3D%22Konrad%20Dybcio%22%20%=
-3Ckonrad.dybcio%40oss.qualcomm.com%3E > wrote:
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+index 0ee2f4b99fbd..b8ab64a8de1c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+@@ -38,11 +38,6 @@ reserved-memory {
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		qseecom_mem: memory@b2000000 {
+-			reg = <0 0xb2000000 0 0x1800000>;
+-			no-map;
+-		};
+-
+ 		gpu_mem: memory@8c415000 {
+ 			reg = <0 0x8c415000 0 0x2000>;
+ 			no-map;
+@@ -99,7 +94,12 @@ memory@9d400000 {
+ 			no-map;
+ 		};
+ 
+-		rmtfs_mem: rmtfs-region@f0800000 {
++		qseecom_mem: memory@b2000000 {
++			reg = <0 0xb2000000 0 0x1800000>;
++			no-map;
++		};
++
++		rmtfs_mem: memory@f0801000 {
+ 			compatible = "qcom,rmtfs-mem";
+ 			reg = <0 0xf0800000 0 0x202000>;
+ 			qcom,use-guard-pages;
+@@ -467,14 +467,22 @@ &mss_pil {
+ 	status = "okay";
+ };
+ 
++&pm8998_gpios {
++	vol_up_pin_a: vol-up-active-state {
++		pins = "gpio6";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
++	};
++};
++
+ &pm8998_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
+ 	status = "okay";
+ };
+ 
+ &sdhc_2 {
+-	status = "okay";
+-
+ 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
+ 
+ 	pinctrl-names = "default";
+@@ -482,26 +490,70 @@ &sdhc_2 {
+ 
+ 	vmmc-supply = <&vreg_l21a_2p95>;
+ 	vqmmc-supply = <&vddpx_2>;
++
++	status = "okay";
+ };
+ 
+-/*
+- * UFS works partially and only with clk_ignore_unused.
+- * Sometimes it crashes with I/O errors.
+- */
+-&ufs_mem_hc {
++/* PINCTRL - additions to nodes defined in sdm845.dtsi */
++
++&tlmm {
++	gpio-reserved-ranges = <28 4>, <81 4>;
++
++	sdc2_clk: sdc2-clk-state {
++		pins = "sdc2_clk";
++		bias-disable;
++
++		/*
++		 * It seems that mmc_test reports errors if drive
++		 * strength is not 16 on clk, cmd, and data pins.
++		 *
++		 * TODO: copy-pasted from mtp, try other values
++		 * on these devices.
++		 */
++		drive-strength = <16>;
++	};
++
++	sdc2_cmd: sdc2-cmd-state {
++		pins = "sdc2_cmd";
++		bias-pull-up;
++		drive-strength = <16>;
++	};
++
++	sdc2_data: sdc2-data-state {
++		pins = "sdc2_data";
++		bias-pull-up;
++		drive-strength = <16>;
++	};
++
++	sd_card_det_n: sd-card-det-n-state {
++		pins = "gpio126";
++		function = "gpio";
++		bias-pull-up;
++	};
++};
++
++&qupv3_id_0 {
+ 	status = "okay";
++};
+ 
++&qupv3_id_1 {
++	status = "okay";
++};
++
++&ufs_mem_hc {
+ 	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
+ 
+ 	vcc-supply = <&vreg_l20a_2p95>;
+ 	vcc-max-microamp = <600000>;
+-};
+ 
+-&ufs_mem_phy {
+ 	status = "okay";
++};
+ 
++&ufs_mem_phy {
+ 	vdda-phy-supply = <&vdda_ufs1_core>;
+ 	vdda-pll-supply = <&vdda_ufs1_1p2>;
++
++	status = "okay";
+ };
+ 
+ &usb_1 {
+@@ -514,8 +566,6 @@ &usb_1_dwc3 {
+ };
+ 
+ &usb_1_hsphy {
+-	status = "okay";
+-
+ 	vdd-supply = <&vdda_usb1_ss_core>;
+ 	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
+ 	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
+@@ -524,59 +574,29 @@ &usb_1_hsphy {
+ 	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
+ 	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
+ 	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
+-};
+ 
+-&usb_1_qmpphy {
+ 	status = "okay";
++};
+ 
++&usb_1_qmpphy {
+ 	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
+ 	vdda-pll-supply = <&vdda_usb1_ss_core>;
+-};
+-
+-/* PINCTRL - additions to nodes defined in sdm845.dtsi */
+-
+-&tlmm {
+-	gpio-reserved-ranges = <28 4>, <81 4>;
+-
+-	sdc2_clk: sdc2-clk-state {
+-		pins = "sdc2_clk";
+-		bias-disable;
+ 
+-		/*
+-		 * It seems that mmc_test reports errors if drive
+-		 * strength is not 16 on clk, cmd, and data pins.
+-		 *
+-		 * TODO: copy-pasted from mtp, try other values
+-		 * on these devices.
+-		 */
+-		drive-strength = <16>;
+-	};
++	status = "okay";
++};
+ 
+-	sdc2_cmd: sdc2-cmd-state {
+-		pins = "sdc2_cmd";
+-		bias-pull-up;
+-		drive-strength = <16>;
+-	};
++&venus {
++	status = "okay";
++};
+ 
+-	sdc2_data: sdc2-data-state {
+-		pins = "sdc2_data";
+-		bias-pull-up;
+-		drive-strength = <16>;
+-	};
++&wifi {
++	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
++	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
++	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
++	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
++	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
+ 
+-	sd_card_det_n: sd-card-det-n-state {
+-		pins = "gpio126";
+-		function = "gpio";
+-		bias-pull-up;
+-	};
+-};
++	qcom,snoc-host-cap-skip-quirk;
+ 
+-&pm8998_gpios {
+-	vol_up_pin_a: vol-up-active-state {
+-		pins = "gpio6";
+-		function = "normal";
+-		input-enable;
+-		bias-pull-up;
+-		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
+-	};
++	status = "okay";
+ };
 
+-- 
+2.52.0
 
->=20
->=20On 11/28/25 9:20 PM, Paul Sajna wrote:
->=20
->=20>=20
->=20> I did more testing on this, and the led only comes on if it's brigh=
-tness is set to approx 150/255 or lower. In that case, should I set led-m=
-ax-microamp to 60mA?
-> >=20
->=20FWIW your downstream kernel sets up channels 0 and 1, here you only
-> enabled 1. Taking a look at a picture of the phone, I only see a single
-> LED on the back, so perhaps you're (over)driving a single power line?
->=20
->=20I'm not a milion percent sure, but I would assume the current draw
-> *limiting* register applies to the sum of the current going through
-> the three channels because there's only a single instance of it.
->=20
->=20Konrad
->
-
-I tried setting up both, but only the one that was mapped as `led-sources=
- =3D <2>` seemed to have any effect. Also it would confuse userspace flas=
-hlight apps if there were two I think. So I'll push v5 with just the one =
-that does anything.
