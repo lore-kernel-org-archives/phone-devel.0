@@ -1,69 +1,91 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16D25B31D;
-	Wed,  3 Dec 2025 09:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255EF2DD5F6;
+	Wed,  3 Dec 2025 09:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764753700; cv=none; b=KoM5PZYVd5QkTVXvk+CZLZitv2dqHxvNTWuveWOJESFYMAmsOLlYoxpVrWLr/ZcDpbWvhaORbC032uVHCkH8nbqC1EPQ6PUHV1taSv3oI4PrExdKFqjPAOTaJG4tFFzZLiBh/+UxpLnzDXw9MXCS82ou/YyGFVcliImxYqeGZck=
+	t=1764754077; cv=none; b=to62yJTgkkeQqSG1MUIriy+OOIPSyoR1QIv1HlH4byJe3oXdsu6aJhwjLND2bEU/nH52YkR/Ys+Rhz/DHUKSkdLUFD4ek3G3BDWxMEjJqD8nSNHP+j+iuTsM9T3hzrB82xaJIdrp9hzskWwC2RvLAFfZJMqLdYZa8xWYOkuL4Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764753700; c=relaxed/simple;
-	bh=8/DMKispPhVOB48ghh6Kz40cgrCCwGXbb/Q2gzGcmj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RP5kaSFPzmQDcFPrqM6c95hh2sCjuBU+nZtfr5TYRileZC+AydIzSWXFCGKbN8J311+2rMvo4/6TYplLr+fzwqHNBFF4utTgQxoJv3Sy+SF4ijU+Nq+401g/C8hk2L2RB5UUOFa4NtwhENDMbceWJID/O4KHoiv8db7sKWqhgoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GvqY1b+q; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=EegJXA4R; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1764754077; c=relaxed/simple;
+	bh=lN4pUidHEfSwBA4u7DE6rOq94JjHsmvAT+sc92T9dZI=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=M/4jORGtmudmFCv11dLimdmdTuE2ftBXnpnhZy/qIKpu3gLN35A1w6wsk8pAw99rmSn2JESee/SL/4lToIkmBMTG1Zoed9lwZKUGZxSWS9rF4YW0LySay5XLvuWG4bfZ+joI+ocT1To16KpVWgSQBlHOQRmqw5e65uuzC3CdUkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=loiQjTLt; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GvqY1b+q";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="EegJXA4R"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1764753691; bh=U0/PwUkJsw6fA82odH8GggG
-	uGT/E7RXMkt0H6HrI1yI=; b=GvqY1b+qnYFHpoE2du+vVD/ygmhcu4YySyfDamMik5A70CCigt
-	2h68Ee+ZxC3GMM7BauMYT++gJmaRrlCC5+9CDvVEYixfZYVSL6h96HOzz69SM0pGzMKk+up5LEj
-	ZF2t4PTmhQOhFUh7CsQWQCN3lusYTaiviBh9n7EqAXXDroYE5m+bjzDepv1050egcnX5TFpIGQ8
-	R/UsxF3UQO4stvKTQsBYXcn0QCx633C3vldXDzpvGMWFvd/YIfR6V9XOb2I07h6ApGuwCDkkPL7
-	Nsz28dbiRJyBdizAyMqblqRRybJeYrV4jYv8zHFZjMIvFNjSpoSEJZhvf5/Y5R40OGQ==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1764753691; bh=U0/PwUkJsw6fA82odH8GggG
-	uGT/E7RXMkt0H6HrI1yI=; b=EegJXA4Rz3wO7qaGPXzLqokh0Fm+GKre2gyA+l9NtoDDyJq/48
-	rxzTVF4zAgH5cIPpQORCHVUEWvWSUUUBINDQ==;
-Message-ID: <dd83ca81-83eb-4347-b4cc-839e1a5a7f90@mainlining.org>
-Date: Wed, 3 Dec 2025 12:21:29 +0300
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="loiQjTLt"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] media: i2c: Add driver for LC898217XC VCM
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, david@ixit.cz,
- linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Vitalii Skorkin <nikroks@mainlining.org>,
- Antonio Rische <nt8r@protonmail.com>
-References: <20251201-media-i2c-lc898217xc-initial-driver-v3-0-46e23897e921@mainlining.org>
- <20251201-media-i2c-lc898217xc-initial-driver-v3-2-46e23897e921@mainlining.org>
- <CAPY8ntCKfGX_5wCSnQz3YAmQD_pyeF+q3EoMDxyXA4Dgg9osmg@mail.gmail.com>
-Content-Language: en-US
-From: Vasiliy Doylov <nekocwd@mainlining.org>
-In-Reply-To: <CAPY8ntCKfGX_5wCSnQz3YAmQD_pyeF+q3EoMDxyXA4Dgg9osmg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1764754063;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lN4pUidHEfSwBA4u7DE6rOq94JjHsmvAT+sc92T9dZI=;
+	b=loiQjTLt/dTCAn4zUxiLekEhMaxsCvpFn6g88/+jzS/UKDV8Xa4Yf3mq9s+yg9Y1rCbSHW
+	3ZhveVAc5m7Cyjcs8/t/q0n+bELOSdWQwtOazQeI86z3ET7I0jOJCbwFqNdXNjv9j2dLk3
+	lPqFu3UkRpd3nvVolnr5KPpbzlfThRqY+77X2S0xzVWBnKYUDSbFoJtDk5dRyGPirTU5+r
+	yUQTzLE62mo/3Bbrl+NHPWYrcQlyt9YDR0OZvDTCaSsNgqFFot67x/M/JE5qMwp1Pa7TRX
+	XaBlc+1K1xQvtQt5tFzuJWOYammHpuoTx8kBzGf0leUFPPDPNUb2BvBYaExDpA==
+Date: Wed, 03 Dec 2025 09:27:40 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Paul Sajna" <sajattack@postmarketos.org>
+Message-ID: <9cdccbb5a3fb10a2d7de1e1d17d36018f40b18a1@postmarketos.org>
+TLS-Required: No
+Subject: Re: [PATCH v4 09/12] arm64: dts: qcom: sdm845-lg-common: Add camera
+ flash
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "David Heidelberg" <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, "Amir Dahan"
+ <system64fumo@protonmail.com>, "Christopher Brown"
+ <crispybrown@gmail.com>
+In-Reply-To: <863db415-51e0-4c54-85bf-ac6a168758e0@oss.qualcomm.com>
+References: <20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org>
+ <20251125-judyln-dts-v4-9-a5a60500b267@postmarketos.org>
+ <62ce91326c0e1d5aef1ad5ecad9b99695f983347@postmarketos.org>
+ <863db415-51e0-4c54-85bf-ac6a168758e0@oss.qualcomm.com>
+X-Migadu-Flow: FLOW_OUT
+
+linux-postmarketos-qcom-sdm845-6.16.7_p20251203010632-r0.apk
 
 
-On 12/1/25 5:42 PM, Dave Stevenson wrote:
-> Do you not want to restore the current position after resuming power?
-> Potentially use  __v4l2_ctrl_handler_setup() to reset all controls
-> should any extra ones get added.
+December 1, 2025 at 11:42 AM, "Konrad Dybcio" <konrad.dybcio@oss.qualcomm=
+.com mailto:konrad.dybcio@oss.qualcomm.com?to=3D%22Konrad%20Dybcio%22%20%=
+3Ckonrad.dybcio%40oss.qualcomm.com%3E > wrote:
 
-I want to.
 
-Should lc898217xc_runtime_resume fail if lc898217xc_set_dac fail?
+>=20
+>=20On 11/28/25 9:20 PM, Paul Sajna wrote:
+>=20
+>=20>=20
+>=20> I did more testing on this, and the led only comes on if it's brigh=
+tness is set to approx 150/255 or lower. In that case, should I set led-m=
+ax-microamp to 60mA?
+> >=20
+>=20FWIW your downstream kernel sets up channels 0 and 1, here you only
+> enabled 1. Taking a look at a picture of the phone, I only see a single
+> LED on the back, so perhaps you're (over)driving a single power line?
+>=20
+>=20I'm not a milion percent sure, but I would assume the current draw
+> *limiting* register applies to the sum of the current going through
+> the three channels because there's only a single instance of it.
+>=20
+>=20Konrad
+>
 
-IMO, It should ignore this error, but other drivers returning errcode
-
+I tried setting up both, but only the one that was mapped as `led-sources=
+ =3D <2>` seemed to have any effect. Also it would confuse userspace flas=
+hlight apps if there were two I think. So I'll push v5 with just the one =
+that does anything.
