@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B5F33A715;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ED633B6D2;
 	Fri,  5 Dec 2025 13:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764939656; cv=none; b=C46th7U9dhZnHGxO+bmvGZiXnIs4UpRcJUL5yAP+Fq11TQjHvOHgilwdOcFmG5YA7+AJQt4WbU4KQowV5q5vJXZPQIDqPsqYKWEgZ1t6fIns6G3JkycZR3M+iSVOPrd2hTINS+X+uKne9rc/GBsEcKO29ojr+Ad/4Pv9eW36vAU=
+	t=1764939656; cv=none; b=tf1PXN8qjtYvXoxf6UO/bcm6SloycXt0Q6/4B1apDQ2cjqFL6y5myA9244WX1TisAZDR6mgBs/p2flbQl3dXC/kpGWoxIn+gZsDtMEZapjAQyaIVqxkQyhBWnKTZD9ugQH8WEhGKUQIC0vwQb7K7tiZPLAPto8gt+2HxIoQxQWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764939656; c=relaxed/simple;
-	bh=Hjh2q7YGF3G7TKCnljODy8o4LA7T6Xj3FX5bucukiG4=;
+	bh=jzkpa3d2FIi3jSnxqBzxOYnzejhwzBmVc+sxHIhRxsU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WJ3J4WsTGj/Dl6gMGdlS4vQggay0/Pco1Q95QikCnwMd1rhpOYd0HLklPX0phGKox1w1mcwgnP4LzpqDsLPQxIxEYwl46GlSseTySRaedJKMDKIYOrS5X23m7kYV1ZPqBl+N+cKuwVguWxjUeUoTgtMzRZl/vHRxgkyLCkMv1wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kkw4sTxd; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=NY4Sm+pgq5tVlxWj8xMpeMhyhj6CzakMcSiRVupdlWggGww3msoOoLyHczgrKqVm4Z/Zpfozv9ijyq/m0xbkYURDDnjA3M7zCq59Vs2YS0RvHD2oG/TWKBxnivkNAVX6iULgom8/VLGi/0b1f8INOtt4gUpqZK1zo78htDgOI80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJc+uDAN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kkw4sTxd"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B21FCC2BC86;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJc+uDAN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A156C19421;
 	Fri,  5 Dec 2025 13:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764939655;
-	bh=Hjh2q7YGF3G7TKCnljODy8o4LA7T6Xj3FX5bucukiG4=;
+	bh=jzkpa3d2FIi3jSnxqBzxOYnzejhwzBmVc+sxHIhRxsU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Kkw4sTxd2ZlZl1Ioj2PV4GFspqRQKXr+0HDEX6g4KAxW73wEHLEBltbZXYO/ZJVVl
-	 RZz5yfPRBCRB7DwuHena76iRWBQe2xtJ+cDNiwYp7ccgHgdbzc2eF+ycJNGgP0m75h
-	 vz00QYjQLraW3TIZ0tU1uaMbmGUbwGB83JEL1TsjODCp2AsOVzvt2PgAQRKxXljsUP
-	 3PPl9g7WzDnALpXBATOk2XYErMLU3KuZ2mqKYaOH9bHNnetYJ0AWmLvi3Mgwh4fWW6
-	 6R7afG6n3SHzgeG3eGZu4Zng0caPpjamvJbeXIW75qbnk/nWX5ccwSBKCaweMl0bCL
-	 FTHQjO37ZXqgA==
+	b=rJc+uDANiia/FiDREzDg1PqESFa8iHOLwqQbiNstTMaIwQWG+Y5WXuYwdkRExyIWp
+	 RsU7sqqVeUCksurnyJqa0jnptS4oU7fadjhsHOxIGxQIdBPpKBzXk9lvwhMgxDV2oL
+	 3a6bEagKI8gNWNcGYV+0lVfSk0QDxvIDpnffDiAGnaH2k3timZUvLb3Foc0Y4XPy93
+	 SYbNr4OJ5rvBvgBUBWpBFKvXMgOKDysnV0G7Rs0sfP6uxjPrLFtgCPUnoxid0b6Tkc
+	 y7DCGQH00JbsJx8s45BIV+wx19eJ2mqEn8Tx0jOHFf/Yq1jcuvozXqrzF5iw/guU1g
+	 kYarKgQUI87CA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A38BDD2F7EF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74303D2F7E7;
 	Fri,  5 Dec 2025 13:00:55 +0000 (UTC)
 From: Robert Eckelmann via B4 Relay <devnull+longnoserob.gmail.com@kernel.org>
-Date: Fri, 05 Dec 2025 22:00:06 +0900
-Subject: [PATCH v2 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add
- placeholders and sort
+Date: Fri, 05 Dec 2025 22:00:04 +0900
+Subject: [PATCH v2 1/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ SLPI
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251205-slpi-v2-3-dfe0b106cf1a@gmail.com>
+Message-Id: <20251205-slpi-v2-1-dfe0b106cf1a@gmail.com>
 References: <20251205-slpi-v2-0-dfe0b106cf1a@gmail.com>
 In-Reply-To: <20251205-slpi-v2-0-dfe0b106cf1a@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -52,13 +52,13 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org, david@ixit.cz, 
  Robert Eckelmann <longnoserob@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1758;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1044;
  i=longnoserob@gmail.com; h=from:subject:message-id;
- bh=NKSrjVKl6hmHb40HZ/gBpdJQQYkkXd4Osh0NjPVYeDk=;
- b=owGbwMvMwCVmcOAq9/vk/SGMp9WSGDKNrrel/Z8mJPmG95tYyxzte84mbnz3TI4Fb3og4f3rX
- OxZpVc5HaUsDGJcDLJiiiw73I7pZLoujdi4e38ZzBxWJpAhDFycAjAR636GP9w3VXXeOR7udg6b
- zvys0H256rzZO3lfc7vtb40s/lZ9LIXhf9KeOoHZf9bzpnFFfX18lLl6l5ax7kWJjfGul8SCJKS
- 7GQE=
+ bh=AE9KxQiMpmdD1lHdyzsIYuYg+WK329GmEsuY+M4AANc=;
+ b=owGbwMvMwCVmcOAq9/vk/SGMp9WSGDKNrrftfxA4x9okg18sc6ngKu71fDPPRGYmsSSlzL4z6
+ fazRn7mjlIWBjEuBlkxRZYdbsd0Ml2XRmzcvb8MZg4rE8gQBi5OAZhIZRMjw4fzz5d8E7scbTlh
+ 17fldw6s+d30o2/93ZeuAQuUpHwmHnJmZHiha8W773moz/WMIzMz7vxJV9TcyhEdXcL9Kmdd/mq
+ mDH4A
 X-Developer-Key: i=longnoserob@gmail.com; a=openpgp;
  fpr=B846C62C6945A558B1BBBF7630C0D50BEF63BF54
 X-Endpoint-Received: by B4 Relay for longnoserob@gmail.com/default with
@@ -68,73 +68,36 @@ Reply-To: longnoserob@gmail.com
 
 From: Robert Eckelmann <longnoserob@gmail.com>
 
-We know these devices are present, most of them are supported by
-downstream and close to the mainline kernels.
+Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
 
-This is very handy when rebasing the integration tree with the support.
-
-No functional changes.
-
-Reviewed-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../dts/qcom/sdm845-xiaomi-beryllium-common.dtsi   | 29 ++++++++++++++++------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 8ce592cabd35..8df5311f4afd 100644
+index 785006a15e97..cadddcf63ef6 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -227,6 +227,12 @@ vreg_l26a_1p2: ldo26 {
- 	};
+@@ -425,6 +425,12 @@ &sdhc_2 {
+ 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
  };
  
-+&cci_i2c0 {
-+	status = "okay";
-+
-+	/* IMX363 @ 10 */
-+};
-+
- &cdsp_pas {
- 	status = "okay";
- 	firmware-name = "qcom/sdm845/Xiaomi/beryllium/cdsp.mbn";
-@@ -261,6 +267,22 @@ &ibb {
- 	qcom,discharge-resistor-kohms = <300>;
- };
- 
-+&ipa {
-+	qcom,gsi-loader = "self";
-+	memory-region = <&ipa_fw_mem>;
-+	firmware-name = "qcom/sdm845/beryllium/ipa_fws.mbn";
++&slpi_pas {
++	firmware-name = "qcom/sdm845/Xiaomi/beryllium/slpi.mbn";
 +
 +	status = "okay";
 +};
 +
-+&i2c5 {
-+	clock-frequency = <400000>;
-+
-+	status = "okay";
-+
-+	/* TAS2559 @ 4C */
-+};
-+
- &lab {
- 	regulator-min-microvolt = <4600000>;
- 	regulator-max-microvolt = <6000000>;
-@@ -312,13 +334,6 @@ &mss_pil {
- 	"qcom/sdm845/Xiaomi/beryllium/modem.mbn";
+ &sound {
+ 	compatible = "qcom,db845c-sndcard", "qcom,sdm845-sndcard";
+ 	pinctrl-0 = <&quat_mi2s_active
+@@ -637,3 +643,4 @@ &wifi {
+ 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+ 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
  };
- 
--&ipa {
--	qcom,gsi-loader = "self";
--	memory-region = <&ipa_fw_mem>;
--	firmware-name = "qcom/sdm845/Xiaomi/beryllium/ipa_fws.mbn";
--	status = "okay";
--};
--
- &pm8998_gpios {
- 	vol_up_pin_a: vol-up-active-state {
- 		pins = "gpio6";
++
 
 -- 
 2.52.0
