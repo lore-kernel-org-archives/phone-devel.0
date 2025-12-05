@@ -1,67 +1,66 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DB3305958
-	for <phone-devel@vger.kernel.org>; Fri,  5 Dec 2025 10:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DFF2BD015
+	for <phone-devel@vger.kernel.org>; Fri,  5 Dec 2025 10:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764931139; cv=none; b=MLI3B7wgV2ISmj3CpG9RMXfUOX6OC2+DN4/gqvfb4HR2sgGkNQGhqsVS2ZTAtz0PybA5Q02T/n3QcL4g9ZOwmeT+658CcUQECWxjScmfvNzW8XUYH9QdHMsfqTsFGDkyh6xXPU5rDcJVv8JFaMWeZ6A5iV8VJXxEMdXOLZUV6ws=
+	t=1764931194; cv=none; b=RyoCcs+rrPlhvAJ/BLmd4Vw6gb50QZ1iUvEaeGYcwoP9G9cicv64qTZGf4tlOj/oGbl1VSPGp3U9zyBc6eseBSVtTj8Ft6ryUlc8oqzw7KDewljIy13MWiKfmzeBiLwpMX6ELFB7juk8T+I1zzy0forjFi/B4wuF+HWd48XbdnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764931139; c=relaxed/simple;
-	bh=7Ti0/hGGkcg6vgg8ymr8rwSgVKCe99zuGiU54ocDWAY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Py3vVkmth0qasedtdkepK3Pod7UPW1bYnJ3MduMlxipTKY2HsmpKD0nJfsXkAwGzUiIu9yH4m3Aly64eOqVBNBFerSk9NNCN+qSCaXXgFPnom714b9h9GrjYg6h1GoqFUpWUCOFmlcJ4B4Z4d/BDV0JpFIab+lv2xYXOU7SlQbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wIDmaRxL; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1764931194; c=relaxed/simple;
+	bh=o5zYQo/pdhvmT1AW6TQbgPX3NoefX45zPL89CUC7CN0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dq/2NGv3e3uvYAQCECiOGXjFjA72ST56TWBXkbMOC3iEegLgCxaSYTx+Qp8vxKhzZokYBBYrKobqBApuROhPCAYOgnLZyOxnMkXpGeIIlO7ILAt9P+r92qFgjmRQTRRAdgWfYX0vNIBfOO86Q5Pn2K2sY0AgGGaaRL5Su4eSdes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EyOISVt3; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wIDmaRxL"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4775895d69cso9820425e9.0
-        for <phone-devel@vger.kernel.org>; Fri, 05 Dec 2025 02:38:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EyOISVt3"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477632b0621so13940845e9.2
+        for <phone-devel@vger.kernel.org>; Fri, 05 Dec 2025 02:39:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764931126; x=1765535926; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fk2Qe6UttCBY6LSv0m45hYHnxidbxniuJXbEECMv7UY=;
-        b=wIDmaRxLRmZmtfvpWC8v9C8oFKrswPcglDTp0Uj0bJbjhlYvIIAGm6yncpWdAS9txT
-         4/g1IVxSDaXapSvcKOHxPScqV4nGRmfFyOeZq6Ux7+SUPlyK3/i9q+vj/tMzDLxpG3kI
-         Fn7yBexlS+sURVrzqwB/jfTBB2fomGqj5P+Kny+809oscQe8vlymxDjN2/tyXYzFMvYX
-         u0Nkc16YDYdYL2OO3s7NlQrVzZ34DZT7UXJTOUDzLMxkEX2ToHmniNJFObvRgMSwFrrR
-         y4oBS3NYRnlHEMjujPr7I4DoTyBN6iqYOy8rPGVGvpm/kT6W8qD+iW2dd1MEGTNV5yr8
-         TBxw==
+        d=linaro.org; s=google; t=1764931185; x=1765535985; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=o5zYQo/pdhvmT1AW6TQbgPX3NoefX45zPL89CUC7CN0=;
+        b=EyOISVt3IcNqBjNzKBPVLixt7VHbxvSfGxOvF6OJNqG/Q5ka/WiKsHBAO2G5lN2BlU
+         M3HIbSLDX4fA+lusj4Pq77rEbS0ecT+lSnw4+Hnwwr+iqEeoU6mq/C/32RCRnMl92bn1
+         plTperEaxlOB1y2tN83UGvkJahEhcSRvXz7ad+p/qIYdDHkMDEVxZPfwyAkDcExex9kQ
+         HfpIStRpGPUMSzNfn9M/TlP/wVASmZZNJy64i5Yhsw0O+twro1IbRwG17LUYCsV/B/78
+         LrW7P8cl0If49cTJ/H8BbjB32x3Q8yvSdyzCMhmup1TaF2kSoKKEmh6tBsp+/nzCwuoT
+         4Wsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764931126; x=1765535926;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fk2Qe6UttCBY6LSv0m45hYHnxidbxniuJXbEECMv7UY=;
-        b=cI5kkKqK/ucSrcKtoV1SMOm/HTr630kH4hCR8vW8QnpB+c/lyMfNfeJO9NJRLxvgMY
-         fGYtGuTNpzgwAeC90vea5Kvc2PDOuZpKLFkKM3PJHcHPkjbTuadW9G4ieOC6mHB0muhn
-         xw0OzUlSFOfLTJgfwUZe6pPOgImml1JmQJDHLYfwXn4h0VkECh81EniXjzxia8tEawaK
-         BUySKobeXVrRod/JZQULKXIzOeOMftqQpMvZpQRe/2fbPzlBDYICYekX4MbF4qBeC3v0
-         aFeP5EEXzFSw1gf1kYFqD6MNqH6LodsHCc+gDzfCxCXAPFbTsNrpGxfHWUw95eLiVFAp
-         iTmw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3/+cxbWj9Pyvt2aGA51zlUiBY8cg2U9gf1TVcHpCjrcY0lzh6N+VUn/Olr+s92X2VFfXEY1/rIsto+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy96c967Vqx953iwDl8vyfgSlWJ+xaAutYwitIY7z1sAmMBYYIv
-	jUGxTJR2CJQbkmiErQHiYbptZMIUuKf+Eevchaj6tjuX5iYUM1IpFF0BddCf/ukEWWc=
-X-Gm-Gg: ASbGnctuhQF7T1SU7jwuAZ1YKL2HvdUYvECyhJ5cMz1R4lx4YYs4vEPU1MbzdWiyMUA
-	kBF4ZrxR6NXhc305V+MCb7MxLdz/nSb1JMBljm+tIhksPWJx5tByVOYpkrEzyZCPkJVd2r2ZZ2B
-	5L/I/3eNJmXgota+xQnWBP2Nnsc8dt90dV0glruYdETHgfZ80GeEWw/pZYUdHBem2ITbYni12mD
-	QVRmQLfRYdZMxoFnor9vzfuEGqTn2QedYJ8KuACASPOTVIIUyJTi+nwhHisQShGebMiTc8N+Xbo
-	qPnU3gI/mgzWbLLtIVqm/4Dp4Ct4FrTukW+rKVBiOC/bmONzbH0ri7jnO4Fm7HTkFtrR/Jcff4l
-	RNNmwsN88o6QjcQ47vnHY9TWm4tJMtI2Trj4DH4Rz23yrHGrwIkVTTijJr7PuTWx2EuTzuEz0Id
-	DS0x6m/BS4DAEAE15GCvjWVmikNahn4uPrYN6rMGBeg8RpxazbosAikcrxVYNr/60=
-X-Google-Smtp-Source: AGHT+IEniZY9x6ScJP/72sFnDswrZrFy73p5tN4uqWyYm+lhn3NmJsuyIGi2aQ1n3YuJ/2WMhpQq1Q==
-X-Received: by 2002:a05:600c:35ce:b0:479:2651:3f9c with SMTP id 5b1f17b1804b1-4792f268a6bmr70857545e9.14.1764931126466;
-        Fri, 05 Dec 2025 02:38:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764931185; x=1765535985;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o5zYQo/pdhvmT1AW6TQbgPX3NoefX45zPL89CUC7CN0=;
+        b=cZ6B/NiDEL8dyq4rrQoGilArsKEM+nX07IrAY7hxpdmxjOKrDEchbeU/KI7m2KBhRC
+         Z7qMqCoQTo152w3pudSe2aDfceDW3s/2/zPkyBa7gg0GAPs+9J/zBl6bN17CXYexfSx7
+         2KZXHEzSikOpbYlxcJHIBdE2KW38NPRkrNObdQT04m5kP3erIdViRqBmm5pW33Fy213U
+         2Cyy8IU/ddnKMM2XiB81z92EckiMcWzBgjtonhwrBcyzrVaCSMZqA21rTOAxhAGdgrEz
+         fEbhgUXuLu9mGBCAzt722vEVu4Ysx5cPyQJ5Dfhtmnl2I5YvbHUCIeECgW3ezgY3I5kv
+         QTyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVknOSpXRR1dXhbdK5s3vKm3N/UQM113N0i0NcWEMaD5DQNlK/L3CfsUy5ZHSdsLgI44WdPa8JOy46Sgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtfo6OkVUxHF9XXHi+8l+w8B0Uf7ejZJNUBCG51bWP1Fv1vFD+
+	FR8whd/iR2BaDaljsZ7gxNf0y8zA2wXBFZNl74MprMJ+19UG68Z5ZDgobUZlFGjXXoc=
+X-Gm-Gg: ASbGncsgZtQvRyz4EkWujx5Fql9dd/R9Vr/+C+Vmt3Y/LuyVKe/FxWAiUQPeWz+wHXD
+	LixnXSswPaj4RynAIyROmvQyEyZb6HW9HASqntcwlx5tkvXdBCr4RpaTufg4w8e2PxycUAHIg0A
+	UPConB6mN4a79Eq2acMocoWE0i7GB9rCx4HKCGZz/2UACAlZcvwRUGm97QerKCrD6vrO5gpFfq/
+	bB2atn/hsSl6AqEArOo407wsz0BdrRaVqiTPD0nMg46jjKtdmAcZlDfQxFo1xtEIqFYdR39wclS
+	l94Y7GE2fSnKdYIan8307sekF/8CFouYXngQk9+PiFYCkNZUs89kW3c1w5IubcpwEfpFNpXvWdq
+	S7zCKK/UARE1KaWIUesYZ586Y6ms7GrGNENlnbN770ZYyHPsWHJYK1/hMN6m+CiXhRtJOx5AAuj
+	53rzDg0J9t+z2Lw1fJGLOhWIA2sUGx9qwf6WIG3ZSUsrRp4qKNtjXh
+X-Google-Smtp-Source: AGHT+IHAcPLHZg6bWDyZGKpCbcZudLY6bYaoGTsYh6dE+C0Igma98JGLt6Qsc4L18+Bxn9oezOhieQ==
+X-Received: by 2002:a05:600c:4f8b:b0:475:d8b3:a9d5 with SMTP id 5b1f17b1804b1-4792aeeb58cmr94509685e9.10.1764931185544;
+        Fri, 05 Dec 2025 02:39:45 -0800 (PST)
 Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479311ed466sm72223685e9.13.2025.12.05.02.38.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b02e84dsm56877255e9.4.2025.12.05.02.39.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Dec 2025 02:38:45 -0800 (PST)
-Message-ID: <418e11df-1e17-46a7-813c-045a31d5c657@linaro.org>
-Date: Fri, 5 Dec 2025 10:38:44 +0000
+        Fri, 05 Dec 2025 02:39:45 -0800 (PST)
+Message-ID: <862de579-c7d8-4374-9090-cb42c5dda73a@linaro.org>
+Date: Fri, 5 Dec 2025 10:39:43 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,6 +70,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH WIP v2 7/8] media: qcom: camss: csiphy-3ph: C-PHY needs
  own lane configuration
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
  Todor Tomov <todor.too@gmail.com>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
@@ -84,123 +84,16 @@ Cc: Joel Selvaraj <foss@joelselvaraj.com>,
  phone-devel@vger.kernel.org
 References: <20251204-qcom-cphy-v2-0-6b35ef8b071e@ixit.cz>
  <20251204-qcom-cphy-v2-7-6b35ef8b071e@ixit.cz>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+ <418e11df-1e17-46a7-813c-045a31d5c657@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20251204-qcom-cphy-v2-7-6b35ef8b071e@ixit.cz>
+In-Reply-To: <418e11df-1e17-46a7-813c-045a31d5c657@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 04/12/2025 16:32, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> Make sure we have proper lane registers definition in-place for each
-> generation, otherwise C-PHY won't work.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 48 ++++++++++++++++------
->   1 file changed, 36 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> index 6d6dd54c5ac9c..c957f7dbfb243 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> @@ -1222,8 +1222,12 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->   		}
->   		break;
->   	case CAMSS_2290:
-> -		regs->lane_regs = &lane_regs_qcm2290[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
+On 05/12/2025 10:38, Bryan O'Donoghue wrote:
+> and int.
 
-Is this error possible ?
-
-If so we want to trap it earlier and throw a meaningful error up the 
-callstack to NAK the configuration.
-
-i.e. you could make this function return and int and throw the error 
-upwards.
-
-But is there no opportunity to trap this error before this point ?
-
-Either way just printing out something like "critical error can't 
-continue" without returning logical result codes to that effect is wrong.
-
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_qcm2290[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
-> +		}
->   		break;
->   	case CAMSS_7280:
->   	case CAMSS_8250:
-> @@ -1236,25 +1240,45 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->   		}
->   		break;
->   	case CAMSS_8280XP:
-> -		regs->lane_regs = &lane_regs_sc8280xp[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_sc8280xp);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_sc8280xp[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sc8280xp);
-> +		}
->   		break;
->   	case CAMSS_X1E80100:
-> -		regs->lane_regs = &lane_regs_x1e80100[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_x1e80100);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_x1e80100[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_x1e80100);
-> +		}
->   		break;
->   	case CAMSS_8550:
-> -		regs->lane_regs = &lane_regs_sm8550[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_sm8550);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_sm8550[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sm8550);
-> +		}
->   		break;
->   	case CAMSS_8650:
-> -		regs->lane_regs = &lane_regs_sm8650[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_sm8650);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_sm8650[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sm8650);
-> +		}
->   		break;
->   	case CAMSS_8300:
->   	case CAMSS_8775P:
-> -		regs->lane_regs = &lane_regs_sa8775p[0];
-> -		regs->lane_array_size = ARRAY_SIZE(lane_regs_sa8775p);
-> +		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
-> +			dev_err(dev, "Missing lane_regs definition for %d\n", c->phy_cfg);
-
-You could trap this up the top of the function.
-Make this function return and int.
-
-Or better yet find this error earlier ?
-
-Anyway rather than replicate the if (cphy) { do stuff } in each case of 
-the switch, just move the error handling to the top of the function once 
-and return a real error.
-
-> +		} else { /* V4L2_MBUS_CSI2_DPHY */
-> +			regs->lane_regs = &lane_regs_sa8775p[0];
-> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sa8775p);
-> +		}
->   		break;
->   	default:
->   		break;
-> 
+*an int
 
 ---
 bod
