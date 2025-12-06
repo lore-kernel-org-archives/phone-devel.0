@@ -1,59 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27438299A8A;
-	Sat,  6 Dec 2025 03:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB55325785D;
+	Sat,  6 Dec 2025 03:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764993592; cv=none; b=QZ3c0LdM3ssvTN3/DE+fd2brTzuR7eDZoP0+KPbbLcoOiT0Su5EQGCPo6FCqIT+oPDziXLv5WLfxiOjSrANqbef5DuSim4Ra0RcZ5cat/Z9PccWTqKoss8rkhynpe7zByCUsmDhNzwcSTx4sZkXH3UxrC86gNLs8dBYKz3oSz+g=
+	t=1764993595; cv=none; b=aCEeIgO1Iamu3gYmFbwcaJlwro2kQHReTmRworGn86YLdPofTLI39LYw9iwPxIPnYB7yNp3cfiE5a5rKm8StaTCm8HHv4uApV5QpWO+giIscC3mAen5rpyFlpVhKFb2SRxg4kqeKrKufLg/qUradsBBGO6f7YjDn4gl4ty+s+iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764993592; c=relaxed/simple;
-	bh=Yp+h4dlCyljGscNsyg/vjo3+xpYcb64d7JYudiRzfp8=;
+	s=arc-20240116; t=1764993595; c=relaxed/simple;
+	bh=pEPt3HWjY7ucCmubfRLXzLpIWQ5q9hgoRVtNASqK7Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B1YWBkhLWB8oIqgF+WaBoaMOTZZJobp76a+4E5wQ6PTrPLfZuCXlkBen/DsH5qCTFY1IY0HprvIWRJzi5OAhZmWPJTYnFhkJqcpP7Jtc3uSyD9O9FcrB6a5Bhd1sRA0j1oSMwRrCavyF+VOfcpCI1vQ5PKK8nZ4ISM8X+blWFbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkCkgvZy; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=I7ZTj0xCWMjsgxgG0TKCoV3BVi6HslHwEAqnHMllI/4xGLSiSOh8Aq45vLsEnu3owN/5m/K1Sclt8G4QTwNNuMgIFpDySj8GiSD3ob7/HeNKgEzTdP5u4e9501KKZ2rWrrZnTbXpf3YVbBhHRZbkTjgyrey20nulm1IUzJ4VwMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDYXetbw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkCkgvZy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D93C116D0;
-	Sat,  6 Dec 2025 03:59:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDYXetbw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6C8C2BCB3;
+	Sat,  6 Dec 2025 03:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764993591;
-	bh=Yp+h4dlCyljGscNsyg/vjo3+xpYcb64d7JYudiRzfp8=;
+	s=k20201202; t=1764993595;
+	bh=pEPt3HWjY7ucCmubfRLXzLpIWQ5q9hgoRVtNASqK7Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkCkgvZydo552dqIhZSMUa22B6nbA4hWiZy/1qRlUooHHb9bDEQUns65d/CuvPx6B
-	 VA5tP48awwY3zOtpJ+USU+Qtzv9nFK98FyxUZEwVu6Bj2nzIZIKloaITUAH5Oich2W
-	 SQutnK07It7XpF8LnyHAz5GIdRVpAkZ40t50DRqu9N9U3OUJoHLHDg8aW6cEG6DgUO
-	 +cikYW8et8GZRcaF5FPslwK27weGO8cflJbUNb0xxA3a5ABNVUXAdXIdjSYQStfauU
-	 FqHFzh1TbqpnNbVRSu6Fra/mTuUArvnQXeXLyvBVwwuf2XJWhf7lGKlYnfiQtZ3ovM
-	 UaZoIJ6+hR8ZQ==
+	b=rDYXetbwG8rYwJvMZsec3bXyR4eq4MONW1gnGfMDcanX+gOp2m8KZ4kpccJzE7Sww
+	 TdRRJkKVxgMAzTPeLEBjYZqjnVYgzbNJ0pASHV11n58pfD8TefW0QFK/crCmlemknZ
+	 fxu4jjfo9r87xA5um+3mzFsz8RDoVDViuv5tTvqOHnj1oaroFyzB00NSszDnIWgejD
+	 kB21MqVE1cRtthlvajHUnTq4+FxP/fml9FvFlpyXrW5ALgcjNBIHrn+2Sq9PwbbeIG
+	 NlC7qmKsX4Hvb5fkse5aKSnvWYc3USaHcKWsVHR6kOWd+ebRWljt/uE4GlpBnbIl7z
+	 1x/ccbGIhwM/Q==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	David Heidelberg <david@ixit.cz>
-Cc: dri-devel@lists.freedesktop.org,
+	Luca Weiss <luca@lucaweiss.eu>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: qcom: sdm845-oneplus-enchilada: Specify panel name within the compatible
-Date: Fri,  5 Dec 2025 22:06:05 -0600
-Message-ID: <176499396482.224243.10120913853765639507.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/4] Start using rpmpd for power domains on MSM8974
+Date: Fri,  5 Dec 2025 22:06:08 -0600
+Message-ID: <176499396494.224243.12900669334147776741.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251204-sofef00-rebuild-v4-1-7f6e030ae5b7@ixit.cz>
-References: <20251204-sofef00-rebuild-v4-1-7f6e030ae5b7@ixit.cz>
+In-Reply-To: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
+References: <20250621-msm8974-rpmpd-switch-v1-0-0a2cb303c446@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -64,20 +56,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 04 Dec 2025 11:41:24 +0100, David Heidelberg wrote:
-> sofef00 is name of the DDIC, it doesn't contain name of the panel used.
-> The DDIC is also paired with other panels, so make clear which panel is
-> used.
+On Sat, 21 Jun 2025 15:19:55 +0200, Luca Weiss wrote:
+> Switch over the ADSP PIL to use power-domains instead of a regulator,
+> and have one commit switching over the MSM8974 SoC plus all the devices
+> to use power-domains.
 > 
-> New device-tree will work with old driver as expected, due to secondary
-> compatible.
+> Note, that I'm aware that these changes are not backwards compatible and
+> not really bisectable, but since it only affects the ADSP on these
+> pretty old boards, I say it's fine to have this. Get all the patches
+> into the same release (6.17?) and then we're good again.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] arm64: qcom: sdm845-oneplus-enchilada: Specify panel name within the compatible
-      commit: d60e51cbae7e92c4a00cddb2750129094760da60
+[3/4] ARM: dts: qcom: msm8974: Sort header includes alphabetically
+      commit: cc09be7d644063334634baa6bb8f3860d6e05dcc
+[4/4] ARM: dts: qcom: msm8974: Start using rpmpd for power domains
+      commit: ce1799781200529149cc9e013ae1fdd6eb04b2b5
 
 Best regards,
 -- 
