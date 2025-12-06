@@ -1,107 +1,58 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F1F45BE3
-	for <phone-devel@vger.kernel.org>; Sat,  6 Dec 2025 03:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27438299A8A;
+	Sat,  6 Dec 2025 03:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764992141; cv=none; b=W5JdY5Wi2KfdR4X1m1zGHqYS3+zF63o+uSBrGH6jOIZt6iwgbHLX/alAVB/0YO7QDs7o7WQ/0SgBGmZWX1+7slK+mDiEmKXUm9h94HAkV0PeFXv6xUB0b+1jsZikFS0nXYf5ewDjwyFdyAoJ2QIuFgkXzb0GT/1bvK9cDdn4wuw=
+	t=1764993592; cv=none; b=QZ3c0LdM3ssvTN3/DE+fd2brTzuR7eDZoP0+KPbbLcoOiT0Su5EQGCPo6FCqIT+oPDziXLv5WLfxiOjSrANqbef5DuSim4Ra0RcZ5cat/Z9PccWTqKoss8rkhynpe7zByCUsmDhNzwcSTx4sZkXH3UxrC86gNLs8dBYKz3oSz+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764992141; c=relaxed/simple;
-	bh=/W7+9pVo4RSNIFtOIikLqxLJgtA6F948bY6gz3DENhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ND4McgjELP919gUsz5T1xY9ipMq2Hkxt68UVC3N1dTIItuCf9H3sMHKEedLNC6PhEX5TLNAzxtByVuynxDe99zAyaU/5c1GQPqxTp0mcfm1GCZ0Puu4CaueEIskY9+3YrFQKFU2vvFRK13E6xa0wnj6j+GLZPPhyrtD9UXs8XME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=L3iTVbx7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UGibg+wW; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1764993592; c=relaxed/simple;
+	bh=Yp+h4dlCyljGscNsyg/vjo3+xpYcb64d7JYudiRzfp8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B1YWBkhLWB8oIqgF+WaBoaMOTZZJobp76a+4E5wQ6PTrPLfZuCXlkBen/DsH5qCTFY1IY0HprvIWRJzi5OAhZmWPJTYnFhkJqcpP7Jtc3uSyD9O9FcrB6a5Bhd1sRA0j1oSMwRrCavyF+VOfcpCI1vQ5PKK8nZ4ISM8X+blWFbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkCkgvZy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="L3iTVbx7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UGibg+wW"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B62qPV02697366
-	for <phone-devel@vger.kernel.org>; Sat, 6 Dec 2025 03:35:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=IXPcbCBaPEtCMiINSRS9p4GH
-	WlWr4Um92ZlmDVQDvTo=; b=L3iTVbx7dVdcXG+O9jJyH0p75W9XT87kBHMEUB9Q
-	htsTLKbh29AcH47+pzItGPY/fSInYKMGroQhXtKWW/+Cojd3CplebDqmofmZOTcT
-	rJBrwhjeNeQmifbOLcaiNiYK+/xvcRkhCqx/XRaUeoNK0xLhzFu0Pna5pSdmoK+I
-	ubmMtKiGbCebb6ctER83GUjfxLzCKs98VX3Slqjbl8KriIyBIge92dzE6/UMRwN7
-	fMZb7q/Cz5DnnQMCIg16AvC2ssam1MMZyzJIrgZ/aPC8ATPp30lQC5byXZlUYqdb
-	pZvRrV+FCTX5dj49O/6/r+/4S1nDyyxQ/PpUgJaPkp58Qw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4avc2wg1x5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 06 Dec 2025 03:35:38 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b6963d1624so48398585a.0
-        for <phone-devel@vger.kernel.org>; Fri, 05 Dec 2025 19:35:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764992138; x=1765596938; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IXPcbCBaPEtCMiINSRS9p4GHWlWr4Um92ZlmDVQDvTo=;
-        b=UGibg+wWoTOzSP1GyswfpsJsn3xnzNJDubdkGDaZw4R9uC86Ywb2LNFfHiUh3L0qOB
-         xEoJAdujGKzslfRiB7KUBEWwxeICyEpBYR8W+qSccl+tyGmzxQAeHIRXbT9MJcvyGSmm
-         kzgLbAM7WMzqgBvaXqKMOnQVndo+vTbXXj5mJRYAho23oQWORXkVFGnw1nlnxEeWuUGF
-         3PUg4dEnZXHFngpV1JsK9qMVZvDr6ZNjW6CCDhW5T/l/3lZ3kI2VIgAtI2gG0tjv2/ih
-         5KBte+K59lvVFDdDy3Zk/hBXa5yk/xliXFJb4cqFT69528nxeUd+zf14v0gMgZXrXSVX
-         Ok0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764992138; x=1765596938;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IXPcbCBaPEtCMiINSRS9p4GHWlWr4Um92ZlmDVQDvTo=;
-        b=Vf+lG6OKZX1hll2fBln/MDNaDDHYosDPNoYcLmA+hf0pNSm0ZuSJD4hEKSXopiMpwz
-         RXP9EVBbifQMUuZgVfqi16FLSyghMrDR/YoUE9adkwYYCn6gTnpumq+jTFxtY4qZ6Q4M
-         mvYccFEoB5tFqUCFzz0IVxceEy3eoce72FYm0ZqRTHU446Xpd37p/K0YpeOWVyOwjCJJ
-         BhlAl30wyqRNiwTBdTAz+/czDeHvV8x5SgXBJl/OcJ/LNsM/bqqqM+/x6+FWEdnjZGHK
-         Vv7pbb5S6Jgm1HjqYETwGs/LOppqL29w2I64hf49np3QUIaxBIL1tsM55cl/O/fLIl8f
-         GdHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUsQJRIuXi0VkcYmArzlwj8ntzRdA/bvi8lO4FFMrGYnkqAURLwJ8u104Pv4EvYUWflFMgxw1UlVWqJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl/MF8Qm/rwZnkOU4xK2lylFDAVmrNfGc4zvYaKCryTpm2Pa40
-	yYblyZEXdggZcAG7vmB23PrbUXUZVPbtIDeefMzb8HkXxlRcyG1+ydhOU3AblC0ip0tqDKp/8IQ
-	phq8kN3tLEJunOi9wLtiuLJ45KIoxWOEeCepx6B84O27AzqyVhkBvhrhQWaiGC+kZVg==
-X-Gm-Gg: ASbGncu67AVAvD1JfXL3BLPks3SNNIqATPNYG+KQ83ySmA7T1Hw5KCGvC8dIywGi0Jw
-	IAKDKAsSaZUIIwbcZx6Ot4/KqZMO6VWlGtnwI4R5G1aY9hDS+6Ds7aIZ23QLrJWsc/njuCY4Ns2
-	9QI1aTz+tGJTa3w1bOP5BapucQeeKOBdmas/S+3irMZ5Eknwqn+AsyCGRdBomxy8tfVSmyTpjqP
-	Nx3GNosgBoOfDmtcdQTnCaImnJhd+JR381xJhEagsGAc9IsECnkD7Oa3q/TC9DFt11S0aIPX6N3
-	R9SWdLN3XOoHYk2N6ijCc8M3TOKut0UX6TcabBCELCaseTVSgysvYcd+ODYbgnIO2pMiIfxFYkv
-	4EdRm8DK0d4cp2hmIymPFxxGpj933+09U/N5Cp10eQLvFzM+8KgCZkO8rR8FrFlsJ2KFl3huF3W
-	4XsIm2k19I7xHmr5W/frZsZkw=
-X-Received: by 2002:a05:620a:3190:b0:8b2:71dd:588e with SMTP id af79cd13be357-8b6a24f64e7mr210230785a.90.1764992138343;
-        Fri, 05 Dec 2025 19:35:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEUbE/SHRgDvUvm5YVOFdimtJ2ZhaIalFbIGKwVQ6n+VX8QscibWner/JGt2413Nypt1oy+pg==
-X-Received: by 2002:a05:620a:3190:b0:8b2:71dd:588e with SMTP id af79cd13be357-8b6a24f64e7mr210228685a.90.1764992137950;
-        Fri, 05 Dec 2025 19:35:37 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7c28026sm2035628e87.71.2025.12.05.19.35.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 19:35:35 -0800 (PST)
-Date: Sat, 6 Dec 2025 05:35:33 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Casey Connolly <casey.connolly@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: qcom: sdm845-oneplus-enchilada: Specify panel
- name within the compatible
-Message-ID: <hsjeuii636bzihsbxfb5e37bizagcseme3czhesffpraa7sufx@qjzylz7jbktq>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkCkgvZy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D93C116D0;
+	Sat,  6 Dec 2025 03:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764993591;
+	bh=Yp+h4dlCyljGscNsyg/vjo3+xpYcb64d7JYudiRzfp8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KkCkgvZydo552dqIhZSMUa22B6nbA4hWiZy/1qRlUooHHb9bDEQUns65d/CuvPx6B
+	 VA5tP48awwY3zOtpJ+USU+Qtzv9nFK98FyxUZEwVu6Bj2nzIZIKloaITUAH5Oich2W
+	 SQutnK07It7XpF8LnyHAz5GIdRVpAkZ40t50DRqu9N9U3OUJoHLHDg8aW6cEG6DgUO
+	 +cikYW8et8GZRcaF5FPslwK27weGO8cflJbUNb0xxA3a5ABNVUXAdXIdjSYQStfauU
+	 FqHFzh1TbqpnNbVRSu6Fra/mTuUArvnQXeXLyvBVwwuf2XJWhf7lGKlYnfiQtZ3ovM
+	 UaZoIJ6+hR8ZQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Cc: dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: qcom: sdm845-oneplus-enchilada: Specify panel name within the compatible
+Date: Fri,  5 Dec 2025 22:06:05 -0600
+Message-ID: <176499396482.224243.10120913853765639507.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251204-sofef00-rebuild-v4-1-7f6e030ae5b7@ixit.cz>
 References: <20251204-sofef00-rebuild-v4-1-7f6e030ae5b7@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -109,35 +60,11 @@ List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251204-sofef00-rebuild-v4-1-7f6e030ae5b7@ixit.cz>
-X-Proofpoint-GUID: XFFQLcpe59zTxg8RQfFhaxtINV6JOAnC
-X-Proofpoint-ORIG-GUID: XFFQLcpe59zTxg8RQfFhaxtINV6JOAnC
-X-Authority-Analysis: v=2.4 cv=d774CBjE c=1 sm=1 tr=0 ts=6933a48a cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=alNsdzoY9l9OrmpsANkA:9 a=CjuIK1q_8ugA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyNyBTYWx0ZWRfXzWmf/D7NSkjh
- 6HvzfJ2KvrI+lGddxsOQGgzda9Em3LCVulmj/eU0dujZkbtqWpMq9YMeVPC9VKfBYOuNv2rJpMD
- m0Ub+y0WI+4IWAFmj/5MlwibEA4JOA8T8vH9kbeQ0LnOiAJz6kZtbWVx2e3m2fwvve4uCk+CmSE
- K2VVl9Q/dL8N2fKZFsuNhBAZKWv+/TlK6wVfxYH6RVOC5jPxygfds3HVKxYvdOIm8ZcBEdSH6nc
- 4dJ2i5z3PPzjNAKYbxCTig5efOSP8n89SFn6B+vsU+IKWXSI0DhmWW08ms7Ft8dZZgfhJx6xmP/
- ufB6k3MrhGCY9YXC0Uapz6RxOtNbcOfVx1HIIYZU7LlI9b2zypePV2fvHG449C8C8g0WTqu4AfT
- lJ6a18wNl/SKCk/8Z4I+546MspLNhA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_09,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 clxscore=1015 impostorscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512060027
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 04, 2025 at 11:41:24AM +0100, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
+
+On Thu, 04 Dec 2025 11:41:24 +0100, David Heidelberg wrote:
 > sofef00 is name of the DDIC, it doesn't contain name of the panel used.
 > The DDIC is also paired with other panels, so make clear which panel is
 > used.
@@ -145,19 +72,13 @@ On Thu, Dec 04, 2025 at 11:41:24AM +0100, David Heidelberg via B4 Relay wrote:
 > New device-tree will work with old driver as expected, due to secondary
 > compatible.
 > 
-> cosmetic: sort the node.
-> 
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> This DDIC is essential for panels used in OnePlus 6 and Pixel 3a XL
-> (SDC variant). With proper support, all downstream patches in
-> sdm845-mainline and sdm670-mainline can be dropped.
-> 
+> [...]
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Applied, thanks!
 
+[1/1] arm64: qcom: sdm845-oneplus-enchilada: Specify panel name within the compatible
+      commit: d60e51cbae7e92c4a00cddb2750129094760da60
 
+Best regards,
 -- 
-With best wishes
-Dmitry
+Bjorn Andersson <andersson@kernel.org>
