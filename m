@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254667E0FF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5572F0C79;
 	Sat,  6 Dec 2025 13:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765028083; cv=none; b=MyrLjo+w4l1LCPjnuxbZFr8hApxRAMCWcObLuc5YT9MUJ/TDRduhjYrCOgjtGbf7/4q7UB2lXTXD6rRxeYw5UPdifcXpfrywMT6mdisZvmdc/AS1LboaLAOkRA3isCSaN1MFwQcJHTJnJ2woo0ilLBXRUk4hCNTOm/2DHmM00EE=
+	t=1765028083; cv=none; b=CXf5GB9S3ZEIw8g9hUhTyXPMbcUnrYV41Ju/FQQDanTw8hKtjvl+aeGRK6Dv4eAZpWYtDzAT1Q0gmylQiKPr7ZMmkQ1/k7OfmwdePztLFvliNTznrBCbluJX4YLN3LmZ1dKnMyo4dkwz3FRvC8VK0h53y8t3lzKM+v+PVpjk2u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765028083; c=relaxed/simple;
-	bh=Fc1/10leeyqV93aaN1mZqOChw1gXUFjdExoULM0DJ3U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dXP03hT5QR3tPv6/EsrpRPRnN0afS22H4asZLSuVl13euOfcn53pc6VVHoyphYXOsfKR+tcJ6oVTWBRJr8+dVNviLFVrEueUezSU1I3LoJn9NTeCzs8181TdCdf2cxgsiPPBLOFsrKJI9M1jxQPdkhvnQptUvSwjGyVwiIxO7kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nB/wyBp7; arc=none smtp.client-ip=10.30.226.201
+	bh=P6JIG7+hx3GfFzXJ3PaLVXgbb5QcMZmiNNwqLuWL2lE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aY5rEVcpMSjtI60WpitcutLYFLDtxuIfuF3+kXdyJD9SwlLlu4KsShNZQn3vsG/xYUOVsoGs/O0E3yxKQzpxu09Qp4RmjXBEIyFp++7FgBdfrd98CQvIDhd81D7+IuprlgNrwoXt50/SCLB6wfQga+hDShdoJATpRjPL2T38XsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWI11iTk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nB/wyBp7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DCF21C4CEF5;
-	Sat,  6 Dec 2025 13:34:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWI11iTk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A7ADC113D0;
+	Sat,  6 Dec 2025 13:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1765028083;
-	bh=Fc1/10leeyqV93aaN1mZqOChw1gXUFjdExoULM0DJ3U=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=nB/wyBp7ziC09vCLJOLvrIQE8c8IMltyfFVInbnrHw+81n80OBHSrMMabiqR/Rrso
-	 GxIGJSJPlPlpzZQIcxqz0vDfsB4213cbUnaKpr7o2znNlmgqeuoK2CBkY8kksxKY+P
-	 PSnWdXYL83DDW6XC8CwMNQcK7YZ9tmLY+e/VBbyVCg+f4pC9hA0M4bSlKvgzdt+48y
-	 pQ5uyKpRtYzkrxzvStkPlJtND5Yy5vfrdCnYbEsUDeCOYkgmM4xhZP7dJNe2HLNkrX
-	 i3hEGZc4tTxiu1Jc4wL3OH0X5FoP8Fu0SkwGfOZzvA5A6SfotU3xvvuRnGhNsO2m/5
-	 CS0HZ2rHi5meA==
+	bh=P6JIG7+hx3GfFzXJ3PaLVXgbb5QcMZmiNNwqLuWL2lE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=YWI11iTk1662lrlgI3+m/oF0fJJGm8s8rl1TK+lLiSUA8HxTLGsvLOgtngpaDnNEz
+	 8BGor78liJI80GP9zx8tuzFot2/SQmPiH/EP9s7ChElKxlybWNmAHwElsRg/txtR13
+	 XUiEZ8RT+CfULc2yDWeab3F9vUKkpFEwznNqbUrcGq6lfgMx0PbbGaBsKbcQylSGi3
+	 EmxISxYQCsBP3qe9PRPeAf8nSfRugux8vWXN5Jc0S0cvu0kkJ+JIrwZ1vAAWL18eT3
+	 ljV9I2/3QSnuI8Y6eNw94xyIhF7Hv4/9xXaOOqDftALOWuekjHaPfIaNzKsY2vxymh
+	 iiD1QfLsvE+EQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5D45D339BC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED9D9D3B7D7;
 	Sat,  6 Dec 2025 13:34:42 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v5 0/8] Add support for Pixel 3 and Pixel 3 XL
-Date: Sat, 06 Dec 2025 14:34:17 +0100
-Message-Id: <20251206-pixel-3-v5-0-dc99732e7d35@ixit.cz>
+Date: Sat, 06 Dec 2025 14:34:19 +0100
+Subject: [PATCH v5 2/8] dt-bindings: panel: sw43408: adjust to reflect the
+ DDIC and panel used
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,12 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANowNGkC/1XQyw6CMBAF0F8xXVsz0wcUV/6HcdHHoE2MYkHiI
- /y7RY3g8rZzbjp9spZSpJatF0+WqI9tPJ9y0MsF8wd72hOPIWcmQGhQWPEm3ujIJdeIFLywqoC
- S5ekmUZ2vxqbtLudDbLtzur+LexxP3x0IoH8dPXLg1hlndF2glPUm3mK38g82NvRipiRMSmRlv
- A3BEZTCV/9KTgrRTEpmJbG0wimAYOy/UjMlZi9Uo3IlFLUJ3lfFpIbP0oku1/xr3XfzYXgB2QR
- IM1MBAAA=
-X-Change-ID: 20250419-pixel-3-511edc2a4607
+Message-Id: <20251206-pixel-3-v5-2-dc99732e7d35@ixit.cz>
+References: <20251206-pixel-3-v5-0-dc99732e7d35@ixit.cz>
+In-Reply-To: <20251206-pixel-3-v5-0-dc99732e7d35@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -63,138 +61,86 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, David Heidelberg <david@ixit.cz>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Amit Pundir <amit.pundir@linaro.org>, Casey Connolly <casey@connolly.tech>, 
- Joel Selvaraj <foss@joelselvaraj.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4392; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=Fc1/10leeyqV93aaN1mZqOChw1gXUFjdExoULM0DJ3U=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpNDDwRYraqDgOJTfZuaT8KZzTsF0MLuLnkdiC5
- U3DuLSOJDSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaTQw8AAKCRBgAj/E00kg
- ct7mD/4yuOrJl/nJImQMU0Wd5b6FL6Tn1noeUazvMSj2XgXDhu5/3gNdVcgDYNGo4fYia80o/J8
- jKbzlVlol7LPbxAohl+plbt1lH/Y8YMbEloW28VC/siV9Ji8RBMOHasofBbAn6zm9pi1vPR6vZP
- aqWGyd027vd4brE3h+zo7qFicM5TCe+LyeOVEeFXsgNBWTQA3FTUcFUsm2CjSTZzeMrlFz95Xp7
- ELpmW6LgXCDidAU27VpW+orJEa1iAlvPwxXHGFj/tirhI/9bVoyUosASWcs4MjuoVW7IpoLOS2V
- UZLC6ZAiMgRdvbOMv/TJhU6CPvUNK2ZGatr/ZJw0JrQd99C8I5tK+1IVttP9VXxzhhMN9sc4D+q
- mZe+/wIkOZHu7fX1WeLSYhix+qEB4Ljm7TlNPFwkzthm2DGBOpGtJCwtRnouNc3AJVk5yw0hVdq
- gzj/j1zD58/XgoWpi43Bu2f3RkiXlxJLrJfPyXe13upYtek0K9JoS+/derm7XxeurTIASXlMHw5
- 13tn+3OH5+NGdJO8LFU7LBkimsWrWR3dAD9pT3aswUuXb9pCXqPA1DMmURri0x49eg5bXOCXtdt
- HwHFFKFIVuMof3xDSoxXF1L80mmACeN/IOdNsPzKo6ud3xrdR+5ZUQxhBqxB2kqFzwbHAOeLsiP
- /IMbYU2QEmPnLuQ==
+ bh=YFbMU07Wu5FnvTw9LCEYZ4TnpCBRf84TLv0leteBovM=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpNDDwvDaR+m+QhyrgquOXDdM2avUtPyLdimLfW
+ Ah8GO3lqxCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaTQw8AAKCRBgAj/E00kg
+ cvbID/0dhkZmu6IKOX/8vMpiK4EW/pxZfDdWH6Xl3GHgtOUlwVA7n7KVp8NCBvrKFzLw5DXb+eQ
+ UgtZRmkMFLANxh8lT+JesNImudWnbE2YD+ugaz/qAnwnO1AfYdZNR+PZAzGnJlo+a24aJqj8e+x
+ oczJr6qNI/BgtPEGfPXjWBDkyTZ2gMHeA7hdtbcDmBFMPs/krIj2OHesE2kMHsI1SXWinwJQDZx
+ 56YciqFiUea7HhcSJebXfpmk895bkbd+H7paXSb4y5J+VW+Z/d1/u4SR//StqHxqmdSJ7aUmApT
+ 49tnRHtHVoL1b32uBEDHXrm7MwJqH1pzrbU8TmDR3cFkW8fSyMTasyZ9DCkZModoSljgohFtB1K
+ KMiUR+XgDMRPdBUEoZT+XvZXgfp1XuJODqo1Gr0iDoU5pj81iey5zs8k4DCKB/yDHJrfIsiY0y7
+ oqNX7E4tiPocA953o6HsZEQ0VgPM4F8Jxg6rLqasniXnAouFHJOVlR6HPn6ItHkJo1wSM/giV96
+ O805CINM5pmjJYB7Otrnri6tZ6AOXnt34l3x0t2f/x7CW7LeLnpSNz6zwhVDsi5qR7IA/9LaOhj
+ qdNwyeqdg00IYowOEfdnyHBauwNalC49327BTqNLZxzMY0IRIbwMQTV/wo69RPC9pz8/+z48nsz
+ nhema7e/ODkJ8eg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This adds initial device tree support for the following phones:
+From: David Heidelberg <david@ixit.cz>
 
- - Google Pixel 3 (blueline)
- - Google Pixel 3 XL (crosshatch)
+Add compatible for used LG panel.
+SW43408 is not panel, but DDIC. The panel itself is the
+LG LH546WF1-ED01, so introduce combined compatible for it.
 
-Both phone boards use the same identifiers and differ only slightly
-in their connected peripherals.
-
-This is mainly focused to get the base functionality of the board and
-being able to use the upstream DTS within Linux and u-boot.
-
-Booting
--------
-For older Pixel 3 bootloaders, bootloader-compatible board and MSM IDs are
-required for the kernel to boot, so these have been added.
-
-For recent Pixel 3 bootloaders,
-a) you want chainloaded proper bootloader (f.e. u-boot),
-b) you can also boot kernel when adding back TEXT_OFFSET
-   (partial revert of 120dc60d).
-
-This series is a beggining of cleaning up and transitioning support from
-sdm845 close to mainline tree to the mainline.
-
-Until merged, available at:
-  https://gitlab.com/sdm845/sdm845-next/-/commits/b4/pixel-3
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v5:
-- Document 1 MHz frequency for i2c2 on blueline and add placeholder for
-  the touchscreen.
-- Rename vreg_l14a_1p88 regulator to vreg_l14a_1p8 as it's 1.80V.
-- Move panel _enable() function below _program(). (Dmitry)
-- Link to v4: https://lore.kernel.org/r/20251125-pixel-3-v4-0-3b706f8dcc96@ixit.cz
+ .../devicetree/bindings/display/panel/lg,sw43408.yaml       | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Changes in v4:
-- Updated panel device-tree example to contain the both compatibles.
-- Put panel pins into the panel-default-state and drop the suspend state
-  as it's not yet used.
-- Also, sort the pins. (Konrad)
-- Move the framebuffer format to common, as it's UEFI standard. (Konrad)
-- Improve commit descriptions and add Fixes tag. (Dmitry)
-- Link to v3: https://lore.kernel.org/r/20251118-pixel-3-v3-0-317a2b400d8a@ixit.cz
+diff --git a/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml b/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
+index 2219d3d4ac43b..f641efaeb8b36 100644
+--- a/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
++++ b/Documentation/devicetree/bindings/display/panel/lg,sw43408.yaml
+@@ -4,14 +4,16 @@
+ $id: http://devicetree.org/schemas/display/panel/lg,sw43408.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: LG SW43408 1080x2160 DSI panel
++title: LG SW43408 AMOLED DDIC
+ 
+ maintainers:
+   - Casey Connolly <casey.connolly@linaro.org>
+ 
+ description:
+-  This panel is used on the Pixel 3, it is a 60hz OLED panel which
+-  required DSC (Display Stream Compression) and has rounded corners.
++  The SW43408 is display driver IC with connected panel.
++
++  LG LH546WF1-ED01 panel is used on the Pixel 3, it is a 60hz OLED panel
++  which required DSC (Display Stream Compression) and has rounded corners.
+ 
+ allOf:
+   - $ref: panel-common.yaml#
+@@ -19,6 +21,9 @@ allOf:
+ properties:
+   compatible:
+     items:
++      - enum:
++            # LG 5.46 inch, 1080x2160 pixels, 18:9 ratio
++          - lg,sw43408-lh546wf1-ed01
+       - const: lg,sw43408
+ 
+   reg:
+@@ -46,7 +51,7 @@ examples:
+         #size-cells = <0>;
+ 
+         panel@0 {
+-            compatible = "lg,sw43408";
++            compatible = "lg,sw43408-lh546wf1-ed01", "lg,sw43408";
+             reg = <0>;
+ 
+             vddi-supply = <&vreg_l14a_1p88>;
 
-Changes in v3:
-- dropped Documentaion: prefix from 1st commit (Krzysztof)
-- Extended the compatible for panel driver.
-- Document reserved GPIOs.
-- Drop some useless statuses, sort pinctrl. (Konrad)
-- Add placeholders for the known i2c devices.
-- Link to v2: https://lore.kernel.org/r/20251030-pixel-3-v2-0-8caddbe072c9@ixit.cz
-
-Changes in v2:
-- rebased on next-20251030
-- generalize chosen to -common (Dmitry)
-- demystify rmtfs_mem qcom,vmid
-- use qcom,use-guard-pages instead of lower/upper guard block
-- merge port@1 endpoint into label mdss_dsi0_out
-- sort pinctrl
-- sorted the nodes inside root
-- put status as a last property into mdss_dsi0 block
-- rename volume-keys to gpio-keys   
-- removed LS-UART1 label
-- removed gmu block, already enabled
-- removed accidentally introduced WIP crosshatch panel support
-- removed useless panel_pmgpio_pins (Dmitry)
-- removed usb_2 as it's unused on production units (only devkit)
-- move mdss node into the -common and disable in crosshatch (Dmitry)
-- move battery node into the -commonm
-- move framebuffer into the -common (Dmitry)
-- add all firmwares (Dmitry)
-- add Wi-Fi support
-- add Bluetooth support
-- add missing gpi_dma1 node
-- renamed regulators to follow regulator-foo-bar BCP (Dmitry)
-- adapt to recent cleanup GPU's zap-shader node
-- Link to v1: https://lore.kernel.org/r/20251005-pixel-3-v1-0-ab8b85f6133f@ixit.cz
-
----
-David Heidelberg (8):
-      dt-bindings: arm: qcom: Add Pixel 3 and 3 XL
-      dt-bindings: panel: sw43408: adjust to reflect the DDIC and panel used
-      drm/panel: sw43408: Introduce LH546WF1-ED01 panel compatible
-      drm/panel: sw43408: Add enable/disable and reset functions
-      drm/panel: sw43408: Remove manual invocation of unprepare at remove
-      drm/panel: sw43408: Switch to devm_regulator_bulk_get_const
-      drm/panel: sw43408: Improve wording when reset-gpios aren't available
-      arm64: dts: qcom: Add support for Pixel 3 and Pixel 3 XL
-
- Documentation/devicetree/bindings/arm/qcom.yaml    |   2 +
- .../bindings/display/panel/lg,sw43408.yaml         |  13 +-
- arch/arm64/boot/dts/qcom/Makefile                  |   2 +
- .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |  85 ++++
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 524 +++++++++++++++++++++
- .../boot/dts/qcom/sdm845-google-crosshatch.dts     |  28 ++
- drivers/gpu/drm/panel/panel-lg-sw43408.c           |  86 ++--
- 7 files changed, 704 insertions(+), 36 deletions(-)
----
-base-commit: 44ddd568b5431628c63b3df652ceb5b466e20165
-change-id: 20250419-pixel-3-511edc2a4607
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.51.0
 
 
