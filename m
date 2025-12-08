@@ -1,96 +1,93 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085630F7F5
-	for <phone-devel@vger.kernel.org>; Mon,  8 Dec 2025 11:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CEE31355C;
+	Mon,  8 Dec 2025 12:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765193700; cv=none; b=JgTxYUoHgN7dOut6lkLxqrx9JImqjXPulwR8Pg9wHzdt9mvvdM7yALBkP8g6ugZnZplQY9Px48dFJJ1yANweJchePxq0IFvDBRhqTLxPlXUHrvUKDvU2BYoLUFQrBvaofpLizrud2gJa7TuEAUoQzeKKO3LEbdKD5PtrfwSE4NY=
+	t=1765197680; cv=none; b=MP/WV2Sz/Gv9wKhVagrBueK/wNkYUMksD94nsn04AcapITaWWcWk1y5oNcOLcBWTTp9Ke0arYZqM82qnNs5smsyuWuB3is2w/2h1stmSHwCbMFH6jtE9cttXUH6f27L/Hpye4wvvwSfVHLdadJoz/7xyCUTqPIJrFxWgADsbJZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765193700; c=relaxed/simple;
-	bh=bNW25in4pRD8YOdAgJuUdg+9roU5D76em+oRLz4Nkb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gn3C+qTiZ1GL7HoEh07NXQbvk3AkElbrgMdCQ8PfksWnbhN4xs7wh1oIGFRSCt4/ZNTDCaN8MqZZoW8LcNe4GFJ7AW8OwIkdiwwqWsEqlfdVBk7JsRy7OcskM58rUuseloZIWSxjnAeA4nmUbsBJwfthO+xG3DGf/omgNrGKfZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=EnShWl57; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1765197680; c=relaxed/simple;
+	bh=ATObcVA277EPtE5hC8WOkwhqMi5GiWWPtSeS9U75Oyg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jBRlBDwRyD7SYN31HLy6fxh/GO//RgYkTTYYKJ+hNa8yf0cw4EiMu8WTgn5QojgCi5h6y2wgMyLMU4UR+bKJrHq3o/6NPECEg28Y4pLpTTmr3ysgK/8GNpZwjVszg7XNicUC/0proT8DPGnaKxPSkbTOBAeP2cYWbexNY1XqXSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=SICKTMxO; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="EnShWl57"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=bNW2
-	5in4pRD8YOdAgJuUdg+9roU5D76em+oRLz4Nkb8=; b=EnShWl57/y90y+Uvrpev
-	AqLDBc24raurAucozBcqu/7JnoC/dzUahbItMb5hkVRfLQRl0YPvNnEGnuVljtLg
-	L04upYVYPH3w+V7+dCOlO3sDGz5p0NEH2fLxEAgPUpny5lEHlWI8MwGtN3DXjD2P
-	E+HMSIbsTjhs/VpigsmXJTEg+6TPm8DCa+2gpuBLmt9JcqhmBtC9i2mpOoNnF7G8
-	ZDkFDau5TTmZtJ9LZV8FXpKkGiX/rn1hlsrtXAdmO1MBO6M2eqykEtVUwYlatAkr
-	OMdREITl3PBlCmMPfvSjv5rSqzuoxi62O2gTJVkJ5mgu0R/G9pHGU2IR1pBEwKx7
-	4g==
-Received: (qmail 2513978 invoked from network); 8 Dec 2025 12:34:55 +0100
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 8 Dec 2025 12:34:55 +0100
-X-UD-Smtp-Session: l3s3148p1@T9YGL29FVtzdcafS
-Date: Mon, 8 Dec 2025 20:34:51 +0900
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Luca Weiss <luca@lucaweiss.eu>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] i2c: qcom-cci: Add msm8953 compatible
-Message-ID: <aTa3291WXdt5OVQN@shikoro>
-References: <20251028-msm8953-cci-v2-0-b5f9f7135326@lucaweiss.eu>
- <20251028-msm8953-cci-v2-2-b5f9f7135326@lucaweiss.eu>
- <EB0BBDE9-0B5D-49B2-866D-112B131C8C44@lucaweiss.eu>
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="SICKTMxO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1765197668; bh=ATObcVA277EPtE5hC8WOkwhqMi5GiWWPtSeS9U75Oyg=;
+	h=From:Date:Subject:To:Cc;
+	b=SICKTMxOM9i1jM92C1DB+bXePp9O0cyhXb5miqgdVnJ9Az73x5ghgAYvx2JZ5XZOd
+	 7wGXHPyTL09I07PapNiMlO2Ji0D89H0mOdWLjgEtI5dmENp+BZV1mlmyld0VrKZPmt
+	 zKuZRgIs9AD941vFQ5qXeu+HW2UDMchyCc80fxxY=
+From: Luca Weiss <luca@lucaweiss.eu>
+Date: Mon, 08 Dec 2025 21:41:02 +0900
+Subject: [PATCH] ARM: dts: qcom: msm8974-hammerhead: Update model property
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jjAItr+qvh2LQu/w"
-Content-Disposition: inline
-In-Reply-To: <EB0BBDE9-0B5D-49B2-866D-112B131C8C44@lucaweiss.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251208-msm8974-hammerhead-model-v1-1-88975f30cbaa@lucaweiss.eu>
+X-B4-Tracking: v=1; b=H4sIAF3HNmkC/x3MQQqDMBBG4avIrDuQxJZqr1JcDOZPM+BoSaAUx
+ LsbXH6L93aqKIpKr26ngp9W3dYGf+tozrJ+wBqbKbjw8MENbNWG8XnnLGYoGRLZtoiFk/Qyi09
+ RHKjl34Kk/2v9no7jBOVjBCBqAAAA
+X-Change-ID: 20251208-msm8974-hammerhead-model-fa3aca1fda0e
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jens Reidel <adrian@mainlining.org>, 
+ Bhushan Shah <bshah@kde.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.3
 
+Many years have passed (more than 9 actually) since the introduction of
+the Nexus 5 dts to Linux and it's high time to update the model property
+to be a proper model name and thereby bringing it to the standards of
+the 2020s.
 
---jjAItr+qvh2LQu/w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+The phone was manufactured by LG and sold by Google. Some sources call
+it LG Nexus 5, some Google Nexus 5. I think it was mostly marketed as
+just Nexus 5, but consensus in upstream dts seems to be to use the
+manufacturer, see Nexus 5X, Nexus 6P, Nexus 4.
 
+Arguments could also easily be made to change the compatible to
+"lg,hammerhead" and rename the dts, since lge (LG Electronics) is not
+even documented in vendor-prefixes and doesn't really appear anywhere
+else in the kernel and lg, (for LG Corporation, the parent of LG
+Electronics from what I can tell) is used. But that's more invasive so
+I'm leaving this out in favor of this simple patch.
+---
+ arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Ping for someone to pick up this patch please!
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
+index b3127f0383cf..8f4a1fda9276 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
+@@ -7,7 +7,7 @@
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ 
+ / {
+-	model = "LGE MSM 8974 HAMMERHEAD";
++	model = "LG Nexus 5";
+ 	compatible = "lge,hammerhead", "qcom,msm8974";
+ 	chassis-type = "handset";
+ 
 
-It was accidently set to "Handled elsewhere" so it slipped through the
-cracks. I am sorry about that.
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20251208-msm8974-hammerhead-model-fa3aca1fda0e
 
-Applied to for-next, thanks!
+Best regards,
+-- 
+Luca Weiss <luca@lucaweiss.eu>
 
-
---jjAItr+qvh2LQu/w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmk2t9YACgkQFA3kzBSg
-KbbtPA//VytW6zUEhnDr9BalohpTqu6YA0qPYvgy9ApreeVmlWkuP7PxL5bmPTt6
-eIA35gKf2hQ/5DWwu/o34vo1+Qih9mehEHVB9pvvyNr196ZN0i+l948mP09BiiS4
-Z7FsO2VPAvtcsUvYGs0kMiBDT/8SgFB0CUwKEszGiBuBEoLu+l6/pQdOhQVc/zWr
-EBfSUp6x7hRrXcJ1Gx+XBb3wOOsnzWG+6QpedeyCTD3+z2hUfHNtbmuAZ4vQPIv7
-pXmbH9L5Yd04kWbkahk1F/THUCCf2GjkSDm6StZZYTpM7kISrGrZwG07YtJKQdIX
-eAx0Zl3JnsMw195Y7H+dRar3GXEoRhJCFPPGVo6skzSUJZQK1pYeCcHPOT4+HVGt
-DZrsn7pc7C0G03mV27t858s5zvJYcodllre5ENJif0QRvxW+1lks4pBiAfweqzlh
-JQVKpfuOoLm9WVDRBvsjV7vwrlaeLVnZUtn8nHEfQCm9gTkb7uOI3ih9k+A3pFO1
-x+woJcWl5W2MjsuT62WD/LczQ/l5Y8g/D3L11MmSDVryx2311N5iNu1uutHt+U5e
-apoO2d2btdL8ziySOyX2KuHuncRFj7u5j7MyCm5D5eD1bzOX6/VexgSSMhUIOc7N
-fcJzAfV0zhQowpB/1xKE89NluZMZvCokQZwEmVGxuqIphFKE3CM=
-=7Rer
------END PGP SIGNATURE-----
-
---jjAItr+qvh2LQu/w--
