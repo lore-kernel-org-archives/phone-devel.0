@@ -1,146 +1,141 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B824B2F693C;
-	Tue,  9 Dec 2025 22:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CE22E975A
+	for <phone-devel@vger.kernel.org>; Tue,  9 Dec 2025 23:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765320675; cv=none; b=juJ2b54q8RISRxpHG8HR/mwZ7wqmFTV7TgbeQddj2Dx49vo9eCRzi4J7KhOPC1gE9paNl+lHipnvL5Es+DiZb4qSiPYE+yrOQzfrGoodQaZI4FC0UyYMIwv5vC/LQ+B4BMhZbk1BKNZqM0wVMYlKWT9dGr6Bq4Jor43NPa38a3M=
+	t=1765321922; cv=none; b=Od2lpLGdZWlj5ZRw8MSFiid8jK4M9l796shC2yex5KngTavDDYXXeySilHxn2BhABlLcVml5Fr1+s3UEW/RDy8k+IBeUmN58LIUnIsUrvp6NoAr0eFYjSn3eGrBLfJfVEr6DsOcvbHveQUmJx4NzbGJqi8WVATT8GLWDp5jt0RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765320675; c=relaxed/simple;
-	bh=gPGDhghcMRCwKqsJtYp9g/PxpuICie4dXEQOL3uUwf4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H1xfxewMo/0/Vdvl8TpoA1KU1aOUPTEubW725eyeS5GsZ/3EitCOdrpP4Az2bBnJYYSUr8xN6p8+7hF6mct9f9TaO6cGuFc9Nwy7uOjbVCzIiDI+yp34umiV6yjJOh3DEglOJTkyvBJvTI9X+rcJPt21chXrZZyZKbwQyTSUzUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=rqXF0EaT; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1765321922; c=relaxed/simple;
+	bh=8ChSwUHdw1a4imlf5mlmeQxUhLaTIcEsabis5huZ3Aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=adCKc61u9wV0gn/UJ+TFBejzo6gqXSK5daA9MWknNdBUDpuABClDzuKg/RtXO5LbpwzuFLxU8g96FNAHpWgJb7DFnf96DcJ3FB2U1WRDYjApKUdoJBV6ApZCeQKVbprTDWbUb6JiqF0VXe+txDJfQMgfKOhoqlhXE8e3sNo1h9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dUENsZ+U; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MGhCxfEU; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="rqXF0EaT"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D738753405D3;
-	Tue, 09 Dec 2025 23:51:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765320661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5F8BPDJjZU5jQZGk4547xlx1b+9pidthThVI4rsaKsk=;
-	b=rqXF0EaTwXEkSa1MHicA9qMH+JEYGD6w1L770I+lVkfvWPFiD1PdN1XWWKaloyE2SfYp8C
-	L2d4QKcVAKU/rJochspjZkKvNnQcdr+aVOkvxIOUE30JVc2D7UxPHe8HmqkzVgEcR9Fu9c
-	mLEDItRmptSicue8pfaTmjJLjDJWPqU=
-Message-ID: <b171d4d1-9426-49aa-b69b-339fdb78c85d@ixit.cz>
-Date: Tue, 9 Dec 2025 23:51:00 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dUENsZ+U";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MGhCxfEU"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B9NBOVp150422
+	for <phone-devel@vger.kernel.org>; Tue, 9 Dec 2025 23:12:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=yMHuwAiVf8kefegJzUtXsfVv
+	UTlRrVd+3Q+FhBxOBH8=; b=dUENsZ+UJ48u0p/1msQT9rVhIGKb02OnAijmb37H
+	/ZpB1cnL5zggBKtBa7/meWrX33miPP+WWGJk60bw0UFDJYPy29YSGkLmX/eJqkun
+	mS+PK1YRkPvMzt9egwq1QkEd3ALLagiO9ETrScucsswd/IHxk3RUXJeRRVZaYBJy
+	82EY15Ts9OqngLL4tNPrv1lsxfuBKom67rJmvYV5oBKivSaLME11mZigwwONCSK5
+	uYDed95ji7W51UClrZv6HMKE3JU4xfXK9Hk/kVNo0YSggX4m6XeAuWOfjtuof+QW
+	PNNDrBurWLgIHc4d3NOZX9CLP+hisuz9FRN3n/cM4lDCyw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4axesf2ya0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 09 Dec 2025 23:11:59 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b6a9c80038so375865585a.2
+        for <phone-devel@vger.kernel.org>; Tue, 09 Dec 2025 15:11:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1765321919; x=1765926719; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yMHuwAiVf8kefegJzUtXsfVvUTlRrVd+3Q+FhBxOBH8=;
+        b=MGhCxfEUMwDpBeD6VQ34DxqN+ZBB7IG+/EXpPl5nwJkP1OdhgGLC+2GxRmUNw2aG9e
+         mq4WWbl7G70u3g6DdbGGaKBpDqqUgD886cvZEwI8/axsgSMA9O/I9f4NpkMsqHbELCgv
+         ct8y5MEIy4QlpLCcBzkiF6NR0e3yyJ8JUAx9szTFxcRc1ZN58H24+THupO3lxSO5bWBA
+         6v5CF3M9Wmt0TcEPIRIWa9eVImRnjP5B6wnnEOSWNkBfFDrJ4md411X64Yby9LWq3lfY
+         OPtVJsVCa24zEtSu4p/zSkSVoK/IOnOvhq9Zbt10cLu6B42pbEZPquokv5BxEaF41cZS
+         HEWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765321919; x=1765926719;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yMHuwAiVf8kefegJzUtXsfVvUTlRrVd+3Q+FhBxOBH8=;
+        b=ETja3G0xATV/sI/qTy0pkD5Ww5fSHee79ftzbhZeyMS6G0dymbC9NTzCvWqo4lskaH
+         sVy4qx4UYWMpb0DWateifTQGBqt/hwEvMqsyvtgnt5A6J6XEPNRNccXWZ1Ir/rkZdrM6
+         9DipdjAE3sR4emBLrAKXwewwRxvv7/rv02tjB+ebMf/pAHGA3s7JI7zxkpB7aMMQSDVZ
+         Qbwy1eTOlA4B5PHBlsSXT6lOb9Vle2wU6Ej1C6l85ISh5Dw6RSTtf6V+FxQLsBU9WltL
+         H0zyisYPrY+cNfXKIJ2OudZa9DNAk5eeq07MwCOkZAOQ1whk3ztrGBdwU+jV6KeIxify
+         bYAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1ipfsU4RcWRk+AHW6DvtzzmObBECGBjKsN7LmXHljlFWScARoPUftZl8ejI4Nifpg0ImJ0j63iT5I9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyymcU1z/XOE9VWcxgC7Kt/HuH69hWFYn6iH4qRbXhtAjycEukH
+	0QHw+YOaWrqPhI6wLy0U3RmSC1lMLpIFbSpXmQBoRGBXgFG334r3QaxLgyKbvLVa7r9pfcEvDaj
+	LtAY/nZaC0dFrswhUfsB+QdkuGkqNkS+jh7NHH6mQkm9miXqOlE3TRr/jblf8qlaQGQ==
+X-Gm-Gg: ASbGncvZyNwkYkUD629OAJZfvubIo0RySo4H5NwsJa0Y0Cz9EABf96qzRM7vFtqFIyl
+	bIN6SGIGwXu1ji2ZDS/F4SaFnUZkYh9O6C1oc7Y4wlHQHnXTdthWKITnYJvNoZrnwRftvT6BeBj
+	4/ToZpe8G/vCimvuNc3sujGH2I3sx5dYqRtm5ZXyYQwqVSrG0sMnwgjTIHUAXOc2EXj2lujtA14
+	5AA5a82PKFTdYgZHY7b/C3MRn6hSnMxRcUMBPPmUc6MXXUpHG9ePyb5+sanrlaOvF1yfglVxS56
+	qa+1OQBZH29TfudLODepg9/vYY1y3auL4ImoZObtTcEYjCkvYEZziM9/vz6vebnk1914z+yJFxC
+	hBFMSTTBL4+YLInib0eebTbkJFtpzrAEe9TRkT7+v6T4xIlQniiobI/V/3W0zFT+IGf1GuV5pr0
+	uf9Bi83Mh+fPPGWHHO0d0YFAI=
+X-Received: by 2002:ac8:7d48:0:b0:4e8:a850:e7db with SMTP id d75a77b69052e-4f1b1acb520mr6471771cf.71.1765321918992;
+        Tue, 09 Dec 2025 15:11:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGu6YCKe2+d8qDTizG/xo9axO+MFsZsv4tpX7vZUCsXjf711fNSYPHhgGJP5Gi0hx5bGJ9bNw==
+X-Received: by 2002:ac8:7d48:0:b0:4e8:a850:e7db with SMTP id d75a77b69052e-4f1b1acb520mr6471451cf.71.1765321918535;
+        Tue, 09 Dec 2025 15:11:58 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7b24725sm5549491e87.22.2025.12.09.15.11.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 15:11:56 -0800 (PST)
+Date: Wed, 10 Dec 2025 01:11:55 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Sam Day <me@samcday.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: qcom: sdm845-oneplus-enchilada: Sort nodes
+ alphabetically
+Message-ID: <zdewy6qqwm2v4sy2r7mh46y25pifbnvqqtm7ej3aqjxj4cxnia@njdfyta2qna2>
+References: <20251206-sdm845-oneplus-fb-v1-0-19b666b27d6e@ixit.cz>
+ <20251206-sdm845-oneplus-fb-v1-1-19b666b27d6e@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/8] drm/panel: sw43408: Add enable/disable and reset
- functions
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Dmitry Baryshkov <lumag@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Petr Hodina <phodina@protonmail.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20251208-pixel-3-v6-0-e9e559d6f412@ixit.cz>
- <20251208-pixel-3-v6-4-e9e559d6f412@ixit.cz>
- <lilbxguznfzupg2gpfb6xuj4ickffgtuwwlve5g4d22lzr3bsm@slkmhn4agvgr>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <lilbxguznfzupg2gpfb6xuj4ickffgtuwwlve5g4d22lzr3bsm@slkmhn4agvgr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251206-sdm845-oneplus-fb-v1-1-19b666b27d6e@ixit.cz>
+X-Proofpoint-ORIG-GUID: nGvbRyWQ2dG8wjGWLFhUZVIOlAVR8T_B
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDE4MiBTYWx0ZWRfX/AQ0X4Hux37B
+ r6GZyIYNlNpLd6d7Yt7PtPVbpIqTZf6uTrXWzC7D9lCmaaTKuVTLB0XTJzMROS4OmdTtsyP2Z26
+ 2bJKmMxm4AyjCP7br5u4ke8516i02Pu+SVHHz6XoMXhgyp5VXkbQi3HzT6BoCvONLOO3iOyiSF7
+ rvdJoj4MraQxAam81+LH1EIt/9ooQIOkHYzgOYUp1BFb22vZssCcgpjdy5bpJDa2SUehyz0w2Y1
+ e2+HAYgCB6t+DHqNdrZPVTCdBATg/Ymo2oAGaSg2d0ZLJp4UO4EfVRBD+mqzjw4Rq8oToyYoqOg
+ 6R0sOOwgE5wy3PqSBA72DND8UGV1UiP86w+SAQsxFcfcS32baRZNreBkRdBRYLxqeGIkSjVJLYe
+ /XZDv3p3LAZGfuPcC3TFZRAvDczXrA==
+X-Authority-Analysis: v=2.4 cv=fMc0HJae c=1 sm=1 tr=0 ts=6938acc0 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=1YaDnOEcMAd5D--0PjgA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: nGvbRyWQ2dG8wjGWLFhUZVIOlAVR8T_B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-09_05,2025-12-09_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 suspectscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512090182
 
-On 09/12/2025 23:37, Dmitry Baryshkov wrote:
-> On Mon, Dec 08, 2025 at 10:41:57AM +0100, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Introduce enable(), disable() and reset() functions.
->>
->> The enable() and disable() callbacks keep the symmetry in the commands
->> sent to the panel and also make a clearer distinction between panel
->> initialization and configuration.
+On Sat, Dec 06, 2025 at 06:45:42PM +0100, David Heidelberg wrote:
+> Sort the nodes by alphabet, no functional changes.
 > 
-> It's not just it. There is a difference between commands being sent in
-> en/disable and prepare/unprepare.
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
 
-Thanks, I didn't know. Is there good rule how to distinguish, which 
-command should go where?
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-> 
->>
->> Splitting reset() from prepare() follows clean coding practices and lets
->> us potentially make reset optional in the future for flicker-less
->> takeover from a bootloader or framebuffer driver where the panel is
->> already configured.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/gpu/drm/panel/panel-lg-sw43408.c | 47 ++++++++++++++++++++++++--------
->>   1 file changed, 35 insertions(+), 12 deletions(-)
->>
-> 
 
 -- 
-David Heidelberg
-
+With best wishes
+Dmitry
