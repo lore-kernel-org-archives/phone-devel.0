@@ -1,67 +1,69 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615E22147F9
-	for <phone-devel@vger.kernel.org>; Wed, 10 Dec 2025 01:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6C52192EE
+	for <phone-devel@vger.kernel.org>; Wed, 10 Dec 2025 01:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765328741; cv=none; b=fUUjURtkahYpiOmShLs8LuzvzEsC2WA7RvcjVNeq7WQXkdJHhar6+P9vA30GEIa6TBrEjwfm9Yrzdh242YxeCaUXE8cVQgZu52U0OY96lr7GC+rsJraoN5etv5+wMFayIrB8HdkQ586RFD1aZXfMV+I7qAWPc1UR3r8ddUYJUI8=
+	t=1765328744; cv=none; b=VUz+lPVFKsp2QplUwzZCIT4b4ioEf7VffKBEoeu6DSrsMS+FZojpBxfmo+pa+C1dWXIxP3BxQkG63CX6ZRoBwtj/yFwMj6AnFd0jFqXMwC7R3j+A3uDE+EGkAyndWjYnXHMUvoPjus1HBxiQg3h7zfnAppQmeohHequxsd/KRls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765328741; c=relaxed/simple;
-	bh=+i3BTfPhsLE8GEo/94/1SE3mgTKecjalY7mtMdqKORM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lw4x39ZLrozPmItcHeGJC99RC0+r6bItmmvsmeR41Lvzuto3oVmUgBjL0U9e5Fx/6SbnCXXnWE7tuS4V1IiTf6Lkg4eJluyXjJ8HXQ+StUhS+TZ6S2lia+N4wIoOIwKX3h0zpYyiREawTps5cDWA8l4RWApZ46UPJAqbGPoIVRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Ri/GDVTu; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1765328744; c=relaxed/simple;
+	bh=J8jdRyxN4pHi5HwGXl4WVjETvZhi27YUV8vuAHkKjmE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KGhx5IAMEdxHvMXnNRkP7Vx8j18NhrDYO6kt7/JeKspSRkewHa+PsbKXIV286kkcN7zA4hn6LzAn7HzTVWxJLWf65JzwSLc2bW6mMJ+Q0HD1+dzdfe8aM3+DG92x4XD/iL6rxanfEWweimQhlTMT9pTt+lmzYuGW6J2L3eGhR9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=IxzIIUHC; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Ri/GDVTu"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so80212285e9.2
-        for <phone-devel@vger.kernel.org>; Tue, 09 Dec 2025 17:05:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="IxzIIUHC"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47118259fd8so50535825e9.3
+        for <phone-devel@vger.kernel.org>; Tue, 09 Dec 2025 17:05:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1765328737; x=1765933537; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HHcSDCZPYXhd26Yn2LSvoK/Mf/qVpncEW7C95ovxbvY=;
-        b=Ri/GDVTurLUN3C7rCjTK7gMxfgCFTeAyd+wgZf3VlOWirmins7VV96LR0XWNU8Pcbk
-         KPcZNfqm/TTxCZ5W/4NoVrVzpqoTMk2xGaec8Uq/UEUdQjZBcnXLj0fFQDfFVRcsLu4O
-         3d9u4Cek1OvQq15QHkhWoUuk/JsCinEnOQW9fH/A5RhJbVXmDMrVVvFvUc7Tsrm+rcZI
-         x52DwrDBDD63Y+6YAFMqyybxi3f8ZOnA3PsCJn4OIO+o38haM6oJQtSDgkl5mzZ7Wux1
-         4LuksXWI7P9BzNESHVl9gsM9LUBvRtSrTDnAfnk9S4M024XaaiC+3uPsydu5XsZBP0a4
-         mPDQ==
+        d=fairphone.com; s=fair; t=1765328741; x=1765933541; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tMLxoWB0gDu+hYqFcCi8C1Ebr4DsG+tpvO7SBM73pts=;
+        b=IxzIIUHCW/DeNp6ilaOVI3QAnUh/lyTK2xZAeINqiZIshDdzefx9POEMaa+aFfAX/o
+         Em9YE8m9sbZ8A2PTTCOnoqguSdsqyTG6z1c1YPNNGrMTzVWjf0yCgkeUQe1LAUqUT1lG
+         b4carawG6rCsq/fqOclA3YB3bk4DHlCvWeK2XF9KNNsQF1V+ecBa7uuM+EsohEFIvkSl
+         TFoPiAcp12P0E9VKiS1uXTF+6XTJl75z83unhfLCisx/M5gop3nc6fep+4vvEKh9zp1+
+         rW6uvkMD4H7lHVsSI85nV+u7lSZFX5BYOjArtsa8l1VbdLnx4bt2RnTsYF2IU89AsPVa
+         utnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765328737; x=1765933537;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HHcSDCZPYXhd26Yn2LSvoK/Mf/qVpncEW7C95ovxbvY=;
-        b=UZevi4vbNHkCwFUjzA3jpqsJfy2A9DVrK8YRAT+bxwKKjOZ3WnDWTW5hoR6Q7BPuEM
-         raKOmjQQfwr4cW0qEqIUz7Lcvbyk4IHhspHWual3vuHYBeCB1aOs2qmsnV0dv92urg5z
-         A4CvkatE6mXsDpBBL1e4RRTu9m5f5+BOJ3XEvQSka9u4J0LkiEyONFadZpAD30DCU+9a
-         G0UOYasDroAIhxph1gfQM5LeR+nGCSQk2DALFXHWbM+OEMXfBLm50Y2l9XBamaoOLt9g
-         p3g79oF7jvTGkvnNCEEZEUQlaa7fSnjCytKgexp34fo7ZFjhMFz3S5DmMTcn8hoLzPK6
-         b9lw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYLsEKVRBWVHta6FxvxW+Uph03LP0IIJpp/0My8yDEgwiaQ2Y/hTOAbZmNirY+2h7BTcI7AztjrSW2cg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxLO/0cASNp1QtZzqSoWryDp+y6ZBKzZ5Hk4jvzJ/DxQB2AzHg
-	x7JIbvVVwrp1Piy8mJEy8Ked32hlbDcGv0vfNCIy5jthW3aLPrHMH2guCY5MvPo6FRRf1Ux9WA1
-	7Al71Accv3w==
-X-Gm-Gg: ASbGncuf2h4Ib5d+FaPsPXHzXvpBvPA36jLq2Z1LYTCAUQeMErBWMo534j4WKQpJrPo
-	f4/On4iGCD7uyyJTl+99PPncyQRY5DuDr7cmS5XxNROgKZgK7K/skA59UQRC8B+AqSEt6o8reZ9
-	UaOCxl75P0kYT+eLxwlBsxM3kpTk7TI/oJOBWZymQBcagoBrLWNYmpmNrt2G9xxZGjqEWaYgESj
-	IysO4xjLfcYy3PpHXDbZTDFvhAtxTHZ1xgblriDncVbNQKZJeNa4fUxV4Qa165+UWzeSaGFS4ei
-	V73E+xFq1SYJGBt2NKCmrgDd6PQMyVott16JT6h+gyIS3AvY+wlcp3IeA8E9UbV6vGQFfzqjxKG
-	vTiGlmPx0HNASsW89HIHnfPucWjArXGV/9RND7HNo1/6+sg8V2gvJza9sRbjhEEu841ez8aAjSC
-	i0nycevjlwHJrHicglRpPq/PyACJwJ8m2F6Dgx88NsdEoMqYbG+Bb59WFb6+18
-X-Google-Smtp-Source: AGHT+IG0T6nWXe3W7j54A4PIsvvrJ8+7alDZyq2DAzB8aUB31Ina+UJT5hJjNMeivMH0tZ/Ul8SsHQ==
-X-Received: by 2002:a05:600c:528e:b0:477:fcb:2256 with SMTP id 5b1f17b1804b1-47a8378c79emr7622015e9.17.1765328737169;
-        Tue, 09 Dec 2025 17:05:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765328741; x=1765933541;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tMLxoWB0gDu+hYqFcCi8C1Ebr4DsG+tpvO7SBM73pts=;
+        b=uMXJNgh3chxF4HFqHu8AXKSAfum/MsrzOO8eJ/EbysH0gXYJTTPN6CPvMcJB9wR0/E
+         VN27hNf8mGs2J21HIhJbKOiSODmQgqXTg5Z1vzphuNVHF/nG4mshUcRzJ38La2h2IXo1
+         IwnQhIOLCunG7ZxYgqzyBTuTBOuTEczFBhnmh6NKcjfI3c9x32s/C1Xj2tSpH+0YxyMJ
+         mDo4iltTJH0a6ozpNndkmHvPxMxEDgnFqbvOEsF60Kp5S0U4ZJDeVtlwrqtf6HQYgNBy
+         pI296b/ZthSOBZcNUflrtXIrUqJ8ClwasBIo3BNAb3mllQEID8EzGBysYCBwiPlPlfpb
+         rIWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWdHB2qPj80+z/C2czF8/ggvpDtttqJiNTCFQnUfv8n1+42o2bZkSoXYROOMjJW9lNKFXj/PRpd6s0Tg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YziMb/8tR3Bz3tTNoTNVYmoBD+sNZImhwsna4wBfJr/twwNzZiw
+	g/Nxf+ROaE6hcpEqgEUtvtEn9/dNmTCCWbsHbE9XoWd6MFgcI4NHWUzKoqOWCaMzgX3jx1jpcxT
+	jn9U4EbEONg==
+X-Gm-Gg: ASbGncuvTB533CdXZ8jl7PZJCipj1xZR8CiNGulIPQoTZQfdDnSNM6y0aDiiPDadBZj
+	4/emhwipT95hMPy948VCmPTzK9mNt92Tq1m50GSPYNZRh6a9iJG+lXxaE796w6/ynhLSJW59Q9n
+	LCZzGxUKm/XfOkWlqYrb9Xg5scpPCG/ac++JiA3xs1Gzh29cxOEZNXUTzzMV2ap1w3bWcUSBkF2
+	++/lFw35hI+V+TcYUh7MK0UEK+Isvymi0+SlQ2HAdPyHzzv3xuxCuXpbOuBcezEPH5UqtpEuWwf
+	+1PGie9L6sqqOYae/NDUSNyGtgrMf9tMSFW6V3Wt0/PkoEr3UzOwzF4UZUZ6b+rsSx/HqEDdpef
+	Xlko6cvtrcH2GawXTNYXthl5xNX9o6RpWVPFlna0pqFft4OxtCIfdJ2U4/oxxvVAieAcGUIgSys
+	e0MKKrmlPTgA9ZTnUOwHuwxKt3K56oXmDerOT/Os68G687QWXwvbTXvwbV9Rsu
+X-Google-Smtp-Source: AGHT+IFYMluiQ4OKPV5Xr6Cra1B0NB6igYOb8auHiypnamFYSFB9jzG6KW2GARdfJZJFx9+vko2ixw==
+X-Received: by 2002:a05:600c:1910:b0:477:b734:8c22 with SMTP id 5b1f17b1804b1-47a8376e3d9mr6486015e9.8.1765328741065;
+        Tue, 09 Dec 2025 17:05:41 -0800 (PST)
 Received: from [10.200.8.8] (p99249-ipoefx.ipoe.ocn.ne.jp. [153.246.134.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4cf9acsm163206575ad.28.2025.12.09.17.05.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4cf9acsm163206575ad.28.2025.12.09.17.05.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 17:05:36 -0800 (PST)
+        Tue, 09 Dec 2025 17:05:40 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/4] Preparations for camera support on Fairphone 4
-Date: Wed, 10 Dec 2025 10:05:26 +0900
-Message-Id: <20251210-fp4-cam-prep-v1-0-0eacbff271ec@fairphone.com>
+Date: Wed, 10 Dec 2025 10:05:27 +0900
+Subject: [PATCH 1/4] dt-bindings: eeprom: at24: Add compatible for Giantec
+ GT24P64A
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,10 +72,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFfHOGkC/x2MywqAIBAAfyX23IKvIvqV6CC61h4yUYhA/Pek4
- wzMVCiUmQqsQ4VMDxe+Ywc5DuBOGw9C9p1BCTVJJQWGZNDZC1OmhLMR2igfxKIN9KTLwO+/2/b
- WPvs3PC1eAAAA
-X-Change-ID: 20251210-fp4-cam-prep-640342df0834
+Message-Id: <20251210-fp4-cam-prep-v1-1-0eacbff271ec@fairphone.com>
+References: <20251210-fp4-cam-prep-v1-0-0eacbff271ec@fairphone.com>
+In-Reply-To: <20251210-fp4-cam-prep-v1-0-0eacbff271ec@fairphone.com>
 To: Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
@@ -83,35 +84,34 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765328733; l=883;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765328733; l=737;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=+i3BTfPhsLE8GEo/94/1SE3mgTKecjalY7mtMdqKORM=;
- b=WYroaOjCibHjE0paBIII6ZqmzENJydkJRzz6ylokmPfmofZB4qZ4I1nlYmOCU7+MSpxAM7NY/
- udMRwR5fT0lAWBhaWZdjprM3ucYrMDCO5qetfjwrRt2D/WWahkT8brU
+ bh=J8jdRyxN4pHi5HwGXl4WVjETvZhi27YUV8vuAHkKjmE=;
+ b=mI6wLjWaV6kPINJVrW6xd+goS/oplPOblpiCMDfCYKOyYykcFKB5qA36gXDy031uD9RaEwiY1
+ Ga78FKqUPyXA7d53Wc9YGCgs64YyHEeehU3zD27+Qo8eFR8CIdnQRR2
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Start adding some camera-related parts which can easily be upstreamed.
-
-This contains the EEPROMs, fixed-regulators and enabling the CCI pull-up
-voltage source.
+Add the compatible for another 64Kb EEPROM from Giantec.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (4):
-      dt-bindings: eeprom: at24: Add compatible for Giantec GT24P64A
-      arm64: dts: qcom: sm7225-fairphone-fp4: Add camera EEPROMs
-      arm64: dts: qcom: sm7225-fairphone-fp4: Add camera fixed regulators
-      arm64: dts: qcom: sm7225-fairphone-fp4: Enable CCI pull-up
+ Documentation/devicetree/bindings/eeprom/at24.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- Documentation/devicetree/bindings/eeprom/at24.yaml |  1 +
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 72 +++++++++++++++++++++-
- 2 files changed, 70 insertions(+), 3 deletions(-)
----
-base-commit: c75caf76ed86bbc15a72808f48f8df1608a0886c
-change-id: 20251210-fp4-cam-prep-640342df0834
+diff --git a/Documentation/devicetree/bindings/eeprom/at24.yaml b/Documentation/devicetree/bindings/eeprom/at24.yaml
+index c21282634780..ce63acb025e8 100644
+--- a/Documentation/devicetree/bindings/eeprom/at24.yaml
++++ b/Documentation/devicetree/bindings/eeprom/at24.yaml
+@@ -132,6 +132,7 @@ properties:
+       - items:
+           - enum:
+               - belling,bl24s64
++              - giantec,gt24p64a
+               - onnn,n24s64b
+               - puya,p24c64f
+           - const: atmel,24c64
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.52.0
 
