@@ -1,227 +1,367 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD32D7393
-	for <phone-devel@vger.kernel.org>; Thu, 11 Dec 2025 05:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EC419C54F;
+	Thu, 11 Dec 2025 10:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765431890; cv=none; b=r6BBj20oTILbCFNsi2WeJAwPwya8Wxq4uNngdceFMoIwEeCJYp/jGVmmxDOtE3nr+fpGZGzOfEF3csx5indSHFjTaDL+oim9gafL551PKQPGzMKkLdyd4aw7iHN263GAJBRSI7zlG1eFnfXTHOzc96KEictimHHykl8rBLbSTVE=
+	t=1765449690; cv=none; b=cX1sYEqyNjVP+E4VQ7lgtw8TsMzMZCGfF4J9roRFsfI7BwaZ2ec537UHfYa1iF7Pmo/ReXex2SCPAUZQ7lwliY8jE4hVDh05XrfqWzNsw2+dnokyIXdnjXLpW4cqfFCEiU9G3MADpPmYJ3CEarFFiPI3tXpljYPr8ZSGApFnPng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765431890; c=relaxed/simple;
-	bh=SzxaHVHPjqDlmBpQu5Xm2YNMObWyx8B6VBrtONyU0s0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfxWEfa5HoewBHRGsPMsh/p9zkkruSOmN6D4iVK/mkjg6r8PDG1/ULVLCAP7m8fcnJRJ7JPE+tA8ymIx2GrFwkSkN4y43XB5SFviz77JqlbX+yDQphwfsqlfgGxoWwPeKNuxVGha2kwKwNTsJhzgNRqyMb4Ngj3WscVvMdw4Auw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mGBQbx14; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OsP96+QT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1765449690; c=relaxed/simple;
+	bh=begFGZazqUKZQa9ofKLMdCkCaBySGSED/jRTMP9SLBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XxTJY+La/C2h0gn4dbE/j8CsXLGNZIKOC19hn1IXaGcRKPvuVzHcGcaZbBaCHhCUqlJYO4f6AbzS3JUd901K17LrN9Ou4/zLpAWboB1m5rPE+KSFlNGDsiKifODPBvPbImssrFSYKkl10sOuQu+uErxL4TT2iF/15WzH7YMCUB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=PQ/cUp0C; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mGBQbx14";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OsP96+QT"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BALSk3s3563616
-	for <phone-devel@vger.kernel.org>; Thu, 11 Dec 2025 05:44:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=JLG2w+C3sTszdx4VirmlaHOi
-	FL5gN+K2jZmVYvVT/j8=; b=mGBQbx14LnZEz0Emgk0KwuJjoz2lMbaSeFM/9Qq/
-	JLTR8SLPUjwowuVwEyVWNPWImBAy8h4FOa0My0wyAr0qS3cjwfQ5I8NLGJo41n6d
-	uI9jM/Ow+5l0bGXgPNhf0BEOnOHYlLq8Rr06uhe3HvQI1GxiZPoiIMDoYlp2nyB3
-	G388bNB9ewU0UeQ5d8Pby3MpxcnPAecZnAzW0Mpp9dJlaVN6rldmT7Yh1r44Zgex
-	UrEJ09L7I7s+tdw4TcaMglVU9Gus5KU5v3dGHScqMjNZqxnA6iInY59H30zZ9Sqt
-	lNh/A2p9X/WNyP1lnhwrSLz/xK7ojDEF+o7O4vkUbLyhNw==
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com [209.85.221.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aygtfh4hy-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 11 Dec 2025 05:44:47 +0000 (GMT)
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-55ad466ad2eso422153e0c.2
-        for <phone-devel@vger.kernel.org>; Wed, 10 Dec 2025 21:44:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765431886; x=1766036686; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JLG2w+C3sTszdx4VirmlaHOiFL5gN+K2jZmVYvVT/j8=;
-        b=OsP96+QTQ8LNqYFPJWDqmvxvEMZ/7vhOc6MlNR68dKRQGV7njBQRCo9Av0RMx04R+O
-         2RvmbV9BBcpRDnuE2ML+tJYajI7WoQ7KJoX5ukP5VzNYHGqmZn5xA0AbtQU7Fix5qW7a
-         hp6O8Rmq9QSEJF7f8Tm1pKcSySUsLaIPljKkTGn0alphvaWxraxMcS4cQVIwQB4xRuJc
-         F/hGHvSMz5u9iwXEoWra4z7T4V2eNOxW7/x+zZdaoFDNjZpG2lfV9T9mvt7N0GQ+oKge
-         zGU+yl6b7tyn8Q2LMY0p61RiqghPbsDw+lEvNuNGcpxi4qwC80HziiapRa2Yy3sVDypG
-         h0Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765431886; x=1766036686;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JLG2w+C3sTszdx4VirmlaHOiFL5gN+K2jZmVYvVT/j8=;
-        b=HcYAXvMQY59ZJR7gESD43xoLpQgE7nKun5xrwv9jQgvNvVYjO+kg4Av4sblgkoLol7
-         vobsORDlB5ZeOVJnZX8wVYgFx37KLPTxIm7F17oO8ANwmi5SRZ7zeUIAp0g8vmaa8B3T
-         XrVuDi3oJ+yHhMrsDIL4/UDjAQfJ7jSTs9/ZNdYLvSpvcYXfX+8pGlc7OXHxOw4ZQvMq
-         3z+Ov00AH+8PSe+kwN25yw4N0u/bAfYGADaYkkw+3j6fdqdClEdmPPcdbPKGx23CqcYd
-         2gM211z56cgZLlbppfu4KYeqClQWswxx3JKNsyUWi/PXka4345azpoipFR9y+DfaTJ/w
-         jAqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVuR7nt9JL0PC/l/3fPCLegNbL9RWDX82h9CkDBvQdKGJVhQCWWEntzaPIFZ1WLCuTfjhOy2iMuNG3L7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMQBBVeqRVevLGf+r8S/ftr7/zEHb99w2DCvWANgdPlu8B3dCS
-	SzQJ/XeBpndEIZ2tBduZXeMRY9UtTpulkSd44F8jByfayPPIB326SwY1o2r1ANCyioERlsAwRJf
-	EXMI94pWLf96YIgunR2HqD9aARD/ojSPQO4gemtmt94RMmwOpfdRne+TN0RJlqiMBXw==
-X-Gm-Gg: AY/fxX5F9hq9qH52CjTuL+TkpIM710pHohvM2yG5EPoufMo/pZuW7UAjXkF6CmjdhrW
-	oQXrn4i+ppzu8ZwwEPXwHLYSdipB6r8J6OaLKNeMg+pE40T8OThmcwkHhGj0Zd8Sjs3i4xJFYfA
-	AlwvwXg3yLZb8u64r3oW4dhsewjFMULB8XA6kCXO+Sv5Pjh2zbeaV4h1rK22Mso6vg6I1YXUB+R
-	uyNXSgc846azRSlfuz1AETzpjvgw5uK1Aii/a+nD5OjgtDBQZ685EtH2G5EZDGCLoQFylTcwTgz
-	ufdtZXeQrfmrh1AzC5qXZG/I62H3ssbW4ycXwRAUKWryO+ugRpswG5ytcvI+SDLWuWFfqWXsUBU
-	uaqY2UpD3ngKH5wX7nRKNlp5U2GIGbMz4/oPV35krKgMbDicgqfOFWXrip13RvNP0C80WK7kESk
-	7bFQJNwkP1de/lbWdkpod00Ns=
-X-Received: by 2002:a05:6122:32c4:b0:54a:a048:45a4 with SMTP id 71dfb90a1353d-55fcfc5104amr1538459e0c.16.1765431886198;
-        Wed, 10 Dec 2025 21:44:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGGfi2cilvQl8uWCLP+ABlqrwXcWpY35vi39IvBW1eJLuXb5tc9Q5Oi12IXGio+bfFJJkuxng==
-X-Received: by 2002:a05:6122:32c4:b0:54a:a048:45a4 with SMTP id 71dfb90a1353d-55fcfc5104amr1538441e0c.16.1765431885725;
-        Wed, 10 Dec 2025 21:44:45 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37fbca6c62esm3887871fa.32.2025.12.10.21.44.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 21:44:45 -0800 (PST)
-Date: Thu, 11 Dec 2025 07:44:42 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Jingyi Wang <jingyi.wang@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, aiqun.yu@oss.qualcomm.com,
-        tingwei.zhang@oss.qualcomm.com, trilok.soni@oss.qualcomm.com,
-        yijie.yang@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Tengfei Fan <tengfei.fan@oss.qualcomm.com>
-Subject: Re: [PATCH v3 3/5] arm64: dts: qcom: Introduce Kaanapali SoC
-Message-ID: <drbc2hb5hv36s2bzxaalfnr6lcer7zfyexnya3xpi6ltlhw6et@6gu5s7wfwm26>
-References: <20251210-knp-dts-v3-0-8dcd52f055c2@oss.qualcomm.com>
- <20251210-knp-dts-v3-3-8dcd52f055c2@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="PQ/cUp0C"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id C2ACF53400DF;
+	Thu, 11 Dec 2025 11:41:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1765449680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=39t4qSwaXVVCQNrcHAVK1TaW9IJtAMG+tTL2a2iNL60=;
+	b=PQ/cUp0C6KYobnnWtTIQ50KvBYR45B9+qLoCTtcPQTfIvDBhEYl8Ru128pbqqZlEReg5M4
+	iboNwi0BzxVAbsQfbBOhZOiMF2UnbbzpM2RAuRt3mAQatwxXhfUG0eq8Yxo408XT1XC+5X
+	dlH6DmcpYuQBb1Q9OTYgeAI/as5XMug=
+Message-ID: <9221ccef-f1b9-4491-83e2-7116b7523857@ixit.cz>
+Date: Thu, 11 Dec 2025 11:41:20 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210-knp-dts-v3-3-8dcd52f055c2@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=At7jHe9P c=1 sm=1 tr=0 ts=693a5a4f cx=c_pps
- a=JIY1xp/sjQ9K5JH4t62bdg==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=rz-J1vZrXhXIdLqqZeEA:9 a=CjuIK1q_8ugA:10
- a=tNoRWFLymzeba-QzToBc:22
-X-Proofpoint-ORIG-GUID: xLd3RVuoAqUR3Cq0uA9C1G5K7eFKFiPC
-X-Proofpoint-GUID: xLd3RVuoAqUR3Cq0uA9C1G5K7eFKFiPC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjExMDAzOCBTYWx0ZWRfXxZ8fA0/Gf3ql
- 0tnCvCdKbkGJsT5BEhilE+/9h4WQwMRQFfALOgFwLM5D8IKK9B49aFHBid1/vlj5fUKH4VidgVx
- Z/ws9X8/KxABFR/XhjQdhbRMilbxMKUWAwnyJLYd+NWm/fkdG66P+AnJfBwTBI2p2Blx2+0RhNd
- Lz1p19g0x+cfEn+gsIiwNaR2IxaSaGhg4M+HIXpFkwzM+nxgPAuagBobSsjOboF5pI5WN+a3IMF
- bsxLNHZCgY/qfGpLo7V0KLkYVVnRu92Ekvj7wdVaXBoAiSbWbCytnJHEdbqYpmaxVCuG5emOAJL
- p5RyykX4mbqO2Vh5kneEyetoR3NsDXLYuaG3rOXf4ci0w/aiNdiDG2s8rkDQRao7CtECPDE4vEk
- 9mafupWerqno2TiU2v+XlQho65tCVA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-10_03,2025-12-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
- phishscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512110038
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH QUESTION] arm64: configs: Add Snapdragon 845 config
+ fragment
+To: Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Casey Connolly <casey.connolly@linaro.org>,
+ Casey Connolly <casey@connolly.tech>, Joel Selvaraj <foss@joelselvaraj.com>,
+ Alexander Martinz <amartinz@shiftphones.com>,
+ Dzmitry Sankouski <dsankouski@gmail.com>,
+ =?UTF-8?Q?Pablo_Correa_G=C3=B3mez?= <ablocorrea@hotmail.com>
+Cc: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251126-sdm845-config-question-v1-1-ffa91ed53095@ixit.cz>
+ <8f8baac8-3b1a-442d-a64f-5a90f9e30552@app.fastmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <8f8baac8-3b1a-442d-a64f-5a90f9e30552@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 10, 2025 at 07:05:04PM -0800, Jingyi Wang wrote:
-> Kaanapali is Snapdragon SoC from Qualcomm.
+On 03/12/2025 22:35, Arnd Bergmann wrote:
+> On Wed, Nov 26, 2025, at 17:19, David Heidelberg via B4 Relay wrote:
+>>
+>> This patch is a question, if it would be viable to introduce this
+>> configuration fragment as part of mainline kernel, so keeping it in sync
+>> with recent kernel updates would be more straighforward.
 > 
-> Features added in this patch:
-> - CPUs with PSCI idle states and cpufreq
-> - Interrupt-controller with PDC wakeup support
-> - Timers, TCSR Clock Controllers
-> - Reserved Shared memory
-> - GCC and RPMHCC
-> - TLMM
-> - Interconnect with CPU BWMONs
-> - QuP with UART
-> - SMMU
-> - RPMhPD
-> - UFS with Inline Crypto Engine
-> - LLCC
-> - Watchdog
-> - SD Card
-> - PCIe
+> I don't mind the idea of having additional fragments for specific
+> purposes, but as others have said this one does not seem that useful.
 > 
-> Written with help from Raviteja Laggyshetty (added interconnect nodes),
-> Taniya Das (added Clock Controllers and cpufreq), Jishnu Prakash
-> (added RPMhPD), Nitin Rawat (added UFS), Gaurav Kashyap (added ICE),
-> Manish Pandey (added SD Card) and Qiang Yu (added PCIe).
+> I think it does too many things at once and is still too specific to
+> a relatively uncommon usecase. Having an SDM845 specific fragment is
+> clearly too narrow, but I can see us adding a fragment for phones
+> overall, which would then turn on options for Qualcomm, Mediatek
+> and Samsung based phones.
+
+I agree there are too specific things. I sent this as a conversation 
+starter more than "a fragment to ship".
+
+Having something like a pure mobile fragment would be awesome.
+Bringing up phones is challenging enough, so when people have one more 
+pillar to rely on, it'll definitely accelerate work.
+
+I believe it would help many close-to-mainline projects to have a more 
+stable base in the kernel instead of every repository playing on own 
+small playground.
+
 > 
-> Co-developed-by: Tengfei Fan <tengfei.fan@oss.qualcomm.com>
-> Signed-off-by: Tengfei Fan <tengfei.fan@oss.qualcomm.com>
-> Signed-off-by: Jingyi Wang <jingyi.wang@oss.qualcomm.com>
-> ---
->  arch/arm64/boot/dts/qcom/kaanapali.dtsi | 1606 +++++++++++++++++++++++++++++++
->  1 file changed, 1606 insertions(+)
+>> +# Samsung S9 SM-G9600(starqltechn)
+>> +CONFIG_SND_SOC_MAX98512=y
+>> +CONFIG_SND_SOC_MAXIM_DSM=y
+>> +CONFIG_SND_SOC_MAXIM_DSM_CAL=y
+>> +CONFIG_DRM_PANEL_SAMSUNG_S6E3HA8=y
+>> +CONFIG_TOUCHSCREEN_S6SY761=m
+>> +CONFIG_MFD_SEC_CORE=m
+>> +CONFIG_REGULATOR_S2DOS05=m
+>> +CONFIG_MFD_MAX77705=m
+>> +CONFIG_LEDS_MAX77705=m
+>> +CONFIG_CHARGER_MAX77705=m
+>> +CONFIG_BATTERY_MAX17042=m
+>> +CONFIG_INPUT_MAX77693_HAPTIC=m
+>> +CONFIG_PWM_CLK=m
+>> +
+>> +# SHIFT6mq
+>> +CONFIG_DRM_PANEL_VISIONOX_RM69299=y
+>> +CONFIG_SND_SOC_TFA989X=m
 > 
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		pdp_mem: pdp-region@81300000 {
+> I think overall we can be fairly liberal with adding
+> more loadable modules to the common defconfig, but much
+> less so the built-in drivers.
+> 
+>> +# SOC
+>> +CONFIG_FORCE_NR_CPUS=y
+>> +CONFIG_NR_CPUS=8
+> 
+> This would break other devices that have more CPUs, which in turn
+> makes it impossible to combine the fragment with other fragments.
 
-please drop -region, please be consistent
+Yes, I just used the original data from the fragment, as we know it's 8 
+cores, it's safe option. For the final fragment this will go away (if we 
+talk about mobile generic fragment).
 
-> +			reg = <0x0 0x81300000 0x0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		aop_cmd_db_mem: aop-cmd-db@81c60000 {
-> +			compatible = "qcom,cmd-db";
-> +			reg = <0x0 0x81c60000 0x0 0x20000>;
-> +			no-map;
-> +		};
-> +
-> +		smem_mem: smem@81d00000 {
-> +			compatible = "qcom,smem";
-> +			reg = <0x0 0x81d00000 0x0 0x200000>;
-> +			hwlocks = <&tcsr_mutex 3>;
-> +			no-map;
-> +		};
-> +
-> +		pdp_ns_shared_mem: pdp-ns-shared-region@81f00000 {
+> 
+>> +CONFIG_SCSI_UFS_QCOM=y
+>> +CONFIG_QCOM_GSBI=y
+>> +CONFIG_QCOM_LLCC=y
+>> +CONFIG_QCOM_OCMEM=y
+>> +CONFIG_QCOM_RMTFS_MEM=y
+>> +CONFIG_QCOM_SOCINFO=y
+>> +CONFIG_QCOM_WCNSS_CTRL=y
+>> +CONFIG_QCOM_APR=y
+>> +CONFIG_POWER_RESET_QCOM_PON=y
+>> +CONFIG_QCOM_SPMI_TEMP_ALARM=y
+>> +CONFIG_QCOM_LMH=y
+>> +CONFIG_SCHED_CLUSTER=y
+>> +CONFIG_SND_SOC_QDSP6_Q6VOICE=m
+>> +CONFIG_SCSI_UFS_BSG=y
+>> +CONFIG_PHY_QCOM_QMP_PCIE=y
+>> +CONFIG_BACKLIGHT_CLASS_DEVICE=y
+>> +CONFIG_INTERCONNECT_QCOM_OSM_L3=y
+> 
+> Again, these should mosely be loadable modules.
 
-please drop -region
+Probably, some of these workarounds are here because of some issue in 
+the kernel, which leads to boot failure.
 
-> +			reg = <0x0 0x81f00000 0x0 0x100000>;
-> +			no-map;
-> +		};
-> +
+There will be more of these bug-avoid changes.
 
-> +
-> +		pcie0: pcie@1c00000 {
-> +			device_type = "pci";
-> +			compatible = "qcom,kaanapali-pcie", "qcom,pcie-sm8550";
-> +			reg = <0 0x01c00000 0 0x3000>,
+We'll test how many of these are necessary.
 
-0x0 instead of 0 (here and in other reg entries).
+The question is, if documented, could we push some of these into the 
+initial fragments? I assume fixing some of these may take some time.
 
-> +			      <0 0x40000000 0 0xf1d>,
-> +			      <0 0x40000f20 0 0xa8>,
-> +			      <0 0x40001000 0 0x1000>,
-> +			      <0 0x40100000 0 0x100000>,
-> +			      <0 0x01c03000 0 0x1000>;
-> +			reg-names = "parf",
-> +				    "dbi",
-> +				    "elbi",
-> +				    "atu",
-> +				    "config",
-> +				    "mhi";
-> +			#address-cells = <3>;
-> +			#size-cells = <2>;
-> +			ranges = <0x01000000 0 0x00000000 0 0x40200000 0 0x100000>,
+> 
+>> +# Notification LED
+>> +# Must be builtin as it won't be automatically modprobed
+>> +CONFIG_LEDS_TRIGGER_PATTERN=y
+> 
+> This sounds like bug that we should fix and not work around.
+> 
+>> +# Graphics
+>> +CONFIG_DRM=y
+>> +CONFIG_FB_SIMPLE=y
+> 
+> I don't want to enable more fbdev drivers. Right now the
+> only one we enable is FB_EFI, and we should probably replace
+> that with DRM_SIMPLEDRM in order to turn off CONFIG_FB
+> entirely.
 
-Also 0x0 here
+Useful with debugging, but this can handle Mobian, NixOS Mobile, pmOS by 
+their fragments, so that's fine to drop.
 
-> +				 <0x02000000 0 0x40300000 0 0x40300000 0 0x23d00000>;
-> +
+> 
+>> +# Power management
+>> +CONFIG_PM_AUTOSLEEP=y
+>> +CONFIG_PM_WAKELOCKS=y
+>> +
+>> +# MGLRU
+>> +CONFIG_LRU_GEN=y
+>> +CONFIG_LRU_GEN_ENABLED=y
+>> +
+>> +# Usage clamping (scale CPU for specific tasks)
+>> +CONFIG_UCLAMP_TASK=y
+>> +CONFIG_UCLAMP_TASK_GROUP=y
+> 
+> We can discuss changing the defaults for these in the defconfig,
+> but this doesn't seem to belong with the other stuff.
+
+Great :)
+
+> 
+>> +# HID/Input
+>> +CONFIG_LCD_CLASS_DEVICE=m
+> 
+> This is not an input option
+
+Thanks, removed.
+
+> 
+>> +CONFIG_I2C_HID=y
+>> +CONFIG_HID_GENERIC=m
+>> +CONFIG_UHID=m
+>> +CONFIG_USB_HID=m
+>> +CONFIG_INPUT_EVDEV=y
+>> +CONFIG_BT_HIDP=m
+>> +CONFIG_INPUT_JOYDEV=m
+>> +CONFIG_HID_ACCUTOUCH=m
+>> +CONFIG_HID_ACRUX=m
+>> +CONFIG_HID_ACRUX_FF=y
+>> +CONFIG_HID_ALPS=m
+>> +CONFIG_HID_APPLEIR=m
+> 
+> This looks like you are just enabling every single USB HID
+> driver, which is probably not something we want in a commonly
+> used fragment, though having a well-maintained fragment for
+> popular pluggable USB devices may be useful for others as well.
+
+Yeah, this part make sense for distro-specific.
+
+> 
+>> +# Qcom stuff
+>> +CONFIG_RPMSG_CHAR=y
+>> +CONFIG_QCOM_Q6V5_ADSP=m
+>> +CONFIG_BT_RFCOMM=m
+>> +CONFIG_BT_RFCOMM_TTY=y
+>> +CONFIG_BT_BNEP=m
+>> +CONFIG_BT_BNEP_MC_FILTER=y
+>> +CONFIG_BT_BNEP_PROTO_FILTER=y
+>> +CONFIG_BT_HS=y
+>> +CONFIG_BT_LE=y
+>> +CONFIG_HID_BATTERY_STRENGTH=y
+>> +CONFIG_HIDRAW=y
+>> +CONFIG_QCOM_COINCELL=m
+>> +CONFIG_QCOM_FASTRPC=m
+>> +CONFIG_QCOM_SPMI_VADC=y
+>> +CONFIG_QCOM_SPMI_ADC5=y
+>> +CONFIG_PHY_QCOM_QMP=y
+>> +CONFIG_PHY_QCOM_QUSB2=y
+>> +CONFIG_PHY_QCOM_QMP_UFS=y
+>> +CONFIG_TYPEC=y
+>> +CONFIG_PHY_QCOM_QMP_COMBO=y
+>> +CONFIG_LEDS_CLASS_FLASH=y
+>> +CONFIG_TCP_CONG_ADVANCED=y
+>> +CONFIG_TCP_CONG_WESTWOOD=y
+>> +CONFIG_DEFAULT_WESTWOOD=y
+>> +CONFIG_BLK_DEV_RAM=y
+>> +CONFIG_BLK_DEV_RAM_SIZE=8192
+>> +CONFIG_BTRFS_FS=y
+>> +CONFIG_BTRFS_FS_POSIX_ACL=y
+>> +CONFIG_F2FS_FS=y
+> 
+> Most of these don't look like "Qcom stuff" to me. In particular
+> BTRFS is probably not something you'd even want to enable on
+> a phone, though that could be part of a generic distro config
+> that we have discussed several times in the past.
+
+Yeah, pmOS specific changes will be dropped.
+
+> 
+>> +# WLAN debugging
+>> +CONFIG_ATH10K_DEBUG=y
+>> +CONFIG_ATH10K_DEBUGFS=y
+>> +CONFIG_ATH10K_SPECTRAL=y
+> 
+> This particular one seem arbitrary, but having a "debugging"
+> fragment is something others may find helpful as well. The
+> hard part there is figuring out which debug options are the
+> most helpful for the least overhead, as everyone is debugging
+> different bugs.
+
+I was thinking having "fragment pack" for "early bringup-er", something 
+like common things you need to verify, when you setting up
+  - regulators
+  - clocks
+  - serial
+  - framebuffer
+
+When people are new to the kernel development and still don't know all, 
+I think this may accelerate their progress.
+
+
+> 
+>> +# Disable all unrelated stuffs afaik
+>> +CONFIG_ARCH_BLAIZE=n
+>> +CONFIG_ARCH_SPARX5=n
+>> +CONFIG_HIBERNATION=n
+>> +CONFIG_FW_LOADER_USER_HELPER=n
+>> +CONFIG_FW_LOADER_USER_HELPER_FALLBACK=n
+>> +CONFIG_BLK_DEV_NVME=n
+> 
+> It feels wrong to turn things off in the same fragment
+> that turns other things on.
+
+Here, would it make sense to do 3-4 categories, dropping things which 
+CANNOT in general setups on devices such as:
+
+  - servers (phone battery, vibrator, etc.)
+  - desktops and laptops (embedded drivers, etc.)
+  - mobile, e.g., phone and tablets (RAID array on PCIe, network routing 
+chip, etc.)
+  - basic embedded and routers
+
+If we go by the Pareto principle (~ 80/20) with low effort and easy 
+maintenance, we could manage smaller, more efficient images. 
+Distributions (or people) who don't want to risk any inconvenience or 
+have an obscure setup will just not use the fragments.
+
+What do you think?
+
+If there is a consensus on some parts, I'll prepare some basic small series.
+
+David
+
+P.S. Sorry for the late reply, Thunderbird decided to encrypt my Draft, 
+but somehow forgot how to decrypt it...
+
+> 
+>        Arnd
 
 -- 
-With best wishes
-Dmitry
+David Heidelberg
+
