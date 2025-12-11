@@ -1,167 +1,65 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D65F2D0C9F;
-	Thu, 11 Dec 2025 15:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D0222A813;
+	Thu, 11 Dec 2025 16:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765466445; cv=none; b=Bo3+2g25HaNsFvMzET81hlS4Et8cBZGQBwxjXvu2+UKCuLOYsFp5Wauqm7Tr6DTBKbWun04Q9fDiLhScFprNuCuIMYoRHxjdUDhj4ldOPnjEpwRXqeg0iV2zQEUkI3MTFzoR6M8jnl5Kz5ElLvGWK7UItEkNXva3pVY4lX0ptRw=
+	t=1765472155; cv=none; b=bYZ+cB3HStDtKv5mqvteHEnzR3E1zSSduF+uuVwtZZNNwGxcZZUIV38KsMNv6YFi7u24Un3BDVyo8LZweDWz7UbHqQvbt/uLpW6d9+cYiwA7/NAxB2h16VC9gjNWAcaMs5bAWOMfrPpSb3Xiby7oZX0p/2TuDcVefGs9QmrkRLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765466445; c=relaxed/simple;
-	bh=U17Oq66S2MsACzyeVGFg97Yll+ujgWmENIU+J6+X8HE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OpxFMdZ+3NXXm/2Qw18RHNy3ndge+FpY6Z10iWv14v0c3EgyOJBa/xeTa17yszF1dzmiPOAGLsbNUOKwPiKVEi3qkntFmD9r8nJimD6prYgzgix1hEl3oo/lhbxa/vFc5SoFFOfbikjbGXDXbsT/dxQcoTvXT76OOvaQ53McdyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HX2f2Ahi; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1765472155; c=relaxed/simple;
+	bh=p1wXN1Wr+B3KKDcmzUhjXYWeO1t5k47iSeRckuWz7jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n0Y2/FPc4HeakZ9yiVd5f+nPIxwYOrE5PfM3xQav5HR20+Ght1h/23SuV38wexdKPkJ7KomMml91KCwGadh/CDw3VQXpVY4ykGGp7LbXFzebBRuH4kAuJu145W2bjV2Htjb3Q93qsvBjwk7smRGBRwuQjjR4sjVP+12k5onRh9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DA7Jz8sI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HX2f2Ahi"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 19AA953409EA;
-	Thu, 11 Dec 2025 16:20:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765466437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tt8mMUNiD7OTlXd6QhMuRKTXiKd4hKlJb4B25sgPgZA=;
-	b=HX2f2AhipQOorhBnNaj1+0lA/lbURVg0o+IXAhOAax/zFaBrUILumr7RRiIPBFPNuBgBjT
-	eCVMJPteLFeE/WguPmPJ3R4W4HboMWCK5NGN9YixMdvQ5cuiWWHvFNcTZXNhZSlf4/6CSn
-	sa5JJr6lTjsqHi7RV7n4eju7Rc9a25E=
-Message-ID: <df5557e2-a086-48ca-b8e7-972cbdb7745a@ixit.cz>
-Date: Thu, 11 Dec 2025 16:20:36 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DA7Jz8sI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C15FC4CEF7;
+	Thu, 11 Dec 2025 16:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765472154;
+	bh=p1wXN1Wr+B3KKDcmzUhjXYWeO1t5k47iSeRckuWz7jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DA7Jz8sIqptqoXVCIONcKg4aA00Jo+7Ibmpw0oib4G7Q+yZCMIEi/VJByqKAWXwZH
+	 06Racp2pVu6pGrzoFBUbrhMs1vl5f1Zz8AERcYjsMG5dlVHUe0oCwbRgzYYe929Pgh
+	 t6Gy1J/135ONdyfqDsVx9E+w4ZgtorTb7fRVf30FbSV+YNjEOWcs8sZRLOICOt1tf3
+	 rTlKPn09wRhBpdyfN0NpquK4XG+ckriorFLZXyDP6P911T56i7UyqCKbetHbwROZ8D
+	 jSo/B3N0GWfdjGWzwcS+gLiFvZLqrz4b8yQMlDKSykpI3yDmvTR6Y3S8SSCjYfQnbs
+	 nPx1bGntv8zdg==
+Date: Thu, 11 Dec 2025 10:55:45 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-arm-msm@vger.kernel.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, linux-i2c@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: eeprom: at24: Add compatible for
+ Giantec GT24P64A
+Message-ID: <176547214530.1553950.16205619497487516656.robh@kernel.org>
+References: <20251210-fp4-cam-prep-v1-0-0eacbff271ec@fairphone.com>
+ <20251210-fp4-cam-prep-v1-1-0eacbff271ec@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH WIP v2 3/8] media: qcom: camss: Prepare CSID for C-PHY
- support
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251204-qcom-cphy-v2-0-6b35ef8b071e@ixit.cz>
- <20251204-qcom-cphy-v2-3-6b35ef8b071e@ixit.cz>
- <9af39b45-581b-4e25-8ab9-19015f00d6bc@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <9af39b45-581b-4e25-8ab9-19015f00d6bc@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251210-fp4-cam-prep-v1-1-0eacbff271ec@fairphone.com>
 
-On 05/12/2025 10:43, Konrad Dybcio wrote:
-> On 12/4/25 5:32 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Inherit C-PHY information from CSIPHY, so we can configure CSID
->> properly.
->>
->> CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
->>   drivers/media/platform/qcom/camss/camss-csid.c      | 1 +
->>   drivers/media/platform/qcom/camss/camss-csid.h      | 1 +
->>   3 files changed, 3 insertions(+)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> index 2a1746dcc1c5b..033036ae28a4f 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
->> @@ -183,6 +183,7 @@ static void __csid_configure_rx(struct csid_device *csid,
->>   	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
->>   	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
->>   	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
->> +	val |= csid->phy.cphy << CSI2_RX_CFG0_PHY_TYPE_SEL;
+
+On Wed, 10 Dec 2025 10:05:27 +0900, Luca Weiss wrote:
+> Add the compatible for another 64Kb EEPROM from Giantec.
 > 
-> This field is 1-wide, this would be neater:
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/eeprom/at24.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> if (csid->phy.cphy)
-> 	val |= BIT(CSI2_RX_CFG0_PHY_TYPE_SEL);
 
-Hello Konrad,
-
-while your change make sense as we work with 1-bit.
-On other hand, due to TYPE_SEL naming, it's not very explicit why we set 
-this bit when cphy is on.
-
-Maybe I could propose renaming CSI2_RX_CFG0_PHY_TYPE_SEL to 
-CSI2_RX_CFG0_PHY_TYPE_SEL_CPHY, then setting 1 to it would make sense.
-
-Most clean solution to me would be something like
-
-#define TYPE_SEL_DPHY	0
-#define TYPE_SEL_CPHY	1
-
-val |= (csid->phy.cphy ? TYPE_SEL_CPHY : TYPE_SEL_DPHY) << 
-CSI2_RX_CFG0_PHY_TYPE_SEL
-
-Do I overthinking this? What do you think?
-
-David
-
-> 
-> Konrad
-
--- 
-David Heidelberg
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
