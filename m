@@ -1,112 +1,167 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A23256C6D
-	for <phone-devel@vger.kernel.org>; Thu, 11 Dec 2025 14:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D65F2D0C9F;
+	Thu, 11 Dec 2025 15:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765464102; cv=none; b=CptZ+CU/4jD7GJ01PAlBOdobSgVvhTw4lPmsU0Dg6sME4vDyTGiYHPM7OH4b029t7Sd5sQCLO1g7ReAe6Z9FoZGfq3XEKkSVmbk6qZyCGMQkNQQ+8xeTEG1GXFtUHUyxP+Q07l9lgRi/3mIZU5ZPrr4x1RBwGaSn8x4hB8Byr4M=
+	t=1765466445; cv=none; b=Bo3+2g25HaNsFvMzET81hlS4Et8cBZGQBwxjXvu2+UKCuLOYsFp5Wauqm7Tr6DTBKbWun04Q9fDiLhScFprNuCuIMYoRHxjdUDhj4ldOPnjEpwRXqeg0iV2zQEUkI3MTFzoR6M8jnl5Kz5ElLvGWK7UItEkNXva3pVY4lX0ptRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765464102; c=relaxed/simple;
-	bh=XL08wq/Gpmij7q/EVlU3oMvW4oE7BPSYS0rC8uxEoyk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kdxdZuZFrPwfl0F40mlSaHUANc4ThD18Wh+F+knJ0P5DmAQgMHy+BCKPkPBRz6QNdPPhoMz3ulwr8b9OZQah7ioAnL6pL3ZEi3BKJxMhqe1eZPMQGcbGsWK2BzD3TBfaZIvt794NX05Ds4A+DAtuuHXpIop9GxIgrW/cXyNkn60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YK5j8pQr; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765466445; c=relaxed/simple;
+	bh=U17Oq66S2MsACzyeVGFg97Yll+ujgWmENIU+J6+X8HE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OpxFMdZ+3NXXm/2Qw18RHNy3ndge+FpY6Z10iWv14v0c3EgyOJBa/xeTa17yszF1dzmiPOAGLsbNUOKwPiKVEi3qkntFmD9r8nJimD6prYgzgix1hEl3oo/lhbxa/vFc5SoFFOfbikjbGXDXbsT/dxQcoTvXT76OOvaQ53McdyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HX2f2Ahi; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YK5j8pQr"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5958931c9c7so205195e87.2
-        for <phone-devel@vger.kernel.org>; Thu, 11 Dec 2025 06:41:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765464099; x=1766068899; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XL08wq/Gpmij7q/EVlU3oMvW4oE7BPSYS0rC8uxEoyk=;
-        b=YK5j8pQrSp19WFlSsShgo5pF1l74Owhrzfy81Qmeoz7jkXoSK+nHX+q1uy1WNzXcfA
-         bJYdp9DavVMCNDkxA0802rfW7bVS3orM2QsIQs4mXOH9WmPpGMzS6jylyjPW+ncHq0Ih
-         IngGy3QhsyYH55xHt1cEaijdQuWoPUOIzPz+8b8IHKeJcWS0wxkMW/mqmIWLJ2OQ4xN+
-         xXEZJ035bT8ciuX1cOXurRCyk3zEUDCwHaxzhHBveslyhv9aNYAouNilUJ5xv1VoQ602
-         E/RNghQdGnLXpkXg9LUGpyLac1wStq+KqfKqv50Kfn8cpsZX8Cy39gmAFIRggo9utTNr
-         0lyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765464099; x=1766068899;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XL08wq/Gpmij7q/EVlU3oMvW4oE7BPSYS0rC8uxEoyk=;
-        b=blKje47XbEoX/Bzrh1080X0W5p6wwknKd7BGln5HMIfMDUFMko9BhrhtZHYlnLI2Dg
-         Ywy0ctepYc5p5jb1QyG5/QvTj37o7RVFBubp2PdySKIIb2tulnrILXQ6K3RgFSJvFCJJ
-         tFV7f4dKYLSpHiSSnFY1hKUnGE/xGqZrJy3M0SDw8+FO4NkqYGAmAKdL+oxVvcaP8SK4
-         HZzsr2H0COFpovmm6DzX6GQEGyQr01+g0HqycK0f730YaQIN8eGMegjU/NyL7xgiJsYP
-         3JKT6iM188XoEKQre2jJ727PrpIAHonOf/thXp+a3gFxKBIqxHVITMS2GPuLolJdpLqX
-         XCCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHgyXq7vM9QwtWeTI9z/1nr80fQO7AeBKyZVtCDMu89REkUTi/eoP+USHfEbhaCLOlhJdopMqjJKReFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcftZXYoBg67keZdrSfqtDeAj326BQRRHuW0KnZl4iWjk6Gg3M
-	hhsvTI/yM/L3+Z7QnMMBMoEsHHY7l7RXaK9IXDz0Q7EKkAiHLm+Jcg8O2gapZh+uI0nRTY8HHSi
-	kqWplCyk/Hez5NDeyqONXby1BB1uzYKU=
-X-Gm-Gg: AY/fxX6d/ojcHi/qUMKg53EL/s11guuzrWK283rFfeVTg6suoq9tsnLF5dilzTPeytt
-	ji7dN6T6MRMPO1puifbrRPrxbccAAic8rwv0ZQVduQElzRdlZmg6Xhrz3gxy5VJ/eW1VeXjUxEd
-	qK9Gv8ythQA4BqSjycytFxsjtRPYRWQNpMb95cQ5HeaNLZXKurMWUGFS4wNXZIHzKHUEGR+Ld+w
-	b1QT16ojkf955bZieC4vUqhY0/z1mwrabjBQv+9HKrvk/nY7YfJV1ATWvcB0huwJl0dN3GFw033
-	zAEV
-X-Google-Smtp-Source: AGHT+IFiIR+iIsV4mJ6qVbYZvp4StuXMH2zma5BiBkgrZg+TTdcuperTYP94aUirT3N2xa/3hEPBPBBlokr7QfLebLc=
-X-Received: by 2002:a05:6512:61a1:b0:598:f85b:b12f with SMTP id
- 2adb3069b0e04-598f85bb2f2mr223765e87.38.1765464098416; Thu, 11 Dec 2025
- 06:41:38 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HX2f2Ahi"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 19AA953409EA;
+	Thu, 11 Dec 2025 16:20:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1765466437;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tt8mMUNiD7OTlXd6QhMuRKTXiKd4hKlJb4B25sgPgZA=;
+	b=HX2f2AhipQOorhBnNaj1+0lA/lbURVg0o+IXAhOAax/zFaBrUILumr7RRiIPBFPNuBgBjT
+	eCVMJPteLFeE/WguPmPJ3R4W4HboMWCK5NGN9YixMdvQ5cuiWWHvFNcTZXNhZSlf4/6CSn
+	sa5JJr6lTjsqHi7RV7n4eju7Rc9a25E=
+Message-ID: <df5557e2-a086-48ca-b8e7-972cbdb7745a@ixit.cz>
+Date: Thu, 11 Dec 2025 16:20:36 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251207-adsp-cx-fixup-v1-1-0471bf2c5f33@lucaweiss.eu> <d81e017e-e317-402d-a4bf-7ddfa033299e@oss.qualcomm.com>
-In-Reply-To: <d81e017e-e317-402d-a4bf-7ddfa033299e@oss.qualcomm.com>
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Thu, 11 Dec 2025 17:41:26 +0300
-X-Gm-Features: AQt7F2pajj9Y1bhJt30iOkjeSJDSjern_i-FqbzQqEVWSt5mgRNTFkDTUxa7MnY
-Message-ID: <CABTCjFBQOq1pmdou_17ZOV3MgTxD_2byAY4RitqPVN5FYdRuJg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: remoteproc: qcom,adsp: Re-add cx-supply
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Luca Weiss <luca@lucaweiss.eu>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH WIP v2 3/8] media: qcom: camss: Prepare CSID for C-PHY
+ support
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
+Cc: Joel Selvaraj <foss@joelselvaraj.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251204-qcom-cphy-v2-0-6b35ef8b071e@ixit.cz>
+ <20251204-qcom-cphy-v2-3-6b35ef8b071e@ixit.cz>
+ <9af39b45-581b-4e25-8ab9-19015f00d6bc@oss.qualcomm.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <9af39b45-581b-4e25-8ab9-19015f00d6bc@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-=D0=BF=D0=BD, 8 =D0=B4=D0=B5=D0=BA. 2025=E2=80=AF=D0=B3. =D0=B2 19:33, Konr=
-ad Dybcio <konrad.dybcio@oss.qualcomm.com>:
->
-> On 12/7/25 11:35 AM, Luca Weiss wrote:
-> > Some boards (e.g. sdm845-samsung-starqltechn) provide a cx-supply
-> > reference for the SLPI PAS.
-> >
-> > The Linux driver unconditionally tries getting "cx" and "px" supplies,
-> > so it actually is used.
-> >
-> > Fixes: 3d447dcdae53 ("dt-bindings: remoteproc: qcom,adsp: Make msm8974 =
-use CX as power domain")
-> > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> > ---
-> > There's literally one board using this upstream, judging from that I'm
-> > not sure this is a misuse of cx-supply or what exactly. An alternative
-> > to this patch is of course removing the usage in
-> > sdm845-samsung-starqltechn, but as it stands right now the patch under
-> > "Fixes" introduces a dtbs_check warning.
->
-> FWIW that's likely a hack (because IIUC it needs to power up some
-> regulator for the sensor devices to work) but that's "fine"
->
+On 05/12/2025 10:43, Konrad Dybcio wrote:
+> On 12/4/25 5:32 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Inherit C-PHY information from CSIPHY, so we can configure CSID
+>> properly.
+>>
+>> CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
+>>   drivers/media/platform/qcom/camss/camss-csid.c      | 1 +
+>>   drivers/media/platform/qcom/camss/camss-csid.h      | 1 +
+>>   3 files changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+>> index 2a1746dcc1c5b..033036ae28a4f 100644
+>> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+>> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+>> @@ -183,6 +183,7 @@ static void __csid_configure_rx(struct csid_device *csid,
+>>   	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
+>>   	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
+>>   	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
+>> +	val |= csid->phy.cphy << CSI2_RX_CFG0_PHY_TYPE_SEL;
+> 
+> This field is 1-wide, this would be neater:
+> 
+> if (csid->phy.cphy)
+> 	val |= BIT(CSI2_RX_CFG0_PHY_TYPE_SEL);
 
-I confirm this probably powers up devices, because firmware boots fine
-without cx-supply.
+Hello Konrad,
 
---=20
+while your change make sense as we work with 1-bit.
+On other hand, due to TYPE_SEL naming, it's not very explicit why we set 
+this bit when cphy is on.
 
-Best regards,
-Dzmitry
+Maybe I could propose renaming CSI2_RX_CFG0_PHY_TYPE_SEL to 
+CSI2_RX_CFG0_PHY_TYPE_SEL_CPHY, then setting 1 to it would make sense.
+
+Most clean solution to me would be something like
+
+#define TYPE_SEL_DPHY	0
+#define TYPE_SEL_CPHY	1
+
+val |= (csid->phy.cphy ? TYPE_SEL_CPHY : TYPE_SEL_DPHY) << 
+CSI2_RX_CFG0_PHY_TYPE_SEL
+
+Do I overthinking this? What do you think?
+
+David
+
+> 
+> Konrad
+
+-- 
+David Heidelberg
+
