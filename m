@@ -1,107 +1,189 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA0B2874FB;
-	Fri, 12 Dec 2025 22:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6613FFD;
+	Fri, 12 Dec 2025 22:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765579498; cv=none; b=RDVGJuvtwWnB50OLfFa2KgXmtmZzNE1VYmYsWlf+v9QZxA1rVHykk1kGhZ3YvSPe+nBx2m+wEcboRfVuEpGzckw1SwaP7SXvCHEL4rs1IdLFCikqaYJtcSYl8y9p6fjHqi9gqDEW+nH2fDL8BwWXElt95SCxKk3O3wwtldtVXiQ=
+	t=1765580159; cv=none; b=c/iphP4TChiTW70TyrzZJQJc0P5p3VpUskRojEQ+GDmqQ4eidW7/1nz8fapq1EUkXq/iNVdVphW3M5YkUaz0OP6VjGAKrf1NfuTUPqSxbewHTK8ehlRT2LL7EKgbE21cw6F6OTXQtF4JDKHsQz/HUSIxXzmkxD4N0FtsvBlHiis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765579498; c=relaxed/simple;
-	bh=OIyVM6E2jjnCI4e64mE50nhFMC8YY4mZA0yBwdNNHOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNnpXr6mOyRy6EOC5TvCaDtN7ChnXzwhVyPyaWsJTp+LBlGUlMQTyWWLljboXaialN8HqKUbv733XsMcwI+vO9ofcwSUXksgqJztnydlC+Qwuj+JCjXasffYA0mEErq/pg+faHezixUTNfzk97c0roFdWDD33xnDGBs54Pnevsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=WbJJCdHM; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	s=arc-20240116; t=1765580159; c=relaxed/simple;
+	bh=Z69HFHhLeuWwH+CGK1nhOtAp3UyvN+1Q71kH7nxiK7g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UlKvo9BckOZSeoiF+wWeIRUTO6oEJnmVjijRCr5kIuLi3s7TGmQvSQEQaZ/T7R2Cn7xroK6dlK+sIZi+X+/A61FCf97DEWqsSLFsdErvkU1KCkzvfRp+743Y73VyUTf2Ts3A+qa8L7WSWp7yUIEJmbOMZ35fVm1+gnbVD4iOZzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJQiAb5/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="WbJJCdHM"
-DKIM-Signature: a=rsa-sha256; bh=OIyVM6E2jjnCI4e64mE50nhFMC8YY4mZA0yBwdNNHOc=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1765579474; v=1; x=1766011474;
- b=WbJJCdHMhCtEBqknfMmY9TjyDu897IeEWZqEGa/stAH3HmI5/tfv0itmwSExzYNagE4GNg1U
- ZxUlNxN9Yii8R2LnBm0frkGyj/FOJNLlapSmBlLlvOuFJgq7U+iioQ+xYJIZ6hsm//6m2fJLI3T
- 0Am7Kwixs/rDWXPgM6pOSqBBsGWcTqSv2f4AcYIwOztzuPJ/D6ccc0BCci05j2bHyWRshz1wGQY
- NaWUVl4mYnzjUmWzSF0eUgPXoHu6we5QxAcAO6B+TZcsFTnx+d+aLkp9DS3ntJEwntr3tGrxfMY
- mQ1l8nPzPkVlFs81ZzO7cizmtHGPueIKENEIJMi8929Rg==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 8bfa23d1; Fri, 12 Dec 2025 23:44:34 +0100
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Brian Norris <briannorris@chromium.org>, Karel Balej <balejk@matfyz.cz>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Francesco Dolcini <francesco@dolcini.it>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
- Peng Fan <peng.fan@nxp.com>
-Subject:
- Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts: samsung,coreprimevelte: add
- wifi node
-Date: Fri, 12 Dec 2025 23:44:33 +0100
-Message-ID: <5962754.DvuYhMxLoT@radijator>
-In-Reply-To: <DEWJTWZ6Q51B.13HQYMDJZRFWA@matfyz.cz>
-References:
- <20251026182602.26464-1-balejk@matfyz.cz>
- <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
- <DEWJTWZ6Q51B.13HQYMDJZRFWA@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJQiAb5/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3AE5CC4CEF1;
+	Fri, 12 Dec 2025 22:55:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765580158;
+	bh=Z69HFHhLeuWwH+CGK1nhOtAp3UyvN+1Q71kH7nxiK7g=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=PJQiAb5/unCdAIPRLyHrtm+krBIqawMi/+tKCckZSotwcV1T416A29tCosEXTWcDo
+	 ld1Yts1GUmqbS1IQe78Xljl/hnLx4FIxJI/B9qKZhOd5fR6fwBmhUjlrnonVCRC2ID
+	 ddbyLq6Pi2LDO4LGmmdOteVwNIihk8Ob5ajj46+js2LC+YfwS7YMfqBxtSpt3qvPl9
+	 fhWF4gIPK8bDqA/35Gnd7y5l8H8I5mGj5fn2pQr8wDtAslzQoNTA0PeDDakuxNqsRi
+	 V1AdEP3Z+DnH15UG0FZJePnF1kGaF88nzraTKPGyLApmpWHbog9qOCiX+8XrqoCuiD
+	 QZ4Hh3nFpDrbw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 299C3D59D7D;
+	Fri, 12 Dec 2025 22:55:58 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 12 Dec 2025 23:55:57 +0100
+Subject: [PATCH] media: dt-bindings: Correct camss VDDA PLL supply
+ description
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Autocrypt: addr=duje@dujemihanovic.xyz;
- keydata=
- mDMEZokhzhYJKwYBBAHaRw8BAQdAWJZ0hsI/ytTqHGFV8x6tzd5sB596cTeeDB4CQsTf+wC0KUR
- 1amUgTWloYW5vdmnEhyA8ZHVqZS5taWhhbm92aWNAc2tvbGUuaHI+iJkEMBYKAEEWIQRt/0HWDf
- MUtbdrpjCtMZNSRY+tAwUCaJ5XkSMdIEFkZHJlc3MgYm91bmNlcyBhcyBvZiB+MzEvMDgvMjAyN
- QAKCRCtMZNSRY+tA/N/AQDth3Xl3wNcETvWPqqfYfyw4BFqbOD05A/W0/G0ZIjFzgD+PZVts3sN
- p5WuEwIxUrWxwavWJQBJwhXeWdru5ol82gmImQQTFgoAQRYhBG3/QdYN8xS1t2umMK0xk1JFj60
- DBQJmiSH/AhsDBQkJZgGABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEK0xk1JFj60Dlw
- 8A/i4lPOL7NaYoYePDql8MaJaR9qoUi+D+HtD3t0Koi7ztAQCdizXbuqP3AVNxy5Gpb1ozgp9Xq
- h2MRcNmJCHA1YhWAbQoRHVqZSBNaWhhbm92acSHIDxkdWplQGR1amVtaWhhbm92aWMueHl6PoiZ
- BBMWCgBBFiEEbf9B1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwMFCQlmAYAFCwkIBwICIgIGFQo
- JCAsCBBYCAwECHgcCF4AACgkQrTGTUkWPrQPUYAEAlVKitl0w6Wun+hC0JIf8bnc0TnrH8kcDxV
- f5lAF38fcA/j8RxR/p558NTFUyHZt2Sa5AqxVkaA4aJekySytWe1YGuDgEZokhzhIKKwYBBAGXV
- QEFAQEHQMRz0l4Dnk6Vl9YqC+ZGDDpr8SkFDyYOXqdBMGad3VccAwEIB4h+BBgWCgAmFiEEbf9B
- 1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwwFCQlmAYAACgkQrTGTUkWPrQMbkwD+K6jiXYYMRnV
- l/5dpL//wXB1cM72ceR9tXYweMXg1lfABAOugzMF0xypW9zwYAEWVNOAaPsqtEPPYfBY3IXxl6m
- sB
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAHydPGkC/x3LMQqAMAxA0atIZgNNoIheRRxKTTWDrTQggnh3i
+ +Pj8x8wqSoGU/dAlUtNS26gvoO4h7wJ6toM7NgTE+NaomEMhxkmvcXQpeDZ80CjJ2jbWeUP7Zq
+ X9/0AgZgaumIAAAA=
+X-Change-ID: 20251212-docs-camss-fixes-0fa525271951
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Vikram Sharma <quic_vikramsa@quicinc.com>, 
+ Kapatrala Syed <akapatra@quicinc.com>, 
+ Hariram Purushothaman <hariramp@quicinc.com>, 
+ Richard Acayan <mailingradian@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4488; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=qHMgX4yIAZfT5HLJApJFTrMsi2e0Zb8+cULYJUs4ldc=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPJ19rhf2Bu4oI6wDHizm+ItUDiSmkginGNU4W
+ h8yd9I5zFqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaTydfQAKCRBgAj/E00kg
+ corlD/0Xs0msufVJBrB5kVHvPM6tRGweLZPmBRHdC2oJCgJr6zNu3k4CJmEeQTqLZvsEQIozH5J
+ 0w0Y5IWbujAOXk6HfY16QUQhE8aS1kw/gGfVV1od1FNuKQS5bm6lqZ1wbZf67vlX9En/ZgxfVOe
+ Nb8ke6kJ1gVjsbKprAJb4HLr01haX2MCjUKSlfwuJ7ny8C00pmrLi1ZN2y/Yo11zJmRnbWSC3ri
+ i0dPwPK70fww0rK+hXVKS7DJ84TJ7bG3ovXjbs+oa0a9sXKeDd3lFvJ7hvLc7ooStsn0Tmec2nf
+ iJGYf545z6AZRrqHAhaZ8LYdzmtJ/0XHjEjV1wyBazeUBG8ruU23ruWW03x08Us2/IcjGS7WA+r
+ MDEJ5M23rvb7Ye0RFotYLTOcWMyiQyMX0fKVTNl+UtTwbMYKrSUqmHEoKjtcEcw+DHZ3jspMZ78
+ eAyiR8aexLiTnzi8ZnEXUGBFb/NwNIumbHg0n+Ze7zvqdXn5/yQ9TeikB4j+f8HDAk1s1UjTuKX
+ XexS7mqyKLBinAO3VdJQH6XQoFHi9A8bNchUWaOVBlsyUiK9JCG2JzXighwCqkn8b08/hrnutbv
+ UEuj+GsBJAl8bnE0S/RvtIT9BuHLLaz6ONMrjlNSFcQ7kQd9rXpPUrOBrUIyXrfWzHYVDMCM6Sc
+ 4YD/MIMIf5EZu1Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Friday, 12 December 2025 22:17:12 Central European Standard Time Karel=20
-Balej wrote:
-> Duje Mihanovi=C4=87, 2025-12-12T15:55:48+01:00:
-> > On 12/12/25 09:36, Karel Balej wrote:
-> >> Not having any board schematics, I don't really know what exactly the
-> >> regulator's purpose is. As I mentioned in the commit message, the
-> >> communication with the chipset seems to work even if this is disabled
-> >> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
-> >> like it should be the case if this was a main power supply for the bus,
-> >> only actual connecting to networks doesn't work (gives
-> >> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
-> >=20
-> > To me, this strongly suggests that the regulator powers the WiFi
-> > transmitter or at least a part of it (such as the RF amp).
->=20
-> Something like this occurred to me too but would the chip even see the
-> networks if this was the case? Although you are right that it could only
-> power some specific part of the radio.
+From: David Heidelberg <david@ixit.cz>
 
-AFAIK you don't need the transmitter to capture and parse beacon frames. Of=
-=20
-course, connecting to networks is a completely different story.
+Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
+voltage from the description.
 
-Regards,
-=2D-
-Duje
+Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda regulator descriptions sdm845")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Added only Fixes tag for the initial commit, not all the copy-paste
+propagated ones.
+---
+ Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+index 019caa2b09c32..9009cfe993d75 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+@@ -130,7 +130,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+index ee35e3bc97ffd..cb922f90fe900 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+@@ -129,7 +129,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+index c99fe4106eee9..2231d7216f62a 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+@@ -268,7 +268,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+ required:
+   - clock-names
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+index 35c40fe223767..8e6ca94c88695 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+@@ -95,7 +95,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+index 82bf4689d3300..d50e096b900db 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+@@ -211,7 +211,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+ required:
+   - clock-names
+diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+index ebf68ff4ab961..ccd2d024bfd10 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+@@ -300,7 +300,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      Phandle to regulator supply to PHY refclk pll block.
+ 
+ required:
+   - clock-names
+
+---
+base-commit: d9771d0dbe18dd643760431870a6abf9b0866bb0
+change-id: 20251212-docs-camss-fixes-0fa525271951
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
 
 
