@@ -1,34 +1,39 @@
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8F8224B15;
-	Fri, 12 Dec 2025 15:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517E719F40A;
+	Fri, 12 Dec 2025 15:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765552371; cv=none; b=HJ2rHESDbgYnmgCpvMfBeEurq4+82KbXP56qYy0h/x+0spQBTuRI9q3tkuzTh1O66I4yeW0S0Yb2AY0+9prmjgqs3lmfOt979fwZCUY3cn4s5tFlINYlcxWMrgDinlg/L6DG0heaNw3yZIhCYw2tvI4wH0KlK+2XCEinIjvvEo8=
+	t=1765552950; cv=none; b=kCj/l9ZbN0VBPejhdmYdifghCX4sCGnxyUXQZrMSRX4usof6tjYX2JfFg9DkKEvLglihes9VO9QdXC5dIRh5EYbSmr4Up8/JqdO0g8aSHZoXHrnhFGSqQfoks24CwNtgOLVD5vw/fbr2lt4UFBaUcLCsWvNa9eeWyjHIlcQH3q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765552371; c=relaxed/simple;
-	bh=Au2bq/uT4hQqmVRhmRu0GZSkECIowsydK5IBDoeqVls=;
+	s=arc-20240116; t=1765552950; c=relaxed/simple;
+	bh=+IblNVT1S6CLR1JEjL42CUwdGpM2anjc5n8A6MmD+2c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rh2oYhqq/i4yOZjpwfZRByYo653aQM93GjJWdfXE4bbchnVfIdLMz6zHaIiA23Weh7itv1NgE00qhmogO3BbY9WdckDLSNXfl+yQh1it6SQodnZKuWW5pTA1iJM8IFE25lJhJkeIixQlVG8YfFM7hTdiNSfoyXqDYr+ePY7Jylc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=lKqb0Eww; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+	 In-Reply-To:Content-Type; b=QmLGr6l0qQb1X+/Lvzowzp2Vk0hUaWv/qa1lmc9DhJ5XW3bPzFsnj3mLM9YyVit8nYA8ThEuqmAm45irmU1SblJbstlN/+69IH3891rdjYQXUCFUASQCiKrZcE37a5lzUQGnr/gOcfwaqGcfrWq8tX5xrVl/P6Ooaq3XtVJVGwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=onT3DUAd; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="lKqb0Eww"
-DKIM-Signature: a=rsa-sha256; bh=4ws6w/h+ocGHgXoKslH3aTkpzb0iw8aDky8/QSNIKFA=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1765551350; v=1; x=1765983350;
- b=lKqb0Ewwk2P9x7xWmAco6D6Vb4U9a1BhGCwrhdQoau5rmSp1f9sM8gPW/vc/YBZPrrfS275F
- 1PD8w92z8zLgtq6cN30ya1uSfWBPLl7CGMJSQQgm0DJ06i/pOtDzo+uAcihfukJZi4o01bpOFi7
- 5RzQhGIDEaS/cUlWYnE6tDrFnptw1HL1mJbnEgqPX4WIyqVPwxf0TnF/SxSojUFbIS2ZAlQ3AlB
- CeWMlwkgKY/Ayrd3Nu36IaC+73iA6NKkxCIAJWwD+hvqgrqv5p7QAy48y+tFk3zxLrv8J+RiwOY
- ZzOXpaf34kuaxdLkfUBuVBMDLk10Z28DFPTWFenpUc9PA==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 97b39aec; Fri, 12 Dec 2025 15:55:50 +0100
-Message-ID: <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
-Date: Fri, 12 Dec 2025 15:55:48 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="onT3DUAd"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 4EAE25340C9A;
+	Fri, 12 Dec 2025 16:22:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1765552934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=McnJ1LW6C8Q5h1Cv7cup4coDzbIea7AHQdJ49VdSV+U=;
+	b=onT3DUAdQorz+yRSuqdKQfS8xkjPf1ykFsOZYdBVONlTfgGMokO5k/6iQBysAeQnqWc1KH
+	OyiM628thmrYuCQncLqjkvIS5jdvDtgQl5b2q32wTtqLe+d/TTQ0s7t90OCdnPRHaswTF+
+	4CTWHELiVFYQfYiLjy3m99zCGUds2cM=
+Message-ID: <d84c25d7-62c7-433d-9978-dd6b20f5681c@ixit.cz>
+Date: Fri, 12 Dec 2025 16:22:14 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -36,87 +41,137 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts: samsung,coreprimevelte:
- add wifi node
-To: Karel Balej <balejk@matfyz.cz>, Brian Norris <briannorris@chromium.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH RFC 2/8] power: supply: Add driver for Qualcomm PMI8998
+ fuel gauge
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Francesco Dolcini <francesco@dolcini.it>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
- Peng Fan <peng.fan@nxp.com>
-References: <20251026182602.26464-1-balejk@matfyz.cz>
- <20251026182602.26464-5-balejk@matfyz.cz> <aTCv75hjdX5XvgCh@google.com>
- <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+ <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>,
+ Casey Connolly <casey@connolly.tech>, Joel Selvaraj <foss@joelselvaraj.com>,
+ Yassine Oudjana <y.oudjana@protonmail.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Alexander Martinz <amartinz@shiftphones.com>,
+ =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Richard Acayan <mailingradian@gmail.com>,
+ Alexey Minnekhanov <alexeymin@postmarketos.org>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20251124-pmi8998_fuel_gauge-v1-0-dd3791f61478@ixit.cz>
+ <20251124-pmi8998_fuel_gauge-v1-2-dd3791f61478@ixit.cz>
+ <5d6c3dda-71cd-4684-8546-bc4918b560de@oss.qualcomm.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-In-Reply-To: <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <5d6c3dda-71cd-4684-8546-bc4918b560de@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/12/25 09:36, Karel Balej wrote:
-> Brian Norris, 2025-12-03T13:47:27-08:00:
+On 27/11/2025 16:28, Konrad Dybcio wrote:
+> On 11/24/25 10:53 PM, David Heidelberg via B4 Relay wrote:
+>> From: Joel Selvaraj <foss@joelselvaraj.com>
 >>
->> Do we have a min/max voltage for this regulator?
+>> Ths driver supports the fuel gauge hardware available on PMICs known as
+>> 3rd generation fuel gauge hardware available on PMI8998.
+>>
+[...]
+
+> Downstream checks if the address is > 0xBA which is what you want
+> at least for pmi8998
+
+My downstream [1] checks this value.
+
+[1] 
+https://github.com/LineageOS/android_kernel_xiaomi_sdm845/blob/lineage-22.2/drivers/power/supply/qcom/qpnp-fg.c#L760> 
+
+> You can de-abbreviate this to 'secure_access' (not to be confused
+> with 'secondary' or so). There's a locking mechanism which needs a
+> 0xa5 byte written to the base+0xd0 register (applies to all FG
+> peripherals with the 'last non-secure register' value possibly
+> varying).
 > 
-> The downstream node is defined with the same values as the above ldo14,
-> they however are however only defined in the PMIC dtsi and correspond to
-> the actual physical limits of the regulator specified also in the
-> driver, so this doesn't really give any specific constraints for the
-> board itself.
+> [...]
 > 
-> The downstream code enabling WiFi seems to force it to 3300000 (which
-> also seems to be the startup value) unconditionally, so I suppose I will
-> just set the both limits to this value?
-
-This sounds reasonable to me.
-
->>
->>> +			};
->>>   		};
->>>   	};
->>>   };
->>> @@ -523,6 +531,13 @@ &sdh1 {
->>>   	pinctrl-1 = <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
->>>   	bus-width = <4>;
->>>   	non-removable;
->>> +	#address-cells = <1>;
->>> +	#size-cells = <0>;
->>
->> I wonder if this should have:
->>
->> 	vmmc-supply = <&ldo16>;
->>
->> rather than regulator-always-on above.
+>> +	u8 sec_addr_val = 0xa5;
+>> +	int ret;
+>> +
+>> +	if (((chip->base + addr) & 0xff00) == 0)
 > 
-> You mean ldo15 right?
+> The 'fuel gauge' consists of:
 > 
-> Not having any board schematics, I don't really know what exactly the
-> regulator's purpose is. As I mentioned in the commit message, the
-> communication with the chipset seems to work even if this is disabled
-> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
-> like it should be the case if this was a main power supply for the bus,
-> only actual connecting to networks doesn't work (gives
-> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
+> FG_BATT_SOC @ 0x4000 (state of charge monitor)
+> FG_BATT_INFO @ 0x4100 ("general fg minus SoC")
+> FG_BCL @ 0x4200 (battery current limiter)
+> FG_LMH @ 0x4300 (limits management hardware)
+> FG_MEM_IF @ 0x4400 (DMA engine)
+> RRADC @ 0x4500 (today handled by its own driver)
+> 
+> and a couple other peripherals that Linux doesn't need to worry about
+> 
+> Each one of them should have its own 'reg' entry (which is assumed
+> to be 0x100-long), which will let you skip such interesting checks
+> and rely on the regmap framework disallowing address spillover (or
+> you can just then make the addr argument a u8)
 
-To me, this strongly suggests that the regulator powers the WiFi 
-transmitter or at least a part of it (such as the RF amp).
+Sounds good.
 
-> So this didn't seem too fitting for either vmmc nor vqmmc as far as I
-> understand their semantics, so I went with the regulator-always-on
-> approach to be safe.
+> 
+> It would be good to keep in mind their relationship and think about how
+> to model them together. I don't think they must all necessarily be part
+> of a single big "fg" dt node, particularly the LMH/BCL part seems to be
+> rather self-contained
 
-Considering the above, I'd reckon it'd be good to have the option to 
-toggle it for rfkill if anything. I'm however not sure what would be the 
-right way to do so, nor how rfkill even works, if at all, with mwifiex 
-(from what I see, the driver does not use the API).
+Would you recommend some readings to prepare for this task?
 
-Regards,
---
-Duje
+I see the FG_BATT* + FG_MEM_IF seems to be pretty relying on each other, 
+so I assume I need to take good care of that relation, when spliting 
+pieces up.
+
+Thanks
+David
+
+
+[...]
