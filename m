@@ -1,139 +1,140 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC43123B615;
-	Fri, 12 Dec 2025 15:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E042AD24
+	for <phone-devel@vger.kernel.org>; Fri, 12 Dec 2025 21:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765553970; cv=none; b=Vqtwh8ZGQ3WsqtQBw6R81XxyBPW1xoKNT+b9CkegxKDX+7MVE/Fd5APA8bHeQv1eD1lq9sdeDP3dbAz9V3y7pHbZGOHF4vTRNrCMHHgjccEhNWvAQjvkUu7Rnz4htd6UovTfTO2h+gjO20xa4ygUsGQVbughdRN//1tIa2WVvBg=
+	t=1765574244; cv=none; b=ACwzwPgXZU0CyVGdhfRxuH6/t1QHyRA3VWaFEsfD/t8tAtGLUOk0CggQFABBC4HWjuLc54bM/eeFSOkxVoFtW2/7pY7OvXX+Ddga7Vl37JUCTbvZgcw2v4SMaWZPeU9yr5qOjZa4cn9Ihgfcq/qGqFZAijLhjEXuubPkHK3E2FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765553970; c=relaxed/simple;
-	bh=i+StYMH5DiClQd8CdLEc/WxSielRjql9cTA17RW2Gzs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kfZhIT75Ru9Gvw95+YxPKv9wgqOiQ/WupGZKZuiASkzkaSQ4ydmwzxthHlxCuvFtj4ZddR42P6fDMYf5zduRUR2EpGRrTZf4e7NAl1xIDQhz+78FUmeUo0BuzSrkxEjAmbKYIDgoQZrQCLXZRplNtYzJFA6FDGQqI37nm0L1oyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LZHXqd+G; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1765574244; c=relaxed/simple;
+	bh=x3CNFs0hLuWUM+gyOO6MyVKcgZ7XrZR6ET7W0thCckA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=OH3Kicq+VAQxTm5xCN31GCjG0t+yHjt4d8+3OrkHgapqHcfuDLam7U2PeAzAEfDcdftTWbVfAcCe0SMybnf2Q5sNzXljMMqfCpnMNOBHvE7OPowDm3kkaAY9ihrhCfG5cfvuOZDxuqK1b97xPJpy/FTykm2hP5G8JBUQ4G9OB5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=OE3fP7qM; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LZHXqd+G"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 46D3F53400FC;
-	Fri, 12 Dec 2025 16:39:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765553964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qoFlOLYfVlGGDdW12N9r5ZtwHxJ3NpUpyJPN67jy810=;
-	b=LZHXqd+G0AcQYPIygP+oh5JEc6XWcR6wn13rdAPY3pTM4bXLUT083yzq9veWTFWYGuYc/g
-	WTKf32XZr0gEJDrb0kq5wWX0GjqbcmjyJLC2iaN/YE68raIX24Zfi/C/PJ5pF8CDonXh4u
-	spZ2mQMeCBThGJMfh2w6ib9k4KjOREw=
-Message-ID: <eb5106b4-6beb-471f-92c6-f5f4bba4d9ff@ixit.cz>
-Date: Fri, 12 Dec 2025 16:39:23 +0100
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="OE3fP7qM"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1765574234; x=1766874234;
+	bh=SgUfumfpK8IIvCsoZJdwGQ9G22gqg60C4Us0iM2ajKk=; h=From;
+	b=OE3fP7qMrQ9bg3lfj4OuqwhlpebxqbREJxoAPnzCEMv2XNlSmscAXITSuUS9Qd9b3
+	 o9xqJOBix4IP2TR5FssIj/ZFEzre6naHZTyCPKZOEkb1Q2YtsCfgK8/FaTAqdDkGnU
+	 kxr2EqCPeEV2I6v75dloTs0VeXUPgeJWHKYW1/RACH8LWWT4TUz5CSaTfnXgGQ+2W8
+	 9Ey9CUeMRCCeT7jq+n3KRat6PaXdT2BklyyLYT8WJ/SXYCJ1R3Q97Rl8fQTJo+b6P6
+	 3jIdjYNq60x9NsHOLkt5L0KIOrkbjUYuC/VOyJmunZKUEpeBAI0y/u6cua/XdpHv3G
+	 U7R0QdmL7vr2g==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5BCLHCKs025210
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Fri, 12 Dec 2025 22:17:13 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/8] drm/panel: sw43408: Add enable/disable and reset
- functions
-From: David Heidelberg <david@ixit.cz>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Dmitry Baryshkov <lumag@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Petr Hodina <phodina@protonmail.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20251208-pixel-3-v6-0-e9e559d6f412@ixit.cz>
- <20251208-pixel-3-v6-4-e9e559d6f412@ixit.cz>
- <lilbxguznfzupg2gpfb6xuj4ickffgtuwwlve5g4d22lzr3bsm@slkmhn4agvgr>
- <b171d4d1-9426-49aa-b69b-339fdb78c85d@ixit.cz>
-Content-Language: en-US
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <b171d4d1-9426-49aa-b69b-339fdb78c85d@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Dec 2025 22:17:12 +0100
+Message-Id: <DEWJTWZ6Q51B.13HQYMDJZRFWA@matfyz.cz>
+Cc: "Johannes Berg" <johannes@sipsolutions.net>,
+        "Rob Herring"
+ <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
+        "Gregory
+ Clement" <gregory.clement@bootlin.com>,
+        "Sebastian Hesselbarth"
+ <sebastian.hesselbarth@gmail.com>,
+        "Francesco Dolcini"
+ <francesco@dolcini.it>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>, "Frank Li"
+ <Frank.Li@nxp.com>,
+        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>,
+        "Peng Fan" <peng.fan@nxp.com>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts:
+ samsung,coreprimevelte: add wifi node
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+        "Brian Norris"
+ <briannorris@chromium.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <20251026182602.26464-5-balejk@matfyz.cz> <aTCv75hjdX5XvgCh@google.com>
+ <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+ <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
+In-Reply-To: <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
+X-Spam-Level: ****
 
-On 09/12/2025 23:51, David Heidelberg wrote:
-> On 09/12/2025 23:37, Dmitry Baryshkov wrote:
->> On Mon, Dec 08, 2025 at 10:41:57AM +0100, David Heidelberg via B4 
->> Relay wrote:
->>> From: David Heidelberg <david@ixit.cz>
+Duje Mihanovi=C4=87, 2025-12-12T15:55:48+01:00:
+> On 12/12/25 09:36, Karel Balej wrote:
+>>>> +			};
+>>>>   		};
+>>>>   	};
+>>>>   };
+>>>> @@ -523,6 +531,13 @@ &sdh1 {
+>>>>   	pinctrl-1 =3D <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
+>>>>   	bus-width =3D <4>;
+>>>>   	non-removable;
+>>>> +	#address-cells =3D <1>;
+>>>> +	#size-cells =3D <0>;
 >>>
->>> Introduce enable(), disable() and reset() functions.
+>>> I wonder if this should have:
 >>>
->>> The enable() and disable() callbacks keep the symmetry in the commands
->>> sent to the panel and also make a clearer distinction between panel
->>> initialization and configuration.
->>
->> It's not just it. There is a difference between commands being sent in
->> en/disable and prepare/unprepare.
-> 
-> Thanks, I didn't know. Is there good rule how to distinguish, which 
-> command should go where?
+>>> 	vmmc-supply =3D <&ldo16>;
+>>>
+>>> rather than regulator-always-on above.
+>>=20
+>> You mean ldo15 right?
+>>=20
+>> Not having any board schematics, I don't really know what exactly the
+>> regulator's purpose is. As I mentioned in the commit message, the
+>> communication with the chipset seems to work even if this is disabled
+>> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
+>> like it should be the case if this was a main power supply for the bus,
+>> only actual connecting to networks doesn't work (gives
+>> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
+>
+> To me, this strongly suggests that the regulator powers the WiFi=20
+> transmitter or at least a part of it (such as the RF amp).
 
-How about I would "reduce" this patch to putting reset sequence into own 
-function, so Pixel 3 support could get merged?
+Something like this occurred to me too but would the chip even see the
+networks if this was the case? Although you are right that it could only
+power some specific part of the radio.
 
-The display will need more work anyway, would you be fine with this 
-approach?
+>> So this didn't seem too fitting for either vmmc nor vqmmc as far as I
+>> understand their semantics, so I went with the regulator-always-on
+>> approach to be safe.
+>
+> Considering the above, I'd reckon it'd be good to have the option to=20
+> toggle it for rfkill if anything. I'm however not sure what would be the=
+=20
+> right way to do so, nor how rfkill even works, if at all, with mwifiex=20
+> (from what I see, the driver does not use the API).
 
-David
+I have experimented with rfkill here before. The chip has a specific pin
+for this so I don't think handling the regulator alone would suffice.
+But yes, it should certainly be associated with the rfkill if possible
+so that it could be turned off to save power when the radio is disabled.
+
+Brian, is it possible to attach the rfkill pin (and ideally this
+regulator) to the wireless device solely through the device tree in some
+generic way or must this be implemented in the driver? I have
+experimented with the rfkill-gpio driver in the past but it appeared as
+a separate rfkill device with its own controls independent of the
+mwifiex device and I could only soft block both (soft blocking the
+rfkill-gpio device of course had effect on the wifi though).
+
+Regards,
+K. B.
