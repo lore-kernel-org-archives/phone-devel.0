@@ -1,154 +1,122 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95D7304BC6
-	for <phone-devel@vger.kernel.org>; Fri, 12 Dec 2025 09:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8F8224B15;
+	Fri, 12 Dec 2025 15:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765530263; cv=none; b=etf890EP6uF9oThKd1TM7P2igTMEYaLjj12KwOZ2M7FzqG9Ie9/KGg2n0Z/y1uDHb6N8WZZH5YfMECq1TQuxC/dZHqW8sDWZRd8aez2AI7k5/sA/JomDsjkWSllWaEaRw/HhG1ZFGNrM7Gy7bliTj58LJQvHLfIGb3odsPnOzBE=
+	t=1765552371; cv=none; b=HJ2rHESDbgYnmgCpvMfBeEurq4+82KbXP56qYy0h/x+0spQBTuRI9q3tkuzTh1O66I4yeW0S0Yb2AY0+9prmjgqs3lmfOt979fwZCUY3cn4s5tFlINYlcxWMrgDinlg/L6DG0heaNw3yZIhCYw2tvI4wH0KlK+2XCEinIjvvEo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765530263; c=relaxed/simple;
-	bh=72HAfi72SmDJb0OCeKnVGaHwhyYFhkB1nePjitPZwis=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Cc:Subject:
-	 References:In-Reply-To; b=NCgZaUs0xCZeWgutPFacqz5gkiZAAltCBrSYWzb45NlZdUoM6e5OoHhiodJzkgaJ/8zqNvxEVDXTCq4PPj4NLtXqq16rvnliUm6pvELy9GFQGeZy//qwpzNN7v6MQiUP0FBbqkWYLYDqK/kkU4lpyu0Yt+MIKaDepa+NRF8GQco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=ZqFAjb2B; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1765552371; c=relaxed/simple;
+	bh=Au2bq/uT4hQqmVRhmRu0GZSkECIowsydK5IBDoeqVls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rh2oYhqq/i4yOZjpwfZRByYo653aQM93GjJWdfXE4bbchnVfIdLMz6zHaIiA23Weh7itv1NgE00qhmogO3BbY9WdckDLSNXfl+yQh1it6SQodnZKuWW5pTA1iJM8IFE25lJhJkeIixQlVG8YfFM7hTdiNSfoyXqDYr+ePY7Jylc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=lKqb0Eww; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="ZqFAjb2B"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1765528615; x=1766828615;
-	bh=06iQT5wqSAV80e9jTa3YiqvCIEHPGGapBLMjVJZ1Eh4=; h=From;
-	b=ZqFAjb2Bbbp+1UwXi0Wbfe5kzx7wqzGs83QToiBgrE2Fb/3IhUbCiT4Ch2+lF75X2
-	 YBK2mwHgWEGasLCNid+gcaQQ8Qc3AKidt5XUibcZpsbjSkrTMt+LCKJMftGplpnFw4
-	 hd5C63q+A2z9LsqiODZF3WpZ21qQYA+noUHwbbIH130PyLv6lzJjzABXESuzbuGUfm
-	 ohiRDD7S8o4BTJL9Rf8FyrdaogG/imcGXGcSQX5/3rQeruL+LE1XZYj19gWIyXiTjL
-	 6T+o0ICVAvwTk4sPIgDCh3O39Ls8gevvvkvhgN2uyXKT9JaC8oBHbENnrP4Sf+FM9Z
-	 SIqaMJ1DtAgqg==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5BC8apRt091034
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Fri, 12 Dec 2025 09:36:52 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="lKqb0Eww"
+DKIM-Signature: a=rsa-sha256; bh=4ws6w/h+ocGHgXoKslH3aTkpzb0iw8aDky8/QSNIKFA=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1765551350; v=1; x=1765983350;
+ b=lKqb0Ewwk2P9x7xWmAco6D6Vb4U9a1BhGCwrhdQoau5rmSp1f9sM8gPW/vc/YBZPrrfS275F
+ 1PD8w92z8zLgtq6cN30ya1uSfWBPLl7CGMJSQQgm0DJ06i/pOtDzo+uAcihfukJZi4o01bpOFi7
+ 5RzQhGIDEaS/cUlWYnE6tDrFnptw1HL1mJbnEgqPX4WIyqVPwxf0TnF/SxSojUFbIS2ZAlQ3AlB
+ CeWMlwkgKY/Ayrd3Nu36IaC+73iA6NKkxCIAJWwD+hvqgrqv5p7QAy48y+tFk3zxLrv8J+RiwOY
+ ZzOXpaf34kuaxdLkfUBuVBMDLk10Z28DFPTWFenpUc9PA==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 97b39aec; Fri, 12 Dec 2025 15:55:50 +0100
+Message-ID: <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
+Date: Fri, 12 Dec 2025 15:55:48 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Dec 2025 09:36:50 +0100
-Message-Id: <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
-To: "Brian Norris" <briannorris@chromium.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-Cc: "Johannes Berg" <johannes@sipsolutions.net>,
-        "Rob Herring"
- <robh@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje@dujemihanovic.xyz>,
-        "Andrew Lunn" <andrew@lunn.ch>,
-        "Gregory Clement"
- <gregory.clement@bootlin.com>,
-        "Sebastian Hesselbarth"
- <sebastian.hesselbarth@gmail.com>,
-        "Francesco Dolcini"
- <francesco@dolcini.it>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>, "Frank Li"
- <Frank.Li@nxp.com>,
-        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>,
-        "Peng Fan" <peng.fan@nxp.com>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts:
- samsung,coreprimevelte: add wifi node
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts: samsung,coreprimevelte:
+ add wifi node
+To: Karel Balej <balejk@matfyz.cz>, Brian Norris <briannorris@chromium.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>
 References: <20251026182602.26464-1-balejk@matfyz.cz>
  <20251026182602.26464-5-balejk@matfyz.cz> <aTCv75hjdX5XvgCh@google.com>
-In-Reply-To: <aTCv75hjdX5XvgCh@google.com>
-X-Spam-Level: ****
+ <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+Content-Language: en-US
+From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+In-Reply-To: <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Brian Norris, 2025-12-03T13:47:27-08:00:
-> On Sun, Oct 26, 2025 at 07:20:41PM +0100, Karel Balej wrote:
->> Add a node for the phone's WiFi serviced by the Marvell SD8777 chip a
->> communication with which happens over the SDIO. Also enable a regulator
->> without which it is not possible to connect to networks although they
->> are discovered properly.
->>=20
->> Signed-off-by: Karel Balej <balejk@matfyz.cz>
->> ---
->>  .../mmp/pxa1908-samsung-coreprimevelte.dts        | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>=20
->> diff --git a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimeve=
-lte.dts b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dt=
-s
->> index b2ce5edd9c6a..36d6ae4e902e 100644
->> --- a/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
->> +++ b/arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts
->> @@ -475,6 +475,14 @@ ldo14: ldo14 {
->>  				regulator-min-microvolt =3D <1200000>;
->>  				regulator-max-microvolt =3D <3300000>;
->>  			};
->> +
->> +			/*
->> +			 * Needs to be enabled in order for the WiFi to be able
->> +			 * to connect to networks.
->> +			 */
->> +			ldo15 {
->> +				regulator-always-on;
->
-> Do we have a min/max voltage for this regulator?
+On 12/12/25 09:36, Karel Balej wrote:
+> Brian Norris, 2025-12-03T13:47:27-08:00:
+>>
+>> Do we have a min/max voltage for this regulator?
+> 
+> The downstream node is defined with the same values as the above ldo14,
+> they however are however only defined in the PMIC dtsi and correspond to
+> the actual physical limits of the regulator specified also in the
+> driver, so this doesn't really give any specific constraints for the
+> board itself.
+> 
+> The downstream code enabling WiFi seems to force it to 3300000 (which
+> also seems to be the startup value) unconditionally, so I suppose I will
+> just set the both limits to this value?
 
-The downstream node is defined with the same values as the above ldo14,
-they however are however only defined in the PMIC dtsi and correspond to
-the actual physical limits of the regulator specified also in the
-driver, so this doesn't really give any specific constraints for the
-board itself.
+This sounds reasonable to me.
 
-The downstream code enabling WiFi seems to force it to 3300000 (which
-also seems to be the startup value) unconditionally, so I suppose I will
-just set the both limits to this value?
+>>
+>>> +			};
+>>>   		};
+>>>   	};
+>>>   };
+>>> @@ -523,6 +531,13 @@ &sdh1 {
+>>>   	pinctrl-1 = <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
+>>>   	bus-width = <4>;
+>>>   	non-removable;
+>>> +	#address-cells = <1>;
+>>> +	#size-cells = <0>;
+>>
+>> I wonder if this should have:
+>>
+>> 	vmmc-supply = <&ldo16>;
+>>
+>> rather than regulator-always-on above.
+> 
+> You mean ldo15 right?
+> 
+> Not having any board schematics, I don't really know what exactly the
+> regulator's purpose is. As I mentioned in the commit message, the
+> communication with the chipset seems to work even if this is disabled
+> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
+> like it should be the case if this was a main power supply for the bus,
+> only actual connecting to networks doesn't work (gives
+> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
 
->
->> +			};
->>  		};
->>  	};
->>  };
->> @@ -523,6 +531,13 @@ &sdh1 {
->>  	pinctrl-1 =3D <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
->>  	bus-width =3D <4>;
->>  	non-removable;
->> +	#address-cells =3D <1>;
->> +	#size-cells =3D <0>;
->
-> I wonder if this should have:
->
-> 	vmmc-supply =3D <&ldo16>;
->
-> rather than regulator-always-on above.
+To me, this strongly suggests that the regulator powers the WiFi 
+transmitter or at least a part of it (such as the RF amp).
 
-You mean ldo15 right?
+> So this didn't seem too fitting for either vmmc nor vqmmc as far as I
+> understand their semantics, so I went with the regulator-always-on
+> approach to be safe.
 
-Not having any board schematics, I don't really know what exactly the
-regulator's purpose is. As I mentioned in the commit message, the
-communication with the chipset seems to work even if this is disabled
-(e. g. FW loads, networks can be scanned for,...) which doesn't seem
-like it should be the case if this was a main power supply for the bus,
-only actual connecting to networks doesn't work (gives
-CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
+Considering the above, I'd reckon it'd be good to have the option to 
+toggle it for rfkill if anything. I'm however not sure what would be the 
+right way to do so, nor how rfkill even works, if at all, with mwifiex 
+(from what I see, the driver does not use the API).
 
-So this didn't seem too fitting for either vmmc nor vqmmc as far as I
-understand their semantics, so I went with the regulator-always-on
-approach to be safe.
-
-Thank you for the comments,
-K. B.
+Regards,
+--
+Duje
