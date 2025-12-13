@@ -1,142 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD18AD24;
-	Sat, 13 Dec 2025 03:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5991F92E
+	for <phone-devel@vger.kernel.org>; Sat, 13 Dec 2025 04:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765595918; cv=none; b=IlFoS18n1z7nOAKyrPgP1jmY0zaRw2ey9jt1FLEnWuAVidD2Obcau2kwHosRMxngTSgUy50g+YywJRI054YovOSrczJLk904Mpl3p/e0T8CBqNrGdKwLLWHB06Bmrmyq3PNYpyaVLHzoQuLz0JNGJ7ywNM4FxKN7y1GrzNAEoZ4=
+	t=1765598504; cv=none; b=RCNEdR8pE27L+eCAh3O6yQW/D4FG95ayzPZY+oVgU1BvYZMVIxcAKMKgT64YqG4dCtZnlHD9fenIb7J9oYEebUFea3TZCT+JOLjEKAPhSki9G/f0JYkdrswtlZJE1D2OxHWRZv7LppnRqpswrScgshEY0K/C9joDwfwf5zIMNCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765595918; c=relaxed/simple;
-	bh=kpnXNzdGYP2zwFs8w+pWtw9Kv4Wj2G2tKsafdEQ5Gks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EBmd0bgxVfnVr14oyn5nGTk/0Et1lUXCc6pd6XMudK/eWSkc6hU/+ik8+IH2yt6ZrJS/mbi8xuLRp8BhNJeTXHBd4H2ZP5Rs3oc7Rg2ZZpahnZ37kKzL4RgF7uMRvNQiEIsEezXYJYxIXYOp4mObpXc6ShDShbM4S75AeT6GEyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLBvr/jE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765598504; c=relaxed/simple;
+	bh=vwiZYPfOQvunfhjxyDYYfW8jvyT3qy1mEalXZqzJyQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mSmjMh4oSrUV2Cq7J+tbgoOMUeukavgZOFwtsKPahFArpy5hqhANMOw3FPRMKl4foeF3ew75RO3koT7KYOv+wVjjcIy+fvYVYraKxyERG4m14XeCYzSsoujROnrdOeMM8X9lsOgGRR3eBlEzwesWweiUhr6vknSTG1QwKBzVdjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YzveGwpq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LBRpaKt2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLBvr/jE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67708C4CEF7;
-	Sat, 13 Dec 2025 03:18:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765595918;
-	bh=kpnXNzdGYP2zwFs8w+pWtw9Kv4Wj2G2tKsafdEQ5Gks=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZLBvr/jE5QHhvn1Ge7YWIQQuliv0hTWw2mk3Cg53SpyF58iraplDWcSyb72DWmzks
-	 ZFvzK1NSZdsoV0TarnxvjC5qYCBmuTsZpLtoYpEbVUUcOolRdJsbtgaigqbZ0tVPwd
-	 eJq63oYvpsVnmLI8Bv0LcGYDpi5SalJEzpacmKVBJKw6/jFcAu1MAed+NDZWkauUhJ
-	 3xxRkOV4zQ3S+8sIaFOPo4rL8BLwpVhsFZDY1cTvy5JIztYg/l1F53Eb5GoOwKjRNy
-	 fblnm3QhKORjwD64eRZRFcoQvL0WxkvTrQU9dz5V4D2dPXKTN9IXYOzTnmBfTSg4I1
-	 81goUgB/RteMg==
-Message-ID: <ea21463c-89cd-43c3-b3e3-b5bcc5fb82fb@kernel.org>
-Date: Sat, 13 Dec 2025 04:18:31 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YzveGwpq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LBRpaKt2"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BD2GjnT1746480
+	for <phone-devel@vger.kernel.org>; Sat, 13 Dec 2025 04:01:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=LcNVAJsLGQf24kG2wRpel78O
+	cIah1cBrBEulv8MZ6Y8=; b=YzveGwpqsxyZMxL+MIWY6mbtC40VeRt42mhWiAQK
+	Wu3ASXaVCOZC3omld1a4BoNsJpoLKcf5ITq5he34sUjdHCV8z+UMjOA60oLrMayi
+	bnDw3cv6Lu6Fjc9j1/hbTRsAvYsIOlRh60eelyqPF79E8scE0puEOXlqRD6WrsEI
+	Xwg26V3QxPAsawjRI9VOuL0mz2bCP19fJtGXHwE1yjqz0F+KUqspWNLKzW68Q9+y
+	VSIezrJMUXYXMcwkIYfOuWtaIJUZ29xf0kki072Cr5pZHpkbBx3W61XydXQibkJp
+	Du8agDyyiaVewnsRAMtMhJluIcjCXEPD7lZPDjRzEVDvyA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b0wuf871n-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 13 Dec 2025 04:01:41 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4f1d2aa793fso26899021cf.3
+        for <phone-devel@vger.kernel.org>; Fri, 12 Dec 2025 20:01:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1765598500; x=1766203300; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LcNVAJsLGQf24kG2wRpel78OcIah1cBrBEulv8MZ6Y8=;
+        b=LBRpaKt2IXx+7cHx+8dZNwNuPr6Vb9wFOSZfav3cCq48YF2x9gImmDly+Tugwem6Rl
+         nTy/2JsCbj11nqz4cMqp2jd0jiNVaJ+zNG7rrhPeNHyEL/8Y02cxPE599qcwKE9ULcT1
+         G4jFpezTQTiEq+sDew/xIfzesErjRaYnygLlcErZI5nGetV9nYkfDNWFAxdMVPVJue5V
+         lznFt/ia8pVsiQTH2xUiIdkaABtxAlGp7OQsrFlz36bnzfKWVmQLrtyu/CKVNvGvQEuE
+         mlpyLG8unu5wDCYkSOARkTD2ZC/mj9BGrQBCidf9FusR2mlGTaOmFC3OBpUk3gxgyLxB
+         lXcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765598500; x=1766203300;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LcNVAJsLGQf24kG2wRpel78OcIah1cBrBEulv8MZ6Y8=;
+        b=gZVvroIKLqjH1gnp25O+0/v0A56GylO/OmM6D9eLL4AC5vF1c4lk+yWtPtYeo3fkgD
+         a/arVWskxxzEr0vuaLx+yr1KLCZgqnyn0BNKseCbgXhkM5S6G2mMSzc1erNYS3UaDHRe
+         h3+oWUdHhrpbmD3OW56RMRw55Erz5H0ItYxdu9t74zdGNITDSqRDXOPxyriCMpjwuCyA
+         M/rbUbWRl9FFri0dmJX9zxzNhsht1+AyWxe+YG7ylOVVvn3NgxwrtFGLdVYeJL3piTR2
+         xyYaisVGymWOTn/OUBKkwbe4pucqHqank930X76wvTDX6jk1N6LaJGOZ4ToZpO39CN4x
+         2+Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfqPKuzwIjs0F1Q2OKoP41Q7y9BpdAgIf7pc4z9c6iEEvIsMkuOyuFrMQ8rbLypKf5n0AiEsDPs+a6RA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3ia56UzjlYRRjdMUjJWH3LBwhu6qcjfUrYEMMx42p3V3xaeIW
+	693Be5zQoRdyyLWYtqVdfdPYGOrUzIEdr4+boEM0EWepjMnDuZKghiuLKG6B2EZkOSkhUetMh51
+	sVciZ80HnThTZdjCQOgXW8vtKUdrv6B4uMJ6+9iSumyRCGAQy5Ej17TMApoZG0yp6uA==
+X-Gm-Gg: AY/fxX6clXCD8WWMdyNOeiR6rlj408/Bl4tUYtKTbbJ4EORpizdbZG7UE9fF7Yo5ao0
+	X6uHSV9mcKR19+uQJeC+O+q68eL5qc2GpFLnTkynqpworqi4gjSC3LkD/2G0KkF3+HsaS6C1Wit
+	OhbZUtpo/NoSUTj1ieX2fzZ324U49qIL3lcILtZ8CjITA9fCn1igRQT2FYKTqlrcmqE7kO5a8NW
+	xmO3XJPCO3c3G0KvnGeBXafVIZ7UI/80Y/qSxLH401EfdhQWImutQFPo5C0iWcKdyhj0kQAljFz
+	YGnEQsZIA2asGZrzgVRlqlJloOYIcnM5pgyo3LptyyMeSasvf8J0w2NqrXgLLU4oKpxvMvriBEr
+	U1PUwUY64AzBqmNjsnxYTuEvQ9fIXUJ37NP9FZ6sES3Qo6W3ewrjr2RjPQY2ev9p2reFGZoz7Am
+	Y/5bhafscaMTOBfmf+em4/7Lg=
+X-Received: by 2002:a05:622a:41c5:b0:4f1:e2a4:db39 with SMTP id d75a77b69052e-4f1e2a4e0ecmr999811cf.4.1765598500317;
+        Fri, 12 Dec 2025 20:01:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEB6fsoDzbxK5AIYGHnnqvCIiJWXQuSf+BANSN6Bb11p3TUXgUWgwzIVGKz2HvArPjz2uurUQ==
+X-Received: by 2002:a05:622a:41c5:b0:4f1:e2a4:db39 with SMTP id d75a77b69052e-4f1e2a4e0ecmr999371cf.4.1765598499798;
+        Fri, 12 Dec 2025 20:01:39 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-598f2f3eeecsm2643794e87.30.2025.12.12.20.01.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 20:01:39 -0800 (PST)
+Date: Sat, 13 Dec 2025 06:01:36 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: david@ixit.cz
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Petr Hodina <petr.hodina@protonmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2] clk: qcom: rcg2, msm/dsi: Fix hangs caused by
+ register writes while clocks are off
+Message-ID: <aeefcr2yynlgnkiocv5eeqs4heaym6bts55z5iziqkysdzzqnt@oz2yau4nqwq7>
+References: <20251213-stability-discussion-v1-0-b25df8453526@ixit.cz>
+ <20251213-stability-discussion-v1-2-b25df8453526@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: dt-bindings: Correct camss VDDA PLL supply
- description
-To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vikram Sharma <quic_vikramsa@quicinc.com>,
- Kapatrala Syed <akapatra@quicinc.com>,
- Hariram Purushothaman <hariramp@quicinc.com>,
- Richard Acayan <mailingradian@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251213-stability-discussion-v1-2-b25df8453526@ixit.cz>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAzMCBTYWx0ZWRfXx7PDFXCPreKu
+ GhrjjvN0j5RNWXQNQ+5cEbxN34DD1Lgsddlh3Th+g8ut5iS956b+4bOFqKfIu8CwHWrD5zMyqXJ
+ 1mM71rDya+dcC1ijKqBwbI4CHzoKpADokSWS1iO09yN0ZnmhvoCYUJKoYbVr6BpywVq4ZmsheHb
+ RY0Y+7Iw1gjBnBvXCKwZ+71Q97sRQ8TgmCMsa8rlV1OL7/g53n5irz7jAjH3nf7GAE0q8yht3Lj
+ YF76EgY+8RszdUib8iqCQwWomKsLGuYqWJcCF2aVLSJJsJr1vh+N1XN5vt59tfMEKg0GLoEVhrd
+ SZy6iuLirtUiyaLXKZKtMQuCJ6HpG0W+feYMDAF/JkxaiKYTuWtQmbDYCWlojucqbtF4nbHQvq5
+ e+D1pwWlVWPD7SkxKJ+m4NXnPB9aOQ==
+X-Proofpoint-GUID: zkbJ9dWxUm9hVLbrlvO-fsOGkvUlEL-e
+X-Proofpoint-ORIG-GUID: zkbJ9dWxUm9hVLbrlvO-fsOGkvUlEL-e
+X-Authority-Analysis: v=2.4 cv=cObtc1eN c=1 sm=1 tr=0 ts=693ce525 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=sfOm8-O8AAAA:8 a=P0BQ7NvINjiI-4SoFKYA:9 a=CjuIK1q_8ugA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22 a=TvTJqdcANYtsRzA46cdi:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-12_07,2025-12-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 bulkscore=0 phishscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512130030
 
-On 12/12/2025 23:55, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On Sat, Dec 13, 2025 at 12:08:17AM +0100, David Heidelberg via B4 Relay wrote:
+> From: Petr Hodina <petr.hodina@protonmail.com>
 > 
-> Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
-> voltage from the description.
+> This patch fixes system hangs that occur when RCG2 and DSI code paths
+> perform register accesses while the associated clocks or power domains
+> are disabled.
+
+In general this should not be happening. Do you have a description of
+the corresponding code path?
+
 > 
-> Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda regulator descriptions sdm845")
+> For the Qualcomm RCG2 clock driver, updating M/N/D registers while the
+> clock is gated can cause the hardware to lock up. Avoid toggling the
+> update bit when the clock is disabled and instead write the configuration
+> directly.
+> 
+> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
-> Added only Fixes tag for the initial commit, not all the copy-paste
-> propagated ones.
-> ---
->  Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
->  Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
->  Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
->  Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
->  Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
->  Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
->  6 files changed, 6 insertions(+), 6 deletions(-)
+>  drivers/clk/qcom/clk-rcg2.c        | 18 ++++++++++++++++++
+>  drivers/gpu/drm/msm/dsi/dsi_host.c | 13 +++++++++++++
+>  2 files changed, 31 insertions(+)
+
+This needs to be split into two patches.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> index 019caa2b09c32..9009cfe993d75 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> @@ -130,7 +130,7 @@ properties:
+> diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+> index e18cb8807d735..a18d2b9319670 100644
+> --- a/drivers/clk/qcom/clk-rcg2.c
+> +++ b/drivers/clk/qcom/clk-rcg2.c
+> @@ -1182,6 +1182,24 @@ static int clk_pixel_set_rate(struct clk_hw *hw, unsigned long rate,
+>  		f.m = frac->num;
+>  		f.n = frac->den;
 >  
->    vdda-pll-supply:
->      description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
+> +		/*
+> +		 * If clock is disabled, update the M, N and D registers and
+> +		 * don't hit the update bit.
+> +		 */
+> +		if (!clk_hw_is_enabled(hw)) {
+> +			int ret;
+> +
+> +			ret = regmap_read(rcg->clkr.regmap, RCG_CFG_OFFSET(rcg), &cfg);
+> +			if (ret)
+> +				return ret;
+> +
+> +			ret = __clk_rcg2_configure(rcg, &f, &cfg);
+> +			if (ret)
+> +				return ret;
+> +
+> +			return regmap_write(rcg->clkr.regmap, RCG_CFG_OFFSET(rcg), cfg);
+> +		}
+> +
+>  		return clk_rcg2_configure(rcg, &f);
+>  	}
+>  	return -EINVAL;
+> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> index e0de545d40775..374ed966e960b 100644
+> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
+> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> @@ -762,6 +762,12 @@ dsi_get_cmd_fmt(const enum mipi_dsi_pixel_format mipi_fmt)
+>  
+>  static void dsi_ctrl_disable(struct msm_dsi_host *msm_host)
+>  {
+> +	/* Check if we're already powered off before writing registers */
+> +	if (!msm_host->power_on) {
+> +		pr_info("DSI CTRL: Skipping register write - host already powered off\n");
 
-If doing this then also drop all redundant useless information. It is
-never useful to say that phandle is a phandle and that supply is a
-regulator supply, so just "PHY refclk PLL block supply".
+It definitely should be dev_something. Probably dev_warn().
 
+> +		return;
+> +	}
+> +
+>  	dsi_write(msm_host, REG_DSI_CTRL, 0);
+>  }
+>  
+> @@ -2489,6 +2495,8 @@ int msm_dsi_host_power_off(struct mipi_dsi_host *host)
+>  {
+>  	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+>  	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+> +	int ret;
+> +
 
+Extra empty line
 
+>  
+>  	mutex_lock(&msm_host->dev_mutex);
+>  	if (!msm_host->power_on) {
+> @@ -2496,6 +2504,11 @@ int msm_dsi_host_power_off(struct mipi_dsi_host *host)
+>  		goto unlock_ret;
+>  	}
+>  
+> +	/* Ensure clocks are enabled before register access */
 
-Best regards,
-Krzysztof
+And this looks like yet another fix, prompting for a separate commmit.
+
+> +	ret = pm_runtime_get_sync(&msm_host->pdev->dev);
+> +	if (ret < 0)
+> +		pm_runtime_put_noidle(&msm_host->pdev->dev);
+
+pm_runtime_resume_and_get()
+
+Also, where is a corresponding put() ? We are leaking the runtime PM
+counter otherwise.
+
+> +
+>  	dsi_ctrl_disable(msm_host);
+>  
+>  	pinctrl_pm_select_sleep_state(&msm_host->pdev->dev);
+> 
+> -- 
+> 2.51.0
+> 
+> 
+
+-- 
+With best wishes
+Dmitry
