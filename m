@@ -1,164 +1,194 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920B2C0F9A
-	for <phone-devel@vger.kernel.org>; Sat, 13 Dec 2025 08:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9B75475B;
+	Sat, 13 Dec 2025 09:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765615757; cv=none; b=tj5Pr8lAU9ahxlj/LKdUzI7hxAOIMde9vdHaRvMLYvBDFtO/iQlqy5ocTQ8jtiDflQT2i46WwRxLCIOfTAfa3sE50sEvf61BWmzuWrQM53tqvD7u1CRBX1uvmpfcjQFXCRqpk467jtYmqCLEmJj7BuALRSIjS559YhKn8ljoDPA=
+	t=1765617579; cv=none; b=rPKYeGsi1IxEUSsyQBHY0Dt7ZB60RoABKEYCvLZekTw/+Go5iutNUh0mfLZzuuUdKAaON8oneU+fmQyHP7yARYlXnwcvmRowC2KJ85Goq3WdgO9GO+t0K8+QcpsMAnQMgo8DYxCYUN7ElhrLVYCbW2yn9aeqESNuWetgzOp2GFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765615757; c=relaxed/simple;
-	bh=BzPUFq1qO+L33vQKBf6t9fZkXo642dR1D7b6QKM2WZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjJfa1v22F3dNc1GqYvkfpclCg3Y9fRZdRf+oBvpZuI7lulm7xUWwyfoPncLe1VWS5ifJVtoorojlW/z5IkNdwZL16SWteclCuSEvvP1YTYkuHolgpBEyQQE75jwWvzzZTWE99PZjMKHFEn9Ep1xFDauZB+EzUReerzP60xE2UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=DdbAFa9h; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1765617579; c=relaxed/simple;
+	bh=ZC6LKSjxQS22vl80g1WT7hEClX9HmgidrrcTYvgfxQs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ffGLEuaZRn+p/6H/2/JAslzmmEEiqBCATxiCHDqaOMg2xUvp+JU9ogLRs0BodFVhAkUmRgxGDL1hm/M4cGcNL1310HiVekIgIOwzNsP5mGAFXO/4nk+h2oVlMlmEuZQIKFDxtUZH36wYbaXaiyCvrar7IJK7ScJprb/sGAAMXQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOCaoqY7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="DdbAFa9h"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1765615745; x=1766915745;
-	bh=S9RqYk1apuuSaVqcDeaTaZWQ548F3KY11GTRUevi5ZA=; h=From;
-	b=DdbAFa9hSPUjoXS9bXykkVGBIEWHZbxM+Ib1d0uG1vcbFmmLUAzp+zN+fuHqjVrfn
-	 5IbtmafoU10o7bOb8C/hVzS5JVyDxT5M0eC/QSkWhqjWHssfLTFtflcrXPnXWj2xDD
-	 e7MPIS672KpAQFm156W8xbX/J/st+sMy+fD6jEIyzYVaeqGiJ+Y7sqVQ5m5xdqhmxQ
-	 /S/2nQ06BVVCW5O1kQdEKV/+Ms7Fl4C/TzLQVpKQkQQQ+6T9WoTuOa/bjv3IrRbrDB
-	 l5hNee6ef+6mXwUTmKWnCNpXXFTXnwqgW4w2L/zc4dcJnypoRhqdQs1sDVLaoVsELH
-	 WeJO2fjXaxm6Q==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5BD8n3tP051961
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sat, 13 Dec 2025 09:49:05 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
-From: Karel Balej <balejk@matfyz.cz>
-To: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-        Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Karel Balej <balejk@matfyz.cz>
-Subject: [PATCH v2 2/2] pmdomain: add audio power island for Marvell PXA1908 SoC
-Date: Sat, 13 Dec 2025 09:48:13 +0100
-Message-ID: <20251213084843.7491-2-balejk@matfyz.cz>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251213084843.7491-1-balejk@matfyz.cz>
-References: <20251213084843.7491-1-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOCaoqY7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DEC56C4CEF7;
+	Sat, 13 Dec 2025 09:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765617578;
+	bh=ZC6LKSjxQS22vl80g1WT7hEClX9HmgidrrcTYvgfxQs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=TOCaoqY7sMkhA3OleCmwe7rowMa7Joehl/7w1iKMeoAVCtQKfARTDK9vMvCIGKgCh
+	 4kF18cAhyQdiM0WLoQyP3qnV/nC0GYdx70lyuM0IAWBXcWSDh1/tijkhv52AZ+7+RF
+	 Z4S5F+okiQnxcOYHBzp5YBRy1h6jZW2IBxkWBu2CTVmepDC/ekVgcTgasEPu8vPgCo
+	 amFWfa+Xid9w6t11MbHQTvVvyMBTrl3FRZHyg36IvekKKuRwc1V+MRwewQQ+e2P6dE
+	 peX0fHEcAEIgmX2aOdfUU5LoO5YZRiN6omB4eobtf8n7NrxG/Y9zxB7PD6I3zfEbcZ
+	 9ojLqsZ6wUKMQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5B03D59F5D;
+	Sat, 13 Dec 2025 09:19:38 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 13 Dec 2025 10:19:31 +0100
+Subject: [PATCH v2] media: dt-bindings: Correct camss VDDA PLL supply
+ description
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251213-docs-camss-fixes-v2-1-a8a4d4d51c6c@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAKIvPWkC/32NQQ7CMAwEv1L5jFFsyULlxD9QD1GaUB9oUFxVh
+ Sp/J/QBHGdXs7uDxaLR4NrtUOKqpnluwKcOwuTnR0QdGwM7FmJiHHMwDP5phkm3aOiSFxa+UC8
+ ETXuVeBTNug+NJ7Ull/fxsNIv/TO2EhJKcETiJCXpb7rpcg4fGGqtX0RqAwuuAAAA
+X-Change-ID: 20251212-docs-camss-fixes-0fa525271951
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Vikram Sharma <quic_vikramsa@quicinc.com>, 
+ Kapatrala Syed <akapatra@quicinc.com>, 
+ Hariram Purushothaman <hariramp@quicinc.com>, 
+ Richard Acayan <mailingradian@gmail.com>, Bryan O'Donoghue <bod@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4520; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=n25Y4zdV+bOupKAPE/Z72jIjyFFWI3setI3tH0lwlkU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPS+piNuPUubfl5wYicf9pKpGHsVRbXsc5gQ34
+ 4Bia4zvKpuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaT0vqQAKCRBgAj/E00kg
+ coRDD/0dr2HxjAAd0+/Zay0CACnHM3LBMMaf8q7Ij0sAyl59yDYQaMOi7AaUuS/DolXGFJiG1yK
+ EhmJGtzGDejdaU2lwjBWoV/PfBETVol6MhQzoBfHkxDlw8Wfs0lFst0/72josSLKUIkY5A47oAW
+ lhrSfPbgbIc76sWY7QoPZAYl0lPOFwbxMSBYbfIKoH0juf6MklKIElDQ8qZ2E5VvkSLNRrymsh2
+ UUWt8DfG2IJoMYQttatkjwjWCG5EweFwCCpAtJDRD01+vftvIY4xq0nkpLM6pPd/t7QsFzYsAOF
+ PV464c+fKmukc+cYAMjmM4oJYpL5j7AlX3mUOjG1xDswEc47073k5jFCgi3US03Jv7eMNNDYCsG
+ SO3zosd4tAqvKGopRcysBtoxD9QHddqFjKPoERPxSVCR2Hp7v063p2iv6NOMYxDqnL1F6wKCXMi
+ 19Hl81mWw7ra7tkd/ndNHxfHVGOrdTDzr5Jj3nslNEsxRPzSTUmY7bgBrmyWMBbXRHtKKTciX3Y
+ mbY5OSGu7UVLqU8i2oTfLmgrs4Y/2SqkWwQIUNwZN8R8h7sDMs3ckCfcEtFqtu6YGUwYnulRkKf
+ jWWwDsgFDyxTZ9Gtz/SLPgVvZTwLNexiCZcIwnQyDOIbecyKttJA0M5rDzbT+2AmNaWKTXeHaw4
+ y4ShWRYcJI6Bi+Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Define power domain which needs to be enabled in order for audio to work
-on the PXA1908-based samsung,coreprimevelte smartphone. In the
-downstream code, this power-on method is marked as specific to the ULCx
-series which is allegedly a codename of sorts with ULC1 corresponding to
-the PXA1908.
+From: David Heidelberg <david@ixit.cz>
 
-No other audio components needed for sound to work on this phone are
-currently available mainline but some successful testing was performed
-with the vendor variants of the respective drivers and with the domain
-forced always-on.
+Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
+voltage from the description.
 
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda regulator descriptions sdm845")
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
+Added only Fixes tag for the initial commit, not all the copy-paste
+propagated ones.
+---
+Changes in v2:
+- Applied suggestion to clarify the description. (Krzysztof)
+- Link to v1: https://lore.kernel.org/r/20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz
+---
+ Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
+ Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-Notes:
-    v2:
-    - APMU_AUD_CLK -> APMU_AUDIO_CLK and group it with other register
-      definitions. (Duje)
-    - Move default function exit path inside the switch. (Duje)
-    - Modify the commit message with information provided by Duje (thanks!).
+diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+index 019caa2b09c32..cc48c0e50853d 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+@@ -130,7 +130,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+index ee35e3bc97ffd..c9464192373d3 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+@@ -129,7 +129,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+index c99fe4106eee9..6641084449670 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+@@ -268,7 +268,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+ required:
+   - clock-names
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+index 35c40fe223767..26fba2c0ceca5 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+@@ -95,7 +95,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+index 82bf4689d3300..34428171d6e38 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+@@ -211,7 +211,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+ required:
+   - clock-names
+diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+index ebf68ff4ab961..0b3a3d0e26453 100644
+--- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+@@ -300,7 +300,7 @@ properties:
+ 
+   vdda-pll-supply:
+     description:
+-      Phandle to 1.8V regulator supply to PHY refclk pll block.
++      PHY refclk PLL block supply.
+ 
+ required:
+   - clock-names
 
- .../marvell/pxa1908-power-controller.c        | 39 +++++++++++++++++--
- 1 file changed, 35 insertions(+), 4 deletions(-)
+---
+base-commit: d9771d0dbe18dd643760431870a6abf9b0866bb0
+change-id: 20251212-docs-camss-fixes-0fa525271951
 
-diff --git a/drivers/pmdomain/marvell/pxa1908-power-controller.c b/drivers/pmdomain/marvell/pxa1908-power-controller.c
-index ff5e6e82d3f8..543e8d33ac0c 100644
---- a/drivers/pmdomain/marvell/pxa1908-power-controller.c
-+++ b/drivers/pmdomain/marvell/pxa1908-power-controller.c
-@@ -24,12 +24,15 @@
- #define APMU_DEBUG		0x88
- #define DSI_PHY_DVM_MASK	BIT(31)
- 
-+#define APMU_AUDIO_CLK		0x80
-+#define AUDIO_ULCX_ENABLE	0x0d
-+
- #define POWER_ON_LATENCY_US	300
- #define POWER_OFF_LATENCY_US	20
- #define POWER_POLL_TIMEOUT_US	(25 * USEC_PER_MSEC)
- #define POWER_POLL_SLEEP_US	6
- 
--#define NR_DOMAINS	5
-+#define NR_DOMAINS	6
- 
- #define to_pxa1908_pd(_genpd) container_of(_genpd, struct pxa1908_pd, genpd)
- 
-@@ -59,9 +62,14 @@ static inline bool pxa1908_pd_is_on(struct pxa1908_pd *pd)
- {
- 	struct pxa1908_pd_ctrl *ctrl = pd->ctrl;
- 
--	return pd->data.id != PXA1908_POWER_DOMAIN_DSI
--		? regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state)
--		: regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
-+	switch (pd->data.id) {
-+	case PXA1908_POWER_DOMAIN_AUDIO:
-+		return regmap_test_bits(ctrl->base, APMU_AUDIO_CLK, AUDIO_ULCX_ENABLE);
-+	case PXA1908_POWER_DOMAIN_DSI:
-+		return regmap_test_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
-+	default:
-+		return regmap_test_bits(ctrl->base, APMU_PWR_STATUS_REG, pd->data.pwr_state);
-+	}
- }
- 
- static int pxa1908_pd_power_on(struct generic_pm_domain *genpd)
-@@ -123,6 +131,22 @@ static inline int pxa1908_dsi_power_off(struct generic_pm_domain *genpd)
- 	return regmap_clear_bits(ctrl->base, APMU_DEBUG, DSI_PHY_DVM_MASK);
- }
- 
-+static inline int pxa1908_audio_power_on(struct generic_pm_domain *genpd)
-+{
-+	struct pxa1908_pd *pd = to_pxa1908_pd(genpd);
-+	struct pxa1908_pd_ctrl *ctrl = pd->ctrl;
-+
-+	return regmap_set_bits(ctrl->base, APMU_AUDIO_CLK, AUDIO_ULCX_ENABLE);
-+}
-+
-+static inline int pxa1908_audio_power_off(struct generic_pm_domain *genpd)
-+{
-+	struct pxa1908_pd *pd = to_pxa1908_pd(genpd);
-+	struct pxa1908_pd_ctrl *ctrl = pd->ctrl;
-+
-+	return regmap_clear_bits(ctrl->base, APMU_AUDIO_CLK, AUDIO_ULCX_ENABLE);
-+}
-+
- #define DOMAIN(_id, _name, ctrl, mode, state) \
- 	[_id] = { \
- 		.data = { \
-@@ -159,6 +183,13 @@ static struct pxa1908_pd domains[NR_DOMAINS] = {
- 			.keep_on = true,
- 		},
- 	},
-+	[PXA1908_POWER_DOMAIN_AUDIO] = {
-+		.genpd = {
-+			.name = "audio",
-+			.power_on = pxa1908_audio_power_on,
-+			.power_off = pxa1908_audio_power_off,
-+		},
-+	},
- };
- 
- static void pxa1908_pd_remove(struct auxiliary_device *auxdev)
+Best regards,
 -- 
-2.51.2
+David Heidelberg <david@ixit.cz>
+
 
