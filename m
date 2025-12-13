@@ -1,176 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3351A3C38;
-	Sat, 13 Dec 2025 07:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A092C0F70
+	for <phone-devel@vger.kernel.org>; Sat, 13 Dec 2025 08:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765610923; cv=none; b=kXmb11RP2yR0cWOwglBA9gtrWFMSCOqNY/SJ8EyZ7MU69n2CMxwbj0LkNEFrwj2eENXK4Bv3wyo9bDNcR8hk0vPyMLa6DkxoBtsKfoWx0puohbEGq7HTunLPe9McVbwiy4FjiCSyeC9J0ImSRfnhTyv1C1QcBu2++cRjjUScYmQ=
+	t=1765615756; cv=none; b=lKNCMNt3FQ1ofOCytiNhCEyvPohot47KdtFioWqU3DQAewWpm2cp7F6t3mJd6DC52VPa/NveJidj1w6hlVRslRUTy4LnwsAhBWAp+Haso4HfKzDYDk+Ea4DT0itMnm4nuxQimEiMb647t/z9s3Dw9p0N8R5jfRIiHxMo2uvpw1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765610923; c=relaxed/simple;
-	bh=I8KHB05J4hzU7RAcGfM4K+COzPxnPfyndjSsOY4V+h8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IimK+2xakRLlAj+bO4wFdAzYVPDfJvNDuiHS+1eVmQzCFxYsV2liVcIrGs1GlYMUOURYe4MEJhX5oWu1Lg2gaEzaD7b3qcFiOH3tpQhHqPFjsHEZ6LOh7r/ojx0imKiCg+kWaFuqGMQQwUJv1WoiCxWbV08UXq8U0/KHGySB6v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuwYDZsp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765615756; c=relaxed/simple;
+	bh=Lmg1bqIhkrWTJCAPgB5H4cWELl/ZFtQzVJyDAiq3pR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sPX1tbDGqA7+ZufxGtiZMqKmxvhse5BCNtXWTE+NvNHoFbeqsULexsNzYd2i0y6gT4/vm6q0aP4TYzj8FKyMk95gW765JAHXWY/OBUNsxBC9voYvf8+6cYRWGI2+W9WfL6zTB5LRTTiNRaS5fkr1cHbMoR5HA1Ou9mC2tDsDBew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=W4plroK2; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GuwYDZsp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC7CC116B1;
-	Sat, 13 Dec 2025 07:28:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765610922;
-	bh=I8KHB05J4hzU7RAcGfM4K+COzPxnPfyndjSsOY4V+h8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GuwYDZspCrlYpM3yidUiAHpYR37T1Q4VnneG1ihkjSwHfoZCcVywhoxvYuSZxWN5D
-	 Z9OqOMjbPCmMPeA+HZln6BeweyVD+Z6hg6CYHPTY2F8ktiPFPwqd7EUpvJtBNp2Z7J
-	 12W9+OAtXmUrabNWkNAh4xCK4M3z/N8saObqde0ZqZJi9lQk6nMuQV2sKRPkXH5RL+
-	 bDXSWd1ekWMCLmmTA+/lANrI+O67Zkbd9rboRmzRU07ULyEBCQC+g16n62r6/C2NVd
-	 LjCCAAmBlmBzwLn7bnH8qpxR1rth9wlsEvgb/Ya1pTXpR2WBu9YiIGDIUUYBc/Q3Ba
-	 eu+3LAX6Sqmtg==
-Message-ID: <37ef8a9e-0ebc-4d31-99e1-3f0512d73412@kernel.org>
-Date: Sat, 13 Dec 2025 07:28:32 +0000
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="W4plroK2"
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1765615742; x=1766915742;
+	bh=MsJ/bbje7wscSwZPWlgEMlKtiOAlEmU0N4goIajw7B8=; h=From;
+	b=W4plroK2aGc8coBxZGC4nza2c3SitcVOSLEzgydCidHCuBrNBvMdJusVb6S0JkMZW
+	 f9znjwQmGI8xG32cViAoN53pCDhdLse5wWjjBOz2jwFsp1vZEHAKXakXCTJt/e4Lqe
+	 mUMZ7cA4KPmmvsQkNfPlJmkuZSNFZIHKwde8GM9veZEgkn/vlmfqEFxHvYrwroKiGL
+	 RWtKVRG5KUtgapKmHrAnrJ9OjST1PhDT9t6Z7cXujlO++l7h/wu9gs/d06qmG1VUPO
+	 WxBn+pfWI2RmGIOMfa9IZ8OB1KejQtQ3l+wgolCuZvggNAIVtj4Bz40J/d7wJ2uaQ+
+	 S9sR/aobENiJA==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5BD8n1tx051949
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 13 Dec 2025 09:49:02 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
+From: Karel Balej <balejk@matfyz.cz>
+To: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+        Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Karel Balej <balejk@matfyz.cz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v2 1/2] dt-bindings: power: define ID for Marvell PXA1908 audio domain
+Date: Sat, 13 Dec 2025 09:48:12 +0100
+Message-ID: <20251213084843.7491-1-balejk@matfyz.cz>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: dt-bindings: Correct camss VDDA PLL supply
- description
-To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vikram Sharma <quic_vikramsa@quicinc.com>,
- Kapatrala Syed <akapatra@quicinc.com>,
- Hariram Purushothaman <hariramp@quicinc.com>,
- Richard Acayan <mailingradian@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <-p_V50_c9ufrDqGMvZ5pwIXywQxh2C6Rjo4IEUlVAeFJouqq3zlWRt-VsIRsCmGwuvslk9MU3XxtxyTZrXuSSg==@protonmail.internalid>
- <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
-Content-Language: en-US
-From: Bryan O'Donoghue <bod@kernel.org>
-In-Reply-To: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ****
 
-On 12/12/2025 22:55, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
-> voltage from the description.
-> 
-> Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda regulator descriptions sdm845")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> Added only Fixes tag for the initial commit, not all the copy-paste
-> propagated ones.
-> ---
->   Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
->   Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
->   Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
->   Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
->   Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
->   Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
->   6 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> index 019caa2b09c32..9009cfe993d75 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
-> @@ -130,7 +130,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->     ports:
->       $ref: /schemas/graph.yaml#/properties/ports
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
-> index ee35e3bc97ffd..cb922f90fe900 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
-> @@ -129,7 +129,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->     ports:
->       $ref: /schemas/graph.yaml#/properties/ports
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
-> index c99fe4106eee9..2231d7216f62a 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
-> @@ -268,7 +268,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->   required:
->     - clock-names
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
-> index 35c40fe223767..8e6ca94c88695 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
-> @@ -95,7 +95,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->     ports:
->       $ref: /schemas/graph.yaml#/properties/ports
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
-> index 82bf4689d3300..d50e096b900db 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
-> @@ -211,7 +211,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->   required:
->     - clock-names
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
-> index ebf68ff4ab961..ccd2d024bfd10 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
-> @@ -300,7 +300,7 @@ properties:
-> 
->     vdda-pll-supply:
->       description:
-> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
-> +      Phandle to regulator supply to PHY refclk pll block.
-> 
->   required:
->     - clock-names
-> 
-> ---
-> base-commit: d9771d0dbe18dd643760431870a6abf9b0866bb0
-> change-id: 20251212-docs-camss-fixes-0fa525271951
-> 
-> Best regards,
-> --
-> David Heidelberg <david@ixit.cz>
-> 
-> 
-> 
+Define an identifier for the SoC's audio power island so that it can be
+referenced through device tree.
 
-I think this is copy/paste legacy error.
-
-The voltage level should be more usefully encoded in the name anyway.
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Duje Mihanović <duje@dujemihanovic.xyz>
+Signed-off-by: Karel Balej <balejk@matfyz.cz>
 ---
-bod
+
+Notes:
+    v2:
+    - Add received trailers (thanks!).
+    - v1: https://lore.kernel.org/r/20251127190237.745-1-balejk@matfyz.cz/
+
+ include/dt-bindings/power/marvell,pxa1908-power.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/dt-bindings/power/marvell,pxa1908-power.h b/include/dt-bindings/power/marvell,pxa1908-power.h
+index 19b088351af1..173f47e0e69d 100644
+--- a/include/dt-bindings/power/marvell,pxa1908-power.h
++++ b/include/dt-bindings/power/marvell,pxa1908-power.h
+@@ -13,5 +13,6 @@
+ #define PXA1908_POWER_DOMAIN_GPU2D	2
+ #define PXA1908_POWER_DOMAIN_DSI	3
+ #define PXA1908_POWER_DOMAIN_ISP	4
++#define PXA1908_POWER_DOMAIN_AUDIO	5
+ 
+ #endif
+-- 
+2.51.2
+
