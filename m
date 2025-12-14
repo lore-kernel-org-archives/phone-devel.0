@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D06199FB0;
-	Sun, 14 Dec 2025 09:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887581DF26B;
+	Sun, 14 Dec 2025 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765704929; cv=none; b=UMRuwRdBSdT/c8U5pIiT0hvqjs2pFsFcpV2J5MmYfnkRHeGPCixT5Otc2Lu8MJeYHsWV16Yh4Ga/DyKcTjZkmczjo4/5dY+/N+Q6D3kSrhhQ7tVVl6k2rxYGYfQiK2JdY6YqwfiJlpDXsX6F0c4aFiTtONQxQrR+UQis5ZQmcao=
+	t=1765723438; cv=none; b=XMcNDf2vYL9CLfoFdx81jVXg8GgqrW6ocDdlRJG4F27QSQ3/gfd5COc47gE/W78QBqJWLIoV5FBmCrkxPWUGFposO3WWB8n3TeMaCeRAtkkfq3SJ12vcjjYrkO2rQWviEmcX/S0Yccb7zsCAkSQgWft7eap9QtBTG6/x8axtFws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765704929; c=relaxed/simple;
-	bh=z4uLRSI/RsfVSf3WSE/RzhaFVNkBYN5eW1kJcBuDefY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UE1Q5iA3PtZCcMc3jMh08+dWgT8UWoK/DxWS9posmF5qm6OOs3JHRPJt20gZNyUAELI9ajauoMjk9tM0ea/Iu2ESuD0/8+l89FkLQl/W6unwIytUqJgI5JAeIJlFN7sjATi1ZjWHyAYk8E8zayZt1zCzT4sBDZf1N1wMWOT0GDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=K50dNiAK; arc=none smtp.client-ip=94.112.25.9
+	s=arc-20240116; t=1765723438; c=relaxed/simple;
+	bh=38d14VsJvhCbxnpUdWOYeVEr7x3iGjfi9wDfEND2fO0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dzbxdyoM3EXO10qiZeytliAGM86oFT9seABFWvCXtahd47GgIE5yZSV5+K6+Juja2ejnskHjKKTASV8Jg56lU76BYAcQDRxkghlUWB1cMuxoM2G0Z3YWGJONcqioVVHnIusZ1AyhB6UKIr7vqdmCxr6NlKAjzZTKBzXx1ZzstMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=0rPIEAgr; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="K50dNiAK"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="0rPIEAgr"
+Received: from [172.16.12.102] (89-24-64-24.customers.tmcz.cz [89.24.64.24])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id A83A65340EB3;
-	Sun, 14 Dec 2025 10:35:14 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id B94745340C2F;
+	Sun, 14 Dec 2025 15:43:48 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765704914;
+	t=1765723429;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tMgjTzgxKuwd4mawBjuWpHsFIkkq8ldcQ3anb9nOhyk=;
-	b=K50dNiAKSIxpsuOyd3/iSylE8L69IURehIHgwD1JZBhIoRDuNcfuHiqtC7IwDXIVmlgfmW
-	Epl5NbGbRa5OXluAa96cM4CNv7h8Y4HsYHC8OhiBPu/8eakpr2+J9J4RTO2/zYOwPck4XC
-	yKBrYabSoQtOHClbi8Q5ONJ6UZD0ZrY=
-Message-ID: <b9b84317-a392-4f1e-aa8f-351e92c678a1@ixit.cz>
-Date: Sun, 14 Dec 2025 10:35:14 +0100
+	bh=di9ZCcqsLSXIeX22FHRGvyhPhPO+kWwqNhUMHEPpsz8=;
+	b=0rPIEAgrU6WV2/4hOSqm2CEzdad8d/pN/CJ4cP2fC/31iIxYM6bRqMYiKqfKNcmbWpz9FO
+	fBr7IJ7bK1JJYA+SDwCqMCxTVNwP50TSzvDEI2ZSlb2V846kHF2zQqrCeE3hxTwAzzdGoY
+	crhULlbvRIOqf6/McoU7JKscPrb8ckk=
+Message-ID: <2e67ef23-5f20-49aa-95eb-96be2e8bfccc@ixit.cz>
+Date: Sun, 14 Dec 2025 15:43:48 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,24 +41,31 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: dt-bindings: Correct camss VDDA PLL supply
- description
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vikram Sharma <quic_vikramsa@quicinc.com>,
- Kapatrala Syed <akapatra@quicinc.com>,
- Hariram Purushothaman <hariramp@quicinc.com>,
- Richard Acayan <mailingradian@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
- <1e09a93a-d42f-4a23-b346-9f158a60d8aa@linaro.org>
-Content-Language: en-US
+Subject: Re: [PATCH v6 4/8] drm/panel: sw43408: Add enable/disable and reset
+ functions
 From: David Heidelberg <david@ixit.cz>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Dmitry Baryshkov <lumag@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+ Petr Hodina <phodina@protonmail.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20251208-pixel-3-v6-0-e9e559d6f412@ixit.cz>
+ <20251208-pixel-3-v6-4-e9e559d6f412@ixit.cz>
+ <lilbxguznfzupg2gpfb6xuj4ickffgtuwwlve5g4d22lzr3bsm@slkmhn4agvgr>
+ <b171d4d1-9426-49aa-b69b-339fdb78c85d@ixit.cz>
+ <eb5106b4-6beb-471f-92c6-f5f4bba4d9ff@ixit.cz>
+Content-Language: en-US
 Autocrypt: addr=david@ixit.cz; keydata=
  xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
  9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
@@ -102,135 +109,43 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <1e09a93a-d42f-4a23-b346-9f158a60d8aa@linaro.org>
+In-Reply-To: <eb5106b4-6beb-471f-92c6-f5f4bba4d9ff@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 14/12/2025 01:04, Vladimir Zapolskiy wrote:
-> On 12/13/25 00:55, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
+On 12/12/2025 16:39, David Heidelberg wrote:
+> On 09/12/2025 23:51, David Heidelberg wrote:
+>> On 09/12/2025 23:37, Dmitry Baryshkov wrote:
+>>> On Mon, Dec 08, 2025 at 10:41:57AM +0100, David Heidelberg via B4 
+>>> Relay wrote:
+>>>> From: David Heidelberg <david@ixit.cz>
+>>>>
+>>>> Introduce enable(), disable() and reset() functions.
+>>>>
+>>>> The enable() and disable() callbacks keep the symmetry in the commands
+>>>> sent to the panel and also make a clearer distinction between panel
+>>>> initialization and configuration.
+>>>
+>>> It's not just it. There is a difference between commands being sent in
+>>> en/disable and prepare/unprepare.
 >>
->> Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
->> voltage from the description.
->>
->> Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda 
->> regulator descriptions sdm845")
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->> Added only Fixes tag for the initial commit, not all the copy-paste
->> propagated ones.
+>> Thanks, I didn't know. Is there good rule how to distinguish, which 
+>> command should go where?
 > 
-> Generally it should be possible to specify a list of Fixes: tags.
+> How about I would "reduce" this patch to putting reset sequence into own 
+> function, so Pixel 3 support could get merged?
 > 
-> However, despite the change is the proper one, there is an opinion that 
-> Fixes
-> tags are not applicable to dt bindings with a given reason that only 
-> executed
-> code can be fixed. So you may be asked to remove even a single Fixes tag.
-> 
->>   Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
->>   6 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p- 
->> camss.yaml
->> index 019caa2b09c32..9009cfe993d75 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
->> @@ -130,7 +130,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>     ports:
->>       $ref: /schemas/graph.yaml#/properties/ports
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280- 
->> camss.yaml
->> index ee35e3bc97ffd..cb922f90fe900 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
->> @@ -129,7 +129,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>     ports:
->>       $ref: /schemas/graph.yaml#/properties/ports
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sc8280xp- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc8280xp- 
->> camss.yaml
->> index c99fe4106eee9..2231d7216f62a 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
->> @@ -268,7 +268,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>   required:
->>     - clock-names
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm670- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm670- 
->> camss.yaml
->> index 35c40fe223767..8e6ca94c88695 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
->> @@ -95,7 +95,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>     ports:
->>       $ref: /schemas/graph.yaml#/properties/ports
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845- 
->> camss.yaml
->> index 82bf4689d3300..d50e096b900db 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
->> @@ -211,7 +211,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>   required:
->>     - clock-names
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250- 
->> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250- 
->> camss.yaml
->> index ebf68ff4ab961..ccd2d024bfd10 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
->> @@ -300,7 +300,7 @@ properties:
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      Phandle to regulator supply to PHY refclk pll block.
->>   required:
->>     - clock-names
->>
-> 
-> As for the change itself it is good, I'd prefer to get a correction
-> to 1.2V in the documentation rather than a complete removal though.
+> The display will need more work anyway, would you be fine with this 
+> approach?
 
-What I'm seeing, while the vdda-pll is usually close to 1.2V, it seems 
-to me that's not everytime the case.
+As I did additional few changes, I'll sent v7 now, where I'll just 
+abstract _reset() into own function.
 
-Can you confirm it should be exactly 1.2V, if yes, I'll clarify it in 
-next version.
+I would address any other (non reviewed) changes when we manage to get 
+panel with the driver behave stable on mainline/-next.
 
-David>
-> In any case,
-> 
-> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> 
+If you decide this change is worthy of inclusion in this series, I'm 
+open to bring this commit back in future revisions.
 
--- 
-David Heidelberg
-
+Thank you
+David
