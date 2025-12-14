@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A7127EFEE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A890327FB26;
 	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765723885; cv=none; b=DUbSFaYdHAEMLka6AWJvO4hYG/eVWhXBzefvMvtFI0E4y1MJO01Ps76mExHt4EN+XqPmhCrfiKFoVTtbCxh2hhy1UKEmWiM7IhnqDjpdGpWTiljwQl1tDYNnrajz1AKyPldgfG9G/onl+uTDA22thtIHLKIExTnNVzaFrtOFrlo=
+	t=1765723885; cv=none; b=SpGgOvLTfw2Of3jm277msftNwv7AjQCi4bakwdytSDqtQlWFPlSUzN1irjEOMyYxs4YnOOXG8FzWXfTDkDtB/AqK+UZV5f6352GOhb2a3605p4hjTSFyoUWCGDoDJiyhBWZ5ASBPGPHJminvJOKlxN3Ru/AVjuXVj43Wf+NmQEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765723885; c=relaxed/simple;
-	bh=FTnekFL85P5dEJyzOwFjR26VGROYCVe1TyphWBdknRY=;
+	bh=2RANSEFOJjyzRJJyR9FuG9eSVR0Xf6BT9jHslxv2GEI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oZwUNT9NAt1ZE1nAXuqm+KQJ4HpK8d15/jfXxmAeJxCDP/VAh/AutGlwiORD99TIcQP1qx3UOkpES/TSws1ODFOkn9KAoN12J0jTmYTHw4KlBrxow4eTqJoxlnJy9NGllWtXZiLT7Z/raUz2fML0X1W7AgRATvyIv7pKslFv62Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WW5f/fKi; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Yz6JzD4LmLmqPKivRoGB+SUTC6F2KSTYD4FqtQPtc5nvd7eqIaB8XUJv8ZT5TJ2R0pIsUVpIHU6qDjzwK+1TYaLBvWUW325YfOT1klHp16U0Nd/qX6mmfDCYzVA1YxRlIvX80ndBPSJ9oKDKbfI9mXdDdCtGv1YFXApuBQaJ7sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sd71ntWz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WW5f/fKi"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F043C2BCB5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sd71ntWz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4AFE1C2BCC6;
 	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1765723885;
-	bh=FTnekFL85P5dEJyzOwFjR26VGROYCVe1TyphWBdknRY=;
+	bh=2RANSEFOJjyzRJJyR9FuG9eSVR0Xf6BT9jHslxv2GEI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WW5f/fKiJlJevzfMpb86KzwtJcsGHCgEwd+TVRsv4nQhTINVFcssx3kJMY7QO2TTw
-	 cJGGmzLrDg8gzTASI4bfnKt0b90Cxk9pEsvXHRJ+UKP2+JFrI2ms+3LqUSCI3b5MbN
-	 9fEx6Pe3Jhed3MB8oCysGGvZaQXlB3CVBbrwUYLj2frAR9YoSmF/r6sG0MAwnfYiHM
-	 Oy99VFhWdbNVLmlAgyAD2fhk8bpp5n9gcgYHCDdhluNrn4BE6sD7rf+rQ1W2WPEbPv
-	 pcW+rRPCqfTqWhhS1tVSaIL6/AAYBsBhOlCZfdLSCDwKcQWgL8HBTScqQAGRf6UPj0
-	 3iUWi/dyOdY2w==
+	b=sd71ntWzGzd88dDBqj7CKcPXwfTeVMsmLBaaQr2kGtR8XPAPC8basCKMEW/XyYXON
+	 IQmev1GIU8jg5jppsoIUVdmNZlDCL8hliQR4FixCLIG1zMFGVdsI15jqtVdBCfr6VT
+	 bnwFYSn6CoKr5CAfhNZKFokpi8SYVP8bp/cDhUn8Vv5qPxhEHnPAHHYO/jUndbC7c/
+	 igYr/VyGE388QLrOd/dhNmr1guriUA6XU8UDS9IKI2A8cOmbUUAXyqZVF67GE4nDXx
+	 9eCxDMp4UpdxBdqGGNOpxgxypnPY4DMKWPWogg1FbTwXRjhm5sAn3y9rFc2dGjFTZG
+	 ezzOVkf6yh7GQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F066D5B16F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41A20D5B170;
 	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 14 Dec 2025 15:51:20 +0100
-Subject: [PATCH v7 4/8] drm/panel: sw43408: Separate reset sequence into
- own function
+Date: Sun, 14 Dec 2025 15:51:23 +0100
+Subject: [PATCH v7 7/8] drm/panel: sw43408: Improve wording when
+ reset-gpios aren't available
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251214-pixel-3-v7-4-b1c0cf6f224d@ixit.cz>
+Message-Id: <20251214-pixel-3-v7-7-b1c0cf6f224d@ixit.cz>
 References: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
 In-Reply-To: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -62,21 +62,21 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1539; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=955; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=5aFne3CXus5NuIRnX30e5rFmCgrdPMD+0rFZ6fyE3yo=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPs7pU6yexG9rodzNHtDr27W0QxJohKicQ8AWk
- Yd2GeLMKg2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaT7O6QAKCRBgAj/E00kg
- crfOEACr/nul51iXYZAg7d9hPYj/1defLJUI0rZLjsEdRcrLrZJ4OIcP+LpUjy91cIzgdNbbeq/
- yNYGJM2PqzU5bspzz+r32zl+oeY2xzHkPFaRyevtsVlC8rZstZ91+gyXFaPZy6m+Cst2FyHFmsI
- vUDPEe9vvJ4Jx1/J6l9We+1u0LU5GGo/1qIVvgSod7cNwhk4k7U7t19rAYvP+sly+KAZ+K9rHsO
- JQJQz3TicLIHj4Mbr6Jy86fUxzBM/CVX4Vg5YaSMXhT9R8HQo/HgkwC3Bvduq5f82PU6TBclIW8
- 1rsymaKmCsra6fZRXTWDAurSiCPrn7+0uyQNv+JnNMtqAjuu0BPlVslAGXG1SXC77wZ7Neu3Yg8
- xPmsc25l4b6+7lrLZpTCs0OTWh5F/D1Y+v2FUTleB1GYd5jHjP8cTEtrk1QWP78htU1fM8a8S9u
- 2yyrHuGe03z3IK/fKygZZV8tsGlGh5O1wiRVn/T8ZPVoRr6X3uY+3oGMLwBDLJ9u4AGJ+3bxsEY
- V4E5zIkX9mbXMmvN6NgGkd61vFqSykBmwMUlX9+ZGVx/4H8ORkNtRlg+f0pl9MVEempilIycQ1i
- KlRxJD/oHX8E6M1jMtxzgz3eOGc5QcvWfzmacvLejyMVk1g4b6jBtlF4RIqcT6yuWCiIvD3jGKk
- 6COADOMXh1qiIbg==
+ bh=xiRuRI627EVxbYMotExrfzaJ9rtq89cPkPZhyucnC8k=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPs7qW94IO0AcSLnbrZATEICV7JcrROYo1EJ9L
+ 8yk3YNgh4yJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaT7O6gAKCRBgAj/E00kg
+ cuBaD/45BzmNR273ZnD0o/Jyo7UIWbcUXLdUkKD6Pbo2szq3SwOROX0RvCi8nOYebjycsHGcvVE
+ WLv5yXfcynjxlxJB20c+cLDqGDzu08YdRKXAKNMgJTOt+CcV42KyENUPCbzXGpJ8PJHzWXcrSlR
+ Vuc3CEPhW896+noSoNUlkWpkuXg9jdncI4amWLqipSw9qjoFeXT10LMaFW9cwjaiQc92aOEh53m
+ qL3zEYqK1LdbD/soEtMV5TX1BvoJVc23COu9NpDK+QmaxVnJB9PMByyWS7hTq42N4xoNNeXCdzj
+ EOFdFX9F1cRA67bDuhqYxFh7vJrtSLsrJ2DHyI08EMjAHzt3710Z8LF9ouHEuesOEk3YT5lcCxK
+ hylu3HgYef4/DsoQsiLgGQ3T0OMIeNUmaiYXZFq8MiMC0+0RG+kLAljf22O5hBJGnIO6hySNqH7
+ Uck1du7fkR8y20qdEM5A+oQ5D4CPi7m5cgdjaJpCAOlmIuPw4Phv5MeJwboBPJ2NwF1YA33o6Cf
+ U+spQdNZtZO0IQ6DXirFr8IqUV8nfOMFwtyAo9ye+2wHzXcOzPdYC23q8UxkFhg76nY6q79rknY
+ 93eCeeyAA1/udewU5yqYV6Du9qw9cfc0tn7XWU+UGLP2EP9QdqoY0VXmq5XAX3iI+nQbmAD/vAr
+ k1GpMcN6DWofAMA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -85,51 +85,31 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Splitting reset() from prepare() follows clean coding practices and lets
-us potentially make reset optional in the future for flicker-less
-takeover from a bootloader or framebuffer driver where the panel is
-already configured.
+Choose better wording.
 
+Cosmetic: also inline PTR_ERR.
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panel/panel-lg-sw43408.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-index dcca7873acf8e..ed9c7452ea846 100644
+index a5708c7d04192..293826c5006b9 100644
 --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
 +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -119,6 +119,16 @@ static int sw43408_program(struct drm_panel *panel)
- 	return ctx.accum_err;
- }
+@@ -244,8 +244,8 @@ static int sw43408_add(struct sw43408_panel *ctx)
  
-+static void sw43408_reset(struct sw43408_panel *ctx)
-+{
-+	gpiod_set_value(ctx->reset_gpio, 0);
-+	usleep_range(9000, 10000);
-+	gpiod_set_value(ctx->reset_gpio, 1);
-+	usleep_range(1000, 2000);
-+	gpiod_set_value(ctx->reset_gpio, 0);
-+	usleep_range(9000, 10000);
-+}
-+
- static int sw43408_prepare(struct drm_panel *panel)
- {
- 	struct sw43408_panel *ctx = to_panel_info(panel);
-@@ -130,12 +140,7 @@ static int sw43408_prepare(struct drm_panel *panel)
+ 	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(ctx->reset_gpio)) {
+-		ret = PTR_ERR(ctx->reset_gpio);
+-		return dev_err_probe(dev, ret, "cannot get reset gpio\n");
++		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
++				     "Failed to get reset-gpios\n");
+ 	}
  
- 	usleep_range(5000, 6000);
- 
--	gpiod_set_value(ctx->reset_gpio, 0);
--	usleep_range(9000, 10000);
--	gpiod_set_value(ctx->reset_gpio, 1);
--	usleep_range(1000, 2000);
--	gpiod_set_value(ctx->reset_gpio, 0);
--	usleep_range(9000, 10000);
-+	sw43408_reset(ctx);
- 
- 	ret = sw43408_program(panel);
- 	if (ret)
+ 	ret = sw43408_backlight_init(ctx);
 
 -- 
 2.51.0
