@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEE5225A34;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9888F27E1DC;
 	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765723885; cv=none; b=Um/iLnjRkOWLnx5CE7MwvmWOMVLuOFwPMmODXpug97N48C7wzESDo6JrZCwjiQCP3WYLt3uDO4j/kUf6ix5QJIE04V43QIQJ8E99sdx3vbVwhA8Pw44f+rZN6zETMxurlDo3MLfsp2NKb0ZXUWcL/hYBvz+A/k4ZDwBPqdj6U20=
+	t=1765723885; cv=none; b=AYOiZoJ8ThiKlm8QHTeDRW29xi0DStDir+mLCdpBcZ/+EkMnGu73s/CwyT0cPKvzmMf2Bb4Yhb0Gl/sxP9OLvfrayLdxnZ7q/ib+Yb4LPjwWut2TjBMZzUl9TQAKWpF6a4vVowUWUMPclVNH400f0q1bpqVm13t07aO7zcm1Ehg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765723885; c=relaxed/simple;
-	bh=7dRCkVhoY2x3WSouCqiav3GqVK107vBblD9M5kWqe3E=;
+	bh=Lboai8EeopeEBFSuATB/HNZX9cbcUnOk2Po9DEsGe4U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=secAwyPEFexbKMVN3FcRkf5Ql0oiyc3hkPsz7TwJi0u965LNjeTIF5/VVn6T61UFT1DWGDN9psW7MUfn3mXn5HanN/rk8JNiwrs5HmFLEydKEygUP9Y7PcBbh4oVpwYgF3wKvsJFW+UMWMwiQvx8YE8gdKy7Od5G+sk0fbjY5uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXbUOA5X; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Wc2cS0niMARd4dlKei5NnC5tNjzYeUoe1KUzhqa+ki7+DU6B59gyDVNT1hm7aS94yrmaXl7J2+Bc72WKAFlQkA0WQQbV4mg9TZhO/e+hAVxxMTo62fMZKn+ty3y0ME5iN7kP+hZhZKXvfgMT8ZeuFFu20waUAAZml+0n/SrP9AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNry0N0P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXbUOA5X"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 088FCC2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNry0N0P"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62434C4AF55;
 	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1765723885;
-	bh=7dRCkVhoY2x3WSouCqiav3GqVK107vBblD9M5kWqe3E=;
+	bh=Lboai8EeopeEBFSuATB/HNZX9cbcUnOk2Po9DEsGe4U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qXbUOA5X3mn2FMuHerPq3pO0ux4Sncq0965K9Z+o9vrFhEwbNiiy24hkvr4IL7IEu
-	 l9G3z5CpJTil7oXtjFfjYOMUUiPDb3nqJQmdiBJ+51zmro1hv3Zw3U3nLPgfz0W95k
-	 z1GwRv6TegYo2CpXvsmjSm8ASksmRePKNuwPfwokkZUAyAUoAz7k3Bp7avCM2/vTre
-	 ppoVZxRfQzMN7P6N60JnrQUqz178PiGGM7CCeM4SYcQE3T+MGk59czQO8tAzus/L3r
-	 9p8u3g9jraN4xtlkiYQRPlbMvBCoriVTe0OM89lyRWUn1hVnw2k6Kv+1Tszs2auuoa
-	 QzTN0YYRJ/UQQ==
+	b=gNry0N0PZWhma0E3uCgzeWZdQoW8sHcgfABn2KBWlGdz0mb2Z16gtRn+aUoLhgWVD
+	 sXfHbS6S1k1njEu7yVlevdmhPCenSZDb73M17MadpyaOB78+uMEoznanCoy3+zvNF0
+	 UGDmDomQAC6/Adq7chatTfQiqCHyl2vL7Uk/K7p+WXP0Q4VGdxmJIJbtezj1aPZabw
+	 Cjiki2OPAqzZGYFK0MrCsGA18QcQqZBqfpRj7p4wbX+7/wMAXg1XWeFXOuiqQuTG2T
+	 44fXm6nK/y/GVZGw00Ajw8OFC+JFzphi0lCPQZ2MzZ9jTyPFj+EmhzvN+fW2nbnF5Z
+	 8OSNjbxNtZXLw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F32F6D5B170;
-	Sun, 14 Dec 2025 14:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55323D5B171;
+	Sun, 14 Dec 2025 14:51:25 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 14 Dec 2025 15:51:19 +0100
-Subject: [PATCH v7 3/8] drm/panel: sw43408: Introduce LH546WF1-ED01 panel
- compatible
+Date: Sun, 14 Dec 2025 15:51:24 +0100
+Subject: [PATCH v7 8/8] arm64: dts: qcom: Add support for Pixel 3 and Pixel
+ 3 XL
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251214-pixel-3-v7-3-b1c0cf6f224d@ixit.cz>
+Message-Id: <20251214-pixel-3-v7-8-b1c0cf6f224d@ixit.cz>
 References: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
 In-Reply-To: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -60,23 +60,27 @@ To: Bjorn Andersson <andersson@kernel.org>,
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, David Heidelberg <david@ixit.cz>
+ dri-devel@lists.freedesktop.org, David Heidelberg <david@ixit.cz>, 
+ Amit Pundir <amit.pundir@linaro.org>, Casey Connolly <casey@connolly.tech>, 
+ Joel Selvaraj <foss@joelselvaraj.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1747; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18088; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=K5KrfoqgLLk98vvZLiz1OAUosAiZymNlygbzh53UxIQ=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPs7pcjJ8DiNm/QsQ2xgqL2hhrn6hr487/6aGL
- ui0uC6MMsGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaT7O6QAKCRBgAj/E00kg
- ctMUEACWQDMLGDo+ER5UtNNwjpv+5lUOBlXndjOknI4BVQxaNXIaiehOZmzYL0zwL/Jz41ORIxE
- nUgeCa1AjM/vkqf2g9L8pggx3PRFnXaUhK5b+ZwfYIcI2NdCEMJr3Gc2ToNAxxh4XGCm9PIsDpe
- s6QC0SctaRlA4Ph1YJEf3ckWLWj/W9J4OBIFpoHGxtSRLpWTC7TDpS24VwdBn1PYOXdZGDaM9pD
- ta4V+h1Wz6YS5PWvcy3RMqCRoLx+4PZ14+UQyeEloTHDA6vq6ynxDIoWotxPEo+8gBS66/097kL
- vvQhOz0Szi9G3ScxGim/XP9BtW/9uGVkOgTGtVxUqeLhpGId76UqI2jgbUreLpX5ZY4Vv4oTR7l
- R+6FsTxBVfUQCQ32y+uMyS9EimXthkcPsJLvFBTA3MZST2N704IzP5TaMel9I/wDie1jSB2i/3E
- DdeZsl9ng6Kv1GYkdJsqT21/gwHPWt1weR6V0sGbd5PoCOuXW5GDNfitfB5wtbD1spbDXo8frE/
- gR0roOWBB6TVZXU+w1R3hefcRUPHXKTQp7hnBImEHy1NpwF8rKyQUpUs4zQeayTL2yqXSk3s9Md
- 1GpANsUu+s92Tg6BEJaDoHk74ON7LGXmopD97Oqx5cXw+LIpiLOts+hImMFKjXusPgwsN1YOOSG
- PuYc25Vg66r1W4g==
+ bh=39zvd9k7CrDiRLbinVszmhIVwGcsW4DHVMWoYFfctZE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpPs7qDLcGkgQREF/M9CWb5zMfn871fbtiCu9PG
+ NmiUxpBqhiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaT7O6gAKCRBgAj/E00kg
+ cp+jD/9uYqHQ0yP8feXfTq0Lh/fEmLh+JLl7fhNG0UY7AKmfKoKA8zBtjp/ZONH7Kk6FWywH12c
+ 6jNfbHVvEBZvY0xqEacAovAlk3QQJfCgPPMb7UVUjynz8UqnvmFo+y8JBbYs4y1VNABA2hWum8c
+ FBRve1vSdp3W+XntimOISd1xGPDJa5/lkT14PEZTFFAw5EAVlngID4DiXjpLBVFdJ8ZbzdyAVfP
+ ZELtxZ+pWsNyKKnLK3rtL9SWH9Epeg2d0w9m82IEDjXJC3Hn3tCHZ1qB2oEmDpPyEyF6fFDW6GP
+ bbuCLP1ztCxK+qL8qvWDd+BDxSN6E/7Bt61iHiyeHk4w6GfZeD+KnHi6TytnRWSPhtLvcUhR628
+ xJLh+Zs5AdiR3q+MEymVFULWHz+tK1iPDhiGZOcehBdDAE6wwQBR3k1dvkzTBYI7PHBePcVfPog
+ LnkZUas3RuZ09KJE3+sKzUqKDm5TiBTjRe1QfqejXUQI1cJW2xPUd2WY15Fa1Hhen3tsuqoA7oY
+ +NyizR1MVRZX7nrVGIfEYLqQUnSUm7ezvQcivtjgbJNjtCPCuvllsw1kSGOyla89G1faMVc6fU6
+ 11nYPKJjU5eg4V36kHjuwlMxJShtzr9/F5b1AN9abJuyRYSQUsgI3Utp5sOHhCmoPih4gtRfpoZ
+ FbLhmuWP3D3TVEA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -85,50 +89,752 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-The supported panel is LH546WF1-ED01, add compatible and adjust the
-struct name to reflect that.
+This adds initial device tree support for the following phones:
 
-The standalone compatible lg,sw43408 will continue to work, even thou
-there are no users yet.
+ - Google Pixel 3 (blueline)
+ - Google Pixel 3 XL (crosshatch)
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Both phone boards use the same identifiers and differ only slightly
+in their connected peripherals.
+
+Supported functionality includes:
+ - Debug UART
+ - UFS
+ - USB-C (peripheral mode)
+ - Framebuffer (both u-boot and Linux)
+ - Display (Pixel 3 only, and the driver needs work)
+ - GPU
+ - Bluetooth
+ - Wi-Fi
+
+The rmtfs region is allocated using UIO, making it technically "dynamic."
+
+Its address and size can be read from sysfs:
+
+$ cat /sys/class/uio/uio0/name
+/sys/class/uio/uio0/maps/map0/addr
+0x00000000f2701000
+
+$ cat /sys/class/uio/uio0/maps/map0/size
+0x0000000000200000
+
+Like the OnePlus 6, the Pixel 3 requires 1 kB of reserved memory on either
+side of the rmtfs region to work around an XPU bug that would otherwise
+cause erroneous violations when accessing the rmtfs_mem region.
+
+Co-developed-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Co-developed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Co-developed-by: Casey Connolly <casey@connolly.tech>
+Signed-off-by: Casey Connolly <casey@connolly.tech>
+Co-developed-by: Joel Selvaraj <foss@joelselvaraj.com>
+Signed-off-by: Joel Selvaraj <foss@joelselvaraj.com>
+Co-developed-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Co-developed-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/Makefile                  |   2 +
+ .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |  89 ++++
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 536 +++++++++++++++++++++
+ .../boot/dts/qcom/sdm845-google-crosshatch.dts     |  36 ++
+ 4 files changed, 663 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-index 46a56ea92ad9f..dcca7873acf8e 100644
---- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-+++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -149,7 +149,7 @@ static int sw43408_prepare(struct drm_panel *panel)
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 6f34d5ed331c4..c853b28b3b198 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -250,6 +250,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-db845c.dtb
+ sdm845-db845c-navigation-mezzanine-dtbs	:= sdm845-db845c.dtb sdm845-db845c-navigation-mezzanine.dtbo
  
--static const struct drm_display_mode sw43408_mode = {
-+static const struct drm_display_mode lh546wf1_ed01_mode = {
- 	.clock = (1080 + 20 + 32 + 20) * (2160 + 20 + 4 + 20) * 60 / 1000,
- 
- 	.hdisplay = 1080,
-@@ -171,7 +171,7 @@ static const struct drm_display_mode sw43408_mode = {
- static int sw43408_get_modes(struct drm_panel *panel,
- 			     struct drm_connector *connector)
- {
--	return drm_connector_helper_get_modes_fixed(connector, &sw43408_mode);
-+	return drm_connector_helper_get_modes_fixed(connector, &lh546wf1_ed01_mode);
- }
- 
- static int sw43408_backlight_update_status(struct backlight_device *bl)
-@@ -214,7 +214,8 @@ static const struct drm_panel_funcs sw43408_funcs = {
- };
- 
- static const struct of_device_id sw43408_of_match[] = {
--	{ .compatible = "lg,sw43408", },
-+	{ .compatible = "lg,sw43408", }, /* legacy */
-+	{ .compatible = "lg,sw43408-lh546wf1-ed01", },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sw43408_of_match);
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-db845c-navigation-mezzanine.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-google-crosshatch.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-google-blueline.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-lg-judyln.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-lg-judyp.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-mtp.dtb
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+new file mode 100644
+index 0000000000000..fa89be500fb85
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++#include "sdm845-google-common.dtsi"
++
++/ {
++	model = "Google Pixel 3";
++	compatible = "google,blueline", "qcom,sdm845";
++};
++
++&battery {
++	charge-full-design-microamp-hours = <2970000>;
++	voltage-min-design-microvolt = <3600000>;
++	voltage-max-design-microvolt = <4400000>;
++};
++
++&framebuffer0 {
++	width = <1080>;
++	height = <2160>;
++	stride = <(1080 * 4)>;
++};
++
++&i2c2 {
++	clock-frequency = <1000000>;
++
++	status = "okay";
++
++	/* ST,FTS @ 49 */
++};
++
++&mdss_dsi0 {
++	vdda-supply = <&vdda_mipi_dsi0_1p2>;
++
++	status = "okay";
++
++	panel@0 {
++		compatible = "lg,sw43408-lh546wf1-ed01", "lg,sw43408";
++		reg = <0>;
++
++		vddi-supply = <&vreg_l14a_1p8>;
++		vpnl-supply = <&vreg_l28a_3p0>;
++
++		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
++
++		pinctrl-0 = <&panel_default>;
++		pinctrl-names = "default";
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&mdss_dsi0_out>;
++			};
++		};
++	};
++};
++
++&mdss_dsi0_out {
++	data-lanes = <0 1 2 3>;
++	remote-endpoint = <&panel_in>;
++	qcom,te-source = "mdp_vsync_e";
++};
++
++&mdss_dsi0_phy {
++	vdds-supply = <&vdda_mipi_dsi0_pll>;
++
++	status = "okay";
++};
++
++&tlmm {
++	panel_default: panel-default-state {
++		reset-pins {
++			pins = "gpio6";
++			function = "gpio";
++			drive-strength = <8>;
++			bias-disable;
++		};
++
++		te-pins {
++			pins = "gpio12";
++			function = "mdp_vsync";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
++	};
++};
++
++&wifi {
++	qcom,calibration-variant = "Google_blueline";
++};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+new file mode 100644
+index 0000000000000..fd9788d5c3f54
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+@@ -0,0 +1,536 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++#include <dt-bindings/arm/qcom,ids.h>
++#include <dt-bindings/dma/qcom-gpi.h>
++#include <dt-bindings/input/linux-event-codes.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++
++#include "sdm845.dtsi"
++#include "pm8998.dtsi"
++#include "pmi8998.dtsi"
++
++/delete-node/ &mpss_region;
++/delete-node/ &venus_mem;
++/delete-node/ &cdsp_mem;
++/delete-node/ &mba_region;
++/delete-node/ &slpi_mem;
++/delete-node/ &spss_mem;
++/delete-node/ &rmtfs_mem;
++
++/ {
++	chassis-type = "handset";
++	qcom,board-id = <0x00021505 0>;
++	qcom,msm-id = <QCOM_ID_SDM845 0x20001>;
++
++	aliases {
++		serial0 = &uart9;
++		serial1 = &uart6;
++	};
++
++	battery: battery {
++		compatible = "simple-battery";
++	};
++
++	chosen {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		stdout-path = "serial0:115200n8";
++
++		/* Use display framebuffer as setup by bootloader */
++		framebuffer0: framebuffer-0 {
++			compatible = "simple-framebuffer";
++			memory-region = <&cont_splash_mem>;
++
++			format = "a8r8g8b8";
++		};
++	};
++
++	reserved-memory {
++		cont_splash_mem: splash@9d400000 {
++			reg = <0 0x9d400000 0 0x02400000>;
++			no-map;
++		};
++
++		mpss_region: memory@8e000000 {
++			reg = <0 0x8e000000 0 0x9800000>;
++			no-map;
++		};
++
++		venus_mem: venus@97800000 {
++			reg = <0 0x97800000 0 0x500000>;
++			no-map;
++		};
++
++		cdsp_mem: cdsp-mem@97D00000 {
++			reg = <0 0x97D00000 0 0x800000>;
++			no-map;
++		};
++
++		mba_region: mba@98500000 {
++			reg = <0 0x98500000 0 0x200000>;
++			no-map;
++		};
++
++		slpi_mem: slpi@98700000 {
++			reg = <0 0x98700000 0 0x1400000>;
++			no-map;
++		};
++
++		spss_mem: spss@99B00000 {
++			reg = <0 0x99B00000 0 0x100000>;
++			no-map;
++		};
++
++		rmtfs_mem: rmtfs-region@f2700000 {
++			compatible = "qcom,rmtfs-mem";
++			reg = <0 0xf2700000 0 0x202000>;
++			qcom,use-guard-pages;
++			no-map;
++
++			qcom,client-id = <1>;
++			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		label = "Volume keys";
++		autorepeat;
++
++		pinctrl-0 = <&volume_up_gpio>;
++		pinctrl-names = "default";
++
++		key-vol-up {
++			label = "Volume Up";
++			linux,code = <KEY_VOLUMEUP>;
++			gpios = <&pm8998_gpios 6 GPIO_ACTIVE_LOW>;
++			debounce-interval = <15>;
++		};
++	};
++
++	vph_pwr: regulator-vph-pwr {
++		compatible = "regulator-fixed";
++		regulator-name = "vph_pwr";
++		regulator-min-microvolt = <3700000>;
++		regulator-max-microvolt = <3700000>;
++	};
++
++	vreg_s4a_1p8: regulator-vreg-s4a-1p8 {
++		compatible = "regulator-fixed";
++		regulator-name = "vreg_s4a_1p8";
++
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++		regulator-boot-on;
++
++		vin-supply = <&vph_pwr>;
++	};
++};
++
++&adsp_pas {
++	firmware-name = "qcom/sdm845/Google/blueline/adsp.mbn";
++
++	status = "okay";
++};
++
++&apps_rsc {
++	regulators-0 {
++		compatible = "qcom,pm8998-rpmh-regulators";
++		qcom,pmic-id = "a";
++
++		vdd-s1-supply = <&vph_pwr>;
++		vdd-s2-supply = <&vph_pwr>;
++		vdd-s3-supply = <&vph_pwr>;
++		vdd-s4-supply = <&vph_pwr>;
++		vdd-s5-supply = <&vph_pwr>;
++		vdd-s6-supply = <&vph_pwr>;
++		vdd-s7-supply = <&vph_pwr>;
++		vdd-s8-supply = <&vph_pwr>;
++		vdd-s9-supply = <&vph_pwr>;
++		vdd-s10-supply = <&vph_pwr>;
++		vdd-s11-supply = <&vph_pwr>;
++		vdd-s12-supply = <&vph_pwr>;
++		vdd-s13-supply = <&vph_pwr>;
++		vdd-l1-l27-supply = <&vreg_s7a_1p025>;
++		vdd-l2-l8-l17-supply = <&vreg_s3a_1p35>;
++		vdd-l3-l11-supply = <&vreg_s7a_1p025>;
++		vdd-l4-l5-supply = <&vreg_s7a_1p025>;
++		vdd-l6-supply = <&vph_pwr>;
++		vdd-l7-l12-l14-l15-supply = <&vreg_s5a_2p04>;
++		vdd-l9-supply = <&vreg_bob>;
++		vdd-l10-l23-l25-supply = <&vreg_bob>;
++		vdd-l13-l19-l21-supply = <&vreg_bob>;
++		vdd-l16-l28-supply = <&vreg_bob>;
++		vdd-l18-l22-supply = <&vreg_bob>;
++		vdd-l20-l24-supply = <&vreg_bob>;
++		vdd-l26-supply = <&vreg_s3a_1p35>;
++		vin-lvs-1-2-supply = <&vreg_s4a_1p8>;
++
++		vreg_s3a_1p35: smps3 {
++			regulator-min-microvolt = <1352000>;
++			regulator-max-microvolt = <1352000>;
++		};
++
++		vreg_s5a_2p04: smps5 {
++			regulator-min-microvolt = <1904000>;
++			regulator-max-microvolt = <2040000>;
++		};
++
++		vreg_s7a_1p025: smps7 {
++			regulator-min-microvolt = <900000>;
++			regulator-max-microvolt = <1028000>;
++		};
++
++		vdda_mipi_dsi0_pll:
++		vreg_l1a_0p875: ldo1 {
++			regulator-min-microvolt = <880000>;
++			regulator-max-microvolt = <880000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
++		};
++
++		vreg_l5a_0p8: ldo5 {
++			regulator-min-microvolt = <800000>;
++			regulator-max-microvolt = <800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l12a_1p8: ldo12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7a_1p8: ldo7 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l13a_2p95: ldo13 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <2960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l14a_1p8: ldo14 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
++			/*
++			 * We can't properly bring the panel back if it gets turned off
++			 * so keep it's regulators always on for now.
++			 */
++			regulator-always-on;
++		};
++
++		vreg_l17a_1p3: ldo17 {
++			regulator-min-microvolt = <1304000>;
++			regulator-max-microvolt = <1304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l19a_3p3: ldo19 {
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3312000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			/*
++			 * The touchscreen needs this to be 3.3v, which is apparently
++			 * quite close to the hardware limit for this LDO (3.312v)
++			 * It must be kept in high power mode to prevent TS brownouts
++			 */
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l20a_2p95: ldo20 {
++			regulator-min-microvolt = <2960000>;
++			regulator-max-microvolt = <2968000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l21a_2p95: ldo21 {
++			regulator-min-microvolt = <2960000>;
++			regulator-max-microvolt = <2968000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l24a_3p075: ldo24 {
++			regulator-min-microvolt = <3088000>;
++			regulator-max-microvolt = <3088000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l25a_3p3: ldo25 {
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3312000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vdda_mipi_dsi0_1p2:
++		vreg_l26a_1p2: ldo26 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1200000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
++		};
++
++		vreg_l28a_3p0: ldo28 {
++			regulator-min-microvolt = <2856000>;
++			regulator-max-microvolt = <3008000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_LPM>;
++			regulator-boot-on;
++			/*
++			 * We can't properly bring the panel back if it gets turned off
++			 * so keep it's regulators always on for now.
++			 */
++			regulator-always-on;
++		};
++	};
++
++	regulators-1 {
++		compatible = "qcom,pmi8998-rpmh-regulators";
++		qcom,pmic-id = "b";
++
++		vdd-bob-supply = <&vph_pwr>;
++
++		vreg_bob: bob {
++			regulator-min-microvolt = <3312000>;
++			regulator-max-microvolt = <3600000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
++			regulator-allow-bypass;
++		};
++	};
++
++	regulators-2 {
++		compatible = "qcom,pm8005-rpmh-regulators";
++		qcom,pmic-id = "c";
++
++		vdd-s1-supply = <&vph_pwr>;
++		vdd-s2-supply = <&vph_pwr>;
++		vdd-s3-supply = <&vph_pwr>;
++		vdd-s4-supply = <&vph_pwr>;
++
++		vreg_s3c_0p6: smps3 {
++			regulator-min-microvolt = <600000>;
++			regulator-max-microvolt = <600000>;
++		};
++	};
++};
++
++&cci {
++	status = "okay";
++};
++
++&cci_i2c1 {
++	/* actuator @0c */
++
++	/* front camera, imx355 @1a */
++
++	/* eeprom @50, at24 driver says 8K */
++};
++
++&cdsp_pas {
++	firmware-name = "qcom/sdm845/Google/blueline/cdsp.mbn";
++
++	status = "okay";
++};
++
++&gcc {
++	protected-clocks = <GCC_QSPI_CORE_CLK>,
++			   <GCC_QSPI_CORE_CLK_SRC>,
++			   <GCC_QSPI_CNOC_PERIPH_AHB_CLK>;
++};
++
++&gpi_dma0 {
++	status = "okay";
++};
++
++&gpi_dma1 {
++	status = "okay";
++};
++
++&gpu {
++	status = "okay";
++};
++
++&gpu_zap_shader {
++	firmware-name = "qcom/sdm845/Google/blueline/a630_zap.mbn";
++};
++
++&i2c12 {
++	/* Bottom spkr (right) CS35L36 @ 40 */
++
++	/* Top spkr (left) CS35L36 @ 41 */
++};
++
++&ipa {
++	firmware-name = "qcom/sdm845/Google/blueline/ipa_fws.mbn";
++	memory-region = <&ipa_fw_mem>;
++
++	status = "okay";
++};
++
++&mdss {
++	status = "okay";
++};
++
++&mss_pil {
++	firmware-name = "qcom/sdm845/Google/blueline/mba.mbn",
++			"qcom/sdm845/Google/blueline/modem.mbn";
++
++	status = "okay";
++};
++
++&pm8998_gpios {
++	volume_up_gpio: vol-up-active-state {
++		pins = "gpio6";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		qcom,drive-strength = <0>;
++	};
++};
++
++&pm8998_resin {
++	linux,code = <KEY_VOLUMEDOWN>;
++
++	status = "okay";
++};
++
++&pmi8998_charger {
++	monitored-battery = <&battery>;
++
++	status = "okay";
++};
++
++&qupv3_id_0 {
++	status = "okay";
++};
++
++&qupv3_id_1 {
++	status = "okay";
++};
++
++&qup_uart9_rx {
++	drive-strength = <2>;
++	bias-pull-up;
++};
++
++&qup_uart9_tx {
++	drive-strength = <2>;
++	bias-disable;
++};
++
++&tlmm {
++	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
++			       <81 4>; /* SPI (most likely Fingerprint Cards FPC1075) */
++
++	touchscreen_reset: ts-reset-state {
++		pins = "gpio99";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-pull-up;
++	};
++
++	touchscreen_pins: ts-pins-gpio-state {
++		pins = "gpio125";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	touchscreen_i2c_pins: qup-i2c2-gpio-state {
++		pins = "gpio27", "gpio28";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++};
++
++&uart6 {
++	pinctrl-0 = <&qup_uart6_4pin>;
++
++	status = "okay";
++
++	bluetooth {
++		compatible = "qcom,wcn3990-bt";
++
++		vddio-supply = <&vreg_s4a_1p8>;
++		vddxo-supply = <&vreg_l7a_1p8>;
++		vddrf-supply = <&vreg_l17a_1p3>;
++		vddch0-supply = <&vreg_l25a_3p3>;
++		max-speed = <3200000>;
++	};
++};
++
++&uart9 {
++	status = "okay";
++};
++
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
++
++	vcc-supply = <&vreg_l20a_2p95>;
++	vcc-max-microamp = <800000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l1a_0p875>;
++	vdda-pll-supply = <&vreg_l26a_1p2>;
++
++	status = "okay";
++};
++
++&usb_1 {
++	status = "okay";
++};
++
++&usb_1_dwc3 {
++	dr_mode = "peripheral";
++};
++
++&usb_1_hsphy {
++	vdd-supply = <&vreg_l1a_0p875>;
++	vdda-pll-supply = <&vreg_l12a_1p8>;
++	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
++
++	qcom,imp-res-offset-value = <8>;
++	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
++	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
++	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
++
++	status = "okay";
++};
++
++&usb_1_qmpphy {
++	vdda-phy-supply = <&vreg_l26a_1p2>;
++	vdda-pll-supply = <&vreg_l1a_0p875>;
++
++	status = "okay";
++};
++
++&venus {
++	firmware-name = "qcom/sdm845/Google/blueline/venus.mbn";
++
++	status = "okay";
++};
++
++&wifi {
++	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
++	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
++	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
++	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
++
++	qcom,snoc-host-cap-8bit-quirk;
++
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts b/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts
+new file mode 100644
+index 0000000000000..2a81ca1d00b1b
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++#include "sdm845-google-common.dtsi"
++
++/ {
++	model = "Google Pixel 3 XL";
++	compatible = "google,crosshatch", "qcom,sdm845";
++};
++
++&battery {
++	charge-full-design-microamp-hours = <3480000>;
++	voltage-min-design-microvolt = <3600000>;
++	voltage-max-design-microvolt = <4400000>;
++};
++
++&dispcc {
++	/* Disable for now so simple-framebuffer continues working */
++	status = "disabled";
++};
++
++&framebuffer0 {
++	width = <1440>;
++	height = <2960>;
++	stride = <(1440 * 4)>;
++};
++
++&mdss {
++	/* Disable for now so simple-framebuffer continues working */
++	status = "disabled";
++};
++
++&wifi {
++	qcom,calibration-variant = "Google_crosshatch";
++};
 
 -- 
 2.51.0
