@@ -1,49 +1,28 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE5C3093BA;
-	Mon, 15 Dec 2025 14:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F877314D0E;
+	Mon, 15 Dec 2025 15:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765810475; cv=none; b=cPjw9SQQ10icFB3Rmb9su75QKSm1YoI9JqTYrBO7HmC/CIU26Qc/oKERW7zzGr8LSiboUHOYnLYUHGc3ugxfZQxxYeN4dg95Y+iFKPNdAqh8/umZNRWwgGCNySEkqGJDFL6PFIeYATGXYcvdV268vxs1HFztgAfQLZnN5CWAlXo=
+	t=1765811148; cv=none; b=CV+ztKNPr11mNovoGpwRaHuk1aZUmXPgzPTRAWxCT9U6n3A9zfZ+fn5qRBLDysEy4fOJfhLoFj9VjKajJ24Zm9SOorQcr0wgucw5LfEUs/jXWeW7eJd36KNNGmZUxMpb2H/DwBoj+yVc1sYw3q07NdjPeeTRwd5k0lPZe+JQXqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765810475; c=relaxed/simple;
-	bh=McPL/V5+VICDbNj/YnyhPIUOoM9MCkCe19K4JXTXOek=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tlz0MNvKEvv2kJpShqhM7i58LcMpb3PWcgWtEuG5UIyVxadxV62uGZHPkUPRXOQKxJJgxkNUmm1U8TommfqQWDIDxHFGnU311cY1HzMwJtpMwuHmLpJNfTO7hUoqzcEgsBN9ThGtUbcrCclB/nhToOUu/9cYT9jY17S0odZ+dv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=ZDaB1Cmb; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=pjsMWxte; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="ZDaB1Cmb";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="pjsMWxte"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1765809434; bh=McPL/V5+VICDbNj/YnyhPIUOoM9MCkCe19K4JXTXOek=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ZDaB1CmbIkjyUizkmRO6FAEGapvWSAaIaQ2MnGIKYehKdctcb3/8ldTYPCvv9gggD
-	 NcWWD8MUzSBa5W8NuBLB8urOK72XJDiFponlC9cfL5BL33fDyV6hq9AsXbNDHACYu9
-	 1t+wlSUn3fIhdquy+dX6ebz4tEWI763IRcl2oj/D1Tu4nAAmZY1Cim6HjJxAP0j7vY
-	 Qhp1EwW17fqsJ5ObYYaersSBA89XWwX4jnRpCzMce1S5g5uQ7c8UBOcIi3dSE1r52U
-	 FEPQfllDaVCU0bI3RMrnB8YlyV+lrVknYVO9LFWE5fjs/2bPX3m4tbJDaQxBVo+CSH
-	 uopoHCZiPHgTg==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 7A96EFB03;
-	Mon, 15 Dec 2025 15:37:14 +0100 (CET)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Xwxdq6gGIeX3; Mon, 15 Dec 2025 15:37:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1765809433; bh=McPL/V5+VICDbNj/YnyhPIUOoM9MCkCe19K4JXTXOek=;
-	h=From:Date:Subject:To:Cc:From;
-	b=pjsMWxte30XUdZNgAsLfxt3DKOsvzqhdyxl8mnONyJYepB/yJ8zWXYonak0Jgah8k
-	 iL2D437CUFAozAzTiCAnES9YNp+kaQQjrCldAuyyPc+yUyrPjxH29POZqf06h6HKh3
-	 vOXXbGfYgt/4lT8+cmRbg3OYNWMrZuVHiHZLSjHlSvZK41p+sApYE+RlFw7Copf9IE
-	 Pxu9ePFLHWqaSrzJPEkWUW3d+RLyUSmI4LwE1hZw61NDZ0agnY/zTQPhjoFgZm+fvb
-	 pzIU/JvlLpad6GQArnI15nkf0ZhMYaSD6bhjfh6jt7DWNlcbdP4igJqjyNhNgC7qJN
-	 kwNXvlnYylE2g==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Mon, 15 Dec 2025 15:37:02 +0100
-Subject: [PATCH v3] drm/panel: visionox-rm69299: Depend on
- BACKLIGHT_CLASS_DEVICE
+	s=arc-20240116; t=1765811148; c=relaxed/simple;
+	bh=r3suQozgcCgmmzPjxsON2tfMubesauxQ51FUd0nhCDQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LCFuGWNq8lUiD7Yj+oBGUZFjEpzPwe/3tUpIbPMICq+P+YBqDqU66uhkepdHDUpXoC5SLHBZhNULrKCb6QvGZ1Djqpcrw5BT4BR7SL5Y/vRIOf3UFzMUac6W8Ukrlml0mma1G8EehDgW5BUZqmy+Org5JOu6vkS0KIDXKA7EvOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timmermann.space; spf=pass smtp.mailfrom=timmermann.space; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timmermann.space
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=timmermann.space
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dVNfT20K4z9ss9;
+	Mon, 15 Dec 2025 16:05:37 +0100 (CET)
+From: Lukas Timmermann <linux@timmermann.space>
+Subject: [PATCH v3 0/3] Add support for exynos5250-manta (Google Nexus 10)
+Date: Mon, 15 Dec 2025 16:05:21 +0100
+Message-Id: <20251215-lat3st-staging-v3-0-2e4914b64dd8@timmermann.space>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,88 +30,61 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251215-visionox-rm69299-bl-v3-1-69c0521465c3@sigxcpu.org>
-X-B4-Tracking: v=1; b=H4sIAA4dQGkC/33NwQ6CMAyA4VchOzuzFemcJ9/DeBiswBJ1ZNMFQ
- 3h3B140MR7/pv06sUjBUWSHYmKBkovO33KUm4I1vbl1xJ3NzUBAJYVE/l7xIw9X1KA1ry9cERq
- gUiCgZflyCNS6cVVP59y9i3cfnuuTJJfpfy9JLrkt671UhioDeIyuG5vhsfWhY4uY4FNRvxXIi
- ratEYgCVbX7VuZ5fgEXk9a+/gAAAA==
-X-Change-ID: 20251016-visionox-rm69299-bl-7e6a2e30626d
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel <phone-devel@vger.kernel.org>, 
- Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1612; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=McPL/V5+VICDbNj/YnyhPIUOoM9MCkCe19K4JXTXOek=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQnBRQjBTRUxJQ0ZqY3k0dzdKWVVVZVRFeU4vTnc2Cm5JS09uNkRKTC8vMjZRMldZ
- U2FKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYVVBZEVnQUt
- DUkFsdjRaU1N2ekI0N1NYRC85VDU4L3VIQWluRnVDc1RkUytwNHljRmc0ZG8yaTg5S0hUcE9kbw
- pmYnZMTEFtRFRVL3Q2T3d4ZkpmWHlnR0VFYVkyZ1ZvbUNEeThrQ2M4azZxb1lZSkx3SW81Mmk5N
- UFOVEZPVmlnCmsxT2QwOWI2amt3TzQrRTROV0QwTDhKSWQrUTdJNmlRWFlWYkdKTWs5NjBNZmFv
- VmNNekREcjRpZmZaY0gyYVYKVE1pVEFXaGNoVll0OU5lUzdQU0dPRndjcmNOUW5xV2FWU2lWeEt
- sSFZyNkFpRlEydW0rNTBUUUV0MDZ2UzFKWApzRUpnYmxqYXp3VmZzK1lPV210RzV4TVFDR283N0
- VXSGprUFdVOGJZbW5kWW5SS29lOWNGWnl4dXB0bnpnYnBMCitBbE9rL1VlTDV4dDc4bGdwQzVMc
- jZ0eXQ0cS9iZ0JISXp4MWsvTUJuVjdmWW9WZVZ0NXFUZEZPYzVraXhmWjIKdGF4SWJ6b0VGNGE4
- UDArRlErVGZLS0ZQUkR0OG5jSm9MeDdtczBDbkZpVGVraUFKbEVNNk9kTndoTlVyOGpCOApCM1R
- tZ2pOVGdhcC9qRFFjbFV3YzFnRVlxaGM4ck43YVpELzZ0NXNIWmJUMGJGM3JHdmxSWDVwTWFRck
- V1UnFNCmQyK2k2NFRmcUV5MkRXVmkwNk83Q1RxWCt4YkZGdjNsWDBNSTM5NS9FTWhqWDF1aTg3d
- VhaNDhVOVlrb1kvMU4KU3dIRlVteGRscGZpVmJVVjFiQXhoNUJONkJ4S2pZUDA0NEpnMzRLaVdJ
- SDQydVdjU0hYaVJGWW1ZWDBjb3hnSgpOMEg5SXRGUnFzZkxpWmlENzQ3RW1qbkZWdzVNdHJkYnI
- vbmgyWEJMbHgrcjNLcDdpa1RmZy9DR2VxL3c3UHE2CjlZcmY2dz09Cj02T05HCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALEjQGkC/x3MTQqAIBBA4avIrBNSsb+rRAvJyQbCwpEIwrsnL
+ b/Fey8wJkKGSbyQ8CamM1aYRsC6uxhQkq8G3WqrtLLycNlwlpxdoBikH9dRd35wvd2gRlfCjZ5
+ /OC+lfBhQT4BgAAAA
+X-Change-ID: 20251215-lat3st-staging-d9c926d8a75f
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Lukas Timmermann <linux@timmermann.space>, 
+ Alexandre Marquet <tb@a-marquet.fr>
 
-We handle backlight so need that dependency.
+This patch series adds initial support for the google-manta board, known
+as Google Nexus 10 to users. The device is powered by
+the Exynos 5250 SoC. The bindings for the notification led are already 
+in the kernel mailing list, got recently applied and can be found here:
+https://lore.kernel.org/linux-leds/20251125114015.355487-1-linux@timmermann.space/
 
-Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support")
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512020154.xVlxrCXE-lkp@intel.com/
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
----
+The first two patches add the necessary device tree files and
+bindings, while the last patch makes a small modification to
+allow CPU1 to boot, as it requires a call to it's underlying firmware.
+
+This first iteration only provides basic support to get the board
+up and running and usable via UART and with WiFi support. We will upstream additional 
+features in future patches. All patches have been tested on real hardware.
+
 Changes in v3:
-- Basically a desending of v2 as it still bites people
-- Add Closes: with a link to the original report
-- Collect Reviewed-by from lists
-- Link to v2: https://lore.kernel.org/r/20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org
-
+ - Added a better patch description for firmware patch. (@krzk)
+ - Reorganized nodes in DT. (@krzk)
+ - Fixed memory node to use separate entries. (@krzk)
+ - Renamed pwrseq node. (@krzk)
+ - Fixed firmware checking for old dt compatible string. (@pavel)
+ - Link to v2: https://lore.kernel.org/all/20251125-google-manta-v2-0-0f097cfff39c@timmermann.space/
 Changes in v2:
-- Add Reported-by: kernelci.org bot <bot@kernelci.org>
-- Link to v1: https://lore.kernel.org/r/20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org
----
- drivers/gpu/drm/panel/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ - Renamed to google-manta (@krzk)
+ - Link to v1: https://lore.kernel.org/all/20251120144018.961604-2-linux@timmermann.space/
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 407c5f6a268b..59f5a31f3381 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -1112,6 +1112,7 @@ config DRM_PANEL_VISIONOX_RM69299
- 	tristate "Visionox RM69299"
- 	depends on OF
- 	depends on DRM_MIPI_DSI
-+	depends on BACKLIGHT_CLASS_DEVICE
- 	help
- 	  Say Y here if you want to enable support for Visionox
- 	  RM69299  DSI Video Mode panel.
-
+Signed-off-by: Lukas Timmermann <linux@timmermann.space>
 ---
-base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a
-change-id: 20251016-visionox-rm69299-bl-7e6a2e30626d
+Alexandre Marquet (3):
+      dt-bindings: ARM: samsung: Add Google Manta (Nexus 10)
+      ARM: dts: exynos: Add Google Manta (Nexus 10)
+      ARM: samsung: exynos5250: Allow CPU1 to boot
+
+ .../bindings/arm/samsung/samsung-boards.yaml       |   1 +
+ arch/arm/boot/dts/samsung/Makefile                 |   1 +
+ arch/arm/boot/dts/samsung/exynos5250-manta.dts     | 511 +++++++++++++++++++++
+ arch/arm/mach-exynos/firmware.c                    |   4 +-
+ 4 files changed, 515 insertions(+), 2 deletions(-)
+---
+base-commit: d5f0e9098499869354aacb5b080f602f0399d396
+change-id: 20251215-lat3st-staging-d9c926d8a75f
 
 Best regards,
 -- 
-Guido Günther <agx@sigxcpu.org>
+Lukas Timmermann <linux@timmermann.space>
 
