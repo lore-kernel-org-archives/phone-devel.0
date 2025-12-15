@@ -1,53 +1,53 @@
 Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86322330313;
-	Mon, 15 Dec 2025 11:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF8C1DED5C;
+	Mon, 15 Dec 2025 11:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765798603; cv=none; b=JOUmmX8lORVUiQM2IMCB2OS2BzPS6BViYmz6WOJMVv1HDykOZafVB5Ccf/B7Qe5+pKn7d9Vi3whPReG9SYXL3CwrOruDIEjaBaIweDdIURIxlYf6Si6JgtEeI7q9NoBK45WQKy8lzBwK4tUcgvozuSadbPMIEe7A6rzdrZP6mFg=
+	t=1765798705; cv=none; b=M7MqkpH6izr5IqfkM5gIV8TvM7SEb3W/cFR7zIUNPs8qT0vG/Qv1jCiecq5g7Qyz6GUaYJCxPZYzNw+Ot2RV/zGIpFyWQM9P9HtT56mfpyZycMjzW+uzbX2ML6yQ8MqslZQw7TaL6jVtMIj4st8JtXRZ11/LNNMaAy1A7R9jZAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765798603; c=relaxed/simple;
-	bh=2wvTlYZzFBcgQQgVgCj/ZERGMyAXIb07ce4j26xpgJA=;
+	s=arc-20240116; t=1765798705; c=relaxed/simple;
+	bh=zZmqmz09nOBmIi1tPbhi+eCZRo0nzYR2QjYerEQFEww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HqZ4YccvHpbZkU6iv+nIsHQdXyVC5trm+lF+s6xVtldqbEkfqLGaEuYol/oS/DMkTj7j0zXGuAaOnwU3lsVcfa4BwuyXIM6LOTaE9RAh4xSErLlm2TvoPC8BfCLPg6JSUFCe3PumuRy4JyDc7P3941/PvfQzAPqQFynKyNt/Aas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=1AlnazAp; arc=none smtp.client-ip=185.11.138.130
+	 MIME-Version:Content-Type; b=BVr68cA2vQv39bCdQfYPseDxvZs6xCFtcyeEepneUhT9n9Ri7CLaHc+wEx5pZGxnqZXqcpmajZPZjJLmGibqtUcpsJ4CqE5tL6TKzSfry4xH7WZLo7Os4KwT5lhf0LxqkqE9/s5dV1JJIr78O//XX3eviQhA+OlVej89l7QmV7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=OdCBfSVE; arc=none smtp.client-ip=185.11.138.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="1AlnazAp"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="OdCBfSVE"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
 	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=QuF8eKYdyq0Lx8q7EFdB8lJKxyIkO2eBdUsXglP9txM=; b=1AlnazApiDEhlijBTC0mwxyBQu
-	Yk9J4u2sl6IlknfNmDU06dEBcLn7GF4vglaa7tkWsjvCnHRYV/dgnrtoUQh1ekSay9NBjHHO1PEee
-	AsWcz/JMZOQ6+LRbU027X3kDK9Nawin2HhVzyKDGC+icz4TkDs5fea/XJk0huyDlzD5QMeGuNW7rf
-	MWfz30VnoGipVOHUX4yBDUDBEjdMfdN6vc/VV1KFcDXvgZfqBOnv1kdGKOxF/AiVexzV0bcC+L7wq
-	cOtPdDqJhpcZGDcJAA6jrNFOu3YqTcBaXeGseK2sc6CBx77ENl9lVuCLM3eCs27XC/ApGURT6tfwo
-	KkziR4yQ==;
-Received: from [192.76.154.229] (helo=phil.localnet)
+	bh=gYPdjCs2I4pKStwB8vwr/UnSwkBP0xQatRIbmAK/KFA=; b=OdCBfSVEdv2ReAg+WKWx43rNzw
+	zcUqPS79qXRZQ7rP82AHOeQJ+ncOzDbBwLM35SE2VJAQ64T5tEd7NH4cInw4KoYGyAnTiDm4UdPfA
+	UkAUmCuhbZqV3nTd/Ix2Rs0xjLGdy2Zb6I+matGxiVOM0EXd1vaBcx5R7tKwo9WfUBFHZ+p2BKiRG
+	xgazN6dei/Fi1iQupd/lK4pP+xsJUNtRG2zq8eU63V8Lzb5GACnF3Wax9pwiyXIHpQle/fwAsqAnR
+	/Nvczwt37mvB+Wm/pSFCcw7fvR6P0E69z/Vsk4gbx5Ja2TrI2YY8nVf3rqHBK1xAjzkcr2CxCF4Av
+	BCy7klPQ==;
+Received: from [192.76.154.237] (helo=phil.localnet)
 	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <heiko@sntech.de>)
-	id 1vV6sN-0000B7-NP; Mon, 15 Dec 2025 12:36:27 +0100
+	id 1vV6uA-0000CP-HC; Mon, 15 Dec 2025 12:38:18 +0100
 From: Heiko Stuebner <heiko@sntech.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, guptarud@gmail.com
 Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>,
- Ondrej Jirman <megi@xff.cz>, Martijn Braam <martijn@brixit.nl>,
- Kamil =?UTF-8?B?VHJ6Y2nFhHNraQ==?= <ayufan@ayufan.eu>
+ Ondrej Jirman <megi@xff.cz>, "Leonardo G. Trombetta" <lgtrombetta@gmx.com>,
+ Pavel Machek <pavel@ucw.cz>
 Subject:
- Re: [PATCH v5 1/4] arm64: dts: rockchip: Add light/proximity sensor to
- Pinephone Pro
-Date: Mon, 15 Dec 2025 12:36:26 +0100
-Message-ID: <10855349.CDJkKcVGEf@phil>
+ Re: [PATCH v5 3/4] arm64: dts: rockchip: Add magnetometer sensor to Pinephone
+ Pro
+Date: Mon, 15 Dec 2025 12:38:17 +0100
+Message-ID: <7420522.MhkbZ0Pkbq@phil>
 In-Reply-To:
- <20251124-ppp_light_accel_mag_vol-down-v5-1-f9a10a0a50eb@gmail.com>
+ <20251124-ppp_light_accel_mag_vol-down-v5-3-f9a10a0a50eb@gmail.com>
 References:
  <20251124-ppp_light_accel_mag_vol-down-v5-0-f9a10a0a50eb@gmail.com>
- <20251124-ppp_light_accel_mag_vol-down-v5-1-f9a10a0a50eb@gmail.com>
+ <20251124-ppp_light_accel_mag_vol-down-v5-3-f9a10a0a50eb@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -57,60 +57,45 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
 
-Hi,
-
-Am Dienstag, 25. November 2025, 04:47:00 Mitteleurop=C3=A4ische Normalzeit =
+Am Dienstag, 25. November 2025, 04:47:02 Mitteleurop=C3=A4ische Normalzeit =
 schrieb Rudraksha Gupta via B4 Relay:
 
+>  arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 15 +++++++++++++=
+++
+>  1 file changed, 15 insertions(+)
+>=20
 > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch=
 /arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> index 6f97e57f36f5..2d2858ee149e 100644
+> index f8c74b43ae9f..03721d71766c 100644
 > --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
 > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> @@ -520,6 +520,16 @@ touchscreen@14 {
->  		touchscreen-size-x =3D <720>;
->  		touchscreen-size-y =3D <1440>;
+> @@ -553,6 +553,21 @@ mpu6500@68 {
 >  	};
-> +
-> +	light-sensor@48 {
-> +		compatible =3D "sensortek,stk3311";
-> +		proximity-near-level =3D <300>;
-
-proximity-next-... belongs below pinctrl-*
-
-
-> +		reg =3D <0x48>;
-> +		interrupt-parent =3D <&gpio4>;
-> +		interrupts =3D <RK_PD3 IRQ_TYPE_EDGE_FALLING>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&light_int_l>;
-> +	};
 >  };
 > =20
->  &i2c4 {
-> @@ -689,6 +699,12 @@ vcc1v8_codec_en: vcc1v8-codec-en {
->  		};
->  	};
-> =20
-> +	stk3311 {
+> +&i2c4 {
+> +	af8133j: compass@1c {
+> +		compatible =3D "voltafield,af8133j";
+> +		reg =3D <0x1c>;
+> +		reset-gpios =3D <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 
-please sort nodes alphabetically
-(stk3311 after vcc1v8-codec-en is incorrect)
+reset-gpios below dvdd-*
 
+And for completeness sake, you probably want to also add a simple
+pinctrl entry
 
-> +		light_int_l: light-int-l {
-> +			rockchip,pins =3D <4 RK_PD3 RK_FUNC_GPIO &pcfg_input_pull_up>;
-> +		};
-> +	};
+> +		avdd-supply =3D <&vcc_3v0>;
+> +		dvdd-supply =3D <&vcc_1v8>;
 > +
->  	wireless-bluetooth {
->  		bt_wake_pin: bt-wake-pin {
->  			rockchip,pins =3D <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
->=20
->=20
+> +		mount-matrix =3D
+> +			"0", "1", "0",
+> +			"-1", "0", "0",
+> +			"0", "0", "1";
+> +	};
+> +};
+> +
 
-
+Thanks
 Heiko
-
 
 
