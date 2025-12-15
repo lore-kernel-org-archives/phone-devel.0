@@ -1,78 +1,137 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3F6334C08;
-	Mon, 15 Dec 2025 15:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70CF35898;
+	Mon, 15 Dec 2025 18:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765811160; cv=none; b=UHL2gENs7/6YwJeZinnWqyxHqGGy0ye20CE2azSFzP1VLfAyIUNRR1u6Tik9E4zVA3WfPMw/qcPJSk2CSX8N+JF7/+h1d8adzpiT4Nmnxaay10y9M1pIbSmw1i5kbsOz2+/B6bo4U9bVbjWkL76QtGs7e1oXYVQQKby99QeDL2I=
+	t=1765824265; cv=none; b=vAfgungGy1liCOfKyDJW1SW1OJJCtd+QY2MyUtplFoeXMVK/jaD8NWL33zYjjaBXjJRofQAOTpwWlEzzsqWNqA9mf6LJXBgSmv/kbbktv25QVVMA/VJYoqTI6snLB+Opf/rT7fYCtk1M8nK7PUAzYEkAA12KxwyBbogRy9+bhIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765811160; c=relaxed/simple;
-	bh=AsuqJm8mkPTMoDsTrdHY+1C/20T7/ZHHgDoKkqlVBkE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bQOxucBBUQAVRzfvhA7cSP8iD8lVaycxjhA4CN8KqTdFPX1K7P/hIiUvMsAz1s/jbnE66fQP2NaT9ZqGtzO2ExN9I6xUIU2+VPIrUGqDDtTxtHcKgsZs09lPkgTYmmCx7nkkrqDJC/FPXmZsUIfDWuLBxjbnNyeBsVeTIP2FPc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timmermann.space; spf=pass smtp.mailfrom=timmermann.space; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timmermann.space
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=timmermann.space
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=arc-20240116; t=1765824265; c=relaxed/simple;
+	bh=qpBx4wEZpLL4lJqDNFrjuk0OwiGoe33WSWQQkD/a27g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=juuPhZNR0Ur7VcihTHYIJE9FgvaYabb227XaxjZgzB8NHFMuYYrqGW7oMosEzQ+j0uqIpe/xptHE767Is6bIwSLnjZI1aCdSIJkuF0p9N2upxaghWhiyQ3Wk4kKxOH/15qksx+rbsQUEJxSppDyFCNOHL7wU15kQ2Y1B5UC3fPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=rIRsDSeF; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="rIRsDSeF"
+Received: from [172.16.12.102] (89-24-64-24.customers.tmcz.cz [89.24.64.24])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dVNfj3xxBz9tkJ;
-	Mon, 15 Dec 2025 16:05:49 +0100 (CET)
-From: Lukas Timmermann <linux@timmermann.space>
-Date: Mon, 15 Dec 2025 16:05:24 +0100
-Subject: [PATCH v3 3/3] ARM: samsung: exynos5250: Allow CPU1 to boot
+	by ixit.cz (Postfix) with ESMTPSA id 28EFF5340C9A;
+	Mon, 15 Dec 2025 19:44:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1765824253;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=irzNCmVOaKYvk+ajybp9u9wMyP5vl197wYD9phMdZss=;
+	b=rIRsDSeFEufrNZyKeXxeuj3H4/q2dlE4mR+6Simgwx8VxYrNUvTHL1q9XgHyFNy2bqaLUU
+	UsxjkXlYMekDpUSfmZ2TGJtPhNsq+Fb1e/9mxEiBHz1CWU2QgcO42YFQZEtURM1qAc2Bbq
+	FJ9qPBPknauuA/FcbSeZLEjvL5YMFNY=
+Message-ID: <5fa44b8f-4101-4e1a-8ec9-afa9864cb405@ixit.cz>
+Date: Mon, 15 Dec 2025 19:44:10 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251215-lat3st-staging-v3-3-2e4914b64dd8@timmermann.space>
-References: <20251215-lat3st-staging-v3-0-2e4914b64dd8@timmermann.space>
-In-Reply-To: <20251215-lat3st-staging-v3-0-2e4914b64dd8@timmermann.space>
-To: Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Lukas Timmermann <linux@timmermann.space>, 
- Alexandre Marquet <tb@a-marquet.fr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] drm/panel: visionox-rm69299: Depend on
+ BACKLIGHT_CLASS_DEVICE
+To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel <phone-devel@vger.kernel.org>,
+ Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>,
+ Randy Dunlap <rdunlap@infradead.org>
+References: <20251215-visionox-rm69299-bl-v3-1-69c0521465c3@sigxcpu.org>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20251215-visionox-rm69299-bl-v3-1-69c0521465c3@sigxcpu.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Alexandre Marquet <tb@a-marquet.fr>
+On 15/12/2025 15:37, Guido GÃ¼nther wrote:
+> We handle backlight so need that dependency.
+> 
+> Fixes: 49802972d116 ("drm/panel: visionox-rm69299: Add backlight support")
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202512020154.xVlxrCXE-lkp@intel.com/
+> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+> Tested-by: Randy Dunlap <rdunlap@infradead.org>
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> ---
+> Changes in v3:
+> - Basically a desending of v2 as it still bites people
+> - Add Closes: with a link to the original report
+> - Collect Reviewed-by from lists
+> - Link to v2: https://lore.kernel.org/r/20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org
+> 
+> Changes in v2:
+> - Add Reported-by: kernelci.org bot <bot@kernelci.org>
+> - Link to v1: https://lore.kernel.org/r/20251016-visionox-rm69299-bl-v1-1-d3b817ae5a26@sigxcpu.org
+> ---
+>   drivers/gpu/drm/panel/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
 
-The firmware trustzone needs a special call to bring up the secondary
-cpu core on the Manta board. This seems to be not needed on other
-exynos5 boards and comes down to the available firmware on
-a particular board.
+Not like this one patch needs it, but here:
 
-Signed-off-by: Alexandre Marquet <tb@a-marquet.fr>
-Signed-off-by: Lukas Timmermann <linux@timmermann.space>
----
- arch/arm/mach-exynos/firmware.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/mach-exynos/firmware.c b/arch/arm/mach-exynos/firmware.c
-index a5e22678e27b..e9b0ed07bb90 100644
---- a/arch/arm/mach-exynos/firmware.c
-+++ b/arch/arm/mach-exynos/firmware.c
-@@ -61,10 +61,10 @@ static int exynos_cpu_boot(int cpu)
- 	 * Exynos3250 doesn't need to send smc command for secondary CPU boot
- 	 * because Exynos3250 removes WFE in secure mode.
- 	 *
--	 * On Exynos5 devices the call is ignored by trustzone firmware.
-+	 * On most Exynos5 devices the call is ignored by trustzone firmware.
- 	 */
- 	if (!soc_is_exynos4210() && !soc_is_exynos4212() &&
--	    !soc_is_exynos4412())
-+	    !soc_is_exynos4412() && !of_machine_is_compatible("google,manta"))
- 		return 0;
- 
- 	/*
-
+Reviewed-by: David Heidelberg <david@ixit.cz>
 -- 
-2.52.0
+David Heidelberg
 
