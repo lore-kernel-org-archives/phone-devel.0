@@ -1,137 +1,151 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BF6346AE9;
-	Tue, 16 Dec 2025 14:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98291A3172;
+	Tue, 16 Dec 2025 20:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765894017; cv=none; b=s8gOpz1kjJ0+UjUQ7zsUdFHKRpffFHYzsCyRyDmbENScJyb6t/DGHFiNndFVZaoCuSDI3m3LKD7EJE4KBmyVQCtRZiELIvgL2Zz9F8sCfA467KjirVUMcoiVgzQwGFT9TJ1ab9hxeYcj2A3sVJ5xDii9V42teeMeSksPn6DSbfY=
+	t=1765917253; cv=none; b=WMaBN4bsCSh7JftNQi0RV17/Jkhitx2OYM8E/fOz1sGihW7wyBen99zrxRMgR4iPHTfFbGZ36Frun+TDCJCiEXwiGygiaDHLXnJWdTk68aSNvXsbnrBRjt6RPq33m1Ogy8hMrl+sQ+0+oap2C4SeaUKg/vASZXpQ7saJz/dzeKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765894017; c=relaxed/simple;
-	bh=1kJBw9ewAFyhP05soNF5xx0EC+X1pDy+ycp2TT5An6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G9G8mCR+HdUnMHTKjS2KdY4h7Tp2t3V2poDQ9D7Ap/legZGI4ZU18q0FMKiJ+/xBi6v56tNxmTdwVanAqTxrVLHvgG9sdMG+coXe1B4C/XOWVQvU1qeU9L9djzOYQJtfoSxRGKQqt0m5LdYKplwiIhJnuGGt4KC+t04G0so4RgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TFz8f+2S; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1765917253; c=relaxed/simple;
+	bh=gbs4MTBB/3mazzLZycEOEMLJRyBSAc2efhxppbIrQME=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EKBv8saEwBCOzi0VAn6S4EZkyynJ5U5YRUvDMDwqRxQR5rvxt7Z9okDc/YhSFWLsWYwbgeoFABh4KKwy7S0RowGc78oqfReTSHw+H5rCBEZJXQybCXMhcYAAuM8O0rVfTzjIH8Ejjn4aQdZ4wH1ZtZBMz3nv4HIrDpVHM+iqfQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejwgbbhE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TFz8f+2S"
-Received: from [192.168.88.180] (ip-94-112-34-59.bb.vodafone.cz [94.112.34.59])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 096BD5340E12;
-	Tue, 16 Dec 2025 15:06:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765894006;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Kwd5JGsT5lP0X1c4h0ZVuRID3Oabl5FqXHQYBnk1M6k=;
-	b=TFz8f+2SyT9Mv7egQ9NzazOtUnKeuNZT4UDAoHwKdhP4KLV+62zdgwyCtkJiJXxw6EjSZr
-	p3Oj8E5AWBqDgGWuEDY7b/4v8zULy+4UU86XeRp6oLPh3+laK6LOLmPcNsZzIt4Q2EjWOQ
-	NkBoxMR3gnhzb2KFoMcMstqwzu8SXMk=
-Message-ID: <06e5bd5f-1748-4a6d-a054-64b8b73efb33@ixit.cz>
-Date: Tue, 16 Dec 2025 15:06:42 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejwgbbhE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 32F58C4CEF1;
+	Tue, 16 Dec 2025 20:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765917253;
+	bh=gbs4MTBB/3mazzLZycEOEMLJRyBSAc2efhxppbIrQME=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ejwgbbhE1VKoPElXQTJdSzP0MqnWz2PUxWlRnBZb4N9Cp6cKn0n+zf6U4nK22RVkQ
+	 f1pwGdvbm6Rj703objVU0wimqgNh29ln88OTwU79OyjhM4XZEBu5tagGfG4sA4Ksbg
+	 KgV0jfx6y2Jx69JwuwhzIysbRRpTkJwn+Cwfcqv3/VV4sCEbaPErg6V2+/bIXbgH7T
+	 ND8CABNcqREln/WpjnsnoVF+nnLZEBclj+aRKlBaah8m+lJ4e6QRnA9o7Geyzn8QEd
+	 ODJt7pLqS+6lzaJmbTwNdH7sMG8RCrSdEk6nuGkYekmvOIQOvArB9KRTXLaHlJ167K
+	 v1MmsH+LGx6IA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 288B4D5E127;
+	Tue, 16 Dec 2025 20:34:13 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 16 Dec 2025 21:34:08 +0100
+Subject: [PATCH] arm64: dts: qcom: sdm845-oneplus: Enable known blocks and
+ add placeholders
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/2] Input: add ABS_SND_PROFILE
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>,
- =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- Gergo Koteles <soyer@irl.hu>
-References: <20251113-op6-tri-state-v8-0-54073f3874bc@ixit.cz>
- <20251113-op6-tri-state-v8-1-54073f3874bc@ixit.cz>
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251216-placeholders-v1-1-d7d544200e7c@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAD/CQWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQyNj3YKcxOTUjPyclNSiYl3zFDPTVCNLMxOLRBMloJaCotS0zAqwcdG
+ xtbUAMTGuOl4AAAA=
+X-Change-ID: 20251123-placeholders-7d65e29648a4
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1668; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=+JZK2ZbxfA/IlfNdhYsiDNwaA0HXucqfuw6KNa0TyXk=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpQcJEA5Crw2AD4nFHdNFPek/RbVbA9LTtw78Hh
+ 4W6BMB9wcyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaUHCRAAKCRBgAj/E00kg
+ coQ4D/wIOrl3U2EPI6EA35fBqsUoauCdeaHMeDEaVT/zFWMxpY4NvPo7wQPEKxGptTrhvi0DS10
+ yCn/4/HjDwEb9vmbsnj6dJ7UDoqbW6+PzRYphlSoND/IoHRT0Bh373xKXOmuWAWJtEhA6Cmb7A0
+ 9tpUKrJ1jhmNo1iGhUZkqUnigNWKXjAUioHYtXmqoycC/fkuWdS6spHKlciENo0ehlPp0+0q/72
+ m1nfuBi+auZdkt7yqiliJ3efTApM4s0kodS0PQZe1PD/oq4CPn52esVEAJFBjO0GCu1EJN3es/x
+ rL575oZ/+LuNzQSb0UJcN+PyZo8AN2CAFynPOs/QWA9ielUgjpgJtBM8+MiozHLzWEDvGwhZiyV
+ i/pkCbUOfDZubU1DWGg/swawcp529r5fnZcK0uCgZfa+fPVir40FrPDhp8lRRHiUi0KbeJ+nFki
+ KeC3+VXUktrf4BrRsAn2wmGxpjYrMBAZTM9Tc0aiEmOnyMPK+OB6Vvy1zpMp/nU7aN5HaItZPVb
+ oN5wBPoKfBwmoors9qnzIKdbKGaoarYUt5nRtdOTy/jY9IU6kPyspRou7uCOd5fycjJTzvFm0Ka
+ NuY3uesS0hK5H6cz8O44mN2S3vYGvHHBw6Swaw1DqWjBnvdh/6KvD6qI1CCTt1JNK3Ae5OwuwnU
+ UGyUMm1NE8YVc7g==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+
 From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20251113-op6-tri-state-v8-1-54073f3874bc@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 13/11/2025 17:02, David Heidelberg via B4 Relay wrote:
-> From: Gergo Koteles <soyer@irl.hu>
-> 
-> ABS_SND_PROFILE used to describe the state of a multi-value sound profile
-> switch. This will be used for the alert-slider on OnePlus phones or other
-> phones.
-> 
-> Profile values added as SND_PROFLE_(SILENT|VIBRATE|RING) identifiers
-> to input-event-codes.h so they can be used from DTS.
-> 
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-> Tested-by: Guido Günther <agx@sigxcpu.org> # oneplus,fajita & oneplus,enchilada
-> Reviewed-by: Guido Günther <agx@sigxcpu.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   Documentation/input/event-codes.rst    | 6 ++++++
->   drivers/hid/hid-debug.c                | 1 +
->   include/uapi/linux/input-event-codes.h | 9 +++++++++
->   3 files changed, 16 insertions(+)
-> 
+We know these devices are present; most of them are supported by
+downstream and are close to the mainline kernels.
 
-Hello Dmitry, can I count this one reaches Linux 6.20?
+This adds placeholders for:
+ - front camera (imx371)
+ - rear cameras (imx519, imx376k)
+ - actuators
+ - NFC node on i2c3
 
-Thank you
-David
+This is very handy when rebasing the integration tree with
+support for multiple different blocks at the same time.
 
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index db6dd04c51bb5..3e60565d54c08 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -352,6 +352,26 @@ vreg_s3c_0p6: smps3 {
+ 	};
+ };
+ 
++&cci {
++	status = "okay";
++};
++
++&cci_i2c0 {
++	/* front sony,imx371 @10 */
++
++	/* rear sony,imx519 @1a */
++
++	/* rear onnn,lc898217xc @72 */
++};
++
++&cci_i2c1 {
++	/* sa,sa3103 @0d */
++
++	/* rear sony,imx376k @10 */
++
++	/* onnn,lc898217xc @74 */
++};
++
+ &cdsp_pas {
+ 	status = "okay";
+ 	firmware-name = "qcom/sdm845/oneplus6/cdsp.mbn";
+@@ -373,6 +393,14 @@ &gpu_zap_shader {
+ 	firmware-name = "qcom/sdm845/oneplus6/a630_zap.mbn";
+ };
+ 
++&i2c3 {
++	clock-frequency = <400000>;
++
++	status = "okay";
++
++	/* nxp,nxp-nci-i2c @28 */
++};
++
+ &i2c10 {
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+
+---
+base-commit: 563c8dd425b59e44470e28519107b1efc99f4c7b
+change-id: 20251123-placeholders-7d65e29648a4
+
+Best regards,
 -- 
-David Heidelberg
+David Heidelberg <david@ixit.cz>
+
 
