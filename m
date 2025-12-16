@@ -1,92 +1,81 @@
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280B833B6E4
-	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 10:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6AC32692B
+	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 10:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765880594; cv=none; b=Z6wEOQUrZEladQEIQPR4gyO34wFFhUqKMYKyelLfvE7AN7yE9X8G6J98CC6Qd2Rof2N9px2vUOCUYKeHrIFYuJRwBC2kMFWPMH6e2JsR4v2x1wM0Dl1BuTWsOj45wrWDIsmL/m2xP2iYXHgG/Tf/PWidosHBsZd1bnwB/wyr1P8=
+	t=1765881106; cv=none; b=rUqxMLT9jOYCr/eADr+1ki4tyXYnJHtkjYZnzYOw9JGANLYWrPVQR9dgGzI6ihlYBilWHp688VLYGrltO3fSnnRMvl120mVbxntxoIuI6MFOhcTZM+1mdyh1ZNdlsbaNfGlEgIgqK5ef2zvckZcBBEcHyATdU4pKVRH/AxKw1QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765880594; c=relaxed/simple;
-	bh=GzXFDo5IY5tF/4y98oUYhUu76Y9hSnuKCvwUardhPFs=;
+	s=arc-20240116; t=1765881106; c=relaxed/simple;
+	bh=OA4iMZDuZcyWyQupNSGMWlK+hOOk4+wcRSguSmXeI20=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=LK7vNVu6+oWBX+9QGrV+3Q6TIgDPmAZ6qo0CBfcaKyErFr3Iuo+c0n572phHWypB3Vcecu3Zw0UjXDBS/frhl31b5OaSPHEYwMsoyg6S6NAnz3Cj/aBE9S80YN1YH7LQ9AL19JBG5qCaBqNIKIwVazUtxiJ5upAParCMIBDTAwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nfC3ZT23; arc=none smtp.client-ip=209.85.221.65
+	 MIME-Version:Content-Type; b=KIgN6dDfkuCCLjGcebsdJmjkWrRZ+J4yg77djTaRBVPOepYxuHTh5J37SvpmuhcFlq5oiRhOu3OobGAXey7wJw6XiLFxNIW6SAlwKRuWy/0FzggZiBVa519YT+6FuMIS+3iYNZEV++RZTNHJfMp9qc8t2HyEfGVCGfq7DiCtU8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AMVYrNst; arc=none smtp.client-ip=209.85.128.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nfC3ZT23"
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so1450233f8f.2
-        for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 02:23:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AMVYrNst"
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4775ae77516so52863955e9.1
+        for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 02:31:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765880591; x=1766485391; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1765881102; x=1766485902; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4IZdqT3f5FjLJw92pQmwl5xRGES7bj8LR/OQmW30pQg=;
-        b=nfC3ZT234EotRGpj+zunwZsWh8l0L++0Dgh16MXctiVYjPUGdPFYnKv3VvUfr4I4uc
-         f/MrzrgsvgpMB83loFwvsWFtRj6BMpEFoLUFgGxBQYWB9gQEq+5AWQk1/V3sPUuz5irb
-         ua/UpngCjjkrTjihHIP9jVkb8DxSGblVDZkgMIlP1A3y6UMsh1g7WMfOhMWJHK3CUPWW
-         SYWxmr9YdOs3/151YSCgNFPyhiI3cgtgKCcYEWBJ0RSZPCnBl/cHMR2UfWgOl3ixgXWL
-         x1IIOoCxOB9Q2KJrTWvG1HO43nrFQmmebwq6DDpCpGi5B9rrP8iB0Yv71IhdBLl9gm/p
-         Nz0Q==
+        bh=5F3GAGvtojXzfrnNDqZPNvA9zvELXurzGXYNSS1JeNU=;
+        b=AMVYrNstkN2YJI9914s9FaeYsIblidhHYp9TGwzRgevW8JMuV0fLMgN3E0C2vgUa8g
+         t0v6/kwVpdxGeJEqH2C8bFwlFMc1lIY5K/w+q7IrSY77H98O6ykDDBlILmgHAulSjGm4
+         HoU/KPCK+Eqx4Xc6Kx737GgbZ4j/nC9jtxFvnjzFkn2YbwQq0JydtppET84zvUcJb4hN
+         D/oCwmRZKczru9sSprJuJ5cYyM3CK6oqvF0ozRyKLuxoFCuNxwg/s9QisyI7gGl7BPyZ
+         wm9bq0gcOTRSjXi7Ccw3JskwGoq1SM1sXk6DWBvwNheBgXXUXtWjoIx9xMvfYMG2mduE
+         94PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765880591; x=1766485391;
+        d=1e100.net; s=20230601; t=1765881102; x=1766485902;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4IZdqT3f5FjLJw92pQmwl5xRGES7bj8LR/OQmW30pQg=;
-        b=vFxEjs0RgGq5ddqcmMJ7wUdJZuOKTX3SBdWE4QqWdXxnjHDQ9tKb7f0C3VJHs9DL39
-         GsALTkK4o4jCW9t8Iml9OotONM6xZvIeiYaEyxyqIzZlTek2QXJ7OjQOBcbF2L51c3QY
-         Jiwo19IpNcKLxaqooTu2Ddq3GklqT/l7sFLza5Y+upauS8YpvOJ0g6Ljy0RVYuXK6qYl
-         9Kt76BVs2so7UvOsfjD0gYElqom/eDbjQB70lujqL2mQHNtEWZN2zAVBBtPBcM7nt1tH
-         j0tVJvCoFOKzcFMga4slFNGxUHu2+0909c11lQhSbgOPhOXPqezjKryQFNK67rPT/Ufl
-         79XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW27dzlrtvFFg88p5uYAc6UmN6BpJD2kqrpKI4YZ28idFJrlkcEG5xHL/cXWHO3jO5MbvdxoA5oRpEv7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCfBOqOe8mSXIDYGavfmJYVGgXU3M/7HdGOg8fCSKoTS/tm1T0
-	v1wgB01a+GzsIA1Imfj6CiYlkeBfs64iyoD1CbBzSQ7s7tsEJBEviLN2Uf2o/v7Cnks=
-X-Gm-Gg: AY/fxX4pPMmXal81R/yAnqbR3Tu2u4yfbxrU7x6z/qFsEv+7vw3Mln2kQ3vrPKDyFWb
-	X5zaDYSaEZ2XRz68jFD6Bkttfe1xf4X3EuLLNxQDdGsrPR+StiAQVUqPm40Mas9MTwMWqIVuIXw
-	l/UdvAsIdLwwcX7JC3ABjKoElwYPeHRMnOCuv8beTshVaIAFDoip1iAob7yxTeGFG6QM1y18+oc
-	mkCAT7UPEdBa04zQ1AnitseuJDHaECW7rJJOf5QJLYz3p2yASPJs/0ia5/h0B71wPpdfi0b/AJB
-	xeotVOQn/91F3on+tucLnj6KYSSPE9rCurdGl39xiAr84gcS/FtseI8K0A4/8hgjSzEiufTB3mZ
-	a1ef62CCjIz/IE/L8/kGwGJ/r2B/EpEMeiClu2Nq98UytH7wbiLzCFarMpziUc2xqh8jvxr1e5F
-	eqL6kgiIMCEv1t10Xk1SUNO/4KgX/Pdzk=
-X-Google-Smtp-Source: AGHT+IHdYoe0Jxs5on7xWo5sC0mu4jrv63ZGB+gV2yfNBNXsZdkj2vvC6F2crM2qJ3WTRAF/bSMiFw==
-X-Received: by 2002:a05:6000:2909:b0:42b:3131:5437 with SMTP id ffacd0b85a97d-42fb46e1b5fmr12776263f8f.34.1765880591356;
-        Tue, 16 Dec 2025 02:23:11 -0800 (PST)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f984a268sm14996292f8f.1.2025.12.16.02.23.10
+        bh=5F3GAGvtojXzfrnNDqZPNvA9zvELXurzGXYNSS1JeNU=;
+        b=eM14hyjNp4u/oKTA2efj+rwEVpKU7UqPvrtdmKZPS+Z1B/m3RryowhN0gqTddOwYay
+         oh6yLOYKWLFWSP4AIGWgwUg/mJsrs6Ng8KIQAqTpfHmQu9gPOwhd+Zr3Kmu/VDk0C8wX
+         0COOzdCzN/8OeJDdA/6ixuwjSHvqmiyblu0NrZWdaxAq6CY1uah9G/SmHH3k1yo6kzdd
+         vl9eKIjdRjKrQUcqtGr0VShbx0IJi6L69TbYq3KaZty3+sLSH8N1e6O6d1AXp4xDrizy
+         VLJU+3Ev0LvY9QNY0KYgmf09cmAnI282YvTPNzeHhxvIEC/0XMyEJYYY7GzAUokh5w/V
+         Na+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXq9Odzo68O8knOZ80pxMvlVMzL5YjNBN6bAH6eiP+voeAlwo0KvIuPOQZF1rWYktSH4WZCZ1R42ChHZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnIFzu2eaFKEZ69DPurLt1Pq2Ti6ScjlV7zUtpy0snp8eDNG/h
+	nlXiWdicK8Hvmrw0xjyzQbCyua3Cml/sLj2EzPd8DlWOE+hFD4s17Clf1dIctrC68nEZfORPL3J
+	E3YkdAh0=
+X-Gm-Gg: AY/fxX7Z3lFQabLbw9fzs5fb4WUELF2sbOUIBzY/s8axEZeAtoUBKJmmoUCQjw1oBEy
+	WZq89QzgmaV2fMpCRUUQ4mwNzx5M3xKV6m8bX2BcS7qe01Kf837l7Y3krEQWTNIqZS4YJzfuhSM
+	sx67KbjpJCfQE2iZOxAoVDMqYJpghJBjJtCcEaDxA5GePFX0KutDaQUtGSjlZAmt9QrJrFMceYD
+	pr6sGyrT1FRXHrdSy3KgCcDQh7w/HbqhTtW7/6eRk0Twv1PKLgesCKOdWXBXq6vOpdEngMabdK6
+	Fz/Ggvbeiyoju4WTYCRdAPPs/vm4mmfh0Wi/OI/jIptbr/1xbInFWeJdCeHYkYsrrHv5t8BiRBC
+	xyyu3T5Nd8DjrKRNSZmTIEmWLxr6N31jtdoXgzLEmlr9x4GM8G86q/QvNerOILYCseOnKrt9oAK
+	GcKWUngtMOBSQPWP7iPvlOBbfhtB5HFAc=
+X-Google-Smtp-Source: AGHT+IG84hC2FrP21rLuYsftv8LEMIN2jKOtlRqZbs0BvKeHh9lWYYcuPTMdqRe8uDNf4GyhBem4Mg==
+X-Received: by 2002:a05:600c:64c6:b0:477:639d:bca2 with SMTP id 5b1f17b1804b1-47a8f89bc56mr152345205e9.4.1765881102116;
+        Tue, 16 Dec 2025 02:31:42 -0800 (PST)
+Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:8261:5fff:fe11:bdda])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bd95e0161sm7256525e9.2.2025.12.16.02.31.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 02:23:10 -0800 (PST)
+        Tue, 16 Dec 2025 02:31:41 -0800 (PST)
 From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
+To: Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
- Petr Hodina <phodina@protonmail.com>, 
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, Krzysztof Kozlowski <krzk@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Amit Pundir <amit.pundir@linaro.org>, Casey Connolly <casey@connolly.tech>, 
- Joel Selvaraj <foss@joelselvaraj.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>
-In-Reply-To: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
-References: <20251214-pixel-3-v7-0-b1c0cf6f224d@ixit.cz>
-Subject: Re: (subset) [PATCH v7 0/8] Add support for Pixel 3 and Pixel 3 XL
-Message-Id: <176588059015.2230787.12554234444654203091.b4-ty@linaro.org>
-Date: Tue, 16 Dec 2025 11:23:10 +0100
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel <phone-devel@vger.kernel.org>, 
+ Gustavo Padovan <gus@collabora.com>, "kernelci.org bot" <bot@kernelci.org>
+In-Reply-To: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
+References: <20251017-visionox-rm69299-bl-v2-1-9dfa06606754@sigxcpu.org>
+Subject: Re: [PATCH v2] drm/panel: visionox-rm69299: Depend on
+ BACKLIGHT_CLASS_DEVICE
+Message-Id: <176588110109.2282705.4050268532333619476.b4-ty@linaro.org>
+Date: Tue, 16 Dec 2025 11:31:41 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -94,36 +83,20 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.14.3
 
 Hi,
 
-On Sun, 14 Dec 2025 15:51:16 +0100, David Heidelberg wrote:
-> This adds initial device tree support for the following phones:
+On Fri, 17 Oct 2025 10:27:59 +0200, Guido Günther wrote:
+> We handle backlight so need that dependency.
 > 
->  - Google Pixel 3 (blueline)
->  - Google Pixel 3 XL (crosshatch)
 > 
-> Both phone boards use the same identifiers and differ only slightly
-> in their connected peripherals.
-> 
-> [...]
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
 
-[2/8] dt-bindings: panel: sw43408: adjust to reflect the DDIC and panel used
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/dbb5d6010c1ecf01560af405c5b503f4cf2b1149
-[3/8] drm/panel: sw43408: Introduce LH546WF1-ED01 panel compatible
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/be85d4124dbe6ed597c7a6a16e53d8b98684fab6
-[4/8] drm/panel: sw43408: Separate reset sequence into own function
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/5f0cc92fa0dab7cbb999dedc653f5857a62b2022
-[5/8] drm/panel: sw43408: Remove manual invocation of unprepare at remove
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/cbc1e99a9e0a6c8b22ddcbb40ca37457066f9493
-[6/8] drm/panel: sw43408: Switch to devm_regulator_bulk_get_const
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/ed2b818a24760d7adc92d2e9b0e135f2c33edd8c
-[7/8] drm/panel: sw43408: Improve wording when reset-gpios aren't available
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/29e208a08a8ebb0f214e815eee0a7beff778864f
+[1/1] drm/panel: visionox-rm69299: Depend on BACKLIGHT_CLASS_DEVICE
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/2bfca4fe1f36eb6618e5712a8b5b41433bb6f10b
 
 -- 
 Neil
