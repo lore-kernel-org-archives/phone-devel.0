@@ -1,39 +1,66 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DFC2C1593;
-	Mon, 15 Dec 2025 20:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CB17080E
+	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 01:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765832004; cv=none; b=R5daEWhAbVRnsCWMx+HOGBbWrXmsJJHm4H19OOX+eNlL7WjJSqMy0tujSqaf+kW7OOybTQL+suzrJNJaveucd8VlWtJcbFfVCSjeJPC2Fhy1DIBjwaFc4E3R8WXVPpNqiWHOTT09WrD496vcyLAwgc+mBJPLm5mh+6GxMwFiWBs=
+	t=1765847421; cv=none; b=T1diICTIzJFfUZXGnZS+2YqnXRXLO1HuFW4DH3dB2h2ACYpuwYgla5dWZdAquNWq0Q7Sfj0pZjkadc0dN5unMnmKZQAu2Zjqu+HKBoASLJ0R/oEX0GLwyskr9tcHfNAF5dZBQ9BSYtXX4dQTM8Jr8tp/E+e2aL0snJ9GGwKIsWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765832004; c=relaxed/simple;
-	bh=wnXx2FE2UYTTVHQUPGui824zNK9pwlMaiMwS7FI1feo=;
+	s=arc-20240116; t=1765847421; c=relaxed/simple;
+	bh=WIZ9jyFswOPNqTgsmJJ76iM6G7nvLeuDuP7DQJ6BNqA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NOgiDLvTiocaCuFfFKQ7fHnNIX7w4w5D3a0CVn9PMFptXfWImQDlVAgpfXf/uSN6rXoGrthK0OclvIQ7F6kNIXd0LM3+W8MEEIVFA0HWIat2lQj7kaVqAGhPBHcEH16pGR9oHoY9aAbAcj/w0AehCNCwg6NFP0DbjvujvFks4po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=fQ7Qxudq; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=AXpfBIrUJblnrmkUPPab2XioCnX3QHlJ/vwqH9brFxclLApY0kGd9/PbULqxYoCKNxrpATWX4mdH66kPcktpHRNbUP9arNZiTHrSWUVyaoF/xM1m+/SwLQx4KJWlLI53krIOLd4HWRO7GXagOHE8iTdl3bMkFzA8sM5YYj4wOg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VT0cj1O2; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="fQ7Qxudq"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 80AF65341084;
-	Mon, 15 Dec 2025 21:53:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1765831996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=u/AAyRLiQWiVo4N5CDJ8oTYay8qWsdQc5oSgwkGCtSI=;
-	b=fQ7QxudqYvi+d4L/CbsQo7jPjwkafZE2mGPJdBA6+98ANzEEJD/PhEJ29Si29U8Icb8Koi
-	3rZ5eQ/kg9Onw3QyTnsWql8DijnD9VVWFnGqCJePHVZW5QHapEqwbGdONZnfaaX7xHhoHw
-	/csAw0N6tw3bFkYlm1f/aZI/kpsG3aE=
-Message-ID: <5c780cb5-d605-4568-bb53-e0fc0885f6a0@ixit.cz>
-Date: Mon, 15 Dec 2025 21:53:15 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VT0cj1O2"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-37b960d8aeaso4251181fa.2
+        for <phone-devel@vger.kernel.org>; Mon, 15 Dec 2025 17:10:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765847416; x=1766452216; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mi8Xm0zurhbSPDMlN1uc/lNI9yNMPSviozpqbJTiEDg=;
+        b=VT0cj1O2UIktLIzkUNpdWYDS3SfInrhRY5mNJcIKLeUAXCKRnfwbUflVWjr+5L2m2h
+         8+WWCWRbStWVXcptD5tJdnwvuPsKkW2Zv/oNskRQqBqrVJcIZCJykx7PPQtFsuRcpYTC
+         XlwVQvCvmiX4uFLJe9LYi6QIQP17gPaVn5nij71NEtk3tU8dPxKwX7ywJKMmeq7vX2c5
+         an1OKKnE4LnMcyB7y2AS0t17BU4sGHiS3J86NELr8jdlU8bP/slS1Uf6EhzZd7YfUNjf
+         btpfWx78MnxCnndLDhszNUTO+JqoG0mtIRqBu2tD+pydRZ9BaEoC/JnMoDgLv/61iISN
+         W/EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765847416; x=1766452216;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mi8Xm0zurhbSPDMlN1uc/lNI9yNMPSviozpqbJTiEDg=;
+        b=SshXklk8NP9Mji9EwwA3aG5RQ21AcOIIbJBOQ2mTcqd2NdDbaUwK8r6Wipy+o0n/SV
+         Ty6idxIxWe5v4BbB1h7ktJWFoI2tCITBSVm2Yxg2vx1oJD7jFFFd9NlcFgXL5OMcUcRc
+         AiARr0N4Kn6kWEannw4SncsKgdoVCqgOFOCOTAfl0riy675INi+AdBkOWnVVfgD/helg
+         /HPKRwVO5uf6x7lu8BICcYIbO7FI3XNO90DB1cTNGB1eQ6VMNO7YM9v7+FG5SENPdm93
+         uqhDW40y638hYHNIa9KNWRHd0OBBt1mT+oEHHFE25bdr+xo5hPF0Duo3VlWfEEILf6eC
+         gS8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU8Yp/mkg39j0tE2FlyNLB1B2wuasLIDgtEd+7jOewgAqBRXSyaZW1DROyfUy2tXgkcnO6TZw4ehxc3hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfzVxsIwAxNbNZazRxQFJwQCbXrbAcsMQRoBNknAzlqJYfNfll
+	fpszOo5F8LuJJVe1Hid1D8P/9pPT7269PsAj5G9X9JaPMVIKTgC+K34RsZYk9SZoKfs=
+X-Gm-Gg: AY/fxX4C0g8nVZKl82uJplmQ2MaojFa9VsFE3i3qr29gXyJmKEjGn/xwtlDKa9QwuB3
+	M1RoudmbmdodOUY++NNgmqcuLPZOxgTH/nSKDkM55I1ua0QZa2FXqk9i6THEj2PqhoSbqAtsIxg
+	VmCrqQiYWwloCOckFxTL5+ON9zwVx13NLxCQ7tTXa5x1cRuDU2Clh806d8QwHIhZ+i0HJ3agUMi
+	+XI8EYAzkwMYmBqx2dUH7IB9t/VduehZOAdzjUEMu6RIrw520/RCjgmGLK4qtKL0//6rTUtBdUA
+	HTKTRQ1EmJLBDyk+feM599/7EMri0xtqroCs7GXgk8ScG5Nh1Ut4CxfJN3Oz042ZwFXexUbmo6X
+	kNW5AcHp+Bn9XluJcD3jcOvu+OYVMZCFMxDKhsspyrLwL4pnIH28URrQdBuiw8wVcHKS2nUNDpF
+	yug4RHYApT8Qq7V17iQKzhrxNR3rIOC/gDQBiDTMUc+SuC6tzTJd5iUySKKDu2G+6Iaw==
+X-Google-Smtp-Source: AGHT+IH7lvZQh/tJdyvFMjmv5Z9sx5r76i24YJXdpQwBw46WC2pR2Mr05q/RbbpGbzcBzScS/lkVsA==
+X-Received: by 2002:a05:651c:2223:b0:37a:8acb:a053 with SMTP id 38308e7fff4ca-37fd088227dmr17398471fa.8.1765847416234;
+        Mon, 15 Dec 2025 17:10:16 -0800 (PST)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37fdebe61e2sm33946831fa.7.2025.12.15.17.10.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 17:10:14 -0800 (PST)
+Message-ID: <9d78a741-2cc4-4622-8c4d-a096521ca08a@linaro.org>
+Date: Tue, 16 Dec 2025 03:10:13 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,112 +68,164 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] ARM: dts: exynos: Add Google Manta (Nexus 10)
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Lukas Timmermann <linux@timmermann.space>,
- Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+Subject: Re: [PATCH] media: dt-bindings: Correct camss VDDA PLL supply
+ description
+To: David Heidelberg <david@ixit.cz>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Vikram Sharma <quic_vikramsa@quicinc.com>,
+ Kapatrala Syed <akapatra@quicinc.com>,
+ Hariram Purushothaman <hariramp@quicinc.com>,
+ Richard Acayan <mailingradian@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Alexandre Marquet <tb@a-marquet.fr>
-References: <20251215-lat3st-staging-v3-0-2e4914b64dd8@timmermann.space>
- <20251215-lat3st-staging-v3-2-2e4914b64dd8@timmermann.space>
- <c62d6c99-0c8d-40e5-95fc-ae73ecaca926@ixit.cz>
- <546ff0cb-a3a2-4fa4-a78b-79c923ed7765@kernel.org>
- <eb898d21-5fda-474d-979e-18da33a85415@ixit.cz>
- <cc15ff73-7322-41a9-b0db-a321d6835c36@kernel.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <cc15ff73-7322-41a9-b0db-a321d6835c36@kernel.org>
+ phone-devel@vger.kernel.org
+References: <20251212-docs-camss-fixes-v1-1-5c011505ff59@ixit.cz>
+ <1e09a93a-d42f-4a23-b346-9f158a60d8aa@linaro.org>
+ <b9b84317-a392-4f1e-aa8f-351e92c678a1@ixit.cz>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <b9b84317-a392-4f1e-aa8f-351e92c678a1@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 15/12/2025 21:33, Krzysztof Kozlowski wrote:
-> On 15/12/2025 21:06, David Heidelberg wrote:
->>>>> +	aliases {
->>>>> +		mmc0 = &mmc_0; /* eMMC */
->>>>> +		mmc1 = &mmc_1; /* WiFi */
->>>>> +	};
->>>>> +
->>>>> +	bmp180_vdda_reg: regulator-bmp180-vdda {
->>>>> +		compatible = "regulator-fixed";
->>>>> +		regulator-name = "BMP180_VDDA";
->>>>> +	};
->>>> something-something-regulator (all occurences within the DTS)
->>>>
+On 12/14/25 11:35, David Heidelberg wrote:
+> On 14/12/2025 01:04, Vladimir Zapolskiy wrote:
+>> On 12/13/25 00:55, David Heidelberg via B4 Relay wrote:
+>>> From: David Heidelberg <david@ixit.cz>
 >>>
->>> I don't understand this suggestion.
+>>> Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
+>>> voltage from the description.
+>>>
+>>> Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda
+>>> regulator descriptions sdm845")
+>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>> ---
+>>> Added only Fixes tag for the initial commit, not all the copy-paste
+>>> propagated ones.
 >>
->> oh right, let me clarify,
+>> Generally it should be possible to specify a list of Fixes: tags.
 >>
->> the regulator name should end with -regulator postfix.
+>> However, despite the change is the proper one, there is an opinion that
+>> Fixes
+>> tags are not applicable to dt bindings with a given reason that only
+>> executed
+>> code can be fixed. So you may be asked to remove even a single Fixes tag.
+>>
+>>>    Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
+>>>    Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
+>>>    Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
+>>>    Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
+>>>    Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
+>>>    Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
+>>>    6 files changed, 6 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-
+>>> camss.yaml
+>>> index 019caa2b09c32..9009cfe993d75 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+>>> @@ -130,7 +130,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>      ports:
+>>>        $ref: /schemas/graph.yaml#/properties/ports
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-
+>>> camss.yaml
+>>> index ee35e3bc97ffd..cb922f90fe900 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml
+>>> @@ -129,7 +129,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>      ports:
+>>>        $ref: /schemas/graph.yaml#/properties/ports
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sc8280xp-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sc8280xp-
+>>> camss.yaml
+>>> index c99fe4106eee9..2231d7216f62a 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml
+>>> @@ -268,7 +268,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>    required:
+>>>      - clock-names
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm670-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm670-
+>>> camss.yaml
+>>> index 35c40fe223767..8e6ca94c88695 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml
+>>> @@ -95,7 +95,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>      ports:
+>>>        $ref: /schemas/graph.yaml#/properties/ports
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm845-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sdm845-
+>>> camss.yaml
+>>> index 82bf4689d3300..d50e096b900db 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml
+>>> @@ -211,7 +211,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>    required:
+>>>      - clock-names
+>>> diff --git a/Documentation/devicetree/bindings/media/qcom,sm8250-
+>>> camss.yaml b/Documentation/devicetree/bindings/media/qcom,sm8250-
+>>> camss.yaml
+>>> index ebf68ff4ab961..ccd2d024bfd10 100644
+>>> --- a/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+>>> +++ b/Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml
+>>> @@ -300,7 +300,7 @@ properties:
+>>>      vdda-pll-supply:
+>>>        description:
+>>> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
+>>> +      Phandle to regulator supply to PHY refclk pll block.
+>>>    required:
+>>>      - clock-names
+>>>
+>>
+>> As for the change itself it is good, I'd prefer to get a correction
+>> to 1.2V in the documentation rather than a complete removal though.
 > 
-> That is not a correct suggestion for none of the SoC trees. If you
-> wanted to be consistent with old Exynos, then look at the sources - this
-> is voltage-regulator. But if we are nitpicking on that, this should be
-> either matching new code (regulator) or even the new style from DT bindings.
-
-Oh, sorry, my bad.
-
+> What I'm seeing, while the vdda-pll is usually close to 1.2V, it seems
+> to me that's not everytime the case.
 > 
-> You have never reviewed anything on samsung-soc, so I wonder if this is
-> result of cc-ing this phone-devel. If that's the case, that list should
-> be just ignored.
+> Can you confirm it should be exactly 1.2V, if yes, I'll clarify it in
+> next version.
 > 
-> Please do not nitpick on such stuff, especially on things not being
-> correct in terms of recommended style or bindings.
 
-Ok, sure.
+This info can be obtained by checking "vdda-pll-supply" supplies of CAMSS,
+which are set in upstream device tree nodes right at the moment across
+various Qualcomm SoCs, as well it can be verified against downstream.
 
-Please ignore my review.
+The naming (and the descriptions above also) "vdda-pll-supply" itself
+is non-informative, I hope that in future there will be only clear supply
+names like found in qcom,x1e80100-camss.yaml, qcom,qcm2290-camss.yaml and
+qcom,sm8650-camss.yaml
 
-David
-
+>> In any case,
+>>
+>> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+>>
 > 
-> 
-> Best regards,
-> Krzysztof
 
+-- 
+Best wishes,
+Vladimir
