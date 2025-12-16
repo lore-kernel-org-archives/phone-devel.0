@@ -1,87 +1,39 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B2A3B75EA
-	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 13:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BF6346AE9;
+	Tue, 16 Dec 2025 14:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765893082; cv=none; b=n4uCcIsMaC0QMLZkGELfq66qr/tK6SYNTmaiKP0G/q9dTI/2zUiH9mbGCSu3WmwE0Ze/t2dVDfkLlDxZXN+1raz0CMTNVMycfyxHKLoMqReJVjpoHzh44Wk8EYDWMRx8AL+kiXGRzpGozoujjpBmVEzU+06x2YZuyPCty5P6Z8o=
+	t=1765894017; cv=none; b=s8gOpz1kjJ0+UjUQ7zsUdFHKRpffFHYzsCyRyDmbENScJyb6t/DGHFiNndFVZaoCuSDI3m3LKD7EJE4KBmyVQCtRZiELIvgL2Zz9F8sCfA467KjirVUMcoiVgzQwGFT9TJ1ab9hxeYcj2A3sVJ5xDii9V42teeMeSksPn6DSbfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765893082; c=relaxed/simple;
-	bh=kqefaEAINqf9ddsXkYYvoPTUSPTPMuBy/+O6QH0DNwc=;
+	s=arc-20240116; t=1765894017; c=relaxed/simple;
+	bh=1kJBw9ewAFyhP05soNF5xx0EC+X1pDy+ycp2TT5An6E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d1N/l0oMX6XAedUAMpZGxiaYqRnNUFof0pnW9C87tCrFsdi3Uv+9m6c8JAmZ2tUmwdPKfDNQceJI9EZqgB37fW/1cA+Z2B3ivfYbQGrlFnI0Px2V+EBjIVUaYU6JMR+ZUKdpdgfGsFMr5AmBK220MaHM6vMRUU/vYt1R9mvGDe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=H0sQo4tQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CO9OZs40; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=G9G8mCR+HdUnMHTKjS2KdY4h7Tp2t3V2poDQ9D7Ap/legZGI4ZU18q0FMKiJ+/xBi6v56tNxmTdwVanAqTxrVLHvgG9sdMG+coXe1B4C/XOWVQvU1qeU9L9djzOYQJtfoSxRGKQqt0m5LdYKplwiIhJnuGGt4KC+t04G0so4RgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TFz8f+2S; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="H0sQo4tQ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CO9OZs40"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG9bgPk2516351
-	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 13:51:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	INRsKK1zePcdI3MxN+3hX4QLQffn2295G25DNvsrZrk=; b=H0sQo4tQVbc15Jgy
-	yzUdm3FiOBzttSL2D2BWVJ6qw4i7YROcnjirWnndq6pqHGRb2wcAL2Gei+B3Ie0S
-	B3xm3J9goHoZQItQV9zI4EZvge14K0NKCO7u/YWgzCW3RXSnIQmed0G4xxsfdDoU
-	wrKHXFfl5KZUFPPPNs0X9ahAx1kDH64W4GaThUk9KlkGlG/SjPYDL1UmcVsZ3pld
-	MVCwEHzyyHRBDvQ+C8EhgWXmNZuiu19arpnx15B27OM6KEX9YTGkE0sBbZuFJKmH
-	jxjxChkn4W5xuUg5/S+YW5o/gs44PpGW+NJ4M89oFdrOEDVNv+b71fQkq5vtZys9
-	jM6thQ==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b34y80yj1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 13:51:19 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a094144faaso8446325ad.2
-        for <phone-devel@vger.kernel.org>; Tue, 16 Dec 2025 05:51:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765893079; x=1766497879; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=INRsKK1zePcdI3MxN+3hX4QLQffn2295G25DNvsrZrk=;
-        b=CO9OZs40IhrDCiqIU6Ag94dSmI1yLMQ2oRY3xSb8Ct1r+bNgtvqfXKGaUs148f1AnV
-         mEkCE3rxQsoFQZcIaE7IUmLfnOiXEcS/bIDM2Cg9A26D6dSsDaP4AdbOIphfAQjKtglk
-         Xh0SMM9zzfD42UFdhAlN6o9FStO/JwqUcQ/eYOuNc4ohuvTT5JvLjUPQhlCMauoWgmfg
-         s9k+wiQdi6PHBRhT2t6vqqwbIxzqVIRJ0rMYQASdMh6+ZNMKcOo6tbXnZmVTP2CtZij/
-         nHPBrz57OCXvKHpJgP122xjiL14v+x4/w0w8Due3aBY4MPtvmWNwY9I9m1yTF0jrTskG
-         cQKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765893079; x=1766497879;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=INRsKK1zePcdI3MxN+3hX4QLQffn2295G25DNvsrZrk=;
-        b=cc5LZ2nV7ZNIKY2qM8UyIOTFPsxch+dWhvoRhxUva1IMIx6Owf1T3e8hGs+mzhoqxk
-         t/gkvB1gwPhwmY35lQCBCRv7eiUKksWYSdYk9KvW4bdYOFCtG2qHvCg4D72R7Qd9cL1K
-         YNQC8rAdm4HxVcXSAn+MP2D43smQuRxbFkQ9YL/sxATGHvhq7pR5VFObXMMeSNJZNGM+
-         XdpUkSCWKFBf4dpLwHA9ZD64afhRqQJ1mL7N52npT5Fu5wi3w6KFwBUMoGgZMBdwGYQd
-         vWg2JWESxDWjH0SC4WDP0S9rPJQU+5XGHBIgttTooPRLgEesNwmL2gHC9GXrk1ipqBW1
-         sHBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYcVawxHM0e9KlDsLtD+1+B7nj+2yRxM0773vSoCUl/hSDXyzmz9QWNrwQpYHcBLfU7G53ycVgRJqj2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfRlFh7w3Chmkf44C5efJ2bypgdqx5zpDb/Qkbchapr8e9Z+vk
-	oJ6wpcAUjEzOKdyFapsMO0Axo3RohFvlQZ0Na63W4Rc9iLFCFkuQ0QxqVIaE+PncLbdmGBuQpw2
-	6N8vOeXGAItlpajTuW8Qg5MhWKFCeK072/qK5clrvv/Rso5YUmKMRpO53JtcT726+dQ==
-X-Gm-Gg: AY/fxX4vdji9cdvQ9OcdzWPooR9TVbIo24B3BHPnJ5fbslziIK9zjlBFUr6d9KY609r
-	vnuBP71hzt2Un6aRTp/mS/1q7H8/lcwSozJrl9n9ZNCrp4Sw9e+wFLL/NrsMI5u0L52D6TIJH52
-	vTbHs3FJOqIWBFGVk1BYblRYekt5WNOt3E3cQ2l7tc+Fv8PiYxFIYLp5v/NjCnJ87mNC2L6HL3B
-	99GJmqAvBgp4R4gHrJsnu/PVbMJPo03Q5q7TGFh4U1c7rW5N+lVz3f/uuVtQPeiefUbLls5z1lr
-	UbptCG31r8xCBugnlaBVLO4rBNDptzqdPlapfG65GcExufsydNH7i7sIlBW4+gsggbk/y/dB9Fq
-	oZQEMNUO69MHbOp8PImpW6KDLU6HLUDjCpkFPuibNEUYpsjlEZvVMIn8UuIkKwV1QfA==
-X-Received: by 2002:a17:903:2bcc:b0:29d:7e23:629 with SMTP id d9443c01a7336-29f23807a27mr108321875ad.0.1765893079189;
-        Tue, 16 Dec 2025 05:51:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHBOq5l2eisqWzuziHOLKqJEQPy0Brj00XHCZuNMqzhum37I6UYsbBPPvOquk5iaGRcXQavjw==
-X-Received: by 2002:a17:903:2bcc:b0:29d:7e23:629 with SMTP id d9443c01a7336-29f23807a27mr108321695ad.0.1765893078766;
-        Tue, 16 Dec 2025 05:51:18 -0800 (PST)
-Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa2ea57csm1688588866b.22.2025.12.16.05.51.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Dec 2025 05:51:18 -0800 (PST)
-Message-ID: <932a87de-ab2d-4a60-a188-04cc2c00898c@oss.qualcomm.com>
-Date: Tue, 16 Dec 2025 14:51:15 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TFz8f+2S"
+Received: from [192.168.88.180] (ip-94-112-34-59.bb.vodafone.cz [94.112.34.59])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 096BD5340E12;
+	Tue, 16 Dec 2025 15:06:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1765894006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Kwd5JGsT5lP0X1c4h0ZVuRID3Oabl5FqXHQYBnk1M6k=;
+	b=TFz8f+2SyT9Mv7egQ9NzazOtUnKeuNZT4UDAoHwKdhP4KLV+62zdgwyCtkJiJXxw6EjSZr
+	p3Oj8E5AWBqDgGWuEDY7b/4v8zULy+4UU86XeRp6oLPh3+laK6LOLmPcNsZzIt4Q2EjWOQ
+	NkBoxMR3gnhzb2KFoMcMstqwzu8SXMk=
+Message-ID: <06e5bd5f-1748-4a6d-a054-64b8b73efb33@ixit.cz>
+Date: Tue, 16 Dec 2025 15:06:42 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,74 +41,97 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: sm7225-fairphone-fp4: Add camera
- fixed regulators
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20251210-fp4-cam-prep-v1-0-0eacbff271ec@fairphone.com>
- <20251210-fp4-cam-prep-v1-3-0eacbff271ec@fairphone.com>
+Subject: Re: [PATCH v8 1/2] Input: add ABS_SND_PROFILE
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>,
+ Benjamin Tissoires <bentiss@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>,
+ =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ Gergo Koteles <soyer@irl.hu>
+References: <20251113-op6-tri-state-v8-0-54073f3874bc@ixit.cz>
+ <20251113-op6-tri-state-v8-1-54073f3874bc@ixit.cz>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251210-fp4-cam-prep-v1-3-0eacbff271ec@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=LrCfC3dc c=1 sm=1 tr=0 ts=694163d7 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=6H0WHjuAAAAA:8 a=7PjLcmBxODYuNRU7m5cA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-ORIG-GUID: XTv-Pt9BNQ0IO13H3QzdZAYG0TSuskuF
-X-Proofpoint-GUID: XTv-Pt9BNQ0IO13H3QzdZAYG0TSuskuF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDExOSBTYWx0ZWRfX84cAHMJe/RDO
- Z2DxYLOPgSuUUsCWEkkKvugRpLaWvJ1aPOopo8CgIyXvfJ4X0701U+saiojuJhzwd3ZvKkToSTT
- /LGgD67F5qYbAU910XPEfYPR8c8iOdH922UkEUJymrT86oS6ej09ZRoM8FghbsgIZiDxGV7rAdF
- SPaHd7/LzUlkPyJyOJNWrryfeP6YdMpv+lt+ADUVxuS5o/OrM2PC4K5EuNoK8umca+JC7Z2CNAp
- FjquER5kf/hy/rVV9ZsV1MQk8S5DQ/nBeFql46BxNgHZmeh5NwoYuqOdMFssdRfO2QtWva377Pd
- Jam0XUIxjZUje2Z6/EDVuGLQ5oc/a54/ug20Ev9Hp+06ZKSJTc8zfV2AX2Vz407MUakhCyeZUaI
- W401hlilAYJ1Auke1vwM95mrd/D+FQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_02,2025-12-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512160119
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20251113-op6-tri-state-v8-1-54073f3874bc@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 12/10/25 2:05 AM, Luca Weiss wrote:
-> Add multiple fixed regulators that are found on the phone, which provide
-> power to the cameras.
+On 13/11/2025 17:02, David Heidelberg via B4 Relay wrote:
+> From: Gergo Koteles <soyer@irl.hu>
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ABS_SND_PROFILE used to describe the state of a multi-value sound profile
+> switch. This will be used for the alert-slider on OnePlus phones or other
+> phones.
+> 
+> Profile values added as SND_PROFLE_(SILENT|VIBRATE|RING) identifiers
+> to input-event-codes.h so they can be used from DTS.
+> 
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+> Tested-by: Guido Günther <agx@sigxcpu.org> # oneplus,fajita & oneplus,enchilada
+> Reviewed-by: Guido Günther <agx@sigxcpu.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 40 +++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
+>   Documentation/input/event-codes.rst    | 6 ++++++
+>   drivers/hid/hid-debug.c                | 1 +
+>   include/uapi/linux/input-event-codes.h | 9 +++++++++
+>   3 files changed, 16 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> index c2f856a56b2b..0cfb24e3941d 100644
-> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> @@ -246,6 +246,46 @@ active-config0 {
->  			};
->  		};
->  	};
-> +
-> +	vreg_32m_cam_dvdd_1p05: regulator-32m-cam-dvdd-1p05 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "32M_CAM_DVDD_1P05";
-> +		regulator-min-microvolt = <1050000>;
-> +		regulator-max-microvolt = <1050000>;
-> +		gpio = <&pm6150l_gpios 2 GPIO_ACTIVE_HIGH>;
 
-It'd be useful to also explicitly describe the pinmux/cfg states
-of the PMIC pins, since these can be a little surprising at boot
+Hello Dmitry, can I count this one reaches Linux 6.20?
 
-Konrad
+Thank you
+David
+
+-- 
+David Heidelberg
+
