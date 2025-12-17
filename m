@@ -1,244 +1,223 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF205365A09
-	for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 15:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C93327202
+	for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 18:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985291; cv=none; b=dH1qxm76KwsDV2YG4/pzUZ4/dCRzlNUNy9ZvPSX/mV0aStoJ70YNcfpvcGglaJK/Qu6kuWDaR9uyY8O5krZjoar0tsSW9RH79Qx/j1wZNe81E24WFJf7Lj1oTVmJ9t82b1nWP2tGkRw6l4Ad1k3fS38WCiAV/SQ650vHaUt9ZbA=
+	t=1765995276; cv=none; b=JpAaN22L/OTFr++EIwi75kzsn9m2PVvS6XynYw2fKkxVlp4FrwMlQUKpEB3YlminDHl4KyzlQmJS61hAbuek5Elr84k/1wkwllxdYabAKuVDlwMg9AO0Dr+QTOW1+/DsGdKbyB0KAo7VZ2W1ghUc+BuX7EKiQXekQIVt2NrWgNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985291; c=relaxed/simple;
-	bh=vS5+QGMhJqTRxwmGixf3B1LtkbQB7ZugwrDt7jvSwIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HVINnbXtUGSmCj/4L43nVG8Y3hmEwTBcf6KzE2NlQs1Ylyl5kGIpnHMg6M7am/wBKez8pAV6jbR6BrUpm0ycwqaOr7aGNuCH+KTIzRcpSankncbl89a7PHoig9F5WjcmYtZ/5B3qcMhtFXHlvg1Nw4leXa7r7RVT7Fw/R8CgtQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lh3QtnEj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZdaZT/SV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1765995276; c=relaxed/simple;
+	bh=K15nuZjaTiUBVKSXtUhPDvjMT3AwbGOD/SO+UT+RLk0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UwoAk+PjzvUOscwWVQQLsAV/6xbZWhxo4GTPYFk+7duXdSObf+T+LhL3vcqMDNQZ9GpzvtR8O9CisZ8K5rOpoPb2kJbfXxRYY5dA5rl7qYeq7wRzkTOHoWZQOZM1AJR2mnZkVSQ7suoAfB9g+jxh3JS2PyuyVPm1XX14pum2PoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O7pS1ZSW; arc=none smtp.client-ip=209.85.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lh3QtnEj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZdaZT/SV"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHCKnpS2042713
-	for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 15:28:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	NpvxrAGKgOQQiuwNm3XoE1ZgU+P+KY6K4nV1l37VaBo=; b=lh3QtnEjO5uRQCtF
-	uFnxIsyXTPhpuU+pkhgQw1Pnsc9ys/7hLvjsdAr2cJx02hsZ4saAqR2JV01Gpw7t
-	RaoW5Fid69HAJqmOWUn4eTFpHM71BruTdebKDlrEwp4tDlhmuYtdmnxN1JmAVRTN
-	1lM/s9zWQdAy0fcOO/q6p2LrIXeDtExAHweYhXHhZkjAKxyneh66RoV6kSHpf+v5
-	AvDGog8+UTNJwk7TKbdwf1lHuHoN0jwRRksXJMxA8Iyg8LvEUSiAP2tbx0ICxuad
-	1Y/GUWKmk5Wi2x8xExrCs2aS251WZgjRniYf2YQAPw9CgWqVH/h2F0XKUT/w6bEK
-	YX5wEA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3fj1txmv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 15:28:08 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ede0bd2154so19629111cf.1
-        for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 07:28:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O7pS1ZSW"
+Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-64175dfc338so9105474a12.0
+        for <phone-devel@vger.kernel.org>; Wed, 17 Dec 2025 10:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765985288; x=1766590088; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NpvxrAGKgOQQiuwNm3XoE1ZgU+P+KY6K4nV1l37VaBo=;
-        b=ZdaZT/SV64uzOUBsdULUozLOk4m/0oqe4XR6mmKNbjh+wGB/G3nvKcBGHsywCyNZC3
-         6wnZcMd4LkqD6ADnohQqPxY9q+m9OZ/UzUUATcQZ6R+f4X5BoM5Ub+Ln97C2vei4WcYz
-         DzjFgFRQVp64d8oFRncDXhBvQBjrj6uAz9lFEqwD9j/WkCeID1mMpuwn0odo9vhC0Ufb
-         zbB7B7ca/1m5k6KSiAhBSG35KTvTFAlO8wTsbTo6Q20FXT+zpqsJimRZodsBmJgYBEW8
-         ZxZH20IbRz4bUsO+Xc8TnrYrwEJI45ag8nljEvZcVItUcC4fJrahUOZlFK8kwF20ZxUn
-         4TeQ==
+        d=gmail.com; s=20230601; t=1765995273; x=1766600073; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VbVikF+2G1b3d7XO038cFmze5WHGBBZWgyB+3vlCP44=;
+        b=O7pS1ZSWIOJDyPqRS1/ZKwWa/vaVFBZb1quTM0M1/jn69zG7HtnJd1CzSEJl52lORy
+         ZaUmsvYsJ5v8ePHhxs/GQfQ2aRkplv+xXb3WT92vASgI/crapJ3ouzzE/SM+iETl+GaJ
+         9gtr8ec+MkRObbofkmQjwwjZYokrynXgj5HZz048WqbguUz2yt4Vb3+NWU47o60ZROxZ
+         0tGABTOrMxj1jJM7bPwZpqRo3iH7e1ElglEqJdMGIhuUnOWW7vAq4Pf9Qb5ern2wwh6z
+         Qx7navV4pumQfi+p8MKG9XlLNdSNnmAWYmeQnU0xyPxk06PjKb0dNLIFDmhZDCyfgj5d
+         PErA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765985288; x=1766590088;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NpvxrAGKgOQQiuwNm3XoE1ZgU+P+KY6K4nV1l37VaBo=;
-        b=U2frzKDW0Rq034YXaTpbYsEUK5h+1HMzRA8RCkDlSZm9XVG7IuMKiRgC7yac/XMr6w
-         UkL/WoLPZh/Cy1QVxQwm9ppCCXuogoaXJHz/xgkHmNeqdS12UhmQCWGPsiN6Dkk0IGrs
-         lQBQ+OWk2OO2ev2w3JnmxUGdHi4emu6zHGfEDFzO/UudOg3TjwyKR+jj9TZq3VBbRIFx
-         yhqUeBOcDPWU14iwxP0428gqKVLgSfMBmTBhB08rsORtLgJSG3S84FW7iu9EOGXfGMGg
-         GScrvEq6R59c4+dWAFt6be9OyuahoAaD44AKme7ZEKJoSlDLzyYESxfXH/LahSrzSOYm
-         GSDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIazrQ5dP5CnxcSHKRQDMXPgZ7ODvCIcx9+QRHB+S1iXa4n5knzkMjf0y68bs7tNW+rPcEYE2e3L5RzA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF8kH67/AVMaYyTcKXBb3o/R4+uJeVREewC841YjBWND8tDPhe
-	LZ+hoo9MdvyPfuAc097sZNPZ+afuv9J+XdEBZTwnBq6e7QrZTt0qr59Q66DiYOR48hzHD03pvIH
-	fEsStBvzFH9MqkGW039tQMjiTqF290/hacuvyz4xHePYQT02ejCNsXtOYmDzjNwmJkQ==
-X-Gm-Gg: AY/fxX47mqfHj+bSGYxQAeIaNq3zMoEKvRnZHJV0e5T2EhnF448R8vqM+I42EaPbIK9
-	G+YzuSvVV3tAKRQ7w1j18D8wObYhkj9k5vykXuFO8XTef4JdqWDkK48EssDQnOwNi6fSl2LDB26
-	0nL1WNlopB/6K/3QPygvKmsEDjFRR54fBW/OjRJ29pDsmmLTqyv5U3jtsZUTRHqNMeYGEfHybLs
-	oHgHrqbsM4EzUrzVANPSAtuvZuKolAbL3l9n8QeTi4gluYyFfRmZOzqHiD7Savmy4AMHJC2wca5
-	iNFl4Ms3LHxavGiFfbO9AubiZrNQPqND7Ndt5/ErCfiM/kVxDgw5JzpvidGfZ0kZZInsyuI/E54
-	GlBHWhUA3P4/HmHY/FxeOWGBZy7aj2nhJxkq72epBj+vUmzpA3FwO66/UwcqKxTt98g==
-X-Received: by 2002:a05:622a:15ca:b0:4ee:87e:dedf with SMTP id d75a77b69052e-4f1d06108d3mr186906731cf.8.1765985287948;
-        Wed, 17 Dec 2025 07:28:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQYxBozUDpQ8zpkUoU2aSZ8eRnOyZoPy/cVs78PuFM8EGLqXffXzVf5Xsu375vNciuAlo7fg==
-X-Received: by 2002:a05:622a:15ca:b0:4ee:87e:dedf with SMTP id d75a77b69052e-4f1d06108d3mr186906391cf.8.1765985287417;
-        Wed, 17 Dec 2025 07:28:07 -0800 (PST)
-Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b3f584800sm2692758a12.30.2025.12.17.07.28.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 07:28:06 -0800 (PST)
-Message-ID: <5f1282b2-2447-4ce8-a943-90c88e7f5835@oss.qualcomm.com>
-Date: Wed, 17 Dec 2025 16:28:04 +0100
+        d=1e100.net; s=20230601; t=1765995273; x=1766600073;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VbVikF+2G1b3d7XO038cFmze5WHGBBZWgyB+3vlCP44=;
+        b=mMfpK4Eq3oc+jR0+PMHf5UDAD2kQ6+17shuPir47hDCsMXofINLt9G0sUK89aovy+h
+         TwvknBIt/pCKh1HnT2Txog8P1JK3LuoVjsk1ZRg4zvaRQ89w+KN0cSCxwHsKu124YowY
+         i7mhIhwqhixWmMjTxoW0gKz6bp1qSGXwSGWSzrEox/u3blRqAQkUZR5BmD590/hmL+sJ
+         1qjantpgmHyCp1PqYfjCzKKxLWOpw43vFC1mMkaCNeDwHD4LM8Adii55qLQwwo45U2vv
+         6lTBDNUxexKUiNhT6SPXgHAOyeNu4Q7EsyC9WuUSNEwE3NUsFf+Kyo8PNNWDD0JAvP3Y
+         Ju3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUqD1IgagfHZ5MA1KBGbh9UBSlA0EHCCTg4wWsbvOaZyfTiiAjzR30BuTIpXgK8avXhDkPjSaibSk+pDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW0QVRmyTvh0VQg45NnQ6BwTg32ORPwESQqUHHDUBTUVr5wjjM
+	/duSoLVSMloy5aDjvP2a8vHkCUhwcqlUpAx/ILNcvOxuvsY/KKGj0nIC
+X-Gm-Gg: AY/fxX6WgqBMObnfsiS/De2hWPw4p5X7fW463eSRw7Z/GFayOo2tLj9P0zXJI0EcKH+
+	W5oeyPQlkt50bA5OAlLTOOW4b5vmSoLFpSAlvGBW5DC5DQKR7WPV2QD1g5LnTJ0aBLKZMC0cHhH
+	0fFluEVZx4BPsZQ61J+1EVOd8qEVVlWWhal7rrUU1z9+EcmqVDmCoE6l8vPBR3gRe0YDGW3DL2s
+	xdR3H05KFHxysvt3clunnkKICgSph01TKnOIvpFiFUgoSmswoZVvbKiW6ABJg5AsyZlCyC61eBA
+	replYP977L4ZU8k+lR/+1E94f7V8VIfnZlVJBMPkj02vcrC3eh9HUumlWf0vBHoEy7sSoqM4oRK
+	kI3B5J+eKppofVWwcLPVEFzxY3clZsLLIdxKZTFX5kLc5vYDzh8WDI4kPUc2kUr9umxGAym3EDR
+	BwOieeiwn0bNjPKrEInmfcOyaTGGMtQ8jF2Wxhmgx2kCgKPTDL5bQOJMy6i4Dk3kSm
+X-Google-Smtp-Source: AGHT+IFj3TCyaBMkYZdzStRuIRqQZOLqF7ec/I58OPcphVai+0kRlE2QbnpuALvqaq35kB4vGBD2QQ==
+X-Received: by 2002:a05:6402:1446:b0:640:3210:6e48 with SMTP id 4fb4d7f45d1cf-6499b16a78emr16792502a12.4.1765995272511;
+        Wed, 17 Dec 2025 10:14:32 -0800 (PST)
+Received: from Radijator.localdomain (93-140-155-17.adsl.net.t-com.hr. [93.140.155.17])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b5886d3d4sm152344a12.19.2025.12.17.10.14.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 10:14:30 -0800 (PST)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
+Date: Wed, 17 Dec 2025 19:14:23 +0100
+Subject: [PATCH v2] leds: expresswire: Fix chip state breakage
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-oneplus: Enable known blocks and
- add placeholders
-To: David Heidelberg <david@ixit.cz>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20251216-placeholders-v1-1-d7d544200e7c@ixit.cz>
- <f3ad33e4-1924-4a8e-8fe0-56487ea2c872@oss.qualcomm.com>
- <5199fe6a-550a-4366-bee2-d4ab08ed248b@ixit.cz>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <5199fe6a-550a-4366-bee2-d4ab08ed248b@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDEyMSBTYWx0ZWRfX6iFs/oRQckiJ
- 2nYc8m2Q/NNTiwtb64A6eDumSdSDy+a68lKuY17MLCCmosaPF/jQgHeD5YMcyPLF42eFN2/M+xG
- WdWPyVc/k4042pF218RXUA8p1TF7INRLQPYE8oEPxS3Q+kzG3WbpZFAK5YzpwajWhN47Dw4Fbmo
- WV/nOF40VmA4cmEgw6vEp4Q1MkLWCAGPXv38zbJLRAHRUHYG+ZQJQLk+lO91r1GktMgJgnVj9sv
- 54335aTeK9QRLCtv6AllhRvrvoPWNeu13I3BmbtC/zOkSrRpIrUBA+bQQkTN5Jb70DObU3GLFTf
- tlJ5cufTaJ3cOlD2/UWTjKWxGzvSQNLb4KnhMpAcJRyOMDFQHXYrHfPVk5LBWNiHUE37bZJyZpZ
- fGhFIaKkqUzgx5shwEfyWJgTy9rH3w==
-X-Proofpoint-ORIG-GUID: wBy2IZSRR5dLxEN1paxFHmPl0aQf-q6A
-X-Proofpoint-GUID: wBy2IZSRR5dLxEN1paxFHmPl0aQf-q6A
-X-Authority-Analysis: v=2.4 cv=edgwvrEH c=1 sm=1 tr=0 ts=6942cc09 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=p0WdMEafAAAA:8 a=6oNqwxbLjnVaV5MYmCcA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_03,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
- adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170121
+Message-Id: <20251217-expresswire-fix-v2-1-4a02b10acd96@dujemihanovic.xyz>
+X-B4-Tracking: v=1; b=H4sIAP7yQmkC/3WOTQ6CMBCFr0JmbQ1tQ4OuvIdhUaeDjIlgWq0g6
+ d0d2bv83sv7WSFRZEpwrFaIlDnxNAqYXQU4+PFKioMwmNo0dWsOiuZHpJTeHEn1PCvnbNAXi9Z
+ 4D5ISV+St8dwJD5yeU1y2gax/6v+urJVWfYstOh8cNv0pvG50ZzkyZcb9vHygK6V8AXq18CK2A
+ AAA
+X-Change-ID: 20250829-expresswire-fix-663d1b3c32aa
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4518;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=88T4mkMcx1ShNFI4rFzfnyovyPLWzXoaZQkJnadZHJY=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDJlOn1kPXbT4s1472WKZyw3dpe2Jh4qWaE3qW/nhToHIL
+ ZWPHlK7O0pZGMS4GGTFFFly/zte4/0ssnV79jIDmDmsTCBDGLg4BWAiV84zMjx5bX7ygW2PwbN7
+ CVXdOkYWfIssXnzmXPvG6OtWsSSFOdMYGRasKVkneSLe1OvV9r8rfQ4u/ik/4QurQUNA1+KpJfe
+ 9mTkB
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-On 12/17/25 4:00 PM, David Heidelberg wrote:
-> On 17/12/2025 13:04, Konrad Dybcio wrote:
->> On 12/16/25 9:34 PM, David Heidelberg via B4 Relay wrote:
->>> From: David Heidelberg <david@ixit.cz>
->>>
->>> We know these devices are present; most of them are supported by
->>> downstream and are close to the mainline kernels.
->>>
->>> This adds placeholders for:
->>>   - front camera (imx371)
->>>   - rear cameras (imx519, imx376k)
->>>   - actuators
->>>   - NFC node on i2c3
->>>
->>> This is very handy when rebasing the integration tree with
->>> support for multiple different blocks at the same time.
->>>
->>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>> ---
->>
->> [...]
->>
->>> +&i2c3 {
->>> +    clock-frequency = <400000>;
->>> +
->>> +    status = "okay";
->>> +
->>> +    /* nxp,nxp-nci-i2c @28 */
->>
->> This seems fairly straightforward to enable - could you just
->> do that instead?
-> 
-> I have patch for it in-tree, but most likely not correct. See notes in:
-> 
-> https://gitlab.com/sdm845/sdm845-next/-/commit/eeb765bb1166e020a771ed712fec76b56da229ee
-> 
-> For now, I can only confirm the device is on the i2c address.
+From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Taking a look at just the names of the sdm845-qrd.dtsi/sony modifications for
-their sdm845 phones in downstream which I presume have the exact same chip anyway:
+It is possible to put the KTD2801 chip in an unknown/undefined state by
+changing the brightness very rapidly (for example, with a brightness
+slider). When this happens, the brightness is stuck on max and cannot be
+changed until the chip is power cycled.
 
-notes based on observation and driver (drivers/nfc/nq-nci.c)
+Fix this by disabling interrupts while talking to the chip. While at it,
+make expresswire_power_off() use fsleep() and also unexport some
+functions meant to be internal.
 
-        nq@28 {
-                compatible = "qcom,nq-nci";
-                reg = <0x28>;
-                qcom,nq-irq = <&tlmm 63 0x00>; // interrupt, duplicated below
-                qcom,nq-ven = <&tlmm 12 0x00>; // voltage enable, ACTIVE_HIGH
-                qcom,nq-firm = <&tlmm 62 0x00>; // firmware download, ACTIVE_HIGH
-                qcom,nq-clkreq = <&pm8998_gpios 21 0x00>; // clock enable, INPUT
-                qcom,nq-esepwr = <&tlmm 116 0x00>; // eSE power enable, ACTIVE_HIGH
-                interrupt-parent = <&tlmm>;
-                interrupts = <63 0>;
-		[... blurb ...]
-        };
+Fixes: 1368d06dd2c9 ("leds: Introduce ExpressWire library")
+Tested-by: Karel Balej <balejk@matfyz.cz>
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Changes in v2:
+- Update trailers
+- Rebase on v6.19-rc1
+- Reword commit message (fix grammar errors, simplify text)
+- Add Fixes: tag
+- Link to v1: https://lore.kernel.org/r/20250829-expresswire-fix-v1-1-f8c8c6ad6c5f@dujemihanovic.xyz
+---
+ drivers/leds/leds-expresswire.c  | 24 +++++++++++++++++-------
+ include/linux/leds-expresswire.h |  3 ---
+ 2 files changed, 17 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/leds/leds-expresswire.c b/drivers/leds/leds-expresswire.c
+index bb69be228a6d..25c6b159a6ee 100644
+--- a/drivers/leds/leds-expresswire.c
++++ b/drivers/leds/leds-expresswire.c
+@@ -9,6 +9,7 @@
+ #include <linux/delay.h>
+ #include <linux/export.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/irqflags.h>
+ #include <linux/types.h>
+ 
+ #include <linux/leds-expresswire.h>
+@@ -16,37 +17,41 @@
+ void expresswire_power_off(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value_cansleep(props->ctrl_gpio, 0);
+-	usleep_range(props->timing.poweroff_us, props->timing.poweroff_us * 2);
++	fsleep(props->timing.poweroff_us);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_power_off, "EXPRESSWIRE");
+ 
+ void expresswire_enable(struct expresswire_common_props *props)
+ {
++	unsigned long flags;
++
++	local_irq_save(flags);
++
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.detect_delay_us);
+ 	gpiod_set_value(props->ctrl_gpio, 0);
+ 	udelay(props->timing.detect_us);
+ 	gpiod_set_value(props->ctrl_gpio, 1);
++
++	local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_enable, "EXPRESSWIRE");
+ 
+-void expresswire_start(struct expresswire_common_props *props)
++static void expresswire_start(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.data_start_us);
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_start, "EXPRESSWIRE");
+ 
+-void expresswire_end(struct expresswire_common_props *props)
++static void expresswire_end(struct expresswire_common_props *props)
+ {
+ 	gpiod_set_value(props->ctrl_gpio, 0);
+ 	udelay(props->timing.end_of_data_low_us);
+ 	gpiod_set_value(props->ctrl_gpio, 1);
+ 	udelay(props->timing.end_of_data_high_us);
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_end, "EXPRESSWIRE");
+ 
+-void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
++static void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
+ {
+ 	if (bit) {
+ 		gpiod_set_value(props->ctrl_gpio, 0);
+@@ -60,13 +65,18 @@ void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
+ 		udelay(props->timing.short_bitset_us);
+ 	}
+ }
+-EXPORT_SYMBOL_NS_GPL(expresswire_set_bit, "EXPRESSWIRE");
+ 
+ void expresswire_write_u8(struct expresswire_common_props *props, u8 val)
+ {
++	unsigned long flags;
++
++	local_irq_save(flags);
++
+ 	expresswire_start(props);
+ 	for (int i = 7; i >= 0; i--)
+ 		expresswire_set_bit(props, val & BIT(i));
+ 	expresswire_end(props);
++
++	local_irq_restore(flags);
+ }
+ EXPORT_SYMBOL_NS_GPL(expresswire_write_u8, "EXPRESSWIRE");
+diff --git a/include/linux/leds-expresswire.h b/include/linux/leds-expresswire.h
+index a422921f4159..7f8c4795f69f 100644
+--- a/include/linux/leds-expresswire.h
++++ b/include/linux/leds-expresswire.h
+@@ -30,9 +30,6 @@ struct expresswire_common_props {
+ 
+ void expresswire_power_off(struct expresswire_common_props *props);
+ void expresswire_enable(struct expresswire_common_props *props);
+-void expresswire_start(struct expresswire_common_props *props);
+-void expresswire_end(struct expresswire_common_props *props);
+-void expresswire_set_bit(struct expresswire_common_props *props, bool bit);
+ void expresswire_write_u8(struct expresswire_common_props *props, u8 val);
+ 
+ #endif /* _LEDS_EXPRESSWIRE_H */
 
-   pm8998_gpio_21: pm8998_gpio_21 {
-                pins = "gpio21";
-                function = "normal";
-                input-enable;
-                bias-pull-down;
-                power-source = <1>;
-        };
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20250829-expresswire-fix-663d1b3c32aa
 
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
 
-        /* GPIO_62: NFC_DWLD_EN */
-        sdm_gpio_62: sdm_gpio_62 {
-                mux {
-                        pins = "gpio62";
-                        function = "gpio";
-                };
-
-                config {
-                        pins = "gpio62";
-                        drive-strength = <2>;
-                        bias-disable;
-                        output-low;
-                };
-        };
-
-
-        /* GPIO_63: NFC_IRQ */
-        sdm_gpio_63: sdm_gpio_63 {
-                mux {
-                        pins = "gpio63";
-                        function = "gpio";
-                };
-
-                config {
-                        pins = "gpio63";
-                        drive-strength = <2>;
-                        bias-pull-down;
-                        input-enable;
-                };
-        };
-
-
-        /* GPIO_12 : NFC_VEN */
-        sdm_gpio_12: sdm_gpio_12 {
-                mux {
-                        pins = "gpio12";
-                        function = "gpio";
-                };
-
-                config {
-                        pins = "gpio12";
-                        drive-strength = <2>;
-                        bias-disable;
-                        output-low;
-                };
-        };
-
-Konrad
