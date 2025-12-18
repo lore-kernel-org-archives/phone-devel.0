@@ -1,86 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C69221F12;
-	Thu, 18 Dec 2025 03:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA77128371;
+	Thu, 18 Dec 2025 08:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766027032; cv=none; b=fD96/HLP1GcIe4rbX046aV1bVWIgRV/D2cOTEOjZrJZGeGfTSxRHs9xpZHQyutkztkxI50J6MUbXhsqFM5hbtRnIoRjgpmgsWoM93/yvmwIa+LIp948YeqcncdXcPkQev2ySHGmQS9dvOOmHR4lnDGqjqvmDRvPMnyNco6iVXGE=
+	t=1766045413; cv=none; b=Y/xVTrQX2Besu9V55qyyw0fhy70boAkvuGLQSeg5Lr1QKDqMMqKUqvhVN875T+VBlaiu83ywgI5/oXMj7hjN2rMlDtgEqfMfC+ZIsjhvC90aWAY7el863ncVKkh2qU4DBp4lyItzkrAy4dns9wgU1d/6kXSe8a20s7CUdyD4II8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766027032; c=relaxed/simple;
-	bh=sng7GYF4rSHur+dVCcJWfgiPkVznmDfRvjDEJrTRqKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z3ii4HBie1fjhMLdOD73Xj89LVTjWQiFosXxPBGuyFJmoba7zGSSYrtENVoe5B9EMxLgD0mJUP2AY7skUpMYxigtjCWn/mZB5dFj6pyXbvhVVa9dLZjy1KfnwUybAd+fzcKSIB4RfbaQnF3F+ZpWEttiyhxQgLkhEugG/1THG3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cM8bBr2m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766045413; c=relaxed/simple;
+	bh=1kawf6/eHWUgOrQBkscyWGShgWyUf9Rvwpy3U+sycYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bp54sLc+afz/B/T1ncnhq5002XjyvOYF+DmdbU92aS9tvG2bHtlm2cwAwOJelQ5eJRhpqlowrJAReGvUzON3oGWlmKlaXCaWeCssjnvqlJdQijFfbQ5z2/oDryhTUoSwfX3Vm5omBp92A0XzKfaSKyrLT6RvVXCJy+cIGG/4QZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7lIiraF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cM8bBr2m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E68C19422;
-	Thu, 18 Dec 2025 03:03:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7lIiraF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5826C4CEFB;
+	Thu, 18 Dec 2025 08:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766027032;
-	bh=sng7GYF4rSHur+dVCcJWfgiPkVznmDfRvjDEJrTRqKo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM8bBr2m6U5CJEpLEd5HcOKyDCCmdCAej3O+FVA9mLqmn9B/Wzlg7MoOc/v8KbLoC
-	 8xhw9B6hmqhhThSTaYb5i0clMDQaKsRyYXA8PsqxWukBjgfBjs4Xi/LO1hn/mmiZP5
-	 029U9zzPaDSt520HSfJlUJmeTWUKSbeOQBp+ym8woJ2aXs+T6eRXvj4Eic2lzyIa4c
-	 YuchaOn+yr1IXiTmh2a4DeImbP9b1kGpHktdkpljRZw+v4Fz3tpWCG24ovo4ABoimJ
-	 EQLkuXsNi81Q4i/uF4HBVtElu1CZtlj60m4ZdYWwVZO3VQ65RVUgDYH/ZFe1KV5V2W
-	 P2kBvSx3m41dw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jingyi Wang <jingyi.wang@oss.qualcomm.com>
-Cc: aiqun.yu@oss.qualcomm.com,
-	tingwei.zhang@oss.qualcomm.com,
-	trilok.soni@oss.qualcomm.com,
-	yijie.yang@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Tengfei Fan <tengfei.fan@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v4 0/5] arm64: dts: qcom: Introduce Kaanapali platform device tree
-Date: Wed, 17 Dec 2025 21:11:51 -0600
-Message-ID: <176602747928.229487.1894524352438355859.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251215-knp-dts-v4-0-1541bebeb89f@oss.qualcomm.com>
-References: <20251215-knp-dts-v4-0-1541bebeb89f@oss.qualcomm.com>
+	s=k20201202; t=1766045412;
+	bh=1kawf6/eHWUgOrQBkscyWGShgWyUf9Rvwpy3U+sycYE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E7lIiraFORtkaLk8lIRzlpyJUqtjWxCeECGyL1TuDB2kfAunHquRAnH4923U1NUEv
+	 UiTZaRSLkuzVAR0Dmr2DNnfAUFCu3uWIWgLETNWfFD2a9ZB+pEtGPxzeLK/NyO8Mbm
+	 xnbe3xayRrF6uAIQxqWaAKCzldu0qpIhpIEqJ5x7y4HYkWSFHLR3tv/74WGtbTfgkr
+	 KOahoWan1lEKmBkl1FB+KE7OS5VyJweyQP8BjQiUX7+cfAcoO8yLUdsvC6dYX2pbzM
+	 dNhhdQPwRlAlPXPpJdgmDBN3GTd1chqWahTfTMEFZrLTYCcXkRYkdsa8+yxkzwEr6O
+	 9o7NNP/gnKdow==
+Date: Thu, 18 Dec 2025 09:10:09 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Heidelberg <david@ixit.cz>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vikram Sharma <quic_vikramsa@quicinc.com>, Kapatrala Syed <akapatra@quicinc.com>, 
+	Hariram Purushothaman <hariramp@quicinc.com>, Richard Acayan <mailingradian@gmail.com>, 
+	Bryan O'Donoghue <bod@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+	Depeng Shao <quic_depengs@quicinc.com>, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] media: dt-bindings: Update camss VDDA PHY supply
+ description
+Message-ID: <20251218-amigurumi-adder-of-snow-76e343@quoll>
+References: <20251216-docs-camss-fixes-v3-0-c238b6810771@ixit.cz>
+ <20251216-docs-camss-fixes-v3-2-c238b6810771@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251216-docs-camss-fixes-v3-2-c238b6810771@ixit.cz>
 
-
-On Mon, 15 Dec 2025 01:07:20 -0800, Jingyi Wang wrote:
-> Introduce the Device Tree for the recently announced Snapdragon SoC from Qualcomm:
-> https://www.qualcomm.com/products/mobile/snapdragon/smartphones/snapdragon-8-series-mobile-platforms/snapdragon-8-elite-gen-5
+On Tue, Dec 16, 2025 at 01:24:51PM +0100, David Heidelberg wrote:
+> Usually, the supply is around 0.875 - 0.88 V. Include the information
+> same as is already done for more recent camss dt-bindings.
 > 
-> Add device trees for the Kaanapali SoC, MTP (Mobile Test Platform) and
-> QRD (Qualcomm Reference Device), along with the corresponding defconfig
-> and binding, providing initial support to boot to UART shell with UFS
-> enabled.
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
+>  Documentation/devicetree/bindings/media/qcom,sm8550-camss.yaml   | 2 +-
+>  7 files changed, 7 insertions(+), 7 deletions(-)
 > 
-> [...]
+> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+> index 4986d18d1a2da..5c47a2cf220fb 100644
+> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
+> @@ -126,7 +126,7 @@ properties:
+>  
+>    vdda-phy-supply:
+>      description:
+> -      Phandle to a regulator supply to PHY core block.
+> +      0.88V regulator supply to CSIPHY IP blocks.
 
-Applied, thanks!
-
-[1/5] dt-bindings: arm: qcom: Document Kaanapali SoC and its reference boards
-      commit: 725ba2d0e0b9ac1f0bc0c0c166db03201feaa203
-[3/5] arm64: dts: qcom: Introduce Kaanapali SoC
-      (no commit info)
-[4/5] arm64: dts: qcom: kaanapali: Add base MTP board
-      (no commit info)
-[5/5] arm64: dts: qcom: kaanapali: Add base QRD board
-      (no commit info)
+As I said, this is just a supply, not a "regulator supply". I gave you
+justification for this. This is completely unimportant but I just wonder
+why even that direct instruction has to be ignored.
 
 Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Krzysztof
+
