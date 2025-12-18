@@ -1,84 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA95D28D8DA;
-	Thu, 18 Dec 2025 15:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D136B2D0618
+	for <phone-devel@vger.kernel.org>; Thu, 18 Dec 2025 19:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766070265; cv=none; b=EPDOupEiFgeVkqLC05Axj7h87zfXqlFUSwXqNnfzYJIgdpAwmXBIzWutixBc3l+ZH8TWm8G8al+gPTbJNrZoxDAT2mFaDw10aVcwMsowTjxcLp/QSAJNBSVs4RWsXXXkLO95XVnURdENn3yYRixXbyIJLZGUTHvUzLCQFrODZh8=
+	t=1766085610; cv=none; b=acYhFzIWFKFjvbPGzrbJNjQPpI3uQgBhDR7C2WwUPAttC++nG+xIVPsBzrmK5sNkyyAruP9Zu3rjthXegCMXZiYOlvwFjeuEdihkfXb8wp7bIYyOsmlLBnfkl94F4rrGzgH5lrPG4XraevySDMQ76diiNkuPN1NTI7wzBatgnR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766070265; c=relaxed/simple;
-	bh=TZc9Hlw0J1rsEXQ0S3cg/4mmQeIULdQ8BsiItCa/0nA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hqzilOScAaDoYpUmbctEJgAwohQYjXvllMBfnyfxHWxi6dWY/75gmhINRHQ/SE8/VqbbFsq43yarshweGJIy8PtaJ99gu1SF+6w8EVkB5GMTUXj1WGncXv9pQrF43hDOkeGIq6O1q6hlVShiVlobG9nLKg1UAYYrrajcZBhOIvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=or0nf8VU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766085610; c=relaxed/simple;
+	bh=DPw3MEKEDTj6hhZJV240070qZUesK7eMmHDzezoTDnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fVfQ8+gpfYj1FI+mOm4RGFhNoxxrPt6ko0jfLHHQZoia+F63nAPH7Co50YzCo8slHHlgldkG/se+p1QJ3GAY41KtlfCvgWf4WBjWl8XMtM8SzUwJoxIkatktLGZ9rsC47iA6ZWwImMgCQi7eCKZHS5EA9hwg4SeVaaxihIQwiY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=grimler.se; spf=pass smtp.mailfrom=grimler.se; dkim=pass (1024-bit key) header.d=grimler.se header.i=@grimler.se header.b=ayQeIOYW; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=grimler.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grimler.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="or0nf8VU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191D4C4CEFB;
-	Thu, 18 Dec 2025 15:04:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766070265;
-	bh=TZc9Hlw0J1rsEXQ0S3cg/4mmQeIULdQ8BsiItCa/0nA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=or0nf8VUHQUtT3hN+QIH+SD1Wc1VA8wcJbvDGXZWaZcXFg3zv3BZRf//deLGRlaim
-	 ARFCW5RU3zVDBFANug05lEnQ/AUchMNl7jKOgB1w8w6A8JuWvpYOzPMcbW2Cd+WIeg
-	 xq+v1OtlKPkFufoRcGENo51C2qqIdoinAmghuVbdaZNfbN+WnKtXirXBnc0l3TKQfq
-	 3mH6aiIUstI7F4oO7pBuDlfrNTPLWZGWB3NOPQ3Gvz/NgR/wV1WilA50BPNRLwSnXZ
-	 zAw5NRmiGdkj1TxevR0h05Nxu3AgDeEC4202aHuOTfWpZadpQ5TDBHjSF31TVMobtI
-	 VXtrQA5BhsKjg==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jingyi Wang <jingyi.wang@oss.qualcomm.com>
-Cc: aiqun.yu@oss.qualcomm.com,
-	tingwei.zhang@oss.qualcomm.com,
-	trilok.soni@oss.qualcomm.com,
-	yijie.yang@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Tengfei Fan <tengfei.fan@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v4 0/5] arm64: dts: qcom: Introduce Kaanapali platform device tree
-Date: Thu, 18 Dec 2025 09:04:21 -0600
-Message-ID: <176607025911.302413.14359032773299957927.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251215-knp-dts-v4-0-1541bebeb89f@oss.qualcomm.com>
-References: <20251215-knp-dts-v4-0-1541bebeb89f@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=grimler.se header.i=@grimler.se header.b="ayQeIOYW"
+Date: Thu, 18 Dec 2025 20:19:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+	t=1766085588;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jMI8gahPCkzfyAYCyt7orDE3Hlig6obQSOnVubX38hw=;
+	b=ayQeIOYWIhuWrcl1GyU8FZ8BHEhQhUVd/Pw/svHsWCKBWgvEJNIymCmuaxZq4bYlXCavMY
+	+2JWoQDVXxj5qLtJNKgjsyeVtYjouI7V/IiDsneJK4ULcIFqa4EXnd5DnMnlZ61q6VCupa
+	Hml87eBKtAduyqvV/5JOJNL01d7J14w=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Henrik Grimler <henrik@grimler.se>
+To: Lukas Timmermann <linux@timmermann.space>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+	Alexandre Marquet <tb@a-marquet.fr>
+Subject: Re: [PATCH v3 3/3] ARM: samsung: exynos5250: Allow CPU1 to boot
+Message-ID: <20251218191944.GA63330@l14.localdomain>
+References: <20251215-lat3st-staging-v3-0-2e4914b64dd8@timmermann.space>
+ <20251215-lat3st-staging-v3-3-2e4914b64dd8@timmermann.space>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215-lat3st-staging-v3-3-2e4914b64dd8@timmermann.space>
+X-Migadu-Flow: FLOW_OUT
 
+Hi Lukas,
 
-On Mon, 15 Dec 2025 01:07:20 -0800, Jingyi Wang wrote:
-> Introduce the Device Tree for the recently announced Snapdragon SoC from Qualcomm:
-> https://www.qualcomm.com/products/mobile/snapdragon/smartphones/snapdragon-8-series-mobile-platforms/snapdragon-8-elite-gen-5
+On Mon, Dec 15, 2025 at 04:05:24PM +0100, Lukas Timmermann wrote:
+> From: Alexandre Marquet <tb@a-marquet.fr>
 > 
-> Add device trees for the Kaanapali SoC, MTP (Mobile Test Platform) and
-> QRD (Qualcomm Reference Device), along with the corresponding defconfig
-> and binding, providing initial support to boot to UART shell with UFS
-> enabled.
+> The firmware trustzone needs a special call to bring up the secondary
+> cpu core on the Manta board. This seems to be not needed on other
+> exynos5 boards and comes down to the available firmware on
+> a particular board.
 > 
-> [...]
+> Signed-off-by: Alexandre Marquet <tb@a-marquet.fr>
+> Signed-off-by: Lukas Timmermann <linux@timmermann.space>
 
-Applied, thanks!
+Reviewed-by: Henrik Grimler <henrik@grimler.se>
 
-[3/5] arm64: dts: qcom: Introduce Kaanapali SoC
-      commit: 2eeb5767d53f457913d2b378a3bd9e2269a4098d
-[4/5] arm64: dts: qcom: kaanapali: Add base MTP board
-      commit: 1cc3a0a0210697a25e96783cf21f93d28a09ebf7
-[5/5] arm64: dts: qcom: kaanapali: Add base QRD board
-      commit: 0e31dcfefd21ed76ff1b2d05647cd34336ab9772
+I had a look at the manta bootloader, but have not been able to
+pinpoint where the smc calls are handled. Nevertheless, Seems like
+manta might be the only Exynos 5 android device that needs CPU1BOOT. I
+tried to track down exynos5250-arndale's tzsw to compare with, but
+seems like it is no longer available anywhere unfortunately.
+
+Here's a summary of my findings from looking at sboot/the tzsw from
+various devices, where `CPU1BOOT SMC is handled == yes` means that the
+device needs the SMC call.
+
+.----------------------.--------------.--------------.--------------.
+| Device (exynos-)     | Similar tzsw | CPU1BOOT SMC | sboot/tzsw   |
+|                      | to odroidxu? | is handled?  |   source     |
+.----------------------.--------------.--------------.--------------.
+  4212-tab3            | yes          | yes          | T310XXSBQB2
+  4412-i9300           | yes          | yes          | I9300XXUGPE1
+  4412-i9305           | yes          | yes          | I9305XXUFPB1
+  4412-odroid{x,x2,u3} | yes          | yes          | wiki.odroid.com/_media/en/boot.tar.gz
+  4412-origen          | no           | don't know   | Linaro's origen hwpack 20130130
+  5260-hllte (SM-N7505)| no           | don't know   | N7505XXSDRI2
+  5410-odroidxu        | yes          | no           | github.com/hsnaves/exynos5410-firmware
+  5410-ja3g            | no           | don't know   | I9500XXUHPK1
+  5420-chagall-wifi    | no           | no           | T800XXU1CRJ1
+  5420-arndale-octa    | yes          | no           | Linaro's arndale-octa hwpack 20140323
+  5422-odroid-xu{3,4}  | yes          | no           | Hardkernel's u-boot 2020.01 branch
+  5422-samsung-k3g     | no           | don't know   | G900HXXU1CVG7
+
+As can be seen none of the Exynos 5 devices in the list have been
+confirmed to need/handle CPU1BOOT.
 
 Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Henrik Grimler
+
+
+> ---
+>  arch/arm/mach-exynos/firmware.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-exynos/firmware.c b/arch/arm/mach-exynos/firmware.c
+> index a5e22678e27b..e9b0ed07bb90 100644
+> --- a/arch/arm/mach-exynos/firmware.c
+> +++ b/arch/arm/mach-exynos/firmware.c
+> @@ -61,10 +61,10 @@ static int exynos_cpu_boot(int cpu)
+>  	 * Exynos3250 doesn't need to send smc command for secondary CPU boot
+>  	 * because Exynos3250 removes WFE in secure mode.
+>  	 *
+> -	 * On Exynos5 devices the call is ignored by trustzone firmware.
+> +	 * On most Exynos5 devices the call is ignored by trustzone firmware.
+>  	 */
+>  	if (!soc_is_exynos4210() && !soc_is_exynos4212() &&
+> -	    !soc_is_exynos4412())
+> +	    !soc_is_exynos4412() && !of_machine_is_compatible("google,manta"))
+>  		return 0;
+>  
+>  	/*
+> 
+> -- 
+> 2.52.0
+> 
+> 
