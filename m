@@ -1,39 +1,87 @@
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C28533D50E;
-	Thu, 18 Dec 2025 10:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDE032E6A8
+	for <phone-devel@vger.kernel.org>; Thu, 18 Dec 2025 12:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766053340; cv=none; b=sj7cgHMkTnmnu2c9sCJcpsetbObGtfhSSPUA+1zhRMWkxBcceoeN6D+2Sg2wz2iDXRSrV8If9rVxUP0ECfawFvLXwfb6o8TlTpfOXthuNg9fFurBaQv/1Lnq2qrdretimO1BG/U07TpblBe3OwLzfQ4Xq2fXXElrwFAZj5ghvek=
+	t=1766060763; cv=none; b=NW/Uje2GJcCYd1hFQnwT6zenFnvVcI7uH9QPuKWh7qWEpoWNOXhbjiqsJw5tI/5URCl1JDDiuAPxS/RcpqJ5zX8nXK8MtA9kwwGRew7HlYLuItIfWUQ6fqTAVDRt+lvJP5p08e9KVm9ehTNjy1F4Vk+/lmznHu7x4Anggxv3+MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766053340; c=relaxed/simple;
-	bh=nc63BXqVqo46QLxYdc6g3mibuTJmhbDOeeLRzL2PSjA=;
+	s=arc-20240116; t=1766060763; c=relaxed/simple;
+	bh=pKmU0fwG5vsNUByzsdzUiSnAznD5hFkczWB8RpIVjnE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qf2/wGRAebf/qK23y6qF8/cGlVnlCsQPDnRgrY5qzYT7C4A+pgcOJaX28QHE3DA8U4DqfrtaBxkF99YI/wFG7KdThr7Huesf85memwQ2VjpSKUNHpbGf9kC6211d7PCa3P02nVefitkxxMnVuajy04iK3w5pfLKvtHzGyN2tfZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=oSVBW1jN; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=Osqbnm4vNqII9F4bDanlEK0vZKhvXowIITzcRXgTbEz+3Kq9BffZ0iyQTEyRSoRHNB9F65kFpbcz8Mk3MFhVg+xHih4tx35z1MGuwwcs9Uq/3TV/3WaNXsQKs3/RUYyzgfm9uhagi1/NNC80xr5FV7EP6xrAY7WkQrNsJDMojEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eGKf7Hix; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WE10zUkP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="oSVBW1jN"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 0858B53404F0;
-	Thu, 18 Dec 2025 11:22:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1766053334;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K/irWSn37D7mYBIfiDTm/ffnnl0LzGlvS6Z3CI7fd+Q=;
-	b=oSVBW1jNcCRxqppbdoGB+Atz/YsRKLTbqw9rjhz3OaRaFmvtoRcfcfF7IyG+de3ApG3Li2
-	RWwO8OdZQArb9rG8EpswoGZVloPIQH2IcAPfSKMwnzPu6yQByJxuIKXW8saC6L2w/hJagP
-	+zyhZwnvuBu0WjS5Po96hASYfKhrORE=
-Message-ID: <6c3b9716-5f74-46cd-b3d9-ee5c3441c172@ixit.cz>
-Date: Thu, 18 Dec 2025 11:22:13 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eGKf7Hix";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WE10zUkP"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BI92Igc4058331
+	for <phone-devel@vger.kernel.org>; Thu, 18 Dec 2025 12:26:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	g1kei3VviQUzx7YE5/174xV34BfK+CaqS8GVwkzgtt0=; b=eGKf7HixctNSAkSt
+	UMWag1Py5IDuQYaD9Mvf9vZLBrscJoS0uzT7FdibRHY+sZc93cz7uWKYg93u+FBt
+	7Do+u3N9DqYTpi3s+Yz6CUWdpas7m46YzPT/ppXtqkqa4JTx2YtcpOz4hghhJRdP
+	n3q7MUWv8xLBVyFZCvfGdrT9G2Sg4DuiPImGgZ50soY0SOS9+/fjecvKPrDrAYjm
+	akEZucxJxdkcrrBUptZYcr8nYjaR5jjyHdVANjW40lmXa4OHkW7ev7ibuFohSOPF
+	jPro6m49qpoXb8FGVV0qsslnAomxYRW2V65jvTTGW1pMRAiuNvE96snxC4NaA/Zr
+	ODVWmA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3xr5bj7t-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 18 Dec 2025 12:26:00 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4f34b9ab702so1160231cf.3
+        for <phone-devel@vger.kernel.org>; Thu, 18 Dec 2025 04:26:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766060760; x=1766665560; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g1kei3VviQUzx7YE5/174xV34BfK+CaqS8GVwkzgtt0=;
+        b=WE10zUkPuS4T92xRxfHdsilyMJTdJQge0zHvPWu1evOLgUCBgTaT+hNyjjdf1wY08P
+         eSp/mjeCMXsqn3xt0ezOSMK/Po9sixXHZjsPdnX8GQ+K022JWxp1ZcnhF68W4mi2cl2s
+         kdZiL/PRAYRmOqL17s0DpCY/USsS04ka7YALQnG+i4VY7D9qNbl4RcT4NCdUetnj1n4m
+         NQIP80sN6AnGMuawHUJVxlI6mZEr/5OeI54NXkSPrFkkfDspjVu3ftx7KQIAO3FEFqUx
+         j/UJOAjcbNq7pKVnJYLf1M07SSomiDr/7KAsJT4nCPmSpHowczuU1wDPoqelifsUsGOS
+         SZFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766060760; x=1766665560;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g1kei3VviQUzx7YE5/174xV34BfK+CaqS8GVwkzgtt0=;
+        b=Nn070L99OzRboEEz5zBvTaTFEdfD1KUV5KnnxrofphVEZuGOIywf8gqI7sYuIk8qjM
+         iPWmbhdHZaGRzoNtXaHu8Gr166LrBObf/2ZjElGhlNz7lTo6mBRAz+ssFgqv0eiB4O0T
+         lPyanbbqMd3Wtp6bQeUFG0oHSQiyURO6ZAW7EyxNZcnKG8mRZP+6H+wMe54rvvNFxIgP
+         HfN4ygRRgjiWPE4VgKJm7oY/9J4vUUiPVCbBaRuoSXlF5kJRPx6WK6F21Dru+o8pgxy4
+         xgOwwFJB3BLH3e0DCgI53Kr2QJYd5Oa93YfB4kGdGDNmii7BlNnnCzMbh+51jpDRjlKE
+         OhAg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4i+EYZEhhEBrbgVi3UBj88VaFGKbFJIjwYcQ45+nVTSvL0Nh6qUDj/q3k6XCdw1BY+Icbc5swQkjpGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiahdLCd1sqrQs9agVVcib0GNafCupmVMfu96ZMxDdmy2juB03
+	WL1W9nLZRu3xAduQuxI3a+lbSHzepmk3CeZT3f++JzpsByCJP2zzNu2xI1mm5rhbLlCcMyPCNL7
+	g66J7tnTzGRTauXOKA47fzqPkd07YFqJ/vadzN/xeBcIgbtbqZUJaYkH4O69UvZMIYg==
+X-Gm-Gg: AY/fxX5ba7b7BCcCvFGXVNWNA+dHLUydS0DJwu4MwQTUTPgzqmQP2/OBxyVIELzvkpB
+	pn2ezhw/U2PlC6CTI9lJQTTlr8A9Ms8O2sT5C3hg1JfOluqPpvFZHyuwKJgIWu5bpTBzl3kxWOH
+	1nPAHgV7Jia9RS80TvF1t/W8Mj1v/EYF6AnUrkVn1jwoYHbOZo+WHF8GFwWCjnPZ7mkv7lKq6qY
+	p5BFTELA+m1oJ87szveL/X/bCZNVqthfZuhVXzlDhJwFNyVq6hHvjWXk2fg3nnlspdC/hKrWTxo
+	OUKehjM1AVTYjajUIecqca1BPuvLJVv4VW8XhGk+cdP31TsKyB7+wBXRR3IOGIRoVe/59zvi0xQ
+	HncGgTHwlQC16wbUfTYMOFyWnvgefFjUGIABlfawzgJnzMeqcslWdE/FfDwiSUptzIA==
+X-Received: by 2002:a05:622a:834d:b0:4ee:2339:a056 with SMTP id d75a77b69052e-4f36108e8efmr15386781cf.2.1766060760466;
+        Thu, 18 Dec 2025 04:26:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFGxOsD6vYrUp/zDUbJN3vsyK2mh6VD2QunVUUWpY5pcH2SGoXhlbu5E2ZPMIl+YBcRjc1A0A==
+X-Received: by 2002:a05:622a:834d:b0:4ee:2339:a056 with SMTP id d75a77b69052e-4f36108e8efmr15386441cf.2.1766060759889;
+        Thu, 18 Dec 2025 04:25:59 -0800 (PST)
+Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b588b0b3asm2410527a12.35.2025.12.18.04.25.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Dec 2025 04:25:59 -0800 (PST)
+Message-ID: <f86b483d-c674-4901-b2c8-19a535df4234@oss.qualcomm.com>
+Date: Thu, 18 Dec 2025 13:25:56 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,84 +89,67 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] Improve older camss supply descriptions
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vikram Sharma <quic_vikramsa@quicinc.com>,
- Kapatrala Syed <akapatra@quicinc.com>,
- Hariram Purushothaman <hariramp@quicinc.com>,
- Richard Acayan <mailingradian@gmail.com>, Bryan O'Donoghue <bod@kernel.org>,
- Hans Verkuil <hverkuil@kernel.org>, Depeng Shao <quic_depengs@quicinc.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20251216-docs-camss-fixes-v3-0-c238b6810771@ixit.cz>
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-db845c: Use pad fn
+ instead of defining own
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251217-sdm845-mclk-v2-0-7028c2d09145@ixit.cz>
+ <20251217-sdm845-mclk-v2-2-7028c2d09145@ixit.cz>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20251216-docs-camss-fixes-v3-0-c238b6810771@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251217-sdm845-mclk-v2-2-7028c2d09145@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: LrhGxnP1dtiklvxfqftmH70hGQclUWTS
+X-Authority-Analysis: v=2.4 cv=DsBbOW/+ c=1 sm=1 tr=0 ts=6943f2d9 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=e_nn8CCX7OWYOPDVI2QA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDEwMyBTYWx0ZWRfX/Njs6cJUmjVW
+ VN9vvWuuAf5ByZgyi/KJIEMKjP57Oigbae4DIezdSkKBU/M+PjlOFPTBWOvHPIxQbHABNIiwJva
+ uZWOIQtNXB3r6F3XitDmbAH6HdnPzbGW1sP8jVXM+e9GwiCgZU0KqjtOYzUYCVV3gHXc3iETa5D
+ UsvLWQjtoKvCBAaGQLSTbElHNjx/P5eg0GCjPiTjmf4zTeOP949zUEF8JJS+eHH8MHPdDmzyS8O
+ LfQd8ZjR3DBuBQDIKOUUX1C3jfJbr2suLYj9zS4zHi5KSvxikYNyY7Pa30M4IR/lw+8D6y9E8D3
+ OeQiyyCRDAqM1gzXVxj/1+CCysiMdNbVhiQEafAx7DtsIEXRUVrjd/qyPaNE4sdRlTf1KLZd1eA
+ AxBpwKGxEt7+myMWog6URG6wp1w6bg==
+X-Proofpoint-ORIG-GUID: LrhGxnP1dtiklvxfqftmH70hGQclUWTS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512180103
 
-btw. I looked at qcom,qcm2290-camss.yaml and if there isn't something 
-very specific about qcm2290, the supply may have wrong voltrage.
-I'll leave this for someone with datasheets (cc Loic):
+On 12/17/25 12:39 PM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> Instead of defining own pad function for master clock, pick one offered
+> by sdm845 device-tree include.
 
-   vdd-csiphy-1p8-supply:
-     description:
-       Phandle to 1.8V regulator supply to CSI PHYs pll block.
+I'm a little bitter about the wording - the pad function here is "cam_mclk",
+whereas what you're doing is inheriting a common pinmux/pincfg node that
+refers to that function
 
-as see on the mailing list the 0.8V example was given and changed to 
-1.8V, so maybe it has a reason, just making a note to be extra sure 
-while touching the docs.
+[...]
 
-David
--- 
-David Heidelberg
+> -		mclk0-pins {
+> -			pins = "gpio13";
+> -			function = "cam_mclk";
+> -
+> -			drive-strength = <16>;
 
+This patch changes the drive-strength (16 -> 2 mA)
+
+FWIW it's 2 on reference designs and Sony boards, check your
+downstream kernel
+
+Konrad
