@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3589F1DE3AD;
-	Thu, 18 Dec 2025 10:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C28533D50E;
+	Thu, 18 Dec 2025 10:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766052267; cv=none; b=tuxNQ7/zUhfqo+D3+YVmnazaJHgljgEeWstx/ODh3nQU6BJVjTSlqNjrMS1rN2QWXN7UsfUIlgBxt2/KttSw9sPztmAtshBhNOuF0TAm0gJyKvl/dYcu8Ohs0skJs2j9D/sPJ2q+TgP+73tdEbOmO+IDb+mAWHfvKziCa326FVo=
+	t=1766053340; cv=none; b=sj7cgHMkTnmnu2c9sCJcpsetbObGtfhSSPUA+1zhRMWkxBcceoeN6D+2Sg2wz2iDXRSrV8If9rVxUP0ECfawFvLXwfb6o8TlTpfOXthuNg9fFurBaQv/1Lnq2qrdretimO1BG/U07TpblBe3OwLzfQ4Xq2fXXElrwFAZj5ghvek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766052267; c=relaxed/simple;
-	bh=TxUlum7SkjqBF/sSg9gTED352+ADC55NbZgt0g3Ir4I=;
+	s=arc-20240116; t=1766053340; c=relaxed/simple;
+	bh=nc63BXqVqo46QLxYdc6g3mibuTJmhbDOeeLRzL2PSjA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k+JhKUiV3v0EmSNzqXLkRJfj0sk5Zsg5AgU3BBE4KVv9/pLuJLAAk3RxBcSEpYKNZiQKBDe7jE/5cV87ypBfeBrsV/hyv05cs8ws/C4LTMLFVz2EWSCAS88QSOKw+Ky2SOHviDEbfeiliVqgE9anVz5eiY2T1Nt22XOo0gs03fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=f54/ZzJk; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=Qf2/wGRAebf/qK23y6qF8/cGlVnlCsQPDnRgrY5qzYT7C4A+pgcOJaX28QHE3DA8U4DqfrtaBxkF99YI/wFG7KdThr7Huesf85memwQ2VjpSKUNHpbGf9kC6211d7PCa3P02nVefitkxxMnVuajy04iK3w5pfLKvtHzGyN2tfZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=oSVBW1jN; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="f54/ZzJk"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="oSVBW1jN"
 Received: from [10.0.0.200] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2BF975340CDD;
-	Thu, 18 Dec 2025 11:04:13 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 0858B53404F0;
+	Thu, 18 Dec 2025 11:22:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1766052253;
+	t=1766053334;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8l5P0XUgSnIo+g8uPjdtfk2ynK85bdk/6mgJVx0MUpQ=;
-	b=f54/ZzJkfA9PC5/yLTSj0YJ+IK2KnczOKOgeL1gl23KuNDh5nRBwA5WZaVcfEDmraZpkor
-	oUItVZgBpILpUVYXoxmrftGog5n8fLoB2gLSEKRo/FNoaoTKqeEx9snJ5LGIP7cDA99swb
-	7JlwLIvbnbXaiK2zF5wft4nsxl9et3g=
-Message-ID: <a25c4b25-6b7d-4e05-b8a8-546273fa4750@ixit.cz>
-Date: Thu, 18 Dec 2025 11:04:13 +0100
+	bh=K/irWSn37D7mYBIfiDTm/ffnnl0LzGlvS6Z3CI7fd+Q=;
+	b=oSVBW1jNcCRxqppbdoGB+Atz/YsRKLTbqw9rjhz3OaRaFmvtoRcfcfF7IyG+de3ApG3Li2
+	RWwO8OdZQArb9rG8EpswoGZVloPIQH2IcAPfSKMwnzPu6yQByJxuIKXW8saC6L2w/hJagP
+	+zyhZwnvuBu0WjS5Po96hASYfKhrORE=
+Message-ID: <6c3b9716-5f74-46cd-b3d9-ee5c3441c172@ixit.cz>
+Date: Thu, 18 Dec 2025 11:22:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,10 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] media: dt-bindings: Correct camss VDDA PLL supply
- description
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+Subject: Re: [PATCH v3 0/2] Improve older camss supply descriptions
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -54,12 +52,11 @@ Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
  Hariram Purushothaman <hariramp@quicinc.com>,
  Richard Acayan <mailingradian@gmail.com>, Bryan O'Donoghue <bod@kernel.org>,
  Hans Verkuil <hverkuil@kernel.org>, Depeng Shao <quic_depengs@quicinc.com>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20251216-docs-camss-fixes-v3-0-c238b6810771@ixit.cz>
- <20251216-docs-camss-fixes-v3-1-c238b6810771@ixit.cz>
- <20251218-fresh-fair-pigeon-aaeca0@quoll>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -105,62 +102,23 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20251218-fresh-fair-pigeon-aaeca0@quoll>
+In-Reply-To: <20251216-docs-camss-fixes-v3-0-c238b6810771@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 18/12/2025 09:12, Krzysztof Kozlowski wrote:
-> On Tue, Dec 16, 2025 at 01:24:50PM +0100, David Heidelberg wrote:
->> Usually, the supply is around 1.2 V, not 1.8 V. Rather remove mention of
->> voltage from the description.
-> 
-> You did not remove the voltage. Anyway, both commits should be squashed.
-> 
->>
->> Fixes: 849139d46d09 ("media: dt-bindings: media: camss: Fixup vdda regulator descriptions sdm845")
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml  | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sc7280-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sc8280xp-camss.yaml | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sdm845-camss.yaml   | 2 +-
->>   Documentation/devicetree/bindings/media/qcom,sm8250-camss.yaml   | 2 +-
->>   6 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
->> index 019caa2b09c32..4986d18d1a2da 100644
->> --- a/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
->> +++ b/Documentation/devicetree/bindings/media/qcom,sa8775p-camss.yaml
->> @@ -130,7 +130,7 @@ properties:
->>   
->>     vdda-pll-supply:
->>       description:
->> -      Phandle to 1.8V regulator supply to PHY refclk pll block.
->> +      1.2V regulator supply to CSIPHY IP blocks.
-> 
-> "...that supply is a regulator supply" so you still decided to go that
-> way. Why? I think I could not write this clearer.
+btw. I looked at qcom,qcm2290-camss.yaml and if there isn't something 
+very specific about qcm2290, the supply may have wrong voltrage.
+I'll leave this for someone with datasheets (cc Loic):
 
-Oh! Vladimir mentioned the supplies should look like in
+   vdd-csiphy-1p8-supply:
+     description:
+       Phandle to 1.8V regulator supply to CSI PHYs pll block.
 
- > names like found in qcom,x1e80100-camss.yaml, qcom,qcm2290-camss.yaml 
-and qcom,sm8650-camss.yaml
+as see on the mailing list the 0.8V example was given and changed to 
+1.8V, so maybe it has a reason, just making a note to be extra sure 
+while touching the docs.
 
-I blindly considered these to be "examples how it should look like" and 
-used the more recent description without checking them.
-
-I'll squash the commits in next version and rephrase all camss the 
-supplies correctly, if it make sense to you.
-
-Sorry for the inconvenience and thanks.
 David
-
-> 
-> Best regards,
-> Krzysztof
-> 
-
 -- 
 David Heidelberg
 
