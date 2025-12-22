@@ -1,39 +1,39 @@
 Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3C6227E83;
-	Mon, 22 Dec 2025 13:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15576FC5;
+	Mon, 22 Dec 2025 14:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766409887; cv=none; b=IXH7bnRIFWmmZIpM5e7HLoW6ZCafoR+ORkz+x9glHOML1xt/VOLK1TUjCXm+bV/kwWfrIzAqFXsRTouk5dvy+0Qas0RUNGHVFbZyx9IzkZULeKj0gTAawtA23StY33MzEvRpLmK3GKjcr+ek+ORY40mDBmqtK0MyojoNyPzLf0g=
+	t=1766412092; cv=none; b=KIe7AKX5mHI9oaBivmUGiJzlpmxWTVfbWZbMZQfZlcjA/cl6nyZGHNONJY7cU/Y3a4/9Laq4Ialr5nOdHDNQ5k2k+xrPEPVxjA1HApUGgTOcK4xAbGveQwGm4zhFV6UKFLYl8Tpr0CusI2O9V5CgqSfMSwETywVKwDK3ReGcS+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766409887; c=relaxed/simple;
-	bh=CBzPZJiYQzOouUYmyZ3aTlJxin+UE8JGzemB7huEd4Q=;
+	s=arc-20240116; t=1766412092; c=relaxed/simple;
+	bh=PusaHigErO05TgG4Vucoaj4/WBG2ExfgestHJdFX62s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HLWy0T7g6/hF7M6rjtbbdYJP5UCJ6WEpEDBH/W6DUyDk/6FZtx5YEYGaP2mKOfnT3KXV5LevPx7yW9vVyIJ4RJwjslWhBrkX0sy5PoLiT6Usgl1a0/voGmYyT2rCricbSiJbSM7qtDdTTD8VbOBDgOFpD0rG7SSBV/KzBPfiJ1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=ei3NnpuT; arc=none smtp.client-ip=94.112.25.9
+	 In-Reply-To:Content-Type; b=mCvwjDA2xqGAziTHnmqFutNm2vY7Q8m9G1INt7AiinRKTFcINcf8WneUfcQjr+Ygw6ba9YEcXtA0olkkNQhi7tLH4egaj6gp89iX8v2rMS9qX/T7llt8+lJUvoLM5drVGYB+k2KA3dUck7UacIsMwqrMlXm8j94v92IrWXVp0Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=0V6uobjQ; arc=none smtp.client-ip=94.112.25.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="ei3NnpuT"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="0V6uobjQ"
 Received: from [192.168.136.28] (78-80-96-111.customers.tmcz.cz [78.80.96.111])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id A70475340CDC;
-	Mon, 22 Dec 2025 14:24:29 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id C4A4F53409E4;
+	Mon, 22 Dec 2025 15:01:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1766409870;
+	t=1766412084;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gLptg8CkM0dtSh1z2ypvw4PNv7j78rQ2+Zocv81oMU8=;
-	b=ei3NnpuT7W0EXoJJn20RHhcfJd2PBnKx+jXZj3wrmn2raKC9gevCgad5NlgZHCjWOTOW6w
-	Y6BjYZVDBfaFrlfhaQm8EcuP5VyVGnZryUe0OJ/2qMM58dc1FtSAFiaHyse9MGIVaP5+Lu
-	tPswf6XAthiCmeE7iaEpCEi3jRNisro=
-Message-ID: <56dc18db-c1e8-43b8-be9e-667544b7508d@ixit.cz>
-Date: Mon, 22 Dec 2025 14:24:26 +0100
+	bh=N1qdfjO0147Ai2vSJqmHPykKPgwTDBEt2ek4Q7arHWw=;
+	b=0V6uobjQxdK1IQWqlru15b9alAeNKETl1AJc1qwbPe0vTQUvHoGXwCQQ3DUM9yG0owRH22
+	5GaxM7lBLoq9vHLRN7Amu3kGcldAbTlP6jAwSdGbSf4hHvyxijt4rRuBLCNQhZ8uXMrOcf
+	QErGKUkW+hDGQhEgpwM4I4Z3Yv8baDE=
+Message-ID: <eabea4d4-366c-491a-bdcf-cbbfede66bd1@ixit.cz>
+Date: Mon, 22 Dec 2025 15:01:23 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,21 +41,19 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] arm64: dts: qcom: sdm845-oneplus: Add alert-slider
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>,
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-db845c: Use pad fn
+ instead of defining own
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Casey Connolly <casey.connolly@linaro.org>,
- =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- Gergo Koteles <soyer@irl.hu>, Casey Connolly <casey@connolly.tech>
-References: <20251113-op6-tri-state-v8-0-54073f3874bc@ixit.cz>
- <20251113-op6-tri-state-v8-2-54073f3874bc@ixit.cz>
+ <conor+dt@kernel.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Robert Foss <rfoss@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251217-sdm845-mclk-v2-0-7028c2d09145@ixit.cz>
+ <20251217-sdm845-mclk-v2-2-7028c2d09145@ixit.cz>
+ <f86b483d-c674-4901-b2c8-19a535df4234@oss.qualcomm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -101,32 +99,42 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20251113-op6-tri-state-v8-2-54073f3874bc@ixit.cz>
+In-Reply-To: <f86b483d-c674-4901-b2c8-19a535df4234@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 13/11/2025 17:02, David Heidelberg via B4 Relay wrote:
-> From: Gergo Koteles <soyer@irl.hu>
+On 18/12/2025 13:25, Konrad Dybcio wrote:
+> On 12/17/25 12:39 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Instead of defining own pad function for master clock, pick one offered
+>> by sdm845 device-tree include.
 > 
-> The alert-slider is a tri-state sound profile switch found on the
-> OnePlus 6, Android maps the states to "silent", "vibrate" and "ring".
-> Expose them as ABS_SND_PROFILE events.
-> The previous GPIO numbers were wrong. Update them to the correct ones.
+> I'm a little bitter about the wording - the pad function here is "cam_mclk",
+> whereas what you're doing is inheriting a common pinmux/pincfg node that
+> refers to that function
 > 
-> Co-developed-by: Casey Connolly <casey@connolly.tech>
-> Signed-off-by: Casey Connolly <casey@connolly.tech>
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Tested-by: Guido Günther <agx@sigxcpu.org> # oneplus,fajita & oneplus,enchilada
-> Reviewed-by: Guido Günther <agx@sigxcpu.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-[...]
+> [...]
+> 
+>> -		mclk0-pins {
+>> -			pins = "gpio13";
+>> -			function = "cam_mclk";
+>> -
+>> -			drive-strength = <16>;
+> 
+> This patch changes the drive-strength (16 -> 2 mA)
+> 
+> FWIW it's 2 on reference designs and Sony boards, check your
+> downstream kernel
 
-As the first patch of the series got applied on the input tree,
+I don't have any. I'm fine with this patch not getting applied, but I'll 
+CC Robert who added the support, maybe he can verify.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/log/?h=for-linus
-
-hopefully now there is anything blocking this one? =)
-
-Thank you and enjoy the holidays!
 David
+
+> 
+> Konrad
+
+-- 
+David Heidelberg
+
