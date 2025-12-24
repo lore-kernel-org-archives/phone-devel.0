@@ -1,39 +1,39 @@
-Received: from mail-43166.protonmail.ch (mail-43166.protonmail.ch [185.70.43.166])
+Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDCD314D1F
-	for <phone-devel@vger.kernel.org>; Tue, 23 Dec 2025 12:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F3132D448;
+	Wed, 24 Dec 2025 10:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766494471; cv=none; b=lZnb1FThwRpwhlhGATWpppka+E/KYCdmlrBVWYkpMKJogOlykk5SilMo6ZWygCwPFIn8N5HdWpng+lG/ApAX/w2Q7w456u/kBdJ6HTRBTFCzWCgXKUdRVWpBHzrFPBEWEo2tYtLN592sM9ne7mu6qRgYUKp+SB4wZ074DV4FmwE=
+	t=1766571062; cv=none; b=Ctw1fdeDl297K0TIXsb/DgCpwgGKRcia/eEllGEP+eCcuR74XB2923l2CWNzNyGmF/yYxzZRlvyU+EwaovFf4rkxhuTbCAVpB6r1yiwnoAHg0SxqvWHBbD0p5rZ5gxURJRAPeW2Dm1sRoZSO8km93Ba1aztF+flKzX+J11QAkHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766494471; c=relaxed/simple;
-	bh=DZ1d0AwBbeN/7LfgYao+KlQlum6vTZgIQzqhqrfvrE0=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=II7a0/5tAD6NwqPHvonlKAdrdfzQm5n6jDCcbaP2OlXD3sVZs1vQJXpiAWmic/Kgl8jggEbPB63KMyWAtGeJ5X9yWrgfcWOS4fLXDJhXLq9YfNzWtb2KE/Ffpsmx6gwQUU0315MhK638FfcShQAjEE0ds4FLLdSp5T8IdHVc+WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=jteheAHh; arc=none smtp.client-ip=185.70.43.166
+	s=arc-20240116; t=1766571062; c=relaxed/simple;
+	bh=opoRu0oShSE9vKmU4/Lbp3lEB5j8hPGGHo/PxJzsPwY=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=aKqMewtQWexThTvdHLTag4t4ShmVJfjyC197KdkpM2mUsJ4aTvvwUQU0VDgGuA/1iKRgW42vQ3lSUyZdlwjChuTUfUOhMCOjF9Ywc1Ew6UzUhKb1DNGo9/SIeA0TgirYu/GyWWWeTYi6T4O92ILetmRly8zr9aDena8eE84lrTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Kkg9Fi4f; arc=none smtp.client-ip=185.70.43.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="jteheAHh"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Kkg9Fi4f"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1766494461; x=1766753661;
-	bh=DZ1d0AwBbeN/7LfgYao+KlQlum6vTZgIQzqhqrfvrE0=;
+	s=protonmail3; t=1766571052; x=1766830252;
+	bh=VfGh99DaHyxuNNcjDG+xthx2dce/rPW4sAfjxa91af0=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=jteheAHhrwfQp0fLQFwjn4CZWSUStOe/EbXJ7uoTRNBN1BXR1NSp9UewrHh/hXO+S
-	 3wrFtSgWzSI90tmzrk/FMNGEas2ix0OCKYUhN/Q5sYzoE/Ws7qIabrHgtSP6FjdYs4
-	 I5T5LSeBQ51Yk1mGDodriKDemmCTc6y848wthDZucaGOe6cp92R+i3r6K/ylqM0HPJ
-	 YCu+6kOQ/801xEzgvuera4iAUDedwhDqYwnNpTUAFcA71H26pL2I9CIA5HEifA0OBL
-	 f5G03Dbg5y7wLRU5ED67h1uSl0SqtpSbgGu/b/CMbhmqO11QeqztJfJgkeiOf2kTwV
-	 i2VvBatj1qjbQ==
-Date: Tue, 23 Dec 2025 12:54:19 +0000
-To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: Bought Vivo X100 Pro 5G Android Phone on 19 Dec 2025 Friday
-Message-ID: <8I1WK-pCdud5y7SQpsjV8EQzBsJ9Uvnt5sk7sUB-hIWKj5rnfo-HPfRcHP16870xYMx4VpPAk2KRUYMY3DTTMWtcOrZ8nV90QyTCMI9fBZY=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: cba6457a3a02a31491a56f187799d3ef8f76849f
+	b=Kkg9Fi4fM2KsdpLuiWTu21K4wiHEb6rvP77in2HFWQHzmZMfV2tqRfoyhaxPTpguI
+	 caI6wtPmeldY+LFh532HngPY7lxjQkxey+Lun26WnwANF50eJKihDSWzRWhyB4C0B4
+	 KQF5755tMSYNEMVsvlueisBrOLikmJQPL50fYgxbQ+1v8y0HnELrNSiU86rUJUiwHv
+	 921YIz5XRth62KXzMTk9AidAekbwTDED4n4ax/s7vCyJ1fjIN57FX49SiuosBCNKc3
+	 t0h2YMkCoaK/YWnT4XKast6Gstnco4aCfNI1PgXBx5TtwwiwrZxBebNWSnZJUpyOq0
+	 SAeFkCSaABPBQ==
+Date: Wed, 24 Dec 2025 10:10:48 +0000
+To: linux-kernel@vger.kernel.org
+From: Raymond Hackley <raymondhackley@protonmail.com>
+Cc: Markuss Broks <markuss.broks@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Raymond Hackley <raymondhackley@protonmail.com>
+Subject: [PATCH] dt-bindings: input: touchscreen: imagis: allow linux,keycodes for ist3038
+Message-ID: <20251224100941.3356201-1-raymondhackley@protonmail.com>
+Feedback-ID: 49437091:user:proton
+X-Pm-Message-ID: 20e023c92c0ef6208d6c92209203c9dee83e9a89
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,113 +43,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Subject: Bought Vivo X100 Pro 5G Android Phone on 19 Dec 2025 Friday
+Imagis IST3038 provides touch keys. Allow linux,keycodes for ist3038.
 
-Good day from Singapore,
+Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+---
+ .../bindings/input/touchscreen/imagis,ist3038c.yaml           | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-It looks like a Malaysia set.
-
-Color: Blue
-RAM: 16 GB
-Storage: 512 GB
-Advertised selling condition: Excellent
-
-Model: V2309
-
-Serial number:
-10AE*******021U
-
-IMEI (slot 1):
-8644*******4037
-
-IMEI (slot 2):
-8644*******4029
-
-Purchase date: 19 Dec 2025 Friday 2.41 PM via online store (Singapore Time)
-
-Delivery date: 22 Dec 2025 Monday 8.17 PM (Singapore Time)
-
-Price: SGD$598
-Express next working day shipping: SGD$15
-Total: SGD$613
-Payment Method: Grab PayLater x4 monthly installments
-
-Installment details=20
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-1st installment payment on 19 Dec 2025 Friday: SGD$153.22
-2nd installment payment on 19 Jan 2026 Monday: SGD$153.22
-3rd installment payment on 19 Feb 2026 Thursday: SGD$153.22
-4th and final installment payment on 19 Mar 2026 Thursday: SGD$153.24
-
-Warranty: 3 months
-AC adapter provided: NO
-Accessories provided: USB-C to USB-C cable ONLY
-
-More information
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-About phone
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Funtouch OS 15
-
-vivo V3 Chip
-
-Processor: 3.25 GHz Dimensity 9300 Octa-core
-
-RAM: 16 + 16 GB
-
-Android version: 15
-
-Phone storage: 512 GB
-
-Software information
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-OS version: Funtouch OS 15
-
-Model: V2309
-
-Hardware version: MP_0.1
-
-Build number: PD2324DF_EX_A_15.1.12.0.W20
-
-Baseband version: MOLY.NR16.R2.MP3.TC19.PR1.SP.V1.P144
-
-Linux Kernel version:
-
-6.1.124-android14-11-g4a504128448d-ab13226672 #1 Mon Mar 17 02:05:11 UTC 20=
-25
-
-Compile time: 4 Jun 2025 14:39:15
-
-Android security update: 1 June 2025
-
-Google Play system update: 1 January 2025
-
-Status
-=3D=3D=3D=3D=3D=3D=3D
-
-IMEI SV: 41
-
-MEID: A000-snipped-E8C9
-
-EID: 8904-snipped-3920
-
-Regards,
-
-Mr. Turritopsis Dohrnii Teo En Ming
-Extremely Democratic People's Republic of Singapore
-23 Dec 2025 Tuesday 8.53 pm Singapore Time
-
-
-
-
-
-
-
-
-
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist=
+3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist=
+3038c.yaml
+index 0ef79343bf9a..dfaffbc398d3 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
+aml
++++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
+aml
+@@ -55,7 +55,9 @@ allOf:
+         properties:
+           compatible:
+             contains:
+-              const: imagis,ist3032c
++              enum:
++                - imagis,ist3032c
++                - imagis,ist3038
+     then:
+       properties:
+         linux,keycodes: false
+--=20
+2.47.3
 
 
