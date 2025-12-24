@@ -1,75 +1,94 @@
-Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F3132D448;
-	Wed, 24 Dec 2025 10:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F83632;
+	Wed, 24 Dec 2025 19:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766571062; cv=none; b=Ctw1fdeDl297K0TIXsb/DgCpwgGKRcia/eEllGEP+eCcuR74XB2923l2CWNzNyGmF/yYxzZRlvyU+EwaovFf4rkxhuTbCAVpB6r1yiwnoAHg0SxqvWHBbD0p5rZ5gxURJRAPeW2Dm1sRoZSO8km93Ba1aztF+flKzX+J11QAkHI=
+	t=1766604694; cv=none; b=EGeijRr/njqq3CuyUj+DoN70iug7EVmmd6JRrMvQsRxtclT/Fqj1A+pD40TJHOQya0mnH/o6PNUl3jyMSZucKhjd8ZpIsGYpiWFa6/MW4NzIdyEMmFpn8A3VZqRydldjIMgCBa1yLbGO8tVTyv4Nab4dYDyAfaz9Q6QFM/Tc5Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766571062; c=relaxed/simple;
-	bh=opoRu0oShSE9vKmU4/Lbp3lEB5j8hPGGHo/PxJzsPwY=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=aKqMewtQWexThTvdHLTag4t4ShmVJfjyC197KdkpM2mUsJ4aTvvwUQU0VDgGuA/1iKRgW42vQ3lSUyZdlwjChuTUfUOhMCOjF9Ywc1Ew6UzUhKb1DNGo9/SIeA0TgirYu/GyWWWeTYi6T4O92ILetmRly8zr9aDena8eE84lrTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Kkg9Fi4f; arc=none smtp.client-ip=185.70.43.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1766604694; c=relaxed/simple;
+	bh=laVChJNHDMAEia3D9tY89qEJGVGUm43S0WNZqN+Tr7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kRWt/4YcoJN85+4PDOIfTR2YJjW4i7GHfksLEMjb4uv/7+wvCb4Fm2e9e3PPFlWO4u607tFJxF6oBXCML4cSezsQ9DuF1hV2hrGGaXRKuG4NData9PBl1GQUPm1/riDQSXP102xdbeT+9vgJxSv1wzag4GoXBBtF8Y88N9eIp2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=SN+ObwVE; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Kkg9Fi4f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1766571052; x=1766830252;
-	bh=VfGh99DaHyxuNNcjDG+xthx2dce/rPW4sAfjxa91af0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Kkg9Fi4fM2KsdpLuiWTu21K4wiHEb6rvP77in2HFWQHzmZMfV2tqRfoyhaxPTpguI
-	 caI6wtPmeldY+LFh532HngPY7lxjQkxey+Lun26WnwANF50eJKihDSWzRWhyB4C0B4
-	 KQF5755tMSYNEMVsvlueisBrOLikmJQPL50fYgxbQ+1v8y0HnELrNSiU86rUJUiwHv
-	 921YIz5XRth62KXzMTk9AidAekbwTDED4n4ax/s7vCyJ1fjIN57FX49SiuosBCNKc3
-	 t0h2YMkCoaK/YWnT4XKast6Gstnco4aCfNI1PgXBx5TtwwiwrZxBebNWSnZJUpyOq0
-	 SAeFkCSaABPBQ==
-Date: Wed, 24 Dec 2025 10:10:48 +0000
-To: linux-kernel@vger.kernel.org
-From: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: Markuss Broks <markuss.broks@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Raymond Hackley <raymondhackley@protonmail.com>
-Subject: [PATCH] dt-bindings: input: touchscreen: imagis: allow linux,keycodes for ist3038
-Message-ID: <20251224100941.3356201-1-raymondhackley@protonmail.com>
-Feedback-ID: 49437091:user:proton
-X-Pm-Message-ID: 20e023c92c0ef6208d6c92209203c9dee83e9a89
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="SN+ObwVE"
+DKIM-Signature: a=rsa-sha256; bh=laVChJNHDMAEia3D9tY89qEJGVGUm43S0WNZqN+Tr7Q=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1766603684; v=1; x=1767035684;
+ b=SN+ObwVEF/zqznQv8SvkdHWJchtv4GCvgsa382pLIH7l8wzC8eYH3kBZ7/0xHo4i+qs04no5
+ Il8QHjJoYawDMSXY31NNLJhoRymV94nQcxMthyZJdFRfiji+8fAIs4pMWdvvIIb8cqTtAzyQtDn
+ vUL3sHnn8/6kmN5+whf+aD/Bq+XlxUnXlA14p7cRDWed9x2wDr+2eO+eMUf+lXi0p8ZNRx3Xqaa
+ pv6GPsm3Vxyo0Reysvn2I6gTAcxhP3V9JwpD2nPvkZI+IZSbsiVcEzgcGkIgJVN6ptqr9EnX6O3
+ P4u7mDsLoamS3zCPGSiR7GwgYHEuuy+kIRPOEngKACxVw==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id d4a10bf5; Wed, 24 Dec 2025 20:14:44 +0100
+From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ Karel Balej <balejk@matfyz.cz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Karel Balej <balejk@matfyz.cz>
+Subject:
+ Re: [PATCH v2 2/2] pmdomain: add audio power island for Marvell PXA1908 SoC
+Date: Wed, 24 Dec 2025 20:14:43 +0100
+Message-ID: <5977726.DvuYhMxLoT@radijator>
+In-Reply-To: <20251213084843.7491-2-balejk@matfyz.cz>
+References:
+ <20251213084843.7491-1-balejk@matfyz.cz>
+ <20251213084843.7491-2-balejk@matfyz.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Autocrypt: addr=duje@dujemihanovic.xyz;
+ keydata=
+ mDMEZokhzhYJKwYBBAHaRw8BAQdAWJZ0hsI/ytTqHGFV8x6tzd5sB596cTeeDB4CQsTf+wC0KUR
+ 1amUgTWloYW5vdmnEhyA8ZHVqZS5taWhhbm92aWNAc2tvbGUuaHI+iJkEMBYKAEEWIQRt/0HWDf
+ MUtbdrpjCtMZNSRY+tAwUCaJ5XkSMdIEFkZHJlc3MgYm91bmNlcyBhcyBvZiB+MzEvMDgvMjAyN
+ QAKCRCtMZNSRY+tA/N/AQDth3Xl3wNcETvWPqqfYfyw4BFqbOD05A/W0/G0ZIjFzgD+PZVts3sN
+ p5WuEwIxUrWxwavWJQBJwhXeWdru5ol82gmImQQTFgoAQRYhBG3/QdYN8xS1t2umMK0xk1JFj60
+ DBQJmiSH/AhsDBQkJZgGABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEK0xk1JFj60Dlw
+ 8A/i4lPOL7NaYoYePDql8MaJaR9qoUi+D+HtD3t0Koi7ztAQCdizXbuqP3AVNxy5Gpb1ozgp9Xq
+ h2MRcNmJCHA1YhWAbQoRHVqZSBNaWhhbm92acSHIDxkdWplQGR1amVtaWhhbm92aWMueHl6PoiZ
+ BBMWCgBBFiEEbf9B1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwMFCQlmAYAFCwkIBwICIgIGFQo
+ JCAsCBBYCAwECHgcCF4AACgkQrTGTUkWPrQPUYAEAlVKitl0w6Wun+hC0JIf8bnc0TnrH8kcDxV
+ f5lAF38fcA/j8RxR/p558NTFUyHZt2Sa5AqxVkaA4aJekySytWe1YGuDgEZokhzhIKKwYBBAGXV
+ QEFAQEHQMRz0l4Dnk6Vl9YqC+ZGDDpr8SkFDyYOXqdBMGad3VccAwEIB4h+BBgWCgAmFiEEbf9B
+ 1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwwFCQlmAYAACgkQrTGTUkWPrQMbkwD+K6jiXYYMRnV
+ l/5dpL//wXB1cM72ceR9tXYweMXg1lfABAOugzMF0xypW9zwYAEWVNOAaPsqtEPPYfBY3IXxl6m
+ sB
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-Imagis IST3038 provides touch keys. Allow linux,keycodes for ist3038.
+On Saturday, 13 December 2025 09:48:13 Central European Standard Time Karel=
+=20
+Balej wrote:
+> Define power domain which needs to be enabled in order for audio to work
+> on the PXA1908-based samsung,coreprimevelte smartphone. In the
+> downstream code, this power-on method is marked as specific to the ULCx
+> series which is allegedly a codename of sorts with ULC1 corresponding to
+> the PXA1908.
+>=20
+> No other audio components needed for sound to work on this phone are
+> currently available mainline but some successful testing was performed
+> with the vendor variants of the respective drivers and with the domain
+> forced always-on.
+>=20
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
 
-Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
----
- .../bindings/input/touchscreen/imagis,ist3038c.yaml           | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reviewed-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist=
-3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist=
-3038c.yaml
-index 0ef79343bf9a..dfaffbc398d3 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
-aml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
-aml
-@@ -55,7 +55,9 @@ allOf:
-         properties:
-           compatible:
-             contains:
--              const: imagis,ist3032c
-+              enum:
-+                - imagis,ist3032c
-+                - imagis,ist3038
-     then:
-       properties:
-         linux,keycodes: false
---=20
-2.47.3
+Regards,
+=2D-
+Duje
 
 
