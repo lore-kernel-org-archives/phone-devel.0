@@ -1,43 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10699.protonmail.ch (mail-10699.protonmail.ch [79.135.106.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AFF20DD48;
-	Sat, 27 Dec 2025 13:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778701F30BB
+	for <phone-devel@vger.kernel.org>; Sun, 28 Dec 2025 16:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766840654; cv=none; b=sIG12uHn+4Tq07N4Fl1TFQ3fdoJCTYYZs45MRBL/szOPza4wCylTswa/2VsKWhm0nZ8a3iJEqKbzMnuMfXQ661IDgDgYuY6OlIc4/8jU3SuEqV+FLcq1/I0U5hgkTtTwhuEQVBIh0fIS8P6RwE06qp0fcmLjQFWhx+dKSQwMO60=
+	t=1766941090; cv=none; b=O6Hnutuz5T6K3SoIO3qhCdx2BF3Pew/ib0fmRwmUfJFr0Jes8UTn9IjvH574O48b+WJUdsg6YIAvzbwO4bWuJTgZ/TVgAq2ES9VqCXX0bCFa1By1fNuibypqTjYfhX1zgJb/hFpF7OtowTYlT2nge09cEZ1//S0nRcqZJGBvxYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766840654; c=relaxed/simple;
-	bh=Z1kcZGRyt20iQgSjAx3zYm9EN6LDAbyS0WUMqu67fas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IOpxVJyy7EPi0PyoVvKbMtZej2DjWb/VDuLgE9VG6OGa9YhW3VxEFUF68ego3Md89/GRb1rD/BZaTf/nuBdoVoFZ4jcTdEXdfh/ntTqaadt6e/olMV/CL7Tc+mZpiotiKDsDq9H6Gbf5id9NoJ48e8IotRHnsdOwxEA/6n2FgIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5duHaeO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766941090; c=relaxed/simple;
+	bh=KB9sO9aMGdcw6jeBzLUUFUL9t3v1FpybWsgaytIVZuU=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fNwwLKjj/sHqrcJIGh6fxc6DqVqQ/+vggwDg62JmTm5TzZaVnkFQmL2pZAevZeFnxoaXwaDE71cUiYUf/FJoB/VOv2WUIRIBtOXxdMmeEX0nA66i332EbnimBehLpGxcbSBtzKtu6FBwDH41cqNEKMYPWhyzTQcDyZ0Xjmb52CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=t3Nroe30; arc=none smtp.client-ip=79.135.106.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5duHaeO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B3EC4CEF1;
-	Sat, 27 Dec 2025 13:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766840652;
-	bh=Z1kcZGRyt20iQgSjAx3zYm9EN6LDAbyS0WUMqu67fas=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J5duHaeO30JORRORz3Qx2RLTHZVod5XqCn5PIoxISe+slk72Wg/XtQpiQqdhKU8mE
-	 1fmlx2CS7BYzH74cI7Ont6xv0pqf1Z221t5vtxr4oN2zfYlIaN7O515lbwKYSv7tAv
-	 DPyd6O+bQOYXxHmMsjs9MZtwj7ev7qyc0wzwtJtVSQDc3TZ7WB4MQc+DQBu266Hnlq
-	 48o0NojCZ8GZ0oPCTt1jwRY6sbjq4OGPpzwZyHVdhMavVu0t9RdLfotzEbfb7WYIyo
-	 nlxRD4cmjRDGqL9WdcEf7Eg73/UnTwTM06DbUdq+Zo53sCm8MTHoTPXo6km4jLOT3w
-	 9akZ8PSSBu9uA==
-Date: Sat, 27 Dec 2025 14:04:09 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, Markuss Broks <markuss.broks@gmail.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
-	devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] dt-bindings: input: touchscreen: imagis: allow
- linux,keycodes for ist3038
-Message-ID: <20251227-serious-ultramarine-puffin-fba17c@quoll>
-References: <20251224100941.3356201-1-raymondhackley@protonmail.com>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="t3Nroe30"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1766941080; x=1767200280;
+	bh=KB9sO9aMGdcw6jeBzLUUFUL9t3v1FpybWsgaytIVZuU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=t3Nroe30MBaDtpwSsPK+xBqiTNJOmuOzsbSf0kF16dBzD/12IpJ7sgHVTcfyZaBRr
+	 PMNWqPEfQ9awyKcnzUD4YBfuKvdm3UiPZrmVvfgwVgRrA6fXcW/xKM7fW2mhePHyoF
+	 Mdup8h21Tqn7A4+LKFDojcNEhVGcNPRB4W7KbIzRoCbdm620dIQcU4mBkfEyBEvUy9
+	 eFla+Tvrwx4CA08iPkLWaWU05W6oOs8kBdl+JDP+5xK4Ag5vtChCE031DALbPUfNYP
+	 OmnTk/DnuJ8xu2mXHTz8AL1ulzO/p3TwDAfpQDYbZikyGrRzBdHpNnyr05a6oSUTh6
+	 AGrHBk3DykMoA==
+Date: Sun, 28 Dec 2025 16:57:54 +0000
+To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: Teo En Ming's Review of Vivo X100 Pro Android Phone 29 Dec 2025 Monday
+Message-ID: <r5FL-w0olqvxqnChQl2CiLqlD4j9D4oPMxm-RhufGe_9awu-Exk3774X8Onu1HmL5J-rB9GNiYR-rz5gBJvHZBZ_WOhH4GyS8qQYNBQQu7o=@protonmail.com>
+Feedback-ID: 39510961:user:proton
+X-Pm-Message-ID: 2f8bf1e6eccf4cfa7930cc9118e3e04ff28ec782
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -45,19 +41,80 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251224100941.3356201-1-raymondhackley@protonmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 24, 2025 at 10:10:48AM +0000, Raymond Hackley wrote:
-> Imagis IST3038 provides touch keys. Allow linux,keycodes for ist3038.
-> 
-> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
-> ---
->  .../bindings/input/touchscreen/imagis,ist3038c.yaml           | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Subject: Teo En Ming's Review of Vivo X100 Pro Android Phone 29 Dec 2025 Mo=
+nday
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Good day from Singapore,
 
-Best regards,
-Krzysztof
+This is based on my personal experience at EOY 2025 cosplay convention at R=
+affles City Convention Center Singapore from 27-28 Dec 2025 (Saturday and S=
+unday). I have taken more than 1000 photos and videos (with photos being th=
+e majority and videos being the minority) with the Vivo X100 Pro Android Ph=
+one over these 2 days.
+
+I can conclude that the Vivo X100 Pro Android Phone is an excellent top-of-=
+the-line premium flagship smartphone designed for exceptional photography a=
+nd videography.
+
+Out of the more than 1000 photos I have taken, very few photos (only 2-3) t=
+urn out blur or out of focus.
+
+Front Camera
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+I can take selfie photos in rapid firing mode without any lag at all.
+
+Almost all of the selfie photos are sharp and clear with AI beauty enhancem=
+ents.
+
+The front camera performs well in low light environment: even when the surr=
+oundings are dark, you can still take good quality and well-exposed photos =
+without any external light source, thanks to its superior image processor.
+
+Videos taken with the front camera have good quality.
+
+Rear camera
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+I can also take portrait photos in rapid firing mode without any lag at all=
+.
+
+Almost all of the portrait photos are sharp and clear with AI beauty enhanc=
+ements.
+
+The rear camera also performs well in low light environment: even when the =
+surroundings are dark, you can still take good quality and well-exposed pho=
+tos without any external light source, thanks to its superior image process=
+or.
+
+Full HD and 4K videos taken with the rear camera have good quality, even up=
+ to 4.3x optical zoom. I have not tried taking 8K videos yet.
+
+However, AI exposure adjustment does not apply to videos taken with the rea=
+r camera, so when the surroundings are dark, your recorded videos will also=
+ be dark. You will definitely need an external light source (e.g. LED video=
+ light) when you take videos with the rear camera.
+
+I think the Vivo X100 Pro Android phone beats my premium super-zoom bridge =
+cameras with 1-inch sensors hands down, due to AI beauty enhancements. You =
+can definitely use the Vivo X100 Pro Android phone for model portraiture sh=
+oots instead of the traditional DSLR and mirrorless cameras.
+
+Thank you for reading my concise review of the Vivo X100 Pro Android Phone.
+
+Regards,
+
+Mr. Turritopsis Dohrnii Teo En Ming
+Extremely Democratic People's Republic of Singapore
+29 Dec 2025 Monday 12.57 am Singapore Time
+
+
+
+
+
+
+
+
 
