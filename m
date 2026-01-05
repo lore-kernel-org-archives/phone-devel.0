@@ -1,70 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631033CE8D;
-	Mon,  5 Jan 2026 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16A92C11E2;
+	Mon,  5 Jan 2026 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767622129; cv=none; b=r1tEGwBW3dfNUykbSakgBhIIzjggXh1KiRX/NslaDWNzVgkBwj9zouSsYPIVyDptD6d9GeNbpHJ/YEntVxSWoGrp6JwDEQ9/NZNi7FsnfS4mSikfQEtjeoi/TuygOteYbtPoeLH3fvoP2rUhcj4bRnKK3BUkr0rGJw2Xk9kqf9I=
+	t=1767624426; cv=none; b=m9953N0lN3sH8YwMSmTayLYgFo4NfbTzRAtCcnByGGgpWGHXewFYFTMXCD/2SwOYD/NeKhySP9Q9yQWIYACh6paTERs1P5BIqdzk2qdYsIJwVQvicLxevW8FTHUgdcatFkdQ+uiYWZs6j5ZA7MFZlJLy9lTEN+L8YulTp0+fn7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767622129; c=relaxed/simple;
-	bh=NZqLDLnd1FHPajxHSK2z/fFDLFW9K7NvY1/kz3U+r3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0ItsXbRYt0cUjJIV0Ay2pDQ9PbEXP3r78l6jPVFDyMiELJluLXkrqJGzej3a1hUc/gwf21cvczdfDjX183cQelpzKDHNe3X7bjiEuHio8maJFPQhRPgmr/d4FLVywwi9zWf0xcp08QtuvfNlyI3MAojm2jDGHwouwmLPm/mQJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usUmWyLP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767624426; c=relaxed/simple;
+	bh=+quKuNPIhmeMbJDF+EeuSj5ZqJwXuTPMmde1EfKDd6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JZwepYYI0Xx3Ctpm7+8tXxPwLvORJeJxO/cAf07Jt0Jwp5cV+3W7Q0ohk1+m6A8vib++k502RMB7EksoQNts/utTXdKJtR0s2m7qleoj0sKCdJrcJUBRZSTzrYbFnJp1PV/rYj2zIvoSE/G5e3YrC+KIuKtR+JyDTh64yhT81nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEQ3HUx1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usUmWyLP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB2BC2BCC6;
-	Mon,  5 Jan 2026 14:08:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEQ3HUx1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9DC116D0;
+	Mon,  5 Jan 2026 14:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767622128;
-	bh=NZqLDLnd1FHPajxHSK2z/fFDLFW9K7NvY1/kz3U+r3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usUmWyLPTVskcfEfD0iMku0BQhQAut07whbYSpPq7STRcnwnVhJiIFGhchW6tmptZ
-	 UX5dCEwWIT2tWLBALo6xcwOcb5LJWLPXm3rHlQqq/M4XOJlWUn6PLlDBXbB3ghN856
-	 E3jLA31Jk0tNLGg5Da7KZxWv7iIBSKqzz1/dhQ6KfKBAifd5D6Og1NaQSeu0HPTc67
-	 p4R/pfZXvY8m7YxKRa3zE5OaKCLwwjdnez8Htt7F/CA+YRLSwP0DL1w7xzOmeP+/HO
-	 pu+uqhk42TGZzwIV0aRkw82cy9mN5TUb0EO3RDKsX/hM8k9lU+BO5IBqaKSmCFXXgb
-	 TMuQbqlpwGOFQ==
+	s=k20201202; t=1767624425;
+	bh=+quKuNPIhmeMbJDF+EeuSj5ZqJwXuTPMmde1EfKDd6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SEQ3HUx1CCOl5vFbMM9fTT+1RLJdbXg8cuZAdkWWEA8SoSCGBYxkBah1cgwra3E0A
+	 pSRVOEuUOSGyBZLh7rWn+WU8zN0xFLFCiawpokIaplxvorXfUMzEAFZ5s1787wDJzh
+	 NoKeoqk/kJxWWYEqrJfW53qNmMsUJdqeSeRm/A87rFR4ibkt8rEh2dZbd9TDA/QCfN
+	 nUo1PZ97x8UvfEQc4zTp/dkG4EUrVjn6cn43dnaDS+wzRkGsiR+we3Gx8z7nP0iHWT
+	 YaGdY6jjCO5khzkHsC+DahIeQpbeKQk5PsUeFiu4r0xUGDWn3N8B+eUriFWK3jhseH
+	 kQRAlI0o+Ayhw==
+Date: Mon, 5 Jan 2026 08:47:01 -0600
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 0/2] Asus ZenFone 2 Laser/Selfie includes a battery measured by voltage mode BMS and a simple GPIO hall effect sensor. The following commits include support for these components.
-Date: Mon,  5 Jan 2026 08:07:45 -0600
-Message-ID: <176762206366.2923194.10285379259334522401.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251208-b4-battery-hall-v3-0-84e2157705a4@gmail.com>
-References: <20251208-b4-battery-hall-v3-0-84e2157705a4@gmail.com>
+To: longnoserob@gmail.com
+Cc: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, david@ixit.cz, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v4 0/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ SLPI
+Message-ID: <rg2ibycuc5hnwn3tigmfoac7viwjw6524dzozi3is2ivn4svb2@zzuempzehrdj>
+References: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
 
-
-On Mon, 08 Dec 2025 16:59:19 +0200, Erikas Bitovtas wrote:
+On Mon, Jan 05, 2026 at 10:31:50PM +0900, Robert Eckelmann via B4 Relay wrote:
+> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
 > 
 
+Thank you for your patches, Robert. I've already applied v3, please
+check the result in linux-next and send any incremental patches on top
+of that if necessary.
 
-Applied, thanks!
+Thank you,
+Bjorn
 
-[1/2] arm64: dts: qcom: msm8939-asus-z00t: add battery
-      commit: 094a6bbe84d43f04485d565f8174af66d90eb6a7
-[2/2] arm64: dts: qcom: msm8939-asus-z00t: add hall sensor
-      commit: 931b763e63b317d65f2555ea396f39bacba35b7d
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
+> ---
+> Changes in v4:
+> - remove not needed status change
+> - Link to v3: https://lore.kernel.org/r/20251205-slpi-v3-0-a1320a074345@gmail.com
+> 
+> Changes in v3:
+> - remove stray newline at end of file
+> - Link to v2: https://lore.kernel.org/r/20251205-slpi-v2-0-dfe0b106cf1a@gmail.com
+> 
+> Changes in v2:
+> - adjusted firmware paths
+> - enabled i2c busses
+> - Link to v1: https://lore.kernel.org/r/20251126-slpi-v1-0-c101d08beaf2@gmail.com
+> 
+> ---
+> Robert Eckelmann (3):
+>       arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable SLPI
+>       arm64: dts: qcom: sdm845-xiaomi-beryllium: Adjust firmware paths
+>       arm64: dts: qcom: sdm845-xiaomi-beryllium: Add placeholders and sort
+> 
+>  .../dts/qcom/sdm845-xiaomi-beryllium-common.dtsi   | 44 ++++++++++++++++------
+>  1 file changed, 32 insertions(+), 12 deletions(-)
+> ---
+> base-commit: 6987d58a9cbc5bd57c983baa514474a86c945d56
+> change-id: 20251126-slpi-c616e3a391ce
+> 
+> Best regards,
+> -- 
+> Robert Eckelmann <longnoserob@gmail.com>
+> 
+> 
