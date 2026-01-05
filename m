@@ -1,93 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16A92C11E2;
-	Mon,  5 Jan 2026 14:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056713112B4;
+	Mon,  5 Jan 2026 19:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767624426; cv=none; b=m9953N0lN3sH8YwMSmTayLYgFo4NfbTzRAtCcnByGGgpWGHXewFYFTMXCD/2SwOYD/NeKhySP9Q9yQWIYACh6paTERs1P5BIqdzk2qdYsIJwVQvicLxevW8FTHUgdcatFkdQ+uiYWZs6j5ZA7MFZlJLy9lTEN+L8YulTp0+fn7w=
+	t=1767640601; cv=none; b=esOvd9HO6uwCd6vM8QnA+ol0JzTAch+0JUcryyTiC6ATR9bvZhhH98GGLzs5HW7SlIIQGse3M+7kdGThG462HDd4X7v8EcC3jHqDYePLmnPTstUDhvBymdGKtTQrBIuqUwZPNDkdfmGG/HJ9gY6mwJGk/aLpYX0IAWVRakcBggE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767624426; c=relaxed/simple;
-	bh=+quKuNPIhmeMbJDF+EeuSj5ZqJwXuTPMmde1EfKDd6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZwepYYI0Xx3Ctpm7+8tXxPwLvORJeJxO/cAf07Jt0Jwp5cV+3W7Q0ohk1+m6A8vib++k502RMB7EksoQNts/utTXdKJtR0s2m7qleoj0sKCdJrcJUBRZSTzrYbFnJp1PV/rYj2zIvoSE/G5e3YrC+KIuKtR+JyDTh64yhT81nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEQ3HUx1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767640601; c=relaxed/simple;
+	bh=+ius9zQo9Q9QI7YzArmNKIVZiGB4iJha+FfrhltYWEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t/Vd9+5TCa2l+5nKKed3HcgPXCqkLTD++Jb1IrQmBNg90Zoy1xRRj5ol6sMP2m5N8Bp5Rs1gBFpRoK7JUbLVNhvBpuvhlRDs1BG1iOEWLMhNrnY7PvqsoYKS2iiNPC1JJsuqJQhcaGgvtLkLbi0KASHtu4n2sR3XlmoV3Nw+iO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt6TBbDv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEQ3HUx1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9DC116D0;
-	Mon,  5 Jan 2026 14:47:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt6TBbDv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47203C116D0;
+	Mon,  5 Jan 2026 19:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767624425;
-	bh=+quKuNPIhmeMbJDF+EeuSj5ZqJwXuTPMmde1EfKDd6w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SEQ3HUx1CCOl5vFbMM9fTT+1RLJdbXg8cuZAdkWWEA8SoSCGBYxkBah1cgwra3E0A
-	 pSRVOEuUOSGyBZLh7rWn+WU8zN0xFLFCiawpokIaplxvorXfUMzEAFZ5s1787wDJzh
-	 NoKeoqk/kJxWWYEqrJfW53qNmMsUJdqeSeRm/A87rFR4ibkt8rEh2dZbd9TDA/QCfN
-	 nUo1PZ97x8UvfEQc4zTp/dkG4EUrVjn6cn43dnaDS+wzRkGsiR+we3Gx8z7nP0iHWT
-	 YaGdY6jjCO5khzkHsC+DahIeQpbeKQk5PsUeFiu4r0xUGDWn3N8B+eUriFWK3jhseH
-	 kQRAlI0o+Ayhw==
-Date: Mon, 5 Jan 2026 08:47:01 -0600
+	s=k20201202; t=1767640600;
+	bh=+ius9zQo9Q9QI7YzArmNKIVZiGB4iJha+FfrhltYWEk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Mt6TBbDvYj98Ndc4pMoDVLu/oUfPNrlt8cnJYbAVLV0Y+Yn8GlcUGz59WjcoMLLgg
+	 RHt58PTXGJxVpr7h4eqaYOaGxLke/hzvytoWBPoHuazcla39ojQ/69lV7w80mJiuZO
+	 G48Tkp0R1YAJ//QEF7e4M6MwpxXAKxXkty9ykGAGkklgDpU37YyoYOTri7lkb1y7l1
+	 L6NvF7IxHWj3itahe3K7bMbOFfrU8HWkG/jmdQT/3ImMFnZDswNx0id79/Jdi2rYE3
+	 MjaKMwi7tCaUuU92w9DpWof4FhLoSEctD5BDb88KM80Zx8gHh3oh+HUNscy5LMjBKD
+	 d1itd1+txJrCw==
 From: Bjorn Andersson <andersson@kernel.org>
-To: longnoserob@gmail.com
-Cc: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, david@ixit.cz, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
- SLPI
-Message-ID: <rg2ibycuc5hnwn3tigmfoac7viwjw6524dzozi3is2ivn4svb2@zzuempzehrdj>
-References: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
+To: Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vincent Knecht <vincent.knecht@mailoo.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v9] arm64: dts: qcom: msm8939: Add camss and cci
+Date: Mon,  5 Jan 2026 13:16:20 -0600
+Message-ID: <176764058405.2961867.13783282805903485831.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260104-camss-8x39-vbif-v9-1-0d47c7afbb2f@apitzsch.eu>
+References: <20260104-camss-8x39-vbif-v9-1-0d47c7afbb2f@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 05, 2026 at 10:31:50PM +0900, Robert Eckelmann via B4 Relay wrote:
-> Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
+
+On Sun, 04 Jan 2026 19:31:53 +0100, André Apitzsch wrote:
+> Add the camera subsystem and CCI used to interface with cameras on the
+> Snapdragon 615.
+> 
 > 
 
-Thank you for your patches, Robert. I've already applied v3, please
-check the result in linux-next and send any incremental patches on top
-of that if necessary.
+Applied, thanks!
 
-Thank you,
-Bjorn
+[1/1] arm64: dts: qcom: msm8939: Add camss and cci
+      commit: a502697b840d8377742e1f31000cb52695df33e7
 
-> Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
-> ---
-> Changes in v4:
-> - remove not needed status change
-> - Link to v3: https://lore.kernel.org/r/20251205-slpi-v3-0-a1320a074345@gmail.com
-> 
-> Changes in v3:
-> - remove stray newline at end of file
-> - Link to v2: https://lore.kernel.org/r/20251205-slpi-v2-0-dfe0b106cf1a@gmail.com
-> 
-> Changes in v2:
-> - adjusted firmware paths
-> - enabled i2c busses
-> - Link to v1: https://lore.kernel.org/r/20251126-slpi-v1-0-c101d08beaf2@gmail.com
-> 
-> ---
-> Robert Eckelmann (3):
->       arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable SLPI
->       arm64: dts: qcom: sdm845-xiaomi-beryllium: Adjust firmware paths
->       arm64: dts: qcom: sdm845-xiaomi-beryllium: Add placeholders and sort
-> 
->  .../dts/qcom/sdm845-xiaomi-beryllium-common.dtsi   | 44 ++++++++++++++++------
->  1 file changed, 32 insertions(+), 12 deletions(-)
-> ---
-> base-commit: 6987d58a9cbc5bd57c983baa514474a86c945d56
-> change-id: 20251126-slpi-c616e3a391ce
-> 
-> Best regards,
-> -- 
-> Robert Eckelmann <longnoserob@gmail.com>
-> 
-> 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
