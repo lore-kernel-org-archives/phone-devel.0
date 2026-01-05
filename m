@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DD5254AFF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A659D242D6A;
 	Mon,  5 Jan 2026 13:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767619964; cv=none; b=ILO4cb4RMKmlKCNrYpEeccaXi9Y2vBLTeJl7xpm3b4quNJgD72SV92M5KPY5aXq4gih1AHVD+khOZYeZcCSsJiaLRbuNxCJuCWYtMSMwTkYYwdn6SNAUX4F/zdUeR6h/zTKkJVo0s/8Pk+MnNS4dw5eJjALR7SDscmvCG0R5O7w=
+	t=1767619964; cv=none; b=ZbtnZUtuUfMywsV1S7iwruP6MkqIR4DBYNcnSnXocv+Gg3WPo+NzL49BzHov6FLm3sWi8r2/FgVs7ZMvD4mLEI22VgTHIxezQZnUSo6tfXYDJ1Q0zAwJt24XuW5vy4r5vsQqzPSnLyGg3VXxuybq5wpSAl4oFQYU8P/HDRl0c9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767619964; c=relaxed/simple;
-	bh=KCJo9bzAW0Wc/a7Id3cOuHsee7B+TqvmoXMRYMyk6uA=;
+	bh=d0QOaMZo/Hvkcd1e6/0gFf64ZqhjOoDB4Uo4/a0cj+M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pSE4ou9H3BCfG78uUP7QgINlWAOZZsOIhgeJO/XVQdv+wycPqYSvh4aiPzynu9xG56tpQGzPcThUTB5xLX1eWiNzeKO8/pI84nj4VIQ4nU82Z9QPj/HwXB5zudu0APUhj6t7SlbOF7Ll4jqj9t3Nbwerf+Gfj4X0AdrRQkDxcOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5SKziVX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Z3Ak/m/rGxvAaYOExGqhoemypEUweQjaSQTVP74Te7pL7huC3XPRxUwl5iujN65fionxyvUDlvCsbadMeL7Q7v1A4JB9PRVllzwQYe7dCLbHZUzn0Xe+7it1VgcqZL6L9kVjTxrQO0u/LAza1cqnw6hRNbvYI1vRIhWF6jLBUbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc85s27+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5SKziVX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 33D91C16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc85s27+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4976DC2BC87;
 	Mon,  5 Jan 2026 13:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1767619964;
-	bh=KCJo9bzAW0Wc/a7Id3cOuHsee7B+TqvmoXMRYMyk6uA=;
+	bh=d0QOaMZo/Hvkcd1e6/0gFf64ZqhjOoDB4Uo4/a0cj+M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=V5SKziVXXd3go7P+IbgszQr2K5i6YKiI2PvZTKeLWlQamyHQcxO8DUUA2TPvn702U
-	 bUqf7IVUruSvD+yKuL9cExVhrpCCU4R04x0PLeebLPlScbDWP3IYXOV6qRwlqbOl0q
-	 f7JqI/99MFYcICc6QjGrl9ersThfoL9J/6vvQkBVYz6oKxJHeUTpgfNbqFGBwMerbU
-	 yVa/bEj/h2u4sOEkpHRKUnFLhUIepi75XD3qMF6IodSajHFWA0lXu/QaLKxDOd4VP2
-	 dYkU+fIqYa5Y5xsZPn+Kzznk2DWVKZTx3Y44CRjgblBVkNMAoJO1vuo7Qv2NazZVTS
-	 f9577T59MWSzQ==
+	b=cc85s27+Fmir5AQrLtZJterqBy8bZGxflB0vsCCP7coJtim9feQB5Z0S9BrIXZHdG
+	 NjD3h90uN6SghqlSN52S0VmOSk3m7/wQFVPRgezpTy2YKgRXAeuSCm5y1qsko+eRoe
+	 pPadWfiKbcfTtzOPxhDMh7OviHRSqD9OrqZP3BHiaf/AGNt77aE7xuzrQvyfc8uJ30
+	 KiJeosNrUCfxdkqKIBxXK6Gx1PFZifrjtNIJUaQqC0tLE1Gwx/+57G0Nkss7WdATQV
+	 kGKSvXRM+B7QDErHoFFFZsnPNG55dXYz3WdxfIqaaSLi6AG66WNqRw+9RIzQJJd3yP
+	 sY4H7KFOmeMfw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20DE2C79F8C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCA9C79F92;
 	Mon,  5 Jan 2026 13:32:44 +0000 (UTC)
 From: Robert Eckelmann via B4 Relay <devnull+longnoserob.gmail.com@kernel.org>
-Date: Mon, 05 Jan 2026 22:31:51 +0900
-Subject: [PATCH v4 1/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
- SLPI
+Date: Mon, 05 Jan 2026 22:31:53 +0900
+Subject: [PATCH v4 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add
+ placeholders and sort
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-slpi-v4-1-e6e0abfad3a4@gmail.com>
+Message-Id: <20260105-slpi-v4-3-e6e0abfad3a4@gmail.com>
 References: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
 In-Reply-To: <20260105-slpi-v4-0-e6e0abfad3a4@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -53,13 +53,13 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  Robert Eckelmann <longnoserob@gmail.com>, 
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=989;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1802;
  i=longnoserob@gmail.com; h=from:subject:message-id;
- bh=43kKQJ2mrMLWelYKXy1f8QwGrRrSkq/JoF9T1aflu3c=;
- b=owGbwMvMwCVmcOAq9/vk/SGMp9WSGDKj91Y5ndp0SXKNZJ/MmmOLeCXOlTEZVhl58+xdu4Dr4
- nrNnEuRHaUsDGJcDLJiiiw73I7pZLoujdi4e38ZzBxWJpAhDFycAjCR/7MYGfY9i3LR6lB6pJHZ
- 9m9Bqfm7mzH+Wnny4ktZIs48u7NM6xwjwy3pxPSNMjHTN0WnGO9b2tFr+ibw6seJm7V9BG8EMs5
- uZwcA
+ bh=EM/NFegAHroxA02lkzL/+IA7UF2v/eqwuF0ytn6UwBI=;
+ b=owGbwMvMwCVmcOAq9/vk/SGMp9WSGDKj91ZNmL/v1YS+Bu0fPUnWh3yUb7Xy5kgbH3yZeidvS
+ UiD5gqVjlIWBjEuBlkxRZYdbsd0Ml2XRmzcvb8MZg4rE8gQBi5OAZhIRQIjw2WfJ/LPevbUZplE
+ lTqtVHV6GC3j9VxPrYFxBWfR4r8sxQx/hUN1f0zvu+/f6TxbkjWhrEbzw4q5q8/d0Gif0HveVeY
+ 3NwA=
 X-Developer-Key: i=longnoserob@gmail.com; a=openpgp;
  fpr=B846C62C6945A558B1BBBF7630C0D50BEF63BF54
 X-Endpoint-Received: by B4 Relay for longnoserob@gmail.com/default with
@@ -69,32 +69,72 @@ Reply-To: longnoserob@gmail.com
 
 From: Robert Eckelmann <longnoserob@gmail.com>
 
-Enable the SLPI dsp on the Xiaomi Pocophone F1 with Qualcom SDM845 SoC.
+We know these devices are present, most of them are supported by
+downstream and close to the mainline kernels.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
+This is very handy when rebasing the integration tree with the support.
+
+No functional changes.
+
+Reviewed-by: David Heidelberg <david@ixit.cz>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Robert Eckelmann <longnoserob@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../dts/qcom/sdm845-xiaomi-beryllium-common.dtsi   | 27 ++++++++++++++++------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 785006a15e97..57af560e35ce 100644
+index ab450d44b3f6..6f1bff7a37cd 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -425,6 +425,12 @@ &sdhc_2 {
- 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
+@@ -227,6 +227,10 @@ vreg_l26a_1p2: ldo26 {
+ 	};
  };
  
-+&slpi_pas {
-+	firmware-name = "qcom/sdm845/Xiaomi/beryllium/slpi.mbn";
++&cci_i2c0 {
++	/* IMX363 @ 10 */
++};
++
+ &cdsp_pas {
+ 	status = "okay";
+ 	firmware-name = "qcom/sdm845/Xiaomi/beryllium/cdsp.mbn";
+@@ -261,6 +265,22 @@ &ibb {
+ 	qcom,discharge-resistor-kohms = <300>;
+ };
+ 
++&ipa {
++	qcom,gsi-loader = "self";
++	memory-region = <&ipa_fw_mem>;
++	firmware-name = "qcom/sdm845/beryllium/ipa_fws.mbn";
 +
 +	status = "okay";
 +};
 +
- &sound {
- 	compatible = "qcom,db845c-sndcard", "qcom,sdm845-sndcard";
- 	pinctrl-0 = <&quat_mi2s_active
++&i2c5 {
++	clock-frequency = <400000>;
++
++	status = "okay";
++
++	/* TAS2559 @ 4C */
++};
++
+ &lab {
+ 	regulator-min-microvolt = <4600000>;
+ 	regulator-max-microvolt = <6000000>;
+@@ -312,13 +332,6 @@ &mss_pil {
+ 	"qcom/sdm845/Xiaomi/beryllium/modem.mbn";
+ };
+ 
+-&ipa {
+-	qcom,gsi-loader = "self";
+-	memory-region = <&ipa_fw_mem>;
+-	firmware-name = "qcom/sdm845/Xiaomi/beryllium/ipa_fws.mbn";
+-	status = "okay";
+-};
+-
+ &pm8998_gpios {
+ 	vol_up_pin_a: vol-up-active-state {
+ 		pins = "gpio6";
 
 -- 
 2.52.0
