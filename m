@@ -1,44 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1D1314B86;
-	Mon,  5 Jan 2026 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631033CE8D;
+	Mon,  5 Jan 2026 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767622107; cv=none; b=HbOuy69fDyyAgtQOvUr6A0YvV8GmK1/MIIv1jgh8zK/2YpVAfuUpDJtBiQ04EKA10OqIWeErylK9/kmBuCABI8AsqXYBlK+6gtypoaT3yWp49NGn54Nwjy78Qrdd+U4Q0Z3fWp9YvXtEVyyrZFUy0BijNUZAPvtfpOgHcjfvdbQ=
+	t=1767622129; cv=none; b=r1tEGwBW3dfNUykbSakgBhIIzjggXh1KiRX/NslaDWNzVgkBwj9zouSsYPIVyDptD6d9GeNbpHJ/YEntVxSWoGrp6JwDEQ9/NZNi7FsnfS4mSikfQEtjeoi/TuygOteYbtPoeLH3fvoP2rUhcj4bRnKK3BUkr0rGJw2Xk9kqf9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767622107; c=relaxed/simple;
-	bh=rgwvarEcd76+ypLeUaD3y5gBAR7/Pau59dCY4GHKs20=;
+	s=arc-20240116; t=1767622129; c=relaxed/simple;
+	bh=NZqLDLnd1FHPajxHSK2z/fFDLFW9K7NvY1/kz3U+r3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KYoy4DMB7rKu7DmV3FEcZn+l19x0pvFC/fWcByPIuXeViMU+uXupE+1oX0aAN0fAbExHk51Pe0mlwh2Hm1NbTJf0Yw4MEOJRmDFPzxRvDZeRUKwJSaiFs+6CplRUXXnwFJroxJApEemvvP0Ee5NLLm6as5gwpPC8wsLrprBfoMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfYaoE+i; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=m0ItsXbRYt0cUjJIV0Ay2pDQ9PbEXP3r78l6jPVFDyMiELJluLXkrqJGzej3a1hUc/gwf21cvczdfDjX183cQelpzKDHNe3X7bjiEuHio8maJFPQhRPgmr/d4FLVywwi9zWf0xcp08QtuvfNlyI3MAojm2jDGHwouwmLPm/mQJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usUmWyLP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfYaoE+i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCDCC2BCB6;
-	Mon,  5 Jan 2026 14:08:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usUmWyLP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB2BC2BCC6;
+	Mon,  5 Jan 2026 14:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767622106;
-	bh=rgwvarEcd76+ypLeUaD3y5gBAR7/Pau59dCY4GHKs20=;
+	s=k20201202; t=1767622128;
+	bh=NZqLDLnd1FHPajxHSK2z/fFDLFW9K7NvY1/kz3U+r3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfYaoE+iJt3A/dAECy12Cc67LNgXCaER1hX/c5/PUOPIzTlVmsE9Mm5cxgwEMj55r
-	 g1ebwpwXZS2OpQjla3TOLPEIQle3PLBNaraREG4FRwlbalh+L6h4tdaWCD4xC84ZlY
-	 Ib2nNEiix6ynC70B+Nu7/AcIUC9/AJqsaKzEtmjDiOo19pDBcifegPrUx43XjO7eFC
-	 6I2Em+3gd/79nhQ9i1PMUMHjruToyCCbjH6gjrJFs0D8j0g9iBBLTf6ChE9BJx6YMy
-	 WL9Ogkr1H/lxwrWXVtbxUANl5AHyoiaGzW/vFBhlFbekXhJVdTadeUkDhJyK5XCkP6
-	 HjA/pveEXRpxA==
+	b=usUmWyLPTVskcfEfD0iMku0BQhQAut07whbYSpPq7STRcnwnVhJiIFGhchW6tmptZ
+	 UX5dCEwWIT2tWLBALo6xcwOcb5LJWLPXm3rHlQqq/M4XOJlWUn6PLlDBXbB3ghN856
+	 E3jLA31Jk0tNLGg5Da7KZxWv7iIBSKqzz1/dhQ6KfKBAifd5D6Og1NaQSeu0HPTc67
+	 p4R/pfZXvY8m7YxKRa3zE5OaKCLwwjdnez8Htt7F/CA+YRLSwP0DL1w7xzOmeP+/HO
+	 pu+uqhk42TGZzwIV0aRkw82cy9mN5TUb0EO3RDKsX/hM8k9lU+BO5IBqaKSmCFXXgb
+	 TMuQbqlpwGOFQ==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Erikas Bitovtas <xerikasxx@gmail.com>
 Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: defconfig: Enable options for Qualcomm Milos SoC
-Date: Mon,  5 Jan 2026 08:07:33 -0600
-Message-ID: <176762206365.2923194.14017762679747233922.b4-ty@kernel.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v3 0/2] Asus ZenFone 2 Laser/Selfie includes a battery measured by voltage mode BMS and a simple GPIO hall effect sensor. The following commits include support for these components.
+Date: Mon,  5 Jan 2026 08:07:45 -0600
+Message-ID: <176762206366.2923194.10285379259334522401.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251219-milos-defconfig-v1-1-f58012ac8ef6@fairphone.com>
-References: <20251219-milos-defconfig-v1-1-f58012ac8ef6@fairphone.com>
+In-Reply-To: <20251208-b4-battery-hall-v3-0-84e2157705a4@gmail.com>
+References: <20251208-b4-battery-hall-v3-0-84e2157705a4@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -49,16 +54,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 19 Dec 2025 12:39:03 +0100, Luca Weiss wrote:
-> Enable the pinctrl, clock and interconnect drivers for the Qualcomm
-> Milos SoC. This is required for booting The Fairphone (Gen. 6).
+On Mon, 08 Dec 2025 16:59:19 +0200, Erikas Bitovtas wrote:
 > 
-> 
+
 
 Applied, thanks!
 
-[1/1] arm64: defconfig: Enable options for Qualcomm Milos SoC
-      commit: 94d5285f2fe5a3e2e9b8de88b73711a1173c4159
+[1/2] arm64: dts: qcom: msm8939-asus-z00t: add battery
+      commit: 094a6bbe84d43f04485d565f8174af66d90eb6a7
+[2/2] arm64: dts: qcom: msm8939-asus-z00t: add hall sensor
+      commit: 931b763e63b317d65f2555ea396f39bacba35b7d
 
 Best regards,
 -- 
