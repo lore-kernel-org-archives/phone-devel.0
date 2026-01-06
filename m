@@ -1,36 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90C3346B0;
-	Tue,  6 Jan 2026 15:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A70354AE0;
+	Tue,  6 Jan 2026 18:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767712448; cv=none; b=sYcQjTfkelbZb9X0ZEUA/S4L86MbtZe8e4F+RmDA92CzhTgAfHIyCoSC9HCLUkgpyPg+Dd778EBnMOB9FQOC9xurMKKk3gMebsEZnxgipoq3vN4mropITc+2/vSQDlFdEh9ObIbbqzhAjAieUKhPWr2Tl9xcny32qviLW8TWp/Y=
+	t=1767724935; cv=none; b=rJg8H161/E15/J5WHV9/hvzI/G0s0jROwzxbTXtlm2js21Va+s0FIcuVeAxyDqv0bUWXs9H+JRdjPDhP+3fLRHA4iGpvcUFPYzfMG7asCxWqymjmvUp9M80Q3PJ4+usRQZF1ID8mjCfKLXO7p70glFOVXFXvy8GDyk2tCJMn7U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767712448; c=relaxed/simple;
-	bh=2ApmWlo7y6D9h+PivaXb27nqv9LyVlHA6yH8DQnxb84=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ENuTvUYPHbgYDJflFcbqLgey70/7dZIq6IQ2rJKJZ+hRE2Lj8BpnkHyVBQ45z3fcpcyBh4Cclkk9YCcy3ZgRcLL9zo6hU2XKduHYH4tGXI+k4Me5zRL8OOjNCs9wAz+MiXxlqqYe9sYnGZyZ49rIxzZfyYzqJpq6GBdaMcDpx4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZayMMaS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767724935; c=relaxed/simple;
+	bh=IZJSKgEbNi1RsSOG/0ndHi0Nwd7YEhIuXT0g7eL/APQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YaC3aBNHS5Uy3c2N1jQ3NJ7bj37pU9/Lu3SAYKf5OBITkrsITyqsiFe+GUr3VF90rTPR/Q+c8rtysCvTtN8DsaFVE3NKVz3A+lNxXn5t4cvtzzEmaE9zZSfzv75aI8zDgr7+izs5wizlbU9UOh1fBzdnaPLS+iEkW0rHHzX+NPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=JRsFOcWC; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZayMMaS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8BABEC16AAE;
-	Tue,  6 Jan 2026 15:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767712447;
-	bh=2ApmWlo7y6D9h+PivaXb27nqv9LyVlHA6yH8DQnxb84=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=FZayMMaS/i/Qb9Mqt5mok2Rdn6s3mef1ndgGl5D/NUtUAXTEoUZtB3ffeOErfFhUW
-	 tCK1OSahrZ0/B7e3+DQXv3VkeAv7BBkTsCQXScRoTmMEs7KU4jqVwkGuFOap0XHKxu
-	 z0BbRITuvjsHiENE4dtaM2xwdUWjEw/WfYW7GU7J2tTkynxVwi7mrkYB6mlD5JEDaQ
-	 QPbkK+Tb5lN/ObSgaR9kQ4gehf9DbLZJ6y2wGHHu29h5mTkfPPupXMJg7GcHZ6M3ml
-	 2ano2pE+tralojG47vLRlUiS8zTYumDWE9cqRSMMVp9kDUOEFuMeJrDjcJQUrI7Ckm
-	 uVZxKKW+OiDRg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82B4ACE9D4A;
-	Tue,  6 Jan 2026 15:14:07 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 06 Jan 2026 16:14:05 +0100
-Subject: [PATCH] media: ccs: Accommodate C-PHY into the calculation
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="JRsFOcWC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=Eq0CqoMxGePRdfmtZq04yvid4QxViZV6z4QHN+0Dl7E=; b=JRsFOcWCmtPqSgsEcxqmLuPnBE
+	8Ev6MrkfuUr2Y4Ns67l0eSsB0qrLnUeCxiX2f4PhPzbVVEyEaE3hzACd220AdcTLbdwqJudKeIiUL
+	5MG6EM5KrwlSkNk/Pm/JCjHB6xz+YSvcZE3cUk1dho93K6S12VztK0V/R/rxeB10hKpuTrZjMPSPq
+	FjJYthoJAM2Naqqw0pJZqSSTGIaVk5mz3ECqeSZa6l7Y8Gk4wrmAHWIXv0Aakp1vCR4QVBqt+L4NY
+	NDfxLgdNJe21fzWyhF2A5hJp5HOl5vkKvzRudBLT3OxlnRu+YlAr3+eqFTeHMMMKIPiiJPQf68X3d
+	5hrjh08A==;
+Received: from [194.95.143.137] (helo=phil.dip.tu-dresden.de)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1vdC0N-001Hfs-CZ; Tue, 06 Jan 2026 19:42:07 +0100
+From: Heiko Stuebner <heiko@sntech.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Rudraksha Gupta <guptarud@gmail.com>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	Ondrej Jirman <megi@xff.cz>,
+	"Leonardo G. Trombetta" <lgtrombetta@gmx.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Martijn Braam <martijn@brixit.nl>,
+	=?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
+Subject: Re: [PATCH v6 0/2] Upstreaming Pinephone Pro Patches
+Date: Tue,  6 Jan 2026 19:41:58 +0100
+Message-ID: <176772487191.3029798.15593519528724659699.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20251225-ppp_light_accel_mag_vol-down-v6-0-8c79a4e87001@gmail.com>
+References: <20251225-ppp_light_accel_mag_vol-down-v6-0-8c79a4e87001@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -38,76 +59,32 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-ccs-account-for-cphy-v1-1-c3639d606271@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAL0mXWkC/x3MPQ6AIAxA4auYzjZBBvy5inHAWrQLGFCjMdxd4
- vgN772QOAonGKoXIl+SJPiCpq6ANutXRlmKQSttVKMMEiW0ROH0B7oQkfbtQev6tutmo3TvoKR
- 7ZCf3vx2nnD+WKD+HZgAAAA==
-X-Change-ID: 20260106-ccs-account-for-cphy-af9788b6029f
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1385; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=dwwD/3ToQdy2999UX5LH+C6Kbfqw7B2Pld4wPUvRozw=;
- b=kA0DAAgBYAI/xNNJIHIByyZiAGldJr6hRSnxRX3ddHeuWIjaZJfpEk1Fl0K7+qldAS/LzpOOn
- IkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJpXSa+AAoJEGACP8TTSSBy24QQAJ3P
- oYDcg7bkEuwDJ2VLTHZQSv/OBL+4D2EvFmFv2UBZUlW/HfRyL6rdSz4txsqGN7ofmf+tk/mS15w
- G9jHsTTTT0fhmDm8zzELQXot34oFCN1ISkjqAXX6k7bPRi9bsHYKI0yfWWsJgoqBVZ/G85rfuE0
- Ipdt39Vi3K+GnBma4R5RJxKIiIjooxBmY1xH6zouGZfb/mr5/SnL0MBL/DACIH3hPVCy0ZpBvAA
- TGzCZWysAwcsDDOw/Mfs1ec+9gcvg6q+BpFAiq1I6S+qthavLtIxiF9QFxyWwB4SWu9duPsnzFT
- 3Gp31oc+xDQbjE4kTzdHAkeje8TkeEsVZGUeHytdGUlyk/eyncHnY32w3KVMZTzeXfO6UWfh0Ca
- OmrqLNY3F/7Phv5zMjKDEARCFChP/IK1zbD6HU/7aAjlVvbDuylC0/o67eNrnYbs0Jc2G5lIcvy
- 9kfM5/4c7Zh92JeB1XmYZY7UvDAL0eopgacKBuN/7+1hH7U42LQDuFV6AYhu4ZBZqdEA6lHV3lj
- okrfALhrFhVpw6cQHCLhJ4jYgMLeCJVLBBei8tPp8VkoOzMBYVQIuUOjAj3ta4/orB2oQL4yAda
- ygm7h/GJmU2dhzxK0qfdNqjZkpcCFtMS9LCde3mSymlwc+XUWXMd98VW7TIKSlRlQDYVW+VAbnS
- R1Nj1
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 8bit
 
-From: David Heidelberg <david@ixit.cz>
 
-We need to set correct mode for PLL to calculate correct frequency.
-Signalling mode is known at this point, so use it for that.
+On Thu, 25 Dec 2025 19:43:18 -0800, Rudraksha Gupta wrote:
+> Throughout the years, many have contributed to the Pinephone Pro (ppp)
+> development. Unfortunately, these patches are scattered around various
+> repositories in different states.
+> 
+> I will be attempting to upstream these patches. I will start off with the
+> following small series:
+> - Add light/proximity sensor support
+>   - Link: https://codeberg.org/megi/linux/commit/f171bc7013bc7ad3de9af817bfbcbfa548ebe01c
+> - Add magnetometer sensor support
+>   - Link: https://codeberg.org/megi/linux/commit/2f7e67f451f16eaf15b81aa1dbdf126d54927d35
+> - Add mount-matrix for magnetometer
+>   - Link: https://codeberg.org/megi/linux/commit/d7cd2eab931e32fa94408a96d73b4e6c0616107a
+> 
+> [...]
 
-Fixes: 47b6eaf36eba ("media: ccs-pll: Differentiate between CSI-2 D-PHY and C-PHY")
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/i2c/ccs/ccs-core.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index f8523140784c7..2d689e47ed094 100644
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3425,7 +3425,14 @@ static int ccs_probe(struct i2c_client *client)
- 	sensor->scale_m = CCS_LIM(sensor, SCALER_N_MIN);
- 
- 	/* prepare PLL configuration input values */
--	sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
-+	switch (sensor->hwcfg.csi_signalling_mode) {
-+	case CCS_CSI_SIGNALING_MODE_CSI_2_CPHY:
-+		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_CPHY;
-+		break;
-+	case CCS_CSI_SIGNALING_MODE_CSI_2_DPHY:
-+		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
-+		break;
-+	}
- 	sensor->pll.csi2.lanes = sensor->hwcfg.lanes;
- 	if (CCS_LIM(sensor, CLOCK_CALCULATION) &
- 	    CCS_CLOCK_CALCULATION_LANE_SPEED) {
-
----
-base-commit: 6cd6c12031130a349a098dbeb19d8c3070d2dfbe
-change-id: 20260106-ccs-account-for-cphy-af9788b6029f
+[1/2] arm64: dts: rockchip: Add magnetometer sensor to Pinephone Pro
+      commit: 2b8cd99c8cf489d539e1347adb5fd39548c53f19
+[2/2] arm64: dts: rockchip: Add light/proximity sensor to Pinephone Pro
+      commit: a3e4bb6c9a2262c87a842d9fa42bdd65a1671edf
 
 Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
-
-
+Heiko Stuebner <heiko@sntech.de>
