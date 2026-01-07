@@ -1,101 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CDB25F99B;
-	Wed,  7 Jan 2026 07:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3F1A4F3C
+	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 08:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771328; cv=none; b=BhzGBoTeC1da646xU8y81jBvn2lee3vDnKKZgtxJoKJ+duwspejQ/EMhpQoRkWLMghDGDFpti9F7W5qy8wi41jh/tXyt1tE6mkNiC7c7fFXwAOEweULoBgBCdaIneiVExfiFVMufMOX1KmP3d90j/vGJOinY3XC1vLYxdqA/H2o=
+	t=1767773163; cv=none; b=YJchBMmjvgwzHCWTGoEJQxtYX5+Q7aUSe/rNWWGgEKqMM8dZdZ1TLX+xQVcoB56G3cUsq/yJtVtXxquLn9ywsZ69ex5jidDnMFyagAxHcX2cS3lRO88IrHMxEL36UqroUEpvb2rBRdLaslFN0iM1VhrLfFI94KnlsETZf/GwAaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771328; c=relaxed/simple;
-	bh=JxK/sfpMBjul47uCw1GUClA/LRnvepcpBa/ZVdT9bSA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jOqJATSK3mje5I+/QPnTnkg9to5BlcBsZkqyCfssOdMfGlGO054AAP14yhYhP4E4mEoYcmAlfUMZmOmru/9ZdN+/TP7EyH/qdP5hpNrlp5jINNkdqAVvpmEBxkN8tj9gZqiBAUsbfahskvfnnLnelm35D2F6LSvMjk3IMxq9FSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzoD4Gfi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767773163; c=relaxed/simple;
+	bh=pB3wFfFcfrB8Ff4wD4ThceQT023SqfNJq63rMjQeuWY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aADcs86cqj3N1+4BcuFP8qCE/txU1L39CTeSlXCCPT0SUfv9UZ9WlqNelRhnwB9APWa50zekNyA9vmOepaAC86XRPXgW4MMWp1w6Q9089l5vRbK6BHj9YqiLOxwPFaA5KkUVM2JDqMeU9rxGP2xHmvWTDyktpUqJ8S4fMJoXXiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=t2n2Qap2; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzoD4Gfi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B454C4CEF7;
-	Wed,  7 Jan 2026 07:35:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767771327;
-	bh=JxK/sfpMBjul47uCw1GUClA/LRnvepcpBa/ZVdT9bSA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nzoD4Gfi6iBch8kWj2ojN9VLT+Z5tUj0XeONDF+EDWczaYgOXM1lrV1gfRDn9uZiR
-	 tLgiRCflOdiTqYvgtCZpKK30svw4TaJO5a5ZhnSdnyZ3ag/jvpe439Z1m4tWuQvjzg
-	 7NIBex9mGR4xkY6p99+NhaSF1pZLjWSoMHSKTdKBz+9tNMKaiaDQ/HHnmjbkz9dVtV
-	 R+ie0DqZgw7qP6PsHD5IjrVw0T21eUHAtjpJxRBdqcewy4CZlYklHSZxdZVlaPSfHM
-	 sHLoD0eHVcb/e3RpIQQTlgqVhfshjVKPhfibsB3c0H/7jVlCReOqZugD60i6iJ5rg1
-	 dzMG67bVVRdgg==
-Date: Wed, 7 Jan 2026 08:35:25 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Acayan <mailingradian@gmail.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Robert Mader <robert.mader@collabora.com>, 
-	Bryan O'Donoghue <bod@kernel.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] dt-bindings: media: i2c: Add Sony IMX355
-Message-ID: <20260107-aspiring-unselfish-dogfish-963c1e@quoll>
-References: <20260107043044.92485-1-mailingradian@gmail.com>
- <20260107043044.92485-2-mailingradian@gmail.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="t2n2Qap2"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64b560e425eso2392405a12.1
+        for <phone-devel@vger.kernel.org>; Wed, 07 Jan 2026 00:06:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1767773160; x=1768377960; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aea4uA3J/1hwOpuMUNDquHCAnGDE82D8jnGDI33DmmI=;
+        b=t2n2Qap2snXJ1sgPwbbQSUltKuOtstCzls6HfXSYUXWTBv5cdXFmeTdOGG4SnRWyDY
+         MqqWN91J07Y+/hd6pN4ySo8kJ53+bB0T3AUZ408/w02hYT+l9PhRqlv2VO/T8MZMSabn
+         eGMvl5Zyv5QwfvzyLQcJSBUV58pflnm62BDPiS1JB/gIOR7idVbMhRuvm4XeHYPv4ewl
+         N+4CqXRszLiTa0GYaYul86i66yIcqluvyhH88hevJ6oDnmxhcDPd4G71CCL32A1kIZgA
+         Rr0KqRVEC229UFHiq7TQKY6ItjG159SC670qThAvSysNHAolhZ2EVmYt6aRLTnpJ7d3l
+         WBGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767773160; x=1768377960;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aea4uA3J/1hwOpuMUNDquHCAnGDE82D8jnGDI33DmmI=;
+        b=g3msV1LszzJ7MuJsL6F4JuZqegOLSNTu/jvGwunxoikboD1sHKHBj6wRz4xRDfueI6
+         ndk1aTrUFr07CdAGGYwdB2oK4YJPT21zWEZLHCg6cRWd/cQ0Ht2vdSgMbqiEqiMmPEEq
+         s18DUERsFprjveegHA5vX43RG/4XW/r16T5W/9qpmO2PH+i2FDcnqa8k+e4YELoXHME5
+         t8t+gBPtwlLRxjGG9XCbqmmomMCZ9NSnOG47K1DA0IzpRPXCZ9E7WvJ2JZpv4EJ9DZEQ
+         QevLDOZHZ9amBDa41dbADqJuCp5BMZcSMJFMhAMvzGbu51zhrlbsJIhcqEbAZHVGyDjs
+         zXBA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Y/7nJgtCd4vpAvgzdNx1CoktjcybewokH9nPDsL1dvuJdGKSjR+Jnp1qXuvj03iU2++W5n0kRB9glg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YysIZhU+XTKuej491xVAdc8vqyIkx0/FLmdnS084pqeVs4QNbjv
+	x7UJHI8IkHadz+qItHcIG3EpcKypVOdvTcDGg28/vFOQWpC3qDWtZREAvPpiCAcNyAM=
+X-Gm-Gg: AY/fxX5C09xTQcwEMao42DmcByuwfSy/20JEn6aGFW0zv/yJ6k/JJQlx5+EaoIcgck/
+	HJeS9lXywBVIHr8RRvPfXraUOGTzQ2LRuSyPnhAiqRKeW8HLUGJXnSWD/7yb6G0dpKz+izQaf34
+	+Me/zgUY22Qwp9/XIZJ3qVGzWdwvFfYmXi7f9hRoGRHyHeh3lQNSkGdiOnp0KRLkfPQZP3jKv6p
+	gpvlRs5CfPo13csgrOdr8j7U14syH2bMmwXpGSjdIgHS3AD4kn9q3oSDfRRzr5BvBXcyZCrfRVV
+	7pv6QlcovGx2h4zMwu47iGSzDljmnZ9aeA7sW0wly+c7JhvDfkMOg9YD/Y2Jo5wVYleIPHF7PxQ
+	LmoYFzhzBCOuqgaKc/sod+T9gjfRbKq/FlJYMg4blEc0LaD/vvYaSE6gpzPYMIFF8TrkF5VEs7i
+	cYfMKgurr+mAG6f8pYt9XLnMbH8g==
+X-Google-Smtp-Source: AGHT+IHQhvsajZNsAjIqdeTR55Pw24pMGEFgeV3TrZGwVgpku5ShlzsTTOU37V7fY7XTDRiYIV76WA==
+X-Received: by 2002:a05:6402:26d4:b0:649:cec4:2173 with SMTP id 4fb4d7f45d1cf-65097de6edfmr1372195a12.9.1767773160150;
+        Wed, 07 Jan 2026 00:06:00 -0800 (PST)
+Received: from [192.168.224.78] ([213.208.157.247])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507bf6d5absm3941299a12.33.2026.01.07.00.05.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 00:05:59 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/6] Enable UFS support on Milos
+Date: Wed, 07 Jan 2026 09:05:50 +0100
+Message-Id: <20260107-milos-ufs-v1-0-6982ab20d0ac@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260107043044.92485-2-mailingradian@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN4TXmkC/y3MQQrDIBCF4avIrDtgQomQq5Qs1IzpQNXWMSUQc
+ vdKk+X/eHw7CBUmgVHtUOjLwjm16G4K/NOmhZDn1tDrftCdHjDyKwuuQdC44GZj7t4aD+3/LhR
+ 4+1uP6exCn7WR9RzBWSH0OUauo0q0VbxYA9Nx/ADuaakFjAAAAA==
+X-Change-ID: 20260106-milos-ufs-7bfbd774ca7c
+To: Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+ Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767773155; l=1231;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=pB3wFfFcfrB8Ff4wD4ThceQT023SqfNJq63rMjQeuWY=;
+ b=Ijl4D0+iLyVGZ0M1qfLy2I2IXvmtEOs7o+3vK2uEs/UcQ6h1855hoeK3mjwjmyOcn4UdfWtNz
+ 38+258XrMLvAUktnYO0rAjq9N0IzcQtdcJnuqwDjihz3MjNAQHtFREY
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On Tue, Jan 06, 2026 at 11:30:40PM -0500, Richard Acayan wrote:
-> The IMX355 camera sensor is a camera sensor that can be found as the
-> front camera in some smartphones, such as the Pixel 3, Pixel 3 XL, Pixel
-> 3a, and Pixel 3a XL. It already has a driver, but needs support for
-> device tree. Document the IMX355 to support defining it in device tree.
-> 
-> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-> ---
->  .../bindings/media/i2c/sony,imx355.yaml       | 115 ++++++++++++++++++
->  1 file changed, 115 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
-> new file mode 100644
-> index 000000000000..33d253ca0e4f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
-> @@ -0,0 +1,115 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +
+Add inline-crypto-engine and UFS bindings & driver parts, then add them
+to milos dtsi and enable the UFS storage on Fairphone (Gen. 6).
 
-Drop blank line.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (6):
+      dt-bindings: crypto: qcom,inline-crypto-engine: document the Milos ICE
+      scsi: ufs: qcom,sc7180-ufshc: dt-bindings: Document the Milos UFS Controller
+      dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: document the Milos QMP UFS PHY
+      phy: qcom-qmp-ufs: Add Milos support
+      arm64: dts: qcom: milos: Add UFS nodes
+      arm64: dts: qcom: milos-fairphone-fp6: Enable UFS
 
-<form letter>
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here. However, there's no
-need to repost patches *only* to add the tags. The upstream maintainer
-will do that for tags received on the version they apply.
-
-Please read:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
-
-Read carefully last sentence above.
+ .../bindings/crypto/qcom,inline-crypto-engine.yaml |   1 +
+ .../bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml    |   2 +
+ .../devicetree/bindings/ufs/qcom,sc7180-ufshc.yaml |   2 +
+ arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts   |  18 +++
+ arch/arm64/boot/dts/qcom/milos.dtsi                | 127 ++++++++++++++++++++-
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c            |  96 ++++++++++++++++
+ 6 files changed, 243 insertions(+), 3 deletions(-)
+---
+base-commit: ef1c7b875741bef0ff37ae8ab8a9aaf407dc141c
+change-id: 20260106-milos-ufs-7bfbd774ca7c
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
