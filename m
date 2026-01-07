@@ -1,90 +1,157 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A70354AE0;
-	Tue,  6 Jan 2026 18:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A7204F93
+	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 04:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767724935; cv=none; b=rJg8H161/E15/J5WHV9/hvzI/G0s0jROwzxbTXtlm2js21Va+s0FIcuVeAxyDqv0bUWXs9H+JRdjPDhP+3fLRHA4iGpvcUFPYzfMG7asCxWqymjmvUp9M80Q3PJ4+usRQZF1ID8mjCfKLXO7p70glFOVXFXvy8GDyk2tCJMn7U8=
+	t=1767759875; cv=none; b=kLI8/1unHvn8ABD0tpk7DKHbhflCv2N5wlSuDVq645pU37U0iKrOrqUxyD5L529fU/Zws+/acA44sX5ZJZ5Bl57+p4cEP4LbhM9zwZ7DhsXRkF+yG5DXcVeBaQienHT2HCac4CiAQu8WxQyVyrWJ6piDvEjLRt6iQyfrr3p4YOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767724935; c=relaxed/simple;
-	bh=IZJSKgEbNi1RsSOG/0ndHi0Nwd7YEhIuXT0g7eL/APQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YaC3aBNHS5Uy3c2N1jQ3NJ7bj37pU9/Lu3SAYKf5OBITkrsITyqsiFe+GUr3VF90rTPR/Q+c8rtysCvTtN8DsaFVE3NKVz3A+lNxXn5t4cvtzzEmaE9zZSfzv75aI8zDgr7+izs5wizlbU9UOh1fBzdnaPLS+iEkW0rHHzX+NPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=JRsFOcWC; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	s=arc-20240116; t=1767759875; c=relaxed/simple;
+	bh=QoEydU6h2r0D0PwDBN8+9gzv4tzYc8b9zBCcJbvkw1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sduRRKG81PmX9yII9ZT8vBM+8ajbT/pyqRGNtRNqD5VCbgk/dj4vJ6Mn4Zs7JsR5A7hG7VGBDxlsrNyTHxpoRyWaTcZfZc/ykl4XupFOxtHVwFTIuQ2TEjbV9f+m+u2liGn6VY9e0AvGyp0o2PWmTGCGCjbBYxoX/u69F9IyGqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F9tCHjd/; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="JRsFOcWC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=Eq0CqoMxGePRdfmtZq04yvid4QxViZV6z4QHN+0Dl7E=; b=JRsFOcWCmtPqSgsEcxqmLuPnBE
-	8Ev6MrkfuUr2Y4Ns67l0eSsB0qrLnUeCxiX2f4PhPzbVVEyEaE3hzACd220AdcTLbdwqJudKeIiUL
-	5MG6EM5KrwlSkNk/Pm/JCjHB6xz+YSvcZE3cUk1dho93K6S12VztK0V/R/rxeB10hKpuTrZjMPSPq
-	FjJYthoJAM2Naqqw0pJZqSSTGIaVk5mz3ECqeSZa6l7Y8Gk4wrmAHWIXv0Aakp1vCR4QVBqt+L4NY
-	NDfxLgdNJe21fzWyhF2A5hJp5HOl5vkKvzRudBLT3OxlnRu+YlAr3+eqFTeHMMMKIPiiJPQf68X3d
-	5hrjh08A==;
-Received: from [194.95.143.137] (helo=phil.dip.tu-dresden.de)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vdC0N-001Hfs-CZ; Tue, 06 Jan 2026 19:42:07 +0100
-From: Heiko Stuebner <heiko@sntech.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F9tCHjd/"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8888a444300so14092746d6.1
+        for <phone-devel@vger.kernel.org>; Tue, 06 Jan 2026 20:24:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767759872; x=1768364672; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=foLR2dTcYP4XS4NpABZxr5kZsIpw5l3lYiCp5Kd5N30=;
+        b=F9tCHjd/T2dUKdBmEZyjwrxPrzEGH+q472E6QgXTQ6IskzWEgtJ/5rSywo/JIghcpB
+         yxCZTo2LN3ZoHt0O8wBrlVJovOddOrb6hMJLVrML5IjIOQdv9IM02PwJpqO7txrZQ8Ar
+         TH22kW6MpuJzrU7bwtCupTV+Kdmo25DvdTr6eafIvb0dlsRmz7Kygvf506KN4YVT4hRC
+         YAZyRt4fNbHLNxhZH9XjllYDW31vDaVIQzFV3JYWLhuXxyXWSPj0UCELHNX9YZRlTaNx
+         z6sXyF8CoGI8xcGrxIRB+dgTN7tluzezgLCSWPrLti7aPmqYDHoJwMXW/HyuPeOJt0OE
+         RW5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767759872; x=1768364672;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=foLR2dTcYP4XS4NpABZxr5kZsIpw5l3lYiCp5Kd5N30=;
+        b=uL9kl/KiUF9ROAtF4GYool8y0LX0pEwBseKrEok/5ZsUiC12FtaAqCEgaN2hoFTEIH
+         /kd+sj7UkyFCfm84/OKQonBl5/m2OwEhmQDVt4Kwf+66rklDZ9dQ8V83mICW8E6WuuZO
+         xWXl3ngLYrrQ8RZ1KWKox2vglxQvVmTaofBTHzkDtCcdf2nQYBHHNuTm5g+TDL6MgRfe
+         TfSwu3PYbW+YEFi3mgEgkr63MkxAhf09GnEaB4rlHLLsX5hmu6/Kcp13OlwtqAnrQWhg
+         Dc0NlC4LAIL+IErZmBTKT1gRQ63jQ7FQDiRhmdNJCdZKEe3FIuHWZY/cqgqeBuJxs84F
+         c18g==
+X-Forwarded-Encrypted: i=1; AJvYcCU7VWlc78PMVTECi7RERQXmg709PGDiPoHfpwwtSn7lajHXDnE23daFqNYjVaCrqi+tdH6/qWj8rvtqGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvS5bLYm/GqiqZOgFu8BSMKs4WyRjDnzUSPv2gp0IAI+q9bEP0
+	8WZJ5tOUNeaL7yx74a2Ll0aNK2NvLdDTqQ0i0uBHW0tb1rKw8VbbhgO0
+X-Gm-Gg: AY/fxX5KFWYoCC9geL8oFnBmlUZhQ3hiNr758lfmJvPUYRzxzWqOzS5fKdavmz6gmrA
+	t9xMo7Zrb9LvJH/CLvK3xBa2PwgGOH66AEcXKdUYfWmALsjjeEHIzMpte9+u1bibi/z6BBianKm
+	Vpd+q1NVFWfhrfUlWjkszof49EQH1SsJo34pBxYpu1jdb7fC41DPCIZ4whO7fjDzqARC1z7koBg
+	Nq0rsi+mzasFoAL2+aDjUiIDkjR6sYaUj0s4dcnFRZMFFy2bC6OILoAi2LKygU1lgnF/jFcgNdI
+	WLpDmqQqz+SBsPsqv2uKUMIY+ara6PfCgY7716p0xJW8mFGoFihGvviLiWmIdH4QTg2zy//8Onv
+	SWWnl8Q+XA6jEbYXkzsnn13f5YNB/mpw7R5VfLDbj6NcAmHyKQNXQGjDJaA+5y3Rby/P5Z/XaVi
+	0y17x8FiUqRocKvg==
+X-Google-Smtp-Source: AGHT+IFMcPjHVkeZMdl9Hl8GA7wGzaPseWw7WxemviJhy/p7asvPmy59KOUjV7qnXWUC1pZBy673aQ==
+X-Received: by 2002:a05:6214:5f03:b0:880:4eac:8689 with SMTP id 6a1803df08f44-890842709cfmr17306166d6.57.1767759871920;
+        Tue, 06 Jan 2026 20:24:31 -0800 (PST)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e472csm26596296d6.23.2026.01.06.20.24.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 20:24:31 -0800 (PST)
+From: Richard Acayan <mailingradian@gmail.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Rudraksha Gupta <guptarud@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	linux-media@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Robert Mader <robert.mader@collabora.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	David Heidelberg <david@ixit.cz>,
 	phone-devel@vger.kernel.org,
-	Ondrej Jirman <megi@xff.cz>,
-	"Leonardo G. Trombetta" <lgtrombetta@gmx.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Martijn Braam <martijn@brixit.nl>,
-	=?UTF-8?q?Kamil=20Trzci=C5=84ski?= <ayufan@ayufan.eu>
-Subject: Re: [PATCH v6 0/2] Upstreaming Pinephone Pro Patches
-Date: Tue,  6 Jan 2026 19:41:58 +0100
-Message-ID: <176772487191.3029798.15593519528724659699.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20251225-ppp_light_accel_mag_vol-down-v6-0-8c79a4e87001@gmail.com>
-References: <20251225-ppp_light_accel_mag_vol-down-v6-0-8c79a4e87001@gmail.com>
+	Richard Acayan <mailingradian@gmail.com>
+Subject: [PATCH v5 0/5] media: i2c: IMX355 for the Pixel 3a
+Date: Tue,  6 Jan 2026 23:24:46 -0500
+Message-ID: <20260107042451.92048-1-mailingradian@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+This adds support for the IMX355 in devicetree and adds support for the
+Pixel 3a front camera.
 
-On Thu, 25 Dec 2025 19:43:18 -0800, Rudraksha Gupta wrote:
-> Throughout the years, many have contributed to the Pinephone Pro (ppp)
-> development. Unfortunately, these patches are scattered around various
-> repositories in different states.
-> 
-> I will be attempting to upstream these patches. I will start off with the
-> following small series:
-> - Add light/proximity sensor support
->   - Link: https://codeberg.org/megi/linux/commit/f171bc7013bc7ad3de9af817bfbcbfa548ebe01c
-> - Add magnetometer sensor support
->   - Link: https://codeberg.org/megi/linux/commit/2f7e67f451f16eaf15b81aa1dbdf126d54927d35
-> - Add mount-matrix for magnetometer
->   - Link: https://codeberg.org/megi/linux/commit/d7cd2eab931e32fa94408a96d73b4e6c0616107a
-> 
-> [...]
+Changes since v4 (https://lore.kernel.org/r/20251211014846.16602-1-mailingradian@gmail.com):
+- add NAK from Krzysztof (2/5)
+- label the camss ports (3/5, 5/5)
+- define endpoint properties correctly (1/5)
+- use devm_regulator_bulk_get_const (2/5)
+- remove clock-names (1/5, 5/5)
+- set reset GPIO as active low (1/5, 2/5, 5/5)
+- explicitly drive reset low at start of sequence (2/5)
+- make data-lanes in endpoint optional and start at 1 (1/5, 5/5)
+- add mclk3 pin (4/5)
+- add Reviewed-by's (4/5)
 
-Applied, thanks!
+Changes since v3 (https://lore.kernel.org/r/20250905215516.289998-6-mailingradian@gmail.com):
+- separate camera mclk pins and move to different patch (4/5, 5/5)
+- remove polarity from rear camera pin (5/5)
+- remove output-low from front camera pins (5/5)
+- mention effects of dcf6fb89e6f7 ("media: qcom: camss: remove a check for unavailable CAMSS endpoint") (3/5)
+- specify single clock-name without items nesting (1/5)
+- rebase on 49c6ac166cf7 ("media: i2c: imx355: Replace client->dev
+  usage") and eaa7d46d9654 ("media: i2c: imx335: Use V4L2 sensor clock
+  helper") (2/5)
+- do not use of_match_ptr for OF match table (2/5)
+- remove redundant GPIO validity checks (2/5)
+- describe endpoint data-lanes (1/5)
 
-[1/2] arm64: dts: rockchip: Add magnetometer sensor to Pinephone Pro
-      commit: 2b8cd99c8cf489d539e1347adb5fd39548c53f19
-[2/2] arm64: dts: rockchip: Add light/proximity sensor to Pinephone Pro
-      commit: a3e4bb6c9a2262c87a842d9fa42bdd65a1671edf
+Changes since v2 (https://lore.kernel.org/r/20250714210227.714841-6-mailingradian@gmail.com):
+- use devm_v4l2_sensor_clk_get (2/4)
+- require supplies and clock-names (1/4)
+- move unevaluatedProperties down (1/4)
+- disable clocks as last power-off action (2/4)
+- use 0 in gpio pin power-supply (4/4)
 
-Best regards,
+Changes since v1 (https://lore.kernel.org/r/20250630225944.320755-7-mailingradian@gmail.com):
+- too much to have a complete list (1-4/4)
+- squash camera orientation patch (4/4, previously 5/5)
+- squash driver changes (2/4, previously 3/5)
+- remove labelled endpoint node in sdm670.dtsi (3/4, 4/4)
+- change init sequence to match other similar drivers (2/4)
+- retrieve clock frequency from devicetree-defined clock (4/4)
+- remove clock-frequency from dt-bindings (1/4)
+- remove redundant descriptions of child nodes (1/4)
+- switch initial drive of the reset GPIO to low (2/4)
+- set mclk frequency to 19.2 MHz (4/4)
+- add vdda-pll supply for camss (4/4)
+- use common power on and off functions (2/4)
+- use devm_clk_get_optional (2/4)
+- remove extra layer when describing mclk pin (4/4)
+- rename regulators (1/4, 2/4, 4/4)
+
+Richard Acayan (5):
+  dt-bindings: media: i2c: Add Sony IMX355
+  media: i2c: imx355: Support devicetree and power management
+  arm64: dts: qcom: sdm670: label the camss ports instead of endpoints
+  arm64: dts: qcom: sdm670: add camera mclk pins
+  arm64: dts: qcom: sdm670-google-sargo: add imx355 front camera
+
+ .../bindings/media/i2c/sony,imx355.yaml       | 115 +++++++++++++++++
+ .../boot/dts/qcom/sdm670-google-sargo.dts     | 104 ++++++++++++++++
+ arch/arm64/boot/dts/qcom/sdm670.dtsi          |  46 ++++---
+ drivers/media/i2c/imx355.c                    | 116 ++++++++++++++++--
+ 4 files changed, 358 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+
 -- 
-Heiko Stuebner <heiko@sntech.de>
+2.52.0
+
