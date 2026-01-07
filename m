@@ -1,81 +1,39 @@
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4507A34AAF9
-	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 21:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043DA3398A
+	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 21:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767820173; cv=none; b=WhsFCKW+fC8G9lelyH+POxgtaFARUHgHhFUZ7i5YTAxSNok5TluulyaiB16AHwZy9rhi3GAb3/K9Maem8i//8WL06QxLIs8b7AzCAF7hQT9d5V73/g4ynFZkCtoCZz1zYlAYdHsbYyib2p3kV5+xgC9VeQy91Ldrmu61iRz/RwE=
+	t=1767821184; cv=none; b=YVOOjBaDjP0PKeN01CfwYpBlvc5P3vakaM9iVZq7HPFjUzPc4Kn1q05xGdo2RghMOZEKK5rDqr1/W4X3Kd4JI6VwLp9YZM1BgpT9o57FR6XZV8xKO2Da1XnanZfPsrjSS95x8zuhz5IlKB7wkc9BuNETNM4TCUelfN49fQ7Tnb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767820173; c=relaxed/simple;
-	bh=DmEo/icvCyME4Vu4+YNrrCX0jWjgS/elBcUFOZbQm+M=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FETbeeW/zkOB404VdzI56RmsMZAHALEaUod7TZxixi7CXi8f5uhScgJwvNbbJFL+VRwIEoR9D1vHv1s2BUPx/EH3PitTwHCETLJhO6JD/TCqn/KSAd13h+FFwQ2HDPyIqaZCMscdScMQ10mIvgqXykN8Ruxsug4CufO7YGvJ1Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=qrulm0c4; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1767821184; c=relaxed/simple;
+	bh=wMLzAiJoG4hS6W6lpS2vfptH/MKlC3yYUOcX9aub0tc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eCtEYO729UEUpN6tZ/By0nMUmgvKpdmFhghqkgWb89nMYJpMN2HNylZQt8cB/8KE4P2rSePGCGDhWSj046qE1hhy+Aj3IvJrnJMTJ83/fiVt6P/3WXEqRr4BzvY9iUyXj7+Yox9F1CC9T0mPxbiI5p9GXnpcXCS6Hh6Ugm53l14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=v6i3y0qS; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="qrulm0c4"
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="v6i3y0qS"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 51720401C3
-	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 21:09:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1767820162;
-	bh=YPUHget73xCVxejyip0HkiyxXh/2Y8oqGvSQ4Vo/5u4=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type;
-	b=qrulm0c403/2UR2GmrzrTO3kjRTw0TDIfcoLAi/90eKrFz9qDRh7Vn/8Ra5uqU6rF
-	 UB7hOvW/JO0oxBUNiYdM/GsWirRNslXIC3YlBqTl33rtfhDbP5fIAOnAVNV4jZoUM+
-	 Fs3KyUJ7UMebmozeb6k8k2RCy58q/+6utscgRgWkFgexfaMYVnSuyI1VfptfWylzgt
-	 v3zDcs4V0O8B9jUhpl3slI/WZhg862S/31RhTzFzi0mPI7SazxGlRFFxAabHOfSao+
-	 wt9U8NVGwytus2fAwAs3z/x2P5Kx5WGNL6U8bb+03VTzUBvhYx58WVt4W4XzYNSB2q
-	 zBBzH0Qd/wQx3Eondvadh1igyL1Gx7tdmWvGbQq4VDHCMOaMfvEf6Jh5jxuQhCSfmq
-	 vdlam0ZMgL0LhBDwdGpBhwJdlUWW2luY//ManeQ7GA5vdCrmFnXQnFa4D7d2TCGCuS
-	 G22R4A4Nf9vFV23ukt9Y2LrQ6qMvho3kJY6ahq/94pEl9ZEWxRaOBomfNroZkeqsc4
-	 FV7qQ+Z2qmDj7NTJH0V8LaDFFDsD+/wfr6qh+WXL914/g7662AN3v59Tc/Fb0zaYFs
-	 Bc1CjTmuRFD/TY70v74IlLZelxnflD7PogwSu1TSr9CSksgf+eFR/xz6tEzPduKYGE
-	 2LjdOB4uKgFe5ILta5DAi1KI=
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4325aa61c6bso1698232f8f.0
-        for <phone-devel@vger.kernel.org>; Wed, 07 Jan 2026 13:09:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767820162; x=1768424962;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YPUHget73xCVxejyip0HkiyxXh/2Y8oqGvSQ4Vo/5u4=;
-        b=sfIz6jpli+V5XgIe1Vcbw63CrgQuexJPVMFq27+vvQ/IMfiNwPsLoZ31LCdPWT9jdd
-         jvYDuvms0s47sj9dMIYWSllsYQBfCPuPhTM7yCCK59EPEKTKaflDHQOYt5qNECSQ2Inz
-         zSWgMCMC1+UiO+y/udUNvi7Av2efTIfQEW+OeAD5B4IVZmqLXv7TDqA0h7ajnDbEtOWA
-         WfSXg+sB+GEbRVEUHsZqRPZtO7doao+BOO+k+yaLfFknX3wYg+k5BTZwIVnRdZWZizMa
-         nHCDbvpGfymbmtM0nnBMXL9tPQbhVvA7KJ50Hli+YAp6mQW4XrR1isbWIdbu2EsEfdpX
-         AMTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVakbH1XJHOd31i5gzmcBdnGFV5m90Gg6e1I5PWtzF5T4s8s3TV00Jwb7P3M4vyF6bVQRwnov69ahCang==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH6H62zH85JbH5IyWkAJ1F35w9jbSsSodg3/lWuYT54HtO8nZS
-	unHSnWMGcdigpJ4VweqPe7ZRWMMvWk8VKUPZcDoXW9gN5OKWtTn+2+ficXuM+o54PrJnMeDUN9i
-	oidxr5hBnlO+VnBktCr+/HAC8fQnxmEgQE76wUyAqfwPGLUTHs/6hE0rj+Y++9SjXaVz2ibDsRI
-	0lpDal
-X-Gm-Gg: AY/fxX7k/PXOysqkqgX5LxoC94NmUbf44iezgpyrQ7gfArGbhUzWml3YBwj6UWAhUbi
-	ML2luAFyqCEtx1QO0k1qqvNQ9EHHWhZeIBtCKHU6GZFTQSduiI2jeXK7mnpbyRl0whI07/XC5Tq
-	EK4AcrWwsOHnVOJVkl9En4WdhALss/Fmh9+eNMTbHaCUDc+dpsdMXRvysOpaak9IEs9uTuc9CnI
-	s3xxf+cbq7c7qXeSAFtBd/sdSv7wajwAYxTjGzH9bJc0WMT73YhIt7v1JuA/elyC4SD+xXHHHeu
-	i2WnJdFwuKQG/MAkNIkl1MjzevXVIy0MzoTAfPe9dbtFG9bparsKxyfM1Ffn36gW3Go627sY2i4
-	lKd0JZ0pPUPAe8ER7Odk6m6mQtj4aX737cyNGuJAxyycUL2zwLxPY5fAnNXyk9KyozQ==
-X-Received: by 2002:a05:6000:25c1:b0:430:f742:fbc3 with SMTP id ffacd0b85a97d-432c376155bmr5042562f8f.48.1767820161648;
-        Wed, 07 Jan 2026 13:09:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG6/QQ84s4NCohE05G2lAu2LhRRsGdWUAW31GpqsV1awN3uQsuXe8WJ6/heoQxue7s2hyPeng==
-X-Received: by 2002:a05:6000:25c1:b0:430:f742:fbc3 with SMTP id ffacd0b85a97d-432c376155bmr5042535f8f.48.1767820161274;
-        Wed, 07 Jan 2026 13:09:21 -0800 (PST)
-Received: from [192.168.103.126] (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5df9c5sm12768366f8f.22.2026.01.07.13.09.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 13:09:20 -0800 (PST)
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-X-Google-Original-From: Heinrich Schuchardt <xypron.debian@gmx.de>
-Message-ID: <d878f88e-9349-42e5-a7e6-d363c01743a3@gmx.de>
-Date: Wed, 7 Jan 2026 22:09:19 +0100
+	by ixit.cz (Postfix) with ESMTPSA id 402215340CF8;
+	Wed, 07 Jan 2026 22:26:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1767821175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ompJdg23KAp6jAm3gfGiwFWOfg9ZZQkAn6dn1w9WzvI=;
+	b=v6i3y0qSx+4bgr0p9Fgs4IFwKcctB1ZVmo4+yL0qIvrVDmp1gLDuqjUoo8lfMMBrRlro2A
+	52jbkRzSaCnzA/YJ39d6l1/SWQQuzw9/S5v9hdsVUr+CF/5gbXI2s0EuTZjz8hY6cdKs8Z
+	CCT03NfyyIiSvipah9W1f6s6xC5JBNA=
+Message-ID: <33a85240-0ca0-495d-8ddf-32ab4e904e1a@ixit.cz>
+Date: Wed, 7 Jan 2026 22:26:14 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -85,7 +43,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/2] doc: board: qualcomm: document Pixel 3 / 3 XL
  support
-To: david@ixit.cz
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 Cc: Casey Connolly <casey.connolly@linaro.org>,
  Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>,
  Luca Weiss <luca.weiss@fairphone.com>, Simon Glass <sjg@chromium.org>,
@@ -95,64 +53,95 @@ Cc: Casey Connolly <casey.connolly@linaro.org>,
  Sumit Garg <sumit.garg@kernel.org>
 References: <20260107-pixel-config-v3-0-02a25e3fdcfa@ixit.cz>
  <20260107-pixel-config-v3-1-02a25e3fdcfa@ixit.cz>
+ <d878f88e-9349-42e5-a7e6-d363c01743a3@gmx.de>
 Content-Language: en-US
-In-Reply-To: <20260107-pixel-config-v3-1-02a25e3fdcfa@ixit.cz>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <d878f88e-9349-42e5-a7e6-d363c01743a3@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/7/26 21:28, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 07/01/2026 22:09, Heinrich Schuchardt wrote:
+> On 1/7/26 21:28, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> U-Boot does work on Qualcomm 845-based Pixel 3 and 3 XL.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   doc/board/qualcomm/board.rst | 20 ++++++++++++++++++++
+>>   1 file changed, 20 insertions(+)
+>>
+>> diff --git a/doc/board/qualcomm/board.rst b/doc/board/qualcomm/board.rst
+>> index 642c5095261..e5dbc9816b9 100644
+>> --- a/doc/board/qualcomm/board.rst
+>> +++ b/doc/board/qualcomm/board.rst
+>> @@ -38,6 +38,25 @@ with appended dtb, so let's mimic linux to satisfy 
+>> stock bootloader.
+>>   Boards
+>>   ------
+>> +Pixel 3 (blueline) and Pixel 3 XL (crosshatch)
+>> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 > 
-> U-Boot does work on Qualcomm 845-based Pixel 3 and 3 XL.
+> How about the Pixel 5 (redfin) mentioned in patch 2/2?
+
+There will be likely more of SDM Pixels needing this quirk.
+Pixel 5 has for now no mainline Linux support (missing device-tree).
+
+So far I can only support Pixel 3 / 3 XL (both tested).
+
+I mentioned Pixel 5 mostly to justify the rename from
+google-pixel3.config to google-pixel.config as it's clear that there is 
+more Google devices needing this quirk not limited to Pixel 3 (with 
+recent bootloader).
+
+David
+
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   doc/board/qualcomm/board.rst | 20 ++++++++++++++++++++
->   1 file changed, 20 insertions(+)
+> Best regards
 > 
-> diff --git a/doc/board/qualcomm/board.rst b/doc/board/qualcomm/board.rst
-> index 642c5095261..e5dbc9816b9 100644
-> --- a/doc/board/qualcomm/board.rst
-> +++ b/doc/board/qualcomm/board.rst
-> @@ -38,6 +38,25 @@ with appended dtb, so let's mimic linux to satisfy stock bootloader.
->   Boards
->   ------
->   
-> +Pixel 3 (blueline) and Pixel 3 XL (crosshatch)
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-How about the Pixel 5 (redfin) mentioned in patch 2/2?
-
-Best regards
-
-Heinrich
-
-> +blueline refers to the Google Pixel 3, and crosshatch to the Pixel 3 XL, both
-> +powered by the Qualcomm SDM845 SoC.
-> +
-> +These devices use the common qcom_defconfig with the google-pixel.config
-> +fragment for configuration.
-> +
-> +Use the following commands::
-> +
-> +	make CROSS_COMPILE=aarch64-linux-gnu- O=.output qcom_defconfig google-pixel.config qcom-phone.config
-> +
-> +The DTB is called:
-> +
-> + - "sdm845-google-blueline.dtb" (Pixel 3)
-> + - "sdm845-google-crosshatch.dtb" (Pixel 3 XL)
-> +
-> +More information can be found on the `Google Pixel 3 page`_.
-> +
->   starqlte
->   ^^^^^^^^
->   
-> @@ -131,5 +150,6 @@ Other devices with boot image version 2 can be built like this example::
->   	fastboot flash boot boot.img
->   	fastboot erase dtbo
->   
-> +.. _Google Pixel 3 page: https://en.wikipedia.org/wiki/Pixel_3
->   .. _Samsung S9 page: https://en.wikipedia.org/wiki/Samsung_Galaxy_S9
->   .. _DragonBoard 845c page: https://www.96boards.org/product/rb3-platform/
+> Heinrich
 > 
-
+[...]
