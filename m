@@ -1,147 +1,128 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043DA3398A
-	for <phone-devel@vger.kernel.org>; Wed,  7 Jan 2026 21:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EC526E6F9;
+	Wed,  7 Jan 2026 23:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767821184; cv=none; b=YVOOjBaDjP0PKeN01CfwYpBlvc5P3vakaM9iVZq7HPFjUzPc4Kn1q05xGdo2RghMOZEKK5rDqr1/W4X3Kd4JI6VwLp9YZM1BgpT9o57FR6XZV8xKO2Da1XnanZfPsrjSS95x8zuhz5IlKB7wkc9BuNETNM4TCUelfN49fQ7Tnb0=
+	t=1767827073; cv=none; b=mDHVvahVVqwtEtsWR4klLm6XkuOUClTYcANNrPks+x2NBpm6xrbulwCntzTMPpQviLU4obozCqGKN2+PSx6zSK8opwwLM3uml6jNRJ6aACFZS8xRSXKcz3E0ewvcx630F2mXaptWBSXGZ792uepTdt8QB3LHjfnTpV8zLDNmZIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767821184; c=relaxed/simple;
-	bh=wMLzAiJoG4hS6W6lpS2vfptH/MKlC3yYUOcX9aub0tc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eCtEYO729UEUpN6tZ/By0nMUmgvKpdmFhghqkgWb89nMYJpMN2HNylZQt8cB/8KE4P2rSePGCGDhWSj046qE1hhy+Aj3IvJrnJMTJ83/fiVt6P/3WXEqRr4BzvY9iUyXj7+Yox9F1CC9T0mPxbiI5p9GXnpcXCS6Hh6Ugm53l14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=v6i3y0qS; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1767827073; c=relaxed/simple;
+	bh=I6xheA3HBW8FXoLvBoYTxBynZhv7VLPB7kjGOA3MebY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=o9RKlbhhTQqIO//Fbxu0cO+cfUMR/2C6F01dptv3hYJsC2xUfbE7oHjtsPbkWyPcShl2c1RNXlh3tJ0YjA5Dbizb4193dNSEPak7xJZWSGsqQy3vUhQPpNyjy+qxUUirIoUQvGKfAx3Qgo5DsNYtp39IK60gFdvFIl4SivVXKV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5v/20YH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="v6i3y0qS"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 402215340CF8;
-	Wed, 07 Jan 2026 22:26:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1767821175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ompJdg23KAp6jAm3gfGiwFWOfg9ZZQkAn6dn1w9WzvI=;
-	b=v6i3y0qSx+4bgr0p9Fgs4IFwKcctB1ZVmo4+yL0qIvrVDmp1gLDuqjUoo8lfMMBrRlro2A
-	52jbkRzSaCnzA/YJ39d6l1/SWQQuzw9/S5v9hdsVUr+CF/5gbXI2s0EuTZjz8hY6cdKs8Z
-	CCT03NfyyIiSvipah9W1f6s6xC5JBNA=
-Message-ID: <33a85240-0ca0-495d-8ddf-32ab4e904e1a@ixit.cz>
-Date: Wed, 7 Jan 2026 22:26:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5v/20YH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CDB9C4CEF1;
+	Wed,  7 Jan 2026 23:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767827073;
+	bh=I6xheA3HBW8FXoLvBoYTxBynZhv7VLPB7kjGOA3MebY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=C5v/20YHHn5q64q0b5qZKg8ZFjGtHNCw6IHPuCEFXyx9HzZSosW7kzaJG7U5Lncvk
+	 HvCQ904YMDEJWXD9MAkjJrUuCBWmtwWyOSM/clHXm/sDwePtCpzDqWZA3X3k23pCVp
+	 iTeqRwr6bFlXTwQRAUtcNK4jkCWlL+YRACQVq2MWYCCXpDhwuDR1C2WT3JmkBXuKTO
+	 C5Sn4LiKNtjeDeFpKF1Ggrf1kUoO0fzq7KcR/RPnGG6TKJHukJllrJUe+49Vz/oIHe
+	 I4nXYyP0NLkan10tXQRHPXLgir4IJqwG5LmcxGhzz6oZOCkx3iQJN3XvBQ+7M/Vcgl
+	 SP60x/Njs+oTQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03512D0D17C;
+	Wed,  7 Jan 2026 23:04:33 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 08 Jan 2026 00:04:30 +0100
+Subject: [PATCH v2] media: ccs: Accommodate C-PHY into the calculation
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] doc: board: qualcomm: document Pixel 3 / 3 XL
- support
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Casey Connolly <casey.connolly@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>,
- Luca Weiss <luca.weiss@fairphone.com>, Simon Glass <sjg@chromium.org>,
- Petr Hodina <petr.hodina@protonmail.com>, Matthew Croughan
- <matt@croughan.sh>, phone-devel@vger.kernel.org, u-boot-qcom@groups.io,
- u-boot@lists.denx.de, Petr Vorel <petr.vorel@gmail.com>,
- Sumit Garg <sumit.garg@kernel.org>
-References: <20260107-pixel-config-v3-0-02a25e3fdcfa@ixit.cz>
- <20260107-pixel-config-v3-1-02a25e3fdcfa@ixit.cz>
- <d878f88e-9349-42e5-a7e6-d363c01743a3@gmx.de>
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260108-ccs-account-for-cphy-v2-1-f2749ecf0733@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAH3mXmkC/4WNQQ6DIBBFr2Jm3WkAE9Sueo/GBR2hzAYMWKM13
+ L3UC3T5XvLfPyDbxDbDrTkg2ZUzx1BBXRogb8LLIk+VQQmlhRQaiTIaovgOC7qYkGa/o3FD1/d
+ PLdTgoE7nZB1vZ/YxVvacl5j282WVP/snuEqUSK1uh0kLrTp5542XK31gLKV8ASbcgca2AAAA
+X-Change-ID: 20260106-ccs-account-for-cphy-af9788b6029f
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1900; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=pgifrmWzS93M40AkrvwrqvuNB9Em0PvPuVu5KPWYkkc=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpXuZ/tSg/is/AuU7XMxXP5LVAvPoMiwqcI8u+i
+ 2WpM/Chrf6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaV7mfwAKCRBgAj/E00kg
+ cqqkD/9JDlbDiNHaEuQ67d9ZmBvoLyan7X+vdNst4KlVIcrCifjoYS+xTj57D92gdHEjhZctiqP
+ WmahRYRK+Kf9Sd/6awLhiYNbp7oCKrrWQgLQVy8cPtBXZmBkz2gIjJLyzvpeoJNCme47Av5ti1+
+ Jj5v3X9lvfr6oS8zLZidxo1OCmxOhoU4N37DGJKFl00ZIFr9uVDzoa1EAwHViyVmrcS5o8Gf6C+
+ pjq/CoZKhTYGZB9PEmA0t2zk0j/y0EKWX5Q/hZjLZyf0/FWtIZfH692MjX5ft8SgsJe4xMQd1Mx
+ uhRK6s8i3dhwb0cIefIp+u07JEKQ2AuaeDmQEtZ6WJqQdNEgIX02mEGilXFt5deDH4lV2V8+3kU
+ 5K1xd1R/uCF0oSgu0tqUX+GYWUBmUq1NR7gfPIBqsQM1t8bw3qQhSbo9wC+UzS4yHIExnFg93Dm
+ OlbGridgx5d+rUZzQ2FYKs4YwKzw0Qm7zosGQ9VfGj7d0DgoLp3hCJC3w8NUe5N+7mhJzmCftTb
+ sn6fWGzFcAf8DblgFFIzKdpfkOqqVtvCTUGmNXqWkwP3Ae1S8AOi3K4QzqVtsQPx8BUjUluXBYU
+ CaFNArFcp11ZEzKuxxTCUmkRF0PhaW6FqLWkgPtykLgmfHyxgXa9H3IRGS9eJyn/65GAtlaOUIb
+ Wo5vjLxrPkFTykw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+
 From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <d878f88e-9349-42e5-a7e6-d363c01743a3@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 07/01/2026 22:09, Heinrich Schuchardt wrote:
-> On 1/7/26 21:28, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> U-Boot does work on Qualcomm 845-based Pixel 3 and 3 XL.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   doc/board/qualcomm/board.rst | 20 ++++++++++++++++++++
->>   1 file changed, 20 insertions(+)
->>
->> diff --git a/doc/board/qualcomm/board.rst b/doc/board/qualcomm/board.rst
->> index 642c5095261..e5dbc9816b9 100644
->> --- a/doc/board/qualcomm/board.rst
->> +++ b/doc/board/qualcomm/board.rst
->> @@ -38,6 +38,25 @@ with appended dtb, so let's mimic linux to satisfy 
->> stock bootloader.
->>   Boards
->>   ------
->> +Pixel 3 (blueline) and Pixel 3 XL (crosshatch)
->> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> How about the Pixel 5 (redfin) mentioned in patch 2/2?
+We need to set correct mode for PLL to calculate correct frequency.
+Signalling mode is known at this point, so use it for that.
 
-There will be likely more of SDM Pixels needing this quirk.
-Pixel 5 has for now no mainline Linux support (missing device-tree).
+Fixes: 47b6eaf36eba ("media: ccs-pll: Differentiate between CSI-2 D-PHY and C-PHY")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v2:
+- Account for CCP2 which PLL calculation handled same way as D-PHY.
+- Add default statement for error handling. (Mehdi)
+- Link to v1: https://lore.kernel.org/r/20260106-ccs-account-for-cphy-v1-1-c3639d606271@ixit.cz
+---
+ drivers/media/i2c/ccs/ccs-core.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-So far I can only support Pixel 3 / 3 XL (both tested).
+diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
+index f8523140784c7..c1fff4029b5bd 100644
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3425,7 +3425,22 @@ static int ccs_probe(struct i2c_client *client)
+ 	sensor->scale_m = CCS_LIM(sensor, SCALER_N_MIN);
+ 
+ 	/* prepare PLL configuration input values */
+-	sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
++	switch (sensor->hwcfg.csi_signalling_mode) {
++	case CCS_CSI_SIGNALING_MODE_CSI_2_CPHY:
++		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_CPHY;
++		break;
++	case CCS_CSI_SIGNALING_MODE_CSI_2_DPHY:
++	case SMIAPP_CSI_SIGNALLING_MODE_CCP2_DATA_CLOCK;
++	case SMIAPP_CSI_SIGNALLING_MODE_CCP2_DATA_STROBE:
++		sensor->pll.bus_type = CCS_PLL_BUS_TYPE_CSI2_DPHY;
++		break;
++	default:
++		dev_err(&client->dev, "unsupported signalling mode %u\n",
++			sensor->hwcfg.csi_signalling_mode);
++		rval = -EINVAL;
++		goto out_cleanup;
++
++	}
+ 	sensor->pll.csi2.lanes = sensor->hwcfg.lanes;
+ 	if (CCS_LIM(sensor, CLOCK_CALCULATION) &
+ 	    CCS_CLOCK_CALCULATION_LANE_SPEED) {
 
-I mentioned Pixel 5 mostly to justify the rename from
-google-pixel3.config to google-pixel.config as it's clear that there is 
-more Google devices needing this quirk not limited to Pixel 3 (with 
-recent bootloader).
+---
+base-commit: f96074c6d01d8a5e9e2fccd0bba5f2ed654c1f2d
+change-id: 20260106-ccs-account-for-cphy-af9788b6029f
 
-David
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
 
-> 
-> Best regards
-> 
-> Heinrich
-> 
-[...]
+
