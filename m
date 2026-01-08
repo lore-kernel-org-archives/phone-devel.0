@@ -1,124 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DB03242C8
-	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21BF27F18F;
+	Thu,  8 Jan 2026 23:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767910383; cv=none; b=unZKt2yTvWUq1DP6G/T9tfXOCJXJW+lcOaq7OEXAsvW2vij2rQYHBKhmENVSqPHG/C7UPaLBIBk8fy8SsthVERLRrDuU38bMsCUUhVIVfj2MVZYLv3ZmVPA9viLbv3pVHcWlB5jurewmo8C7wLrt0VsVX2a+9v1w1WOXHDaX3lk=
+	t=1767913236; cv=none; b=VZBlXOzBVQiDYc/riwozUFTIRNgI8bo7hZwDxe6M8kS1HaRl8FvdlhtTLbx8kX68lJJNQbfmn8wKBgvyXrV4DUoJcayEyIvVoPQmot74WQ2fiNYUTY2ceO9dm5r5J2lnTpRBkQfCeLya9/Qz2kB3+lNSoaMGCgEU95/wr8A6Y7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767910383; c=relaxed/simple;
-	bh=Btre+W9rXfTntEbWir+3D2MhegCB4vsVPDfdX2a6Dek=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fet/iVOKXuGwNACtw9xq+qsdl8+9Pzi+Ju42l97tKOAKAcaC04ZrtNLyO72xtNXlqeMtBSJFm9TdBd/zVcKaoUD5LCjSAybYTc7dezFpixIKTLXMU+BxHP/Y0Q6DU+06o3FP4JU4ZN0D5AtZ9VrC4NK3KfEpfsRmUqBA0ASK+rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0rvcJg+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767913236; c=relaxed/simple;
+	bh=Gmp7oxzoMMQ+4FOB0OmFFTH7yDV+Rd4MYUw4zlyLzq4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cIT9Fl5u2TcRbVCrmQrRMptkY/3kjCDFOUuChWTfA8jvBmXKyzr88Ph7NFZ2vtySN7hIOQflExxFo0KGVkpQCLsJCHpyEKJoYzkGxMZMPfz6SuHyn/9pf6ZxzMOdycv1/IAk4s6VeYlan4iy4mfCwtfN+VQZ+ficza4GCJKjdY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=W7HLm4CL; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0rvcJg+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BF981C19423;
-	Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767910382;
-	bh=Btre+W9rXfTntEbWir+3D2MhegCB4vsVPDfdX2a6Dek=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=S0rvcJg+LvBtvl6qu8Tr0rfLCMVfHFuZvTVARXU48yELBs+OpADdRE8e65gcBfiwX
-	 MPQRPcd4ooNnElQEhI4NS9tNi6FQvYFyDlT75Mfk1iMo0S1nJmTZx6JKA/BV1592xg
-	 dMSLP71bmKnLyq/uvmPscc5qe07EMZsGrQ0uW/cH5V4RFVKH1e4LRXTaEFXyVOoH79
-	 br3AZXWgdBEHsa9oi46jCuGYWY3lCjz03non1qrQyvs6hR3IWsR3m9RO+I84PggTrU
-	 pCMOn5MB6XqBPMfgrjsX0wuDQC1CL0rFwEXmai0t2/GjNXxOH7SRkMTtqZMJ20ZFwy
-	 2XMRczddmk7vA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5703D232C2;
-	Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v4 0/2] Introduce Pixel config fragment for chainloading
- u-boot
-Date: Thu, 08 Jan 2026 23:13:00 +0100
-Message-Id: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="W7HLm4CL"
+Message-ID: <702e4696-5ff6-4c72-bce4-1a9a8ee1ba18@packett.cool>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1767913222;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Y93ff+hEOI+QHoGj9/iWZX4epwSGuXWyQ3WAZwL30k=;
+	b=W7HLm4CLof9hJBlf9kF+Ck/RzjHe1jNiMASMK39UJHeXZndB5FTA5SHTAXtUKm8ZZwjZcY
+	NkoZcf1HOarv5Nn2EWog/W2fzVzLbDrrhezpiO7+2SIPgLhhSKiPJqZ0YMnY1XEVX9gjCF
+	zscvZj3lfYU7Kj7ir0WhOivJQ/c5VhIuFMRLLKcmf3xF0UoTwQi+aNaA2sbv5ejKyB75MB
+	wXZ2rgUijijpYmbPGs4cHFhPWw0Hz/LuE5WiOnSCnbLfj1mN4e4d9zAnKKFTao24uO5ySB
+	uYtY841b4cR62R4Zf5xNP6YeyPdAcDbxdm2Ag8nTHcpt480Vo24YxnLs0vLGgA==
+Date: Thu, 8 Jan 2026 20:00:13 -0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH v2] clk: qcom: dispcc-sdm845: Enable parents for pixel
+ clocks
+To: petr.hodina@protonmail.com, Konrad Dybcio
+ <konrad.dybcio@oss.qualcomm.com>, Rob Clark <robin.clark@oss.qualcomm.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
+ <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, David Heidelberg <david@ixit.cz>,
+ Taniya Das <quic_tdas@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260107-stability-discussion-v2-1-ef7717b435ff@protonmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+In-Reply-To: <20260107-stability-discussion-v2-1-ef7717b435ff@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOwrYGkC/23OQQ6CQAwF0KuYWVvSdmZUXHkP4wKGgk0MGDATl
- HB3BxPDhuX/zfvpZAbpVQZz3k2ml6iDdm0Kbr8z4V60jYBWKRtGPiDhEZ46ygNC19bagCvRnyQ
- EJ1SaRJ691Om+zF1vKd91eHX9+7ceaWmXIY9Hzglt7jEj8g4dAkNVRK0uOuorCx+z6MirOCEjk
- vV5xsScMNCWsH+x8Wy0gIBcsBdbV6EuVjrP8xcGkIPKCgEAAA==
-X-Change-ID: 20260107-pixel-config-4b058ecc4e1b
-To: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, 
- u-boot@lists.denx.de, Petr Vorel <petr.vorel@gmail.com>
-Cc: Casey Connolly <casey.connolly@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>, 
- Luca Weiss <luca.weiss@fairphone.com>, Simon Glass <sjg@chromium.org>, 
- Petr Hodina <petr.hodina@protonmail.com>, 
- Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, Simon Glass <simon.glass@canonical.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=Btre+W9rXfTntEbWir+3D2MhegCB4vsVPDfdX2a6Dek=;
- b=kA0DAAgBYAI/xNNJIHIByyZiAGlgK+2gB9sgdp8yXtazzm0fS+wJ9BRrgxi+RjkT3c5e40PuD
- YkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJpYCvtAAoJEGACP8TTSSByqtgQAIJX
- nCzTiuhCC+iDyJ9yeyaIy0fFDC2ZjAtqD4bLK0+WG5N5hAXfSGbyM8vizG8QddZ+3fYsmiMiSqu
- ZklbBRvMG2hyNfLwIaCjVYAZe1Fqkypsdrgm1kq5pMW45c++Tbu5UKAQwbQTqobyAAncQZoOkb0
- cXAJSWeT8wtpN88NgMt6iWdydcNHgLnp9KBMwV0H0sOzic3RuooK4N3OQ3+BLpjgZ5rbKf/MR2K
- b+Ik8rxhmhM+zWIGQR+dnuP3tFkuPEI9NE2HrG5kcw/mMaNgD9KyVvrNYzKndBL58NjTCw/ITDb
- YMU42y1YNnIrYQyrarpa//GR+xCEsA+myAm9UWlMHSjLlAPqMgbAp3AoLNBchc+X4l3pnH7Td93
- miAr1lFY+bhGKlWKI9lCrLr1YKs5aTGvvuAq+zTFkEx2N647Wn8HJVYommIZALE03PwEPVtzIti
- xO6gji+dBn4E0/tz94aCRaUzBju1xdexZdcAB6gzUL4FqKKFBN3ula9Cv1kJ02shQpZ0EE8xzHQ
- 3USFgmvfL6/Paw8+fD6gley1ClJdVlKFPou0Ao6Pr3ybYMF8RJCaAKjUd2I0a2GL1/R46A91tFp
- H1M07uFCOjJV3PdEwoo5oquHCbnCCW2+YOjn6wpMNqes6p7ALHu29nrbbQUR5ncoMysGPbgizYN
- b7+Xt
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Migadu-Flow: FLOW_OUT
 
-Snapdragon Google Pixel bootloaders require the TEXT_OFFSET to be
-exactly 0x80000. Without this, U-Boot or kernels will fail to load.
 
-This patchset documents Pixel 3 and Pixel 3 XL and adds the necessary
-config fragment along with usage instructions.
+On 1/7/26 8:44 AM, Petr Hodina via B4 Relay wrote:
+> From: Petr Hodina <petr.hodina@protonmail.com>
+>
+> Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
+> clocks are enabled during clock operations, preventing potential
+> stability issues during display configuration.
+>
+> Fixes: 81351776c9fb ("clk: qcom: Add display clock controller driver for SDM845")
+> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
+> ---
+> We are currently running the latest linux-next snapshots (next-202511*
+> and next-202512*) and have encountered random freezes and crashes on the
+> Pixel 3, as well as crash dumps on the OnePlus 6 and 6T.
+>
+> This commit fixes the stability issue. I've checked other SDM dispcc
+> files and they also contain this configuration.
 
-It has been tested on Pixel 3, 3 XL (by me), and Pixel 5 (by Petr Vorel).
+Hm, we don't have this flag set in dispcc-x1e80100.c either!
 
-The corresponding DTS files (sdm845-google-blueline and crosshatch) have
-already been merged into the Linux -next, so mainline U-Boot will receive
-these devices support soon.
+The only random freeze we have on that platform seems related to PCIe 
+ASPM with NVMe drives, but during display configuration.. *extremely* 
+rarely, but the eDP display output can get stuck on a blue screen. Many 
+run with clk_ignore_unused for the early uefi framebuffer though.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Changes in v4:
-- s/CONFIG_TEXT_OFFSET/CONFIG_TEXT_BASE/ in commit message (Casey)
-- Link to v3: https://lore.kernel.org/r/20260107-pixel-config-v3-0-02a25e3fdcfa@ixit.cz
-
-Changes in v3:
-- Renamed google-pixel3.config to google-pixel.config as it's not
-  limited to Pixel 3 / 3 XL, but also 5 and possibly others.
-- Reworked the documentation. (Casey)
-- Reworded commit message. (Casey)
-- Link to v2: https://lore.kernel.org/u-boot/20250802001359.2122103-1-david@ixit.cz/
-
-Changes in v2:
-- Added documentation of Pixel 3 / 3 XL into doc/board/qualcomm. (Casey)
-- Link to v1: https://lore.kernel.org/u-boot/20250729103950.1154040-2-david@ixit.cz/
-
----
-David Heidelberg (2):
-      doc: board: qualcomm: document Pixel 3 / 3 XL support
-      configs: Add google-pixel fragment config for Pixel 3, 3 XL, 5
-
- board/qualcomm/google-pixel.config |  5 +++++
- doc/board/qualcomm/board.rst       | 20 ++++++++++++++++++++
- 2 files changed, 25 insertions(+)
----
-base-commit: 53c0d5b387956bb4070a943b61991898373a20e2
-change-id: 20260107-pixel-config-4b058ecc4e1b
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
+~val
 
