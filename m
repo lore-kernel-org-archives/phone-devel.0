@@ -1,112 +1,129 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1883009F6
-	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 17:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E3F33D4F2
+	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767894208; cv=none; b=SEtjDbS8dDGqGm2lSve8iu1vr3RDsciWCfHAT/8g0sQFwTUmm6ZeN2eli4HVVZ+gMA89/wuLmOY3aNHYmRB09DpsNHgtc52fOEGkjimLitdVs8HOpVAbMqynNdnrrnQxZrJnb1s9F1fhhhfK9ZcvCLfjywaJOnzyzu8CT/D+gmc=
+	t=1767910383; cv=none; b=kKe2xcBWpJvt5R9gLH/H1OqI1TElXS9xxYyLKwt9qkTF+KlPPiP4s6o8akx3H4UnPBV1Z/61dhtyQ+0ZP4k1iUiBoYuMc8cceL4QNZrnQGNXKsxmRh0J1jGhvwdNKMypufrmw5LQ2VAyb5mRQsFAmTTyJcOlp0oDHpUbecYisQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767894208; c=relaxed/simple;
-	bh=ZcQNeKDblC0togYftGoB5YI+zH/8WuW18RQGgZRkc8I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n+VeUQDdL69OfEFScawXIwvsBdyQRMpM/CV/IguJnULdcHPzFFK6/d1lOSEpf1kwJuFLI+FasHQWAxSTtuwFbvHf833v2xNnKRgFaKrdg7wXwN6kXK4+pk0Dzg4OYj79vg/p2w5EQQ1NFC5wqYhYN9aTr2DUsyWVH2gAsPGhmwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ige6Qd/d; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1767910383; c=relaxed/simple;
+	bh=aaJS6O2g0heQM1gZYRRUlRYZDQrHUwH4WyvQBnJ+K7I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=deSm2/tDBjnu6JdUwbaOSLlu8HLXcIimqiIrzRg1h7w1WUoPy1X2xwesH0Yw+gwl6EwhDtl4ZPmWDre30EcVTRTlOdvrwke3C8R8N02DSw0jeuObim7FtBYmCHSdGkS7Y15ARmhKzgj2PH6KgqIk//+cqZds92OR4imzlJQU9Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rq5k8Xqz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ige6Qd/d"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7baf61be569so2331377b3a.3
-        for <phone-devel@vger.kernel.org>; Thu, 08 Jan 2026 09:43:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767894199; x=1768498999; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vCNHB3lCIVC67sc2QISk0+5ANY7HH19lb+3n7pNN738=;
-        b=ige6Qd/daAV5GbVO20lE0AxRwKfPXNLlgSyibasoqtH48yRQm3rQsk4U6WGNX35jRF
-         Q6RP+yuaJSG8PrzDt64B/YhKYFFOnT1XmdfpSLmVTjVXf6ulgT9a+Cywm4wwkSyRAcpZ
-         DiJoN0pJWWZfh1iWNiug8MjhphCjaN2weyANk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767894199; x=1768498999;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vCNHB3lCIVC67sc2QISk0+5ANY7HH19lb+3n7pNN738=;
-        b=VgWzoDF2uI3sfIFb9eUCKkmQxgXVBsnbGQQHUIYjDZa/ohrb0sQkUn7OUaZF4UnHoX
-         ppt6HE1AeXMcMR+FYQXJ+Fo7cF42aOPxb2qoCDiOueibKdOqyJbAK+tEx8K2jdftXWyg
-         piVd9DVfgzcrdI9Nmkjrq5vFxsO+OBuDagapzU3UZ3f8Xq/PshgP8poaUBC05CQ/hf1f
-         1vp8LhIX9TrkfkrzwR5nKPiXrh21d0hQ10Z4UHod/ptrw78HqhjTqoqW8Pn3qypR97Dt
-         fhbLFVFQv6Eak3upWET/AU8Z1N5wdLBoY+Lr2SGGdx+fznJk6h7TsbkCO48ZO+u/GNrk
-         joFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvo66t56USKkME3n3Xs5EfwGvgguR3OggM/8nzF/3EUCN00nyiGhL8QHN7csTzCN/0XcwA1VMFva+xtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY9/CL09o777wN41BDIb7ygCCc1Zd/+RGXEDi1NciKvIx/aS/K
-	Ou4pOLcOoczcKxSrgIe7Hs4JVw/v6lqDBO95EuVqe8D13SbTZgrCQFwG2vtnG01KLlpbcU4Ektl
-	wMx7b6AfaoYDxU5OOn7T50k67cD22cE/AjWTSL3Ml
-X-Gm-Gg: AY/fxX4+VKtIUTTrj/HHakWe4d8GNRrAeesBZA9ALlV97cWb+B0gUYYzg6TGpw+DayV
-	3EgorAJvNsXFSEuCJqh43JQHJRt8ePXGCg4hAUFMDg31Zw/1pVGfO2IW8ge+8VDR8r+NEPz+rlp
-	ZvkuYblC/1a0qvG1S+E2xhreD8cck9PvnU41vZonL2by5CO6q3BIagEsaLb1maPuQuzd6UacO0/
-	aVEQ4b3dc12Jra2LeyIJ1L+47EVNku5cC/Akg4fv0fvk9zD3YHKJxlkBJ87vK0JG8rshuJmwf1J
-	9MNZ
-X-Google-Smtp-Source: AGHT+IFFi5xC5ddFn0DjhbM5af4f+yeQJYolLLy/wXfDituQyQc/NJOZO/Q3IfIPaZxrtCjn6JSYcF9TOWejlU4OHmg=
-X-Received: by 2002:a17:90b:5884:b0:33f:eca0:47c6 with SMTP id
- 98e67ed59e1d1-34f68c27d86mr6334495a91.30.1767894199501; Thu, 08 Jan 2026
- 09:43:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rq5k8Xqz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CCD6CC19424;
+	Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767910382;
+	bh=aaJS6O2g0heQM1gZYRRUlRYZDQrHUwH4WyvQBnJ+K7I=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Rq5k8Xqzt9ctZCN85GUsed3BIznQl81joiry8+L5/jp9MXfbyKmTiIic1wDAZXuXW
+	 fySyrjG4GVux2IagrFlhk0hMfUqRYPST1iv460XIK/1LRuLfiegna5k3vCMW1Au/yh
+	 go1R18bdG1bSoVThXydGcn/aYnQLHKq6Ok3v82hM1iP9FOFPdJ/5QsM2C88Jjz/ps+
+	 ihpUS5mjCJHfY1SbBXas5uiT52UnzAp427tmmvW7VUC+Db+asn4q0f2v6I82P7SvyQ
+	 xNq8yyTDmRsA8gNLoQ5odGS+MxcXCWL2cqHcSee1padAI+GKx06hWEU/HQyIoPMLGH
+	 H2uAKAGZu6xEQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5875D232C0;
+	Thu,  8 Jan 2026 22:13:02 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 08 Jan 2026 23:13:01 +0100
+Subject: [PATCH v4 1/2] doc: board: qualcomm: document Pixel 3 / 3 XL
+ support
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107-pixel-config-v3-0-02a25e3fdcfa@ixit.cz> <20260107-pixel-config-v3-2-02a25e3fdcfa@ixit.cz>
-In-Reply-To: <20260107-pixel-config-v3-2-02a25e3fdcfa@ixit.cz>
-From: Simon Glass <sjg@chromium.org>
-Date: Thu, 8 Jan 2026 10:42:20 -0700
-X-Gm-Features: AQt7F2rHm35tMBWaCsi0XYwhBjdfX0PJ8OUZIxci620AxRMyQHhZwuKgpcYTASc
-Message-ID: <CAFLszTgJyqYvwyb=KCtPmEtbb-aOP44seR32kufvB8jn53T2Dw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] configs: Add google-pixel fragment config for
- Pixel 3, 3 XL, 5
-To: david@ixit.cz
-Cc: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, u-boot@lists.denx.de, 
-	Petr Vorel <petr.vorel@gmail.com>, Casey Connolly <casey.connolly@linaro.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>, 
-	Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <petr.hodina@protonmail.com>, 
-	Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260108-pixel-config-v4-1-76a2212b69a5@ixit.cz>
+References: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
+In-Reply-To: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
+To: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, 
+ u-boot@lists.denx.de, Petr Vorel <petr.vorel@gmail.com>
+Cc: Casey Connolly <casey.connolly@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>, Simon Glass <sjg@chromium.org>, 
+ Petr Hodina <petr.hodina@protonmail.com>, 
+ Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, Simon Glass <simon.glass@canonical.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1672; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=hNetKZ+Gddro+OaLlOoaiaAKLTKqtCw0Cv7t5elrvAA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpYCvtYbVwQVtX+//qbGMJliHa2ykjFvvx2GxPy
+ N+SZitDgTOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaWAr7QAKCRBgAj/E00kg
+ cuk6D/4wZIi16z6PBPdae34tlgM+74SrAsyIUMD7N+WVNOYVe3DJDXSNCuAa6EbIKEvOlxBJr/d
+ xVLk85zYTcvKrwAOXYS9BMITx4gbhukMJgfNdbDsI2F+a/DXt5V8qfPRCe9+G93fuh7/A51LcvF
+ 7d83wFF/HLcWYEq5FLW/SgCdKK3RrfqoXXlmBb8aTGHGldFocy9wfvJcBDNGXO5VJgHyQQwkleg
+ bWA90TLluAPrIcdamZFRZ/XdZ2HGbkrwfPx3tCXCNuNUYce7GebZ2W8ijJiCjVjec5/gL686T11
+ gbEzETCuIm0nkUAmw2AUc518lJphaisnY8pXyPf5dWE2/4in6pNKmqEAF09S4VYSJDnuZiu3hvI
+ XQjvzgkLTH/DdD9CqoXvsKF8z8j3qlVa/zoqMTsUDOqiVJna3CTzCftHqSGc5UmW0FHhWZqq2GG
+ 2dWmyjJ6kVvhw+547GWyD2DjB4SJaqNJOC6syEGRvQOVyqpYedMhFXAndZOwp/rTA+cSxH3yceL
+ briG5wEYONjnTs3mk0j9Se6kMYS+4lBGCbSaHrNKV818OZUCQfFRnCR7zehgq0eb7NguK9afip6
+ dZdFVgGinZ6oH8vJ5IoZGY0U+dxUONl3DKhTWhe7BMmXfTVjeUA+vGbpDcXu3j3ukeykhn6NhX6
+ +pTX9/cOUleSabw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Wed, 7 Jan 2026 at 13:28, David Heidelberg via B4 Relay
-<devnull+david.ixit.cz@kernel.org> wrote:
->
-> From: David Heidelberg <david@ixit.cz>
->
-> Introduce a fragment config for the Pixel 3, Pixel 3 XL, Pixel 5.
->
-> On these devices, U-Boot is chainloaded via fastboot. However, due to
-> additional requirements added by google, the image header must have
-> a specific value for the text offset.
-> This is solved by setting CONFIG_TEXT_OFFSET to 0x80000 in U-Boot.
->
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  board/qualcomm/google-pixel.config | 5 +++++
->  1 file changed, 5 insertions(+)
+From: David Heidelberg <david@ixit.cz>
+
+U-Boot does work on Qualcomm 845-based Pixel 3 and 3 XL.
 
 Reviewed-by: Simon Glass <simon.glass@canonical.com>
+Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ doc/board/qualcomm/board.rst | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/doc/board/qualcomm/board.rst b/doc/board/qualcomm/board.rst
+index 642c5095261..e5dbc9816b9 100644
+--- a/doc/board/qualcomm/board.rst
++++ b/doc/board/qualcomm/board.rst
+@@ -38,6 +38,25 @@ with appended dtb, so let's mimic linux to satisfy stock bootloader.
+ Boards
+ ------
+ 
++Pixel 3 (blueline) and Pixel 3 XL (crosshatch)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++blueline refers to the Google Pixel 3, and crosshatch to the Pixel 3 XL, both
++powered by the Qualcomm SDM845 SoC.
++
++These devices use the common qcom_defconfig with the google-pixel.config
++fragment for configuration.
++
++Use the following commands::
++
++	make CROSS_COMPILE=aarch64-linux-gnu- O=.output qcom_defconfig google-pixel.config qcom-phone.config
++
++The DTB is called:
++
++ - "sdm845-google-blueline.dtb" (Pixel 3)
++ - "sdm845-google-crosshatch.dtb" (Pixel 3 XL)
++
++More information can be found on the `Google Pixel 3 page`_.
++
+ starqlte
+ ^^^^^^^^
+ 
+@@ -131,5 +150,6 @@ Other devices with boot image version 2 can be built like this example::
+ 	fastboot flash boot boot.img
+ 	fastboot erase dtbo
+ 
++.. _Google Pixel 3 page: https://en.wikipedia.org/wiki/Pixel_3
+ .. _Samsung S9 page: https://en.wikipedia.org/wiki/Samsung_Galaxy_S9
+ .. _DragonBoard 845c page: https://www.96boards.org/product/rb3-platform/
+
+-- 
+2.51.0
 
 
->
-> diff --git a/board/qualcomm/google-pixel.config b/board/qualcomm/google-pixel.config
-> new file mode 100644
-> index 00000000000..999d4e45268
-> --- /dev/null
-> +++ b/board/qualcomm/google-pixel.config
-> @@ -0,0 +1,5 @@
-> +# Enables chainloading of U-Boot on Google Pixel phones using
-> +# newer bootloaders (Android Q/R)
-> +# Use for following devices: Pixel 3 (blueline), Pixel 3 XL (crosshatch),
-> +# Pixel 5 (redfin)...
-> +CONFIG_TEXT_BASE=0x80080000
->
-> --
-> 2.51.0
->
->
