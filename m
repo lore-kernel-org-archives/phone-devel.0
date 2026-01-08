@@ -1,147 +1,144 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1728689B
-	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 04:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6001C2874F5
+	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 16:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767845690; cv=none; b=VbXUkbTuomccevNkjpVraOehJfMUbrOg5VfvarKTgyRaokX1vl3tYB1m7Y4vpgIXdvmkIp9b1efCdMO2HNrjwvB46abt7HO+l4bzivlE9giLsWoAqOb0UonNt5/0l4hdMmP+WhDrAfVy1iFZB4LtQRh5gp/8PMpvz9xoF3FlVkY=
+	t=1767888917; cv=none; b=DYArDD34P0oXJPlxGXdhkkJbHyfYSFd7Sge6GpyNwe9vjcimgKlAY3dC9sTpDerUvi0Qo4SnxwLy0DOIFTrVS1jqfMKPJdgZ5tVHn7fLatHKtlo2KuhbB+V784nWBcrxNsbunKnyMYRhLvBfEJr+Zr8FHNaFL+2npIWCveYP26A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767845690; c=relaxed/simple;
-	bh=5v+QV2skJk4921XwaaCIdZfyxCtahUKTYMsazQJoUKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dQnUTfDyG+fSE9Ul/nKgcB/fsB+3s+O2yU7sQ9/4s1ePy5ikDNhW0oX7raAhtLkVhGktT+REC+lGI2sUsZhECMHTcYYAC4sZo1Wzn4WoNf8s8KpZni6S+c9+7ZM7cBsSlOhswNDVQ1eQ/o7WR1mB15L4JS8GeMLbNOHCaRKmycA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjObOs85; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767888917; c=relaxed/simple;
+	bh=j4LAzNIFv1X29crUoE72s1k6VUje/cLuwDzuY/rKTIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SNAbSZqv4cn2/8/XJytipg59xc+W+VcN5fm+SE1zABWCe0jINKfw5ftmf4L8uHuDoZE0dbFdHOJR4+EtI88YkSQr/8mmmbIQ5bPNq52jzQLSIW8VVQXzNnGUzSXiJGZI1a+w5oE8UOEsRUclM2feZpLVARthZBvexKbJ2iEn4OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZArFabZw; arc=none smtp.client-ip=209.85.218.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjObOs85"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8bb6a27d407so250851085a.0
-        for <phone-devel@vger.kernel.org>; Wed, 07 Jan 2026 20:14:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZArFabZw"
+Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b8427c74ef3so516572666b.2
+        for <phone-devel@vger.kernel.org>; Thu, 08 Jan 2026 08:15:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767845686; x=1768450486; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2yAjFIwjl4VMJZ1+V1C6pz96OIbw8JbCPoa9P5fH03s=;
-        b=QjObOs85/sJzp7tOXRyN7XC9v6hjIbf3RFCh4drQXSL23apYWZLl7XKZrp10+OPmM0
-         nYwlwkXUnEQ0kkmegsFl1PV0FQd5D6hZbWihISb4vUnf+u/TW9GgR7PMcrXLecbMU8s0
-         2dt5NH0wNNON148WOnic3bj7J6SFGWblXysL6wicEI18dhkmveIurjEOHLTZt5HtgPgH
-         E1JhnSBe+yAOHCDhD+I6oq8IKJ3pkuYPai49DpZeD+tTfPj6sTXzsfaIwVUTDCoL/cOA
-         PdzLJpbLt1/nVS62HWi+B1XLkKdf9sUmzuC5+Yy/K1IuKdzywlxPpS59Nht9WdyAELG/
-         XmSw==
+        d=linaro.org; s=google; t=1767888911; x=1768493711; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IiQ2M263m7QTXKwLN4tDC8aWCnEeeTKjVpkEGAomMY8=;
+        b=ZArFabZwnHRO+5HQOSypDR8Qtxfrhb12gyC94qD7c3L6AuTihTcZm2LKJqDGZgcuNh
+         5zi8mzBDxlkl+z2JnrRb9S9B9blq1KU8S3sxumq6/JRRxYg7OXwa2rWi2ASQ8CmHZQSs
+         kvhKGWumaOPuyjul47I8NboZt8TiU/XtRxGA0gvEah5CF1HihzeHvU3aNBBM6Jz1R56t
+         6vEQSDu5Da8FC1KoSSoGYLHkACifqidzzWQKuAqS7EOVzQ5qJGhHQR1Y6wIOf/FR3mOs
+         ZU+PY6pFgXqFPvSoGj9a/mJs3SsW6uA3q1on3Q9qZqb57YX7lhv5p0ICjxr+VM0gWDqN
+         0+iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767845686; x=1768450486;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2yAjFIwjl4VMJZ1+V1C6pz96OIbw8JbCPoa9P5fH03s=;
-        b=AuGrAE/GVAq3FEF3gq17UU/g2z0vVC8abLMOf9KJq4fX5TE/OygIJTxyFcyb1nj5OG
-         pc1YtkqRU/WvsPJg/aZgud7kLjFCJXktVBGVNhzo5pdFPvos3bZ07ibL5yBSZEq+AVLO
-         3J6F6ixX8sCfy9lzM2MbotA6kjdXuRbcU0zD9qYW1izxVXj6yfu8Rn5KpU78/7DQkJHH
-         e4RlY04gL/IV1T36Hae7q/3VpnIuiqkShT2QP+1eedR+tgUI3z5VhXkq01ZY9T3DQU8K
-         fAgacvlQJOPoxshRPtX284eVS7p97ShuSLKf5NPDmpl1ZTFgRkVqpR8kiyEUFwHzL0rt
-         +bqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUk0j+OUzwFXrlIkKuoKUhDu989oIv4kuBF32E1SUhEDEfAvJh3OXgfU3QUveY3IMZuRK6lxtiOyI1AjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN07AYoT9KpFF/ucDux0NmjUAwbSEHGQ+QY7DIFU6LmsZeFWHo
-	mhcRD7yXpepNcBO0/2m7ijPaMxSjqEr6Zva90o0zw9VAJ1xvmqjKLiaB
-X-Gm-Gg: AY/fxX7qM2AD27Oqz1zFWvfntWt9qmhj4+DDpjeLVGTaFoFIXnRkCwaCbrpZscTAxKM
-	nUGmUkJGeG9qLtknAGdBunOT2QPte2eMLPhJNP1kX4MgUau4v4cGSmlVS4ExIwALxIBkbWjIJWN
-	H6W2/6bCPxNJEAvSQ7TnFpXItpZILd215dum3CzmN3srqj9JG7W2gqkE0IlZVVdC0BAOILvrxNC
-	tAD+dgDfYWjtvexcpFhnEcxQ+cwsDwKKuZOYRMjmPe/Wwk8uyBwrztpBEN9EiANqYpaMVO7rhML
-	XwwujXtlw3t0aVWhXbMAcV9MZpHr32T878983miRlljpvhTQ5cU5UGKG0LxQ0I4PlX/D+xny1nK
-	hpHQUIsPy19HbKsEb+iMYxpQzPPR4OPAMrWGwhb0QU6a4q/EuVfdk49GPJUN6LxDaIJYnO1sXmM
-	yvv2EVgo3M0516+A==
-X-Google-Smtp-Source: AGHT+IF3KLEAoIR6iLJwpBg2iAqPNGhRNw28m2GAujrjVEQ/ioKoivK+pFkCUvt4wmrDlxfnphqTjA==
-X-Received: by 2002:a05:620a:1a01:b0:8b2:e922:5282 with SMTP id af79cd13be357-8c389384396mr587730185a.26.1767845685882;
-        Wed, 07 Jan 2026 20:14:45 -0800 (PST)
-Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a7962sm499071885a.11.2026.01.07.20.14.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 20:14:45 -0800 (PST)
-Date: Wed, 7 Jan 2026 23:15:06 -0500
-From: Richard Acayan <mailingradian@gmail.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Robert Mader <robert.mader@collabora.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v6 2/5] media: i2c: imx355: Support devicetree and power
- management
-Message-ID: <aV8vSuCDhqCcuwuL@rdacayan>
-References: <20260107043044.92485-1-mailingradian@gmail.com>
- <20260107043044.92485-3-mailingradian@gmail.com>
- <aV6qnjyXV-yTLqVl@kekkonen.localdomain>
+        d=1e100.net; s=20230601; t=1767888911; x=1768493711;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IiQ2M263m7QTXKwLN4tDC8aWCnEeeTKjVpkEGAomMY8=;
+        b=wRbuqVReCApLDC/ez01EwQWKqHXWqxZYamYuHTsgXqzUBmDry5ygeBc8c+lz/Y2KCo
+         Q89ChY+j93r5/gwLl0Zia82JI1j01kVoIWqI+F/hVuW3o1CSTDL8mj4TH7kCio09uwos
+         mDwm9KMq42HBlFQVJNLVYQui+KdhhTQENFOBxTihb/GDOQ+1UVPj7hzdzhQKZWObj7l1
+         cy9SIwqRdPKPZ0CkRZ4wy9D4+6nU43ug5u/lrsza+3P4r478h/nkrbaFqRFiUjU6EUNP
+         WsOdm5lW34XgNnqyYbE4T5l9SM/fMuGoW7OI5CFGS+yCb18InUCby1Ey9LRK5HhP/WTG
+         JcMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNfvFEtZZySnnJxobR0hj90R5nKbfVvT2UsqEppJNgN1lxRnzwJaLle70pO1q9KYwQbj/6cZzCHCyrtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIr7Gp77Etp+Hm/7b0UtSu+1k3zgn4nEpx4b5b0omDo1GxICYY
+	1A6Q0dfIlyUrmkhMabmgHKDEMghHGunzEEuzrDBE8e6LSxYacw8fFiCUfvGVHdOiKhk=
+X-Gm-Gg: AY/fxX5iKG3q/EivcHNzQnM4qOrhT4tl/JFeTeKYsVHf1UvqUIh010veTsBMTxUMjx2
+	6+64/Ofw3mVfXYcUPsX1QLF8KSasyROlOBm9U1K3HXbTG+CdX826+eaCTBrgc3vW1upoCAeEzTN
+	NCivORxVXLgLv+jCVSbMqS4BZyOdRfo9yb+joMQbiOLN1o6kMS53Z01Le+DOiB96vl14+J09TtG
+	xAmgYk9sYIHwuBqrmNRnAO+cheU5tYUSxwGAtD40nA2mwDdnrY3hRSukC6Bbp3FNaM6Bp/2cXnK
+	/EOcXmmx2i2/Pn81FwDxE9G3MruXjnjA58jxQtvsE2JxjSBcwT7STn9kyUO0Qre7PdXSrygss+W
+	X25Z34jYVqYMdbH9dxGj29xaTm54zi3Udq4j3zvTDXC9wKKg5+dwRI6v0mlOOKUJbjdPmYaka1Y
+	dt5M/B4uFyjI7idJqtJohpAdVlkbhIayQcHcE5v05rB+Uj2g2JKcU=
+X-Google-Smtp-Source: AGHT+IGr8gtZPpqzuM+ssayJZ4ogdjVB7iKZX7c1OP3fHg8b3u0L+y9v0plDphOgMi5NRBEGal340A==
+X-Received: by 2002:a17:907:3e13:b0:b79:c460:39a4 with SMTP id a640c23a62f3a-b84453acb55mr663991266b.56.1767888911090;
+        Thu, 08 Jan 2026 08:15:11 -0800 (PST)
+Received: from [192.168.1.36] (p5b29e30b.dip0.t-ipconnect.de. [91.41.227.11])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d3229sm828256366b.37.2026.01.08.08.15.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 08:15:10 -0800 (PST)
+Message-ID: <51f32da3-e87d-4e8f-b221-0adb9af4bf93@linaro.org>
+Date: Thu, 8 Jan 2026 17:15:09 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aV6qnjyXV-yTLqVl@kekkonen.localdomain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] doc: board: qualcomm: document Pixel 3 / 3 XL
+ support
+To: david@ixit.cz, Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io,
+ u-boot@lists.denx.de, Petr Vorel <petr.vorel@gmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini
+ <trini@konsulko.com>, Luca Weiss <luca.weiss@fairphone.com>,
+ Simon Glass <sjg@chromium.org>, Petr Hodina <petr.hodina@protonmail.com>,
+ Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org
+References: <20260107-pixel-config-v3-0-02a25e3fdcfa@ixit.cz>
+ <20260107-pixel-config-v3-1-02a25e3fdcfa@ixit.cz>
+From: Casey Connolly <casey.connolly@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20260107-pixel-config-v3-1-02a25e3fdcfa@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 07, 2026 at 08:49:02PM +0200, Sakari Ailus wrote:
-> Hi Richard,
-> On Tue, Jan 06, 2026 at 11:30:41PM -0500, Richard Acayan wrote:
-> > A device tree compatible makes it possible for this driver to be used on
-> > Open Firmware devices. Initialization of power-managed resources such as
-> > the reset GPIO and voltage regulators can be specified in the device
-> > tree and handled by the driver. Add support for this so the Pixel 3a can
-> > use the driver.
-> > 
-> > Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-> > Nacked-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+
+On 07/01/2026 21:28, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
-> Uh-oh.
-(snip)
-> > +static int imx355_power_on(struct device *dev)
-> > +{
-> > +	struct i2c_client *client = container_of(dev, struct i2c_client, dev);
-> > +	struct v4l2_subdev *sd = i2c_get_clientdata(client);
-> > +	struct imx355 *imx355 = to_imx355(sd);
-> > +	int ret;
-> > +
-> > +	ret = clk_prepare_enable(imx355->clk);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to enable clocks: %d\n", ret);
-> > +		return ret;
-> > +	}
-> > +
-> > +	ret = regulator_bulk_enable(ARRAY_SIZE(imx355_supplies),
-> > +				    imx355->supplies);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to enable regulators: %d\n", ret);
-> > +		goto error_disable_clocks;
-> > +	}
-> > +
-> > +	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
-> > +	usleep_range(5000, 5100);
-> > +	gpiod_set_value_cansleep(imx355->reset_gpio, 0);
-> > +	usleep_range(8000, 8100);
+> U-Boot does work on Qualcomm 845-based Pixel 3 and 3 XL.
 > 
-> Where do these values come from? Apparently 1 ms is required (after lifting
-> xshutdown) before reading identification register and 10 ms is required
-> (from the same point of time) before streaming can be enabled.
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-I don't have the hardware specification. The sequence seemed to last
-12-13 ms. Dividing the delays are a guess and the camera can usually
-open at least a few times.
+Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
 
-The final 8 ms wait can be extended to 10 ms (assuming xshutdown is the
-same as the reset line). Is there a minimum time for asserting the reset
-(currently 5 ms), or can it be reduced to 1 ms?
+> ---
+>  doc/board/qualcomm/board.rst | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/doc/board/qualcomm/board.rst b/doc/board/qualcomm/board.rst
+> index 642c5095261..e5dbc9816b9 100644
+> --- a/doc/board/qualcomm/board.rst
+> +++ b/doc/board/qualcomm/board.rst
+> @@ -38,6 +38,25 @@ with appended dtb, so let's mimic linux to satisfy stock bootloader.
+>  Boards
+>  ------
+>  
+> +Pixel 3 (blueline) and Pixel 3 XL (crosshatch)
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +blueline refers to the Google Pixel 3, and crosshatch to the Pixel 3 XL, both
+> +powered by the Qualcomm SDM845 SoC.
+> +
+> +These devices use the common qcom_defconfig with the google-pixel.config
+> +fragment for configuration.
+> +
+> +Use the following commands::
+> +
+> +	make CROSS_COMPILE=aarch64-linux-gnu- O=.output qcom_defconfig google-pixel.config qcom-phone.config
+> +
+> +The DTB is called:
+> +
+> + - "sdm845-google-blueline.dtb" (Pixel 3)
+> + - "sdm845-google-crosshatch.dtb" (Pixel 3 XL)
+> +
+> +More information can be found on the `Google Pixel 3 page`_.
+> +
+>  starqlte
+>  ^^^^^^^^
+>  
+> @@ -131,5 +150,6 @@ Other devices with boot image version 2 can be built like this example::
+>  	fastboot flash boot boot.img
+>  	fastboot erase dtbo
+>  
+> +.. _Google Pixel 3 page: https://en.wikipedia.org/wiki/Pixel_3
+>  .. _Samsung S9 page: https://en.wikipedia.org/wiki/Samsung_Galaxy_S9
+>  .. _DragonBoard 845c page: https://www.96boards.org/product/rb3-platform/
+> 
 
-New sequence (maybe, if the docs support it):
+-- 
+// Casey (she/her)
 
-	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
-	usleep_range(1000, 2000);
-	gpiod_set_value_cansleep(imx355->reset_gpio, 0);
-	usleep_range(10000, 11000);
