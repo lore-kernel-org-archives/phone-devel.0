@@ -1,71 +1,70 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4401B202979
-	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 03:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1728689B
+	for <phone-devel@vger.kernel.org>; Thu,  8 Jan 2026 04:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767842895; cv=none; b=eVeqMjeH3/KaMG2BJlU3IN4yEZOsuHLAZs6GITjKtdn3vuWamS1Ucc8Ivpyi3lkDZ6MSbnM2orR2sfBLzvYsGEPuVpk1d2X2i3UY/I4vR3TtogQIqGX13y4fPO/tnI7xxh/h+YvGjcq9kbFCe+vfWVZW1DbptbsHulVc5aI3uqg=
+	t=1767845690; cv=none; b=VbXUkbTuomccevNkjpVraOehJfMUbrOg5VfvarKTgyRaokX1vl3tYB1m7Y4vpgIXdvmkIp9b1efCdMO2HNrjwvB46abt7HO+l4bzivlE9giLsWoAqOb0UonNt5/0l4hdMmP+WhDrAfVy1iFZB4LtQRh5gp/8PMpvz9xoF3FlVkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767842895; c=relaxed/simple;
-	bh=VGk454ttZIdzpsHMCIxZieV3Y0Q+sd63A46nmYZNR9M=;
+	s=arc-20240116; t=1767845690; c=relaxed/simple;
+	bh=5v+QV2skJk4921XwaaCIdZfyxCtahUKTYMsazQJoUKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ruGeSoyPy0mjE26KYOHmCQ3kTBUcRxFG+rrEexAaG/BUWXujaBXT5qFp4InPVZopxgiu5Bj+/0L6oxcOrpuHu3eaaOkosyMq0UDsEwbEvjNPOMIRiLoPMRkR4vfZl6tRzKYo9y7T4QkvoNrJ88mpa2uRAD/ATX4yOZhy3KHFwX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cu+/GE6g; arc=none smtp.client-ip=209.85.160.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=dQnUTfDyG+fSE9Ul/nKgcB/fsB+3s+O2yU7sQ9/4s1ePy5ikDNhW0oX7raAhtLkVhGktT+REC+lGI2sUsZhECMHTcYYAC4sZo1Wzn4WoNf8s8KpZni6S+c9+7ZM7cBsSlOhswNDVQ1eQ/o7WR1mB15L4JS8GeMLbNOHCaRKmycA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjObOs85; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cu+/GE6g"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso28566621cf.1
-        for <phone-devel@vger.kernel.org>; Wed, 07 Jan 2026 19:28:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjObOs85"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8bb6a27d407so250851085a.0
+        for <phone-devel@vger.kernel.org>; Wed, 07 Jan 2026 20:14:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767842893; x=1768447693; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767845686; x=1768450486; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vofKUnypKUICeBkcdQzN2mTABpjUkxfzwfH7Xyfr7fo=;
-        b=Cu+/GE6gQ/VWFSZ9sgXaSJoBGq81/pcafRxekyHJO9dCL97P5+wmyQRXqBgvxYfxnP
-         q44CdN0zO2/yaPYCJDfXCj14+TW56YghiERkOgU0jnQ92eRqh83O/zeq+AfiEEWpg1dV
-         GeoRO0sqx4JrAwpvz9KyDJx46eHY/c4Rauz9QZScu3MklURpASuSvT1a7UBAsa2GW85+
-         SoaGH9xWnghMyLRiSqAuz2wJAFC9Gcbh8s12s2T1Gz5+Njjk0JNEGA8fToN+a+yIYY54
-         k0NpRzIO0uVPDva8HHznlQFZPUm3S/alDj/TqUsfm2yd/xgXYLRbpWgFSEVkeSBZGayZ
-         QICQ==
+        bh=2yAjFIwjl4VMJZ1+V1C6pz96OIbw8JbCPoa9P5fH03s=;
+        b=QjObOs85/sJzp7tOXRyN7XC9v6hjIbf3RFCh4drQXSL23apYWZLl7XKZrp10+OPmM0
+         nYwlwkXUnEQ0kkmegsFl1PV0FQd5D6hZbWihISb4vUnf+u/TW9GgR7PMcrXLecbMU8s0
+         2dt5NH0wNNON148WOnic3bj7J6SFGWblXysL6wicEI18dhkmveIurjEOHLTZt5HtgPgH
+         E1JhnSBe+yAOHCDhD+I6oq8IKJ3pkuYPai49DpZeD+tTfPj6sTXzsfaIwVUTDCoL/cOA
+         PdzLJpbLt1/nVS62HWi+B1XLkKdf9sUmzuC5+Yy/K1IuKdzywlxPpS59Nht9WdyAELG/
+         XmSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767842893; x=1768447693;
+        d=1e100.net; s=20230601; t=1767845686; x=1768450486;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vofKUnypKUICeBkcdQzN2mTABpjUkxfzwfH7Xyfr7fo=;
-        b=Ev00U3VcAyucT33g0Zoy4eQiSigpof/xbi9Ivbw6P8x6qpdJp9cQjRMEG+9G3D8Nok
-         SVBCe+WzUZa7sZfi3ob5ej5HoMPGSEQYectoszGm1iCHXSYpdlJZ9sXzmRQ4UTjyaY5u
-         WHqy5rIfBlyt3mNOinQai/Iz13rmWiRu+10qyLZBzsmgiDsvUKsH0oA67vd+TiiV2AUw
-         AwBF5IPtgh1T5n5sdHROXldcfKMuSEzkYnbq5fQVRQM0C8ZXy2jQbR3QLnY0QKS0tKAk
-         LMl0htAxCOcGYVAultnspA85b80GANOHr1SvBSUt/s5f4mWXfVCxmqTdemgkVbT6BY3v
-         iYCw==
-X-Forwarded-Encrypted: i=1; AJvYcCXqYDDEu196NLD6JYvU7VSRnuKPwt/+wg49S4AjlXywF7nW6mZe0AO0gUEkh/Su3CYXknGfm1wrSi++nA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEcQkbTOpy1SKjU9SvromvIz9fGcwrrPTDe1xHKovrd87MbsND
-	5XyZFAPl2L4x1i4Il0rxWwit3ngOCOMNL6u7uDl1kg9xZHpglunw8ob0yZoDMQ==
-X-Gm-Gg: AY/fxX5qQz5P0UeyoczlrVxNOcjZY/FIeGPTMM0Q3I0BJAH+EkGykjDjMg5Mu+e4OnQ
-	wxe8tcOuunrld7G1S94yUrFRA69o8Hp+/cWqOeI4rUgquMRDNY79v8+Dnf5ZQ64vgs8v2j4INQd
-	3DIM4fuf3dMYAdNx2lyWS7EwcQqZq40ms91iO5CMLXd2O5RxBuUKht/WFaDW8XkHvk/4Sa8wXmj
-	TFTXV95jfhoDGsL94GhUfjVH/FQ/qSfKIUJWAPqIPitVyV/RX/Cd1/tyEX5ldOavnt2tJVloYX6
-	yvHw65bjoP8jeQUT8Li+FgXEtNzx6/hbFhfuUDgCAr6oek7yQXFXJa/stxvoI5XCO+yCNWPapRl
-	kTeGG+Xh0SqfX+K2PAe16ej9jF99zgF2I5v0Ew9PerhENgLKIkRtwFS+XBi/i4oRf9jWaeivjcA
-	XZnyqdQfeanuBlmA==
-X-Google-Smtp-Source: AGHT+IEjSoUYkF14Ssyk5oRE7aJzB2JoaALD5N+ldr3oo6bP0R6LXqMtXCQczf07mSQIpjrUbtFTyQ==
-X-Received: by 2002:a05:622a:1811:b0:4ee:213b:3391 with SMTP id d75a77b69052e-4ffb482f716mr64003111cf.20.1767842893142;
-        Wed, 07 Jan 2026 19:28:13 -0800 (PST)
+        bh=2yAjFIwjl4VMJZ1+V1C6pz96OIbw8JbCPoa9P5fH03s=;
+        b=AuGrAE/GVAq3FEF3gq17UU/g2z0vVC8abLMOf9KJq4fX5TE/OygIJTxyFcyb1nj5OG
+         pc1YtkqRU/WvsPJg/aZgud7kLjFCJXktVBGVNhzo5pdFPvos3bZ07ibL5yBSZEq+AVLO
+         3J6F6ixX8sCfy9lzM2MbotA6kjdXuRbcU0zD9qYW1izxVXj6yfu8Rn5KpU78/7DQkJHH
+         e4RlY04gL/IV1T36Hae7q/3VpnIuiqkShT2QP+1eedR+tgUI3z5VhXkq01ZY9T3DQU8K
+         fAgacvlQJOPoxshRPtX284eVS7p97ShuSLKf5NPDmpl1ZTFgRkVqpR8kiyEUFwHzL0rt
+         +bqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUk0j+OUzwFXrlIkKuoKUhDu989oIv4kuBF32E1SUhEDEfAvJh3OXgfU3QUveY3IMZuRK6lxtiOyI1AjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN07AYoT9KpFF/ucDux0NmjUAwbSEHGQ+QY7DIFU6LmsZeFWHo
+	mhcRD7yXpepNcBO0/2m7ijPaMxSjqEr6Zva90o0zw9VAJ1xvmqjKLiaB
+X-Gm-Gg: AY/fxX7qM2AD27Oqz1zFWvfntWt9qmhj4+DDpjeLVGTaFoFIXnRkCwaCbrpZscTAxKM
+	nUGmUkJGeG9qLtknAGdBunOT2QPte2eMLPhJNP1kX4MgUau4v4cGSmlVS4ExIwALxIBkbWjIJWN
+	H6W2/6bCPxNJEAvSQ7TnFpXItpZILd215dum3CzmN3srqj9JG7W2gqkE0IlZVVdC0BAOILvrxNC
+	tAD+dgDfYWjtvexcpFhnEcxQ+cwsDwKKuZOYRMjmPe/Wwk8uyBwrztpBEN9EiANqYpaMVO7rhML
+	XwwujXtlw3t0aVWhXbMAcV9MZpHr32T878983miRlljpvhTQ5cU5UGKG0LxQ0I4PlX/D+xny1nK
+	hpHQUIsPy19HbKsEb+iMYxpQzPPR4OPAMrWGwhb0QU6a4q/EuVfdk49GPJUN6LxDaIJYnO1sXmM
+	yvv2EVgo3M0516+A==
+X-Google-Smtp-Source: AGHT+IF3KLEAoIR6iLJwpBg2iAqPNGhRNw28m2GAujrjVEQ/ioKoivK+pFkCUvt4wmrDlxfnphqTjA==
+X-Received: by 2002:a05:620a:1a01:b0:8b2:e922:5282 with SMTP id af79cd13be357-8c389384396mr587730185a.26.1767845685882;
+        Wed, 07 Jan 2026 20:14:45 -0800 (PST)
 Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8d39950sm42659431cf.1.2026.01.07.19.28.11
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a7962sm499071885a.11.2026.01.07.20.14.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 19:28:11 -0800 (PST)
-Date: Wed, 7 Jan 2026 22:28:32 -0500
+        Wed, 07 Jan 2026 20:14:45 -0800 (PST)
+Date: Wed, 7 Jan 2026 23:15:06 -0500
 From: Richard Acayan <mailingradian@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -75,10 +74,10 @@ Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
 Subject: Re: [PATCH v6 2/5] media: i2c: imx355: Support devicetree and power
  management
-Message-ID: <aV8kYJm7nUM3A5jf@rdacayan>
+Message-ID: <aV8vSuCDhqCcuwuL@rdacayan>
 References: <20260107043044.92485-1-mailingradian@gmail.com>
  <20260107043044.92485-3-mailingradian@gmail.com>
- <20260107-masterful-ermine-of-cubism-e5d5e1@quoll>
+ <aV6qnjyXV-yTLqVl@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -87,9 +86,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107-masterful-ermine-of-cubism-e5d5e1@quoll>
+In-Reply-To: <aV6qnjyXV-yTLqVl@kekkonen.localdomain>
 
-On Wed, Jan 07, 2026 at 08:34:29AM +0100, Krzysztof Kozlowski wrote:
+On Wed, Jan 07, 2026 at 08:49:02PM +0200, Sakari Ailus wrote:
+> Hi Richard,
 > On Tue, Jan 06, 2026 at 11:30:41PM -0500, Richard Acayan wrote:
 > > A device tree compatible makes it possible for this driver to be used on
 > > Open Firmware devices. Initialization of power-managed resources such as
@@ -100,29 +100,48 @@ On Wed, Jan 07, 2026 at 08:34:29AM +0100, Krzysztof Kozlowski wrote:
 > > Signed-off-by: Richard Acayan <mailingradian@gmail.com>
 > > Nacked-by: Krzysztof Kozlowski <krzk@kernel.org>
 > 
-> You did not receive such tag. You cannot construct tags, just because
-> of ... what exactly? Why do you think to use this or other email?
+> Uh-oh.
+(snip)
+> > +static int imx355_power_on(struct device *dev)
+> > +{
+> > +	struct i2c_client *client = container_of(dev, struct i2c_client, dev);
+> > +	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+> > +	struct imx355 *imx355 = to_imx355(sd);
+> > +	int ret;
+> > +
+> > +	ret = clk_prepare_enable(imx355->clk);
+> > +	if (ret) {
+> > +		dev_err(dev, "failed to enable clocks: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = regulator_bulk_enable(ARRAY_SIZE(imx355_supplies),
+> > +				    imx355->supplies);
+> > +	if (ret) {
+> > +		dev_err(dev, "failed to enable regulators: %d\n", ret);
+> > +		goto error_disable_clocks;
+> > +	}
+> > +
+> > +	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
+> > +	usleep_range(5000, 5100);
+> > +	gpiod_set_value_cansleep(imx355->reset_gpio, 0);
+> > +	usleep_range(8000, 8100);
+> 
+> Where do these values come from? Apparently 1 ms is required (after lifting
+> xshutdown) before reading identification register and 10 ms is required
+> (from the same point of time) before streaming can be enabled.
 
-I interpret "NAK" as a request to stop working on the patch. I assumed
-you wanted this for process reasons, since I didn't specifically address
-your review of the reset sequence for 3 revisions (v2-v4). I can't go
-back and follow the submission process differently.
+I don't have the hardware specification. The sequence seemed to last
+12-13 ms. Dividing the delays are a guess and the camera can usually
+open at least a few times.
 
-Original complaint (https://lore.kernel.org/r/ff9d571a-9b47-4f39-8589-d4c7b190d3bd@kernel.org):
+The final 8 ms wait can be extended to 10 ms (assuming xshutdown is the
+same as the reset line). Is there a minimum time for asserting the reset
+(currently 5 ms), or can it be reduced to 1 ms?
 
-	I already told you this at v1 and you ignored the problem and never
-	responded.
+New sequence (maybe, if the docs support it):
 
-	NAK
-
-The path forward is usually to give up, or keep the NAK and hope that
-the other maintainers accept the patch anyway. I see 17 cases of the
-latter since the kernel started using Git until v6.19-rc1.
-
-> You received only NAK as disagreement of this patch, but I did not allow
-> to merge it with my NAK.
-
-Ok, I will remove the Nacked-by in the next revision unless you
-communicate that you actually want work on this patch to stop.
-
-
+	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
+	usleep_range(1000, 2000);
+	gpiod_set_value_cansleep(imx355->reset_gpio, 0);
+	usleep_range(10000, 11000);
