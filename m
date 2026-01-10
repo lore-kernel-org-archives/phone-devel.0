@@ -1,127 +1,139 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC86631984E
-	for <phone-devel@vger.kernel.org>; Fri,  9 Jan 2026 21:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7640823817E;
+	Sat, 10 Jan 2026 05:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767992708; cv=none; b=apHlyyynnjWt16LTmv7ENTHc5VYVFUGDULrLHZ1Cd0PUULkGj9SnHgwhNcIHsWqsf7pCYBgkB2URgvpjomRM0HhzQd/p6WEjAeuZZk0sQdtfN8OiKQ99TW/WUcZXcCa9fUBJZr7fVvWUr5sM7WeTHO3T6xL50oKksuGt5ihc8MU=
+	t=1768022886; cv=none; b=DpCCdnKefbOFtcK+rcNd1pH45YlIgQueaC8CA2f4fW+X/DXnBlgttfIJ2Ql+57tfBRQkbEm3o07OP67U3fgnAUXKjy9AaUF5BPvaak4Y6qIzkmslXmdJiquHbSJfmfSbLpr9ppWBFrlgpx2EBncBStgTpa2SzUPUCfe9UgcWKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767992708; c=relaxed/simple;
-	bh=Jx001Gjk5byTh/JNhBm9LSIvMEMN1PQnYcManLzCvts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5Rn8MyNIAzEUDUJxAR0RibjHxNpHI2ULE8GCI4ZBpHQlLztCPqzmG4bcB/VqSvDt6nBDKkvZePVlSE/OoYst5wyUOy8d/R2GcsnvuYA6/Prg4gN491D52B7MxqEfU73MpN9GBJ9XG1uNCuqaVuFj9z35HxYPDLSj59pNs1s+Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iLJ0MJ/W; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768022886; c=relaxed/simple;
+	bh=6pDUPiuFiPqNLLaA02BruImiD4RCNyvRpgK6pYgKfT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NlTRkilRc1MMjxP0DEfP2lcGqOcKSJvOylgkxXmQ/QV1NdDIWftakaWeccU/rsvYq01Fv5ouhX2R+wAHu/QVoa6SCZ3KpCPqfhlln0wWquv9WRP7wnal7EyVlWl6Zq/1EohI29uIot16lphctSfImV8M9uCV6zRCdIrnzIi4Qmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machinesoul.in; spf=pass smtp.mailfrom=machinesoul.in; dkim=pass (2048-bit key) header.d=machinesoul.in header.i=@machinesoul.in header.b=ROIyPfgm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PKqPpEvY; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machinesoul.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machinesoul.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLJ0MJ/W"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so38560375e9.2
-        for <phone-devel@vger.kernel.org>; Fri, 09 Jan 2026 13:05:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767992705; x=1768597505; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZY7PcYrtAxG4VqNQOc4JV3SfdlaH/jPuUtHmha5rUHg=;
-        b=iLJ0MJ/WTjlzxs8WqXIchxg3PCS+PcKThs/hJVX5cUz4nrjcXyCfZvJ6Nf/Ya5olX5
-         gidLdCkgXaRw1nwI9ApCOHWhz11pDV89W9zQOCZ/9QzG6yWxTFjacn6tfMEyE4w5ZOkU
-         J/Gp4IyqlBZaGNayIdkpono3bvrADlenXZy9JnMvdFiVz2cb7msNRALyIWh0V7o1HHts
-         WlmdIZvBF6quGQ+NIGpMjAVLx9xgVKijkqnou2/DM6e4Iiwpo/wbwLZnk/7R1m0Ry9xb
-         qsJgAXALoaXqqmlOdpBBAGEcz/JPSTww+FlUS/AQIwmCBBIxp6gp7CdAhWAI/UCPpH0o
-         twjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767992705; x=1768597505;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZY7PcYrtAxG4VqNQOc4JV3SfdlaH/jPuUtHmha5rUHg=;
-        b=nq4qhOapzgoxKjamurAkOQRJT08SAPHgoeeAjmgFuWTpV7bi3jeBVxet//36CmfMVf
-         gT4aDMAICyX7x5Mpj8X7KlbrxTCzpG8AfbepwoOj/deRDhb6hl8/j1GUGBZ6fMb5z6YW
-         z7gvesN/EXuLHQRixFvZgEqTB8gD9Et9XsG39EF/un+001kahLrvyRn4DuI3f85fi/LV
-         hGN7/IdIgaeLsMs5he8H2Omg0KHv1mfPjln5C2JvJaYFN+WQWdgrO/dZCLfXqf4k4zTL
-         1TvTkJPhe1dw51r3yq7blEwS0uxc1O5bW4c/HGfjetzc2qaC7G78kfytD/CiY/QN+S3C
-         9ViQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZDKyLK5R68NL/mwpJteqSwbte6glSWSxtxok6ulujn/9N7xc+nuvZJewk7iKCDpw312IqAWzmcCou0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydYMzQV4PzuUabb3MPsGGTolw9sgEaDxMfsf0EOBVZhMqV7R+F
-	vUEPF7ar3ykYG9YjHn3xjC4uuqvBS3XZa0PzBtDlfuZ/XC0euXkZpUYt
-X-Gm-Gg: AY/fxX6Ra2w7QGAZ5RsaKenDNgKiKozursi5urEWjmW41kKmnpVBgrJiyfjHgHc6jcf
-	D/s9PODzhQAvUKfN2bpQQnhEc4zKNbN9DRRRg8+azSAXixSpKKe4e4X7EFVwHvrl4jinj2wehdo
-	sFKl8uixptOT7e8oH9S092eqJCIfuhhdutma+uE1l2pidfoQajKiWYGirwp2M5QXL59bPqhQNZW
-	/ZziJkEurovfJDtvFbLtRl17NR4OfRW6asaTlX4SfE0objyRqVgy83f3TnZtMPvyO7lrKo0AEv2
-	Cuxk3e9IYFa9ayhCZRHpQ8lZcChSp6B9c0eowdG6f+ZSIzgMXrvXxb7jKFeNq98n//0a8CE6cgD
-	NIZ2fIxFs0kmRd/Bzs64inlnf7iSOINRPG+ObxDCSMwzvBjCNTFNzpqYrvKyHsNzUoOgwaie0A3
-	DrUJiIXzWy00u08CvVPYvYpnQrOGo3iwVX96R1X3TlxtKIhyvw
-X-Google-Smtp-Source: AGHT+IHdI7W0Gnaxz5WrYkHIDSlle5KiqkYcIeY+eBK7zSr0o5F53BUSFNiHrXhvpqri2QnP4xitfA==
-X-Received: by 2002:a05:600c:474f:b0:475:e067:f23d with SMTP id 5b1f17b1804b1-47d84b41294mr119773275e9.25.1767992704938;
-        Fri, 09 Jan 2026 13:05:04 -0800 (PST)
-Received: from pevik (gw1.ms-free.net. [185.243.124.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6ef885sm221687775e9.9.2026.01.09.13.05.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 13:05:04 -0800 (PST)
-Date: Fri, 9 Jan 2026 22:05:01 +0100
-From: Petr Vorel <petr.vorel@gmail.com>
-To: david@ixit.cz
-Cc: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io,
-	u-boot@lists.denx.de, Casey Connolly <casey.connolly@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Tom Rini <trini@konsulko.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Simon Glass <sjg@chromium.org>,
-	Petr Hodina <petr.hodina@protonmail.com>,
-	Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org,
-	Simon Glass <simon.glass@canonical.com>
-Subject: Re: [PATCH v4 2/2] configs: Add google-pixel fragment config for
- Pixel 3, 3 XL, 5
-Message-ID: <20260109210501.GB140231@pevik>
-Reply-To: Petr Vorel <petr.vorel@gmail.com>
-References: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
- <20260108-pixel-config-v4-2-76a2212b69a5@ixit.cz>
+	dkim=pass (2048-bit key) header.d=machinesoul.in header.i=@machinesoul.in header.b="ROIyPfgm";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PKqPpEvY"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9941BEC010D;
+	Sat, 10 Jan 2026 00:28:03 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Sat, 10 Jan 2026 00:28:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=machinesoul.in;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1768022883; x=1768109283; bh=Vlu0eptfBDk2LzNmZS/x/2Ae8ytOqM3P
+	3I6cBadH/AA=; b=ROIyPfgmDF8UxP3PQxd1P2l8mq+2mSJpSFVzrvk5ER4gQdHQ
+	2AcMxWx89hE8mHfOQXmv/u7Y96oLrzLzSV3KbmYFoJZciRZQBxPvBf1L0qDyf7ua
+	EZAfpZEKO/EUYCUQqnk4T/FQXRWMkFl9eYsP6kAejG4WkQNNWtEUdG2TCJTNefaj
+	5a+pTX0Wx5SwP17cxIPFPoC1XLgSdldao5RnfS70uTbJ04441oozVLjvw4muDvuw
+	/RzXQXfaLfs0bRF3shz4aGIdevmuztyQ2rNyKgbwp0pmhHRAZ9/UqZPWegq6BF7h
+	IAwi0ks2mbRzZ14UrBA55ARxAVBurxRwCi+cXg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768022883; x=
+	1768109283; bh=Vlu0eptfBDk2LzNmZS/x/2Ae8ytOqM3P3I6cBadH/AA=; b=P
+	KqPpEvYlrHcEPVKAN7wTN5Fs3PbNr6CmMwU7LduoZER51j81Vb5A9JNYKEr3MU2f
+	NehYhWUC4iAXacURzTCfkWL0B5dD2Sb/nrOYk4HhnemytdWCxKdMqFmnK2K7MdT2
+	Ek6HV9ZsEQF8Vda6qlJcCzQKgK6SxeE2+uDJ2S5Rd08xBERxuzMxF1mCea76qAdc
+	vT3paE1YzytyDFBExd8wLVLA/0Wd2R6Z3f4aJjT3xj8hW3mZHEHsXdbnaPNzvzvN
+	VOyrHRkTErTUdGlYvwxNAj6dNIumqxtuMoAWtaj4l/YiuuNeCN12JnSKH25l4Op/
+	EDuVDKRnTpwCzlWv4N0lw==
+X-ME-Sender: <xms:YuNhafTg-13QpBfZirbMwSEJ_b22m0in2lIXbYBVUnMDFN9_qu0Beg>
+    <xme:YuNhaXJ-tJuoQHQtYWOPcoAHinK-7hlCxkrEhO-vQOqOpUJMCeudSkhcn6kbDerZb
+    gwCfwzVnXXceoS3AotD0MgT763wBPo8Lhk7hfbv0uPlkLo512I3Ac0>
+X-ME-Received: <xmr:YuNhaRFkfF9xJxRjConZZt51NXYD-QpUXeZfx_k417A77n2aHUnY_EDiXf-zQM3VV8w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduuddtkeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepuehhuhhshhgr
+    nhcuufhhrghhuceosghhuhhshhgrnhdrshhhrghhsehmrggthhhinhgvshhouhhlrdhinh
+    eqnecuggftrfgrthhtvghrnhepgeeftdeuheetjeevveehkeegledttdeikeejledvgfdu
+    tddvteevkeehudduledvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepsghhuhhshhgrnhdrshhhrghhsehmrggthhhinhgvshhouhhlrdhinhdp
+    nhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlgh
+    hirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepphgvrhgvgiesphgvrhgvgidrtgiipdhrtghpth
+    htohepthhifigrihesshhushgvrdgtohhmpdhrtghpthhtohepsghhrghrrggufigrjhdr
+    rhgrjhhusehmrggthhhinhgvshhouhhlrdhinhdprhgtphhtthhopegrlhgvgigrnhgurh
+    gvrdhfvghrrhhivghugiesohhrrghnghgvrdgtohhmpdhrtghpthhtoheplhhutggrrdif
+    vghishhssehfrghirhhphhhonhgvrdgtohhmpdhrtghpthhtohepmihpohhsthhmrghrkh
+    gvthhoshdsuhhpshhtrhgvrghmihhngheslhhishhtshdrshhrrdhhthdprhgtphhtthho
+    pehphhhonhgvqdguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:YuNhac2A98zoAmpDORfia2tm6xDl1q7j-DAGtMwm2r8mf63kbzYhZQ>
+    <xmx:YuNhaRIQAL-FkQvFePr1yoMJJSrIsoOaKEhCiTiYCROSht2Ro9E5Og>
+    <xmx:YuNhaZ1PudttDFYQALzp9Zufys84sGs6gXG_2-2mr1Uc8JbvTtR-pg>
+    <xmx:YuNhadnWFxAzQdY4hMBNX0S_Ms1C-8L303MegkxtWoUN1QcqT0tqPw>
+    <xmx:Y-Nhab4QJOZNRdPT8VoRPWk_irsq4elu--7DQKGWpkjtD0n_VGr34m6Y>
+Feedback-ID: i6b0e4831:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 10 Jan 2026 00:27:58 -0500 (EST)
+From: Bhushan Shah <bhushan.shah@machinesoul.in>
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Bharadwaj Raju <bharadwaj.raju@machinesoul.in>,
+ Alexandre Ferrieux <alexandre.ferrieux@orange.com>,
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Luca Weiss <luca.weiss@fairphone.com>
+Subject: Re: [PATCH 2/2] ASoC: codecs: aw88261: Add devicetree support
+Date: Sat, 10 Jan 2026 10:57:45 +0530
+Message-ID: <5862699.31r3eYUQgx@antlia>
+In-Reply-To: <20260109-aw88261-dt-v1-2-45840c7632a3@fairphone.com>
+References:
+ <20260109-aw88261-dt-v1-0-45840c7632a3@fairphone.com>
+ <20260109-aw88261-dt-v1-2-45840c7632a3@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260108-pixel-config-v4-2-76a2212b69a5@ixit.cz>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Hi all,
+On Friday, 9 January 2026 20:32:06 IST Luca Weiss wrote:
+> Add the compatible "awinic,aw88261" so that module autoloading will work
+> based on the compatible from devicetree.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
+Tested-by: Bhushan Shah <bhushan.shah@machinesoul.in>
 
-> Introduce a fragment config for the Pixel 3, Pixel 3 XL, Pixel 5.
-
-> On these devices, U-Boot is chainloaded via fastboot. However, due to
-> additional requirements added by Google, the image header must have
-> a specific value for the text offset.
-> This is solved by setting CONFIG_TEXT_BASE to 0x80080000 in U-Boot.
-
-Yeah, to workaround for kernel change 120dc60d0bdb ("arm64: get rid of
-TEXT_OFFSET") because trying to put it back [1] was rejected.
-
-Thanks!
-Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
-
-Kind regards,
-Petr
-
-[1] https://lore.kernel.org/all/20251006-arm64-text-offset-v1-1-bf0e8a27383b@oss.qualcomm.com/
-
-> Reviewed-by: Simon Glass <simon.glass@canonical.com>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  board/qualcomm/google-pixel.config | 5 +++++
->  1 file changed, 5 insertions(+)
+>  sound/soc/codecs/aw88261.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
+> index ceea0c8c60b1..810c90f5e783 100644
+> --- a/sound/soc/codecs/aw88261.c
+> +++ b/sound/soc/codecs/aw88261.c
+> @@ -1269,9 +1269,16 @@ static const struct i2c_device_id aw88261_i2c_id[] =
+> { };
+>  MODULE_DEVICE_TABLE(i2c, aw88261_i2c_id);
+> 
+> +static const struct of_device_id aw88261_of_table[] = {
+> +	{ .compatible = "awinic,aw88261" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, aw88261_of_table);
+> +
+>  static struct i2c_driver aw88261_i2c_driver = {
+>  	.driver = {
+>  		.name = "aw88261",
+> +		.of_match_table = aw88261_of_table,
+>  	},
+>  	.probe = aw88261_i2c_probe,
+>  	.id_table = aw88261_i2c_id,
 
-> diff --git a/board/qualcomm/google-pixel.config b/board/qualcomm/google-pixel.config
-> new file mode 100644
-> index 00000000000..999d4e45268
-> --- /dev/null
-> +++ b/board/qualcomm/google-pixel.config
-> @@ -0,0 +1,5 @@
-> +# Enables chainloading of U-Boot on Google Pixel phones using
-> +# newer bootloaders (Android Q/R)
-> +# Use for following devices: Pixel 3 (blueline), Pixel 3 XL (crosshatch),
-> +# Pixel 5 (redfin)...
-> +CONFIG_TEXT_BASE=0x80080000
+
+
+
