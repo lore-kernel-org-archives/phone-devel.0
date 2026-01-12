@@ -1,256 +1,136 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595F357A2D
-	for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 13:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCEE35B139
+	for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 13:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768223335; cv=none; b=iOuLtndxIjo89iP5bU8DA33jV8icUCcWn2S5L9ksaz4M/bPfDejo5nVq1eqsK3GZz2VJ1Q6v1gfF/D75wA3f+KRBaTiEyCv/8RmcB1GdLcI9XPGi4h3ybgUBAQiJr1BXDFpK2xN9PJkahJZTfSQC+mWvRtVQNbOFx+XjAqXym0k=
+	t=1768226000; cv=none; b=rrOBGzZFphBuFCqdNFlSw+U8VOr4lmkeY53THBvScSK+pGER87FqDaj8Nar67x2RKZj3z4X175FSWXByQqkocyrUKOBbZ+5OvL6GVhjF5DsoeqIh4W06JWapxpVOtmp/wfNBau9rtbQbBoSQ6VsjXnEoWdwzEpwjqjB/4NFBFqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768223335; c=relaxed/simple;
-	bh=YTVkCN24/ARJNxBRMbLG2byyse7jCJp1KD9YVEJe7fg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YGp2m3C76IYYgmIoVZkaBhYrifa36KflvUtgrSsvWnwrAALIRAGCjZnTlA8VdrLgRETYmgA4e+nyoaF2I2WWKNGKwDwv3XEfP+8v2WCY/RY8RDaFB+yi5ksf7z9Io5CauEa7hbP4OVYa+cfs8srH8YEctsknZwSTPHvN568co3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ONUb602Q; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1768226000; c=relaxed/simple;
+	bh=869qKXPKp/5HVz58yGdlPkNK/AkfXAZ4HLSxUNKXhtM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GlDMzpCJtrPnqAsdSdn2LNdFotwP9xVNxFeLVyaAtDJBIQv2QmOQdndyOYX9fLhGHHfvIhNpZSnJeFkNVkKYDfi/V6sd5PQ7Bmzlri8mcJa2ZUJYPKiBXZ5JPWzRyXk+O3vvrl8od+H5lUNpdNTBXGhJrDNXgKnNLLMwV+S4j48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=HCdB2ELF; arc=none smtp.client-ip=209.85.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ONUb602Q"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775ae77516so70289965e9.1
-        for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 05:08:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="HCdB2ELF"
+Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-64b8b5410a1so9441047a12.2
+        for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 05:53:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768223331; x=1768828131; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BF9HRCZwVM8HohHOVVmaFmMZoI1kBoRSnqS8ZzxwdRQ=;
-        b=ONUb602QVTxB0uTYiPCiU6+kXahVGELlLm3CowLbvvfwCD5mCGdVTasZm5O1ldbT2C
-         VGcxR4itUDFm6VeSBgxaf1gwxRXDJZZOPNgqJVdDeZlW7C2FuPA0mkYYYmhrSrrNLL2e
-         pRKlwPbOSJCgX76N3tQHSjy1+Dcv8453zZp7Y5YxFqeT3T23c3yGhynXocuH3wminpVk
-         PjcmmS2VDK7AFoZCPAUQ76XDNVz+vdz0LL4ME5MRWbHT0q1KZWuAIJkLclzBM/rRVcOX
-         qG8Z6e1sSzpsblBKsVFMJFZM6i7s8AWDfwo0qOLwX3uhplET2h6JPy8BiZxzCMLEmgeq
-         QGzw==
+        d=fairphone.com; s=fair; t=1768225997; x=1768830797; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gaVryPH+6C0Tqtqwm/Yuk9yK3m+Wj3s5OH+GPIlElSk=;
+        b=HCdB2ELFcSZpD3xwA99hzBqSSgY/rleO2LCMi4XMPK8VNq/68RYfqSFFTkY3DgLGQp
+         +Tx2i56mn+rVZyaDw8A1/kQM94aB0XWKPOP2yTi3eRDou9/ePQglfDQwdvTVAzUy11nz
+         iPLz31s7GN8eDXTfbYNWGmiopGQBQmPii+IU4Ft0dVAz/XJ56EHPpVcZPhIkoburCzRJ
+         rEUIMKErFoUdSiOAAHN9ZdO1ICmJCIvRUTQxxECEwtFi7PNbxzJA9wUtD2owZtQhTMLD
+         H/gn8c64tZWD4QyVaJ+AmoJjew6eJDJ5I3eOq2n3gNNIrQqemsoYSI5TOs53wV+3Svf9
+         5THw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768223331; x=1768828131;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BF9HRCZwVM8HohHOVVmaFmMZoI1kBoRSnqS8ZzxwdRQ=;
-        b=KUj0nLo/HyNtoOq3DiCFqRSqxE5Wa7U9ulh7UwScvUo1j0ycSizSyEJ7cVsnf8qkmv
-         yQ1Yq1l5oiTfyOLa1Ydvsb8uDxmHdVS/6Qz2MVbLlhxejMLIfg2y4G7riNo08uUN98uH
-         idWxSmG7GoXRhw5kNUhHT2ampqVuEN7IKC0oAtMY3pElTT4pVEo8UuWVulN0XBF70ap5
-         Keh6khcG67jOJr1V3Db7IgVf7bFy/Wh85tT4LDIH7A3jTq18Z/rr9MWFQ6i//c796DLR
-         J/2XbQvukOCuqbizCxSQdt7qfWVPfuZcE2uwykBXCSmdXGMG24kQ0GWIBitNMKEhowaN
-         m+pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHxaeIeGOTew0Ma4VibwqCCkNiN2Sz9D4W4v00Mg3SgOUrR3pCRawCkTWdLy5fSXCKhKdzfXOrv8xSIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz56bO+yPW8fZ8JfPiiv8y7e9z0nFDr8ZIvrWLMCoRHpZEyp15o
-	THc6gWgovBvckM7+vv4lNeyI2gKO5H/9dKQPvq6Q1F9BNv8J0rjfUTLBt34/Zs+yy9o=
-X-Gm-Gg: AY/fxX6U/Ap+AzDaiAfXySj412b+iIxTGb9YnLSDRBDGfQzbzNXvibGPuRttM/0Io5m
-	DQKhgB6/eF5F3STrPe9pWaEYhQW4FhyhbpdAa3ts3QdRTrFLzfRHtdU5oTAwJX+m7ZC1kLU51h1
-	Z6sa+93SPWJ3xAKHXu+N31BLI8e8R551pehss5HaiUcb+qh1ng+XoJWumQheTxZ8+D5uYN9f75K
-	D60X8X4CKNUTiIXoU4AlLP0F+4xvml2KasSyCjX5my/x5mIc8DTZjaLLO5vUVKj77J69CqgFJHr
-	Xgjik46fl8kludz1FhDARYJWzuev4VseZ9wK5ni+dpS1V+VVLCFfcfB98/W4bpsC4mHY8c+Y9l+
-	w10i0wQokL5ZyktHl0AhrKWxq0Ffd23/TKXAABrJhD47+kDC4/L3RFOAkCJF5pcU/smOy74LJeA
-	A8Xk0f8Fsw8lzWsaU2dYR0wL6e1QX40DYw23stz/w=
-X-Google-Smtp-Source: AGHT+IEtO2xzsh2F6bjVyeH53ljL8NiwROmn+6MmXlos+dptQWGriTYDZzCaDlYWz//1QpK6zSKEIg==
-X-Received: by 2002:a05:600c:3110:b0:479:3a86:dc1a with SMTP id 5b1f17b1804b1-47d84b41176mr203344865e9.36.1768223331152;
-        Mon, 12 Jan 2026 05:08:51 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5fe67csm38528840f8f.40.2026.01.12.05.08.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 05:08:50 -0800 (PST)
-Message-ID: <99ec09fa-b4e3-4f68-9980-a3dfb81635e8@linaro.org>
-Date: Mon, 12 Jan 2026 14:08:49 +0100
+        d=1e100.net; s=20230601; t=1768225997; x=1768830797;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gaVryPH+6C0Tqtqwm/Yuk9yK3m+Wj3s5OH+GPIlElSk=;
+        b=sy+2VoNEsgladk9avkQzra9/89Zp4RRZyZuU9u95P4Cd7TM2X7W9yZgOs13kkqrS8s
+         IaE59SUGeAWcJdDqtF0CwXvpkzuvogGppqX/0FY4n8eMBHRgZ8jPP80TdD+hUNVlThl4
+         Tn8O8ECwWnLudJepu0ufxskjwlqtvCj45jPFq1rgO0CJCEnlNlkqHJCJIe5cuUoSygtQ
+         vZki9DgREz/vwNuHpjMyqv+uL8k44l0xjNaqr0TczUguvGBFB3ZjKvMhoADtWq+2nNI/
+         rvKhqLKcBbPk4Wdh5ha5OpnYyl1tPb1WH0oR4okPGUxlwJ+/PxHoewVvzolgTocdPXeS
+         TnQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUusoHgbLNhyRLXiXd/CVJssH+tAtq6MSP+Vd878fEV0d3CQGzA8Eb6htVW4IpLiza9UA6o0eh6FN5evA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP09HPAtRuZNTzZimzgYdtwW8pH31LoHxCD29fFcctpM1HOC0I
+	iwILQT4wQ0UGrP+sngr4WzL7TMAMKJRBvsbmGiFZYCCMl8rqFGUU1uFQKpuUVwpXZNw=
+X-Gm-Gg: AY/fxX7f3MMvnuG90afkrWrPV9r2kTSxvN0PwhNUTVZnihb3526ElIlu7XRzKDr1p8N
+	J5yzSkSF7iaOQJbJiy3BwKfS6dK9uwLOSwUgtgaoqcdj5W+zCFD4YAr0LTWnJufNjdcpkq4k9u7
+	x3/EjOGjDTJ5umxq8uzjImoxsdhWYlTiB4NV/t7iuxki5G2kw2fFMHPy762uT4qJauoqnz0BPHU
+	3YwL/+AhXGE97nzkD2GacV3CE3MGyC0Vsau4nCwIQ3M0z3vS6+2dMl8DwH9sjm2Ak+ojw4WGXvz
+	B1vgn8kopEbAD7bQX/wAtAVJE5uY6v8gmA3PcorDdJ7UP1XmZ36i6XBVbwPURG1pGKPEXwS9OU1
+	Umav7OSehEJdJuhc0H+oU270c7weyF8Q3G0ITZ5uRK4n2GGSPH4ozAG4I0m+6Tt23DTTjZUyeqX
+	nkwQR5xIywd1VpIBtfbSXIcf6kSWL9m3mxwjgwhY8vyEQvr+eg2zS9DQC54lc6d3VX
+X-Google-Smtp-Source: AGHT+IHzxEgz2KsBSO+arQBHVhJujP60zEh8vnZJ9xXT+N10U47A31S2v+8UfRza4bfmALX8ySwXSw==
+X-Received: by 2002:a17:906:fe0a:b0:b83:3773:dd96 with SMTP id a640c23a62f3a-b8445030d72mr1887365266b.3.1768225996535;
+        Mon, 12 Jan 2026 05:53:16 -0800 (PST)
+Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8731f071e4sm25700466b.66.2026.01.12.05.53.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 05:53:16 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v2 0/6] Enable UFS support on Milos
+Date: Mon, 12 Jan 2026 14:53:13 +0100
+Message-Id: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 5/6] arm64: dts: qcom: milos: Add UFS nodes
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Luca Weiss <luca.weiss@fairphone.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/02OQQ6CMBBFr0JmbU1pDFVW3sOwaMtUJpEW20Iwh
+ LtbQROXb+b/N7NAxEAYoS4WCDhRJO8yiEMBplPujozazCC4qHjJK9bTw0c22siktrqV8mSUNJD
+ zQ0BL8+a6NTsHfI5ZmfYhaBWRGd/3lOrC4ZzYVyvhU+goJh9e2y9TuTV++7+zU8k4qy5nobTgL
+ VfmahWFofMOj9kNzbqub5GInBHXAAAA
+X-Change-ID: 20260106-milos-ufs-7bfbd774ca7c
+To: Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+ Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
  Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org
-References: <20260107-milos-ufs-v1-0-6982ab20d0ac@fairphone.com>
- <20260107-milos-ufs-v1-5-6982ab20d0ac@fairphone.com>
- <2486dc4b-71f3-4cd9-8139-b397407d7e4d@linaro.org>
- <543d9e55-c858-40f9-8785-c9f636850120@linaro.org>
- <DFMH8W40TCJ0.XCTHNRJFJE4T@fairphone.com>
- <ccbaff51-d7fa-4b22-8d4e-02bea5d8a529@oss.qualcomm.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <ccbaff51-d7fa-4b22-8d4e-02bea5d8a529@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Abel Vesa <abel.vesa@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768225995; l=1410;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=869qKXPKp/5HVz58yGdlPkNK/AkfXAZ4HLSxUNKXhtM=;
+ b=ya0h1GWx9MbkL8J1GPpxKxKEPorYhGvXMWiaky/iNsRq8ZRWCVWK6G2OODVWZ8CbyrFGEcgyH
+ tvHqCQKfapfACq0UkxcYG5jly+DRCv9gxdUuVrllWQA3147ZU6tLlAT
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On 1/12/26 11:29, Konrad Dybcio wrote:
-> On 1/12/26 9:45 AM, Luca Weiss wrote:
->> Hi Neil,
->>
->> On Mon Jan 12, 2026 at 9:26 AM CET, Neil Armstrong wrote:
->>> On 1/7/26 14:53, Neil Armstrong wrote:
->>>> Hi,
->>>>
->>>> On 1/7/26 09:05, Luca Weiss wrote:
->>>>> Add the nodes for the UFS PHY and UFS host controller, along with the
->>>>> ICE used for UFS.
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>>    arch/arm64/boot/dts/qcom/milos.dtsi | 127 +++++++++++++++++++++++++++++++++++-
->>>>>    1 file changed, 124 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
->>>>> index e1a51d43943f..0f69deabb60c 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/milos.dtsi
->>>>> +++ b/arch/arm64/boot/dts/qcom/milos.dtsi
->>>>> @@ -797,9 +797,9 @@ gcc: clock-controller@100000 {
->>>>>                     <&sleep_clk>,
->>>>>                     <0>, /* pcie_0_pipe_clk */
->>>>>                     <0>, /* pcie_1_pipe_clk */
->>>>> -                 <0>, /* ufs_phy_rx_symbol_0_clk */
->>>>> -                 <0>, /* ufs_phy_rx_symbol_1_clk */
->>>>> -                 <0>, /* ufs_phy_tx_symbol_0_clk */
->>>>> +                 <&ufs_mem_phy 0>,
->>>>> +                 <&ufs_mem_phy 1>,
->>>>> +                 <&ufs_mem_phy 2>,
->>>>>                     <0>; /* usb3_phy_wrapper_gcc_usb30_pipe_clk */
->>>>>                #clock-cells = <1>;
->>>>> @@ -1151,6 +1151,127 @@ aggre2_noc: interconnect@1700000 {
->>>>>                qcom,bcm-voters = <&apps_bcm_voter>;
->>>>>            };
->>>>> +        ufs_mem_phy: phy@1d80000 {
->>>>> +            compatible = "qcom,milos-qmp-ufs-phy";
->>>>> +            reg = <0x0 0x01d80000 0x0 0x2000>;
->>>>> +
->>>>> +            clocks = <&rpmhcc RPMH_CXO_CLK>,
->>>>> +                 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
->>>>> +                 <&tcsr TCSR_UFS_CLKREF_EN>;
->>>>> +            clock-names = "ref",
->>>>> +                      "ref_aux",
->>>>> +                      "qref";
->>>>> +
->>>>> +            resets = <&ufs_mem_hc 0>;
->>>>> +            reset-names = "ufsphy";
->>>>> +
->>>>> +            power-domains = <&gcc UFS_MEM_PHY_GDSC>;
->>>>> +
->>>>> +            #clock-cells = <1>;
->>>>> +            #phy-cells = <0>;
->>>>> +
->>>>> +            status = "disabled";
->>>>> +        };
->>>>> +
->>>>> +        ufs_mem_hc: ufshc@1d84000 {
->>>>> +            compatible = "qcom,milos-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
->>>>> +            reg = <0x0 0x01d84000 0x0 0x3000>;
->>>>> +
->>>>> +            interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH 0>;
->>>>> +
->>>>> +            clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
->>>>> +                 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
->>>>> +                 <&gcc GCC_UFS_PHY_AHB_CLK>,
->>>>> +                 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
->>>>> +                 <&tcsr TCSR_UFS_PAD_CLKREF_EN>,
->>>>> +                 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
->>>>> +                 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
->>>>> +                 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
->>>>> +            clock-names = "core_clk",
->>>>> +                      "bus_aggr_clk",
->>>>> +                      "iface_clk",
->>>>> +                      "core_clk_unipro",
->>>>> +                      "ref_clk",
->>>>> +                      "tx_lane0_sync_clk",
->>>>> +                      "rx_lane0_sync_clk",
->>>>> +                      "rx_lane1_sync_clk";
->>>>> +
->>>>> +            resets = <&gcc GCC_UFS_PHY_BCR>;
->>>>> +            reset-names = "rst";
->>>>> +
->>>>> +            interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
->>>>> +                     &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
->>>>> +                    <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
->>>>> +                     &cnoc_cfg SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
->>>>> +            interconnect-names = "ufs-ddr",
->>>>> +                         "cpu-ufs";
->>>>> +
->>>>> +            power-domains = <&gcc UFS_PHY_GDSC>;
->>>>> +            required-opps = <&rpmhpd_opp_nom>;
->>>>> +
->>>>> +            operating-points-v2 = <&ufs_opp_table>;
->>>>> +
->>>>> +            iommus = <&apps_smmu 0x60 0>;
->>>>
->>>> dma-coherent ?
->>
->>
->> Given that downstream volcano.dtsi has dma-coherent in the ufshc@1d84000
->> node, looks like this is missing in my patch.
-> 
-> Seems that way
-> 
->>>>
->>>> and no MCQ support ?
->>
->> Not sure, I could only find one reference to MCQ on createpoint for
->> milos, but given there's no mcq_sqd/mcq_vs reg defined downstream, and I
->> couldn't find anything for the same register values in the .FLAT file, I
->> don't think Milos has MCQ? Feel free to prove me wrong though.
->>
->>>
->>> So, people just ignore my comment ?
->>>
->>> Milos is based on SM8550, so it should have dma-coherent, for the MCQ
->>> I hope they used the fixed added to the SM8650 UFS controller for MCQ.
->>
->> Not sure what this should mean regarding MCQ...
-> 
-> This platform doesn't support MCQ
+Add inline-crypto-engine and UFS bindings & driver parts, then add them
+to milos dtsi and enable the UFS storage on Fairphone (Gen. 6).
 
-Ack, it must be same situation as Kailua then,
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+- Add missing dma-coherent in milos.dtsi (Neil)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20260107-milos-ufs-v1-0-6982ab20d0ac@fairphone.com
 
-Thanks
-Neil
+---
+Luca Weiss (6):
+      dt-bindings: crypto: qcom,inline-crypto-engine: document the Milos ICE
+      scsi: ufs: qcom,sc7180-ufshc: dt-bindings: Document the Milos UFS Controller
+      dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: document the Milos QMP UFS PHY
+      phy: qcom-qmp-ufs: Add Milos support
+      arm64: dts: qcom: milos: Add UFS nodes
+      arm64: dts: qcom: milos-fairphone-fp6: Enable UFS
 
-> 
-> Konrad
+ .../bindings/crypto/qcom,inline-crypto-engine.yaml |   1 +
+ .../bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml    |   2 +
+ .../devicetree/bindings/ufs/qcom,sc7180-ufshc.yaml |   2 +
+ arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts   |  18 +++
+ arch/arm64/boot/dts/qcom/milos.dtsi                | 129 ++++++++++++++++++++-
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c            |  96 +++++++++++++++
+ 6 files changed, 245 insertions(+), 3 deletions(-)
+---
+base-commit: ef1c7b875741bef0ff37ae8ab8a9aaf407dc141c
+change-id: 20260106-milos-ufs-7bfbd774ca7c
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
