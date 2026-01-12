@@ -1,39 +1,68 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E94D2D7DD1;
-	Mon, 12 Jan 2026 12:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595F357A2D
+	for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 13:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768221423; cv=none; b=af1ncDgK+1AzWi5GBRk/T2ipcU0Ig758r521zpeewQMLPrZIBidxSfP8oCZk1Q4t5aHo+QKjvE6DVKfvshL21YFEgBzdhyJRt2YGLFaP6dkpqmLUumPDRCvpqwcIpyQNohkpPAE/VW0J5VgwP1aT0KtnzcuzEU7anTSEeTlJHSY=
+	t=1768223335; cv=none; b=iOuLtndxIjo89iP5bU8DA33jV8icUCcWn2S5L9ksaz4M/bPfDejo5nVq1eqsK3GZz2VJ1Q6v1gfF/D75wA3f+KRBaTiEyCv/8RmcB1GdLcI9XPGi4h3ybgUBAQiJr1BXDFpK2xN9PJkahJZTfSQC+mWvRtVQNbOFx+XjAqXym0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768221423; c=relaxed/simple;
-	bh=kO210+4m+TjK5sEZHyuBf0P1eIi7PvqxSa0jVPJ+KIQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t6DVfZXr/pj2peZBVpsbkEXHQsotrNj8R4Yt/DmbPut26BO6lOJ/BvOKGV1M6/lgT3QeqqD8WOWvoN9GohhX040R2JbsTmMfEVZ37ypTXHvf3jyPQnCFDzBDQotDxuU8nJvHU70pSsE8aCPyfFS3NLNAxrsHns4+nKHzp/9q2hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=nAThxmnH; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1768223335; c=relaxed/simple;
+	bh=YTVkCN24/ARJNxBRMbLG2byyse7jCJp1KD9YVEJe7fg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YGp2m3C76IYYgmIoVZkaBhYrifa36KflvUtgrSsvWnwrAALIRAGCjZnTlA8VdrLgRETYmgA4e+nyoaF2I2WWKNGKwDwv3XEfP+8v2WCY/RY8RDaFB+yi5ksf7z9Io5CauEa7hbP4OVYa+cfs8srH8YEctsknZwSTPHvN568co3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ONUb602Q; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="nAThxmnH"
-Received: from [192.168.162.203] (unknown [176.98.251.102])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 116B653406F9;
-	Mon, 12 Jan 2026 13:36:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1768221411;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hrRWY5QnU8ShdJpczco29vqJeK9Xm/DdoDiRYUay+s8=;
-	b=nAThxmnHp2f+PzNYM+SIriFtaFjz58Hn3fncfItgsjGRn+c9bWA4uCsrCixFJWzGaGaGyb
-	uk3n0ufY6dj5ZScLEJTO39OtfbTB11YJjw3rIU1COWkhl4eTY9yU8T08uiYTolFJ3PArsC
-	MQesnwfc5n/+2wTpJsgN58nkrUZfxHk=
-Message-ID: <654126da-3cdb-465e-82a9-cbeb1b46a657@ixit.cz>
-Date: Mon, 12 Jan 2026 13:36:49 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ONUb602Q"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775ae77516so70289965e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 05:08:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768223331; x=1768828131; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BF9HRCZwVM8HohHOVVmaFmMZoI1kBoRSnqS8ZzxwdRQ=;
+        b=ONUb602QVTxB0uTYiPCiU6+kXahVGELlLm3CowLbvvfwCD5mCGdVTasZm5O1ldbT2C
+         VGcxR4itUDFm6VeSBgxaf1gwxRXDJZZOPNgqJVdDeZlW7C2FuPA0mkYYYmhrSrrNLL2e
+         pRKlwPbOSJCgX76N3tQHSjy1+Dcv8453zZp7Y5YxFqeT3T23c3yGhynXocuH3wminpVk
+         PjcmmS2VDK7AFoZCPAUQ76XDNVz+vdz0LL4ME5MRWbHT0q1KZWuAIJkLclzBM/rRVcOX
+         qG8Z6e1sSzpsblBKsVFMJFZM6i7s8AWDfwo0qOLwX3uhplET2h6JPy8BiZxzCMLEmgeq
+         QGzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768223331; x=1768828131;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BF9HRCZwVM8HohHOVVmaFmMZoI1kBoRSnqS8ZzxwdRQ=;
+        b=KUj0nLo/HyNtoOq3DiCFqRSqxE5Wa7U9ulh7UwScvUo1j0ycSizSyEJ7cVsnf8qkmv
+         yQ1Yq1l5oiTfyOLa1Ydvsb8uDxmHdVS/6Qz2MVbLlhxejMLIfg2y4G7riNo08uUN98uH
+         idWxSmG7GoXRhw5kNUhHT2ampqVuEN7IKC0oAtMY3pElTT4pVEo8UuWVulN0XBF70ap5
+         Keh6khcG67jOJr1V3Db7IgVf7bFy/Wh85tT4LDIH7A3jTq18Z/rr9MWFQ6i//c796DLR
+         J/2XbQvukOCuqbizCxSQdt7qfWVPfuZcE2uwykBXCSmdXGMG24kQ0GWIBitNMKEhowaN
+         m+pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHxaeIeGOTew0Ma4VibwqCCkNiN2Sz9D4W4v00Mg3SgOUrR3pCRawCkTWdLy5fSXCKhKdzfXOrv8xSIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz56bO+yPW8fZ8JfPiiv8y7e9z0nFDr8ZIvrWLMCoRHpZEyp15o
+	THc6gWgovBvckM7+vv4lNeyI2gKO5H/9dKQPvq6Q1F9BNv8J0rjfUTLBt34/Zs+yy9o=
+X-Gm-Gg: AY/fxX6U/Ap+AzDaiAfXySj412b+iIxTGb9YnLSDRBDGfQzbzNXvibGPuRttM/0Io5m
+	DQKhgB6/eF5F3STrPe9pWaEYhQW4FhyhbpdAa3ts3QdRTrFLzfRHtdU5oTAwJX+m7ZC1kLU51h1
+	Z6sa+93SPWJ3xAKHXu+N31BLI8e8R551pehss5HaiUcb+qh1ng+XoJWumQheTxZ8+D5uYN9f75K
+	D60X8X4CKNUTiIXoU4AlLP0F+4xvml2KasSyCjX5my/x5mIc8DTZjaLLO5vUVKj77J69CqgFJHr
+	Xgjik46fl8kludz1FhDARYJWzuev4VseZ9wK5ni+dpS1V+VVLCFfcfB98/W4bpsC4mHY8c+Y9l+
+	w10i0wQokL5ZyktHl0AhrKWxq0Ffd23/TKXAABrJhD47+kDC4/L3RFOAkCJF5pcU/smOy74LJeA
+	A8Xk0f8Fsw8lzWsaU2dYR0wL6e1QX40DYw23stz/w=
+X-Google-Smtp-Source: AGHT+IEtO2xzsh2F6bjVyeH53ljL8NiwROmn+6MmXlos+dptQWGriTYDZzCaDlYWz//1QpK6zSKEIg==
+X-Received: by 2002:a05:600c:3110:b0:479:3a86:dc1a with SMTP id 5b1f17b1804b1-47d84b41176mr203344865e9.36.1768223331152;
+        Mon, 12 Jan 2026 05:08:51 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5fe67csm38528840f8f.40.2026.01.12.05.08.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Jan 2026 05:08:50 -0800 (PST)
+Message-ID: <99ec09fa-b4e3-4f68-9980-a3dfb81635e8@linaro.org>
+Date: Mon, 12 Jan 2026 14:08:49 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,110 +70,187 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] needsreview! arm64: dts: qcom: sdm845: Add missing MDSS
- reset
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-arm-msm@vger.kernel.org,
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 5/6] arm64: dts: qcom: milos: Add UFS nodes
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Luca Weiss <luca.weiss@fairphone.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260112-mdss-reset-v1-1-af7c572204d3@ixit.cz>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260112-mdss-reset-v1-1-af7c572204d3@ixit.cz>
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org
+References: <20260107-milos-ufs-v1-0-6982ab20d0ac@fairphone.com>
+ <20260107-milos-ufs-v1-5-6982ab20d0ac@fairphone.com>
+ <2486dc4b-71f3-4cd9-8139-b397407d7e4d@linaro.org>
+ <543d9e55-c858-40f9-8785-c9f636850120@linaro.org>
+ <DFMH8W40TCJ0.XCTHNRJFJE4T@fairphone.com>
+ <ccbaff51-d7fa-4b22-8d4e-02bea5d8a529@oss.qualcomm.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <ccbaff51-d7fa-4b22-8d4e-02bea5d8a529@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Seeing the $subj, I asking myself why do I use `b4 --reflect`...
+On 1/12/26 11:29, Konrad Dybcio wrote:
+> On 1/12/26 9:45 AM, Luca Weiss wrote:
+>> Hi Neil,
+>>
+>> On Mon Jan 12, 2026 at 9:26 AM CET, Neil Armstrong wrote:
+>>> On 1/7/26 14:53, Neil Armstrong wrote:
+>>>> Hi,
+>>>>
+>>>> On 1/7/26 09:05, Luca Weiss wrote:
+>>>>> Add the nodes for the UFS PHY and UFS host controller, along with the
+>>>>> ICE used for UFS.
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>>    arch/arm64/boot/dts/qcom/milos.dtsi | 127 +++++++++++++++++++++++++++++++++++-
+>>>>>    1 file changed, 124 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
+>>>>> index e1a51d43943f..0f69deabb60c 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/milos.dtsi
+>>>>> +++ b/arch/arm64/boot/dts/qcom/milos.dtsi
+>>>>> @@ -797,9 +797,9 @@ gcc: clock-controller@100000 {
+>>>>>                     <&sleep_clk>,
+>>>>>                     <0>, /* pcie_0_pipe_clk */
+>>>>>                     <0>, /* pcie_1_pipe_clk */
+>>>>> -                 <0>, /* ufs_phy_rx_symbol_0_clk */
+>>>>> -                 <0>, /* ufs_phy_rx_symbol_1_clk */
+>>>>> -                 <0>, /* ufs_phy_tx_symbol_0_clk */
+>>>>> +                 <&ufs_mem_phy 0>,
+>>>>> +                 <&ufs_mem_phy 1>,
+>>>>> +                 <&ufs_mem_phy 2>,
+>>>>>                     <0>; /* usb3_phy_wrapper_gcc_usb30_pipe_clk */
+>>>>>                #clock-cells = <1>;
+>>>>> @@ -1151,6 +1151,127 @@ aggre2_noc: interconnect@1700000 {
+>>>>>                qcom,bcm-voters = <&apps_bcm_voter>;
+>>>>>            };
+>>>>> +        ufs_mem_phy: phy@1d80000 {
+>>>>> +            compatible = "qcom,milos-qmp-ufs-phy";
+>>>>> +            reg = <0x0 0x01d80000 0x0 0x2000>;
+>>>>> +
+>>>>> +            clocks = <&rpmhcc RPMH_CXO_CLK>,
+>>>>> +                 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
+>>>>> +                 <&tcsr TCSR_UFS_CLKREF_EN>;
+>>>>> +            clock-names = "ref",
+>>>>> +                      "ref_aux",
+>>>>> +                      "qref";
+>>>>> +
+>>>>> +            resets = <&ufs_mem_hc 0>;
+>>>>> +            reset-names = "ufsphy";
+>>>>> +
+>>>>> +            power-domains = <&gcc UFS_MEM_PHY_GDSC>;
+>>>>> +
+>>>>> +            #clock-cells = <1>;
+>>>>> +            #phy-cells = <0>;
+>>>>> +
+>>>>> +            status = "disabled";
+>>>>> +        };
+>>>>> +
+>>>>> +        ufs_mem_hc: ufshc@1d84000 {
+>>>>> +            compatible = "qcom,milos-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
+>>>>> +            reg = <0x0 0x01d84000 0x0 0x3000>;
+>>>>> +
+>>>>> +            interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH 0>;
+>>>>> +
+>>>>> +            clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
+>>>>> +                 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
+>>>>> +                 <&gcc GCC_UFS_PHY_AHB_CLK>,
+>>>>> +                 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
+>>>>> +                 <&tcsr TCSR_UFS_PAD_CLKREF_EN>,
+>>>>> +                 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+>>>>> +                 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+>>>>> +                 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
+>>>>> +            clock-names = "core_clk",
+>>>>> +                      "bus_aggr_clk",
+>>>>> +                      "iface_clk",
+>>>>> +                      "core_clk_unipro",
+>>>>> +                      "ref_clk",
+>>>>> +                      "tx_lane0_sync_clk",
+>>>>> +                      "rx_lane0_sync_clk",
+>>>>> +                      "rx_lane1_sync_clk";
+>>>>> +
+>>>>> +            resets = <&gcc GCC_UFS_PHY_BCR>;
+>>>>> +            reset-names = "rst";
+>>>>> +
+>>>>> +            interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
+>>>>> +                     &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+>>>>> +                    <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
+>>>>> +                     &cnoc_cfg SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
+>>>>> +            interconnect-names = "ufs-ddr",
+>>>>> +                         "cpu-ufs";
+>>>>> +
+>>>>> +            power-domains = <&gcc UFS_PHY_GDSC>;
+>>>>> +            required-opps = <&rpmhpd_opp_nom>;
+>>>>> +
+>>>>> +            operating-points-v2 = <&ufs_opp_table>;
+>>>>> +
+>>>>> +            iommus = <&apps_smmu 0x60 0>;
+>>>>
+>>>> dma-coherent ?
+>>
+>>
+>> Given that downstream volcano.dtsi has dma-coherent in the ufshc@1d84000
+>> node, looks like this is missing in my patch.
+> 
+> Seems that way
+> 
+>>>>
+>>>> and no MCQ support ?
+>>
+>> Not sure, I could only find one reference to MCQ on createpoint for
+>> milos, but given there's no mcq_sqd/mcq_vs reg defined downstream, and I
+>> couldn't find anything for the same register values in the .FLAT file, I
+>> don't think Milos has MCQ? Feel free to prove me wrong though.
+>>
+>>>
+>>> So, people just ignore my comment ?
+>>>
+>>> Milos is based on SM8550, so it should have dma-coherent, for the MCQ
+>>> I hope they used the fixed added to the SM8650 UFS controller for MCQ.
+>>
+>> Not sure what this should mean regarding MCQ...
+> 
+> This platform doesn't support MCQ
 
-Anyway, if the patch will be good enough, feel free to strip 
-`needsreview!`, or I'll sent v2 ;-)
+Ack, it must be same situation as Kailua then,
 
-David
+Thanks
+Neil
 
-On 12/01/2026 13:33, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
 > 
-> If the OS does not support recovering the state left by the
-> bootloader it needs a way to reset display hardware, so that it can
-> start from a clean state. Add a reference to the relevant reset.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> It efficiently fixes nothing for us (at least what we're aware), so I
-> assume the state left by bootloader is good enough
-> 
-> I sending this as a something "which seems right" and works for us in
-> sdm845-next tree.
-> 
-> David
-> ---
->   arch/arm64/boot/dts/qcom/sdm845.dtsi | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> index bf2f9c04adba7..75c192eddc57c 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> @@ -4550,6 +4550,7 @@ mdss: display-subsystem@ae00000 {
->   			reg-names = "mdss";
->   
->   			power-domains = <&dispcc MDSS_GDSC>;
-> +			resets = <&dispcc DISP_CC_MDSS_RSCC_BCR>;
->   
->   			clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
->   				 <&dispcc DISP_CC_MDSS_MDP_CLK>;
-> 
-> ---
-> base-commit: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
-> change-id: 20260112-mdss-reset-06988f05af96
-> 
-> Best regards,
-
--- 
-David Heidelberg
+> Konrad
 
