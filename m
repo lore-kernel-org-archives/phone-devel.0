@@ -1,102 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C47C365A0E;
-	Mon, 12 Jan 2026 16:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFD832B9A2;
+	Mon, 12 Jan 2026 20:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768235574; cv=none; b=QP2Ctvm7/B6BOhIpD3twzJQVcLsVvJXi8OELz1yQVcldRYNOurajxfwXpUJq7z9KO1Ki/oAmu62D8WhfKyAB7G0C49KNMHlV5x0t/kxGBZ2AdrLbPillHaVB2AXUUeJOOOD2EdLWa9uLBz4vBCXokOzRfRPrKJpm4WiqBoalECE=
+	t=1768248838; cv=none; b=nBVHvm5LVqGSfRbduKGA2Suq90hndr/+CihwsjivCwNLQ4DKfFMXvyHwMTR5rCnB7lcwHB9o53lXwsfaMP3ZoR+daC/SoPm89Ckrr/q221iV/sHygaVvJS+kiQjj+Nn+zpp4A4hyWR1YIsTP594DRiYVVOudadWGcOrhVtopgBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768235574; c=relaxed/simple;
-	bh=NpW82Ke+nzxEz6aeANGPyr2oNuEfY8j0dI+XrayeXKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FnqlylRAmeSsRfy3GXNKU2rap8wdunbFv7qYPzc5eMLll3AOI2crBJ1XiVnVlv2e8l5RsqScoa8v6+8iiyOoWcktZlcx/JzN5HL2nyflKn0WqJbdQVO+ZA/2BTpgd+LnxhOZrzifGGUXk5IjP8zDk8F2rU/zWyUDJssrkqIcIow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n06VKge/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768248838; c=relaxed/simple;
+	bh=llQc7V0Zs7DL/iz8nU/dhM41OW2SMa7CYw2K9d9w/pQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OxOYV9J9zER3WT8aDWm+nRO6iZiJQ8OPouVTKP5MoRKm4WNVY+d1stSkA/flq4wI32k79Y5U7PkaFPHJ7ZTX1u4ZF9voEE39jUl4tWHAM5uwL4vQfW0f4NYRdw33Yz7VEXu54lmTZ07Lvz5v8lnU3PqNU1dN4CWD/IzGYSXKBWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=srsdFf7y; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=8UkXZsci; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n06VKge/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F8FC116D0;
-	Mon, 12 Jan 2026 16:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768235574;
-	bh=NpW82Ke+nzxEz6aeANGPyr2oNuEfY8j0dI+XrayeXKQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n06VKge/OPw86uOO8f9x/O9tjaPOahKzfucvMrkSuCKeGGgAHqFw9OQSgCwYZq6Kt
-	 b1bYuv0eNOhSAajtYUMFIxo+hhePDgxJpLdflH7n9BiHaQjosjLmnnwyOu0acBHveE
-	 hFmKaNOqlLnHy3WdEoL5vUgZD1lOHJQV3jAX4dtZMkIcY4WbZKEn1QyWjPV2WI9qrJ
-	 b4MH5R7dgWPvXai1HVQ1DY6kUHZdjFZlzBVfGC6uRnkYotD//JPiho6C+wn96eepbc
-	 HPd5CItwA0nrPi/2CgRGFYrfnN5cqUMQKmLz6tocThMcL/96017mwy211oEhtJODIS
-	 g4Wm9YakQSOVg==
-Date: Mon, 12 Jan 2026 16:32:47 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Bhushan Shah <bhushan.shah@machinesoul.in>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] ASoC: dt-bindings: document dvdd-supply property for
- awinic,aw88261
-Message-ID: <15afa51b-4f58-4f74-b7cc-cdc28e08a689@sirena.org.uk>
-References: <20260111-aw88261-dvdd-v1-0-83fa0850d561@machinesoul.in>
- <20260111-aw88261-dvdd-v1-2-83fa0850d561@machinesoul.in>
- <9249c034-de8c-479b-a9c5-f1252e0beba2@kernel.org>
- <5e47fe91-e150-4b5d-a669-3a7beeea4f03@app.fastmail.com>
- <1ab13178-8253-4dc7-9143-6684ededd8f9@kernel.org>
- <19035a09-8b6b-4590-a816-82350c1389e3@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="srsdFf7y";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="8UkXZsci"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Date:Subject:From; t=1768248814; bh=4bW11u95KX08C+OMgjgtiKz
+	F+ITZerhLKulxVrH9D4U=; b=srsdFf7yHyMlS8tQVDlfj4ACa7xaTYnZKnVbL7B/1I9KxM9cuw
+	52jHjJ0F9RDbOqQmv5l9f4To5cyYdoKN5X+n57xELSn1l8XBbG32bAa0B4WDE0CeN8M04RFsuJb
+	Ds/VTFrC8+Qi8ilpEy8zsrYJP9ByrdM1YHuXrlueQ+8B6tuhaudv3oe3qKl2UlJH0xreU6Sv6Bt
+	WJrpdRMUJSHnJBXnUl4wJySKZoeij3Cy9q/sclp2aUlWrtTGI1YMVm66TW6apeD8kSMM6hgy0C+
+	DwLZyDRjbvgd81UZGPs7o3E6nrUQsWOaIOS5/RnWTqMkZwAOwz+x6Cq2xHDI7YfHv8w==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Date:Subject:From; t=1768248814; bh=4bW11u95KX08C+OMgjgtiKz
+	F+ITZerhLKulxVrH9D4U=; b=8UkXZsciYMcv2RypcpDUVa2sLc9rjKgVj6nSYCgShNz11cjdkf
+	zHe0fA/dqxEcEVQsMHgtubn32lXr4jgUleBw==;
+From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Subject: [PATCH 0/6] Initial Redmi Note 8T support and more
+Date: Mon, 12 Jan 2026 21:13:23 +0100
+Message-Id: <20260112-xiaomi-willow-v1-0-8e4476897638@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mrF9UZFO81zOJzJt"
-Content-Disposition: inline
-In-Reply-To: <19035a09-8b6b-4590-a816-82350c1389e3@app.fastmail.com>
-X-Cookie: Surprise due today.  Also the rent.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQ0ND3YrMxPzcTN3yzJyc/HJdExMLU1OjNAMjczMjJaCegqLUtMwKsHn
+ RsbW1AEtN0lpfAAAA
+X-Change-ID: 20260111-xiaomi-willow-448552f02762
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Gabriel Gonzales <semfault@disroot.org>, 
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ Biswapriyo Nath <nathbappai@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux@mainlining.org, 
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768248812; l=1673;
+ i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
+ bh=llQc7V0Zs7DL/iz8nU/dhM41OW2SMa7CYw2K9d9w/pQ=;
+ b=KsozJuwNsnZ61hcY2e2+SrRpBh0JeUTWHDpas+EXd0+qRMsAfYfKVA+gxnObYOB7vdaEQTydt
+ 8LxzmRKiSFaBuuBCJLrLRu7Q7ar8KM/oPWRLj2ODO29F5TC1fFwO6Jy
+X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
+ pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
+Redmi Note 8 and 8T are sibling devices the only difference
+is Redmi Note 8T have NFC.
+This patch series is commonizing Redmi Note 8 devicetree
+for a base for both devices.
 
---mrF9UZFO81zOJzJt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch series also contains some fixes for Redmi Note 8:
+- Fix reserved memory ranges, they were wrongly defined.
+- Fix msm-id and remove board-id, board-id is not neccessary
+for the bootloader.
+- Fix reserved-gpio-ranges the reserved ranges was wrongly
+defined what caused the device crash on the boot.
+- Remove unnecessary usb-extcon, gpio102 is related to DisplayPort
+what is not supported by these devices.
 
-On Mon, Jan 12, 2026 at 09:57:46PM +0530, Bharadwaj Raju wrote:
-> On Sun, 11 Jan 2026, at 9:40 PM, Krzysztof Kozlowski wrote:
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+---
+Barnabás Czémán (6):
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix msm-id and remove board-id
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct reserved memory ranges
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove extcon
+      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+      dt-bindings: arm: qcom: Add Xiaomi Redmi Note 8T
+      arm64: dts: qcom: Add Redmi Note 8T
 
-> > You mean the bindings were incomplete?
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi | 302 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts  | 287 +-------------------
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dts  |  13 +
+ 5 files changed, 319 insertions(+), 285 deletions(-)
+---
+base-commit: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
+change-id: 20260111-xiaomi-willow-448552f02762
 
-> Yes, the chip needs DVDD to power on.
+Best regards,
+-- 
+Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-> After looking at other codec drivers, they generally make it optional=20
-> in the binding but error out from probe if it can't be enabled.
-
-> I'll resend the series with it made optional.
-
-No, if the chip needs the supply it shouldn't be optional in the
-bindings - it is an ABI break, but in practice only for validation since
-the kernel will assume some supply is there even if not described.
-
---mrF9UZFO81zOJzJt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmllIi8ACgkQJNaLcl1U
-h9CG/Qf+JmZRQSxDtOocqqDM+D7XZV+cZrbfn6MjY41taCUTQvjsXaqoAp/yFW8q
-BUqT+AM4c4p8XaitsOpEEdnIaiQc8UyhGfjcui7/wqPOhtIvTJ45rQML6U2diydc
-1TMUcjJn4ezLmqNrHxKAQfyP6uWrz9wcacUli+PFU5trK7VQPy+1yTsv9/jOln1R
-zG6TB8dtgbZI+H8ALeH5+VHbpb+i18chQe5ig/B3YlpZgB/IrnqFfPyKA9wPxD72
-oN54dWM/JAwIO+dLsiudJ6NR/FWnQqRnX/rerg9tVSmuy/oTk1sMsqtnnviJD8yQ
-MdcoiymChbXlDomlTc1BJPY2lCeV6Q==
-=zmdZ
------END PGP SIGNATURE-----
-
---mrF9UZFO81zOJzJt--
