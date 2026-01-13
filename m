@@ -1,113 +1,155 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B9B3815EA;
-	Tue, 13 Jan 2026 09:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9BB38A9A5
+	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 09:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768296313; cv=none; b=NoGXZBt8qnAxhDQBZ0vrA/XxS0pghIijq5AZvS0y6cHZPkZgMLmThbg0kM9fO4WCRRH+CfRo0nudsXmLC5c49pBjKMidrjbSgbeUSIDdCpcNbfgBIDPPcHnJwCyKJxD+jHsFmblu+R7Z3TOMxtE1rMqT++0mrEjmsl3zE2FtYmI=
+	t=1768296448; cv=none; b=sP1V0qgXD3vmlIfW3Q22ueK4JN3YsGwdzjn7VKH9pRgRGIweqKsUm3drCEW0Yay9kdXanuD6poQqHFsdxH/gtZ1nPIeZiZOXLUEVxkGIbjmpB3tAVmODoGS2PSnYVmKvkAuXOM2GLCVeNbww5VSIh/wgMxkvLxX0iurUaTohR+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768296313; c=relaxed/simple;
-	bh=AzXKgKkGT5WxYHVWoxvNel+hfZJBjYGlu46iUuROqbo=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=XsNGWIot2oAUlV8mm4a0c24BC7sdu530RpyCszXGidoms31oXbOS8YwMATimOBEq4Yzemv7CrlbI+v6WQIPtoWaJFeR2ycMnxbPKH/S3Goo640oMHGOoDux/AiTkB2kGWjVnrip903t4bEmDm88NjqqkgKEc7dZhMHvY0kdqpXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Wba3eUdH; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=obGdS+b0; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1768296448; c=relaxed/simple;
+	bh=Fz3cR76+MaQp/XIhDc9c1VZP14LpV9CinThbODOLIbo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aRm/R51XdjFJ18iSVZRNmYteKPPD8QWar3GpbrcbhjiSKwh745zgHcCRqAws9iyTqMdkum5JOt68hoMb26cN+ZO7KZgzjDj3OqRi15N6NI9+y5MDmC0Pvktacz14uC0cGXTf5w+/zSLZUzJmFdDMyxaGWyRktPlhDpmhfH0c+rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SfuRzeAn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JQaGfADS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Wba3eUdH";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="obGdS+b0"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1768296300; bh=0pngC0SckCVUXla1waluvTC
-	IVJX4K1IOTa/kAtQEAcQ=; b=Wba3eUdHRvAR+rZRfy48fjzNdbplUXMIo04wULwRfr5wRhp8Do
-	VZJZF7HwPYf1KXP0j93FXXmTd5sLk2DdZjMmEFD4ak+TnHvc9mED/wXJUKDgQqZZ8iKdcimbGv/
-	vbNDRBHiLPUMXCD5tgrkZtLuSXBuPhmm8RBkROLb4m24cPnMA65SVo50DCAfUn63Z2GAAJFOMPu
-	xCer8rRrhfvw+8rbzHNt7p6oiRx2ysfHLe7v/UBWHv4kjKpBKyU3lCRAbT+nqElR+wIKNbgsqX8
-	BLUewhaFy0zLEmXGBFEInanfESxHM13+kxc36/TYVcqdxB6sTH7SmvMIyHLimrEDEQQ==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1768296300; bh=0pngC0SckCVUXla1waluvTC
-	IVJX4K1IOTa/kAtQEAcQ=; b=obGdS+b0g386uxkwoH3w9d4xBktOdZnTxzBZB2IjuewUcspc1l
-	Fwu0D2mRBLmlVsmCrE5fVSKVpm9Fq36GcoBQ==;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SfuRzeAn";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JQaGfADS"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60D5aod73636908
+	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 09:27:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nl15lCV8+GTtshqVfCCdKPL5mfcUQeG7WRkEgB05pqc=; b=SfuRzeAnhaBhpHwt
+	QGX7M2WiauFLwmlpcawn0szGh28DJC9ORgnPNXr0xWVlCwlz1bEPFK3ALJVaUjnA
+	otJX7Kf58xcl7T5+hPuyNNirAZi8L6HOtegrxGBgVebf0BzNampHT/6UzbvpvDLu
+	+LyA9B7LbXpEtF2W22cn6okBP087PwqXtj6GxbdeWtJ3jpEnrE17iqgyi6AM5MML
+	isPNdaSGLVU3nWh5u8Kl2Zza8gqQUGDK5sLyTmy34V0UVqlOjULeCYJ1WmFpLjht
+	wJJN33dZm3Y69jgrL3Y90Ko/AzormH4Z4sMpozC225iOziob7OVyfoiU0//Z8BIK
+	8hlbFA==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bng2c0prb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 09:27:18 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-501423e1faaso222101cf.0
+        for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 01:27:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768296437; x=1768901237; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nl15lCV8+GTtshqVfCCdKPL5mfcUQeG7WRkEgB05pqc=;
+        b=JQaGfADSk5ZTNG9lYpDs/meeHDZpTlrHTNfy9MhJlQFL0lO/w9TzHdZFk1oCgmzwtm
+         qrArqUzbl0BbEIW79iPe2cyWNhcdNKPfIfCLCSS+ynJN2dkS1PZcK9FgbpNA7RCVRruk
+         Q+/+h/LS0KfMpf7hsqbFIF5dqWWhJW5t1JZPK2niMNjk7RR2k6UqbyAY2s8LVGuaCg0z
+         59SU6DWBF/NDmWDK+oHLGHYHni4lBda/kw1pbtjkqsDhg7M6pd94P2hnVpMVYtXDFVzJ
+         aaYX9CRGDQEq9mIqWLrWcN4SgOyATGZpNb7sb4DEgyI8osFpm1pmsmR4u/AGwTnlfdW5
+         NAbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768296437; x=1768901237;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nl15lCV8+GTtshqVfCCdKPL5mfcUQeG7WRkEgB05pqc=;
+        b=v8P+P/XAR27nYGkRQO1e0QMp3df7GyiR1/A8/o2LZMUG0LfvNA5UjKF7jLNJiIadvm
+         mkdZk9uVFhSkjfM0qQRfrHRZsx6G+tmo/RG6mJd/RjxVHJz28yQVMkJ/Tveg1JxVkcSj
+         pwMqyJ3IJLf6HBDyE93sAhC8Awr6O4oUN1nKduvc1wRMdLbi2V1PD5Lp7QermN26JW7i
+         7cGBIVx3BimbhgggshJGaIQuTttzDZvXBe3kBigGy5B372YOF8Bip70Dr0/t349M6Hgb
+         3+4NGpyd2hlWxhsD+ndsC52lWfv4ytE+3LLSRYumd8e5RtHLznlM85MzCfMXT8kL3VBl
+         cxkw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0VFOYCj+9Nq0JbdQB34WoD6ZoG5j/OlYhtPW5tkQvAquKVKK+DM+1Xm5nQvgFFGLrloujv7/5Eh34Fw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMrNvBCnNFx/rODMlKUbSZZh79dPysUhDgvAidzs+imQXkV9O1
+	D2wZMOOapZnBva9Asr6to1rhs9RLcX0y9L3lWXLw1HjRYtv8lOHAMPLK1OMX99Ejz3fHuyjmEyy
+	ekyr4R7u3PWuGS3/B7ApznKwGdXm9D7Kat1w3vCqR+PhpFasdIud00wGgqfFx3Rw/Xw==
+X-Gm-Gg: AY/fxX4BAI+QzVF9zIkmGuVe7esWZpFgJBeu8k+XajbmZIJO5yLINBDvpfxNmgkddIC
+	VdQijETRs3/eQeNtbGvgDPOpKKqOY02z+qUqIMgxsanM8SWcSpwPavE+Me+fWq3wB5lN825pB8M
+	8pgKnctiyO3Ojcustpke88/bYWp+MUCqIMWTROVcBL0qlp8b62ozbJ8pXrM6WzwSGrp5VqbGGFr
+	X3ztLauwlG4+45hXhr2cmTjkK65uOY2afb+S4orjVr/NZ/mfKzJcAxrTfEnOQjzlPn+1+zcosk+
+	/zsqaZwqFRn9ZRZRMUjAO1STEcr9+vN2IBt6HMQkEvYFlPWDlG/4OYMcZXyD9yP9zN84hMOrX+h
+	6mIoh8HswZowsAUl6mUz2jKH8K8l+xDUOKhJg2mpyuYbXNbtXUfB9DKIJa0E2x8yDC5Y=
+X-Received: by 2002:a05:622a:1391:b0:4ee:1fbe:80dd with SMTP id d75a77b69052e-4ffb490058amr225480751cf.5.1768296437228;
+        Tue, 13 Jan 2026 01:27:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHnlMTzNrNhcfpXiQVSIw1kY27USHt4pc+MMDCbypU4h5Ch0yyRWR5bQ0m9fiujeiYQv8MIfw==
+X-Received: by 2002:a05:622a:1391:b0:4ee:1fbe:80dd with SMTP id d75a77b69052e-4ffb490058amr225480601cf.5.1768296436809;
+        Tue, 13 Jan 2026 01:27:16 -0800 (PST)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b873051cc88sm286593566b.7.2026.01.13.01.27.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jan 2026 01:27:16 -0800 (PST)
+Message-ID: <6a4f7953-1db7-446d-ac2a-0870f4f3a260@oss.qualcomm.com>
+Date: Tue, 13 Jan 2026 10:27:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 13 Jan 2026 10:25:00 +0100
-From: barnabas.czeman@mainlining.org
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
- <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Gabriel Gonzales
- <semfault@disroot.org>, Kees Cook <kees@kernel.org>, Tony Luck
- <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Biswapriyo Nath <nathbappai@gmail.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org
-Subject: Re: [PATCH 4/6] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved
- gpio ranges
-In-Reply-To: <9662c03b-a012-4b3c-8061-62f71a3f44a6@oss.qualcomm.com>
-References: <20260112-xiaomi-willow-v1-0-8e4476897638@mainlining.org>
- <20260112-xiaomi-willow-v1-4-8e4476897638@mainlining.org>
- <11ee77c1-2ea6-4c7c-b955-22f10d879ad7@oss.qualcomm.com>
- <dd4ad11c57d00e9d9f532f40f408b637@mainlining.org>
- <9662c03b-a012-4b3c-8061-62f71a3f44a6@oss.qualcomm.com>
-Message-ID: <43741f0228b0e0d6b2991417852f890a@mainlining.org>
-X-Sender: barnabas.czeman@mainlining.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] needsreview! arm64: dts: qcom: sdm845: Add missing MDSS
+ reset
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260112-mdss-reset-v1-1-af7c572204d3@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260112-mdss-reset-v1-1-af7c572204d3@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA3OSBTYWx0ZWRfXxdtiBRB805X4
+ GBiKEVYsNuxvz1Ehuy8JjuC3Uqira3+3081Bo50YmDCVnHU6lvDMgV/nm6nWSGw47Go4Br6GwYJ
+ q1GK1udQyV4XwFjpZknX/IXl63EyA4zf08bHQpkLwdu2bXSDQDmoRnSx8TbveOcOJwTKYUWPaJC
+ jmghkTlYbP45aax/szD4p/L2YfwkIM6+z0ro4fl52oqCoGg/sufAmdvGL5liCMPB8REH+x8wUeh
+ UkJaYMWkeWQ3VGwc2j/0WRDox0oV9t5ezrM3qioEJNUqKT5G/FCbsuZbcpmlyLkFwzmzc6adSYJ
+ NprPxTHpFbH4+cOmkDHlzaJYPrxNZcMHIxzWi0JckowuJD333zNT3fguUvKwEe2yibgZsiWwYzc
+ hpsTbZOUoJxhKtml8TaYqQZCdQxWvhktJqNdui5i3An3MWe9DNMfX1MiUeYODiF4i9Fjyx8C5pQ
+ M2yxNq6tPyVJhr6XRxA==
+X-Authority-Analysis: v=2.4 cv=C5TkCAP+ c=1 sm=1 tr=0 ts=69660ff6 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=9UNV2iuIHs_NaximHYUA:9 a=QEXdDO2ut3YA:10
+ a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-GUID: -VBH4K0lolZO99oWYzpshiHUzRhreAcB
+X-Proofpoint-ORIG-GUID: -VBH4K0lolZO99oWYzpshiHUzRhreAcB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_01,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 bulkscore=0 impostorscore=0 adultscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2601130079
 
-On 2026-01-13 10:12, Konrad Dybcio wrote:
-> On 1/13/26 10:08 AM, barnabas.czeman@mainlining.org wrote:
->> On 2026-01-13 10:01, Konrad Dybcio wrote:
->>> On 1/12/26 9:13 PM, Barnabás Czémán wrote:
->>>> The device was crashing on boot because the reserved gpio ranges
->>>> was wrongly defined. Correct the ranges for avoid pinctrl crashing.
->>>> 
->>>> Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for 
->>>> xiaomi-ginkgo")
->>>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>>> ---
->>> 
->>> That's odd.. were you able to confirm that these values are alright 
->>> for
->>> both the Note 8 and the 8T?
->> Yes, it was tested on both devices. The original devicetree was never 
->> boot.
+On 1/12/26 1:33 PM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
-> Fun..
+> If the OS does not support recovering the state left by the
+> bootloader it needs a way to reset display hardware, so that it can
+> start from a clean state. Add a reference to the relevant reset.
+
+This part is reasonable
+
 > 
->>> 
->>>>  arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 2 +-
->>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>> 
->>>> diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts 
->>>> b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
->>>> index 666daf4a9fdd..163ecdc7fd6c 100644
->>>> --- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
->>>> +++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
->>>> @@ -296,7 +296,7 @@ &sdhc_2 {
->>>>  };
->>>> 
->>>>  &tlmm {
->>>> -    gpio-reserved-ranges = <22 2>, <28 6>;
->>>> +    gpio-reserved-ranges = <0 4>, <30 4>;
->>> 
->>> Any chance you know/could deduce what they're connected to and 
->>> describe
->>> it, like in x1-crd.dtsi?
->> https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/willow-p-oss/drivers/pinctrl/qcom/pinctrl-msm.c#L605
->> https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/ginkgo-p-oss/drivers/pinctrl/qcom/pinctrl-msm.c#L610
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> It efficiently fixes nothing for us (at least what we're aware), so I
+> assume the state left by bootloader is good enough
 > 
-> GPIO0-3 sounds like QUP0 and GPIO30-33 sounds like QUP6
-> 
-> My guess would be one goes to a fingerprint scanner and one goes to
-> NFC eSE (or N/C for the device without NFC)
-> 
-> Could you scan the downstream devicetree for signals of that?
-NFC is using gpio83, gpio84, gpio85 and gpio95.
-> 
-> Konrad
+> I sending this as a something "which seems right" and works for us in
+> sdm845-next tree.
+
+This part says "I am only doing this because cargo cult"..
+
+Generally this patch looks good, because it describes a physical
+connection on the SoC for the OS to consume..
+
+Konrad
