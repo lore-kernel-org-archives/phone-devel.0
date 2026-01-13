@@ -1,189 +1,268 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1900B251791
-	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 01:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7244E36B07E
+	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 08:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768267118; cv=none; b=WWqL6PDr3mYzPWA9rHAnl2j2IFC7cbKX30Huf/zCw4A5bnGJ+vxw68zdx5qNi7wGTakPzZwv5yjaE1Xj3XOZ5VPKdYNVyXTkPAb6QELojBHMdZyxIhsCfuCGOjf3DjE5hInzEgJIR4+4LMuDbITWTtWiksViuLthuRwJJHtVV5s=
+	t=1768291363; cv=none; b=UX/oekWPRY+BwyK959wbOvIyRH3wFvx51YKRtU6oYX08GD53Bzz/Ku1hECQARchz1M7v/X3nRvuZAp3AdIhYy+Cc1vkc3nkcucICVznBcU3YoDHmvyYC0yoolri6f1gnc4GqE4b65Um8HFWwGkHJuA4YFT7zIARLnr6DGZVzVtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768267118; c=relaxed/simple;
-	bh=DcdBU8InJgMguQ2iTSiZxsVXaoWbbEYqvuCyyEOFkOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OrlmUU+8/Ue1+uwTfOH9HqCMzRIKUyg22sDzh8D0UE3Tqv8UyQ0gd26q+wChyimYOXiIDvjYuN4BWc+VMT/0yeZ16cafjvNbloaf3nTFWeYvoSEvx/lhosPStrj6kzZ37qU1ukTQSmYRdxjwh6LzYeZW93WPUg1qLR5ZR1U2Cbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aGPl4eRX; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=htjowIl4; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1768291363; c=relaxed/simple;
+	bh=CfGLLHtAMP5se33ly666hJEy8681yRbGQLMykeBbx1k=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=lnKiY01fr+BKqjlxnkjWKilTzrf0fxzGe2JrvJGP3Y3xba4xXvCo7wWiII+cE2EtfIDDX+j2gWMCYf62aE/dci3y/S1wkatLHvyy2LKssDD+U0MwZWIyo+Zg9OeYlCyABtJJ8ySRbYpNWJ8og4/D8ioeiotkjKz+P7p5Byh7zwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BW0kqUjQ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aGPl4eRX";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="htjowIl4"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60CN5Cx72604891
-	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 01:18:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wTkdGQ8kKP6sKFT1qADeBrtyvC4PpVNNcTkxvZ/+Y4k=; b=aGPl4eRXZXe11A6r
-	UgI45mqq3dzacSv9kaXo90migfZsXmnytU+6nwHiX3xV05eFH29N149Jf6qFpse6
-	MYULFic3ATw5ArZHf2+/x2sYF9f210JV6UsGcHAJNdOJgAoJ/mGYpEsaRimbILQ1
-	Fj2kgqZFPwRxR2ixlhqC7RkC+w7btd9HQ62R9v2Itkue7JowqAu4AOdsFjYWCPAv
-	QHiN87hxzISUuy03dm2ovZt4UOedQ3loSEtVc95h58n8ml44W7ZxWU/6+cbC2MKF
-	3adhwbDsYLmbJbmw3exBj4hMavaZZkCpnqihk+r6Ei28QruSnwNXHPqslTz1CXrq
-	HpowZg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bn7uyrpq1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 01:18:36 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b2e41884a0so1571541685a.1
-        for <phone-devel@vger.kernel.org>; Mon, 12 Jan 2026 17:18:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BW0kqUjQ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47eddddcdcfso386575e9.1
+        for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 00:02:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768267115; x=1768871915; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wTkdGQ8kKP6sKFT1qADeBrtyvC4PpVNNcTkxvZ/+Y4k=;
-        b=htjowIl404LE6kxmYJqSDVsFz7w50gV6bLcgVujurhKWDQXXBIB/RxQNnLFREX8pEc
-         U7N3Izn7PR7KnnzG6b416DDZWT194qV1pI7QRvP7zJkZyh+J6XgItn19HstxWdJQonTI
-         DxRjbi8z7ZsCKZdXXPNjQdvcRssGkzh1Gqt4PMUnDFxnRUAX9O64Z99PFvugtBko/eiS
-         UsDznJs0QOUhFdGAuw16Xr/q4WtfCF94t9O44u+LxyEGMdgapNgPfdfQPJMoO1JhC8rQ
-         srRjP0xhAV39/K9s8KsdAPwCFeJLBU4rgGt51amwq75owAv9rh7Sil+KQoTTkYFJnESF
-         4jHQ==
+        d=linaro.org; s=google; t=1768291353; x=1768896153; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g6A7r611q476j/8oCIaN8K7+Q8yqCShfdSd5Arz3Gpc=;
+        b=BW0kqUjQPz7P/T47Y9g3A3OwkseZzCGJKk3QD2GbuTLwrFM5yj09E2CUTcsa7mUijz
+         YlXMjyvrXvMQiYawHLxi8KIq22k7l0xmDXyhp06GI3QUjmqmWftacYZI1R1iddaAPAGi
+         HsWMKJGWm1Y44zAycuTjyndNXkeguznUxLwVPyhx2o/N4RHA625ObBA+pSBu44wdmA+y
+         luccyS/6WAEnLYfflRYuME2HpkD3BTJ3Pc/K7ST+wYayjlcSNn6JNZVhhSrEGRWXf1KB
+         s96fIaPzf7RSw6HzjmtafWwfEMwJvwXqEhpy3q4DD1gBBP4ERRPeYc+YNFEw6yZp8c+C
+         bZ5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768267115; x=1768871915;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wTkdGQ8kKP6sKFT1qADeBrtyvC4PpVNNcTkxvZ/+Y4k=;
-        b=CGuh4IO5p+3Q+GfkPsP8xUJwsLdUSBGqe2JKKLajufDqIOhpzBFACUpTF6w/3clgth
-         wzrzDxv6zARYPsJpbg9D8fatUxWjK9zYTFBnABZ9hVWQ7qgJeWy3MZSyY4Af1tECjq6d
-         YeFr6cf9/c/yvFsiWS847Jy+zZPXMn6RUZOlIjb3A0HQCbXI0jnG33ZQljwYisDJoM2I
-         IBJPMa9Pyk5v/riDqjEVmmbdxquaYjLeRGV7ixWov/rzkC4bwfUqHX6jMjr5al4Q8fi9
-         3UG5EJ8Nd27zN1c6r1jQLhGIlM1Bhg3Ui1JF9P2ESlbAtMBA9odanpxwSGITCpSEHl9e
-         XsOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDpgWpx58cPfQKjMZj1DG3Tga/YuRRIz0vQ41Bsanto9zzFaDiTWxdgLtjnLcmbBl7zt/iKF+4FrskTQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHx7++41jmqe1MN6kRmdi6m1YlqBaPRMRulkonig9lCsMez6xp
-	DIkC245BdPBLOCCpcDLpFmzCU/s9kwvyRk1TQcqmLMbQynZ4eBjutAW9/DHytNdCRDH8n7ZTniW
-	kI4RCZ9qRV/oLP39d6qvlApdVNChPpos6Xegea+XQZSeVl6RPDbZZCcOY+IcqZEjAoQ==
-X-Gm-Gg: AY/fxX4gtkWH44gjpHh79prlj9iX5LFb1PsbDoRtvMJHNQ3W3zBPmY0qmzr/Vmv30bB
-	oW10XvBeq4TVOo1pK4OKJGdczG9CePC7VF0ch4teb+lEhGAOS4Lfjc5NMRlzFoiS5oE9eS33h66
-	HCpT5SygImI3eS/7njMc9qzhTjtrcMesgpN0JB+1CsHfc4LBtONLrDWdv0FJ1jiEYxX4eWSLign
-	QhD8op9OsoBuPZySckel8FGBx73NgYHfVWXV/0cWnErYkCwJHAPAxi8Z3AO4c3wS9LHjhuA4azm
-	K1BAiY1I/+4zLI9j81f92w07iripGc7evaJCRFP8hoFgXFbPG8ERzTJpEfuq02fAZ7qxfejPw6/
-	n1P0/lFpOCN+x4k1ZK7fV1IAoSK7VpbDYgli1hgvSvJ6Cc8bLvOHOxsKLFMVczdKfKJhfOyhJK2
-	XUzbovIKBLYsmCY4rac6CBbJw=
-X-Received: by 2002:a05:620a:290c:b0:8b2:a0cd:90ef with SMTP id af79cd13be357-8c389407515mr2700220685a.70.1768267115373;
-        Mon, 12 Jan 2026 17:18:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLZI1hd4woXlXq+FYN7ag5gwJwSjpT2Ga+pQiFR32NkRsBGaCGTDamRbr7UbZnimayaujyqQ==
-X-Received: by 2002:a05:620a:290c:b0:8b2:a0cd:90ef with SMTP id af79cd13be357-8c389407515mr2700218085a.70.1768267114909;
-        Mon, 12 Jan 2026 17:18:34 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b65cea275sm5094320e87.1.2026.01.12.17.18.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 17:18:34 -0800 (PST)
-Date: Tue, 13 Jan 2026 03:18:32 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: barnabas.czeman@mainlining.org
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Gabriel Gonzales <semfault@disroot.org>, Kees Cook <kees@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Biswapriyo Nath <nathbappai@gmail.com>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org
-Subject: Re: [PATCH 6/6] arm64: dts: qcom: Add Redmi Note 8T
-Message-ID: <2da7ufltv6xfek62j7r33lrgppd2zm6oahhhiwz57w3ckcs3fn@xcclze4oalo4>
-References: <20260112-xiaomi-willow-v1-0-8e4476897638@mainlining.org>
- <20260112-xiaomi-willow-v1-6-8e4476897638@mainlining.org>
- <3d2qboek2kzsnsjmn7rqi6xkfotfchc7vdmyeprivu27l3rw2b@i5lbwsvxfwdb>
- <aa8d5d6f9301d94b56af4580210ffc88@mainlining.org>
- <nrudictx64m24ydh265c4ma7txfdmmncjqfl4xq6zxvk75lkzq@wu6vnehc3dqu>
- <abd31188336b3322b9322f1e6791320e@mainlining.org>
+        d=1e100.net; s=20230601; t=1768291353; x=1768896153;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g6A7r611q476j/8oCIaN8K7+Q8yqCShfdSd5Arz3Gpc=;
+        b=Z27651odL1e4jkYl1SjElbvQ5TsTyJpuvXfBztbalxxrCG11DogJOxV1bNYQr8bDXT
+         bE0GAoCPSjY9u2qgcBjYfFOFrfiCsAVvf1jl5ROt5l5goEIXKXcn6Pe1iCZxfv3fljaG
+         FOH12AN3mQ4Z2+libN/AHtAN1wN212SjOVUac7aPJ2SZ3CFngm8XhHv1S0eCrZLhZolV
+         Sdbw+eye+YJNsnoPUfcN0IA6nBgXoMJGVCHke9ztIi7OKtCfXNyKk6VAM53tlU8JBRa1
+         +Go8jIY+oc93MfYV4jUcNmhpT7Q5z3FcBdpJZHzTKfae4LpjNkqoW7o37aWCgBhxPFFy
+         K6fA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfeRAGhCyyAytyx+ry0ums4jabPI2WV51Evx4R9dmJTmmqbRVc5+BiR8acHu93Yzapo8971ORaWEiokQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwXoKaWippHcsmiJiIANno4ubseLfuD3cgJhAXWEkUHQqGowq6
+	xjjMa4xJWZolp3cxdCXn8Z143nPFXGM2B/17GBW2hja/xRhiq0M/qXTFYM8EE/A0uBA=
+X-Gm-Gg: AY/fxX7stBmvYtoqwynKAjrKViCXNhZ0+dPHFfa7n4tsMbEjII22QDh4EMVzru6CUse
+	zbD42Uu7UmfbrqQu/I5kE9gtevM2L19aNB9sk3SEcJ158UzkPcYZFpMEANW3cGWDAxix1f8anlN
+	GzQ2Y2rZe80diMXPsW8uhbCNCPOj53D9iLId4c88NVVYkewv22P3pMW7q61vKdVo0x1hyGOEtEq
+	/0SSfBCmxk7bLbhMp/NJKDjPiffERls1oxH723yhMicD0IiIvGL4o6qYsMBZZGUAcCvU9RoSQ3X
+	skGYgUCft8nnU51h0hKQ3GBRc8mLedpxBxae8bzIv1Aa5AWTDNOI6YXyfenFRtdXmg7OGCQzdyT
+	WiCMlKr81gxq6+CnKXg39jgfH/oDnOYrgZU194CQCyQPsN1YfHJ8RdytTSfXk8rbr2b3j5rmZgr
+	p3/wiD1x1aIxwYqFV4HdsKutgnQ8ViN98EUxYICqc=
+X-Google-Smtp-Source: AGHT+IHrnnPCXrF0NOJBoPGixzBrnHBCDRj20M4yCZwqxFE51GxNlKuyIibw+hyJVZQowMJPsFEW1w==
+X-Received: by 2002:a05:600c:4fc6:b0:477:5ad9:6df1 with SMTP id 5b1f17b1804b1-47d84b0aaa3mr221663015e9.3.1768291352911;
+        Tue, 13 Jan 2026 00:02:32 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ecf6a5466sm109514045e9.11.2026.01.13.00.02.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jan 2026 00:02:31 -0800 (PST)
+Message-ID: <186438aa-a39e-4c85-9187-cd47d6abd2e7@linaro.org>
+Date: Tue, 13 Jan 2026 09:02:30 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <abd31188336b3322b9322f1e6791320e@mainlining.org>
-X-Proofpoint-ORIG-GUID: -9j1i9NjeqNtVWgia6Om2ARRwamVFIo-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDAwOSBTYWx0ZWRfX9lSZryBtiPZP
- ey4SASjKtiCi9A+PA4Amsy2L+da3/zt5RyXUxyCuLedAiorHvybU17onynoqHpMzcqcXo3BsPX5
- 4n2k68joWnPvfJXVl1TjaeWSo16BT0pLRRTRQCmsJsW8TzIU6x7aLFrkdMz+x+GCvL7Ws5h3+3D
- 1IFt9nJ0gzvI1oiIWfYqMpuXPpA6UPFcVz2PmckOXgOmmqIx8L9ONataW7IAhAyA98ViDnGiXuW
- R0JWTpdloHvQT61ONYoS1HBsLXfZMeapm7YJwUIdwXGo1cxZorbIUcQDf8qaRpgCY2NoEnNhTK3
- ppsGNhZlK5/u32MTvUSLvdG8fFffkqvpWOH+FV1xaD+5LOMWI/CNJg7G0Gw7YxRH9wfelAh9WSJ
- X6oPUbl1cWxclSO2Lblp7Yg1rdy7OatBdHmha/t+WlEZm73xcqOcYlG9RLeomjPvJCqzevjmYjo
- YsrjN1i0WlVbyaMLlCw==
-X-Authority-Analysis: v=2.4 cv=bpdBxUai c=1 sm=1 tr=0 ts=69659d6c cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=OuZLqq7tAAAA:8 a=LpNgXrTXAAAA:8 a=EUspDBNiAAAA:8 a=GsNEW2zrF1RCk_DmH1QA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=NFOGd7dJGGMPyQGDc5-O:22
- a=AKGiAy9iJ-JzxKVHQNES:22 a=LqOpv0_-CX5VL_7kjZO3:22
-X-Proofpoint-GUID: -9j1i9NjeqNtVWgia6Om2ARRwamVFIo-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_07,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- impostorscore=0 clxscore=1015 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601130009
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v2 4/6] phy: qcom-qmp-ufs: Add Milos support
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org,
+ Abel Vesa <abel.vesa@oss.qualcomm.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+References: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
+ <20260112-milos-ufs-v2-4-d3ce4f61f030@fairphone.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260112-milos-ufs-v2-4-d3ce4f61f030@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 13, 2026 at 01:49:58AM +0100, barnabas.czeman@mainlining.org wrote:
-> On 2026-01-13 01:22, Dmitry Baryshkov wrote:
-> > On Tue, Jan 13, 2026 at 12:41:43AM +0100, barnabas.czeman@mainlining.org
-> > wrote:
-> > > On 2026-01-12 23:15, Dmitry Baryshkov wrote:
-> > > > On Mon, Jan 12, 2026 at 09:13:29PM +0100, Barnabás Czémán wrote:
-> > > > > Redmi Note 8T (willow) is very similar to Redmi Note 8 (ginkgo)
-> > > > > the only difference is willow have NFC.
-> > > > > Make a common base from ginkgo devicetree for both device.
-> > > > >
-> > > > > Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> > > > > ---
-> > > > >  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
-> > > > >  .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi | 302
-> > > > > +++++++++++++++++++++
-> > > > >  arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts  | 296
-> > > > > +-------------------
-> > > > >  arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dts  |  13 +
-> > > > >  4 files changed, 318 insertions(+), 294 deletions(-)
-> > > > >
-> > > > > diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-> > > > > b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-> > > > > index 163ecdc7fd6c..70be19357d11 100644
-> > > > > --- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-> > > > > +++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-> > > > > @@ -1,304 +1,12 @@
-> > > > >  // SPDX-License-Identifier: BSD-3-Clause
-> > > > >  /*
-> > > > > - * Copyright (c) 2025, Gabriel Gonzales <semfault@disroot.org>
-> > > > > + * Copyright (c) 2026, Barnabas Czeman
-> > > >
-> > > > Hmm?
-> > > Original file was renamed to sm6125-xiaomi-ginkgo-common.dtsi this
-> > > is a new
-> > > file just the file name is same.
-> > 
-> > Following Konrad's advice:
-> > 
-> > Would the following addition to .gitconfig help?
-> No, only until i am not creating the sm6125-xiaomi-ginkgo.dts and adding it
-> to the stage.
-> > 
+On 1/12/26 14:53, Luca Weiss wrote:
+> Add the init sequence tables and config for the UFS QMP phy found in the
+> Milos SoC.
+> 
+> Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>   drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 96 +++++++++++++++++++++++++++++++++
+>   1 file changed, 96 insertions(+)
+> 
+> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+> index 8a280433a42b..df138a5442eb 100644
+> --- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+> @@ -84,6 +84,68 @@ static const unsigned int ufsphy_v6_regs_layout[QPHY_LAYOUT_SIZE] = {
+>   	[QPHY_PCS_POWER_DOWN_CONTROL]	= QPHY_V6_PCS_UFS_POWER_DOWN_CONTROL,
+>   };
+>   
+> +static const struct qmp_phy_init_tbl milos_ufsphy_serdes[] = {
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_SYSCLK_EN_SEL, 0xd9),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_CMN_CONFIG_1, 0x16),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_HSCLK_SEL_1, 0x11),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_HSCLK_HS_SWITCH_SEL_1, 0x00),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_LOCK_CMP_EN, 0x01),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_PLL_IVCO, 0x0f),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_CMN_IETRIM, 0x0a),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_CMN_IPTRIM, 0x17),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_VCO_TUNE_MAP, 0x04),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_BG_TIMER, 0x0e),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_VCO_TUNE_INITVAL2, 0x00),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_DEC_START_MODE0, 0x82),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_CP_CTRL_MODE0, 0x14),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_PLL_RCTRL_MODE0, 0x18),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_PLL_CCTRL_MODE0, 0x18),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_LOCK_CMP1_MODE0, 0xff),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_LOCK_CMP2_MODE0, 0x0c),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_DEC_START_MODE1, 0x98),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_CP_CTRL_MODE1, 0x14),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_PLL_RCTRL_MODE1, 0x18),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_PLL_CCTRL_MODE1, 0x18),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_LOCK_CMP1_MODE1, 0x32),
+> +	QMP_PHY_INIT_CFG(QSERDES_V6_COM_LOCK_CMP2_MODE1, 0x0f),
+> +};
+> +
+> +static const struct qmp_phy_init_tbl milos_ufsphy_tx[] = {
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_TX_LANE_MODE_1, 0x05),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_TX_RES_CODE_LANE_OFFSET_TX, 0x07),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_TX_RES_CODE_LANE_OFFSET_RX, 0x0e),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_TX_FR_DCC_CTRL, 0xcc),
+> +};
+> +
+> +static const struct qmp_phy_init_tbl milos_ufsphy_rx[] = {
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_UCDR_FO_GAIN_RATE2, 0x0c),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_VGA_CAL_MAN_VAL, 0x3e),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_RX_EQU_ADAPTOR_CNTRL4, 0x0f),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B0, 0xce),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B1, 0xce),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B2, 0x18),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B3, 0x1a),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B4, 0x0f),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE_0_1_B6, 0x60),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE2_B3, 0x9e),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE2_B6, 0x60),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE3_B3, 0x9e),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE3_B4, 0x0e),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE3_B5, 0x36),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_MODE_RATE3_B8, 0x02),
+> +	QMP_PHY_INIT_CFG(QSERDES_UFS_V6_RX_UCDR_PI_CTRL1, 0x94),
+> +};
+> +
+> +static const struct qmp_phy_init_tbl milos_ufsphy_pcs[] = {
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x0b),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
+> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
+> +};
+> +
+>   static const struct qmp_phy_init_tbl msm8996_ufsphy_serdes[] = {
+>   	QMP_PHY_INIT_CFG(QSERDES_COM_CMN_CONFIG, 0x0e),
+>   	QMP_PHY_INIT_CFG(QSERDES_COM_SYSCLK_EN_SEL, 0xd7),
+> @@ -1165,6 +1227,11 @@ static inline void qphy_clrbits(void __iomem *base, u32 offset, u32 val)
+>   }
+>   
+>   /* Regulator bulk data with load values for specific configurations */
+> +static const struct regulator_bulk_data milos_ufsphy_vreg_l[] = {
+> +	{ .supply = "vdda-phy", .init_load_uA = 140120 },
+> +	{ .supply = "vdda-pll", .init_load_uA = 18340 },
+> +};
+> +
+>   static const struct regulator_bulk_data msm8996_ufsphy_vreg_l[] = {
+>   	{ .supply = "vdda-phy", .init_load_uA = 51400 },
+>   	{ .supply = "vdda-pll", .init_load_uA = 14600 },
+> @@ -1258,6 +1325,32 @@ static const struct qmp_ufs_offsets qmp_ufs_offsets_v6 = {
+>   	.rx2		= 0x1a00,
+>   };
+>   
+> +static const struct qmp_phy_cfg milos_ufsphy_cfg = {
+> +	.lanes			= 2,
+> +
+> +	.offsets		= &qmp_ufs_offsets_v6,
+> +	.max_supported_gear	= UFS_HS_G4,
+> +
+> +	.tbls = {
+> +		.serdes		= milos_ufsphy_serdes,
+> +		.serdes_num	= ARRAY_SIZE(milos_ufsphy_serdes),
+> +		.tx		= milos_ufsphy_tx,
+> +		.tx_num		= ARRAY_SIZE(milos_ufsphy_tx),
+> +		.rx		= milos_ufsphy_rx,
+> +		.rx_num		= ARRAY_SIZE(milos_ufsphy_rx),
+> +		.pcs		= milos_ufsphy_pcs,
+> +		.pcs_num	= ARRAY_SIZE(milos_ufsphy_pcs),
+> +	},
+> +	.tbls_hs_b = {
+> +		.serdes		= sm8550_ufsphy_hs_b_serdes,
+> +		.serdes_num	= ARRAY_SIZE(sm8550_ufsphy_hs_b_serdes),
+> +	},
+> +
+> +	.vreg_list		= milos_ufsphy_vreg_l,
+> +	.num_vregs		= ARRAY_SIZE(milos_ufsphy_vreg_l),
+> +	.regs			= ufsphy_v6_regs_layout,
+> +};
+> +
+>   static const struct qmp_phy_cfg msm8996_ufsphy_cfg = {
+>   	.lanes			= 1,
+>   
+> @@ -2166,6 +2259,9 @@ static int qmp_ufs_probe(struct platform_device *pdev)
+>   
+>   static const struct of_device_id qmp_ufs_of_match_table[] = {
+>   	{
+> +		.compatible = "qcom,milos-qmp-ufs-phy",
+> +		.data = &milos_ufsphy_cfg,
+> +	}, {
+>   		.compatible = "qcom,msm8996-qmp-ufs-phy",
+>   		.data = &msm8996_ufsphy_cfg,
+>   	}, {
+> 
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-
--- 
-With best wishes
-Dmitry
+Thanks,
+Neil
