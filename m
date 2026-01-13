@@ -1,88 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B413904F0;
-	Tue, 13 Jan 2026 13:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ECC3933FA
+	for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 14:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768312198; cv=none; b=iyUl0TzJQy468T4ZRMwGILKTt7Vsr9cctUpZD9/aecKwSTM4aM35KM5/JQYtIMogaYDIAiTQkQ/3ibryOBvZ/EOxazFJeBvst7q22LEsYc+PxDdpWrXj7IwO+l+BtIPEXVZerfvMVnzTkzHi9zdl7Ro7Z+FRjCFmWVwMGr/ARp8=
+	t=1768313648; cv=none; b=b4MmdSprIMEybDl5Ot0sqfeHD+TkF2EUd//boeWyDF0xavQ6QRnE0U4dh15VEp6+Y80sPb09O+Gdm0Ls5uRPt3ELtN7R7EbTXOAgwGc/4N7XfyQws7/SvMQRpg+4UPVc+jeu7vxPHlGRIFn4d98c5Fq05GS92irOnnNRET3E6zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768312198; c=relaxed/simple;
-	bh=GDFDkGbCJ5TgA92X+tpXDckP8PixVMFa8wvkXOOtY5g=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Y2LW/lNbx9epU3XVtQ9zKBJ5lCW6Nm/S+WxtTk/pndxnFgecRHUnx07JnDQZArJIuSlV1gi+rNCdc5CbTmXEHRX23BIUaInxeUO72D1UN0pYX3VAAmaNKBYZfAs9m0jy41KH+pn8GlkSxL3e9yG/nDgmefU8GxKPUNo+8PI6ne8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXrVJG2m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768313648; c=relaxed/simple;
+	bh=Yh/skuOQuC/zZ/fQfc54UBUifN3ebScHgpu0xUQPYSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rOjAbzBMHFZorxKTI88irT69VnB1YWOAGdo62OL3dW7p8+hgHCNCTpJHPByqvgDL0HbCsZB4a+SXuzTJsm03dVJaAnaiAMgNlrWFDkpPtkZwx24+ugcPHHKOwqNy2Wd+ZOYEceYIMc+iEyuVevaahxEI7sd8ith6gy5J9XrJOJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FkK2yDQ0; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXrVJG2m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27355C19422;
-	Tue, 13 Jan 2026 13:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768312198;
-	bh=GDFDkGbCJ5TgA92X+tpXDckP8PixVMFa8wvkXOOtY5g=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=bXrVJG2mrwi9h7q/S1LeQlVSuWNEQwu8+nlKb1V4Gs7zfamZJRBurUzS5a5i/fD9G
-	 yx50NtinLHXySdusnJ+g19MtUjSJ7I1ahyCTXF90XGpfD3+QAckGr6Jl2/Wupk96Ns
-	 CbdXTmbBCLLNeddEomD4nEV+KmrVcNd+oM5gMb5ZrVQBhYR9w/lp1D9ByRiy1yHgvu
-	 /eoA63tVIR2UTDVU2XFxtiuSEfOVhIuBivP2kiB9tej+qPxridj3vF4WliNrzWJXpK
-	 HViltXJyRnTS/86hDQaGiPQYim5wndBJEpgcqkvuiQIMkL+jMJAdfdVHyfxsES/uZF
-	 8XDCOYTwfCLVg==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Bhushan Shah <bhushan.shah@machinesoul.in>, 
- Bharadwaj Raju <bharadwaj.raju@machinesoul.in>, 
- Alexandre Ferrieux <alexandre.ferrieux@orange.com>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260109-aw88261-dt-v1-0-45840c7632a3@fairphone.com>
-References: <20260109-aw88261-dt-v1-0-45840c7632a3@fairphone.com>
-Subject: Re: [PATCH 0/2] Add devicetree support for aw88261 amplifier
- driver & minor cleanup
-Message-Id: <176831219589.70484.13135502001126330506.b4-ty@kernel.org>
-Date: Tue, 13 Jan 2026 13:49:55 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkK2yDQ0"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bde0f62464cso3141215a12.2
+        for <phone-devel@vger.kernel.org>; Tue, 13 Jan 2026 06:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768313643; x=1768918443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yh/skuOQuC/zZ/fQfc54UBUifN3ebScHgpu0xUQPYSk=;
+        b=FkK2yDQ0gdrvpsMBaScW+qvQ/ok3On1tPM9wAIf9HZvAfV+wz8Cg0/AeF0+qhQ3zDj
+         J8pLhylFsLI76gMWMb/tTQ2Gp4WGPQ/Rhvie5wfnhWQ0GF+XgEFs6O80iSSOpyGdEmbh
+         ECrhFW/bDJrpJzYCDk7Vhde2GE6Dl7qxnIndtsGfGfgR/7ryxFIJSMSAmqyt5FEEAjDD
+         Xbkesv9BQ1mPoHIc4OGx5GyoIrxxWc1cWXJPcCwlw3bYE4mq/XRMBVLITr5e+DW4mlhz
+         RZxeNxUmaA+bgbGVXI4gTWAApRStrrLRoTJi+GIAt36sC+yWxiJD7ie7FMg8Ffj1/Rry
+         NRWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768313643; x=1768918443;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Yh/skuOQuC/zZ/fQfc54UBUifN3ebScHgpu0xUQPYSk=;
+        b=or9BXkj1omMht3EvEu5W9/NucJs/skRAsutZ9nrz8G2CpsMi5Hb7CVHmWMYTL8A8h9
+         seVNHnB/JuuQkdjRra5vqfkvTm9sRg3fwLPIcOdpI47Wm30mkVoX0KxwZkf1eyx97fIP
+         vJcKFW2XwaOlrot4c9jo+Jk4e0sXlCagTwcX4vYPBERXMgDvpm+M9JMU8NAKYm9WqiiP
+         rKox2O3T/qmUaA63e1Pav0LKY4xSF3eXkkfoNKSV226CyV9cXqwZEc/TkOvDP4MPOI37
+         KXCu07qQY2qIP+OqiGVKB+OKP8sJN6er2JNdIaOg0cVft0KwW7ay9bf7Nd2VzaYuPl+y
+         ZCBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWN8pg0dkhph+Di89KigLWycHKyTsU1sqR4d+tc9XJPju9huQsriscL24IIUPoLKaIfk14D2vyFNdfIBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0vsqbQwkqSQ+OpAXFulowp8dIb/5dQE32GHbNYqKPLVlbCBWn
+	SB9WOutDCNQKLD1wsYHFL0G2S1NawOoiOmagDpCsxEAlBm0xC/J2/r7Y
+X-Gm-Gg: AY/fxX7xv2PXswN78yTpAfsuR/BEPv7+6L8Ki+REyAHVQjCrbCi4XykiM1XkS5//mzX
+	vJUGSqIgiKauzK1hvpziKlVjgRx0PaSaxJ8iJ07GEybzTxRugQuj2J4/Y+Ek12H49CwVvRf2LrR
+	bUPJjMNx8EHIUCrHk2KOIwtc/D+wNU9YvKXFAFdlRfD7mgYVKEeGxJosnS8FC6yugmAX1q9yCfd
+	D5oFv0Ct9NUROONV943B83rw57MTHgeZHPXnRVMUeF4CGv5ypnQpbuqtJLijVCbbYvgAluY6gGa
+	UzehZpye1l4ELvF6/GJeimEmF47z+gqo1t9VfFtJGjURmnDeNa2gJetc2l+PXk0/kkio6adU7P9
+	G8hKlT7N1crobjI4tvQEciPdZ40OThogZ+rRSkAc41z0DXemli1zw1K2cLXF6NXdDwOEPJM5rcC
+	QyqYtt6ch7eA==
+X-Google-Smtp-Source: AGHT+IG7buq9CzX9ZRTrAw60UgkpwZAGNd7i/rZuf8pczHAcg2auSyZzQR/xxashE4pdHuR2UKZuqQ==
+X-Received: by 2002:a17:902:da8d:b0:2a2:f2a5:4136 with SMTP id d9443c01a7336-2a3ee45b2f6mr207785705ad.22.1768313642789;
+        Tue, 13 Jan 2026 06:14:02 -0800 (PST)
+Received: from ArchLinux ([45.113.100.103])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a3e3cd495dsm205884225ad.96.2026.01.13.06.13.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 06:14:02 -0800 (PST)
+From: Biswapriyo Nath <nathbappai@gmail.com>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Biswapriyo Nath <nathbappai@gmail.com>,
+	barnabas.czeman@mainlining.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Gabriel Gonzales <semfault@disroot.org>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux@mainlining.org
+Subject: Re: [PATCH 4/6] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+Date: Tue, 13 Jan 2026 14:13:36 +0000
+Message-ID: <20260113141342.11057-1-nathbappai@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <e4f9cdc4-1b3a-44b0-83f1-315c934985ba@oss.qualcomm.com>
+References: 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
 
-On Fri, 09 Jan 2026 16:02:04 +0100, Luca Weiss wrote:
-> A series with a small cleanup and then a patch adding devicetree support
-> for the aw88261 driver.
-> 
-> 
+On Tue, 13 Jan 2026 10:45:02 +0100 Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
 
-Applied to
+> I was referring to the NFC eSE (embedded Secure Element) which usually
+> has a separate connection to the SoC
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Yes, gpio 0-4 are connected to NFC eSE and gpio 30-34 are for
+fingerprint scanner. Here is the list of reserved gpio and their
+functions according to the device's schematic.
 
-Thanks!
+0 - ESE_SPI_MISO
+1 - ESE_SPI_MOSI
+2 - ESE_SPI_SCLK
+3 - ESE_SPI_CS_N
 
-[1/2] ASoC: codecs: aw88261: Remove AW88261_I2C_NAME macro
-      commit: e76f8c269e3558d02e19515cd3cc470e42ddbd36
-[2/2] ASoC: codecs: aw88261: Add devicetree support
-      commit: b9198ce5c6dfee19b9662dda95ba559af9cdf53f
+30 - FP_SPI_MISO
+31 - FP_SPI_MOSI
+32 - FP_SPI_SCLK
+33 - FP_SPI_CS_N
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Though Redmi Note 8 does not have NFC, kernel crashes if 0-4 gpios
+are not reserved.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Tested-by: Biswapriyo Nath <nathbappai@gmail.com>
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Thanks.
