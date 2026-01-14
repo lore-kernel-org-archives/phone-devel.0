@@ -1,193 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B24F38B99C;
-	Wed, 14 Jan 2026 10:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF432347DD;
+	Wed, 14 Jan 2026 10:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768385338; cv=none; b=eiC7bBW8likCwOYXVO5o8EpXSW2DrBa3RHJ+imC/4S95X+5+Dhasl948NM5jkhiGM+4EOf/ZHcuM/7PhxQNn1XbTwhkbVTche0ZDPe1LCT0Xr4kX7LC6+F117f3ARIHrhTZMF2DC0yUnSssPH0+3YQ0JtRKPHJ+FCOXTgDaio2g=
+	t=1768385731; cv=none; b=L17mbFL1lvNTTu9eHMPOSxugksPgjvZxuLcBr0flTeO2MZa/IYX+ljZ/sxHxzgWANwuK7BxpOQStLkcM4XRCkl0/IMj2o8mOyXwmi44+qpNOvvl4Qkj65e1mjGUSwBJMwaCeVZ6juDroRVE9pgftcKbzUb/WBh/egClwVaYH8tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768385338; c=relaxed/simple;
-	bh=B8uw2XRpfRfyUglpmkl1Ya7toisPuPn6DrBBErbtgZQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k0vtu/gIcBfrao49WXi03G67WyGrOGCa8fFq7P8GeSIbfj77dhC2VOY+XH0N2absddzAj1gl9aLAPv8jY6zEHPynzpZUNLN8act3KcrbVQsyP5DJeLCFTqa+RrESsPg7FGJuLFxHnzb9W524o7Al5tkU9TMm8SL/nP0shV8mr8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNTrzFA5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768385731; c=relaxed/simple;
+	bh=BSlpfIrK5dRI6lkCxT0jZZqToalipGqymJE051q+zds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=idX37TAHQsZ+o4uzDEhuTOKEwAI6kH7RqgnYE773sVsiijE1dJZm2JFJAQTXf7aWGU2Ip5FcICOXm2xRL4QE4XG6r3R6ahjlN06X5JTUdCkgJU34ZeQaiL/27OJpzpE13J8qrtVBOLW16Z0rWuXfhek41YgydE49SYcKKebqWQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Ipkxpsp4; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNTrzFA5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EEF80C19421;
-	Wed, 14 Jan 2026 10:08:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768385338;
-	bh=B8uw2XRpfRfyUglpmkl1Ya7toisPuPn6DrBBErbtgZQ=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=BNTrzFA51xhjj1oY+b5F6GD2I6Wp4R2D0qFwYbaA4LX1F15V4u5IUuGE0PxESM2Ui
-	 S5SY9NHRLXVlPrAwO2jehIMajRzkbcKv9x2qJE43PQwGwcXjuim+4tWDN1HitFkLr5
-	 u8m6nUeKyfWSFpJkSaQ0hzQV0NeAcrI7CvsRwmbW3fXqcgM4e4txjkRQHeECcgM8I0
-	 ckqTEhgDv/0V57jkHfVi5C/zFImjePC3hjABVebsowkbe5THIVe4ixWnm05yOVQSD+
-	 dgXh4Zez3tXAUEWZBhltngStsKXFtRkPPg1c8Og0Fb9m4qxnGJBVUOomeT3kKKwi9+
-	 0mkbmHEr2VDHw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF207D31A38;
-	Wed, 14 Jan 2026 10:08:57 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 14 Jan 2026 11:08:45 +0100
-Subject: [PATCH v3] arm64: dts: qcom: sdm845: Introduce camera master clock
- pinctrl
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Ipkxpsp4"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 99FF95340113;
+	Wed, 14 Jan 2026 11:15:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1768385713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IiQVuVyJ2TE0ifLICuSzvGyHRIfP+uV5vL19S8pfuH0=;
+	b=Ipkxpsp4skDmER8ZTTM7sV3oyMRg10OByBe/rOqktVbeDdd8IuFBQ8v5p0D85tXZlb1RKO
+	bCwCz4d7pIgOBHoUrsy45po+nWBGzmAXKNd+UtQB8OAzbI+9tAXI/3GN9iUqLrHFm275vx
+	llUcvrlw+6i9UZk/mUM9v1JvRg+3n5c=
+Message-ID: <723357fc-a785-45d6-8d49-4c00dd4f340c@ixit.cz>
+Date: Wed, 14 Jan 2026 11:15:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-sdm845-mclk-v3-1-c9351deaf4f2@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIACxrZ2kC/23MQQ7CIBCF4as0rMUwU5DiynsYFxXQTrStgYZUm
- 95d2o2auHwv+f6JRR/IR7YvJhZ8okh9l0e5KZht6u7qObm8GQpUgFDy6NpKKt7a+40LCResjUJ
- fAsviEfyFxrV2POXdUBz68FzjCZb3fycBFxyMPlsjtZN2d6CRhq19saWS8FvqX4lZaoGVRScMS
- PWR8zy/AbBSpOzeAAAA
-X-Change-ID: 20251213-sdm845-mclk-041f2a952e31
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3175; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=VjhjaqM3XS+2n8GQ/x6ApyiqxtWTj+IRWhXyXFadzb0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpZ2s4qUlnsUVwtA6W65uL1mnojYILhVNWEt82U
- g/yf/DzcLGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaWdrOAAKCRBgAj/E00kg
- cs7+D/9ML+U8eqXXOOZTcHPNgeiBo/mhZ0Z3jrLg/n2w6HWaR6tRiVitKZRAg+utC4b6Y02ad1U
- DXACGzZP6l1BIypVgyNPSxSMLMLoRycoDSF7O15SsqDnTroiv4KgYJGol1DsANCobEn9bKKGvBm
- 0ch5BK5JN5k5hcQzMWkYggLs2Lm0dWrEd24V/EQGm6zbnsM5pq6bhp9bzzwk0rviyTX8I13AEpe
- XuzV8JoVN/wSMOnyu1uvfG578OT9zQTpApIPRQl4sj+EVFYiyhH4YHc9RF7/FwM3WxWdCU/J0kS
- A7MkMM9RO2KSduFDSB65Q9DVu0mXuz7kFf46S6sPzLfGCDwJCN1yfA1BqqxjqyGUwo0eXheAogw
- ePh78bIqgRBB9xblTehQYoYg9JYTADE1sqg+VzrRbX/BLSGiblS2QzyO1X+LTB5OGzNKaj29kOC
- bGDUY3fz0/C+JskQ0A3y3k2Vpo+EtFEi6GqvxIyhlEPA6PyU7DpIYUALzFPVxTVy/MACvFcS77b
- hADQVAB5xl4W95+QrU9yZTmMm1V6oTKq+6bdUSYZ2rJikN/FkxBapu2qutVEfxFZmJDbEyarQLZ
- thyraLsVcjGW5binxvRxcixhfeHhsx1kq8UYS4z7E6MvxlqV6D8LBxPyMt8yzaS3gbqM5i+Xf5D
- 4X1ATcbIHiWqd3Q==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct
+ reserved memory ranges
+To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Gabriel Gonzales <semfault@disroot.org>,
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+ Biswapriyo Nath <nathbappai@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux@mainlining.org
+References: <20260112-xiaomi-willow-v1-0-8e4476897638@mainlining.org>
+ <20260112-xiaomi-willow-v1-2-8e4476897638@mainlining.org>
+Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260112-xiaomi-willow-v1-2-8e4476897638@mainlining.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Put clock pins configuration for camera master clock into the dtsi.
+On 12/01/2026 21:13, BarnabÃ¡s CzÃ©mÃ¡n wrote:
+> The device was crashing on high memory load because the reserved memory
+> ranges was wrongly defined. Correct the ranges for avoid the crashes.
+> Change the ramoops memory range to match with the values from the recovery
+> to be able to get the results from the device.
+> 
+> Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> ---
+>   arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 44 ++++++++++++++++-------
+>   1 file changed, 32 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+> index bf03226a6f85..4c548cb5f253 100644
+> --- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+> +++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+> @@ -13,6 +13,12 @@
+>   #include "sm6125.dtsi"
+>   #include "pm6125.dtsi"
+>   
+> +/delete-node/ &adsp_pil_mem;
+> +/delete-node/ &cont_splash_mem;
+> +/delete-node/ &gpu_mem;
+> +/delete-node/ &ipa_fw_mem;
+> +/delete-node/ &ipa_gsi_mem;
+> +
+>   / {
+>   	model = "Xiaomi Redmi Note 8";
+>   	compatible = "xiaomi,ginkgo", "qcom,sm6125";
+> @@ -36,28 +42,42 @@ framebuffer0: framebuffer@5c000000 {
+>   	};
+>   
+>   	reserved-memory {
+> -		debug_mem: debug@ffb00000 {
+> -			reg = <0x0 0xffb00000 0x0 0xc0000>;
+> +		adsp_pil_mem: adsp_pil_mem@55300000 {
+> +			reg = <0x0 0x55300000 0x0 0x2200000>;
+>   			no-map;
+>   		};
+>   
+> -		last_log_mem: lastlog@ffbc0000 {
+> -			reg = <0x0 0xffbc0000 0x0 0x80000>;
+> +		ipa_fw_mem: ipa_fw_mem@57500000 {
+> +			reg = <0x0 0x57500000 0x0 0x10000>;
+>   			no-map;
+>   		};
+>   
+> -		pstore_mem: ramoops@ffc00000 {
+> -			compatible = "ramoops";
+> -			reg = <0x0 0xffc40000 0x0 0xc0000>;
+> -			record-size = <0x1000>;
+> -			console-size = <0x40000>;
+> -			pmsg-size = <0x20000>;
+> +		ipa_gsi_mem: ipa_gsi_mem@57510000 {
+> +			reg = <0x0 0x57510000 0x0 0x5000>;
+> +			no-map;
+>   		};
+>   
+> -		cmdline_mem: memory@ffd00000 {
+> -			reg = <0x0 0xffd40000 0x0 0x1000>;
+> +		gpu_mem: gpu_mem@57515000 {
+> +			reg = <0x0 0x57515000 0x0 0x2000>;
+>   			no-map;
+>   		};
+> +
+> +		framebuffer@5c000000 {
+> +			reg = <0x0 0x5c000000 0x0 (2340 * 1080 * 4)>;
+> +			no-map;
+> +		};
 
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Inspired by Richard's patch set for SDM670, I noticed that SDM845
-follows the same pattern. This change prepares for enabling
-additional cameras.
+Hello!
 
-These pinctrl settings have been verified against the downstream
-SDM845 kernel.
+I suggest one more nice to have improvement:
 
-Since most of these are not yet used in mainline, testing was done
-on sdm845-next using OnePlus 6 cameras with downstream drivers.
+you could label framebuffer cont_splash_mem since you already touching 
+the node and testing the series.
 
-Thank you
+Then in additional commit, you can replace manually defined `reg` in 
+chosen > framebuffer node with
+
+memory-region = <&cont_splash_mem>;
+
+For example you can look at sdm845-oneplus-common.dtsi
+
+Tell me what u think
+
 David
----
-Changes in v3:
-- Dropped 2nd patch
-  ("arm64: dts: qcom: sdm845-db845c: Use pad fn instead of defining own")
-  as there is no documentation or people who can answer questions for
-  now, so we can move forward with the main camera work.
-- Link to v2: https://lore.kernel.org/r/20251217-sdm845-mclk-v2-0-7028c2d09145@ixit.cz
 
-Changes in v2:
-- Added mclk3. (Vladimir)
-- Reword commit messages.
-- Corrected commit msg name. (Konrad)
-- Link to v1: https://lore.kernel.org/r/20251213-sdm845-mclk-v1-0-197bc947d4c6@ixit.cz
----
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 56 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+> +
+> +		/*
+> +		 * Matching with recovery values
+> +		 * to be able to get the results.
+> +		 */
+> +		ramoops@61600000 {
+> +			compatible = "ramoops";
+> +			reg = <0x0 0x61600000 0x0 0x400000>;
+> +			record-size = <0x80000>;
+> +			pmsg-size = <0x200000>;
+> +			console-size = <0x100000>;
+> +		};
+>   	};
+>   
+>   	extcon_usb: extcon-usb {
+> 
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index bf2f9c04adba7..c0f21a745fb0c 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -2805,6 +2805,62 @@ tlmm: pinctrl@3400000 {
- 			gpio-ranges = <&tlmm 0 0 151>;
- 			wakeup-parent = <&pdc_intc>;
- 
-+			cam_mclk0_default: cam-mclk0-default-state {
-+				pins = "gpio13";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			cam_mclk0_sleep: cam-mclk0-sleep-state {
-+				pins = "gpio13";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cam_mclk1_default: cam-mclk1-default-state {
-+				pins = "gpio14";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			cam_mclk1_sleep: cam-mclk1-sleep-state {
-+				pins = "gpio14";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cam_mclk2_default: cam-mclk2-default-state {
-+				pins = "gpio15";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			cam_mclk2_sleep: cam-mclk2-sleep-state {
-+				pins = "gpio15";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cam_mclk3_default: cam-mclk3-default-state {
-+				pins = "gpio16";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			cam_mclk3_sleep: cam-mclk3-sleep-state {
-+				pins = "gpio16";
-+				function = "cam_mclk";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
- 			cci0_default: cci0-default-state {
- 				/* SDA, SCL */
- 				pins = "gpio17", "gpio18";
-
----
-base-commit: 0f853ca2a798ead9d24d39cad99b0966815c582a
-change-id: 20251213-sdm845-mclk-041f2a952e31
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
-
+David Heidelberg
 
