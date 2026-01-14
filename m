@@ -1,38 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D47D3921F4;
-	Wed, 14 Jan 2026 10:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C802BE647;
+	Wed, 14 Jan 2026 14:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768386807; cv=none; b=RJBzDYBZH49FvioDfzyhRkuPm7Ja8ZTus6FT2HjfPAH3e+42eVNdRTwhr4h66EGz2GU2Xsla0Lr1PogOIKz+KgFOtFnBjIYLnvTG/UVrdUkththZGDjdwK1JdFQTcWFuucyG2cXC3KVTWDcwfbdd05NRM1F5xnQFxoByVFtk4DM=
+	t=1768399303; cv=none; b=NGFCOoLbki0YC9CmVRudHm5QZWrzPNo1JXGuQyEWOn6qg3UQq77dOCZv4BrPBuqkmplo8Q/S4CKUH40AOcAoN8iJSwTqKMITz54EIBYGMnycT0SuVWz56CVJnOpi/kudTt145r8ad5BCLGzUHaBzP9Igrw94k98oGMO6i7Y4eTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768386807; c=relaxed/simple;
-	bh=N1BdKy4sBKxvIIyVtsyzDq2V8jFFwsJOFrPu6Lzc2tg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XnwVx7CnzHvH3gz5RhvrpjZsvj9RsTWHpB2Bcs6ZsWNDkJgIeYWFkJ+scPkw+PqI5i576uEl9dC5xfsHIvctzZdA52YoAxaHcvBI2XS59FotD6lbGp+rEJ95DFt/VQUV7Lgf0UbmJGNfDw6gNueRj3yLphAVFHQWRoBI/NqeEQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBrkSDW6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768399303; c=relaxed/simple;
+	bh=enCvrz8y/9rxsUlw1ssbCZBDFIf1yBnbNn8Z6/4K4hA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=dA0VEJPgE6OGtPdvRNSPKZtG9u6Qtkr39ArtkXvtqAPBGZQ+h+t68HUAAwyIiojzGjS97tJtvQPlzKei1TC6XR2C9O09WHdbfevh4Ol5Totuu54hYqvtkK1KjTOpyPy8xPnN7QeBmBr3jXNQkitu6vLlvc8uKKx5/H00gonqxSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTbhI3eY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBrkSDW6"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F85CC16AAE;
-	Wed, 14 Jan 2026 10:33:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTbhI3eY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AFEC4CEF7;
+	Wed, 14 Jan 2026 14:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768386806;
-	bh=N1BdKy4sBKxvIIyVtsyzDq2V8jFFwsJOFrPu6Lzc2tg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dBrkSDW63df4ofNC4rmOdXPywp4yrcQkcU2ncSYV06QJRkXhENHg8ZrKOccHWhIBY
-	 0/RPRwDvXn5vekyjuDeDWcBcdZkXkCnEVl1oo6HoNhD6iUADRYabGIHJovW27mnLAB
-	 VORTQdOp9ieRDqf3WPGch+ozO1CE893riJ4pWlSVvN5i5+7cj0dKRDO3tgJJJ9MkJP
-	 a4O86dV90l8G6ZuOJUzK4vXREbTGrQpW0ezVIEqWKiTFgVDa7wdzDqMafSZceOOouL
-	 XFyCOybX4GbtLp5L3U9VC6kCsBm4AZlo1/YG1fgq1uNRhM66wnR/s6GXgjYlfr9XMI
-	 6SpSoG3uCrMhA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F45FD29FE6;
-	Wed, 14 Jan 2026 10:33:26 +0000 (UTC)
-From: Bharadwaj Raju via B4 Relay <devnull+bharadwaj.raju.machinesoul.in@kernel.org>
-Date: Wed, 14 Jan 2026 16:03:24 +0530
-Subject: [PATCH v2 1/2] ASoC: dt-bindings: document dvdd-supply property
- for awinic,aw88261
+	s=k20201202; t=1768399302;
+	bh=enCvrz8y/9rxsUlw1ssbCZBDFIf1yBnbNn8Z6/4K4hA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=QTbhI3eYuVO9pJXj0FPP9M9Z53GRE4eX9s7MgRSPPMH6LfCa2vPcyrbsf/sJtwCID
+	 BT+gk+12FZyqsoZvMHQHzLHsyrc6Ut2vZOuB2VuMcZFd1rBiAsk9ZIfjahQDGXeh9x
+	 1A8Jrm4lptla50UGAqWVu4gCqX+yO+cGkKAc4k9Py6hN5Qq11GWn1O2/wvLY8XLFwB
+	 2+0MWgPfMi/U/NxKOMSPpoKczXetlS4IcWSv6DqKhVIeL40k8aH9JPcBohB7RjApXJ
+	 Wx1jW3LAPcfdcH4OMkzVsVqjW/KnDuUkbSeP+5rLeHXe9qQ2oM1TSmWSRcIqxojxHf
+	 i4QxvH0jplnTQ==
+From: Vinod Koul <vkoul@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+ Bart Van Assche <bvanassche@acm.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Abel Vesa <abel.vesa@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+In-Reply-To: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
+References: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
+Subject: Re: (subset) [PATCH v2 0/6] Enable UFS support on Milos
+Message-Id: <176839929655.937923.9686904791516121188.b4-ty@kernel.org>
+Date: Wed, 14 Jan 2026 19:31:36 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,78 +57,24 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-aw88261-dvdd-v2-1-ef485b82a7a7@machinesoul.in>
-References: <20260114-aw88261-dvdd-v2-0-ef485b82a7a7@machinesoul.in>
-In-Reply-To: <20260114-aw88261-dvdd-v2-0-ef485b82a7a7@machinesoul.in>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Weidong Wang <wangweidong.a@awinic.com>
-Cc: Bhushan Shah <bhushan.shah@machinesoul.in>, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768386804; l=1347;
- i=bharadwaj.raju@machinesoul.in; s=20260111; h=from:subject:message-id;
- bh=ytR+KVyf/ePc8ymcKGXV0QZMqpvAJw8hDP+6Qezgv+4=;
- b=FzKAImxPg3NqbTQ0C4Kf35xzU8OrTOeaM3al7ov8KZQXNIk/mrJOsAcYDPDrCzgvHYR05paM5
- GJwlIPfjo1SD3LJ8W4IM94SqXch/LjSVTc5UzzWumexHz8JEiK9ZUxj
-X-Developer-Key: i=bharadwaj.raju@machinesoul.in; a=ed25519;
- pk=0M1a+iMXDqasbx7bQL71NdtuutFXu+lVxsiSnEiyAIg=
-X-Endpoint-Received: by B4 Relay for bharadwaj.raju@machinesoul.in/20260111
- with auth_id=598
-X-Original-From: Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
-Reply-To: bharadwaj.raju@machinesoul.in
+X-Mailer: b4 0.13.0
 
-From: Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
 
-Add (and require) the dvdd-supply property for awinic,aw88261 in
-the awinic,aw88395.yaml binding.
+On Mon, 12 Jan 2026 14:53:13 +0100, Luca Weiss wrote:
+> Add inline-crypto-engine and UFS bindings & driver parts, then add them
+> to milos dtsi and enable the UFS storage on Fairphone (Gen. 6).
+> 
+> 
 
-The chip needs DVDD to power on, and currently there are no users of
-this compatible in the kernel device trees, so we should be fine to
-change the ABI in this case.
+Applied, thanks!
 
-Signed-off-by: Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
----
- Documentation/devicetree/bindings/sound/awinic,aw88395.yaml | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+[3/6] dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: document the Milos QMP UFS PHY
+      commit: ed0a26aa453b6ec7faec32ddb4fb3d4360e1676c
+[4/6] phy: qcom-qmp-ufs: Add Milos support
+      commit: 3554ded4f02aa8e95af66911aa666b2cd192022d
 
-diff --git a/Documentation/devicetree/bindings/sound/awinic,aw88395.yaml b/Documentation/devicetree/bindings/sound/awinic,aw88395.yaml
-index bb92d6ca3144..994d68c074a9 100644
---- a/Documentation/devicetree/bindings/sound/awinic,aw88395.yaml
-+++ b/Documentation/devicetree/bindings/sound/awinic,aw88395.yaml
-@@ -33,6 +33,8 @@ properties:
-   reset-gpios:
-     maxItems: 1
- 
-+  dvdd-supply: true
-+
-   awinic,audio-channel:
-     description:
-       It is used to distinguish multiple PA devices, so that different
-@@ -65,6 +67,17 @@ allOf:
-     then:
-       properties:
-         reset-gpios: false
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: awinic,aw88261
-+    then:
-+      required:
-+        - dvdd-supply
-+    else:
-+      properties:
-+        dvdd-supply: false
- 
- unevaluatedProperties: false
- 
-
+Best regards,
 -- 
-2.43.0
+~Vinod
 
 
