@@ -1,54 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C802BE647;
-	Wed, 14 Jan 2026 14:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B15536CDEF;
+	Wed, 14 Jan 2026 21:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768399303; cv=none; b=NGFCOoLbki0YC9CmVRudHm5QZWrzPNo1JXGuQyEWOn6qg3UQq77dOCZv4BrPBuqkmplo8Q/S4CKUH40AOcAoN8iJSwTqKMITz54EIBYGMnycT0SuVWz56CVJnOpi/kudTt145r8ad5BCLGzUHaBzP9Igrw94k98oGMO6i7Y4eTs=
+	t=1768426611; cv=none; b=czGV4Qh3s5WTt360KlO+oQMfJD5nkF5gOb4qcv8orV1GUlT1gXIhfq0qLGb5JsRYwhHzlllJ8ZRMO8QAq8Ox9NrF6XKGkza61FohfZm6s/5xX0rjADT6MXoU+eoQ948fhtzgUYQI+y1068uXINYWjZvJDDLhVxcM9Oi58xesAnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768399303; c=relaxed/simple;
-	bh=enCvrz8y/9rxsUlw1ssbCZBDFIf1yBnbNn8Z6/4K4hA=;
+	s=arc-20240116; t=1768426611; c=relaxed/simple;
+	bh=Z1dfX9gk2urpYUYEB93Z15lfNXAJVW6pafH+FHMy1bs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dA0VEJPgE6OGtPdvRNSPKZtG9u6Qtkr39ArtkXvtqAPBGZQ+h+t68HUAAwyIiojzGjS97tJtvQPlzKei1TC6XR2C9O09WHdbfevh4Ol5Totuu54hYqvtkK1KjTOpyPy8xPnN7QeBmBr3jXNQkitu6vLlvc8uKKx5/H00gonqxSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTbhI3eY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=dOEHYXOMJkNzXNtamh0FzzMgS/kK70Afe0W083+UIH2KB6c6hnO8B24O3F3OiTSPb5qmzLqxzjUmDxPC/u4NmXw13B1e71P1fWR9VG5WR8bOf1Rhi5tmImKV2h5UdFNBAl92BDmhBNHsCHcnAei2v8jHZIGK7HMWgatzBq/2ajQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBaltaVT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTbhI3eY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AFEC4CEF7;
-	Wed, 14 Jan 2026 14:01:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBaltaVT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B2DC19423;
+	Wed, 14 Jan 2026 21:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768399302;
-	bh=enCvrz8y/9rxsUlw1ssbCZBDFIf1yBnbNn8Z6/4K4hA=;
+	s=k20201202; t=1768426610;
+	bh=Z1dfX9gk2urpYUYEB93Z15lfNXAJVW6pafH+FHMy1bs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=QTbhI3eYuVO9pJXj0FPP9M9Z53GRE4eX9s7MgRSPPMH6LfCa2vPcyrbsf/sJtwCID
-	 BT+gk+12FZyqsoZvMHQHzLHsyrc6Ut2vZOuB2VuMcZFd1rBiAsk9ZIfjahQDGXeh9x
-	 1A8Jrm4lptla50UGAqWVu4gCqX+yO+cGkKAc4k9Py6hN5Qq11GWn1O2/wvLY8XLFwB
-	 2+0MWgPfMi/U/NxKOMSPpoKczXetlS4IcWSv6DqKhVIeL40k8aH9JPcBohB7RjApXJ
-	 Wx1jW3LAPcfdcH4OMkzVsVqjW/KnDuUkbSeP+5rLeHXe9qQ2oM1TSmWSRcIqxojxHf
-	 i4QxvH0jplnTQ==
-From: Vinod Koul <vkoul@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>, 
- "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, 
+	b=rBaltaVTiuHqpMyci1U7wQUj8laOiH2rCgx9CIg7lY1K9Vt01dwi8Fb7lR01U7i74
+	 23kb9D7MFXlFMD0UK1u2oCSe1NEGrUyS+UqUIfUi/qFl33V2RTnARG7DDtwCt13+YA
+	 ExeSVGwDq+ojoxxNaeb7SOCj7TTsDGmHuvA32Y88t1bAxSGRtiWPCd4E+LKPC9xU5u
+	 +dZfDWK/uP8lpE5IRCCLWf2uMy1fsiG3jRk8HdZEscuWLKw4MR1bDNQYwhTOuqMfys
+	 HyGgRnLY707aMx0lZON/xzq7vtqgDKeWkGwD/hY+D6YGD7E0jgTGMZUXt9syYVqLWA
+	 3RawZawSjUSNQ==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
- Bart Van Assche <bvanassche@acm.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Abel Vesa <abel.vesa@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-In-Reply-To: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
-References: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
-Subject: Re: (subset) [PATCH v2 0/6] Enable UFS support on Milos
-Message-Id: <176839929655.937923.9686904791516121188.b4-ty@kernel.org>
-Date: Wed, 14 Jan 2026 19:31:36 +0530
+ Conor Dooley <conor+dt@kernel.org>, Weidong Wang <wangweidong.a@awinic.com>, 
+ Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
+Cc: Bhushan Shah <bhushan.shah@machinesoul.in>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20260114-aw88261-dvdd-v2-0-ef485b82a7a7@machinesoul.in>
+References: <20260114-aw88261-dvdd-v2-0-ef485b82a7a7@machinesoul.in>
+Subject: Re: [PATCH v2 0/2] ASoC: codecs: aw88261: add dvdd-supply property
+Message-Id: <176842660767.229619.9557284936368561049.b4-ty@kernel.org>
+Date: Wed, 14 Jan 2026 21:36:47 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -57,24 +50,43 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+X-Mailer: b4 0.15-dev-47773
 
-
-On Mon, 12 Jan 2026 14:53:13 +0100, Luca Weiss wrote:
-> Add inline-crypto-engine and UFS bindings & driver parts, then add them
-> to milos dtsi and enable the UFS storage on Fairphone (Gen. 6).
+On Wed, 14 Jan 2026 16:03:23 +0530, Bharadwaj Raju wrote:
+> The AW88261 has a DVDD chip which needs to be powered on for it to
+> function correctly. The property for this was missing, so this patchset
+> adds the dvdd-supply property which enables a regulator to be bound
+> to it in a device tree.
 > 
 > 
 
-Applied, thanks!
+Applied to
 
-[3/6] dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: document the Milos QMP UFS PHY
-      commit: ed0a26aa453b6ec7faec32ddb4fb3d4360e1676c
-[4/6] phy: qcom-qmp-ufs: Add Milos support
-      commit: 3554ded4f02aa8e95af66911aa666b2cd192022d
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Best regards,
--- 
-~Vinod
+Thanks!
 
+[1/2] ASoC: dt-bindings: document dvdd-supply property for awinic,aw88261
+      commit: 18d524de812ff37e7de12a2acddfe7eee6b4ca3c
+[2/2] ASoC: codecs: aw88261: use dvdd-supply regulator
+      commit: 519d0a6b2ca5a891340b6c24a4c40545f518e1a8
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
