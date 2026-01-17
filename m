@@ -1,108 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6C32C15A0;
-	Sat, 17 Jan 2026 20:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDFF2EBB8A
+	for <phone-devel@vger.kernel.org>; Sat, 17 Jan 2026 21:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768681703; cv=none; b=D4uRNxwVBUxoHSy6B8gkccPfN5hgY3RGF3Q0XiPBX/vOuw/wbLZyXjx7HpN0PKOcAFOf5wBI1xXKI8wSnkrAMLjrGTJKxQf1rL6aplnfIO8TNyoe1Zu3Y9ufYxCRjlUYVlI84d3gJNLOyOO4zb8wlu0Uvy1cg/7sUNlb9/m0NRU=
+	t=1768685374; cv=none; b=RlcHaUKzPwsTgD16+xjFKFVFqqbrSt21gE9d1BA32NNGY1BtkL6VB+L7iBiYMN6rBnZRM1lcKK4k60XyA0WL5Mx3mIPX6x/VRaiiZx6Zn4c6/LNp5DKyC/tFrzPhwy9XFR9vhPq4QaFHZMvd+XTHqHmpImZhq5J9Hym+v2dBmGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768681703; c=relaxed/simple;
-	bh=uYCTFcKcWCYxNjVzOuzLVBRKXbVczjlOCPm0q/0V5K0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tekNVVfBShkbgu06EUqj3nHCTmk2q8+4YSaXp3mFvpZ+vmtKrW9nieOL+5t2NgvbyT7KNITMoQehRE+BIuUPf5/+crCWPnVRRCjwIIoTqV/YUNZhg54m8ElGGGZ5rpnQrzBItG0yIg5/XMBK3P6cY8j9aQ9aKrhndd0UkzEGjRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GAE1OPSz; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768685374; c=relaxed/simple;
+	bh=+F8doHC+R3TqmCSMzKBhj25i6waFCtZIFSnjx/GJfFw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=spuEtiHV/LUFv82LMIctOivP2JHrrxOfmsiZphsiCZnGYbzIos8AQ5yex43HCxiuZWZ61+pYXSygegHeCFWXHemhZ/I2Bv73OW/5Z/u86A/dkzFxUdFERJ7v+HTkW4T01Kg0k1KHSG0hqk8EPQm9WqHx+XiAvGqCqQaFVwLCsRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EOQeWH8t; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GAE1OPSz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768681701; x=1800217701;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uYCTFcKcWCYxNjVzOuzLVBRKXbVczjlOCPm0q/0V5K0=;
-  b=GAE1OPSzrG68UhbObtqjBotz0nusBPraAxQnMsrnn7a9NpEHZkXChf+o
-   DS/A+kCDiFHgtmMOPM+f6fYvYbO7IGum6139Pa+vvGbQxhBQa3oZbpdw/
-   q7MOepvTrxGmJdjeNXFBBeFA30ccral1g5kn0zc+5WFPI+Rd1usJ/12n3
-   YC8HPgCeeyx1S8rlA0VbyIjoqIK4iHFPXDafVxv1YbZEMpy/+Ru0qHGi8
-   wz1Ek8davPB2G2+3q2Tt+rXGhkNl7I6KoxVsq41EreT26LGNQKI/H4iuS
-   M6gPmV1uo8YLbkVJPgeMDJ6FsskSuEBDjjIz+TftvP331p2QvdLIghgPC
-   Q==;
-X-CSE-ConnectionGUID: 7PqOwwEYTVKWjOdcmjMPAg==
-X-CSE-MsgGUID: oqEIYqHQTKuKD4rsAT70yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11674"; a="69870069"
-X-IronPort-AV: E=Sophos;i="6.21,234,1763452800"; 
-   d="scan'208";a="69870069"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2026 12:28:21 -0800
-X-CSE-ConnectionGUID: fAbcORYZRp2CY7Smwz4aIQ==
-X-CSE-MsgGUID: vyYOqqd+RESlpo5PAmgW3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,234,1763452800"; 
-   d="scan'208";a="205128770"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 17 Jan 2026 12:28:16 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vhCu6-00000000MCO-13L3;
-	Sat, 17 Jan 2026 20:28:14 +0000
-Date: Sun, 18 Jan 2026 04:27:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>,
-	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Petr Hodina <phodina@protonmail.com>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	"Dr. Git" <drgitx@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Joel Selvaraj <foss@joelselvaraj.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH v3 8/8] media: qcom: camss: Account for C-PHY when
- calculating link frequency
-Message-ID: <202601180402.n3SE2vPM-lkp@intel.com>
-References: <20260117-qcom-cphy-v3-8-8ce76a06f7db@ixit.cz>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EOQeWH8t"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47ee07570deso21258915e9.1
+        for <phone-devel@vger.kernel.org>; Sat, 17 Jan 2026 13:29:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768685371; x=1769290171; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NUZkLJCYosO47GkqiURTbkox3qlRh5JiUOfRD1pS/eA=;
+        b=EOQeWH8t6++fSCL5s+4bYK66hju4QyqLzCl+uesRvBJAihsFtn+gW7lr+5Zo0IHCTf
+         BxKjrfhccthYWiVfwFz40SKRX9xQuy5sAX7Kq2yNBpFcif7N/wAbLXq3Np2dn6RAhyqw
+         ne/Jv+5jS1YakqSX5Sp8y6fDTwa0xmuFjqP3mr3lZtqeiSE0iNgtG86W4E9iH8wmJJ4U
+         pCwyJg+0u5bptYkEojuYJIZQLLh/rc1frC3ZrxSxLLWg/fcqL6OkI7gvP677SJNDsWqO
+         qdoFFW4OKigRPfsZCjAh0oI6Pi4bzYzDIyoCYNI6z59J9L4dd4PG28ZfO1DsBphYew8K
+         en8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768685371; x=1769290171;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NUZkLJCYosO47GkqiURTbkox3qlRh5JiUOfRD1pS/eA=;
+        b=dmO5BfCGM+iXayf/gaxwhWaqBC7gRwFGwgeH6Q56GiiuSug4flQONRR573EsQGqeqn
+         iFpgzSn/kSFm8TviiEwjbv89wMzgnUbpfQ2xIIcVJzJbqNtL9CTvNdT+sA0qjxoMy1jl
+         cpCeqbCMMc8yyLNrmlYeQQq1Xnkt5lhFAZe2VMpWPlEEBL+xnyeXfshWledBsdDIjiH5
+         K+B67IkqgcmX1wd8AEktxMp9iYiJ+/AII9JyOZYBKkXmoPdufNURNf7FcKXKLG7Eh6ee
+         zvP7AHyVFROmNozad0slROPHK/V4ZBm45VAvQnLAjIjtcG1AMRU8DcjC5ke22G++41Xb
+         ip2g==
+X-Forwarded-Encrypted: i=1; AJvYcCW7/0GTDR88N0zKT19SYNSwGRzBw9HorcA/AECO8rb33bVm8WR/cIIuRL5QhlK29Wf7f+9B+2GGo40Uog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY6WrqEiRIPaIQyt6OVwmIX5ZAAqhlOK2R2Y6r79jKOaXnyt2u
+	M/JHPhOonrmMLK5f4flKMjd/AH/pC9T3DpruV7MK4pPjkuF9GiqoRSAH8HzaBUnBuI0=
+X-Gm-Gg: AY/fxX4LHphGhNE1mdtp8jMzg8+CQmN3x1PhgG0wkOE8sdCROBCPH6BVoeBBYG7ZZIg
+	HmC2OLOG6Gu6JcM4jXca6mVA6qqHAPjMrCyN1OBYzsJ6IbqOxHIWFAlgzf8xbe961hwcjykpnzY
+	X51ZDzTe7WXtFYPyTrt+/F7NWC82G9Hkd7PJHAMoRN0bI9ePtn5MhBD5JBt7CGhg/BSx3Tlzvju
+	rXo4lyccDuNZjMz4ZWeoiQejjL9FzIm2VkXT1LbSH7wDktKv0n0DEh7/SojM9ssyznNISqnkrlD
+	g7nUzNDJRxB7VLm4KIQCwMNDsG9Xmyo86CuLBDOeDZryFg7ISDL5sPNu2MK/s+/X8RaYvniHa8W
+	PWFOPEXrsN4oREKKsrOlEXSOwnmP4fTmHsvjM3sqQgR2smLMBz35bdcCQykQ6+A8Q4+Ny0gy0yB
+	R7rb8SOYj2Sz2+lDBG1ZevNDyzw9KT4As3vIuMq0HU9wSg/JRsh9Ue
+X-Received: by 2002:a05:600c:8106:b0:480:1c2f:b003 with SMTP id 5b1f17b1804b1-4801eb09208mr70457285e9.20.1768685371142;
+        Sat, 17 Jan 2026 13:29:31 -0800 (PST)
+Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801fd3bcd2sm51156465e9.1.2026.01.17.13.29.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Jan 2026 13:29:29 -0800 (PST)
+Message-ID: <1d4531c3-c73a-4990-8752-d9b4190c9c8c@linaro.org>
+Date: Sat, 17 Jan 2026 21:29:26 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260117-qcom-cphy-v3-8-8ce76a06f7db@ixit.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] media: qcom: camss: csiphy: Introduce PHY
+ configuration
+To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260117-qcom-cphy-v3-0-8ce76a06f7db@ixit.cz>
+ <20260117-qcom-cphy-v3-1-8ce76a06f7db@ixit.cz>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20260117-qcom-cphy-v3-1-8ce76a06f7db@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi David,
+On 17/01/2026 15:36, David Heidelberg via B4 Relay wrote:
+> +	if (lncfg->phy_cfg != V4L2_MBUS_CSI2_CPHY) {
+> +		lncfg->clk.pos = mipi_csi2->clock_lane;
+> +		lncfg->clk.pol = mipi_csi2->lane_polarities[0];
+> +	}
 
-kernel test robot noticed the following build warnings:
+Just wondering as I look at this code; is it possible to set clock_lane 
+to say 0xff in DT ?
 
-[auto build test WARNING on 46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Heidelberg-via-B4-Relay/media-qcom-camss-csiphy-Introduce-PHY-configuration/20260117-234024
-base:   46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b
-patch link:    https://lore.kernel.org/r/20260117-qcom-cphy-v3-8-8ce76a06f7db%40ixit.cz
-patch subject: [PATCH v3 8/8] media: qcom: camss: Account for C-PHY when calculating link frequency
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260118/202601180402.n3SE2vPM-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260118/202601180402.n3SE2vPM-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601180402.n3SE2vPM-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: drivers/media/platform/qcom/camss/camss.c:4296 function parameter 'cphy' not described in 'camss_get_link_freq'
->> Warning: drivers/media/platform/qcom/camss/camss.c:4296 function parameter 'cphy' not described in 'camss_get_link_freq'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+bod
