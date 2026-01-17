@@ -1,103 +1,310 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD3227FD75;
-	Sat, 17 Jan 2026 11:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CE02FB962
+	for <phone-devel@vger.kernel.org>; Sat, 17 Jan 2026 12:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768650901; cv=none; b=k+GkFBVSphQBSmWz+bgf9KsPbRhYW23eCM2Bosdmdqd0cOLzBcVf5HeM/Ztr5KA3o9tcbZ8Cm/XFXo9l8mZ5MCEjkNcv1C/OI8TjWoCVe3ThEl0AO2HePm5XeG6o2copJOGsZvc1DzTq0Yi775wSPsu1474o355DrYme2hKmOD8=
+	t=1768651390; cv=none; b=VoOuyTIRFbJXY8ZmBVklq3LWk5beSPUZDG/CjPugQ23G5E4TiuDQAXzFbbaYMg3mflDk67gJ7xnNN6M10fahlx4bWEI4Yip1OsmUybrUST/LML1w0zX7MJenMwtqCeGhowyvWzPMDNjG4ktZZ4H9uZT87OS+/LRrtF4mA48vFRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768650901; c=relaxed/simple;
-	bh=zFMOe005svxDsEjnge2FB7+UlCYUDnusP7mG2pZ9H8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mIsJ2ySVx0EgT07SqxCagVTcgE4v96pqDPD5tQO75/tS8ulue1Bz93pMdcibvuG828256Aag/C2fp4RAg/5ZY9mIG8iTH0fMWLbb0oa8AkPorEOPeo54CY2sHaHPlFF/H2CVA8dBOXu/K7EsfPNWFoEToNT0O0q3s4m0Doi6Gqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxwERz+c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768651390; c=relaxed/simple;
+	bh=K00qxXVYAgjogp+eQMeRQVso+5GUgNP/gI8Eqd3+zsI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c5lmOc2+F67g9sgR/1IZjs7D5MvbQRiWaRLuKQv3dMhdaoy69yOvQcMOdOPmbnmOgz6S+Ah05w3JxC9ko+lpenhOEDAtdIOKc2LSCMOpLg1Pxji2FhpeQAvqK6ZZTbbtv79WDRokHRIxktd3klxo6A/yRdsQfnBXl4TUhf5q0Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o/ZpaUs1; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxwERz+c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAA8C4CEF7;
-	Sat, 17 Jan 2026 11:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768650900;
-	bh=zFMOe005svxDsEjnge2FB7+UlCYUDnusP7mG2pZ9H8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bxwERz+cvpuEokpLt9OXFsZ+t1SGbDOfkikqQ2YZ5GivArx+EtImAC4rGYPZ4+NtH
-	 7h85HFhnFIhhwjIXULp1AegeantNgb+UdB/Q0sYvjIS7IZEoZ8FoWqTsloj9e9IXIw
-	 E+vNl1ztHTg8hg9R3RF2whoI/6B7wz936bscIXnJrTSRvuRQu4a/jhE2q52PGLHrPa
-	 AihCLXZfFzL4LkZa1E5wbWyVQ5DI/Gvy76ljoxEABIpz/U9ancRLsZVKR+Lff7+Xa0
-	 36uL4szZV+sAyMMFbmz03qv2fojSuMVasDIqPuH8v3aUvw0Ez9hhRtgwf34723N8sC
-	 mHygMGARGFTfQ==
-Date: Sat, 17 Jan 2026 12:54:58 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Loic Poulain <loic.poulain@oss.qualcomm.com>, Robert Foss <rfoss@kernel.org>, 
-	Andi Shyti <andi.shyti@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 2/4] dt-bindings: i2c: qcom-cci: Document Milos compatible
-Message-ID: <20260117-obedient-galago-from-eldorado-8e0ba4@quoll>
-References: <20260116-milos-cci-v1-0-28e01128da9c@fairphone.com>
- <20260116-milos-cci-v1-2-28e01128da9c@fairphone.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o/ZpaUs1"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-382fc524cf3so2283451fa.0
+        for <phone-devel@vger.kernel.org>; Sat, 17 Jan 2026 04:03:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768651386; x=1769256186; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JT/sW0/Fa74RHt1FJUosgK1BrqCKXUUAbI7KDecqiQ0=;
+        b=o/ZpaUs1k3f0tNfvj0iX/Q6yxSDZE/xWERNWo6S+AX0dTxbWHW+UNs53cmICBur7X1
+         THMJc923oQ+UjlQZDpWYb3n3YuWV7pguhzoEbAUORSRSFVUpAfqxKoYYBvqQs+wqzEHe
+         7ilIe2mixLKH2LUizQi4mSvGuW8xTHKYFw3WmOhk6Cv/O7oPv0boVKBI3+0ltgP2bCbu
+         ONx4b/7bBHKjn/lli4Ul1+qvPAuPQvo5xLQ6Mu5PmMYN+qlM6Nz8C8ROx42HpEPrr2vZ
+         W1Oj02En474rlYIQe2u5mdp/Pm+Yk09xuJrzGMmiZ74TYuDBrgTarE+RBEt4naietecC
+         Zmww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768651386; x=1769256186;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JT/sW0/Fa74RHt1FJUosgK1BrqCKXUUAbI7KDecqiQ0=;
+        b=fr8evLsYd7GZBjWFWvoK/sQ8KOCd1pkGFh6PjEmOmiyYnSVwbk6bP06LiWi1DP2h8B
+         9Ss6F9alHtq50nl4gm8tLKejK8ogMZ/CUQjaFAtFuCEdDg+5qaJgXqyWym3vMj5JEx9q
+         8cbz8PFOfVGB8Tyz9Jl7ToIMnQoXqdLm3Rscjzvc2L773ZfRuRkCrSS9QmKrzERG+X/W
+         reL66C9TpRdksIW/VUjIkMdYqrhQWtqH2zhFFcOx1KRA5fhiqCCIsOC0HYv4VcSUHjPe
+         wGUidzzV5n80rJP6AITx1nSTGzATR4fyZ+n6BoNHfV+jH0JKh5HNbMH1SojcNH9u4Dxa
+         cbZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXu0lITH9oFFEB2/L5JjGqHcMKNJ652sg9g+EzmxWaJdhfx+ahl/7w8htI/a/UuOoJiPPvvTiuJyQgTGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl36Cg68fkqVNTciceHpxVydn1Wll6QnsfBS8rIOzt3vHBzO6a
+	Dduvq/QzpFfvIXletcRiNqmjPi6ntKOkMOtuSHBk4nu6oSFHe7D03aS2hBUcyYuGjtM=
+X-Gm-Gg: AY/fxX4hlXByCmtTB+dPkkc+GBffOaRpRi+RMyiUXx201XAjMJa9sCUakC9FqXJatSs
+	6ws9I3lHnYVtwRIj5RBzhEol2FMW2J1JcC55m0DNw91fpNa+G/jH0o5fIYTQL/S+ctKn/5P606T
+	p2mbWC6r+3UCkvCCFNumVJAWyn/IgwQtWJ3BMiBUU/1gJv99lacU1PibnWz8sBzySSkp0fuHYOI
+	0S7V5818ojSgodslon1u7gQcmCBLyZ/zABBmOuyhNEzVPV1/QV4yhM+tYJLp90NNdOOT+5yajLb
+	aBHQAmDXFcCkF7SIKQXQBRJcZisgB/AtxyWJaEsXHh0mC+D8FDEOsYNTzDUm42xbRxRFtGVMwO+
+	c2mKJMTx7UhVGY6EExFGzErU3xJeqz+bvy/Z2raRWniJoqcp0k1Dk7sb6M6f/V+WfpiR22wOjAi
+	TPKQRo/3GdgrKF3s5ntCCb9O4UqkDTIqcjb4Tw7nJ1TaLBNjVA3FpetPFdph7cwOeXrg==
+X-Received: by 2002:a05:651c:41c4:b0:37a:4fb0:69a6 with SMTP id 38308e7fff4ca-38384180b18mr13042911fa.2.1768651385968;
+        Sat, 17 Jan 2026 04:03:05 -0800 (PST)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38384e788d5sm16240881fa.31.2026.01.17.04.03.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Jan 2026 04:03:04 -0800 (PST)
+Message-ID: <a29ff1e4-117c-4703-b0c7-73ad4e369201@linaro.org>
+Date: Sat, 17 Jan 2026 14:03:02 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260116-milos-cci-v1-2-28e01128da9c@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/5] media: i2c: imx355: Support devicetree and power
+ management
+To: Richard Acayan <mailingradian@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc: Robert Mader <robert.mader@collabora.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+References: <20260117040657.27043-1-mailingradian@gmail.com>
+ <20260117040657.27043-3-mailingradian@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20260117040657.27043-3-mailingradian@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 16, 2026 at 02:38:56PM +0100, Luca Weiss wrote:
-> Add Milos compatible for the CAMSS CCI interfaces.
+On 1/17/26 06:06, Richard Acayan wrote:
+> A device tree compatible makes it possible for this driver to be used on
+> Open Firmware devices. Initialization of power-managed resources such as
+> the reset GPIO and voltage regulators can be specified in the device
+> tree and handled by the driver. Add support for this so the Pixel 3a can
+> use the driver.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
 > ---
->  .../devicetree/bindings/i2c/qcom,i2c-cci.yaml          | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>   drivers/media/i2c/imx355.c | 116 ++++++++++++++++++++++++++++++++++---
+>   1 file changed, 108 insertions(+), 8 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> index a3fe1eea6aec..c57d81258fba 100644
-> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> @@ -27,6 +27,7 @@ properties:
->        - items:
->            - enum:
->                - qcom,kaanapali-cci
-> +              - qcom,milos-cci
->                - qcom,qcm2290-cci
->                - qcom,sa8775p-cci
->                - qcom,sc7280-cci
-> @@ -263,6 +264,23 @@ allOf:
->              - const: cpas_ahb
->              - const: cci
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,milos-cci
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 3
-> +          maxItems: 3
-> +        clock-names:
-> +          items:
-> +            - const: soc_ahb
-> +            - const: cpas_ahb
-> +            - const: cci
+> diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
+> index 776107efe386..5a8da035ba5f 100644
+> --- a/drivers/media/i2c/imx355.c
+> +++ b/drivers/media/i2c/imx355.c
+> @@ -3,9 +3,13 @@
+>   
+>   #include <linux/acpi.h>
+>   #include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+>   #include <linux/i2c.h>
+>   #include <linux/module.h>
+> +#include <linux/of.h>
+>   #include <linux/pm_runtime.h>
+> +#include <linux/regulator/consumer.h>
+>   #include <linux/unaligned.h>
+>   
+>   #include <media/v4l2-ctrls.h>
+> @@ -125,6 +129,15 @@ struct imx355 {
+>   	 * Protect access to sensor v4l2 controls.
+>   	 */
+>   	struct mutex mutex;
+> +
+> +	struct gpio_desc *reset_gpio;
+> +	struct regulator_bulk_data *supplies;
+> +};
+> +
+> +static const struct regulator_bulk_data imx355_supplies[] = {
+> +	{ .supply = "avdd" },
+> +	{ .supply = "dvdd" },
+> +	{ .supply = "dovdd" },
+>   };
+>   
+>   static const struct imx355_reg imx355_global_regs[] = {
+> @@ -1515,6 +1528,55 @@ static const struct v4l2_subdev_internal_ops imx355_internal_ops = {
+>   	.open = imx355_open,
+>   };
+>   
+> +static int imx355_power_off(struct device *dev)
+> +{
+> +	struct i2c_client *client = container_of(dev, struct i2c_client, dev);
+> +	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+> +	struct imx355 *imx355 = to_imx355(sd);
+> +
+> +	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
+> +
+> +	regulator_bulk_disable(ARRAY_SIZE(imx355_supplies), imx355->supplies);
+> +	clk_disable_unprepare(imx355->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx355_power_on(struct device *dev)
+> +{
+> +	struct i2c_client *client = container_of(dev, struct i2c_client, dev);
+> +	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+> +	struct imx355 *imx355 = to_imx355(sd);
+> +	int ret;
+> +
+> +	ret = clk_prepare_enable(imx355->clk);
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable clocks: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(imx355_supplies),
+> +				    imx355->supplies);
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable regulators: %d\n", ret);
+> +		goto error_disable_clocks;
+> +	}
+> +
+> +	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
+> +	usleep_range(1000, 2000);
 
-Same comments as other discussion these days - I guess that soc_ahb
-serves the same purpose as camnoc_axi, so this is just last entri in the
-if:then: blocks.
+The deassert above is not needed IMO, anyway.
 
-I really find this binding terrible - around six names for AHB - so I do
-not want another combination...
+> +	gpiod_set_value_cansleep(imx355->reset_gpio, 0);
+> +	usleep_range(10000, 11000);
+> +
+> +	return 0;
+> +
+> +error_disable_clocks:
+> +	clk_disable_unprepare(imx355->clk);
+> +	return ret;
+> +}
+> +
+> +static DEFINE_RUNTIME_DEV_PM_OPS(imx355_pm_ops, imx355_power_off,
+> +				 imx355_power_on, NULL);
+> +
+>   /* Initialize control handlers */
+>   static int imx355_init_controls(struct imx355 *imx355)
+>   {
+> @@ -1689,16 +1751,26 @@ static int imx355_probe(struct i2c_client *client)
+>   				     "external clock %lu is not supported\n",
+>   				     freq);
+>   
+> -	/* Initialize subdev */
+> -	v4l2_i2c_subdev_init(&imx355->sd, client, &imx355_subdev_ops);
+> -
+> -	/* Check module identity */
+> -	ret = imx355_identify_module(imx355);
+> +	ret = devm_regulator_bulk_get_const(imx355->dev,
+> +					    ARRAY_SIZE(imx355_supplies),
+> +					    imx355_supplies,
+> +					    &imx355->supplies);
+>   	if (ret) {
+> -		dev_err(imx355->dev, "failed to find sensor: %d", ret);
+> +		dev_err_probe(imx355->dev, ret, "could not get regulators");
+>   		goto error_probe;
+>   	}
+>   
+> +	imx355->reset_gpio = devm_gpiod_get_optional(imx355->dev, "reset",
+> +						     GPIOD_OUT_HIGH);
+> +	if (IS_ERR(imx355->reset_gpio)) {
+> +		ret = dev_err_probe(imx355->dev, PTR_ERR(imx355->reset_gpio),
+> +				    "failed to get gpios");
+> +		goto error_probe;
+> +	}
+> +
+> +	/* Initialize subdev */
+> +	v4l2_i2c_subdev_init(&imx355->sd, client, &imx355_subdev_ops);
+> +
+>   	imx355->hwcfg = imx355_get_hwcfg(imx355->dev);
+>   	if (!imx355->hwcfg) {
+>   		dev_err(imx355->dev, "failed to get hwcfg");
+> @@ -1706,13 +1778,26 @@ static int imx355_probe(struct i2c_client *client)
+>   		goto error_probe;
+>   	}
+>   
+> +	ret = imx355_power_on(imx355->dev);
+> +	if (ret) {
+> +		dev_err(imx355->dev, "failed to power on sensor: %d", ret);
 
-Best regards,
-Krzysztof
+You do write a message to the kernel log buffer on error in imx355_power_on(),
+and here it can be removed.
 
+Also you may start using dev_err_probe() on all new error paths.
+
+> +		goto error_probe;
+> +	}
+> +
+> +	/* Check module identity */
+> +	ret = imx355_identify_module(imx355);
+> +	if (ret) {
+> +		dev_err(imx355->dev, "failed to find sensor: %d", ret);
+> +		goto error_power_off;
+> +	}
+> +
+>   	/* Set default mode to max resolution */
+>   	imx355->cur_mode = &supported_modes[0];
+>   
+>   	ret = imx355_init_controls(imx355);
+>   	if (ret) {
+>   		dev_err(imx355->dev, "failed to init controls: %d", ret);
+> -		goto error_probe;
+> +		goto error_power_off;
+>   	}
+>   
+>   	/* Initialize subdev */
+> @@ -1752,6 +1837,9 @@ static int imx355_probe(struct i2c_client *client)
+>   error_handler_free:
+>   	v4l2_ctrl_handler_free(imx355->sd.ctrl_handler);
+>   
+> +error_power_off:
+> +	imx355_power_off(imx355->dev);
+> +
+>   error_probe:
+>   	mutex_destroy(&imx355->mutex);
+>   
+> @@ -1768,7 +1856,11 @@ static void imx355_remove(struct i2c_client *client)
+>   	v4l2_ctrl_handler_free(sd->ctrl_handler);
+>   
+>   	pm_runtime_disable(imx355->dev);
+> -	pm_runtime_set_suspended(imx355->dev);
+> +
+> +	if (!pm_runtime_status_suspended(imx355->dev)) {
+> +		imx355_power_off(imx355->dev);
+> +		pm_runtime_set_suspended(imx355->dev);
+> +	}
+>   
+>   	mutex_destroy(&imx355->mutex);
+>   }
+> @@ -1779,10 +1871,18 @@ static const struct acpi_device_id imx355_acpi_ids[] __maybe_unused = {
+>   };
+>   MODULE_DEVICE_TABLE(acpi, imx355_acpi_ids);
+>   
+> +static const struct of_device_id imx355_match_table[] = {
+> +	{ .compatible = "sony,imx355", },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, imx355_match_table);
+> +
+>   static struct i2c_driver imx355_i2c_driver = {
+>   	.driver = {
+>   		.name = "imx355",
+>   		.acpi_match_table = ACPI_PTR(imx355_acpi_ids),
+> +		.of_match_table = imx355_match_table,
+> +		.pm = &imx355_pm_ops,
+>   	},
+>   	.probe = imx355_probe,
+>   	.remove = imx355_remove,
+
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+
+-- 
+Best wishes,
+Vladimir
