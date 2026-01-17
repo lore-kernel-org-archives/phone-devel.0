@@ -1,109 +1,153 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510F335573
-	for <phone-devel@vger.kernel.org>; Fri, 16 Jan 2026 18:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C571DED4C;
+	Sat, 17 Jan 2026 02:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768586618; cv=none; b=aHjnK6x72mt7QGeLLrEOA+lTsJrUUXWYEGiULZ/mmtNXYPNFTEPOF4MdT7wC3qt2TD24FFK8XCyXnFrNyTXa0q1WIUIy4mwO2WzR/5tEXcBCWH8Xs3n7H+fNZG2ZT96VAcqU/AspR5/3XRSi0qzhu+HmwWeSowwe29/YCUznGkU=
+	t=1768616454; cv=none; b=QpnZzfSNE4odnv41dswQOdEljkUlE3HayJnIFH8xuvvozUhKTAllY19e5ZQc3WayqAhTU8CbZA7ZwjxwUxLy/cfpQIRWCdkchRiS5YPruNc/PKuxo86QdZHCcx5UsaqITBrSVOnNXptQ3ivFE993DFnLKe/vupIfUszkq0Jm0wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768586618; c=relaxed/simple;
-	bh=KpR9XGC+Bx3BLKA6Y/iezvo9GcrGkG2svGi38rOB6y8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BJ9twJ482w7j6BX5JtZWtPY1mDbSdzYulEpFxwylvInzDx2nw4PVZBBuKHv2d/7J3dHc2IySA/R9NEXw38OloODjAecwTEkgYUtxvPJiQE2d4ub8MK6Uffm2/gru+qAVWQjcuBdMwo9DcZZuIA2yJKIXyK0HFpKUAjKy82vE3rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kckkdGJx; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1768616454; c=relaxed/simple;
+	bh=INs+6hwwqSyR6Q/SwGX7iuQFBsJkkf6pJ1jUIyZQ6iw=;
+	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=slo4ZApyZulzOPw/5QbxYq6l5UORMKikPqz3bHICMb7G8nWL9s1ZhuJxQjHc8ry1eE0RiefPWAT5i2jvSwlQDmfZpVVvxrq/u5BHZNK6PJRNuNKYV6NEwMSllr60+2QQgNkfmkhGeouKO8hWWXU9hXm/9Bvze6rsp4g2v5ZygjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ly19mmnz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kckkdGJx"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64b8123c333so3664140a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 16 Jan 2026 10:03:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768586615; x=1769191415; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bzxoYSCgeFJWxhjkLGYTzXNDLcf4pbH0TysaMixA8sU=;
-        b=kckkdGJxk3Qpnf98p5Ygoao1rlIqdKAeCNduvYVXNHY8aJZIuIfoaeRYbKMzvgYQU6
-         lcnGpyqAUK+UEWevouRsYuyXdSNZV1XS311PilkCzGMES//4Uwj5Bvhxxg9BKCzkpGBo
-         Bkgj3wNuJxXRjzK8/QYHFrZt8qYRAbqOGQ/7UaoqZPiifF7C7k49rey/L/y6PsCg3Mhl
-         9mMKlXgoavJVaYHTs7zA3hhIuQVR7Zbl8Ku+Ghe77afCM7b169vFojyxqo8y0hdnuBla
-         W3k10FOSK71KEPEMFel0cxxe5okNo2jw5dTd+kS8qE/wKajAG9YglMqkaqhiTe7G1xkr
-         77fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768586615; x=1769191415;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bzxoYSCgeFJWxhjkLGYTzXNDLcf4pbH0TysaMixA8sU=;
-        b=cDyDSaFKrThHRHe0BO3vn0yTbJlRUUwv0LCoQdhf7yQx7Q58gX/2XYlG5xre+Evl/J
-         0i74u0phOF0ylKIYI0Z3ENUqg2b8vCINbDl2odRR7UqRrpml63cJNg7o4cIi8lSFWK6n
-         Q7il+uqYcOtfS52vnJQZqf+SACIHoq2XBjt+CcmTtLTKTF0hoFRkvzaFH6PNWSg+tXgY
-         O6/WqnTkSbSn8dAPpWxvr5Mu96j3itIwDz/OR37f7ZbL9DcmU8a3qeN1JlEaFhak6DY1
-         9rS3rTjoeKPunYyqxZ1qfX4Rp013W1OOsmP4EQ/32Fzvm6im0e1EthvdPxyY1WPPpgy+
-         Uu4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV3Fvcxhed872v4pGbFITQrzFXwjybhA9DXamB/gP1T3IZRg2ZyzgibgLwdc/DD41ambm67JofxGIkFlg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ/rbScvM13IkPJ1oHmWvkR8/hWnRUzDofcExzZvUKIiy3sy5L
-	NasJqyALwX3QtxZw7DFQWENhjA6D3h3KQZZAcivaUeoJwrs05kNUMNQNW1HEMk3y7zA=
-X-Gm-Gg: AY/fxX7KuvMwHKbCu5qQiyvZQyORc7qxLQlBdBZpO6q1WHwSwqThfsBXYHGSCM7vY52
-	cpb25zgsD44i0U6WbowuXpKQdl5NOOEX5Jlje0WDzeNhauQNLQyTm1jXoDJeW0qAjgpIqUmi/oR
-	8zqQ9grkbogfnGPFqDDmXZl+ntaEongS+AgPMf4mnNf8/qRHC8NONHKa9yQr2K8fODc/4XJKe+E
-	ploU+TsYzN/iDMIf+bA6qvm1SRKj36mzK0X67VfC+9PNAW9jmUjx6RSyWKWH96ksUEu49+S8KsF
-	EQvSZu6GECFNNYb2b6hxmE3gLuqRhDbEkhjGA156FLKtXfv3yqnN0WRdgDQJbwVw+yhGcFjDeZw
-	ZeEeKKW1kfKjt30H8TA1O6qnfXqsaPEolvhom/fBdSe72pDS8B2xabhRTXO8b12OYEVcx2oN5D7
-	HldcMrBRyysKUk1raYy3O78isir4ys4mCWyHlFESWYhL2Rnr5JQvdcjA==
-X-Received: by 2002:a05:6402:42d3:b0:64b:7e89:811 with SMTP id 4fb4d7f45d1cf-654ba1d2dc2mr2735165a12.13.1768586615205;
-        Fri, 16 Jan 2026 10:03:35 -0800 (PST)
-Received: from lion.localdomain (p5b29e30b.dip0.t-ipconnect.de. [91.41.227.11])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-654533cc5e1sm2932712a12.19.2026.01.16.10.03.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 10:03:34 -0800 (PST)
-From: Casey Connolly <casey.connolly@linaro.org>
-To: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, 
- u-boot@lists.denx.de, Petr Vorel <petr.vorel@gmail.com>, 
- David Heidelberg <david@ixit.cz>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
- Tom Rini <trini@konsulko.com>, Luca Weiss <luca.weiss@fairphone.com>, 
- Simon Glass <sjg@chromium.org>, Petr Hodina <petr.hodina@protonmail.com>, 
- Matthew Croughan <matt@croughan.sh>, phone-devel@vger.kernel.org, 
- Simon Glass <simon.glass@canonical.com>
-In-Reply-To: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
-References: <20260108-pixel-config-v4-0-76a2212b69a5@ixit.cz>
-Subject: Re: [PATCH v4 0/2] Introduce Pixel config fragment for
- chainloading u-boot
-Message-Id: <176858661385.3399278.12645916008692694395.b4-ty@linaro.org>
-Date: Fri, 16 Jan 2026 19:03:33 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ly19mmnz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB6DC116C6;
+	Sat, 17 Jan 2026 02:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768616453;
+	bh=INs+6hwwqSyR6Q/SwGX7iuQFBsJkkf6pJ1jUIyZQ6iw=;
+	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
+	b=Ly19mmnzSKl5PrNFIkOUwNJwbNc5gOxdZhJ95MGtchDMfarRg+N9NsbHKT8pKcRUF
+	 bbnqUt6eGXwJHhsFwQi2eTavB2oK7SDSrVLIFP5jtilvBrIX1zFLQx63daovDsvcv9
+	 xp1xYqCbCA0zU+HrKqZUurtCJ9sGH8yuslG38KPgKTzg+BisdwMcpZgQJiA/2Gtg42
+	 a+6LarLDL40yUOe59X+AK6DG3wYl7PBXcMlvfTRQN+eZJQMwM79Nusk2ppnArkv9uM
+	 DTe4shc831UISeo7tnJuN3dRkF+AKYKM33UL8oTBy6HV+feZnPRuoyQRTEg1wh0AV8
+	 bAlG7TeVrZeSQ==
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 16 Jan 2026 20:20:52 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Cc: phone-devel@vger.kernel.org, Tony Luck <tony.luck@intel.com>, 
+ devicetree@vger.kernel.org, Kees Cook <kees@kernel.org>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Gabriel Gonzales <semfault@disroot.org>, Conor Dooley <conor+dt@kernel.org>, 
+ linux@mainlining.org, Konrad Dybcio <konradybcio@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-hardening@vger.kernel.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Biswapriyo Nath <nathbappai@gmail.com>
+To: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+In-Reply-To: <20260116-xiaomi-willow-v2-0-4694feb70cdb@mainlining.org>
+References: <20260116-xiaomi-willow-v2-0-4694feb70cdb@mainlining.org>
+Message-Id: <176861636288.2528721.260536635040675678.robh@kernel.org>
+Subject: Re: [PATCH v2 0/7] Initial Redmi Note 8T support and more
 
 
-On Thu, 08 Jan 2026 23:13:00 +0100, David Heidelberg wrote:
-> Snapdragon Google Pixel bootloaders require the TEXT_OFFSET to be
-> exactly 0x80000. Without this, U-Boot or kernels will fail to load.
+On Fri, 16 Jan 2026 16:54:42 +0100, Barnabás Czémán wrote:
+> Redmi Note 8 and 8T are sibling devices the only difference
+> is Redmi Note 8T have NFC.
+> This patch series is commonizing Redmi Note 8 devicetree
+> for a base for both devices.
 > 
-> This patchset documents Pixel 3 and Pixel 3 XL and adds the necessary
-> config fragment along with usage instructions.
+> The patch series also contains some fixes for Redmi Note 8:
+> - Fix reserved memory ranges, they were wrongly defined.
+> - Remove board-id, board-id is not neccessary for the bootloader.
+> - Fix reserved-gpio-ranges the reserved ranges was wrongly
+> defined what caused the device crash on the boot.
+> - Remove unnecessary usb-extcon, gpio102 is related to DisplayPort
+> what is not supported by these devices.
+> - Use memory-region property for framebuffer.
 > 
-> It has been tested on Pixel 3, 3 XL (by me), and Pixel 5 (by Petr Vorel).
+> Depends on:
+> [1] https://lore.kernel.org/all/20251229142806.241088-2-krzysztof.kozlowski@oss.qualcomm.com/
 > 
-> [...]
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> ---
+> Changes in v2:
+> - Fix copyright in sm6125-xiaomi-ginkgo.dts as requested.
+> - Use memory-region property for the framebuffer.
+> - Add comment about the NFC.
+> - Remove msm-id change in favor of [1].
+> - Link to v1: https://lore.kernel.org/r/20260112-xiaomi-willow-v1-0-8e4476897638@mainlining.org
+> 
+> ---
+> Barnabás Czémán (7):
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove board-id
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct reserved memory ranges
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Set memory-region for framebuffer
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove extcon
+>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+>       dt-bindings: arm: qcom: Add Xiaomi Redmi Note 8T
+>       arm64: dts: qcom: Add Redmi Note 8T
+> 
+>  Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+>  arch/arm64/boot/dts/qcom/Makefile                  |   3 +-
+>  .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi | 301 +++++++++++++++++++++
+>  arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts  | 285 +------------------
+>  arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dts  |  15 +
+>  5 files changed, 320 insertions(+), 285 deletions(-)
+> ---
+> base-commit: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
+> change-id: 20260111-xiaomi-willow-448552f02762
+> prerequisite-message-id: <20251229142806.241088-2-krzysztof.kozlowski@oss.qualcomm.com>
+> prerequisite-patch-id: 1bc49c0e2bec1a47667df776e1ab265b0699ea35
+> 
+> Best regards,
+> --
+> Barnabás Czémán <barnabas.czeman@mainlining.org>
+> 
+> 
+> 
 
-Applied, thanks!
 
-[1/2] doc: board: qualcomm: document Pixel 3 / 3 XL support
-      https://source.denx.de/u-boot/custodians/u-boot-snapdragon/-/commit/500d2e5e5546
-[2/2] configs: Add google-pixel fragment config for Pixel 3, 3 XL, 5
-      https://source.denx.de/u-boot/custodians/u-boot-snapdragon/-/commit/338dbbba8787
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Best regards,
--- 
-// Casey (she/they)
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Deps: looking for dependencies matching 1 patch-ids
+ Deps: Applying prerequisite patch: [PATCH RFT] arm64: dts: qcom: sm6125-ginkgo: Fix missing msm-id subtype
+ Base: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+Warnings in base: 266
+Warnings after series: 272
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/qcom/' for 20260116-xiaomi-willow-v2-0-4694feb70cdb@mainlining.org:
+
+arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dtb: geniqup@4ac0000 (qcom,geni-se-qup): #address-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/soc/qcom/qcom,geni-se.yaml
+arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dtb: geniqup@4ac0000 (qcom,geni-se-qup): #size-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/soc/qcom/qcom,geni-se.yaml
+arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dtb: geniqup@4cc0000 (qcom,geni-se-qup): #address-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/soc/qcom/qcom,geni-se.yaml
+arch/arm64/boot/dts/qcom/sm6125-xiaomi-willow.dtb: geniqup@4cc0000 (qcom,geni-se-qup): #size-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/soc/qcom/qcom,geni-se.yaml
+
+
+
 
 
