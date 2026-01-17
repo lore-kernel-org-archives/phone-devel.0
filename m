@@ -1,120 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F242C032C;
-	Sat, 17 Jan 2026 10:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E096D72622;
+	Sat, 17 Jan 2026 11:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768647151; cv=none; b=OPPV0L2WNs2nkKKF+NVjH4fFrx7kDetV+fofUij8K59t+oKMGZge1eBP3t3q/Mh4ITZ/HRMQtXP3zBo1k+Tj7cmjWhP4G5pYzugzFDeZDpV3YTmcFIPjl1fWqipfBRpCX+FMoW2eaqp14pKyEt4QgXvNwV3L2U0V5cPkuQDMgKk=
+	t=1768650416; cv=none; b=CGvPWYDBOSGOxYqi4DxSmm5IHN2n0AYeXO7Is4DXe9UCJeZShJHT7PrYXwH/5MrKTdvEQ86dqJYbAbMzXJHilUUMaH2a0Kh/U0Cb+jRSf9dqrO8h0a+AuVMJjCMNhmdIUTQBUwmh4DbNet9+vtu0iUu+2Q4gA8p43xHpdVwynME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768647151; c=relaxed/simple;
-	bh=D8rJ8RkHTEhL7rsO2/lejXlsHMvngtEGWU8Zg3Qg2/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ms4hTapdg5B7g7nTO0LsJ8vfxaTpQS7yFEFGVQ4vS75DWBPvFvI6eZS0ghedTkLqEmDBD58cLVH+InRGJaOi0psLZ7Wovq7Sg/sHO4eC71vcxjmXYrsoD4BTuVyKGZlTjA7iQ5XoxEIkSziJX9/nN0+oq6ntLigHnwxWRLuuhss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZsyPC20; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768650416; c=relaxed/simple;
+	bh=0BDMRZjZ+cF68tCc8y83Q2hV4mWRimaps4LDJoli4OA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IC9rdmHwREcDxI8Ozvn5W81irUrzejFHIPh7WVYmUP/EZdgccc9+W1GT8uO27yOyJzvNCGOe0zzt0NQROet8FOpuLjaPRZE5IbQ+h+roudPp6jIRada/ycuSVDgOytDPRPZ88R1sss7M6CR7ucbokmykYEY3JNYAomup28hq29g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UphNA9ij; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZsyPC20"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D5CC4CEF7;
-	Sat, 17 Jan 2026 10:52:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UphNA9ij"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94B6C4CEF7;
+	Sat, 17 Jan 2026 11:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768647151;
-	bh=D8rJ8RkHTEhL7rsO2/lejXlsHMvngtEGWU8Zg3Qg2/Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FZsyPC20zx2++nHAXSOh5VxuAjLNKRGgtd3kvcfFeax0+uoT/zWHfV6uh7ad+L6hK
-	 jh2iHoKK8w3tSzNZ5FgMi4ki4NL1JJICylX3bVycryrWSPU05w65ve/Gq1N54c6iz8
-	 CeI4NvCQADkoe6QMArCAct2b5KDRgsU3ZCy1aBYf8JwQk09l4XacFzaO0eWekCH4M/
-	 oud+ajL465jxcd+BYj0Xk9kOQJhmKZ4clwrzCEVCMl1k0JW5GQi3xgqj47Lx0AN6I0
-	 QPxwo9BL1J5XbLiT9zzs78w2dpRomY0qBkAu9zJW8URF0rYebT2UNt6RncyqK/ioZe
-	 ep6LP7iehPRsA==
-Message-ID: <a3571017-c127-44a4-a096-48dd1557d5fa@kernel.org>
-Date: Sat, 17 Jan 2026 11:52:24 +0100
+	s=k20201202; t=1768650415;
+	bh=0BDMRZjZ+cF68tCc8y83Q2hV4mWRimaps4LDJoli4OA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UphNA9ijerNgx0WLGbB4jQY09R5Y8tXcV0nXuw0XFsx9tr9FszPLBDisX0iBhnajn
+	 yx13skeXjRHDwhheu47HNctI8ZCfujRlJESrbicC5Pxwt9Wa3CWV7UJT4RhAV5m3Y1
+	 Z8FYs6WSCCEhk7lMltgUcP7IKdUv7zPkuln94bVilgYchrIfU/d1vU3Mn73M9bIAaQ
+	 ybrTOUrq9s1S1wnH2TJyuKZLU/8B2kqjKLa5RtkqBvcGY40lFDCYfahy6nUR2psyue
+	 EXImBbUKQNU2ZOu7hDKbx600MyvJiDGxng0uAB62eqbi+rU06d63wZaXbe93TT6H1V
+	 hCH2HqFaxe1Gw==
+Date: Sat, 17 Jan 2026 12:46:53 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Georgi Djakov <djakov@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/5] dt-bindings: clock: qcom,milos-camcc: Document
+ interconnect path
+Message-ID: <20260117-efficient-fractal-sloth-aaf7c2@quoll>
+References: <20260116-milos-camcc-icc-v1-0-400b7fcd156a@fairphone.com>
+ <20260116-milos-camcc-icc-v1-2-400b7fcd156a@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/5] dt-bindings: media: i2c: Add Sony IMX355
-To: Richard Acayan <mailingradian@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc: Robert Mader <robert.mader@collabora.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-References: <20260117040657.27043-1-mailingradian@gmail.com>
- <20260117040657.27043-2-mailingradian@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260117040657.27043-2-mailingradian@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260116-milos-camcc-icc-v1-2-400b7fcd156a@fairphone.com>
 
-On 17/01/2026 05:06, Richard Acayan wrote:
-> The IMX355 camera sensor is a camera sensor that can be found as the
-> front camera in some smartphones, such as the Pixel 3, Pixel 3 XL, Pixel
-> 3a, and Pixel 3a XL. It already has a driver, but needs support for
-> device tree. Document the IMX355 to support defining it in device tree.
+On Fri, Jan 16, 2026 at 02:17:21PM +0100, Luca Weiss wrote:
+> Document an interconnect path for camcc that's required to enable
+> the CAMSS_TOP_GDSC power domain.
+
+I find it confusing. Enabling GDSC power domains is done via power
+domains, not via interconnects. Do not represent power domains as
+interconnects, it's something completely different.
+
 > 
-> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  .../bindings/media/i2c/sony,imx355.yaml       | 105 ++++++++++++++++++
->  1 file changed, 105 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+>  Documentation/devicetree/bindings/clock/qcom,milos-camcc.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/clock/qcom,milos-camcc.yaml b/Documentation/devicetree/bindings/clock/qcom,milos-camcc.yaml
+> index f63149ecf3e1..707b25d2c11e 100644
+> --- a/Documentation/devicetree/bindings/clock/qcom,milos-camcc.yaml
+> +++ b/Documentation/devicetree/bindings/clock/qcom,milos-camcc.yaml
+> @@ -25,6 +25,10 @@ properties:
+>        - description: Sleep clock source
+>        - description: Camera AHB clock from GCC
+>  
+> +  interconnects:
+> +    items:
+> +      - description: Interconnect path to enable the MultiMedia NoC
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+And since when clock controllers are part of interconnect path... Even
+more questions....
 
 Best regards,
 Krzysztof
+
