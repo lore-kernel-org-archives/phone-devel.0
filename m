@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB1131AABA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9C31E106;
 	Mon, 19 Jan 2026 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823934; cv=none; b=ryeZQLoIidOWvmA4/a7wriKN56l8e9YeiTc1pcNvSoChRQGrlYKuQO7efGiBTX754j+P7LbxrnMxJSPayYubQjujQmZybFL5Swn0mNNxkOcz84y3g9ADtzmL/yGJxWUlHkXo3uoJAyplCo3aL3l1rGK6JLlvYigesFxZN6uZsiI=
+	t=1768823934; cv=none; b=oIl3kt0ZVcE8E0Hr/iWB+cJ4GFECCgJNUnIj0DwuT2XxwEmR97ecx0bFlS+gMkSgLYmxHz4k54WocZuPE3pKdBhqACkjPSpGZ/kntH7KVMI583KXGew7BO33E/LwEpUzs0HV9KZf7Wn43eqwXQ8WuNdtDkZlmvWJm56BD1fv16M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768823934; c=relaxed/simple;
-	bh=i2KIyk/9YoyAsAVQ8Ktvjgu6lNLtjdHRFEc2ofmH1w8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cOXT3m1f1QiwPM73Wbb/3Nkgdpk7xmDDGUF//+fLXDqgy0vr41wi4y3s2ZT90rwY59OvHRucpxQz5Dw7JQ/0gbdTjdHY8xI4ig6vcp080j5oCihOTVS/ZEXH/4SwE4n1v8duX1X0KJ/gR5v/plpehJN+VhBKqgtVhu9tt7HEpWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0+TCn8g; arc=none smtp.client-ip=10.30.226.201
+	bh=HBg6SibUs1urS8KtNtxZyU66tOskoFp3/RfnmX6QDIU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bHC55bdY9g0O6u/goifvEZcof6pPA8xNV/M8n1y256BdR8ZT2oi1+/35cxO2qMdWubf+DkSCAjGpj1BItU8e/W3MPFe/OufxyGNWt6V2v1iC74IZKRAFFdrH3txTMd/i5sFl9vqrT9tprgSAI205GLn+EWXhm9Z/de4Ho0pd2xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPjKY12B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0+TCn8g"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0106DC19423;
-	Mon, 19 Jan 2026 11:58:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPjKY12B"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9566C116C6;
+	Mon, 19 Jan 2026 11:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768823934;
-	bh=i2KIyk/9YoyAsAVQ8Ktvjgu6lNLtjdHRFEc2ofmH1w8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=S0+TCn8gijlXSzIovKNXCahsIYRsgkgfk5rblb+z0nEbC/X+ZEZfkmeZCZ3YoEmbG
-	 JIN/v70hKSRdBHxPsn/R6uRLlSpvNUT96zUsncKwWD7hXgHzXLAuJmcm+mQx5miy4M
-	 waj/S3vBZyFAMC+DKFOv7N26uPQudG6xh0640QBsBfbQgdiLI8LgdUHxaiWuym+LZi
-	 7Z4o6nPsaseFoXsc4AyVt1NWbaREuilhvtW8KVTbaYwxhGLe1ZzHXcErJA2Nu+2gM3
-	 CCqjCMa3RlFUsHbe737W2/PYh4UpnOi4dR5lmk+XJTUe75K5T/tpmZYZCYQSOK7s4G
-	 6N4G1uWJXdXIA==
+	s=k20201202; t=1768823933;
+	bh=HBg6SibUs1urS8KtNtxZyU66tOskoFp3/RfnmX6QDIU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=uPjKY12BDYWaw8abaHwZYk4dt8xFujzyvcAOwQMglFBcjJsb4h8tsdG37IJb8dnyn
+	 7FfbZnx/RtSv8I0w510iyilvtRpJAmBCmBDVk5Nh7I9b5lClTxtXCLdHxyhLsc6wUG
+	 IxTSJc0vj0NB2puYGrhnD6RR2UUN8PVRdmgySwJ6kjJcmX7e/fmKeFgL2Ur15Cb6eU
+	 gE9GVQFOmoCYz74UWxktp/WNzy1GfU/xdPVH/sAceHA2kK4dyB9VlSs4hKfMlDs7RU
+	 6yeRMoc8RF7Q7Nn9qFOQAzwYABha0jo3+3oA46RqhQaOoGdMCiGSrNtOylwtBuYjni
+	 WVf4GNfDRkjEA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED106CCF2F4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF400CCF2E0;
 	Mon, 19 Jan 2026 11:58:53 +0000 (UTC)
 From: Petr Hodina via B4 Relay <devnull+petr.hodina.protonmail.com@kernel.org>
-Date: Mon, 19 Jan 2026 12:58:53 +0100
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-sony-xperia-tama: Add
- bluetooth
+Subject: [PATCH 0/2] Enable uart and bluetooth for Xperia devices
+Date: Mon, 19 Jan 2026 12:58:51 +0100
+Message-Id: <20260119-akatsuki-uart-v1-0-238f4da4fa56@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +40,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-akatsuki-uart-v1-2-238f4da4fa56@protonmail.com>
-References: <20260119-akatsuki-uart-v1-0-238f4da4fa56@protonmail.com>
-In-Reply-To: <20260119-akatsuki-uart-v1-0-238f4da4fa56@protonmail.com>
+X-B4-Tracking: v=1; b=H4sIAHscbmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI0Nz3cTsxJLi0uxM3dLEohJdkxRzA1NzCzOTpERzJaCegqLUtMwKsHn
+ RsbW1ABTPxgNfAAAA
+X-Change-ID: 20251217-akatsuki-uart-4d7057864ba7
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,11 +52,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Petr Hodina <petr.hodina@protonmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768823932; l=989;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768823932; l=690;
  i=petr.hodina@protonmail.com; s=20260107; h=from:subject:message-id;
- bh=oJfa2XZX/bnhQI4FpuzAOMxaAeuoSQqJQXp6FVFBsCo=;
- b=a/0z+yHib1x0aFIOKRMxjXjdkZYOLrvT5bGZkBat/lOzbNC21peavZUojSS53cpiRTOZzPnG8
- CVMlK64CRVbCP02aP5a2ddJeio6qkgwqGgvm9Gbb4q5W2V2dxm+mlIV
+ bh=HBg6SibUs1urS8KtNtxZyU66tOskoFp3/RfnmX6QDIU=;
+ b=Ejt1k5CivNj7Up8XdDKPDpQGKTc6/tLJZt5xAICmDn5470akPSg7HE5f7KO/OLqTy36FOaLC0
+ D1WMiVGr21SCiFBSfLTw1S/Omi8TqTbJN3sV98lhdKhgi8S7CgB8ikU
 X-Developer-Key: i=petr.hodina@protonmail.com; a=ed25519;
  pk=3QaVc6AaAu1IsyyH86+LIOOFhD7kCws8Xhe+wwyE7Bg=
 X-Endpoint-Received: by B4 Relay for petr.hodina@protonmail.com/20260107
@@ -64,45 +64,24 @@ X-Endpoint-Received: by B4 Relay for petr.hodina@protonmail.com/20260107
 X-Original-From: Petr Hodina <petr.hodina@protonmail.com>
 Reply-To: petr.hodina@protonmail.com
 
-From: Petr Hodina <petr.hodina@protonmail.com>
-
-Enable the bluetooth interface on the uart6
+This fixes the uart instances defined in the dts so the serial
+console will now work if uart is attached to Rx pin on the uSD pinout.
+Also now enables bluetooth.
 
 Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
 ---
- arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Petr Hodina (2):
+      arm64: dts: qcom: sdm845-sony-xperia-tama: Correct uart instances
+      arm64: dts: qcom: sdm845-sony-xperia-tama: Add bluetooth
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-index 68841e036c20..f23f9757a08b 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-@@ -755,6 +755,23 @@ int-pins {
- 
- &uart6 {
- 	status = "okay";
-+
-+	bluetooth {
-+		compatible = "qcom,wcn3990-bt";
-+
-+		/*
-+		 * This path is relative to the qca/
-+		 * subdir under lib/firmware.
-+		 */
-+		firmware-name = "akatsuki/crnv21.bin";
-+
-+		vddio-supply = <&vreg_s3a_1p3>;
-+		vddxo-supply = <&vreg_s5a_1p9>;
-+		vddrf-supply = <&vreg_l17a_1p3>;
-+		vddch0-supply = <&vreg_l25a_3p0>;
-+
-+		max-speed = <3200000>;
-+	};
- };
- 
- &uart9 {
+ .../boot/dts/qcom/sdm845-sony-xperia-tama.dtsi      | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+---
+base-commit: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
+change-id: 20251217-akatsuki-uart-4d7057864ba7
 
+Best regards,
 -- 
-2.52.0
+Petr Hodina <petr.hodina@protonmail.com>
 
 
