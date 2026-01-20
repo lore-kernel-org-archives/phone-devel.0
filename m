@@ -1,154 +1,120 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594B7358D16
-	for <phone-devel@vger.kernel.org>; Mon, 19 Jan 2026 15:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DA133506C
+	for <phone-devel@vger.kernel.org>; Tue, 20 Jan 2026 03:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768837948; cv=none; b=ie7CTWf/lP5mINlyhZw1HToL8Zd4fYgiLpLusmMcmdPFlcMcvCxLpllNWItsd/gH5vhb6Lh3AZrnWRTsACtftZsXKgHXdZbTi9exhQgIaqUvJp2F5a91/qkCR6XYUKAHB0g1rXQ9s5BqKSlfpEEKfOK2IyKhPgVK6ng46QqpW/E=
+	t=1768881022; cv=none; b=nXbAPLGXlI/0A1QX+4vftuvf+4E4SgKhg48uffueTXlcqg62bga/HSrkvW+oyNLap6UCnk5kdW+4EawVzxdfih86S3s4qDutuHlolBN3/6jFbf8wr/vvJI9rDt1qMrsoqwXoa5TjFJ8kLThNGJ6wkmwKln6xb1F1AoX50r/1s1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768837948; c=relaxed/simple;
-	bh=hmFWkaNjPJg0ioPLpbxNfZVs6zemNfl3UQ9lpEvUopw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=tu53WNVbCSkg+zBCJ/C6uuhvLFyfzdD01pg0L3IcKHqmn5eW0ola6Mhmhmsj4ayPjW0QvhUUt2LDCkdz45I03ReIhPC0GT2It/iB/PXUDP9T/SBfki9ntkhwaFsES22bhqlGVnIrYa93+5k/D/f0O5ACazer2aDJvr7jtP6BWs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=sDA2oJMU; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1768881022; c=relaxed/simple;
+	bh=YouqfwVWzYXpcikOlfu9sTS3gDOn1ZFujhD3ULTm95g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cER+Zpa/5E9KCJ/qgwVhxpfMISOXFc02R+1i9K9pK+HORyCGo9vUQZggydmna4WW5PjATSQJbdEGzx3TXGGrjxAjEXus9stnaES9cLbjr+rOznIAWF9wt6ZNDnWMeJil3TVE0V6WoTPVWg7rCw4As9YrRS1vPbiz4Cm+GxlfKIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZmqhouTb; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="sDA2oJMU"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so778473066b.2
-        for <phone-devel@vger.kernel.org>; Mon, 19 Jan 2026 07:52:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZmqhouTb"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c533228383so298078985a.3
+        for <phone-devel@vger.kernel.org>; Mon, 19 Jan 2026 19:50:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1768837945; x=1769442745; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ydzLNmqrNw79cznaWxcj/vU4qCKsfInZqdkzuOLukEY=;
-        b=sDA2oJMUN0WLSPzOzyP+whoU+Mfyqsz4btnURPSZZszzL79YJPr4lNqtAkhuOJXziZ
-         iHbq40ya5d6jt2cTKgmU1xrRvwbJmIgvWL/01iT5A35P1AL6nJaA6xgxk73Q4v6nwP/w
-         poGBTBfFFYf7x3DKlQUe0XFF8FQEADES5r3dypoX2FPoiGVD7f+x1m5cHbLUtOwLS1vX
-         c0zBIELGJDlESedyPaOqi9mLP9psfWEt4QA+4SQbv4AxKyDwzBbs3vo1wkzayb4OsMKK
-         fXm+0X5g2fMKROOZUKteRUeDgg5VNAz9iKes7Ak9pz8SNLU7f7k62HdethtIA0Oh76uF
-         6xLQ==
+        d=gmail.com; s=20230601; t=1768881020; x=1769485820; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J0ylyK0Iu22RJ/xkcdGlRObGYO0FeHTfl507VqBaAx4=;
+        b=ZmqhouTbwST4ddALMVWqWYXrD6SOgQJIASZXcp1vBD6BF+Zo55rXjoSNVULPX/aRUW
+         ur9RsyoFLFnJ6IMDWoqqNtsRoLyCqppfLbCN8/CR4nkAyXRqFlfP9OHMcxp9pm8FaKRI
+         NYcwVFQ4jagrD5FgIYl/XzZKnbl3Wic0TpoI1ow0pjv9PA04fsQ8uuiePnWSlvfeGx+m
+         r3apki+c9emFM70Q++iVoS2lyRHcMo4Wji42O7/5C3eyQ9mdC7TDLksftz4wFGgcqauk
+         Ceczqnr/IlqyLmvKDN8Hj7H1NnXphNcPnq5zRf4rkbHVZOPqwDlgD7bhijGExMXJhnbd
+         oqUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768837945; x=1769442745;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ydzLNmqrNw79cznaWxcj/vU4qCKsfInZqdkzuOLukEY=;
-        b=FSkraFfGZ/Smia3Z8XFXwcPGJ7wG0SeCuXOeC0A5Aah8C7se/DDg3TABZfPK4oSDdI
-         9VvMZyY0NoXzcoJ8cCYHNtLyv/6SAbkz3AboBsBgwBRtv1Y8ZyDy0Yg7mcfTOiVpdzGj
-         iAe+hEt90OhLfgyYr9IkDgtjP/+pLGcraWcH7VRgdOjAhJGY1r2u3nj+lDtp1z25W/Rl
-         By0yaQbKsC4DPwjuaRDF10o7EgBBI+HbBMIY/8EyejLZ9KOnFai/gUfKEPhLL7sL4J5g
-         MeiD/WX4BXM6ZBC21CSUsx79TNVpCMnrnD5ldBq898wmP5udfTFDSaLLZmwg/495DhQv
-         T0kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHC4UgutoXW2v0lxArg8EI38LHXDvb2knRrUBHV2DZefA6B+xagnfmDkIlLpjVg2tz9miqrOFVjVDpqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+xlzJXNqazdicm/csLse65bvpGL+dagnH5ah+y67PKbUoq9ZD
-	yfloqIN8P+M/vg7LUBKt5F6N32lwex6QbhbvTf6tQMWiNKuq8vcYfXGFMjK3NFuF2lk=
-X-Gm-Gg: AY/fxX6NBg2j+inhpchLokHvpQNlMk0NBxkPT/GXroh1wfPmVCwJCn+YT8jfMF0wdoc
-	NAZ+VEDBy2/f4Bx2KrekvW3k66IMz/8eI64zA53GTTXxL4/LvdzdrwcRBlCABV//OE6F0G9mi18
-	QDsn0R0WW3Mp3Whvy13JaxxL+WdYgTd/EAj+KAwUpzFtAMH+1JSm8zZQkhofeMMEmdiHOLKAio9
-	g8oCdo8jej3bS0Za6cUTH6ZfoueKPZywa+UYgz9h006jBm2k2w7/cdNtZ6EtUtuofEyL3ieNGBJ
-	K7jV9nc458AnMYRK02u0SGusbOra/9R7uImNmvhEmlj+ctR8TVJigaFCcyoFhVDTpYFYRAWfeQt
-	w6LI3lnvq8depYtToGsAyujeEoeVdVz1uBMbT6KSahMfLm0cFtQhHtdR0Bwobs0uYFqGG/wWFbm
-	e67/oqvt73AcordTlg5rp7D/Zh0F0PI+pyg9o5zXmgrL4G0GqrdGeiK1eY1CTHJqObyk8=
-X-Received: by 2002:a17:906:ef05:b0:b87:1064:4ea1 with SMTP id a640c23a62f3a-b879302d388mr921496066b.65.1768837944673;
-        Mon, 19 Jan 2026 07:52:24 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fbbsm1159645266b.38.2026.01.19.07.52.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 07:52:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768881020; x=1769485820;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J0ylyK0Iu22RJ/xkcdGlRObGYO0FeHTfl507VqBaAx4=;
+        b=RSZxqgZnnxugb08fVMbZ9NA0UgZ9EeBLFLzPYtTSnfQgEA7EkKaQvPSZ/2CzSBekSc
+         g8IxMPLDLsrWsfzykuPptCJJ0IObZZatDm4aNL6w6IG3CJkzdoWdlsEwxI2iu3i98iGs
+         9jyzfct6Yi8XnvUmEORjUUQO7A1wkqD1QtGopXNMgo9SKk0TWIsgKpTRE9eDGDjBlOwW
+         xN6c9amg8Q3c7f8ru9m+5guP/D8Cm4SK1JLIpUdTACPpxlsTrduzt4TeNQBDnNHkjuud
+         2wscr6FoYLbzE3snYZpsWScYNdIyKYR4EPK2DCbt4WmK7LeseZIA8jLuVGLqQtemTHzf
+         8KcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUi6xK7kR8yGsPry0CH9mqQSaFW/oqwRKUklh0YbZN+UgqhIp1YiCXKs2uKZfbLDMcw/WY006QsSiUN+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxR8QjPtOhDMJU3K+ZcUAPoZDiOV428Gd5prFrM/+ehlNhCntB
+	X/2Ml7ANyufcweeFsqgsV7ta4qicZfunaF6sEELIA3TWdJ8Sm2UseRgRGRTE4Q==
+X-Gm-Gg: AY/fxX40d6rRTw6+nQx7i5x7pJ/VD1tdcxgA0mR83s8FrcCbDge+bQshXgkFKjFIxdA
+	mU0/MmtUKYDk1bVmbL4CJGnQXMCAxAiDl1RjdiDUxuI2i6WQMqpDi7wXh0w5Qkr3nURAexnl5JZ
+	eZHVNFc0v7L44fe2rgQUtBrVX5Z5E1qJ/xyaBVBC2FlMD8TVTOfrAIOkjw1KQD4jJczN0mAMKqE
+	LcrANibQsGTenJrrwre4SsjHgSpBcyZuTCuIHkHuxR0w33mz7vhopW69G4v02O3bUIXwOt0iTbG
+	rM2n8nLCpLfFsWgW3bh6Ny6dyCCrNRrjbN9oK/8tmVNfWTUsCwOaOyTUzRXYpwGKBqvvnLEleKx
+	JrOA5wAzvvcit3E/+iM02N9E4erghz7OrO6EdXm3ERrpM2IRnJl6/CzwI2SAw+XMu+ehAMY6i+w
+	qynE2QV2l3pSt7l7eSeePujiEs
+X-Received: by 2002:a05:620a:3f97:b0:8b2:2607:83d5 with SMTP id af79cd13be357-8c6ccf2381fmr56720685a.75.1768881019642;
+        Mon, 19 Jan 2026 19:50:19 -0800 (PST)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a7250a60sm936184085a.31.2026.01.19.19.50.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 19:50:19 -0800 (PST)
+Date: Mon, 19 Jan 2026 22:50:41 -0500
+From: Richard Acayan <mailingradian@gmail.com>
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Robert Mader <robert.mader@collabora.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v7 2/5] media: i2c: imx355: Support devicetree and power
+ management
+Message-ID: <aW77kXzBjAlIMG1C@rdacayan>
+References: <20260117040657.27043-1-mailingradian@gmail.com>
+ <20260117040657.27043-3-mailingradian@gmail.com>
+ <a29ff1e4-117c-4703-b0c7-73ad4e369201@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 16:52:23 +0100
-Message-Id: <DFSOPXFSOUY2.2Z6XCLCD796Q@fairphone.com>
-Subject: Re: [PATCH] arm64: dts: qcom: milos-fairphone-fp6: Add Hall Effect
- sensor
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260116-fp6-hall-sensor-v1-1-69275c6bd809@fairphone.com>
- <3a17f2e5-0724-4d70-bd22-1e612142b3e8@oss.qualcomm.com>
-In-Reply-To: <3a17f2e5-0724-4d70-bd22-1e612142b3e8@oss.qualcomm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a29ff1e4-117c-4703-b0c7-73ad4e369201@linaro.org>
 
-On Mon Jan 19, 2026 at 3:41 PM CET, Konrad Dybcio wrote:
-> On 1/16/26 3:22 PM, Luca Weiss wrote:
->> Add a node for the Hall Effect sensor, used to detect whether the Flip
->> Cover is closed or not.
->>=20
->> The sensor is powered through vreg_l10b, so let's put a
->> regulator-always-on on that to make sure the sensor gets power.
->
-> Is there anything else on L10B? Can we turn it off if the hall sensor
-> is e.g. user-disabled?
+On Sat, Jan 17, 2026 at 02:03:02PM +0200, Vladimir Zapolskiy wrote:
+> On 1/17/26 06:06, Richard Acayan wrote:
+(snip)
+> > +static int imx355_power_on(struct device *dev)
+> > +{
+> > +	struct i2c_client *client = container_of(dev, struct i2c_client, dev);
+> > +	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+> > +	struct imx355 *imx355 = to_imx355(sd);
+> > +	int ret;
+> > +
+> > +	ret = clk_prepare_enable(imx355->clk);
+> > +	if (ret) {
+> > +		dev_err(dev, "failed to enable clocks: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = regulator_bulk_enable(ARRAY_SIZE(imx355_supplies),
+> > +				    imx355->supplies);
+> > +	if (ret) {
+> > +		dev_err(dev, "failed to enable regulators: %d\n", ret);
+> > +		goto error_disable_clocks;
+> > +	}
+> > +
+> > +	gpiod_set_value_cansleep(imx355->reset_gpio, 1);
+> > +	usleep_range(1000, 2000);
+> 
+> The deassert above is not needed IMO, anyway.
 
-It's the voltage source for pull-up of sensor I2C bus (so
-ADSP-managed?), DVDD for amplifiers and VDD for a most sensors like
-the gyro.
-
-So realistically, it'll probably be (nearly) always on anyways. And I
-don't want to shave another yak by adding vdd support to gpio-keys...
-
-Regards
-Luca
-
->
-> Konrad
->
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>=20
->> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm=
-64/boot/dts/qcom/milos-fairphone-fp6.dts
->> index 7629ceddde2a..98b3fc654206 100644
->> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> @@ -32,6 +32,16 @@ gpio-keys {
->>  		pinctrl-0 =3D <&volume_up_default>;
->>  		pinctrl-names =3D "default";
->> =20
->> +		/* Powered by the always-on vreg_l10b */
->> +		event-hall-sensor {
->> +			label =3D "Hall Effect Sensor";
->> +			gpios =3D <&tlmm 70 GPIO_ACTIVE_LOW>;
->> +			linux,input-type =3D <EV_SW>;
->> +			linux,code =3D <SW_LID>;
->> +			linux,can-disable;
->> +			wakeup-source;
->> +		};
->> +
->>  		key-volume-up {
->>  			label =3D "Volume Up";
->>  			gpios =3D <&pm7550_gpios 6 GPIO_ACTIVE_LOW>;
->> @@ -316,6 +326,8 @@ vreg_l10b: ldo10 {
->>  			regulator-min-microvolt =3D <1800000>;
->>  			regulator-max-microvolt =3D <1800000>;
->>  			regulator-initial-mode =3D <RPMH_REGULATOR_MODE_HPM>;
->> +			/* Hall sensor VDD */
->> +			regulator-always-on;
->>  		};
->> =20
->>  		vreg_l11b: ldo11 {
->>=20
->> ---
->> base-commit: ef1c7b875741bef0ff37ae8ab8a9aaf407dc141c
->> change-id: 20260116-fp6-hall-sensor-1049f2f872ac
->>=20
->> Best regards,
-
+This assert is for clarity, otherwise it isn't obvious that the GPIO is
+asserted low when the function is called. It should stay.
