@@ -1,98 +1,86 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC692BE7BA
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 22:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D25B5AB
+	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 23:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769638638; cv=none; b=ZmN5Olrhabkz6l+PA0PHl7BVrGYSblNzvTzdnuKwyk3y7cyo+Znm//2X8hTUXire8pr7AX5TMcPlD3Vzq2WfhGPZRm2nX4BF64645df/vdkaS2ZICet3iS7Rex8a5JMU+FcxKfAob5d39FUrC3IjX2VkraxRoH4sBFhcyJCr23E=
+	t=1769642603; cv=none; b=JLqQFRJUglPq45Kw1Co3wSYqW4Thcygo2KHFLyvtXS0N174rAZbOnQqKNtCcwPfdnpPZjV8CHKDKXlU2ikUXxeUfWP5LC6PkbijbmpbzlG0NnDCcG/zRmzSKZNxjIlil8cxknzDXLUMxyfDzdCAge/cbqm4ZRUmGfVhNA8ymqTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769638638; c=relaxed/simple;
-	bh=8gCm+keAh4iloPnPUPFhyZpkhcs2+S5XGOmc6PZKlAI=;
+	s=arc-20240116; t=1769642603; c=relaxed/simple;
+	bh=6ca1Sl8ati4GIMbwjPj+oVMEy+QZ4KssuHKcXxijejo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VYk13HiAr4hthNzf0TPgshQ7QZzU+UUCiWllr7L3jcZS169cACF3K30jsWHkxnCO1rfEfYB3aKMux1iZFAog7/KiCsBsKOiMmOED7mAD+ykozRv/uMSL/QRToDyg2oQHXpOVQ1E4/ldRl7wOn+QUL1x+/cNy1RU8zz9jt3kjZlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nehQZQsZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iQDY6+Hm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KUTYkbqzZVcqD1gJaUa1NDVv97dfqeMKD5MyUiat6YhBD6zC/YldI9qSBafj0Cse69D+gZ8nfovKGrLTpa8/3wW+qACgNsVZev9T0ZuQISjqYpiBTVfcl9YN1NpVy7s1YemNxOeG3tEhfA1wSVmeA0H+XpSQDe1fJy8rs3ZjCSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K90z6qwu; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nehQZQsZ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iQDY6+Hm"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60SFeHrJ3246846
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 22:17:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=LiSPXLj4QSiN5MSKstEEgtaG
-	EF4LVNZ0IAEy6B5hhkc=; b=nehQZQsZnUyGSoaBwALnypDTGwnULyCFAEVJuFRf
-	6jncvHpjdcUcxW/5oO9KK4zmkNMCOX9UnDzX0igiPsgEjRU9+6IA7DN5vz5Kk4yw
-	X9fwnYFEqwZy+aB85sp4bQI0Zh8Hy0jHQH16ms8MCbK8yuksabp2Ciw2Nq8d7CqM
-	i6BFUj63gFRXi0J+igV3JQmm1/fhJOL7kaaR3dMPlkMkQgRBJFYUxOMg/7SAJ5Z+
-	7YzdlyO9fH03HF/kDQqDiVGiFqnjlHerFNnifDHpOKowQmTQiKzhrvaSlc2SJ7tS
-	I+8xMVDh/gYPocLxqXiEZPwFjpsOCgicnbDvJx2tbijbDg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bydfk35w5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 22:17:15 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c71304beb4so76049085a.3
-        for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 14:17:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K90z6qwu"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-894774491deso5144146d6.2
+        for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 15:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769638635; x=1770243435; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769642601; x=1770247401; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LiSPXLj4QSiN5MSKstEEgtaGEF4LVNZ0IAEy6B5hhkc=;
-        b=iQDY6+HmmRaKFdHPcfOlaPuQWT19U93SXZwOF8JyzDD1IPV4ZNyyWdz+vRNrpwbQHG
-         L0Ih6yiY1+o2FGNyXrzef6hHGfI0EX/DWNOeBWCgwrubxsCJqwgPS/B5XSJDb2UPFu0b
-         35ZB8Xr34GYY3mHanAX9t947D32Vhtg9f1glqVMXJ1jK6r7jNdcRXGNMocMH0QgZoxdh
-         2AbnuWIyggbJQUJWTeU10KfGUNYpV/ePd04gu785BqltgJmVOHp1z3Xi3zp6bDWvFKZp
-         sZjUii9/uBG/JLyJq11LMXdpr1eZD2b0QlgNY4nNVm2WsbFVY9HM6TTc2FcvaFk1yeOG
-         56ug==
+        bh=/R+p0Q89VOTzs/CkCyEL3M6uPrfEJ5bMsqI/Cf8cMcA=;
+        b=K90z6qwuK+1/Xnm39ywbGMTfqcD+S7ZsH0SnB+CLJpInQddrut702wGJ0kMCG5fDXW
+         5nSGTj993iMthvMjzahsmtk1Z16YMQTUJDerRE/mKT7ClwzPPkGi1i0C+xOtkR9PFXCN
+         wS/c5jb59jkMWvDYlwvByHDc5CoEPprWg3Q1TfFrHMk7Ey1vK7+ZtGMLNWP9IrdMIESx
+         Ld7Hw4Q20cF6WM7I47395kLR0WfIVEkzszvlwhQPFAfAxh0o0r5/hmr0q9vGsIBeC591
+         j8DlygFXIqTElL+qv+w2fkfLzCKijzdihWj/qTJr2jW+ILtid+NK2R915riiODEIWG1+
+         Al8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769638635; x=1770243435;
+        d=1e100.net; s=20230601; t=1769642601; x=1770247401;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LiSPXLj4QSiN5MSKstEEgtaGEF4LVNZ0IAEy6B5hhkc=;
-        b=OpMxy/EHO64d+C66MYzswhJ1djrfanfLbrr/Mi7uBBEG2oD8xkJVujNBl5xv5ndy6R
-         L02t5bS4GNJWKRwOLGjY2Ukvy5DQ0y677j2U/AVkRcQ8RCTGs06NTgkVifkEtyl4yuhG
-         WqqUTmhq43+fKZyE09giJ90w/OSjv4F0zG0UrcyoXFPQ3Ph2K5Ul7SRMwHo2f22xOe8C
-         2PFS7LA/R4f55oMxP150GJ3JPWNfyCPgcrzW26fS8/ASd5flaHLXSD2/wdqg7EiLr7wp
-         TrKfmKPkHgBoZEkVwuxtxB4/f5g/PTruijAO7thryY707nk6akJkAqYKKJmxgm2BsPNK
-         pRuw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8qZM9+VS1lxtq7n0UT8XeQy55z8540gi84Cen08+HNXbDoiOYNhuC4tlvIYSdFG6dkjsprTladPbvpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTk/FhJL2Gs6frQ41fmllkUIWsVbMNX2+aZd+yIZHA+zNOaw6p
-	LG3Ce7+VqKUogSSOd1RiVPEqw+fHs3r+VjicX0b9oleT0TVD+p8A4advTyQJBfH6m1ztyhQTjQU
-	sSV7yRM6h+BeR9fPSDfXskmcEOWJ9GHnA7gfdF2a1z0mHVIathAzXp2jVF3t0sBD+ug==
-X-Gm-Gg: AZuq6aJ+Rv/tXRrYeiTYs/qJqxwk7mHLLXegDWOjZcie2l+4dLMnp3D3cC45Sczx8Re
-	u2c+UnkVnVDje4c4xKuwcIkR8ubdlAi8LqeLGqujkDgeg6oWCrrAhj8Y0fEFtd/u6sdRdA+SmVi
-	2P+a+WCUrQLytgZMGSOIOcjGJhxFeCfTzwh4H6eOud1iMu8hFnwQjfG8TJVT1A8Mk2/C/86nPoq
-	x28N1SYSpiOTNlqgm7tGrJ+fbcUEiTH8TCSbsrRA1LkdFarUWJDV4DKLqsfZZkPzF0iER5qDQgy
-	NpVg4xLDuRTxNm7Z2mnVCqATC5ExMOxOjjJafhuyX9w9GUsKvOaPgoO/cpnJ2WX9sNMA8FhVEIZ
-	RXSmxvGb7y977rbTn0v3n5kGfiU2IHw1Yu65OmYspk6kNe4RIl7dmApkeBa7MawNQmd2XWfrt6U
-	FXQhXEfBkOSLvUBSG00wXGRxg=
-X-Received: by 2002:a05:620a:bcb:b0:8c6:a213:8fe0 with SMTP id af79cd13be357-8c70b860766mr819709385a.23.1769638634547;
-        Wed, 28 Jan 2026 14:17:14 -0800 (PST)
-X-Received: by 2002:a05:620a:bcb:b0:8c6:a213:8fe0 with SMTP id af79cd13be357-8c70b860766mr819705985a.23.1769638634131;
-        Wed, 28 Jan 2026 14:17:14 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38625fbd154sm5748571fa.43.2026.01.28.14.17.10
+        bh=/R+p0Q89VOTzs/CkCyEL3M6uPrfEJ5bMsqI/Cf8cMcA=;
+        b=S2IbuOCPIrqaOheYMc6Alt7ZKsTI3eYEw822k4V/1keMYm9H/cJVX/CZCGts9ZFDYy
+         IfiibEV5TQPeNLHY6HEqsXnQOgzNoci/WfALbxarR3/IRPITgI8+VL/AIPpknSEBXJY8
+         RGHa/0rjjkVge6pRSZd99GcJBwH63pnzqx/f2E5pjBktkKMGabeLUg5l226+A9eNyGlb
+         /6rZSpNfnZfeJpwzfo6CLzh3jxGjvFxk1B5K9WpUcegpejs+DnsAZoKjQtP511DDSeFm
+         PALdvUhb98FXZnj/OW2Z4bXKw09vJCKzne8NWfzXEuPZ0X1RVFwyO3dgF0vmwGrrmWkb
+         oyFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkgKynfobzb+DrAIyqV+FBEaKH98KZchDLIfepvLItBbouHDh3bM7JBhyh2oDyAOi6a7qBQPnLRhWHLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6YBUQuhLPZPn78MxZ33JuD4t2temxLVv05xRhqHMElhsidjb9
+	32I5CNo1zeEFmv9VoyaZBxtnimGgxHgLX+mhwXNreMMtOQUVhpA8SMYP
+X-Gm-Gg: AZuq6aJ0kZIuHFcyhHxUE2e+ZtHeGs39DCCSqvw4S23de9OHQvtGqsvq6dh4kc7XlmX
+	Puufk4aYJzYAPwugn4h2Il3zQccpXDnnkF5ancgQe3SdeFURZ99D1dxKTUUrXoM/Sr2FpXE+oS/
+	dpQ4upzRR0eHrL+42L+lYLht0OMx8GMQ5rgQOWm7pu9QSmPL++lycRfJxVOGbM52jlUh8YpLROM
+	ZGGn+x6Pd7ZPZaB3ZY86ShkhHZ35/5CVlrJTEmG26v0IsyYS2niaOvWuz0kVyIl0qmJjD/8iP0W
+	0vNxG9lWaxwgIFiMS+C3fLazKOKi/elAKCER9qH8ulBGqFvtbpCo+/82SWwP7TS1di9O8eQxpYH
+	LaYg+dZlcuTPf+aRJ6VVIkQxMIMOgpDgalDlKmL0CNuSlzOfaXyRtoFB5XDSGE9s9C6iuXaqaKo
+	PF7jd6G9WczhgA6A==
+X-Received: by 2002:a05:620a:25d4:b0:8c6:d2ca:1d0e with SMTP id af79cd13be357-8c70b84a6fcmr916954085a.11.1769642600692;
+        Wed, 28 Jan 2026 15:23:20 -0800 (PST)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d375b640sm26715056d6.39.2026.01.28.15.23.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 14:17:12 -0800 (PST)
-Date: Thu, 29 Jan 2026 00:17:09 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] arm64: defconfig: Enable LPASS LPI pin controller
- for SM6350
-Message-ID: <44ar6f64zneh5ix62mjtwycp7np4n4fpabynftrpb6yev4qshr@lopazp22g6o7>
-References: <20260128-sm6350-lpi-tlmm-v1-0-36583f2a2a2a@fairphone.com>
- <20260128-sm6350-lpi-tlmm-v1-5-36583f2a2a2a@fairphone.com>
+        Wed, 28 Jan 2026 15:23:19 -0800 (PST)
+Date: Wed, 28 Jan 2026 18:23:43 -0500
+From: Richard Acayan <mailingradian@gmail.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Robert Mader <robert.mader@collabora.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v7 2/5] media: i2c: imx355: Support devicetree and power
+ management
+Message-ID: <aXqaf4OmvSCvt5gu@rdacayan>
+References: <20260117040657.27043-1-mailingradian@gmail.com>
+ <20260117040657.27043-3-mailingradian@gmail.com>
+ <578668b0-cba2-4550-b676-26ed0b447bf2@linaro.org>
+ <aW-V8VTcOICLWqaU@kekkonen.localdomain>
+ <aXl6MpRB9ncCeu2M@rdacayan>
+ <aXnB2FUgb5OlGjfn@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -101,44 +89,41 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260128-sm6350-lpi-tlmm-v1-5-36583f2a2a2a@fairphone.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDE4MyBTYWx0ZWRfXxw0C9N+2SvR2
- h9h9UZq8WUNZ5EtKhyDKsbVzoCLE6iY1NaqnY15B/3cAdBPLTTyMwl8jUwzLYnHfRSTFTX3PyRk
- 1lKZTiQLpjnOXRe61ql0bwh6GQiIA9rs0hHBKPsIgIed3ewz8RzfGIzyRHhG3gqLl6ztqPjm6FW
- n/QdUuPvW78erYSWwwNHm2NVMnVdtrTAiLGj9IFopA4bm3BX1JMeXAJu9gFXkCheGLSB1DPDeZQ
- Gs8Y66hF7thdrOoDX7Nf78u/l3RhRCAiYUYADq4ozAmABAshCyqVnm9jQO2ii51wPGq/PLBOsp9
- EB/yigfr5LCKae/DiRzTmWnniMrGAPO0nzk0dH7Dk4DTLENY9fw5FQKJI7lGisjtR9URnSx9ecP
- 9d6/+CT77BkiGf3DNT+UPvnK8UMaEIwmrgfeOsYoiUYjVI+xBQFGnFOwyQGvJbEC7eSSEloi7/w
- /+LevTGI3E8aU/n7TVw==
-X-Authority-Analysis: v=2.4 cv=XfWEDY55 c=1 sm=1 tr=0 ts=697a8aeb cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=gLsbps8-TBLE9aXLRz8A:9 a=CjuIK1q_8ugA:10
- a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: F3cYxEITBrwa_kiqhl-vK_127vD02Mbg
-X-Proofpoint-ORIG-GUID: F3cYxEITBrwa_kiqhl-vK_127vD02Mbg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_06,2026-01-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 impostorscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601280183
+In-Reply-To: <aXnB2FUgb5OlGjfn@kekkonen.localdomain>
 
-On Wed, Jan 28, 2026 at 01:26:53PM +0100, Luca Weiss wrote:
-> Build the LPASS LPI pin controller driver for SM6350 as module, which is
-> required for audio functionality on boards such as the Fairphone 4.
+On Wed, Jan 28, 2026 at 09:59:20AM +0200, Sakari Ailus wrote:
+> On Tue, Jan 27, 2026 at 09:53:38PM -0500, Richard Acayan wrote:
+> > On Tue, Jan 20, 2026 at 04:49:21PM +0200, Sakari Ailus wrote:
+> > > Hi Bryan, others,
+> > > 
+> > > On Tue, Jan 20, 2026 at 12:44:24PM +0000, Bryan O'Donoghue wrote:
+> > > > I think reset should be asserted before regulators and power are switched
+> > > > on. i.e. before you try to switch the chip on, you should establish that the
+> > > > reset pin is in the state that the timing diagram calls for.
+> > > 
+> > > Indeed.
+> > 
+> > I think the discussion is more about whether there should be an assert
+> > in the same function as the de-assert.
+> > 
+> > > The xshutdown pin, as it is typically called labelled as "reset" in this
+> > > case, functions as both hardware reset and hardware standby mode control.
+> > > It should be asserted (i.e. be set to low level) whenever the sensor is
+> > > expected to be powered off. Typically deasserting it is the last step in
+> > > the sensor's power-up sequence. This applies to nearly all CSI-2 and DVP
+> > > (parallel) camera sensors. (There are some exceptions that use explicitly
+> > > two GPIOs for similar functions but there are very few of them.)
+> > 
+> > This patch has the reset asserted by the time it gets to
+> > imx355_power_on():
+> > 
+> > - when coming from runtime PM, the suspend callback asserted it
+> > - when coming from probe, GPIOD_OUT_HIGH asserted it (considering that
+> >   active-low also affects the initial output setting)
+> > 
+> > Should it be asserted again inside the function, or
+> > should the initial `gpiod_set_value_cansleep()` be removed?
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  arch/arm64/configs/defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
+> Please remove it as requested.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-
-
--- 
-With best wishes
-Dmitry
+Ok, I will remove it.
