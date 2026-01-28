@@ -1,65 +1,55 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC862BE7BA
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 02:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0CF32BF2E;
+	Wed, 28 Jan 2026 07:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769568796; cv=none; b=N/Smr3rjBb4liMWc0uh9iemX+T5PAzgjaNqfk4MpmNZmLt5b4Ez58deHmlS1BuZGG+H7c1Dg431vS5OnRfN71Thj/pdNRi9KJlvPFTgRXE82tat1Nr01QB3FuR30usA3Pz7n1z/wH4RUQN2tN71Dke2dTJCBRTQT2QeZA26FIdo=
+	t=1769587161; cv=none; b=RqCujCoOXA5rKHH8yDEO1Hvf4834eJ/c2hQAW6zW6pGQG1fQmNxo7PCbiOrUv6xGl3LWAAOUaHwq/BG2x/1bE+YW9RcO39KRKrE69votogJGBItGffcBEEgkuF/Z5A1k9hcmQk8/5P+kY2qOhIB2PT+/6H6vOZhQXFdxB+8dI+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769568796; c=relaxed/simple;
-	bh=9KL0qFGhdBvOIIw6GVscMMDXp1h7L+qs/1b2H49sp40=;
+	s=arc-20240116; t=1769587161; c=relaxed/simple;
+	bh=bLrxrtaKEb0EIqN05MhZumlDxMxzAI3JunezXZpTj3E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GenfbRfxD593LN7qMahgbjVyZ4dkOqgALQbipoxusyMMrP1+QIVTD+M3mitjUueK9JGB0H1DdA41lP4quy3yeH52tRv910HzsbMh1DOjH4LbBaHQEJj9k80oY5nAS2VIHMdekMwxGNDGRSCesk/iFn5zcoEZh7kgzC75JBKy4J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SiIQOE+W; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=OT0GfvPghCbduVRxwpROHVHZ2YZ7wwbuP84hTxvFYjbjtpcCShyRxQRT00u2wNql1TiSwcwoJRgNSq9YHVjgTZd5C1TaLtHaejrhoVVKvrJUPIu1aRh3KA43lwdHPOYFl3DdLud5fOpHd1wF2hckWVWiJLlx9siSZcQWrPjQ0lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyXUMY6b; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SiIQOE+W"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89476eaaf16so64432976d6.1
-        for <phone-devel@vger.kernel.org>; Tue, 27 Jan 2026 18:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769568794; x=1770173594; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yluvfUNr6pH7GOU/s+jQXcqg7WVVoVQL2cZIk1rM12A=;
-        b=SiIQOE+WNstIDMT5YlVCQsJtZWphJZJr3NdEDMdV5NDb67FflCWbfmi3VIVT0kk6ut
-         Eqvh/niJq2sI0m/kI7RTwI5BZC9UZIq6s50meT0FW+1yG0LTGneqVw71RkKu2BH2L4OB
-         uAdj0yV5PMH47KKYtVJZid4JEn/6KRfjQt8tWwF/ufLdmqQqAgUXOgkzCoMEdFoEUTk8
-         tqlCWumtPztW5G/VJ6/2OdX/qUhpIsUFVtFjDQ+KAhc+rfUPFLpKr6IvGmxCsK8TTZbW
-         riyZr8g0rDrhdE11+KTpoiCHOwkbxmeBXDglcBQKaGzWiTVtBM+a/TyVL0rClf2Plb27
-         oK9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769568794; x=1770173594;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yluvfUNr6pH7GOU/s+jQXcqg7WVVoVQL2cZIk1rM12A=;
-        b=NEt42PobGc9mA05x3i2jC3Z225Th2U+4uEDlRaTlSjW7dJlGXHq+v4viW44LNmAQ7I
-         q3dSxukBzHWWZ7LrISZ8sKaYg9gTy53cxp2Xts6yux5AnojmlsIzSPvIZpHnqKl7/CBM
-         fz1EbbMGOxlH653NcGpb2ftFqdgwUjkzUzx9fhEtgx/GhWzSe1CWIuGqP04CpbtJXhAY
-         L2MlH0V32g0vgUuvP9W+PuGmxcObydatTYxPqs6fcnJGNs6LMns+HtGQvwCjtM2pjTtQ
-         5EZqDRBXFGPJmNlrvrtFe9ZT2pw6dDCKeSnPKA4RYJHa/HX5n1a1arZOlvpBpFeoAN7N
-         0IpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpQFndTg4Ag4A8mxFfwe9wOFwkZhPjFsmy1rnNU7TrjiYghOsi2GmGd5RD0rm1hvx7Hthy37jqnvxAjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydivoTOsjz3DhbpsaWGCX9F3GAgznYuB2u097vtfftkYC9jq6l
-	uoIPbqHQMPkFLetZFP4/nYcejQwb4BgTHQcxe7oE06OXo45+R21nOasU
-X-Gm-Gg: AZuq6aKPQ85f2IkplWEyCAYTpyZUtGa02GhWcKbYDoazHgxT9btiyj+xbusvi2CT18J
-	PlgpEij+pG0RDlz0Nq0RSCFglL6TJmyv94gSAuKAu0wZXEfgUQa+jtUgJheVlYSRrptWGNAQgi0
-	xp92zz3UtgUKgRn8zGPq85uuzYAds5j79DASY8hEqzZJLzzyqTRpYjvQ28fBOiHLx9jl9nvpwGm
-	7oZRJYs/tjNxT59X3RnTCW7+/jg78B3BiDj8qgRWexeU/UbBjnL+wqm6hfnXSwV4j7i58MLxWSG
-	wJcBTMDNsMgV/2W4e7+YEJ7DRd+g+8+SFabP+GcZJRvpMXGLvt1LsWOX8MuSV0AVlk/LHR7VX0i
-	eYsiL6HRyaY+hrVuXaSCkOSG7CdCw9mwGCPejFdk0aKGlvl4P2q+G1iBzZfIVCCLsmNlGJpyvd3
-	nhKcajhZJfht8uMQ==
-X-Received: by 2002:a05:6214:da5:b0:894:6e5d:eb8d with SMTP id 6a1803df08f44-894cc8c977dmr49820206d6.34.1769568794147;
-        Tue, 27 Jan 2026 18:53:14 -0800 (PST)
-Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d375ed92sm8696686d6.44.2026.01.27.18.53.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 18:53:13 -0800 (PST)
-Date: Tue, 27 Jan 2026 21:53:38 -0500
-From: Richard Acayan <mailingradian@gmail.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyXUMY6b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769587159; x=1801123159;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bLrxrtaKEb0EIqN05MhZumlDxMxzAI3JunezXZpTj3E=;
+  b=EyXUMY6bWQ9zgHZf9zod8yZwZlhU0YvGdVLezgYgOqcGMyqE99KCsUUP
+   m9/FNJpxoHeEqEPGaVAuKFcBv1ZXCz7Mdym9NbkGZjSjDv/k4KhZmH238
+   5YLT7473+kEJHVruRm3IUcYIAPWkPSgNur+/dpXS2DqTxCTYyriB/jIsj
+   PpWngT7TwoksSsLEf/j4R7Oim2c8ePvCNrfucu+Witgqwcu0KIDDiDaOL
+   2XoqIkbOPXDkaKZM+C0ED5R+tXma64du4b3KCzs3VetHoGAAGnMhRsKmW
+   mfE+405ZL4mSRDLKn/VXnbzoOJ/LZ6n90JBA9F0WzwPR/UGzFgxRXEWEb
+   g==;
+X-CSE-ConnectionGUID: aMk2igRwTC+JmgmMhJgXFQ==
+X-CSE-MsgGUID: PZMJOQu/R62S8qLYWkjcYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88213354"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="88213354"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 23:59:19 -0800
+X-CSE-ConnectionGUID: 5zo4JnMQTI600qsDecQFhw==
+X-CSE-MsgGUID: O2q+B3eCRc+ROdb41+pwtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="208439050"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.229])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 23:59:15 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id BF78A1207FB;
+	Wed, 28 Jan 2026 09:59:20 +0200 (EET)
+Date: Wed, 28 Jan 2026 09:59:20 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Richard Acayan <mailingradian@gmail.com>
 Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -74,11 +64,12 @@ Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
 	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
 Subject: Re: [PATCH v7 2/5] media: i2c: imx355: Support devicetree and power
  management
-Message-ID: <aXl6MpRB9ncCeu2M@rdacayan>
+Message-ID: <aXnB2FUgb5OlGjfn@kekkonen.localdomain>
 References: <20260117040657.27043-1-mailingradian@gmail.com>
  <20260117040657.27043-3-mailingradian@gmail.com>
  <578668b0-cba2-4550-b676-26ed0b447bf2@linaro.org>
  <aW-V8VTcOICLWqaU@kekkonen.localdomain>
+ <aXl6MpRB9ncCeu2M@rdacayan>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -87,35 +78,41 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aW-V8VTcOICLWqaU@kekkonen.localdomain>
+In-Reply-To: <aXl6MpRB9ncCeu2M@rdacayan>
 
-On Tue, Jan 20, 2026 at 04:49:21PM +0200, Sakari Ailus wrote:
-> Hi Bryan, others,
+On Tue, Jan 27, 2026 at 09:53:38PM -0500, Richard Acayan wrote:
+> On Tue, Jan 20, 2026 at 04:49:21PM +0200, Sakari Ailus wrote:
+> > Hi Bryan, others,
+> > 
+> > On Tue, Jan 20, 2026 at 12:44:24PM +0000, Bryan O'Donoghue wrote:
+> > > I think reset should be asserted before regulators and power are switched
+> > > on. i.e. before you try to switch the chip on, you should establish that the
+> > > reset pin is in the state that the timing diagram calls for.
+> > 
+> > Indeed.
 > 
-> On Tue, Jan 20, 2026 at 12:44:24PM +0000, Bryan O'Donoghue wrote:
-> > I think reset should be asserted before regulators and power are switched
-> > on. i.e. before you try to switch the chip on, you should establish that the
-> > reset pin is in the state that the timing diagram calls for.
+> I think the discussion is more about whether there should be an assert
+> in the same function as the de-assert.
 > 
-> Indeed.
+> > The xshutdown pin, as it is typically called labelled as "reset" in this
+> > case, functions as both hardware reset and hardware standby mode control.
+> > It should be asserted (i.e. be set to low level) whenever the sensor is
+> > expected to be powered off. Typically deasserting it is the last step in
+> > the sensor's power-up sequence. This applies to nearly all CSI-2 and DVP
+> > (parallel) camera sensors. (There are some exceptions that use explicitly
+> > two GPIOs for similar functions but there are very few of them.)
+> 
+> This patch has the reset asserted by the time it gets to
+> imx355_power_on():
+> 
+> - when coming from runtime PM, the suspend callback asserted it
+> - when coming from probe, GPIOD_OUT_HIGH asserted it (considering that
+>   active-low also affects the initial output setting)
+> 
+> Should it be asserted again inside the function, or
+> should the initial `gpiod_set_value_cansleep()` be removed?
 
-I think the discussion is more about whether there should be an assert
-in the same function as the de-assert.
+Please remove it as requested.
 
-> The xshutdown pin, as it is typically called labelled as "reset" in this
-> case, functions as both hardware reset and hardware standby mode control.
-> It should be asserted (i.e. be set to low level) whenever the sensor is
-> expected to be powered off. Typically deasserting it is the last step in
-> the sensor's power-up sequence. This applies to nearly all CSI-2 and DVP
-> (parallel) camera sensors. (There are some exceptions that use explicitly
-> two GPIOs for similar functions but there are very few of them.)
-
-This patch has the reset asserted by the time it gets to
-imx355_power_on():
-
-- when coming from runtime PM, the suspend callback asserted it
-- when coming from probe, GPIOD_OUT_HIGH asserted it (considering that
-  active-low also affects the initial output setting)
-
-Should it be asserted again inside the function, or
-should the initial `gpiod_set_value_cansleep()` be removed?
+-- 
+Sakari Ailus
