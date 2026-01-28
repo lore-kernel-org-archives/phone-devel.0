@@ -1,144 +1,129 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B926734DB4E
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 11:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B36734EEFC
+	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 12:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769599648; cv=none; b=tt050fwx5hP7JD0LiqqnKiC5rButcquBPvXBVFVhjtRwRYd5GSTzEYDHdHrz9WYE16A4/iAc88WMjQE+mzc127OxaCqBjkxko2x7u196LCx/VYKEB34GyzqVaCXu/XnxQJXlJeHjYK/ZWA3Rez2xpVplb393+9C7f5E9Ch0bGrM=
+	t=1769603218; cv=none; b=MLMWZrtbn5gB6byxQjvOArvUT/inhY4pvARA9fCWwB7BB1fxm9BN4wYro18rNA0u7SnrVm5GP5er45ercEfn7RXVczx7Re0MbXJcX/YZwt73gN9jqfxCLODPT8KYhRM2EdJUw91V4OPaNOnj6z48GgD6uFbmtAaGtyuBIrQepZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769599648; c=relaxed/simple;
-	bh=EQD4R80s9K33p3vFtS/DW0zAFA0Ul6Ha7HL9EjSzIXA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rZjdV1KQomW1Op4V5vThj0kWaXbUdMUAe2EyNpeZbtWiDTcw0kNNSfM/4iylemD+nasxpnWx7SvqrxPXL2pJNxl+3SicG61hdfdxchrZWFx3H/vfDp9I6WemXNOiexsaRG/fBkbpT8ZadaSkKkBpsGQmdp3inrdrD4JN7kUZYsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bgLYnYwc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VO11wSR9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1769603218; c=relaxed/simple;
+	bh=PMp+SYYveIhSJZHGkVejvHSGEyMcoktcC9f/SvT8FV4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mmJ+sxnlmgcYhsBbWnpo+U4KNZ8p7JttxClvDWYenKShjE72tO15ivGZobNUOJTTWGBoPoWAiDh8x8cxDONO+RrXmqENAL5adQNK7v0V3bN9Oqxrqq98cXG+QliqiE3cHWXXi2SeU873g2QfClF4QG+BEpoky23Ym6LRvnxXsWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=bM1AAuD2; arc=none smtp.client-ip=209.85.218.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bgLYnYwc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VO11wSR9"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60S928Y5320318
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 11:27:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5ZO0iU86Qu9T51d5N4vqKEcp/6QeK62PA7A1aNSWaQk=; b=bgLYnYwc8SUiweei
-	hmNh+qViLg+vgvHMe1+hpIekOv2yN2PZ+uIIeM725Y6//8eOTCBVfWj/gqVOrnvC
-	pX81LfUIEH3BYUQTKpMqOuhKjcza37UmEaTI2dQZ5Je+3m4cQjp0F3aR2QWeukxn
-	9ucB722Coh3lZJphxPBBqdUUibDUS4cG8SpAGnaktuIuw+6kouR1EngPxWymiWFX
-	+EMyq68JziGtuw3XISLG81sg83tLLJmiK+TuRFhulS2eVI0k8uD3lQ2UufY6XsoH
-	bdpB3/Q92ki1IkLx5Rv0RmjZ/e9xJaVgXH4OZ7fSlU/4Qg2qYIJjPsC4/LwNgc5X
-	kWy8YA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4by4sjtgwg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 11:27:25 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-88a26989018so15304386d6.0
-        for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 03:27:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="bM1AAuD2"
+Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-b88593aa4dcso743603866b.3
+        for <phone-devel@vger.kernel.org>; Wed, 28 Jan 2026 04:26:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769599645; x=1770204445; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZO0iU86Qu9T51d5N4vqKEcp/6QeK62PA7A1aNSWaQk=;
-        b=VO11wSR9eVVYR4ovShLroSDwQCFs/Tx/FBpMJjTdRMnampGBVuvVpxZcPx0h45i4Ia
-         wPmJWzhxeGv//W0+umuaB6Nyra+tbUxpBoljWTw2t2kPSeDcK4TBNqVWg/F4FFIhUlnY
-         jw98K96O/FR9KPIqyKbFQ/0w4oRIcFVLVlJoYUh6axARLmOf1HARlaZNhAuCWilmjJny
-         wsEC7uTjIPCPXz4xTKRZDRZ/WUToyS/Wla6uQAjNRGgrX+UVy3nMoVwVOq8saLwhP+zB
-         SKJOGLG6B2JZ2gJHKhO6ez5b3WY2F04bMRLvPw0l7nPI5ayqgZ3QsIVaDXK/BKrT3oY0
-         y/8Q==
+        d=fairphone.com; s=fair; t=1769603213; x=1770208013; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5t5z0ZO3g+Pz6/wrKMnuRW0D0vGmyfcpUHFLY2ZznsM=;
+        b=bM1AAuD2KvXogd5aScJ/QmkjU/l7uS3WAfQbGioAUERsUe9UDXyHsUHajfaqFIXo9N
+         4Snm8sCVXNnnYfSKUahtMhzGkAQ1Qow5mkWva/H9h1t2utCcrnrTZbPdV61XRcO28Wje
+         t2Wv+Zc5wI5Nj1B4PybxafeLrR9VjQXcPaV5aYMM0skZOn/J6g7fEPBruPxy8tyyPV7U
+         M0WFhhxqjYThZlPXApbZcx/XeUy0u6/OMJhjnVsHCb5CPRZ3AXVm2ygoNnummgg+44ib
+         H4ZBwJ1lTzrXTLh4eUe38YFisgowgXU6zgnJH14ycxGPgbph3A1elBe1iynh2EuCmcQ3
+         6pog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769599645; x=1770204445;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5ZO0iU86Qu9T51d5N4vqKEcp/6QeK62PA7A1aNSWaQk=;
-        b=MNB/o0h/7KaxBJ3JPN1SHnP5aYnrdvKfSF2HsA9I6QPaCHY3fBJ5Hzwg7mMAzbkuMV
-         NQxXLl81sYBzImgQ05LhiHeblfN0MiV/IpDs1qcKlAbOdK9VlbpNOe9MXPyWwWTnUKxp
-         LmbxZhoWQr6TKThYLWpDFLExKAGcNt4F+OA3uvAu7Q+Up36PZuOjT80Au/cv2Cb4A02e
-         yMYWaO/Q9IYX+o5Eqwh2HHaZo1mvxpGxmCoT87V5YEysmzDZ+hgBYMeTg4v+ZR+h0yuN
-         fmGRP4ps9VVyJyEd56GFZQ7hpSb6Oq0Gp/L2ZnQeclDe9/wfG3ZEyw1rBPmtlRjBQvw0
-         2RDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSGUoU/sZ+b4NOrst780u6d1LcY744BO5WDaHCCbsXPh3rPCIpdgoE57WY9/m7nVlsdFVzqUbl1wEkNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx89kcsfsKpRrgzWCiZ6xa0GgzDrkRY+mwqhsxSGsBi2ORU7InD
-	JZOhF3FAbUUe9CjYHW3my6owBjxmXETXaltP8MEJiEKUfQCk3fJFOpb7IhiikZH+nBgI5xyJxVm
-	1fjCupV4CCWbQnGS7AJkvy5rwIXebO/uX/5d2c4MmFEUa7GQ2xpgYAfVC9+/h454rPg==
-X-Gm-Gg: AZuq6aKaDsqYYhewATTVLNKoCjmgH4hK7aceYeheyo0NF4l/MEVdju3u/DeUdUXvXik
-	Ed4/bXvyWKrK9L/WzvY7AlAxfGMXqb6PN3vLpnB5jlAJdB8L7kfkRAHjISkTvJqILMXIxt2Jhs4
-	/L7QPvYf+n4w5StCLFsWGQurkRbqBB36Oas//+OzkUKCII+ePZ3/KnLxcCpl/htbIVl5lD1qlEB
-	nM4a9j/PBMhNvu6OxTGw6jXLXDMXVKWoGB5e6n+adZ4/L5k1vpdX2JloT/DAvdPDSLIuCz9UrX/
-	G+i42KESxBZasSdiSUY9SrqxDL66J2n7JBP3oUdT+PmABXUNX6EgfFEdplUewVNlIY43OuP5TuZ
-	Y/4EEZTJ5y2SIZ9HYPtRBtVrbMOfZGTKdeQ2Su/rzZwx3gbh4vVnhQysBH0T/wVJ1xQM=
-X-Received: by 2002:a05:6214:4d05:b0:880:5cc1:693e with SMTP id 6a1803df08f44-894d7895ac8mr11074736d6.7.1769599644642;
-        Wed, 28 Jan 2026 03:27:24 -0800 (PST)
-X-Received: by 2002:a05:6214:4d05:b0:880:5cc1:693e with SMTP id 6a1803df08f44-894d7895ac8mr11074556d6.7.1769599644287;
-        Wed, 28 Jan 2026 03:27:24 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b4452d67sm1420904a12.8.2026.01.28.03.27.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 03:27:23 -0800 (PST)
-Message-ID: <2b4568ee-1d0f-4bab-afbb-cbc3215d1cb5@oss.qualcomm.com>
-Date: Wed, 28 Jan 2026 12:27:21 +0100
+        d=1e100.net; s=20230601; t=1769603213; x=1770208013;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5t5z0ZO3g+Pz6/wrKMnuRW0D0vGmyfcpUHFLY2ZznsM=;
+        b=DnP1wr4x4xJvyuz2szCDaSUhtSQUV1+v08JlodEQ3+zsq1kBsygd71RfuFIjfp05x4
+         Lnre9+qwULirzn5MTbz+9Z51ENpKtzzNj7/s23zWLGzW2AbRO4NFI02MJ8v1gXkJllPf
+         wNKOS//ocato9gaW5V91kY1n9CbeSlEU7E8TMpprNKwQv8PRefZ25m3Qfq4ckVz2ZCw0
+         tMbx1vYS0l82ehDR25rmTrVUmV+ulYTTvzFuu7f609HA5k8G9gX8vbDo4o7IXdYDGc7A
+         cvjNsATRxDBByGdkB7Vs26UHnpXaMRnrhGsI6OZmXrRQq4oqd/Z4Xfj0a0D2J7IFoyeP
+         zT0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXFHFllgE7KRtkY3V5QVuc8iDvcBcP0SJRg81TwXJ3ed5EM33AjKZmHuZ05ql9Q2fu88RgEl+zCbYHBdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBV6576twv40AvPANGbzfpcLBacz4V7VGYeuaHTdJRxdkEAgM7
+	IoajbgseyMqFrgb24nSOFWR9tZ9vhLdSzUFzzxXQhNOz3S4wQ8KWeE+mO4EKd3easEo=
+X-Gm-Gg: AZuq6aIdDZMFfha4uOctJAnF8Sn3LUBNtS1x19oWAANqrmYXK2RyAT/B5tKCZFd9ZS+
+	G2qRyCongItDK0eqEJ79Rr0wGeeUawii6l+ap8N0GbDJ12EaX19r9qK6FrBQfIEy1ZflwdnnZc3
+	5+ewYE0S/zhm76ERxXc9V58oJWPfSXoHAnWlRvniY8nVaytwuEapH6RbMq2XNsqf3HHuzjlR2k+
+	lb4yU0Z0XRCNpcSkzceW70y3D6wvAbpbxmivLg9PFutzo4o8Ea5JFqx2HYXoByjKRrU4W24G16t
+	M/9NqA0FR6N7yZLwOGaMlhXPTowh69sqvzm0PbWUiqkIfzNceMFoMl8BvS0ZFZAeThmH3w+zYog
+	+Fqu2EbzGK0K3U7jUAVnO6DyNUpVecg8ayoonFoXiLRC1o7t+rlZyrCs+FyOsd7ZtYinsBIHinY
+	dkFizNNnTw5X2d/gEac5eKLSjIJX8ZC3amY9+SgbXSAIpnyWs4e23QJQ0QrUxakGf9Lw==
+X-Received: by 2002:a17:907:6d19:b0:b87:2c3d:ef08 with SMTP id a640c23a62f3a-b8dab346cc6mr391601866b.33.1769603213084;
+        Wed, 28 Jan 2026 04:26:53 -0800 (PST)
+Received: from [172.16.220.101] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf1baa42sm119536866b.46.2026.01.28.04.26.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 04:26:52 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/5] Add LPASS LPI pin controller support for SM6350
+Date: Wed, 28 Jan 2026 13:26:48 +0100
+Message-Id: <20260128-sm6350-lpi-tlmm-v1-0-36583f2a2a2a@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] pinctrl: qcom: sm8250-lpass-lpi: Fix i2s2_data_groups
- definition
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linusw@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260128-sm8250-lpass-lpi-fix-v1-1-8e68f47dfeb4@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260128-sm8250-lpass-lpi-fix-v1-1-8e68f47dfeb4@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDA5MyBTYWx0ZWRfX2YLXEkS4sNiy
- idMoSJ6nb4X56ewuWOnMsZJa0ckm6PnM0t2kumNAs/Gk7w176h2+knmriNJafifXNfGCqwBT4es
- qlKipgTgnuegZe3jKbukWm+1ypQRQPPk/QlX/Rw5GkBszj2WLH+6t5C8srZHgRVIla7rZLbRkiS
- Kv8CpAfx1MjxSw0fcyEgO9aM9oRNjWyhGrZnz9DDdldShF+PEPW3eANIEw7zv4QESb/N1Aeq8Xd
- bHT7dNLnR3sohlx5zSoR6tcCq+I8Hf3t4kR8xvNYql1s/JlzevxRmoukm+3JX07vcTCawgHdvwi
- rNCPi5g8LQkhApdg+k2qCl6cChC3wBycgTh+fKRQwWNb+4CjAJSUHGBsEbJXJN5OiDU5uFTvaqD
- nIwx4dwSlz9LenR3akE6f/xFOXYoBNEADimL+B3a9kAlIv+rgfb7YSmEk4VocrdIOnyTosAmARR
- AbTkcDzuAPnzPwgVl4Q==
-X-Proofpoint-ORIG-GUID: tkMynpN_bS1hNKMB07RACu5Xuyant7e5
-X-Authority-Analysis: v=2.4 cv=KezfcAYD c=1 sm=1 tr=0 ts=6979f29d cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8
- a=KqVGvLWFIAZGjLrJOEQA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
- a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-GUID: tkMynpN_bS1hNKMB07RACu5Xuyant7e5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_02,2026-01-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601280093
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avIrBtQM4muEi1KpxpIC40IorsnL
+ d/i/wcyJaYMnXgg0cWZ91igKgFuHeNCyL4YtNRWKt1iDrZuJG4H47mFgJN3o/E0NdYoKNWRaOb
+ 7P/bD+37vl6xUYQAAAA==
+X-Change-ID: 20260128-sm6350-lpi-tlmm-bdca4deb5641
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769603212; l=1773;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=PMp+SYYveIhSJZHGkVejvHSGEyMcoktcC9f/SvT8FV4=;
+ b=UsE+EyCE2pBBQZcFymi5Q0PEW7r/CykmAv6cAEboBbsuABg6FyiTEFpjDDYFfyMV5kqMeo4vV
+ FWV/6spJRJHCmqCx2acLsST+juopXH9Pt4zcWzBt6+IF99A/YA/J0Ny
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On 1/28/26 12:22 PM, Luca Weiss wrote:
-> The i2s2_data function is available on both gpio12 and gpio13. Fix the
-> groups definition.
-> 
-> Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+Introduce support for the LPASS LPI pin controller for the Qualcomm
+SM6350 SoC, by adding the dt-bindings, driver, dts bits and enabling it
+in the arm64 defconfig.
 
-docs agree
+The custom slew offset for gpio14 is described as
+"qcom,lpi-slew-base-tbl" in the downstream dts[0]. I've tried to find
+some reasonable solution to have this handled correctly in the patches
+here, but suggestions are welcome how to improve the situation. There's
+of course several ways to implement a solution for this.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+[0] https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/refs/heads/kernel/13/fp4/qcom/lagoon-lpi.dtsi#25
 
-Konrad
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (5):
+      dt-bindings: pinctrl: qcom: Add SM6350 LPI pinctrl
+      pinctrl: qcom: lpass-lpi: Add ability to use SPARE_1 for slew control
+      pinctrl: qcom: Add SM6350 LPASS LPI TLMM
+      arm64: dts: qcom: sm6350: add LPASS LPI pin controller
+      arm64: defconfig: Enable LPASS LPI pin controller for SM6350
+
+ .../pinctrl/qcom,sm6350-lpass-lpi-pinctrl.yaml     | 124 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               |  66 +++++++++
+ arch/arm64/configs/defconfig                       |   1 +
+ drivers/pinctrl/qcom/Kconfig                       |   9 ++
+ drivers/pinctrl/qcom/Makefile                      |   1 +
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c           |   2 +
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.h           |  20 +++
+ drivers/pinctrl/qcom/pinctrl-sm6350-lpass-lpi.c    | 149 +++++++++++++++++++++
+ 8 files changed, 372 insertions(+)
+---
+base-commit: 4f938c7d3b25d87b356af4106c2682caf8c835a2
+change-id: 20260128-sm6350-lpi-tlmm-bdca4deb5641
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
