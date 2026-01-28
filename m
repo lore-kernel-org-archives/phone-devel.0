@@ -1,118 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0CF32BF2E;
-	Wed, 28 Jan 2026 07:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A745C2DC798;
+	Wed, 28 Jan 2026 10:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769587161; cv=none; b=RqCujCoOXA5rKHH8yDEO1Hvf4834eJ/c2hQAW6zW6pGQG1fQmNxo7PCbiOrUv6xGl3LWAAOUaHwq/BG2x/1bE+YW9RcO39KRKrE69votogJGBItGffcBEEgkuF/Z5A1k9hcmQk8/5P+kY2qOhIB2PT+/6H6vOZhQXFdxB+8dI+c=
+	t=1769597899; cv=none; b=gFF3XL+03Xi1FRR2UwymFhKkQo6agr5yrHumJfu3z6hWckellRmQCpyxNVMkEQbOQD3Thp61jieCuXqE54QDONxcSXS8TPSn+UJrBod8UUJv1rxIMzig+M9BSIVb5oSVkqKrK5mUJKjGAfoEnsXQfflsV4p4vYP1IBYfqInoE3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769587161; c=relaxed/simple;
-	bh=bLrxrtaKEb0EIqN05MhZumlDxMxzAI3JunezXZpTj3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OT0GfvPghCbduVRxwpROHVHZ2YZ7wwbuP84hTxvFYjbjtpcCShyRxQRT00u2wNql1TiSwcwoJRgNSq9YHVjgTZd5C1TaLtHaejrhoVVKvrJUPIu1aRh3KA43lwdHPOYFl3DdLud5fOpHd1wF2hckWVWiJLlx9siSZcQWrPjQ0lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyXUMY6b; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1769597899; c=relaxed/simple;
+	bh=yX9uJyvvHBgb5atLiB3p0mcLtf07NaZ+JbN9vi8aOUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NyUjVezMdjMl0Ub3BN1aJlGk0Xh2t90kVWE55e/hzUqKiFYyjexxeUkCMR1LMDyJPXvvYPrXEW45y5MxywkCNLblShYh2cLXrd+UdoxYhpMBg/WVw3qZJdnmuWkUlzqUamcA1I5dW3VbaA1+U5tjuuiDxA/NTHrXHdfEXplmmmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzy8ljFS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyXUMY6b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769587159; x=1801123159;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bLrxrtaKEb0EIqN05MhZumlDxMxzAI3JunezXZpTj3E=;
-  b=EyXUMY6bWQ9zgHZf9zod8yZwZlhU0YvGdVLezgYgOqcGMyqE99KCsUUP
-   m9/FNJpxoHeEqEPGaVAuKFcBv1ZXCz7Mdym9NbkGZjSjDv/k4KhZmH238
-   5YLT7473+kEJHVruRm3IUcYIAPWkPSgNur+/dpXS2DqTxCTYyriB/jIsj
-   PpWngT7TwoksSsLEf/j4R7Oim2c8ePvCNrfucu+Witgqwcu0KIDDiDaOL
-   2XoqIkbOPXDkaKZM+C0ED5R+tXma64du4b3KCzs3VetHoGAAGnMhRsKmW
-   mfE+405ZL4mSRDLKn/VXnbzoOJ/LZ6n90JBA9F0WzwPR/UGzFgxRXEWEb
-   g==;
-X-CSE-ConnectionGUID: aMk2igRwTC+JmgmMhJgXFQ==
-X-CSE-MsgGUID: PZMJOQu/R62S8qLYWkjcYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88213354"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="88213354"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 23:59:19 -0800
-X-CSE-ConnectionGUID: 5zo4JnMQTI600qsDecQFhw==
-X-CSE-MsgGUID: O2q+B3eCRc+ROdb41+pwtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208439050"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.229])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 23:59:15 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id BF78A1207FB;
-	Wed, 28 Jan 2026 09:59:20 +0200 (EET)
-Date: Wed, 28 Jan 2026 09:59:20 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Richard Acayan <mailingradian@gmail.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Robert Mader <robert.mader@collabora.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v7 2/5] media: i2c: imx355: Support devicetree and power
- management
-Message-ID: <aXnB2FUgb5OlGjfn@kekkonen.localdomain>
-References: <20260117040657.27043-1-mailingradian@gmail.com>
- <20260117040657.27043-3-mailingradian@gmail.com>
- <578668b0-cba2-4550-b676-26ed0b447bf2@linaro.org>
- <aW-V8VTcOICLWqaU@kekkonen.localdomain>
- <aXl6MpRB9ncCeu2M@rdacayan>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzy8ljFS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61E0C4CEF1;
+	Wed, 28 Jan 2026 10:58:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769597899;
+	bh=yX9uJyvvHBgb5atLiB3p0mcLtf07NaZ+JbN9vi8aOUs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dzy8ljFScUzYuX2hGHMdGB8+0uOftaDh8qrsudDq+6MZTU2OXmEk2JCq5TuIsRF1Q
+	 b94L2u4VVuFly9ceSJB9j+9C4EIy3QPF53/R0yR2r3j4acAbvFoCZEdRJhw3ydGSRW
+	 GnPoWH1/cajSeWLCLmp8W7pk1R0u3fWaEp54rpEYyYSuKTdE3mHoa+0kZUL6pUnehj
+	 Chnen9sXwVfuKn5NxLfe95k8TlUXbiiJHhRfU4tyKO/K9XEaZmS+piUyJ7SFuHAGgi
+	 0L6/x1cEvdVcYCrbEn9rqRlWl2ISUJskstl+NLGpqiPBp5YAWhjwvbFSOChJUuiLXp
+	 lNnrXYAM2xmTQ==
+Message-ID: <277537d2-9b4f-41b9-94e2-9ff45db6c970@kernel.org>
+Date: Wed, 28 Jan 2026 11:58:14 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXl6MpRB9ncCeu2M@rdacayan>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] Add support for exynos5250-manta (Google Nexus 10)
+To: Lukas Timmermann <linux@timmermann.space>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Alexandre Marquet <tb@a-marquet.fr>,
+ Henrik Grimler <henrik@grimler.se>
+References: <20260127-lat3st-staging-v4-0-797469aaaf9d@timmermann.space>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260127-lat3st-staging-v4-0-797469aaaf9d@timmermann.space>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 27, 2026 at 09:53:38PM -0500, Richard Acayan wrote:
-> On Tue, Jan 20, 2026 at 04:49:21PM +0200, Sakari Ailus wrote:
-> > Hi Bryan, others,
-> > 
-> > On Tue, Jan 20, 2026 at 12:44:24PM +0000, Bryan O'Donoghue wrote:
-> > > I think reset should be asserted before regulators and power are switched
-> > > on. i.e. before you try to switch the chip on, you should establish that the
-> > > reset pin is in the state that the timing diagram calls for.
-> > 
-> > Indeed.
+On 27/01/2026 21:40, Lukas Timmermann wrote:
+> This patch series adds initial support for the google-manta board, known
+> as Google Nexus 10 to users. The device is powered by
+> the Exynos 5250 SoC. The bindings for the notification led are already 
+> in the linux-next tree and can be found here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/leds/ams,as3668.yaml
 > 
-> I think the discussion is more about whether there should be an assert
-> in the same function as the de-assert.
+> The first two patches add the necessary device tree files and
+> bindings, while the last patch makes a small modification to
+> allow CPU1 to boot, as it requires a call to it's underlying firmware.
 > 
-> > The xshutdown pin, as it is typically called labelled as "reset" in this
-> > case, functions as both hardware reset and hardware standby mode control.
-> > It should be asserted (i.e. be set to low level) whenever the sensor is
-> > expected to be powered off. Typically deasserting it is the last step in
-> > the sensor's power-up sequence. This applies to nearly all CSI-2 and DVP
-> > (parallel) camera sensors. (There are some exceptions that use explicitly
-> > two GPIOs for similar functions but there are very few of them.)
+> This first iteration only provides basic support to get the board
+> up and running and usable via UART and with WiFi support. We will upstream additional 
+> features in future patches. All patches have been tested on real hardware.
 > 
-> This patch has the reset asserted by the time it gets to
-> imx355_power_on():
-> 
-> - when coming from runtime PM, the suspend callback asserted it
-> - when coming from probe, GPIOD_OUT_HIGH asserted it (considering that
->   active-low also affects the initial output setting)
-> 
-> Should it be asserted again inside the function, or
-> should the initial `gpiod_set_value_cansleep()` be removed?
 
-Please remove it as requested.
 
--- 
-Sakari Ailus
+Thank you for the patch. My tree is currently closed for new features
+till the end of the merge window. I will review and/or apply the patch
+then. If I misjudged this patch and this is a fix, please let me know.
+
+
+
+Best regards,
+Krzysztof
