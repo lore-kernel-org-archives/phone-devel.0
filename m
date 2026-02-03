@@ -1,74 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAF919992C
-	for <phone-devel@vger.kernel.org>; Tue,  3 Feb 2026 00:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083473AE707
+	for <phone-devel@vger.kernel.org>; Tue,  3 Feb 2026 15:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770078161; cv=none; b=ag1Ys7OsXEnWZV7HcSJa8bbxLGElnj80dZpx9b1S0esQUqlkR1PR5APg0gbM9TVzxzLHQOV1L7jidK2+bKJ0CLqAblUskydHNMOxF2klPhhCGrWQWYsq852pT6QsYnFLNMYlRN2aRtU4nVl5oCaN+L3Z1Iwhm2TT25yv1BT5Vw4=
+	t=1770133272; cv=none; b=DyJoXCqO5HOROfKzfgrpuFgVYazAtme1UTdUVTdnI8Te6YHqXmc2OGceVAvjdgy96wQnaRWISAKTKZeLCfVBtdc2gxh2xTPF146xjvzIbKa8fTEA75IkViDewib/mu+c4gRt1YwOIs+Y8VGZWChuktu4nyjGwIrittzYYl37+oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770078161; c=relaxed/simple;
-	bh=fd/LXC9Lkp/Qm0nZSoqgcUwNOstocRzFQcntsHK+Qf0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pxN1BTFbc78/h3hHUxKgeVY+tJ5QU4k9D8eZmcTat4PL5olNzaMAa2PQJVT4RrzVMMV5YBNRJaYe566Y5mmW9oMWMZKCTO7nHKQ5lC9lS5anxXovRD5GQdQYAKTwNPfyMkOIWLle3jJTUk3swEjdO5RvnrxMFZSrUG7LvCPM6RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzLmJA2Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770133272; c=relaxed/simple;
+	bh=1LJxSgDfu2qHVQ0BcLX0FLZBAv55EAAcPTpRZxMhd0k=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kVTStRDpSEfaU9637slroRIUCy37NZEULGrwgZGB54qx2WoYGZ/FwipTNentURT74bhLA0r1FEb9f+TubWHX+d9R7ol4ToxZH7Wto7blzfZyYXxgswN139YHGgIiT2ZmBZFMQ1inmOeQ0XRVwHGiBTDOoIj05uAKoGjqFT7aJiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWYzJmqr; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzLmJA2Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FEFC2BC87
-	for <phone-devel@vger.kernel.org>; Tue,  3 Feb 2026 00:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770078160;
-	bh=fd/LXC9Lkp/Qm0nZSoqgcUwNOstocRzFQcntsHK+Qf0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YzLmJA2YJbB7ULeIq5OkdMRIIolngtFk3kQv7IsNzhdGlpFs0MoNfWRsF1DDq3ERq
-	 +y5R04lvHS0BrOcIybgBBVTdONoq4ZqdJ4g+KW54lVD6zIzA9fJO6byBRtcI35UIks
-	 Zkn6oO0/umPHq9/Zv3VVSYGdgVIBJl8CnG+n1aLmHyTP12Uw+Nx8drWLkpGSYKDttP
-	 CpRTQhmDiIE5PZ3NS9DcuaBSZaIXC5Z2UWpkpol7GfzxVB4DZRPVeSoeF+hvOhpwwa
-	 1aLkEANjntD6TSLJoC8jOGL4AFEAOb8heHHmsxK0YT9DbFXRYZMddlj7qPcUUJw7h6
-	 qBHxDUXoMtsvw==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-649b383919bso2279652d50.1
-        for <phone-devel@vger.kernel.org>; Mon, 02 Feb 2026 16:22:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUpxyUQGgMM7fLEbMkTEeCC+JV320dguj8CGnRDW2wjCT2lgjz3Njxyn4p3mGPpWoRYxrJ1hyRqqAb/4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBR/6lmK0KdhuLBZOZzi9+uTL+sKarWss/ERn2xrim3m9saEvH
-	OP/L51RFCcn0iFgvGUH8QMulPc0xMZSy640X7VPs0UkJrpfVAe6hqITgtYYfbpum233R16CZqDg
-	qmtLdq3wCzgSSwYWl7p4+UZsjj6nJYuY=
-X-Received: by 2002:a53:d603:0:b0:63e:2269:42eb with SMTP id
- 956f58d0204a3-649a849fb8cmr7846684d50.45.1770078160320; Mon, 02 Feb 2026
- 16:22:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWYzJmqr"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-794d4c34bd3so25690037b3.3
+        for <phone-devel@vger.kernel.org>; Tue, 03 Feb 2026 07:41:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770133270; x=1770738070; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Y+dHBcJ0EB1oMWtqDa79JLU2lSQMRC9g+f/II9Wq8ic=;
+        b=JWYzJmqrJZlDuWM1M5XSmQVkgjbQcC7n26n23tCf3PGLlAdKUMHG3fwNQyMmVm3ZkA
+         K1V+/fe3vNvj9m2gpSXu7EXOOMCMLYTpAIMUoNTCUJW0ni7iz/z7Fm7rPcR6KDQq7xK4
+         ItBSQRcNiyDYGU9SwuC1FC/yFjrozk1SC56D913jf+Ua85WQ1j/kmZVsmYiHoygrctCU
+         TeXJVuXmZBXolSbyCba4DGpse3lDmguwg/wiBjGHL2o17ltHCvkFuHQ+diVXfAL+GGqM
+         4HMLpjX2VLE66GvCE68ai7nPtr72lbMMIBjr/h+BZGUR/Dp9v7EFbqwryxuAvUhAlaiw
+         eG1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770133270; x=1770738070;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+dHBcJ0EB1oMWtqDa79JLU2lSQMRC9g+f/II9Wq8ic=;
+        b=T4e56nzBfW7GpvlggPnB+9AB0zgm4trPu9vMIzuasJQmJyR+WE6fFaTxoeZvGGwjou
+         5jITguiPE732UQ2/sua12XwMDMSSMRzk4puqJSm8//0dVHIJyLlbpZk21qn09JbtyLlG
+         4fYO4DwilzJJXb3+fiACJOeZYLl7MAsM0vI+1O6TxsyVtQQQHpkKqKd9MIRxbNaej2ab
+         yFbcsEKKthrrT7tYKUklNlN2/Q29oRYIWNaRn6LjcqYAkpbUxJ4fBD06Oj4QNpuEGj83
+         iCUqU0XMs5kT8E5m/Ye5HA1iU54SPhiSaJ8nDY+gqmmps40Ns4OcExahLSo1PukZ0Sy0
+         De3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVrM4wZei8zEEYRXSJsZPdodOjpgc14ejeCz5hzC79a12YdRZ5T0LY0se0oTjswBq5Yu/a9klvuQTJg0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/c/U2TMukVG10jsyYuT3JMkl6j7l9RTIB/xM1h3ed9nyRX3GO
+	Uf8+xxErwFORk8SI1r5BudGTplDUUPIoS6AbbtYCAwGm/NlfaOay01vz
+X-Gm-Gg: AZuq6aLTLVAxyqIpxt+0ITa/gkWxVuw8CYhy96WP+TIQvchb/fOYflb8TtuTlpNEzHc
+	bQRHKOd0KJiCMGXcNPClIPOCFDFXnRqXhwquzWVP3huySJEX3U+MY2ywj5XnK7YCLtTdQSSKGaW
+	cDC9TdNoXd93gCa0B1AVTjCGED2LysEcaxISgeOvyGOXS+mZHlJO2YPrhjcY10q/afza8F3S3oQ
+	sRNyC0OTZNwW1XboT1A4IUaKmajF7WRvOW8Ch07QWwQ9SGt8dfko21VjRq5hqjCYPDpAqhIuIyL
+	Vw/7joH1S/1lka31UV5izQmxnYs5glZdDNGlw+n89xZgS+xUGlSeoo+jSL9UT8hTxSZGkbtbB+T
+	ZEiiyQAQbDS8+U8qbxlnxuT+HLeFaBWcQ8D9wo/IflbtEuPf1tVol6lM8xVG4Frgq2/J9nODMP2
+	sICXHHD/yL+Ee3qw==
+X-Received: by 2002:a05:690c:260b:b0:794:f3df:80f3 with SMTP id 00721157ae682-794f3dfa1a8mr32368167b3.69.1770133269769;
+        Tue, 03 Feb 2026 07:41:09 -0800 (PST)
+Received: from [192.168.0.40] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649b30b5825sm8121645d50.24.2026.02.03.07.41.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 07:41:09 -0800 (PST)
+Message-ID: <372c9172-ea01-4a3a-b737-3f7f14519791@gmail.com>
+Date: Tue, 3 Feb 2026 17:41:04 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260128-sm8250-lpass-lpi-fix-v1-1-8e68f47dfeb4@fairphone.com>
-In-Reply-To: <20260128-sm8250-lpass-lpi-fix-v1-1-8e68f47dfeb4@fairphone.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 3 Feb 2026 01:22:29 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnG_VGBjWR9UM+zcZ1Cm=ugTeXwhf30Lj0x65eCcaSQ1A@mail.gmail.com>
-X-Gm-Features: AZwV_QiGVVIf1jx-YTeg_ItUtMMLJYRipJZik-ctsh1EWvAi5djtmQ2tZbjFQtw
-Message-ID: <CAD++jLnG_VGBjWR9UM+zcZ1Cm=ugTeXwhf30Lj0x65eCcaSQ1A@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: sm8250-lpass-lpi: Fix i2s2_data_groups definition
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: Re: [PATCH 2/2] iio: light: Add support for Capella cm36686 and
+ cm36672p sensors
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kevin Tsai <ktsai@capellamicro.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260201-cm36686-v1-0-4949a2a9ba63@gmail.com>
+ <20260201-cm36686-v1-2-4949a2a9ba63@gmail.com>
+ <eb922433-3951-409a-a397-b48efef57b7b@baylibre.com>
+ <b133521f-434d-4972-82a3-6e7978e557bd@gmail.com>
+ <086d6b35-8c19-4e92-9cd1-557b98991d35@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <086d6b35-8c19-4e92-9cd1-557b98991d35@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 28, 2026 at 12:22=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.c=
-om> wrote:
+> Pro tip: when you reply, trim out the not relevant parts like this.
 
-> The i2s2_data function is available on both gpio12 and gpio13. Fix the
-> groups definition.
->
-> Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver"=
-)
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Noted.
+> We could start with hard-coding the als_trans_ratio in this driver for the
+> scale (and write comments explaining where it came from and what we know
+> and don't know). Then at least we would have a scale. And if anyone needs
+> something more accurate and reverse-engineers it we could fix it up later
+> with a DT property or something like that.
+> 
 
-Patch applied.
-
-Yours,
-Linus Walleij
+In arch/arm/boot/dts/qcom/libra/common-proximity.dtsi Xiaomi sets this property
+to 16, and they set integration time in their driver to 160ms. Maybe
+als_trans_ratio has something to do with integration time? In that case, we can
+calculate the scale from a formula, like this:
+scale = cm36686_als_it_times[index][1] / 10000 * 40000
+val = scale / 1000000
+val2 = scale % 1000000
+This would allow us to preserve lux value when changing integration time.
