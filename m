@@ -1,65 +1,66 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083473AE707
-	for <phone-devel@vger.kernel.org>; Tue,  3 Feb 2026 15:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C273D3019
+	for <phone-devel@vger.kernel.org>; Tue,  3 Feb 2026 16:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133272; cv=none; b=DyJoXCqO5HOROfKzfgrpuFgVYazAtme1UTdUVTdnI8Te6YHqXmc2OGceVAvjdgy96wQnaRWISAKTKZeLCfVBtdc2gxh2xTPF146xjvzIbKa8fTEA75IkViDewib/mu+c4gRt1YwOIs+Y8VGZWChuktu4nyjGwIrittzYYl37+oE=
+	t=1770136614; cv=none; b=Q3/iokWPggO1jYpE3T7cI1eRBsEn7hltBmCjjoubFc05xn1iZ9tX65Zr4zRCFzzuhY1Y9p4x/Egn7hKxELIS8pg8yAQOpwzttDI6lo4RIu5c9PkyD7sg21t0mVw5+92QDmfvZ91ndjLCyRUQELZ2y6l8oqv3v+p/bHzuiUi+OSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133272; c=relaxed/simple;
-	bh=1LJxSgDfu2qHVQ0BcLX0FLZBAv55EAAcPTpRZxMhd0k=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kVTStRDpSEfaU9637slroRIUCy37NZEULGrwgZGB54qx2WoYGZ/FwipTNentURT74bhLA0r1FEb9f+TubWHX+d9R7ol4ToxZH7Wto7blzfZyYXxgswN139YHGgIiT2ZmBZFMQ1inmOeQ0XRVwHGiBTDOoIj05uAKoGjqFT7aJiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWYzJmqr; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770136614; c=relaxed/simple;
+	bh=DmlvpbzDEq4IPSeR2r7sL20gZAslDIjjLsNOaO5v9XE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C2l0uPbH2my93oAK9pDjMFIGUC6hQ+st9wO+PI8d7uhjSqJe4fx91om+Qn62t8zcZjq/dGVk+5Q4bpeZGpzW5zxxM1o9OFUia5grOyImEk0yFGVo9WE2UyEq1Q4lUMdDa8U/aA7vyTLGpAgH5CBJ6AyfL9w7vwVSF/OLlXV/VJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=qapDFiCL; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWYzJmqr"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-794d4c34bd3so25690037b3.3
-        for <phone-devel@vger.kernel.org>; Tue, 03 Feb 2026 07:41:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="qapDFiCL"
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-40946982a78so1942403fac.2
+        for <phone-devel@vger.kernel.org>; Tue, 03 Feb 2026 08:36:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770133270; x=1770738070; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Y+dHBcJ0EB1oMWtqDa79JLU2lSQMRC9g+f/II9Wq8ic=;
-        b=JWYzJmqrJZlDuWM1M5XSmQVkgjbQcC7n26n23tCf3PGLlAdKUMHG3fwNQyMmVm3ZkA
-         K1V+/fe3vNvj9m2gpSXu7EXOOMCMLYTpAIMUoNTCUJW0ni7iz/z7Fm7rPcR6KDQq7xK4
-         ItBSQRcNiyDYGU9SwuC1FC/yFjrozk1SC56D913jf+Ua85WQ1j/kmZVsmYiHoygrctCU
-         TeXJVuXmZBXolSbyCba4DGpse3lDmguwg/wiBjGHL2o17ltHCvkFuHQ+diVXfAL+GGqM
-         4HMLpjX2VLE66GvCE68ai7nPtr72lbMMIBjr/h+BZGUR/Dp9v7EFbqwryxuAvUhAlaiw
-         eG1A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770136611; x=1770741411; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DhiJ2nzhxoH58/LPSL3akF68TqoZ8tdv8BmXMofsceo=;
+        b=qapDFiCLn28srBWgtOrErna+DeSYdTC4UsTktUpYxxZLvjQ+fWqBzQc89fCDRzfJB1
+         vV6kHWf7ah+aEemr7ZII9Irfqez+0KwQH84vBIG/5wumYre6MirCFz5JSdQZKK4hkYO1
+         caC16hyALKnWchpkHnhzaXrYfLK0xD5hq2am+zL3jMvQEua5fhJejzmnLevLcp/VrDec
+         iPu2Ui14cngqxgAAo9KWN7G9j78gRTXBrEloO8T5ge8hTjQvOkVpU2cbk/eVJMGXbWV4
+         iAmWd+JSZEDwXhqa+HIbcYSflr/c6S2654Ow1IzS2a+qD3tk+6GzkfRlLe7ltY48GOPT
+         RMbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770133270; x=1770738070;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y+dHBcJ0EB1oMWtqDa79JLU2lSQMRC9g+f/II9Wq8ic=;
-        b=T4e56nzBfW7GpvlggPnB+9AB0zgm4trPu9vMIzuasJQmJyR+WE6fFaTxoeZvGGwjou
-         5jITguiPE732UQ2/sua12XwMDMSSMRzk4puqJSm8//0dVHIJyLlbpZk21qn09JbtyLlG
-         4fYO4DwilzJJXb3+fiACJOeZYLl7MAsM0vI+1O6TxsyVtQQQHpkKqKd9MIRxbNaej2ab
-         yFbcsEKKthrrT7tYKUklNlN2/Q29oRYIWNaRn6LjcqYAkpbUxJ4fBD06Oj4QNpuEGj83
-         iCUqU0XMs5kT8E5m/Ye5HA1iU54SPhiSaJ8nDY+gqmmps40Ns4OcExahLSo1PukZ0Sy0
-         De3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrM4wZei8zEEYRXSJsZPdodOjpgc14ejeCz5hzC79a12YdRZ5T0LY0se0oTjswBq5Yu/a9klvuQTJg0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/c/U2TMukVG10jsyYuT3JMkl6j7l9RTIB/xM1h3ed9nyRX3GO
-	Uf8+xxErwFORk8SI1r5BudGTplDUUPIoS6AbbtYCAwGm/NlfaOay01vz
-X-Gm-Gg: AZuq6aLTLVAxyqIpxt+0ITa/gkWxVuw8CYhy96WP+TIQvchb/fOYflb8TtuTlpNEzHc
-	bQRHKOd0KJiCMGXcNPClIPOCFDFXnRqXhwquzWVP3huySJEX3U+MY2ywj5XnK7YCLtTdQSSKGaW
-	cDC9TdNoXd93gCa0B1AVTjCGED2LysEcaxISgeOvyGOXS+mZHlJO2YPrhjcY10q/afza8F3S3oQ
-	sRNyC0OTZNwW1XboT1A4IUaKmajF7WRvOW8Ch07QWwQ9SGt8dfko21VjRq5hqjCYPDpAqhIuIyL
-	Vw/7joH1S/1lka31UV5izQmxnYs5glZdDNGlw+n89xZgS+xUGlSeoo+jSL9UT8hTxSZGkbtbB+T
-	ZEiiyQAQbDS8+U8qbxlnxuT+HLeFaBWcQ8D9wo/IflbtEuPf1tVol6lM8xVG4Frgq2/J9nODMP2
-	sICXHHD/yL+Ee3qw==
-X-Received: by 2002:a05:690c:260b:b0:794:f3df:80f3 with SMTP id 00721157ae682-794f3dfa1a8mr32368167b3.69.1770133269769;
-        Tue, 03 Feb 2026 07:41:09 -0800 (PST)
-Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649b30b5825sm8121645d50.24.2026.02.03.07.41.06
+        d=1e100.net; s=20230601; t=1770136611; x=1770741411;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DhiJ2nzhxoH58/LPSL3akF68TqoZ8tdv8BmXMofsceo=;
+        b=gPcac9dHvm7KjfwgnyjIJLEGuTYVWk6miWo8TNYEWpCGYgIkM6obOro59zLOfE1eLC
+         lKcG2ypFfwl2FYVCK1h6qKCn5OSRgd5PcmqqCdeBDOjQ572wrNh7OuGo5evbtoyc0Y8N
+         IZBlO9wKveJPNvBtCGUKmPwX3GESQoFcv97S2nKghHJnRLg1InMCyxyOmfQfj3T69+Sx
+         dr4BWIr8VsbgGovV9DCaL4I7IIMtyyxUHOk/9FliEPjLFTybLsA1UoQ2zuOPcPs7n72V
+         OPp/FcjuupuGVQHadUsCmH8s5smr9l8ocX6UMKsapsqv3t3lGJy7J7tjlpWMgA8/k7aW
+         /GpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVAYECMj/Dlt4huogxLXylkvny1Val+DDLc/GLsgbWaRqf285wV2379vu/a+qCssktozkFmMK6Qm3YuKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3+GUEHhM4jJHdXp7KdiT4rJ1TIQEpVESB69mGOAsdPhPMCE9w
+	QD35oPzxNavPXxIheca5dOS849hUbpTTMl31UmJNASEApNj5KkqMGdb4Uapki88q9W0=
+X-Gm-Gg: AZuq6aIdL/EIJwqzZiqeRBwC+cK/nFRZZ04vYWsr+Yjyv3yhXDPsClPTTKv8SzlN/Vu
+	fZl32Wz27HX8e61435DnoKa5vCO50iYr8S2UScVEMVNz3yuZEtyN5sEEomMx+hH4XAUYEo+w7tS
+	oqXHou5nF+0UFuIDlol5L/vPmEXb4TgWAo9LlZ1K9u4jhMLCa4kjmXcaow0gwKI2oOR2Hht0ANQ
+	SDv54ygoiFkzNYcaTcy5nAvf94EAx9/1sVu3wGoG6tAQwBtmYc/ZNLICyOltT/xHd0ZvdjmPm0U
+	u7FcuFjEGt0sX3khHnlRaRdcQpoIR4pz/Z4XBsjHNksxODj3S85MT7U+kaXacj6ytexTFy0292n
+	eoAOBGRNEy7iS03jHRpZYCJ3fJ9YYKzRKuq9kS8fcGv8Gk1LCiGJE+OTrU0yrRxlo4K5rczoOab
+	0MH/O3JdaFoHR4Cd0Kw9beJAXoXG/F0Hx7MqPFwcTvDqm0Lb1rHI7jczo=
+X-Received: by 2002:a05:6870:3512:b0:3ec:48d5:5a50 with SMTP id 586e51a60fabf-409a6adfcf5mr7572564fac.19.1770136611130;
+        Tue, 03 Feb 2026 08:36:51 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:8e13:880:992:e796? ([2600:8803:e7e4:500:8e13:880:992:e796])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-409570f63b4sm14278713fac.3.2026.02.03.08.36.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Feb 2026 07:41:09 -0800 (PST)
-Message-ID: <372c9172-ea01-4a3a-b737-3f7f14519791@gmail.com>
-Date: Tue, 3 Feb 2026 17:41:04 +0200
+        Tue, 03 Feb 2026 08:36:50 -0800 (PST)
+Message-ID: <0b001503-5882-446c-a0df-642a9f75e7e3@baylibre.com>
+Date: Tue, 3 Feb 2026 10:36:49 -0600
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,10 +68,9 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Erikas Bitovtas <xerikasxx@gmail.com>
 Subject: Re: [PATCH 2/2] iio: light: Add support for Capella cm36686 and
  cm36672p sensors
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+To: Erikas Bitovtas <xerikasxx@gmail.com>, Jonathan Cameron
  <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
  Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -83,26 +83,34 @@ References: <20260201-cm36686-v1-0-4949a2a9ba63@gmail.com>
  <eb922433-3951-409a-a397-b48efef57b7b@baylibre.com>
  <b133521f-434d-4972-82a3-6e7978e557bd@gmail.com>
  <086d6b35-8c19-4e92-9cd1-557b98991d35@baylibre.com>
+ <372c9172-ea01-4a3a-b737-3f7f14519791@gmail.com>
 Content-Language: en-US
-In-Reply-To: <086d6b35-8c19-4e92-9cd1-557b98991d35@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <372c9172-ea01-4a3a-b737-3f7f14519791@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-> Pro tip: when you reply, trim out the not relevant parts like this.
-
-Noted.
-> We could start with hard-coding the als_trans_ratio in this driver for the
-> scale (and write comments explaining where it came from and what we know
-> and don't know). Then at least we would have a scale. And if anyone needs
-> something more accurate and reverse-engineers it we could fix it up later
-> with a DT property or something like that.
+On 2/3/26 9:41 AM, Erikas Bitovtas wrote:
+>> Pro tip: when you reply, trim out the not relevant parts like this.
 > 
+> Noted.
+>> We could start with hard-coding the als_trans_ratio in this driver for the
+>> scale (and write comments explaining where it came from and what we know
+>> and don't know). Then at least we would have a scale. And if anyone needs
+>> something more accurate and reverse-engineers it we could fix it up later
+>> with a DT property or something like that.
+>>
+> 
+> In arch/arm/boot/dts/qcom/libra/common-proximity.dtsi Xiaomi sets this property
+> to 16, and they set integration time in their driver to 160ms. Maybe
+> als_trans_ratio has something to do with integration time? 
 
-In arch/arm/boot/dts/qcom/libra/common-proximity.dtsi Xiaomi sets this property
-to 16, and they set integration time in their driver to 160ms. Maybe
-als_trans_ratio has something to do with integration time? In that case, we can
-calculate the scale from a formula, like this:
-scale = cm36686_als_it_times[index][1] / 10000 * 40000
-val = scale / 1000000
-val2 = scale % 1000000
-This would allow us to preserve lux value when changing integration time.
+I assume you have the hardware and can do a test to confirm this. :-)
+
+> In that case, we can
+> calculate the scale from a formula, like this:
+> scale = cm36686_als_it_times[index][1] / 10000 * 40000
+> val = scale / 1000000
+> val2 = scale % 1000000
+> This would allow us to preserve lux value when changing integration time.
+
