@@ -1,89 +1,140 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6B63ECBFC
-	for <phone-devel@vger.kernel.org>; Wed,  4 Feb 2026 11:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6590843AA6;
+	Wed,  4 Feb 2026 13:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770204350; cv=none; b=O1siy3hlZ+FOkh+amh+G3nOpC0uJUZ/eLHgO+YsmR7XgQUViTqlhC5DgWXX/WA+wD73dn4LYKxp8ZGRD8uTiMDJpqhCiqSIHG5mcj05Kau+QDHD69W05otp5C+LC2INgxeUcTH1iOBNWZhez5fwWogQGQp1qlOAb197W0Xb3LYQ=
+	t=1770210935; cv=none; b=rroJAUTJPY2HHb3UhBtT+o/lG56FqTFVh5bd7/u7Uczyt3usUF0ci0I+QGPlNltTseIKsjMGgyovBxHfCcNhtgc497/PmQYDqdFCdz1VynufrjROqbobxTbc5S3JsIw0sYs54KCkQLqJfIiZGcKvODu9zokCzj0T3Rn2BZY1UJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770204350; c=relaxed/simple;
-	bh=cHrIGCrLD2E71lxcn6R9T8rwGbDwPkRE47D0XFgJzv0=;
+	s=arc-20240116; t=1770210935; c=relaxed/simple;
+	bh=02d4/3q/zFQxPynJd4XcqNpUBi7WTFJGoOXNWFYSYtE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XKnTK7Q00/nBgRibqxlnrGIsaVfZzl5O9RB8shfi4zpL90P932smH37nhi5+UnZwY8ds5TzWQphnqnKhe1FyHiKUjUFbkLnB+ACy89m8CCKcxaNFnCtWpjQH/YlPymyxvubzAUuJO+WZvyVzIQ1Unay4LhxzODsrPJXK4k0VD2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNXIISo4; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=eNJNswtKo5fchLHg+16pGTrqK4GL8dBO7SS84o4IELf87vSdYK7ekbK5m7IvsA9LA501O1eQLprf/9coIRiLObfWY0JfuNTBrrr+2C8ndf3q6Rhrhxgzt6Q/vxno0cohZbuZAGYJOSLsIp9jTQJ1jQA7EPB6CasIOqlDNF24hqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNWCAIa6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNXIISo4"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1233b953bebso2618811c88.1
-        for <phone-devel@vger.kernel.org>; Wed, 04 Feb 2026 03:25:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770204349; x=1770809149; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mYrSGr/bgBDeAZ5X1xIVgbMDj6wzpB8qLVpSIaqJT/s=;
-        b=eNXIISo4aQQIBQHdlO4XbwCqot0+VXtRPHNtKHFI+KFB2jiPqVYCUg71ZNyWmtzGgP
-         wC4maQro0HfaHDjxJiy4vKxGZffOBxtO7EythNtQfHnuz/bMT8Rojp1Jrebvx8BRudY7
-         B+mC6/km06Kx6RUxFlISKqYRNvXpMDgBqWZqqRBv2YOqva7GN53eVsS/KvQU+hfdHXSJ
-         rAer8iEs9vYZ2jNTS2TkooAIlfgCQDl8NFToJnG7AHnGBP48rF8mVuPKnkK+27qUSmQ6
-         uf1xL/D9/Yli3yanC1RS4+u+K5/5X0i/Fq6Vb5B08QglP9Vg3NkIlgufKhBD+PgzxxwA
-         cQfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770204349; x=1770809149;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mYrSGr/bgBDeAZ5X1xIVgbMDj6wzpB8qLVpSIaqJT/s=;
-        b=ddykPpCj6160P3Tl+RQe3pdUz5LQUL/QkQQj5XBSK8n9SWRIYtrNyozo5AA9Sm7VcL
-         zz76c35+QEFIXdYYLzD3H2ue644FAJBCXnKJUnwquDYl1sjUjd6nWY+j5WcSaWG7c3ae
-         UDL5vHSGmGK5BTa4+cnkS4DCofiJGX6pjllEw5BJexNeiy7W83Dqi+tOQk5TQiS83xGb
-         GPEuor5Xrywp6xKC+9IU5LxFI857Glhrw4qSwT85kQ/rHTmTusfnycTMlJZNtILcxEQv
-         PadpOTfKuM8Pbf/geib2W0bRi16r9Vz4dRppFVn52O04nV9M8AUMkwQnXvb9EXLFW9Gf
-         CF6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXDZ0b83TiPpR5fM18YXrtRQMsje+1FrvbTmUr8FkJhmoecuBNHcMpUqiF4c6XHR2pVplBvbDF1M4Nbjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwfJPi70O1YFH7o4cAd4Xkjs+K4W81p3K5YiLfHhEcRpRxUbTg
-	VHocZcHnu1v4Ykk8huPl3tLJhQbGF8lk7GLj2OystvBFar5YO6UyhW7E
-X-Gm-Gg: AZuq6aJ9Vk8kYYLuoB/iJQh4gslT1UkFDof0GWiG7xdye9WFRHDE2tvU/8JWRZS4gue
-	lTNZVAm2clvzdgNWkwprX5AHkUCNoOfxy6clJV6DrCxubxrA41j3/k0vTOixcAmE8MZQoJIsLU+
-	swcyq6R5/CEq6cIu0LMSMukQuMkz732/pouP4jfh0oRxcQaOOPrafCScAi123UH9hadKfL22uF0
-	ViE6NteJL6X5rhe3y7hHAYWPKz6xbjeublN4F0MrRBVJbqkKCsMsUiyPYqhhrP9XK4A1+z+Mo6k
-	i81w2n1koYUp8DlrcTgUtSE9Fxs3Htd0vfOsX8YmN9CQ2A1myKMNUa6xrJUYS2yPMN26J/KXt09
-	LR85fowzMSfY4DewPYZCaM5e/AZZ4JZK0vo9AUUwrZYfQ1/wGWKG2l+Bg2vs5dHK/iBfaLpPjZX
-	2OEjnPgUt87IZuKbRpx95j0kVQhihSWZXrYIeojJTEBCB3ViJI247R
-X-Received: by 2002:a05:7022:325:b0:11d:e25a:d9ca with SMTP id a92af1059eb24-126f47bd21cmr998880c88.26.1770204349187;
-        Wed, 04 Feb 2026 03:25:49 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:b789:f5e2:3597:9114])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f4e111efsm1602698c88.8.2026.02.04.03.25.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 03:25:48 -0800 (PST)
-Date: Wed, 4 Feb 2026 03:25:45 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Raymond Hackley <raymondhackley@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, Markuss Broks <markuss.broks@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] dt-bindings: input: touchscreen: imagis: allow
- linux,keycodes for ist3038
-Message-ID: <aYMsshqLbX3DfIO2@google.com>
-References: <20251224100941.3356201-1-raymondhackley@protonmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNWCAIa6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CD7C16AAE;
+	Wed,  4 Feb 2026 13:15:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770210935;
+	bh=02d4/3q/zFQxPynJd4XcqNpUBi7WTFJGoOXNWFYSYtE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pNWCAIa65dm29/1g4DlBYuxfM7L6pU5Dz3bYFOwlFw3YCnBAmNij3xxp+MiiPfWAG
+	 pTR7E95oF9nRTJyZKTLHbLA4u8DVsk4UrrZUt1yVSme/QPa0wvOACbpiLoZGKmbv7q
+	 ckiwaRjPUk1D6a3hTQQ73ANbterB8IzvEmU74OyV4NqLl0MzwxnN0n8FWrCFx4gWgI
+	 AAHzzkHx6GTvYNCcce9EZRzZcqRpvMwp0t2i/FjU2MqBPFQ848q1DmCcyBEXLim3wk
+	 IP6juSiwjzZhuQ1acBr1rgsk794PoGXiIUARxJH+B7Vt9ESNHwduNyEIyZbsXhmXLt
+	 NK6gs+cGIm9Ag==
+Date: Wed, 4 Feb 2026 13:15:30 +0000
+From: Lee Jones <lee@kernel.org>
+To: Artur Weber <aweber.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Stanislav Jakubek <stano.jakubek@gmail.com>
+Subject: Re: [PATCH v3] mfd: bcm590xx: Add support for interrupt handling
+Message-ID: <20260204131530.GA1169221@google.com>
+References: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
+ <20251023130335.GM475031@google.com>
+ <b0cffa2f-6ad2-40a3-a5ee-5df6b2918524@gmail.com>
+ <20251113132648.GG1949330@google.com>
+ <3ccdc769-4730-42de-9bb6-1d6322111fac@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251224100941.3356201-1-raymondhackley@protonmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3ccdc769-4730-42de-9bb6-1d6322111fac@gmail.com>
 
-On Wed, Dec 24, 2025 at 10:10:48AM +0000, Raymond Hackley wrote:
-> Imagis IST3038 provides touch keys. Allow linux,keycodes for ist3038.
+On Sat, 24 Jan 2026, Artur Weber wrote:
+
+> On 13.11.2025 14:26, Lee Jones wrote:
+> > On Wed, 29 Oct 2025, Artur Weber wrote:
+> > 
+> > > On 23.10.2025 15:03, Lee Jones wrote:
+> > > > On Mon, 13 Oct 2025, Artur Weber wrote:
+> > > > 
+> > > > > The BCM590XX supports up to 128 internal interrupts, which are used by
+> > > > > various parts of the chip. Add regmap_irq-based interrupt handling and
+> > > > > helper functions to allow subdevice drivers to easily use the interrupts.
+> > > > > 
+> > > > > Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+> > > > > 
+> > > > > (...)>>
+> > > > > diff --git a/drivers/mfd/bcm590xx.c b/drivers/mfd/bcm590xx.c
+> > > > > index 5a8456bbd63f..fb6afe277ebf 100644
+> > > > > --- a/drivers/mfd/bcm590xx.c
+> > > > > +++ b/drivers/mfd/bcm590xx.c
+> > > > > @@ -26,16 +26,29 @@
+> > > > >    #define BCM590XX_PMUREV_ANA_MASK	0xF0
+> > > > >    #define BCM590XX_PMUREV_ANA_SHIFT	4
+> > > > > +#define BCM590XX_REG_IRQ1		0x20
+> > > > > +#define BCM590XX_REG_IRQ1MASK		0x30
+> > > > 
+> > > > This isn't better.
+> > > > 
+> > > > And now the nomenclature is inconsistent with the one above.
+> > > > 
+> > > > What is a mask register?  I don't understand.
+> > > 
+> > > The IRQxMASK registers store the interrupt masks for each interrupt. To
+> > > explain this more clearly:
+> > > 
+> > > The BCM590xx chips have up to 128 internal interrupts (the exact number
+> > > is different between the BCM59054 and BCM59056, but both reserve the
+> > > exact same amount of registers for them).
+> > > 
+> > > The status of each interrupt is stored in the IRQx registers
+> > > (0x20-0x2f), and each bit represents a single interrupt.
+> > > 
+> > > The interrupt masks (that is, whether the interrupt is enabled or
+> > > disabled) are stored in the IRQx_MASK registers (0x30-0x3f), and each
+> > > bit represents the mask for a single interrupt, in the same order as the
+> > > IRQx registers. (...would IRQMASKx be more consistent?)
+> > > 
+> > > Each register stores 8 bits of data, meaning the {status, mask} for 8
+> > > interrupts can fit into one {status, mask} register.
+> > 
+> > Okay, so the "MASK" thing is just silly naming by the H/W designers?
+> > 
+> > STATUS or ENABLE sounds like it would be better, since a "mask" to me is
+> > a software term which describes the methods for manipulating these kinds
+> > of groups of bits.
+> > 
 > 
-> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+> As far as I can tell, "interrupt masking" is the standard term for
+> enabling/disabling interrupts[1]. It's even consistent with regmap_irq setup
+> code - if you scroll down to the part where this register gets used, it's
+> passed to the struct "regmap_irq_chip" to the field ".mask_base":
+> 
+> > +static const struct regmap_irq_chip bcm59054_irq_chip = {
+> > +	.name = "bcm59054-irq",
+> > +	.irqs = bcm59054_regmap_irqs,
+> > +	.num_irqs = BCM59054_IRQ_MAX,
+> > +	.num_regs = 16,
+> > +	.status_base = BCM590XX_REG_IRQ1,
+> > +	.mask_base = BCM590XX_REG_IRQ1MASK,
+> > +	.clear_on_unmask = true,
+> > +};
+> 
+> I find it a bit reductive to just call it "silly naming by the H/W
+> designers"...
+> 
+> ...but I won't waste any more of your time about it :). I'll rename it to
+> IRQENABLE in the next version (though I do have mixed feelings about
+> completely changing a hw register's name...)
+> 
+> [1] https://en.wikipedia.org/wiki/Interrupt#Masking
 
-Applied, thank you.
+I know how masking works.
+
+However, I was unaware of the nomenclature used by Regmap.
+
+If the registers are called that in the datasheet, you should keep them.
 
 -- 
-Dmitry
+Lee Jones [李琼斯]
