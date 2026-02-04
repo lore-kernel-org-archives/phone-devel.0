@@ -1,87 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B330288B8;
-	Wed,  4 Feb 2026 13:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DA02F617F
+	for <phone-devel@vger.kernel.org>; Wed,  4 Feb 2026 16:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770211108; cv=none; b=DsvDeq1ex42MW+gTxMdlwUNR8c+QxQ8UGTdtg3vTUuQxicU7KqN39frJEdgWz0XW3ryS2k0+vghof674RIibz6xEObBK8s83THigsDM+/KfC2/+QIEbJNyPW2q9qQbJlThLdj1q+C9ZxF7lilxaxwkdD2ukFVKGyqJNWhfNVlQ0=
+	t=1770222897; cv=none; b=kqdU1hNGlKgjFToysryZ3RA061lEzKuyO516P1DKAeczULEaKN1XeFTRa6RvuF7B0cQHDfW8PgyAp/uas4G5n8fO8H3ZKIkxtN/NJq2qqBhfYNqT+a9m4e3SdFE8wg69xDfd5lh033Slb6LnLw0H8+X3bYY6ouauhoVlu5Abp1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770211108; c=relaxed/simple;
-	bh=BXwiOOSfxA2vJmftKUX4ZKhYetd5VCDpZWLrDkT00gs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LoBqiHyh2nOkypiFPBmrL0nfP/QaAvFu8YNdupdMmNug9z83UmoLNh9/wtloKVb2x0ou6YxdP9y4vehhtCGlzsWbFS1DtUzyHoY1pRcDhgHViGItmC/L4+2zkPT7qT1goulftZlj5wiAumvOsJeLl3dMmikSpvX+qKtCTfJf/+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mYvMeahI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770222897; c=relaxed/simple;
+	bh=aD3JG2CFG0c/0J99/RvgjjGJymEw45rYyKXCIerd8MA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P2ETHwuBsZM5/ULtyqc+NyBLCa4MaIp7UQPltcviIUJasPBR+ULsVavLOqinVjXand7oK6JrjfyzCAkyXfdVKokydewGi9zwkhok2N22bWczALyalFmJ0ZBPrlUlmo3BxpKlEE2K7HiCrITj4uacGhTiRv/h6c1NQY4G+aPzCkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wjn9pUFz; arc=none smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mYvMeahI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E75EC4CEF7;
-	Wed,  4 Feb 2026 13:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770211108;
-	bh=BXwiOOSfxA2vJmftKUX4ZKhYetd5VCDpZWLrDkT00gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mYvMeahIP51DzlnxngziFHPVmhsnN2KBxIVCIYB4S54+RNztIc7U8lur99XAdxi1g
-	 3WAv4jrpnPX0xwFb40+cmhPoPpptW2GAVaFQRvlwkzr28/kPB519/UbzDlmESU5hlV
-	 civmI4lFcmMeRlRDZkoGN8OVwkgCOMl6bdgSMTWUJdo3E2HHTQj48K0veOCkum/D8W
-	 vJN4DwVX/V1Phbvs2T6elJnyFXw88Vbv1dsCxQ5Sdv8tqAuOGY0wSUSzONC4y5TyB3
-	 HQpqCh9dFugIf4VoXJjKKc36zrTMuf0lkJKdlIhKQ9M4arBQJXGpMTub5S4VfWwvm/
-	 7mio8+XwNiXxQ==
-Date: Wed, 4 Feb 2026 13:18:24 +0000
-From: Lee Jones <lee@kernel.org>
-To: Artur Weber <aweber.kernel@gmail.com>
-Cc: linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Stanislav Jakubek <stano.jakubek@gmail.com>
-Subject: Re: [PATCH v3] mfd: bcm590xx: Add support for interrupt handling
-Message-ID: <20260204131824.GB1169221@google.com>
-References: <20251013-bcm590xx-irq-v3-1-0ceb060d2ee8@gmail.com>
- <20251023130335.GM475031@google.com>
- <2153fb6d-17d3-4cec-b348-894599743b93@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wjn9pUFz"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64937edbc9eso55675d50.2
+        for <phone-devel@vger.kernel.org>; Wed, 04 Feb 2026 08:34:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770222896; x=1770827696; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aD3JG2CFG0c/0J99/RvgjjGJymEw45rYyKXCIerd8MA=;
+        b=Wjn9pUFzWfE3RTBKprt0ESn5qv1wW0359wQg8otruxEO3bVNPhZyySwCx0Z4E99JkP
+         Mw/M8ll/4anNUm6QOjqhtkp6OTwZRzMegKPRT81TjhFoad3BulgU+eqFXTDmuApHgyBd
+         Xh6JsfLrHfj4NwalokwIeq0xSENo2rwRBWf8e3jTzJ1nxbsu6YVfr4ULenUEL3RijmTD
+         jrbEm35jBCIuSpoKerXunT3pWGQSW3yF5cMxN6NtG+SbK0pclHi3eHUetLqBMfJxgOtM
+         aK7Rnb2+Gc8lYizinjUe5qgkG/IcjlqO/eQFRoUMA/YbvpIt7/d8nJtripaNsau8X3C6
+         3U+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770222896; x=1770827696;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aD3JG2CFG0c/0J99/RvgjjGJymEw45rYyKXCIerd8MA=;
+        b=s0+D+pqmOEvIT3QZHZC8S1JlpUOrxCOp32XkVgfZ2Hv42Mfyio9nZXu3rDSq5a4tMx
+         PM8d4RaZNnSp6G/GGQSWeGfiourPM0O6qM928IFzHHw92umauawU/T5tWydTIjBCQPYE
+         5QV1Ubn/P0z3lydIXxlQDZDsYhvag5y4R1h54Ls6XAzlmYD0+MRlHoryYO+JXJVY6JHG
+         0qYc8tksJhh1R1sgNqn9gcZeh26z2PwsY2Sg2oaBX6/1xPQ3/5oGUBSIysmYX9rKIt5W
+         D25uR0on/FcoXg/Y/8pi4rpjc39eEcTa+IHQIllw6+0Yvnwo2TdH/BQUlzIg5BYSaiwS
+         BE2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVA1od5ZVaUdoirpJ3HU9OPsQnW/5IsqrlQKnNUD6Y3CerB29/S30TBgslAltp+bjDNYiz3FeXF3cBCcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlLyBhhEa3Ri1xswvEe1TFjQSirnZKnejiW1Ni/O/htYXviEyA
+	kOdwvEJDXCZk1ZKrSvCtBNWHXzjm4hBUZabNb0KX8YAF9BCHejJZMIob
+X-Gm-Gg: AZuq6aLjZtlTz6kEDajic66cUiSaHSlaFKY/7h7UfX72IgU43MITk/ZoqLJ4B1fG4hW
+	BIGfqKt+k0OBI19a5LIOmj5H0Wq2Wf5mfiprtdDmQj7K2ASnNZmG03m4CAOr7SEb+Hd5IcgpgGY
+	9EUd3EavUrw/3WTBG0y0ONWh3nojHLToef3OuN18dXJsiMSz3v/WY+cY1ixLDnquzKbRlRwHkdr
+	ERJSQQkZToTv/3rVP4m0XtOIv+fhAVhDNBcvzw0uXwHKR000cTQRC4Qw8vbiaOTWSfdCPUBG77w
+	eWBF9MCmqGghgzWSfoOGWsIMdg2j9NeUcp9Ynq7cbKlIoe+OLzzRSaDyZ5GXuezQQz+PzCU8tic
+	eUk+gaaSKaOBwH0MyWDOY+NP77fQwrOw9Sjw1CDa5MiDYYPq1aLajhNLMM4PkVOSSvw1lIztlHv
+	ReDAX0/nUw6frwrQ==
+X-Received: by 2002:a53:ebc1:0:b0:649:af6b:7427 with SMTP id 956f58d0204a3-649db4bd3aemr2658511d50.78.1770222895989;
+        Wed, 04 Feb 2026 08:34:55 -0800 (PST)
+Received: from [192.168.0.40] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649dc4b7e06sm2822790d50.6.2026.02.04.08.34.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Feb 2026 08:34:55 -0800 (PST)
+Message-ID: <34824fc2-af03-48e3-98b8-04fae28c9a64@gmail.com>
+Date: Wed, 4 Feb 2026 18:34:50 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2153fb6d-17d3-4cec-b348-894599743b93@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: light: Add support for Capella cm36686 and
+ cm36672p sensors
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kevin Tsai <ktsai@capellamicro.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260201-cm36686-v1-0-4949a2a9ba63@gmail.com>
+ <20260201-cm36686-v1-2-4949a2a9ba63@gmail.com>
+ <eb922433-3951-409a-a397-b48efef57b7b@baylibre.com>
+ <b133521f-434d-4972-82a3-6e7978e557bd@gmail.com>
+ <086d6b35-8c19-4e92-9cd1-557b98991d35@baylibre.com>
+ <372c9172-ea01-4a3a-b737-3f7f14519791@gmail.com>
+ <0b001503-5882-446c-a0df-642a9f75e7e3@baylibre.com>
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Content-Language: en-US
+In-Reply-To: <0b001503-5882-446c-a0df-642a9f75e7e3@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 24 Jan 2026, Artur Weber wrote:
+> I assume you have the hardware and can do a test to confirm this. :-)
 
-> Sorry for the late reply to a 3-month-old review, but I missed this comment:
-> 
-> On 23.10.2025 15:03, Lee Jones wrote:
-> > On Mon, 13 Oct 2025, Artur Weber wrote:
-> > > +static bool bcm590xx_volatile_pri(struct device *dev, unsigned int reg)
-> > 
-> > If I've asked a question or showed uncertainty about something, it
-> > usually means that changes need to be made.  Asking what "pri" meant
-> > wasn't a one time thing.  It shows that something is not clear and if
-> > I'm asking, others will wonder too.
-> > 
-> > Can we change 'sec' to 'secondary' and 'pri' to 'primary' please?
-> 
-> That function was named for consistency with the other uses of "pri" and
-> "sec" in the code; this function is passed to a field in the struct
-> "bcm590xx_regmap_config_pri".
-> 
-> (Admittedly, "bcm590xx_regmap_volatile_pri" would be a more accurate
-> function name.)
-> 
-> I understand that the pri/sec naming could be confusing though. Should I
-> update the entire driver to use primary/secondary instead, or just this
-> one function? Or just the regmap_config?
-> 
-> The regmap_pri and regmap_sec names are also used in the bcm590xx struct
-> which is passed to other drivers (currently only the regulator driver),
-> changing those would also involve changing that driver, but that's fine
-> by me.
-
-My preference would be to elevate the ambiguity everywhere.
-
-But it's not a demand.  Do what you think is best.
-
--- 
-Lee Jones [李琼斯]
+I tested the formula used in Xiaomi's driver in the mainline kernel and
+compared it against the downstream kernel, and the lux readings match between
+them. Therefore, I suppose this solution could be good for now.
+Although my formula for calculating scale is wrong - it should be inverse
+proportionate to integration time. So:
+80ms -> 1.28
+160ms -> 0.64 (what Xiaomi uses)
+320ms -> 0.32
+640ms -> 0.16
+This can be achieved by multiplying als_trans_ratio by integration time used in
+Xiaomi's driver, and then dividing by integration time we have set up at the
+given moment.
+For example, suppose we set our int time in mainline to 80ms
+16 (als_trans_ration) * 16 (160ms / 10000) = 256
+256 / 8 (80ms / 10000) = 32
+Starting here, we calculate based on how Xiaomi calculates scale for their values:
+32 * 40000 = 1280000
+val = 1280000 / 1000000 = 1
+val2 = 1280000 % 1000000 = 280000
+And that leaves us with scale of 1.280000.
+Of course, comments on how we came to this value would be included as well.
