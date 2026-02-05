@@ -1,120 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06FD331A5D;
-	Wed,  4 Feb 2026 17:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E23A0EA1
+	for <phone-devel@vger.kernel.org>; Thu,  5 Feb 2026 09:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224623; cv=none; b=hzNRX4qZGczQm1ICzr8xAB138DNPd0L5x2pmEeXXaa4DGRz7m02I0siMse7B29zZlLK+GcjU1DnWsease6lWRThcNxP7JHxApbiwX1NPAlQJCNZ4SPlHn65UDk+dTg7KqGjWnlGaB14Kp81PUVxuYminPBprNOJJb7D0+DblSa4=
+	t=1770282318; cv=none; b=rcg7R+mrg4mKOpqht5xhy633yrxBVSPjYD+Is4nc6ytM5ac2C+NEP6HyOLA3MjiKaGWJMPKiC4rOG+1TqsGTA8IsvwdwyYhZLilOGioEC4UqAWqoDCNBgXnSzEoz95Q8g78o6E4cIrwgQxE+n5txyDoPOYfECOqeDHY5Beyx4jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224623; c=relaxed/simple;
-	bh=grfMbECNH1icJfVNClw7Lzh5XJpsl8PTYhdQn5bwIDc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=onoB1gUpwnPaaODWVVD0O+NO43DbPCa6KCRoxoyzoA971xCQkVYwulkX22j/u1NYRaX+ueuzYl3Pc/YdoVHevmazPIn0in3LQPr0n11SbsSZ8YRs9HI2TFOdPoNRz0e42xIhqCXkAr0NA3dsjPrp+C91hPoWas8i7dB6JnOcqiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOgwHOb+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770282318; c=relaxed/simple;
+	bh=anLO55SwKY2JU/D6EdJkspS/WXaI34Yc/1S0BY14WTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S7kwwdupvcWufcmOmdtcO3f/FOVmoxUxxvsmKmfH+4AS+5zwgBv+i4x1EoDlO+tg7LaxhyPXLuwAUaHLeVIot8ehyLNt8iSKxkMTtrjN1AxvaIBXQLpFU/ew4+7lqQE26UhHnGl5o0hDeXYv36SNqb7+sdcAmK2hmYTSPvQ50T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gyfF1qTV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Viwjta4G; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOgwHOb+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B2578C2BC86;
-	Wed,  4 Feb 2026 17:03:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770224622;
-	bh=grfMbECNH1icJfVNClw7Lzh5XJpsl8PTYhdQn5bwIDc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=AOgwHOb+WFd19ylpyssPlYWpCDu9t25k8Ywq99B1ZmCqdlj3J8GiL1rtI9Y1GV18f
-	 uSED/pEA0gwTtwEUFaDxuNXiT2WUpto5PLeBQrdKsPHPHIpArg5xm8UVOhmH8hmG9B
-	 hZEF+OR7ZxPu7ZZxBYP6rSaZVT12kl8T+KAO3Kr8TBccBptVNEPmOXKx5rfDhoUrG3
-	 lfZSf68Iqd1cWojfDirimkw/xfQtcsjUeGzMNCgdnRG2jE2ce5zl1SdrCSqRaZPs3M
-	 oOzqwdWkcBOWiop0Zo+0cAdmGRqTqj4s1o6U2IApAcVH47jAq3LxrLxIb1klbIXSZx
-	 pBnfaqXwzW+7Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 991A4E9D418;
-	Wed,  4 Feb 2026 17:03:42 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 04 Feb 2026 18:03:41 +0100
-Subject: [PATCH] testing! arm64: dts: qcom: decrease WiFi antenna regulator
- minimum to 3.0V
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gyfF1qTV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Viwjta4G"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61555p2p3047833
+	for <phone-devel@vger.kernel.org>; Thu, 5 Feb 2026 09:05:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HXzW66qwAeMlnOxMmTGmYciFEyFaFIMfICLtoVtwxos=; b=gyfF1qTVeIUOT0Yi
+	7YoAQvAU05QnJNbT3iDy+9DXrtj4d1fMLALepRDkmhzRIW5jW49SGuZejJT/CIL6
+	m6Sk8MJcafVXZ55ckI4JGrmADpcdm9x23i1M+sxgTvsRHF2Xd0V6ec5u43t8i2pg
+	+LrHC65SjhKhrYQXA7P7WYFfGuhXbiSXYu1OjidCy0CZnuVHkXokLLUq47HCCYyl
+	jggT//PkINvk5hL1HPLrfv/CG9P6dv+wYP4SYtalPkkpuPYA/nRp/1GFS0ly/PkQ
+	cabG7rt94b03HsyYhvJ69b/fMG5bDVCsooRes5/iuQ/zreeYRgfF63PcqTIsgDbq
+	M4B87A==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c4mrtgpbw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 05 Feb 2026 09:05:17 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5048d049ff1so2281831cf.1
+        for <phone-devel@vger.kernel.org>; Thu, 05 Feb 2026 01:05:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1770282316; x=1770887116; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HXzW66qwAeMlnOxMmTGmYciFEyFaFIMfICLtoVtwxos=;
+        b=Viwjta4GR9W+PuXPfmwVDaow6um2fACTDfOG4+h5bj3gRNQHGIoi1jlWE6SBVK+Hr3
+         gGCKkr1KT6BosILPh3CUS/2I3aK5zC7sOeB4U9MZvNwNkXWnxu2Nu/vZFJoo7Ao6ApN6
+         unND6+xGSP/KMEZJ4iSXar2fUVMrKwQ0BH1NZQPAbgi/ZOfWNb/dTMNdYhGAK88uEdZa
+         21NOrSmJQoswl35Lt3vQt/YdlYFOsh4FOYeKf1PjabI7qzGgeKigVuaAQDOBYjS6f+sp
+         Ft+xAFK9eYvaDQkErLdMl8PluyIl09Lugt3n+C0UIKz3hHcagzhNiCo7zQP+ZwUx33zX
+         fFkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770282316; x=1770887116;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HXzW66qwAeMlnOxMmTGmYciFEyFaFIMfICLtoVtwxos=;
+        b=Xr5pgrsPv/LUrMdKxdtPGbm2rsHeKYwPduY+vikVNB/KSZqWwFQyWnzNfuQNvxEbya
+         sWZkgoTtcuUvmCdtakuX9/HZchNLbVEDRhoJ2aXwEleW6u3qRPjnRgJro8oxTuh3dFCF
+         DfOrPAzFmv7vyvOuHAusKlweiCQPDKCeo78RH4kVQzLlAlTHtd6lM49O59i3D46fCc5K
+         1kahFZocsQlNk3IYY1G2wcD9XkdO74tROiJMdgd1TiH/CD+TD0VkhIWhF19vhWvrnsWU
+         S9e8dedg0UOyTLdGLVx5FP8aladLx1r0c8C/FSo0yLmhCd5o2n8VQNfQvfQVPH0D9x9B
+         QPXw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9p50drboMJ6r82PdkMcPiXXlEyM6BPSPBi3KqUSDpr+olMwiND3Eye9KvztQWzivMTy+6N8YulPsIgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YznJ9dEbGfFJJ8paUhR7QfoGkrEcHjgiWdqQrpdK5bQpPwiqWlM
+	K+Kgpw+V9Dt5lx0iSSC8OpTODMUEo/ZjQnXtzB2f0Of+EouL9NsXHXz3aiNZlWrsV5UZExO16CW
+	+9SjwXuojFelcnzSuT9EvNMsekWkPWX5TE/7+7bcFwX6HromjXUxXITmvM2yyFG2Ffw==
+X-Gm-Gg: AZuq6aLvnUHO4hcCpBTsLLpfYWKfLHUHrC+YroJBsLyrV0PFngTcXaAzK4G8yew2U4R
+	JRgOVLMh2gybJIyd+Qd+N2FJIUZGPK+LFwigJRF69QsFgHNKsntZF+27gSYssEPKOynAl7DH4y5
+	svuGZ3FhHU5KzJMQovlP0WXgTyXfXgueiKN8tcWS2AUs8Rs5agkC3fTApy40etSAm7jYOYRPRve
+	B8fCvxeseBKnhLGdLdqW2/vGEVJL+7e9LjfAquu2e0B6KWdP4qwuiTPFXqzNQOkkrQTkJd/O34u
+	EbIYptdlDd/8xiEFXFxkm0OPYBcE/5x2PtKVch4Mo+twmm27lmxBFfu8cSQwzRRhl4VduCLgJbX
+	UMyFfKYEJL0/1AC5ExPNuNWPw6fxMq3VnGSikNQKRhxmqVmiVGdyOI247kzx1vH9sxY0=
+X-Received: by 2002:a05:620a:172b:b0:8c5:305e:ea16 with SMTP id af79cd13be357-8ca33156b6emr493913685a.8.1770282316599;
+        Thu, 05 Feb 2026 01:05:16 -0800 (PST)
+X-Received: by 2002:a05:620a:172b:b0:8c5:305e:ea16 with SMTP id af79cd13be357-8ca33156b6emr493910685a.8.1770282316183;
+        Thu, 05 Feb 2026 01:05:16 -0800 (PST)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8e9feeff51sm199400966b.39.2026.02.05.01.05.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Feb 2026 01:05:15 -0800 (PST)
+Message-ID: <d800d5cc-0e57-401a-a62a-42e9c40125f6@oss.qualcomm.com>
+Date: Thu, 5 Feb 2026 10:05:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] testing! arm64: dts: qcom: decrease WiFi antenna
+ regulator minimum to 3.0V
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260204-oneplus6-wifi-voltage-v1-1-ee6fd47f9d02@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260204-oneplus6-wifi-voltage-v1-1-ee6fd47f9d02@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-oneplus6-wifi-voltage-v1-1-ee6fd47f9d02@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAOx7g2kC/x2MWwqAIBAAryL7nZBCIl0l+pBtrYVQ0V4Q3j3pc
- 2BmXiiUmQqM4oVMFxeOoYHqBODmwkqSl8agez0orYyMgdJ+FiNv9iyvuB+uSZYQLXpryCO0NmX
- y/Pzfaa71A3I3h2hnAAAA
-X-Change-ID: 20251216-oneplus6-wifi-voltage-8ecc8cf86efc
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1386; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=MU24/0EIkkFW4iVo90u34fUl4tbYSjVYYtHCLcNmzhI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpg3vttL5pwPV+sq8S27yyE9ZGek38daFoKqtkz
- lcccZPXB4mJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaYN77QAKCRBgAj/E00kg
- chLDEACm+c5AjJwx7etuRiWKrMxuYeqaDczPtr9XUafue2acCLjH4sFSi7MDwui3i6b4vYwg8ah
- zv7H47yGtLtKCeGA3QWhW52UouDimzbEjePwexkfRspE4by+RN4VjCvvEY8f3+2WQwllKv4wpw4
- T6DqU7isqI9u8z5U4Wf3NA/xk1WfFlhT2kAL74OviaxxJ0PN6gij8Ipoubfg042c5bMtiVxUvTY
- edxOycNeMzkXeBejtt6whLYaQwrnaOqL65pizd5YweFFYjRbDu0OF2dVoMpDYARBvnVamV8bdrY
- MkmVwI7aFa6FRtdpHfgROP2fFjhfOxk9cmmoqWQ4dDTGWIbVaFFXGkAzrM6EcsIDiOMsK7+204s
- aOOJSANkOi6FQMZDbdcRrtx53kwSns74qL6HIezwcvmGQo+eY/SBDokMb7Cxc/4Bd1dEONSESDi
- gJ+XAD1Fq/OYjBKcSSDq+MxVZVO6HFWhe6XcVfDmU0+1iQ1n5UOVFPBVRkm6KGn8DKW9v+9OrGm
- DVwCOsEZqv04i7UJ55HEkI4KV+f+pXTwJOmNnZJ11OrZ1lK0w2DmQZIOpjm/LMHhPa9HfblR45R
- 4MnzfqiuQzQkKCd16qOaXxazh7Bt+MkdaQpgjC5ZRsVUw/QNargNUKZAF6ubwQ36HOE9snjVCRV
- vtmO7glK6idZy+g==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDA2NSBTYWx0ZWRfX69y8k8OcBw3U
+ x6Ub3AzgQhKO3C9zcsRtuYZQrRcMcGTKaWvc9kphsyWr+kYH2CZsqmXLm0Eru0VpIGmZvwM7yL0
+ b1AspgZmdAXiyOyYsZfy/le9FkkUq/pilcisNGotACIWT7H9ZD8vFUCuFAzo7Vy/gCoDJPTFI+W
+ DVBwDsc5EaNz8yMbtgCXL7tTeYKH8I4UP4KfOqD+yYTuGDBUrEvy77qKf9J8uNHdKa/B1PJsHQN
+ GNrjIm4i+SxPpeRn+gTNUvphXYctqOsnnrH8lGGuuTVdJyM5zqFzLAE90KIEsTYV/8NzStG73H6
+ YvgYKENPEYEtkDEvFvbE3wbPbXCKXht7u5FAcmxvfu72ld69YmZN5GAksv4dg0Vou9xcqQSZGfq
+ jN2ehzIQOMm15X5LHTfqP85/vA7AEQvpOO9N3ad1xmPTP0jH7a+MADNncNtOhdoSLMctEUvZ+5t
+ nzJkJNBeiD6rrKr/lIQ==
+X-Proofpoint-ORIG-GUID: FXKC0zLyKNZAjXqps2iYkrqX1Fj3_YJX
+X-Authority-Analysis: v=2.4 cv=UoBu9uwB c=1 sm=1 tr=0 ts=69845d4d cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=o67kmj3H2-0caDlAT-4A:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-GUID: FXKC0zLyKNZAjXqps2iYkrqX1Fj3_YJX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-05_01,2026-02-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602050065
 
-From: David Heidelberg <david@ixit.cz>
+On 2/4/26 6:03 PM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> Downstream defines minimal voltage as 3.0 V, while when OnePlus 6 was
+> introduced to Linux mainline, the value was fixed to maximum 3.3V.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Tested for ~ 1 month. Seems to work well, no visible issues anywhere.
+> ---
+>  arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> index 5b121ea5520f5..e950db41ce25a 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> @@ -307,7 +307,7 @@ vreg_l20a_2p95: ldo20 {
+>  		};
+>  
+>  		vreg_l23a_3p3: ldo23 {
+> -			regulator-min-microvolt = <3300000>;
+> +			regulator-min-microvolt = <3000000>;
+>  			regulator-max-microvolt = <3312000>;
+>  			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>  		};
+> @@ -320,7 +320,7 @@ vreg_l24a_3p075: ldo24 {
+>  		};
+>  
+>  		vreg_l25a_3p3: ldo25 {
+> -			regulator-min-microvolt = <3300000>;
+> +			regulator-min-microvolt = <3000000>;
+>  			regulator-max-microvolt = <3312000>;
 
-Downstream defines minimal voltage as 3.0 V, while when OnePlus 6 was
-introduced to Linux mainline, the value was fixed to maximum 3.3V.
+A datasheet tells me this is out of spec for this wireless chip
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Tested for ~ 1 month. Seems to work well, no visible issues anywhere.
----
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 5b121ea5520f5..e950db41ce25a 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -307,7 +307,7 @@ vreg_l20a_2p95: ldo20 {
- 		};
- 
- 		vreg_l23a_3p3: ldo23 {
--			regulator-min-microvolt = <3300000>;
-+			regulator-min-microvolt = <3000000>;
- 			regulator-max-microvolt = <3312000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
-@@ -320,7 +320,7 @@ vreg_l24a_3p075: ldo24 {
- 		};
- 
- 		vreg_l25a_3p3: ldo25 {
--			regulator-min-microvolt = <3300000>;
-+			regulator-min-microvolt = <3000000>;
- 			regulator-max-microvolt = <3312000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
-
----
-base-commit: 5c009020744fe129e4728e71c44a6c7816c9105e
-change-id: 20251216-oneplus6-wifi-voltage-8ecc8cf86efc
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
-
+Konrad
