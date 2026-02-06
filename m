@@ -1,154 +1,86 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114473B52FD;
-	Thu,  5 Feb 2026 11:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CB92F290A;
+	Fri,  6 Feb 2026 10:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770292008; cv=none; b=q1A2yViIovDeozxF7c/A/sIEZFpHJHm2Zj1vQffDEGPxOLU/6XR4XO/4ImJmppMg+dr1BCfplOYURqUNkyxZZpEwKVCdKh3EalhClSxSZOTZA/8FoJOZ0yHaAN6T7LbE3pb1z1x8oL3nC+iXgFsEztqFx/HtX858vHZIt0UFOmY=
+	t=1770373654; cv=none; b=fimz8FObCggPxUzr17KI7YvwttUAB+j4LkeYZ5usN6l/sGyZLianpnCg/DmeHOViVnO45ek40/O7ryvM1SCXxHffc7HcEX6TMDVwHmHzsmsHjqpX5PVQU0guIOEt7k9rf1yFGPZgjjpp7LkFvcK4ranFlQAT55Vd5TCjcZQ9bY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770292008; c=relaxed/simple;
-	bh=n85kj26Wnf1Yt29MCr5evEYJnpqMWdEm7g0pleLWswA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V05zVDPM13M71BFan+nfGLTVqXN7AnpZY78P1HXSLHtDtOJRCoh35sSXHsjNkd1KhEfqVWg1ucdvHbTn3SjwC0ihGXdL8wL+X6V51u3NJdxQiylyer1WoYSGsHGi4gj5f12FZa4DQw27V+j/iV0/mySm+MufLO79fefLbPPYo1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HKTpV309; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1770373654; c=relaxed/simple;
+	bh=R6d6LOYx1acrZEfT768rwpy3DqJ5O4GGUCRhdfOAiOs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JbbZK0knwOPZEZB8DAN8QqqlPig4+Wpzc9V2C/hA9uwPf+oUr0qK62mzW98Ys8b8qf5eE9N16aS2ev9sO51FCdP4bTUjeXKNi0D3PUwNHCzHfzhvqMiOPj2WNr9KppFer+oh/XteJDU5FtWjhqonW9kM/t2u2G12DBqfgNzP//0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=c9xEOKQ/; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HKTpV309"
-Received: from [IPV6:2a02:f000:10bd:e301::f31] (unknown [IPv6:2a02:f000:10bd:e301::f31])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4F7DC5340500;
-	Thu, 05 Feb 2026 12:46:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1770292004;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZP29WmD8c9iZtInYzS71FGqO7Upk+MXKJTExni0XCrw=;
-	b=HKTpV309pQdfWOlDw1l8NpVgPDfgtaydbAVnFN2h0yWYDouXjkrqwkJcah9RtLiBold9mi
-	Z6EFqcSHlvHZMbvVaWz8znW9I95DnMs8LgOrYBwgVnQd/jl5LP9EqLQvY1E3RLtcagpcpU
-	47Dr3oOO2tRO7Vhp59hL/3xkrGBBVnY=
-Message-ID: <8d54edae-23d3-43ce-8a99-7c4791a4b857@ixit.cz>
-Date: Thu, 5 Feb 2026 12:46:43 +0100
+	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="c9xEOKQ/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
+	t=1770373253; bh=R6d6LOYx1acrZEfT768rwpy3DqJ5O4GGUCRhdfOAiOs=;
+	h=From:Subject:Date:To:Cc;
+	b=c9xEOKQ/su2/QSb8Z4jYID+ZTdPzW74lDLaWIT/7ZSAI9HcA6ZtBtv6a+Vb0AAhMi
+	 Z7XcvChmWFJQTpLFvydDN21rBPSqWOCwPkfJtn28eohMzJmJYU8ab8ws5GZFa2R1r1
+	 KvFpNCOJlwwg/yKBEV4wwfX/ru9b0PGT05czLSNI=
+From: Luca Weiss <luca@lucaweiss.eu>
+Subject: [PATCH 0/2] Fix syscfg-pctl compatible for MT8516
+Date: Fri, 06 Feb 2026 11:20:47 +0100
+Message-Id: <20260206-mt8516-syscfg-syscon-v1-0-96dcb37acdb4@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] testing! arm64: dts: qcom: decrease WiFi antenna
- regulator minimum to 3.0V
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260204-oneplus6-wifi-voltage-v1-1-ee6fd47f9d02@ixit.cz>
- <d800d5cc-0e57-401a-a62a-42e9c40125f6@oss.qualcomm.com>
- <851db388-61dc-4916-91fa-32b96113d4aa@ixit.cz>
- <ea4877a6-3032-4710-a563-99230b6f861d@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <ea4877a6-3032-4710-a563-99230b6f861d@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MywqAIBAAfyX2nKCCi/Qr0aHHZnvIwo0opH9PP
+ A1zmMkglJgEuiZDopuFj1jEtA3M2xgDKV6Kg9UWtdWo9ss7g0pemddQcUSF5BYz6RE9WSjpmWj
+ lp2774ft+maRIpmYAAAA=
+X-Change-ID: 20260206-mt8516-syscfg-syscon-6e5d1b0a68e2
+To: ~postmarketos/upstreaming@lists.sr.ht, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ phone-devel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ Luca Weiss <luca@lucaweiss.eu>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=614; i=luca@lucaweiss.eu;
+ h=from:subject:message-id; bh=R6d6LOYx1acrZEfT768rwpy3DqJ5O4GGUCRhdfOAiOs=;
+ b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBphcCCle6WQVY8NfJ/FMmSJUdEibM9IZeseQXgt
+ WZADv8RTTqJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaYXAggAKCRBy2EO4nU3X
+ Vs+eD/9LBSIv48EKjvhOdZoTFAt94zO89FZiJosZwfat8w8XNmaWa66EC2YdT4YjRiYeXn40Q6e
+ D+h+Yo/szBLSwT4vWDU382eTBV8HhAoExnDPnH6hsIqgkfETc4B4kdefOkMXlGht8+jvNZOSb71
+ dFxKEKNruMiWnvn4KAe5mDso9V0PZf5Dau2lzyIsUKKBHmft3RgXoJxCj78TK66vPF746VJIPub
+ rmZgWZrhbPGsfve91HoWnXUUKd3JMENpNfQ2l+e1jLm6Cy2niFYAAoHKeiKsjkvnicqRCQK6yIu
+ gHs89P2adwGFyjKZMBx1hg9AJfPliBNMfaYOP7E99FXSBdMMSR/LljV39hAtSmLZY0G2A4ETLym
+ uE61xzKqL2IhlSWLicVqk/as5WNCGEmed2W+8AN755ABnswylamh8Jwwj+pr3g6GyWWmmAX+N1v
+ 3as7Gid5JHwaVBjtkYs7xBwNJacLuXS2H85EaVcDXz5svfvhSy08D17QFcH9nL33jq6Nt5tOx+E
+ WbNoj7kI1qIUepNGqIWfAU6lAVelA3I+uSn0htfkE2Jktu0Z5Y/GQxuP9Y1jF6QQMQZFUThql28
+ ywK4WMHLtrcjDGnfY6h2mUTb7Ejx4IULWOx1JS+UHQZz7tUOh73WSzmwcuPLIkMVrswzpPkaqk+
+ B1Dp6RguibkHjaA==
+X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 05/02/2026 11:51, Konrad Dybcio wrote:
-> On 2/5/26 10:58 AM, David Heidelberg wrote:
->> On 05/02/2026 10:05, Konrad Dybcio wrote:
->>> On 2/4/26 6:03 PM, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> Downstream defines minimal voltage as 3.0 V, while when OnePlus 6 was
->>>> introduced to Linux mainline, the value was fixed to maximum 3.3V.
->>>>
->>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>> ---
->>>> Tested for ~ 1 month. Seems to work well, no visible issues anywhere.
->>>> ---
->>>>    arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
->>>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>> index 5b121ea5520f5..e950db41ce25a 100644
->>>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>> @@ -307,7 +307,7 @@ vreg_l20a_2p95: ldo20 {
->>>>            };
->>>>              vreg_l23a_3p3: ldo23 {
->>>> -            regulator-min-microvolt = <3300000>;
->>>> +            regulator-min-microvolt = <3000000>;
->>>>                regulator-max-microvolt = <3312000>;
->>>>                regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
->>>>            };
->>>> @@ -320,7 +320,7 @@ vreg_l24a_3p075: ldo24 {
->>>>            };
->>>>              vreg_l25a_3p3: ldo25 {
->>>> -            regulator-min-microvolt = <3300000>;
->>>> +            regulator-min-microvolt = <3000000>;
->>>>                regulator-max-microvolt = <3312000>;
->>>
->>> A datasheet tells me this is out of spec for this wireless chip
->>
->> As I don't have the datasheet, can you clarify if the 3.3 - 3.312V is the correct range which should be kept?
-> 
-> These settings are OK.
-> 
-> Konrad
+Address a dtbs_check warning on MT8516 by introducing a new compatible
+for the syscon.
 
-Good, I'm dropping the patch then!
-Thank you
-David
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+---
+Luca Weiss (2):
+      dt-bindings: mfd: syscon: Add mt8516-syscfg
+      arm64: dts: mediatek: mt8516: fix syscfg-pctl compatible
 
+ Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi          | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+---
+base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
+change-id: 20260206-mt8516-syscfg-syscon-6e5d1b0a68e2
+
+Best regards,
 -- 
-David Heidelberg
+Luca Weiss <luca@lucaweiss.eu>
 
