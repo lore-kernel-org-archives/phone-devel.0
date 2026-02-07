@@ -1,96 +1,82 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DA430BB81;
-	Fri,  6 Feb 2026 10:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12928302756;
+	Sat,  7 Feb 2026 10:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770373654; cv=none; b=Bdm7D24gOmt2IETmT6GxKTFIZGo9giMbqmdCTZPqw3KZR2Kik//DZW7geVA49YvlYdi7MTS4DSA02k1x8KBAAGpN729P1IS3WgMdRcRyaXpX63mViRMCP+ANpuVnyhyIE6OdBA50nnxFUETJSrhmG8bVjddfl9z1QXZqdEIYBkI=
+	t=1770461482; cv=none; b=RbOVrSuZEjephP2YwRO08xytO5TfQ83srnZ0HzcqZdxASXowiA85qmhZbPBW5ZZFpwzC3I5QeDp9zGeox4Lx6PdjL1YIv5TN0INfUU6HVciF+kNCiFgN0zUjp/fNycWD2uV1NusQ8HR+abeqTwLt4SX99qD1ZLwn/qavsSl6D8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770373654; c=relaxed/simple;
-	bh=bb8AkHZnGIuJ+7cT+GCvgzq7B3H5p2MohzntibPFGLo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sGS4InmY9dDARaPrOtjdYFujSjvlRkGUy1jOI5Hq3kis5IL+AM36HY0YuY4D9M7RYsJ/Gly+9OSZgIwRHnUSi227AJhf0eWRR7ni1u68Av+AefMi96P9dRzWYErI38dfa7zCDKKrBDZjqDaJg332sxQexGOf7IxreYJZ/DhInH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=Bitv0eth; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1770461482; c=relaxed/simple;
+	bh=7COmJBYpWmIF+5G8iwqi9ALnilsYuZL0dPcrXEBiApI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fCKPuRzlYu3VrE8wwRmVMAHMXvUV1eHIU/CQISnufciBuwu0tmj01I8SrJAlgBlsgSSQkEeQrnSBiTUHcwV+9wzPFK972T8KvGfUdzC46rS57lAteL+bKHaXqPAydB6VVBpcWpffMuzXJBASEaeyIanrHuXp/7baXkLwEPNbSv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMdpeVeG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="Bitv0eth"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1770373253; bh=bb8AkHZnGIuJ+7cT+GCvgzq7B3H5p2MohzntibPFGLo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Bitv0eth9udeuN4/o0MSc/pUM1TUsF/2YJRHeb7drQGu4DwoXoE2rZscU4f1qe/5G
-	 9UYbiJBXLd7pA4nWXUH8r6oW8koEkRVVrmX84L1aZeXOhqaHeE5+MZTxOxsnMZxOeq
-	 FNYb+PEs9n0E43PfLT86hvHMO9jNPgUEJyRplOT4=
-From: Luca Weiss <luca@lucaweiss.eu>
-Date: Fri, 06 Feb 2026 11:20:48 +0100
-Subject: [PATCH 1/2] dt-bindings: mfd: syscon: Add mt8516-syscfg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMdpeVeG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1835BC116D0;
+	Sat,  7 Feb 2026 10:51:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770461481;
+	bh=7COmJBYpWmIF+5G8iwqi9ALnilsYuZL0dPcrXEBiApI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oMdpeVeG2KfNHqGHHL3EZdIsvT6oUuqLWyD/NGEud31NGYw43m8gl0v2l00aasrQW
+	 dNluG2PF6XlhU04zbLO+cX2Zq60WYPUP0lFvs+XC9zES5KwdUf8JAMA6GDY1SPXoeR
+	 X34w4ceosX7mkJRZ9SisEZvxUJlg5z9CwfCKaXRlEnOGiN3mSMlGrpB11pvudbbedB
+	 qGE3CkYzQJrDPKxwos3fUa4eUnlo95WsZANikd5Bnk6SPQkMOKy+xHhNm1V5gUR3kB
+	 r3EGcmmMWbHw3LJVph5pTWNqqpTALgW+xsTXbV5dNOOQ7pK2/3Vve9KPbpLmF5hJSq
+	 lG7uo1P6H2eLQ==
+Date: Sat, 7 Feb 2026 11:51:19 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Luca Weiss <luca@lucaweiss.eu>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, Lee Jones <lee@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: mfd: syscon: Add mt8516-syscfg
+Message-ID: <20260207-tricky-strange-swan-6f11b0@quoll>
+References: <20260206-mt8516-syscfg-syscon-v1-0-96dcb37acdb4@lucaweiss.eu>
+ <20260206-mt8516-syscfg-syscon-v1-1-96dcb37acdb4@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-mt8516-syscfg-syscon-v1-1-96dcb37acdb4@lucaweiss.eu>
-References: <20260206-mt8516-syscfg-syscon-v1-0-96dcb37acdb4@lucaweiss.eu>
-In-Reply-To: <20260206-mt8516-syscfg-syscon-v1-0-96dcb37acdb4@lucaweiss.eu>
-To: ~postmarketos/upstreaming@lists.sr.ht, Lee Jones <lee@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- phone-devel@vger.kernel.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Luca Weiss <luca@lucaweiss.eu>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=bb8AkHZnGIuJ+7cT+GCvgzq7B3H5p2MohzntibPFGLo=;
- b=owEBbQKS/ZANAwAKAXLYQ7idTddWAcsmYgBphcCDzskBqy9v4qpP4BZJ+QhF2ite7JcmFWQ47
- Rf5eqBdO7KJAjMEAAEKAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCaYXAgwAKCRBy2EO4nU3X
- Vpm3EADKOM4gT8umZZLojsk3B6h0DJE7Tej45JE3RwK1GLaTnTzhgGCasz0NlSlBf6QHbbuys0y
- tinBkBWQZe1LQ2kaq8lmggjVRouB2fpwr3ZnbtAcYpe4Kd0rwzsiFIrJ7U8cN8knxEv7Rv2L2U4
- PCjoJQ/buOzxweAfRGYjx/2lVhUm0yRZO1iN6eQEu57fvYX3S03VzVdLnQTL1uj05+jd/drdI4U
- icjTUrLEpyzA9dAUiZu/vUfFaPJIOuoBIjejKUgol90NE7ZMAQwSCdwO0WYlDGlCXdBg4MxBtmk
- CIZ9RS4kyeVp8WKSoFPcMDz4Vcv0JJalNj7lH85rTH55b0Z6erVJOJ6kjRMUh5jv6h+wbzHupDL
- u1LaYV8QTD8eiAMP56ojtZg07c4DdpVlV5dQHVC8XP5v34g1brVQAvux4Gnq/aYCKieMaLDIXj9
- 6BEiu8pqNT9R4xrgDtMEJAtw8BrC0YpTZJRBj5bIItcHAmTM02pKXD8a3EEZmRj3pV7x/mgoM0e
- FMEaH90ItwQuWzDDxyQR7EWoTrqJuDWoTRRw/aUaEf3hVAFNIOfVMGL6Se/AEP+8gNGXteaNaGm
- NS6lbPpPUMyRQYL1MqsJzOUxjvBLtf/rz4qQ1IZfzOOCWY9fx6sSaQ2p2UFeciWFeT48vVuYRqb
- svPYqQfRynsGScg==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260206-mt8516-syscfg-syscon-v1-1-96dcb37acdb4@lucaweiss.eu>
 
-Document the Mediatek mt8516-syscfg.
+On Fri, Feb 06, 2026 at 11:20:48AM +0100, Luca Weiss wrote:
+> Document the Mediatek mt8516-syscfg.
 
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
- Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Which is what? What is syscfg block?
 
-diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
-index e57add2bacd3..a67699f1faee 100644
---- a/Documentation/devicetree/bindings/mfd/syscon.yaml
-+++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
-@@ -91,6 +91,7 @@ select:
-           - mediatek,mt8135-pctl-b-syscfg
-           - mediatek,mt8173-pctl-a-syscfg
-           - mediatek,mt8365-syscfg
-+          - mediatek,mt8516-syscfg
-           - microchip,lan966x-cpu-syscon
-           - microchip,mpfs-control-scb
-           - microchip,mpfs-sysreg-scb
-@@ -204,6 +205,7 @@ properties:
-               - mediatek,mt8173-pctl-a-syscfg
-               - mediatek,mt8365-infracfg-nao
-               - mediatek,mt8365-syscfg
-+              - mediatek,mt8516-syscfg
-               - microchip,lan966x-cpu-syscon
-               - microchip,mpfs-control-scb
-               - microchip,mpfs-sysreg-scb
+> 
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> ---
+>  Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
+> index e57add2bacd3..a67699f1faee 100644
+> --- a/Documentation/devicetree/bindings/mfd/syscon.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
+> @@ -91,6 +91,7 @@ select:
+>            - mediatek,mt8135-pctl-b-syscfg
+>            - mediatek,mt8173-pctl-a-syscfg
+>            - mediatek,mt8365-syscfg
+> +          - mediatek,mt8516-syscfg
 
--- 
-2.52.0
+Why aren't you placing it with all others mediatek,mt8516 syscons?
+
+Why this is so generically called "syscfg", completely not looking like
+a real name from datasheet unlike the others in this device.
+
+You have entire commit msg to explain that.
+
+Best regards,
+Krzysztof
 
