@@ -1,66 +1,66 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048C37A4AE
-	for <phone-devel@vger.kernel.org>; Mon,  9 Feb 2026 14:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2339C244665
+	for <phone-devel@vger.kernel.org>; Mon,  9 Feb 2026 14:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647033; cv=none; b=AF7jfW/h6B0Z7FVaQ+X64ddujnERfeeby0Si8jIRgAnUN2USkwJS6I0hoGUfpnzZECRRZwMrwK7Dpq/+bjlvB76ZD/N1sRiGNcgabXDoWSqxAC1xIOq24ybM/6OiST5v4CYSrFzir5/bWbEKLSB5/shVQ1a+Fp/g/9r8c5qkK8s=
+	t=1770647037; cv=none; b=HTfBMRFkFrj4cM1QlrTf8Aryg1WXYFpSIs3DDdzDM6IpmQVR0WiQckaoKCmLLqZFhiLXyn8afQ38rNZ7f7Iu7cHDd0NHTcG0yVgAdZ2v6eW+hWsuFy8PMloOz36mUWO+FuyM3xJn6Aog/creD2HCCzKABfoWUJ8wTizSAQCHQw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647033; c=relaxed/simple;
-	bh=KQ9ifxubGw3t6jtXoH0IfLlgMwKpuQ8vYfyn9qOFKb8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Y2PQ6HdOMMt1TrkDIUEr6aOsgZYvXs5YdsmV9z/d5n380eTk6FxKss+qaDC1m9rVV0PgB24TsLhojU6dpJqEMxsVgUf3kHSDPHzIfUvqHiCyWQkIFl1s0xCMiz3wzOpgYp3AqGp1BfdXfEBS9oiFsc8DXhII4UGqzDFrD4VVAx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Si+p7Dus; arc=none smtp.client-ip=74.125.224.51
+	s=arc-20240116; t=1770647037; c=relaxed/simple;
+	bh=zT7ghM6hNRSAnvMOdpsrrBvdH8nHGRJGNrKkXNiW0lo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rmy7Rf6lwZNCggjNMdS18lp/med0COXRE8P7+LFaC0f1lUI/OeQdwfqI8nPFPN6DE+/GQcCsgAaXHudkMQeK0G9J0Llurshz5odKLDDBRcbhvFJdHDZ+7wkHcuPajWGiS4+O7J6T1RFkLJZ+b8Mdd/gbI3MRXHUvNC04PzjIYig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEVuPakh; arc=none smtp.client-ip=209.85.128.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Si+p7Dus"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-64ad79dfb7cso1836734d50.2
-        for <phone-devel@vger.kernel.org>; Mon, 09 Feb 2026 06:23:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEVuPakh"
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-7963b25e0ffso12017077b3.0
+        for <phone-devel@vger.kernel.org>; Mon, 09 Feb 2026 06:23:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770647032; x=1771251832; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NKsGnQMxLXhyEu5Sx6xOkySlmfKndn8CBckTO+kUQjQ=;
-        b=Si+p7Dus9imKj7ZqWlHjM09LXIwS3xn4PDdGtLax0Fa2Fm2PDnsXOFsPluEjuDbX/c
-         JMvMq5ZCaEfUHmZS9BWmKrmzp6rgUhGlVcfIAAJPcC20oxiI6Ces9o4dTyk0CZRpjr+X
-         qsv2fg/VoWKkkJyDs42dFwP482MEcjQ0jX1+wZXkk4JFAnwmd/k3J1Vt4GtLEdJQW+SZ
-         RrcauPhIwCcUgswThgdNPVND+o3b51mODGxswnzbrB7+P1beJHQpnnQ07nGHup15kx42
-         8lV0f6UIlFwLy8JFYyCx1Pry7bXfMTKvOHmWhaoFd31FunCqW35v4LB69EDvWIJ9QEjc
-         Q5uQ==
+        d=gmail.com; s=20230601; t=1770647036; x=1771251836; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/rpT//HF8ja4RuclSr7p+NXdCcERtIsyjZBNMoKdEQ4=;
+        b=WEVuPakh0TiPnXtAnhmQH+8guK00txy7HX/1LPTC6XYB3cfkPY9qOPCeDlI8yt/4Cf
+         QytUrN55dYIf+KCd0rzl0a+rgmC1FQP2gJg9oAoTC5+cZrMz77Zodl1zcX8Oz+tvq/lf
+         coYDu6LC2n95tdEFQP2zHt6IRtjA6lPx+8D7q+H0AyE7E1YX+Dzc1UE/A3Kvl7P53QZp
+         1aHe1jvyxWd8Ry+EjTa5O3h0uG/HzZkjaL/SbZqv34DxUbtA6rYxW2+CQ2pStSfR2igz
+         TYM+TAs02nXEecEnIU1vORf4LX2eoTGs7nB6bp+VvHBRWDS7Cl/U+sk20c8bK7qei13E
+         Xv0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770647032; x=1771251832;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NKsGnQMxLXhyEu5Sx6xOkySlmfKndn8CBckTO+kUQjQ=;
-        b=DOgZjSJW/P8BnKiQTeXUpGMWQ91t4v+0mSsbBfKGDvGS30HqhlrW3qbdKJi8L/bBTs
-         pMZgrfsKDFmZyWVapjoMVwDJXR5wMRUBY0kKU5pyY+DKlllFSikFAhWVrs/veEvmUOL7
-         JGUpG8D4+THpA2Hf2xCrNJQrEqSypBAqYCx1utyIE4KfO7EDDEgInB0HUK9wGvXMKGuG
-         zEcM8GKmp7Oa7CyWthwZOxQMHe7q9F5jdbTYDJwOP34OjAQPtcMh/5MObzk38+JD0Rs7
-         MYneYD75JvRj6DaVvWc8DX7cJkZwhDDJSccXspUuZPNoJfiiWMZL9urUm+2NTNj0sxH/
-         Gs8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXBOX/fAp4prTf4UoLs+tLDybkHZciYGC/fGuQPeOhZf7QkCh0lVtT//j5ZZZHdzv9t93Xh+4hv03gKCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzjloEj/nbWlxXj0WslidCw1oOBh85sPuGaeuJ32Ksd6JQo7gk
-	+0Sh4SJUBKMEoPsh/9jhYvW3PJiij36s1clj+xMSZc8lQKFgd31mDiZO
-X-Gm-Gg: AZuq6aJZjHc7E2UwDs4daV0H2GnzdOBiEre/Hv//KlqMxq6Jx64vXOx8MKQxPzKDEru
-	w1p2xtZAy9Q9PF8ObOf6fB5C4YXcP4Ap4AnPNbGgPuYkc4DEjtBo3uJpyEghPxsOnJJwGB0cD3Q
-	eA2brhEp7cpxqzG6Pqt+7vyOGusl9+fHdnnskobJYBl9lB2oCwUCtS/XvBwATSX2jgEN8Oveazo
-	PnEg9lztLHt9JNPeYSM+t2+Naqaak1Qr7U0LOhOhfs1AGnlTv/SCRwMk/9x27GYH13+8IbeFowV
-	c0yLIsruqBUtpb0TOijvtlOvDc3ffOT8nf+w1llzBtShcYqvR5FsrAaAIiib5utQproGU+wA+da
-	gvpNiQjh0BmHxgOoDEZ2rv9qhyYAuYH2BxJKW6CB+x4aGZpHW0phgisuziherEw5s0jhx4rQIY9
-	g8iWBL3ttNxvHD/g==
-X-Received: by 2002:a05:690c:e352:b0:796:45d4:9e67 with SMTP id 00721157ae682-79645d4b021mr30943597b3.64.1770647032236;
-        Mon, 09 Feb 2026 06:23:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770647036; x=1771251836;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/rpT//HF8ja4RuclSr7p+NXdCcERtIsyjZBNMoKdEQ4=;
+        b=j0ctTgELm3vRjhHysYVFDDGaLm1VRKbcbuEUBn737ZSUik17UbDIOTOv8roMpWPnJ3
+         bGRtRNohmEKtgyv9zFR6r6wiLCr1Hz1FaUwuKLpctl5Remf3PVGlpe9O3gkM6xV5vmzg
+         IL+kjrwFvYom6HflXqyRMywKs62ebF8hNN9F52oh5SQtafzbAXLYyUEqdjdDJA5bF9oV
+         02voQgcviM4X8ZGwbatHy2vcBxFmJSXUfPaYHgxtythhExUiE41Os50x+21jpqn305+e
+         dWTaJEem8zZOniO82KBFz6o3XsD2RWFuqD9DOFHwOaiSCQth3i/0uJpPwyMGfVQGdI4K
+         tIWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6/LVBkd9iLgU6rbC/mmBH4uHZ5N1aORZG9LfNkixUmEtKBrCzQr6T/zilU6gNjH4W7tZsicglgSeQUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN+gmQdSXWjaIK0EoACJ2fPjxxKE+UkeM3sTgA1HNoxcFlE+PH
+	1Xq2KBu5T2S5Ff0seBIwe9Dpp2IwlX71803lwyUCJROxXrdtJYLdHj1e
+X-Gm-Gg: AZuq6aIWYEnOvdmiz0e7FYE58/Wr/kZ4ZQwY2YpRnDxZB/p7QSrmoZ8dUrU7V1dVjSd
+	ECarMVPYq16NbwE0iWlBN/bhAAP3wOzv/17aNfiiXMuIoonIvRixM5397qYblpBEmW4tN8I6dLg
+	oJdE0f2WzfRF67bliip+B3UPkkcN7J+hsX5NreoA9TefGeWuoWL8Nz5bWGvEElSx0zQaXM6NukK
+	g0tskzKTJpHyrtSrwYVXgGavInP8rrkPRsDMAsc+0tIiDHX2znuCzErq+JaILAAlBAq2XMZ5r7U
+	gLEG5koRF2LoBb8gBbdmG44kn7XOqOnuZ4xhzkwAJwCfISICk4bU3xrnWkhJTXy626J0C/XUODV
+	+2twlkZ86oGyq35Kf+kVqNPmIam0mnZmSA3KxudqJxXE4ujkGjpzubhkHLI4f4Xj6uBDziMXXiN
+	uUgOL9X9kLrEx6ax78vox3lf/f
+X-Received: by 2002:a05:690c:c4fa:b0:796:2bd2:4b23 with SMTP id 00721157ae682-7962bd25c2emr80535017b3.3.1770647036142;
+        Mon, 09 Feb 2026 06:23:56 -0800 (PST)
 Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a0467easm92497947b3.13.2026.02.09.06.23.48
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a0467easm92497947b3.13.2026.02.09.06.23.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 06:23:51 -0800 (PST)
+        Mon, 09 Feb 2026 06:23:55 -0800 (PST)
 From: Erikas Bitovtas <xerikasxx@gmail.com>
-Subject: [PATCH v2 0/2] iio: light: Add support for Capella cm36686 and
- cm36672p sensors
-Date: Mon, 09 Feb 2026 16:23:40 +0200
-Message-Id: <20260209-cm36686-v2-0-a48126d2b124@gmail.com>
+Date: Mon, 09 Feb 2026 16:23:41 +0200
+Subject: [PATCH v2 1/2] dt-bindings: Add binding document for cm36686
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,10 +69,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDIwND3eRcYzMzCzPdtGTzRAtjC9M0w+QUJaDqgqLUtMwKsEnRsbW1AEi
- X8l5ZAAAA
-X-Change-ID: 20260201-cm36686-fc7a8385f1cd
+Message-Id: <20260209-cm36686-v2-1-a48126d2b124@gmail.com>
+References: <20260209-cm36686-v2-0-a48126d2b124@gmail.com>
+In-Reply-To: <20260209-cm36686-v2-0-a48126d2b124@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -84,66 +83,118 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
 X-Mailer: b4 0.14.3
 
-This patch series adds support for Capella cm36686 and cm36672p ambient
-light and proximity sensors.
-
-Capella cm36686 is a combined ambient light and proximity sensor with
-adjustable integration time, interrupt and hysteresis support. It has
-the slave address of 0x60. cm36672p is fully compatible with cm36686,
-except that it is a proximity-only sensor.
-
-Unfortunately, datasheets for these sensors are not publicly
-available. This code is based on Android downstream kernels for devices
-which did use these sensors and a previous submission for cm36672p to
-mailing lists:
-https://github.com/LineageOS/android_kernel_xiaomi_msm8992/blob/cm-14.1/drivers/iio/light/cm36686.c
-https://github.com/shakalaca/ASUS_ZenFone_ZD551KL/blob/android-6.0/kernel/drivers/input/misc/cm36283.c
-https://lore.kernel.org/linux-iio/1465462845-1571-1-git-send-email-capellamicro@gmail.com/
-
-The following code has been tested on Asus ZenFone 2 Laser/Selfie, which
-uses cm36686 as its ambient light and proximity sensor.
-
-This is my first driver on Linux, so I appreciate all the feedback and
-patience I receive.
-
-Changes since v1:
-- Add copyright information.
-- Sort includes in alphabetical order.
-- Add trailing commas.
-- Remove blank spaces where unnecessary.
-- Add a fallback for capella,cm36686 compatible.
-- Make power supplies required.
-- Add '-microamp' suffix for capella,proximity-led-current.
-- Replace local caching and i2c_smbus calls with regmap API.
-- Make interrupt optional.
-- Add action or reset only after setup is done.
-- Replace mutex_[un]lock calls with guard(mutex)
-- Add comments on where mutex is used.
-- Add comments on proximity register defaults.
-- Remove default proximity sensor duty ratio and integration time. Those
-  were taken from the testing device and had no real reason to be there.
-- Replace dev_err_probe on device's part ID with a warning.
-- Replace chip->supplies property with a single
-  devm_regulator_bulk_get_enable call.
-- Use individual structs instead of array-style device info
-- Remove enums which are no longer used.
+Document the Capella cm36686 ambient light and proximity sensor devicetree
+bindings.
 
 Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
-Erikas Bitovtas (2):
-      dt-bindings: Add binding document for cm36686
-      iio: light: Add support for Capella cm36686 and cm36672p sensors
+ .../bindings/iio/light/capella,cm36686.yaml        | 97 ++++++++++++++++++++++
+ 1 file changed, 97 insertions(+)
 
- .../bindings/iio/light/capella,cm36686.yaml        |  97 +++
- drivers/iio/light/Kconfig                          |  11 +
- drivers/iio/light/Makefile                         |   1 +
- drivers/iio/light/cm36686.c                        | 940 +++++++++++++++++++++
- 4 files changed, 1049 insertions(+)
----
-base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
-change-id: 20260201-cm36686-fc7a8385f1cd
+diff --git a/Documentation/devicetree/bindings/iio/light/capella,cm36686.yaml b/Documentation/devicetree/bindings/iio/light/capella,cm36686.yaml
+new file mode 100644
+index 000000000000..0e54b681e197
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/capella,cm36686.yaml
+@@ -0,0 +1,97 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/capella,cm36686.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Capella cm36686 I2C Ambient Light and Proximity sensor
++
++maintainers:
++  - Erikas Bitovtas <xerikasxx@gmail.com>
++
++properties:
++  compatible:
++    oneOf:
++      - const: capella,cm36672p
++      - items:
++          - const: capella,cm36686
++          - const: capella,cm36672p
++
++  reg:
++    maxItems: 1
++    description: I2C address of the device. Must be 0x60 for both cm36686
++      and cm36672p sensors.
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply:
++    description:
++      Regulator that provides power to the sensor.
++
++  vddio-supply:
++    description:
++      Regulator used to power IO and I2C bus.
++
++  vled-supply:
++    description:
++      Regulator used to power proximity LED
++
++  proximity-near-level: true
++
++  capella,proximity-led-current-microamp:
++    description:
++      Current for proximity IR LED
++    enum: [50000, 75000, 100000, 120000, 140000, 160000, 180000, 200000]
++    default: 50000
++
++  capella,glass-factor:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Lux amplification factor to account for packaging - a number by which a
++      lux reading is multiplied.
++    default: 1
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          enum:
++            - capella,cm36672p
++    then:
++      properties:
++        capella,glass-factor: false
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - vddio-supply
++  - vled-supply
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      light-sensor@60 {
++        compatible = "capella,cm36686", "capella,cm36672p";
++        reg = <0x60>;
++
++        vdd-supply = <&pm8916_l8>;
++        vddio-supply = <&pm8916_l6>;
++        vled-supply = <&reg_prox_vled>;
++
++        interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
++
++        proximity-near-level = <30>;
++
++        capella,glass-factor = <16>;
++        capella,proximity-led-current-microamp = <100000>;
++      };
++    };
 
-Best regards,
 -- 
-Erikas Bitovtas <xerikasxx@gmail.com>
+2.53.0
 
