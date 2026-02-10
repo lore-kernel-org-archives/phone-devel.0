@@ -1,40 +1,66 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22434C818;
-	Tue, 10 Feb 2026 10:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A03A8F7
+	for <phone-devel@vger.kernel.org>; Tue, 10 Feb 2026 12:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770720684; cv=none; b=DK/M717UUPp7Che9cOHpE1gcD0T/O7lFJqLkchVxS+kSYH8YETnPBL/S1zpMJY8vDvSZ/2NrlbaUzMLfGtKawW+zLvoqmbhjLoEw+3ToPY9HDdm65rJEc5Roq66471vuKqc/bsiW90kxGtnAdKdj/0Mea5tGLyA/eEYvQen1MR0=
+	t=1770727102; cv=none; b=PabpGrTaPRi5UtWBtOwUBx2dd+iZ1fLcEggLmzgvaZPMKghL+LrO1F49RP856VaEGhvsd653g0ZCaNt+KiwCy2ofr/RO2GSma4YUc2BUL+I19GrResB0KZ/MSXknmJJpsmBqmPSC29AWBCMirALFOQyKDJACmpCS46KGqP/gaMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770720684; c=relaxed/simple;
-	bh=NTDQ2z46qy9D3IuLQd4Soj1UA8t+QmePoMymLDLGHS0=;
+	s=arc-20240116; t=1770727102; c=relaxed/simple;
+	bh=QU31hIANM2iKsUCoSFU71RTnMz2RvL9BIjntvMtSLGI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GNlV2FIVPiEsUrNgbWayYySXP056vRNB/S6ZwWK8MPQZ67EbO/t9jWKGWQoPWrrHfS9TPXtUkddYt2RuzAqthHzz6pK+0tdtpLiscj4pt4y6recXQEfnhRXEBiD5kXRLibPXspDbs6ngSgM3zG41WYJ321BgRknyKPQAAMNKSJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ORI+W7xI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 In-Reply-To:Content-Type; b=UbUHtLOY1khBY/o7ZfFcn0W9mf8O5s4EOAxR+joVle77YTxhQPXaU09krxPZdWz7BlZD3VGyqRtBepJ1LeZ1mJzBMXNA0Y2MRPqj9dKXQR+N6beJE7+HjEU0F/ddrS6JXsXrNh304yY3ImE4s/0HOq7ja77Xmjs3RGxjKDGvJ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r8UqmhFv; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ORI+W7xI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770720681;
-	bh=NTDQ2z46qy9D3IuLQd4Soj1UA8t+QmePoMymLDLGHS0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ORI+W7xILBNUuSSdr6XQ7zospIplxBB0gAiCi+7j+WjOg6OirC5t7D+Xl5O7l6U0P
-	 0HD2maqTImAwLwopKSirmVOZeShM031FZYVVgpHLke/6jK4BxMMu0ps9IYJAiVU7mJ
-	 DPkI4/W6XVDRMh6+5pcME+ypELxTR7UpIOY675gyM5/WE4WjDlffajsjni8nZUuueR
-	 XxgTBnTkrlvPFnk/DRWWENPmDN+lmWYtu9LWEMdMIEYX+QtAP5kHqaevrVTBqCC3ku
-	 tUTykaPPeNV8WofuxZySz/BeOHrhszS0BTziiskZQVZeGt1ORhiYtOxaHAmvupeBWQ
-	 n1OUnnD1am5mQ==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9846417E012E;
-	Tue, 10 Feb 2026 11:51:20 +0100 (CET)
-Message-ID: <296b000c-5970-4668-bd42-b99ca78d598f@collabora.com>
-Date: Tue, 10 Feb 2026 11:51:20 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r8UqmhFv"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-385bd47d64fso2271141fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 10 Feb 2026 04:38:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770727099; x=1771331899; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x3D31YqYK8CuEtFXmlILPkuZg/ugm6z1QAeaPoW6EMo=;
+        b=r8UqmhFvwutFls7L8q4VYmfFHmCbxMK0eeXh15QSflrwrd0aeHVX4r8uMkgsdObnGt
+         oDPhpdJwEA/EjSXKD/uAzLWK8X856DYD4tm8WKvhrRyVB1OfXY4zbke6IhRvNEjbndNW
+         jwFKCgPZVgjqugF8zQYNA+XMcklTR7OJdOpbAPqLmhoc4mSbIxtrmLRRcw970UHsA8bo
+         3hIhudmwSg4IdLyErievLcpUiWE0qnjH76/aReEhHNKpQjZP1IAka0Evm+fwsVrJQZkj
+         y97mTxZ8e2QpXQbbaiA58zgzgCE5n3jl+KVbEFN1avAOnNwx7ndo2x0mFM5upC77YNDc
+         xpYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770727099; x=1771331899;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x3D31YqYK8CuEtFXmlILPkuZg/ugm6z1QAeaPoW6EMo=;
+        b=aqcEqWrImn2kTPIEF3r/Q22GRHlMai1pmRQ4GTQGIuhIrSg9JQRJmll12rZYmZrUIj
+         gyu3z4FbJe7qAnaRYginnQCQA/FLM/BJH+MdZ3KMScfnSe/OOSb5NnsbfRXZi5a+IkhZ
+         200HOQCvUbI3125ij2GbsfoVEbW6KwDyLwVf6fijrOH6GULQa3kE3tcNtfCy9P8IS8GG
+         +7AKnlBpdsJbgl7dgkrdypw2GY7TAr/wZnrW1WM8D919sXa7M7Kq8qXM7le4IjiJW0lj
+         tBPq2+vop59UtN4bmwuvZPB69NBQHHLwiQiRQEqguoKH4U5dXJDGjqJzPu+bkYelyAhj
+         RTuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMPHyifvkkDCTZyvRm5R2Wgg5k+qn5SY8tXvwixtDmCBe3KZ2t23asUmnWzNPcP7psygVHj4+/MBOjgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkdGVSyrfTEy1lLRNv1hhhDGMk2qDAOHfjf+FiBK8gO8EIoe4d
+	yPIf66nSTUdvc802C7etZPGxHvFAcxw+yx/4Jqyz4o0TTQkJy/EWr17jLdrtVavN4lc=
+X-Gm-Gg: AZuq6aJsGgY+ro1Gcfzu8sxJ+7eNGm7RhIZ0k+jDE/iEJadNoU5i7LlN5LzgN8JoBg6
+	BouCbi0MbKDqgv2m3SOTFlrBPI9JlrGHvhifpdJA5/Tjl1i+tNAiuvnqTnmBvUWNGL8r8afdshD
+	qlDceqDPdaapp+XcbivSqAwnBWbpn/yDcB+LdEf7O/2dffnHPBsaBrBEpoV2T5Oe9QPkqLf/fXS
+	sBIASW17/KI8EsQJMXh8I+tfSUIC1S5BJJ6tvUNFotdXeqWstwsX5q/vWfdtEAGgcQbDuXVnTNA
+	zJUFGYfHp6Cn/7lsH8TSalabVFEHgofCyDemvvGtJjcOv9J1bkCQsq/LWST9XWKcwoAYTxPclJa
+	yqzxYleaVI+auwsIb10WZPJfPQ9CgA3sW09iehmA0jjAqBIEY6KnMRGGaeZnWaOPrvPuLE9VyBz
+	yZsoILo04GBVaUHYpx+H0akIZvLDPvgSN5xwhZfwijjsZAfI4TmyYUMOf2bxYptyBn/UzQeTFxT
+	4FBPA==
+X-Received: by 2002:a05:651c:f06:b0:386:ec29:372f with SMTP id 38308e7fff4ca-386effdb4cemr3801691fa.2.1770727099335;
+        Tue, 10 Feb 2026 04:38:19 -0800 (PST)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b62363e9sm33183741fa.1.2026.02.10.04.38.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Feb 2026 04:38:18 -0800 (PST)
+Message-ID: <51da29cc-7881-4d45-9233-f7b1c4f6e14f@linaro.org>
+Date: Tue, 10 Feb 2026 14:38:15 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -42,111 +68,47 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: mfd: syscon: Add mt8516-syscfg
-To: Luca Weiss <luca@lucaweiss.eu>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260206-mt8516-syscfg-syscon-v1-0-96dcb37acdb4@lucaweiss.eu>
- <20260206-mt8516-syscfg-syscon-v1-1-96dcb37acdb4@lucaweiss.eu>
- <20260207-tricky-strange-swan-6f11b0@quoll>
- <3476c51b-9293-40f1-8b5c-9ac9802d7d97@collabora.com>
- <f1e1eeea-b246-42c8-84c9-0c1203706ddc@lucaweiss.eu>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <f1e1eeea-b246-42c8-84c9-0c1203706ddc@lucaweiss.eu>
+Subject: Re: [PATCH v8 1/7] dt-bindings: media: qcom,sdm670-camss: Remove
+ clock-lanes property
+To: Richard Acayan <mailingradian@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Tianshu Qiu
+ <tian.shu.qiu@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+Cc: Robert Mader <robert.mader@collabora.com>,
+ David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+References: <20260210020207.10246-1-mailingradian@gmail.com>
+ <20260210020207.10246-2-mailingradian@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20260210020207.10246-2-mailingradian@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Il 09/02/26 21:45, Luca Weiss ha scritto:
-> Hi AngeloGioacchino,
+On 2/10/26 04:02, Richard Acayan wrote:
+> The clock-lanes property has no effect on the hardware configuration, as
+> of 336136e197e2 ("media: dt-bindings: media: camss: Remove clock-lane
+> property"). Remove the clock-lanes property.
 > 
-> On 09-02-2026 12:34, AngeloGioacchino Del Regno wrote:
->> Il 07/02/26 11:51, Krzysztof Kozlowski ha scritto:
->>> On Fri, Feb 06, 2026 at 11:20:48AM +0100, Luca Weiss wrote:
->>>> Document the Mediatek mt8516-syscfg.
->>>
->>> Which is what? What is syscfg block?
->>>
->>
->> Not sure this is really a SYSCFG block.
->>
->> This should be a GPIO controller range, which is split between IOCFG and EINT.
->> Now, the legacy drivers are declaring the EINT iospace in the pinctrl node, and
->> getting the GPIO controller (IOCFG) iospace from a regmap.
->>
->> I don't have any board with MT8516... but well, the really-right-thing to do
->> would be to migrate that SoC off of the legacy driver, to the new-style one
->> that *properly* takes two iospaces:
->> "base" -> (0x10005000)
->> "eint" -> (0x1000b000)
->>
->> Luca, if you've got such a board, could you please try to migrate this SoC out
->> of the improper (but working good) driver and bindings?
->>
->> If not... well, I think this block is IOCFG, not SYSCFG...
-> 
-> Thanks for the suggestions. This is essentially my first Mediatek patch and while 
-> I'd say I have a good understanding of Qualcomm SoCs, Mediatek is very different, 
-> so I've got no clue about anything here really ;)
-> 
-> I'll try to decipher your comment and see what I can do about it, hopefully soon. 
-> Thanks!
-> 
+> Suggested-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-Oh, okay. You want to check mt6795.dtsi - that's a SoC that has "more or less" the
-same generation of GPIO Controller IP as MT8516.
+Remove this unauthrized tag from me.
 
-Also, useless to say, drivers/pinctrl/mediatek ... there's a pinctrl-moore and a
-pinctrl-paris; your SoC *should* be paris, but I don't really know - you want to
-definitely check if the register layout matches between the old-legacy-deprecated
-driver and the Paris IP.
+I asked to remove CAMSS 'clock-lanes' property from .dtsi file, and this
+displayed change very is different one.
 
-Check a bit; should you have any question, either reply here or shoot me an email,
-I'll do anything I can (though probably with late replies, as I'm usually a bit
-busy with work - but no worries about disturbing in any way!) to clarify things
-for you.
+> Link: https://lore.kernel.org/r/bbf0dcd9-d0f2-49a6-a2f2-6ec9376f2f59@linaro.org
 
-Cheers,
-Angelo
+Remove this given irrelevant link also.
 
-> Regards
-> Luca
-> 
->>
->> Cheers,
->> Angelo
->>
->>>>
->>>> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
->>>> ---
->>>>   Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
->>>>   1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/ 
->>>> Documentation/devicetree/bindings/mfd/syscon.yaml
->>>> index e57add2bacd3..a67699f1faee 100644
->>>> --- a/Documentation/devicetree/bindings/mfd/syscon.yaml
->>>> +++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
->>>> @@ -91,6 +91,7 @@ select:
->>>>             - mediatek,mt8135-pctl-b-syscfg
->>>>             - mediatek,mt8173-pctl-a-syscfg
->>>>             - mediatek,mt8365-syscfg
->>>> +          - mediatek,mt8516-syscfg
->>>
->>> Why aren't you placing it with all others mediatek,mt8516 syscons?
->>>
->>> Why this is so generically called "syscfg", completely not looking like
->>> a real name from datasheet unlike the others in this device.
->>>
->>> You have entire commit msg to explain that.
->>>
->>> Best regards,
->>> Krzysztof
->>>
->>
->>
-> 
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+
+-- 
+Best wishes,
+Vladimir
