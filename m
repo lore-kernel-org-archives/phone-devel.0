@@ -1,68 +1,69 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EC63612E1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DF0367F4A
 	for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 10:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770805670; cv=none; b=tKS5iK6nma4XHFO/3aZhw/qhJtjY7DoMDO8YqzbIwhrn4ujIWZ9B3q/Qk+MNhFMpoTF2GYHwgZ50uoFku0SlYDjrqFHafOYuxezJRl4zfvhXYHolXUw3py36B7j/kbjUE/LRTlIRShQcoZF6DEDmBcCOEMiyRDEHSl6JXC5ahhw=
+	t=1770805671; cv=none; b=m9l0xIE5Z8yjwJ7BghJL5lAcblEJatdrZiWzqfkDqOzl9VKi8bOcgnJ3Y+U5o9xIU7iNDVaLiJKT+llBw0krtT14mOLhHHJK9a86FKyzbsRSeBm1aRVT/fVmWZo71zchPbN1Nx4OuYAGTEcaBSikIsN18JcFkTrQNnPD1kogdss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770805670; c=relaxed/simple;
-	bh=lrAhY6+QpfzhR3CUKyt42tW2guO/yHYDHCPWvOuysKA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ug+G1bcyIMmP/TkHgReALli62i5MDCCFLgqlbHAFN/BT0KhYNvOwTmM4oaM21CoUNeR49zvlSWghkaymtdw3wc7XMKxmfhtI8PdXEji6iKf9spAzjV8ClHF3aqK5BcOoq/IKB5J9AmzNU4DLzSZuYMg2hFXOrSiT7YjlgD8BanQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=lPsbcQDc; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1770805671; c=relaxed/simple;
+	bh=EEdEa3IUnYRnCSJujp56yp6HpXcw4IsB31pVJk5oyWo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nWo2ZhqJWJtIGEc7GrmUiTRe+tw/Zbxp8oorE5V36SwJaXImStTwQ21DD3p9LPto0QxLImNzFM+1KxyygEhhwrSk/jaerb7VwHaeYjX4H4Lk7/uz7HrL7+3xP2gJ/+uX/JQ+5NyWuVQFXFxKHFODFRsCD7q35G5NGqfw2tG3n/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=eBNWvaPj; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="lPsbcQDc"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65940221f7eso11213635a12.0
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="eBNWvaPj"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so263522066b.2
         for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 02:27:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1770805667; x=1771410467; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cFvWbdBwgEcUXjI4yzNcU+BV58r6gnRAccKEixMkUnA=;
-        b=lPsbcQDcxLpMLtIOHckzfG+LFwrmehFFFmt8BWQsBqx2gV8XNm4b/7AklOEPMfwhAR
-         Zkov3bKyIC4OgVQBLq259A9jJDaaHf1aRDhMFrQ2oKapRvREFlice7OOlFZbbBjtpWkQ
-         dSHw+pr7LHVlnPwoxLtwo5RIRHV/NHqQL+b4C8k35wpZcg112o3BmzrHxNcn/QWDWtVW
-         EcK5qDbh5dLk0kji3jjSWUTr+NDHdJu0CArbt4ckmtVGr4nAXYWcSjaVMcpv2GDgTFc5
-         CxCir7JOJcE6hVu1K8wCwmGCxODrTM7sAemFrwC/RsVBpQKD9gKXNE6Zj044ZwqMdPmV
-         OTcQ==
+        d=fairphone.com; s=fair; t=1770805668; x=1771410468; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=roAcgFRbH54UQCdhIFxSyx+KQ1p/KfSb2O/TanFU0qU=;
+        b=eBNWvaPjb0JiecfddRXAc7G5d3raSV7PeD98Gyn2iVple2RkA/GQQcXYinN9U3ZK60
+         uH26uaBXPUTT5LLUa3sKELJpA70xqTSgp5MgiGXd/Jf7BFrtmVTspBdASVlvJ7TzqBw4
+         QtP4pgFD7pPsXn0GPkkyKbenHKzjKZ4Yhzd7wNKyfrrfFJyMpb/jsbvyGC9zWKprlwK+
+         qG7fvrNPFV6aFuBALLokaZ01ighXCBnMilUGcXcGFg/FAs6BQeNbK9+tkhqB1a4Nj98+
+         zZqlRx3uHQEEHwFzhepX850Qv1qVnZKpOZD5hCs7Wvav9RiiSfsplVW9XuRNwzdAnEWt
+         aloQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770805667; x=1771410467;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cFvWbdBwgEcUXjI4yzNcU+BV58r6gnRAccKEixMkUnA=;
-        b=M2tmll3f2M2N8QSZt/pAZhU/E5d4G/x01O3Vw3+IoQhUD48iZEyRGI0O+z39i2a3l/
-         CcpNvpSN55r2h6lz5bQKL6mot4wBS9A6gDIOqB+3MzjLhPkeIP7t97ryawd5chUMX1xa
-         hmOC9L45vyHRzGcbciz3kWlt82J5ENtH7WCkTJNJiwoy54PTS567zVi0aAqpxrHXZiCs
-         Q24ZLhuSNsyYBWhPjvtpCtaOkBkBURHgbIonCGETFiwrxaV95FIYJPeDTVhMlAM3erOK
-         fddm0HR1kqvaSvNXiUXkqvCUXAfzEhvs6DrBXa68EeO5L3fg8nwS4Is7KeklYVCdMbkj
-         Jtow==
-X-Forwarded-Encrypted: i=1; AJvYcCX9ApZ1ZPCA39t5DvwyuzBV5RMWOc2Jm3y2XSvK6o3WoczcrZ68LCJzaaqh3TrpY541w5DvflYpuAWkBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2DMvO0T0Ls88vK77Rtvbf4Hc3hPHD8R0XpURDZRfrdfdIznfu
-	d1vlI/Lk8d9vlnPi5PO7hCWFHWsDiccB4Ph1HXnOx6CmOKBF2VDmOM/jrp0HvmrxepMxSxCBhMe
-	aPpK8
-X-Gm-Gg: AZuq6aKjApLaq+UKqDvyzLiwxx2n6LTLOaW3hfzqcItEkHu0xT4pCBa54K8CnYh5x0y
-	7ehubV68U0JdE+DlF8QLECrQChBS45bnLoZnVpmRL52p/G7NXbG25YVw31hg+UJ/k9U4u41r2p+
-	HF38zk/b77lh56RQnwuxmHUBr/VZl5Re+QwZ4EZ4at32kuaBgwkH0Q0j2OSlhHy2w+Mouil/Yvi
-	jzRGypPBw1y2GPWWB/f+EIiaE/Um43uDQNo3eNzY9xL3WamxL+EqSVblE87R57/gqzkJ8axinwb
-	s0vW4VD9lX8MxXISBKpHmeUZaVIFeXHIy7hH1ey0rfKJaarwdjqLi6mWrCuDCXpQtRsjbFI76OV
-	9pYsZfxMXZkrNuoANHlYGKYkgWybfdv3YrtSqmngfgWStN8ofuWjUlDYxur128NgmZUrmUowzHq
-	aBMkWMMTZdVBGeZgtmSemF8nXRYINq/gJS48mbwaPOSHe2BOKB+Z/AfrypHi6bUP/5g2ydMddUd
-	A6w
-X-Received: by 2002:a17:907:9289:b0:b73:210a:44e with SMTP id a640c23a62f3a-b8f717080ddmr71193766b.30.1770805667335;
-        Wed, 11 Feb 2026 02:27:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770805668; x=1771410468;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=roAcgFRbH54UQCdhIFxSyx+KQ1p/KfSb2O/TanFU0qU=;
+        b=arHjIFHa0WOSXRauJiMk78dyDIM91uWe46HPhBrSlRVYn+Sf+7+HgzuaqhxLutGNIp
+         K0LiUqJkK80Lpu3atUWzzAg0fZPmxfwlZkfRY0531Q+16P/EyNNAbgHExsggzBxG3eA9
+         Qq6pN6Aop8hDwKx+2c9UWFTRFibyclfnOi5p3VNYNMGaoy0/Yz3106XYnxHVE1YEoxyT
+         l3Eh4mHpjk4aYUJ9J4mSG0LgKEL1EJbnemejz4HXnCNj8atX8RRiqVNqzZLf5deHjPgu
+         JEseD0WR3h+T4FJAw94kUwlPvDiOpIU6rVn5sKhKpxQOeQx8lL9Q9y2ZE6PIVk4taaw9
+         mQLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbRmo/6xTlLgRCJ89a7UKU6QPRJNyAee7mZMgEzz5t+wiBidPiyG7FWpAtBbQvajHgQKEt4w1TY4VUcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx/17MOCyTFIx1N00F2hkQu7Tnr+PGf+Xo1/Yl7bnZDnYpsRqM
+	U2OAB8bISRjZvxxVD/n7pZPEy3cAXrcrp9c/OVgYlYLfwQUhG1vtI/bStkCgxfjVP1FJR84QYYp
+	DVTsM
+X-Gm-Gg: AZuq6aJ3EZeinBAXL3TnLPHxdXwMmmmZ+yMuk68XcDsz6QKa72DkW8iJQArUJMtN9Bd
+	jCPZg1UAW2hmBE4xWn6hicxp6uyYHoZzOxnugPrrUVd2Rn5o02Zy6SlMwPF9VEynQIrFOc96yJ7
+	BdzF14aZf9jzh+PrawEKhAxw18HWXplObY2pNB2Twh5iKPjqWkmienfk5DIduM59idifRbGBScL
+	LjPh7W77qTo6wRXlLiLj7511fHv247U47czfHP+Ikmxb527wsbIkG4g2Qbu0cEbsco1dFwjUMXV
+	sknYyZSfqDq5mGi7vZCCxSRHk4a727jw72mMKCzqo9j41/sxHM9KDZ7H8GNYOonqOBfe7CAbjB9
+	nMdkGmiWD1n74/6SXzLY6fV2y7qTFwMXXoE2rpMJVrAKuK5QeET/BFV5svRTCQ1+0vJBbfeU+yk
+	l82e8qQ1S+0xhnYjO23+4MUPvyLLdbWcaZjKWwjPeNoZwo43gJNGyizgViU6nzVtMa2GjDvWxRG
+	V/z
+X-Received: by 2002:a17:907:2da3:b0:b87:117f:b6f0 with SMTP id a640c23a62f3a-b8edf34b385mr1105176666b.30.1770805668021;
+        Wed, 11 Feb 2026 02:27:48 -0800 (PST)
 Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f6ec54925sm44296266b.53.2026.02.11.02.27.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f6ec54925sm44296266b.53.2026.02.11.02.27.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 11 Feb 2026 02:27:47 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/3] Bitmask logic fix and firmware-name support for
- AW88261 amplifier driver
-Date: Wed, 11 Feb 2026 11:27:31 +0100
-Message-Id: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+Date: Wed, 11 Feb 2026 11:27:32 +0100
+Subject: [PATCH 1/3] ASoC: codecs: aw88261: Fix erroneous bitmask logic in
+ Awinic init
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,10 +72,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBOcIcy6SrQQHWsWWShUEN09a
- fkW/z9QOAsXGJsHMp9SZE8V2DbgV5cWVhKqgTQZTYjKXdaSQRWv5DZWdvCEwfih6w3U6Mgc5f6
- H0/y+H00BSDpgAAAA
-X-Change-ID: 20260211-aw88261-fwname-89c21d6c9476
+Message-Id: <20260211-aw88261-fwname-v1-1-e24e833a019d@fairphone.com>
+References: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+In-Reply-To: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
  Weidong Wang <wangweidong.a@awinic.com>, Rob Herring <robh@kernel.org>, 
@@ -87,35 +87,51 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770805666; l=862;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770805666; l=1451;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=lrAhY6+QpfzhR3CUKyt42tW2guO/yHYDHCPWvOuysKA=;
- b=QZwG9Mo9pYOwFUON1wrF/HQ3xQNMAkT59lgRa+SNZsrXpKDqJbYbyB73rVA+fz8cdpPvU1Mnv
- K95/u6alG3BAx9fakuVcXvkqbrUU0WmB1bKzHtYfoye7OuBD++7u8of
+ bh=O64Bv8tsAMjygJxOqAvbghMEW/OID2nPg5aDiw2JAmo=;
+ b=l0mAytX0jWY9agCYFNdGfdJiZxt8eXnq5o9t+chjtb0Ha4Ns2Dqtmh2hsvZEVeTEU5UJMmnhX
+ Uf2FjeO+lv4CgGRjzILPv7NFFMjpNQgRuysz98NogelOko4HSWnqU15
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-First a patch which fixes a logic error in the aw88261 driver. And then
-we add "firmware-name" support for that driver to support loading
-the device-specific firmware properly.
+From: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+The aw88261_dev_reg_update() function sets the Awinic registers in a
+rather nonuniform way:
+  - most registers get directly overwritten from the firmware blob
+  - but a handful of them need more delicate logic to preserve
+    some bits from their current value, according to a register-
+    specific mask
+For the latter, the logic is basically
+       NEW = (OLD & MASK) | (VAL & ~MASK)
+However, the ~MASK value is hand-computed, and in the specific case
+of the SYSCTRL register, in a buggy way.
+This patch restores the proper ~MASK value.
+
+Fixes: 028a2ae25691 ("ASoC: codecs: Add aw88261 amplifier driver")
+Signed-off-by: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
 ---
-Alexandre Ferrieux (1):
-      ASoC: codecs: aw88261: Fix erroneous bitmask logic in Awinic init
+ sound/soc/codecs/aw88261.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Luca Weiss (2):
-      ASoC: dt-bindings: awinic,aw88395: Document firmware-name property
-      ASoC: codecs: aw88261: Add firmware-name support
+diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
+index 29b3fc8a1ea4..43c03d3cb252 100644
+--- a/sound/soc/codecs/aw88261.c
++++ b/sound/soc/codecs/aw88261.c
+@@ -424,9 +424,10 @@ static int aw88261_dev_reg_update(struct aw88261 *aw88261,
+ 			if (ret)
+ 				break;
+ 
++			/* keep all three bits from current hw status */
+ 			read_val &= (~AW88261_AMPPD_MASK) | (~AW88261_PWDN_MASK) |
+ 								(~AW88261_HMUTE_MASK);
+-			reg_val &= (AW88261_AMPPD_MASK | AW88261_PWDN_MASK | AW88261_HMUTE_MASK);
++			reg_val &= (AW88261_AMPPD_MASK & AW88261_PWDN_MASK & AW88261_HMUTE_MASK);
+ 			reg_val |= read_val;
+ 
+ 			/* enable uls hmute */
 
- .../devicetree/bindings/sound/awinic,aw88395.yaml        |  4 ++++
- sound/soc/codecs/aw88261.c                               | 16 +++++++++++-----
- 2 files changed, 15 insertions(+), 5 deletions(-)
----
-base-commit: 6ca87498ba32522a6c10914add7beb2d9a2eb558
-change-id: 20260211-aw88261-fwname-89c21d6c9476
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.53.0
 
