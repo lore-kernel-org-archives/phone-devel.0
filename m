@@ -1,144 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B4F366827;
-	Wed, 11 Feb 2026 10:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EC63612E1
+	for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 10:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770804661; cv=none; b=sO3mTu62tj7v0PxnGbMJP08n8zmTdinPOXkCZYpZQqfvpb66OEL9RdAHZzV6wlCj1Vht6jYMqpV3UOVpmXVQHlD1QJMDE03wIP9lYcoWpWSzUGuyl2VBrDAd6jauYwEFU8wkkzZbJXPwhiWMsSQNlUiaYmB0a0u6mxHLt6h6wFQ=
+	t=1770805670; cv=none; b=tKS5iK6nma4XHFO/3aZhw/qhJtjY7DoMDO8YqzbIwhrn4ujIWZ9B3q/Qk+MNhFMpoTF2GYHwgZ50uoFku0SlYDjrqFHafOYuxezJRl4zfvhXYHolXUw3py36B7j/kbjUE/LRTlIRShQcoZF6DEDmBcCOEMiyRDEHSl6JXC5ahhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770804661; c=relaxed/simple;
-	bh=UI3E6x+qfcV5tPmVFvSkSbIbzmQTV/SjwJS4GDRttx0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X1I0Q/L21pPzZ/WxoQS0IKSDUSC25TEx3GN3dQKv1OEXeySenomM7Wtk8B03CCIYt+pxMFDRFts9+5DETpwueNZ9FZ2SRmfH8em5ahsTMmM9zBJeE01tYe61/YqToyArSGe1SA61diGHuUp7Ng96qaY53xXeGG4Run513GfYAAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4pgoLse; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770805670; c=relaxed/simple;
+	bh=lrAhY6+QpfzhR3CUKyt42tW2guO/yHYDHCPWvOuysKA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ug+G1bcyIMmP/TkHgReALli62i5MDCCFLgqlbHAFN/BT0KhYNvOwTmM4oaM21CoUNeR49zvlSWghkaymtdw3wc7XMKxmfhtI8PdXEji6iKf9spAzjV8ClHF3aqK5BcOoq/IKB5J9AmzNU4DLzSZuYMg2hFXOrSiT7YjlgD8BanQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=lPsbcQDc; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4pgoLse"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8356C4CEF7;
-	Wed, 11 Feb 2026 10:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770804661;
-	bh=UI3E6x+qfcV5tPmVFvSkSbIbzmQTV/SjwJS4GDRttx0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e4pgoLseg5C5+K3tWOCNyR7uXq74n7f/pWOybfIzI0rxRKucuAWNt/CtdfQWNZ8Rv
-	 t312U50B/r0md/ZymQyL6jdmGb/TX8mrD+I0wr+HoYPLlaoinWTb76zFzG2QTuEJ2D
-	 o+FYIAJrdmJrGfI/1/gf3BLzRmGsYTMMiEZnOiD+i0NW9cRsSZmuxruJw9chxQhAMc
-	 vjFlcjylMRmB37iWZl//bQJqzBoybYztc+o01UPN57HNsCG4tofy2syc833pkNlHe3
-	 2FHVulrNCkIYvhULNBJCdOiosmtjKmEI0/BZkGageSrS+fLqNMW7IjO54GetYZTvrs
-	 uqmNUuu4Pn+Ug==
-Message-ID: <6f97c68d-0236-4d04-8199-768ecee7c4dd@kernel.org>
-Date: Wed, 11 Feb 2026 11:10:56 +0100
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="lPsbcQDc"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65940221f7eso11213635a12.0
+        for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 02:27:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1770805667; x=1771410467; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cFvWbdBwgEcUXjI4yzNcU+BV58r6gnRAccKEixMkUnA=;
+        b=lPsbcQDcxLpMLtIOHckzfG+LFwrmehFFFmt8BWQsBqx2gV8XNm4b/7AklOEPMfwhAR
+         Zkov3bKyIC4OgVQBLq259A9jJDaaHf1aRDhMFrQ2oKapRvREFlice7OOlFZbbBjtpWkQ
+         dSHw+pr7LHVlnPwoxLtwo5RIRHV/NHqQL+b4C8k35wpZcg112o3BmzrHxNcn/QWDWtVW
+         EcK5qDbh5dLk0kji3jjSWUTr+NDHdJu0CArbt4ckmtVGr4nAXYWcSjaVMcpv2GDgTFc5
+         CxCir7JOJcE6hVu1K8wCwmGCxODrTM7sAemFrwC/RsVBpQKD9gKXNE6Zj044ZwqMdPmV
+         OTcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770805667; x=1771410467;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cFvWbdBwgEcUXjI4yzNcU+BV58r6gnRAccKEixMkUnA=;
+        b=M2tmll3f2M2N8QSZt/pAZhU/E5d4G/x01O3Vw3+IoQhUD48iZEyRGI0O+z39i2a3l/
+         CcpNvpSN55r2h6lz5bQKL6mot4wBS9A6gDIOqB+3MzjLhPkeIP7t97ryawd5chUMX1xa
+         hmOC9L45vyHRzGcbciz3kWlt82J5ENtH7WCkTJNJiwoy54PTS567zVi0aAqpxrHXZiCs
+         Q24ZLhuSNsyYBWhPjvtpCtaOkBkBURHgbIonCGETFiwrxaV95FIYJPeDTVhMlAM3erOK
+         fddm0HR1kqvaSvNXiUXkqvCUXAfzEhvs6DrBXa68EeO5L3fg8nwS4Is7KeklYVCdMbkj
+         Jtow==
+X-Forwarded-Encrypted: i=1; AJvYcCX9ApZ1ZPCA39t5DvwyuzBV5RMWOc2Jm3y2XSvK6o3WoczcrZ68LCJzaaqh3TrpY541w5DvflYpuAWkBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2DMvO0T0Ls88vK77Rtvbf4Hc3hPHD8R0XpURDZRfrdfdIznfu
+	d1vlI/Lk8d9vlnPi5PO7hCWFHWsDiccB4Ph1HXnOx6CmOKBF2VDmOM/jrp0HvmrxepMxSxCBhMe
+	aPpK8
+X-Gm-Gg: AZuq6aKjApLaq+UKqDvyzLiwxx2n6LTLOaW3hfzqcItEkHu0xT4pCBa54K8CnYh5x0y
+	7ehubV68U0JdE+DlF8QLECrQChBS45bnLoZnVpmRL52p/G7NXbG25YVw31hg+UJ/k9U4u41r2p+
+	HF38zk/b77lh56RQnwuxmHUBr/VZl5Re+QwZ4EZ4at32kuaBgwkH0Q0j2OSlhHy2w+Mouil/Yvi
+	jzRGypPBw1y2GPWWB/f+EIiaE/Um43uDQNo3eNzY9xL3WamxL+EqSVblE87R57/gqzkJ8axinwb
+	s0vW4VD9lX8MxXISBKpHmeUZaVIFeXHIy7hH1ey0rfKJaarwdjqLi6mWrCuDCXpQtRsjbFI76OV
+	9pYsZfxMXZkrNuoANHlYGKYkgWybfdv3YrtSqmngfgWStN8ofuWjUlDYxur128NgmZUrmUowzHq
+	aBMkWMMTZdVBGeZgtmSemF8nXRYINq/gJS48mbwaPOSHe2BOKB+Z/AfrypHi6bUP/5g2ydMddUd
+	A6w
+X-Received: by 2002:a17:907:9289:b0:b73:210a:44e with SMTP id a640c23a62f3a-b8f717080ddmr71193766b.30.1770805667335;
+        Wed, 11 Feb 2026 02:27:47 -0800 (PST)
+Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f6ec54925sm44296266b.53.2026.02.11.02.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 02:27:47 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/3] Bitmask logic fix and firmware-name support for
+ AW88261 amplifier driver
+Date: Wed, 11 Feb 2026 11:27:31 +0100
+Message-Id: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: vcnl4000: add Capella
- CM36686 and CM36672P
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260210-cm36686-v1-0-aef68dd46ad4@gmail.com>
- <20260210-cm36686-v1-1-aef68dd46ad4@gmail.com>
- <20260211-sceptical-frog-of-revolution-fc3cf4@quoll>
- <b95d7a49-6191-4d85-b725-4a941505b40d@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <b95d7a49-6191-4d85-b725-4a941505b40d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBOcIcy6SrQQHWsWWShUEN09a
+ fkW/z9QOAsXGJsHMp9SZE8V2DbgV5cWVhKqgTQZTYjKXdaSQRWv5DZWdvCEwfih6w3U6Mgc5f6
+ H0/y+H00BSDpgAAAA
+X-Change-ID: 20260211-aw88261-fwname-89c21d6c9476
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Weidong Wang <wangweidong.a@awinic.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Alexandre Ferrieux <alexandre.ferrieux@orange.com>, 
+ Bhushan Shah <bhushan.shah@machinesoul.in>, 
+ Bharadwaj Raju <bharadwaj.raju@machinesoul.in>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770805666; l=862;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=lrAhY6+QpfzhR3CUKyt42tW2guO/yHYDHCPWvOuysKA=;
+ b=QZwG9Mo9pYOwFUON1wrF/HQ3xQNMAkT59lgRa+SNZsrXpKDqJbYbyB73rVA+fz8cdpPvU1Mnv
+ K95/u6alG3BAx9fakuVcXvkqbrUU0WmB1bKzHtYfoye7OuBD++7u8of
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On 11/02/2026 11:07, Erikas Bitovtas wrote:
-> 
-> 
-> On 2/11/26 8:49 AM, Krzysztof Kozlowski wrote:
->>
->> There was CM36686 v1 and v2, so I do not understand versioning here.
->> Also, lack of any changelog.
->>
->> And how is it supposed to work for us? Try yourself:
->>
->>   $ b4 diff 20260210-cm36686-v1-1-aef68dd46ad4@gmail.com
->>   Could not find lower series to compare against.
+First a patch which fixes a logic error in the aw88261 driver. And then
+we add "firmware-name" support for that driver to support loading
+the device-specific firmware properly.
 
-Look here.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Alexandre Ferrieux (1):
+      ASoC: codecs: aw88261: Fix erroneous bitmask logic in Awinic init
 
->>
->> Please implement previous feedback.
->>
->> Best regards,
->> Krzysztof
->>
-> 
-> Since I am making changes to the existing driver instead of creating a new one,
-> I introduced a new patch series. As I mentioned in the cover letter, cm36686 is
-> fully compatible with vcnl4040, so instead of creating a new binding, I create a
-> fallback compatible for the device. I probably should have named this patch
-> series something else.
+Luca Weiss (2):
+      ASoC: dt-bindings: awinic,aw88395: Document firmware-name property
+      ASoC: codecs: aw88261: Add firmware-name support
 
-That's fine, but that's v3 of previous patches. Your work was to add
-CM36686 support. How you do it, evolves, but patchset/work is one
-continuous work. When you rework approach next time, you also start from
-v1? And then you go back to previous solution of new driver it will jump
-from v1 to v3?
-
-> As for the previous feedback, I added the subject prefix and removed the
-> redundant phrasing.
-
-And how do I know it if there is no changelog with list of changes? Look
-how many patches is here:
-https://lore.kernel.org/linux-devicetree/
+ .../devicetree/bindings/sound/awinic,aw88395.yaml        |  4 ++++
+ sound/soc/codecs/aw88261.c                               | 16 +++++++++++-----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+---
+base-commit: 6ca87498ba32522a6c10914add7beb2d9a2eb558
+change-id: 20260211-aw88261-fwname-89c21d6c9476
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
