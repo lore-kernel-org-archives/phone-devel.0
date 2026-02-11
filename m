@@ -1,127 +1,120 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBA51E1DE5
-	for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 13:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D3721CC43;
+	Wed, 11 Feb 2026 13:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770816769; cv=none; b=ZPw2PbuhyZ/AoOJJuFWP16ZlDVWTlTpo4I4l8jGb75BZRlWNbhqGpWhRn6FU1CJIiMqGJfez9gC4y7Rff+GMdoTC1a3Y5HWgBujp9luiDOjribXZZFFn+wqRaltohf2bxfWzsMz/YHjxNmdGrGi2Pz4sEo67AXkQ+T8mA8k9D7I=
+	t=1770817064; cv=none; b=BG6/DdZcVTTM6exd9AnlYpf6Bc1xgNVKvm4ICY9Ck43FAYjm172v6jpPQMYl8DCf3gTCRAq/LeQmxWyv+fegSkhqAJ1BT0mHVBlAjv0SWRaHOzUWjfZLoeHMtF6nSPRYyNqIGm9i7x8lPdNAX6DaXObNSvjQ9Dxz0yt1x/cPIjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770816769; c=relaxed/simple;
-	bh=nO4RyeFHjHYIJrJZLaxwdROhYOsIjOdlkOslHNR92Eo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=DSpxHtzvoJiUxUfYuZfi3FGU8Ke6ityUsYRgpNbNjJKlo/rvAojZv5aJFzn5rUM1kkK68FNWhs+JbEDbxZ5FhQpZ7ipf8HBWeeY23pKtdQ5e83jW4Z0j7W5aeWdP0n4xTV+DHT4H8swmcPss+RaCQDYwuZXR2EWEMD1WEVr4vSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UJNrpWfA; arc=none smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770817064; c=relaxed/simple;
+	bh=ZMp+wqiX7KaYCFGawBcaQ9vuznlji2FeoAA27Loft40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IArRH5pt0rM5bBfejPaq9qW4q1CmZVMPIDwQtAO0k/nuSJzeEykKHir6Ky+ujxMfceZSutpS2jzxXV71dsPKWU18H69WIoNIry2WPISBRVFiNOL85DIzR4fHFf8+PTRWznnrOFvO7rV8x4UJYMct3p3L0KkE3qRYxOOvkTtiBcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=asLP+P2T; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJNrpWfA"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64aefa98fe6so2137076d50.1
-        for <phone-devel@vger.kernel.org>; Wed, 11 Feb 2026 05:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770816767; x=1771421567; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KNjtiUKn9uwrlqe6xzKXcs6lWXAK19SBBem7iPc2udY=;
-        b=UJNrpWfAC2RMn7VzuXlIKslf9yPpovbq1IdGTjYzOq44dp0vTCurHIVTP4v0wNGMsx
-         2fd78RJazbNRY3bRfnY/w9R0QKwxwOvAD2jrLu6D9e0/Ho/C6lq6leQK8loxRb+1WPAb
-         99RjR9L6IME6Pr8rbmY0H2fnfCm1NFyFdxv463m5II6LDpjODNkr0CaajrueqGusCObd
-         qMYruQUL5cHChYvOgppuLVYoa1cublJxJgJ/BryXxFTrQugbAh+E+E8ePVxhnSTGMfaO
-         IEt/Wv9exg8uE193ijN6v2YdXAbSkSq2VoBmY403mFepoEb5xYmMkB1AuwIfLLMCvlMZ
-         59TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770816767; x=1771421567;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KNjtiUKn9uwrlqe6xzKXcs6lWXAK19SBBem7iPc2udY=;
-        b=j9wD6PDfVaTQgX/22JYqakMmiQ5Us6OiRMAJNY4UG/CD9K7lYbInsbIh5cU5pnd/fD
-         A2rFK5dGeaVtMFFBOYL1+q7gnl4b983EHlPJK/uSr940BAl7qTYEN7b3wcnJWHFPaonT
-         uC9cDrybPmKxX8oCRCyQ5/inHq/DxhDWLg8gYLshWJCmOta3zt0EDUNww8bnlrXdVqKV
-         0gu1ioehTvtpdtKJgfCZwwAhqRrYK6anM/5I9Yn09xqXDcaB+7CbY+DL5Qorzzp0cwsl
-         84nXFPPw79nRVKpp30b79VkQHMQ9MGS2dB+nCAewqxXDSN/UVNbJddvov0tBttXeP0Al
-         q+VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVVhkza7TGf2H9g0GiP48FKfn2/drdc2yxvx+HtqC9grYC1X+rCaHvWVhweIS2q9eLhAP59QxIUpcxmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeQ1OWF4/s+K04On2MUll/18qqqn/WpGTU7n9fsizBW/YpQGCD
-	8SxKj2rcVOQQcwaYikPL3kS5eOSPTsqMFUXRSRXhb7GytAmzv5iERonl
-X-Gm-Gg: AZuq6aLOR/3FQdkGVlgU0s50IwF0NN1NePY0jw4EOEsRQaYRWC+uOXm5lqsG/vwvhJs
-	zDdYEpFTkyXufobex+6EkbUKAiItI7e6DL2e3iMiUV134hMNWoefBgdyceyAdrNuSeVdAQfL5NY
-	0PcYwqxPK7aHtdFX2oQQff1KeHrmb7RUJUYqBH2rSmOZN1q4VOZOPaXfLxlL9eqyW33kJHBiYio
-	rnTg8BwCrIVFSl+jeCiVbI//llKCq6flPrHlOGmkw/j8lQzrvSRIZQ3iYwH0sxSGN+6li5u0Z16
-	W+i3Uan7GF+nT4j4NQlbABUt+GE10azMBSkq72wpV31XFMmv+KXjVpH2mKAK5HFfTUnJRIeu+EB
-	Xfnr5dUWmCdt+sGkInD3cDeccwg1oaG00hbX6nvXgxZsLgcj73rZNn6MMFxgKbqmSvZ3Tj2gsDC
-	61oVakmIVZvfqVXIVTr2pgSB6g+Q==
-X-Received: by 2002:a05:690c:39c:b0:794:ef94:1222 with SMTP id 00721157ae682-7952ab57b30mr352057867b3.55.1770816766817;
-        Wed, 11 Feb 2026 05:32:46 -0800 (PST)
-Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c267ba3sm15525077b3.48.2026.02.11.05.32.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Feb 2026 05:32:46 -0800 (PST)
-Message-ID: <242d5502-bf58-4e25-8258-8a6c75ff3623@gmail.com>
-Date: Wed, 11 Feb 2026 15:32:41 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="asLP+P2T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770817063; x=1802353063;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZMp+wqiX7KaYCFGawBcaQ9vuznlji2FeoAA27Loft40=;
+  b=asLP+P2T03Lfl8D6pfs5+y9n3p7998LKLtiaAHt8xYx0imOzOytruHos
+   o9p0Xoh0qcE8Sj+ObMyaM1wJhU2GHivp/cKmYFkC9lkQEk1tL4Zrn2Qgq
+   AksFipTU93V9QIfzxIn/nUK+UUP5f0EoPzY+PtA7khTDHYJlsZMHEkEEI
+   2h7gJ99iN9lM14D+fth5/4PnDWtjuXKpiQeoF6Q+O4TGrtx9fjNTAkxSq
+   JjBgayXeDOGK775yroN1wRX6fGRGLKOuUCDuq3dGHhKqfJ6UDoBGYcUF8
+   SDRJRlJUv5RjBYHAf5lz5EphNShDYpblRcDx4YGb6w+HfwHx/i8WBYmmK
+   Q==;
+X-CSE-ConnectionGUID: hzlwUPpQRCaCZNG5T291Ww==
+X-CSE-MsgGUID: PxIjoxy4S1igMAbgnYn8Xw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71678824"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="71678824"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 05:37:43 -0800
+X-CSE-ConnectionGUID: g3+MpPZcTJmmXJfnM13kjg==
+X-CSE-MsgGUID: iA/pJCTATJ6nUuElIDw8CQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="216406913"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.220])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 05:37:39 -0800
+Date: Wed, 11 Feb 2026 15:37:36 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: vcnl4000: add Capella
+ CM36686 and CM36672P
+Message-ID: <aYyGIPNeHWpluaoF@smile.fi.intel.com>
+References: <20260210-cm36686-v1-0-aef68dd46ad4@gmail.com>
+ <20260210-cm36686-v1-1-aef68dd46ad4@gmail.com>
+ <20260211-sceptical-frog-of-revolution-fc3cf4@quoll>
+ <b95d7a49-6191-4d85-b725-4a941505b40d@gmail.com>
+ <6f97c68d-0236-4d04-8199-768ecee7c4dd@kernel.org>
+ <242d5502-bf58-4e25-8258-8a6c75ff3623@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: vcnl4000: add Capella
- CM36686 and CM36672P
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260210-cm36686-v1-0-aef68dd46ad4@gmail.com>
- <20260210-cm36686-v1-1-aef68dd46ad4@gmail.com>
- <20260211-sceptical-frog-of-revolution-fc3cf4@quoll>
- <b95d7a49-6191-4d85-b725-4a941505b40d@gmail.com>
- <6f97c68d-0236-4d04-8199-768ecee7c4dd@kernel.org>
-Content-Language: en-US
-In-Reply-To: <6f97c68d-0236-4d04-8199-768ecee7c4dd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <242d5502-bf58-4e25-8258-8a6c75ff3623@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Wed, Feb 11, 2026 at 03:32:41PM +0200, Erikas Bitovtas wrote:
 
->>>
->>> Please implement previous feedback.
->>>
->>> Best regards,
->>> Krzysztof
->>>
->>
->> Since I am making changes to the existing driver instead of creating a new one,
->> I introduced a new patch series. As I mentioned in the cover letter, cm36686 is
->> fully compatible with vcnl4040, so instead of creating a new binding, I create a
->> fallback compatible for the device. I probably should have named this patch
->> series something else.
+> >>> Please implement previous feedback.
+> >>
+> >> Since I am making changes to the existing driver instead of creating a new one,
+> >> I introduced a new patch series. As I mentioned in the cover letter, cm36686 is
+> >> fully compatible with vcnl4040, so instead of creating a new binding, I create a
+> >> fallback compatible for the device. I probably should have named this patch
+> >> series something else.
+> > 
+> > That's fine, but that's v3 of previous patches. Your work was to add
+> > CM36686 support. How you do it, evolves, but patchset/work is one
+> > continuous work. When you rework approach next time, you also start from
+> > v1? And then you go back to previous solution of new driver it will jump
+> > from v1 to v3?
+> > 
 > 
-> That's fine, but that's v3 of previous patches. Your work was to add
-> CM36686 support. How you do it, evolves, but patchset/work is one
-> continuous work. When you rework approach next time, you also start from
-> v1? And then you go back to previous solution of new driver it will jump
-> from v1 to v3?
+> There has been a misunderstanding. I assumed that since I will no longer
+> be developing that driver, this warrants a new patch series. I apologize
+> for this.
+> Here is the changelog since v2:
+> - Remove the previous unnecessary proposed driver and bindings.
+> - Add a fallback compatible for cm36686 of vcnl4040.
+> - Add a new compatible for cm36672p.
+> - Add channel info for cm36672p.
+> - Remove redundant information in the dt-bindings commit message.
+> Here is the link to v2:
+> https://lore.kernel.org/linux-iio/20260209182432.00006c3c@huawei.com/
 > 
+> I have received some feedback regarding the changes I made to the
+> existing vcnl4000 driver. Shall I submit the implementation of it as a
+> v3 to that series of patches?
 
-There has been a misunderstanding. I assumed that since I will no longer
-be developing that driver, this warrants a new patch series. I apologize
-for this.
-Here is the changelog since v2:
-- Remove the previous unnecessary proposed driver and bindings.
-- Add a fallback compatible for cm36686 of vcnl4040.
-- Add a new compatible for cm36672p.
-- Add channel info for cm36672p.
-- Remove redundant information in the dt-bindings commit message.
-Here is the link to v2:
-https://lore.kernel.org/linux-iio/20260209182432.00006c3c@huawei.com/
+I guess v4 would be better as this is assumed misversioned v3, if I got
+the situation correctly.
 
-I have received some feedback regarding the changes I made to the
-existing vcnl4000 driver. Shall I submit the implementation of it as a
-v3 to that series of patches?
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
