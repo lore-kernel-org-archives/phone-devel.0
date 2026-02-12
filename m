@@ -1,66 +1,66 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F6D35CBA3
-	for <phone-devel@vger.kernel.org>; Thu, 12 Feb 2026 14:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30F935D5EB
+	for <phone-devel@vger.kernel.org>; Thu, 12 Feb 2026 14:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770907556; cv=none; b=P8aO/c1pC9/WkuFS3I5MDjrtInIR01i4RvmGgYHlVg4SD2eQcSHb/AkfTnStpuzkLuQKuSGpyoe5yZZqaAIFUwRXBFeqnzx5EyS2bQ2V75d8Q46BxtnU1E9uorypIFL6ir0hbwt2IFOv+mq+Hv1MUHx/xyms+beESUR1PiVdbFs=
+	t=1770907560; cv=none; b=Pm4HpquV/h2R71wD9HBuXuFZBX1D1MnWBZ1fIQmQHGS37Hr8uR76temd/ib/ROQpHYYuOUg8HX6cbY+L7ab/XER2tKXpsoBfSuTgFPINoziI4KDmsC5d1oYxgAndSjH+EFO3LBB4acDsV5L1fHHYNhJoiab/CEvjXJABCEjgx8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770907556; c=relaxed/simple;
-	bh=lazVxl8WJKg/jltTmr7HFjMBJRcsa2eV7m49E9VAdAc=;
+	s=arc-20240116; t=1770907560; c=relaxed/simple;
+	bh=fy4LXU/WUrRSUNC3KYSIjdzX5OzOC+ZS//OJBVtQK7U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oaCxjEynExoEmx9u4edVXp4nq7kcMvaDmxMBDEANqFj4AwhZ+12A9tdUwHlbbZPggJ6D68YEwcHwT0jTX5gg6bW5yBeyQ/JuJQI1gA4FpE+ITZ+N34MgOdtDYrPMEkzt9NfMKam3BBMIjQhRTyz0QFJZmgvGWLcbJ+7/oMHcKyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tqtwan+M; arc=none smtp.client-ip=74.125.224.46
+	 In-Reply-To:To:Cc; b=MTV4HvyyIp4PlV0R4WqwRnW3Vvo5kahId2y4r6O77XFRWpLrlYaazV8hP/HfKfinqOtje6nO6wxlp76DeV+MgHUsUjxF7x866kVHZ5mFoCvNrJBWZpUatJxUTuw/yd/QKQYIlrFsPi980YHaBU6D86NG3zT8u4GhUF6WdV0TuEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ij2FT/i6; arc=none smtp.client-ip=74.125.224.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tqtwan+M"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-64ae222d87dso3459774d50.2
-        for <phone-devel@vger.kernel.org>; Thu, 12 Feb 2026 06:45:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ij2FT/i6"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64a28af2f4cso3265295d50.1
+        for <phone-devel@vger.kernel.org>; Thu, 12 Feb 2026 06:45:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770907554; x=1771512354; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770907558; x=1771512358; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OiO+nVc5IO8Z6Ent3/Ayytw2yL90H0wfU2AM1rR7mW8=;
-        b=Tqtwan+MxuRKTgh2+k0wpds8w/n7bD7UIZaxveWzj2zYi3Q3i9ZRfEBBmwp+7t9ylO
-         HPoW92/P0kAek6NBLT/7ygOxMaMA+GB2AhZBgopJN1TfG60RwI464ic6e2QX8kYIiiIE
-         NKEDiGDmapKWQtotggWqFH0ky/kV8jTEeOdMvY0ym1xLZRuUspjXkMs3pgHs2eOX5PBQ
-         jW4+jHyh6FMQD7weZiUacoL37vtv4I9hVoBUoWZQfBI7v4NKsblTFO/nPh+o8MGu9vUs
-         BjPYpouCZuRfJQbHSHsdriTiywsdUubDfLPBkvUTS68HMb0vRFY4+MQOMPTpUVu4FISh
-         ReCw==
+        bh=+JG1I3xYlNRfZ4lCELzjfItlxHeuT4mtPnRcvecqAwg=;
+        b=ij2FT/i6ctE7yOV/dNstWG7kJntnWslehKJtkBctgjhWLobYRfIxA0yohUJWFDJNv2
+         N0GSMGXtNU4NAEnfBe1LHfoNR19e0DR73IkHjH7mspRoQ2ryX5iyUB8Eh0hSA3PvFTuX
+         lSMZbHBXmEK/hLeSD6IjN+7cqWisp9HshVL6P/5t+Yl7i80nFcl9zs1JR7r5J5iVoEoG
+         vKHy8kpo01NF4HmyS3vCtxIu8x70tLyd/iVzzlT6xc2IGBoNYJ91bALAYMsa40e2hU4v
+         QqoOQwGqMcxUHwNWh1h8irfsysXQLfZm5tAy9a4rzltPyliS2NnqbVF1HojXeUd5qY8X
+         oGCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770907554; x=1771512354;
+        d=1e100.net; s=20230601; t=1770907558; x=1771512358;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OiO+nVc5IO8Z6Ent3/Ayytw2yL90H0wfU2AM1rR7mW8=;
-        b=QpaTdsFAR9Z8B36sXH2b4aDgDBA0HYWx7Xlo36ZOhO/F2aZVeaCdd2SUeYfNasIzlA
-         eItJ0kW2BBUdRUGV9DHp3gE7jrBUuD3kfslSW2caVII7XKaE2cJEz237F1TH54ZTX9YU
-         5fHvlsBsLtI3+DUWnG63Fojd/UMgTdUSqc+rnRom2skSqxHxN1LP5xE9eSvpOchuoBgH
-         60R2af0lf89FnSzz/nYK+3nMY9gj6ExfXl6jDDPevKzLOTDI0fIUCgLOQ8UMtqbaL30O
-         qr/3thiYTPxCgHUQXRE1YcKcTyj73pckc8mYf2yFJT9BKk6sO7+haE67ffvrWG3bN8NX
-         pAUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPN1gNVxpRSsdcTCqIGJKSooX86CpshtoMBfBQb4EosnK4ayUVbynQlBmdWQkGzj0QM2IWAmy1igpb/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8mrNNS3e2L2sNAoBy+XtoQao7OPm0gQwzczRm45zP5TNq/PLI
-	vSgZFXE2l9361vp4YuN1pU9BWjMgL52N7ia2UnreURhK8HebHM4ZU8cf
-X-Gm-Gg: AZuq6aLzQnSiOBqVoEpeDAvkAgGopDGa+qO3M8IbJd3ouykMqFe42a8mRiH9bla7SA7
-	ucK0NJwYO4dn53HoUUvIkxD1LYF0MmeOoooNj4qb+3DJtX9qRWjP+Ttca7xZQl0tg+x8C/IWqt9
-	rACFwclPFjTucI9/fXOT9uCgC7wXErMrqVSfgv4h7WIxTnHuxVlELOMAp5hvGC+ziVoe1FZeENE
-	sN0fYsQD0BmNfNwQGNlgWvZfeyxWhzC8epSbfSspeTzQgXVxIBxNqHUXyn14Z7ZxkuVb8j25Zy6
-	WObOISxAAz7fxqV3ohe0OYvFysiXW35qAUnFd9BUOtXhSGo7hRoyc1v1e30vMKtk5ve3Il3ZSS+
-	uitVVBjHYkVwjrDMPjRwAliOgbnQqwyUviLw3LaTzCjB4GD5GhUwBkKK+ZSGKY+906H74X3nK2y
-	/1DM57pLKbWnLSXQE2j9DzhKFCvg==
-X-Received: by 2002:a05:690e:400e:b0:64a:ee9d:8b83 with SMTP id 956f58d0204a3-64c081ea5a8mr1592504d50.41.1770907554038;
-        Thu, 12 Feb 2026 06:45:54 -0800 (PST)
+        bh=+JG1I3xYlNRfZ4lCELzjfItlxHeuT4mtPnRcvecqAwg=;
+        b=Tj4D1QypPspcHt70lYqnDsrqXFW7leah1g86NDKgnNV7u+quR5iryqTmzFI3yJKhXU
+         VoiYXSILwnPP6PayeHcNjsV099w/Kb47YgzYHElDqbr/mFIiNZSSFk7Ny1C1UZMW6hq2
+         0cbzVnm36z3itoIzR4eMwAj3cw4ipM+kKxR6ZRLIAJ4yix5WpZBfyQqt5fqcscGErReM
+         6njLQjkTs1l/yJ6+ZW15ryls956zRnVLa+fjavD/v97UFpKv26oZfguG7WjNlCHWH9dx
+         2b9sr0/SNu23HXbfchgy0kHiI96LY3NYHsEztm7nlztbvcAGoDmSmkGJrE+XK+NnYPH8
+         oPEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbB3QpHTuXUSm8bU1I4EL3MkRaiU3rXAGTOyiGnIUCjSqNQNCHAkLWxz7MuHFd6bfPLTmIOMIsRASiWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWp+ZiVqTWPehwbyrnA93vfTBCbF5g5l5Vdm1JDEdQTTNDTuFA
+	QkIm0bMMt1ku34Rwme63IQAxTSAUH3rSrEg74DNu0cckiadrJKPyxayhxFcu5w==
+X-Gm-Gg: AZuq6aImCLn1OlC9DylS2mdYOUX7PMvPAUPLt+ZU4yf0zgKsMkwndfzxftyv2X9m5gu
+	qJKi5BPCMK/9ASHjKmu9xPNQKOnRd9W+VQ9iWRkeg0ikz56at/hZh4PDnF4lxAb1eITCWx8La1g
+	o/jd9f2GdDPWtsPgz9a30ZQH5oSHZrwYbH3ma174tbfuR7owLXCFMUPEk8G8K3mh0VPzmofwEfZ
+	GqIG4wv0LOZhXq4ENunmtRr4nYY1V6bJ6t2DBC4ciJ523u4GNc0QRj8f2zOKVigXXNtB6AbPgZK
+	otoCtKhpfhrIJ4I4PCNGTeO0Jx8oeimoc5okQdN1mn17NNEi1g3u8EkIOd5kMY0bUjKCKYh1dum
+	0qCyn6TwWgruCLb6TLw+0CNUlc/iIUDZxQC0iilzBUkA34m20EJDIDaCaBg62DF8J/tKHhu9o25
+	iypFCREgapKlSFMuE1B0iQuV0J3A==
+X-Received: by 2002:a05:690e:144f:b0:64a:d716:c8e8 with SMTP id 956f58d0204a3-64bdf2f7ce1mr2097988d50.13.1770907557758;
+        Thu, 12 Feb 2026 06:45:57 -0800 (PST)
 Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64afc83c201sm4897318d50.3.2026.02.12.06.45.50
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64afc83c201sm4897318d50.3.2026.02.12.06.45.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 06:45:53 -0800 (PST)
+        Thu, 12 Feb 2026 06:45:57 -0800 (PST)
 From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Thu, 12 Feb 2026 16:42:47 +0200
-Subject: [PATCH v4 1/2] dt-bindings: iio: light: vcnl4000: add Capella
+Date: Thu, 12 Feb 2026 16:42:48 +0200
+Subject: [PATCH v4 2/2] iio: light: vcnl4000: add support for Capella
  CM36686 and CM36672P
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
+Message-Id: <20260212-cm36686-v4-2-8f587d4a72bf@gmail.com>
 References: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
 In-Reply-To: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -84,47 +84,95 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
 X-Mailer: b4 0.14.3
 
-Capella CM36686 is an ambient light and proximity sensor developed by
-Capella Microsystems, now a subsidiary of Vishay Intertechnology Inc. It
-has an I2C address of 0x60 and is fully compatible with an existing
-driver for VCNL4040. Capella CM36672P is a proximity-only sensor that
-is fully compatible with CM36686, and therefore with VCNL4040. Add
-compatibles for cm36672p and cm36686, with a fallback for cm36686 of
-vcnl4040.
+Add support for Capella's CM36686 and CM36672P sensors. Capella
+CM36686 is an ambient light and proximity sensor that is fully
+compatible with VCNL4040 and can be used as is. For CM36672P, which is
+a proximity-only sensor, also remove the IIO_LIGHT channel.
 
 Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
- .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml  | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/iio/light/vcnl4000.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-index 4d1a225e8868..2ba4d5de4ec4 100644
---- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-@@ -18,12 +18,17 @@ allOf:
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index a36c23813679..1f8f4e4586f4 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -185,6 +185,7 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
+ #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
  
- properties:
-   compatible:
--    enum:
--      - vishay,vcnl4000
--      - vishay,vcnl4010
--      - vishay,vcnl4020
--      - vishay,vcnl4040
--      - vishay,vcnl4200
-+    oneOf:
-+      - enum:
-+          - capella,cm36672p
-+          - vishay,vcnl4000
-+          - vishay,vcnl4010
-+          - vishay,vcnl4020
-+          - vishay,vcnl4040
-+          - vishay,vcnl4200
-+      - items:
-+          - const: capella,cm36686
-+          - const: vishay,vcnl4040
+ enum vcnl4000_device_ids {
++	CM36672P,
+ 	VCNL4000,
+ 	VCNL4010,
+ 	VCNL4040,
+@@ -235,6 +236,8 @@ struct vcnl4000_chip_spec {
+ };
  
-   interrupts:
-     maxItems: 1
+ static const struct i2c_device_id vcnl4000_id[] = {
++	{ "cm36672p", CM36672P },
++	{ "cm36686", VCNL4040 },
+ 	{ "vcnl4000", VCNL4000 },
+ 	{ "vcnl4010", VCNL4010 },
+ 	{ "vcnl4020", VCNL4010 },
+@@ -1842,6 +1845,22 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
+ 	}
+ };
+ 
++static const struct iio_chan_spec cm36672p_channels[] = {
++	{
++		.type = IIO_PROXIMITY,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			BIT(IIO_CHAN_INFO_INT_TIME) |
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
++			BIT(IIO_CHAN_INFO_CALIBBIAS),
++		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
++			BIT(IIO_CHAN_INFO_CALIBBIAS),
++		.ext_info = vcnl4000_ext_info,
++		.event_spec = vcnl4040_event_spec,
++		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
++	},
++};
++
+ static const struct iio_info vcnl4000_info = {
+ 	.read_raw = vcnl4000_read_raw,
+ };
+@@ -1867,6 +1886,19 @@ static const struct iio_info vcnl4040_info = {
+ };
+ 
+ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
++	[CM36672P] = {
++		.prod = "CM36672P",
++		.init = vcnl4200_init,
++		.measure_proximity = vcnl4200_measure_proximity,
++		.set_power_state = vcnl4200_set_power_state,
++		.channels = cm36672p_channels,
++		.num_channels = ARRAY_SIZE(cm36672p_channels),
++		.info = &vcnl4040_info,
++		.irq_thread = vcnl4040_irq_thread,
++		.int_reg = VCNL4040_INT_FLAGS,
++		.ps_it_times = &vcnl4040_ps_it_times,
++		.num_ps_it_times = ARRAY_SIZE(vcnl4040_ps_it_times),
++	},
+ 	[VCNL4000] = {
+ 		.prod = "VCNL4000",
+ 		.init = vcnl4000_init,
+@@ -2033,6 +2065,14 @@ static int vcnl4000_probe(struct i2c_client *client)
+ }
+ 
+ static const struct of_device_id vcnl_4000_of_match[] = {
++	{
++		.compatible = "capella,cm36672p",
++		.data = (void *)CM36672P,
++	},
++	{
++		.compatible = "capella,cm36686",
++		.data = (void *)VCNL4040,
++	},
+ 	{
+ 		.compatible = "vishay,vcnl4000",
+ 		.data = (void *)VCNL4000,
 
 -- 
 2.53.0
