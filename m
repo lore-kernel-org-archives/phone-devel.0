@@ -1,100 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D088305E32;
-	Fri, 13 Feb 2026 07:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807D53191D0
+	for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 08:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770969249; cv=none; b=L/WWzXkmbns2JAIB15xF00E6S/Zp6kBEhTK2LzD1RWUzY9SWABInk0fbeAb3m4HKwwEOCRhw1bbg8UOeB1uVx4qzj/xJ8qVmlL3h7JlphwRHpPbV3xa4k5x4f1Li2yjUEZfynsxvnov5ew7CqNcQNXwQiUK2TdoOPkqI7Je2Eok=
+	t=1770969748; cv=none; b=esYEE2g+bBXdpA0DsiNRSQtKB8K7Wvo6QvS74p7H8P9E9uX0rbfZWFreJ2FtiG5Gox9+Mu6mxyiRfcaDkDQMbckc0A7Q84mf4H5bpcuCJSPiqIPISbtyb+82e6GG2UTzkB+keiaXbKeboMNQsiCehCUOdPXq0n6OwqaLxa26wFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770969249; c=relaxed/simple;
-	bh=fyBZBOvRm63EDEk40xoiwwcRMLnqBiSK5e6jEdumIhU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z16OxnT3t2cWH79oc5Q7/AiDvConL+0p3XKnYX93lyiqfqy0mysP86U+Cn2froMRoEY/Vhc3Uob4xc18en8VBMP6avDdgc73+ZXQX38mp/QVQkWST096yBuO2EWg8jZWikBFY7M1G146aofnPsdQm9Rd34kLdzFgqwv/D+48174=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSQER7Qt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770969748; c=relaxed/simple;
+	bh=YuUImcaHV7Y1d4T5vAe0F0a09U37V8B1PbdWpCRJ28k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Y+Kx74aXhgPlZJje3X9fInkEmheMwuO3fQFFUXgv+BVQnfWozUwXYqGXUWQ5VvGMyniLLJdeIwuYs4Iw4/gas4JsEw1x2h0Fh1D6iQMzE22baX2WSeqX8Ji91MZRr7TXeduW9V05IFwsJoKIhDqEOOoqU+Q85MTAwJVpEaIr338=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=eGQMVc9v; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSQER7Qt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC0C116C6;
-	Fri, 13 Feb 2026 07:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770969248;
-	bh=fyBZBOvRm63EDEk40xoiwwcRMLnqBiSK5e6jEdumIhU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WSQER7QtxLkW6KVIUaosZ3F51+neBscYBbgVcl7FtPjEYXEMLrpEU8FIVDGnLnp1N
-	 ngJsm96F+rnE7CgNshR/woYsGthxTNLDK6Wr/xEzoMAto/jhgZJ2QtKyr5lL0KpSzD
-	 pTb4ZfsnvHDgpnvnY8UA7rX45ZYvjeC5vmFUXrrq/avmSjwKQp4QDzm16R7lhIwynf
-	 /yKDSF8fg/8SdNPiGsYPbOHciVSQlPxFaocZWEYsJtLGnCbsuHbfRqo/DVXkku49a1
-	 ZYKcrutfDRksF+pNqQQD4N0iRApLbTqnQdtlh1/hXafDt2Gay0ljxf3ykfIhSZWpN3
-	 P0h03W4Y0CnJA==
-Date: Fri, 13 Feb 2026 08:54:06 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: vcnl4000: add Capella
- CM36686 and CM36672P
-Message-ID: <20260213-unyielding-pistachio-ape-deda74@quoll>
-References: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
- <20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="eGQMVc9v"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8f992167dcso72854966b.1
+        for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 00:02:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1770969746; x=1771574546; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YuUImcaHV7Y1d4T5vAe0F0a09U37V8B1PbdWpCRJ28k=;
+        b=eGQMVc9vAIHjZisWn1LqjOvpJFrWgRNjPWe/zc5kU1I8Yg82oFmbAgIxqeQDVpIdnm
+         ae9akT54wFHK4R/oxLg97klYq8h7eLjU321xhetr7kOvnz2JQ1CDXlXTH+macb48XI7q
+         Z9GG9uJ0gtNsBC33s5P4uLZ1fB5S2nxZGAx0YzZ46E5f7GyaX8EZQSJtSRgW+HETkisd
+         BB8BckSN42+Z881sSh3pJpVe+ZZ0jchPC7Pn7oGdCowyDdfVmfc2AJlPs4dA1VBBtUOe
+         qQJwnhFA9fktYQpHcMmWKB/flXwgpcgaWMPoAuKju/YCKdv34OUOPdNX7Sq1iD6zInXN
+         pFxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770969746; x=1771574546;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YuUImcaHV7Y1d4T5vAe0F0a09U37V8B1PbdWpCRJ28k=;
+        b=EECgsqzxucuGEeIxcoo/ShgECnvp/TjKTU/gSF40vNoaY3RzxcAel69Ea9B7WvwUbD
+         Kfx36YNktljJ4op04yN7vKd969YPTCMB9IeQOZQ9og/znM47injJBDL3I44TP/pPR9ct
+         g+81JsvHkuMmgVaavTCsNfTLTdiuO2M3n+lUt1jpF5di0GjMPbM3ieY2QjYNud80CmMs
+         j9DeKf3YXGhkP5duVMxhTcoEG/iricnhMXLaOGeTTRee/gDwiRXuXCxyclr11BUQQ2Gh
+         /+RXBdGklBmSqeJGHGk2x35VEreBQDOo7JSJEH9gkZ8D5zWUMQd90EIJmlAcyVczmUQm
+         RSIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJOSN1KlQ4JdYDplWhnA9pkJ8BJZF9iR8GfXKABmyCnW7WWEmnhjRnwUowvnrwR82ob45sVFOFVQg8Yw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyShw7AfIU3NZmkMzH2lSTgQkJuPnHSi3JoCQHaxX2jPs3jDfGx
+	3Lzq5cZyb8GIDG0AuWkvKU9a5ob5BdwecY0daO1KpADZMbkJInUvgQaXgLub1b9wdBQ=
+X-Gm-Gg: AZuq6aImKyZoSBCP650DRiQNMFJGiwqQwtBOscEw1LBoCnSu8+gj4KR8ZjIhOuw8Mhs
+	VbG+NuW+9e6jgKV/jwkdtfL7ULHRLwZz13+MJcsDjsPnl2FJfOGBFUO86g0lg8Q7FPjA1KKk2SE
+	v9Mw96pyc9ALjtFxU45YHRVVxw3cP6qesZO2G5SKw1ycPCUbq+I+cEKcLPdUtzb4GLjc+l4TcKF
+	L+IaA7oOhL9Xd8pqYVKLMM5MLws4HXR74btWMNyiKghqZb84GInofdwISMPiaI/Ls2kR7ulpWmK
+	9dXHGZ49u0LDV2aNiPMVztfBSpVa6OtEz25RDIa2Q32ZOcJFfHK2K2amnf0XlTNUXBkXABxGoie
+	RJcCskZWQ1sZpHiitzC9ZuLmje16d5RrXirUz72MdhkEspNZdP8L5bfN0Lr7TaeivkJys37lIIw
+	GBo1gJk7Mnrw2EoANdInnLiddSewjXIGq+GUxJ357DqhpjqE2fu+HGu8M7x1BWnNJhNYpX
+X-Received: by 2002:a17:907:3e2a:b0:b83:95ca:23e7 with SMTP id a640c23a62f3a-b8fb4176f79mr42051366b.4.1770969745217;
+        Fri, 13 Feb 2026 00:02:25 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f6ec35688sm234531566b.51.2026.02.13.00.02.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Feb 2026 00:02:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Feb 2026 09:02:23 +0100
+Message-Id: <DGDODOW5NS9N.AS3NWJ3VOID7@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/3] Add CAMSS support for SM6350
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Bryan O'Donoghue"
+ <bryan.odonoghue@linaro.org>, "Luca Weiss" <luca.weiss@fairphone.com>,
+ "Bryan O'Donoghue" <bod@kernel.org>, "Robert Foss" <rfoss@kernel.org>,
+ "Todor Tomov" <todor.too@gmail.com>, "Vladimir Zapolskiy"
+ <vladimir.zapolskiy@linaro.org>, "Mauro Carvalho Chehab"
+ <mchehab@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Taniya Das" <taniya.das@oss.qualcomm.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <3ph8XeidoxkUIsK7qiOH29pde94sdwa3ReWKVVrPabgS5enIAmwVAC5plyFnBMJGKQBnxFB6df6j69OMFIeavw==@protonmail.internalid> <20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com> <df4a6a77-9004-4dbe-9b11-7af2bea7e068@kernel.org> <DE8JJCQA0C4Q.35NEED7XG0K0V@fairphone.com> <17e7ebc9-3b88-4334-b87d-1bce6d5bb120@linaro.org> <893b97ad-7d2b-4408-bab5-2cd63fdaa33b@oss.qualcomm.com> <28f33d3a-6866-4bdb-a1e5-d193dcb7d4d1@linaro.org> <a15bbbf1-549d-4603-ad6d-3a578b548184@oss.qualcomm.com> <0a114896-ffca-427a-8761-977dafa73ea5@linaro.org> <0392b41d-3a95-4c77-9267-bfa3e207013a@oss.qualcomm.com>
+In-Reply-To: <0392b41d-3a95-4c77-9267-bfa3e207013a@oss.qualcomm.com>
 
-On Thu, Feb 12, 2026 at 04:42:47PM +0200, Erikas Bitovtas wrote:
-> Capella CM36686 is an ambient light and proximity sensor developed by
-> Capella Microsystems, now a subsidiary of Vishay Intertechnology Inc. It
-> has an I2C address of 0x60 and is fully compatible with an existing
-> driver for VCNL4040.
+On Tue Nov 18, 2025 at 12:50 PM CET, Konrad Dybcio wrote:
+> On 11/18/25 12:08 PM, Bryan O'Donoghue wrote:
+>> On 18/11/2025 10:06, Konrad Dybcio wrote:
+>>>>> Konrad
+>>>> vfe170 is what we have on sdm845
+>>>>
+>>>> So I'm just asking Luca to try the sdm845 method of waggling this cloc=
+k since what we have doesn't work.
+>>> It's of course going to work because this way you're not calling the
+>>> code that throws this error
+>>>
+>>> I was curious whether you know the actual reason why this is being
+>>> done in some other GCC drivers
+>>>
+>>> Konrad
+>>=20
+>> No notion at all, perhaps as a workaround to this very problem.
+>
+> I tried digging it up, but only managed to find that there is a signal
+> between titan and gcc to request it being enabled (perhaps that's a
+> fancy description of hwcg)
+>
+> Maybe +Taniya would know? (context: sm6350 gcc_camera_axi_clk stuck at
+> 'on' when disabling)
 
-I wonder why and how...
+Coming back on this again, anybody got an idea about this clock issue?
 
-> Capella CM36672P is a proximity-only sensor that
-> is fully compatible with CM36686, and therefore with VCNL4040. Add
-> compatibles for cm36672p and cm36686, with a fallback for cm36686 of
-> vcnl4040.
-> 
-> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> ---
->  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml  | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> index 4d1a225e8868..2ba4d5de4ec4 100644
-> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> @@ -18,12 +18,17 @@ allOf:
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - vishay,vcnl4000
-> -      - vishay,vcnl4010
-> -      - vishay,vcnl4020
-> -      - vishay,vcnl4040
-> -      - vishay,vcnl4200
-> +    oneOf:
-> +      - enum:
-> +          - capella,cm36672p
+Regards
+Luca
 
-CM36672P is compatible with CM36686, but this is not expressed.
-Confusing commit msg and code.
-
-> +          - vishay,vcnl4000
-> +          - vishay,vcnl4010
-> +          - vishay,vcnl4020
-> +          - vishay,vcnl4040
-
-Best regards,
-Krzysztof
+>
+> Konrad
 
