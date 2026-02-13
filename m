@@ -1,169 +1,140 @@
 Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC7D225413
-	for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879D122332E
+	for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 14:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770992472; cv=none; b=Yw71gGLW0XwyGydxHnZbrpWayvttP2/zny2XWZGAFtxjGfv2fbXBG/ffAVDho7CkjGwmQkhW84N3NGjRmg/iq3OU98/Jpt9IKLgk+Atw7Z5kOrOjCXeYYkdG8EkQrNoDMI1jybRdqzdr20I5raZXlGarD/fMFSV/5hb6T7JX8aM=
+	t=1770992647; cv=none; b=AqdjKwQmKW5ld/ojPbdH2a7Do+MNIhjeZw86Ex/bKXAPjSx7u39AL/3kEQWTbSmD1ycBBRzmH4J0cCZhqhQzIPQszdLDETbORuGcBTSXOOw5QiMn6j0DYuDXiS/5Zfe3sKYUEPFsPl+daQ5a/a8j8AWrpIN6Tzz93x/wLKFKi24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770992472; c=relaxed/simple;
-	bh=PaJDyaKNMJRWk4L74IdB8CguRyGRaIr/tCoXLPzHYng=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KF1CTdnvMCrxdc+icdvLu44/89YlReOAuo2vlyBBWU9WBLlsj6isdt2qt4shgTeCSIVHz/yd8MVAHAFoChGosts9NYddyeFHjnoflDyFXxf5tnL7Yw4ZHWAqE2mB3YAA4eThT+l35pPit+BXlqfrHz959U9lANFf40xESOhoJ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=uz+M8SLj; arc=none smtp.client-ip=209.85.218.66
+	s=arc-20240116; t=1770992647; c=relaxed/simple;
+	bh=Ay0D6GdAPXygldsOGoBiVkahDJKNp328gQFQGPJ+sIk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=bdKq5IJW6SGI3NPWzijuPBsb2P/7KHnEJcnMOmEqUYG2bVCde5z+PGv/FTBId2ID2OGBEHDURyFUYkgVR9A97EPp+u+AlvxoFgli1FYVXQKv3+Kr/HOmTQ/OweMAT4uoEzdyCYGQ3VlvY6E40hkiRlyQ69vL0/lg4+f0jHUjZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=xftAIikl; arc=none smtp.client-ip=209.85.218.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="uz+M8SLj"
-Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-b883787268fso115288366b.3
-        for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 06:21:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="xftAIikl"
+Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-b885a18f620so128552466b.3
+        for <phone-devel@vger.kernel.org>; Fri, 13 Feb 2026 06:24:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1770992469; x=1771597269; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2lNvGn/gAEy5rTVgtFUfiU9KyxO9dt/WiWx7gXnF/wQ=;
-        b=uz+M8SLj3xATVu/YOYuhviEGC6ogRgqDnQbRDM6YdS9+vr9D0SvJlWteCKGBX+NYZ1
-         MKRKH9b9d9ebU/jVj5OouZVhI3oEET7U60tmao/89BnCW4wkYLqhpRuukHs69qS77JUD
-         caalCLlxP1e7wqdXB/L0f4NcIAfjYungjIq4/EgLjrlQ0oH129MPXIYCp3ZXMPutRgpP
-         Thz5rovYvYnGC7XADkxnZFIXYJ3wPBVlfO2OnmOdQP+kAFLF52YnhRvxJZOcnlMTLXgL
-         DX92X4zA1qyQX+ScBdRSwWNTWWC4ZO0N8H/ob7vGUGZcmXqGLPs44TI2v64OfKrtv9Hu
-         nY2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770992469; x=1771597269;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1770992645; x=1771597445; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2lNvGn/gAEy5rTVgtFUfiU9KyxO9dt/WiWx7gXnF/wQ=;
-        b=b5KPKwScuTGHJvl6zf95hsdzqOD5+EcHzjR1uZ0iNN3gO6cfTANoUgxeuohtLUYQbk
-         ZQ4KtNTa8DBUVr2U1nGnCljNSjYloBeFuASQWPHihxxCmkOwTz2FHCTIkzhY/y86odPo
-         KUbeWpAnEq34X4JrP6rbKdlFoD5FTAVRkM0ZytGClGLu0Zk6RwlT1ego04hTW9WSvmeW
-         o1Q1Rx3P7/lC3F81E213dyA+fCSDF6qAX14jSM8xD/LhQHl022/eSUlsBwIBwgrQ5xNX
-         J1RwZd1kHlU0sBl5qShbPESZ1Id94ulsjOTimwWX/His2OzK0Y9wqU49mjWb0BU69C9R
-         lYqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvDy0WBSYGxQo9QOxiFYJRsVexNOLXc7+lnku5WFbQQyQaC0mk6ZMe1cayrcZrTfo4b8L8RXKfV13QXQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3nZibYK83aysWVTmAx1HvE0XUWA5xCLm4zNap8FLEzBj7e6iP
-	h/w31+z5Ayq1dNEj9qRW1dSikaHiokZV8h6VhO2Hib0jrbjP0HQJ4fkFKNpdv9P5Z2A=
-X-Gm-Gg: AZuq6aKt+a6CiHwp5PaEJtT3vL4PTXBHeAOC/Vna4LZ2Bfftl2znyr/r1Z8UEv4poJS
-	f3ctk5Ro1KIm7koYw4QnxrtMKiJ7XEU7tB/JEPEm5vJL1xdzv0uftBQA4uBX1JXGbFlJzdP+AF+
-	J0E76g3UiQrkGWzSz9lIniKaIB0Cwe93n7bmifBiH+M/3lbu0CMyGxPrZXi+vcm7rw64Q+VLHnv
-	0x7ofwq9Fi0Xg2atJL1MJncqBHyhf2qmwHZ6n/Vo77LQrnAFmgNJOJfO0hbug1nzXcpKeGWyC5M
-	a3Owg3vMXfjN/0SFRmKpBh18sPjsmLCl7VmQmN//ySkmLJB1a5K6yveYEpjfgg+JO0XIOIEE5yr
-	gfAhDo9PoBAsZ6gGmqUuseIACr2hBfF4uucRHElUw9iKPc/hyRLu7QbgP3/upgJA844YnB53ZFW
-	3fdHd644b8ozzgStSKyz6TLPNZXEPtQk2xEMUMfDaE/LRGvJYCYHzF51MnrrdjxjiFhdUp7Pumb
-	co3
-X-Received: by 2002:a17:907:9692:b0:b87:a0df:2f98 with SMTP id a640c23a62f3a-b8fb4672805mr106847666b.63.1770992469139;
-        Fri, 13 Feb 2026 06:21:09 -0800 (PST)
-Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f9d45e79asm130787166b.24.2026.02.13.06.21.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 06:21:08 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 13 Feb 2026 15:21:06 +0100
-Subject: [PATCH v2] arm64: dts: qcom: milos-fairphone-fp6: Add Hall Effect
- sensor
+        bh=yCFtFmCjsibDMDkl0GJojw688jZoMr8VtFLUcg2+jq0=;
+        b=xftAIiklNZuYwEWU0UTU3mMdZIrTjE4TbK0BPVpFAkIGgxNBlFSygBdquMhOz00BcL
+         VWjf9Jwe+bjnVZPCPRTXLtEbKnhT13yT/oDxVHz8tfzKuF74IGmt6N/am2w4oWVHs77V
+         3tuj8VObvPWIRdxFrmHnQ6/TMALkOjXMueusHqGH1H+iKzj+xPamRv7TiVs/2vHhVx/i
+         qFtKUKmNaI/BuzJWLzslrGv3e4xalerF1m1oxVVLuETqC8DGPcGU6Eg7VTD0s2sW0sYQ
+         blgBk5ReFAQdv5pw6Hh3PajMzx4C9xyFn/DXJyD5YNoZwsK2EuMMq4UyJyOf70otoXfh
+         83QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770992645; x=1771597445;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yCFtFmCjsibDMDkl0GJojw688jZoMr8VtFLUcg2+jq0=;
+        b=r8a96AAJl0ChbCRaYFFxJ9BfSSkVaNiKn0qu0DOfuS10s1lY2MTqhp9G30KvcWdjcI
+         3+pEM+q1vgsT5xPmSGSHbHMvPaV0eN6hqc1nVbI2zHNR/WBuc0YU8rlYp3r2zX9VkKJd
+         +AoaBMzxaHm+FQ3V0jMSIcHAcd39GYj5PWyomC25IR9tDbelH6d0AqAdslfiPGb66VEl
+         s2lgy0RpZYnJTKNIKLhunML73+KToEYVufSt5k3b8p4SvKUP4Wha7Pa/fMbvViR93+Rw
+         zgrSUJVFCS1ugnUYFXfQhGZ2b/syJL5MUihsRnPa1YiFkZSW0T1sT3b85mlfqko4yBK6
+         8BZA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXU9fh1/DTOORQJRbmgm3iUz8i1HccNnEBcMmKf9DnYRRh+W+E+5TUIxZDtOb1rur9yxvZ02aLKXd2+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/bG3l7IGdwqJL0u+Jf7L9PwdEPhsRSE6PaAsj4IO5DrvGis2/
+	pizvBkB7u/ZtuAZ2/OKFCMsQfhn1PxD+JLmp7MpJ8cJXmr0BIwollqniKY26SCkg3i4=
+X-Gm-Gg: AZuq6aLgcepG16jdDIJgi+mHGKlyva2x4FTzrwW7LdCiisISdqk7cGSYM//16pZyNFk
+	5hNJDfYatM6ILnPgYJE3kX3OogM3hr3HBc7cKx37i1HdTkz+JDKWLd1aIRRTj9YkV/+xj+lCfEq
+	10UpN3upkw+1XX+pqzvQfEpjc3mnfTjBMvgXzyYVA9R8giOuryxm3e8Q4hmUWjanxQw+1KjECW+
+	FrGUW8X/UG7aS2s0YVGGhAFmN3vRlgHTD+oQwAuc+1vnPd4HbGjX9RLnDajV+7rU/aNkGuxC0JX
+	BBngnROYvo5cAMe/FNXXCIoGruDlgXeNkTr5DTVU3f2M3/uJzVIto5yYtOmU+RJLFmDar7fVc8U
+	DE431cWRCZ0+B6ZJDYiNi5bO1Sq6hhr3SCOfPh4P4G5bOZdE9pOxjW4P0ePqqf4v2jY+YNcCi/M
+	5h4mepOcpgOyu2t644QBzA0Wz+4oXxu/w06CsPsjuE3APONS5KVihsSR5HtUKvTaWiqsFm
+X-Received: by 2002:a17:907:1c83:b0:b88:21cd:5fcc with SMTP id a640c23a62f3a-b8face2b48cmr150515366b.36.1770992644795;
+        Fri, 13 Feb 2026 06:24:04 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8f6ebd60edsm256019766b.41.2026.02.13.06.24.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Feb 2026 06:24:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260213-fp6-hall-sensor-v2-1-ecd113d4919c@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ6CMBBFr0Jm7RjaaAFX3sOwKGVqm0CLbSUYw
- t2tsHb5JnnvzwqRgqUIt2KFQLON1rsM/FSAMtI9CW2fGXjJRcmYQD0JNHIYMJKLPiArL43muq6
- 4VJCtKZC2y158tAcHer1zOB1H6GQkVH4cbboVjpaEe5wzDj/B2Jh8+OwfzWw3/o7PDBmKhldXJ
- bq+Lpu7ljZMxjs65wVot237AnEmzH/jAAAA
-X-Change-ID: 20260116-fp6-hall-sensor-1049f2f872ac
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770992468; l=2287;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=PaJDyaKNMJRWk4L74IdB8CguRyGRaIr/tCoXLPzHYng=;
- b=emdVErxPZvsDCPjFLjkK/Ib4DqAmZNg9hjAxRMoUzy1wy+86mc5SrhhyKAg08Rzttq9JlS+71
- djlXzxRZaZPAsK6yO5ZxWiEjMPHzgStUoYZyTtFkqODKDqxu9INg8G7
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Feb 2026 15:24:04 +0100
+Message-Id: <DGDWHX20052Z.C8JH4RXIPJCK@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: milos-fairphone-fp6: Enable WiFi
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Alexander Koskovich" <AKoskovich@pm.me>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260116-milos-fp6-bt-wifi-v1-0-27b4fbb77e9c@fairphone.com>
+ <20260116-milos-fp6-bt-wifi-v1-5-27b4fbb77e9c@fairphone.com>
+ <300f3ceb-546b-4670-a0ae-4a6f451a7f4e@oss.qualcomm.com>
+In-Reply-To: <300f3ceb-546b-4670-a0ae-4a6f451a7f4e@oss.qualcomm.com>
 
-Add a node for the Hall Effect sensor, used to detect whether the Flip
-Cover is closed or not.
+On Wed Jan 21, 2026 at 12:50 PM CET, Konrad Dybcio wrote:
+> On 1/16/26 3:50 PM, Luca Weiss wrote:
+>> Configure and enable the WiFi node, and add the required pinctrl to
+>> provide the sleep clock from the PMK8550 (PMK7635) to WCN6755.
+>>=20
+>> Thanks to Alexander Koskovich for helping with the bringup, adding
+>> the missing pinctrl to make the WPSS stop crashing.
+>>=20
+>> Link: https://lore.kernel.org/linux-arm-msm/DBF7OWAWQ94M.FSCP4DPF8ZJY@fa=
+irphone.com/
+>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> ---
+>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 19 +++++++++++++++++=
++-
+>>  1 file changed, 18 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm=
+64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> index cbe1507b0aaa..75f2b3a3e572 100644
+>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>> @@ -232,7 +232,7 @@ wcn6750-pmu {
+>> =20
+>>  		clocks =3D <&rpmhcc RPMH_RF_CLK1>;
+>> =20
+>> -		pinctrl-0 =3D <&bluetooth_enable_default>;
+>> +		pinctrl-0 =3D <&bluetooth_enable_default>, <&pmk8550_sleep_clk_defaul=
+t>;
+>>  		pinctrl-names =3D "default";
+>> =20
+>>  		regulators {
+>> @@ -704,6 +704,17 @@ &pmiv0104_eusb2_repeater {
+>>  	qcom,tune-usb2-preem =3D /bits/ 8 <0x6>;
+>>  };
+>> =20
+>> +&pmk8550_gpios {
+>> +	pmk8550_sleep_clk_default: sleep-clk-default-state {
+>> +		pins =3D "gpio5";
+>
+> I'm thinking how to best reflect that. Perhaps gpio-gate-clock which
+> would be consumed by the PMU?
 
-The sensor is powered through vreg_l10b, so let's put a
-regulator-always-on on that to make sure the sensor gets power.
+This way of doing it already has a precedent with sm8550-hdk.dts and
+sm8550-qrd.dts at least.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-As pointed out in v1, this would preferably go via some vdd-supply to
-gpio-keys, but this support does not exist yet.
----
-Changes in v2:
-- Add pinctrl for gpio70
-- Link to v1: https://lore.kernel.org/r/20260116-fp6-hall-sensor-v1-1-69275c6bd809@fairphone.com
----
- arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+Regards
+Luca
 
-diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-index 7629ceddde2a..bba327cc7a38 100644
---- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-+++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-@@ -29,9 +29,19 @@ aliases {
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 
--		pinctrl-0 = <&volume_up_default>;
-+		pinctrl-0 = <&volume_up_default>, <&hall_sensor_default>;
- 		pinctrl-names = "default";
- 
-+		/* Powered by the always-on vreg_l10b */
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 70 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+			wakeup-source;
-+		};
-+
- 		key-volume-up {
- 			label = "Volume Up";
- 			gpios = <&pm7550_gpios 6 GPIO_ACTIVE_LOW>;
-@@ -316,6 +326,8 @@ vreg_l10b: ldo10 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			/* Hall sensor VDD */
-+			regulator-always-on;
- 		};
- 
- 		vreg_l11b: ldo11 {
-@@ -807,6 +819,13 @@ sdc2_card_det_n: sdc2-card-det-state {
- 		bias-pull-up;
- 	};
- 
-+	hall_sensor_default: hall-sensor-default-state {
-+		pins = "gpio70";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	pm8008_int_default: pm8008-int-default-state {
- 		pins = "gpio125";
- 		function = "gpio";
-
----
-base-commit: 3daf23347bb5f4a375d0101ed29c97ce1a99721b
-change-id: 20260116-fp6-hall-sensor-1049f2f872ac
-
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
+>
+> FWIW PMK8550 can reportedly output this clock from GPIO3 and GPIO5
+> (not sure if at once) if set to FUNC1
+>
+> Konrad
 
