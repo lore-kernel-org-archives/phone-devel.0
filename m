@@ -1,170 +1,147 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D8F86331
-	for <phone-devel@vger.kernel.org>; Sun, 15 Feb 2026 18:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AB139D;
+	Sun, 15 Feb 2026 19:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771178466; cv=none; b=hjepyYs4/f2Ct76VA05WRGsVInOrRGle0uioWS1GF6dmZaeYna7jWmdeoSbJAWRlrmGfbsGd2CMKPK+C2c+7tgh43dKxIy3lQ7jLPk4GXzJVcoJP1Nwh5EZI7JS57h3BylHJX6fSlk72bLHvkuVKky/ByHCYmAH1keaZDPdpKW8=
+	t=1771183884; cv=none; b=myrfCyjnxbI45vFbbx+It5bfFBFqVqIukDwiRM5iIKVtWKOEbt+ETY7BN4hWx24JtMWtA1qqp7Mpz2PTkOkYMq30RsnpSrPSEh/y/sni1yta6n5FKZrtpFNXLCiKP+jomLYkYtf+vyun9+TgAJAIUyaDUY8mibyK6f9Ra69kCMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771178466; c=relaxed/simple;
-	bh=BFCwEhjPRXqG+a0i103fckn8v3LCvfKjt9tQvvQNMUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tvlm/H9Amv3LcpbrFZkgY78DYpK7KLtPkJlBGWX0ZjDQLdsftcp+p1hA9Tb0vuKU1aR9JzzcXUhkuI0/N3ZM+vzxWHs71hHOBjW0gKf23UPz/bHczlMhsCl1yauPBhomP91VCoOQoiYjTNNzoAlupygsEwC3CuKHqU+i5yjhcc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WrhHNAth; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771183884; c=relaxed/simple;
+	bh=YUFwljSclpXuAJwzKYldElUKW0OXoIZkIj60REl5nEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CHnmNFfsDnA8TriscJF6vtUSGNi925PqKHRxtPKAH80U5bWdFElu2hL7aQF15z1EJChVYMXrSB18JwCeYd7RPI27qdoMoS7eiS9TDJa5UNbVyZZUo9LqBCyjb2sEpsnsL0UhJMua0Si1iliJJ0bSLinqc/Q2fOZqEozjnQNxM6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfwBDkh3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrhHNAth"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-796d68083cdso35616237b3.1
-        for <phone-devel@vger.kernel.org>; Sun, 15 Feb 2026 10:01:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771178464; x=1771783264; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dVfc3ZKINfdX4zMGanggAKwnJ4AmEdhD9zmapZzYYN8=;
-        b=WrhHNAthwySqyuTRsmHNP2drY2szeh4SZeMtvw/KO8McroR4Wgf8mIlkZIDVJIqzK3
-         SABOqdSfLSsQUG3pH0nVCQKxWe9ti/K1mss/hJmWeMuzkkEWukDvMNgbJCnToMIncSGo
-         wPl1qFFX7SF/n+0ojtQUIrE+JFQv76RE9j+NX8EfpiiZ7q3vYvKFTizQ3ZsMxcGKHWD4
-         j2UvmLzfanpRbcvXVjNkC/E55+W0isSre4ZVxx3jH5Q9p2NlbQc+WH4T83W9GGXJXvZ6
-         GvLGCJmkfy5ftkG5SYXXTJxSSJfKimSOnOesf/vXeWUXPwLAVliKblP9bfDV4DsCAlxS
-         00kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771178464; x=1771783264;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dVfc3ZKINfdX4zMGanggAKwnJ4AmEdhD9zmapZzYYN8=;
-        b=Lp+wsIT+ZMkDIswwxf6mCGZ1gdDs3SYKCDr+U/03SBJqlFSyB+QSncdzcfCl1W/5XB
-         5nIszdtjl2tijAecs1n8M7yNGX7b1aORwuPa1ixzHzR6l9OlNqB4cE+BZ76+j8nKxvm9
-         CrIWDIyPe2MnQ48CZgTBjYydESQIoD+93om3KOGe/ScLhcMqNFtbBAMnjtx/3q8qYY39
-         w185kLUB2eNcaPc9WrbCU71r/vLTQZu/3ocCVRKcW5yD8EVYnp/o47oy8xvhkPCbrIuF
-         0r4eIZQNqXVJ6srerX3Iq4+sVt9NuhiL2mBU2LUzVE4/2WUVzntv7bXMWQw7+VSgFs3B
-         Ti/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVo/adqUI/OMXRnDy8zC9v1tLppQ0e8ciapYSF+/98KE+pt+3knuSQbnT+qZECEtX6HqKTKa5g76GPftA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3kKeHL1vijDroOCB/9vsf+MhxGeuj0ypznLQrQXa1/32p9xVz
-	g7hGFuLPeog+yxrxzjKS/Ge1SV1HQzzUY15jiD73glh/E7BTosnGFA+p
-X-Gm-Gg: AZuq6aKhAfBnTXnIGWGXNDQxIpal0RmR0tD1HpPjGh7R+oUIxNd4yvZJBWAFIZ+R1pQ
-	SdJNFhLo4R7LwDL1bkcYmWN1WIzZpl3eW10Bq+8sBGt03xeXEtgcSag0sbyqk4NUPuZFsEu1Pn2
-	HYunF9aQlzaUNQs2U1TaS8tASy+Rdio9MtqPyJdJMP0xzxjIKsKEUkBHc5rcylf3tlrvX3pOIh3
-	qoGAsKb/+QPfxwy7LI2bGvz6qIlLLw+0HrLC8y7grJ64MWtUzS1NGFq4btU7wxQkGIvnQtMVGEh
-	AN6k7pqkyTA09W2TYWRO2f35GmP7zQsEOIK/X86X1RVDBpa23vEwpoEOx94qWGlR9kI4c2RlEcM
-	NGSBMQNmiuqGR0V/8CGpPF49gS+g2ugTefPLnKQSPLUqx7WygOBCdXndmP0rxX4aR7gvvRUodSL
-	WLU6UKlHUn3NLDZTXvyJYrNVYnYg==
-X-Received: by 2002:a05:690c:c50e:b0:796:3079:a88 with SMTP id 00721157ae682-797aa905601mr53078187b3.16.1771178464259;
-        Sun, 15 Feb 2026 10:01:04 -0800 (PST)
-Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c1a8222sm94305827b3.23.2026.02.15.10.00.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Feb 2026 10:01:03 -0800 (PST)
-Message-ID: <38dca0a1-b5a7-45e4-845d-b6bb53203fcb@gmail.com>
-Date: Sun, 15 Feb 2026 20:00:52 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfwBDkh3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9828BC4CEF7;
+	Sun, 15 Feb 2026 19:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771183884;
+	bh=YUFwljSclpXuAJwzKYldElUKW0OXoIZkIj60REl5nEY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KfwBDkh33NxWapDdKV5jRXKs0i9CATLjd6mc+uNnVkxAO4RCqa0tRoKRCHosZqVbW
+	 TKyF+e3idflRPVdjejg9AI82vmPtpCi/lrTVIfQabXtRhajIl3rzC5ZfVPzmGFhr9k
+	 yE7Pj4Xru6K7BH7+CV9Aa81eHErGqOQtLYlWFtwoV1eq7QbcJPAfnZwBa6I8RTP36m
+	 YjKn/HZ/SVVbkSHdk5kC7C8cXke0RIXX/dvkugFEHOAuDU5592GX3ElwVUQlEquokK
+	 Z/w9LvHcR48wJ0ZJy62cq9aBEmSbz/x8KubRgIBKMTy1b4i6H5ls7MPAKxR269k7tf
+	 /t4l1m2ut80lA==
+Date: Sun, 15 Feb 2026 19:31:14 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: andy@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dlechner@baylibre.com, krzk+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com,
+ phone-devel@vger.kernel.org, pmeerw@pmeerw.net, robh@kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v4 2/2] iio: light: vcnl4000: add support for Capella
+ CM36686 and CM36672P
+Message-ID: <20260215193114.2a1010a8@jic23-huawei>
+In-Reply-To: <20260215172856.34702-1-xerikasxx@gmail.com>
+References: <20260214180919.72389701@jic23-huawei>
+	<20260215172856.34702-1-xerikasxx@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: vcnl4000: add Capella
- CM36686 and CM36672P
-To: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
- <20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
- <20260213-unyielding-pistachio-ape-deda74@quoll>
- <3a20c906-647c-458f-a118-c7927495e7ef@gmail.com>
- <8fb27a7a-82dc-443b-bcc4-21007783fc54@kernel.org>
- <f014078c-6e4d-48b0-a814-45898b005c44@gmail.com>
- <880ddcad-a92e-43bb-ad5c-d6f2f353d182@baylibre.com>
- <20260215174901.11f6fd6a@jic23-huawei>
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20260215174901.11f6fd6a@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Sun, 15 Feb 2026 19:28:56 +0200
+Erikas Bitovtas <xerikasxx@gmail.com> wrote:
 
+> On 2/14/26 8:09 PM, Jonathan Cameron wrote:
+> >> ---
+> >>  drivers/iio/light/vcnl4000.c | 40 ++++++++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 40 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> >> index a36c23813679..1f8f4e4586f4 100644
+> >> --- a/drivers/iio/light/vcnl4000.c
+> >> +++ b/drivers/iio/light/vcnl4000.c
+> >> @@ -185,6 +185,7 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
+> >>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
+> >>  
+> >>  enum vcnl4000_device_ids {
+> >> +	CM36672P,
+> >>  	VCNL4000,
+> >>  	VCNL4010,
+> >>  	VCNL4040,
+> >> @@ -235,6 +236,8 @@ struct vcnl4000_chip_spec {
+> >>  };
+> >>  
+> >>  static const struct i2c_device_id vcnl4000_id[] = {
+> >> +	{ "cm36672p", CM36672P },
+> >> +	{ "cm36686", VCNL4040 },
+> >>  	{ "vcnl4000", VCNL4000 },
+> >>  	{ "vcnl4010", VCNL4010 },
+> >>  	{ "vcnl4020", VCNL4010 },
+> >> @@ -1842,6 +1845,22 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
+> >>  	}
+> >>  };  
+> > 
+> > ...
+> >   
+> >>  	[VCNL4000] = {
+> >>  		.prod = "VCNL4000",
+> >>  		.init = vcnl4000_init,
+> >> @@ -2033,6 +2065,14 @@ static int vcnl4000_probe(struct i2c_client *client)
+> >>  }
+> >>  
+> >>  static const struct of_device_id vcnl_4000_of_match[] = {
+> >> +	{
+> >> +		.compatible = "capella,cm36672p",
+> >> +		.data = (void *)CM36672P,
+> >> +	},
+> >> +	{
+> >> +		.compatible = "capella,cm36686",
+> >> +		.data = (void *)VCNL4040,  
+> > 
+> > Is this necessary? I 'think' if you drop it we'll match instead
+> > on the vcnl4040 fallback and then the access to the data will be
+> > through the stripped name only bit of the compatible (first entry, not
+> > the fallback so cm36686 in this case). So you do need the cm36686
+> > entry in the i2c_device_id table above. Probably better to keep
+> > this here to avoid having to reason this out - but perhaps a
+> > comment to that affect would be useful (assuming you verify my
+> > reasoning).
+> >  
+> After I removed the entry for "capella,cm36686", I received the "Unable
+> to handle kernel NULL pointer dereference" error in dmesg. And at least
+> stk3310 driver includes a compatible entry both for the device (stk3013)
+> and for the fallback (stk3310). So my assumption is that this entry is
+> needed.
+> I could include a comment explaining that cm36686 is fully compatible
+> with vcnl4040, however, if that is necessary.
 
-On 2/15/26 7:49 PM, Jonathan Cameron wrote:
-> On Sat, 14 Feb 2026 10:44:23 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
+Thanks for checking.
+
+What did you get as the backtrace?  I'm hoping it'll explain what I'm
+misunderstanding!  The hacks around using the wrong table for compatible
+matches have tripped me up before.
+
+Jonathan
+
+> > As Andy suggested moving away from enum values an towards
+> > direct pointers to the chip_info structures + drop the
+> > i2c_client_get_device_id() in favour of i2c_get_match_data() which
+> > uses the right firmware entry to get the data in all cases is the
+> > right long term solution and avoids an association being necessary
+> > between the two tables.
+> > 
+> > Jonathan
+> > 
+> > 
+> > 
+> >   
+> >> +	},
+> >>  	{
+> >>  		.compatible = "vishay,vcnl4000",
+> >>  		.data = (void *)VCNL4000,
+> >>  
+> >   
 > 
->> On 2/13/26 2:56 AM, Erikas Bitovtas wrote:
->>>
->>>
->>> On 2/13/26 10:51 AM, Krzysztof Kozlowski wrote:  
->>>> On 13/02/2026 09:29, Erikas Bitovtas wrote:  
->>>>>>> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->>>>>>> ---
->>>>>>>  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml  | 17 +++++++++++------
->>>>>>>  1 file changed, 11 insertions(+), 6 deletions(-)
->>>>>>>
->>>>>>> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->>>>>>> index 4d1a225e8868..2ba4d5de4ec4 100644
->>>>>>> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->>>>>>> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->>>>>>> @@ -18,12 +18,17 @@ allOf:
->>>>>>>  
->>>>>>>  properties:
->>>>>>>    compatible:
->>>>>>> -    enum:
->>>>>>> -      - vishay,vcnl4000
->>>>>>> -      - vishay,vcnl4010
->>>>>>> -      - vishay,vcnl4020
->>>>>>> -      - vishay,vcnl4040
->>>>>>> -      - vishay,vcnl4200
->>>>>>> +    oneOf:
->>>>>>> +      - enum:
->>>>>>> +          - capella,cm36672p  
->>>>>>
->>>>>> CM36672P is compatible with CM36686, but this is not expressed.
->>>>>> Confusing commit msg and code.   
->>>>>
->>>>> For CM36672P we create a dedicated compatible because it is a
->>>>> proximity-only sensor which has the same proximity sensor configuration,
->>>>> but ambient light sensor registers are missing (reserved).  
->>>>
->>>> I don't understand this. You just wrote "fully compatible with CM36686"
->>>> and now you imply that not.
->>>>
->>>> Decide.
->>>>  
->>> It is not. CM36672P supports only a subset of CM36686 features, in
->>> particular the proximity sensor. That is what I meant initially.
->>> I am sorry if the previous phrasing caused any confusion.  
->>
->> But CM36686 is fully compatible with CM36672P, right?
-> 
-> I'd be clear in this discussion that the P version is a subset.
-> So it's very much one way compatibility (your ordering below reflects
-> that right)
-> 
-As I said, only proximity register fields are compatible between
-CM36672P and CM36686. CM36672P lacks ambient light sensing capabilities.
-I am not sure if CM36672P should fall back to VCNL4040, or the other way
-around.
->>
->> So this would make sense?
->>
->>       - items:
->>           - const: capella,cm36686
->>           - const: vishay,vcnl4040
->>           - const: capella,cm36686p
-> 
-> I'm not sure we can do that now given we'd also need the option
-> of vcnl4040 falling back to cm36686p for it to feel logical and
-> retrofitting fallbacks is a bit odd.
-> 
-> Jonathan
-> 
-To clarify, there is no such device as CM36686P. I suppose this is
-supposed to be CM36672P here?
+
