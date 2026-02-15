@@ -1,154 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1881DFF7;
-	Sun, 15 Feb 2026 19:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723921548C;
+	Sun, 15 Feb 2026 20:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771184303; cv=none; b=YveUMFgKGTx7wOpGfAiHCyxLa9OEUiHpZv6vwBAN+1YUxWEa+k4JGuJ24yjgOseyRX5EryFKtbJjUVi/eh7av8dUMQ4BhGDQsr5dGyYrUNWtUL2qqd6848DN2SJE1S6HVgZv077+zhIyGdSY30q48SZq0MzvtJkkVvP5f598c5M=
+	t=1771185762; cv=none; b=CbnKvL3zL2kVEsPcG4+PqmPNddHRnNt7Q5cb4jsJqp4zi1KkbmkSE9zA8pyfdNXsDDGRMbmVzRwP96a4nn1vq2xMiCXod76uyWxuyf74PzyDcI1lPOXJw01n+BnKTRp8Euj6nD4dFYV0qXE8Ca0NWlCuhRaBt8QudKvDF4cNvyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771184303; c=relaxed/simple;
-	bh=T0FVe6vwzE/qlD2kK3E/XopnPmRa+oQubVPY2ngSZPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eG9pMcw5egjQ6hRdAwcpRx2es8kBgPXGTDrtKZXWmBCtCLreWbfjEfki/4A+jfWtycx7k43f0ae0jpdYcbKPdT5iAPbTKqgWO4zPMAGwlxIMhvm1rvHKN03reBmFIaKuN/jWG9pbqONcXTwOQoqwGVYFpVddodo3kwI6HL6cszU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZo9S8xZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771185762; c=relaxed/simple;
+	bh=P9JtAwWdXihI1s5S3QBpOen7buRI2icrD1xD1tvM40c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IEsY8F7P9OyBXPfCg+11yD1fOD/ay8MB9v1x94ZdAz3WYJe5mr618KfGiVGuO3e6qVdqwvJCUo8MO/oFrxO8cLV8R5KxiJXf1RE3SHiFDMofRM2YjHIb8gdu3qx+N1uUyi3tsKOP+0GitRZ5/ghnN7hXFmiHctU1kxOIcTBfbb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gf2ZDcLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZo9S8xZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08334C4CEF7;
-	Sun, 15 Feb 2026 19:38:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gf2ZDcLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DE65C4CEF7;
+	Sun, 15 Feb 2026 20:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771184303;
-	bh=T0FVe6vwzE/qlD2kK3E/XopnPmRa+oQubVPY2ngSZPY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aZo9S8xZuiMDLP4ZDEaF2KTrx68ds2YvU6yD12ARu6HWKqlB+cqgrI4kyPvbjGMp4
-	 0+qcNYdDbxELd4M6UHuX+DrM6/YRWy5Gv2n95r//DoJu/llr9WO1h9UAQMJo+KHfas
-	 EjC7LrZ1bYyQBoC/WyymIPEZ1CBH9IvHsVy1AYC3yz8FQQMwgXBzz9OyF79F9K7LqF
-	 Nc1JO3gbS34H7Ns3Dozz9mZYXQihQkXdyWSgM7isIP4GkYNHYVM+BqaYFkltRuBFL3
-	 EBVm4ErOFbe8D1edzSYxRPohPt9oGcc7rVMjnYtZjoM7MGQ0SQ6os9i0fw5SHrzh9b
-	 LpswxzJ6b+6Eg==
-Date: Sun, 15 Feb 2026 19:38:12 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Krzysztof Kozlowski
- <krzk@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Peter
- Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: vcnl4000: add Capella
- CM36686 and CM36672P
-Message-ID: <20260215193812.1677d5ea@jic23-huawei>
-In-Reply-To: <38dca0a1-b5a7-45e4-845d-b6bb53203fcb@gmail.com>
-References: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
-	<20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
-	<20260213-unyielding-pistachio-ape-deda74@quoll>
-	<3a20c906-647c-458f-a118-c7927495e7ef@gmail.com>
-	<8fb27a7a-82dc-443b-bcc4-21007783fc54@kernel.org>
-	<f014078c-6e4d-48b0-a814-45898b005c44@gmail.com>
-	<880ddcad-a92e-43bb-ad5c-d6f2f353d182@baylibre.com>
-	<20260215174901.11f6fd6a@jic23-huawei>
-	<38dca0a1-b5a7-45e4-845d-b6bb53203fcb@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1771185762;
+	bh=P9JtAwWdXihI1s5S3QBpOen7buRI2icrD1xD1tvM40c=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Gf2ZDcLWBPjeG6milFN/g903DmQLm2KIygfWpcNlgTMBQvmAzcHsCs3iae2W/lKuN
+	 2mMyO4n85L+1wctn+lZ8y2Z8lsLIuY0P1lWkZFGUsVNCkHIv/eUjTqGd/oQWv74/4N
+	 aoFnvgX3BpsE3AKgv6hE89nY5ALz1ng4nQjUM+jpdI8bXVTZ3xFusoyA260jyMF1jo
+	 OWtj+9AzCm9FGLrxd1mtDE4a1svI5kwDYwGPdM3rCDs7031h6Qu2VCK5/OKVVYJAfE
+	 NfvNURGziHo/tTSmIdXS3XpbKGHSWAEY5g0Li/iYO4WtlEOw+AhI0WXF8zXUBwWMZh
+	 rnYC5w+O/vxcA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E55F7E63F10;
+	Sun, 15 Feb 2026 20:02:41 +0000 (UTC)
+From: Paul Adam via B4 Relay <devnull+adamp.posteo.de@kernel.org>
+Subject: [PATCH 0/3] Add wiko-chuppito devictree
+Date: Sun, 15 Feb 2026 21:02:00 +0100
+Message-Id: <20260215-wiko-chuppito-v1-0-9ee6b89606a0@posteo.de>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADgmkmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDI0NT3fLM7Hzd5IzSgoLMknzdxFSLxDQTCxPjVDNzJaCegqLUtMwKsHn
+ RsbW1ALAuLPlfAAAA
+X-Change-ID: 20260215-wiko-chuppito-ae8af4843e67
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Paul Adam <adamp@posteo.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771185760; l=1200;
+ i=adamp@posteo.de; s=20260215; h=from:subject:message-id;
+ bh=P9JtAwWdXihI1s5S3QBpOen7buRI2icrD1xD1tvM40c=;
+ b=ZmAXkTj+15EekGnrE9s5rYxmZGHeFNVtQhSUQ0OgQJnYq/6+fO6lylgpuozQ0Ias8Xts9KZ+I
+ cdwNhm8iLFIDVQZhc0dwInHLumgPKwmhKOMAE7qf9ZjpnmxmyUv/+0d
+X-Developer-Key: i=adamp@posteo.de; a=ed25519;
+ pk=mtrPhSn7htywc4S5zrKNrWM6laAdfnaJzIs0BDiCyAs=
+X-Endpoint-Received: by B4 Relay for adamp@posteo.de/20260215 with
+ auth_id=640
+X-Original-From: Paul Adam <adamp@posteo.de>
+Reply-To: adamp@posteo.de
 
-On Sun, 15 Feb 2026 20:00:52 +0200
-Erikas Bitovtas <xerikasxx@gmail.com> wrote:
+Add bindings vor Wiko SAS and wiko-chuppito
+which are used in the devicetree.
 
-> On 2/15/26 7:49 PM, Jonathan Cameron wrote:
-> > On Sat, 14 Feb 2026 10:44:23 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> On 2/13/26 2:56 AM, Erikas Bitovtas wrote:  
-> >>>
-> >>>
-> >>> On 2/13/26 10:51 AM, Krzysztof Kozlowski wrote:    
-> >>>> On 13/02/2026 09:29, Erikas Bitovtas wrote:    
-> >>>>>>> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> >>>>>>> ---
-> >>>>>>>  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml  | 17 +++++++++++------
-> >>>>>>>  1 file changed, 11 insertions(+), 6 deletions(-)
-> >>>>>>>
-> >>>>>>> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> >>>>>>> index 4d1a225e8868..2ba4d5de4ec4 100644
-> >>>>>>> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> >>>>>>> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> >>>>>>> @@ -18,12 +18,17 @@ allOf:
-> >>>>>>>  
-> >>>>>>>  properties:
-> >>>>>>>    compatible:
-> >>>>>>> -    enum:
-> >>>>>>> -      - vishay,vcnl4000
-> >>>>>>> -      - vishay,vcnl4010
-> >>>>>>> -      - vishay,vcnl4020
-> >>>>>>> -      - vishay,vcnl4040
-> >>>>>>> -      - vishay,vcnl4200
-> >>>>>>> +    oneOf:
-> >>>>>>> +      - enum:
-> >>>>>>> +          - capella,cm36672p    
-> >>>>>>
-> >>>>>> CM36672P is compatible with CM36686, but this is not expressed.
-> >>>>>> Confusing commit msg and code.     
-> >>>>>
-> >>>>> For CM36672P we create a dedicated compatible because it is a
-> >>>>> proximity-only sensor which has the same proximity sensor configuration,
-> >>>>> but ambient light sensor registers are missing (reserved).    
-> >>>>
-> >>>> I don't understand this. You just wrote "fully compatible with CM36686"
-> >>>> and now you imply that not.
-> >>>>
-> >>>> Decide.
-> >>>>    
-> >>> It is not. CM36672P supports only a subset of CM36686 features, in
-> >>> particular the proximity sensor. That is what I meant initially.
-> >>> I am sorry if the previous phrasing caused any confusion.    
-> >>
-> >> But CM36686 is fully compatible with CM36672P, right?  
-> > 
-> > I'd be clear in this discussion that the P version is a subset.
-> > So it's very much one way compatibility (your ordering below reflects
-> > that right)
-> >   
-> As I said, only proximity register fields are compatible between
-> CM36672P and CM36686. CM36672P lacks ambient light sensing capabilities.
-> I am not sure if CM36672P should fall back to VCNL4040, or the other way
-> around.
+Then introduce an initial device tree for Wiko PULP 4G.
+Includes support for:
+- UART
+- USB (no OTG)
+- Internal storage
+- MicroSD
+- Volume keys + Power button
+- Touchscreen
+- Backlight
+- Accelerometer: Invensense MPU6880
+- Magnetometer: Asahi Kasei AK09911
+- Hall sensor: Rohm BU52021HFV
+- Proximity sensor
+- Vibrator
+- Earpiece
+- Microphone 1
+- Headphones
+- Wifi
+- Bluetooth
+- GPU
 
-Absolutely could have the vcnl4040 fall back the cm36672p as it would
-make a full functioning proximity sensor. Other way around is definitely
-not possible as you have noted as the ambient light parts would simply
-not work, which is not something we can consider compatible.
+Signed-off-by: Paul Adam <adamp@posteo.de>
+---
+Paul Adam (3):
+      dt-bindings: vendor-prefixes: add WIKO SAS
+      dt-bindings: arm: qcom: add wiko,chuppito compatible string
+      arm64: dts: qcom: msm8916-wiko-chuppito: add initial devicetree
 
-I just don't think it makes sense now given the evolution of the binding.
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts | 371 +++++++++++++++++++++
+ 4 files changed, 375 insertions(+)
+---
+base-commit: cee73b1e840c154f64ace682cb477c1ae2e29cc4
+change-id: 20260215-wiko-chuppito-ae8af4843e67
 
-> >>
-> >> So this would make sense?
-> >>
-> >>       - items:
-> >>           - const: capella,cm36686
-> >>           - const: vishay,vcnl4040
-> >>           - const: capella,cm36686p  
-> > 
-> > I'm not sure we can do that now given we'd also need the option
-> > of vcnl4040 falling back to cm36686p for it to feel logical and
-> > retrofitting fallbacks is a bit odd.
-> > 
-> > Jonathan
-> >   
-> To clarify, there is no such device as CM36686P. I suppose this is
-> supposed to be CM36672P here?
-Yes. I just didn't check David's list. We only really care about the P
-bit meaning proximity only for this discussion.
-
-Thanks,
-
-Jonathan
+Best regards,
+-- 
+Paul Adam <adamp@posteo.de>
 
 
