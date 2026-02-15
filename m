@@ -1,45 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AB139D;
-	Sun, 15 Feb 2026 19:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB2D8287E;
+	Sun, 15 Feb 2026 19:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771183884; cv=none; b=myrfCyjnxbI45vFbbx+It5bfFBFqVqIukDwiRM5iIKVtWKOEbt+ETY7BN4hWx24JtMWtA1qqp7Mpz2PTkOkYMq30RsnpSrPSEh/y/sni1yta6n5FKZrtpFNXLCiKP+jomLYkYtf+vyun9+TgAJAIUyaDUY8mibyK6f9Ra69kCMI=
+	t=1771184168; cv=none; b=OEZQL0bC2+xnWIrGO3SjS5s5903ZWJi45cluwcuRXcLBoIi4Kc6qiZjkeamHQejS6sLDiaVo6Qb3ykixs2dk4S/DZZrbYoP1KJQS0v83QOCgowY/T0VqKVNjcCHX9KooI83YusuiDt6EWcpg8AvWhvDeye7DMuB8XbKeMRGiAJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771183884; c=relaxed/simple;
-	bh=YUFwljSclpXuAJwzKYldElUKW0OXoIZkIj60REl5nEY=;
+	s=arc-20240116; t=1771184168; c=relaxed/simple;
+	bh=QBiV9NdAm4Ymnf+cZF3juzjoLYiPTM6xuHMwfWmGaww=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHnmNFfsDnA8TriscJF6vtUSGNi925PqKHRxtPKAH80U5bWdFElu2hL7aQF15z1EJChVYMXrSB18JwCeYd7RPI27qdoMoS7eiS9TDJa5UNbVyZZUo9LqBCyjb2sEpsnsL0UhJMua0Si1iliJJ0bSLinqc/Q2fOZqEozjnQNxM6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfwBDkh3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=dox4lyzPl5BAPak3tbogfxx0imIfywKnj2H50FryYLZz4Oa3TWds9++n8/MLyAJu1EvHawZgYbhLynL1guXJj1dunNErg3uXabVgvDpM284KF4voITx5hKCEu0WykaCHgiMnVhnkWOwJiuZYgrFtLlnUrCwk6ce7so4wJ/aHSlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7fnWKtv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfwBDkh3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9828BC4CEF7;
-	Sun, 15 Feb 2026 19:31:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7fnWKtv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF1BC4CEF7;
+	Sun, 15 Feb 2026 19:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771183884;
-	bh=YUFwljSclpXuAJwzKYldElUKW0OXoIZkIj60REl5nEY=;
+	s=k20201202; t=1771184167;
+	bh=QBiV9NdAm4Ymnf+cZF3juzjoLYiPTM6xuHMwfWmGaww=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KfwBDkh33NxWapDdKV5jRXKs0i9CATLjd6mc+uNnVkxAO4RCqa0tRoKRCHosZqVbW
-	 TKyF+e3idflRPVdjejg9AI82vmPtpCi/lrTVIfQabXtRhajIl3rzC5ZfVPzmGFhr9k
-	 yE7Pj4Xru6K7BH7+CV9Aa81eHErGqOQtLYlWFtwoV1eq7QbcJPAfnZwBa6I8RTP36m
-	 YjKn/HZ/SVVbkSHdk5kC7C8cXke0RIXX/dvkugFEHOAuDU5592GX3ElwVUQlEquokK
-	 Z/w9LvHcR48wJ0ZJy62cq9aBEmSbz/x8KubRgIBKMTy1b4i6H5ls7MPAKxR269k7tf
-	 /t4l1m2ut80lA==
-Date: Sun, 15 Feb 2026 19:31:14 +0000
+	b=V7fnWKtvWUldefWbTPngsOwPVd7oK7xP7VULIiKD957xbVnrW4fTGDrSwNJR09hUF
+	 LNwcl816/VG4JtDng0UJG+wMX9YXQ7VD+cZTiB2iQdyG6fguRSGS1hFJZmzvFVA18l
+	 Dq6a8JCHtoxMTT5yJN0Le+8WKTZHOhwgqyzrPr8J/7wgxVfIdstmqVP9TgrMggbx+v
+	 6ek6eH+Uu47Ft0PdHGhzUtOROccuab8bDedO88Q1hpOXQZdKSeK2X9EPNOugit6+0/
+	 ZJkmK8dTmMuq18AW0fYs7mMkkxY0qV5NmJFSJkBeJu38kRwsQEWcHJqh/WYDhoECsG
+	 AcJ7xrit+cEFg==
+Date: Sun, 15 Feb 2026 19:35:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: andy@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- dlechner@baylibre.com, krzk+dt@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, nuno.sa@analog.com,
- phone-devel@vger.kernel.org, pmeerw@pmeerw.net, robh@kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 2/2] iio: light: vcnl4000: add support for Capella
+Cc: David Lechner <dlechner@baylibre.com>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Peter
+ Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: vcnl4000: add Capella
  CM36686 and CM36672P
-Message-ID: <20260215193114.2a1010a8@jic23-huawei>
-In-Reply-To: <20260215172856.34702-1-xerikasxx@gmail.com>
-References: <20260214180919.72389701@jic23-huawei>
-	<20260215172856.34702-1-xerikasxx@gmail.com>
+Message-ID: <20260215193557.1ddd2adf@jic23-huawei>
+In-Reply-To: <eea4cf8c-4126-49a8-ada8-1b1893a406c2@gmail.com>
+References: <20260212-cm36686-v4-0-8f587d4a72bf@gmail.com>
+	<20260212-cm36686-v4-1-8f587d4a72bf@gmail.com>
+	<20260213-unyielding-pistachio-ape-deda74@quoll>
+	<3a20c906-647c-458f-a118-c7927495e7ef@gmail.com>
+	<8fb27a7a-82dc-443b-bcc4-21007783fc54@kernel.org>
+	<f014078c-6e4d-48b0-a814-45898b005c44@gmail.com>
+	<880ddcad-a92e-43bb-ad5c-d6f2f353d182@baylibre.com>
+	<eea4cf8c-4126-49a8-ada8-1b1893a406c2@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -50,98 +58,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 15 Feb 2026 19:28:56 +0200
+On Sun, 15 Feb 2026 18:16:45 +0200
 Erikas Bitovtas <xerikasxx@gmail.com> wrote:
 
-> On 2/14/26 8:09 PM, Jonathan Cameron wrote:
-> >> ---
-> >>  drivers/iio/light/vcnl4000.c | 40 ++++++++++++++++++++++++++++++++++++++++
-> >>  1 file changed, 40 insertions(+)
+> On 2/14/26 6:44 PM, David Lechner wrote:
+> > On 2/13/26 2:56 AM, Erikas Bitovtas wrote:  
 > >>
-> >> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> >> index a36c23813679..1f8f4e4586f4 100644
-> >> --- a/drivers/iio/light/vcnl4000.c
-> >> +++ b/drivers/iio/light/vcnl4000.c
-> >> @@ -185,6 +185,7 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
-> >>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
-> >>  
-> >>  enum vcnl4000_device_ids {
-> >> +	CM36672P,
-> >>  	VCNL4000,
-> >>  	VCNL4010,
-> >>  	VCNL4040,
-> >> @@ -235,6 +236,8 @@ struct vcnl4000_chip_spec {
-> >>  };
-> >>  
-> >>  static const struct i2c_device_id vcnl4000_id[] = {
-> >> +	{ "cm36672p", CM36672P },
-> >> +	{ "cm36686", VCNL4040 },
-> >>  	{ "vcnl4000", VCNL4000 },
-> >>  	{ "vcnl4010", VCNL4010 },
-> >>  	{ "vcnl4020", VCNL4010 },
-> >> @@ -1842,6 +1845,22 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
-> >>  	}
-> >>  };  
+> >>
+> >> On 2/13/26 10:51 AM, Krzysztof Kozlowski wrote:  
+> >>> On 13/02/2026 09:29, Erikas Bitovtas wrote:  
+> >>>>>> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> >>>>>> ---
+> >>>>>>  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml  | 17 +++++++++++------
+> >>>>>>  1 file changed, 11 insertions(+), 6 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> >>>>>> index 4d1a225e8868..2ba4d5de4ec4 100644
+> >>>>>> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> >>>>>> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> >>>>>> @@ -18,12 +18,17 @@ allOf:
+> >>>>>>  
+> >>>>>>  properties:
+> >>>>>>    compatible:
+> >>>>>> -    enum:
+> >>>>>> -      - vishay,vcnl4000
+> >>>>>> -      - vishay,vcnl4010
+> >>>>>> -      - vishay,vcnl4020
+> >>>>>> -      - vishay,vcnl4040
+> >>>>>> -      - vishay,vcnl4200
+> >>>>>> +    oneOf:
+> >>>>>> +      - enum:
+> >>>>>> +          - capella,cm36672p  
+> >>>>>
+> >>>>> CM36672P is compatible with CM36686, but this is not expressed.
+> >>>>> Confusing commit msg and code.   
+> >>>>
+> >>>> For CM36672P we create a dedicated compatible because it is a
+> >>>> proximity-only sensor which has the same proximity sensor configuration,
+> >>>> but ambient light sensor registers are missing (reserved).  
+> >>>
+> >>> I don't understand this. You just wrote "fully compatible with CM36686"
+> >>> and now you imply that not.
+> >>>
+> >>> Decide.
+> >>>  
+> >> It is not. CM36672P supports only a subset of CM36686 features, in
+> >> particular the proximity sensor. That is what I meant initially.
+> >> I am sorry if the previous phrasing caused any confusion.  
 > > 
-> > ...
+> > But CM36686 is fully compatible with CM36672P, right?
+> > 
+> > So this would make sense?
+> > 
+> >       - items:
+> >           - const: capella,cm36686
+> >           - const: vishay,vcnl4040
+> >           - const: capella,cm36686p
+> > 
 > >   
-> >>  	[VCNL4000] = {
-> >>  		.prod = "VCNL4000",
-> >>  		.init = vcnl4000_init,
-> >> @@ -2033,6 +2065,14 @@ static int vcnl4000_probe(struct i2c_client *client)
-> >>  }
-> >>  
-> >>  static const struct of_device_id vcnl_4000_of_match[] = {
-> >> +	{
-> >> +		.compatible = "capella,cm36672p",
-> >> +		.data = (void *)CM36672P,
-> >> +	},
-> >> +	{
-> >> +		.compatible = "capella,cm36686",
-> >> +		.data = (void *)VCNL4040,  
-> > 
-> > Is this necessary? I 'think' if you drop it we'll match instead
-> > on the vcnl4040 fallback and then the access to the data will be
-> > through the stripped name only bit of the compatible (first entry, not
-> > the fallback so cm36686 in this case). So you do need the cm36686
-> > entry in the i2c_device_id table above. Probably better to keep
-> > this here to avoid having to reason this out - but perhaps a
-> > comment to that affect would be useful (assuming you verify my
-> > reasoning).
-> >  
-> After I removed the entry for "capella,cm36686", I received the "Unable
-> to handle kernel NULL pointer dereference" error in dmesg. And at least
-> stk3310 driver includes a compatible entry both for the device (stk3013)
-> and for the fallback (stk3310). So my assumption is that this entry is
-> needed.
-> I could include a comment explaining that cm36686 is fully compatible
-> with vcnl4040, however, if that is necessary.
+> If you try to use CM36686 compatible for CM36672P, proximity channels
+> will work, but in_illuminance_raw will return 0 and changing illuminance
+> parameters will have no effect. 
 
-Thanks for checking.
+Look at the ordering above.  The key I think is it's not saying the cm36672p can
+fallback to the cm36686, but the other way around.
 
-What did you get as the backtrace?  I'm hoping it'll explain what I'm
-misunderstanding!  The hacks around using the wrong table for compatible
-matches have tripped me up before.
+If that fallback was used (because we'd actually had the driver evolve in
+a different order and older versions only supported the cm36672p) then we'd
+see a proximity only device presented with the ambient light parts hidden
+away. 
+
+> That is because CM36672P is a proximity
+> sensor only and the register fields for ambient light are reserved.
+> And if you try to use CM36672P compatible with CM36686, it will work,
+> but only proximity channel will be available, even though CM36686 also
+> can sense light.
+Understood.  So in one direction it is correctly considered backwards compatible
+but not the other way round.  The ambient light can be thought of as 'value add'
+new features on a 'newer' device (obviously that's not actually the case but
+it's an easier way to think about how fallback compatibles are often used).
 
 Jonathan
 
-> > As Andy suggested moving away from enum values an towards
-> > direct pointers to the chip_info structures + drop the
-> > i2c_client_get_device_id() in favour of i2c_get_match_data() which
-> > uses the right firmware entry to get the data in all cases is the
-> > right long term solution and avoids an association being necessary
-> > between the two tables.
-> > 
-> > Jonathan
-> > 
-> > 
-> > 
-> >   
-> >> +	},
-> >>  	{
-> >>  		.compatible = "vishay,vcnl4000",
-> >>  		.data = (void *)VCNL4000,
-> >>  
-> >   
 > 
 
