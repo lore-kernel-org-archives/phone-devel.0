@@ -1,50 +1,50 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F42D061C
-	for <phone-devel@vger.kernel.org>; Mon, 16 Feb 2026 23:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737352F4A15;
+	Mon, 16 Feb 2026 23:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771285142; cv=none; b=Xa2sgceyMtDC9RXjIOd0FZsX1pG9D8OF+N0A2l4cu77jhQxtss7qSdg8VtYDjA2H93e1NAw0BCknFMUpacizKeWDUnTHDuw4P/LNNfVKfk2EyJwb6VNOYaCKfU5e4whfFAeVwTCOVzuciVCGeW6N/cJZqF9clg9WHTeGDb4onrw=
+	t=1771285146; cv=none; b=h7mQEHmbM3sGtor/6AOsqY3Xy3p8952irXpRQtPHxwBi6OAUug2f+SA+vebOam3M1MwcyWSamRnHaE9xGqRRFph/s5DRapKu7RuFceLhbR2Z4Nynkz2k+y3YWp+yOYVICm6Nu5UHWyJwy2ZOuBOFxgUYvBv9rpecibarGElX9I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771285142; c=relaxed/simple;
-	bh=9gXORpOWQrrniCRlK1vNO9h4X4Fi44J556FjVdTAbLQ=;
+	s=arc-20240116; t=1771285146; c=relaxed/simple;
+	bh=RbCV6vzOlnwxtYtR5B5jbd9YeOD8iqu6VXuc+VtdXhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfNqZ5hWEA1JcNh3hlxVemKCb3abLLge7Zhv9INbAfTI+CsfPDpgK/SQjzDhlICncgOlLsBu+hn3AAC7Jb5XT0vRLPnnwZSRVDFH/t94twPBgp9d4Qg2rXjAjLxXvv6OUEtoMDxwH6S5DIL9eZbfoNQNMG/CMNJLCSljlMME7UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=Dn9Jea18; arc=none smtp.client-ip=95.215.58.188
+	 MIME-Version; b=p8gwvmilkdeKypwdXhPq7zoIBwlVWPBrIvBsG5AtaSGJEqZGodPE7jxqvEcDxuNI4mxE0B6I4u1+SNS0wBkGtfOUB5wZ+i2kMY7p5dML7o92F/iSpJpw8U+t2dPYmg/H06sY2qMgUoMgYuSKNWwju3taVuXNAYS1SwK4dabSK8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=OXJx9inD; arc=none smtp.client-ip=95.215.58.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="Dn9Jea18"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="OXJx9inD"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1771285139;
+	s=key1; t=1771285143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yY9yyJpMHiUSK3y3yUdWqkedHsO8yxXbPn8ACEQJD3A=;
-	b=Dn9Jea18JOksSmpf/XyNliig2T5KJu2U6Gtw7hKdNSfvbm0BtqHMyMA1bE16fcnLlb5TOx
-	xddFDV5a909ej8fCFNq5B1mzvrG2UChVKTGrnb7bT1R/2R3Ym4zgRVrZpPI1wnLl0KofxS
-	FXcc9yg0LrRrmcFCyKg398NM535UA2gdUuaEvH50ugpBu86g+zcRpKN3GREtZNnedWBaxH
-	kdNa/0cekpNWJzf+CjXZowbsQkURUU14BpA/aukRpQ4aJC0hULC8FSGiKZTsuyz2bTewfd
-	oyaJyNv0TTlOoxxwgjMZGiwHf+VSE9MC3zqJjHceoprYVmBKS2PFBZhU2DywFQ==
+	bh=KY82BaUYIukxsPfbzUE86Y/IZ+XbH/uKCDnIMOz06rs=;
+	b=OXJx9inDTjXp2JZwbkvCjcdcucOwNDeBErqq8EwU86/GBwbVAwNTyfoRATgdmwjf3UZFpU
+	1cI/Lqa3LYdh6STnQoWQSXMX1mQo9J71ytvxEYKjyrkqs7iHRb4MmYgBKtoLJdxXsr9u1/
+	rz6JUUoqZngpsgro5frg2b8KZfk/WubtTRHnUZj1rqiX9eGewn6V+92cAhWYS/EQ3sc563
+	Fzz4nnak1rUiWvnCsPIqMihosvatamtAA0/GuFO3Xqjqipzjg+4rfQzlu0F1qFkJRd2Ab3
+	dqZemXDgmt93pbgAhVv8WiyzTnu0g+q8oWJDyyurFNAyutdUdA/vvEWaWfN4mA==
 From: Val Packett <val@packett.cool>
 To: Bjorn Andersson <andersson@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Martin Botka <martin.botka@somainline.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Adam Skladowski <a39.skl@gmail.com>
 Cc: linux-arm-msm@vger.kernel.org,
 	phone-devel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht,
 	Val Packett <val@packett.cool>,
-	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/6] clk: qcom: dispcc-sm6125: Add missing MDSS resets
-Date: Mon, 16 Feb 2026 20:25:22 -0300
-Message-ID: <20260216233600.13098-6-val@packett.cool>
+Subject: [PATCH 5/6] arm64: dts: qcom: sm6115: Add missing MDSS core reset
+Date: Mon, 16 Feb 2026 20:25:23 -0300
+Message-ID: <20260216233600.13098-7-val@packett.cool>
 In-Reply-To: <20260216233600.13098-2-val@packett.cool>
 References: <20260216233600.13098-2-val@packett.cool>
 Precedence: bulk
@@ -56,46 +56,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The MDSS resets were left undescribed, fix that.
+To make sure the display subsystem starts in a predictable state, we
+need to reset it. Otherwise, unpredictable issues can happen, e.g.
+on the motorola-guamp smartphone DSI would not transmit anything.
 
-Fixes: 6e87c8f07407 ("clk: qcom: Add display clock controller driver for SM6125")
+Wire up the reset to fix.
+
+Fixes: 705e50427d81 ("arm64: dts: qcom: sm6115: Add mdss/dpu node")
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- drivers/clk/qcom/dispcc-sm6125.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sm6125.c b/drivers/clk/qcom/dispcc-sm6125.c
-index 851d38a487d3..2c67abcfef12 100644
---- a/drivers/clk/qcom/dispcc-sm6125.c
-+++ b/drivers/clk/qcom/dispcc-sm6125.c
-@@ -17,6 +17,7 @@
- #include "clk-regmap.h"
- #include "common.h"
- #include "gdsc.h"
-+#include "reset.h"
+diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+index e9336adbc391..3a9a1ad8d581 100644
+--- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+@@ -1864,6 +1864,8 @@ mdss: display-subsystem@5e00000 {
+ 				 <&gcc GCC_DISP_HF_AXI_CLK>,
+ 				 <&dispcc DISP_CC_MDSS_MDP_CLK>;
  
- enum {
- 	P_BI_TCXO,
-@@ -607,6 +608,10 @@ static struct clk_branch disp_cc_xo_clk = {
- 	},
- };
- 
-+static const struct qcom_reset_map disp_cc_sm6125_resets[] = {
-+	[DISP_CC_MDSS_CORE_BCR] = { 0x2000 },
-+};
++			resets = <&dispcc DISP_CC_MDSS_CORE_BCR>;
 +
- static struct gdsc mdss_gdsc = {
- 	.gdscr = 0x3000,
- 	.pd = {
-@@ -663,6 +668,8 @@ static const struct qcom_cc_desc disp_cc_sm6125_desc = {
- 	.config = &disp_cc_sm6125_regmap_config,
- 	.clks = disp_cc_sm6125_clocks,
- 	.num_clks = ARRAY_SIZE(disp_cc_sm6125_clocks),
-+	.resets = disp_cc_sm6125_resets,
-+	.num_resets = ARRAY_SIZE(disp_cc_sm6125_resets),
- 	.gdscs = disp_cc_sm6125_gdscs,
- 	.num_gdscs = ARRAY_SIZE(disp_cc_sm6125_gdscs),
- };
+ 			interrupts = <GIC_SPI 186 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-controller;
+ 			#interrupt-cells = <1>;
 -- 
 2.52.0
 
