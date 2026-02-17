@@ -1,91 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803EE264A97;
-	Tue, 17 Feb 2026 19:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A01339B1;
+	Tue, 17 Feb 2026 20:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771356284; cv=none; b=URtj66BMQVamAh16JV9Gtll6ryCtl+pHeQo505LC6ae7aH8c7iT7d2F/+xcjOqIUm4vihlLaxu7X1+bxgNHA1VAgf3PkzEDGJFvN3wtUmYTQDwJPpPxVQhcB97l7IXuLLWnDtt3soiTY8cmJjFgD+utZiOLlJGAY0inA9lvI+1s=
+	t=1771359960; cv=none; b=NzOLvJQsdX7FBsd2itAHRM9JnmZHhNdFpDTrKjL0D0IEooZLJ6On6UOo1fWpghKdACfYXerxd09jR9CCxuVPZf5aTggQqmQY6dwB6KPdDHO7K9Wzgqbi0VIXtnGqfTNzgmjf1SGb7DrnNDjeaHV9pntI1B4uCVEGEgGJUtOVZbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771356284; c=relaxed/simple;
-	bh=UBdePPv19uaL81ASanxtUzA/Qh7h0X8+eypdZNRQKxY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ARNvnbtFg6UOIgz6wbOedm+dLK88Qt0wnNw8cuC+T+6+Ar4E8bjt9s275CumS9GM3lUpmCNLdLfmnMOm7SloLCahSZGYZIqQZPzHHhYRNvkXkXjZUpuy/xdXPLCrxQGKXYweW8chQLgphBxCiS3VksSDzZJsew+xMkLIlBATUqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQhnJnmr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771359960; c=relaxed/simple;
+	bh=V6sjBNNTcTEsO5eShsQ7boXHiEv6kCM9NI3J8S5QTew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aaRYP8EVMOyt5GlI3IXyNKyoPPlLwfpow2OTGJbwJqx4+6F2rRoGrgfCouB5GZ1ozZTAHt9W3OUKt79Z54G6JmCUinGCH+ac3H5EKa2ojl2KmqzDB6NpFJkEcGg/w9gl0rf3P+loEhSrDaCGnCZZq2i+yAeQhu1R1spFNKotCvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7GKYozx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQhnJnmr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB3CC4CEF7;
-	Tue, 17 Feb 2026 19:24:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7GKYozx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C173C4CEF7;
+	Tue, 17 Feb 2026 20:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771356284;
-	bh=UBdePPv19uaL81ASanxtUzA/Qh7h0X8+eypdZNRQKxY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=uQhnJnmrSJtJy9aCZlD96gakRwyp06O7fm39QS/5A/vGVQnv/fHdSFOHOQA2BfHd3
-	 L1K4V/pzqAH0kt7hpB4QIuZlHj8yUeTX3qsHZca3UKFN9T8vlSuUAFfjRACNTbEN3O
-	 yP3ESHuRlKG76ApVYycPOgdOafsZBMeWE+iXHAFkglrh7vrmdzNExKBtTu4RUOzFm7
-	 T06/KeQGeLzqHxZXN6ioyUSAoRkYPtHiOkSdd2LhaCegnEC548B7nbajX0lwZnxn9g
-	 Zq+VvyZuwvpSDjV50xHr5rFcOknPCxUNktqsewhfLaQPO3n2PclraJ+sjZ0801hBQl
-	 ra6xoR+RAVVVA==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Weidong Wang <wangweidong.a@awinic.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Alexandre Ferrieux <alexandre.ferrieux@orange.com>, 
- Bhushan Shah <bhushan.shah@machinesoul.in>, 
- Bharadwaj Raju <bharadwaj.raju@machinesoul.in>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org
-In-Reply-To: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
-References: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
-Subject: Re: (subset) [PATCH 0/3] Bitmask logic fix and firmware-name
- support for AW88261 amplifier driver
-Message-Id: <177135628111.310944.13830467532641718835.b4-ty@kernel.org>
-Date: Tue, 17 Feb 2026 19:24:41 +0000
+	s=k20201202; t=1771359960;
+	bh=V6sjBNNTcTEsO5eShsQ7boXHiEv6kCM9NI3J8S5QTew=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k7GKYozx94x5Pzo5LOC9fMe0Yj8Y/jBhytJ472w1fs/fPX2c5K6r9NWrgIT5zcNp0
+	 Gk58EBzN1meeLr2bF4lV/WRJ8Oq7GmISe7NocB5kcp5UeisZmKZGLYu8sCOBsIj54D
+	 zFz0GqqRPV8U3MzHkMnX7M+/su+tfd6EQ8wIMt9dRsk0lBGIDsLVfovPBwFsP9o/3Z
+	 JhQ3dpY+GH1pH02gVEjyMeKY0vsBy0a07rEZiioltQYQT1gAd48HYrKfU/0UlWCHzY
+	 DgJR6r5dLyKrtOCxN/5JHF94uHlRcfgYT04t/kmDcMfRtQ9Su4VmZPGbTJFQC3/w+i
+	 3+cWe+6O5hhSw==
+Date: Tue, 17 Feb 2026 21:25:57 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: vendor-prefixes: Add Holitech
+Message-ID: <20260217-tanuki-of-amusing-agility-32b250@quoll>
+References: <20260217070121.190108-1-val@packett.cool>
+ <20260217070121.190108-2-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260217070121.190108-2-val@packett.cool>
 
-On Wed, 11 Feb 2026 11:27:31 +0100, Luca Weiss wrote:
-> First a patch which fixes a logic error in the aw88261 driver. And then
-> we add "firmware-name" support for that driver to support loading
-> the device-specific firmware properly.
+On Tue, Feb 17, 2026 at 04:00:09AM -0300, Val Packett wrote:
+> Jiangxi Holitech Technology Co., Ltd. is a manufacturer of display panels.
 > 
-> 
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Applied to
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/3] ASoC: codecs: aw88261: Fix erroneous bitmask logic in Awinic init
-      commit: b82fa9b0c26eeb2fde6017f7de2c3c544484efef
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Best regards,
+Krzysztof
 
