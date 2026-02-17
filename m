@@ -1,181 +1,172 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D8631076A
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B00A333725
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771329682; cv=none; b=PooKUDFaIy2I1KXt9V//9FIAg+A05/KAzjyrbr5xUfG1TKeFoat3cHuWBpYcUV4E5y9+OU/DhM69ek08mWdrGHbo5GkD1utEkNBib9b2fEug8DD7I9ZbvBl8boDm3hQWH1TmsAMf3HWFnQPWljBAyIfW/+21YK6Nx/y6TCbc6Os=
+	t=1771330416; cv=none; b=EMsQt6/3uxEhfdhrnle2TAQ7FxkYaxfk2JOj8UKYVhjP18k62WR1gBpCJ8/vYKgEAS/lxJX504qvC3rFE53sC5Cly0aLl0/Nf756zhwuZngVa6yzdkx1Ugi4eDLt5c2LkFi9tBOmYwA2KWWA9OMrkBQyfWQvZZdOkY+SaapUcWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771329682; c=relaxed/simple;
-	bh=wyi/2K/PMgiBnA9eO9+b6JgtXV7Y4MAa2MEv05gq3no=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fxmULMMJeymv1SoUzhEi9c171rEG9UUN67y7TLAQDvnqaigBBz4F6wdKtLjjP+Cv57IfPxJVnxQKiAFSSxGIMx9hKkq1Gfc9058kRG1wx/Md65VDO2o+wEIrFJVr038F4JaxifdVJxbREiZhEyxD36Wmwvgu1+4cTdF9ZbPfwns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ifSnJ1ej; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=d+5afWpC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1771330416; c=relaxed/simple;
+	bh=YpXWy4g7+t7X7zx1cT8W68M3ZmvB/pe8TsSW1+fLS3I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JqipLgsIATxsJxxhbp16qcWiBg9AuCj2XX8L3BC8lWZR0cdZkGyySDYfDZeiu+FRD44/xkI4m/n+Gvdq5+64KCxNz+9JV8gHWSZGYpWGcxWM7sDd9tVr8aPz21xkmy1XZyOnqShsEZf8ZJRBn1E+fD5xcV0r5q3lS9EjySA+56U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEvHhf9j; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ifSnJ1ej";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="d+5afWpC"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61H8v86S048690
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:01:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qcoxJfqP8hTwWTWUoRtoBVPz62wL8BplEKMyIUX4f8A=; b=ifSnJ1ejb87BvdQZ
-	byFrF3BA43EMtnd0P5sXvejeW7KYbJOi7PG03N7TUUgxWnILGIl1YjcR5/HZhyNH
-	xNf03lcIcEPCAfSiFbXD5TuOs8NGmV6Npy4EaszDCr47/bxxzJvNy6g20FqrBsE5
-	rL3IZRuEhCwSSjWVSKA7ECBvROh9ublKLVuRteLDaiUJf3YpexoPEEVdjhHBIr5l
-	EVqXI56GASo3je2jY+r4wkHupV3FsN+Re7cWlPL9hhRd4u49WSacJUnbBTsvZHfQ
-	qOfUNLzPOH7NCdM7lLFRocBDO7XmZTHRSujNRWycoR4TS1ExrysKbVa01R0a0h4W
-	JifaSg==
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cc6d828jq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:01:20 +0000 (GMT)
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-567560838f3so1072420e0c.2
-        for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 04:01:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEvHhf9j"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-797a52d8c34so34761827b3.2
+        for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 04:13:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771329680; x=1771934480; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qcoxJfqP8hTwWTWUoRtoBVPz62wL8BplEKMyIUX4f8A=;
-        b=d+5afWpCQZwcC5s07HiD6f3OxJKiY2C/uvHXpshP2FykSnnZnGl5wFtS4oNXzLdjIR
-         SGwg7v0+QHiDtFEGPTHEWLY4GNe0ANunNPg5IbIoMhQo0nPvDSoiaU1IRAhKTPP8QkYb
-         L1sS39nK55/qW5xd6W/+sk0jBXygCQkc3AT0554QIRNCywSkQbXAquVkwEFaqoohkg/A
-         rjMhNPrfA4mHh3uoLZ10W6pyyolwWBheY7um6JqPz5omNpBOMKwNJjZJGh96dSRcNZ2L
-         AE5mUIHB9LIIWv84MdItWHI3vtKqvyCCGjnms43TGi4sMSBVoU0JodiyO7ZlAkmt/Pxx
-         WUDg==
+        d=gmail.com; s=20230601; t=1771330413; x=1771935213; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ad+zouveqL0jevr2Wpb297zGwvqmkqHDiYrYOYw1pbk=;
+        b=KEvHhf9jEMLq6m+C8bP21gXfThW2EicJ7pFNoNLSfXB7cLhEgKcB+eVb9NCcNhjRNG
+         p3T8cWiqA0xrDyTwRuvqvZoiknYKl/wurDY9yPRkKJSWONHsO2OLKeiMk0vaGbd5r6cL
+         RJ/Z6genHZUdrLYeKJ6SXLT7TnRxdAK7jUxz1/ByXJLVygSCmSSG3TIIdFHbWz+WnFzo
+         PUdAsgsUEyAkAxNApEvpc2JLDgzD5hLoxmmKEcPjtrfCHaSyY0zuH994dSWHHoBVOmMm
+         ePnyViELZbfVdcLpHZXkHui9pVgrs5zz9SOiA74TQV2NfjRbXFvnPlQZ7Lv5H+l9QfNS
+         +kIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771329680; x=1771934480;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qcoxJfqP8hTwWTWUoRtoBVPz62wL8BplEKMyIUX4f8A=;
-        b=s6uq3w6EwOU0RE1ceov5gw2gs219aDKkk4Og5vfRBSEwbZKeZZ68Rl8B0Tki9dtZSZ
-         CUE4R7uXBsbXnfrJ2o0hwxYHwy3hNbLIc49AA6bhA+X4u0WbkR9igq8+x67E6qr/QsI3
-         ux4GMKC4ADWdVX6rrwpacqy3RW/RlcwyPyI80vT7kqcXH87K8HEY9G6X4AkTaVKN4vd0
-         VChaU0sYS3nv4Fije3iuUiG1qXWlFrKkpt6EXfS+MFlYjl7idJSocwKuifbabl4aUa2j
-         nWJjahnXGh9udmJiDb2n5Fwt1B0VeFhNPiYQBl3S/GqkdbZqi1rPmqbDIeR1SqHkITra
-         8VYg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKfqW9CFvGbuasxoLEiE2o34GOils2iqLvC/4Zf+gBXzs9gG/mwEoTAlia9SjJ8xNqxvzO7lbqSA97YA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzuqrleb9k9R9TSiaD2zENx9KDQPiHEZ9n0S1fom5APkjPP8zOr
-	+P9zakmUByiiOyVbKR+u7I15s+//lRRNjPxIEaEg5+KuvZiSQzQZ2EdNSTtpc1XZeUzVr+NUnYv
-	b1K6BdYWtcLGg23DoKMFD6tXQ3d26ygUH+rsMH25OC8TPO5DP7zDrHb3C+cTJpd4rik5wSMOeTw
-	==
-X-Gm-Gg: AZuq6aK1aAWEQ94sN3etYNRLUZk2N6iPadtAwhpasEk+Fm0xCm62tiIntttjMv5Tqup
-	bVnyVWsbcGvKw0Fj3MY+jQbU0pDLDv/Aw4YwBIS5QmIkEJxmVj0T/j47B/P5FOpK+Ocx/klyZAK
-	8vCZPBsrjmE1Tm0/RJJg7BhxQjudfmsHmhlE7HtAzEljuzhzE2PU57JKTaGV5YUBEIIjCMK5Kvb
-	NJsytEksx2I0IMSVnNUlw58S/SfdFR0polCASMOqK0XPp4kbA7Um2H9IudpGmfnytTy9GsTlGEF
-	LuZFpZOrtbZGnPrA8suj37ECpUR/nacgmK/MgFVkMSTRsbTtGtYvamt8v+QmKy+bdhxGEDoSOFl
-	H0r2wgFAcKRX4UKHXFVVZp1s+rRX1sNPZAkuDsYw5Tk4oZyV+NIgErl0n6THvC0CIDzpmUQARxb
-	8EowI=
-X-Received: by 2002:ac5:c89b:0:b0:559:5ac3:4451 with SMTP id 71dfb90a1353d-5676f436ba6mr1603018e0c.3.1771329679408;
-        Tue, 17 Feb 2026 04:01:19 -0800 (PST)
-X-Received: by 2002:ac5:c89b:0:b0:559:5ac3:4451 with SMTP id 71dfb90a1353d-5676f436ba6mr1602994e0c.3.1771329678699;
-        Tue, 17 Feb 2026 04:01:18 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc735d2dcsm351116166b.12.2026.02.17.04.01.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Feb 2026 04:01:17 -0800 (PST)
-Message-ID: <124c661b-db25-466a-a163-99ca336a3e70@oss.qualcomm.com>
-Date: Tue, 17 Feb 2026 13:01:15 +0100
+        d=1e100.net; s=20230601; t=1771330413; x=1771935213;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ad+zouveqL0jevr2Wpb297zGwvqmkqHDiYrYOYw1pbk=;
+        b=ZR2tpFWh2bn8T0xvoASVlOQe0GKpSeKAuHQ56PIBUFb8/mVZaiok3YIHEVmAPsRD6e
+         j54x8thbntMFnjZE9g0IJ5aXCww2NYJw9zHyX2v5YMr1zrCwhwCI/rmOWDejM0EQiPk7
+         d320cnLr76IDFF0EUqwAMWFIOqkl503py+KkNeK8DuTYehNGamquPkI7JyRplF3kbsow
+         gyhkUbvn2pYmebLxF4q5m+Z/dzu7bnWNvRzYvgTFB4ZIzbPoBwi8RNoOjnP7MNGGAxuT
+         qQIHzm8m/IXZpnLG8A+JNOoU34Mjt2s0V7ibvx7ox0yGiihtjBQk03hvbLdUzI7lMCM9
+         XH4w==
+X-Forwarded-Encrypted: i=1; AJvYcCW2V93t6dT6Xm/Ml9RGhQ536Bc5sf9rnOQtzG93eu90gDtXHq6tjmz7T4S+61NLcQBk9fe7tjnodMhkRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaRrWZGigp1nI03FX666tMu/AUpq5ak8eNbf2f+BqznGEgcEAn
+	RKS75XsPbr8RTy/b7f2UllZmji6O8BVFiUI+k7FaE9Gr3Cu0dLGiQc4v
+X-Gm-Gg: AZuq6aInwIavhstSDSQCywOaLBbUMJCRQt4x60qK4hbR/GyYxnz8OicIePqm1kDDtlh
+	ofO0wJxE/82dHjIDJ4aRWSchpW4VkX53p7ZErQR1xTdk/l8TqIwStk1lc7x08jAeIHHVABReFjc
+	Lv0sIvqhCTZZ5Cvafh1NaQttF0GiGFy7zZTwk8nUlkV1V6TkntlhVZYDKmpmJisiPEvkZjmZxU5
+	NRjt8KtsFm4223XFTB8FLf/3GKdUNCJIJ3rHdTNb7+zdc3sOdYRrMQCRRy5CphQE7WdHZSHDt8f
+	mRNHD273QPPrXUtQqANHaq/MvXQk+F2R4N7SNiU2Eb85+3i8O6P4n49dgrsYwSnwK3gRAGYZCWO
+	fdPgKlQrIl2LYtQ51PLZBMoj6k4OUaRmc4P6AijbgZhjL/LeXFntn7LW8/nJhaS6sdWQGZJVlN3
+	Ogjf4LMEsA818cOXjb5hr2/S8QbA==
+X-Received: by 2002:a05:690c:113:b0:796:3f2f:a310 with SMTP id 00721157ae682-797a0cb9039mr93355227b3.32.1771330412998;
+        Tue, 17 Feb 2026 04:13:32 -0800 (PST)
+Received: from [192.168.0.40] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c16eb07sm115610727b3.7.2026.02.17.04.13.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 04:13:32 -0800 (PST)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v5 0/2] iio: light: Add support for Capella cm36686 and
+ cm36672p sensors
+Date: Tue, 17 Feb 2026 14:13:14 +0200
+Message-Id: <20260217-cm36686-v5-0-63c2de9709d8@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] Add CAMSS support for SM6350
-To: Imran Shaik <imran.shaik@oss.qualcomm.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Bryan O'Donoghue <bod@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Taniya Das <taniya.das@oss.qualcomm.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com>
- <c83ce76a-1c83-40eb-9c67-d26b7e6f68f3@oss.qualcomm.com>
- <caa870e2-3795-40bc-9f0e-c93e313c8c6e@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <caa870e2-3795-40bc-9f0e-c93e313c8c6e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=bqVBxUai c=1 sm=1 tr=0 ts=69945890 cx=c_pps
- a=+D9SDfe9YZWTjADjLiQY5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=fxqAw4-zz0YW6xlzh2kA:9 a=QEXdDO2ut3YA:10 a=vmgOmaN-Xu0dpDh8OwbV:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDA5OSBTYWx0ZWRfXwkSaClTVLWaL
- DbGDhJiivaYYrLjpOZ3KTj9sB7j4jOm7tdeBWhkThbKUcNJa+HL9LvwLyitnr/YRwCyQ+zluUuI
- R1VVH1vnvlbkvrAruQ4OOwY3qymVhrD3uT2dWJk46/9RVB1Kje+8hOD9luXBQlAwdv7LeB78eGf
- eVf6nuTuW2Y3oeVWrDSZZ378HUhNoTRBA+6xayrH8TC4OQF851WxvD5KswRjFWw3C+jsAdW5vNB
- Init43thFmsfN3cy3EybtRALSQgNO2lXJ7HfLdU8tNAIcEG0R+3XWJnVQE4y7SK0FFb1DdmaVpH
- U2FOxyPf2IysQyp4Udy2CeodJO4VLvT11y7lCW0SGR/F6nMSbYYVtQluociFl/k6LBC+10j9shA
- vQqsZGYepwTZH93n0lkkiGWWjBDaFiuRjhGe94kEoJe/yxy3BisuwG/AvL7jgzTpAd4Yt0nwhAx
- xFxBAOu5zpviAOHE/0A==
-X-Proofpoint-GUID: j_qlFkHKXQsKl7d0oxkeRNZpCkBaS972
-X-Proofpoint-ORIG-GUID: j_qlFkHKXQsKl7d0oxkeRNZpCkBaS972
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_01,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 clxscore=1015
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602170099
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIwND3eRcYzMzCzPdtGTzRAtjC9M0w+QUJaDqgqLUtMwKsEnRsbW1AHg
+ nh2pZAAAA
+X-Change-ID: 20260201-cm36686-fc7a8385f1cd
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+X-Mailer: b4 0.14.3
 
-On 2/17/26 12:56 PM, Imran Shaik wrote:
-> 
-> 
-> On 16-02-2026 04:34 pm, Konrad Dybcio wrote:
->> On 2/13/26 2:15 PM, Luca Weiss wrote:
->>> Add bindings, driver and dts to support the Camera Subsystem on the
->>> SM6350 SoC.
->>>
->>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
->>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
->>> far as I can tell.
->>>
->>> Though when stopping the camera stream, the following clock warning
->>> appears in dmesg. But it does not interfere with any functionality,
->>> starting and stopping the stream works and debugcc is showing 426.4 MHz
->>> while the clock is on, and 'off' while it's off.
->>>
->>> Any suggestion how to fix this, is appreciated.
->>>
->>> [ 5738.590980] ------------[ cut here ]------------
->>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
->>
->> FWIW 845 has .halt_check = BRANCH_VOTED here, which translates into
->> 'dont check the state at disable', this one has BRANCH_HALT (i.e. spin
->> and keep checking the hw state)
->>
->> +Taniya would BRANCH_VOTED be fitting for 6350 too? ^
->>
-> 
-> The parent RCG of this clock is under NoC control, and seems like there is no vote on the NoC while disabling this clock, hence this issue is observed.
-> 
-> The BRANCH_HALT_VOTED/BRANCH_HALT_SKIP should help, or if the NoC voting is removed after the clock disable then also this issue should be resolved.
+This patch series adds support for Capella cm36686 and cm36672p ambient
+light and proximity sensors.
 
-This is very useful, thanks for the insight!
+Capella cm36686 is a combined ambient light and proximity sensor with
+adjustable integration time, interrupt and hysteresis support. It has
+the slave address of 0x60. cm36672p is partially compatible with
+cm36686, in that it is a proximity-only sensor that shares the same
+proximity register field interface with cm36686.
 
-Is any of these solutions specifically preferred from your side?
+Unfortunately, datasheets for these sensors are not publicly
+available. Initially, this patch series introduced a new driver, which
+had code based on Android downstream kernels for devices which did use
+these sensors and a previous submission for cm36672p to mailing lists:
+https://github.com/LineageOS/android_kernel_xiaomi_msm8992/blob/cm-14.1/drivers/iio/light/cm36686.c
+https://github.com/shakalaca/ASUS_ZenFone_ZD551KL/blob/android-6.0/kernel/drivers/input/misc/cm36283.c
+https://lore.kernel.org/linux-iio/1465462845-1571-1-git-send-email-capellamicro@gmail.com/
 
-Konrad
+The following code has been tested on Asus ZenFone 2 Laser/Selfie, which
+uses cm36686 as its ambient light and proximity sensor.
+
+Changes since v4:
+- CM36672P is only partially compatible with CM36686, reword patch
+  series commits to reflect that.
+- Add comment explaining why we use VCNL4040 device ID for CM36686.
+- Link to v4:
+https://lore.kernel.org/linux-iio/20260212-cm36686-v4-0-8f587d4a72bf@gmail.com/
+
+Changes since v3 (misversioned as v1):
+- Move Capella enum IDs up so device IDs are sorted by string literal.
+- Move device tree table entries up so they are sorted by string
+  literal.
+- Add a trailing comma to the cm36672p_channels proximity channel entry.
+- Link to v3:
+https://lore.kernel.org/linux-iio/20260210-cm36686-v1-0-aef68dd46ad4@gmail.com/
+
+Changes since v2:
+- Remove the previous unnecessary proposed driver and bindings.
+- Add a fallback compatible for cm36686 of vcnl4040.
+- Add a new compatible for cm36672p.
+- Add channel info for cm36672p.
+- Remove redundant information in the dt-bindings commit message.
+- Link to v2:
+https://lore.kernel.org/linux-iio/20260209-cm36686-v2-0-a48126d2b124@gmail.com/
+
+Changes since v1:
+- Add copyright information.
+- Sort includes in alphabetical order.
+- Add trailing commas.
+- Remove blank spaces where unnecessary.
+- Add a fallback for capella,cm36686 compatible.
+- Make power supplies required.
+- Add '-microamp' suffix for capella,proximity-led-current.
+- Replace local caching and i2c_smbus calls with regmap API.
+- Make interrupt optional.
+- Add action or reset only after setup is done.
+- Replace mutex_[un]lock calls with guard(mutex)
+- Add comments on where mutex is used.
+- Add comments on proximity register defaults.
+- Remove default proximity sensor duty ratio and integration time. Those
+  were taken from the testing device and had no real reason to be there.
+- Replace dev_err_probe on device's part ID with a warning.
+- Replace chip->supplies property with a single
+  devm_regulator_bulk_get_enable call.
+- Use individual structs instead of array-style device info
+- Remove enums which are no longer used.
+- Link to v1:
+https://lore.kernel.org/linux-iio/20260201-cm36686-v1-0-4949a2a9ba63@gmail.com/
+
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Erikas Bitovtas (2):
+      dt-bindings: iio: light: vcnl4000: add Capella CM36686 and CM36672P
+      iio: light: vcnl4000: add support for Capella CM36686 and CM36672P
+
+ .../bindings/iio/light/vishay,vcnl4000.yaml        | 17 +++++----
+ drivers/iio/light/vcnl4000.c                       | 41 ++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 6 deletions(-)
+---
+base-commit: 350adaf7fde9fdbd9aeed6d442a9ae90c6a3ab97
+change-id: 20260201-cm36686-fc7a8385f1cd
+
+Best regards,
+-- 
+Erikas Bitovtas <xerikasxx@gmail.com>
+
