@@ -1,63 +1,63 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962B248880
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 00:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A59A246335
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 00:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771288080; cv=none; b=PRbFkDYenmNOT4HlAwZLora+ClTeJ4S7gNhIvyg61N/KYplcK4tW1x9wGq05Djn4hgz2+6SM31r0td1ABt0PZfzjnYNZZNWaK24y9tDaYVWtBvm5TS8JOiiQVzuofZNwpHZju/EIACXblHDmZvZbZbNFpPCkCN5rHwCGOZvCPqw=
+	t=1771288092; cv=none; b=Aqbh82PIzCV1dydTZPP2nXUh7prV6xjyR0GBhOrUzUjLyeibFTspSUSnBb8JgGXPWwStM3/GIdD+nZr7CEd+eUBnM3HEVOTZRAciLl6gwiWtLiGdU98MXX7lxE7BclkC73Fhl1oqd3uzB6gdKEk+IN9MODJCMDVa7suJQOcyg3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771288080; c=relaxed/simple;
-	bh=Yxjldx0Jy64uXswjyLdMRw4GImxB5nb7jAdle3qN1SY=;
+	s=arc-20240116; t=1771288092; c=relaxed/simple;
+	bh=1v4dPSgOcOuVrr3Qg9J9gEsFMLIU5i68Rq6Ja2quspc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEf22YD7KPy603Lz9GZblbNJW7tjcaKOAGekcO2K276xF4xCdueeVgBiftBuAirlkQLafE6tKac3DPElulSOSSUkp0r24ArJJ/teK7680puNRXXyx9BUB+qcZPxJ3Pl+1t7oYiOhOgFMbQUVr/V6qHPeUUpB0nNV6PCRikBaqYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hSgkgc3h; arc=none smtp.client-ip=209.85.160.170
+	 MIME-Version; b=qW+eaKENbq5TqttgMOxHh6rs/703BhKgEmcT9iERvnAV0cLON1sRP2lSdrEf4agAN1+SN9r5Q5rsWNKDi3oEQQpfe4/S6ensOCdj4U9Qr9dEe0I+4WD0Hyf6FoSITf4XsbdVZ+LvCKZOSWqMjKRyFFvCwfNP5p5a/NmgkAqoclg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HAnOt1cK; arc=none smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hSgkgc3h"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-506c00df428so18937921cf.3
-        for <phone-devel@vger.kernel.org>; Mon, 16 Feb 2026 16:27:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HAnOt1cK"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50334dd44d2so44923101cf.1
+        for <phone-devel@vger.kernel.org>; Mon, 16 Feb 2026 16:28:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771288079; x=1771892879; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771288090; x=1771892890; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3ASIhVmOfm72bVzGA477nCjdiqa2Jqep/Bp6HdWkvEc=;
-        b=hSgkgc3hlrJl651+9lw5Qfp4j4/xTeSTWHc8vR98BAHPKWuBJ77yTomai37FyZhfGM
-         wrB7ZnjgHGopnl7QwzvHaaGUmEc3SKHiXU2zApV5KSt0vdzI31REgmvaSlR6xJwnJy7g
-         9D3eb3/pbD47R6CltW727OZ5a3pXEdu2yF/xlb1MlpTz1c8zga0wC9hGJMt9OK7k9150
-         REMDJI818y52z8eiFSnXswgwwL7FC8Z9UgIQNtrJI4M9lQBckD6lladQZKbqUUjhGCOz
-         VWm3WBPFtjDaoV1/E+ZSxMFJO67A+pXw+hLBOweQOlbtBi/xTZ6t6KvT0NKmXds/SGfb
-         HHQg==
+        bh=8JChrl7P28KUq3wAAIILUlLq1kDzZ9Zu7NIGfFL/Hv8=;
+        b=HAnOt1cKRSUStA/otjkj27uKR2JkaSAnza1rI/Nyw+mfuSJiCTwDBz+F0p8bCnPXc7
+         VMldhHD7k+QCFDfCFNQ/vwyMldauo+2ZQRnhm9fQfKFuApNy2OLtz8zS7MAaLMXbcRJW
+         zcarf/KHZ9qn9l+nsF4xyz1SnaVubHRrbe9sWcdB4kLhoO+H8SmKMXtDiJ2Lg4pLI6ru
+         92R+tKjL1iuQVyt1/MsR1LeH+DRk9cU8+soHRuGv4i8Qkkkx1o9uWLWVj5tWB1udOlxj
+         kAQkbi4WiXEJGxY4bexBons1IlnNIuxSglfhw23RlcqG/d9ep/OpHH7u8pInfp0Kvlvj
+         0XrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771288079; x=1771892879;
+        d=1e100.net; s=20230601; t=1771288090; x=1771892890;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3ASIhVmOfm72bVzGA477nCjdiqa2Jqep/Bp6HdWkvEc=;
-        b=eXHS8Ut1DngPxb84LwImcXTkqN9efrSbI/pifckz1SQ1sHR6JBxcqAMNjx/ALuNsAP
-         l1JTKSOI2p1Bq2Tvy8jjALCRlUFbL1p+WFF6kK8zD/hj6rNNhYGE5WbgEEpAuPbKFWaG
-         PMv47qWPyi6evpjC/7DsMQwy+f/3NgXZYEfd0FGk5gwf+kcrt1CJEIOqOXEdzx0YDYr6
-         N05bPlv0HrYhcVOYQG+QmYJPUH6kVSXMJgVER5Dgyg3u+LKwQogkDkXmmVgRufr8Z67y
-         SLIChjlcy0FRXUEOP+pnDyOk7HF5UwZqbcLlWDvGke1e/ah3WJwPrY/6niZn1GqnIfT0
-         HKKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYBFStOxc1ul78/nX5jJJgN4Ubv21K39IUQeIyvuNpE9dwRyvl0G/HoFMxCIG+LEHJrWosByLcgbK6PQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMNryPLTcvzlEC7a5oraEYH5TogpsuNdYRKi3m0aBIahgRdq08
-	pla+dllWSC53+48l/xtPXLkBNNvogC6nunaJEGQBSJzS7aL4rPpfdMiR
-X-Gm-Gg: AZuq6aKK+slmTBk0agfhSLpdTkhl1ODwkeV6EL+2t+iyQbSmz2Rr7MoVzm4O+CGbk6l
-	0eM/93+yPX3IlL0CAQOyBjTLd8QFB8RPTkqwrYbHgxUW0KgfDPzczTO4JzNoCKTIEL47efAeby1
-	YBXuXp5UG3IlAfDDNocjgugV0s8awuQZfEJdXG/pmoWO6jzvuu5R4CTptLlEB5Fu3/VDoC7x3La
-	JPIHnKim+KSIdCbz6xN/yRt0GCI1b141o3F3ahlxXAXOUzqxVLdP3Zca5DZH/F6+diuyzijR8P5
-	xKz35lEZbocaOWAW27ym2UhFPZg6iYhVLeh1TKwE45bndtRsNMyPJ0dO9dRIiqGVAg9fe0+2KvI
-	uRtl7udgXYg6f1qB2llei8QXNQYC2GJBGggUp8zZB+f0htFWvOopA0pLinbnJbdvobSjcHgLsdk
-	C4kGumSrvt0X1zzJE9Nj7SMgugLzbBYg==
-X-Received: by 2002:a05:622a:1b92:b0:501:40af:96bf with SMTP id d75a77b69052e-506a837b78amr149961911cf.68.1771288078776;
-        Mon, 16 Feb 2026 16:27:58 -0800 (PST)
+        bh=8JChrl7P28KUq3wAAIILUlLq1kDzZ9Zu7NIGfFL/Hv8=;
+        b=DdaWqq5qMIw156bJbMH/mDi93+/tE5DqtC3F84ccmBy005uuI+t+XWcUAEEG0cTI2c
+         cmg5NirQePh0OEviAR+0Z9uZFLf36Igerhzgph1o++jACT4xSHHJPszoE6uuIDcERJP5
+         HNpg+9xiyfDM9Qf1Z4c56I4aZTMK5ttuzCN0yHw+aoTpaF/TD7q9gUYZHqbNCyHbLMcC
+         Z1/X+K+c1dAPKY35A5XAc+JQUxOeRGIZnMZ9KgHi01JALUhyXqnLnLQ9i5k4C67sSeIb
+         XAgQaNC2UTtlzalO97VqY4ICMKcao5jipICaWHJf9df9iTII9sCMIvDXPG5j2X2nnD5u
+         edgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWRqfKwRKwzL4yxQozJ4t0QZWklZEY2s5D400xNxFWLPddIWn6F6Unyq2yxNLrfMbldSixr+S/3rUsVEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/Z6c8eYKXbpMd+cKqqRDCBnVIMuFzpLCkCqzqDBNh6MgAAXwn
+	++f/LzLX4BVmVQw7keza3OGgbAyOGCcKe9YBXZ6JuISytzqKdw7gMYjx
+X-Gm-Gg: AZuq6aIlnxx0EBJ79YltqaHAFDrkW6TtzPR2L5yA+ZyViOW2YzlDwstAmgp+vIGpiT7
+	dsKe2mUsTrsKVR+QFblaSQgQ8lPH5EGD215vHum9rHpSgVWy5Ul9Defy0GLvRBNCH+h7pFso5BE
+	5n6spU4Ip3zQUHmTlKf6YLH2FBDQFNtfahN9h8n7pSyHQEKHU7Z5SWxAozRGdPhVHxsPYbCKPYI
+	ZELRA1BG8GmxldDEat5IVcj4iDzv2G7eNtBD3Y0p2b1SLJaogZtjEmpmiD+wDqZmg8QicRicFhN
+	KYoyNj4B21Rryb38rgnoSoPxXgSp8aAIZy9i/wPq7gVVDmHOClGLcq9QmaDTYXZQgk8CiSnX1Eo
+	M/DqiYv6fvEgSaLtqT1jBuk8c6bgWWV+jhq3kYFoorC+RFIIpZWHUtzQSAfyX737LyPqBKUhjxr
+	AXu9WQ6uora43s7EvFUkmbdCyw1UYseA==
+X-Received: by 2002:a05:622a:1654:b0:4f4:d2c3:b236 with SMTP id d75a77b69052e-506b3fffed1mr139068231cf.47.1771288090458;
+        Mon, 16 Feb 2026 16:28:10 -0800 (PST)
 Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-506a93ba30fsm92083441cf.26.2026.02.16.16.27.58
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-506847d9852sm161636611cf.7.2026.02.16.16.28.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Feb 2026 16:27:58 -0800 (PST)
+        Mon, 16 Feb 2026 16:28:09 -0800 (PST)
 From: Richard Acayan <mailingradian@gmail.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -78,9 +78,9 @@ Cc: Robert Mader <robert.mader@collabora.com>,
 	David Heidelberg <david@ixit.cz>,
 	phone-devel@vger.kernel.org,
 	Richard Acayan <mailingradian@gmail.com>
-Subject: [PATCH v9 4/7] media: i2c: imx355: Restrict data lanes to 4
-Date: Mon, 16 Feb 2026 19:27:35 -0500
-Message-ID: <20260217002738.133534-5-mailingradian@gmail.com>
+Subject: [PATCH v9 5/7] arm64: dts: qcom: sdm670: label the camss ports instead of endpoints
+Date: Mon, 16 Feb 2026 19:27:36 -0500
+Message-ID: <20260217002738.133534-6-mailingradian@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260217002738.133534-1-mailingradian@gmail.com>
 References: <20260217002738.133534-1-mailingradian@gmail.com>
@@ -92,44 +92,60 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IMX355 sensor driver currently supports having 4 data lanes. There
-can't be more or less, so check if the firmware specifies 4 lanes.
+Endpoints cannot be pre-defined since commit dcf6fb89e6f7 ("media: qcom:
+camss: remove a check for unavailable CAMSS endpoint") was applied,
+probing all endpoint nodes and requiring them to have a remote. There is
+no sensible remote in the SoC devicetree because camera sensors are
+board-specific.
 
-Existing ACPI hardware descriptions may not have the data lanes defined
-so this check also accepts a placeholder of 0 lanes.
+The ports are meant to be extended by a board devicetree in order to
+define fully configured endpoints and connect the ports to camera
+sensors. For nodes that are only meaningful if extended, labels are
+usually assigned. Label these ports so they can be extended directly.
 
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/aW3uFcT1zmiF4GUP@kekkonen.localdomain
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Richard Acayan <mailingradian@gmail.com>
 ---
- drivers/media/i2c/imx355.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm670.dtsi | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
-index 9ca87488c933..0d6aabea7d59 100644
---- a/drivers/media/i2c/imx355.c
-+++ b/drivers/media/i2c/imx355.c
-@@ -66,6 +66,9 @@
- #define IMX355_EXT_CLK			19200000
- #define IMX355_LINK_FREQ_INDEX		0
+diff --git a/arch/arm64/boot/dts/qcom/sdm670.dtsi b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+index b8a8dcbdfbe3..3eb4eaf7b8d7 100644
+--- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+@@ -1776,28 +1776,16 @@ ports {
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
  
-+/* number of data lanes */
-+#define IMX355_DATA_LANES		4
-+
- struct imx355_reg {
- 	u16 address;
- 	u8 val;
-@@ -1705,6 +1708,10 @@ static struct imx355_hwcfg *imx355_get_hwcfg(struct device *dev)
- 	if (!cfg)
- 		goto out_err;
+-				port@0 {
++				camss_port0: port@0 {
+ 					reg = <0>;
+-
+-					camss_endpoint0: endpoint {
+-						status = "disabled";
+-					};
+ 				};
  
-+	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 0
-+	 && bus_cfg.bus.mipi_csi2.num_data_lanes != IMX355_DATA_LANES)
-+		goto out_err;
-+
- 	ret = v4l2_link_freq_to_bitmap(dev, bus_cfg.link_frequencies,
- 				       bus_cfg.nr_of_link_frequencies,
- 				       link_freq_menu_items,
+-				port@1 {
++				camss_port1: port@1 {
+ 					reg = <1>;
+-
+-					camss_endpoint1: endpoint {
+-						status = "disabled";
+-					};
+ 				};
+ 
+-				port@2 {
++				camss_port2: port@2 {
+ 					reg = <2>;
+-
+-					camss_endpoint2: endpoint {
+-						status = "disabled";
+-					};
+ 				};
+ 			};
+ 		};
 -- 
 2.53.0
 
