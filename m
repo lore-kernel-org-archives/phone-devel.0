@@ -1,117 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7EB14A62B;
-	Tue, 17 Feb 2026 19:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803EE264A97;
+	Tue, 17 Feb 2026 19:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771355602; cv=none; b=OmzP0ivprqKAGgNUK0Zf4wa/tq8FyK2WXU+vMVF38cwlr1ttaIRzTOHrO+I/w3bOTH7TjsuS1FtHvTNlJ6ROy9YC+V6PjbrRBxPOUfmNnNj2ehbZIZ2uW/EVaZHXmj5GcDBjT/mon2+wcu5sMxJZDOW8Iz+IDBMPNoqfR3dERWc=
+	t=1771356284; cv=none; b=URtj66BMQVamAh16JV9Gtll6ryCtl+pHeQo505LC6ae7aH8c7iT7d2F/+xcjOqIUm4vihlLaxu7X1+bxgNHA1VAgf3PkzEDGJFvN3wtUmYTQDwJPpPxVQhcB97l7IXuLLWnDtt3soiTY8cmJjFgD+utZiOLlJGAY0inA9lvI+1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771355602; c=relaxed/simple;
-	bh=d6SjbfBW35f7aFqMnMFJMaB0H1QisZxlZ96DgYW2Qxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qOPaeyHeeFSP5cKy3zQRhIzZ3CDdbIpG1vVZkosJCDqb98n7Wws37eNzoee0Z+PZ1rShzBBP4mn3TNFRbeOPXDx/SldwCTn1zLKS+0PA17G+eJom2bTF/PHVWxDnGoRa9h1R+D5aaTcHs1xSgMeMOAzaE2Zaz+K19dKHDwTxpyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OT+faP5T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771356284; c=relaxed/simple;
+	bh=UBdePPv19uaL81ASanxtUzA/Qh7h0X8+eypdZNRQKxY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ARNvnbtFg6UOIgz6wbOedm+dLK88Qt0wnNw8cuC+T+6+Ar4E8bjt9s275CumS9GM3lUpmCNLdLfmnMOm7SloLCahSZGYZIqQZPzHHhYRNvkXkXjZUpuy/xdXPLCrxQGKXYweW8chQLgphBxCiS3VksSDzZJsew+xMkLIlBATUqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQhnJnmr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OT+faP5T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A35C4CEF7;
-	Tue, 17 Feb 2026 19:13:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQhnJnmr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB3CC4CEF7;
+	Tue, 17 Feb 2026 19:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771355602;
-	bh=d6SjbfBW35f7aFqMnMFJMaB0H1QisZxlZ96DgYW2Qxk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OT+faP5TqMRPxnW27DXM51tz+L9fc/UIIB3oQGM1re/W1zii1ObIVeTGr45EdlbfS
-	 /+Q5mY7hew299blzJ/DNSkwc9u2NkW13Wrbp/OrOnSp+vuRff44XpALUUBBVupGBqh
-	 gFzdinXz69qymbGY99Wg1Gx/jMB7kVOG9wtp8CoqyBN4rUfxstSpNBRmhRr5kzVfnc
-	 5JDj0Vrs8qK/53HvxaZIWDJ43ytjO90mqUIMAZhzX7toXxvurnnt1Enn1+JL+GxLC5
-	 VJLlvqRyknBJvSqZpuH+B/xzRRF62Jbaf61VcKAAmge0IIbApcYGJJhFBeSn5IPIjC
-	 zdtoq6r/rfSdA==
-Message-ID: <975930a0-1ad6-4b3f-ba3f-13f6f79322e6@kernel.org>
-Date: Tue, 17 Feb 2026 20:13:16 +0100
+	s=k20201202; t=1771356284;
+	bh=UBdePPv19uaL81ASanxtUzA/Qh7h0X8+eypdZNRQKxY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=uQhnJnmrSJtJy9aCZlD96gakRwyp06O7fm39QS/5A/vGVQnv/fHdSFOHOQA2BfHd3
+	 L1K4V/pzqAH0kt7hpB4QIuZlHj8yUeTX3qsHZca3UKFN9T8vlSuUAFfjRACNTbEN3O
+	 yP3ESHuRlKG76ApVYycPOgdOafsZBMeWE+iXHAFkglrh7vrmdzNExKBtTu4RUOzFm7
+	 T06/KeQGeLzqHxZXN6ioyUSAoRkYPtHiOkSdd2LhaCegnEC548B7nbajX0lwZnxn9g
+	 Zq+VvyZuwvpSDjV50xHr5rFcOknPCxUNktqsewhfLaQPO3n2PclraJ+sjZ0801hBQl
+	 ra6xoR+RAVVVA==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Weidong Wang <wangweidong.a@awinic.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Alexandre Ferrieux <alexandre.ferrieux@orange.com>, 
+ Bhushan Shah <bhushan.shah@machinesoul.in>, 
+ Bharadwaj Raju <bharadwaj.raju@machinesoul.in>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+References: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+Subject: Re: (subset) [PATCH 0/3] Bitmask logic fix and firmware-name
+ support for AW88261 amplifier driver
+Message-Id: <177135628111.310944.13830467532641718835.b4-ty@kernel.org>
+Date: Tue, 17 Feb 2026 19:24:41 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] dt-bindings: clock: qcom,dispcc-sm6125: Define MDSS
- resets
-To: Yedaya Katsman <yedaya.ka@gmail.com>, val@packett.cool
-Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- krzk+dt@kernel.org, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
- marijn.suijten@somainline.org, martin.botka@somainline.org,
- mturquette@baylibre.com, phone-devel@vger.kernel.org, robh@kernel.org,
- sboyd@kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <CAHuF_ZqWTb5Z7J10WQaBR2adVi1rU-ZFFTCBkHh6nNtuuCdJDQ@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAHuF_ZqWTb5Z7J10WQaBR2adVi1rU-ZFFTCBkHh6nNtuuCdJDQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On 17/02/2026 19:51, Yedaya Katsman wrote:
-> On Mon, Feb 16, 2026 at 08:25:20PM -0300, Val Packett wrote:
->> Add the missing defines for MDSS resets.
->> While here, align comment style with other SoCs.
->>
->> Fixes: 8397c9c0c26b ("dt-bindings: clock: add QCOM SM6125 display clock bindings")
->> Signed-off-by: Val Packett <val@packett.cool>
->> ---
->>  include/dt-bindings/clock/qcom,dispcc-sm6125.h | 6 +++++-
->>  1 file changed, 5 insertions(+), 1 deletion(-)
+On Wed, 11 Feb 2026 11:27:31 +0100, Luca Weiss wrote:
+> First a patch which fixes a logic error in the aw88261 driver. And then
+> we add "firmware-name" support for that driver to support loading
+> the device-specific firmware properly.
 > 
-> Tested-By: Yedaya Katsman <yedaya.ka@gmail.com>
+> 
 
-Thanks for the efforts, but unfortunately you cannot test a header. It
-is not possible. Testing means you try given code on a REAL device and
-you cannot do that for the header or bindings.
+Applied to
 
-Please do not add tags which are not representing actual action.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Best regards,
-Krzysztof
+Thanks!
+
+[1/3] ASoC: codecs: aw88261: Fix erroneous bitmask logic in Awinic init
+      commit: b82fa9b0c26eeb2fde6017f7de2c3c544484efef
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
