@@ -1,53 +1,85 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A62D780E
-	for <phone-devel@vger.kernel.org>; Mon, 16 Feb 2026 23:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CA425776
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 00:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771285150; cv=none; b=dpYFVLmDC4Rz41ZPd9bfZMMETqSckAg8VIocYGGx3qTbumuSK87mUasr933LSF96Sj30a0/aC3KEG14jo1vjOjEVrxKY9bF28ILcV9kwunLlp/9/Jzh7JMg0K3J26M1iu+KufMPMnKjGktmRR6Z05xQI2BmtozmUQO7WjYfTTig=
+	t=1771288034; cv=none; b=lg7Q5U9HRpCM1JPLILY8wUhtDtQa5GJi+Sc531ipDhvCk6cqbfi5EmKTX8e08starrdDTZoaHcsubbQiW30OOrZNba8Z3KX6XqdYyRe6iy4/XVhNQiebRlAhYo/aAL4rUylEpXTSaYxbPKMzjgrUQxRJjjSDt4p1pwTjYl3KpeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771285150; c=relaxed/simple;
-	bh=FzEDqe3HBmxO9tiERGUD5CbndWbXj8cTA4U4jJIIxwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJLf2dwdQrMEt1gAKys62LxEaoAL0rHN6LcB9t3dmYyzFF5WCLBwPN6tN/j0WQ/lYj/KWvL9Fgku3l895KE6F96b0XWTAJwVwzzpOloG0sp/AFA/EnX5nF2tdzq005WbI7hr8AhqzxftdQS44d4mMb7F+fwkbT3H6rJwjWGG+8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=tMAJgSO1; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1771288034; c=relaxed/simple;
+	bh=y8zY+jB7047Hqz0G2nsBkPFynGKhy1MWI9oaZkNNTpc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/N59v6N9OUhlQr7dfyXy2pHRvbSOesDxCjReCRo4z7TN2q258wYfUVg/DKVNzgqOR4liEXQXLA/BzqHlbpYeKLZKX3dzidsU5cJSaxZMjCcKbe9JzCxnTvsghOFtxMRQmtJiIoBlaNwgJolY/MUMj1xI+9MWxJNofFv0dXUIsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V+ErnJVX; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="tMAJgSO1"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1771285148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jw6LbuJdUl80cdrWG1FjVnPEOcj3kz8s/yDqaabuano=;
-	b=tMAJgSO1aAwqoEJfxiKKa2h+P806coUwah+cWnqZSlnPnp4fiqAknqtSZJM+Kzkki/Iw7X
-	jMX32IcQ/AvJ3VWI2mqFVrLAOwrnf2++7364cjpJorOIM5wjuhevrIlgsucEW8jUHUIIla
-	VHo8oZkVtvsnwQ991NjE2feVAneOpNFGKr9qjCYPW2g80A1F+2pYaeXV/q/odVrKr5AKZp
-	eiLfIaTCwr3aahD0sK3rY8huMfWyXhc1u6TlslMjmRbEFoJCp53A5TvmLBbaWDd2VHp5Ea
-	BHdBXUn9d/A+ZCvPtQnvXm3GhKojxaTg1fq+/jPgZF0kj/IwubIySoQQi5tG7g==
-From: Val Packett <val@packett.cool>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V+ErnJVX"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-896fb37d1f0so81047626d6.2
+        for <phone-devel@vger.kernel.org>; Mon, 16 Feb 2026 16:27:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771288031; x=1771892831; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CN+EmxdCFVl4S/1oavyLxRyMCRPdWOSDmH8hJQng4jI=;
+        b=V+ErnJVXqfRy+ESIRBCSzSNSeTvwcuLmAPzE/haTMziZ1RvLIwKUQ5Rz6VsyDA7zdZ
+         m+XF8M5gkvaDgMwr17i2L6tCKjyTZ78Fg5KiBMmiGiGHvv2NTKiX7SmSs9nBrgd5/50K
+         Q9DriPiq16fjBT+otGS8hCTKKCwFqlEBU1zHTfGxpaa+QTQsRNlYooJI2HEg5MvLkzgr
+         IOfbAo+4MEyIGq71O6mUMu3b+ZL/zJc3lERmQ8GAlwn6CzjayiMauO6mEWY/UvWlnQ4G
+         OPHlz3TdM5KATUf6+7U1HOzhswrhJp3F+kvN/44Fw21yiP0E1Hc2/BVxWS9EmiFwoi7c
+         G0hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771288031; x=1771892831;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CN+EmxdCFVl4S/1oavyLxRyMCRPdWOSDmH8hJQng4jI=;
+        b=E2gklA9lCLBJhPpUVJeAHCfAC2zpjF2Cm4ZVIYlzgytogy5gaLqSiaXIcsMVOkGl1b
+         PgPEGPmZk7g8hBunUNIHK/H9f/OHVg3hkU/6DaQPxV++M+zP7gVV+CgGF+rxGVwxVV3C
+         Ut5jF05ud+sF3jw47trXVnqo1J0hvidVqvbeyZqpcNkBhM1jEeECtJ4JBP72s6PBsZdy
+         W7q+fGSzujYO5oyt7kYoXq92WzCcvXQLRsHQUbyqUwToDCmXqLZEpseOSZz4aKfQdnTQ
+         SG9btpXuz5A7CGsjVEk9qfJqSobdvWChFZC2HmoHzT/EUr2amFhePRbOrZExfoJbRZDI
+         OUOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV4V32URD6818EUNrLpQLwwjwA1aqnX9UQBYIgbmglJ8UPmGeft9ItL1AbgCF+/JHe8YpIESVmyEno70Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0RERfb5e81roJByic501FtMxNRg4oSHMUSGFDfltvk7wwT2sp
+	8hQQaNZNgoUPB3O8JcPmlJuLR0vcTjcq15hWEe/pDQU/pSl38lUJwPMaz94OgQ==
+X-Gm-Gg: AZuq6aIg6MbnO3d6U8+eEu81cOAxISK0oqsPI9jBCMG/xq/0sLk+TT2aFgjk2y/3diE
+	XeSFcdd3dEdDQCzGBjBwayFBquOQlBMBQXwou3c1IPLdtd9Uz+RdEAkoLI2TKVrnc4VuFN1RnLV
+	8XzDSs2vO/KyouyL3oC9NhGrLUlAfj285Dusn2JvDRzwtguYqOLNGkJ1XeOkIIptX6RsoBLBDxt
+	i6gg6c6XifFvAahpqcvUexU8xF6nPid3aPqXh09Mho4ygz6IyvJ/ldiDgRs7jyd8FHJguVPaIT9
+	sUsbFpre0i/jKxGYO7Q4AehZo8xMiF0OUaXEzOdghvDEv9lO5cD8L7h2KENX5AVLpZLoJTBNyzs
+	y0IOpFbHzyxTYBZ7EMr4CU9eCW+nCxEmGHMxDRoMWgeIabczvrWLcpFexw1OhUaY0yuuuv/tkvl
+	QHVd2Fg38sS7pNbIBuaj50DcDbeBBWRw==
+X-Received: by 2002:a05:622a:1355:b0:4f5:fd34:bb02 with SMTP id d75a77b69052e-506b4012a86mr119670311cf.57.1771288031589;
+        Mon, 16 Feb 2026 16:27:11 -0800 (PST)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-506bab11e14sm72798281cf.0.2026.02.16.16.27.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Feb 2026 16:27:11 -0800 (PST)
+From: Richard Acayan <mailingradian@gmail.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <lumag@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Val Packett <val@packett.cool>,
+	Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	"Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: qcom: sm6125: Add missing MDSS core reset
-Date: Mon, 16 Feb 2026 20:25:24 -0300
-Message-ID: <20260216233600.13098-8-val@packett.cool>
-In-Reply-To: <20260216233600.13098-2-val@packett.cool>
-References: <20260216233600.13098-2-val@packett.cool>
+	linux-arm-msm@vger.kernel.org
+Cc: Robert Mader <robert.mader@collabora.com>,
+	David Heidelberg <david@ixit.cz>,
+	phone-devel@vger.kernel.org,
+	Richard Acayan <mailingradian@gmail.com>
+Subject: [PATCH v9 0/7] media: i2c: IMX355 for the Pixel 3a
+Date: Mon, 16 Feb 2026 19:27:31 -0500
+Message-ID: <20260217002738.133534-1-mailingradian@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,41 +87,103 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-To make sure the display subsystem starts in a predictable state, we
-need to reset it. On closely related SoC (sm6115) this has caused
-DSI displays to not work.
+This adds support for the IMX355 in devicetree and adds support for the
+Pixel 3a front camera.
 
-Wire up the reset to fix.
+Changes since v8 (https://lore.kernel.org/r/20260210020207.10246-1-mailingradian@gmail.com):
+- allow clock-lanes, but make it optional (1/7)
 
-Fixes: 0865d23a0226 ("arm64: dts: qcom: sm6125: Add display hardware nodes")
-Signed-off-by: Val Packett <val@packett.cool>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+Changes since v7 (https://lore.kernel.org/r/20260117040657.27043-1-mailingradian@gmail.com):
+- restrict data-lanes to 4 (4/7)
+- include first patch (1/7)
+- add back optional data-lanes in bindings (2/7)
+- remove assert low on power on again (Bryan's review retained) (3/7)
+- use dev_err_probe in power on (3/7)
+- remove second error on probe power on (3/7)
+- add review tags (2/7, 3/7, 7/7)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index 80c42dff5399..a22374e5a17f 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -1238,6 +1238,8 @@ mdss: display-subsystem@5e00000 {
- 				      "ahb",
- 				      "core";
- 
-+			resets = <&dispcc DISP_CC_MDSS_CORE_BCR>;
-+
- 			power-domains = <&dispcc MDSS_GDSC>;
- 
- 			iommus = <&apps_smmu 0x400 0x0>;
-@@ -1437,6 +1439,7 @@ dispcc: clock-controller@5f00000 {
- 			power-domains = <&rpmpd RPMPD_VDDCX>;
- 
- 			#clock-cells = <1>;
-+			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
- 		};
- 
+Changes since v6 (https://lore.kernel.org/r/20260107043044.92485-1-mailingradian@gmail.com):
+- remove NAK from Krzysztof (3/6)
+- assert reset GPIO on probe (3/6)
+- change delays in reset sequence (3/6)
+- remove __maybe_unused from OF match table (3/6)
+- fix alignment for arguments to devm_regulator_bulk_get_const (3/6)
+- remove front camera pin configuration (6/6)
+- remove clock-lanes from camss endpoint (1/6, 6/6)
+- remove data-lanes from camera sensor endpoint (2/6, 6/6)
+- remove blank line at top of binding (2/6)
+- add review tags (2/6, 3/6, 5/6, 6/6)
+
+Changes since v5 (https://lore.kernel.org/r/20260107042451.92048-1-mailingradian@gmail.com):
+- add Bryan to CC who added a Reviewed-by
+
+Changes since v4 (https://lore.kernel.org/r/20251211014846.16602-1-mailingradian@gmail.com):
+- add NAK from Krzysztof (2/5)
+- label the camss ports (3/5, 5/5)
+- define endpoint properties correctly (1/5)
+- use devm_regulator_bulk_get_const (2/5)
+- remove clock-names (1/5, 5/5)
+- set reset GPIO as active low (1/5, 2/5, 5/5)
+- explicitly drive reset low at start of sequence (2/5)
+- make data-lanes in endpoint optional and start at 1 (1/5, 5/5)
+- add mclk3 pin (4/5)
+- add Reviewed-by's (4/5)
+
+Changes since v3 (https://lore.kernel.org/r/20250905215516.289998-6-mailingradian@gmail.com):
+- separate camera mclk pins and move to different patch (4/5, 5/5)
+- remove polarity from rear camera pin (5/5)
+- remove output-low from front camera pins (5/5)
+- mention effects of dcf6fb89e6f7 ("media: qcom: camss: remove a check for unavailable CAMSS endpoint") (3/5)
+- specify single clock-name without items nesting (1/5)
+- rebase on 49c6ac166cf7 ("media: i2c: imx355: Replace client->dev
+  usage") and eaa7d46d9654 ("media: i2c: imx335: Use V4L2 sensor clock
+  helper") (2/5)
+- do not use of_match_ptr for OF match table (2/5)
+- remove redundant GPIO validity checks (2/5)
+- describe endpoint data-lanes (1/5)
+
+Changes since v2 (https://lore.kernel.org/r/20250714210227.714841-6-mailingradian@gmail.com):
+- use devm_v4l2_sensor_clk_get (2/4)
+- require supplies and clock-names (1/4)
+- move unevaluatedProperties down (1/4)
+- disable clocks as last power-off action (2/4)
+- use 0 in gpio pin power-supply (4/4)
+
+Changes since v1 (https://lore.kernel.org/r/20250630225944.320755-7-mailingradian@gmail.com):
+- too much to have a complete list (1-4/4)
+- squash camera orientation patch (4/4, previously 5/5)
+- squash driver changes (2/4, previously 3/5)
+- remove labelled endpoint node in sdm670.dtsi (3/4, 4/4)
+- change init sequence to match other similar drivers (2/4)
+- retrieve clock frequency from devicetree-defined clock (4/4)
+- remove clock-frequency from dt-bindings (1/4)
+- remove redundant descriptions of child nodes (1/4)
+- switch initial drive of the reset GPIO to low (2/4)
+- set mclk frequency to 19.2 MHz (4/4)
+- add vdda-pll supply for camss (4/4)
+- use common power on and off functions (2/4)
+- use devm_clk_get_optional (2/4)
+- remove extra layer when describing mclk pin (4/4)
+- rename regulators (1/4, 2/4, 4/4)
+
+Richard Acayan (7):
+  dt-bindings: media: qcom,sdm670-camss: Remove clock-lanes requirement
+  dt-bindings: media: i2c: Add Sony IMX355
+  media: i2c: imx355: Support devicetree and power management
+  media: i2c: imx355: Restrict data lanes to 4
+  arm64: dts: qcom: sdm670: label the camss ports instead of endpoints
+  arm64: dts: qcom: sdm670: add camera mclk pins
+  arm64: dts: qcom: sdm670-google-sargo: add imx355 front camera
+
+ .../bindings/media/i2c/sony,imx355.yaml       | 111 ++++++++++++++++
+ .../bindings/media/qcom,sdm670-camss.yaml     |   3 -
+ .../boot/dts/qcom/sdm670-google-sargo.dts     |  95 ++++++++++++++
+ arch/arm64/boot/dts/qcom/sdm670.dtsi          |  46 ++++---
+ drivers/media/i2c/imx355.c                    | 118 ++++++++++++++++--
+ 5 files changed, 347 insertions(+), 26 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx355.yaml
+
 -- 
-2.52.0
+2.53.0
 
