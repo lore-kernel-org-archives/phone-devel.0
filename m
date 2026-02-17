@@ -1,185 +1,234 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5017D33971D
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D95334690
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771330422; cv=none; b=W4Hx2eSAr5icjhULyeaui0soA6ej26WvshemisiUzGF6GCitEYAJp7C7I6B7ga3oVxs5QTbRZg+EiHw7hP1Mbbw1tN+igyp2+3sECBk21xEk0AleFKYw0Rd3xIjADN99+Kxg0LdD0pW3IJz6ty4P7pJP98tFC9I+pmobJbGxn2k=
+	t=1771332136; cv=none; b=bNxZdt25KpVLl5hs36ZVJ519EK2b8t1+sOhs7U9s3kEBCuu66TIp2IF9ikUJiWZGoAIwdtZLvUNymkXAqPJOTzbjsZ5YkhqwqNiWM+Q9NG0vhdHF7/13+5Wj0IV3Ye8FzMI0n/q/MAf6sZBDKN2dtA0Ay72gbjpc5ImtliRTqyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771330422; c=relaxed/simple;
-	bh=YJwAdc9YN+Ork+lkKKTLcj/O0ofn3u7uG2j/EDfwnM4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z73Iv1O1dlXIG+LSjc734GX0Rix26QddfBqe8EG5zxb9Kf1+7XaKyW0wKnm+5/jvotLAdkr16ruNLX+EDUOGEapU7JACJtGcKRt7gzxRdONAsIW+Atr6tDfkd4xx1aTDEciav2CLcUIElW/37EgQ0kyz5puApPU6iTDdTeBsq2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBjhCn7m; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771332136; c=relaxed/simple;
+	bh=Uzt7RvHwwqFSV3phhIIGejkiKsOxEO0Vb+GmvZWLI+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EbRjfFyj3UVIfgHnj9GuRqUo9ogKnoyTTRBTtB/HELRv4d19QwW36C5+z0s+TAWFztvcZuvYN1nDy/NLzgtnOdZWaxNo56mWir5GKfWKaj+5zuqlBQxg6LhT9y6N1nGMMGeRtU0nkSQ8O2F0inQISK5y1PS4P8Jw2ga//0Ej4Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DoKPKbsG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UUX44s7B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBjhCn7m"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-797de0727a4so9854307b3.0
-        for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 04:13:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DoKPKbsG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UUX44s7B"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HA6I3I549524
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:42:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	o6e4jsLCb9oNoLVirKnKjbtTHj3HOKLPKd3Pmm55v7Q=; b=DoKPKbsGJ4I0F6RT
+	FF+O0s9IFeEQwFJlKdIz+VDLe7bQaUrSiLGCzf5C3MAfpw329GTdc3nRXpglqtj5
+	Kj2BGFD8HBX3FpJvgWVkZlVwdIGm5O1i6Eda7tdDOiUXmFCFk/NzLm99bJkdor10
+	hnUh8aujkznWS16KDKLat+rNmmCUVCjpKP+F+G1OQnUpbUHt7czKGYmQ5fNW7Sc1
+	2SPjTurQQiZGKfyDRmiDlSBmdPKh9WKs5+c90bUDVInYsTV0ZgX4U9OTYdX4O/5G
+	tyvryUJJcmFJkURu3duM1hJ+yIwUds2H1vlODtU5h6v/PJs7Ms0roq0khFFVehTA
+	fY/Ibg==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cc6d82d47-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 12:42:14 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c710279d57so309964085a.3
+        for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 04:42:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771330419; x=1771935219; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JnctnXD+vW2hwHaBIXjEArJKKlKzrQnCanQjG6cUX0E=;
-        b=YBjhCn7mcDBt3F835kH3Nt9ts9UiHcI90dYZIGPVhgqQ8hC8LbV1vxdJi7IfR0ZZE9
-         5i9bNkGyJFvTstxhHH7MZywNe4+hpEtLIoOOlmKwZPicyIRqFhtCULCJ5I3KfNSrA/+t
-         dUavoZgOZFi0tUb2Dx+9386t/XhKJ8IiIKlXAGc1WAuU/Pm3B/A9hG2Plfh/OH4ot9un
-         9r8FB+jislQH918hiVXReIh+T730BI0+FHqJnqjZoI7rNJtsEc2EM2MiSKCN5iPT6+Fl
-         +R2w2p0GXVYFSlLgK4BM3+Aqnw08Pz1dNO87h7HhYJRF10CGipam7VpehyLVVHYDMY3A
-         nt/g==
+        d=oss.qualcomm.com; s=google; t=1771332134; x=1771936934; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o6e4jsLCb9oNoLVirKnKjbtTHj3HOKLPKd3Pmm55v7Q=;
+        b=UUX44s7BSLVb91pR/gukmEFCq1aBGk4BsOnZIr2Gpb4elt0ObRI/Zevys31WXVzToO
+         jJe7ZSWp43kbzFtYNDzRlO+0QtIpjomhgkEN9xb0z/VGQOZo6ZOkorgQMNIwc7wHNjjW
+         ll+gxbRiY8mPXNRaGyXFN9WnwLNTKvaY2WQ2JGUg+xzU4gGoQyTrY4RNEDocxp1gh3Xa
+         MfSvVcW+K/21cuj2heIdiHbOQezOeKhwgOIiYLwzuoDR0W5nAUw+RSIujon0lDdIYC25
+         jNk7IrZSqP1aayKvufwTTs8FAFaN+gr2dlUQalv5ge0xJfaE3iBAbrQJKkAMoyrOV2Cu
+         epKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771330419; x=1771935219;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JnctnXD+vW2hwHaBIXjEArJKKlKzrQnCanQjG6cUX0E=;
-        b=tMMpghgY4XzhJK8aASfG3ydyoWqRRhVnavB2xrxTFkCbbILBmOHEgb9x5JclpOEee1
-         0fRpVidunDOKIePGsnqVX9cPQeLu4b9snN7Tj+sb0AK8d+IOrC5YXRd6sKibOI+r3W3/
-         GPfl4nvlx8EOkRFDXqoexRQIFOtEvy6Ckduc3O7ybyA+eCEneQtGrhzFmmrA7UB/iwcX
-         4WuskCMCO7F/RIw63TsqLSqEqQFBkl9uPjIjIyt7UW2q4FCIofOL0lCFxCVYs6loeYHk
-         6MRgOebXnYnCOqJgLQdAdiVOsQ9nUjb7K9ksUuDGDCnDizhGh3S0rcKtQ6trgBW96cgY
-         Iagw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbczoo2P+uKvAjQrelqNZnMuXKtPdtKqYUgsG9X05JyF+JwksOW5D8qFFLKhLamMSKKSq6WKmycli30w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJahJDox/5pSAka0CdLj1KeTahU2ZQyUSmxXHQRH3So7dIb5Tf
-	cw5CIZsmR9bwAehwZ59WfqBNNW5b9NAgpNtUoBb9x9EN1PTOJiOtiNAM
-X-Gm-Gg: AZuq6aJYw8lSoFgnX3UsoJanNv9i51zIWddXm5uZaRdvdB6hbSQUEqRLikqGxOTdK7e
-	Mj0ZAbt5Fi1mH5O3hk9c7XNnyKTYIH3hFCKj/YOnIBfkYHnFN4ZW6p7PnFY66cfn3pMhDzG+YPz
-	YtIyJwT1UDUG9iwilEXW0lwyyYVTOwcat4xY0NbMaezrUyiqpSB4TI2GqUdl/jCd87gUu+S0jaY
-	RrWAZK2KRfyUOYygqfQtwHsJ4pghQzw5EdTSnemg+ClZ43dsw5Jpw5z24D82VjlQax7lkabXUgJ
-	+VUBzUyynhzxymDP+RcmhHFTlShlaarXnlQvBRIFg/5pfs5qRGoAqnd/ogoeFwdrVNJp86N7x1+
-	xkYDkrMtt/cFIpq3c9cFsi20p1gRdFJHDANnTWVe+7sPMqSBABNVWbGqp/aQ6255VH0YR5amuMk
-	5C5V+aPBfXXDBiOt/BlobxuVhmyw==
-X-Received: by 2002:a05:690c:318:b0:797:ef49:a48c with SMTP id 00721157ae682-797ef49a9bdmr5077777b3.36.1771330419207;
-        Tue, 17 Feb 2026 04:13:39 -0800 (PST)
-Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c16eb07sm115610727b3.7.2026.02.17.04.13.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 04:13:38 -0800 (PST)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Tue, 17 Feb 2026 14:13:16 +0200
-Subject: [PATCH v5 2/2] iio: light: vcnl4000: add support for Capella
- CM36686 and CM36672P
+        d=1e100.net; s=20230601; t=1771332134; x=1771936934;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o6e4jsLCb9oNoLVirKnKjbtTHj3HOKLPKd3Pmm55v7Q=;
+        b=HeYkKUc9PCFm0MyQaD5sZFDIlAhiFGrqpSdELs1mp//lIwbPQHDkEWb/Z3L9iaj2A/
+         AsLq1Tlv3DgHHw8jNFG9Z9g756sE3aMYiMHCyfPRxLXHVXqH7UDBlLTwCFkdnAWTvu2W
+         ml3QMB9cvAh6SZx5eqqSGbMEXdJmuQyag0Uh2eqBAjeFft0/nlwpIW6t7QSu6on6e7JJ
+         36E5vnRPk6ArQrn9H87HnD0T4QYRDskorDUnO03F38nLAs4UxrXDR8K9ABtx9tL/Aqv8
+         wPBpbDMPbqpyqZuH8GxvsxCEswmMXK+sh2Ei6lCo7TJbuEoAoz8mwNUBLPuVI9bbKOow
+         zMwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpkytjrZzVsFbFDNgCe+RMQQEt4cGAQuiEtDa5ZNAcNhnKrQkNkPAI9xqy3/sTcfsV2bjVH9Yj+E886A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8CzBvTWFbnOUwAQM8RhTor3SHeiBetCvXTOc+LD1bme71ZJY+
+	O80bzhboXKAOUSV1ifNrF1gokt2BI0FHPpfm8yCqkknAAOTcS+VSd79QqF7dVpi3sqebzsaluB+
+	9w9nhT1v0atSd9KcfLUYNHnZPxIVBHb/hysFmD8E8+kApvsaPAlqc+tU3GaP/Ycg5LA==
+X-Gm-Gg: AZuq6aKn8qFG2a3Wh+piLB0XjWXN0YPvtdICv0gbN6Mf0eQ6q+7YBSkDQVy0xQPrZSq
+	KDvymbg4K0iJ29EYNqq9hv0nPIWvK9+iqKIMtF/wONwa25aTxAhV3XtusOkohEBMyAeswdiAH8z
+	feAWVs83H64N2/3lbCg4WDNvExVaBr1DCOryXXf04wrKoBqHPfRF1jtm7TAl2C2UDlX0A9W7WAF
+	e7Y4wrmqZ1m5xhPBO1IdX1o6CB0BV9SstzAOz+1ddv1p9nVncxlWJYI6cooXn7XadFS/LNPisD4
+	3Oymo3w0PUCXwauDmwsiDkHRjD7f/xVSpN4Lovm1cuQ2mkldCMk/31PvJMY67xYmR7PJyYm1tWj
+	mirPVW+Ckh9GAHz2+gDnKD8cRCUGejiCY107a+Om9b+J3wKhK7FK77uDIti0xgMDa7oxGcDp0sV
+	0ygaU=
+X-Received: by 2002:a05:620a:2948:b0:8c7:17af:7ae with SMTP id af79cd13be357-8cb408b846bmr1269566485a.7.1771332133847;
+        Tue, 17 Feb 2026 04:42:13 -0800 (PST)
+X-Received: by 2002:a05:620a:2948:b0:8c7:17af:7ae with SMTP id af79cd13be357-8cb408b846bmr1269564085a.7.1771332133311;
+        Tue, 17 Feb 2026 04:42:13 -0800 (PST)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc76278b8sm350008466b.33.2026.02.17.04.42.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Feb 2026 04:42:12 -0800 (PST)
+Message-ID: <7e3dfa3a-f526-42c6-94d8-d6390dee0acf@oss.qualcomm.com>
+Date: Tue, 17 Feb 2026 13:42:10 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: milos-fairphone-fp6: Add camera
+ EEPROMs on CCI busses
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20260116-milos-cci-v1-0-28e01128da9c@fairphone.com>
+ <20260116-milos-cci-v1-4-28e01128da9c@fairphone.com>
+ <ae73eac1-4e27-404d-af73-88eed699db0b@oss.qualcomm.com>
+ <DFQ3MBO2EAYF.1PRF2111N0U1I@fairphone.com>
+ <44f65bb6-616c-4dd9-a7a1-ee62d5d217cb@oss.qualcomm.com>
+ <DGDVK13XN7OO.3I398MMB95Z8U@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <DGDVK13XN7OO.3I398MMB95Z8U@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260217-cm36686-v5-2-63c2de9709d8@gmail.com>
-References: <20260217-cm36686-v5-0-63c2de9709d8@gmail.com>
-In-Reply-To: <20260217-cm36686-v5-0-63c2de9709d8@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
- Andy Shevchenko <andriy.shevchenko@intel.com>
-X-Mailer: b4 0.14.3
+X-Authority-Analysis: v=2.4 cv=bqVBxUai c=1 sm=1 tr=0 ts=69946226 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
+ a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=n6VhdLltzCPXJ-gkZbsA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDEwNSBTYWx0ZWRfX8/IEyidopW98
+ FL9+To6+5Sypaf8G3QW2H4CD2ENO8HmTWeLx4JSsL7Y8G8KNAOE/2a0jQatsvw/YmdF45klQDpe
+ DG/p19QOiT71WIXMxkk97dBrpv69jn7wkDloq3rNIbydsFoAuxozuCAcRytJIL1Zrgyv5nM089Q
+ AFalgPBz/wUI6DZx2kxi5Il3LhFIjsqTo8lqumFv2v68U9mJ+qDwtJFb/4Gs16g5W8RKgkRO4b6
+ 0Hj/l6gYwdU7IfqVTit3Ot/aFy3a11D9FGgIXEg7HXINIX0SK0oMTATRXjh3o/LKz4ZdWfODPDS
+ 5A6KuTbZU/7RS5y0N+JU522igRkw0lZAZuGNpuxrff0IuzSQvNrJ7wNF7gXMsK25LtYQStU5T6R
+ tQBewWxI+uoeqwEMT47LKEoCaarGFpCbS9is90Puy98dk4Mpnjqa1MY0QrFqRtO8GlgWcB2HF/2
+ yMhl7UGgk2WEHQ9njLg==
+X-Proofpoint-GUID: 12VjL3kewlWp8vnTfp3y8A3xxUbpChtw
+X-Proofpoint-ORIG-GUID: 12VjL3kewlWp8vnTfp3y8A3xxUbpChtw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-17_01,2026-02-16_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 clxscore=1015
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602170105
 
-Add support for Capella's CM36686 and CM36672P sensors. Capella
-CM36686 is an ambient light and proximity sensor that is fully
-compatible with VCNL4040 and can be used as is.
-CM36672P is partially compatible with VCNL4040 - it uses the same
-register fields for proximity sensing, but the ambient light registers
-are reserved. For CM36672P, we reuse vcnl4040_channels, but remove the
-IIO_LIGHT channel and ambient light integration time.
+On 2/13/26 2:39 PM, Luca Weiss wrote:
+> On Mon Jan 19, 2026 at 11:42 AM CET, Konrad Dybcio wrote:
+>> On 1/16/26 3:54 PM, Luca Weiss wrote:
+>>> On Fri Jan 16, 2026 at 2:59 PM CET, Konrad Dybcio wrote:
+>>>> On 1/16/26 2:38 PM, Luca Weiss wrote:
+>>>>> Enable the CCI I2C busses and add nodes for the EEPROMs found on the
+>>>>> camera that are connected there.
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 50 ++++++++++++++++++++++++
+>>>>>  1 file changed, 50 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>>>> index 7629ceddde2a..c4a706e945ba 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>>>> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+>>>>> @@ -529,6 +529,56 @@ vreg_l11f: ldo11 {
+>>>>>  	};
+>>>>>  };
+>>>>>  
+>>>>> +&cci0 {
+>>>>> +	status = "okay";
+>>>>> +};
+>>>>> +
+>>>>> +&cci0_i2c0 {
+>>>>> +	/* Main cam: Sony IMX896 @ 0x1a */
+>>>>> +
+>>>>> +	eeprom@50 {
+>>>>> +		compatible = "puya,p24c128f", "atmel,24c128";
+>>>>> +		reg = <0x50>;
+>>>>> +		vcc-supply = <&vreg_l6p>;
+>>>>> +		read-only;
+>>>>> +	};
+>>>>> +
+>>>>> +	/* Dongwoon DW9784 VCM/OIS @ 0x72 */
+>>>>> +};
+>>>>> +
+>>>>> +
+>>>>> +&cci0_i2c1 {
+>>>>> +	/* Awinic AW86017 VCM @ 0x0c */
+>>>>> +	/* UW cam: OmniVision OV13B10 @ 0x36 */
+>>>>
+>>>> There's a driver for this one!
+>>>
+>>> Yep! Already got patches to add the required regulators & devicetree
+>>> support to the driver, but since I've got zero on CAMSS so far, I
+>>> couldn't test it more than reading chip ID.
+>>
+>> That means the digital part works.. I'd say it's a good enough
+>> indicator
+>>
+>>>>> +
+>>>>> +	eeprom@52 {
+>>>>> +		compatible = "puya,p24c128f", "atmel,24c128";
+>>>>> +		reg = <0x52>;
+>>>>> +		vcc-supply = <&vreg_l6p>;
+>>>>> +		read-only;
+>>>>> +	};
+>>>>> +};
+>>>>> +
+>>>>> +&cci1 {
+>>>>> +	/* cci1_i2c0 is not used for CCI */
+>>>>> +	pinctrl-0 = <&cci1_1_default>;
+>>>>> +	pinctrl-1 = <&cci1_1_sleep>;
+>>>>
+>>>> Let's keep them per-bus-subnode so we don't have to override it
+>>>
+>>> I don't see any upstream example of that, would the pinctrl work
+>>> correctly with that?
+>>
+>> Hmm.. I assumed it would.. and I assumed we do have examples but
+>> ma-a-aybe they got stuck somewhere in the review purgatory?
+>>
+>> If you'd be inclined to test that, you can add a pr_err() to e.g.
+>> msm_pinmux_set_mux() and observe whether that changes as you
+>> interact with the sensor over i2c
+> 
+> Yeah that doesn't work. With the following diff I just get some CCI
+> timeouts and at24 driver doesn't probe correctly. I'd prefer not to do
+> some yak shaving to get this patch upstream.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
----
- drivers/iio/light/vcnl4000.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+I think the setting happens somewhere near
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index a36c23813679..5e03c3d8874b 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -185,6 +185,7 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
- #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
- 
- enum vcnl4000_device_ids {
-+	CM36672P,
- 	VCNL4000,
- 	VCNL4010,
- 	VCNL4040,
-@@ -235,6 +236,8 @@ struct vcnl4000_chip_spec {
- };
- 
- static const struct i2c_device_id vcnl4000_id[] = {
-+	{ "cm36672p", CM36672P },
-+	{ "cm36686", VCNL4040 },
- 	{ "vcnl4000", VCNL4000 },
- 	{ "vcnl4010", VCNL4010 },
- 	{ "vcnl4020", VCNL4010 },
-@@ -1842,6 +1845,22 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
- 	}
- };
- 
-+static const struct iio_chan_spec cm36672p_channels[] = {
-+	{
-+		.type = IIO_PROXIMITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.ext_info = vcnl4000_ext_info,
-+		.event_spec = vcnl4040_event_spec,
-+		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
-+	},
-+};
-+
- static const struct iio_info vcnl4000_info = {
- 	.read_raw = vcnl4000_read_raw,
- };
-@@ -1867,6 +1886,19 @@ static const struct iio_info vcnl4040_info = {
- };
- 
- static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
-+	[CM36672P] = {
-+		.prod = "CM36672P",
-+		.init = vcnl4200_init,
-+		.measure_proximity = vcnl4200_measure_proximity,
-+		.set_power_state = vcnl4200_set_power_state,
-+		.channels = cm36672p_channels,
-+		.num_channels = ARRAY_SIZE(cm36672p_channels),
-+		.info = &vcnl4040_info,
-+		.irq_thread = vcnl4040_irq_thread,
-+		.int_reg = VCNL4040_INT_FLAGS,
-+		.ps_it_times = &vcnl4040_ps_it_times,
-+		.num_ps_it_times = ARRAY_SIZE(vcnl4040_ps_it_times),
-+	},
- 	[VCNL4000] = {
- 		.prod = "VCNL4000",
- 		.init = vcnl4000_init,
-@@ -2033,6 +2065,15 @@ static int vcnl4000_probe(struct i2c_client *client)
- }
- 
- static const struct of_device_id vcnl_4000_of_match[] = {
-+	{
-+		.compatible = "capella,cm36672p",
-+		.data = (void *)CM36672P,
-+	},
-+	/* Capella CM36686 is fully compatible with Vishay VCNL4040 */
-+	{
-+		.compatible = "capella,cm36686",
-+		.data = (void *)VCNL4040,
-+	},
- 	{
- 		.compatible = "vishay,vcnl4000",
- 		.data = (void *)VCNL4000,
+drivers/base/dd.c : really_probe() : pinctrl_bind_pins()
 
--- 
-2.53.0
+which implies there would be a driver in play, which there isn't for the
+CCI subnodes.. But let's kick that can down the road
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+
+Konrad
