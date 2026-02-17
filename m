@@ -1,48 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC3A261B78;
-	Tue, 17 Feb 2026 07:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155871E3DED;
+	Tue, 17 Feb 2026 08:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771313897; cv=none; b=M/pOQ+4e8RpccmjwYiosTsgdQWHQnBVmgFhaJFD2WbXMguvgmYFTMJv+gid9KnBOZVTn92h4AagTtw207xq8Q1o7KIiAFzMMV54l7ad+AstsS1Pcz1UNamUFX06dg4yse3DKJE0g6L9N8QDp3u91/lY/GStz50xQHSehtziW4ck=
+	t=1771315891; cv=none; b=UFkHdndmAuclPf/wkxqJB/Ucxc2sljPEGrxyFVPGfY3YErPPhysK0ipFf8IqViHJ+wvOXKnYCmO2qgqe6S3AtKsDolbJnE1JfHpirV0kWxVZcQop2VbjeXkluX63yCmwnn0kpTZt2LY0y9pVx2mYU0KQYyKFjKkXd4XEM8pL/fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771313897; c=relaxed/simple;
-	bh=sYIw5Vc7TI8r4u9ZvnHGICD7JjEG5n8qH/M7xNUUcwA=;
+	s=arc-20240116; t=1771315891; c=relaxed/simple;
+	bh=nFY1vSabPgCfBeXJBl3p55eqBUinLpounWMuYH7A8XQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WXdxBHp6u0fUlq/w94seb7H8cMjknx2IHv3jb9BGjYNHtt3ua84aGO8qjD1U14pwekxJyAlQUQ9wXRpBr2Di6RTYszKe9HRK5fgtzf3fxLyznU/J1Xbr4Zki9yr3xBc6GVCAvt0zL31C2oHU9wrYe8o74cGzMp8eFwL7bLx2UFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nURBGtCV; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RUR7jicnVjy4n204doJQCDPSME4mfk7FSQd243nRBM4nKLBIOdHyfRhyJ9K04dsPctd7y2YopMnVS3WIU+mna6HfJ446D/LpyIQgYKKrMAzWlPXPleSDC4men1DnQQxR/M8nkMU2RjAhArvd25L3vsAGl7i67byUM5QYKSYh+E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpRANsfB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nURBGtCV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70803C4CEF7;
-	Tue, 17 Feb 2026 07:38:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpRANsfB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED1EC2BC86;
+	Tue, 17 Feb 2026 08:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771313897;
-	bh=sYIw5Vc7TI8r4u9ZvnHGICD7JjEG5n8qH/M7xNUUcwA=;
+	s=k20201202; t=1771315890;
+	bh=nFY1vSabPgCfBeXJBl3p55eqBUinLpounWMuYH7A8XQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nURBGtCVkwCBropZUG13Tyz2z7ehmU9tJBtTgvheJnWJtmc6mNw8wQ0dA7cfANjpA
-	 7tOw+6ofsZ/VSiKOBH/LxDKxYsFD6AcjdFM6JMEOp8MJL6V0O2XwQ37v/D3yarADy1
-	 CYOjIvTdEdUwxQLsP3E+qaO4Z2n/08gSJxh2KxZG1dP91sUmBG+5rYO+ecbVTQvaKN
-	 4dVvkncLxKmgViWzgzYpwVZLC3T9zatB1fTvtf6dpoBZxY9CbMZjPknlSOtNCfUhL7
-	 DPBHWXd61hDTv7DV41S1cw/03kin/cYyU1qKbFHGBIDs5jtq7OHQrvCdeuz7eHb5B3
-	 sJExDuhMfBOYw==
-Date: Tue, 17 Feb 2026 08:38:14 +0100
+	b=LpRANsfB4DVY0GonZpgCgVup5ZWSVYo5aGZGn9UE0/FHiNzssEZeRRcKcU+AKFdHN
+	 /QUSNDgYzlZCaJXJ5ljtCc4O4kN88e8Jy+4mOvXXSXuNYaU8B8LinvE4joIHZZypAz
+	 1TD2w9q9R/GLRtlas/T8ABRqOfE9jdHRULQE05Mmli3f3HEoepB4AY1/NN1lPENSOM
+	 YROOBKKwXpIeC+HUZn/ZCS1UlLAU0dVOUE4ryzsj7DoF12s9LX4bGOOGSMCD32Z9QV
+	 q6D3tbEJYV1LG4e9DiM7PGfGWDlHtO5hwWnKanMFTLd1lObjne8HR72JMuff8t+Vxz
+	 czBgQVPBNWUTw==
+Date: Tue, 17 Feb 2026 09:11:28 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Acayan <mailingradian@gmail.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>, 
-	Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, Robert Mader <robert.mader@collabora.com>, 
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v9 1/7] dt-bindings: media: qcom,sdm670-camss: Remove
- clock-lanes requirement
-Message-ID: <20260217-hidden-ultramarine-teal-ca2f9a@quoll>
-References: <20260217002738.133534-1-mailingradian@gmail.com>
- <20260217002738.133534-2-mailingradian@gmail.com>
+To: Val Packett <val@packett.cool>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Adam Skladowski <a39.skl@gmail.com>, linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] dt-bindings: clock: qcom,sm6115-dispcc: Define MDSS
+ resets
+Message-ID: <20260217-gentle-ambitious-newt-21c4a4@quoll>
+References: <20260216233600.13098-2-val@packett.cool>
+ <20260216233600.13098-3-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,20 +48,20 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260217002738.133534-2-mailingradian@gmail.com>
+In-Reply-To: <20260216233600.13098-3-val@packett.cool>
 
-On Mon, Feb 16, 2026 at 07:27:32PM -0500, Richard Acayan wrote:
-> The clock-lanes property has no effect on the hardware configuration, as
-> of commit 336136e197e2 ("media: dt-bindings: media: camss: Remove
-> clock-lane property"). Since boards with new camss support can omit the
-> property, remove it from the required lists.
+On Mon, Feb 16, 2026 at 08:25:19PM -0300, Val Packett wrote:
+> Add the missing defines for MDSS resets.
+> While here, align comment style with other SoCs.
 > 
-> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-> ---
->  Documentation/devicetree/bindings/media/qcom,sdm670-camss.yaml | 3 ---
->  1 file changed, 3 deletions(-)
+> Fixes: 38557c6fc077 ("dt-bindings: clock: add QCOM SM6115 display clock bindings")
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Not a fix or explain the impact of the bug.
+
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>  include/dt-bindings/clock/qcom,sm6115-dispcc.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 
 Best regards,
 Krzysztof
