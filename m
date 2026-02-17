@@ -1,106 +1,117 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5A336EAA9
-	for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 18:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771354316; cv=pass; b=j4VGcNb5V3eY9+VbUetj1S5sOHLRHotFeYDkz/Nkmp0jzsVCLcAjaBzBweeqLquEJ1RDWp7F6kFyFfI6nogCzWP3nLLA5Xqgltd/tl+I1+KAx83qxy+4x4BrkwPbjQplHEkfOWMFniLJm7sQT1U3m1IE3z77MGAWS8oj8jfRikc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771354316; c=relaxed/simple;
-	bh=mlaZHFNq5XRxueoqRH3q0IdHdk7o8tvxpfjKaHA7LPs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZqPdnpWeULYlXYrHjIivzxSN4OHv0wfGl+kED6VjKvMyPC+iB1bHm70bGg6llwm3cg8WFyQ2kKN4O9LlVvZf/OUARFsQMrbn4SYM4T8w7NXsHIxGS87wmHeFWTTizldLymo7mP0Vfpud3/WlxwGzs4ep2WvW3HsH+O5J9wHah/U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPHBkMTS; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7EB14A62B;
+	Tue, 17 Feb 2026 19:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771355602; cv=none; b=OmzP0ivprqKAGgNUK0Zf4wa/tq8FyK2WXU+vMVF38cwlr1ttaIRzTOHrO+I/w3bOTH7TjsuS1FtHvTNlJ6ROy9YC+V6PjbrRBxPOUfmNnNj2ehbZIZ2uW/EVaZHXmj5GcDBjT/mon2+wcu5sMxJZDOW8Iz+IDBMPNoqfR3dERWc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771355602; c=relaxed/simple;
+	bh=d6SjbfBW35f7aFqMnMFJMaB0H1QisZxlZ96DgYW2Qxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qOPaeyHeeFSP5cKy3zQRhIzZ3CDdbIpG1vVZkosJCDqb98n7Wws37eNzoee0Z+PZ1rShzBBP4mn3TNFRbeOPXDx/SldwCTn1zLKS+0PA17G+eJom2bTF/PHVWxDnGoRa9h1R+D5aaTcHs1xSgMeMOAzaE2Zaz+K19dKHDwTxpyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OT+faP5T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPHBkMTS"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b86671f87eso217538eec.0
-        for <phone-devel@vger.kernel.org>; Tue, 17 Feb 2026 10:51:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771354314; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fCaZWTI3lRFWmdYh9ejaBDJOnIsKpUd2ZMY1ET4Ejex7Iv2zgpKUMYo57/bv4ZkcwP
-         Me+ODi2RBMtL4wkeCLZIQYB6nNa1XRmJcOihuZMyt1Xdd+dOUg1W/somwGTlcnnXtOtJ
-         rY+6ByU+l2gPjJvEdyJOUG3ifR8tC7mJNd4nipwgiVRutt/fzzDs358naLDWaK5YmW23
-         Ngh4GW3+/zbrWU9qzdZcyaDP+J6IVV2mz7QTGsR8D0kO6kToVtNQNjgy9l5fluUN0/Fo
-         W0r0BZ1kuMdM9cyC4pyE0YauJND7sZ8ts8hSjcXyDE5jMKvHySrMdNRXYnBZEAkn6JU5
-         dpeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=J/Dwq29TVM3lC7MbucjOF4EsI3jXCUOI1BLL/5lhNGs=;
-        fh=It1WXh/fxLyRrqCVi8/duvZMkDJ8aQ9Gm9ny3HpwTZk=;
-        b=NaGJlO/dmtkYsXE9i+c+ocmGLrZsvawDglo4o3+9CQpIUf1SPye9kZKmGcPwoNt1Yk
-         713HrC2ubbT0N9IBCI88WcfZw48/fJ3YF+kE7hWDNdiFa/hpj6Lk74DGK9CVGnmQfMXH
-         R6R1gwY7PS00VcsJfz5dVAOS63LOm71gra7UhIRv1isYXf32TB0fNjas0yOKjhpo3cyM
-         Noidox87zBQMgdfawYxY80kGgKtc4kbez+u4BXTYS3FpHmsKtNuyu9+RN3GzbDNBv4v3
-         M9Ha2dZtE2pmqje0WKvWNn6vUpTNKyK6rpSbg3QISkIRVh2SI+1P7eWnNz1uFlEIUOmy
-         Krdw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771354314; x=1771959114; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J/Dwq29TVM3lC7MbucjOF4EsI3jXCUOI1BLL/5lhNGs=;
-        b=cPHBkMTSjsQBrLDzh0g8vj7f7bTw03oaXK9dbK4ieBzV5uV+wxGL935i4qZM2/biBM
-         QE/Bha4ZjDL/9dUWLpQuPHfI8s3B/peCXQs2sDucRTrCV7+mAgqFgNpf1mp/+CUigEgf
-         UxUmiEqc1OykzT5BvYjfQU4Lj3a2+DVZ9KNQXWVDV04oRxtY4l14BdpbfS5fGHcr1zMp
-         sDwM2/o7ZYD7ioUiuURlKrQjqR9PaE/cif45Lm8juHfROp9KH+FeCBqpp9CNcLck1BEH
-         O3ss3JLl20ZOzvb/o1E116JC8zQGr6T+nVrCn0IdtxigqnVqsLW+30+c3YsKVjTWTC6c
-         kNhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771354314; x=1771959114;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J/Dwq29TVM3lC7MbucjOF4EsI3jXCUOI1BLL/5lhNGs=;
-        b=Q2WTwr/E/vg1Ik/XFGsKzyWC+ZRUDKlb8je3zyZWz/ov9hKf3MHkj0djbbAxD6ELVQ
-         9RmA/ysa7XVol7UxU0ja3pyBdXQu2NEFjMW6ZoXyAKwrlHiC8nUcsZ4hFMN4KXfnxwo4
-         +6NpWbEYBqHMY+ghc7Cl0h2rP2fNGDRPtNa8XybG6rWhOSm0htbOL0WM8RMW36lpZ0Ce
-         PBuviC1fTkpffU6UYca4mVlFs88Mjogzyw4VFoPtmTDIoTXb1vhh9iXo6irXunldpM77
-         08K2hKyaoDQz2WxLYf6YR3BQjWqhj/WEHBRh4oxT91IN3Gr6H740vI7eknoLJwKcglJ4
-         dKWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZxpUdYHA9Knjeej73CXi9IEg7cgze9rEUoY+Hh21kQg8bpYcmLfZCJ3Pr4eLiQaXuUalq6tpk4QBt9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvnKlN4ifuzHcOGl2xriJIzPfNEEICXhh6+UehwnHOUl5qZBRz
-	fTgGK5lW5cu48b3gclLV6SZmcOuEdPCMr1z3SfhOfmQhDxFRNyF7KeW3lgCNvtwizR7/PLMG8qv
-	J0CHzzmoUB992t/xtQJC6SImu96Zk1Z0=
-X-Gm-Gg: AZuq6aIxiAE7oeIyHO0jIJNAqxm74UH3hCjP8TJzyFYLRhKBuxJ3vRADscitxvBT9fb
-	ageUj+PXwlacftbueieq4Z+lkr9GHw6RAG0/Fif9BawAYhCV/z5/XULWVtGpFp9n3xpePv5GHrb
-	1h2/EL+pBvO+YdPI/qVT2V8HvgasCmWaEejaXF2ObkgG1ozH8qnWBxyU2clEW1EyL8kU9b7NmYi
-	er9Qp+NTsIVDlbUMC38HOWdWf4hbYC4kk74d7d6tNaR91lQc6XU2YOwrlzMLuQkABOcAVGReuq+
-	lgxIXwpJ
-X-Received: by 2002:a05:7300:b90b:b0:2b8:1d16:9736 with SMTP id
- 5a478bee46e88-2babc44ed98mr5624900eec.23.1771354313687; Tue, 17 Feb 2026
- 10:51:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OT+faP5T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A35C4CEF7;
+	Tue, 17 Feb 2026 19:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771355602;
+	bh=d6SjbfBW35f7aFqMnMFJMaB0H1QisZxlZ96DgYW2Qxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OT+faP5TqMRPxnW27DXM51tz+L9fc/UIIB3oQGM1re/W1zii1ObIVeTGr45EdlbfS
+	 /+Q5mY7hew299blzJ/DNSkwc9u2NkW13Wrbp/OrOnSp+vuRff44XpALUUBBVupGBqh
+	 gFzdinXz69qymbGY99Wg1Gx/jMB7kVOG9wtp8CoqyBN4rUfxstSpNBRmhRr5kzVfnc
+	 5JDj0Vrs8qK/53HvxaZIWDJ43ytjO90mqUIMAZhzX7toXxvurnnt1Enn1+JL+GxLC5
+	 VJLlvqRyknBJvSqZpuH+B/xzRRF62Jbaf61VcKAAmge0IIbApcYGJJhFBeSn5IPIjC
+	 zdtoq6r/rfSdA==
+Message-ID: <975930a0-1ad6-4b3f-ba3f-13f6f79322e6@kernel.org>
+Date: Tue, 17 Feb 2026 20:13:16 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Yedaya Katsman <yedaya.ka@gmail.com>
-Date: Tue, 17 Feb 2026 20:51:42 +0200
-X-Gm-Features: AaiRm51oN_WMS2IyaAAXhBJ1VmnFKjk3HIr2OX6Yqqq7pT9MsuQDZGKYwbAC5Us
-Message-ID: <CAHuF_ZqWTb5Z7J10WQaBR2adVi1rU-ZFFTCBkHh6nNtuuCdJDQ@mail.gmail.com>
-Subject: Re: [PATCH 2/6] dt-bindings: clock: qcom,dispcc-sm6125: Define MDSS resets
-To: val@packett.cool
-Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
-	krzk+dt@kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	marijn.suijten@somainline.org, martin.botka@somainline.org, 
-	mturquette@baylibre.com, phone-devel@vger.kernel.org, robh@kernel.org, 
-	sboyd@kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] dt-bindings: clock: qcom,dispcc-sm6125: Define MDSS
+ resets
+To: Yedaya Katsman <yedaya.ka@gmail.com>, val@packett.cool
+Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ krzk+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+ marijn.suijten@somainline.org, martin.botka@somainline.org,
+ mturquette@baylibre.com, phone-devel@vger.kernel.org, robh@kernel.org,
+ sboyd@kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <CAHuF_ZqWTb5Z7J10WQaBR2adVi1rU-ZFFTCBkHh6nNtuuCdJDQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAHuF_ZqWTb5Z7J10WQaBR2adVi1rU-ZFFTCBkHh6nNtuuCdJDQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 16, 2026 at 08:25:20PM -0300, Val Packett wrote:
-> Add the missing defines for MDSS resets.
-> While here, align comment style with other SoCs.
->
-> Fixes: 8397c9c0c26b ("dt-bindings: clock: add QCOM SM6125 display clock bindings")
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
->  include/dt-bindings/clock/qcom,dispcc-sm6125.h | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+On 17/02/2026 19:51, Yedaya Katsman wrote:
+> On Mon, Feb 16, 2026 at 08:25:20PM -0300, Val Packett wrote:
+>> Add the missing defines for MDSS resets.
+>> While here, align comment style with other SoCs.
+>>
+>> Fixes: 8397c9c0c26b ("dt-bindings: clock: add QCOM SM6125 display clock bindings")
+>> Signed-off-by: Val Packett <val@packett.cool>
+>> ---
+>>  include/dt-bindings/clock/qcom,dispcc-sm6125.h | 6 +++++-
+>>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> Tested-By: Yedaya Katsman <yedaya.ka@gmail.com>
 
-Tested-By: Yedaya Katsman <yedaya.ka@gmail.com>
+Thanks for the efforts, but unfortunately you cannot test a header. It
+is not possible. Testing means you try given code on a REAL device and
+you cannot do that for the header or bindings.
 
-Regards, Yedaya
+Please do not add tags which are not representing actual action.
+
+Best regards,
+Krzysztof
