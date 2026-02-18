@@ -1,171 +1,95 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C67931AA91
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 20:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398482F49EB;
+	Wed, 18 Feb 2026 23:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771447642; cv=none; b=urGRTcrGBWTQdyoCBw9ZiRdP/Ngdj8PnS+K1aJImKe8FDJe84RsVixW50s/3i1EM3uwzJrm2637nsu6NzpUMQYTXx5sQ4ML5XFM6tMitufZ5ForwRmYhwftc80g0c8ai0hkZnv/lPAXBn8w29UfaJzVaidRmaE8g+778NwVzyFo=
+	t=1771457691; cv=none; b=mdKWBmXgdLSy+4xUJZqi8HSvccjE3ARh/wtUBnpmE6quhOqSjT8KoJlF2FdiyHr1CyTYrIw5Mpw0GC1ZE+cxy2x2T1GRbroBrZ8U/ZZF10OpsPbz3/HQK7TPm/HYgSK5eiomfl8wGl7xUEfny+IGA8gI4tbfX1YhwZx4AKHyUQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771447642; c=relaxed/simple;
-	bh=CDIqozJsuQFo5m0tgWLil73b1CNFKcj9LqyslgWQvKQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VvU65aNdwNjXx/lr5P1Tw+JUofzEW1I/at3btCFhDID07SQRnJpROaEsyQl7kbH7NbBvq6Fvy0rO94O7V58MS0WX0JBazGIfetV3pjqt6X1ZVcLCa5CkEPUn/0attar9eq0hM78oibp88/u2J7OoqjFaNcSeMojsZ6fhrKd0sYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=l/wooTMM; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fhihws6o; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1771457691; c=relaxed/simple;
+	bh=qpmummim78gKeegZYCtVyp5iwX18vKvMYjnNgD8l0OE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=YoTmNdzHBtq1orxbaB+xgtrI3QQxn4To+unaMvwtPxh1Oex3OPXBET0N5wSBMe/jjvRMEZ2ViI5w1W7MgTqZYIlOgqnecKI6ElCNQMS3IATC4mjlx1R//Ns9WTSM7sGd//PMxlvUT/8B1e2xxjp6rAyIoavlqvRtkItMYLKnofg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jl69D+Do; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="l/wooTMM";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fhihws6o"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ID1qPt1167926
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 20:47:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1D10VM7RANBM+iJIzulrc/EbcESoqbZHUXFXPZa+iQc=; b=l/wooTMMWCxYb6Gm
-	kDuk74c2mGtQMNHmdnQDcmNZGdtPFxfVZXRcLWDwrN4o/0QhfpsgQ2Ze3dKPwju6
-	JLiKgNbxccktxhMPUZB7fEFi3oWS9Sutx0MCqBsElnq1KvtyLUhFf4t693RUMtT0
-	0mze4+OdpuV0EzKnVCQnMeSDR+2OQuawyfu0g7tyDNsumL+9Z7h1c+JoTtCT95Nf
-	rB86irlZLqGlHdRfrEKaUeJ//aMyb4NREtceRv+2CClggZbCUMCfFTxoxbJg0wcp
-	kyugPQaPtTDnxswQ7bwAgmTd3CZotUNu8hlPAH/ytUJsCgSdU1vGsEyOCjRbM01d
-	gcbwyA==
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cd3ahawfq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 20:47:20 +0000 (GMT)
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-45f07dad7a8so770275b6e.0
-        for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 12:47:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771447640; x=1772052440; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1D10VM7RANBM+iJIzulrc/EbcESoqbZHUXFXPZa+iQc=;
-        b=fhihws6oRG1knCOeuKSCru6hL2VtOKmG3GvJGStnbMsK1+iI/7FLx8GL1fZAUldRMX
-         XmyVg/1Ek+51e7v6JQ3Ndme/szMhVSIFmO3zMSjVOTOhZmB5mVyWpg5Kez7qdkg/AH3v
-         0MQepD4fxsH+tx7YZPZqQ19E9wI0GYX4gYD+f/gAsMPb+nCGCMAuMC/RlNk7xW41Toqr
-         m77fg5YPHnpGXQH/rD7PAS9eqFnquKIobXOnNesy5ehjXQgLhwWBpLIvUv89dxmpr4vT
-         e5bW07CX++33WJsn7fCr17qqwe5xq5yZEE+XAb+qV/9zN78A5LEu3XRLE5JNl05mRPyg
-         Yjug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771447640; x=1772052440;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1D10VM7RANBM+iJIzulrc/EbcESoqbZHUXFXPZa+iQc=;
-        b=tjkj0vL2WdiwfTi7I46XNiumboSLlUYZTpJpG9tMQBudePNdn6/xWxeGWz3uPgje45
-         U4sVwautWLwsK/EeThbJOLHZZ4fulTK4MmviTNdwef2a5Q5asbIotVB0MTvMwEqgjKq2
-         FP34JZ/FdpeOHXAdNfDbnoUd5FErKxWPuDMXrRMeJuo4SQ3Wub5WEniMn2BZma4S4t0f
-         K7K1bEPy3WG0jrmp+I26M6vcT4VioKYvNWjMHKSSrXdBMpmF2WnZaEzYYjOyGTbECCBy
-         nxrh60423XIFhO7oq7tdxhzMkzua13+JPD0iWSF6Xrc7MOoA4o0eUh+WctELwpzgVEbw
-         9uWw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0JmBDB3cjA4BnbJORuW3IgWe3ogMW9Tln4u6jsIK7A0k2F74sCsSfB20JXLCyGeuqOq4pCS5Bz7CWkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrlCITE3xP87b7Y/hkG1XqEbXwo9ZjCzbW5mVnatEZTKFO/Vv5
-	wxLA1MCm6YfEWrZZxd3AfyKYObhphMp044yC6Ia93czQ0jSF5/2R6X8ABtBlg8FMvQIDhE3tmRM
-	FGMumJVO+8YjwMEvjpS4Ktk5yW9DSULampqLkx7lce4pgFEHsdoeHXw4gE6kjbO/tRA==
-X-Gm-Gg: AZuq6aI2n0FqwIr64UBdo351GchsUujlzNDIa6TYgPvxdaUdckwlRoJYkU+noAkfNFa
-	KVBjejRaWlUfbsnoqRiOYFZDRlkzW3dVKN4nbu2tlvFGX5AAejvFSqh6ZNwQ4AfAd5HhSKhIu12
-	2YA83WoHho3UTT3B1kItnutMr0Ha6zKpfe+KccicGXfONukHTyJNKj2uOcZ8UhfQqI/tgFp/U1a
-	0l51VO08Jb9YpWOFo7qWM7bxhyDH56fpA1K+BwVr3CcPAuy+ZYpM3hmxykPjOXVhBvmATffbsiO
-	fdGkIz02og3A/wlxoYq2wAPlLTW0cSZxn0p5UGnhsXPRo4/bv0g3gv6sP+6+Uw2RoSWBluF08cI
-	CuxcNL4dnhnbG1E+DKB4SsE+JnZ1O80ym3iDKDX22tuuWYRyIS3cuiRZnBo61WFsrDcteI0NxVE
-	bY3w==
-X-Received: by 2002:a05:6808:4f52:b0:45c:8bfc:4194 with SMTP id 5614622812f47-463b40f7577mr8096887b6e.65.1771447639827;
-        Wed, 18 Feb 2026 12:47:19 -0800 (PST)
-X-Received: by 2002:a05:6808:4f52:b0:45c:8bfc:4194 with SMTP id 5614622812f47-463b40f7577mr8096875b6e.65.1771447639400;
-        Wed, 18 Feb 2026 12:47:19 -0800 (PST)
-Received: from [10.62.37.112] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-463a6a369e3sm10998625b6e.4.2026.02.18.12.47.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Feb 2026 12:47:19 -0800 (PST)
-Message-ID: <0cb83f05-1e0d-4c8a-beab-3617fe1de90b@oss.qualcomm.com>
-Date: Wed, 18 Feb 2026 12:47:17 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jl69D+Do"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE38C19421;
+	Wed, 18 Feb 2026 23:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771457690;
+	bh=qpmummim78gKeegZYCtVyp5iwX18vKvMYjnNgD8l0OE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jl69D+DoZkStaY2t47YypxsCLd3CevtFy84xk5J11X5goiW4pR06Zk98qjsQIzhHT
+	 lB60HhAP9YpZDXVUv93WB5kYWUNymt15kRzZACjvy85H0eBN6ulLruWNNiHFPvpxIm
+	 dEH4wf8e0wn1RNN1NZrOj0bMd3TS5IiM2AXuxo9WrBz81wNfWMwsMCYQHoeajlUYzl
+	 s3pycgZ4DZFZkySQlJNMJXdS8hCFFYLiVE4PTkGli1+FYsAsmGxytpDLAyZzH68gje
+	 TRKmtmkdzxENsS9XcKLk961MRaRgwdbugP2qHHUNOoyTwjtNEQFdvKcm9/yaQINW9D
+	 LR/ukAqzLNF4w==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Weidong Wang <wangweidong.a@awinic.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Alexandre Ferrieux <alexandre.ferrieux@orange.com>, 
+ Bhushan Shah <bhushan.shah@machinesoul.in>, 
+ Bharadwaj Raju <bharadwaj.raju@machinesoul.in>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+References: <20260211-aw88261-fwname-v1-0-e24e833a019d@fairphone.com>
+Subject: Re: [PATCH 0/3] Bitmask logic fix and firmware-name support for
+ AW88261 amplifier driver
+Message-Id: <177145768781.2257280.10716165868413631584.b4-ty@kernel.org>
+Date: Wed, 18 Feb 2026 23:34:47 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
-To: Krzysztof Kozlowski <krzk@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com>
- <20260213-sm6350-camss-v3-1-30a845b0b7cc@fairphone.com>
- <W3evhxwcLQLbkKftGpGmJ5LaEO_h3nxsWSSzrthlfatPfO60KrPpbyaq7yAu1vKbQc0RLqsaCQhTPzRruNTg_Q==@protonmail.internalid>
- <20260214-slick-ringtail-of-innovation-d8eecd@quoll>
- <f5869002-1b42-4164-9f14-2ee41f5b1496@kernel.org>
- <b3e76e9f-a820-43ee-9089-7b7eaa876ebe@oss.qualcomm.com>
- <002d0b53-8fd6-4d40-9c4c-4c79a7704fce@kernel.org>
-Content-Language: en-US
-From: Vijay Kumar Tumati <vijay.tumati@oss.qualcomm.com>
-In-Reply-To: <002d0b53-8fd6-4d40-9c4c-4c79a7704fce@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Zo3g6t7G c=1 sm=1 tr=0 ts=69962558 cx=c_pps
- a=4ztaESFFfuz8Af0l9swBwA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Mtrz32Ht2ljPaXyFR70A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=TPnrazJqx2CeVZ-ItzZ-:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE3OCBTYWx0ZWRfX54t7Os2kjIt6
- j2k++mlDUUmiIY3L6T+AyS0sooW7Proy42zZuPssv4VBLPhaZSjj30mXz/N1byTB6O9Z+/BLIQR
- SZYGspNWbo5RVBGx/sMRRg9qKw5my9+2ZD/vKAAOLrkQYtopLKwbPlt6zRxzPyjWAKKqEXF+/1X
- p/06dB0bcA4/WqidH4pIghnauWNldB8hP/dNsxSBuIsaZCMmONRr+IRxU1IjeqxtrG8i9qcusn2
- 8PHOS2t37cq0ZGkM9N238MD0hSccVFqeDouyXI/yuQe2D9qZmgqtUpmIhcLyxb0Vmg5GIdHg+9/
- OkBvIghtzIDa5lsQ++uLWEYULcHRnu+v/gV/cLOBIFLP6p9b5r5crORXJ9Yk86qEL3TxfeKHs0y
- /6fPwF7/5t1fnnacD8um47rJhOlilSzfDSC7IlLKVQta9Ug/KRl05jXjpwaIb00Zw3zkwZffTdx
- yP9wyJdLorB4UUUuo9Q==
-X-Proofpoint-ORIG-GUID: _izgdfM-7qv1tYuH4E-K1Pss_b_eBrcd
-X-Proofpoint-GUID: _izgdfM-7qv1tYuH4E-K1Pss_b_eBrcd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_04,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 clxscore=1015
- adultscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180178
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-
-
-On 2/18/2026 12:10 PM, Krzysztof Kozlowski wrote:
-> On 17/02/2026 23:18, Vijay Kumar Tumati wrote:
->>>>> +  vdd-csiphy3-1p25-supply:
->>>>> +    description:
->>>>> +      Phandle to a 1.25V regulator supply to CSIPHY3.
->>>>
->>>> I assume that we abandon the idea of separate CSI PHY devices. It was
->>>> discssed way too long time ago.
->>>
->>> No just waiting for 6.20/7.0 to drop however, I think its fine to add
->>> new definitions until we merge that series.
->>>> With domains changed:
->> Please correct me if I misunderstood but if we are not blocking the new
->> patches over PHY node separation anymore, can you re-review SM8750
->> patches please, Krzysztof? Thank you.
->>
->> https://lore.kernel.org/all/20260119-add-support-for-camss-on-sm8750-v2-0-3e06583a0a81@oss.qualcomm.com/
+On Wed, 11 Feb 2026 11:27:31 +0100, Luca Weiss wrote:
+> First a patch which fixes a logic error in the aw88261 driver. And then
+> we add "firmware-name" support for that driver to support loading
+> the device-specific firmware properly.
 > 
-> I replied there, one more thing to fix.
-Appreciate it, Krzysztof. We will post the next revision as soon as 
-China team is back from holidays, early next week. Thank you.
 > 
-> Best regards,
-> Krzysztof
+
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/3] ASoC: codecs: aw88261: Fix erroneous bitmask logic in Awinic init
+      commit: b82fa9b0c26eeb2fde6017f7de2c3c544484efef
+[2/3] ASoC: dt-bindings: awinic,aw88395: Document firmware-name property
+      (no commit info)
+[3/3] ASoC: codecs: aw88261: Add firmware-name support
+      (no commit info)
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
