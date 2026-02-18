@@ -1,179 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from hamster.birch.relay.mailchannels.net (hamster.birch.relay.mailchannels.net [23.83.209.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3962FF662;
-	Wed, 18 Feb 2026 10:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771411255; cv=none; b=BqwBHX8qyCqY7RQG1S2lTyMHUZXEPNBYUDj8zIxFstXrL6eSKXg9lO4GFrZi/I1iomYivr1c2YbyVHPa1e9biqVt6IUmxK37NqwcPMVxH6V0e8dVUsNBBfUu/yTx8Q7Nye1+ct+kCzqyxXru/PgW0E8HTL8blRKOZXygg/bnB44=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771411255; c=relaxed/simple;
-	bh=RJ3db4P7f6iZL9PjraP8K+gI4ily9Dn6WB2Z9jdSzdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/QZ5fcpKAAnhE3+9/bJhNU1OM3WOBH8Rv88jA+9OVUBs3ftjhFd+3zz85sWUzeSGui3w6gx0+WUbiub6o0QJq8/soAeLFH0fMM5j79ceIsa9ti1Nf7BNKv6TcqsS8sob6jbn/NjVOs/h75EvvJqmSJ4ELu0RaBrw2L+Ud6VFDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gao72Tz8; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D3B3064BA;
+	Wed, 18 Feb 2026 12:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771416740; cv=pass; b=SE6CM7Ix4MzGJC/W9rh8OvaYZDtKxq2QFCE+DyEKvX0rmnSG5sBilour9Jw3PRX4kP91WLV34S7h1kqYnr3+lRhijtS6XdLL/Qs3d2/0asTgnCoevAsHxf/n1mNlfaCRyjHVXTbVows0dptB2QYmD2XohgGk9zJG1j/fWdb1mGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771416740; c=relaxed/simple;
+	bh=DUhthZlWxgLc+u8XC0DuEYtuketyEUoQp+seSACpnRg=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=ml6EhQ/d14rlTdUDauETVp9oHG90Cg8MGuGbmqhLyHNJeJHcdtEa1AAg16F7uEkSIEOufq9zdOpTFKDGQAbOn6cLs3qybsWa8qryTbnlvEBWUoJhUFaj05ihU0J8KF7tmIC5eiLGoi7IXx6FvmKszSlB1BncCcmnGK+a3GhLe+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=CQZi5aJ6; arc=pass smtp.client-ip=23.83.209.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gao72Tz8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771411254; x=1802947254;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RJ3db4P7f6iZL9PjraP8K+gI4ily9Dn6WB2Z9jdSzdI=;
-  b=gao72Tz8Mf5xEHkMriiy65ftvlgmKSKlobPVoRLgZtXH9yA0DwQ9/Xc6
-   juuJiGdIeNEBkTo/sc66JaFj0jifUV1bvDXYOt2hHOY7mzWups+AbnZjz
-   GyC7opoSRRzWmYlB+Ix0Fx9OJGO/xWmjRdX+i2EJcSGlxF51ZKa5dwfIj
-   PEg2PnaxqPuvWu8bjFBZZK4jbegf4/UiH3SoWcSnQ0qfNQb8IcbeZo+ih
-   eGwgnYHtf2McjJlvPL0Ic98p9ULc3cFHk2GbrZEyiDxiChxTrBABobJZ9
-   bmaIaf7icDdCMmvB59blasGsQqn6GZNmXNnpPiWHq5MdRnB8Or9AcqJTd
-   Q==;
-X-CSE-ConnectionGUID: pSL6OD+nSLC8nrS+X2ckgQ==
-X-CSE-MsgGUID: 981wdYDBTw6V0y3yZSb+oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="76344964"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; 
-   d="scan'208";a="76344964"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 02:40:51 -0800
-X-CSE-ConnectionGUID: sLYSybasRgiOXb5BDWpu0g==
-X-CSE-MsgGUID: ETul5zvpTyWNRTSJaFeDtQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; 
-   d="scan'208";a="214148729"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 18 Feb 2026 02:40:46 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vsez6-000000012HE-1d79;
-	Wed, 18 Feb 2026 10:40:44 +0000
-Date: Wed, 18 Feb 2026 18:40:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Aelin Reidel <aelin@mainlining.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Henrik Rydberg <rydberg@bitmath.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux@mainlining.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Aelin Reidel <aelin@mainlining.org>,
-	Piyush Raj Chouhan <pc1598@mainlining.org>
-Subject: Re: [PATCH 2/3] Input: add support for Goodix GTX8 Touchscreen ICs
-Message-ID: <202602181848.DK5Wc0iI-lkp@intel.com>
-References: <20260218-gtx8-v1-2-0d575b3dedc5@mainlining.org>
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="CQZi5aJ6"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 01210161171;
+	Wed, 18 Feb 2026 12:12:12 +0000 (UTC)
+Received: from fr-int-smtpout13.hostinger.io (trex-green-6.trex.outbound.svc.cluster.local [100.99.184.158])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 55D461629F0;
+	Wed, 18 Feb 2026 12:12:07 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1771416730;
+	b=XQAbhmuGKv64i3kyFwMUVMYLVEBJTe8R49N3vPJkpp0hJKRbVZ54dzFfaNCao1c/1PR/Tj
+	m/VqWBK9uVU/Pq/POCbnKHf7/t0BaFLLcsN2DUOSIz8Vu2UhJPsarbKb8e+bQlJD7e2rwy
+	MbN9H6Lc58+DiBX19YKEXrBTpKfqmWEgIA0UhJ0KW94z2yi0BQclKKeivvqeLi0+VPxM2D
+	zV2HmJyGmbDND5EJFqUDDJ9GvYMWO20oynkcltW7mh+Z4St0XsG0U/KYRA4XHi7jW0l8I3
+	jJk39DyzwBnD1mXl3BfSpmHz70SiBJ8Djd1IJBSMbHxtxIo6db6n9fyVcvmsZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1771416730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DUhthZlWxgLc+u8XC0DuEYtuketyEUoQp+seSACpnRg=;
+	b=3eptZoEbid5bdiGV4iaPoYO9Zu8awbwmz45NkHaM57vFYOTNdFaPxeWZmfjAvM9VU6SgyW
+	zNbsNxMSPbXIl4bdHXbqIQP2WtMOhqTdwygqqnw2q/1cq4830V/qlPKbM0fhp4lZaQiwwe
+	z/pqIAA4n+f7jSpKJk6KPnYtmlCMbIrPS1xIfn7j7UDfE0ddDObHxipB9S4OsG633h+NLc
+	3hqi+3XSyesBBHudPDQbHQPpostElAggCj0SSlm1VHhU5C6dT2Gtq6nExs1BIGxliAtv+F
+	zZBd/RLCgGCrGl2Xh8AQ809GIRe2aFCo16a2Pca4boNwZZsGDsnKEdP7/OD+Mw==
+ARC-Authentication-Results: i=1;
+	rspamd-84c84ff4fc-sjj9c;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Spot-Stretch: 6faa6caf1f7e38be_1771416730321_654544285
+X-MC-Loop-Signature: 1771416730321:1444518429
+X-MC-Ingress-Time: 1771416730321
+Received: from fr-int-smtpout13.hostinger.io (fr-int-smtpout13.hostinger.io
+ [148.222.54.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.184.158 (trex/7.1.3);
+	Wed, 18 Feb 2026 12:12:10 +0000
+Received: from [IPV6:2001:448a:c020:52e:7820:f884:34b8:246d] (unknown [IPv6:2001:448a:c020:52e:7820:f884:34b8:246d])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fGFkB2h0VzyQ6;
+	Wed, 18 Feb 2026 12:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1771416725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DUhthZlWxgLc+u8XC0DuEYtuketyEUoQp+seSACpnRg=;
+	b=CQZi5aJ6znbj5YB1V9CP6uKur5LO9ZqP/NIZumvay9pEWHkr89Qkuc+XdhKupZlWa+LfAf
+	3Rw4yEqhonR4UxYh15B7ZwJI9BLDI6YYu0LQB/v61O75DH89VPhPpgoD25U3KsNZMNKX6H
+	v+TBuHN73kcfaEyQyjLEkkDxsnSTlYCqXUCQotbdulekano8mcUZJA72xUmrvun6A6oQru
+	gjz98vKdkis1d4sXrlehQjg9AUQNRbsQnNjpNRalvWMKD7gboPIn+FSI+luet0aafFzwSQ
+	UNSdgRyfKATiN1R8VromUCAciyeuaLM5zchvwJJl1cn0JFkX4cfpjTo33HhoZA==
+Message-ID: <f1948d10-2327-45a6-9634-cd9ec01419a3@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260218-gtx8-v1-2-0d575b3dedc5@mainlining.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: clock: qcom,rpmcc: add msm8960
+ compatible
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260218-msm8960-sps-rpm-bindings-v1-0-bbc11c0d4f24@smankusors.com>
+ <20260218-msm8960-sps-rpm-bindings-v1-1-bbc11c0d4f24@smankusors.com>
+ <7gdpb64yu4ydcgfejfavq4g6vc3rz7cn3h7shle7gx6upscpki@podywah6acxh>
+Content-Language: en-US
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+In-Reply-To: <7gdpb64yu4ydcgfejfavq4g6vc3rz7cn3h7shle7gx6upscpki@podywah6acxh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Wed, 18 Feb 2026 12:12:02 +0000 (UTC)
+X-CM-Envelope: MS4xfN/gSSoXlEuY3QiUa+BBPmhReYyZd74eFYQd6yiWMwCpSrMSrKxs4DvvxGTABNlmL9atj1oAJk9x2FuLQv3nEVyY60IzqC9jY9ngIXLbfRWXvl4zdle0 8oci860cqtNK+ZVv6ABVdBJ47qIGBI0iQOt9EHoaeWphOmCDYkUYN8WUviLz2AJ7Js0bHdXIMsvu2yIYF6GjXgHzXFCkjKg+hvu60xWEEYWoGsOYM8b8g86P Ao62yndZnY5OcDXJmKgJeSuAVWJxi5D0tFf3FoCUws9Ep9Zd2cuP76PUmqeoLyv4m+RYWlpGQKaKjwoxBiQ7iZFDK/ocmFGofzT3rPu4grAWnwyo97rt/s4Q y75ZYMWSrrd0E+u9FAJMNVcwiRLMx36+veMJFD2SpZfqRjbNF9Lr8OA41zQi2mO5GdFAEo7VsDo5YsHoh8C/UHo7G9xyG8/JhXYYUUycr0gz09Gjel/IXIY0 XtWqMsvV6ykdtq+05RbFFf6YzUK1wYmeeT5o6afDYLb75jvgDToGch7vNyWi8KAhcAtT93MdGj2jw2LZ2lqL28MrqSStnhCdHqS1isuSCyrckkvE/qHPTG3d S8UJpRhBYWjDnj1dDwvARcGYzdPq4aFBf2p48B5CNRNCNFxZ1wKEQk8HKzFVzBkkCzqZtY+HUwsO0VkXSi8g7WaduBCZCIZ8giPmRo5uRwEcCAxqXxt0nl/4 BD42einc5MWNLKH1jEBdT8K42l3zxAp6tftB/LswPqY5kXJbPOquOzTGifzcLMo8IKmB3RbdAXs=
+X-CM-Analysis: v=2.4 cv=UN2PHzfy c=1 sm=1 tr=0 ts=6995ac95 a=XHuy+qXzPRwA4Bik7sPwZg==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=vI95pzUp9MDcBy5qOgsA:9 a=QEXdDO2ut3YA:10
+X-AuthUser: linux@smankusors.com
 
-Hi Aelin,
+On 2/18/2026 3:44 PM, Dmitry Baryshkov wrote:
+> On Wed, Feb 18, 2026 at 06:59:05AM +0000, Antony Kurniawan Soemardi wrote:
+>> Document the qcom,rpmcc-msm8960 compatible.
+>>
+>> The MSM8960 platform shares the same RPM clock definitions as
+>> APQ8064, so extend the existing conditional schema to treat
+>> qcom,rpmcc-msm8960 the same as qcom,rpmcc-apq8064.
+> The way you implemented it, it requires driver changes which were not
+> included in this PR.
+Oh wait sorry, I was misremembering thing about how I should sent
+dt-binding patches. I'm planning to send the following patches:
 
-kernel test robot noticed the following build errors:
+dt-bindings: clock: qcom,rpmcc: add msm8960 compatible
+dt-bindings: mfd: syscon: add qcom,msm8960-sps-sic
+mfd: qcom_rpm: add msm8960 QDSS clock resource
+clk: qcom: clk-rpm: add msm8960 compatible
+ARM: dts: qcom: msm8960: add rpm clock controller node
+ARM: dts: qcom: msm8960: add scm node
+ARM: dts: qcom: msm8960: add smem & hwmutex nodes
+ARM: dts: qcom: msm8960: add smsm & sps nodes
+ARM: dts: qcom: msm8960: add riva nodes
+ARM: dts: qcom: msm8960: huashan: add riva node
 
-[auto build test ERROR on fe9e3edb6a215515d1148d32a5c445c5bdd7916f]
+I'm concerned that this might be too large? Or not?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Aelin-Reidel/dt-bindings-input-document-Goodix-GTX8-Touchscreen-ICs/20260218-075424
-base:   fe9e3edb6a215515d1148d32a5c445c5bdd7916f
-patch link:    https://lore.kernel.org/r/20260218-gtx8-v1-2-0d575b3dedc5%40mainlining.org
-patch subject: [PATCH 2/3] Input: add support for Goodix GTX8 Touchscreen ICs
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260218/202602181848.DK5Wc0iI-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260218/202602181848.DK5Wc0iI-lkp@intel.com/reproduce)
+Would it be better to submit them as a single patch series to enable
+Bluetooth and Wi-Fi on msm8960?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602181848.DK5Wc0iI-lkp@intel.com/
+also +Krzysztof for the same comment.
 
-All errors (new ones prefixed by >>):
-
-   drivers/input/touchscreen/goodix_gtx8.c: In function 'goodix_gtx8_report_state':
->> drivers/input/touchscreen/goodix_gtx8.c:110:37: error: implicit declaration of function 'FIELD_GET' [-Wimplicit-function-declaration]
-     110 |                         finger_id = FIELD_GET(
-         |                                     ^~~~~~~~~
-   In file included from include/linux/kernel.h:35,
-                    from include/linux/random.h:7,
-                    from include/linux/nodemask.h:94,
-                    from include/linux/numa.h:6,
-                    from include/linux/cpumask.h:15,
-                    from include/linux/smp.h:13,
-                    from include/linux/lockdep.h:14,
-                    from include/linux/spinlock.h:63,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:7,
-                    from include/linux/slab.h:17,
-                    from include/linux/resource_ext.h:11,
-                    from include/linux/acpi.h:14,
-                    from include/linux/i2c.h:13,
-                    from drivers/input/touchscreen/goodix_gtx8.c:16:
-   drivers/input/touchscreen/goodix_gtx8.c: At top level:
->> drivers/input/touchscreen/goodix_gtx8.c:555:37: error: 'goodix_gtx8_pm_ops' undeclared here (not in a function); did you mean 'goodix_gtx8_probe'?
-     555 |                 .pm = pm_sleep_ptr(&goodix_gtx8_pm_ops),
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/util_macros.h:136:44: note: in definition of macro 'PTR_IF'
-     136 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
-         |                                            ^~~
-   drivers/input/touchscreen/goodix_gtx8.c:555:23: note: in expansion of macro 'pm_sleep_ptr'
-     555 |                 .pm = pm_sleep_ptr(&goodix_gtx8_pm_ops),
-         |                       ^~~~~~~~~~~~
-
-
-vim +/FIELD_GET +110 drivers/input/touchscreen/goodix_gtx8.c
-
-    87	
-    88	static void goodix_gtx8_report_state(struct goodix_gtx8_core *cd, u8 touch_num,
-    89					     union goodix_gtx8_touch *touch_data)
-    90	{
-    91		union goodix_gtx8_touch *t;
-    92		int i;
-    93		u8 finger_id;
-    94	
-    95		for (i = 0; i < touch_num; i++) {
-    96			t = &touch_data[i];
-    97	
-    98			if (cd->ic_data->ic_type == IC_TYPE_NORMANDY) {
-    99				input_mt_slot(cd->input_dev, t->normandy.finger_id);
-   100				input_mt_report_slot_state(cd->input_dev,
-   101							   MT_TOOL_FINGER, true);
-   102	
-   103				touchscreen_report_pos(cd->input_dev, &cd->props,
-   104						       __le16_to_cpu(t->normandy.x),
-   105						       __le16_to_cpu(t->normandy.y),
-   106						       true);
-   107				input_report_abs(cd->input_dev, ABS_MT_TOUCH_MAJOR,
-   108						 t->normandy.w);
-   109			} else {
- > 110				finger_id = FIELD_GET(
-   111					GOODIX_GTX8_FINGER_ID_MASK_YELLOWSTONE,
-   112					t->yellowstone.finger_id);
-   113				input_mt_slot(cd->input_dev, finger_id);
-   114				input_mt_report_slot_state(cd->input_dev,
-   115							   MT_TOOL_FINGER, true);
-   116	
-   117				touchscreen_report_pos(cd->input_dev, &cd->props,
-   118						       __be16_to_cpu(t->yellowstone.x),
-   119						       __be16_to_cpu(t->yellowstone.y),
-   120						       true);
-   121				input_report_abs(cd->input_dev, ABS_MT_TOUCH_MAJOR,
-   122						 t->yellowstone.w);
-   123			}
-   124		}
-   125	
-   126		input_mt_sync_frame(cd->input_dev);
-   127		input_sync(cd->input_dev);
-   128	}
-   129	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Antony K. S.
