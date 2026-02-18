@@ -1,67 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4A6346FDA;
-	Wed, 18 Feb 2026 19:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6DE3451A9;
+	Wed, 18 Feb 2026 20:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771443591; cv=none; b=HZP5Bl55AQ6GqtBzbX6mzTBHbbfWZ5RZOF5LRkOsy5UCxx1l/1zmRQGFBIG4+WDed37VgnHKew8VYNPgSHJUuYtPDQZkXGeYev+YHJZ2zpyt6SsHoZ453wJXGGacaJIRLKbM3Y9DT0q0usePVxb80G/HQ34LAfc2GgIE3+6ZQpM=
+	t=1771445450; cv=none; b=QmZVUeF8ghh7FwRpCANnyKeZ7GqO8rMeRhFVFrfVFQ8tuSK0fWiKKT5Dq4QvVaj2tHTxA6ec6mC5qYHEVp1XQBzpg8fBcHV+CGx6q5q5VnHBhOzIAYngE3X2Bb/C9QQ1Rz42DEOc32I0CczUGFe3JT+e4Ap8vNqtf4Ju/2e7eW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771443591; c=relaxed/simple;
-	bh=D+sEqreT8KH5MvuumZ7pq26QX38YMqgmFXHC5MpUHIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OVUYC9PGjNuL2+Ku8LF4ZkXxadlc5wT0IGWUrPKSJgVYJcHfvgypKr0J4QzE/Kpf10df9yNojIy5Vua5p6f53eSL85XcnGcRPMWahHMt471SOot1+LhkHXs5bq6/oDr75QWFHCNclSgjKvXQRX61gjQJ2GbyEY9wvI4/jdaNIyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI+hyUgq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771445450; c=relaxed/simple;
+	bh=xW/MyHo6KQjbKxYNlRnkTDuAqoAXtNChD2UDEshVBNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lwnc76fNj4WFM7fR1gcszCu1enFRpsZ4lmhqUm8/psr7QkezQP8Dy3ILvzqvhowx8qPRiH1GFKmfReueoNZKiEZiN99awYNCV711GGFQC5eXqEq2+YVcu5bTnXF//qvNjPRSIvBddWIPdVIeYbhHCP/0kG+65yG/dnhjPgOuSX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5KIUqeF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI+hyUgq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B24AC116D0;
-	Wed, 18 Feb 2026 19:39:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5KIUqeF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C29BC116D0;
+	Wed, 18 Feb 2026 20:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771443591;
-	bh=D+sEqreT8KH5MvuumZ7pq26QX38YMqgmFXHC5MpUHIU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RI+hyUgqI5cailj1bpFIIXs3zptVPHPX93Xkr5Re4wSoXIbRLMHjD1aXMwKbjKs+B
-	 mTiCFNEElZy8jB3/lGLMeqqbGycz97SV30exS2xB0bRGwJdsvVz8QpEs0tUS7HadqQ
-	 6XV8TTrPIoa8ALF3yZ3RQ22OYVirOye9ACou8eRzXmz82R2plyhgC4qKdBBaDB1+f4
-	 C3Di2Z9/fv8xVrwfBt0LMQZ3G/HMSIMSgvnN2/KQXZ1Z/7c6FlOmu3o23atMYzQzH3
-	 CpwM//95xUMlqGIuiE18JZ2zmfEtgkEP6UFCB+zob/w9FnW+qxKY+0ShKMUSBVCLhP
-	 X/xBG9aWgtpbQ==
-Date: Wed, 18 Feb 2026 19:39:42 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v5 0/2] iio: light: Add support for Capella cm36686 and
- cm36672p sensors
-Message-ID: <20260218193942.192faeef@jic23-huawei>
-In-Reply-To: <20260217-cm36686-v5-0-63c2de9709d8@gmail.com>
-References: <20260217-cm36686-v5-0-63c2de9709d8@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1771445450;
+	bh=xW/MyHo6KQjbKxYNlRnkTDuAqoAXtNChD2UDEshVBNw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j5KIUqeFmvAmTrKiAbbfRkQX+Huros6cFShiYDsAv6kkadgN+otQRaQL50GTuDNjS
+	 SfCVKp+yOSJ/ccnDndYa4ZSkr1sKZFs4nTC79+6HUnvW7J50smSHJzTwO4OG1vK0Oi
+	 3GZLsfkbi2DCBtGk0bEwK/iZxAzbd0/+So5BA1Q/klF05kwFViDVEkkXlj4EO8LcVj
+	 ed8Q/40iNT9WDdihErH4PoGjv2NFKuVjHGNYVO5ZwxKSHrtXxTt5mrEdmbtoZgZDOW
+	 RiKvSRTMWp1hKFNHqz31w0I0OojARFVUEE682Zjw4PWcVZbaR6kycErD+urQidy23U
+	 YQpmVH0yxv6Bg==
+Message-ID: <002d0b53-8fd6-4d40-9c4c-4c79a7704fce@kernel.org>
+Date: Wed, 18 Feb 2026 21:10:44 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
+To: Vijay Kumar Tumati <vijay.tumati@oss.qualcomm.com>,
+ Bryan O'Donoghue <bod@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com>
+ <20260213-sm6350-camss-v3-1-30a845b0b7cc@fairphone.com>
+ <W3evhxwcLQLbkKftGpGmJ5LaEO_h3nxsWSSzrthlfatPfO60KrPpbyaq7yAu1vKbQc0RLqsaCQhTPzRruNTg_Q==@protonmail.internalid>
+ <20260214-slick-ringtail-of-innovation-d8eecd@quoll>
+ <f5869002-1b42-4164-9f14-2ee41f5b1496@kernel.org>
+ <b3e76e9f-a820-43ee-9089-7b7eaa876ebe@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <b3e76e9f-a820-43ee-9089-7b7eaa876ebe@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 17 Feb 2026 14:13:14 +0200
-Erikas Bitovtas <xerikasxx@gmail.com> wrote:
-
-> This patch series adds support for Capella cm36686 and cm36672p ambient
-> light and proximity sensors.
+On 17/02/2026 23:18, Vijay Kumar Tumati wrote:
+>>>> +  vdd-csiphy3-1p25-supply:
+>>>> +    description:
+>>>> +      Phandle to a 1.25V regulator supply to CSIPHY3.
+>>>
+>>> I assume that we abandon the idea of separate CSI PHY devices. It was
+>>> discssed way too long time ago.
+>>
+>> No just waiting for 6.20/7.0 to drop however, I think its fine to add 
+>> new definitions until we merge that series.
+>>> With domains changed:
+> Please correct me if I misunderstood but if we are not blocking the new 
+> patches over PHY node separation anymore, can you re-review SM8750 
+> patches please, Krzysztof? Thank you.
 > 
-Series applied to the testing branch of iio.git.
+> https://lore.kernel.org/all/20260119-add-support-for-camss-on-sm8750-v2-0-3e06583a0a81@oss.qualcomm.com/
 
-I'll be rebasing on rc1 after the weekend and then pushing out as togreg for
-linux-next to pick up.
+I replied there, one more thing to fix.
 
-Thanks,
-
-Jonathan
+Best regards,
+Krzysztof
