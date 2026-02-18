@@ -1,191 +1,183 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5F933BBD4
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 18:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7986C2E1C7C;
+	Wed, 18 Feb 2026 19:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771438377; cv=none; b=kSHGOc2tea0d7qxWOISCgDJRh4aQdTmlmLcz4VNVyYMtO1h4mLf2CFipEHlhu713Fcv2rL4wE81tayA1Cgds9HVIH/Nhv3HTAG0STGWInSmqvXCGbn6FDjqUOi5YVgBUBkRutcSr7w3H/yaPFv0GvkTLkVLQcSnECnJLWHJMhXo=
+	t=1771443132; cv=none; b=ucpCeOOcJKHCkZiOeYpEa7BXDKSnugWh4ZDlXr6jVqkG4AoQ5UNkCjlJgJy1RBrH9IyhEmAla/s2yOP/4jY34qgO5Q+RRpCAnBspVqKuQsfEdp1+UVeDRRtEOYLGk+n6e1MjCeejqRcpDd1JDgDrr0NU8uNyREbcZq4Fqqe3zHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771438377; c=relaxed/simple;
-	bh=EGCHzAodjFoZy8zwIYBG26zhK2m8hl6yb7/jmJpKo5E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UA99DpIfPPMoyOnGpbxV775R468YP9YcpAsOdsXjjXcN+w6wjgBIVbrjI3P+YHAtX4XPmAqJZ5Q9KT96RUPMAE41wLrkDMnGu4PsrVkd5DRHY8lPUCNO/Z8Coi8lED3VzY4SaBtRDy5uEenRv1udu7Xjsfc8g6tMjVu3/FhYDFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gTLTC/7f; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VcfuAgsp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1771443132; c=relaxed/simple;
+	bh=VorzV0gWr0O6AA2ImGqp/U+3EMA/7VoEq4X1IOkrX6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dMcEeCn5+wx2b9NTz8waIqVbkQ0gfwcUo8KnpWRd2OAPb2k241cA1JxP77H9SvWjgFXrVTwzc1iD4NigT6rcIRUkqDzGRjTP5tJIcgMeoHX8SE0w/UF+7v+QmsNf94fTLY+fVnrTq2aurYgX8u/N39OLoWwrvONJ64B8b1o0sUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLtnW0dL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gTLTC/7f";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VcfuAgsp"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61IC4vCF4060756
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 18:12:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0qxYicnhNGlFLcggiQLI77gWH/Wu7rKIhhyFeimRe+0=; b=gTLTC/7fQg/PpnEg
-	r4+FYne+wtNRoFdRMRBBrB8WmbJQXoxjckho7MPclKtEVybhzONWam5DnUD8tvo6
-	oaeK9MtZd6//hb0M0GRm42Ew6gvIINmJbn0BaWIgtr+iUmY6gE/RwkfK9guh/WiB
-	k0y2RcyZtBCaJ4oG4QIVqAM8F+zBZRrfaIx/6UtA5yNN5gW+3E+2lPqUPZyTmvO1
-	G5jwPEenrFxgZrCOfFila1OG3wRsga0EertXx5Hr4Ai5wPhf/tDKEgA2Pi103lwF
-	xqxWD6J23IEJonr4Jh59jde69iE+BBera4+oicBkR0FM8ZuEYEJjsVytEAku8L4v
-	/+vqUw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cd1qx2qn2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 18:12:55 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-354e7e705e3so40630a91.1
-        for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 10:12:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771438374; x=1772043174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0qxYicnhNGlFLcggiQLI77gWH/Wu7rKIhhyFeimRe+0=;
-        b=VcfuAgspV7dauuXX0eUbQDF9Z9IpN3gpDqXDWjmzmkGgVP1BiVo5IhPE/twkEowLJX
-         fzNUBi7oxaGCRx7opzmm+WSvgKQ53hjZzAiiUJMGcIjRH/LjYI7O7lRVMgk3KaGUUGJn
-         jOtitTdS63timTR4MGQ2zklqKBRKp2D34zg9NvMaVvcaUfPa0WQWWnuR4nUNWVzC6AVL
-         Xe+zuN9hlnJ1xGxLcx9u/v4NAgC0vltQO6qiqGmaT2e3xj7mOnUIR7J8yNheSY7JRr/o
-         iDuNNSPuva1DA42+E/ZnFDuW12C4BSswvL3q1qixku9aIokOQqlVMrKxJ/N1OfPw5OkP
-         JBCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771438374; x=1772043174;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0qxYicnhNGlFLcggiQLI77gWH/Wu7rKIhhyFeimRe+0=;
-        b=t+VLzWjTyn2//csT4ruOatFB946cllazWDRL6SZ3pzuSRnF1AuiGkxEEomSo+G2+iB
-         HpbYQ4Q/gEF1/Qhh3U6fi4HesiDQgh++1Ud3KeRXxdFB42J4wInVz4Ki6J8rxNdyoN55
-         DlADnRe5CXMD6WaTbYGrprY/dNxpmtHRSW58sRAVd3o5wShqDTDSCTflJEyR0Bb9dOgm
-         JuXB0Jna8wye3/83nGBwCeg+6s/aEHI9AKoGBQn71yC8tmU37+bfJ+GFn8Ovk/+2WBhX
-         xdi7eZ2IrfC26DZgmxfiUkn9/PdLsYUDy/MVekrV7IAmKNGCOeU8vDxc/VvunAOYCUGi
-         7qzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMefwkKKCehJIcuARk5agl2qNHfmMkX2SFc3U8z/iogZ3lyujlZOW2vUhBfDE5CkrZ+AGhrwQQfYx2Ew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsCUxxwgPrW7c5+y/Wjnf36lmCO/1Ov0dBSG/Ld/ZvDOirmY23
-	/q9hxlRuGhcDciOicTbqDU/2ayfOncMJUVZLKFeDbYJhx8sLaGihoWtpAc0PoMLsvKRPH/8j/HY
-	JP/pwhcv2KGrL86iNFPMA+bEhDYjP5skOPMLfo6kdUAG+XWbMafCQp7Ep0MSR8EfvYw==
-X-Gm-Gg: AZuq6aL32867mdfTpTvCS/YUI19HYOReWoiXJuDFZoGR+EvQtv8SmNoD7TwCCdeB6WT
-	I4osDYLpjNHsAkxueqFmjxLusWxY5eoHqCfn/bJrB1QPH5tPsCQl9hNDYyHjvbVdmgA+BgWs/0h
-	Z2JBGO4pZm3Rwel2zuAaeDOVwvm/zHWqK8WLod1Fqy3TdxcPpTgaFwqK3bWMifVabY/HErTc0Ft
-	/WPj5GhbglGcaE6rmVJk6OyqXjZb+woAatESj9JcrPl59kAD0MJT17dsLIunfZKGyTYEuWy/lgN
-	Y/Yd6wP9d0ecf7FjC2zBLeplJI8LYOqRLPA9QTR49SinSqLoKhArKvcLQKG0xDLepNI63I1NNFY
-	jiNj/DWeJNrsE/bdPKuWalug7B+SyBbVDQ25ElMjBimuwSFvHXEw=
-X-Received: by 2002:a17:90b:1348:b0:341:c964:126c with SMTP id 98e67ed59e1d1-3589380276emr130935a91.34.1771438374187;
-        Wed, 18 Feb 2026 10:12:54 -0800 (PST)
-X-Received: by 2002:a17:90b:1348:b0:341:c964:126c with SMTP id 98e67ed59e1d1-3589380276emr130915a91.34.1771438373715;
-        Wed, 18 Feb 2026 10:12:53 -0800 (PST)
-Received: from [192.168.29.32] ([49.43.224.102])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35887899158sm1783264a91.5.2026.02.18.10.12.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Feb 2026 10:12:53 -0800 (PST)
-Message-ID: <0c7a4fef-e7c6-43d9-83ca-65a182a33adf@oss.qualcomm.com>
-Date: Wed, 18 Feb 2026 23:42:28 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLtnW0dL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B96DC116D0;
+	Wed, 18 Feb 2026 19:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771443132;
+	bh=VorzV0gWr0O6AA2ImGqp/U+3EMA/7VoEq4X1IOkrX6I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pLtnW0dLufISY0raQ1oP7SquwZMCZr1as+DhzKHCxcEAVpUfFNyO1k+X1ldSchpCv
+	 Kizfyc1NnlcXlw53Ez5i4viDxMBkBZP7/2dmWeXynjQ9dGD0jzCAX8FzZGhs//TbGV
+	 KNppP+RHEOBvFUjjLBn67XrbgkC5cCkrC5zM0v4mq8IDVRzBRR03FOszkMzoBs8kls
+	 KxoQBnj6UNmsKa2WRt8H4y61NT3fJKnGva2I3fAO+c6X7KIsl/DU16n3VcLGGABNqb
+	 oeUMDFx/hFxaZ8PjPewl9uOGEVfkeJO0snDWnNR/NGsTJJG2A1bLfkPL2HFMFOdFAJ
+	 VtK6LNCcbW8AA==
+Date: Wed, 18 Feb 2026 19:32:01 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: andy@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dlechner@baylibre.com, krzk+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com,
+ phone-devel@vger.kernel.org, pmeerw@pmeerw.net, robh@kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v4 2/2] iio: light: vcnl4000: add support for Capella
+ CM36686 and CM36672P
+Message-ID: <20260218193201.5117479b@jic23-huawei>
+In-Reply-To: <ceb597ed-3380-4952-b159-36f3862bf2c2@gmail.com>
+References: <20260215193114.2a1010a8@jic23-huawei>
+	<20260215200628.53841-1-xerikasxx@gmail.com>
+	<20260215215519.23126ef3@jic23-huawei>
+	<ceb597ed-3380-4952-b159-36f3862bf2c2@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] Add CAMSS support for SM6350
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Bryan O'Donoghue <bod@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Taniya Das <taniya.das@oss.qualcomm.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com>
- <c83ce76a-1c83-40eb-9c67-d26b7e6f68f3@oss.qualcomm.com>
- <caa870e2-3795-40bc-9f0e-c93e313c8c6e@oss.qualcomm.com>
- <124c661b-db25-466a-a163-99ca336a3e70@oss.qualcomm.com>
-Content-Language: en-US
-From: Imran Shaik <imran.shaik@oss.qualcomm.com>
-In-Reply-To: <124c661b-db25-466a-a163-99ca336a3e70@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: wrzG889YjgxodFEhUFrxCtWwLi_kIRpl
-X-Authority-Analysis: v=2.4 cv=R7oO2NRX c=1 sm=1 tr=0 ts=69960127 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=8ET0PZbB28S/dExBzKx22g==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=BC0RzjFpySZ26J9PUKwA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE1NSBTYWx0ZWRfXz+yrgAcDh10N
- iUNn2zPJIapU4CUp/ulm2kfUhbZYjZ0sQ/jwI4Rf/zzFhVCnYFuqDYQQY1WX9D+27VsxCcUBRhB
- wuppkwBCG/JW7aGeQqW69dYMOCSQ26vRRHLFBImw7nMOUDTSBdMH3+R+Z5pfzJJMP/8lOPhpki9
- PkhpDQKnJtMFe/dTCT+gNy0IlaBVlidHGISATj3U1PqwHiqnfSq8qNW9gAY9LRLHwIffM1fGZaM
- lmJESZ7MvCvChW1cmQDV1DXLJgsjSKHWzEi87tjJ0DW9W1sQsaq0K9hgz4R1JHfCUphgfXY0rm2
- NrwOhN7m7qfyLkFJqtOzicI3roB7N0HoP+NLLFZZyoVH795+3SDPBIokZ5JD+F9gTmO2DmiJSch
- niZv4IKdXjiEB0Dh9jvpaYWkMlbs7ctpO1dgqpZD4GrKm5HunzpASsJVO/W41s+s+wry4dS+tug
- HyIxv5c2HZYG26X0jFg==
-X-Proofpoint-ORIG-GUID: wrzG889YjgxodFEhUFrxCtWwLi_kIRpl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_03,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180155
 
+On Mon, 16 Feb 2026 10:21:23 +0200
+Erikas Bitovtas <xerikasxx@gmail.com> wrote:
 
-
-On 17-02-2026 05:31 pm, Konrad Dybcio wrote:
-> On 2/17/26 12:56 PM, Imran Shaik wrote:
->>
->>
->> On 16-02-2026 04:34 pm, Konrad Dybcio wrote:
->>> On 2/13/26 2:15 PM, Luca Weiss wrote:
->>>> Add bindings, driver and dts to support the Camera Subsystem on the
->>>> SM6350 SoC.
->>>>
->>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
->>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
->>>> far as I can tell.
->>>>
->>>> Though when stopping the camera stream, the following clock warning
->>>> appears in dmesg. But it does not interfere with any functionality,
->>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
->>>> while the clock is on, and 'off' while it's off.
->>>>
->>>> Any suggestion how to fix this, is appreciated.
->>>>
->>>> [ 5738.590980] ------------[ cut here ]------------
->>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
->>>
->>> FWIW 845 has .halt_check = BRANCH_VOTED here, which translates into
->>> 'dont check the state at disable', this one has BRANCH_HALT (i.e. spin
->>> and keep checking the hw state)
->>>
->>> +Taniya would BRANCH_VOTED be fitting for 6350 too? ^
->>>
->>
->> The parent RCG of this clock is under NoC control, and seems like there is no vote on the NoC while disabling this clock, hence this issue is observed.
->>
->> The BRANCH_HALT_VOTED/BRANCH_HALT_SKIP should help, or if the NoC voting is removed after the clock disable then also this issue should be resolved.
+> On 2/15/26 11:55 PM, Jonathan Cameron wrote:
+> > On Sun, 15 Feb 2026 22:06:28 +0200
+> > Erikas Bitovtas <xerikasxx@gmail.com> wrote:
+> >   
+> >> On 2/15/26 9:31 PM, Jonathan Cameron wrote:  
+> >>> On Sun, 15 Feb 2026 19:28:56 +0200
+> >>> Erikas Bitovtas <xerikasxx@gmail.com> wrote:
+> >>>     
+> >>>> On 2/14/26 8:09 PM, Jonathan Cameron wrote:    
+> >>>>>> ---
+> >>>>>>  drivers/iio/light/vcnl4000.c | 40 ++++++++++++++++++++++++++++++++++++++++
+> >>>>>>  1 file changed, 40 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> >>>>>> index a36c23813679..1f8f4e4586f4 100644
+> >>>>>> --- a/drivers/iio/light/vcnl4000.c
+> >>>>>> +++ b/drivers/iio/light/vcnl4000.c
+> >>>>>> @@ -185,6 +185,7 @@ static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
+> >>>>>>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
+> >>>>>>  
+> >>>>>>  enum vcnl4000_device_ids {
+> >>>>>> +	CM36672P,
+> >>>>>>  	VCNL4000,
+> >>>>>>  	VCNL4010,
+> >>>>>>  	VCNL4040,
+> >>>>>> @@ -235,6 +236,8 @@ struct vcnl4000_chip_spec {
+> >>>>>>  };
+> >>>>>>  
+> >>>>>>  static const struct i2c_device_id vcnl4000_id[] = {
+> >>>>>> +	{ "cm36672p", CM36672P },
+> >>>>>> +	{ "cm36686", VCNL4040 },
+> >>>>>>  	{ "vcnl4000", VCNL4000 },
+> >>>>>>  	{ "vcnl4010", VCNL4010 },
+> >>>>>>  	{ "vcnl4020", VCNL4010 },
+> >>>>>> @@ -1842,6 +1845,22 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
+> >>>>>>  	}
+> >>>>>>  };      
+> >>>>>
+> >>>>> ...
+> >>>>>       
+> >>>>>>  	[VCNL4000] = {
+> >>>>>>  		.prod = "VCNL4000",
+> >>>>>>  		.init = vcnl4000_init,
+> >>>>>> @@ -2033,6 +2065,14 @@ static int vcnl4000_probe(struct i2c_client *client)
+> >>>>>>  }
+> >>>>>>  
+> >>>>>>  static const struct of_device_id vcnl_4000_of_match[] = {
+> >>>>>> +	{
+> >>>>>> +		.compatible = "capella,cm36672p",
+> >>>>>> +		.data = (void *)CM36672P,
+> >>>>>> +	},
+> >>>>>> +	{
+> >>>>>> +		.compatible = "capella,cm36686",
+> >>>>>> +		.data = (void *)VCNL4040,      
+> >>>>>
+> >>>>> Is this necessary? I 'think' if you drop it we'll match instead
+> >>>>> on the vcnl4040 fallback and then the access to the data will be
+> >>>>> through the stripped name only bit of the compatible (first entry, not
+> >>>>> the fallback so cm36686 in this case). So you do need the cm36686
+> >>>>> entry in the i2c_device_id table above. Probably better to keep
+> >>>>> this here to avoid having to reason this out - but perhaps a
+> >>>>> comment to that affect would be useful (assuming you verify my
+> >>>>> reasoning).
+> >>>>>      
+> >>>> After I removed the entry for "capella,cm36686", I received the "Unable
+> >>>> to handle kernel NULL pointer dereference" error in dmesg. And at least
+> >>>> stk3310 driver includes a compatible entry both for the device (stk3013)
+> >>>> and for the fallback (stk3310). So my assumption is that this entry is
+> >>>> needed.
+> >>>> I could include a comment explaining that cm36686 is fully compatible
+> >>>> with vcnl4040, however, if that is necessary.    
+> >>>
+> >>> Thanks for checking.
+> >>>
+> >>> What did you get as the backtrace?  I'm hoping it'll explain what I'm
+> >>> misunderstanding!  The hacks around using the wrong table for compatible
+> >>> matches have tripped me up before.
+> >>>
+> >>> Jonathan
+> >>>     
+> >>
+> >> I am attaching a link to the dmesg. There were quite a lot of lines in
+> >> the stack trace and I am not sure what is the right way to post logs in
+> >> the mailing list.
+> >>
+> >> https://pastebin.com/QgeTdNEP  
+> > 
+> > Thanks. only relevant bit is probably:
+> > 
+> > [   15.566076]  vcnl4000_probe+0x54/0x288 [vcnl4000] (P)
+> > [   15.566102]  i2c_device_probe+0x2b0/0x358
+> > [   15.566121]  really_probe+0x154/0x448
+> > 
+> > My guess is my understanding of i2c_client_get_device_id() is wrong and that
+> > is returning NULL.  That can only happen if client->name is not a match for
+> > anything the i2_device_id table.  If you have a chance, can you dump
+> > what client->name is in this case? I thought it ended up as
+> > cm36686 (stripped first entry in compatible) but seems I'm probably wrong on
+> > that :(
+> > 
+> > The path I thought worked was via info->type (which gets copied to client->name)
+> > set via of_alias_from_compatible() here.
+> > https://elixir.bootlin.com/linux/v6.19-rc4/source/drivers/i2c/i2c-core-of.c#L30
+> > Which should just return the first compatible without that vendor prefix.
+> > 
+> > Meh, this doesn't really matter anyway as once we refactor to actually use
+> > the data in the of_device_id table, we will need the entry and in the meantime
+> > it's sort of documentation.
+> > 
+> > J
+> >   
 > 
-> This is very useful, thanks for the insight!
-> 
-> Is any of these solutions specifically preferred from your side?
-> 
-> Konrad
+> Apparently I just had commented out the i2c_device_id entry for cm36686
+> as well, when I had to comment out only of_device_id entry. After adding
+> i2c_device_id entry back, it works, just as you said.
+> I will submit a v5 with of_device_id entry removed if that is necessary.
 
- From clock controllers side we can use the BRANCH_HALT_SKIP as this 
-covers both enable/disable scenarios. But this needs to be checked 
-further from consumer driver side as well to handle the NoC voting 
-properly.
+It's not hugely important but I would expect to see it go away if a follow up
+set moves to actually using the data form the of_device_id table.  At that point
+the two types of table are largely independent.
 
 Thanks,
-Imran
+
+Jonathan
+
 
