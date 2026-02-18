@@ -1,157 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15772FD7BE;
-	Wed, 18 Feb 2026 13:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CC031282E
+	for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 13:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421399; cv=none; b=NnbIRzODWF8+46lkXqIr6/IymJAr7DpSSbQeM2hb0ETwt2VgpMsEEmyzDGi1iAmQbcpdbml8ujhnnPv+OoR+KPzGbJf39FDGdqZ0u3d/DQxwGJKvJzAZi9vmY4AFsTr1xvSzAK71anT+cgm/UR4HS02xPHWGjy8MtQo5r9gO6ds=
+	t=1771421547; cv=none; b=abXWBxOsd3VF7O/EQDr/EpFifkgzQfK/t3eFt/rKCT8HFmNxj1pt/YVk/u+OlUGPhLsEgTUbib4wDCkNrfszpYq6O4Srcz14pwQwC105YfFeX+A1S+UmRCu/npQms2rpG8sRuMfq7g276JYIWA3uB5niZ/VTjNCF4q8hFOZh8Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771421399; c=relaxed/simple;
-	bh=+eEDQP7ZC+Sn7kLzL0NEWHh05rcZXqlQQIEzWs0DxtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hBBjJ946VoAEobVW0mosKYNRLNCcR2lNVPQKk/Qd8hQ/Vipt6FUcLAvW9aJrpWbnw1l/YFOgQargvvMIWyCDm/3SrvPcifl7zg+M8RPQFcywagqiG/lfR1r1+oscpoQas3EeImMeJwfVdL11hN5FvvOmZ/d8hpCZ12rnbs9R/fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iTXg9L3Q; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1771421547; c=relaxed/simple;
+	bh=OjsOVKKkecxrDuJK35sJC8GLlFfWYkzW0WWUdrjxNms=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V77KIq6u6kRAkX+xdumGlrD1ItDu5LbB4Wtsq91sCnevTbOxYL3y7SxaIYr8A9C7ae+DQDFss3xqkjcPOj56H/xXqeXAgdsaIZjIq5111wf5ctMnszxRbELJd7eaNGFfK22hEaUvKRR3DTjca+ttplGN8vRJurhOp4pMlCmrdAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y1rqW9D1; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iTXg9L3Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771421398; x=1802957398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+eEDQP7ZC+Sn7kLzL0NEWHh05rcZXqlQQIEzWs0DxtA=;
-  b=iTXg9L3QjcJGmZGwJfzHj5LvLIq7/6MHSZXXufH675aOhyUPwGgNZ1lo
-   fths+1YDowTq3325CawCXjxOG7Qj7JtnBuaIvXY2NJubWjK40WKUFeer8
-   pMEo5Xw98cL/TZ3E+Mf84gioERUGuHSWoGnFuf95r/uTjacmNKurCtKbb
-   l361tM/PyJqTjis2OUEYNkP0cCc+BMEcqkuUGuezibXXpHpSk8/FVtQo7
-   k9DGpQa1mUVNOKw5x+qzU+xlICAVOaPhiaqsHMeH375m/4+wOk09UHfvr
-   EDG4GmMbmOmf3RU2zMvhY4yr2KerK5QGqets6lRAUnl7hjrnfTXwg1ZoL
-   g==;
-X-CSE-ConnectionGUID: bs9PubYfTPuoNxddtyPrkg==
-X-CSE-MsgGUID: dsN50TnrS52eR//c+pmEqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="97956449"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; 
-   d="scan'208";a="97956449"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 05:29:57 -0800
-X-CSE-ConnectionGUID: Izloa6RIRcudyY2e/WdIxA==
-X-CSE-MsgGUID: dQzn2tmzSRSZRYfKJ5n1tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; 
-   d="scan'208";a="212553047"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 18 Feb 2026 05:29:52 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vshck-000000012Nc-1WO1;
-	Wed, 18 Feb 2026 13:29:50 +0000
-Date: Wed, 18 Feb 2026 21:28:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Aelin Reidel <aelin@mainlining.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Henrik Rydberg <rydberg@bitmath.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux@mainlining.org,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	Aelin Reidel <aelin@mainlining.org>,
-	Piyush Raj Chouhan <pc1598@mainlining.org>
-Subject: Re: [PATCH 2/3] Input: add support for Goodix GTX8 Touchscreen ICs
-Message-ID: <202602182104.ONBwXzkn-lkp@intel.com>
-References: <20260218-gtx8-v1-2-0d575b3dedc5@mainlining.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y1rqW9D1"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48371119eacso50461435e9.2
+        for <phone-devel@vger.kernel.org>; Wed, 18 Feb 2026 05:32:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771421544; x=1772026344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=03+WHqXS0uXZVxR2wEZ9W9ki9OCzcDYn5L0WMe95atw=;
+        b=Y1rqW9D1496cF5ypCs7cp/iINy4GKv063cXMo7vkTbIAxOKlOuM7kLztJEFpzxazGR
+         Ik2YQ4panmveG4YoS/qy65PscJsNNtucDv++mwhaWYYHiJMFSE+oXtY/jCzuWn16SuWe
+         UFH2Mk+71wMJFctN5W3/z82GrC9cTtw1f9D4mXDQnF38v4CqnWl6AVIAGgdZ0F7+xIR4
+         yrpoWTwIJTnTlVpd+PHBQYoXslzql2slqk+KiRW3BpdEV2bEwsRFUwkwDD51mOdm33AZ
+         ya9lDC5RBLYw5EWlTkgL+znGRvZvIsv7KPgy9DmZcwGHTF1OnMy8Yn/HOOhAG0Hb3YxS
+         8/lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771421544; x=1772026344;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=03+WHqXS0uXZVxR2wEZ9W9ki9OCzcDYn5L0WMe95atw=;
+        b=dqDt4edox9u3oHZikwfEcN/Khvr7pDjAR3MtixLnJmnr//ZjzbfPqfDof8/5h9rZVi
+         C+B2aHL2rbgUD/uT7/8YrGJZYPrqxp2BgkamGH5FjVTw/Sfv77rtz5MY2UoltXyNTr7s
+         QMJsxkNEK5QWhm42h/C1hc7xyDstFQKEEQnuN48jxmmEakJpwstkDiwDXBlQjf75EakF
+         YGcFEU66NvsvLecQbxoS15ffxH5AiA7ozKj8+o4sHVZ6HjXQ4/HttF4CNgkzlnsyBYoP
+         /j8w4BCtWgf9uEss0T0EG0AL979ttHjz8H81l8wxsv+y03zMLHFLlkAjXhQ2naOPwOGj
+         aWLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVUxWx5JS2CPi+mOr5sqjPekKQaKolQht26QVGQ1zsBInM9S2SG+4rZ2NW3/RixsSZaS2O/PKyomc6ig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMlB6m/OBf5j8WRhrZfUmZ3oBkfEBv+7i4LqC7Z+MQb/5G4/N7
+	xqSZGGy1nknB3rdCEER3NMVZwtn0SXoBvJEwEG+ZeL2rifzD5GkOzSlG
+X-Gm-Gg: AZuq6aL7AGgRHpvFcN8T2Ove/7CmBWT9OQ9x6KrEM/f8RmjwdkcEIlET8vP711tLiml
+	6VCljOgZdKfL/ISy34SoYZ9jnU/YagKZDX5q0oFxbcfPyzbWf9PgfMD/9xSB5gtnc44xXO2yv74
+	i/cQ6wACk0DO1SQk4Xj4S2TvsTAiix1UUCe8U1j7RutofHcuOyB5lpVLk9h6WKGkIK+npAv3jWG
+	naKvpo5Fo3cLmU2BdwmtuD2sU/9v6Q7tx9y1TBXu+3BLWV81Kz90MUVFAx3zqWvmdTBkcEdYycC
+	8heYsyqmrHTf+MK3b+NE1KmVRsf20WA91NaizJqtmmGnThf5Qj30hnTIz3ou90u/0GESQST4hKt
+	fooLuwsDIykbOrrkcUF0oTZY24Rqdk2detuQnCKzaW29Q3cOR9HAhQK/Ho7/wTM66YXX622fraW
+	Lx2cqDuGkafIJQYf2Bj27OHTOxRrd9A6Jo0rnvF1UN8GVNkUZj
+X-Received: by 2002:a05:600c:c4a5:b0:480:699c:abe9 with SMTP id 5b1f17b1804b1-48398b879c4mr30727945e9.37.1771421544245;
+        Wed, 18 Feb 2026 05:32:24 -0800 (PST)
+Received: from fedora (89-139-55-36.bb.netvision.net.il. [89.139.55.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a74918sm41939520f8f.17.2026.02.18.05.32.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 05:32:23 -0800 (PST)
+From: Yedaya Katsman <yedaya.ka@gmail.com>
+To: val@packett.cool
+Cc: andersson@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	konradybcio@kernel.org,
+	krzk+dt@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lumag@kernel.org,
+	marijn.suijten@somainline.org,
+	phone-devel@vger.kernel.org,
+	robh@kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Yedaya Katsman <yedaya.ka@gmail.com>
+Subject: Re: [PATCH 6/6] arm64: dts: qcom: sm6125: Add missing MDSS core reset
+Date: Wed, 18 Feb 2026 15:31:18 +0200
+Message-ID: <20260218133117.1584696-2-yedaya.ka@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260216233600.13098-8-val@packett.cool>
+References: <20260216233600.13098-8-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260218-gtx8-v1-2-0d575b3dedc5@mainlining.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Aelin,
+On Mon, 16 Feb 2026 20:25:24 -0300, Val Packett wrote:
+> To make sure the display subsystem starts in a predictable state, we
+> need to reset it. On closely related SoC (sm6115) this has caused
+> DSI displays to not work.
+> 
+> Wire up the reset to fix.
+> 
+> Fixes: 0865d23a0226 ("arm64: dts: qcom: sm6125: Add display hardware nodes")
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>  arch/arm64/boot/dts/qcom/sm6125.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+Tested-By: Yedaya Katsman <yedaya.ka@gmail.com>
 
-kernel test robot noticed the following build errors:
+This makes a panel driver I'm testing work more reliably, right after boot
+instead of some random time later.
 
-[auto build test ERROR on fe9e3edb6a215515d1148d32a5c445c5bdd7916f]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Aelin-Reidel/dt-bindings-input-document-Goodix-GTX8-Touchscreen-ICs/20260218-075424
-base:   fe9e3edb6a215515d1148d32a5c445c5bdd7916f
-patch link:    https://lore.kernel.org/r/20260218-gtx8-v1-2-0d575b3dedc5%40mainlining.org
-patch subject: [PATCH 2/3] Input: add support for Goodix GTX8 Touchscreen ICs
-config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20260218/202602182104.ONBwXzkn-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project e86750b29fa0ff207cd43213d66dabe565417638)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260218/202602182104.ONBwXzkn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602182104.ONBwXzkn-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/input/touchscreen/goodix_gtx8.c:110:16: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     110 |                         finger_id = FIELD_GET(
-         |                                     ^
-   drivers/input/touchscreen/goodix_gtx8.c:135:14: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     135 |         touch_num = FIELD_GET(GOODIX_GTX8_TOUCH_COUNT_MASK, touch_num);
-         |                     ^
-   2 errors generated.
-
-
-vim +/FIELD_GET +110 drivers/input/touchscreen/goodix_gtx8.c
-
-    87	
-    88	static void goodix_gtx8_report_state(struct goodix_gtx8_core *cd, u8 touch_num,
-    89					     union goodix_gtx8_touch *touch_data)
-    90	{
-    91		union goodix_gtx8_touch *t;
-    92		int i;
-    93		u8 finger_id;
-    94	
-    95		for (i = 0; i < touch_num; i++) {
-    96			t = &touch_data[i];
-    97	
-    98			if (cd->ic_data->ic_type == IC_TYPE_NORMANDY) {
-    99				input_mt_slot(cd->input_dev, t->normandy.finger_id);
-   100				input_mt_report_slot_state(cd->input_dev,
-   101							   MT_TOOL_FINGER, true);
-   102	
-   103				touchscreen_report_pos(cd->input_dev, &cd->props,
-   104						       __le16_to_cpu(t->normandy.x),
-   105						       __le16_to_cpu(t->normandy.y),
-   106						       true);
-   107				input_report_abs(cd->input_dev, ABS_MT_TOUCH_MAJOR,
-   108						 t->normandy.w);
-   109			} else {
- > 110				finger_id = FIELD_GET(
-   111					GOODIX_GTX8_FINGER_ID_MASK_YELLOWSTONE,
-   112					t->yellowstone.finger_id);
-   113				input_mt_slot(cd->input_dev, finger_id);
-   114				input_mt_report_slot_state(cd->input_dev,
-   115							   MT_TOOL_FINGER, true);
-   116	
-   117				touchscreen_report_pos(cd->input_dev, &cd->props,
-   118						       __be16_to_cpu(t->yellowstone.x),
-   119						       __be16_to_cpu(t->yellowstone.y),
-   120						       true);
-   121				input_report_abs(cd->input_dev, ABS_MT_TOUCH_MAJOR,
-   122						 t->yellowstone.w);
-   123			}
-   124		}
-   125	
-   126		input_mt_sync_frame(cd->input_dev);
-   127		input_sync(cd->input_dev);
-   128	}
-   129	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards, Yedaya
