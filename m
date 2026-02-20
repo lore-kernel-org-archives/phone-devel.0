@@ -1,223 +1,202 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F5F33F371
-	for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 10:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA3D32ED3F
+	for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 11:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771584684; cv=none; b=KP+BGbIRLtPSqI127OvwFK4XiyT7/sK4y3RH7FbghpY5c465H7N7gxNFE0PZx/nyOjV2sk7/i1apqxINS2dUn7uqhmnZmxd8XEpemg2zskmuCf/SvgYUKyPgJdOhN9DRFPhWzXm+zmz77ZFDR5tgpGZHq57YyBXgWgYDsZaKapg=
+	t=1771586814; cv=none; b=GOC8nIfq0hAEJgDdcSzoCI14RtxIigz3E6EiuVINgL3ZBcKw++4XSOfO/qs1b4lT17EbqZj6rSiAj7z/BnT7fMrC9j/d9220H9orcFXsYsyGmRQVtxrRF4W+l4fXPIcGfuVnVpTrPmxuG9sRrzulS+wXVpHbj0VrntDVZrsti8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771584684; c=relaxed/simple;
-	bh=ks6OJSw/UwvvF2/JUxSnt1Tii4VaTCXNdvHN7i3pd2A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSL51UELBt0cjriEPqcriAdS8xJzagCaHbrLcsEmtDyQzpEU+NRtjV83gLe3jQBOr/mQgz231jeP9e5tPUbY5DP/TZmZToYgUfMIdaJcL6Sc3PZ3JEUEfiGA2Ag8/8HbLDFKHjqvGWIPl5Euc7igU3vtXrcbJBEViuq995G0oKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BueSl0t8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TOAoSrj1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1771586814; c=relaxed/simple;
+	bh=m91/Pj6i562vC9RgSAKF0lAmXFt7YMj8wOrD5dUjLts=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=hqMPS6OsjUH2qZFZJ+NYl1Y6gan5vUa8+b19YPR01sxiYmjzhEG3DWfgmAfoYpALbVd+Ygv1SiP+S3jTr4a/u4DD4sejgnNx8txSc6HDQgRIftunNQOW/LWJXoPMSk1AsbjPNsveZz/qzhuaL2sp16b3ErGMI8tPVnrdXs5cHM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=WlDvS1KO; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BueSl0t8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TOAoSrj1"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61K5Rlml3154452
-	for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 10:51:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	n8sjIgXFVYbyhkWb9bMVXULx3YRL8NxHkkz55sJrEfA=; b=BueSl0t8sjkgfsHn
-	wC7Y86DW8R4z7S7OJvfXyn63FWvSwGwK7Aw5kaTXqbRl5sKFXMyMsSQjnbxCWTmj
-	rUjY/rIZsGmuO7o1wqw3c4Tg7ZdTlD9bfxLX1mjDVt6igrJywqilZSzEBkveonSZ
-	pPGjO7qbXLMqS3ugXsM8Khq5iBz5CQ6XxJQnIGdnU1nbG6tJhSlTxlDWeAL4k8xn
-	2uPaXcgiHZxRGsBDjeLKnQ47M6LICWxs9vjuiUFFutKhAvUvfaqE1MhwjaQ0Sv5w
-	Yer1MYHRQdgD8QSJCOA57odnydXR4D9mIlw82J1ENBp7hW+JGkMAvt0ehRHAFrT0
-	MVO47A==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ceh7bgrxn-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 10:51:21 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cb38a5dc3cso191178885a.3
-        for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 02:51:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="WlDvS1KO"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65c01595276so2866192a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 03:26:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771584680; x=1772189480; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n8sjIgXFVYbyhkWb9bMVXULx3YRL8NxHkkz55sJrEfA=;
-        b=TOAoSrj1pNkW7zgtDRYPw94vSxGl0hqBTtX6EvM23ImSfc9jflEHE49s0yAvsnyeVf
-         xOJjXJNEX/+g/UGB2pRQvfoCQQr833HuLzGW3kznQ9dfMC2o+WY+O7nENcCZOzLRsHsf
-         iOc2OeDgfCv42QJjcAZufB3piORJ8iF855qphpPvnbK6V95GBqQIz0ctFMMK/8yAGDnf
-         NJeNnE5/MZweEa+JeUzxfpdTb7LNtV5jX5f5+VD+HMCQ5EWv2PfoJ2l4pSJmzM4MS1Am
-         dfwmHXvC9KDSa1chIGbJxslEnh6yW/txijue8KCXqZvyoFhNUr6a1OnRad1DZG3QTCvT
-         q6Ew==
+        d=fairphone.com; s=fair; t=1771586809; x=1772191609; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=83zz9Fx5gsW9BIv6c8ksqWZjM7IcWR5idqwhbUOB91Y=;
+        b=WlDvS1KOyibyFVCCqJYzkavPTQYwMCrJrR1gCfkhpkNF23AFSKSY+Up0Iv6MUlmgxE
+         PXDuz1A/97WtcAr0YtYUGl7rJ68Bh/eE6CONVuBcbcodcwMl5QgtPKDX6VNHyDzCpc8u
+         H0dkeiQYKV24KqYmXnT/GjGoGJKHYR/a+a6k9xkGUjFaZq+sB99hUzVrr5ot7LbV/s1L
+         vVXJF3vftRivB5EREc9uShQmwh35W8/9GtfzeRuISyBK/3U3D/wZpWRDstRzvYY2PVxs
+         hKVSH4Q5Tz605zqKfqa5PSxa4Oi/KgW4IFVmuEPejgHiNP1bbBvnI4Ozo7FsnIsjpQZq
+         fO/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771584680; x=1772189480;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n8sjIgXFVYbyhkWb9bMVXULx3YRL8NxHkkz55sJrEfA=;
-        b=mXyxnN8gzWImYIy65g0q3u1/mS5W9sjFCltnXizMoZAs6dQfVO3yApa+p0i8TRdKO4
-         2UNZtZfIdjB6wM0nVr9CIglfoanTCTyJec3WnJVMPxiupftWkPRLY4l7ZU8F+pkt0bgP
-         msI8jLwtYIbm50OjJ73Pz9DlpPTJ+NWIyaCgSGGqA8flMCkCIDq312dmhlHibGVer7Wc
-         +thQrZU06slRU8ZjnO4wQE/qD9ctolCDInaQqoJDeYoERJWods3b8QUyR11qI/sCLfWU
-         Q6JXVHMxkaMrd+W6fHpRXXt2jJV+xQ8TZxtB5cdq8OWjv006cwBsDUWsl3zDi+ev6J9y
-         AAbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXK/f9uZYLWSEHO3WM1jlvQRJWIt76xLxjocHtr1ZjHOxQWMv8Mu9sP5W2fyVv5Hrj+qSOmYww/UbwSMA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhD8J8BWygWoVrVO0shcNLqOrJHDPfEfSNU2LtQaFixJHL1d8d
-	L+3qtxjuYwC3uHMwhsNUEnW4tmrTrqM5L5iiU0KklfWvQ9WV7mwH0T8QuCfhlZrwct8hQXzVCul
-	BxlbBPYzbJER4BWmk3j8bwISOhmIzqjuZHBbNN3DKvOjeoj9IAHujsCLdoQhafzGIJw==
-X-Gm-Gg: AZuq6aJ8JhUacVzLg1/1k7MRUV9ZXvvy7JYPmbNYN05bWDAkEF8zScWSMexkqA9bnCF
-	HJ0Fz9tB3rssAeV1aovtEw9yu5JB3yanAAA9Jdr3wlF6lFUmtMeK/vJxcOua8XJQx3W+Wugy+A3
-	ZrR66bDFM2OBxVE974f1BSug9m21PQk3jLwcoykP/Ttl1kwU4CUwLKLWIqU1mxSfW0w5fLONjhe
-	SKjnRIgMamMRAgEMclCRBZMxUR7/8McSO4kNRLicl2y2C5yFSZCTSmTVFsM7tcoqR7boIT1kPxq
-	EsybzztVpN/tVR0XtExd/LZ+RPQB/IF56LcGVTL2XqQR4m84WX39AW1Ex7Ed3q2h2ugPimrSzRI
-	y7rvxCrNuCIcoz0Qlw+seiVaaQMOap9otC8M40fvPYgX4tR8tUlm+I/IT6iiFQhSQsJ8+vFiUbK
-	J4qyk=
-X-Received: by 2002:a05:620a:7006:b0:8c7:1b40:d096 with SMTP id af79cd13be357-8cb408e956dmr2404927485a.9.1771584679723;
-        Fri, 20 Feb 2026 02:51:19 -0800 (PST)
-X-Received: by 2002:a05:620a:7006:b0:8c7:1b40:d096 with SMTP id af79cd13be357-8cb408e956dmr2404925985a.9.1771584679248;
-        Fri, 20 Feb 2026 02:51:19 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc7665345sm664435366b.53.2026.02.20.02.51.15
+        d=1e100.net; s=20230601; t=1771586809; x=1772191609;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=83zz9Fx5gsW9BIv6c8ksqWZjM7IcWR5idqwhbUOB91Y=;
+        b=fTOtndECxZoaOsJyiOjv0Uucj+ANj5SZ5gDDAHzpMIk7xhGKNj9reDH/cJpdBZOOAF
+         SwyiQUvzeUsnrS5Kp6fCIerRGertCO0RFlZaAiv9i3v6XyluZY7DLrtJ42b412PdT+XZ
+         UkQG2Ik/+jyrB41kKv7uObCO0ppSZAbkRkTExBRKQ5XCV5z2ONh/xaFA/HUoNRoy7cgz
+         wobkdBgbwoa8NWf5vOY5betXPbSqI/sokDdv7h4BnMcGu3uLWUBLM2ZyHHurSLrPZ/Jn
+         f9nsKt72X0k17v9X2xMZ/mUVY7WyokiHWh95frYKlWHm6FkPTsGfcP6A9ZGm+vtLsC85
+         ldyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Skx99lzJmwoPe5ezPKaHxWivuYQjqkDB8YdOdtxwg7NdMIJKGXGizGKgIg4Gz1TtcaAgJmoaB9pEDQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2f+Gi4rGxPzyGNDTLO/9qz1lPQ5kGr0Utl2aYTxhBtC2dpNvy
+	glFaOkMEi65hhqDIJSBfPxpweS7OzOebVlnLvbPY7C4bciU6I+ghjWo/wm9FD7snoYA=
+X-Gm-Gg: AZuq6aJl0EKx6XycVlB629Ac1fnwrJcyqLDSl6FZcHusJNQVDxnXfWxpuaEjhRR6qDv
+	IHzuK+lMtGhysi3YOgmeHgBHwjMzDzn6oSm4ZRCVA32aFaSTHLD95fxKYsUkszryhnQtQ11HMDV
+	igrPCgxUF2PVpNCsiQ6t0ZClGq+OxzU0MDrWix1v5/+C2XPoFV78RWWFPw30Sat+Y/xHytSjsfz
+	wY53YzT4gPsCRcy+euZWQvWdwrJ5ED8NKa88NHPvQjOd3kjSvrebQB/5H+eq+hFOvyXzwuPhxlk
+	5fjSrvTKTpSPM4RlwT4uj6F5ccNE5JS0VwmJiVMNyM1etcYPXuQJF/+5WPrOMabG0/vmFwXp2uJ
+	9aOxPUQcBNPrW6Okd7FQoEFzGvqgAZV5Ckdgl+HECzeutkRIwzIkvSJf2sQlG24oo3t8IPaQj3I
+	w3ydNnnwCJUnoJDbaHQ5H5J+GlYw1I7tfKoEviAybicB6hRjL755EP6062czE6+jZ1nbbQKZr/A
+	DUeK9U=
+X-Received: by 2002:a05:6402:5186:b0:659:454b:7167 with SMTP id 4fb4d7f45d1cf-65bc7a751a0mr10415695a12.23.1771586809215;
+        Fri, 20 Feb 2026 03:26:49 -0800 (PST)
+Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65bad29d295sm4987701a12.8.2026.02.20.03.26.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Feb 2026 02:51:18 -0800 (PST)
-Message-ID: <a422e087-a91c-4bb2-9d95-e1cefc9a91bf@oss.qualcomm.com>
-Date: Fri, 20 Feb 2026 11:51:15 +0100
+        Fri, 20 Feb 2026 03:26:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 20 Feb 2026 12:26:48 +0100
+Message-Id: <DGJR40B5R6MB.1V4ZK5SW1PXAV@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
 Subject: Re: [PATCH v2 5/5] arm64: dts: qcom: sm7225-fairphone-fp4: Add
  battery temperature node
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Jonathan Cameron
- <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Hans de Goede <hansg@kernel.org>, Jens Reidel <adrian@mainlining.org>,
-        Casey Connolly <casey.connolly@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>, "Jonathan Cameron" <jic23@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+ "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba" <lukasz.luba@arm.com>,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Laxman
+ Dewangan" <ldewangan@nvidia.com>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Hans de Goede"
+ <hansg@kernel.org>, "Jens Reidel" <adrian@mainlining.org>, "Casey Connolly"
+ <casey.connolly@linaro.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20260220-bat-temp-adc-v2-0-fe34ed4ea851@fairphone.com>
  <20260220-bat-temp-adc-v2-5-fe34ed4ea851@fairphone.com>
  <85ce1f2c-f5cf-4e97-9611-4aed03f69cd7@oss.qualcomm.com>
  <DGJQ4WLIML3H.GAO7T4L3MCJM@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <DGJQ4WLIML3H.GAO7T4L3MCJM@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Voguwu2n c=1 sm=1 tr=0 ts=69983ca9 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=6H0WHjuAAAAA:8 a=ftgFGzw_iv9xBS2N3wAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-ORIG-GUID: xCGNHZkMzkR6hEmdWmoiwAY32QvTrKfU
-X-Proofpoint-GUID: xCGNHZkMzkR6hEmdWmoiwAY32QvTrKfU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIwMDA5NCBTYWx0ZWRfXwZhSS+b+G5Xn
- Xp9AjmNlmKr2u5YM752mHQp+mNcPe5F0+p4FDprQqNGEAU9GkC/sq2xSWzXfRriEsAnZ+4t5jtt
- 5hz6/JiFkD+pulahao9TQjt6jM4Md7A4CEXm0RUeqUGSI/HfFmjb/ezCSesDL4vwfruq1aTKXhv
- IPeTWOYz9KIrnuthk6fkil1/to9wHv34o3SP6SI1JxVXzHk6A9FrC3cASnEZoa/iJavzNlxeFQi
- xPHA7fUi+z7zgbO3LrObDZmBlU5d0OfrVExxIBdSprce0YPuQizwU0UNpUW+St/aocKD/M4Ca/x
- zVHnXX7ca7ieuBzkOvEpLMK49qflLqWJNOinGgLdyIjcUwQvV96MAftRY+UvtWRrTEti0RE5FIF
- 7bA4lfOWmM/Wm80yFserJBH9UTKuILLnRWDX3mKaIPfBEm6/032pz5zsNpWvInplSlRgPgb0pxl
- kYP3usf2XQahbQqsd7w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-20_01,2026-02-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602200094
+ <a422e087-a91c-4bb2-9d95-e1cefc9a91bf@oss.qualcomm.com>
+In-Reply-To: <a422e087-a91c-4bb2-9d95-e1cefc9a91bf@oss.qualcomm.com>
 
-On 2/20/26 11:40 AM, Luca Weiss wrote:
-> On Fri Feb 20, 2026 at 11:00 AM CET, Konrad Dybcio wrote:
->> On 2/20/26 10:19 AM, Luca Weiss wrote:
->>> Add a generic-adc-thermal node to convert the voltage read by the
->>> battery temperature ADC into degree Celsius using the provided lookup
->>> table.
+On Fri Feb 20, 2026 at 11:51 AM CET, Konrad Dybcio wrote:
+> On 2/20/26 11:40 AM, Luca Weiss wrote:
+>> On Fri Feb 20, 2026 at 11:00 AM CET, Konrad Dybcio wrote:
+>>> On 2/20/26 10:19 AM, Luca Weiss wrote:
+>>>> Add a generic-adc-thermal node to convert the voltage read by the
+>>>> battery temperature ADC into degree Celsius using the provided lookup
+>>>> table.
+>>>>
+>>>> This will later be used as input for the fuel gauge node (QGauge on th=
+e
+>>>> PM7250B).
+>>>>
+>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>> ---
+>>>>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 83 ++++++++++++++=
++++++++++
+>>>>  1 file changed, 83 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/=
+arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>>>> index b697051a0aaa..7857003099a6 100644
+>>>> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>>>> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>>>> @@ -108,6 +108,89 @@ rear_cam_sensor: thermal-sensor-rear-cam {
+>>>>  		io-channel-names =3D "sensor-channel";
+>>>>  	};
+>>>> =20
+>>>> +	bat_therm_sensor: thermal-sensor-bat-therm {
 >>>
->>> This will later be used as input for the fuel gauge node (QGauge on the
->>> PM7250B).
+>>> nit: this should be a little higher
+>>=20
+>> meh, it's surprisingly easy to miss this sorting stuff. Will fix in v3.
+>>=20
 >>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 83 +++++++++++++++++++++++
->>>  1 file changed, 83 insertions(+)
+>>>> +		compatible =3D "generic-adc-thermal";
+>>>> +		#thermal-sensor-cells =3D <0>;
+>>>> +		#io-channel-cells =3D <0>;
+>>>> +		io-channels =3D <&pm7250b_adc ADC5_BAT_THERM_30K_PU>;
+>>>> +		io-channel-names =3D "sensor-channel";
+>>>> +		/*
+>>>> +		 * Voltage to temperature table for 10k=CE=A9 (B=3D3435K) NTC with =
+a
+>>>> +		 * 1.875V reference and 30k=CE=A9 pull-up.
+>>>> +		 */
 >>>
->>> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
->>> index b697051a0aaa..7857003099a6 100644
->>> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
->>> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
->>> @@ -108,6 +108,89 @@ rear_cam_sensor: thermal-sensor-rear-cam {
->>>  		io-channel-names = "sensor-channel";
->>>  	};
->>>  
->>> +	bat_therm_sensor: thermal-sensor-bat-therm {
->>
->> nit: this should be a little higher
-> 
-> meh, it's surprisingly easy to miss this sorting stuff. Will fix in v3.
-> 
->>
->>> +		compatible = "generic-adc-thermal";
->>> +		#thermal-sensor-cells = <0>;
->>> +		#io-channel-cells = <0>;
->>> +		io-channels = <&pm7250b_adc ADC5_BAT_THERM_30K_PU>;
->>> +		io-channel-names = "sensor-channel";
->>> +		/*
->>> +		 * Voltage to temperature table for 10kΩ (B=3435K) NTC with a
->>> +		 * 1.875V reference and 30kΩ pull-up.
->>> +		 */
->>
->> I think this looks good. Is this data going to be correct for all/most
->> devices (i.e. is there a single battery sku)?
-> 
-> Yes, from my info there's just a single battery SKU, so that makes it
-> easy here.
-> 
-> For Fairphone 3 there's two battery SKUs:
-> 
-> * (Fuji) F3AC with NTC 100kOhm B=4100, ID resistor 10kOhm
-> * (Kayo) F3AC1 with NTC 100kOhm B=4050, ID resistor 49.9kOhm
-> 
-> In reality, one can probably ignore the difference between the LUT for
-> either B value since it only differs by a marginal amount, but
-> conceptually I'm not sure how this should really be resolved.
-> 
-> We could have both battery definitions in the dtb, and then the charging
-> driver could determine the battery that's actually present in the
-> system (based on the BATT_ID measurement), but given the design here
-> now, I'm not sure how this temperature lookup table would be propagated
-> to the rest of the system...
+>>> I think this looks good. Is this data going to be correct for all/most
+>>> devices (i.e. is there a single battery sku)?
+>>=20
+>> Yes, from my info there's just a single battery SKU, so that makes it
+>> easy here.
+>>=20
+>> For Fairphone 3 there's two battery SKUs:
+>>=20
+>> * (Fuji) F3AC with NTC 100kOhm B=3D4100, ID resistor 10kOhm
+>> * (Kayo) F3AC1 with NTC 100kOhm B=3D4050, ID resistor 49.9kOhm
+>>=20
+>> In reality, one can probably ignore the difference between the LUT for
+>> either B value since it only differs by a marginal amount, but
+>> conceptually I'm not sure how this should really be resolved.
+>>=20
+>> We could have both battery definitions in the dtb, and then the charging
+>> driver could determine the battery that's actually present in the
+>> system (based on the BATT_ID measurement), but given the design here
+>> now, I'm not sure how this temperature lookup table would be propagated
+>> to the rest of the system...
+>
+> The path of least resistance (pun intended) would probably be to make
+> generic-adc-thermal consume an ID channel and accept a number of LUTs..
 
-The path of least resistance (pun intended) would probably be to make
-generic-adc-thermal consume an ID channel and accept a number of LUTs..
+Not the worst idea ;)
 
-That sounds sensible since most battery ID mechanisms are probably also
-ADC-based and one would hope (tm) that the values output by these ADC channels
-would then be distinct enough for the driver to have an easy time confidently
-selecting one of the options (or a fallback)
+>
+> That sounds sensible since most battery ID mechanisms are probably also
+> ADC-based and one would hope (tm) that the values output by these ADC cha=
+nnels
+> would then be distinct enough for the driver to have an easy time confide=
+ntly
+> selecting one of the options (or a fallback)
 
-That said, this is just my guesstimates and perhaps the IIO folks could comment
-on that
+Charger / fuel guage and everything else battery-related would also need
+to get the correct battery properties for the actual one present, not
+just this generic-adc-thermal driver.
 
-Konrad
+But I feel like soon DT maintainers will say that Linux shouldn't
+dynamically detect hardware that's present and the DT should be the
+absolute source of truth. That works fine in simple cases, but in case
+of interchangeable batteries, display panels, camera sensors, this won't
+work. *Something* needs to determine what's actually there.
+
+And for most of the ways to detect which of those are present in the
+device that is booting, you need half a kernel to power up the various
+hardware and do some basic communication to figure out what's there. Of
+course you could say that's U-Boot's job for example but not sure you
+want to add a CCI (I2C), ADC driver and much more...
+
+Regards
+Luca
+
+> That said, this is just my guesstimates and perhaps the IIO folks could c=
+omment
+> on that
+>
+> Konrad
+
