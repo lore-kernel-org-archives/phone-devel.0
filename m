@@ -1,351 +1,247 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3822FD675;
-	Fri, 20 Feb 2026 17:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51F73126D7
+	for <phone-devel@vger.kernel.org>; Sat, 21 Feb 2026 02:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771609487; cv=none; b=nCH/gB7E86n/UprBzREVODBWu6meMrrPY/ndPaBR1FrWqsCDcECs1Xtyqj4pOPX3gh3b7TjT8Tg+ozq4BgnvVDoAyr6VlqcBbBj2xyedj926K0ouAZJSfUhgfzdz+30DPzMdnrxkYDpP0vbEhDM+tLrBZHvNJZjdHY4wNVcpbsY=
+	t=1771642181; cv=none; b=pefpzHpkME16L+usXhWkVGhgbzujND22fSlVYnti76t5UbO2LV1i7bXKOqmnx9IxBw9Uswxb0Rb+YA4UaJINXkecmWKgW6sY+YDnz0gQIMOxIFmESlGXqePVdY2rPt4eGmk39Mo3EWNPnSE8G2DhvMCVZps7Gx6FCWRHJhJQX+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771609487; c=relaxed/simple;
-	bh=wX88KeWRiqLuO6kipOhcvY2+P2VNb3Ay5Og4bJ69guE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nFgCeHqq2qPICAL5db7mkFZfm41rGe5+wUD6i8/DVG1l0LqOVeUd3ZX49MN5Crik6/pffpi1Bq2P2TAWZuuYqmlyLLqj2iIulYgKLcqscZ0tQkosmW0FWk27VbY3XBlAz3px7FePyDc/wfQM9QTqc44TJsxkcqNDtyGThOBbshM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=vMK6dIOh; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1771642181; c=relaxed/simple;
+	bh=uq92ycsM47Jo3q4lAh30+sbvRyqWHRljr1zKiEWutzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=brHLQQz5IaifDSU305rZ9IC5YrwQo2rDPlEkVdAoyZ1GaK5F4RhNv/007lcelZy2UaWbqADxZhDbc8fHteGtIxhfBkvqARteSZQOt+8wjfDF7UrfcPoJYcdf76E2UlQvdufa7ydio3t51Epk2B/0edkM7lg7jtE13YlrWRW870M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Zbrur7YM; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ayU4VO+j; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="vMK6dIOh"
-Received: from [192.168.42.100] (nat2.prg.suse.com [195.250.132.146])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2C50453400FD;
-	Fri, 20 Feb 2026 18:44:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1771609472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PrCgaoopzsB3y5ZDlO/h7S6gsTddBedMQOc+qTolBSc=;
-	b=vMK6dIOh9YDI/phT0a8mEA8RrrbBJ8XslhWHNfKrJCh9bhX7t+3Bg43oHUmNW/wJkD4Bfv
-	KU3b+tzW0IkkGpFZLSaDFc8Q20gcnYfcQAJzN6HU2bt8oG7RrTR/tab3sVBTZZjSsUj5i4
-	ndoIQ/48OG+HY9NnwKltX2yr70oTvTI=
-Message-ID: <65dfcd7f-ac25-4318-b385-bba2c7c63035@ixit.cz>
-Date: Fri, 20 Feb 2026 18:44:31 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Zbrur7YM";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ayU4VO+j"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61KGWlLc2492207
+	for <phone-devel@vger.kernel.org>; Sat, 21 Feb 2026 02:49:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	BmWwSyvtQgL34OEqTM20cBfqvgI2QWHHCJgEeagqLDo=; b=Zbrur7YMuFsAtxgl
+	ZpG+MMTRvPm6XqWhMA1Ukb4OavUa/TsVFx9pZXgp54AeaRplZb/PjaiGgnI/GXNR
+	bwoRxRbu/ole69KAiIu2IhOCh4Arh14MtlwsjVRXpf7Shb3njsZ+ShajScnzhngH
+	ygc2/CNALxCschU2e+xiIxqTNbz/DJ6SPDjJAY7NMe3JHnR9fRMZJlcnEOQ9wN3v
+	YO2jhYMu42cqKkav9Iq37LzcOiDVKfFw912380YcxmT6l3JonCqmtvC2f604t96r
+	h4hFSNiIX2uiifLhBQY6UG0n6b/46WEGKmfkR1qG5UMdtie1ifuOoJqLh+v+Hbjn
+	PC3lWg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ceh4j2yh8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Sat, 21 Feb 2026 02:49:38 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cb706313beso399220285a.3
+        for <phone-devel@vger.kernel.org>; Fri, 20 Feb 2026 18:49:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1771642173; x=1772246973; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BmWwSyvtQgL34OEqTM20cBfqvgI2QWHHCJgEeagqLDo=;
+        b=ayU4VO+jPo2fCWEKsdD9PtYTeUq2N7fQLzeShwIVShqBaVgczSNHed+3A5pfHvvE/8
+         +nY9uQnu449ZPczMr41AJL68subWuUreDac7rLp298rosiGC01wJSHaxb7JD/58zuGic
+         WoX2RYdly+clzg6FPP8ExhWb6ZSTB5EH0qTXjR34lrFgYCUsCskclzMXKkxe9WGLgzC0
+         z3928+1qX0l+qukA1Gs4/SJEdDbKQAXoaIrRPVLf/oJ/OeqQIO8zgq5IE6DWab8pnNw+
+         YcpHKVD3DivFV1O0ZTpN28xUezT6V9x/WazUC9fKKCb5gcqKIud0kqswSR/8mE4FkPRm
+         f1bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771642173; x=1772246973;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BmWwSyvtQgL34OEqTM20cBfqvgI2QWHHCJgEeagqLDo=;
+        b=QVlC5Gvs1fMmPGcYcE8uRKDQbYwTeowz9/C9auoa8RG70xJaaRjp27RdEJPwX5Xaap
+         95OLxXb0qpW3vi+e8HoatfsIPkpyHkSf5kSkj6FDDzxa1XucSXIhlywFi6znJxc19Udl
+         1ZLmBigfx3+fBzsst/CHTBWAJmxR0hYDKU9SgPF4NWJ0XKL3iJLsv3f2z/PTdxHk/BDU
+         P5yzNe3oH7UsTNHx1HlDHCUu/6dXCslZQrMF0K6yf+VJ0xqQc6jKRpKp4mgaZ/cai5bP
+         GZ7ttWU9pM69+RISoBoguHwlC6dyWLES+Gw1ZU8XzvUmvWDSHQJLc2xdyqXmE+ivkrIF
+         3NtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQrx1vJ7Yy2Nc09hL5HXAzPLyRHZISJY8QC7swfHDRb9nhWuLVV/SmKf2ZWHQb3Z3HO9mBId5UeQBwFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6AgGMIQ/uqw7bFZdOn36QzPDNc+wmWjMnJscF+naRMASp4O4Z
+	Tg3y+gHIGDamOdRMdCLxUvaCdm0E6tpQ8//fQBCsXiUjjdumA7ezn54vdpc8aHLxA9VswDKQlTk
+	qGK+sWFTCiw/vyJ3U5tIPtsTF0JNWPwB6MD+2ajuUzgHLEiicka9iW2nC0+C/P3Nxng==
+X-Gm-Gg: AZuq6aIuDUZK1cNThIOlYuFP5IGUNtVFDLpUSRiHjP8RktO+p1+aUZL3tNXK8qJE1/o
+	ek9MjOipamTQJ8xvvWLXtfTPJK0Nb4FVOibH8ULQyLzS1xrQE9qyeWaKFLUlzRWECr4LZ55LWsF
+	zsme5nv3qd17jPH7WxVnM6YTdcjm/7kwY+I8G2CVVs6fo4xteKFdgT9JbE0X2QftvKewA3fdf0W
+	7HDyA5fluUXzEtFIMuleM9L9/5iwEfnfBp2m6+M3HxirVmxls6uB6/N9dpK5/JTHXW80baXc+WB
+	ltKVMkr0q5ZDPpUjdl8vaXck/v9I5JO7fI/uXJVbrnPfI/6JuQ3/WbKHYLRF3BzS4Aajq/Zr2Bn
+	IxLRKRNyJuNFO5Sx95qixjEco/TG2Q8cVprD0+kkMLuXHCwQNNitnMuGQIM2OMdrHxLDiXVCIxZ
+	inwmldOJ2kYDKktU/WktzY3eD6omb7SfZiEew=
+X-Received: by 2002:a05:620a:1a0f:b0:8c6:b45b:9e2d with SMTP id af79cd13be357-8cb8c9fc7a1mr245186685a.26.1771642172448;
+        Fri, 20 Feb 2026 18:49:32 -0800 (PST)
+X-Received: by 2002:a05:620a:1a0f:b0:8c6:b45b:9e2d with SMTP id af79cd13be357-8cb8c9fc7a1mr245185185a.26.1771642171899;
+        Fri, 20 Feb 2026 18:49:31 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a0eeb1be5fsm179895e87.39.2026.02.20.18.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 18:49:31 -0800 (PST)
+Date: Sat, 21 Feb 2026 04:49:29 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Hans de Goede <hansg@kernel.org>, Jens Reidel <adrian@mainlining.org>,
+        Casey Connolly <casey.connolly@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] arm64: dts: qcom: sm7225-fairphone-fp4: Add
+ battery temperature node
+Message-ID: <yikwygc5gasmr3cdyv5emfr2flaoraxcz7ap3j55wn4ib6wfqx@4yxoly5zrucx>
+References: <20260220-bat-temp-adc-v2-0-fe34ed4ea851@fairphone.com>
+ <20260220-bat-temp-adc-v2-5-fe34ed4ea851@fairphone.com>
+ <85ce1f2c-f5cf-4e97-9611-4aed03f69cd7@oss.qualcomm.com>
+ <DGJQ4WLIML3H.GAO7T4L3MCJM@fairphone.com>
+ <a422e087-a91c-4bb2-9d95-e1cefc9a91bf@oss.qualcomm.com>
+ <DGJR40B5R6MB.1V4ZK5SW1PXAV@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] media: qcom: camss: csiphy-3ph: Use odd bits for
- configuring C-PHY lanes
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>,
- Kieran Bingham <kbingham@kernel.org>, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>, Casey Connolly
- <casey.connolly@linaro.org>, Sakari Ailus <sakari.ailus@linux.intel.com>,
- linux-media@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
- linux-arm-msm@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- "Dr. Git" <drgitx@gmail.com>, Petr Hodina <phodina@protonmail.com>
-References: <20260117-qcom-cphy-v3-0-8ce76a06f7db@ixit.cz>
- <20260117-qcom-cphy-v3-2-8ce76a06f7db@ixit.cz>
- <de5fbe8d-3f9e-4be8-a9e3-991b959305e4@linaro.org>
- <176873791545.3486172.9291085318504972330@ping.linuxembedded.co.uk>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <176873791545.3486172.9291085318504972330@ping.linuxembedded.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DGJR40B5R6MB.1V4ZK5SW1PXAV@fairphone.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIxMDAyOCBTYWx0ZWRfX8VfLX8n6gYQi
+ SRhRvlSee3Y57wq0ZxEBad4NaQKKd2zO+8BN6FxsClBi6aEjsAXpR2hcYb6E42+xpqMl97XrfuI
+ ptIWJHzRZtIZ+hYFbC7VgYqPY77wcA20TiQ5kMOWPtR2F2o4+1K9RAFUGKsGS9mH5WAUg22w+Y4
+ eseT54Zlbumo18ADUrRol/BwvoqqOhxCzWCBJ3U8xElR1wpNkbLu1qTC20zytLL9RyRmJyIFSYK
+ zb6rToSnalrk6zjt6MDj/r+1LtkWb/zFS2jw1a2n/mqrY8TMIvV8iZYd6OgcbpVrOgoZO06dqYy
+ NsqJ+cLt0LdVCaDaqBgX0mzygTB/O7Vb49pZjPnGUBy7fnY+riBaTCAXUzF8lIRgqEFjv6faOwO
+ 2uUGj/LrtDgp+ioCmjZuWYV3xSlB4p73Htchkfn5cQs31pT8a3xizq+zqgeggl4+rzOCh8Gv9ow
+ sz0gM3bnqEqNuMrU0QA==
+X-Authority-Analysis: v=2.4 cv=R/0O2NRX c=1 sm=1 tr=0 ts=69991d42 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=6H0WHjuAAAAA:8
+ a=Wrfmzfmk65d1CdvWbAUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-GUID: 585WtQ81QQ5CN6SXHcsi4iqoAwF6TzPI
+X-Proofpoint-ORIG-GUID: 585WtQ81QQ5CN6SXHcsi4iqoAwF6TzPI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-21_01,2026-02-20_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 adultscore=0
+ spamscore=0 phishscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602210028
 
-On 18/01/2026 13:05, Kieran Bingham wrote:
-> Quoting Bryan O'Donoghue (2026-01-17 21:38:17)
->> On 17/01/2026 15:36, David Heidelberg via B4 Relay wrote:
->>> From: David Heidelberg <david@ixit.cz>
->>>
->>> So far, only D-PHY mode was supported, which uses even bits when enabling
->>> or masking lanes. For C-PHY configuration, the hardware instead requires
->>> using the odd bits.
->>>
->>> Since there can be unrecognized configuration allow returning failure.
->>>
->>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>> ---
->>>    .../platform/qcom/camss/camss-csiphy-2ph-1-0.c     |  8 ++--
->>>    .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 49 +++++++++++++++++-----
->>>    drivers/media/platform/qcom/camss/camss-csiphy.c   |  4 +-
->>>    drivers/media/platform/qcom/camss/camss-csiphy.h   |  6 +--
->>>    4 files changed, 47 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
->>> index 9d67e7fa6366a..bb4b91f69616b 100644
->>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
->>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
->>> @@ -94,9 +94,9 @@ static u8 csiphy_settle_cnt_calc(s64 link_freq, u32 timer_clk_rate)
->>>        return settle_cnt;
->>>    }
->>>    
->>> -static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>> -                             struct csiphy_config *cfg,
->>> -                             s64 link_freq, u8 lane_mask)
->>> +static int csiphy_lanes_enable(struct csiphy_device *csiphy,
->>> +                            struct csiphy_config *cfg,
->>> +                            s64 link_freq, u8 lane_mask)
->>>    {
->>>        struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
->>>        u8 settle_cnt;
->>> @@ -132,6 +132,8 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>>                writel_relaxed(0x3f, csiphy->base +
->>>                               CAMSS_CSI_PHY_INTERRUPT_CLEARn(l));
->>>        }
->>> +
->>> +     return 0;
->>>    }
->>>    
->>>    static void csiphy_lanes_disable(struct csiphy_device *csiphy,
->>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->>> index 4154832745525..f3a8625511e1e 100644
->>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->>> @@ -14,6 +14,7 @@
->>>    #include <linux/delay.h>
->>>    #include <linux/interrupt.h>
->>>    #include <linux/io.h>
->>> +#include <linux/media-bus-format.h>
->>>    
->>>    #define CSIPHY_3PH_LNn_CFG1(n)                      (0x000 + 0x100 * (n))
->>>    #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG (BIT(7) | BIT(6))
->>> @@ -993,13 +994,22 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
->>>    
->>>    static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
->>>    {
->>> -     u8 lane_mask;
->>> -     int i;
->>> +     u8 lane_mask = 0;
->>>    
->>> -     lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->>> +     switch (lane_cfg->phy_cfg) {
->>> +     case V4L2_MBUS_CSI2_CPHY:
->>> +             for (int i = 0; i < lane_cfg->num_data; i++)
->>> +                     lane_mask |= (1 << lane_cfg->data[i].pos) + 1;
->>
->> 1 << anything == BIT(anything)
->>
->> I've always disliked the look of this code and now it occurs to me why.
->>
->> This code is analogous to:
->>
->> lane_mask |= BIT(lane_cfg->data[i].pos) + 1);
+On Fri, Feb 20, 2026 at 12:26:48PM +0100, Luca Weiss wrote:
+> On Fri Feb 20, 2026 at 11:51 AM CET, Konrad Dybcio wrote:
+> > On 2/20/26 11:40 AM, Luca Weiss wrote:
+> >> On Fri Feb 20, 2026 at 11:00 AM CET, Konrad Dybcio wrote:
+> >>> On 2/20/26 10:19 AM, Luca Weiss wrote:
+> >>>> Add a generic-adc-thermal node to convert the voltage read by the
+> >>>> battery temperature ADC into degree Celsius using the provided lookup
+> >>>> table.
+> >>>>
+> >>>> This will later be used as input for the fuel gauge node (QGauge on the
+> >>>> PM7250B).
+> >>>>
+> >>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> >>>> ---
+> >>>>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 83 +++++++++++++++++++++++
+> >>>>  1 file changed, 83 insertions(+)
+> >>>>
+> >>>> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> >>>> index b697051a0aaa..7857003099a6 100644
+> >>>> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> >>>> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> >>>> @@ -108,6 +108,89 @@ rear_cam_sensor: thermal-sensor-rear-cam {
+> >>>>  		io-channel-names = "sensor-channel";
+> >>>>  	};
+> >>>>  
+> >>>> +	bat_therm_sensor: thermal-sensor-bat-therm {
+> >>>
+> >>> nit: this should be a little higher
+> >> 
+> >> meh, it's surprisingly easy to miss this sorting stuff. Will fix in v3.
+> >> 
+> >>>
+> >>>> +		compatible = "generic-adc-thermal";
+> >>>> +		#thermal-sensor-cells = <0>;
+> >>>> +		#io-channel-cells = <0>;
+> >>>> +		io-channels = <&pm7250b_adc ADC5_BAT_THERM_30K_PU>;
+> >>>> +		io-channel-names = "sensor-channel";
+> >>>> +		/*
+> >>>> +		 * Voltage to temperature table for 10kΩ (B=3435K) NTC with a
+> >>>> +		 * 1.875V reference and 30kΩ pull-up.
+> >>>> +		 */
+> >>>
+> >>> I think this looks good. Is this data going to be correct for all/most
+> >>> devices (i.e. is there a single battery sku)?
+> >> 
+> >> Yes, from my info there's just a single battery SKU, so that makes it
+> >> easy here.
+> >> 
+> >> For Fairphone 3 there's two battery SKUs:
+> >> 
+> >> * (Fuji) F3AC with NTC 100kOhm B=4100, ID resistor 10kOhm
+> >> * (Kayo) F3AC1 with NTC 100kOhm B=4050, ID resistor 49.9kOhm
+> >> 
+> >> In reality, one can probably ignore the difference between the LUT for
+> >> either B value since it only differs by a marginal amount, but
+> >> conceptually I'm not sure how this should really be resolved.
+> >> 
+> >> We could have both battery definitions in the dtb, and then the charging
+> >> driver could determine the battery that's actually present in the
+> >> system (based on the BATT_ID measurement), but given the design here
+> >> now, I'm not sure how this temperature lookup table would be propagated
+> >> to the rest of the system...
+> >
+> > The path of least resistance (pun intended) would probably be to make
+> > generic-adc-thermal consume an ID channel and accept a number of LUTs..
 > 
-> I see that addition to a bit mask and get a little bit scared.
+> Not the worst idea ;)
 > 
-> This gives:
->    pos   mask
->     0    0b00000010 (note 0 bit is zero here but 1 on all others)
->     1    0b00000011
->     2    0b00000101
->     3    0b00001001
->     4    0b00010001
+> >
+> > That sounds sensible since most battery ID mechanisms are probably also
+> > ADC-based and one would hope (tm) that the values output by these ADC channels
+> > would then be distinct enough for the driver to have an easy time confidently
+> > selecting one of the options (or a fallback)
 > 
-> Is that expected?
+> Charger / fuel guage and everything else battery-related would also need
+> to get the correct battery properties for the actual one present, not
+> just this generic-adc-thermal driver.
 > 
-> Can data[i].pos ever be position 0 ??
-> 
-> I assume this starts at position 1 - and the +1 here is to always set
-> the zeroth bit ?
-> 
-> Perhapse this might be precise to convey that in such a case?
-> 
->    lane_mask |= BIT(pos) | 1;
-> 
-> I guess it depends on what this is really being used for which I don't
-> have in my context.
+> But I feel like soon DT maintainers will say that Linux shouldn't
+> dynamically detect hardware that's present and the DT should be the
+> absolute source of truth. That works fine in simple cases, but in case
+> of interchangeable batteries, display panels, camera sensors, this won't
+> work. *Something* needs to determine what's actually there.
 
-I currently don't see clear way forward, maybe someone from qcom could 
-give a hint how to continue?
-
-Thanks
-David
+How is it handled for the Android boots? I assume there are (at least)
+two DTBOs and the correct one is being selected somehow (via the msm-id
+/ board-id?). Or does ABL pass some kind of battery identifier to the
+kernel?
 
 > 
-> --
-> Kieran
-> 
->   
-> 
->>
->> but BIT() is less janky and more upstreamy.
->>
->> janky/upstreamy - this is the on-point technical argument y'all came
->> here for :)
->>
->>> +             break;
->>> +     case V4L2_MBUS_CSI2_DPHY:
->>> +             lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->>>    
->>> -     for (i = 0; i < lane_cfg->num_data; i++)
->>> -             lane_mask |= 1 << lane_cfg->data[i].pos;
->>> +             for (int i = 0; i < lane_cfg->num_data; i++)
->>> +                     lane_mask |= 1 << lane_cfg->data[i].pos;
->>> +             break;
->>> +     default:
->>> +             break;
->>> +     }
->>>    
->>>        return lane_mask;
->>>    }
->>> @@ -1027,10 +1037,11 @@ static bool csiphy_is_gen2(u32 version)
->>>        return ret;
->>>    }
->>>    
->>> -static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>> -                             struct csiphy_config *cfg,
->>> -                             s64 link_freq, u8 lane_mask)
->>> +static int csiphy_lanes_enable(struct csiphy_device *csiphy,
->>> +                            struct csiphy_config *cfg,
->>> +                            s64 link_freq, u8 lane_mask)
->>>    {
->>> +     struct device *dev = csiphy->camss->dev;
->>>        struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
->>>        struct csiphy_device_regs *regs = csiphy->regs;
->>>        u8 settle_cnt;
->>> @@ -1039,9 +1050,23 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>>    
->>>        settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
->>>    
->>> -     val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->>> -     for (i = 0; i < c->num_data; i++)
->>> -             val |= BIT(c->data[i].pos * 2);
->>> +     val = 0;
->>> +
->>> +     switch (c->phy_cfg) {
->>> +     case V4L2_MBUS_CSI2_CPHY:
->>> +             for (i = 0; i < c->num_data; i++)
->>> +                     val |= BIT((c->data[i].pos * 2) + 1);
->>> +             break;
->>> +     case V4L2_MBUS_CSI2_DPHY:
->>> +             val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->>> +
->>> +             for (i = 0; i < c->num_data; i++)
->>> +                     val |= BIT(c->data[i].pos * 2);
->>> +             break;
->>> +     default:
->>> +             dev_err(dev, "Unsupported bus type %d\n", c->phy_cfg);
->>> +             return -EINVAL;
->>> +     }
->>>    
->>>        writel_relaxed(val, csiphy->base +
->>>                       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
->>> @@ -1068,6 +1093,8 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>>                writel_relaxed(0, csiphy->base +
->>>                               CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, i));
->>>        }
->>> +
->>> +     return 0;
->>>    }
->>>    
->>>    static void csiphy_lanes_disable(struct csiphy_device *csiphy,
->>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
->>> index 62623393f4144..08dd238e52799 100644
->>> --- a/drivers/media/platform/qcom/camss/camss-csiphy.c
->>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
->>> @@ -295,9 +295,7 @@ static int csiphy_stream_on(struct csiphy_device *csiphy)
->>>                wmb();
->>>        }
->>>    
->>> -     csiphy->res->hw_ops->lanes_enable(csiphy, cfg, link_freq, lane_mask);
->>> -
->>> -     return 0;
->>> +     return csiphy->res->hw_ops->lanes_enable(csiphy, cfg, link_freq, lane_mask);
->>
->> ick.
->>
->> More high brow stuff from bod here but, more seriously this is three
->> levels of indirection deep and the statement keeps getting longer.
->>
->> Could you get a pointer to hw_ops() to reduce this down a bit.
->>
->>>    }
->>>    
->>>    /*
->>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.h b/drivers/media/platform/qcom/camss/camss-csiphy.h
->>> index d198171700e73..21cf2ce931c1d 100644
->>> --- a/drivers/media/platform/qcom/camss/camss-csiphy.h
->>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.h
->>> @@ -73,9 +73,9 @@ struct csiphy_hw_ops {
->>>        void (*hw_version_read)(struct csiphy_device *csiphy,
->>>                                struct device *dev);
->>>        void (*reset)(struct csiphy_device *csiphy);
->>> -     void (*lanes_enable)(struct csiphy_device *csiphy,
->>> -                          struct csiphy_config *cfg,
->>> -                          s64 link_freq, u8 lane_mask);
->>> +     int (*lanes_enable)(struct csiphy_device *csiphy,
->>> +                         struct csiphy_config *cfg,
->>> +                         s64 link_freq, u8 lane_mask);
->>>        void (*lanes_disable)(struct csiphy_device *csiphy,
->>>                              struct csiphy_config *cfg);
->>>        irqreturn_t (*isr)(int irq, void *dev);
->>>
->>
->> With those tweaks.
->>
->> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>
->> ---
->> bod
+> And for most of the ways to detect which of those are present in the
+> device that is booting, you need half a kernel to power up the various
+> hardware and do some basic communication to figure out what's there. Of
+> course you could say that's U-Boot's job for example but not sure you
+> want to add a CCI (I2C), ADC driver and much more...
 
 -- 
-David Heidelberg
-
+With best wishes
+Dmitry
