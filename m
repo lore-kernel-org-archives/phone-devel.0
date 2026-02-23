@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959A135BDCA;
-	Mon, 23 Feb 2026 10:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03C0356A24;
+	Mon, 23 Feb 2026 10:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771842352; cv=none; b=rVcDI2Ud8RXFfA8c+Deukxu5JeKAdR9T1o6cbyzJYN44ptXBtZvv4Kri4/D4r8nElbgIA5vJZvkyT1mNwwzoPLYbAcpEmeD+g4sFCneUGKlo1jOgDNNJCFwoEBVqscyZRYcfgHw1dfXmnIE8efm0yhPrBlhdJiln4iKRF44Q/g8=
+	t=1771842587; cv=none; b=CpERdz8F6PbtroRXrH6lEURt3UoHIKmFyHo5p2n0MCRA0IYtv32WQYNRQ/C4bXU0sWv7rQsD1OKmKKnHJg2mpObpTrcL1nxOw76bCdfm28RxWeyITpxQ4gQAm2NhjBSVlybbPD2pHw3J7eKLKH60fUG+w8iWeXYzLlR/XHuX/CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771842352; c=relaxed/simple;
-	bh=eOZvOyeMiUAyRxE8OxnmYiwJsq5EuJamUv57QzoABT4=;
+	s=arc-20240116; t=1771842587; c=relaxed/simple;
+	bh=sQDGB/4LD2boeOhifdS5IUoT7OL0r0nYxmEKNWhR7Ds=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lwnbwMZgHojgTtDGuetgKUl3Z8sDQRx2OjW3DMT7gMhbZNbxS37UMjZM1I6pm3DXtIa+mtzUTuLuLdrv2CtwPoLixAxJT1l1qBo1kfmHBpEQ5ol4DqKzBBiNMKhRSG7PoWx5s82Xu4w+Yfkq4YVUfzcsb6UnZX3+UUzzuOv9uJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhbYLtTq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SAgA3+5oV7fVN+9JFLV/N5u7mhGs6Vm1JRHbXnOzPAiatOCp4d+NOPCNCx6tUp09cf/YQtuMuGyG3SnIVYeWqlNxd3OWODIyH9ac2dnBtqCJWxMsv6wD89UDhp9dQfdn8k2cK/buCZLbuchsZ4GTXL47oMW1pozzZXB912umA10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrXdCkhE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhbYLtTq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE73C116C6;
-	Mon, 23 Feb 2026 10:25:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrXdCkhE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7545C116C6;
+	Mon, 23 Feb 2026 10:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771842352;
-	bh=eOZvOyeMiUAyRxE8OxnmYiwJsq5EuJamUv57QzoABT4=;
+	s=k20201202; t=1771842587;
+	bh=sQDGB/4LD2boeOhifdS5IUoT7OL0r0nYxmEKNWhR7Ds=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QhbYLtTqOn4ytpxhIiLvO6iPHP3IA/ZeqWGhZqRXHGHG86PqVQO3pso7B0arpJwWn
-	 yTRHyrSVY2yepzWYNwOESCLdlQvwOYncpu4HU5rU5UnFMPfk76fjO+tstJoVMvXz0K
-	 ty+SKHnvVFJTJ+DQnUU8OxFwcPs4Xlw/ZhC9qk+mwxjXD6fWk45O8JLV4j9TWfilqN
-	 dr/iYeRKRMe7NlOAjp95zoLpEFGLZ77siI2xCzcCNhhmhgRnbYswzdAaQ3DztTHW3Q
-	 z0rL3lVGVwhuGSvipGpuFlYwMaIOZk9izQdvAasa3Zxf3bbN3uo1cZKPwqnaNF7y38
-	 X9MuX/bcUi76g==
-Date: Mon, 23 Feb 2026 11:25:49 +0100
+	b=UrXdCkhE1OVhRfgfDyGPA21qceycMfVvyWt+16Xe/5ztc9LsaOJuwJzOHU8UV8gw8
+	 lLWCFMP7D89HVN68avNhwHzotsfLct81kOBWhFH6fKUD/SbPgSvb7HokHrfsMIv+5y
+	 yDrR1O6y9CyMkZAIIcvfin9nBDoPEq37MH/wtBZEJdjdYmt22TN95gQr2YB6gLHXlJ
+	 Cy05WZP69Cr7uHS5DH/VEO/Cws0PUkD3Ff6T2VHL7bOB+cpJcOG4lCribpugkml0q/
+	 DCt+tJdEYS/7vnzb09wubcGOmSijIJ5u9YrFOY5546rC6X2EFri0pAy1ncbXmyRBzo
+	 dT8jKjmmvBxVw==
+Date: Mon, 23 Feb 2026 11:29:44 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Paul Adam <adamp@posteo.de>
 Cc: Rob Herring <robh@kernel.org>, 
@@ -34,10 +34,11 @@ Cc: Rob Herring <robh@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: vendor-prefixes: add WIKO SAS
-Message-ID: <20260223-literate-flamingo-of-reading-4deaa5@quoll>
+Subject: Re: [PATCH v2 2/3] dt-bindings: arm: qcom: add wiko,chuppito
+ compatible string
+Message-ID: <20260223-victorious-nickel-nightingale-e1dea8@quoll>
 References: <20260221-wiko-chuppito-v2-0-6336b1b12389@posteo.de>
- <20260221-wiko-chuppito-v2-1-6336b1b12389@posteo.de>
+ <20260221-wiko-chuppito-v2-2-6336b1b12389@posteo.de>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -46,19 +47,14 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260221-wiko-chuppito-v2-1-6336b1b12389@posteo.de>
+In-Reply-To: <20260221-wiko-chuppito-v2-2-6336b1b12389@posteo.de>
 
-On Sat, Feb 21, 2026 at 09:55:39PM +0100, Paul Adam wrote:
-> Wiko is a french smartphone company: https://wiko.com
+On Sat, Feb 21, 2026 at 09:55:40PM +0100, Paul Adam wrote:
+> Add a compatible for Wiko PULP 4G
 
-Everything in Chinese, so not that much French company. Also footer says
-after translation:
+", a some sort of a device... here goes short explanation".
 
-Copyright =C2=A9 Wuke Terminal Technology (Dongguan) Co., Ltd.
-The main body number of the record: Guangdong ICP No. 2022057930
-
-so for sure not French.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
