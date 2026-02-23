@@ -1,147 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B887825FA10;
-	Mon, 23 Feb 2026 20:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF8E37C112
+	for <phone-devel@vger.kernel.org>; Mon, 23 Feb 2026 22:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771877028; cv=none; b=ef+002tjFoJHlEHHD2tsJbvoWGZ51MyAEQhiM+mpsD/GiU4gb/G/WssKqP5l9wZkzZsvrOXDLjob84jwp3WtwfY1Oy0BD//FeDkmdYypsiziYrhXwqw7SKvk+I9U/o3S1LH2EcdGFaO9A6HaWqh80abw8+6vg5UaBRUCYC+jWYk=
+	t=1771884337; cv=none; b=ssx3x/xGKWqw5pHMV7r53VjKO7vMLfqXxMnZqjACnmN5rsYvleBzt39bh1GkB7ZKMUGjHRFr0sgQPbUMbRZHRRO4CVqEZeBo6H4AMOLcoZj/D0y1bIXzjMy4Ta7Cj2A3ZEglZK5b00QN1LXdtiKId9u/r4zMiHf+f0xqjzQj4R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771877028; c=relaxed/simple;
-	bh=aTh23EkOJI0kjUod1Hs09WDlySin3Rd8su95Qd1Sxbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rp4piEZlHtkfCdm9gzUAsidI+hRnq2ovSgoXRp7NHz8nxM+0t6nLjIYiyWce+Dk0FpRkGkgG1oNGeFuoHRxyfhSFgRpgYb1kJN1YibMiw++jGhvK4/MfTx5VObBCaGKeIq5H9hEgd9SkYFrpzN/yOrte6d5vrGgwtp40GrGfZLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3AIdiY1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771884337; c=relaxed/simple;
+	bh=iJ4CbTCrYdLmFrPnd8AD2DQXbeKk4toKBexKglpoUVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m4GlHwZHOBrBtG0Ef0X+XCrJrg618N1VmiY64tgMKr3jya+7sUC1i/tFMwxyKreoBP/LApf09foa4NWgSZ5VBvXqBvu9cqKeY9c8hF9UY5WExCg7hARW68UgguQXILEP29dQYACim+yQHzKSVCg/aO7V3CcvkGDp9jKgHkyXtLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=sDVSFi+Q; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3AIdiY1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3ABC116C6;
-	Mon, 23 Feb 2026 20:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771877028;
-	bh=aTh23EkOJI0kjUod1Hs09WDlySin3Rd8su95Qd1Sxbk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V3AIdiY1aWDJa++pm5SdWAXF58jKQG7vxcOkk/g3sD4FIY71PPIutHXG6R44JPj79
-	 1SggovlSNnN0ReSuS9yc4TYmeZIVcF7N68XB5VMuj15EXMdt/4fkxisauTZR/nl3Jv
-	 UAkoocK2iAN0T7e2B1EDU2tswqxU9T9SBSu2u2tHomXLxW0G8GJc0x58BPwcRKiMv0
-	 gYi88QIURdsrshq+uual9Mb/FWpKEbOkL4A2r6NYF0Q4h1CguOEo5H+XeD9oyS8l0r
-	 e0Ylem0e2Wt3Hrv3JiNViBAz/ZuQWyUkSi3IOmpozH+eRSjh5gJo0hpK2sIkjpzScS
-	 pbT8ZzJ9FHBBQ==
-Date: Mon, 23 Feb 2026 14:03:44 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Matti =?utf-8?Q?Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>, Luca Weiss <luca@lucaweiss.eu>, 
-	Vladimir Lypak <vladimir.lypak@gmail.com>, 
-	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] remoteproc: qcom_wcnss: Fix handling the lack of PD
- regulators in v3
-Message-ID: <jup7hphwpa754gyhtcahz25glecp6ctpuxcwzvco6wrbokvnip@quw7hrauahsa>
-References: <20260201210230.911220-1-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="sDVSFi+Q"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1771884334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NgbEvxCqnxS2xWV0vKpYj1iqUy5PwFQB8T1ITONd/tY=;
+	b=sDVSFi+QofqC3UwKp7uh5iF1KQAg1iW5fNL8K3nBvK/KYl2tnEUBXtCYVxqDjjqP08D0Gm
+	JQSHcqywRIBxmvInqISR+/LluT5F5ssRo79BVvzq/Sp81zwM1c+TyHDppZjGYTzxKxBA1S
+	lr7pwD7AYfgM/kXK+2h3Gt9ZV7MjhDOvf5BRm/vTh2K6aoFV6/56s5aTl+yhlgk01LFJ2Q
+	3pkFDgs6kLJspHP82IKYcliU17x5UaaYPvewnQkpWC2BhyLUAUISRTWYNPUOCD98Gl8vR6
+	Gy0Nd52XnqoZVKUNwR4haWAtdzK5qwg2FKBRzV1oX0DaIeTOfH39lNZbpjwy1g==
+From: Raymond Hackley <wonderfulshrinemaidenofparadise@postmarketos.org>
+To: linux-kernel@vger.kernel.org
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	Max McNamee <maxmcnamee@proton.me>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Nikita Travkin <nikita@trvn.ru>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Raymond Hackley <raymondhackley@protonmail.com>
+Subject: [PATCH 1/3] arm64: dts: qcom: msm8916-samsung-fortuna: Move SM5504 from rossa and refactor MUIC
+Date: Mon, 23 Feb 2026 22:05:12 +0000
+Message-ID: <20260223220514.2556033-2-wonderfulshrinemaidenofparadise@postmarketos.org>
+In-Reply-To: <20260223220514.2556033-1-wonderfulshrinemaidenofparadise@postmarketos.org>
+References: <20260223220514.2556033-1-wonderfulshrinemaidenofparadise@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260201210230.911220-1-val@packett.cool>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Feb 01, 2026 at 05:55:03PM -0300, Val Packett wrote:
-> The changes introduced to handle single power domain platforms have
-> swapped the info pointer increment from num_pd_vregs to num_pds, which
-> would shift the info pointer past the end of the array for pronto-v3,
-> which does not list power domain regulators in vregs.
-> 
-> This showed up as a difference between GCC- and LLVM-compiled kernels
-> on SDM632 devices, where only with LLVM one would get the
-> "regulator request with no identifier" error, because the out-of-bounds
-> memory ended up being zeroed. Fix by skipping the increment when there
-> are more power domains than regulators.
-> 
+From: Raymond Hackley <raymondhackley@protonmail.com>
 
-Is the error only an error print, or did the thing stop working as well?
+MUIC varies on fortuna/rossa devices, which could be either SM5502 or
+SM5504. Move SM5504 from msm8916-samsung-rossa-common to
+msm8916-samsung-fortuna-common and refactor MUIC.
 
-Should we no longer carry
-Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
+Disable MUIC by default in msm8916-samsung-fortuna-common, and explicitly
+specify them in each fortuna/rossa board.
 
-Regards,
-Bjorn
+Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+---
+ .../dts/qcom/msm8216-samsung-fortuna3g.dts    | 18 +++++++++++
+ .../qcom/msm8916-samsung-fortuna-common.dtsi  | 32 ++++++++++++-------
+ .../dts/qcom/msm8916-samsung-gprimeltecan.dts | 15 ++++++++-
+ .../qcom/msm8916-samsung-grandprimelte.dts    | 18 +++++++++++
+ .../qcom/msm8916-samsung-rossa-common.dtsi    | 19 -----------
+ .../boot/dts/qcom/msm8916-samsung-rossa.dts   | 18 +++++++++++
+ 6 files changed, 88 insertions(+), 32 deletions(-)
 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
-> v2: changed to detect the >= condition suggested by Konrad
-> v1: https://lore.kernel.org/all/20260126235018.969140-1-val@packett.cool/
-> 
-> "possible_pds" is the best name I could come up with (as "num" is already
-> taken by the number of *successfully attached* PDs and "max" is the constant
-> for the array length) for the count we're checking against. Maybe the "num"
-> could be changed to "attached" but that feels like too much diff.
-> 
-> ~val
-> ---
-> 
->  drivers/remoteproc/qcom_wcnss.c | 23 ++++++++++++++---------
->  1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-> index ee18bf2e8054..60f629b5bbed 100644
-> --- a/drivers/remoteproc/qcom_wcnss.c
-> +++ b/drivers/remoteproc/qcom_wcnss.c
-> @@ -441,25 +441,31 @@ static void wcnss_release_pds(struct qcom_wcnss *wcnss)
->  }
->  
->  static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
-> -				 const struct wcnss_vreg_info *info,
-> -				 int num_vregs, int num_pd_vregs)
-> +				 const struct wcnss_data *data)
->  {
-> +	const struct wcnss_vreg_info *info = data->vregs;
->  	struct regulator_bulk_data *bulk;
-> +	size_t i, possible_pds = 0, num_vregs = data->num_vregs;
->  	int ret;
-> -	int i;
-> +
-> +	for (i = 0; i < WCNSS_MAX_PDS; i++)
-> +		if (data->pd_names[i])
-> +			possible_pds++;
->  
->  	/*
->  	 * If attaching the power domains suceeded we can skip requesting
->  	 * the regulators for the power domains. For old device trees we need to
->  	 * reserve extra space to manage them through the regulator interface.
->  	 */
-> -	if (wcnss->num_pds) {
-> +	if (possible_pds >= num_vregs) {
-> +		/* Do nothing if vregs do not include PD regulators (pronto-v3) */
-> +	} else if (wcnss->num_pds) {
->  		info += wcnss->num_pds;
->  		/* Handle single power domain case */
-> -		if (wcnss->num_pds < num_pd_vregs)
-> -			num_vregs += num_pd_vregs - wcnss->num_pds;
-> +		if (wcnss->num_pds < data->num_pd_vregs)
-> +			num_vregs += data->num_pd_vregs - wcnss->num_pds;
->  	} else {
-> -		num_vregs += num_pd_vregs;
-> +		num_vregs += data->num_pd_vregs;
->  	}
->  
->  	bulk = devm_kcalloc(wcnss->dev,
-> @@ -607,8 +613,7 @@ static int wcnss_probe(struct platform_device *pdev)
->  	if (ret && (ret != -ENODATA || !data->num_pd_vregs))
->  		return ret;
->  
-> -	ret = wcnss_init_regulators(wcnss, data->vregs, data->num_vregs,
-> -				    data->num_pd_vregs);
-> +	ret = wcnss_init_regulators(wcnss, data);
->  	if (ret)
->  		goto detach_pds;
->  
-> -- 
-> 2.52.0
-> 
+diff --git a/arch/arm64/boot/dts/qcom/msm8216-samsung-fortuna3g.dts b/arch/arm64/boot/dts/qcom/msm8216-samsung-fortuna3g.dts
+index fba68bf8bf79..aed90c8089aa 100644
+--- a/arch/arm64/boot/dts/qcom/msm8216-samsung-fortuna3g.dts
++++ b/arch/arm64/boot/dts/qcom/msm8216-samsung-fortuna3g.dts
+@@ -16,6 +16,15 @@ &battery {
+ 	constant-charge-voltage-max-microvolt = <4350000>;
+ };
+ 
++&charger {
++	richtek,usb-connector = <&usb_con_sm5502>;
++	status = "okay";
++};
++
++&muic_sm5502 {
++	status = "okay";
++};
++
+ &st_accel {
+ 	status = "okay";
+ };
+@@ -23,3 +32,12 @@ &st_accel {
+ &st_magn {
+ 	status = "okay";
+ };
++
++&usb {
++	extcon = <&muic_sm5502>, <&muic_sm5502>;
++	status = "okay";
++};
++
++&usb_hs_phy {
++	extcon = <&muic_sm5502>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
+index fb790b02736a..fd62e82075c4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-fortuna-common.dtsi
+@@ -144,14 +144,31 @@ reg_vdd_tsp_a: regulator-vdd-tsp-a {
+ &blsp_i2c1 {
+ 	status = "okay";
+ 
+-	muic: extcon@25 {
++	/* MUIC/extcon varies depending on model variant */
++	muic_sm5504: extcon@14 {
++		compatible = "siliconmitus,sm5504-muic";
++		reg = <0x14>;
++		interrupts-extended = <&tlmm 12 IRQ_TYPE_EDGE_FALLING>;
++		pinctrl-0 = <&muic_int_default>;
++		pinctrl-names = "default";
++		status = "disabled";
++
++		usb_con_sm5504: connector {
++			compatible = "usb-b-connector";
++			label = "micro-USB";
++			type = "micro";
++		};
++	};
++
++	muic_sm5502: extcon@25 {
+ 		compatible = "siliconmitus,sm5502-muic";
+ 		reg = <0x25>;
+ 		interrupts-extended = <&tlmm 12 IRQ_TYPE_EDGE_FALLING>;
+ 		pinctrl-0 = <&muic_int_default>;
+ 		pinctrl-names = "default";
++		status = "disabled";
+ 
+-		usb_con: connector {
++		usb_con_sm5502: connector {
+ 			compatible = "usb-b-connector";
+ 			label = "micro-USB";
+ 			type = "micro";
+@@ -298,7 +315,7 @@ rt5033_reg_safe_ldo: SAFE_LDO {
+ 		charger: charger {
+ 			compatible = "richtek,rt5033-charger";
+ 			monitored-battery = <&battery>;
+-			richtek,usb-connector = <&usb_con>;
++			status = "disabled";
+ 		};
+ 	};
+ };
+@@ -348,15 +365,6 @@ &sound {
+ 		"AMIC3", "MIC BIAS External1";
+ };
+ 
+-&usb {
+-	extcon = <&muic>, <&muic>;
+-	status = "okay";
+-};
+-
+-&usb_hs_phy {
+-	extcon = <&muic>;
+-};
+-
+ &venus {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gprimeltecan.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-gprimeltecan.dts
+index 677e4e286ac0..15dcfe8234d9 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gprimeltecan.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gprimeltecan.dts
+@@ -86,7 +86,7 @@ rt5033_reg_safe_ldo: SAFE_LDO {
+ 		charger: charger {
+ 			compatible = "richtek,rt5033-charger";
+ 			monitored-battery = <&battery>;
+-			richtek,usb-connector = <&usb_con>;
++			richtek,usb-connector = <&usb_con_sm5502>;
+ 		};
+ 	};
+ };
+@@ -95,3 +95,16 @@ &mpss_mem {
+ 	/* Firmware for gprimeltecan needs more space */
+ 	reg = <0x0 0x86800000 0x0 0x5400000>;
+ };
++
++&muic_sm5502 {
++	status = "okay";
++};
++
++&usb {
++	extcon = <&muic_sm5502>, <&muic_sm5502>;
++	status = "okay";
++};
++
++&usb_hs_phy {
++	extcon = <&muic_sm5502>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandprimelte.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandprimelte.dts
+index 582bfcb09684..268277c1caf4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandprimelte.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandprimelte.dts
+@@ -24,7 +24,25 @@ &bosch_magn {
+ 	status = "okay";
+ };
+ 
++&charger {
++	richtek,usb-connector = <&usb_con_sm5502>;
++	status = "okay";
++};
++
+ &mpss_mem {
+ 	/* Firmware for grandprimelte needs more space */
+ 	reg = <0x0 0x86800000 0x0 0x5400000>;
+ };
++
++&muic_sm5502 {
++	status = "okay";
++};
++
++&usb {
++	extcon = <&muic_sm5502>, <&muic_sm5502>;
++	status = "okay";
++};
++
++&usb_hs_phy {
++	extcon = <&muic_sm5502>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa-common.dtsi
+index e33453c3e51e..5b08f0e11105 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa-common.dtsi
+@@ -2,28 +2,9 @@
+ 
+ #include "msm8916-samsung-fortuna-common.dtsi"
+ 
+-/* SM5504 MUIC instead of SM5502 */
+-/delete-node/ &muic;
+-
+ /* IST3038 instead of Zinitix BT541 */
+ /delete-node/ &touchscreen;
+ 
+-&blsp_i2c1 {
+-	muic: extcon@14 {
+-		compatible = "siliconmitus,sm5504-muic";
+-		reg = <0x14>;
+-		interrupts-extended = <&tlmm 12 IRQ_TYPE_EDGE_FALLING>;
+-		pinctrl-0 = <&muic_int_default>;
+-		pinctrl-names = "default";
+-
+-		usb_con: connector {
+-			compatible = "usb-b-connector";
+-			label = "micro-USB";
+-			type = "micro";
+-		};
+-	};
+-};
+-
+ &blsp_i2c5 {
+ 	touchscreen: touchscreen@50 {
+ 		compatible = "imagis,ist3038";
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts
+index 1981bb71f6a9..a5106afc3c59 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-rossa.dts
+@@ -16,7 +16,25 @@ &battery {
+ 	constant-charge-voltage-max-microvolt = <4400000>;
+ };
+ 
++&charger {
++	richtek,usb-connector = <&usb_con_sm5504>;
++	status = "okay";
++};
++
+ &mpss_mem {
+ 	/* Firmware for rossa needs more space */
+ 	reg = <0x0 0x86800000 0x0 0x5800000>;
+ };
++
++&muic_sm5504 {
++	status = "okay";
++};
++
++&usb {
++	extcon = <&muic_sm5504>, <&muic_sm5504>;
++	status = "okay";
++};
++
++&usb_hs_phy {
++	extcon = <&muic_sm5504>;
++};
+-- 
+2.47.3
+
