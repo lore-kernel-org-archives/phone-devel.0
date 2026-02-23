@@ -1,478 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C14260565;
-	Sat, 21 Feb 2026 20:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A1346E64
+	for <phone-devel@vger.kernel.org>; Mon, 23 Feb 2026 07:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771707383; cv=none; b=cfyo9ouKHh29FDoOgvyBaTmAD2B61j6fSqOIoTwINjXZ4K/cdOHiQv/5gTUJCmnBxuivQML//DX7rRHohwy4wl4MqBquEDtxRTdKsBMHaFgW13zyRCh7pelFQh/gcBfN1Q/jVWMYoP1tRvf6H+7AALBKv7ffX2rPx0AUEl/8xDU=
+	t=1771833055; cv=none; b=AEAZ2ZxPzRB78sS6MObGTuyKU4ZAytat6Sm9i7qnzt2zVrLfP5ZTxwpb4waApwizkLkhg6ArCX8SA1JoDLzqDo151ySngz8NEEGtXwz0dRnnF6fLLl40dEnQif7LcRAUnZElBjp6/lwSiInfbbjexRXDfb0F3iYqNTNGElJ9xzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771707383; c=relaxed/simple;
-	bh=Dn/8d2h+M/S+3kYYuxzE/fTaOrIcd4b/BqQLqQch2ww=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ndeSi4vCKPdsvHYuUu2IhQOg7gzVfx1MX+66akMbmgJtB3/ZzGX0H2lrFXH18YYjr9k83ESdmQg/LoHxrUaFNboa755ik0fwdcjdwIhi2Mc4YJhsYOvRbtwzZb+sRSoCuBRMIPC2Q/q0T+uTdlwlhOuGoZgZnghh6Ix67gEClMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=au/A5gcn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771833055; c=relaxed/simple;
+	bh=myrYEPr/R1pVr+HcXiT9MOTW/An54yWrX6KWA186BlE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=SfyhUsl537WdZNrN+4PDjfnrUZ4I+3idR6u7QK0WrMmHcTSEXhtmNg76x6d2s1XQn/d/2PL0M5q3IPrV7ILrblnYnI9r9o8wZ9vFKNPJyjjMIU02afwt6ArG6OFsAi4ZjTti4DUmPfCSF08lfkza4400EMuy5aCkNNCtMxOdJbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Vfj1Mg1J; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="au/A5gcn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 648ACC2BC9E;
-	Sat, 21 Feb 2026 20:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771707383;
-	bh=Dn/8d2h+M/S+3kYYuxzE/fTaOrIcd4b/BqQLqQch2ww=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=au/A5gcn5/VSrSKHPvSTNuGhskEzFQNR1LUIyAgxypm/ICgaQzNaGkE/YRz6cVXyJ
-	 yucfVJuYZolC/Zr8H/XaIwGvOoycJw56TTdqGhUO7dZmjtV7v/hGtXIqYoCWUiBAKx
-	 BUx+qfHJXZx0oPZhYdhHtLc8b/bQJtws5jDygw6sDW2E6MwZDCI10erWMS5fwq5Prr
-	 NZ/jtolGmqW8lobQ0qEz6TaYLtJXZHvDqqP2QL84k25EGF0toRr9+kKJ8vx/E96xz2
-	 MKGnPyrYhGdjZJqkK7fnCpDpWJ0WSqlxMHIoBrmGx7dTfj+fUxQvXPbyjU47h3Ovt9
-	 3YWefnv3kx2tw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B4E1C624A0;
-	Sat, 21 Feb 2026 20:56:23 +0000 (UTC)
-From: Paul Adam via B4 Relay <devnull+adamp.posteo.de@kernel.org>
-Date: Sat, 21 Feb 2026 21:55:41 +0100
-Subject: [PATCH v2 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
- initial devicetree
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Vfj1Mg1J"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65be78011c8so5589736a12.3
+        for <phone-devel@vger.kernel.org>; Sun, 22 Feb 2026 23:50:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1771833052; x=1772437852; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERYQol69KzvMZw4jEOTjkJFG/z3wRah/VmniZQD/41w=;
+        b=Vfj1Mg1Jtj3zNWPsyWcoDtm2oFvl+48/lxpC6XCUaeYoAjjLFjglwV1CPlX00jL+is
+         mFquk3O73OI9NlWw+W/CJ6zEQzJdDF5UNdrzdWYrwnW7fuQDLVVGB9Mylg6FpeGJqbMa
+         3OWyVeEfJtysaGOQw9ntC8EbUfOG3IjMe4apFhDi2YGDzzVs4yj0KVIpqzoxnA93OLu0
+         lSqnCwHaP+weWaEfwXd4e6MiNGK4Y1ol0bwZXgJu81QfA55aIBC9zUD2yw2V1n83v1Id
+         Q/OSayAy7fj3isTKCXbikkwT0y1s81U2QT5ObyWyk2QXg4UcHxVlZbamdRUI3aSER76x
+         E1sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771833052; x=1772437852;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ERYQol69KzvMZw4jEOTjkJFG/z3wRah/VmniZQD/41w=;
+        b=gp2/cmooR0xGtcQMBmeOUq8G54D7VfVPvtg7AN0Vx0V9/SLvYBNH6LLPEfvVNYB0yl
+         Y8SbGPXeoPpNqjr3QGzYzyNYrZiKjBugfGeg969WLh6XCVPFEtZiSRwORFzi1xoWyqXJ
+         mQKSPpJCXzcp+X2ujfFr7hrnE1b0eI7nRNZYYZSeKsxD/ML1UDMoEtQepr/7DiCeix6f
+         0iQrwD3h6NCo55XGkc7X70gvnXiBpJ/i02JXKLhK2SgLUV+cn0YRwtiF7DHSKoVz5eY8
+         4torKyVOuhBrNGsSdFIhlZeuwL2XFFTePjXNgBV6S3IT9qSP/8UGXRjGfC5/doyEv8aQ
+         8/AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdNlNn1FNenvbzLD3MeKbYGKRYGKzfebuNnsepofmxUsHOvx8CjfWieK3idQ/pApmyrkggQ2/8xQaOhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQB8GoyeQEcqfo1WWaj8uvBrGGBPBILoHNZbn770QFNB8eh2ZA
+	/XqwkYLd+65sfoYFftWEDnZ3ETSa5I9HMhC//vls9STGBJRZpf59e/xFqw0Ztnuvay8=
+X-Gm-Gg: AZuq6aKowdEbOHnZO/Ndjh0dnyuZjt9HSKiJQcmhGZPpA/2/dWG+mESC8vHX8VwXrTj
+	q18BrqHD20/Nk/hkjtf5KSkqc0Ji3Rx07G94pMxxXegzHQscsm1cJN8Ho+tkIK9mJx0z9Jl1vkn
+	MXyGAUOEUCCmMikeoaFh+o8hEgSgJK3glhWr/5HkXPa9chJe414A8UG9xBm9Mm7LZgh5+2IIAgi
+	uUiVhFUYtmorwbfuu4stD324iekQJXMzjvNZFbVbLaew4QHi1L1fTrVmte8Zx+YX2i467gm/v0m
+	MkU1LSTZ/PMWRRCF7fR3CM77rpV6ChsgfLDdbD6cw9qX5x7CaMNwFGUc9+jomFptSOuhVO0iZdl
+	4ad3y16W2lNTisjNCcM/0lxt2ZAZbbejTMU5u6WjxEvUcMni/2JKur4+AUctUuc5/puSlUKAIGu
+	dimknFMnoBRF9nWuNLUjQIJSiwfiz9IytBdsBit+5ghGJCiYMlqrp3cusUbQ6xUSZxtBIEoNGOu
+	syElH0=
+X-Received: by 2002:a17:906:9fd2:b0:b90:3436:9f71 with SMTP id a640c23a62f3a-b9081bbf557mr536112366b.47.1771833051868;
+        Sun, 22 Feb 2026 23:50:51 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084e8d0d9sm297348066b.50.2026.02.22.23.50.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Feb 2026 23:50:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260221-wiko-chuppito-v2-3-6336b1b12389@posteo.de>
-References: <20260221-wiko-chuppito-v2-0-6336b1b12389@posteo.de>
-In-Reply-To: <20260221-wiko-chuppito-v2-0-6336b1b12389@posteo.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Paul Adam <adamp@posteo.de>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771707381; l=9047;
- i=adamp@posteo.de; s=20260215; h=from:subject:message-id;
- bh=fHaZvFc2F+Zdqx6b/XG/AUiKvbzgj0C5HF9r+F7ZYnY=;
- b=UhA4ybSYO8iUlp9wzy+caPfINnbDYZ5tR7rQHvUPP9sfX21TOhPoIvdQwMy0lWQlBPNrSLxfX
- hd9pwhRnEd+CHTINWRRcM8tP2f880dzjrc56I2C92onQZHIvpb5+fj+
-X-Developer-Key: i=adamp@posteo.de; a=ed25519;
- pk=mtrPhSn7htywc4S5zrKNrWM6laAdfnaJzIs0BDiCyAs=
-X-Endpoint-Received: by B4 Relay for adamp@posteo.de/20260215 with
- auth_id=640
-X-Original-From: Paul Adam <adamp@posteo.de>
-Reply-To: adamp@posteo.de
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 23 Feb 2026 08:50:50 +0100
+Message-Id: <DGM6EAN8EJU0.2JLEY3CA0R5G9@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "David Lechner" <dlechner@baylibre.com>,
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Daniel
+ Lezcano" <daniel.lezcano@linaro.org>, "Zhang Rui" <rui.zhang@intel.com>,
+ "Lukasz Luba" <lukasz.luba@arm.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Laxman Dewangan" <ldewangan@nvidia.com>, "Bjorn
+ Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Hans de Goede" <hansg@kernel.org>, "Jens Reidel"
+ <adrian@mainlining.org>, "Casey Connolly" <casey.connolly@linaro.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 5/5] arm64: dts: qcom: sm7225-fairphone-fp4: Add
+ battery temperature node
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260220-bat-temp-adc-v2-0-fe34ed4ea851@fairphone.com>
+ <20260220-bat-temp-adc-v2-5-fe34ed4ea851@fairphone.com>
+ <85ce1f2c-f5cf-4e97-9611-4aed03f69cd7@oss.qualcomm.com>
+ <DGJQ4WLIML3H.GAO7T4L3MCJM@fairphone.com>
+ <a422e087-a91c-4bb2-9d95-e1cefc9a91bf@oss.qualcomm.com>
+ <DGJR40B5R6MB.1V4ZK5SW1PXAV@fairphone.com>
+ <yikwygc5gasmr3cdyv5emfr2flaoraxcz7ap3j55wn4ib6wfqx@4yxoly5zrucx>
+In-Reply-To: <yikwygc5gasmr3cdyv5emfr2flaoraxcz7ap3j55wn4ib6wfqx@4yxoly5zrucx>
 
-From: Paul Adam <adamp@posteo.de>
+On Sat Feb 21, 2026 at 3:49 AM CET, Dmitry Baryshkov wrote:
+> On Fri, Feb 20, 2026 at 12:26:48PM +0100, Luca Weiss wrote:
+>> On Fri Feb 20, 2026 at 11:51 AM CET, Konrad Dybcio wrote:
+>> > On 2/20/26 11:40 AM, Luca Weiss wrote:
+>> >> On Fri Feb 20, 2026 at 11:00 AM CET, Konrad Dybcio wrote:
+>> >>> On 2/20/26 10:19 AM, Luca Weiss wrote:
+>> >>>> Add a generic-adc-thermal node to convert the voltage read by the
+>> >>>> battery temperature ADC into degree Celsius using the provided look=
+up
+>> >>>> table.
+>> >>>>
+>> >>>> This will later be used as input for the fuel gauge node (QGauge on=
+ the
+>> >>>> PM7250B).
+>> >>>>
+>> >>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> >>>> ---
+>> >>>>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 83 +++++++++++=
+++++++++++++
+>> >>>>  1 file changed, 83 insertions(+)
+>> >>>>
+>> >>>> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/ar=
+ch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>> >>>> index b697051a0aaa..7857003099a6 100644
+>> >>>> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>> >>>> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+>> >>>> @@ -108,6 +108,89 @@ rear_cam_sensor: thermal-sensor-rear-cam {
+>> >>>>  		io-channel-names =3D "sensor-channel";
+>> >>>>  	};
+>> >>>> =20
+>> >>>> +	bat_therm_sensor: thermal-sensor-bat-therm {
+>> >>>
+>> >>> nit: this should be a little higher
+>> >>=20
+>> >> meh, it's surprisingly easy to miss this sorting stuff. Will fix in v=
+3.
+>> >>=20
+>> >>>
+>> >>>> +		compatible =3D "generic-adc-thermal";
+>> >>>> +		#thermal-sensor-cells =3D <0>;
+>> >>>> +		#io-channel-cells =3D <0>;
+>> >>>> +		io-channels =3D <&pm7250b_adc ADC5_BAT_THERM_30K_PU>;
+>> >>>> +		io-channel-names =3D "sensor-channel";
+>> >>>> +		/*
+>> >>>> +		 * Voltage to temperature table for 10k=CE=A9 (B=3D3435K) NTC wi=
+th a
+>> >>>> +		 * 1.875V reference and 30k=CE=A9 pull-up.
+>> >>>> +		 */
+>> >>>
+>> >>> I think this looks good. Is this data going to be correct for all/mo=
+st
+>> >>> devices (i.e. is there a single battery sku)?
+>> >>=20
+>> >> Yes, from my info there's just a single battery SKU, so that makes it
+>> >> easy here.
+>> >>=20
+>> >> For Fairphone 3 there's two battery SKUs:
+>> >>=20
+>> >> * (Fuji) F3AC with NTC 100kOhm B=3D4100, ID resistor 10kOhm
+>> >> * (Kayo) F3AC1 with NTC 100kOhm B=3D4050, ID resistor 49.9kOhm
+>> >>=20
+>> >> In reality, one can probably ignore the difference between the LUT fo=
+r
+>> >> either B value since it only differs by a marginal amount, but
+>> >> conceptually I'm not sure how this should really be resolved.
+>> >>=20
+>> >> We could have both battery definitions in the dtb, and then the charg=
+ing
+>> >> driver could determine the battery that's actually present in the
+>> >> system (based on the BATT_ID measurement), but given the design here
+>> >> now, I'm not sure how this temperature lookup table would be propagat=
+ed
+>> >> to the rest of the system...
+>> >
+>> > The path of least resistance (pun intended) would probably be to make
+>> > generic-adc-thermal consume an ID channel and accept a number of LUTs.=
+.
+>>=20
+>> Not the worst idea ;)
+>>=20
+>> >
+>> > That sounds sensible since most battery ID mechanisms are probably als=
+o
+>> > ADC-based and one would hope (tm) that the values output by these ADC =
+channels
+>> > would then be distinct enough for the driver to have an easy time conf=
+idently
+>> > selecting one of the options (or a fallback)
+>>=20
+>> Charger / fuel guage and everything else battery-related would also need
+>> to get the correct battery properties for the actual one present, not
+>> just this generic-adc-thermal driver.
+>>=20
+>> But I feel like soon DT maintainers will say that Linux shouldn't
+>> dynamically detect hardware that's present and the DT should be the
+>> absolute source of truth. That works fine in simple cases, but in case
+>> of interchangeable batteries, display panels, camera sensors, this won't
+>> work. *Something* needs to determine what's actually there.
+>
+> How is it handled for the Android boots? I assume there are (at least)
+> two DTBOs and the correct one is being selected somehow (via the msm-id
+> / board-id?). Or does ABL pass some kind of battery identifier to the
+> kernel?
 
-Add an initial device tree for Wiko PULP 4G.
-Includes support for:
-- UART
-- USB (no OTG)
-- Internal storage
-- MicroSD
-- Volume keys + Power button
-- Touchscreen
-- Backlight
-- Accelerometer: Invensense MPU6880
-- Magnetometer: Asahi Kasei AK09911
-- Hall sensor: Rohm BU52021HFV
-- Proximity sensor
-- Vibrator
-- Earpiece
-- Microphone 1
-- Headphones
-- Wifi
-- Bluetooth
-- GPU
+On downstream the Linux driver will do the selection, there you have two
+batterydata nodes in the dtb with each their qcom,batt-id-kohm property
+and the driver will choose the correct one at runtime.
 
-Signed-off-by: Paul Adam <adamp@posteo.de>
----
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts | 361 +++++++++++++++++++++
- 2 files changed, 362 insertions(+)
+Similar with multiple display panels, but I think there usually the
+'detection' happens via what's passed on cmdline from the bootloader.
+But not with two dtbs, the driver is selecting the correct panel from
+one dtb.
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index f80b5d9cf1e8..5a3a9a823503 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -75,6 +75,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-rossa.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-uf896.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-ufi001c.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wiko-chuppito.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86518.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86528.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-new file mode 100644
-index 000000000000..7f3a48e3bcb9
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-@@ -0,0 +1,361 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8916-pm8916.dtsi"
-+#include "msm8916-modem-qdsp6.dtsi"
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
-+
-+/ {
-+	model = "Wiko Pulp 4G";
-+	compatible = "wiko,chuppito", "qcom,msm8916";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		mmc0 = &sdhc_1; /* eMMC */
-+		mmc1 = &sdhc_2; /* SD card */
-+		serial0 = &blsp_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pm8916_pwm 0 100000>;
-+		brightness-levels = <0 255>;
-+		num-interpolated-steps = <255>;
-+		default-brightness-level = <255>;
-+		enable-gpios = <&tlmm 119 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&button_backlight_default>;
-+		pinctrl-1 = <&button_backlight_off>;
-+		pinctrl-names = "default", "off";
-+	};
-+
-+	keys {
-+		compatible = "gpio-keys";
-+		pinctrl-0 = <&keys_default>;
-+		pinctrl-names = "default";
-+		label = "GPIO Buttons";
-+
-+		button-volume-up {
-+			label = "Volume up";
-+			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	hall-sensor {
-+		compatible = "gpio-keys";
-+		pinctrl-0 = <&hall_sensor_default>;
-+		pinctrl-names = "default";
-+		label = "GPIO Hall Effect Sensor";
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 117 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+	};
-+
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpios = <&tlmm 110 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&usb_id_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
-+&blsp_uart2 {
-+	status = "okay";
-+};
-+
-+&blsp_i2c2 {
-+	status = "okay";
-+
-+	magnetometer@c {
-+		compatible = "asahi-kasei,ak09911";
-+		reg = <0x0c>;
-+		vdd-supply = <&pm8916_l17>;
-+		vid-supply = <&pm8916_l6>;
-+		reset-gpios = <&tlmm 120 GPIO_ACTIVE_LOW>;
-+		pinctrl-0 = <&mag_reset_default>;
-+		pinctrl-1 = <&mag_reset_suspend>;
-+		pinctrl-names = "default", "suspend";
-+		mount-matrix = "1",  "0", "0",
-+			       "0", "1", "0",
-+			       "0",  "0", "1";
-+	};
-+
-+	proximity@48 {
-+		compatible = "sensortek,stk3310";
-+		reg = <0x48>;
-+		interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
-+		pinctrl-0 = <&proximity_int_default>;
-+		pinctrl-1 = <&proximity_int_suspend>;
-+		pinctrl-names = "default", "suspend";
-+	};
-+
-+	imu@68 {
-+		compatible = "invensense,mpu6880";
-+		reg = <0x68>;
-+		interrupts-extended = <&tlmm 115 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+		pinctrl-0 = <&imu_int_default>;
-+		pinctrl-1 = <&imu_int_suspend>;
-+		pinctrl-names = "default", "suspend";
-+		mount-matrix = "0",  "-1", "0",
-+			       "-1", "0", "0",
-+			       "0",  "0", "-1";
-+	};
-+};
-+
-+&blsp_i2c5 {
-+	status = "okay";
-+
-+	rmi4@39 {
-+		compatible = "syna,rmi4-i2c";
-+		reg = <0x39>;
-+		interrupts-extended = <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8916_l17>;
-+		vio-supply = <&pm8916_l6>;
-+		pinctrl-0 = <&touchscreen_default>;
-+		pinctrl-1 = <&touchscreen_suspend>;
-+		pinctrl-names = "default", "suspend";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		syna,startup-delay-ms = <100>;
-+		syna,reset-delay-ms = <160>;
-+
-+		rmi4-f01@1 {
-+			reg = <0x1>;
-+			syna,nosleep-mode = <1>;
-+		};
-+
-+		rmi4-f11@11 {
-+			reg = <0x11>;
-+			syna,sensor-type = <1>;
-+		};
-+	};
-+};
-+
-+&gpu {
-+	status = "okay";
-+};
-+
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5600000>;
-+};
-+
-+&pm8916_pwm {
-+	pinctrl-0 = <&pwm_out>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&pm8916_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&pm8916_rpm_regulators {
-+	pm8916_l17: l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+		regulator-always-on;
-+	};
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-0 = <&sdc2_default>, <&sdc2_cd_default>;
-+	pinctrl-1 = <&sdc2_sleep>, <&sdc2_cd_default>;
-+	pinctrl-names = "default", "sleep";
-+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+};
-+
-+&sound {
-+	audio-routing = "AMIC1", "MIC BIAS Internal1",
-+		"AMIC2", "MIC BIAS Internal2",
-+		"AMIC3", "MIC BIAS Internal1";
-+};
-+
-+&usb {
-+	extcon = <&usb_id>, <&usb_id>;
-+	status = "okay";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&venus {
-+	status = "okay";
-+};
-+
-+&venus_mem {
-+	status = "okay";
-+};
-+
-+&wcnss {
-+	status = "okay";
-+};
-+
-+&wcnss_iris {
-+	compatible = "qcom,wcn3620";
-+};
-+
-+&wcnss_mem {
-+	status = "okay";
-+};
-+
-+&tlmm {
-+	button_backlight_default: button-backlight-default-state {
-+		pins = "gpio119";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	button_backlight_off: button-backlight-off-state {
-+	     pins = "gpio119";
-+	     function = "gpio";
-+	     drive-strength = <2>;
-+	     bias-disable;
-+	     output-low;
-+	};
-+
-+	keys_default: keys-default-state {
-+		pins = "gpio107";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	hall_sensor_default: hall-sensor-default-state {
-+		pins = "gpio117";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	imu_int_default: imu-int-default-state {
-+		pins = "gpio115";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	imu_int_suspend: imu-int-suspend-state {
-+		pins = "gpio115";
-+		function = "gpio";
-+		drive-strength = <2>;
-+	};
-+
-+	mag_reset_default: mag-reset-default-state {
-+		pins = "gpio120";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	mag_reset_suspend: mag-reset-suspend-state {
-+		pins = "gpio120";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
-+
-+	proximity_int_default: proximity-int-default-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	proximity_int_suspend: proximity-int-suspend-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
-+
-+	sdc2_cd_default: sdc2-cd-default-state {
-+		pins = "gpio38";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	touchscreen_default: touchscreen-default-state {
-+		touchscreen-pins {
-+			pins = "gpio13";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+
-+		reset-pins {
-+			pins = "gpio12";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
-+
-+	touchscreen_suspend: touchscreen-suspend-state {
-+		touchscreen-pins {
-+			pins = "gpio13";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+
-+		reset-pins {
-+			pins = "gpio12";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+	};
-+
-+	usb_id_default: usb-id-default-state {
-+		pins = "gpio110";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+};
-+
-+&pm8916_codec {
-+	qcom,hphl-jack-type-normally-open;
-+};
-+
-+&pm8916_mpps {
-+	pwm_out: mpp4-state {
-+		pins = "mpp4";
-+		function = "digital";
-+		power-source = <PM8916_MPP_VPH>;
-+		output-low;
-+		qcom,dtest = <1>;
-+	};
-+};
+For cameras, the camera stack is 95% in user space, so it's not quite
+comparable but also there usually I think there it's trying probe camera
+#1, if it fails try probing camera #2.
 
--- 
-2.53.0
+Regards
+Luca
 
+>
+>>=20
+>> And for most of the ways to detect which of those are present in the
+>> device that is booting, you need half a kernel to power up the various
+>> hardware and do some basic communication to figure out what's there. Of
+>> course you could say that's U-Boot's job for example but not sure you
+>> want to add a CCI (I2C), ADC driver and much more...
 
