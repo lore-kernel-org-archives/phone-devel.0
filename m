@@ -1,148 +1,159 @@
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A7A3D3489
-	for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 14:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C08D3C196C
+	for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 14:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772030616; cv=none; b=R3204wRihvziBTCm8cnjEeQ6c9EEBevYQLekcg+Cix8IMEclrnSfBAWRIIeXXl9pN57KKc7LI2nnz+rJdyhqi3N6vjeBoLXB9B+x6KbDBWu9vtQwrL7DvNW8ub/MYp3Bbmt8ugSqLv8K2ivrEbU/71mghkrKT2rmjbdRqOaO/do=
+	t=1772030905; cv=none; b=oLmzu91g2IIHRJ5+3jnbLh5ULU5deze5NsvgqYEZ9eGqc8TwiUxXyj1yz5TDeJzMyoxXDmoSVe0SbpepLqxjUy1P9Pr7SO+ystNKH8mmeUzhy/tUdmcxauLvxDLmptZTO+eaNhBq3qXY99ssFKem0IugABlswwxeqxBa/p6LP/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772030616; c=relaxed/simple;
-	bh=rKEeqVjE7wfvhzODV5z9zcNrAw4sm3ndUuu6PN9eKjg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pNyMdmG3bv74qJt5D5ebODXQUs0HAoTsIBc2RCV+WCXYaNQ39sRyVjYsXq9X8eVpAjIx6oK209qf5vZMG2DQ/arZhG4GUg6DB+khc4ZmbVBABHsovsEmAbppa3OjXYJ3c+/fX9nUq8KG68qFfcca9mkuKzfUncUTnT0cxQHUWGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WU/4bZN/; arc=none smtp.client-ip=74.125.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772030905; c=relaxed/simple;
+	bh=xidOB+jX+4w0CUBEqt1PtSU26kes9riZzE4qVFrxmzQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=encQ3dPGYSNn3O4aVN1xRD61V2dCtpuYOzhBaBwjqFA/ESdYEXtizSlbS6YhF+/OaQPogr0OOh+HSbs/JlA37Ek4o+RC9G3CDUNc1cmH22smfDrgig4JfFesg3Nc9Zb7HWMFxlkimbYMums99S9skeJm4EvkFXDOLFI/W1oL8Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dDvQRzLK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Rf1vJgqd; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WU/4bZN/"
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64ca6595c8aso1243984d50.0
-        for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 06:43:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dDvQRzLK";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Rf1vJgqd"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PB3Rv11512055
+	for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 14:48:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5zADAch3Mm7UabY4EXg2OfU3UoQHMHTE2nopv33diB8=; b=dDvQRzLKfxytsAk4
+	rGwK/IKh4wwSCLTn3WsclgXdAEXAramwI9zp/UugBclvjd+EOxqAJr8v9nsIVFyo
+	nhMZjkEDGhqwfGAAVY45bs19sjPt9JBcX4xluYPkgdJXfEktQbczH9X9nwHPuTwS
+	zjuRKM3hApk/AfkEoEV0AUP9Gx5nAKy4Xu8HHNkIIrtGKBKQGCD18g/4JlR0b/Ty
+	+vLN+YqNfOj1PkXnAgS0CvP5lHAdt3EfYSPK9ik3smCGkhofjEjH5ltGGvED4UFN
+	OvrxufYjWb7di4S2J6wqzRvdVlKpT8YveKYzX4TaOhMaO4e1Ui8Ztu9o91X9SqQN
+	wd8+QQ==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4chyvf0jw4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 14:48:23 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-899bcf92decso2857576d6.2
+        for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 06:48:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772030614; x=1772635414; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y5kQ77vzvVXrrGoka+gxza3DJxHiQ4HnQDx7tuRIPuo=;
-        b=WU/4bZN/VSsPB7FurFAyKD2xFJUePr35LRXNhCSzmMarD7zrW1uvTFiOt5BOEHUjVK
-         ZNdX71XGotDL5pflPbwNqXzQbuagcsYee89LoKd8pByIYnckd+DjfZ7NyhTtjrQUgyUB
-         TfKBoQZT0jqEq1q4IHJpa9yzzrTyiERuZlckkXzN8pTxFB2kL3KnGrsCFSJC0dbv3dLM
-         Sod22LyFbCG+ytfwUVLwQa9A0P4kJ5+TSee/o0/v3IQAzI3ABkqFeusI6n0Acxvnu/CW
-         vhAov4aRSsMOcIwBbiVeVm9xBHai2yxroZiH/nW58YGhA6EeL8NLEDOUZVNwU+1nRgxM
-         v9xg==
+        d=oss.qualcomm.com; s=google; t=1772030903; x=1772635703; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5zADAch3Mm7UabY4EXg2OfU3UoQHMHTE2nopv33diB8=;
+        b=Rf1vJgqdBLXpNCBOW4FrTh2TkjXynJ/uewdemoM1Gviq6RSy9k+70mJRrM1uoLNNZ+
+         0Tu6WJZBmCZnTRFa9/sqcG4v2aTgb4XdUc4zVOe0ttwRTVEj2CvuIc5dJFCkWrUv8bsz
+         wsB84U4ho+dojr3/6TBs0Gi5cfdHjeGLvMLnXIwos1HFjxtlzdL2pp42nMv6OYA7SIR4
+         pNW6jDa3LTHw7kXS7owdnYLOzBjLrQyunI3Aab+XiCLr8HLIjU8Cp5Cv14wa2QhQGqLy
+         x6wDASCWpNJSOVS3O8S8iu7gdIZdcd7yYnFAqpYE+Faaalwc1oxJ2FCjB6m+Pj0MBK/P
+         6nRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772030614; x=1772635414;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y5kQ77vzvVXrrGoka+gxza3DJxHiQ4HnQDx7tuRIPuo=;
-        b=h80Z95Gl4CusXi+r/e4Xx8j6L8kvfYWtvaa7FEbnyD3aJ07tV0jT7gL1WxvjkGBANw
-         oAtlI/c3D0HO51FkblX79LQUwni07oeV7XuVnZLiEbQZhJa0nc4O3xQvvGsboL+h21Kx
-         7NDwbbsMQZPsB3ErAThJ85cytTRTNmMDqPOxqyc4H0mAETIXWVygSebVlsSNbcAp09hZ
-         lqmm21mx+zs8md3r2ztup5blyjDE03mhuE3LQAXG2O1FFvqz7xEv9boFcIcCsIxpcICa
-         J4dhOqPgWexyjwlBN1H+9ZCefQduxHFUyNCyt4va9ERyou7dzcvWB7BYuc3xnV1x5Jmu
-         a6lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWo25fEH3DEne3RwOaYlJfQOoZLy4f+eZGa/yhwCLK/mcAbqk5OL1elpq9uupormNIkLI4hrKV4MSr2OA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyeu6JsBijVBsHm/ws+HrqL9owqnaPkjWXsCPclq+EhRJJzzhdm
-	MwSELDb8gwD0gvosUVPD9uktxuWPMNNNgnMLuQImlMsqe0gKcByB+S8l
-X-Gm-Gg: ATEYQzzDz82VmMxjzwGT0UeaLeraGBrfPeP37WOWvGeaot7FxyrszmCy2slpGjDvPpz
-	6rhKpsMshU3z5xrLIB7btnBZ5vyYejlP5k52YpdLBTO3rL78/l6HKX1w7YCO73GissCkWAVDfhb
-	2DI5X595GGXYRDfZZkcIV0ttaEUaThYFTFdoBoxAivWZkmyGCIcy0aCwyIcMJmQpHs7BhnxAkED
-	Wv+u1mTTjuFxFylYN5bAAzuhZQsYr7FXphK36TLY9D+vkpDo1GLNsmb38BpyjIyg9oA8ijiOlNn
-	lkdepD6vEzW0O5fmv9WS/rLKQxNspZ+Q9jY/T2NF1xhZiXHqvyGT0ysTBZzY1X8ZX13YPk8IjT+
-	auKoEtClFT/MG3k5e2dO1ORIg2LmQh0nFzaZkHuWZK1DvUmomOJBIuEAGIiF6avaH5k84zquEOB
-	64Ff/4luyMAS144ky2daCy5Q==
-X-Received: by 2002:a05:690e:16e4:b0:649:b975:df20 with SMTP id 956f58d0204a3-64cb24d9de7mr443663d50.52.1772030613902;
-        Wed, 25 Feb 2026 06:43:33 -0800 (PST)
-Received: from [192.168.0.40] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64c7a2520b6sm5555814d50.2.2026.02.25.06.43.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 06:43:33 -0800 (PST)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Wed, 25 Feb 2026 16:43:24 +0200
-Subject: [PATCH] arm64: dts: qcom: msm8939-asus-z00t: add ambient light and
- proximity sensor
+        d=1e100.net; s=20230601; t=1772030903; x=1772635703;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5zADAch3Mm7UabY4EXg2OfU3UoQHMHTE2nopv33diB8=;
+        b=mOU0z0/B+abfD/oksd1HeIas7b6lLLAkDaaXg+hK4HXSN5wUnoZVDao7dLKZAQU9eI
+         hSo+Q3xcHHEVW1KoNvK7kkJJYYd8W5c0BXfjtpUGPN+GxSYLtLcIw2ZCI9JYv/PwGfxp
+         agzN0FTswhLzhITpIzYiKLf3Ssnc6cUzXGy65utehYRGiRzpnAECTVTcc9t+0OkSADWT
+         s4BqRVBwQG1Gt50h2SO6koVsg23d0l14YlHL58qTUymXUeSL6EXBoxrAyZ3KNeMK7Kva
+         amMAbGh31ARMUKXz4WgQvi+Mq9UaY6mmOltUOXS8MHmndhsEpMxHZK0UX9IepAXl+iGo
+         lITQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTrhBz/JXldaJF3/1DqGmv6DjBH5bQY45tObr6EZWHAJFyjoSBHrIBNAfmJVNPBPmVCFQsSyQpxRLTQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz90I5NglR5WQKgqdx0Azw/gFYM1NEUp7zD3TMye5G2C6PVirhu
+	tbRZuYq9qP2JqjX2DyLHO50XBnvqxsxKLW7sSzyBmI08fSfvswM36aWm38HYKXe9+h30curH5ic
+	aIKCToY/bP9RiwWLO9gKNtW78/WnrLGEZw1iDa/NIgyVAETWSu/yaUQWqFfU70m0rLQ==
+X-Gm-Gg: ATEYQzzkAdae48CTKQngZw4gRNJ4k+liWiL9Vr1twPQhXQVhla27C6sYaBnvcoYMBrj
+	145zd1ruATSst64/jRZbT74veX9w36GGWr0EnRJ9lnM+Hy/vncHg5EeTjTJWSB3kddMLFfNZzcb
+	h/YeXk3sb2UkG+e5HfnRFXvNsic/KwygyT8J059lSMKYCVdfavrg6tBRoDAs/XXIbnSWdCE0UaM
+	GgY5xkycHqYPCMmTwawQ8YI5JSL74AAF3owq2hlvjvotwFg5nYOCawPU7TB+w83NzwEAJ0+Z088
+	7V8er5VtQR8um+dAD4CGewSRU6VVUhjquBgYOfVvXTS9Lz3lebW0lPto7OpSuoSjKXDVlWhOH98
+	AqifJWc2zDaCH7z11rTCp6htmGqf/X2b5qksBfaK5vSF6ZX5L11NPD7M1fhTCGmmK0JuZX0lFhU
+	ONjHM=
+X-Received: by 2002:a05:6214:4f04:b0:896:fd66:a084 with SMTP id 6a1803df08f44-89979e1ebe5mr155965716d6.8.1772030902720;
+        Wed, 25 Feb 2026 06:48:22 -0800 (PST)
+X-Received: by 2002:a05:6214:4f04:b0:896:fd66:a084 with SMTP id 6a1803df08f44-89979e1ebe5mr155965386d6.8.1772030902230;
+        Wed, 25 Feb 2026 06:48:22 -0800 (PST)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084f191b9sm509759166b.67.2026.02.25.06.48.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 06:48:21 -0800 (PST)
+Message-ID: <6e525b57-bab8-4549-8d33-bcdb1a474fea@oss.qualcomm.com>
+Date: Wed, 25 Feb 2026 15:48:19 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: msm8939-asus-z00t: add ambient light
+ and proximity sensor
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+References: <20260225-z00t-capella-sensor-v1-1-99f767bc326a@gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260225-z00t-capella-sensor-v1-1-99f767bc326a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-z00t-capella-sensor-v1-1-99f767bc326a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMAxA0atI1hOIGazMXEVmUdpUA1KlEZER7
- 25x+Rb/n2BSVAy+zQlFdjVdckX7aiBMPo+CGquBiR0xd/gn2jD4VebZo0m2pWBM8d0H/jhKDmq
- 5Fkl6PNfhd103OxgcZ2UAAAA=
-X-Change-ID: 20260225-z00t-capella-sensor-dfd37c2960f6
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
-X-Mailer: b4 0.14.3
+X-Proofpoint-ORIG-GUID: v4wqT0kZWe0LFZeRdwtcwQIH5gj8pG42
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDE0MSBTYWx0ZWRfX0VHycmO6y0vu
+ PsXnG3g1xcs8dKUEbRmZJXNmMmIHKt44d4wIDi3b8VvGbAERbHLPg9mseLkAf1+NBrFuykV8JlB
+ +THO+t3xcnyVB4AIb2xLrjXk7uui54SXtwEtq6X9gUUOe1OtcTi2IA/X9Zf/zMXlyLBEexYUord
+ Hx4gfG6kLNvfxpNpqLlqK6pX3bpwlleKVu6YLtB9sQlXYAu5HkHxgTwj9CD0JSVULOjhTqVYW4V
+ GTOWZPGJetScwv3rIWCfx6TxTqfmqW6JH3dwnTkxhGW2086mDNo+iEx8HgCQZ1hdQokJjebX+Do
+ l4/mtzzwNUWiAXdkKcvK5rO7zXKyyYYboeWc86veSj8+rBZpE91NrsdhKWJhESghHs7IaEdaXFl
+ zJ4181qrsLbMtsOjypHYB2F36uRafwDW7yOuEHDItTQ2PxuIwyxkfn8Do8HnPD7EBi0Y196LNGU
+ OCPEwelpxfZl5onD2FQ==
+X-Proofpoint-GUID: v4wqT0kZWe0LFZeRdwtcwQIH5gj8pG42
+X-Authority-Analysis: v=2.4 cv=dZWNHHXe c=1 sm=1 tr=0 ts=699f0bb7 cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=DldKRDGfgS33INwkZP4A:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_01,2026-02-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2602250141
 
-This device uses Capella CM36686 as its ambient light and proximity
-sensor. It is fully compatible with Vishay VCNL4040. Downstream device
-tree reports Capella CM36283, but upon probe, a device ID for CM36686 is
-actually found. This commit adds support for Capella CM36686 ambient
-light and proximity sensor.
+On 2/25/26 3:43 PM, Erikas Bitovtas wrote:
+> This device uses Capella CM36686 as its ambient light and proximity
+> sensor. It is fully compatible with Vishay VCNL4040. Downstream device
+> tree reports Capella CM36283, but upon probe, a device ID for CM36686 is
+> actually found. This commit adds support for Capella CM36686 ambient
+> light and proximity sensor.
+> 
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
+> arm64: dts: qcom: msm8939-asus-z00t: add ambient light and proximity
+> sensor
+> 
+> This device uses Capella CM36686 as its ambient light and proximity
+> sensor. Downstream device tree uses the compatible of CM36283, but upon
+> probe, we can see that a device ID of CM36686 is actually read. Possibly
+> a driver for CM36283 was adapted to be used on CM36686.
+> This patch enables Capella CM36686 ambient light and proximity sensor on
+> Asus ZenFone 2 Laser/Selfie.
 
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
----
-arm64: dts: qcom: msm8939-asus-z00t: add ambient light and proximity
-sensor
+Downstream using vaguely-related compatibles is ""standard practice"",
+many vendor drivers don't really care about semantic correctness,
+as you were able to find out via the chip ID register
 
-This device uses Capella CM36686 as its ambient light and proximity
-sensor. Downstream device tree uses the compatible of CM36283, but upon
-probe, we can see that a device ID of CM36686 is actually read. Possibly
-a driver for CM36283 was adapted to be used on CM36686.
-This patch enables Capella CM36686 ambient light and proximity sensor on
-Asus ZenFone 2 Laser/Selfie.
----
- arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-index ea90b00a2c8a..1a340fa92755 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-@@ -147,6 +147,17 @@ magnetometer@c {
- 		pinctrl-names = "default";
- 	};
- 
-+	light-sensor@60 {
-+		compatible = "capella,cm36686", "vishay,vcnl4040";
-+		reg = <0x60>;
-+
-+		interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
-+		proximity-near-level = <30>;
-+
-+		pinctrl-0 = <&light_int_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	imu@68 {
- 		compatible = "invensense,mpu6515";
- 		reg = <0x68>;
-@@ -330,4 +341,11 @@ mag_reset_default: mag-reset-default-state {
- 		drive-strength = <2>;
- 		bias-disable;
- 	};
-+
-+	light_int_default: light-int-default-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <16>;
-+		bias-pull-up;
-+	};
- };
-
----
-base-commit: 3ef088b0c5772a6f75634e54aa34f5fc0a2c041c
-change-id: 20260225-z00t-capella-sensor-dfd37c2960f6
-
-Best regards,
--- 
-Erikas Bitovtas <xerikasxx@gmail.com>
-
+Konrad
