@@ -1,122 +1,144 @@
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D852EDD62
-	for <phone-devel@vger.kernel.org>; Wed, 25 Feb 2026 07:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310682F691D;
+	Wed, 25 Feb 2026 08:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772005114; cv=none; b=X44STkT8PFzMJQCLPTTHW4lTDhu7cHRmZ0XrAz7KbGLKgHpWrc9aba4HOhojwzYqkih+Wud77K6xli3ZSGVsyzPW3+SnCCFXFGJpyYPJ3l6Z2SSTcCMUPMLXL62+vZKZp48ykJ00YYvaxD1EMCx+bbU6sY4caYwyDdqe6jcFqKg=
+	t=1772008777; cv=none; b=Q0jDldKUAPXKlh9wZIlQb+sM7uq+zvSjmwJmtR9af5H6sAPcE4WFpqIeVdIKb0LwQu318NkkoFde8Pionm6baHx5/eUMOH62o3y7EejCB/C8H3m4rA+pUl9mJO+HnKIQO5Vin5gVBcndNltMJ6l5bXM2nfoxicJ9ufP3Y9j4Zgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772005114; c=relaxed/simple;
-	bh=RBbXuWLXblfk6OwSd9oD/neH6OS15UC/fy5GctQv3UE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=kxPe6FtUthfLk1s908oMPgjvFDhXUGRUBsOdhQWNEHQ/nP/eRRlfRlZDEWCjf9GqY16PvLsJm5dIpJb5enWGBLPUg0NcgPyi0CJZRwsRRHBy6LXVcDQEhETtgqvxZbEWCoRb/wmHEBroxWqoDGtXfH1G6CAKhmQ89aicpKRy3c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=YFt0B7kz; arc=none smtp.client-ip=209.85.218.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1772008777; c=relaxed/simple;
+	bh=1OCPxXntM+s7o5PBlMuNbV/cDG5o/3yTIzhrli3dG8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mxdwq3EKz99UsdgObydbcgj1qQh+u1qt4XvDubk7Pe0abtbPNK4BjNnSQo6fxpQ+gPGpz5NQuJ2aTDHxQiEiYzR9omS1b9lOkFHmTJoaOCCJeRVHbuby7K+WgMJV2dWNKiTXxxNzZ5u7RXrdryQOi4i/Xms6Ya9Y6e0yimZtliM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSSl2XTg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="YFt0B7kz"
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so1109567566b.2
-        for <phone-devel@vger.kernel.org>; Tue, 24 Feb 2026 23:38:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1772005112; x=1772609912; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RBbXuWLXblfk6OwSd9oD/neH6OS15UC/fy5GctQv3UE=;
-        b=YFt0B7kzDND5OVl2+MnPcsAB9HGkjCkn/jj4r7YU5tBnp4y36qwriwD2e5CJdI0c/6
-         1sDt5AbR0J+c+HHL9iWMYCeX6umOneiuoC0ZlYQAXmOO0/iqYeTbkdfSkC17K8fzxtGq
-         /zfB36IRQ6XEmyLqYLfAAdNlx+L+e8uYv0oyjuPlGY/5/FYMEHHOWNr1TkEwHRZnV0mo
-         ML2hpvsd4YdzGSK6FtoOvy6TxNtdTaUvf7+r47vbkl/ciYb3wl0Cwq3OMvKh1e47NzxR
-         zRI2ex3XM0JpGH0xJGYSrUPPiCbNLbZBcn1JLffUfpiP5p0Y+wK+WTCgrntBVYa06+eI
-         xiAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772005112; x=1772609912;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RBbXuWLXblfk6OwSd9oD/neH6OS15UC/fy5GctQv3UE=;
-        b=EhcSM0UzlT41z5a83d6RcrTQ5bY9ho62N5j8O8Q5EZZ0X8Lge7bkIN9CbYQfQo1+6K
-         GA1ndT8A2UHMUbolgL/gCVJ2N1d3i3qXod3qimdOzQ7iBqjf+wBdiihVWl67ZKkZ5Biv
-         Y4kEq2VtiGYTvtnP0XF4zYb55ucwia1V0WHwD7yn+CGqJPFZAcFCFquJVUgEx5l36gNc
-         xJWj9Rh4QJ6MWPTD3cvhoCzOW1zdOlXEb9SDWiHlWII5UYGVDax3FspyoIFXLOCBOZYf
-         bSbv9j36bXGsIIuQsHC+RhpxznRkr0u3vbj6oIdB2mjmwhP93YPLHgG7gLRx6yunv5tX
-         CbTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkBQNk38W8vPX/OicV4g2DiCXweFjMe+NZy8VGftKR4UUuPjviaMCY1D6B9ApAV69aA0gDe475zFc3Uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGRUU+PD5ZkNrYO6WHH1r1Yc52EUaH+xIcbs5E4Ae/IQkwEIAl
-	CaWXMwZYWLMaOQKuqlsZ6mN8hKrRlb1zV6FiCVq/o0wPTA1VY4Sm0YS4fsfVcbxe8XA=
-X-Gm-Gg: ATEYQzzSoaDQtqTgqUAU0V7l3Jy/U4rEhKmXfDxbV65z8y5f1r33qipkiy0RquN+HBt
-	XslRepGDLAAgNDG205JB52T//lyY4c4O4bFFrktkzgsY8tWMQAmCaHJKN8eqjq+yjNsMhyD9++/
-	TdOMkDpTkJ8HVgXw85kHMgFUTw/5BAo5O9B7aY6fwvv0z2gy9l7CPcq0ptr0tz3kcwG+Ys60nnl
-	YYYiGjoloEUIGyvt+fsBaeXCWy2Br5gxP/pBkbkrwAMZX18WEAq8i1Epq06QJK1YXPCy+DLelq8
-	+PJoZUbD/IzO85gV8eAiNzGbB+ZtAKksbdC0ac6VcvtuvH3s6jfBKyH7mwRGX9QRaylzq7usLTq
-	KtqCnSwG+viqX2+CouMsjhZBn4lgPmDGHv6Fg1iFYxbdfmygVQiYdNXuEpp3sRFP5Saco7g0rfX
-	ojJwFWiDwognCSquHwfstB1eqE/nh9IzhCQkPJ/5aJ9vPyJjpjg6S8gBjluLTieLcYnfe8
-X-Received: by 2002:a17:906:eec7:b0:b87:c92:25bf with SMTP id a640c23a62f3a-b9081b23d71mr868904066b.33.1772005111791;
-        Tue, 24 Feb 2026 23:38:31 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084cd4adbsm494528566b.29.2026.02.24.23.38.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 23:38:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSSl2XTg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E05C116D0;
+	Wed, 25 Feb 2026 08:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772008776;
+	bh=1OCPxXntM+s7o5PBlMuNbV/cDG5o/3yTIzhrli3dG8Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MSSl2XTgEWR03qgz9kE0MAQkk6LLIOSabSJrrBAHX1/2OXar3ZUBFKegvn4Bi1huI
+	 jG5FQF9+VMmkW3zolT9IkoWE2Cc4+Sf+FKkQmHgVj3eswe1GK/KAvWXovETDe5/HPG
+	 HbmLKXD222dYwl+PhY/8r5oxLMjRlVB336p2byRAhbpjJYLnldLPWckWA+Eu6BUs2v
+	 620VHwkWrzey57XFfPleHkHEQbC5Q+dWsHVmEwvCi/ODyn0bkVENz12opZ8lc6bVwQ
+	 Zg438WzlHpS+cmUZP0KZyLBEWGuwsdxOxC9r5c2a9gPcdjnLOSzbHKHgR2/gIme6Iw
+	 KlxPR0bXZcf2g==
+Message-ID: <100347ef-ab5e-45d4-a3b8-5d900110e0c8@kernel.org>
+Date: Wed, 25 Feb 2026 09:39:30 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Feb 2026 08:38:30 +0100
-Message-Id: <DGNVDXQTH812.3MCVKWNCKR8B6@fairphone.com>
-Cc: "Herbert Xu" <herbert@gondor.apana.org.au>, "David S. Miller"
- <davem@davemloft.net>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Avri Altman" <avri.altman@wdc.com>, "Bart Van
- Assche" <bvanassche@acm.org>, "Vinod Koul" <vkoul@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
- <linux-phy@lists.infradead.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski@oss.qualcomm.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/6] scsi: ufs: qcom,sc7180-ufshc: dt-bindings:
  Document the Milos UFS Controller
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 References: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
  <20260112-milos-ufs-v2-2-d3ce4f61f030@fairphone.com>
  <DGDW69W84LJ1.2GHM2WU31VANR@fairphone.com>
  <yq14in67xwd.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq14in67xwd.fsf@ca-mkp.ca.oracle.com>
+ <DGNVDXQTH812.3MCVKWNCKR8B6@fairphone.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <DGNVDXQTH812.3MCVKWNCKR8B6@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue Feb 24, 2026 at 8:19 PM CET, Martin K. Petersen wrote:
->
-> Luca,
->
->> I've added you to this email now since you seem to pick up most patches
->> for these files. Could you take this one please to unblock Milos UFS
->> dts?
->
-> Applied #2, #5, and #6 to 7.1/scsi-staging, thanks!
+On 25/02/2026 08:38, Luca Weiss wrote:
+> On Tue Feb 24, 2026 at 8:19 PM CET, Martin K. Petersen wrote:
+>>
+>> Luca,
+>>
+>>> I've added you to this email now since you seem to pick up most patches
+>>> for these files. Could you take this one please to unblock Milos UFS
+>>> dts?
+>>
+>> Applied #2, #5, and #6 to 7.1/scsi-staging, thanks!
+> 
+> Hi Martin,
+> 
+> Thanks for picking up the bindings!
+> 
+> I'm surprised you picked up the dts as well (and modified the subject
+> line), these patches should go via Bjorn's qcom tree.
+> 
+> * scsi: qcom: milos: arm64: dts: Add UFS nodes
+> * scsi: qcom: milos-fairphone-fp6: arm64: dts: Enable UFS
+> 
+> I also see these in your staging branch as well:
+> 
+> * scsi: qcom: hamoa: arm64: dts: Add UFS nodes for x1e80100 SoC
+> * scsi: qcom: hamoa-iot-evk: arm64: dts: Enable UFS
 
-Hi Martin,
 
-Thanks for picking up the bindings!
+Uh, what? First, renaming prefix is not correct for arm64 DTS patches,
+but nevertheless these MUST NOT be merged into SCSI/UFS.
 
-I'm surprised you picked up the dts as well (and modified the subject
-line), these patches should go via Bjorn's qcom tree.
+Never.
 
-* scsi: qcom: milos: arm64: dts: Add UFS nodes
-* scsi: qcom: milos-fairphone-fp6: arm64: dts: Enable UFS
+I will mark SCSI/UFS subsystem as one needing explicit patchset split.
 
-I also see these in your staging branch as well:
-
-* scsi: qcom: hamoa: arm64: dts: Add UFS nodes for x1e80100 SoC
-* scsi: qcom: hamoa-iot-evk: arm64: dts: Enable UFS
-
-Regards
-Luca
+Best regards,
+Krzysztof
