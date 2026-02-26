@@ -1,134 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3183C314D15;
-	Thu, 26 Feb 2026 09:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93BE36682C;
+	Thu, 26 Feb 2026 11:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772099092; cv=none; b=LNvjlCbaBn9rUaUGADLjh9QDJrFg162+p+nCEHJfScSLl0SX/iCkEhc2eg04iD7Ir7Lg/zUhWe/lkKrQMcEJhtZlKozozctCftqseXkRjlUEwfMtr8KSuJtqkh5zw/esC0QNkbkXwcY6oFqg4Env1SKuxy5pRfkobDFmvo0hTvQ=
+	t=1772107059; cv=none; b=kh71SrDKI4D9xurVzDZF+/JERUCqvZzn94jo7ZppKEUw23sROlkXrMnuIck3Sa1wLdhWNJvWT684XWs73USbPaPjr8eRn26MWXNuGFeJxNe0TlVPV+qs+hL4E/42ernaN2mMDRgxc8iATTS/3oWuk7xQwgQRXNuR22x1SF7KZFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772099092; c=relaxed/simple;
-	bh=4lIQj+VvqKNaQMANS9iMHQMwjGFcpQa9Jac1FstFcqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DpG6LXkg0Ax7bKs9diMV11drx8OhYScWduyzjyC+BpmaxubAHPHghAYhcVIIognldp0eiEC0FYOnTPqCBBIONnVJSfGwRNfP8Ky35bqehFaEOlO+HCn2fsqmgMgauLY+DCbnT6QTFHd1oUhpowyfDiE3S0wfTHVaubliGTbdE4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlER1XBN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772107059; c=relaxed/simple;
+	bh=MqSJmu1uXT6iOqp2k37q1PgdWKfSaMyjLJfRuK9RPqw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Nx3rz+qr7n5dPG4oUCOLmaYh8QeLAPcxN8DWHOlcYdd1f4gguV5Uy6LOUDIF8Htgf3ZUc9XABK4wnNBJWrX8exXk94MLjl1kb4RoON46mjwQGTP5Hf0NmvF2VcCxFB79syUXnP3EjuPMRzh4oYRffNCGQU1hld2Nw8Wwp74v2WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rx/XTseo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlER1XBN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F516C19422;
-	Thu, 26 Feb 2026 09:44:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rx/XTseo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A02E1C19423;
+	Thu, 26 Feb 2026 11:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772099091;
-	bh=4lIQj+VvqKNaQMANS9iMHQMwjGFcpQa9Jac1FstFcqI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RlER1XBNLk8gDURJLPbEpzvVkup8+b+PyQ7fX6kX+kZfw2E+lhL8OAWYejxRf2PJh
-	 G088jnMqan1rhv0r42adl8dNC8ikt2gL0CvThow7yD9jB5y5ljQRQuzM4ekh/L8K5T
-	 vhctTpw3k1GnjkjYmJwPGFIiLTPqrAo+RqyczjF0pLce1H/Xf0DapM9Ko3/AkrbPwv
-	 CrErVw+7Q3AyStseDTQskpAwYf1i/Yr7J7ep7hA5k0Jm99x0SSri+r1m0nrczURaV6
-	 wqi/58HZknAgr95+kchdZhDFpJOXTJxb2RDlVSMTqyx35beuTYAvxjvVnALdA5uA+T
-	 bEcY0raxGO5xg==
-Message-ID: <7927bdab-9c3b-460d-a2ba-2e5b06ee8804@kernel.org>
-Date: Thu, 26 Feb 2026 10:44:46 +0100
+	s=k20201202; t=1772107058;
+	bh=MqSJmu1uXT6iOqp2k37q1PgdWKfSaMyjLJfRuK9RPqw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=rx/XTseons2fHbfB9DcdbMfx02OEkrvjkSiDPtHMZSTPrEmuG9Qz9CvYlnBcMf9zJ
+	 HynLUBKWlqBfY5BkYlKY5D5Iy9HiMYb8NyGVe/EUMQmdy+mHgOw0PDUTW7Y573vcZ8
+	 v2BWiu6nYmaBfweiJGZHQEjJHjghY/SI71zRucSF6duxdnP58EcofQzUt0JjwdhmKQ
+	 F/PWYR1+Q+2lJXV1Ul+86F+MML33WqnHDAOfoisiYMbStxGEnecF7sNP01Q04gq/1d
+	 prK2hLqajdnWoTnX2KgDCXFtJyfc6pJm6v2A65H+LuwuJBlZfBxwpJ+IUR1O171lag
+	 /XJ0oYXM5EsZA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95777FC593A;
+	Thu, 26 Feb 2026 11:57:38 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 26 Feb 2026 12:57:36 +0100
+Subject: [PATCH 1/4] drm/panel: Clean up SOFEF00 config dependencies
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
-To: Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com>
- <20260213-sm6350-camss-v3-1-30a845b0b7cc@fairphone.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260213-sm6350-camss-v3-1-30a845b0b7cc@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260226-panel-clean-up-kconfig-dep-v1-1-bb28a2355b4c@ixit.cz>
+References: <20260226-panel-clean-up-kconfig-dep-v1-0-bb28a2355b4c@ixit.cz>
+In-Reply-To: <20260226-panel-clean-up-kconfig-dep-v1-0-bb28a2355b4c@ixit.cz>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Dzmitry Sankouski <dsankouski@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Casey Connolly <casey.connolly@linaro.org>, 
+ marijn.suijten@somainline.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1352; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=S2VmpYOqwuL+0OJ8gYr+mbqdWnTXUGRv7C3ek1BRY3c=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpoDUwi1CjtxFs5Sj/rXK7pY5bi2RLpIoCFPyEq
+ woAahnB0l6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaaA1MAAKCRBgAj/E00kg
+ csbJEACtWhRwtEV68IEUPumQ+0W9UDjFpTKqA8vLw/EGhDWAix7givziihyRR1aHGeHf/dKVy3O
+ 9pBRNgts4TpFp+BWpTRDvsbrbyMbPN/6/S3Ov0hZngQ6YEFxUtoFfk/N2iveGvjm69OZnvm+2Ef
+ JcK6Q3y0EhevQUzu8iIuX+KL1TNO7TCphyA/fx7ij1+NW+u5Eh04hGK1a85wrpfEiPDtcgqJoU+
+ X9uEt5lxwmtKtB8tHvNEwGe9sFJpm9RQSGrAz165iQrFLkuISl6SwUBy6Vq9boP04jCsCR1KQ34
+ nMZ9u7Dg9BJRLiNhN1A44OItCJxNMS+ub9ewBb4ByTSQWVwiZS5ACHL9FqK561saFj0FGqSyJAH
+ e/eZg/WcKOsBqj7r9X+V6TfpPKZR40Dlp7zDscBGkKleTPsusuC5susIwQpVcXSosn9XvSSPLFq
+ zv4uxSljWYPJ8ZsJdOj0jUucRydhC/YHX2uGaAqEw6OKDPeT0fh7xoQWgMUIK41nMyB3Yie2jhW
+ sxxhnhq9JaURXRZif4pcIgxHk/eh3yI6tt+mVxE7+9s26varnrOg73ZusLYpcryditqWCJx8PFf
+ ilSm7nGXfu/5zOlE7QutiTJIi2N/MFVr9OEX4gMfu61fiRhjFDg4qJb5PJS7/eTHaoOHVFuBNow
+ US66dQ3OiFT+CyQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 13/02/2026 14:15, Luca Weiss wrote:
-> Add bindings for the Camera Subsystem on the SM6350 SoC.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../bindings/media/qcom,sm6350-camss.yaml          | 471 +++++++++++++++++++++
->  1 file changed, 471 insertions(+)
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-Just to be clear, because Bryan posted now x1e80100 camss patches
-changing ABI. I was holding this patchset for camss/media maintainers to
-come up with driver and any other necessary pieces (like guidance for
-bindings) support for split CSI PHY. Finally after long time I gave up
-and gave these bindings green light.
+As per the config name this Display IC features a DSI command-mode
+interface (or the command to switch to video mode is not
+known/documented) and does not use any of the video-mode helper
+utilities, hence should not select VIDEOMODE_HELPERS.  In addition it
+uses devm_gpiod_get() and related functions from GPIOLIB.
 
-Additionally there is some claim that there is policy allowing to change
-bindings. No. There is no change of bindings with few exceptions. Decide
-now what bindings you want to have. One single node or split CSI PHY,
-because you cannot take the first option but then six months later send
-complete revamp of the ABI.
+Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
+Reviewed-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ drivers/gpu/drm/panel/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So please decide and answer, e.g. by taking this patch, that you
-understand above and THIS will be your fixed ABI.
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 79264f7bbd0e2..2fd3222ba2e3b 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -909,10 +909,10 @@ config DRM_PANEL_SAMSUNG_S6E8AA5X01_AMS561RA01
+ 
+ config DRM_PANEL_SAMSUNG_SOFEF00
+ 	tristate "Samsung SOFEF00 DSI panel controller"
++	depends on GPIOLIB
+ 	depends on OF
+ 	depends on DRM_MIPI_DSI
+ 	depends on BACKLIGHT_CLASS_DEVICE
+-	select VIDEOMODE_HELPERS
+ 	help
+ 	  Say Y or M here if you want to enable support for the Samsung AMOLED
+ 	  panel SOFEF00 DDIC and connected panel.
 
-P.S. It is second time I am battling with fake policies invented around
-camss. Previous was that supposedly we ask to order the
-reg/interrupts/clocks by value. That was completely fake rule debunked
-later when DT maintainers found out that you created such. Now another
-rule that you can change a released ABI with users just calling them "no
-upstream DTS users". I think this drivers/subsystem is somehow the most
-fake-rule inventing and I never had to correct other folks so many
-times. I don't know why.
+-- 
+2.51.0
 
-Best regards,
-Krzysztof
+
