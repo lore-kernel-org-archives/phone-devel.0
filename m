@@ -1,71 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7E730E0EF;
-	Thu, 26 Feb 2026 21:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7C533A01E;
+	Fri, 27 Feb 2026 03:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772140447; cv=none; b=SB3vSm3ItfSGW5pKt5JRgJ6Iiz+8J5w1XTbY84gLKeq0PGNondoOTbOAxjlcJq8y8IwRGPxl9XbNMQVFIoR0VXw4bGbKgbj1DnmiJY7Nz2QssEzmZ9pNXqp74GDE+KaDU2ynLb+sYz0gjG8vOKCVUc/W+FwcLpsWdMS2pjId/R0=
+	t=1772164359; cv=none; b=GfDFvancn0WOy36z4rdEFNILx7KNvL4d48p88RTvIJv+LgaoaZX7H+dalS0UqGSIVtZefuV9Nn/1ZnOCS26fk1NDK+uVFIccrg+SUPGgGgIj6wYjC38A4G88ghzP3PgV5dkZU1PNIvpcNblA15mVCmY3nX87uiXm5Vvyn7y9YNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772140447; c=relaxed/simple;
-	bh=p+nQrqubGpHurZZtPn/aeXXk5EP9EA2Ye/VBiS7O1B4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HiSLlvW5uYx6VksiAmplWXGliOIJ7izInxDqd45lOdShJlI7noWCYwjpVYaiT5SHJ19tMc7yCMaZlCt7CyLqf58vfEjg/rZx941BQgToCcc52Hvox4pVr0MjR/OAh1DhF2wjDpYC0/qMqcyCkjHg8YZcoBTGPUVrvAiIkgCSbFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiBoyLAJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772164359; c=relaxed/simple;
+	bh=sGcIi9R+H+rYlejz3LbbzLzmzqTMDT0m2GiS7N0wTHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FZdqRCp/TnxV3Mji6l5frLAMojLJajnHVP/26CUPsGdzqc0SZD+dkU4/ZR7PP4hHhzVIFMmT7BKW9oa7cclOxQL1kJ8j0E2cFLKW4UBRB2pZazVQhNlSD0lmzrevxwyXBlP6YDjycdCQOSjRdWRiI1obhTgk5k0GFyZ02H/LT/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bl/CaEpa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiBoyLAJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD30DC116C6;
-	Thu, 26 Feb 2026 21:14:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bl/CaEpa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B7CC19423;
+	Fri, 27 Feb 2026 03:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772140447;
-	bh=p+nQrqubGpHurZZtPn/aeXXk5EP9EA2Ye/VBiS7O1B4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IiBoyLAJL/7A6Efk4sZ/y12JwNyLCShAKaVtiZgkMf5gBJ9vWuKVuTXsS1ZF5xvi3
-	 saumJkI6E4CstJQiu+gEeOw6DA3YiXHUfXui3fKuX9qi6iG7yt3Z/S1poo0bJXrnXs
-	 /LaBC2rWj+xdMrHKVBLbfV6ZNU5UzjSOAAWSPX+OHPhlB7Z1glEkEMDEaaaRJNA2Gc
-	 2b4J8Q1FdICKtea8990pQk4OwfojD0OKO+ol0uWLUNKR9z3ImwrsX3ZCFwc8Wv0klx
-	 xWd8BaTPqd4p/JqwtQN/WfvMw7wbcqlYsDGSQYOZNIwy3pdGD1tMFWXK56TmKAt+5l
-	 ln+Ch/diVv5eg==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>, 
- Lukas Timmermann <linux@timmermann.space>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Alexandre Marquet <tb@a-marquet.fr>, 
- Henrik Grimler <henrik@grimler.se>
-In-Reply-To: <20260127-lat3st-staging-v4-3-797469aaaf9d@timmermann.space>
-References: <20260127-lat3st-staging-v4-0-797469aaaf9d@timmermann.space>
- <20260127-lat3st-staging-v4-3-797469aaaf9d@timmermann.space>
-Subject: Re: (subset) [PATCH v4 3/3] ARM: samsung: exynos5250: Allow CPU1
- to boot
-Message-Id: <177214044450.341643.10542668846868518849.b4-ty@kernel.org>
-Date: Thu, 26 Feb 2026 22:14:04 +0100
+	s=k20201202; t=1772164359;
+	bh=sGcIi9R+H+rYlejz3LbbzLzmzqTMDT0m2GiS7N0wTHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bl/CaEpaUARa6Oyh6+Q0TcqnR8VOvXTMqZYbXr3BBHTjB47Cwk8KEjyGZpObZNz1n
+	 ZxnigLbQI3Gf+rkoz37BGPLbUhC6OFGzUAJWcw/Jo2M+BPLZ2H2Ygkt1IzKdiUbvH+
+	 DhGFXGmlexEEZHtsC8IrME0z6f/dhFFs6rL15r6dh6IolqqtAuvw0c9jhF1VuBWzSk
+	 Onynceq+DDz9aBm7RHMF5epDxAtyqjL3Dkyv0PekcK1rpVLLpvPHR2XRyGyDxwHi1Q
+	 a0S/K8APMxChudUL+KRFVORIwLMxiiVIkGCd55cWW64MQK1HQVS5U3WwNZ8bsLLZGe
+	 O78k5YHQFRB3w==
+Date: Thu, 26 Feb 2026 21:52:35 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Matti =?utf-8?Q?Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>, Luca Weiss <luca@lucaweiss.eu>, 
+	Vladimir Lypak <vladimir.lypak@gmail.com>, 
+	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org, 
+	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v2] remoteproc: qcom_wcnss: Fix handling the lack of PD
+ regulators in v3
+Message-ID: <mteufo3laiiuhcgbihxnossy4xfkxhct57mkav2fr4oxvaldp7@k6p7edkfgjt4>
+References: <20260201210230.911220-1-val@packett.cool>
+ <jup7hphwpa754gyhtcahz25glecp6ctpuxcwzvco6wrbokvnip@quw7hrauahsa>
+ <ddd8b949-3f73-4e3d-90b9-be95e859f3b1@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ddd8b949-3f73-4e3d-90b9-be95e859f3b1@packett.cool>
 
-
-On Tue, 27 Jan 2026 21:40:58 +0100, Lukas Timmermann wrote:
-> The firmware trustzone needs a special call to bring up the secondary
-> cpu core on the Manta board. This seems to be not needed on other
-> exynos5 boards and comes down to the available firmware on
-> a particular board.
+On Tue, Feb 24, 2026 at 03:45:05PM -0300, Val Packett wrote:
 > 
+> On 2/23/26 5:03 PM, Bjorn Andersson wrote:
+> > On Sun, Feb 01, 2026 at 05:55:03PM -0300, Val Packett wrote:
+> > > The changes introduced to handle single power domain platforms have
+> > > swapped the info pointer increment from num_pd_vregs to num_pds, which
+> > > would shift the info pointer past the end of the array for pronto-v3,
+> > > which does not list power domain regulators in vregs.
+> > > 
+> > > This showed up as a difference between GCC- and LLVM-compiled kernels
+> > > on SDM632 devices, where only with LLVM one would get the
+> > > "regulator request with no identifier" error, because the out-of-bounds
+> > > memory ended up being zeroed. Fix by skipping the increment when there
+> > > are more power domains than regulators.
+> > > 
+> > Is the error only an error print, or did the thing stop working as well?
+> 
+> It's a real error. Likely no one would've bothered debugging it if it
+> weren't breaking everything :)
+> 
+> It was a blocker for allowing LLVM/clang builds of the msm8953 kernel in
+> postmarketOS, the whole reason to dig into this was "switching to clang
+> breaks the modem, WTF?!"
 > 
 
-Applied, thanks!
+Can you provide me with a Fixes: line please?
 
-[3/3] ARM: samsung: exynos5250: Allow CPU1 to boot
-      https://git.kernel.org/krzk/linux/c/32d4b991f25eeffac7568ef51367f924394fbdc5
+Regards,
+Bjorn
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzk@kernel.org>
-
+> ~val
+> 
