@@ -1,100 +1,85 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9454A3542E9;
-	Fri, 27 Feb 2026 04:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB66317A2E8;
+	Sat, 28 Feb 2026 01:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772166078; cv=none; b=LldE/sGDeLolcatua8Y34wOEozdJmvzlRQ4NHESa6Jw8vplerDiVaAGW7/iDRxtG9y6ac2GVeMMigHbjI/Zn/RnQSznB+seNaYG/MasdlXjhRIdsIJ1dtCsZYa9ijN6y+n4jHikUIoFXqy+y3TKur/j4e4fb+1vCYWOXaSRE8UQ=
+	t=1772243861; cv=none; b=CsfsA5N5Ay2vNETaP79Zt/1e2Of9SloYG89LTL8OePQGe2T9rK6n48qtM4PExCjSM3NVQuSemTkEbKyKdZBkoYu8T9/nIF2ixOVNiMqgPvAmBKzDazoJk6R47vJZeqj5og6YDbavalZsCF9RhBKPKUIalR8wH+r40DMAbazyMfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772166078; c=relaxed/simple;
-	bh=DjhCwJelsHxDZr2A9nbd6G55W14Jv0FPsNstLX/ZETA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c+IwHtFAoG61aKE0s6U/MUKCvEm+ssjb6z2ho+hZzfVIWRp7cADq56vvAkwTvN47SVwSIb3M6hTcvbCHhSGxbSc4Yky6mc79GxD04vQqWfy3M/G3Kl+pdo3YQCXl5TW2kmQgKWNREB4IMZJ3jVs/OTMWiNP8JeO0iFET8f6t2QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=lDRlqMaL; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1772243861; c=relaxed/simple;
+	bh=mqgh3KinL8lR1abG10D3/1AkSqQqDN7cUVnCfUjIrMU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ys8bljMDSCdzmspvuhoAAMP8WjAliUGC/5h+59DXQRoKgQFmy3TlMHdwpxy6P4RVLMvPKx/1Kn4LBr9f3HzKSrOF+y+OFmuO39FeLgtavBbSA/SVkrUlN4bsWfAfwWyUXL4HnKNToO0CvxPgQCm2CrYJlGT484aZRdUZjoj3UrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=H7t7r3lP; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=RzD43SKF; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="lDRlqMaL"
-Message-ID: <4c8e310c-ab39-491b-9a39-99ddbc943b00@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1772166064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9n0A5zUZC+lx+LR4fd6ULnk460On2lLPIMiPdwgeFyg=;
-	b=lDRlqMaLbqiYTHS9SlFw+sFcgiORpu7H2cD6sR1nTRI1gsNlTLmO4wB2dHs6Pbo7D8W2mk
-	Kt9mksvkriB37vvj7wanoVOd7H+HqRvthfYEIrdPtKN0II+xPrm3W3DRTr2WjQD4ynPgZ+
-	TnyfS/guUR13OM8DzYZlBHujN5KyJIqm/ssSxWB3okq8dnaVaxoZ9mNbWmKEmkTOWv1gop
-	UgLt0UKUV10d4klh4/T13svGl3atZYKKgB8rI3o4gfjoCjYo/r3cR9Yz0GEymtN6LjXqX1
-	a8JMKTxhYjzUtucdRrUB+bMvHjJigVw1egwxqFqXm9v2V5a8oYnnvDNFvQjWDg==
-Date: Fri, 27 Feb 2026 01:20:48 -0300
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="H7t7r3lP";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="RzD43SKF"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Subject:Date:From; t=1772243806; bh=AUlBsE2lv1qFAMOJ2b89Ub+
+	ErBhxWmCUaBMB+doDrJo=; b=H7t7r3lPPRBDb6qSRAX1bxmoYFzI4/ZWtASkui5DWEt8Vsf9jn
+	EPpLTmD7ykAV5lyvELt5Z9o4q2iaTNK6b4pcwpaCc0KRSfbyFvh8zw+of8+4ZGXoxYzJBfCZexM
+	v9DjQNpsCg79ddfELi3+t6sgWygVC1e1aKEr9zb3N7f/r+ZqTV3KCwrW4quTPntz8jv/AnpBvQ6
+	ueJJmw5g6hnGMzTMi2lveVEgESnDrBkXskjICdq9z+19xZR8ycVzqKKqVqIL5xM7Jye1Ms9/LXv
+	MFeIDtybT1/GGLff6An7SrKqZI2qE/+6Dmv3TwQ6MTSZ1ZJiH9s/Lc+lFxc0Oom1IIQ==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Subject:Date:From; t=1772243806; bh=AUlBsE2lv1qFAMOJ2b89Ub+
+	ErBhxWmCUaBMB+doDrJo=; b=RzD43SKFn7EO0XqcIKpQfsWJhKMs2OGOkwbs/p0MFgaFM+wG0l
+	6ryVaWk4sY1hBvYmFWjTMo0Gj05cFLXrGSDA==;
+From: Aelin Reidel <aelin@mainlining.org>
+Date: Sat, 28 Feb 2026 02:56:12 +0100
+Subject: [PATCH v2 3/3] MAINTAINERS: add an entry for Goodix GTX8
+ Touchscreen driver
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] remoteproc: qcom_wcnss: Fix handling the lack of PD
- regulators in v3
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
- Luca Weiss <luca@lucaweiss.eu>, Vladimir Lypak <vladimir.lypak@gmail.com>,
- =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, llvm@lists.linux.dev
-References: <20260201210230.911220-1-val@packett.cool>
- <jup7hphwpa754gyhtcahz25glecp6ctpuxcwzvco6wrbokvnip@quw7hrauahsa>
- <ddd8b949-3f73-4e3d-90b9-be95e859f3b1@packett.cool>
- <mteufo3laiiuhcgbihxnossy4xfkxhct57mkav2fr4oxvaldp7@k6p7edkfgjt4>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <mteufo3laiiuhcgbihxnossy4xfkxhct57mkav2fr4oxvaldp7@k6p7edkfgjt4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <20260228-gtx8-v2-3-3a408c365f6c@mainlining.org>
+References: <20260228-gtx8-v2-0-3a408c365f6c@mainlining.org>
+In-Reply-To: <20260228-gtx8-v2-0-3a408c365f6c@mainlining.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Hans de Goede <hansg@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Henrik Rydberg <rydberg@bitmath.org>
+Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux@mainlining.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Aelin Reidel <aelin@mainlining.org>
+X-Mailer: b4 0.14.2
 
+Add MAINTAINERS entry for the Goodix GTX8 Touchscreen IC driver.
 
-On 2/27/26 12:52 AM, Bjorn Andersson wrote:
-> On Tue, Feb 24, 2026 at 03:45:05PM -0300, Val Packett wrote:
->> On 2/23/26 5:03 PM, Bjorn Andersson wrote:
->>> On Sun, Feb 01, 2026 at 05:55:03PM -0300, Val Packett wrote:
->>>> The changes introduced to handle single power domain platforms have
->>>> swapped the info pointer increment from num_pd_vregs to num_pds, which
->>>> would shift the info pointer past the end of the array for pronto-v3,
->>>> which does not list power domain regulators in vregs.
->>>>
->>>> This showed up as a difference between GCC- and LLVM-compiled kernels
->>>> on SDM632 devices, where only with LLVM one would get the
->>>> "regulator request with no identifier" error, because the out-of-bounds
->>>> memory ended up being zeroed. Fix by skipping the increment when there
->>>> are more power domains than regulators.
->>>>
->>> Is the error only an error print, or did the thing stop working as well?
->> It's a real error. Likely no one would've bothered debugging it if it
->> weren't breaking everything :)
->>
->> It was a blocker for allowing LLVM/clang builds of the msm8953 kernel in
->> postmarketOS, the whole reason to dig into this was "switching to clang
->> breaks the modem, WTF?!"
->>
-> Can you provide me with a Fixes: line please?
->
-Oops, did I lose it at some point? o.0 Sorry!
+Signed-off-by: Aelin Reidel <aelin@mainlining.org>
+---
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only 
-single power domain")
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 14899f1de77ed2e8a583cf7b0fea25725c8534cb..c76f9fbe51f929f7eded37760cb5c83dfa337d0b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10849,6 +10849,13 @@ M:	Maud Spierings <maudspierings@gocontroll.com>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/connector/gocontroll,moduline-module-slot.yaml
+ 
++GOODIX GTX8 TOUCHSCREEN
++M:	Aelin Reidel <aelin@mainlining.org>
++L:	linux-input@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/input/touchscreen/goodix,gt9886.yaml
++F:	drivers/input/touchscreen/goodix_gtx8*
++
+ GOODIX TOUCHSCREEN
+ M:	Hans de Goede <hansg@kernel.org>
+ L:	linux-input@vger.kernel.org
 
-
-~val
+-- 
+2.53.0
 
