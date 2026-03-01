@@ -1,227 +1,322 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF06821D3D2;
-	Sun,  1 Mar 2026 00:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB093175A7A;
+	Sun,  1 Mar 2026 11:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772326284; cv=none; b=isgfbyVXUnA021pd0aaFvQvaxqudAwrT+hscPVFyB/Rxo+g8NNDN7OijcbB1TI2R2Z0kyQuekwfz/KBXvKg1XzaWdRAUZz9YxRtXC/lf+CwtdEQKQU9TqkK9dcsEEkIMlg86luo9tjSrFkkb+I/eLhMM/XTmn6DcD1cxzkKOYGQ=
+	t=1772365385; cv=none; b=AW05CROE5lOWGwoX/4aQ2Isitg5502Que3OdnonxGpmuVdET4YbUzx2rpd0GXIocX6dLFRsgHsHq7WSCGhU06d+G8yX9i0G4/LJ9EqnifpMjWo57vDIzi9v7uJmnNueg/weQ8P7N46//OEHGnTuafTGBNREuttiCkdAUTUpnmvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772326284; c=relaxed/simple;
-	bh=eAVdcXaV6oSYqlsY5bs9aHZfvkb/ZO5oPVUjvOjHD7g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QKDVhZkyZCOaIoE/Jl26pjuNvQDipfVTNbvg61BZABHVqvUv/jbwnmnRDrPLQzvQ60TxBibw4iccrVxTFFBGw4sd+dfuJO0+ej7vRZFq8Z45qQ6GH3tmPPM7F3yYU2alagQs3CNsruvFYoD3FhxebJMvLVBodmOQMpM6VP6rNrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6xgcssm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772365385; c=relaxed/simple;
+	bh=/6lGKPBod54k57df5F8PYUqoqo6RqrWwsHxiulBOvgo=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=SxCWrdb4hse2gcQ+v1mGiN/Vp7hurjszTOtiswdLuJPn7SJdFDEl+Xa5GWLWkmkEfjLZQui3ZUx1lFqrwU9CFZFJSGcAD3DIhNBaUAfSzi718w5b3srgFv50lD7BE4y3kqOvGeBq24+G9U+AFo16lovbg2L0gUwKRDCMoSbTL9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=F0sJSgbu; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6xgcssm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CCE7AC19424;
-	Sun,  1 Mar 2026 00:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772326283;
-	bh=eAVdcXaV6oSYqlsY5bs9aHZfvkb/ZO5oPVUjvOjHD7g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=h6xgcssmcNeI3nZGNDPnpokHk1asFvREFDr/VUUzz/9HUafR7ZRg5lBAVGJ/RHxyx
-	 LFZAINdZbOvn2f6z0dV2LKguy2CFDAoG6JphQZWoguckqDZVrLFZsWCkcK63EhZVwg
-	 6jOeODNihpWnDVhMA2tHt4kyS76KBk/a0eO+9bQx4cImCPHijQ0ZfUtf4ddT+qcTTO
-	 7XPNgjp6ZLPMeUucQIlGxEkdOJgQkY7MJAT7OVT3fhusAG5lD4aDFIohYHatfYqmbJ
-	 nwtryaq29JDfabv1OiLhwQ+bRYtX0HUzgBGYigNo+dkK/QJ9t+RZ4ZFy4hsfCjIZHP
-	 Jn4iI9ZPS1QWA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5807FD0049;
-	Sun,  1 Mar 2026 00:51:23 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 01 Mar 2026 01:51:28 +0100
-Subject: [PATCH WIP v4 9/9] media: qcom: camss: Account for C-PHY when
- calculating link frequency
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="F0sJSgbu"
+Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DFD7A56D;
+	Sun,  1 Mar 2026 12:41:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1772365319;
+	bh=/6lGKPBod54k57df5F8PYUqoqo6RqrWwsHxiulBOvgo=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=F0sJSgbuTM8I14ibOxECaF0as6nTmZdXAUyIWP/49hJuyp8uLDfCCx7tgC5fjogFf
+	 RRsPjWGUmVDt1Gwj7drQK4MBeIW2Jb2pK8Mg2HVoJDUmj5vxRU7ETgwVI+urFoTk89
+	 FUSRe+lYLf5TxM2X1fOhWJHNKdb7Ps7TxoHKGigg=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260301-qcom-cphy-v4-9-e53316d2cc65@ixit.cz>
-References: <20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz>
-In-Reply-To: <20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6125; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=Cjh/ZCc+QxiGxE0P3pin9rU82Q1mGW8XbN3n2VAfbWs=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpo42JiWMCDeyS6nMb0DJdISneQyIuieGWA7N6t
- mYYFQY5OOeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaaONiQAKCRBgAj/E00kg
- cslrD/wPuUhKj65xd6W8NpE9LwqpaN2hXZGJRjBidegodg/nYCj+4Hz/Bw4idpLc/piu2N6Lh3s
- urukhvNP7ick7mXQciySdDUgQf9pEbe4WUX8HYm/+OxRkGTOlpt0rq6onGlLEKeIYXt6iK8CtJX
- zFXsGZuJpGLaGWJeCPO/5tkBXwl5rLeq+ipNKfJbeDWxC3P2r4q4K7R0QJycYqnT1OI2qrgee/3
- FyUIKocC+BgGedGKSK6F4PehKz5pSRXXH/0A0dbrDwutRnAbYDLw6aEnK5OVDvn2EiW2Ufk1AP0
- 1NRWnZFmSo0MvxiDN73n4DuJo41yBmx2vcAYd07S2r4ed2s/IsBz4slXgRo6bE8PReqmrZShPwo
- 5R9eqdqVvVSpT5rodLlxiAOQZBJgsNrYyWd+jzK6VOtvS44A/TYgNv8Kd46+HDsjkcRTF+jXozm
- gwWCmDRMIt7toZHvJrVO8JM0LL+3LPJ13HtIp4mOdWpKnXa6szklZcghCL6i9D0Jq0N1/yxp+px
- S1dFnx4TDDGHrw0+6jQPK/lsKDzAIKwXoGECKNOZ5yuhwFzrMCoPIGda49aj0vAKfyzINqjlRHM
- kLI9TcTynzGM4Ee92zGuYhvmxd5HoGS7MpbA3IeKBiDwngLYpQc/0dQ4QocjYAlIi75rk6Ta/2S
- KAx7UQ0Yx+JRJCw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <b23f0e1e-8a79-44c6-a0b8-09997ed26e4b@ixit.cz>
+References: <20260117-qcom-cphy-v3-0-8ce76a06f7db@ixit.cz> <20260117-qcom-cphy-v3-2-8ce76a06f7db@ixit.cz> <de5fbe8d-3f9e-4be8-a9e3-991b959305e4@linaro.org> <176873791545.3486172.9291085318504972330@ping.linuxembedded.co.uk> <b23f0e1e-8a79-44c6-a0b8-09997ed26e4b@ixit.cz>
+Subject: Re: [PATCH v3 2/8] media: qcom: camss: csiphy-3ph: Use odd bits for configuring C-PHY lanes
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Casey Connolly <casey.connolly@linaro.org>, David Heidelberg <david@ixit.cz>, Dr. Git <drgitx@gmail.com>, Luca Weiss <luca.weiss@fairphone.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Petr Hodina <phodina@protonmail.com>, Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Date: Sun, 01 Mar 2026 11:42:55 +0000
+Message-ID: <177236537581.1230693.15193663000744024111@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
-From: David Heidelberg <david@ixit.cz>
+Quoting David Heidelberg (2026-02-28 22:37:57)
+> On 18/01/2026 13:05, Kieran Bingham wrote:
+> > Quoting Bryan O'Donoghue (2026-01-17 21:38:17)
+> >> On 17/01/2026 15:36, David Heidelberg via B4 Relay wrote:
+> >>> From: David Heidelberg <david@ixit.cz>
+> >>>
+> >>> So far, only D-PHY mode was supported, which uses even bits when enab=
+ling
+> >>> or masking lanes. For C-PHY configuration, the hardware instead requi=
+res
+> >>> using the odd bits.
+> >>>
+> >>> Since there can be unrecognized configuration allow returning failure.
+> >>>
+> >>> Signed-off-by: David Heidelberg <david@ixit.cz>
+> >>> ---
+> >>>    .../platform/qcom/camss/camss-csiphy-2ph-1-0.c     |  8 ++--
+> >>>    .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 49 ++++++++++=
++++++++-----
+> >>>    drivers/media/platform/qcom/camss/camss-csiphy.c   |  4 +-
+> >>>    drivers/media/platform/qcom/camss/camss-csiphy.h   |  6 +--
+> >>>    4 files changed, 47 insertions(+), 20 deletions(-)
+> >>>
+> >>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c=
+ b/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
+> >>> index 9d67e7fa6366a..bb4b91f69616b 100644
+> >>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
+> >>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.c
+> >>> @@ -94,9 +94,9 @@ static u8 csiphy_settle_cnt_calc(s64 link_freq, u32=
+ timer_clk_rate)
+> >>>        return settle_cnt;
+> >>>    }
+> >>>   =20
+> >>> -static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+> >>> -                             struct csiphy_config *cfg,
+> >>> -                             s64 link_freq, u8 lane_mask)
+> >>> +static int csiphy_lanes_enable(struct csiphy_device *csiphy,
+> >>> +                            struct csiphy_config *cfg,
+> >>> +                            s64 link_freq, u8 lane_mask)
+> >>>    {
+> >>>        struct csiphy_lanes_cfg *c =3D &cfg->csi2->lane_cfg;
+> >>>        u8 settle_cnt;
+> >>> @@ -132,6 +132,8 @@ static void csiphy_lanes_enable(struct csiphy_dev=
+ice *csiphy,
+> >>>                writel_relaxed(0x3f, csiphy->base +
+> >>>                               CAMSS_CSI_PHY_INTERRUPT_CLEARn(l));
+> >>>        }
+> >>> +
+> >>> +     return 0;
+> >>>    }
+> >>>   =20
+> >>>    static void csiphy_lanes_disable(struct csiphy_device *csiphy,
+> >>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c=
+ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> >>> index 4154832745525..f3a8625511e1e 100644
+> >>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> >>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> >>> @@ -14,6 +14,7 @@
+> >>>    #include <linux/delay.h>
+> >>>    #include <linux/interrupt.h>
+> >>>    #include <linux/io.h>
+> >>> +#include <linux/media-bus-format.h>
+> >>>   =20
+> >>>    #define CSIPHY_3PH_LNn_CFG1(n)                      (0x000 + 0x100=
+ * (n))
+> >>>    #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG (BIT(7) | BIT(6))
+> >>> @@ -993,13 +994,22 @@ static void csiphy_gen2_config_lanes(struct csi=
+phy_device *csiphy,
+> >>>   =20
+> >>>    static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
+> >>>    {
+> >>> -     u8 lane_mask;
+> >>> -     int i;
+> >>> +     u8 lane_mask =3D 0;
+> >>>   =20
+> >>> -     lane_mask =3D CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> >>> +     switch (lane_cfg->phy_cfg) {
+> >>> +     case V4L2_MBUS_CSI2_CPHY:
+> >>> +             for (int i =3D 0; i < lane_cfg->num_data; i++)
+> >>> +                     lane_mask |=3D (1 << lane_cfg->data[i].pos) + 1;
+> >>
+> >> 1 << anything =3D=3D BIT(anything)
+> >>
+> >> I've always disliked the look of this code and now it occurs to me why.
+> >>
+> >> This code is analogous to:
+> >>
+> >> lane_mask |=3D BIT(lane_cfg->data[i].pos) + 1);
+> >=20
+> > I see that addition to a bit mask and get a little bit scared.
+> >=20
+> > This gives:
+> >    pos   mask
+> >     0    0b00000010 (note 0 bit is zero here but 1 on all others)
+> >     1    0b00000011
+> >     2    0b00000101
+> >     3    0b00001001
+> >     4    0b00010001
+> >=20
+> > Is that expected?
+> >=20
+> > Can data[i].pos ever be position 0 ??
+> >=20
+> > I assume this starts at position 1 - and the +1 here is to always set
+> > the zeroth bit ?
+> >=20
+> > Perhapse this might be precise to convey that in such a case?
+> >=20
+> >    lane_mask |=3D BIT(pos) | 1;
+> >=20
+> > I guess it depends on what this is really being used for which I don't
+> > have in my context.
+>=20
+> Ok, I started looking again into the lovely downstream code.
+>=20
+> D-PHY has bits 0b0D_D_D_D
+> C-PHY has bits 0b0_C_C_C_
+>=20
+> so for some reason it worked in my usecase without proper lane mask, but =
 
-Ensure that the link frequency divider correctly accounts for C-PHY
-operation. The divider differs between D-PHY and C-PHY, as described
-in the MIPI CSI-2 specification.
+> the original formula should be
+>=20
+>   -                     lane_mask |=3D (1 << lane_cfg->data[i].pos) + 1;
+>   +                     lane_mask |=3D (1 << lane_cfg->data[i].pos + 1);
+>=20
+> Thus
+>=20
+> BIT(lane_cfg->data[i].pos + 1);
 
-For more details, see:
-https://docs.kernel.org/driver-api/media/tx-rx.html#pixel-rate
+That looks a lot more sane!
 
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/platform/qcom/camss/camss-csid.c   | 11 +++++++----
- drivers/media/platform/qcom/camss/camss-csiphy.c |  6 ++----
- drivers/media/platform/qcom/camss/camss.c        | 18 +++++++++++++++---
- drivers/media/platform/qcom/camss/camss.h        |  2 +-
- 4 files changed, 25 insertions(+), 12 deletions(-)
+--
+Kieran
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-index b50b0cfe280c1..2fc17c6a15e2e 100644
---- a/drivers/media/platform/qcom/camss/camss-csid.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid.c
-@@ -534,18 +534,21 @@ const struct csid_format_info *csid_get_fmt_entry(const struct csid_format_info
-  * csid_set_clock_rates - Calculate and set clock rates on CSID module
-  * @csiphy: CSID device
-  */
--static int csid_set_clock_rates(struct csid_device *csid)
-+static int csid_set_clock_rates(struct v4l2_subdev *sd, struct csid_device *csid)
- {
- 	struct device *dev = csid->camss->dev;
-+	struct csiphy_device *csiphy = v4l2_get_subdevdata(sd);
-+	struct csiphy_lanes_cfg *lane_cfg = &csiphy->cfg.csi2->lane_cfg;
- 	const struct csid_format_info *fmt;
-+
- 	s64 link_freq;
- 	int i, j;
- 	int ret;
- 
- 	fmt = csid_get_fmt_entry(csid->res->formats->formats, csid->res->formats->nformats,
- 				 csid->fmt[MSM_CSIPHY_PAD_SINK].code);
--	link_freq = camss_get_link_freq(&csid->subdev.entity, fmt->bpp,
--					csid->phy.lane_cnt);
-+
-+	link_freq = camss_get_link_freq(&csid->subdev.entity, fmt->bpp, lane_cfg);
- 	if (link_freq < 0)
- 		link_freq = 0;
- 
-@@ -703,7 +706,7 @@ static int csid_set_power(struct v4l2_subdev *sd, int on)
- 			return ret;
- 		}
- 
--		ret = csid_set_clock_rates(csid);
-+		ret = csid_set_clock_rates(sd, csid);
- 		if (ret < 0) {
- 			regulator_bulk_disable(csid->num_supplies,
- 					       csid->supplies);
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
-index 938600f3defe1..ea9dd2cd2e740 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
-@@ -143,9 +143,8 @@ static int csiphy_set_clock_rates(struct csiphy_device *csiphy)
- 
- 	u8 bpp = csiphy_get_bpp(csiphy->res->formats->formats, csiphy->res->formats->nformats,
- 				csiphy->fmt[MSM_CSIPHY_PAD_SINK].code);
--	u8 num_lanes = csiphy->cfg.csi2->lane_cfg.num_data;
- 
--	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes);
-+	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, &csiphy->cfg.csi2->lane_cfg);
- 	if (link_freq < 0)
- 		link_freq  = 0;
- 
-@@ -270,10 +269,9 @@ static int csiphy_stream_on(struct csiphy_device *csiphy)
- 	u8 lane_mask = csiphy->res->hw_ops->get_lane_mask(&cfg->csi2->lane_cfg);
- 	u8 bpp = csiphy_get_bpp(csiphy->res->formats->formats, csiphy->res->formats->nformats,
- 				csiphy->fmt[MSM_CSIPHY_PAD_SINK].code);
--	u8 num_lanes = csiphy->cfg.csi2->lane_cfg.num_data;
- 	u8 val;
- 
--	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes);
-+	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, &csiphy->cfg.csi2->lane_cfg);
- 
- 	if (link_freq < 0) {
- 		dev_err(csiphy->camss->dev,
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index ea0c8cf3cd806..4c13bae17007e 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -32,6 +32,14 @@
- #define CAMSS_CLOCK_MARGIN_NUMERATOR 105
- #define CAMSS_CLOCK_MARGIN_DENOMINATOR 100
- 
-+/*
-+ * C-PHY encodes data by 16/7 ~ 2.28 bits/symbol
-+ * D-PHY doesn't encode data, thus 16/16 = 1 b/s
-+ */
-+#define CAMSS_COMMON_PHY_DIVIDENT 16
-+#define CAMSS_CPHY_DIVISOR 7
-+#define CAMSS_DPHY_DIVISOR 16
-+
- static const struct parent_dev_ops vfe_parent_dev_ops;
- 
- static const struct camss_subdev_resources csiphy_res_8x16[] = {
-@@ -4280,20 +4288,24 @@ struct media_pad *camss_find_sensor_pad(struct media_entity *entity)
-  * camss_get_link_freq - Get link frequency from sensor
-  * @entity: Media entity in the current pipeline
-  * @bpp: Number of bits per pixel for the current format
-- * @lanes: Number of lanes in the link to the sensor
-+ * @lane_cfg: CSI2 lane configuration
-  *
-  * Return link frequency on success or a negative error code otherwise
-  */
- s64 camss_get_link_freq(struct media_entity *entity, unsigned int bpp,
--			unsigned int lanes)
-+			struct csiphy_lanes_cfg *lane_cfg)
- {
- 	struct media_pad *sensor_pad;
-+	u8 num_lanes = lane_cfg->num_data;
-+	bool cphy = lane_cfg->phy_cfg == V4L2_MBUS_CSI2_CPHY;
-+	unsigned int div = num_lanes * 2 * (cphy ? CAMSS_CPHY_DIVISOR :
-+						     CAMSS_DPHY_DIVISOR);
- 
- 	sensor_pad = camss_find_sensor_pad(entity);
- 	if (!sensor_pad)
- 		return -ENODEV;
- 
--	return v4l2_get_link_freq(sensor_pad, bpp, 2 * lanes);
-+	return v4l2_get_link_freq(sensor_pad, CAMSS_COMMON_PHY_DIVIDENT * bpp, div);
- }
- 
- /*
-diff --git a/drivers/media/platform/qcom/camss/camss.h b/drivers/media/platform/qcom/camss/camss.h
-index 6d048414c919e..67be42b4c9174 100644
---- a/drivers/media/platform/qcom/camss/camss.h
-+++ b/drivers/media/platform/qcom/camss/camss.h
-@@ -163,7 +163,7 @@ int camss_enable_clocks(int nclocks, struct camss_clock *clock,
- void camss_disable_clocks(int nclocks, struct camss_clock *clock);
- struct media_pad *camss_find_sensor_pad(struct media_entity *entity);
- s64 camss_get_link_freq(struct media_entity *entity, unsigned int bpp,
--			unsigned int lanes);
-+			struct csiphy_lanes_cfg *lane_cfg);
- int camss_get_pixel_clock(struct media_entity *entity, u64 *pixel_clock);
- int camss_pm_domain_on(struct camss *camss, int id);
- void camss_pm_domain_off(struct camss *camss, int id);
-
--- 
-2.51.0
-
-
+>=20
+> >=20
+> > --
+> > Kieran
+> >=20
+> >  =20
+> >=20
+> >>
+> >> but BIT() is less janky and more upstreamy.
+> >>
+> >> janky/upstreamy - this is the on-point technical argument y'all came
+> >> here for :)
+> >>
+> >>> +             break;
+> >>> +     case V4L2_MBUS_CSI2_DPHY:
+> >>> +             lane_mask =3D CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABL=
+E;
+> >>>   =20
+> >>> -     for (i =3D 0; i < lane_cfg->num_data; i++)
+> >>> -             lane_mask |=3D 1 << lane_cfg->data[i].pos;
+> >>> +             for (int i =3D 0; i < lane_cfg->num_data; i++)
+> >>> +                     lane_mask |=3D 1 << lane_cfg->data[i].pos;
+> >>> +             break;
+> >>> +     default:
+> >>> +             break;
+> >>> +     }
+> >>>   =20
+> >>>        return lane_mask;
+> >>>    }
+> >>> @@ -1027,10 +1037,11 @@ static bool csiphy_is_gen2(u32 version)
+> >>>        return ret;
+> >>>    }
+> >>>   =20
+> >>> -static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+> >>> -                             struct csiphy_config *cfg,
+> >>> -                             s64 link_freq, u8 lane_mask)
+> >>> +static int csiphy_lanes_enable(struct csiphy_device *csiphy,
+> >>> +                            struct csiphy_config *cfg,
+> >>> +                            s64 link_freq, u8 lane_mask)
+> >>>    {
+> >>> +     struct device *dev =3D csiphy->camss->dev;
+> >>>        struct csiphy_lanes_cfg *c =3D &cfg->csi2->lane_cfg;
+> >>>        struct csiphy_device_regs *regs =3D csiphy->regs;
+> >>>        u8 settle_cnt;
+> >>> @@ -1039,9 +1050,23 @@ static void csiphy_lanes_enable(struct csiphy_=
+device *csiphy,
+> >>>   =20
+> >>>        settle_cnt =3D csiphy_settle_cnt_calc(link_freq, csiphy->timer=
+_clk_rate);
+> >>>   =20
+> >>> -     val =3D CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> >>> -     for (i =3D 0; i < c->num_data; i++)
+> >>> -             val |=3D BIT(c->data[i].pos * 2);
+> >>> +     val =3D 0;
+> >>> +
+> >>> +     switch (c->phy_cfg) {
+> >>> +     case V4L2_MBUS_CSI2_CPHY:
+> >>> +             for (i =3D 0; i < c->num_data; i++)
+> >>> +                     val |=3D BIT((c->data[i].pos * 2) + 1);
+> >>> +             break;
+> >>> +     case V4L2_MBUS_CSI2_DPHY:
+> >>> +             val =3D CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> >>> +
+> >>> +             for (i =3D 0; i < c->num_data; i++)
+> >>> +                     val |=3D BIT(c->data[i].pos * 2);
+> >>> +             break;
+> >>> +     default:
+> >>> +             dev_err(dev, "Unsupported bus type %d\n", c->phy_cfg);
+> >>> +             return -EINVAL;
+> >>> +     }
+> >>>   =20
+> >>>        writel_relaxed(val, csiphy->base +
+> >>>                       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5=
+));
+> >>> @@ -1068,6 +1093,8 @@ static void csiphy_lanes_enable(struct csiphy_d=
+evice *csiphy,
+> >>>                writel_relaxed(0, csiphy->base +
+> >>>                               CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->o=
+ffset, i));
+> >>>        }
+> >>> +
+> >>> +     return 0;
+> >>>    }
+> >>>   =20
+> >>>    static void csiphy_lanes_disable(struct csiphy_device *csiphy,
+> >>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drive=
+rs/media/platform/qcom/camss/camss-csiphy.c
+> >>> index 62623393f4144..08dd238e52799 100644
+> >>> --- a/drivers/media/platform/qcom/camss/camss-csiphy.c
+> >>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
+> >>> @@ -295,9 +295,7 @@ static int csiphy_stream_on(struct csiphy_device =
+*csiphy)
+> >>>                wmb();
+> >>>        }
+> >>>   =20
+> >>> -     csiphy->res->hw_ops->lanes_enable(csiphy, cfg, link_freq, lane_=
+mask);
+> >>> -
+> >>> -     return 0;
+> >>> +     return csiphy->res->hw_ops->lanes_enable(csiphy, cfg, link_freq=
+, lane_mask);
+> >>
+> >> ick.
+> >>
+> >> More high brow stuff from bod here but, more seriously this is three
+> >> levels of indirection deep and the statement keeps getting longer.
+> >>
+> >> Could you get a pointer to hw_ops() to reduce this down a bit.
+> >>
+> >>>    }
+> >>>   =20
+> >>>    /*
+> >>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.h b/drive=
+rs/media/platform/qcom/camss/camss-csiphy.h
+> >>> index d198171700e73..21cf2ce931c1d 100644
+> >>> --- a/drivers/media/platform/qcom/camss/camss-csiphy.h
+> >>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.h
+> >>> @@ -73,9 +73,9 @@ struct csiphy_hw_ops {
+> >>>        void (*hw_version_read)(struct csiphy_device *csiphy,
+> >>>                                struct device *dev);
+> >>>        void (*reset)(struct csiphy_device *csiphy);
+> >>> -     void (*lanes_enable)(struct csiphy_device *csiphy,
+> >>> -                          struct csiphy_config *cfg,
+> >>> -                          s64 link_freq, u8 lane_mask);
+> >>> +     int (*lanes_enable)(struct csiphy_device *csiphy,
+> >>> +                         struct csiphy_config *cfg,
+> >>> +                         s64 link_freq, u8 lane_mask);
+> >>>        void (*lanes_disable)(struct csiphy_device *csiphy,
+> >>>                              struct csiphy_config *cfg);
+> >>>        irqreturn_t (*isr)(int irq, void *dev);
+> >>>
+> >>
+> >> With those tweaks.
+> >>
+> >> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> >>
+> >> ---
+> >> bod
+>=20
+> --=20
+> David Heidelberg
+>
