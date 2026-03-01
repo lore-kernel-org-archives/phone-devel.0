@@ -1,86 +1,127 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129661E5B64;
-	Sun,  1 Mar 2026 15:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB024336EC9;
+	Sun,  1 Mar 2026 16:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772380637; cv=none; b=eZHBVOZSHTycgTIUpy1GaCcNA0EoY0UvpRGMyYbnVX6H2UVIUaoWkmDkhwyWNTwQxvADN92qlEIaGQ0YMdvhJDuey4nvjo71cb0/A7Gu32A92wC6hUZpGh9pc1mPDmR9A2mCwdJ1uTfVCA8NgD9K+TQjxZtVefSVirGxYt8On1E=
+	t=1772383505; cv=none; b=LrYExQHnPUc4960jPeMNCVr8MibEacAFni41PngIKmD84tqkIWYd9Fc06pxeK7xG33gURuCwm1eeBpNXnf4Eb6ZrMB4892WzLPTPm9v0ZZnyorq39bX9jtERKa4bOw9hGUNU1bE3vpSG4jV1zVS1ynj/1uJwBEgR4kNdjjCGWio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772380637; c=relaxed/simple;
-	bh=t8oc8JDt2e608x3X8ZqaFFb/ngOLHac77ZTqYBbzizI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Yn5dq6pl8FpzEnR4YMqLlTJPrz0xFPiWIJLP1iYPyicIWSu/1kjVC7MToPez/jyHIsx1+t9aytlOjJzkWxUzr7Z4gfiDtk5DV1IritYjzXpS56Vq0vVumIyYjb55En+ZNw9bIsTiRKow4vmfsbkiOnfrnhwcjpwEirc08wkZYck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=bVXOpCa4; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=XRBflLCK; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1772383505; c=relaxed/simple;
+	bh=ObyGEKWKsqYn0bM1IdlemshurNAb8v/KhxU989lhCfA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I5fojPl4H6V0EZ+ltesV2k7lzWCH27Zj5Y+6sGNVh0HPHEVf9+khSopuqSE/LI9snbbqwQso7ZLg6UGUClJ0o0/wwQmEyX20VuXuPE16XxyD3Kf6yF53OMkpmV4RAS8JQODI7qD/4UT3JX3oqGYVmu+g0GU+AgdxTlNjvaJJBOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LoWf0/AA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="bVXOpCa4";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="XRBflLCK"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772380518; bh=nbcD0sgt3M7NkjfYuNxSnj+
-	7YeOQ1n3E7X8hZDizAqk=; b=bVXOpCa4Qi1nCkLX9dhYHcNz3h5nRoUmPc7qSn8ydD7nyRpEQs
-	PsCqvPcm0Nagk5d16d5qlVl/dPUZJCvxJ0ncjdSAJeavbaxNt6TnJLT/sUKzKlg3K2ytBHp5dKB
-	CYSeA3sk46/RoARU6njkBxW6T8nWrJ++rOxLuiw8ZrfKAxWi87atFUXZptZ1l1dZ+Rjn6KuqjCA
-	kaav9jkxstx0Ptg/kThoE/gQibh+ijFpzeD5IFKhBN4ljEvL6gVsQwDgEIz9SdT8Ra6H6+22wEV
-	zjll8VGMj+9rLS2BRkHsKfOrz4EGYb6aghQSuhN04dDi6O38TX4IkF7Nv1Az6aMQ6ig==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772380518; bh=nbcD0sgt3M7NkjfYuNxSnj+
-	7YeOQ1n3E7X8hZDizAqk=; b=XRBflLCKKtyu2lMDMWw6tFbapGlTqxm5FKWkvBpg14lLF5qg7M
-	VB5WuA87x4h9+5ggBVSjGYJKFyS3WJEXI0DA==;
-From: Aelin Reidel <aelin@mainlining.org>
-Date: Sun, 01 Mar 2026 16:55:10 +0100
-Subject: [PATCH 1/2] dt-bindings: arm: qcom,ids: Add SoC IDs for SM7450 and
- SM7450P
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LoWf0/AA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF12C116C6;
+	Sun,  1 Mar 2026 16:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772383505;
+	bh=ObyGEKWKsqYn0bM1IdlemshurNAb8v/KhxU989lhCfA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LoWf0/AADjAKTww6uR64HGbBWOcL+zKHKpib+4V8K8FX9z27jL84sj/DFo7QgT7pR
+	 445UMptR7GE7w3BZiapQDAG6j2rUu5XfVuX9b/AYZzP3K3v5k9OZXWUni0iMF5q2oX
+	 qR5w52ef8Ij09+TXM30prp1PuT3DeY8k+xBi0QtvxPsr2cvaCLnkAeRXc4UJU7OiBU
+	 yPcUE3RA49AIkLC/6IDkR+RH57M4iopKXyy63FPdWpcahfHSE/ojUzTX/TwzL6FQ/t
+	 +oGwli55F6EOOPqgf9LPeKIOzGio9QauYt9OJ4ymLnSIHrs46R2MRIU8+RroCZXCvn
+	 rBjTfqvHFOl9Q==
+Message-ID: <f18afe8a-58e3-41ab-bdb1-5e9676a10103@kernel.org>
+Date: Sun, 1 Mar 2026 17:45:00 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260301-fillmore-socids-v1-1-5a033cd8d0e3@mainlining.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] soc: qcom: socinfo: Add SoC IDs for SM7450 and
+ SM7450P
+To: Aelin Reidel <aelin@mainlining.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux@mainlining.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20260301-fillmore-socids-v1-0-5a033cd8d0e3@mainlining.org>
-In-Reply-To: <20260301-fillmore-socids-v1-0-5a033cd8d0e3@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux@mainlining.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Aelin Reidel <aelin@mainlining.org>
-X-Mailer: b4 0.14.2
+ <20260301-fillmore-socids-v1-2-5a033cd8d0e3@mainlining.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260301-fillmore-socids-v1-2-5a033cd8d0e3@mainlining.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SM7450 and SM7450P are two SoCs of the 'fillmore' family.
+On 01/03/2026 16:55, Aelin Reidel wrote:
+> SM7450 and SM7450P are two SoCs in the 'fillmore' family.
+> 
+> Signed-off-by: Aelin Reidel <aelin@mainlining.org>
+> ---
+>  drivers/soc/qcom/socinfo.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+> index 003a2304d535c2655db566c644342dbc387e24a9..cde2151251f31fe26adbb1ed462c62c75a99f536 100644
+> --- a/drivers/soc/qcom/socinfo.c
+> +++ b/drivers/soc/qcom/socinfo.c
+> @@ -492,6 +492,7 @@ static const struct soc_id soc_id[] = {
+>  	{ qcom_board_id(QRU1000) },
+>  	{ qcom_board_id(SM8475_2) },
+>  	{ qcom_board_id(QDU1000) },
+> +	{ qcom_board_id(SM7450P) },
+>  	{ qcom_board_id(X1E80100) },
+>  	{ qcom_board_id(SM8650) },
+>  	{ qcom_board_id(SM4450) },
+> @@ -508,6 +509,7 @@ static const struct soc_id soc_id[] = {
+>  	{ qcom_board_id(QCM8550) },
+>  	{ qcom_board_id(SM8750)  },
+>  	{ qcom_board_id(IPQ5300) },
+> +	{ qcom_board_id(SM7450) },
 
-Signed-off-by: Aelin Reidel <aelin@mainlining.org>
----
- include/dt-bindings/arm/qcom,ids.h | 2 ++
- 1 file changed, 2 insertions(+)
+Wrongly placed, look how these are ordered.
 
-diff --git a/include/dt-bindings/arm/qcom,ids.h b/include/dt-bindings/arm/qcom,ids.h
-index 8776844e0eeb370b874f41063ba057d5ade4f003..4efbf06fad9c9bd3ca33910d48dd3b9574271e5f 100644
---- a/include/dt-bindings/arm/qcom,ids.h
-+++ b/include/dt-bindings/arm/qcom,ids.h
-@@ -245,6 +245,7 @@
- #define QCOM_ID_IPQ5000			503
- #define QCOM_ID_IPQ0509			504
- #define QCOM_ID_IPQ0518			505
-+#define QCOM_ID_SM7450			506
- #define QCOM_ID_SM6375			507
- #define QCOM_ID_IPQ9514			510
- #define QCOM_ID_IPQ9550			511
-@@ -264,6 +265,7 @@
- #define QCOM_ID_QRU1000			539
- #define QCOM_ID_SM8475_2		540
- #define QCOM_ID_QDU1000			545
-+#define QCOM_ID_SM7450P			547
- #define QCOM_ID_X1E80100		555
- #define QCOM_ID_SM8650			557
- #define QCOM_ID_SM4450			568
-
--- 
-2.53.0
-
+Best regards,
+Krzysztof
