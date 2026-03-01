@@ -1,99 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF7019CCF7;
-	Sun,  1 Mar 2026 19:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C54E31A556
+	for <phone-devel@vger.kernel.org>; Sun,  1 Mar 2026 22:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772393651; cv=none; b=fzbIKvOa0MBHiX7gtDznUMSSJ+M4ibD0awgawwPGKTeaNzrJ9c6HMdWnnUEeshPufF2CHhkretUQkkR+/xueJZrcq+Z2NSa2O2/MDZR9DmJPw9HHJgKjbXs8py570d4+I57K5fB06cgE5JfYEsnREkyu8R8FR/1PJQ4GXwQlVGQ=
+	t=1772403023; cv=none; b=u1OPjzb07LQx5Eqre1FLfkJkq5edd+QHp+H1IoR49Zbs4E0vzbFsbHmznRUhZ+7a8Y/sKmbIh6eMUzYdQXINfStFnQBwViXueb2ISeqaxoA/8i8t+vSCnSOUSTrGpm1LPzhULs/uDxb8rMp5NlqVQpKLsW4hHRXBIBf+17qDA/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772393651; c=relaxed/simple;
-	bh=7rbVOD75vPzOlqdIY0xNu9uaaRvyRGffFSeHa031auU=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Cpl2VsFLfGkAs3l2B8cwb1UjpOHe+1s/Tie2n9x0rpl2gq9MABRq3n44h1vHgCp+TnnjMAiR7HdZtokboVtXZvASo4McReT6E/yHuztBhRc3dVuTzdXtpzyKSNGbePbMG3W+sSoUwDPlzcb3a1MbFSSEzWxEBCiKg45nZjwfETc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qVPauTa9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772403023; c=relaxed/simple;
+	bh=thRh1q6Zg8tV6DzFJ3CJKUqKNXpLmy45vgdB9JTO12A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g039Q1xe5pmGcrMV1JYW1qyNJG67lR0v4N+DTuy55e1haS/M378dPGdM9m2zmSEn00b6OqOnqsCSlll7KfRY05xvoyXYCz0PQb6XzcxND4js6hBWpLpYH9UrhoO7bUjCgwLmqGO48l2KR0RQTelV/xA4mAo4vw8HjTjlM89lcpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H75ozLun; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qVPauTa9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D72C2BC86;
-	Sun,  1 Mar 2026 19:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772393650;
-	bh=7rbVOD75vPzOlqdIY0xNu9uaaRvyRGffFSeHa031auU=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=qVPauTa9GxT9y6KpV/kICjl+slqdqbPZ8z6sTszN2ExQwwLOSMFkdXAEkRrcMk5v+
-	 qlBiyS7UUMcdBCqjM0hdH1czuXF+PC2BkXKMrXoGcfTgeTppbgdT2qNWKn+hThkZLI
-	 0aU0xSo5SL3TxiyiuO2aUJXC0dMkhQA2nHUpxULIXqvRdQJW8GoJHklahpKIxElcXs
-	 mg5QoJeyGrq237T9nfFEaGg+/rjNKy4ePKPIacVuU7L9PB9i7OGHL6Xov5W4FnAwvD
-	 iupM/vdrhb16pAF+U5s6lmoOZCUyz8V/A1Z+mz9SsYHTZSC9aMfk2NokYN1c3GPz8e
-	 kgfpfmXa8QeVw==
-Date: Sun, 01 Mar 2026 13:34:09 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H75ozLun"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2bdfc4b191fso584333eec.1
+        for <phone-devel@vger.kernel.org>; Sun, 01 Mar 2026 14:10:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772403020; x=1773007820; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nFjVWYC4aukpE9k+uYV7EwxrLAHwdFE4Qix6Wa9fAVI=;
+        b=H75ozLun5rPOR/sPNmlzR5SB5n0Rg/I9CPCiO9f5Q7ojiZgAfrCRho2v3+QMP2ZMYS
+         jjCb42kwexcd+o5PfG1JysClQecfik3Sdfv73FBoobBQEBk0vHXmUUWoMo5+k8PRdYuR
+         fMDVykZ8W2obbynHb6aBHjoeGWzI9A+MJKPMgJfY1AgWZ8WdfhWGWMFBBF3rrS1jVSV+
+         y8ml3NeEllRqn2/TOpV9xw820fSkTz97ZbIDntnR1sWLvPvm7yAHqqdVkrjh7fa5Pn1p
+         W+gLE/Ht4yTvDCBGG0zZtMdejxAEU1IPlIYoI3C6AVPO061SrfoSAcqvs0X6LmPjRllY
+         Dhig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772403020; x=1773007820;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nFjVWYC4aukpE9k+uYV7EwxrLAHwdFE4Qix6Wa9fAVI=;
+        b=tpdwExVIQ8s5QlN63+i3/4LfQDLKfZAmBqYpHPDlNyGw0/gXVpgJNvxPsaK9pVw+ZV
+         D9EcZC3++nhqzW+UkZ4Uu8v7iGi9/StVrdRU59CwN8AcjltLe2s6y0ha5IW4A2h6QHY9
+         /BPIkQPdqWIXAYABvD6tz/T63VtFIa73HmFaMdYr0HoyBmXonp7OhfAXu3TWRojh8v9H
+         j4GXK4o8ym64RdzTu/oAr4/VavSLDNDx6q1/bJFrhCPuWuABiyrKBm11jbeX5ald5rSI
+         AelC11dLiRu96mGMvT2M5bH9BUz+fwAy496iEUT2pNEEXrAU8vn2Mh8kCjdUWbWRgIRF
+         mIJw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5GgYm6w0vVgeeho1xlEq97cNjXbMNXbf+O5Nel5v9MxJ2L1aSk8LWe5LrMm0bxJaWwa8tJfx6HBzyqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMo1m30PlRVk5DJh23ZQfRqBYSaVzd2RwjA/sVzaVYFH13dXRV
+	CsH4RX4p3GuydVIcQYQ/ZltIEuc83453Qh3kI4iLFUF83/2yNWXw2KLK
+X-Gm-Gg: ATEYQzxHDUtptzIXWd3JsPLayX2n7Km8/R4neZuKDWrkdNM/pPDv+rMS9iEH0WcIbFI
+	2/gOMNijP1il2hU+8Pc28jj2lcMlidUxn/qUD1D36geIjO7KTmd/NZe83oTvNyHPjL96ccL963b
+	hBRKvL3Q1K7lLK6uQp8ggaJ7NOxYPPHevHYg8oTmn/xumAwuroGStK/9FJWOymhOyQDrRD+qqMh
+	YmCZGGk35dd1MrNfYK7WyVmgLdKKr/q4Gfc6u2xPC9o9noLQOjneWjyK0N/ojMpGirK2fimwZ9n
+	BGtL8ZoKfdXiA18Ojc1Qou2FSMedh26gLii4M8N5+kBlp5mras6CXrXsCW9Rrid4Yyy1I4swbTM
+	Fz3kFzO9tkD+duVuxYEE0fpBPZX9nxxs7g3cG0x47YjGaqwjgMYeNspHqObB2/FyUSytmtGXqu4
+	ESvQo9X95fqw1RBBSXWaE96enqpmWpO1ncT3jC8r2yXBHSAInpnEKyYPqMrb1RbnBS
+X-Received: by 2002:a05:7300:6c25:b0:2be:e52:a3e2 with SMTP id 5a478bee46e88-2be0e52a574mr617422eec.33.1772403020408;
+        Sun, 01 Mar 2026 14:10:20 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:864f:8513:57d0:4064])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be12805b93sm1051546eec.15.2026.03.01.14.10.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2026 14:10:19 -0800 (PST)
+Date: Sun, 1 Mar 2026 14:10:16 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH 09/10] Input: stmfts - support FTS5
+Message-ID: <aaS4cQopqsQoS807@google.com>
+References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+ <20260301-stmfts5-v1-9-22c458b9ac68@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-arm-msm@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
- linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org, 
- linux-input@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- linux-stm32@st-md-mailman.stormreply.com, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, phone-devel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-In-Reply-To: <20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz>
-References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
- <20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz>
-Message-Id: <177239364971.730877.1130326937114423321.robh@kernel.org>
-Subject: Re: [PATCH 08/10] dt-bindings: input: touchscreen: st,stmfts:
- Introduce STM FTS5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301-stmfts5-v1-9-22c458b9ac68@ixit.cz>
 
+Hi David,
 
-On Sun, 01 Mar 2026 18:51:22 +0100, David Heidelberg wrote:
-> Introduce more recent STM FTS5 touchscreen support.
+On Sun, Mar 01, 2026 at 06:51:23PM +0100, David Heidelberg via B4 Relay wrote:
+> From: Petr Hodina <petr.hodina@protonmail.com>
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  .../bindings/input/touchscreen/st,stmfts.yaml           | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
+> Introduce basic FTS5 support.
 > 
+> FTS support SLPI and AP mode, introduce switch GPIO to switch between
+> those two. Currently we can handle only full power AP mode, so we just
+> switch to it.
+> 
+> Useful for devices like Pixel 3 (blueline).
 
-My bot found errors running 'make dt_binding_check' on your patch:
+I see "is_fts5" sprinkled throughout the code. I wonder: can we define
+chip-specific operations and call them instead of doing conditional
+logic which is hard to expand (if ever needed) to support additional
+variants.
+> 
+> Nitpick: changed GPL v2 to GPL in module license.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml:58:1: [error] duplication of key "allOf" in mapping (key-duplicates)
+Please split in to a separate patch.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml: ignoring, error parsing file
-./Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml:58:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/input/touchscreen/st,stmfts.example.dts'
-Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml:58:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/input/touchscreen/st,stmfts.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1597: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+Thanks.
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+Dmitry
