@@ -1,127 +1,181 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB024336EC9;
-	Sun,  1 Mar 2026 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78314A59;
+	Sun,  1 Mar 2026 17:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772383505; cv=none; b=LrYExQHnPUc4960jPeMNCVr8MibEacAFni41PngIKmD84tqkIWYd9Fc06pxeK7xG33gURuCwm1eeBpNXnf4Eb6ZrMB4892WzLPTPm9v0ZZnyorq39bX9jtERKa4bOw9hGUNU1bE3vpSG4jV1zVS1ynj/1uJwBEgR4kNdjjCGWio=
+	t=1772387479; cv=none; b=ZyOYAhLocQ3WISXqOcLajGUP2viwY5jyBgpACH9Z5Noz/Pglze+EFlGvmjE/Ouz/7AfYKRUnK4SLmoY9waTMKHIFMUyb+sNtjFZE1uNynuRWD5bxvSQABFTx1T2lhhduFW3/WwChprcaiTkbbnvby39C/9Pdbacl1zNmf0b3Xt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772383505; c=relaxed/simple;
-	bh=ObyGEKWKsqYn0bM1IdlemshurNAb8v/KhxU989lhCfA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I5fojPl4H6V0EZ+ltesV2k7lzWCH27Zj5Y+6sGNVh0HPHEVf9+khSopuqSE/LI9snbbqwQso7ZLg6UGUClJ0o0/wwQmEyX20VuXuPE16XxyD3Kf6yF53OMkpmV4RAS8JQODI7qD/4UT3JX3oqGYVmu+g0GU+AgdxTlNjvaJJBOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LoWf0/AA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772387479; c=relaxed/simple;
+	bh=mc55QfSw9Ry9mLwkhN9n5gi0ZpQTsuXJJMLqwg3DcLs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=eoPV/nBjtOd8FAhiWQErqdiAu7UGI5Csnq6Jjp5EGQka1cD0uVtlhyb8tVkbD2qjyBOkB43xzHk+wEeYPUJvEdRsgv6tYbgRnvvq2DvKDF0aapxpl+pL9ruYwpDvBdgzZE/eXH7QI15Ot2wo4HlnjQjSkVKAZpnC5qpRZ0MjeDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDu5s9GZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LoWf0/AA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF12C116C6;
-	Sun,  1 Mar 2026 16:45:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDu5s9GZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 48F55C2BCB0;
+	Sun,  1 Mar 2026 17:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772383505;
-	bh=ObyGEKWKsqYn0bM1IdlemshurNAb8v/KhxU989lhCfA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LoWf0/AADjAKTww6uR64HGbBWOcL+zKHKpib+4V8K8FX9z27jL84sj/DFo7QgT7pR
-	 445UMptR7GE7w3BZiapQDAG6j2rUu5XfVuX9b/AYZzP3K3v5k9OZXWUni0iMF5q2oX
-	 qR5w52ef8Ij09+TXM30prp1PuT3DeY8k+xBi0QtvxPsr2cvaCLnkAeRXc4UJU7OiBU
-	 yPcUE3RA49AIkLC/6IDkR+RH57M4iopKXyy63FPdWpcahfHSE/ojUzTX/TwzL6FQ/t
-	 +oGwli55F6EOOPqgf9LPeKIOzGio9QauYt9OJ4ymLnSIHrs46R2MRIU8+RroCZXCvn
-	 rBjTfqvHFOl9Q==
-Message-ID: <f18afe8a-58e3-41ab-bdb1-5e9676a10103@kernel.org>
-Date: Sun, 1 Mar 2026 17:45:00 +0100
+	s=k20201202; t=1772387479;
+	bh=mc55QfSw9Ry9mLwkhN9n5gi0ZpQTsuXJJMLqwg3DcLs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=TDu5s9GZfGaxhyNdejKKZx0l8mZ3i4RtQHx5CokNdgUPMpX1KxZoFKkL0J4mtHxrY
+	 fwcxE3kXhRCbvb/8xbSfrSjr/Mfy1OocEHfGmN2jJja3EcrKHDAUxk811ndsuFhFwa
+	 bafrvUL+6w4yKnAZKwMIwEPgucPfgY0n+PS75KychtScKm9jUzuEIJ2fiZ9mefZROM
+	 0YvSNzLfftxdAdgBDlWDiXUh6KJkKxpzO8rFXkcixc0WT1J2ZPG25gtw2g7+sAA/6O
+	 As5LQeUAsbcQrBSqNeGX6qv909WdggPvedK4vYpYURxrU1MMTlsR11y5kAlw4pufmi
+	 r472tId6NSchg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EDCAFD006E;
+	Sun,  1 Mar 2026 17:51:19 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sun, 01 Mar 2026 18:51:15 +0100
+Subject: [PATCH 01/10] Input: stmfts - Use dev struct directly
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] soc: qcom: socinfo: Add SoC IDs for SM7450 and
- SM7450P
-To: Aelin Reidel <aelin@mainlining.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux@mainlining.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20260301-fillmore-socids-v1-0-5a033cd8d0e3@mainlining.org>
- <20260301-fillmore-socids-v1-2-5a033cd8d0e3@mainlining.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260301-fillmore-socids-v1-2-5a033cd8d0e3@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260301-stmfts5-v1-1-22c458b9ac68@ixit.cz>
+References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+In-Reply-To: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3250; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=rLvXwYr8pRgjc4tXLmz60BmHo2WrnBAMJ136Em/i4E4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBppHyUJhChuWhA7f0ZMnBICB62mYuFxWMpN6WEt
+ yQcwnmupwyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaaR8lAAKCRBgAj/E00kg
+ cr38D/4sZ8a33ur+ea+HzTQrrZBNLoWzQNadsTB8b7dDzsr33qGisK7QYEM4SfIZYqd7iuwilzp
+ qF1wQvaaHDUkO8m/JRIVMc65fNXg0RYYpdM1m8F1o2wsswVmIfVn9nuq3aTf/M3y4RfxeuZTil1
+ UjXMrmeN47VLuL+S9vEh9dxi7dPfBWRFu9XM7lrYLPphnrcQzegHiYhMfZia+WaQbXz3xU5Z1vr
+ Of07bWLTYnj8paN8Ol4aIXQ1I/Kj4GT+XLbV3JZr+TMYzVgZwrDTCyfI/AMVsgnojmHG8GZkaUl
+ jDLdieILWVF+fDuWuolw6umCQRwKIT93gzPgIuCSwsxdoTo2Rcz7/8L8DAzKv6TvSl/zqz6DeXQ
+ gFLgJiMBpaQKd0dm4gXRyw/0LGsD7NCm67yld0Gx+4IQJ9c+0xAEzLTQLkw/stZq+zekQ8SfrdJ
+ Z69ICjrtDGUdUUMvrCNhgz9qEmtaHlqL24B/72+JCJOKWLEisoxT7uFZNhIZLylSE8Vo9Xh/8gn
+ 7n6Y6Whfvx5HT9O75TDOjMgqMxxfsqWuTMXkpLdZBEoCV5Ao9lH3q9EY46oOP2BviS+YORXrKih
+ o29qKxxckWBgcRmGr/ESt2mLG3dNIcF121uLCCqRg6MtDCWQw5koZkWt4KM9baVobsjEtZ7bRRX
+ ibvsWlvPnmTqRdA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 01/03/2026 16:55, Aelin Reidel wrote:
-> SM7450 and SM7450P are two SoCs in the 'fillmore' family.
-> 
-> Signed-off-by: Aelin Reidel <aelin@mainlining.org>
-> ---
->  drivers/soc/qcom/socinfo.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-> index 003a2304d535c2655db566c644342dbc387e24a9..cde2151251f31fe26adbb1ed462c62c75a99f536 100644
-> --- a/drivers/soc/qcom/socinfo.c
-> +++ b/drivers/soc/qcom/socinfo.c
-> @@ -492,6 +492,7 @@ static const struct soc_id soc_id[] = {
->  	{ qcom_board_id(QRU1000) },
->  	{ qcom_board_id(SM8475_2) },
->  	{ qcom_board_id(QDU1000) },
-> +	{ qcom_board_id(SM7450P) },
->  	{ qcom_board_id(X1E80100) },
->  	{ qcom_board_id(SM8650) },
->  	{ qcom_board_id(SM4450) },
-> @@ -508,6 +509,7 @@ static const struct soc_id soc_id[] = {
->  	{ qcom_board_id(QCM8550) },
->  	{ qcom_board_id(SM8750)  },
->  	{ qcom_board_id(IPQ5300) },
-> +	{ qcom_board_id(SM7450) },
+From: David Heidelberg <david@ixit.cz>
 
-Wrongly placed, look how these are ordered.
+Makes the code better readable and noticably shorter.
 
-Best regards,
-Krzysztof
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ drivers/input/touchscreen/stmfts.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
+index 4b166b0a9a5a6..27adb139fa0ce 100644
+--- a/drivers/input/touchscreen/stmfts.c
++++ b/drivers/input/touchscreen/stmfts.c
+@@ -620,6 +620,7 @@ static int stmfts_enable_led(struct stmfts_data *sdata)
+ 
+ static int stmfts_probe(struct i2c_client *client)
+ {
++	struct device *dev = &client->dev;
+ 	int err;
+ 	struct stmfts_data *sdata;
+ 
+@@ -628,7 +629,7 @@ static int stmfts_probe(struct i2c_client *client)
+ 						I2C_FUNC_SMBUS_I2C_BLOCK))
+ 		return -ENODEV;
+ 
+-	sdata = devm_kzalloc(&client->dev, sizeof(*sdata), GFP_KERNEL);
++	sdata = devm_kzalloc(dev, sizeof(*sdata), GFP_KERNEL);
+ 	if (!sdata)
+ 		return -ENOMEM;
+ 
+@@ -640,13 +641,13 @@ static int stmfts_probe(struct i2c_client *client)
+ 
+ 	sdata->regulators[STMFTS_REGULATOR_VDD].supply = "vdd";
+ 	sdata->regulators[STMFTS_REGULATOR_AVDD].supply = "avdd";
+-	err = devm_regulator_bulk_get(&client->dev,
++	err = devm_regulator_bulk_get(dev,
+ 				      ARRAY_SIZE(sdata->regulators),
+ 				      sdata->regulators);
+ 	if (err)
+ 		return err;
+ 
+-	sdata->input = devm_input_allocate_device(&client->dev);
++	sdata->input = devm_input_allocate_device(dev);
+ 	if (!sdata->input)
+ 		return -ENOMEM;
+ 
+@@ -665,7 +666,7 @@ static int stmfts_probe(struct i2c_client *client)
+ 	input_set_abs_params(sdata->input, ABS_MT_PRESSURE, 0, 255, 0, 0);
+ 	input_set_abs_params(sdata->input, ABS_DISTANCE, 0, 255, 0, 0);
+ 
+-	sdata->use_key = device_property_read_bool(&client->dev,
++	sdata->use_key = device_property_read_bool(dev,
+ 						   "touch-key-connected");
+ 	if (sdata->use_key) {
+ 		input_set_capability(sdata->input, EV_KEY, KEY_MENU);
+@@ -686,20 +687,20 @@ static int stmfts_probe(struct i2c_client *client)
+ 	 * interrupts. To be on the safe side it's better to not enable
+ 	 * the interrupts during their request.
+ 	 */
+-	err = devm_request_threaded_irq(&client->dev, client->irq,
++	err = devm_request_threaded_irq(dev, client->irq,
+ 					NULL, stmfts_irq_handler,
+ 					IRQF_ONESHOT | IRQF_NO_AUTOEN,
+ 					"stmfts_irq", sdata);
+ 	if (err)
+ 		return err;
+ 
+-	dev_dbg(&client->dev, "initializing ST-Microelectronics FTS...\n");
++	dev_dbg(dev, "initializing ST-Microelectronics FTS...\n");
+ 
+ 	err = stmfts_power_on(sdata);
+ 	if (err)
+ 		return err;
+ 
+-	err = devm_add_action_or_reset(&client->dev, stmfts_power_off, sdata);
++	err = devm_add_action_or_reset(dev, stmfts_power_off, sdata);
+ 	if (err)
+ 		return err;
+ 
+@@ -716,13 +717,13 @@ static int stmfts_probe(struct i2c_client *client)
+ 			 * without LEDs. The ledvdd regulator pointer will be
+ 			 * used as a flag.
+ 			 */
+-			dev_warn(&client->dev, "unable to use touchkey leds\n");
++			dev_warn(dev, "unable to use touchkey leds\n");
+ 			sdata->ledvdd = NULL;
+ 		}
+ 	}
+ 
+-	pm_runtime_enable(&client->dev);
+-	device_enable_async_suspend(&client->dev);
++	pm_runtime_enable(dev);
++	device_enable_async_suspend(dev);
+ 
+ 	return 0;
+ }
+
+-- 
+2.51.0
+
+
