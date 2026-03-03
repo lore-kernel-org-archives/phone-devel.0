@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7018939182E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70284391835;
 	Tue,  3 Mar 2026 10:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772532374; cv=none; b=XiHSVW4kXP28bHMnWJ3sBIBTNH0hTUmg4hviirHjbnT/A2k7QruM3kOzKupldZwOtC7QPvQNGamarKsSBSIN5J+xDjs0ZoQIoFjo3N2+AB/zBZZTTFPdutaLWhhxvPqq7BSI3zNKXZYZ33mON0KbpZ5KhM7OXZo0cu7q6qAD/tg=
+	t=1772532374; cv=none; b=UOPQcUzrnckJHtUuVqXj1WrLzIVn/zkhrTVDveY0RDUWVtd9UpwVulc3I5rzQBsVOI8/caUhtZP4jeIduauKEMKfv0oqi4qj8O09monusl1OvBE77ds9nTEKxw95vZfkHQBDOaAlbp4of9psTb8HLcmztj+FF34aNG9EOWILuuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772532374; c=relaxed/simple;
-	bh=tiavi+o7WBPMjVR9uDgFy8Beo4pqzbDSBeaybOTnde8=;
+	bh=aWSOch14nISiNhO8bQzO0BFhDC30KcTAdOuiQogBchE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a9F8vlrFSY33uAK3ejKophm7jTSkbNccbBChEYg9j4tEdz+sSqNyye7XwCuSH2iOhRW8EQGbSZe1LM8QMGdk3joNdaNdHe0tVC06OXkRvdW9rQgQHuVB4EvlKzm25XRztUCYbOL3nsO6USEW3WEbKCiqmRbEu+bCvZ0F1p/OR/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=DDboC1Cs; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=k0qRnJ5C5nypEDWWXR4JWj2/ssg5+QKxpewsNGODfS1s8AMu/oAughC3nEBtIUJ6yJv+NYzRFPS6Rxlk3ouekkjiHqi5xvnpuRM6EKow7YL3tKSVFCMeo8LgLbpnHtoLW/DUjmOzvdU0HCOn1zDx7YCkdINC+Cj1CInC7yClJ1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TeqRe/Uv; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="DDboC1Cs"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TeqRe/Uv"
 Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 01CF65340FD9;
-	Tue, 03 Mar 2026 11:00:41 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 0B0F85341073;
+	Tue, 03 Mar 2026 11:06:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1772532046;
+	t=1772532366;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O34r5PhyONR+u/TntIvSUszMsmdAixkhg0u5q1PMUeU=;
-	b=DDboC1CsCqKHomhe+6ldtrxYaD/Ybx3K15n1RhCKXK510M0ulkx3+tuGpEQKqfMrHaELT5
-	v3tEhA/FeiMlHpGZw1Fa1mfUIcxai19qSVPhETHUedUmYENGLbw95QcZbEFxNuGIn3bonP
-	u7Ke5c2xeuvMxh7bRX5/LyZvhCrp6Kg=
-Message-ID: <f5038001-da33-4c44-b9f7-3f967830eec0@ixit.cz>
-Date: Tue, 3 Mar 2026 11:00:40 +0100
+	bh=y9Idq/6eLjZEV7U5Tt+Y9XC49rr7DyC1YephUWmcFpw=;
+	b=TeqRe/UvMw7Rx26jpeXywgjvpTV3t6/tB7TcgCcvYYaNKIuNH/9rvVreaDPYLiIgVaDLzL
+	PGBF+Ynu+VcBP9ZzCUT2UQ6c92I6y/jthACrZUg8xy0YifnL6Uzt9IS4KLfVrk0u8eewk2
+	yD90soULD7trTyHcVxpk5MZ/ZObl4OE=
+Message-ID: <c6e77d44-f6ab-4207-b6bd-16f646a44f35@ixit.cz>
+Date: Tue, 3 Mar 2026 11:06:05 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH WIP v4 6/9] media: qcom: camss: csiphy-3ph: Update Gen2
- v1.1 MIPI CSI-2 CPHY init
+Subject: Re: [PATCH WIP v4 4/9] media: qcom: camss: Initialize lanes after
+ lane configuration is available
 To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
  Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
@@ -55,8 +55,8 @@ Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz>
- <20260301-qcom-cphy-v4-6-e53316d2cc65@ixit.cz>
- <4f29492f-c5c0-402c-b2aa-0e1886299d59@linaro.org>
+ <20260301-qcom-cphy-v4-4-e53316d2cc65@ixit.cz>
+ <200485c3-6f6b-4c92-a631-b5fcf3dfe1b8@linaro.org>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -102,85 +102,20 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <4f29492f-c5c0-402c-b2aa-0e1886299d59@linaro.org>
+In-Reply-To: <200485c3-6f6b-4c92-a631-b5fcf3dfe1b8@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 03/03/2026 10:55, Bryan O'Donoghue wrote:
+On 03/03/2026 10:54, Bryan O'Donoghue wrote:
 > On 01/03/2026 00:51, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> These values should improve C-PHY behaviour. Should match most recent
->> Qualcomm code.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../media/platform/qcom/camss/camss-csiphy-3ph-1-0.c   | 18 +++++++++---------
->>   1 file changed, 9 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/ 
->> drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> index 5482fb5163e17..c612192ee727a 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> @@ -225,9 +225,9 @@ csiphy_lane_regs lane_regs_sdm845[] = {
->>   /* 3 entries: 3 lanes (C-PHY) */
->>   static const struct
->>   csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->> -    {0x015c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x0168, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x016c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x015c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x0168, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x016c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x0104, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x010c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>       {0x0108, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->> @@ -245,9 +245,9 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->>       {0x0164, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x01dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x035c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x0368, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x036c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x035c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x0368, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x036c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x0304, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x030c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>       {0x0308, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->> @@ -265,9 +265,9 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->>       {0x0364, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x03dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x055c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x0568, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -    {0x056c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x055c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x0568, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +    {0x056c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x0504, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>       {0x050c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>       {0x0508, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->>
+>>   Move the lane initialization to a later stage where the
+>> configuration structures are available.
 > 
-> Squash down and Co-developed-by
-> 
+> You should specify which later phase in the commit log @ next rev.
 
-We don't have any documentation how these lanes are set. I think it's good to 
-see two working variants, someone may need it to demystify it one day and the 
-history may comes handy. Also both variants works for us.
+"Move the lane initialization to csiphy_lanes_enable which is
+entered at later stage where the configuration structures are available."
 
-I think it would make sense to squash it, when the magic hex gets documented, 
-but even with description it may be useful to see what's being tuned to get 
-better working C-PHY.
+sounds good?
 
-So I would propose intentionally keep here the "history" so someone in the 
-future may use it to describe these registers.
-
-David
-
-> ---
-> bod
-
--- 
-David Heidelberg
-
+[...]
