@@ -1,86 +1,105 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15753451A6;
-	Mon,  2 Mar 2026 13:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6953750B7
+	for <phone-devel@vger.kernel.org>; Tue,  3 Mar 2026 03:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772457072; cv=none; b=q3CiOPBGTuaGduDxGjFLho4gNO+yOFTQ9E2xKa/sQXi+uhj+vjBDVTouLxg+qtGF1UINv0ZaGzeUTB4eA3Kyrl6EtlLytjFWmg9bWXSjYlQsLCGPKPnI5+wqERcFN3r0K5XEXPWmM0TY085Em12mh4cEu6ArnAnvwjIM/K6MtDo=
+	t=1772509760; cv=none; b=rRP/biiRnXswLANh8tNhzpBTRWGAlkXwxuR2XDQJ7LQhg1XtPxcVff0sR+ztGbMxPhMVmLXFuKqTVa/umklNzgCx0ygfDf3ViBzhm8jtF32TOcZHUXDyYeWpLSFRSt6H8h07ftqms4N622X4DNtbtY+cLeLbyJkID1XjMt6HQQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772457072; c=relaxed/simple;
-	bh=4Dl7qNJkM6VRrzDadhWFsHW1BqH/tJy3BIL9B/FMWlQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NsvbBOIGmlwoRL24WsJsUQTQxgmtWDNKLO4E0AFAXtl9AQ3RWssyKGv6Vkft9kem9ZlGQL4tH/tOlF8EY9owtlC2VUWPaTaOn3flsnVfhbTEHiTCCap0pqdjNKkwMyPvqt0MHsZQlKDdapHRhaBUfvHNmO+CThHDQc7zCAFg2hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=ry/LnNck; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=LgvEukKw; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1772509760; c=relaxed/simple;
+	bh=PihsNO0K+58AmyOvT+8NT63epKHoVK+kCgGzUQhRDgk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QO0PN1M2w2ft8WubNj4H8E0YHUPV6UKabRCFAuiZw6vOefgFrav7BIAO+JPpCZ5MdJnWNyilugdpHsZrzHFsKvuxPBwX3HoaMVV/4srT4e8EbKGvX1aqejuZV9IiznM9lBEFURHTNFk9j5+2pGOlvmYS4X0/rsS5zxr1ESysY54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=E7Kmu9yX; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="ry/LnNck";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="LgvEukKw"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772457043; bh=PMmMDXkvatfQ72A8jZnSDmG
-	G8kJMJVyQjVddP2Ub5Xc=; b=ry/LnNckQtCCcRDIXj7agYt6VkSCw9a5i7mMv037ClmYNFweik
-	ySzHV/pHx3K7pAEel131vzPn7Vu83t9XoM1sOMB9UXQLHy8v/1NS9z7NmtitEFdUQD4Ad8/a0ES
-	VPU2qyd9tL1JNWVRuowR3+yA+9eqHxZChVvW5pbFlTR97KhchMn9rrFijrBHtWueCvvA7rbxAOp
-	40GvjkZNwNOnFJTdAuBvW8jz5KhAGrJi4A4CkdGqqURJKGe4GbA8XLeYT9SM5iVqkCHk28flIoA
-	RURN3pjYUKujOxmhZUukqMGFcX5ypjc7EjGP+/4XfMvhTCLbW2q+VhJEtHVtxbaWiYg==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772457043; bh=PMmMDXkvatfQ72A8jZnSDmG
-	G8kJMJVyQjVddP2Ub5Xc=; b=LgvEukKwN/1q+PJ3Zk9FuANYnnLPatcw2RYIkbBx4V6hif4pnv
-	pSA9sGJNbOW70rSDDF9IWgIo/RBuWTcyKOBw==;
-From: Aelin Reidel <aelin@mainlining.org>
-Date: Mon, 02 Mar 2026 14:10:15 +0100
-Subject: [PATCH v2 2/2] soc: qcom: socinfo: Add SoC IDs for SM7450 and
- SM7450P
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="E7Kmu9yX"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1772509757;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jsfisfPitjxmyl+3oICy+Pnnbsp+I1m60qBMNOzfFBM=;
+	b=E7Kmu9yXP8JO+NWJaYd/kWZnUOVdnJxlWLlP8p0dYkWghZucboiCEzUh6hc/UzHdrx2HuS
+	XAObRZe3Mh7ihE4SNo0gQgX++4+GgfIoq6OcHfeTXmf3LeglYJAiBH7rhCGVw+ZnMvrBsV
+	HjvUEF640qRlbTsSf1e8XpVZxnO7fcwEOX+V0bhu6HvsCfIQqwQ70+McsDqdDKscZt68Lg
+	8MS9WpYFu38NeOmIXgpXE+arWWJol0x9miyD+glk8xZb/R2sr3oyiteIgz+U4EqztOF17i
+	gQsWIO3fWPECs8CzdBCtwhERTdOmKYxUPOsLLUMpgmiwsccetsQnM6ks0WXigw==
+From: Val Packett <val@packett.cool>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Martin Botka <martin.botka@somainline.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>
+Cc: Val Packett <val@packett.cool>,
+	linux-arm-msm@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v3 1/6] dt-bindings: clock: qcom,sm6115-dispcc: Define MDSS resets
+Date: Tue,  3 Mar 2026 00:41:20 -0300
+Message-ID: <20260303034847.13870-2-val@packett.cool>
+In-Reply-To: <20260303034847.13870-1-val@packett.cool>
+References: <20260303034847.13870-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-fillmore-socids-v2-2-e6c5ad167ec4@mainlining.org>
-References: <20260302-fillmore-socids-v2-0-e6c5ad167ec4@mainlining.org>
-In-Reply-To: <20260302-fillmore-socids-v2-0-e6c5ad167ec4@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux@mainlining.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Aelin Reidel <aelin@mainlining.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-SM7450 and SM7450P are two SoCs in the 'fillmore' family.
+Add the missing defines for MDSS resets, which are necessary to reset
+the display subsystem in order to avoid issues caused by state left over
+from the bootloader.
 
-Signed-off-by: Aelin Reidel <aelin@mainlining.org>
+While here, align comment style with other SoCs.
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
 ---
- drivers/soc/qcom/socinfo.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/dt-bindings/clock/qcom,sm6115-dispcc.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index 003a2304d535c2655db566c644342dbc387e24a9..eddd149731645fa4a75e80968a7c495a508c1c30 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -473,6 +473,7 @@ static const struct soc_id soc_id[] = {
- 	{ qcom_board_id(IPQ5000) },
- 	{ qcom_board_id(IPQ0509) },
- 	{ qcom_board_id(IPQ0518) },
-+	{ qcom_board_id(SM7450) },
- 	{ qcom_board_id(SM6375) },
- 	{ qcom_board_id(IPQ9514) },
- 	{ qcom_board_id(IPQ9550) },
-@@ -492,6 +493,7 @@ static const struct soc_id soc_id[] = {
- 	{ qcom_board_id(QRU1000) },
- 	{ qcom_board_id(SM8475_2) },
- 	{ qcom_board_id(QDU1000) },
-+	{ qcom_board_id(SM7450P) },
- 	{ qcom_board_id(X1E80100) },
- 	{ qcom_board_id(SM8650) },
- 	{ qcom_board_id(SM4450) },
-
+diff --git a/include/dt-bindings/clock/qcom,sm6115-dispcc.h b/include/dt-bindings/clock/qcom,sm6115-dispcc.h
+index d1a6c45b5029..ab8d312ade37 100644
+--- a/include/dt-bindings/clock/qcom,sm6115-dispcc.h
++++ b/include/dt-bindings/clock/qcom,sm6115-dispcc.h
+@@ -6,7 +6,7 @@
+ #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SM6115_H
+ #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SM6115_H
+ 
+-/* DISP_CC clocks */
++/* Clocks */
+ #define DISP_CC_PLL0			0
+ #define DISP_CC_PLL0_OUT_MAIN		1
+ #define DISP_CC_MDSS_AHB_CLK		2
+@@ -30,7 +30,10 @@
+ #define DISP_CC_SLEEP_CLK		20
+ #define DISP_CC_SLEEP_CLK_SRC		21
+ 
+-/* DISP_CC GDSCR */
++/* Resets */
++#define DISP_CC_MDSS_CORE_BCR			0
++
++/* GDSCs */
+ #define MDSS_GDSC			0
+ 
+ #endif
 -- 
-2.53.0
+2.52.0
 
