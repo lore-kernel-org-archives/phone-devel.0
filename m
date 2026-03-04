@@ -1,129 +1,99 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B191862;
-	Tue,  3 Mar 2026 20:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C075B37F8B9
+	for <phone-devel@vger.kernel.org>; Wed,  4 Mar 2026 04:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772569910; cv=none; b=LdJ/UVilML5BJ1YhBC9HYoJZBACvCXLUVieuyAZCmorUtuVv+wVTX+wwdMX9dMOaEqwGQVNorxTwX5n65HMqDM3uQcU2qc3++8NHYzEwoyRXEw+O7XDNs6ji9QO0ar4M1dqSKiv7Gzrx3/Nmz9/A5EeO0ppCMZ1JivJqj+nmr3E=
+	t=1772600360; cv=none; b=J7kIbyMdu6W9pbTTvLIZ8C8ubU7FPV9y3BHT47SEUV9hg2TgyDGrDQM9cocmpF1AvpIkXmGB/qSPNaqz0YJ5i8pIc88LFBmc64ZgybpAJR2Zvo5L0PXfI/TTHBgipI4TJ2nGqDwtSqyNjmwh6ZQqQ/yk4bH3TVfydyiU//YNJKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772569910; c=relaxed/simple;
-	bh=5F9H6sZYaOGQj8Ncrc+tFILSwfKIiqQCK2/fxurdFKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BhbXmweb7J/Ir1y8qtgC4ERos5EfKNiz/30A2vj8HfMBM40VS2HZX5xCub8NQTXau/kn69syJJ72nj3SFMQvkVsAGpMSuiasQFnA/z94Cyw9UvrNNjG3OfKPsISOOhni/NrS4YxGjhIoOX+iBH+MVV1WZnrCcPr1YdhhXdcIx6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=k4erFZBI; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1772600360; c=relaxed/simple;
+	bh=NhgmQKsMwB8zEIpgqpqtkcZaPSWUSfgat9WpBVwGKAM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+71IIF+cl1Fjp5IaeMkMZSIFMFgfQr2e1iCvdfmhFcIi0lXGDo0X5nrE/m5A92WvgoLHhMWCu0/AGizmrYdFMrl7a59seEK3yv3CjD30eOGFJf2r70PosIwSF8JEsLjnaP0GrAns2wZUVOvKDRg7VOMd2cDk48MHzUrNQ6JPF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MyEI9ya7; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="k4erFZBI"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4D5E453422FF;
-	Tue, 03 Mar 2026 21:31:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1772569904;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7Z4fn9lOz3ldIthi03Uam6PSHh3/GlZ8QX/65u1in0Y=;
-	b=k4erFZBIYMLERkN/P54JbNb638+cBHpxdO8E4UWGvqSETAyYFqOPjjWuNEdxzmyKUN1ekk
-	fsLVu+ARuOltdCYe15FAAMTjjQHEXeGjFevJpJvvD93Y756WlWDKd8MH6vomvzJ0cW5zws
-	4fc+0SHAUxwzmsZQWq3w7b+fOpsAQXc=
-Message-ID: <236f8908-9b0c-4a1c-ad51-f9b6ddb1958a@ixit.cz>
-Date: Tue, 3 Mar 2026 21:31:43 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MyEI9ya7"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2be1ab1fa7dso3135895eec.0
+        for <phone-devel@vger.kernel.org>; Tue, 03 Mar 2026 20:59:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772600359; x=1773205159; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EDBrUhFaFc7wQVcSeZc1Bi9PtbigcT50WYnul0mkrvw=;
+        b=MyEI9ya7zKkbFBeQuXi8fryJgwOLRbyihfcv3WqPq1MmHZoayNdBz6ibNQiG+v2gtT
+         84Lq7jDN9wDabHZJRdmZYKDe8xS7ZDgIUOhV8FZftArPoEgEufvOZGwcM7Vtq77jZoPq
+         oRe1lkMDGHFu1y3PISoJOL00nacJgB45S5h7r6dVgdmL4AHyz3jjIULYszizXs640glN
+         +ofqxaNTcS7Bz0qa9Gt8t+hMYMxDAxPqZ06z5orgfWIBsFVMfGBctEkyJcSYb1NenGmH
+         v0nIg4IWPHGLkhHSYr6LcHVGqOrQQsdFVVD6843djzM49wjqsqtdKPnt/3nWl2jQVFNh
+         A2Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772600359; x=1773205159;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EDBrUhFaFc7wQVcSeZc1Bi9PtbigcT50WYnul0mkrvw=;
+        b=X1KPmz0uNoUQe0mc/2mIK32phbH1QwpNlDl+o/eo1OCixi2MVYOySuh5Yr3dTQE0Yz
+         F9mkH9cYGyf3rJ70FrVOYd0SveWsUfklfOCH08W2Yskri3wwfOmljXuoRX2T/vbdMwVZ
+         dtS/kvnSoezQYi2cpakFloxWWiz77/wdkueow/zrOO85ha9bAN/0Lsil0n3eUSh3M5nj
+         pjKfnwNnuo2q7LoA4vdEjYjvaq4ARR4I9nK7EkhDoujvzidnnYgHV2Dd4wt8F4dyjbhE
+         RaecpVfI5+2wiGT1CpG8UbmpTQ/c0X+UpHO3GwzaifSe/08LGG9tEI1cjCuykyKuMD83
+         Q01A==
+X-Forwarded-Encrypted: i=1; AJvYcCU8DMpOYvvCDivBg9r3s/GEUvxhn5Lzb/sWYqQUENKvYgXiuZGibwGIEfYIp422/QqPFQqzFD4YvZBANg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAHY80luKTsNjWsx7w4Cjy/mk0hvhojghnpPcO7qSWch9gxAz3
+	6rsis3OxU/mx56sidix+Gz131CrZOhBjsofiihp5EI8nKmDwJUoc6QAY
+X-Gm-Gg: ATEYQzxv9YbeNfWMuQFN97jJv9JIVcqctTmv7oX7p7MzwqkYM/SogsYRXlWmYasacyv
+	xD+55xFgc2O8FJi29evnOPZkp5C2xI6lrr/3XHWmoGoTlvREw7i9QPVYScl0XDt5OsoLqvxmgmy
+	eZjtNQSILHbfoU7vKZDWCR86NH1EHtNLZ3eWVtBjrngs5BLcHrMMjb710c0SCpewf+/2G7e9kNG
+	a8C1x1oELursB1a2Rq/YbGTxrfG/jv/6kOBx1nfLdU1NtmESnk0HVavu4z50RJu0W+H9TMlPsi9
+	L4zdz+5cBqN0SDlX1g2aXfBis6mtAvghwvhI4dKu8ViyPMEys3TeqAuJnj2th9xrJ9RmLrDX3oB
+	LY0mLv2NTl+aQ6IEQVkzJ/sUQdogxlk59fxrV3U/tTxf4KY0RKo5XnHfIMtwuTkhGAK0N5rh+sF
+	yVnSCizv9oaB6G9FKbIRIEXNECHbOh6gdYO6hVPnqqdUUPhYXmFiJ08NyWf/1Gdhe0
+X-Received: by 2002:a05:7300:a887:b0:2bd:b961:7e8b with SMTP id 5a478bee46e88-2be310975famr422928eec.24.1772600358821;
+        Tue, 03 Mar 2026 20:59:18 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:a048:d9ec:d217:7d59])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be1ce921dasm3981312eec.10.2026.03.03.20.59.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 20:59:18 -0800 (PST)
+Date: Tue, 3 Mar 2026 20:59:15 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH 03/10] Input: stmfts - abstract reading information from
+ the firmware
+Message-ID: <aae7zuSkAgNaciUK@google.com>
+References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+ <20260301-stmfts5-v1-3-22c458b9ac68@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH WIP v4 3/9] media: qcom: camss: Prepare CSID for C-PHY
- support
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz>
- <20260301-qcom-cphy-v4-3-e53316d2cc65@ixit.cz>
- <3834ecc4-02d4-42ab-9a4c-075874d27b17@linaro.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <3834ecc4-02d4-42ab-9a4c-075874d27b17@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301-stmfts5-v1-3-22c458b9ac68@ixit.cz>
 
-On 03/03/2026 10:53, Bryan O'Donoghue wrote:
-> On 01/03/2026 00:51, David Heidelberg via B4 Relay wrote:
->> +    bool cphy;
+On Sun, Mar 01, 2026 at 06:51:17PM +0100, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
-> Same comment as before, you should have an enum not a bool.
-
-
-While for general camss it makes sense to me, here it seems to be very simple 
-switch with no other extra usefulness.
-
-If u insist, I'll change it, but LGTM with cphy here.
-
-David
-
-> 
+> Improves readability and makes splitting power on function in following
+> commit easier.
 > ---
-> bod
+
+Missing signed-off-by...
+
+Thanks.
 
 -- 
-David Heidelberg
-
+Dmitry
