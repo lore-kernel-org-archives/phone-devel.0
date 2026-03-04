@@ -1,150 +1,240 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053D31DF742
-	for <phone-devel@vger.kernel.org>; Wed,  4 Mar 2026 05:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E3934DCEC
+	for <phone-devel@vger.kernel.org>; Wed,  4 Mar 2026 16:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772600481; cv=none; b=AxL9owSpgYOs7SfObQZCMmQopR3Bfax3J8MDYJKeMZX1qK72SBgy1JJOzpEEb5tNCcwMYYQ0ZtYEgBiK1llIuQmXptA/xKX+cEDEyzosLcGaT/RH9BImicVEkSdehBHnphde3C6VQpt0hUj1eqEToyEHgGtA/EqpRLexNLC9Ud8=
+	t=1772641575; cv=none; b=HPuQbGLlpRzVXRNvWwl3KNqCVmNTfEjkFurKtHWk/Bq0j1WdjD2yQ+FeTFhEen5GAL4BNJX/y++9MuCoeIwLgjcxLwU/Pq0IwAE3hzFn3gpMh6flQTGBlpswiRgk7I3R77GMpahcPPLvW5Dhp+KxRkHZt+Q0fxMEfmHPTd4mab4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772600481; c=relaxed/simple;
-	bh=q900SxARa7WkotcVHjlQh+90jJwX7uIhDq9gH9l/QfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uluRMO4BEFj0G7dGFBYbT9C5ZdJF3NYnNjBMwxV2jRQWKtBCevD7adzROjL91xr9gAGq0WDB125b02ezDx42+ZysZwiRgspGtn8FzQQaw+D5FHurQgkiSRKQOi2DYZ3ME525NQRx8s9a2zaGjRgT0g60D1OUltPYfV7GLju5VJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=noVzN0gY; arc=none smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772641575; c=relaxed/simple;
+	bh=hN9Ke+tpFcR/wGaDz+lYn3JRd5Ni0yP/B1f4HEGgNGo=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=q3T20kTjN8Uy96Z0cJH/5++YSDlcC8qDIMOYZPbmcbNkQAG1T/gT+hZjTkDiTCY7dEGWrDQ2KJVM7hbUS03HLGfoFkTF5yDu+8mTYlc0ViK6Gm7YQohcCXmMr+7SYgi2qdp2C9XIlK2Xf8C2Auf7JCNZ+PhCvRxTMXFP03Atx30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pgYPvY+N; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="noVzN0gY"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12732e6a123so3943244c88.1
-        for <phone-devel@vger.kernel.org>; Tue, 03 Mar 2026 21:01:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pgYPvY+N"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48372efa020so62654375e9.2
+        for <phone-devel@vger.kernel.org>; Wed, 04 Mar 2026 08:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772600478; x=1773205278; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/nYbvJ2Ie/7AoV2hxQbNjt9CPBgI0NZpDJT+MhOo98=;
-        b=noVzN0gY6eDOmqdIDzhqW7qhaHHSELHcvJObBWE3FYMEO/OLSyyhqgXb+Pu2XWdyAq
-         LI7wT165K39bYeBeQxZE9Udgs5sijUrIh+t+s6aF2TyoYRsLi6pV3tbNoyerqGwIFUSo
-         Qr4cym0LaZmn0aKkCdXz99pW7FlPrWk4pv4yLTG1S8MgOVtAW7GQeQ61nlIgc+HjDGCV
-         pMmoZBG9RO5WHCegH5cDgy5EipYHDY43UJUwMTOSYbZYOqHCaNtPz5Gv3Dz13GmNCPeT
-         rZCHThWX18UcDrkdEHrsnI94B48y60CtvMDdKHvIgEKvDn/gDGuALJmgOqFGk47pHqvw
-         b0Xw==
+        d=linaro.org; s=google; t=1772641572; x=1773246372; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IycgstOp8AUBvQFItrqTS+kIWrn5vpM6y/uf2FdllGI=;
+        b=pgYPvY+NQKtuKKt3nOeRhDxl11Eieuy2PE1LLA/cpdIaBcRaFVHvItkUwB2bdGyaCe
+         QAF9ENy1/+veUjcQ4oXWq6IzJoyj1p9NetOhujTClTaSG98CPVPUtbZIb8x0gLKIy573
+         oI4qUu52+tXlfe2Zwx2NGhcQrZxreQjbSgy9lqvRHXSDiEctPAxf79FbN5D3D/TEj4X0
+         L9Ens6eFEMtOOmvtjSxwbtjxBjko3t6eOGJVJxahWAkEYeTR0KcZq+lBopLfubeWEkkD
+         bbMcLVslbrQWvKG4VVw495eJzVzycPUZgp6/C8amaq6VHghLGTLH0sdNoHkoBdp8WYs9
+         9nHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772600478; x=1773205278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1772641572; x=1773246372;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l/nYbvJ2Ie/7AoV2hxQbNjt9CPBgI0NZpDJT+MhOo98=;
-        b=uhfwfCxaFDRnXMl6Gbb2wq78HTz8y3y0p/kEvQkuFx89bGaiOzZFn6WMFwHA78f1tg
-         /Kh10RMzqiFvnef3o4Kc6l9p1QocMeb2xN+2vcunKC9T4cpf5n19pJgZcfOaZ7UAJSDG
-         RmHqSHQpZa50Sev4A6Wt1JPL1PAc69U4NFXXi6jYrtEd9i+Qp6929MvnI3iZlvniuYlF
-         xKJfqphQ7UG+G9YYBM02tGtGUbU3meYVmRZ9KpCIRnYC5nn/Eg9zhRN0ocRSO7EeUeFH
-         x7N54ZKG029i/PgTquD4DHJKeVRPNnRBJtVOuB/2bbjTvfbSR2sMEqw2ScNkUqt0FI27
-         D2Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnzXWfVFBrGDDTblHdQtb9BAKVD6PDlqfAUJoS7gU8EJVi+f23OSKyaT3mQ5f38xSM+9JR1ZRGNEeDkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUh7GNJDst1lChE2WjnKizaq+zKAJptgfT4/hVAxitl6diShh+
-	StiVe3TlLQ/uEZUsZ3mqhj4fNVYcfEv5Cvfwwf5HkuZcMILJ1pF1JON6
-X-Gm-Gg: ATEYQzz1RKksA7HR5IkGLPutjlx4+k4vjH0EAiTUEOPkTDtLm0x9f3rAdADoEHzanrc
-	lQS39EwhW8OUH/yXmOaG3IfebFZBtJyCFxmmAhBIkN7PpqVl/2bq3WShjyFn35yvBqBpRyp+dmQ
-	lxk5YaySCkYSBGpbCm5RiAGKA0HciyfXH27i6iRPs7wFR9W3HGFRequSUoXfLBDMePVecTgwuSq
-	Ve5z/yrj+ZcC5hAuVe1Hhcq4CnXZ8KBDAdqwRSF2mC3CjxmEYGQNMiGCB2PXP1if6yVgOo/X8qd
-	fB3slfI1lvlag6gjJ5n6sW1PVnA2xSkIP2sawOw/PXwXyTEgLyi7F9AQ0w5zy1BZOp9ThAf1idp
-	xVwuiB/B51SIXaE3DcZfv9HlkmByIndkembgrQ3F4wsivOGBYe0NzQVRQdf67JVaYROZHOhs4pf
-	cM39obOR3LJFDg0DNXNKY+js3ZDFs/o4MzbDPbTdZUXZdRnUdvao3+5vJrPXUMLiVN
-X-Received: by 2002:a05:7022:24aa:b0:119:e569:fbb2 with SMTP id a92af1059eb24-128b70df522mr302307c88.33.1772600477988;
-        Tue, 03 Mar 2026 21:01:17 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:a048:d9ec:d217:7d59])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127899dfc47sm21528620c88.6.2026.03.03.21.01.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 21:01:17 -0800 (PST)
-Date: Tue, 3 Mar 2026 21:01:14 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: david@ixit.cz
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
-	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH 04/10] Input: stmfts - disable regulators when power on
- fails
-Message-ID: <aae8OqFl5Aejv6YN@google.com>
-References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
- <20260301-stmfts5-v1-4-22c458b9ac68@ixit.cz>
+        bh=IycgstOp8AUBvQFItrqTS+kIWrn5vpM6y/uf2FdllGI=;
+        b=fNgDGx4AoB33NGUuEQ0u8O8d/lJI6isWKIm4LbOQuzZXnDKGGqF1Rpyy9Ni3+6E1RV
+         39MQDTvwO9i1n3DRdrLD1N6RBUUiDQOH8dEDiGVpxGOCxWIK0iQRh9FX6uhTSxnHK3iv
+         kgcNJwBS+ixzagugyXUK6I+owQq7P1XZZbBzH7FNUgs7rmwerxgVidacNDRv9I2y7BmF
+         nVQ4Sp359uxVVFoxMtAnZEgIVJuVpmOeqEprMwLQxKedDjnjrSPkD8UjocsrMz+74cXb
+         g4nsv2/V98zQuzHr8oFwwzeun60bpFbz25z1Hgt7gDzFuCMPuYGTYY1sMoKZGHJQbvC7
+         DOCA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6TzMBxmQbd4YWdnBTveSBmOQ+wZ7ZEQUY0U9NfeFbr6wfCCusLtTAGKX2T5UCzKNmi/qelhek8y+Nkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw63yZHsVY1jvgs+O2/J3j+icEdnBLrLFGwP0VhLfWMnucUxe/c
+	/RYiGXYt5ThhTz7CS8+4hNWEdy/shcKjcqAaw4CG6lm3bCtku3s8YoZ6rHO7HOja+MU=
+X-Gm-Gg: ATEYQzwYd84WLp5yHWAdiKJyGjTD2kkGs62BDKev3ax3mURqR7fu11QpH/eqi/I3kzg
+	ClM2UGciQqu0/HFXsoicdIEOZ8J7W0FP7Gzkj3pyIzg/5eCqfLd3NJby4vMNZq3aB1SJ1epwgbV
+	oPsTxudTMdJdIDKDG8+jmVRGnd3/asVRN3+hxFEMfPTrA/tpe/lnUZo1sZR6tHOt38/BPoQxi3p
+	f8E0lZuHC26r+5rSKkrkcQpXUah6SrUc+QTWf/HhC24AK4+onDxK8xQDR+a5OXwXbgR0AO/O0wx
+	NL4H+m+/JY85EXt9O4XCBQ9mp0awwsiXg3OkxJNbmPbBXRyxtUw4J1UCeIWhZMyFUwsibDjixGq
+	CxxF0yttghHtyMn4gB/HV0sHgndaAchAVR4Yi8j5qyu6UQP61V7HOV+mnAKnEHcg3xNvzj0/WmS
+	afT5sRvcjZciHKGKgNacdZZOo8xPnWRL5clngRzrzyITz9lS9gQegr65p0m04P9Jg9DyMJ3+M7Z
+	AFJ
+X-Received: by 2002:a05:600c:a4b:b0:480:1c10:5633 with SMTP id 5b1f17b1804b1-48519896e83mr39034405e9.26.1772641572014;
+        Wed, 04 Mar 2026 08:26:12 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:106d:1080:da6:dde3:e477:94d2? ([2a01:e0a:106d:1080:da6:dde3:e477:94d2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851884224fsm62369745e9.4.2026.03.04.08.26.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Mar 2026 08:26:11 -0800 (PST)
+Message-ID: <bd2bb9c1-70e2-4914-afe2-c172501c25bc@linaro.org>
+Date: Wed, 4 Mar 2026 17:26:10 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260301-stmfts5-v1-4-22c458b9ac68@ixit.cz>
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 3/4] drm/panel: himax-hx83102: Add support for Holitech
+ HTF065H045
+To: Val Packett <val@packett.cool>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org
+References: <20260217070121.190108-1-val@packett.cool>
+ <20260217070121.190108-4-val@packett.cool>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260217070121.190108-4-val@packett.cool>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Mar 01, 2026 at 06:51:18PM +0100, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 2/17/26 08:00, Val Packett wrote:
+> This 720x1600 panel is found in several Motorola/Lenovo smartphones like
+> the Moto G9 Play (guamp). The initialization sequence is based on the
+> datasheet. Add it to the existing HX83102 panel driver.
 > 
-> We must power off regulators after failing at power on phase.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: Val Packett <val@packett.cool>
 > ---
->  drivers/input/touchscreen/stmfts.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+>   drivers/gpu/drm/panel/panel-himax-hx83102.c | 86 +++++++++++++++++++++
+>   1 file changed, 86 insertions(+)
 > 
-> diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
-> index db2dd0bb59fcc..f4e5f1b3ce796 100644
-> --- a/drivers/input/touchscreen/stmfts.c
-> +++ b/drivers/input/touchscreen/stmfts.c
-> @@ -558,7 +558,7 @@ static int stmfts_power_on(struct stmfts_data *sdata)
->  
->  	err = stmfts_read_system_info(sdata);
->  	if (err)
-> -		return err;
-> +		goto power_off;
->  
->  	enable_irq(sdata->client->irq);
->  
-> @@ -566,11 +566,11 @@ static int stmfts_power_on(struct stmfts_data *sdata)
->  
->  	err = stmfts_command(sdata, STMFTS_SYSTEM_RESET);
->  	if (err)
-> -		return err;
-> +		goto power_off;
->  
->  	err = stmfts_command(sdata, STMFTS_SLEEP_OUT);
->  	if (err)
-> -		return err;
-> +		goto power_off;
->  
->  	/* optional tuning */
->  	err = stmfts_command(sdata, STMFTS_MS_CX_TUNING);
-> @@ -586,7 +586,7 @@ static int stmfts_power_on(struct stmfts_data *sdata)
->  
->  	err = stmfts_command(sdata, STMFTS_FULL_FORCE_CALIBRATION);
->  	if (err)
-> -		return err;
-> +		goto power_off;
->  
->  	/*
->  	 * At this point no one is using the touchscreen
-> @@ -595,6 +595,11 @@ static int stmfts_power_on(struct stmfts_data *sdata)
->  	(void) i2c_smbus_write_byte(sdata->client, STMFTS_SLEEP_IN);
->  
->  	return 0;
+> diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+> index 1d3bb5dca559..34e0e956db48 100644
+> --- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
+> +++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+> @@ -701,6 +701,67 @@ static int starry_2082109qfh040022_50e_init(struct hx83102 *ctx)
+>   	return dsi_ctx.accum_err;
+>   }
+>   
+> +static int holitech_htf065h045_init(struct hx83102 *ctx)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
 > +
-> +power_off:
-> +	regulator_bulk_disable(ARRAY_SIZE(stmfts_supplies),
-> +			       sdata->supplies);
-> +	return err;
+> +	msleep(50);
+> +
+> +	hx83102_enable_extended_cmds(&dsi_ctx, true);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x22, 0x44, 0x27, 0x27, 0x32,
+> +				     0x52, 0x57, 0x39, 0x08, 0x08, 0x08);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETDISP, 0x00, 0x00, 0x06, 0x40, 0x00,
+> +				     0x0e, 0xae, 0x38, 0x00, 0x00, 0x00, 0x00, 0xf4, 0xa0);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCYC, 0x01, 0x58, 0x01, 0x58, 0x01,
+> +				     0x58, 0x03, 0x58, 0x03, 0xff, 0x01, 0x20, 0x00, 0xff);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPANEL, 0x02);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP0, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +				     0x10, 0x00, 0x17, 0x00, 0x63, 0x37, 0x0e, 0x0e, 0x00, 0x00,
+> +				     0x32, 0x10, 0x08, 0x00, 0x08, 0x32, 0x16, 0x4e, 0x06, 0x4e);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPWM, 0x04, 0x0c, 0xb2, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP1, 0x24, 0x25, 0x18, 0x18, 0x19,
+> +				     0x19, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18,
+> +				     0x18, 0x18, 0x18, 0x06, 0x07, 0x04, 0x05, 0x18, 0x18, 0x18,
+> +				     0x18, 0x02, 0x03, 0x00, 0x01, 0x20, 0x21, 0x18, 0x18, 0x18,
+> +				     0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP2, 0x00, 0x09, 0x16, 0x1f, 0x28,
+> +				     0x4b, 0x65, 0x6d, 0x74, 0x70, 0x89, 0x8d, 0x91, 0xa0, 0x9e,
+> +				     0xa8, 0xb2, 0xc8, 0xc9, 0x65, 0x6d, 0x78, 0x7f, 0x00, 0x09,
+> +				     0x16, 0x1f, 0x28, 0x4b, 0x65, 0x6d, 0x74, 0x70, 0x89, 0x8d,
+> +				     0x91, 0xa0, 0x9e, 0xa8, 0xb2, 0xc8, 0xc9, 0x65, 0x6d, 0x78,
+> +				     0x7f);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETTP1, 0xff, 0x14, 0x00, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETTP1, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP3, 0xff, 0xff, 0xff, 0xff, 0xff,
+> +				     0xf0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP3, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
+> +				     0xa0, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa0, 0xaa, 0xaa, 0xaa,
+> +				     0xaa, 0xaa, 0xa0, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa0);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETMIPI, 0x70, 0x23, 0xa8, 0x93, 0xb2,
+> +				     0xc0, 0xc0, 0x01, 0x10, 0x00, 0x00, 0x00, 0x0d, 0x3d, 0x82,
+> +				     0x77, 0x04, 0x01, 0x04);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCLOCK, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCLOCK, 0x00, 0x53, 0x00, 0x02, 0x59);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPTBA, 0xfc, 0x00, 0x04, 0x9e, 0xf6,
+> +				     0x00, 0x5d);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCYC, 0x42, 0x00, 0x33, 0x00, 0x33,
+> +				     0x88, 0xb3, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPCTRL, 0x20, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x7f, 0x03, 0xf5);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+>   static const struct drm_display_mode starry_mode = {
+>   	.clock = 162680,
+>   	.hdisplay = 1200,
+> @@ -833,6 +894,28 @@ static const struct hx83102_panel_desc starry_2082109qfh040022_50e_desc = {
+>   	.init = starry_2082109qfh040022_50e_init,
+>   };
+>   
+> +static const struct drm_display_mode holitech_htf065h045_default_mode = {
+> +	.clock = 90720,
+> +	.hdisplay = 720,
+> +	.hsync_start = 720 + 40,
+> +	.hsync_end = 720 + 40 + 40,
+> +	.htotal = 720 + 40 + 40 + 40,
+> +	.vdisplay = 1600,
+> +	.vsync_start = 1600 + 186,
+> +	.vsync_end = 1600 + 186 + 2,
+> +	.vtotal = 1600 + 186 + 2 + 12,
+> +	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+> +};
+> +
+> +static const struct hx83102_panel_desc holitech_htf065h045_desc = {
+> +	.modes = &holitech_htf065h045_default_mode,
+> +	.size = {
+> +		.width_mm = 68,
+> +		.height_mm = 151,
+> +	},
+> +	.init = holitech_htf065h045_init,
+> +};
+> +
+>   static int hx83102_enable(struct drm_panel *panel)
+>   {
+>   	msleep(130);
+> @@ -1069,6 +1152,9 @@ static const struct of_device_id hx83102_of_match[] = {
+>   	{ .compatible = "starry,himax83102-j02",
+>   	  .data = &starry_desc
+>   	},
+> +	{ .compatible = "holitech,htf065h045",
+> +	  .data = &holitech_htf065h045_desc
+> +	},
+>   	{ /* sentinel */ }
+>   };
+>   MODULE_DEVICE_TABLE(of, hx83102_of_match);
 
-Maybe wrap everything below enabling the supplies into
-stmfts_configute() or something to avoid bunch of gotos to power off on
-error?
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Thanks.
-
--- 
-Dmitry
+Thanks,
+Neil
