@@ -1,68 +1,68 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E3934DCEC
-	for <phone-devel@vger.kernel.org>; Wed,  4 Mar 2026 16:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2C235E946
+	for <phone-devel@vger.kernel.org>; Wed,  4 Mar 2026 16:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772641575; cv=none; b=HPuQbGLlpRzVXRNvWwl3KNqCVmNTfEjkFurKtHWk/Bq0j1WdjD2yQ+FeTFhEen5GAL4BNJX/y++9MuCoeIwLgjcxLwU/Pq0IwAE3hzFn3gpMh6flQTGBlpswiRgk7I3R77GMpahcPPLvW5Dhp+KxRkHZt+Q0fxMEfmHPTd4mab4=
+	t=1772641667; cv=none; b=UybVz9I7IhPhG1e9gyXO0UGMjA5Uq4EPv95/5ohnp4L3Z8mIMd+IwaBqDFTOHcBb12uyNK/ZKoUzF63MUSEpB4naoZdBiKr4yniKTyWH93VLn8vWY5RoaOcwSnk01iZ6f1aFv5rJkUWiZsWcxQP3o6j3zMluqVTv7Qc/rC4+fGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772641575; c=relaxed/simple;
-	bh=hN9Ke+tpFcR/wGaDz+lYn3JRd5Ni0yP/B1f4HEGgNGo=;
+	s=arc-20240116; t=1772641667; c=relaxed/simple;
+	bh=NwH6LIxcX3xeN91en9y8iMO+uWzG2ZNFE1foFo78ThQ=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=q3T20kTjN8Uy96Z0cJH/5++YSDlcC8qDIMOYZPbmcbNkQAG1T/gT+hZjTkDiTCY7dEGWrDQ2KJVM7hbUS03HLGfoFkTF5yDu+8mTYlc0ViK6Gm7YQohcCXmMr+7SYgi2qdp2C9XIlK2Xf8C2Auf7JCNZ+PhCvRxTMXFP03Atx30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pgYPvY+N; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:Content-Type; b=OGqAIy092nLEx6u1mZauiu4uQA41mnDJZcIx7D+cmKyc98PMfWp2BiiQ9gTzxklKXvg5jktBN0NDMeK7rIfoRr1EQGZecgsidMi0HORMr5Lr3cNHD4VVrQ5lEMlsa6v1fybMRtTyJWZxGRLVGbaY1Sf7KnrF21IlA4G1Sjt2/o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nFH9Hh6U; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pgYPvY+N"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48372efa020so62654375e9.2
-        for <phone-devel@vger.kernel.org>; Wed, 04 Mar 2026 08:26:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nFH9Hh6U"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4837584120eso52895545e9.1
+        for <phone-devel@vger.kernel.org>; Wed, 04 Mar 2026 08:27:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772641572; x=1773246372; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1772641663; x=1773246463; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IycgstOp8AUBvQFItrqTS+kIWrn5vpM6y/uf2FdllGI=;
-        b=pgYPvY+NQKtuKKt3nOeRhDxl11Eieuy2PE1LLA/cpdIaBcRaFVHvItkUwB2bdGyaCe
-         QAF9ENy1/+veUjcQ4oXWq6IzJoyj1p9NetOhujTClTaSG98CPVPUtbZIb8x0gLKIy573
-         oI4qUu52+tXlfe2Zwx2NGhcQrZxreQjbSgy9lqvRHXSDiEctPAxf79FbN5D3D/TEj4X0
-         L9Ens6eFEMtOOmvtjSxwbtjxBjko3t6eOGJVJxahWAkEYeTR0KcZq+lBopLfubeWEkkD
-         bbMcLVslbrQWvKG4VVw495eJzVzycPUZgp6/C8amaq6VHghLGTLH0sdNoHkoBdp8WYs9
-         9nHw==
+        bh=RUiQRhZhuyL2bRHYFIvUj3h1OxzYZlpga2Ooaul5ruw=;
+        b=nFH9Hh6UY6b3hggOvNAKGTtek+rVHy+0GSeBYJOuYO4DMDq659BZ1vEGo73kgfxXwm
+         ReSSPN0h2zzKMTchlBKVcs3/buyCBHleYO0xqUSR1Qp2tZlngJBwD2J1psOSh7M8jIiC
+         rEwp80XVyIjDxTt9fc9qORA+jkSFwpQvCeu0LeTrRXaVcYTp9YPfuWC9AhvpEhFgomyI
+         xJohFatmM5Fgtm1ZtsHhze857FzrqJuy8rm0nDBXBZfuDOgIp6fhj3uMZu0pocKNy3hl
+         TFvE85qmV/P6NJlGukosxjtFhs//Ki0yIcFH1qPtLyb/00jHzgL2lGqjnoYYO0PMEOe4
+         8aeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772641572; x=1773246372;
+        d=1e100.net; s=20230601; t=1772641663; x=1773246463;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IycgstOp8AUBvQFItrqTS+kIWrn5vpM6y/uf2FdllGI=;
-        b=fNgDGx4AoB33NGUuEQ0u8O8d/lJI6isWKIm4LbOQuzZXnDKGGqF1Rpyy9Ni3+6E1RV
-         39MQDTvwO9i1n3DRdrLD1N6RBUUiDQOH8dEDiGVpxGOCxWIK0iQRh9FX6uhTSxnHK3iv
-         kgcNJwBS+ixzagugyXUK6I+owQq7P1XZZbBzH7FNUgs7rmwerxgVidacNDRv9I2y7BmF
-         nVQ4Sp359uxVVFoxMtAnZEgIVJuVpmOeqEprMwLQxKedDjnjrSPkD8UjocsrMz+74cXb
-         g4nsv2/V98zQuzHr8oFwwzeun60bpFbz25z1Hgt7gDzFuCMPuYGTYY1sMoKZGHJQbvC7
-         DOCA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6TzMBxmQbd4YWdnBTveSBmOQ+wZ7ZEQUY0U9NfeFbr6wfCCusLtTAGKX2T5UCzKNmi/qelhek8y+Nkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw63yZHsVY1jvgs+O2/J3j+icEdnBLrLFGwP0VhLfWMnucUxe/c
-	/RYiGXYt5ThhTz7CS8+4hNWEdy/shcKjcqAaw4CG6lm3bCtku3s8YoZ6rHO7HOja+MU=
-X-Gm-Gg: ATEYQzwYd84WLp5yHWAdiKJyGjTD2kkGs62BDKev3ax3mURqR7fu11QpH/eqi/I3kzg
-	ClM2UGciQqu0/HFXsoicdIEOZ8J7W0FP7Gzkj3pyIzg/5eCqfLd3NJby4vMNZq3aB1SJ1epwgbV
-	oPsTxudTMdJdIDKDG8+jmVRGnd3/asVRN3+hxFEMfPTrA/tpe/lnUZo1sZR6tHOt38/BPoQxi3p
-	f8E0lZuHC26r+5rSKkrkcQpXUah6SrUc+QTWf/HhC24AK4+onDxK8xQDR+a5OXwXbgR0AO/O0wx
-	NL4H+m+/JY85EXt9O4XCBQ9mp0awwsiXg3OkxJNbmPbBXRyxtUw4J1UCeIWhZMyFUwsibDjixGq
-	CxxF0yttghHtyMn4gB/HV0sHgndaAchAVR4Yi8j5qyu6UQP61V7HOV+mnAKnEHcg3xNvzj0/WmS
-	afT5sRvcjZciHKGKgNacdZZOo8xPnWRL5clngRzrzyITz9lS9gQegr65p0m04P9Jg9DyMJ3+M7Z
-	AFJ
-X-Received: by 2002:a05:600c:a4b:b0:480:1c10:5633 with SMTP id 5b1f17b1804b1-48519896e83mr39034405e9.26.1772641572014;
-        Wed, 04 Mar 2026 08:26:12 -0800 (PST)
+        bh=RUiQRhZhuyL2bRHYFIvUj3h1OxzYZlpga2Ooaul5ruw=;
+        b=YuqSKs702fuqbHO+8vNNxVoG79jq7shUWsaavv1GUSeQzZk3kRmd26PPNpCTBW/GG6
+         mjYYL4tWa6YhVjrHQwoWrYEgX/4bdHOf8ACOsmhMxeai2Q5kHa+Z/ujGbqrO2StE19bp
+         t169pSt78b45O+6eYnuLyNDtgiWaSeg08Rv7oYXUmrKlIXchyZlv5dBA4DXyghX6V1UL
+         dHyVjWDoasa+//Z0IyPMvIo5Y0FIr/rFQGBGfixrRaitgFzaano1oAyGtxmlJJfp3zFM
+         Tc42MG8PYKptrXRlVMYCCBtzY6S6/iHlTwn6Q3UgX7on00swFC3yAsAGA/UxuqLU+CCL
+         aNFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUl8LHb38NYf+w+NY9IY7fBlQWyN1HvZjCplDXBx/vCogQ5cDh6G9zfBKFBO3ZM30qRcmMJ8Hs/q9VCiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMUn2pkQvYhJsKg8U/1+qXon+cOtH37y/uZYMwd9xtDDk8zK/6
+	zBedkEl77cnnqAWpFu4GwXN563k+t8V3JyadpIh7ShCZUGAkTqZxEkID8dfMARZMXp8=
+X-Gm-Gg: ATEYQzzkc4wybKQTN/mYgot3/xCGbFnpjgr3VXMji1MLxVeSb2O2aX+YA6ejwgfC+Kg
+	dT4AgifFMCLH44K9q6jwKg5e8MnIRjzf+EP7sMvAKWU5Vdjj+DxrwFjabDtaqZQqeExVNLz0q84
+	eWSMxdt3+6UvsIMGyVzV8HSpHlTlbpPPX43t7ltmHDGTItghKHzl13VVGR0/uSQN5fWlFfj5KQT
+	A1jNcHirfj9Kbe+SBjBgkBSvbJ/CK1spKRB9ZyxxFFr6+BekD7xAntEpbrRf0SdQS0/69mgbx+p
+	yEC/llD5eh58UZ0e7Riv5uM7RFuQZ7QA+wQnG//wOvTQbDq8YL3kj4z9d/AD1V/An7S7JCt2cBg
+	lGYN7Ak6RpriL1s1C9iBKLywlFlypaFfEZP2psozw3XJ24Th+dYRdaPVmOkCGQQgdXGelvZShP0
+	yNVZ/z42ZjQfEUMoyJZVtmCDcIOgRCA8VJttOFvTIQfxVE9qmf98G/CZHvBgp3A9NoDO28LF/sx
+	N1ZKOAUnw5uqQ4=
+X-Received: by 2002:a05:600c:828a:b0:480:1c53:2085 with SMTP id 5b1f17b1804b1-4851986f362mr50738455e9.19.1772641662829;
+        Wed, 04 Mar 2026 08:27:42 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:106d:1080:da6:dde3:e477:94d2? ([2a01:e0a:106d:1080:da6:dde3:e477:94d2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851884224fsm62369745e9.4.2026.03.04.08.26.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851ad02ffcsm11481675e9.20.2026.03.04.08.27.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 08:26:11 -0800 (PST)
-Message-ID: <bd2bb9c1-70e2-4914-afe2-c172501c25bc@linaro.org>
-Date: Wed, 4 Mar 2026 17:26:10 +0100
+        Wed, 04 Mar 2026 08:27:42 -0800 (PST)
+Message-ID: <b2ce76f4-bb19-4e4c-a5bb-c3000f8a9827@linaro.org>
+Date: Wed, 4 Mar 2026 17:27:41 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,8 +72,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 3/4] drm/panel: himax-hx83102: Add support for Holitech
- HTF065H045
+Subject: Re: [PATCH 4/4] drm/panel: himax-hx83102: Add support for DSI DCS
+ backlight control
 To: Val Packett <val@packett.cool>, Jessica Zhang <jesszhan0024@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
@@ -81,7 +81,7 @@ To: Val Packett <val@packett.cool>, Jessica Zhang <jesszhan0024@gmail.com>,
 Cc: dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
  ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org
 References: <20260217070121.190108-1-val@packett.cool>
- <20260217070121.190108-4-val@packett.cool>
+ <20260217070121.190108-5-val@packett.cool>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -108,133 +108,133 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260217070121.190108-4-val@packett.cool>
+In-Reply-To: <20260217070121.190108-5-val@packett.cool>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/17/26 08:00, Val Packett wrote:
-> This 720x1600 panel is found in several Motorola/Lenovo smartphones like
-> the Moto G9 Play (guamp). The initialization sequence is based on the
-> datasheet. Add it to the existing HX83102 panel driver.
+> The HTF065H045 panel based on the HX83102 controller does use DCS
+> commands for controlling backlight brightness. Make the driver fall back
+> to DCS when no external backlight has been defined in the device tree,
+> like many other drivers do.
 > 
 > Signed-off-by: Val Packett <val@packett.cool>
 > ---
->   drivers/gpu/drm/panel/panel-himax-hx83102.c | 86 +++++++++++++++++++++
->   1 file changed, 86 insertions(+)
+>   drivers/gpu/drm/panel/panel-himax-hx83102.c | 65 +++++++++++++++++++++
+>   1 file changed, 65 insertions(+)
 > 
 > diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-> index 1d3bb5dca559..34e0e956db48 100644
+> index 34e0e956db48..8b2a68ee851e 100644
 > --- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
 > +++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-> @@ -701,6 +701,67 @@ static int starry_2082109qfh040022_50e_init(struct hx83102 *ctx)
->   	return dsi_ctx.accum_err;
->   }
+> @@ -7,6 +7,7 @@
+>    * Based on drivers/gpu/drm/panel/panel-himax-hx8394.c
+>    */
 >   
-> +static int holitech_htf065h045_init(struct hx83102 *ctx)
+> +#include <linux/backlight.h>
+>   #include <linux/delay.h>
+>   #include <linux/gpio/consumer.h>
+>   #include <linux/module.h>
+> @@ -76,6 +77,8 @@ struct hx83102_panel_desc {
+>   		unsigned int height_mm;
+>   	} size;
+>   
+> +	bool has_backlight;
+> +
+>   	int (*init)(struct hx83102 *ctx);
+>   };
+>   
+> @@ -913,6 +916,7 @@ static const struct hx83102_panel_desc holitech_htf065h045_desc = {
+>   		.width_mm = 68,
+>   		.height_mm = 151,
+>   	},
+> +	.has_backlight = true,
+>   	.init = holitech_htf065h045_init,
+>   };
+>   
+> @@ -1049,6 +1053,59 @@ static const struct drm_panel_funcs hx83102_drm_funcs = {
+>   	.get_orientation = hx83102_get_orientation,
+>   };
+>   
+> +static int hx83102_bl_update_status(struct backlight_device *bl)
 > +{
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness = backlight_get_brightness(bl);
+> +	int ret;
 > +
-> +	msleep(50);
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
 > +
-> +	hx83102_enable_extended_cmds(&dsi_ctx, true);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x22, 0x44, 0x27, 0x27, 0x32,
-> +				     0x52, 0x57, 0x39, 0x08, 0x08, 0x08);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETDISP, 0x00, 0x00, 0x06, 0x40, 0x00,
-> +				     0x0e, 0xae, 0x38, 0x00, 0x00, 0x00, 0x00, 0xf4, 0xa0);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCYC, 0x01, 0x58, 0x01, 0x58, 0x01,
-> +				     0x58, 0x03, 0x58, 0x03, 0xff, 0x01, 0x20, 0x00, 0xff);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPANEL, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP0, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x10, 0x00, 0x17, 0x00, 0x63, 0x37, 0x0e, 0x0e, 0x00, 0x00,
-> +				     0x32, 0x10, 0x08, 0x00, 0x08, 0x32, 0x16, 0x4e, 0x06, 0x4e);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPWM, 0x04, 0x0c, 0xb2, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP1, 0x24, 0x25, 0x18, 0x18, 0x19,
-> +				     0x19, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18,
-> +				     0x18, 0x18, 0x18, 0x06, 0x07, 0x04, 0x05, 0x18, 0x18, 0x18,
-> +				     0x18, 0x02, 0x03, 0x00, 0x01, 0x20, 0x21, 0x18, 0x18, 0x18,
-> +				     0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP2, 0x00, 0x09, 0x16, 0x1f, 0x28,
-> +				     0x4b, 0x65, 0x6d, 0x74, 0x70, 0x89, 0x8d, 0x91, 0xa0, 0x9e,
-> +				     0xa8, 0xb2, 0xc8, 0xc9, 0x65, 0x6d, 0x78, 0x7f, 0x00, 0x09,
-> +				     0x16, 0x1f, 0x28, 0x4b, 0x65, 0x6d, 0x74, 0x70, 0x89, 0x8d,
-> +				     0x91, 0xa0, 0x9e, 0xa8, 0xb2, 0xc8, 0xc9, 0x65, 0x6d, 0x78,
-> +				     0x7f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETTP1, 0xff, 0x14, 0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETTP1, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP3, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +				     0xf0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x03);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGIP3, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa,
-> +				     0xa0, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa0, 0xaa, 0xaa, 0xaa,
-> +				     0xaa, 0xaa, 0xa0, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa0);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETMIPI, 0x70, 0x23, 0xa8, 0x93, 0xb2,
-> +				     0xc0, 0xc0, 0x01, 0x10, 0x00, 0x00, 0x00, 0x0d, 0x3d, 0x82,
-> +				     0x77, 0x04, 0x01, 0x04);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCLOCK, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCLOCK, 0x00, 0x53, 0x00, 0x02, 0x59);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPTBA, 0xfc, 0x00, 0x04, 0x9e, 0xf6,
-> +				     0x00, 0x5d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETCYC, 0x42, 0x00, 0x33, 0x00, 0x33,
-> +				     0x88, 0xb3, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPCTRL, 0x20, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x7f, 0x03, 0xf5);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETBANK, 0x00);
+> +	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +	return dsi_ctx.accum_err;
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return 0;
 > +}
 > +
->   static const struct drm_display_mode starry_mode = {
->   	.clock = 162680,
->   	.hdisplay = 1200,
-> @@ -833,6 +894,28 @@ static const struct hx83102_panel_desc starry_2082109qfh040022_50e_desc = {
->   	.init = starry_2082109qfh040022_50e_init,
->   };
->   
-> +static const struct drm_display_mode holitech_htf065h045_default_mode = {
-> +	.clock = 90720,
-> +	.hdisplay = 720,
-> +	.hsync_start = 720 + 40,
-> +	.hsync_end = 720 + 40 + 40,
-> +	.htotal = 720 + 40 + 40 + 40,
-> +	.vdisplay = 1600,
-> +	.vsync_start = 1600 + 186,
-> +	.vsync_end = 1600 + 186 + 2,
-> +	.vtotal = 1600 + 186 + 2 + 12,
-> +	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
+> +static int hx83102_bl_get_brightness(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness;
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_get_display_brightness_large(dsi, &brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return brightness;
+> +}
+> +
+> +static const struct backlight_ops hx83102_bl_ops = {
+> +	.update_status = hx83102_bl_update_status,
+> +	.get_brightness = hx83102_bl_get_brightness,
 > +};
 > +
-> +static const struct hx83102_panel_desc holitech_htf065h045_desc = {
-> +	.modes = &holitech_htf065h045_default_mode,
-> +	.size = {
-> +		.width_mm = 68,
-> +		.height_mm = 151,
-> +	},
-> +	.init = holitech_htf065h045_init,
-> +};
-> +
->   static int hx83102_enable(struct drm_panel *panel)
->   {
->   	msleep(130);
-> @@ -1069,6 +1152,9 @@ static const struct of_device_id hx83102_of_match[] = {
->   	{ .compatible = "starry,himax83102-j02",
->   	  .data = &starry_desc
->   	},
-> +	{ .compatible = "holitech,htf065h045",
-> +	  .data = &holitech_htf065h045_desc
-> +	},
->   	{ /* sentinel */ }
->   };
->   MODULE_DEVICE_TABLE(of, hx83102_of_match);
+> +static struct backlight_device *
+> +hx83102_create_dcs_backlight(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	const struct backlight_properties props = {
+> +		.type = BACKLIGHT_RAW,
+> +		.brightness = 4095,
+> +		.max_brightness = 4095,
+
+I guess those values could be in the hx83102_panel_desc.
+
+Anyway:
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
 Thanks,
 Neil
+
+> +	};
+> +
+> +	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
+> +					      &hx83102_bl_ops, &props);
+> +}
+> +
+>   static int hx83102_panel_add(struct hx83102 *ctx)
+>   {
+>   	struct device *dev = &ctx->dsi->dev;
+> @@ -1080,6 +1137,14 @@ static int hx83102_panel_add(struct hx83102 *ctx)
+>   	if (err)
+>   		return err;
+>   
+> +	/* Use DSI-based backlight as fallback if available */
+> +	if (ctx->desc->has_backlight && !ctx->base.backlight) {
+> +		ctx->base.backlight = hx83102_create_dcs_backlight(ctx->dsi);
+> +		if (IS_ERR(ctx->base.backlight))
+> +			return dev_err_probe(dev, PTR_ERR(ctx->base.backlight),
+> +					     "Failed to create backlight\n");
+> +	}
+> +
+>   	ctx->base.funcs = &hx83102_drm_funcs;
+>   	ctx->base.dev = &ctx->dsi->dev;
+>   
+
