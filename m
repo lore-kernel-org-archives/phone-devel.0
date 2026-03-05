@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2390C3659F8;
-	Thu,  5 Mar 2026 08:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3F30F808;
+	Thu,  5 Mar 2026 08:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772700736; cv=none; b=oSVs2eU1PndjB0Y7xhaQWPl6dOCcqHaVogjaxWEPvqF6x9PNWLGhUWVqAP9WuHvgfLV0KTmL8W46ACJKd2Dj4+RetGHvTaCirzXQ0Pr62OqyQSAsEcG4BgytBeMx6SnBgMJQLvny8+h/sIBV7nbAemnpEWZdWul1BtfFhW1jdiE=
+	t=1772701096; cv=none; b=WOjPG5RqgfGErmhk+KIHwxjW+Q2eJmeRUzvGxKxbA4tTZe2Oxk0qTiJsGOBr1UNSdE6V2B5dKfmIxj1YhS9qOoPrbodf+8Zl8LbNsJ8ijn5OXi60HBp3PekD8gFieqGym0QC01V5F9udu3JosTqQlZjk/J1l9cQ/QA1vOGCe80I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772700736; c=relaxed/simple;
-	bh=2n+Sy/iUmf9D5/oObxZ8bevg/dvw6DLrlInXg3HoR5M=;
+	s=arc-20240116; t=1772701096; c=relaxed/simple;
+	bh=H+oJZQ3001plR3zQ6WoYzq0zrvjKiN1LRRf3kGj1oc4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zna5TrJOm9Rl6Obj7pTAH9wyppRFqQHVKjBMpVaOK7QUJWB5zHm1fpznFwAlvZCS7LkA4ckVZHu1L8NsW8J2XSQC5hBRfWTxuarAeufLfuqQMoA6YdJMOslcIiMq/tSGCH1q8S60RbUQfteSjHA9rOyKHz/S/fyChb5+OBQRC4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=AhPEIWYJ; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=JN9AjOo6xZwBitu0pzK6sNgekd452Zh3EEsRwxGsJMI7E96bO329R6mv6xVusZxqfkAyPc+ClC7m+s2kqfqoKiybn7dEgMfK7PE/9nqTRZUAy74ohllESRsnLhBabMBdjYi7WlT9Z/1uE06zvnHXLp7AUbgXlPUeIWBSCgehYcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LCqOSXMp; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="AhPEIWYJ"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LCqOSXMp"
 Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 803BE5340DE5;
-	Thu, 05 Mar 2026 09:52:05 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 8480F5341062;
+	Thu, 05 Mar 2026 09:58:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1772700725;
+	t=1772701091;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l75KWOV2Iul3RJdikyRE7LsUPxrHScrfHDcaANemI0U=;
-	b=AhPEIWYJRIwots91XsmLvj/so9t7htSvcI+KFEj6ixHj0bMq9bWO7yvSS7W769efMNv8lB
-	6KN05ndQsjhNGEXlirEyQb9s/AbtuSZTVnOdDLfBmiLydb/H7iZI3OXss2yMa6JiUcUuxw
-	N0ZA9IMMt0Wm/T2EJlLcYbVs2TK2Aoo=
-Message-ID: <f6b67fb8-27cf-489d-8640-82770d40eb8d@ixit.cz>
-Date: Thu, 5 Mar 2026 09:52:04 +0100
+	bh=i1x+U3Few/NgVJRWrIcf5kMgGln2fDeZq/ALUbGnECI=;
+	b=LCqOSXMpL9C9HUUhYqOnp2Yca6e8UZnxgWIelvwtSn0z2jXOOpQ6h6+0IK5Y5c9XXIKevX
+	/1QkwOos70/Lgdwf9h71jv2hwcdbdCeODuTGeLAX4m6Unv9kdpcUPyAAKpli7Rurx5oKsq
+	aj0mxi4YGWPe/oE9bk/Ul3tl5khmlUg=
+Message-ID: <7b7e3fea-514a-4a3f-bdb4-0d51df7df21a@ixit.cz>
+Date: Thu, 5 Mar 2026 09:58:11 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,12 +41,17 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Add support for hx83102-based Holitech HTF065H045
- panel
-To: Val Packett <val@packett.cool>
+Subject: Re: [PATCH 4/4] drm/panel: himax-hx83102: Add support for DSI DCS
+ backlight control
+To: Val Packett <val@packett.cool>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260217070121.190108-1-val@packett.cool>
+ <20260217070121.190108-5-val@packett.cool>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -92,44 +97,34 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260217070121.190108-1-val@packett.cool>
+In-Reply-To: <20260217070121.190108-5-val@packett.cool>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 17/02/2026 08:00, Val Packett wrote:
-> This 720x1600 panel is found in several Motorola/Lenovo smartphones.
-> It will be used in the device tree for the Moto G9 Play (sm6115-motorola-guamp).
-> Fully tested on it, including brightness adjustment.
-> 
-> The initialization sequence is based on leaked documentation found online :)
-> as the sequence included in downstream Android DTS was near-empty (I think it
-> relies on the bootloader to do the bulk of the initialization).
 
-Depends how bad is the driver in Android, but generally when panel is powered 
-down (not with DSI command, but regulator-wise) it needs full sequence to 
-power-on. This implies the Android driver should (but maybe doesn't?) do full 
-initialization.
+[...]
 
-You can also extract the sequence from the EFI bootloader firmware image (it's 
-XML file) and verify (if you want to).
+> +
+> +static struct backlight_device *
+> +hx83102_create_dcs_backlight(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	const struct backlight_properties props = {
+> +		.type = BACKLIGHT_RAW,
+> +		.brightness = 4095,
 
-> That documentation is also the source for the exact model number (as it's the
-> same vendor, same controller IC, same resolution, and made for Motorola).
-> 
-> Thanks,
-> ~val
-> 
-> Val Packett (4):
->    dt-bindings: vendor-prefixes: Add Holitech
->    dt-bindings: display: panel: Add compatible for Holitech HTF065H045
->    drm/panel: himax-hx83102: Add support for Holitech HTF065H045
->    drm/panel: himax-hx83102: Add support for DSI DCS backlight control
-> 
->   .../bindings/display/panel/himax,hx83102.yaml |   2 +
->   .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->   drivers/gpu/drm/panel/panel-himax-hx83102.c   | 151 ++++++++++++++++++
->   3 files changed, 155 insertions(+)
-> 
+Series looks good, just nitpick here.
+
+While this is not OLED, where full brightness reduces the lifetime of display a 
+lot, are you sure you want to bring the display backlight up to 100% by default?
+
+Usually I've and others put ~ 50%. It's important to keep display well readable 
+until userspace takes over, but not have to be full-throttle :)
+
+David
+
+[...]
 
 -- 
 David Heidelberg
