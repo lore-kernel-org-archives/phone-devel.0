@@ -1,88 +1,39 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80DA283FC3
-	for <phone-devel@vger.kernel.org>; Thu,  5 Mar 2026 08:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2390C3659F8;
+	Thu,  5 Mar 2026 08:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772699319; cv=none; b=DoCZXuFpeoA3HjJ0HXqZj90iKiT665shHCevXN4nr3HvECfd/1c+0vX5L/mY1kZ/gAvKCU4Hhs9qdOdzANcyo5oOcSXIvySw23niDP0Lge2dfETMZBB1QIHynahoFkJiaM9LVimBG9+dNF2YlSwZoSNOC3iVQ6bx/uFCqINQJ7w=
+	t=1772700736; cv=none; b=oSVs2eU1PndjB0Y7xhaQWPl6dOCcqHaVogjaxWEPvqF6x9PNWLGhUWVqAP9WuHvgfLV0KTmL8W46ACJKd2Dj4+RetGHvTaCirzXQ0Pr62OqyQSAsEcG4BgytBeMx6SnBgMJQLvny8+h/sIBV7nbAemnpEWZdWul1BtfFhW1jdiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772699319; c=relaxed/simple;
-	bh=JwApMPYiG4fd/ILnv58A9G+Wcb/3tF+XZk+KEDsh1gc=;
+	s=arc-20240116; t=1772700736; c=relaxed/simple;
+	bh=2n+Sy/iUmf9D5/oObxZ8bevg/dvw6DLrlInXg3HoR5M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dwj3ZW4GrOZBA4QO+k3buouyObWYjihv/Ucs9/rWZ6kpV2iEUrvDJGMJqt+Nb34wTKfcY2QC0h39mkJsWcAwpx44zts5KFmP4wqmYceek+We4w5auZYD/a3IGUiBnJt3OO1e2nVGnABBz/1LJ8EdfRo9/kVRO4B92OogRA8v7hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A/KxXZzj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bzvEU6tz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=Zna5TrJOm9Rl6Obj7pTAH9wyppRFqQHVKjBMpVaOK7QUJWB5zHm1fpznFwAlvZCS7LkA4ckVZHu1L8NsW8J2XSQC5hBRfWTxuarAeufLfuqQMoA6YdJMOslcIiMq/tSGCH1q8S60RbUQfteSjHA9rOyKHz/S/fyChb5+OBQRC4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=AhPEIWYJ; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A/KxXZzj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bzvEU6tz"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6251CEEh3473560
-	for <phone-devel@vger.kernel.org>; Thu, 5 Mar 2026 08:28:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Mgrx79lfGEzLBlX9QN3Dz4SsddgdoZaYB0lKI1UCPb0=; b=A/KxXZzjrwhBKTtf
-	xknJShvWkVYN1otjYIetX2XvjAB+2HazIWy7LzL0fkNAJgsobAmu6skfI3H5JtX1
-	+NvTZqRh5TxSPdfxUHu81FaVsTnIlzGMUVREfOeVkPP1XJMadYcVaK7QCf6gxsis
-	vf7+hUYHDfLRdqZR/auibSPTPP1f8pObKDQzyd2zFU5BivWxvCtnJBp20MrE0GUV
-	deI3ujDw1LMsoxUwzskONrbHOG9EaFoxunskpNDUExTsuntSX6WsjW7YniNCIsjc
-	nP76ksbQI1z1+4ZkhNmTDEWeAKaAQU/CRap9SHAgxbVxCSdfFZa6YMyY92XR7Qvs
-	lPfEhA==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cpj183wtt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 05 Mar 2026 08:28:36 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cb38a5dc3cso577621985a.3
-        for <phone-devel@vger.kernel.org>; Thu, 05 Mar 2026 00:28:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772699316; x=1773304116; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mgrx79lfGEzLBlX9QN3Dz4SsddgdoZaYB0lKI1UCPb0=;
-        b=bzvEU6tzu8LQIx5J+I3mBt6x13UsytFwFvx+HWXyuqDzwx3SxW+LQ+PTJ+s1byTM5E
-         2kVow+5GeH1/vOmU2a4yguM4L2RnQMyjOovfjrFJJWizRt9Nzm/R9dnZ/0N2feGWkvT5
-         qGerlCSXLp9Ssk/fDcATPiUu4RRBGdSJU7ufxEX3rpaUxCu6e4oGE3qIThqV5Kwc8P26
-         CfP4Q/XTGH4oeDDNhIsbL7Kqc3It8DylT72EH+xxOiTl5fBDnC40xwLPwTeGIGm/62qf
-         zrsdmlpihCSowoMO8op0s1x9U5NWiirQ78t9cezKvj4nRaHGLX6HtBBtjgRG/pmfasFY
-         ylhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772699316; x=1773304116;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mgrx79lfGEzLBlX9QN3Dz4SsddgdoZaYB0lKI1UCPb0=;
-        b=jtFCS3+VDU9Mh424GQ9UGhx9wxPP82ocS2vi/RPzA7yDw7MfDeqB6qszSY6uCCIHiv
-         gSL0QvwL6DhIKNr/Sr7UTTml7tc361Ur2lq9TT06JGHm0lJwwdAJrv2vbldLKPYT1S5b
-         B3gjNMss1AXJlu8fRstadwwmb1moThQhgSJDeOe0ATNRAoFNvpPrdo8pVOZ4EOPUiX2i
-         877ENvl7paXnaP0rh5VjLGCgnTtFXQ8Wf7or/4Cif+4ZoKG+fHMubLPv6HlvPJasJEl6
-         IwvCnIK6ilSLVppqHctdVrSgiMtWiC1x4TwSDWvfG1BoP/rH5pPfgpdNTiWZlB/u6jIn
-         EPag==
-X-Forwarded-Encrypted: i=1; AJvYcCWyndnh7xgzwnMh+Z+pxbFmqDqjJmfrSWC9bGmCzJMYTcQmL2un/jx0P4CNrFfPeeW8UutTxpmobYi3KQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFVBsu/DhT0pEcQPlG3dwNzGfdvaC5VahYZ+AY35rHkgHLbNjv
-	qN4GOGZG8M1q4/5qqbKavmEdtb1wG5uT/5XxqYNIeEokFPn8d/AKPlm49ImHJ5DNFjMv/ceeS4r
-	xBtZInM0m2fLYpz/bTzegGtR5W81FvcYiAfkfKVPIei5OPboiQ0dePub2Hgyd3Yfr75FxEG/+2Q
-	==
-X-Gm-Gg: ATEYQzzJlv1Uu/8kzW4WTliCcY+ArfyC/bKJd6iEV6Iry0lcKU0UqZ5zIk1tqSyjU7K
-	GPe/oGHhk4NgnA+h7d4LcGhUixa8f/m61ujP82Nb2uZ47EOWG46VtuzvsvJFxNgsfQeoQnBP2HW
-	+xLjCP6CCdGrqaO66Kiw3bis+D/2ujPlOnl04Mr+y218VprF5QMJoJKNi6+NTq9REROXdF8BYGc
-	w0qqwaBSDbJQhEkNXqgaGEFDIFez+pEWnP3kexImhuaso+XLnllZI2BFWWg8XI53ac2WE6dh2WV
-	PpOTZfLTBINSnjyPq72b+ZhOdVmdHn3MhJwQ1aPwx+ARq7W7Sm7usJ0YuXoKdgmpNFQXk9xQenv
-	wnLR/AnRRZqVxHJUKicXLu302hLNIsUwmeVSihus61qOnOkc9wEeftqSjpdhnxt/TRNkJnvWa7C
-	AmT6I=
-X-Received: by 2002:a05:620a:4409:b0:8cb:52c2:6f19 with SMTP id af79cd13be357-8cd5afa7b9cmr428636585a.7.1772699316231;
-        Thu, 05 Mar 2026 00:28:36 -0800 (PST)
-X-Received: by 2002:a05:620a:4409:b0:8cb:52c2:6f19 with SMTP id af79cd13be357-8cd5afa7b9cmr428635385a.7.1772699315811;
-        Thu, 05 Mar 2026 00:28:35 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac84357sm868737766b.30.2026.03.05.00.28.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Mar 2026 00:28:34 -0800 (PST)
-Message-ID: <a3668aed-0763-4bfd-a24b-f95977d2167c@oss.qualcomm.com>
-Date: Thu, 5 Mar 2026 09:28:32 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="AhPEIWYJ"
+Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 803BE5340DE5;
+	Thu, 05 Mar 2026 09:52:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1772700725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=l75KWOV2Iul3RJdikyRE7LsUPxrHScrfHDcaANemI0U=;
+	b=AhPEIWYJRIwots91XsmLvj/so9t7htSvcI+KFEj6ixHj0bMq9bWO7yvSS7W769efMNv8lB
+	6KN05ndQsjhNGEXlirEyQb9s/AbtuSZTVnOdDLfBmiLydb/H7iZI3OXss2yMa6JiUcUuxw
+	N0ZA9IMMt0Wm/T2EJlLcYbVs2TK2Aoo=
+Message-ID: <f6b67fb8-27cf-489d-8640-82770d40eb8d@ixit.cz>
+Date: Thu, 5 Mar 2026 09:52:04 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -90,91 +41,96 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
- initial devicetree
-To: Paul Adam <adamp@posteo.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20260301-wiko-chuppito-v3-0-9b36a2a7aed5@posteo.de>
- <20260301-wiko-chuppito-v3-3-9b36a2a7aed5@posteo.de>
- <9ffc0460-e394-4f18-aed2-ad8a0b3d1b8f@oss.qualcomm.com>
- <aaiuzCWHegpJMCVj@MyryksLaptop>
+Subject: Re: [PATCH 0/4] Add support for hx83102-based Holitech HTF065H045
+ panel
+To: Val Packett <val@packett.cool>
+Cc: dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260217070121.190108-1-val@packett.cool>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <aaiuzCWHegpJMCVj@MyryksLaptop>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260217070121.190108-1-val@packett.cool>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Kf094m7Hay7y8csFc4Lh97EJW3UDIR7M
-X-Proofpoint-ORIG-GUID: Kf094m7Hay7y8csFc4Lh97EJW3UDIR7M
-X-Authority-Analysis: v=2.4 cv=Ed7FgfmC c=1 sm=1 tr=0 ts=69a93eb4 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=boWcjoDG4uMwkFA1WOEA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDA2NiBTYWx0ZWRfX//YRI+qyFBN6
- ZeijdCm3QdXD65vuLV7tO2dWzIF8OMjUjH9skUEKXvVziGUNe1T8IQCM7J/0uR1yLUsFjnFN9vp
- rQpRhuMHj4S4+ej4rapBqLs24rRoRdFhnxXs9+8bB/EhsOyEeOnczVMnzRFI+5yGXKpQFmMkn2C
- jtEhCcJ2e9pUG3kST1P4rsmwi2ij2kjX2+4F9xgSNyzJUyXvsP16VxwGEGMEkX++GODlmi1q8JA
- 7cN1oWxsOtz1IO0meHdpkVeQb6yPTlSUNQveXLDqB2dBc9raCE+suHiHnteZoxYtp49XCDHeLTJ
- 2MVM1t88dSJHPU9xnjMaxc4ENtb38APUnhoMZtP6tXc7pDLJXURQi1irJFe0VOU5KzW/DpcdxZ7
- jh3O+xMTsn+imYrhHmCS8jEzQytb6YSfh2LFgOM+PIpsldMn4vm5dHGa1yqpTaQvvcY7zZasIg/
- rVKhlt/9NwPygp4Xomw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_02,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050066
 
-On 3/4/26 11:14 PM, Paul Adam wrote:
-> On 26/03/02 12:08, Konrad Dybcio wrote:
->> On 3/1/26 11:29 PM, Paul Adam via B4 Relay wrote:
->>> From: Paul Adam <adamp@posteo.de>
->>>
->>> Add an initial device tree for Wiko PULP 4G.
->>> Includes support for:
->>> - UART
->>> - USB (no OTG)
->>> - Internal storage
->>> - MicroSD
->>> - Volume keys + Power button
->>> - Touchscreen
->>> - Backlight
->>> - Accelerometer: Invensense MPU6880
->>> - Magnetometer: Asahi Kasei AK09911
->>> - Hall sensor: Rohm BU52021HFV
->>> - Proximity sensor
->>> - Vibrator
->>> - Earpiece
->>> - Microphone 1
->>> - Headphones
->>> - Wifi
->>> - Bluetooth
->>> - GPU
->>>
->>> Signed-off-by: Paul Adam <adamp@posteo.de>
->>> ---
->>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>
->> Konrad
+On 17/02/2026 08:00, Val Packett wrote:
+> This 720x1600 panel is found in several Motorola/Lenovo smartphones.
+> It will be used in the device tree for the Moto G9 Play (sm6115-motorola-guamp).
+> Fully tested on it, including brightness adjustment.
 > 
-> Thanks for reviewing!
+> The initialization sequence is based on leaked documentation found online :)
+> as the sequence included in downstream Android DTS was near-empty (I think it
+> relies on the bootloader to do the bulk of the initialization).
+
+Depends how bad is the driver in Android, but generally when panel is powered 
+down (not with DSI command, but regulator-wise) it needs full sequence to 
+power-on. This implies the Android driver should (but maybe doesn't?) do full 
+initialization.
+
+You can also extract the sequence from the EFI bootloader firmware image (it's 
+XML file) and verify (if you want to).
+
+> That documentation is also the source for the exact model number (as it's the
+> same vendor, same controller IC, same resolution, and made for Motorola).
 > 
-> I assume I resend this once more with your tag added?
+> Thanks,
+> ~val
+> 
+> Val Packett (4):
+>    dt-bindings: vendor-prefixes: Add Holitech
+>    dt-bindings: display: panel: Add compatible for Holitech HTF065H045
+>    drm/panel: himax-hx83102: Add support for Holitech HTF065H045
+>    drm/panel: himax-hx83102: Add support for DSI DCS backlight control
+> 
+>   .../bindings/display/panel/himax,hx83102.yaml |   2 +
+>   .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+>   drivers/gpu/drm/panel/panel-himax-hx83102.c   | 151 ++++++++++++++++++
+>   3 files changed, 155 insertions(+)
+> 
 
-No need, the maintainer tooling (b4) grabs tags whilst applying
+-- 
+David Heidelberg
 
-> Also is there anything else I need to do, if I don't receive further
-> suggestions?
-
-Nope, just wait!
-
-Konrad
