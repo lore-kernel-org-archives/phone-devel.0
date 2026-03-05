@@ -1,36 +1,36 @@
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F9D3CE498;
-	Thu,  5 Mar 2026 17:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53A8313540;
+	Thu,  5 Mar 2026 17:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772731732; cv=none; b=De5ryY2t85B9VFfg3jN7Q9HaFk6vLfpQrDtbSMd6CLApRez8UmUMLe7jbteU/rb0bR4SoIdQ1rB5rk9nVu9xo3WVP2jl5XFp2el3SHa8N2CSVduV7CE4mz37x1is5RCrht5o8tLEBSi/batGLIfOMUF+PftGS/diY86jLeloNiw=
+	t=1772731749; cv=none; b=nt0WZbKf4Ogw0dJ4fMqdwTWh0QbcpcSDszv4aLgOPtYSq+LR0yWy/1nPx79T+qNBamlvbUjhy5NJ2dBdsXXk96oJBmRD4szKFzj9Wyi64+3Yl17ehLRApjPcjqbSdxcM83ei1PZY74yoQYe55PdZRbvGtef28hLQd1Ng9W+QOx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772731732; c=relaxed/simple;
-	bh=ZPK2VT1HFBBm6ahy9ybaGuxsK2/a/XNZLCQf575gccA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MRSEGvvz6IcaQMGzRwE3Ke3uaiMzLYUGyJ3HMmRC7COsz+uXcVXmxIDyMP/YUv8TDeGmujycImi489pGQ8NRXn5tDSx8OKAWHHNvhNPeCZVlIh+VRoxfO98iR7jIacQ+hWYt5wIjTatCh5TMXAiBoch42/XJNp2h8ReYr9D5U+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=UsGAkVQk; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=cX8enkkK; arc=none smtp.client-ip=5.75.144.95
+	s=arc-20240116; t=1772731749; c=relaxed/simple;
+	bh=zcJSmOmN3xafWLxMlqnYXDawmBYO+JKoYNcl0mT8OP8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lAthomPqO1sWw/81AkupUZs9S0bjgEUSkvMOojOxYwhscI7XRXrLEf57Z707RdP0EFQE041Ih89L1NZ2CjvhXf2BPBuiFV4av1z3x2vn6JV49ZvrSrDtlV13l05Q6MUYhey+MnEHrTrQ000cV+49OHTf6dEReeWQcDqNcAMSqB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=DJwabuWU; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=3QjMSCW5; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="UsGAkVQk";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="cX8enkkK"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="DJwabuWU";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="3QjMSCW5"
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772731728; bh=AYxYY2/zzt/6fBHUnJEllfl
-	xkQdpqVDfE8pDshk7bPY=; b=UsGAkVQk4x7G1ZNDkI5rN0xDOgFUk0eisZgYMHo/OTeTfM26eX
-	60RWpovoKWXoveOh6cRiRLSQrAiLh8+rSK5Fc8fsKLYM0UFFk/LGeoLNkrjoViMklVZ4z7FK0V6
-	diLBfyGaXfSS8J90WtOu+pf7odFtyfGYwBgjlIdTz4FU1YdlmAXn66084b1u4ZONjbwiUmjx1xw
-	6TbyslKqJvqraDTKGaRkwxEId6jkW5cgg0UFi7eTEj8ZLj6vcZOCdC6S2OeVBdX8ONrikJp2Lti
-	EPP/Rqcv4j9kxi5K7JVHCp9tO/zwP3NZxkkIjtqRg2gP/N9i/0h9FLH6rI/EZlujpLw==;
+	h=To:Message-Id:Date:Subject:From; t=1772731726; bh=N854RCmLSX8Z2Z+/ygFlUEq
+	5mRJryu/DCluuMqOr8/Q=; b=DJwabuWUL+uyIfwGr5TkKtC8MyynZ+QKi4xwTmPlIiWdRvCcxK
+	Ke1jPmgz6cQBCYCWbOl2JQ8aarohY/dCbdzwKXNgF+Fr8/v9Sr4uWMkQM9mbHUkR8XOahkV/GuA
+	nS0VLZ9aJmvfxdDui+MAWglcFZwDMK4ZyBrnubk9Hu/zm+oM9PuxJ2q/Gdxre+qirgg1xhwS5Kv
+	tEtBrJg62xmPVu9h1bI9X330SG9qUHg9IyRdAxY6WmD9JMQm9vEGQtBADkuT2QJ/5geUz4jg4Oj
+	Ax+1GeBrrN7MbyKReUup6jbnuSPePUVIT5cViFJo/2sRGfHRYAltz3JQBnNZY3V/Zvw==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1772731728; bh=AYxYY2/zzt/6fBHUnJEllfl
-	xkQdpqVDfE8pDshk7bPY=; b=cX8enkkKnkMcQe/AEyy6kQrPMIN8OxbOzPoKP0HSJzTSy7MLnP
-	d2PTIJRaNmKLihk4+m7Ow5ZyD/yD3dmj3vAQ==;
+	h=To:Message-Id:Date:Subject:From; t=1772731726; bh=N854RCmLSX8Z2Z+/ygFlUEq
+	5mRJryu/DCluuMqOr8/Q=; b=3QjMSCW5BCnJOjr803/M/Rb2Mijtx4qgYNvZHWLb/2IUgLxaUz
+	fDgum8VYydHBk6bSe5m7DHcOdLpbyF8xljCw==;
 From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Thu, 05 Mar 2026 18:28:34 +0100
-Subject: [PATCH 2/5] dt-bindings: arm: qcom: Add Redmi 4A
+Subject: [PATCH 0/5] Commonize Redmi 5A for 4A and GO
+Date: Thu, 05 Mar 2026 18:28:32 +0100
+Message-Id: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,9 +39,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260305-riva-common-v1-2-436f1f4b7399@mainlining.org>
-References: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
-In-Reply-To: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwMT3aLMskTd5Pzc3Pw8XTOzVMtkSxMLQ8tEEyWgjoKi1LTMCrBp0bG
+ 1tQCFwAvsXQAAAA==
+X-Change-ID: 20260304-riva-common-66e9c94819a4
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -51,34 +52,48 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux@mainlining.org, phone-devel@vger.kernel.org, 
  =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772731726; l=652;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772731726; l=1366;
  i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=ZPK2VT1HFBBm6ahy9ybaGuxsK2/a/XNZLCQf575gccA=;
- b=eZLcqu1sWfWuqMhkf0AiKgmZcK242z7eMUGZSIBEGsO6ANBbCjMGIZCnn9lK/ofUGE3P3gLbe
- dUvPlYHERfDADxgmgsyeY8WJwbcAmoD3UNQLapaCNiCemVlsSf5zFW3
+ bh=zcJSmOmN3xafWLxMlqnYXDawmBYO+JKoYNcl0mT8OP8=;
+ b=/VvWKjz8Qgp3zfnRjx4oYNpdxyXmxUH315XBy0+4uhJfq8LBHNagCl1ksrhkr/fk8EnCsIoiZ
+ Ukmvn6EiEL8B06rgXCVSbS+ujqqWqqbOO4b4vBnJ72btfToeGPbOQzF
 X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
  pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-Add Redmi 4A (rolex).
+Redmi 5A is similar device like Redmi GO and Redmi 4A.
+
+This patch series commonize it to avoid code duplications.
+
+Differences between 4A and 5A:
+- Different charger and fg
+- Different displays panel but same resolution
+- Different speaker codec configuration (awinic-mode)
+
+Differences between GO and 5A:
+- Different charger and fg
+- Different speaker codec (aw87319)
 
 Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
- 1 file changed, 1 insertion(+)
+Barnabás Czémán (5):
+      arm64: dts: qcom: msm8917-xiaomi-riva: Commonize for Redmi 4A and GO
+      dt-bindings: arm: qcom: Add Redmi 4A
+      arm64: dts: qcom: Add Redmi 4A
+      dt-bindings: arm: qcom: Add Redmi Go
+      arm64: dts: qcom: Add Redmi Go
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 153664da91d9..456c1a382cc2 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -200,6 +200,7 @@ properties:
-       - items:
-           - enum:
-               - xiaomi,riva
-+              - xiaomi,rolex
-           - const: qcom,msm8917
- 
-       - items:
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   2 +
+ .../boot/dts/qcom/msm8917-xiaomi-riva-common.dtsi  | 333 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts   | 304 +------------------
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts  |  19 ++
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts  |  27 ++
+ 6 files changed, 386 insertions(+), 301 deletions(-)
+---
+base-commit: fc7b1a72c6cd5cbbd989c6c32a6486e3e4e3594d
+change-id: 20260304-riva-common-66e9c94819a4
 
+Best regards,
 -- 
-2.53.0
+Barnabás Czémán <barnabas.czeman@mainlining.org>
 
