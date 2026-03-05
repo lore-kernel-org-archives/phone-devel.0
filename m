@@ -1,131 +1,276 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3F30F808;
-	Thu,  5 Mar 2026 08:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C865377EC5
+	for <phone-devel@vger.kernel.org>; Thu,  5 Mar 2026 09:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772701096; cv=none; b=WOjPG5RqgfGErmhk+KIHwxjW+Q2eJmeRUzvGxKxbA4tTZe2Oxk0qTiJsGOBr1UNSdE6V2B5dKfmIxj1YhS9qOoPrbodf+8Zl8LbNsJ8ijn5OXi60HBp3PekD8gFieqGym0QC01V5F9udu3JosTqQlZjk/J1l9cQ/QA1vOGCe80I=
+	t=1772704079; cv=none; b=hPUr0BqZOyUpSLZXNwOoibuda2Pb1wdcVaSxbS2Rowip0GBrQnGULEc+0YqX3theZ53LDpb8aupuDeBGtRrHjr8URc3wcLlIIEKpKp5jWNtL6OLMXVq2nhlFE1iJjYVnhdvb1LoWl3q8U23FfIkDhn6Dygdy2SvKHqOvGqmaXng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772701096; c=relaxed/simple;
-	bh=H+oJZQ3001plR3zQ6WoYzq0zrvjKiN1LRRf3kGj1oc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JN9AjOo6xZwBitu0pzK6sNgekd452Zh3EEsRwxGsJMI7E96bO329R6mv6xVusZxqfkAyPc+ClC7m+s2kqfqoKiybn7dEgMfK7PE/9nqTRZUAy74ohllESRsnLhBabMBdjYi7WlT9Z/1uE06zvnHXLp7AUbgXlPUeIWBSCgehYcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LCqOSXMp; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1772704079; c=relaxed/simple;
+	bh=yNJ+g0kgFl4rN2nV1qDYDztAf8zpw/3rgT6jdQgfIak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kSqa9BazhqRtXCyIULSjMqvLfKJ3krpx1FA7gqg7MX8tTPDmxpIvhRAE/8TSWPnVMP3IFDFMG3Y7K9JA66bfS4c3CQ9q3HmJJjh1jbk96UVKpqrxKEEksi6JzNEsyrpqISEIY+k6ygUnnE9L9tAB6XEgpEEMWuWI7HZl6962ieI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eLCMqKDy; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LCqOSXMp"
-Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 8480F5341062;
-	Thu, 05 Mar 2026 09:58:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1772701091;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i1x+U3Few/NgVJRWrIcf5kMgGln2fDeZq/ALUbGnECI=;
-	b=LCqOSXMpL9C9HUUhYqOnp2Yca6e8UZnxgWIelvwtSn0z2jXOOpQ6h6+0IK5Y5c9XXIKevX
-	/1QkwOos70/Lgdwf9h71jv2hwcdbdCeODuTGeLAX4m6Unv9kdpcUPyAAKpli7Rurx5oKsq
-	aj0mxi4YGWPe/oE9bk/Ul3tl5khmlUg=
-Message-ID: <7b7e3fea-514a-4a3f-bdb4-0d51df7df21a@ixit.cz>
-Date: Thu, 5 Mar 2026 09:58:11 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eLCMqKDy"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so89091065e9.1
+        for <phone-devel@vger.kernel.org>; Thu, 05 Mar 2026 01:47:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1772704076; x=1773308876; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=obqyQWFp1H53oLqwIlaLvRj7pbSd+nYq4rGayxVQqL4=;
+        b=eLCMqKDymWtpwAUnQYoKNKqKiLoWlQxH/p4LQR614Ji1m2oo6S4ecYxpAFss6bgzfM
+         TgCaWir/AHpvUMW5hTLr6jycQUyOTcQ7i5DVXtDPubkJP6PvayZbBU1eiv/+TrD6SCfO
+         I548MehQoziFRYJo+wtgiERDzmxlO7PE7Zayui51vrMZhUKY+8pyUz4QsraYDc9eLULY
+         d0OKgVX7VgrQxf8gjyynfLut3tGSovKCED+Mrx4OlNIDPYs9oRUhI0VFhkRyHPIPxS9Q
+         bTz8Yt33f+Owoaz2gFxQSiZZJKZJvXaYmfeC/+vkPDwFGQcDi652pTLaRs6h5zmg9jDD
+         pgyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772704076; x=1773308876;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=obqyQWFp1H53oLqwIlaLvRj7pbSd+nYq4rGayxVQqL4=;
+        b=j+4qC4QuwAhQvsQoOclGxqObC0f2TIMIwDkn25TJWBvd8V8yZiBUdnFU0hQ578ONZO
+         J24uDM5qb4kNOPl17tdG3+8Cl/y5RwA1Oo78yaoLIdYmhHUo6zYb3cK490fid60Du7tj
+         yUotYVuXF8TdXEJozZyODxsTH2JxAooZLZa5hXgHEc9wJk3mXWPebP15yNpNkji7q4nM
+         hbkMFDm7grqhmx6j6Z6qUBBaywYrsr+jYcNfWHiWEgPsWb04eK3nb3hDfjCJYVCTZRtv
+         fz8a6qFjYFKnau+FEewH20ofO6GKpHkkuegLAwX27gn8LAEEic6sCzWQ+5GOUOflJvHh
+         2J5A==
+X-Forwarded-Encrypted: i=1; AJvYcCW4XuLrD9/hK6Erk2vAVIdbK9xCEib0GhkTkQocs/LsNP45pcq+xIN98cbT1Z6DE84DCjx0Q2JYgtQVbg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjA+3Pb3Qy/IkAM93xfHLkTzlbQ5FiVnThTg40BrPwMbBmeIgV
+	PIEDXgCoQfjTmIUhwMOrm1lEn9H0l0TbuTusRCY3Su7KEqw4a5gWMWIvSKQ4DwF4Ry8=
+X-Gm-Gg: ATEYQzwvNvjEsSrMLXLy4kzQj/T/H+kP050xepoUsyRtTiv/eZliB+0BNT3eatowDzQ
+	c6CUfUdlnDKVGdyw5/2xe2vMYUl9Zc1+/boq5i+NKH4iKmSwimZpkfWipCAKTX7ezr1j4Y2f2Xi
+	S82o1giF+Qj+qcDm6jdqAFBQnwWDi9vyToeFPIrO8aK0/fM6Cd0an+NBGsktbISTBZ97ICYidI+
+	FA1Xmlef5+Ctt4UIRAEAiwu4EwI9Zw3+twE+9GOnD01R3KZ7v1QYsHQsPv3w+cMsj05+obi4kgH
+	BB3RZcRd2AXM0yJs0ElDGX45xufRkuRDUPHGsz6VfxhTJCwr7YuITBfaZX1QfYX4UU+XQV8SFwU
+	Rw2mL+SSUAG1i13LyjpoQnU0GNcGL4yQm2I30TTiuSL8GN2AmPzTBwN2tjVrxdvrTgNO1M7yteX
+	JREsgBnWeZweF29gxlg0qBbz34YSGvdQC2fItnKBA=
+X-Received: by 2002:a05:600c:46d2:b0:483:b505:9db4 with SMTP id 5b1f17b1804b1-485198a3d0emr89895795e9.31.1772704076395;
+        Thu, 05 Mar 2026 01:47:56 -0800 (PST)
+Received: from linaro.org ([77.64.146.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851ec74bc7sm25012025e9.0.2026.03.05.01.47.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 01:47:55 -0800 (PST)
+Date: Thu, 5 Mar 2026 10:47:22 +0100
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
+To: adamp@posteo.de
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
+ initial devicetree
+Message-ID: <aalRKuqzX48PzyL-@linaro.org>
+References: <20260301-wiko-chuppito-v3-0-9b36a2a7aed5@posteo.de>
+ <20260301-wiko-chuppito-v3-3-9b36a2a7aed5@posteo.de>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] drm/panel: himax-hx83102: Add support for DSI DCS
- backlight control
-To: Val Packett <val@packett.cool>, Neil Armstrong
- <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260217070121.190108-1-val@packett.cool>
- <20260217070121.190108-5-val@packett.cool>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260217070121.190108-5-val@packett.cool>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301-wiko-chuppito-v3-3-9b36a2a7aed5@posteo.de>
 
-On 17/02/2026 08:00, Val Packett wrote:
-
-[...]
-
+On Sun, Mar 01, 2026 at 11:29:19PM +0100, Paul Adam via B4 Relay wrote:
+> From: Paul Adam <adamp@posteo.de>
+> 
+> Add an initial device tree for Wiko PULP 4G.
+> Includes support for:
+> - UART
+> - USB (no OTG)
+> - Internal storage
+> - MicroSD
+> - Volume keys + Power button
+> - Touchscreen
+> - Backlight
+> - Accelerometer: Invensense MPU6880
+> - Magnetometer: Asahi Kasei AK09911
+> - Hall sensor: Rohm BU52021HFV
+> - Proximity sensor
+> - Vibrator
+> - Earpiece
+> - Microphone 1
+> - Headphones
+> - Wifi
+> - Bluetooth
+> - GPU
+> 
+> Signed-off-by: Paul Adam <adamp@posteo.de>
+> ---
+>  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+>  arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts | 356 +++++++++++++++++++++
+>  2 files changed, 357 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index f80b5d9cf1e8..5a3a9a823503 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -75,6 +75,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-rossa.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-uf896.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-ufi001c.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wiko-chuppito.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86518.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86528.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
+> new file mode 100644
+> index 000000000000..dd56e1baeb4b
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
+> @@ -0,0 +1,356 @@
+> [...]
+> +&blsp_i2c2 {
+> +	status = "okay";
 > +
-> +static struct backlight_device *
-> +hx83102_create_dcs_backlight(struct mipi_dsi_device *dsi)
-> +{
-> +	struct device *dev = &dsi->dev;
-> +	const struct backlight_properties props = {
-> +		.type = BACKLIGHT_RAW,
-> +		.brightness = 4095,
+> +	magnetometer@c {
+> +		compatible = "asahi-kasei,ak09911";
+> +		reg = <0x0c>;
+> +		vdd-supply = <&pm8916_l17>;
+> +		vid-supply = <&pm8916_l6>;
+> +		reset-gpios = <&tlmm 120 GPIO_ACTIVE_LOW>;
+> +		pinctrl-0 = <&mag_reset_default>;
+> +		pinctrl-1 = <&mag_reset_suspend>;
+> +		pinctrl-names = "default", "suspend";
 
-Series looks good, just nitpick here.
+Did you mean "sleep" instead of "suspend" here? By default, there is
+"default", "init", "idle" and "sleep" [1], although drivers can request
+custom pinctrl states as well.
 
-While this is not OLED, where full brightness reduces the lifetime of display a 
-lot, are you sure you want to bring the display backlight up to 100% by default?
+Note that even with "sleep", the pinctrl state will be rarely used on
+Linux. Drivers need to explicitly call pinctrl_pm_select_sleep_state()
+to trigger these, but only few drivers do that [2]. From a quick look,
+I suspect that only the &sdhc_2 sleep pinctrl here is currently used on
+Linux.
 
-Usually I've and others put ~ 50%. It's important to keep display well readable 
-until userspace takes over, but not have to be full-throttle :)
+That doesn't mean that you can't add these pinctrl states (the DT is not
+supposed to be specific to one particular operating system), but it does
+mean that most of these are effectively untested right now. I would
+personally omit them.
 
-David
+[1]: https://elixir.bootlin.com/linux/v7.0-rc1/source/include/linux/pinctrl/pinctrl-state.h#L36
+[2]: https://elixir.bootlin.com/linux/v7.0-rc1/A/ident/pinctrl_pm_select_sleep_state
 
-[...]
+> +		mount-matrix = "1",  "0", "0",
+> +			       "0", "1", "0",
+> +			       "0",  "0", "1";
+> +	};
+> +
+> +	proximity@48 {
+> +		compatible = "sensortek,stk3310";
+> +		reg = <0x48>;
+> +		interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
+> +		pinctrl-0 = <&proximity_int_default>;
+> +		pinctrl-1 = <&proximity_int_suspend>;
+> +		pinctrl-names = "default", "suspend";
 
--- 
-David Heidelberg
+Same here.
 
+> +	};
+> +
+> +	imu@68 {
+> +		compatible = "invensense,mpu6880";
+> +		reg = <0x68>;
+> +		interrupts-extended = <&tlmm 115 IRQ_TYPE_EDGE_FALLING>;
+> +		vdd-supply = <&pm8916_l17>;
+> +		vddio-supply = <&pm8916_l6>;
+> +		pinctrl-0 = <&imu_int_default>;
+> +		pinctrl-1 = <&imu_int_suspend>;
+> +		pinctrl-names = "default", "suspend";
+
+And here.
+
+> +		mount-matrix = "0",  "-1", "0",
+> +			       "-1", "0", "0",
+> +			       "0",  "0", "-1";
+> +	};
+> +};
+> +
+> +&blsp_i2c5 {
+> +	status = "okay";
+> +
+> +	touchscreen@39 {
+> +		compatible = "syna,rmi4-i2c";
+> +		reg = <0x39>;
+> +		interrupts-extended = <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
+> +		vdd-supply = <&pm8916_l17>;
+> +		vio-supply = <&pm8916_l6>;
+> +		pinctrl-0 = <&touchscreen_default>;
+> +		pinctrl-1 = <&touchscreen_suspend>;
+> +		pinctrl-names = "default", "suspend";
+
+And here.
+
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		syna,startup-delay-ms = <100>;
+> +		syna,reset-delay-ms = <160>;
+> +
+> +		rmi4-f01@1 {
+> +			reg = <0x1>;
+> +			syna,nosleep-mode = <1>;
+> +		};
+> +
+> +		rmi4-f11@11 {
+> +			reg = <0x11>;
+> +			syna,sensor-type = <1>;
+> +		};
+> +	};
+> +};
+> +
+> [...]
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +		regulator-always-on;
+
+Does this need to be always-on?
+
+> +	};
+> +};
+> +
+> [...]
+> +&sdhc_2 {
+> +	pinctrl-0 = <&sdc2_default>, <&sdc2_cd_default>;
+> +	pinctrl-1 = <&sdc2_sleep>, <&sdc2_cd_default>;
+> +	pinctrl-names = "default", "sleep";
+
+This is OK, drivers/mmc/host/sdhci-msm.c selects the sleep state.
+
+> +	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
+> +
+> +	status = "okay";
+> +};
+> [...]
+> +&tlmm {
+> [...]
+> +	imu_int_default: imu-int-default-state {
+> +		pins = "gpio115";
+> +		function = "gpio";
+> +		drive-strength = <2>;
+> +		bias-disable;
+> +	};
+> +
+> +	imu_int_suspend: imu-int-suspend-state {
+> +		pins = "gpio115";
+> +		function = "gpio";
+> +		drive-strength = <2>;
+> +	};
+
+imu_int_default has a bias, but imu_int_suspend does not, is this
+intended? I would just drop these "suspend" states, as I mentioned
+above.
+
+Thanks,
+Stephan
