@@ -1,112 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89657285CAA;
-	Fri,  6 Mar 2026 08:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B17837C106
+	for <phone-devel@vger.kernel.org>; Fri,  6 Mar 2026 10:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772785772; cv=none; b=X9i6XRnrhA20RYhRWgR3o0ufnFoLwdnxBeI4t7QAt2pLHUhbxr1C0ulmXIt8vUm01Bu+WDhYacdtJy+0+KtfXOXfmvtomyh19SerkZX1nQviWX4WxN8LW1igyHq7H8xoE6CySgo7BkY32ijGeRXayc5ruSRZ1ZwFaLF5ueoBFDo=
+	t=1772793434; cv=none; b=ZmsAxSglLsbLHdf5apHZOOysTwhkMCsbo5ygbrNJ7VdHJP0bJEmcBof5bT44W8NzW3pA2IRebIKXiDjaZ4aLM8lAwzzs1yI7eUdkr7bDf23I9xL1qidbR++mLnRcXXHs5SaAjOFfWtAUQPYT2evjC+aA35p/ley8ArlZGh3mD0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772785772; c=relaxed/simple;
-	bh=FM5qFDOz8tDkVAsftyOyhPhpUbOyiKezbdHAA9JdnXk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cGRM6pHG0o8980cgdDpfXa6NKWjUbyvVqLY/kNaA6Xe4wbViw0ce+F3RWZlY/LSND8cZ096uz2InbdV8fTKJ3A5Xd8VpmxSlmWw5wx2ou+By8iFi1sD1YYqp8sk+rGqYDFGWQhQxrvT7xJ6CUwwRdLgzLjlO+TNC3H7TvxA9ce4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvFgEaeZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772793434; c=relaxed/simple;
+	bh=9mQW205gegUibeTid/1e5hyvVPikyOjbbJTshSUvqqE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=aw3j35qiMSroQl9ZxH0iSw44bZYcli5wt8xWoMH9joHAVC1wHSRcCMVt7qeon2W5jtLTiseUoAfX4tM+qx5vFnWJ6bTbxm9dIgI8/AwqJRmBSrEkv0uttX2K/K/zN0way7ihno/heL28CO1Z8kpXcA0+fv2CFeKIBZSxFN31nqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=IIPRPf/V; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvFgEaeZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1270EC4CEF7;
-	Fri,  6 Mar 2026 08:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772785772;
-	bh=FM5qFDOz8tDkVAsftyOyhPhpUbOyiKezbdHAA9JdnXk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=fvFgEaeZeToaaZwSsUjXx2S72zm7V/q8FbVQVnJqcPkv0ipva4iOXB7GpHs54Oze7
-	 BpHWjHiGWdTVRlNO+a4cMkvm/+DI5+3aNciuWg31kjV5F08grXelvRG5PQsOu0nmY6
-	 V7JylESMXyNlX51ev4aL+f6LP6VNjHZES9wLF0VkvSi8dHuNasLWVCX49Iglv4eRN+
-	 mjxSP9YjyvO+HH5P5YWHRYCrwUEYXTZBaaBrWWeQ8BuBAjwmI7mK6nBs1SVmZtDJ+j
-	 TJ48CMgR4JxMEuMyfBegPky7TjdNsVM+cSnojfveVoeHBZZZni/e0x1WenTKydMNzm
-	 N608Rdit4EdtQ==
-Message-ID: <6621a503-d9c1-4cc4-9687-d92aec6ff10d@kernel.org>
-Date: Fri, 6 Mar 2026 09:29:26 +0100
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="IIPRPf/V"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b941762394aso165303166b.1
+        for <phone-devel@vger.kernel.org>; Fri, 06 Mar 2026 02:37:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1772793429; x=1773398229; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9mQW205gegUibeTid/1e5hyvVPikyOjbbJTshSUvqqE=;
+        b=IIPRPf/VjAEUXK8IyQI6dB7AJahg7RWN0BIknY7cs1Al2aaH1qimHs6i7pawIGUrqX
+         aBc1Nslf7Kg9oY+W2vanwvTGk3ltaRcuCiCopK8wVNr8zNYLxxk4meZJPXmk9utElSw8
+         F41of/pPfqErHw2h00WlD4cOll990+Tze/4WHyv7MeabOpmirywwPV/uhtInqJkH0CFa
+         AOqTCp4ibA+NSsget7w2J3A683K91Rnzv9I5FxK9jwggUTGeUo8/lyxTzPUluFcavX+g
+         YuamSImqSprJnKZTqCh2xY094YPt5lgYF0eI498QHjdNiqLKSMboazlBT/PPI8hVjVbo
+         44Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772793429; x=1773398229;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9mQW205gegUibeTid/1e5hyvVPikyOjbbJTshSUvqqE=;
+        b=waVhxeYCdfruTPXhmalsWWPZ+pcbMB7rw0Sfs3+I18MJQ2/pJ/Jt4kQYwTlKqEy61r
+         h8eHAfam1upNaVXlRNWAqH3Hw1QS26IttPD6pn2n8Wraw6JYlBjzeFNWWyo/t6CCE94G
+         WocbnJPZkfj4RNjluRJd46+37wCkY+kb8wsar4QamaehcZ4Dihrp+BCI4aTQUSpywAOk
+         HCXHLouwwoUQfHimNu1QmFJxHRX5u4GYb7PaD4SQIO30WdvvJRn50vo0iqWTKoDDzm0j
+         dMbQ3Derm6iomuy3tDHpVxBZ46jjTUx/itmVlAYLiF6uIb3WRD5Ev+WYBWljC8WkZglW
+         a+0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWThRIWNRV86oqna26+CkwTzX+1xbAxYxOxhiSnn9N935AlzPwVdYDoIb9WEqwwdCLRSp+siMxCFEU9mA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4XQtTb7kVuuIP6YbWmG9cutdBuxagWyFIhIwvIfR9Ti2qOAwi
+	sRhyXW/2npl6Au9xx4FwMh1v5nQe0Jc06ebHLR1OcZ+n/zw5NM3wBu+sZ4oqxbPGrhE=
+X-Gm-Gg: ATEYQzzlQPOT2Y9sOSYbLxsmCQgJjITw/UztRTrc1Belo3N0frQvLHE+h0JKVsEvYwN
+	p3O/irU772yZbBSEP+r9hG4H5a933EgQcWuX0V8Ua6NTRcCjmzh9t1luoTK9Cyvy6MK0lfsk6n0
+	PxyGWw2la+jNIdobKsPze6TTsErz/3f0BXHDRVAhkh4btaeOGWsX1vAUzv/XHQJu0RA2ged8VOZ
+	rctbh8GJ8D8gpmfeXU5LKB2d9ZhFNFAZD5b1hKWMaAABxQtlHMTifwn1cNzfMznMD7DoG7PIhyo
+	FxjWdxr17GNuOYWoJlyrWJGj1ZHUL5e32hBYYBBzFX8chLWW7vzMJ0sMuir4YYYAbBg1AdBytsO
+	RmNlntpJIQUs1Ae3eu8zhhj0yF3m4Ig6fABAeWQUOy0QpuOsG4kiNHRfXxyPcv/oEP4URr5LJR/
+	FSucn4VbRQCp1YvDt4STA95ta0AREy+e0LuhLmwCe0GVf6TsdKzhihq8tq8dEOI1rdCvru
+X-Received: by 2002:a17:907:9486:b0:b73:572d:3b07 with SMTP id a640c23a62f3a-b942dfb4369mr108342766b.28.1772793429277;
+        Fri, 06 Mar 2026 02:37:09 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942ef8ad0fsm46007966b.19.2026.03.06.02.37.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2026 02:37:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] dt-bindings: arm: qcom: Add Redmi Go
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux@mainlining.org,
- phone-devel@vger.kernel.org
-References: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
- <20260305-riva-common-v1-4-436f1f4b7399@mainlining.org>
- <20260306-daft-squid-of-whirlwind-afcea0@quoll>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260306-daft-squid-of-whirlwind-afcea0@quoll>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 06 Mar 2026 11:37:08 +0100
+Message-Id: <DGVMTLXR7VVA.3UCTHBGDDIKL7@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Krzysztof Kozlowski"
+ <krzk@kernel.org>, "Luca Weiss" <luca.weiss@fairphone.com>, "Taniya Das"
+ <taniya.das@oss.qualcomm.com>
+Cc: "Georgi Djakov" <djakov@kernel.org>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 2/5] dt-bindings: clock: qcom,milos-camcc: Document
+ interconnect path
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260116-milos-camcc-icc-v1-0-400b7fcd156a@fairphone.com>
+ <20260116-milos-camcc-icc-v1-2-400b7fcd156a@fairphone.com>
+ <20260117-efficient-fractal-sloth-aaf7c2@quoll>
+ <59d9f7ff-4111-4304-a76c-40f4000545f5@oss.qualcomm.com>
+ <9f8619d4-43ac-4bc0-9598-c498d59a27b8@oss.qualcomm.com>
+In-Reply-To: <9f8619d4-43ac-4bc0-9598-c498d59a27b8@oss.qualcomm.com>
 
-On 06/03/2026 09:21, Krzysztof Kozlowski wrote:
-> On Thu, Mar 05, 2026 at 06:28:36PM +0100, Barnabás Czémán wrote:
->> Add Redmi Go (tiare).
-> 
-> Squash the two binding patches, please.
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Hi Taniya,
 
-Look, one patch for so many devices:
+On Mon Jan 19, 2026 at 11:28 AM CET, Konrad Dybcio wrote:
+> On 1/19/26 11:20 AM, Konrad Dybcio wrote:
+>> On 1/17/26 12:46 PM, Krzysztof Kozlowski wrote:
+>>> On Fri, Jan 16, 2026 at 02:17:21PM +0100, Luca Weiss wrote:
+>>>> Document an interconnect path for camcc that's required to enable
+>>>> the CAMSS_TOP_GDSC power domain.
+>>>
+>>> I find it confusing. Enabling GDSC power domains is done via power
+>>> domains, not via interconnects. Do not represent power domains as
+>>> interconnects, it's something completely different.
+>>=20
+>> The name of the power domains is CAMSS_TOP_GDSC (seems you misread)
+>>=20
+>> For the power domain to successfully turn on, the MNoC needs to be
+>> turned on (empirical evidence). The way to do it is to request a
+>> nonzero vote on this interconnect path
+>>=20
+>> (presumably because the GDSC or its invisible providers require
+>> something connected over that bus to carry out their enable sequences).
 
-https://lore.kernel.org/all/20260305-verdin-imx95-upstream-frank-li-base-v1-1-823fad02def9@toradex.com/
+Do you have any details you can share for this discussion?
 
-Best regards,
-Krzysztof
+Regards
+Luca
