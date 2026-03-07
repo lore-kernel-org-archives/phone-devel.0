@@ -1,64 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C132D77E6;
-	Sat,  7 Mar 2026 15:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B331B277029
+	for <phone-devel@vger.kernel.org>; Sat,  7 Mar 2026 17:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772898068; cv=none; b=qCqmYFrwB7HkBJogQCh364bOSy1B3NmXsBEOpsjVYiXSY0QNCF9i/0Pd1vvYS3d4x0YKdEu/q0vHv7QlV5bcb57Q/ER5h5AeAXQ5QOBliRx1qHpXDZS+Q/GQQwCJdRVptqpGF1o/pfQi0I3nW/LlBppTkjoFCDXFeZV6wXJNogk=
+	t=1772904013; cv=none; b=uq6Nt2Xb3dSpRSO3SvLbse5OlTzYSDGZAkW9mhDQF+XOo76EYYBz/rJkQaD39eOWqdeaUQXCFdSEtolxIRvrR5S0ObHc5waKC/oJeRVa6kWonbtXxMqIPQIcvwRVtYDs7QL/bCCDVU2Xlw4vppHrxl/oa5VR8RqKdLtKNlJdk2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772898068; c=relaxed/simple;
-	bh=f+VINfj30sRD5d1VtokdWX86fVCDbmqN3C1dnxzpYNk=;
+	s=arc-20240116; t=1772904013; c=relaxed/simple;
+	bh=41c5YB62NkVj4QXCQGXjaY+g6aVFcAXV/YuneE0W+eA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jmJrfZ1cS+qU5Q0igCvqchPR0NSrkb+OwnI8rC0H87gnBQgc+gmec9MhnQ+skZESichwjea52y11lmdU+a5HF77DuALEb6ecsK7mj4mtUGSc7fpKAXy/zXKyW2boOiA5ejJf90AzsTk7ZLsP/NJHKfAEgeel+zOUmr4v6f2wD/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgqp+28H; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ndAonSfk4z0McjF6BUoPZnUxzzr4OKA1xRhaIRmgYBxet1/12/y29YOWUMugSwkCF1gbP24+zRaSGjL16WCGXYBRdrjPfBBtrOg466hCJNNxXuhHHDuXSzJVrQpGrz+EsF2MLML3e4sCDu2jaO7c0ghGrIWhGQwsLC/UkfRi/qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=DYyM21Js; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgqp+28H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4607DC19422;
-	Sat,  7 Mar 2026 15:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772898067;
-	bh=f+VINfj30sRD5d1VtokdWX86fVCDbmqN3C1dnxzpYNk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sgqp+28HRdDN0PvuTh1W2Uw8yhl0iSfX/7blmZYkvTwt2oEGFBNW833PB63sG2xqU
-	 7st9Jf7sE/QhirNBOP936QBObGQSdZeGMxAw1LTVWd5tzV0bxf6qQ8VAYNH/X2NhgS
-	 +eNjWsCVfVgggdSHgbfQaiaF9eYKrfLPz5BCQzVJzzJxncLq33Yc5DOgYot61dtLts
-	 njrruI7dXhoDZudHNZaSDHSij8E7tJm38L5d8pAIdAEjo/fkrt47LyUewjExyHFkwk
-	 CWkU2Ah4HyNGekSq0q64w22M3LVz9soG2dAcV645tXPgWO87gP+/SJwE//ZEbWAkT8
-	 cXA9ePgry+65w==
-Date: Sat, 7 Mar 2026 16:41:05 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] arm64: defconfig: Enable Milos LPASS LPI pinctrl
- driver
-Message-ID: <20260307-tan-dalmatian-of-atheism-e6625e@quoll>
-References: <20260306-milos-pinctrl-lpi-v1-0-086946dbb855@fairphone.com>
- <20260306-milos-pinctrl-lpi-v1-3-086946dbb855@fairphone.com>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="DYyM21Js"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 3B2B924002A
+	for <phone-devel@vger.kernel.org>; Sat,  7 Mar 2026 18:20:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1772904009; bh=TeLxd/uTrJmEOGEZ+zvsDQYaz9O1UZJAm/pt9kYs3jc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:From;
+	b=DYyM21Jsw6HGFIq+iKmRwlI972EckAKed3Bet4l2g4AiDmrGs4m5bvpaDyaldwGfv
+	 7AdVJWDQVVTRotuzxNbgk2iN3fI4ahR3rIS4YnGT0XGn/Nv3pFpekfupgg+sbiNx5J
+	 3x62Z8SOJwryvCfgO3a5m9eh8JcndoEfUo10D7snLweSe4T/4HOqdD4oPtU+3iivZu
+	 OqVyCbkXHnGLuTMTInToJmoI7wmEZTwinJ7fp5go2wowxywBCYXimR81DB84dnPxjQ
+	 bDsaXKyoefyIcek9qMVsxcUYKRk+S5YggumoqGJaWVzJZvk/mRv54B6Q1MFi1p4ZvD
+	 0RBdShfudgZuA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fSqlq38qwz6tws;
+	Sat,  7 Mar 2026 18:20:07 +0100 (CET)
+Date: Sat, 07 Mar 2026 17:20:08 +0000
+From: Paul Adam <adamp@posteo.de>
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
+ initial devicetree
+Message-ID: <aaxeRXsQlR-1CTKV@MyryksLaptop>
+References: <20260301-wiko-chuppito-v3-0-9b36a2a7aed5@posteo.de>
+ <20260301-wiko-chuppito-v3-3-9b36a2a7aed5@posteo.de>
+ <aalRKuqzX48PzyL-@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306-milos-pinctrl-lpi-v1-3-086946dbb855@fairphone.com>
+In-Reply-To: <aalRKuqzX48PzyL-@linaro.org>
 
-On Fri, Mar 06, 2026 at 03:22:17PM +0100, Luca Weiss wrote:
-> Build the LPASS LPI pinctrl driver as module, as required by devices
-> using the Qualcomm Milos SoC.
+On 26/03/05 10:47, Stephan Gerhold wrote:
+> Did you mean "sleep" instead of "suspend" here? By default, there is
+> "default", "init", "idle" and "sleep" [1], although drivers can request
+> custom pinctrl states as well.
+> 
+> Note that even with "sleep", the pinctrl state will be rarely used on
+> Linux. Drivers need to explicitly call pinctrl_pm_select_sleep_state()
+> to trigger these, but only few drivers do that [2]. From a quick look,
+> I suspect that only the &sdhc_2 sleep pinctrl here is currently used on
+> Linux.
+> 
+> That doesn't mean that you can't add these pinctrl states (the DT is not
+> supposed to be specific to one particular operating system), but it does
+> mean that most of these are effectively untested right now. I would
+> personally omit them.
+> 
+> [1]: https://elixir.bootlin.com/linux/v7.0-rc1/source/include/linux/pinctrl/pinctrl-state.h#L36
+> [2]: https://elixir.bootlin.com/linux/v7.0-rc1/A/ident/pinctrl_pm_select_sleep_state
 
-", like foo bar."
+Thanks, I will remove them.
 
-Because if we don't have such device with audio enabled upstream, why
-would we want it in defconfig?
+[...]
 
-Best regards,
-Krzysztof
+> Does this need to be always-on?
 
+Still works without, will take it out.
+
+Paul
