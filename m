@@ -1,164 +1,174 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BF213959D;
-	Sun,  8 Mar 2026 00:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD94271471;
+	Sun,  8 Mar 2026 14:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772931071; cv=none; b=Pkbtil9CQnbMMWf0oEG3uSyAxKPs957hWCgCITR+Ta6exq3aC4XHM1oiRn+DvtglS7TD1uyFpd7l2Nurofqcimbed6OBmfKbCJG8DUxt1IWRG2e+5I+XnD4bLgfKXzeMxoYEI1VyUJVpRJP40x8leY5tyWwzZzdV2AedYCP4fBM=
+	t=1772981577; cv=none; b=bJk7FMuZ6wAL0rOqGoW58DxpfI47P8LeyOGhYVWihfjaOZJNsJ3XY4QXJyn9KNYdjlXqwTIJmxfmQp1LtcplFKJj6groYL9iIzmWBjX6nISWRIq6xl6D47XdKLHY2tF0vJgewLOjA3GOpoxRB5OfUfLIETy5d+EWktEH17suWqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772931071; c=relaxed/simple;
-	bh=beE4ZGZ4MMQidwNf28xa2X+VQTDEeEnbXsFJ11ldVvY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qqwKh+NnP9GmT+g1XmQxvE/sMbjyQiGquXtwPotXo0k3WqgPXbIJ5A3gYN6HOKSU68nUmwdipjxqtmf6lGJukQMsrU/XLtW66al3W+FeFmTsoZrhMG5IxpbmJp9jgoEz7w3L6t4DEx2m5ym9IX+awuGLxNw2X/VNTRlq9zAtR50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=YhzfyX5Q; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=6jb9JiV0; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1772981577; c=relaxed/simple;
+	bh=h9lR2FOnXE7uoB+tCaLzQ8fel/j8lhzsuvRhfAbAB9w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tdP8cSBbCicP5LTCDzPLTQGnIz5uWAEYBSxLfldOALLh20I5rpDjAWUXRUYAEf9ETq3SvR8bjWeOnnIa7Dx+mhJs0egU1IQev4JsIeXXZXcZ08t1qdsAOnbEonGfSW8MCZkixTW2h5Gb3s5J4j8X77iGZAlbGKxO+yaV7yghYcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k77hhvnE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="YhzfyX5Q";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="6jb9JiV0"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1772931037; bh=bhxp6hPSPyCStY1nuvWc8Wy
-	6vYnwRIwNNwC1vc4Uy4U=; b=YhzfyX5QkzcRvWua/T7DYpZ2Vg7jbOurpyREm/5XCw+7nwpk2v
-	rd6rLQFNSVU79Ib17bEapImBDukLgSMQ+gupl5cV5iIrqe2QYcZuOUjbYHy0Tun2R2jKo/THXL6
-	CX7mz14aIWB+xkBL/MKfSKTLtIJsGUaX18xfUVmrp3keLOgbBAee04pouB43YNDLV9n8XlvShDd
-	s0vdOCdYcbOVwqentRn0RYm8BLeQmoU7opkh1bTn/S/cF62bY+/BrYnlkOmo1M9RTFchkZAG51V
-	scm9/eSqRDfnlWgkeuuyrSqME3d9VAwi9SkVJAv8FYgx+Uj6Xgzh9pvKv1IGAxDnlqw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1772931038; bh=bhxp6hPSPyCStY1nuvWc8Wy
-	6vYnwRIwNNwC1vc4Uy4U=; b=6jb9JiV06POjF1jXODcIwcM8OjXielrItEekySekMApkXo+fS9
-	W2v8u1gF3RjWTYy3kqF1dTfCrGnmIiD2u2AA==;
-Message-ID: <5db619e1-a4b8-4da5-b54f-af127b3d2225@mainlining.org>
-Date: Sun, 8 Mar 2026 01:50:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k77hhvnE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E9600C19423;
+	Sun,  8 Mar 2026 14:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772981577;
+	bh=h9lR2FOnXE7uoB+tCaLzQ8fel/j8lhzsuvRhfAbAB9w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=k77hhvnEvTSU6lpLA1+SBP5JZknY/DEi5bTfGwnZOEeHg1EJEOfC/pNvbntjxr5ak
+	 qYvxejUfCBVEtQMzWIBqrQ+vAVSTh9F2hV+odWI/NpbRLItZ73eWc42CH8EGjpUhsW
+	 CRG1VvXdGXy2Ch3IGyiY8WipOPBg1ZHvXk7r4hFHJI+QUUxOpWMatMewN/aG/CO5yx
+	 7nuQWbwNkP3hAKND+mbqh7oVmJAhzfcwGvz6etEKUMHSI6Ucg7MjKDgUrnJDy9RGtN
+	 HzFg+QjuKYGcrTfu2ifNuMCk012bNoPxC6je0iNACJq7kTR+j3foVNSkUiKxOGsWAv
+	 Qr+VH9LHcXGaA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0BFBEA8524;
+	Sun,  8 Mar 2026 14:52:56 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Date: Sun, 08 Mar 2026 16:52:41 +0100
+Subject: [PATCH 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD
+ DSI
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: clock: qcom: document the Fillmore
- Global Clock Controller
-To: Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Taniya Das <quic_tdas@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux@mainlining.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20260308-fillmore-clks-v1-0-976d9a6bebe7@mainlining.org>
- <20260308-fillmore-clks-v1-1-976d9a6bebe7@mainlining.org>
-Content-Language: en-US
-From: Aelin Reidel <aelin@mainlining.org>
-In-Reply-To: <20260308-fillmore-clks-v1-1-976d9a6bebe7@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260308-rimob-new-features-v1-1-aa2c330572c0@protonmail.com>
+References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com>
+In-Reply-To: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772985180; l=2664;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=CY/PsVM9Vewhtr4VFeBaWeD4SwFUa8brDk4OcdsJP5M=;
+ b=SnKXcuSfJ5wjVhp0OwfLf5Z6gv09wYnZZm/lTRzSr02v7j7PV4pf2qRwBopZH4NI/D8uWpyS9
+ ZS3EFrraTRNAmIco82D0JH6KAHO4PzJVYEDoNbS2mMdfXTQDSK2uUPw
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-On 3/8/26 1:39 AM, Aelin Reidel wrote:
-> Add bindings documentation for the Fillmore (e.g. SM7450) Global Clock
-> Controller.
-> 
-> Signed-off-by: Aelin Reidel <aelin@mainlining.org>
-> ---
->  .../bindings/clock/qcom,fillmore-gcc.yaml          |  60 +++++++
->  include/dt-bindings/clock/qcom,fillmore-gcc.h      | 195 +++++++++++++++++++++
->  2 files changed, 255 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,fillmore-gcc.yaml b/Documentation/devicetree/bindings/clock/qcom,fillmore-gcc.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..0eb12a52968edc7961681f0e965b4d6da0858b9c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/qcom,fillmore-gcc.yaml
-> @@ -0,0 +1,60 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/qcom,fillmore-gcc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Global Clock & Reset Controller on Fillmore
-> +
-> +maintainers:
-> +  - Aelin Reidel <aelin@mainlining.org>
-> +
-> +description: |
-> +  Qualcomm global clock control module provides the clocks, resets and power
-> +  domains on Fillmore.
-> +
-> +  See also: include/dt-bindings/clock/qcom,fillmore-gcc.h
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,fillmore-gcc
-> +
-> +  clocks:
-> +    items:
-> +      - description: Board XO source
-> +      - description: Sleep clock source
-> +      - description: PCIE 0 Pipe clock source
-> +      - description: UFS Phy Rx symbol 0 clock source
-> +      - description: UFS Phy Rx symbol 1 clock source
-> +      - description: UFS Phy Tx symbol 0 clock source
-> +      - description: USB3 Phy wrapper pipe clock source
-> +
-> +required:
-> +  - compatible
-> +  - clocks
-> +  - '#power-domain-cells'
-> +
-> +allOf:
-> +  - $ref: qcom,gcc.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/qcom,rpmh.h>
-> +    clock-controller@100000 {
-> +        compatible = "qcom,fillmore-gcc";
-> +        reg = <0x00100000 0x1f4200>;
-> +        clocks = <&rpmhcc RPMH_CXO_CLK>,
-> +                 <&sleep_clk>,
-> +                 <&pcie0_phy>,
-> +                 <&ufs_mem_phy 0>,
-> +                 <&ufs_mem_phy 1>,
-> +                 <&ufs_mem_phy 2>,
-> +                 <&usb_1_qmpphy>;
-> +        #clock-cells = <1>;
-> +        #reset-cells = <1>;
-> +        #power-domain-cells = <1>;
-> +    };
-> +
-> +...
-> diff --git a/include/dt-bindings/clock/qcom,fillmore-gcc.h b/include/dt-bindings/clock/qcom,fillmore-gcc.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..1e78a429a93ab5e73f2454812cb904e2a9a14fc3
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/qcom,fillmore-gcc.h
-> @@ -0,0 +1,195 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +/*
-> + * Copyright (c) 2020, The Linux Foundation. All rights reserved.
-> + * Copyright (c) 2025, Aelin Reidel <aelin@mainlining.org>
-> + */
-> +
-> +#ifndef _DT_BINDINGS_CLK_QCOM_GCC_SM7450_H
-> +#define _DT_BINDINGS_CLK_QCOM_GCC_SM7450_H
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Ugh, I only noticed now after sending that this leftover is still in here. Consider it fixed in v2.
+Document Novatek NT35532-based DSI display panel.
 
-Best regards,
-Aelin
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+---
+ .../bindings/display/panel/novatek,nt35532.yaml    | 66 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 ++
+ 2 files changed, 71 insertions(+)
 
-> +
-> +/* GCC HW clocks */
-> +#define PCIE_0_PIPE_CLK						1
-> +#define UFS_PHY_RX_SYMBOL_0_CLK					2
-> +#define UFS_PHY_RX_SYMBOL_1_CLK					3
-> +#define UFS_PHY_TX_SYMBOL_0_CLK					4
-> +#define USB3_PHY_WRAPPER_GCC_USB30_PIPE_CLK			5
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
+new file mode 100644
+index 000000000000..de11cce83b40
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
+@@ -0,0 +1,66 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt35532.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT35532-based DSI display panels
++
++maintainers:
++  - Cristian Cozzolino <cristian_ci@protonmail.com>
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: novatek,nt35532
++
++  reg:
++    maxItems: 1
++
++  backlight: true
++  reset-gpios: true
++
++  vsn-supply:
++    description: negative voltage supply for analog circuits
++  vsp-supply:
++    description: positive voltage supply for analog circuits
++
++  port: true
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++  - vsn-supply
++  - vsp-supply
++  - port
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "novatek,nt35532";
++            reg = <0>;
++
++            backlight = <&pmi8950_wled>;
++            reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
++            vsn-supply = <&ibb>;
++            vsp-supply = <&lab>;
++
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 61bf550fd37c..12243feb0b27 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8139,6 +8139,11 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
+ F:	Documentation/devicetree/bindings/display/panel/novatek,nt35510.yaml
+ F:	drivers/gpu/drm/panel/panel-novatek-nt35510.c
+ 
++DRM DRIVER FOR NOVATEK NT35532 PANELS
++M:	Cristian Cozzolino <cristian_ci@protonmail.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
++
+ DRM DRIVER FOR NOVATEK NT35560 PANELS
+ M:	Linus Walleij <linusw@kernel.org>
+ S:	Maintained
 
-<snip>
+-- 
+2.52.0
+
 
