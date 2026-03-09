@@ -1,150 +1,106 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail-24425.protonmail.ch (mail-24425.protonmail.ch [109.224.244.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17071377EC6
-	for <phone-devel@vger.kernel.org>; Mon,  9 Mar 2026 12:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857753D5246;
+	Mon,  9 Mar 2026 14:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773060957; cv=none; b=MS++CoUMyKX8fCpGmAFTgNfSL9nJw6Grmm1cb9V906onqItUnTlKDQrJ7MWLZ5tkmfD/3TO1vaXdg8bV5KKOhNXyyjozdNHbPGcQlgkorCFeKqA1dmlo+rxu8TI3N36IO0hWaccWeGYvrlugpSG2Z4pJ/OWRjgnbfE7AKtBUvLY=
+	t=1773067934; cv=none; b=o/NAh77QaZYfsNM/BiNVbT2fp7oD/JoVABZoF90uvjGjinHgvh2xWy9/otLT8TzAZbcYHKnQQAHUB3vNX6CwVB94aw4KOOcHxXd00Nv7cdAGk+7wg2Lpxc56nSK7fpWpvEeSaCEjfQMkeILvhMezS3dUMANi9rD5SzJyCdDT3Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773060957; c=relaxed/simple;
-	bh=7l9aO65EcTRGU9RFNHMLJuCfsf0K5qvwAMtDy4ezTQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qdADynliH//05KiBCDFMkUeE4eRs842zyjgCoGiutMKbnCHgs8EhwTkEY0Uv7z85NRy8JMiszEGm+X/pKkvXD5+wnkiKgDNXWK1RpSoaIlOeCfoZjxlAs5niDV+6KI9HPbhx4HsXyRw8xvI9jjRjgiJhiucUkZjXHiqT37rVS9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cqnxo6iF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jgIZxtZe; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1773067934; c=relaxed/simple;
+	bh=aKVeqBvNoMnwi+KTkPV58gn8MWCuWDAX+BBtLm4NksM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oDsaPfn5Np62zruU8ATUWi68I0pgg3lLGiuPoAmnU/AD4pjpIwFjCfGrajepVbDXqPUZH8pLPflhpmqScw+xNIqRP/aMM9zEz6S8gZYabvHKbgVO3qxcICz5FLUNlzFF0v42KAnBfZp/i+83K3dCTM4IpR51EwUlns65aZvjGtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=biLaHrSl; arc=none smtp.client-ip=109.224.244.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cqnxo6iF";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jgIZxtZe"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629A6hs72195267
-	for <phone-devel@vger.kernel.org>; Mon, 9 Mar 2026 12:55:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yY6MMt9NzfzjlUmoi5wtd94wNXGmWs2VUQczc3QwC/w=; b=cqnxo6iFVBoSK4JX
-	+05Sxo9eIrYt1hn2pOv2VzAxE0w4m9V6NBaZiw8k09psHlMNA1xqdRPyr4hl3umH
-	XZzCK6WvyJBkvcVhWCAxPpXCD/gdvsa4X3Et2HxDO+cdUl1Gxh4J9ayAlGu+AkBp
-	9l2l3ubaOcutlpTgDRFBS9nnDGubAtiYn4wRggz9/gz+pxARweph+p4nCKLoZ2QQ
-	8v3JOZTMJ9neRRaMxGnNF9Q8BMLLBa9S8vatEvfc8nuTjzATW7hNoiCGiLYF+3eg
-	ULwD+gFDv8fxr4ddx9RHZv11bMcwiQrFcaygtCHnOtdRBFfu9KAK6+2BAakF/4pV
-	91pjJQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4csv5u8h9x-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 09 Mar 2026 12:55:55 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cd7a2c535eso83983785a.3
-        for <phone-devel@vger.kernel.org>; Mon, 09 Mar 2026 05:55:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773060954; x=1773665754; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yY6MMt9NzfzjlUmoi5wtd94wNXGmWs2VUQczc3QwC/w=;
-        b=jgIZxtZe+uMqFNvrSmqXtFpWZ4tZX5G7LfjKiqK6mNnb/RdEcKt1kq0nRw6xbhb2Mr
-         CHAhWzMZ92nVFWalzzUUhYG/TXyJg9UVa9t6ztpmyO6+IOvbUkX7+EV3jMFQgcHKYv6a
-         8q48QkzADAOyCEa2ovVHB9Zd4MGBKf2xL+ZDdflyEf10l2dIgMQoH58nz74tJggQnXxb
-         0Xj/HUQUqeDp37Eadm4GEl0yEI4uJc0r9vcbJ+r1MusQDGsgoKydMn7fOqgUDHdIyE9G
-         G74WDlYcqzFdwnMI71asPFjMbJCBjeusg9RaXQDgMMdI28hUsyIllIRMheQ+g5KG9gUd
-         lyRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773060954; x=1773665754;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yY6MMt9NzfzjlUmoi5wtd94wNXGmWs2VUQczc3QwC/w=;
-        b=OMTDwz9XAs5hZF4q4jlBXtHZyZmLEAEt5OxzIdGELrpit7YjDrUbE3xYPktbYD+NIv
-         9TTCDq50qLbRVv2OhGWzQLLfKGESstJK0uHnaosTX6GTgqno/VaOCsPbLJw0RORejdJl
-         NbuQ+Rju/RyRXZcCV3iDrFqUnEj3Y3cYxZ/FTKh0MCxxwGYhXKlDmYep4PfJ0I+oV7Ts
-         ljJ4BcfY6YXm2m8f8hGRMDQDkkRpI4QWRVoPassW4yWZEEf9SJyZT8KefaZgQYWCg5DU
-         7X/2G8O4s1xgsdTCg7Xmk/SEnGA4t8FqEgtDnzmc62LpC1ibTwJcHBy7Zd9VpCQuzHbw
-         Yfcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWer3EGVMtdtgHSLWzwOVHtVVTKK7Ei1rIQ7cOiWNF4uAUuwPwr4M6erdIBgoG8lckbhSHpXxXyov2Lpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4J9Vl19gaItUawV2tH62Oo1jZEpFRIFc5mOKppvt7zJ12Yxoh
-	d8B0/mzw2hYKSqynScUlsCx1lsljq2UgNnJSZ6zqtq4oXeDN9OdSwwLopln8BPacg9dbIoAZMnF
-	J5EFEbA8gOsp2KkxwvyvLGPGg8VTgTDEdbbwcKLkII07GaITSf02sK0xNyUBSWIjHZQ==
-X-Gm-Gg: ATEYQzwcMwDdXFPRcyBkugM3rQe3yoPAFP1P8RU4d9xyTgsZ3y1uLm2yFuLdyKJj5vX
-	hTCqLXtvMNbUE0MBvo2LWkHlyfCgQvG8RhkZIDwE8Vv0QIc585pmwSuX+boIHKQmybanNI7faeZ
-	I6FUIuR5YD+zQv5OL1Jy3WqKNMEAHBVa02uMv/uigxvczTay5Aa06znHkH3qXbupVnxkiz5ThwH
-	1iWTtp0CLPgrX2okbBvAZLugZJ7dHFHEd5tX5VMzeHwvoNei3cg90bs2VSmTqa25iKy2oqS59jA
-	WC8BGK6BvutrMtAKaXVNrBiPB8muZzoOl1fFbVYECHrHXWhvatVZdYTsw1DpPM+heoIA3BmFlS6
-	O1tq17pj4DULCwHzECNJKW/mADfsP/BC3zNAgNNmCxW6ilRciMHH1O1j0B+BTBAfVFON0pVfS6O
-	Pik7c=
-X-Received: by 2002:a05:620a:1a83:b0:8cd:90f4:326d with SMTP id af79cd13be357-8cd90f43559mr89037585a.7.1773060954480;
-        Mon, 09 Mar 2026 05:55:54 -0700 (PDT)
-X-Received: by 2002:a05:620a:1a83:b0:8cd:90f4:326d with SMTP id af79cd13be357-8cd90f43559mr89034485a.7.1773060954089;
-        Mon, 09 Mar 2026 05:55:54 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-661a4fd5e87sm3224131a12.18.2026.03.09.05.55.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Mar 2026 05:55:53 -0700 (PDT)
-Message-ID: <ab66ac70-9c63-4dbc-9ec4-8dc5344fb045@oss.qualcomm.com>
-Date: Mon, 9 Mar 2026 13:55:51 +0100
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="biLaHrSl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1773067925; x=1773327125;
+	bh=K3Nznu+/0RcPCwpyvD2MPBrVSW3dHPifrwUThhMa12o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=biLaHrSlcOp9bSjOsu/CJTRBf+wMkLdAP4MEug9n0xV1Z+wyw9AQgkMrRfvwJbfc8
+	 A7BFcLsXpnENpQAioWTMlxGyZyM7fiozXTpKyy+ZmejxYi0iMwaQ0uRPaNbJ3kXeTe
+	 eqJPO+MUQN5hLaTuX39w41h5tV4GtRwZIQB4M6v2BzbB/JcArTSCQDQ5a2AUddK7xf
+	 j1GXWcPVwCuwtJgfb54lG6j82j82E+PLarQODre2iAyvVInGztjV6TGKFjBlwiBoOU
+	 9P5G7dTUcFK5L0yoHF2lBeLg0XzGHytUw4zadswoO+3z15ffhKsPK8cSlWl1/GbxPP
+	 pU7OyVVPiwl2A==
+Date: Mon, 09 Mar 2026 14:52:01 +0000
+To: Krzysztof Kozlowski <krzk@kernel.org>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
+Message-ID: <7Ft_cDw10-3MmNTrKncMut5g08sodd9CL7r7AGXAtPPqZpXtHEgmqm05WhEpYMZzFEs4B0KWz-LU27Z0_YDnc44nXhdUrUt5X2dWK7D6pYM=@protonmail.com>
+In-Reply-To: <369b48d9-f089-49a2-89cb-a4e0c68f92fa@kernel.org>
+References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com> <20260308-rimob-new-features-v1-1-aa2c330572c0@protonmail.com> <369b48d9-f089-49a2-89cb-a4e0c68f92fa@kernel.org>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: fc565aee6ed89af7a60918254dc78e3c50d606fe
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] arm64: dts: qcom: msm8917-xiaomi-riva: Commonize for
- Redmi 4A and GO
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux@mainlining.org, phone-devel@vger.kernel.org
-References: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
- <20260305-riva-common-v1-1-436f1f4b7399@mainlining.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260305-riva-common-v1-1-436f1f4b7399@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: MDzzjk0xBeE47OOWT9UGZiUgX_YNfP7o
-X-Proofpoint-ORIG-GUID: MDzzjk0xBeE47OOWT9UGZiUgX_YNfP7o
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDExOCBTYWx0ZWRfXzCcbW9vp3kHP
- jcMaK7G1pEISfWkTxZwlZgjGoLe7L4gtX/39I+oxn69U7b2gkNCa/HUilwjY53zdCe/0TDCYgyV
- EEuOtf/EUEw/rb6/Mge6gkj/AgHwjKq1M/iZQE5Q7m8NuBBnrOzfozuUSHZ9PoD8Fcl4/PMdfcZ
- Kiimuca1nxVgB81P0KsVpmPkMkC9JM7MTJ9D8qxf8PJ2CGzRS/O7Ec1gKz330kGGRDCi7/ljsAi
- iu8m4Zdd7neU+Svfwi+G16dhEdiCHXBKeVemFU7DwiL4nI16CKwt0tL6oVZtylabGXUI6sXj5ZP
- 7MJw0DdMMtBbLn58bsZ5Eq9cN+Pw3RTrs5apcdJ0ZpmHXQ+tFflBaFRl26+8oGEQIjnJCtZ7jjH
- 4GenQgRYi2FgZtCDlBbS1JUsjEp6R39DqlqyiCGzmTuy3JrJd7LIZ7mbIVKipkg8ALTRPeVMteU
- nyw+oKX6N8hjp2Eu4XA==
-X-Authority-Analysis: v=2.4 cv=Xr/3+FF9 c=1 sm=1 tr=0 ts=69aec35b cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=OuZLqq7tAAAA:8 a=K2AvnHgvSaJXUkDQH10A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=zZCYzV9kfG8A:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=AKGiAy9iJ-JzxKVHQNES:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_03,2026-03-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090118
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 3/5/26 6:28 PM, Barnabás Czémán wrote:
-> Redmi 5A is very similar for Redmi 4A (rolex) and Redmi GO (tiare),
-> it can be commonized for avoid unnecessary code duplications.
-> 
-> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> ---
+On Sunday, March 8th, 2026 at 17:13, Krzysztof Kozlowski <krzk@kernel.org> =
+wrote:
 
-Could you please try adding the following to your gitconfig:
+> > +  vsp-supply:
+> > +    description: positive voltage supply for analog circuits
+>=20
+> Both are odd. Datasheet says vci, vddi, vddam and optional avdd, avee.
+>=20
+> There is no VSN and VSP. Otherwise please point the page in datasheet or
+> some schematics.
+>=20
+> Best regards,
+> Krzysztof
+>=20
 
-[diff]
-        renameLimit = 999999
-        algorithm = histogram # or 'copies'
-        renames = copies
+I'm not sure about that. Writing panel dt-bindings has been based pretty mo=
+stly on vendor devicetree - which also describes somehow the panel and make=
+s that working with the final product released to the market - so I've to n=
+ecessarily consider that.
+Then, I could agree that vendor devicetree might be not compliant with upst=
+ream rules and could possibly make mistakes with describing the hardware, s=
+o I'd like to find a way to describe that in a more proper way, according t=
+o upstream rules.
 
-and see if this generates a shorter diff?
+That said, vendor devicetree describes lists four power supplies for  DSI: =
+'vdd', 'vddio', 'lab' and 'ibb' (which have the following property names, r=
+espectively, in qcom,mdss_dsi_ctrl node: 'vdd-supply', 'vddio-supply', 'lab=
+-supply' and 'ibb-supply'.
+Two of these are related to ds/controller (apparently, 'vddio' should match=
+ VDDI power supply in NT35532 datasheet.
 
-Konrad
+The remaining two supplies are related to panel ('lab' and 'ibb'). These on=
+es are two 'external ' regulators ('external' from NT35532 perspective), wh=
+ich provide power supply to display, located in the qcom PMIC (in this case=
+, that should be PMI8950). WRT to power supply names described in the bindi=
+ngs ('vsp-supply' and 'vsn-supply') are the same as 'lab-supply' and 'ibb-s=
+upply', just named differently in the vendor devicetrees.
+
+Usage of 'vsp'/'vsn' naming for power supply properties is grounded on they=
+ commonly being used at upstream (different panel bindings make use of thes=
+e properties), on one side, and also described on schematics of devices wit=
+h the same hardware configuration (LCD_VSN and LCD_VSP), on the other.
+
+In the meantime, I've found out schematics for 'xiaomi-mido' (another MSM89=
+53 device) - a variant of this device is shipped with a panel also using NT=
+35532 IC (just like my device) - and LCD_VSN/LCD_VSP are clearly shown ther=
+e too.
+
+I couldn't find much more information about the display on my device and th=
+e only resources available about that are those listed above, as of today. =
+In light of my reply, I ask if it is still necessary to describe, in the bi=
+ndings, power supply properties properties not used currently in the board =
+DTS file.
+
+Regards,
+
+Cristian.
