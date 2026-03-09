@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BEE393DDA;
-	Mon,  9 Mar 2026 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39211393DD7;
+	Mon,  9 Mar 2026 10:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773053846; cv=none; b=Mam0NRJt3EQ2l4pid/OZ/d4dX8oO4foc2RQ0BAkBHWYhb55gWY+zyWvNtx+B47BGGt9cId0L9kubaXoWXT47ADojUGaPsh8HKpGX60xYCuqdM4ApyNJM0k9UB9LZl80JsdlVACqHrLdmZ/ikAv993HF4B4XyD9xJoKcPb3l0doE=
+	t=1773053873; cv=none; b=HSoQe69rRq075b3nZZmsZ8ol3Y9UHgKERepNKHP7JYzxQ1m62WygX16IEoue8fmMcCS8wJvxx4zEqjr4g8OionrC6m+C74zN6CB7tuyyRoggjkiMVk6W8m9IiR55S+0bUzADvKpM3EGbKtmwRXttioXJl/KcdlRIrLJHOaMuXj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773053846; c=relaxed/simple;
-	bh=B0wVxkyuc1NmAywYw4m8ECKANYzo9yfMU/jCS8FPVYM=;
+	s=arc-20240116; t=1773053873; c=relaxed/simple;
+	bh=c/HUepKQyM4P7AmiYv+qUH/T8gLm8fLKfh+FQAWNi4o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p6TXwjSgN6WPvvQYwR42+ILtjnadp1kNQwlyATL37mAtMzKiqYXBJBl97KMkQXufEWC9HS8/H2C2cRg9HWJyS3Dfv0d0kR5C2DVduUzVZ0WKuAKtozcr15ZDh3NZtuyNVlip/CyRZGdUULQOV1rnDvNmuhY9COvZPS5Yc1yGk1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZAtmgQJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=rbaPVEeYqv+vkz1vk7+fRA9e2kyxlhQXhK2Parn2ylGx8YXGLh1umvbLsPSJMk9h93gDBvavmk08oiqbkNjYNA4e1s7QQAZpNusoFjr2f3lKxdUFjTqe18/3oqomPItHQUqhMpg3d1Bzc8ufLb3VfS7hXcXdIGFUtmQuqes6858=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MD7FqELL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZAtmgQJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34C0C2BC87;
-	Mon,  9 Mar 2026 10:57:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MD7FqELL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2647BC19423;
+	Mon,  9 Mar 2026 10:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773053845;
-	bh=B0wVxkyuc1NmAywYw4m8ECKANYzo9yfMU/jCS8FPVYM=;
+	s=k20201202; t=1773053872;
+	bh=c/HUepKQyM4P7AmiYv+qUH/T8gLm8fLKfh+FQAWNi4o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NZAtmgQJmHFbUbh2C12vY2IIksajxE2LGZmelSB2mgnTM+5cvfO8oW/KBgrH+oZ+z
-	 Fl2u8qSgOF14775I5XniHmWVMgUoC+cqeh0yYg3azpA8Lrl7/Q4W6zfJBRNjkwNDA7
-	 e86ZnZih2C54fr8HPXVamgBqKuUXuxgo75SR1DeioWFRdENNoveqZ8VmWljdE0fsjU
-	 MMNbenVDmNgtsKosRgFnyp5X0/XzCO71RTprW7bqq8lVXtnztJJebWeaLgk5MBcGh5
-	 BG5REgIpmMHAp3fn8kgNH3nuWOMSJxeiTDYD2ycSzjqF1eQhWYL/2grBZHiozsk146
-	 VTf1IvPKnaUww==
-Message-ID: <31d954de-811c-441a-a92c-a6e234494c06@kernel.org>
-Date: Mon, 9 Mar 2026 11:57:20 +0100
+	b=MD7FqELLxbtoEVDjQklu5erMmpQDz4/G1hPyglvt2lXWKDN8EJfL+lWcDhhIC0AIY
+	 ffgiWIvzT4udcogBSzCkViXP+bnLDhT8JsEd1Zr7jiPeyDKDDFwlP5yEKAWpvuqkpb
+	 1ScmhNNNpMyjhbWkQND6tr4s7pnPxlSOSy3c6B7wAbx3Jt36Gr39jJO+PLOvGjBZ6a
+	 NIdBXXwRISlNRPgtLTcNb1ytXOSFm4++atJhzdDJoVwYQEydHs5S1pwRhkGybpT1I5
+	 ABA7RXbuBlwrDEvPWMmnBkd+5kGtmiR4poySDtmTbFlD2P6Iz68RAon/gH9M9UbreS
+	 g7iStHd8i2gyw==
+Message-ID: <e174b1ac-380a-41fc-a1c7-d522e8e75c70@kernel.org>
+Date: Mon, 9 Mar 2026 11:57:48 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,19 +35,16 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] clk: qcom: Add support for basic clock providers on
- Fillmore SoC
-To: Aelin Reidel <aelin@mainlining.org>,
+Subject: Re: [PATCH 2/5] dt-bindings: arm: qcom: Add Redmi 4A
+To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
  Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Taniya Das <quic_tdas@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux@mainlining.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20260308-fillmore-clks-v1-0-976d9a6bebe7@mainlining.org>
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux@mainlining.org, phone-devel@vger.kernel.org
+References: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
+ <20260305-riva-common-v1-2-436f1f4b7399@mainlining.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -93,29 +90,22 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260308-fillmore-clks-v1-0-976d9a6bebe7@mainlining.org>
+In-Reply-To: <20260305-riva-common-v1-2-436f1f4b7399@mainlining.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/03/2026 01:39, Aelin Reidel wrote:
-> This series adds the bare minimum clock provider (gcc and rpmh) driver
-> support for the Fillmore SoC (e.g. SM7450).
+On 05/03/2026 18:28, Barnabás Czémán wrote:
+> Add Redmi 4A (rolex).
 > 
-> With this, it is possible to boot to the rootfs from the UFS storage and
-> have functioning USB.
-> 
-> The multimedia-specific clock providers will be sent in a follow-up
-> series.
-> 
-> This patch series was tested on a Xiaomi 13 Lite / Civi 2 (xiaomi-ziyi).
-> 
-> Signed-off-by: Aelin Reidel <aelin@mainlining.org>
+> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+> ---
 
 Do not Cc linux@mainlining.org. It causes multiple bounces and is not
 even necessary. It's some distribution list only growing the CC list
 negatively affecting spam scores of sending patches.
 
 Start using kei or korgalore if you need to track patches.
+
 
 Best regards,
 Krzysztof
