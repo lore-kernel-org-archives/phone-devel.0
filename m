@@ -1,133 +1,121 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311E533C51A
-	for <phone-devel@vger.kernel.org>; Mon,  9 Mar 2026 09:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BEE393DDA;
+	Mon,  9 Mar 2026 10:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773047787; cv=none; b=sDD8E8wkZeRC53FgaX84sZUxrCrKVds9L+cknb8eSwISL3G8nyQKxtYVWWw7HJXEaNAqxZH3bXnEyNgCEt4LN8gdPktgaRgNzPTEx3e07IuBPOyTZCOvKBEZcoc6qA8FSgZFML1x4tb7RjNa7bsZcgrDEHnuFIvyntyFXDYXR4o=
+	t=1773053846; cv=none; b=Mam0NRJt3EQ2l4pid/OZ/d4dX8oO4foc2RQ0BAkBHWYhb55gWY+zyWvNtx+B47BGGt9cId0L9kubaXoWXT47ADojUGaPsh8HKpGX60xYCuqdM4ApyNJM0k9UB9LZl80JsdlVACqHrLdmZ/ikAv993HF4B4XyD9xJoKcPb3l0doE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773047787; c=relaxed/simple;
-	bh=1jGBBfInWcPlyDj77P4+i/0PqZBVJ9PiGxU0GLuAUrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tNS34oGc49Le2BWpze+1aYaI0xtgw9CYy+pVwqVzJ1pxffuQrflDRGys20spE++8B25eTKS8zSLjQSyIySMkKrah2f+OD2SAEPGKe4QVAw41WlC36eOzvXkSB8rcpUYh+GYuW/MUU9xMUXNlWvRmWuEpseKUuTKopXJw3H+Owj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iuUL2+r/; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1773053846; c=relaxed/simple;
+	bh=B0wVxkyuc1NmAywYw4m8ECKANYzo9yfMU/jCS8FPVYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p6TXwjSgN6WPvvQYwR42+ILtjnadp1kNQwlyATL37mAtMzKiqYXBJBl97KMkQXufEWC9HS8/H2C2cRg9HWJyS3Dfv0d0kR5C2DVduUzVZ0WKuAKtozcr15ZDh3NZtuyNVlip/CyRZGdUULQOV1rnDvNmuhY9COvZPS5Yc1yGk1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZAtmgQJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iuUL2+r/"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48529c325f0so17028185e9.0
-        for <phone-devel@vger.kernel.org>; Mon, 09 Mar 2026 02:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773047784; x=1773652584; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xEMYbYJ9NsIB337c5/AE4fq1IEFDMbJNEIOTDlDSI/U=;
-        b=iuUL2+r/GRmzHLfudJSe4dxHLMlKmWWcbPVN0mtSinWyx7VBp58eBXB0mPv7GQn6Ja
-         ifVHK+mc/sJRqChxEjoa3O5BD+YUtoa6gMp0DDXVusRKCE5q4gAZrrsXNDCfPZpkdN17
-         XEl3MWVpktGC6Zrg0XyeIEOve2S+qs/a+EsUvH2G7UwVfJMp3ZIV1+7ASyDLFalkOxLv
-         uPCdQCR5+Um6RxPgl+X77rBNu1O7mOttxbmu+8MBIMA36utedhe91zoATDMaAY2BwUGP
-         vvY+wt4Jq1j4PCyF6AE1eeiTYzpsGmhTQpD0ULWtzxDq1sDzn21SQiJzhqMElodteUsS
-         nYjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773047784; x=1773652584;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xEMYbYJ9NsIB337c5/AE4fq1IEFDMbJNEIOTDlDSI/U=;
-        b=YwPxgejh+BMRFy47YpvbA+q189hbVrCvhQtQYve28g+t2UgfEgO2Oq1fkczYDOBB65
-         Eq8ZQZI24im+78uVh3HfKzO3c8CpiBbYNzj3aQyzs0iK3EhoPR6eYUa56yttOl/EbADO
-         hF1s9Dd9qWVtynUqQKDofqodfP8Oo7jHctvuJEL3fHxcoyEEtv37MjCZvxGQdeOZM9Jp
-         tpm+SvkeByQ23ZBEDBPxbLB+eko3XQMMOWpCrWxiryEuwvDMrDN7x/gpciS3AEPsP8h1
-         I/YseZP00YZ4L7pcyY2rcOp1SPEH4LOkuS7/OuSllog7GAvsv0MGDNCAD4Aj2i3Tt8UI
-         PfVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNlCNX7GCaL/E05MX6XbKPGbFaXcga2V5jg1Xfqv8JkQUn1OptbVIq2xJWHBeOvBLTq1n6vmxLhe6FHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWqo4eqpL3dcKgBlRc+m7ZrCAfqJRoL0pqdHy35FCf5S7BWPlD
-	6hbdK5rBL2oEbZYTi6zF0S05/4bLn+3dX0WeR2zPb3vSzCl+LdUvpsiWr2ntqdc/Eps=
-X-Gm-Gg: ATEYQzxfPNBDob3Y8nXJ2VP/viNCDQ2ZgURk8gSch64/VkULCSA4ZxL1uN5CXrSI0jf
-	ydK0mLM+gs3DadBpVlyxphU5nY01x8J5fGLZ7y2xW6gn+3Mp9efkLExOM6NhbnYrRW1P8VZSbAQ
-	Ak8LmpDMQQl9dEMBCr6QSnCTSNf/KEpho+qyIcF0ZN/gh8abJZa3s2OFpMPMp51JMUXzqWGdxR2
-	bgnLmbDdC/KOuomJ4HHPhY9ldnHKDPAnWr+7WH1/knaYWQApH13M3tHJRWc3lCvC39SLPWeHRXo
-	WaCrPfZAJiT+2JrbD3MCQfjlIupGw9quroIoFULuV5kVSSWdxf80zwSv4IcKMQo9peTsk4KTja8
-	kTrnqQ4PmYBfy4PdkNGf7KUiI10JKGZ8VBf8WTeRB9K09otJJ0laABrjXDKM1EbxlfBeycj13Wc
-	t+J+RhlHTefUQ4cHCrowFDEpU9ne5d
-X-Received: by 2002:a05:600c:888c:b0:485:3812:36da with SMTP id 5b1f17b1804b1-48538123853mr47305545e9.9.1773047784401;
-        Mon, 09 Mar 2026 02:16:24 -0700 (PDT)
-Received: from linaro.org ([77.64.146.222])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4853616a085sm50557965e9.3.2026.03.09.02.16.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 02:16:23 -0700 (PDT)
-Date: Mon, 9 Mar 2026 10:16:18 +0100
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: adamp@posteo.de
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
- initial devicetree
-Message-ID: <aa6P4rE7d2ftaeAw@linaro.org>
-References: <20260307-wiko-chuppito-v4-0-325ac66ae338@posteo.de>
- <20260307-wiko-chuppito-v4-3-325ac66ae338@posteo.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZAtmgQJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34C0C2BC87;
+	Mon,  9 Mar 2026 10:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773053845;
+	bh=B0wVxkyuc1NmAywYw4m8ECKANYzo9yfMU/jCS8FPVYM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NZAtmgQJmHFbUbh2C12vY2IIksajxE2LGZmelSB2mgnTM+5cvfO8oW/KBgrH+oZ+z
+	 Fl2u8qSgOF14775I5XniHmWVMgUoC+cqeh0yYg3azpA8Lrl7/Q4W6zfJBRNjkwNDA7
+	 e86ZnZih2C54fr8HPXVamgBqKuUXuxgo75SR1DeioWFRdENNoveqZ8VmWljdE0fsjU
+	 MMNbenVDmNgtsKosRgFnyp5X0/XzCO71RTprW7bqq8lVXtnztJJebWeaLgk5MBcGh5
+	 BG5REgIpmMHAp3fn8kgNH3nuWOMSJxeiTDYD2ycSzjqF1eQhWYL/2grBZHiozsk146
+	 VTf1IvPKnaUww==
+Message-ID: <31d954de-811c-441a-a92c-a6e234494c06@kernel.org>
+Date: Mon, 9 Mar 2026 11:57:20 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260307-wiko-chuppito-v4-3-325ac66ae338@posteo.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] clk: qcom: Add support for basic clock providers on
+ Fillmore SoC
+To: Aelin Reidel <aelin@mainlining.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Taniya Das <quic_tdas@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux@mainlining.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20260308-fillmore-clks-v1-0-976d9a6bebe7@mainlining.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260308-fillmore-clks-v1-0-976d9a6bebe7@mainlining.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 07, 2026 at 06:23:12PM +0100, Paul Adam via B4 Relay wrote:
-> From: Paul Adam <adamp@posteo.de>
+On 08/03/2026 01:39, Aelin Reidel wrote:
+> This series adds the bare minimum clock provider (gcc and rpmh) driver
+> support for the Fillmore SoC (e.g. SM7450).
 > 
-> Add an initial device tree for Wiko PULP 4G.
-> Includes support for:
-> - UART
-> - USB (no OTG)
-> - Internal storage
-> - MicroSD
-> - Volume keys + Power button
-> - Touchscreen
-> - Backlight
-> - Accelerometer: Invensense MPU6880
-> - Magnetometer: Asahi Kasei AK09911
-> - Hall sensor: Rohm BU52021HFV
-> - Proximity sensor
-> - Vibrator
-> - Earpiece
-> - Microphone 1
-> - Headphones
-> - Wifi
-> - Bluetooth
-> - GPU
+> With this, it is possible to boot to the rootfs from the UFS storage and
+> have functioning USB.
 > 
-> Signed-off-by: Paul Adam <adamp@posteo.de>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
->  arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts | 315 +++++++++++++++++++++
->  2 files changed, 316 insertions(+)
+> The multimedia-specific clock providers will be sent in a follow-up
+> series.
 > 
-> [...]
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-> new file mode 100644
-> index 000000000000..d927bae2b208
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-> @@ -0,0 +1,315 @@
-> [...]
-> +&sound {
-> +	audio-routing = "AMIC1", "MIC BIAS Internal1",
-> +		"AMIC2", "MIC BIAS Internal2",
-> +		"AMIC3", "MIC BIAS Internal1";
+> This patch series was tested on a Xiaomi 13 Lite / Civi 2 (xiaomi-ziyi).
+> 
+> Signed-off-by: Aelin Reidel <aelin@mainlining.org>
 
-Sorry, just noticed this now:
+Do not Cc linux@mainlining.org. It causes multiple bounces and is not
+even necessary. It's some distribution list only growing the CC list
+negatively affecting spam scores of sending patches.
 
-This seems a bit suspicious (I would expect "MIC BIAS Internal3"), have
-you tested if the secondary microphone works?
+Start using kei or korgalore if you need to track patches.
 
-Thanks,
-Stephan
+Best regards,
+Krzysztof
