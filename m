@@ -1,132 +1,73 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C41C3E8C50;
-	Tue, 10 Mar 2026 08:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5713A38E12D
+	for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 11:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773130017; cv=none; b=Iaiwb0aamYTqeLjGgKczXG7crtZe+Flcx+Zt3tZXIGJQjtoMuj6mhAr5h0qKmEXhqvnhpiLM0UmwLamHScwh39g/9VNq7Bh1JOz3TkyEW+18ZKe9tDX9I5KgAtvn22/OsCcsyLU3uKmKOhmFJVFjH2JKtZj4huTeiKD0JoaFIo0=
+	t=1773142027; cv=none; b=GjhuK6AAJ7WVEIGGGMPweeLhf1ADcub24NJpQDMlokE6j7LInzvgoyzxjBLpN5CUUt6xfZh9dzO5xeXoxiI8ZNeKTJOztGZQnQOYoAMJTRUvMpAjeubgMd/oe7MA/6GTCwm3PG7tY0m/PtctKY5AdRYP+xYAGj5+JJ7YFgMGcjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773130017; c=relaxed/simple;
-	bh=YwXa8TtD5U0uSMGnaDkzYNgQcftFkfs1WV/j0tlfVrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TKuV/1HB0CQ94P1E0KUKxnR3Mb7divWo6qs7XaE6J2H9VYViRZK9ZLifB+uu2JHI/wmWcvFt+ew+o0jyH6rh4V7r1obGXjvc8IOHSq0Sf8OtqP7V8jleyFlmWjCviMc/LCIwxyjK9b/GsvAWdYL1rBZcoRaVjVuDHP6wTZcHF0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/7zoWAE; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773142027; c=relaxed/simple;
+	bh=KUTBjDpvkVvQv79dF1VweLpz905Misc/auNCSrupa7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ii5SUWqUGujkkovrHnqto3ItCT0VOHt8LF+RJgVOS5MvohyN7g9DbZsPHwKHZNlA9mI9hwxK70ogEnNNyIh1nFM/jHHsNz3biIJhLMUVQXvL2m6ZjH1hPRFhP6cKJvKjDPEtKCinnVk1MzdhKTAVrYvAEyCiVcs2rIn+VtMWU5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eU4mZhbD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/7zoWAE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773130015; x=1804666015;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YwXa8TtD5U0uSMGnaDkzYNgQcftFkfs1WV/j0tlfVrg=;
-  b=e/7zoWAEPjBRSjByf7H1jBoEis9u6wQiIpUnBVlinnxvxkpj2Hn5aBUm
-   5eIbYu6G6aVMAiiFqBMAtnnSw9TAB/XD7mnbJRRJ//ySODkhg7F2vYWbf
-   5aPnTg65KewSw+ntPSKcU7TPs244qEi3QkNN1onTHiN9KqK10SK3w0qyf
-   OkQl78WG4ftPX1hTZ0xTuGRkVzfxDO4axh1zvJd/YWkFfC/VqKcGYMXVd
-   34St7MvRYB3ilsUuMoD0VjbKRNrs+vyrY3yWWg7v9/N7dZecKWV4WZqt/
-   +XQIigs3sDTkxbq4iyKZIF8rRX8EF2J5ftb9Dj8ehBCjcQDp/2t7sf56v
-   g==;
-X-CSE-ConnectionGUID: tk1WRDIvQA6ryAW4wOdBLA==
-X-CSE-MsgGUID: 6Qp2U0C0RNq87AwEwXMQ8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="85524951"
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="85524951"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 01:06:55 -0700
-X-CSE-ConnectionGUID: F9DhsSnqS4yaywDWOGVhjw==
-X-CSE-MsgGUID: 0MrgnK8WQI2BxxnxyvtG2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="216843777"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.26])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 01:06:51 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 119111206B6;
-	Tue, 10 Mar 2026 10:07:23 +0200 (EET)
-Date: Tue, 10 Mar 2026 10:07:23 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Richard Acayan <mailingradian@gmail.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
-	Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Robert Mader <robert.mader@collabora.com>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v9 4/7] media: i2c: imx355: Restrict data lanes to 4
-Message-ID: <aa_RO3idjnNp1DLV@kekkonen.localdomain>
-References: <20260217002738.133534-1-mailingradian@gmail.com>
- <20260217002738.133534-5-mailingradian@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eU4mZhbD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E87C2BCB4
+	for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 11:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773142027;
+	bh=KUTBjDpvkVvQv79dF1VweLpz905Misc/auNCSrupa7o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eU4mZhbD267cywgJTGOLfjC128KwXy0ZnXwMGAG8ZMt5VR/oSX5uaNN1zmHldZ9fA
+	 zHCdDClwAbppJocc0KnGe41Zh89hOJGEP2+uhwLDpYVHrmSJnYS1NvVssR7yBiePls
+	 fxjUaaqoMvOKVKHQzQjULgj6ZWPE7r+dmUoLKc6tvlXkdL6MYCHG6F2kDPY6ltPkwS
+	 ZEHWLAhGmr86hYpD+SUtf2AXWaIfDNMErhohFwNWYkY3UhLYQdj2tmkaXdn/1kQv5A
+	 kSGC5B1NzxWj5HsbL/cAaSzYAOOQdpEbEaANWZZqh8rbHKoop/ofeUBrbKWbP0LWs+
+	 Bhi2ytbb7xcWQ==
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7927261a3acso114611157b3.0
+        for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 04:27:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVN4Vr9weEqoeZ8IKzEQ+CZ9oF6XwnFpLT8uj5yN6o45QXY1q9sVaH/HvD5Jgle/8XkZhyqbHmlcUsi6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwInQGIUyqmj9muB/43f2jYF5srasPRzW4jfBRWrzyq8py/KHuc
+	+yUkuirZBIjD+nJcTUlc3+Ld5z+6dLXD3zqKNJDnzvTAipobt69qJYZ6cVIGCs676cPsUuld6V3
+	0mVCYP5fpbEeA/4hySsYO5wNjKN3D1HY=
+X-Received: by 2002:a05:690c:7305:b0:799:8c6:9ccb with SMTP id
+ 00721157ae682-79908c69e34mr33790607b3.62.1773142026548; Tue, 10 Mar 2026
+ 04:27:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260217002738.133534-5-mailingradian@gmail.com>
+References: <20260306-milos-pinctrl-lpi-v1-0-086946dbb855@fairphone.com> <20260306-milos-pinctrl-lpi-v1-1-086946dbb855@fairphone.com>
+In-Reply-To: <20260306-milos-pinctrl-lpi-v1-1-086946dbb855@fairphone.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 10 Mar 2026 12:26:55 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=6Xngpo8dmne0ckAFtWCQJLcN+-VNM=h80PpCLQFo=Aw@mail.gmail.com>
+X-Gm-Features: AaiRm53K7tfBjuL50_2M2hYlFXVHTL5n0sOGcmXJEex3Hnm3H0CuXy5gTHWpZxU
+Message-ID: <CAD++jL=6Xngpo8dmne0ckAFtWCQJLcN+-VNM=h80PpCLQFo=Aw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] dt-bindings: pinctrl: qcom: Add Milos LPI pinctrl
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Richard,
+On Fri, Mar 6, 2026 at 3:22=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.com=
+> wrote:
 
-On Mon, Feb 16, 2026 at 07:27:35PM -0500, Richard Acayan wrote:
-> The IMX355 sensor driver currently supports having 4 data lanes. There
-> can't be more or less, so check if the firmware specifies 4 lanes.
-> 
-> Existing ACPI hardware descriptions may not have the data lanes defined
-> so this check also accepts a placeholder of 0 lanes.
-> 
-> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Link: https://lore.kernel.org/r/aW3uFcT1zmiF4GUP@kekkonen.localdomain
-> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-> ---
->  drivers/media/i2c/imx355.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
-> index 9ca87488c933..0d6aabea7d59 100644
-> --- a/drivers/media/i2c/imx355.c
-> +++ b/drivers/media/i2c/imx355.c
-> @@ -66,6 +66,9 @@
->  #define IMX355_EXT_CLK			19200000
->  #define IMX355_LINK_FREQ_INDEX		0
->  
-> +/* number of data lanes */
-> +#define IMX355_DATA_LANES		4
-> +
->  struct imx355_reg {
->  	u16 address;
->  	u8 val;
-> @@ -1705,6 +1708,10 @@ static struct imx355_hwcfg *imx355_get_hwcfg(struct device *dev)
->  	if (!cfg)
->  		goto out_err;
->  
-> +	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 0
+> Add bindings for pin controller in Milos Low Power Audio SubSystem
+> (LPASS).
+>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-The number of lanes should be available from system firmware, so no need
-for this check.
+I fixed up the subject as indicated by Krzysztof and applied the patch.
 
-> +	 && bus_cfg.bus.mipi_csi2.num_data_lanes != IMX355_DATA_LANES)
-
-Indentation.
-
-> +		goto out_err;
-> +
->  	ret = v4l2_link_freq_to_bitmap(dev, bus_cfg.link_frequencies,
->  				       bus_cfg.nr_of_link_frequencies,
->  				       link_freq_menu_items,
-
--- 
-Regards,
-
-Sakari Ailus
+Yours,
+Linus Walleij
