@@ -1,110 +1,90 @@
-Received: from mail-106101.protonmail.ch (mail-106101.protonmail.ch [79.135.106.101])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5C62C11F3;
-	Tue, 10 Mar 2026 16:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55F336606A;
+	Tue, 10 Mar 2026 17:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773160973; cv=none; b=d27sZyGeB/QMsxrPX/xVb80f3sbP8Q6qDaVq6ubDe7GdLCwv3YIu8w0msXhHMWXPe49Z4ZAAtUTbAPuH5tJ3JMlQSGVVrk3bwd6dpeVcrkOqU1hHOtZHgWWZu0oolwYFSHUxxLYXhioyhVxEgd2zXNCQJdliPjKnkKJnpiF6PO0=
+	t=1773163306; cv=none; b=OVP0ETxVttgz3rGZYwbwZEFXBUW8jCLQBktHRunoIKY4jMpFRbGI1H8nnmkfamp2YqKsYFUilZHXNixA/d8O9nz3MblHeVxocu4XCrTqwuxbgdEFCgvTLcORwQ1jSaQTFEE3jxIcKrFRm1ktDZJvOakLzQQRqx4r98+kZkKULm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773160973; c=relaxed/simple;
-	bh=DCJMHMqqQsaf1XMw/XCKtt1LtViAntE3IHj5UuYzADM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g98czw/hyS4vc5yfwbRYftqeHyQ259qnO1mqudKP4cxv+2TlALnrRiUE1UTGAAx46mmTTyCsjn+GH7CcmsgUEHMNfBr36o9J/4N7ABBfj1w8P4iHvWtnSe9Wp+wEQR3pwfkjFgy5h2kndvP15LJfqqE4AVoPuHa0jryyVSyis6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=nPy/6VW7; arc=none smtp.client-ip=79.135.106.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1773163306; c=relaxed/simple;
+	bh=i1e4h/rvl35JWBUmBdG8Ijp3z1P+uEzOGUnHYNNpuSU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=R+M9yE3vhoo/+aJIJMfyJFgosdYt5ss+Z5Y/VL0lc9Ezyd2WFZsr0o64V5lDf46Mt/MgEmPjD9XW/4hVviEFqmVW52tuxSi7SbJuq8z0jUJaSbUjUPkNJ0Bmz+vTnXbFtAnkAdXYQc9xolP0lOehpuHaahm+o7thKj0GsnNfIJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=snS9t+Bg; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=pqIeVwt2; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="nPy/6VW7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1773160968; x=1773420168;
-	bh=jp7taCdw1nI5Sr69i3QhuX5EoaMKfMTuSOuoBJnv8mE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=nPy/6VW7DoGT4FD2fgZU9f0LFiRS9tEMYateMAXg0GMcQQnpN6hEk6+6NHdTnaDRP
-	 vg+OuFysUucg6a+Fy7KjTjV2kHTgWCbWSeNiEYikXRNTYmp5n6Yy0SqIOKQs6FtZSN
-	 Al1tHlVBrh/hI4tKJOKO8cJnpPhJ2DMbMWl85RoJRJtEieTH5pU9xh+Pp+IG87gKsj
-	 fnXDpduZ95tNSebnm3lTOwzNnAn5ZN9T37ZlBZnTDmY7ScZnJBjYaGj1ycvHzVhBBT
-	 8zTv+/3uLt1W8bi4W3RBNTAlGydA4f15G3X8JMacuBTdXEoHeGPWJh6x9Yfzxdwnom
-	 mK0QBK4nelWtQ==
-Date: Tue, 10 Mar 2026 16:42:43 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
-Message-ID: <BP1Sd6YH7pfwUcIQzlAHRokbTdR0TiORnTMO27J1CcPV_O1R1HO85gyIJf_J1szOiMAXn2taMlmC2iUt0Cpr4jKjB7wTeukWuIBFzj5eBdU=@protonmail.com>
-In-Reply-To: <f309905e-6f7f-440e-b463-7bda54298164@oss.qualcomm.com>
-References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com> <20260308-rimob-new-features-v1-3-aa2c330572c0@protonmail.com> <ne3i5tmvperssm4pivae7jhmqzvyy7ftkwnacpaf4ukdqojtha@53mhrxlraw3k> <f309905e-6f7f-440e-b463-7bda54298164@oss.qualcomm.com>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 282e252ccd8632b559874c16cfd9f9f7e1eb4b83
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="snS9t+Bg";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="pqIeVwt2"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Subject:Date:From; t=1773163297; bh=EQAebAB4qzDMBIZybdLJe06
+	OLVcmRdjVBENtrfTyOgo=; b=snS9t+BgmSJNenMDyG49I9ffLM+5OathmROap/T7rAwdr7qTqp
+	lwcuwo8OhAqjo8CnQ75LuT+3AzkpcE8MoGH6OrQTaI0eMF7kmF1Gt2H0NJHB8p7cusANlMIRyBt
+	/5QyC8NnzKQ+dKHyJpHiemCmS5RT6hgsA9/4ULElsg8xb0tRx24hQiL6RppokPIJ/TJLnhunguY
+	RxZx35Zdw0N6Nra7KCRY2PoGxjaOqP3iXLHdOmtGoS8NBJDlshJQ63qYHJhCLsI+yW847Mf8Cs+
+	D210uI/xedV/if+ZAfqFlGDL6OshIdFfABLZgGq6BH3J//x+4DU1+Cpg2zDULNg8NQA==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=To:Message-Id:Subject:Date:From; t=1773163297; bh=EQAebAB4qzDMBIZybdLJe06
+	OLVcmRdjVBENtrfTyOgo=; b=pqIeVwt2kwOFC00rObFu2foG7brMrgBL2FlSYN5x/ZuPrWobvp
+	txTEM/PFN37MSITIvwCev/wGQIjlpiW50fBA==;
+From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Date: Tue, 10 Mar 2026 18:21:31 +0100
+Subject: [PATCH v2 1/7] arm64: dts: qcom: msm8917-xiaomi-riva: Fix board-id
+ for all bootloader
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260310-riva-common-v2-1-3bfc23996857@mainlining.org>
+References: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
+In-Reply-To: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773163296; l=948;
+ i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
+ bh=i1e4h/rvl35JWBUmBdG8Ijp3z1P+uEzOGUnHYNNpuSU=;
+ b=pafn2lETt2O0mm+AuLKPeFH8L3oq0MJ4IwTeVa19cZMlbAypeVQcaMe2ysbrD2CRMP86UQstS
+ 2/7Vb/7rFkcCJGXNS6c5qKtuOEwy3z7Ag3k8TgFMgXhxUTiWEctHQJZ
+X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
+ pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-On Tuesday, March 10th, 2026 at 12:28, Konrad Dybcio <konrad.dybcio@oss.qua=
-lcomm.com> wrote:
+Redmi 5A comes with multiple bootloader versions where the expected
+board-id is different.
+Change the board-id to unified form what works on both bootloader
+version.
 
-> On 3/8/26 4:01 PM, Dmitry Baryshkov wrote:
-> > On Sun, Mar 08, 2026 at 04:52:43PM +0100, Cristian Cozzolino via B4 Rel=
-ay wrote:
-> >> From: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >>
-> >> Add the description for the display panel found on this phone.
-> >> And with this done we can also enable the GPU and set the zap shader
-> >> firmware path.
-> >>
-> >> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >> ---
-> >>  .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 80 +++++++++++++=
-+++++++++
-> >>  1 file changed, 80 insertions(+)
-> >>
-> >> +
-> >> +&mdss_dsi0 {
-> >> +=09vdda-supply =3D <&pm8953_s3>;
-> >> +=09vddio-supply =3D <&pm8953_l6>;
-> >> +
-> >> +=09pinctrl-0 =3D <&mdss_default>;
-> >> +=09pinctrl-1 =3D <&mdss_sleep>;
-> >> +=09pinctrl-names =3D "default", "sleep";
-> >
-> > It might be better to move pinctrl nodes to the panel device, because
-> > they control the panel reset pin (rather than some kind if DSI-related
-> > pin).
->=20
-> +1, perhaps let's rename that pin to panel_reset while at it
+Fixes: 26633b582056 ("arm64: dts: qcom: Add Xiaomi Redmi 5A")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+---
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So, something like (plus related renaming in tlmm node):
+diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
+index 9db503e21888..1bfb16f90ddd 100644
+--- a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
++++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
+@@ -18,7 +18,7 @@ / {
+ 	chassis-type = "handset";
+ 
+ 	qcom,msm-id = <QCOM_ID_MSM8917 0>;
+-	qcom,board-id = <0x1000b 2>, <0x2000b 2>;
++	qcom,board-id = <0x1000b 1>, <0x1000b 2>;
+ 
+ 	pwm_backlight: backlight {
+ 		compatible = "pwm-backlight";
 
-=09panel: panel@0 {
-=09=09compatible =3D "novatek,nt35532";
-=09=09reg =3D <0>;
+-- 
+2.53.0
 
-=09=09backlight =3D <&pmi8950_wled>;
-=09=09reset-gpios =3D <&tlmm 61 GPIO_ACTIVE_LOW>;
-=09=09vsp-supply =3D <&lab>;
-=09=09vsn-supply =3D <&ibb>;
-
-=09=09pinctrl-0 =3D <&panel_default>;
-=09=09pinctrl-1 =3D <&panel_reset>;
-=09=09pinctrl-names =3D "default", "reset";
-
-=09=09port {
-=09=09=09panel_in: endpoint {
-=09=09=09=09remote-endpoint =3D <&mdss_dsi0_out>;
-=09=09=09};
-=09=09};
-=09};
-=20
-this?
-
-> Konrad
->=20
-
-Regards
