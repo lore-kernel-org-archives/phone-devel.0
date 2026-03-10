@@ -1,197 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4EE3E8C6A;
-	Tue, 10 Mar 2026 20:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49AF3AB27A
+	for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 22:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773173199; cv=none; b=OEhseI4aDXRGxvIaO0UaBYGFjWKlyu/FLlmPXDUSPakOv84pgfIQf08uWk0liRY6vqiNMKSDUZxGsNwhHSKAbagoJojRGt6WbNd7J97MAu/FpVbAC3OFmwExBk0ZL2Ds9NYjL/cXbLgNcDeyy6i61V/eIGVdEXLP8KPl3W3rCYk=
+	t=1773181814; cv=none; b=o7TIkD5kDIvMkntoqUdo8wElNuOlDkeYZkQuLPK+kT8w4a56VEiYXJGuUVt8VuM33ghqftJL5/wvYIo4mCJDPWs7d5b9MXgf2GNaAYxr4gQW6+4rJjtnxrDLTCIQP/mfS+GKYbd/RemMWE8lyAfDXgQ01XzJ60rAvcwxK7VGgVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773173199; c=relaxed/simple;
-	bh=Z9vyLtz2EdjxGxaVk1OvvInckKlIsasVV0PmlgMnlrk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OhLs0Vxrfqe3fYHXvRFkI99qix+kWmgqFeIdXDhPTkQdh1uZXGY7CFTlQYxKIGlcl13+u4YL30eAUshWLv5NzZmDXKa1gvWUiBJyQrfvDlnXBZ2TPyzWK5XXB1RumUTwYwgLoq/cqLEhN8agoUDIUL2e2K9laSju1ZnOuI4MZuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NifB0imx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773181814; c=relaxed/simple;
+	bh=E+MzsQ/XNb5YDD8Kdpz85uaBf83jdRYE/spDSsi/7S8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ujx98mKAK1Gyf5yds/TjPK9/8/yNMOUuGllynjESV6qv/soTs+A67U/lvvIBT+0PVI/9ZxKtvXOKvHe14ycVIWNbxxOlEtGHSWt8ss0FHmKtg3oKE1ehbO+SQbHWQwsHf+yCd0vmLb8eyuo5JDDYfU7yCSfArxpODZOuqmGKLw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YAL6wTjo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=T0OKDDfM; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NifB0imx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC587C19423;
-	Tue, 10 Mar 2026 20:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773173198;
-	bh=Z9vyLtz2EdjxGxaVk1OvvInckKlIsasVV0PmlgMnlrk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NifB0imxPuCllqOPCFYAShNxajCzVjUEMHuTPcy8ig2s5C+FKfFEXBwcQBdHefYGa
-	 rz7tYRpTFU1/+EUyUQRXV2l9g31vBOUOQTITWcLdRjnv5sGlgV2bCJHV3XiKV8tV9S
-	 FMylx+z6/WOLlOxSdnSPi3Gh92/umVnlcp74flibrel7k52qRsVUL63FPT2HPnxKEv
-	 w1KAJA15bQ78uampE/AsbGsvVcZkrUdY/jTycgoPsts8W0Ii80dxxDJIy4+Fx3Isuk
-	 c6PVsr8M49oWFcOuLgYlF6IjJjbKg3D5zRV88/Trl2KWTzUStix9LCL8J0aHeDnpta
-	 An7iiMIYxRthQ==
-Message-ID: <4cfc7b40-f172-4eae-8f19-4a3eb858075e@kernel.org>
-Date: Tue, 10 Mar 2026 21:06:33 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YAL6wTjo";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="T0OKDDfM"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AGAfw41265813
+	for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 22:30:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=qxVdbmYtQiHkpJysUmcujS2L
+	t7a1GevGxB0GGYw6iIk=; b=YAL6wTjoxJVvY5pZxsjYm42FCvyIvWImTyIkPgOL
+	33sUiwqcons5/Ad528nBUbny8vmSWCntELSotWgMOgXyzChTm5VX69SpQjOlGRxw
+	PJ/9tlOoGgk4qehz6lPy+8Lqe/vWSraC0qgKmJAh+Dnuww+S+TanpI6wNYogfDdI
+	VMEwgyONIY/VB8pMhXV0QOVTjtDNmaFwOukIcPb2cIKKVrnIiMuyfkzKRO3jSHOa
+	9aLnCLfBDwklkSINYtFfSf2gCSL4VToHDYkaw5Lzdncdp2//0W0RuWRSxbDdGOuW
+	IeDSoBq71cr9wDEdlFV8i+iiGzr6ENnXqFIrv3Savivvdg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ctpkfhcn1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 22:30:12 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd81c571a5so1505606685a.0
+        for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 15:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773181811; x=1773786611; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qxVdbmYtQiHkpJysUmcujS2Lt7a1GevGxB0GGYw6iIk=;
+        b=T0OKDDfMw2SNeQgT6dkfRj4ayl1yEsqbB8iZxXUFG00bnTsgybAUtNop+TlduvJgnt
+         f2hVyYyJyGHgY0+b2SEwAC0/1EEA2QnDqSqgeCUUraVFGScpMcm/srb8Z3h2nuLu9qet
+         LHWfB4qvl9jkoB4tAtGPKyzYXoH1QRNQwpUMBGP6z8OBGOcSZTjvwE/SHadEbstCEC38
+         qMYaBnpQbYbzPpdUYAVsFqDkwS/enBOziC+NuLPrNuqWJGxr3F/4fEH1iEL5ih4W93zK
+         CM1gzeJJrTFxbMj4PwtXFpvh3ra1mnz8Fv3UQic2cLcxyyO9DENT8zH7Kw9M98ivNyUn
+         Eltw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773181811; x=1773786611;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qxVdbmYtQiHkpJysUmcujS2Lt7a1GevGxB0GGYw6iIk=;
+        b=qlwYHEP+p3yYm4S4ae8VJ0UeomHZeO6HEB8Xrpzo633i86dAVK+F/vHMp79YpnBqpJ
+         wujKlWNDTso6530eRg1bpgzEezwD71AuGF9Ffvm76uBK/uqwBWEnerY8M+U2VMaPTjwn
+         AsDkqiScpRcdsSqy2LDVe1ba2aNdXcHm+9uw5broTHN92BbQa4d2NA2vdnvutDwN0Pfy
+         95sHPi8elh90WSgFqZaer1Tycn+YmBE6SKWJcRPWpGgYxxnXl70zH9lBJD04zF4q5O81
+         Lc6TZr0puiXDwFgXd50V22ohsE83INseCj8uM0rqOm20WHMskugGefnzpQ8fAzzm8pMg
+         IJBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSzEDDrnmirP37wkZsVUhGNsipZ3w44pngoV9SC/UHJJw6jFIZJqtNTDZpp8YTokMFzkfDcxSxeAAAzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJXPyzq7Dli5E4Jij7itPFxCHMLX6Ai+SNWoyhbi8aZtSogOsh
+	u/Cin4G9Rg3SGTY3VkW9NIH1C8RClbFc8jltA3nyXxMVwtvrOg/fpzUjU5SM0C6keWVtlpguEbC
+	w/2OE3hgiuWDaQeT2AaKsLjaPnsIIDXdB9vUXKut5c2ueXRLCNhi7AgI8waFUDMWlRg==
+X-Gm-Gg: ATEYQzyF0YPOYLhzQedPSF0rhs71siYwsExAZKigdgBF0tV7rplgZVFAJQ6T0P5daHa
+	atlexTwANpP0fQN7ZSnUkC1KsgEe92XkAH4MIgqZuc7i11Gh6XBZtd35dHCL1Q8mvMP9BEjGowe
+	0IXySm9xpFOis1MmXu7WdwXwJgSSGk/lUpFLramXChFp3XLLGSkXewAGnYKstjVMUfvAUfcSrcY
+	Sw7r+ORp9SG0ISoFx5YXN58qWB5XQel0PMj7EMjNY7rhQAl9gjK02CQhWGRTh7ImjOkwT0h/ULb
+	568x2qWuL/OALiG4ijT5bVY9iGcKJCBNn/OWtq6fzPum2a7f8m04I2Ue1qiY9FTJlYo6zHc5RqQ
+	gVurfMwnilb5SzMiUxC6AsMxrOtJwcvv/6wniTXF8gmipQxI4RimqsXqVhtJQGclOrmCVZjO+6R
+	sCoh3+rhznH7mTPW7V6VxyCPT05ffx7BStBLM=
+X-Received: by 2002:a05:620a:44c4:b0:8cb:4fe7:4c8b with SMTP id af79cd13be357-8cda1a5714dmr74180785a.62.1773181810680;
+        Tue, 10 Mar 2026 15:30:10 -0700 (PDT)
+X-Received: by 2002:a05:620a:44c4:b0:8cb:4fe7:4c8b with SMTP id af79cd13be357-8cda1a5714dmr74172585a.62.1773181810106;
+        Tue, 10 Mar 2026 15:30:10 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a15602e646sm74637e87.31.2026.03.10.15.30.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 15:30:08 -0700 (PDT)
+Date: Wed, 11 Mar 2026 00:30:05 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: cristian_ci <cristian_ci@protonmail.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ display and GPU
+Message-ID: <e6m5xhnexza6fnmz6cczwsrp3ec6n643yjukj64gvync627sl3@2pldnf7ldcpi>
+References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com>
+ <20260308-rimob-new-features-v1-3-aa2c330572c0@protonmail.com>
+ <ne3i5tmvperssm4pivae7jhmqzvyy7ftkwnacpaf4ukdqojtha@53mhrxlraw3k>
+ <f309905e-6f7f-440e-b463-7bda54298164@oss.qualcomm.com>
+ <BP1Sd6YH7pfwUcIQzlAHRokbTdR0TiORnTMO27J1CcPV_O1R1HO85gyIJf_J1szOiMAXn2taMlmC2iUt0Cpr4jKjB7wTeukWuIBFzj5eBdU=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD
- DSI
-To: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com>
- <20260308-rimob-new-features-v1-1-aa2c330572c0@protonmail.com>
- <369b48d9-f089-49a2-89cb-a4e0c68f92fa@kernel.org>
- <7Ft_cDw10-3MmNTrKncMut5g08sodd9CL7r7AGXAtPPqZpXtHEgmqm05WhEpYMZzFEs4B0KWz-LU27Z0_YDnc44nXhdUrUt5X2dWK7D6pYM=@protonmail.com>
- <db04882b-7f30-464c-91a6-578302aef4ff@kernel.org>
- <Nz_hTfDbWqQk8-FcCknxZKO8dIhCAGueG89SRe2LkTG1VK4KjoH-UZH6bsOvqEySwNRjJtsEUL7vxxIXOWyyzLOtM9YLZaCuhPfxNz0mVyk=@protonmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <Nz_hTfDbWqQk8-FcCknxZKO8dIhCAGueG89SRe2LkTG1VK4KjoH-UZH6bsOvqEySwNRjJtsEUL7vxxIXOWyyzLOtM9YLZaCuhPfxNz0mVyk=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BP1Sd6YH7pfwUcIQzlAHRokbTdR0TiORnTMO27J1CcPV_O1R1HO85gyIJf_J1szOiMAXn2taMlmC2iUt0Cpr4jKjB7wTeukWuIBFzj5eBdU=@protonmail.com>
+X-Proofpoint-GUID: N6GB_rpK698P4_3iQVq4S7LPpY1iZ30L
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDE5MiBTYWx0ZWRfX1ue1IyzS1vmG
+ PIT+TUmdS8TTNkAQ74vYz8/90Dm9gbtgyvq1SyzruVYxw0qGCHACKFQuVWGuBqIWBOW1Vur203U
+ zykyYEKvxPKrwUdoIRNjlNpZygUbVNyUYZTIn1cPZFSka98oFNa+EYgqbqWpKwPVYe3aWGDYaT4
+ tHeMz7/W9/BlLkUNgFsU1d15T0XDS84+P4KYcQpQ6DzjYiQgpaakB5J3EflYFYUyWiTlPYCQGdW
+ /VXeFi4Yu7kpSi4UPc6ZbJjqEQUTM9Zx0lfewy9CUMHZVVupXIAAJLPMwHam+Oyi79DFeWjW/dD
+ GaJ1F7rK22PXiENQ0VrzmVVQm1g51xqAEESP402zgLAGJ01YNZM1nnb3HlRH7P/1qjQWKfcM2L8
+ U0x4BoEaxuPxGgra10ldkkh+VaJwGLIxK9OCThXjyUqUlT3f+MS0oie73EsGN1LU+1Rsh2EeL2Z
+ t/tZlYiaTooj8kMVuEA==
+X-Proofpoint-ORIG-GUID: N6GB_rpK698P4_3iQVq4S7LPpY1iZ30L
+X-Authority-Analysis: v=2.4 cv=Gq5PO01C c=1 sm=1 tr=0 ts=69b09b74 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8
+ a=sfOm8-O8AAAA:8 a=XOktAL3nDL9lPePKX28A:9 a=CjuIK1q_8ugA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=TvTJqdcANYtsRzA46cdi:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_04,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100192
 
-On 10/03/2026 18:48, cristian_ci wrote:
+On Tue, Mar 10, 2026 at 04:42:43PM +0000, cristian_ci wrote:
+> On Tuesday, March 10th, 2026 at 12:28, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
 > 
+> > On 3/8/26 4:01 PM, Dmitry Baryshkov wrote:
+> > > On Sun, Mar 08, 2026 at 04:52:43PM +0100, Cristian Cozzolino via B4 Relay wrote:
+> > >> From: Cristian Cozzolino <cristian_ci@protonmail.com>
+> > >>
+> > >> Add the description for the display panel found on this phone.
+> > >> And with this done we can also enable the GPU and set the zap shader
+> > >> firmware path.
+> > >>
+> > >> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+> > >> ---
+> > >>  .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 80 ++++++++++++++++++++++
+> > >>  1 file changed, 80 insertions(+)
+> > >>
+> > >> +
+> > >> +&mdss_dsi0 {
+> > >> +	vdda-supply = <&pm8953_s3>;
+> > >> +	vddio-supply = <&pm8953_l6>;
+> > >> +
+> > >> +	pinctrl-0 = <&mdss_default>;
+> > >> +	pinctrl-1 = <&mdss_sleep>;
+> > >> +	pinctrl-names = "default", "sleep";
+> > >
+> > > It might be better to move pinctrl nodes to the panel device, because
+> > > they control the panel reset pin (rather than some kind if DSI-related
+> > > pin).
+> > 
+> > +1, perhaps let's rename that pin to panel_reset while at it
 > 
+> So, something like (plus related renaming in tlmm node):
 > 
+> 	panel: panel@0 {
+> 		compatible = "novatek,nt35532";
+> 		reg = <0>;
 > 
-> Cristian
+> 		backlight = <&pmi8950_wled>;
+> 		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
+> 		vsp-supply = <&lab>;
+> 		vsn-supply = <&ibb>;
 > 
-> Sent with Proton Mail secure email.
-> 
-> On Monday, March 9th, 2026 at 16:08, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
->> On 09/03/2026 15:52, cristian_ci wrote:
->>> On Sunday, March 8th, 2026 at 17:13, Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>
->>>>> +  vsp-supply:
->>>>> +    description: positive voltage supply for analog circuits
->>>>
->>>> Both are odd. Datasheet says vci, vddi, vddam and optional avdd, avee.
->>>>
->>>> There is no VSN and VSP. Otherwise please point the page in datasheet or
->>>> some schematics.
->>>>
->>>> Best regards,
->>>> Krzysztof
->>>>
->>>
->>> I'm not sure about that. Writing panel dt-bindings has been based pretty mostly on vendor devicetree - which also describes somehow the panel and makes that working with the final product released to the market - so I've to necessarily consider that.
->>> Then, I could agree that vendor devicetree might be not compliant with upstream rules and could possibly make mistakes with describing the hardware, so I'd like to find a way to describe that in a more proper way, according to upstream rules.
->>>
->>> That said, vendor devicetree describes lists four power supplies for  DSI: 'vdd', 'vddio', 'lab' and 'ibb' (which have the following property names, respectively, in qcom,mdss_dsi_ctrl node: 'vdd-supply', 'vddio-supply', 'lab-supply' and 'ibb-supply'.
->>> Two of these are related to ds/controller (apparently, 'vddio' should match VDDI power supply in NT35532 datasheet.
->>>
->>> The remaining two supplies are related to panel ('lab' and 'ibb'). These ones are two 'external ' regulators ('external' from NT35532 perspective), which provide power supply to display, located in the qcom PMIC (in this case, that should be PMI8950). WRT to power supply names described in the bindings ('vsp-supply' and 'vsn-supply') are the same as 'lab-supply' and 'ibb-supply', just named differently in the vendor devicetrees.
->>>
->>> Usage of 'vsp'/'vsn' naming for power supply properties is grounded on they commonly being used at upstream (different panel bindings make use of these properties), on one side, and also described on schematics of devices with the same hardware configuration (LCD_VSN and LCD_VSP), on the other.
->>>
->>> In the meantime, I've found out schematics for 'xiaomi-mido' (another MSM8953 device) - a variant of this device is shipped with a panel also using NT35532 IC (just like my device) - and LCD_VSN/LCD_VSP are clearly shown there too.
->>>
->>> I couldn't find much more information about the display on my device and the only resources available about that are those listed above, as of today. In light of my reply, I ask if it is still necessary to describe, in the bindings, power supply properties properties not used currently in the board DTS file.
->>
->> Please wrap your answers so this will be possible to parse.
->>
->> You write bindings matching the hardware and for the hardware, not for
->> the downstream code. You cannot add supplies which do not exist
->> regardless what some vendor wrote somewhere 
-> 
-> Vendor has also described the hardware by storing information (by including info 
-> about panel too) directly inside the device itself (/sys/firmware/fdt). 
+> 		pinctrl-0 = <&panel_default>;
+> 		pinctrl-1 = <&panel_reset>;
+> 		pinctrl-names = "default", "reset";
 
-Vendor does not care about rules of DT thus puts there completely fake
-information just to make their drivers working
-.
-> Though vendor devicetree could possibly contain mistakes, I guess I've to trust vendor 
-> devicetree (also for the reasons explained in my last reply).
-
-These are not vendor's mistakes. This is deliberate WRONG information.
-
-Sorry, I am not going to keep discussing each property based what vendor
-wrote.
-
-Open datasheet which I said is public.
+No, "reset" would not be recognized. Use "sleep" as before.
 
 > 
->> and yes, you must describe
->> all known supplies for this device, especially that datasheet is
->> available publicly.
+> 		port {
+> 			panel_in: endpoint {
+> 				remote-endpoint = <&mdss_dsi0_out>;
+> 			};
+> 		};
+> 	};
+>  
+> this?
 > 
-> Based on what you said, the following questions have raised:
+> > Konrad
+> > 
 > 
-> - have properties (mentioned by you) be defined 
-> (apart 'vddi', which most likely is actually 'vddio-supply', 
-> already defined within mdss_dsi0 node) outside of 'panel' node?
+> Regards
 
-You are mixing devices. We do not talk about vddio supply in dsi node.
-We talk about THIS device, so open this device datasheet and read it.
-
-> (and related to dsi/controller rather than panel, instead)
-> 
-> - have those properties (mentioned by you) set as 'optional' 
-> in the bindings, rather than set as 'required'?
-
-Why? How device can work without power? Datasheet mentioned which
-supplies can be optional, e.g. grounded or wired to the same source of
-supply.
-
-> (since panel works without most of them defined in the 
-> board DTS file)
-
-
-Best regards,
-Krzysztof
+-- 
+With best wishes
+Dmitry
