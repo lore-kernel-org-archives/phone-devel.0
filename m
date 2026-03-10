@@ -1,36 +1,36 @@
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BA3D47B3;
-	Tue, 10 Mar 2026 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00593D1704;
+	Tue, 10 Mar 2026 17:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773163319; cv=none; b=nJxPhHb0ODwEuV5nAzMyauSRKKF1cSIwExTKc92RzlKdvhLRruCDGQadoO/+acuf5RHbd6+BnrGX7Erb5rMFWbO9edJlDY5XYI0LFHRX8vkbiydPEdXglJZjbvJIWQ38NIj+w4glzJmd2ZlIyqM3l/twot39iAneHIlPmPILuwU=
+	t=1773163319; cv=none; b=MpbNdBp1NnkN2ta6OC8MrDgEcmZBNa+3k+lY4ZsarvpuiH2/uy0lC/KH8Fn8+g4/j7o383eHuBKEOSF86T/4oqmxkqfPWf8g4Mo/k1vgyDD6zHXk+jr0YV6Q9+OAHJ6aAqlxeG8sOPD6W0dlEWG7OAYbLUGxoBFsJMxi37X8Ygk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773163319; c=relaxed/simple;
-	bh=TzsVHGlSCoBbKSOPs+fFU0nWBXCQdGT/XXZxOtpruB8=;
+	bh=1gZkswrM/ObZDhdjRWGLnDhPUr9HaofQevWlqnoBf5w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=livp3lL5tBxFhkLJ6/hWqYbdfacH1Pz2M9J+SeKkPjJommiO0glojFQxTD7WRUt7m3CQGJrIL6e84ua2ouO49mka1RG/eIuHhq30grgC9kuaVM7xO9iQs5r1C66KwHIa5zKP0yRWrs4LAXxzwVu2nz4qfz1q+/14yFHRzwWcPsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=O2i9t/Hb; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=+BvpFZBQ; arc=none smtp.client-ip=5.75.144.95
+	 In-Reply-To:To:Cc; b=Q/DHNO+Pq3EhhyS/wmdqDRNcy5aQiDPGVmE3Mp6hDVDtzD7Suf46vmrn6tlQ48dnWjzDjn7cNAlcUcQOLAaGv1yPQNyXUasZFX+2hlnbycx8lNtCRs5W8r0m5aKK5uZnAFsDHgkXPk2INJgYedQ5YNxj2rugTCEcG/miPCv04c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=bKCof+HJ; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=5uE+NIrD; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="O2i9t/Hb";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="+BvpFZBQ"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="bKCof+HJ";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="5uE+NIrD"
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773163299; bh=pruZLXeRhOoythzHmsrVYzI
-	deJBxXFqU4MKRcDB+P0s=; b=O2i9t/Hbq/GHeIinR+14DdJ2GNh8AFaf6q+zicHIthWBIedBNE
-	0IzB7xsu/G2QzULnQ7lhG0sNsTnGtdx2b+Iy1iS9ye3q3lFkE87qHI3m3HZr0iVC1KobwBNArSc
-	hzmR2CyE0qfV9w3w6qravInAyp/Pu3tmH8FsIVoNJtGChsAi6t6qpW73vf2TYzXpmN+M3sQtWWB
-	+X+7hc7aERQa8UVfmt1vJSc3GOhrjZyMgPlIbI+OCa3QVhukY3HF2BZFNgX6KKPwdboWGbafUnQ
-	rr8Xc5m8Ib4p5rsRl32mLR+oFh2xJudnGYy+FnqpRKxXSF7nEOIB6LUohFW2iHjOOkw==;
+	h=To:Message-Id:Subject:Date:From; t=1773163301; bh=3rxwRnspv+VmkJ6StVbCi+j
+	VKNvSggvttHkEfU43PIA=; b=bKCof+HJUtIrVpt1Nyyj5Fmr8W7BOxctwIYdWHO15eGXeoIT4J
+	xxYH7ujxYj+lmuq3hU2MzXc3antaSAKRVsX50qszhP+F6UWD6gTNd7H6iEYrgst5yQX5FWiNfYe
+	OjRuj4w17PbPDuBF7eqBEJbHvII+pvC+hwJLtsZdGnj1pA50WXTGyI9/GKGSaz9J09WTS1+Vul7
+	nNEPD+AUNFePS1SxB4vxbHvjMokq4Olub2DxJTaKmcZtiDS648DKzGfx5KqD8DvhIfB8pBumgAa
+	ThDv5g35GBXsW7DDoT5GhgEJzg6qc+hgCCFgp4UckxphmqYlGaUE+9FQMcKJEnUE0gQ==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773163299; bh=pruZLXeRhOoythzHmsrVYzI
-	deJBxXFqU4MKRcDB+P0s=; b=+BvpFZBQRK5/lvTKk59GHJwMyNgxz+qOIeZSiEmRgi6iaL4bKI
-	YgIN8zUGeEUWVCVLyOC0f7ULNRjUy326ZRBQ==;
+	h=To:Message-Id:Subject:Date:From; t=1773163301; bh=3rxwRnspv+VmkJ6StVbCi+j
+	VKNvSggvttHkEfU43PIA=; b=5uE+NIrDiv1+n9vNibgJpwvv9ot832fmnBGGjeZGUTwEitiW+o
+	aNzEVQEt3v5AU5460csvIt/l/2tqHn9QI1Cw==;
 From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Tue, 10 Mar 2026 18:21:35 +0100
-Subject: [PATCH v2 5/7] dt-bindings: arm: qcom: Add Redmi 4A and Go
+Date: Tue, 10 Mar 2026 18:21:37 +0100
+Subject: [PATCH v2 7/7] arm64: dts: qcom: Add Redmi Go
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260310-riva-common-v2-5-3bfc23996857@mainlining.org>
+Message-Id: <20260310-riva-common-v2-7-3bfc23996857@mainlining.org>
 References: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
 In-Reply-To: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -49,38 +49,66 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773163296; l=776;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773163296; l=1725;
  i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=TzsVHGlSCoBbKSOPs+fFU0nWBXCQdGT/XXZxOtpruB8=;
- b=BUJavoJl3wJVIAOti/If/CXHaKt3rQEf7UpJOz1wb9y3Um4wrr+CXUAuLuta+5Z2d+Px4SS/l
- A4Fwmb/Ho/mDFR/gRfXb5I3wEyFOHp9HuypQQ6yhWeSRnzhTgKQXMDF
+ bh=1gZkswrM/ObZDhdjRWGLnDhPUr9HaofQevWlqnoBf5w=;
+ b=c2fXwGOGTpMvFBW+arCxwpY0cZH8xfJcLkpwASabr8VYZ05H2BabVhwTgLt1Ve8dgnOCsLjWU
+ dnxgmClsrPPBxWqmQKIxmgMth5zM5GOEUlK7+tpjiGAVnz3ccve9hYG
 X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
  pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-Add Redmi 4A (rolex) and Redmi Go (tiare).
+Redmi Go (tiare) is like Redmi 5A with small differences like charging,
+fuel gauge and different speaker codec.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/Makefile                 |  1 +
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 153664da91d9..1bdf2d8c9b47 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -200,6 +200,8 @@ properties:
-       - items:
-           - enum:
-               - xiaomi,riva
-+              - xiaomi,rolex
-+              - xiaomi,tiare
-           - const: qcom,msm8917
- 
-       - items:
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 20e161e843ed..a74598cf0b47 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -83,6 +83,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-yiming-uz801v3.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8917-xiaomi-riva.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8917-xiaomi-rolex.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8917-xiaomi-tiare.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8929-wingtech-wt82918hd.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8937-xiaomi-land.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-asus-z00t.dtb
+diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts
+new file mode 100644
+index 000000000000..64a564d97dd0
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2026, Barnabas Czeman
++ */
++
++/dts-v1/;
++
++#include "msm8917-xiaomi-wingtech.dtsi"
++
++/ {
++	model = "Xiaomi Redmi Go (tiare)";
++	compatible = "xiaomi,tiare", "qcom,msm8917";
++
++	qcom,board-id = <0x1000b 1>;
++};
++
++&pm8937_l22 {
++	regulator-max-microvolt = <2850000>;
++};
++
++&pm8937_l23 {
++	regulator-max-microvolt = <1250000>;
++};
 
 -- 
 2.53.0
