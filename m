@@ -1,69 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3B93ACA5D;
-	Tue, 10 Mar 2026 02:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C41C3E8C50;
+	Tue, 10 Mar 2026 08:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773110781; cv=none; b=qRmCVJGcrKna2TNc9qBdkhrxXlxQjK/sYK5EHgAvW8j4/5hoRvywuA9rMhXNP/8CIO6KD5CYuGo9JcMU4vczcewu1blzztpMiF8Hycme58LjKuZ3tFqcASp1o6C6+TAtocBTW1keLawitfFqmzx+nyHXnS+AMEs+9SlwNoaOlJU=
+	t=1773130017; cv=none; b=Iaiwb0aamYTqeLjGgKczXG7crtZe+Flcx+Zt3tZXIGJQjtoMuj6mhAr5h0qKmEXhqvnhpiLM0UmwLamHScwh39g/9VNq7Bh1JOz3TkyEW+18ZKe9tDX9I5KgAtvn22/OsCcsyLU3uKmKOhmFJVFjH2JKtZj4huTeiKD0JoaFIo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773110781; c=relaxed/simple;
-	bh=dr3P/aHwZCCaL0bsU4F1HV5pO0OkqMHP04HTDR7lxsw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hf+cTU4LBcDWOernpuj0LA4W/RU4OrwQ9Z8JP8nPWeBKxUS+cC6pwSMC9tenxAiiO+zVNeecHQoVAhgTwqylKcMXcOqSVogRmHnOxLeHTRNX38xrU5puJaiEh5LCXfQhUw02MgXQJMtvNnXAnWm/Fs3NSiqk5PDneJcNT5yL1FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evwZ+w3v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773130017; c=relaxed/simple;
+	bh=YwXa8TtD5U0uSMGnaDkzYNgQcftFkfs1WV/j0tlfVrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TKuV/1HB0CQ94P1E0KUKxnR3Mb7divWo6qs7XaE6J2H9VYViRZK9ZLifB+uu2JHI/wmWcvFt+ew+o0jyH6rh4V7r1obGXjvc8IOHSq0Sf8OtqP7V8jleyFlmWjCviMc/LCIwxyjK9b/GsvAWdYL1rBZcoRaVjVuDHP6wTZcHF0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/7zoWAE; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evwZ+w3v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E778EC2BCB4;
-	Tue, 10 Mar 2026 02:46:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773110781;
-	bh=dr3P/aHwZCCaL0bsU4F1HV5pO0OkqMHP04HTDR7lxsw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evwZ+w3v14HQBzPBMvXodLR4G/3j84VdP7BxQaLqj8l7PhjH19F10nq8C0ce1Ao5F
-	 buVL3HZDSb14Q10fMPDdySzT0J9n1hi0E6VwizDvU5s/hpA5UFLftUBjLUmXpS6Bev
-	 SE4PZZlMWe+LpwM0xvZ17CRwHTPCCPeI9QcKVmBtrdYoBMgmfHY41L2IuGQH4KQB0g
-	 9HOJzgllHyT70MtVIDUww9ahOjX6rQ3Zr206YGzyIbDyBld6aQCo5kBlytvJmzrmJ8
-	 Dz3sDmAceAXsLrPNQcygWzSmL8dpGdFrtIBlnqc3aCUzSfSQZIA7woZwSDs7xrIwy5
-	 RnF0zVhfbAXVQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/7zoWAE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773130015; x=1804666015;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YwXa8TtD5U0uSMGnaDkzYNgQcftFkfs1WV/j0tlfVrg=;
+  b=e/7zoWAEPjBRSjByf7H1jBoEis9u6wQiIpUnBVlinnxvxkpj2Hn5aBUm
+   5eIbYu6G6aVMAiiFqBMAtnnSw9TAB/XD7mnbJRRJ//ySODkhg7F2vYWbf
+   5aPnTg65KewSw+ntPSKcU7TPs244qEi3QkNN1onTHiN9KqK10SK3w0qyf
+   OkQl78WG4ftPX1hTZ0xTuGRkVzfxDO4axh1zvJd/YWkFfC/VqKcGYMXVd
+   34St7MvRYB3ilsUuMoD0VjbKRNrs+vyrY3yWWg7v9/N7dZecKWV4WZqt/
+   +XQIigs3sDTkxbq4iyKZIF8rRX8EF2J5ftb9Dj8ehBCjcQDp/2t7sf56v
+   g==;
+X-CSE-ConnectionGUID: tk1WRDIvQA6ryAW4wOdBLA==
+X-CSE-MsgGUID: 6Qp2U0C0RNq87AwEwXMQ8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="85524951"
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="85524951"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 01:06:55 -0700
+X-CSE-ConnectionGUID: F9DhsSnqS4yaywDWOGVhjw==
+X-CSE-MsgGUID: 0MrgnK8WQI2BxxnxyvtG2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="216843777"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.26])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 01:06:51 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 119111206B6;
+	Tue, 10 Mar 2026 10:07:23 +0200 (EET)
+Date: Tue, 10 Mar 2026 10:07:23 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Richard Acayan <mailingradian@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
 	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3] arm64: dts: qcom: sdm845: Introduce camera master clock pinctrl
-Date: Mon,  9 Mar 2026 21:45:25 -0500
-Message-ID: <177311073323.23763.15914117254800208700.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260114-sdm845-mclk-v3-1-c9351deaf4f2@ixit.cz>
-References: <20260114-sdm845-mclk-v3-1-c9351deaf4f2@ixit.cz>
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Robert Mader <robert.mader@collabora.com>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v9 4/7] media: i2c: imx355: Restrict data lanes to 4
+Message-ID: <aa_RO3idjnNp1DLV@kekkonen.localdomain>
+References: <20260217002738.133534-1-mailingradian@gmail.com>
+ <20260217002738.133534-5-mailingradian@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217002738.133534-5-mailingradian@gmail.com>
 
+Hi Richard,
 
-On Wed, 14 Jan 2026 11:08:45 +0100, David Heidelberg wrote:
-> Put clock pins configuration for camera master clock into the dtsi.
+On Mon, Feb 16, 2026 at 07:27:35PM -0500, Richard Acayan wrote:
+> The IMX355 sensor driver currently supports having 4 data lanes. There
+> can't be more or less, so check if the firmware specifies 4 lanes.
 > 
+> Existing ACPI hardware descriptions may not have the data lanes defined
+> so this check also accepts a placeholder of 0 lanes.
 > 
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Link: https://lore.kernel.org/r/aW3uFcT1zmiF4GUP@kekkonen.localdomain
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+> ---
+>  drivers/media/i2c/imx355.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
+> index 9ca87488c933..0d6aabea7d59 100644
+> --- a/drivers/media/i2c/imx355.c
+> +++ b/drivers/media/i2c/imx355.c
+> @@ -66,6 +66,9 @@
+>  #define IMX355_EXT_CLK			19200000
+>  #define IMX355_LINK_FREQ_INDEX		0
+>  
+> +/* number of data lanes */
+> +#define IMX355_DATA_LANES		4
+> +
+>  struct imx355_reg {
+>  	u16 address;
+>  	u8 val;
+> @@ -1705,6 +1708,10 @@ static struct imx355_hwcfg *imx355_get_hwcfg(struct device *dev)
+>  	if (!cfg)
+>  		goto out_err;
+>  
+> +	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 0
 
-Applied, thanks!
+The number of lanes should be available from system firmware, so no need
+for this check.
 
-[1/1] arm64: dts: qcom: sdm845: Introduce camera master clock pinctrl
-      commit: 7ffe83b6178e1668cf17ab4d9394dc2873c3aa17
+> +	 && bus_cfg.bus.mipi_csi2.num_data_lanes != IMX355_DATA_LANES)
 
-Best regards,
+Indentation.
+
+> +		goto out_err;
+> +
+>  	ret = v4l2_link_freq_to_bitmap(dev, bus_cfg.link_frequencies,
+>  				       bus_cfg.nr_of_link_frequencies,
+>  				       link_freq_menu_items,
+
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Regards,
+
+Sakari Ailus
