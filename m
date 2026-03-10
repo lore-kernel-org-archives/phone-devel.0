@@ -1,40 +1,40 @@
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3E93EAC79;
-	Tue, 10 Mar 2026 12:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6083A7580;
+	Tue, 10 Mar 2026 12:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773146891; cv=none; b=ifvOgkQRSiJeOGcdXxXqHaFrBac9RyG9rKKQhGPiFMeAvjOD07F3Isw3L6tsUHl61hka9La5r4J5d2lGRlwU1Dxvt+bYYFxMKGaWG3RZPxn/y8MEB0guHF6qJt1Zp17M7vuNA8HHDNh3RrgES8MRwHBXNMIGw+w2DHo0z1c1gXw=
+	t=1773147460; cv=none; b=QF4jygOQMOzS+770hq7KVcg1XbKsWRUeLtJImYFBlbgbe95xQciNDa3k3nvkqBtFj/9Hc8fo6Kibuq/emxOEj61is47DDxQa37qk+pff252OESwjqYeDc0qd8UDEDRmjCgWAOrq4Iklyr3LU4sDQSDDLcZOJRm1WH9pWNFyyqIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773146891; c=relaxed/simple;
-	bh=F4K4me9Zce8ZPwr9kNm/pN03aWbImAL1o/d1QRaADFA=;
+	s=arc-20240116; t=1773147460; c=relaxed/simple;
+	bh=7B1yL4NXUbSrk9RavCHgDv8l+QllyzHuM2LtcNkdcqM=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=JYp7UfQHUj6V+8BgEo1PRIB7s0OfOE/K7OVsg7u3/jCduwLLZl75h06lRGPf79J4mTkvyitNP3+Au3orUJ7CK/LMexHd7cqTT6lKvsBGADdUVPqLuT8j0R5tvhmw79PXG0R1C9ZnljB8nVk68c4sfxE/FO6EUrGNwrtmYJ0cBnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GXy8ETvo; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=BU1+6y70; arc=none smtp.client-ip=5.75.144.95
+	 Message-ID:Content-Type; b=VDCNrplIjZQnzjqehw5QGJ5MPeTxYM5VJ51ZKMJpgykcNeg12TfMdwBqSHyZQn7HOYd+zwDpygK3XJhqANejMMRxISKdjkcpCvkXuus5PiApzPpAMJ1ovY5xhJnVUKHEfjlHi2nPbGb54VH15H0EUm781rkwNf0IPpIEDA4bHkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=YqhqqXn/; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=qcj2U8WT; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GXy8ETvo";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="BU1+6y70"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="YqhqqXn/";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="qcj2U8WT"
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1773146872; bh=DoqtFfjxITXmNu6NKaWLplq
-	7x6ormIyWUuMGJ9LAwoM=; b=GXy8ETvo591GzDCHMk0r8wUUQjMsvXo+qX+5qzYIWsBBKoX5ch
-	dc12sUBU2ZEyIivih1RRCfqUSVGsclakShkGuk7U1dtprBWOyPG5Bl/CvEmkOe5mZpqwclml7ai
-	dopAMgpobZzZhv4VRvFYAdQEzXckTxmmsHd5xkJ1rblb5p8Voy5UbOpTELgpa4aX+c03XA+29KT
-	SSF18s39F2U0lKaK5ZAJRu9Hb4zQyA5Khi3kLwE3a/vX9oEFz+oR6bf4upCO9noiXAQoIkc8tyF
-	7G7bEVo13X2vY/G1R491/UR5FsRbDhADmbBi9MDUVJEKC4xPly8skQF/uXkmcoyuZuw==;
+	h=Message-ID:Subject:To:From:Date; t=1773147455; bh=AgluKCXDjtXXarLidShHy0Q
+	ZPjPkfIfpD3Xwdip+tb0=; b=YqhqqXn/zNSwmjWn+bZkLj7k2kuIvRlkvvzL7jd9KGJVYnsJD6
+	8CKLknSSPq2pkQzhzwqfqeabhU+vfZXkUm43aX3XDzdRdpZYRNN6iR+y26UxnHQqIJ4pfiGoJvL
+	o/gIzNwVA0IJnc9EtwUpG6v3e+4ex1z5GO76OVs5XSA7vIhYLr94KI+/o1xV7Arfa0po9QvsZzy
+	0xgW7I+BIfVHmHuNJS2fLM6IxGoLWrDiavv8Oy77AuiBZAtMnI/YrmqRb1TTa/soSYJKpEVEXgY
+	TYFaIVM0Y7Cdfgw0c/sq/TztAPPtA/JpAA+0wQiIea7cuQ+3+480pYqwrkyNIUZTgAA==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Subject:To:From:Date; t=1773146872; bh=DoqtFfjxITXmNu6NKaWLplq
-	7x6ormIyWUuMGJ9LAwoM=; b=BU1+6y70OqEBq4iycKRsowV65GcRcAQtDq7nZaZnViO6deUliv
-	WPKXrgQEcw4qIAGMwN76/u/x4OzZaAV7pNBw==;
+	h=Message-ID:Subject:To:From:Date; t=1773147455; bh=AgluKCXDjtXXarLidShHy0Q
+	ZPjPkfIfpD3Xwdip+tb0=; b=qcj2U8WTBiAiqZ+wQUEuw39D+Ylai2HEHwGx2zIxI5HxrVHAzE
+	OfjbrQ4ncl6qJq8RaGskiP7D3uo6snoQ/AAQ==;
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 10 Mar 2026 13:47:51 +0100
+Date: Tue, 10 Mar 2026 13:57:35 +0100
 From: barnabas.czeman@mainlining.org
 To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
@@ -43,91 +43,40 @@ Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux@mainlining.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 5/5] arm64: dts: qcom: Add Redmi Go
-In-Reply-To: <8d327f02-b2c1-431f-8a18-bba99e396223@oss.qualcomm.com>
+Subject: Re: [PATCH 1/5] arm64: dts: qcom: msm8917-xiaomi-riva: Commonize for
+ Redmi 4A and GO
+In-Reply-To: <ab66ac70-9c63-4dbc-9ec4-8dc5344fb045@oss.qualcomm.com>
 References: <20260305-riva-common-v1-0-436f1f4b7399@mainlining.org>
- <20260305-riva-common-v1-5-436f1f4b7399@mainlining.org>
- <07b552b4-ecdb-4877-8b45-fcaa6792aee4@oss.qualcomm.com>
- <390f4c8b89f3465924d6ef95bccccc6a@mainlining.org>
- <46a3f0ff1a5c20e8bd4a4c1efb16960d@mainlining.org>
- <8d327f02-b2c1-431f-8a18-bba99e396223@oss.qualcomm.com>
-Message-ID: <3fbedf4f9bff962a8f11dc746090504b@mainlining.org>
+ <20260305-riva-common-v1-1-436f1f4b7399@mainlining.org>
+ <ab66ac70-9c63-4dbc-9ec4-8dc5344fb045@oss.qualcomm.com>
+Message-ID: <fabedbb450f409aa0aa415151de0263b@mainlining.org>
 X-Sender: barnabas.czeman@mainlining.org
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2026-03-10 13:31, Konrad Dybcio wrote:
-> On 3/9/26 10:36 PM, barnabas.czeman@mainlining.org wrote:
->> On 2026-03-09 22:19, barnabas.czeman@mainlining.org wrote:
->>> On 2026-03-09 13:53, Konrad Dybcio wrote:
->>>> On 3/5/26 6:28 PM, Barnabás Czémán wrote:
->>>>> Redmi Go (tiare) is like Redmi 5A with small differences like 
->>>>> charging,
->>>>> fuel gauge and different speaker codec.
->>>>> 
->>>>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>>>> ---
->>>>>  arch/arm64/boot/dts/qcom/Makefile                 |  1 +
->>>>>  arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts | 27 
->>>>> +++++++++++++++++++++++
->>>>>  2 files changed, 28 insertions(+)
->>>>> 
->>>>> diff --git a/arch/arm64/boot/dts/qcom/Makefile 
->>>>> b/arch/arm64/boot/dts/qcom/Makefile
->>>>> index 20e161e843ed..a74598cf0b47 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/Makefile
->>>>> +++ b/arch/arm64/boot/dts/qcom/Makefile
->>>>> @@ -83,6 +83,7 @@ dtb-$(CONFIG_ARCH_QCOM)    += 
->>>>> msm8916-wingtech-wt88047.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8916-yiming-uz801v3.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8917-xiaomi-riva.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8917-xiaomi-rolex.dtb
->>>>> +dtb-$(CONFIG_ARCH_QCOM)    += msm8917-xiaomi-tiare.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8929-wingtech-wt82918hd.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8937-xiaomi-land.dtb
->>>>>  dtb-$(CONFIG_ARCH_QCOM)    += msm8939-asus-z00t.dtb
->>>>> diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts 
->>>>> b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts
->>>>> new file mode 100644
->>>>> index 000000000000..c3a74530c34c
->>>>> --- /dev/null
->>>>> +++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts
->>>>> @@ -0,0 +1,27 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0-only
->>>>> +/*
->>>>> + * Copyright (c) 2026, Barnabas Czeman
->>>>> + */
->>>>> +
->>>>> +/dts-v1/;
->>>>> +
->>>>> +#include "msm8917-xiaomi-riva-common.dtsi"
->>>>> +
->>>>> +/ {
->>>>> +    model = "Xiaomi Redmi Go (tiare)";
->>>>> +    compatible = "xiaomi,tiare", "qcom,msm8917";
->>>>> +
->>>>> +    qcom,board-id = <0x1000b 1>;
->>>> 
->>>> Could you please double-check this? Riva and Rolex seem to have
->>>> properly different values there, but this one mimics one of the
->>>> values for Rolex.
->>> riva value is depends from the bootloader, Oreo bootloader using same 
->>> value
->>> like rolex and tiare, 2nd entry in the board-id is not used so i 
->>> should remove it.
->>> Here is some more context:
->>> https://github.com/msm8916-mainline/lk2nd/blob/main/lk2nd/device/dts/msm8952/msm8917-xiaomi-riva.dts
->>> https://github.com/msm8916-mainline/lk2nd/blob/main/lk2nd/device/dts/msm8952/msm8917-xiaomi-common.dts
->>> 
->> I have find out this qcom,board-id = <0x1000b 1>, <0x1000b 2>; works 
->> with both bootloader version
->> on riva but if i set only one of them, the bootloader version will be 
->> limited.
+On 2026-03-09 13:55, Konrad Dybcio wrote:
+> On 3/5/26 6:28 PM, Barnabás Czémán wrote:
+>> Redmi 5A is very similar for Redmi 4A (rolex) and Redmi GO (tiare),
+>> it can be commonized for avoid unnecessary code duplications.
+>> 
+>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+>> ---
 > 
-> These properties exist for the sole reason of making the bootloader
-> happy, so if there's nuance, let's not try being too smart and just
-> stick with what works
-I have tested this on both version.
+> Could you please try adding the following to your gitconfig:
+> 
+> [diff]
+>         renameLimit = 999999
+>         algorithm = histogram # or 'copies'
+>         renames = copies
+> 
+> and see if this generates a shorter diff?
 > 
 > Konrad
+One more question should i rename msm8917-xiaomi-riva-common to 
+msm8917-wingtech-common,
+they are wingtech devices. Which naming is preferred?
+They have wingtech name also:
+S88503 - Redmi 4A (rolex)
+S88505 - Redmi 5A (riva)
+S88508 - Redmi Go (tiare)
