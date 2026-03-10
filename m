@@ -1,107 +1,148 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7096B3D3D00;
-	Tue, 10 Mar 2026 17:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5085F2E9730;
+	Tue, 10 Mar 2026 17:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773163320; cv=none; b=GBW/ENI7264+55eVXez5I1N3MuGQficqqcEb7gCVJk5GV3WHqXKtHuP1kaDGZ0C6PjKwhl1BNDezQRzwS/I5KznKf+2gPb0hB3Jc0FrlypCUUSnkXctLCXZDGDn7EKAfxvtjvd3bmG21qIbigihucV0VrbSFup2ZWjuPiGTFF5Q=
+	t=1773164903; cv=none; b=dOxCedFAqvLWeEAb81qNWGt6aU3L+AiCst/diXt4kkIC33iYn7Fr/htuoL5A/68Z1EKOpCp9EBdNlwEe3HZt7SKEAly/DlgH6/IBYX6/z3m1DfaQI5LYE4jA2S4jgWS+Jaq0u9QFPot3aWOTsUeMJnD4yZ/lvavMSOtZUL0lP9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773163320; c=relaxed/simple;
-	bh=1MDsEvb9e0chGFF10/hd+zOHjqNOQPgApn7TIsz0T4Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HujX64jjW9BChx9Sfz7M39do0vr/5zPbWAzSpuGDq8PIm0KmpI228CMaJu5HpM0XVm5C7yYzRq2cqyW4shdR+T3N6dig+nqYt28NZDL1MP5Mbo3ews6/KvtqeFCRanMWCrN7e0vnNXjGaY60tJ6p/SmEX4iifnM1mX01ay1l234=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=qZNqm0nN; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Dbd0HXNb; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1773164903; c=relaxed/simple;
+	bh=Rd82VMvssCgqufFd8/eaqmc54Ncv9DNjiJoXAlj0srE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nm6J5QgQxITP8qlErlMxlJZjeyHyRqwjOgSx7P7zMo3A7nN7qe6gNXeXXczTC6U6+EVWq4gHhdmyLRcXU7gogThRw10+wleA/b4CrJ3dAK0oaFSZ9LdSLe7TCl489URyC3y6zglXpya0UWK+yNhlNJJFqP/dQ71eVspADAVgJRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=ZRK1wjIl; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="qZNqm0nN";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Dbd0HXNb"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773163300; bh=Amb8lLLLsCs9TABIogcXvIO
-	PN7m+sBHaYhmkdVwSwzs=; b=qZNqm0nN88oFbfH6FArcS5BGvee+C9hTg/SeQhNkio/CTCHjuW
-	iZvzxPzPY5Z/NY82w2/tmIpRXuDbeDQZzhJaEf+uIsb2JLuyUjl9FYbr8XeMg6yiRdTJQqrpdiQ
-	hSmE7QH/kOELGtI03NuF8lZtzmhrI7mDQLOBIa9yvWhQKJpcWFmN7Jv232jNpSFtDP7DEW6yRdP
-	A7MW+U9jtzc6AYVt2cuqvPMAyH0sAV5lxliCKR5huIN0KSCXIsuDzNlTpTqoaIwr+lIfLvS5asX
-	S/0qtnvkXoKRewoBmpCl5EsQQwAw7cIHSIzScCox9unirHPxYPREHhJTYgxXzQiFuJQ==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773163300; bh=Amb8lLLLsCs9TABIogcXvIO
-	PN7m+sBHaYhmkdVwSwzs=; b=Dbd0HXNbKv3Js2GBMkynSZO0yhEbRXWj4ufgOWQWfLDAzKXKUu
-	MfjIAFsul52hYcJddCKq8r7Uhp/Sdl9dCSCA==;
-From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Tue, 10 Mar 2026 18:21:36 +0100
-Subject: [PATCH v2 6/7] arm64: dts: qcom: Add Redmi 4A
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ZRK1wjIl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1773164893; x=1773424093;
+	bh=OkWCVZlxqftLu2aBpMJ8TERkvPlB5Fhg+4q1RHor8Us=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZRK1wjIlW2tdy2KhNvkVHOw2UmPWIcnGeKQL09/FwyMRm/LgqsW6AM55vQh6kg4oi
+	 OR/x6ckDEVUWLARgsMMEkIRk3UkmoApC34a+g7jzyrJbHUuULSYA4TZXyXE1xRywh+
+	 IcxwWAfTGqkK8n5/CfZwUam6vnF6xhr+wbioQGiQhEyvYdgcP+vrCd96Zgyu5YB8zw
+	 bs5i3lhZNDr08Pduvg07ZNxeYpKBerzMKcq+Rq9xmJHXYVYrgoYuseBBE2lTLIeYc2
+	 YYdl/j1VgsMLREmBspXkQhAWHtBzyumiD/g89OMqmPvJ+coLgblXJG2MzTZl8AxlML
+	 LlbML5zAhb9QA==
+Date: Tue, 10 Mar 2026 17:48:08 +0000
+To: Krzysztof Kozlowski <krzk@kernel.org>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
+Message-ID: <Nz_hTfDbWqQk8-FcCknxZKO8dIhCAGueG89SRe2LkTG1VK4KjoH-UZH6bsOvqEySwNRjJtsEUL7vxxIXOWyyzLOtM9YLZaCuhPfxNz0mVyk=@protonmail.com>
+In-Reply-To: <db04882b-7f30-464c-91a6-578302aef4ff@kernel.org>
+References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com> <20260308-rimob-new-features-v1-1-aa2c330572c0@protonmail.com> <369b48d9-f089-49a2-89cb-a4e0c68f92fa@kernel.org> <7Ft_cDw10-3MmNTrKncMut5g08sodd9CL7r7AGXAtPPqZpXtHEgmqm05WhEpYMZzFEs4B0KWz-LU27Z0_YDnc44nXhdUrUt5X2dWK7D6pYM=@protonmail.com> <db04882b-7f30-464c-91a6-578302aef4ff@kernel.org>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: ab6af6b5969c34bbccb471ccdb9316c79e71b9a3
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260310-riva-common-v2-6-3bfc23996857@mainlining.org>
-References: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
-In-Reply-To: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773163296; l=1616;
- i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=1MDsEvb9e0chGFF10/hd+zOHjqNOQPgApn7TIsz0T4Q=;
- b=KMNrszd0vGBFy5n2/UlGNn+7gStSMbFeItSQUWPD69L/JdY/hp6EF5a59ck3itHuAMa14HkaO
- PDOsHF2IAgZAEa5g918RY/bhWD8MIdWXYifHyRi8XCGmmppEOAfDahK
-X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
- pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Redmi 4A (rolex) is like Redmi 5A with small differences like charging,
-fuel gauge, different speaker codec configuration and display.
 
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
----
- arch/arm64/boot/dts/qcom/Makefile                 |  1 +
- arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 6d87be639aac..20e161e843ed 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -82,6 +82,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86528.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-yiming-uz801v3.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8917-xiaomi-riva.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8917-xiaomi-rolex.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8929-wingtech-wt82918hd.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8937-xiaomi-land.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-asus-z00t.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts
-new file mode 100644
-index 000000000000..f0b72d9878c4
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2026, Barnabas Czeman
-+ */
-+
-+/dts-v1/;
-+
-+#include "msm8917-xiaomi-wingtech.dtsi"
-+
-+/ {
-+	model = "Xiaomi Redmi 4A (rolex)";
-+	compatible = "xiaomi,rolex", "qcom,msm8917";
-+
-+	qcom,board-id = <0x1000b 1>;
-+};
 
--- 
-2.53.0
 
+Cristian
+
+Sent with Proton Mail secure email.
+
+On Monday, March 9th, 2026 at 16:08, Krzysztof Kozlowski <krzk@kernel.org> =
+wrote:
+
+> On 09/03/2026 15:52, cristian_ci wrote:
+> > On Sunday, March 8th, 2026 at 17:13, Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
+> >
+> >>> +  vsp-supply:
+> >>> +    description: positive voltage supply for analog circuits
+> >>
+> >> Both are odd. Datasheet says vci, vddi, vddam and optional avdd, avee.
+> >>
+> >> There is no VSN and VSP. Otherwise please point the page in datasheet =
+or
+> >> some schematics.
+> >>
+> >> Best regards,
+> >> Krzysztof
+> >>
+> >
+> > I'm not sure about that. Writing panel dt-bindings has been based prett=
+y mostly on vendor devicetree - which also describes somehow the panel and =
+makes that working with the final product released to the market - so I've =
+to necessarily consider that.
+> > Then, I could agree that vendor devicetree might be not compliant with =
+upstream rules and could possibly make mistakes with describing the hardwar=
+e, so I'd like to find a way to describe that in a more proper way, accordi=
+ng to upstream rules.
+> >
+> > That said, vendor devicetree describes lists four power supplies for  D=
+SI: 'vdd', 'vddio', 'lab' and 'ibb' (which have the following property name=
+s, respectively, in qcom,mdss_dsi_ctrl node: 'vdd-supply', 'vddio-supply', =
+'lab-supply' and 'ibb-supply'.
+> > Two of these are related to ds/controller (apparently, 'vddio' should m=
+atch VDDI power supply in NT35532 datasheet.
+> >
+> > The remaining two supplies are related to panel ('lab' and 'ibb'). Thes=
+e ones are two 'external ' regulators ('external' from NT35532 perspective)=
+, which provide power supply to display, located in the qcom PMIC (in this =
+case, that should be PMI8950). WRT to power supply names described in the b=
+indings ('vsp-supply' and 'vsn-supply') are the same as 'lab-supply' and 'i=
+bb-supply', just named differently in the vendor devicetrees.
+> >
+> > Usage of 'vsp'/'vsn' naming for power supply properties is grounded on =
+they commonly being used at upstream (different panel bindings make use of =
+these properties), on one side, and also described on schematics of devices=
+ with the same hardware configuration (LCD_VSN and LCD_VSP), on the other.
+> >
+> > In the meantime, I've found out schematics for 'xiaomi-mido' (another M=
+SM8953 device) - a variant of this device is shipped with a panel also usin=
+g NT35532 IC (just like my device) - and LCD_VSN/LCD_VSP are clearly shown =
+there too.
+> >
+> > I couldn't find much more information about the display on my device an=
+d the only resources available about that are those listed above, as of tod=
+ay. In light of my reply, I ask if it is still necessary to describe, in th=
+e bindings, power supply properties properties not used currently in the bo=
+ard DTS file.
+>=20
+> Please wrap your answers so this will be possible to parse.
+>=20
+> You write bindings matching the hardware and for the hardware, not for
+> the downstream code. You cannot add supplies which do not exist
+> regardless what some vendor wrote somewhere=20
+
+Vendor has also described the hardware by storing information (by including=
+ info=20
+about panel too) directly inside the device itself (/sys/firmware/fdt).=20
+Though vendor devicetree could possibly contain mistakes, I guess I've to t=
+rust vendor=20
+devicetree (also for the reasons explained in my last reply).
+
+> and yes, you must describe
+> all known supplies for this device, especially that datasheet is
+> available publicly.
+
+Based on what you said, the following questions have raised:
+
+- have properties (mentioned by you) be defined=20
+(apart 'vddi', which most likely is actually 'vddio-supply',=20
+already defined within mdss_dsi0 node) outside of 'panel' node?
+(and related to dsi/controller rather than panel, instead)
+
+- have those properties (mentioned by you) set as 'optional'=20
+in the bindings, rather than set as 'required'?
+(since panel works without most of them defined in the=20
+board DTS file)
+
+> Best regards,
+> Krzysztof
+> 
