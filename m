@@ -1,125 +1,101 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAC5426682
-	for <phone-devel@vger.kernel.org>; Mon,  9 Mar 2026 22:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4E332B9A2;
+	Tue, 10 Mar 2026 02:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773094074; cv=none; b=QjzoJElttn6SoFL8pgE78wr11M0C7JjDksIzfIULA+hZ/Njcty+JHBeJ3Phh7JLb6O9ng/RYE4lzm1yugBaVD5c5gNv+XBhb3nvFvtNdgMW2xhYyufzpraW52/JLKg5l+64nyJSbzYiEMUjeucByrlQwJFxr8JKZqk/BNZXWmnE=
+	t=1773110773; cv=none; b=K8kHsuV8j1hF+I6mi6eXsDi2RxkXTEkbgsI1TS1V7/dHBmUMmrHJOW/9BlyV6hgaelBvmLbE+4LAvfK5WWkhQ7gDLsz+C3p/GahypxS5DxQu1NBy1GLom/KoANNAxGskjNdaqzvhLmwqZ1wz4XxuYLlJZrzUoDDHqn7QZ6uOZyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773094074; c=relaxed/simple;
-	bh=mXuEXkQj7Rg4dutsP6ny1KP87NvfEJ0+83zK4pvYZr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JSFnijtPwLxs5Jos1Ywn68vAuvhEb6eG1JUEsTE1BrylGTbjOj9vKusum/majOFlsE5y1HrnJQf6KaySe6YEPKPmnllifn+iM8aCZ4RsDIfFe2mYFta4B3TTQoeCGRX1ucJwTrz5uv7veJPRvlLhGsyWJSBoNw1xjVawG9vou8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fQbai9Lc; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1773110773; c=relaxed/simple;
+	bh=8ZSQ9NsNIH3PdEI8a25pi0HPrK42YnV+4hx7xxrVNRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QSs1K0xb4EFmiryTdc6ZvCvucXQQ1mGgPjs9428RKqNIFn1hk6Rj8QjchG74vY9eK7yVYHZBE4vLoNbJkS1w7D42NHcT3iGGHuPzT74DzvRLHKtFiwPGgEhRSbghojGKsIxlRpHtsx+jZd7DTVpChT1QxPbjUQbmr7Z0UQFvxDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h64B7dvl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fQbai9Lc"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439b790af67so5088719f8f.0
-        for <phone-devel@vger.kernel.org>; Mon, 09 Mar 2026 15:07:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773094070; x=1773698870; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dk5accODM7ezppgmsEo6ZlVd16xDcQunTBdBDruNkNk=;
-        b=fQbai9LcJlrJp7LHta2PUOQaEWQBCKry7hgxgC9IDhjff1qTboyTCcCWWs7KeCC++5
-         Lcz6nq+tcIvWdzdKPS5M+oQTIThkzVl9P16wFdMRlHXXOy635XGyDEi+k+PMVTK4ylnF
-         6rmvMM2nbRPQORp5zJ61ElHchC9H5EPr1SSBAjemPyU1/urLFN33y1E/OuATk3DGh1oK
-         Ak8wVblBAumy7Ek2VtdJNMp/uNa3vgXMjgd6+4oEfWyn8cc+5BFrMSDyfwxV4MvobP7o
-         2QpeZnUQ3D6WHb0R+ZI4m+EsKm1osgcJyGMMY5sVM87DmOdvTTC/eaO8g/bwSIGMMYNv
-         cQVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773094070; x=1773698870;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dk5accODM7ezppgmsEo6ZlVd16xDcQunTBdBDruNkNk=;
-        b=KldmJAO12uCk4nUgmpXw1r6RlYSz98WB0kWcas03UDs+DF5/4ydMDqryriZNGbLFij
-         Uq6kFNKTIPHUv2Bq3KF0E+cQl+dEOixdoCrGLomhW6/4fG688h09LY1LUfLJLEW5kA1j
-         mAtZ3rJ4s5nUOEPDJaPLp5h0ynVnX5pVRCQeT/N0wPaoAIeuXT/vBGq5Nz8zCENpQv+x
-         xOsXx7s23RHDObRrWodwcadeYkJ91q5Tba3n8Hwi62z/YAJAIgYXRmu+mBS3dfWBRkbq
-         h0OjZBvPtKizXEgTixP+2e9icTZC4ViOKENNGRH8yUEQHEdzF9Ih5NO7fAoTWGR4pMNH
-         G3Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGzY9n0UHFda1k1Ee8iR6eBma5ghQuuxTv1AOcgJEaJU+SZ5MXlTpNFGee7C2mnbzOEKshthC0flD68w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZY2J+ndNvcisV3S6dPQKReg5mJWYxh6fpyRe7UN2vdL75CGgd
-	8YWxg+R/ZgAeG+Q6Lzlw5a+twlrQF/nDUlPkFMmKFci25NTKs3xZObIdJrHFG8gsRSE=
-X-Gm-Gg: ATEYQzzcB6J5jzNtOk3ln6kPc16sHNybP3GEgq6cWfAhBMZf8rbC9pHjabsG71jQqeL
-	s/OJn6F1SmuL/MWBkvkn7wPyCgmspv0g0s/EkzaobuUiCmJPnHbvKnt5LVLMzoKLX/6qmsx1OdR
-	+1HZaRCy+RJyw/KXA0vT66Of59zEtbE4a6cCi6P+fle9Eg3NXmvfgkz/2pGZ/UnuREBP00FlcQ/
-	CfcyM7Ca+0NheI3oHSEqEUsd63PQrHyhtqn8/Jy9xtrfe+84gidpxIL8xEWWHbdoTh0ZoAhUr3u
-	cqoZWQzE+elhjiu5R+gqpILOGL94OztdwWSNCdfNdHZrdBzEZZKcvDvWLXg/l8qywK/TMoD7lIV
-	RRuihSy3MbF3t6gQ3fHS+PIOdmqYgBOttpxDSPUDSl+phWBITPKxQPD5mgZfTDZFhiYcPorKkU+
-	aagZVQojBE/zGZg9t3JtlIS6AzSYyCLN399XE=
-X-Received: by 2002:a05:600d:848a:b0:485:3294:fff0 with SMTP id 5b1f17b1804b1-48541a2b9f4mr12097815e9.17.1773094070519;
-        Mon, 09 Mar 2026 15:07:50 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff23:4441:1c2c:7aff:fe45:362e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485419c2930sm44011255e9.0.2026.03.09.15.07.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 15:07:50 -0700 (PDT)
-Date: Mon, 9 Mar 2026 23:07:33 +0100
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Paul Adam <adamp@posteo.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h64B7dvl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D088BC4CEF7;
+	Tue, 10 Mar 2026 02:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773110773;
+	bh=8ZSQ9NsNIH3PdEI8a25pi0HPrK42YnV+4hx7xxrVNRA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=h64B7dvlNhd68KVGrvrpkCVLPEi+OBR2CqHCuqb54Cxb1fW3XDLIF07fRroeBEH1i
+	 GJSbwt+B9RJnWuawQ2M3mpxgZBqZWolxBFbXTgYTBw47rbNJG7fFOCHCdd4uAsbGAb
+	 CYpkOnm7jkMFcr9ciaQcRMRApqtaWm/g1pTiG0qZW0tZOa5XleE8tnH5n5mxEh2BM8
+	 ePIMl24N3Fdrb6RZt412R5df4FY1MN88SYCZHkjhutuZc/fDFK2Bnm3MH/C8q4Hl6z
+	 /gsIxltGIFYrL5YEGf8lefNiyzfQSUacuBSYyv2GAehJqWGfIh4y3Oot6XO5Yuibv0
+	 FAzq3Nsh1xmWg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
- initial devicetree
-Message-ID: <aa9Epb7MQ0qVFWGO@linaro.org>
-References: <20260307-wiko-chuppito-v4-0-325ac66ae338@posteo.de>
- <20260307-wiko-chuppito-v4-3-325ac66ae338@posteo.de>
- <aa6P4rE7d2ftaeAw@linaro.org>
- <aa8__ofJBdMfavbq@MyryksLaptop>
+	Gabriel Gonzales <semfault@disroot.org>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Biswapriyo Nath <nathbappai@gmail.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux@mainlining.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v3 0/7] Initial Redmi Note 8T support and more
+Date: Mon,  9 Mar 2026 21:45:24 -0500
+Message-ID: <177311073318.23763.5505178540690402680.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260126-xiaomi-willow-v3-0-aad7b106c311@mainlining.org>
+References: <20260126-xiaomi-willow-v3-0-aad7b106c311@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa8__ofJBdMfavbq@MyryksLaptop>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 09, 2026 at 09:48:12PM +0000, Paul Adam wrote:
-> On 26/03/09 10:16, Stephan Gerhold wrote:
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-> > > new file mode 100644
-> > > index 000000000000..d927bae2b208
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-> > > @@ -0,0 +1,315 @@
-> > > [...]
-> > > +&sound {
-> > > +	audio-routing = "AMIC1", "MIC BIAS Internal1",
-> > > +		"AMIC2", "MIC BIAS Internal2",
-> > > +		"AMIC3", "MIC BIAS Internal1";
-> > 
-> > Sorry, just noticed this now:
-> > 
-> > This seems a bit suspicious (I would expect "MIC BIAS Internal3"), have
-> > you tested if the secondary microphone works?
-> > 
-> > Thanks,
-> > Stephan
+
+On Mon, 26 Jan 2026 17:34:50 +0100, Barnabás Czémán wrote:
+> Redmi Note 8 and 8T are sibling devices the only difference
+> is Redmi Note 8T have NFC.
+> This patch series is commonizing Redmi Note 8 devicetree
+> for a base for both devices.
 > 
-> The secondary microphone does not work yet, neither with Internal1
-> nor Internal3.
+> The patch series also contains some fixes for Redmi Note 8:
+> - Fix reserved memory ranges, they were wrongly defined.
+> - Remove board-id, board-id is not neccessary for the bootloader.
+> - Fix reserved-gpio-ranges the reserved ranges was wrongly
+> defined what caused the device crash on the boot.
+> - Remove unnecessary usb-extcon, gpio102 is related to DisplayPort
+> what is not supported by these devices.
+> - Use memory-region property for framebuffer.
 > 
-> In the downstream devicetree its Internal1 for AMIC3.
-> 
-> Is there a way for me to check which one is correct?
-> 
+> [...]
 
-To be absolutely sure, only with the schematic diagram of the board...
+Applied, thanks!
 
-Another option would be that the secondary microphone simply does not
-exist at all (i.e. there is only one microphone). Any idea if it works
-on Android?
+[1/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove board-id
+      commit: 535e5741bc9acef5ea2561aa300f28370599e7e2
+[2/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct reserved memory ranges
+      commit: 242801cc24e865cb525ef7d826ce6ebeffcad606
+[3/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Set memory-region for framebuffer
+      commit: f3d3a5924812eae3aedb431632c8a3b4c3f6bae1
+[4/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove extcon
+      commit: 79664600fd3ed3972ad9321e13d1f80267730447
+[5/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+      commit: e8669e010991154bedadd1cd67700544e0362e99
+[6/7] dt-bindings: arm: qcom: Add Xiaomi Redmi Note 8T
+      commit: 32ace20ca1b65fcc2680b94cc8f00a80758eb76d
+[7/7] arm64: dts: qcom: Add Redmi Note 8T
+      commit: 7bb7c90e0ac18565a45c02072356bf3dffb81bcb
 
-If in doubt, it would be better to remove the line for AMIC3.
-
-Thanks,
-Stephan
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
