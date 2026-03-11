@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9635230DD2F;
-	Wed, 11 Mar 2026 18:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F9C3E9597;
+	Wed, 11 Mar 2026 18:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254671; cv=none; b=RdhU2ZSbpBwp/zRR51O30CZL5VrUklvX9oDoh+05dgQcM69e4+6hQ9P459zbo2W2OO1CsVM1LTOtXFkc5sip7A6/JdVCcKa31I4AOSUzUUkA2e9+VfyDWdo/aux8Vdb2OU0Shpfq9KCUUK+Yc2DGCrJsxM3NjI9TWanD2xnKkLQ=
+	t=1773254826; cv=none; b=Dm9NW2UjXm8q0zeTfmMYF1bq5oS6GuS0a5/vqSbI0lJunLkrMFRAfqI73XD6gSQ4xM2yOz+vOJMOlJBul95kACKH9+9oM9NyCdqt44EHjwDf4lsUzgP8dY6flnhDpbsydLsITGuLb5lHfrJasEw59fd9gitXw3a8FFsyEYJEcus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254671; c=relaxed/simple;
-	bh=1hwN9lB39gZMN/iMHPqeoGVh2gh5ZyKeriDbiYZU+jE=;
+	s=arc-20240116; t=1773254826; c=relaxed/simple;
+	bh=dQI5AaRN9kQoOur5mR9n344XaBUPCGCsHOMIOiHYfZM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gGr1ynn1y18w+ixPd0Ugtgd7q/7w4ryfar/880+Vf7IkgoEvdnz24C9Q7JwRc6z/LR5FV5AWdpKO31W7lXrFZw0D+nsjf5tqzOU+rMmn3wdPTOIU0jWarrATVJb2tF2ulOLftucQRywdfPG0St/neNcRBBxF7qBafLlPjXqzhZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXm7xL4c; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gN4vdzIZ4ImysPrlqBWxUD6VFgXP9IgKgQCkPAhnmWOC5emAy6ZGwWbK9Ufs3MBba1kad2/e3N4e+6Rl6rhCOPmAb0BmkzXOlyQQ695aa+LzqUn3P4THCjvNuW60IgZslFqxDCo/2TGokeRdFIZeWVV1fu5lbEkq7ovXPmW8IPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPz7JH+i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXm7xL4c"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4C86BC19425;
-	Wed, 11 Mar 2026 18:44:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPz7JH+i"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E0C37C4AF0D;
+	Wed, 11 Mar 2026 18:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773254671;
-	bh=1hwN9lB39gZMN/iMHPqeoGVh2gh5ZyKeriDbiYZU+jE=;
+	s=k20201202; t=1773254825;
+	bh=dQI5AaRN9kQoOur5mR9n344XaBUPCGCsHOMIOiHYfZM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QXm7xL4c9zphgE4VjSSEtRdN95S2W5ZmGMzRPSAp3t6OgHC/eBXkwxMAe+i6SQugk
-	 23hI0xakdsWihG6Wk+vhv3hn5r5h4Q2uOBSWlibMikhdugUvIXnDUSsbzYALqauCFK
-	 CSkRsOwGzXbMgcwA0yRN0ydPhpLc8m0QZWKwvU8AmOYHtvybuUwkEHsosq8bzlCfH4
-	 HG74NtQrBTbwJPCEunTiUicDIQHpt7Bgw6AoHq4ZnDMeyYYfQvpdz7ABBM+l7f1uyp
-	 alI+onguGhzpRx5jN2oyTRPUc+H0L1t34kZS+t1HRlWGu5I2KaTjkezFL03mkn/7aN
-	 67+JRjSWJkDbg==
+	b=FPz7JH+ixHPaceo2C3zsjjC0BfTbYjTJkN86JV1ekB9AXTp6hXwY1dN229gV3Vgej
+	 lyvcXCqMplAQxUtE0BTAE0L5PbJe1NZYDGtYZ5Ru2NTht+JhdmhTjvfQ5bqX7Pva5V
+	 FmOeCdQnXe2AXe5RW/mG8wmMM7DihCGloBkfnJJn5uuyOPY1KhGUIP1DdVNWhXY9Av
+	 AfkGceZTMk/c4NWeIvyzg9kBkAT2Mc/xbY7Nqc4fdTamVLTrce75W/zHIYMYlyLERb
+	 LY1tlBT2EN+eqQ+KqhX5b95hlxOesw2HVEWH+qjyRsq7OnjPZvucXD0LWbkp5cyqOv
+	 ccxAZIsC6MzHw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44D7A1125866;
-	Wed, 11 Mar 2026 18:44:31 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 11 Mar 2026 19:44:29 +0100
-Subject: [PATCH 1/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Introduce
- framebuffer
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE30B1125869;
+	Wed, 11 Mar 2026 18:47:05 +0000 (UTC)
+From: Paul Adam via B4 Relay <devnull+adamp.posteo.de@kernel.org>
+Date: Wed, 11 Mar 2026 19:46:06 +0100
+Subject: [PATCH v5 2/3] dt-bindings: arm: qcom: add wiko,chuppito
+ compatible string
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,75 +41,51 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-beryllium-fb-v1-1-408a580d125e@ixit.cz>
-References: <20260311-beryllium-fb-v1-0-408a580d125e@ixit.cz>
-In-Reply-To: <20260311-beryllium-fb-v1-0-408a580d125e@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Petr Hodina <petr.hodina@protonmail.com>
+Message-Id: <20260311-wiko-chuppito-v5-2-0a8656cca1b3@posteo.de>
+References: <20260311-wiko-chuppito-v5-0-0a8656cca1b3@posteo.de>
+In-Reply-To: <20260311-wiko-chuppito-v5-0-0a8656cca1b3@posteo.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Paul Adam <adamp@posteo.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1053; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=i+PpcsXJJ53DrxBp3ADnJsJTSeGIaZ45KNoGbwtVT7c=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpsbgO+vyDUcHpIKz/T39SZ3iI42Y1qchdCybkd
- Sby9saxZLSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCabG4DgAKCRBgAj/E00kg
- coi6D/9E4h6y/4CrOKrqkUzpAtAdVD47dHUZ3BnJEqDl2xqoJx0vCQlX97QkiNSKsJ64e/S2lUg
- naF0xH+f5hxXYfYYp7r6ZTxPNf6mdM8RPHAIlGhK3KFWNJz57joD1cRA7loPBLx4Aj7ZJxcmKG2
- uWsxos0zIkAE8tLRdLYhimr4QcJ+nLO0KQ0w23KVVWSg97uUdsD29Gp2FolsomQdlOUh9jL5xOZ
- +Cz4VfZKMQCqo9DELgoj+NRWUlA2VyR+7TYXNXj8Ec4EzBxI058/NMOYTN/W07KduTUcQesNaY+
- B0vXbR6qXSR0YwACGvTF0ogjwFQMLVA3lo5BXUmkYDgCgq26Krnnnh+5/m14allMiPs8KXqMNp9
- 0OEFHlizKEe30Wb2EKl0LtgAZnW3H3k1G+6/86UYwhEblpCf1hYWffMSgeXAbEMFGZJcx+Pp5kq
- kq66KJchdxnoKu7NbefvqHa45UKFLhKnKEmLmWampYTuKefo+BQMOU0yT6meofeI9lHySARUYVt
- ichOBjeYYqjFbHXO/hFP/SKyGhSb3OhtQJl8m2jFyN9Snz0v/5yivMqFpHgkoApmtq8bl1IVCTe
- QzxYq4bm0letvP9zvOL3AwrpdQfawZWA/GDGWc5GktYK2INjQ0sUlgzQoFSm1J7ymjU3hYfmsp6
- z8s3lxaHQIU2YCQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773254823; l=811;
+ i=adamp@posteo.de; s=20260215; h=from:subject:message-id;
+ bh=L22ne3Q6rMpTpkTkP/rKSYuGR0NhqH7BLqT9DvYenoM=;
+ b=StxlTKFfGMrQ4hlOVMoGzhx3Qo8J4BI18sm1xyp9OGI3VVwsBD/6JYaQwpJ9o8SmT5CPyOVAf
+ O2sYX4wZuYKB5ixVIRZoAgSBgcuGwOHFzMiqAPkmJNWJrhlLHzXPZLH
+X-Developer-Key: i=adamp@posteo.de; a=ed25519;
+ pk=mtrPhSn7htywc4S5zrKNrWM6laAdfnaJzIs0BDiCyAs=
+X-Endpoint-Received: by B4 Relay for adamp@posteo.de/20260215 with
+ auth_id=640
+X-Original-From: Paul Adam <adamp@posteo.de>
+Reply-To: adamp@posteo.de
 
-From: Petr Hodina <petr.hodina@protonmail.com>
+From: Paul Adam <adamp@posteo.de>
 
-Add framebuffer for early console and u-boot support.
+Add a compatible for Wiko PULP 4G, a phone from 2015.
 
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Paul Adam <adamp@posteo.de>
 ---
- .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi    | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 01b570d0880d6..bd6d7a3cfc0ac 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -39,6 +39,22 @@ aliases {
- 		serial1 = &uart6;
- 	};
- 
-+	chosen {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		framebuffer: framebuffer@9d400000 {
-+			compatible = "simple-framebuffer";
-+			memory-region = <&cont_splash_mem>;
-+
-+			format = "a8r8g8b8";
-+			stride = <(1080 * 4)>;
-+			height = <2246>;
-+			width = <1080>;
-+		};
-+	};
-+
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 		autorepeat;
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index d48c625d3fc4..c9525b61f8ff 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -186,6 +186,7 @@ properties:
+               - samsung,serranove
+               - thwc,uf896
+               - thwc,ufi001c
++              - wiko,chuppito
+               - wingtech,wt86518
+               - wingtech,wt86528
+               - wingtech,wt88047
 
 -- 
 2.53.0
