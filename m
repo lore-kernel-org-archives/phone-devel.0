@@ -1,120 +1,137 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F3F30F812;
-	Wed, 11 Mar 2026 02:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B68B282F04
+	for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 02:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773194812; cv=none; b=QRsUGvvvzyOzOMqI+IwdfrydPnWhZjf/ENY3enDQfsTXwsMFoYk3umy1ju6HjXmlq/9v3u/O4ZDLKioJqB9ZhT7GbunE235wkBibIpnzuIFRZkD4iZO4WwouLd7sqear7zASnzSxwmZBUz8SbhDEdaIBm9xMyzsS2ycyl8Bwa4Q=
+	t=1773195911; cv=none; b=u8DY0kKIZnCS7SMvTbNSJMkhDKiB7DbhFrug1vKAIHhuENcTRKvDIKF3odBEtHe93OzGKjTNCCZAQ+CkH3aFzZ/zqx2rDTCI1jD7KfXgOdJnMc87pFRfeN1qF0yjfEd8pyhisnqTMwJlEm0M6g/gG3HJeoK76EtfESGhUOdOvbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773194812; c=relaxed/simple;
-	bh=UaLVhdvXWetzbH8/UhNuhhsOqPDDmNHqLePyoUgiblA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Om63K0PoeRxImNXyJ+EQNxLV+akkZ3Det92MpsgwHVNi5PN3SYr4gp4z3swTI98AG2eGlW9H/urdnLyziLCF4ao3TdQDwcO0wAPkNq7CY+pXUSQkAM0ZD+5EaZ/KUdXEek/aj7+j6dmTR4RQjWGgqpusmOSaP4NhOY7tpqIClxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=r/xO1K/f; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1773195911; c=relaxed/simple;
+	bh=x3oA4b9XXpfnN8kUiNhtlS/tc1BuEX7AW97CTEgFyIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HBUH8lZTUR7eFzJmqeWi7XP/PtYiHUXpKBVr3qIApOhYHTreodXVP7v2axmEOiicL83Sknhx+o8BYebmP2pzfDke7CPXilsZIGpJFeuKe7EiBOC6WnPzin5gCrBI1DcKQ7JR0cmvY8x+HI1KCOh7gMwpY8E0Qricq2IP//kk+RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FY2bT0go; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="r/xO1K/f"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AIZD6L2911115;
-	Wed, 11 Mar 2026 02:06:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=pAAxYFFzFfWTOcBLF8XT5Q5KOsRMGDM9wOgpZHoM5vE=; b=
-	r/xO1K/fKQXWxSJL7g5SYOtFMNcbIYoTB5jH8UR+qc+ueOG24a0Ybd9tNh45hLnu
-	AGxoPSYJDDEjOPbstjpVjskGjou+bGQtBRrnE1GElwQdPMp06CZMEQWwyykrl0j0
-	IhPsixhCAcMl+uyYE6gY/IJ8xLWeixEsCXPK0z390blyTJ+qIuPjx5ez943bwnMW
-	lj+APr0sIzyeEFkX1/LRS9bcIO8H5E2zQsNccYmjR4h7PsPsCk9SRitrimVLuqlH
-	10tdYeenRNyE6w5Q7oPDacBACiZU2Pplpf33j2Php+MhIbhns344Yq3KROi9T7F5
-	4+PiAoMY5USWkdkEs3wmzw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cskua44mn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 02:06:24 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62B1cDcJ020243;
-	Wed, 11 Mar 2026 02:06:23 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4crafewwjt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 02:06:23 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62B26M5J002770;
-	Wed, 11 Mar 2026 02:06:22 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4crafewwj6-2;
-	Wed, 11 Mar 2026 02:06:22 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>, Vinod Koul <vkoul@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-phy@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        Abel Vesa <abel.vesa@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v2 0/6] Enable UFS support on Milos
-Date: Tue, 10 Mar 2026 22:06:13 -0400
-Message-ID: <177289787680.2131580.5421474366567386451.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
-References: <20260112-milos-ufs-v2-0-d3ce4f61f030@fairphone.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FY2bT0go"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cd7a75c680so47763685a.1
+        for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 19:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773195909; x=1773800709; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pdOODwOyqf2HXTJor8x6+j1U0inwH0LLdlGvfoS1Vfo=;
+        b=FY2bT0goJi+eGxVKUdDcVzRwoQgrQnVLnDcA7loJJil0P4Ni8pMG46aYtZLbnzYCmL
+         ttG0XvTy8yd/gnIaI7o5qrih4Kn+rgjI47B8IO3PTeKTbFI+kHx1XjLEs5+eaM4nB2e1
+         +DYVbLzQRgvKCQr8i0dsxeA03Z3dbFuQyDMtV8NIGYZCX5VpgkgYDtaWauNrOv9jXteO
+         dCe3Eob7ZRKNsS2XQ4HujfFkZZBi7CuGsR+y9/w6OLKI3CM8ihaDROZVBmSR5h8CTnLN
+         rWHfL7sy3cHpmKkxD7DcXmXWeaY/5qn2IElaygmHlm3aEjYk5glgV5tSpCh9/lLyx5P6
+         It4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773195909; x=1773800709;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pdOODwOyqf2HXTJor8x6+j1U0inwH0LLdlGvfoS1Vfo=;
+        b=sWzZkRDntM+cVqJJJpPAms3JzXqigglducgANqPekogU26M3AjKIo9jLdtuBB530uz
+         QGbx5pUk0znVa29J9dSY53Gib/BJffxMsDTQ97+QqzjaO4HkDJJo4gt0iqN9Y0EFtt6L
+         0wvnsLrptxr1eJsM+ucYKurpFkVpzEpM/jDpJXQNneQ6dcdnzEaBxfkMRMdZMDInCIDU
+         CeFwj2odp8PFtMVwpHO/vanUr/5s4o7itqZBS5/M07V+W+WD1PmVlSnH2tFJUijw7MKC
+         7OPANzXa5laHNYHH4wkmdYThn1X9OEf0ioOdHPaj8BW9WwXWqckMoz8NWMpnXjkF9IKV
+         pYNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ6rkzRE5u9WmdmcIgdQ4ZwGYVR7smmYo6IjwwFCyVl+y/ymdpVujAnm4sAxTVA6dOUhfBrlw9uMFCYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuQ1CJ13kglErDKuFQ7F8YsUtAPtZ2HMe5o97P62TX08qoBGn6
+	Vt64SZD0dd2Zq0N47RXik6z2tXLktNRsNTNzoR9BdzxeMWhMWga+rc0c
+X-Gm-Gg: ATEYQzwEt75AM4rgieM+jEZ3S4EYYXI9pgoO6Y2OvxSjoZrdQF1UdLCAcByPTktWi1S
+	0roH6r+hsezykd0DxDNcwVKW+wN1roTD9bFGy2SzMge/8THDDxphv4SuEwruRLGPtmA/lGblFU2
+	2rekxXkZ0z+x5bHJ2mqf/pZ9rECWmN3UDyicP00strKrniqfIQbQPD2p+WDL+xURl67cs3LUYRe
+	q8KwXqrNgGC13DzvNUScQaLsuHcXiMYTTVrRoOb8qquNSwZOkKKu+7576qr7TB9jAqnAzdCMnvn
+	0MqSFMlRE/XRIgmrWdZD2biGELOu3OjjN8EhII8SjlROD+KjP9t2B3kDvwoQpoUg4YDIpQ5ydEL
+	7yBsiBxQ6DD4VlSpw/CEDSqT/U/WZmMATdjOUyWs/0sS+ISjeaVHtgo1+7pL6cdqki+OHR7bkEP
+	8LcOZDI3qPXzZcWiNYOakATImWhg==
+X-Received: by 2002:a05:622a:1111:b0:509:1be4:97d1 with SMTP id d75a77b69052e-5093a19d134mr10124061cf.34.1773195909341;
+        Tue, 10 Mar 2026 19:25:09 -0700 (PDT)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939ec63d6sm5194251cf.12.2026.03.10.19.25.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 19:25:08 -0700 (PDT)
+Date: Tue, 10 Mar 2026 22:25:40 -0400
+From: Richard Acayan <mailingradian@gmail.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Cc: Robert Mader <robert.mader@collabora.com>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v9 7/7] arm64: dts: qcom: sdm670-google-sargo: add imx355
+ front camera
+Message-ID: <abDSpE3BNb0jFrqx@rdacayan>
+References: <20260217002738.133534-1-mailingradian@gmail.com>
+ <20260217002738.133534-8-mailingradian@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_05,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2603110016
-X-Authority-Analysis: v=2.4 cv=Methep/f c=1 sm=1 tr=0 ts=69b0ce20 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22 a=VwQbUJbxAAAA:8
- a=IOu2Ym7NY8O1g5AK-m0A:9 a=QEXdDO2ut3YA:10 cc=ntf awl=host:12272
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDAxNiBTYWx0ZWRfX/4B9gGsOR3eQ
- OCrB0qlknbYbxRXzoXDF1gJfzToTWVd5cFSaSLa2lPVx+xHbEINrnjIrob5bSdt58/G/D7Ch6HA
- 1BP3Ip2L1L/WjuA6tHobH94TsTIl2vlBZ6t5VvjeaXlU1nL5dGKx1jY//2c/Xr5ybyM+r5uo/0H
- 0lATTU5XGkKUjD19QeGfiz+FGlp7lp4tyymURdsim0vd4sny5fkCTU/T4v1cxPAbxrbrfHYzLxp
- nd90SQOrBP1xKkpyyeohE+eXnTlvjknN8RBUOMKBu8ji38/s7jHiASjX1jteCbXgttQWD1C9Uhz
- Qxu3xII21Zo1LKv8t1QWf2vEHBM73AqzlPOYzs76aIPEWRIE9SBGREgUBbGTCByBy66Gm2MnFng
- 91i3+J8QJLC5WtD/BoCtq25XJe5BMvf3j4JYSPhzc6wwxOM2/DqNjVz/seXEx5r0ShNi62QH9Lj
- w60Dd4F8ld03FdQC2tMHGPZczfVSFpxNGiSjMvxg=
-X-Proofpoint-ORIG-GUID: 0iVz1MMjg1mg92z-0oju3n36A3WoI9_j
-X-Proofpoint-GUID: 0iVz1MMjg1mg92z-0oju3n36A3WoI9_j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217002738.133534-8-mailingradian@gmail.com>
 
-On Mon, 12 Jan 2026 14:53:13 +0100, Luca Weiss wrote:
-
-> Add inline-crypto-engine and UFS bindings & driver parts, then add them
-> to milos dtsi and enable the UFS storage on Fairphone (Gen. 6).
+On Mon, Feb 16, 2026 at 07:27:38PM -0500, Richard Acayan wrote:
+> The Sony IMX355 is the front camera on the Pixel 3a, mounted in portrait
+> mode. It is connected to CSIPHY1 and CCI I2C1, and uses MCLK2. Add
+> support for it.
 > 
+> Co-developed-by: Robert Mader <robert.mader@collabora.com>
+> Signed-off-by: Robert Mader <robert.mader@collabora.com>
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> ---
+>  .../boot/dts/qcom/sdm670-google-sargo.dts     | 95 +++++++++++++++++++
+>  1 file changed, 95 insertions(+)
 > 
+(snip)
+> +
+> +&cci_i2c1 {
+> +	camera@1a {
+> +		compatible = "sony,imx355";
+> +		reg = <0x1a>;
+> +
+> +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +
+> +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +		assigned-clock-rates = <19200000>;
+> +
+> +		reset-gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
+> +
+> +		avdd-supply = <&cam_front_ldo>;
+> +		dvdd-supply = <&cam_front_ldo>;
+> +		dovdd-supply = <&cam_vio_ldo>;
+> +
+> +		pinctrl-0 = <&cam_mclk2_default>;
+> +		pinctrl-names = "default";
+> +
+> +		rotation = <270>;
+> +		orientation = <0>;
+> +
+> +		port {
+> +			cam_front_endpoint: endpoint {
+> +				link-frequencies = /bits/ 64 <360000000>;
+> +				remote-endpoint = <&camss_endpoint1>;
+> +			};
 
-Applied to 7.1/scsi-queue, thanks!
-
-[2/6] scsi: ufs: qcom,sc7180-ufshc: dt-bindings: Document the Milos UFS Controller
-      https://git.kernel.org/mkp/scsi/c/cf44b6369b83
-
--- 
-Martin K. Petersen
+This also needs data-lanes.
