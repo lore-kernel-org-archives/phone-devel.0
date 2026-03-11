@@ -1,140 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9A32116E0;
-	Wed, 11 Mar 2026 18:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AAA3EAC74
+	for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 18:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773252099; cv=none; b=JfdRYlG43Kj0DiW37aeBOrVv7jiO3Fo/fTiTXVyfrxjHTRN/wKIOin1rVXZiM4iaKrNQWf6HEIRwrOz29CnIIvHm80yYpUH/7fUv26stE8eMXpqbU+0x4BCgrCwWVQY9IGEtTO3fRWgZ1aaGn/cuJr4THPQ+51GkNy2COV5xW5M=
+	t=1773254440; cv=none; b=EP1otaSdr/50A9/t7ja3J1pAxLivTMvQSUhWyB4IMwxaFeVYUKEsAk4m5lCaIatpX18C22MG5M7H++OuZ4yPO4J1EsmQhWPkMOACvCKxftCy58oMF5tFPpmYLNHcYbCgfsudot2t0Jcf6Rykodzp9JEtHCJ1RL2OPjGZE2tDdqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773252099; c=relaxed/simple;
-	bh=3yWJLZ6GD/dmWHpKPnwlQPmYIRRZb9sfs9HOE709OMk=;
+	s=arc-20240116; t=1773254440; c=relaxed/simple;
+	bh=HcVMetrvvL3zERXXTCW96tAJJzhjC7tNn3P3hKyDTJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WugJjzmzFUSwdO9W/IJokIo/NZ3FhydKT/LmFpwL+aZp5/gUfqLieJ4fWcmHEJ8W0X0Qhfz5fJRRKVdu/5nYjZHxSnVbxMl+Ck8A7Mu5Y7Db11MXSVOTtcMCIpdT/LWZnHJazD3Y4gAECg3O6pcTPbwPATHi6KEr3juIIN3ulRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frk/CePd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=t/CSqWJIapdi8O2cCcRCFP5k61GDNT7hCrQ/aSaOlu9ZRXQvcPXBBOLinZKfZ7jsuB6M3EVj8wa9EuQUIMa85Z7IaEBe5+8X/x9Nr7Qm60l5hz7xWYeiT1fDer4eW2KvJ4r/WGTyyQ+QMvda2tZaVIh4+KnPHXBaeDXiEP+pFA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=BzjvIJtW; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frk/CePd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20AFC4CEF7;
-	Wed, 11 Mar 2026 18:01:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773252099;
-	bh=3yWJLZ6GD/dmWHpKPnwlQPmYIRRZb9sfs9HOE709OMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=frk/CePd+U5812zAX29sI8YOCqz8vMR9Ia7CzLsw0NNdHN4DlpSmRpXI5m4qdxm2S
-	 QibXU93M97zLnR2UTk7XBWuVBHBzo1lpdmjlZHxwRj06iZcB2vmCV8RGTI+VszQfqn
-	 blhKo0EbHk4gm9TVSUs/L4l4d0lfE0S7YjkOwdiZFYa6huKB7K+Reyw9AteNN18mOx
-	 oxTCdorLYp7VgtX5tpxAzGa3ydWpWn5sPEjs4QzsivX7Sgzk0Ik0pr4z/j4Qsker3P
-	 PMYtx+UejyOrWHNLkhjjPf44IwR6tQr+A3Tr63BSy8W4XFHpJiFm9YyX2diN9JSQOq
-	 AiNGBrzarfsAg==
-Date: Wed, 11 Mar 2026 18:01:33 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="BzjvIJtW"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 78DA2240104
+	for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 19:40:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1773254430; bh=pyxqsBy+r2XZ/+SecKDN7NQWIq2m6SNbdVMKtFtT8oA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:From;
+	b=BzjvIJtWIoaYOdVfcpn8ttb/ly8w6JRxQNEKffooTj3bhvSPRqfdSF7su/4kT88Q7
+	 SoDvzXv4YB9ssEpLRjVUaln/oYNkmr0rI1UXNypZrHzMRMF0B/TX/8Omx697TDGZKR
+	 mIHwIsGvkZPMWp9zvyOlqniY3Gs3kO4gmI6XE497fmARG9+SGQyKwxCrFAs4DvlS+i
+	 m1bM+zRgUe8fVxrhMFkwtXSyEupYTW8LmD3F2zRJt+T6uXz8kNuX3E+4H76FAMDkcd
+	 Md5pRX+SNVcZVcUsE0SAjORJbFVSBzPU7qaFLl21HnD60pbkzlgkWFwUELbfjFpUH5
+	 lAXslKB7EBZ0w==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fWKLh5cZDz6tvm;
+	Wed, 11 Mar 2026 19:40:28 +0100 (CET)
+Date: Wed, 11 Mar 2026 18:40:29 +0000
+From: Paul Adam <adamp@posteo.de>
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Add
- Bluetooth
-Message-ID: <20260311-come-olive-7bbc8f6536e1@spud>
-References: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
- <20230421-fp4-bluetooth-v2-4-3de840d5483e@fairphone.com>
- <20260310-maritime-silly-05e7b7e03aa6@spud>
- <DGZSPC64B8K5.3HBPHWMWXR482@fairphone.com>
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
+ initial devicetree
+Message-ID: <abG3G3MQeKd3UAaL@MyryksLaptop>
+References: <20260307-wiko-chuppito-v4-0-325ac66ae338@posteo.de>
+ <20260307-wiko-chuppito-v4-3-325ac66ae338@posteo.de>
+ <aa6P4rE7d2ftaeAw@linaro.org>
+ <aa8__ofJBdMfavbq@MyryksLaptop>
+ <aa9Epb7MQ0qVFWGO@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0kPLRKqAFXYbgZvV"
-Content-Disposition: inline
-In-Reply-To: <DGZSPC64B8K5.3HBPHWMWXR482@fairphone.com>
-
-
---0kPLRKqAFXYbgZvV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aa9Epb7MQ0qVFWGO@linaro.org>
 
-On Wed, Mar 11, 2026 at 09:04:20AM +0100, Luca Weiss wrote:
-> On Tue Mar 10, 2026 at 7:02 PM CET, Conor Dooley wrote:
-> > On Fri, May 12, 2023 at 03:58:26PM +0200, Luca Weiss wrote:
-> >
-> >> +&qup_uart1_cts {
-> >> +	/*
-> >> +	 * Configure a bias-bus-hold on CTS to lower power
-> >> +	 * usage when Bluetooth is turned off. Bus hold will
-> >> +	 * maintain a low power state regardless of whether
-> >> +	 * the Bluetooth module drives the pin in either
-> >> +	 * direction or leaves the pin fully unpowered.
-> >> +	 */
-> >> +	bias-bus-hold;
-> >> +};
-> >> +
-> >> +&qup_uart1_rts {
-> >> +	/* We'll drive RTS, so no pull */
-> >> +	drive-strength =3D <2>;
-> >> +	bias-disable;
-> >> +};
-> >> +
-> >> +&qup_uart1_rx {
-> >> +	/*
-> >> +	 * Configure a pull-up on RX. This is needed to avoid
-> >> +	 * garbage data when the TX pin of the Bluetooth module is
-> >> +	 * in tri-state (module powered off or not driving the
-> >> +	 * signal yet).
-> >> +	 */
-> >> +	bias-pull-up;
-> >> +};
-> >> +
-> >> +&qup_uart1_tx {
-> >> +	/* We'll drive TX, so no pull */
-> >> +	drive-strength =3D <2>;
-> >> +	bias-disable;
-> >> +};
-> >
-> > I recently made some changes to pincfg-node.yaml to detect if there's
-> > conflicting properties used, and these got detected. Should these not
-> > do what has been done on the msm8998-xiaomi-sagit, and delete the
-> > inherited bias-foo from the dtsi?
-> > &blsp1_i2c5_sleep {
-> > 	/delete-property/ bias-pull-up;
-> > 	bias-disable;
-> > };
->=20
-> Yes, you're completely right.
->=20
-> In the final dtb qup-uart1-{cts,rts,rx,tx}-default-state contain two
-> bias-* properties, this must be wrong.
->=20
-> Thanks for pointing this out, I'll prepare a patch soon!
+On 26/03/09 11:07, Stephan Gerhold wrote:
+> On Mon, Mar 09, 2026 at 09:48:12PM +0000, Paul Adam wrote:
+> > On 26/03/09 10:16, Stephan Gerhold wrote:
+> > > > diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
+> > > > new file mode 100644
+> > > > index 000000000000..d927bae2b208
+> > > > --- /dev/null
+> > > > +++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
+> > > > @@ -0,0 +1,315 @@
+> > > > [...]
+> > > > +&sound {
+> > > > +	audio-routing = "AMIC1", "MIC BIAS Internal1",
+> > > > +		"AMIC2", "MIC BIAS Internal2",
+> > > > +		"AMIC3", "MIC BIAS Internal1";
+> > > 
+> > > Sorry, just noticed this now:
+> > > 
+> > > This seems a bit suspicious (I would expect "MIC BIAS Internal3"), have
+> > > you tested if the secondary microphone works?
+> > > 
+> > > Thanks,
+> > > Stephan
+> > 
+> > The secondary microphone does not work yet, neither with Internal1
+> > nor Internal3.
+> > 
+> > In the downstream devicetree its Internal1 for AMIC3.
+> > 
+> > Is there a way for me to check which one is correct?
+> > 
+> 
+> To be absolutely sure, only with the schematic diagram of the board...
+> 
+> Another option would be that the secondary microphone simply does not
+> exist at all (i.e. there is only one microphone). Any idea if it works
+> on Android?
+> 
+> If in doubt, it would be better to remove the line for AMIC3.
+> 
+> Thanks,
+> Stephan
 
+Tried around some more and got the secondary microphone to record something,
+even without the third line. Will take the line out.
 
-Cool, guess it just worked for you because of either property ordering
-or how linux parsed it.
-
---0kPLRKqAFXYbgZvV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabGt/QAKCRB4tDGHoIJi
-0tHSAP9RJhZFjBy79D1QA4/Y8GvUh6dcjQSJvmheIyZevV3mgwEAkrgsg1dqN3vO
-SUrSbqWC3nY+WuhQ8enPQB6kw6udSAM=
-=RVbj
------END PGP SIGNATURE-----
-
---0kPLRKqAFXYbgZvV--
+Paul
