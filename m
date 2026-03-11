@@ -1,137 +1,147 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B68B282F04
-	for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 02:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70362BE621
+	for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 08:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773195911; cv=none; b=u8DY0kKIZnCS7SMvTbNSJMkhDKiB7DbhFrug1vKAIHhuENcTRKvDIKF3odBEtHe93OzGKjTNCCZAQ+CkH3aFzZ/zqx2rDTCI1jD7KfXgOdJnMc87pFRfeN1qF0yjfEd8pyhisnqTMwJlEm0M6g/gG3HJeoK76EtfESGhUOdOvbQ=
+	t=1773216265; cv=none; b=SMp6YHLCEtRhZlFS0kaIZbijE9OXWt0nEB6+bvLGpI0MrjYQ8wdLA9aPoQ7W+TQyrD4BJ90uHEjbhDAmmuVeR1eClu6DDZm4alIt6ljHotcIPQQJTZxBjZEQJbc0ZvHpfgU0vF480eE5dKirQHUPG3n13MwUJ+Nr+PUksD1L67I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773195911; c=relaxed/simple;
-	bh=x3oA4b9XXpfnN8kUiNhtlS/tc1BuEX7AW97CTEgFyIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBUH8lZTUR7eFzJmqeWi7XP/PtYiHUXpKBVr3qIApOhYHTreodXVP7v2axmEOiicL83Sknhx+o8BYebmP2pzfDke7CPXilsZIGpJFeuKe7EiBOC6WnPzin5gCrBI1DcKQ7JR0cmvY8x+HI1KCOh7gMwpY8E0Qricq2IP//kk+RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FY2bT0go; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773216265; c=relaxed/simple;
+	bh=khDVMinyRktjp81VmTv78vhuR5dfLwAEQX0dFp8erl4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=Y+VTiKaGqg0iwp9I5//dFV4eaI9TrPwrHVO7ASDM8TODKyqN/DGaxi8R4LO4TZ+ZVVV6c7jSSHO0OfqeNG/XcWoov+aBFhCnc9xy6SY/Eol4/S39jf/hhFcuJO9ahJET76ifkscZFsrRvzkmpXRPfDaO3mwBxdlNOZ9uizMGZ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=oUqoX8kq; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FY2bT0go"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cd7a75c680so47763685a.1
-        for <phone-devel@vger.kernel.org>; Tue, 10 Mar 2026 19:25:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="oUqoX8kq"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b886fc047d5so2249003666b.3
+        for <phone-devel@vger.kernel.org>; Wed, 11 Mar 2026 01:04:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773195909; x=1773800709; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pdOODwOyqf2HXTJor8x6+j1U0inwH0LLdlGvfoS1Vfo=;
-        b=FY2bT0goJi+eGxVKUdDcVzRwoQgrQnVLnDcA7loJJil0P4Ni8pMG46aYtZLbnzYCmL
-         ttG0XvTy8yd/gnIaI7o5qrih4Kn+rgjI47B8IO3PTeKTbFI+kHx1XjLEs5+eaM4nB2e1
-         +DYVbLzQRgvKCQr8i0dsxeA03Z3dbFuQyDMtV8NIGYZCX5VpgkgYDtaWauNrOv9jXteO
-         dCe3Eob7ZRKNsS2XQ4HujfFkZZBi7CuGsR+y9/w6OLKI3CM8ihaDROZVBmSR5h8CTnLN
-         rWHfL7sy3cHpmKkxD7DcXmXWeaY/5qn2IElaygmHlm3aEjYk5glgV5tSpCh9/lLyx5P6
-         It4Q==
+        d=fairphone.com; s=fair; t=1773216262; x=1773821062; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MSG8jCrZgvSAYH3ST0w7E15BQnOuBJZtxXBK3xYNciI=;
+        b=oUqoX8kqAP89jNayDviF3q4pftyP1lM14c5hxiJpdKaU9ScxErvL8+kNw/uZrRFBFJ
+         HzZWhtoEzEu3bHw/CkOX29AXUMUO1dJGGdhJ+/gEG0D9QD4JA4IVLoV0EAz/uBCRnF7w
+         svTFaOFM8EMKKb/8/n1dz5/xzHbzzY6OUm7cW2rGzrk+N6x8a2QIz76lDwjOjdjaPyFW
+         16PqMotxrtSDONDngnDtikJRVJaIWvQhmeAC5w/Cga0nczajBEwibTIvtDNG8zn3PBbQ
+         5mk5BGgwpMGzKWOOhZ8IZwg75OKNVGCbQBZcLFrtVfGGbNrxAFyNUDKb2JAAYT4nkPB1
+         HXDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773195909; x=1773800709;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pdOODwOyqf2HXTJor8x6+j1U0inwH0LLdlGvfoS1Vfo=;
-        b=sWzZkRDntM+cVqJJJpPAms3JzXqigglducgANqPekogU26M3AjKIo9jLdtuBB530uz
-         QGbx5pUk0znVa29J9dSY53Gib/BJffxMsDTQ97+QqzjaO4HkDJJo4gt0iqN9Y0EFtt6L
-         0wvnsLrptxr1eJsM+ucYKurpFkVpzEpM/jDpJXQNneQ6dcdnzEaBxfkMRMdZMDInCIDU
-         CeFwj2odp8PFtMVwpHO/vanUr/5s4o7itqZBS5/M07V+W+WD1PmVlSnH2tFJUijw7MKC
-         7OPANzXa5laHNYHH4wkmdYThn1X9OEf0ioOdHPaj8BW9WwXWqckMoz8NWMpnXjkF9IKV
-         pYNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ6rkzRE5u9WmdmcIgdQ4ZwGYVR7smmYo6IjwwFCyVl+y/ymdpVujAnm4sAxTVA6dOUhfBrlw9uMFCYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuQ1CJ13kglErDKuFQ7F8YsUtAPtZ2HMe5o97P62TX08qoBGn6
-	Vt64SZD0dd2Zq0N47RXik6z2tXLktNRsNTNzoR9BdzxeMWhMWga+rc0c
-X-Gm-Gg: ATEYQzwEt75AM4rgieM+jEZ3S4EYYXI9pgoO6Y2OvxSjoZrdQF1UdLCAcByPTktWi1S
-	0roH6r+hsezykd0DxDNcwVKW+wN1roTD9bFGy2SzMge/8THDDxphv4SuEwruRLGPtmA/lGblFU2
-	2rekxXkZ0z+x5bHJ2mqf/pZ9rECWmN3UDyicP00strKrniqfIQbQPD2p+WDL+xURl67cs3LUYRe
-	q8KwXqrNgGC13DzvNUScQaLsuHcXiMYTTVrRoOb8qquNSwZOkKKu+7576qr7TB9jAqnAzdCMnvn
-	0MqSFMlRE/XRIgmrWdZD2biGELOu3OjjN8EhII8SjlROD+KjP9t2B3kDvwoQpoUg4YDIpQ5ydEL
-	7yBsiBxQ6DD4VlSpw/CEDSqT/U/WZmMATdjOUyWs/0sS+ISjeaVHtgo1+7pL6cdqki+OHR7bkEP
-	8LcOZDI3qPXzZcWiNYOakATImWhg==
-X-Received: by 2002:a05:622a:1111:b0:509:1be4:97d1 with SMTP id d75a77b69052e-5093a19d134mr10124061cf.34.1773195909341;
-        Tue, 10 Mar 2026 19:25:09 -0700 (PDT)
-Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50939ec63d6sm5194251cf.12.2026.03.10.19.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 19:25:08 -0700 (PDT)
-Date: Tue, 10 Mar 2026 22:25:40 -0400
-From: Richard Acayan <mailingradian@gmail.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
-	Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Cc: Robert Mader <robert.mader@collabora.com>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v9 7/7] arm64: dts: qcom: sdm670-google-sargo: add imx355
- front camera
-Message-ID: <abDSpE3BNb0jFrqx@rdacayan>
-References: <20260217002738.133534-1-mailingradian@gmail.com>
- <20260217002738.133534-8-mailingradian@gmail.com>
+        d=1e100.net; s=20230601; t=1773216262; x=1773821062;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MSG8jCrZgvSAYH3ST0w7E15BQnOuBJZtxXBK3xYNciI=;
+        b=CV/+AzTE/wykQXlAI8aCDsa/jGBBHTT7EBQ5/R3hbJKtl/5SgJfSXeF6N43BhS/7vj
+         JaJDgI18svVixOC8KgkQMMPISBj7sMvRTNQPOm8ln75FzW7cCTUB+iFtGEIkp7TSKwm0
+         zmGf1uNLd64OV63Co6yObnpPV/3n5EpNzEr50N945+USVBlgnHDY2zHKbfKWlzZSIJGP
+         gZJ7MNSl3TkReGlIzs+bnTfiDr/9TH67k29tcqZz13QgTjMqRXWgnk175GUI2bCrHSk1
+         8JKNPddiJcIEbez8tODTl58T6YGnpU+zBrDBxKQfJFCW0VkpG4Of4SpTgcujdiKHftzx
+         DNRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ4rEdkhmD7xH3x3aIH+qGs0USpCFW9EVXJ+ewpih7Iiy6BmsBDUG9KKGkgwMWCBNkwtySF7gJn3lvcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzOZVehPGXVzw6SHhh680ODkKIhrjhrZUnCd8kU6mo2GlfaSev
+	Mvgy96phD4uac2JkH/TJEKCkaMGrPkQSArXmuGRTTZWCBXmTyRecHnJ75ZUNi+R3aSY=
+X-Gm-Gg: ATEYQzyQCAcEHsK07JIBEqAPR9cKAyQdlmps2opqVACo3sqpqzXlLrxeSKXXY7BtXm1
+	74DozBH353dUhN98bWSa15bCbK5RJvRAcpAV5YoCOjQvrKIb70cHh2imYcb4kU7Dki+jBB6Faq6
+	ktT42QjK4L4BE251g+pQe7eQwPHT6dli/nxjjhPP3H3WRwIxgkFa9/eEaBY7iikK1By2FI2HKMS
+	7yiuWSUpNzT1+zgRuwbxYcrTbK7MgfKxdgqKvusbkQMFHVrbyC6FmsuxBWX9czzkQz//XL1s5ia
+	c6ipHbUdTjS8xt4e1zcSVy4+oKK0Fgg4ogbrvCfFvojFfKsew2nkwjuIDXnUW+F8qESV0bQSW0F
+	BuzIOc6zpsS0o2l+mZyxqzIobQ6mRvWyEfPZrDTVET7f/S2BWXcI3w1HyF/gNEbTNFZXtqA0Dzw
+	hMRW5eOE6ZnhsziPVJVG3ueE1VwRp132bO/qiuWfj/+5JVarqk82ODjyCso8FMpG3FJIvO
+X-Received: by 2002:a17:906:7314:b0:b97:23c7:2b54 with SMTP id a640c23a62f3a-b972e61897bmr85765466b.49.1773216261981;
+        Wed, 11 Mar 2026 01:04:21 -0700 (PDT)
+Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b972de0bd42sm37527166b.9.2026.03.11.01.04.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 01:04:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260217002738.133534-8-mailingradian@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Mar 2026 09:04:20 +0100
+Message-Id: <DGZSPC64B8K5.3HBPHWMWXR482@fairphone.com>
+To: "Conor Dooley" <conor@kernel.org>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Marcel Holtmann"
+ <marcel@holtmann.org>, "Johan Hedberg" <johan.hedberg@gmail.com>, "Luiz
+ Augusto von Dentz" <luiz.dentz@gmail.com>, "Andy Gross"
+ <agross@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konrad.dybcio@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH v2 4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Add
+ Bluetooth
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
+ <20230421-fp4-bluetooth-v2-4-3de840d5483e@fairphone.com>
+ <20260310-maritime-silly-05e7b7e03aa6@spud>
+In-Reply-To: <20260310-maritime-silly-05e7b7e03aa6@spud>
 
-On Mon, Feb 16, 2026 at 07:27:38PM -0500, Richard Acayan wrote:
-> The Sony IMX355 is the front camera on the Pixel 3a, mounted in portrait
-> mode. It is connected to CSIPHY1 and CCI I2C1, and uses MCLK2. Add
-> support for it.
-> 
-> Co-developed-by: Robert Mader <robert.mader@collabora.com>
-> Signed-off-by: Robert Mader <robert.mader@collabora.com>
-> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> ---
->  .../boot/dts/qcom/sdm670-google-sargo.dts     | 95 +++++++++++++++++++
->  1 file changed, 95 insertions(+)
-> 
-(snip)
-> +
-> +&cci_i2c1 {
-> +	camera@1a {
-> +		compatible = "sony,imx355";
-> +		reg = <0x1a>;
-> +
-> +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
-> +
-> +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
-> +		assigned-clock-rates = <19200000>;
-> +
-> +		reset-gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
-> +
-> +		avdd-supply = <&cam_front_ldo>;
-> +		dvdd-supply = <&cam_front_ldo>;
-> +		dovdd-supply = <&cam_vio_ldo>;
-> +
-> +		pinctrl-0 = <&cam_mclk2_default>;
-> +		pinctrl-names = "default";
-> +
-> +		rotation = <270>;
-> +		orientation = <0>;
-> +
-> +		port {
-> +			cam_front_endpoint: endpoint {
-> +				link-frequencies = /bits/ 64 <360000000>;
-> +				remote-endpoint = <&camss_endpoint1>;
-> +			};
+On Tue Mar 10, 2026 at 7:02 PM CET, Conor Dooley wrote:
+> On Fri, May 12, 2023 at 03:58:26PM +0200, Luca Weiss wrote:
+>
+>> +&qup_uart1_cts {
+>> +	/*
+>> +	 * Configure a bias-bus-hold on CTS to lower power
+>> +	 * usage when Bluetooth is turned off. Bus hold will
+>> +	 * maintain a low power state regardless of whether
+>> +	 * the Bluetooth module drives the pin in either
+>> +	 * direction or leaves the pin fully unpowered.
+>> +	 */
+>> +	bias-bus-hold;
+>> +};
+>> +
+>> +&qup_uart1_rts {
+>> +	/* We'll drive RTS, so no pull */
+>> +	drive-strength =3D <2>;
+>> +	bias-disable;
+>> +};
+>> +
+>> +&qup_uart1_rx {
+>> +	/*
+>> +	 * Configure a pull-up on RX. This is needed to avoid
+>> +	 * garbage data when the TX pin of the Bluetooth module is
+>> +	 * in tri-state (module powered off or not driving the
+>> +	 * signal yet).
+>> +	 */
+>> +	bias-pull-up;
+>> +};
+>> +
+>> +&qup_uart1_tx {
+>> +	/* We'll drive TX, so no pull */
+>> +	drive-strength =3D <2>;
+>> +	bias-disable;
+>> +};
+>
+> I recently made some changes to pincfg-node.yaml to detect if there's
+> conflicting properties used, and these got detected. Should these not
+> do what has been done on the msm8998-xiaomi-sagit, and delete the
+> inherited bias-foo from the dtsi?
+> &blsp1_i2c5_sleep {
+> 	/delete-property/ bias-pull-up;
+> 	bias-disable;
+> };
 
-This also needs data-lanes.
+Yes, you're completely right.
+
+In the final dtb qup-uart1-{cts,rts,rx,tx}-default-state contain two
+bias-* properties, this must be wrong.
+
+Thanks for pointing this out, I'll prepare a patch soon!
+
+Regards
+Luca
