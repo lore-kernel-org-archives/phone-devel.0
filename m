@@ -1,431 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313F3EAC77;
-	Wed, 11 Mar 2026 18:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF242F3C19;
+	Wed, 11 Mar 2026 19:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254826; cv=none; b=o8pgw0yJab6QKhuu51+h72KZJYZ/Q7go+AAvFQVXLYlJrsF7iw2sEGLp1Y7iVG78GyC3LqlO5Y7uT7R2MiDDVyRPmrWgzCK2a79RR77eK832sOEE/kB9/n8wzhCb+e+R8uKIewLlyPl2Bf4Lzp0a+yod7rwmI68+c0xUJ3JyDo0=
+	t=1773259154; cv=none; b=eLWgCaWU9l6/uxltuI0Z3mjwjieyJw0kIYtzMGI4BKoqYslMMW/XpOcq/sImnuIayooXJmDUrT/aTBIzwNPNJilFJ6+C3BQQAhQl7JdhW8ZqouMcVJ3UwZFYNo4EPKvz6vfU14dnO8ZKYRXtz39FsrGPZr+fUH79d7wzyYrEwm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254826; c=relaxed/simple;
-	bh=23ehR3e9GdT43vFDxfGchV095S8HkQ6dk0lxHCCc42o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IoLthA/xqHJ/5zi+wvQpG7E3LXOAdNQHKnj2JgaXYkH6IsgrWosdpfPDh1chNWsg9PA0vgNIgmkZcnyhAH8HyiuBJyRoyVu12OFM8Xtq+1Hknrt8cHmenLOODeph9yLCVxE1sF2IG4j/+U3KL9Mdt+4zT+ivY/vWmcq7IXFshQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsIARa3U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773259154; c=relaxed/simple;
+	bh=8p4+LstFYZTdtEwWu8/zX3vtiS13K3rgUJAcloezkBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RjpOxBy0ENPp9f8x90/wZuQSt1o2yizFnf3PIW4vVh3FOQR2x7dUg61XSk7WY4D5ww3MXMFVw5GS5dZRECfcwqQ46EFBtT8UQaZti1N3aGo+YJYeFp5o67vDuJxWbA/L1hn/mJSEqyN3CvezJLv9qi4aLmlsqwOKKiBL2nztIaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=XlTlwCDB; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsIARa3U"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F260DC2BCB0;
-	Wed, 11 Mar 2026 18:47:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773254826;
-	bh=23ehR3e9GdT43vFDxfGchV095S8HkQ6dk0lxHCCc42o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nsIARa3U/K8XrZWPs7uGnQiqcR0LViChgv8EEkVZootDy2JYDJKrRhzjxKfok5wVp
-	 N2S0jkF9d2UKpD1e2VT95EuksPe+kTlp6vEMZGZ5XtQ8tq/HhhxUpnJYs+2CtNOPxC
-	 Hu0alQ3us18SBMl4Zs+9/qJoIpngRbJ2OFsYFzaQ1ij8A+VFOARk4Gl5JuVxkjVr+0
-	 nK/6djcQ1Yx43O+N1E9+/QLcsovIoQncga30i5JGWRcLae27oROVu7IaITHY9t6QEk
-	 R6sUeQFUzPoWhcgpQMzyPZBYTw7oZrxQAFwLt78P7CsK/lgNVxm/cUFK1woMhRA/3x
-	 wrThs+owgYgEQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2D77112586A;
-	Wed, 11 Mar 2026 18:47:05 +0000 (UTC)
-From: Paul Adam via B4 Relay <devnull+adamp.posteo.de@kernel.org>
-Date: Wed, 11 Mar 2026 19:46:07 +0100
-Subject: [PATCH v5 3/3] arm64: dts: qcom: msm8916-wiko-chuppito: add
- initial devicetree
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="XlTlwCDB"
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id EB1C75341BB9;
+	Wed, 11 Mar 2026 20:59:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773259146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QX5Jt6Z3lZJRoQ9C0CpYxGi1veLiB/YS80S7aSHNgRc=;
+	b=XlTlwCDBGIzl4Kf/jOISfEjeRdJSFfZYK1rV1x/bn0mztyhisQE6V10yA2ItdsHcEgfShx
+	UfcOVTaZqCuLW3jQq3diWy6vqhayecpEwterpG8Rcid4O9nb2dAgLtcBkmKk3IYzvaQJTb
+	RJ2UiEOVtMdF6In2oEEBoA4rOnhC5No=
+Message-ID: <4b44378b-171c-45b6-8000-b72d78166afe@ixit.cz>
+Date: Wed, 11 Mar 2026 20:59:05 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 7/7] arm64: dts: qcom: sdm670-google-sargo: add imx355
+ front camera
+To: Richard Acayan <mailingradian@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Tianshu Qiu
+ <tian.shu.qiu@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+Cc: Robert Mader <robert.mader@collabora.com>, phone-devel@vger.kernel.org
+References: <20260217002738.133534-1-mailingradian@gmail.com>
+ <20260217002738.133534-8-mailingradian@gmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260217002738.133534-8-mailingradian@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-wiko-chuppito-v5-3-0a8656cca1b3@posteo.de>
-References: <20260311-wiko-chuppito-v5-0-0a8656cca1b3@posteo.de>
-In-Reply-To: <20260311-wiko-chuppito-v5-0-0a8656cca1b3@posteo.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Paul Adam <adamp@posteo.de>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773254823; l=7866;
- i=adamp@posteo.de; s=20260215; h=from:subject:message-id;
- bh=gUEGfocX6FZEAHCOkCMohPSEZtjQN06ZmSd94+6ahnk=;
- b=kfnCLSlI5njQRZIE9UxTpvCme8EbabTynGkX50nCJl4zNyRab51vWcakmjqQhcTfzPU3/hQbK
- zhfDCkzHloiC7MnV6D4oPd0QVXjQiYTgj57EsurMItY2OI3bSYrb+W0
-X-Developer-Key: i=adamp@posteo.de; a=ed25519;
- pk=mtrPhSn7htywc4S5zrKNrWM6laAdfnaJzIs0BDiCyAs=
-X-Endpoint-Received: by B4 Relay for adamp@posteo.de/20260215 with
- auth_id=640
-X-Original-From: Paul Adam <adamp@posteo.de>
-Reply-To: adamp@posteo.de
 
-From: Paul Adam <adamp@posteo.de>
+On 17/02/2026 01:27, Richard Acayan wrote:
+> The Sony IMX355 is the front camera on the Pixel 3a, mounted in portrait
+> mode. It is connected to CSIPHY1 and CCI I2C1, and uses MCLK2. Add
+> support for it.
+> 
+> Co-developed-by: Robert Mader <robert.mader@collabora.com>
+> Signed-off-by: Robert Mader <robert.mader@collabora.com>
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> ---
+>   .../boot/dts/qcom/sdm670-google-sargo.dts     | 95 +++++++++++++++++++
+>   1 file changed, 95 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+> index ed55646ca419..e925cba0381f 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+> @@ -172,6 +172,34 @@ vreg_s2b_1p05: vreg-s2b-regulator {
+>   		regulator-min-microvolt = <1050000>;
+>   		regulator-max-microvolt = <1050000>;
+>   	};
+> +
+> +	cam_front_ldo: cam-front-ldo-regulator {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "cam_front_ldo";
+> +		regulator-min-microvolt = <1352000>;
+> +		regulator-max-microvolt = <1352000>;
+> +		regulator-enable-ramp-delay = <135>;
+> +
+> +		gpios = <&pm660l_gpios 4 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +
+> +		pinctrl-0 = <&cam_front_ldo_pin>;
+> +		pinctrl-names = "default";
+> +	};
+> +
 
-Add an initial device tree for Wiko PULP 4G.
-Includes support for:
-- UART
-- USB (no OTG)
-- Internal storage
-- MicroSD
-- Volume keys + Power button
-- Touchscreen
-- Backlight
-- Accelerometer: Invensense MPU6880
-- Magnetometer: Asahi Kasei AK09911
-- Hall sensor: Rohm BU52021HFV
-- Proximity sensor
-- Vibrator
-- Earpiece
-- Microphone 1
-- Headphones
-- Wifi
-- Bluetooth
-- GPU
+[...]
 
-Signed-off-by: Paul Adam <adamp@posteo.de>
----
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts | 314 +++++++++++++++++++++
- 2 files changed, 315 insertions(+)
+> +
+> +&cci_i2c1 {
+> +	camera@1a {
+> +		compatible = "sony,imx355";
+> +		reg = <0x1a>;
+> +
+> +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +
+> +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +		assigned-clock-rates = <19200000>;
+> +
+> +		reset-gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
+> +
+> +		avdd-supply = <&cam_front_ldo>;
+> +		dvdd-supply = <&cam_front_ldo>;
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index f80b5d9cf1e8..5a3a9a823503 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -75,6 +75,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-rossa.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-uf896.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-ufi001c.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wiko-chuppito.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86518.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt86528.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-new file mode 100644
-index 000000000000..262d9a959e6a
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8916-wiko-chuppito.dts
-@@ -0,0 +1,314 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8916-pm8916.dtsi"
-+#include "msm8916-modem-qdsp6.dtsi"
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
-+
-+/ {
-+	model = "Wiko Pulp 4G";
-+	compatible = "wiko,chuppito", "qcom,msm8916";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		mmc0 = &sdhc_1; /* eMMC */
-+		mmc1 = &sdhc_2; /* SD card */
-+		serial0 = &blsp_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pm8916_pwm 0 100000>;
-+		brightness-levels = <0 255>;
-+		num-interpolated-steps = <255>;
-+		default-brightness-level = <255>;
-+		enable-gpios = <&tlmm 119 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&button_backlight_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	gpio-hall-sensor {
-+		compatible = "gpio-keys";
-+		pinctrl-0 = <&gpio_hall_sensor_default>;
-+		pinctrl-names = "default";
-+		label = "Hall Effect Sensor";
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 117 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-0 = <&gpio_keys_default>;
-+		pinctrl-names = "default";
-+		label = "Buttons";
-+
-+		button-volume-up {
-+			label = "Volume up";
-+			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpios = <&tlmm 110 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&usb_id_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
-+&blsp_i2c2 {
-+	status = "okay";
-+
-+	magnetometer@c {
-+		compatible = "asahi-kasei,ak09911";
-+		reg = <0x0c>;
-+		vdd-supply = <&pm8916_l17>;
-+		vid-supply = <&pm8916_l6>;
-+		reset-gpios = <&tlmm 120 GPIO_ACTIVE_LOW>;
-+		pinctrl-0 = <&mag_reset_default>;
-+		pinctrl-names = "default";
-+		mount-matrix = "1",  "0", "0",
-+			       "0", "1", "0",
-+			       "0",  "0", "1";
-+	};
-+
-+	proximity@48 {
-+		compatible = "sensortek,stk3310";
-+		reg = <0x48>;
-+		interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
-+		pinctrl-0 = <&proximity_int_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	imu@68 {
-+		compatible = "invensense,mpu6880";
-+		reg = <0x68>;
-+		interrupts-extended = <&tlmm 115 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+		pinctrl-0 = <&imu_int_default>;
-+		pinctrl-names = "default";
-+		mount-matrix = "0",  "-1", "0",
-+			       "-1", "0", "0",
-+			       "0",  "0", "-1";
-+	};
-+};
-+
-+&blsp_i2c5 {
-+	status = "okay";
-+
-+	touchscreen@39 {
-+		compatible = "syna,rmi4-i2c";
-+		reg = <0x39>;
-+		interrupts-extended = <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8916_l17>;
-+		vio-supply = <&pm8916_l6>;
-+		pinctrl-0 = <&touchscreen_default>;
-+		pinctrl-names = "default";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		syna,startup-delay-ms = <100>;
-+		syna,reset-delay-ms = <160>;
-+
-+		rmi4-f01@1 {
-+			reg = <0x1>;
-+			syna,nosleep-mode = <1>;
-+		};
-+
-+		rmi4-f11@11 {
-+			reg = <0x11>;
-+			syna,sensor-type = <1>;
-+		};
-+	};
-+};
-+
-+&blsp_uart2 {
-+	status = "okay";
-+};
-+
-+&gpu {
-+	status = "okay";
-+};
-+
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5600000>;
-+};
-+
-+&pm8916_codec {
-+	qcom,hphl-jack-type-normally-open;
-+};
-+
-+&pm8916_mpps {
-+	pwm_out: mpp4-state {
-+		pins = "mpp4";
-+		function = "digital";
-+		power-source = <PM8916_MPP_VPH>;
-+		output-low;
-+		qcom,dtest = <1>;
-+	};
-+};
-+
-+&pm8916_pwm {
-+	pinctrl-0 = <&pwm_out>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+};
-+
-+&pm8916_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+
-+	status = "okay";
-+};
-+
-+&pm8916_rpm_regulators {
-+	pm8916_l17: l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-0 = <&sdc2_default>, <&sdc2_cd_default>;
-+	pinctrl-1 = <&sdc2_sleep>, <&sdc2_cd_default>;
-+	pinctrl-names = "default", "sleep";
-+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
-+
-+	status = "okay";
-+};
-+
-+&sound {
-+	audio-routing = "AMIC1", "MIC BIAS Internal1",
-+		"AMIC2", "MIC BIAS Internal2";
-+};
-+
-+&tlmm {
-+	button_backlight_default: button-backlight-default-state {
-+		pins = "gpio119";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio117";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	gpio_keys_default: gpio-keys-default-state {
-+		pins = "gpio107";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	imu_int_default: imu-int-default-state {
-+		pins = "gpio115";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	mag_reset_default: mag-reset-default-state {
-+		pins = "gpio120";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	proximity_int_default: proximity-int-default-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	sdc2_cd_default: sdc2-cd-default-state {
-+		pins = "gpio38";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	touchscreen_default: touchscreen-default-state {
-+		touchscreen-pins {
-+			pins = "gpio13";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+
-+		reset-pins {
-+			pins = "gpio12";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
-+
-+	usb_id_default: usb-id-default-state {
-+		pins = "gpio110";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+};
-+
-+&usb {
-+	extcon = <&usb_id>, <&usb_id>;
-+
-+	status = "okay";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&venus {
-+	status = "okay";
-+};
-+
-+&venus_mem {
-+	status = "okay";
-+};
-+
-+&wcnss {
-+	status = "okay";
-+};
-+
-+&wcnss_iris {
-+	compatible = "qcom,wcn3620";
-+};
-+
-+&wcnss_mem {
-+	status = "okay";
-+};
+It's unlikely that one supply is used both for digital and analog supply?
+
+I see downstream does it, but I don't think it's correct.
+
+> +		dovdd-supply = <&cam_vio_ldo>;
+> +
+> +		pinctrl-0 = <&cam_mclk2_default>;
+> +		pinctrl-names = "default";
+> +
+> +		rotation = <270>;
+> +		orientation = <0>;
+> +
+> +		port {
+> +			cam_front_endpoint: endpoint {
+> +				link-frequencies = /bits/ 64 <360000000>;
+> +				remote-endpoint = <&camss_endpoint1>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+>   &gcc {
+>   	protected-clocks = <GCC_QSPI_CORE_CLK>,
+>   			   <GCC_QSPI_CORE_CLK_SRC>,
+> @@ -490,6 +571,14 @@ &pm660_charger {
+>   	status = "okay";
+>   };
+>   
+> +&pm660_gpios {
+> +	cam_vio_pin: cam-vio-state {
+> +		pins = "gpio13";
+> +		function = "normal";
+> +		power-source = <0>;
+> +	};
+> +};
+> +
+>   &pm660_rradc {
+>   	status = "okay";
+>   };
+> @@ -508,6 +597,12 @@ led-0 {
+>   };
+>   
+>   &pm660l_gpios {
+> +	cam_front_ldo_pin: cam-front-state {
+> +		pins = "gpio4";
+> +		function = "normal";
+> +		power-source = <0>;
+> +	};
+> +
+>   	vol_up_pin: vol-up-state {
+>   		pins = "gpio7";
+>   		function = "normal";
 
 -- 
-2.53.0
-
+David Heidelberg
 
