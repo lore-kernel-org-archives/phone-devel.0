@@ -1,100 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED4E2DCF6C;
-	Wed, 11 Mar 2026 15:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9A234A3C4;
+	Wed, 11 Mar 2026 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773244493; cv=none; b=QmCU4jmyImDCZFTesUWPCqaYKQfNRUjPbPBE0teCXv4KKL4TjJJhFBTySzqqX/Vr53I2TcqO3ebCkOcnSAQJU97uWAKi0CKm6nmMPEf+Qzh53bVKpX+W7zRE655wKin72uasnK/FWGGg8ldBm+3ZVGxq8JTOqZR70ZI1aELg/3w=
+	t=1773251253; cv=none; b=SBTDEDb9d5hcCBim7ViyjI9dIbNc8Kp+KNnckbM6IdAeOj1GXvrb/hiFkk/opxvSWF4stHmadTIPEmbSdBEQ62SWDJwnq3ex84UkTo7dNywYyg6gEpkI1t+yyQN/b7hyoFFsZvfB/B8/Dyq5XCau/ULo4QzuyldEi6+2F57LQn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773244493; c=relaxed/simple;
-	bh=xcSvTOO0GXndR/GwQixypGrHYhD11o2aTKZ3MudGlyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S8gHhPed29lpjSi6QDasWkeMolzBm1pVm35BUuqQt8v9un+Z2+vC0UvgyeMdFXFpqY9RuLSbu2OhRAbNSsa5bn+NaWwoYQlxyu5LICAAZiqa/yuIcIxMJRvktmdudXdS+7wkDKLWljrkIRD/9addqCXhWm6Z30aArfFwn0p4Hbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f6GhNtbX; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773251253; c=relaxed/simple;
+	bh=0GrU/57leQyt4NvkiZZomuxhX0pstv7NJrM08cPkhZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ODbhjGAkBbicteCvljEBwBVwal16pYb+RGlCW07moLGGlm3IR2SpqbSiyb1Pu4BF6+WznmYSWXi62frIvGDiKfetwBJF/7g8LZexZv5gTV51/mYQEgOOIY0hketwiLjJ2uKJ2V0mQ8iu9wdDlQIwU4HbTFuJyDEeO1WXjrVoF8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Fu2lCv9F; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f6GhNtbX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773244492; x=1804780492;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xcSvTOO0GXndR/GwQixypGrHYhD11o2aTKZ3MudGlyM=;
-  b=f6GhNtbXgRet+JX89BgC0PYT06WdeBe7yVXTXjYT6AwSsX1sO2Rq7Cgr
-   ZXFvTpzE4t9MMpdt+T/Y4IKiVkRSK/au6ez5DusZlE8xwf4M0AjA/lpSg
-   ajCcibuPDl00UREUxWp7MWvNFH2MZXfj2RHBRq2DcVkg/DmmvQDLmgKe2
-   hDcmYilrDuBd9eaG6sPruQBWzt54kGKTQ7CEW8m6Z1SCaZnjtHWTExh3P
-   918oEK6UpjQdneDlhOi6F10zr7OgtiBvRL5HMqyodP2WISrI4RA4juP5a
-   SwRNqMqYktXippjBlgn752X0M0vipPATiCdb+qV0DwGgXE5xDFkqoPG1B
-   A==;
-X-CSE-ConnectionGUID: BVwGYS4TRViP5+MWgKj1Cg==
-X-CSE-MsgGUID: KYIy7QDRSP+q7sT43WV2Ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="61895632"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="61895632"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 08:54:51 -0700
-X-CSE-ConnectionGUID: 4IR9kl8jRJyuA20Wlfcv9Q==
-X-CSE-MsgGUID: g4bCuECHRcWKpTbTS8oMmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="251022426"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.178])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 08:54:47 -0700
-Date: Wed, 11 Mar 2026 17:54:45 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Raymond Hackley <raymondhackley@protonmail.com>
-Subject: Re: [PATCH 2/2] iio: light: vcnl4000: add regulator support
-Message-ID: <abGQRYxnJiEXXTiq@ashevche-desk.local>
-References: <20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com>
- <20260311-vcnl4000-regulators-v1-2-66b6038ce563@gmail.com>
- <abFejMb3uLbg4fiu@ashevche-desk.local>
- <9e5babd2-3e11-4c79-9192-379b11392a58@gmail.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Fu2lCv9F"
+Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id DBB845340648;
+	Wed, 11 Mar 2026 18:47:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773251235;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VW+byR75H9gT824Mi6K0l6kCtlGyTKMzJDm9X3k1+ho=;
+	b=Fu2lCv9FqnO3acesfsGh2+v/8gQiOtNrxMGNN8T/+sc6s1W59WzrMCwjL/4X0+OMavN+8t
+	g8y+DqS2LI3IvKW2bNbgz3Fw7S0U8tISFDPC3EZ9CDtSNftUBl++mSF0fmESN/Q6ADVh63
+	OLTn34yib/AQUQg23Y0ds+W5xtw52Fw=
+Message-ID: <b7c82439-effe-45fe-b64a-25fa979a933c@ixit.cz>
+Date: Wed, 11 Mar 2026 18:47:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e5babd2-3e11-4c79-9192-379b11392a58@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/4] arm64: dts: qcom: sdm845-oneplus: Implement panel
+ sleep pinctrl
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+References: <20251103-s6e3fc2x01-v6-0-d4eb4abaefa4@ixit.cz>
+ <20251103-s6e3fc2x01-v6-3-d4eb4abaefa4@ixit.cz>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20251103-s6e3fc2x01-v6-3-d4eb4abaefa4@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 11, 2026 at 02:40:00PM +0200, Erikas Bitovtas wrote:
-> On 3/11/26 2:22 PM, Andy Shevchenko wrote:
-> > On Wed, Mar 11, 2026 at 01:38:03PM +0200, Erikas Bitovtas wrote:
-> >> Add supply, I2C and cathode voltage regulators to the sensor and enable
-> >> them. This keeps the sensor powered on even after its only supply shared
-> >> by another device shuts down.
-> > 
-> >> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> >> Reported-by: Raymond Hackley <raymondhackley@protonmail.com>
-> > 
-> > Where was it reported? Do you need Closes tag?
+On 03/11/2025 12:45, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> We can DSI pin from 8mA to 2mA while suspend, do it.
+> 
+> In theory, should give us extra 2 hours of idle battery life.
+> 
+> cosmetic: sort pinctrl properties.
+> 
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>   .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 26 +++++++++++++++++++++-
+>   1 file changed, 25 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> index d59a5e8cdeb2c..f00dbc0fff3d4 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> @@ -449,8 +449,9 @@ display_panel: panel@0 {
+>   
+>   		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+>   
+> -		pinctrl-names = "default";
+>   		pinctrl-0 = <&panel_default>;
+> +		pinctrl-1 = <&panel_sleep>;
+> +		pinctrl-names = "default", "sleep";
+>   
 
-> The report was done outside of LKML, in a Matrix channel.
+Recent Matrix discussion brought me to look into how sleep state is handled.
 
-Good, next time don't forget to add this type of information in the comments
-block, so we will know why Closes is not accompanied with the Reported-by.
-But if that channel has web-available archives, it will be good to have a link
-to it in the Closes tag.
+Should the panel driver add to pinctrl_pm_select_sleep_state to enter the state?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks
+David
