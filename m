@@ -1,133 +1,121 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72A63C945A;
-	Thu, 12 Mar 2026 11:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513B533D511
+	for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 11:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773314753; cv=none; b=j5F6ZsXceuoeGAmQyRt0LofTZVrAPH/S/IXb1JKk1+dTJxqcMiV+yDigiSOVG6k6Xq8rQ+NQ92o8ogWLd+JmJy81579rhPasI410JuYkEZv4BqnNzU1NAeTwTNzPJFiIhdxEs3HBVPTMMkC2UH7EFN8XFRnvnF0SZ3JLF010Dfo=
+	t=1773316402; cv=none; b=GYSJcKx0dIXs22Ixs0GsiYeUbw8dE0SfZ+6tKhLYVXO390BdMvqZ8LMdT8GZDwq0nMES3W7saFGb4VA38HRAId2ozlnFjn/o6BIowN28enD/d8/WoENjB+Q1J4ZbqhDhnzy783pg7SiiVrogz9efBb4WK093oHognyYQ4jnM0qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773314753; c=relaxed/simple;
-	bh=Rj9R/w5TQZVEOVlu8IN/GrbnhZ2/MLTMI1kLN4xob4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CMSJuDGagsdk0NykBMurFd1+q7DUSw4BnK0vYWx753+1eQbLWH/+M4+86UMRsjKhhGkq7HIAeYVuALEe9dmDO8hswxDIl0F6aJ/yfE6/6ajW4JAMacqMghCiLSpKH5Y74AzlkKdmIMWExdVU2B+rucmw92Zykf7pHFBSfmYBd1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=xU6tvrqw; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1773316402; c=relaxed/simple;
+	bh=J+U5drShINo5+0B3DYDVjx3TPOFOzJe4Hqp6zGMExds=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ExPMR1gmL61DoIGHbDwn2DAWYy5O0kr1YTNbWMkPZzkAkaE2DiLqUESBTroTwS7igC1nexbWNw41Zq9k7bETxVbi5yrwcJtRJkuYZJhzxOij3kKMqU25Auq/RgEJNjgfoBla+pKRBeOYPAiNX7G9ilZwkMXlI0FEPM3rC9igWOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lbtg1hK3; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="xU6tvrqw"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id E5E0F5340902;
-	Thu, 12 Mar 2026 12:25:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1773314746;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=beJppJ0vqUAp1ABTbz2DxlfFA+mOM5wX8wTOItZJ5zQ=;
-	b=xU6tvrqweDLU/sgEygB2bYRySO0ymtQvuCWs+JIq4u4fcTqEhhG+l/Re2hkcyqvHEMrKtP
-	388NVQlS8530fwwt8sDytTgBzo6PpFBiBp05wd0zhUi98VWMTmn0x0/OBuAptMSlXWmfL9
-	KLbw1lX67Z8sPNehW92s37nsMXdHhCY=
-Message-ID: <137c19a3-136a-4e0e-b4ea-8cc474172d81@ixit.cz>
-Date: Thu, 12 Mar 2026 12:25:45 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lbtg1hK3"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439d8dc4ae4so1045536f8f.2
+        for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 04:53:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773316399; x=1773921199; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=44LXRHinVhycilszR/4yNd78RLiYQ/Nblg4COhfoEQc=;
+        b=Lbtg1hK3yB3gYJ56R5yPo3Tx9k2eZYG8+itJUNHVDWUJUXTDBu0kzBHMQqaureLXVj
+         qxNOepIhvFJrhr1W6ECWaS18js0pWx3Pa+6tMb6EHuY1RR6glc4uhuhrTT62hJptXQD7
+         E3CzztCMcd0AC46SSWKREQxHRjVWAwp0eZqclmqvY9vUhs1BSzmzysIQbOweXvdGs2iQ
+         8mrzW5gptAhciyV2B6lPdb5AXdTw9R1jR/C10oikQZC/NMdQQliwskkXGD6Ng+v/NJoy
+         dJjcoH07vL9XdLuGI5Oqyb1SOH5hni1V/nnss9KX71lUd76R94FNL19e8eU5ayciAXX+
+         VlMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773316399; x=1773921199;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=44LXRHinVhycilszR/4yNd78RLiYQ/Nblg4COhfoEQc=;
+        b=atWEReFTNl/RNosMkR8E6Uf0ccLmJ3LSoqrzAcHGBVn4crJDtwAWIL4ZSvndYPLy8W
+         Qh93aVjSP3Lf6Tse1XvlO8x/i/yzQravKivzEGZKnjuzm3w29pjbsPJrP6VaR3nIGxW6
+         jEVIN23NKGSsLcc0xWbmxpWKlI4wYS954hn4GIKnDt0wbgIDBirs26WqV2aTHXRv8OZG
+         RYFxaM8tYHTFCamfzlzsnjheJKxa21Ty68/ugobnGhjGvHVqe1lIqXwoXum3sJ/c+4SH
+         Xx1ZF/7dMJgcaJ+k0rXmwb0Wgo86bVWvsp7DzIRSwV816DuQfFqYyzyIII4tsBiZWI5i
+         VAKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfnqhmZY+9JQkiecxGln2LzzrGS/e2Xwxl0v9/+xfy3ADMSZci+EYSdYzsz8FlRIS5LYXz8xqi0ZOGGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyolfk3T7xRHqGp98PdzW9mO6o/cAgpf6O0KK2uc+kgd5PlX8f7
+	dEEcKdaT8TldgmT/6UVoq+HhRAaGkuCLJ772fTf4246kvUGTDPTwRXQO
+X-Gm-Gg: ATEYQzz6sPBYZtLGfhZdsfxZY0z3qN0wZqKELRJrkpNexRHvJKzAEXF6ORP4Rj5rGph
+	B+MTrHxKWrC9F+JNtyJ+JxBgW+ShEcmosxXTt8w/Rze7FRxqoIkDa/rhBC0K4t4PQoDvZqm7EnH
+	cfJvQzSLkZSv5hddHM7N8//fYozVwlpW1dON2zV8L+XlQ+tTHOrj0Q/ejgPBs5CTfe7ALBHL6q8
+	V/EqDscp8CbgHnIEIGLAe5dtHJmmoSSYaNN4Q5OarK9IgqO1axVM8ZI0DtPyZkN+NkvZcNqzgto
+	mzztxqRVKaLGnpS2bX3YiZsmuRzvoObhGCBaUIvQ9knkelOzeSvPlY/fziB770NZrRtpOWiLVtS
+	qu5ZwEvaEglY1ZDbZCulZBTJgKUI/W8iC8DQaAlLKkUwHJz4odtmzRHFdiD1P6UPb63MDoF7ITq
+	fcQGGaFnPg+EzIoJblXRUwtvwfRQ==
+X-Received: by 2002:a05:6000:186b:b0:439:b046:2044 with SMTP id ffacd0b85a97d-439f81f2334mr11880791f8f.12.1773316398625;
+        Thu, 12 Mar 2026 04:53:18 -0700 (PDT)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm7044960f8f.31.2026.03.12.04.53.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 04:53:18 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v2 0/3] iio: light: vcnl4000: add regulator support
+Date: Thu, 12 Mar 2026 13:53:11 +0200
+Message-Id: <20260312-vcnl4000-regulators-v2-0-2bdebbcbb58a@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium-tianma:
- Disable MDSS
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Petr Hodina <petr.hodina@protonmail.com>
-References: <20260311-beryllium-fb-v1-0-408a580d125e@ixit.cz>
- <20260311-beryllium-fb-v1-2-408a580d125e@ixit.cz>
- <t4uhjpxdvjxda4dxkoxktv6xlxg3xvzyslgerluu3t2dzxv33v@k46gvwv4uf22>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <t4uhjpxdvjxda4dxkoxktv6xlxg3xvzyslgerluu3t2dzxv33v@k46gvwv4uf22>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQrCMBBEf6Xs2cim1VA8+R+lh3TdtgttIokGp
+ eTfjQVvHt8w82aDyEE4wqXaIHCSKN4VqA8V0GzdxEpuhaHG2mCjUSVyywkRVeDpudiHD1ENNOq
+ htaiJDZTlPfAor93a9YVniaX33k+S/qY/n/7rS1qhMmYojZb4bJrrtFpZjuRX6HPOH0D/Ida2A
+ AAA
+X-Change-ID: 20260310-vcnl4000-regulators-bcf1b8a01ce6
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Raymond Hackley <raymondhackley@protonmail.com>
+X-Mailer: b4 0.14.3
 
-On 12/03/2026 03:46, Dmitry Baryshkov wrote:
-> On Wed, Mar 11, 2026 at 07:44:30PM +0100, David Heidelberg via B4 Relay wrote:
->> From: Petr Hodina <petr.hodina@protonmail.com>
->>
->> Currently the panel driver for tianma is broken.
-> 
-> How broken? Can it be fixed instead?
+This patch series introduces support for voltage supply, I2C and cathode
+regulators. This fixes an issue where if a regulator is shared between
+the proximity sensor and some other device, and the other device is
+powered off, the proximity sensor would be powered off as well.
 
-No output to the panel. Definitely can be fixed, but current situation is that 
-we don't have anyone who has available time or device to tackle the problem.
+One of the commits includes a Reported-by: tag without a Closes: tag -
+the report was done outside of LKML.
 
-I know it's not optimal, but on a way to achieve working mainline phones, my 
-thinking is better to mark it as broken in mainline until someone fixes 
-(assuming Fixes tag and backport) then just going black display (when we have at 
-least framebuffer now).
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Changes in v2:
+- Removed double quotes in includes.
+- Reordered includes alphabetically.
+- Enabled regulators before the mutex is initialized.
+- Replaced direct usage of &client->dev with a variable.
+- Link to v1: https://lore.kernel.org/r/20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com
 
-David
+---
+Erikas Bitovtas (3):
+      dt-bindings: iio: light: vcnl4000: add regulators
+      iio: light: vcnl4000: add support for regulators
+      iio: light: vcnl4000: move client->dev in probe into a variable
 
-> 
->> Disable MDSS to prevent DRM taking over the framebuffer.
->>
->> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
+ .../bindings/iio/light/vishay,vcnl4000.yaml        |  7 ++++
+ drivers/iio/light/vcnl4000.c                       | 41 +++++++++++++---------
+ 2 files changed, 32 insertions(+), 16 deletions(-)
+---
+base-commit: f90aadf1c67c8b4969d1e5e6d4fd7227adb6e4d7
+change-id: 20260310-vcnl4000-regulators-bcf1b8a01ce6
 
-[...]
+Best regards,
+-- 
+Erikas Bitovtas <xerikasxx@gmail.com>
+
