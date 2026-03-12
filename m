@@ -1,66 +1,67 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE36399362
-	for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 11:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BD63A256B
+	for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 11:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773316404; cv=none; b=kqYESjd/jpgMshhsYj1f/kHiQ36f+/etOJAyhlGsPuwyuvW8klmgX9lrdQYt5zfquRz6+PVwebzPyO7atEE1UfnBfqqkiXBgspYCaBvEE798cSSdE4s4ucyZDWcZZ+y1higs/IT5Ra6bH7hf80ilCwjHDOjegqupHWn2dFHwWNw=
+	t=1773316405; cv=none; b=uH99GdcG0TiwTJauJCDg9CiyyJcG4eK/KM9yk9pS4u2RVQdqMrcm/Wdoy4Opf9mKvq9plZV/oxZkQcWwWXU6Qu1JwskfwZk6PGpbiM4nlj0fEVFN7KxU0MUSSlFv43lfcmtg76BHkJQjWvKH2M94/nun+F1NZ9ge+CzwapxeTDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773316404; c=relaxed/simple;
-	bh=8Xyy00oxH9BoglqKEOMhdKaA9OWY9AsQ82hA9RGRF9g=;
+	s=arc-20240116; t=1773316405; c=relaxed/simple;
+	bh=6TUyoJLJSqeungB5Dy08vZAqsI6zizoCJy5q8AmL2/4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DoJuws6qbZzpdmPyE6U7u3okfcYTYyfPson8BNZVOB1BegCGk4S+bXnsy+0W+9KaDHjbSSJWtiVTt1ypmK6JAJrl3LarZXOYOZ40E/o51Cgg4ojgESaWuaQ/FxRgxGOgNON+HtxwQ31FTwsuCM0HVsO+viZqBnxJg3ieeDOeyOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OT+8NL6Q; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:To:Cc; b=lGokZ84r0jXzMMBN2cDzA6w4WHg+PT/hcetJztCxTR3Uoy+SQD8NQ6CF9B7FAMH9EhDEIbbTijNqwi0u0QF9X/V30IQ7OHW0kU17EKksEIdFaEdCGAecjzxLaI/b7aPTvY1PSorqfxETquNsUIEl6/09AVdzfiZvHUSmPCcWmyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxLbspGt; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OT+8NL6Q"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4853c3c2fe7so4853095e9.0
-        for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 04:53:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxLbspGt"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48374014a77so10303105e9.3
+        for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 04:53:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773316401; x=1773921201; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773316403; x=1773921203; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ksNpMcFOkdRuvwTL39BI4yY5vtgJD4Unsj/0RB7GtmA=;
-        b=OT+8NL6Q+xa9qHCGj2CVJkyOoECqJ1v9JHMe8rCzCj5LCZih+hJlyYbntbXByED7nE
-         C//0CInB9fYLGmnx12w+C1dSKVGW8/0XzJ4vb5dO8c2XilB4SV6C3J9pvWXRJvQJsXgk
-         SaDoyC68C7wOAbLbDfXQ+GrlZUP5y/kqvRqI3q8yFlnD1KZ0ZfaVspztCJyPGXUfKzR8
-         MWt+cQFFEFCkZg5txBi45OKQMhbSyUTuW9kthysNYCiZZFVbZsX5mtsC5TcbccJY0Pod
-         bDo0viXRzkYjnmQBNchN6r/yQrqNdR/fyka2UrAadBl4zMvZ5eh6t8urKVPn0X2XWZFQ
-         A41g==
+        bh=zJtLWo5ws6cOY8PPBgpE01aNyBcJ7pcov+uZ7h1HS6E=;
+        b=DxLbspGtxz9Q6QNkA6okY2YiBQNjpHb4sbbGAYsNfczWxfyTi8gijMyWahB+xf5Il7
+         9Cu9x1uwC8gYz1janyFJvW2Jrl/45h2weuIa0T8o7/cL/I5HDHXP0ZRCd0m/q3bkX+LT
+         sN/2TsH2EyzMK6ka0PYNHUOHTCn2d1cZEKKMPykwnFL0UjQOjv2wNYerZjNA3PvzFjQT
+         yzlhgzL5KetUJTSMfn0VlW/QUT2W8FuC3agq9Zo7OVeUSuMgVus2ud0HLs+f9k40CG/X
+         JvyrmC08JE1sszAEmmbOtk7hJGG5/XhcAjQGWel0fe+Jgz7ojURYAxD6r4zLhn4G38vt
+         w8Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773316401; x=1773921201;
+        d=1e100.net; s=20230601; t=1773316403; x=1773921203;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ksNpMcFOkdRuvwTL39BI4yY5vtgJD4Unsj/0RB7GtmA=;
-        b=R2WhqOIDcV9ZzioRA444+wtSrKrx9UdMsMzEhAM0nOPtjKIsGrGR9qUdKNMr7NKPdi
-         maakIt+J6eD7HjSgBKu6hxtSZaHLx9yN40IMutlRNwqqVe3YBPo8hGQu5ml+x5Lg8i1l
-         UDYDMkG5GyC2ZXX0hU5K+bfoptTpwOfaSp/u33pX4O+QM6MoxI6oLRAn5j6rwJkp8Kye
-         IWtt+TMnrXbERv/It2TaDu9HXJ+FObQhXP+lRViQfLi3K0IjXVv+jjbLJmOmwCMppWNd
-         nyGT+fsTJUjGMLeS8oeVSC8KDjKvG7VsEj/Dctw6C0x2seoLd7PnFUUHKZoqr8+M2yPF
-         oesg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpyF9OvBq/sR8mhKP9yYx+mJq+MgW4UvAsJMbQ2kwkpMw3WvCLs7j/n2/qfV5cJfci980D7VQ2oYElfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4UR6qZOP3mg5Xkefdmeiecdgz+76+PXa6M4O3CN0f/0HTQa97
-	zSCJjmttme2ODQqDVoT78k7ar/mjqqQynZfT2A15yDlOiggs8PxaY4sU
-X-Gm-Gg: ATEYQzzU+VRg9/ik3WUR5NtNhyb3L6HP0z+YFjf1abODC0/3Ufuiyr0Zbf4oYoWM4yP
-	bvOwVShHvE6JFAhntPEgX+YXZiY1satfhC5ulZmQ4f93sClHVLzN14mYvg2dZNY6Pg8hO9OAXbK
-	zW9gZhxlRNDRnM2682sYOHySycTJznrg/ntv+TeFkuv9uTXr565LOKRzm6UICMU2HUX7L8O5YZZ
-	FD28j/c0egqfRHOI28ZuLY3dVghJ7SMjGnlCiAEZzGHFfovf87oXP2XCCPVz8gVxWnM9hyZkhxt
-	iYbND/nRqcwXJZAHPETty1QgaHmKxwSiT+0Xhl/09AfVgy+bSZMbDvgdvvdoca0iBA/Yk9OOwy6
-	hE76lkE0u/3b/bgeHLbp3HZ8yOcXjbk24+XxtI4NPtso3ZIY7GvuIn/jPTicuJLAQ7w7hy1ZrJF
-	S8uGfTZeuTIhRBehtN6n3keN12tQ==
-X-Received: by 2002:a05:600c:630f:b0:480:4ae2:def1 with SMTP id 5b1f17b1804b1-4854b0c7c1cmr116758785e9.13.1773316401185;
-        Thu, 12 Mar 2026 04:53:21 -0700 (PDT)
+        bh=zJtLWo5ws6cOY8PPBgpE01aNyBcJ7pcov+uZ7h1HS6E=;
+        b=WoJV+TkbqDFMDpsNFPWN48f8tWtstOvQmVyXYi7D9Y4nzyVK3btpP7Ked/wlOrytbb
+         nPWqxG5kGh17otqX11NTkJ3TEqHvLPAfDpTDvnAs9PhN5TAzP/lery7vBpOQiGJFHzUt
+         1nn5l+4P5i4DiANj4iaz12ZOlDXT8jiGXUM1tWvuM9g5ubdD4qxtEqKIgZd/s+0gmR6O
+         f685e0uIGLqGtvdR9eL2DLOC9fuq9ux8KJ9Lxf0nJXERhwh3Y4OVwssortsh1v6W/lcM
+         za/UhWUL+b6eoKGoNEF6Y5cpkzUidXUqjrrG+pK6YEx67shYr52nvnRcfEiDwiGVPCtd
+         Zz1A==
+X-Forwarded-Encrypted: i=1; AJvYcCU78aXK3b6Yxl+fNN3x5/03a55UgJcphL+/6Wc8ZFErt3qrN7GDUFf18ikKLfn1LAw4eWhLv0bi6q8iOg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYBtwrC3xBTRh45woKaciHiMK39RY99uKFobvzjEJy2dCivdCQ
+	gjyHxuwCukod01EQQuE1wddIQptYPGsH0mfUw3RqrpfFB1LB5/Fk2rco
+X-Gm-Gg: ATEYQzysBBwjpizyqIkU2NhCafUSlMUTWFMh8mDE43j+aa55izywH5vx1dd3CrOOO0o
+	zgW5DdhMqMlni+9yPB0z4F3WPnWJu64aNEyGKjibIZ+914/7zLVDTh2JJO75RvPczos2ysylJBN
+	Bm+TdjZbN289iCARXQc3DOTQoC9XsohZMroelbbEyoqWB6TE242TTnzL+Vq9SJwiNGZBUX+QD6s
+	tRcpOlpFROJsIJdkwGrWi9jKZao9lc6djokHsynHnlnchSpumZyQxg6XmxwSrVOwKC5FhnElO/X
+	yL2RQowwvIsYR8SNE9cGmQsoSn1PZNwrYh2+/B5STBrZrG5IgAUw6jJQvYUZId+QLw/npB5eGf/
+	OofVwsEEb7GvcyH2UYE13Lt3YktLYlgq7uVkVLpI98MiyFT97q3L65mdOSRRCS0xmRftO3h8j5m
+	+YwWX7blZpS16QQT88PdDTiBFTpQ==
+X-Received: by 2002:a05:600c:19d4:b0:485:3ae3:b394 with SMTP id 5b1f17b1804b1-4854b158082mr108421115e9.31.1773316402466;
+        Thu, 12 Mar 2026 04:53:22 -0700 (PDT)
 Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm7044960f8f.31.2026.03.12.04.53.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm7044960f8f.31.2026.03.12.04.53.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 04:53:20 -0700 (PDT)
+        Thu, 12 Mar 2026 04:53:22 -0700 (PDT)
 From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Thu, 12 Mar 2026 13:53:13 +0200
-Subject: [PATCH v2 2/3] iio: light: vcnl4000: add support for regulators
+Date: Thu, 12 Mar 2026 13:53:14 +0200
+Subject: [PATCH v2 3/3] iio: light: vcnl4000: move client->dev in probe
+ into a variable
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260312-vcnl4000-regulators-v2-2-2bdebbcbb58a@gmail.com>
+Message-Id: <20260312-vcnl4000-regulators-v2-3-2bdebbcbb58a@gmail.com>
 References: <20260312-vcnl4000-regulators-v2-0-2bdebbcbb58a@gmail.com>
 In-Reply-To: <20260312-vcnl4000-regulators-v2-0-2bdebbcbb58a@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -80,65 +81,109 @@ To: Jonathan Cameron <jic23@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
- Raymond Hackley <raymondhackley@protonmail.com>
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
 X-Mailer: b4 0.14.3
 
-Add supply, I2C and cathode voltage regulators to the sensor and enable
-them. This keeps the sensor powered on even after its only supply shared
-by another device shuts down.
-This bug was reported outside of LKML, so no Closes: tag can be
-attached.
+Move client->dev into a variable of its own and replace all instances of
+client->dev being used by it.
 
 Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-Reported-by: Raymond Hackley <raymondhackley@protonmail.com>
 ---
- drivers/iio/light/vcnl4000.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/iio/light/vcnl4000.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 5e03c3d8874b..04bde498aec4 100644
+index 04bde498aec4..36a3d8075eb3 100644
 --- a/drivers/iio/light/vcnl4000.c
 +++ b/drivers/iio/light/vcnl4000.c
-@@ -18,12 +18,13 @@
-  */
- 
- #include <linux/bitfield.h>
--#include <linux/module.h>
--#include <linux/i2c.h>
--#include <linux/err.h>
- #include <linux/delay.h>
--#include <linux/pm_runtime.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
- #include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/units.h>
- 
- #include <linux/iio/buffer.h>
-@@ -1983,6 +1984,7 @@ static int vcnl4010_probe_trigger(struct iio_dev *indio_dev)
- static int vcnl4000_probe(struct i2c_client *client)
- {
- 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-+	const char * const regulator_names[] = { "vdd", "vddio", "vled" };
+@@ -1987,9 +1987,10 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 	const char * const regulator_names[] = { "vdd", "vddio", "vled" };
  	struct vcnl4000_data *data;
  	struct iio_dev *indio_dev;
++	struct device *dev = &client->dev;
  	int ret;
-@@ -1997,6 +1999,12 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 
+-	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+@@ -1999,7 +2000,7 @@ static int vcnl4000_probe(struct i2c_client *client)
  	data->id = id->driver_data;
  	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
  
-+	ret = devm_regulator_bulk_get_enable(&client->dev,
-+				      ARRAY_SIZE(regulator_names),
-+				      regulator_names);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_init(&data->vcnl4000_lock);
+-	ret = devm_regulator_bulk_get_enable(&client->dev,
++	ret = devm_regulator_bulk_get_enable(dev,
+ 				      ARRAY_SIZE(regulator_names),
+ 				      regulator_names);
+ 	if (ret < 0)
+@@ -2011,10 +2012,10 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 	if (ret < 0)
+ 		return ret;
  
- 	ret = data->chip_spec->init(data);
+-	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
++	dev_dbg(dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
+ 		data->chip_spec->prod, data->rev);
+ 
+-	if (device_property_read_u32(&client->dev, "proximity-near-level",
++	if (device_property_read_u32(dev, "proximity-near-level",
+ 				     &data->near_level))
+ 		data->near_level = 0;
+ 
+@@ -2026,26 +2027,26 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 
+ 	if (data->chip_spec->trig_buffer_func &&
+ 	    data->chip_spec->buffer_setup_ops) {
+-		ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
++		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+ 						      NULL,
+ 						      data->chip_spec->trig_buffer_func,
+ 						      data->chip_spec->buffer_setup_ops);
+ 		if (ret < 0) {
+-			dev_err(&client->dev,
++			dev_err(dev,
+ 				"unable to setup iio triggered buffer\n");
+ 			return ret;
+ 		}
+ 	}
+ 
+ 	if (client->irq && data->chip_spec->irq_thread) {
+-		ret = devm_request_threaded_irq(&client->dev, client->irq,
+-						NULL, data->chip_spec->irq_thread,
++		ret = devm_request_threaded_irq(dev, client->irq, NULL,
++						data->chip_spec->irq_thread,
+ 						IRQF_TRIGGER_FALLING |
+ 						IRQF_ONESHOT,
+ 						"vcnl4000_irq",
+ 						indio_dev);
+ 		if (ret < 0) {
+-			dev_err(&client->dev, "irq request failed\n");
++			dev_err(dev, "irq request failed\n");
+ 			return ret;
+ 		}
+ 
+@@ -2054,7 +2055,7 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 			return ret;
+ 	}
+ 
+-	ret = pm_runtime_set_active(&client->dev);
++	ret = pm_runtime_set_active(dev);
+ 	if (ret < 0)
+ 		goto fail_poweroff;
+ 
+@@ -2062,9 +2063,9 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 	if (ret < 0)
+ 		goto fail_poweroff;
+ 
+-	pm_runtime_enable(&client->dev);
+-	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
+-	pm_runtime_use_autosuspend(&client->dev);
++	pm_runtime_enable(dev);
++	pm_runtime_set_autosuspend_delay(dev, VCNL4000_SLEEP_DELAY_MS);
++	pm_runtime_use_autosuspend(dev);
+ 
+ 	return 0;
+ fail_poweroff:
 
 -- 
 2.53.0
