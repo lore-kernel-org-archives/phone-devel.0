@@ -1,234 +1,512 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE57375AC6
-	for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 11:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA4B3B8944;
+	Thu, 12 Mar 2026 12:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773316522; cv=none; b=HCIrsC+pPKj0DrkpjNOD43LQyUnGX7bx/237Om97b+OLgG2S3xGNAZgyORP1P7Ueb3J9izVoCVPLDv3uieuvppkBlS3bf07M38EWpk4voHSsXCxUTzQUNYyR6tB1qFG/6iRxnkJIqiqhjSyksNMNMXNGSjKyHI+ak0NNGb82dcw=
+	t=1773317393; cv=none; b=DcmNRw1cv14V1u4dhvRCEhCWEOwvffl1UHB4gTPbZ60sqey9i4DK+PSFxQ2CsXmTFvo36HDlB9LSnVnDKjTgOh9M8gZOukdWwAmmK2dWSBybV5rkL9Ky1qmIOnzlP3mxfPcQeZNg+oL+uEoXNR/zZkfLxGOKptG2DU2eEhzKSHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773316522; c=relaxed/simple;
-	bh=NMCnP+Vn9CRSuVMeCq9y74f40B8hugn2Hc7oZ++rEeU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=icCAaHlniUfQIYiCxP0wtf0n80hcMOhdT8bCvqQWG1Bd+rYFiE6Oo5FGsdF3gj9Dd4dWqqumyAYaO5QiGr3p8q13exKNQTJ17LJhSfj7JWsl5WgBqA+PRJ7keX1rDnEM+QuMuLsAu0LcV3JpBtPcul1vKG9byDCYzmxiIQkGYGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSQSpCF7; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773317393; c=relaxed/simple;
+	bh=JxK38VEcEu4D0JlBeHscPHRjEhWqpJcsFuamvp8Xiyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bZojypbarwi9+Rf8JWi/Go4gl8qdvB1z5/WGZxfHQTL7sE2oKHBrUP59/k2nxBVdZwK7D0/xBr8JkOgHQ24sGWmZn9Lly1Hbxkp46M/ylIjxCS6YZ75Fm2YS093KyF7eK5t+qboEvVJAnbXwkb4OEZbU6I5OGRJ3w+lJHVlpX+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=g79vdLK/; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSQSpCF7"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439c944bb62so727334f8f.3
-        for <phone-devel@vger.kernel.org>; Thu, 12 Mar 2026 04:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773316520; x=1773921320; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=80Lm5IjiUIX059jl1E/bAPpLCGfF21FnmJFKamm0ixc=;
-        b=fSQSpCF7d0F4Ry1QQIZoYDoCO/bOMHD++5QQHVwv8eYx/IpXgLrb/0boxp6QQVGANq
-         X9Hm5Ub72e/gi1geTutEZWGdccvb/k+kxdpfUEcyjrHHW6OOtXbWI72scX76NmOSLPdN
-         Gd2cb0k5f4xxEzngyAyYIq4TukE1Jeh7UEdZZrbL24pTEWUYuSGzbboQFm3//L1Z8ezg
-         KfQ/+rWryQqtTaCuiIbWw1tOMPyGP+e3IYoEqWBXuSuTHmN5eRhqYGhZU9eNxwFcffGe
-         bepfrmp8bNkEl79iso7GhRysV4opm/cSp+jg2rD3EBevfsLGK7V4Z10NdVJiXxF3ZeSf
-         EWew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773316520; x=1773921320;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=80Lm5IjiUIX059jl1E/bAPpLCGfF21FnmJFKamm0ixc=;
-        b=Ja3VJ+XOTNzlmZxal32xdzarlh6t8fHPAROHgajxRsX4MBNR6LTjj/9j7wKNaoDOTq
-         fg6Z42pldwADzGH6K2UtJU9AyI60wl3JXNf6qoyDeepR+mHuhQTTGD2Ign5qaqgF8s67
-         GQW58K0MMUmtZ5rQ9I9KzbG/WHEYn0dYvhIjqvY4avKkS0E3JGPsjZwcwLYfc/8hf0mX
-         yrJUeCerDYgI/Lls2vsIogwaEuHOgPWyF3wcPLBT3OlDf/9Ug29gmPFXTtH0Ww233PQm
-         PTm7y3i43x9QewjXjqlJYAkFTXQJ+TsYEufZuczKpwNu4nTiRvYah7+QgqtLGrezD0gG
-         57TA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8orbyurDxeZbZ80NbnIpQNZeiWq7P3QnOk2+F+mRrvCByBlWQxL1wWkYcMMSUQvo8O8A9EGBBa/Bw1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2Q6qIlh2UGj56++5v/G/FnaWpDBmyZwZ45RZSqc4oRA6TmGbT
-	V6yZ+DMH1hdFqD4eYZ7TaSewFR3zab6MnigpkZMDnur0e0d6aMuwt8Qd773lXl9VXYU=
-X-Gm-Gg: ATEYQzzyRs7O9cycLdoAXlc1mUE8ciQpomcr1g+EVzAkEIjZoo+Ti47wab3wYG+5pe1
-	6VitTzrcJft2IP7GoJhPHlF2KQmXrBBXKPkIplHMbK+vm4Y8G7z3xKK3dCf2AkbzhzSYhe0dTsO
-	O1zd/ADoE3H5ySkSpGaTfSyVdOWGi+3kaUPCJbpcYvVz1mYIz8c0JiD8pNqnWXQ8z7SjS0RJlxT
-	VULLqOcUjkToRgUuUdcG04nx28ZNeEdmbEAhbu3QZVYgK/HDWf2daY12WqonPK96bARV8XH78oF
-	K8Qd3pTwGqOhlcfnfejgsSA7st6Bq7HI9YKaAljvZkpklbR8EpM/o8e7PhMXBuDgR/Yr8AfndMi
-	JxEsyeeBovwAavUKGvrquj0blzwci5wU/eMBvruXXKsswZ7BjPp9zZJIe9CgOV6nj66He7LUI6h
-	QEOtj0hwGy9hpOlJoRALaX9MlHQtWbx3B63Fxex1XTYpzmF3GhX4LVyqLTp6Ftm+s=
-X-Received: by 2002:a05:6000:4029:b0:439:b6c0:ea86 with SMTP id ffacd0b85a97d-439f81b6370mr10386697f8f.1.1773316519830;
-        Thu, 12 Mar 2026 04:55:19 -0700 (PDT)
-Received: from [10.100.102.17] (89-139-129-65.bb.netvision.net.il. [89.139.129.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe22529csm7058657f8f.31.2026.03.12.04.55.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 04:55:19 -0700 (PDT)
-From: Yedaya Katsman <yedaya.ka@gmail.com>
-Date: Thu, 12 Mar 2026 13:55:10 +0200
-Subject: [PATCH v3 3/3] arm64: dts: qcom: sm6125-xiaomi-laurel-sprout:
- Enable MDSS and add panel
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="g79vdLK/"
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 3DE6B53400FD;
+	Thu, 12 Mar 2026 13:09:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773317376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YgUody75rJUQE1fojs3LrS2xdVlGscbJtNJbUj3bZfA=;
+	b=g79vdLK/m4SXw65tWgKvHxSNvFGMOw0lJYI7+UgZZJ0TZ/FUgZKPFwindidQj9m/I6HQST
+	SCuEK93nTSxn1PH7T9hIbCAbAargB2YLJQIZGqaO5eLeGYgQIEH5q/OlSbf96hAGRCzDQJ
+	IjD2xlEGz6yHHMdYbhVX4lJoap1lUYE=
+Message-ID: <1029b5b9-c2ab-42be-a0cf-71304e40e6d8@ixit.cz>
+Date: Thu, 12 Mar 2026 13:09:34 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260312-panel-patches-v3-3-6ed8c006d0be@gmail.com>
-References: <20260312-panel-patches-v3-0-6ed8c006d0be@gmail.com>
-In-Reply-To: <20260312-panel-patches-v3-0-6ed8c006d0be@gmail.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- =?utf-8?q?Kamil_Go=C5=82da?= <kamil.golda@protonmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] drm: panel: Add Samsung S6E8FCO DSI controller for
+ M1906F9 panel
+To: Yedaya Katsman <yedaya.ka@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Kamil_Go=C5=82da?=
+ <kamil.golda@protonmail.com>, Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Yedaya Katsman <yedaya.ka@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773316510; l=3281;
- i=yedaya.ka@gmail.com; s=20260113; h=from:subject:message-id;
- bh=NMCnP+Vn9CRSuVMeCq9y74f40B8hugn2Hc7oZ++rEeU=;
- b=zYQWzhpTIbcPuQxsdVMDtlcN2tNPR5qKgoIzLDC0rIWjSAqELBfMLtEVOHPJOL/SQ8qRsoKW9
- Smzws947TVODHaZhvs3rlnKeuJQ2+EYh2xyXsAULJ9eu1Q/gv7/D9Q3
-X-Developer-Key: i=yedaya.ka@gmail.com; a=ed25519;
- pk=CgNmxD3tYSws5dZfpmJfc6re/bV/f47veVijddHLytk=
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20260312-panel-patches-v3-0-6ed8c006d0be@gmail.com>
+ <20260312-panel-patches-v3-2-6ed8c006d0be@gmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260312-panel-patches-v3-2-6ed8c006d0be@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Enable the MDSS nodes and add supplies and bindings for the Samsung S6E8FCO
-DSI controller for the M1906F9 panel.
+On 12/03/2026 12:55, Yedaya Katsman wrote:
+> Add driver for Samsung S6E8FCO DSI controller for M1906F9 video mode panel,
+> found in Xiaomi Mi A3 mobile phone.
+> 
+> Co-developed-by: Kamil Gołda <kamil.golda@protonmail.com>
+> Signed-off-by: Kamil Gołda <kamil.golda@protonmail.com>
+> Signed-off-by: Yedaya Katsman <yedaya.ka@gmail.com>
+> ---
+>   MAINTAINERS                                        |   1 +
+>   drivers/gpu/drm/panel/Kconfig                      |  13 +
+>   drivers/gpu/drm/panel/Makefile                     |   1 +
+>   .../gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c  | 302 +++++++++++++++++++++
+>   4 files changed, 317 insertions(+)
+> 
 
-The ldo and iovcc gpio pins boot up with a current of 16 mA, but they work
-fine with 2mA, so I used that.
+Thanks for sending the panel upstream,
 
-Co-developed-by: Kamil Gołda <kamil.golda@protonmail.com>
-Signed-off-by: Kamil Gołda <kamil.golda@protonmail.com>
-Signed-off-by: Yedaya Katsman <yedaya.ka@gmail.com>
----
- .../boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts  | 94 ++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+see few thoughts below:
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-index 994fb0412fcbdf5466f87a325c48b697a37b514b..878b7cab479fb173bbc01ffb653e306e52cae54b 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts
-@@ -82,6 +82,33 @@ key-volume-up {
- 		};
- 	};
- 
-+	panel_vddi_1p8: regulator-panel-vddi {
-+		compatible = "regulator-fixed";
-+		regulator-name = "panel_vddi_1p8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-boot-on;
-+		vin-supply = <&vreg_l9a>;
-+
-+		enable-active-high;
-+		gpio = <&tlmm 26 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&panel_vddi_1p8_en>;
-+		pinctrl-names = "default";
-+	};
-+
-+	panel_vci_3p0: regulator-panel-vci {
-+		compatible = "regulator-fixed";
-+		regulator-name = "panel_vci_3p0";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-boot-on;
-+
-+		enable-active-high;
-+		gpio = <&tlmm 124 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&panel_vci_3p0_en>;
-+		pinctrl-names = "default";
-+	};
-+
- 	thermal-zones {
- 		rf-pa0-thermal {
- 			thermal-sensors = <&pm6125_adc_tm 0>;
-@@ -128,6 +155,45 @@ &hsusb_phy1 {
- 	status = "okay";
- };
- 
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mdss_dsi0 {
-+	vdda-supply = <&vreg_l18a>;
-+	status = "okay";
-+
-+	panel@0 {
-+		compatible = "samsung,s6e8fco-m1906f9";
-+		reg = <0>;
-+
-+		reset-gpios = <&tlmm 90 GPIO_ACTIVE_LOW>;
-+
-+		pinctrl-0 = <&mdss_default>;
-+		pinctrl-1 = <&mdss_sleep>;
-+		pinctrl-names = "default", "sleep";
-+
-+		vddi-supply = <&panel_vddi_1p8>;
-+		vci-supply = <&panel_vci_3p0>;
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&mdss_dsi0_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&mdss_dsi0_out {
-+	data-lanes = <0 1 2 3>;
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+
-+&mdss_dsi0_phy {
-+	status = "okay";
-+};
-+
- &pm6125_adc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm>;
-@@ -387,6 +453,34 @@ &sdhc_2 {
- 
- &tlmm {
- 	gpio-reserved-ranges = <22 2>, <28 6>;
-+
-+	panel_vddi_1p8_en: panel-vddi-default-state {
-+		pins = "gpio26";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	mdss_default: mdss-default-state {
-+		pins = "gpio90";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-disable;
-+	};
-+
-+	mdss_sleep: mdss-sleep-state {
-+		pins = "gpio90";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
-+
-+	panel_vci_3p0_en: panel-vci-default-state {
-+		pins = "gpio124";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
- };
- 
- &ufs_mem_hc {
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d7aee8dab903cd42c245fea3cf8971dcd99b2196..d00775a09445a8a1bd626ecfd27903471d08d33a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8187,6 +8187,7 @@ DRM DRIVER FOR SAMSUNG S6E8FCO PANELS
+>   M:	Yedaya Katsman <yedaya.ka@gmail.com>
+>   S:	Maintained
+>   F:	Documentation/devicetree/bindings/display/panel/samsung,s6e8fco-m1906f9.yaml
+> +F:	drivers/gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c
+>   
+>   DRM DRIVER FOR SAMSUNG SOFEF00 DDIC
+>   M:	David Heidelberg <david@ixit.cz>
+> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+> index 7a83804fedca1b688ce6fbe4295ec9009007e693..ee9cc6939f2ac1dc4542563fd73f68ac5f9ee371 100644
+> --- a/drivers/gpu/drm/panel/Kconfig
+> +++ b/drivers/gpu/drm/panel/Kconfig
+> @@ -893,6 +893,19 @@ config DRM_PANEL_SAMSUNG_S6E8AA5X01_AMS561RA01
+>   	  ~5.6 inch AMOLED display, and the controller is driven by the MIPI
+>   	  DSI protocol with 4 lanes.
+>   
+> +config DRM_PANEL_SAMSUNG_S6E8FCO_M1906F9
+> +	tristate "Samsung M1906F9 panel with S6E8FCO DSI controller"
+
+I believe here it should be only S6E8FC0 mentioned, as the list of supported 
+panels can grow in the future.
+
+The supported panel should be definitely named in description (incl. where found 
+as you did), also panel structure should be named as you named whole driver. 
+Rest of the more generic calls and function I would recomend using only s6e8fc0 
+identification.
+
+
+Same the structs naming inside the panel, etc.
+
+> +	depends on OF
+> +	depends on BACKLIGHT_CLASS_DEVICE
+> +	select DRM_MIPI_DSI
+> +	select VIDEOMODE_HELPERS
+> +	help
+> +	  Say Y or M here if you want to enable support for the Samsung video
+> +	  mode panel M1906F9 (M1906F9SH or M1906F9SI), which uses the Samsung
+> +	  S6E8FCO DSI controller. The panel has a 6.09 inch AMOLED display,
+> +	  with a resolution of 720x1560.
+> +	  Found in the Xiaomi Mi A3 smartphone (xiaomi-laurel).
+> +
+>   config DRM_PANEL_SAMSUNG_SOFEF00
+>   	tristate "Samsung SOFEF00 DSI panel controller"
+>   	depends on OF
+> diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+> index b9562a6fdcb38bfd0dfee9e8c11e16149ada4386..19e1e898dfd4af2d34eafe7a6ded5ad74fc7ee04 100644
+> --- a/drivers/gpu/drm/panel/Makefile
+> +++ b/drivers/gpu/drm/panel/Makefile
+> @@ -91,6 +91,7 @@ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E88A0_AMS427AP24) += panel-samsung-s6e88a0-ams4
+>   obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E88A0_AMS452EF01) += panel-samsung-s6e88a0-ams452ef01.o
+>   obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E8AA0) += panel-samsung-s6e8aa0.o
+>   obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E8AA5X01_AMS561RA01) += panel-samsung-s6e8aa5x01-ams561ra01.o
+> +obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E8FCO_M1906F9) += panel-samsung-s6e8fco-m1906f9.o
+>   obj-$(CONFIG_DRM_PANEL_SAMSUNG_SOFEF00) += panel-samsung-sofef00.o
+>   obj-$(CONFIG_DRM_PANEL_SEIKO_43WVF1G) += panel-seiko-43wvf1g.o
+>   obj-$(CONFIG_DRM_PANEL_SHARP_LQ079L1SX01) += panel-sharp-lq079l1sx01.o
+> diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c b/drivers/gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..ccf18da59271dc4926a536f795a38d8eae349e00
+> --- /dev/null
+> +++ b/drivers/gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c
+> @@ -0,0 +1,302 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +// Copyright (c) Kamil Gołda <kamil.golda@protonmail.com>
+> +// Copyright (c) Yedaya Katsman <yedaya.ka@gmail.com>
+> +// Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
+> +//   Copyright (c) The Linux Foundation. All rights reserved.
+> +
+> +#include <linux/backlight.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#include <video/mipi_display.h>
+> +
+> +#include <drm/drm_mipi_dsi.h>
+> +#include <drm/drm_modes.h>
+> +#include <drm/drm_panel.h>
+> +#include <drm/drm_probe_helper.h>
+> +
+> +struct s6e8fco_m1906f9_ctx {
+> +	struct drm_panel panel;
+> +	struct mipi_dsi_device *dsi;
+> +	struct regulator_bulk_data *supplies;
+> +	struct gpio_desc *reset_gpio;
+> +};
+> +
+> +static const struct regulator_bulk_data s6e8fco_m1906f9_supplies[] = {
+> +	{ .supply = "vddi" },
+> +	{ .supply = "vci" },
+> +};
+> +
+> +static inline
+> +struct s6e8fco_m1906f9_ctx *to_s6e8fco_m1906f9_ctx(struct drm_panel *panel)
+> +{
+> +	return container_of_const(panel, struct s6e8fco_m1906f9_ctx, panel);
+> +}
+> +
+> +static void s6e8fco_m1906f9_reset(struct s6e8fco_m1906f9_ctx *ctx)
+> +{
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+> +	usleep_range(12000, 13000);
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+> +	usleep_range(2000, 3000);
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+> +	usleep_range(10000, 11000);
+> +}
+> +
+> +#define s6e8fco_m1906f9_test_key_on_lvl2(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0x5a, 0x5a)
+> +#define s6e8fco_m1906f9_test_key_off_lvl2(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0xa5, 0xa5)
+> +#define s6e8fco_m1906f9_test_key_on_lvl3(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xfc, 0x5a, 0x5a)
+> +#define s6e8fco_m1906f9_test_key_off_lvl3(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xfc, 0xa5, 0xa5)
+> +
+> +static int s6e8fco_m1906f9_on(struct s6e8fco_m1906f9_ctx *ctx)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+> +
+> +	s6e8fco_m1906f9_test_key_on_lvl3(&dsi_ctx);
+> +
+> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x0000);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+> +				     0x20);
+> +	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 50);
+> +	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+> +
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x04, 0xed);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xed,
+> +				     0xe4, 0x08, 0x96, 0xa4, 0x2a, 0x72, 0xe2,
+> +				     0xca, 0x00);
+> +	s6e8fco_m1906f9_test_key_off_lvl3(&dsi_ctx);
+> +	s6e8fco_m1906f9_test_key_on_lvl2(&dsi_ctx);
+> +	s6e8fco_m1906f9_test_key_on_lvl3(&dsi_ctx);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1, 0x93);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x05, 0xf4);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf4, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xed, 0x01, 0x81, 0x04);
+> +	s6e8fco_m1906f9_test_key_off_lvl2(&dsi_ctx);
+> +	s6e8fco_m1906f9_test_key_off_lvl3(&dsi_ctx);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+> +static int s6e8fco_m1906f9_off(struct s6e8fco_m1906f9_ctx *ctx)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+> +
+> +	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 20);
+> +	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 120);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+> +static int s6e8fco_m1906f9_prepare(struct drm_panel *panel)
+> +{
+> +	struct s6e8fco_m1906f9_ctx *ctx = to_s6e8fco_m1906f9_ctx(panel);
+> +	struct device *dev = &ctx->dsi->dev;
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(s6e8fco_m1906f9_supplies), ctx->supplies);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to enable regulators: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	s6e8fco_m1906f9_reset(ctx);
+> +
+> +	ret = s6e8fco_m1906f9_on(ctx);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to initialize panel: %d\n", ret);
+> +		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+> +		regulator_bulk_disable(ARRAY_SIZE(s6e8fco_m1906f9_supplies), ctx->supplies);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int s6e8fco_m1906f9_unprepare(struct drm_panel *panel)
+> +{
+> +	struct s6e8fco_m1906f9_ctx *ctx = to_s6e8fco_m1906f9_ctx(panel);
+> +	struct device *dev = &ctx->dsi->dev;
+> +	int ret;
+> +
+> +	ret = s6e8fco_m1906f9_off(ctx);
+> +	if (ret < 0)
+> +		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
+> +
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+> +	regulator_bulk_disable(ARRAY_SIZE(s6e8fco_m1906f9_supplies), ctx->supplies);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct drm_display_mode s6e8fco_m1906f9_samsungp_mode = {
+> +	.clock = (720 + 350 + 40 + 294) * (1560 + 17 + 2 + 5) * 60 / 1000,
+> +	.hdisplay = 720,
+> +	.hsync_start = 720 + 350,
+> +	.hsync_end = 720 + 350 + 40,
+> +	.htotal = 720 + 350 + 40 + 294,
+> +	.vdisplay = 1560,
+> +	.vsync_start = 1560 + 17,
+> +	.vsync_end = 1560 + 17 + 2,
+> +	.vtotal = 1560 + 17 + 2 + 5,
+> +	.width_mm = 65,
+> +	.height_mm = 140,
+> +	.type = DRM_MODE_TYPE_DRIVER,
+> +};
+> +
+> +static int s6e8fco_m1906f9_get_modes(struct drm_panel *panel,
+> +				      struct drm_connector *connector)
+> +{
+> +	return drm_connector_helper_get_modes_fixed(connector, &s6e8fco_m1906f9_samsungp_mode);
+> +}
+> +
+> +static const struct drm_panel_funcs s6e8fco_m1906f9_panel_funcs = {
+> +	.prepare = s6e8fco_m1906f9_prepare,
+> +	.unprepare = s6e8fco_m1906f9_unprepare,
+> +	.get_modes = s6e8fco_m1906f9_get_modes,
+> +};
+> +
+> +static int s6e8fco_m1906f9_bl_update_status(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness = backlight_get_brightness(bl);
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return 0;
+> +}
+> +
+> +static int s6e8fco_m1906f9_bl_get_brightness(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness;
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_get_display_brightness_large(dsi, &brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return brightness;
+> +}
+> +
+> +static const struct backlight_ops s6e8fco_m1906f9_bl_ops = {
+> +	.update_status = s6e8fco_m1906f9_bl_update_status,
+> +	.get_brightness = s6e8fco_m1906f9_bl_get_brightness,
+> +};
+> +
+> +static struct backlight_device *
+> +s6e8fco_m1906f9_create_backlight(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	const struct backlight_properties props = {
+> +		.type = BACKLIGHT_RAW,
+> +		.brightness = 512,
+> +		// The downstream dts claims 2047, but seems to ignore the MSB.
+
+I think this type of comment is useful for initial reviewers (maybe below the 
+--- in commit message, but not must-have in the code itself).
+
+> +		.max_brightness = 1023,
+> +	};
+> +
+> +	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
+> +					      &s6e8fco_m1906f9_bl_ops, &props);
+> +}
+> +
+> +static int s6e8fco_m1906f9_probe(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	struct s6e8fco_m1906f9_ctx *ctx;
+> +	int ret;
+> +
+> +	ctx = devm_drm_panel_alloc(dev, struct s6e8fco_m1906f9_ctx, panel,
+> +				   &s6e8fco_m1906f9_panel_funcs,
+> +				   DRM_MODE_CONNECTOR_DSI);
+> +	if (IS_ERR(ctx))
+> +		return PTR_ERR(ctx);
+> +
+> +	ret = devm_regulator_bulk_get_const(dev,
+> +					    ARRAY_SIZE(s6e8fco_m1906f9_supplies),
+> +					    s6e8fco_m1906f9_supplies,
+> +					    &ctx->supplies);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(ctx->reset_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
+> +				     "Failed to get reset-gpios\n");
+> +
+> +	ctx->dsi = dsi;
+> +	mipi_dsi_set_drvdata(dsi, ctx);
+> +
+> +	dsi->lanes = 4;
+> +	dsi->format = MIPI_DSI_FMT_RGB888;
+> +	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+> +			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
+> +
+> +	ctx->panel.prepare_prev_first = true;
+> +
+> +	ctx->panel.backlight = s6e8fco_m1906f9_create_backlight(dsi);
+> +	if (IS_ERR(ctx->panel.backlight))
+> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
+> +				     "Failed to create backlight\n");
+> +
+> +	drm_panel_add(&ctx->panel);
+> +
+> +	ret = mipi_dsi_attach(dsi);
+> +	if (ret < 0) {
+> +		drm_panel_remove(&ctx->panel);
+> +		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void s6e8fco_m1906f9_remove(struct mipi_dsi_device *dsi)
+> +{
+> +	struct s6e8fco_m1906f9_ctx *ctx = mipi_dsi_get_drvdata(dsi);
+> +	int ret;
+> +
+> +	ret = mipi_dsi_detach(dsi);
+> +	if (ret < 0)
+> +		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
+> +
+> +	drm_panel_remove(&ctx->panel);
+> +}
+> +
+> +static const struct of_device_id samsung_s6e8fco_m1906f9_of_match[] = {
+> +	{ .compatible = "samsung,s6e8fco-m1906f9" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, samsung_s6e8fco_m1906f9_of_match);
+> +
+> +static struct mipi_dsi_driver s6e8fco_m1906f9_driver = {
+> +	.probe = s6e8fco_m1906f9_probe,
+> +	.remove = s6e8fco_m1906f9_remove,
+> +	.driver = {
+> +		.name = "panel-samsung-s6e8fco-m1906f9",
+> +		.of_match_table = samsung_s6e8fco_m1906f9_of_match,
+> +	},
+> +};
+> +module_mipi_dsi_driver(s6e8fco_m1906f9_driver);
+> +
+> +MODULE_AUTHOR("Kamil Gołda <kamil.golda@protonmail.com>");
+> +MODULE_DESCRIPTION("DRM driver for Samsubng s6e8fco DSI controller for m1906f9 amoled video mode panel");
+
+typo in Samsung, also here feel free to drop "for m190..." part
+
+Except the nitpicks, looks really good.
+
+David
+
+> +MODULE_LICENSE("GPL");
+> 
 
 -- 
-2.53.0
+David Heidelberg
 
