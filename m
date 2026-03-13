@@ -1,87 +1,39 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAA3372688
-	for <phone-devel@vger.kernel.org>; Fri, 13 Mar 2026 12:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC793164B4;
+	Fri, 13 Mar 2026 13:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773406349; cv=none; b=UaIOW2oZi4sfKk9TTTkpzDfwCij9j/pfYlZxG6pY5YURCg1qcZ7gDTqk7n2gAvEJX7fXrxjRJNRx6vW4U5b9ULc7sXjivcYyEXmJUk/uUHwZBfZCSnFIODAM/oONtIuqlUAwnNpLF59YPs2swinsMbAdCxRDEObPirJNxvBiBck=
+	t=1773407372; cv=none; b=GUtldJ5G2nL0O/RA+aIL/H+h+NSXQuhp+4+4qAo+k/Lyy2yaB5TMOzRvFRHX4dK4m5+I3C9Rg9gYNEI5MO5SsUrguY9XFJhoMuXl/Zsfp3SRa/FY5vaOh2Gs0IJ6MLy91Ru6XtUDbEfRpcdOwfWJ2dKrvHzkIFH//LsTVf7tfxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773406349; c=relaxed/simple;
-	bh=wtDbhbmNnfEqEzyJzSlKLMntpH7AqiBe1ctdQmC+84k=;
+	s=arc-20240116; t=1773407372; c=relaxed/simple;
+	bh=gaPIcy61Pt/6wvBcSN+Gyc66S8RetLYWWhpKR/i9qk0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EejgptPyuqsJw8XSTkWoF/qnyFNaQRVlcw01laBdePWNNyezKDCOF6uhgwKa3Md+MCSBo/B9Mp/mBtCoThrcgmv5GJZCCdmT04FTvImxMlNyJB0N1uad5vQ/MGxVYvzb4n8ng5vqyD3QTPtQRkiF544xuHNfVIGKhJRka1cfmJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oPAp0SYR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jBwg/3xp; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=ijKJV6/RQnRQRh43xAgy2NDWaFRu+zGwBHSwe6f4kOMw1a/GprfKePInZcdG4StFxhd1rm2Eo6R9UyuQ1/lZWrpPvpW/2/p080gdfm+0rHeLapMaf8didU7fXWhJEfykvICnzB8I70//T1YWAmbmrHhfiQyaA24lhoEs1Pr8kFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=S3IAVA0e; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oPAp0SYR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jBwg/3xp"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62D6oVtc793577
-	for <phone-devel@vger.kernel.org>; Fri, 13 Mar 2026 12:52:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Bfg4L5JUbKgcj3urNnjZrvnI239bwc+beH+6JvGVSxI=; b=oPAp0SYRNQn53PhL
-	He7aTOT8HZrsHCQ7npPny19iaISjT1FhvOMwq6B1uoY8sZeIHdbmEccjPkqwLeUi
-	xDJGsDbGzNCHJEHenSiG+1r1XN+vEShtyFmF7vyqLZnFN5ap/UtWUPNfd/Ajoysc
-	KwaE640CMTwEFvC5dGxnqCmr0Y5WI1gff2bASYpVSdF3JDdJNuGwg6h33OQ5lsST
-	8v2wDVzC/Tlz69SbkEMd24LLuIRHE0bBhZLsXu/+FKbMrWlOcgCIZNbVAC7GfDpP
-	we561h7GIpCVnlc0NLOnzBQQlvz+C8HM2U+lNYoeXHa94r/bgKsPrTlCHGEKppC+
-	TdWPwg==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cvdnt18kd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 13 Mar 2026 12:52:26 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd7a2c535eso102152785a.3
-        for <phone-devel@vger.kernel.org>; Fri, 13 Mar 2026 05:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773406346; x=1774011146; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bfg4L5JUbKgcj3urNnjZrvnI239bwc+beH+6JvGVSxI=;
-        b=jBwg/3xpOz0MkqELLun8/T+PU1qphEmacZq40MjGitRx7Wa1/CXjOAJ5j1RYeroHlr
-         8BIDWlD8B/qxHpsTu5TGuA0GdbaWo0F3FICMlUV9rRKEj4EFEGDHKpFXU2H3b90zsAYK
-         guHefMnDZkhDjv4KezOiGXFZ1TIHN0qYpB2cSDv4c7L9hiy/+WJSwGfoSb1vlCvT1EJQ
-         K/xOh+9kIYdFefjejSgEKVtv3Esh6k5cIEgkpUVsqU6/KNSt8cbm7wHy08ZvRRBz94Wj
-         quOCVfLyHTbSa+GUVZm12bkgrheIatLfX7qVDZLclwtKx63oAOft8jmp2hOOijx8ZFcg
-         HzJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773406346; x=1774011146;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Bfg4L5JUbKgcj3urNnjZrvnI239bwc+beH+6JvGVSxI=;
-        b=hQk5hZjce2oumgxbrQ7exjo33K99PoUH9HJuEosqhxvoHK+R4UM4AtjzUEkk4yrnUf
-         xP5c3Uc9ovPAY9j7Lm2I5IaZHKWR8LfyhYVtqCAakOWQG7ATd2xmzzrETnwRbOq7vljR
-         N1dh/L7g0ldakpGleDiiey27LI2vRFluQwyR36lqA+rN2veQ4GqylJMLKfa2sJFMpa7Y
-         mCogah9ePfol1daZU0e3A8G59YUB38s72baVjW2q2DSdehvC9wBMo8w/FSfBzSNMy0Aw
-         8Ri+/RmS7G3euyzJc9Y5aYcyuN9roqx0V2xeYL1lNGMKcfiYcbdsb3UcWLZM3UNgEK4q
-         RUZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgWAKDCtJO7AZ7XuI+Ms6EcsOetm3FGiepLTrzD9jt/f49mOB5IyT8N8FqHp3TL7YqwFNDbPD0Uavkgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpYq5qjeprZFuVSTgb1/AVvmiCVkdooLlaEvL6PQUsEyhc4zQN
-	pctUUW0hB1sV4uAmgcOmTgNPxT7SHNQRo0MUAxYs1uCG0j0995A/bTvJQDyMopMgqfUUa9WstfG
-	G0CFSMMckxO9t5NHyUEAdb6k8SzlrjDAb54qJdAtP6epcD06KDUvtFWIq6LIieb7KkQ==
-X-Gm-Gg: ATEYQzxpxdbZSaFstXo7ZIfultpROrJ++ADv7oTyPFoNVp4492AWcwT0MkJlDzDBh6l
-	36aqg7k2gGgMIut6hT4IwyXIatB7yr2ZrG0TQrizZ5+0Hwj6zrV5gpjjW8G9/n+PZJCfgnOEMtj
-	6uzJH5U2dm0wBREG+flaNOwwZd+Ja6Jcc9I9kRwhqVTtx2BgKNYcYUHy55VjlCaDElDg+b14CQK
-	pI2V5Ia+zDft7LWKF9juersmUBFGPLsG4XqYYZlj3VSGKn9a00m9Oh7DQ0c7zV9NTefD7N9jp0j
-	0H8Gzj+I1agKK3HcPNFXE81X31xpD9OIs9EOm1vslncXrmKifLFr8TOe/aXX7/0FdTmBmH2jnJz
-	1dRhSTWEDqRZ0zXvZTS915ydRYEKbDcea/Zs/xW3TH2v09AXA/CFTYQPPnvUR4EHLiEVXysJU/q
-	RgkBM=
-X-Received: by 2002:a05:620a:3193:b0:8cd:923a:87a8 with SMTP id af79cd13be357-8cdb5a2d141mr327694085a.1.1773406345670;
-        Fri, 13 Mar 2026 05:52:25 -0700 (PDT)
-X-Received: by 2002:a05:620a:3193:b0:8cd:923a:87a8 with SMTP id af79cd13be357-8cdb5a2d141mr327691985a.1.1773406345267;
-        Fri, 13 Mar 2026 05:52:25 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976cc29844sm44696966b.30.2026.03.13.05.52.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Mar 2026 05:52:24 -0700 (PDT)
-Message-ID: <4e4054e4-6e5c-4623-a03e-2fdf1277a2d8@oss.qualcomm.com>
-Date: Fri, 13 Mar 2026 13:52:21 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="S3IAVA0e"
+Received: from [192.168.1.110] (109-81-2-35.rct.o2.cz [109.81.2.35])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 7C67553400DE;
+	Fri, 13 Mar 2026 14:09:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773407359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pSw+LSHVdnBLOEdayhFuL9lCDLMPEVX00ozM6jrquAc=;
+	b=S3IAVA0eamGrIaaF+qlwzH0FE6HMUw/XTCSE4vKHV9qNtTjjllSf6CLN3HOAhY+aSDsDtu
+	mR8sXXXJ9KFmpQ7yBgQeObGgp6z53/vzGPn4aAzfuG8/5UC/3GgRUOxIL9P+xpBRQOIpMj
+	x9jPBwQ/90fz0kwHbqbpL3Zs079g4ZA=
+Message-ID: <e93d3d7d-1df3-45e1-bf9b-d2ccb937aced@ixit.cz>
+Date: Fri, 13 Mar 2026 14:09:18 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,71 +41,98 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] arm64: dts: qcom: Add Redmi 4A
-To: barnabas.czeman@mainlining.org
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium-tianma:
+ Disable MDSS
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20260310-riva-common-v2-0-3bfc23996857@mainlining.org>
- <20260310-riva-common-v2-6-3bfc23996857@mainlining.org>
- <9b6520b3-aa43-4657-aba0-bba89af8a47d@oss.qualcomm.com>
- <37f385d1ad7a464771e641807d75f5e5@mainlining.org>
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Petr Hodina <petr.hodina@protonmail.com>
+References: <20260311-beryllium-fb-v1-0-408a580d125e@ixit.cz>
+ <20260311-beryllium-fb-v1-2-408a580d125e@ixit.cz>
+ <t4uhjpxdvjxda4dxkoxktv6xlxg3xvzyslgerluu3t2dzxv33v@k46gvwv4uf22>
+ <137c19a3-136a-4e0e-b4ea-8cc474172d81@ixit.cz>
+ <e65ebd79-9edb-4001-a5c1-c4b6a67d5234@oss.qualcomm.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <37f385d1ad7a464771e641807d75f5e5@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=KZrfcAYD c=1 sm=1 tr=0 ts=69b4088a cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=f6X2TnFsAAAA:20 a=OuZLqq7tAAAA:8 a=5Mg_qL-c0DIWtcCVzYIA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22 a=AKGiAy9iJ-JzxKVHQNES:22
- a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-GUID: 5-_49lT531mmvUoCiQSz-M87ZG89BpuP
-X-Proofpoint-ORIG-GUID: 5-_49lT531mmvUoCiQSz-M87ZG89BpuP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEzMDEwMiBTYWx0ZWRfX8MLr/kzv4tcN
- zFWidkfSuq+tk/uEq14r79NiKbPUy4sbI8HpjuVWGgVRm+xA9eSy6TxUbessiFeyYEmaDYgx1rJ
- OOm834twP39dpaHFObr5V8U/vQLGzNjli+1lNGEA569zerGZBy0YgRPLTrhLOnT/54fzmb6vS+C
- je7anouQxY6+xBvJDpP7/KXblpI10lMmnGsTyejtB0h2kNbh4m6B5b1a71GL4tLDX2+Z2e2Kdfo
- FgWjB2Ni5RlEw+euTEGu0WaZf3f6FNwLreSGjGGz1D8qNfv8Z4C5//6Ed6ZKwY2T9j7t4WO1omt
- 9jzjAXAJ4XPag1k2Rk2/W7nzG1125gNC+G8mYm5agJ1ba5R4+li6d2580M6lnHwf9c6DIU9Nn0E
- k1b/SEIHAtaurEgXWTIJV8Y7jkqYvMUtvufbtmE4Vj/LsFtMB3p2w+RLJ0Y3N7hYw+j2LoYBAbe
- fGPa2+c+jUjuVqcXBGw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-13_02,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- malwarescore=0 impostorscore=0 adultscore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603130102
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <e65ebd79-9edb-4001-a5c1-c4b6a67d5234@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 3/11/26 3:38 PM, barnabas.czeman@mainlining.org wrote:
-> On 2026-03-11 10:16, Konrad Dybcio wrote:
->> On 3/10/26 6:21 PM, Barnabás Czémán wrote:
->>> Redmi 4A (rolex) is like Redmi 5A with small differences like charging,
->>> fuel gauge, different speaker codec configuration and display.
+On 13/03/2026 13:38, Konrad Dybcio wrote:
+> On 3/12/26 12:25 PM, David Heidelberg wrote:
+>> On 12/03/2026 03:46, Dmitry Baryshkov wrote:
+>>> On Wed, Mar 11, 2026 at 07:44:30PM +0100, David Heidelberg via B4 Relay wrote:
+>>>> From: Petr Hodina <petr.hodina@protonmail.com>
+>>>>
+>>>> Currently the panel driver for tianma is broken.
 >>>
->>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
->>> ---
+>>> How broken? Can it be fixed instead?
 >>
->> I see the Go has some differences in regulator configuration.
+>> No output to the panel. Definitely can be fixed, but current situation is that we don't have anyone who has available time or device to tackle the problem.
 >>
->> Does the 4A's one match the existing 5A?
-> Yes they are same, l22 is vana l23 is vdig for camera sensor.
-> riva and rolex is using 2.8v for vana and 1.2v for vdig.
-> tiare is using 2.85v for vana and 1.2 v for vdig so l22 min-voltage also should be increased
-> but l23 max-voltage increase is unnecessary, there is no reason to keep downstream value there.
+>> I know it's not optimal, but on a way to achieve working mainline phones, my thinking is better to mark it as broken in mainline until someone fixes (assuming Fixes tag and backport) then just going black display (when we have at least framebuffer now).
 > 
-> Here is some proof https://github.com/Mi-Thorium/kernel_devicetree_xiaomi-msm8937/blob/dts/mi8937/4.9/master/wingtech/msm8917/tiare/camera.dtsi#L16C1-L23C65
+> If you have a person with limited time, would simply copying this:
+> 
+> 2b973ca48ff3 ("drm/panel: sony-td4353-jdi: Enable prepare_prev_first")
 
-FWIW it's easiest to work with decompiled DTs, as the include chains are
-often very complex. You can then throw them into ./scripts/dtx_diff or
-similar
+Sorry, I don't follow. You meant introducing prepare_prev_first?
 
-Konrad
+I asked if it's possible to test, but looking at the rest of the driver, it'll 
+need refactor anyway.
+
+David>
+> fix it?
+> 
+> Konrad
+
+-- 
+David Heidelberg
+
