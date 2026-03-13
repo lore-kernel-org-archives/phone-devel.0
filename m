@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C673CD8CE;
-	Fri, 13 Mar 2026 18:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8273DA7E1;
+	Fri, 13 Mar 2026 18:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773425482; cv=none; b=Jn07icakwJHJPIOPZnjGY7M/MzFQ5xxRxA6e1cAVP9u9p8X6CNOvwNwkL/6l7Ko7nYSUV+DaTIPLR6T8rwharD2iJfqX5X+g9ODqEsvzb5c6A8ItiC7lZy/EjqE1bdtUtbFUNTxwudHlzvygwBpvLlL7ms1MgoW5pTPr8P8xjcI=
+	t=1773426413; cv=none; b=fqXHUCUP+IMFGMcvnRehMtJf+PejkjewZeooEiKYqGjU8zvgLg46Ue0Shu7zYURpJIedGHdszL+S6HeuH0njgdu9D3JFRl+/TcJKqNkwYnA5lzDI+p2VgyOZPvs62i1LzrvTfH5Poy4LTkIsxMUCRwZEGPps9MzOlxwrliK7DMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773425482; c=relaxed/simple;
-	bh=8dcP5vj9PDnkeTFCUwW1twcXPEsgLx0UtV4oZCgW4hs=;
+	s=arc-20240116; t=1773426413; c=relaxed/simple;
+	bh=zVAZ8kPXdPxobM3WP0KMWbuhFPV5OOyg7nv5dNwhaKo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YXrrtDVPeuzFSMiSixiVJCDeH3HFYgIipxe1NezhIKoUEAxni/Kzmee5sxRzrx+4usIQjds3VBiRosXPqczWqn+IDJWrlm77USxA+lrtiYpUHC9Umehrxv4BA1OjvbjzboTskIV9LWCNWzepZmJbKUwshR4d8TFrilfAcoclbsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TkSPr3M7; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=YJY9noBzOXPvB7s7z1etvkPgJiifzNsjdVgMSIivrDf4m+3+Z491tuT68bXYFeO1L4RN9sV0B/bq2Vkb9PRgtOOXU+41Hrw/EUFNuiX8vmWwusscQwy7/Sf1py14Bjo65ICww05M1DxsuWiHqTjF3NwXiTyO3SF/GHIxFfaGz8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=aaHMayK+; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TkSPr3M7"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="aaHMayK+"
 Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 767355340E02;
-	Fri, 13 Mar 2026 19:11:14 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 552BD5341208;
+	Fri, 13 Mar 2026 19:26:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1773425474;
+	t=1773426407;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l2FtP+iFXrSPmPhtCC5xRBNHOWXH+rXgtXw5IfBTcFU=;
-	b=TkSPr3M7qh4hKV/WfxmgC9qtutvk6h5UpzdoNFVwUoKmdw1+CIaycxC2o3PyBqCCd3Pa+O
-	dybC/txqa0jwVI7ismwb609AdGf+TALDXGwiKv0Ru7yWOy8RwAFYLfJXh4h0MjF4GF4GSH
-	c2jCWBDrcVVNfcDLAGvaOh0/sCL7tTg=
-Message-ID: <64b3314e-e054-4d63-a0c2-3d5fa24cd653@ixit.cz>
-Date: Fri, 13 Mar 2026 19:11:13 +0100
+	bh=W38Na8cWHqwvq5ZQDv7J8A47FeHpFLJrgEIEKymB3Yw=;
+	b=aaHMayK+CP+nnzzuJXetzhfRLIkajznH7s3BN1bGq7BSqKaktasWM/w7DuM2VnkCce9OGy
+	OCGraGkZn0dBwqM3UfAiBELGqfTSrz/nfLlAvmvUPAzboLT/shHoAx2gXFJfSAsjEFGrY9
+	tvGl5basX6+NK9uuZ76jw0pciCJiSOY=
+Message-ID: <1349f725-a20f-4935-a829-208c8e583ad9@ixit.cz>
+Date: Fri, 13 Mar 2026 19:26:47 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,17 +41,23 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Add front
- camera support
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH v9 7/7] arm64: dts: qcom: sdm670-google-sargo: add imx355
+ front camera
+To: Richard Acayan <mailingradian@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Tianshu Qiu
+ <tian.shu.qiu@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Robert Mader <robert.mader@collabora.com>
 Cc: phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260313-fp5-s5kjn1-v1-0-fa4f1c727318@fairphone.com>
- <20260313-fp5-s5kjn1-v1-2-fa4f1c727318@fairphone.com>
+ devicetree@vger.kernel.org, linux-media@vger.kernel.org
+References: <20260217002738.133534-1-mailingradian@gmail.com>
+ <20260217002738.133534-8-mailingradian@gmail.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -97,35 +103,84 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260313-fp5-s5kjn1-v1-2-fa4f1c727318@fairphone.com>
+In-Reply-To: <20260217002738.133534-8-mailingradian@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 13/03/2026 17:00, Luca Weiss wrote:
-
+On 17/02/2026 01:27, Richard Acayan wrote:
 [...]
 
-> @@ -1332,6 +1377,13 @@ usb_redrive_1v8_en_default: usb-redrive-1v8-en-default-state {
->   		output-high;
->   	};
+> +&cci_i2c1 {
+> +	camera@1a {
+> +		compatible = "sony,imx355";
+> +		reg = <0x1a>;
+> +
+> +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +
+> +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +		assigned-clock-rates = <19200000>;
+
+Extract from #sdm670-mainline:erebion.eu discussion:
+The imx355 can operate on 24 MHz (on both Pixel 3 and 3a), but Linux kernel 
+driver can operate only with 19.2 MHz.
+
+I assume it would be worth it mention at least by comment here.
+
+David
+
+> +
+> +		reset-gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
+> +
+> +		avdd-supply = <&cam_front_ldo>;
+> +		dvdd-supply = <&cam_front_ldo>;
+> +		dovdd-supply = <&cam_vio_ldo>;
+> +
+> +		pinctrl-0 = <&cam_mclk2_default>;
+> +		pinctrl-names = "default";
+> +
+> +		rotation = <270>;
+> +		orientation = <0>;
+> +
+> +		port {
+> +			cam_front_endpoint: endpoint {
+> +				link-frequencies = /bits/ 64 <360000000>;
+> +				remote-endpoint = <&camss_endpoint1>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+>   &gcc {
+>   	protected-clocks = <GCC_QSPI_CORE_CLK>,
+>   			   <GCC_QSPI_CORE_CLK_SRC>,
+> @@ -490,6 +571,14 @@ &pm660_charger {
+>   	status = "okay";
+>   };
 >   
-> +	cam_mclk3_default: cam-mclk3-default-state {
-
-Maybe master clock states could be added architecture wide to kodiak.dtsi as 
-done in [1]?
-
-[1] https://lore.kernel.org/all/20260114-sdm845-mclk-v3-1-c9351deaf4f2@ixit.cz/
-
-> +		pins = "gpio67";
-> +		function = "cam_mclk";
-> +		drive-strength = <2>;
-> +		bias-disable;
+> +&pm660_gpios {
+> +	cam_vio_pin: cam-vio-state {
+> +		pins = "gpio13";
+> +		function = "normal";
+> +		power-source = <0>;
+> +	};
+> +};
+> +
+>   &pm660_rradc {
+>   	status = "okay";
+>   };
+> @@ -508,6 +597,12 @@ led-0 {
+>   };
+>   
+>   &pm660l_gpios {
+> +	cam_front_ldo_pin: cam-front-state {
+> +		pins = "gpio4";
+> +		function = "normal";
+> +		power-source = <0>;
 > +	};
 > +
->   	mdp_vsync: mdp-vsync-state {
->   		pins = "gpio80";
->   		function = "mdp_vsync";
-> 
+>   	vol_up_pin: vol-up-state {
+>   		pins = "gpio7";
+>   		function = "normal";
 
 -- 
 David Heidelberg
