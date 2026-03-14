@@ -1,222 +1,110 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308F637CD4C
-	for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 16:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AB237F743
+	for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 19:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773504407; cv=none; b=UHpG0Ttk0zRTcDCe1nHdEdze4xuQPjcAHpMxkuHYKgcdwu0AePL6gxVIraI4PS+cAQ+kXpf8ep8nWbxVCmv/A1r7yQxxXtBYDcIMIi3slG+dHVufVHOllM9fMq/j4Actd+uwouohWjgXmL1g0k9f8k1rljOFT4AqpUAVEz2WwwM=
+	t=1773517916; cv=none; b=ZfikKBgrZUYxOIflYYsF9pNesZxPKj+4j9HSZ0b/KmigBChN0a0qmfvgEBeu+vuq0rlzWCNfJSw5xOZfYtQgNf6nYm+HuYJPu8rOPm5ZcG82sVbOtXd2/hK2PfI9FxWuBFqzQa1kzS/2VlU/M6sBPzZQMxLyFsU3dqrtzWX+NF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773504407; c=relaxed/simple;
-	bh=AAYQH8m5hJopiQqgeTngADuMlO+elqyJCsSOeSZcnBU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UA/JY0z8RCQh8t6RifJ3Cvhe/1fz2AXRsGLu8SJw3k74YXQOZCwWmLFdC6YS/vpWjelRF5QgQ//UBWdPWj+nwm2ha2OdDBJ/16ZErUYAzMExuqWRW/kDcwWYF8ctRHZbENAWjfKqJy3FC1iLI1D0FUu5rfH9brm0WOIa7BgbOUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dGaiKDey; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773517916; c=relaxed/simple;
+	bh=PN/ebOVkl3Ch2oEl48DSbiQkNWOJst/IpNNfFU9a8WU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c/4PceeI+LGM9urD27Mi9s06rwoFNDHpbuwA5I50Jf9rfECThhSkdHq0Q/oSAT7KjWdUqhEwXdSuxS86uBg6/h+hX1mbRnyEt2LtpYUB96//Pb758xq9F3lh0ubed33THNAy97kZ9G4MYuCqpquUKC+QQaR19rhcqh55Oqu9yVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=flEhqgR4; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dGaiKDey"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6634bb959a2so4359659a12.1
-        for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 09:06:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="flEhqgR4"
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d73e0e0a36so1456137a34.1
+        for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 12:51:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773504404; x=1774109204; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ztVKqP7Iue8aUh5WW0pabHa7SHe1KuIXZfJfBXrdn9M=;
-        b=dGaiKDeyCS/zMpoONAWtHlh6/lm5+lp/RD1B9EeSGZ2u5oRIpW1Iirkmz6zYIloLUs
-         /VEQqCH0R4Ju26RpDnC1TS3BAF8DBdY3Q1WBZn2Uc+aCHx1O3h2FCSuD7NOXd8cKJyew
-         J7uWG3FghoA8CkNzjwbAEajbKB3PKa6EDxnl9TvygmQ7D3+SB4dAu+1gec9Pp9HuS2em
-         3BBpwDEj7DyjxSYc6iuY1TW/JVmo7U/pE/tUCSnHUkzJ/wit9T/7rU8xc4H5q+DmUNWl
-         NSDJUXU3GBO1RC28jclfsIoF2DHlcKiXVfRlT2OpoKW5x6xn9oR1sY5RKL7fIDYahpB+
-         f2TA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1773517912; x=1774122712; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D8F1aqi6Qy869M29EukxOGNGMVc3+0t8hXdBRfmiktU=;
+        b=flEhqgR4mKUaS/olngJFGDWd7v8oKAo/r6t+CEfnMQiKnG5qCpDOL995SiGRCr0zBK
+         sKxyTS3Ub3Iv7xo3TC7eHJa/MAR9afA9ED0Tglx2nhiyoXafAS4Cihpk0mccsb35QWo4
+         LFfkpEmMu3X1qPnNXkgUvkm1zYqgmvEjWZB9ADQWnXaf49MCtBYJdMCjntroQJ5+83Av
+         djvi2uf/U2gZGvAHigYZGPYafgsofKJZ34BsgR+blnB71FYqZNonOWFdpmuhd1IdvxLC
+         6JKOTTTUNrwp6H6br5xZcdhMmLBgL+nF5TWXAoHdkzrjRQ01oqtPS6J0Hz5Fj4EO9a9L
+         A4Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773504404; x=1774109204;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ztVKqP7Iue8aUh5WW0pabHa7SHe1KuIXZfJfBXrdn9M=;
-        b=GmzIu+dOJvInmCftj+asVgRPPKDgsxGFwrbbD8ieBO62spDB2ha5w9pQG2Xf9FHXSd
-         KMVtRzepL4NZaDFpVkgugQ6wITFpgCYzj2L8yqgWGSY61GH3s8E4Zsv3P01x8SWnvAQD
-         lrvp1hWDYZxU6z4LTaK0ED1uOK3YJjX3IZ/zWQjRTIULBx7DZlLKmBYe0xV6kFNwbqWr
-         vnGe1jKDP9tgDH+jA7jB6YXu9xQoy+g4cet/Xy9eRjH6NvFAueyTslxNComHdCod0YiC
-         0Rm7LIIhOPxd1Pa8G0L13WO8oXn6w/+oubUIPnZXfvPVIfQFx/2yRMX748fPjebnLMzI
-         X9+w==
-X-Forwarded-Encrypted: i=1; AJvYcCU6DMuaXgqt7Hwk3dJD+R+O+8LHoYOPkRphJ9l6pyiW0QjdnU2fkqiF11mH64Qm0n79D+C2pyKzbpe2mA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+BXHDXBcKW/o8eLZyTd1VZItIA6aAFfNSaTLakGStFgOo5HuS
-	BDr2qYEbJTkgHZs+PBs0mI9E16gTVqNtKS9gLwt/tatfVtoIltnrSJxv
-X-Gm-Gg: ATEYQzxnKf0aGq9cOtkftTm/yY3ETXt7qW7Xhd60LC4fFvJUxrjn9emmY43B8eN8dht
-	xTwuB2+YziFIhj0oeo8hGaV7UW+mLlwgegbcwGi2ELKDoIpUt6ojwonmelN4TYUQW4XkPqfPczn
-	cMoaWID4s9t5f19nmyNfctjf69P18VIY57iUv0dOLXliKdV2mB2Pyg/kzYv6lWaGLXayfTQenC4
-	LDL56wWNFHD9OnTOi3Rtq0BHvDRchCtgrGpwbzmt5rMD/ESz2Mdm+fsMfkbMSKf3FuywVCjghe4
-	DcMH9byYIUVoqhkF4r4YPf+t+pgFjst4cTC0dSUmgJkINT6cIqMPxHWc+yK4QOiMrY41rMlXIsW
-	vxpP4uIXJ9l6zzQ1M944dz/VCys9xmRUvjWpIe7gyuEV3TtLrUg8x3r7SlvdBuOb4VzLa7IpqDu
-	UcErmUAxHtdWVD79OHlLXALtdVQg==
-X-Received: by 2002:a17:907:746:b0:b97:6384:2317 with SMTP id a640c23a62f3a-b97650e5609mr440832566b.17.1773504404085;
-        Sat, 14 Mar 2026 09:06:44 -0700 (PDT)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b978b8625d3sm151722366b.52.2026.03.14.09.06.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 09:06:43 -0700 (PDT)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Sat, 14 Mar 2026 18:06:35 +0200
-Subject: [PATCH v3 6/6] iio: light: vcnl4000: use variables for I2C client
- and device instances
+        d=1e100.net; s=20251104; t=1773517912; x=1774122712;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D8F1aqi6Qy869M29EukxOGNGMVc3+0t8hXdBRfmiktU=;
+        b=Nl7HjmyGi5PhOl/qhixzv/AafwtHSYp50uuA3zLOBk65xFOuk8moeXObMCQtvpNi/e
+         BqxeLP9GXq/us+RkTC4FT34ytXpGMMLTLHGgfHYzVLWvRifuHMsjl0TW7Pd8Ye9yVnFC
+         MFBs7F/zUREWXrd8DwBZa4HVEMXjgDQpJRO0gv8UsigDzkMeHEe2Xzd1vsYIrRiCCh81
+         waWY2768eStZ+Q7Gy3iE1L6V7ixWq9MrIgK61RJwAZwxC29x9rGG9ypfWcZclOga5eqH
+         WL1gQTw1tvAITCl1IE+/EXEKRp2co+Epdn3C8s7t1c2qMIXFiAnfwXRaaHfAUDHARwY4
+         ZE6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXOiJtXznpPSpXyGKgh+BMgsvcNVHJ1g9VgAvH3ojG0UVeDpwh5J/2012AbFVSX+3wJPfu1c3msvj5xIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjJCXVLn2fTRrOCZV2dgfS5lICjk7s/8bZPCUNOynXgxRKz51f
+	+zKpi9eUDD2ZEnrSKQjMwBvJD86EKz2r2M21SynijAA9S/DXCW4oqqnWGKwpzpbkq+k=
+X-Gm-Gg: ATEYQzxExQTZolESUP0s0oXZUWPhkSVJnofmuItwAVkxXg3CmZLGntQ4OhTEuIJksEh
+	0tMZSNVpDvh3556aeb8NE5sWg/kIHJ/TaeFEQoOZpp6W8PDZbk3OSVBXjqtR2CwTWG8n8eUM32q
+	YkrOCnZz4Ik44nYtCKazEb4vquBk30Uarjxxqn/iH/0xfPufZEfoAklidbz0Ny5XUddoZVs1IrO
+	00bswT6NENBIvefTjDPGNna4MzOilTSSG4lN9P7JqpJxcHAkWhN2EU6z5tfpqKGnc6OEXPAIPtW
+	PsVU2lT6ZQo5L42AV1oJY3HpuBE9rre9Aww8cEqZGSxho5LUrxMdSRVP0xReAR3LyOynT/xg+YR
+	trk28smt9r4pBziOWOoePqnGxRtUNyyxAdkXoChpjgc0t2czGbzpQriCxCcYivckK7gildBSIE1
+	YjtaT5mBu8yK03flLNIDJHbbMleDbFS9kQxnYDu7rFsJXckOVNWoQRBcJQuc42h0mNJRByO/ceO
+	A==
+X-Received: by 2002:a05:6830:828d:b0:7c7:63b6:89d3 with SMTP id 46e09a7af769-7d782510f72mr5089963a34.19.1773517912188;
+        Sat, 14 Mar 2026 12:51:52 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:14a9:db6c:e65a:4287? ([2600:8803:e7e4:500:14a9:db6c:e65a:4287])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d76aebc9d3sm9157746a34.24.2026.03.14.12.51.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Mar 2026 12:51:51 -0700 (PDT)
+Message-ID: <cde8cef8-1bfa-47e0-8ebb-6c295f31f497@baylibre.com>
+Date: Sat, 14 Mar 2026 14:51:50 -0500
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260314-vcnl4000-regulators-v3-6-3c4a48d30676@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] iio: light: vcnl4000: replace mutex_init with
+ devm_mutex_init
+To: Erikas Bitovtas <xerikasxx@gmail.com>, Jonathan Cameron
+ <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
 References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
-In-Reply-To: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
-X-Mailer: b4 0.14.3
+ <20260314-vcnl4000-regulators-v3-3-3c4a48d30676@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20260314-vcnl4000-regulators-v3-3-3c4a48d30676@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-After moving data->client and client->dev into variables of their own,
-replace all instances of data->client and client->dev being used in
-vcnl4200_init and vcnl4000_probe by the said variables to reduce
-clutter.
+On 3/14/26 11:06 AM, Erikas Bitovtas wrote:
+> Replace mutex_init used across driver with its device-managed
+> counterpart, so all assigned mutexes get destroyed.
+> 
 
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
----
- drivers/iio/light/vcnl4000.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+...
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index c8bb1826b916..9b7cd3f0c8fb 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -362,14 +362,14 @@ static int vcnl4200_init(struct vcnl4000_data *data)
- 	int ret, id;
- 	u16 regval;
- 
--	ret = i2c_smbus_read_word_data(data->client, VCNL4200_DEV_ID);
-+	ret = i2c_smbus_read_word_data(client, VCNL4200_DEV_ID);
- 	if (ret < 0)
- 		return ret;
- 
- 	id = ret & 0xff;
- 
- 	if (id != VCNL4200_PROD_ID) {
--		ret = i2c_smbus_read_word_data(data->client, VCNL4040_DEV_ID);
-+		ret = i2c_smbus_read_word_data(client, VCNL4040_DEV_ID);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -379,7 +379,7 @@ static int vcnl4200_init(struct vcnl4000_data *data)
- 			return -ENODEV;
- 	}
- 
--	dev_dbg(&data->client->dev, "device id 0x%x", id);
-+	dev_dbg(dev, "device id 0x%x", id);
- 
- 	data->rev = (ret >> 8) & 0xf;
- 	data->ps_int = 0;
-@@ -413,23 +413,23 @@ static int vcnl4200_init(struct vcnl4000_data *data)
- 		return ret;
- 
- 	/* Use 16 bits proximity sensor readings */
--	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	ret = i2c_smbus_read_word_data(client, VCNL4200_PS_CONF1);
- 	if (ret < 0)
- 		return ret;
- 
- 	regval = ret | VCNL4040_PS_CONF2_PS_HD;
--	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,
-+	ret = i2c_smbus_write_word_data(client, VCNL4200_PS_CONF1,
- 					regval);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Align proximity sensor sample rate to 16 bits data width */
--	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
-+	ret = i2c_smbus_read_word_data(client, VCNL4200_PS_CONF3);
- 	if (ret < 0)
- 		return ret;
- 
- 	regval = ret | VCNL4040_CONF3_PS_SAMPLE_16BITS;
--	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
-+	ret = i2c_smbus_write_word_data(client, VCNL4200_PS_CONF3,
- 					regval);
- 	if (ret < 0)
- 		return ret;
-@@ -1998,7 +1998,7 @@ static int vcnl4000_probe(struct i2c_client *client)
- 	struct device *dev = &client->dev;
- 	int ret;
- 
--	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
-@@ -2022,10 +2022,10 @@ static int vcnl4000_probe(struct i2c_client *client)
- 	if (ret < 0)
- 		return ret;
- 
--	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
-+	dev_dbg(dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
- 		data->chip_spec->prod, data->rev);
- 
--	if (device_property_read_u32(&client->dev, "proximity-near-level",
-+	if (device_property_read_u32(dev, "proximity-near-level",
- 				     &data->near_level))
- 		data->near_level = 0;
- 
-@@ -2037,7 +2037,7 @@ static int vcnl4000_probe(struct i2c_client *client)
- 
- 	if (data->chip_spec->trig_buffer_func &&
- 	    data->chip_spec->buffer_setup_ops) {
--		ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
-+		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
- 						      NULL,
- 						      data->chip_spec->trig_buffer_func,
- 						      data->chip_spec->buffer_setup_ops);
-@@ -2046,8 +2046,8 @@ static int vcnl4000_probe(struct i2c_client *client)
- 	}
- 
- 	if (client->irq && data->chip_spec->irq_thread) {
--		ret = devm_request_threaded_irq(&client->dev, client->irq,
--						NULL, data->chip_spec->irq_thread,
-+		ret = devm_request_threaded_irq(dev, client->irq, NULL,
-+						data->chip_spec->irq_thread,
- 						IRQF_TRIGGER_FALLING |
- 						IRQF_ONESHOT,
- 						"vcnl4000_irq",
-@@ -2060,7 +2060,7 @@ static int vcnl4000_probe(struct i2c_client *client)
- 			return ret;
- 	}
- 
--	ret = pm_runtime_set_active(&client->dev);
-+	ret = pm_runtime_set_active(dev);
- 	if (ret < 0)
- 		goto fail_poweroff;
- 
-@@ -2068,9 +2068,9 @@ static int vcnl4000_probe(struct i2c_client *client)
- 	if (ret < 0)
- 		goto fail_poweroff;
- 
--	pm_runtime_enable(&client->dev);
--	pm_runtime_set_autosuspend_delay(&client->dev, VCNL4000_SLEEP_DELAY_MS);
--	pm_runtime_use_autosuspend(&client->dev);
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, VCNL4000_SLEEP_DELAY_MS);
-+	pm_runtime_use_autosuspend(dev);
- 
- 	return 0;
- fail_poweroff:
+> @@ -1985,6 +1993,7 @@ static int vcnl4000_probe(struct i2c_client *client)
+>  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  	struct vcnl4000_data *data;
+>  	struct iio_dev *indio_dev;
+> +	struct device *dev = &client->dev;
 
--- 
-2.53.0
+Purely cosmetic, but I would have put this two lines up (right after
+*id) to keep assignments and longer lines together.
 
+No need to v4 though, everything else look good.
+
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
