@@ -1,105 +1,167 @@
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A77F37F75F
-	for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 19:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6AB3876A0
+	for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 21:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773518034; cv=none; b=dvU9hjXjtgsqcNO0fslBvWbIXyjSTucF5UemwiJZUqcfVnkGZnUUsadQE7x+MvA+nqbeexv8uso0jc8RI1ykImAElN7bxVuoaA3kAN4ZTjg+njy/V3mvmL4IEBOV5WR/l70bmPGOmYYdrNea3Y/W14wUUlTFtZGrw/GbldEFyJU=
+	t=1773524793; cv=none; b=G3iOS2/zlB8t8bVJpSCbM0gjElGZzFB6oOoZvXKecGeOul5gafhPjmdzHCst8DOWlwGtQ43vw/oTKaLTiQN+xMFFtuLWcm0EnFy2J/pL8mULqJ7iKkCRWq5BweTs00UkzV9/wg1nHa6GW/YwikDMnuJLLeNH57J+eKea3LSHIVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773518034; c=relaxed/simple;
-	bh=WoYBcfnqdXjGLK8p2ATCDv5Clwk3rCl9OK1fQPfrqbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Navqyz7ukHghw/61l7pr7kOB1T6u/qBsVevMIguUvwYstbfG2jdRqpc7Bohu3SKGINyCRj9JOmqDidP5fmXSYeFrdsIeF6FnqZJz8Sx2wks3X4zOX3dUsz9egcsWxmNg1arMWHx9u+Lnv7EMw48E+PH15eu50n009ImPm/M8Dx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=phCg3G4U; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1773524793; c=relaxed/simple;
+	bh=wQWIVAu3Y4jDHR5DBLOkg+dc0hKAQmR/KU3X139W63A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Oagjxv2dz/NirSZtNOR+VQxaz2sS0UUz2CaPzP7T7GtxYBHH+uGIWRVSoPJtQkKdCi/IStfkmSQDEBdElPbm8CU7xRKSR59Wi/dGVNtS0wgwYSXoH4BJ63Bw15J22cZ7mMq0/ip7m4YbrcvmSR4EpdN1/nsjaBXIOYRDi5bzOjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XD+VjDtl; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="phCg3G4U"
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-415e568a7ecso1191126fac.0
-        for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 12:53:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XD+VjDtl"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4855dbfc129so10811785e9.0
+        for <phone-devel@vger.kernel.org>; Sat, 14 Mar 2026 14:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1773518031; x=1774122831; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jAUWUxgIJbO5o3ZCocsIhLG9qA3mcb6cANaDC/wIQ9Q=;
-        b=phCg3G4UpLjTDCiRn9Kfgzoxih14sZ5+A46wkuduGbAUTVGGLJioPsmvFndMoCGiMC
-         5F72fHgNzPfMvaOYwbWPQF8Cb1hItKBp8s5bRB9tc4xzsRHP71pt1kUW7QxtT22UwJZL
-         KzpaqbLAuNPt9lsQ9JjpzsabOqz3Tf7ZHF10Bvx6ayJdVxSCCiLwMGu6pCpLgQP8fdGR
-         cQOkocPaO5DOzZ5eDlzz/jPXcKPFU8wL8fT4uVNcazviiCTFF0wMK0NwIacOHa+W1W4m
-         w1KjV0cWB59E2z6g6Cy17EOGkCEVcp94RRmC0IfU2i+Hx+NOYu9fIv2tVe+RTNtekcd1
-         r04Q==
+        d=gmail.com; s=20230601; t=1773524786; x=1774129586; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bh7FZS1WHQ+R8ev12RVDamAIZTNW5FHsYgbvpBRxNek=;
+        b=XD+VjDtlAwFffjv2YtXfudRB87M3a0xL67N2N1F1TgT4gzPoHXsIubU6bH+ZWPu2Lu
+         oyB/U25dLKDJuToN8FZTeZwaoCGtUn6lHfLKp3Z6wxDfEyE6CsdoBZZIWSeBOeYBcgTu
+         umHK3UkHJbxkGJ7n+L9pkBSNvr5dbQ3gP4WTeJNSeImRnKc5IoH9B2eS2PFq8886PwB4
+         WnAcGIJ6xJunJKjkZgsVzCqt7NHNnvcX5lWk15lz1+SF04Voh/8qjfgIaTRhs1LN9lUU
+         +Kfa/JkkftROIVDaI/PAI0n1q38gWBIPZ+FJQtmpm9tmUDekOIsolh/iKWbwShsFJZEq
+         XqiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773518031; x=1774122831;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jAUWUxgIJbO5o3ZCocsIhLG9qA3mcb6cANaDC/wIQ9Q=;
-        b=a2JWrCnzNxlMD32MVMJ9KYPjATjBhjBlHrAXp8rZeKBF9HEcTDuERTznEOWHk3htmk
-         2LO1NuUoqjhrVbnXQ9uaqpFxhZMo07Ce2WXDVtX0lakEC0vV5GgrMRGzOpyDOwfV7Xtd
-         gvIUnXOEl+aEcA0Z5kGnRITbmaA/DWk2mVIlGVHviK8p3Ryz1kVsF9w1soD2MOzfHZpA
-         WooDMD1t5Q3s/VSFw6QleFSapFTogXL7gb8wq9vL+k0eVo/zj9RmaUFpJ7uyvNKpWRpf
-         lMHp5/21NgCVQCGZqP4htsXPPoS5VrKWT/LghCwLeFFKJ/8WeU1lKoELYqEHJqGf0B8Z
-         LFkw==
-X-Forwarded-Encrypted: i=1; AJvYcCXu7R+gGPTfflrCFH6mtMjCZTWV0awxYauVqnH+oanTh3pfNSdzkF4t7SSwwMY/x56MYfxt8sUVg+ZEiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDApJdFJCQPwfAq7+aCAlA4gA0/JRuyHh8vCGgql4KC5sKPcZP
-	FVgKbw/YYPirui/sd4v/RAhr4tfd9SXUpgltCTs7DNmOJsEak5ITbQbFmQ+pw9QXhxg=
-X-Gm-Gg: ATEYQzxgk0cVi2oT2GOsHbGaQDibLbFtOoQqHMV5GKVtooKPax+JPai/HbPfG7yj0In
-	NxfLNqIYW7bi6VyHgSQH6PPqV4asaQEdR3eJkLFcc+H/O7JTdpfxGwFQ5ziWH+YxaGjH4sLAiXD
-	rqme9MabNaCqd5hKAXYTLVcMgnNbh5OmuLIYP/IPw85xhrqm/Mr1Q02oxxVuDOVi7Ka12lypYB7
-	cnIc79cisNTG0G3TKDS5t2kmDhZi4mkLyK+NHbPfhVTQh3VwBGRwIzNS6o32FIvCAfWGOSu9Ah3
-	xMIHhqONcuy7z8QusNF1QMs2skOY/I8dyCbgQ5VYSrAgp3yejyfbAeejtAYTrGb/jx7AxdwIMPS
-	+kJlkeAZtboGNpNfvF6oyS0pCxZXDhNkZRnfQTrl3hgGKS6Okf3TtGZpi5SSbmUwlanlK+dhqRz
-	58Y/4WTyWbAp8nySl3NPGLh7V2f2vGK2A9bDIExi367Z81WO1+2J7mIEtfUnJAuBMWi7CaHZ2st
-	F75O80E6WRz
-X-Received: by 2002:a05:6870:d8c:b0:404:33e1:3cc2 with SMTP id 586e51a60fabf-417b91b2c8fmr4441451fac.13.1773518030913;
-        Sat, 14 Mar 2026 12:53:50 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:14a9:db6c:e65a:4287? ([2600:8803:e7e4:500:14a9:db6c:e65a:4287])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e64a931sm12099255fac.14.2026.03.14.12.53.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 Mar 2026 12:53:49 -0700 (PDT)
-Message-ID: <cb92bb47-9078-475d-b242-71e3f9181a72@baylibre.com>
-Date: Sat, 14 Mar 2026 14:53:47 -0500
+        d=1e100.net; s=20251104; t=1773524786; x=1774129586;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bh7FZS1WHQ+R8ev12RVDamAIZTNW5FHsYgbvpBRxNek=;
+        b=GrvfYi02cXi9CL2d3Ftu9KrlNdd9BojZqgVLsEFb0htMaykrT+2yo1YEBWE2uPiMFw
+         GlFcUbF8GjuyefgycOyV/oeZZ2+Ye3xFphD2IAn9v8ZhY1NOPxY8DEHo/Oil1O9z/9pW
+         pkGQCxdOiAj1/Yjgi/AtCJAcS19IMq38GD0HgJRA+XoqC0bOgiFKqw11GmGZGNdGpa70
+         ToCK2QCIE3/RNouTxPip7OTjlwJAA3QDx/XHYuHLDWEW4NEZhUh4hFzDzHd+fLciOrbM
+         kDCAmlR/E+vAicaUbnlcZP0ihETEF/DyIpVzOxjSTJrtFHcW4+ftW39OgOekxd1CbPbO
+         ZLTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJcg17p4artKJ7EaLeH8FPL0mOuJE9sjdmFeGwn7S5jCoLrnNtIOK0vosZaoE1Ut7GhRjOiKr/8g3h1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5ZQ+NOjIThpDMuFRAbIWJbvtSsYYqpkOdWYFfKV3xxUM3i673
+	WNnfXh5XQTJJg5kRiEgRtHVWKwZF4FgI2lpXsfxtb1xCz0GmhmtWMK2V
+X-Gm-Gg: ATEYQzxUNYb03J2bOiZ/VSFWBK/E3uFdkINYfuS+j6+92TTQtqScdpgJYOOcHoZbU9w
+	4MDvZigGl1n11RSCNK8fcBm8io2N+b+zTa06FpjjgqkvJzsoopwd3Jplhrvj08NjgnkGH7JSlMP
+	rvo3JqbEzfTbR0NSpjFHUSkCj/65+QVBqYbEv0KWSyqLJrJrD65o4ll+nq8cCZ1WR4RBoQgfmNK
+	AkmCGUi3ZhSyTRKIipBhoNWRBssi/Y1diPpVCGxb6OHj2ZiEKWTRipGj4weoy6X3pf7SOyuUskG
+	Tw8ag20QVju1OSZGLY07IeessQIpvCrCdfMl/GusFuhy+djYdocRJbU/Yy15iGLp7xwFCxGmXm1
+	Co2ZEsYUmFcDoySOiX+cfSk+8bGWldJ4+znWU2qz1zJMdoAntCO2MO8eF6bY4PAKPfhlSbF/DtZ
+	nrA51gqwjmVJi1cD3K0ml4kkrsi9pv5Y+mSWsDhNytTDniP88mQS8PKIY6zk7YSJjHFnvu3VR8i
+	A==
+X-Received: by 2002:a05:600c:a4b:b0:485:3692:e8f7 with SMTP id 5b1f17b1804b1-48556707ddbmr131089695e9.25.1773524786521;
+        Sat, 14 Mar 2026 14:46:26 -0700 (PDT)
+Received: from [10.100.102.17] (89-139-129-65.bb.netvision.net.il. [89.139.129.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe19aec5sm28756221f8f.4.2026.03.14.14.46.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 14:46:26 -0700 (PDT)
+From: Yedaya Katsman <yedaya.ka@gmail.com>
+Subject: [PATCH v4 0/3] Add support for the Samsung S6E8FCO DSI and M1906F9
+ display panel
+Date: Sat, 14 Mar 2026 23:46:20 +0200
+Message-Id: <20260314-panel-patches-v4-0-1ecbb2c0c3c8@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] iio: light: vcnl4000: add regulator support
-To: Erikas Bitovtas <xerikasxx@gmail.com>, Jonathan Cameron
- <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Raymond Hackley <raymondhackley@protonmail.com>
-References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Py2rDMBBFf8VoXYUZSZZsU0r+o3ShxzgR9auWa
+ 1qC/72ys2jJoggEd+Ac7r2xRHOkxJrixmZaY4rjkIN6Kpi/2uFCPIacmQChQWDFJztQl//FXyl
+ xXevQGoJQIbDMTDO18evwvb7d80wfn1m73I+sp5TsoW2K58Mq96cqZU4oKwMc+Wq782T9Oy3Ly
+ Y9j97KrnU3E/dj3cWmKoGrQllDZskWpPTlt0DlUnoLLl9aWGoLVbC9xjWkZ5+9j44pHi/scIR/
+ mrMiBG1NqAbUypq3Pl97GLpfoD9Mq/qVFptFpG5TBUCp4pOUvLVE80jLTmkLlAXQAR3/pbdt+A
+ LTXkXCrAQAA
+X-Change-ID: 20260218-panel-patches-696df7e0d810
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Kamil_Go=C5=82da?= <kamil.golda@protonmail.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Kaustabh Chakraborty <kauschluss@disroot.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Yedaya Katsman <yedaya.ka@gmail.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773524783; l=2780;
+ i=yedaya.ka@gmail.com; s=20260113; h=from:subject:message-id;
+ bh=wQWIVAu3Y4jDHR5DBLOkg+dc0hKAQmR/KU3X139W63A=;
+ b=kaHaVx1CkItxr7tsnvLvlHc6nISme3slmuCrzRKlt3I2KBENyh+3rgK8qjI47fQGbcrORQvCK
+ cuwBDvT0pT8CYMSZEHREfM2DaP4OWtx5KPC4TDgylEoBND0mDoO5I0z
+X-Developer-Key: i=yedaya.ka@gmail.com; a=ed25519;
+ pk=CgNmxD3tYSws5dZfpmJfc6re/bV/f47veVijddHLytk=
 
-On 3/14/26 11:06 AM, Erikas Bitovtas wrote:
-> This patch series introduces support for voltage supply, I2C and cathode
-> regulators. This fixes an issue where if a regulator is shared between
-> the proximity sensor and some other device, and the other device is
-> powered off, the proximity sensor would be powered off as well.
-> 
-> One of the commits includes a Reported-by: tag without a Closes: tag -
-> the report was done outside of LKML.
+This adds a driver to support the Samsung S6E8FCO DSI controller with the
+M1906F9 display panel found in Xiaomi Mi A3 (xiaomi-laurel). The driver is
+generated using linux-mdss-dsi-panel-driver-generator[0].
 
-If it is on the public web, we can still add a link. You can just reply
-to that patch with the tag (if there is one) and it will get picked up.
+The mdss reset dependency makes the screen work more reliably.
 
-> 
-> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> ---
+[0]: https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+Original tree with patches: https://gitlab.postmarketos.org/SzczurekYT/linux/-/tree/laurel
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Yedaya Katsman <yedaya.ka@gmail.com>
+---
+Changes in v4:
+- Use exisiting binding instead of creating a new one
+- Mention dsi phy power source in commit message
+- Mention only DSI controller, not panel where it makes sense
+- Remove VIDEOMODE_HELPERS selection
+- Collect trailers
+- Link to v3: https://lore.kernel.org/r/20260312-panel-patches-v3-0-6ed8c006d0be@gmail.com
+
+Changes in v3:
+- Make driver, bindings, compatible specific to M1906F9 panel
+- Adjust brightness scale and default
+- de-mystify some dsi writes
+- move pinctrl for mdss into panel node
+- Rename regulator nodes and names according to schematic
+- Treat vreg_l9a as input to vddi regulator
+- Add myself to copyright header, remove years
+- Link to v2: https://lore.kernel.org/r/20260223-panel-patches-v2-0-1b6ad471d540@gmail.com
+
+Changes in v2:
+- Changed commit title like Dmitry asked
+- Fixed copyright header years
+- Link to v1: https://lore.kernel.org/r/20260223-panel-patches-v1-0-7756209477f9@gmail.com
+
+---
+Yedaya Katsman (3):
+      dt-bindings: display: panel: Add Samsung S6E8FCO-M1906F9
+      drm: panel: Add Samsung S6E8FCO DSI controller for M1906F9 panel
+      arm64: dts: qcom: sm6125-xiaomi-laurel-sprout: Enable MDSS and add panel
+
+ .../panel/samsung,s6e8aa5x01-ams561ra01.yaml       |   5 +-
+ MAINTAINERS                                        |   5 +
+ .../boot/dts/qcom/sm6125-xiaomi-laurel-sprout.dts  |  94 +++++++
+ drivers/gpu/drm/panel/Kconfig                      |  13 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ .../gpu/drm/panel/panel-samsung-s6e8fco-m1906f9.c  | 301 +++++++++++++++++++++
+ 6 files changed, 418 insertions(+), 1 deletion(-)
+---
+base-commit: d4906ae14a5f136ceb671bb14cedbf13fa560da6
+change-id: 20260218-panel-patches-696df7e0d810
+prerequisite-message-id: <20260303034847.13870-1-val@packett.cool>
+prerequisite-patch-id: 3fba84f11111406e0d530013fd45ad0eb389786b
+prerequisite-patch-id: 81440b7f28f9101d3dc5d4bad6dc86e39b81a026
+prerequisite-patch-id: 53469d8c9810169d058f1bfd27ac8399038aae74
+prerequisite-patch-id: 80809bee71eb6434f6699d5e5f8c7f9d4bcd1ca7
+prerequisite-patch-id: 0269e01c9c54a37bb92983635cd516342189aee5
+prerequisite-patch-id: e2bbf7c452d4da6d71b1a5194e0d7ce46584e113
+
+Best regards,
+-- 
+Yedaya Katsman <yedaya.ka@gmail.com>
 
