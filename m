@@ -1,130 +1,134 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E08C1EFFB7
-	for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 19:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D471192D97;
+	Sun, 15 Mar 2026 19:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773602162; cv=none; b=UOVA44w7E17DdN7H0WLJZH2Y/sHyxJMhIAErn0wWgLYvYyT4a24ewBNpG6kmPcnLTNZ4TTZc81iVJzxbykA0JGbxl27Vxb0VoJPJfsP+KV5kJK+Qehf4OxM5H6ec3/lAJq6uMY3xnwvu+i3rlG6+Pm6cCL5Vp0YEYO3uXFj6sYY=
+	t=1773603618; cv=none; b=SrRuIIfS36/dj2KJPruTui077NvJ/ek9QeCX/wBzyaupP+i79cFrcdHnVmL89/BZIFqPm4/o6A0aMaO0dcp+Y1tUaQgwAFSC5khRK4IT/cp+q979uv3l/3xutBSsfWbLyS02TzJHEyRimRgND8z5TYuAxIZoh0SnaGoiOWoVm7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773602162; c=relaxed/simple;
-	bh=a6zCJ7W8/2j3GTCTCY6FAyHidVZVuKayQ1N0RO9KOEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vk2UjxNsNmyNsQbIlwFE4xsYTqof4GbPBKMDWdLcpTvMnBuNyr5Wqx3sdSZvzCbrhtJzwpbRjVWQLYVo3jDw/UVirrTuNC5tZlwKnJ0p3yza4jWGeN4DreqXruBMpNXHKDt7wxeXD8fMZcChOR4XJ8hfD3RI5Gs7qGeY5UJCjjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxvjKQs8; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773603618; c=relaxed/simple;
+	bh=fesAHPKNbUs9hVBXGq+5vFg6Af/I3x1FzOPH/+s5Nh8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k/A0cK1nN/UuHt7ZJnSpvIoj/iJULmHmhvO4wfTb3oA/N0ztFi087TDhDBAlvsg1UGCvcfjw9c1s9ji6ybR+3hgnYz92DRsSfKQE9mG4Ke+vbCvwO5S+kxm9CUUNRwvRGuF0sHpaGfg5o8Ua6gsWrVKQs2jN0WbqX+iIZC+AtoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svMSw9i7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxvjKQs8"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b97b7e0368eso45999366b.3
-        for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 12:16:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773602159; x=1774206959; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=j24q+WEEaIIpTAaLp22q5B3jSJrQk0EvfwD9aUHG8bI=;
-        b=DxvjKQs8kWy2u73OGxFvaR8tCE3IMk0ePE9vqxw+/7XaS9NXNB6JcuMm8TNqiGffmE
-         +23cB11lX47Lw9mkCj433edZ698dowY9OD2NUX3y3hJ+NwzYB7w+CeOBQFWVDGXSCxur
-         QLROn93dVOC8k6Dy7D+3zCpaatwExWf+h00rsMqKbMTeyqwNbB9twOOfKaXPCADsDCe7
-         enIEJFbjQMmK+iSymqPtkqn9BwxIMrpsNfzHQggWQ8NvIQlUOgIxw2v+qNiplciUbXYC
-         AJNU6jfWtUFGTPbZdKcAdTD4CSdeLC52EEUXt6Ed+X/RBGgB1PkB2d+7DZl7WjXe7I0k
-         R9Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773602159; x=1774206959;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j24q+WEEaIIpTAaLp22q5B3jSJrQk0EvfwD9aUHG8bI=;
-        b=shxk/rw2lMClxpbLiCdBSc6LNHHyX4+tppZE++xVtu56W/0QLjy0kzEQOWbqePIfQ/
-         g0KCgF7/X4CLlcBIGWsIsLUxLoFeYPmdddWJAQvgnVkzoFAjOgjskllqAZJBHLi50TjF
-         6VmIhchpkRdtwW/p+VFZSWYTR6RuxZ7NgBDu6apIVAnxc+h7DiU7bOCK5ObA22tNsU6Q
-         /VO8CEDpeOvnGqzLxoDKMAwbrlJFfXhjkt2cafWd05lXBgKuQ/BLcMRAC2lP+rhc15is
-         0kiZrwQhlTv+t45xPtW8rmpdR3H6XGB0XDegLsjFN6AWsPOY8OjQWSV5HHvKhyvH6CC8
-         hO7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVJXyG+VIASu3keTrznfru0xhGCkmJKNHbIqWlCiSBPep8Y108fJEqSEoki8FB7Ubz+JFaFoj6Qjy9Rqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg3fLqh0ISHYW/Epi57WFLKNb0Im5zZP8nk6w8zALlRqRDAVRs
-	Ky1AssJHqN8d53zQMJ0c4zQCKIwwEhXpRzIc7lomLp/rDLIvjUjuPC2i
-X-Gm-Gg: ATEYQzyFI/rA6xTrP/Zj0Hw8Q7jrnNTubkJdfULRJCOiT0PVc4Dg6jVFMDe3cVAeEsZ
-	glWkFE52JpJQ9vTZj/R6jOtcl+mG08U873P7mmDUziBEc9xj1KDMKXbeeI+kEapzONKpbWRAp95
-	U/WGGE6BXnsLyM7OdyISeC0cG408N0KXXPxW4X3o+bdhDxGVhYipzOAuxSvXE5Er2Ps5h+oNL+a
-	gRZYdS3NaJxuXnSIOEiihpjK4GOzKh8leZKUgXSwnIbPrCdMr77CeXRB8zLuugIDxqbyOWv/2Wn
-	c3ppWW52ABAtygLCDZ/5I0ZN9rOO/GzpmNLJz1PmWe1s9yu9K4t0rgwsLAPwDuimaC5348JGH7d
-	NJuct9oqEySlkS+8htddbLi5qjmGEj3pS1ZX39ugsYgFcYvrIOZjWEsb0Gn4kLQrQwsvgUU8X9L
-	2NhvDJFHBp5bK36BwJcKjOrC53vA==
-X-Received: by 2002:a17:906:4a9a:b0:b97:f3:1231 with SMTP id a640c23a62f3a-b97653525a2mr439485666b.57.1773602158949;
-        Sun, 15 Mar 2026 12:15:58 -0700 (PDT)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976cdb1d20sm421911166b.41.2026.03.15.12.15.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Mar 2026 12:15:58 -0700 (PDT)
-Message-ID: <706a349f-63e5-4f47-9f77-c84db1058f5e@gmail.com>
-Date: Sun, 15 Mar 2026 21:15:51 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svMSw9i7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 13477C4CEF7;
+	Sun, 15 Mar 2026 19:40:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773603618;
+	bh=fesAHPKNbUs9hVBXGq+5vFg6Af/I3x1FzOPH/+s5Nh8=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=svMSw9i7qXnati9XP9eIfXCZBkyysXiqlc2aSS0oWQW+dea6yENARFfqa3jwjCq59
+	 41stdRjDrQJm/pL90PLqSd/7wOBWpEOqIldK58YAus2mZPfEfFT0xw+CPUtg3BBkSb
+	 XHpuYyWOs0eZKJ5zmmvGHmqLMZ5QFKWEcrn8QG/ApRZfzfiHELh38kaXKYT+TTPRPL
+	 cweIQbUSMJUktt5oaQXcNQ4bgPghgeVya0ZdMJBmlQ1bI9gs8HMfNLsLHzyDE4hs3y
+	 FKnKVdNrzVA/xQ0W5+oEPKWmROdihEiaGTLu38pR4+5hQVFz62apZm4aSQDx6zTvw2
+	 OWFraqqG+d7kg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C35FF30282;
+	Sun, 15 Mar 2026 19:40:18 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sun, 15 Mar 2026 20:40:16 +0100
+Subject: [PATCH] power: supply: qcom_smbx: allow disabling charging
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] iio: light: vcnl4000: remove error messages for
- trigger and irq
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
- <20260314-vcnl4000-regulators-v3-5-3c4a48d30676@gmail.com>
- <20260315183127.59036e25@jic23-huawei>
-Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <20260315183127.59036e25@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260315-smb2-cherry-pick-v1-1-b2710e470490@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAB8Lt2kC/x3MSQqAMAxA0atI1gZqHBZeRVzYNtogDqQgivTuF
+ pdv8f8LkVU4Ql+8oHxJlGPPqMoCXJj2hVF8NpChztRVi3GzhC6w6oOnuBUb65i8p9lbhpydyrP
+ c/3IYU/oAQZYYgmIAAAA=
+X-Change-ID: 20260315-smb2-cherry-pick-4bce2dd2fdbe
+To: Casey Connolly <casey.connolly@linaro.org>, 
+ Sebastian Reichel <sre@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1907; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=4AjGJKwbJXe+JB86/acJqUuqP6FV9Wr+oAVrVaq0fiI=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBptwshPIdiXezEZzCVg9hmuCN0irJHRc9S1JKO8
+ J7d6Gt30iWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCabcLIQAKCRBgAj/E00kg
+ cj0OD/wNTfuFuEMJsk5ORkTHCYwFuvW/caJm+clwHiwTJyjDjmOFg31ilRGxWEil0ZymBh9WiC2
+ S1t0ydvEC9JVrHIrXC5CsJCuugFxuRDGmPlWagNhYQgHtkz65H9jFgbtCQLkc7OpN8bBcAzGn1+
+ +tFiNt7MbutiIn1ZZ/WeZCm4U3k+Jbo2tvYHLZqjBsrBRJNh4mbYKK0l99r/29lQOvX7lpoGtTh
+ kgW5KDEWIl0FCqodmmTI6ELsLPekaDZX+mZuFlqYkturHE3C2L6xfktdHRdN+0WbDDr4ylYA49U
+ gCXHEygE6VNwPn2bsZtEJD8+/1+RUDXEjts3HGz+W2Jcr+TKHeOhI935PKZYpV70gCJpw13S7K3
+ NnVlQoqpJR0lTKdNtHwDP0g9YqrOItx6mZTzL95DatWTsj+8IF1Qvc5151XNcjhvImxUjBm/6Kz
+ boxeSXnVIFoT3/RinblE3YgqcYFV7E+9OwKGIdLU4Em8oc6fnEJ0EgcPxgUVizK9pxDBXQHOlRt
+ 7+EKR6Pvq7R0dBIrjP6Mmr2tIsdCydkbU+aAPI/kgZIYouzftHI+s+yykxqRuV2727IcosT7zl8
+ bOk99aY7D8ml21Mxm4q4CbmJOpKBtglkLvCcExsTP78bL41b+mj1J3rWirAKeNxaeJZsexi3nJB
+ 6cKB3OZJohwWO4A==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
+From: Casey Connolly <casey.connolly@linaro.org>
 
+Hook up USBIN_CMD_IL so that writing "0" to the status register will
+disable charging, this is useful to let users limit charging
+automatically.
 
-On 3/15/26 8:31 PM, Jonathan Cameron wrote:
-> On Sat, 14 Mar 2026 18:06:34 +0200
-> Erikas Bitovtas <xerikasxx@gmail.com> wrote:
-> 
->> The error code is available in the log after return. Remove duplicate
->> error messages to reduce noise in dmesg.
->>
->> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->> ---
->>  drivers/iio/light/vcnl4000.c | 9 ++-------
->>  1 file changed, 2 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
->> index e501db7249d7..c8bb1826b916 100644
->> --- a/drivers/iio/light/vcnl4000.c
->> +++ b/drivers/iio/light/vcnl4000.c
->> @@ -2041,11 +2041,8 @@ static int vcnl4000_probe(struct i2c_client *client)
->>  						      NULL,
->>  						      data->chip_spec->trig_buffer_func,
->>  						      data->chip_spec->buffer_setup_ops);
->> -		if (ret < 0) {
->> -			dev_err(&client->dev,
->> -				"unable to setup iio triggered buffer\n");
-> 
-> Is this one a duplicate? I don't recall us being particular verbose
-> in terms of error messages in iio_triggered_buffer_setup_ext() which is
-> where that ends up coming from.  I think there is only one path
-> where it can return anything other than -ENOMEM and that one is a duplicate
-> registration check (so fair to not print).  So perhaps all this patch
-> needs is a comment on what errors can surface from this call and why
-> it is therefore not worth printing anything.
-> 
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+[David]
+ - adapted from:
+ https://lore.kernel.org/all/20250619-smb2-smb5-support-v1-5-ac5dec51b6e1@linaro.org/
+ - moved USBIN defines into the right place inside this patch
+---
+ drivers/power/supply/qcom_smbx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-I do not see anything being printed on iio_triggered_buffer_setup_ext(),
-so I guess this is not a duplicate. The function can return -EADDRINUSE
-if a buffer is already assigned, to prevent cleanup function being
-called on a buffer that wasn't allocated.
-I will add this print back if necessary in v4.
+diff --git a/drivers/power/supply/qcom_smbx.c b/drivers/power/supply/qcom_smbx.c
+index b1cb925581ec6..bf2e2ccc454a6 100644
+--- a/drivers/power/supply/qcom_smbx.c
++++ b/drivers/power/supply/qcom_smbx.c
+@@ -134,6 +134,9 @@
+ #define OCP_CHARGER_BIT					BIT(1)
+ #define SDP_CHARGER_BIT					BIT(0)
+ 
++#define USBIN_CMD_IL					0x340
++#define USBIN_SUSPEND_BIT				BIT(0)
++
+ #define TYPE_C_STATUS_1					0x30B
+ #define UFP_TYPEC_MASK					GENMASK(7, 5)
+ #define UFP_TYPEC_RDSTD_BIT				BIT(7)
+@@ -693,6 +696,9 @@ static int smb_set_property(struct power_supply *psy,
+ 	struct smb_chip *chip = power_supply_get_drvdata(psy);
+ 
+ 	switch (psp) {
++	case POWER_SUPPLY_PROP_STATUS:
++		return regmap_update_bits(chip->regmap, chip->base + USBIN_CMD_IL,
++					  USBIN_SUSPEND_BIT, !val->intval);
+ 	case POWER_SUPPLY_PROP_CURRENT_MAX:
+ 		return smb_set_current_limit(chip, val->intval);
+ 	default:
+@@ -705,6 +711,7 @@ static int smb_property_is_writable(struct power_supply *psy,
+ 				     enum power_supply_property psp)
+ {
+ 	switch (psp) {
++	case POWER_SUPPLY_PROP_STATUS:
+ 	case POWER_SUPPLY_PROP_CURRENT_MAX:
+ 		return 1;
+ 	default:
+
+---
+base-commit: b84a0ebe421ca56995ff78b66307667b62b3a900
+change-id: 20260315-smb2-cherry-pick-4bce2dd2fdbe
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
 
