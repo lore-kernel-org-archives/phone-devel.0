@@ -1,37 +1,36 @@
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3C52F2914;
-	Sun, 15 Mar 2026 16:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E425C372EC7;
+	Sun, 15 Mar 2026 16:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773592001; cv=none; b=MMeAGgUykB8UxfOctDM16rGP8OcNzA+eub2ES/Cr3r+1yGUkWgZaudzvGq9IMyKr5V7TVPUdUzVys5YUpS6/lWXzC3ekU836D9FV/D1aoCs7rxMRQkJgO9MyNFncJA+Wn/CcFeyhtcm0AtNKC/tviLreAAvUlfYTJwwtP6RjABs=
+	t=1773592003; cv=none; b=Ki0VPMLG4us32RjyLSXTPjDSXkGSFHb4kzPp0/ePnON+s0HSlbvTb6hrWJUVBzz5IQEPXFbiSRWsNdu+/Sy/mqCdSLbPg49F6KTkEHweLGaKEVIWyuGLhEzFC1XVBEk24eYNuzyaX44eD6ADRpk4tBzBWvljoVxDlu+Zo4rUpog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773592001; c=relaxed/simple;
-	bh=rIvMLM3QhOkRWka2LjBZdqA8Vls7l42V9OAFy0VFsUQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CRDkPUDOccWC+2JnnsB8BzQ9Af1xQnFZq4SHFWmMJNO+YKaxhGlbqUi9Po0G/hEtHg2kkbPnBPhUXamn4ArRfqHCER9jAGegsTw9/EJ1DPlDy+R+fVPD2B1i4ESacfYqDdrrUlXjKG9iND+ZlGfqcjyfg4jGwTKrXYyl0vFt4Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=pWeNRe/v; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=lHfOVred; arc=none smtp.client-ip=5.75.144.95
+	s=arc-20240116; t=1773592003; c=relaxed/simple;
+	bh=Qv/0mt3K1ZGVC5zwWg88s9g1sE15YjvjmlLsD4egYVU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iGWXLxswARA2RfYRIyAG07eOXkcA3M4al9vy2ZUmMYPj7EmAjvo0PFYloDKgFBP0EzhRYiSqfvo6DsBBZmPdnb2hy2j8CWLM3okc39VctuUmIqP1NlrRsaZuHahqJu+b8Ngzd88zzB7lsUbFH58L5UNXYR22mjoL8XgQLOP/pDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Rfb1pYIN; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Os2jTDuv; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="pWeNRe/v";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="lHfOVred"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Rfb1pYIN";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Os2jTDuv"
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773591985; bh=IOuUqF1xVNBeTgp+udPGJtI
-	usAfDxF3I4S3OS3Dua3I=; b=pWeNRe/vznvjPfoHDk4Us+3cgyrxDP5rGDzc0WAdB/593qKaNG
-	NSbFzvlkI6ULkaxyd2qMrT+AKID/pAXphnlYILnwQaPe3+hXCo7X8Oxpm6E7bXORWlRx5IwFCMz
-	HhSmJJJGveBaImjNtIU8I1UTYj/MnbgTIX/FRAsxznSDTWKdxI4GRmKTJ8FVJRKZlFBjdYP/P5Y
-	CukZTja6k6IOM56uvgofC5b4Bh0pnRVlGynoZZt1sc4SDasSdJ8Jaj7DPfjjJTUVr63SPDWZlVM
-	u2V/nJg4gvDsec3NacPEsVO3WjYzbfE0xAuZxyr2KMn4sDEsramhcTU0emVXSqVpVnA==;
+	h=To:Message-Id:Date:Subject:From; t=1773591983; bh=9MDuQpXz9EY+lYi48n7MBX4
+	3xM7tnzw19M/+uYyQhv8=; b=Rfb1pYINC/6mUxJsweatSGw1rrluRwq4mJfMzcHl9+NUb6UJYJ
+	044PrwuHo3LJvOnEqef8YgWa3N9IjrZNNgoMcqA6uUeR4ltIXOSKdq3tU3Y9OC+Ba4OJvufvrWY
+	DtyGJsz1HRaX5fKc6M0PVoGWp3s/rRRLYHSKS6rPj9mJ8HknIy7oafs6T60Dwc378+fxLXcbmVx
+	/JVjMDaz+MHfbpz6aQNynakcS6aEjSii1IqmZ6TK0nl77j1FmqccXF+M9/DZOn+rRdqx820tiUA
+	lFk5TQ2ZbXk97okJd2wYNVeB5/VU/vktUOuKTKXseA+/s0Mw8/uh7MUM3oLb58BthCw==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1773591985; bh=IOuUqF1xVNBeTgp+udPGJtI
-	usAfDxF3I4S3OS3Dua3I=; b=lHfOVred7eUp1Hm/m9OISmR+R+3evJdT/9t1hhofP5ZrQYt1To
-	rQ36MWxOOnZmjSbFaqsixJGgrC+koKmoeFCQ==;
+	h=To:Message-Id:Date:Subject:From; t=1773591983; bh=9MDuQpXz9EY+lYi48n7MBX4
+	3xM7tnzw19M/+uYyQhv8=; b=Os2jTDuvfnX2msi6qCtZRQiKgmmN0gcLYQCaBNG3S36j6CcO/s
+	SlRcMIevCs8WggRzuWCV43F0GzYrims/bnCQ==;
 From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
-Date: Sun, 15 Mar 2026 17:26:21 +0100
-Subject: [PATCH v3 3/6] arm64: dts: qcom: msm8917-xiaomi-wingtech: Add
- goodix touch
+Subject: [PATCH v3 0/6] Commonize Redmi 5A for 4A and GO
+Date: Sun, 15 Mar 2026 17:26:18 +0100
+Message-Id: <20260315-riva-common-v3-0-897f130786ed@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,9 +39,11 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260315-riva-common-v3-3-897f130786ed@mainlining.org>
-References: <20260315-riva-common-v3-0-897f130786ed@mainlining.org>
-In-Reply-To: <20260315-riva-common-v3-0-897f130786ed@mainlining.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XM3wrCIByG4VsZHmf4b2521H1EB87U/aBpaEgxd
+ u+5QdDo8P3ge2aUbQKb0amZUbIFMsRQgx8aZEYdvMVwq40YYZJwInCCorGJ0xQDltIqo0RPlRa
+ oPh7JOnht2uVae4T8jOm94YWu69dpd06hmGDBpaNODB1X6jxpCHcIEPwxJo9WrLAfgJI9wCrAB
+ 2dYPcu+7f6AZVk+wfQJ3OwAAAA=
+X-Change-ID: 20260304-riva-common-66e9c94819a4
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -50,54 +51,75 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773591982; l=1255;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773591982; l=2496;
  i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
- bh=rIvMLM3QhOkRWka2LjBZdqA8Vls7l42V9OAFy0VFsUQ=;
- b=7JWUTg02Xj0tCu1okIipCekGa5IiN31p0DdmDDzLcaKfy9QeQDTOTqXsqgaO4Zqwbz8FYL+bT
- xkWrF/c2baPB/nf5VfDIIjNYF/HV0IGmxglkEBTjmYtXYS5BVavVFPj
+ bh=Qv/0mt3K1ZGVC5zwWg88s9g1sE15YjvjmlLsD4egYVU=;
+ b=eFTzWe6qxFDimuq27B5zcMCRaxIJ+iGL7LdfIQvKTwFKWiu0nuluShv75xhChi2UHCcDaVxUl
+ 3vMRbb96or7A+yheioAQ9/SnlsxccB6N4V63gVUdc6a+xq9lzoQDW20
 X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
  pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-There are variants from MSM8917 wingtech xiaomis what
-are using goodix touch controller instead of focaltech.
-Add goodix node for make it able to use touch on all
-variants.
+Redmi 5A is similar device like Redmi GO and Redmi 4A.
+
+This patch series commonize it to avoid code duplications.
+
+Differences between 4A and 5A:
+- Different charger and fg
+- Different displays panel but same resolution
+- Different speaker codec configuration (awinic-mode)
+
+Differences between GO and 5A:
+- Different charger and fg
+- Different speaker codec (aw87319)
+
+Additional changes:
+- Update Redmi 5A board-id for support nougat and oreo bootloader.
+- Add Goodix touch controller support for all variants.
+  The necessary touch controller can be enabled by devicetree overlay or lk2nd.
 
 Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
 ---
- arch/arm64/boot/dts/qcom/msm8917-xiaomi-wingtech.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Changes in v3:
+- xiaomi-tiare: Remove l23 regulator override, add min-volateg for l22.
+- xiaomi-riva: use generic names for fg and charger.
+- xiaomi-wingtech: Use memory-region for framebuffer.
+- squash riva addition commit to comminization commit.
+- Link to v2: https://lore.kernel.org/r/20260310-riva-common-v2-0-3bfc23996857@mainlining.org
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-wingtech.dtsi b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-wingtech.dtsi
-index 714e75de014b..69eda5f42c06 100644
---- a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-wingtech.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-wingtech.dtsi
-@@ -102,6 +102,22 @@ edt_ft5306: touchscreen@38 {
- 
- 		status = "disabled";
- 	};
-+
-+	goodix_gt911: touchscreen@5d {
-+		compatible = "goodix,gt911";
-+		reg = <0x5d>;
-+		interrupts-extended = <&tlmm 65 IRQ_TYPE_LEVEL_LOW>;
-+		irq-gpios = <&tlmm 65 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&tsp_int_rst_default>;
-+		pinctrl-names = "default";
-+		AVDD28-supply = <&pm8937_l10>;
-+		VDDIO-supply = <&pm8937_l5>;
-+		touchscreen-size-x = <720>;
-+		touchscreen-size-y = <1280>;
-+
-+		status = "disabled";
-+	};
- };
- 
- &pm8937_gpios {
+Changes in v2:
+- Rename msm8917-xiaomi-riva-common to msm8917-xiaomi-wingtech.
+- Split goodix touch controller addition to a different commit.
+- Disable touch controllers by default.
+- Split new Redmi 5A devicetree to a different commit.
+- Fix Redmi 4A board-id.
+- Update riva board-id to make it able to run all bootloader version.
+- Squash the devicetree bindings.
+- Link to v1: https://lore.kernel.org/r/20260305-riva-common-v1-0-436f1f4b7399@mainlining.org
 
+---
+Barnabás Czémán (6):
+      arm64: dts: qcom: msm8917-xiaomi-riva: Fix board-id for all bootloader
+      arm64: dts: qcom: Make a common base from Redmi 5A
+      arm64: dts: qcom: msm8917-xiaomi-wingtech: Add goodix touch
+      dt-bindings: arm: qcom: Add Redmi 4A and Go
+      arm64: dts: qcom: Add Redmi 4A
+      arm64: dts: qcom: Add Redmi Go
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   2 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   2 +
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts   | 310 +--------------------
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-rolex.dts  |  15 +
+ arch/arm64/boot/dts/qcom/msm8917-xiaomi-tiare.dts  |  20 ++
+ ...iaomi-riva.dts => msm8917-xiaomi-wingtech.dtsi} |  61 ++--
+ 6 files changed, 60 insertions(+), 350 deletions(-)
+---
+base-commit: fc7b1a72c6cd5cbbd989c6c32a6486e3e4e3594d
+change-id: 20260304-riva-common-66e9c94819a4
+
+Best regards,
 -- 
-2.53.0
+Barnabás Czémán <barnabas.czeman@mainlining.org>
 
