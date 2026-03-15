@@ -1,156 +1,121 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A271219A7A;
-	Sun, 15 Mar 2026 17:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2114A81AA8;
+	Sun, 15 Mar 2026 18:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773594564; cv=none; b=eCYDPp2s4hynl3X5r3oZHwSP0+YIostIi1Xox9r8kCQciJC+IoM1LGQxGEh0+NsjpCYt/zxPA+UTNYkYf92xIfRc3SVa+w/frWga/jIf/2PaTaE5IZ9SxfLhvPLTIgmI1862h1RJ0spUPFXPHLvUubt2aXLK/Yq2DAWkdfaOMno=
+	t=1773598582; cv=none; b=ENSPKHbxyIZsIR9HELyYwQVK6C7O1iCAp0/TGMwzsJDsYRxc6fy+foPp08puV8ecVe5QT5Eoxp0x5SFmHE16NF/5nzrBlO8nV/6007r1EALS4uzfYEMT2gXBhHIRkvRtpumBGrlnn67Nj6o/wQpQjSTa4s3+EHyfAXRZ2gxjTZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773594564; c=relaxed/simple;
-	bh=mX10FJAkNsenCP5RPPaxWE9Q884YI4qeCI+PcSfQa28=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NYXEnUBnFjRA9ArkheVXzbgkq0DfopFCiw/a8AMS8IsSLq6sVOFNu5H7VZP8mOROdjdTtvINxCGzjC/m5tcQlAIt/SyoF4x6+mqU1DUf3SLYwjwIkZAgahkGqj4w2810t/Cupjm932FlgmVRxpif3M/XQxrwFfdSS2mQXYzoZE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=JDAURPEB; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1773598582; c=relaxed/simple;
+	bh=71RIg7xRGVJjhjqpJ7ft9mWQQXDFw3/vQjLHuEITUXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ueap1dz9OZWooEy3TCIdj6xpiV9IviD1UCTCyQqrI6TiRxdfCWh7I7TQVjMne8DasmJiHTc9xgugxUSf+mmOiH5fXxAbKmEZXoQzZie1RKlwj6SjU3Iz+IT+bvdYFdeWvCTlbowx/OKjPILsdNyJia8z1O2xvNX0yN2gMcHI8/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMFlO8dJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="JDAURPEB"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id EC49653400BC;
-	Sun, 15 Mar 2026 18:09:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1773594556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gpKpWcE4rirX56wK1cuA2VwU8rzHhAoRcRhE8IIu4P8=;
-	b=JDAURPEBzqngX20RIdtqMbmfw7/J1wVHScRL52inZqhWiKjTTDlI4Epdt7hTK7aEKx34pv
-	+j3/ybQRUfpi3tfrccUnRSkSYYudDDAmWGhBSza51KBVcZVEdUyC9zAfT/5A36dCmXFyd3
-	XcyPVxORq2fmWABVDN1KMBjVb3e+eMo=
-Message-ID: <4b8c8d8c-d2f3-4938-a451-e8e9524d40c3@ixit.cz>
-Date: Sun, 15 Mar 2026 18:09:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMFlO8dJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12100C4CEF7;
+	Sun, 15 Mar 2026 18:16:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773598581;
+	bh=71RIg7xRGVJjhjqpJ7ft9mWQQXDFw3/vQjLHuEITUXk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KMFlO8dJ8RW5T4iTDVQEGaoVqTj4Va4XWEDeKJ4GlAB4fIsO1eBBNa+TleBKMp5dr
+	 +o4FUOQsb2Fk0Xaox4JRd9gzZv604IuMaNtt5LaIxJaB51/n0niMNGbxGDdo5when1
+	 RPOr2a/3Lk/K1r5n+rAijadatOXc7DwN61L71WkZ2LDdjFgImkeseIDg/KS6gS5gIo
+	 /Qteara/p5aD+DfWUiM//ZAvdj9616hl5BTwt0DBefvj0IItwgDXfjzspjl3OosjEu
+	 1zAnO2oWm2tEh99YNg8N9K6dSHAUtWijYwlaAH+wiYGNGFG2sNVjJIgTNiNthIE8mu
+	 RFhWG20dGNMtA==
+Date: Sun, 15 Mar 2026 18:16:10 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Erikas Bitovtas <xerikasxx@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Peter
+ Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, Raymond
+ Hackley <raymondhackley@protonmail.com>
+Subject: Re: [PATCH 2/2] iio: light: vcnl4000: add regulator support
+Message-ID: <20260315181610.4a99e985@jic23-huawei>
+In-Reply-To: <abFejMb3uLbg4fiu@ashevche-desk.local>
+References: <20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com>
+	<20260311-vcnl4000-regulators-v1-2-66b6038ce563@gmail.com>
+	<abFejMb3uLbg4fiu@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] dt-bindings: input: touchscreen: st,stmfts:
- Introduce STM FTS5
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
- <20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz>
- <qibmsgfttxo6kiaqyjljj6otamqp7okfr4abwpmuo7daanl6qu@ka33zvoz7lte>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <qibmsgfttxo6kiaqyjljj6otamqp7okfr4abwpmuo7daanl6qu@ka33zvoz7lte>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 01/03/2026 23:40, Dmitry Baryshkov wrote:
+On Wed, 11 Mar 2026 14:22:36 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-[...]
-
->> +    then:
->> +      properties:
->> +        switch-gpio:
->> +          description: Switch between SLPI and AP mode.
+> On Wed, Mar 11, 2026 at 01:38:03PM +0200, Erikas Bitovtas wrote:
+> > Add supply, I2C and cathode voltage regulators to the sensor and enable
+> > them. This keeps the sensor powered on even after its only supply shared
+> > by another device shuts down.  
 > 
-> This doesn't sounds like the GPIO on the touchscreen, more like the
-> external schematic component. If it need sto be turned to one position,
-> it might be better to use GPIO hog for that.
-
-Right now yes, but the GPIO serves to switching between SLPI and AP mode at 
-runtime, see [1]
-
-The driver lack supports for SLPI, but at moment when SLPI support lands, we 
-should be able do something like:
-
--> device starts, touchscreen works
--> screen goes to sleep, but instead of powering off touchscreen, it switches to 
-SLPI mode
--> user taps at touchscreen, device wakes up
-
-Thus I think we need to support this GPIO in the driver.
-
-David
-
+> > Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> > Reported-by: Raymond Hackley <raymondhackley@protonmail.com>  
 > 
->> +
->> +      required:
->> +        - switch-gpio
->> +
->>   examples:
->>     - |
->>       #include <dt-bindings/interrupt-controller/irq.h>
->>
->> -- 
->> 2.51.0
->>
->>
+> Where was it reported? Do you need Closes tag?
 > 
+> ...
+> 
+> > +#include "linux/array_size.h"
+> > +#include "linux/regulator/consumer.h"  
+> 
+> Double quotes, huh?!
+> 
+> >  #include <linux/bitfield.h>
+> >  #include <linux/module.h>
+> >  #include <linux/i2c.h>  
+> 
+> Also, please keep the list ordered.
+> 
+> ...
+> 
+> >  	mutex_init(&data->vcnl4000_lock);
+> > +	ret = devm_regulator_bulk_get_enable(&client->dev,
+> > +				      ARRAY_SIZE(regulator_names),
+> > +				      regulator_names);
+> > +	if (ret < 0)
+> > +		return ret;  
+> 
+> You can't add devm_ after non-devm calls.
 
--- 
-David Heidelberg
+This one happens to be fine because there is no cleanup of the
+mutex_init(), so it is sort of not mixing devm and non devm.
+That is kind of a historical thing where I for one wasn't convinced
+it was worth the annoyance of mutex_destroy() until the devm
+easy way of doing it came along.
+
+Now, as the code is being touched anyway, I would
+like that moved to
+ret = devm_mutex_init();
+if (ret)
+	return ret;
+as a precursor patch both as it makes it obvious we are still devm and
+to get the advantage when lock debugging is turned on.
+
+Thanks
+
+Jonathan
+
+> Also it would help you to have
+> 
+> 	struct device *dev = &client->dev;
+> 
+> at the top of the function.
+> 
+> ...
+> 
+> With the above being said, I expect a series out of two patches at least.
+> 
 
