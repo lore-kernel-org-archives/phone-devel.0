@@ -1,128 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4B37C924;
-	Sun, 15 Mar 2026 18:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E08C1EFFB7
+	for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 19:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773600774; cv=none; b=ci62mDWcFurLutOEdF5yiPF45cUdi3YR6NQKIoGneuh2zuXOrt2fNp5vQyS/+wrYZdJmj32C1ON8lOAwxVlxLCM9qwkOAKcVGOxkXWWdidKZG9ONYt7GVH/thYJacmzBkQxMgwev05/js7FCZKC40ImJ/UHzsuSKn9A18PHnSx8=
+	t=1773602162; cv=none; b=UOVA44w7E17DdN7H0WLJZH2Y/sHyxJMhIAErn0wWgLYvYyT4a24ewBNpG6kmPcnLTNZ4TTZc81iVJzxbykA0JGbxl27Vxb0VoJPJfsP+KV5kJK+Qehf4OxM5H6ec3/lAJq6uMY3xnwvu+i3rlG6+Pm6cCL5Vp0YEYO3uXFj6sYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773600774; c=relaxed/simple;
-	bh=DRN8Y2azyPABZr+mUTsY8ADaTpvTOyUxWI2eOU/dWp0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iHzx3XIgcU9q+w2Wu+dDfZdzhP8i2PZTqr9Wpo5y4w9Qk50o7kHu+qTmiTkZgUxPcEEaTbDBxKxO5PLCGWVbO6zX0NczPS1HKyaqAh700nyrcqsqGwpQXioIeyL9Gz7ZOmeyK+ZRNNZTTSB0qmXii0RTc9czNnvIwvQrQrzjINw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAeXjpl+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773602162; c=relaxed/simple;
+	bh=a6zCJ7W8/2j3GTCTCY6FAyHidVZVuKayQ1N0RO9KOEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vk2UjxNsNmyNsQbIlwFE4xsYTqof4GbPBKMDWdLcpTvMnBuNyr5Wqx3sdSZvzCbrhtJzwpbRjVWQLYVo3jDw/UVirrTuNC5tZlwKnJ0p3yza4jWGeN4DreqXruBMpNXHKDt7wxeXD8fMZcChOR4XJ8hfD3RI5Gs7qGeY5UJCjjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DxvjKQs8; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAeXjpl+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D600EC2BCFA;
-	Sun, 15 Mar 2026 18:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773600774;
-	bh=DRN8Y2azyPABZr+mUTsY8ADaTpvTOyUxWI2eOU/dWp0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OAeXjpl+VhkelY+3qCifOb7WHdtRSrnVmMkjj2LOJIvj23739HrT0R5pLuubtxWro
-	 nxJRoN+orRQTNanig4BZJRTpXvYGrNeR5k1UIJ/y6HTSGgwiN++0+4R6AMrzLUs4OO
-	 KGKBZpjV+wfMScHLKwiWp2MugwoN3KxnMxHc9rM1NC2hlsN0P/VSqedJlJpqElBkUa
-	 DGCL4yrw2aoTHlL27dtpH5mXMsInCogpBvjKz9iYgBLQurJpppz2rjfe2BsDSZtul8
-	 8QS7zI6rkq5X06ji/XjOpXjXmCgWgAVUyOyOOGxtVKeYTUMs4L5sa5nXx/bvOK2EqT
-	 MIrjlWubT30uw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBDDDF30282;
-	Sun, 15 Mar 2026 18:52:53 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 15 Mar 2026 19:52:47 +0100
-Subject: [PATCH WIP v2 11/11] arm64: dts: qcom: sdm845-google: Add STM FTS
- touchscreen support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DxvjKQs8"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b97b7e0368eso45999366b.3
+        for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 12:16:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773602159; x=1774206959; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j24q+WEEaIIpTAaLp22q5B3jSJrQk0EvfwD9aUHG8bI=;
+        b=DxvjKQs8kWy2u73OGxFvaR8tCE3IMk0ePE9vqxw+/7XaS9NXNB6JcuMm8TNqiGffmE
+         +23cB11lX47Lw9mkCj433edZ698dowY9OD2NUX3y3hJ+NwzYB7w+CeOBQFWVDGXSCxur
+         QLROn93dVOC8k6Dy7D+3zCpaatwExWf+h00rsMqKbMTeyqwNbB9twOOfKaXPCADsDCe7
+         enIEJFbjQMmK+iSymqPtkqn9BwxIMrpsNfzHQggWQ8NvIQlUOgIxw2v+qNiplciUbXYC
+         AJNU6jfWtUFGTPbZdKcAdTD4CSdeLC52EEUXt6Ed+X/RBGgB1PkB2d+7DZl7WjXe7I0k
+         R9Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773602159; x=1774206959;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j24q+WEEaIIpTAaLp22q5B3jSJrQk0EvfwD9aUHG8bI=;
+        b=shxk/rw2lMClxpbLiCdBSc6LNHHyX4+tppZE++xVtu56W/0QLjy0kzEQOWbqePIfQ/
+         g0KCgF7/X4CLlcBIGWsIsLUxLoFeYPmdddWJAQvgnVkzoFAjOgjskllqAZJBHLi50TjF
+         6VmIhchpkRdtwW/p+VFZSWYTR6RuxZ7NgBDu6apIVAnxc+h7DiU7bOCK5ObA22tNsU6Q
+         /VO8CEDpeOvnGqzLxoDKMAwbrlJFfXhjkt2cafWd05lXBgKuQ/BLcMRAC2lP+rhc15is
+         0kiZrwQhlTv+t45xPtW8rmpdR3H6XGB0XDegLsjFN6AWsPOY8OjQWSV5HHvKhyvH6CC8
+         hO7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVJXyG+VIASu3keTrznfru0xhGCkmJKNHbIqWlCiSBPep8Y108fJEqSEoki8FB7Ubz+JFaFoj6Qjy9Rqw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg3fLqh0ISHYW/Epi57WFLKNb0Im5zZP8nk6w8zALlRqRDAVRs
+	Ky1AssJHqN8d53zQMJ0c4zQCKIwwEhXpRzIc7lomLp/rDLIvjUjuPC2i
+X-Gm-Gg: ATEYQzyFI/rA6xTrP/Zj0Hw8Q7jrnNTubkJdfULRJCOiT0PVc4Dg6jVFMDe3cVAeEsZ
+	glWkFE52JpJQ9vTZj/R6jOtcl+mG08U873P7mmDUziBEc9xj1KDMKXbeeI+kEapzONKpbWRAp95
+	U/WGGE6BXnsLyM7OdyISeC0cG408N0KXXPxW4X3o+bdhDxGVhYipzOAuxSvXE5Er2Ps5h+oNL+a
+	gRZYdS3NaJxuXnSIOEiihpjK4GOzKh8leZKUgXSwnIbPrCdMr77CeXRB8zLuugIDxqbyOWv/2Wn
+	c3ppWW52ABAtygLCDZ/5I0ZN9rOO/GzpmNLJz1PmWe1s9yu9K4t0rgwsLAPwDuimaC5348JGH7d
+	NJuct9oqEySlkS+8htddbLi5qjmGEj3pS1ZX39ugsYgFcYvrIOZjWEsb0Gn4kLQrQwsvgUU8X9L
+	2NhvDJFHBp5bK36BwJcKjOrC53vA==
+X-Received: by 2002:a17:906:4a9a:b0:b97:f3:1231 with SMTP id a640c23a62f3a-b97653525a2mr439485666b.57.1773602158949;
+        Sun, 15 Mar 2026 12:15:58 -0700 (PDT)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976cdb1d20sm421911166b.41.2026.03.15.12.15.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Mar 2026 12:15:58 -0700 (PDT)
+Message-ID: <706a349f-63e5-4f47-9f77-c84db1058f5e@gmail.com>
+Date: Sun, 15 Mar 2026 21:15:51 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] iio: light: vcnl4000: remove error messages for
+ trigger and irq
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
+ <20260314-vcnl4000-regulators-v3-5-3c4a48d30676@gmail.com>
+ <20260315183127.59036e25@jic23-huawei>
+Content-Language: en-US
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+In-Reply-To: <20260315183127.59036e25@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260315-stmfts5-v2-11-70bc83ee9591@ixit.cz>
-References: <20260315-stmfts5-v2-0-70bc83ee9591@ixit.cz>
-In-Reply-To: <20260315-stmfts5-v2-0-70bc83ee9591@ixit.cz>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1222; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=GLiD2nULc18ENMziPB9JyYEPA1R8XKpCMXaNSc0DKdU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBptv/6OhC8SocPmih7wGnZLPlUoktbgC3LKcDkk
- rb7jDcfKtuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCabb/+gAKCRBgAj/E00kg
- cjyAEACecNgd/QeeVImpnVd0/qO9+NmYGuaGVLUdkOlwiR1azyYsPURJ0BoyOPVPUtW2SARrkbp
- /8y+IyIkP6AfVP++jl5EJ6Yb7RANAZofa7WRVNE7EPvM+AinjYj7tk5DCxmS+XbjjG+2fsOZL4n
- Dl0gV1yktFmywT+QT8MjjBZDsgbfZpLBjqJxQmtL4QLcK4bgb78wF0XiWrL4LRdHzKAU6OlpJaI
- LLZhvv4S1aZDfByji/VpDBP7wd78ADZmLqgk1qJrkzJGUpvMdkBWuNNy0ShAPwPQ/6qBCLxBMfi
- KGv68gmommlUQfPd6LWmEX9MRo8aVQloJoeJsr59cRpxKhqYzVENlAF0F2K02rH+CYwz+L1mrER
- z0r96/B3M1MbE3+C2x0pQaXCgiROmD9uWKcQdaURbtuTU7ZPh8a2o/HyfGotrhpkp7dpHd+gaW6
- nWbiiAQACYEfnCaawvKmRL5nX4eUXAN95YFnE9twgQpyQDKJjRMmpAmPpjqF97P3p7LTMpuutth
- cGBOEnjMVoyfpjhAt1qL3bw8zlbnbds2TzfEgRV7jZTAC5o+q6oR4UwDc7HpU3jorAULWVBzD+h
- T88D7ApzdQs8qIaVXoxc9Tf55Dwv6W/74Eed+xnAqYOhVLlW1Knj7K8nSzP+kO6QAFxtb8DY0I4
- yXJg9gbgW+l2ccw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-From: Petr Hodina <petr.hodina@protonmail.com>
 
-Basic touchscreen connected to second i2c bus.
 
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-Co-developed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+On 3/15/26 8:31 PM, Jonathan Cameron wrote:
+> On Sat, 14 Mar 2026 18:06:34 +0200
+> Erikas Bitovtas <xerikasxx@gmail.com> wrote:
+> 
+>> The error code is available in the log after return. Remove duplicate
+>> error messages to reduce noise in dmesg.
+>>
+>> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+>> ---
+>>  drivers/iio/light/vcnl4000.c | 9 ++-------
+>>  1 file changed, 2 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+>> index e501db7249d7..c8bb1826b916 100644
+>> --- a/drivers/iio/light/vcnl4000.c
+>> +++ b/drivers/iio/light/vcnl4000.c
+>> @@ -2041,11 +2041,8 @@ static int vcnl4000_probe(struct i2c_client *client)
+>>  						      NULL,
+>>  						      data->chip_spec->trig_buffer_func,
+>>  						      data->chip_spec->buffer_setup_ops);
+>> -		if (ret < 0) {
+>> -			dev_err(&client->dev,
+>> -				"unable to setup iio triggered buffer\n");
+> 
+> Is this one a duplicate? I don't recall us being particular verbose
+> in terms of error messages in iio_triggered_buffer_setup_ext() which is
+> where that ends up coming from.  I think there is only one path
+> where it can return anything other than -ENOMEM and that one is a duplicate
+> registration check (so fair to not print).  So perhaps all this patch
+> needs is a comment on what errors can surface from this call and why
+> it is therefore not worth printing anything.
+> 
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-index fa89be500fb85..48d7e7f83c285 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-@@ -26,7 +26,25 @@ &i2c2 {
- 
- 	status = "okay";
- 
--	/* ST,FTS @ 49 */
-+	touchscreen@49 {
-+		compatible = "st,stmfts5";
-+		reg = <0x49>;
-+
-+		pinctrl-0 = <&touchscreen_pins &touchscreen_reset>;
-+		pinctrl-names = "default";
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <125 IRQ_TYPE_LEVEL_LOW>;
-+
-+		switch-gpios = <&tlmm 136 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&tlmm 99 GPIO_ACTIVE_LOW>;
-+
-+		avdd-supply = <&vreg_l14a_1p8>;
-+		vdd-supply = <&vreg_l19a_3p3>;
-+
-+		touchscreen-size-x = <1080>;
-+		touchscreen-size-y = <2160>;
-+	};
- };
- 
- &mdss_dsi0 {
-
--- 
-2.53.0
-
+I do not see anything being printed on iio_triggered_buffer_setup_ext(),
+so I guess this is not a duplicate. The function can return -EADDRINUSE
+if a buffer is already assigned, to prevent cleanup function being
+called on a buffer that wasn't allocated.
+I will add this print back if necessary in v4.
 
