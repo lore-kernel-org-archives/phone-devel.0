@@ -1,66 +1,39 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA65373C18
-	for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 17:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A271219A7A;
+	Sun, 15 Mar 2026 17:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773594449; cv=none; b=pq+2E8+lBP5WfSn9V9Iah4piAghK3MpSGlHCmc0X4RZeaOQEGmA2PLETL+bWXPjUIwDVDJe9UDTdVyDoXElg5TnVQXrpFdF4TTM3r6EDkQLZSrLgmxR+nhdXiWh9f1ziwXUYNNGAvPUSMAE8QirhhwXJM/t+GSIbENwN8sMhv7I=
+	t=1773594564; cv=none; b=eCYDPp2s4hynl3X5r3oZHwSP0+YIostIi1Xox9r8kCQciJC+IoM1LGQxGEh0+NsjpCYt/zxPA+UTNYkYf92xIfRc3SVa+w/frWga/jIf/2PaTaE5IZ9SxfLhvPLTIgmI1862h1RJ0spUPFXPHLvUubt2aXLK/Yq2DAWkdfaOMno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773594449; c=relaxed/simple;
-	bh=u7g/7fNCkIeTMCYO3iV/qfav7MuiFPpqrSVcnGrxMBU=;
+	s=arc-20240116; t=1773594564; c=relaxed/simple;
+	bh=mX10FJAkNsenCP5RPPaxWE9Q884YI4qeCI+PcSfQa28=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qFfqDRxytz0P+z+Z6ArzyHuwxpLY4Wc6fUKL6PzS3pf7A3Wx2KSB6PtBG+vCqLtKeP+TEbSW6dNTULuRI64/GuTJecx5c1+yowNtkbY+qh+mpveYMjJmGv0wc0RknwhB534f8xZiu/PmLzKDOWfvvtyP3vhHae0umLoeggF2pwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MXpCvxXD; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=NYXEnUBnFjRA9ArkheVXzbgkq0DfopFCiw/a8AMS8IsSLq6sVOFNu5H7VZP8mOROdjdTtvINxCGzjC/m5tcQlAIt/SyoF4x6+mqU1DUf3SLYwjwIkZAgahkGqj4w2810t/Cupjm932FlgmVRxpif3M/XQxrwFfdSS2mQXYzoZE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=JDAURPEB; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXpCvxXD"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b97a0f18a3aso101497166b.1
-        for <phone-devel@vger.kernel.org>; Sun, 15 Mar 2026 10:07:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773594446; x=1774199246; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ups20uRnYGz6Ay3iT6SM4s0q/qm3+3T4sX9Egk3yWMY=;
-        b=MXpCvxXD51aZGQlwIvOcLBBX4zRc8uF4mZx4CZLh+TOtPiF6PJcWVoV4u5fXXNuxDA
-         5BKrczr5O0txyEDRwovSQzPzSbKpu29n0MXMyZDmtB4qxkIGUsVHSkHIBcRbLk8Jbnss
-         HGdty24QuonvyMas0c3xTjfbxicr15PKq6NDLNdOcVpbjWvnktVgeUePdPbuQtm7U9x5
-         j5jKKuYc2Ctvbh0c88OS8y3C/sum8y464jAjmLfv/4ZZgAX5LQPi5dkhl2WE/1+cgqjp
-         kgH8e65UAoJiFHwS1hrhzClXvg9A1rgDuTQvS0kKgOyRYA9BGjuDboP+3m4bHJ6G2FlQ
-         M5lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773594446; x=1774199246;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ups20uRnYGz6Ay3iT6SM4s0q/qm3+3T4sX9Egk3yWMY=;
-        b=sVOWKl0rGdIMaV5SwO3icb4IWDKc+CjagJSxQPGNmNKRS5rr1wKhgGAQd06USwz3fv
-         Iq9jdGUipRoPGDbxrkaXOhE/tlu2RWiUc/oLHx1oBag8E1nPGeDE8KDDnl2odtFSUX1f
-         MLBzMgcqRBnD//bcIFpTArpgu4ri19tkiti8xu8GlRDOrrBICNhKvNsj+oDDJ+cxc7vq
-         sA2a2C9da8KorKuYNX01kVwsGAGa8wRw3XiV91q76udP4AR1OyVmD9Y0uPgTBUH4QSp5
-         SLE3DOiouh7Y199JqOfS/PxlAKAlM0CMKipJGkG3wYRQ6T7z7ugDToRD4VjJjR9yQCvy
-         bDXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUtKYW93NYddk/Cg1tF6eZYD3K+QLiij6kNgTaNta/cpAd9XvK6+OMm0+yb2PIOvruBhHWO8f8K+fO4oA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6J2DI5dOXuN4MHtKjeWbO/bdBCqeB0Z7DtBt8w5tLBesZNQhY
-	3OKqC1QyJqL6xFBVb93yDRsF0mnfc0JIQjTDg1fNq52DrU3vW8xgVp1b
-X-Gm-Gg: ATEYQzzne1aNzXf+tkWVf6403oPzh1RoVlPBkWHNzPnbSXtZCMdnJd9NuVSc2FPzDwF
-	nxzFwJADI7bW0S63H832PzPgSTy//87GmafcwfG8XAC2+57Kqfw/BJ0YHU8hkVo1DRQsJRaQIDj
-	pblNEWTU0UThrQ93/OoaeZHo+9C5loPzJl30ACR5YQn3UzZ7os+m1F1ODJLPgzO4NeLvJAVPE6H
-	FujuszL0sTGde3j0gyniCnjwDsnkEt0FMCONw+ftF5T36vWKaD9YIR++EtePMU4HKawWdkyzXdc
-	LX7V2h0D8HyHASRllBe4efaD2jYapuvKW9y3wtU5IfaSIZaVICr4cweeGNwdo32Bwnoswy57vRG
-	1/SzdNt4ZpmNnFrR8DUs8Zd2qJT0Q//guXfccW+2uEDg6aSz6EFTJXPTOa4F9y4hlwATdFISuPf
-	lk8ITKI/nn97yMjdsmV88zBl+xBXpjSfwxenYg
-X-Received: by 2002:a17:907:fd0f:b0:b87:1fe6:f223 with SMTP id a640c23a62f3a-b9765012d6cmr568157766b.6.1773594446007;
-        Sun, 15 Mar 2026 10:07:26 -0700 (PDT)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976d0b5886sm399606066b.65.2026.03.15.10.07.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Mar 2026 10:07:25 -0700 (PDT)
-Message-ID: <567e0d49-270a-4442-8416-a9625bbe98f5@gmail.com>
-Date: Sun, 15 Mar 2026 19:07:24 +0200
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="JDAURPEB"
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id EC49653400BC;
+	Sun, 15 Mar 2026 18:09:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773594556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gpKpWcE4rirX56wK1cuA2VwU8rzHhAoRcRhE8IIu4P8=;
+	b=JDAURPEBzqngX20RIdtqMbmfw7/J1wVHScRL52inZqhWiKjTTDlI4Epdt7hTK7aEKx34pv
+	+j3/ybQRUfpi3tfrccUnRSkSYYudDDAmWGhBSza51KBVcZVEdUyC9zAfT/5A36dCmXFyd3
+	XcyPVxORq2fmWABVDN1KMBjVb3e+eMo=
+Message-ID: <4b8c8d8c-d2f3-4938-a451-e8e9524d40c3@ixit.cz>
+Date: Sun, 15 Mar 2026 18:09:14 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,77 +41,116 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] dt-bindings: iio: light: vcnl4000: add regulators
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
- <20260314-vcnl4000-regulators-v3-1-3c4a48d30676@gmail.com>
- <20260315-honest-debonair-oarfish-3a33ed@quoll>
+Subject: Re: [PATCH 08/10] dt-bindings: input: touchscreen: st,stmfts:
+ Introduce STM FTS5
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+ <20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz>
+ <qibmsgfttxo6kiaqyjljj6otamqp7okfr4abwpmuo7daanl6qu@ka33zvoz7lte>
 Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <20260315-honest-debonair-oarfish-3a33ed@quoll>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <qibmsgfttxo6kiaqyjljj6otamqp7okfr4abwpmuo7daanl6qu@ka33zvoz7lte>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 01/03/2026 23:40, Dmitry Baryshkov wrote:
 
+[...]
 
-On 3/15/26 10:49 AM, Krzysztof Kozlowski wrote:
-> On Sat, Mar 14, 2026 at 06:06:30PM +0200, Erikas Bitovtas wrote:
->> This commit adds supply properties for the sensor, I2C bus and IR LED
+>> +    then:
+>> +      properties:
+>> +        switch-gpio:
+>> +          description: Switch between SLPI and AP mode.
 > 
-> Please do not use "This commit/patch/change", but imperative mood. See
-> longer explanation here:
-> https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
-> 
->> anode supplies [1], which can be found in vcnl4000 ambient light and
-> 
-> So other devices do not have these supplies? Or have only some?
-> 
-> You already received that question, so I assume you checked. Then check
-> again because 4040 has VDD.
-> 
+> This doesn't sounds like the GPIO on the touchscreen, more like the
+> external schematic component. If it need sto be turned to one position,
+> it might be better to use GPIO hog for that.
 
-VLED is supposed to be the IR anode pin. Every model has one. It is pin
-1 on vcnl4000, vcnl4010 and vcnl4020, pin 6 on vcnl4200 and pin 4 on
-vcnl4040.
-VDD pin is pin 7 on vcnl4000 and vcnl4010, pin 5 on vcnl4020 and pin 3
-on vcnl4040 and vcnl4200.
-VDDIO is an external supply to the I2C bus for the sensor.
+Right now yes, but the GPIO serves to switching between SLPI and AP mode at 
+runtime, see [1]
 
-> thus in
-> that case 
+The driver lack supports for SLPI, but at moment when SLPI support lands, we 
+should be able do something like:
+
+-> device starts, touchscreen works
+-> screen goes to sleep, but instead of powering off touchscreen, it switches to 
+SLPI mode
+-> user taps at touchscreen, device wakes up
+
+Thus I think we need to support this GPIO in the driver.
+
+David
+
 > 
->> proximity sensors, to ensure the sensor is powered on before proceeding
->> with setup.
+>> +
+>> +      required:
+>> +        - switch-gpio
+>> +
+>>   examples:
+>>     - |
+>>       #include <dt-bindings/interrupt-controller/irq.h>
 >>
->> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
+>> -- 
+>> 2.51.0
 >>
->> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->> ---
->>  Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
->>  1 file changed, 7 insertions(+)
 >>
->> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> index 2ba4d5de4ec4..a1b4c02db246 100644
->> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> @@ -33,6 +33,10 @@ properties:
->>    interrupts:
->>      maxItems: 1
->>  
->> +  vdd-supply: true
->> +  vddio-supply: true
 > 
-> VCNL4000 does not have VDDIO and VLED pins.
-> 
-> Best regards,
-> Krzysztof
-> 
+
+-- 
+David Heidelberg
 
