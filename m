@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2114A81AA8;
-	Sun, 15 Mar 2026 18:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A949319B5A3;
+	Sun, 15 Mar 2026 18:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773598582; cv=none; b=ENSPKHbxyIZsIR9HELyYwQVK6C7O1iCAp0/TGMwzsJDsYRxc6fy+foPp08puV8ecVe5QT5Eoxp0x5SFmHE16NF/5nzrBlO8nV/6007r1EALS4uzfYEMT2gXBhHIRkvRtpumBGrlnn67Nj6o/wQpQjSTa4s3+EHyfAXRZ2gxjTZw=
+	t=1773599212; cv=none; b=NvyejxXq1vOe1vY/5i5BcTTPgfr4xw/6Q0pFusja6NGFtSV05dWKmYsRK6txwq285de67P4ZKVIW4TtCFCcY/rXYbI7LYa1gV5k1r4oRAjjVzyVL/qst5YMKQKnSta+JpMYVKFXFBHp/LGcVtiA2qzpyfDL2QJdJEdHb3zkCZFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773598582; c=relaxed/simple;
-	bh=71RIg7xRGVJjhjqpJ7ft9mWQQXDFw3/vQjLHuEITUXk=;
+	s=arc-20240116; t=1773599212; c=relaxed/simple;
+	bh=bA0X/cdAPTa3TTm+zrn9vDdqCAipGretS+zp96/vxyA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ueap1dz9OZWooEy3TCIdj6xpiV9IviD1UCTCyQqrI6TiRxdfCWh7I7TQVjMne8DasmJiHTc9xgugxUSf+mmOiH5fXxAbKmEZXoQzZie1RKlwj6SjU3Iz+IT+bvdYFdeWvCTlbowx/OKjPILsdNyJia8z1O2xvNX0yN2gMcHI8/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMFlO8dJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tSdDu6zUtoGfnTc7QA8CmegZwvPaAqXTgUDZNHjzGu75gl8qymNwX0vacOxPoNrmbhDlPaUxyt8k3Ixkn3ZG4NxWV11FMg1t2DWkYcjTtO/3QrSkcv2WAFx8NvV+RiKmflginIuik48/6zZA1IYZWvIqpAgNsIgQ0zcaMzx9tUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVHnml3+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMFlO8dJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12100C4CEF7;
-	Sun, 15 Mar 2026 18:16:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVHnml3+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5236EC4CEF7;
+	Sun, 15 Mar 2026 18:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773598581;
-	bh=71RIg7xRGVJjhjqpJ7ft9mWQQXDFw3/vQjLHuEITUXk=;
+	s=k20201202; t=1773599212;
+	bh=bA0X/cdAPTa3TTm+zrn9vDdqCAipGretS+zp96/vxyA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KMFlO8dJ8RW5T4iTDVQEGaoVqTj4Va4XWEDeKJ4GlAB4fIsO1eBBNa+TleBKMp5dr
-	 +o4FUOQsb2Fk0Xaox4JRd9gzZv604IuMaNtt5LaIxJaB51/n0niMNGbxGDdo5when1
-	 RPOr2a/3Lk/K1r5n+rAijadatOXc7DwN61L71WkZ2LDdjFgImkeseIDg/KS6gS5gIo
-	 /Qteara/p5aD+DfWUiM//ZAvdj9616hl5BTwt0DBefvj0IItwgDXfjzspjl3OosjEu
-	 1zAnO2oWm2tEh99YNg8N9K6dSHAUtWijYwlaAH+wiYGNGFG2sNVjJIgTNiNthIE8mu
-	 RFhWG20dGNMtA==
-Date: Sun, 15 Mar 2026 18:16:10 +0000
+	b=hVHnml3+ZneQQO5V1+nquOTr+v0PrGhAdTFh9sgmSXrRQXM617BiDKdOM+EdH/fBZ
+	 +WSE3Bq4rVCUjAv8Ri9wGkAyHaRzooNUc5acT3IXq8JYxWEBSI9wJH5s7Jo4nwBdaE
+	 kGDTak96F2a7ccy+shu1CdSbjkUOxw+tz0pl6c7BoN19O0Vc+8Ewiw+MXsZzANIygh
+	 zmwy+lgjLoIB3L9Zm0CtAk2udTUtZY69ZA/y/NGmzxWVDp2eq1TFR4TdaNz5oYxni3
+	 687zY07NSt1yYTmu3ZeAtMD+OT7kLXzYy8eBPCUwNENzWVDpOq56SucVFqfuw2hqGT
+	 KAlVtGFl06wAw==
+Date: Sun, 15 Mar 2026 18:26:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Erikas Bitovtas <xerikasxx@gmail.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Peter
- Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, Raymond
- Hackley <raymondhackley@protonmail.com>
-Subject: Re: [PATCH 2/2] iio: light: vcnl4000: add regulator support
-Message-ID: <20260315181610.4a99e985@jic23-huawei>
-In-Reply-To: <abFejMb3uLbg4fiu@ashevche-desk.local>
-References: <20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com>
-	<20260311-vcnl4000-regulators-v1-2-66b6038ce563@gmail.com>
-	<abFejMb3uLbg4fiu@ashevche-desk.local>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] iio: light: vcnl4000: replace mutex_init with
+ devm_mutex_init
+Message-ID: <20260315182642.5c6918ad@jic23-huawei>
+In-Reply-To: <20260314-vcnl4000-regulators-v3-3-3c4a48d30676@gmail.com>
+References: <20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com>
+	<20260314-vcnl4000-regulators-v3-3-3c4a48d30676@gmail.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -53,69 +52,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Mar 2026 14:22:36 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Sat, 14 Mar 2026 18:06:32 +0200
+Erikas Bitovtas <xerikasxx@gmail.com> wrote:
 
-> On Wed, Mar 11, 2026 at 01:38:03PM +0200, Erikas Bitovtas wrote:
-> > Add supply, I2C and cathode voltage regulators to the sensor and enable
-> > them. This keeps the sensor powered on even after its only supply shared
-> > by another device shuts down.  
+> Replace mutex_init used across driver with its device-managed
+> counterpart, so all assigned mutexes get destroyed.
 > 
-> > Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> > Reported-by: Raymond Hackley <raymondhackley@protonmail.com>  
-> 
-> Where was it reported? Do you need Closes tag?
-> 
-> ...
-> 
-> > +#include "linux/array_size.h"
-> > +#include "linux/regulator/consumer.h"  
-> 
-> Double quotes, huh?!
-> 
-> >  #include <linux/bitfield.h>
-> >  #include <linux/module.h>
-> >  #include <linux/i2c.h>  
-> 
-> Also, please keep the list ordered.
-> 
-> ...
-> 
-> >  	mutex_init(&data->vcnl4000_lock);
-> > +	ret = devm_regulator_bulk_get_enable(&client->dev,
-> > +				      ARRAY_SIZE(regulator_names),
-> > +				      regulator_names);
-> > +	if (ret < 0)
-> > +		return ret;  
-> 
-> You can't add devm_ after non-devm calls.
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+Hi Erikas,
 
-This one happens to be fine because there is no cleanup of the
-mutex_init(), so it is sort of not mixing devm and non devm.
-That is kind of a historical thing where I for one wasn't convinced
-it was worth the annoyance of mutex_destroy() until the devm
-easy way of doing it came along.
-
-Now, as the code is being touched anyway, I would
-like that moved to
-ret = devm_mutex_init();
-if (ret)
-	return ret;
-as a precursor patch both as it makes it obvious we are still devm and
-to get the advantage when lock debugging is turned on.
-
-Thanks
+One related area that I noticed whilst checking this patch was
+safe wrt to ordering.  I think cleaning that up before this
+patch would make this one more obviously correct.
 
 Jonathan
 
-> Also it would help you to have
+> ---
+>  drivers/iio/light/vcnl4000.c | 17 ++++++++++++++---
+>  1 file changed, 14 insertions(+), 3 deletions(-)
 > 
-> 	struct device *dev = &client->dev;
-> 
-> at the top of the function.
-> 
-> ...
-> 
-> With the above being said, I expect a series out of two patches at least.
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index 939ff2d65105..0ee307fc5ab7 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -356,6 +356,8 @@ static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+>  
+>  static int vcnl4200_init(struct vcnl4000_data *data)
+>  {
+> +	struct i2c_client *client = data->client;
+> +	struct device *dev = &client->dev;
+>  	int ret, id;
+>  	u16 regval;
+>  
+> @@ -400,8 +402,14 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+>  	}
+>  	data->al_scale = data->chip_spec->ulux_step;
+>  	data->ps_scale = 16;
+> -	mutex_init(&data->vcnl4200_al.lock);
+> -	mutex_init(&data->vcnl4200_ps.lock);
+> +
+> +	ret = devm_mutex_init(dev, &data->vcnl4200_al.lock);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = devm_mutex_init(dev, &data->vcnl4200_ps.lock);
+> +	if (ret < 0)
+> +		return ret;
+I think this is ok because the only thing undone in remove is the power state
+setting that is the last call in this function but the mixture of non
+devm and devm calls in init is less than helpful for readability.
+Given both init() callbacks end with
+return data->chip_spec->set_power_state(data, true) and the remove
+just calls that callback without any wrapping up in different init functions
+I'm thinking it would make it all more readable if we didn't consider
+turning on the power as part of the _init() but instead called it
+directly from probe().
+
+That would perhaps give more readable code and avoid mix of devm cleanup
+and other cleanup in those callbacks.
+
+
+>  
+>  	/* Use 16 bits proximity sensor readings */
+>  	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> @@ -1985,6 +1993,7 @@ static int vcnl4000_probe(struct i2c_client *client)
+>  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  	struct vcnl4000_data *data;
+>  	struct iio_dev *indio_dev;
+> +	struct device *dev = &client->dev;
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> @@ -1997,7 +2006,9 @@ static int vcnl4000_probe(struct i2c_client *client)
+>  	data->id = id->driver_data;
+>  	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
+>  
+> -	mutex_init(&data->vcnl4000_lock);
+> +	ret = devm_mutex_init(dev, &data->vcnl4000_lock);
+> +	if (ret < 0)
+> +		return ret;
+>  
+>  	ret = data->chip_spec->init(data);
+>  	if (ret < 0)
 > 
 
