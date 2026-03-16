@@ -1,177 +1,208 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BC720468E;
-	Mon, 16 Mar 2026 06:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486423559C4
+	for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 08:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773643689; cv=none; b=YNxU22Rj7LUATn/J/LOvR/Jx09h88EP5n/UOv11JrIJQ4Uwbq75L9Dtp0+ICQw4M0JkvhF30Nil2CSHKDKUwzQwf2LhZUzEkvHsVe6orbIVBu17codz8jW/xWopCS4X8y+xAhZTbeLTPFOvg3Yvn7u4XTRiY1aRIto4HuZI95cY=
+	t=1773648185; cv=none; b=adP0+zPVCxtNvWAxf2lZgnNcHXVkY/yPmUwkg4ymTtGrCrgam40u5qDrrUwZALwkYVVUkamq35SamkuMIAJWhVcLpharOHlv9h3bBMSObF2rH5lm85AsO7VvWqpD0pajQgiWVgBFQOQ4Kt1UvCma8nVAC2wgI52Udnt1EwJUylc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773643689; c=relaxed/simple;
-	bh=DvcWku+iWuEBTEQLmL0mPUKhyzSKNUO8/1ZTbR7l0Bw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkFnKYqnIqoUX49qFp6jJPFVLbfFk53dvE43NyQeU8MfwF/JZHTCiJsz9pF44xlfrH2nTSSOg1Ytk+/bjTmlJ40C4uYbzv3RqburH6E2OWf5kNk0xduejtVcEYRjp6IOfnxaEZD4AzHj9KQhCkJgSdM0V0ve9iiI6JYeXS144qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=N2PI9mya; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1773648185; c=relaxed/simple;
+	bh=I3ozpn0AlufRc2Jss5KsZyj0nVqY6AoUdItpi643AQI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Py3XUaDCTxH4j8uOmpzGnZ0cidudLHR1OELnO0X63SEd1NVnimWiSjlZJQmLSU0Lf/bjpuhB7tFl9HGQQeBk7YiVZXaxK3dJ5TI0VYpjpwkY35bkRovZE2/Ollv+pl61HhGcSJf/qKw80zdlj5Z0Tx5ya3gDJhJLn4ygTbfx+IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=TC477T5P; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="N2PI9mya"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1773643677; x=1773902877;
-	bh=8ICJw08UJIz0AP6P0cn3L4DZUL5fjtlF4dxKFsE46as=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=N2PI9myakKW6GEoOdz3lHidvmY9XMdFsqujfxRNBFbMJ6/EYfKdE4JyJIW7+raV/O
-	 LZc5sgNX62j17yMz4qkLuePZQn3CRHbtSlpU7yBHMdOhSb9U769EkoDlPDGBLzqtOR
-	 dnMBD9idzRqwneC4l3SHO1B/uwLJW04KTSihi6J2c9Lsi1ZlPdweyAg05I+K3LBaat
-	 9NRd6G5HMqJ8U6ycat/5BoEF/6c1x2WqL9jp4v5N2yHTfmP9QsdUyBeTS96GXLmnb4
-	 NwgbBBMnYi0I2b2zNC+9F6lGs4hheVnX5rxNzaRLqWykOd0J0AiBySWpUoDnuO6P4l
-	 8IDtDAlc4Na4w==
-Date: Mon, 16 Mar 2026 06:47:52 +0000
-To: Krzysztof Kozlowski <krzk@kernel.org>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
-Message-ID: <2Iorhp1aLx-JWsIeTVctlNqbF5BWAbE7_0Ki5GL2nNNp0XViFuNBRJV60_KF0Zh8I8AamFvv7hFWZXajcVrqLlLFnfOI_csagePlYvLYAZo=@protonmail.com>
-In-Reply-To: <2d0afdab-78b7-4e60-b132-98cfcbbbb5af@kernel.org>
-References: <20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com> <20260308-rimob-new-features-v1-1-aa2c330572c0@protonmail.com> <369b48d9-f089-49a2-89cb-a4e0c68f92fa@kernel.org> <7Ft_cDw10-3MmNTrKncMut5g08sodd9CL7r7AGXAtPPqZpXtHEgmqm05WhEpYMZzFEs4B0KWz-LU27Z0_YDnc44nXhdUrUt5X2dWK7D6pYM=@protonmail.com> <db04882b-7f30-464c-91a6-578302aef4ff@kernel.org> <Nz_hTfDbWqQk8-FcCknxZKO8dIhCAGueG89SRe2LkTG1VK4KjoH-UZH6bsOvqEySwNRjJtsEUL7vxxIXOWyyzLOtM9YLZaCuhPfxNz0mVyk=@protonmail.com> <4cfc7b40-f172-4eae-8f19-4a3eb858075e@kernel.org> <q2whOVhy_Cqm5m8toyiZ0PQQThv6LLoo8a5ialb_td0o5yM1FRLIMRZh2FKRiwSuwPfmfibU6Z6_jz6kJFJGlFfu3V-ELMteHVDM7zpnSBI=@protonmail.com> <2d0afdab-78b7-4e60-b132-98cfcbbbb5af@kernel.org>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: d6ec91e3516ec63a908e0b35f46289badd97cb96
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="TC477T5P"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-661d20c9787so6030526a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 01:03:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1773648183; x=1774252983; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sU3L+3tbACqITsDz16andVuW8wZL35d5pmOo8PiAQ1A=;
+        b=TC477T5PvaGkjcNwJm7pCqcz8viqAUum5A18ihSZaEmGWIxEvx3ewsyFaw58OamBkT
+         B0Ta3lk6ieThz7uSz6TzQnsQ+u/6+/P3GsJXcxxmjQF64EisRgGDi8hVZ+06+a7/QZHd
+         KY+GFQ8v1xqBJSTshlsWqiCfDmbohnH4RavHs6OSRKK/gBiKgTUBh8Jnxl0M4ZBhjEnP
+         qHQCNMwlz1dkd5k4iweQt9GhdTpt8OqGpPi+GN1G6w9jOJVbFvNChsG2i95SaYbiomss
+         m6hazGTRuBHQW+eshgYiqfQp+T9eEGxYynYIXH9Fza02ByhkVEbnAiGNqWIRrcmLnKLv
+         9nSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773648183; x=1774252983;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sU3L+3tbACqITsDz16andVuW8wZL35d5pmOo8PiAQ1A=;
+        b=VkU3oeseHaab7Di9qSkEyKcSjRJ2bS4WEuQcoQJRiUkPjNVaViiWyRznKs18J8nL12
+         HtMPNpydJfX8m+xEPaAViSkJzd4BCESrn+I0yBLm+hGjIvJkrYXfd2NFG27ewU9X0ZLj
+         SZ1oWuaNoAKHNuCFRuqygjoBnyOaSiVxpN+Y/CzBSnoIQgkD91CoHG0xa+WMfAfi9x9m
+         up43BR1GVuwho/yDSlyujTnE9DNsEfo3ZuO+mUM2facnQ9/kKk8EJyjDiiB0pEObewJy
+         w4ADS2QZKX5mm7kyvOHukJbj1Imd1lWhMWXg5AF94x6DnmFbs5pqvj78a2wDOI9DhCVz
+         qoIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvL9KbilrFXLkaon/t2UIzLlFxExfAakz+TqyToBhlozQXBkLn2UtZ9rcYOcYPadonrzzwjLGsWLP0ow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxchIEJ/SRgMea2G6Qio26SRBVFJ/8nEZ6RZHMpBkqOl/Ghyy+n
+	B3CEwFEboGWTFuOrTWk4mDLJaWe6BL9IgjeF12OHAZ2PWIdvR+aTEsSVQP5t+hEZues=
+X-Gm-Gg: ATEYQzwsXyu0ar9u1vuIhzkA77UNQwU3ozTi8CDRxh217rnkA/p7vRjt4uGTZ67EmUx
+	9Fakmk/fwzVmYYEgRUEtLXS845BoJKYNB3poX9Y5FNUK+L4xKqGbX8DGiTzID9xS+Ylf+nYubsq
+	4kc4nrN6esAhpcmqdVQ3NAdXn92NKot58g1YL8FA0qfQ4Exau90DKSPdq0sORIOBRAkFqAAJNoV
+	X01WLSFEQOuCHBrVdBlF3tajnvWFG2YPJqFY7EzQptL/VLv6KuiKBBWWkHXXhfVrFQk4MI8vucl
+	atcajQSEMe6DgaP9BHiymA7msncum+RnbB2aZod1oULZGtSjWoVhHvim4PntKp4elXWBBR7YrIb
+	bLU84nLv/lZ4BaitBbdmTO1jkJHVirqf1OBcfaDAYEB56v8W49PCLjOoBn+9QJqGjurbuDqrOHY
+	1d5v841QShXsucGMkdZPikSPci7VAHfR6y9q5PgKHyUNv5y+9gv+S3Pnz0dwJiYN/ZDZXI
+X-Received: by 2002:a17:907:98e:b0:b97:554:f12e with SMTP id a640c23a62f3a-b97650c2f9bmr622693766b.14.1773648182486;
+        Mon, 16 Mar 2026 01:03:02 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976d0b5886sm504167566b.65.2026.03.16.01.03.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Mar 2026 01:03:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Mar 2026 09:03:01 +0100
+Message-Id: <DH41T22PJEW9.3EO3P50QRXG8H@fairphone.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Krzysztof Kozlowski"
+ <krzk@kernel.org>, "Bartosz Golaszewski" <brgl@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Loic Poulain"
+ <loic.poulain@oss.qualcomm.com>, "Robert Foss" <rfoss@kernel.org>, "Andi
+ Shyti" <andi.shyti@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 2/4] dt-bindings: i2c: qcom-cci: Document Milos
+ compatible
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260116-milos-cci-v1-0-28e01128da9c@fairphone.com>
+ <20260116-milos-cci-v1-2-28e01128da9c@fairphone.com>
+ <20260117-obedient-galago-from-eldorado-8e0ba4@quoll>
+ <cb2430f2-8601-4c72-af6b-10f1ff16c188@oss.qualcomm.com>
+ <DGDV2EMXHDS3.2377AQBNDDHAV@fairphone.com>
+ <DH1LC0C4QD0Y.1XKV1PWFCBQRN@fairphone.com>
+ <jexys4ypbizesa3whuvtq36t6hpqm4httlbwtzkulz5pld4yul@lf3joaistvfb>
+In-Reply-To: <jexys4ypbizesa3whuvtq36t6hpqm4httlbwtzkulz5pld4yul@lf3joaistvfb>
 
-On Friday, March 13th, 2026 at 09:32, Krzysztof Kozlowski <krzk@kernel.org>=
- wrote:
+On Fri Mar 13, 2026 at 5:18 PM CET, Dmitry Baryshkov wrote:
+> On Fri, Mar 13, 2026 at 11:43:07AM +0100, Luca Weiss wrote:
+>> On Fri Feb 13, 2026 at 2:16 PM CET, Luca Weiss wrote:
+>> > Hi all,
+>> >
+>> > On Tue Jan 20, 2026 at 2:18 PM CET, Konrad Dybcio wrote:
+>> >> On 1/17/26 12:54 PM, Krzysztof Kozlowski wrote:
+>> >>> On Fri, Jan 16, 2026 at 02:38:56PM +0100, Luca Weiss wrote:
+>> >>>> Add Milos compatible for the CAMSS CCI interfaces.
+>> >>>>
+>> >>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> >>>> ---
+>> >>>>  .../devicetree/bindings/i2c/qcom,i2c-cci.yaml          | 18 ++++++=
+++++++++++++
+>> >>>>  1 file changed, 18 insertions(+)
+>> >>>>
+>> >>>> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yam=
+l b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> >>>> index a3fe1eea6aec..c57d81258fba 100644
+>> >>>> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> >>>> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+>> >>>> @@ -27,6 +27,7 @@ properties:
+>> >>>>        - items:
+>> >>>>            - enum:
+>> >>>>                - qcom,kaanapali-cci
+>> >>>> +              - qcom,milos-cci
+>> >>>>                - qcom,qcm2290-cci
+>> >>>>                - qcom,sa8775p-cci
+>> >>>>                - qcom,sc7280-cci
+>> >>>> @@ -263,6 +264,23 @@ allOf:
+>> >>>>              - const: cpas_ahb
+>> >>>>              - const: cci
+>> >>>> =20
+>> >>>> +  - if:
+>> >>>> +      properties:
+>> >>>> +        compatible:
+>> >>>> +          contains:
+>> >>>> +            enum:
+>> >>>> +              - qcom,milos-cci
+>> >>>> +    then:
+>> >>>> +      properties:
+>> >>>> +        clocks:
+>> >>>> +          minItems: 3
+>> >>>> +          maxItems: 3
+>> >>>> +        clock-names:
+>> >>>> +          items:
+>> >>>> +            - const: soc_ahb
+>> >>>> +            - const: cpas_ahb
+>> >>>> +            - const: cci
+>> >>>=20
+>> >>> Same comments as other discussion these days - I guess that soc_ahb
+>> >>> serves the same purpose as camnoc_axi, so this is just last entri in=
+ the
+>> >>> if:then: blocks.
+>> >>>=20
+>> >>> I really find this binding terrible - around six names for AHB - so =
+I do
+>> >>> not want another combination...
+>> >>
+>> >> I dug up the CCI doc, it talks about the CCI having a CC_CCI_CLK cloc=
+k ("cci"
+>> >> here) and a CC_PBUS_CLK (AHB interface to the rest of the SoC).
+>> >>
+>> >> The CAMSS TOP doc (for Milos specifically, but I would assume there's=
+ a
+>> >> pattern) says that for access to CCI_0, I need to enable CAM_CC_CPAS_=
+AHB_CLK
+>> >> and CAM_CC_CCI_0_CLK. CPAS is a wrapper inside CAMSS that contains mo=
+st of
+>> >> the programmable IPs on there (notably not the CSIPHYs, at least not =
+on this
+>> >> platform)
+>> >>
+>> >> It further mentions that GCC_SOC_AHB_CLK is required for *any* regist=
+er
+>> >> access within CAMSS. Perhaps it sits right in front of the xNoC-to-CA=
+MNoC
+>> >> interface.
+>> >>
+>> >> This only enforces my imagination of CAMSS being a fully contained "b=
+us"
+>> >> (perhaps somewhat like AxNOC on 8996 represented with a simple-pm-bus=
+)..
+>> >>
+>> >> +Dmitry, myself and a number of our colleagues were deliberating how =
+to
+>> >> best represent the hardware going forward and I think we at some poin=
+t waved
+>> >> the idea of putting every camera subdevice under a "camss: bus@ {}"-t=
+ype node,
+>> >> which would hold the reference to the TITAN_TOP_GDSC. This seems fitt=
+ing for
+>> >> housing the SOC_AHB clock as well and therefore concluding this discu=
+ssion.
+>> >
+>> > How can we continue here? What change can I do to unblock this? I can'=
+t
+>> > tell whether soc_ahb =3D=3D camnoc_axi for this platform so I need som=
+e help
+>> > here.
+>>=20
+>> Any feedback on this?
+>
+> I went on and checked. No Milos's soc_ahb !=3D camnoc_axi. They serve
+> different purposes.
 
-> On 13/03/2026 09:26, cristian_ci wrote:
-> >
-> > On Tuesday, March 10th, 2026 at 21:06, Krzysztof Kozlowski <krzk@kernel=
-.org> wrote:
-> >
-> >> On 10/03/2026 18:48, cristian_ci wrote:
-> >>> On Monday, March 9th, 2026 at 16:08, Krzysztof Kozlowski <krzk@kernel=
-.org> wrote:
-> >>>
-> >>>> On 09/03/2026 15:52, cristian_ci wrote:
-> >>>>> On Sunday, March 8th, 2026 at 17:13, Krzysztof Kozlowski <krzk@kern=
-el.org> wrote:
-> >>>>>
-> >>>>>>> +  vsp-supply:
-> >>>>>>> +    description: positive voltage supply for analog circuits
-> >>>>>>
-> >>>>>> Both are odd. Datasheet says vci, vddi, vddam and optional avdd, a=
-vee.
-> >>>>>>
-> >>>>>> There is no VSN and VSP. Otherwise please point the page in datash=
-eet or
-> >>>>>> some schematics.
-> >>>>>>
-> >>>>>> Best regards,
-> >>>>>> Krzysztof
-> >>>>>>
-> >>>>>
-> >>>>> I'm not sure about that. Writing panel dt-bindings has been based p=
-retty mostly on vendor devicetree - which also describes somehow the panel =
-and makes that working with the final product released to the market - so I=
-'ve to necessarily consider that.
-> >>>>> Then, I could agree that vendor devicetree might be not compliant w=
-ith upstream rules and could possibly make mistakes with describing the har=
-dware, so I'd like to find a way to describe that in a more proper way, acc=
-ording to upstream rules.
-> >>>>>
-> >>>>> That said, vendor devicetree describes lists four power supplies fo=
-r  DSI: 'vdd', 'vddio', 'lab' and 'ibb' (which have the following property =
-names, respectively, in qcom,mdss_dsi_ctrl node: 'vdd-supply', 'vddio-suppl=
-y', 'lab-supply' and 'ibb-supply'.
-> >>>>> Two of these are related to ds/controller (apparently, 'vddio' shou=
-ld match VDDI power supply in NT35532 datasheet.
-> >>>>>
-> >>>>> The remaining two supplies are related to panel ('lab' and 'ibb'). =
-These ones are two 'external ' regulators ('external' from NT35532 perspect=
-ive), which provide power supply to display, located in the qcom PMIC (in t=
-his case, that should be PMI8950). WRT to power supply names described in t=
-he bindings ('vsp-supply' and 'vsn-supply') are the same as 'lab-supply' an=
-d 'ibb-supply', just named differently in the vendor devicetrees.
-> >>>>>
-> >>>>> Usage of 'vsp'/'vsn' naming for power supply properties is grounded=
- on they commonly being used at upstream (different panel bindings make use=
- of these properties), on one side, and also described on schematics of dev=
-ices with the same hardware configuration (LCD_VSN and LCD_VSP), on the oth=
-er.
-> >>>>>
-> >>>>> In the meantime, I've found out schematics for 'xiaomi-mido' (anoth=
-er MSM8953 device) - a variant of this device is shipped with a panel also =
-using NT35532 IC (just like my device) - and LCD_VSN/LCD_VSP are clearly sh=
-own there too.
-> >>>>>
-> >>>>> I couldn't find much more information about the display on my devic=
-e and the only resources available about that are those listed above, as of=
- today. In light of my reply, I ask if it is still necessary to describe, i=
-n the bindings, power supply properties properties not used currently in th=
-e board DTS file.
-> >>>>
-> >>>> Please wrap your answers so this will be possible to parse.
-> >>>>
-> >>>> You write bindings matching the hardware and for the hardware, not f=
-or
-> >>>> the downstream code. You cannot add supplies which do not exist
-> >>>> regardless what some vendor wrote somewhere
-> >>>
-> >>> Vendor has also described the hardware by storing information (by inc=
-luding info
-> >>> about panel too) directly inside the device itself (/sys/firmware/fdt=
-).
-> >>
-> >> Vendor does not care about rules of DT thus puts there completely fake
-> >> information just to make their drivers working
-> >> .
-> >
-> > I'm not sure what that statement is based on in the specific case of
->=20
-> It's based on years of looking at vendor code.
->=20
-> > the panel I'm actually testing. A set of clues (some of which were also=
- mentioned
-> > in my first reply some days ago) point out that rimob's panel is really=
- supplied by
-> > two regulators part of PMIC [1]. Not only for this reason, I do not hav=
-e
-> > enough solid reasons, after all, to consider vendor data about the pane=
-l mounted in
-> > this device (rimob) as not decently reliable, so I cannot ignore them, =
-at least.
->=20
-> And I did not disagree that you need regulators and that vendor
-> correctly wired two of them.
->=20
-> The comments are about naming!
->=20
-> I discussed of using argument of incomplete or not fully correct vendor
-> code when the true hardware description is available. If the vendor
-> calls them in vendor DTS "yellow-pony-supply" you are going to use that
-> argument to write bindings? And then argue that "not sure what that
-> statement is based on"?
->=20
-> It's obvious - vendor code is crap. There are no VSN and VSP inputs. We
-> already confirmed that.
->=20
-> You claim that vendor called like that thus you can use them as well is
-> simply not correct approach.
+Thanks Dmitry, appreciate it!
 
-Ok but I don't know if I can submit a v2 series including my new bindings=
-=20
-changes (along with changes for other patches too) or I've to stick with=20
-v1 here, by showing my proposed fix for power supply properties, in order=
-=20
-to address review concerns about bindings, first.
-=20
-> Best regards,
-> Krzysztof
-> 
+@Krzysztof: Could you take another look at the binding then please?
+
+Regards
+Luca
+
