@@ -1,65 +1,66 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BE33CF68B
-	for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 17:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DECC3CF032
+	for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 17:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773681592; cv=none; b=EfZfpy+zw5nbrL6hUOOHhDiji0iDAAtzWLC8pbj+wmyv0MKJB5g2uNvzlKfFZk2Y4+7XnFspwNnxLK1eg/8m8ilQzvLoh/4WYd9wLRENiIUrIHgqqEAuoml/36PbVJEbWuLAoca8g0ljAR/s7ClQ2OPVlU+1b052dzIYYr4aPpw=
+	t=1773681595; cv=none; b=GRpZAj81xaN3clAXyoJ5JkMMx8wJlHd5YbDfNljMzo6MvKjDYG6ZDk+0pZtekuMp4iPmmYaqN45Dlgw1EKRG4dxUr/fxZNLyHQOc4qtcfUz60gZI8wo6hbps7pCaXHJ5sx+3zzKh7hrOanm68WbRLWI/rwZ6srd+y6AacWN2dt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773681592; c=relaxed/simple;
-	bh=OOhWhIBktKoAtdZER1V9ZuKqMI9/xmuvVzeYZnJq6n4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Melr4DYtjYnWjtfnA71fnptU/ci/4DWIRAm3EDpW34OxYB9watwaWrdbHEILr107ZPiKi9SHNqsex9gVLa6cJb7j3oNyvYz+gRtwqBm2lY7q5s8cjB5EFLbAENztV2NgX2dzmOMjRMeIBpPNIFUZgaNMtDrjRVh2cFKP+xkMbVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vr4HZzbP; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1773681595; c=relaxed/simple;
+	bh=CZ1jj/eiHUYjGjlvolJhpPQIMl/aN3JFj+jg+nCFVEA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IQTSWES8X7tO6LtJbEQG+chy7gTG8fOiib+mOOQCcwT6gf/gFVlTr6QMka6LiwyQLztKY9w3Ms1y4NlSACACn0BEJNkhWEdUN3E2RxSg7I6Upxgxr0oqdc/UfIrGT4mHcXD4VuKeZTC4OqfJqsBYcz2emxjfWGJ3xqWbyFavlBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5QHY4EM; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vr4HZzbP"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-666f646f5cfso745958a12.1
-        for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 10:19:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5QHY4EM"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b97b7e0368eso192218466b.3
+        for <phone-devel@vger.kernel.org>; Mon, 16 Mar 2026 10:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773681589; x=1774286389; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ui4W/qmHAPpyDEXnX4wSdjce55+fYM+nlh/b/oydIMw=;
-        b=Vr4HZzbPRIhBCSXdcedBYQcXcnXvLcYpInye5TgPFvzjh1Cz7l5+Hyc2QW7qbYzkuH
-         kMjUhKZhe68ocfqRXvRQ/Qhw17+wZSO4S8HOhIcuUncz1hY5OLLa3BveQnBZaMg4Fi6c
-         VKgZsDv+sIGexmf7tDndmT3b2Y9G6Vo7yuNpqaMV9Evjbl2mRO8h5Fe19hWNkcM3+oOu
-         tWPwl24oV+DyG0D7AgsKoCFwGwaxF3HOgnoAw4/Hck0ddbxpnnHnCyVzh4osI6gsQ7ba
-         ri6olGIiazlE8ttTsa7HBoVK9QnaRW25FqzsTm4Lzz3g3wrYDwJZbjf9giv2iWxBc4/c
-         I5XA==
+        d=gmail.com; s=20230601; t=1773681591; x=1774286391; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hrOVP7ftGVSwzsjwgJO9DIOtGTWA2U/htQxTfqCFeYU=;
+        b=Z5QHY4EMw7pa4wLUPbEWBfKlCivNMR+CiRr4ZckwZ53Atfavbyan9qta8SUB99FSTq
+         ORO4a1HiTFiWQKaptg0di8cKeTODsWTTQ28tHa/Nk0pXdznLByXb6UbBw5X78MVINb4S
+         izwnl667pGlIYfnNlEscJMs8oY33uUzH3oDdFCWiXLWcACEUKP7/yebPwyVKbPXIs57e
+         jUauZxsE9EddMUBbSuECgQEu/eEhRMO1qUIFEsGWRXOoQmVROorNGgdvk8f6/QrZckyE
+         IyO0Kv3aRmQhIoN59SlXHjeRHWenX1fRAXNucp4F4g0Pe3CyWXa4Ak3pIKwA1LyXe7Hd
+         xonA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773681589; x=1774286389;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ui4W/qmHAPpyDEXnX4wSdjce55+fYM+nlh/b/oydIMw=;
-        b=id3nDXROP4J0hMBKVMiogf29ZMmwKtepT5KmlFCeuSDyKD4UGhCgU+IiRD4LOeBExY
-         LfkIAwustWnGj67SkmgmY1wQzMz7UhG3b94DJx/Ga8qWZcv/nChCOuBrdlUF13VNMB6D
-         yHiv40XA9HnyC//CLBCSz3Px5B+wILOccZXpXUPIertWFGP0eShh5WiG3KWLldmjxEH7
-         BtEmVlQB2Hkutvm4a6Y84kuR5aFgT5m0z3Nb+Jz0gFmVhIGxLhBZ/sOanWFVsdFHZd1b
-         8zFibPmwfvY7pxpohlgcdoNS43f4IqxfTr+yPE1l5lt6yUDrLb9IZ1D5S5n3CklUROBQ
-         Xjjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXwA5szK2zsPU1QvsOdOZLbcIv3wpGqBny5a5hzJ0nRRTFNqaB4xLutFWoYFnhjjuGhyiBCFz5VbCvJMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1iXmhU2C2CXwC48MPQvil43seXgX1XYxy35XYdzyvrfbp6p0K
-	wbTT2K2rJTz9YY3gVYoP4FdteWrHew/MllDgutGfQ4qzoITsqLMvuPaS
-X-Gm-Gg: ATEYQzyRb0DL++wys5uTsIlL8I/eCbUGrDpBEHF3lWh4KiKj1SNlH1ZpBvfHkHM8mao
-	R6TG3/IW4CsWJTU5/6riZd/yBDlS2QNR2TzCcSnNQ/FXCtsLzTZzT4pcveRiGxJlcHVI/I1xQTn
-	GegwvvOtiFU2ya6ki9kBAzq1U0FudhtY1Tt4dBTgwlCsm0CCEDtL7cWeQ8yVTDDq+qhWrOm+L0J
-	jAkDHJRfKc9orxuXr1XTOlHYuZeHbZU7MpQymmhmDqGVoslHskijp/etfMxfC8LworIIfPJC82F
-	5cigMHESH42XpDbiCR3gWcUMJHz36OzkBIxDVzVpqIKpOsu3AsJV2UujfGqtQt1TZBwfEQcR4SE
-	TVisQwu/iGcwzCMVN+tJaM0j2W5bnYACihpjLREFPIjZFXFl1RlXuoc2Cnr9U5TvHyUXRQ6KgIu
-	RaUpMrfryL9VGCMCX0K0V0kZeJQA==
-X-Received: by 2002:a17:907:86a5:b0:b96:e79f:194c with SMTP id a640c23a62f3a-b97d6e51416mr31543466b.31.1773681589204;
-        Mon, 16 Mar 2026 10:19:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773681591; x=1774286391;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hrOVP7ftGVSwzsjwgJO9DIOtGTWA2U/htQxTfqCFeYU=;
+        b=A2vDf30XQ9fjQvZWX3cMy4YZA+ssgm+kuCnjEERzRXBQZ1m1x9+0lVg5dLj1ruzU4M
+         KaRgJgJmjoItDeRKPNBLmf56MhGguiRf8rPXCW27TFQVYjfl2ImUfGE47puoCQfeXtqQ
+         bsEAH9/muOhbYLo/4XpPeNXLyIY51XX8dVFsmoAYahQd02CCdg6540uxm2pVBHIiRmIF
+         jn68/tcf+fvyDOxNJlBxW3ucI89+md4CrCnZ9tKvNmjG6kC6R1iaSXI48iTG7IP+gUDw
+         rlsVUVRYJu1eRcy6EM9j/gnpRH9wRQaM0feklex2vMiTPlzdGN8VUBCo0T3kTH2Eo9Rk
+         lhSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOVMJaZZeQUqerz8fRp2QABRjBnsZC6hOyl5PRYp7h0rZgH3MV40zzLvdgxTwCpuYtGUxh6RRppgwdkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjMLNZPwh+GYkzcKtJ3zvBpGBwWrKcubaqf+lkT+orkDVh+Qnq
+	07oZjogBn5RwIBMECo3Sr48BvpsjLTTgGNKkf8VmcxOE1rZJd9Cj7Og5XywEVuXL
+X-Gm-Gg: ATEYQzw9W8fB8YoZY8nIgLtRffBWKn+EGr3xjVQdNyX40zQHEevc+7EN/Kvhe5qeB/8
+	BdfBe4hI7jbDbLrZ6nojwnG4wWxwZASUu5Rns1pp2YEImRN/+GoXmQgoMsDouqCpb513We5fG17
+	ywGiq4iH7pD4Ljv4XBH5k7u0f5PBukieHgsTzd2YqqIeYkVZRbIj1Nsj1jmB1ncebltjYc9PLb2
+	DWbpijLXfOP71vy7NDPDiGBpQkpK/Syw2BEVCgsL2csqwK4fHQp4Wy/GlJ3xnC4zLbKLvUluVDt
+	O1XBsQ5Z3+AiA9LsxOieaB42s9bafIEp4ueMcau5gudH38hevtGkmQEDt+Rd2js9yBEExl2K3sB
+	7DeW0wh7oQ2Hkm3tM/cbLM4QaPzWkwcwKyMcFcMg6FIQgv3+4JpDv7WVcXOBHQ29F3YnxaAVRTP
+	5MaPLXoa5/+UDtRDQNirftNJA13g==
+X-Received: by 2002:a17:906:7953:b0:b97:73ae:e1f with SMTP id a640c23a62f3a-b9773ae1114mr769934166b.34.1773681590773;
+        Mon, 16 Mar 2026 10:19:50 -0700 (PDT)
 Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97846174cfsm505940266b.22.2026.03.16.10.19.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97846174cfsm505940266b.22.2026.03.16.10.19.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 10:19:48 -0700 (PDT)
+        Mon, 16 Mar 2026 10:19:50 -0700 (PDT)
 From: Erikas Bitovtas <xerikasxx@gmail.com>
-Subject: [PATCH v4 0/7] iio: light: vcnl4000: add regulator support
-Date: Mon, 16 Mar 2026 19:19:44 +0200
-Message-Id: <20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com>
+Date: Mon, 16 Mar 2026 19:19:45 +0200
+Subject: [PATCH v4 1/7] dt-bindings: iio: light: vcnl4000: add regulators
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,11 +69,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NywrCMBAF0F+RrI1MHo3Flf8hLpJ02gb6kESDU
- vrvTgtCkS7vcO+ZiSWMARO7HCYWMYcUxoGCPh6Yb+3QIA8VZSZBGlACePZDpwGAR2xenX2OMXH
- na+FKC8KjYbR8RKzDe1Vvd8ptSNT7rE+yWK4/T+x6WXDgxjhqlB4Lo65Nb0N38mPPFi/LrSH3D
- UmGdBU6550rSvtvqK2h9w1FhvLa6rJSYM5ma8zz/AVwnkZ4PgEAAA==
-X-Change-ID: 20260310-vcnl4000-regulators-bcf1b8a01ce6
+Message-Id: <20260316-vcnl4000-regulators-v4-1-854fc2eaf54b@gmail.com>
+References: <20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com>
+In-Reply-To: <20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -81,70 +80,48 @@ To: Jonathan Cameron <jic23@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
- Raymond Hackley <raymondhackley@protonmail.com>
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
 X-Mailer: b4 0.14.3
 
-This patch series introduces support for voltage supply, I2C and cathode
-regulators. This fixes an issue where if a regulator is shared between
-the proximity sensor and some other device, and the other device is
-powered off, the proximity sensor would be powered off as well.
+These sensors can accept 2 supplies - one for the sensor and one for IR
+LED [1]. Add supply properties for the sensor - 2 for the sensors and
+one external, for their I2C bus, to ensure the sensor is powered on
+before proceeding with setup.
 
-One of the commits includes a Reported-by: tag without a Closes: tag -
-the report was done outside of LKML.
+[1] https://www.vishay.com/docs/84274/vcnl4040.pdf
 
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
-Changes in v4:
-- Reworded device tree bindings commit into imperative mood and
-  clarified where do supplies come from.
-- Moved data->chip_spec->set_power_state() calls from init functions to
-  probe.
-- Removed explicit less than 0 checks for ret where unnecessary.
-- Moved the patch that adds regulators to the end of the series.
-- Added an explanation for removing duplicate prints in probe.
-- Fixed indentation for devm_regulator_bulk_get_enable() and i2c_smbus
-  writes in vcnl4200_init().
-- Removed a redundant check for "proximity-near-level" device property.
-- Link to v3: https://lore.kernel.org/r/20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com
+ Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Changes in v3:
-- Added a more detailed description for supplies in the dt-bindings commit.
-- Separated sorting includes into a commit of its own.
-- Replaced all occurrences of mutex_init with its device-managed
-  counterpart.
-- Moved client->dev variable declaration into a commit for adding
-  regulators.
-- Removed redundant dev_err messages in probe function.
-- Replaced all direct usages of client->dev and data->client into usages
-  by variable.
-- Link to v2: https://lore.kernel.org/r/20260312-vcnl4000-regulators-v2-0-2bdebbcbb58a@gmail.com
+diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+index 2ba4d5de4ec4..a1b4c02db246 100644
+--- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
++++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+@@ -33,6 +33,10 @@ properties:
+   interrupts:
+     maxItems: 1
+ 
++  vdd-supply: true
++  vddio-supply: true
++  vled-supply: true
++
+   reg:
+     maxItems: 1
+ 
+@@ -54,6 +58,9 @@ examples:
+             compatible = "vishay,vcnl4200";
+             reg = <0x51>;
+             proximity-near-level = <220>;
++            vdd-supply = <&reg_vdd>;
++            vddio-supply = <&reg_vddio>;
++            vled-supply = <&reg_vled>;
+         };
+     };
+ ...
 
-Changes in v2:
-- Removed double quotes in includes.
-- Reordered includes alphabetically.
-- Enabled regulators before the mutex is initialized.
-- Replaced direct usage of &client->dev with a variable.
-- Link to v1: https://lore.kernel.org/r/20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com
-
----
-Erikas Bitovtas (7):
-      dt-bindings: iio: light: vcnl4000: add regulators
-      iio: light: vcnl4000: sort includes by their name
-      iio: light: vcnl4000: move power enablement from init to probe
-      iio: light: vcnl4000: replace mutex_init with devm_mutex_init
-      iio: light: vcnl4000: remove error messages for trigger and irq
-      iio: light: vcnl4000: use variables for I2C client and device instances
-      iio: light: vcnl4000: add support for regulators
-
- .../bindings/iio/light/vishay,vcnl4000.yaml        |  7 ++
- drivers/iio/light/vcnl4000.c                       | 90 ++++++++++++----------
- 2 files changed, 56 insertions(+), 41 deletions(-)
----
-base-commit: 6e03baeeb160e6cfd72f2c39f26c50bcd925c7a0
-change-id: 20260310-vcnl4000-regulators-bcf1b8a01ce6
-
-Best regards,
 -- 
-Erikas Bitovtas <xerikasxx@gmail.com>
+2.53.0
 
