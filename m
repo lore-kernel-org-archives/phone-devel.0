@@ -1,97 +1,83 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37847366545;
-	Mon, 16 Mar 2026 21:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0633946C;
+	Tue, 17 Mar 2026 07:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773695677; cv=none; b=Sc9IN/qKG+n8OLhr8z/JsCbS8koFDCYmeXutZAZkIQz/ypb8V1MQiiqPBhROf0BcTPUFWdmVzHhiA83OH8ar7M+Woh4mAetuSXoBCCI6eb0vZY88vwtXTx4LSUQJuiiOevb4xj3TVf6MCTxov2uiQp1MMw6bIwqkg+aYMRWL/rs=
+	t=1773732008; cv=none; b=qCDaKIAmmI1WDUQg2Z1b8KqwpJ8AjVEDg1KSXaXsvUjQrNbYw/BJeIzJJhyIWZq1nNbPE7V3kozICwbfYgR9sDxy/lc2mUVqwuHjMS3SE+v+xsCA6ikswBn34zWCWAOeAYDC1LMNuohrMqT5QcntbWfq+705cAeiDujU1todrV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773695677; c=relaxed/simple;
-	bh=jcd/GN93y2rBVk7GYIzWLuhb0heIRu8r6Z0+jGJy+1s=;
+	s=arc-20240116; t=1773732008; c=relaxed/simple;
+	bh=17I5AKEtPfO6q1JpSx7o444U78m/ylhWetYIHxoJrVY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DucBUQhvVvsiP/sPz+CzHgII+vH6Oxr9xl3J+1GWhgEdPzIPuWSsYdM2NRrbCCOq5WpjwM2NVBD0opmXJ2xikxeuNqpayX1/yOBKoeCqfPJMFpZ7NO+k6K2j64mDXKm28GR9eWMkV7p+qUfjJ9Kyyf29foZSGwlc5h2iuSsHMJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UiEfvPnr; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uOVvizo2bp28estDQjSSfpDnCha4nqqX/D2kKr6gfOVMmWGApYsjlLDP7YWLGTgm8uLEjdnyQ7lIRqj3uQ9o1dtHySJA1gIjzBoNA70qEF+Dakqa5gScihW/sKkWYoXbBPNlt0x7hU0eXy2Buxr/KtaoknAAjUyj6QEGPpc3AYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLqi2nMA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UiEfvPnr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773695673; x=1805231673;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jcd/GN93y2rBVk7GYIzWLuhb0heIRu8r6Z0+jGJy+1s=;
-  b=UiEfvPnrtL3CUk83ftLNZkuTsprU99B9jWhjvaHjGDgcPixHYKCeudJ6
-   T1hOysblp3ZnMikWnH/psKtfhmXww/PIYqyk6dZIxvTe+DHRGKvxrBB1T
-   Sj+KWiwm0RlCX07gxabj0vJOXhnHRyiZsmLvyCazZOzlGX5Zq/CJdxcXG
-   ru2bS+Gua9oObf1KL9rVU1NFsB/Ry0rVslfqBfstDMGeJ52ZhRvlWvPCM
-   yvcHSsbMB2O5Eyhm4/6hmu656c8G78kgkYLA0WqKKdrzDzu2O3mWOm6qC
-   eemAH1GUgfBUCXwiSyLKQlTXF95pg+zLRxV1RBzb6J5Jg+VeG/1TFirHR
-   g==;
-X-CSE-ConnectionGUID: 6AI7F4CORfyw9CfEHGgk0Q==
-X-CSE-MsgGUID: gCsmq9EuSVCMRA91vUhxUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74837796"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74837796"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 14:14:31 -0700
-X-CSE-ConnectionGUID: l8mFQn7uQ+C0vaisftjsNA==
-X-CSE-MsgGUID: oFXoz8IFTJKil0kkWX0XIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="245065408"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.237])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 14:14:28 -0700
-Date: Mon, 16 Mar 2026 23:14:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLqi2nMA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC5AC4CEF7;
+	Tue, 17 Mar 2026 07:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773732008;
+	bh=17I5AKEtPfO6q1JpSx7o444U78m/ylhWetYIHxoJrVY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OLqi2nMAr3/yjGI1CEf55AQzxtWZQHBfq3ZtYK6XldbJeRf8M2hdq+OjuOMngmD7e
+	 /jRToatryzClCtsvv+26TqQ2XPymbuj+mehC8NM1QShs5FQUVvIrUYubfH1EkdRYS9
+	 Afnd30zPqPANGeh2QN7nIcDKsktKCcpSwVhAoHQEPYMCXdD+lWYA4spJTkWtKtQsRC
+	 C79sxiDrr8g9QLRL6Hqr1KcEUztxCgT3I0zXSpHjpHeaEJoqvsCtjMlhotf2gfhocS
+	 A+WMe+Zm6xb+nFcOR2vJyKa6TTn2M13EDZN4LhYCEabxuD2oe14jj0ETn5FGYa4Zb3
+	 6GD1bR0Fjs2wQ==
+Date: Tue, 17 Mar 2026 08:20:05 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Raymond Hackley <raymondhackley@protonmail.com>
-Subject: Re: [PATCH v4 0/7] iio: light: vcnl4000: add regulator support
-Message-ID: <abhysYYZj4VWhdtx@ashevche-desk.local>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] dt-bindings: iio: light: vcnl4000: add regulators
+Message-ID: <20260317-tricky-pony-of-assurance-7a8cac@quoll>
 References: <20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com>
- <abhhPnvQwpZozHPe@ashevche-desk.local>
- <ea623eb6-2f63-459d-a1c0-afffd2428426@gmail.com>
+ <20260316-vcnl4000-regulators-v4-1-854fc2eaf54b@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ea623eb6-2f63-459d-a1c0-afffd2428426@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260316-vcnl4000-regulators-v4-1-854fc2eaf54b@gmail.com>
 
-On Mon, Mar 16, 2026 at 10:20:54PM +0200, Erikas Bitovtas wrote:
-> On 3/16/26 9:59 PM, Andy Shevchenko wrote:
-> > On Mon, Mar 16, 2026 at 07:19:44PM +0200, Erikas Bitovtas wrote:
-
-...
-
-> >> One of the commits includes a Reported-by: tag without a Closes: tag -
-> >> the report was done outside of LKML.
-> > 
-> > You mean outside of public web access?
+On Mon, Mar 16, 2026 at 07:19:45PM +0200, Erikas Bitovtas wrote:
+> These sensors can accept 2 supplies - one for the sensor and one for IR
+> LED [1]. Add supply properties for the sensor - 2 for the sensors and
+> one external, for their I2C bus, to ensure the sensor is powered on
+> before proceeding with setup.
 > 
-> The report was done in a Matrix channel. I could provide the link to the
-> report for the Closes: tag, but it requires to sign-in to view it.
+> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> index 2ba4d5de4ec4..a1b4c02db246 100644
+> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
+> @@ -33,6 +33,10 @@ properties:
+>    interrupts:
+>      maxItems: 1
+>  
+> +  vdd-supply: true
+> +  vddio-supply: true
+> +  vled-supply: true
 
-Okay, thanks for elaboration. In case of a new version, please mention this
-in the cover letter.
+Same comments as before, I do not see improvements.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 
