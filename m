@@ -1,66 +1,39 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2298339446D
-	for <phone-devel@vger.kernel.org>; Tue, 17 Mar 2026 08:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3889639A072;
+	Tue, 17 Mar 2026 08:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734866; cv=none; b=IdTFGP08eu9ZBVFDq0DWmeot3bOl1+zytvKSaXvtFHngjnBdhvT9ICmLLRrEzZD/3HSsQk4th6SaDgMtR6o1hXKzL1HXEySMu2LNgh/695oXl2Z6lB96mmm4BA9QTV1s5eljNxAJTzPqXCkz5xMgnC24Cdl8ll/dC3SqL29VApE=
+	t=1773736820; cv=none; b=R8Jw6wCvOO5+79/AXT51ltvc77CFiYxSYFpWy03ul2LvhKVNLnVDDvAqZ6tu3JwsebWMLEA6Z2mwAL+vo6vjdttYGx6yy1lerGCbvsMAXPQlp2WKXpvUliiJwQ/BtReukKWQa/zWB8HSMsaUS5Kh9ZpmT23S3cV8WJn06cWVYWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734866; c=relaxed/simple;
-	bh=xjMI3kWLb004RFGciwvvZcxiwmFj4VVzpHoNLJgITKQ=;
+	s=arc-20240116; t=1773736820; c=relaxed/simple;
+	bh=iR51IgqDLrePRMXylU7T4WoyWjFBLamD+zTHk3FgwnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V599DjbnhgwqEF7OKUx4g23j7zHt2QF+RlbqkTbC0HrJUuUdYwWr8KPXhqMCN3Ud9iCESU4CcPHvo87DSgW4CcCdSHLskUfTiIthEK2/eUj2Q7iiCqgsp5sPky+z6wHmhvo7c5pylBZHpMZOsoJOxtVymH9Nxdy5hIJ/tgbnZZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yr/HjY3i; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=MlmqWDqDrzHuMYP3hKMLfK+M8apoMw4pmHngxQSvMYeYTFSAoyt/r2Yw36sRPiR81cKhw8h0xN6Bwg16HSKoBYrglDaeeGDQ4uF7vP2W/PqNvdmiaZMqUlC/bp4qo/V3NOA1wq+MSG4fKmNRoreuKVZ1Z4H6+xaap4FJLah1qwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Hg6H0WPl; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yr/HjY3i"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b886fc047d5so906644266b.3
-        for <phone-devel@vger.kernel.org>; Tue, 17 Mar 2026 01:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773734863; x=1774339663; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zH58nQVPnaeEnUw730ASGfF9l+ejJ6sv9p1FAkERXbs=;
-        b=Yr/HjY3i0z05NXV2n+9u2rLpjSTAQA6C5n5F6bXf5kuhRPunLI+fR5ENlF8X2e/2qY
-         aiE547oHcpobbrStQkqGCvT2OdzmG5jogJYsVCyd356eEWLhVy9wvxlPMOKyeLpJy1JC
-         FKWklfEzrseRM97NkJ8573zCuA4bUaZnokqkXtwOQ+9X6uj3jMM7o5elCcEcSS8pAV2h
-         k/hiqVNqkXSidFLyq4ZgLQYEOfTnnbr2gL2KDmFAFIjh+7zEcrFcJeGQqsW0nqwDZxya
-         H0CGYEBuohgoLOZKwRiJXTRvPewVLChYCHwc/7n/lKI5w+Xq0W+ajSb+K0A/lD/Ntr08
-         TZIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773734863; x=1774339663;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zH58nQVPnaeEnUw730ASGfF9l+ejJ6sv9p1FAkERXbs=;
-        b=Bo97LqngIcQ5hHozqTbn5rw7l//7k0cTRI1tXaq32DyMJF6i2cPRTnPdiBozl/kblY
-         H3eb99rG6ROtwEcR9xGKH82YkjgmUl/GslnDc3PjDaN+SqLdR8jZlw3GgGX7ozGDhLoX
-         l3lLQ2sf+RyNqhIHS1SYEb57OXKjOnw4+dhb6JMV14ZcXrurIHvRUgWFo7LhU840v5cG
-         R8luRij548PSiVCScrjepg8k34/yyQZ+Vcv+O7WfUUj1Nidy06DLnH20etGmRFJZjT/d
-         MTxNCadLCrphNSTILDEfxtCnERjjfNi3LOJO1oaI2bdZ6KMktbRNCUQ/Gt1yVf4MS38j
-         sgGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbt5ssjKQ3wkftfTDBLCyiKWFxLX1D/YLl6MR+0bWgtzZGmlJQoxndOzSw6bV8pWrm5qWJ3d1qKj2Mwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZhljkwrEUnBQxbdXbt3jVGEkmkn8P3QKUHyqJhaFR4+zwXH2H
-	872p3jisWEfo8q11p2vzKv0A6SuqRjDowTYG+LbWOyGnXPRYOusxKC5k
-X-Gm-Gg: ATEYQzw22gChmR51zYncbPrxrGujB2VHc21xxIs3t3v3TcUtsXNiDUHnTVngIN06Bgi
-	I6zqxfeo8HXjO9HflTO4gWGytvaEoZHAdRGLxuRxxTtaTkv1fjKaZ4ZIxD3UQDfr+UUUZOTbgrY
-	rleJWf8BtNZ8lMoGuHe3iGE94tDvi+jBOy4g22kDTNKS4QNaUkyTYlj1cZC0HU5tghUgpATP1RB
-	UnuFKzS3gbUrfIGncOtRLEwomDAjVZH1ylU+tGk3MPe4flC9SUb5XMzoh0WVkXz7cL0JeyKOw+f
-	cX1fjopal/s1IIlFsXyVwz10KAPX6ToJ5bIGLjjIdlVpQas+TgDPTKrIcD6EKqDcbPMcmPfXdKx
-	GqRAtFc6skTC/ggGCRjhJ8TGgLbWlJs25mhFeoEqxJ9AK/znRDnN5aQLnrPOYZIJfPfbghKUD7f
-	6F3Nac14DEybhhK+9WkyrTxNW0J06WpsfnBUO5
-X-Received: by 2002:a17:907:6d05:b0:b97:b378:62ba with SMTP id a640c23a62f3a-b97b3786658mr484917966b.33.1773734862942;
-        Tue, 17 Mar 2026 01:07:42 -0700 (PDT)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b976cdb47fasm666212966b.43.2026.03.17.01.07.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 01:07:42 -0700 (PDT)
-Message-ID: <da9850da-af27-48d9-9e5e-2d187c35d262@gmail.com>
-Date: Tue, 17 Mar 2026 10:07:41 +0200
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Hg6H0WPl"
+Received: from [10.65.3.249] (unknown [87.58.114.210])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 0515353400F0;
+	Tue, 17 Mar 2026 09:40:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773736806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rw0Qp/gUQyiHMUxNeOL0g8aT47rCKytoyrfPeu124hM=;
+	b=Hg6H0WPlxGhfOD1rzBoj8P7cA/T2fFHZUw3apBmp1cERGkAeXHHx6spvK4oEzjkbrMRXPB
+	VDZdbi8OlPro7rsiXlJjJFumAAXxKWCJCOoloNKZjifZJUI5/J0xGf1rXNqC6s511JtugD
+	jet/G8SPQlqdsLGv+VNHlyy7aQ4aqNA=
+Message-ID: <b43a2558-f20a-408c-95c3-26d1937a2648@ixit.cz>
+Date: Tue, 17 Mar 2026 09:40:03 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,59 +41,115 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] dt-bindings: iio: light: vcnl4000: add regulators
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium-tianma:
+ Disable MDSS
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Petr Hodina <petr.hodina@protonmail.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
-References: <20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com>
- <20260316-vcnl4000-regulators-v4-1-854fc2eaf54b@gmail.com>
- <20260317-tricky-pony-of-assurance-7a8cac@quoll>
+References: <20260311-beryllium-fb-v1-0-408a580d125e@ixit.cz>
+ <20260311-beryllium-fb-v1-2-408a580d125e@ixit.cz>
+ <t4uhjpxdvjxda4dxkoxktv6xlxg3xvzyslgerluu3t2dzxv33v@k46gvwv4uf22>
+ <137c19a3-136a-4e0e-b4ea-8cc474172d81@ixit.cz>
+ <e65ebd79-9edb-4001-a5c1-c4b6a67d5234@oss.qualcomm.com>
+ <e93d3d7d-1df3-45e1-bf9b-d2ccb937aced@ixit.cz>
+ <e242dc13-9818-4445-b835-86a87965090e@oss.qualcomm.com>
 Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <20260317-tricky-pony-of-assurance-7a8cac@quoll>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <e242dc13-9818-4445-b835-86a87965090e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 3/17/26 9:20 AM, Krzysztof Kozlowski wrote:
-> On Mon, Mar 16, 2026 at 07:19:45PM +0200, Erikas Bitovtas wrote:
->> These sensors can accept 2 supplies - one for the sensor and one for IR
->> LED [1]. Add supply properties for the sensor - 2 for the sensors and
->> one external, for their I2C bus, to ensure the sensor is powered on
->> before proceeding with setup.
+On 16/03/2026 10:30, Konrad Dybcio wrote:
+> On 3/13/26 2:09 PM, David Heidelberg wrote:
+>> On 13/03/2026 13:38, Konrad Dybcio wrote:
+>>> On 3/12/26 12:25 PM, David Heidelberg wrote:
+>>>> On 12/03/2026 03:46, Dmitry Baryshkov wrote:
+>>>>> On Wed, Mar 11, 2026 at 07:44:30PM +0100, David Heidelberg via B4 Relay wrote:
+>>>>>> From: Petr Hodina <petr.hodina@protonmail.com>
+>>>>>>
+>>>>>> Currently the panel driver for tianma is broken.
+>>>>>
+>>>>> How broken? Can it be fixed instead?
+>>>>
+>>>> No output to the panel. Definitely can be fixed, but current situation is that we don't have anyone who has available time or device to tackle the problem.
+>>>>
+>>>> I know it's not optimal, but on a way to achieve working mainline phones, my thinking is better to mark it as broken in mainline until someone fixes (assuming Fixes tag and backport) then just going black display (when we have at least framebuffer now).
+>>>
+>>> If you have a person with limited time, would simply copying this:
+>>>
+>>> 2b973ca48ff3 ("drm/panel: sony-td4353-jdi: Enable prepare_prev_first")
 >>
->> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
->>
->> Reviewed-by: David Lechner <dlechner@baylibre.com>
->> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->> ---
->>  Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> index 2ba4d5de4ec4..a1b4c02db246 100644
->> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
->> @@ -33,6 +33,10 @@ properties:
->>    interrupts:
->>      maxItems: 1
->>  
->> +  vdd-supply: true
->> +  vddio-supply: true
->> +  vled-supply: true
+>> Sorry, I don't follow. You meant introducing prepare_prev_first?
 > 
-> Same comments as before, I do not see improvements.
+> Yes, just setting that single flag
 > 
-> Best regards,
-> Krzysztof
+>> I asked if it's possible to test, but looking at the rest of the driver, it'll need refactor anyway.
 > 
+> Well I'dve assumed it worked at least at some point in time given it's
+> in mainline?
 
-I explained why in v3. The message can be found here:
-https://lore.kernel.org/linux-iio/cb92bb47-9078-475d-b242-71e3f9181a72@baylibre.com/T/#m6da277894cf5c2b473fbeebd4b7bafc7519ebc26
+That's not sure, for previous panel drivers (OP6/6T) upstreamed drivers didn't 
+worked on mainline at all.
+
+Trying prepare_prev_first could work thou. Hopefully Petr will be able to give 
+it a shot.
+
+David
+
+> 
+> Konrad
+
+-- 
+David Heidelberg
+
