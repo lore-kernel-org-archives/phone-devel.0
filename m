@@ -1,87 +1,39 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E833B7B63
-	for <phone-devel@vger.kernel.org>; Wed, 18 Mar 2026 09:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8036D389DF3;
+	Wed, 18 Mar 2026 10:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773827827; cv=none; b=owSX6oi/YqX7DA/Sc+x7GC2Ob5lO35EQUx2u3mmbwsd79YNI8IYY7AZcZ3pOS4WwvQdz6M4hgfkFOS1E7HGpYcf3/Ddfa9RPevIeIoKEhl5hhEM8l0YvdATm5b4gIqtnfsxXhQurArLgSg/A/2m9LrqC5itmYOa3+A6GwnbkgWc=
+	t=1773830279; cv=none; b=Kho10rS+Bk4Bfi4kRjwwuw72FHfN+5/CZpCBbS/wmmU6p57uXpm/FeSh+WmWuvv+/oTxWbKv0CaT7k6f0q8wl+iJOvLU49aJbXMaZkY8a90hb3VJf9HDIzApfth8vyYRZVKUOkxYJZmQ8Aecjbp4SCD6fEIvWhvUheUBdGdeOLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773827827; c=relaxed/simple;
-	bh=OL4oKchoFswnzx2QRr0fz2Z7AnQokBGnhRRCJefe/z8=;
+	s=arc-20240116; t=1773830279; c=relaxed/simple;
+	bh=6vY0pdgBza8xTqRIz8qPP3bwrGvY4bCjmV4o9yyz344=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oSfLRHpUK+L4XaEfniU5QLVTAYvjfHxFreH22HpwQnPxBDQIWoXUbzDFPgcglBa+os3Qj/blpoo/6bpVgQuypcxbPcL1Knv9rFO9autoS/OVRFxfxRnjjAuGCKJaLrRBh93rUo+wmXKMpnfsi3FyShOwBq2Qq8fsWWDoDkGGsmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B1owF/Nf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NWsZqHhT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=gpIk/rD7EoBjdc48Q9QPpfSPgMwxw8mymKUxVm/6wViLIT+JsiGLpCO82ji8EtzwyJ2mS+67cpGyYycp6ana5j40VlwOOMskXQbtOP9Md3qu6lmpP95PLmuSo/LNYbIgUj8brxPi5E1RaSLihEIBXXvESDElQGpMhPY+x5eLElk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=0x56s/TS; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B1owF/Nf";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NWsZqHhT"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I96OwE2296076
-	for <phone-devel@vger.kernel.org>; Wed, 18 Mar 2026 09:56:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8hNx37GX3aKHJ23EGUcbBUoJYjcGIqnf+W6oBgnb+mM=; b=B1owF/NfFrOQGcaU
-	uBeAZAj7hNzTUfrRQs3b8tGn7rAU2+EzptVY/zvY1eXiQiEUkNf85T3cJqaysQBd
-	cBWZLFOdvAkrMC1g1P+M4JI4Qs5nx+MlO4VAFaYyeUY4nWNTo3UutmGrxWuvrtxs
-	m+LWYSDjq2g8V2XwHWdRhpuvXGCZ7GIMOqV97pYdiNt7rczNF5lsEILliyaVMmLC
-	JbdKwehqbE011+0W3AKtMNyfQi36folBf98fuG5so0ZrtcD5kqhRIWzNeHiDzLj6
-	uLwiHoX6GNHADxELEL67PlvXiC7POfCs8FpzYZo6ENMZSnupmjJ+LuuNnTStujoy
-	FTtPTQ==
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cya83ut4k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Wed, 18 Mar 2026 09:56:59 +0000 (GMT)
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-89a01982dc5so60919726d6.3
-        for <phone-devel@vger.kernel.org>; Wed, 18 Mar 2026 02:56:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773827818; x=1774432618; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8hNx37GX3aKHJ23EGUcbBUoJYjcGIqnf+W6oBgnb+mM=;
-        b=NWsZqHhTz0n9p7zqRlIiSHyDtrREwmCRPtfWWKYYHsAFLyaapo4TDFzWSVOJ4jJYl8
-         8nbHenHE5IkBadSruVuQgpI8i3FLans192aAGwyPxkJMmIgiEJZiXib5u88+nB+8hYmd
-         GEkgAOdz9Zu55lF0ytEkVT+WUzAKVhzkO1SKYFLpFqC0iOCAdchhFoAgXh/3i4lCUxim
-         Hoy1rhpwrenIOXRmoeH1Yk17o4orISATFCMD5zuvskwN7NWs19mlkkbgcGaA3t1RtXs9
-         MLb7JrvvwRdorsICkGZOzQOO84dlGPi/hzfH7x3yaYf46D8/kvZJUTtbG411xUAzLohh
-         YgHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773827818; x=1774432618;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8hNx37GX3aKHJ23EGUcbBUoJYjcGIqnf+W6oBgnb+mM=;
-        b=duLqndti+h8dqmcUELY8BDb7kScH6bLsSawbBor4H1Mh5sXjQc91ErYoTz3dyELm6h
-         qCaQCgPlZDQPRMu0H+T5FFrE9FrXTPeTs9StuqSbnK04PJq3N6eQKsNdBFTME2sZl823
-         REB5gJlI4DVXiqyRU89LfwzsMxIfbICfWan9zbSD2o/TND2QP3xE46T6aHgfDDj8M8oa
-         ISRJSRfa2ZHVpKRW2MVCt958bKgxe6P5Ghk+EQcz3+Gj1W69lSsZ5HJxliUncA5Dy2ku
-         VByT3RFWMvtVTy/dm4yCeWoItip7vPUlS8MNtc7cHt8PMASr6Jen6f+PANm0Wsu5Xb9o
-         tTSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUx6MdZR3iHts8fHgomMeSeEMe22/O/nGAlqfi/yWUTR0cnlOXpig3bmqREtkzbybpxPH2MOH9XRtxm7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9I+biJDavX8yoLYbzJG51dr71cCElXBAU4YjPu3kPJuHsoDeH
-	njPvVSunFVE/U8YtT4xnIWhLYLoIGIZ6eRA6fJCwkQjovcjVXr8LY6rPvGTjpvjBXtclO2SJMqO
-	bhrtgudNvrLutOA9UyTOLcIuqqNZrBjevwIhgYPhwzQ+peFxsP/fmkEPlJkCnkasERw==
-X-Gm-Gg: ATEYQzyUsZw2TOyZdpffJPK37QJsR7rTucQE+DbRy8VfKa3xqLg+FSmfLwRZo8y2mep
-	c2xsNLx6lirqEDAm9tnxtXAAog+zIqku+FYceJLj/EbzrfTimOUltek0gRI/2yEphFURC2t+eVp
-	KHLvWNOBNi4I0T4nq/qW0boJnui1mFU8+mGuLCgPDRwhuRyWdPpm3qD6pZ2FUlir5Q7xSBshdDO
-	ebYKSk3/ibA99F03zt/fZ/B4Iw8/VKX3SBTQWRumSJRU/YuSHVjDNv5kKgZLfmXjyqeqq668d/s
-	jrB0XDlAzIFd1TJ2v9m4G0M4oOzb0iJJzGGYgM77v5aTV9KNyzKytGbpzQK8pjeTdROnDdg6xNl
-	c5WulqpuL7v92b38WYn2Hzd1+53F9Kky7M2WNirdSzzpxkU6jR+iveaojxndD2on0gwVsrK3E4M
-	Pdk+o=
-X-Received: by 2002:a05:6214:411a:b0:89c:51d0:20df with SMTP id 6a1803df08f44-89c6b5bfd2cmr29596816d6.3.1773827818239;
-        Wed, 18 Mar 2026 02:56:58 -0700 (PDT)
-X-Received: by 2002:a05:6214:411a:b0:89c:51d0:20df with SMTP id 6a1803df08f44-89c6b5bfd2cmr29596726d6.3.1773827817763;
-        Wed, 18 Mar 2026 02:56:57 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97f16868b5sm172231766b.30.2026.03.18.02.56.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Mar 2026 02:56:57 -0700 (PDT)
-Message-ID: <98230025-ed6e-4d89-b36c-316886179087@oss.qualcomm.com>
-Date: Wed, 18 Mar 2026 10:56:55 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="0x56s/TS"
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id CDEDC5340EC6;
+	Wed, 18 Mar 2026 11:30:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1773829846;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ySmRO3DM2H1VVSWDueEkjq2xi5/f6QFsmik7iIaDqK8=;
+	b=0x56s/TSoZIHJw89MWhfKvDWXFUMGpc+CbTswtJOxxE0U/ghB4zfzJd1iAXNfQ+dMI6zkx
+	F2Hti2+pdHsC1bKSDO31Z0hoxhE5c40IwMEeFk92yrsIH4doMEQ2QdJpE1USaN+t2bqOcd
+	E1AA1i2a7XgFotUvng5Vi09cdqFYfdI=
+Message-ID: <7e31ff87-3350-4a6a-9517-e0ad02d36040@ixit.cz>
+Date: Wed, 18 Mar 2026 11:30:44 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,56 +41,194 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: milos: add ADSP GPR
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260306-milos-fastrpc-gpr-v1-0-893eb98869ce@fairphone.com>
- <20260306-milos-fastrpc-gpr-v1-2-893eb98869ce@fairphone.com>
+Subject: Re: [PATCH v5 2/3] drm: panel: Add Samsung S6E8FC0 DSI controller for
+ M1906F9 panel
+To: Yedaya Katsman <yedaya.ka@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Kamil_Go=C5=82da?=
+ <kamil.golda@protonmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Kaustabh Chakraborty <kauschluss@disroot.org>
+Cc: phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+References: <20260317-panel-patches-v5-0-ef99f7b280da@gmail.com>
+ <20260317-panel-patches-v5-2-ef99f7b280da@gmail.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260306-milos-fastrpc-gpr-v1-2-893eb98869ce@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: UWZKNQhM3fyZe09C6JeQny7CQBrlXb2m
-X-Proofpoint-GUID: UWZKNQhM3fyZe09C6JeQny7CQBrlXb2m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA4NCBTYWx0ZWRfX2iDN3hmgnZzX
- 4JNuNwVeq+UAaojPSaJQdqGuPkY/x2M2o2HdkxEP4jeaP6qTYnY23ABzSlM1HkreMGB24r5AFUm
- lAWlDZrLsbXKjE3Fa81CIiTojglZqhjK/6RIE3cVa27dNLtxqjJ6QXEoNEYV7icEm/H/iDylPEa
- SHJ3n85GDnG7OCI5wMsxgENI+Xje5tbReDS4eJ9eLeF5CHp40u/Oj3/A4KWFEa9IzRQpgsljVqi
- 9eFJokIJmYZcvYYRiFCQvhLXiq+cs/t7MJIw+1wSN78btiH9lsrzJGQm4LVaDtWPgbjgtLfTg9U
- NEP2zH/oUFA672DpbGn+k1XsTR/CknHG4+zwNBiqf0p/F29bMwKLjMWnkbLqe1lmqCYFiXDxlId
- sm80j5r0u7x/RLB/361o1z8Lou64nRrph1ivzj/Vlbcs8SrWcZxHP55+Y37FofVrPhEpRfa+WhA
- dh1TrRLotcSkk4QsNuA==
-X-Authority-Analysis: v=2.4 cv=Y8n1cxeN c=1 sm=1 tr=0 ts=69ba76eb cx=c_pps
- a=oc9J++0uMp73DTRD5QyR2A==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=CgmkN4CY_FeYCb7YkRkA:9 a=QEXdDO2ut3YA:10
- a=iYH6xdkBrDN1Jqds4HTS:22 a=Soq9LBFxuPC4vsCAQt-j:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 impostorscore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180084
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
+ 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
+ lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
+ 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
+ dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
+ F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
+ NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
+ 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
+ AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
+ k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
+ ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
+ AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
+ AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
+ afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
+ loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
+ jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
+ ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
+ VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
+ W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
+ zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
+ QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
+ UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
+ zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
+ 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
+ IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
+ jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
+ FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
+ aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
+ NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
+ AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
+ hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
+ rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
+ qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
+ 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
+ 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
+ 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
+ NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
+ GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
+ yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
+ zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
+ fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
+ ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
+In-Reply-To: <20260317-panel-patches-v5-2-ef99f7b280da@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 3/6/26 3:01 PM, Luca Weiss wrote:
-> Add the ADSP Generic Packet Router (GPR) device node as part of audio
-> subsystem in Qualcomm Milos SoC.
+On 17/03/2026 19:50, Yedaya Katsman wrote:
+> Add driver for Samsung S6E8FC0 DSI controller for M1906F9 video mode panel,
+> found in Xiaomi Mi A3 mobile phone.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Co-developed-by: Kamil Gołda <kamil.golda@protonmail.com>
+> Signed-off-by: Kamil Gołda <kamil.golda@protonmail.com>
+> Signed-off-by: Yedaya Katsman <yedaya.ka@gmail.com>
+> 
+> ---
+> 
+> The downstream dts claims a max brightness of 2047, but seems to ignore the
+> MSB.
 > ---
 
-To the best of my ability:
+[...]
+> +
+> +static const struct regulator_bulk_data s6e8fc0_m1906f9_supplies[] = {
+> +	{ .supply = "vdd" },
+> +	{ .supply = "vci" },
+> +};
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+these power supplies should be only DDIC related
 
-Konrad
+> +
+> +static inline
+> +struct s6e8fc0_ctx *to_s6e8fc0_ctx(struct drm_panel *panel)
+> +{
+> +	return container_of_const(panel, struct s6e8fc0_ctx, panel);
+> +}
+> +
+> +static void s6e8fc0_m1906f9_reset(struct s6e8fc0_ctx *ctx)
+> +{
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+> +	usleep_range(12000, 13000);
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+> +	usleep_range(2000, 3000);
+> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+> +	usleep_range(10000, 11000);
+> +}
+> +
+> +#define s6e8fc0_m1906f9_test_key_on_lvl2(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0x5a, 0x5a)
+> +#define s6e8fc0_m1906f9_test_key_off_lvl2(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xf0, 0xa5, 0xa5)
+> +#define s6e8fc0_m1906f9_test_key_on_lvl3(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xfc, 0x5a, 0x5a)
+> +#define s6e8fc0_m1906f9_test_key_off_lvl3(ctx) \
+> +	mipi_dsi_dcs_write_seq_multi(ctx, 0xfc, 0xa5, 0xa5)
+> +
+
+macros are definitely DDIC only (not panel related, thus s6e8fc0 only)
+
+> +static int s6e8fc0_m1906f9_on(struct s6e8fc0_ctx *ctx)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+> +
+> +	s6e8fc0_m1906f9_test_key_on_lvl3(&dsi_ctx);
+> +
+> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x0000);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+> +				     0x20);
+> +	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 50);
+> +	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+> +
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x04, 0xed);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xed,
+> +				     0xe4, 0x08, 0x96, 0xa4, 0x2a, 0x72, 0xe2,
+> +				     0xca, 0x00);
+> +	s6e8fc0_m1906f9_test_key_off_lvl3(&dsi_ctx);
+> +	s6e8fc0_m1906f9_test_key_on_lvl2(&dsi_ctx);
+> +	s6e8fc0_m1906f9_test_key_on_lvl3(&dsi_ctx);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1, 0x93);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb0, 0x05, 0xf4);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf4, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xed, 0x01, 0x81, 0x04);
+> +	s6e8fc0_m1906f9_test_key_off_lvl2(&dsi_ctx);
+> +	s6e8fc0_m1906f9_test_key_off_lvl3(&dsi_ctx);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+
+[...]
+
+> +
+> +static const struct of_device_id samsung_s6e8fc0_m1906f9_of_match[] = {
+
+this struct is only DDIC related, the content of it below is panel related
+
+> +	{ .compatible = "samsung,s6e8fc0-m1906f9" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, samsung_s6e8fc0_m1906f9_of_match);
+> +
+> +static struct mipi_dsi_driver s6e8fc0_m1906f9_driver = {
+> +	.probe = s6e8fc0_m1906f9_probe,
+> +	.remove = s6e8fc0_remove,
+> +	.driver = {
+> +		.name = "panel-samsung-s6e8fc0-m1906f9",
+> +		.of_match_table = samsung_s6e8fc0_m1906f9_of_match,
+> +	},
+> +};
+> +module_mipi_dsi_driver(s6e8fc0_m1906f9_driver);
+
+mipi_dsi_driver is DDIC related, not panel.
+
+
+Otherwise LGTM, with requested changes
+
+Reviewed-by: David Heidelberg <david@ixit.cz>
+
+Thank you!
+David
+
+> +
+> +MODULE_AUTHOR("Kamil Gołda <kamil.golda@protonmail.com>");
+> +MODULE_DESCRIPTION("DRM driver for Samsung s6e8fc0 DSI controller");
+> +MODULE_LICENSE("GPL");
+> 
+
+-- 
+David Heidelberg
+
