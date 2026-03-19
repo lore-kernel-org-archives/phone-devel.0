@@ -1,66 +1,66 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF4734CFA1
-	for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 11:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F823CE4BE
+	for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 11:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773921554; cv=none; b=Y/ZE+IhpO2sqeU3WCins9jQQpxTZ5MXUsVc6E96aU4OxbN6bPM+8dzCDQwZYVscH6LODn3R52WrtLVOK6hm8UIw4EY8bsG7Ygt9jGm4AmRpUun5CafpweKTf+l6vnTL+hpfi7NBTtI8A7rcaAhwJbY8yV+SvCBNA4kYK/ipdPpo=
+	t=1773921555; cv=none; b=SMDnTRXFZo5rn3mNXvRJRB7s1Lu/bVnAw/c4OTVYweqnDLyJVriGV8thheC+wAaFpD/lAJWotMvLoIDziHlVS0g7zy3HN7j1jnNEBtEjp1fWU53s9iS85n3BzbDUbaMqDIc4KH5ZABn1FkXBmw3xbwgoI2NQowwt6vweWcI5jnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773921554; c=relaxed/simple;
-	bh=aiPXxbkBtL2g1i14xqt2LGY7RPn85iUFNe9a0NClGa4=;
+	s=arc-20240116; t=1773921555; c=relaxed/simple;
+	bh=FyYL7KjhfBkhq4Z8eKOH65vilPS2pr7+rN80jiOzQpc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NaR2gfw0UJ8J9Fj2ZTFUTYKE5J2sQWAth3J8Xp5tnr/zNrhE8iuCbm/VZ8+OPUFRKJ9s4YwQqA89XpSkJpFYUBSr/vRmGFK6pm0JuMwTZYbxW/2M6WhsF0veY/ly5U6z7SfeGveIfcRhmem+QUM1REZep4Ltn9mCXouA7JSwRgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jwXrFg59; arc=none smtp.client-ip=209.85.218.48
+	 In-Reply-To:To:Cc; b=sp+v77ZXsZI3L/H55p1GK+/q81TLpdN3W8HTpGh0rqsYkUJzNIdVYRe3pRRcreiyaRpcXhVphHXYLK+EersRGfUnAbe5MlxO48+IX0KUoKxE1F6p7KJhFPbAxrDjTfJab7WYj/CJ65x8vilL0cs810HjnrvIBVvFbzdVQZeldpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jr5exfEK; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jwXrFg59"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b9825ba7e8dso36719466b.3
-        for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 04:59:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jr5exfEK"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b936331786dso60142466b.3
+        for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 04:59:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773921548; x=1774526348; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773921549; x=1774526349; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cZa0s7hz2156Ccpdoak30m2Gw7JDYqAQedbI9A51ZyU=;
-        b=jwXrFg5916CCvzLfTU0t6sbRD+c7bpyZTKNdYFN3nwU52oGcjtegr1wh7G2cQLyPoc
-         TaRQR4cDmr40W7OatWJ76qncMx0H12GXhR7oonw2qjjHtwFNwQfmc8gabdZwI8xgbtEY
-         2/AGBzv1m9TC38AAqiwBbymy54FmRJu5Fcma7/0YJgYAKFi+OafHExB1nFaBO/q3YP4f
-         ov76Qf52i9tXV+ilupxpyridYtx43+zMxGTTo8mMD30MCUQpo1rZKiQgy0l1idVvAGF8
-         Sfb620oTBsEGo8w/HEwm8zck8uynOVgBpKZnKi5qI+a1wDKTsYyn3qc5nxV9vp73gUyD
-         SxxA==
+        bh=AGTiQESNTxF+kqg9mPQcr06UPYRyUnWm55j6lAp7RWY=;
+        b=Jr5exfEK9YaQ/thIlySFnLsSKgAz6iUh/nMJRplGQa9P+FisjinJcPAKWx5ZaVQz+2
+         Wm1R7NhYdxJCX7v83hVDHWgUsD5n/310rd2G3+a1p2AFhxxmKZNmWt61KRSUor7/7JDe
+         BYwieDWtqGI61vosW7Nfty+w1swF66taFB9GUaUayGLWfRhOFHwyD1I8gG8mrOH9ckuF
+         P59NgU18z2kQwL8mV2t24SpkQWH5zSXgCTuWOJhjRcntvvld0wMPfHNF1dOd8hI/deCV
+         AkDdmlyJO2RKgxibJKUvRRDcc6NN1tAJiLwsrpYESDVbvVbtT4z2REU50pTQXuGVxJbE
+         vjTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773921548; x=1774526348;
+        d=1e100.net; s=20251104; t=1773921549; x=1774526349;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=cZa0s7hz2156Ccpdoak30m2Gw7JDYqAQedbI9A51ZyU=;
-        b=jssxpxlQMX1idM1mqChHHMSLLKgH24zK/oZyKSETDjhi569BBLzMuoR5SSiE4LlKwj
-         cNTJKwgp+G7EKyFNsLe1xd5Ms3Vo9MWrls904NRbLEpcIVDKf25GhJotzXGjXE4iysbw
-         Um/NpnA+JQfUNJkwC76bgrtA42iir8gNSPy5Qgq+uBmTzgTCGo2rjtYvgg0J7+GNewoj
-         GD43xgDh2E2tJrJjJtqqhLUTYuxK+RKyyKYxC1D6ZtMoY5023UxwJzjMzGGNS6izKdd9
-         iZhWQsj3vnSqlCRzRyufKEcXWV8SKy+zLcKfC+QyRJvUojoR30UiTHqVccIvmnXJuTbX
-         Szfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUb09MVwzQpaHx5Q+NKn+89amsp331Rzg8KBMZ/FzUYaKA8EqFNe5lhSMMG5SsGiN+3FHqM13yMOnxZGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIiiyZIPjUJiACfInFFPvgiRWKTge/kYVwqQaB1reqS4yrKFJv
-	KS0oBWvcuenLqjiKis8IzOTRiIYD6FbLFCGaQFeoKDg2KhFqc1Kdtfhg
-X-Gm-Gg: ATEYQzx+g76wk83/BU8k3tALYj1RV97W/6qNy8w/RxSJY+l63CBM/7aD9B+B3dp0j+P
-	2NXTWTPqMqqZRyA0cDPjbnUnACh2AbrkTYRtGFfSc1ph73ciV21TBsw7N3AYk9faATTN8/jiX62
-	FvDPortgqRk7Ezv4LSACtlXFRBAbd3IGAT/Rq0+CdmvUyYLtBPO/Q0MKS0sL6YTNYbTaU/mkBrR
-	3016fSQV1txAVdp/8kxwosiQ6yfPxHdeYIqPqzEwaqXZ82NZyXwEq2JjtGYzzBLaT5KIRBFZITo
-	jNtzFsPjoVmeBe0U2s85BFkm8MGAsBSznR5ExRgKLpBzLkF6W4+KlPnamVbJzMfZ01En4QhK/p8
-	xYxFRbfku9uFxnIC6VAik+/y+WR9IabUkfGlOSLi7RojaYdww1tUOUSvaDGBxMpxsr/vvZ3gXNq
-	f5E2NdDt0muKehRdgq40r/I2cU45jlE+2w+xYR
-X-Received: by 2002:a17:907:728e:b0:b98:667:2e1d with SMTP id a640c23a62f3a-b9806672ff4mr337932966b.25.1773921547845;
-        Thu, 19 Mar 2026 04:59:07 -0700 (PDT)
+        bh=AGTiQESNTxF+kqg9mPQcr06UPYRyUnWm55j6lAp7RWY=;
+        b=PR0lsvlgZu/2XD4kipDwo0yatLhpwDs++Il5ltm4Yh9HPA2POAblxPmaZD6H6cnp0r
+         kLDITWrii47gy/Mm5lPuqiUOUzDQcTZpbFFDNXFTa7+oILYHqRXzsBrqMysdV22M2iZg
+         iUrgHdftUDj45/aRqROa02kecKGH8mSRbYwkKYojyH/Ua6zBd3kg6AYFZSAhb+LxoGSW
+         I6eAJnTAmQXCmK1ndQizfppAwcFjeK2Lo3ZoPJKZ1p8OJM0/72usy5Cq4gFQw2JW3f9+
+         utHHccjBA9vOtTeO146DvwfGPA20KvCHy78mmJv3MiPbCbOlioGR5J7C4SZXN/GzJg+Q
+         oGcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcLGCUQECO5x5lOtT8sg0i+GlPlJKh+zCcpktRPOVxw9loLJ4GlBof9Q/ESlFlXh7gZSOa7Mhsm9+hQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywL1P2BKTThyL7Urt0CF240R1q+u19VAbiAKkEpmUqIiZLihfH
+	aE9gITISZF8Pn8AoHAwA9bO0XujQ62DvpA5kd3Gt3HwgI92bXQ6mQaU8
+X-Gm-Gg: ATEYQzxKzEy5fqmAUKRQbZj6cq0r7/myxVYKjc7cQNPUa5yKD1abYXTQxKU2LZqqIdR
+	Cj2ulXKtQYWErAbLZOoqzL7rv523jAkak3TVX3e81P79YN0lupcorEvO4LFbzzOugR81Up9DVV8
+	WIXp/w7AQqc938Ext0Oc6AyDSjRVMx1RtwbhFhC4wPhx7UduDEyfa10oo8H/bT+XP1YgSXLe0ur
+	G+0WYwN0badfd1pfse/FfsXYhmawnHe5fVTgm3Cbxu98F1YBecsj1lpMgHJDGBkpx4bCaCEqrZA
+	umjQWCcxWzX9p7oSKWEqrdhaQfZjW+G2vkfM6YBssEiPQSR27YpQxjnzFAohtYP5TGtowYI2oep
+	loKtk0HkwdUgZXbemyNaNmM0xeyFhDBovoOmoZQBJXuVfmGpUTjMNgTATXLve8vbA7YwLyGdQcV
+	mPu9Z2yH5huB9rOYFB040F5IkdSA==
+X-Received: by 2002:a17:907:ea6:b0:b97:fb80:dd12 with SMTP id a640c23a62f3a-b97fb810dcfmr397921866b.33.1773921549259;
+        Thu, 19 Mar 2026 04:59:09 -0700 (PDT)
 Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97f16d3380sm461399166b.42.2026.03.19.04.59.06
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97f16d3380sm461399166b.42.2026.03.19.04.59.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 04:59:07 -0700 (PDT)
+        Thu, 19 Mar 2026 04:59:08 -0700 (PDT)
 From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Thu, 19 Mar 2026 13:58:39 +0200
-Subject: [PATCH v5 1/8] dt-bindings: iio: light: vcnl4000: add regulators
+Date: Thu, 19 Mar 2026 13:58:40 +0200
+Subject: [PATCH v5 2/8] iio: light: vcnl4000: sort includes by their name
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-vcnl4000-regulators-v5-1-a025d3332805@gmail.com>
+Message-Id: <20260319-vcnl4000-regulators-v5-2-a025d3332805@gmail.com>
 References: <20260319-vcnl4000-regulators-v5-0-a025d3332805@gmail.com>
 In-Reply-To: <20260319-vcnl4000-regulators-v5-0-a025d3332805@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -83,44 +83,35 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
 X-Mailer: b4 0.14.3
 
-These sensors can accept 2 supplies - one for the sensor and one for IR
-LED [1]. Add supply properties for the sensor - 2 for the sensors and
-one external, for their open drain interrupt line, to ensure the sensor
-is powered on before proceeding with setup.
-
-[1] https://www.vishay.com/docs/84274/vcnl4040.pdf
+Sort include headers by file name for better readability.
 
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/light/vcnl4000.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-index 2ba4d5de4ec4..44882a90bc76 100644
---- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-@@ -33,6 +33,10 @@ properties:
-   interrupts:
-     maxItems: 1
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 5e03c3d8874b..939ff2d65105 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -18,12 +18,12 @@
+  */
  
-+  vdd-supply: true
-+  vio-supply: true
-+  vled-supply: true
-+
-   reg:
-     maxItems: 1
+ #include <linux/bitfield.h>
+-#include <linux/module.h>
+-#include <linux/i2c.h>
+-#include <linux/err.h>
+ #include <linux/delay.h>
+-#include <linux/pm_runtime.h>
++#include <linux/err.h>
++#include <linux/i2c.h>
+ #include <linux/interrupt.h>
++#include <linux/module.h>
++#include <linux/pm_runtime.h>
+ #include <linux/units.h>
  
-@@ -54,6 +58,9 @@ examples:
-             compatible = "vishay,vcnl4200";
-             reg = <0x51>;
-             proximity-near-level = <220>;
-+            vdd-supply = <&reg_vdd>;
-+            vddio-supply = <&reg_vddio>;
-+            vled-supply = <&reg_vled>;
-         };
-     };
- ...
+ #include <linux/iio/buffer.h>
 
 -- 
 2.53.0
