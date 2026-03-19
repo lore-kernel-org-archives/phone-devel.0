@@ -1,149 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB312246BC6
-	for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 12:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA863D47B0;
+	Thu, 19 Mar 2026 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773924478; cv=none; b=F7y2yURRf1bIKM8t8Z79Z0S8jvXkqMSjlJdGd+t5DpBhROZBhURaF1NvXuifUASaQWMrfdbSRbNOh03PectBECXLfTNn+l+ot7Rgmo+opCkmVrQsE1rt1p/CCFJ7Gl/XImLMa7fWZawg10ofipUBNq8rwitjANd80XB38CtWAj4=
+	t=1773926526; cv=none; b=Ai33HWCcLUZgp6QlhWX4q+1mEX4+/RmgFRxbGJzdai4K1/cg5UdBEBWGYbpOIr/ZK12egh3n+EbF7BbaKl63zs9nb2XqsB11/pi9IrI0cianXTY5bWxoz3x5dvw4uDWCTX31wkk7Dqn8Y8XmyZ9Qd9V1C7b7tP/+5lIkXyfyYsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773924478; c=relaxed/simple;
-	bh=zTY+Se3NFvHBXt3d4ew0w2jM2I7U1Cal8UaC8rHErGM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LhAwUuItwMK5ll+D9KqNiwZ2535jheNSgURP9twUbJZrXXED/lc7MTCzohWgEHKWrR0NQ81AgXiF2RR5aChEE6A4KU8F840SAAXE2vrYItz6RMn+ELg2tQs6oful/WnSotjYia6j75t2hRJp0TJE6ANrnxf5qkJhRZ/Iw7ofhxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYYIAucB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773926526; c=relaxed/simple;
+	bh=vQhVWR7cnljcBAQ+FqNmBa875xO5JBP0pYkOmwNY/fA=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=IKVkFLRHFX6K0hJXqmnrYtkKYv1y2GktlhkKd3i+yWJMyHkFYU1Ov1C3YQ/QZD+7LQIU5lX2aUHfh/EZbSBkyOqUbZKjieqvyTiocZjono7nHwFQtqkiHSav0f0iLoO27/JXLqxHoB1yEV0o2gNuvAdK+yUkYafXVA2ovCnLYbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VojmOK/J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYYIAucB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F268C2BCB1
-	for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 12:47:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VojmOK/J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0610BC19424;
+	Thu, 19 Mar 2026 13:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773924478;
-	bh=zTY+Se3NFvHBXt3d4ew0w2jM2I7U1Cal8UaC8rHErGM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KYYIAucB7njxEo1PVsQFHRNpjRT84zx60wmJ2jyXxdzr2HwVkU3Puy51MsdOdplbq
-	 FjQKHbJq53lwP5/rQPLvhBfDpf/00XGy6KchM3kbsQC4tNKPV5Eb6aNnAcRXoESGFA
-	 lQbN2yILFPG3pCPLfzh6UubKjDpiuJOsx9aw6ozdYAM26auPhx3jr4KDCXAN8H9KaI
-	 iHRv41pwjGEmZMAf8U766RUvXfmMPhpa1qiXKOgMVwHA5UcCS9ZUYZjWfzOPrka0rh
-	 bOexCLacfoVsdVfkBHu6DXVxEgIAPjlgDxFfCIjVLgVMOmxiqf5cHwntA0mzkBw6YU
-	 xwh1+63zZsDcA==
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64ad9238d8fso1283510d50.3
-        for <phone-devel@vger.kernel.org>; Thu, 19 Mar 2026 05:47:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWmkr6wOS3KS3Mqvux4/e67M6tZaSJACIQvot9iojFvk03KBQXJ7VxOa2j0FY9GGUWnPJ79TSS410OdvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0EWzoPwHWh5JzX4X0hoEbH6aSq04E7jX7x8g59HiB40QJq+5H
-	TqRcilG/KYf5m1oGtzRHctWXL2BcExxnc1aOBgkN3/L2SaU7M0Ygjd9MFcaOTAUroOk25ze1eC1
-	DNJ5YlLuPnwTg3nj8iDTxNvhbK8XU7ms=
-X-Received: by 2002:a05:690c:6610:b0:798:5951:f42b with SMTP id
- 00721157ae682-79a71c40194mr76142387b3.42.1773924477855; Thu, 19 Mar 2026
- 05:47:57 -0700 (PDT)
+	s=k20201202; t=1773926526;
+	bh=vQhVWR7cnljcBAQ+FqNmBa875xO5JBP0pYkOmwNY/fA=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=VojmOK/JVolCTphrZHzD2ZbAyLQ9GxQsP17ENAmQw/b5E2wW1HTW0/pOs/DYsfu0O
+	 dIAzoV4OwPZ+vmLBqcExxY1DcloZPVgthG4jufAujqgdH7BWhxGU0MtY7gqq7K9rC3
+	 5xzYXDxPtVRAjUoX0qz6NbAYgLrAtWLmGX2wsRInuQU4FT3SVplbyG8SInOjj1D4Vm
+	 0TaGQwuylrRjnslgBc4wDPn2dUT5mwSIGera9sxQA8KF3ccQ3QyzOqY2u/OWHbtjIU
+	 uHILOd5QULrE5l7/XvkLEvIk+vSJxjFdkMAt/D/6m0yurS67EkRaf76wcQj6iLIUMc
+	 tUePvIF9JIOqA==
+Date: Thu, 19 Mar 2026 08:22:05 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260318-expressatt_camera_flash-v2-0-5c2b9a623dcb@gmail.com> <20260318-expressatt_camera_flash-v2-2-5c2b9a623dcb@gmail.com>
-In-Reply-To: <20260318-expressatt_camera_flash-v2-2-5c2b9a623dcb@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 19 Mar 2026 13:47:47 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmyYkxWmed+_TR90bQjOm80qOiFhy+ozO+oaStTCZgC6w@mail.gmail.com>
-X-Gm-Features: AaiRm505cPvbdwiTvmw3UtKWuDl2DXwZ-y3i9XjbmrEhtSPFBdQzKgyQpyb6AMc
-Message-ID: <CAD++jLmyYkxWmed+_TR90bQjOm80qOiFhy+ozO+oaStTCZgC6w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] leds: flash: rt8515: Support single-GPIO flash ICs
- with vin supply
-To: guptarud@gmail.com, Mark Brown <broonie@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, linux-leds@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>, 
+ phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+In-Reply-To: <20260319-vcnl4000-regulators-v5-1-a025d3332805@gmail.com>
+References: <20260319-vcnl4000-regulators-v5-0-a025d3332805@gmail.com>
+ <20260319-vcnl4000-regulators-v5-1-a025d3332805@gmail.com>
+Message-Id: <177392652513.2385567.5373645949337322213.robh@kernel.org>
+Subject: Re: [PATCH v5 1/8] dt-bindings: iio: light: vcnl4000: add
+ regulators
 
-Hi Rudraksha,
 
-this is a clear improvement! I like the directions this
-is going.
+On Thu, 19 Mar 2026 13:58:39 +0200, Erikas Bitovtas wrote:
+> These sensors can accept 2 supplies - one for the sensor and one for IR
+> LED [1]. Add supply properties for the sensor - 2 for the sensors and
+> one external, for their open drain interrupt line, to ensure the sensor
+> is powered on before proceeding with setup.
+> 
+> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-Mark Brown needs to look at how you're using regulators
-here.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-On Wed, Mar 18, 2026 at 7:34=E2=80=AFPM Rudraksha Gupta via B4 Relay
-<devnull+guptarud.gmail.com@kernel.org> wrote:
+yamllint warnings/errors:
 
-> From: Rudraksha Gupta <guptarud@gmail.com>
->
-> Extend the RT8515 driver to support flash ICs that use only a single
-> GPIO for both flash and torch modes (no separate ENT pin), with an
-> optional vin regulator that gates power to the flash IC.
->
-> When vin-supply is provided, the driver enables the regulator before
-> activating the LED and disables it when turning off.
->
-> Make ent-gpios optional and validate at probe time that exactly one of
-> ent-gpios or vin-supply is provided. When ent-gpios is absent, the
-> driver uses enf-gpios for both flash and torch brightness control.
->
-> Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.example.dtb: light-sensor@51 (vishay,vcnl4200): 'vddio-supply' does not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/iio/light/vishay,vcnl4000.yaml
 
-(...)
+doc reference errors (make refcheckdocs):
 
->         struct regulator *reg;
-> +       bool reg_enabled;
+See https://patchwork.kernel.org/project/devicetree/patch/20260319-vcnl4000-regulators-v5-1-a025d3332805@gmail.com
 
-I think you can actually ask a regulator if it is enabled already,
-regulator_is_enabled().
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-Also as long as you enable and disable it the same number of
-times it also contains an internal reference count, so this is
-often enough.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-> +       if (rt->reg && rt->reg_enabled) {
-> +               regulator_disable(rt->reg);
-> +               rt->reg_enabled =3D false;
-> +       }
+pip3 install dtschema --upgrade
 
-I don't think you need to NULL-check rt-reg but not sure.
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
-Can you use regulator_is_enabled() instead of the bool local?
-
-> +               /* Enable the vin regulator if needed */
-> +               if (rt->reg && !rt->reg_enabled) {
-
-Dito
-
-> +               /* Enable the vin regulator if needed */
-> +               if (rt->reg && !rt->reg_enabled) {
-> +                       ret =3D regulator_enable(rt->reg);
-
-Dito
-
->         if (state) {
-> +               /* Enable the vin regulator if needed */
-> +               if (rt->reg && !rt->reg_enabled) {
-
-Dito.
-
-> +       /* Optional VIN supply (e.g. GPIO-controlled fixed regulator) */
-> +       rt->reg =3D devm_regulator_get_optional(dev, "vin");
-> +       if (IS_ERR(rt->reg)) {
-> +               if (PTR_ERR(rt->reg) =3D=3D -ENODEV)
-> +                       rt->reg =3D NULL;
-
-I think the regulator callbacks are able to deal transparently
-with "regulators" that are -ENODEV, can you just let it pass?
-Anyway Mark knows what to do here.
-
-> +       /* Exactly one of ENT or VIN must be provided */
-> +       if (!rt->enable_torch =3D=3D !rt->reg)
-> +               return dev_err_probe(dev, -EINVAL,
-> +                                    "exactly one of ent-gpios or vin-sup=
-ply is required\n");
-
-Please drop this check.
-
-I think there can be systems using the torch but also define
-the regulator.
-
-Yours,
-Linus Walleij
