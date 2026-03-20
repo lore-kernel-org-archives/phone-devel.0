@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18833CFF56;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58D13CB2CC;
 	Fri, 20 Mar 2026 16:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774024147; cv=none; b=oOdkh6xO0edJHLadATtSaHPf5d2yzVzjW+O1EebY0a+IkboNeccbisSRM1oXsawDzGgIwyC+2LxAyaaQfBrHNS+KWrVrhkbP2OZt9JyU0FrmWRo2YxJ6WRtDUS+mO97nJ0KWMdraafRf8NFZ0wEoms3Fer58g86sg8dK79WNS40=
+	t=1774024147; cv=none; b=jPB5hnBY4iTsKee6L2E6EfXld9xrGgEIwtXWrdJssTI44KtvQRvoHEmMC/CQ+NHkski7EZ0aSXFpSgli0gl7ccM48gnrY85jKRUJ/BZBm6+HBgjeeqj2gp0tpQBx/3iEP4QuYCiBCyZe9xRjlPZIxWe5sPIGf3TbqpOkUfMc7K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774024147; c=relaxed/simple;
-	bh=Ug1ZlH1itHQlZdElqdeD1isP56arF+w6CXvCerFsyC8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LFRhFYt9vv6Bj+TAPFOcuoEkRg5wv3C04TpbgrYkvqf0ONj55bkdj1ijAYDvqzTnRVygruiDbRi/87lyL4VIZO0G+/V7IQqO8P2Rikv8EQWJ92baYSGPgp94S2yzDclCvevKsNv/496YqAYLomZLciRq4Ypw1IPiBRQAAvhLu0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vpqz1yrO; arc=none smtp.client-ip=10.30.226.201
+	bh=Tl0cBmQFO6SzEUpIlcnPS82ad0RFGxin1DOyrGX5yXw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DN8whqmz13hU0H7Wbs8Kqnhkgk1VfrSUNzE8I4Kon3YhwdUo7yprBg1mqaOFFXN9SjXNIY29a88CixnL/Bbs4osZly9FD+t3BTJaP87kBzofbzaytsjO6HMomc0VVaeCE4GdStD8qGg7vvE5DUVfNgbTCuDlKC3NyqZHEqgzb2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FeDvdT91; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vpqz1yrO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6620CC19425;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FeDvdT91"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8800CC2BCB2;
 	Fri, 20 Mar 2026 16:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774024147;
-	bh=Ug1ZlH1itHQlZdElqdeD1isP56arF+w6CXvCerFsyC8=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Vpqz1yrOZnMcMSKzkAYL7BSJ7ZTEKmofGGXW96HX22KmctM5V8GVHzQc9NgrrOOB7
-	 W5JBMf/uaNE8eIFMakjdcr6F0j+3cHJzsVCZsjEuZihTQd4+ngiJTrba9KG9/YoceB
-	 YCRCjBpP0oZV+u3Av1JWQttmoOj47jHZtfuYa4+Z21d9fJpGTeSJBCtYoY8eL/TjjV
-	 zJaxek7xGunOzGP2+hcxJ9zKrgqxpeiM2PIvBvIHaAeXucFJtu3iVl0BY6oYpQoPfD
-	 kOLu64Jel4Ov1HWMyo7dOHxN7kEBLvKTzYgs6O5Ea5IfuU45cnezAWgROprpwIyaK7
-	 Y91uL+RW4DzMg==
+	bh=Tl0cBmQFO6SzEUpIlcnPS82ad0RFGxin1DOyrGX5yXw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FeDvdT91vIwsLVq4lcN92cxGQyWsEd/Gv4+Evz03U/snfyQe598kthY06MU4CvyqH
+	 AIqLV95x3Ofeh9HSTzmMHAy8ezwKrb5g2ZfEW/ysoSkxB3iAW9ZlEP7vaNclxbuflX
+	 VcF18Ejo+rcoodi26CuKafcn8B6h12yklH+pyjXfDVZbbrOSlhoJdOMx0UI6nhZA/o
+	 U8nLaHhT6m7fct+WRN8xqQVQW2XBDdCjFJ0AP77Kyg91sBakcq/CRyATd1oLbheYnl
+	 y/fjF2OETFahpnGmFMwmTxjbg4fGcdwdHyR/6RyMC3mU1BkU7LA4ABpIvXio1e3Yfa
+	 Y1RhAZZZ8txfg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C23F10987A6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D47710987A9;
 	Fri, 20 Mar 2026 16:29:07 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 0/3] SHIFT 6MQ SD-card support, improved responsivness of
- touchscreen, and codec
-Date: Fri, 20 Mar 2026 17:29:04 +0100
-Message-Id: <20260320-axolotl-misc-p1-v1-0-89c9b5ecb26e@ixit.cz>
+Date: Fri, 20 Mar 2026 17:29:06 +0100
+Subject: [PATCH 2/3] arm64: dts: qcom: sdm845-shift-axolotl: Set higher
+ touchscreen i2c clock
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANB1vWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYyMD3cSK/Jz8khzd3MziZN0CQ10zA8MUEwuDZCPTlDQloK6CotS0zAq
- widGxtbUA1dZ+emEAAAA=
-X-Change-ID: 20260320-axolotl-misc-p1-601d480c25df
+Message-Id: <20260320-axolotl-misc-p1-v1-2-89c9b5ecb26e@ixit.cz>
+References: <20260320-axolotl-misc-p1-v1-0-89c9b5ecb26e@ixit.cz>
+In-Reply-To: <20260320-axolotl-misc-p1-v1-0-89c9b5ecb26e@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,51 +51,55 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, Petr Hodina <phodina@protonmail.com>, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Alexander Martinz <amartinz@shiftphones.com>
+ Casey Connolly <casey.connolly@linaro.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=752; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=710; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=Ug1ZlH1itHQlZdElqdeD1isP56arF+w6CXvCerFsyC8=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpvXXRcxjb8S5LRW8Pns7ES1MQJV59xBIt3G5V3
- POW24oXwmqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab110QAKCRBgAj/E00kg
- cuItEADFkkuZYtDhkdxfwf8AQjLxixHSPDF3FM9seYuJhTVHXMluvFfmDf4X6oWjpYhPv6GYrkq
- VhltG5hH+UNFpER1sE4gjnsiOJYepgWeh1HgswxMskYdOJQSlgicrnKhUjrCcfqMvuy3tnxWQmt
- cWcb1vHq5TJLnfNyPkLYjSW9UHt23uC2VpEB+Zw2eMN2zq8/NtJJWjpy2Ehc7XoLTKL+6LU8w/p
- 69uHcBZPpjn+XmHTfssVC7a27p1UgrwCsB++JBkE2WusuWdIg3BtPPg3uDcOVrbV7iMMoIBuFdh
- y21wzDVmYCwZsfZ7osQKHGTpLvgXCbFqpffxhBeQqxNHQI5UxkWQu40wUiVVAgFMiuuPLDf1H/K
- 3lWHVNmc8uTILEXvLkv12GXqUnrQnQYI3YIFcZ7jm3zU2PLoBxr2M8ZGWKkc/DmtG0trKEtqqyj
- rmqvBCuSkG7ej9C/DCLZ4fiswBO9r/37udralxgat0XSRjso9ugGMD3pgePaTBvVlgnIetH0YEd
- yRO3KrnAJpcYDgwiTMLL+2N+hNPGBAjY8c0kJ89xXXJ5zrD6w/zBjAdraUxVkWszgo17ylp0OkN
- GNWOUXmEkNeS4hhnu7lRmtsEDu+19DW3Qt0xlfctSYEARyWeVxtqQU0E5OcZ+0Dbj5vRDYI0I7O
- WX8dqDAq30gaVVw==
+ bh=NWMLGsbNtB42CC2D75yqh2SFHZ5p3oShA6K4n6umXsA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpvXXRS/+Km3l7C1DG/t7dCgJjAdgot+rf29dhN
+ jt4ERVzIPSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab110QAKCRBgAj/E00kg
+ cslvD/4rmQAp2oOFc4SkQ7dqC96MF9OisFgjRJGBUddN9wyRTpdQrrJn1+/EvbSdVfywTgKy9Zi
+ X05D9nVGTw/mshz5G1wAgACKTyR9M5m0tQTpNcG7UEejecxkiH8DH20bAUh/CZSX9k9RWu4ZZCI
+ vklamp6rcg7ENAkkbLvca8nXhjxVnvQy6caG7l5E4mDx8HI0P3q8RiaWFuopfF6Ayg47ytSZkAD
+ 99q/kzpo6ToQiazkX6ZnwyEB6g+VJh8sUt/9Y2zUrG9KhzvrXttpf4FgE48ug70peyTPTqweQZj
+ okjm1pIHT51e/7mekJpyegKO9FS11mb/gqvpkR1aFZbOK7lIiP8CzNJsAjmXO4a2i/NFkc8rO1R
+ Uq6/P9/zn5bwCWoKFUD4AuyhpiybvN0aOgTw4CZgOnHX/vWTi8BtGAc4mWCSUkuDjlKbWK+IWA+
+ a4ondhVOoGvob4kZQmxdZ4mcOhs3PeNGZeYeBggCKIx45suHEHR0eQBN/xCWmL/pBHCqX8I6xG8
+ YE55pl45rnXi7N1uWTeti5hNJ4H1phEnex67cLmTbbCvOysIp5p+ruJaB2LOkSKINw4hJ50158T
+ ASoycnYL/18J9PyPfSTdwe02quBdVgAOImIQGB9bHDEMFEdLAzisJoSXV335rdmJkdBR7Krex6J
+ 6fBpxYjyTRPWJfg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-I've tested that SD card and touchscreen works well, the codec does too,
-but for complete enablement needs soundcard support which isn't fully
-finished.
+From: Casey Connolly <casey.connolly@linaro.org>
 
+Sets a higher rate than the default for good responsiveness of
+touchscreen.
+
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Alexander Martinz (1):
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable TFA9890 codec
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Casey Connolly (2):
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable sdcard
-      arm64: dts: qcom: sdm845-shift-axolotl: Set higher touchscreen i2c clock
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 1f21da310b762..8d4bf858b238b 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -432,6 +432,8 @@ &gpu_zap_shader {
+ };
+ 
+ &i2c5 {
++	clock-frequency = <400000>;
++
+ 	status = "okay";
+ 
+ 	touchscreen@38 {
 
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 58 +++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
----
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-change-id: 20260320-axolotl-misc-p1-601d480c25df
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.53.0
 
 
