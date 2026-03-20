@@ -1,116 +1,97 @@
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C15B346FCA;
-	Fri, 20 Mar 2026 19:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.155.198.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D288B36894A
+	for <phone-devel@vger.kernel.org>; Fri, 20 Mar 2026 21:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774036114; cv=none; b=SYiClRDrzr1jIpT+pPYv/G0VaUKrh5Duvr8vjeVEoMh4nA5yfYax1dDBkMAs1kJj2xh+CCNcJ0OCYwfkmaC3dUh0DgCnsnuJlnRCJLTP6xrBE6UL+RdcOJotEP2ghuODJIxvExodrYWUTa+/sV9cO3thVKxlRo/b/90H2xtRhXU=
+	t=1774041302; cv=none; b=YRJVsdV9eF7xfFX37Hqpkf4Y0G7ZbCne/QWdV4QLNr3NT+UgK6o3IOy1olQwFodWaDjvdCnxaCFvaH+XqI3gICJNrqz0PR7lCTX6pESDvdCYtmidJUkSpkxhlhNbCHWQurO+ZsJT3EVH4GQ2XuVjGXo5pWV5vFD2FJbFsIYE7TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774036114; c=relaxed/simple;
-	bh=7ytz/z5ALk+SscFAnn7t/xKn1lxJTNR51Ag/WSCQ48k=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kzTeEmMm2J1XAVpna+LrqS/63elO9t//LCe5pycwEp7c2XgXGi1esA64dDZIFvsdm/o6qGIYkfCKTPaBiCkT0ZzZA8Rw5vgIMjT9vCfUEcGAcqfQCWGxt+ehMGQwUs274AM9PiLQg0n1O8IJVxYNCFtHGi/hCCd08Kn+0JgV99k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=HI36ZShg; arc=none smtp.client-ip=35.155.198.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1774041302; c=relaxed/simple;
+	bh=gO5UhDNhFn1ojze5ogbDG991DIMWJJB4bmVCCn865V8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g8RJJ9LrC+gdbgn7Ae3OFxOGDRBs3K4+FHveD3L9Bar90753pmGv2GQJvUCecWlJhPQGgomwtToeE5fYtTRPjoZaqn8To7Y3+A7tE/Eh0DnY6Uv5E9nsYBjRXbUjrV0yap2MKvTtrUvWW79fHRnpu8VLMoOhQvyqas2pXoxtn2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Vg8Hpznx; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="HI36ZShg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1774036113; x=1805572113;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q4TiEgfIAvMzCqc4KEMYNYNKQ830eOmdK/ypgIVMnB0=;
-  b=HI36ZShguwu6FWGH6onECBlfEw14c0gwZSxv9TnrUSdb8S/xvg35xfxW
-   i7Qml2b7qrBey99oFZynuLZljs3iXvR+67zQFOiECBdF3A8KX/gZTCjqb
-   jWaLRxVHgtSuFQodJhusyBS59Kz76dWjRIRZnmj/1jbCVeL+eotudoNPc
-   VX9T7FViwgMWQJ4MjBLu9ScoG60SC8/yIPl0qGpkVok/tR6CUJ910d70+
-   gtA+5Bnil3eme1WvprALx6fSlGNbe55/p55FL1D0g5WaOpQ3YRr+TTc5+
-   OXoUEunuueExjbj25X2cl9u8OtnH0/FWoIMm996DY7BMpl7OxChtUW7ih
-   A==;
-X-CSE-ConnectionGUID: eQzROiltQkKsAskOTuVL+A==
-X-CSE-MsgGUID: EKPiCysSRaKnStZUN8gGPQ==
-X-IronPort-AV: E=Sophos;i="6.23,130,1770595200"; 
-   d="scan'208";a="15374064"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 19:48:32 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:5335]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.60.23:2525] with esmtp (Farcaster)
- id cf03d1ac-a93d-4cd4-8130-2bf2729af980; Fri, 20 Mar 2026 19:48:32 +0000 (UTC)
-X-Farcaster-Flow-ID: cf03d1ac-a93d-4cd4-8130-2bf2729af980
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 20 Mar 2026 19:48:32 +0000
-Received: from localhost (10.187.171.32) by EX19D001UWA001.ant.amazon.com
- (10.13.138.214) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 20 Mar 2026
- 19:48:31 +0000
-Date: Fri, 20 Mar 2026 12:48:29 -0700
-From: Cory Keitz <ckeitz@amazon.com>
-To: <david@ixit.cz>
-CC: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, "Bryan
- O'Donoghue" <bryan.odonoghue@linaro.org>, Vladimir Zapolskiy
-	<vladimir.zapolskiy@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
-	Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Joel Selvaraj
-	<foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, <linux-media@vger.kernel.org>,
-	<linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<phone-devel@vger.kernel.org>
-Subject: Re: [PATCH WIP v4 9/9] media: qcom: camss: Account for C-PHY when
- calculating link frequency
-Message-ID: <ab2kjbN0Igbkp6sw@bcd074ae11bb>
-References: <20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz>
- <20260301-qcom-cphy-v4-9-e53316d2cc65@ixit.cz>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Vg8Hpznx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=gO5U
+	hDNhFn1ojze5ogbDG991DIMWJJB4bmVCCn865V8=; b=Vg8HpznxbbPncQ+oD/Gx
+	uTP5MuK2gtU86+BgVaiobyOxL8/V9XpjhGfjc6upZK7XfpS3mK5lmhDdnXjKCTT+
+	sseSWGjuGE6HwOpA0x+zneOFN5n92Un2kDDiSGjYbK0pDxLSolYzwKf4HsGxHTxU
+	FkDsKaN/eXTlf0QJD48IHx9aVapCKYsr5LQS1B1e6JOkyLzaVDo9RcmuMqSik1gt
+	A1PwN4asXfybC3B4CtJ2VWqTQogCu0ui+gXMOe5IZ3Akfs6KxJUuoig1Vh04cLhT
+	nHW1Waaurbcvn0o3hzADqRTAdrsWcTnDE9G/4ysCGodYAdWac+eIvEsAvXJscqHe
+	Eg==
+Received: (qmail 1698466 invoked from network); 20 Mar 2026 22:14:48 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 Mar 2026 22:14:48 +0100
+X-UD-Smtp-Session: l3s3148p1@z72LLHtNjoEujnsL
+Date: Fri, 20 Mar 2026 22:14:43 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: i2c: qcom-cci: Document Milos
+ compatible
+Message-ID: <ab24w_ESHK46nG8P@shikoro>
+References: <20260320-milos-cci-v2-0-1947fc83f756@fairphone.com>
+ <20260320-milos-cci-v2-1-1947fc83f756@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pD0ll/xn1Oqxasoq"
 Content-Disposition: inline
-In-Reply-To: <20260301-qcom-cphy-v4-9-e53316d2cc65@ixit.cz>
-X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+In-Reply-To: <20260320-milos-cci-v2-1-1947fc83f756@fairphone.com>
 
-On Sun, Mar 01, 2026 at 01:51:28AM +0100, David Heidelberg via B4 Relay wrote:
-> -static int csid_set_clock_rates(struct csid_device *csid)
-> +static int csid_set_clock_rates(struct v4l2_subdev *sd, struct csid_device *csid)
->  {
->  	struct device *dev = csid->camss->dev;
-> +	struct csiphy_device *csiphy = v4l2_get_subdevdata(sd);
-> +	struct csiphy_lanes_cfg *lane_cfg = &csiphy->cfg.csi2->lane_cfg;
 
-I believe there's a regression here from v3. I've been testing v4 of
-this series on SA8775P (kernel 6.18) with a GMSL2 camera pipeline and
-hit an invalid pointer dereference in csid_set_clock_rates() during
-pipeline power-up:
+--pD0ll/xn1Oqxasoq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  pc : camss_get_link_freq+0x1c/0xc4 [qcom_camss]
-  lr : csid_set_power+0xc8/0x404 [qcom_camss]
-  Code: 910003fd a90153f3 aa0003f4 a9025bf5 (b9400040)
+On Fri, Mar 20, 2026 at 09:09:49AM +0100, Luca Weiss wrote:
+> Add Milos compatible for the CAMSS CCI interfaces.
+>=20
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-The sd passed here from csid_set_power() is the csid subdev, so the
-subdevdata is a csid_device rather than a csiphy_device. The csid_device
-stores its linked csiphy_id during csid_link_setup(), so the fix is to
-look it up through the camss device array:
+Applied to for-next, thanks!
 
-    static int csid_set_clock_rates(struct csid_device *csid)
-    {
-        struct csiphy_device *csiphy = &csid->camss->csiphy[csid->phy.csiphy_id];
-        struct csiphy_lanes_cfg *lane_cfg = &csiphy->cfg.csi2->lane_cfg;
 
-This also lets us drop the v4l2_subdev parameter entirely since it's
-no longer needed. With the above change my pipeline powers on and
-streams correctly.
+--pD0ll/xn1Oqxasoq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Tested-by: Cory Keitz <ckeitz@amazon.com>
+-----BEGIN PGP SIGNATURE-----
 
----
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmm9uMMACgkQFA3kzBSg
+KbZ0tg/+LUI3JxaBw5Qt8zsyDLp5qi5ASZQO/aaaU4PH8JR1EuCcV4lnbEDr9TnH
+85Z88F4dpUstC/vB8OXPpU0pZbOvQiq2NFQihiGA0Lq0oqiylmYDieJxiVZGDjwZ
+U4WpM91KThPy7c9wWFFV24XcPTs5YFKcR7nYi72O+ukGePF+31CrTFRgmbay3C+y
+Fb0lqtY7rKlxvlZP4qhQRNOuhlfwH/mJkpCvI8FzQOe048Zf5hHq0p+Un+Ndap3b
+C98q2HTTu+UOFNVgOqEIatFKBtZY2GhLenXwCmCtuNDJW7XLeUfjCTF8eAnQsK1q
+eG7ZJmzLR5KYI5ly/BlSDefVS9Bd7cfLtNnaGDDhVLB25Vls9uT1F0mAeXDVu+20
+j796W6D94GInA0PFdOHB8Hh7r0GHm/zfABI6yuE+8e1W5oILXyMj92SDup7ktKEL
+WcNRpDivBGof2aYmcHkXF54zGULcctuYNrbNzQHi89+NQd1+u57uLGgBgREMbwK5
+EVTUGmjn7yXNStuWTmHghj/hkNWVcOcGVw57p1zrJiL1MK3Dwiw57FsR2FMhohzp
+cxaJv3Ky5EDsbFh1ON+T59UFXp7Lqr5LC46AMxNJ3Phpi5leXT8iQb+KY3jG/olL
+iIMRTua+RFtyfw4Stur3reyPB60d3lfHkYZu7Q7RybCs99y9ZtE=
+=sp0J
+-----END PGP SIGNATURE-----
 
-Regards,
-Cory
+--pD0ll/xn1Oqxasoq--
