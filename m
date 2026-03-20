@@ -1,269 +1,115 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D36D3CE49E;
-	Fri, 20 Mar 2026 17:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B4284881;
+	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774027184; cv=none; b=K6gGFPhFsA97VYXgZYu+GqnUuBsTmi4y/kRRxGzTnWjKqwsx6HgY07XgnrnMNPySYlYu2GF1pFVENPiUQpV/LqLSwFiuDFbliBhGTrsP4jserAgkLQSeRulHvf0QIKLoOoZ3Ih75AyhaCLUkUkiWCGv6HxxG0w5YVg4DSTxGKe0=
+	t=1774027993; cv=none; b=IKozdmw7b4MMlaLFit4yFcXeDMD2UgJsagiQZUQpbqp/n7+EZZDyLGRy8CLdaOfm4OAxmrkNZB5+ld6iKvMbWTFVwYZ/xbXgU28+/0SMkkRwk6Qxvc6AI55HipLDri5p6jhk7EpVBG5XDlvK7FuPSXsnEU+8gMWvi3v3UU4H5mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774027184; c=relaxed/simple;
-	bh=Ff5MCd76lX4P5xCpCAN97g8qOKz0x+DcZ/VxavtstMA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mZRRdhIUeZCTiI6roVZInRX/0cBtWi/kbNzICrFBHk7LRW+oJNnX2dFF+rskrch8K7JHG5oOODIKlubwbVbchwISphl7CpTZAWgQU8u4vHfZKoz8T/fy0FSA9x6lNU6pKrV7/O/yPGaA0m09/TGUX8z12rLQNozRGDWYRw8J3y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=DichGLsE; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1774027993; c=relaxed/simple;
+	bh=bJdmavUSv2NlFXOMsEE+uSUGXqFImnXF6p4/XW5muvg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=akAM+BTlJn9xF46VkFQLvVtirq5LkQbUgzBX3QCrXJZs2kEJA4hCgqbz82CJcofc+ggt9Pm2WJvsbREdSQOiuCD6FZqqRglU8QBheB9zw0k0lLFVvcvqXtpOqSgf6/Bnkva5Si1Ylrdu2jplXaefrZsFqYPY5VLxOZ2qG8duMCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTh7qr6r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="DichGLsE"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 59B895340831;
-	Fri, 20 Mar 2026 18:19:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1774027178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HkMKEi5oAMFyf4sRfULNlu6RjJGU3K/YzZ7HkQjQQds=;
-	b=DichGLsE9yrdJihfpOnWdFGmVDiUCoc6YdUYxga5B/qen9FI19kZvqZQoidMu5CKUhBmi/
-	FMeAycN8Nyh30J+vRqcqFGxC8Hz9P6+Tot8ogVyreW8IRtqxwwBVK6OgNAj2OjtOUhRhOg
-	2TRD511KkAZxkuXv4Szn2HFWiXUN4g8=
-Message-ID: <fba4238e-88dc-4e9f-82df-1acdc99346cf@ixit.cz>
-Date: Fri, 20 Mar 2026 18:19:38 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTh7qr6r"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 31E33C4CEF7;
+	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774027993;
+	bh=bJdmavUSv2NlFXOMsEE+uSUGXqFImnXF6p4/XW5muvg=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=JTh7qr6r5LaKRXGKUoJNN0roIuGnF0v6MT7LJu9lN6xwMurQK8hV21WbKcbQmvipL
+	 BlqqnmRF3e0LGF4cx0I3iImmBbpSbocyxn/8aYv1jS+VBmn+B6sP5gqmYpP0dKAdS0
+	 RfUrKowxWwMQyz61FAuYpFP18zoYURC8Xg9aJWn9DSiJ9M0Azg0u1R3sJQ/eIFFvuK
+	 c4NMmSPr3JdqHiSUANXlXC2aAJHGPVGGe20ma9pxZ8wmZbERmU5K1EufsvWkvTeg0c
+	 HsbCfGH18xKCdIP5MYl40KzT6LqpCyTE4homPivNtMNA9P7geqHwN2tzZDj8SvLcw9
+	 aH63SmSUDV8XQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 202261099B31;
+	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 20 Mar 2026 18:33:11 +0100
+Subject: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a
+ regulator as powered during boot
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/7] Input: synaptics-rmi4 - handle duplicate/unknown
- PDT entries
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIANaEvWkC/32NQQ6CMBBFr0JmbQ1TohRX3sOwaMsokyA1bW1A0
+ rtbOYDL95L//gaBPFOAS7WBp8SB3VxAHiqwo54fJHgoDLKW57pBKQz5dZr4/RTGuehmoQcjUZF
+ tSSoos5enOy978tYXHjlE59f9IeHP/oklFChOnVWNNh2aVl154Xi0H+hzzl9WmZdsrgAAAA==
+X-Change-ID: 20260312-beryllium-booton-adb218ec7e28
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Amit Pundir <amit.pundir@linaro.org>, 
+ Joel Selvaraj <foss@joelselvaraj.com>
+Cc: Konrad Dybcio <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1322; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=qhSNX+ZRoU8k5wfUWkwoB33o7SNAMBW2ljNv0axP1vU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpvYTXzZhy//JiuZ4qBP2RKD13XDkw9Mld4KDoo
+ IAzTSF/WSeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab2E1wAKCRBgAj/E00kg
+ chFMD/sEb5fXRORc/goYsqlAANIb4gpgIcgOeicvR1ooTpnhKWoctaeLtjCyWvphycHnE7+aBCA
+ kAQND6PZVMFmfhQlvbbAg8Y9swz9muDhi3e85XneSh/ThRE/bfphWTuDUw+F8/TUMmFkXEv2wTr
+ NrlyMCx+yfAcALO/j7n5YHHupzXhS+1rSBnSf5AyHRqdXEkFj1SgYOeeWcMiQdGYg0Tw+QwX36P
+ 4zlcoIl0e+LkMK28nIY452Mom9bJLslS+BPM/TC6PGp5dcytVCX+n0vhmAjM0ISFg4zGqplhcAX
+ yyWTu9xr1B2ptmypyneG+dbXs3QOLrGXEfeEN46NXr6Uo5tO/Rq9yJB5OEvbVy5jXz4IyuEshZ2
+ vvY4CrUvuEmRf5wTrBJmPaSexjt1G3HS7DPVLJ9AACYkic78tn9wvfeK2AoUZbaT/TozvCfPmOf
+ gJwxJAxFkQjG3Z7A7WFPO3OKLzlsR48ymL/GKBeC2YP+VOGk0LcGC8Hh3T0bc6ImOVIKUUKYZ2k
+ BXMTJ94uuWh+DG8kXtu3u/Y5cpcGtUaa4Xdm2Q3QweWI/7ykj3HxoseJZnaC22buHVRwI7WPoir
+ +/Cgg52gR+UZ1D1AQUyfWIikhBlgVyiowrbAteMdEo+P6X+xMuJ+YMIZkZJRCFkLGoSahYuIRFF
+ smGjavlr/9lt6Zg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+
 From: David Heidelberg <david@ixit.cz>
-To: Casey Connolly <kcxt@postmarketos.org>,
- Kaustabh Chakraborty <kauschluss@disroot.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vincent Huang <vincent.huang@tw.synaptics.com>
-Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260320-synaptics-rmi4-v7-0-379360de18d0@ixit.cz>
- <20260320-synaptics-rmi4-v7-2-379360de18d0@ixit.cz>
- <fba73d66-4300-4c4d-9bf6-4b38a4e847d7@postmarketos.org>
- <3dca0fc0-fe1c-4f84-b336-856f55a6e3da@ixit.cz>
- <55dab1d8-87af-4285-9ab1-924bf392c78d@postmarketos.org>
- <f31d10ce-a3dc-4599-8201-8a78aa2fc65f@ixit.cz>
-Content-Language: en-US
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <f31d10ce-a3dc-4599-8201-8a78aa2fc65f@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Pushed changes to
+The regulator must be on, since it provides the display subsystem and
+therefore the bootloader had turned it on before Linux booted.
 
-https://codeberg.org/sdm845/linux/commits/branch/b4/synaptics-rmi4
+Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v2:
+- Filled missing device in the commit subject.
+- Fixed commit wording to be more clear. (Konrad)
+- Link to v1: https://lore.kernel.org/r/20260312-beryllium-booton-v1-1-59c83ab91b78@ixit.cz
+---
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 20/03/2026 18:12, David Heidelberg wrote:
-> On 20/03/2026 18:03, Casey Connolly wrote:
->>
->>
->> On 20/03/2026 17:54, David Heidelberg wrote:
->>> On 20/03/2026 17:49, Casey Connolly wrote:
->>>> Hi David,
->>>>
->>>> Nice timing with the series, I hit an OOB access (found it when I
->>>> enabled UBSAN) with this patch the other day.
->>>>
->>>> The pdt_scan_state->pdts array should actually be of size
->>>> (RMI_PDT_MAX+1).
->>>>
->>>> Additionally, I think rmi_pdt_entry_is_valid() is missing a bounds check.
->>>>
->>>> Kind regards,
->>>
->>>
->>> Thanks a lot for catching this and for the detailed notes — that’s very
->>> helpful.
->>>
->>> Since you’re the original author of the commit, I’m completely fine with
->>> you taking over the b4 series if you’d prefer. Alternatively, if it’s
->>> easier, feel free to just send me a fixed patch and I can incorporate it.
->>>
->>
->> Uh sure, not sure this will apply cleanly I just edited inline it's a
->> 3-line delta. Also figured we can drop pdt_count since it's unused.
-> 
-> The pdt_count is used in
-> 
-> Input: synaptics-rmi4 - support fallback values for PDT descriptor bytes
-> 
-> thus should be moved there I assume, but can be dropped here.
-> 
-> David
-> 
->>
->> ---
->>
->> diff --git a/drivers/input/rmi4/rmi_driver.c
->> b/drivers/input/rmi4/rmi_driver.c
->> index ccd9338a44dbe..c7d2f68e65487 100644
->> --- a/drivers/input/rmi4/rmi_driver.c
->> +++ b/drivers/input/rmi4/rmi_driver.c
->> @@ -494,12 +494,39 @@ static void rmi_driver_copy_pdt_to_fd(const struct
->> pdt_entry *pdt,
->>       fd->function_version = pdt->function_version;
->>   }
->>
->> +static bool rmi_pdt_entry_is_valid(struct rmi_device *rmi_dev,
->> +                   struct pdt_scan_state *state, u8 fn)
->> +{
->> +    if (fn > RMI_PDT_MAX)
->> +        return false;
->> +
->> +    switch (fn) {
->> +    case 0x01:
->> +    case 0x03:
->> +    case 0x11:
->> +    case 0x12:
->> +    case 0x30:
->> +    case 0x34:
->> +    case 0x3a:
->> +    case 0x54:
->> +    case 0x55:
->> +        if (state->pdts[fn] == true)
->> +            return false;
->> +        break;
->> +    default:
->> +        rmi_dbg(RMI_DEBUG_CORE, &rmi_dev->dev,
->> +            "PDT has unknown function number %#02x\n", fn);
->> +        return false;
->> +    }
->> +
->> +    state->pdts[fn] = true;
->> +    return true;
->> +}
->> +
->>   #define RMI_SCAN_CONTINUE    0
->>   #define RMI_SCAN_DONE        1
->>
->>   static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
->>                    int page,
->> -                 int *empty_pages,
->> +                 struct pdt_scan_state *state,
->>                    void *ctx,
->>                    int (*callback)(struct rmi_device *rmi_dev,
->>                            void *ctx,
->> @@ -522,6 +549,9 @@ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
->>           if (RMI4_END_OF_PDT(pdt_entry.function_number))
->>               break;
->>
->> +        if (!rmi_pdt_entry_is_valid(rmi_dev, state, pdt_entry.function_number))
->> +            continue;
->> +
->>           retval = callback(rmi_dev, ctx, &pdt_entry);
->>           if (retval != RMI_SCAN_CONTINUE)
->>               return retval;
->> @@ -532,11 +562,11 @@ static int rmi_scan_pdt_page(struct rmi_device
->> *rmi_dev,
->>        * or more is found, stop scanning.
->>        */
->>       if (addr == pdt_start)
->> -        ++*empty_pages;
->> +        ++state->empty_pages;
->>       else
->> -        *empty_pages = 0;
->> +        state->empty_pages = 0;
->>
->> -    return (data->bootloader_mode || *empty_pages >= 2) ?
->> +    return (data->bootloader_mode || state->empty_pages >= 2) ?
->>                       RMI_SCAN_DONE : RMI_SCAN_CONTINUE;
->>   }
->>
->> @@ -545,11 +575,11 @@ int rmi_scan_pdt(struct rmi_device *rmi_dev, void
->> *ctx,
->>            void *ctx, const struct pdt_entry *entry))
->>   {
->>       int page;
->> -    int empty_pages = 0;
->> +    struct pdt_scan_state state = {0, {0}};
->>       int retval = RMI_SCAN_DONE;
->>
->>       for (page = 0; page <= RMI4_MAX_PAGE; page++) {
->> -        retval = rmi_scan_pdt_page(rmi_dev, page, &empty_pages,
->> +        retval = rmi_scan_pdt_page(rmi_dev, page, &state,
->>                          ctx, callback);
->>           if (retval != RMI_SCAN_CONTINUE)
->>               break;
->> diff --git a/drivers/input/rmi4/rmi_driver.h
->> b/drivers/input/rmi4/rmi_driver.h
->> index e84495caab151..a4ae2af93ce3a 100644
->> --- a/drivers/input/rmi4/rmi_driver.h
->> +++ b/drivers/input/rmi4/rmi_driver.h
->> @@ -46,6 +46,14 @@ struct pdt_entry {
->>       u8 function_number;
->>   };
->>
->> +#define RMI_PDT_MAX 0x55
->> +
->> +struct pdt_scan_state {
->> +    u8 empty_pages;
->> +    bool pdts[RMI_PDT_MAX + 1];
->> +};
->> +
->>   #define RMI_REG_DESC_PRESENSE_BITS    (32 * BITS_PER_BYTE)
->>   #define RMI_REG_DESC_SUBPACKET_BITS    (37 * BITS_PER_BYTE)
->>
->>
-> 
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 01b570d0880d6..1298485c42142 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -148,6 +148,7 @@ vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
+ 
+ 		vreg_l5a_0p8: ldo5 {
 
+---
+base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+change-id: 20260312-beryllium-booton-adb218ec7e28
+
+Best regards,
 -- 
-David Heidelberg
+David Heidelberg <david@ixit.cz>
+
 
