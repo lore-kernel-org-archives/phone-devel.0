@@ -1,38 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640843D2FF5;
-	Fri, 20 Mar 2026 16:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311C63D4106
+	for <phone-devel@vger.kernel.org>; Fri, 20 Mar 2026 16:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774025085; cv=none; b=jWo0cbKwK2cMJeonKrTNr3/OnX/aZF5Bd+P06fPg4TAIOdQe+v3+ybqvv4emxJxbrDrUkbXT4VDX/RQDhk/qrpevQKBhdskjCIGobzZe6L9j4z6B189PZ9i0emcTYBumQXRxpF4PT/ABostzvbtMBTWpjKllQiv3dkjR1d8QzJ0=
+	t=1774025146; cv=none; b=O3p4A8SEkZpmkMf1NIIO5VBqGg1KRlpSAUG1HEWtztKoGhMEIapqkhdJZ0Od8r2HRqTJHW1qsDWIb/quMO5wlAow/zloSxxWnP3mYqXSXWV9153MwabgJ7sR+SZqaIBk2CD4Wb6+lrW3wajLRB+qwcLAGRouBfkl/LardMRF/vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774025085; c=relaxed/simple;
-	bh=Dg8VJs/6qaDCZA5ZK4yQ/nkLOVVgN9sIgg9C2DqA2gE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Cefx0vgnd82vOJXB3lmf23NsH7N5o/x+cDmHvwVJReGg7J/WYzcqjXEfny0of0V2u1XcfRMdaVg/8I9NvGF9Q9vmdARerxtthXtWo4tdkeIct5QrE8vAU6sYS5/QgsimnMASSY5DKcNtxt4CSPgZbsfPVXcTR9d6uoYMyO5MKjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6KQvHT0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774025146; c=relaxed/simple;
+	bh=ln7S5W6Uf/xuAne/wiJa+l0b61/Ti+nERWCBB1m2EuY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NVpcC8yYb1R6wl+I5tSbftqIC5rgANjf8Igv55Pnr/Id8BQhc/3+mEZWtzSoL2ZvEfHnAapMIgJWV9x6kGokx1nZpSBOfXwEpDCB0/49cf1J3xsiqU4CfEJQmHV7Voi0o0fX+ubbwJCZD2Fbn9nLYYDnGEaIFrFraFDuwZwOjjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StnmV3E2; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6KQvHT0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 17679C2BCB6;
-	Fri, 20 Mar 2026 16:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774025085;
-	bh=Dg8VJs/6qaDCZA5ZK4yQ/nkLOVVgN9sIgg9C2DqA2gE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=k6KQvHT0EsuSQMuNGZN/SnSMTNe6p/vy+WFfOII2NdGyOUlAGeZleHlk7NKGRqGeY
-	 7+kBrATovWBMmXeqHhY6FX73IcDA+ah5qGkjTyMGy24/S2GDVyUjOU10YvEPM+xjxJ
-	 7eVumEpOVrkrQalGlkH32bU77+Q3j/p6lbB2NuqsSx8J6ha/m7GRH0NX0sC1+Pa8IM
-	 T1n48jx0NjQ0cDYggXNnZWJC2w2/ls3lENUo0weXpzxKtIE462KThrfYQUOVSHIgkR
-	 5v868kPBYBPRWMf+f3+JEvcgUBl85ihqUkLEDvmIvoBIrrZce1avdHcdEELNb7km/j
-	 6tyJd96ow/R9A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F89B10987B6;
-	Fri, 20 Mar 2026 16:44:45 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 20 Mar 2026 17:44:47 +0100
-Subject: [PATCH v7 6/7] Input: synaptics-rmi4 - read product ID on
- aftermarket touch ICs
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StnmV3E2"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b98069e41b0so409460066b.1
+        for <phone-devel@vger.kernel.org>; Fri, 20 Mar 2026 09:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774025143; x=1774629943; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=APS5boRfm0PmBR504YJDOGG69WFYNxRuX26D7Uz2WEc=;
+        b=StnmV3E2Dd7DSLQWAV6l914/BiWkPGYzMp/tgyhbw2OCXGYjVwBOBlXIsAdRZ8SvJE
+         C/8gsgZgqxUnAsIXRJkSEnL6etxfLKrsNTNR/rSu3L1BC3O3IFPfZTJyUmqcLWX4pK8T
+         qRNzsLdTWsfr1anO7MUs8mY1lmhSjy4RVJ6z2tDUNBGyLqrN9VWndjljUCMjI69HKhil
+         FXk73B/lZ4Io+ltW1G7lFqhYNKMAgH79CPtamthMKjzLrTdYtRzmn3FD7gK+v79bccdT
+         u7nJDzphZCgCsFz3VziEkHQZKl+3WjS4QIOcFZlz3U1BiXgwSqKloHUzXXkNJrcs9pBC
+         JOJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774025143; x=1774629943;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=APS5boRfm0PmBR504YJDOGG69WFYNxRuX26D7Uz2WEc=;
+        b=iPlTOMZNY0WoWC6M2M/nXqGHpR652YNrZicvBoU5QFvl1z6JaQEtN/2Eqg67fA9xvU
+         X9taJdftNpoC6KTwCyUOharQoSijAYpt++c/fjjanSYmYG7p9qgT1c3WAStzcMKs3Hgu
+         dQMYm40rlZTP7qa8JzBP//etiEUzhE/4j3+xAXqtef2FSGw+rNWIhwbHaf6XGs1T4V5P
+         kVsZM8XGt1I2s1LVL+OvXZ8w++dxg5Pkv84TL6FmC7ohiQ7djFDqqtIYflyiPJgiXRSv
+         7DOsGSSmtGSNC4Q1CNxYDtXNLCD2e02ajA/l2vBpN7lqIYWAgx/nPuyNJnDqTKVqkozu
+         AW8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUggbHijlYdVZX6BwIIGTxP0bWUNL7LkhNNcryx0BHX6yLuSmcwupCx19Km4zUEpO8RczqnLoIxauzH4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBnWhzrhxRbLhgu6a+Eonpw6WqYBXdJeSmqZW/xOsHffmQ2Rqc
+	lAfKpkLraao5guo5Eo15WiqnoXwf3Vl2dSracni2vIZnn9AU6V47Yh4T
+X-Gm-Gg: ATEYQzy0yNvb2wfJQwlL3tg0pspWl/HyT0TUEjr0d6yDE5q16cfnVHPLWuu6JBjsQGl
+	A1tNltjaxUdFWDGsGcfY1DT+D5V3TKPjKIJhIvPI/JDgirJ/qAHbUdJnc1+YsGp1xn7Sblpwt1+
+	TnrH1yW+NydGy3nMJ9fDhWVYftFB2Ea9XxbNw7paXSHA6Jq411/f8poKWgk88JArcToyS4ffSgM
+	n3PmglWfD2rsYkny0stU4TKGxhvhOSSuBp5E9mPvHPf4UGzTQ0F8AWzsnWLqruR2GdNLM77WeQy
+	8YERapTbv2S6PTzGoEblJURoBDxLTrVamq7pb/0zs/SgWSQL/HM+ZyVTK5xuf08IfeuMPCX7W1r
+	/l6DK22Dm5dBofgSnyJPfF/bORd9vwMX6NLDjCXvwUC2BjEsg6RRdckqozniI0WX9Dct3W3Q+y4
+	5EeRQln6r/5TNwH3Pw9kEfA5uASQ==
+X-Received: by 2002:a17:907:398c:b0:b97:a4b1:51b4 with SMTP id a640c23a62f3a-b982f59564cmr236548466b.17.1774025143256;
+        Fri, 20 Mar 2026 09:45:43 -0700 (PDT)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b98335f1747sm176730466b.33.2026.03.20.09.45.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 09:45:42 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v6 0/8] iio: light: vcnl4000: add regulator support
+Date: Fri, 20 Mar 2026 18:45:35 +0200
+Message-Id: <20260320-vcnl4000-regulators-v6-0-0d24d20b1a5b@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,80 +68,98 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-synaptics-rmi4-v7-6-379360de18d0@ixit.cz>
-References: <20260320-synaptics-rmi4-v7-0-379360de18d0@ixit.cz>
-In-Reply-To: <20260320-synaptics-rmi4-v7-0-379360de18d0@ixit.cz>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NTWrDMBAF4KsErasw+o2aVe5RupDksSNw7CC1o
+ iX47p0ECsJo+Yb3vnmwgjlhYefDg2WsqaR1oWDfDixe/TIhTwNlJkFaUAJ4jcusAYBnnL5n/7X
+ mwkMcRXAeRETLaHnPOKafl/rxSfmaCvV+X0+qeF7/PdH1quDArQ3UcBGNVZfp5tN8jOuNPb0qW
+ 0P2DUmGDAOGEEMwzu8N1Rq6bygyVNReu0GBPdm9oVvD9g1NhjN6jBL9aHTYG6Y13vuGIcODNIN
+ SSjowrbFt2x/lV57gxgEAAA==
+X-Change-ID: 20260310-vcnl4000-regulators-bcf1b8a01ce6
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
- Vincent Huang <vincent.huang@tw.synaptics.com>
-Cc: David Heidelberg <david@ixit.cz>, linux-input@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Casey Connolly <casey.connolly@linaro.org>, phone-devel@vger.kernel.org
+ Conor Dooley <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Raymond Hackley <raymondhackley@protonmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1203; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=CMV2802aTv/oc1MkDukEK0bp3xh70HXQEEwQSB5KFZI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpvXl7NLLzGO8qCVp/Q9HhBBv4aiAiHF48BHyI6
- XFzx0U5EImJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab15ewAKCRBgAj/E00kg
- crVED/9nvywg8EHTH0qMFq+ZYfPb5cTMzoUrzinCajuPGSe9/dDIWh/s2c+nhD9EF99z+WBL7GL
- 5n6EFxb4XF4zPC8FBkAho4p6YrrZOqi4PywJ1jTb4mBAQSHl+rL4AdnwZc9kaiG9oHEdrNxC/in
- XSlVRGpTox2FF5Su9vBFX8ENxCI142httbHKSWcjQwkStLt/dyEQFHmOCZb1JplN0G25qTV34v9
- eW8qQwXHsGeV2zL7MZmlq3SSOIpOEADx+mcphGzgsL1iWxJPWGCBw/fDh2wMaw5KiXdokyQib9b
- NQT6/fpzWahYClWvPWpd+QOczCSm0qwCjUaFQEqzYldReB+Jv0lPCkMgrb4e3rr615NFcsrhP9B
- baJchCHkXLQPs0nTIRwTFKkKuGg8mCBFRmEYEIVisE27YSJtNlMipqRWs3mxtEIWa2gM8Rt6NvI
- ofnqa0Y9AWXr0AqVSGvA1Kc+/Wj25r3KuDlms5Woxxf6QuXe3hO4Sg9WhrJJcKud93vpKr0ZO1K
- SUIB70rjPbaGEd0X5Ocox61BNHlW4Rpa3LfQ74Sehw8pbwIUWT/4ry6xnIuT06c6qScz+izk3HP
- HfvT+AOckCm/+yAJfLl1M5vg+vx2ea9WtIpYfDo9zLXb0zaxxm6uby4GZ2nGhYB+qgCVzyBWh6L
- wh+uhsITDRE+xkQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+This patch series introduces support for voltage supply, I2C and cathode
+regulators. This fixes an issue where if a regulator is shared between
+the proximity sensor and some other device, and the other device is
+powered off, the proximity sensor would be powered off as well.
 
-Some replacement displays include third-party touch ICs which do not
-report the product ID correctly unless we read directly from the
-product ID register. Add a check and a fallback read to handle this.
+One of the commits includes a Reported-by: tag without a Closes: tag -
+the report was done outside in a Matrix channel. A link to access the
+report requires sign-in, therefore it was left out.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
- drivers/input/rmi4/rmi_f01.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Changes in v6:
+- Added descriptions to the regulators in the binding.
+- Fixed the dt_binding_check bug in the example.
+- Link to v5: https://lore.kernel.org/r/20260319-vcnl4000-regulators-v5-0-a025d3332805@gmail.com
 
-diff --git a/drivers/input/rmi4/rmi_f01.c b/drivers/input/rmi4/rmi_f01.c
-index 47be64284b25e..2278e9b6a9207 100644
---- a/drivers/input/rmi4/rmi_f01.c
-+++ b/drivers/input/rmi4/rmi_f01.c
-@@ -250,6 +250,20 @@ static int rmi_f01_read_properties(struct rmi_device *rmi_dev,
- 		}
- 	}
- 
-+	/*
-+	 * Some aftermarket ICs put garbage into the product id field unless
-+	 * we read directly from the product id register.
-+	 */
-+	if (props->product_id[0] < 0x20) {
-+		ret = rmi_read_block(rmi_dev, query_base_addr + 11,
-+				       props->product_id, RMI_PRODUCT_ID_LENGTH);
-+		if (ret) {
-+			dev_err(&rmi_dev->dev,
-+				"Failed to read product id: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
+Changes in v5:
+- Renamed vddio-supply to vio-supply.
+- Added parentheses to function calls in a variable usage commit message.
+- Moved the redundant "proximity-near-level" check removal into its own
+  patch.
+- Link to v4: https://lore.kernel.org/r/20260316-vcnl4000-regulators-v4-0-854fc2eaf54b@gmail.com
 
+Changes in v4:
+- Reworded device tree bindings commit into imperative mood and
+  clarified where do supplies come from.
+- Moved data->chip_spec->set_power_state() calls from init functions to
+  probe.
+- Removed explicit less than 0 checks for ret where unnecessary.
+- Moved the patch that adds regulators to the end of the series.
+- Added an explanation for removing duplicate prints in probe.
+- Fixed indentation for devm_regulator_bulk_get_enable() and i2c_smbus
+  writes in vcnl4200_init().
+- Removed a redundant check for "proximity-near-level" device property.
+- Link to v3: https://lore.kernel.org/r/20260314-vcnl4000-regulators-v3-0-3c4a48d30676@gmail.com
+
+Changes in v3:
+- Added a more detailed description for supplies in the dt-bindings commit.
+- Separated sorting includes into a commit of its own.
+- Replaced all occurrences of mutex_init with its device-managed
+  counterpart.
+- Moved client->dev variable declaration into a commit for adding
+  regulators.
+- Removed redundant dev_err messages in probe function.
+- Replaced all direct usages of client->dev and data->client into usages
+  by variable.
+- Link to v2: https://lore.kernel.org/r/20260312-vcnl4000-regulators-v2-0-2bdebbcbb58a@gmail.com
+
+Changes in v2:
+- Removed double quotes in includes.
+- Reordered includes alphabetically.
+- Enabled regulators before the mutex is initialized.
+- Replaced direct usage of &client->dev with a variable.
+- Link to v1: https://lore.kernel.org/r/20260311-vcnl4000-regulators-v1-0-66b6038ce563@gmail.com
+
+---
+Erikas Bitovtas (8):
+      dt-bindings: iio: light: vcnl4000: add regulators
+      iio: light: vcnl4000: sort includes by their name
+      iio: light: vcnl4000: move power enablement from init to probe
+      iio: light: vcnl4000: replace mutex_init() with devm_mutex_init()
+      iio: light: vcnl4000: remove error messages for trigger and irq
+      iio: light: vcnl4000: use variables for I2C client and device instances
+      iio: light: vcnl4000: remove redundant check for proximity-near-level
+      iio: light: vcnl4000: add support for regulators
+
+ .../bindings/iio/light/vishay,vcnl4000.yaml        | 14 ++++
+ drivers/iio/light/vcnl4000.c                       | 90 ++++++++++++----------
+ 2 files changed, 63 insertions(+), 41 deletions(-)
+---
+base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+change-id: 20260310-vcnl4000-regulators-bcf1b8a01ce6
+
+Best regards,
 -- 
-2.53.0
-
+Erikas Bitovtas <xerikasxx@gmail.com>
 
