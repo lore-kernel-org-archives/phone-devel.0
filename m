@@ -1,118 +1,86 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from mail-24429.protonmail.ch (mail-24429.protonmail.ch [109.224.244.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED09B37AA72;
-	Thu, 19 Mar 2026 19:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAABA2F3C3D;
+	Fri, 20 Mar 2026 07:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773950025; cv=none; b=PWrU5oLvZE5PP1l21+jb9vx9DM5hFiOkEgb7h0uck6vt1uwNtBGa0d5fEquaWhpxEXENnRS7eSGEFOmC+UdQzCNa+bbFYqefEaa+IbwHlXkpBSiDcgaX+dIspiga4cAeUguNriy8cWS45yGVPW+PTYQ4fDRBKL8hETGEXqN/0Xc=
+	t=1773991163; cv=none; b=lfxOvpNFBut8l1WR43w0khGHSE2ELQ3AHC1kS+GhXEp+tjty9Y2wmZ4OtclggRTNOTU2yNLCsmD8gs8Ph269Wpy15ZCL72fweT7b+GjqtGb86yfeRjC29IxZABEgAtN3yTKetVmwL4Rv1o8VCwIewGvarDCJWKPjOpoTNn8PVmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773950025; c=relaxed/simple;
-	bh=sF+8jtV/WwYCCRSffYrJMGTkUiaxse8RWJVU6ge3MoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nb1XTWLnPzKLvfNX/QNRW5ul/u4nnQfh5m++4pYudwKhKOvb7CavBOnREu4R5MMSXyoNAvoeQd9BAfDQrKVTROxiJfJVW8W4WP5I1PVKMxxcsgNWJShNoc0WyDWxygkc12gclt0rS6ql6WaSVfq6GbDhhoMUa7gMnpx/umpNxnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=kv9TcWUH; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1773991163; c=relaxed/simple;
+	bh=d8KZnHOUKc9aPKh5RRZ2INy5sMjFQ1N3a3BA8s1oSug=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D37doaWDNfg2ZpS9IRlL7AFL85WHhU4T0xh6OxIJrI+zdYplyKM70ayULoYkdrG0+Gz06S9WYoGbzA92rFC6H9kqlFe06azR4yVrRwXwrBKpKX5S5p0VX5RTbB9iqpAwFVWCTxGeiEts0dQikubUREeqLTEi5yKLwkV0vKQALLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=INtXjfTu; arc=none smtp.client-ip=109.224.244.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="kv9TcWUH"
-Received: from [IPV6:2a02:f000:10bd:e301::471] (unknown [IPv6:2a02:f000:10bd:e301::471])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9558D5341429;
-	Thu, 19 Mar 2026 20:53:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1773950010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ef2pGympoMfAQ0bthujS7x6VQDfjbzAcP6KKCJ1S4/s=;
-	b=kv9TcWUHaLqsffOm4EN/j4zhUnq8R2n0oL8mIWrP3hojCZJn8vz4A71V5LHg1pyZ51rn2i
-	Lhfb3C/LUklWORJhlnip20KfAw2qB6RUufnDIfzs2Do4PVvSJA+6765dcWBkrkzf+3N3NM
-	0vK63MPirjZIX05og/HbIxko4ZjM2AI=
-Message-ID: <796bc6c7-0bcc-43dd-8104-97eedf62fce8@ixit.cz>
-Date: Thu, 19 Mar 2026 20:53:29 +0100
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="INtXjfTu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1773991152; x=1774250352;
+	bh=+XRuUNY/hs84dNZVuW3v8EtYOa8xUIu2OLZAs6swl6w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=INtXjfTu6Poa+7BLNGkevsDHl+W/CESmy3XD2c0ApIVLVTfB1dl3NAHSHycLrhB37
+	 pDl5OrqL5hvo9v5jGvj+mJlv5ilzhi6ojB2QP5tsb2hofVvFv7iGLSQ/16bhmCa8T4
+	 YIMp3KHJh7TSMk8DjhV1ViFJS1cWdhVrTBvI75iA35m77nK2coApTkGldgrGQdYLZ+
+	 pQXhJz9JBNs5HrqpjHHRZCDy/AM/RWUdyMh+sciT73woXxu0hV4exDkzQRF5TPffU1
+	 j/GmX/XxRySCCqHxzmSzoiIyLcLO0DJsnDpF5UbitXeIpswtKaoyneUK4BkCXpc8RF
+	 c3C7hAK+H2A2A==
+Date: Fri, 20 Mar 2026 07:19:06 +0000
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] drm/panel: Add driver for Novatek NT35532
+Message-ID: <4f3qSm2N-iqHmdKAzp6YslvLGtZbaeYJhV9pae3gtww5xiIUDM3Xov9wdCCumhINDMaHeFaJPMf23RqvZZkDQlE8D6hObDFaCd1vZjUHUoA=@protonmail.com>
+In-Reply-To: <byxrw5g4t23vivbt4xxpyfcsbrmlaju4lqqwsc75iqizoqmt4n@ltuwlggbitye>
+References: <20260318-rimob-new-features-v2-0-c1bf8917449e@protonmail.com> <20260318-rimob-new-features-v2-2-c1bf8917449e@protonmail.com> <byxrw5g4t23vivbt4xxpyfcsbrmlaju4lqqwsc75iqizoqmt4n@ltuwlggbitye>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: 73aca8d40c90d8b6aa8bf437ae557b39d9b0cefe
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add front
- camera support
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20260319-fp5-s5kjn1-v3-0-9cf4b8c09567@fairphone.com>
- <20260319-fp5-s5kjn1-v3-2-9cf4b8c09567@fairphone.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260319-fp5-s5kjn1-v3-2-9cf4b8c09567@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 19/03/2026 16:36, Luca Weiss wrote:
-> Add and configure the necessary nodes to enable the front camera
-> (Samsung S5KJN1), connected to CSIPHY 3.
+On Thursday, March 19th, 2026 at 03:27, Dmitry Baryshkov <dmitry.baryshkov@=
+oss.qualcomm.com> wrote:
+
+> On Wed, Mar 18, 2026 at 11:28:10PM +0100, Cristian Cozzolino via B4 Relay=
+ wrote:
+> > From: Cristian Cozzolino <cristian_ci@protonmail.com>
+> >
+> > Add support for Novatek NT35532-based 1080p video mode DSI panel.
+> >
+> > Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+> > ---
+> >  MAINTAINERS                                   |   1 +
+> >  drivers/gpu/drm/panel/Kconfig                 |  11 +
+> >  drivers/gpu/drm/panel/Makefile                |   1 +
+> >  drivers/gpu/drm/panel/panel-novatek-nt35532.c | 779 ++++++++++++++++++=
+++++++++
+> >  4 files changed, 792 insertions(+)
+> >
+>=20
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+
+I'm doing a test: since I'm not sure if:
+
+=09select VIDEOMODE_HELPERS
+
+is actually needed in Kconfig nt35532 entry, I've temporarily=20
+removed that select line and regenerated .config file. Though,=20
+I've noticed CONFIG_VIDEOMODE_HELPERS was still set to 'y'=20
+nevetheless, so I decided to not going forward since that=20
+code would have been built anyway so that there was no=20
+point for doing that. I wonder: is that select line really=20
+necessary, at this point?
+
+> --
+> With best wishes
+> Dmitry
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-
-if for some reason will be sending another revision, you could decouple the mclk 
-addition to Kodiak and add mclk0,1,2 too, but LGTM as is! :)
-
-Reviewed-by: David Heidelberg <david@ixit.cz>
-
