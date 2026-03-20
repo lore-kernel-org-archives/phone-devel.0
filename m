@@ -1,115 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B4284881;
-	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991E934DB54;
+	Fri, 20 Mar 2026 19:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774027993; cv=none; b=IKozdmw7b4MMlaLFit4yFcXeDMD2UgJsagiQZUQpbqp/n7+EZZDyLGRy8CLdaOfm4OAxmrkNZB5+ld6iKvMbWTFVwYZ/xbXgU28+/0SMkkRwk6Qxvc6AI55HipLDri5p6jhk7EpVBG5XDlvK7FuPSXsnEU+8gMWvi3v3UU4H5mI=
+	t=1774035309; cv=none; b=YYPp5C4auH2jnOkxcvy6FDdt75ZvQh123p7JD+TdfrUQa8GvHanoj6ItjuP1F7dqRVg+tjqbc+d6VeEh9vsoEd5fo6ML56PJU3PPCE7fFDyFszUMha4ekkhIfNtW9v9UfWSL89KlLz8dWKOnmHcnKOhtLovLByha1Idvn8IxLeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774027993; c=relaxed/simple;
-	bh=bJdmavUSv2NlFXOMsEE+uSUGXqFImnXF6p4/XW5muvg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=akAM+BTlJn9xF46VkFQLvVtirq5LkQbUgzBX3QCrXJZs2kEJA4hCgqbz82CJcofc+ggt9Pm2WJvsbREdSQOiuCD6FZqqRglU8QBheB9zw0k0lLFVvcvqXtpOqSgf6/Bnkva5Si1Ylrdu2jplXaefrZsFqYPY5VLxOZ2qG8duMCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTh7qr6r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774035309; c=relaxed/simple;
+	bh=8YBTIlU5Zz2RAIVhWK5asqXzaMSXnEP+4TOZRUxC4zk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mMh6JnS4IXU4q1noEaN+rp+DlZYU8oeyQDcuP+2gY7y07cr6QjU+f0jJ6bXFhXv6MQoZ+er+rHEVdya5ddHbjTAz5JsQCe2NShaB9dUxFtAJVqglUpHHKGJW7LVNAbmi6huYYsohCFwmcyPhhxGCWwx81nc6cZJmq60HjTvhFn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZF5O3BL; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTh7qr6r"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 31E33C4CEF7;
-	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774027993;
-	bh=bJdmavUSv2NlFXOMsEE+uSUGXqFImnXF6p4/XW5muvg=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=JTh7qr6r5LaKRXGKUoJNN0roIuGnF0v6MT7LJu9lN6xwMurQK8hV21WbKcbQmvipL
-	 BlqqnmRF3e0LGF4cx0I3iImmBbpSbocyxn/8aYv1jS+VBmn+B6sP5gqmYpP0dKAdS0
-	 RfUrKowxWwMQyz61FAuYpFP18zoYURC8Xg9aJWn9DSiJ9M0Azg0u1R3sJQ/eIFFvuK
-	 c4NMmSPr3JdqHiSUANXlXC2aAJHGPVGGe20ma9pxZ8wmZbERmU5K1EufsvWkvTeg0c
-	 HsbCfGH18xKCdIP5MYl40KzT6LqpCyTE4homPivNtMNA9P7geqHwN2tzZDj8SvLcw9
-	 aH63SmSUDV8XQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 202261099B31;
-	Fri, 20 Mar 2026 17:33:13 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 20 Mar 2026 18:33:11 +0100
-Subject: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a
- regulator as powered during boot
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZF5O3BL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774035307; x=1805571307;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8YBTIlU5Zz2RAIVhWK5asqXzaMSXnEP+4TOZRUxC4zk=;
+  b=fZF5O3BLjhWX/DcDT1tVesj/A00FBHsgsu2CLG4G4MWRasqeff+Ux8x/
+   Y2EiMqycOa6/HKnnBYxujpTP2boXbJ3ZpJzjdzUm5O/zRZC20D5VBdw3s
+   OsIpEUAj+vKfZ/CxVcudKEbKUC0PL5vaZc2plBAZ2hYk9xcX+2P8Ni7ky
+   DXfOJgMMYs2osysvogqLZusJRCwqm2iZjN9iC/XEZS7n5neFmMVAfXEsO
+   4Q818YCsAIhyFUGgPo0TbMXJ1HwtIUQ+ZleUwZBSacwR/HBCF8POrWoB+
+   iYFL9i5YvEygEZQ2+Aqycg2ejtyMMco1h0zGXw+GvO8v4yPJk9JSe/FUY
+   w==;
+X-CSE-ConnectionGUID: YTAXr3wPR/yrmAFKFJOMMQ==
+X-CSE-MsgGUID: ZAC2dScFShy7juh/KQwRBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75320759"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="75320759"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 12:35:07 -0700
+X-CSE-ConnectionGUID: GW8SQ+YIQLOah75gIq0tEA==
+X-CSE-MsgGUID: TT79nw/oQ3qZY/4NM5azfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="223408773"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.40])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 12:35:03 -0700
+Date: Fri, 20 Mar 2026 21:35:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Raymond Hackley <raymondhackley@protonmail.com>
+Subject: Re: [PATCH v6 0/8] iio: light: vcnl4000: add regulator support
+Message-ID: <ab2hZXdinHWNYB9S@ashevche-desk.local>
+References: <20260320-vcnl4000-regulators-v6-0-0d24d20b1a5b@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIANaEvWkC/32NQQ6CMBBFr0JmbQ1TohRX3sOwaMsokyA1bW1A0
- rtbOYDL95L//gaBPFOAS7WBp8SB3VxAHiqwo54fJHgoDLKW57pBKQz5dZr4/RTGuehmoQcjUZF
- tSSoos5enOy978tYXHjlE59f9IeHP/oklFChOnVWNNh2aVl154Xi0H+hzzl9WmZdsrgAAAA==
-X-Change-ID: 20260312-beryllium-booton-adb218ec7e28
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Amit Pundir <amit.pundir@linaro.org>, 
- Joel Selvaraj <foss@joelselvaraj.com>
-Cc: Konrad Dybcio <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1322; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=qhSNX+ZRoU8k5wfUWkwoB33o7SNAMBW2ljNv0axP1vU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpvYTXzZhy//JiuZ4qBP2RKD13XDkw9Mld4KDoo
- IAzTSF/WSeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab2E1wAKCRBgAj/E00kg
- chFMD/sEb5fXRORc/goYsqlAANIb4gpgIcgOeicvR1ooTpnhKWoctaeLtjCyWvphycHnE7+aBCA
- kAQND6PZVMFmfhQlvbbAg8Y9swz9muDhi3e85XneSh/ThRE/bfphWTuDUw+F8/TUMmFkXEv2wTr
- NrlyMCx+yfAcALO/j7n5YHHupzXhS+1rSBnSf5AyHRqdXEkFj1SgYOeeWcMiQdGYg0Tw+QwX36P
- 4zlcoIl0e+LkMK28nIY452Mom9bJLslS+BPM/TC6PGp5dcytVCX+n0vhmAjM0ISFg4zGqplhcAX
- yyWTu9xr1B2ptmypyneG+dbXs3QOLrGXEfeEN46NXr6Uo5tO/Rq9yJB5OEvbVy5jXz4IyuEshZ2
- vvY4CrUvuEmRf5wTrBJmPaSexjt1G3HS7DPVLJ9AACYkic78tn9wvfeK2AoUZbaT/TozvCfPmOf
- gJwxJAxFkQjG3Z7A7WFPO3OKLzlsR48ymL/GKBeC2YP+VOGk0LcGC8Hh3T0bc6ImOVIKUUKYZ2k
- BXMTJ94uuWh+DG8kXtu3u/Y5cpcGtUaa4Xdm2Q3QweWI/7ykj3HxoseJZnaC22buHVRwI7WPoir
- +/Cgg52gR+UZ1D1AQUyfWIikhBlgVyiowrbAteMdEo+P6X+xMuJ+YMIZkZJRCFkLGoSahYuIRFF
- smGjavlr/9lt6Zg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320-vcnl4000-regulators-v6-0-0d24d20b1a5b@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: David Heidelberg <david@ixit.cz>
+On Fri, Mar 20, 2026 at 06:45:35PM +0200, Erikas Bitovtas wrote:
+> This patch series introduces support for voltage supply, I2C and cathode
+> regulators. This fixes an issue where if a regulator is shared between
+> the proximity sensor and some other device, and the other device is
+> powered off, the proximity sensor would be powered off as well.
+> 
+> One of the commits includes a Reported-by: tag without a Closes: tag -
+> the report was done outside in a Matrix channel. A link to access the
+> report requires sign-in, therefore it was left out.
 
-The regulator must be on, since it provides the display subsystem and
-therefore the bootloader had turned it on before Linux booted.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Changes in v2:
-- Filled missing device in the commit subject.
-- Fixed commit wording to be more clear. (Konrad)
-- Link to v1: https://lore.kernel.org/r/20260312-beryllium-booton-v1-1-59c83ab91b78@ixit.cz
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+For the series, except the DT binding, I haven't even opened that mail.
+Also you can add Suggested-by to the selected patches.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 01b570d0880d6..1298485c42142 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -148,6 +148,7 @@ vreg_l1a_0p875: ldo1 {
- 			regulator-min-microvolt = <880000>;
- 			regulator-max-microvolt = <880000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-boot-on;
- 		};
- 
- 		vreg_l5a_0p8: ldo5 {
-
----
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-change-id: 20260312-beryllium-booton-adb218ec7e28
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+With Best Regards,
+Andy Shevchenko
 
 
