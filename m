@@ -1,158 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15C14A60F;
-	Sat, 21 Mar 2026 09:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D3C40DFB0;
+	Sat, 21 Mar 2026 10:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774087004; cv=none; b=HlnGCgDtMNQlOFwNGWBXp0DCfI+M9IzFRamzWZeuzY4L1x7qExjDb2IVzt6hAXryT8OMlLaW1dBtWH3wZ/f7GykOG3tgG7fsybR/NjiUgiM7fjC1o0EXRHAQr12a40HVX529IMDbVDL9Ioc5CBuYZoEsvg1WDLnjqeBPuN0DHvU=
+	t=1774088075; cv=none; b=RzScSM7/3OBvTW1rlaAy9B0w787OJoQG27oDNnH6/2kVawKFAqWdj78DsKUCyrEYmk47HJITXUmjoxqDXXqoq/c3Yzl19PO4dpuSexIpMKeMVe7x8yhRB3XwSdVn67Ja0OjUAvU/9IHDvUXKavsMx3GzvEc1DjZA77tz9ZM+O3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774087004; c=relaxed/simple;
-	bh=+LVNkCkCMdRhAgRtq1Pu/cBRkMFNTx5E4/plQSuuNBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G0pd8gt+bGrtPYhDHoqBjB5cW90tI9TK7cqWWxI33nVfP2Hlci1Br3l073He3Fh66R3Y6vAq1GyOMSLWfvj9OLckhPDNaCEo/8nB73nl3VM6cxk5qKVHPdhtVHAryF0Z9sF2knD8sJE7H3DR7FTy4OCLJgN6s69F2+TIfQEf7tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiij6ej8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774088075; c=relaxed/simple;
+	bh=xCkIiUSVYuAkn1uHQcD+JYggjOG2RNIA8Bfj3bWxCQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l43oPfagL5redloiC3FWOwzLmlU27CrG1shA/hTjVvyQi8zOa6UWha8za98FtzSuWcZ9VHnxSeNSKBForywi0sErnw5xedq6LU7rHRuhFq6x52Z14weuYG6pkg5Y8rpcIoFTUx9bziK0OzhyxNOMBYGNpgVoz0NETGTGDceIE5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyKF1Uj3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiij6ej8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9F0C19421;
-	Sat, 21 Mar 2026 09:56:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyKF1Uj3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA93C19421;
+	Sat, 21 Mar 2026 10:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774087004;
-	bh=+LVNkCkCMdRhAgRtq1Pu/cBRkMFNTx5E4/plQSuuNBs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fiij6ej82yH+M+mEq4Jf73Xe124BHToVVWaE8kFcgvpmd2mtfo/xSgSm0pBe/83SB
-	 EgG6vS9iBCKib2rZr/mN1IIk2HlrcI/nSod1hUsq12PHob0e5XeZzxyL+26mJlcTyv
-	 CA1osB+90HHxRFOoXEVcL1pZ5+4H7vxP2yq9EyAtCZhU4+TAk6QABpAbHV4cLIt3ng
-	 +B12VEtlzrkL8NAnygYUr+3VpVWBMLkewV7TzzYOlBTMJ/VgsKisYKyiWbsKLmpgMS
-	 eggDRPvZVwMJ040cVEflITfqg46fh3Ahgmt+Sur8hsA8h0fb4TB7rCMNreG8sWFzLP
-	 JMO9jDVQYg7fA==
-Message-ID: <9bb6e4ac-c7f2-4f1d-aff0-70eefec810a2@kernel.org>
-Date: Sat, 21 Mar 2026 10:56:38 +0100
+	s=k20201202; t=1774088075;
+	bh=xCkIiUSVYuAkn1uHQcD+JYggjOG2RNIA8Bfj3bWxCQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iyKF1Uj3WcNhaxsclKwDdIjWnEEGkS5Kp4k8PVZHrbUrSDzal0VoHDAfWC2EBoqr9
+	 ZOSyTyvLSk9+2PBdzEyHjp9Wf+bGtE4jXe0nPsf2OtmRzobAkTaHzHE/S6Tel20vdU
+	 HaiGpftmXIBhpQmkmzDugJAd+55z/e3i78W0cAtxgzus8W80P6F3F+dhd0LRxEJJNN
+	 gbjrEizaW91bN00zjnURvWDvgVMwAgv1ujzUweoNypxgNvpaWj+7T6ldx5G72A0o75
+	 55Jei2O5H2mh3V2GhLytAgVIsvdsyDkMivUH01so+LETjWNBRcWm6Qy+MKswgR23Kw
+	 nRCy9dYrbUs4w==
+Date: Sat, 21 Mar 2026 11:14:32 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Peter Meerwald <pmeerw@pmeerw.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v6 1/8] dt-bindings: iio: light: vcnl4000: add regulators
+Message-ID: <20260321-inquisitive-wandering-antelope-3d3da7@quoll>
+References: <20260320-vcnl4000-regulators-v6-0-0d24d20b1a5b@gmail.com>
+ <20260320-vcnl4000-regulators-v6-1-0d24d20b1a5b@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] dt-bindings: display: panel: Add Novatek NT35532
- LCD DSI
-To: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260318-rimob-new-features-v2-0-c1bf8917449e@protonmail.com>
- <20260318-rimob-new-features-v2-1-c1bf8917449e@protonmail.com>
- <20260319-amorphous-pastoral-turtle-851af9@quoll>
- <oMTrCB7euJojLz1EUHDhHCq071GQWD0g7-sqwahA62CnM-sVw08UCNhKdgHX2NrEN3H8iRhc0suejuq5JZ39UA2nEfKhRq9qwYJWSxCrAtc=@protonmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <oMTrCB7euJojLz1EUHDhHCq071GQWD0g7-sqwahA62CnM-sVw08UCNhKdgHX2NrEN3H8iRhc0suejuq5JZ39UA2nEfKhRq9qwYJWSxCrAtc=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260320-vcnl4000-regulators-v6-1-0d24d20b1a5b@gmail.com>
 
-On 20/03/2026 23:32, cristian_ci wrote:
-> On Thursday, March 19th, 2026 at 10:09, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Fri, Mar 20, 2026 at 06:45:36PM +0200, Erikas Bitovtas wrote:
+> These sensors can accept 2 supplies - one for the sensor and one for IR
+> LED [1]. Add supply properties for the sensor - 2 for the sensors and
+> one external, for their open drain interrupt line, to ensure the sensor
+> is powered on before proceeding with setup.
 > 
->> On Wed, Mar 18, 2026 at 11:28:09PM +0100, Cristian Cozzolino wrote:
->>> +  avdd-supply:
->>> +    description: positive boost supply regulator
->>> +
->>> +  avee-supply:
->>> +    description: negative boost supply regulator
->>> +
->>> +  vci-supply:
->>> +    description: regulator that supplies the analog voltage
->>> +
->>> +  vddam-supply:
->>> +    description: power supply for MIPI interface
->>> +
->>> +  vddi-supply:
->>> +    description: regulator that supplies the I/O voltage
->>> +
->>> +  port: true
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - reset-gpios
->>> +  - avdd-supply
->>> +  - avee-supply
->>> +  - vci-supply
->>
->> Only VDDI is required according to datasheet (see page 11 and page 16).
+> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
 > 
-> Just to be sure, are you mentioning the part saying there are multiple 
-> power modes (2-1PWR, 2-2PWR, 3éWR and 4PWR) related to NT35532? 
-> 
->> Others are needed only in specific configurations, which I would ignore
->> for the simplicity of the binding. Drop these three.
->>
->> Previous discussion point was about this - write bindings based on
->> datasheet, since it is available.
-> 
-> I've removed avdd, avee and vci supplies from 'required' properties 
-> and I've also tested the new bindings (just for completeness). Now, 
-> I'm going to reintroduce again the issue already raised previously 
-> (for which I received no replies in v1): should I submit a v3 
-> series including my new changes or I've to stick with v2 here, in 
-> order to address review concerns about binding, first?
-> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml     | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 
-I don't understand the question. This is v2, right? So I asked to make
-changes to it, thus you should submit v3 after receiving some more
-review for example.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
+
