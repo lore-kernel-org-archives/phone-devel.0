@@ -1,87 +1,158 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA03301468
-	for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 07:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D15C14A60F;
+	Sat, 21 Mar 2026 09:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774078423; cv=none; b=GijX0TdPFpAzaFnH88mYElbZMUbrhlhPWWO77epBvw1fJChfhXDvqnVUJlxCM+F+urupF+HMJyiiw8c/i0X8dJfvJ1xt1rYdx5A2rAAMCANIbGU/UzK0Eh1W8CeKtFtn1QwV9yLMpUtG7Xz4gaPtse0FF+h3dDb3i/crOzEcTP0=
+	t=1774087004; cv=none; b=HlnGCgDtMNQlOFwNGWBXp0DCfI+M9IzFRamzWZeuzY4L1x7qExjDb2IVzt6hAXryT8OMlLaW1dBtWH3wZ/f7GykOG3tgG7fsybR/NjiUgiM7fjC1o0EXRHAQr12a40HVX529IMDbVDL9Ioc5CBuYZoEsvg1WDLnjqeBPuN0DHvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774078423; c=relaxed/simple;
-	bh=ohd6sExu0boJe37wSbF8PjokdWTXmSyxm0K7qXBQ5T0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F1cWzC19d00CXjY7vNHSBDWLNx8swf6Z26LnpwSgkqiLuX1VK/86BSKoJOT0hrWbHHhw9pJOAyVnWnvDFYFWo8pX/yqPQ6gd+/HssJpQFAMdx89eRAk226tZVqgTRFtUxsCbhxUZk0Ndh2zSsLPPNN9QlpQ4hiOEg3h+vfrRtLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=EjBYmNLr; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1774087004; c=relaxed/simple;
+	bh=+LVNkCkCMdRhAgRtq1Pu/cBRkMFNTx5E4/plQSuuNBs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G0pd8gt+bGrtPYhDHoqBjB5cW90tI9TK7cqWWxI33nVfP2Hlci1Br3l073He3Fh66R3Y6vAq1GyOMSLWfvj9OLckhPDNaCEo/8nB73nl3VM6cxk5qKVHPdhtVHAryF0Z9sF2knD8sJE7H3DR7FTy4OCLJgN6s69F2+TIfQEf7tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiij6ej8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="EjBYmNLr"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1774078408;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=okBqHNZetlSObACyiKEtIep5x52Gimb817rennDzcCs=;
-	b=EjBYmNLrmAgk9A0ZuLVS2hiWCcRNXNAgCcKt5emjohE7XXAVyXzhNPx2vxFubsBZdL7UQE
-	W16g1obNopC3A2CJyoljobuJBsOkb9Z1yZDOJ1cnUvTevT89w3ev8rH+lpi3Q5hPs9drln
-	iyEFuwvpHivY6lPGMcQs05JJvE4fSKA2lweOpeG8wCJdONH6R0NwwZEQjZpdATGV83M1H3
-	hrwhnf+Za5MK+W5rKFUf6pNJKiBAupKa8yK80Q1SFEQgmxiYryFhvW8/4r5DXj+W9Lky5g
-	ODjxN6AJU0zq1a2W6fbwDc3zYu6hDioIWqSvtFyp9nEeX9WqYNSx3hyN50a8QQ==
-From: Val Packett <val@packett.cool>
-To: Hans de Goede <hansg@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Henrik Rydberg <rydberg@bitmath.org>
-Cc: Val Packett <val@packett.cool>,
-	Stanislav Zaikin <zstaseg@gmail.com>,
-	linux-input@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Input: goodix-berlin: report a resolution of 10 units/mm
-Date: Sat, 21 Mar 2026 04:30:07 -0300
-Message-ID: <20260321073242.556253-1-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiij6ej8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9F0C19421;
+	Sat, 21 Mar 2026 09:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774087004;
+	bh=+LVNkCkCMdRhAgRtq1Pu/cBRkMFNTx5E4/plQSuuNBs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fiij6ej82yH+M+mEq4Jf73Xe124BHToVVWaE8kFcgvpmd2mtfo/xSgSm0pBe/83SB
+	 EgG6vS9iBCKib2rZr/mN1IIk2HlrcI/nSod1hUsq12PHob0e5XeZzxyL+26mJlcTyv
+	 CA1osB+90HHxRFOoXEVcL1pZ5+4H7vxP2yq9EyAtCZhU4+TAk6QABpAbHV4cLIt3ng
+	 +B12VEtlzrkL8NAnygYUr+3VpVWBMLkewV7TzzYOlBTMJ/VgsKisYKyiWbsKLmpgMS
+	 eggDRPvZVwMJ040cVEflITfqg46fh3Ahgmt+Sur8hsA8h0fb4TB7rCMNreG8sWFzLP
+	 JMO9jDVQYg7fA==
+Message-ID: <9bb6e4ac-c7f2-4f1d-aff0-70eefec810a2@kernel.org>
+Date: Sat, 21 Mar 2026 10:56:38 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] dt-bindings: display: panel: Add Novatek NT35532
+ LCD DSI
+To: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260318-rimob-new-features-v2-0-c1bf8917449e@protonmail.com>
+ <20260318-rimob-new-features-v2-1-c1bf8917449e@protonmail.com>
+ <20260319-amorphous-pastoral-turtle-851af9@quoll>
+ <oMTrCB7euJojLz1EUHDhHCq071GQWD0g7-sqwahA62CnM-sVw08UCNhKdgHX2NrEN3H8iRhc0suejuq5JZ39UA2nEfKhRq9qwYJWSxCrAtc=@protonmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <oMTrCB7euJojLz1EUHDhHCq071GQWD0g7-sqwahA62CnM-sVw08UCNhKdgHX2NrEN3H8iRhc0suejuq5JZ39UA2nEfKhRq9qwYJWSxCrAtc=@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Without a reported resolution, userspace was assuming 1 unit/mm which
-is wildly wrong: a regular smartphone is clearly not 2.4 meters tall.
-Most applications do not care much for this kind of raw mm value,
-but Phosh's on-screen keyboard would accidentally trigger swipe-to-close
-gestures due to misinterpreting small movements as huge ones.
+On 20/03/2026 23:32, cristian_ci wrote:
+> On Thursday, March 19th, 2026 at 10:09, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> 
+>> On Wed, Mar 18, 2026 at 11:28:09PM +0100, Cristian Cozzolino wrote:
+>>> +  avdd-supply:
+>>> +    description: positive boost supply regulator
+>>> +
+>>> +  avee-supply:
+>>> +    description: negative boost supply regulator
+>>> +
+>>> +  vci-supply:
+>>> +    description: regulator that supplies the analog voltage
+>>> +
+>>> +  vddam-supply:
+>>> +    description: power supply for MIPI interface
+>>> +
+>>> +  vddi-supply:
+>>> +    description: regulator that supplies the I/O voltage
+>>> +
+>>> +  port: true
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - reg
+>>> +  - reset-gpios
+>>> +  - avdd-supply
+>>> +  - avee-supply
+>>> +  - vci-supply
+>>
+>> Only VDDI is required according to datasheet (see page 11 and page 16).
+> 
+> Just to be sure, are you mentioning the part saying there are multiple 
+> power modes (2-1PWR, 2-2PWR, 3éWR and 4PWR) related to NT35532? 
+> 
+>> Others are needed only in specific configurations, which I would ignore
+>> for the simplicity of the binding. Drop these three.
+>>
+>> Previous discussion point was about this - write bindings based on
+>> datasheet, since it is available.
+> 
+> I've removed avdd, avee and vci supplies from 'required' properties 
+> and I've also tested the new bindings (just for completeness). Now, 
+> I'm going to reintroduce again the issue already raised previously 
+> (for which I received no replies in v1): should I submit a v3 
+> series including my new changes or I've to stick with v2 here, in 
+> order to address review concerns about binding, first?
+> 
 
-Do what the older goodix.c driver does and set the resolution to 10
-units/mm to make sure the numbers calculated by userspace are reasonable.
+I don't understand the question. This is v2, right? So I asked to make
+changes to it, thus you should submit v3 after receiving some more
+review for example.
 
-Signed-off-by: Val Packett <val@packett.cool>
----
- drivers/input/touchscreen/goodix_berlin_core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/input/touchscreen/goodix_berlin_core.c b/drivers/input/touchscreen/goodix_berlin_core.c
-index 83f28b870531..b0938a4f3fec 100644
---- a/drivers/input/touchscreen/goodix_berlin_core.c
-+++ b/drivers/input/touchscreen/goodix_berlin_core.c
-@@ -628,6 +628,14 @@ static int goodix_berlin_input_dev_config(struct goodix_berlin_core *cd,
- 
- 	touchscreen_parse_properties(cd->input_dev, true, &cd->props);
- 
-+	/*
-+	 * The resolution of these touchscreens is about 10 units/mm, the actual
-+	 * resolution does not matter much since we set INPUT_PROP_DIRECT.
-+	 * Set it to 10 to ensure userspace isn't off by an order of magnitude.
-+	 */
-+	input_abs_set_res(cd->input_dev, ABS_MT_POSITION_X, 10);
-+	input_abs_set_res(cd->input_dev, ABS_MT_POSITION_Y, 10);
-+
- 	error = input_mt_init_slots(cd->input_dev, GOODIX_BERLIN_MAX_TOUCH,
- 				    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED);
- 	if (error)
--- 
-2.53.0
-
+Best regards,
+Krzysztof
