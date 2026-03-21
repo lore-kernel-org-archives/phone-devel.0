@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6F1372B3C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B221A392824;
 	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774106591; cv=none; b=EI/3Jhar1JgmSPDqgJ8SgpULB21HhVn4YBiQzqr2pYwDI8uEFO6m9Qqluo4ePB34ywalqS02pkdKjXcw0LMOq9YHONvYuI/OpJBBIGnwYgJU/cTPvzQ/hmi4DD/3cePliufPJFUhGXfyd5UrW70o5Bw0BuJShw4N+2ohc8G9NFE=
+	t=1774106591; cv=none; b=HICrwNB6tNhalujOp7ZoDFqgts6BqIF8wjHNo4Kh9UrNYOv2a9UjHTmDGhZ+9T0j2AXQ2nPnE1n7OyZOQwVdDRKKHzK1Szw89ktPsouxcx8XwIazqcpSQpvVxxtWwsmyRIyvtTj2eRH35ysjWV2UOnVNcRCkQy5wZXR8WLxxyDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774106591; c=relaxed/simple;
-	bh=GpDywJE4lv+WKaQwWmudJo8czmdfCXwQdG8fx5funFE=;
+	bh=X8kk9y3/T6U+5v+rvIXYxkhfQN2QiiYDUZWIvW+9ffE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U0TzkVv7LplXzo0xiD+YXbfeI9FQbndUzQwL9N4WGHKqc41UXgeF7E5H4YGYC+IFex4L6ITVQp3gurQMLOxbhIFBTeqg+NzvpOpewR9tOe+JjAj1dcl3B3RYsSUyEc2luaSKZVTi2eKlnDKR7QOlV43PGangK4kqxbJatPL9FYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2MdO8pk; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=OtUo5JHfEoW4pbwmzfsY7euGAOkYF+jagzP1KkJpV5B6o66A2Yl5Ui7bjRitCAxTkTPx8WlvebsSXo0Hi8LtY7IbW5TaGF8YLFeuU1fuMK63ovwmjcET8VoBtCJKvYlsrjy+fbr+kFHcWu9ZQp9uK8uzcHAf0nDzU4Ud1vrqNbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+E/OI92; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2MdO8pk"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 59D2FC2BCC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+E/OI92"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 85109C2BCB3;
 	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774106591;
-	bh=GpDywJE4lv+WKaQwWmudJo8czmdfCXwQdG8fx5funFE=;
+	bh=X8kk9y3/T6U+5v+rvIXYxkhfQN2QiiYDUZWIvW+9ffE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=B2MdO8pkpzpeoO7NfeyPtt9jWlDWs7V1aXpQieIXj3FMzy2nr6Slz+GftJ21FoLAJ
-	 2/crOOVvUFzm87bhxS9CWcybScJCsBndXozViDGiMylUWY62TzF3A9gTpG/usui3s7
-	 b9f9Aj/SW5+fD+G+kCzMKx7dV8Jd0BMbn/W/auIT6EdjT22rU72FXWjvbiEPX0rCC0
-	 jQ62Z92UHU64QlzZNxnomY8HjU5+7AHWoWFAdNEpPe9mhQ+xxhw6ND/HJUiKy3c5S5
-	 8HihOWGaBU08jok53xtQih7LKta0HEjxtfZFBWgoSYEyrk2el12JN0eKE3GDDKJ0jO
-	 chlto1KemPIvg==
+	b=Z+E/OI92je2YtLd+3zJsHXxCaylKDaW9KMpSrJZqxCfQnnWu7P0DBtxp63/gqr91j
+	 4FA53LDIskq6pNQSmoFjvlsjfRcjJlyVqRqCS0Mzk5/Nj784bgqChHpklXIDSCwl12
+	 U7MVcwq2wCvxEqLsoOzfb2ExjqhcqrBEj0uh1E5HK9jkf57wwZVPLp1Jtnj9zoikod
+	 aAThpVv91h8+We5eNOggKLniB/u21K4Vygbdhdm1QXt8I0YpIMXIImURZ3w5hpzNRc
+	 DRoRWeBX57PVHG0yi/tnJ17af81cW1r319t2ReYbKsmK+UPKmR5ISa7cs4ey+3XAsI
+	 mW4ux9bddya3Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 507781094478;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78AF71094484;
 	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Sat, 21 Mar 2026 17:23:22 +0100
-Subject: [PATCH v3 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
- display and GPU
+Date: Sat, 21 Mar 2026 17:23:25 +0100
+Subject: [PATCH v3 6/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ Hall sensor
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260321-rimob-new-features-v3-3-d4b8ee867de7@protonmail.com>
+Message-Id: <20260321-rimob-new-features-v3-6-d4b8ee867de7@protonmail.com>
 References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
 In-Reply-To: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -55,13 +55,14 @@ To: Neil Armstrong <neil.armstrong@linaro.org>,
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Cristian Cozzolino <cristian_ci@protonmail.com>
+ Cristian Cozzolino <cristian_ci@protonmail.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774110230; l=2395;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774110230; l=1551;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=VyUvBSXd0jNEXP9pnCsEQXXkOKHY91F/ZfnedxNcwXE=;
- b=kvU71w3QnZER8tVg+MaJZWGefcXQJ/RnYFCZYYFgv+W3f9k1qLjegzq2Sip1XJfT7zat2FS3Q
- SujGu+gDcU0Diyevzo20ysLzzUai7z/aADdBjdlspOl43amuoCPSar5
+ bh=ujtpWdG8p5BFdv+RAOObPc/pCeqZIWvZWLlolCjiSQI=;
+ b=WCP9/DME7uCAWOxFEjyczF1OmsDT4gEnTxSHzLEperNg8Vx5xkZbEmNIBIsoyxWPUZPucvIbE
+ HhUM8Ts4cwBBLQYyyxbGAQ6SoXWBGAz4hUKW9eAexlPNQ+p5RNolHYb
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -71,119 +72,53 @@ Reply-To: cristian_ci@protonmail.com
 
 From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Add the description for the display panel found on this phone.
-And with this done we can also enable the GPU and set the zap shader
-firmware path.
+Enable the Hall effect sensor (flip cover) for Billion Capture+.
+The GPIO is mapped to SW_LID events as in other qcom devices.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 74 ++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-index ef4faf763132..d07303a37b2c 100644
+index ddbbbc1eb5b2..d99e73f63a94 100644
 --- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-@@ -78,6 +78,13 @@ vph_pwr: vph-pwr-regulator {
- 	};
- };
+@@ -47,9 +47,18 @@ framebuffer@90001000 {
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
  
-+&gpu {
-+	status = "okay";
-+};
-+
-+&gpu_zap_shader {
-+	firmware-name = "qcom/msm8953/flipkart/rimob/a506_zap.mbn";
-+};
+-		pinctrl-0 = <&gpio_key_default>;
++		pinctrl-0 = <&gpio_hall_sensor_default>, <&gpio_key_default>;
+ 		pinctrl-names = "default";
  
- &hsusb_phy {
- 	vdd-supply = <&pm8953_l3>;
-@@ -87,11 +94,70 @@ &hsusb_phy {
- 	status = "okay";
- };
- 
-+&ibb {
-+	qcom,discharge-resistor-kohms = <32>;
-+};
-+
-+&lab {
-+	qcom,soft-start-us = <800>;
-+};
-+
-+&mdss {
-+	status = "okay";
-+};
-+
-+&mdss_dsi0 {
-+	vdda-supply = <&pm8953_s3>;
-+	vddio-supply = <&pm8953_l6>;
-+
-+	status = "okay";
-+
-+	panel: panel@0 {
-+		compatible = "novatek,nt35532";
-+		reg = <0>;
-+
-+		backlight = <&pmi8950_wled>;
-+		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
-+		avdd-supply = <&lab>;
-+		avee-supply = <&ibb>;
-+		vci-supply = <&pm8953_l17>;
-+		vddi-supply = <&pm8953_l6>;
-+
-+		pinctrl-0 = <&panel_default>;
-+		pinctrl-names = "default";
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&mdss_dsi0_out>;
-+			};
++		event-hall-sensor {
++			label = "Hall Effect Sensor";
++			gpios = <&tlmm 46 GPIO_ACTIVE_LOW>;
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_LID>;
++			linux,can-disable;
++			wakeup-source;
 +		};
-+	};
-+};
 +
-+&mdss_dsi0_out {
-+	data-lanes = <0 1 2 3>;
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+&mdss_dsi0_phy {
-+	vcca-supply = <&pm8953_l3>;
-+
-+	status = "okay";
-+};
-+
- &pm8953_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- 	status = "okay";
- };
+ 		key-volume-up {
+ 			label = "Volume Up";
+ 			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
+@@ -329,6 +338,13 @@ &sdhc_2 {
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <135 4>;
  
-+&pmi8950_wled {
-+	qcom,current-limit-microamp = <10000>;
-+	qcom,num-strings = <3>;
-+	qcom,ovp-millivolt = <29500>;
-+
-+	status = "okay";
-+};
-+
- &rpm_requests {
- 	regulators {
- 		compatible = "qcom,rpm-pm8953-regulators";
-@@ -244,6 +310,14 @@ gpio_key_default: gpio-key-default-state {
- 		drive-strength = <2>;
- 		bias-pull-up;
- 	};
-+
-+	panel_default: panel-default-state {
-+		pins = "gpio61";
++	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
++		pins = "gpio46";
 +		function = "gpio";
-+		drive-strength = <8>;
++		drive-strength = <2>;
 +		bias-disable;
-+		output-high;
 +	};
- };
- 
- &usb3 {
++
+ 	gpio_key_default: gpio-key-default-state {
+ 		pins = "gpio85";
+ 		function = "gpio";
 
 -- 
 2.53.0
