@@ -1,138 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-106102.protonmail.ch (mail-106102.protonmail.ch [79.135.106.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB26F3921FD;
-	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7293101A7
+	for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 16:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774106591; cv=none; b=iG+K0qy4K8vTAufH5bLB5iq3ca6MqPPZYZBRh4+HlrQqcROqc/c7L1hwQUVTS/c9rIzFQxP9dVx9NYmT4FVVBUdI30JzAyUXp4vhZZuKNbaAdnFTpBcnbJDZtkog8uOileO13cMIMuTEM8zr2cGehh7cCqfN8dvBO457Sp55fo0=
+	t=1774109744; cv=none; b=h0/sLGEh8xPftC6iWlVCID361j5RSrawfXU5sra2n2CELHMDtoYhheTuMNxT/BRT/Kd1vz57ZDP9J8K2xUd5rfxvuIzCj7rlKalz+BwS7jvPv1vbbkSX7mzgISZWra1W3AdqEvUyaay01oqVjZWzBesNIIFxxap4zAiVRoFv2w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774106591; c=relaxed/simple;
-	bh=SsbCfS4QCvwhdAO5K8XNABoWORODfiw1Z9sqj0nbl5k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LLefqIVKMrlmhP38O69H4PbjB4pjeFVBGd+NsWx/txrZmxqYch/xBl0r5DqWiUPcd+5PUEvJ/ijh4/BoJOpCTe1iiyBS9pqKRuCFXlhf+w2aphMQoZMY7u4jiZtHk8aY9jYa25RcfSFYu/Ujip950IG54M8PjQaJVKgFpF0oqHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqHDiny5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774109744; c=relaxed/simple;
+	bh=AYOratEPILDbogYZ1WfiD0THvnwSWeWlBhpHZUoYx54=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ctHh5zZEofhcA4+rRGkPKxnjIyHYNq7ZOzVNxmrDDKQaWyMKVHqqmqyhjRngg8TDVq+yTTSvAF2D4xNsIs10TIjsjr+67dlh7/Eknx1K7EZT+77pGVh7X1AS2Sp1+4EvDZ6nfSellzmnYD+L3rWXCT9DyP9j08vzu90H2CazHh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=uKdagoi2; arc=none smtp.client-ip=79.135.106.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqHDiny5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 75B54C2BCC6;
-	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774106591;
-	bh=SsbCfS4QCvwhdAO5K8XNABoWORODfiw1Z9sqj0nbl5k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nqHDiny5MBBwUOvK1gscDzwCUJKylWqh4nXfnL15FCStMSISOhd76nNJxAlmscWJj
-	 1I6A3ogMHIvTgEtg8VI74/Pv/f924S+6T6SUX6xgkDhRVQi9cuZRX7zrjKEJ8g/O80
-	 taGuZA4Dhkp+w7SdFdYC8xToZZyt3g1JOuLrTL8YWbtvgSqI2Py6ne7bnqxtWpsDDt
-	 y/hUhFgv0/dqWRxTkffooMJbgslWwWeFDuNovDblLYGf1nqMDY/enKz/PSlhaTlDFq
-	 p75ipzUqPUWwbThpsy0ZONj4YXqgJcXRafk4JmIuYZXZw/yYblG0uBrJbjHfuEltjo
-	 pbPWhgJFI2HLg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B4EE1094488;
-	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
-From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Sat, 21 Mar 2026 17:23:24 +0100
-Subject: [PATCH v3 5/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
- touchscreen
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="uKdagoi2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1774109734; x=1774368934;
+	bh=QotTHgm5szfDydHr9RZe/Pmi7UIj/OMAipB3hOHJLmw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=uKdagoi2L9q735o9uBLUbe0p9IWsDjPM59Lh+XCNGXygsYF1FJY8D/cM343QnBvMP
+	 2S1IgoGYX/UPdcZcJEdRwT7HspcHAZxGg5vRP9jC164LzPwyWuo7LdSE3UIXUhXZmW
+	 /AbSqNvQ1+5dx+VQqZNRTO5WqTFiNK7AR7/alVFwjTf3nnRTkCk8XBo8A7NfBJUtXs
+	 byKWK8K1DgTke2SI08LPhdsCEww7qja7UknjAMgGkIfiA6MgXBDnvvRua6Li5WvcIb
+	 nnxORmWAPuJLUoCX43jSELPFsbkuC0fSDr8+nyJLI7IpH1Tfrol47qppo4mA6XmHMF
+	 zzK2OxKFWJYQQ==
+Date: Sat, 21 Mar 2026 16:15:29 +0000
+To: Krzysztof Kozlowski <krzk@kernel.org>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
+Message-ID: <JPvrBL0VElAnSybKBmlSXQbxGuYnospMhh-e3w4Ug5_6boEWzayNwLUDvCJPlz5IH5JAjciiMhdTBEOiTwJ7e0cbuZW7DV7r55qka0VmhBc=@protonmail.com>
+In-Reply-To: <9bb6e4ac-c7f2-4f1d-aff0-70eefec810a2@kernel.org>
+References: <20260318-rimob-new-features-v2-0-c1bf8917449e@protonmail.com> <20260318-rimob-new-features-v2-1-c1bf8917449e@protonmail.com> <20260319-amorphous-pastoral-turtle-851af9@quoll> <oMTrCB7euJojLz1EUHDhHCq071GQWD0g7-sqwahA62CnM-sVw08UCNhKdgHX2NrEN3H8iRhc0suejuq5JZ39UA2nEfKhRq9qwYJWSxCrAtc=@protonmail.com> <9bb6e4ac-c7f2-4f1d-aff0-70eefec810a2@kernel.org>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: c3476e88b1fb925ce3150479b96fa7d10da5ebb6
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260321-rimob-new-features-v3-5-d4b8ee867de7@protonmail.com>
-References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
-In-Reply-To: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Cristian Cozzolino <cristian_ci@protonmail.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774110230; l=1582;
- i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=3bKin1PZP9GVSsW6glNJDP7CuB4rn0CKi/qbCyBa+rA=;
- b=B5If5K0fLvQgoogkrILzqhKx8UKibbWWQJM4uBFDmy5w5f4Dl1frWx50cUatUU/MScjJQZMfh
- 3tGpS/NLFzVDlUN6jK79oxJ22HAmUQorELLANOUSlWMa+ULjKwyBWX9
-X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
- pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
-X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
- with auth_id=438
-X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
-Reply-To: cristian_ci@protonmail.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+On Saturday, March 21st, 2026 at 10:56, Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
 
-This device uses a Goodix GT5688 touch controller, connected to i2c_3.
-Add it to the device tree.
+> On 20/03/2026 23:32, cristian_ci wrote:
+> > On Thursday, March 19th, 2026 at 10:09, Krzysztof Kozlowski <krzk@kerne=
+l.org> wrote:
+> >
+> >> On Wed, Mar 18, 2026 at 11:28:09PM +0100, Cristian Cozzolino wrote:
+> >>> +  avdd-supply:
+> >>> +    description: positive boost supply regulator
+> >>> +
+> >>> +  avee-supply:
+> >>> +    description: negative boost supply regulator
+> >>> +
+> >>> +  vci-supply:
+> >>> +    description: regulator that supplies the analog voltage
+> >>> +
+> >>> +  vddam-supply:
+> >>> +    description: power supply for MIPI interface
+> >>> +
+> >>> +  vddi-supply:
+> >>> +    description: regulator that supplies the I/O voltage
+> >>> +
+> >>> +  port: true
+> >>> +
+> >>> +required:
+> >>> +  - compatible
+> >>> +  - reg
+> >>> +  - reset-gpios
+> >>> +  - avdd-supply
+> >>> +  - avee-supply
+> >>> +  - vci-supply
+> >>
+> >> Only VDDI is required according to datasheet (see page 11 and page 16)=
+.
+> >
+> > Just to be sure, are you mentioning the part saying there are multiple
+> > power modes (2-1PWR, 2-2PWR, 3=C3=A9WR and 4PWR) related to NT35532?
+> >
+> >> Others are needed only in specific configurations, which I would ignor=
+e
+> >> for the simplicity of the binding. Drop these three.
+> >>
+> >> Previous discussion point was about this - write bindings based on
+> >> datasheet, since it is available.
+> >
+> > I've removed avdd, avee and vci supplies from 'required' properties
+> > and I've also tested the new bindings (just for completeness). Now,
+> > I'm going to reintroduce again the issue already raised previously
+> > (for which I received no replies in v1): should I submit a v3
+> > series including my new changes or I've to stick with v2 here, in
+> > order to address review concerns about binding, first?
+> >
+>=20
+> I don't understand the question. This is v2, right? So I asked to make
+> changes to it, thus you should submit v3 after receiving some more
+> review for example.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
----
- .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 32 ++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+I've submitted v3 of patch series considering that, apart dt-bindings, I=20
+think I've addressed reviews for the rest of patches, during these last=20
+days.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-index eab310ffa07b..ddbbbc1eb5b2 100644
---- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-@@ -94,6 +94,31 @@ &hsusb_phy {
- 	status = "okay";
- };
- 
-+&i2c_3 {
-+	status = "okay";
-+
-+	touchscreen@5d {
-+		compatible = "goodix,gt5688";
-+		reg = <0x5d>;
-+
-+		interrupts-extended = <&tlmm 65 IRQ_TYPE_LEVEL_LOW>;
-+
-+		pinctrl-0 = <&tsp_int_rst_default>;
-+		pinctrl-names = "default";
-+
-+		irq-gpios = <&tlmm 65 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
-+
-+		VDDIO-supply = <&pm8953_l6>;
-+		AVDD28-supply = <&pm8953_l10>;
-+
-+		touchscreen-size-x = <1080>;
-+		touchscreen-size-y = <1920>;
-+		touchscreen-inverted-x;
-+		touchscreen-inverted-y;
-+	};
-+};
-+
- &ibb {
- 	qcom,discharge-resistor-kohms = <32>;
- };
-@@ -318,6 +343,13 @@ panel_default: panel-default-state {
- 		bias-disable;
- 		output-high;
- 	};
-+
-+	tsp_int_rst_default: tsp-int-rst-default-state {
-+		pins = "gpio64", "gpio65";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
- };
- 
- &usb3 {
-
--- 
-2.53.0
-
-
+> Best regards,
+> Krzysztof
+> 
