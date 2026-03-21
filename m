@@ -1,118 +1,185 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9412D6401;
-	Sat, 21 Mar 2026 12:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E96155C87;
+	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774096965; cv=none; b=O37KfKHGf4oNL9nomfU/wESLpjmVLKofjjhUedvuYRhJ4KXQx6J9xkqakFFoKNHdwo4WB/pSRbJlrcdHXnSEwmpR27Cs50vdG4QnoBJvIfQKdUtk3TKk7TT5HWzpY1tHdNGO4/7xxMf7URYQtx36Dtj9ohK72dvcl4EsJCMTfi4=
+	t=1774106591; cv=none; b=q2qMyxnjwdj1H5IVa8DR/AIeSGegO87UNN15qBM25UhgHdqupSTjXg3LFOxJvjQc5DOGHrYyP/fKMCWmVMt53s5DeXergTDY47qyhx4BWkTOfrQItpB6xsfhvn/rTR/7WK033FmET7Hky/EhzHTtPyHcSKJEsD9+UQ5r8So0Xm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774096965; c=relaxed/simple;
-	bh=MjYkdz9+L0pyMEt2KrtErEE8PXR6dETfF3AbkkP3hG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VL6u9KdM70mxAd9GHW5W2nwbtHXo7v27sDed9O+L0jC/SiIU5+Clgp8pbdHlFKOi66TqKrJ8pgRo11vSJarvmcmEqmQh0RfWTOM0SWLeUrJhyrxokVex3/cRaUp/AyPU9+XJM1DmlOn7wq4WnSvJcfQPp3wPI1rkQoNyxJ3ejYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i7ipOjvg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774106591; c=relaxed/simple;
+	bh=RXilof1gAfb4sHzRQIGyoky1lk3TJShq5kSjMd7XO7k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FWHxB1WdZAtPVzYq3/rmjh3LbiGQVcEwPptPJlnDKnGA2gQySVVzaxA9n3tfa/zp3kmyx7ZgErT5dV/FDd76jg8mb2ge8GrZ7FQxC4Vi+as3JWIG+i7xe9jooUqIvSaDhElGCl5ql8p9iAkbFq82DGb48UqZ+fwtGub0POHra+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZcszYl+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i7ipOjvg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A1BC19421;
-	Sat, 21 Mar 2026 12:42:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZcszYl+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2B92CC2BCB0;
+	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774096965;
-	bh=MjYkdz9+L0pyMEt2KrtErEE8PXR6dETfF3AbkkP3hG0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i7ipOjvgSojBhyyQqFGUVKqo+FjYzHwF0TFIW5V+Wk2gTo85vTsLXCIjtTI9eDx4p
-	 ZYpbMgBAWf1eFANJ8Ngy7a8iPkRtkoHDQyOyN69enJXQo4+rtAjQ0723PYTYducVf0
-	 A29FpB4iZm+YL8iKb5/2o960t/mFyE8ukAklHkSdTrhCaLnuGL2ql40bzWiAYTowAP
-	 vd2AK+Sex0Mtu6gezG5bAp/DkUxFSW77SYgEAALPd4i65qwZz/jguxtAQAnxz6JSn8
-	 cXrjUTXtgrZC7k3+zNuOkV6C2dKbFf1gqAYXn63aJzqqIvDmRJXrByy2vzX0kiU1D0
-	 M2VyVOMD6v/XA==
-Date: Sat, 21 Mar 2026 12:42:35 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peter Meerwald <pmeerw@pmeerw.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-Subject: Re: [PATCH v6 1/8] dt-bindings: iio: light: vcnl4000: add
- regulators
-Message-ID: <20260321124235.1d07d486@jic23-huawei>
-In-Reply-To: <20260320-vcnl4000-regulators-v6-1-0d24d20b1a5b@gmail.com>
-References: <20260320-vcnl4000-regulators-v6-0-0d24d20b1a5b@gmail.com>
-	<20260320-vcnl4000-regulators-v6-1-0d24d20b1a5b@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1774106591;
+	bh=RXilof1gAfb4sHzRQIGyoky1lk3TJShq5kSjMd7XO7k=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=tZcszYl+KiIh9okNdYrXuWj30/YVPrrPL6hSEPK70wR4PUDtcCJvuOY95ePJyGiIg
+	 W+E36Ca+KRBsaV8eTt8AdtIatPNHAxkELse55mwitf/supVK+bER4+/sZkf3gBU2Z+
+	 pSGIZNqdPNtOtXsA3xS2LvJrmaYN7Pi8CfR/a7z49jfP0LuwryC/7xXgrvPCfwGrS3
+	 LyPs5B6rHxkzopITZ1BAKMXm+Pa88dzmnJAXyEsD75B/yEH1YSH2umFsgWTxJNDvz+
+	 boDqai3phhj2kDC6OIQ00proPAP9TyakSt1vdxZUyUFcMQ7XrOA6hmCQLvhuBlEmDO
+	 SYadCaFckJXYA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A6E61094483;
+	Sat, 21 Mar 2026 15:23:11 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Date: Sat, 21 Mar 2026 17:23:20 +0100
+Subject: [PATCH v3 1/6] dt-bindings: display: panel: Add Novatek NT35532
+ LCD DSI
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com>
+References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
+In-Reply-To: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774110230; l=2947;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=PxFqeuqNj1VprUSP+bqkkKxxxmFjF1RLDaIlR7HIQTQ=;
+ b=GDROwhLCa2Yuk8MyHRFlLqKznRGxgpl5vmEJjBb+x4hjGX4lNF19rHqIYtWXeSCLiNLc2xSdM
+ hB6ukXIVg8JC9otKWwQZIYS8PEV8aZequ/glW78KqRDnx5zUlHF7IYl
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-On Fri, 20 Mar 2026 18:45:36 +0200
-Erikas Bitovtas <xerikasxx@gmail.com> wrote:
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-> These sensors can accept 2 supplies - one for the sensor and one for IR
-> LED [1]. Add supply properties for the sensor - 2 for the sensors and
-> one external, for their open drain interrupt line, to ensure the sensor
-> is powered on before proceeding with setup.
-> 
-> [1] https://www.vishay.com/docs/84274/vcnl4040.pdf
-> 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> ---
->  .../devicetree/bindings/iio/light/vishay,vcnl4000.yaml     | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> index 2ba4d5de4ec4..516afef7a545 100644
-> --- a/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/vishay,vcnl4000.yaml
-> @@ -33,6 +33,17 @@ properties:
->    interrupts:
->      maxItems: 1
->  
-> +  vdd-supply:
-> +    description: Regulator providing power to the "VDD" pin.
-> +
-> +  vio-supply:
-> +    description: Regulator providing power for pull-up of the I/O lines.
-> +      Does not connect to the sensor directly, but is needed for the
-> +      correct operation of the I2C and interrupt lines.
+Document Novatek NT35532-based DSI display panel.
 
-It's optional so I guess it doesn't matter, but whether this supply is
-needed of not is down to whether the SoC allows for pull up on the
-interrupt and I2C lines.  Some SoCs provide this (though it's been
-a while since I used one that did.).
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+---
+ .../bindings/display/panel/novatek,nt35532.yaml    | 77 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 ++
+ 2 files changed, 82 insertions(+)
 
-In other cases an external pull up is needed. It would feel
-odd to provide a supply for the pull up it was all hidden in the SoC.
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
+new file mode 100644
+index 000000000000..c7928553681a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
+@@ -0,0 +1,77 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt35532.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT35532-based DSI display panels
++
++maintainers:
++  - Cristian Cozzolino <cristian_ci@protonmail.com>
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: novatek,nt35532
++
++  reg:
++    maxItems: 1
++
++  backlight: true
++  reset-gpios: true
++
++  avdd-supply:
++    description: positive boost supply regulator
++
++  avee-supply:
++    description: negative boost supply regulator
++
++  vci-supply:
++    description: regulator that supplies the analog voltage
++
++  vddam-supply:
++    description: power supply for MIPI interface
++
++  vddi-supply:
++    description: regulator that supplies the I/O voltage
++
++  port: true
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++  - vddi-supply
++  - port
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "novatek,nt35532";
++            reg = <0>;
++
++            backlight = <&pmi8950_wled>;
++            reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
++            avdd-supply = <&lab>;
++            avee-supply = <&ibb>;
++            vci-supply = <&pm8953_l17>;
++            vddi-supply = <&pm8953_l6>;
++
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a626dee5c106..8ed2866bbd6e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8171,6 +8171,11 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
+ F:	Documentation/devicetree/bindings/display/panel/novatek,nt35510.yaml
+ F:	drivers/gpu/drm/panel/panel-novatek-nt35510.c
+ 
++DRM DRIVER FOR NOVATEK NT35532 PANELS
++M:	Cristian Cozzolino <cristian_ci@protonmail.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
++
+ DRM DRIVER FOR NOVATEK NT35560 PANELS
+ M:	Linus Walleij <linusw@kernel.org>
+ S:	Maintained
 
-Anyhow, optional so we aren't forcing this anyway.
+-- 
+2.53.0
 
-Jonathan
-
-
-> +
-> +  vled-supply:
-> +    description: Regulator providing power to the IR anode pin.
-> +
->    reg:
->      maxItems: 1
->  
-> @@ -54,6 +65,9 @@ examples:
->              compatible = "vishay,vcnl4200";
->              reg = <0x51>;
->              proximity-near-level = <220>;
-> +            vdd-supply = <&reg_vdd>;
-> +            vio-supply = <&reg_vio>;
-> +            vled-supply = <&reg_vled>;
->          };
->      };
->  ...
-> 
 
