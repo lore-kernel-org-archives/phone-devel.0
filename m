@@ -1,259 +1,138 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBAA3C07A
-	for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 16:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E7A70808;
+	Sun, 22 Mar 2026 10:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774111557; cv=none; b=gNQniqxCf1pMCZNPRFHRJH8/0GAOVOWI4gqNbTm5OWkp5xjZbsvWV8w4FZ4JB2uEGFs1vQzSJZLNka/+TjXK02pj10M7uqXgbd+bTg4g5QiSsLkEHX1h1W7pMMk9qQe8wJ+y/qbQkdpO2dmYaJNWNyhqvRKd/oQcPeCVoFX27Aw=
+	t=1774174612; cv=none; b=RHllpygClPCP0CCA9hnVojXkdiVkkRIqhSTU4MBSTfbJ8exVrGVuYHuLvZ8xB7xQpS3OIfDRQ2VvuhBEzm0snrzeYPIyJ2SfHBstLPBS/Rw+c8ec0nYP4LMkOfX5LaamADXLAfCLcDUI0OZ3Ht0BRsXK9PfOGNjRm9vWjoHc2oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774111557; c=relaxed/simple;
-	bh=uyk4VQ92eC8jVlcr4DpTxR35wJcMa8O+NexB9SlTofc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HP4F3cgHtZoyRVCuQ8n8UFmMLBhnaDSnuL9ghMv62E+j2fUoatFAa1He8k5jhzHTzw4tLzlODfhp3/iPpgwMod1k655STyqfMcYzHiogCtjK+YQb/tusakke+GwA34YSQ431jODJuPn3N3vuNIyf1sBX5vwKW1AelREUMIpQA+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ePyL/e//; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XuGBXt4s; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1774174612; c=relaxed/simple;
+	bh=po8CNnTkaQpHNLdR0yFceY24ysPtBKZ0S56BW+e5MOw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CMKskzmaR9qSXfPGIwxrrSV/wcfFyrzQQRSdwmwDZQN3kA7I6KqSlVvDmvRE98xACGrf8GNb8YFh4k787EPglShXlAEkp0e4UgE67x99yHbqp99pRbQJD/h6zUB6q7jWY1qhhNieGE+mz+OXQMooZMis3hfPOzG2A/LihGSf4QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hE1w3KiU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ePyL/e//";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XuGBXt4s"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62LCwZeB324938
-	for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 16:45:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=2/N1XFHZigaYi8JcvlnG5wwE
-	4V6fkSbgFB8/uIe4z38=; b=ePyL/e//PQz/eiSykNU/683qA09roC+Cafcdp6iD
-	KQWOU6EJ1OiYuspTlu9rLOkc4HkvEVVMdoSNb2TUwCRVuDQw2XhlZM0EMtREqSu+
-	h73dM3WHOkajbwtUpXGPyzvQVpacwNxDxep0A8WIgbN5hlcHRltXBEDV+bIkfbU5
-	J+2k77IO25C0Firn+ZomMWtiLWgKIqOIf/zAVeCTC6LoHG8D5FlK2MX8ixmCMCX4
-	c0/xgY5/L5Hk0urp/QvQ+TDVtW2r/4XC3K0FoHU9NavWqqVRHqdXPpUOkgja3YjI
-	wSzRnhy+LuO2dzdD8UYkvL0HMO4Z0BLNxD6Ff9vrOm39Wg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d1gpk17sf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 16:45:53 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50b4fe4ff7bso19719981cf.0
-        for <phone-devel@vger.kernel.org>; Sat, 21 Mar 2026 09:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774111553; x=1774716353; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2/N1XFHZigaYi8JcvlnG5wwE4V6fkSbgFB8/uIe4z38=;
-        b=XuGBXt4sfqVKrr9D3TzwKuYPT1XMdLKoNiHuFhJFOt/n3K1UKE4xDPIrx+JZfNQ5Sz
-         uPnIZlX32mowRnlNBHEaWajo42qMR2KNrZu34e624frBniPnfPT1XmccRx5yPCc2nWAf
-         nd6gmr8/iDMQLE9KbY2N7PV3YLtAgiye24DpS2EApWv5/UjF828tPMJKgJw+X2LFIfrW
-         AdK/rtt24musdhozFvXeLRYxbKcZNW6fiv69CDXhFllbARSdENuGHk9cYjxn8STi+wFd
-         9I5G7wW7w60ZBGIt8CA083Vs+3627L1FR3PU3JQ1XpqxTrnnKAOlTBbqf4RMs7glK5q2
-         IWhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774111553; x=1774716353;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2/N1XFHZigaYi8JcvlnG5wwE4V6fkSbgFB8/uIe4z38=;
-        b=bB6AL67QnJxVlqIxFc03mFk+ABvmLv+Kkh2PR44HGWo9AwD8R7/dxxq5p4d2SSNjCz
-         Kdqy5ASNmXgSUMOjQlwVylWpu2jWxBKYTArypYZpmC+CmYMGMhP0ZBld3J/7tEIEc9TJ
-         /weVL1ZCwXsAUgX1EadG5AaqtbBCuVgdQzs8xvt3wt42adUT0tb03Y7jjyc5Bb+d7P4P
-         2nTKbeSubNiNnk8+d/tiY7WK1yIreIy+VznZQM3SYUknyxKDowmSPcn6c3uMkwsRf0oT
-         oYz3x634T8/gC7v7uxDT5x/3quWAqCDCIVxnQBow3nICJTW1OEuTefSzHnUk0jExcYoq
-         U9/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXoGM8rcQy9iy63JIZE8fB8nAWXGTsGwSuLLTF2dEAXIHoqBnsr8eRUeAGLVUXP5LOS/1/D6tvgdsG64A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5wgkRd9X9WUb7GvnYkZH/ZlFJuenGWRnCo0PM7j14G2UWU9dg
-	peru8lX76nRAW1X+4oQYMM7mhkrJybA+vnBwg8bIcLmni5cScRjRGl43Ni3sB+FOlCGHZlrMglb
-	y5uOgecKjIKxc55mzYOxGs7Voq/oW9ySpthLrwqvJHrDETQdlBF/G/Gmi/LgN0B3S0Q==
-X-Gm-Gg: ATEYQzyJ15tgsKvaJx4EQuNGb/RjoV++2wIn2u2JogayTwueHcuhaq6RCK8lMB6etIL
-	W9tfMlvlgp1t+hQsB+oVJtmd7ZonrLnhxwU+uWfroX72eMn0F/uicOJnEzMfdI3kRXAZ6VdnrGo
-	+XWj2muBfqtyG3KyTVbHq6csVYMchzHPwGjXEV0KH01liHzp6CaN8yS94eS0D0hJ1oJB7Un+KDx
-	2jTPfOVzWACQewUbWRW2YPTeHe+Ss+nEgVpr6bQebNRMaBR9QQIanuxEFpcZZ015i9cXZBwWSk1
-	zymqdKhYe+qhLZxee+n5I9P4DW8pc6i+i51LWCWy8UZuHvG5gKbPqxFIrAA410O/rdhvReXKCMl
-	daNlOw4SAo6WdFgIGUJL7ZjeyRoCCaUHWSTus+OR/NMlABKl9iWcwzrNf1pklvaCLaaKymdnEoZ
-	IZcskfYfYhvbunc1GMJZcD9epVYxiwh94aY+8=
-X-Received: by 2002:a05:622a:a6d1:b0:50b:4a3c:8917 with SMTP id d75a77b69052e-50b4a3c9321mr25856431cf.24.1774111553230;
-        Sat, 21 Mar 2026 09:45:53 -0700 (PDT)
-X-Received: by 2002:a05:622a:a6d1:b0:50b:4a3c:8917 with SMTP id d75a77b69052e-50b4a3c9321mr25856101cf.24.1774111552728;
-        Sat, 21 Mar 2026 09:45:52 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a28519f2afsm1227669e87.18.2026.03.21.09.45.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 09:45:51 -0700 (PDT)
-Date: Sat, 21 Mar 2026 18:45:49 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: cristian_ci@protonmail.com
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: display: panel: Add Novatek NT35532
- LCD DSI
-Message-ID: <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5>
-References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com>
- <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hE1w3KiU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA548C19424;
+	Sun, 22 Mar 2026 10:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774174612;
+	bh=po8CNnTkaQpHNLdR0yFceY24ysPtBKZ0S56BW+e5MOw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hE1w3KiUolvaky3I2jyH23SJbxCpZg2xDQkAuvRw236wK/t8yGIvgxVtJ3rhMqnOw
+	 g3N06F++bLXBiAdoBCvT3P9LPeT11C1TXIhO2xeIEVZW8B6ZDpHkUd85wwRu9Itr3w
+	 HlFjzlUEo9nWeyMlIrdzCjqEZEdo1UpyBOTAjqDwk0hwl9m9dz0vd5ZkncvnRmR5Sc
+	 xgDQM4Rya32OYPCBUrsQe+/tJ0VPx9lNS/OJ2HUADij412RdZySs6mUnndpLainOOF
+	 gZ5Np9lolvvg7SHfBWTZaJQCcIVHWSEZfh1Jg5Bt3iv2MkuHLC76GBWTWJCgSP+XE8
+	 A97JWiU8rt+kw==
+Message-ID: <9b1a9660-3672-4165-b5bb-c7807ce885cc@kernel.org>
+Date: Sun, 22 Mar 2026 11:16:46 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com>
-X-Proofpoint-ORIG-GUID: 10xYiE383me9K3-1_QLJ9cN4vBusSu1w
-X-Proofpoint-GUID: 10xYiE383me9K3-1_QLJ9cN4vBusSu1w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDE0MiBTYWx0ZWRfXzekEQ9nwhbGG
- lz1TnXMnau0Wo4otRvgdifKqDf3i1dI1hDf4WBDyIwyzuR0HARJ587c/SyppiKoVcViiuSkPKqm
- YCknuVfv09q4JZCyIBBSUj8kEhZ6PhaPa5auXfYI7vaIeGQWceDTD5GfK3U6J/Po1pa7T45Up1j
- s6gkYq2XG+0d/YhjwTw3cfLpoEZFdUvMWQlPbtJq2aKhykJa7NYmOu8RBcq37AUMv6Dxl8W/nWa
- 6AVgvJUFvfVPP7rWOQ7mUPzEFGtQM1GNX5NsmkuCXE9Yk2fS71Y1v/O7l6MfZsY09b82B4vcOJM
- U/my90TYhc1zy+ZOXmraWcdlvjaAtez/EdUwWsTcHfxAQyDNvyqu6v/aF/XPJSphWZM/NO898Vx
- /JAwXozk6DnlYBcW2NQuHQYKeurO/AEZsAsmvVpuZlLCIewa4AUiwH7jUOPrPoXBe5J5arCNghQ
- KN+I7VybV0sjxFVIdyA==
-X-Authority-Analysis: v=2.4 cv=QKhlhwLL c=1 sm=1 tr=0 ts=69becb41 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=e5mUnYsNAAAA:8
- a=sfOm8-O8AAAA:8 a=VwQbUJbxAAAA:8 a=dSvQR-6XSxectfY1rdkA:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22 a=Vxmtnl_E_bksehYqCbjh:22 a=TvTJqdcANYtsRzA46cdi:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-21_05,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603210142
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/10] dt-bindings: input: touchscreen: st,stmfts:
+ Introduce STM FTS5
+To: David Heidelberg <david@ixit.cz>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz>
+ <20260301-stmfts5-v1-8-22c458b9ac68@ixit.cz>
+ <qibmsgfttxo6kiaqyjljj6otamqp7okfr4abwpmuo7daanl6qu@ka33zvoz7lte>
+ <4b8c8d8c-d2f3-4938-a451-e8e9524d40c3@ixit.cz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <4b8c8d8c-d2f3-4938-a451-e8e9524d40c3@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 21, 2026 at 05:23:20PM +0100, Cristian Cozzolino via B4 Relay wrote:
-> From: Cristian Cozzolino <cristian_ci@protonmail.com>
+On 15/03/2026 18:09, David Heidelberg wrote:
+> On 01/03/2026 23:40, Dmitry Baryshkov wrote:
 > 
-> Document Novatek NT35532-based DSI display panel.
+> [...]
 > 
-> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> ---
->  .../bindings/display/panel/novatek,nt35532.yaml    | 77 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 82 insertions(+)
-
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: novatek,nt35532
-
-This is not enough to identify the panel. This name identifies the
-controller inside the panel, however the exact settings (and the
-behaviour) would depend on the exact TFT "glass" used with this
-controller. Downstream usually doesn't care that much and frequently
-just uses the controller name or the the controller with some kind of
-"description" like ("wqhd-dsc-cmd").
-
-What does it mean for the upstream:
-- Try identifying the actual panel used for the phones. Sometimes
-  googling for spare or replacement parts would reveal such a name.
-  Sometimes it can be seen as a marking on the cable or on the backside
-  of the panel (again, googling).
-
-- If not found, come up with some artificial identifier that would
-  identify the controller+glass combo (e.g. "tianma,fhd-video" or
-  "lenovo,j606f-boe-nt36523w" (where lenovo,j6006f is a device name and
-  boe is a "supplier").
-
-- Either use both strings for compat property:
-  compatible = "tianma,fhd-video", "novatek,nt36672a"
-  or just the first one.
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  backlight: true
-> +  reset-gpios: true
-> +
-> +  avdd-supply:
-> +    description: positive boost supply regulator
-> +
-> +  avee-supply:
-> +    description: negative boost supply regulator
-> +
-> +  vci-supply:
-> +    description: regulator that supplies the analog voltage
-> +
-> +  vddam-supply:
-> +    description: power supply for MIPI interface
-> +
-> +  vddi-supply:
-> +    description: regulator that supplies the I/O voltage
-> +
-> +  port: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reset-gpios
-> +  - vddi-supply
-> +  - port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    dsi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        panel@0 {
-> +            compatible = "novatek,nt35532";
-> +            reg = <0>;
-> +
-> +            backlight = <&pmi8950_wled>;
-> +            reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
-> +            avdd-supply = <&lab>;
-> +            avee-supply = <&ibb>;
-> +            vci-supply = <&pm8953_l17>;
-> +            vddi-supply = <&pm8953_l6>;
-> +
-> +            port {
-> +                panel_in: endpoint {
-> +                    remote-endpoint = <&dsi0_out>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a626dee5c106..8ed2866bbd6e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8171,6 +8171,11 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
->  F:	Documentation/devicetree/bindings/display/panel/novatek,nt35510.yaml
->  F:	drivers/gpu/drm/panel/panel-novatek-nt35510.c
->  
-> +DRM DRIVER FOR NOVATEK NT35532 PANELS
-> +M:	Cristian Cozzolino <cristian_ci@protonmail.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/display/panel/novatek,nt35532.yaml
-> +
->  DRM DRIVER FOR NOVATEK NT35560 PANELS
->  M:	Linus Walleij <linusw@kernel.org>
->  S:	Maintained
+>>> +    then:
+>>> +      properties:
+>>> +        switch-gpio:
+>>> +          description: Switch between SLPI and AP mode.
+>>
+>> This doesn't sounds like the GPIO on the touchscreen, more like the
+>> external schematic component. If it need sto be turned to one position,
+>> it might be better to use GPIO hog for that.
 > 
-> -- 
-> 2.53.0
+> Right now yes, but the GPIO serves to switching between SLPI and AP mode at 
+> runtime, see [1]
 > 
+> The driver lack supports for SLPI, but at moment when SLPI support lands, we 
+> should be able do something like:
 > 
+> -> device starts, touchscreen works
+> -> screen goes to sleep, but instead of powering off touchscreen, it switches to 
+> SLPI mode
+> -> user taps at touchscreen, device wakes up
+> 
+> Thus I think we need to support this GPIO in the driver.
 
--- 
-With best wishes
-Dmitry
+But that's not role of this device. You cannot just hook random GPIOs
+into this device node, just because you want some use-case in the driver.
+
+Best regards,
+Krzysztof
