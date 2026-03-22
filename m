@@ -1,134 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D91070808;
-	Sun, 22 Mar 2026 10:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD132DF3FD;
+	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774174658; cv=none; b=bCrB52WxEf5iDHKBHj78VVlPa4j3wBrWEKSDCa9iiiUhvkRhE3DZlqY19B1sdpA81LEsRvreo2KgqAV3xWFtb8ilBjZ/MfQtIq45dr90tdmClJSxmDlr6RFgmJUZ2qxdVwgP6nR17ql9FJarFI0OtJ84/J7SJ+B4sNFsLfU1cpE=
+	t=1774189462; cv=none; b=sXK8hePdwri6tEy3GilagELpqMeZTewBC20vDdW4Dx7dYoA9NDd4PyhmPAFwUDZufY3LZ7B6Z/DGHTEkLejSTspK/DKUgssiVapLDOvDc4BYjjB74Iwm/Hui3xBunxr1GUFlLWAM30ZynU+jbVKGPwHVQKW2jMq6qyCt3+G3d4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774174658; c=relaxed/simple;
-	bh=eVpUKNGxn3gmB5z4ZlpgOTqVBddGHzbne695kR2EpmM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GZwP4PjkEte0M5hwoio8mvuKX9HMAyHgWIkLDYsZrNcTGGpGbKblNn4crEm4jVy4KoAXrhB5FLeGPu27ABV60h0uoV2ZgAiYBxwBS1I4flC6eYs+VLtvCcMEpRuCKX1ex3SII9aWoBx2zZktUKq9mkUQZls71A0v6g0uyDncj+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfqSIWk6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774189462; c=relaxed/simple;
+	bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cQoYQ3XvpejmSw75Mirln3s8VIzxCABX19NzeR/1X9bcsvXtzruq1cy5jrdhCRG8Fhv65jA7ZNqtt6EctGldqlKpAMe9FnsmowG44INZiEgHkJmTNmH9lBpnUltQNm2QBzjIE7F2YDGxGYRaC3c4J7YHrhV3PBBA9Oid/DE3fRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ei1+DEwY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfqSIWk6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134E2C19424;
-	Sun, 22 Mar 2026 10:17:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ei1+DEwY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A63D7C19424;
+	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774174657;
-	bh=eVpUKNGxn3gmB5z4ZlpgOTqVBddGHzbne695kR2EpmM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UfqSIWk6ebpum2EGHkIN7D11xsyn8h2dTcvYKJ/Ot/IEIjxoCGGf9sCJk8Jh/AOeR
-	 CnlER9j2n+alpZhu/+7jMm3bqIsFBMvRvnhjRSTIiFiZhxhe96mrkXZwTd0PrALZK2
-	 sJlGwpDL6jPFbtFD0Mvpt0AEDR9PPgkv+WY2ad2sCgkvzhGHyaF3J1WpN6dK/pJR1s
-	 yMyVcBpDKD6VAdBRsb0K7v/PUMjABJXxESSvzQ0CvU9sWSCeLuCndcsgWO76kj1GOg
-	 0IsrQqXnnuXgfXHroyzOxE/Ngut8tut2aE2XGVz0rW/fkZVT5dO26JT3AH4Sr3Pt2W
-	 NS2myhnDOEU3g==
-Message-ID: <d60ff766-0dba-442d-af0e-e5ed6709ff52@kernel.org>
-Date: Sun, 22 Mar 2026 11:17:32 +0100
+	s=k20201202; t=1774189461;
+	bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Ei1+DEwY7ZM+wqpz2Zgm+3/3DVfJB7cGCQeTzHKzfH/5dEJ6VVfh/rz3dSL/BffuO
+	 fxemgNDV2E6xps7ZAMrOG2f0udBFQ9dRskehTyv5xtlsCfkb/85N1+xE7T1SKjpwl3
+	 78R7OEnisCV16N8e3Gm4cZTBRm/X+BFc5xD3v/E70Of3nhc+ojQViP4SaiTRNr6j/y
+	 ihN52SVHy+awrPcVKweLuaGc7uHoGv6iZM2+bpNuUsIkd5lKVhmlg8i/ae1FB328zz
+	 Ah4ybp5+MhzyWMfIP/5pjJyb5de7/jL1ZPjFA/TnVebx1c70wjbCZ6xh246YJwNXpQ
+	 qs/4ndDr1lrZQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D6CBFC72C6;
+	Sun, 22 Mar 2026 14:24:21 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH QUESTION 0/2] NFC support in Linux (and support for
+ Qualcomm SDM845 devices)
+Date: Sun, 22 Mar 2026 15:24:18 +0100
+Message-Id: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH WIP v2 09/11] dt-bindings: input: touchscreen: st,stmfts:
- Introduce STM FTS5
-To: david@ixit.cz, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260315-stmfts5-v2-0-70bc83ee9591@ixit.cz>
- <20260315-stmfts5-v2-9-70bc83ee9591@ixit.cz>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260315-stmfts5-v2-9-70bc83ee9591@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJL7v2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQ0ML3fy81IKc0mLdvLRk3WQDg9Q0w+SUtETLJCWgjoKi1LTMCrBp0Uq
+ Boa7BIZ7+fkqxtbUAFlwnv2cAAAA=
+X-Change-ID: 20251118-oneplus-nfc-c00ef1cdfa9b
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, 
+ biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1991; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=0y+vz9QItdufZS4Gg1aj8uk09vnC7uOD1Z32a7tIeRg=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpv/uUtZf7rj034FIS1wsfZrfec7TNLugbDYF7R
+ C+mgBKhrreJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCab/7lAAKCRBgAj/E00kg
+ cuV9EADQlJ4AcLuzCdke6vz8uKtFi3LaQOIqic0KyvwHlDp+iSQqpo+q4muU3H4juTjatvmVK5G
+ XMHc4TL31G5HNqmJhWqmmySxXnHDOiYu5Ql7oJ1WonCv1bmHUaJWMXwIWDxM0cHpPZdx6CvqbWJ
+ aMlqrxyWAHv6L/bFwtzWemA6ksOrWhxf4Ni+kR6PGHlx6VxbeSzK1g2SM5L4S8MrBFFpmcRpwV5
+ TYQobX1Yc4i6i+4R9QBkfQ12stVgfzmDahkAYg+zLOlR1n15tyjiIYqcDrtcVhM00s4i29vlwUT
+ ftQLSQfDTkO79tZxrwEjQEpJSSRfXd2Zm8F/junJvqicQe620B7/kuuC18rRWAMOnkgMfKk/g35
+ HAS9Ix2yNCR33d6LPWnP6/ZUSuoV0FtW9LlynGRngPw6Gj3xg6Jlgew6V+f78niy+ea/V9TOt/Q
+ YFaO3F2u8vliJgkXY2W+xCbC7j58OVHU9v21SN9soCjkVnQrv7QKryuM5Wjmg7mzKwFmKwJ80mK
+ YXD9TA6CGwdYTQgXRqBCdUwTBomwtpEpnj6ytQPxKEviwR/kYO9uk/K8BrUBbXFQQbLqKkd0zK2
+ oFxytPIG7qMZ/Y7WvQYg8CpqQtMlCllYog9Lg9Es7ScX/LRKgoNRQm9EjfppdniQJRlmPUj6QfI
+ aMOYx1GrDk8NzXw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 15/03/2026 19:52, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> Introduce more recent STM FTS5 touchscreen support.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  .../devicetree/bindings/input/touchscreen/st,stmfts.yaml  | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml b/Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml
-> index 64c4f24ea3dd0..66255893a99fb 100644
-> --- a/Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml
-> @@ -16,10 +16,23 @@ description:
->  
->  allOf:
->    - $ref: touchscreen.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: st,stmfts5
-> +    then:
-> +      properties:
-> +        switch-gpios:
-> +          description: Switch between SLPI and AP mode.
+There isn't upstream driver.
 
-Do not define properties in if:then: branches. Anyway, not a property of
-this device.
+I'm openining this as a starter. We need a NFC drivers I assume. I tried
+quick check, but both of NFC drivers register
+
+nfc: nfc_init: NFC Core ver 0.1
+NET: Registered PF_NFC protocol family
+
+but efficiently does nothing. In the See section, there are some ways
+how to make NFC work, but rely on patched vendor libs, missing updates
+etc.
+
+1. What hardware is present on Snapdragon 845, is there some
+   documentation? It seems that both sdm845 devices has almost identical
+   setup, thus it's NFC solution integrated? @Qualcomm
+
+2. What's the right approach to continue? Should we upstream these
+   definitions and then start developing user-space stack? @netdev (I
+   see orphaned)
+
+Since looking at NFC mailing list (oe-linux-nfc) and seeing it's pretty
+much dead, would be cool to revive it.
+
+Also there is some effort from Arch people [1], but likely without clean
+path to mainline.
+
+Can we revieve the NFC effort? I'm offering limited maintanance (in case
+people would send patches).
+
+See:
+ - https://gitlab.com/sdm845-mainline/linux/-/merge_requests/62
+ - https://github.com/NXPNFCLinux/linux_libnfc-nci/
+   - https://github.com/biemster/pmos-openbox-conky/blob/main/libnfc-nci.patch
+   - https://github.com/biemster/pmos-openbox-conky/blob/main/nfctest.patch
+   - pull request
+   - full of hacks
+
+ - [1] https://github.com/zmr-233/linux-nxp-nfc-fix
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+David Heidelberg (1):
+      arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
+
+biemster (1):
+      arm64: dts: qcom: sdm845-oneplus: Enable NFC
+
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 32 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts  | 33 ++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
+---
+base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+change-id: 20251118-oneplus-nfc-c00ef1cdfa9b
 
 Best regards,
-Krzysztof
+-- 
+David Heidelberg <david@ixit.cz>
+
+
