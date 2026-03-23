@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4886037F733;
-	Mon, 23 Mar 2026 22:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646762FFF8F;
+	Mon, 23 Mar 2026 23:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774306594; cv=none; b=mOQm4zT18kATduGXbZvUeggK39T+JRubCiD5YtWr6xOFrvPuCKH0LFLwbzzeTLhYZdM6jVuYhHHCGhp7rRYdr44I4ptH2Q+xHJCPemgNPQe1LhPCcprNhWTokc1pBzocV0wy5PUDF7TIpiQcs/xc7exLL5wwGax7OG2EdBgyK5k=
+	t=1774307725; cv=none; b=cprfi/lMW2WoPkhGol8DVizhVIYoQNEXEhx30MtBVGmiPRHc098TB2KIJS3OuwNK6TSlaloqljK1OES5z/scsjxMYW0jtEw1JX5C2NHWtSB784bLmJqsBDRKBFk8RflN6DJWJGpolhZPi0v0I7w6VH2eMbfOOOHgBNcyZs/M22M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774306594; c=relaxed/simple;
-	bh=VV1Zsp1M4XHUL282IN9IWHoYkJMVQ5E3aDc9mkpuoSM=;
+	s=arc-20240116; t=1774307725; c=relaxed/simple;
+	bh=uUsCxowuFHvVjL+K0F+VOH13MkRxu9d9YIXEiIo/qlg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mXyIvqEErE/DidbQphfiNKTpe86l0/C7kkPyr9g9JhF0yyCGoaU5sfczVtqEjnfl6wq8ByHQz3MX6DGRHWMJJskysgiYPbkp0iAdzlk0d2lacKpNNT7lL8txf4OgqGLonBRlLxShp9L+mF8oTRtutlR8SJp/51Kh0AvletD3xyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zljAhxzM; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=s2zhCZp3pYmK183ve6wnGU+Uvuj4A/+o8Vkzsdil+W1uvxtwF3BelIE3HF67vyo0jfJiLTNtJlat02w6jzrt7pHvS8mGv0hvSFFFwZyGZLbAz/C8BwIo7Wvilb5vsft+MxDklpFqu1F29UZP7RPZVJFe3xolRvZFtK3r9aW2P4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=z0OPCs6K; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zljAhxzM"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="z0OPCs6K"
 Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id AC99C5340DB3;
-	Mon, 23 Mar 2026 23:56:23 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id E0A3353404F3;
+	Tue, 24 Mar 2026 00:15:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1774306583;
+	t=1774307719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l2am5SjhL+EBD0s7bFRr7LcFzU84yONY+yyZv43z2iE=;
-	b=zljAhxzM9W/1YTUGQMWYnoN04Ls7zSy6ORP0pUU2roeTW8WzlnuEe6OY84KL15t28eWVx8
-	xWTbe0fslZn+jdQFDe6X5lvtiBYSVir2iPGAGkZqllG5ul3tweuHKy+zPjBkOhUQyafcGf
-	DYY1I6F7at04N8moYm2Pqd5Vvapl61Y=
-Message-ID: <9cb387c2-5690-44aa-a5ad-0416d6bb3374@ixit.cz>
-Date: Mon, 23 Mar 2026 23:56:23 +0100
+	bh=8OjqYEiOjOSU2L5g3Yjx6lZ6D9NkcdNqnY0jLq9F6K0=;
+	b=z0OPCs6KsHLMbIqWnmLyI1S8gsM+n5Oe5JTIZLJMc9AtEEMTLInP/Qg0pqAO9JO8Q2PUlP
+	HX5bXQUDrRB3fJGC9E6NWKXzRU2Olt6p6d0mWMOWs7la8spC7V7fv6e1RrkJJVNajsEqXN
+	rydil+ZTwRqzQQNaPxpNv+vqA5H0SWs=
+Message-ID: <d51b237c-8079-4398-8b8b-ec6a6876b173@ixit.cz>
+Date: Tue, 24 Mar 2026 00:15:19 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,19 +41,19 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH QUESTION 0/2] NFC support in Linux (and support for
- Qualcomm SDM845 devices)
-To: Krzysztof Kozlowski <krzk@kernel.org>,
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sdm845-shift-axolotl: Set higher
+ touchscreen i2c clock
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>,
- biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Dylan Van Assche <me@dylanvanassche.be>
+Cc: linux-arm-msm@vger.kernel.org, Petr Hodina <phodina@protonmail.com>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260322-oneplus-nfc-v1-0-5f22f544f0e2@ixit.cz>
- <eb316800-0be6-4aa7-b9f6-e2b17646d1a0@kernel.org>
+ phone-devel@vger.kernel.org, Casey Connolly <casey.connolly@linaro.org>
+References: <20260320-axolotl-misc-p1-v1-0-89c9b5ecb26e@ixit.cz>
+ <20260320-axolotl-misc-p1-v1-2-89c9b5ecb26e@ixit.cz>
+ <182a6226-bb23-4ad6-b454-4913ab461264@oss.qualcomm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -99,28 +99,36 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <eb316800-0be6-4aa7-b9f6-e2b17646d1a0@kernel.org>
+In-Reply-To: <182a6226-bb23-4ad6-b454-4913ab461264@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+
+
+On 23/03/2026 10:56, Konrad Dybcio wrote:
+> On 3/20/26 5:29 PM, David Heidelberg via B4 Relay wrote:
+>> From: Casey Connolly <casey.connolly@linaro.org>
+>>
+>> Sets a higher rate than the default for good responsiveness of
+>> touchscreen.
+>>
+>> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
 > 
-> You will not get another stack, but taking care of Linux nfc and neard
-> would be appreciated.
+> I assume this is in line with downstream (i.e. you're not trying to make
+> the panel IC work too hard?)
 
-Just tested with `neard`, `nfctool -d nfc0 -p` and the HW is able to detect tag 
-(didn't do more testing for now, but it's good start).
+When bus frequency is not specified in DTS (which isn't in this case), 
+downstream set i2c bus to 400 kHz.
 
-Thank you for the new release!
-
-I'll send non-QUESTION series ~ tomorrow.
+See
+https://github.com/SHIFTPHONES/android_kernel_shift_sdm845/blob/lineage/lineage-20/drivers/i2c/busses/i2c-qcom-geni.c#L894
 
 David
 
 > 
-> Let me release a new version for it.
-> 
-> Best regards,
-> Krzysztof
+> Konrad
 
 -- 
 David Heidelberg
