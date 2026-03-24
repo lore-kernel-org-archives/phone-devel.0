@@ -1,50 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA54E389470;
-	Tue, 24 Mar 2026 03:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781BA38BF7A;
+	Tue, 24 Mar 2026 03:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774321566; cv=none; b=ukqlDY+u2yOfLWdHrt141mEpIz6+um03mpVUXwj4pmRd9y0TOMYz/ztwyTvWAuwncVge6Z36va6VUlRgj99Vf436PiETcfmVEeFAWk6R650f6BtcxLpld3mi1V/nRdSQgZwo2dSwbNCQ8k+4NnURgnw2Go//cElJwjNGzB9iWMM=
+	t=1774321571; cv=none; b=Da4R1Fz8I81yUTxdnwlgUamb+Ya4K+O/6SgeANyqSVOCyK1LYT+egQKJcTZ4SCSDL3p7VysjeCDuF6PrxRntb7Lj7r+8GDmnJWvy4T2on4sQObD9gAsi9I8/m4FaR4PDIHs/F7VPmqJAVb+29p8dr9lSGDjt7t4tfumgNszCBR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774321566; c=relaxed/simple;
-	bh=kDjTBwLh7iKxxXgqzNaOLi8nACa0drh31Nm+ci76kAs=;
+	s=arc-20240116; t=1774321571; c=relaxed/simple;
+	bh=+vWP+7o+fo7L4QQONyk0lyVTElyoyOW5p6UODAFS7FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H7NFgm4SPsMvY83FwXU3U8lrY/p/ePkNIMlQ00Ayidi6MdXsbLwIsyz1GLkOmtQ/Odnf3Ij19pLuRYYa2/tF9XeuOSPJPbNEn9037xpZBIfZ+bQltTD35O5o+aYT4IkGU81obiYKkgBmZxvIZpTF8vCv5cnG6MOA+S9JB3Dj3+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJ6otrrQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=qikRKrQfoSroAaIeRYirdyYCMR50TN+XPQfpyK2fJ8eZyUuU+a5Pu5vJAjM/Qls7WAX14XU0X4wAXMiodXyqsebD1KI+zW4et2EckWfH7vbnvn8nOqwqLpZVJunlFH8UJYhHUlzJcBjh3FCNoRcFayev6O7npV7yk3eBMXgk5rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mr59V1d7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJ6otrrQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BC4C2BCB1;
-	Tue, 24 Mar 2026 03:06:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mr59V1d7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6E3C2BCB1;
+	Tue, 24 Mar 2026 03:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774321565;
-	bh=kDjTBwLh7iKxxXgqzNaOLi8nACa0drh31Nm+ci76kAs=;
+	s=k20201202; t=1774321571;
+	bh=+vWP+7o+fo7L4QQONyk0lyVTElyoyOW5p6UODAFS7FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJ6otrrQeQ18r421OzZBkt9+h1sCbzfj0ue67592JcM1k3DS5T3cGUQkcIklpI746
-	 SDrzV4pbmJYd5O1BMNEN4bBGogBR1TXXNOLAAIneZU2H5exMo/5yseHHrmE6XOOth5
-	 SUaQVwqjlumAQrYkHtsqYMb4mPl8LxqenIhudwwUy8LFQuEK3h8nSPfmmlmAjptVpx
-	 kSkT9SwMUGZEVNhK7DXlpcIPIrm5DvHbNSYfheITQ7IqadjdCMOIFbRpD0m9rxBY81
-	 fyaEYZaWFoTwlb6RYh37p5uB1CjO4d3fgSc9ApvLtf7CtufS6HEGhOnnKlWVm4IU5o
-	 tUL30gKnVd8Yg==
+	b=mr59V1d7lu02t3ujIMjfH8ZAWyrWSVCgPmq7gXVxAJDv6IQSBS5WFWskvcHQC+F2u
+	 swXCUxBDmtXIA81ANP+IdSNt/4ID6YMb9n4D6V8x4hhRnV9nTEHQ6ZVVwu+czRBx7s
+	 aPeI/NKQJfcvkr6ci2KWpGJ3amoAUeAepG26aKzdabkbz/3keuNnTlKuXo1M6LFvuN
+	 4Ukoq2FeZxeKp/Kh8ZPuZmDWJUjyxv642tNrcpsjUYMGtdMc+O+tuhoGL9C0wgErK7
+	 NoUfH+n+epu3wda767qt+yWEVqheXSnNayXFe40N5oVpJWe2Iq0BGLIiqMoC+Zuhh9
+	 pjCinfs8FIFqw==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Joel Selvaraj <foss@joelselvaraj.com>,
-	David Heidelberg <david@ixit.cz>
-Cc: Konrad Dybcio <konradybcio@gmail.com>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
-Date: Mon, 23 Mar 2026 22:05:50 -0500
-Message-ID: <177432155632.28714.1991404860482205009.b4-ty@kernel.org>
+	Conor Dooley <conor@kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Fix conflicting bias pinctrl
+Date: Mon, 23 Mar 2026 22:05:54 -0500
+Message-ID: <177432155623.28714.3926947200697585101.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz>
-References: <20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz>
+In-Reply-To: <20260319-fp4-uart1-fix-v1-1-f6b3fedef583@fairphone.com>
+References: <20260319-fp4-uart1-fix-v1-1-f6b3fedef583@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,16 +54,17 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 20 Mar 2026 18:33:11 +0100, David Heidelberg wrote:
-> The regulator must be on, since it provides the display subsystem and
-> therefore the bootloader had turned it on before Linux booted.
+On Thu, 19 Mar 2026 09:55:00 +0100, Luca Weiss wrote:
+> The pinctrl nodes from sm6350.dtsi already contain a bias-* property, so
+> that needs to be deleted, otherwise the dtb will contain two conflicting
+> bias-* properties.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
-      commit: dff3c181e4115815e138282f04dde0a5d0be1cbd
+[1/1] arm64: dts: qcom: sm7225-fairphone-fp4: Fix conflicting bias pinctrl
+      commit: 5f80d68959dd1bff70fd0abea8a69f507f204287
 
 Best regards,
 -- 
