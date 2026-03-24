@@ -1,43 +1,43 @@
-Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
+Received: from mail-24424.protonmail.ch (mail-24424.protonmail.ch [109.224.244.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8DB377ED4;
-	Tue, 24 Mar 2026 11:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCA23DFC93;
+	Tue, 24 Mar 2026 13:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774351140; cv=none; b=kZKVOzxi8ZnWPkrSXe17CkuqwoTeBHwvDkZ8xoXUgdyiWit4I9rbeBSblTy6I/LdTXx8O1jkvcTtu5M4i0L9qa0kJEzNl7+eKppORpP2vgu6sooxT7Kh/c8dDd28bw03qSKEVtoUn+jmO6ZTlFVgKKYU51R+NkiOjLx6IRTsiww=
+	t=1774357830; cv=none; b=a/gDVtZViVBBPlAAk48XbUDtq47UMPTxffRf5tKtu6rBLgntQtdxvG7WxIkL0jPe3LnpTT12AFPniBBHSnv811fJ8ij0JaKMDjXmoVN5UAPzLHtoN7S9nJOkt6ptC+7Sb23F8p7/97d44V2WfuvxyYYVq4dov522LiO7w73/PPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774351140; c=relaxed/simple;
-	bh=UKyanTaa3bAcO0AHokq+HZtb8o9J90V2szIDEcQ5uwM=;
+	s=arc-20240116; t=1774357830; c=relaxed/simple;
+	bh=0pnB0U7InhkGL9lTdgeWgS0PDvdGdURPxYWKmTb9BiU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W+uN67cNA+6qI+vtCkfjYPQHhpCQei8+glYQ87x7G7kKAnLWKEXNrOtz5wQI8CsFphxt53ksf/1I43VHvKfmcKTZz6R4/rVcq+CxlOj9DK/THjDIYrBaekZROp/r0AadQY491tA8/asMzZrWBuLYHU5pwYS+Zpq3aREI1v4ac8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=VWsVMZwC; arc=none smtp.client-ip=79.135.106.96
+	 MIME-Version:Content-Type; b=fqolWaW2Add/CvrNxui+PNlVkuoUtKBVPie2sZEfXGcO4lkJn66ow7ae9gCuwSVAzVK5/X3QKh0EPz2Dqy+J06fI08JH0mSrHIOkyO4J01jS1I9gnsCEBec1J/gqfm/n3sDi/EIM5yJPBtJoJo6nv22B1XFLxsd0RLbGLDyVTxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=FK2nnl1U; arc=none smtp.client-ip=109.224.244.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="VWsVMZwC"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="FK2nnl1U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1774351129; x=1774610329;
-	bh=qVjkyw5ZHphaFrlSim6h5wgpJKPCtWdAfdOkUlHhv9E=;
+	s=protonmail3; t=1774357819; x=1774617019;
+	bh=d8w5CZ1DioJDLSSnZn0lUgk1zgmXdXiL/spUhVixnL4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=VWsVMZwCr8orPqBG41pIABYqhyDVjQTu/hE9DKpKafooLdT+2p0xJwaPqqj12PXRk
-	 9crMX3u/zcFvjFIzbAsnzY8j8fPVw1TqTspKgpnLchTCSDp6kNMm7WQV5jwMHspuQk
-	 69CailYkjbTF+aUe6nzDLKwq/8wNDhz/CM1r8r0rsIuuctJ9UYIR+nzBGTj4zwVfXZ
-	 QG8HQ6f5m6BpcjxCbzrHbv43yFdyU12aAjTj5n/kvlKxloUtMd2Tno83AxK/4bmbhh
-	 PIeltpjOaYXErXphdt7HzXYtRGUqKo0nspb2xAPx8w1P4CBBoSyyz2tpmAkeW4wcAF
-	 NQO1OotX16ttQ==
-Date: Tue, 24 Mar 2026 11:18:43 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+	b=FK2nnl1U1iJW2JFd3eYi+a/efk4dTWRpwXM3P/p7hU2is3URddT8zC4MxpNA0GBil
+	 JRaU88xJgM0zqXDmzB5xduxQ82vuGkkD/BnuJ4G8WJOvpvjKI6bk/7obXbO4fjU9rc
+	 AdtwnYHWSst5aiEXHqmBnGPy7LaTrHX6qjQxhMmt9uwOh4tJEZrjY7F5wd9g0MHjeH
+	 7/yhVTRsx+fZjtdRCo6R5BKnf0S+pL3r7q+HVN+WLTg3Bf/pAQfNC/Hyot9OlGfy1o
+	 nAVmdb9K0hjZBwpg2SWNOm8cwKoabMcY8fqjgo7htiOXLTZCfEz7LiY967QTcHdHCY
+	 VDqJxuTpNUfzw==
+Date: Tue, 24 Mar 2026 13:10:13 +0000
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 From: cristian_ci <cristian_ci@protonmail.com>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
-Message-ID: <7wYxWlqdcbL3ANB9n0g4t74x-dwE2yG4CmVw9TwGNmwARxbT5WsdG1fpuIDSA5ab750Gs8OUBwmVa_nZd065guKDJueytb1AmlQ05__IzmU=@protonmail.com>
-In-Reply-To: <109d21b4-5d16-4689-8383-ecd29bbbf8a6@oss.qualcomm.com>
-References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-3-d4b8ee867de7@protonmail.com> <109d21b4-5d16-4689-8383-ecd29bbbf8a6@oss.qualcomm.com>
+Subject: Re: [PATCH v3 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
+Message-ID: <GF8zsK-szOM98Ck2jznCOZ4xjuJTl9g1b0uPc1N79Dzf7PNzOiVgewdqPFGjqF3YD7tOUa2tzdc7rG_e7iNH8yjHOJ9DobsihTxRLUk8EL4=@protonmail.com>
+In-Reply-To: <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5>
+References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com> <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5>
 Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 4b4a5d996315f0912517e9a2ba4b654fffffc846
+X-Pm-Message-ID: 70202603ff894e828bf88287248da08abdde0c30
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,34 +47,191 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Monday, March 23rd, 2026 at 11:52, Konrad Dybcio <konrad.dybcio@oss.qual=
-comm.com> wrote:
+On Saturday, March 21st, 2026 at 17:46, Dmitry Baryshkov <dmitry.baryshkov@=
+oss.qualcomm.com> wrote:
 
-> On 3/21/26 5:23 PM, Cristian Cozzolino via B4 Relay wrote:
+> On Sat, Mar 21, 2026 at 05:23:20PM +0100, Cristian Cozzolino via B4 Relay=
+ wrote:
 > > From: Cristian Cozzolino <cristian_ci@protonmail.com>
 > >
-> > Add the description for the display panel found on this phone.
-> > And with this done we can also enable the GPU and set the zap shader
-> > firmware path.
+> > Document Novatek NT35532-based DSI display panel.
 > >
 > > Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 > > ---
+> >  .../bindings/display/panel/novatek,nt35532.yaml    | 77 ++++++++++++++=
+++++++++
+> >  MAINTAINERS                                        |  5 ++
+> >  2 files changed, 82 insertions(+)
 >=20
-> [...]
+> > +allOf:
+> > +  - $ref: panel-common.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: novatek,nt35532
 >=20
-> > +=09panel_default: panel-default-state {
-> > +=09=09pins =3D "gpio61";
-> > +=09=09function =3D "gpio";
-> > +=09=09drive-strength =3D <8>;
-> > +=09=09bias-disable;
-> > +=09=09output-high;
->=20
-> This says "by default, actively drive the pin not to reset the display
-> panel". Is this actually necessary?
+> This is not enough to identify the panel. This name identifies the
+> controller inside the panel, however the exact settings (and the
+> behaviour) would depend on the exact TFT "glass" used with this
+> controller. Downstream usually doesn't care that much and frequently
+> just uses the controller name or the the controller with some kind of
+> "description" like ("wqhd-dsc-cmd").
 
-I've tried to remove panel pinctrl stuff from the panel and the device stil=
-l boots/works exactly like before. So, have I to submit v4 without pinctrl =
-at all for the panel?
+Ok but I just don't understand the following: I'd like to know (also=20
+considering that I find it difficult to find someone, outside of this=20
+ML, available to discuss this stuff, specifically) exactly why the=20
+current bindings are not enough.
+I mean: looking at schematics and datasheets of other similar devices=20
+and based on observations about my device, I believe the generic bindings=
+=20
+approach for nt35532 works quite well for panels.
+Novatek made the IC first and then whoever buys it can be a display=20
+vendor. If we talk about downstream, differences between panels are describ=
+ed=20
+there (i.e. my panel makes use of four supplies, while other ones could use=
+=20
+a different configuration).
 
-> Konrad
+> What does it mean for the upstream:
+> - Try identifying the actual panel used for the phones. Sometimes
+>   googling for spare or replacement parts would reveal such a name.
+>   Sometimes it can be seen as a marking on the cable or on the backside
+>   of the panel (again, googling).
+
+It seems that 'google' approach fails, in my case :( (I only know that=20
+the vendor assigned Smartron the work to design the HW - but SW too -=20
+of the device. Nevertheless, Smartron is neither OEM nor ODM, so the=20
+company was relying, at the time, on a series of chinese manufacturers to p=
+rovide=20
+parts required for this device, including panel suppliers: in general,=20
+the list of panel suppliers for Smartron includes BOE, Tianma and other kno=
+wn=20
+companies. So, this panel may be any of those, paired with NT35532, and wor=
+k=20
+anyway). Unfortunately, even if marking on the cable is known, that doesn't=
+=20
+identify the panel but the cable itself (which is available on the market,=
+=20
+though), instead, in this case.
+
+> - If not found, come up with some artificial identifier that would
+>   identify the controller+glass combo (e.g. "tianma,fhd-video" or
+>   "lenovo,j606f-boe-nt36523w" (where lenovo,j6006f is a device name and
+>   boe is a "supplier").
+
+Assuming that resources available which I've as source of information=20
+for this panel are limited (the ones also described in v1's review thread),=
+=20
+my vendor devicetree describes the panel in  'qcom,mdss_dsi_nt35532_1080p_c=
+s_video'=20
+node and makes use of:
+
+qcom,mdss-dsi-panel-name =3D "nt35532 1080p cs video mode dsi panel";
+
+property. Until now, close-to-mainline devicetree I was using the following=
+=20
+compatible for the panel:
+
+compatible =3D "flipkart,rimob-nt35532-cs";
+
+and I'm not sure about the exact meaning of 'cs' suffix. I cannot state 'CS=
+'=20
+as panel supplier and use that upstream without proof/evidence. What do=20
+you suggest, in this regard?
+
+
+Cristian
+=20
+> - Either use both strings for compat property:
+>   compatible =3D "tianma,fhd-video", "novatek,nt36672a"
+>   or just the first one.
+>=20
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  backlight: true
+> > +  reset-gpios: true
+> > +
+> > +  avdd-supply:
+> > +    description: positive boost supply regulator
+> > +
+> > +  avee-supply:
+> > +    description: negative boost supply regulator
+> > +
+> > +  vci-supply:
+> > +    description: regulator that supplies the analog voltage
+> > +
+> > +  vddam-supply:
+> > +    description: power supply for MIPI interface
+> > +
+> > +  vddi-supply:
+> > +    description: regulator that supplies the I/O voltage
+> > +
+> > +  port: true
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - reset-gpios
+> > +  - vddi-supply
+> > +  - port
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +
+> > +    dsi {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        panel@0 {
+> > +            compatible =3D "novatek,nt35532";
+> > +            reg =3D <0>;
+> > +
+> > +            backlight =3D <&pmi8950_wled>;
+> > +            reset-gpios =3D <&tlmm 61 GPIO_ACTIVE_LOW>;
+> > +            avdd-supply =3D <&lab>;
+> > +            avee-supply =3D <&ibb>;
+> > +            vci-supply =3D <&pm8953_l17>;
+> > +            vddi-supply =3D <&pm8953_l6>;
+> > +
+> > +            port {
+> > +                panel_in: endpoint {
+> > +                    remote-endpoint =3D <&dsi0_out>;
+> > +                };
+> > +            };
+> > +        };
+> > +    };
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index a626dee5c106..8ed2866bbd6e 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -8171,6 +8171,11 @@ T:=09git https://gitlab.freedesktop.org/drm/misc=
+/kernel.git
+> >  F:=09Documentation/devicetree/bindings/display/panel/novatek,nt35510.y=
+aml
+> >  F:=09drivers/gpu/drm/panel/panel-novatek-nt35510.c
+> >
+> > +DRM DRIVER FOR NOVATEK NT35532 PANELS
+> > +M:=09Cristian Cozzolino <cristian_ci@protonmail.com>
+> > +S:=09Maintained
+> > +F:=09Documentation/devicetree/bindings/display/panel/novatek,nt35532.y=
+aml
+> > +
+> >  DRM DRIVER FOR NOVATEK NT35560 PANELS
+> >  M:=09Linus Walleij <linusw@kernel.org>
+> >  S:=09Maintained
+> >
+> > --
+> > 2.53.0
+> >
+> >
+>=20
+> --
+> With best wishes
+> Dmitry
 > 
