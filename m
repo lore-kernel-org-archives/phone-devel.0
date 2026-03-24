@@ -1,237 +1,155 @@
-Received: from mail-24424.protonmail.ch (mail-24424.protonmail.ch [109.224.244.24])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCA23DFC93;
-	Tue, 24 Mar 2026 13:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DBF3F881F
+	for <phone-devel@vger.kernel.org>; Tue, 24 Mar 2026 13:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774357830; cv=none; b=a/gDVtZViVBBPlAAk48XbUDtq47UMPTxffRf5tKtu6rBLgntQtdxvG7WxIkL0jPe3LnpTT12AFPniBBHSnv811fJ8ij0JaKMDjXmoVN5UAPzLHtoN7S9nJOkt6ptC+7Sb23F8p7/97d44V2WfuvxyYYVq4dov522LiO7w73/PPU=
+	t=1774357980; cv=none; b=AnyG6Zu2jlp72+QSSkSK2yEFq/6rxQ2DfzKioxrf2HVyBld27euCykSNqEnHsnkbkwZQmWh1+UMtfzStbQ2OGfgWQnmCMJk0kp+PbNj2dMMsuUplPie8wHr5Y5N3Je3o7I0lOVpITEIy69Rg+rWffikQm4EXvyPFzqDOj+R+vCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774357830; c=relaxed/simple;
-	bh=0pnB0U7InhkGL9lTdgeWgS0PDvdGdURPxYWKmTb9BiU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fqolWaW2Add/CvrNxui+PNlVkuoUtKBVPie2sZEfXGcO4lkJn66ow7ae9gCuwSVAzVK5/X3QKh0EPz2Dqy+J06fI08JH0mSrHIOkyO4J01jS1I9gnsCEBec1J/gqfm/n3sDi/EIM5yJPBtJoJo6nv22B1XFLxsd0RLbGLDyVTxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=FK2nnl1U; arc=none smtp.client-ip=109.224.244.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1774357980; c=relaxed/simple;
+	bh=Wv1ee/UdWUibTfcvsLtCfhOHsnrgoqjmx5DCdPOFXKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mqJY7Z2oTaUTr5CMeBgVestaelXy7Mz73NsKajuYfTPCbXtPCn4yto28oWbyBZ+DFsK2YMCwN3zhTZW1k9nZjuecMHB4k2oH5Etr2KEl/wCikOIuRZf5R48VVGR1vem7f6IWbIKJKi8bQU2VVQtyYTQDUaXmPnhogSHzPQWHwVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DoLVi22y; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ox39SNM+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="FK2nnl1U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1774357819; x=1774617019;
-	bh=d8w5CZ1DioJDLSSnZn0lUgk1zgmXdXiL/spUhVixnL4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=FK2nnl1U1iJW2JFd3eYi+a/efk4dTWRpwXM3P/p7hU2is3URddT8zC4MxpNA0GBil
-	 JRaU88xJgM0zqXDmzB5xduxQ82vuGkkD/BnuJ4G8WJOvpvjKI6bk/7obXbO4fjU9rc
-	 AdtwnYHWSst5aiEXHqmBnGPy7LaTrHX6qjQxhMmt9uwOh4tJEZrjY7F5wd9g0MHjeH
-	 7/yhVTRsx+fZjtdRCo6R5BKnf0S+pL3r7q+HVN+WLTg3Bf/pAQfNC/Hyot9OlGfy1o
-	 nAVmdb9K0hjZBwpg2SWNOm8cwKoabMcY8fqjgo7htiOXLTZCfEz7LiY967QTcHdHCY
-	 VDqJxuTpNUfzw==
-Date: Tue, 24 Mar 2026 13:10:13 +0000
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
-Message-ID: <GF8zsK-szOM98Ck2jznCOZ4xjuJTl9g1b0uPc1N79Dzf7PNzOiVgewdqPFGjqF3YD7tOUa2tzdc7rG_e7iNH8yjHOJ9DobsihTxRLUk8EL4=@protonmail.com>
-In-Reply-To: <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5>
-References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com> <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 70202603ff894e828bf88287248da08abdde0c30
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DoLVi22y";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ox39SNM+"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OBasgN1291302
+	for <phone-devel@vger.kernel.org>; Tue, 24 Mar 2026 13:12:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	FmTdVZdBA+lXMY5CjsSoQzxZqT+oe8b7DJtwkiD+/3o=; b=DoLVi22y7xyAaNOw
+	VEmC4YgWZ89U2jWU1jstWFgp6t+dgKIcVRoJ4uww5UbsdiW/Utoxug0gnJfLD5VM
+	tJ/YQ9pFIxhUkxL+8TdYY9CfFja4Jw/+FR+cJFb8iZfowegTD9vx9vMIKWWtxQ8l
+	9ddkGjs0H8kEfgwl2WRynWTYFrGfmTL/0sCzFTkc2fT0yDmoGK3YGHz6a4Hqusqa
+	x6mAFtwbm6J0D7hE2vr334yJWwuRGhmW4BhMVuQIOgTbJWD6+/5vo14CHzWdVqbQ
+	J+xU3hsFWu0OlUIcURP52BuUGt0h8wo+FMO2GFBYFN4rJTecB/tEXfpGMW+yAY14
+	dp5PDA==
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d3sw40dc3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Tue, 24 Mar 2026 13:12:58 +0000 (GMT)
+Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-94ddd9b0f66so603299241.3
+        for <phone-devel@vger.kernel.org>; Tue, 24 Mar 2026 06:12:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774357978; x=1774962778; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FmTdVZdBA+lXMY5CjsSoQzxZqT+oe8b7DJtwkiD+/3o=;
+        b=Ox39SNM+hFeGXWLXk/Zcln0kJrxOxiwm5scjQ/HnPE6SxIrnOBwbxyD0kdD9ArNsR4
+         nr0/9wZefdQzxsqWH5Rc90WgxcDZ5huTdrv7u8m0kpa9FDL6c64ocigLCMA7X/DQ70Bk
+         sboCdulcaqcgMaIzcjZxAA2KF/q+pOXS0MsayeApbGwCwABrTKSF6BZ0EHX73F5wnARu
+         DdHE6WUAV5RDP2KFKQowy4ynQHRofXm/OMdtQ4fOZgBhVx744BEM8wdLod+3a2/5K0fR
+         AZLCHDoCRnVwoQ+4QMqd60RGSweH0YRcEBICj4FqULnnozoPqzecg1IsfMGwb7YgPLGp
+         Ydbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774357978; x=1774962778;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FmTdVZdBA+lXMY5CjsSoQzxZqT+oe8b7DJtwkiD+/3o=;
+        b=f3YeBPczrQJ6YsCI2Gevu1nNyq/cLn33hArXep7WK4pSYt35j/fxqh8kjzLYO6D1U3
+         CWHa3ExyG/tdJCirC+jt1979upFKWpaw5QNppSILNXQ7l6IU9dsf2JEOApShxBj7CsT3
+         I0GTq2UQYEa+KeWTiEHDqU1NqnpDW8288+O3wJqb0qKDek9+qb/f5C/MGgr3EBP2G6Sb
+         TjV3Thzj4zPFELluFemC/trU1h6jhUM17jxWhEzzSY68DhkRe8hBLHISmuv4HOnmkHfb
+         Xbr5AXRvgap05S9gq9lGLFIgevHNlwAcX8tPhG6O8xMYyZOUNola0cx0hK1yBtHd1bOS
+         /9Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeQ0R/3cRqY2oRdX/0ZeZVbm0uoz8n6OJtJ/u3OIpkj8W18h/G3V4Zg7KK8J4RVTD1DadvLEHejGFB8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGru/4chqBFSg12aURxg+/q65ZGpQMGAaJwlOi+/Lo0ITEIOZi
+	DH1pB8Kr87FSU4y1VovGh/seXNDUGrSNaRUbFpYf2sXKYgJob5m4P9FkgSsEjSJ6vbVVjep1iR5
+	j3XODLL6Q6jlnyhyERJHgdUueGkRTjnwq/B+3PA5vSOOnTyjjAqRr4eymz+O6gO1KyQ==
+X-Gm-Gg: ATEYQzzAkTNfZfaTABwotGWcfRGENXQvHb/sgNG1y3ylP8Z8KJg57Mg4S7O97fCd5PA
+	7S6wekE5d6TGRGEr4b5Uq0aTpEsnhMo9bFU+SSn6eKxWXfMKYd1V1tZZLedlcOJPcBTe59/aMoT
+	dNGogcrZl3mdjBAfWfPjctm2oAlPeq5ZSrJkrWW6IeFLBHeTBDDCGqiv2bHPPAouLWVIs5jiz1V
+	wGfwyaSyNtusgNlRnsOqy83EfBE1lbyMzoo2kKEzo6fJemRkRJ+ekvKwwniMmT4wnVKHYariZr1
+	j0OY5ARMP4AfEhhMdX8UuN2Ih/ny+cXjE+BERZcKfCuSkNLPXHIGQA3bZBlIMpRinoy3i5hrIIF
+	G9J2z9f3wqeKcr6OfewvUz2JCON04LgIvGh4smI0zfrZ3fR7l9KoBlFDTJZPwo7/+Lqjm9+Q2t7
+	QC9BM=
+X-Received: by 2002:a05:6122:13c:b0:56d:10ac:2910 with SMTP id 71dfb90a1353d-56d10ac2dcbmr1187688e0c.2.1774357977677;
+        Tue, 24 Mar 2026 06:12:57 -0700 (PDT)
+X-Received: by 2002:a05:6122:13c:b0:56d:10ac:2910 with SMTP id 71dfb90a1353d-56d10ac2dcbmr1187686e0c.2.1774357977277;
+        Tue, 24 Mar 2026 06:12:57 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9832f8c177sm638398266b.15.2026.03.24.06.12.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 06:12:55 -0700 (PDT)
+Message-ID: <9d9ec994-c954-445d-97b2-772614d66f35@oss.qualcomm.com>
+Date: Tue, 24 Mar 2026 14:12:53 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Alexander Martinz <amartinz@shift.eco>
+Cc: Petr Hodina <petr.hodina@protonmail.com>,
+        biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260324-oneplus-nfc-v2-0-3eef052c9bc6@ixit.cz>
+ <20260324-oneplus-nfc-v2-2-3eef052c9bc6@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260324-oneplus-nfc-v2-2-3eef052c9bc6@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDEwNCBTYWx0ZWRfX2RVg5bszfwm4
+ NcxWmGFdHTySF6GImRLJl/wgkobu1l9RLJvLBmXNz3/GHf3pCHliLiFd3D/d+VySFVkcuAzjDex
+ t5EcDOoZU2Vq2QStT3n1dGCnM4p1WftaK9YPL3kNmd2Qf5ogvtJIFJgbO8O2wkymBoqI88i7yWQ
+ 5/LYPdxdPKCpA3mK3UM272rhgESqscDorRmK/ghEWi6Vw9H/ncjwMcpxij/WR+A5JLpbXYjJmUi
+ HBbSKahAD3M107baHGNEFhhEj8yxo1W6wfTVgYc+jpg+v9Rdpmsu27EpX80zJFlZcPnHQVoTcmg
+ J2H4fIi0nhOmumtjLlQTnurU2IQP9e0AdcEC5OJjM9+yhQtvjr/QSGHcM9W8bbRWiMnlF7br2cO
+ vp9TTxgNSIMRkHVtA68n/rnmBeaB7tl1Yq01EncXM3ck1otPFPeL0Ki8YO3aSTAuODgAQHlntZe
+ T8JfEf+sMKbMrY8m2Wg==
+X-Proofpoint-GUID: e67xtaJclfCiClnABiFyEdOqvQSkHoiS
+X-Authority-Analysis: v=2.4 cv=bpVBxUai c=1 sm=1 tr=0 ts=69c28dda cx=c_pps
+ a=UbhLPJ621ZpgOD2l3yZY1w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=IHWTUvJBEwR_a5bXKskA:9 a=QEXdDO2ut3YA:10 a=TOPH6uDL9cOC6tEoww4z:22
+X-Proofpoint-ORIG-GUID: e67xtaJclfCiClnABiFyEdOqvQSkHoiS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 adultscore=0
+ bulkscore=0 spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240104
 
-On Saturday, March 21st, 2026 at 17:46, Dmitry Baryshkov <dmitry.baryshkov@=
-oss.qualcomm.com> wrote:
-
-> On Sat, Mar 21, 2026 at 05:23:20PM +0100, Cristian Cozzolino via B4 Relay=
- wrote:
-> > From: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >
-> > Document Novatek NT35532-based DSI display panel.
-> >
-> > Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> > ---
-> >  .../bindings/display/panel/novatek,nt35532.yaml    | 77 ++++++++++++++=
-++++++++
-> >  MAINTAINERS                                        |  5 ++
-> >  2 files changed, 82 insertions(+)
->=20
-> > +allOf:
-> > +  - $ref: panel-common.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: novatek,nt35532
->=20
-> This is not enough to identify the panel. This name identifies the
-> controller inside the panel, however the exact settings (and the
-> behaviour) would depend on the exact TFT "glass" used with this
-> controller. Downstream usually doesn't care that much and frequently
-> just uses the controller name or the the controller with some kind of
-> "description" like ("wqhd-dsc-cmd").
-
-Ok but I just don't understand the following: I'd like to know (also=20
-considering that I find it difficult to find someone, outside of this=20
-ML, available to discuss this stuff, specifically) exactly why the=20
-current bindings are not enough.
-I mean: looking at schematics and datasheets of other similar devices=20
-and based on observations about my device, I believe the generic bindings=
-=20
-approach for nt35532 works quite well for panels.
-Novatek made the IC first and then whoever buys it can be a display=20
-vendor. If we talk about downstream, differences between panels are describ=
-ed=20
-there (i.e. my panel makes use of four supplies, while other ones could use=
-=20
-a different configuration).
-
-> What does it mean for the upstream:
-> - Try identifying the actual panel used for the phones. Sometimes
->   googling for spare or replacement parts would reveal such a name.
->   Sometimes it can be seen as a marking on the cable or on the backside
->   of the panel (again, googling).
-
-It seems that 'google' approach fails, in my case :( (I only know that=20
-the vendor assigned Smartron the work to design the HW - but SW too -=20
-of the device. Nevertheless, Smartron is neither OEM nor ODM, so the=20
-company was relying, at the time, on a series of chinese manufacturers to p=
-rovide=20
-parts required for this device, including panel suppliers: in general,=20
-the list of panel suppliers for Smartron includes BOE, Tianma and other kno=
-wn=20
-companies. So, this panel may be any of those, paired with NT35532, and wor=
-k=20
-anyway). Unfortunately, even if marking on the cable is known, that doesn't=
-=20
-identify the panel but the cable itself (which is available on the market,=
-=20
-though), instead, in this case.
-
-> - If not found, come up with some artificial identifier that would
->   identify the controller+glass combo (e.g. "tianma,fhd-video" or
->   "lenovo,j606f-boe-nt36523w" (where lenovo,j6006f is a device name and
->   boe is a "supplier").
-
-Assuming that resources available which I've as source of information=20
-for this panel are limited (the ones also described in v1's review thread),=
-=20
-my vendor devicetree describes the panel in  'qcom,mdss_dsi_nt35532_1080p_c=
-s_video'=20
-node and makes use of:
-
-qcom,mdss-dsi-panel-name =3D "nt35532 1080p cs video mode dsi panel";
-
-property. Until now, close-to-mainline devicetree I was using the following=
-=20
-compatible for the panel:
-
-compatible =3D "flipkart,rimob-nt35532-cs";
-
-and I'm not sure about the exact meaning of 'cs' suffix. I cannot state 'CS=
-'=20
-as panel supplier and use that upstream without proof/evidence. What do=20
-you suggest, in this regard?
-
-
-Cristian
-=20
-> - Either use both strings for compat property:
->   compatible =3D "tianma,fhd-video", "novatek,nt36672a"
->   or just the first one.
->=20
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  backlight: true
-> > +  reset-gpios: true
-> > +
-> > +  avdd-supply:
-> > +    description: positive boost supply regulator
-> > +
-> > +  avee-supply:
-> > +    description: negative boost supply regulator
-> > +
-> > +  vci-supply:
-> > +    description: regulator that supplies the analog voltage
-> > +
-> > +  vddam-supply:
-> > +    description: power supply for MIPI interface
-> > +
-> > +  vddi-supply:
-> > +    description: regulator that supplies the I/O voltage
-> > +
-> > +  port: true
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - reset-gpios
-> > +  - vddi-supply
-> > +  - port
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +
-> > +    dsi {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        panel@0 {
-> > +            compatible =3D "novatek,nt35532";
-> > +            reg =3D <0>;
-> > +
-> > +            backlight =3D <&pmi8950_wled>;
-> > +            reset-gpios =3D <&tlmm 61 GPIO_ACTIVE_LOW>;
-> > +            avdd-supply =3D <&lab>;
-> > +            avee-supply =3D <&ibb>;
-> > +            vci-supply =3D <&pm8953_l17>;
-> > +            vddi-supply =3D <&pm8953_l6>;
-> > +
-> > +            port {
-> > +                panel_in: endpoint {
-> > +                    remote-endpoint =3D <&dsi0_out>;
-> > +                };
-> > +            };
-> > +        };
-> > +    };
-> > +...
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index a626dee5c106..8ed2866bbd6e 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -8171,6 +8171,11 @@ T:=09git https://gitlab.freedesktop.org/drm/misc=
-/kernel.git
-> >  F:=09Documentation/devicetree/bindings/display/panel/novatek,nt35510.y=
-aml
-> >  F:=09drivers/gpu/drm/panel/panel-novatek-nt35510.c
-> >
-> > +DRM DRIVER FOR NOVATEK NT35532 PANELS
-> > +M:=09Cristian Cozzolino <cristian_ci@protonmail.com>
-> > +S:=09Maintained
-> > +F:=09Documentation/devicetree/bindings/display/panel/novatek,nt35532.y=
-aml
-> > +
-> >  DRM DRIVER FOR NOVATEK NT35560 PANELS
-> >  M:=09Linus Walleij <linusw@kernel.org>
-> >  S:=09Maintained
-> >
-> > --
-> > 2.53.0
-> >
-> >
->=20
-> --
-> With best wishes
-> Dmitry
+On 3/24/26 12:20 AM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
+> Definition of the NFC.
+
+"meh" commit message
+
+[...]
+
+> +	nfc_enable_default: nfc-enable-default-state {
+> +		pins = "gpio12", "gpio62";
+> +		function = "gpio";
+> +		drive-strength = <2>;
+> +		bias-pull-up;
+
+Are you sure about pulling up an active-high pin?
+
+FWIW TLMM subnodes are best sorted by pin index (although the file
+currently doesn't really do that) as per dts coding style
+
+Konrad
