@@ -1,33 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8B83C7E13;
-	Wed, 25 Mar 2026 11:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B9C3CA483;
+	Wed, 25 Mar 2026 11:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774438323; cv=none; b=BEc20ByUjGiIx6ZCkjhhG+01PbODW+boNthOlQQ8INQ4rpNENlaTmp/hjkmHNvA7jwNnOzRQMJff7o0k7iR9RQZAupcbuGSLUiP+7MV8gRAay9LWBcsx9atfFRSnia8BG0/IOqPlCemWh+oR82kbQEfLNjZ8tBkZiZM5iTBxngU=
+	t=1774438416; cv=none; b=Frrg+gb3P0EwP2pbZgO8E5w8JTi6dbV+QvUU46CKYYJC37BaLGavU16K3OxD/av8Qcpd736TMAXwxcu5tAQv36rlJWvvHOh6nB55pW7XWTvP5gB9rNaEttFzAQczMHgl19z3NfLH6hxvQh365iQ6+kHxDjfPDMX9sG7EC0W8CvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774438323; c=relaxed/simple;
-	bh=Pdu9z57yDEEmN+aEzcYH+0eI2CjV3sgqjGJN6kagq+k=;
+	s=arc-20240116; t=1774438416; c=relaxed/simple;
+	bh=dqfXT7JRvqdV6dqChLjvXgdIKe2U/drCwrcLsfW0mR8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mFhMk8R1zmLjIaCXryJsw88E78MilV7Fr+YQnwZoYS74qE2zU5beol07XDFOfGoo/IO1Td0CofemEQWj1BtPLI3dR78oQ7J2qWQktxETgGpV2cGvC3t1/kkK27FaMMafiGp4SA1w5g20Egus7DacDOBF+MSGO7Vun/4SfCuIv3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MycwOQlt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=GZmvb0Mg6gYaBwQo0ppdsHTyRRbjBYESZLjMy6wjIj/PR+s7/Z0bQtr8x/nGEoygRDgdp5+EVfOamYF/KqoJ0OZwyNHA/u8iA0v5eDm/Q3VojJzp5NLnkqcXDyMT5c/ZcKBj3S0Pzp4f7T79lZwFnQmkzwiah0M+IlOdQDHWWIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cb63Ub3I; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MycwOQlt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728F5C2BCB0;
-	Wed, 25 Mar 2026 11:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774438322;
-	bh=Pdu9z57yDEEmN+aEzcYH+0eI2CjV3sgqjGJN6kagq+k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MycwOQltwHMQhaOInlNbtVPzW33iD0/ZecRnirjfS3QxJxrUTIGXatJdA8voseq2z
-	 BHdEbL4LOZHbGd9a9n57pyFmwjklfgHosWJpDC/hA/Su9+p0CS9hN6z+snpPwoVscg
-	 bLJMJk4f1KfM5hOKEeedJ1xx1p4FZXr+55mLoXmPtP3buxiVlCyvOFoaY+ZiSleu64
-	 KSgK1ZEnFIToM92CowrDCGxMw2Ku0toUbWD9MNf3J48eNPWmKp8Pp+MasBBcHrM9jv
-	 q495/4m8p7iUhtR/7/QEhNSiVg/eU3xSeKOPEcLEBE6xOyrDANf8hXt9IJUlDLhoxn
-	 68pvz/cLSbAYw==
-Message-ID: <c607e5e9-2e2c-450d-9ca2-5727ba99578c@kernel.org>
-Date: Wed, 25 Mar 2026 12:31:57 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cb63Ub3I"
+Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id CB40D5340E02;
+	Wed, 25 Mar 2026 12:33:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1774438404;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gLSxmvfaVN4JW42d0aN8BYmaZ4NPb1akBbyZkW+lZAM=;
+	b=Cb63Ub3IbRhRH+EvkrMsAByknWoYN+orjvzp1/4uDNhSlB77reGca9adKe+9VBXmaRqZYn
+	qh0c6os6xRbyxbifMZc0EUrnTOzwsARZXqOfnaN6Ec7LpLTA7HucvkI6u51mNli5Xa64Oa
+	w4oXhLizXtZq4QGFEmNxnAys5xtAgxM=
+Message-ID: <5630a4af-e18f-4daf-9b04-ea61091d9e51@ixit.cz>
+Date: Wed, 25 Mar 2026 12:33:23 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,129 +41,125 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- David Heidelberg <david@ixit.cz>, Konrad Dybcio <konradybcio@kernel.org>,
- Alexander Martinz <amartinz@shift.eco>
-Cc: Petr Hodina <petr.hodina@protonmail.com>,
- biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, Rob Herring <robh@kernel.org>,
- oe-linux-nfc@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>
-References: <20260324-oneplus-nfc-v2-0-3eef052c9bc6@ixit.cz>
- <20260324-oneplus-nfc-v2-2-3eef052c9bc6@ixit.cz>
- <9d9ec994-c954-445d-97b2-772614d66f35@oss.qualcomm.com>
- <041766dd-422e-40e1-9e5d-c220580871f5@ixit.cz>
- <a0da2236-27b3-4491-862a-457a03cb4c5e@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v8 1/7] dt-bindings: input: syna,rmi4: Document
+ syna,rmi4-s3706b
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vincent Huang <vincent.huang@tw.synaptics.com>,
+ Casey Connolly <casey.connolly@linaro.org>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
+References: <20260324-synaptics-rmi4-v8-0-2168d2df68f5@ixit.cz>
+ <20260324-synaptics-rmi4-v8-1-2168d2df68f5@ixit.cz>
+ <acLpBXc9Qi5riQO0@google.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <a0da2236-27b3-4491-862a-457a03cb4c5e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <acLpBXc9Qi5riQO0@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 25/03/2026 12:20, Konrad Dybcio wrote:
+On 24/03/2026 20:42, Dmitry Torokhov wrote:
+> On Tue, Mar 24, 2026 at 08:40:34PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
 >>
->>>
->>> FWIW TLMM subnodes are best sorted by pin index (although the file
->>> currently doesn't really do that) as per dts coding style
+>> Mostly irrelevant for authentic Synaptics touchscreens, but very important
+>> for applying workarounds to cheap TS knockoffs.
 >>
->> I assume when I group the -pins into -state it doesn't apply anymore? As I don't feel having pins relevant to one device / subsystem all over the place is extra clean.
+>> These knockoffs work well with the downstream driver, and since the user
+>> has no way to distinguish them, later in this patch set, we introduce
+>> workarounds to ensure they function as well as possible.
+>>
+>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   Documentation/devicetree/bindings/input/syna,rmi4.yaml | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> index 8685ef4481f4a..fb4804ac3544d 100644
+>> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> @@ -18,9 +18,14 @@ description: |
+>>   
+>>   properties:
+>>     compatible:
+>> -    enum:
+>> -      - syna,rmi4-i2c
+>> -      - syna,rmi4-spi
+>> +    oneOf:
+>> +      - enum:
+>> +          - syna,rmi4-i2c
+>> +          - syna,rmi4-spi
+>> +      - items:
+>> +          - enum:
+>> +              - syna,rmi4-s3706b  # OnePlus 6/6T
+> 
+> I thought that all the workarounds will be keyed off this new
+> compatible, but I do not see that. What am I missing?
+
+The compatible is used for sequence in the
+
+Input: synaptics-rmi4 - support fallback values for PDT descriptor bytes
+
+where it is used to provide values missing for OP6 (and possible others in the 
+future, when added).
+
+ From my understanding the series, only two patches (1st and last) are specific 
+for the OP6, rest will likely benefit various TS not implementing full Synaptics 
+set. All measures apply only when touchscreen reports something wrong.
+
+David
+
+> 
+> Thanks.
 > 
 
-	nfc_int_default: nfc-int-default-state {
-		pins = "gpio63";
-	};
+-- 
+David Heidelberg
 
-	nfc_enable_default: nfc-enable-default-state {
-		pins = "gpio12", "gpio62";
-	};
-
- 	sde_dsi_active: sde-dsi-active-state {
- 		pins = "gpio6", "gpio11";
-	}
-
-Let's imagine future possible implementation of DTS coding style
-linter/checkpatch. How it would sort the nodes? Either by node name or
-the first value in "pins", this this would be:
-
- 	sde_dsi_active: sde-dsi-active-state {
- 		pins = "gpio6", "gpio11";
-	}
-
-	nfc_enable_default: nfc-enable-default-state {
-		pins = "gpio12", "gpio62";
-	};
-
-	nfc_int_default: nfc-int-default-state {
-		pins = "gpio63";
-	};
-
-So that's how you code. Less work for future linter/checkpatch.
-
-The trouble is that "pins" property sorting can result in nodes being
-spread all over, imagine:
-
-	nfc_enable_default: nfc-enable-default-state {
-		pins = "gpio5", "gpio62";
-			// ^^^^^ DIFFERENCE!
-	};
-
- 	sde_dsi_active: sde-dsi-active-state {
- 		pins = "gpio6", "gpio11";
-	}
-
-	nfc_int_default: nfc-int-default-state {
-		pins = "gpio63";
-	};
-
-That's why I would propose to keep everything sorted by node name, but I
-am fine with both choices. Qualcomm maintainers decide about such
-detailed style they want to impose.
-
-Best regards,
-Krzysztof
