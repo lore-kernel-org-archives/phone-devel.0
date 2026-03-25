@@ -1,124 +1,174 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53B2421EE5
-	for <phone-devel@vger.kernel.org>; Wed, 25 Mar 2026 18:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22916329E6C;
+	Wed, 25 Mar 2026 18:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774462105; cv=none; b=D3arM5DX0AmOaRW0fJOaV2YPqGrLJQj+LhCwfVOXRnNFiZMiy1is02/wzlMdUxjAdrLgyYtM/+4gJUsFa+6eapISOJ5Nn2VdsnKaiJaT9dH5ZzP8hOupRvz4Pn7X9G0fcGouFH8iGYSSCmErF8q5j1JZaymhLeLIQtx1X8aWL80=
+	t=1774463523; cv=none; b=G8EtCfwdVcmhNQClBVuNFmJxZ+DBZeFPkVv+gkw9yJciLOnSTUskS2bhk0+a9DrjiuhVmR6Vmv2XV1hskQQS1/uNJ+yIA4mg1wHMWTY5Z9I35sTdKHfrNKbs+pzeT1zfzUhheTtC+1tuwj1nnZh2pmKxo1+3GgIDdlqldxAhMcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774462105; c=relaxed/simple;
-	bh=O5VLqveoT1MLTeYBJSBjiMtqJBUVJFLJ/CLj6h7ZMKI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LW5pu/RE21+G2BB1DrA6IXnhN4OofHZuVuFucnRm/idotVB3u1YIdz1CKRGmUyIYNF0iotR6zIMJeyV7VMKtYsM8m2wDYIz+c2cVz7NxYgW0TNgaq9xSBkopjwzaft3XZBtBHxZhxs5xn+9GTVrWTo11dYOL20//yBy8fjsLrWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BowbVxWU; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774463523; c=relaxed/simple;
+	bh=VoEoJuUr2Lj+hHN5wBOfe52hwrMPIs3kY7QEt2p4Ih0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ipSIZlYiFzikNpjzqGUYdY0y8EL5DVGOFij8VQK1qJinjf7EA1bZYcma02DMgj6eyeQjUGJv1TTu8ZKUZR+4aI1/mWqrycvnZ8wYFoxoD/ZhxQH8QE4Azlow7IIyThyFo6YEVwzaeXMMBO3rmoeXMWgbzQKco4rp0Gde1aBmIFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=EDFwCxBz; arc=none smtp.client-ip=85.9.206.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BowbVxWU"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b04fc8851cso1090055ad.0
-        for <phone-devel@vger.kernel.org>; Wed, 25 Mar 2026 11:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774462100; x=1775066900; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+rvofdNd3f5+/efY7L/G9vZlRMw7vdhOoBtyFgJOyhQ=;
-        b=BowbVxWUsTxPoaN+CY/4SCHwbmKekGCN9oRDlaklsw8SuxO9WJB1c0981LdLlONhPe
-         SwaoMB5eTZvLEuRoCMtIwBNJhETQJql2EVD1lAZjnNL/LM9wuIzxfYs2SwBJFhFyYde5
-         AF0wkLrb8mZtVsrmgL4EAuEnKBVOuqc+muqxzsjEOQZ2AuCwNnr6W48hiC+JU6CSRMls
-         S2uHNUGm7Kr1xi31mTt8mSxNbHxKs3Tj3Ud80pGE/1NC59RITZ+ycot0AHe/7r47fYAP
-         LPz6S/9CGGb2ggzK4R5jo6YLTgj7CBrSAZeodDBD4thBFnuAWlTglg755o0YjNqYW+8q
-         gsKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774462100; x=1775066900;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+rvofdNd3f5+/efY7L/G9vZlRMw7vdhOoBtyFgJOyhQ=;
-        b=Htfo65zuBSbtA5g/6RM4CMUeukuL0D3Na/69j1CzRzpMEVbCBFVEfEuX0wpoSyXuVn
-         pFvWTOfrGoCYPdnw6gcIIj6ffg70vJoG7Vohwl0aeMdojUDux5+LYA+qWZmqN+56qUtZ
-         vbBe5K7C6kpZcu9gcJD3v7hCBg2inEyULI+3Iza6LrdMqkiJhLW8vba1+fzgkF8slPuU
-         1/8cYmd7wFiu91XLL8bqyFQ75QOzxOzLnNjNjzRSCk0PnOFYswspG/0+vdhLhV0Xa3JG
-         w5uaspjlZgOqDONwR8muLUgLijGpCU0xDAUdw9BlS+JEv7rmhK3NxTkZQuZ8JnRizsfP
-         3M1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUQoMAZJAc5r8HSSPPeLdafahY9RUrmEeW1w29uquhH+Aawnom18DkpB3a2p+XspBZr73ow+KQR8zLrmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUS4PjnGPLr/Y7ogC2jSrZJ7LOxYx3cP1XiPBkMjQRcW7gIVo7
-	r+pFumvhLi/6RCZz7MWjWMK52yfV3H8ahDjMKvl6z/V9qnLHe6e8q9YX
-X-Gm-Gg: ATEYQzyF1uQPYgtmhWmi8mpfQ5IIzoV+d/DPuvr60+/CRlElfRPqbPiPgrqUQSfGJZ5
-	Ons0ALDUwainF+BzcvRx3r9NfMOmxjKCAGICTLy4uDWxcHE+0FjkO/qpCuPnKcpyVdnXC+wBXAo
-	Sj6GrsfKKobJyFD9KQLc0ftGHok5RUDcNDTuMTEvr9LeSTsrmNon/QvRs8QYoqOMUG1ZSxfSN20
-	lAxyy8xm4i8zcR+bkvpUOYTwwIt/Qm8xQUT3x8Xx2rbliGksgrXmJ/eZKCU7srV+WaERFa9taD6
-	0qeJXNfC62QDFXmcF6o73mbmGWlsvQ7D52srcPuseYCd1zSHIGvRu8R7P1fdl73rbq90n2BR9uP
-	J3dAoJ6mFTcmgwQV5I0q0113m61OFIBSBcLFNTTN7YKgAAe43H3oICwdmxeCmwNzUFN1WBgid26
-	KOTV8wfNYHpm4WVjfz8sYvMY0Tkh63
-X-Received: by 2002:a17:903:3843:b0:2b0:9a61:916 with SMTP id d9443c01a7336-2b0b0a7f831mr49090795ad.31.1774462099766;
-        Wed, 25 Mar 2026 11:08:19 -0700 (PDT)
-Received: from [192.168.0.102] ([43.251.91.187])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b0bc773b33sm5687805ad.10.2026.03.25.11.08.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 11:08:19 -0700 (PDT)
-From: Biswapriyo Nath <nathbappai@gmail.com>
-Date: Wed, 25 Mar 2026 18:07:30 +0000
-Subject: [PATCH 7/7] dt-bindings: clock: qcom, dispcc-sm6125: Add
- #reset-cells property
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="EDFwCxBz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1774463513; x=1774722713;
+	bh=j86thck0cTqsFgXxw60goLvNyAwdeaXAk0Tlweu0J7A=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=EDFwCxBz+oeTss4TdxJTaOi/GaI36MwEjl7TfA4WB3rpdj8VmPUDgXenXHZ+Xs5Vp
+	 FYua2lTAJmXiR/LEBCTiCS8ZVvICPaSG+f7cnjKmRjiiK+NHT8PQ6aU8nHPThumDyE
+	 tgYF+KDwh7TAubhbT6vUjNx8/gzHrUd4oedw4KBHV6bzp2CfDb8cDO5/QAoj9CaYox
+	 Ljn6XpU2v5U1N1qQIDqt6kZrpWH8nqOrrWMMk6q0KGzbIaaWnaJXTLShy4VHEzZ6hK
+	 hPKB2rlqj2UupFz5+9PHA80/MNApMOExCxjN7+A8o8skPdhPziayWCQjtyNlHiBrhG
+	 rvGQOQXBbGLZg==
+Date: Wed, 25 Mar 2026 18:31:47 +0000
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] dt-bindings: display: panel: Add Novatek NT35532 LCD DSI
+Message-ID: <E_O40YTvp6FW2yHa_lQOmzZwB1BZ7r_uCfh82T3BeO-SLK255eefzThCZDYJ2PFi3Hlnp3JXL7JWrlIU2ymh7m68wkNMTsM7jcMa8XxuxCs=@protonmail.com>
+In-Reply-To: <fh7rfswcwcrquijgjq547b6jjuq2v3wxiweh5xnnd4z5ql5n7r@gt425ujkpctu>
+References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-1-d4b8ee867de7@protonmail.com> <sdcfwycey5ykhn2fghun7imx3tjtnwat3ny3mut5dwstl7wvw6@maqrzlycwdn5> <GF8zsK-szOM98Ck2jznCOZ4xjuJTl9g1b0uPc1N79Dzf7PNzOiVgewdqPFGjqF3YD7tOUa2tzdc7rG_e7iNH8yjHOJ9DobsihTxRLUk8EL4=@protonmail.com> <fh7rfswcwcrquijgjq547b6jjuq2v3wxiweh5xnnd4z5ql5n7r@gt425ujkpctu>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: c9e8d4bc47d850f720563065e567891a08ab9c34
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-ginkgo-add-usb-ir-vib-v1-7-446c6e865ad6@gmail.com>
-References: <20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com>
-In-Reply-To: <20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Sean Young <sean@mess.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Martin Botka <martin.botka@somainline.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Biswapriyo Nath <nathbappai@gmail.com>, 
- kernel test robot <lkp@intel.com>
-X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774462047; l=913;
- i=nathbappai@gmail.com; s=20260118; h=from:subject:message-id;
- bh=O5VLqveoT1MLTeYBJSBjiMtqJBUVJFLJ/CLj6h7ZMKI=;
- b=rUnZtLLz4Xmj0RcCQQLRkTmldWk3RQ1b5aFfulPjR4kYbTcb4NhNVfi/aoK7g8WkEfY0jg3ZZ
- 1uXUOvuzSagDL/2aA9WfaTAyKY05yLQdKb4KrPcmZQxOrgym2fPHKNZ
-X-Developer-Key: i=nathbappai@gmail.com; a=ed25519;
- pk=slmb/9yXbet+KTiT3EYLCp0p0MEOYa3EdjUXP+HXfjg=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The '#reset-cells' property is permitted for the SM6125 SoC clock
-controllers, but not listed as a valid property.
+On Tuesday, March 24th, 2026 at 23:20, Dmitry Baryshkov <dmitry.baryshkov@o=
+ss.qualcomm.com> wrote:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603150629.GYoouFwZ-lkp@intel.com/
-Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
----
- Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+> On Tue, Mar 24, 2026 at 01:10:13PM +0000, cristian_ci wrote:
+> > On Saturday, March 21st, 2026 at 17:46, Dmitry Baryshkov <dmitry.barysh=
+kov@oss.qualcomm.com> wrote:
+> >
+> > > This is not enough to identify the panel. This name identifies the
+> > > controller inside the panel, however the exact settings (and the
+> > > behaviour) would depend on the exact TFT "glass" used with this
+> > > controller. Downstream usually doesn't care that much and frequently
+> > > just uses the controller name or the the controller with some kind of
+> > > "description" like ("wqhd-dsc-cmd").
+> >
+> > Ok but I just don't understand the following: I'd like to know (also
+> > considering that I find it difficult to find someone, outside of this
+> > ML, available to discuss this stuff, specifically) exactly why the
+> > current bindings are not enough.
+> > I mean: looking at schematics and datasheets of other similar devices
+> > and based on observations about my device, I believe the generic bindin=
+gs
+> > approach for nt35532 works quite well for panels.
+> > Novatek made the IC first and then whoever buys it can be a display
+> > vendor. If we talk about downstream, differences between panels are des=
+cribed
+> > there (i.e. my panel makes use of four supplies, while other ones could=
+ use
+> > a different configuration).
+>=20
+> Different "glass" means different programming sequences. Take a look
+> at the existing drivers which handle multiple panels. Sequences, modes,
+> etc. are different though the DDIC (controller) is the same. For Android
+> kernels this is handled by putting all the information into the DT. This
+> approach does not align well with the upstream DT expectations /
+> guidelines / philosophy / etc.
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml b/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
-index ef2b1e20443..0d467c1f30e 100644
---- a/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
-@@ -45,6 +45,9 @@ properties:
-   '#clock-cells':
-     const: 1
- 
-+  '#reset-cells':
-+    const: 1
-+
-   '#power-domain-cells':
-     const: 1
- 
+True. I completely forgot about that, my bad. Yes, vendors handle init=20
+sequences, modes and other information in the DT, while upstream puts=20
+initialization into panel driver. Now, I've looked at panel-sitronix-st7703=
+.c=20
+driver to get an example of multiple panels supported by the same DDIC=20
+driver.
 
--- 
-2.53.0
+> For example, let's take two NT35532 panels described by [1], [2]. The
+> sequences are somewhat similar, but the contents is completely
+> different. From the upstream point of view, each should be described by
+> its own compatible string (so that the kernel can identify them).
+>=20
+> [1] https://github.com/eliot-shao/qcom/blob/master/display/LCM-NT35532-JM=
+55FH-1080p/kernel/arch/arm/boot/dts/qcom/dsi-panel-nt35532-jm55fh-1080p-vid=
+eo.dtsi
+> [2] https://github.com/balika011/android_kernel_xiaomi_msm8953/blob/maste=
+r/arch/arm/boot/dts/qcom/dsi-panel-nt35532-fhd-video.dtsi
+>=20
+> >
+> > > What does it mean for the upstream:
+> > > - Try identifying the actual panel used for the phones. Sometimes
+> > >   googling for spare or replacement parts would reveal such a name.
+> > >   Sometimes it can be seen as a marking on the cable or on the backsi=
+de
+> > >   of the panel (again, googling).
+> >
+> > It seems that 'google' approach fails, in my case :( (I only know that
+> > the vendor assigned Smartron the work to design the HW - but SW too -
+> > of the device. Nevertheless, Smartron is neither OEM nor ODM, so the
+> > company was relying, at the time, on a series of chinese manufacturers =
+to provide
+> > parts required for this device, including panel suppliers: in general,
+> > the list of panel suppliers for Smartron includes BOE, Tianma and other=
+ known
+> > companies. So, this panel may be any of those, paired with NT35532, and=
+ work
+> > anyway). Unfortunately, even if marking on the cable is known, that doe=
+sn't
+> > identify the panel but the cable itself (which is available on the mark=
+et,
+> > though), instead, in this case.
+> >
+> > > - If not found, come up with some artificial identifier that would
+> > >   identify the controller+glass combo (e.g. "tianma,fhd-video" or
+> > >   "lenovo,j606f-boe-nt36523w" (where lenovo,j6006f is a device name a=
+nd
+> > >   boe is a "supplier").
+> >
+> > Assuming that resources available which I've as source of information
+> > for this panel are limited (the ones also described in v1's review thre=
+ad),
+> > my vendor devicetree describes the panel in  'qcom,mdss_dsi_nt35532_108=
+0p_cs_video'
+> > node and makes use of:
+> >
+> > qcom,mdss-dsi-panel-name =3D "nt35532 1080p cs video mode dsi panel";
+> >
+> > property. Until now, close-to-mainline devicetree I was using the follo=
+wing
+> > compatible for the panel:
+> >
+> > compatible =3D "flipkart,rimob-nt35532-cs";
+>=20
+> In the lack of any information, this is probably as good as anything
+> else. Please describe in your commit message that you don't know the
+> exact vendor of the panel (nor the id of the panel).=20
 
+Ok, apart adding a new compatible ("flipkart,rimob-panel-nt35532-cs") to=20
+dt-bindings (patch 1/6) - leaving  "novatek,nt35532" as fallback - and=20
+setting that to panel node (patch 3/6), I'll have to change (patch 2/6)=20
+too, by renaming nt35532_on to rimob_panel_on and so on for nt35532_off,=20
+nt35532_mode; by adding a new struct named rimob_panel_desc defining=20
+.mode, .on, .off members and moving .lanes, .format and .mode_flags from=20
+nt35532_probe to this new desc specific struct and by adding .data argument=
+=20
+to nt35532_of_match. What about the other nt35532 functions (i.e. nt35532_r=
+eset)?
+
+> > and I'm not sure about the exact meaning of 'cs' suffix. I cannot state=
+ 'CS'
+> > as panel supplier and use that upstream without proof/evidence. What do
+> > you suggest, in this regard?
+> >
+> >
+>=20
+> --
+> With best wishes
+> Dmitry
+> 
