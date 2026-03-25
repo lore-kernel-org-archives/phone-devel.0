@@ -1,159 +1,151 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from crocodile.elm.relay.mailchannels.net (crocodile.elm.relay.mailchannels.net [23.83.212.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0826C329C71;
-	Wed, 25 Mar 2026 20:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774469859; cv=none; b=BvP5GdIF1K0SgrAfPAio7o0vVFlrtY4LYtjfvbBpXVPZ8KmDKgnY1CiufsmfRHCUUpYtEbHdqnXUdSW4lc7PiPdD63Ra1nLiWvOb5gCyB1+mfkUrIj3of3Dg/t3l8h05cQOa6Z3c+W6f6rc3RtGbHMdhqC5dvutcQxJkZoFFx3U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774469859; c=relaxed/simple;
-	bh=xxdiRusDCg8XggyxbKv/ax5A4cpWZxxs0MIE2E/4MHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tgGOyRpAfGUztRtUZ0tlvFqyecFBYfBc4KLVG1oX9tEwuuaXMLo1f/PM8xkqzJUAsZGsTW4vMYvXhj7LiV3AJ2s62gWigjRMdLTMKq3aTSESYdfhfMb0vcJbxvjnAEO4v04DfkUTvE/JSjD4FM+J9NIrLQCBtYewX0rN+jv8TL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=vtBU1FTI; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F843264CF;
+	Wed, 25 Mar 2026 21:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774472566; cv=pass; b=Ykkea9S0zYNFuGc15Y8WnXt06tXSw+DXyCcGipx+R5RiN8B0QU1Kf9ZsDiG3ZSnWYUTuHAR+D1ARb+4czQzkm5BbQvbCO6zGI82eNqj7d5gQ/EdEFUjxK7K/DQqHMHgMKSr88NFX0Q3UxmNAusc/TdnzYP1RpdIJ/njdSy0i3r8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774472566; c=relaxed/simple;
+	bh=wACdQNI+8zAec/s3V3rt5YY4G202YVIBUqhgbpq2kKs=;
+	h=From:Subject:Message-Id:MIME-Version:Content-Type:To:Cc:Date; b=jwrcyOWOAlYoavPT3UeicVNWRIvIsKya93ffqL8i4+xvhgJ4m5l93X3Rq8K86rfHH7pqhV62lgqO9dBCZjULP0dY4omIan0MfUci4ZAYE2rI8Km60TdXW53+6kYrXTwrxyMWBI7PhX0G95rPltMUpCzmggzW6nJditTXfsFgNP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=VKqdalQr; arc=pass smtp.client-ip=23.83.212.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="vtBU1FTI"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id A55F553404AA;
-	Wed, 25 Mar 2026 21:17:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1774469852;
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="VKqdalQr"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 8452D401D86;
+	Wed, 25 Mar 2026 21:02:43 +0000 (UTC)
+Received: from fr-int-smtpout25.hostinger.io (100-96-3-148.trex-nlb.outbound.svc.cluster.local [100.96.3.148])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 505F54019F2;
+	Wed, 25 Mar 2026 21:02:39 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1774472561;
+	b=yjnqidl4fAjbA1IhAlxhr5W/ECfVLMJnz2Ierlq8Lwq8y50ywrj1UfCM0lvzpJ4sZdRVDZ
+	W3scnfcJzoeQvAcXRXIfOcfmFJgDhZgIs3P9pdYLyanX+avmATX2nvm/MGBAljk2Te3vOp
+	mRbT4d87g6PKEGzqrSdfh0hrhFkNGAWdBbLrEzAvfMjmzACGJVXbFK0QbLMqXDYx785Avp
+	bdrgQKimXLaE6om+a58OwuiZL07bgOdfOBFQaxytAggm2KUq2ALArXYvjcSRro8/2Pc1Xi
+	FAh1PplYqn1u52qKx6+YM9BtWQCFapJLJFyBEUCh01AAqXSHRb9/9cLtMzzXAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1774472561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+bUy/E5OiYj4aWK3bmB4/FAGi3LnIZH7GVH1QKUs9JQ=;
-	b=vtBU1FTIhWz942b+WIghkHhiYRvbUTvPWpiaUxys1No8HaAdG5mdhzrtwVf+nUjmOwX+3w
-	9jU+YAqPL148s/V5X9PIOTx1neO+ADwqafCTOzPFORl8+RzsMxSbdf/pMHzgZex4Kx0HUz
-	G0c7w2PTB0QkGJQHbNfEnc6qM0B18pY=
-Message-ID: <6638c874-8472-4383-bf83-21c5b632e73e@ixit.cz>
-Date: Wed, 25 Mar 2026 21:17:31 +0100
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=OH8COS2pCIjBs8hij3fLubn5K83F6iOpok5M1DQoARo=;
+	b=wmP/XVxmngHY+JS11NS3jW+8m5oyCvntfezWmXyArCmv8l1KU26uEYhPqpZOkN6n2mbOt1
+	DM9pZMbayy3C5Zn3nYd/t4TUi9hgpJP+xRz2k6uvHyAPn/M+9PwpEXI45c5LPXt6Z2cqKi
+	LOtqzBKZArBinXR3oeQ3rgaSU20axH/3/g+/Qa/CsLFeQoiJWZJ1v2sjwj8HJ2Ugojsfb2
+	YSYF173bRDdHaKeHnyMujosaDUAw21liNYsNgVO84E+zaGympenohPrw/6ECL+o7QsGJaj
+	ypT+ePkbdc6m1J8JQweUEcl5p6ykyHQiABsvfSiuzJ79B5ddbCZPiCbhVYyeKg==
+ARC-Authentication-Results: i=1;
+	rspamd-db964497c-g7vbt;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Bottle-Wipe: 296c16f64cb0b399_1774472563407_200871386
+X-MC-Loop-Signature: 1774472563407:3782653531
+X-MC-Ingress-Time: 1774472563407
+Received: from fr-int-smtpout25.hostinger.io (fr-int-smtpout25.hostinger.io
+ [148.222.54.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.3.148 (trex/7.1.5);
+	Wed, 25 Mar 2026 21:02:43 +0000
+Received: from [172.17.0.2] (unknown [180.253.44.220])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fgzrB1BDLz1xpk;
+	Wed, 25 Mar 2026 21:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1774472557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OH8COS2pCIjBs8hij3fLubn5K83F6iOpok5M1DQoARo=;
+	b=VKqdalQr8k1J7BL3fktoyk+cX58ZCd/7Lz87OZTmG+Xi8L2lNUbxNNo1e0N504AG3TRc5O
+	HwkquOCOwIzYUXBtha4pG5nbkNqAqhEm/WELvsWbFJIp+stse2xRPkNeMr9qiYW44Ta7Wl
+	KTtzZJ6oY7/yKOgG7UNxamjU0TxuUVawS2+ZQJ28NcE3+9iRqAoIkXM1o1sVTaa1M+N+V1
+	RgmVoNL6io8nqtT3om29wE1OM25c//rmn5h6cOiNplpMmLUnbnSKzkLcKe3bTrVR8GC6zc
+	mjmTPeCMCX2JwPL0VBrK1DehHZABR/BFvMLGhBGLNyN0LMjLLUuTbefVkPhH2w==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH 0/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
+ channel labels from DT
+Message-Id: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Alexander Martinz <amartinz@shift.eco>
-Cc: Petr Hodina <petr.hodina@protonmail.com>,
- biemster <l.j.beemster@gmail.com>, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, Rob Herring <robh@kernel.org>,
- oe-linux-nfc@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>
-References: <20260324-oneplus-nfc-v2-0-3eef052c9bc6@ixit.cz>
- <20260324-oneplus-nfc-v2-2-3eef052c9bc6@ixit.cz>
- <9d9ec994-c954-445d-97b2-772614d66f35@oss.qualcomm.com>
- <041766dd-422e-40e1-9e5d-c220580871f5@ixit.cz>
- <a0da2236-27b3-4491-862a-457a03cb4c5e@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <a0da2236-27b3-4491-862a-457a03cb4c5e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADBNxGkC/x3MSQqAMAxA0atI1gZqFaeriItoUw040YIExLtbX
+ L7F/w9EDsIR+uyBwLdEOY+EIs9gXulYGMUlgzW2NqUt8NpbVUU9yc240cQbVg155xtvauoghVd
+ gL/pPh/F9P55ww49kAAAA
+X-Change-ID: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774472553; l=1433;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=wACdQNI+8zAec/s3V3rt5YY4G202YVIBUqhgbpq2kKs=;
+ b=ngiU1utpjKX9QkjYMT7YkL/wUgt/0RSA9kG2krG7tk3hEMlcX7VAA1wqk9EOQuWa7SqrU7ETQ
+ QPc5aZ3y/XxCaN0nBCxgTOL0qNLNWTSsy7AkUXPqbfR83Un+3FXBSQa
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Wed, 25 Mar 2026 21:02:33 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=UN2PHzfy c=1 sm=1 tr=0 ts=69c44d6d a=9XgiG0qChrIWxZZBWkq1Wg==:117 a=9XgiG0qChrIWxZZBWkq1Wg==:17 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=wxLWbCv9AAAA:8 a=zjR9frvayTJ3PP2CzHgA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-CM-Envelope: MS4xfA7a2X59ChSMD813BX2eR1odEZ2qEOMwPOVe0DQZDcCg2f/jysaAd1GCL2jeNExy4PzxZ8mcVyGujDtHwKMavW9mdtXwEWqWxGa1riumiOfHYCwh0RJ0 bzY1vovyWT3+cM7a8Zk+AzsQZALioXLQnR895C7L6kKZSTkGv+qk9jwu3KtMHnrFehwOLacczz/dvqGWNs4AMR6jSx/q4RzhjjCOYRk2eolkCYC3r/7QM66a qxm7t5rp90ccnPC9SvYXOYVCUjmPLr9ixpI6g8DD0XFqKKKj5/DQltz2w6B8H010ME3WTUcg3GS16saIZ/JVAq7PTNWkk1akU4EO65H0jph3vw/rDEKmcrMc NpRNIb/A/kucF6ODvSwZ3laTdibNR+zq4eRw0cOU7bLjKtr04ehl+OijsdutgyTnjwmTO5dQu9dHovL1TJsOJzBkuhhfY5ogB3NmO99s2OOCni0hWgS0pS/K qXFyetOMQc5kiEQ69eQRloJK7LJqrwswThZxRZgwU26yg+t1P9xNC+fyNbz3TVqNYUzqXIMSePLqbIwR69b/fMSyEAgTzf0ewXtxMeKaLKHiPVPCGR01kyFf wX4uQP2UUWdYqavRNO8aw3Dv7MScSthZqFp8qFiMiyMQIkx4oTa4l5+eIeK4D005/aA=
+X-AuthUser: linux@smankusors.com
 
-On 25/03/2026 12:20, Konrad Dybcio wrote:
-> On 3/24/26 7:08 PM, David Heidelberg wrote:
->>
->>
->> On 24/03/2026 14:12, Konrad Dybcio wrote:
->>> On 3/24/26 12:20 AM, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> Definition of the NFC.
->>>
->>> "meh" commit message
->>>
->>> [...]
->>>
->>>> +    nfc_enable_default: nfc-enable-default-state {
->>>> +        pins = "gpio12", "gpio62";
->>>> +        function = "gpio";
->>>> +        drive-strength = <2>;
->>>> +        bias-pull-up;
+This series adds support for reading channel labels from the device tree
+in the the Qualcomm PM8xxx XOADC driver, along with the corresponding
+DT updates for the PM8921 PMIC.
 
-               bias-disable;
->>>
->>> Are you sure about pulling up an active-high pin?
->>
->> I'm not sure, but downstream does it (and "works for me"). Maybe Alexander would know more details here.
-> 
-> Would changing it to bias-disable also "work for you"?
+Tested on Sony Xperia SP (PM8921):
+> cat /sys/bus/iio/devices/iio\:device0/in_voltage7_label
+usb_vbus
+> cat /sys/bus/iio/devices/iio\:device0/in_temp12_label
+ref_muxoff
 
-Yeah, works for me. Should OnePlus 6 do the same?
+This patch was originally part of the larger series addressing the said
+driver improvements. As the calibration fixes are not yet ready, the
+label support is split out to allow independent review and merging.
 
-Looking at OP6 datasheet, there is no pull-up/down on 12,62,nor IRQ 63.
+Changes since original patch:
+- The label is now read from the platform description (device tree)
+  instead of the internal datasheet name.
+- Link to original patch:
+  https://lore.kernel.org/all/20251028-pm8xxx-xoadc-fix-v1-1-b000e1036e41@smankusors.com/
 
-David
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
+---
+Antony Kurniawan Soemardi (2):
+      ARM: dts: qcom: pm8921: add labels for ADC channels
+      iio: adc: qcom-pm8xxx-xoadc: add support for reading channel labels
 
-> 
->>
->> David
->>
->>>
->>> FWIW TLMM subnodes are best sorted by pin index (although the file
->>> currently doesn't really do that) as per dts coding style
->>
->> I assume when I group the -pins into -state it doesn't apply anymore? As I don't feel having pins relevant to one device / subsystem all over the place is extra clean.
-> 
-> Krzysztof?
-> 
-> Konrad
+ arch/arm/boot/dts/qcom/pm8921.dtsi  | 12 ++++++++++++
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 26 +++++++++++++++++++++-----
+ 2 files changed, 33 insertions(+), 5 deletions(-)
+---
+base-commit: c612261bedd6bbab7109f798715e449c9d20ff2f
+change-id: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
 
--- 
-David Heidelberg
+Best regards,
+--
+Antony Kurniawan Soemardi <linux@smankusors.com>
 
