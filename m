@@ -1,157 +1,170 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2299E3CC9F8;
-	Wed, 25 Mar 2026 17:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156093AA4F1;
+	Wed, 25 Mar 2026 17:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774460381; cv=none; b=jqqA43up+RhUJN4RK+Y4uR2eUm3vESg0X60Ig3UDDjpPndDXni58WtDfvnmjGDb3xlEvuzqB+B71RNvpELI1jriE+3CGlQP0/EAo28gCzvSsf2EHjB1iaPLR/T7Uivs5p3IiqmqX8FAnJdVz/NwGNu4WZpyNCXNMbvK/RWeS5q0=
+	t=1774461438; cv=none; b=Y9Vu7U3MMv+d2d5BJfz3fvxXNas/4PciHu0ui/LeoRLwR1cOlRK1b9ax/LM0vISYIhiXducMuvvkPgPcpdgnbPfCVS+d0odPlQeNwb7UOB52s5cVW7JgRpbbhBpQxasqjHs3zS97LpnpFJqew+vmOR98F5bNAbGISex4+bS3AdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774460381; c=relaxed/simple;
-	bh=U1CClbbYMV3aDRX/EeYBmhygOq7XX1V8RT7YNZEpQ0U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GDyW6jqBCG5P+EZgNLEJCMN6hVFFsgOppEMK44m+T5IA2rzMDmnu4d3UIdQKAX+jkqhiZuEZaQn6i7/OLU+YR24DiMN+valKcusHn3Dz9rusx8Xs48f4BiJ6oZ2Ddd1WF6OS4WJLtXk8DfG3r7Xr+8Mad00B9FbVZ/hKL5iOO7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Jv+70GcG; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1774461438; c=relaxed/simple;
+	bh=SRtdPBa0tcNCzl+HO0BObCvLUHh2UjsIHIIIQfNSZlI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=G1dF474JEvq5wPhcs0VZ8rrh7NCQ87y0PbPdY958Pl8/YQrXCvazYl7zW+VoIXpIbe8dpZ7cfkVjPaZuGtZGVwiGOqSntoD87LpCN2iZgo8ytFp1HIxy6KPlMUBv6mkWabFkJASylBqaQDpTwunftVQ9nEDaZjXxh5VuNXyvX2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbWhKFgr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Jv+70GcG"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D057653400DE;
-	Wed, 25 Mar 2026 18:39:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1774460374;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WmUIEtW5+eXkmHyv6fj0xD4LEO3YM6Y6FsgaI2ESrFA=;
-	b=Jv+70GcGKOM3rOK39+5T7uC+XF5901O5ly5/cEBZINaw2aiAPIhzJuh0/pTOHV4dF22s8c
-	zSyM8y1LA9EeW90FiTvpUsY2Lw58PjmTMJewJXHucGl21qVPehrlDNTYU7T6xdFxYukOhE
-	u0UidhPpc2o38pzzwwROQQO4Iv2XKi4=
-Message-ID: <323d5570-ae3d-4083-bbc8-8ce2ef53a34c@ixit.cz>
-Date: Wed, 25 Mar 2026 18:39:32 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbWhKFgr"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CB3CDC2BCB0;
+	Wed, 25 Mar 2026 17:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774461437;
+	bh=SRtdPBa0tcNCzl+HO0BObCvLUHh2UjsIHIIIQfNSZlI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=EbWhKFgrWvOyu1Bkls+wkgIu5jN63+7sCO7rwEl6dzagOTLNt3QI/0jXXjP3xqXVG
+	 TPP1iPH1EO59Q8w7Nl0Xy2jWdTaKpBfkM85sFnTVgypGKFkIb+FWr/f0gz4RcHrQBS
+	 aTArQYepo5Oc9kfzfOH2Q3dfOmZgB5U3RTfhfQ6XkQOqvT8sryJfgxjzgqoVLsvpZs
+	 hpa4wyvFYwR9BwV2RddUVsuOGg5TXwA5xLfP17ErG0d/m5rY+eNWlD7Xby4cwfEqm/
+	 kDOTxNakE37AWHBHB4Lh7NXwg3JCq2EPsOYJ2UZWAEABjz/upaOEMZIb16Gal2UuL+
+	 WMYFGCzUevT4w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8AE6109C052;
+	Wed, 25 Mar 2026 17:57:17 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Wed, 25 Mar 2026 18:57:16 +0100
+Subject: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap QMI
+ requests
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] ath10k: Introduce a device-tree quirk to skip host
- cap QMI requests
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Paul Sajna <sajattack@postmarketos.org>, Amit Pundir
- <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
- devicetree@vger.kernel.org, ath10k@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260325-skip-host-cam-qmi-req-v3-0-b163cf7b3c81@ixit.cz>
- <20260325-skip-host-cam-qmi-req-v3-2-b163cf7b3c81@ixit.cz>
- <d6pv62kc5zyqite7krm65vbtlqnsc3v53rlrtilchyk5c7uad2@iu4yaw2ksr65>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <d6pv62kc5zyqite7krm65vbtlqnsc3v53rlrtilchyk5c7uad2@iu4yaw2ksr65>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
+References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Paul Sajna <sajattack@postmarketos.org>
+Cc: Amit Pundir <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org, 
+ devicetree@vger.kernel.org, ath10k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3364; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=UTkKBACGLvaXcmRbJw5uCHiS4miIsN2vwhwdC9DQ5n0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpxCH78K9ly8lE2lWicWxBVkBFyYWU04No+j2Jp
+ qVgJGG89FKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCacQh+wAKCRBgAj/E00kg
+ cnP1D/0atIwyGIZK7+wVOOqpa3UaZtclm1FJLcJIQpZ5fPRlUvXpvInUN9KAOLwzDy29m3b9VWf
+ /osir0ogyljci6mawtR+bRGu3Ms1Ecvt/l980YfVrVAkPiFUdADdwA9lYPoxQuLSbvO9BZIxnH2
+ sUlVHEGaZoZ6K8M8dqP3jlRDwXPO1rn/JKNKw+ycc5Jvin1NhS6uT2PQc9hWXbFDZXnzBTwoeIY
+ 9x7PK4VpcPMDvipLkwilkJmUtPMK+hZ3+ikNJY7hFy6srUNLRqja8XS+IiA5V2V41U8h4uw/m6M
+ aN+MGS9i2ornGL7s9bmrYfW656w+Sn52Nq2bixIeF5pgZtYt0QBvZq8tWZwxISlmL/9Cd8moNjR
+ 1OofbzQ8sAdX654u3jGYrkWUiqdk2gFUAeQgs4bbJBLa4DbViRAP7DlNkxbW1Tc0t9ChmOEC4Hw
+ pVyaJVShcs2sAPbwts+pTaWkDASlnLV/vxYzg1akal7mv/xrH1uP1Fn9TwZ2M8LWf4frO4DEnHQ
+ 7I9d9W7oZ0tH4qEv0qFT86XDLnQKR/AMHUO0hyc1x5+waf0u4myJ+z/tDkscYAXwDYsUH0CGIW3
+ MOXvPh0CQkem9Mrvz1PiLheo2mjzxq97NZj6Xq8T6XZrNqixqXHZvIqeCzUrQ2C4AfFUPRJJ761
+ K89RaYQ42ci4BbQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 25/03/2026 18:15, Dmitry Baryshkov wrote:
-> On Wed, Mar 25, 2026 at 05:41:13PM +0100, David Heidelberg via B4 Relay wrote:
->> From: Amit Pundir <amit.pundir@linaro.org>
->>
->> There are firmware versions which do not support host capability QMI
->> request. We suspect either the host cap is not implemented or there may
->> be firmware specific issues, but apparently there seem to be a generation
->> of firmware that has this particular behavior.
-> 
-> It needs to be explicit that this happens _before_ firmware-N.bin and
-> board-M.bin loading. As such, you can't add a quirk to the firmware.bin
-> (a standard way to handle firmware issues).
+From: Amit Pundir <amit.pundir@linaro.org>
 
-Ok, let me send with updated desc :)
+Some firmware versions do not support the host capability QMI request.
+Since this request occurs before firmware-N.bin and board-M.bin are
+loaded, the quirk cannot be expressed in the firmware itself.
 
-> 
->> For example, firmware build on Xiaomi Poco F1 (sdm845) phone:
->> "QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
->>
->> If we do not skip the host cap QMI request on Poco F1, then we get a
->> QMI_ERR_MALFORMED_MSG_V01 error message before loading the firmware in the
->> ath10k_qmi_host_cap_send_sync(). This error message is not fatal to the
->> firmware nor to the ath10k driver and we can still bring up the WiFi
->> services successfully if we just ignore it.
->>
->> Hence introducing this device-tree quirk to skip host capability
->> QMI request for the devices with firmware versions which do not support
->> this feature.
->>
->> Suggested-by: Bjorn Andersson <andersson@kernel.org>
->> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> 
-> You are sending the patch, but it misses your SoB.
+The root cause is unclear, but there appears to be a generation of
+firmware that lacks host capability support.
 
-Oh, sorry bout that.
+Without this quirk, ath10k_qmi_host_cap_send_sync() returns
+QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is not
+fatal - Wi-Fi services still come up successfully if the request is simply
+skipped.
 
-checkpatch.pl could spot this kind of an issue :P
+Add a device-tree quirk to skip the host capability QMI request on devices
+whose firmware does not support it.
 
-David>
->> ---
->>   drivers/net/wireless/ath/ath10k/qmi.c  | 13 ++++++++++---
->>   drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
->>   drivers/net/wireless/ath/ath10k/snoc.h |  1 +
->>   3 files changed, 14 insertions(+), 3 deletions(-)
-> 
+For example, firmware build
+"QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
+on Xiaomi Poco F1 phone requires this quirk.
+
+Suggested-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ drivers/net/wireless/ath/ath10k/qmi.c  | 13 ++++++++++---
+ drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
+ drivers/net/wireless/ath/ath10k/snoc.h |  1 +
+ 3 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index eebd78e7ff6bc..e7f90fd9e9b83 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -808,6 +808,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k_qmi *qmi)
+ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
+ {
+ 	struct ath10k *ar = qmi->ar;
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 	int ret;
+ 
+ 	ret = ath10k_qmi_ind_register_send_sync_msg(qmi);
+@@ -819,9 +820,15 @@ static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
+ 		return;
+ 	}
+ 
+-	ret = ath10k_qmi_host_cap_send_sync(qmi);
+-	if (ret)
+-		return;
++	/*
++	 * Skip the host capability request for the firmware versions which
++	 * do not support this feature.
++	 */
++	if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags)) {
++		ret = ath10k_qmi_host_cap_send_sync(qmi);
++		if (ret)
++			return;
++	}
+ 
+ 	ret = ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
+ 	if (ret)
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index f72f236fb9eb3..3106502275781 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1362,6 +1362,9 @@ static void ath10k_snoc_quirks_init(struct ath10k *ar)
+ 
+ 	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-quirk"))
+ 		set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
++
++	if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quirk"))
++		set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
+ }
+ 
+ int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index 1ecae34687c21..46574fd8f84ee 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -51,6 +51,7 @@ enum ath10k_snoc_flags {
+ 	ATH10K_SNOC_FLAG_MODEM_STOPPED,
+ 	ATH10K_SNOC_FLAG_RECOVERY,
+ 	ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
++	ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
+ };
+ 
+ struct clk_bulk_data;
 
 -- 
-David Heidelberg
+2.53.0
+
 
