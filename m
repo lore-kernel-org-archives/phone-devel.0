@@ -1,113 +1,162 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C9C3ACA42
-	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 06:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACED3B38AE;
+	Thu, 26 Mar 2026 07:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774505113; cv=none; b=foymY1cBmrV4oIdDNRubfRW3MB4bwP5b5I1ojz8z1KdDGIW2k6pTxcl/6MTiF/NJECPjV2eytlsBW9sTmKbYfiWB9mNIvdXD3ine+cifhZjWJSMIOE3B89GcLcaEeF6R6hxoIj5XwNscc7/Qxp1yzI8iHRrZ0PlsfiyuOn5zz0g=
+	t=1774511853; cv=none; b=R9Xs8N9ls8+9I8fYhlA9LA9ajwMjiaBve2EEMUraNly5HATZjSUviUdvFUzhDbinDYB0d0IL5w9fZhshWNVZf0WxhKH1uvgSn1/hbcHB91C++rTSn/LvXF05OqXcx11SKqecDPyLdKBsH+3HxuWOu4cmkLUlIb24GUqqkw8Jiw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774505113; c=relaxed/simple;
-	bh=qNFpsTzbZWFFsE9iGPhAqreCH10Wgsp1S3A+JKsN4UE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dS6Nrt2EZ3GZh3DvLKJuTtgwDcH1I7A/+cUWCEfh1CxDABdizeoM0t0afwHY9ox1zJOFjpK8Y6JA6kAD0jx0Z+0ySrrvu8pOH76KKWYt+FPCq8f1wVDcd/aJqmp1FpXl7xizWxlM+QYrc+6qUo5cUHjI/gQe88B4RjOx8XJqaIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBvfFiws; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774511853; c=relaxed/simple;
+	bh=RlIM0MUSwd5wz+8XPIpqDDZrKwpihhE+hECNmip7gPI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Dt5SpCQnlJfj7gy6Mbc0kwv4lBVote4LX6Ih9I8jk69/Hz6nMw73JE48nQ60PrFUUDs4cMlG7YFhbR6L68kGMkxovqDPxPo4oP7l/RhB1sO2ouRap/AnKcwZ0zRoLC9gmcAF2by2P/TfZYdL6MBXuyYIXvmhAmoo8fGVYZ1A8ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7SHwOxr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBvfFiws"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so5547095ad.2
-        for <phone-devel@vger.kernel.org>; Wed, 25 Mar 2026 23:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774505111; x=1775109911; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=slX6PVa4cy3hgS68Dza9/DJkjU5Sh4E3O/3Ms43H/6g=;
-        b=gBvfFiws1D7nrr0969LU2ttOkRDtgN0BXXAg7NjMb1jnWTiv7SwpdNrVptgI4QHkeh
-         fgXQGXYgQVfLMCCRhsLdAiuvxtTmShQcFv4+owmBUkMnsEGItbmc/mkaquLahDJRLVxr
-         dtoMNXsr2B0gDHbUDBbfUDN0mpW1+EbSMOwz0IPY4uxEoOT6VfbhS2r2Q2oP5QuTjy/d
-         mwCqrhgFCg/bEpBlYpQqBqIQodsTnZk26HO+gvj4rpKqSanmg8wWJI0Dm9xL0I+hnkEd
-         VL2NVdMiPuNiK87ljI1RcbEaJLQP9eBZf8G1Ly5ndrbLtjw0cEY8D9fwsXlwrGHEF861
-         atnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774505111; x=1775109911;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=slX6PVa4cy3hgS68Dza9/DJkjU5Sh4E3O/3Ms43H/6g=;
-        b=KBoU2UF8pJP+DBkMSqNQ5K47YfjXArhHLRHZtBum1Fpu6iTt/m6nGXouHZSkAekbUv
-         Y5hxtaxNl3aDFhxnZzzCLMqnAVv5iqDNnlek9fia/hI7x7HgUQdfUe1KnfoBedLiQcvM
-         T2mjlMCyMWTWqfQr2MD5mM0Brb6tY684kW9WKqLs5h7SHJG2zsqP0g6oZWsFsRkEwaJo
-         LMQbrQPCpvu3V8uqRJdkl3T+CicCuPfQUdxb+46MHlxE7RfT4+2i0y/iWXJLZNGEMkxo
-         EZDSrKJJvheQlzXjgdv9MGF2/onkhpR78qsxnkW+3R0TkY74LXN1EhhY37Kbnz0ZK+jZ
-         lT+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUdraKBflJbHHQ1GjuaOQMWwlNMgOUm8OFNr6IeS3hokVDOzDjs9T7eIVxSFpl9WCe8oWSdDxwNa3ndDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8v9HbLDeSqHDCuDlq2oaFpfnGF1Vw+YkKbtVMlKjPf/LBFBxW
-	sFZY/Y+ay/jstgej0Wb107Rc5ajUUPxBYRkegJPpapY3GuwUUSsaAZCv
-X-Gm-Gg: ATEYQzzpn9NelUmPsyq2TrpH2kkrbW8D3iYQv8/ftBD/nphP/pa8yoTHNT7hZX9bAUM
-	L2FsLcgmqzfBi2WMstMAl3btbvPl3M/Jhx0ZhVah7Fz/N9RTSHsF1tFZOGEPAAK8j+PNua+je41
-	dUkAk8QYD+3NWzjRywRo7YC92LBh4Q63HhXY5TQ8QwZ3EYEkv4EO4tvFMOi4P95q9iullG61s+z
-	klYYnh4zipYfKhPhiJDT6KbR1955dQlkz3fUegm6EIAG3hKR4Nzsy2JRbRwXDGgFi4Fkt6ym2C0
-	msNltvczBifxDPTzt188otWq8GRBSyrKrbU5leNVtpYAslpvGyZU7da65sTbJ59UWH92bNYFGxJ
-	5xzgrW5dm/CWafQCvzxoQZbs1qC3azNv+b/dxcPHK0uDEJEVVknz/Bd9kMqFyfj8vnklUeV8oR1
-	bIL299wlogJ5S3Zc36QzM1
-X-Received: by 2002:a17:903:2f4f:b0:2b0:41eb:165e with SMTP id d9443c01a7336-2b0b0ac5e1cmr75649075ad.38.1774505110564;
-        Wed, 25 Mar 2026 23:05:10 -0700 (PDT)
-Received: from ArchLinux ([43.226.30.138])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b0bc7afad1sm21051385ad.31.2026.03.25.23.05.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 23:05:10 -0700 (PDT)
-From: Biswapriyo Nath <nathbappai@gmail.com>
-To: Sean Young <sean@mess.org>
-Cc: Biswapriyo Nath <nathbappai@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Martin Botka <martin.botka@somainline.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 0/7] Add vibrator, IR transmitter and USB-C handling in xiaomi-ginkgo
-Date: Thu, 26 Mar 2026 06:03:58 +0000
-Message-ID: <20260326060402.16021-1-nathbappai@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <acRdOmHKQmBp-RSd@gofer.mess.org>
-References: 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7SHwOxr"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BF323C116C6;
+	Thu, 26 Mar 2026 07:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774511852;
+	bh=RlIM0MUSwd5wz+8XPIpqDDZrKwpihhE+hECNmip7gPI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=P7SHwOxrRy2qbwV51TFmQT47oevjRaSaRZ38/VBFqLvc7EPEo9xyJG1Uzv2oPKxCD
+	 EvWHN4w+D1AzpZwmVUlnmqBmrfjgcaCYibN51ut/VKN8pkMaZtB8h27ftrbExy57Q0
+	 YorJF3eI3cznHWKdRco6+7f+nKQyLJvFY/vBLhiB6iLtf8Z3/njf+jZnM0kkJIYAN1
+	 zVwBDRKDPmUkernKsiKGukyXbN/5nSZ45eWxUeH1U/WiL/vNFxW22h6enGxS9QR/1w
+	 0MxSW1hr9yA2HvXcoyxJGYDDhrvURQMqR6sGlCW++S3R+7GhOT3gdJb6H2ZKOwq8c9
+	 4ZjKInI6rJFUg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACFCA106F2E9;
+	Thu, 26 Mar 2026 07:57:32 +0000 (UTC)
+From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
+Subject: [PATCH v3 0/3] Samsung Expressatt: Camera Flash
+Date: Thu, 26 Mar 2026 00:57:30 -0700
+Message-Id: <20260326-expressatt_camera_flash-v3-0-e75e5d58990f@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOrmxGkC/4WPy2rDMBBFf8VoXQU9bLkypeQ/Sgmjh2PRKG4kR
+ SQE/3tlZVFvSpnVHWbO4T5QtMHZiIbmgYLNLrr5XAJ/aZCe4Hy02JmSESNMEE4EtrfvYGOElA4
+ avA1wGE8QJ0y5ph30LesBUPkuV6O7VfLH5zMHe7kWQXoukV8xVTA0b4XfUUa6DR+n+aqnL3vHm
+ eIybdsqyXotR74/enCnnZ79++pSEC0uwbs0NFnsqESrcnIxzeFeu2Vanf/WKCqCFZVSjL02ozG
+ /qsrMbMOhr39zWOF0mikJgnGj1ZazLMsPaB6EDXkBAAA=
+X-Change-ID: 20260306-expressatt_camera_flash-13c15a7427aa
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774511852; l=3372;
+ i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
+ bh=RlIM0MUSwd5wz+8XPIpqDDZrKwpihhE+hECNmip7gPI=;
+ b=zbdwGQMdwTftPx42S7rTi4MPfe2+CYew1vD4HdwzXJiO6y16XrYpftcKvYRpJEiv2dkXaxRO/
+ rmGccPAbWtyBFvtr0rcTlEfdCkM1b1pNLzUAfaFIqGyJmtq2wNaznid
+X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
+ pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
+X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
+ auth_id=211
+X-Original-From: Rudraksha Gupta <guptarud@gmail.com>
+Reply-To: guptarud@gmail.com
 
-On Wed, 25 Mar 2026 22:10:02 +0000 Sean Young <sean@mess.org> wrote:
+This small series adds camera flash to an existing similar mainline
+driver and adds it to the Samsung Expressatt's DTS
 
-> On Wed, Mar 25, 2026 at 06:07:23PM +0000, Biswapriyo Nath wrote:
-> > This patch series add support for various components in Xiaomi Redmi
-> > Note 8.
-> > 
-> > Most notably:
-> > - IR transmitter
-> 
-> For the IR stuff:
-> 
-> Signed-off-by: Sean Young <sean@mess.org>
+// Tests
 
-Hi, thank you for the review. Could you please add the trailer to the
-specific patch. Otherwise, b4 adds the trailer to all patches. Also,
-do you mean Reviewed-by or Acked-by tag instead of SoB?
+// # Navigate to LED
+sudo su
+cd /sys/class/leds/white:flash
 
-Thanks.
+// # Should stay at dim brightness
+echo 1 > brightness
+echo 1 > brightness
+echo 1 > brightness
+echo 1 > brightness
+echo 0 > brightness           # LED_OFF
+
+// # Max Brightness
+echo 50 > brightness
+echo 0 > brightness           # LED_OFF
+echo 99 > brightness
+echo 0 > brightness           # LED_OFF
+echo 1000 > brightness
+echo 0 > brightness           # LED_OFF
+echo 100 > brightness
+echo 0 > brightness           # LED_OFF
+
+// # Should increase in brightness
+for i in $(seq 1 16); do echo $i > brightness; sleep 1; done
+echo 0 > brightness           # LED_OFF
+
+// # Test flash strobe (rt8515_led_flash_strobe_set)
+cat max_flash_timeout          # check max
+echo 200000 > flash_timeout    # 200ms
+echo 1 > flash_strobe          # strobe ON → brightness_commit + timer
+cat flash_strobe               # should read 1, then 0 after timeout
+sleep 1
+cat flash_strobe               # should be 0 (timer fired)
+
+// # Test manual strobe cancel
+echo 1 > flash_strobe ; echo 0 > flash_strobe          # immediate off
+
+// # Check regulator error handling
+dmesg | tail -20                     # look for any "failed to turn off LED" msgs
+
+Downstream reference:
+Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/drivers/leds/Makefile#L51
+Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/arch/arm/mach-msm/board-apexq-camera.c#L591
+
+Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+---
+Changes in v3:
+- DTS:
+    - Renamed and reordered nodes
+- Driver:
+    - Use regulator_is_enabled() instead of reg_enabled
+    - remove ent xor vin check
+    - remove rt->reg == -ENODEV check
+    - rename functions to reflect what they do and added ret's
+    - Fixed: LED was increasing in brightness when setting the same
+        brightness multiple times
+- Link to v2: https://lore.kernel.org/r/20260318-expressatt_camera_flash-v2-0-5c2b9a623dcb@gmail.com
+
+Changes in v2:
+- dt-bindings: Explain the hardware and not the driver
+- **/*: Use vin-supply instead of unlock-gpio
+- expressatt DTS: Reorder pinctrl-*
+- expressatt DTS: Define rfs-ohms to a default (couldn't find
+                  information about this)
+- Link to v1: https://lore.kernel.org/r/20260306-expressatt_camera_flash-v1-0-b1996f7cdfdd@gmail.com
+
+---
+Rudraksha Gupta (3):
+      dt-bindings: leds: rt8515: Support single-GPIO flash ICs with vin supply
+      leds: flash: rt8515: Support single-GPIO flash ICs with vin supply
+      ARM: dts: qcom: msm8960: expressatt: Add camera flash
+
+ .../devicetree/bindings/leds/richtek,rt8515.yaml   | 34 +++++++-
+ .../dts/qcom/qcom-msm8960-samsung-expressatt.dts   | 43 +++++++++++
+ drivers/leds/flash/leds-rt8515.c                   | 90 +++++++++++++++++-----
+ 3 files changed, 148 insertions(+), 19 deletions(-)
+---
+base-commit: e9ec05addd1a067fc7cb218f20ecdc1b1b0898c0
+change-id: 20260306-expressatt_camera_flash-13c15a7427aa
+prerequisite-message-id: <20251205-expressatt-touchkey-v1-1-1444b927c9f3@gmail.com>
+prerequisite-patch-id: 8de4de7909722ccaf385c4224f25a623eaa72c28
+
+Best regards,
+-- 
+Rudraksha Gupta <guptarud@gmail.com>
+
+
