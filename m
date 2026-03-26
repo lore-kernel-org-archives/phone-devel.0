@@ -1,137 +1,96 @@
-Received: from cyan.elm.relay.mailchannels.net (cyan.elm.relay.mailchannels.net [23.83.212.47])
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D523139A04C;
-	Thu, 26 Mar 2026 12:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774527590; cv=pass; b=OEXgVmCziG7gUXDg9xkI5F25ypQhLzF4ny9EfLBE4723R2bO2YszhgChv/o9o2dvuZjqWAeFayVkwMSPCP8U9tUi5es4EYT+RVAOHVy7C4msLi59EXL/7QUjSIpOd5E6ZA5mROsGOQNlf/dt0BqkZFO/9scoJsD+vD0lky79qjY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774527590; c=relaxed/simple;
-	bh=Vz5S9H6Pby4OehJkIKEruyNQa86WKw88cdgPJyrBVwM=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=t3QXPOzeeU2mSRnmuymY5tEn+FtU1WkzVfv5Z5qf6qdgEEdwmqc9WrDV6flQxYhEZE9UXS2IuIqY1fSNNl/p+qQ/4GH8o8TatUDY3M7biS2MnLQ/DbGh+2Hpq0Xx6qAYUTwBBOXSFoMxv6zKKJvdogZsjDV0Aykx9t+RF0NUxak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=csuMkZ9D; arc=pass smtp.client-ip=23.83.212.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B352033065C;
+	Thu, 26 Mar 2026 17:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774547293; cv=none; b=ciA8qeu6c3MIJijFt51bpuE9YcywpPE1f3eObTSbD3UU9pue4/7S3+DhNPxz9vBU0yor5ZfKEqXsEhK/K48L8k10ei01Q9xCt+YVBBepBmayXKFFfs238Mjr2h2P+5dMukZ9/XGk2BCdpLzTjBLx8EeDUs69Y6CHfG/9c3liCZE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774547293; c=relaxed/simple;
+	bh=DTxED/e7umhg7+GX+gtMUVo3085Rfcc7YrPrEZ1eBrY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=KqBPJNWPojBL86pj8r+THr1a8nsuYjz8Ws2cYiVUzmR9HvwmiyQwsqLKPmGyGTTn2mZbn0kqx8aIdXGdym0nb2VvQvI0QX06h/lQmTu2+1ZXjMUdLB5xgC/sfihcDWsIQm91OJFyN5vrksfTxktZ7jTgmy+bXp2tHV1L4n8OA5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GpG6sHai; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=tK5XT8gl; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="csuMkZ9D"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 101134E1E60;
-	Thu, 26 Mar 2026 12:01:01 +0000 (UTC)
-Received: from fr-int-smtpout19.hostinger.io (trex-green-1.trex.outbound.svc.cluster.local [100.96.16.108])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 90FDF4E12E1;
-	Thu, 26 Mar 2026 12:00:57 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1774526460;
-	b=RHa03PlWrVDJ/85j0zUqDyMfNvYtMhq2SIz4mKQwxzJR/IE3saYfP1VEnKdHOmoiXN/cwS
-	zOPVpIEiePpyIKAo+CLrXpBK0/rFyAFAPZKBEyG/X5hIIHYRebrHM1MxYAn2UOiyG/HLZt
-	3jO24+bv+xdZf6F7GZwgdt9y+yW0W+dKZiuShgAa1iji4i0UyUPUUW3hyPGyIH8ojBBbrZ
-	khKuzdogHuhh/R/Wk6OVheFkIXlIV10fT7xoxJT/gBvIe4EwqmFQLtoaChn49277UNEhUP
-	1OTKPAxGrV4AJ7QI5I1688WyG1fq33PaePndycdEIGRgv/Zx46zLJYKbJq8Zgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1774526460;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WnrocUNggqvz3INtqivTHgtL/XlNGyk5luM3l6z3IRg=;
-	b=dVfs+qeTiJVbAsQv9imN6JTAwjIi+RHV4qI9Gge5vQVZ4bj0RYU3mfWNS57vAKELMkHuBq
-	p/CMW+Y2nC7hLEq8+Z4GzNniNs72sJTXgKXabxgGPUp2IoLifojzZ7MwhIZ0cbpvTMndv9
-	6NSd9GwubfBCWPo9PcKef/WXWVGHJnM5Fte4qvWrJeRE0xxkOQ7rg9ZOGMI32VW3xXbmlR
-	c79OmKxB74zohO0X0C7+dXFo+dmc/3zP3t7gUpBFyFXuFC8zMRElkg+H1QzOKjhpbHI48U
-	yvK62W11K8pvEH9tyKb9wreD6a4SeRo2kUe+Iq9KZLKY+0KG7/RebZ9AM+dGpw==
-ARC-Authentication-Results: i=1;
-	rspamd-db964497c-4fp6h;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Zesty-Interest: 7f38a29149175688_1774526460811_1763565449
-X-MC-Loop-Signature: 1774526460811:3013558152
-X-MC-Ingress-Time: 1774526460810
-Received: from fr-int-smtpout19.hostinger.io (fr-int-smtpout19.hostinger.io
- [148.222.54.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.16.108 (trex/7.1.5);
-	Thu, 26 Mar 2026 12:01:00 +0000
-Received: from [IPV6:2001:448a:502c:4ea6:f59a:8eea:dae5:9f6f] (unknown [IPv6:2001:448a:502c:4ea6:f59a:8eea:dae5:9f6f])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fhMmh2MhYz1xy3;
-	Thu, 26 Mar 2026 12:00:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1774526455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WnrocUNggqvz3INtqivTHgtL/XlNGyk5luM3l6z3IRg=;
-	b=csuMkZ9DeSB5Mn7kzz/JWo3ZtTdopKQ3wc7i+YUjubdzDfQGpMIdRdJll1gSqayO7VOOUo
-	JfgxDa7lXKDjdCY1sv6X2AlFt8KXNBNlsCpyGqLG4uHggkUrktNwvNxwoN1wE6QkYia8jd
-	qC2XRv8an6FMejIMn8KAqHdVW0cCzcXBedOCpCNZL5MOEUVCbR5jJjCEa44PYhmBumvuhz
-	oimLN4fzFZS0OaHRL2QzN0SiaGyqROMEZDWLTiqyZCoOrBNeQu01QUSFV49DdDokLaDEaB
-	nfW+DUccsXllYaXZdQ/4Ei2dE0EyMxhVJQ3hDC3x69XmwQrlEqDJ3BVPLOEA2g==
-Message-ID: <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GpG6sHai";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="tK5XT8gl"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1774547288; bh=TcWB/9vyD54+dFx1oHfTRCb
+	cspoYc7ZfLbCigZuE7fk=; b=GpG6sHaiG6SrHUIZqGpMcGlN+QXG/SdMAfzkdH6/pWf+nliAVA
+	cLkzBSCexOqjAeIc0JCvEEGOT6fwo/bzFzqb/6mAEnD3fNdR1+Yli2N2nZRAFYi07N/UgmyRon2
+	J1CQxFRlQQXci3kmjpRqE0w2hRSPij6UTO9hLixe3CEm+ZSG5taeyZ+z1Mu0y2unYja3K/qjolo
+	tg/E/TIN9nbwftq6GaMeW4v/JlYioN2Sx5jL8C8AZn+Gynvx77aArrUOmvm2ObE6hKPSEYcqTNR
+	7HG0wk6YUztU12EKhJaLMAhJBw+M9v1RS1EBGfrgQCfV0aohuG/IaLH/ewazqFh/vpA==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1774547288; bh=TcWB/9vyD54+dFx1oHfTRCb
+	cspoYc7ZfLbCigZuE7fk=; b=tK5XT8glwGmZjOacZ4juSdcmsuTwgWoF619oyzb4P+0AKZnpwU
+	/smzfuJcewTKfpLTMEGNC3srarWn3VfItKCw==;
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
- channel labels
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
- <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
- <acUIAh_r7mSfIiEB@ashevche-desk.local>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <acUIAh_r7mSfIiEB@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Thu, 26 Mar 2026 18:48:08 +0100
+From: barnabas.czeman@mainlining.org
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Biswapriyo Nath <nathbappai@gmail.com>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, Pavel Machek
+ <pavel@kernel.org>, Sean Young <sean@mess.org>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Martin Botka
+ <martin.botka@somainline.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-clk@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, kernel
+ test robot <lkp@intel.com>
+Subject: Re: [PATCH 0/7] Add vibrator, IR transmitter and USB-C handling in
+ xiaomi-ginkgo
+In-Reply-To: <9a61ad79-b787-4b83-b7dd-2ea36e7cea81@oss.qualcomm.com>
+References: <20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com>
+ <9a61ad79-b787-4b83-b7dd-2ea36e7cea81@oss.qualcomm.com>
+Message-ID: <cc0d9e1d8f85bf2b67df35b8d9c2110c@mainlining.org>
+X-Sender: barnabas.czeman@mainlining.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Date: Thu, 26 Mar 2026 12:00:52 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=ZbRPNdVA c=1 sm=1 tr=0 ts=69c51ff7 a=1IylDFeuS8XspTXaodopzQ==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=o-qGAwvgtZWI0aAfrXgA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfEJbGOOMJFcoSDip9GVhDzxy3RTdNLi2Pj75jTPWSN/LqpOUlqw30nxPqxINYmumlmZV09yvfURl/iz5uTi5v27joQfPArNaMKV72xu97lmprqHt7eNX 6cNvmQk68faXYMzN2jh9ucymnaoKWGB0Y99LenjoTze6jHscKYDtu3oVbsjTzAexKK/8eE+g71dQzpbYratRvQr3Sk1cQo6pnVxqGFktTTmheXT0l0O7OIRd e3Fa+6NENVm0r14LySe6rDwPACWWdR8WqUbLaWgTvEAQPmQAqGDtuENku0G4ii152UgEv/y48Pz49We12aN4SjDmdFLP86V64t1SWskKGkXcYM1q+I9FutVM sxzO2XNEwkkkKy92rOWpnz3okoSIA9rWyHmhzGz6MA0hpuyS0xj3kzAsQlJGqZMD73PcZBR68jgVAnHaNwNAPug8ITkstCsZfRW+SMKmab9fFml9hnHqqGZj 5r371m5PY6ZlDfAsfNTQ4aG/wXcwwRGS+F5NBD0S42NXWBf+7JAup+Ft80l/jKmEHquAAo3WIuWPYM6elGrx8WdDtbnKufs8BKUU2/zvOluIP4wR/orTm166 mGnyNYz3cIXGBgyHLPqhjSQIOqbaFs2suKQnhnPPKEtyGOUT/SblOnFc13u96xRncaBCH0wX0Ki2onyMKmaG9qA05Uu9Izwp0WUUDyxbg5dsHquMOQGwt3RN MTii9hQMCde6wr8oV4OCe8A9hHTZ3sBVmd7qlbhk+L0fMwSyEM21wi5IZiqJ5QoND8thTSQlH40=
-X-AuthUser: linux@smankusors.com
 
-On 3/26/2026 5:18 PM, Andy Shevchenko wrote:
- >> Tested-on: Sony Xperia SP (PM8921)
- >
- > Interesting, never saw this tag before.
-
-Oh, I just realized I misremember Tested-by tag as Tested-on... Let me
-know if it's not acceptable.
-
- >> +	if (!ch) {
- >> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
- >> +		return -EINVAL;
- >> +	}
- >
- > Isn't it a dead code? Also poisoning dmesg with this recurrent 
-message is not
- > good idea to begin with (the user space will have a door to flood it, 
-which
- > might be considered as an assistance to hackers to clear immediate 
-logs after
- > a successful attack).
-
-Good point about the successful attack hint! I was copying the existing
-code from pm8xxx_read_raw. Do you think those checks are unnecessary for
-pm8xxx_read_raw as well?
-
-Thanks,
-Antony K. S.
+On 2026-03-26 10:39, Konrad Dybcio wrote:
+> On 3/25/26 7:07 PM, Biswapriyo Nath wrote:
+>> This patch series add support for various components in Xiaomi Redmi
+>> Note 8.
+>> 
+>> Most notably:
+>> - IR transmitter
+>> - USB-C OTG
+>> - Vibrator
+>> 
+>> Also, fix some bindings warning as reported due to previous commits.
+>> These are tested with linux-next tag next-20260320.
+>> 
+>> Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
+>> ---
+>> Biswapriyo Nath (7):
+>>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Enable vibrator
+>>       arm64: dts: qcom: sm6125: Enable USB-C port handling
+>>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add PMI632 Type-C 
+>> property
+>>       dt-bindings: leds: irled: ir-spi-led: Add new duty-cycle value
+>>       arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add IR transmitter
+>>       arm64: dts: qcom: sm6125: Use 64 bit addressing
+>>       dt-bindings: clock: qcom, dispcc-sm6125: Add #reset-cells 
+>> property
+>> 
+>>  .../bindings/clock/qcom,dispcc-sm6125.yaml         |   3 +
+>>  .../devicetree/bindings/leds/irled/ir-spi-led.yaml |   2 +-
+>>  .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi |  56 +++++++
+> 
+> I'm assuming all of these changes apply to both ginkgo and willow,
+> which both include ginkgo-common?
+All these change should work on both, willow is a ginkgo with NFC.
+> 
+> Konrad
