@@ -1,120 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82B1312815;
-	Thu, 26 Mar 2026 19:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76437393DE8
+	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 19:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774551867; cv=none; b=L7XkQf1Mq+nxGpMH2mh/TF0ogsxJZKSl521jZOXYqlpHhcSQZGFvbCGkutatiHVJkAbbARNMWBnqHWu1sHkS8fATCnjhQpH9gZuujhzqSjRyRLaRyOmySAlhB2UVtRsJivMynn1uIU95cc9s2FtLfwXcU+ZPMhVbu19reUb5KkE=
+	t=1774554013; cv=none; b=oxBuc7jIcV4VBZEH/diZBHZpPTqPZCvWqoLXWx0bzuL+bKgZI4jsXKFl2hwJpGNz9Z9R7pt2Y57i2adeOt535O//fhAvqDAKRkpvoQ0rVNhFxMGMhV+ek/Mr5EUuiMdEAhZL++q9WjuyeNDHd5Mx8bs3HZZ9YlRJdwTKBVYbny4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774551867; c=relaxed/simple;
-	bh=2GdEkka0Rx1k7PnbHtzzL6iWygOPHt0EXermV7BBad8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G2+my6Kg8bw5ysT3eqpqDwsBVyWAXhtTbUGAqp6IH5CUw8ixb997dMBvDcjY63BLPgjThoQoMXHcfPXwEtarn6TTQnf/WaB0bXDMWhc19OkDeWbCQssfFxQ3xRfOuAQW06++Cp7+uz5BWehh31u0KmFxnlIddJxvnWdgavrXXt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6ExEklm; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1774554013; c=relaxed/simple;
+	bh=vrl0CXld5pnl3+j2iO7woriOvcxFLATcV9RLuYGwkcU=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=Uc4WxjZj8MiwoBT/EsGZilkWelau6ViW0Ca72dBVd5pG/7PTmqJlZ+6XB3tatAwrE1uigvDJRppXQ32dk7AWHVlvGVf9VGRVqVn/q35RXJPueAEOsRTc93TCC9mIxPYIMc5DvkswOXh2dSTIB6vj8WLhDHL1NiVL2uL1KLihrqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=XTH6vNZf; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6ExEklm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774551866; x=1806087866;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2GdEkka0Rx1k7PnbHtzzL6iWygOPHt0EXermV7BBad8=;
-  b=U6ExEklmbFeKybEin0xG7zKvQ13SNE+6WoFFy4MoczUqJ6iEPlb06MQG
-   OLOTyFUrRay5/mGYDal185MHCWmEg2OZGNERju76VBmr6xcEHQKSAnnlb
-   9ave1+qAdl5JiOANgdjaYEs2vHEUEVveu5tZoUbT6EvolLxSamIJTK9lh
-   rU/aBKcQCDylQgHP6lXcKsXk8FE8R+uWQXuCVgu4uv6iFZS44NgKJ1EaO
-   J+nMdShRv/PVH1u1EZ9V3Roq+hVmXt9jIKvA0ZlgJ8njOdpGiiSZS+cGw
-   AXWclUGfAEjpWXTj7B3EniQWcQ7LrAmREzU5Ut7Wl8/AZUg6fLWy9JZYt
-   w==;
-X-CSE-ConnectionGUID: tPfG/najRjypQ7j62Ra8vA==
-X-CSE-MsgGUID: o5kvUWc2QZ++FHA80pihSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74805631"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="74805631"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:04:25 -0700
-X-CSE-ConnectionGUID: dJEwYd7UR4OOE4MUQB2E2A==
-X-CSE-MsgGUID: V/RzEx+QQMm69OICDPV8uQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="225092187"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.216])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:04:21 -0700
-Date: Thu, 26 Mar 2026 21:04:18 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Antony Kurniawan Soemardi <linux@smankusors.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
- channel labels
-Message-ID: <acWDMg58qxyeM5Eq@ashevche-desk.local>
-References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
- <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
- <acUIAh_r7mSfIiEB@ashevche-desk.local>
- <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="XTH6vNZf"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1774553998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2sSZdOlH6LcaXmEulL+Z3vD5W8JNjS8vj1IOyQwqalY=;
+	b=XTH6vNZfTs+Rhn/5LbLqBySMN0ZX5pl6xsbTh9654tQcRAh1k+4nFg2w4G1u1qCntQiaZ8
+	A/R2MUis4bsWUAwdlxAgvsKMoCQTVTKo5FYZ+UF5W86+DpeBTmUVbgxC4++ZpZuZrgdUd4
+	CJEUl378fYQ+f+HtmI79PftGLkYVsggFhKDl/3JVteu3ZiYS8a22o8T7OP9KUtpDC4JYac
+	9CXVos/p6+ikPQVwciRBc6BdRnFiAKhP5CmwYb+nAvENQrNDTM6rf7qlh3ECM895NMgvQF
+	+ztY6H8YDr09klaAyYgCcmhSwrhKLlLhwgvTQs0BGGViqdjhMKM87IDTt2Ed8Q==
+Date: Thu, 26 Mar 2026 19:39:49 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Paul Sajna" <sajattack@postmarketos.org>
+Message-ID: <425dcdb501ed6ebb0e652c58ef2c56c78754884b@postmarketos.org>
+TLS-Required: No
+Subject: Re: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap
+ QMI requests
+To: david@ixit.cz, "Johannes Berg" <johannes@sipsolutions.net>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Jeff Johnson" <jjohnson@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>
+Cc: "Amit Pundir" <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
+ devicetree@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org, "David Heidelberg" <david@ixit.cz>
+In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
+References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Mar 26, 2026 at 12:00:52PM +0000, Antony Kurniawan Soemardi wrote:
-> On 3/26/2026 5:18 PM, Andy Shevchenko wrote:
-
-...
-
-> >> Tested-on: Sony Xperia SP (PM8921)
-> >
-> > Interesting, never saw this tag before.
-> 
-> Oh, I just realized I misremember Tested-by tag as Tested-on... Let me
-> know if it's not acceptable.
-
-You can just put it in a free text:
-
-  "The change has been tested on ..."
-
-...
-
-
-> >> +	if (!ch) {
-> >> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
-> >> +		return -EINVAL;
-> >> +	}
-> >
-> > Isn't it a dead code? Also poisoning dmesg with this recurrent message is
-> > not good idea to begin with (the user space will have a door to flood it,
-> > which might be considered as an assistance to hackers to clear immediate
-> > logs after a successful attack).
-> 
-> Good point about the successful attack hint! I was copying the existing
-> code from pm8xxx_read_raw. Do you think those checks are unnecessary for
-> pm8xxx_read_raw as well?
-
-Yes, I think they are not as the returned code should be enough to identify
-the problem. (For no such channel I would rather see -ENOENT, but we can't
-simply replace that in the existing code as it's part of ABI.)
-
--- 
-With Best Regards,
-Andy Shevchenko
+March 25, 2026 at 5:57 PM, "David Heidelberg via B4 Relay" <devnull+david=
+.ixit.cz@kernel.org mailto:devnull+david.ixit.cz@kernel.org?to=3D%22David=
+%20Heidelberg%20via%20B4%20Relay%22%20%3Cdevnull%2Bdavid.ixit.cz%40kernel=
+.org%3E > wrote:
 
 
+>=20
+>=20From: Amit Pundir <amit.pundir@linaro.org>
+>=20
+>=20Some firmware versions do not support the host capability QMI request=
+.
+> Since this request occurs before firmware-N.bin and board-M.bin are
+> loaded, the quirk cannot be expressed in the firmware itself.
+>=20
+>=20The root cause is unclear, but there appears to be a generation of
+> firmware that lacks host capability support.
+>=20
+>=20Without this quirk, ath10k_qmi_host_cap_send_sync() returns
+> QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is no=
+t
+> fatal - Wi-Fi services still come up successfully if the request is sim=
+ply
+> skipped.
+>=20
+>=20Add a device-tree quirk to skip the host capability QMI request on de=
+vices
+> whose firmware does not support it.
+>=20
+>=20For example, firmware build
+> "QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
+> on Xiaomi Poco F1 phone requires this quirk.
+>=20
+>=20Suggested-by: Bjorn Andersson <andersson@kernel.org>
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  drivers/net/wireless/ath/ath10k/qmi.c | 13 ++++++++++---
+>  drivers/net/wireless/ath/ath10k/snoc.c | 3 +++
+>  drivers/net/wireless/ath/ath10k/snoc.h | 1 +
+>  3 files changed, 14 insertions(+), 3 deletions(-)
+>=20
+>=20diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wire=
+less/ath/ath10k/qmi.c
+> index eebd78e7ff6bc..e7f90fd9e9b83 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -808,6 +808,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k=
+_qmi *qmi)
+>  static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
+>  {
+>  struct ath10k *ar =3D qmi->ar;
+> + struct ath10k_snoc *ar_snoc =3D ath10k_snoc_priv(ar);
+>  int ret;
+>=20=20
+>=20 ret =3D ath10k_qmi_ind_register_send_sync_msg(qmi);
+> @@ -819,9 +820,15 @@ static void ath10k_qmi_event_server_arrive(struct =
+ath10k_qmi *qmi)
+>  return;
+>  }
+>=20=20
+>=20- ret =3D ath10k_qmi_host_cap_send_sync(qmi);
+> - if (ret)
+> - return;
+> + /*
+> + * Skip the host capability request for the firmware versions which
+> + * do not support this feature.
+> + */
+> + if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags))=
+ {
+> + ret =3D ath10k_qmi_host_cap_send_sync(qmi);
+> + if (ret)
+> + return;
+> + }
+>=20=20
+>=20 ret =3D ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
+>  if (ret)
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wirel=
+ess/ath/ath10k/snoc.c
+> index f72f236fb9eb3..3106502275781 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1362,6 +1362,9 @@ static void ath10k_snoc_quirks_init(struct ath10k=
+ *ar)
+>=20=20
+>=20 if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-qui=
+rk"))
+>  set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
+> +
+> + if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quir=
+k"))
+> + set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
+>  }
+>=20=20
+>=20 int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wirel=
+ess/ath/ath10k/snoc.h
+> index 1ecae34687c21..46574fd8f84ee 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.h
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.h
+> @@ -51,6 +51,7 @@ enum ath10k_snoc_flags {
+>  ATH10K_SNOC_FLAG_MODEM_STOPPED,
+>  ATH10K_SNOC_FLAG_RECOVERY,
+>  ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
+> + ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
+>  };
+>=20=20
+>=20 struct clk_bulk_data;
+>=20
+>=20--=20
+>=202.53.0
+>
+
+Tested-by: Paul Sajna <sajattack@postmarketos.org>
