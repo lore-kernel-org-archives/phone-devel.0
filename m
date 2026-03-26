@@ -1,123 +1,120 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E853A1691
-	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 18:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82B1312815;
+	Thu, 26 Mar 2026 19:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774550501; cv=none; b=Qphe5ER5dfoNFZm2+cOdXAWUGV4UM8QaXqwJgFr8VKBlq2CPv6yVGtB4i2iO29t3GNneaURIc2O4CPRUMrRKLv2EwbZEnz+LPI0gQ/K5OMUOz9bMoGtFoieuUi+ZYNKgX3w0SFwRI2DH5/EnPXQBPqIIFWT0mydz5UghSkXU3CI=
+	t=1774551867; cv=none; b=L7XkQf1Mq+nxGpMH2mh/TF0ogsxJZKSl521jZOXYqlpHhcSQZGFvbCGkutatiHVJkAbbARNMWBnqHWu1sHkS8fATCnjhQpH9gZuujhzqSjRyRLaRyOmySAlhB2UVtRsJivMynn1uIU95cc9s2FtLfwXcU+ZPMhVbu19reUb5KkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774550501; c=relaxed/simple;
-	bh=bJ6aPe/Nui+QtwM6pXeCZFiQSEzOXhL5o526MBBhQg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y81EnO0Dx1mMKmWRyuCo7LnBTp12fbxubfsYMqlBBhzuQdJnwZOppdWCPdWFN57CZzxKGmW+Zj6KIS+LH92S4YVZzAohQMV2UjyYFdeVTK8SHKcc2Ve1SusIQw0Ho6inYREq+GQoOAijlCwJT9pljxL26d5mVUY9vd7AFP7S9U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0/avLhY; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774551867; c=relaxed/simple;
+	bh=2GdEkka0Rx1k7PnbHtzzL6iWygOPHt0EXermV7BBad8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G2+my6Kg8bw5ysT3eqpqDwsBVyWAXhtTbUGAqp6IH5CUw8ixb997dMBvDcjY63BLPgjThoQoMXHcfPXwEtarn6TTQnf/WaB0bXDMWhc19OkDeWbCQssfFxQ3xRfOuAQW06++Cp7+uz5BWehh31u0KmFxnlIddJxvnWdgavrXXt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6ExEklm; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0/avLhY"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c766a95a72dso954435a12.1
-        for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 11:41:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774550499; x=1775155299; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mwjCW0nYj9p4CO0/GU2nqORuahjWsn3xAn/vBQiDUkM=;
-        b=g0/avLhYWeUQAjbmFQB51pk4QoETWtzlA3Q0BknjGbf06jt/6R9vn4B3WQhXXLjZnZ
-         6SQaGWu7aEj6MWXJ7Kxz1a+uPvgWuhV7AV85G54CLZR7c4mqFqNbRJPZzrMvOfk+D3a8
-         hwyOO20Cpyzg4euDTEikpGe1V8t4dEqv0hsNQ7JmwsIoW2TI079ACg2e68YCtincfnhh
-         GDou0kXJodeK1I+cWrS39G2RMH74/lZScCrA759yMO6QKZYiOz3ZTgvVeYXVxyfKnhpD
-         pelNt5MmZVcNZbohGy8H6Nk0IOfcQ4uyhxg8hAyHN4qm4j62FffWbKzFymWQVIC3P12m
-         D3cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774550499; x=1775155299;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mwjCW0nYj9p4CO0/GU2nqORuahjWsn3xAn/vBQiDUkM=;
-        b=FLa2jNzhRdPepH6A0tHd1y5N0YwFRJhsJSV2Pz2Olfj/3Pb6tg73YzAeVWSUocnAEx
-         /7v9LcvJlwZhlkmUJf38VFC3Md8gEPzzJYONjVfhHpKWme4l+zdoVnuYojOPuhoLkOVE
-         k/ckQfzE++KEa6wco/gtHV/35e9tPmqyXjqdZ0ySlb7wAyeBshg3LKDCraFsn5OplyS5
-         Gc9ub2D/homiFnqf7QY+6CMgt7lJBo4OLR5yiRTsIa73T/08ziTml4XtL2+BF0QYPtBI
-         SofMZU2n5Jw4X8BthX6C8OxmTBIj+OSLt7bJUiyaLGq6vjohMMGdpXZMDyUaBqumTJw/
-         atig==
-X-Forwarded-Encrypted: i=1; AJvYcCXDDGKYiIg2vZMtlCViDMcek9dFDi0AwXtPr3Tp+09H9S9pyLGpkZ/kZbeYkbON0r2dRq5HzRfnfOXiAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxchd34S4WuI0hl6/Rut4Zbc9xJ0DNSO08Jw73YTlBgaAvEiqDb
-	DVYmLNqMY+66S7Ra1EQCNwf5ina6U6V0oeKyw4refZfWLKCioOVo5Cx1
-X-Gm-Gg: ATEYQzxAWI5S2ZdnG03uZIBhh6nmf7D1bVv6OTI+z65oixodtxUPr5Aui9vh8Xtshdz
-	N2X0KVAJRH5Pa3LXGnXZoHonPFV0qLkEfEt39GDmm5RQDiQq3WC7Df6NngTkShKESUCzxsYNXyM
-	1yAAN18ARk/gZoF4HN/M2cEBpg3MQTJjV1ONfYOsVsIsIk7Xgq5CwzU9HtkS6kxPquSjP03YYUz
-	4b2REpqDi2brTCrnJh25tGmrRj3CIsRA3P0T4Fnv+eYQB0cOSNTgfyfFiOy0707/5QEKwLipk0P
-	OBcfAJsu28LlfLG3RPZiWNaR0KgFceIsGy7dmQrVsLZEQ9tXidlMc4DOl6BMIVIbfS1pNS6rkJ5
-	hTeyWERqnk0311FUxNplS9dy0Y4BogSIxE8NXTukSCydlhYh5ICk9GenuZ4ngBmZvHVc00laqRE
-	5uww2gAwTcf6bxxIZPB31G
-X-Received: by 2002:a05:6a20:3d81:b0:39b:edcd:d936 with SMTP id adf61e73a8af0-39c4ab8beb1mr9569115637.16.1774550499135;
-        Thu, 26 Mar 2026 11:41:39 -0700 (PDT)
-Received: from ArchLinux ([43.251.91.119])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c76737f42dcsm2983400a12.4.2026.03.26.11.41.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 11:41:38 -0700 (PDT)
-From: Biswapriyo Nath <nathbappai@gmail.com>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Biswapriyo Nath <nathbappai@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6ExEklm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774551866; x=1806087866;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2GdEkka0Rx1k7PnbHtzzL6iWygOPHt0EXermV7BBad8=;
+  b=U6ExEklmbFeKybEin0xG7zKvQ13SNE+6WoFFy4MoczUqJ6iEPlb06MQG
+   OLOTyFUrRay5/mGYDal185MHCWmEg2OZGNERju76VBmr6xcEHQKSAnnlb
+   9ave1+qAdl5JiOANgdjaYEs2vHEUEVveu5tZoUbT6EvolLxSamIJTK9lh
+   rU/aBKcQCDylQgHP6lXcKsXk8FE8R+uWQXuCVgu4uv6iFZS44NgKJ1EaO
+   J+nMdShRv/PVH1u1EZ9V3Roq+hVmXt9jIKvA0ZlgJ8njOdpGiiSZS+cGw
+   AXWclUGfAEjpWXTj7B3EniQWcQ7LrAmREzU5Ut7Wl8/AZUg6fLWy9JZYt
+   w==;
+X-CSE-ConnectionGUID: tPfG/najRjypQ7j62Ra8vA==
+X-CSE-MsgGUID: o5kvUWc2QZ++FHA80pihSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="74805631"
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="74805631"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:04:25 -0700
+X-CSE-ConnectionGUID: dJEwYd7UR4OOE4MUQB2E2A==
+X-CSE-MsgGUID: V/RzEx+QQMm69OICDPV8uQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
+   d="scan'208";a="225092187"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.216])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 12:04:21 -0700
+Date: Thu, 26 Mar 2026 21:04:18 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Antony Kurniawan Soemardi <linux@smankusors.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Sean Young <sean@mess.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Martin Botka <martin.botka@somainline.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH 5/7] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add IR transmitter
-Date: Thu, 26 Mar 2026 18:41:24 +0000
-Message-ID: <20260326184126.9280-1-nathbappai@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <dd71e35d-5dd1-4341-bcdb-d082dba41d3a@oss.qualcomm.com>
-References: 
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
+ channel labels
+Message-ID: <acWDMg58qxyeM5Eq@ashevche-desk.local>
+References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
+ <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
+ <acUIAh_r7mSfIiEB@ashevche-desk.local>
+ <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, 26 Mar 2026 10:29:49 +0100 Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
+On Thu, Mar 26, 2026 at 12:00:52PM +0000, Antony Kurniawan Soemardi wrote:
+> On 3/26/2026 5:18 PM, Andy Shevchenko wrote:
 
-> On 3/25/26 7:07 PM, Biswapriyo Nath wrote:
-> > The IR transmitting LED is connected to SPI8 controller.
-> > 
-> > Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
-> > ---
-> 
-> [...]
-> 
-> > +&spi8 {
-> > +	status = "okay";
-> > +
-> > +	irled@1 {
-> > +		compatible = "ir-spi-led";
-> > +		reg = <1>;
-> > +
-> > +		duty-cycle = /bits/ 8 <30>;
-> > +		spi-max-frequency = <1000000>;
-> 
-> I see the binding allows a power-supply handle - do you need one?
-> 
-> Konrad
-> 
+...
 
-I have tested the IR transmitter with my TV and set-top box both.
-power-supply is not required and not mentioned in Android devicetree.
+> >> Tested-on: Sony Xperia SP (PM8921)
+> >
+> > Interesting, never saw this tag before.
+> 
+> Oh, I just realized I misremember Tested-by tag as Tested-on... Let me
+> know if it's not acceptable.
+
+You can just put it in a free text:
+
+  "The change has been tested on ..."
+
+...
+
+
+> >> +	if (!ch) {
+> >> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
+> >> +		return -EINVAL;
+> >> +	}
+> >
+> > Isn't it a dead code? Also poisoning dmesg with this recurrent message is
+> > not good idea to begin with (the user space will have a door to flood it,
+> > which might be considered as an assistance to hackers to clear immediate
+> > logs after a successful attack).
+> 
+> Good point about the successful attack hint! I was copying the existing
+> code from pm8xxx_read_raw. Do you think those checks are unnecessary for
+> pm8xxx_read_raw as well?
+
+Yes, I think they are not as the returned code should be enough to identify
+the problem. (For no such channel I would rather see -ENOENT, but we can't
+simply replace that in the existing code as it's part of ABI.)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
