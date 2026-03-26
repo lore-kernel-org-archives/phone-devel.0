@@ -1,97 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD4338F23F
-	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 10:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A88E35BDD5;
+	Thu, 26 Mar 2026 10:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774519893; cv=none; b=F0oxAl6/KKN7sUx2axshfpZVIBypGOCJQW4pAS1mkj2v7YvRj9hnv+OPpCD12RB8n4B56JXfRCSbycWWVsse4xYQqwye7+BOFepQFli/czL+rl612YOegGzeWj+cTD6hBhoTJHnytLTuSBbphXIZqQ5f2x2PfpyqN0ya032gyV4=
+	t=1774520329; cv=none; b=KHmXzcSVYnwsA5i/Mpl+IvshlygGVlcX2kWpag+Xwp8mPQgwq184iNQpqpgtysWmxyiFcEG7AyPXePJf8IY7Ky+9Po4UG44Fa9kM/HS5xCA/rjrtgPenpzPPOlBuem4/d1KP9vzLbaUyzCKlGEDEqGPQeZ+RLpz1Ql3Bj4wxQjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774519893; c=relaxed/simple;
-	bh=QXFGyJCxVdNpF288bgk0fuzrDLWtjYWQ1ifovXx9A1Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sD0+dZC5ZWgTGsPPck89sWXUa9MGbDPtDCPlch+aKc4FODGYb2Ur57xr7pIkRfv93ryHLeYiB8c2mdakcjYJxYWvHV07YulQ8Ak70snutGPSI2UiBtVOrrJywBXQ9q2voeNCGN7hgj724t8FIMnJ+CVDU6oE81+6Qrxh+StNHEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pVBUjR6q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774520329; c=relaxed/simple;
+	bh=hhLeCC4ZxIHzEaVms0pQfRfpSthRqXTTREIjc2vSvtA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2dpaIg8NPUkDOhWPIjey/XNqP22nyRLa2aLM6c/PbHJi/a21so3E9IOfoTO171SYqdYfDY+rNRE36o1Lb8n7U5bEOa3j8u1epL09qtBzBebHARPl+Npxa08mP4nbk57GeLBrd6TPh51wVtKXkGQISKrLJ0hT473Cmkj9xwFT8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHZJXJyQ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pVBUjR6q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EC3C2BCB4
-	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 10:11:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774519893;
-	bh=QXFGyJCxVdNpF288bgk0fuzrDLWtjYWQ1ifovXx9A1Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pVBUjR6qQvl8xug/BhAV8gUrM20yrEvEgrD00Sa86uqTwaK9cS2VOxvNRVmgEyGjr
-	 l1LhX+kcq9ZJgHEx5jHlDo/Dwy5x/ACJ8Nto5S0CnDBy0/GF3kyQeQbFwxPWbVCfFY
-	 cvorQ3EUbJ80gzqAEf5uMMD0vlmDAmPWh3Pb+eKn+usFxsQeftw11S3UAFM+/FvSwo
-	 EizJTRjmLK2vZwYCZWspG9FoyE1ZOxPSaL8QYkJ4QHzVT0e/Mpmdzl9rku5+TWI2b7
-	 7BFrGW+nEcgfJbsBgM7nTsf1eZ1GK8LICKQRI4bOq8LQKYwenL1b5uW4LK6X+Ne60h
-	 23atR6QRbJmpg==
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-79a535e7c00so7214737b3.3
-        for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 03:11:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlaz6tyUMu7QaPnOf50j1GqLrD5Rs/grxOQ5LAwWvEB1eXcx2o0DmbuFSYxMV1lzPqjux7mnTZiCrAAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxrOyrcHqRbYnh/Wz2YbLOJDPpWjGPC+/xN5s4PGLmE1VNilfW
-	Suky63gGBKCHBXZMdX3fGqjseCZ2fXL41QPtY7Vtrh3F6Qp3kYhQ+mWa/2tzcYltrqJ/n6DqZvL
-	5yov26yiO6VFQ3aOYquWo59cGo7ovoI0=
-X-Received: by 2002:a05:690c:c530:b0:79a:b46c:e60a with SMTP id
- 00721157ae682-79acf6c80ebmr67567397b3.44.1774519892555; Thu, 26 Mar 2026
- 03:11:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHZJXJyQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774520328; x=1806056328;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hhLeCC4ZxIHzEaVms0pQfRfpSthRqXTTREIjc2vSvtA=;
+  b=UHZJXJyQ/QZG3fjLjoS8aHGZ1KUX8++qwgoZilZfksIjjbnLJPJ9AjNQ
+   3NcDaM61Zr4gwQSAofldRXEcD+OGl+5NJwUBlxOYsE7jJ+MPW6+AKgeba
+   HzuZQcGTVfRxlkjAhVKQOnoo0Em6/gTHI1Kj6LRnDJlrdwO+BiBNkGp3j
+   z/fxoxUJ1GbxLyNzB32lyFPZevjjx2T/PWda8D/WeGoNcPR1PkS8rVjeH
+   978W0RT125jyizZJot5h7lNwi7PRK9XukcZUE3+CuLCnKXkC7ceFKl3kk
+   5n6rzsRRtnywLv2vHsVtCJKg/ItK01cED9fRsUPhC0cjSDrUPN6tKgEsZ
+   Q==;
+X-CSE-ConnectionGUID: e6NUwQH1QYGGoeTWo/Jeuw==
+X-CSE-MsgGUID: 32vav8XqS4Oah5OlHN1lrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="79172598"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="79172598"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:18:47 -0700
+X-CSE-ConnectionGUID: MGrvg+ROSHSrxnjt/bVwqg==
+X-CSE-MsgGUID: H94Wbn2GRt2Qx+pj62NHDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="229034432"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.216])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 03:18:44 -0700
+Date: Thu, 26 Mar 2026 12:18:42 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Antony Kurniawan Soemardi <linux@smankusors.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
+ channel labels
+Message-ID: <acUIAh_r7mSfIiEB@ashevche-desk.local>
+References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
+ <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326-expressatt_camera_flash-v3-0-e75e5d58990f@gmail.com> <20260326-expressatt_camera_flash-v3-2-e75e5d58990f@gmail.com>
-In-Reply-To: <20260326-expressatt_camera_flash-v3-2-e75e5d58990f@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 26 Mar 2026 11:11:21 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkKqmEQ+Y4w4hHkNfw8KwoBPTg4o0NP=B85JNJ1X-_Z9A@mail.gmail.com>
-X-Gm-Features: AQROBzCcPBE-367IK-ffpVZCMs_a5jdyIlj2tHpyWX11hFiACnnKCNZ3SJn6aXU
-Message-ID: <CAD++jLkKqmEQ+Y4w4hHkNfw8KwoBPTg4o0NP=B85JNJ1X-_Z9A@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] leds: flash: rt8515: Support single-GPIO flash ICs
- with vin supply
-To: guptarud@gmail.com
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-leds@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Rudraksha,
+On Wed, Mar 25, 2026 at 09:02:41PM +0000, Antony Kurniawan Soemardi wrote:
+> Implement the .read_label callback to allow userspace to identify ADC
+> channels via the "label" property in the device tree. The name field in
+> pm8xxx_chan_info is renamed to label to better reflect its purpose. If
+> no label is provided in the device tree, it defaults to the hardware
+> datasheet name.
 
-this is starting to look good, some remaining snags below:
+> Tested-on: Sony Xperia SP (PM8921)
 
-On Thu, Mar 26, 2026 at 8:57=E2=80=AFAM Rudraksha Gupta via B4 Relay
-<devnull+guptarud.gmail.com@kernel.org> wrote:
+Interesting, never saw this tag before.
 
-> -static void rt8515_gpio_brightness_commit(struct gpio_desc *gpiod,
-> -                                         int brightness)
-> +static int rt8515_set_flash_brightness(struct rt8515 *rt,
-> +                                        struct gpio_desc *gpiod,
-> +                                        int brightness)
+> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 
-Do not change the name of the function, it's confusing.
-This is also used for setting the brightness of the torch, and after
-this change it looks like the function is just for the flash.
+...
 
->         } else if (brightness < RT8515_TORCH_MAX) {
-> -               /* Step it up to movie mode brightness using the flash pi=
-n */
-> -               rt8515_gpio_brightness_commit(rt->enable_torch, brightnes=
-s);
-> +               /* Step it up to movie mode brightness */
-> +               ret =3D rt8515_set_flash_brightness(rt, rt->enable_torch =
-?
-> +                               rt->enable_torch : rt->enable_flash, brig=
-htness);
-> +               if (ret)
-> +                       goto out;
+> +static int pm8xxx_read_label(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, char *label)
+> +{
+> +	struct pm8xxx_xoadc *adc = iio_priv(indio_dev);
+> +	struct pm8xxx_chan_info *ch = pm8xxx_get_channel(adc, chan->address);
 
-Add a comment befor this that if we don't have a separate torch
-enable pin connected, we use the flash pin also for the torch.
+> +	if (!ch) {
+> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
+> +		return -EINVAL;
+> +	}
 
-Yours,
-Linus Walleij
+Isn't it a dead code? Also poisoning dmesg with this recurrent message is not
+good idea to begin with (the user space will have a door to flood it, which
+might be considered as an assistance to hackers to clear immediate logs after
+a successful attack).
+
+> +	return sysfs_emit(label, "%s\n", ch->label);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
