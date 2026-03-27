@@ -1,128 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from siberian.tulip.relay.mailchannels.net (siberian.tulip.relay.mailchannels.net [23.83.218.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF236371CFE;
-	Fri, 27 Mar 2026 17:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774633920; cv=none; b=uBCJSqcthDFLmjIaRmPsznOjtkg5scuoX9N8op05nTbw6HpTq44t5bo/ykgzlfe1LXW4Pqeqpk0WHYPvBGYIw2RujNmpNKeTDydK4I+Dl9Rgb8FxrjAyDp6ntbYitJ8cxDHvifCGuSGaQ0ttaHUapfxMj1qO5cvCN+WuHInh96Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774633920; c=relaxed/simple;
-	bh=zRvA02n55H6F0ORN5r8qynowYTw/58ttft03ZFRvRRY=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=j+1PltPrmk+R3u9fMLQB1Wwr5eLkmXI9lmuCe6NMY5CgqRT2FZxxI97YPwdmp4gGQ6tToLDC0RwB/pNB6U1JNI1+5CU8uDer4t93vzmtNoLrutyhIXpvkmJGbmnw+5nqXvbDKMucxjyk6bLvHV3lfBnck/I3DSUcMULyvaz5lgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcByUmB/; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843D137C106;
+	Fri, 27 Mar 2026 19:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.246
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774639447; cv=pass; b=U63Rgrv2EE8VcThCLGUtjDTOTvfloIiV/BhfmzS+vec03u8WsmWopDOgITwk7vlnfGwolXET9atJSfiaHI1sYlJGU4GojspjkibTaWRLFe3rkZ9CYCoMzcTrnt+goswpT2YSCv+/nYvP+6UReKuGbwYh+T3QxN+RpVZkN7HGM+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774639447; c=relaxed/simple;
+	bh=PUSztIUro6Z3furr61dKex2o7Dkj57/lpaQYapsxrgo=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=Q8AKgT+ZzIrBNn3rzSIvsPl4CYmhJLSkMZH2Cr5HGDZXGVkRU7ODB1a5sCgDUREL8AjMpNJcnqE0ZZYUqmORVu7lYXcLmdrrB0LXViNFZ7l1cUCOGfMnHcUEkvWqAKJ8X5vohGkCg14S7TSRm5K23AcdHyPGzvocfSxbN+6HOo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=Wdf0plUu; arc=pass smtp.client-ip=23.83.218.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcByUmB/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7103C19423;
-	Fri, 27 Mar 2026 17:51:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774633920;
-	bh=zRvA02n55H6F0ORN5r8qynowYTw/58ttft03ZFRvRRY=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=EcByUmB/fhOaTUDVp1b/zq+k+LRyAaNVR6S4h9vSV8N/eofFsVaZC/p4h1A+jJNP3
-	 9rEIsTsYK+kG24THax9IbEikcfE3m5NRFmdwk6T8NP03bthRsa4BivZIuRjA2w8HGC
-	 cpBkb9abwr1Gxl6Wq0l2GFOxGRV39Z38P8Kew4q4FfPiuIvQK4eix5y07qCdOTZwTi
-	 lV4jmMWLqLErykoYKx78LUDOR7m3IxaBklGXU4Ej6Oeqwky7u2vdxYuTSqraAwgtpu
-	 6bXPg7JymaoTujsQjn2Zlg9PlLyOKbXSMSYxnxxsJvbNCL9LwQ5qIXzLPNBDR2RSQP
-	 Ov6vM4Kz7prBQ==
-Date: Fri, 27 Mar 2026 12:51:57 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="Wdf0plUu"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 263467E2C70;
+	Fri, 27 Mar 2026 19:05:12 +0000 (UTC)
+Received: from de-fra-smtpout6.hostinger.io (100-115-116-28.trex-nlb.outbound.svc.cluster.local [100.115.116.28])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 0F76D7E2F52;
+	Fri, 27 Mar 2026 19:05:08 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1774638311;
+	b=IYy6h9DQWrd49d0CVwIqT44C5QI3kycncafbWAJWY+Z3vr9G2NA+a6BTTtKohSp1VRiR6+
+	2n6QA1Z1Hi6rRip8DNNNubW+qZ0LAHJyFu7jKCGrG1+4TBoaC/p0f/Nrla9USLPJ0sqWNa
+	yZkGOO2YBZrIdtVV6mTKiJterB2B1AEecdf+JxvhVUfCZnOLepL1Bj1YcVvCq2WGGAN21g
+	ZHn0Kr4Koc9wYwTptQhtt23g6OW74E80DVQA99QmH5bZxCIf3vN7X4pgb4YRaBlw/qK5Zs
+	cCySvIQat+nF/g/cKMsOfEQ8/ZSgL0ywjy2D4r8+SqijxFxgr6kPb/hfsJKcJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1774638311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=urdPlQnffPNS3930VfPP6NP1Km4+SI7i5jmZi3CfVKk=;
+	b=tG8zTbNyNuUaGRYRPjBU7Lf4aGtmKmQ2N/v5N7t+8BbITjMBZytc+4hhOlhYfCbllgB0de
+	TveTgL5tAzuiSgeINNRbvf35wY7kTBoP7wZU8q/JPlnh7bgwEyfEWbnkBFupwUo0/6RNO4
+	KUbKh7TkFfwU5UnG0XLMTskuiWaXjPw9CVjjpmNWJH4EvQQJSIRuHNUWQYWfRFOeZqhmgd
+	qXjxHLSiNA4Y0OshapotpBeEkS4Ktv5n9CxBkkWBqowKwPnNDC7U+TOXMoGRkXY5q8YlEh
+	6K1lWAMiKM/5Fvlbq96IzwdSSXbd8xm0SzGbeGaaaHawC3Q4N5ueGmoLMWoSZw==
+ARC-Authentication-Results: i=1;
+	rspamd-7f98bb5847-qjg9m;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Macabre-Suffer: 198d6d775a2863d4_1774638311954_1497667489
+X-MC-Loop-Signature: 1774638311954:1394827398
+X-MC-Ingress-Time: 1774638311954
+Received: from de-fra-smtpout6.hostinger.io (de-fra-smtpout6.hostinger.io
+ [148.222.55.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.115.116.28 (trex/7.1.5);
+	Fri, 27 Mar 2026 19:05:11 +0000
+Received: from [IPV6:2001:448a:502c:4ea6:c47d:9c65:bdc7:d11f] (unknown [IPv6:2001:448a:502c:4ea6:c47d:9c65:bdc7:d11f])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fj97h2KWvz45pT;
+	Fri, 27 Mar 2026 19:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1774638307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=urdPlQnffPNS3930VfPP6NP1Km4+SI7i5jmZi3CfVKk=;
+	b=Wdf0plUuMfPOMkAQ8glcvPYh0u0Ay5RfzoRot8m0tve4TeMPU70hSGao9EEcgAKCUq3sef
+	P7/0qB5ZI1davWDmNDOreKp1uhI5Y/UTPlsNdkFDQi0Bv1TxY1AG9beTlvSd98WhZwQY/V
+	4rbZoBNekOEw0lNUwKSSHXXGB34x9B/znl5saMKxSuXyIuLgmDIAuYFKxubReWvybvNacn
+	K/WmTR3Rteqeh60Tl0urDcuuZDyYV2XIhOwenqPYr+1HGErz9xsa+G9+blQkquPcOaJ50r
+	rCHc/2Yv734aLszpOg5rihBmJa2frJRvjaJO+nq1gZzcCObYoJijjC0H1NCbRg==
+Message-ID: <c8e6166f-e9fc-430e-b290-a97c2aae2b31@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, linux-kernel@vger.kernel.org, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Jonathan Marek <jonathan@marek.ca>, Konrad Dybcio <konradybcio@kernel.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, devicetree@vger.kernel.org, 
- Krishna Manikandan <quic_mkrishn@quicinc.com>, 
- ~postmarketos/upstreaming@lists.sr.ht, Sean Paul <sean@poorly.run>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, Conor Dooley <conor+dt@kernel.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- David Airlie <airlied@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, dri-devel@lists.freedesktop.org, 
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
- Alexander Koskovich <akoskovich@pm.me>, 
- Thomas Zimmermann <tzimmermann@suse.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-In-Reply-To: <20260327-milos-mdss-v2-4-bc586683f5ca@fairphone.com>
-References: <20260327-milos-mdss-v2-0-bc586683f5ca@fairphone.com>
- <20260327-milos-mdss-v2-4-bc586683f5ca@fairphone.com>
-Message-Id: <177463391769.3232558.4643402365403400713.robh@kernel.org>
-Subject: Re: [PATCH v2 4/9] dt-bindings: display: msm: document the Milos
- Mobile Display Subsystem
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
+ channel labels
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
+ <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
+ <acUIAh_r7mSfIiEB@ashevche-desk.local>
+ <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
+ <acWDMg58qxyeM5Eq@ashevche-desk.local>
+Content-Language: en-US
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+In-Reply-To: <acWDMg58qxyeM5Eq@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Fri, 27 Mar 2026 19:05:04 +0000 (UTC)
+X-CM-Envelope: MS4xfEqvzjXxVf9yColdO4Y7KOcvmc8GtclHktRL50CzAIt9ppyIjMjc6Hat3ZT3hjTIe6ygH3lR2eGRnHKjQg3M/Bkt7nfQAzADzw0eMsnGgmRnHsI7iAtw kuU/jnfOGvOzXF1vNHYV6dBFsr+cy5ZmfF91X9ni2KNGVhsGmCMhYWG1KiGH4LsWCEtwoeFxMRlJK8uDil+mDraCamHdTbL2FsgZZuZFIZZU5HAkn3DWAQ7B zCjR45Ajyni/IZPjPN49gqoLyGd76OzPdaSMPkPmOc18Trj3HVnsIHlM5Z4/XyNYnzYdZBLvMHQ7Rp8wEkqyEVQQL7N+PZo47HjZcLHkpLVktb0AtOvzjtE5 N6DMXCUzJWKwZ8lOPeLJMoc9mSTlx2sPlI1PFloa2W9Zd0Pu8FK/apwMHPoKoprsYIV9fTJnSJnqptyHV6G9CEXnny+3gB0W9LwS+ymbKub/4j5jq9P7lRKM xMCT28hoOxx69rKVWSqxWuk+LU5Fz5HT9AMjvOX7tSZJLLDhMlSOitR1B+wZCIfXsU7aztn97tvTzxwf7SR9uSVapew5+CbWwcM48m4pWrcQhtQ7eXLlaPqb ESN1p26xBUAXUk7EII5XFoOVEC0lx3jKGa5ITH0I4xBzTX8FFltr/4SkAvWkmGJcs8aUotGpUcbZsB4iiDyzJSzuk0oYSjTBh0N/B1cHfA11oEsofkLCRtfd +D0K7gitW3BBkx/9LhKeVdcmc305nwMbE0V+z9xdVvIcjWpN38J9gmMaxIZoqXc+DANKKy08ryM=
+X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69c6d4e3 a=2f+13PdvnRQklfqNEF6FXA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=yDFIC1yK4SsZJBJc34sA:9 a=QEXdDO2ut3YA:10
+X-AuthUser: linux@smankusors.com
 
-
-On Fri, 27 Mar 2026 17:12:23 +0100, Luca Weiss wrote:
-> Document the Mobile Display Subsystem (MDSS) on the Milos SoC.
+On 3/27/2026 2:04 AM, Andy Shevchenko wrote:
+> On Thu, Mar 26, 2026 at 12:00:52PM +0000, Antony Kurniawan Soemardi wrote:
+>> On 3/26/2026 5:18 PM, Andy Shevchenko wrote:
+> ...
+>>>> +	if (!ch) {
+>>>> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
+>>>> +		return -EINVAL;
+>>>> +	}
+>>>
+>>> Isn't it a dead code? Also poisoning dmesg with this recurrent message is
+>>> not good idea to begin with (the user space will have a door to flood it,
+>>> which might be considered as an assistance to hackers to clear immediate
+>>> logs after a successful attack).
+>>
+>> Good point about the successful attack hint! I was copying the existing
+>> code from pm8xxx_read_raw. Do you think those checks are unnecessary for
+>> pm8xxx_read_raw as well?
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../bindings/display/msm/qcom,milos-mdss.yaml      | 283 +++++++++++++++++++++
->  1 file changed, 283 insertions(+)
-> 
+> Yes, I think they are not as the returned code should be enough to identify
+> the problem. (For no such channel I would rather see -ENOENT, but we can't
+> simply replace that in the existing code as it's part of ABI.)
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Just to re-clarify, do you mean for both pm8xxx_read_label &
+pm8xxx_read_raw:
+1. if the check fails, it should only return -EINVAL without any
+    logging; or
+2. remove the checks because there's no way it's not found?
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:36.31-51 Unexpected 'DISP_CC_MDSS_AHB_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:37.28-47 Unexpected 'GCC_DISP_HF_AXI_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:38.31-51 Unexpected 'DISP_CC_MDSS_MDP_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:40.31-52 Unexpected 'DISP_CC_MDSS_CORE_BCR'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:42.42-61 Unexpected 'QCOM_ICC_TAG_ALWAYS'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:43.41-60 Unexpected 'QCOM_ICC_TAG_ALWAYS'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:44.41-65 Unexpected 'QCOM_ICC_TAG_ACTIVE_ONLY'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:45.43-67 Unexpected 'QCOM_ICC_TAG_ACTIVE_ONLY'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:49.38-60 Unexpected 'DISP_CC_MDSS_CORE_GDSC'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:69.32-51 Unexpected 'GCC_DISP_HF_AXI_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:70.35-55 Unexpected 'DISP_CC_MDSS_AHB_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:71.35-59 Unexpected 'DISP_CC_MDSS_MDP_LUT_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:72.35-55 Unexpected 'DISP_CC_MDSS_MDP_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:73.35-57 Unexpected 'DISP_CC_MDSS_VSYNC_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:80.44-66 Unexpected 'DISP_CC_MDSS_VSYNC_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:142.35-57 Unexpected 'DISP_CC_MDSS_BYTE0_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:143.35-62 Unexpected 'DISP_CC_MDSS_BYTE0_INTF_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:144.35-57 Unexpected 'DISP_CC_MDSS_PCLK0_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:145.35-56 Unexpected 'DISP_CC_MDSS_ESC0_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:146.35-55 Unexpected 'DISP_CC_MDSS_AHB_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:147.32-51 Unexpected 'GCC_DISP_HF_AXI_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:155.44-70 Unexpected 'DISP_CC_MDSS_BYTE0_CLK_SRC'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:156.44-70 Unexpected 'DISP_CC_MDSS_PCLK0_CLK_SRC'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:157.58-74 Unexpected 'DSI_BYTE_PLL_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:158.58-75 Unexpected 'DSI_PIXEL_PLL_CLK'
-Lexical error: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dts:219.35-55 Unexpected 'DISP_CC_MDSS_AHB_CLK'
-FATAL ERROR: Syntax error parsing input tree
-make[2]: *** [scripts/Makefile.dtbs:140: Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1614: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260327-milos-mdss-v2-4-bc586683f5ca@fairphone.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+Thanks,
+Antony K. S.
