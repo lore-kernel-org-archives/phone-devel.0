@@ -1,172 +1,91 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from mail-24429.protonmail.ch (mail-24429.protonmail.ch [109.224.244.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76437393DE8
-	for <phone-devel@vger.kernel.org>; Thu, 26 Mar 2026 19:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907325EF87;
+	Fri, 27 Mar 2026 05:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774554013; cv=none; b=oxBuc7jIcV4VBZEH/diZBHZpPTqPZCvWqoLXWx0bzuL+bKgZI4jsXKFl2hwJpGNz9Z9R7pt2Y57i2adeOt535O//fhAvqDAKRkpvoQ0rVNhFxMGMhV+ek/Mr5EUuiMdEAhZL++q9WjuyeNDHd5Mx8bs3HZZ9YlRJdwTKBVYbny4=
+	t=1774589224; cv=none; b=gAC/qPqypFef41XhCbFeNxQ2T/scIsAJztEHkAb13Bcleh3dI42PPC/xU6dtS4UbRml0RIwajricOxwIdKwX4v5En0wabfcMu1FXUTbt7rTFi5ix2zGI9l31phztx2WSDOatDYtRbvWHUeVzdQl83OpdSyuP42/LAGQKEucXiTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774554013; c=relaxed/simple;
-	bh=vrl0CXld5pnl3+j2iO7woriOvcxFLATcV9RLuYGwkcU=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=Uc4WxjZj8MiwoBT/EsGZilkWelau6ViW0Ca72dBVd5pG/7PTmqJlZ+6XB3tatAwrE1uigvDJRppXQ32dk7AWHVlvGVf9VGRVqVn/q35RXJPueAEOsRTc93TCC9mIxPYIMc5DvkswOXh2dSTIB6vj8WLhDHL1NiVL2uL1KLihrqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=XTH6vNZf; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1774589224; c=relaxed/simple;
+	bh=bEzkue1X7mLp+/j/hhoJP+Jnd4BlvcuBWwITMbXCxq8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JeH40hhilPWwSjl60Jn6W2+1emBggLY0e5Am9mGKa1z40/GtAienXwFuUuHdGAjKhFRu0djIipgn0lLY7ZusBjVZpzVvTQjX6zFL3M87Brdn5lkWnW3TViHCw5PJenQ2uyHJJBPRirCKqsmdrmcRcubi6kA0CZw0EW5yG5PKDfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=sDNBBMYV; arc=none smtp.client-ip=109.224.244.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="XTH6vNZf"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="sDNBBMYV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1774589214; x=1774848414;
+	bh=E+nwK/sviPTJ4YHe+rWlRmRhYCoqZkYMB6zYwWx5tr0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=sDNBBMYVJAp1LdeUIFiSOLc1bKhghvNL2Q1/KdU+eYfNHKzsfgkEW5FXp3fipfxAF
+	 kxEReEJ74UPzEYehOn/I43Oft4dOT2J0vhpFHuayeKtp4GyY43vSG5zQ3PCJeBos83
+	 etrIxLyRi6fbZGk4iV4fWhIWaG6zTlwT8kHehaEqLVjBcMH9hpemmegLF+S8pBlX4S
+	 HsieuSir62nZmmtMFXiS4YrJMF1/MuFpcu3uUv3U4yWighWmEU27hvLXnfIVqDbJOw
+	 BcEtLsktfxf0ylr2CZN7sbpn1qqIYuojbyBf9UToMTNgNpmAWd1KiFs8yzH+rPrXv3
+	 MFNROqRF7aMnQ==
+Date: Fri, 27 Mar 2026 05:26:47 +0000
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: cristian_ci <cristian_ci@protonmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
+Message-ID: <63LsT_8yLkjzVTSswYeIbFl40zYY30Bo5DyyLCqYrG1E0eJ4RqKF715_8j2J0WRd3RESpYvwfPTJzw7xsCa4wdxmYGQbUArRlKz3PL1cJ5Q=@protonmail.com>
+In-Reply-To: <87943afd-2601-423e-878d-36b69ac3d6c3@oss.qualcomm.com>
+References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-3-d4b8ee867de7@protonmail.com> <109d21b4-5d16-4689-8383-ecd29bbbf8a6@oss.qualcomm.com> <7wYxWlqdcbL3ANB9n0g4t74x-dwE2yG4CmVw9TwGNmwARxbT5WsdG1fpuIDSA5ab750Gs8OUBwmVa_nZd065guKDJueytb1AmlQ05__IzmU=@protonmail.com> <87943afd-2601-423e-878d-36b69ac3d6c3@oss.qualcomm.com>
+Feedback-ID: 27475468:user:proton
+X-Pm-Message-ID: 13a94298c7042e78ace8ac9e771817c299e4a043
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1774553998;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2sSZdOlH6LcaXmEulL+Z3vD5W8JNjS8vj1IOyQwqalY=;
-	b=XTH6vNZfTs+Rhn/5LbLqBySMN0ZX5pl6xsbTh9654tQcRAh1k+4nFg2w4G1u1qCntQiaZ8
-	A/R2MUis4bsWUAwdlxAgvsKMoCQTVTKo5FYZ+UF5W86+DpeBTmUVbgxC4++ZpZuZrgdUd4
-	CJEUl378fYQ+f+HtmI79PftGLkYVsggFhKDl/3JVteu3ZiYS8a22o8T7OP9KUtpDC4JYac
-	9CXVos/p6+ikPQVwciRBc6BdRnFiAKhP5CmwYb+nAvENQrNDTM6rf7qlh3ECM895NMgvQF
-	+ztY6H8YDr09klaAyYgCcmhSwrhKLlLhwgvTQs0BGGViqdjhMKM87IDTt2Ed8Q==
-Date: Thu, 26 Mar 2026 19:39:49 +0000
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <425dcdb501ed6ebb0e652c58ef2c56c78754884b@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap
- QMI requests
-To: david@ixit.cz, "Johannes Berg" <johannes@sipsolutions.net>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Jeff Johnson" <jjohnson@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>
-Cc: "Amit Pundir" <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
- devicetree@vger.kernel.org, ath10k@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org, "David Heidelberg" <david@ixit.cz>
-In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
-References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
- <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
-X-Migadu-Flow: FLOW_OUT
 
-March 25, 2026 at 5:57 PM, "David Heidelberg via B4 Relay" <devnull+david=
-.ixit.cz@kernel.org mailto:devnull+david.ixit.cz@kernel.org?to=3D%22David=
-%20Heidelberg%20via%20B4%20Relay%22%20%3Cdevnull%2Bdavid.ixit.cz%40kernel=
-.org%3E > wrote:
+On Thursday, March 26th, 2026 at 13:08, Konrad Dybcio <konrad.dybcio@oss.qu=
+alcomm.com> wrote:
 
+> On 3/24/26 12:18 PM, cristian_ci wrote:
+> > On Monday, March 23rd, 2026 at 11:52, Konrad Dybcio <konrad.dybcio@oss.=
+qualcomm.com> wrote:
+> >
+> >> On 3/21/26 5:23 PM, Cristian Cozzolino via B4 Relay wrote:
+> >>> From: Cristian Cozzolino <cristian_ci@protonmail.com>
+> >>>
+> >>> Add the description for the display panel found on this phone.
+> >>> And with this done we can also enable the GPU and set the zap shader
+> >>> firmware path.
+> >>>
+> >>> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+> >>> ---
+> >>
+> >> [...]
+> >>
+> >>> +=09panel_default: panel-default-state {
+> >>> +=09=09pins =3D "gpio61";
+> >>> +=09=09function =3D "gpio";
+> >>> +=09=09drive-strength =3D <8>;
+> >>> +=09=09bias-disable;
+> >>> +=09=09output-high;
+> >>
+> >> This says "by default, actively drive the pin not to reset the display
+> >> panel". Is this actually necessary?
+> >
+> > I've tried to remove panel pinctrl stuff from the panel and the device =
+still boots/works exactly like before. So, have I to submit v4 without pinc=
+trl at all for the panel?
+>=20
+> No, the pin config is useful, I'm specifically referencing the output-hig=
+h
+> property
 
->=20
->=20From: Amit Pundir <amit.pundir@linaro.org>
->=20
->=20Some firmware versions do not support the host capability QMI request=
-.
-> Since this request occurs before firmware-N.bin and board-M.bin are
-> loaded, the quirk cannot be expressed in the firmware itself.
->=20
->=20The root cause is unclear, but there appears to be a generation of
-> firmware that lacks host capability support.
->=20
->=20Without this quirk, ath10k_qmi_host_cap_send_sync() returns
-> QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is no=
-t
-> fatal - Wi-Fi services still come up successfully if the request is sim=
-ply
-> skipped.
->=20
->=20Add a device-tree quirk to skip the host capability QMI request on de=
-vices
-> whose firmware does not support it.
->=20
->=20For example, firmware build
-> "QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
-> on Xiaomi Poco F1 phone requires this quirk.
->=20
->=20Suggested-by: Bjorn Andersson <andersson@kernel.org>
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/net/wireless/ath/ath10k/qmi.c | 13 ++++++++++---
->  drivers/net/wireless/ath/ath10k/snoc.c | 3 +++
->  drivers/net/wireless/ath/ath10k/snoc.h | 1 +
->  3 files changed, 14 insertions(+), 3 deletions(-)
->=20
->=20diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wire=
-less/ath/ath10k/qmi.c
-> index eebd78e7ff6bc..e7f90fd9e9b83 100644
-> --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> @@ -808,6 +808,7 @@ ath10k_qmi_ind_register_send_sync_msg(struct ath10k=
-_qmi *qmi)
->  static void ath10k_qmi_event_server_arrive(struct ath10k_qmi *qmi)
->  {
->  struct ath10k *ar =3D qmi->ar;
-> + struct ath10k_snoc *ar_snoc =3D ath10k_snoc_priv(ar);
->  int ret;
->=20=20
->=20 ret =3D ath10k_qmi_ind_register_send_sync_msg(qmi);
-> @@ -819,9 +820,15 @@ static void ath10k_qmi_event_server_arrive(struct =
-ath10k_qmi *qmi)
->  return;
->  }
->=20=20
->=20- ret =3D ath10k_qmi_host_cap_send_sync(qmi);
-> - if (ret)
-> - return;
-> + /*
-> + * Skip the host capability request for the firmware versions which
-> + * do not support this feature.
-> + */
-> + if (!test_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags))=
- {
-> + ret =3D ath10k_qmi_host_cap_send_sync(qmi);
-> + if (ret)
-> + return;
-> + }
->=20=20
->=20 ret =3D ath10k_qmi_msa_mem_info_send_sync_msg(qmi);
->  if (ret)
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wirel=
-ess/ath/ath10k/snoc.c
-> index f72f236fb9eb3..3106502275781 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1362,6 +1362,9 @@ static void ath10k_snoc_quirks_init(struct ath10k=
- *ar)
->=20=20
->=20 if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-8bit-qui=
-rk"))
->  set_bit(ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK, &ar_snoc->flags);
-> +
-> + if (of_property_read_bool(dev->of_node, "qcom,snoc-host-cap-skip-quir=
-k"))
-> + set_bit(ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK, &ar_snoc->flags);
->  }
->=20=20
->=20 int ath10k_snoc_fw_indication(struct ath10k *ar, u64 type)
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wirel=
-ess/ath/ath10k/snoc.h
-> index 1ecae34687c21..46574fd8f84ee 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.h
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.h
-> @@ -51,6 +51,7 @@ enum ath10k_snoc_flags {
->  ATH10K_SNOC_FLAG_MODEM_STOPPED,
->  ATH10K_SNOC_FLAG_RECOVERY,
->  ATH10K_SNOC_FLAG_8BIT_HOST_CAP_QUIRK,
-> + ATH10K_SNOC_FLAG_SKIP_HOST_CAP_QUIRK,
->  };
->=20=20
->=20 struct clk_bulk_data;
->=20
->=20--=20
->=202.53.0
->
+I've commented out "output-high" property and (apparently) the device=20
+boots and works like before.
 
-Tested-by: Paul Sajna <sajattack@postmarketos.org>
+> Konrad
+> 
