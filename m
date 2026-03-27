@@ -1,68 +1,67 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834C347BC7
-	for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 16:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BD6349B0F
+	for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 16:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774627959; cv=none; b=CSSPwrn9izJFq04GDUnj2LosKetIIR1x1BPt8VWQV/UHLNRbpGECk9dq/7s3iU5eN+JWinPdWz/ao2MRfrBkuxj7myGr4l8Q05p6pWTAhpIicpSDKRtx0uTT5a6fVu8L3dwPSQ72z/zgugKMkDswAlbZkdO4qeMBb/V214Z2JaI=
+	t=1774627959; cv=none; b=clFzSYRuk8WKSq6rNNztqkXwxuANlF2PYvcUbKlvJIINkGDsTE7wkCghxDfhjuoUvQHn8+KgOEFPejwBPBguAKH146uVdrq03US5J9X7xDqbbQM9jCrZsOLctoXiw5p3RWWPpQlDx16K1sCUbu6NqbXBnFCWRRFEyCtY+yRZPaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774627959; c=relaxed/simple;
-	bh=KtUn5G2UTlEzF/yc8/MAeH8lYJexJkFm284OdZOtjsA=;
+	bh=5cRqSrO9TWRQUaD7bTpD1ZxLquZmqnEMTYi63NVSawg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RBNfWO+LVB/2oM96Gh9Me3nwgTY0bK4I+wpdM6GqNbcs/5k40YGYUS+iqYOyTaGFxH4N6vZTTRz1ao6VJ/oFIw0mCl4soGEpRQry7cKzxSY9+lbhOcPkzxcuN8qoVbJW+9BqSAHQQ/61MpH2W6oWH+qVbnvO8Y9OZlaWUJ06jg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=VrD/aJIW; arc=none smtp.client-ip=209.85.218.53
+	 In-Reply-To:To:Cc; b=PfJ5O8NRPvtRtEiFSM1wfpMw5KQ9CwYQatoyu4S8nBE0Ob1Lysmzhu94CD1d8cGA+/coPP2tfCPHy6QS2ECwKuDLFsA8QuCujnUojG4ohAwUy021nxA7eGyhd3ByGz1p4IQM0t7Ocu4njUO33ln99QLg9/glxurbicMCVl0+f04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=TD6Y+/Dn; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="VrD/aJIW"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b9382e59c0eso374825066b.0
-        for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 09:12:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="TD6Y+/Dn"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b98133bdc4bso275717066b.0
+        for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 09:12:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1774627955; x=1775232755; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1774627956; x=1775232756; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Dq7FZmaEKFcQHlwC/6geG17+uu+aaA5ZxCfFTQLxT+c=;
-        b=VrD/aJIWqP9BmTi/wYTjfLhIFf1S60MDFEICeTv2ULEjxV5/nS4a8Q/oSCZ79nZLwc
-         8IM81A3W5nEXbHejsUVQ13ECYwNO364GcH8tjuCqz81NwWV+vt+jYBQyFaVwtWDMoqqj
-         73eHv3gJIePgjfHPGilDZ/mSNvcRo5sLG7QzrhxYk0UIi5Rgvs7wOiQai8RKfZp+LCgl
-         bLAW5rDsQyca3swEMt8zVP1i8y78uYBJZx4YyDrgFoz/lgVur3jBE4ZLTR1R6CwamzUn
-         NZt+GdVyWnxZAjv/BPhnYC9p3skfdvIb0DCCtJfOD4TiO98lTJPk6IFI/VAdMVEUa3g8
-         +PJw==
+        bh=9jDY2PYGbaZfyJpszHkpHZ5M00y7JZRiJojTTA2GybA=;
+        b=TD6Y+/DnMebuVJMFs6ASMGZIC9H8GNw5FEEUp7aIBurPXYMaxK24GHd62pgKKSVYVe
+         7G0sUpR0A2rC3livq9C4xhj/fKdh9/Z5NG/vrAYixu1I3IiTx+BZQ1UgCmBIRynZdc9M
+         C/TyR5do0KPuBY20/7JmQ8qomqkaiMXBYy+DuyLUbsXbOfbBUhzeqIvdF3LEbFsK9KKv
+         Fuhj9wXK6GobTdTwMCpHp8VCCyWuVy4P0/3qOgM9ZAqaHEmWnCWTP7CQ+ACd9VYvTnAV
+         mNGcaO04Zh9WDyfhhh1BLE5w7ue90FIIVOsmaAh2cIiiDMTY7nXtdnhG2fEnJ92rZ3XD
+         K34w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774627955; x=1775232755;
+        d=1e100.net; s=20251104; t=1774627956; x=1775232756;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Dq7FZmaEKFcQHlwC/6geG17+uu+aaA5ZxCfFTQLxT+c=;
-        b=eMn9IBw8Uo3QTNJW+LEIpTLpckOL+Kvacu8NmZR2k9IEJp2DuL9ntqSZKrI60ZAQlr
-         9GaTDw7AG4O62/wZAzEuKsd++R5/gmVbjAXf5K9vnsGl/IVMTruQAs6Y1MwqrZfns1cS
-         wpfW7LLaHzBcX/Cbju7VEKnLP7x25C1LNzMAS3kS87umFWIr91gCuAnmaC7GO97wqWhW
-         VpXjf1jB0DLKaS4FskKyHwK7N7yfjyEqjzj2tra+xJVRzB64zw01mMOeVOccxa23DWYs
-         Uj4pPjX1rhnFXKHcPGQ8ss27gZv3nIHmrFEdd2W0g9nIwzu5j4qigRZZS4S/7JwT38ql
-         ImEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdCeC2mZjW0556hJCQhKXju0J+yftfLIUXuBK9Q6WlvjMd/EM1rfdxuiz/1ZK7hIJWnAFZ86Kq3VTaVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdWWF0k8uyRCFunXKEL1pjBTg2VeJ3iQzAOZQ8ADTFyx7u8GrH
-	q3Uqh7ofSH+4+tdaMTgJqgmY9oUT2XAF5gJDSFXj0oxnAsKoqjYj6J5y0rQ1dinZz4M=
-X-Gm-Gg: ATEYQzx2E5egV1EgUjNRzo56RQNH16x7D/8YQbj5rfpdR2YyL+S3wABwCU7NUPRzAcB
-	pf4Jb4CZwyo6gyDDbNkYlAsfPgSFx9OGamjlBbrFu1HSIDfHhbu3J2iJxXXJXQouzfLObQ/xh1u
-	kksJSQylCyHQbRfN2tD9TTGJsTIMcmvBFjUoMhnxPMMCERDdJ8LdRxs1oVgPLov9h0+ypOK40E7
-	NpVBUp1uMdGKHuhi8kf5oPTEhKtn7gox0yQ9vFvCSM2GjBFwKy/EmInZHB2E0Zwk6H8H1H27fE4
-	CC/PUcvUFa+MpyDfiyRWgulESbedTqEV247tDdRXT9lEVnCROF4hDscjvljOBZsbiglJO6WspGA
-	spz7dZCPM84eKnAJfKoduPo4lvXyMdlWvrSKJSQJGw51H/do+vYTE8XEp177a6tM4FdO8Lbtawq
-	HJDidhEZeCJ/hp9sYUs9sCqu+NJ/sr0yZLPnseZ3L5+FfF+Z0pMAGDEdTf5kYlG57tZtZ9NjvM1
-	0PrSA==
-X-Received: by 2002:a17:907:94c2:b0:b97:bc6b:7f21 with SMTP id a640c23a62f3a-b9b4fa1aee7mr205959666b.0.1774627955130;
-        Fri, 27 Mar 2026 09:12:35 -0700 (PDT)
+        bh=9jDY2PYGbaZfyJpszHkpHZ5M00y7JZRiJojTTA2GybA=;
+        b=mrlGdAXjS9AY9aHm13S9gvHAs50WGMiXJ1/GWxjCvpJImVHWo9m9tvRQXX8DwpuWKQ
+         +8e5WKUjbNhfPahPBNGpoQsAKMgD41Jzg7DFDO4P9NwdkxbR52ZZkhQw/YRgs925aIWw
+         h4llsqNRK00kHDxTeWU5gStzCKH6Xik4+oFiKY3am1zIMuZGb0PqmuwPMITdntvTtuMG
+         5q7Ktku+rgiMSyDbNCchkoDlBkrllefjGSqk4PnRtHfkowW+dZ1bf4C45ptOlaObFvZb
+         4akxpO/JJtCgVVTGQfubXY21PQtAg/yUh5TND+0x8mKfO0Sr6wM0AE9qStiFUfe3wVcd
+         2t4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWhEJoJFluAY1ttAYyXHhoJQJK0IrrFuq6/hLR1t+jznJ7CLLM4YbrxYZLaE9wwhfACJPA1NqBZW1ApkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/lXW911H8IoDuHmw8OayZiy1sb29OF2qTcHj1LufdfxzntvRi
+	p53BILvSTwCwhbK6/qQCw43c1rdj9pNUlLB/BgIMZVAhpw5pEzKXQFpwepvlN+sGquo=
+X-Gm-Gg: ATEYQzz7dvJyPb9eJbw2zSAWS8sePNQuCm6eVxHolsTJyPEy6oQKuxXRLJdD+6Vf21h
+	te2OVPANSw12Swq+JqXjiMyb1GZ0pXyaVMbt+yu7kauO+UMeR7/rCaoIUI3G4UsVMwVG5g10QGc
+	xUvcpfmRnT/UlSGu/PMtsCxu15og8ysXiVK4JBGX3QH13uaNoJgwZXow0DI0uDrkR9Riy2msh3h
+	awseIeLk5LKrBTa5pYmbXYstnmFMnrwFFoCEtVoBB33sI4Hdx8Y/ifNXezI3uqJICBusGl/nM7A
+	PdCtvSi1BgHYUUIBTYdfU8CdLcNAaz1EgDvgOlruGYSy+LU5gnDToZ88bTrI8Ku9hPmccICsmDd
+	HaXMxez33S2tS21o0L84wdQcboB0YVbCtZ027vEuZAZ50XIaaKt2oBFzvF8eFh8JqW2sqMMsZ6q
+	rJpcQBlR1Uf4nYpUR7BKwR7gJkAfK9QrZz3tIBacSACExxx1r1cS+cV/90M3nU0+trS0DinHGoX
+	0zl/w==
+X-Received: by 2002:a17:907:9306:b0:b98:4abb:cc49 with SMTP id a640c23a62f3a-b9b502bfd00mr209569466b.5.1774627956162;
+        Fri, 27 Mar 2026 09:12:36 -0700 (PDT)
 Received: from [172.16.220.101] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b20265cc0sm273518366b.15.2026.03.27.09.12.34
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b20265cc0sm273518366b.15.2026.03.27.09.12.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 09:12:34 -0700 (PDT)
+        Fri, 27 Mar 2026 09:12:35 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 27 Mar 2026 17:12:23 +0100
-Subject: [PATCH v2 4/9] dt-bindings: display: msm: document the Milos
- Mobile Display Subsystem
+Date: Fri, 27 Mar 2026 17:12:24 +0100
+Subject: [PATCH v2 5/9] soc: qcom: ubwc: Add config for Milos
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-milos-mdss-v2-4-bc586683f5ca@fairphone.com>
+Message-Id: <20260327-milos-mdss-v2-5-bc586683f5ca@fairphone.com>
 References: <20260327-milos-mdss-v2-0-bc586683f5ca@fairphone.com>
 In-Reply-To: <20260327-milos-mdss-v2-0-bc586683f5ca@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -93,312 +92,58 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+ devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774627949; l=9238;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774627949; l=1658;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=KtUn5G2UTlEzF/yc8/MAeH8lYJexJkFm284OdZOtjsA=;
- b=XRBDJr+T4inivP4pCestBgyjauRIBd5h9gxsYU7Sc+onWf6YvnD0LQUjqAApSV7jl/whtAR4E
- eTvFPG0+Te6Co++eRkdMlIQz0g81A6TkBr87kCD7dNRLZzUBawgg1LF
+ bh=5cRqSrO9TWRQUaD7bTpD1ZxLquZmqnEMTYi63NVSawg=;
+ b=aIVcCFwLleXDR6BbWbAVLdZGSgSQE3T0zkh07vYu6x6K/HU3SUHpaustvo0IrxX3T00BKLHOA
+ f+oyhjM/FIkCWLIqvrDlNpWYSCHXcofk+OrlUQkx6J2XtUJlVtSdlnu
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Document the Mobile Display Subsystem (MDSS) on the Milos SoC.
+Describe the Universal Bandwidth Compression (UBWC) configuration
+for the Milos SoC.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- .../bindings/display/msm/qcom,milos-mdss.yaml      | 283 +++++++++++++++++++++
- 1 file changed, 283 insertions(+)
+ drivers/soc/qcom/ubwc_config.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.yaml
-new file mode 100644
-index 000000000000..0fb66b4b2742
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/msm/qcom,milos-mdss.yaml
-@@ -0,0 +1,283 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/msm/qcom,milos-mdss.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/soc/qcom/ubwc_config.c b/drivers/soc/qcom/ubwc_config.c
+index 3fe47d8f0f63..1551f270afce 100644
+--- a/drivers/soc/qcom/ubwc_config.c
++++ b/drivers/soc/qcom/ubwc_config.c
+@@ -37,6 +37,17 @@ static const struct qcom_ubwc_cfg_data kaanapali_data = {
+ 	.macrotile_mode = true,
+ };
+ 
++static const struct qcom_ubwc_cfg_data milos_data = {
++	.ubwc_enc_version = UBWC_4_0,
++	.ubwc_dec_version = UBWC_4_0,
++	.ubwc_swizzle = UBWC_SWIZZLE_ENABLE_LVL2 |
++			UBWC_SWIZZLE_ENABLE_LVL3,
++	.ubwc_bank_spread = true,
++	/* TODO: highest_bank_bit = 14 for LP_DDR4 */
++	.highest_bank_bit = 15,
++	.macrotile_mode = true,
++};
 +
-+title: Qualcomm Milos Display MDSS
-+
-+maintainers:
-+  - Luca Weiss <luca.weiss@fairphone.com>
-+
-+description:
-+  Milos MSM Mobile Display Subsystem(MDSS), which encapsulates sub-blocks like
-+  DPU display controller, DSI and DP interfaces etc.
-+
-+$ref: /schemas/display/msm/mdss-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: qcom,milos-mdss
-+
-+  clocks:
-+    items:
-+      - description: Display AHB
-+      - description: Display hf AXI
-+      - description: Display core
-+
-+  iommus:
-+    maxItems: 1
-+
-+  interconnects:
-+    items:
-+      - description: Interconnect path from mdp0 port to the data bus
-+      - description: Interconnect path from CPU to the reg bus
-+
-+  interconnect-names:
-+    items:
-+      - const: mdp0-mem
-+      - const: cpu-cfg
-+
-+patternProperties:
-+  "^display-controller@[0-9a-f]+$":
-+    type: object
-+    additionalProperties: true
-+    properties:
-+      compatible:
-+        const: qcom,milos-dpu
-+
-+  "^displayport-controller@[0-9a-f]+$":
-+    type: object
-+    additionalProperties: true
-+    properties:
-+      compatible:
-+        const: qcom,milos-dp
-+
-+  "^dsi@[0-9a-f]+$":
-+    type: object
-+    additionalProperties: true
-+    properties:
-+      compatible:
-+        items:
-+          - const: qcom,milos-dsi-ctrl
-+          - const: qcom,mdss-dsi-ctrl
-+
-+  "^phy@[0-9a-f]+$":
-+    type: object
-+    additionalProperties: true
-+    properties:
-+      compatible:
-+        const: qcom,milos-dsi-phy-4nm
-+
-+required:
-+  - compatible
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/qcom,rpmh.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/power/qcom,rpmhpd.h>
-+    #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
-+
-+    display-subsystem@ae00000 {
-+        compatible = "qcom,milos-mdss";
-+        reg = <0x0ae00000 0x1000>;
-+        reg-names = "mdss";
-+
-+        interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH 0>;
-+
-+        clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+                 <&gcc GCC_DISP_HF_AXI_CLK>,
-+                 <&dispcc DISP_CC_MDSS_MDP_CLK>;
-+
-+        resets = <&dispcc DISP_CC_MDSS_CORE_BCR>;
-+
-+        interconnects = <&mmss_noc MASTER_MDP QCOM_ICC_TAG_ALWAYS
-+                         &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-+                        <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
-+                         &cnoc_main SLAVE_DISPLAY_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
-+        interconnect-names = "mdp0-mem",
-+                             "cpu-cfg";
-+
-+        power-domains = <&dispcc DISP_CC_MDSS_CORE_GDSC>;
-+
-+        iommus = <&apps_smmu 0x1c00 0x2>;
-+
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+        ranges;
-+
-+        display-controller@ae01000 {
-+            compatible = "qcom,milos-dpu";
-+            reg = <0x0ae01000 0x8f000>,
-+                  <0x0aeb0000 0x3000>;
-+            reg-names = "mdp",
-+                        "vbif";
-+
-+            interrupts-extended = <&mdss 0>;
-+
-+            clocks = <&gcc GCC_DISP_HF_AXI_CLK>,
-+                     <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+                     <&dispcc DISP_CC_MDSS_MDP_LUT_CLK>,
-+                     <&dispcc DISP_CC_MDSS_MDP_CLK>,
-+                     <&dispcc DISP_CC_MDSS_VSYNC_CLK>;
-+            clock-names = "nrt_bus",
-+                          "iface",
-+                          "lut",
-+                          "core",
-+                          "vsync";
-+
-+            assigned-clocks = <&dispcc DISP_CC_MDSS_VSYNC_CLK>;
-+            assigned-clock-rates = <19200000>;
-+
-+            operating-points-v2 = <&mdp_opp_table>;
-+
-+            power-domains = <&rpmhpd RPMHPD_CX>;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+
-+                    dpu_intf1_out: endpoint {
-+                        remote-endpoint = <&mdss_dsi0_in>;
-+                    };
-+                };
-+            };
-+
-+            mdp_opp_table: opp-table {
-+                compatible = "operating-points-v2";
-+
-+                opp-200000000 {
-+                    opp-hz = /bits/ 64 <200000000>;
-+                    required-opps = <&rpmhpd_opp_low_svs>;
-+                };
-+
-+                opp-342000000 {
-+                    opp-hz = /bits/ 64 <342000000>;
-+                    required-opps = <&rpmhpd_opp_svs>;
-+                };
-+
-+                opp-402000000 {
-+                    opp-hz = /bits/ 64 <402000000>;
-+                    required-opps = <&rpmhpd_opp_svs_l1>;
-+                };
-+
-+                opp-535000000 {
-+                    opp-hz = /bits/ 64 <535000000>;
-+                    required-opps = <&rpmhpd_opp_nom>;
-+                };
-+
-+                opp-600000000 {
-+                    opp-hz = /bits/ 64 <600000000>;
-+                    required-opps = <&rpmhpd_opp_nom_l1>;
-+                };
-+
-+                opp-630000000 {
-+                    opp-hz = /bits/ 64 <630000000>;
-+                    required-opps = <&rpmhpd_opp_turbo>;
-+                };
-+            };
-+        };
-+
-+        dsi@ae94000 {
-+            compatible = "qcom,milos-dsi-ctrl", "qcom,mdss-dsi-ctrl";
-+            reg = <0x0ae94000 0x1000>;
-+            reg-names = "dsi_ctrl";
-+
-+            interrupts-extended = <&mdss 4>;
-+
-+            clocks = <&dispcc DISP_CC_MDSS_BYTE0_CLK>,
-+                     <&dispcc DISP_CC_MDSS_BYTE0_INTF_CLK>,
-+                     <&dispcc DISP_CC_MDSS_PCLK0_CLK>,
-+                     <&dispcc DISP_CC_MDSS_ESC0_CLK>,
-+                     <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+                     <&gcc GCC_DISP_HF_AXI_CLK>;
-+            clock-names = "byte",
-+                          "byte_intf",
-+                          "pixel",
-+                          "core",
-+                          "iface",
-+                          "bus";
-+
-+            assigned-clocks = <&dispcc DISP_CC_MDSS_BYTE0_CLK_SRC>,
-+                              <&dispcc DISP_CC_MDSS_PCLK0_CLK_SRC>;
-+            assigned-clock-parents = <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
-+                                     <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>;
-+
-+            operating-points-v2 = <&mdss_dsi_opp_table>;
-+
-+            power-domains = <&rpmhpd RPMHPD_CX>;
-+
-+            phys = <&mdss_dsi0_phy>;
-+            phy-names = "dsi";
-+
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+
-+                    mdss_dsi0_in: endpoint {
-+                        remote-endpoint = <&dpu_intf1_out>;
-+                    };
-+                };
-+
-+                port@1 {
-+                    reg = <1>;
-+
-+                    mdss_dsi0_out: endpoint {
-+                    };
-+                };
-+            };
-+
-+            mdss_dsi_opp_table: opp-table {
-+                compatible = "operating-points-v2";
-+
-+                opp-187500000 {
-+                    opp-hz = /bits/ 64 <187500000>;
-+                    required-opps = <&rpmhpd_opp_low_svs>;
-+                };
-+
-+                opp-300000000 {
-+                    opp-hz = /bits/ 64 <300000000>;
-+                    required-opps = <&rpmhpd_opp_svs>;
-+                };
-+
-+                opp-358000000 {
-+                    opp-hz = /bits/ 64 <358000000>;
-+                    required-opps = <&rpmhpd_opp_svs_l1>;
-+                };
-+            };
-+        };
-+
-+        mdss_dsi0_phy: phy@ae95000 {
-+            compatible = "qcom,milos-dsi-phy-4nm";
-+            reg = <0x0ae95000 0x200>,
-+                  <0x0ae95200 0x300>,
-+                  <0x0ae95500 0x400>;
-+            reg-names = "dsi_phy",
-+                        "dsi_phy_lane",
-+                        "dsi_pll";
-+
-+            clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+                     <&rpmhcc RPMH_CXO_CLK>;
-+            clock-names = "iface",
-+                          "ref";
-+
-+            #clock-cells = <1>;
-+            #phy-cells = <0>;
-+        };
-+    };
-+...
+ static const struct qcom_ubwc_cfg_data msm8937_data = {
+ 	.ubwc_enc_version = UBWC_1_0,
+ 	.ubwc_dec_version = UBWC_1_0,
+@@ -247,6 +258,7 @@ static const struct of_device_id qcom_ubwc_configs[] __maybe_unused = {
+ 	{ .compatible = "qcom,kaanapali", .data = &kaanapali_data, },
+ 	{ .compatible = "qcom,glymur", .data = &glymur_data},
+ 	{ .compatible = "qcom,mahua", .data = &glymur_data },
++	{ .compatible = "qcom,milos", .data = &milos_data },
+ 	{ .compatible = "qcom,msm8226", .data = &no_ubwc_data },
+ 	{ .compatible = "qcom,msm8916", .data = &no_ubwc_data },
+ 	{ .compatible = "qcom,msm8917", .data = &no_ubwc_data },
 
 -- 
 2.53.0
