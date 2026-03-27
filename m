@@ -1,143 +1,152 @@
-Received: from siberian.tulip.relay.mailchannels.net (siberian.tulip.relay.mailchannels.net [23.83.218.246])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843D137C106;
-	Fri, 27 Mar 2026 19:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.246
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774639447; cv=pass; b=U63Rgrv2EE8VcThCLGUtjDTOTvfloIiV/BhfmzS+vec03u8WsmWopDOgITwk7vlnfGwolXET9atJSfiaHI1sYlJGU4GojspjkibTaWRLFe3rkZ9CYCoMzcTrnt+goswpT2YSCv+/nYvP+6UReKuGbwYh+T3QxN+RpVZkN7HGM+M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774639447; c=relaxed/simple;
-	bh=PUSztIUro6Z3furr61dKex2o7Dkj57/lpaQYapsxrgo=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=Q8AKgT+ZzIrBNn3rzSIvsPl4CYmhJLSkMZH2Cr5HGDZXGVkRU7ODB1a5sCgDUREL8AjMpNJcnqE0ZZYUqmORVu7lYXcLmdrrB0LXViNFZ7l1cUCOGfMnHcUEkvWqAKJ8X5vohGkCg14S7TSRm5K23AcdHyPGzvocfSxbN+6HOo0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=Wdf0plUu; arc=pass smtp.client-ip=23.83.218.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBA137FF5B
+	for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 19:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774640871; cv=none; b=BgcCn8C8b/jqmViHKEz1uFjqzHc46TvDCQuiUehHIp6TEg/x/2nflirFVRrgFae+OpiOm9EycMP7hA5o1ds38NaDplA6UF5tT+KTnV1fKYCKZM3v66nMjun9Hk8MGE/Kyc7FcLdtAW4SAcikx70Lm3lSPqC41Gzy9o7aKOFCkO0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774640871; c=relaxed/simple;
+	bh=q/6+vMvA2E4OZu3sbTJUXlFO5fj+YmxcRVRVtOtAQuY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nBFTJH6yOYtj/ZohhSnhq8zT7otAy9rm6+VuJiEOV/BcXlIm01D5aP7YIJ/thVqZHBPBfAuBY5m9F/E7b0MxG/oYF/+tICiHnyoPnOacCT0WztM7blaBR574pbFe6qk3a7IRucjPbpY6Wse7zGm3CzwRy4KbuKLTtQBEL8V0Uh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nDfH9+Cg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q+NGW3J9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="Wdf0plUu"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 263467E2C70;
-	Fri, 27 Mar 2026 19:05:12 +0000 (UTC)
-Received: from de-fra-smtpout6.hostinger.io (100-115-116-28.trex-nlb.outbound.svc.cluster.local [100.115.116.28])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 0F76D7E2F52;
-	Fri, 27 Mar 2026 19:05:08 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1774638311;
-	b=IYy6h9DQWrd49d0CVwIqT44C5QI3kycncafbWAJWY+Z3vr9G2NA+a6BTTtKohSp1VRiR6+
-	2n6QA1Z1Hi6rRip8DNNNubW+qZ0LAHJyFu7jKCGrG1+4TBoaC/p0f/Nrla9USLPJ0sqWNa
-	yZkGOO2YBZrIdtVV6mTKiJterB2B1AEecdf+JxvhVUfCZnOLepL1Bj1YcVvCq2WGGAN21g
-	ZHn0Kr4Koc9wYwTptQhtt23g6OW74E80DVQA99QmH5bZxCIf3vN7X4pgb4YRaBlw/qK5Zs
-	cCySvIQat+nF/g/cKMsOfEQ8/ZSgL0ywjy2D4r8+SqijxFxgr6kPb/hfsJKcJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1774638311;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=urdPlQnffPNS3930VfPP6NP1Km4+SI7i5jmZi3CfVKk=;
-	b=tG8zTbNyNuUaGRYRPjBU7Lf4aGtmKmQ2N/v5N7t+8BbITjMBZytc+4hhOlhYfCbllgB0de
-	TveTgL5tAzuiSgeINNRbvf35wY7kTBoP7wZU8q/JPlnh7bgwEyfEWbnkBFupwUo0/6RNO4
-	KUbKh7TkFfwU5UnG0XLMTskuiWaXjPw9CVjjpmNWJH4EvQQJSIRuHNUWQYWfRFOeZqhmgd
-	qXjxHLSiNA4Y0OshapotpBeEkS4Ktv5n9CxBkkWBqowKwPnNDC7U+TOXMoGRkXY5q8YlEh
-	6K1lWAMiKM/5Fvlbq96IzwdSSXbd8xm0SzGbeGaaaHawC3Q4N5ueGmoLMWoSZw==
-ARC-Authentication-Results: i=1;
-	rspamd-7f98bb5847-qjg9m;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Macabre-Suffer: 198d6d775a2863d4_1774638311954_1497667489
-X-MC-Loop-Signature: 1774638311954:1394827398
-X-MC-Ingress-Time: 1774638311954
-Received: from de-fra-smtpout6.hostinger.io (de-fra-smtpout6.hostinger.io
- [148.222.55.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.115.116.28 (trex/7.1.5);
-	Fri, 27 Mar 2026 19:05:11 +0000
-Received: from [IPV6:2001:448a:502c:4ea6:c47d:9c65:bdc7:d11f] (unknown [IPv6:2001:448a:502c:4ea6:c47d:9c65:bdc7:d11f])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fj97h2KWvz45pT;
-	Fri, 27 Mar 2026 19:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1774638307;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=urdPlQnffPNS3930VfPP6NP1Km4+SI7i5jmZi3CfVKk=;
-	b=Wdf0plUuMfPOMkAQ8glcvPYh0u0Ay5RfzoRot8m0tve4TeMPU70hSGao9EEcgAKCUq3sef
-	P7/0qB5ZI1davWDmNDOreKp1uhI5Y/UTPlsNdkFDQi0Bv1TxY1AG9beTlvSd98WhZwQY/V
-	4rbZoBNekOEw0lNUwKSSHXXGB34x9B/znl5saMKxSuXyIuLgmDIAuYFKxubReWvybvNacn
-	K/WmTR3Rteqeh60Tl0urDcuuZDyYV2XIhOwenqPYr+1HGErz9xsa+G9+blQkquPcOaJ50r
-	rCHc/2Yv734aLszpOg5rihBmJa2frJRvjaJO+nq1gZzcCObYoJijjC0H1NCbRg==
-Message-ID: <c8e6166f-e9fc-430e-b290-a97c2aae2b31@smankusors.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nDfH9+Cg";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q+NGW3J9"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62RI2NqQ890129
+	for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 19:47:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	K6XR8VEr9ypixa6lsMOHaJVt1KW3Mhm37VQBvXFJnis=; b=nDfH9+CgSmUTr/Jy
+	DUyPM4HxcFXuCvnrg1gW8YY5wolyL5bmU/VZq1nOWa5t9lRzcrYw6t+Jjn7eJtj8
+	qZ9T6/A0ZhwuZY026SGhK6xdzMrLfrFsvQHcEr0gFLIVbmOOMNbSAXBW2XRLpvFz
+	huHSaUAAyBISbik4HoET5P6dwPYbxpv5lAPCzPY3oaPgiQCdo6wxkaf28n81rgJr
+	pWIfGcCqezlnvSb7pfEqo9aGaTXCjgkNp2nfD5rat/r455oWdE/5XnftMV3Rr6Ye
+	HM34D9oCwEjHsHUjUhUtTRm9IIbneprd3hDswPrVXKYQICCMPB4WssTfijCQ8xXG
+	j+OPrA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d5vf6ruen-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 19:47:49 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5093b92f327so55623141cf.1
+        for <phone-devel@vger.kernel.org>; Fri, 27 Mar 2026 12:47:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774640869; x=1775245669; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K6XR8VEr9ypixa6lsMOHaJVt1KW3Mhm37VQBvXFJnis=;
+        b=Q+NGW3J9hHjegF1W4aEp+nrlIxN7xgGWhRwtwt5C/3q+8l2h0NWKcngBG1FlWb+uaW
+         gqlOXuFikKA90iyOXY/marqbLkaZoVi9j9LI4h1sf/mY0eUGwBf+jj8xatux0PjgYFES
+         i//wq9eTHvfIoXYc1pYgqoTnKYt8iT9DPY4ZrU3pghVg2Q/9KDbItWBwfAEGZ8Smi64D
+         zh6iQLixQp5pWgAJ5yDnnFmw1j27cP0AEQCSICZCqSPhIg4iWKE8QxC8QBN+e/+dxFhG
+         ECj3s1edSXXaLZqbEjiBOyVryfZiO02trFR5/+EbPuGE/dKVeuuiIrCosv8l+QGIKPN3
+         V4Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774640869; x=1775245669;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K6XR8VEr9ypixa6lsMOHaJVt1KW3Mhm37VQBvXFJnis=;
+        b=P+X/1vb1YsHuAEMRa1EPJd6+bwd8z/gqbkKkB7R6+V3net3d4Xf6Tk54+z2nYMzWtD
+         bBjiQFbcVf08KU1bg5jPfz32lZRmpyiU7g1LojSPFTG1OKPWY85X9y3UAmXp5tE1hxlr
+         yqRvKhsRqMPUXvdlY9t9kLHCAviSyeJLbmY7HcmC6myP7gHBFNiL9PiACYF+onO5cU5C
+         uIkLHOvdOfnehHejnE++wxYqQUINGuJIzW3bqjxDaW94ZFvzNem04rpuqdyeR76Z9qrl
+         tsIquufI+8R2BP+LitIafofzFarcIn0ep98JRl/OwDJ4eIUllwobBBRHTXyzMNzO5ccE
+         JrGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUpSPSxiNwb0LOKk0IJSOKxEM/DkHCFnVjuOLVFzZZQ2PK8FZdy9XwGzhzmKhFd2XvTD6qsy3UIGSvug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmREuHmQawk1741nKn4T95UrG8no7MEgZ5hi+dnPSE/DcNOd5y
+	ae0G9aLrgfWsHAuPUvtgcGx+nC6AOnetZV6COumCraCA4IdLBHKD4UMi4Qj/wdlZOPhjAPzTFbM
+	sZ8e+f/l2WJFTN0rsR/cLAJyVkQfKbKEya9ZpSPxBARC3W4cqgr+E/YpPQj0/fSDHbw==
+X-Gm-Gg: ATEYQzwZaBDqWZp2QTTBlCx3xG6sVpu+7kEurJICxl5PiUP+ChxfUOLsRrR3r8UvgUV
+	9V0aQbdLZPmJqt0mPccyRuIRvoaNacNvm5RsGCVDN4KXQ9siESKj59B3S1e+l/dUABjDDRNncXW
+	pAxodT1F9q3qjAXHOu7BEp/so8ED2O596I0B2S1S1oSdhXeXUnwMLXRWt0bQopjzMXsCXW1nTpo
+	1Qxj4D/4EXTIOw2cL9e+VhtblHFkfZEIk6lqY61gl0twuasEWcVD71WQpoZuSMHY1Gfti25Vh8k
+	k3JEIAj9knGKI8C0wodFA4ZLHuR0e+qOI/BpzjEZksPPDWs+YL2+opmluSkxISaN919NBK3P2RQ
+	9qJV8848X/7+My7ehtMeCvdT3RtU/dsfAiq/A1kfh7Nwzu9Cwmxlw5LRuEjPoCJQxAuw1dAZGcB
+	8gV1PmX0KAtOD5/owhwttHDPCIFkIk6paQ
+X-Received: by 2002:a05:622a:4812:b0:509:31bd:3de4 with SMTP id d75a77b69052e-50ba39780fbmr53426871cf.56.1774640868704;
+        Fri, 27 Mar 2026 12:47:48 -0700 (PDT)
+X-Received: by 2002:a05:622a:4812:b0:509:31bd:3de4 with SMTP id d75a77b69052e-50ba39780fbmr53426511cf.56.1774640868259;
+        Fri, 27 Mar 2026 12:47:48 -0700 (PDT)
+Received: from umbar.. (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c837130basm275211fa.12.2026.03.27.12.47.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 12:47:46 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: robin.clark@oss.qualcomm.com,
+        =?UTF-8?q?C=C3=A9dric=20Bellegarde?= <cedric.bellegarde@adishatz.org>
+Cc: lumag@kernel.org, abhinav.kumar@linux.dev, jessica.zhang@oss.qualcomm.com,
+        sean@poorly.run, marijn.suijten@somainline.org, airlied@gmail.com,
+        simona@ffwll.ch, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] drm/msm/dpu: fix vblank IRQ registration before atomic_mode_set
+Date: Fri, 27 Mar 2026 21:47:39 +0200
+Message-ID: <177463970790.3488980.11725092140153098793.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260318171700.394945-1-cedric.bellegarde@adishatz.org>
+References: <20260318171700.394945-1-cedric.bellegarde@adishatz.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: add support for reading
- channel labels
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com>
- <20260326-pm8xxx-xoadc-label-v1-2-027805dad4db@smankusors.com>
- <acUIAh_r7mSfIiEB@ashevche-desk.local>
- <0b85a229-219f-4457-8fe4-bd4b3545684f@smankusors.com>
- <acWDMg58qxyeM5Eq@ashevche-desk.local>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <acWDMg58qxyeM5Eq@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Fri, 27 Mar 2026 19:05:04 +0000 (UTC)
-X-CM-Envelope: MS4xfEqvzjXxVf9yColdO4Y7KOcvmc8GtclHktRL50CzAIt9ppyIjMjc6Hat3ZT3hjTIe6ygH3lR2eGRnHKjQg3M/Bkt7nfQAzADzw0eMsnGgmRnHsI7iAtw kuU/jnfOGvOzXF1vNHYV6dBFsr+cy5ZmfF91X9ni2KNGVhsGmCMhYWG1KiGH4LsWCEtwoeFxMRlJK8uDil+mDraCamHdTbL2FsgZZuZFIZZU5HAkn3DWAQ7B zCjR45Ajyni/IZPjPN49gqoLyGd76OzPdaSMPkPmOc18Trj3HVnsIHlM5Z4/XyNYnzYdZBLvMHQ7Rp8wEkqyEVQQL7N+PZo47HjZcLHkpLVktb0AtOvzjtE5 N6DMXCUzJWKwZ8lOPeLJMoc9mSTlx2sPlI1PFloa2W9Zd0Pu8FK/apwMHPoKoprsYIV9fTJnSJnqptyHV6G9CEXnny+3gB0W9LwS+ymbKub/4j5jq9P7lRKM xMCT28hoOxx69rKVWSqxWuk+LU5Fz5HT9AMjvOX7tSZJLLDhMlSOitR1B+wZCIfXsU7aztn97tvTzxwf7SR9uSVapew5+CbWwcM48m4pWrcQhtQ7eXLlaPqb ESN1p26xBUAXUk7EII5XFoOVEC0lx3jKGa5ITH0I4xBzTX8FFltr/4SkAvWkmGJcs8aUotGpUcbZsB4iiDyzJSzuk0oYSjTBh0N/B1cHfA11oEsofkLCRtfd +D0K7gitW3BBkx/9LhKeVdcmc305nwMbE0V+z9xdVvIcjWpN38J9gmMaxIZoqXc+DANKKy08ryM=
-X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69c6d4e3 a=2f+13PdvnRQklfqNEF6FXA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=yDFIC1yK4SsZJBJc34sA:9 a=QEXdDO2ut3YA:10
-X-AuthUser: linux@smankusors.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=X/Zf6WTe c=1 sm=1 tr=0 ts=69c6dee5 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=e5mUnYsNAAAA:8
+ a=3Bny_bJLngoGic2QnrEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=dawVfQjAaf238kedN5IG:22 a=Vxmtnl_E_bksehYqCbjh:22
+X-Proofpoint-ORIG-GUID: 9O4e797n-WqlF0zV9SY3D38eBbQUnGwx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDEzOCBTYWx0ZWRfX5ijrKwgPYu22
+ yJQJh5k6fBZwH4aw3u+28k4c+aSIZ+vvw5ne4+Yx/aJeBjS9a7+qNqpC6MzSEU307KAIfDj+Ch7
+ 540+YoiaTS02zfwyepNiIZkU6asXR23PZ2L5Ny8ohd6uJ8ZWhSQtOHnU3pCWngwWY95ZE5T4gDG
+ 03BVa/vlpdn/kuxkVp9/39gtcVQFHVq5Nuxi0bC9prRATxVJ+YFlQK0vBiRi8ZVD/+IcAFas1tj
+ Zrym3RYTaXpwYhQUsJqYsBe3xsc1ocJEhKR/LURUKhvoGj8hXPBC1tHupFpz8qrSdF/OmA/AELx
+ WTK28VQaNZzOqOXTRiIN6CCLD/+zghfyu9JH1OMWCv3BSMnkTheUi3kvahIvQa11DlTKJQA13q8
+ mAcrzOTLjt8e0J3Yr4baDgtL9NIOlHVCTS+xLB/Hv3fIU+ekwf9Wn8dD8QlgxJifkSMRI9/7deM
+ BbvTEuyjBD5kkQcOyEQ==
+X-Proofpoint-GUID: 9O4e797n-WqlF0zV9SY3D38eBbQUnGwx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ spamscore=0 clxscore=1015 phishscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603270138
 
-On 3/27/2026 2:04 AM, Andy Shevchenko wrote:
-> On Thu, Mar 26, 2026 at 12:00:52PM +0000, Antony Kurniawan Soemardi wrote:
->> On 3/26/2026 5:18 PM, Andy Shevchenko wrote:
-> ...
->>>> +	if (!ch) {
->>>> +		dev_err(adc->dev, "no such channel %lu\n", chan->address);
->>>> +		return -EINVAL;
->>>> +	}
->>>
->>> Isn't it a dead code? Also poisoning dmesg with this recurrent message is
->>> not good idea to begin with (the user space will have a door to flood it,
->>> which might be considered as an assistance to hackers to clear immediate
->>> logs after a successful attack).
->>
->> Good point about the successful attack hint! I was copying the existing
->> code from pm8xxx_read_raw. Do you think those checks are unnecessary for
->> pm8xxx_read_raw as well?
+On Wed, 18 Mar 2026 18:17:00 +0100, Cédric Bellegarde wrote:
+> dpu_encoder_toggle_vblank_for_crtc() can call control_vblank_irq()
+> at any time in response to a userspace vblank request, independently
+> of the atomic commit sequence. If this happens before the encoder's
+> first atomic_mode_set(), irq[INTR_IDX_RDPTR] is still zero.
 > 
-> Yes, I think they are not as the returned code should be enough to identify
-> the problem. (For no such channel I would rather see -ENOENT, but we can't
-> simply replace that in the existing code as it's part of ABI.)
+> Passing irq_idx=0 to dpu_core_irq_register_callback() is treated as
+> invalid, and DPU_IRQ_REG(0) and DPU_IRQ_BIT(0) produce misleading
+> values of 134217727 and 31 respectively due to unsigned wraparound
+> in the (irq_idx - 1) macros, resulting in the confusing error:
+> 
+> [...]
 
-Just to re-clarify, do you mean for both pm8xxx_read_label &
-pm8xxx_read_raw:
-1. if the check fails, it should only return -EINVAL without any
-    logging; or
-2. remove the checks because there's no way it's not found?
+Applied to msm-next, thanks!
 
+[1/1] drm/msm/dpu: fix vblank IRQ registration before atomic_mode_set
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/961c900628fe
+
+Best regards,
 -- 
-Thanks,
-Antony K. S.
+With best wishes
+Dmitry
+
+
