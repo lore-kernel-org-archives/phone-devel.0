@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165E938655F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166B038C2C4;
 	Fri, 27 Mar 2026 13:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774618219; cv=none; b=HJR6cRlsbmnMr4D39+18mQXzQ2kCZdtEuIuqv1nA8D7rYcT1RmdPAaHmeDXTuHNy2ixHZNl30uzPDvIv9DNj7Ie7vilotaKLEVJdsc2OSn/ViPa9rHrjOzZRyWm0Z5/3dXa/8qtGYMhUyLtbkil66MjI5C+wsjht6NmoB5LssVk=
+	t=1774618219; cv=none; b=jmyBT/4iIWke8y9imy0BcyK+FszkzDEeN9obztZNlDzbNvJ/rM13xP2r/exCHyrh9gOEMNWQuWXkMoEHruk9j12SsS/TDEh8pyUXD5PcKQdIbZL/+gIG3a3SmQrK7sqcBeSVlQq13ze6t1Jiv6edpaUa4GCksWJsWAvwxXO01RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774618219; c=relaxed/simple;
-	bh=5BGVxKnhc8w27oGyJiGN11xQUs8HA3TLrtWytOF51bE=;
+	bh=o+cDd6rLPqJJvSBR0PTspOivz6thnRMenTivb5cMzPY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bal3RdOPrQzY21ERx2CPtNvEgi7OqnNPwOK+TyM1GHgg6ezl93cnCl4DdYOgwgJC/16wjXsRpKK2uXSQD31gzWjdDP4P2LpreFgIFTfh6NHKDRSFWRiZOIGYzAhWonSsGBy1KpbKnqw5NPyhZ8z9kIZx23/C1B9HOqBHCrQnbRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2caN0+u; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Lc++JuxXpf5k6m20mud2ljMPjpaB7GOvnBPV/2BtXyWGRNwZTyg9YHyDnytNp3aOyLZjPNQDUf03BuFMyHPkY7YO3R2aOmDoI06q7Y7/o7IFgn/1wkeLwDrOwo4rXD/4mSbbps811NogsYO152H9xeQIRrrzcghLoXQ7XoXZj7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utuxB/nj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2caN0+u"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E4528C19423;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utuxB/nj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CD281C2BCB8;
 	Fri, 27 Mar 2026 13:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774618219;
-	bh=5BGVxKnhc8w27oGyJiGN11xQUs8HA3TLrtWytOF51bE=;
+	s=k20201202; t=1774618218;
+	bh=o+cDd6rLPqJJvSBR0PTspOivz6thnRMenTivb5cMzPY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=a2caN0+uO4hO72Lq8cvot0kOAUNeuU9iN2l0TomchpazLL3PnujD6zYD1xtZ3T1ge
-	 hQj4swxQ4FbJfli3f0teDmdbGGxiEVZyVcYs1b/+QuCLgU1/cCtjFH8PLHIagv70S/
-	 NQPAKyv9rIbIRChOt0IqE3LKJn0z1GBpt6nd51fPEGa2u23cqEWbBjQoz0tXJUTcU8
-	 4xmDiEJ+r2UXA7ftuEpRaz0b58bCrCWehbWhfW1g0hdbbKi5exFCXmcveMV6wRUulz
-	 BzwKJYWLgdBgrjIpIsMHmMjq6B8h+CKHNTIfQqyOQ6o364pBszfv0+3tKx9VldbElX
-	 hlnI9kJ7Wy9VQ==
+	b=utuxB/nj/+CDzaSmUjUKjwbAKSrrBUdxwXqNrEJatIVQH751yRaPsntb/MbLOlYzp
+	 KFSnd2rWXzy+iKYlUt30Y5f1VeuTP98VApE/3YnJp0lyjImUw15p/srC65EMpiDOZC
+	 HUAzMYsb3DKgmWtIbvSfVPFN7fyjGnbN86ZE8Jd+V8fTXDSkepvoc8kQgCUyqqYQtd
+	 zpvCVyord8+21Uq0t71LNFdazrGNPz895svHsNUubYnA6RXzGH8NQcClC6n3Pm7EcW
+	 +8NdvGy+9+27b7jWAl8lh4kMc/DT5dNXLI/17XoQYOdXlWu0aRgYcsoDgiLPoqPBrd
+	 YZ+JF1D+cguPg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D486010ED674;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFC9010ED661;
 	Fri, 27 Mar 2026 13:30:18 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Fri, 27 Mar 2026 15:30:52 +0100
-Subject: [PATCH v4 6/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
- Hall sensor
+Date: Fri, 27 Mar 2026 15:30:51 +0100
+Subject: [PATCH v4 5/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ touchscreen
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-rimob-new-features-v4-6-06edff9c4509@protonmail.com>
+Message-Id: <20260327-rimob-new-features-v4-5-06edff9c4509@protonmail.com>
 References: <20260327-rimob-new-features-v4-0-06edff9c4509@protonmail.com>
 In-Reply-To: <20260327-rimob-new-features-v4-0-06edff9c4509@protonmail.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -58,11 +58,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  Cristian Cozzolino <cristian_ci@protonmail.com>, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774621871; l=1551;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774621871; l=1591;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=qjRJ0X+ghZb8YDf+gcP0JTOiaPJ3AI/2/QR/QNsMqZY=;
- b=nFg5wkNjlIPy6PXSIpFJr1FgiQfn3kXcgy+YIcsZLIkt0OKDd1DDtICYuTGE6ciE/SfMc8Y1h
- NFhe2Ewo7SpDfaz9T0KCVXeHsrng++BSOw/idV8GOX/m7Znp/l9Hcjn
+ bh=jTbARXkjWHmyaiFZEdymOFXmGC761kbHkBCVhgFNKAg=;
+ b=IfSwCEIRtDhlJX9itmeIG+vCObwSjOzfTK45LKDx70YAi++WLHu9OEnuop7f2mmI5ZFKHwuKk
+ 5GMZqP9t9OmAt8m1xsrocp15rulA5fvWshs7AEttxWkr1iS+odpBDa+
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -72,53 +72,65 @@ Reply-To: cristian_ci@protonmail.com
 
 From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Enable the Hall effect sensor (flip cover) for Billion Capture+.
-The GPIO is mapped to SW_LID events as in other qcom devices.
+This device uses a Goodix GT5688 touch controller, connected to i2c_3.
+Add it to the device tree.
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 32 ++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-index a1280b0e7e90..8e3874740cf9 100644
+index 8620143e04a0..a1280b0e7e90 100644
 --- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-@@ -47,9 +47,18 @@ framebuffer@90001000 {
- 	gpio-keys {
- 		compatible = "gpio-keys";
+@@ -94,6 +94,31 @@ &hsusb_phy {
+ 	status = "okay";
+ };
  
--		pinctrl-0 = <&gpio_key_default>;
-+		pinctrl-0 = <&gpio_hall_sensor_default>, <&gpio_key_default>;
- 		pinctrl-names = "default";
- 
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 46 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+			wakeup-source;
-+		};
++&i2c_3 {
++	status = "okay";
 +
- 		key-volume-up {
- 			label = "Volume Up";
- 			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
-@@ -329,6 +338,13 @@ &sdhc_2 {
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <135 4>;
- 
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio46";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
++	touchscreen@5d {
++		compatible = "goodix,gt5688";
++		reg = <0x5d>;
++
++		interrupts-extended = <&tlmm 65 IRQ_TYPE_LEVEL_LOW>;
++
++		pinctrl-0 = <&tsp_int_rst_default>;
++		pinctrl-names = "default";
++
++		irq-gpios = <&tlmm 65 GPIO_ACTIVE_HIGH>;
++		reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
++
++		VDDIO-supply = <&pm8953_l6>;
++		AVDD28-supply = <&pm8953_l10>;
++
++		touchscreen-size-x = <1080>;
++		touchscreen-size-y = <1920>;
++		touchscreen-inverted-x;
++		touchscreen-inverted-y;
 +	};
++};
 +
- 	gpio_key_default: gpio-key-default-state {
- 		pins = "gpio85";
- 		function = "gpio";
+ &ibb {
+ 	qcom,discharge-resistor-kohms = <32>;
+ };
+@@ -317,6 +342,13 @@ panel_default: panel-default-state {
+ 		drive-strength = <8>;
+ 		bias-disable;
+ 	};
++
++	tsp_int_rst_default: tsp-int-rst-default-state {
++		pins = "gpio64", "gpio65";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-pull-up;
++	};
+ };
+ 
+ &usb3 {
 
 -- 
 2.53.0
