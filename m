@@ -1,43 +1,47 @@
-Received: from mail-24429.protonmail.ch (mail-24429.protonmail.ch [109.224.244.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907325EF87;
-	Fri, 27 Mar 2026 05:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D76B3CAE8E;
+	Fri, 27 Mar 2026 07:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774589224; cv=none; b=gAC/qPqypFef41XhCbFeNxQ2T/scIsAJztEHkAb13Bcleh3dI42PPC/xU6dtS4UbRml0RIwajricOxwIdKwX4v5En0wabfcMu1FXUTbt7rTFi5ix2zGI9l31phztx2WSDOatDYtRbvWHUeVzdQl83OpdSyuP42/LAGQKEucXiTQ=
+	t=1774597882; cv=none; b=OGL/VRA5FIbe5wINpoByLvVs8TkENB3QhuEsr3xff1DbYdqW+3T1LjaNfet6WcpR2tww1UDOk4i/MYiv1DRDy5vg0Pd/lXcL8UGczsi4DpxajCdczIvUnjSHllmx6oLzOQuonViKxH1b9V6MCDJr9maToRWx8iosq7xIpVXXFQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774589224; c=relaxed/simple;
-	bh=bEzkue1X7mLp+/j/hhoJP+Jnd4BlvcuBWwITMbXCxq8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeH40hhilPWwSjl60Jn6W2+1emBggLY0e5Am9mGKa1z40/GtAienXwFuUuHdGAjKhFRu0djIipgn0lLY7ZusBjVZpzVvTQjX6zFL3M87Brdn5lkWnW3TViHCw5PJenQ2uyHJJBPRirCKqsmdrmcRcubi6kA0CZw0EW5yG5PKDfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=sDNBBMYV; arc=none smtp.client-ip=109.224.244.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1774597882; c=relaxed/simple;
+	bh=X4SHtt80dWhbPwyKQPEneW9QD0TqzHzy5YP5TuanMPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MGReWGIiezMQ/AK3V6n7M8nsrlzvMcy0PrdbLLhq21yD0F40Gr87ywf++3+RT4qgIKM30bLooClidKq6RWmIj/6hO3XWvojx5njKKEFAyQuF0fcvY9YY3+NwhHpDwyR3cUyokjUnn7HY1am5wdNglHFpBRqZBva+MRTJIY8bXCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oW2oC0TD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="sDNBBMYV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1774589214; x=1774848414;
-	bh=E+nwK/sviPTJ4YHe+rWlRmRhYCoqZkYMB6zYwWx5tr0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=sDNBBMYVJAp1LdeUIFiSOLc1bKhghvNL2Q1/KdU+eYfNHKzsfgkEW5FXp3fipfxAF
-	 kxEReEJ74UPzEYehOn/I43Oft4dOT2J0vhpFHuayeKtp4GyY43vSG5zQ3PCJeBos83
-	 etrIxLyRi6fbZGk4iV4fWhIWaG6zTlwT8kHehaEqLVjBcMH9hpemmegLF+S8pBlX4S
-	 HsieuSir62nZmmtMFXiS4YrJMF1/MuFpcu3uUv3U4yWighWmEU27hvLXnfIVqDbJOw
-	 BcEtLsktfxf0ylr2CZN7sbpn1qqIYuojbyBf9UToMTNgNpmAWd1KiFs8yzH+rPrXv3
-	 MFNROqRF7aMnQ==
-Date: Fri, 27 Mar 2026 05:26:47 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
-Message-ID: <63LsT_8yLkjzVTSswYeIbFl40zYY30Bo5DyyLCqYrG1E0eJ4RqKF715_8j2J0WRd3RESpYvwfPTJzw7xsCa4wdxmYGQbUArRlKz3PL1cJ5Q=@protonmail.com>
-In-Reply-To: <87943afd-2601-423e-878d-36b69ac3d6c3@oss.qualcomm.com>
-References: <20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com> <20260321-rimob-new-features-v3-3-d4b8ee867de7@protonmail.com> <109d21b4-5d16-4689-8383-ecd29bbbf8a6@oss.qualcomm.com> <7wYxWlqdcbL3ANB9n0g4t74x-dwE2yG4CmVw9TwGNmwARxbT5WsdG1fpuIDSA5ab750Gs8OUBwmVa_nZd065guKDJueytb1AmlQ05__IzmU=@protonmail.com> <87943afd-2601-423e-878d-36b69ac3d6c3@oss.qualcomm.com>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: 13a94298c7042e78ace8ac9e771817c299e4a043
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oW2oC0TD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D946BC19423;
+	Fri, 27 Mar 2026 07:51:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774597881;
+	bh=X4SHtt80dWhbPwyKQPEneW9QD0TqzHzy5YP5TuanMPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oW2oC0TDPDcEJL40Ubhj2Tbs20NeQCGJCFEm6QphrVA7nG3987rI91+CyXQaJkWjI
+	 q1YDdGZUrVU8Ss7owuckaEaU8WeoSfgaqpOEk0ihNUda6GLPaWDs6vcvFbTJw2eq3n
+	 2V8SzXWqh3THU1w2+Ct2EB1HTWoBZAJq5L3e82Ve2DRRkz92upgY1xrGRo+9KheuOT
+	 DERm/9iuANlmubGUPRHgs9kvLA+E6dESn/ahYN3SHpRiE31Ol7AV+4eOCE3GOFL/9m
+	 MXve62Ot0WYTkJ1ST5dwremsOcPe16/WycNd4MW5ORO6AJAMivLNlD2C7gH+HXaFSy
+	 tu+wCthasZbHA==
+Date: Fri, 27 Mar 2026 08:51:18 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Biswapriyo Nath <nathbappai@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Sean Young <sean@mess.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Martin Botka <martin.botka@somainline.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, linux-clk@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 4/7] dt-bindings: leds: irled: ir-spi-led: Add new
+ duty-cycle value
+Message-ID: <20260327-natural-wild-mongrel-5bcc43@quoll>
+References: <20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com>
+ <20260325-ginkgo-add-usb-ir-vib-v1-4-446c6e865ad6@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -45,47 +49,30 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20260325-ginkgo-add-usb-ir-vib-v1-4-446c6e865ad6@gmail.com>
 
-On Thursday, March 26th, 2026 at 13:08, Konrad Dybcio <konrad.dybcio@oss.qu=
-alcomm.com> wrote:
-
-> On 3/24/26 12:18 PM, cristian_ci wrote:
-> > On Monday, March 23rd, 2026 at 11:52, Konrad Dybcio <konrad.dybcio@oss.=
-qualcomm.com> wrote:
-> >
-> >> On 3/21/26 5:23 PM, Cristian Cozzolino via B4 Relay wrote:
-> >>> From: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >>>
-> >>> Add the description for the display panel found on this phone.
-> >>> And with this done we can also enable the GPU and set the zap shader
-> >>> firmware path.
-> >>>
-> >>> Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >>> ---
-> >>
-> >> [...]
-> >>
-> >>> +=09panel_default: panel-default-state {
-> >>> +=09=09pins =3D "gpio61";
-> >>> +=09=09function =3D "gpio";
-> >>> +=09=09drive-strength =3D <8>;
-> >>> +=09=09bias-disable;
-> >>> +=09=09output-high;
-> >>
-> >> This says "by default, actively drive the pin not to reset the display
-> >> panel". Is this actually necessary?
-> >
-> > I've tried to remove panel pinctrl stuff from the panel and the device =
-still boots/works exactly like before. So, have I to submit v4 without pinc=
-trl at all for the panel?
->=20
-> No, the pin config is useful, I'm specifically referencing the output-hig=
-h
-> property
-
-I've commented out "output-high" property and (apparently) the device=20
-boots and works like before.
-
-> Konrad
+On Wed, Mar 25, 2026 at 06:07:27PM +0000, Biswapriyo Nath wrote:
+> 30 duty cycle for IR transmitter is used in Xiaomi Redmi Note 8 (ginkgo).
 > 
+> Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml b/Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml
+> index 72cadebf6e3..0297bfbb275 100644
+> --- a/Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml
+> +++ b/Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml
+> @@ -25,7 +25,7 @@ properties:
+>  
+>    duty-cycle:
+>      $ref: /schemas/types.yaml#/definitions/uint8
+> -    enum: [50, 60, 70, 75, 80, 90]
+> +    enum: [30, 50, 60, 70, 75, 80, 90]
+
+Hm, why is this enum, instead of 1-99, in the first place?
+
+Best regards,
+Krzysztof
+
