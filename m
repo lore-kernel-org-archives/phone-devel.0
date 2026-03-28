@@ -1,85 +1,128 @@
-Received: from mail-24431.protonmail.ch (mail-24431.protonmail.ch [109.224.244.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603E134FF46
-	for <phone-devel@vger.kernel.org>; Sat, 28 Mar 2026 17:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AC2338936
+	for <phone-devel@vger.kernel.org>; Sat, 28 Mar 2026 20:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774719070; cv=none; b=obsKcgnt6DK40WoAqft6OBs30wu/1GCZEXF68z4eoUeHxA1VIjyMN07T4hexAMaVRKRysoSAyOvQ17GRl6/cs3RIl+I8dHDaiR397HWWq7/d06bvTkpI9bDVc8pExbXCZxuO36De+vLAOfGZEYJeHErudG22HZ85nJQwwJ/EJuE=
+	t=1774730604; cv=none; b=X2aaqRhwI0nJnVzMEW7RNfR3mNlVypScoqG9BPBrTxIchoINdwZX/pWg0qcJKXFiXlZuZBOPrSDC4pHXTzOO/chbrzB56Y0tlXclc3jBDIoJw5lnYP1R3avW5ZXu3InOPmgAgK7sG1LytO75XSLcKyRcNQ9zHTT7PP1AAWM8lA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774719070; c=relaxed/simple;
-	bh=0ez/HeqjP2d++NPPugrN+b9Byj3675ZLl57i5U+g6q0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lvb/m+cKISg0q8989G1a208ZGKwuUJQS1x4z7xO0djD9sAwuB6HA4r1OOy1gC2s7TabiS+IfwygekeaD+QsTNQqDI9+G+Q6FMdh9afG4T0Jil+Hxdqjs4UNJ6AdHpUFWDpze0jk8n7aBxybqazWxMbyU0PEOsCUEbApQiRDWz3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=JYXx2ugx; arc=none smtp.client-ip=109.224.244.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1774730604; c=relaxed/simple;
+	bh=+EX5095f1L67iD8d4OUekG+X9JM3DOBgBP6fl+h7c8E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P+YjG3SJXsMjUo0ozLLehjzXYqq3EulgwbQKxcHUzr+f3dtNc9ygOzrOH1pXgufGo9tEqu7X9WxsTgM9AA4RHtZt9tk35ER0BL8eTs1xJ1r6rE1k4RAEwu3XhFcjRv9hi7CDujaCBwgR3ZR+T6EtInpTtEfECasEKPf1Ke4q4Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8DRqWk1; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="JYXx2ugx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1774719059; x=1774978259;
-	bh=sgqrW4vue2YRH/11cpwfBbkabMPf+9TeMN7abNY/hXQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=JYXx2ugxoLBqIhcply1iBLXBWtiOGWnNv8TPcXKMqbK0dTiKIhPDiY4fuMniIzG0c
-	 DgcG4PxASDHkVW+RCVWk1GlERuVPiwQH3xVFSHB2bS5oj6/LKbvTPgInk6MZjj08+s
-	 53RJcD5kY/AwH6oCXofd2azsDtu+4m/m0L+IpTfD6gZrrhTRrfhvhL/vV3Awwtnxks
-	 Kiyfc7ZgE8ASj4btj4yHWeM40sFaUhE1vfH8ZsAca2dhXeLw8DfEgrwkN3rs8jkBq0
-	 N9USWcLMelB9iPxGrLYHaR7DvhfOBjnhydzrUol06o/2kkHkQxIdpTxr6DC0lhzOxi
-	 GnbAJTbZVDiew==
-Date: Sat, 28 Mar 2026 17:30:53 +0000
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-From: cristian_ci <cristian_ci@protonmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 3/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
-Message-ID: <O7THc5h8ZhgzNpklYKTGOnEZKlN4BtHZHjKZt2KErekNb3E-hizt2dw7xuJ8G6giEyivmvC0f6-eIfCT6fJkUA7_CVQwhAktCXfBqAVV_Zo=@protonmail.com>
-In-Reply-To: <us3ps4bgf5ekk2iudcgs2wa4b5qd4mzokec4q55pmhb6kvt6ht@qm4mmzdai2t2>
-References: <20260327-rimob-new-features-v4-0-06edff9c4509@protonmail.com> <20260327-rimob-new-features-v4-3-06edff9c4509@protonmail.com> <us3ps4bgf5ekk2iudcgs2wa4b5qd4mzokec4q55pmhb6kvt6ht@qm4mmzdai2t2>
-Feedback-ID: 27475468:user:proton
-X-Pm-Message-ID: cf18d05c5f1d325076efcda785cfdd467cb230d9
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8DRqWk1"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48538c5956bso31619615e9.0
+        for <phone-devel@vger.kernel.org>; Sat, 28 Mar 2026 13:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774730602; x=1775335402; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HKX+S1We1s3caipzPcYGWRj3v8GHW7uxnmBU1rD2O0M=;
+        b=T8DRqWk1KPib1f0c8WrM6HRacctIXr+jlZlotmaptfspY1eUWhTDSbGJJmAeEF9Awt
+         0sypFZZDl/fW5isEJV2jxaI2G8xchUEICMzBWeWqsGxGaLWcGdD+c5y2954DozgMrPe3
+         HdXYw50Klo4lWvmTJpv2ifS1oj2/xEY2bQQsoDbGLLmgWClA+F+4I0WrCB6BQRl1vaX8
+         S4pVn6JMvsBKK7244YH53v2tT4G21so3faMg/pVFuDnq/dPWPsPm/Qon8v767Ou/m7gl
+         YkC14fQsQElHL40l72VJUChy4m/gwTixipe/o4KNVAP0Hs8Dj/MGqEA8AkuK2nvc11/Y
+         Cacg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774730602; x=1775335402;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HKX+S1We1s3caipzPcYGWRj3v8GHW7uxnmBU1rD2O0M=;
+        b=dLfCuRvRsGwMTFubZfB8LOBkrzibHEwZ6xMaWJgVo2HR6KrVtJxbd8e8MyT/VE5P3N
+         Oei1sDGljkOCYYR0axXiUVXhFtXync/lIYgDzCwIka5xTWTPB1/sJ0/VMeaQCxMOqKVx
+         GFs9H2V38m6pS4LURcETqGCeUMhp4IhDGl0jdeVfIwTJnx+elrqoaMb4ZR2jNL31IBMQ
+         xWxZ5C+Uxg5RKbf2U97n0FDdXphFZxvQdxmlcn7EZrFGRFQHEIYEERI5eYvmvSGRNj+M
+         HrHt587kjXJYW4CCT8Kf1hmGa9t2Ig/XGt88uoJugxuCKhlcMZpv0wDPAHdEeKBdQY7I
+         CpZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUySru4STaOa8Tq3KSjJZs684EPJ9BvkFuOAoThqUoclHmo28Yzay2daAD9idhSM5RXhn6IpQ+bvec/RA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiWFLSY0HIFu23JSuQUKVWbHdBlYG8BZjFjOxPnslaWmwI341K
+	je7JirhfAfcSfqWfYJHwsvpalqDVrNHg9z1Eiqc+93p14EC6vdBYPL/D
+X-Gm-Gg: ATEYQzyiMFuDZBgkhZeyvF+v8Lq+LmR8PlHQ9RiQNYZmOFhMibKriKavZYaBWNguJfW
+	9BhYszydwbFu23wbvTtiMf0LhTv/Hge1BkseesD3laqtfSt5MKOsnLh7lDNyGBK9yRdBQp8HJMe
+	FlG+fOiNOMrOlRKRWJuRzTuTdn/ltZk8ji1kQ35a2ZJpUyVQ8+Y4pv/rJ2PlSzZAlAn9UY/px9S
+	gD9MBht3nynqBw+DZnxBBNjbjeLo626BW2Z/+nrpRKIcTsYjb8Xc8mLHt+v3xw8UcCLfVLCEyaP
+	GQjd3n8NQZGM/iROnDdN3Q27evV6QBGBERJvQde5uEr37VtV711QlrBQmlDu1dBrokl71BkRpvU
+	CQjmENRRKmNpjtIgZOLaa0gVhfbcBAeJYGzzpTu7qP/VTbzxQlA69+WJRzpReZuTp6dT5b1yDDW
+	dtHRB13IwblvmQr9qcH/x//0LZzbcY9uBsnk7uI14yp5E7A0M4Qvr01cHZG9Ofw0JbFkym/qVgB
+	j11Ii7So4yf46hWsM4z32KKbQ==
+X-Received: by 2002:a05:600c:4e0b:b0:485:fbd2:f72 with SMTP id 5b1f17b1804b1-487290a9254mr102394915e9.1.1774730601395;
+        Sat, 28 Mar 2026 13:43:21 -0700 (PDT)
+Received: from [127.0.1.1] (93-140-187-240.adsl.net.t-com.hr. [93.140.187.240])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48730628efasm109519825e9.5.2026.03.28.13.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 13:43:20 -0700 (PDT)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
+Date: Sat, 28 Mar 2026 21:42:16 +0100
+Subject: [PATCH] backlight: ktd2801: enable BL_CORE_SUSPENDRESUME
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260328-ktd2801-pm-fix-v1-1-007cb103faeb@dujemihanovic.xyz>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY0MT3eySFCMLA0PdglzdtMwKXUPzVAtzQ9M0i2RjcyWgpoKiVKAw2MD
+ o2NpaAFlB42dgAAAA
+X-Change-ID: 20260314-ktd2801-pm-fix-17e8715f8c37
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
+Cc: Karel Balej <balejk@matfyz.cz>, dri-devel@lists.freedesktop.org, 
+ linux-fbdev@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1056;
+ i=duje@dujemihanovic.xyz; s=20260328; h=from:subject:message-id;
+ bh=ZxchMbxwniYIWnT9R7/2Td04/zp5hTI04KiKc8j4Q4g=;
+ b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGDJP2KbHtWVJlUzc/WPZVv0I27N23+16d3Wnzf39bl7+j
+ oXvMxyyO0pZGMS4GGTFFFmYl8pd4ksNn+hQZJsEM4eVCWQIAxenAEzkQATDX5FW8dMPdCXrznXM
+ nLJB0ap+xqH2987aWyZUy7s4d+8MS2dkmPQxZZOGwjfGGCXuy282TzVXupY8dWbx9jULg9O4epL
+ nMAEA
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=9BD463017690089DAA8DC266275F544B3B1B4792
 
-On Friday, March 27th, 2026 at 23:57, Dmitry Baryshkov <dmitry.baryshkov@os=
-s.qualcomm.com> wrote:
+From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-> On Fri, Mar 27, 2026 at 03:30:49PM +0100, Cristian Cozzolino via B4 Relay=
- wrote:
-> > From: Cristian Cozzolino <cristian_ci@protonmail.com>
-> >
-> > Add the description for the display panel found on this phone.
-> > And with this done we can also enable the GPU and set the zap shader
-> > firmware path.
-> >
-> > Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
-> > ---
-> >  .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 73 ++++++++++++++=
-++++++++
-> >  1 file changed, 73 insertions(+)
-> >
->=20
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Boards using this backlight chip do not power the backlight off on
+suspend. Enable BL_CORE_SUSPENDRESUME so the chip gets powered off by
+the backlight core on suspend.
 
-I wonder if I should, instead, edit the compatible property by adding a=20
-second string (for the fallback), like this:
+Tested on samsung,coreprimevelte.
 
-compatible =3D "flipkart,rimob-panel-nt35532-cs", "novatek,nt35532";
+Cc: stable@vger.kernel.org # v6.19
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+ drivers/video/backlight/ktd2801-backlight.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-and, therefore, add "novatek,nt35532" string also to (patch 1/6)'s=20
-bindings example. Let me know what you think.
+diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
+index 17eac1b3bce4..1b1307e03b20 100644
+--- a/drivers/video/backlight/ktd2801-backlight.c
++++ b/drivers/video/backlight/ktd2801-backlight.c
+@@ -53,6 +53,7 @@ static int ktd2801_update_status(struct backlight_device *bd)
+ }
+ 
+ static const struct backlight_ops ktd2801_backlight_ops = {
++	.options = BL_CORE_SUSPENDRESUME,
+ 	.update_status = ktd2801_update_status,
+ };
+ 
 
-Thanks,
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260314-ktd2801-pm-fix-17e8715f8c37
 
-Cristian.
+Best regards,
+--  
+Duje Mihanović <duje@dujemihanovic.xyz>
 
-> --
-> With best wishes
-> Dmitry
-> 
