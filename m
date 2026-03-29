@@ -1,83 +1,83 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A61C35DA60
-	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC2A35DA60
+	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774801615; cv=none; b=CSKTtnHQllb/JiGju0IXEmLhIdUnBWuJozGsMsMrdG+WuJoc6561Ykxz22H/sHVEa5SGHoFsRQU6kpQX95LAEhURDwWsYreheXbcDSgQFvkeCxKuk9iEekLwXyubJ/IyUg98PR7Q8f3YXR1eMz2dVpD9H7WaY5N4DlbK7rhaGiQ=
+	t=1774801632; cv=none; b=ssVwiXSIxRuRGYPJzLC+q2ElIZRei+wlh64YsnGqfTEgMyjbSw6fxV3fbW5U7D/0i3f0RUQ/9Afs6w30VXNaVhN3Hf8nqNgkHM4wCCuaGNBYOTFCqVFjhCklQWgQBSKHPqm4yLGMVQhbO1mByNQBNqJYAmuXSoKAJeuKaxGSpcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774801615; c=relaxed/simple;
-	bh=BV2CRbd5Ks1bM7XWw8rz9kW/9XNhzo5Mqsm6ztgphcg=;
+	s=arc-20240116; t=1774801632; c=relaxed/simple;
+	bh=xlO662m0unxoo5rjyx3DFIhOEQX0knSmHVlA5hbLlKQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/9mtU8u5duIK7EbJK5Xfhs4aSYGl7KeXuKAnVTmE3xlRnhHWyoEoXz1hx9usRNPD71YPuwA3dSCFDPEfapaIyZ6DAZj+aaKAZyoClHBfXmnFV6oFyI7dyDn/K5LEVD/559GEfCaQHI0sTYWQNHXerH29fHDJpnKDZr8ChLis4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gaeCLS/R; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WZ3d2bdZ; arc=none smtp.client-ip=205.220.180.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=HfHyaYDVZRV0qZiQFpDBb8YdzOFwuzF/x5nwvb3H369+QPM0RD8QIiyov7KlRxBZAffY2+fW/4a3HwF5p3Q1BmNeJE2TrBRGgKTVouKWP9PJSp7lu4puzIWQ7IhpQBMKDWAYyeRgcgw/hsm9e3E6c1R/MxID9gJ9IQfQLmiKE2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LH4yN1xU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=abN0mbML; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gaeCLS/R";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WZ3d2bdZ"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62TAi3tx1617497
-	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:26:53 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LH4yN1xU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="abN0mbML"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62TD9RDo2050359
+	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:27:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=fdGyKkoxaQWG1ffBLul/TTDI
-	k4tPeF9ND1V5q4icSaU=; b=gaeCLS/RVhM7PuJSy/D6Du30dO75tX/tFs9zmVpW
-	Nx/xYZUip9bX3ulnJXW92PvIPnb4n+FIrmLcHIW1kaXNLFulVMXa8494ASY7UBme
-	Xo1rRGtoy1sgZ+wvQ3xEBP/G4sCI3nTO5UdvIymzX5zMXUQBw0f88Mu9SxQfjdCM
-	1W3muAYy1iiZAhm/VObGybqa6ERgmLviFUQYZ42mXa8v88YUkojouGlm49nuNZJH
-	F+gytqpprj/SvWOo7E/4TmYqSDiga6w73SSka5HFos0dn4+MtLU/90IOvhggbFBo
-	43gZYc9bVXIPOwbfdib5MNzzHXKPOsXc0VqVwbZ75Tun+Q==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d672ub5fv-1
+	:references:subject:to; s=qcppdkim1; bh=2DRZhCEGAhiBuBP1YCe5luWO
+	TveYo+3ES/uCRfsSr/U=; b=LH4yN1xUjGDj4Crv4C/8ISiVOaWv0I2qSshRYCPu
+	gVSDiIq3RQ1WWt/rZjqfmoOkmG0FnZdSkBOpuWhqmVg/CchnULzkjGOBgqtV+Sdp
+	hmNDBcxDNLtxRu+2sbXcWglE0EQYjCPJ4xy/EM2jO3QG3SvRQ7/zGcTIXhvCKad2
+	owC9hl/9rrJ7sGlClsPS9yOp8vZj6YMYxgT1Q28ct0nWpawKFW3rxw89BKoelQm0
+	DCczyUmhqSCj5P6F5sTK5Js93VkiTii+LlvBhlctBV+jRNbpxrUCA3F8Sr9f4S1K
+	CfH7PkzDd/XgRDvCWdQWjspoROOv6E4RU9OjCTdOdv32xA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d6ufmh85n-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:26:53 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50b4076dc16so46177061cf.2
-        for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 09:26:53 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 16:27:10 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50b802961ecso47473851cf.1
+        for <phone-devel@vger.kernel.org>; Sun, 29 Mar 2026 09:27:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774801613; x=1775406413; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1774801630; x=1775406430; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fdGyKkoxaQWG1ffBLul/TTDIk4tPeF9ND1V5q4icSaU=;
-        b=WZ3d2bdZ8BWKlwitLlz1WhwhV4FvKFhkQ9myHcgvV49xGeUTGr+Nl9iwSd8egGMiJi
-         4zLdn8oGABSf8kkeHU7qTEKM3k1+c78TlfJW2ppq1Lr+TzqNzR07qsll1135MMG+M5uM
-         F2wxXmpQSQldtvguAP+DGEk9TKyA0ma5Ubp39YD8Kf3VMNY9AgYbeSlNvy6YI8JiIANB
-         +zbruKbGWQQ7QSfsD8gC+4BD9kcgR6ChhO3MJqcD3B3E0D3yW6EyBjNZ1+WuoaL5qVzZ
-         lpY+Si8Q9ZZXeHlyqADGp2I/uS1BK4qE0mZjZnPo7lKQ5AIC+l0CX82IQncDDcv4oZcC
-         SRxw==
+        bh=2DRZhCEGAhiBuBP1YCe5luWOTveYo+3ES/uCRfsSr/U=;
+        b=abN0mbMLI2Ul4k+1JlPXqKNwyfx+0VeFw84+g0l4JTS4jtbiMib4WHdpZYWZ/4Lid2
+         iM42L0Hxp/VmjGjYPYxjlCksEJAUJHWbLLcy10/IzmZCjr95UemdvK0lHSOfWs9y3UhQ
+         PUQL2Tt9vayzuLekBc0IifjTQfkdqtVtuID0fex0vNfDPj2JXk2VA0IIXUB3S0PgwX9m
+         cANiR1kUY6OmAIk1v1OCi2LEdhbFFQ6XiblkpYN53CksMDOWM0rnrrHz3G3KW0+NYlP8
+         Nauo0W5od3v7EGrNwrhcUO9QtH8l825o5ld/MUS1jt6OY5Zu6vHgAWgKKf7bOSZFlOXi
+         AnXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774801613; x=1775406413;
+        d=1e100.net; s=20251104; t=1774801630; x=1775406430;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fdGyKkoxaQWG1ffBLul/TTDIk4tPeF9ND1V5q4icSaU=;
-        b=fbk07X9etUESYHkYngZrjS60GfzEiPvAILhw0MMnxhoyk3mIScXfBlJwKBV9Yyq6G0
-         7CLri+PuZh/4hKrWcPxZDkwRfpl1eGIwy2ssjc370L3qcheEj7VcYSJqAX3PLWs0eubv
-         aizMastJ9oqNQI81enYcX0MQ/0wUjEeqaOAX0aOL0zVY7wVrlfVvm+2A22sIm5eItktC
-         MdLFNXLGeO3Zy+8wMNFLw8hRbzas5l9D0pHJZRXdGvAGP8q3Ilt9gnrmLT63qXCJvTM1
-         /ULxR6H972T9/KX4lOogoLl6ku8Hq7J2kHHjPIIEJIfveSLhqMcgVlZEpV/QOPOThjOK
-         cW+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUrhQtwPlTo44ifBgTjhGIavyMojZMP3MfS0nXytVROCEJAPw+WUejJOhd6Jwayuqs8Urj7aJSYMJjaPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLJY2D4FxJGQg3luc1uW8Gh2WCtU6JMrspj80UVkBxR+3NPm6G
-	uAyFanXLHbysbf634pGqhxlL8Peu7FnL9fJr6CcSSni6H1uJgzM+iYpmBzr2yDabmXqWNoIsv9X
-	n415VV96TLWVQjZbldjM7AfvCVDOFla/Dg9uBArVx4VzroT6uSq38b4TxqSydoU5k+Q==
-X-Gm-Gg: ATEYQzzjA3j7n+5SV/mcQvS3QWLcXqp8OOgZadg+k7v//leMfPf06GjUrk3UdqlHCp8
-	5VPZjSo4ZGM0B4OmSStGwAXMJ9pBioKxTkb8bHrpgS5lxYmV6S3+BG+09D+oknVGpAKdZ/W7jbe
-	k0Z79d1kZDMJ6H9XJQ/Icsbs8MwPqLVcC5oPMKJ9L4ehMQ8WC2ojhFUcnPINZK1l5Bstj6OEl/R
-	LQT+R1WPGrVNSIsgEmyK5Dp2fZmukbaFMzIUbBXDeCJlOAPpmrmidcKTjThkLsDzLgVh6ED8rt3
-	M/B74CQN98/yogEnB+JhBIYQwQADzrxF6Ph7rOWYZB9JXL9NPi6iUyaDW0+GfBpY6GrPBAnTcB9
-	OPWkBXzrFoqqg4+0uumOaczWoP85WT6q0/H1z687dUW3lhbwE0Ta87EPhbf6PoJY1UjZAWagI6R
-	uTeouzH5O5njbu60b96ej5wRgED0Dm6I2BrfE=
-X-Received: by 2002:ac8:5814:0:b0:50b:36cc:3350 with SMTP id d75a77b69052e-50ba3994b17mr129652161cf.67.1774801612745;
-        Sun, 29 Mar 2026 09:26:52 -0700 (PDT)
-X-Received: by 2002:ac8:5814:0:b0:50b:36cc:3350 with SMTP id d75a77b69052e-50ba3994b17mr129651861cf.67.1774801612278;
-        Sun, 29 Mar 2026 09:26:52 -0700 (PDT)
+        bh=2DRZhCEGAhiBuBP1YCe5luWOTveYo+3ES/uCRfsSr/U=;
+        b=dbVUJ/LAvKQdvZTqlJk6MUj8lPS+nnK1rXti8kt8AnJpxj6h8TZCLPh8R0D22E/tgJ
+         OAix7TEIUMGRlMWgCSFIgqD6C3dmCJQEadaRwH6D4Wkr29LzLfnLExl8nMossp64HhXV
+         26YaVbZfimwH6qMyoxOWU1Mi/Ea7vnm5IGZQQ7A9iOeYEpJk73OsVR7YtRVhmTU2IvcQ
+         fDqb6oAEYiM7694o1hXu+BzoT4g51jaHLwCSm41FrgXTgsWE9WAE76MemL0x8R86awTh
+         r00DQ2M9f6cF1lL9FggrS1wK2QtzqygjuOA2ZlrY5aZq9hu9Ku0vw40sQaKGIK7R5Wdj
+         GTuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWD7aTRpFboTkRpXbF5WKx0Wp4wMb/fc/2d2RE2EOooeipr+QPLbB1C0vZ3AKOVe40wAEV2qtJkNohjUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz9eRHIHFuRhSUwK8IBDfdyswn6s+Khf0tZCGKSxqLHW3sEixE
+	ylLZsvPgig2R24eR6YF1fqpf5UWJKyNQfJllcMgPzk3SPFPEh0aCaCPjkHl5h7K4IFTAPIO1pEa
+	al9TrkLp6aYIPUrWqR0nFv1Y4+MMQNWbVbA81H4EGZwNQYT73LzUrqgai/fmuiLSd7Q==
+X-Gm-Gg: ATEYQzwk7IQNr/c/TOBNdmDWg0weLoT1XA4AHwTuL+pFl8jaFRcV400/WB7mZ37jd3h
+	XxNSivqw4j2zQt4QjAHAPSKm9sZCkI96HKpOwVxViYOZaNoVcvl3yCWyezce9smAliwcl367QlB
+	ZAaCWRcr4AzGBh2MZWSwBN8Ox74PmxB5Wop26cNNiXhEaf//0NrcRrB/6WfWiI8UFSUo4DEHhZf
+	GLW9pUBOOeP8KWgsDZAdwSySXd+4TYQzrHkmxxiIOP8KD4sMguRALzXCNOQDV0boOrkoGE6DDa5
+	kglCbgPUkK0tZFEn0ltJAShfhNqljN5JpgBlL4zk54Ti1PooYx7OPANkb7nFUtL04OvAEffn3l4
+	h5F3l2jRTu7spnAlJ6gwpy3A2eoj417U7MewmVMAEmVb6GGfVCojVlCCRQPVT86gSi+3uQYD5dH
+	nGE0fmz1yOdJH8jro430Dl8eIRhrwd4eOH/U8=
+X-Received: by 2002:a05:622a:4d4d:b0:50b:26d7:eaa9 with SMTP id d75a77b69052e-50ba398f174mr111884981cf.64.1774801630011;
+        Sun, 29 Mar 2026 09:27:10 -0700 (PDT)
+X-Received: by 2002:a05:622a:4d4d:b0:50b:26d7:eaa9 with SMTP id d75a77b69052e-50ba398f174mr111884651cf.64.1774801629485;
+        Sun, 29 Mar 2026 09:27:09 -0700 (PDT)
 Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b13fd7f3sm1100534e87.23.2026.03.29.09.26.50
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c8389524esm10059401fa.21.2026.03.29.09.27.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 09:26:51 -0700 (PDT)
-Date: Sun, 29 Mar 2026 19:26:49 +0300
+        Sun, 29 Mar 2026 09:27:08 -0700 (PDT)
+Date: Sun, 29 Mar 2026 19:27:06 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 To: david@ixit.cz
 Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
@@ -90,11 +90,11 @@ Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
         devicetree@vger.kernel.org, ath10k@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap
- QMI requests
-Message-ID: <c5tdbllqrxxsviv7m2i3xzweyjhetv6wbpgioddaitig3tm6or@a22uaizux6nq>
+Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
+ ath10k host-cap skip quirk
+Message-ID: <iudca2llwe7dgisilievlwz6t4vbswfywmz43v3oski5usbvxo@ll37ug7adaoe>
 References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
- <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v4-3-bc08538487aa@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -103,69 +103,48 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
-X-Proofpoint-GUID: HaumVkYUmtvXNhxHFhJlk62qn6PGUzUH
-X-Proofpoint-ORIG-GUID: HaumVkYUmtvXNhxHFhJlk62qn6PGUzUH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI5MDEyOCBTYWx0ZWRfX89V0VXU674is
- YrosLHjwBz5YprzhoAtV9oSa2X9sGqa3qpYW6u0TEf0uA83uW0RPbhctlKLKELKWZYeS2bk3c85
- A3csY0uC3qr/p9nUjDmWBRcKKhnxHI1bkJbUmIRri3ZoSwL49M8UzIxePjapW/Lm/+XFgVWFM++
- LHtf3K+o7+CrbdQf2E7yjHTLw3FgK3BvigSDKtTi71DPLiNPqWOdNdZsAmUosSZ7gj7DNprXrdm
- fIJwO5iT24FglUA4RymYrQp5BevhHaeWrZeT9T/fXJblYiYvQWrpt7ecHpEPjOhYNK4QAg3V1id
- BiZ5w6ggDPnYQWA6s+UcOGNuQ71ceju386Z4EGb9dIFH9fjoBEpMWhslqzdh1KFGaTrEIzCTGpx
- N1eCT+duFOtsGQgSSKG49rHSdpAJhyMbKX71N7hJnL5KnWMf2l2nxBdxuoLvt/cGvbkeXp8HATu
- +tJRF7NM1zjcWyKsJZg==
-X-Authority-Analysis: v=2.4 cv=Ae683nXG c=1 sm=1 tr=0 ts=69c952cd cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-3-bc08538487aa@ixit.cz>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI5MDEyOCBTYWx0ZWRfX0zLr+ZE2REpq
+ Udduhe81HrGRfo8uT7br7NxUs1RoIv4J8EP49q8ktUOkNw5B2u1BFzi7oEcPd1sJM53QtF5KCqm
+ YF5Cwnjj3DKGnjCqzz6nFy9NsVQTUDvg9XHPJgwPcQFeS9tfldJtG1cADBj3pyKdC+fWZKE9RgI
+ POJPwzCYAaX5cUF6wAF+wW7pfaBYGJoCoOPb6VKgssqXRBJFErQh2ClwzXQKzGcFq8pMhWAGVHC
+ 9rdJOiWPvWMdCAtodEIX/ZBji0Xf1ByWJJTqP3BKVoVzilIjx8vSGHsWlvP4akSjblXF8LxaRMj
+ sw/YnfpftzIENo3WOrrAPd2yhI6RdKuPR3VJ554/eerLwds3wFX+gQCKZYbjbvxViQT3rk/LdDx
+ KfIkOiKQvixDFrWDzm/0LZKURi5sVjccuAbfo8ROPqSL4/uwtm4sO/ltWxHWuYfgXjrkNoXR2/5
+ QGS6NLu2eSYw2Fyqtug==
+X-Authority-Analysis: v=2.4 cv=aOT9aL9m c=1 sm=1 tr=0 ts=69c952de cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=KKAkSRfTAAAA:8
- a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=Jr6ivFuIO4VC9FIHmAQA:9 a=CjuIK1q_8ugA:10
- a=kacYvNCVWA4VmyqE58fU:22 a=cvBusfyB2V15izCimMoJ:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=KKAkSRfTAAAA:8
+ a=EUspDBNiAAAA:8 a=I6QQIrWB-BqS60JhQb0A:9 a=CjuIK1q_8ugA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: yWVFmzpLdUkoTBYupCru7fQZmzOog-Eg
+X-Proofpoint-GUID: yWVFmzpLdUkoTBYupCru7fQZmzOog-Eg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-29_04,2026-03-28_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1015 suspectscore=0 adultscore=0 malwarescore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603290128
 
-On Wed, Mar 25, 2026 at 06:57:16PM +0100, David Heidelberg via B4 Relay wrote:
+On Wed, Mar 25, 2026 at 06:57:17PM +0100, David Heidelberg via B4 Relay wrote:
 > From: Amit Pundir <amit.pundir@linaro.org>
 > 
-> Some firmware versions do not support the host capability QMI request.
-> Since this request occurs before firmware-N.bin and board-M.bin are
-> loaded, the quirk cannot be expressed in the firmware itself.
-
-
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-
-Jeff, to my knowledge this is the best approach that we have to solve
-the issue on those devices.
-
+> The Wi-Fi firmware used on Xiaomi Poco F1 (beryllium) phone doesn't
+> support the host-capability QMI request, so add a quirk to skip it on
+> this device.
 > 
-> The root cause is unclear, but there appears to be a generation of
-> firmware that lacks host capability support.
-> 
-> Without this quirk, ath10k_qmi_host_cap_send_sync() returns
-> QMI_ERR_MALFORMED_MSG_V01 before loading the firmware. This error is not
-> fatal - Wi-Fi services still come up successfully if the request is simply
-> skipped.
-> 
-> Add a device-tree quirk to skip the host capability QMI request on devices
-> whose firmware does not support it.
-> 
-> For example, firmware build
-> "QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1"
-> on Xiaomi Poco F1 phone requires this quirk.
-> 
-> Suggested-by: Bjorn Andersson <andersson@kernel.org>
 > Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  drivers/net/wireless/ath/ath10k/qmi.c  | 13 ++++++++++---
->  drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
->  drivers/net/wireless/ath/ath10k/snoc.h |  1 +
->  3 files changed, 14 insertions(+), 3 deletions(-)
+>  arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+
 
 -- 
 With best wishes
