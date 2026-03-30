@@ -1,70 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF373DA5C3;
-	Mon, 30 Mar 2026 16:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4033E0235
+	for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 18:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774886540; cv=none; b=BiOM2vr9YmX5F8f8PZMBZbZ/7k3FUIfTyKRtVElKFMtuNz6WvqOdpBzrpLAJcgMu/3w4Oim1DqP4kZ0isw9t/IMs81AXploeLi6nphv/Jrl9CfLxBLkdTEiUxWDQEdHER2Bayxzc3qPZ/3ePMoViQt/5xl7h+saAJo34BwkHZyY=
+	t=1774896981; cv=none; b=Lu+i1MRTWSA29G3ZaeO613FBOCeKll93ez/9cugFNZIWJFCY+uLX/JCecLacR/uhMaHNSiIJE+/kY3vfb/tP6G2bDdcU9Sady6+bN3LAN6ly5iX1DxmBnXa9ni2vVEvo6P8Xb8EHCB7QD+lnc+qAqGXG4Qzpkeu02d7zCaxOSOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774886540; c=relaxed/simple;
-	bh=MdrC3Z2yCbkomz5gWrMMv92kLcM9zScC55e7fCEukP4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qrViU8TiILrIdfwFFrmxGWqwgQKQL92C2fqgfaJnkWXe+OpXCve6ngNuijwEey9XcA3GR3NSKl9y4l/AfcWGj524u4TPyqOKWH1GNQzkBkv/cZSxpy/nLeCnh/X0hKTuZekazDL/G2u8xsvSavSfplBnDGsYKmI/TbC8gWLKtcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXUIrZzo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774896981; c=relaxed/simple;
+	bh=yHWPRys3U05z1+fNskLwUYRnO/48PBX/IFQ3Wl8KjH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rHdYZyRb4fxbVEi+XFVH+Jopp46Z6SiX4u3BYIA6/hr3KUH5iRJH3lzkFT8iGuvkaxqE52O/3HRM8o04yDXLL/VSWwlKp2A9IDbIFmtaazAiMo16uQi+zIqoPCgtRGL82uDy8S/6c5H8pXtYbSE1SvESL/hVB4eZ76RW39s6Ol8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HhZAWK6c; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=icVUEc1M; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXUIrZzo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2870AC4CEF7;
-	Mon, 30 Mar 2026 16:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774886539;
-	bh=MdrC3Z2yCbkomz5gWrMMv92kLcM9zScC55e7fCEukP4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXUIrZzou5MfU3n70h07JWlEVZZroi21zccLG8z9vpYh+K0dIPx5YYQZyFBEHjaD1
-	 CDLOAezcENQnmpgg/e4DCxVf3MZ+QEnuecZEy1I3BpEwBdMdx6IociyVf3nZxk/Plp
-	 WLx33Aey7+vEkqQTk4jScUCYXBHo3KvyUOB7w77/duycA0m/UkwzS5fTvq1px9LOVC
-	 mKbnNCzGUSAZVj4nZG0rWsShxQuKNVQt6rXJ16eNUug7taOee4Q8p9Sj/VIxZgPlJq
-	 1mM2PumUqRkeQzO+5DbgYSXfSBo6haoJdrrghYWXCrUfRaoUYgZORHiXsd+j1kLQs/
-	 5bPCwXwTU5+YQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Erikas Bitovtas <xerikasxx@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: msm8939-asus-z00t: add regulators for ambient light and proximity sensor
-Date: Mon, 30 Mar 2026 11:01:38 -0500
-Message-ID: <177488647756.633011.5748926638297333913.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330-z00t-cm36686-regulators-v1-1-03e23b03bd70@gmail.com>
-References: <20260330-z00t-cm36686-regulators-v1-1-03e23b03bd70@gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HhZAWK6c";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="icVUEc1M"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62UExmDY2391425
+	for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 18:56:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7jQquXf10QhX9x844aAbt/1wdTJFANl0SLZ/dDLwin4=; b=HhZAWK6cv0Nyn4LX
+	LSK7kHxe7ovkOblAPIFEJ3oO2/IKSgW4CXLQfixlc3P1m3tzX6yNVSCSRe0lk/A1
+	btd9VNQQgo+Ta6wfeeAtg2jBwCXaB8vzB7UZgOHtf8tKI4EyBekr2Fi0BPr2WLkJ
+	XqAi0Yu8asfUbIhdY/H1KP087hIq0l29+Otv/5PlW0SvYLtDZBlUR+9DUFIpbl8b
+	CmkMvz9KpgjaeSGvHDikq3KvyTIIKnVDlzJXEJSIXf1qO7jcjioB500reJVLu6uy
+	8XM21xtmO5h/f/qnRx4qTYsGIzsgZzlk/NrqwOUHoDix+Mx4u/e4xMrN7Fi931BH
+	zAP3Cw==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d7ue7gxru-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 18:56:19 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2ba9a744f7dso5016664eec.0
+        for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 11:56:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774896979; x=1775501779; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7jQquXf10QhX9x844aAbt/1wdTJFANl0SLZ/dDLwin4=;
+        b=icVUEc1MD9HW3VA7lAtOhYVkIR/J2Hcge7yCoTeiarhKrhaB+jc4x9eRTztcQPhtiF
+         KUKo8PXW2u62vzOVXohDENvphiBX7zLNZmo/K4nse8QSwA4xESntn2BX25BmdWSGqj2f
+         tRcvYhQ+UgA05YMlknbCs42Fbvhmpuu+1NDwc4qAAB+cr/aYuy7Z8dbPAQyRnhdFmt+M
+         wDfxppSRXlnrJ/pg8I7Ioa3G55cQfQF0Iqg0XM0Lr2A5gkPhIWnyjQf6YqaIaE2TXnXb
+         YCIBQwb8C7MADq43vXoX4ooaCidU1y/yDjceLGAeC3tKbTk5sXsSuVrowkIVgU8MdhVQ
+         Akow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774896979; x=1775501779;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7jQquXf10QhX9x844aAbt/1wdTJFANl0SLZ/dDLwin4=;
+        b=l4II6wD+VPLetqK6dqWBkJQgPXyCv3fr9WyHBlEcQ6yhu9H/Y/chn3ZomEoUQYvNxX
+         4QwDwUHJLZcjiVRwkKgpGOoY+xj7KvqoMx5VoK/CU2lDn144Au0MAaCmESoeBr0Qn3+7
+         v3IWWM1CgbdSe7xToWF2/u39nXyKQMAV9yIxe7dKta5pgrzgLF4nmPqyxrcgiYEbSXfY
+         AemlmCniHDwMx4MhgagUwCo315brqd1NbEfj5yR7FTTgqtv8cvU8J+mkBfVQR7rcts/Z
+         ap7+XQi9nu9LrhAZuERHlbZilsURQpH9fkqzhKKhAYvgSduPM46ica1oqxyimebe9YPl
+         0h/A==
+X-Forwarded-Encrypted: i=1; AJvYcCX/R+DJdY1x/lmSMTk/8Qb8Qsj1+kEWp8J8+9T4OrviQ9g2AyoU8PoYwx+Fy5uvj9LzpR6kb46UlGEKsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOD5FsAwlCrfY83/IUi1GE8xaOnoJTwXBmOXIJGRcuVajzi4+w
+	aH9Ei2LOPAlGGMGqE3UgAgW3fsSRIr0wdtDDaB5X34ysElPJ2uSb4b5OgY74b6YfOUOAiwxhUAM
+	iX2XLm4TIEtSM3hon3uPP+eb2s8JOLvCrr40TrsNJTxAU0A/+Q8PDRPovDtxHkPQhkA==
+X-Gm-Gg: ATEYQzwJWE0F20j10dt0hlskH5RodvJCS5fOoQ4ijOK53WyHjnMTZFTkKLVd3ajDRL2
+	jUfRM+JsWcWKMyHq2uhwhxdO927i/OBqbA/RAqoMuujZDdW+5N1RYaejdkVlTfVxadYwFNaqsSo
+	BFjgqPR4/kDnTwx3g2zT55ajhRJB4sthkl9H3D7kO44HNv5/kV/7bjSXrbaTIZiCrGeNCiRXjQj
+	cyAt2d0fEJtA3dwC8o6FCy2qutC7j+ANuHnAmCBAL+he01JegclaGBaVCJsFGTafub+8xWMc8Qa
+	v/1deqGjtOtnTFFIlSDx1av9RUM6ZtSLtv8FkmzM4dFz3x9xZ8Dnm1DQvOzONCUU8qKfMg9U0UE
+	84ryF+2dFOSeGhS2ZMxF39tAw5n9/d+W14R1eIw7R0ytlSoqlc1T8vdJbpPEMQsz6n9AXB+i0Wi
+	FttP2/dcsXxa+BVA==
+X-Received: by 2002:a05:7022:6281:b0:11b:9b98:aa4b with SMTP id a92af1059eb24-12ab2857c82mr7701502c88.6.1774896979021;
+        Mon, 30 Mar 2026 11:56:19 -0700 (PDT)
+X-Received: by 2002:a05:7022:6281:b0:11b:9b98:aa4b with SMTP id a92af1059eb24-12ab2857c82mr7701468c88.6.1774896978404;
+        Mon, 30 Mar 2026 11:56:18 -0700 (PDT)
+Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ac4a0fa8dsm4890474c88.15.2026.03.30.11.56.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 11:56:17 -0700 (PDT)
+Message-ID: <fd33e4fe-8450-4076-b0cb-f09a7bb9cb11@oss.qualcomm.com>
+Date: Mon, 30 Mar 2026 11:56:16 -0700
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] ath10k: Add device-tree quirk to skip host cap QMI
+ requests
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, david@ixit.cz
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Paul Sajna <sajattack@postmarketos.org>,
+        Amit Pundir
+ <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v4-2-bc08538487aa@ixit.cz>
+ <c5tdbllqrxxsviv7m2i3xzweyjhetv6wbpgioddaitig3tm6or@a22uaizux6nq>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <c5tdbllqrxxsviv7m2i3xzweyjhetv6wbpgioddaitig3tm6or@a22uaizux6nq>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDE1OCBTYWx0ZWRfXyQUia45AlOqG
+ n5imo2RD383+XKH3Kz1zNHjLrC5iUrKmaypIs9ui8F5i1C3P4wfja4pk0bfPsp+LiRFHeoX/BYi
+ /YQwLryVOgvPRNx7AXghpP+UdTWlMzTWhBEc8y3rDqrirsd7RJiwa/1lvDSP+Yz6Dd5On6NJfk8
+ HbiTXH3xnNnBx3hz28LPE+B6eabgNd6hyVHaY5qA+w/x3FfnODPSmiewOXCGkRHo8A+1dhA9lSR
+ /BY15+39NXxmKcE3jJQ1oJ4jFfppEJmpDUd7vG0wZj7wTVLvNSXyljOjtHTKfVCwODYFdGkqcuX
+ ZYaOYcaubN6+LDXHH9S/MpQ7UJm45Op/FHXFtK7Jbga7j57J7vXgk8wirvKgiSZkHAn4fIT7kOw
+ 4Qj4JO66S1hiIJeee4Q7u3QWWR34/C1VRnEVg83byR2frCKNv4Zo/JUEeAqbWJ5G4x0GorL5CoU
+ S+IM1kCmx1pQrrvqQtA==
+X-Proofpoint-GUID: sbRXcrE733bnVHALmxULYz4svd-LGAmL
+X-Authority-Analysis: v=2.4 cv=G7sR0tk5 c=1 sm=1 tr=0 ts=69cac753 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=qpm92PVjyM3Q2z6jdXUA:9 a=QEXdDO2ut3YA:10
+ a=scEy_gLbYbu1JhEsrz4S:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: sbRXcrE733bnVHALmxULYz4svd-LGAmL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-30_01,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603300158
 
-
-On Mon, 30 Mar 2026 02:37:57 +0300, Erikas Bitovtas wrote:
-> VCNL4000 includes support for regulators. Add regulators listed in the
-> downstream device tree so they can be powered in during initialization.
-> VLED supply is missing downstream, so it will be powered on by a dummy.
+On 3/29/2026 9:26 AM, Dmitry Baryshkov wrote:
+> On Wed, Mar 25, 2026 at 06:57:16PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: Amit Pundir <amit.pundir@linaro.org>
+>>
+>> Some firmware versions do not support the host capability QMI request.
+>> Since this request occurs before firmware-N.bin and board-M.bin are
+>> loaded, the quirk cannot be expressed in the firmware itself.
 > 
 > 
+> Acked-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> 
+> Jeff, to my knowledge this is the best approach that we have to solve
+> the issue on those devices.
 
-Applied, thanks!
+I'm ok with this approach.
 
-[1/1] arm64: dts: qcom: msm8939-asus-z00t: add regulators for ambient light and proximity sensor
-      commit: f757451504c4eaa77b3f87fdbed7a11d1f80df29
+I need DT Review or ACK on the 1/3 patch in order to bring the first 2 patches
+through my ath tree.
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+/jeff
