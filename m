@@ -1,66 +1,66 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313973BD64A
-	for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 10:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22BA3C3459
+	for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 10:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774865663; cv=none; b=oPlBZY/Kbz31b8IGrIde+iacE8ALm2edBLIV+fq9/ZSTnpJvfaU8pNdxFblytY8FdfFxd8nk7C0yjIJpt5kBaiM3ttE97i9zpkNDmvdlWEhkf+0KHu793Y/Mtzp8RxOf7p+Qr2vQWJyms5g8jvps48T4ssIfPnmAd2if27gGuP0=
+	t=1774865670; cv=none; b=UmmAUOkQcJIGfrah0v2cr+yoKX5K0FSW0t+5IEG61MyHASdPXr3BggHb3zsnP9JFxpH3MzL/TmRtZw4mKQIVpq5oiXhFcirb2Uf4LZGmxLDEowSzH7dgFK38r35+pE39Oakaiz/sppZ6VMJ3DcG+f8pNOU0QvnWwLB0LrrxOG8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774865663; c=relaxed/simple;
-	bh=VNUz0WiHOuF9ZjXRU42hQEkj+M2Tlz+LSPf+IMOY+mA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ap23Lib/+u4YbgmmlcvYhhQsZXYjh9msh8b/saLLddmueoqTMpoZcPTE2MH9hwS6DUynaBpM2bd4/oMOd2huLr3HeZccFUHmu6coTw+P7f1BdDYlzjZVk9mRY6nPUDgu+d20RUqewX6+bvaFbopfiRZSfAcO4duCGnOFfvKM4yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWe9PHJ/; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1774865670; c=relaxed/simple;
+	bh=cwtQPbv3nwjbv2cB/O7Hw+lGpUV3DovZ0aVRo4yVFIA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=L5s9UT0yL4ceBUovBJqEoWzG6Rn8KjvB99o/pN+j/zCk/33QSBrMOnIWCs4XOGNbNsCRklMV79swelO42gB8l9CmPvMuv16ZeUketuuZ+CoI3QJF9znem/CaJs0yZT7cgKMCovmkiG+0VuxU4SR50NOExInM3PlBnE8CVfmdYd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cGBm33MA; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWe9PHJ/"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82c70e4654eso1779700b3a.2
-        for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 03:14:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cGBm33MA"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829a27414a3so2543221b3a.3
+        for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 03:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774865661; x=1775470461; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6X2KX1P20FWcEf3JZUQZZD6U+N7BccVzrtbGiYYMsJc=;
-        b=CWe9PHJ/Z07fS7sJXYXBwcKQ6K25SqQ0gFjPrviJkM9+c6u6Q2VoBztAUytk/4hxAI
-         Si4r3RT9iEAb2+zyEw9vQMxPQWhkLS9KlqNFPdhOR9c8Jh/CsdPZ3v1vyzu+jRhWEsg8
-         puq6DKhY+WgMt5vnjiETwUVn9Oyyb0yDOSbmmQiN6ybXF6jER4PBPee7z1CuPeCs+WYV
-         yKDoHutsM43HJssmPwPy07ya3uobbN8HPMi0HkKUrBcXZIOuvSkiDuETk6wxifo0Y/02
-         1GX/K2fBER0HjiIdkJro6yPnNuSwyIKWQSVC2Q0QnuDSBzyOMFf8U+IyVldFySPulEHc
-         gtIw==
+        d=gmail.com; s=20251104; t=1774865668; x=1775470468; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=usJaOiTgkcVVvPc4UcNFR6ZaC/shaAHQEtJKypuF1Vo=;
+        b=cGBm33MAGds+3FegA8aMlAic5pCnsURCPcBYSm3RuchsaziQFyFo9xgier5TDycYzF
+         LJYCGC5aGA7t4ccAkHxrYsQvVyWtqcjqV3RNkeAUXOReSoJrdcoTY1hXZauMG+/NPZ8Z
+         BY6n8w16bB2iQhGL46k92VEhPhl6JPiE3yd8+KUzv86K4fPm6kQtYnbcNMDPuxkVqsjS
+         k3td/XWwJ7H64Q26yA8+8E8msfowI7fcmJBdxaP5x846qGZOVh+FCcGWGEXX8/RT1gR1
+         Lp7Zw0B5FDTeMT1soVePObEjtqAAA0BlxxzX3Xz7wmKaYWMyE4nnIV/26G0UL0rHNZCr
+         ckug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774865661; x=1775470461;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6X2KX1P20FWcEf3JZUQZZD6U+N7BccVzrtbGiYYMsJc=;
-        b=Zt8TfaqAcKDbsnxiOFNH/2oR/0yivVAnrkCce/j7Naiaw8hiqU5USdR1YlxgI1aBj9
-         W8zhSsdLhxmzhsIK5+Z1XhRY2YYVGaOikRexfvTnVd251m5+oThE2g4NY+DDwk8P0GvF
-         xr3ECMqDR2ezxde7NMiS4w1H+RqQVs9N9+Hh44oW27xHxlrEGijAQGB5svk3Q6e4TAXM
-         As9ul4cPLVH/y07i//dQdDMrfv3ZOIJ4YvN0B2fW7v8uMUsy1sgVC6wv1+Ew4gWb3PcC
-         Turxn9A+NyPGsMf7Qwg/fRPd6WbF56li34oeSWoPp4ifcXG0sqwm+8EMdTf7ohTXGjeh
-         WX/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXPWGglIPqbm+q7C5U3RGzzC0FDjF/x6VtOIa35/N0N3uDl/Jchgq1jilNEXtiN/zgF/8T9LlRBoE71XQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YywnPYfi/+yDCxuYZBCnZjLMCRIT3yn1c+GR64X78008r5XCkjF
-	pj7gAHuF9lcmYqQ64C4zRrIrXjpvlcx7MPCpCs6W3RIzIuJBo/UkSbGg
-X-Gm-Gg: ATEYQzwjfYAFvZHDyS97gfJuCMvVrR1tk1JDhjBAKEhol5SsuwyRehrppw2J/VPvIJE
-	yu0npxIOLLdtx8gc28n6nfz1PymkLEFYggkYODueEcUa3EYhyY+ispuiDnNDfXMM6PpDAYB2oCi
-	7wzDGLSPXtlM0g68WZr/uTq8kyd0C1ex57qoBJkanjJDkbLoFV/M2ZCYfzbPG94d/OzfGSWRak5
-	CIRLrE+OrBTrOSHqn+FDTEjtCWajj6PJqQR8AWDFx3j8fqaME0S/plWLKrfBTdjz6LrMS4V+pBr
-	PyN4kjvbOlyxSUjeGtML7iTu+r9zEpHy4VDo8TkOjks+GBicsHmxgYl/D2IhrAtTZXMRkcGr0qM
-	VsKE5w9qK35dk1TTwVv0vbU0rUJ8DoxtNs4ij5WWw8S6H6mR2hArOclQV6lY3PGlH0BJHTknbgm
-	yJBWeIWwrNzSvhh5zebkHrnWpZaWGo
-X-Received: by 2002:a05:6a00:2d22:b0:829:7e6d:cf19 with SMTP id d2e1a72fcca58-82c9604e3eamr12068833b3a.48.1774865661480;
-        Mon, 30 Mar 2026 03:14:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774865668; x=1775470468;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=usJaOiTgkcVVvPc4UcNFR6ZaC/shaAHQEtJKypuF1Vo=;
+        b=TZgmcvtA/7sSqSriT2GiQUfrzFGVyMqqmgQq38aGnmPU4ugaZX1UPxLAST2K9LE+/b
+         l3ty99rN5CuRNv80dUGjs5JM+LFZogD50goNJRB/eoFkWyr58OjlcD7wJhOA1mWhMIbb
+         JgDXi7E82iQ8gBtReFwOlTXZR3ULOkI4CbR7ImsN/kluMFtbsagy0SscyxrTUFKtc1os
+         8F9Gn0LgG8IHBoTi6sfzms9+tr4GwIRhg/2D2fhlbJgZTYpPx7vdQ4V+xz3Op+M3zIMO
+         TQjU0Xwdn0pE+GhiP+/70aGGc4QqkJkxOIUpCEfjkuMsmAgExUwKR9dG92foKYwvfQyj
+         KzXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPaNoEsriy7PqiTGqsdEX466Aeozy4SIWGr/i1MB/MJs4kzgcNXGwO7I/s25DlX5xxfMJ4pCLlxGYUvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzouWPRt9jb+MlQ3fyJHM3vrnSOLikrlnyh0UGGCJBY/D1mQh6I
+	r2iICT7ZkeA6c2hULV5iIpHe86RG8LVM/AFeC5uHsO4fOgOZlSjUE2M+
+X-Gm-Gg: ATEYQzyMrOjK8XmSQ53EpzBVgERKUHm90h9hgmTBqy7lz4ZNeJesFHLLjOYRleuiEgN
+	/vF94K1fu/rF1QZYQd9vR+mswybpWRizJ6ouqJd65frNFcleHZf3qJCyN/rkE9TNYxZVvojSfIO
+	vLStb4HUG7xD7IdcIXAyQeFt/G0P2LT6sux/uTVR6nbxrbdErBM2qIvhq4sntO83FphSQNoCRMn
+	jAgdia7UbkvWvDXbtp9N6qwrD6ZW6fvMksBiXOFYHXbe+9w5JUGOnRjb657wnrf0+qkn8pwxhTu
+	X4ecdwB+XOFJlMW3pf+prGhwhhQafNNjkZJepjHcf/FcrVDeTZda8fJXyYsGVxD+UqL1DaTHjYh
+	C9OTe4erZy74IUHS9iLaUjl3awkU/hCsiatza51/coJhfgmib3zfekxnGfGOIXSjQYgX+vx+7B9
+	y17wyAUI8+Squ8OZvcMRbUYRXxMrJD
+X-Received: by 2002:a05:6a00:2d1f:b0:829:8cfb:df45 with SMTP id d2e1a72fcca58-82c95e4d40bmr11478818b3a.15.1774865668135;
+        Mon, 30 Mar 2026 03:14:28 -0700 (PDT)
 Received: from [192.168.0.101] ([43.226.29.240])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82ca843d8e5sm8286080b3a.5.2026.03.30.03.14.14
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82ca843d8e5sm8286080b3a.5.2026.03.30.03.14.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 03:14:21 -0700 (PDT)
+        Mon, 30 Mar 2026 03:14:27 -0700 (PDT)
 From: Biswapriyo Nath <nathbappai@gmail.com>
-Subject: [PATCH v3 0/7] Add vibrator, IR transmitter and USB-C handling in
- xiaomi-ginkgo
-Date: Mon, 30 Mar 2026 10:13:47 +0000
-Message-Id: <20260330-ginkgo-add-usb-ir-vib-v3-0-c4b778b0d7f8@gmail.com>
+Date: Mon, 30 Mar 2026 10:13:48 +0000
+Subject: [PATCH v3 1/7] arm64: dts: qcom: sm6125: Use 64 bit addressing
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,11 +69,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNyw7CIBBFf8WwdgylgI+V/2FcQJni+GgNWKJp+
- u9C3bgxLk9y7zkjixgII9stRhYwUaS+y1AvF6w5mc4jkMvMBBea10KBp+7iezDOwRAtUIBEFqR
- RlXXbttXSsvy9B2zpOXsPxw/HwZ6xeRRZWZwoPvrwmsOpKrt/jVQBByl1o3GjlXF672+Grqumv
- 7HSSOLbsv1lEdmyWXPka6lQKfy2TNP0BhIniOgSAQAA
-X-Change-ID: 20260325-ginkgo-add-usb-ir-vib-4a51bd9ff64b
+Message-Id: <20260330-ginkgo-add-usb-ir-vib-v3-1-c4b778b0d7f8@gmail.com>
+References: <20260330-ginkgo-add-usb-ir-vib-v3-0-c4b778b0d7f8@gmail.com>
+In-Reply-To: <20260330-ginkgo-add-usb-ir-vib-v3-0-c4b778b0d7f8@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -86,59 +84,541 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  phone-devel@vger.kernel.org, Biswapriyo Nath <nathbappai@gmail.com>, 
  kernel test robot <lkp@intel.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774865654; l=1678;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774865654; l=17049;
  i=nathbappai@gmail.com; s=20260118; h=from:subject:message-id;
- bh=VNUz0WiHOuF9ZjXRU42hQEkj+M2Tlz+LSPf+IMOY+mA=;
- b=6qtUaGdDI9jVxrq7nw0ul7y7KHNjMnLjk9RJWUW6JooNXQCD3dMrFQbkk1HrPWfdOVoV8A77P
- ZbKn+kiOMLzBEVGgmMWp6/e32akF66p3yDZa9ZZuwmlCNEb8Uf2gLJp
+ bh=cwtQPbv3nwjbv2cB/O7Hw+lGpUV3DovZ0aVRo4yVFIA=;
+ b=b0sV45a+qMOMqM8kehXfoVgmEMYUspr2C5eIBysaiM1WzS9SspKN/+kQppC8ZYWjTcHO89U/J
+ 1SIlAQnuQ27AtyQxutg+Rd2lHKUqlTgoatZK7piFFspqJtaXIHdV4UL
 X-Developer-Key: i=nathbappai@gmail.com; a=ed25519;
  pk=slmb/9yXbet+KTiT3EYLCp0p0MEOYa3EdjUXP+HXfjg=
 
-This patch series add support for various components in Xiaomi Redmi
-Note 8.
+SM6125's SMMU uses 36bit VAs, which is a good indicator that we
+should increase (dma-)ranges - and by extension #address- and
+ #size-cells to prevent things from getting lost in translation
+(both literally and figuratively). Do so.
 
-Most notably:
-- IR transmitter
-- USB-C OTG
-- Vibrator
-
-Also, fix some bindings warning as reported due to previous commits.
-These are tested with linux-next tag next-20260320.
-
+Fixes: 7bb7c90e0ac1 ("arm64: dts: qcom: Add Redmi Note 8T")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603141433.MDqfoVHn-lkp@intel.com/
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
 ---
-Changes in v3:
-- Fix dispcc-sm6125 binding by adding qcom,gcc reference.
-- Link to v2: https://patch.msgid.link/20260329-ginkgo-add-usb-ir-vib-v2-0-870e0745e55e@gmail.com
+ arch/arm64/boot/dts/qcom/sm6125.dtsi | 153 ++++++++++++++++++-----------------
+ 1 file changed, 78 insertions(+), 75 deletions(-)
 
-Changes in v2:
-- Move bindings fixes to first in the series and add fixes tag.
-- Link to v1: https://patch.msgid.link/20260325-ginkgo-add-usb-ir-vib-v1-0-446c6e865ad6@gmail.com
+diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+index c84911a98fce..a1a296f90f44 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+@@ -374,22 +374,23 @@ smem: smem {
+ 	};
+ 
+ 	soc@0 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		ranges = <0x00 0x00 0x00 0xffffffff>;
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges = <0 0 0 0 0x10 0>;
++		dma-ranges = <0 0 0 0 0x10 0>;
+ 		compatible = "simple-bus";
+ 
+ 		tcsr_mutex: hwlock@340000 {
+ 			compatible = "qcom,tcsr-mutex";
+-			reg = <0x00340000 0x20000>;
++			reg = <0x0 0x00340000 0x0 0x20000>;
+ 			#hwlock-cells = <1>;
+ 		};
+ 
+ 		tlmm: pinctrl@500000 {
+ 			compatible = "qcom,sm6125-tlmm";
+-			reg = <0x00500000 0x400000>,
+-			      <0x00900000 0x400000>,
+-			      <0x00d00000 0x400000>;
++			reg = <0x0 0x00500000 0x0 0x400000>,
++			      <0x0 0x00900000 0x0 0x400000>,
++			      <0x0 0x00d00000 0x0 0x400000>;
+ 			reg-names = "west", "south", "east";
+ 			interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>;
+ 			gpio-controller;
+@@ -672,7 +673,7 @@ qup_uart4_default: qup-uart4-default-state {
+ 
+ 		gcc: clock-controller@1400000 {
+ 			compatible = "qcom,gcc-sm6125";
+-			reg = <0x01400000 0x1f0000>;
++			reg = <0x0 0x01400000 0x0 0x1f0000>;
+ 			#clock-cells = <1>;
+ 			#reset-cells = <1>;
+ 			#power-domain-cells = <1>;
+@@ -682,7 +683,7 @@ gcc: clock-controller@1400000 {
+ 
+ 		hsusb_phy1: phy@1613000 {
+ 			compatible = "qcom,msm8996-qusb2-phy";
+-			reg = <0x01613000 0x180>;
++			reg = <0x0 0x01613000 0x0 0x180>;
+ 			#phy-cells = <0>;
+ 
+ 			clocks = <&gcc GCC_AHB2PHY_USB_CLK>,
+@@ -695,18 +696,18 @@ hsusb_phy1: phy@1613000 {
+ 
+ 		rng: rng@1b53000 {
+ 			compatible = "qcom,prng-ee";
+-			reg = <0x01b53000 0x1000>;
++			reg = <0x0 0x01b53000 0x0 0x1000>;
+ 			clocks = <&gcc GCC_PRNG_AHB_CLK>;
+ 			clock-names = "core";
+ 		};
+ 
+ 		spmi_bus: spmi@1c40000 {
+ 			compatible = "qcom,spmi-pmic-arb";
+-			reg = <0x01c40000 0x1100>,
+-			      <0x01e00000 0x2000000>,
+-			      <0x03e00000 0x100000>,
+-			      <0x03f00000 0xa0000>,
+-			      <0x01c0a000 0x26000>;
++			reg = <0x0 0x01c40000 0x0 0x1100>,
++			      <0x0 0x01e00000 0x0 0x2000000>,
++			      <0x0 0x03e00000 0x0 0x100000>,
++			      <0x0 0x03f00000 0x0 0xa0000>,
++			      <0x0 0x01c0a000 0x0 0x26000>;
+ 			reg-names = "core", "chnls", "obsrvr", "intr", "cnfg";
+ 			interrupt-names = "periph_irq";
+ 			interrupts = <GIC_SPI 183 IRQ_TYPE_LEVEL_HIGH>;
+@@ -720,12 +721,13 @@ spmi_bus: spmi@1c40000 {
+ 
+ 		rpm_msg_ram: sram@45f0000 {
+ 			compatible = "qcom,rpm-msg-ram";
+-			reg = <0x045f0000 0x7000>;
++			reg = <0x0 0x045f0000 0x0 0x7000>;
+ 		};
+ 
+ 		sdhc_1: mmc@4744000 {
+ 			compatible = "qcom,sm6125-sdhci", "qcom,sdhci-msm-v5";
+-			reg = <0x04744000 0x1000>, <0x04745000 0x1000>;
++			reg = <0x0 0x04744000 0x0 0x1000>,
++			      <0x0 0x04745000 0x0 0x1000>;
+ 			reg-names = "hc", "cqhci";
+ 
+ 			interrupts = <GIC_SPI 348 IRQ_TYPE_LEVEL_HIGH>,
+@@ -752,7 +754,7 @@ sdhc_1: mmc@4744000 {
+ 
+ 		sdhc_2: mmc@4784000 {
+ 			compatible = "qcom,sm6125-sdhci", "qcom,sdhci-msm-v5";
+-			reg = <0x04784000 0x1000>;
++			reg = <0x0 0x04784000 0x0 0x1000>;
+ 			reg-names = "hc";
+ 
+ 			interrupts = <GIC_SPI 350 IRQ_TYPE_LEVEL_HIGH>,
+@@ -780,7 +782,8 @@ sdhc_2: mmc@4784000 {
+ 
+ 		ufs_mem_hc: ufshc@4804000 {
+ 			compatible = "qcom,sm6125-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
+-			reg = <0x04804000 0x3000>, <0x04810000 0x8000>;
++			reg = <0x0 0x04804000 0x0 0x3000>,
++			      <0x0 0x04810000 0x0 0x8000>;
+ 			reg-names = "std", "ice";
+ 			interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
+ 
+@@ -825,7 +828,7 @@ ufs_mem_hc: ufshc@4804000 {
+ 
+ 		ufs_mem_phy: phy@4807000 {
+ 			compatible = "qcom,sm6125-qmp-ufs-phy";
+-			reg = <0x04807000 0xdb8>;
++			reg = <0x0 0x04807000 0x0 0xdb8>;
+ 
+ 			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+ 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
+@@ -846,7 +849,7 @@ ufs_mem_phy: phy@4807000 {
+ 
+ 		gpi_dma0: dma-controller@4a00000 {
+ 			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
+-			reg = <0x04a00000 0x60000>;
++			reg = <0x0 0x04a00000 0x0 0x60000>;
+ 			interrupts = <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>,
+@@ -864,19 +867,19 @@ gpi_dma0: dma-controller@4a00000 {
+ 
+ 		qupv3_id_0: geniqup@4ac0000 {
+ 			compatible = "qcom,geni-se-qup";
+-			reg = <0x04ac0000 0x2000>;
++			reg = <0x0 0x04ac0000 0x0 0x2000>;
+ 			clocks = <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
+ 				 <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
+ 			clock-names = "m-ahb", "s-ahb";
+ 			iommus = <&apps_smmu 0x123 0x0>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
++			#address-cells = <2>;
++			#size-cells = <2>;
+ 			ranges;
+ 			status = "disabled";
+ 
+ 			i2c0: i2c@4a80000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04a80000 0x4000>;
++				reg = <0x0 0x04a80000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>;
+@@ -893,7 +896,7 @@ i2c0: i2c@4a80000 {
+ 
+ 			spi0: spi@4a80000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04a80000 0x4000>;
++				reg = <0x0 0x04a80000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>;
+@@ -910,7 +913,7 @@ spi0: spi@4a80000 {
+ 
+ 			i2c1: i2c@4a84000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04a84000 0x4000>;
++				reg = <0x0 0x04a84000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S1_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 328 IRQ_TYPE_LEVEL_HIGH>;
+@@ -927,7 +930,7 @@ i2c1: i2c@4a84000 {
+ 
+ 			i2c2: i2c@4a88000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04a88000 0x4000>;
++				reg = <0x0 0x04a88000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S2_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
+@@ -944,7 +947,7 @@ i2c2: i2c@4a88000 {
+ 
+ 			spi2: spi@4a88000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04a88000 0x4000>;
++				reg = <0x0 0x04a88000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S2_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
+@@ -961,7 +964,7 @@ spi2: spi@4a88000 {
+ 
+ 			i2c3: i2c@4a8c000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04a8c000 0x4000>;
++				reg = <0x0 0x04a8c000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S3_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>;
+@@ -978,7 +981,7 @@ i2c3: i2c@4a8c000 {
+ 
+ 			i2c4: i2c@4a90000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04a90000 0x4000>;
++				reg = <0x0 0x04a90000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S4_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
+@@ -995,7 +998,7 @@ i2c4: i2c@4a90000 {
+ 
+ 			uart4: serial@4a90000 {
+ 				compatible = "qcom,geni-debug-uart";
+-				reg = <0x04a90000 0x4000>;
++				reg = <0x0 0x04a90000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S4_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1007,7 +1010,7 @@ uart4: serial@4a90000 {
+ 
+ 		gpi_dma1: dma-controller@4c00000 {
+ 			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
+-			reg = <0x04c00000 0x60000>;
++			reg = <0x0 0x04c00000 0x0 0x60000>;
+ 			interrupts = <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 316 IRQ_TYPE_LEVEL_HIGH>,
+@@ -1025,19 +1028,19 @@ gpi_dma1: dma-controller@4c00000 {
+ 
+ 		qupv3_id_1: geniqup@4cc0000 {
+ 			compatible = "qcom,geni-se-qup";
+-			reg = <0x04cc0000 0x2000>;
++			reg = <0x0 0x04cc0000 0x0 0x2000>;
+ 			clocks = <&gcc GCC_QUPV3_WRAP_1_M_AHB_CLK>,
+ 				 <&gcc GCC_QUPV3_WRAP_1_S_AHB_CLK>;
+ 			clock-names = "m-ahb", "s-ahb";
+ 			iommus = <&apps_smmu 0x143 0x0>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
++			#address-cells = <2>;
++			#size-cells = <2>;
+ 			ranges;
+ 			status = "disabled";
+ 
+ 			i2c5: i2c@4c80000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04c80000 0x4000>;
++				reg = <0x0 0x04c80000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S0_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1054,7 +1057,7 @@ i2c5: i2c@4c80000 {
+ 
+ 			spi5: spi@4c80000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04c80000 0x4000>;
++				reg = <0x0 0x04c80000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S0_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1071,7 +1074,7 @@ spi5: spi@4c80000 {
+ 
+ 			i2c6: i2c@4c84000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04c84000 0x4000>;
++				reg = <0x0 0x04c84000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S1_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1088,7 +1091,7 @@ i2c6: i2c@4c84000 {
+ 
+ 			spi6: spi@4c84000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04c84000 0x4000>;
++				reg = <0x0 0x04c84000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S1_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1105,7 +1108,7 @@ spi6: spi@4c84000 {
+ 
+ 			i2c7: i2c@4c88000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04c88000 0x4000>;
++				reg = <0x0 0x04c88000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S2_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1122,7 +1125,7 @@ i2c7: i2c@4c88000 {
+ 
+ 			i2c8: i2c@4c8c000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04c8c000 0x4000>;
++				reg = <0x0 0x04c8c000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S3_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1139,7 +1142,7 @@ i2c8: i2c@4c8c000 {
+ 
+ 			spi8: spi@4c8c000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04c8c000 0x4000>;
++				reg = <0x0 0x04c8c000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S3_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1156,7 +1159,7 @@ spi8: spi@4c8c000 {
+ 
+ 			i2c9: i2c@4c90000 {
+ 				compatible = "qcom,geni-i2c";
+-				reg = <0x04c90000 0x4000>;
++				reg = <0x0 0x04c90000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S4_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1173,7 +1176,7 @@ i2c9: i2c@4c90000 {
+ 
+ 			spi9: spi@4c90000 {
+ 				compatible = "qcom,geni-spi";
+-				reg = <0x04c90000 0x4000>;
++				reg = <0x0 0x04c90000 0x0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S4_CLK>;
+ 				clock-names = "se";
+ 				interrupts = <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1191,9 +1194,9 @@ spi9: spi@4c90000 {
+ 
+ 		usb3: usb@4ef8800 {
+ 			compatible = "qcom,sm6125-dwc3", "qcom,dwc3";
+-			reg = <0x04ef8800 0x400>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
++			reg = <0x0 0x04ef8800 0x0 0x400>;
++			#address-cells = <2>;
++			#size-cells = <2>;
+ 			ranges;
+ 
+ 			clocks = <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
+@@ -1228,7 +1231,7 @@ usb3: usb@4ef8800 {
+ 
+ 			usb3_dwc3: usb@4e00000 {
+ 				compatible = "snps,dwc3";
+-				reg = <0x04e00000 0xcd00>;
++				reg = <0x0 0x04e00000 0x0 0xcd00>;
+ 				interrupts = <GIC_SPI 255 IRQ_TYPE_LEVEL_HIGH>;
+ 				iommus = <&apps_smmu 0x100 0x0>;
+ 				phys = <&hsusb_phy1>;
+@@ -1244,12 +1247,12 @@ usb3_dwc3: usb@4e00000 {
+ 
+ 		sram@4690000 {
+ 			compatible = "qcom,rpm-stats";
+-			reg = <0x04690000 0x10000>;
++			reg = <0x0 0x04690000 0x0 0x10000>;
+ 		};
+ 
+ 		mdss: display-subsystem@5e00000 {
+ 			compatible = "qcom,sm6125-mdss";
+-			reg = <0x05e00000 0x1000>;
++			reg = <0x0 0x05e00000 0x0 0x1000>;
+ 			reg-names = "mdss";
+ 
+ 			interrupts = <GIC_SPI 186 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1269,16 +1272,16 @@ mdss: display-subsystem@5e00000 {
+ 
+ 			iommus = <&apps_smmu 0x400 0x0>;
+ 
+-			#address-cells = <1>;
+-			#size-cells = <1>;
++			#address-cells = <2>;
++			#size-cells = <2>;
+ 			ranges;
+ 
+ 			status = "disabled";
+ 
+ 			mdss_mdp: display-controller@5e01000 {
+ 				compatible = "qcom,sm6125-dpu";
+-				reg = <0x05e01000 0x83208>,
+-				      <0x05eb0000 0x3000>;
++				reg = <0x0 0x05e01000 0x0 0x83208>,
++				      <0x0 0x05eb0000 0x0 0x3000>;
+ 				reg-names = "mdp", "vbif";
+ 
+ 				interrupt-parent = <&mdss>;
+@@ -1348,7 +1351,7 @@ opp-400000000 {
+ 
+ 			mdss_dsi0: dsi@5e94000 {
+ 				compatible = "qcom,sm6125-dsi-ctrl", "qcom,mdss-dsi-ctrl";
+-				reg = <0x05e94000 0x400>;
++				reg = <0x0 0x05e94000 0x0 0x400>;
+ 				reg-names = "dsi_ctrl";
+ 
+ 				interrupt-parent = <&mdss>;
+@@ -1417,9 +1420,9 @@ opp-187500000 {
+ 
+ 			mdss_dsi0_phy: phy@5e94400 {
+ 				compatible = "qcom,sm6125-dsi-phy-14nm";
+-				reg = <0x05e94400 0x100>,
+-				      <0x05e94500 0x300>,
+-				      <0x05e94800 0x188>;
++				reg = <0x0 0x05e94400 0x0 0x100>,
++				      <0x0 0x05e94500 0x0 0x300>,
++				      <0x0 0x05e94800 0x0 0x188>;
+ 				reg-names = "dsi_phy",
+ 					    "dsi_phy_lane",
+ 					    "dsi_pll";
+@@ -1441,7 +1444,7 @@ mdss_dsi0_phy: phy@5e94400 {
+ 
+ 		dispcc: clock-controller@5f00000 {
+ 			compatible = "qcom,sm6125-dispcc";
+-			reg = <0x05f00000 0x20000>;
++			reg = <0x0 0x05f00000 0x0 0x20000>;
+ 
+ 			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+ 				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
+@@ -1470,7 +1473,7 @@ dispcc: clock-controller@5f00000 {
+ 
+ 		apps_smmu: iommu@c600000 {
+ 			compatible = "qcom,sm6125-smmu-500", "qcom,smmu-500", "arm,mmu-500";
+-			reg = <0x0c600000 0x80000>;
++			reg = <0x0 0x0c600000 0x0 0x80000>;
+ 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
+@@ -1544,74 +1547,74 @@ apps_smmu: iommu@c600000 {
+ 		apcs_glb: mailbox@f111000 {
+ 			compatible = "qcom,sm6125-apcs-hmss-global",
+ 				     "qcom,msm8994-apcs-kpss-global";
+-			reg = <0x0f111000 0x1000>;
++			reg = <0x0 0x0f111000 0x0 0x1000>;
+ 
+ 			#mbox-cells = <1>;
+ 		};
+ 
+ 		timer@f120000 {
+ 			compatible = "arm,armv7-timer-mem";
+-			#address-cells = <1>;
++			#address-cells = <2>;
+ 			#size-cells = <1>;
+-			ranges;
+-			reg = <0x0f120000 0x1000>;
++			reg = <0x0 0x0f120000 0x0 0x1000>;
++			ranges = <0x0 0x0 0x0 0x0 0x20000000>;
+ 			clock-frequency = <19200000>;
+ 
+ 			frame@f121000 {
+ 				frame-number = <0>;
+ 				interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+ 					     <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f121000 0x1000>,
+-				      <0x0f122000 0x1000>;
++				reg = <0x0 0x0f121000 0x1000>,
++				      <0x0 0x0f122000 0x1000>;
+ 			};
+ 
+ 			frame@f123000 {
+ 				frame-number = <1>;
+ 				interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f123000 0x1000>;
++				reg = <0x0 0x0f123000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 
+ 			frame@f124000 {
+ 				frame-number = <2>;
+ 				interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f124000 0x1000>;
++				reg = <0x0 0x0f124000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 
+ 			frame@f125000 {
+ 				frame-number = <3>;
+ 				interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f125000 0x1000>;
++				reg = <0x0 0x0f125000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 
+ 			frame@f126000 {
+ 				frame-number = <4>;
+ 				interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f126000 0x1000>;
++				reg = <0x0 0x0f126000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 
+ 			frame@f127000 {
+ 				frame-number = <5>;
+ 				interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f127000 0x1000>;
++				reg = <0x0 0x0f127000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 
+ 			frame@f128000 {
+ 				frame-number = <6>;
+ 				interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+-				reg = <0x0f128000 0x1000>;
++				reg = <0x0 0x0f128000 0x1000>;
+ 				status = "disabled";
+ 			};
+ 		};
+ 
+ 		intc: interrupt-controller@f200000 {
+ 			compatible = "arm,gic-v3";
+-			reg = <0x0f200000 0x20000>,
+-			      <0x0f300000 0x100000>;
++			reg = <0x0 0x0f200000 0x0 0x20000>,
++			      <0x0 0x0f300000 0x0 0x100000>;
+ 			#interrupt-cells = <3>;
+ 			interrupt-controller;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
 
----
-Biswapriyo Nath (7):
-      arm64: dts: qcom: sm6125: Use 64 bit addressing
-      dt-bindings: clock: qcom,sm6125-dispcc: reference qcom,gcc.yaml
-      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Enable vibrator
-      arm64: dts: qcom: sm6125: Enable USB-C port handling
-      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add PMI632 Type-C property
-      dt-bindings: leds: irled: ir-spi-led: Add new duty-cycle value
-      arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add IR transmitter
-
- .../bindings/clock/qcom,dispcc-sm6125.yaml         |  17 +--
- .../devicetree/bindings/leds/irled/ir-spi-led.yaml |   2 +-
- .../boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi |  56 +++++++
- arch/arm64/boot/dts/qcom/sm6125.dtsi               | 168 +++++++++++----------
- 4 files changed, 154 insertions(+), 89 deletions(-)
----
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-change-id: 20260325-ginkgo-add-usb-ir-vib-4a51bd9ff64b
-
-Best regards,
---  
-Biswapriyo Nath <nathbappai@gmail.com>
+-- 
+2.53.0
 
