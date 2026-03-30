@@ -1,50 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BFF38E5C8;
-	Mon, 30 Mar 2026 16:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAF23D9DC8;
+	Mon, 30 Mar 2026 16:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774886525; cv=none; b=etCVyQrZlgo8QLZvpS9v+CBaYUiNr2MscDMax9TX8WzDt01aN7EiCdrWGqeQZVLKbCM+zp8espQk3toQlFv7waYyznoBaaVls75tpombXo9jgo6bfyc4jqbVBDvlx8lCdhKZh57yMRQjZC8mz4XmBulrE8fpN4Jpl/OPd/WgQho=
+	t=1774886539; cv=none; b=eOOTWtLIYjrlhwjNOKaSXr7azyHCQ7prARuJTFIf+RDql6mOn4AIqc8DpqgWg36XmaJwxfd7mzk4Cz1pKSZ+xTHe+JfJXeKI1x9uRwTQIyDx81gFA3z0ApXMsmeHVhvEJ48LQ8mUcvJCxoGrHWSHzVVervEi2lYc4IHh4dKzwfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774886525; c=relaxed/simple;
-	bh=92qAfw8U2FiSqrexzRwZBh0VWakwoPy46JfMNYgBTWg=;
+	s=arc-20240116; t=1774886539; c=relaxed/simple;
+	bh=xKRk+5z07NNFWqSLPTnCI8pn6XqNUxPH+058mZEVQF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t1B7XY3Auc9M9fe79s+NpFS9LOMAeCezLbrn3Pb2xDLspsxOZdHAijvogwzz0zBhKilWaRK9gRQj1SsCJqEpurOhaVsaRYdg5wzWba2nNpbXE/IUxJHXBKQTDYSP9kwgrKeecZtQwSScZrdr/X0cHjkQ+1wFPDClOhy5IeDAd5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPDfuni4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Xu9Ik8Ui+fL5+4VdEWqH2GF4k5jFGup4PGq4fT5ieDD6cdRHqFP0mmIJs095INiwsAU/J9nwVOwHVaYrsZb0XDP9KKzozwVwO5Y2dsv16j0oKVntebwA5t7AaNvulHki2uUpXtG+7IK8XFfynLd2wGMQmfS9yIgHam4YL9qZR0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CE5Qgeuy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPDfuni4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A38C2BCB2;
-	Mon, 30 Mar 2026 16:02:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CE5Qgeuy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034F9C19423;
+	Mon, 30 Mar 2026 16:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774886525;
-	bh=92qAfw8U2FiSqrexzRwZBh0VWakwoPy46JfMNYgBTWg=;
+	s=k20201202; t=1774886538;
+	bh=xKRk+5z07NNFWqSLPTnCI8pn6XqNUxPH+058mZEVQF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPDfuni4fhJt9kHgbhb1Q2l/f2udS413ZMI1LHM9c3zEbsD1/RqKCkzEuyXfbqytM
-	 hR9sP1j3kwbaZI00QMu1jRWoJFkfsn94aD0kEYc/nYBx/KHCCYcyyIkBLuIVZfrqDt
-	 CeKiBSAUQdWPBDUF5biiHccs6RXWZ6Iak8HvpBW2KJWjEgwkGNBPBpy548Wg0g94Nc
-	 rpbrXHl59y7bKK2Dr7+FIEVTmyI5FU1yf8dGfdU4ezeJXthLnlPxJMiFhEZnsUELSK
-	 U7ssR7oEy349cZnCaTJAHb2PuQS9rVb9R25jp18yyEUbqByAEVo2UCN4PJyUxUaZqp
-	 JAoQjlWYoRRtw==
+	b=CE5Qgeuy4eliuvLT3EqzrnM/Db1Ff6HXj+LLTMsuc1eL/XebAgYvXTHsT4kUvrbNE
+	 5EuFGZPmDDKuV1ymmSGeCTuJ5QiauoE15vErXQC2QhlKrB+I+QaYbI1a6UqBmRHT3s
+	 KD7UDOQlMqrYQm7ZN7sQcRurgTznIamBj/JfeMjc6PWpiKHJZML28Fbk0S7eyw78QM
+	 ofGCVtnjBxosnpk1TM/+dvda7LNdLytrmEKugHbqDcWkKEOYlUAN2nnwycyVXdZldB
+	 HdSIIuyJ4SqFna/k+cDrN1qfiAeIqZ547XKl8bgAvV6ITAF2+bWbbkuKM/OGO93HMJ
+	 i1Ydt3mQQKVyg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
+To: linux-kernel@vger.kernel.org,
+	Raymond Hackley <wonderfulshrinemaidenofparadise@postmarketos.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 0/2] Front camera enablement on Fairphone 5
-Date: Mon, 30 Mar 2026 11:01:24 -0500
-Message-ID: <177488647775.633011.11463914873995583752.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	Max McNamee <maxmcnamee@proton.me>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Nikita Travkin <nikita@trvn.ru>,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 0/3] arm64: dts: qcom: msm8916-samsung-coreprimeltevzw: add device tree
+Date: Mon, 30 Mar 2026 11:01:37 -0500
+Message-ID: <177488647780.633011.3942997076237860691.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260319-fp5-s5kjn1-v3-0-9cf4b8c09567@fairphone.com>
-References: <20260319-fp5-s5kjn1-v3-0-9cf4b8c09567@fairphone.com>
+In-Reply-To: <20260223220514.2556033-1-wonderfulshrinemaidenofparadise@postmarketos.org>
+References: <20260223220514.2556033-1-wonderfulshrinemaidenofparadise@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,18 +56,36 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 19 Mar 2026 16:36:27 +0100, Luca Weiss wrote:
-> Since the Samsung S5KJN1 driver was upstreamed recently, we can enable
-> the camera upstream by adding a few bits to dts.
+On Mon, 23 Feb 2026 22:05:11 +0000, Raymond Hackley wrote:
+> Samsung Galaxy Core Prime Verizon Wireless is a phone based on MSM8916.
+> They are similar to the other Samsung devices based on MSM8916 with only a
+> few minor differences.
 > 
+> The device trees contain initial support with:
+>  - GPIO keys
+>  - Regulator haptic
+>  - SDHCI (internal and external storage)
+>  - USB Device Mode
+>  - UART (on USB connector via the SM5502 MUIC)
+>  - WCNSS (WiFi/BT)
+>  - Regulators
+>  - QDSP6 audio
+>  - Speaker/earpiece/headphones/microphones via digital/analog codec in
+>    MSM8916/PM8916
+>  - WWAN Internet via BAM-DMUX
+>  - PMIC and charger
+>  - Touchscreen
 > 
+> [...]
 
 Applied, thanks!
 
-[1/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Sort pinctrl nodes by pins
-      commit: e7fc3c46dc09c1c5f901f1a627d9bffc6321081c
-[2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add front camera support
-      commit: 1d44de258d34f33aadda67d69dae5a8427b9d2c7
+[1/3] arm64: dts: qcom: msm8916-samsung-fortuna: Move SM5504 from rossa and refactor MUIC
+      commit: 21450547506ece7e36bef75681479a52e518c53b
+[2/3] dt-bindings: qcom: Document samsung,coreprimeltevzw
+      commit: bb0a09a4fa4821a5a1da1b707e0e169d6a4e8cd2
+[3/3] arm64: dts: qcom: msm8916-samsung-coreprimeltevzw: add device tree
+      commit: 2ce450f77f1de5eb7b489fcd829a7f494952e1bf
 
 Best regards,
 -- 
