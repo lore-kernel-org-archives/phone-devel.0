@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A173EB7FF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77843EB818;
 	Tue, 31 Mar 2026 08:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774946808; cv=none; b=OjSDUgqBGzyyMMLFybSU8W0AzXzpj6iOpErRH9yvMbheDmtDaTctp+/SLdHyOsuh5ySTpmThy+LBFQ2SF/9MQWWTUZ81cK/biUNTjZiZRUKaxdhXJTfV7lEqBfCfLjM3V8fA1uqw0Xd4a8nNufJbER50ZFDGTttdN5PQSJDPDv4=
+	t=1774946808; cv=none; b=nkELOHUcaZp8z2H986bCM2bZvlR3KrTstJpgZMYJVNYsVcQi45LOsTvj0azMsRThdOAnaX0F3tPY2kmeLJ5nOwQon7Mes7umuqI4ybM4IrHS8FgrT7aq8wb5SOnym4OP299o8Nt1IrqINhWl+s4+ZSjCQN+eKSmY8m2JKZ80Xm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774946808; c=relaxed/simple;
-	bh=9BTqj89bZxMO325WD7xX7lCh2duf1b3+w/twlN+ydgw=;
+	bh=+30Pn1ptLHNrbw4TyDkIecgRtiDcpq23znmqm1L6js8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mcgCxf+K3H5xyPIw7dDlE279A53hTtvbmT+omEZVkgAARgt9MFOdf0b7c4rIpLwYOo0HqXejEkjq1h4aT45PBB/y9MwX8BR9FAfZ9/HzHpJOHM0giPr7ZF+WwOTqVZtRA0n2QpfkUwQ+axsNEbm9l3arI25gu7+J1wx+xxTn3D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ur6wD4Yj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=CBmPs9MSgCQeakWbJ6E596fUVcvg+t7nuXrvC2YEiygDBxjBzzePf85+Jhsz0diYG7eaJSjVmFXP3lBM51fF/7d/xgG1WpMvWMXFTSHoixZZEkloLT0y/07AQHsIbYq3zyzvXirFqtvlibiI0tk6ax35hsqCS3Qw5ATaxTD0Xa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=os06rcae; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ur6wD4Yj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72521C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="os06rcae"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 840FAC2BCB7;
 	Tue, 31 Mar 2026 08:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774946808;
-	bh=9BTqj89bZxMO325WD7xX7lCh2duf1b3+w/twlN+ydgw=;
+	bh=+30Pn1ptLHNrbw4TyDkIecgRtiDcpq23znmqm1L6js8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Ur6wD4YjfqaTkjxMIw1egpYO57XBKMZsTBI187M6GcGQHjK0lpxs4C1b+Js6Jaq4Z
-	 J4OTn18bZJX9mdnBfM8/d+sgXyMALTBmI9SgmsXJzFPnHEch4fcO9p8hJ4gw1ailBa
-	 lggWx7zji1gS9gJITYaEntfpQAwWNydRjPh8KgY63fWrxsQ1JkWrs3RMOxdOkQtk4g
-	 rHgUOWO4uXywaD1ZDJnZUriCeu0qZRe5GHg6b/HiM38rmiT8JvJoANK4vAC3Mu9OoM
-	 DoiPDPg22FHe6mDD5KEk3EO7qTilc+V8n4YEn2HIPUJ54wYKayZwwL0Wgp5sJpCcds
-	 QYFDe5l59MsDA==
+	b=os06rcaecghgx+Uab1DuOq2eJv0oNDx7unqg2fNIIlqkt5zjiVRV6sjX3A+r26rmv
+	 k21Eo/It8ygxYHWvCGwtv7f4CD5a1BMi53FCb9ImYarmPIZ69EjWqLnYgXDdXEJfhG
+	 zZNnaubwX73KDmbYafvANcGdO6lVSWM2tcp0p+wYR0EWKRx/K+nDTahxAZv+fiQziz
+	 2Q+rzzZbCgiuhaZi+q7XYS2Io6fu/QFwYIfEzXeLARFX9mxVIzvJ2XcI4tMHEaTGk9
+	 5bxUqNQIMFVu0FCAADqITopnEHanIYV0Je2IZEF2F3rndTC92L+KfAJUtRo0PhJA+y
+	 meOwMyLe+VlTA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68DB0FF60F1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79CF4FF60EF;
 	Tue, 31 Mar 2026 08:46:48 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Date: Tue, 31 Mar 2026 11:47:12 +0200
-Subject: [PATCH v5 4/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
- WiFi/Bluetooth
+Date: Tue, 31 Mar 2026 11:47:13 +0200
+Subject: [PATCH v5 5/6] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ touchscreen
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-rimob-new-features-v5-4-5fcf42a29c12@protonmail.com>
+Message-Id: <20260331-rimob-new-features-v5-5-5fcf42a29c12@protonmail.com>
 References: <20260331-rimob-new-features-v5-0-5fcf42a29c12@protonmail.com>
 In-Reply-To: <20260331-rimob-new-features-v5-0-5fcf42a29c12@protonmail.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -56,14 +56,13 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  Cristian Cozzolino <cristian_ci@protonmail.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774950461; l=1054;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774950461; l=1640;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=fh/EPBf6DDi6xO2cT/WF/4Df/j3opWByAPpvZnndrW8=;
- b=HMR8LJo0K1WR0rIK+nK/nE52KfPHYkMTNNJjMyXRqiLm5lV0EnbBv4jESDlkcfOEXWJ6qhIRv
- JcKGVY+SCrUBA0AhU+U+MTYHL2FtHtcpYnU+T7FbA6vk7btRnDTj3Bl
+ bh=2lixUsZ8hK7GJbfIpYB3fjZMI34WwYmd7iUiJ+N3tkI=;
+ b=CFERXPieFjSemT4rzWmeU5YO4FOP8r536BLkw1/lGiL/0ltYusAh2o/q31z/7qvhlQgCZ0AOS
+ FJQ+EKIW8HBDvO3s/lMBZxHd2zdecNDZdTLNwyCk2Zjy2VYb68cZPyF
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -73,39 +72,65 @@ Reply-To: cristian_ci@protonmail.com
 
 From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Configure and enable the WCNSS which provides WiFi and Bluetooth on this
-device using the WCN3660B chip.
+This device uses a Goodix GT5688 touch controller, connected to i2c_3.
+Add it to the device tree.
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
- arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 32 ++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-index 5a9d71d1e466..db5c9f04bf1a 100644
+index db5c9f04bf1a..060129c72264 100644
 --- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
-@@ -326,3 +326,18 @@ &usb3 {
- &usb3_dwc3 {
- 	dr_mode = "peripheral";
+@@ -94,6 +94,31 @@ &hsusb_phy {
+ 	status = "okay";
  };
-+
-+&wcnss {
-+	vddpx-supply = <&pm8953_l5>;
-+
+ 
++&i2c_3 {
 +	status = "okay";
++
++	touchscreen@5d {
++		compatible = "goodix,gt5688";
++		reg = <0x5d>;
++
++		interrupts-extended = <&tlmm 65 IRQ_TYPE_LEVEL_LOW>;
++
++		pinctrl-0 = <&tsp_int_rst_default>;
++		pinctrl-names = "default";
++
++		irq-gpios = <&tlmm 65 GPIO_ACTIVE_HIGH>;
++		reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
++
++		VDDIO-supply = <&pm8953_l6>;
++		AVDD28-supply = <&pm8953_l10>;
++
++		touchscreen-size-x = <1080>;
++		touchscreen-size-y = <1920>;
++		touchscreen-inverted-x;
++		touchscreen-inverted-y;
++	};
 +};
 +
-+&wcnss_iris {
-+	compatible = "qcom,wcn3660b";
+ &ibb {
+ 	qcom,discharge-resistor-kohms = <32>;
+ };
+@@ -311,6 +336,13 @@ panel_default: panel-default-state {
+ 		bias-disable;
+ 	};
+ 
++	tsp_int_rst_default: tsp-int-rst-default-state {
++		pins = "gpio64", "gpio65";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-pull-up;
++	};
 +
-+	vddxo-supply = <&pm8953_l7>;
-+	vddrfa-supply = <&pm8953_l19>;
-+	vddpa-supply = <&pm8953_l9>;
-+	vdddig-supply = <&pm8953_l5>;
-+};
+ 	gpio_key_default: gpio-key-default-state {
+ 		pins = "gpio85";
+ 		function = "gpio";
 
 -- 
 2.53.0
