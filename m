@@ -1,66 +1,66 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4186E4534AC
-	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 21:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBE8423A91
+	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 21:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774992158; cv=none; b=mHe5oCWy4KeljhSQLuhLEr+GNrS0ECb1GqJkcGM3otGsq8YI2Lcr4ScUiwfB1aek1FJgNj3Pudy9eWo51AQKgw/Rmbv1JCRa/K4WNFQBxEBJaTBpSOaCTZ1VenaKWWK2oSycKpYaNwaRTN5gVt1SFjKdDAKbLoALOWsDy4FmirA=
+	t=1774993038; cv=none; b=OYdvSD6kbZt+iVViRofOqnO+qRMmYkUaMmJlVF5rM80ZUgsZU3ytj1+/GqIuvLgEcJP6O2EcCaLdkVJcFaOS/QqwP/9PC91nzpFNCrQcpnbG6rq8AmvXtb4UlacNptcawvOdQeMDDhKM/VUrL2ng+ephFo83QaInW17lPdugrlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774992158; c=relaxed/simple;
-	bh=uwkdlpWgq7m+FJ52JwOjJT59fNwjkGLpbAiJPGbrgqs=;
+	s=arc-20240116; t=1774993038; c=relaxed/simple;
+	bh=77TKJXfDqxRbDJZcS4iQHfQ8ePzfWbiSwaDIcMZRDug=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tJhevmjzp21bOqgYdTrcle90vfp5xfJu29FRZDbOTUqDesS68GuKpXGsGfqQ7aJNgF8C0grdfL0TV1t6bDWDeVB37e2+C2Modia5ODRFAq8SPgsa6pKPo+ouCSIDAkrL5Pk9JONaaKipOH68lTkZDT3M+fAmNLyqMP6LICUeD2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iOZ5jX/e; arc=none smtp.client-ip=209.85.167.53
+	 In-Reply-To:Content-Type; b=gz18RCePLD9K5mDA9Xkdwga4sQfhFija3WP3mzATSRhp+fFoc+RSmE9pCp0QMmr1bMdgFSl9hT6AYtcglC4ZsTQTsSVhuXepBcWhXFhMjWsi1zTgx19CuFhO5o1IKnjUpIgKKO3//W9VhiwDzGphQiRcMAFDm3RxBgpIQfJM9rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NwYRp2iR; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iOZ5jX/e"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a2c1b09d69so50910e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 14:22:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NwYRp2iR"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a2c1b09d69so52893e87.2
+        for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 14:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774992155; x=1775596955; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1774993035; x=1775597835; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VCku2Tmc/ePL7URZnl/UTImZqNe4IEEZFyzUDR6AaVo=;
-        b=iOZ5jX/eGS7OqEJxFM1ZLRaWKd5DQIs+9WPUWes7zr4p77h72A3a6SXNz3IK4KDmQz
-         0NKSgEDedjHc7PVKwIshWChJVCzrV5Z73iLwL2uF3o0rOfY86ZDTyfskLPDRYzyj4KrQ
-         kton6KzsiDPXMr7XEnUQ7wlKJ9q3OcUNX8D7qqCj9iB1tB8tlYWMqQ/dag9vWkEpZho0
-         Tv8yDWhDb0DqfNOA0SVV8jIF1befvdxRuRwWUEduYCpdFmGSUWH6WAFZeYWNcKeF2cKo
-         m/Z1zTdSBjVZPruNZYcsX7p1NyYSu+uzhhnQiVW21/x9Mxg+GHrx+r578/POiAerM9e5
-         q2gA==
+        bh=KHUi+YrE+mS2lDKmIKKoK4NA/mtXRLEN2zW5bJXcYuk=;
+        b=NwYRp2iRxPPx8fvTfwe0/Bp9h9kSs1CCF1G2mfCPegUPc8pWgatU+ffGKa9dT/6Pi5
+         0h9a5fuAppZYQLmujL8LjF16ErqGiOs5pXwzP5nU+lwnmTtVQwGKTVjyouPQ1774Vx7z
+         f1bq06Y9Aw2XzbKYsWR1N7tCNQL+ETTk2tD6s55UwFYTGV2rvyES4eaG2wrTFMKFcgvm
+         hoYjmzhrwyaCOq0KPdRFme/9ciAH1YqzcYxpFsV8A3dFxNLf1rXUTHe3nmhsVgXdWL7L
+         POV8H7IMAnWS1eCQExEtZjh0UpO7oyf6/CmDofzzyhtOGL8JKV6XBIm73YnthF8OJFFl
+         i4HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774992155; x=1775596955;
+        d=1e100.net; s=20251104; t=1774993035; x=1775597835;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VCku2Tmc/ePL7URZnl/UTImZqNe4IEEZFyzUDR6AaVo=;
-        b=npHcTy0Ugl5v/PajKK/8mWH5CRPZISm+AFAAxjwQwtvOWK/wHRXaggmMB24bjn4/Zh
-         zMA35u6KqWO3M6sqeU0lzzaFwP72Gq/XkX/lT+Hi96QKq1Q75i69c0o2cOkEV1XFOHOK
-         Xj9UqT45S6zlrM5Ez0kY7BK6yiXxsgE720AmiEVikH/6bt+tSU4nzWq07SiSCfN9Wgz5
-         KzUMK2evxoFUYxLWGUpobXVOSdSFnoolv0lOjVayKfNkUCY8hrZSiGltGVDKByReqSOc
-         bhUQYl7Eef2tSx4K9poEN7FaY1/aaq077H4ijWSsYb2WAsM7OHdysznnTBEIxJ9g1stb
-         fe7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXzsGcPsTq5Y4IaFbtrbM5A47gtfrhIq9/oRMg2Q8Zmz2ut62bQFINsdBmEiGV1P/6l1Kg6v+BAlJ8Bmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBqT6vdhoCDOUdKV17YqTaLe+Xyln4t3Iz78x88YTHm9qlsHei
-	8rQaoLySGIT6aP2QH2QhbYKh0HY6BV5jzDbDeJd2t6szRb8LTjNW5UgenUdHuVtgT2w=
-X-Gm-Gg: ATEYQzxLWkHUwl3Ai/tG4ZHv6dIYEcPihFYqzUwYyAKPrwdmrveuA1N/EYXSVxQl/0Y
-	J4K0yBPAR8m+5EiQfu0AeJQPjyqa3DeQS6bpUNIFnkss5NDbZao12+pvEjGfuAY+lQ/Q5btUlP3
-	FroAQzuqSEVMCr1zI4vFxFa3QQpLmJnqY5UPhdNP42g2AEOLzss7Fe9iveHSGycskxg/Pu0eezW
-	i9RqmUj2bQgs4/Pjf+vt92H3D9YF8OkW+O3slvPkO5IpnbupuX7P1CvCsc8fiqCRycfoDpepijf
-	kJPNClW29J7+Yt4XnjQJTq+ejdN3hSr9Ao6SpuaWtn83+sLnqycmZe3jDCCLqDG+K3eAC7olKYo
-	6njLgTV39ugmARpk1dhSoc9xgmZLPQ6hNnoDHJEeGXX7WQtxflm/KaJfjtr3SVYJhsblg+/YLgZ
-	5bs1OXAc5wb/iA5XQy89eltY1nZ4zx3CBDnc7+9GwEB6e+kYjhCKCTP+/x3yjKJbC+waV5s841y
-	F8wtP+BL2fEWwpO
-X-Received: by 2002:a05:6512:39c7:b0:5a1:38c4:424e with SMTP id 2adb3069b0e04-5a2c1f4cfd4mr185134e87.7.1774992155413;
-        Tue, 31 Mar 2026 14:22:35 -0700 (PDT)
+        bh=KHUi+YrE+mS2lDKmIKKoK4NA/mtXRLEN2zW5bJXcYuk=;
+        b=ksTO6M93hYarT8d27+DozhNl7FbQS4TN2GKIzjFyywoh/xxWhuZ1ZXkpjaPCnSAmnR
+         jyohQ0DdZpfMhA0ql73QVYzPfe0i2PhkgLsq/PJ+5adTliJVHb0EpD5QIrj5mIwzgvWs
+         s2y5ia4obI9uquJ88aQ01aflQOyCjaIiRkQNkOhhCM6Cs7zIxAswn9CwEAeZB6Nb9PJc
+         k9Bg64eOojAx+V7f+qL/7oZz/HULM/hWyNWMZotsDYDdj4fs/JHIISjc1yj0W6oDie2Z
+         8UhECPPP6ov2aKx3zrtn2eEwkJcCFTYUPX1pL61AWpfMIZ3qAuUUXofF6h1yuXgoIQoT
+         CtBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/J1L7gyLo5QNRSKmuaCmJDzZzpYUel7wWVU2VSax89WV0lfa2YHCmzVIqyPwhbV3QAS7SkBqa1NOysQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrCNRf91kQKM3l29p+5CLKggdbd8cF0vcxNGB2Qx+ihKvF2VOw
+	8PdeB1L/Whpm2/FAO2Z1w3iWDfGQqAJQD1Odql8u59AueWxy4n78xyvzM+mvZu6k7ZI=
+X-Gm-Gg: ATEYQzws18K2JS1YakVF2E1gns78YKxtbrTPoBycInb6h+mSVreV7xT7iG0K8rGjTAV
+	UlluW62PHdGcj8J9FXjbjaDd1s1DZrRStlHAPOjB268qXszike5Spu/DpfCoUspbbqzeWgpOg3B
+	HsTx/8BzKUMuUpOyA5fCzhiXOWJjRE15n/fyjvepjvCNctuWE5vDDYC1sYKM169fUe0vvKmmRT6
+	PoapAyDcu/GKg7IrEkqvne+XGyAOz5/avZhWGdzLzVyrUV5wKeAXUVEm8WNbLYAdB1ldhZ4wQka
+	B093HwYPTWfwynFpgjdKabKBryyyP3GcRPGVomRluQABeEv/XF6mG4Na7vteVAFtiD9b5/BYQxv
+	T2w1c0qzYNpC6o1JSaWv+q0iQPK8H+BKKFo0KJWEkwti0egOeA/098HhDR5DxJeXYiXnu1r1hlO
+	kxzA035zGXW9Bf33QqBqxeWrzvnMTAOomlXJH/BKMmBYMyKn8g5WcxqT1t7CnckNihLdbHkbF3z
+	839FpwT1NrC0S5n
+X-Received: by 2002:a05:6512:1091:b0:5a1:3d15:287b with SMTP id 2adb3069b0e04-5a2c1c98cc5mr165782e87.0.1774993035132;
+        Tue, 31 Mar 2026 14:37:15 -0700 (PDT)
 Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b1403cb6sm2725447e87.27.2026.03.31.14.22.34
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c83890bbcsm25187391fa.25.2026.03.31.14.37.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Mar 2026 14:22:35 -0700 (PDT)
-Message-ID: <4898366c-108d-479e-93cb-f79b27ba811f@linaro.org>
-Date: Wed, 1 Apr 2026 00:22:34 +0300
+        Tue, 31 Mar 2026 14:37:14 -0700 (PDT)
+Message-ID: <3c51f9fe-9c5f-47dd-a971-5b2a9e416230@linaro.org>
+Date: Wed, 1 Apr 2026 00:37:14 +0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,8 +68,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/7] dt-bindings: media: qcom,sdm670-camss: Remove
- clock-lanes requirement
+Subject: Re: [PATCH v9 4/7] media: i2c: imx355: Restrict data lanes to 4
 To: Richard Acayan <mailingradian@gmail.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -84,24 +83,63 @@ To: Richard Acayan <mailingradian@gmail.com>,
 Cc: Robert Mader <robert.mader@collabora.com>,
  David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
 References: <20260217002738.133534-1-mailingradian@gmail.com>
- <20260217002738.133534-2-mailingradian@gmail.com>
+ <20260217002738.133534-5-mailingradian@gmail.com>
 From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20260217002738.133534-2-mailingradian@gmail.com>
+In-Reply-To: <20260217002738.133534-5-mailingradian@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/17/26 02:27, Richard Acayan wrote:
-> The clock-lanes property has no effect on the hardware configuration, as
-> of commit 336136e197e2 ("media: dt-bindings: media: camss: Remove
-> clock-lane property"). Since boards with new camss support can omit the
-> property, remove it from the required lists.
+> The IMX355 sensor driver currently supports having 4 data lanes. There
+> can't be more or less, so check if the firmware specifies 4 lanes.
+
+Does IMX355 sensor hardware support any other number of lanes?
+
+1) If no, then it makes no practical sense to check for data lanes number
+given by firmware, there can be any stored value, but it's known that the
+number of sensor data lanes is 4.
+
+2) If yes, then please return to the sensor dt bindings, and reflect any
+other options, right now it is set strictly to 4 lanes only. In case if
+'data-lanes' property is omitted, you can use 4 lanes as a default number
+of data lanes, and this information shall be documented in the dt bindings.
+
 > 
+> Existing ACPI hardware descriptions may not have the data lanes defined
+> so this check also accepts a placeholder of 0 lanes.
+> 
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Link: https://lore.kernel.org/r/aW3uFcT1zmiF4GUP@kekkonen.localdomain
 > Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-
-If you send another v10 of the series, please remove 'clock-lanes'
-property from the example as well. Anyway, feel free to add my
-
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> ---
+>   drivers/media/i2c/imx355.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
+> index 9ca87488c933..0d6aabea7d59 100644
+> --- a/drivers/media/i2c/imx355.c
+> +++ b/drivers/media/i2c/imx355.c
+> @@ -66,6 +66,9 @@
+>   #define IMX355_EXT_CLK			19200000
+>   #define IMX355_LINK_FREQ_INDEX		0
+>   
+> +/* number of data lanes */
+> +#define IMX355_DATA_LANES		4
+> +
+>   struct imx355_reg {
+>   	u16 address;
+>   	u8 val;
+> @@ -1705,6 +1708,10 @@ static struct imx355_hwcfg *imx355_get_hwcfg(struct device *dev)
+>   	if (!cfg)
+>   		goto out_err;
+>   
+> +	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 0
+> +	 && bus_cfg.bus.mipi_csi2.num_data_lanes != IMX355_DATA_LANES)
+> +		goto out_err;
+> +
+>   	ret = v4l2_link_freq_to_bitmap(dev, bus_cfg.link_frequencies,
+>   				       bus_cfg.nr_of_link_frequencies,
+>   				       link_freq_menu_items,
 
 -- 
 Best wishes,
