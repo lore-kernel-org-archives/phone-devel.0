@@ -1,142 +1,113 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87F331B114
-	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 01:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4FF34EF0E;
+	Tue, 31 Mar 2026 02:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774920446; cv=none; b=uWqeGwx+3fUvT963DAgZo6XC5ry9MAjOR/Mrczc5HMdkQpIdZ+YqoAr2mmAtmFxZ+wK3mwIX1ftW+r7qMkOjyud8tyBtd0XFjBtLNhFWWA7bkuX/FNhMVEwipuiwiCg+CXlaaW7jD1r4LaJm/d5OTnwZHK6VCqzjliR1OlkroMo=
+	t=1774924661; cv=none; b=g69PgUQV+9CYbsC0F+oHHhpAA9MGMGjFw+f55oCFLiBXYDyUfi5hES/QedqqXTOPDkwTuz66GQvejvitDfPxUS8j5KQMgY+332PE/R4UFzffX3KG66XwpvQi3FhWX2bgH8UdS6yd4aL1wUOv7ZSXCQZNvvUyTSfjIBFH00hZANU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774920446; c=relaxed/simple;
-	bh=DoIAKu1bIw6WjuD6GcmqJ8DVq8l3eat3WF9PWpABhgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ep2V74MF5CV9RbY26jPoDsXrTnvOjaxBgccM1f4eRyYSuO9EIRLFTr+E5972o6sFayL+JN6tcIX3C8rOBAIWe9ySEq4KimAAS340J3SnIl70+p2WrsD7W8Pn5BdUAxS9u4UGn3LHFHpkZIYDGZmsOrGMjLtSfub/vKJCH/+Ir5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OQPIgX3e; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774924661; c=relaxed/simple;
+	bh=SVA2xXx+5ekaMM6clXg6dQYiAHVYTa90/9lM6A+K0OA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lz4+imnLkcbYRkEY4KbPg4E+ShrnpazXNIGVuVpjotY/DFNtVXhiYeP7vTmY0SAXUMXNjEmCiBhUjWfjmmldgkJLTJJdTu4T9W8q9nPn9cJGSN7aFoIhz+ZPfLN9ByzQ6cDJdPqI4iVB/6NI8irlOhgscAKyj6K5lfUinW2AgHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=T2/VrcPO; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OQPIgX3e"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50697d6a69cso27162571cf.2
-        for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 18:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774920444; x=1775525244; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D0yulhRwyETMpFsHW020W350NiZgzMyyxXfQQBfRWcw=;
-        b=OQPIgX3eE3bBYxdpeHII1NQiDfY0MZc/n6fH3Q6EmBgaxJgTiFqsRaMHr8vrEL6lMm
-         jrLIlunjodjTmGOZPK6k7mY8QPPJhFEnU6oH93926O9411d30yUo6Xjb2BEKBB+ucCTp
-         NdanPoThIjuIDtBsTfHfGJvGw1K7xNZR/jRR/FklJOwBxa6QZeUGOO7DyKY+VeAZTAPR
-         IJN4PvhCoMOwiwGdEA9gF2QdTMTZnl/BAUw9CN4rSdYb8GKRWH+V7f67Ozlqz2BfnAvk
-         cumDhtWIovMuBApYCDl1IgehBegxf8WYnLCWWT6c4JxcokWqnFyiY/8+wGFi3ss+Nx6i
-         5mrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774920444; x=1775525244;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D0yulhRwyETMpFsHW020W350NiZgzMyyxXfQQBfRWcw=;
-        b=gZeXZFnbjw4Zsp5zOCjH+LyQLiVGP0E+MtKnBNInQiihhGqAMbkp0dmW18U1aEMxrc
-         bjAvVPyP9Td4CDFvACCWeuq7tWlQ4zHkSzre/35XdgryLTiwAvXUumBqOrRucvXrhTrY
-         HkEOHcR7pYgbqNEB71ur49KwXYxEnKFriB8JcqlecemxVqrwOxps/i17Tb8Dl4ouM/2j
-         kUPYITQp7ihMqC+yt2xTTuYa44d256+dXnK5T80H+pfT4KNtyQM4HK8idY67P5mcZ9X9
-         OFBCq9HXWShPBQzxlnKX8MUcwS4oJ3ckG4UXTsZ7Z3oa5wBGSk25PqGnHpokdi+UK8j8
-         LEcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKbg/EmEa/hf4j/kBuQfj6kBzENhxJPypIkKjtbjl8LsII/P1dAhg/qZPpESYyNgllBuvyZbgi2MHz5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx/TeE97QAvlF9paKZuKfFp4z7ktQddome7fTwfG5HVSRE67pn
-	x0XHPOmPqwnsrz1pLMXRXHyvWhBJYDrRHvSh6HvUNy+wv9nZXOU4W0iI
-X-Gm-Gg: ATEYQzyr/xChsvI8TbHvDKdKsOKAnBVOV2rw3DDQrlgrShRBcuBg8Stg5g97q5o3BMp
-	++npmli7LwamBx5Yowe6SYB9MAbYs69fFolzgUF0XE+G1tm9NTMqNDf/ODRp/a/ovyBl6uHjnIk
-	BqOTxR2FB1U+uReupma/toDr8bGyKarJoS+VxSISeJLKfl63BcYmSuN1EfVDGQqtSoT5MleVH0W
-	vHC0bJJhC3ah8nSSe9y6Rro83gQ1Be9kMh7o2fPLvS8XsCs5SGEIshTIj5DZHYYLGSGpOquXoSj
-	HL3vXOkX6VJfiM22c3PfDKMsquGs83tAg6zD2hGq7BB6YrK8J0sGOiCvD7Q4l+PHPH4y+p2xAoF
-	r0i/zUSsJe4rvH+Ll5gaaQ4MH0iPkJL3scP+7xCMxj97zqbGJITGIRe7y2cTPnC8kzKBbr7kHY8
-	9wmrxcHVWWBhUOelvGvJvyew0PRg==
-X-Received: by 2002:ac8:7f12:0:b0:509:320:2de6 with SMTP id d75a77b69052e-50ba386455dmr204956541cf.25.1774920443757;
-        Mon, 30 Mar 2026 18:27:23 -0700 (PDT)
-Received: from localhost ([184.144.58.243])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50bb3df388dsm96604781cf.6.2026.03.30.18.27.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 18:27:23 -0700 (PDT)
-Date: Mon, 30 Mar 2026 21:27:59 -0400
-From: Richard Acayan <mailingradian@gmail.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: David Heidelberg <david@ixit.cz>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
-	Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Robert Mader <robert.mader@collabora.com>,
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v9 7/7] arm64: dts: qcom: sdm670-google-sargo: add imx355
- front camera
-Message-ID: <acsjH0tZ-jj7N7c5@rdacayan>
-References: <20260217002738.133534-1-mailingradian@gmail.com>
- <20260217002738.133534-8-mailingradian@gmail.com>
- <1349f725-a20f-4935-a829-208c8e583ad9@ixit.cz>
- <acHxgIsyPiQTeqCB@rdacayan>
- <eff25adf-c5fd-484d-a9ae-ec27c0d9c100@ixit.cz>
- <acJuN_FRqMTGgl8C@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="T2/VrcPO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1774924657; x=1775183857;
+	bh=/1inMdodmnjfaFRFqT7EQ00CdVOsNo8SFYi/j0z3d5k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=T2/VrcPOokTWSJv877u0pNyjvkMukDzX5StmrVDKtiapRQzNxsCXtngwzyuiRMci0
+	 5fpHEfL6zYRJUCbjomkcjWSa1ZSiW2lHMyoM/GViPhDw2IOgoB50ya2IyjlZJ0yveq
+	 kDqV8JebGPF70RWzb2s3xtihUxcjmhzuOaaZVgUQ86pKN9Qa/oN2rDtXfVxWAOixjO
+	 lbQJotEoH7nH+N4+DH/uqzan/8r8MtjXww0xpJLT7C45mubDcHDocxOrgjQ7IB4Mwh
+	 PwvA/qAHJsdfZojeaYhZ+lMG/V0w28ceWIx3etwpqbMZZNjO3xZcHH1dQLNJnTctqn
+	 //zAYoGnNf3wA==
+Date: Tue, 31 Mar 2026 02:37:29 +0000
+To: Luca Weiss <luca.weiss@fairphone.com>
+From: Alexander Koskovich <akoskovich@pm.me>
+Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] clk: qcom: Add support for GXCLK for Milos
+Message-ID: <gwVAH2mJerU4dBInw8pKmOs5aQK55Q7W6q_UQAlLFCsEgX6eyvSgXAWbNNMqAX4WmPlYCKUSMhfkr5Jry4Ps5EqnxYZqEEDd3Whwv7ZXGlc=@pm.me>
+In-Reply-To: <20260306-milos-gxclkctl-v1-2-00b09ee159a7@fairphone.com>
+References: <20260306-milos-gxclkctl-v1-0-00b09ee159a7@fairphone.com> <20260306-milos-gxclkctl-v1-2-00b09ee159a7@fairphone.com>
+Feedback-ID: 37836894:user:proton
+X-Pm-Message-ID: c17686b6bc775463e304c714f9124c1ae694fde5
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acJuN_FRqMTGgl8C@kekkonen.localdomain>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 12:57:59PM +0200, Sakari Ailus wrote:
-> Hi David, Richard,
-> 
-> On Tue, Mar 24, 2026 at 10:35:24AM +0100, David Heidelberg wrote:
-> > 
-> > 
-> > On 24/03/2026 03:05, Richard Acayan wrote:
-> > > On Fri, Mar 13, 2026 at 07:26:47PM +0100, David Heidelberg wrote:
-> > > > On 17/02/2026 01:27, Richard Acayan wrote:
-> > > > [...]
-> > > > 
-> > > > > +&cci_i2c1 {
-> > > > > +	camera@1a {
-> > > > > +		compatible = "sony,imx355";
-> > > > > +		reg = <0x1a>;
-> > > > > +
-> > > > > +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
-> > > > > +
-> > > > > +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
-> > > > > +		assigned-clock-rates = <19200000>;
-> > > > 
-> > > > Extract from #sdm670-mainline:erebion.eu discussion:
-> > > > The imx355 can operate on 24 MHz (on both Pixel 3 and 3a), but Linux kernel
-> > > > driver can operate only with 19.2 MHz.
-> > > > 
-> > > > I assume it would be worth it mention at least by comment here.
-> > > 
-> > > This might set the series back because the devicetree isn't meant to be
-> > > written for specific software, but it's included in v11 because you
-> > > already asked twice.
-> > > 
-> > 
-> > I would say node with lower clock frequency is still much better than
-> > nothing or placeholder saying "i2c camera here". Instead we'll have small
-> > placeholder that value can be bumped to 24 MHz. Important is this can be
-> > easily improved when at least one consumer of the device-tree gains support.
-> > 
-> > We have very scarce support of cameras on mobile phones in mainline, thus
-> > leaving a comment that HW can do 24 MHz is reasonable compromise IMHO.
-> 
-> The bindings could document the supported frequency range.
-> 
-> In DTS it may make sense to set the frequency the vendor uses as it may
-> affect the link frequencies (albeit I guess they're the same in this
-> case?).
+On Friday, March 6th, 2026 at 8:56 AM, Luca Weiss <luca.weiss@fairphone.com=
+> wrote:
 
-Is this review relevant to v11?
+> GXCLKCTL (Graphics GX Clock Controller) is a block dedicated to managing
+> clocks for the GPU subsystem on GX power domain. The GX clock controller
+> driver manages only the GX GDSC and the rest of the resources of the
+> controller are managed by the firmware.
+>=20
+> We can use the existing kaanapali driver for Milos as well since the
+> GX_CLKCTL_GX_GDSC supported by the Linux driver requires the same
+> configuration.
+>=20
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/clk/qcom/Makefile             | 2 +-
+>  drivers/clk/qcom/gxclkctl-kaanapali.c | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
+> index 90ea21c3b7cf..155830140d26 100644
+> --- a/drivers/clk/qcom/Makefile
+> +++ b/drivers/clk/qcom/Makefile
+> @@ -182,7 +182,7 @@ obj-$(CONFIG_SM_GPUCC_8350) +=3D gpucc-sm8350.o
+>  obj-$(CONFIG_SM_GPUCC_8450) +=3D gpucc-sm8450.o
+>  obj-$(CONFIG_SM_GPUCC_8550) +=3D gpucc-sm8550.o
+>  obj-$(CONFIG_SM_GPUCC_8650) +=3D gpucc-sm8650.o
+> -obj-$(CONFIG_SM_GPUCC_MILOS) +=3D gpucc-milos.o
+> +obj-$(CONFIG_SM_GPUCC_MILOS) +=3D gpucc-milos.o gxclkctl-kaanapali.o
+>  obj-$(CONFIG_SM_LPASSCC_6115) +=3D lpasscc-sm6115.o
+>  obj-$(CONFIG_SM_TCSRCC_8550) +=3D tcsrcc-sm8550.o
+>  obj-$(CONFIG_SM_TCSRCC_8650) +=3D tcsrcc-sm8650.o
+> diff --git a/drivers/clk/qcom/gxclkctl-kaanapali.c b/drivers/clk/qcom/gxc=
+lkctl-kaanapali.c
+> index 3ee512f34967..d3899420d6f2 100644
+> --- a/drivers/clk/qcom/gxclkctl-kaanapali.c
+> +++ b/drivers/clk/qcom/gxclkctl-kaanapali.c
+> @@ -54,6 +54,7 @@ static const struct qcom_cc_desc gx_clkctl_kaanapali_de=
+sc =3D {
+>  static const struct of_device_id gx_clkctl_kaanapali_match_table[] =3D {
+>  =09{ .compatible =3D "qcom,glymur-gxclkctl" },
+>  =09{ .compatible =3D "qcom,kaanapali-gxclkctl" },
+> +=09{ .compatible =3D "qcom,milos-gxclkctl" },
+>  =09{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, gx_clkctl_kaanapali_match_table);
+>=20
+> --
+> 2.53.0
+>=20
+
+Was running into gx_clkctl_gx_gdsc being stuck on when GPU was doing runtim=
+e pm
+and it seems like this GDSC requires GPU_CC_GX_AHB_FF_CLK to be enabled. Th=
+ough
+it is already in gpu_cc_milos_critical_cbcrs, the GMU firmware appears to b=
+e
+disabling it.
+
+Relevant downstream change:
+https://git.codelinaro.org/clo/la/kernel/qcom/-/commit/3c1f31518edb7b094b9b=
+9285287ba49a5c9196d8
+
+>=20
+> 
