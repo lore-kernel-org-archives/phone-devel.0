@@ -1,113 +1,615 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4FF34EF0E;
-	Tue, 31 Mar 2026 02:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FEC370D65
+	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 06:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774924661; cv=none; b=g69PgUQV+9CYbsC0F+oHHhpAA9MGMGjFw+f55oCFLiBXYDyUfi5hES/QedqqXTOPDkwTuz66GQvejvitDfPxUS8j5KQMgY+332PE/R4UFzffX3KG66XwpvQi3FhWX2bgH8UdS6yd4aL1wUOv7ZSXCQZNvvUyTSfjIBFH00hZANU=
+	t=1774939110; cv=none; b=Af77UJB+ff5I6ftChjli4cvzGjPgL5VHpu8MXSDHsajzhcIkDwU4yYhvOFimwFhusSFBuioW6OJyTsy+EUcW4XcxaGYrEUvIkvSkAAV1d2kAdaHPhTG+v6Xfh1+maZ6ldUWxnp/l3N5UGgNTclNaJ0DagHSq192vySKfQikCBBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774924661; c=relaxed/simple;
-	bh=SVA2xXx+5ekaMM6clXg6dQYiAHVYTa90/9lM6A+K0OA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lz4+imnLkcbYRkEY4KbPg4E+ShrnpazXNIGVuVpjotY/DFNtVXhiYeP7vTmY0SAXUMXNjEmCiBhUjWfjmmldgkJLTJJdTu4T9W8q9nPn9cJGSN7aFoIhz+ZPfLN9ByzQ6cDJdPqI4iVB/6NI8irlOhgscAKyj6K5lfUinW2AgHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=T2/VrcPO; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1774939110; c=relaxed/simple;
+	bh=i7TdXiOc/sU9Xnk8w1j9i+poKchlRCaL9xRHrstCJxI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=CUItG/C9hvAfi+XmMDfsZ4Euhm4K0ZDjyXQAV/+9VHOwSlUUrRDwwQkUSY11xoqfx9tNbQvK9PCZ+oljpBpllfozXjrThkZregd1gbXI0pt5FEijUcHIdWLHWHcUvMnx3c7WPZKPNK0S1f28bY3DtRyX+7dsp1AXirlW/gljihY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=nJi3Y3YH; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="T2/VrcPO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1774924657; x=1775183857;
-	bh=/1inMdodmnjfaFRFqT7EQ00CdVOsNo8SFYi/j0z3d5k=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=T2/VrcPOokTWSJv877u0pNyjvkMukDzX5StmrVDKtiapRQzNxsCXtngwzyuiRMci0
-	 5fpHEfL6zYRJUCbjomkcjWSa1ZSiW2lHMyoM/GViPhDw2IOgoB50ya2IyjlZJ0yveq
-	 kDqV8JebGPF70RWzb2s3xtihUxcjmhzuOaaZVgUQ86pKN9Qa/oN2rDtXfVxWAOixjO
-	 lbQJotEoH7nH+N4+DH/uqzan/8r8MtjXww0xpJLT7C45mubDcHDocxOrgjQ7IB4Mwh
-	 PwvA/qAHJsdfZojeaYhZ+lMG/V0w28ceWIx3etwpqbMZZNjO3xZcHH1dQLNJnTctqn
-	 //zAYoGnNf3wA==
-Date: Tue, 31 Mar 2026 02:37:29 +0000
-To: Luca Weiss <luca.weiss@fairphone.com>
-From: Alexander Koskovich <akoskovich@pm.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] clk: qcom: Add support for GXCLK for Milos
-Message-ID: <gwVAH2mJerU4dBInw8pKmOs5aQK55Q7W6q_UQAlLFCsEgX6eyvSgXAWbNNMqAX4WmPlYCKUSMhfkr5Jry4Ps5EqnxYZqEEDd3Whwv7ZXGlc=@pm.me>
-In-Reply-To: <20260306-milos-gxclkctl-v1-2-00b09ee159a7@fairphone.com>
-References: <20260306-milos-gxclkctl-v1-0-00b09ee159a7@fairphone.com> <20260306-milos-gxclkctl-v1-2-00b09ee159a7@fairphone.com>
-Feedback-ID: 37836894:user:proton
-X-Pm-Message-ID: c17686b6bc775463e304c714f9124c1ae694fde5
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="nJi3Y3YH"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-66c05fb27e4so2396112a12.2
+        for <phone-devel@vger.kernel.org>; Mon, 30 Mar 2026 23:38:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1774939105; x=1775543905; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t360oCPEHg6R1OB75vUyd/Z3XZ/tbyc3ZydlU9E8ss8=;
+        b=nJi3Y3YH6mdALly1GEkIImGp20qVvRj25598q/8KJ/DVcBogS4UXoZ8EC1NRt1PDqe
+         WFo3cjJYWK6w5H1KSX+tYZhjduKAsc6iXxyBPh0+L5yC/aMr/fFGCrNJHoRUV0ZGcNjZ
+         m5NDhKF6QDuvZDQX9lHeh5CzHLYlFGdvj7+F4v5jcLtu75RbA8x/54CmwRTdhN5PSsSp
+         iVXOQnQEbwQKQ8Pp6SefQiUDhx83+YkbdRnG1jvJnFoVLAjpeMLKK59rv3LmwIUJD+rX
+         98GfgDFSz5QMiDk8enC8pc7h1A9HSMv5rk5igpKIsmLaTWruUxWZocQ90e6lEFP6AMf8
+         FL+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774939105; x=1775543905;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t360oCPEHg6R1OB75vUyd/Z3XZ/tbyc3ZydlU9E8ss8=;
+        b=R5Lc/y9QwrnS5cUQVhgRhS2FS+D3Y327HblcIu+rB9InsyrBQ82QW5S7XFNP85TpGz
+         pQx/fJ8KpI0foJ0at85SXV6Cp6saflureSTqXNUkbENofr4ogLUV/sYn5OBEYQhBIATG
+         XNWI6hQMjPSBv4W+wyND8hvLgznqNERpXyqYw/ZfNMWMId9z8fdAixYRqFDDIGg5dVfy
+         7ngi0xi1Dsw5fnbaT3Nj9vAyo+6otteK0hg7tJ080zCSQWrxtr1tmnoLMy9knQPZIrZa
+         NZ6tgAaZLQJUCuKAC8kDqSWr8j/XjgjsJ8RwkiKbjR5k4OczLHtWlcXeDfDUI/Gb5ptq
+         wnBA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwVHhmihFBLz4s3oy8+XVV6+ke/u7Hkaq0snni/DQ0ytU2fmqcLyKbF9Esv2aubjjV7ILCUa+/AcyRKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1SZp4uQPuMMmgsRoFQw0cM2bFiSlQJIsVDi7p3mOgGpfPz8bi
+	YWz4CUea/+NRX/HhApINY8whZNhNIavBtFyQRDLDO/j6TrgOOFMh8lCHIyoWUFkVbf4=
+X-Gm-Gg: ATEYQzyEH0ZBzvLKzuznnYyC8xh9rcVE9MjUvVcvpUbKRvClR4z1/aDt0IvsKWG07RN
+	ugx/L3azL032742LUITTREr3oW4ubFwnuVwjY6+1SYDks5Q2zZ6gWnirBlsNvkQWwQjpCgXesiw
+	Tyu88EJFuIdm9yZVKeGH1MgTvUu/vQZ//qzFGRMLsgIhqzcGcRZeYat41OOsst1C9oOrASXCXBf
+	s4c4qvfP0sVxb3CpSpeYPMMpuou5FjYDTNlvRC8qnwz2g1XIDeRsTLO93EhjU/FdjmEEESsQlMk
+	zgslFsPouh3ZfM/0wAkIximsHPgFhUtNXfpH0a5/EWwJYAhiN1VHu3w7wjbBQB4MPPFIEOrDE3P
+	EyhME7HElwYMSQBUO8TUay2MpQ22SNPRlqlVPHrqov/d4cCzuo0ldThm0k+TMShtV3MIdtyErDx
+	nnCotUw95F9idcyMXphXfkkc9PltPeneRhaevHyiJRmz3fgATYqnlg/mDqO4/OQIt82Xh6ZNlT2
+	zgqjJtjBnynVwGVWdf19JvuQz/meNluzqTi
+X-Received: by 2002:a05:6402:2115:b0:66a:3390:30c4 with SMTP id 4fb4d7f45d1cf-66b28a5d37emr9157097a12.15.1774939105252;
+        Mon, 30 Mar 2026 23:38:25 -0700 (PDT)
+Received: from localhost (2001-1c04-0504-7401-4b2e-1820-6d24-b264.cable.dynamic.v6.ziggo.nl. [2001:1c04:504:7401:4b2e:1820:6d24:b264])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66b7275ff49sm2951107a12.6.2026.03.30.23.38.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 23:38:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 31 Mar 2026 08:38:23 +0200
+Message-Id: <DHGREFP0IVZS.1HWJHNFTI50KZ@fairphone.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: media: camss: Add qcom,sm6350-camss
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Vladimir Zapolskiy" <vladimir.zapolskiy@linaro.org>, "Luca Weiss"
+ <luca.weiss@fairphone.com>, "Bryan O'Donoghue" <bod@kernel.org>, "Robert
+ Foss" <rfoss@kernel.org>, "Todor Tomov" <todor.too@gmail.com>, "Mauro
+ Carvalho Chehab" <mchehab@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com>
+ <20260216-sm6350-camss-v4-1-b9df35f87edb@fairphone.com>
+ <fe00906e-fb06-44e3-985b-3d0e95839e43@linaro.org>
+In-Reply-To: <fe00906e-fb06-44e3-985b-3d0e95839e43@linaro.org>
 
-On Friday, March 6th, 2026 at 8:56 AM, Luca Weiss <luca.weiss@fairphone.com=
-> wrote:
+On Tue Mar 31, 2026 at 12:57 AM CEST, Vladimir Zapolskiy wrote:
+> On 2/16/26 10:54, Luca Weiss wrote:
+>> Add bindings for the Camera Subsystem on the SM6350 SoC.
+>>=20
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>> ---
+>>   .../bindings/media/qcom,sm6350-camss.yaml          | 471 +++++++++++++=
+++++++++
+>>   1 file changed, 471 insertions(+)
+>>=20
+>> diff --git a/Documentation/devicetree/bindings/media/qcom,sm6350-camss.y=
+aml b/Documentation/devicetree/bindings/media/qcom,sm6350-camss.yaml
+>> new file mode 100644
+>> index 000000000000..96974d90d8c4
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/media/qcom,sm6350-camss.yaml
+>> @@ -0,0 +1,471 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/media/qcom,sm6350-camss.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Qualcomm SM6350 Camera Subsystem (CAMSS)
+>> +
+>> +maintainers:
+>> +  - Luca Weiss <luca.weiss@fairphone.com>
+>> +
+>> +description:
+>> +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm platforms.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: qcom,sm6350-camss
+>> +
+>> +  reg:
+>> +    maxItems: 24
+>> +
+>> +  reg-names:
+>> +    items:
+>> +      - const: csid0
+>> +      - const: csid1
+>> +      - const: csid2
+>> +      - const: csid_lite
+>> +      - const: csiphy0
+>> +      - const: csiphy1
+>> +      - const: csiphy2
+>> +      - const: csiphy3
+>> +      - const: vfe0
+>> +      - const: vfe1
+>> +      - const: vfe2
+>> +      - const: vfe_lite
+>> +      - const: a5_csr
+>> +      - const: a5_qgic
+>> +      - const: a5_sierra
+>> +      - const: bps
+>> +      - const: camnoc
+>> +      - const: core_top_csr_tcsr
+>> +      - const: cpas_cdm
+>> +      - const: cpas_top
+>> +      - const: ipe
+>> +      - const: jpeg_dma
+>> +      - const: jpeg_enc
+>> +      - const: lrme
+>> +
+>> +  clocks:
+>> +    maxItems: 39
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: cam_axi
+>> +      - const: soc_ahb
+>> +      - const: camnoc_axi
+>> +      - const: core_ahb
+>> +      - const: cpas_ahb
+>> +      - const: csiphy0
+>> +      - const: csiphy0_timer
+>> +      - const: csiphy1
+>> +      - const: csiphy1_timer
+>> +      - const: csiphy2
+>> +      - const: csiphy2_timer
+>> +      - const: csiphy3
+>> +      - const: csiphy3_timer
+>> +      - const: vfe0_axi
+>> +      - const: vfe0
+>> +      - const: vfe0_cphy_rx
+>> +      - const: vfe0_csid
+>> +      - const: vfe1_axi
+>> +      - const: vfe1
+>> +      - const: vfe1_cphy_rx
+>> +      - const: vfe1_csid
+>> +      - const: vfe2_axi
+>> +      - const: vfe2
+>> +      - const: vfe2_cphy_rx
+>> +      - const: vfe2_csid
+>> +      - const: vfe_lite
+>> +      - const: vfe_lite_cphy_rx
+>> +      - const: vfe_lite_csid
+>> +      - const: bps
+>> +      - const: bps_ahb
+>> +      - const: bps_areg
+>> +      - const: bps_axi
+>> +      - const: icp
+>> +      - const: ipe0
+>> +      - const: ipe0_ahb
+>> +      - const: ipe0_areg
+>> +      - const: ipe0_axi
+>> +      - const: jpeg
+>> +      - const: lrme
+>> +
+>> +  interrupts:
+>> +    maxItems: 18
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: csid0
+>> +      - const: csid1
+>> +      - const: csid2
+>> +      - const: csid_lite
+>> +      - const: csiphy0
+>> +      - const: csiphy1
+>> +      - const: csiphy2
+>> +      - const: csiphy3
+>> +      - const: vfe0
+>> +      - const: vfe1
+>> +      - const: vfe2
+>> +      - const: vfe_lite
+>> +      - const: a5
+>> +      - const: cpas
+>> +      - const: cpas_cdm
+>> +      - const: jpeg_dma
+>> +      - const: jpeg_enc
+>> +      - const: lrme
+>> +
+>> +  interconnects:
+>> +    maxItems: 4
+>> +
+>> +  interconnect-names:
+>> +    items:
+>> +      - const: ahb
+>> +      - const: hf_mnoc
+>> +      - const: sf_mnoc
+>> +      - const: sf_icp_mnoc
+>> +
+>> +  iommus:
+>> +    maxItems: 14
+>> +
+>> +  power-domains:
+>> +    maxItems: 6
+>> +
+>> +  power-domain-names:
+>> +    items:
+>> +      - const: ife0
+>> +      - const: ife1
+>> +      - const: ife2
+>> +      - const: top
+>> +      - const: bps
+>> +      - const: ipe
+>
+> I've lost the content, why 'top' is somewhere in the middle?
 
-> GXCLKCTL (Graphics GX Clock Controller) is a block dedicated to managing
-> clocks for the GPU subsystem on GX power domain. The GX clock controller
-> driver manages only the GX GDSC and the rest of the resources of the
-> controller are managed by the firmware.
->=20
-> We can use the existing kaanapali driver for Milos as well since the
-> GX_CLKCTL_GX_GDSC supported by the Linux driver requires the same
-> configuration.
->=20
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  drivers/clk/qcom/Makefile             | 2 +-
->  drivers/clk/qcom/gxclkctl-kaanapali.c | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
-> index 90ea21c3b7cf..155830140d26 100644
-> --- a/drivers/clk/qcom/Makefile
-> +++ b/drivers/clk/qcom/Makefile
-> @@ -182,7 +182,7 @@ obj-$(CONFIG_SM_GPUCC_8350) +=3D gpucc-sm8350.o
->  obj-$(CONFIG_SM_GPUCC_8450) +=3D gpucc-sm8450.o
->  obj-$(CONFIG_SM_GPUCC_8550) +=3D gpucc-sm8550.o
->  obj-$(CONFIG_SM_GPUCC_8650) +=3D gpucc-sm8650.o
-> -obj-$(CONFIG_SM_GPUCC_MILOS) +=3D gpucc-milos.o
-> +obj-$(CONFIG_SM_GPUCC_MILOS) +=3D gpucc-milos.o gxclkctl-kaanapali.o
->  obj-$(CONFIG_SM_LPASSCC_6115) +=3D lpasscc-sm6115.o
->  obj-$(CONFIG_SM_TCSRCC_8550) +=3D tcsrcc-sm8550.o
->  obj-$(CONFIG_SM_TCSRCC_8650) +=3D tcsrcc-sm8650.o
-> diff --git a/drivers/clk/qcom/gxclkctl-kaanapali.c b/drivers/clk/qcom/gxc=
-lkctl-kaanapali.c
-> index 3ee512f34967..d3899420d6f2 100644
-> --- a/drivers/clk/qcom/gxclkctl-kaanapali.c
-> +++ b/drivers/clk/qcom/gxclkctl-kaanapali.c
-> @@ -54,6 +54,7 @@ static const struct qcom_cc_desc gx_clkctl_kaanapali_de=
-sc =3D {
->  static const struct of_device_id gx_clkctl_kaanapali_match_table[] =3D {
->  =09{ .compatible =3D "qcom,glymur-gxclkctl" },
->  =09{ .compatible =3D "qcom,kaanapali-gxclkctl" },
-> +=09{ .compatible =3D "qcom,milos-gxclkctl" },
->  =09{ }
->  };
->  MODULE_DEVICE_TABLE(of, gx_clkctl_kaanapali_match_table);
->=20
-> --
-> 2.53.0
->=20
+https://lore.kernel.org/linux-arm-msm/20260214-slick-ringtail-of-innovation=
+-d8eecd@quoll/
 
-Was running into gx_clkctl_gx_gdsc being stuck on when GPU was doing runtim=
-e pm
-and it seems like this GDSC requires GPU_CC_GX_AHB_FF_CLK to be enabled. Th=
-ough
-it is already in gpu_cc_milos_critical_cbcrs, the GMU firmware appears to b=
-e
-disabling it.
+>
+>> +
+>> +  vdd-csiphy0-0p9-supply:
+>> +    description:
+>> +      Phandle to a 0.9V regulator supply to CSIPHY0.
+>> +
+>> +  vdd-csiphy0-1p25-supply:
+>> +    description:
+>> +      Phandle to a 1.25V regulator supply to CSIPHY0.
+>> +
+>> +  vdd-csiphy1-0p9-supply:
+>> +    description:
+>> +      Phandle to a 0.9V regulator supply to CSIPHY1.
+>> +
+>> +  vdd-csiphy1-1p25-supply:
+>> +    description:
+>> +      Phandle to a 1.25V regulator supply to CSIPHY1.
+>> +
+>> +  vdd-csiphy2-0p9-supply:
+>> +    description:
+>> +      Phandle to a 0.9V regulator supply to CSIPHY2.
+>> +
+>> +  vdd-csiphy2-1p25-supply:
+>> +    description:
+>> +      Phandle to a 1.25V regulator supply to CSIPHY2.
+>> +
+>> +  vdd-csiphy3-0p9-supply:
+>> +    description:
+>> +      Phandle to a 0.9V regulator supply to CSIPHY3.
+>> +
+>> +  vdd-csiphy3-1p25-supply:
+>> +    description:
+>> +      Phandle to a 1.25V regulator supply to CSIPHY3.
+>> +
+>> +  ports:
+>> +    $ref: /schemas/graph.yaml#/properties/ports
+>> +
+>> +    description:
+>> +      CSI input ports.
+>> +
+>> +    patternProperties:
+>> +      "^port@[0-3]$":
+>> +        $ref: /schemas/graph.yaml#/$defs/port-base
+>> +        unevaluatedProperties: false
+>> +
+>> +        description:
+>> +          Input port for receiving CSI data from a CSIPHY.
+>> +
+>> +        properties:
+>> +          endpoint:
+>> +            $ref: video-interfaces.yaml#
+>> +            unevaluatedProperties: false
+>> +
+>> +            properties:
+>> +              data-lanes:
+>> +                minItems: 1
+>> +                maxItems: 4
+>> +
+>> +              bus-type:
+>> +                enum:
+>> +                  - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
+>> +                  - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
+>> +
+>> +            required:
+>> +              - data-lanes
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reg-names
+>> +  - clocks
+>> +  - clock-names
+>> +  - interrupts
+>> +  - interrupt-names
+>> +  - interconnects
+>> +  - interconnect-names
+>> +  - iommus
+>> +  - power-domains
+>> +  - power-domain-names
+>> +  - ports
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/clock/qcom,gcc-sm6350.h>
+>> +    #include <dt-bindings/clock/qcom,sm6350-camcc.h>
+>> +    #include <dt-bindings/interconnect/qcom,icc.h>
+>> +    #include <dt-bindings/interconnect/qcom,sm6350.h>
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/media/video-interfaces.h>
+>> +    #include <dt-bindings/power/qcom-rpmpd.h>
+>> +
+>> +    soc {
+>> +        #address-cells =3D <2>;
+>> +        #size-cells =3D <2>;
+>> +
+>> +        isp@acb3000 {
+>> +            compatible =3D "qcom,sm6350-camss";
+>> +
+>> +            reg =3D <0x0 0x0acb3000 0x0 0x1000>,
+>> +                  <0x0 0x0acba000 0x0 0x1000>,
+>> +                  <0x0 0x0acc1000 0x0 0x1000>,
+>> +                  <0x0 0x0acc8000 0x0 0x1000>,
+>> +                  <0x0 0x0ac65000 0x0 0x1000>,
+>> +                  <0x0 0x0ac66000 0x0 0x1000>,
+>> +                  <0x0 0x0ac67000 0x0 0x1000>,
+>> +                  <0x0 0x0ac68000 0x0 0x1000>,
+>> +                  <0x0 0x0acaf000 0x0 0x4000>,
+>> +                  <0x0 0x0acb6000 0x0 0x4000>,
+>> +                  <0x0 0x0acbd000 0x0 0x4000>,
+>> +                  <0x0 0x0acc4000 0x0 0x4000>,
+>> +                  <0x0 0x0ac18000 0x0 0x3000>,
+>> +                  <0x0 0x0ac00000 0x0 0x6000>,
+>> +                  <0x0 0x0ac10000 0x0 0x8000>,
+>> +                  <0x0 0x0ac6f000 0x0 0x8000>,
+>> +                  <0x0 0x0ac42000 0x0 0x4600>,
+>> +                  <0x0 0x01fc0000 0x0 0x40000>,
+>> +                  <0x0 0x0ac48000 0x0 0x1000>,
+>> +                  <0x0 0x0ac40000 0x0 0x1000>,
+>> +                  <0x0 0x0ac87000 0x0 0xa000>,
+>> +                  <0x0 0x0ac52000 0x0 0x4000>,
+>> +                  <0x0 0x0ac4e000 0x0 0x4000>,
+>> +                  <0x0 0x0ac6b000 0x0 0xa00>;
+>> +            reg-names =3D "csid0",
+>> +                        "csid1",
+>> +                        "csid2",
+>> +                        "csid_lite",
+>> +                        "csiphy0",
+>> +                        "csiphy1",
+>> +                        "csiphy2",
+>> +                        "csiphy3",
+>> +                        "vfe0",
+>> +                        "vfe1",
+>> +                        "vfe2",
+>> +                        "vfe_lite",
+>> +                        "a5_csr",
+>> +                        "a5_qgic",
+>> +                        "a5_sierra",
+>> +                        "bps",
+>> +                        "camnoc",
+>> +                        "core_top_csr_tcsr",
+>> +                        "cpas_cdm",
+>> +                        "cpas_top",
+>> +                        "ipe",
+>> +                        "jpeg_dma",
+>> +                        "jpeg_enc",
+>> +                        "lrme";
+>> +
+>> +            clocks =3D <&gcc GCC_CAMERA_AXI_CLK>,
+>> +                     <&camcc CAMCC_SOC_AHB_CLK>,
+>> +                     <&camcc CAMCC_CAMNOC_AXI_CLK>,
+>> +                     <&camcc CAMCC_CORE_AHB_CLK>,
+>> +                     <&camcc CAMCC_CPAS_AHB_CLK>,
+>> +                     <&camcc CAMCC_CSIPHY0_CLK>,
+>> +                     <&camcc CAMCC_CSI0PHYTIMER_CLK>,
+>> +                     <&camcc CAMCC_CSIPHY1_CLK>,
+>> +                     <&camcc CAMCC_CSI1PHYTIMER_CLK>,
+>> +                     <&camcc CAMCC_CSIPHY2_CLK>,
+>> +                     <&camcc CAMCC_CSI2PHYTIMER_CLK>,
+>> +                     <&camcc CAMCC_CSIPHY3_CLK>,
+>> +                     <&camcc CAMCC_CSI3PHYTIMER_CLK>,
+>> +                     <&camcc CAMCC_IFE_0_AXI_CLK>,
+>> +                     <&camcc CAMCC_IFE_0_CLK>,
+>> +                     <&camcc CAMCC_IFE_0_CPHY_RX_CLK>,
+>> +                     <&camcc CAMCC_IFE_0_CSID_CLK>,
+>> +                     <&camcc CAMCC_IFE_1_AXI_CLK>,
+>> +                     <&camcc CAMCC_IFE_1_CLK>,
+>> +                     <&camcc CAMCC_IFE_1_CPHY_RX_CLK>,
+>> +                     <&camcc CAMCC_IFE_1_CSID_CLK>,
+>> +                     <&camcc CAMCC_IFE_2_AXI_CLK>,
+>> +                     <&camcc CAMCC_IFE_2_CLK>,
+>> +                     <&camcc CAMCC_IFE_2_CPHY_RX_CLK>,
+>> +                     <&camcc CAMCC_IFE_2_CSID_CLK>,
+>> +                     <&camcc CAMCC_IFE_LITE_CLK>,
+>> +                     <&camcc CAMCC_IFE_LITE_CPHY_RX_CLK>,
+>> +                     <&camcc CAMCC_IFE_LITE_CSID_CLK>,
+>> +                     <&camcc CAMCC_BPS_CLK>,
+>> +                     <&camcc CAMCC_BPS_AHB_CLK>,
+>> +                     <&camcc CAMCC_BPS_AREG_CLK>,
+>> +                     <&camcc CAMCC_BPS_AXI_CLK>,
+>> +                     <&camcc CAMCC_ICP_CLK>,
+>> +                     <&camcc CAMCC_IPE_0_CLK>,
+>> +                     <&camcc CAMCC_IPE_0_AHB_CLK>,
+>> +                     <&camcc CAMCC_IPE_0_AREG_CLK>,
+>> +                     <&camcc CAMCC_IPE_0_AXI_CLK>,
+>> +                     <&camcc CAMCC_JPEG_CLK>,
+>> +                     <&camcc CAMCC_LRME_CLK>;
+>> +            clock-names =3D "cam_axi",
+>> +                          "soc_ahb",
+>> +                          "camnoc_axi",
+>> +                          "core_ahb",
+>> +                          "cpas_ahb",
+>> +                          "csiphy0",
+>> +                          "csiphy0_timer",
+>> +                          "csiphy1",
+>> +                          "csiphy1_timer",
+>> +                          "csiphy2",
+>> +                          "csiphy2_timer",
+>> +                          "csiphy3",
+>> +                          "csiphy3_timer",
+>> +                          "vfe0_axi",
+>> +                          "vfe0",
+>> +                          "vfe0_cphy_rx",
+>> +                          "vfe0_csid",
+>> +                          "vfe1_axi",
+>> +                          "vfe1",
+>> +                          "vfe1_cphy_rx",
+>> +                          "vfe1_csid",
+>> +                          "vfe2_axi",
+>> +                          "vfe2",
+>> +                          "vfe2_cphy_rx",
+>> +                          "vfe2_csid",
+>> +                          "vfe_lite",
+>> +                          "vfe_lite_cphy_rx",
+>> +                          "vfe_lite_csid",
+>> +                          "bps",
+>> +                          "bps_ahb",
+>> +                          "bps_areg",
+>> +                          "bps_axi",
+>> +                          "icp",
+>> +                          "ipe0",
+>> +                          "ipe0_ahb",
+>> +                          "ipe0_areg",
+>> +                          "ipe0_axi",
+>> +                          "jpeg",
+>> +                          "lrme";
+>> +
+>> +            interrupts =3D <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 717 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 473 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 461 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 718 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 472 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 463 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 459 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 475 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 474 IRQ_TYPE_EDGE_RISING>,
+>> +                         <GIC_SPI 476 IRQ_TYPE_EDGE_RISING>;
+>> +            interrupt-names =3D "csid0",
+>> +                              "csid1",
+>> +                              "csid2",
+>> +                              "csid_lite",
+>> +                              "csiphy0",
+>> +                              "csiphy1",
+>> +                              "csiphy2",
+>> +                              "csiphy3",
+>> +                              "vfe0",
+>> +                              "vfe1",
+>> +                              "vfe2",
+>> +                              "vfe_lite",
+>> +                              "a5",
+>> +                              "cpas",
+>> +                              "cpas_cdm",
+>> +                              "jpeg_dma",
+>> +                              "jpeg_enc",
+>> +                              "lrme";
+>> +
+>> +            interconnects =3D <&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_AC=
+TIVE_ONLY
+>> +                             &config_noc SLAVE_CAMERA_CFG QCOM_ICC_TAG_=
+ACTIVE_ONLY>,
+>> +                            <&mmss_noc MASTER_CAMNOC_HF QCOM_ICC_TAG_AL=
+WAYS
+>> +                             &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAY=
+S>,
+>> +                            <&mmss_noc MASTER_CAMNOC_SF QCOM_ICC_TAG_AL=
+WAYS
+>> +                             &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAY=
+S>,
+>> +                            <&mmss_noc MASTER_CAMNOC_ICP QCOM_ICC_TAG_A=
+LWAYS
+>> +                             &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAY=
+S>;
+>> +            interconnect-names =3D "ahb",
+>> +                                 "hf_mnoc",
+>> +                                 "sf_mnoc",
+>> +                                 "sf_icp_mnoc";
+>> +
+>> +            iommus =3D <&apps_smmu 0x820 0xc0>,
+>> +                     <&apps_smmu 0x840 0x0>,
+>> +                     <&apps_smmu 0x860 0xc0>,
+>> +                     <&apps_smmu 0x880 0x0>,
+>> +                     <&apps_smmu 0xc40 0x20>,
+>> +                     <&apps_smmu 0xc60 0x20>,
+>> +                     <&apps_smmu 0xc80 0x0>,
+>> +                     <&apps_smmu 0xca2 0x0>,
+>> +                     <&apps_smmu 0xcc0 0x20>,
+>> +                     <&apps_smmu 0xce0 0x20>,
+>> +                     <&apps_smmu 0xd00 0x20>,
+>> +                     <&apps_smmu 0xd20 0x20>,
+>> +                     <&apps_smmu 0xd40 0x20>,
+>> +                     <&apps_smmu 0xd60 0x20>;
+>> +
+>> +            power-domains =3D <&camcc IFE_0_GDSC>,
+>> +                            <&camcc IFE_1_GDSC>,
+>> +                            <&camcc IFE_2_GDSC>,
+>> +                            <&camcc TITAN_TOP_GDSC>,
+>> +                            <&camcc BPS_GDSC>,
+>> +                            <&camcc IPE_0_GDSC>;
+>> +            power-domain-names =3D "ife0",
+>> +                                 "ife1",
+>> +                                 "ife2",
+>> +                                 "top",
+>> +                                 "bps",
+>> +                                 "ipe";
+>> +
+>> +            vdd-csiphy0-0p9-supply =3D <&vreg_l18a>;
+>> +            vdd-csiphy0-1p25-supply =3D <&vreg_l22a>;
+>> +            vdd-csiphy1-0p9-supply =3D <&vreg_l18a>;
+>> +            vdd-csiphy1-1p25-supply =3D <&vreg_l22a>;
+>> +            vdd-csiphy2-0p9-supply =3D <&vreg_l18a>;
+>> +            vdd-csiphy2-1p25-supply =3D <&vreg_l22a>;
+>> +            vdd-csiphy3-0p9-supply =3D <&vreg_l18a>;
+>> +            vdd-csiphy3-1p25-supply =3D <&vreg_l22a>;
+>> +
+>> +            ports {
+>> +                #address-cells =3D <1>;
+>> +                #size-cells =3D <0>;
+>> +
+>> +                port@0 {
+>> +                    reg =3D <0>;
+>> +
+>> +                    csiphy0_ep: endpoint {
+>> +                        data-lanes =3D <0 1 2 3>;
+>> +                        bus-type =3D <MEDIA_BUS_TYPE_CSI2_DPHY>;
+>> +                        remote-endpoint =3D <&sensor_ep>;
+>> +                    };
+>> +                };
+>> +            };
+>> +        };
+>> +    };
+>>=20
+>
+> Because CAMSS device tree nodes are far from being settled down, one
+> more time I can just express my opinion that there is no good enough
+> reason to describe all clocks and interconnects prematurely, anyway
 
-Relevant downstream change:
-https://git.codelinaro.org/clo/la/kernel/qcom/-/commit/3c1f31518edb7b094b9b=
-9285287ba49a5c9196d8
+Would be nice if the camss maintainers were aligned so that contributors
+don't have to deal with mailing list conflicts over these fundamental
+things.
 
->=20
-> 
+It doesn't really make it fun to contribute if you get conflicting
+opinions from two people that you should both value the opinion of
+because they're maintainer.
+
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+
+Thanks!
+
+Regards
+Luca
