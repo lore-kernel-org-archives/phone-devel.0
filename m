@@ -1,239 +1,124 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25AE37AA61
-	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 18:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211873A1682
+	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 18:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774981486; cv=none; b=OsExiUUYjbNVJFb/cY2k8gZ+in5mgrN0Ao38Srbv5DQ+H+gzDwNsvCUQ2zm+rlt9dNzWnomM/bc7Z3zId7svF4ThPwou2+C6DdPmUVrW04i+M+PbRBHKnN01vXNeYvsxzO/1cM0uJHB+3/izdImETIecCj1UsM4AVgJ2awgKJO8=
+	t=1774983551; cv=none; b=Vi9XGyeYGHhrNgBBWGhCoXq9qzkP8gS4+RSumj5eGi8DbD0FZaMjT4bUMApqwxq2tUxWP8nO4Y6swvtJ86fz5YzT81J1A5EI5LQBqGv7omPfie4RmS0ApNxTRd7y8TpqwSIYo4qFOO99Z+nQFSEY6S3/hcAJfaPt7MGisXgd2sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774981486; c=relaxed/simple;
-	bh=4Y0QZZf7hx7OxnfngFgck/ptzeCaLWIRizIPuutL2gQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VL/vCEQi4PakkuJ1rk2ArSyZIgwW3b4Zi7KbYwjtZn5dA+vFx3A2D8R3fENwTL6G8AzDzp6/GRmOh+P15yXjoDsf8zpj+C9rzJVNhhQiPF8diGSufLH05krAiF3jMYMgL1tj5Hu1jmaVF9MK4qEjBW24s5CUHt7NSZ7oZXl6PZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TY1Ui2sa; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YX0UiVTx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1774983551; c=relaxed/simple;
+	bh=l1cH7gYvlcc0lSooMVlOy/K8fFgRGPMUfDne5EcSqdw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QmsSp8VT/XUCFk+aBr8pBDzGtLzT/FTaVG4b3z7j0qQYxNNbCfovivwHQcJuTQJs6D8qrbX8gUv3o9bgzpmdb4q3C4XIuuMhxq0yAoJaJRIlH/fBZcnUnIqzveX9cuWQ5d0bEVfAbByEihKiYu551WmQQPc2dDIjsB9rSk2HdwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HbSK3R5g; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TY1Ui2sa";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YX0UiVTx"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62VHWxIM3103850
-	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 18:24:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=/CWZbyw95JjqJqWLA6GpFRlU
-	U3PYOcL3cCFiiHuW7b4=; b=TY1Ui2salHX+314tX7JZYQH1a9tRAIaDQf0Uedvf
-	ccm4DkCqI4CCZyydNqbnVYJKkcc/N93VbofDKGbi5wOH980qSQfV9pgjjMZWplo6
-	/lZH0iVFL3Ovw2dOaj/DjwJhD7OZL5MP3wLcXyANt+e/oMba15jtHYAq+PEz+OdP
-	DkVtL2RvnNayfv7ewPBpZ/NhkmEX0v42ZjCHx73yMQeNRZvQwSbzhDHeTOir1kxS
-	9iDqgoCdZyvFTudQbLUYDL4rxjzxrCiW0uG6/auzveiBqmEmTdS0YRNCRfRd2KEP
-	OPUnbgJtcMq/2NCew1NPV9ijncUsNwCXQ1u0UhG04M4JEA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d8js209hg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 18:24:43 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5090cc6a7d2so198584781cf.2
-        for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 11:24:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HbSK3R5g"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2c15849aa2cso6473582eec.0
+        for <phone-devel@vger.kernel.org>; Tue, 31 Mar 2026 11:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774981482; x=1775586282; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CWZbyw95JjqJqWLA6GpFRlUU3PYOcL3cCFiiHuW7b4=;
-        b=YX0UiVTx2cNxZqn1tCLjO3f2XATgCH7GDfzTJsXl/WzBREcFkiOXoyKK1BVwBSK1vi
-         cjkYXFXOOd1C1fzeYHGk8oeJ7Zqj7DM2ri7wJnbglCGn/7cNi2aqdQa0RWIYM3gBwH8l
-         JDnPxmwennkt6Wg0TIJEcOWEke6iK++ZA5+iteAopd7Oq+aiDJf9uzgMTGFts8qN/OZY
-         NNERUsSfwxbVizDJb/7wB5KXLx2u7IR621TqPCHPKrO49J0pTXE4pb3epsHkwYkNQshR
-         lnNPmyYmw9oV8zQqblGFT0NKca9Jy2qW9pbKANgiqB4ymg/HXdlBeiMYDIs2NJKayxMA
-         dGRQ==
+        d=gmail.com; s=20251104; t=1774983549; x=1775588349; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=twlo6aN4ZIIizkV5asPjuWxWSEYhM+jPy1SPudDCUoI=;
+        b=HbSK3R5gD9d/Fq2ihig09b77i+9HS2EDuIAtB+U7QbEwwvREO+5vbeOto0YPXenQsD
+         nMQ552ktCFrjjBkTsYJQNVv40pCpTVcXXj/k+HXmwQ8M+NfousVDrRL/s9NGfVSZAvms
+         cwjnvUr3p8zeG5aoQnTpLqYd2dPpIztW1Xmj9SivGNyQqo6g9qusl2Ehvu5JvkPRE5Yd
+         VbuA9tGHT1wnnQK+HhLPLIEXxwUR2PXRYdqebEHE+u66oeQL0fp2+VCG3RrlbifcqkoM
+         BDz72qV0Z+xNHa5zGSDeXyZZvv4sZC1TB7lHWCBAIT5+nUvz62oy8TA77PLR0AC3q0s8
+         hsEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774981482; x=1775586282;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/CWZbyw95JjqJqWLA6GpFRlUU3PYOcL3cCFiiHuW7b4=;
-        b=IvrrNf9kXx6DshMBzLANn0oAdT1hSGLq6EQ3mwKBeSny6YQe7QpaMY1tF3uNCB5x/G
-         zNhhSfxwxsPIrutOfrp/k3p0O+lZwD2nAfzi4TlLF/+GvnM5Zb7xjqddoR1p5qNpkdmm
-         KxTC9MvxMf8QNWRPJbpJC7Ruw/wYKqFk4qeEQMIYbvQtm99RcLMAe38nNdp3VP2KshVz
-         ScZlNLSfYeDV4dwl4O9I+f1wPxY8rVRDgRPIGZTyipzeIKjWlu51y2dYGW8qEMWGf6yc
-         r51fqSQHVPpOVNN4Htixpq2DDzdISA2EzMVNVEBLWnReEEi3q3JWW28QjHQwyXbSH/O3
-         iCJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKsLAz+6+X+UOiJYfcc/tL3mBIs+TyIgtw6I3NPJ6EqqZrnCr9KXtCyyBULIO3FO2yVRV+2v9uNzU8Nw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoZK5PLCB2zm83XM2Zf5HYoovbVvac0yd1F3zliebk7bjkRDjy
-	0dy+yQ/6Ck6M/Bwo8Scyle/X+24Lqp6qSpTgCgwJ+dqVAs2J3YxOUq4NLbmfWpsLDic/ebRswjs
-	toDNkz0Br70J3WUdhhxyemkBBe2CqWgUjMuEO/Kqifl+VLJeHWHkH+wMNtylWf5R03A==
-X-Gm-Gg: ATEYQzwhNIx4Nj7Vmle27QPytiGgAAai3UiOunJgwMmmwXgHTOegqQSXqf+deuCJcKo
-	DLLJnk3gbsd8OH05W0bdDFRUDOiDtacQusd7D+IErhGELJ/3p+9h4Aunnory5/x7+FUG7yYcFjv
-	0ElpYt6R7HOWa9Zg7cAmvUzIW6UfKVC8kW5ZQ+jXCZCdRXLQJvOv18GCfyUf4fitUe+f932oYVn
-	HRqcHCd0vnb9oIojOAMo1ybuNX6Wfk3Bzs6CGOjeXlNv00eYwV4Y3XYqJOB8MKTFJJgWOuj4Phn
-	o/OVZWAUYW1yAAfJeEFdi1qDhGQmntErgM7aR1UltRHRfBMNlRKz4MjKIz/L8BJ0ejUp1QeIrem
-	AIwZGU57rqZ32gmRWiK6RTNLOVBB9laoIGEKTEy1jabgTuL/Td+iYgIF2SkoSMFduHxFkXtA0pj
-	E+ZzRAGGPTIH8zTRKrRuBnK7kx+w+wu4yN6ec=
-X-Received: by 2002:a05:622a:1f99:b0:50b:43b8:d5a5 with SMTP id d75a77b69052e-50d3bca3f3dmr8613071cf.39.1774981482032;
-        Tue, 31 Mar 2026 11:24:42 -0700 (PDT)
-X-Received: by 2002:a05:622a:1f99:b0:50b:43b8:d5a5 with SMTP id d75a77b69052e-50d3bca3f3dmr8612431cf.39.1774981481522;
-        Tue, 31 Mar 2026 11:24:41 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c838daa4bsm25924981fa.32.2026.03.31.11.24.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 11:24:40 -0700 (PDT)
-Date: Tue, 31 Mar 2026 21:24:38 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: guptarud@gmail.com
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v4 3/3] ARM: dts: qcom: msm8960: expressatt: Add camera
- flash
-Message-ID: <xh2un63wi3noruqm6gf2dhayad77kpubalxc4xarmsm6eznvla@g4w2yuxja3c2>
-References: <20260331-expressatt_camera_flash-v4-0-f1e99f474513@gmail.com>
- <20260331-expressatt_camera_flash-v4-3-f1e99f474513@gmail.com>
+        d=1e100.net; s=20251104; t=1774983549; x=1775588349;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=twlo6aN4ZIIizkV5asPjuWxWSEYhM+jPy1SPudDCUoI=;
+        b=EP02SeVNicCUvxPmXtcq3UKJrMLi1HYBmCI1gmE936PdBh4DdAU/vRAeZbP/DGWCLP
+         ofS1D5jilvX3Kd3SMqZIghy8yUUpKJliJIP+DPOms6qtxiQVSTyZK3qFeuvuYF98lYqZ
+         6m2C3nH0P1lw47Yp00B23cyVmWamuNImYdPBsEbfyT5iJshjGVgN+idV++cCFiLggZjm
+         8cINcGW3K2KPahAfseSAjYUbOH+iLi9XPmBB0YZOvK2blSVrho+ru44a/ukIPFbawfgq
+         +iVe++ehwa2wvMANV0HUHerBFRELVqc3Xl5OYBXbjj4TRAmw5gQogSwlCEAxn7N3Dr/I
+         lWTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNJMXnYncGHoP3cjAmFU6RIhUMoyAvoYcdHY6Xbt42ARxN4MOqk4LxLddoVflzSN3Iks34maYGIETe2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBY3NJDnUL5q1Qms3MiwkN8WxGpYsE5HRqq5vYENWvaxZFRbQT
+	7+4HM4ho6q611nl13gYqRK4zdTjM5LPUMrAWeRp/FcM3z+AwXaDnKTSw
+X-Gm-Gg: ATEYQzzG22H0UNpEUEcMhuiZWXxUJ9g/+PQe0mpGoHANEcfPTdqQgXy49IrU2M+xVNU
+	iFpiu4hF36au84foyNCAGSpUZTbj4v3/1OPncY/FHesYuH54IP+YIXOVjUaUc3HEltUYcvM727Y
+	xLKSBLbeU3CQnBbS3uc9iaEN8mbzhy5lcU+3XTGJE+iMe8BLun8tmSz5EHpCc1sP6uFeNkKBRi4
+	cNMpsJVVdArbbUNwPwlklhDAbjeX7aLLz3tJF5KUcpbk/YI1UYiKBoaMxdeQXt6tpVtuhHUGhUY
+	UrqW7b9w6Mt1dDPCrpejCdjQQ0bg7ItnjM2TxfccPaYeYHIfl2NZsaOwSWZ/N8p0GB55PFvVuRL
+	ckrvZkZI6st7fGP5SMFWiz77e/u+yEg+g3PrzyyubTtzCCEAxLHWP+LAOK/dwQMgRnRSaxguc9t
+	htnILNIH12Mke1UyKYaXwJmveSz/qnsebOV1QblmC6AIwyTpH9EWUDnlHR8KGUbJtDb6xqlI19B
+	+Ns5w==
+X-Received: by 2002:a05:7300:2213:b0:2c5:220c:5670 with SMTP id 5a478bee46e88-2c93078fc9dmr270392eec.2.1774983548956;
+        Tue, 31 Mar 2026 11:59:08 -0700 (PDT)
+Received: from [192.168.68.65] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c68b2c57sm11411406eec.16.2026.03.31.11.59.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 11:59:08 -0700 (PDT)
+Message-ID: <3435895a-ffd9-4dd3-b21a-4466791183ca@gmail.com>
+Date: Tue, 31 Mar 2026 11:59:07 -0700
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260331-expressatt_camera_flash-v4-3-f1e99f474513@gmail.com>
-X-Proofpoint-ORIG-GUID: 50XAoI-fDvirBqa9V5SEsRB0PfxVgmuw
-X-Authority-Analysis: v=2.4 cv=XfqEDY55 c=1 sm=1 tr=0 ts=69cc116b cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=OQN141zOAAAA:20
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=34O5YtzfCyVlAbwKECEA:9 a=CjuIK1q_8ugA:10
- a=dawVfQjAaf238kedN5IG:22 a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDE3NiBTYWx0ZWRfXwapsLFtBGl9Y
- cc9Q004pJDYqZ3oldkQEpJCCAHbw/vERNMQ52J3kjr5dAMM09pLPnrfK+h1SMilCtd2w2XtyVxu
- CyxQ48qjel2antAyNm3L5OMo6gkwCairnq8/oAPLAb2IIzHq0jNG0ei9EduZAThATqIEWLkKarV
- vIv2tiliqDEx7cR4h72DDlkHkwyLYicuxIQ6FnfxC4+8VUMVhs3J6oR0H22t9Guis2WFK/kY6ah
- ymszPjHLG9wkd5gout4DfAqUwb8f+Ov0BTGfPvVpP4JXSd87B++Zx26VtVgKpHhkD+DujJUWaav
- AQRa9W/b4eY0a/cAQTHRAkW4r0N2ih4emRpq0yctsPEcEbSYV2pwSX1dEV4FmvRyHkO6x8uD+k/
- AA8Sdf8aiwOh2zhThDTUokxXfg5ABCWGK7eDuDJU/KVuU9beoiop6YqNjssyawW6LHtiQ9lK+eT
- n03RS/21HKX3qI8yu1g==
-X-Proofpoint-GUID: 50XAoI-fDvirBqa9V5SEsRB0PfxVgmuw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-31_04,2026-03-31_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 phishscore=0 suspectscore=0 clxscore=1015 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603310176
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] ARM: dts: qcom: msm8960: expressatt: Add camera
+ flash
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linux-leds@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ David Heidelberg <david@ixit.cz>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20260331-expressatt_camera_flash-v4-0-f1e99f474513@gmail.com>
+ <20260331-expressatt_camera_flash-v4-3-f1e99f474513@gmail.com>
+ <xh2un63wi3noruqm6gf2dhayad77kpubalxc4xarmsm6eznvla@g4w2yuxja3c2>
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <xh2un63wi3noruqm6gf2dhayad77kpubalxc4xarmsm6eznvla@g4w2yuxja3c2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 31, 2026 at 10:08:09AM -0700, Rudraksha Gupta via B4 Relay wrote:
-> From: Rudraksha Gupta <guptarud@gmail.com>
-> 
-> Add camera flash support for the Samsung Galaxy Express (expressatt).
-> 
-> The flash IC uses a one-wire pulse-count protocol on GPIO 3, powered
-> by a GPIO-controlled fixed regulator on PMIC MPP 4. The regulator is
-> modeled as a regulator-fixed node and supplied to the flash IC via
-> vin-supply.
-> 
-> Downstream references:
-> Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/drivers/leds/Makefile#L51
-> Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/arch/arm/mach-msm/board-apexq-camera.c#L591
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Reviewed-by: David Heidelberg <david@ixit.cz>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
-> ---
->  .../dts/qcom/qcom-msm8960-samsung-expressatt.dts   | 43 ++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts b/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
-> index c4b98af6955d..35514fd53e3d 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <dt-bindings/input/input.h>
-> +#include <dt-bindings/leds/common.h>
->  #include <dt-bindings/reset/qcom,gcc-msm8960.h>
->  
->  #include "qcom-msm8960.dtsi"
-> @@ -61,6 +62,32 @@ touchkey_enable: touchkey-enable {
->  		regulator-boot-on;
->  	};
->  
-> +	vreg_flash: regulator-flash {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "VREG_FLASH_3P3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		gpio = <&pm8921_mpps 4 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		pinctrl-0 = <&flash_led_unlock>;
-> +		pinctrl-names = "default";
-> +	};
-> +
-> +	led-controller {
+Hello Dmitry,
 
-It looks like the nodes are not sorted. Could you please make sure that
-they are sorted alphanumerically (if there is no node address)?
+>> +	vreg_flash: regulator-flash {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "VREG_FLASH_3P3";
+>> +		regulator-min-microvolt = <3300000>;
+>> +		regulator-max-microvolt = <3300000>;
+>> +		gpio = <&pm8921_mpps 4 GPIO_ACTIVE_HIGH>;
+>> +		enable-active-high;
+>> +		pinctrl-0 = <&flash_led_unlock>;
+>> +		pinctrl-names = "default";
+>> +	};
+>> +
+>> +	led-controller {
+> It looks like the nodes are not sorted. Could you please make sure that
+> they are sorted alphanumerically (if there is no node address)?
 
-> +		compatible = "richtek,rt8515";
-> +		enf-gpios = <&tlmm 3 GPIO_ACTIVE_HIGH>;
-> +		vin-supply = <&vreg_flash>;
-> +		richtek,rfs-ohms = <16000>;
-> +		pinctrl-0 = <&cam_flash_en>;
-> +		pinctrl-names = "default";
-> +
-> +		led {
-> +			function = LED_FUNCTION_FLASH;
-> +			color = <LED_COLOR_ID_WHITE>;
-> +			flash-max-timeout-us = <250000>;
-> +		};
-> +	};
-> +
->  	i2c-gpio-touchkey {
->  		compatible = "i2c-gpio";
->  		#address-cells = <1>;
-> @@ -172,6 +199,13 @@ touchscreen@4a {
->  };
->  
->  &tlmm {
-> +	cam_flash_en: cam-flash-en-state {
-> +		pins = "gpio3";
-> +		function = "gpio";
-> +		drive-strength = <16>;
-> +		bias-pull-down;
-> +	};
-> +
->  	spi1_default: spi1-default-state {
->  		mosi-pins {
->  			pins = "gpio6";
-> @@ -572,3 +606,12 @@ magnetometer@2e {
->  		/* TODO: Figure out Mount Matrix */
->  	};
->  };
-> +
-> +&pm8921_mpps {
-> +	flash_led_unlock: flash-led-unlock-state {
-> +		pins = "mpp4";
-> +		function = "digital";
-> +		output-low;
-> +		power-source = <PM8921_GPIO_S4>;
-> +	};
-> +};
-> 
-> -- 
-> 2.53.0
-> 
-> 
+Thanks for your feedback! Could I request this comment/change be noted 
+in 
+https://lore.kernel.org/all/20260331-expressatt_fuel_guage-v1-1-23d1d8526b69@gmail.com/ 
+instead? As this seems to be the only comment remaining, it will be 
+easier for me to reorganize the DTS in the fuel gauge patch series 
+rather than this one, as the fuel gauge patch series depends on this 
+one. It also won't spam others in the mailing list who don't care about 
+the reorganization of the DTS.
 
--- 
-With best wishes
-Dmitry
+
+Thanks,
+
+Rudraksha
+
