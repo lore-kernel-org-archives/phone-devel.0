@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BAA477988;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585F247799B;
 	Wed,  1 Apr 2026 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775062309; cv=none; b=R56sizVzvH9U0AggNI2DyS3RQ/YlmskWWPrFDLS0CTcHmsMeZcEb7A7WvL3szlPGXE3q/jNVj5En6O1LAWpJQDOTyBFJ7mIgbYpb6IGUZ69bt594DX1x7XXgX/wqv13bFNoe7iAkE707SgRQdJFDo7TQqYtm5Bl2aqPZUwrw2Rc=
+	t=1775062309; cv=none; b=e/al4hokTeipcZ2/3YvTdBNkJN7B0rZH3cA9UUMwn5tcT4joNq3gUufScsAqJrB6VmNlpGzOqKiQckDRPV/NHtpyyyBbvuW8nvQK6j6vD53tEYv1bBKbYrEKRE/mn2mNtq4hai8AoXkkeeedK2je8AAayAepIrMsarxdpLQv3w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775062309; c=relaxed/simple;
-	bh=oXZonP5j4c0O65d4B59yS13ja3zzyHaHSOtaUNSb8BE=;
+	bh=FtFaVNDkJs2SPnJxMPfTI8IRK0PD8X/b0KifLpl6RwY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Irmwg1qQHpjXc8ZFT/hPgYVGzdvRdc5q/egxx1XsG0A/ytoWHKdk1N8Clo0a1cwoAGnGTVi9Mp7KFgP9OdOMWOXwWRI1uDgqmGBlvGBG2l56FMK9Gnvma20ZkEKashFIM37N0P709dnrTwtIZV6WceCa2bO7c2TvYbYcHDWI0yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SS36wtHl; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=V9iGuPYbQT5LMW0llauLechD28FtNGXsgispcK9D735R6tIvlKHMv/oB08M1qIQZXz3XQz+MQmaqoSz5VELQRSn/+Yp1C0gXVpcj8IRb3rbZNOHuQBJlJJGCFfbKbRYQp2n7/ZXIw2CdGpIpUEirznY9RXMKFt1LIaJ72dI10H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MEVg22fG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SS36wtHl"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CFBFC19423;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MEVg22fG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26F6DC2BCB3;
 	Wed,  1 Apr 2026 16:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775062309;
-	bh=oXZonP5j4c0O65d4B59yS13ja3zzyHaHSOtaUNSb8BE=;
+	bh=FtFaVNDkJs2SPnJxMPfTI8IRK0PD8X/b0KifLpl6RwY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SS36wtHlQbVLkRpfq8PwHy5bZ0L2reC//J5vS+xcv5aDpV/f6UAQs6GMvz5x0SeKp
-	 6qPeex4APahRDiP/H2vL4qPye7vN161D9/OrWLdeH0flLXzEnopLxsq4xJssY76ogo
-	 VuIsWXgqyKF2BVdVCJurfolyW0WcqKggTjsdtYJLsZJUCt6fF/4cLtZ/CMb6frp4Ui
-	 olL1xSMEnKoBKpGNJphGJfXgJbbVOrG6L0G3RvaIsbjLCEyWk2ULAaozCx6TffE4IS
-	 cKamTPc+g7jgvUAjtGA4RA6PPCoCpYaXAJpVduV2HrPIq/ZioLBJ3R+h8D+xIuVf31
-	 V/P+pnRRELLew==
+	b=MEVg22fGi3hBS6OJM++Ox91GuHiQ9xLwUGaOf0kLoj95JeaCP3iFwBDDrOM9Ct2Ws
+	 ICEV5vrA2Jd01t5s3Vujyb1cpHUdtOtfVVpPlhDZu7o6SiumqTSplHsFxA60tbjZpA
+	 k55dHfEqORgcNI8824PRs7d9ta8TR/jABD4ZUlnazKCwnYV+xOeb8AczVPRt2MOWEA
+	 vhoDXr5dZniWHwiHRuLlmkkjIENKZkDqMXukt7ESjXghgYTl0eXolRURu2kLgSONj0
+	 4Lz66Z2wU6CvGyGtzcpuXRAarn+Weigp5Ag2C8/Wzn1PSRQuonXfd2auzE+jpLqGoF
+	 lge+uwEF6QdAQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF69AD35165;
-	Wed,  1 Apr 2026 16:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F2BE1076386;
+	Wed,  1 Apr 2026 16:51:49 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 01 Apr 2026 18:51:43 +0200
-Subject: [PATCH v2 1/3] arm64: dts: qcom: sdm845-shift-axolotl: Enable
- sdcard
+Date: Wed, 01 Apr 2026 18:51:45 +0200
+Subject: [PATCH v2 3/3] arm64: dts: qcom: sdm845-shift-axolotl: Enable
+ TFA9890 codec
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-axolotl-misc-p1-v2-1-f3af384bbb50@ixit.cz>
+Message-Id: <20260401-axolotl-misc-p1-v2-3-f3af384bbb50@ixit.cz>
 References: <20260401-axolotl-misc-p1-v2-0-f3af384bbb50@ixit.cz>
 In-Reply-To: <20260401-axolotl-misc-p1-v2-0-f3af384bbb50@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -56,99 +56,63 @@ Cc: linux-arm-msm@vger.kernel.org, Petr Hodina <phodina@protonmail.com>,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1795; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1039; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=aZdwStcvm+sP0/bffqiFYiM4zgFWPvHavag314QPrS0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpzU0jT7/hxZAeWt3scy/df6V3dYcWoYPRU+h2T
- 9fov0vKJ9+JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac1NIwAKCRBgAj/E00kg
- cglOD/0dGUViocQ/HGt1FG9pRpZRjK6UR7xNAWdv10rQ5ScXXVxYF6bLeIcIeIDCmOPU+zQwR8A
- xfR42u7WkQl3mSAtbRwtQcs1dZ/ys5f/V2nzHOZR3jYeboNB0VHaMun/ViulUzzMku039fgPvKh
- LgXhxNHqgoPJcUinBv1gX+HpCtTY2pic31B4e+41kNVbm+w/8vhBlpTeiiDTS4HieXSeirp81Lx
- KCVE4d7R0LHrshAsXzL/yZNnZRIcC4XGJDnkmAgVb+a4t74SgXErQ3SYQYmH79PzqM6FD9ljkFM
- uZmpquC7WEPtZ9xogfKp7T6Vj2dC6VGT8PyHD6hg75+Kn6rROLWZ2smAykozlrNQdN+3n5iGMz+
- LtAggvVxDmyiuHJKAPd43nHrgzlzWEiMa0cW/6ElVcy7S974fOw33XvERJAuVoMnGdIe92VXGYn
- sqBN+zFPm9RNCdlXiDhzIB3Rn3xM3n7R2X0+4eiWbuNYRY0GrtI94O/cNmkzSX6Uqt5TyD86LNt
- iZI9aWbmTNEjcHc8j5x+cE3hjs1aiJUC3cxTNUwOwiTF7pNbFbEsFK+h0qjlno0aWS2uWgvRciO
- lJL1bhGROezTm1QsYxjWUQ3g7NlNCHxXnnoEP4wCoPAv3j98eRC3DB1ImkQVR/478ujLXsCh8Q3
- owvkhFrh11Oue+Q==
+ bh=kWUIRVV0NAuvQ6Bo6NPykpz1en1rcDGhEumQ6L7rv0o=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpzU0jnpCeqkPJO0zRg8gy4iKH9Je3koYkpEgGy
+ PtQSNcewbaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac1NIwAKCRBgAj/E00kg
+ cly/D/4yKstwMM7NYhMyZHEEQAB+zMR5kmA5/ejF4l3d0kU6t+CLEkekAp4GwbhpUFWSpeLscdC
+ EHHuitgYOGfraC+99MfJgVJ9I5dh50ZAQ7H19VEsQeaigq1gtWo8U5/q6jqNCjVg10a+/14FAzp
+ gOAAPHaFJD9p10eV/FNwDfZZnVyzq+8ddkK5Hc0jJrEhdK3tlX2fN2Gxf+ryaowfr6Plt8pVpFy
+ MhEXb6bYzohyLAskpsMviScR58MYf1RH9NU8xiWAWlWQMt2vgL7Zih7RNLngUvRl+QSwFX/bQLs
+ G+DBOQoCWcRJsDqMSSwm4kEEGZiYdGYHlKXEzSI/TPh1EB3uxiC5xL6QrpXgH3bCj2ciC5kFD0J
+ iE5QS8al1D+ndmdzxZcOcxdH8QXVJh4VjSjZiFQC2h8LnUwiKmAuy+UHVqqjlx69/bffgXeOLRh
+ DtCzcj1TP3p1qdrbbuI1drCqQijd3uX7l4lUXJjD47EtQEp9ryYJvzFsH00BxGJwB6iRVn31bfW
+ Q2rqfGHIgN6Nq5vRbPGe15k3F2tDZdN9evMvBjDH1yAru0JXd7v/Oh7WFRhjU2WFyf2PEOyx5k7
+ 0dxyxcYjzRv6W1rK3FmAc1UX545/Og5fhgFq89W212j+5i7h7wzgizMrc8XMrInK5WbbqnMvVaP
+ Q5mYy07CfQbRUJw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Alexander Martinz <amartinz@shiftphones.com>
 
-The SHIFT6mq features an sdcard slot, add it.
+Audio amplifier TFA9890 is present on the board.
 
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 44 +++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 740eb22550724..c394350998c26 100644
+index 181c61e8ed748..393eb865a71d3 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
 +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -600,6 +600,24 @@ &qupv3_id_1 {
- 	status = "okay";
+@@ -459,6 +459,19 @@ &i2c10 {
+ 	/* SMB1355@0x0C */
  };
  
-+&sdhc_2 {
++&i2c11 {
++	clock-frequency = <400000>;
++
 +	status = "okay";
 +
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdc2_default_state &sdc2_card_det_n>;
-+
-+	vmmc-supply = <&vreg_l21a_2p95>;
-+	vqmmc-supply = <&vreg_l13a_2p95>;
-+
-+	bus-width = <4>;
-+	/*
-+	 * Card detection is broken, but because the battery must be removed
-+	 * to insert the card, we use this rather than the broken-cd property
-+	 * which would just waste CPU cycles polling.
-+	 */
-+	non-removable;
++	audio-codec@34 {
++		compatible = "nxp,tfa9890";
++		reg = <0x34>;
++		vddd-supply = <&vreg_s4a_1p8>;
++		#sound-dai-cells = <0>;
++	};
 +};
 +
- &slpi_pas {
- 	firmware-name = "qcom/sdm845/SHIFT/axolotl/slpi.mbn";
- 
-@@ -609,6 +627,32 @@ &slpi_pas {
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <81 4>;
- 
-+	sdc2_default_state: sdc2-default-state {
-+		clk-pins {
-+			pins = "sdc2_clk";
-+			bias-disable;
-+			drive-strength = <16>;
-+		};
-+
-+		cmd-pins {
-+			pins = "sdc2_cmd";
-+			bias-pull-up;
-+			drive-strength = <10>;
-+		};
-+
-+		data-pins {
-+			pins = "sdc2_data";
-+			bias-pull-up;
-+			drive-strength = <10>;
-+		};
-+	};
-+
-+	sdc2_card_det_n: sd-card-det-n-state {
-+		pins = "gpio126";
-+		function = "gpio";
-+		bias-disable;
-+	};
-+
- 	sde_dsi_active: sde-dsi-active-state {
- 		pins = "gpio6", "gpio11";
- 		function = "gpio";
+ &ipa {
+ 	qcom,gsi-loader = "self";
+ 	memory-region = <&ipa_fw_mem>;
 
 -- 
 2.53.0
