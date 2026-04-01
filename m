@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7859637B002;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794E137BE8E;
 	Wed,  1 Apr 2026 20:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775076017; cv=none; b=ifwH4EPv4D6E1obL50yzfmGI4Kt0aFUrC+rZu7++bqeQ15Nv38FzlHDnx2jCRdLhe0nxRjaN0einU9fvmcejGn2i60y5Gaj9+QOWPPQzSYt0O313t8mHedZiQmg7kOoYz6CvWmHD9K+u7bUi/3mBmr1+nvx600WezKEWSEpxxCA=
+	t=1775076017; cv=none; b=aPVtO5J6BNiIRD1F4J9yKAL2+GJlT3ngjwI7GBVD5LSUfbpDAJEObp7k5mIIxE2PJhZYl2+rqzo4+TKNDBWqEihH8Fwlxb2SoKSMQIidebhSaWNYslemNuhH3Ud0YHWl7HvLM/VUdK5TQZXtNGAyt+YdPzICW+9oNu/XTnyoims=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775076017; c=relaxed/simple;
-	bh=Twx6Qy0Q6CaPFSgUsx1I5e69oNenyyYz8wjnnuZt1Dk=;
+	bh=+3IVt1E+BzUQ1QcVG0scDrNeFg+bYzOqv78h/27GnuM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O646hes2b0cgke/m5zuR+86j90x7GIWbmyW2C72RdmaokvwOB1i9FDugs47SGMDeprYMNY499E2wFR0RCPLQdXCjb1pVA3KVCV9eA88/WtNHrFu3RBmxPR7+tKME6rCwkd6MWfNGsepW3MGdqMPM4cmy8LaB7KO0SbkVZ83M/Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oD5GHLrd; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ggLd7Vw+6AgkrPRd4Q+cZQm3Gsp4Jbl1UJisMrZs86rahKis8VOLJ47CEMVvk2YNF6/g3wwXrjNqxruFa2ub1rzvRlQaqTGOokZ0VXRBagSRKhqwv3kMLs5AWLBS1uqw4KpT9JnVo04WxPZamzjK2YR8VkMJ7tMgcm0D6lRxBik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EISuzuLZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oD5GHLrd"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 09F05C2BCB0;
-	Wed,  1 Apr 2026 20:40:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EISuzuLZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ECD5EC116C6;
+	Wed,  1 Apr 2026 20:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775076017;
-	bh=Twx6Qy0Q6CaPFSgUsx1I5e69oNenyyYz8wjnnuZt1Dk=;
+	bh=+3IVt1E+BzUQ1QcVG0scDrNeFg+bYzOqv78h/27GnuM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=oD5GHLrdU8jcbdCZXndyaqlMDsj4hKcmiwugvWOhxMxfZmHaZYFiQ5QxNV9K/9Eho
-	 i3dZl5nVYOigKH3gBt1UXPjc+SpYN8PQTBTSpcEnfftfKKrHEMUhQhXHT7bkYhu5lG
-	 umlq2c6PxW1B2j7San0ElSMIKoqNPMR4u4wAFcpCuTxxylJ2kLIIKSbr7OTDWO97nN
-	 bAbJ+bdgmyOrY7CtXT5j408q5IpUdDJkl8CieCAOWbIyHJqrhAEIIxlvzm48q+bwVN
-	 qGhcOsv06k7CDYron6cx6gTrc/MyHUwR72HlcXmzQNCrso6cVsioyG/1ocxfEyV6Mb
-	 GVDtD3dsDcBLw==
+	b=EISuzuLZMjUDk01Rs6GVAyhn0yup8UEsVKcboeeUz3fJvNH449t/EvwNN1IQrTChH
+	 yWrNKbMDNtQSDvukplWP74DrabpcaCO3DNfekn/9isvPYjhee5RXYLBUF0JVqp/2eb
+	 gjW9aRQBVMKVTfY88DQyjMxcfbjf27lh41LY1MS50jCa1nvwxqi3m7duMg6vJu7TQg
+	 iNO1KrV4dj0fmOI7oxrpHAcnMj3YAJyXx5lfJlyR/+qpkuP1VzHpAh39OevlLwBStV
+	 qZZZrAlfXgK/SSSlCiIfF0luzuHIA1mMHO8Quyo7Xk2eeZgSE5c/srK7Pq9Mgymjky
+	 WEDhIpU7DMRvw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3E2510FCADA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D264810FCAD2;
 	Wed,  1 Apr 2026 20:40:16 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 01 Apr 2026 22:40:15 +0200
-Subject: [PATCH v3 2/4] arm64: dts: qcom: sdm845-oneplus: Drop address from
- framebuffer node
+Date: Wed, 01 Apr 2026 22:40:14 +0200
+Subject: [PATCH v3 1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium:
+ Introduce framebuffer
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-beryllium-fb-v3-2-ec7d443402ab@ixit.cz>
+Message-Id: <20260401-beryllium-fb-v3-1-ec7d443402ab@ixit.cz>
 References: <20260401-beryllium-fb-v3-0-ec7d443402ab@ixit.cz>
 In-Reply-To: <20260401-beryllium-fb-v3-0-ec7d443402ab@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -54,52 +54,64 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Petr Hodina <petr.hodina@protonmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=909; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1031; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=WpNRtN9KzfW/WJ6Lnvj3M30Ah3OBdedD1ihXX8o//rY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpzYKuSCC6LZ70kvSXAg4upE79cW3vXQixDTeb3
- scUrRZBgiyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac2CrgAKCRBgAj/E00kg
- coLiD/9UMphhTgj7BGZNyxfMKhDjjXFrLIsFmw9p1/UxbPbEqmw8tZtHya8irhlOos/krRoWexS
- oGURF8JGpTujRx2W65cwnAEAxcCFRIenmEniqS8VWX2q/a/7jnsW0mhqlvuFOcJ/LlkaOyOqIli
- 8g++dioBLaWUCdaoJJ20aXWAsUVrN5naNv/E3UOeVW77eKhYUTaoQvmAi/u3+WxD0MjELwTv1gq
- p5PeYHC0wiu3g2K9DJCgeP9kL5MRWOb0vHMzzqvLnWvos6q+THa18bPwlDffVm1XFx88bZ1WOCB
- NUPLYXYiw54qTPVwHFf7nyhB78op+lpwkW8HDPSH3gFZ72XP7Q+0lIEorKZsW2wkjxhWAS5hiUH
- fNKz7/DKnFSZfO6tYrSlq/bic2vRj17dAvQ9WSziq3WkvpDwhe927uy2TtAXCbcHgS7TlxudmYU
- ZnnK6TFUKs7ME9yX4P/RApPOWBG89sxUY7rP2BVn7jLxQ5Ts4q9gH8Uh/s6trwUS2+ggH6fJNok
- CubrqtV2OzZeCuNQyBsARRnok2W1tcezM4R5czO4hlt9acMkZe0Q/jF23bGXbZ4bmdWRH74/+1p
- Rkd1RZTutpQ64YmVLfkd9CJIG8DtIqDSjHc7B0ratYAz5JPy9ZtPjjFe41BFSoFn3b/XSCFgdTq
- yJuCWWeDUkmu3cA==
+ bh=SnKFfm4qN/M+jaL16XHBrfpNpLQrOoZvc5aNlTISLv4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpzYKuEAyDlig9CdL1SulbmT00rBOvPNJfXjnDC
+ zWbK6I9BBOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac2CrgAKCRBgAj/E00kg
+ copkD/wJhhvuabsJfXdKoj3O6zIl1YjXzTSDBw7vD555UuKZGPywTtwAzDdMCcePydVx0CqHADA
+ 14V0hOecEACczuy395lLpZKImzRF5NkatglxISf2ylA2h1QfaL5e10gbLRnbYo6xV3h6gtqRrnu
+ LSx+rwmQHjt/bWLTU7+W79kj/Vu7L04Di8M3SiOsoGHZ1lR+eOQGQfuzz1IQNagRn4tFZYYRR5w
+ O7NQ6lubsH5sgqHES+2fbxZR0zod8ckRnllcTbYeXf9acgQ12PiqM/8IjfyllKSf3iKp46njLUv
+ VwDjhoSjL0LpHotVqMMN4kLh5BUhOf/Pr5y8n/UY7peD9yZsSNvTXLxVHyood/pNx3556/ohb0b
+ Yn1ims7HoW0BEOS0VefKFvgc3QWMP7LvQqZGtlI1LKBICjXAsrMJEfzE1fSX+CQj67VjzZnzJHC
+ spVf3nDkF8fi4S8NcKPElPkg0xLElXuc+K2RI4guiNbOpAYGMAgUM4kI1aVFEKSed7zvIrX11gp
+ d4YFmXuKgBEvfe4JX4jUFI9SYPXufTTDkj4CygexXLOBg5orOq/MgnzqLQzF1xIdOX+W+Te+XsA
+ 3LEYVyTk8dqc6qJ7Lkh0OV4oHpYuedbxJpBfWMv9rr82S7td8fgg5HUWnMNt1VT2OdRZTsjKoao
+ iCIFBRZFdym47GA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+From: Petr Hodina <petr.hodina@protonmail.com>
 
-This node has no 'reg' property, so it shouldn't have a unit address
-(after '@') either
+Add framebuffer for early console and u-boot support.
 
-Fixes: b0d5c96e860c ("arm64: dts: qcom: sdm845-oneplus: Add framebuffer")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi    | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 6b7378cf4d493..05b8d656b5fc4 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -72,7 +72,7 @@ chosen {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 1298485c42142..a6ee3dd171def 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -39,6 +39,22 @@ aliases {
+ 		serial1 = &uart6;
+ 	};
  
- 		stdout-path = "serial0:115200n8";
- 
--		framebuffer: framebuffer@9d400000 {
++	chosen {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
 +		framebuffer {
- 			compatible = "simple-framebuffer";
- 			memory-region = <&cont_splash_mem>;
- 
++			compatible = "simple-framebuffer";
++			memory-region = <&cont_splash_mem>;
++
++			format = "a8r8g8b8";
++			stride = <(1080 * 4)>;
++			height = <2246>;
++			width = <1080>;
++		};
++	};
++
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+ 		autorepeat;
 
 -- 
 2.53.0
