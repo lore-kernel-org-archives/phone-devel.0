@@ -1,38 +1,55 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941433806DE;
-	Wed,  1 Apr 2026 03:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D0D32D0E3;
+	Wed,  1 Apr 2026 03:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775013395; cv=none; b=PWAFCUHibX0cmAUg6wcGkBAxawOMOmpXt18/H+UsouTJ3IJlhS+MzeBub7Hdb9O6KsjDSc0o1OGqbbxWkM6nZezPNixlBlibZM1ftap24vpUKuJ8AsmOTbRwOWhYypjw73VwalWkCQBrT7StejFyGd9xlCEHD0i75xEHQeXb+3M=
+	t=1775013763; cv=none; b=qmGBK2s6D3/LOZ2n/qoe6f689DG1QNfwXgEDayYTeg2WzJztz1bCez3X81Mlgil8vtvXg1MzVERk1ibgK1YD+jJbVu0R+c4YXk2IB4cRmUXE40F2jrHhMKF86kcQk6QY2GykqbVox440x0bVHWjW33X/UTuYcqV78L2+2B7+dVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775013395; c=relaxed/simple;
-	bh=oJc+1cBUxP4xA2PdQfzSyU3jCiJ8U7GICccKavJd3cQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RoVMkjFVt358IAcxD9EJWKRdTRBfLxOskoC0o0qBKl59vvYVjSKiuGP6hFMnj881/7aYX6PMe0ggnZtIPU4GTGr0btZKZgI2jqjtKqiPPaTL/em675AULw+GAZFhu6p9xbmfqZMkpYUEnvCdQh9AvO5pRJocjUdXc75FoH/ap38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=BiaFO5xf; arc=none smtp.client-ip=91.218.175.189
+	s=arc-20240116; t=1775013763; c=relaxed/simple;
+	bh=62aRNidf81NIQSpQlivJzpjBxKi4+6TnrkQkwf9cnQY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AXrbrSBgwdHgBXvhbAy8oMe9juXl5pNDZGryCInutW7RJJ4SdvM0Pd4LRcpQBGjzQstvYTe80xTr8GxqcNQYNcJI3ZPgU+XE1id8G27RUUNFqnVd2fgnCSxKsyoABSCnJZChOZa86KqvMSfa5skNhRzs4/6MrGCK+pPARsM/gao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=Z9HjMUBG; arc=none smtp.client-ip=95.215.58.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="BiaFO5xf"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="Z9HjMUBG"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775013393;
+	s=key1; t=1775013750;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BUCus0PQMAXlm5B90msn8tZF75isfZdVdYeAoVZuGmk=;
-	b=BiaFO5xf9o2885yBO9Hq+hs6LUVWSnOzSmc14m5HZQGC+6h+UBIbRRm3EHM27cyfRF8bue
-	PgTRA8YTuGiE0FtgVNm6dlkiXA4N5c6IMWMaOvpWutOdyaKlLjq8XrcwKdmgQce2nvoYc8
-	JWDMGKQ5bUM76DJSbyjZeMHeBFbDU1hfhbbaD2LSkSiI9MSDqh+tIOVksD/Lxb0l40Klxo
-	jgde6UyoOQcLdusU1GSVyaY+9pNMZINjpnboIS/ZO34fct49MaPqHs1ATrt9fY1YTSCyOD
-	iW9+pqYPEXVKNndkyLfAwjf/kv1w2mTYINepRojhBNyP7RsVEAINSKNO6kopFg==
+	bh=8ncEp6L8HOBIzKU2YR0UCVFBGSGus/FpKTSPP46t8Nw=;
+	b=Z9HjMUBGTnz5pXgmGRbd4Ua2it923pe60MP0hMKLJcvkT08gGrHNzW+UWd4WSQU5XLdBSX
+	jwYxxR+IPTXXf0XUPW9Idnrpf6uMyLHWkHLkVXOtiQ9JUKo9G2GlGovPR95cj7PnqVHGof
+	6j9Lp4Xtxatl60r4DoiIh8WzQDBLMdHTjjsnEy/xeoxl70R+8rbXL3gZB+EBpPYlHc1nxv
+	aR0HuHM8bEltelVagW3ge/D0KZhTrq+vd3IjxInDgd/ZMf046XXl+EgBvArh2VCJeYXluE
+	eTYVcpOaTQ2IFjVMZOASHLf401McE9lRCMTm2Y/JDcNHJow9HAZ/ukUHeNC6pQ==
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Tue, 31 Mar 2026 20:15:17 -0700
-Subject: [PATCH v7 12/15] arm64: dts: qcom: sdm845-lg-common: Add
- chassis-type
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	David Heidelberg <david@ixit.cz>
+Cc: Paul Sajna <sajattack@postmarketos.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Amir Dahan <system64fumo@tuta.io>,
+	Christopher Brown <crispybrown@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH v7 13/15] arm64: dts: qcom: sdm845-lg-common: Add camera flash
+Date: Tue, 31 Mar 2026 20:22:18 -0700
+Message-ID: <20260331-judyln-dts-v7-13-fbbc4b7cc557@postmarketos.org>
+In-Reply-To: <20260331-judyln-dts-v7-0-fbbc4b7cc557@postmarketos.org>
+References: <20260331-judyln-dts-v7-0-fbbc4b7cc557@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,52 +57,43 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-judyln-dts-v7-12-87217b15fefb@postmarketos.org>
-References: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
-In-Reply-To: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
- Christopher Brown <crispybrown@gmail.com>, 
- Paul Sajna <sajattack@postmarketos.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775013347; l=770;
- i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=oJc+1cBUxP4xA2PdQfzSyU3jCiJ8U7GICccKavJd3cQ=;
- b=FCQ5Or5jMdE6XOIkWhi5M4g2O0fefQHBCaJOGhOdMrNekKFBsuVbGl9A1ISyy8MI2UD8A8ZDN
- 7HJ3pUJnrSzDgvz5GX2tZCCk8PMYQj+PoNDxTP9V9vOo6tOUrgWKDq9
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775013472; l=955; i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id; bh=62aRNidf81NIQSpQlivJzpjBxKi4+6TnrkQkwf9cnQY=; b=SHC4CTQifJradAxFbUMU7CiH/zT8XYO8xhivpZ/n/XYMc2RjgyynuaAYbXZcIyvvkIvHYz7+v kkKet+MyUSvB+fk1smQc8Fh+yW8Up/PUIonsRq8OYVnRshVBsh0veOh
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519; pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The sdm845-lg devices are all phones, therefore handset chassis
+Camera doesn't work yet (imx351), but we can use the flash as a flashlight.
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 8481f0cce974..71d070619ad7 100644
+index 71d070619ad7..9d82961d527e 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -28,6 +28,8 @@
- /delete-node/ &wlan_msa_mem;
+@@ -496,6 +496,19 @@ &pm8998_resin {
+ 	status = "okay";
+ };
  
- / {
-+	chassis-type = "handset";
++&pmi8998_flash {
++	status = "okay";
 +
- 	aliases {
- 		serial0 = &uart9;
- 		serial1 = &uart6;
++	led-0 {
++		function = LED_FUNCTION_FLASH;
++		color = <LED_COLOR_ID_WHITE>;
++		led-sources = <1>, <2>;
++		led-max-microamp = <100000>;
++		flash-max-microamp = <500000>;
++		flash-max-timeout-us = <500000>;
++	};
++};
++
+ &pmi8998_lpg {
+ 	status = "okay";
+ 
 
 -- 
 2.53.0
