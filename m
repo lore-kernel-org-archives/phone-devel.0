@@ -1,38 +1,38 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F799355F52
-	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB9B355F52
+	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775111941; cv=none; b=D+nSVvOa9TedHHmGaxsC7d/cY/l4IRDbu/Q6LVQeDikr1/ChXx22s+SYy1kBx/9PsyU5CWywggEh8f78KdvPtGyyuqDh/TZYLndN88nwCNUtWqtfHahXaBGUpUF++AXNSVaNS/UXQSXgEntlaHoE4LVF1H0OFq8QI0NC2mYEFQQ=
+	t=1775111944; cv=none; b=tjWL5aUESWVz66wrLRcRN+ANQW4ISLVxtHpABUUCTcXmvCFS3iWQirb3cT8MsyyY1yaSPW1TowiroR2enFCXcRehq/Z/7G20ALlQCHvLwQUd1AB/xLVF8PVEPXGLNTq6S1gfbPBnaSrUyScBx2CFJFSQL3FwWy5PCF1yV61MBNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775111941; c=relaxed/simple;
-	bh=sfr5sGWKLV+7cUgvRiDdpIW68jelrwa3IWn9b6yAFYg=;
+	s=arc-20240116; t=1775111944; c=relaxed/simple;
+	bh=qVlujgMOEaY7xi+PNMAVdLKk/YdOHJZXwqfSWM9G4e4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nU4y1JUmEMpzeIurW8n2G3/NOF1OHpdYrA2ALzYUT9nUNtdTzwGOr5YbbgJKKcreiokB1MPKW5qUF30991f0tgrDqkKrmRMqG2Y2abDfij67OzDq9ku1PiLhvzNLrAoHGxNmgSbIvde3uYX17tOhiITuNKEQM3J6Qlwi9DrQ3pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=lODStkLG; arc=none smtp.client-ip=91.218.175.172
+	 In-Reply-To:To:Cc; b=q1dLuEslnRBaUSQJmfXxZkc/sYh9+mpaHnci3qa16XSgyesNrc+9FnHUmanCPKXVfOVSU/rNMYEfkBU3IiI9ajcFYGBDeAk7jve7VFArgGIeLYDCO3AroZsDZ6+XXmrJy99EUuQkl+ZGvR2w9RWbz+Wnn+l5LdlKRqTILwL71oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=lZ2EmA+0; arc=none smtp.client-ip=91.218.175.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="lODStkLG"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="lZ2EmA+0"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775111937;
+	s=key1; t=1775111940;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vS032EvzVpRtfXSTOpPqWmTUv6U6bvbz7aB2vYumwkc=;
-	b=lODStkLGsUE64y0ldoMytzyQK76r1rgSWUJ4qeprk7xXwN7gsxe6U1iNpgF5QkcOzdUYE5
-	crxSMT92XXsv/ABoiuGRzD6l33yeMigEBsg4L9jCbrN51IhEPPeQd6IFhln8cjH2jY0NoT
-	37HuziBYhJuCr5Ocd/ueCHovTQ16fh1KPHTyHD5dnmJROdmoQIWobrCC5WPQ6QesJrYpO+
-	/bfFPEyxpqt3Uz5Lq3mPN6hz5bWcC7sDSAUQs5eR+5akONg8+N5HmKSYoEhOa3TmyMuhYP
-	cdHKE0J4bRlpFfh7KU70l8bevwq3JMwsRq1DePExPI8S39T7D3xOYPznhsnhGA==
+	bh=1ErAhS6cOi4C2zWtYwViDGbHHXH/a8ocTkNTwSr/N2g=;
+	b=lZ2EmA+0yRxO+oztbx1mTHHWbK9gmhWvLWF7GI/eKQ7297rKLe2SRymCwttE6VuJJU/tiy
+	6fIsnWoAI7P1GCfOYtiZ+YVDXsaK0M3qux1bhi0aS/GjL1k9iuJjT4koaisMlXHNUan7q3
+	cNBhjpL4rFSQHii+ySO6o006eIihUS8hzez1FFuN/IvRnM9E0rc3nCdNWzrXXePONomjYj
+	hVY1JtYGudS0O6SFjvqBnkMDBRCzQqabRiSkdG92LV6iTSrWduSv3apH/cLf+LbvvzhbUm
+	RH0u/Q61wyQm70cciyhzuQf29QvYsCVgvTFLdkhdS2NYyArsspWBBtXKNzh8TA==
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Wed, 01 Apr 2026 23:38:28 -0700
-Subject: [PATCH v8 01/15] arm64: dts: qcom: sdm845-lg-common: Sort nodes
- and properties
+Date: Wed, 01 Apr 2026 23:38:29 -0700
+Subject: [PATCH v8 02/15] arm64: dts: qcom: sdm845-lg-judyln: Add firmware
+ nodes, change path
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-judyln-dts-v8-1-7677cfafbc78@postmarketos.org>
+Message-Id: <20260401-judyln-dts-v8-2-7677cfafbc78@postmarketos.org>
 References: <20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org>
 In-Reply-To: <20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -52,197 +52,71 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
  Christopher Brown <crispybrown@gmail.com>, 
- Paul Sajna <sajattack@postmarketos.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775111929; l=4272;
+ Paul Sajna <sajattack@postmarketos.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775111929; l=1633;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=sfr5sGWKLV+7cUgvRiDdpIW68jelrwa3IWn9b6yAFYg=;
- b=fIFo+Eu+1em2sL59o/NuRenMWbavbYYPYFt7N2TZQvn4w/n/dK5m/79Mq4w/823USH9P4DIjT
- 9gIMfWS1J7JALTHJgBQSqgqn9QbK+r4NfiP12/FAyX9EiXEQTrU7Vxt
+ bh=qVlujgMOEaY7xi+PNMAVdLKk/YdOHJZXwqfSWM9G4e4=;
+ b=2Aq+dxMX10SqQHVoRkgT+wq+bVMBKKdIUcmENEwzCMUr1Eny+lmjPSxwsukgFcZJ2gT9YJkvE
+ 0bWev9saiM2A3Il6CYuGNkJAM2liAJLoW6s/vDHgTt4K8C0/UE8Hi+Y
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-Improve adherance to style guidelines below:
-https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
+Add paths for Qualcomm firmware, including:
+ipa, modem, venus, gpu
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+GPU and bluetooth are confirmed working, others may need more
+testing/fixes
+
+But regardless they will need the firmware paths specified here
+and firmware added upstream before they will work, so might as well
+get started on it now.
+
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 124 ++++++++++++-------------
- 1 file changed, 62 insertions(+), 62 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 0ee2f4b99fbd..93ed8f240461 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -38,11 +38,6 @@ reserved-memory {
- 		#size-cells = <2>;
- 		ranges;
- 
--		qseecom_mem: memory@b2000000 {
--			reg = <0 0xb2000000 0 0x1800000>;
--			no-map;
--		};
--
- 		gpu_mem: memory@8c415000 {
- 			reg = <0 0x8c415000 0 0x2000>;
- 			no-map;
-@@ -99,6 +94,11 @@ memory@9d400000 {
- 			no-map;
- 		};
- 
-+		qseecom_mem: memory@b2000000 {
-+			reg = <0 0xb2000000 0 0x1800000>;
-+			no-map;
-+		};
-+
- 		rmtfs_mem: rmtfs-region@f0800000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0 0xf0800000 0 0x202000>;
-@@ -467,14 +467,22 @@ &mss_pil {
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+index 09bfcef42402..6d6cc197176c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+@@ -40,19 +40,23 @@ key-thinq {
  };
  
-+&pm8998_gpios {
-+	vol_up_pin_a: vol-up-active-state {
-+		pins = "gpio6";
-+		function = "normal";
-+		input-enable;
-+		bias-pull-up;
-+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
-+	};
+ &adsp_pas {
+-	firmware-name = "qcom/sdm845/judyln/adsp.mbn";
++	firmware-name = "qcom/sdm845/LG/judyln/adsp.mbn";
+ };
+ 
+ &cdsp_pas {
+-	firmware-name = "qcom/sdm845/judyln/cdsp.mbn";
++	firmware-name = "qcom/sdm845/LG/judyln/cdsp.mbn";
+ };
+ 
+ &gpu_zap_shader {
+-	firmware-name = "qcom/sdm845/judyln/a630_zap.mbn";
++	firmware-name = "qcom/sdm845/LG/judyln/a630_zap.mbn";
 +};
 +
- &pm8998_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- 	status = "okay";
++&ipa {
++	firmware-name = "qcom/sdm845/LG/judyln/ipa_fws.mbn";
  };
  
- &sdhc_2 {
--	status = "okay";
--
- 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
- 
- 	pinctrl-names = "default";
-@@ -482,55 +490,8 @@ &sdhc_2 {
- 
- 	vmmc-supply = <&vreg_l21a_2p95>;
- 	vqmmc-supply = <&vddpx_2>;
--};
--
--/*
-- * UFS works partially and only with clk_ignore_unused.
-- * Sometimes it crashes with I/O errors.
-- */
--&ufs_mem_hc {
--	status = "okay";
--
--	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
--
--	vcc-supply = <&vreg_l20a_2p95>;
--	vcc-max-microamp = <600000>;
--};
--
--&ufs_mem_phy {
--	status = "okay";
--
--	vdda-phy-supply = <&vdda_ufs1_core>;
--	vdda-pll-supply = <&vdda_ufs1_1p2>;
--};
--
--&usb_1 {
--	status = "okay";
--};
--
--&usb_1_dwc3 {
--	/* TODO: these devices have usb id pin */
--	dr_mode = "peripheral";
--};
--
--&usb_1_hsphy {
--	status = "okay";
--
--	vdd-supply = <&vdda_usb1_ss_core>;
--	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
--	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
--
--	qcom,imp-res-offset-value = <8>;
--	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
--	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
--	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
--};
- 
--&usb_1_qmpphy {
- 	status = "okay";
--
--	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
--	vdda-pll-supply = <&vdda_usb1_ss_core>;
+ &mss_pil {
+-	firmware-name = "qcom/sdm845/judyln/mba.mbn", "qcom/sdm845/judyln/modem.mbn";
++	firmware-name = "qcom/sdm845/LG/judyln/mba.mbn", "qcom/sdm845/LG/judyln/modem.mbn";
  };
  
- /* PINCTRL - additions to nodes defined in sdm845.dtsi */
-@@ -571,12 +532,51 @@ sd_card_det_n: sd-card-det-n-state {
+ &tlmm {
+@@ -64,3 +68,7 @@ thinq_key_default: thinq-key-default-state {
+ 		bias-pull-up;
  	};
  };
- 
--&pm8998_gpios {
--	vol_up_pin_a: vol-up-active-state {
--		pins = "gpio6";
--		function = "normal";
--		input-enable;
--		bias-pull-up;
--		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
--	};
-+/*
-+ * UFS works partially and only with clk_ignore_unused.
-+ * Sometimes it crashes with I/O errors.
-+ */
-+&ufs_mem_hc {
-+	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
 +
-+	vcc-supply = <&vreg_l20a_2p95>;
-+	vcc-max-microamp = <600000>;
-+
-+	status = "okay";
++&venus {
++	firmware-name = "qcom/sdm845/LG/judyln/venus.mbn";
 +};
-+
-+&ufs_mem_phy {
-+	vdda-phy-supply = <&vdda_ufs1_core>;
-+	vdda-pll-supply = <&vdda_ufs1_1p2>;
-+
-+	status = "okay";
-+};
-+
-+&usb_1 {
-+	status = "okay";
-+};
-+
-+&usb_1_dwc3 {
-+	/* TODO: these devices have usb id pin */
-+	dr_mode = "peripheral";
-+};
-+
-+&usb_1_hsphy {
-+	vdd-supply = <&vdda_usb1_ss_core>;
-+	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
-+	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
-+
-+	qcom,imp-res-offset-value = <8>;
-+	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
-+	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
-+	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
-+
-+	status = "okay";
-+};
-+
-+&usb_1_qmpphy {
-+	vdda-phy-supply = <&vdda_usb1_ss_1p2>;
-+	vdda-pll-supply = <&vdda_usb1_ss_core>;
-+
-+	status = "okay";
- };
 
 -- 
 2.53.0
