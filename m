@@ -1,215 +1,199 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3C3358375
-	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 03:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E519C366046
+	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775099438; cv=none; b=QfRwpLwrpzvLvedR+vEr44VORhWSpE1ZYU2DfF6DRM9LUI7jrVdV9DW1wBaOvdLC6gnckeur+YEwVhB9lqjs+o6gbHzwcg9DzbW2MMVtVya4+jWm9tLR5B1Dewlv47i10Lqg8nNf9bgSxvxFW/QyXpkxKrnT2+64voSfxAYt6ho=
+	t=1775111938; cv=none; b=fJS8T7owy+dAexaoqrtrooYJKuKCRIdyuYxdXLeaX0xAJpTKKWPqkQ5/hGNSynT0X7+lmtPbuj4romi9ykuAo/9lPHmTtQRPIL/RLBSjIzhIS48HGK9lVZSGGzcpD0pqI7MpNnc2ozeoBkHIi2eJIvvB/pKou5mZIh1urOGF4cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775099438; c=relaxed/simple;
-	bh=i2IPgYVR6Ld9n24vmKw7wlfB6C16UoQiG5rHqnU45Ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l6owpP+8+Dd5Pb5GZYypRT4ty/Bp5RENJc/ydQZ9ptWxahUC//d+1+/pdomYgQldzcUy0raiS1CZCgE4EMhMTt/vWrhG/hooppVG0XpXYrFkeQA/mPAoJJXD+YKVNzGbyLdKhO5PQYSSlCmZXiINpC1+4EseRf9eDMQXSYJCJvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Hsjpl2Ho; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GodQb+Yj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1775111938; c=relaxed/simple;
+	bh=Den85LRFPGWkMEKe8pr8jV6JrMN+myp9iKHpKzVRmDE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K7Ns09zrw4sjVA6PRUtOue2iwkdvyGe6qos1MB+xgMBeZIFGC39/KtPuzcMviNzyRWtZAMMbTdxleEGz2K2NXqSyLFhb5WGj7KCmg8M/YCffmVlI7Pdz6DdgMX63Wan8B49KtjYMorctz8SVQWCWqVyxlkQzbupi3rMD8g1r1ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=rqktxEsV; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Hsjpl2Ho";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GodQb+Yj"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631M3vu01424210
-	for <phone-devel@vger.kernel.org>; Thu, 2 Apr 2026 03:10:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=SUF9Sm+/aFQ9Q9LGQgA6Lail
-	S0HG4qty4JdVJILkImE=; b=Hsjpl2Ho3osr8/sN2dRPsX9eMk9P3nnUcSo+13Pt
-	03bHApFgztTc4OIESBavEzBCixwkLfghlJarPFGwp6QGGBHhIxpaI9dKLGbAsELm
-	pEN4LJcNKoD6jlTxC4vLFIHcZdBO0jNZlZfKIdSmEX4uIxB6pbvHA2/aIrQf0mob
-	VHafumbC+G/GpXNAr6vEZkZmab3QDdoNsmD2hKFp+TspI6t+1gNv9EK96SF9SDnE
-	d8cqbxiDaOrJ+yyjTaIsX6PKKDafLXbXQBLv1VdxEzXB7cwXHa9ZdS1vZrK5PBY7
-	ov0KKrrGgQapDV09Ohgx4k5sFTjlpQgK05xX/IjircUkhA==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9511akr0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 02 Apr 2026 03:10:35 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2c18175fc54so2455488eec.1
-        for <phone-devel@vger.kernel.org>; Wed, 01 Apr 2026 20:10:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775099434; x=1775704234; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SUF9Sm+/aFQ9Q9LGQgA6LailS0HG4qty4JdVJILkImE=;
-        b=GodQb+YjBe4KjD742Wcq8sZn377SF9R5oN7/fQOjO8jJnAS570OE+sFVYBbwyRIScg
-         o6U/ueZFrVISjDCoDD9ySqTHcPjvPNoaHtbzh3OqtwBwfCEfxlueEvTnFIdnTET8QIxL
-         f6LZBnnLnn/9uppSbm8V+OZz8M7U/jjC4N5ziTiRWuPfpNaNq3zdLQVu5WhXM2yPq85N
-         y0rjKxDcCtHb4hNVN16s+1VG1whl+YZ2nZtQXiY0KBQn3D2WnYKIKST4Mh86nq0/Huee
-         GuubPo337HJL4gKmZBDCy8+Mgoq67HDmFGy3LDBGDutTGSu4Hc2kyx2EuE35zNObmSSx
-         JOgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775099434; x=1775704234;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SUF9Sm+/aFQ9Q9LGQgA6LailS0HG4qty4JdVJILkImE=;
-        b=kjNo5ZN5PVNuecJQjMrNS5wtjAr+32v+/uDYF6oGDL+4CGMxNQnOZhALbjs6kj6Prw
-         VLHP5PwjfZ5500M48xHsidFrUItt1nwAIZrBf79Sk9ya4qscDJdZIyysENjsg/4SShvh
-         wTcDWiuzUT1zL/ONT3cIfAf19jhjxa64bnOCYB3c2GpXdhiFJNdIE7Jfwyp8Qx4NwSeH
-         cIo+cZ42KGHwyxr4hDoaBsbOoEPl84us/6bzRilsSoTkQq0Df+oYH1kDH3lHYE9IcV++
-         9qK2uMMTQJR350JdFvX9Zkxm/O5pcqNOloSWhBq1p4i+eoFzLq/9KOsQiOzi6XnOeRtc
-         cP9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQEmxvLdO8Oh5uh+bQ9bKGnKlCMLTV2xBEc+JClzIqui37PCHiROnMfM8FfAfM/AdUzjuMtVR5Q0imTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwehZF6TErZ9PdwrMjhDMhvbI4MN6yJwS9IA4jzpiCxpKTZT9vA
-	PIGLPVbmU8rPSk3Alj5JmXDGGDnqlYjmTEawZ7GbSAVhOqiTI8nCosHE1qmy72pGn2CuY5mNCzq
-	KIdWQ5BZkvOVgV6As2lOXe/ZU3PM6AzoWboCIKuSYmDaXvQ6NKOS0fVmdgCqOKbA7NA==
-X-Gm-Gg: ATEYQzwYlEyOHvuXpnWaHF1KuCBoO3562O8b7uGt4cKoDCeEOUXGHNV0mo7VQslUakS
-	5c5LOa/xbRVxwS1rCHvhgfXoFIkEc69Xikjly1pyqs3sJ1tCZ2N5VhYGcnMtfOFTbXM1Awhv8pU
-	RfzvYUCWxAEYvd91HVcbaYoYXJSp1ZNnr9aExJcg8V3DunTGVMWsOpu8Eijr8u24Vz4H1XMq+sw
-	xOLxphM4pA1L4/BO0ERxEx4D4z7n9NWhW0vuTnZsugUK5NpUTB+j7fT1SVo4cKpe96MpfKiDJ5l
-	BWfXAYrxaFo1yJMhb4h19eoLQZgX+v3qhq3o7kITG/Ik7NDliV5bZ+/aoG2peZekUM2+8B5TLoU
-	/VGQfT80/HWzeTd/MXtgVBAtkTPcZDxDL5GIExQ/DT3/fr97UFtbMCcz9JQol5IzCJXbvGOOuC1
-	Y=
-X-Received: by 2002:a05:7300:2213:b0:2c0:becb:7640 with SMTP id 5a478bee46e88-2c931276dd6mr3580630eec.12.1775099434055;
-        Wed, 01 Apr 2026 20:10:34 -0700 (PDT)
-X-Received: by 2002:a05:7300:2213:b0:2c0:becb:7640 with SMTP id 5a478bee46e88-2c931276dd6mr3580610eec.12.1775099433506;
-        Wed, 01 Apr 2026 20:10:33 -0700 (PDT)
-Received: from hu-mdtipton-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2cafd073194sm283615eec.28.2026.04.01.20.10.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 20:10:33 -0700 (PDT)
-Date: Wed, 1 Apr 2026 20:10:31 -0700
-From: Mike Tipton <mike.tipton@oss.qualcomm.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        Georgi Djakov <djakov@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/5] dt-bindings: clock: qcom,milos-camcc: Document
- interconnect path
-Message-ID: <ac3eJ7lGevZwElfk@hu-mdtipton-lv.qualcomm.com>
-References: <20260116-milos-camcc-icc-v1-0-400b7fcd156a@fairphone.com>
- <20260116-milos-camcc-icc-v1-2-400b7fcd156a@fairphone.com>
- <20260117-efficient-fractal-sloth-aaf7c2@quoll>
- <59d9f7ff-4111-4304-a76c-40f4000545f5@oss.qualcomm.com>
- <9f8619d4-43ac-4bc0-9598-c498d59a27b8@oss.qualcomm.com>
- <acH7aEBvSbiNwhBz@hu-mdtipton-lv.qualcomm.com>
- <DHG7CMLREKDF.2L5V5VQCEYDKH@fairphone.com>
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="rqktxEsV"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1775111933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k+JozJ1OrWPVsB0V0Uf0kk1E2N0eCEbO2hmD2iHts/U=;
+	b=rqktxEsVMye5ighUt5e99ar35PdHgY6eoWzlw1RWA6/epA9FTkPTVC5qJyIDz/U8WQS689
+	Aqo3dpjKNwM+MJ95VD5oTiV+UV+sPIKjCNYVRn+YJ32RvLQj4pswLwFeui/hePMNtdblWg
+	LQTjnL1qr+D2qk7j73VTMkHyoR9uZgpmMMBSn6CcI68PzSSJY+NnRR/JIwT7vVOg11qXvp
+	uH0IoyvU0leOSxR7EZR09oN0Q40bWud51wzfXgp4r1xmaieCHgyckHcmHHt3amuXwj/FfC
+	QgvM6+40w48bBQMbsOUH+7n3xnRCsMmGo6lot18n5rbi3VDytCBe8ZEaBZ59kA==
+From: Paul Sajna <sajattack@postmarketos.org>
+Subject: [PATCH v8 00/15] arm64: dts: qcom: sdm845-lg: Improve hardware
+ support in devicetree
+Date: Wed, 01 Apr 2026 23:38:27 -0700
+Message-Id: <20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DHG7CMLREKDF.2L5V5VQCEYDKH@fairphone.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDAyNyBTYWx0ZWRfX3ncinjYhCZVo
- OHJxFw9kP0w/LtmEzK2v/b6WwfneEx9Yi878Uprzj24qpkFxw4f/yVMXYDKPnjTpaudlP+3IOo9
- 3eksU5EI3U2O1E/fCFzuXASOaDT10yubweasWcb23EVVSdPt8c38mUAOuKn5SuNir193Kmiy0U1
- FZ6QnCMDVd5XNEbneCVCS8pHT+9Pyn527DAVvzbHYdg/n9h6QwigOg41Mys48y7BvdZVf7DF04D
- frTor+miqIVBV3i6I9kDD0476Lxua6vZusCtKQllm1B6PZsOluShh9M0ifyoXRMFxSlIcjCHqkU
- /dwZ/+tYOB1AIuulIBW17rro8rQ2eq+T0/OKCv2eA7eDek3X6kVw73dknv6BEngoYRTcNiq0GgY
- xDocVRfFtCjtz+f0UjoaMxXttQ5vs/+ucYcJlUqrKanEGdOI6E/2imxRbBrybsc0ouZscyv/5t5
- 71eH47QEhnBvKmGBOJw==
-X-Proofpoint-GUID: Svlmq00lPnKl2h97Ed3BNlTAG_xpXXJR
-X-Proofpoint-ORIG-GUID: Svlmq00lPnKl2h97Ed3BNlTAG_xpXXJR
-X-Authority-Analysis: v=2.4 cv=F8pat6hN c=1 sm=1 tr=0 ts=69cdde2b cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=W6naqKN7AAAA:8 a=hMnAP9elBZEPa_KQw-IA:9 a=CjuIK1q_8ugA:10
- a=PxkB5W3o20Ba91AHUih5:22 a=Xp8b5NkTPdl8jt_qJiRs:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-02_01,2026-04-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020027
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XSTU7DMBAF4KtUXmM049+kQoh7IBa2M24DbVLiN
+ KKqenfctIVGkOXzyJ+eRnNkibqaElsujqyjoU512+RQPCxYWLtmRbyucmYChIYSkb/vq8Om4VW
+ fONqgkHRZBYgsf9h1FOuvEXt9u+SOPvfZ7C+PbEspudFcLp6uJNzInWtowwfkyAuhg1UKpPf+Z
+ demfuu6D+rb9Nh2q2d2xtd16tvuMBYfcNSvoLzvmDngQnrlrS2hCvSHG7VB3AtmIogsaEJDBoS
+ RLs4I8k4QxUSQWfCoQiypdHk4I6gfAVHoiaCy4LQzoAG8MHZG0L+CgOkedBYKCBhjcIUq5gRzE
+ wxIMRXMeZNlZSE4NBrDjGDvBDm5l8GeO1iB1qOOFP0/wul0+gZ34fWFlAIAAA==
+X-Change-ID: 20250911-judyln-dts-17c41e59dc0f
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
+ Christopher Brown <crispybrown@gmail.com>, 
+ Paul Sajna <sajattack@postmarketos.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Pavel Machek <pavel@ucw.cz>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775111929; l=5249;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=Den85LRFPGWkMEKe8pr8jV6JrMN+myp9iKHpKzVRmDE=;
+ b=JZKyIofI4nhKOY/Ucjy7WhOdUdzWcU7ppwmKFXS3HXblPJKurAly8VsXUvKXZkDGuqUaHtEQi
+ augNMz+DG2bAfEdsS3aQYtLAEWHpBEmnBKElkGFIOFyH/Rz6n8KOZON
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
+X-Migadu-Flow: FLOW_OUT
 
-Hi Luca,
+Rollup of improved hardware support via devicetree for LG G7 ThinQ
+(judyln) from sdm845-mainline kernel fork
 
-On Mon, Mar 30, 2026 at 04:55:40PM +0200, Luca Weiss wrote:
-> Hi Mike,
-> 
-> On Tue Mar 24, 2026 at 3:48 AM CET, Mike Tipton wrote:
-> > On Mon, Jan 19, 2026 at 11:28:07AM +0100, Konrad Dybcio wrote:
-> >> 
-> >> 
-> >> On 1/19/26 11:20 AM, Konrad Dybcio wrote:
-> >> > On 1/17/26 12:46 PM, Krzysztof Kozlowski wrote:
-> >> >> On Fri, Jan 16, 2026 at 02:17:21PM +0100, Luca Weiss wrote:
-> >> >>> Document an interconnect path for camcc that's required to enable
-> >> >>> the CAMSS_TOP_GDSC power domain.
-> >> >>
-> >> >> I find it confusing. Enabling GDSC power domains is done via power
-> >> >> domains, not via interconnects. Do not represent power domains as
-> >> >> interconnects, it's something completely different.
-> >> > 
-> >> > The name of the power domains is CAMSS_TOP_GDSC (seems you misread)
-> >> > 
-> >> > For the power domain to successfully turn on, the MNoC needs to be
-> >> > turned on (empirical evidence). The way to do it is to request a
-> >> > nonzero vote on this interconnect path
-> >> > 
-> >> > (presumably because the GDSC or its invisible providers require
-> >> > something connected over that bus to carry out their enable sequences).
-> >
-> > The GDSC itself shouldn't depend on MMNOC in order to turn on properly.
-> > It should turn on just fine without it. There *is* a dependency between
-> > CAM_TOP_GDSC and MMNOC, but it's in the opposite direction.
-> 
-> I can personally just write from practical experience, as Qualcomm
-> doesn't share any relevant documentation with OEMs.
-> 
-> Without this patch the GDSC refuses to turn on.
-> 
-> [  291.055839] ------------[ cut here ]------------
-> [  291.055860] cam_cc_camss_top_gdsc status stuck at 'off'
-> [  291.055878] WARNING: drivers/clk/qcom/gdsc.c:178 at gdsc_toggle_logic+0x138/0x144, CPU#4: hexdump/1995
-> 
-> With the patch it turns on just fine, no issues seen.
+Notably, this patch-series enables full DRM acceleration and wifi,
+among other small improvements in individual commits
 
-I haven't observed that behavior, and I just reconfirmed on a more
-recent chip. I explicitly toggled this GDSC on/off while MMNOC is
-collapsed and it turns on fine. And if I disable MMNOC while the GDSC is
-still on, then MMNOC gets stuck entering collapse. But I haven't tried
-on Milos, specifically. It's possible there's some behavior unique to it
-that I'm not aware of.
+after this patch-series the main things that remain to be worked
+on include touchscreen, audio, and modem.
 
-Regardless, the correct solution for both issues (MMNOC getting stuck
-turning off or the GDSC getting stuck turning on) is the same. Which is
-to vote for MMNOC on behalf of the GDSC as your patch does. And is also
-what we've done downstream.
+Depends upon panel driver patch-series https://lore.kernel.org/all/20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org/T/#r9a976ca01e309b6c03100e984a26a0ffc2fe2002
 
-> 
-> As Konrad has written, originally I didn't see any issue because that
-> interconnect was being kept alive by simple-framebuffer where I've added
-> 'interconnects' to keep the framebuffer alive. However when testing
-> without this, the GDSC would refuse to turn on, which led me to this
-> patch series.
-> 
-> Additionally you can see in downstream devicetree you can also see an
-> interconnect defined for the "cam_cc_camss_top_gdsc" node:
-> 
-> https://gerrit-public.fairphone.software/plugins/gitiles/platform/vendor/qcom/proprietary/devicetree/+/refs/heads/odm/rc/target/15/fp6/fps_overlay/volcano.dtsi#2943
+Co-developed-by: Amir Dahan <system64fumo@tuta.io>
+Co-developed-by: Christopher Brown <crispybrown@gmail.com>
+Signed-off-by: Amir Dahan <system64fumo@tuta.io>
+Signed-off-by: Christopher Brown <crispybrown@gmail.com>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+Changes in v8:
+- Fix unit address nit in framebuffer reference commit
+- Link to v7: https://lore.kernel.org/r/20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org
 
-Right, this logic was originally added to prevent MMNOC from getting
-stuck in collapse, rather than to prevent the GDSC from getting stuck
-turning on.
+Changes in v7:
+- Reorganize commits
+- Add firmware-paths for judyp
+- Reword framebuffer reference commit message
+- Squash qups and dma-controllers commits
+- Link to v6: https://lore.kernel.org/r/20260323-judyln-dts-v6-0-29d70ca1651c@postmarketos.org
 
-Mike
+Changes in v6:
+- Mistakes were made with b4 and branch was rebuilt, hopefully correctly
+- Split more things that got mixed into the sort commit (qups and venus)
+- Added more backlight properties from downstream
+- Framebuffer added back in
+- Update compatible for panel
+- Add qcom,te-source
+- Reference memory region in framebuffer instead of reg
+- Correction to rmtfs_mem
+- Set lab/ibb to 5.5V
+- Fixed flashlight/torch
+- Update commit message for gsi-loader=self
+- Update LG to capitalized in firmware paths
+- Remove qcom,snoc-host-cap-skip-quirk dependency (break wifi)
+- Enable dma controllers
+- Link to v5: https://lore.kernel.org/r/20251203-judyln-dts-v5-0-80c1ffca8487@postmarketos.org
 
-> 
-> Regards
-> Luca
+Changes in v5:
+- update system64's email
+- reduce lab/ibb voltage range
+- status should go last
+- remove rebase leftovers
+- fix flashlight
+- Link to v4: https://lore.kernel.org/r/20251125-judyln-dts-v4-0-a5a60500b267@postmarketos.org
+
+Changes in v4:
+- add panel identifier in addition to ddic
+- make sde_te pull-down
+- fixup flash current
+- remove framebuffer reserved-mem
+- remove manual lower guard
+- depend upon https://lore.kernel.org/all/20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz/T
+- reword commits
+- Link to v3: https://lore.kernel.org/r/20250928-judyln-dts-v3-0-b14cf9e9a928@postmarketos.org
+
+Changes in v3:
+- change firmware paths to lowercase 'lg' (matching dt-bindings)
+- fix signoffs
+- add wifi dmesg to commit message
+- remove regulator-always-on from ibb
+- remove framebuffer
+- remove msm ids
+- don't continue commit subject into commit messages
+- split bluetooth node
+- add sbu uart details to commit message
+- change ipa gsi-loader to self
+- Link to v2: https://lore.kernel.org/r/20250916-judyln-dts-v2-0-5e16e60263af@postmarketos.org
+
+Changes in v2:
+- sort at the start
+- drop unnecessary labels
+- drop unnecessary gmu
+- multi-led
+- split fb-panel changes
+- expand upon firmware commit message
+- use qcom,calibration-variant instead of
+  qcom,ath10k-calibration-variant
+- change firmware paths to include "LG"
+- remove framebuffer reservation
+- add lab/ibb
+
+- Link to v1: https://lore.kernel.org/r/20250913-judyln-dts-v1-0-23b4b7790dce@postmarketos.org
+
+---
+Amir Dahan (1):
+      arm64: dts: qcom: sdm845-lg-common: Add LEDs
+
+Christopher Brown (1):
+      arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
+
+Paul Sajna (13):
+      arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
+      arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change path
+      arm64: dts: qcom: sdm845-lg-judyp: Define firmware paths for judyp
+      arm64: dts: qcom: sdm845-lg-common: Enable venus
+      arm64: dts: qcom: sdm845-lg-common: Enable qups and their dma controllers
+      arm64: dts: qcom: sdm845-lg: Add uarts and Bluetooth
+      arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+      arm64: dts: qcom: sdm845-lg-judyln: Add display panel
+      arm64: dts: qcom: sdm845-lg: Add wifi nodes
+      arm64: dts: qcom: sdm845-lg-common: Add chassis-type
+      arm64: dts: qcom: sdm845-lg-common: Add camera flash
+      arm64: dts: qcom: sdm845-lg-common: Change ipa gsi-loader to 'self', add memory-region
+      arm64: dts: qcom: sdm845-lg-{judyln, judyp}: Reference memory region in fb
+
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 228 +++++++++++++++++++------
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 131 +++++++++++++-
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts   |  32 +++-
+ 3 files changed, 321 insertions(+), 70 deletions(-)
+---
+base-commit: 674feabdc26e80c4dbc884d7b6e2d2a4b93919e6
+change-id: 20250911-judyln-dts-17c41e59dc0f
+prerequisite-message-id: <20250910-judyln-panel-v1-1-825c74403bbb@postmarketos.org>
+prerequisite-patch-id: e51151ea7f8fdad6ad7d90713febc5c6b6fc4f9c
+prerequisite-patch-id: b3dd44250da9cd12bc5b2d0d7e865dbe19ceed92
+prerequisite-patch-id: fd6c8077806cb03fcf37d0e0d730314c2760e334
+
+Best regards,
+-- 
+Paul Sajna <sajattack@postmarketos.org>
+
