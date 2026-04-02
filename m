@@ -1,124 +1,131 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7301D6BB
-	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F37D36657D;
+	Thu,  2 Apr 2026 08:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775112218; cv=none; b=Csbd4Q+HA+RKrAq+wglURNAewyaYLG9ZugeoDC8xbQ3W8Zk2yUejFnPTgDCilbD5w4gSymwKpE+Z4SFy022oQH3ryOVfc8vieLpJ1BO6i7wODl80oI0UiJKyYbCkJM5dSiDa+eriogwqpmQeoP9zt/Eu47gYSp4+IMFdeEqUwBM=
+	t=1775118215; cv=none; b=DV6x3DV5pvT1Pkk582muh4/GrzBepi9pqlctcbcrBmb6YtIdZQ9Etx4QRq8BxT/5klBs+2N4edzZDmVw8Ah+szBOZdDrXPGaEaLcC77WXIRL95v9HQl0JNG5rcffY5uO6nu3VcIkQFTt0nXODXmTPK54ojeSHOFu3vJrSTLH10k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775112218; c=relaxed/simple;
-	bh=YL8boRi58Fb9HIAjBmQGYG/fPyUD+EmvR+sjd2urFWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D0ShKnMhD9RvWWE05kuILx3dUGQZxki/iDrs0rupktEDs6EFTTc9/NoCvIYTo6n9KpX+rZMVT1l+a1dpZbHhp+uVjC10UopiltJ2ICobDXGhZW1EwTZpCed5XkreyxsZURejgzHRKWN3KtpyjH1gRVk3w6iWAHszMaXvGfBhpPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=h9W1ehdU; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1775118215; c=relaxed/simple;
+	bh=0FInPO+JEPlRAzEm5olBslJRrlbdYfFnO7iYh10Iz7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jXQWhpgHR1+lLmhB6nxjMeYt7h6FR3rET1OqGyyeabHwacnHVrsvYy9MBgOQ+/Lynql2jfomJTiTpMD9r/f+LAI51O8b+VhKbR++UD+uSJbJNVHg9df2RguqFMG7mXyQMZeEd9mL/9lQ8GwtudS9keAOnNhF5pQrl0e/+1qNivY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U08toMkE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="h9W1ehdU"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775112215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dN6n7q9aSz+JAAiiGw5b3hzH3XbhBiH8W3rSEv/bZPw=;
-	b=h9W1ehdUXuViIQE9bKvqB393DInO896IswAxVFNKb4NDayFU0Haz3kTOdLn0f+/diNxq5L
-	wrScnM8xumsWy5owqF9ISGAn7+HO1NS1mFcrDniGl0G/JIn3UH33Q85oGPlQTcGgPJJkTW
-	TpNjbXdtEmc1+PvNcgt0Gg8iKbPcOZDeCxQyLOU1J7MEPpj9zm8Jib1DqqTGaTZPjgOEYS
-	6eBWsC49i01qt7b6UXwLqxsJqMveaeKSgicppj7fj0ainos7cnNMPheiySK5Kf43DWXpv4
-	y6yXtVfyhnj4vix1c8sMO2Tx3bFc96oEI4PI841ketexSLGYs6Pq4k07lCYw0A==
-From: Paul Sajna <sajattack@postmarketos.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Heidelberg <david@ixit.cz>
-Cc: Paul Sajna <sajattack@postmarketos.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Amir Dahan <system64fumo@tuta.io>,
-	Christopher Brown <crispybrown@gmail.com>
-Subject: [PATCH v8 15/15] arm64: dts: qcom: sdm845-lg-{judyln, judyp}: Reference memory region in fb
-Date: Wed,  1 Apr 2026 23:43:04 -0700
-Message-ID: <20260401-judyln-dts-v8-15-cf13065e52ab@postmarketos.org>
-In-Reply-To: <20260401-judyln-dts-v8-0-cf13065e52ab@postmarketos.org>
-References: <20260401-judyln-dts-v8-0-cf13065e52ab@postmarketos.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U08toMkE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3B4C116C6;
+	Thu,  2 Apr 2026 08:23:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775118215;
+	bh=0FInPO+JEPlRAzEm5olBslJRrlbdYfFnO7iYh10Iz7Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=U08toMkE7N41wybTQoTG9WYeM9s9r+kuPrajoRivjxDsYBwux6oyY7If7lPCW3xWT
+	 efrn5Gtm1iqH8wcV4IKj7L7530VEBydA/XVHg5Q5AeeHu54M4gKEOZevoZ4RoDWps4
+	 RyeOx3l+0nKupu0Sthe4CnjwnonN5/Wctkr0RiCJ7l1tduqLM7jdvnIBiV3uJiHe+t
+	 Gd4at37AE0inWYJ6u+au35BbGF8AzbX10QdypxRkL1kKyO4NAuXQEGYtk+wo+12LCx
+	 +2CyX6jvMwTv0QfkE7cFLYjQBjNgHAwb96q3bPTWnEjHLgSCwAEH3282XuPt41Wun4
+	 j14G8AuwY5yJQ==
+Message-ID: <768180d0-bab6-466f-9f5f-54b36f353bd6@kernel.org>
+Date: Thu, 2 Apr 2026 10:23:30 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775112053; l=2103; i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id; bh=YL8boRi58Fb9HIAjBmQGYG/fPyUD+EmvR+sjd2urFWo=; b=6IbjJKoo3wZPGYtTsR4lTfSkowsGV2h2BAtMhGEmb3RKwtanprYFJVF4MWDnyAggU1fvvi2sV 6mUPomKyNaLBndw29Tp84fuROJ0M80y7uwQSBpQ9LK7Kq7XtAQf9i5s
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519; pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: clock: qcom: document the Milos GX clock
+ controller
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260306-milos-gxclkctl-v1-0-00b09ee159a7@fairphone.com>
+ <20260306-milos-gxclkctl-v1-1-00b09ee159a7@fairphone.com>
+ <20260307-inventive-stingray-of-pride-5c2216@quoll>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260307-inventive-stingray-of-pride-5c2216@quoll>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-To prevent duplicating the framebuffer address and size point out the
-existing framebuffer memory region instead of specifying the address
-manually.
+On 07/03/2026 16:30, Krzysztof Kozlowski wrote:
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - qcom,milos-gxclkctl
+>> +
+>> +  power-domains:
+>> +    description:
+>> +      Power domains required for the clock controller to operate
+>> +    items:
+>> +      - description: GFX power domain
+>> +      - description: GPUCC(CX) power domain
+>> +
+>> +  '#power-domain-cells':
+>> +    const: 1
+>> +
+>> +  reg:
+>> +    maxItems: 1
+> 
+> reg should be the second property, like you have it in "required" part.
+> I guess you copied it from kaanapali-gxclkctl.yaml, so lesson - qcom
+> bindings have acceptable quality, but not good enough to take as correct
+> starting point.
+> 
 
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 3 +--
- arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts  | 4 ++--
- arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts   | 4 ++--
- 3 files changed, 5 insertions(+), 6 deletions(-)
+OTOH, why this entire binding cannot be squashed in Kaanapali one?
+What's the difference?
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 85dc4468b6c4..86cf4eb44084 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -98,8 +98,7 @@ spss_mem: memory@99000000 {
- 			no-map;
- 		};
- 
--		/* Framebuffer region */
--		memory@9d400000 {
-+		framebuffer_mem: memory@9d400000 {
- 			reg = <0x0 0x9d400000 0x0 0x2400000>;
- 			no-map;
- 		};
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-index adf41aa0146a..349faa123ff1 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-@@ -14,9 +14,9 @@ / {
- 	compatible = "lg,judyln", "qcom,sdm845";
- 
- 	chosen {
--		framebuffer@9d400000 {
-+		framebuffer {
- 			compatible = "simple-framebuffer";
--			reg = <0x0 0x9d400000 0x0 (1440 * 3120 * 4)>;
-+			memory-region = <&framebuffer_mem>;
- 			width = <1440>;
- 			height = <3120>;
- 			stride = <(1440 * 4)>;
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts
-index d244ebdd17be..44e762f78e95 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyp.dts
-@@ -14,9 +14,9 @@ / {
- 	compatible = "lg,judyp", "qcom,sdm845";
- 
- 	chosen {
--		framebuffer@9d400000 {
-+		framebuffer {
- 			compatible = "simple-framebuffer";
--			reg = <0x0 0x9d400000 0x0 (1440 * 2880 * 4)>;
-+			memory-region = <&framebuffer_mem>;
- 			width = <1440>;
- 			height = <2880>;
- 			stride = <(1440 * 4)>;
-
--- 
-2.53.0
-
+Best regards,
+Krzysztof
