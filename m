@@ -1,37 +1,37 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F21638654B
-	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE2138756B
+	for <phone-devel@vger.kernel.org>; Thu,  2 Apr 2026 06:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775111963; cv=none; b=iYGz8kNIk+tBcSK1VnPW1dAWF0BTY1J0k3F4+AGrSMPN4GYP4CBBQcG5zrISMl3vkH9hnd4WCbJHGuYFJovoM6yMY4ZLdAHYDVn6QwrlqGL21jbQqnX0TIAIL7LEoVbOo3QeIFMp3cP317k1UcLHW+ySNntUO8YpfiSii6DzRy0=
+	t=1775111967; cv=none; b=Deyo58CFR1+N2ZkJn9zRN90NoB7Fa9BJRnH7ht0eOUaXoLok5DCucpezEX/tiO/3nKTBSFPm2Q/04xCItbi2FR9wwHirQcYdJMQSQYhHNp+aLPpL79mJLS0BunTGNQ9tSk4af+s4QnuCjwZewPlgOUZ0XxsWF6AkQ9R4BaKkwYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775111963; c=relaxed/simple;
-	bh=2OZZUVrxmCnuiImJ91NAO4ZXnGPXGDfivM1k6ood+Do=;
+	s=arc-20240116; t=1775111967; c=relaxed/simple;
+	bh=3IrHi3Mcv3c5xAse6y3RAJeobRsXRa0HsBEFrcGQrqA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Kc6KkmX2ucmiXvExJV0FGpqxohB9bmnH2xLTbBWTmfkau7J/T0Mk278OQPrJA9zCmZWu7VguC3NtA6ucxoB3vhG9Rj21lvhR1vbH9Ix97U13SL0Y8CKP7HNbJuVvPIi/dR6dKWu+Xw//OLFsy0evjVovY59FML8X18dWz6JSHoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=k+4YXJC2; arc=none smtp.client-ip=91.218.175.174
+	 In-Reply-To:To:Cc; b=FV05FQZ44RJj8UCVsMYtQe5c1JALLnO/rXLyYrScnBlSksLwd5O+XIvrubN2Ehlzf2A/IqXEW2IPpLrlpM6Fgm0tClol+2Wt8ylalRn2vYebqzQ9eiQOB1QrhJyatDlY0utNaHGpZIL3/7lfsWW/AFwEzspoKUcFzFgCgL/3vWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=O/ehiUK1; arc=none smtp.client-ip=91.218.175.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="k+4YXJC2"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="O/ehiUK1"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775111960;
+	s=key1; t=1775111964;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PzExXl/EHRF/VL3fZKD3Wfza2ZqXaYA4mFIw7BUnBQI=;
-	b=k+4YXJC21vKDtmSLXU68b1IbN1V4uUtXByLBpR77q/henS+ofXKAz1cZNahpWwIGQ8jFzK
-	i6c5h4Y90FY82+B8XjU1Vb01upcCvoy55r+kCifx7Nx6q+xEdTlwX+JqJ6lC+MRFRh3j3m
-	mEMdiyZhSm9v9rAvZYOOs1iH0ybWxJknQzKgF6gExh2P9TvrEf1sCCPTbNhqA41zzotnyz
-	aQFOqU5PaQcnd4ZGRPgQoZzHjJRyaRQOYJIPPK0/Bhojula0P+k50ql6IWymzM6oFAffXa
-	IPUKw+Vw+riKV1Xqp1ujk33m/9eu/Byoim2bVsiSQoPZNFoGU+vGZopoSWnpVw==
+	bh=jiDukw1aM2i84BBU9Udntw+qp1ClJnW/ElHufmGbE5g=;
+	b=O/ehiUK1FEEJ504WvuiHIh5LepGs4DEDsK6rZQpr1avrP9KWG/s6Fpk6F9GKmewuqfgLYE
+	kXra658qbEPyzfm2gMVf0xug8UVV7a3JyD039oywwPk1InBY4hcAkLyHgmUPOI7I1ECb+R
+	Fkv9VOc9SXhSSrVYdU3SeMxlDdHVHDVuAkNPQAV0AXo/Ozxp7I8PufF6h5/izZQu1dnvyn
+	pzk8hZ53QelF+eyIc5s1AkgA0WGvYMR72OZ6H7JZfTiNUC1xyyKXYinSQtfpa4M41vUGPi
+	ActtCSW5zXZVBZSgVVsXxtX7zS9V5pff5Q2gb3cQL9kssYut1FrOfoL4tk14FA==
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Wed, 01 Apr 2026 23:38:35 -0700
-Subject: [PATCH v8 08/15] arm64: dts: qcom: sdm845-lg-common: Add LEDs
+Date: Wed, 01 Apr 2026 23:38:36 -0700
+Subject: [PATCH v8 09/15] arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-judyln-dts-v8-8-7677cfafbc78@postmarketos.org>
+Message-Id: <20260401-judyln-dts-v8-9-7677cfafbc78@postmarketos.org>
 References: <20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org>
 In-Reply-To: <20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -51,74 +51,52 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, Amir Dahan <system64fumo@tuta.io>, 
  Christopher Brown <crispybrown@gmail.com>, 
- Paul Sajna <sajattack@postmarketos.org>, Pavel Machek <pavel@ucw.cz>, 
+ Paul Sajna <sajattack@postmarketos.org>, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775111929; l=1385;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775111929; l=1151;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=34eT61AAHtgeebYRAnh4RtcK/L2H9WQuYQajrBpPHng=;
- b=uc5CdtyRsljZ34BHNItXKj398fLLRzG8xVg2Pppatm1Nm1aZSIL5W+hDbCZ+5+Guluu0sJrjo
- A/Y1oOs+HkrDldTjUJNqLcdVA6/EqOjoj0WOzCQFrIRmxTcsfeJMVdX
+ bh=3IrHi3Mcv3c5xAse6y3RAJeobRsXRa0HsBEFrcGQrqA=;
+ b=5lt4NIiySlhVbc6tRp9Hv+DQHvJfSHjrKNHYtRvgZTzKpeXbvK8w8aDYuDW4gsA9l3EQvgJCp
+ 0MG3JwbqPxsDe/buualmaOgYV13oV/T88u9gyznichlLBO0Zuqh4jCo
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-From: Amir Dahan <system64fumo@tuta.io>
+These regulators are required for the LCD
 
-Add the multicolor status LED in the phone's notch.
-
-Signed-off-by: Amir Dahan <system64fumo@tuta.io>
-Reviewed-by: Pavel Machek <pavel@ucw.cz>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 27221b3afb30..51cd930488a9 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -6,6 +6,7 @@
-  */
- 
- #include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- 
-@@ -497,6 +498,33 @@ &pm8998_resin {
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+index 6b837da4ef21..2c024b32c00c 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
+@@ -71,6 +71,23 @@ &ipa {
+ 	firmware-name = "qcom/sdm845/LG/judyln/ipa_fws.mbn";
  };
  
-+&pmi8998_lpg {
-+	status = "okay";
-+
-+	multi-led {
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_STATUS;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@3 {
-+			reg = <3>;
-+			color = <LED_COLOR_ID_BLUE>;
-+		};
-+
-+		led@4 {
-+			reg = <4>;
-+			color = <LED_COLOR_ID_GREEN>;
-+		};
-+
-+		led@5 {
-+			reg = <5>;
-+			color = <LED_COLOR_ID_RED>;
-+		};
-+	};
++&ibb {
++	regulator-min-microvolt = <5500000>;
++	regulator-max-microvolt = <5500000>;
++	regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++	qcom,discharge-resistor-kohms = <300>;
 +};
 +
- &qupv3_id_0 {
- 	status = "okay";
++&lab {
++	regulator-min-microvolt = <5500000>;
++	regulator-max-microvolt = <5500000>;
++	regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++};
++
+ &mss_pil {
+ 	firmware-name = "qcom/sdm845/LG/judyln/mba.mbn", "qcom/sdm845/LG/judyln/modem.mbn";
  };
 
 -- 
