@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16A31691A;
-	Fri,  3 Apr 2026 16:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E1E2701BB;
+	Fri,  3 Apr 2026 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775235335; cv=none; b=OO19xijSZX09Gstg+J+7LEVlk2AKk05/u/as8NMXBDJjfQZrDsXbam1ykGtqRyvA/Lo3rihRSIt7RB30eX//DSCs43aaxylK+AycbZDZbnLlm53scft2XNWDqOn4lDopth41B8LeHFPW8P4bLGhuhXNT5zrsnrlCEOGkZKo0Jnc=
+	t=1775236116; cv=none; b=ENzOqyVLi+Nag2yXLFC3h4QYkMbFEhBSJp5RYWJHYeZGJUJjR8WEMnNg6QVqHPHcQ2k/+dvJyLVj2yoOwxveCNcIs7IsYlDYWMrTHmGaguWZbMYuux+oa5woNoT/ZIGtj8Cz/ndju1epq+2nxL4hrc2w8E0okbLmGXK9gd8PdPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775235335; c=relaxed/simple;
-	bh=/tzQuZ/U/5XUWUWrTbV+stwVTQRPCnc9ujggvi8xkgE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iEG9x835B33Fvt8L4jvapxVlj7zIo688oHmvBMFXMC+kBsLVOt+TItFDvCIEH/cj7yLc9Umrpz2cqrUNs1uYkVSnQfSnK3mBzRM/VTdYDd6cAjbCBeH5ICIAi3fyKBVZi1aIG3sh/2St7MxDy0K14gyuORxzPrk01x+c0DgzjUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+a3LlXW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775236116; c=relaxed/simple;
+	bh=GlKYN/zZxt8aijzn4oIdQuv3Z0rJb0I1333hvIbLwMw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=coJQPiRgk8Qn1MsUNKSia5D29U+Tzts+tS9X+nyT/YLFWZu6DFYr1fu5OvgW4PAzWHCFxOFBBFti4AuJXUkkrlogantIekUhcUzerP/aebWtMvbiETo9b2tIXdv3zXcU7X+MZ2N1qDd8x+uqWz/cDZYWNNCia3baikwVShk7quM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZchdwm3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+a3LlXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2DB97C2BCB2;
-	Fri,  3 Apr 2026 16:55:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZchdwm3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62892C4CEF7;
+	Fri,  3 Apr 2026 17:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775235335;
-	bh=/tzQuZ/U/5XUWUWrTbV+stwVTQRPCnc9ujggvi8xkgE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=p+a3LlXW+FQvX97pw8oCJmlWc+nyHoFdWNzJfJCUYt4vOUwPVRZ17Xzxceax9fX2q
-	 9bxinSAa9KWrUperEcZOcin7FHk7shErm3y1MF3UQMuD+OWYsPvSOh1IE9DTBb6JOR
-	 2yp4mvnvJAgkrrSa7OInEX1UJgxEi7psSsYk2TOjH91RZLDPBeStVmgL36XdyZ9+T8
-	 MWQGbn753ubTDJg6zah9aHQF0vBxry/1gbabuZgqwb3PRhlf2PWXfYsFPaTkAkXU8U
-	 8o77eF7YjgnlpoC6gvAoumM6Ebu/P7Ov4cwAG0Io0VG7Pz3f06901uosshjCKSXIl2
-	 Tg1H5meUg4cag==
+	s=k20201202; t=1775236116;
+	bh=GlKYN/zZxt8aijzn4oIdQuv3Z0rJb0I1333hvIbLwMw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=OZchdwm3Ry93yItR+6UNZXN34uWDQ7gZvJK2HAVZl/Qq2cvq9bdpSu34AsF1KWwXF
+	 Ag7g7med83zCKIraZaGQUYsGmKxTCu1qs1L1zjKdmVQC7JjGbfvvaQm3v7LPD0ZKD3
+	 BtE/fiACsNTQSmWksigJ/WblVyXNIFXqiDfngPflknrKnodGv87n6lrpX0aoHJtWvm
+	 18JaTngPC0it1TbNBpTEPf2HKn6L+m732WFLUp98CNTLxoBhxXA57Tak+3AnxRZ4Zs
+	 FmSkWC4cGAuLoAjrGtGwr0qWvIsqdVL1snlngdkepn6grRlYIJox6sU02kwyRyMNQl
+	 mowISHbQyVFRQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 227CCE85385;
-	Fri,  3 Apr 2026 16:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A577E85386;
+	Fri,  3 Apr 2026 17:08:36 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 03 Apr 2026 18:55:34 +0200
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Fix
- compatible strings
+Subject: [PATCH WIP v3 00/11] Input: support for STM FTS5
+Date: Fri, 03 Apr 2026 19:08:29 +0200
+Message-Id: <20260403-stmfts5-v3-0-5da768cfd201@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,89 +40,111 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-beryllium-compat-string-v1-2-0a6b9cb55a20@ixit.cz>
-References: <20260403-beryllium-compat-string-v1-0-0a6b9cb55a20@ixit.cz>
-In-Reply-To: <20260403-beryllium-compat-string-v1-0-0a6b9cb55a20@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Joel Selvaraj <joelselvaraj.oss@gmail.com>, 
- Jens Reidel <adrian@travitia.xyz>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAA30z2kC/02Muw7CIBSGX8WcWQwHSi9Orm5uDsahUGrPYGuAk
+ GrTd5cwWMf/8n0LeOvIejjuFnA2kqdpTEHud2CGdnxYRl3KILgoucCC+fDsg1dMF5VE7HVXSQH
+ p/XK2pzmbbnA9X+CeyoF8mNw72yPmKYskx58oIuNMCFOoWjetKesTzRQO5pMNUfxRqDZKJKri2
+ tTS2kY1uFHrun4B4OVZ4dcAAAA=
+X-Change-ID: 20260214-stmfts5-b47311fbd732
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1901; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2782; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=MZ+eRzNq9NMrcA+OAcR5yU63SqPRgMpiRYCCd8HwqP8=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpz/EFpP7IbtRoFPW4edA+U04N6Pc6pM0G+LVN7
- C3zBYwhtZiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac/xBQAKCRBgAj/E00kg
- cibnD/90wPlkMiUxRKz4ioLPT7dxEjWGGLbcRHmehrjszOfYOWW+qBJer0xSYC3ZsCBjjU6SKM1
- rvZYC3o7ABd2McxVfIHRU3ie2+oHtftxK4vwhAsE6fwysdObacccajWqFgbsjMgarB+oqK1mdRi
- F7xwDJg52n84DzAA7qSvCWpHyK7jhq5YGH36e5Nqf8UFYZQ/RLDOCIfAsfxrL+KktCwvSU22IuV
- oUqpzWXJmMqH7X4/GdBUyUdXNcbkgQKwHLHN7P46/f6jZgslBbOSx94h0dyqStV/7GdxC4yWteU
- Lrw9ydsB5ZQUzpdVt/ciFWqFrlZrmpvgRs1dumBxSOeEPtaX6K39gsapqKCyHM8auhdfNPb/EOh
- Hsg+me4KMM0WpW2aEMnfzuKUC5ryJnESYqyZ1HAL0HeCyHUgslwYMekJNaF6nRMXyizP7p7oWlg
- HL4Awf0pKgRN7Ye2FqgSdTB91evclizQLvIc9MiFF9iWs1/Yf7M1qK2Bv0aFICj0a841RUBmosu
- YPGayHt1jJxTBpuoSLiFRHkmIqP6CH/1uk4gAVsbssAJAfSWQL3l/MV0ujbjj54yyohEcNSD61b
- 5RQPgZWxCcpFozH22PrmjX5uksh2zfAqYRk6AUjOIiyxCHMI/SmXN737PyYGl6GMTiJM7KdcMch
- TTwWS/sdui65m7w==
+ bh=GlKYN/zZxt8aijzn4oIdQuv3Z0rJb0I1333hvIbLwMw=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpz/QPbgkGGQZL6Ms1VT4v9eXov9xd9EfrPAqIV
+ RcjKaBA9EKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCac/0DwAKCRBgAj/E00kg
+ ciZGD/0VTy2p4LA7wUhf9zj4p6BQTIB91aIJN/nsxu35iLgxPUdqZqVKXN2OAOq5Jrr8g6LwlJ9
+ B04oKF2XCz96GCSdXkC3FUo/Cxz5aeBx7+SQIXCXMYqilQnqhtSiRoog9DKTYyxWDsXBkOhsBCs
+ UE3XebZX2Lcyh48cRBrGMEZ0NPsuesYofpsWmPGmRp6CRbnI+PhAgL+wk4vSxh+5kwPNvTUcNDQ
+ tK6K4aYmPLoP/zxLyV5G2Lm+z6oFcq4quGWd4l1EbEZZLAavoWQuErfbyXXn9En5Xo8a1LEICFV
+ WJ9Bb9R9pb5cclH4veK7RlM/mKrchaoqC+t07OtjNSfPjfO3pk+x8EGMDy8K+PyHjc3jU7s34C6
+ mTBCYWtMnu4CuTLyEcuBPTPxuO09UC/4+Q6AnokmjduA555YQhOsEHD94qiF1nUYkO3hHmBUG2N
+ D9cNOllkF5TlbkcexZcREw3MQP6NkoaIYx3sqG91GRJGGQbLJdAhViBB7PsZFPXdjnCjvLn3f6B
+ C6fUx3jnH9Xe10yNcLSb94FApuY7dNvCBsfyYj/cN56C4y74wWvbQgtnXVw+Ur9CAnZPkLmVuDS
+ O3aSmGOu/0CCBWEj8CWZMkWTAyOuncNtnXwtm7Lvq98ogYcwcKhC5IiYr0B+sNchfOmFYSkcTok
+ UOK94K2QqppkkkQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: Jens Reidel <adrian@travitia.xyz>
+Used on various phones. Minimal basic support.
 
-The most specific strings should come first (panel variant included),
-then the more generic ones (device and SoC).
+Includes device-tree enabling touchscreen on Pixel 3.
 
-This is necessary for hexagonrpcd to guess the HexagonFS path for the
-device. It tries all of the compatible entries, but if none for
-xiaomi,beryllium existed it wouldn't be able to guess it.
+Sending as WIP, as not all comments we're addressed, but please feel
+free to apply any patch which does look ready for inclusion.
 
-Fixes: bcf429831ecb ("arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce Xiaomi Poco F1 EBBG variant")
-Fixes: dd6459a0890a ("arm64: dts: qcom: split beryllium dts into common dtsi and tianma dts")
-Signed-off-by: Jens Reidel <adrian@travitia.xyz>
+What is missing:
+ - switching between AP and SLPI mode (to be able to wake up phone by touch)
+ - firmware loading
+ - anything above basic touch
+
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts   | 2 +-
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+TODO for v4:
+- wrap everything below enabling the supplies into stmfts_configure()
+  to avoid bunch of gotos to power off on error? (Dmitry T.)
+- finish chip specific ops and potentinally remove is_fts5. (Dmitry T.)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-index 2d6f0e382a6cb..d157622f84d13 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-@@ -6,7 +6,7 @@
- 
- / {
- 	model = "Xiaomi Pocophone F1 (EBBG)";
--	compatible = "xiaomi,beryllium-ebbg", "qcom,sdm845";
-+	compatible = "xiaomi,beryllium-ebbg", "xiaomi,beryllium", "qcom,sdm845";
- };
- 
- &display_panel {
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-index b58964cde8342..71816a9f33b48 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-@@ -6,7 +6,7 @@
- 
- / {
- 	model = "Xiaomi Pocophone F1 (Tianma)";
--	compatible = "xiaomi,beryllium", "qcom,sdm845";
-+	compatible = "xiaomi,beryllium-tianma", "xiaomi,beryllium", "qcom,sdm845";
- };
- 
- &display_panel {
+Changes in v3:
+- s/touchscreen_pins/touchscreen_irq_n. (Konrad)
+- Use interrupts-extended. (Konrad)
+- Fixed rebase conflict against 8665ceb926ec ("Input: stmfts - use guard notation when acquiring mutex")
+- Rename switch-gpios to mode-switch-gpios.
+- Do not define properties in if:then: branches. (Krzysztof)
+- Link to v2: https://lore.kernel.org/r/20260315-stmfts5-v2-0-70bc83ee9591@ixit.cz
 
+Changes in v2:
+- Fix typo in the binding s/switch-gpio/switch-gpios/.
+- Deduplacate allOf. (Rob yamllint)
+- Add missing S-off-by. (Dmitry B.)
+- Dropped irq-gpios as it's not needed. (Konrad)
+- Correct x and y touchscreen area size. (Konrad)
+- Correct reset introduction commit description. (Krzysztof)
+- Partially implemented chip specific ops. (Dmitry T.)
+- Separeted license naming cleanup into separate commit (Dmitry T.)
+- Link to v1: https://lore.kernel.org/r/20260301-stmfts5-v1-0-22c458b9ac68@ixit.cz
+
+---
+David Heidelberg (7):
+      Input: stmfts - Fix the MODULE_LICENSE() string
+      Input: stmfts - Use dev struct directly
+      Input: stmfts - Switch to devm_regulator_bulk_get_const
+      Input: stmfts - abstract reading information from the firmware
+      Input: stmfts - disable regulators when power on fails
+      dt-bindings: input: touchscreen: st,stmfts: Introduce reset GPIO
+      dt-bindings: input: touchscreen: st,stmfts: Introduce STM FTS5
+
+Petr Hodina (4):
+      Input: stmfts - use client to make future code cleaner
+      Input: stmfts - add optional reset GPIO support
+      Input: stmfts - support FTS5
+      arm64: dts: qcom: sdm845-google: Add STM FTS touchscreen support
+
+ .../bindings/input/touchscreen/st,stmfts.yaml      |  19 +-
+ .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |  19 +-
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi |   2 +-
+ drivers/input/touchscreen/stmfts.c                 | 594 +++++++++++++++++++--
+ 4 files changed, 574 insertions(+), 60 deletions(-)
+---
+base-commit: cc13002a9f984d37906e9476f3e532a8cdd126f5
+change-id: 20260214-stmfts5-b47311fbd732
+
+Best regards,
 -- 
-2.53.0
+David Heidelberg <david@ixit.cz>
 
 
