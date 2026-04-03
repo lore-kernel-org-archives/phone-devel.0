@@ -1,68 +1,68 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7199C3CF69B
-	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 16:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDFB3CEBA3
+	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 16:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775234651; cv=none; b=Q+rtQ9uQo3sVX5JWgFjCy93Tx7SFJCHxLa++HJSgaEhyQ2RoUzJFq4e//H5CvLvJtwwEQSCyh4N69p37qzTx4ZJNuuob5+QizXjOJBCuZW25L5x3fOcBURQfTy14uqAoV4jXBQmK8BVHFqEhAtzlKhN7DnlhgvbncD2iwys1kz8=
+	t=1775234651; cv=none; b=Oy+0cmk2juuuRwX9F4UviqyIyY8LjXvo5YCrSvP08qnA9KSwA/Dryo34WI2zRjXUZFnbbUgPoy9l0qs9+GusFdEVVICiLAO53UYxC9t/VV47NMvH3mj0zzCUsU+fgnPD33Qw1D9YkYc/vkULT/gIPIbEtPfBywiKFtR7ehJCOQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775234651; c=relaxed/simple;
-	bh=WcFI7fW0Pcq6jNkDjMXMqVuX9O3i+aJIuxhJa7yzRNQ=;
+	bh=B17bVmBmnkP1hcqtGSn9ht5X8PSnvCu4sZaG15J8RhU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W6KcE3Agx3IzeBVNQin/JJAqHvDM338KrShdhXhdLux16TeDZMFhBxPv2Bz3D65D1CljKq2N1fBnT6UOq1qYDHyZ5XdXpVJtNpOzcB/skKzKRVYhqRdUgaTOuwqhIQ22hAWehBMvn+4RTT9hnwUE6rDDpBMddZzQW105AzUJt90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=gY1kgvcM; arc=none smtp.client-ip=209.85.218.51
+	 In-Reply-To:To:Cc; b=ZNnU63SJPaPnzcD+0VpR08ad2kTgBmZITsj41amGP9ptFh1pDADDwX0ZfHDmzBkkWyBCduBgK5WVLN4rL7OZ4nPUGoWzxD7hYloZrpi3t1GlTW+ev0JSHXUYccpmUQTimURKo3X9aAZLgkDOvsA6QySyi9YntvRyJqhCJKYhHxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=zqcdEjHa; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="gY1kgvcM"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9c6680aaf8so134083066b.3
-        for <phone-devel@vger.kernel.org>; Fri, 03 Apr 2026 09:44:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zqcdEjHa"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6618bc129acso2819967a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 03 Apr 2026 09:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair; t=1775234647; x=1775839447; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aj/bpUOlSRd6rW4jWC3OLwCcjT6pqLJzLSn9zcAFMO8=;
-        b=gY1kgvcMOmkjIc+Sw56go0y7rwhudlay7EtDsrFhy+H4qFXlGHr0WBggzLyVvDuvr1
-         gz1AdL58/NRuLeilGLT+OTCvHsa59f3SQfG3xCdo71aLdVgvTcezuJMF44l6bHDfxgPm
-         yy4yfUXxThIBLSmz79bKlqDAwN7YSg9k2n495eEyp2Y7W6hUO09M5kabfkc2B67OWEjh
-         ND1m1gwgHbr8ecQkmVG9TzJdl+nzyYWw06MOaT1EAzyuuMcF//aAZxK0BSPSOYiXRYnF
-         jQQ7y/HIJYB3SNBBL/qzPFvYk66cB2PHfTetbCcojZjOxgpSpbn9rJP+s6kZJt85Eo8H
-         ISRw==
+        bh=/I8STiLmCdAUWAKR9dG6wn9ETGBCkr8LaZ1bDk3uHnc=;
+        b=zqcdEjHa9ePvncK9nBm3YpJMCC5jYwE6eAoc3miUGvEVknCKL+nwjw/1w/wiQwuFGB
+         x/WcPzyzFxyryMhvTpJvT7mDLVep5NGaxbP7mcCnOIWHdBe5Jv2SAfv2nU0e4HVhWBpW
+         mazepIQLnD8M134/ZF/p5JYxe+XKCkFkDvjlsXjGzuaECto2NVddXK+3vLJhTkmPuPAO
+         6HJKyPt9KZeufIyJpBQyDAw/4Evd1665uDyDxXETS2Fny0hXMLP0V7HuEuCQyDIvvsz7
+         Gkj6xrgK5eDU6KFCSZIw4MhcsFsptBU7+Te1bqcNTu93QPrl9OhSMpfET5Rih7GJQHTa
+         bJKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1775234647; x=1775839447;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=aj/bpUOlSRd6rW4jWC3OLwCcjT6pqLJzLSn9zcAFMO8=;
-        b=bJNtEa9WcI8ANdv0mBkcepsnPC4KDsL4PcmBKMaPCkwreGlwQro1H+2M5myVAod+H+
-         DeC1vKJiZePGZ66wSbfXjApdrCPFSGijGtcApAFIzpHZzXFvYF9M7CrnRFP5vYpxzhZ+
-         QaO7se8sUuZItgpv0c0nOTlKei0ZrnVWrHFb/4d8HQuPBbtYhcYT0R3I31nbq5DG+iae
-         lkK1Lak5pNNePrOSKbBwSPPkMyE7E3kNPgTZcT94yLjx5LyKL+JpLWEItoylAp3RK1uB
-         N/aXrA4hkjjItJRv+DhyOCX/6NuAyaUUI5h0qaAxZ4fUBagQjVKTW7q6atRDZcHTERVJ
-         010Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWXvi84kS/Pls4Fjfp+AzrBay2YsbJbhWtJGEmQF73ds2gu9lOqo08D3Q2/I5+7bGFo7sSqlGlsSCySIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp+WlSkxA+m/00cuFSuKOqH/u9JKT6sNjaSxgUJf0h+ISrDqiv
-	jOr3nlCFHT9XV/Y19G8Mk5KavMV6fQg9J8goEN6irpPdfNjV0NRcNaKEIzpAkcYooBRCLfFgZ74
-	y9bGlZS0=
-X-Gm-Gg: AeBDievWesM++gC854l20jyyACfsUaLwxPnD7bj7IHTB3prg0mROS1d82wUOlLSIgGF
-	mZLHiVKn2X3LTKKncfwoETBwLXw3q1EjQ/BP+MCVAgMe4qENjQH6Bc4dIJPZUKjZZ9Qe8xRTzYf
-	il4yOtmW8gexHn1EQLYH2nVZMQF8KIL7b7d+nn+4dcIxFEjpR5cN4B0QNB2vsgSBtzjWOw9WFO7
-	Wz1ch3fErW/8CixdCv8tYZvrijCoK8lnlxNbtDJ/b00V+bX9+T9TEzT0Kq2GOVLxvX2Di6QCyz6
-	5YaTskEo/4bWH2y3XEnPNwAkN7rSt5Ejzy2pxxtOTlDPrWItAreYv2yJUTmVsiQl6m6OAsdC1xB
-	aOdbAXZpJBHjq43AJQXjXqEThMiPspNziHtQ+6tmpLghRjWK2k9yCTnO01qW9nNdQDcHBpEx+AK
-	LT9/V4S8qS5RAEACPOYEhXCwkPqgvn0mwDtDriAlM+cK9qZ+m+k1szIutEROK+wfPi02iIxWcU1
-	Fn3oYhjx+OiWKJAeazT1X/PgytSeWkyTvJWqawPy1qilgof
-X-Received: by 2002:a17:906:9fd0:b0:b9c:24a7:510c with SMTP id a640c23a62f3a-b9c67447fcemr195777866b.1.1775234646571;
-        Fri, 03 Apr 2026 09:44:06 -0700 (PDT)
+        bh=/I8STiLmCdAUWAKR9dG6wn9ETGBCkr8LaZ1bDk3uHnc=;
+        b=lYZvmWlJC+WonpFi/Jpbi8y5rc8jv3/3I4F96FhCuP7Pe0rC9M6RaxQ6ExuWuoTeoa
+         yV0hSB3hchs4upBruZcgPrCer1opElE2jPHo3qa4J8wYRxSZDILvhaGc/m14V8agt5we
+         3E0TuZAK14uRTLTrZi0nQxqxNN9ghI2CrRid272PhBA7Dcdy7TzmoTXZbQI6BsHCfRtO
+         W+C6CDAyJLtpnY1yETzFnwNYaw4PiVvNbLlBYxHm4jM6UmyBLNRncl1F9nyVwUQSx3FW
+         ecwGpW1CLwyRFjGgB3yuA7yDm1oPuxJzwMcs8n14oVAM8HDzMfET17/xdpOamFDYWki6
+         9ndw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNwiKIbeHDnjj3LwfI6FWi46JDWP6CGQRgkupXh2M/noQ0s0E2Vv127xlluXZ4W6akLiM39mU1eJd9bQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwQO8AtDTHLypIxb7bRoG5dggCmSMG0DPS6Zrug396FclzFAce
+	2OiMjQ2VtcrHjzpoBvHRkrxABgK9shPBSuydPmUoIKqtsCiwAgdhcbauSmjZ/12/gVUWlEFZ0s5
+	7uTsKN44=
+X-Gm-Gg: AeBDievB8f2m0DaO8AKEb0h01zjSW45aKHQO0Q9LXZ0vmO7fh7s7P6A8dA5rBDRcY6p
+	OOSMjbuCtkUZYLU6tfP6oYjLR0kakkCIMMC4Xed1PkPa6lRwHO8h4fw+GtBBYhdyQHIe6ZpRy73
+	i4+0/40XqXbUrH44OYNqK50tOIQH0F96DJ44azUSb7l+mRSZJxexTNbZjclmudHMdLFo+MqCGeL
+	TTOgpwzyLipUDubkMBQ42oq4mn4EAZw/yntGcMAC9cB2zqWjMDfXa/NJbejCbfhV+7zDYUf1GkL
+	iK4kqakfEO7m9eMM2E/ZJgIHt4bh54adXtoXB13VDuTOA2X6x/vnxr2H3UGRQUmGBAdFhqIVBCI
+	r342Xwey/ijL/TAV5y8cVdJLE2pRN8P3YiGfV2C4yxwhFoUa/7r+yDP9zScwybzV0dNwtwknMay
+	tt0pSRPGGDGv1WkalTqoE5Y2LtXNPvViLH53VMIrhGuYdVkx5AtSHA8kY0mU88hZaVnn2dsXQm5
+	iRVlZiKVsfbnh+b1s65DvwZ4XZecGZBBTn6XA==
+X-Received: by 2002:a17:907:6d05:b0:b98:8e42:95ee with SMTP id a640c23a62f3a-b9c67b9e36cmr170984166b.46.1775234647458;
+        Fri, 03 Apr 2026 09:44:07 -0700 (PDT)
 Received: from otso.local (2001-1c00-3b89-c600-71a4-084f-6409-1447.cable.dynamic.v6.ziggo.nl. [2001:1c00:3b89:c600:71a4:84f:6409:1447])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3ca9a145sm213492566b.25.2026.04.03.09.44.05
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3ca9a145sm213492566b.25.2026.04.03.09.44.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 09:44:06 -0700 (PDT)
+        Fri, 03 Apr 2026 09:44:07 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 03 Apr 2026 18:43:51 +0200
-Subject: [PATCH 5/6] arm64: dts: qcom: milos: Add IPA node
+Date: Fri, 03 Apr 2026 18:43:52 +0200
+Subject: [PATCH 6/6] arm64: dts: qcom: milos-fairphone-fp6: Enable IPA
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-milos-ipa-v1-5-01e9e4e03d3e@fairphone.com>
+Message-Id: <20260403-milos-ipa-v1-6-01e9e4e03d3e@fairphone.com>
 References: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
 In-Reply-To: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
 To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -86,76 +86,42 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775234639; l=1967;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775234639; l=815;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=WcFI7fW0Pcq6jNkDjMXMqVuX9O3i+aJIuxhJa7yzRNQ=;
- b=mMufU+3O/8xMvtjbv05vIQqfZ/0FU/w1WUouJKeI15nIlvTAkcK37zXpUG09vOiAwkgrSzdL6
- 0+ESErF2sMFCRg9IUwwswYdTCnwqqBAq2SLjj+ipyh4TsFUiADE8K88
+ bh=B17bVmBmnkP1hcqtGSn9ht5X8PSnvCu4sZaG15J8RhU=;
+ b=JH5s532eJLrbkYEhCO81ATxiNZvSlOjA4jvYKqWx9Im6HP9GJB+uMtLmI6LL+WUd9YApjuxUY
+ XnsscnhBa1nCaN9g1z2pFNSWuIl/LnuTKTRL9nqvdqAlri9/er5aUaD
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Add the description of the IPA block in the Milos SoC.
+Configure and enable the node for IPA which enables mobile data on this
+device.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/milos.dtsi | 44 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
-index 1c045743ef77..c388dacf47d5 100644
---- a/arch/arm64/boot/dts/qcom/milos.dtsi
-+++ b/arch/arm64/boot/dts/qcom/milos.dtsi
-@@ -1599,6 +1599,50 @@ adreno_smmu: iommu@3da0000 {
- 			dma-coherent;
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+index c1899db46e71..31c6d6627619 100644
+--- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
++++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
+@@ -690,6 +690,15 @@ vreg_l7p: ldo7 {
+ 	/* AW86938FCR vibrator @ 0x5a */
+ };
  
-+		ipa: ipa@3f40000 {
-+			compatible = "qcom,milos-ipa";
++&ipa {
++	firmware-name = "qcom/milos/fairphone/fp6/ipa_fws.mbn";
++	memory-region = <&ipa_fw_mem>;
 +
-+			reg = <0x0 0x03f40000 0x0 0x10000>,
-+			      <0x0 0x03f50000 0x0 0x5000>,
-+			      <0x0 0x03e04000 0x0 0xfc000>;
-+			reg-names = "ipa-reg",
-+				    "ipa-shared",
-+				    "gsi";
++	qcom,gsi-loader = "self";
 +
-+			interrupts-extended = <&intc GIC_SPI 654 IRQ_TYPE_EDGE_RISING 0>,
-+					      <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH 0>,
-+					      <&smp2p_ipa_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_ipa_in 1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ipa",
-+					  "gsi",
-+					  "ipa-clock-query",
-+					  "ipa-setup-ready";
++	status = "okay";
++};
 +
-+			clocks = <&rpmhcc RPMH_IPA_CLK>;
-+			clock-names = "core";
-+
-+			interconnects = <&aggre2_noc MASTER_IPA QCOM_ICC_TAG_ALWAYS
-+					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-+					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
-+					 &cnoc_main SLAVE_IPA_CFG QCOM_ICC_TAG_ACTIVE_ONLY>;
-+			interconnect-names = "memory",
-+					     "config";
-+
-+			iommus = <&apps_smmu 0x4a0 0x0>,
-+				 <&apps_smmu 0x4a2 0x0>;
-+
-+			qcom,qmp = <&aoss_qmp>;
-+
-+			qcom,smem-states = <&smp2p_ipa_out 0>,
-+					   <&smp2p_ipa_out 1>;
-+			qcom,smem-state-names = "ipa-clock-enabled-valid",
-+						"ipa-clock-enabled";
-+
-+			sram = <&ipa_modem_tables>;
-+
-+			status = "disabled";
-+		};
-+
- 		remoteproc_mpss: remoteproc@4080000 {
- 			compatible = "qcom,milos-mpss-pas";
- 			reg = <0x0 0x04080000 0x0 0x10000>;
+ &pm8550vs_c {
+ 	status = "okay";
+ };
 
 -- 
 2.53.0
