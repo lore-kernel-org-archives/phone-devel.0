@@ -1,196 +1,170 @@
-Received: from bisque.elm.relay.mailchannels.net (bisque.elm.relay.mailchannels.net [23.83.212.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BE030FC27;
-	Fri,  3 Apr 2026 09:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775208791; cv=pass; b=SYDCs2g1D3ogxqIYipdfTtN3sJWmlur5FyoX/WxQnmKmQB6wsYSiBdsJMK4dCt3MUB5lSg49FlzAP1KfOIs51UElHQWWhr0+hRB6QF3bAq5UBKZPCxj7qEvYGJX4JQDCurn/e+yGUKLeKYBkdBOKK29Fzev2rWgWTGbcgbMxNyE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775208791; c=relaxed/simple;
-	bh=NQXiLdLmDCoMNO3Sl1Uu25i/2uUDrDKoD8Rqp/Z63aQ=;
-	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc:Date; b=LZDR4zV1E/9Iu+LgThbb0rRLXTK5j/ZpFSADSEw38nYFoOKXkNahEHjm4N5PO3N1ffR5AR3ewIgSWEUPFKJcFiHenCfLoGIdCCzar022WX0onv9A9t1+Vw5aMPMP/G4UcvwMweA7uLMoTIymJ20swe8LTMTxeY3gmlFd0MYh6xg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=KTeGR0XA; arc=pass smtp.client-ip=23.83.212.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1495D382392
+	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 10:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775210978; cv=none; b=sgqtQhG5rQSqDuHykSUzhbSLHlIfFr+6Xvu05H276mVMNpsAkyoD6cNLtPDVl+QbnfbMvCwQuT2ULRwhYITU5bkbjYexySt7VPQIVV8RcEY6l7n+TpkyaXeZivJt7IZRv6WDzBCyakGHIVOS1K/UdfxBBVcI+uBmY5sG9xEIdtI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775210978; c=relaxed/simple;
+	bh=TINvKdSrQ/NGl2be3nDTbiLQxZXwyhQucUzBFBqHyEU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V0L44C5I5n/iHYavJ//0DRvwZ7sdqYVXXCgZAq2VKWdzZj7OsjDAtjY2ItGAxZgK/gQFhsvS4wbvdc3WNqrrRLHLLQ/BD56qJXvIguEDObIiQcWqLS8c5zEAYqKRrucpvvGmdlPHrY7jCo9kDglx4nMLPt21hxdlckaPjyTosbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tsEgU0l0; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="KTeGR0XA"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 5E324401627;
-	Fri, 03 Apr 2026 09:23:29 +0000 (UTC)
-Received: from de-fra-smtpout2.hostinger.io (100-96-234-227.trex-nlb.outbound.svc.cluster.local [100.96.234.227])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 593474011C7;
-	Fri, 03 Apr 2026 09:23:24 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1775208207;
-	b=lYNja0+FmbiEOjpGvUQRbC/dzOsUsJvrg67oti7IC3Ewbap7apvfFgvFEGV4qPyT2XHmXt
-	XyrPfM6eEhCFcWSk6pp8U3xpsYpEeJqN2Q68FlEhCYzNdFTT9AaTf4qVae67oaILoaKsjU
-	gwHiUBEersdRm0XqLjqPkh7x2cUNn2jWWzxUNCeYPylVIjlnLE05FvJz/X9r0xnlwPb2yH
-	8dzMVlfvtSKgNHsWcmUzTM+PLlypWannWP6/ohOElxIO2gNv7vk10SbsAPhqA7sBOf8KTN
-	AR50appS44UzhP1+TNYBKYAe0Xp4R3JHO47lqbgtvKiX+1bKRIUNobclW2W4tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1775208207;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=moCbtDjr4jk52jpEjStHpX5elRFhGe9yWCKpleCbKfA=;
-	b=Rbcsdvh29UBCrv46PBoMBGjBMx6cw9Olx9ylNR+tg1E/Wdjm25Hb96lsLVa8WOxE5bV927
-	WrjTaTpaVdmOdJTJ8pNpFYoPAHWhZUBDD+qvEGHbcnKC+YSrtnQoxi5E5/927r7si/fPCS
-	U0Y1J3LXl9mLn3kSZ6PN9d0GcKQgZvBX3E1fygXlXuU+OAsFLEcga57tRWkP4CEyUEcboB
-	BbQg0kOOW9SRO/vWrNiL3+W7h8HTUiB+/qthIbabZoXPNv2/aUR2UhBeLxpEmb8XAs9fAc
-	HLV3hzdl6im9wwhgCo9XJ35e4NbqMj0Dl4fJ3/gR9nyaSDsj/NoD7gutfS7eSg==
-ARC-Authentication-Results: i=1;
-	rspamd-bd48b9d95-fqg8r;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Rock-Bubble: 6b96ab4b71f1be28_1775208209141_3266784317
-X-MC-Loop-Signature: 1775208209141:4058839875
-X-MC-Ingress-Time: 1775208209141
-Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
- [148.222.55.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.234.227 (trex/7.1.5);
-	Fri, 03 Apr 2026 09:23:29 +0000
-Received: from [172.17.0.2] (unknown [180.253.47.239])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fnCv70sv0z3wpl;
-	Fri,  3 Apr 2026 09:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1775208198;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=moCbtDjr4jk52jpEjStHpX5elRFhGe9yWCKpleCbKfA=;
-	b=KTeGR0XAtIrPmUQzSJFIF1WrAtmj3o3/qybQpcwZ2KV8png2w2ttEXXu8fk6yjuRallu8f
-	3nyyELrUSFabkHDuuEqWeYsXKipunvNh0Etbfy4VJtz7zdxM1612pH/XRH0k3u+5kW8zxt
-	Cq4fOrIFYqkxznCsVUqP66sqsTrNnuPG0dgPMrA96PSU2lmCwzKtCOKhuu27Azr5er/KYQ
-	UtIYaEPa1q7V0lNqNwz9x75hFOtoowhkB+jHA0DyKJKXR5nxori7RbVJg3PQMC8yp0Lf6/
-	Okr5YCphwlismZN5avRW0wC59ihRJ2WkD6QFLckYx6BfYoQz8u1uqR86Aji+jg==
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-Subject: [PATCH v2 1/3] ARM: dts: qcom: pm8921: add labels for ADC channels
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tsEgU0l0"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a2c1b09d69so247192e87.2
+        for <phone-devel@vger.kernel.org>; Fri, 03 Apr 2026 03:09:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1775210973; x=1775815773; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/3jZs1YU/5kS4rEiiUTRNMXO5M8WRI2oxv3zjAIg5U4=;
+        b=tsEgU0l0kF1/msz4dw2bxWLbKMzYXq1+HWVudjh0DErkZ9jgjVDcVykWi03Oukpath
+         wX7xprz0wCEK7rrH3lNlq2yrxbhfd8CsmKaE3OcMK9lEZPSLyueGpdRT/TxRna4KRIJV
+         KxfGzU2PukP1Op2KKP0iAq5w/pZM3GnV5rD/81+1+0BVAzQH832G5cT1RC+004ZzdXTp
+         DuLxEipQQCdgVMll7OJZvBsd+LKuU79N5kHp7VHEHv1fpH0cllvTK+dOhUBxXDfq3I7r
+         PbDe0HC388F0NDrKODP9MN5mRn0Osgyno2DAZ4RJo/VDPIL4Lno44NbzuRbaBJbOaVSL
+         1DxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775210973; x=1775815773;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/3jZs1YU/5kS4rEiiUTRNMXO5M8WRI2oxv3zjAIg5U4=;
+        b=DdNJWJ2Ag+wzi53G3pMSOH16bQtTtsoQmwLHzQkEpzzgoA9KExXR69mlsHJ6LSAHEg
+         XJs61qASI13bEbaAl3J629lNSzLh4KwWZHz5odeOKR59L7cK7/JqHdNiU5wAAwBzfm8l
+         47RQmJ3jwgYbDzHscJrWPdxeq1PMcKS+gb/bjqMKOxhtdOSsW1pbwRiUkdFNNFxn1EK7
+         0VoNV2wcHARMaiVQx9/T70GqK6Y2ERnAdw0LrTsSIRkhQ4cr5JTHarkD8hTxMUSpFzbd
+         wUjOnX8OnwWTWaAF3bwU1sIRahlJw2aG1eFbQJCH4LaeRoyuUkWhcGG8tSThNQDBUkNL
+         9xYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQYk0+5nI8axNLaatY8g+EhMfMnoXY2UU3bohnNCVcy4nfNpxFxPPA8BPvpZg2LaaEeVay0+P6s2xxjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYpoqCB+8735mulZjua1GG+vtg6YPxT12eMon1dkIHj1s6V5RB
+	1BgK+0/0+mrof8SxPyQro0Dnmg+GBQmELSRpYs0DaTwLpQX+FijHw9gJ3dHHcpipbPo=
+X-Gm-Gg: AeBDiev2gVbbpTAHCpj1xHmnR1l7LDEnGaxS6qKe2HOMrUJ9dIEp2FuOHh66hxODxYD
+	etRpKGelW1hUo6+R/q5ZwWd9IipCBDscuvAWe2dedTbaur9i9SI9j/cUz6B0QX8V7fls87H0Pmx
+	PTw+Gqyk+7rw/cRsod4RGPLHhBooeH8AOGgM9olbKIWp7DE7ZQeLe2a7t0+d7wMrudIhc6nDOXl
+	E2X9S3ZrlqRiUGWYAuhrOWVKEg9dTLb4uKNomZyT3NCfE4gtS0rVVr5LBWlIS5t0pJzNBTgCCpJ
+	ZMJ6gXSTK2NDu7sIlqElKHtoyz+zlMzF3xSa9RSch0QLrlWNnpG9IDqB1umCeqlKyST2n2VLMO7
+	ST8z6p93YI/cNTYDwmWljZDT2TRoQO9XFvCK6XHQpcQoBU/Ry70zauS89WAklQ5DICCezN25PLV
+	Zk6ttStKsWL7fbfZKCjXPfPrJPAqfkP8nfupFwQQCvVdUH1g/oIShTEslzBNd67clzIWZ1V3oNc
+	4lGAQ==
+X-Received: by 2002:a05:6512:23a2:b0:5a1:38c4:424e with SMTP id 2adb3069b0e04-5a33758e02emr390883e87.7.1775210972916;
+        Fri, 03 Apr 2026 03:09:32 -0700 (PDT)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6cc6033sm1374630e87.48.2026.04.03.03.09.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Apr 2026 03:09:32 -0700 (PDT)
+Message-ID: <40e9f0f5-8b22-4535-a1e0-6c5073ef94d6@linaro.org>
+Date: Fri, 3 Apr 2026 13:09:31 +0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] Add CAMSS support for SM6350
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bryan O'Donoghue <bod@kernel.org>, Konrad Dybcio
+ <konradybcio@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>
+References: <20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com>
+ <2a108976-374a-46e1-968d-7befa4369a74@linaro.org>
+ <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-pm8xxx-xoadc-label-v2-1-29b50bf821e6@smankusors.com>
-References: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
-In-Reply-To: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- Antony Kurniawan Soemardi <linux@smankusors.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775208191; l=1857;
- i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=NQXiLdLmDCoMNO3Sl1Uu25i/2uUDrDKoD8Rqp/Z63aQ=;
- b=6mMeAln7zNa2Z6ct3gEXWSdyD+MQZrQpQDc5mIuTSBj2PHPX/VLQmrEDJRrVTCRgFgN4xoDAi
- PttA13cKMEXAAkJLbklcnq23sctDG3vR5V3OlyJmQp6lchFvXIPNcBR
-X-Developer-Key: i=linux@smankusors.com; a=ed25519;
- pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
-Date: Fri,  3 Apr 2026 09:23:14 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=ALriHGRn c=1 sm=1 tr=0 ts=69cf8706 a=EXl8KfDnlL3m3zOSb15mOw==:117 a=EXl8KfDnlL3m3zOSb15mOw==:17 a=IkcTkHD0fZMA:10 a=EUspDBNiAAAA:8 a=wxLWbCv9AAAA:8 a=rt3x4hDEALvJiYIjBx4A:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
-X-CM-Envelope: MS4xfLO8RNLQa70s9U7AObuf4XuGV0DIKZjkaOd7PDu3F/95Vjp1bNm/LF6rcf+Fs1QD289FuX3PIQzvSTc1htNm9W8VJVZlWLsCtvVv8kjFCR+OpocOdhZ1 TEgUdp6zy7n7cL8gSOmLmW6jETTK0FETvsUSPk1oO6p1rdvCQU+6HiS9ig2gmeMJm8phnDaMZxFEikPhvcFasV+1WuQsiZO6xysUV0bb/TyuqU8WK5Ad/s6c 0Dba5bVCWbenF89MMpYr6W1TvAbc7K6o27a0LqeD1ZV4bnAxK5AXmAiIHITVzXuT4hSjHdrDU1dOh77jlkY0AtPJij//zQCJHXg477xzDq9RqAE0Ycn8DFHX a09K7kleeEcs7w0vABaSkdYOFVvhQEyahk2ew/bQl6Z1wA+d5H/tVAYaXplij0wJmjfcbpOqIIZECOhHAk1EnO4QsfTKnl+Xg0bS20kgd3Iw5Bic6pfgQQyp 3HTROLtBMHf/mzr0nZlNfoL/0sEvYxCoCD31G9//nCpoVft09UtBPjAHw5vGkRBlSkL7IfhwJuSHemgN04fBnhm/+WTyCNlCkDOMfvoGD7dlMjmFfNPlVqw2 +smF3GV0/huQq2cOGEbjrf+w8Y/+g+/13uuQt5UFK4/J8+miGJWl8jrO7ooTqULBIwyIumvSAEF3cI9KZkncpwLQVpvPZ+q8ULoNbA3hehZcGA==
-X-AuthUser: linux@smankusors.com
 
-Add label properties to all XOADC ADC channel nodes in the PM8921 PMIC
-device tree. This allows userspace and drivers to identify channels by
-name rather than relying on datasheet name.
+Hi Luca.
 
-Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
----
- arch/arm/boot/dts/qcom/pm8921.dtsi | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+On 4/3/26 11:09, Luca Weiss wrote:
+> Hi Vladimir,
+> 
+> On Tue Mar 31, 2026 at 12:49 AM CEST, Vladimir Zapolskiy wrote:
+>> Hi Luca,
+>>
+>> On 2/16/26 10:54, Luca Weiss wrote:
+>>> Add bindings, driver and dts to support the Camera Subsystem on the
+>>> SM6350 SoC.
+>>>
+>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
+>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
+>>> far as I can tell.
+>>>
+>>> Though when stopping the camera stream, the following clock warning
+>>> appears in dmesg. But it does not interfere with any functionality,
+>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
+>>> while the clock is on, and 'off' while it's off.
+>>>
+>>> Any suggestion how to fix this, is appreciated.
+>>
+>> I've looked at CAMCC recently, and I do notice that SM6350 CAMCC does not
+>> set '.use_rpm = true' flag for whatever reason.
+>>
+>> If you find a free minute, can you test the change below?..
+> 
+> Unfortunately that change does not resolve the "gcc_camera_axi_clk
+> status stuck at 'on'" warning.
+> 
+> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
+> active
+> 
+> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
+> suspended
+> 
 
-diff --git a/arch/arm/boot/dts/qcom/pm8921.dtsi b/arch/arm/boot/dts/qcom/pm8921.dtsi
-index 535cb6a2543f69bc30abc89bff4e14a19147ce38..15246f4bd2672ccd4fc3359b66541d53d4da88b4 100644
---- a/arch/arm/boot/dts/qcom/pm8921.dtsi
-+++ b/arch/arm/boot/dts/qcom/pm8921.dtsi
-@@ -75,50 +75,62 @@ pm8921_xoadc: xoadc@197 {
- 
- 			vcoin: adc-channel@0 {
- 				reg = <0x00 0x00>;
-+				label = "vcoin";
- 			};
- 
- 			vbat: adc-channel@1 {
- 				reg = <0x00 0x01>;
-+				label = "vbat";
- 			};
- 
- 			dcin: adc-channel@2 {
- 				reg = <0x00 0x02>;
-+				label = "dcin";
- 			};
- 
- 			vph_pwr: adc-channel@4 {
- 				reg = <0x00 0x04>;
-+				label = "vph_pwr";
- 			};
- 
- 			batt_therm: adc-channel@8 {
- 				reg = <0x00 0x08>;
-+				label = "batt_therm";
- 			};
- 
- 			batt_id: adc-channel@9 {
- 				reg = <0x00 0x09>;
-+				label = "batt_id";
- 			};
- 
- 			usb_vbus: adc-channel@a {
- 				reg = <0x00 0x0a>;
-+				label = "usb_vbus";
- 			};
- 
- 			die_temp: adc-channel@b {
- 				reg = <0x00 0x0b>;
-+				label = "die_temp";
- 			};
- 
- 			ref_625mv: adc-channel@c {
- 				reg = <0x00 0x0c>;
-+				label = "ref_625mv";
- 			};
- 
- 			ref_1250mv: adc-channel@d {
- 				reg = <0x00 0x0d>;
-+				label = "ref_1250mv";
- 			};
- 
- 			chg_temp: adc-channel@e {
- 				reg = <0x00 0x0e>;
-+				label = "chg_temp";
- 			};
- 
- 			ref_muxoff: adc-channel@f {
- 				reg = <0x00 0x0f>;
-+				label = "ref_muxoff";
- 			};
- 		};
- 	};
+So it seems to be a technically deeper issue, once given insights by Imran
+likely to be very relevant:
+https://lore.kernel.org/linux-arm-msm/caa870e2-3795-40bc-9f0e-c93e313c8c6e@oss.qualcomm.com/
+
+>>
+>> ----8<----
+>> diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
+>> index 7df12c1311c6..ba880e4edcaf 100644
+>> --- a/drivers/clk/qcom/camcc-sm6350.c
+>> +++ b/drivers/clk/qcom/camcc-sm6350.c
+>> @@ -1880,6 +1880,7 @@ static const struct qcom_cc_desc camcc_sm6350_desc = {
+>>    	.num_clks = ARRAY_SIZE(camcc_sm6350_clocks),
+>>    	.gdscs = camcc_sm6350_gdscs,
+>>    	.num_gdscs = ARRAY_SIZE(camcc_sm6350_gdscs),
+>> +	.use_rpm = true,
+>>    };
+>>    
+>>    static const struct of_device_id camcc_sm6350_match_table[] = {
+>> ----8<----
+>>
+>> This change could be considered to be included in any case, I believe.
+> 
+> I guess this change is now the way to enable pm_runtime, I had this
+> series 3 years ago in February 2023:
+> https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm-v3-0-d35e0d833cc4@fairphone.com/
+> 
+> But I never followed up due to me not understanding pm_runtime well and
+> no direct need for it.
+> 
+> But I guess reviving that with use_rpm = true, add power-domains &
+> required-opps to dt-bindings and sm6350.dtsi should be a good idea?
+> 
+
+It should be, if SM6350 CAMCC is known to belong to an on-SoC power domain,
+then devm_pm_runtime_enable() will be called on .probe to embed the
+controller driver into the runtime PM framework, see commit c0b6627369bc.
+Power domain management of devices is handled inside the runtime PM.
 
 -- 
-2.34.1
-
+Best wishes,
+Vladimir
