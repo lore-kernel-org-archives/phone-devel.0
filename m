@@ -1,66 +1,83 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9330535959
-	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 08:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775204501; cv=none; b=Mmz/djaHXb7wQFK0d268cWJnJbEY6LSv9sAID6q4e6bOg87oCL5aYsv+qJFlL6hakOCcZnIdvrvatUejZ97B8N5eG1ffsu0GF7JmieJmwViHtW+zO3KSmHh2zw4RyonYhxkI2Bsb6ZqMAgvTW3z1lA+jfQXl9ua7TnjhyGMb300=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775204501; c=relaxed/simple;
-	bh=D8VbY9ar43HVFZIxguK8RYeUx4U66Ej4MgpOIkN24qU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ACWQ0nR9rcEOona50zJuTCI8rOhIXtC2TIY/IBFaKE4IBn3o/tlENVt9VhT4kbJg6m4F9VZk18wr6UpVebYoPbABsgEZ8pNxBtOaKmuTrJHhvnq+qIkH0gnuVGMQFZnZH/D7PYJ5dH5I2vS8CzAlEsbvHnZGnQL/VtYfXXYuRJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Eb12A/j5; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBA8199FAB;
+	Fri,  3 Apr 2026 09:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.253
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775208660; cv=pass; b=S+7oEO7Ln0hmXYzjvxv9bSNq33fbH3qfW1+eZnN1ZwXG5KvHW/aJN6JTZFqwJXZSGx4NtnnyFWU13DciezsFUEBPzkddk+GeEx+AsK1y5DtdpK8u4SyByy9HLF/6j8cxYyU6qgrFrjJc/YpXx7V7/2KYJqnRzhW8gf7gNKm9cDc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775208660; c=relaxed/simple;
+	bh=MCKp5BgyrOI2gWNQS7Xq1slMRXMiXrIKzo2KXcjeeKQ=;
+	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc:Date; b=EGEircUQLcu5y0vanU498MGVnWcsy79CS1Sp2AJgjLNAv4h2Dgs4lheP+Hj4gMQTw1EzrTsmEZFF4nOflHEqQSK/oAh5ZJFYC38fyIjiS0SJRxg0NmQkWgxyIebe6r2QSLClb3aC4veWpUndmCcbTB38W+4c+J9OVwKrFgMIl14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=UhOUmV3h; arc=pass smtp.client-ip=23.83.218.253
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Eb12A/j5"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66d65646c65so3413192a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 03 Apr 2026 01:21:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1775204498; x=1775809298; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c6mDGlLBD/1/EQOe9aCWFmXD0WzOt3S5VFbWUDVz7VA=;
-        b=Eb12A/j5pEFOUrbCKebq2V7uI73mC/xyiDGM1Zw9OMhK6BHLsJuASGu/bc9W3VSqZ8
-         ChEuVwwR1Qs01W88Wuvs/Qrbn01uZcB2I39LyvJShr02swzHggmplx8FtJ7FWmp6PRZX
-         Qu+kLnSGpuBl6mdR/gYeVNvBhahp9hHsvXBKaPpnO5e+kIrgU7M+tU8MCvMebNLe0dfe
-         6850aGa0v39f5Se4DDBPQpgQAQZGswgovI0oq/FWdoEmSnMFVJI1WEGPu9zePkYnqfB8
-         H6/OAvxxFrbKYlQwpJ6RQyJp0b6EVh/ptlCGsloqKQ9M80jlzxKmuQq0kywLcledGYW4
-         9J2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775204498; x=1775809298;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c6mDGlLBD/1/EQOe9aCWFmXD0WzOt3S5VFbWUDVz7VA=;
-        b=P0Bxi6YYwMZd+ob26BnCMuh0ggHzT4wdWuSLOJCmTixU2czAbb0qG8jOju30XxsiSb
-         nwqqtmwO7SbX5OUEDuGLFR/K1WgI1mqyaK63q5UhFTN/xnffNT06EcH3XUNuqVQqfcAl
-         64NbJSzlnmp09rV0loXavH8vtM109Fso9BcYIOBl4xUUdigPyo4nq20vuktOeo7+wnbm
-         mg1ARTkEw+67skAAye/FFMgm/WDvO2n9k43poQF6KDybxcyKB/bhXa3tIXpv3wwPJjKs
-         FHG4bzg/+KBrncP65hhOA8a7S9RtrgBCccboug0I/oUac5OteYRj9/MWG9L2TrYnyoie
-         C7vA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+1Z/YqKrfnpAVTSHaeHcJl7LD0qNklczYi+O9elkNti1RKPQ3DSAsTUo0bTXps3ppqzSqqvAWyOckkg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQq4EL36sD3xImihgnr1A4YoWZeq1oFdhA4nrwwzI5YLVZUG5c
-	maf3fBynhQJlPrPRJb5TOwHcX9Hy2sDkaHvhuyL1Pq5wwwDyzjtNpXHtJyk6mcdnKXQ=
-X-Gm-Gg: AeBDies/h8bQF94c55MPMdUAYVNOl4I7RTOWFjwzinyKL+PrAK6viEIyQy4dH4GDShO
-	3/HOF40K6nHe3Z+55m2t3srDcowFyZOnHlovL7obPpkUEA+vmw1yyJUAnbENhoOcv5s7YWDzdAE
-	wbVT2B7IWbxKc4q82dghvdtQGlGoQdDyjNEd/ewRCgGh3l9tYHRhgfBMzvF+cMQGlJ+6xewleGa
-	KMsaCq4ldXwpjt+qYFowEc7iebZoly49nsIL3xxraGoNHeJctFL2e4Kn0FwC4RZrF2eHTtnrPGt
-	Vkvi+pnAc7td5OfkQLFHlCzM6q+NukxCZRK3dEWijttf3lTpgOGdatdBPrWrlTz/cXkdwwW1vxW
-	bV4fQtOMI7iDW3Z6zknV7LCceHSTAC4TMDPLNAwJRWcXxe9kXu4I9kOuftpNEBf1cKTEBcxwt8r
-	QtmdRTe2L6Q/Q4X5wOGyOgVYhn5O5Btr4hLzE21IDXqy5dLH16p1K7An1QmsvEjhcxlX+kGdj5I
-	tkPUxWCqu4EZpRkE0wExbuDKWti8g03qy0Z/K/LiUh67Jg=
-X-Received: by 2002:a05:6402:5286:b0:66d:d385:3515 with SMTP id 4fb4d7f45d1cf-66e3e2f0456mr929345a12.6.1775204497943;
-        Fri, 03 Apr 2026 01:21:37 -0700 (PDT)
-Received: from [192.168.101.179] (2001-1c04-0504-7401-4b2e-1820-6d24-b264.cable.dynamic.v6.ziggo.nl. [2001:1c04:504:7401:4b2e:1820:6d24:b264])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66e445e5b8dsm292229a12.12.2026.04.03.01.21.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 01:21:37 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 03 Apr 2026 10:21:33 +0200
-Subject: [PATCH v5] arm64: dts: qcom: milos-fairphone-fp6: Add vibrator
- support
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="UhOUmV3h"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 82AE7402876;
+	Fri, 03 Apr 2026 09:23:29 +0000 (UTC)
+Received: from de-fra-smtpout2.hostinger.io (trex-green-5.trex.outbound.svc.cluster.local [100.96.137.18])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 965E04026D6;
+	Fri, 03 Apr 2026 09:23:24 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1775208207;
+	b=SHbt0dEkklB0un4Q5XrL/WHkD7p0l32eidXZisnzsOVZJoWnaChtCAKTk2ZI9EDNvWw9J3
+	vOUaUa/pVOTbNyGs+h6cuPX21/TLSMvTZNYsjyA0Yq2yF7OBY/TrK3POwuGQXlfuzFvBNz
+	HWRksN+brVDymQM+WRxzwhdLELhwgiqSoD0mSmK1S6jbomGlCtydya1OanZHpT10Ksb/QP
+	jAK+oI3SDpkL3EBQErRTkYZHkTN7chO4xnLMw9bL23O0ms052XNPzWWrC1se3nFnzw+4Fr
+	qVYxJFGIZ2ooDxw3KDsGogoaOWYenAoFkKc1GZApdMX2iDELknBC3NodlPiaUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1775208207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V/KSlXPRP0Wx65x3aW3BUrT0hLZy34Lt7a795lyhn0E=;
+	b=IEbF3gvrDUVBkEjt3emtRLG5iNKCIGlR0V+EpbttrVkDtIkJB+lWgO/4gV/9t0P3Yp0dL1
+	UgevQG3ofk+Cdikvv0vo2AXfuXwTzYoN7frggWI2d6FBBY1dm/bfXlKK97w/9hSDsEmemf
+	exES7KFsbTlrPi6B9n3deQTaD0zRWyrc7G17ARaH4niCaxuOGkEspg5NUJUNB1HxpDEK1V
+	6OKQ1fGGGzNOUYg6cwdT2/Q7Mfti6H6XgO5ETJavBHBZJIPTwIyJfuL4ilW93vKoI7WUSP
+	iBdhI1GJPpbsRHwyqDo191AvAjYV3Y+1d6oahEWttvXpISQ2xMTTbUIp7wKV/A==
+ARC-Authentication-Results: i=1;
+	rspamd-bd48b9d95-mj7k8;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Attack-Glossy: 0d5678063590201d_1775208209373_2547522738
+X-MC-Loop-Signature: 1775208209373:2709443968
+X-MC-Ingress-Time: 1775208209373
+Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
+ [148.222.55.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.137.18 (trex/7.1.5);
+	Fri, 03 Apr 2026 09:23:29 +0000
+Received: from [172.17.0.2] (unknown [180.253.47.239])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fnCvB4hlcz3wq2;
+	Fri,  3 Apr 2026 09:23:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1775208201;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V/KSlXPRP0Wx65x3aW3BUrT0hLZy34Lt7a795lyhn0E=;
+	b=UhOUmV3hm9bvVKyaGIs8tvETzWaGWJadyOTbwDPALAuRNRJsGM5cegWvi1JgnEMl4Wjf8s
+	JdpNUbmcQmP93tOhp+Kt1l8gicsY2d2VruvjEa7EuXxGGMWq6VNCkdIzWuiCHSqDeCqiC7
+	41LMhsS8bqi/llFpgDFKVfiMGyMj5hA3SwQANFEkjK/PE7shLQrl5Qt+ZWJs7et7wzih8X
+	kByprBHDffCLWMhXgEZVrPherFk99pbJbB5d5V+5wr4xWClq2IeoBXohTdCQHvGp4IF34a
+	ecV6RxxBImEIr3AP3zcgq7MGB5HmFH1uKZCVQmk58RbdSnIabvs/EzVykL1eJw==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH v2 2/3] iio: adc: qcom-pm8xxx-xoadc: remove redundant error
+ logging in pm8xxx_read_raw
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,114 +86,72 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-aw86938-driver-v5-1-0712909df423@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23QwW7CMAwG4FepcibIcZqSctp7TBzcxqE50LKkC
- 0yId19ohSbBjr8tf5Z9E4lj4CT21U1EziGFaSzBbCrRDzQeWQZXskBAo5TSki62abWVLobMUXa
- 1J3Aa0RKKMnSO7MN1AT8PJQ8hzVP8WfysHtWVQqhfqawkSO7cTtnGOq/pw1OI52EaedtPJ/HgM
- j6JBhTaNwIL0RnFDLYh8uY/Qv8RCO0boQth+l3be6+hbvGVuK9XRv76Lt+a11NFR4ll6Z/CvK9
- Gvs5yWVADlon7L+jgIGhnAQAA
-X-Change-ID: 20251113-aw86938-driver-b4fa0d3228a2
+Message-Id: <20260403-pm8xxx-xoadc-label-v2-2-29b50bf821e6@smankusors.com>
+References: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
+In-Reply-To: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Griffin Kroah-Hartman <griffin.kroah@fairphone.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775204497; l=2607;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=kF5xZxBnLGJc9TH7GPnIOSpNJyqHaQaezUn8kdci2pc=;
- b=USoCAMwtN2U7qE6Ftw2A1txh65zwNWIQv+F44BDmRWWgBJ0umo4d6+io9QpFwkwI1+7fw6aPW
- lzjTVzTPOJSDCRURwDB+VfMrOrFZSkG8Npi4rCtJ2x3NbrXYLaxukFc
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775208191; l=1341;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=MCKp5BgyrOI2gWNQS7Xq1slMRXMiXrIKzo2KXcjeeKQ=;
+ b=sf5Un80sWruxJjCxs+FOJ5PcoFwz0XFvBKPL7PktiqIQV7+moAX02JAkzR19zFCiG/xRW53yc
+ m3BOl1Z17E8BvEMQUoL67yLaO1xYYsRIBR1uD5a0nn+lT4ZaDnc8MYp
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Fri,  3 Apr 2026 09:23:18 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=ALriHGRn c=1 sm=1 tr=0 ts=69cf8709 a=EXl8KfDnlL3m3zOSb15mOw==:117 a=EXl8KfDnlL3m3zOSb15mOw==:17 a=IkcTkHD0fZMA:10 a=wxLWbCv9AAAA:8 a=KG3lkfW8n762lDnNdHkA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-CM-Envelope: MS4xfD3opop/HP4BSN5rN8kz2ZdU0byhCSOx05DonNVURBJLU6d2AWy63sJln6p/obUZ8ZpjkDidR22O2emHk+ycMynC+cKRlpQT89zCaxgJ3SjnXE2Q4/5f NVUnTaaG7+pghYzE7QeIpdT7TfkIhajXK57rRkCnryg4955BWSy70EE5dFUBnmEZlTfiDla7Zaq7ONvFNB2q3LF3VTSq2rFMmgldlIakKfol5e3mU2VtSque hvN409snGnnU+PcnEk3WO8Ok8jzvCMsqMBh4M8kOH48Ot24DOV7LPv3ol/zCBpXvpMKWRStkjP7vR6l4Ptr3Q+fpdQvOMqXd6hg+aOxDUJmPQmJrNH0sZff5 hO+mORpa1W67iC6I0r8UaCBtHJOPjrd09Mm5VNZrq9KqxSnVnTTNfYQFXs21DwkebwLfRWArwjZn8iiHVXB1imqWXNfP7liNe5CzVLD5zPxbAu15U7f+NDgD I1miO70AjUrIPP1AouKYsyRduDgNR4LqIlqcp8+3Cicy01eYt8Vg85O6Hpat++V6BI7PENBL8lIgIQfgcOKWWawqSIk227ygm099cs6BbCnW1dvmWywRyUtz So+dCw2EOtekXHboF2GvUenS5cGOk/wj07m5KpcpN+BLb4qxu1adqS35/zzNjc7Ikys=
+X-AuthUser: linux@smankusors.com
 
-From: Griffin Kroah-Hartman <griffin.kroah@fairphone.com>
+Remove dev_err() for missing channels and rely on -EINVAL to report
+failures, reducing unnecessary log noise.
 
-Add the required node for haptic playback (Awinic AW86938)
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Griffin Kroah-Hartman <griffin.kroah@fairphone.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 ---
-Changes in v5:
-- Rebase on -next, drop input patches
-- Link to v4: https://lore.kernel.org/r/20260302-aw86938-driver-v4-0-92c865df9cca@fairphone.com
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-Changes in v4:
-- Changed how vibration intensity was calculated, added a seperate patch
-  for it.
-- Link to v3: https://lore.kernel.org/r/20260209-aw86938-driver-v3-0-5c79cff30492@fairphone.com
+diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+index 31f88cf7f7f18297132d152648b312c0fb60608e..d63af84bf44776c9c7106a43473b1678496247cb 100644
+--- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
++++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+@@ -657,11 +657,8 @@ static int pm8xxx_read_raw(struct iio_dev *indio_dev,
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		ch = pm8xxx_get_channel(adc, chan->address);
+-		if (!ch) {
+-			dev_err(adc->dev, "no such channel %lu\n",
+-				chan->address);
++		if (!ch)
+ 			return -EINVAL;
+-		}
+ 		ret = pm8xxx_read_channel(adc, ch, &adc_code);
+ 		if (ret)
+ 			return ret;
+@@ -677,11 +674,8 @@ static int pm8xxx_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_RAW:
+ 		ch = pm8xxx_get_channel(adc, chan->address);
+-		if (!ch) {
+-			dev_err(adc->dev, "no such channel %lu\n",
+-				chan->address);
++		if (!ch)
+ 			return -EINVAL;
+-		}
+ 		ret = pm8xxx_read_channel(adc, ch, &adc_code);
+ 		if (ret)
+ 			return ret;
 
-Changes in v3:
-- Changed how compatibility was handled according to feedback
-- Added reset gpio config for vibrator node
-- Link to v2: https://lore.kernel.org/r/20260128-aw86938-driver-v2-0-b51ee086aaf5@fairphone.com
-
-Changes in v2:
-- Added AW86938 specific registers
-- Added chip model enum to differentiate chips
-- Link to v1: https://lore.kernel.org/r/20251204-aw86938-driver-v1-0-ebd71868df3a@fairphone.com
----
- arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 26 +++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-index c1899db46e71..44d13966d6ff 100644
---- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-+++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
-@@ -687,7 +687,17 @@ vreg_l7p: ldo7 {
- 	};
- 
- 	/* VL53L3 ToF @ 0x29 */
--	/* AW86938FCR vibrator @ 0x5a */
-+
-+	vibrator@5a {
-+		compatible = "awinic,aw86938", "awinic,aw86927";
-+		reg = <0x5a>;
-+
-+		interrupts-extended = <&tlmm 80 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&tlmm 78 GPIO_ACTIVE_LOW>;
-+
-+		pinctrl-0 = <&aw86938_int_default>, <&aw86938_reset_default>;
-+		pinctrl-names = "default";
-+	};
- };
- 
- &pm8550vs_c {
-@@ -824,6 +834,20 @@ hall_sensor_default: hall-sensor-default-state {
- 		bias-disable;
- 	};
- 
-+	aw86938_reset_default: aw86938-reset-default-state {
-+		pins = "gpio78";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-down;
-+	};
-+
-+	aw86938_int_default: aw86938-int-default-state {
-+		pins = "gpio80";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
- 	pm8008_int_default: pm8008-int-default-state {
- 		pins = "gpio125";
- 		function = "gpio";
-
----
-base-commit: 83acad05dee54a5cff0c98dd7962e55d4c6b145a
-change-id: 20251113-aw86938-driver-b4fa0d3228a2
-
-Best regards,
---  
-Luca Weiss <luca.weiss@fairphone.com>
+-- 
+2.34.1
 
