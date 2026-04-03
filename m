@@ -1,285 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from seahorse.cherry.relay.mailchannels.net (seahorse.cherry.relay.mailchannels.net [23.83.223.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E7E26F46F;
-	Fri,  3 Apr 2026 15:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775228876; cv=none; b=oE2n3T4z+O2zqjizuObtmG4rF3y9NYcA252Tmm1LDOKs/EY9d/dH2GDmWqLjDUyGeU+YPb+7M+GiS7q2GZ+JSqjx2qhOddUrZktlpZygAp5QaJcJf8Uji4WGbFubv2AACeBZK9PuGHm2CHFLKyYvbCEDAoGDAIkr+wY1jsHzd8M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775228876; c=relaxed/simple;
-	bh=MBl//kVf0h7ViOMDV5/e95VwI4Fm6fUWPiijBlkByPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A5U1XR/PDQCn7D9sq3FND6mdLhCoB7Htj5+kO/XhQHi1YsQf3T7VOPBrTdjR5EraPuYfXnhmPD9TsnLbXN6MihsZktT111L6X0EMlkJHVdYtzJPtEp2y9aFokClJHm8ZjrSr22sAVlJv5NJEfLG9RVAZ3qOzZo5sqmfd7mc/xqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNVDfreg; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997EC23ABA8;
+	Fri,  3 Apr 2026 15:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.161
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775230729; cv=pass; b=fw/HVPecdMKXiwjExCBTEWdLDagcsvgtofRkqv+YVbpzN+d4gmsFBBuO2Qocd0XB61SDXFOpei1vOcvKmutfy3lz+fjyOYKXfy5aaxqpfaXwJT61F3NDsRsotXO4/s/6aqUSNaeuk29OdswXLo1TJ74ZY56wpGhLWghNFFk6jKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775230729; c=relaxed/simple;
+	bh=66aIWb+bdnJRjf0S3pgNBTYc9+jV2JGl1jqzb6xpZ5U=;
+	h=From:Subject:Message-Id:MIME-Version:Content-Type:To:Cc:Date; b=rsk7VqkzRh9KkQTvFQQHlGaTvmrtjC8KkuTcQho4LnRj7UA6QuLsUpHhFxR8D0JoWbHllcRRwRRFZ2d2kxuogjgTIFx3CxeslgIrT3f/K6ElFPF1Cc4xKAv8gck7Z7aIjxpnE5rxI3hKXjkusz/R1V+4FhPiQYLM86v6FCr0Wws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=m+Gw345u; arc=pass smtp.client-ip=23.83.223.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNVDfreg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4C6C2BCAF;
-	Fri,  3 Apr 2026 15:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775228876;
-	bh=MBl//kVf0h7ViOMDV5/e95VwI4Fm6fUWPiijBlkByPo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tNVDfregz0Oo7WeU26r7V03urlU7jBW3Tvif+avKYtKi87XKZzPMMtZjFcI0ZLJHs
-	 MM0hjD9LY7DnR8jZ6zkYso6GQ91+1WoB3gZg+uw4dtvJZLza1tksLnKHGTPQ8WZtze
-	 digTKFzrJ3E/YiOiNoCFwewfuJMENmVi8xXem1C1LGsxGvKABcBmabYujBMHjUbdbe
-	 Sgq6e+5DjLv3p6Jq8aP8wJxUJ2r2+ZEPYMODN5PiGVUvm7dQZZYuzmomBUvTk7Tzax
-	 NkD126yUg7BSLrdXLQ04FPXjm/FjpixWVReuyDKYu35ynAhitDWYuj0GFfxJnt62UK
-	 u57yvp2YgvnnA==
-Message-ID: <c87d229c-137c-4e59-99cc-a97ef04f6e1b@kernel.org>
-Date: Fri, 3 Apr 2026 16:07:50 +0100
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="m+Gw345u"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 4F29B4C2DBC;
+	Fri, 03 Apr 2026 09:23:34 +0000 (UTC)
+Received: from de-fra-smtpout2.hostinger.io (100-96-162-196.trex-nlb.outbound.svc.cluster.local [100.96.162.196])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 487174C29F5;
+	Fri, 03 Apr 2026 09:23:29 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1775208212;
+	b=G8oisKrwJ1l/HnSMp+O/HMBN5ATBRopm1oaKhKjsxS8kGzarYG7g3C93+OnIcaFMtipbtF
+	vjqX6UMqZn7LCvBTi1TW1OpkI7gmKQ1skLjHeJOC0yKazuj6AJbkLJD6pgvN0V1iVHdE9a
+	UxWOmbkmJbsCbq2iS/ifVZ04wsWatpMBcVq8qIRKJI3CyqS3NYwUwpOc2O4TgeBmkmMCvx
+	f1TTzp6jNR8Je52A/3yvUDOzVolYcNXzvHRITiLcF0MVnDy78I9vcwRjeLsm5fSp704fdt
+	XBmp3GEX9uUUulfbO5HdcS7IZ2GFHgBEEe8pT9RAF+04J8aAg7qhKp6/CYw1SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1775208212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=yFVHNGHk5kTfuOncaVGOWPAMBNUlAY7jMU0/aoPowls=;
+	b=Q7zo8P/mN9gMG3wtHY+5rUG5I8TpSOh/l4VdZcFc3DQyN5NSQ7SfSx/o4LHiYVAu6usOFH
+	aW+jOrWenmzmX7n1bkaeP/H/8Bk/FoT1azx2HCUcWix2V3djoYMvbr67HUlrN9aWiugC3e
+	CzkOh2PnP8l3YT0VVbKbWqKFJSTY5td2ZysbUxJ2UyVKxHBnYC9sZmusgc0RviqAAn2Afq
+	1tFelmH6GE6xYQRcdzVITr+7ZcT6KXNbGm1RLYwrKf7Jrop53b9mm2Duw1JgTCUX40ByYR
+	wy7lukk44dBI5QPp3V21FQqO/Kes/kx842Aw9zWtc4WganuirRg6v/xuzc80Kw==
+ARC-Authentication-Results: i=1;
+	rspamd-bd48b9d95-mj7k8;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Versed-Shelf: 3ab720a23a149024_1775208214152_1178420929
+X-MC-Loop-Signature: 1775208214152:1316233226
+X-MC-Ingress-Time: 1775208214152
+Received: from de-fra-smtpout2.hostinger.io ([TEMPUNAVAIL]. [148.222.55.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.162.196 (trex/7.1.5);
+	Fri, 03 Apr 2026 09:23:34 +0000
+Received: from [172.17.0.2] (unknown [180.253.47.239])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fnCv33qqCz3wpf;
+	Fri,  3 Apr 2026 09:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1775208194;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yFVHNGHk5kTfuOncaVGOWPAMBNUlAY7jMU0/aoPowls=;
+	b=m+Gw345uZJJGZP+TwbUzrRuxDg/N+kpdPk+sJKKAXUERSeZH5AyB8hrdTCXkwz60sJ8jEK
+	YvBfDpcWfpT3sxUZN/qP5UuD6kR2mBE6fA9wjJQsfMEk1s0Gr/Lk6fw11m/QVF8Fb40KXG
+	/edx+qeq+jF9KJQBLk4gmQbXRRYlIzodduLpgPAUqZRFgl9DeDJSZ8ljPFulpPo5rinXBf
+	WoUWO9Z0IGTdYAcTwKPN47d62lBhrJBDRjepegOLWxdFrfkB/GH/UJh0h1189N+5fMck/1
+	vmW3H8fvTqDK13JQb8QQ7U4LbdCmvspYRGiAMI0vTyVWmsEAJaFnIUCHh+rwPg==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH v2 0/3] iio: adc: qcom-pm8xxx-xoadc: add support for
+ reading channel labels from DT
+Message-Id: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] Add CAMSS support for SM6350
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-References: <20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com>
- <2a108976-374a-46e1-968d-7befa4369a74@linaro.org>
- <4SLDL62Oin3XdiLjUEC_YAVA-m1dKV4j_8_RolU6NJFWCIWtem6e6sCb9n7OIHbcIWBfWdXx_vZy5mXCAbWUDg==@protonmail.internalid>
- <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com>
-From: Bryan O'Donoghue <bod@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=bod@kernel.org; keydata=
- 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
-In-Reply-To: <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOKGz2kC/22NQQ6CMBBFr0Jm7ZhSEZCV9zAsBtpKI7Sko6SGc
+ HcriTuX7yX//RVYB6sZmmyFoBfL1rsE8pBBP5C7a7QqMUghS3GSOc5THWPE6En1OFKnRywqMsp
+ URpR0gTScgzY27tFbm3iw/PThvX8s+df+cuW/3JKjQCGrWpwVqUJ1V57IPV7sAx97P0G7bdsHa
+ dmi0LkAAAA=
+X-Change-ID: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775208191; l=2103;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=66aIWb+bdnJRjf0S3pgNBTYc9+jV2JGl1jqzb6xpZ5U=;
+ b=+q8xl12f3pu58HFsrYqQFbmPTXsTJ6WF3KoLPgeNJb74fvU2s+KwajhqEL2/aVRhhkKK8/iTp
+ qE9sX9TWWKWABnwbvHXBm41n5cSACwG8UfUXdmbQsySL0Yv3RW2JquU
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Fri,  3 Apr 2026 09:23:11 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69cf8702 a=EXl8KfDnlL3m3zOSb15mOw==:117 a=EXl8KfDnlL3m3zOSb15mOw==:17 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=wxLWbCv9AAAA:8 a=_3edPfKAy5zYfz3TofwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-CM-Envelope: MS4xfB/sn2ihC4TU8lKKknX4CdxobJuoXCeC8RzVt7/nNBLhoThXmVvJD3xIJjbnGtQkuB9IXJ6IasHaVabtqZvkeoJg8ERzRBMaOFSpvU1/2PZWaO3E5PNr 2jKhE2TeX8Uf/KrHnokwJNQfYvDAfmyS8FhWQv8jyZJPV6kYZsmMNmOVtBb76o/4sbOMc5VyUDNnFqhC0MK3o67Y05xrDg3maZrfkqsmxADXE1UpJFMRv2NP eml5kLk3nMvKSZi8O5tCXkZPcDo0FDE2O4ayc4bf9cpdz21dX791EXUx9tR+vXNQqnDVXaFUggZlrP0dm1ZJc2CIuGC9BGOvZYddUUfeG7wrDlUSF2jw/eKT rWrgJbkHwLU8zdRg2e1zkcoVES9umCsr56S31iVT1G4f7EZTdV6kwQJYGNHnP9nGFiOXdC/V4FBpEalKhHQ9LeaPO4ItBrDnB+opQaUWm8NeylS2GHMHHAZ1 iSSIJL9PvaVBIvMi9bJN03qWrMqs6JLRj1C9pViJLTzSic7EszOhhBirPOJW4EwbpMIsfagggqZtR4zEQURCBknYyHyNe4tWf4hy3Fb/0aEaNipyip8JBNij gqWSX7jH+ghtBBEHnR+U00MHXM220x5AAarrSM5ewoV0hEKc3sb7n0LBdbf6R8ZhySxS8ST3vXfBCJZ64hZAGrVNtFNpHtM5h/J7QW6eH0QQLA==
+X-AuthUser: linux@smankusors.com
 
-On 03/04/2026 09:09, Luca Weiss wrote:
-> Hi Vladimir,
-> 
-> On Tue Mar 31, 2026 at 12:49 AM CEST, Vladimir Zapolskiy wrote:
->> Hi Luca,
->>
->> On 2/16/26 10:54, Luca Weiss wrote:
->>> Add bindings, driver and dts to support the Camera Subsystem on the
->>> SM6350 SoC.
->>>
->>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
->>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
->>> far as I can tell.
->>>
->>> Though when stopping the camera stream, the following clock warning
->>> appears in dmesg. But it does not interfere with any functionality,
->>> starting and stopping the stream works and debugcc is showing 426.4 MHz
->>> while the clock is on, and 'off' while it's off.
->>>
->>> Any suggestion how to fix this, is appreciated.
->>
->> I've looked at CAMCC recently, and I do notice that SM6350 CAMCC does not
->> set '.use_rpm = true' flag for whatever reason.
->>
->> If you find a free minute, can you test the change below?..
-> 
-> Unfortunately that change does not resolve the "gcc_camera_axi_clk
-> status stuck at 'on'" warning.
-> 
-> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
-> active
-> 
-> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
-> suspended
-> 
->>
->> ----8<----
->> diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
->> index 7df12c1311c6..ba880e4edcaf 100644
->> --- a/drivers/clk/qcom/camcc-sm6350.c
->> +++ b/drivers/clk/qcom/camcc-sm6350.c
->> @@ -1880,6 +1880,7 @@ static const struct qcom_cc_desc camcc_sm6350_desc = {
->>    	.num_clks = ARRAY_SIZE(camcc_sm6350_clocks),
->>    	.gdscs = camcc_sm6350_gdscs,
->>    	.num_gdscs = ARRAY_SIZE(camcc_sm6350_gdscs),
->> +	.use_rpm = true,
->>    };
->>
->>    static const struct of_device_id camcc_sm6350_match_table[] = {
->> ----8<----
->>
->> This change could be considered to be included in any case, I believe.
-> 
-> I guess this change is now the way to enable pm_runtime, I had this
-> series 3 years ago in February 2023:
-> https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm-v3-0-d35e0d833cc4@fairphone.com/
-> 
-> But I never followed up due to me not understanding pm_runtime well and
-> no direct need for it.
-> 
-> But I guess reviving that with use_rpm = true, add power-domains &
-> required-opps to dt-bindings and sm6350.dtsi should be a good idea?
-> 
-> Regards
-> Luca
-> 
->>
->>> [ 5738.590980] ------------[ cut here ]------------
->>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
->>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
->>> [ 5738.591081] Modules linked in:
->>> [ 5738.591099] CPU: 0 UID: 10000 PID: 6918 Comm: plasma-camera Tainted: G        W           6.17.0-00057-ge6b67db49622 #71 NONE
->>> [ 5738.591118] Tainted: [W]=WARN
->>> [ 5738.591126] Hardware name: Fairphone 4 (DT)
->>> [ 5738.591136] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>> [ 5738.591150] pc : clk_branch_toggle+0x170/0x190
->>> [ 5738.591164] lr : clk_branch_toggle+0x170/0x190
->>> [ 5738.591177] sp : ffff800086ed3980
->>> [ 5738.591184] x29: ffff800086ed3990 x28: 0000000000000001 x27: ffff800086ed3cd8
->>> [ 5738.591208] x26: 0000000000000000 x25: ffffda14fcfbd250 x24: 0000000000000000
->>> [ 5738.591230] x23: 0000000000000000 x22: ffffda14fc38bce0 x21: 0000000000000000
->>> [ 5738.591252] x20: ffffda14fd33e618 x19: 0000000000000000 x18: 00000000000064c8
->>> [ 5738.591274] x17: 0000000000000000 x16: 00001ae003667e9e x15: ffffda14fd2a07b0
->>> [ 5738.591295] x14: 0000000000000000 x13: 6f27207461206b63 x12: 7574732073757461
->>> [ 5738.591317] x11: 0000000000000058 x10: 0000000000000018 x9 : ffffda14fd2a0838
->>> [ 5738.591338] x8 : 0000000000057fa8 x7 : 0000000000000a16 x6 : ffffda14fd2f8838
->>> [ 5738.591360] x5 : ffff0001f6f59788 x4 : 0000000000000a15 x3 : ffff25ecf9d7e000
->>> [ 5738.591381] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000baf5c100
->>> [ 5738.591403] Call trace:
->>> [ 5738.591412]  clk_branch_toggle+0x170/0x190 (P)
->>> [ 5738.591429]  clk_branch2_disable+0x1c/0x30
->>> [ 5738.591445]  clk_core_disable+0x5c/0xb4
->>> [ 5738.591462]  clk_disable+0x38/0x60
->>> [ 5738.591478]  camss_disable_clocks+0x44/0x78
->>> [ 5738.591496]  vfe_put+0x7c/0xc0
->>> [ 5738.591512]  vfe_set_power+0x40/0x50
->>> [ 5738.591528]  pipeline_pm_power_one+0x14c/0x150
->>> [ 5738.591546]  pipeline_pm_power+0x74/0xf4
->>> [ 5738.591561]  v4l2_pipeline_pm_use+0x54/0x9c
->>> [ 5738.591577]  v4l2_pipeline_pm_put+0x14/0x40
->>> [ 5738.591592]  video_unprepare_streaming+0x18/0x24
->>> [ 5738.591608]  __vb2_queue_cancel+0x4c/0x314
->>> [ 5738.591626]  vb2_core_streamoff+0x24/0xc8
->>> [ 5738.591643]  vb2_ioctl_streamoff+0x58/0x98
->>> [ 5738.591657]  v4l_streamoff+0x24/0x30
->>> [ 5738.591672]  __video_do_ioctl+0x430/0x4a8
->>> [ 5738.591689]  video_usercopy+0x2ac/0x680
->>> [ 5738.591705]  video_ioctl2+0x18/0x40
->>> [ 5738.591720]  v4l2_ioctl+0x40/0x60
->>> [ 5738.591734]  __arm64_sys_ioctl+0x90/0xf0
->>> [ 5738.591750]  invoke_syscall.constprop.0+0x40/0xf0
->>> [ 5738.591769]  el0_svc_common.constprop.0+0x38/0xd8
->>> [ 5738.591785]  do_el0_svc+0x1c/0x28
->>> [ 5738.591801]  el0_svc+0x34/0xe8
->>> [ 5738.591820]  el0t_64_sync_handler+0xa0/0xe4
->>> [ 5738.591838]  el0t_64_sync+0x198/0x19c
->>> [ 5738.591854] ---[ end trace 0000000000000000 ]---
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>> Changes in v4:
->>> - Update power-domain-names order (Krzysztof)
->>> - Make hex numbers lower case in init seq (David)
->>> - Pick up tags
->>> - Link to v3: https://lore.kernel.org/r/20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com
->>
->> Should find some time myself to issue RBs, sorry for the delay.
->>
->>> Changes in v3:
->>> - Update dt-bindings to include everything related to camss
->>> - Update regulator names
->>> - Remove slow_ahb_src
->>> - Link to v2: https://lore.kernel.org/r/20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com
->>>
->>> Changes in v2:
->>> - Remove prefix from interconnect-names
->>> - Move 'top' power-domain to the top of list
->>> - Update regulator supply names
->>> - Link to v1: https://lore.kernel.org/r/20251024-sm6350-camss-v1-0-63d626638add@fairphone.com
->>>
->>> ---
->>> Luca Weiss (3):
->>>         dt-bindings: media: camss: Add qcom,sm6350-camss
->>>         media: qcom: camss: Add SM6350 support
->>>         arm64: dts: qcom: sm6350: Add CAMSS node
->>>
->>>    .../bindings/media/qcom,sm6350-camss.yaml          | 471 +++++++++++++++++++++
->>>    arch/arm64/boot/dts/qcom/sm6350.dtsi               | 233 ++++++++++
->>>    .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 125 ++++++
->>>    drivers/media/platform/qcom/camss/camss-vfe.c      |   2 +
->>>    drivers/media/platform/qcom/camss/camss.c          | 261 ++++++++++++
->>>    drivers/media/platform/qcom/camss/camss.h          |   1 +
->>>    6 files changed, 1093 insertions(+)
->>> ---
->>> base-commit: 3daf23347bb5f4a375d0101ed29c97ce1a99721b
->>> change-id: 20251024-sm6350-camss-9c404bf9cfdd
->>>
->>> Best regards,
-> 
+This series adds support for reading channel labels from the device tree
+in the Qualcomm PM8xxx XOADC driver, along with the corresponding DT
+updates for the PM8921 PMIC. Redundant error logging in pm8xxx_read_raw
+is also removed, as returning -EINVAL is sufficient when the channel is
+not found.
 
-What about taking the clock out of hardware gated mode ?
+Tested on Sony Xperia SP (PM8921):
+> cat /sys/bus/iio/devices/iio\:device0/in_voltage7_label
+usb_vbus
+> cat /sys/bus/iio/devices/iio\:device0/in_temp12_label
+ref_muxoff
+> sensors
+iio_hwmon-isa-0000
+Adapter: ISA adapter
+vbat:        267.86 V
+dcin:          4.82 kV
+...
+chg_temp:    +1071.4°C
 
-┌─[deckard@sagittarius-a] - [~/Development/qualcomm/qlt-kernel] - [Fri 
-Apr 03, 16:05]
-└─[$]> git diff
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index a4d6dff9d0f7f..f98cb35bcd408 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -909,8 +909,6 @@ static struct clk_branch gcc_camera_ahb_clk = {
-  static struct clk_branch gcc_camera_axi_clk = {
-         .halt_reg = 0x17018,
-         .halt_check = BRANCH_HALT,
--       .hwcg_reg = 0x17018,
--       .hwcg_bit = 1,
-         .clkr = {
-                 .enable_reg = 0x17018,
-                 .enable_mask = BIT(0),
+Note: the sensor readings above are incorrect due to pending calibration
+fixes are not included in this series. This patch only addresses label
+visibility. The values are expected to be wrong until the calibration
+fixes lands separately.
+
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
+---
+Changes in v2:
+- Remove redundant error logging in pm8xxx_read_raw, since -EINVAL is
+  sufficient to report failures.
+- Reword the uncommon Tested-by commit tag to freeform text
+- Link to v1: https://lore.kernel.org/r/20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com
+
+Changes since original patch:
+- The label is now read from the platform description (device tree)
+  instead of the internal datasheet name.
+- Link to original patch:
+  https://lore.kernel.org/all/20251028-pm8xxx-xoadc-fix-v1-1-b000e1036e41@smankusors.com/
 
 ---
-bod
+Antony Kurniawan Soemardi (3):
+      ARM: dts: qcom: pm8921: add labels for ADC channels
+      iio: adc: qcom-pm8xxx-xoadc: remove redundant error logging in pm8xxx_read_raw
+      iio: adc: qcom-pm8xxx-xoadc: add support for reading channel labels
+
+ arch/arm/boot/dts/qcom/pm8921.dtsi  | 12 ++++++++++++
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 34 +++++++++++++++++++++-------------
+ 2 files changed, 33 insertions(+), 13 deletions(-)
+---
+base-commit: 5619b098e2fbf3a23bf13d91897056a1fe238c6d
+change-id: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
+
+Best regards,
+--
+Antony Kurniawan Soemardi <linux@smankusors.com>
+
