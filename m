@@ -1,80 +1,67 @@
-Received: from seahorse.cherry.relay.mailchannels.net (seahorse.cherry.relay.mailchannels.net [23.83.223.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997EC23ABA8;
-	Fri,  3 Apr 2026 15:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.161
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775230729; cv=pass; b=fw/HVPecdMKXiwjExCBTEWdLDagcsvgtofRkqv+YVbpzN+d4gmsFBBuO2Qocd0XB61SDXFOpei1vOcvKmutfy3lz+fjyOYKXfy5aaxqpfaXwJT61F3NDsRsotXO4/s/6aqUSNaeuk29OdswXLo1TJ74ZY56wpGhLWghNFFk6jKo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775230729; c=relaxed/simple;
-	bh=66aIWb+bdnJRjf0S3pgNBTYc9+jV2JGl1jqzb6xpZ5U=;
-	h=From:Subject:Message-Id:MIME-Version:Content-Type:To:Cc:Date; b=rsk7VqkzRh9KkQTvFQQHlGaTvmrtjC8KkuTcQho4LnRj7UA6QuLsUpHhFxR8D0JoWbHllcRRwRRFZ2d2kxuogjgTIFx3CxeslgIrT3f/K6ElFPF1Cc4xKAv8gck7Z7aIjxpnE5rxI3hKXjkusz/R1V+4FhPiQYLM86v6FCr0Wws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=m+Gw345u; arc=pass smtp.client-ip=23.83.223.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC45C3559D6
+	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 16:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775234644; cv=none; b=q5U0mSD1wDMlNO2j2kgaok/ChfaYcr8Ajhkjl3qzT3ZuLRGAbgFkaAaZRZ+5j/nIM2Afprr86SAh6UB43LHevda+9uJXhuvjj5L4kRSmmCVfgk27YVnq13IiTbwWtmTu4GFesJKhsATMnNASt0G3EGGJL+dUm4y4V9ZFGPJ7poE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775234644; c=relaxed/simple;
+	bh=3eR8Sp2MWr+9xlx1aPEOYPr177oMG8uZ9J0Usq4CAZ8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PNWptm7T3qnLiVhGE6C5M4pgE3697MJbOheKJURPDshySshaLZql6MAIXOXFGl9vz9CnbAIe4cMosS0ySfLZ8oxd2Zf4O/yuUyivmjUg07wxrhADud7ef0B+GXGlMZ49AWnN/ABnGb3IXCNVAiqMW2fjYx2hMwSlw8ynPJcQEbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=m0+JMTtf; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="m+Gw345u"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 4F29B4C2DBC;
-	Fri, 03 Apr 2026 09:23:34 +0000 (UTC)
-Received: from de-fra-smtpout2.hostinger.io (100-96-162-196.trex-nlb.outbound.svc.cluster.local [100.96.162.196])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 487174C29F5;
-	Fri, 03 Apr 2026 09:23:29 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1775208212;
-	b=G8oisKrwJ1l/HnSMp+O/HMBN5ATBRopm1oaKhKjsxS8kGzarYG7g3C93+OnIcaFMtipbtF
-	vjqX6UMqZn7LCvBTi1TW1OpkI7gmKQ1skLjHeJOC0yKazuj6AJbkLJD6pgvN0V1iVHdE9a
-	UxWOmbkmJbsCbq2iS/ifVZ04wsWatpMBcVq8qIRKJI3CyqS3NYwUwpOc2O4TgeBmkmMCvx
-	f1TTzp6jNR8Je52A/3yvUDOzVolYcNXzvHRITiLcF0MVnDy78I9vcwRjeLsm5fSp704fdt
-	XBmp3GEX9uUUulfbO5HdcS7IZ2GFHgBEEe8pT9RAF+04J8aAg7qhKp6/CYw1SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1775208212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=yFVHNGHk5kTfuOncaVGOWPAMBNUlAY7jMU0/aoPowls=;
-	b=Q7zo8P/mN9gMG3wtHY+5rUG5I8TpSOh/l4VdZcFc3DQyN5NSQ7SfSx/o4LHiYVAu6usOFH
-	aW+jOrWenmzmX7n1bkaeP/H/8Bk/FoT1azx2HCUcWix2V3djoYMvbr67HUlrN9aWiugC3e
-	CzkOh2PnP8l3YT0VVbKbWqKFJSTY5td2ZysbUxJ2UyVKxHBnYC9sZmusgc0RviqAAn2Afq
-	1tFelmH6GE6xYQRcdzVITr+7ZcT6KXNbGm1RLYwrKf7Jrop53b9mm2Duw1JgTCUX40ByYR
-	wy7lukk44dBI5QPp3V21FQqO/Kes/kx842Aw9zWtc4WganuirRg6v/xuzc80Kw==
-ARC-Authentication-Results: i=1;
-	rspamd-bd48b9d95-mj7k8;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Versed-Shelf: 3ab720a23a149024_1775208214152_1178420929
-X-MC-Loop-Signature: 1775208214152:1316233226
-X-MC-Ingress-Time: 1775208214152
-Received: from de-fra-smtpout2.hostinger.io ([TEMPUNAVAIL]. [148.222.55.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.162.196 (trex/7.1.5);
-	Fri, 03 Apr 2026 09:23:34 +0000
-Received: from [172.17.0.2] (unknown [180.253.47.239])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fnCv33qqCz3wpf;
-	Fri,  3 Apr 2026 09:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1775208194;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yFVHNGHk5kTfuOncaVGOWPAMBNUlAY7jMU0/aoPowls=;
-	b=m+Gw345uZJJGZP+TwbUzrRuxDg/N+kpdPk+sJKKAXUERSeZH5AyB8hrdTCXkwz60sJ8jEK
-	YvBfDpcWfpT3sxUZN/qP5UuD6kR2mBE6fA9wjJQsfMEk1s0Gr/Lk6fw11m/QVF8Fb40KXG
-	/edx+qeq+jF9KJQBLk4gmQbXRRYlIzodduLpgPAUqZRFgl9DeDJSZ8ljPFulpPo5rinXBf
-	WoUWO9Z0IGTdYAcTwKPN47d62lBhrJBDRjepegOLWxdFrfkB/GH/UJh0h1189N+5fMck/1
-	vmW3H8fvTqDK13JQb8QQ7U4LbdCmvspYRGiAMI0vTyVWmsEAJaFnIUCHh+rwPg==
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-Subject: [PATCH v2 0/3] iio: adc: qcom-pm8xxx-xoadc: add support for
- reading channel labels from DT
-Message-Id: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="m0+JMTtf"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66c17372965so3855291a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 03 Apr 2026 09:44:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1775234641; x=1775839441; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGQd5BP9OR0vvVCUe7ltA9eB3hNUu4hhpU7DvybI+7A=;
+        b=m0+JMTtfTp1IR8gb3fSTR0WYvKj3D3dmiAsg97Asz0LmXbA5FZIW5ho4D0q4WPDksy
+         2gEdjKaNs5B2ldyt2I1vkLS2RoiKtHLqOysF7PiPBFyza9VypLAtw6dudn2oREmmRvde
+         PUutvYjISYMgJrtSQlEnbvKQJ3RIl6VNGDU/oooQx0TGZnIL8YUxhh7G+0NiU+0XpWYR
+         p0itfQcUMUkoz+i5jyCkxnj0wvdxPzoyaovj8SjcaQ4ibMEjXBaB9tiS0SReFU11Qf/x
+         +D/U3cljIsN8weHCOZrdZcPW77u2aB06ZykxN/qDJhrUUcLIL5Yf7RKtqa/6R0Y017FJ
+         FQ3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775234641; x=1775839441;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XGQd5BP9OR0vvVCUe7ltA9eB3hNUu4hhpU7DvybI+7A=;
+        b=q3Cl42QkW44OK8pdRDH0k6AMPFg7Zlw/j/Iar1yWKwcMtuvLChPM3PT7V36Dfd1rWE
+         OMn90Cw3CmMtQfbFWE/D6qyEVaab3Cjyq+Jzvldfkvw4HaBUx/Pe2G0srhrWiQ/WEbT7
+         ge/KFDZM7ook3LE5Bx+N68L5lU+qwtCKRIXU7T0H081xUJrJtlk2D+u84UB4gW7c7P1R
+         rxL1ZkIoZXbAkRR2uQAEGdPNb+cA+/6enDGlK1IXGLUYdfv4NnDlJqNXh5ajMOe9oLmB
+         gZF3wV1r45WYh2RlMf1mMjGhRcOieCPdd9u1Z1V1fKjCArgTPn6YmHCUp6SkVHTkASox
+         5qWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNdrt4Zkui+9QFsZRMfa+dgweGSWZnUHroZ6cOMngf72T9tZ3ulaeYkZRJHxsXJRRCDZoaoHldl7JzYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjiDMskukTm00ozJuiuyBP5B4q13tt0UBDvhclBDMSWnXqiJAP
+	t3sst51PpPswD1RJq/NVUZuTIZlWbdi53davk7C0eK6iTQXw3WjGjzEsUj1a1p2F8O3QGR7GY5o
+	IHk4rnpI=
+X-Gm-Gg: AeBDiesUnOtXyeVNgX/Zn9+ra+f0uhEf0FbTYuYeDTj6kZhNDch8f2FZKG5k11ks9Ed
+	QeyuXDrzurzrCsbDQ/tfhcizL3P/4O581LpK1BUrTxeUr1YchHz0vGsNSg4sY5koFZ45MuWs28/
+	nTL8V797kKvcseS+gLC6XRRwGfgMgnYcSRaVjq0dZQ3OCmquopP4A0I40YS+6QUzkQqKGu+TG2p
+	c2Z3BImizPoWcqC2spf2qiAZJYm0/GRG6hQKNXsq1iywt4EbRSESdFmPcS9yPxnRdF3LIaNMkqr
+	oXzbgJwb9oJ9KK9e8Gq5XPbFdUUTSPgI00ri7xJ2jj71/Rk3o88Zz6hZ7F5NNW/briRoGuwH+GB
+	fQgASEQTIPTZO8kX4c3JDVvNqu/trIOMWl8FP80IjgQvPReomLXix0P751zbbnon/ecITQwYnYs
+	AdPXYKoce5M4kz2M5aediJrvS5XI8ocMzutpMBb+xLCpRY8svnbB5d1DEa05A6mwbHnBlHGFOJj
+	Xci246H7yL4p/+wHX6PA6d0n7qhGu6avL0hbw==
+X-Received: by 2002:a17:907:d40f:b0:b97:b379:b3fa with SMTP id a640c23a62f3a-b9c679f62d8mr218234966b.39.1775234640833;
+        Fri, 03 Apr 2026 09:44:00 -0700 (PDT)
+Received: from otso.local (2001-1c00-3b89-c600-71a4-084f-6409-1447.cable.dynamic.v6.ziggo.nl. [2001:1c00:3b89:c600:71a4:84f:6409:1447])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3ca9a145sm213492566b.25.2026.04.03.09.44.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 09:44:00 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/6] IPA v5.2 support for Milos and Fairphone (Gen. 6)
+Date: Fri, 03 Apr 2026 18:43:46 +0200
+Message-Id: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -82,89 +69,72 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOKGz2kC/22NQQ6CMBBFr0Jm7ZhSEZCV9zAsBtpKI7Sko6SGc
- HcriTuX7yX//RVYB6sZmmyFoBfL1rsE8pBBP5C7a7QqMUghS3GSOc5THWPE6En1OFKnRywqMsp
- URpR0gTScgzY27tFbm3iw/PThvX8s+df+cuW/3JKjQCGrWpwVqUJ1V57IPV7sAx97P0G7bdsHa
- dmi0LkAAAA=
-X-Change-ID: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- Antony Kurniawan Soemardi <linux@smankusors.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775208191; l=2103;
- i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=66aIWb+bdnJRjf0S3pgNBTYc9+jV2JGl1jqzb6xpZ5U=;
- b=+q8xl12f3pu58HFsrYqQFbmPTXsTJ6WF3KoLPgeNJb74fvU2s+KwajhqEL2/aVRhhkKK8/iTp
- qE9sX9TWWKWABnwbvHXBm41n5cSACwG8UfUXdmbQsySL0Yv3RW2JquU
-X-Developer-Key: i=linux@smankusors.com; a=ed25519;
- pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
-Date: Fri,  3 Apr 2026 09:23:11 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69cf8702 a=EXl8KfDnlL3m3zOSb15mOw==:117 a=EXl8KfDnlL3m3zOSb15mOw==:17 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=wxLWbCv9AAAA:8 a=_3edPfKAy5zYfz3TofwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
-X-CM-Envelope: MS4xfB/sn2ihC4TU8lKKknX4CdxobJuoXCeC8RzVt7/nNBLhoThXmVvJD3xIJjbnGtQkuB9IXJ6IasHaVabtqZvkeoJg8ERzRBMaOFSpvU1/2PZWaO3E5PNr 2jKhE2TeX8Uf/KrHnokwJNQfYvDAfmyS8FhWQv8jyZJPV6kYZsmMNmOVtBb76o/4sbOMc5VyUDNnFqhC0MK3o67Y05xrDg3maZrfkqsmxADXE1UpJFMRv2NP eml5kLk3nMvKSZi8O5tCXkZPcDo0FDE2O4ayc4bf9cpdz21dX791EXUx9tR+vXNQqnDVXaFUggZlrP0dm1ZJc2CIuGC9BGOvZYddUUfeG7wrDlUSF2jw/eKT rWrgJbkHwLU8zdRg2e1zkcoVES9umCsr56S31iVT1G4f7EZTdV6kwQJYGNHnP9nGFiOXdC/V4FBpEalKhHQ9LeaPO4ItBrDnB+opQaUWm8NeylS2GHMHHAZ1 iSSIJL9PvaVBIvMi9bJN03qWrMqs6JLRj1C9pViJLTzSic7EszOhhBirPOJW4EwbpMIsfagggqZtR4zEQURCBknYyHyNe4tWf4hy3Fb/0aEaNipyip8JBNij gqWSX7jH+ghtBBEHnR+U00MHXM220x5AAarrSM5ewoV0hEKc3sb7n0LBdbf6R8ZhySxS8ST3vXfBCJZ64hZAGrVNtFNpHtM5h/J7QW6eH0QQLA==
-X-AuthUser: linux@smankusors.com
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12OQQ6CMBBFr9LM2klKKaC9imFRcNQxFrAthIRwd
+ 6uwMC5f8vLfXyCQZwpgxAKeJg7cdwmyg4D2brsbIV8Sg5KqlFrm6PjZB+TBIhWVLKw9VkoXkPz
+ B05Xn79a53jiMzYPa+BnYDU+vMUXipkFjA2HbO8fRiI7miHtIwe8DI/77jhzmVuZaKX3SpTVTB
+ vW6vgGTj2vy0AAAAA==
+X-Change-ID: 20260403-milos-ipa-e5705aa87245
+To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexander Koskovich <akoskovich@pm.me>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775234639; l=1858;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=3eR8Sp2MWr+9xlx1aPEOYPr177oMG8uZ9J0Usq4CAZ8=;
+ b=v1ffqSLzzxM9XxRNgAQX/geWtyuc0La8etp5U2HBuFJW9gM8BPq17ZzLQXAA7A1TPz6gSAEX6
+ Q4DoP1jLyFTARZfCzBKlCSxsRzRHYXV5P5tMzfvTNfSoDsTxA25XAWv
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-This series adds support for reading channel labels from the device tree
-in the Qualcomm PM8xxx XOADC driver, along with the corresponding DT
-updates for the PM8921 PMIC. Redundant error logging in pm8xxx_read_raw
-is also removed, as returning -EINVAL is sufficient when the channel is
-not found.
+First, two fixes that unbreak IPA v5.0+, which can be applied
+independently.
 
-Tested on Sony Xperia SP (PM8921):
-> cat /sys/bus/iio/devices/iio\:device0/in_voltage7_label
-usb_vbus
-> cat /sys/bus/iio/devices/iio\:device0/in_temp12_label
-ref_muxoff
-> sensors
-iio_hwmon-isa-0000
-Adapter: ISA adapter
-vbat:        267.86 V
-dcin:          4.82 kV
-...
-chg_temp:    +1071.4°C
+Then add support for IPA v5.2 which can be found in the Milos SoC. And
+finally enable it on Fairphone (Gen. 6) so that mobile data (4G/5G/..)
+starts working.
 
-Note: the sensor readings above are incorrect due to pending calibration
-fixes are not included in this series. This patch only addresses label
-visibility. The values are expected to be wrong until the calibration
-fixes lands separately.
-
-Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes in v2:
-- Remove redundant error logging in pm8xxx_read_raw, since -EINVAL is
-  sufficient to report failures.
-- Reword the uncommon Tested-by commit tag to freeform text
-- Link to v1: https://lore.kernel.org/r/20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com
+Alexander Koskovich (2):
+      net: ipa: fix GENERIC_CMD register field masks for IPA v5.0+
+      net: ipa: fix event ring index not programmed for IPA v5.0+
 
-Changes since original patch:
-- The label is now read from the platform description (device tree)
-  instead of the internal datasheet name.
-- Link to original patch:
-  https://lore.kernel.org/all/20251028-pm8xxx-xoadc-fix-v1-1-b000e1036e41@smankusors.com/
+Luca Weiss (4):
+      dt-bindings: net: qcom,ipa: add Milos compatible
+      net: ipa: add IPA v5.2 configuration data
+      arm64: dts: qcom: milos: Add IPA node
+      arm64: dts: qcom: milos-fairphone-fp6: Enable IPA
 
+ .../devicetree/bindings/net/qcom,ipa.yaml          |   1 +
+ arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts   |   9 +
+ arch/arm64/boot/dts/qcom/milos.dtsi                |  44 ++
+ drivers/net/ipa/Makefile                           |   2 +-
+ drivers/net/ipa/data/ipa_data-v5.2.c               | 452 +++++++++++++++++++++
+ drivers/net/ipa/gsi_reg.c                          |   1 +
+ drivers/net/ipa/ipa_data.h                         |   1 +
+ drivers/net/ipa/ipa_main.c                         |   4 +
+ drivers/net/ipa/ipa_reg.c                          |   1 +
+ drivers/net/ipa/ipa_sysfs.c                        |   2 +
+ drivers/net/ipa/ipa_version.h                      |   2 +
+ drivers/net/ipa/reg/gsi_reg-v5.0.c                 |   9 +-
+ 12 files changed, 523 insertions(+), 5 deletions(-)
 ---
-Antony Kurniawan Soemardi (3):
-      ARM: dts: qcom: pm8921: add labels for ADC channels
-      iio: adc: qcom-pm8xxx-xoadc: remove redundant error logging in pm8xxx_read_raw
-      iio: adc: qcom-pm8xxx-xoadc: add support for reading channel labels
-
- arch/arm/boot/dts/qcom/pm8921.dtsi  | 12 ++++++++++++
- drivers/iio/adc/qcom-pm8xxx-xoadc.c | 34 +++++++++++++++++++++-------------
- 2 files changed, 33 insertions(+), 13 deletions(-)
----
-base-commit: 5619b098e2fbf3a23bf13d91897056a1fe238c6d
-change-id: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
+base-commit: 83acad05dee54a5cff0c98dd7962e55d4c6b145a
+change-id: 20260403-milos-ipa-e5705aa87245
+prerequisite-change-id: 20260403-milos-imem-3a034224946a:v1
+prerequisite-patch-id: 07ad87fc40adfb8dd146b9c0678d099bfe97f679
+prerequisite-patch-id: 0f4436a42df3bccb92f753cecfbf24c81f4677c8
 
 Best regards,
---
-Antony Kurniawan Soemardi <linux@smankusors.com>
+--  
+Luca Weiss <luca.weiss@fairphone.com>
 
