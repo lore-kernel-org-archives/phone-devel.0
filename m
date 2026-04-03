@@ -1,57 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4325F3CBE61;
-	Thu,  2 Apr 2026 22:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120F6359A9A
+	for <phone-devel@vger.kernel.org>; Fri,  3 Apr 2026 05:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775170492; cv=none; b=tfS1pQWVeHhhhebkLlx63q9fDTXc+ypoF63YQVy+YI4yn7N/hhDn4L50I+7bdN3e3tqvmg2u1nfPVDoCGhkYZFOJHS3Q1Dhshf80nvAdVcFs/cnTc7uLJs+i+TTWVjanf79uHctDDo1YYbRqj6k460jkLYB97PH31Qr6c0bF+2g=
+	t=1775195098; cv=none; b=CNI4i3ps/qTUAdULQMrWjf4IvhujTCWbQ3JHAFpqY+w616ZT1GbkGhGRFUHPmNLdUfsNwA/6WoMsCp7tLTIWQmTsUIq47OegllSk1GI2D5gt30lVQooZil3GsV/cP93IL3pDzLzgU906G+8vddS24vmSoXt4hXspI1ohCW4XTK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775170492; c=relaxed/simple;
-	bh=gTJzfjLipQ7RVXKjNF0EoUEwnvSwwbF6J4IG1xgIxDA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VrSkdBinimfGCfontQ7uukZWeLxC1ywPFvF058BHKaZkMS1POnfyCoZGbldLKzkoEzLQ5GCn0tIguaR2IdYCcMtWmemrwO+bhLs4SeYqj0lqV9TgsMQ/59qdv9SESMHi7d1dzG2C4K2OaD745ZYU8ALAQh3/XelVCFtZo4zNx6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C3C2BCB0;
-	Thu,  2 Apr 2026 22:54:51 +0000 (UTC)
-Received: by venus (Postfix, from userid 1000)
-	id 4D9EC1812B8; Fri, 03 Apr 2026 00:54:50 +0200 (CEST)
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Casey Connolly <casey.connolly@linaro.org>, 
- Sebastian Reichel <sre@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-In-Reply-To: <20260315-smb2-cherry-pick-v1-1-b2710e470490@ixit.cz>
-References: <20260315-smb2-cherry-pick-v1-1-b2710e470490@ixit.cz>
-Subject: Re: [PATCH] power: supply: qcom_smbx: allow disabling charging
-Message-Id: <177517049029.464276.9815426789369592499.b4-ty@collabora.com>
-Date: Fri, 03 Apr 2026 00:54:50 +0200
+	s=arc-20240116; t=1775195098; c=relaxed/simple;
+	bh=N7hywudL6zjyva2RxgQstzjNTfqkYhq3ISbleHrUEPA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WJ428ebuQ9+BAVV/yyGKKEC2jgHo0UIBS6OEepryUGOyCeBefLuYwZGnVG7UuWCzbXfgbfdx6yw8gdMymalNihy6ybtAFIp+WloBvfnGBs9S/RWc14cHdG3fvZxJ+QbfoCbCx0LvZNCUadk5/JPQeaXxb8XKkFWEHg0ytx9fQ/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=gein4Ype; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="gein4Ype"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1775195085;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=66pwrA9dgDiSw/0z2fygVNRM9nXU/lnoGe5zoMWNmhI=;
+	b=gein4Ypet+e9rxovtLCkCmLjh273jvNRLRlTH+ah51fsBKezeA5gqH0gu9kT2tyTA5ALLC
+	DuFwS0sN1vfY31OyllxHiCAqiZBmAcU1P0I1YctJdkclFfO2hfeRC1H997LozvL2t190nB
+	m+FJTHbuVJlXFB9Wh3Xup0WUTwB9NUa6JxSRDNnriJrZcVFB8snJXKnZXfv1qDU/JUr1NG
+	MeVu0OBZ2VphFdAOZF5p7fFGjl2pqcn6gSufwnKYbGnJrEg9X3kldzQdj5iAvrNkrVL2gw
+	wQKYgWTal1IBxGkSTJ4i97RbINbjvboGwFhJweZ/iACZ99B3/ja7m0KWhDbKkQ==
+From: Val Packett <val@packett.cool>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Val Packett <val@packett.cool>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
+Date: Fri,  3 Apr 2026 02:33:08 -0300
+Message-ID: <20260403054417.167917-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+Motorola Edge 30 (motorola,dubai) is a smartphone based on the
+SM7325 SoC.
 
-On Sun, 15 Mar 2026 20:40:16 +0100, David Heidelberg wrote:
-> Hook up USBIN_CMD_IL so that writing "0" to the status register will
-> disable charging, this is useful to let users limit charging
-> automatically.
-> 
-> 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+---
+v2: Pull Acked-by
+v1: https://lore.kernel.org/all/20260329103055.96649-1-val@packett.cool/
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied, thanks!
-
-[1/1] power: supply: qcom_smbx: allow disabling charging
-      commit: 98d68b74ebb9d5f145960ff7d96ce8e7a39fb965
-
-Best regards,
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index ca880c105f3b..58f1621bb855 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -1038,6 +1038,7 @@ properties:
+ 
+       - items:
+           - enum:
++              - motorola,dubai
+               - nothing,spacewar
+           - const: qcom,sm7325
+ 
 -- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
+2.53.0
 
