@@ -1,72 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D31221F06;
-	Sat,  4 Apr 2026 11:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C962777EA;
+	Sat,  4 Apr 2026 19:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775300621; cv=none; b=MHoMaaSuZj5bUkHFN10kYLSwuK3LutYK52vehEwP7i8Jxt006+8gSWhRaENHu8HfiYEBNUKyNMPO8vT+TP2sMKCf3BxCasvTEvu62hsn30sDL68hGLGfq2jwC/fLCNvtwd5NbYhbYnCtIvWU/Q40hW6mOm4u4kbAlhEkSMc9uP0=
+	t=1775330889; cv=none; b=PIgNZb3wHX0pxWh8ZaMnuzwB89piO5dCQujUEN1P+kRoOkcvM4YI0JgBo+p1Z3U4RA2Oa7qr3AnPViQZ+flhoF7NsxwMw3mu0+xMyJajwP8hcShnApVhpJxq61AJO2b/34xuZsIZVnS2cKH1d2luyYFwdVNlD+/giArl5p4bupA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775300621; c=relaxed/simple;
-	bh=6St2+FWQW6l2+yulRPhL9B9LaFWvnweTQb8aao65BJQ=;
+	s=arc-20240116; t=1775330889; c=relaxed/simple;
+	bh=dSJX9GOFRFbixYNAI6Hfa0AxdTI5h2mwNMjm5R1g/V0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eDTM0a33DY/185BaI19yg9+xmZSFoIy9Xx0bxj5FLCPvaVw+2zPtcIu3kVpd95WcfxFFfXUbgd0Q4yEDUXdUG/gF+6z6PtpYHLur9vDBK7uQI0OOBVbqDoSuO8rt4031/zW+zBWFjpxnAsM/BceF0rrtUBGy+l0prD4PADbl7JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlNyJzEP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=F35yIF6opoZ08VomRa3z5YwMbw82WdabTBNjPCE2xw3AnQd1D/eiwEV7P0JJhScL15iTnfQVgMZXO9ozmmUzgmq46Jw4f/bvNBrvtq6wY4O7TpOoUcwXockppM8RWiLWfkRmlI/XEPqGhmBC8RIqN4wi0ok2FBI4PMNekdTlTEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=elb9Ub8A; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlNyJzEP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B5BC19421;
-	Sat,  4 Apr 2026 11:03:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775300621;
-	bh=6St2+FWQW6l2+yulRPhL9B9LaFWvnweTQb8aao65BJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LlNyJzEP1vCy3VsXqvb+qYWW7ZgAAcWmqH3alo3kX5XyniTbUiC/P0mDfU/ml39KV
-	 0bOSX5o1nV5jSsW3IXO9FT/REUxr+KXeBtDRpTjuZkw7/77HI04blC8qRB5T2S13nJ
-	 dDgveJhRGnQ/4gyG9p2PLkN0UUEON9oS/fh764MK3IL2wt6ehQsFhK6+IX7BABewy4
-	 3pEl+awEVmsfviM7h3WUMU1n5tz8UK+hZMbnkQnKRUjRciQ7LL9LdfathHb+BrLkM1
-	 eM467LdIvq2ZKSCC5xLOH3WalCvBVkE93O1MValbuQh+qOmgjYS315D+J1ICMy678L
-	 batJXhfwJvgzw==
-Date: Sat, 4 Apr 2026 13:03:39 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alexander Koskovich <AKoskovich@pm.me>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <jjohnson@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH v2 3/7] dt-bindings: net: wireless: ath11k: Document
- WCN6755 WiFi
-Message-ID: <20260404-sceptical-benign-chachalaca-e13aa9@quoll>
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
- <20260403-milos-fp6-bt-wifi-v2-3-393322b27c5f@fairphone.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="elb9Ub8A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775330888; x=1806866888;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dSJX9GOFRFbixYNAI6Hfa0AxdTI5h2mwNMjm5R1g/V0=;
+  b=elb9Ub8AEgSbvRF87bLgpaaY5QQdyhCBpWacgynpiabhnQ3Lh5KAwYdm
+   jlLhGVhS8uH1xGfGBubagkVJk3agDAwfj7uqcri/9xU/MXaSZs/MVm0p1
+   fbtaxHVRl4b11D2CkC9WobDld02hdmT4JvM3X2nRQquwj4kKSL1s5z68j
+   q1tnkQg89/aF7jhUSnp5m2otEhqewoAg2KT3XgL9Ry5XHLESbO5SvwBnZ
+   PkFSw0gbWqETV3PrK8UGK3WXMR6DjGIVFOIXw6nC1gQKU1SX9iqBlA/Gl
+   i/gpoKY8kQLDhvkH6QuxeO02R1AHUD763XVkHvAzHAlZyBqbP0yE6gEg6
+   A==;
+X-CSE-ConnectionGUID: 9XaBhVTGQbGjRtlQx7DgCg==
+X-CSE-MsgGUID: HaE+U3leStuiEkKP2C6KRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11749"; a="86972448"
+X-IronPort-AV: E=Sophos;i="6.23,160,1770624000"; 
+   d="scan'208";a="86972448"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2026 12:28:07 -0700
+X-CSE-ConnectionGUID: QAFtupCCQBWHlDi7j2iLXw==
+X-CSE-MsgGUID: DXTNmmgLTYO7Zn40+WsJkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,160,1770624000"; 
+   d="scan'208";a="229164035"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.247])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2026 12:28:04 -0700
+Date: Sat, 4 Apr 2026 22:28:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Antony Kurniawan Soemardi <linux@smankusors.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] iio: adc: qcom-pm8xxx-xoadc: add support for
+ reading channel labels
+Message-ID: <adFmQeMVKB125lgJ@ashevche-desk.local>
+References: <20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com>
+ <20260403-pm8xxx-xoadc-label-v2-3-29b50bf821e6@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260403-milos-fp6-bt-wifi-v2-3-393322b27c5f@fairphone.com>
+In-Reply-To: <20260403-pm8xxx-xoadc-label-v2-3-29b50bf821e6@smankusors.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Apr 03, 2026 at 03:52:49PM +0200, Luca Weiss wrote:
-> Document the WCN6755 WiFi using a fallback to WCN6750 since the two
-> chips seem to be completely pin and software compatible. In fact the
-> original downstream kernel just pretends the WCN6755 is a WCN6750.
+On Fri, Apr 03, 2026 at 09:23:21AM +0000, Antony Kurniawan Soemardi wrote:
+> Implement the .read_label callback to allow userspace to identify ADC
+> channels via the "label" property in the device tree. The name field in
+> pm8xxx_chan_info is renamed to label to better reflect its purpose. If
+> no label is provided in the device tree, it defaults to the hardware
+> datasheet name.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml    | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
+> The change has been tested on Sony Xperia SP (PM8921).
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+...
 
-Best regards,
-Krzysztof
+> +	ret = fwnode_property_read_string(fwnode, "label", &ch->label);
+> +	if (ret)
+> +		ch->label = hwchan->datasheet_name;
+
+Branch is not needed.
+
+	ch->label = hwchan->datasheet_name;
+	fwnode_property_read_string(fwnode, "label", &ch->label);
+
+will have the same effect. But if you want to handle errors, you may do
+
+	if (fwnode_property_present(...)) {
+		ret = fwnode_property_read_string(...);
+		if (ret)
+			return ret;
+	} else {
+		...assign default...
+	}
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
