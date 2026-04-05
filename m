@@ -1,53 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA8A35AC07;
-	Sun,  5 Apr 2026 19:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAA435AC31;
+	Sun,  5 Apr 2026 19:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775418038; cv=none; b=iGO3AmeswkPDNUexNkMJh1FGhFlhpfkkbrM9/2PXWF7SKGOd3cG9nIEG+wyhC80Sp9rzSCAkgWxovJhwE3X3WZ6Fijw70eS+fx87VgC8bhqBffVOym6Q7JnciRqq8FsWTcXJnxUkTRs8gGiago/mtyFPz0NLp2f0DafFkXfv1fM=
+	t=1775418044; cv=none; b=U+GW9a6yxAYvDNjVQgKwfE53j9ZdguwzOVfOzJT3Kwmyp/c5ZC8/jE78j7WeHc7FyyBkYaLLnH13bpWgT2POP/elTkW4qM3goVMDpB+FbON9+IAs8cogqjaXDLUhBrlfP7JpjaleWN0bmazZwOzZfJa0EbxMu4qYU+kVwNhvELg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775418038; c=relaxed/simple;
-	bh=t0c1Aj9x6oh9swEHELoQI+YWMFwmyHi/wBMgqgBqNBI=;
+	s=arc-20240116; t=1775418044; c=relaxed/simple;
+	bh=G8OHlwTmTRxK63cP/30d5ZvSGyTtM/dCdLD08SQGNd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATX3+51JmZq3hYibsE+/ic1L722y+jbDrWE/lplxCJvTJE9Gkloy9+Asbi/XJBq1/N5yk7zrt8wZj2ycAriR0ZqjfAGq2X+HVJRPzlFdV8lY1CEqRHh+06ga8kOXNiHXV9sRxUsn+fvIohpwVzoSb+0p6Sf1SB6J1s914C89+/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFWckPmp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=myCdxExndhg56zgNFZz7FU8qHtxwrOOST612DvqmXLdZ556Zulm9d8GjyIZ+0oSdvi/jRGI4Br2b4qID/h6WADbxwLhIuSY3o0t45BTWro2rFeImPQinMtwP5tKVwI1B9cp7dYwlbI+aQbb4pVKeeDay2PNYi5b9UFfrggjziaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JoUYhNK2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFWckPmp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF6CC2BCB0;
-	Sun,  5 Apr 2026 19:40:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JoUYhNK2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEECC19424;
+	Sun,  5 Apr 2026 19:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775418037;
-	bh=t0c1Aj9x6oh9swEHELoQI+YWMFwmyHi/wBMgqgBqNBI=;
+	s=k20201202; t=1775418043;
+	bh=G8OHlwTmTRxK63cP/30d5ZvSGyTtM/dCdLD08SQGNd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFWckPmpRpoSChNlfVehoRcR2M6hOWFqQlj7UvIQMkRWh7fKyib64TycDGrNgEvvo
-	 ILcOcNOhcREb7uFtozvXJWpiZOx1nRXZxSI2IRvbxV+xZYKFCLhwBihGvodT7U6cBp
-	 OWcSVCtll8xQlRDLurizzGnTtnKcxCxsVNY1ag8+WGXNuGT3kP3wg7udmGd5eYUYL3
-	 tq3g+Qi3/KEg+nI5K/hw7kcwZEg7b4cnuMiy9r/8ObUdAOQiNC2yc3NmAbh9PZWrzH
-	 Nio/6mpRGSh76Sgv9m75qgx95CcJyFXjt4V4FpyJahIP4bLSae3u9rNSQuQmNq0U7i
-	 2GATs+PYdAYLA==
+	b=JoUYhNK2rn1I9djWNCEm2ncbbVbMGSkx0CS6iUkKGHWMM2FOqei1RTfHwkST1aDx4
+	 YD8rNvVpCK9quSnJYfg/G5zMWwgJ3hpEZGSr7gT2BIIwJ0XuAIvP+tqZNsa52Wf6BS
+	 O6gXbTrW9AeFMIcV/bGGwlodb+eHhUn0N1V0w2k4KU4gtlDd1CCUFGWB8kTgBSizNE
+	 6UuDwcNVgW5PbEk7JogQSNWAUg5z4P36ywzp6tWW113LvTSu1W9+6bzEYMFsx2sN2Q
+	 hOL24jvU8AJHmYX36O9bv5XMNaBjRSpJFZzUFScPSvGgqbyh6vrZHdGedsjNkcy/rg
+	 fseOGL04fij+w==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dylan Van Assche <me@dylanvanassche.be>,
-	David Heidelberg <david@ixit.cz>
+	David Heidelberg <david@ixit.cz>,
+	Paul Sajna <sajattack@postmarketos.org>
 Cc: linux-arm-msm@vger.kernel.org,
-	Petr Hodina <phodina@protonmail.com>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Alexander Martinz <amartinz@shiftphones.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] SHIFT 6MQ SD-card support, improved responsivness of touchscreen, and codec
-Date: Sun,  5 Apr 2026 14:40:17 -0500
-Message-ID: <177541802154.2061229.10542831803796515827.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Amir Dahan <system64fumo@tuta.io>,
+	Christopher Brown <crispybrown@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH v7 00/15] arm64: dts: qcom: sdm845-lg: Improve hardware support in devicetree
+Date: Sun,  5 Apr 2026 14:40:23 -0500
+Message-ID: <177541802142.2061229.9094394728986735362.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402-axolotl-misc-p1-v3-0-8934e9db6831@ixit.cz>
-References: <20260402-axolotl-misc-p1-v3-0-8934e9db6831@ixit.cz>
+In-Reply-To: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
+References: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -58,21 +59,44 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 02 Apr 2026 11:54:05 +0200, David Heidelberg wrote:
-> I've tested that SD card and touchscreen works well, the codec does too,
-> but for complete enablement needs soundcard support which isn't fully
-> finished.
+On Tue, 31 Mar 2026 20:15:05 -0700, Paul Sajna wrote:
+> Rollup of improved hardware support via devicetree for LG G7 ThinQ
+> (judyln) from sdm845-mainline kernel fork
 > 
+> Notably, this patch-series enables full DRM acceleration and wifi,
+> among other small improvements in individual commits
 > 
+> after this patch-series the main things that remain to be worked
+> on include touchscreen, audio, and modem.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/3] arm64: dts: qcom: sdm845-shift-axolotl: Enable sdcard
-      commit: 338b4158e877f116d404262098bbdcd1eaf6fd88
-[2/3] arm64: dts: qcom: sdm845-shift-axolotl: Set higher touchscreen i2c clock
-      commit: 8a53d5aa0d1179ac14aa7da58351848c2e709dcc
-[3/3] arm64: dts: qcom: sdm845-shift-axolotl: Enable TFA9890 codec
-      commit: 2b676b5a13d28eb038b4e54dae8e161a7be58d96
+[01/15] arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
+        commit: 6a9e8df732014c1c758bd3cd6254b5b4cb273c7f
+[02/15] arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change path
+        commit: b9afe8581c0e14b7b56e2314dc7f9597bf23ef67
+[03/15] arm64: dts: qcom: sdm845-lg-judyp: Define firmware paths for judyp
+        commit: 8f4c53ae286bd6a113245ad53ce957e623374cf0
+[04/15] arm64: dts: qcom: sdm845-lg-common: Enable venus
+        commit: e9f611de7ab51540c0cf246df6b7d4d99f4cec64
+[05/15] arm64: dts: qcom: sdm845-lg-common: Enable qups and their dma controllers
+        commit: 4ec3045c969a326c458c53ca65bde5749e575d52
+[06/15] arm64: dts: qcom: sdm845-lg: Add uarts and Bluetooth
+        commit: e746ed5af3084e9534135679c55e69eced0c657f
+[07/15] arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
+        commit: 995c258982429db93db103fc26fcb3a0acd6a5ee
+[08/15] arm64: dts: qcom: sdm845-lg-common: Add LEDs
+        commit: b49722c8a18cdd11f49357f3b8be23549f76a506
+[09/15] arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+        commit: 2e7cdd400b6a4e67c27fc3e839342824b51d01ff
+[10/15] arm64: dts: qcom: sdm845-lg-judyln: Add display panel
+        commit: c6c66aa3ef33dc3076c6dac64003b29bd9515b58
+[11/15] arm64: dts: qcom: sdm845-lg: Add wifi nodes
+        commit: eb8fa32085261a07d763e9d616b3c206d0be82ff
+[12/15] arm64: dts: qcom: sdm845-lg-common: Add chassis-type
+        commit: a5a5ad9848980e1019ca841fe057afb83debecfa
 
 Best regards,
 -- 
