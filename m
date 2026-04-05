@@ -1,38 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from seahorse.cherry.relay.mailchannels.net (seahorse.cherry.relay.mailchannels.net [23.83.223.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94368322533;
-	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775386497; cv=none; b=F4OMWxlRFrrvcDRz+uyc4Gp4frF4Pj+Zd0FiHnRGjXXj4i3JK1prlChLm5BPrcxLwnmoTF6Q58l3CZxTmTIFc0xfE/1qWCxg3C02hYc9eRaeQXh9F2o+7uHm7XUAWMvHM3j5xDLNk4pmU48yxnqiT4xrWE7C9NLPOOC00QimEyA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775386497; c=relaxed/simple;
-	bh=U0Y1dfa7x6ljrvRF5AHYokovzfPc9zay7BPLdG5hFFM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=G9P0W98OdsS3fbadSohRsui8PyWPZFgePrUymRIOTSQEQl/0dIX93aIXpXiGgSqDYRyXuY8DiJ+hS6KQixvk+bEQjF7qC+tSNORsUjUEHwWj8asm/IOwnCgx3E56jSYJHtrS5Ju5eLgcXdbVffyTOvuAZJBU4fsf9Q2iudGFKhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQ3HfonX; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97731F92E;
+	Sun,  5 Apr 2026 16:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.161
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775407969; cv=pass; b=MKl4efTOlFRGJX33IwAbJwopkKo4XxLjZAlD4OOk2Z437nG0gHwHKhOyXsfUHDm0Yz/vklLiWs6NXRPchkw3B6vlduZQtdBI3TVhUBbvRKnnojn0M8To2g3XdQuOVsZPyJj2Pj8STFzVCjF/g8BzA+rhtuu8GfuMDq7z/geDHJQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775407969; c=relaxed/simple;
+	bh=EZvCXxmXvySQhsHp6IWve7TbCpesTjhOh1VUEuJb5Ck=;
+	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc:Date; b=iDuy9xBHCRzMzYpaXKa012r6kj9OqDWWgzaVn+YpEQ5nSqLdwRnHdB88kACGND0nS4VLUijT9GD8Wr5S53wEXvG92I6ocAVWFkK5OAfEv2hNfwRm1x8xiAfJ4dUiM+dn6S3NqtJrE4jfGSFeluOw4aL8LdWkgh0a65AClni1PpQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=q4vyiR4B; arc=pass smtp.client-ip=23.83.223.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQ3HfonX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 36810C116C6;
-	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775386497;
-	bh=U0Y1dfa7x6ljrvRF5AHYokovzfPc9zay7BPLdG5hFFM=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=PQ3HfonXzRUTEe+hXbfdxK01+NGx7a4wDM6DsgVyg5wFBq8nKQAVfUzsGuBhrBLFv
-	 KMpgyiRDSqZ9++5uQh+9/nszxdlAZog52FJ6PLFvWcfCW29+I5zekLpOru2YE9dgJw
-	 XP7ben80UuA210UmKkxuefvq+V8DZ5FqVZ44qef8c8DjBArsGxrWqCNLqoHGApvZYW
-	 kTAiE06tnp+ypdIDqtcECLK0hoPIIsHmiaoJeKtPc+9fKSTaNyFkQ78GBfbKg7WrXa
-	 FwXhiQ8qhEPP5O+nks/gWbSVnSz3XT7FcETcxgTuWxrMSX/0SUlSMJOlZ8tYhGatd8
-	 wAT/boMu/VU3g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28E07E63FE8;
-	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v2 0/2] arm64: dts: qcom: beryllium compatible ordering and
- bindings update
-Date: Sun, 05 Apr 2026 12:54:54 +0200
-Message-Id: <20260405-beryllium-compat-string-v2-0-91149be07835@ixit.cz>
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="q4vyiR4B"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 943CA6233B;
+	Sun, 05 Apr 2026 16:52:40 +0000 (UTC)
+Received: from fr-int-smtpout21.hostinger.io (trex-green-6.trex.outbound.svc.cluster.local [100.96.162.172])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id B25E461EE6;
+	Sun, 05 Apr 2026 16:52:32 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1775407955;
+	b=uyCSFAs831DzWou3rdSgXZD67kZStmTarnH5NAv09qvXKCng8yBj5/hyJzFoYNmB1ExFr+
+	6bQEtf2aJ/6hQOy3lNJm4MMQuyKCr8EgMZmxBk3p3QmqeosdHK38V/1mIHq5g3SE/yAFZq
+	EYbWPYoFo6X5TmD3yYCPPiQ7FITJ3OBRwSZSOGw5mvqFUVHRTudYoIVWuQiDHm2Nwusi/3
+	GnJ3GLqWWYqyuNCWahzcMUQlX2rzKkiDaZVNzGUmcmhz4zs7b/SyG9mNHPKP7NtWYgckSp
+	PPkTFVSeOy63cVVFOR675eKdU0BRlRDwKbNow1vnKZI5czr9JwITGAeXfSNmcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1775407955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0hEJfRZL2GIoJ9y9RUP+pRIEiyvVIB8dhWwj+cFjh/c=;
+	b=CchZ8KjU9i9oRW1hECXejOF7WEYcKUyaGsFrw2Lo5RnFsngLQeI3oC2mMG7OXdV3gcLjU3
+	pXRkjNg+IYzxp2ZFipJ3Keou39Ee04m3oI46HlMeuer8+yuRpzZOcJ1sXmjYM0z6809v4p
+	tyXeL5xGPz9P9haMzDBNSM3HFH+p8kC8Ba0Ml8hklETEpLH0aOtuQgpvUXuwjY1xS2ENFT
+	iFMawt0Z8bzkHZ8H40PWo2i5eTaaNGI+jBURZXLMA34sJL2lh9lz66K20YxZEP3y7+1Lox
+	kuS08lVj4IwhiZX5R77IuUVmyhFL0GVSWrEVJcI22PWiejsNrosMFMs6+LSZGQ==
+ARC-Authentication-Results: i=1;
+	rspamd-bd48b9d95-kfrcw;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Inform-Soft: 50b9824505a2f1ff_1775407960501_602095209
+X-MC-Loop-Signature: 1775407960501:692205676
+X-MC-Ingress-Time: 1775407960501
+Received: from fr-int-smtpout21.hostinger.io ([TEMPUNAVAIL]. [148.222.54.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.162.172 (trex/7.1.5);
+	Sun, 05 Apr 2026 16:52:40 +0000
+Received: from [172.17.0.2] (unknown [180.247.251.74])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fpdmQ0t96z1xnH;
+	Sun,  5 Apr 2026 16:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1775407945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0hEJfRZL2GIoJ9y9RUP+pRIEiyvVIB8dhWwj+cFjh/c=;
+	b=q4vyiR4BsEa5c/T8veVnc0lK8Er+8RLTn5Kvmlqcvuyrc22OWnsO/n2h8QKuPQOPhicUa6
+	xDKfXHss+ZX3tXHfT/smT20Iu59UHrB0oO5UcTHrSRXqIoHqeXgf4Y7FjVvSKD5yeSkG3T
+	4U1YGWGPrX5HZn3MHzZA97q+I9FHW8t/gGVcGyW6ghiRRa/7M/V4mqymZCGrWcVjKhlbf2
+	bgc6cuYtY16wLEVSTiZuSo77gBQwJTnbOr+1Wi21vgleFvU6AT6cdM+awx43WNU5bs2OCK
+	5KQhQdtWUjVkw9Vlxzfzl3GgvJCG90wJGixReE2hAiZ5nCQpdehZOmA24A1iNA==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH v3 3/3] iio: adc: qcom-pm8xxx-xoadc: add support for
+ reading channel labels
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,92 +85,120 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAH4/0mkC/4WNTQ6CMBBGr0Jm7ZihAkldeQ/Doi0VJuEvbW1A0
- rtbuYDL95LvfQd469h6uBcHOBvZ8zJnEJcCzKDm3iJ3mUGQaKiiG2rr9nHk94RmmVYV0AfHc4/
- GlJXUkpSQHeT16uyLt7P8bDMP7MPi9vMolj/7vxlLJCTVaGl0XStBD944XM0H2pTSFyb4nE28A
- AAA
-X-Change-ID: 20260403-beryllium-compat-string-cc149b90a29d
+Message-Id: <20260405-pm8xxx-xoadc-label-v3-3-9fe179c283ec@smankusors.com>
+References: <20260405-pm8xxx-xoadc-label-v3-0-9fe179c283ec@smankusors.com>
+In-Reply-To: <20260405-pm8xxx-xoadc-label-v3-0-9fe179c283ec@smankusors.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Joel Selvaraj <joelselvaraj.oss@gmail.com>, 
- Jens Reidel <adrian@travitia.xyz>, Arnaud Ferraris <aferraris@debian.org>, 
- Marco Mattiolo <marco.mattiolo@hotmail.it>, 
- Petr Hodina <petr.hodina@protonmail.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1958; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=U0Y1dfa7x6ljrvRF5AHYokovzfPc9zay7BPLdG5hFFM=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp0j9/68wXsw1fCSjwwwXOmquRH96atpAGySsNC
- sck70xjcqCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadI/fwAKCRBgAj/E00kg
- ciBjD/99lAVSgOfOneAV7cN506+okqDnFUa2DbWO2Br86UfEgnyz0Q1lZ1Jvve1b8RXCkgIQJPe
- SqDUwr1FjZn7zXE+deleK8bmva8l3RuEeF8mu4I8XFamtEfNTxJSm0tav2mHyLSLSmw71gLgjiN
- 9Oln98EplrFqBkPjABsZl7YXNwQ1majNgY6GenWeb8aHj+Ryh914GE2lQ7YsdCwFbypusd1/7gB
- xPSs/ZCP1ZqN0VowTPNnnVM8z7xoJuRfjKI1UzJlI2jYIzjjkfNDhoVHVzRRy4RuzLozhDAmmhC
- Pp3c9+P9oyFWoMmXbcFbcm5bBqZdPtM8XFtZnWX/m4ua+A9zf2siFcoFtsbz73HM2M3qQ/Q4gIj
- tAbeNxPbkVbQvpLeg0bVJ/2uHEwt671FSyNm6y7XTjheK15uU4KUK2XHEGvY7hPDKQQxil2Zl8p
- Ny/bp2Mo2h1Imq87XBrylBrF3U7p3M5eO5Tvc7Jgl3UsUNEZLyGRcIxQAevkgRkdQ3RhxKB4Kab
- pCKOc0JdMd7X1VgzuPKAiDNJP3sVMAVXsNnioZuxgRe1MTN+5Arm3v7hrlJYsW/4P6ql43oCiTF
- SoKWHSYeQkTLP9BjJXR4mT0KhyfLZ+JrD9RX13RmEBswW9ACmkXTRNAfZD3C4xplwuEStKsQA/F
- 9t5rInMB/nXn6WA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775407927; l=3487;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=EZvCXxmXvySQhsHp6IWve7TbCpesTjhOh1VUEuJb5Ck=;
+ b=aBPJMkSjbSOgeM6iloBF8lAxAAsGUf3xgrX3LHRw6FqrPRqzgEc8o2z25GX91IenLx9F0Mkqm
+ zOlGkzZn1NhAcOrRC3D2nBI+Z48P1JTIKk4kEs2/kaJBX0p4dwm5QJg
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Sun,  5 Apr 2026 16:52:21 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=UN2PHzfy c=1 sm=1 tr=0 ts=69d2934a a=iMBLmzX4nuXcozcv68JNPw==:117 a=iMBLmzX4nuXcozcv68JNPw==:17 a=IkcTkHD0fZMA:10 a=EUspDBNiAAAA:8 a=wxLWbCv9AAAA:8 a=RWyRNVyMI2VXGFIsuXIA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-CM-Envelope: MS4xfI0nPhALSosJI+v+oJPO0SjtJmuCDvm+JLLK2keCfvqLo1cGIgAYYsVbTFd20We0Nbf9mclb1cR0e3S7BUJqlwkszZ4mYq9WOM8w8jnXH+0kf1kzCnft eKu6DUC0CY8HUv/thvbfOP/sZmbYyo8F5Q7oF96TGmC2J9+UyD6yJRbozSrale95vdNANhMJjIwdw0LFwt1sjrZ6pLYkbQEkFk9CvsDoPKMMDVoAteAHfMnE qAS053efXPMYyoSMI4yvxJZckCljAm7PyV0Bgdrt0bZLkgKwJrpRhQS+aDGhoyNUKE9N4MsJaiR5U1/kzIY9ug/MXi1JmndLVnKEV9emvDtobRbB+JYUm/qs M3zRUMTimxuqC+HuMfbgkTvciF+pj5HEtBXYuWD3fK+QQY73OcQnAL6JAfNCwdwJAIFYoc76IrbS/Q+vziwme744ZxZ1XZ/qAfqOb3qeqL8vlkosFJXGP5Sb 1vf9408FcRF6vY63tnNPbxiWYjpCq2q/Zz3UC7scvbk5sRPtPEHGFEbdHyk4LjkbJuzuOohthYFnp3/lQlnqZr32trTK9Q0lGpVfrJg8RwH12n5R2L4DTeVW 9zlJV8m1riVALUuQbMFKpp4FIzT4LvyMlHjPs1Vv3pXSs6nuPMlS8qrI+oCza6qMoYtlQ8LyAcz39TAkrwM6PWU4AMsLyyrmeetP4U2M2PcW8pbIdIyU0zf7 C61dG5TDf7I=
+X-AuthUser: linux@smankusors.com
 
-This series aligns the Xiaomi Poco F1 (beryllium) device tree
-compatible strings with DT matching rules by ensuring proper
-fallback to the generic device compatible.
+Implement the .read_label callback to allow userspace to identify ADC
+channels via the "label" property in the device tree. The name field in
+pm8xxx_chan_info is renamed to label to better reflect its purpose. If
+no label is provided in the device tree, it defaults to the hardware
+datasheet name.
 
-Patch 1 updates the dt-bindings documentation to describe
-the Tianma panel variant and clarify the expected compatible
-string ordering and fallback requirements, aligning the
-binding with actual DTS usage.
+The change has been tested on Sony Xperia SP (PM8921).
 
-Patch 2 updates the DTS files to append the generic
-"xiaomi,beryllium" compatible after the panel-specific ones.
-This enables correct userspace fallback matching (e.g. for
-hexagonrpcd), which currently fails when only the variant-
-specific compatible is present. This constitutes a DT ABI
-change, as additional compatible matches become possible.
-
-Together, these changes fix an incomplete compatible chain
-and ensure consistent behavior across panel variants.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 ---
-Changes in v2:
-- To be extra safe, CCed Arnauld and Marco (Mobian), Jens (for pmOS) is
-  already in the loop, Petr (for NixOS Mobile is already in the loop).
-- Improved description and documented that main distributions
-  already use the patch (thus no API break will not happen to these
-  projects).
-- Link to v1: https://lore.kernel.org/r/20260403-beryllium-compat-string-v1-0-0a6b9cb55a20@ixit.cz
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
----
-David Heidelberg (1):
-      dt-bindings: arm: qcom: Document Xiaomi Poco F1 Tianma variant
+diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+index 537b03181cbfb4cfcbcb242bcc2c7be18c4c384b..4ff9fee0dbbd9df80b97eb91744133c3db8b3bde 100644
+--- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
++++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+@@ -369,7 +369,7 @@ static const struct xoadc_channel pm8921_xoadc_channels[] = {
+ 
+ /**
+  * struct pm8xxx_chan_info - ADC channel information
+- * @name: name of this channel
++ * @label: label of this channel from device tree (defaults to datasheet name if not specified)
+  * @hwchan: pointer to hardware channel information (muxing & scaling settings)
+  * @calibration: whether to use absolute or ratiometric calibration
+  * @decimation: 0,1,2,3
+@@ -377,7 +377,7 @@ static const struct xoadc_channel pm8921_xoadc_channels[] = {
+  * calibration: 0, 1, 2, 4, 5.
+  */
+ struct pm8xxx_chan_info {
+-	const char *name;
++	const char *label;
+ 	const struct xoadc_channel *hwchan;
+ 	enum vadc_calibration calibration;
+ 	u8 decimation:2;
+@@ -446,7 +446,7 @@ static int pm8xxx_read_channel_rsv(struct pm8xxx_xoadc *adc,
+ 	u8 lsb, msb;
+ 
+ 	dev_dbg(adc->dev, "read channel \"%s\", amux %d, prescale/mux: %d, rsv %d\n",
+-		ch->name, ch->hwchan->amux_channel, ch->hwchan->pre_scale_mux, rsv);
++		ch->label, ch->hwchan->amux_channel, ch->hwchan->pre_scale_mux, rsv);
+ 
+ 	mutex_lock(&adc->lock);
+ 
+@@ -718,8 +718,20 @@ static int pm8xxx_fwnode_xlate(struct iio_dev *indio_dev,
+ 	return -EINVAL;
+ }
+ 
++static int pm8xxx_read_label(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan, char *label)
++{
++	struct pm8xxx_xoadc *adc = iio_priv(indio_dev);
++	struct pm8xxx_chan_info *ch = pm8xxx_get_channel(adc, chan->address);
++
++	if (!ch)
++		return -EINVAL;
++	return sysfs_emit(label, "%s\n", ch->label);
++}
++
+ static const struct iio_info pm8xxx_xoadc_info = {
+ 	.fwnode_xlate = pm8xxx_fwnode_xlate,
++	.read_label = pm8xxx_read_label,
+ 	.read_raw = pm8xxx_read_raw,
+ };
+ 
+@@ -763,7 +775,8 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
+ 			pre_scale_mux, amux_channel);
+ 		return -EINVAL;
+ 	}
+-	ch->name = name;
++	ch->label = hwchan->datasheet_name;
++	fwnode_property_read_string(fwnode, "label", &ch->label);
+ 	ch->hwchan = hwchan;
+ 	/* Everyone seems to use absolute calibration except in special cases */
+ 	ch->calibration = VADC_CALIB_ABSOLUTE;
+@@ -805,7 +818,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
+ 
+ 	dev_dbg(dev,
+ 		"channel [PRESCALE/MUX: %02x AMUX: %02x] \"%s\" ref voltage: %d, decimation %d prescale %d/%d, scale function %d\n",
+-		hwchan->pre_scale_mux, hwchan->amux_channel, ch->name,
++		hwchan->pre_scale_mux, hwchan->amux_channel, ch->label,
+ 		ch->amux_ip_rsv, ch->decimation, hwchan->prescale.numerator,
+ 		hwchan->prescale.denominator, hwchan->scale_fn_type);
+ 
 
-Jens Reidel (1):
-      arm64: dts: qcom: sdm845-xiaomi-beryllium: Append compatible strings
-
- Documentation/devicetree/bindings/arm/qcom.yaml             | 10 ++++++++--
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts   |  2 +-
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts |  2 +-
- 3 files changed, 10 insertions(+), 4 deletions(-)
----
-base-commit: cc13002a9f984d37906e9476f3e532a8cdd126f5
-change-id: 20260403-beryllium-compat-string-cc149b90a29d
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
-
+2.34.1
 
