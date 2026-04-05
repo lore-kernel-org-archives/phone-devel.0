@@ -1,156 +1,143 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE3A40DFB2;
-	Sun,  5 Apr 2026 09:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9426D267AF2;
+	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775380771; cv=none; b=AyU5B3cEFtCVMm7XIaZ292ZleDVjOmY8gq11dzlJIQc4XtOZGnYkePGqWQOcyzFgXXsQf6A0AbeRTG/B1hRieFbG78e7zqjJUgwGPg+Rn+crtvjHe4V7xGIcpLGToEk1Pqbhfoza3sA0AYAOgEYKrbT/hYcWDf5z0X8RjQ6pAII=
+	t=1775386497; cv=none; b=sDI1tHqfsEcZHVZCu7UkABF+2dxBcI0KHgpd2H25wErPseZyzHAw7W0ipkyoZrSYBp0k6xXCxvXxZweanc+8YKBRRoSq+/c86yosr4Y9vblybB82oUAwPOgus2JDU0rhFXg2uCPXEux5+ei62l5cy4WheUXjdqOLtkTze54UhP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775380771; c=relaxed/simple;
-	bh=wIoJ6PJ7yb0uHATOBz8TpY7ThYxjBuWVx4SRtXyHVHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=us1Bzd/q8SHXKMpjTYUCMLItwDiNZ9sF5CSpnKP3vwFWqQ9FQntfQhumQk2xf8g19cUPse9cDKKG9oA034TdT8s8fxWVSgHaHSs2k+sjMTp2e7BGceYimybQzJfcXlrDFZmnC8ANNGqghCmwR1t61gmLwc3APIFkhEKb7Ildq28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=WVam4pDY; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1775386497; c=relaxed/simple;
+	bh=GKrvjJQ6InTyeSypzq7Vxjnbaw/6EBeuclqAJOInFkk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BAG2p2vdka+MxLAPRMfb7EGzLp3o0IE5W/vLJrA3rj5VzxzL4bsWeVxvrILm0lEw76CatC9cJ4g1mSQhcn/TgqElzMmgX7rWP6bJ1fPuP1K+yM1v5oKC4kdGxvTAR1iJJhfgGPiPr2V4XLhSM2Up+7iF8aanr7eZf9wdx1nU+g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCqaUxD8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="WVam4pDY"
-Received: from [IPV6:2a02:f000:10bd:e301::1d7] (unknown [IPv6:2a02:f000:10bd:e301::1d7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id E942D5340AAF;
-	Sun, 05 Apr 2026 11:19:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1775380765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=k2Qfo4xa3ATQwBx9RCVHIPSTrC5tG1ktL6onBnF9LXY=;
-	b=WVam4pDYfPSfF5fnpOqQCh9Ou1bE69tbDdJ3FTvcQt1NO7Hrr09fBmsxDrmF2cRSr4ga0C
-	/kw9C0vcrZMOcax9QcQanF6e7ujhoGmZSRwTMID46nRiwYO5ZfOQ3YHK+NPLoD/WLF7TCZ
-	tFQuY0tcjFnJCHZdgg2erRydPAcOMoM=
-Message-ID: <709b9764-b1db-4110-900f-187272f991c8@ixit.cz>
-Date: Sun, 5 Apr 2026 11:19:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCqaUxD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57F4FC2BCAF;
+	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775386497;
+	bh=GKrvjJQ6InTyeSypzq7Vxjnbaw/6EBeuclqAJOInFkk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=oCqaUxD8Co/jpqC1NLY/FVGbBF0JHMwBkCFKV/OfBBH9aFlopxXicaH2HKKaD/8UM
+	 sGWmKFlYxMEbbPhSVZPIVwMUp+9LZRXnTca+9k5yOLeHuIJvWNCpZazx1KWiHaSkkr
+	 K+MMcjZ3/mE2KI1xTU25J6cr7B9MPTFT7KBWdD/uB8oXRbvWcegLqd5/Y/w1oykA3E
+	 dOHa0c/f8aDp4KNEvk4xnupH/9+DoQL3+fNa9JioXa4Fx2FgIcKwt99TOgNgfV79gD
+	 nPWaEHCMriwahd5cB9HXEs5ilrtikNQP5QB99XPIj2GRnQgfRBzeNEmz5xtSXvsOfr
+	 kp0NrWOZSQr+g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EB88E6401B;
+	Sun,  5 Apr 2026 10:54:57 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sun, 05 Apr 2026 12:54:56 +0200
+Subject: [PATCH v2 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Append
+ compatible strings
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Xiaomi Poco F1 Tianma
- variant bindings
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marijn Suijten <marijn.suijten@somainline.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Joel Selvaraj <joelselvaraj.oss@gmail.com>, Jens Reidel
- <adrian@travitia.xyz>, Petr Hodina <petr.hodina@protonmail.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260403-beryllium-compat-string-v1-0-0a6b9cb55a20@ixit.cz>
- <20260403-beryllium-compat-string-v1-1-0a6b9cb55a20@ixit.cz>
- <20260405-truthful-fat-angelfish-ec3e45@quoll>
- <205d43a0-70aa-4e49-af36-8bc2d5809110@ixit.cz>
- <8ef78376-87f5-4ad4-8453-c59d6aa1dcb5@kernel.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <8ef78376-87f5-4ad4-8453-c59d6aa1dcb5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260405-beryllium-compat-string-v2-2-91149be07835@ixit.cz>
+References: <20260405-beryllium-compat-string-v2-0-91149be07835@ixit.cz>
+In-Reply-To: <20260405-beryllium-compat-string-v2-0-91149be07835@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Joel Selvaraj <joelselvaraj.oss@gmail.com>, 
+ Jens Reidel <adrian@travitia.xyz>, Arnaud Ferraris <aferraris@debian.org>, 
+ Marco Mattiolo <marco.mattiolo@hotmail.it>, 
+ Petr Hodina <petr.hodina@protonmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2487; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=cv7cDYuMTi6gyf2Pp9mcIzjD0CpCT5mLI+pIjAH3UTA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp0j9/da2r9Zvp3XxR8GRM9SV8Jl0kFoIA4qD9/
+ mWIBbIToWSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadI/fwAKCRBgAj/E00kg
+ csVCD/9SY21ucBUIdch1nEgdipJ3CRwzcK1fErN4W2EXhhzDyamREDIgxzpK8jCK3SOjocmzSpF
+ FA5BygMPXxW7xz8+mWbi5QJtRiiTKVIbqPC4V6MedTeWKAFG39mhsgXLE94VlHxsRx3/PQYJEgq
+ M5rnDwVbrhnzHqispVETKPaTAs+EbUSecsRKCBPNSqrMT6SNSZoyCBJyyTxa0yw7ATJtTZ3BlDP
+ 4n3zcMmHsQZCIhweT+aX50sO8V+tq0AH0fIl1eRJB0Szo6K6ZF0FI8gOvUYzQlVJ6AjeVFJP5O0
+ jSQef9LQqggmZBfog6ParwaFSbJi8ecV5JB4arzmT7jIp77JEzUO2BcdWxNlM4IArEHFo8PEm4B
+ C8oID31Xk3v/kmv/G1cCDNaiJcNC4XlMXTbhXT9YJJa0tw0t+GzIZXoKh4Wasnwp81GWrnGHYzP
+ 7sC2AW6UbVPOtkz9qR7ZdeoQX1y3xixFW8NTCMkZ19LyoDB13gDkpuFeCf9fT6PgzdmzeDzV+++
+ fCUh4z4mqqHe3cPTXuNm9ASXjFm3RH8SP0jBLrIpzH26KafXMLaAxxGXorhuUOpcZpRiTFXiHmc
+ JhP6VJApmL7UiaFBGiB3J2seBEngmUAd3ztD1t1Q0QA46xDDDD+JTixaQood0X8rzqRqR40gK43
+ wkmlxX+e5xSVv6Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
+From: Jens Reidel <adrian@travitia.xyz>
 
+Add the generic "xiaomi,beryllium" compatible string after the
+panel-specific one, so the compatible list follows the required
+ordering from most specific to most generic.
 
-On 05/04/2026 10:55, Krzysztof Kozlowski wrote:
-> On 05/04/2026 10:01, David Heidelberg wrote:
->> On 05/04/2026 09:55, Krzysztof Kozlowski wrote:
->>> On Fri, Apr 03, 2026 at 06:55:33PM +0200, David Heidelberg wrote:
->>>> Add documentation for Tianma display and touchscreen variant.
->>>>
->>>> While at it, correct binding documentation expectation.
->>>
->>> What expectation? What exactly did you corrected that you claim this is
->>> a fix?
->>
->> I would say the missing Tianma variant, which been with us for some time. The
-> 
-> Expectation of missing Tianma? We don't have such expectations...
+This allows userspace to fall back to the generic Poco F1 compatible
+when no panel-specific match is present. In particular, hexagonrpcd
+relies on trying all compatible entries to derive the HexagonFS path,
+and currently fails when the generic device string is missing.
 
-Ok.
+This change modifies the DT ABI: systems describing the EBBG variant
+will now also match on "xiaomi,beryllium", whereas previously only
+the panel-specific compatible was exposed.
 
-> 
->> follow up commit fixes the missing compatible and order, thus it would make
->> sense to me have also the dt-bindings part backported and fixed.
-> 
-> You probably should read original discussion why this ended up like that.
+In practice, no upstream userspace distinguishes between Tianma and
+EBBG panel variants. All known consumers rely only on the generic
+device identification, and no panel-specific handling exists.
+Therefore, enabling the generic fallback does not change effective
+runtime behavior, but fixes userspace that depends on generic matching.
 
-All I found is
+The previous state was incomplete, as it omitted the generic
+device-compatible string required for proper fallback matching.
 
-  The compatibility property is
-  moved to the tianma variant, but it is not updated to avoid any
-  further conflict with other projects/users that might depend on it.
+Signed-off-by: Jens Reidel <adrian@travitia.xyz>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts   | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-> 
->>
->> I agree I don't have strong case here. Should I drop the tag, keep it or replace
->> it with Cc: stable@vger.kernel.org?
-> 
-> If you cannot explain what you are fixing, then this is not a fix.
-
-Sure, I'll drop the tag.
-
-> 
-> Best regards,
-> Krzysztof
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+index 2d6f0e382a6cb..d157622f84d13 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+@@ -6,7 +6,7 @@
+ 
+ / {
+ 	model = "Xiaomi Pocophone F1 (EBBG)";
+-	compatible = "xiaomi,beryllium-ebbg", "qcom,sdm845";
++	compatible = "xiaomi,beryllium-ebbg", "xiaomi,beryllium", "qcom,sdm845";
+ };
+ 
+ &display_panel {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+index b58964cde8342..71816a9f33b48 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+@@ -6,7 +6,7 @@
+ 
+ / {
+ 	model = "Xiaomi Pocophone F1 (Tianma)";
+-	compatible = "xiaomi,beryllium", "qcom,sdm845";
++	compatible = "xiaomi,beryllium-tianma", "xiaomi,beryllium", "qcom,sdm845";
+ };
+ 
+ &display_panel {
 
 -- 
-David Heidelberg
+2.53.0
+
 
