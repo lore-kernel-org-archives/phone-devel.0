@@ -1,106 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613C386541;
-	Mon,  6 Apr 2026 15:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDD023D7FF
+	for <phone-devel@vger.kernel.org>; Mon,  6 Apr 2026 15:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775488970; cv=none; b=d0uUNJzovyGcJnXU64sfuMTOHNNb047O8sK/Q8aeF5Xw3QsXdon1sSPwkdhQWfcNDgdZh4eCz5TR6tjWKQ7ns3nX4khKP3YOPb0zzssIoe/S1lpMz0z45nReUvzWETgDuJLXqfdrnLMbp4R6fLSHd/ZInX72rE5EgC1G9R6Kdec=
+	t=1775489424; cv=none; b=RmGmpl3gOi8tdRG1sYpW51jBDxiIECCM2jgignF/3xA5ios3AjpMXE87h6Xyl7M/msaVf4EK8GSQXqai/143Ouuz0lAeqkoEIAVdLYM8vR6c1+4KWDR+BLERt3Y8KljgOg26JH78mwtZI6/8lkUKHya881v4cN9aP8xl8D7CZLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775488970; c=relaxed/simple;
-	bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MvsIPdmVPD43ZcPOHmlQ7OfBNlw0mvhAFhts5gi5i5hmuBmv8amMmR1HeFpBPoUa1LOQArVaF8sPaRzSAhnIPLGnY7qvIViv4xHMWIwETlBC9oqGb8MRmhdi0FnE9v5q/lZy27kGNUtB6xhEqSdDgki31hw5Ih/68ofyROyxOAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFbjQkjD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775489424; c=relaxed/simple;
+	bh=qY8HXRLd3rg8UeZmh2bcc4S7RvrC1Vew4Crqm0UVq88=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=a725y9dP+z/jWJ//+wlb9az5CiGra0fz1Oyo/DWTC8FLR+hbqku8SoLcg3Fwnc6pBMaCEFY14lcmesgL/G5vzPvuNhQThpESkrqgp2+GNhqQFrNlWjOyvhOq1IiXI48Z4/sBuh7sR8tIzp8seN7brKmR1ml6Iokvxp7r9XiW79s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=FEdhD5UU; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFbjQkjD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9718C4CEF7;
-	Mon,  6 Apr 2026 15:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775488969;
-	bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=vFbjQkjDICQPatHELDGaZzMGsOG7IMqZS8Nx0QZ7vwFj+aO7qSZLsXOzn/2N3Aj8P
-	 GQaS+U+vr2nDy11N5l6FpMnGTPxVQCPaO44HkAA0aJr7qr1c6F5Nfjt8wEOGHEdnaG
-	 uvklpS8YoFvJ8yZ4D9kHX5qNvlrRjscjnj6mvcxJIR/OHxiuHuUTfNloMmaxYvV1hs
-	 p9NclkJ/ClxVwPY7sllotz/eUaHLFeDjYUhXB7y9xDxfCsmLWmVlApD9hr+Nsa2eDI
-	 rE+YsIJ/4bKRYOWBWiKAMG5g4+q2szxGIIDSDYo+GQLzupJ/idfiqks9ySg9L9GvoR
-	 THwzn+tommHiQ==
-From: Mark Brown <broonie@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alexander Koskovich <AKoskovich@pm.me>, 
- Liam Girdwood <lgirdwood@gmail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
- Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
- Rocky Liao <quic_rjliao@quicinc.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Jeff Johnson <jjohnson@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-In-Reply-To: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
-References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
-Subject: Re: (subset) [PATCH v2 0/7] Enable Bluetooth and WiFi on Fairphone
- (Gen. 6)
-Message-Id: <177548144839.46304.13972601101594073712.b4-ty@b4>
-Date: Mon, 06 Apr 2026 14:17:28 +0100
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="FEdhD5UU"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1775489411;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cl3MtyC0ml8bgrz0gHQfCrzWUIfK4oCJ4cASNn7ldtc=;
+	b=FEdhD5UUJEAxm6EKJXJ0/H+8PuEjb+nCod/U7iJixCFyku4NCJ7wfxD/pB8W2uu6tx89NZ
+	ruOIcWKXsnjNDFf4xkyOPRay87EHEcRsH8I1AMmw66PI92PAZ/CnOEJRWRrkrxb+EX8yXO
+	QJUA9r92sqSTkwMSrZoOYVFKcXrrjbqLnqpZD/I+UQ/IRy0trZpZSkuXhWcOj8AuxRcdsY
+	Ol2xr7blGEOxpvNhyz0Ead8/Y3c0J6ya6JZMsvmRaL/YKLHPKbh/3SmlQbzAd/n0tHx9tA
+	hqd4UsQH432TJfB8SzCs2f3xMbjBDDsoz1RJGKPxU7mY73gvoR9OXbX8ss8PFA==
+Date: Mon, 06 Apr 2026 15:30:05 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-67696
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1248; i=broonie@kernel.org;
- h=from:subject:message-id; bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp08/EHCSvABc5+hfj7LywcFO5vIyiMIyPbeR7h
- ppJ03irVwuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCadPPxAAKCRAk1otyXVSH
- 0KVpB/9S4D+rqQdrlGK7dDEaMH4ZQMEuGOMsBF05rICalPIeS+4HrqIdPQlTVFXQS+2FvhlW2v9
- 05Q1bZHOQZs52JJs+bbrwIb+9HnsD4fm4Fcq/CwxMBFfcb3D/8Uh7op9NLC9TMkaPvIlEyMVD4V
- 2eZIcjoyQ3ZyIsPzOqGIEKPo5UdI+TQyvmwOYnNcJ7Pg/Ft7ElkHEieBdQ7gR8SjyUegXQSAXNJ
- Lklhvvjd7b4qNJo6F8BDqvjelJFrUH+BSDJI63aYQTuDG5KvMSdQqyGFYjyO6PyvaEmtsmtpWY1
- OBo9Osy1m0mMXQWQCHFcbL50CpXYNDkWKuhxF3yLVZDqBqGq
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Paul Sajna" <sajattack@postmarketos.org>
+Message-ID: <f63f25751b5db2ee5420ec4c12e36271ca22a864@postmarketos.org>
+TLS-Required: No
+Subject: Re: [PATCH v7 00/15] arm64: dts: qcom: sdm845-lg: Improve hardware
+ support in devicetree
+To: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "David Heidelberg" <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, "Amir Dahan"
+ <system64fumo@tuta.io>, "Christopher Brown" <crispybrown@gmail.com>,
+ "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Pavel Machek" <pavel@ucw.cz>
+In-Reply-To: <177541802142.2061229.9094394728986735362.b4-ty@kernel.org>
+References: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
+ <177541802142.2061229.9094394728986735362.b4-ty@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 03 Apr 2026 15:52:46 +0200, Luca Weiss wrote:
-> Enable Bluetooth and WiFi on Fairphone (Gen. 6)
-> 
-> Add the required bits to enable Bluetooth and WiFi on the Milos
-> SoC-based Fairphone (Gen. 6) smartphone.
+April 5, 2026 at 7:40 PM, "Bjorn Andersson" <andersson@kernel.org mailto:=
+andersson@kernel.org?to=3D%22Bjorn%20Andersson%22%20%3Candersson%40kernel=
+.org%3E > wrote:
 
-Applied to
+> Applied, thanks!
+>=20
+>=20[01/15] arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
+>  commit: 6a9e8df732014c1c758bd3cd6254b5b4cb273c7f
+> [02/15] arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change =
+path
+>  commit: b9afe8581c0e14b7b56e2314dc7f9597bf23ef67
+> [03/15] arm64: dts: qcom: sdm845-lg-judyp: Define firmware paths for ju=
+dyp
+>  commit: 8f4c53ae286bd6a113245ad53ce957e623374cf0
+> [04/15] arm64: dts: qcom: sdm845-lg-common: Enable venus
+>  commit: e9f611de7ab51540c0cf246df6b7d4d99f4cec64
+> [05/15] arm64: dts: qcom: sdm845-lg-common: Enable qups and their dma c=
+ontrollers
+>  commit: 4ec3045c969a326c458c53ca65bde5749e575d52
+> [06/15] arm64: dts: qcom: sdm845-lg: Add uarts and Bluetooth
+>  commit: e746ed5af3084e9534135679c55e69eced0c657f
+> [07/15] arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
+>  commit: 995c258982429db93db103fc26fcb3a0acd6a5ee
+> [08/15] arm64: dts: qcom: sdm845-lg-common: Add LEDs
+>  commit: b49722c8a18cdd11f49357f3b8be23549f76a506
+> [09/15] arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
+>  commit: 2e7cdd400b6a4e67c27fc3e839342824b51d01ff
+> [10/15] arm64: dts: qcom: sdm845-lg-judyln: Add display panel
+>  commit: c6c66aa3ef33dc3076c6dac64003b29bd9515b58
+> [11/15] arm64: dts: qcom: sdm845-lg: Add wifi nodes
+>  commit: eb8fa32085261a07d763e9d616b3c206d0be82ff
+> [12/15] arm64: dts: qcom: sdm845-lg-common: Add chassis-type
+>  commit: a5a5ad9848980e1019ca841fe057afb83debecfa
+>=20
+>=20Best regards,
+> --=20
+>=20Bjorn Andersson <andersson@kernel.org>
+>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.1
-
-Thanks!
-
-[1/7] regulator: dt-bindings: qcom,qca6390-pmu: Document WCN6755 PMU
-      https://git.kernel.org/broonie/regulator/c/b043657c35e5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Please apply 13-15. 15 is the only change in v8, so what you've pulled he=
+re from v7 is fine.
