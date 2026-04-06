@@ -1,101 +1,178 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDD023D7FF
-	for <phone-devel@vger.kernel.org>; Mon,  6 Apr 2026 15:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0FB18B0A
+	for <phone-devel@vger.kernel.org>; Mon,  6 Apr 2026 15:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489424; cv=none; b=RmGmpl3gOi8tdRG1sYpW51jBDxiIECCM2jgignF/3xA5ios3AjpMXE87h6Xyl7M/msaVf4EK8GSQXqai/143Ouuz0lAeqkoEIAVdLYM8vR6c1+4KWDR+BLERt3Y8KljgOg26JH78mwtZI6/8lkUKHya881v4cN9aP8xl8D7CZLU=
+	t=1775490703; cv=none; b=RPznRGlEStzlkbvKqgWDwIY8GLu4AZ7MAbcapLArAvTr0PXFJYpBdD0r66j2oCieJIlARmi40uSnBwQ1xDh+8Op+X7plKR2RAYNoZSDBwNAHZOdvwvDxBGF8q7MhfacOIwYXtmhUkJ+yCNxwkSFhZob2hRqGCVZYiyHqDrCBlSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489424; c=relaxed/simple;
-	bh=qY8HXRLd3rg8UeZmh2bcc4S7RvrC1Vew4Crqm0UVq88=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=a725y9dP+z/jWJ//+wlb9az5CiGra0fz1Oyo/DWTC8FLR+hbqku8SoLcg3Fwnc6pBMaCEFY14lcmesgL/G5vzPvuNhQThpESkrqgp2+GNhqQFrNlWjOyvhOq1IiXI48Z4/sBuh7sR8tIzp8seN7brKmR1ml6Iokvxp7r9XiW79s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=FEdhD5UU; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1775490703; c=relaxed/simple;
+	bh=rzKk5WejB+mbn/yRTIRbxkZzr1bQ4VA/zMee/GV8yyM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pxGq8MoYSyeYYUDN1w7MiW7GnBdFtOc14lEuXDRa8UFZVauvLouiphSDu/jdBgwKJBgMjtaCMIzxxBtZ+TGEHSMYgLtSogmmhULOvwTfEdJt0f7a0jIshv3sOa9itcnir8QZiD2FI7MFwi+uwI1GE0u7luCgzOs/4arAELp5rfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=J93kyziE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UIf10krA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="FEdhD5UU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="J93kyziE";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UIf10krA"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636EvqFs1718806
+	for <phone-devel@vger.kernel.org>; Mon, 6 Apr 2026 15:51:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ukQ6Zlht3NZUUsrPWZJsHdIlUjCDU/cg8ksvGrwiy2Q=; b=J93kyziEVXCaDbwt
+	ZIT0AYP/Y0+O2Lgk/IKQ0H3W06K6bAYtGRhFzD/XVbuvpZuwpBH6MUqdtNwsDJme
+	WouloICu0BfgqnKRoKxAXUdFscYsqt+EzzQAr3mUlPGKWa9Z7g5Vs2bE84XzaaCw
+	SOrQzYu5omCBrrW6wKKaa972ZNQllDgt2bpVHBel4Z4m43XHQAmU1EoqibHgajAY
+	Q4M2Q6kP21cghTLNdd/R8AVtvijc50TVOf5nh9YowLnhNFLjo8+T2wUK3iYDNgxX
+	DGMmbGzJS2N7idyKVqmsQuuOeeXQB216jedwhbFbXct2QhlY5R1P0fM7Sh28eK91
+	GYrzjg==
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dcf2ar5yu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 06 Apr 2026 15:51:41 +0000 (GMT)
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-127133794b6so6486420c88.1
+        for <phone-devel@vger.kernel.org>; Mon, 06 Apr 2026 08:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1775490701; x=1776095501; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ukQ6Zlht3NZUUsrPWZJsHdIlUjCDU/cg8ksvGrwiy2Q=;
+        b=UIf10krAU8KYRdzXDO9Ri4GIGW6fMdxfDZCsZ+KKjtLLmYaPC7ECdBBNQb95xslbin
+         srJOTvlDCLsi5pxjORQRPowlO+X3CJ5qA0IJEQvCFtMMURoRDatURrGD+8unpUkbUfk/
+         TxBEce5QVHD21Vi1VTLnp3pFzGGr6n/u2WlRO7sjjdyBvCA6GyQ+G/tXJcHm8oaXnYVJ
+         uf540c5+kwH6UlDOBT1xXq71Scyl7JZCZuB2w9eRlgySls5U5hOi6x3VjRLuYn0klynh
+         LAcyB5GaRMwaSfBsJUKcaY9JyIIBx/bJzqujFBPsinLl0UAJQZtSNpGvriA3M/OeL/o/
+         M8bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775490701; x=1776095501;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ukQ6Zlht3NZUUsrPWZJsHdIlUjCDU/cg8ksvGrwiy2Q=;
+        b=S0VeCHtY96iXhdQulXrdLR1qjsOid5ZeE68wcAS+QhSoSBO7xPwfkoXFdc+sazHdm1
+         XH6hQ1+Or+AXdH4H/Uj3+t9OhB9gpNTo859Y64vHsoBmF7CGP5kK+GmC8F46s7M+D4Hq
+         GgY1S0HdmvJBpP/880DgnJrrjtjmDFJkpwhg31Tj+uu4SzTihRMcXciSr/Y6XBJYDjkE
+         JXjetey25HoSgdpGijhq9MyzzuBnJyHskPQIWjF4xED3oanYdx/VA/xZdjbPXThL/uml
+         cLH/FTHyy6SW0hdZE4Cht22iRecHgclLd196CxoaSI5XAdZGUGOKQGGQ5G69TISogHcU
+         3w6g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+X/PEH8KLLJWGsxCWPCPCtm9ITOFg0MaRbUpJCEEWqYrFLxzgZLyLb045yAtNy5m6oD08jy/hm0xZIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXpP7Vgk9x6MCbqyknvdvrFGqaXrPsKHXGEO250JRhiTvkcwzR
+	4hvbefVMUxuDiAtoy7wDhmoEWovKQpiBxvAhDSVZF9etHKTgKmBSbz0cn5BJ03B5rAtZvowLp2f
+	+huJa7YbBLt8iBL/sKzEfgI08usYFWQK8bsvPrL6kB9J7VzoVa11mHoJGpD1guqw+rg==
+X-Gm-Gg: AeBDiet3KF4rr0gQJYrlSV1OaniyiLCAfRadiUzxdEKztv/grH+5eD1r4yd5lixfpRG
+	Cnp4S5IL5gq73E4gXC7QoCyLfDaF/NU2JsCyxmvNRSHls+oWtGYJILoRnXUobJTRh1FAgPy6JWP
+	A+D4TAdxqCs68x8d6tWTjkLVcvugZ/wG6vSilweGYjjg3v5S+XBOaIorUYybTULWTNxHTpypLp4
+	F2Qzw26xetMMnv6tteA4zDDlioqJI7aW419lSCjk6/5SOcA9sDrERFQvO8puorxNN96nd2O6Qwk
+	0QRxmNxGMI+oD+WusVoww7pyFI5QskvMMoZN0p69cC0c37N83SS4EjxvXbTGZSLufFyiJaFB2bp
+	jD9Xxn9KeF/kwvjKkyxHYSYU3TzxVeg8Xk0Z6LES8lX4tHFVotw7OU6lD35rvbX1azuoyYBlwAb
+	WGp5G0L2p8RazBOQ==
+X-Received: by 2002:a05:7022:62aa:b0:128:cc34:35fc with SMTP id a92af1059eb24-12bfb70ef65mr5780051c88.16.1775490700209;
+        Mon, 06 Apr 2026 08:51:40 -0700 (PDT)
+X-Received: by 2002:a05:7022:62aa:b0:128:cc34:35fc with SMTP id a92af1059eb24-12bfb70ef65mr5780019c88.16.1775490699506;
+        Mon, 06 Apr 2026 08:51:39 -0700 (PDT)
+Received: from [192.168.1.44] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12bede54ba8sm15701803c88.10.2026.04.06.08.51.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2026 08:51:38 -0700 (PDT)
+Message-ID: <0cf5e285-b5f0-49ef-97ae-6c04504044ac@oss.qualcomm.com>
+Date: Mon, 6 Apr 2026 08:51:37 -0700
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775489411;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cl3MtyC0ml8bgrz0gHQfCrzWUIfK4oCJ4cASNn7ldtc=;
-	b=FEdhD5UUJEAxm6EKJXJ0/H+8PuEjb+nCod/U7iJixCFyku4NCJ7wfxD/pB8W2uu6tx89NZ
-	ruOIcWKXsnjNDFf4xkyOPRay87EHEcRsH8I1AMmw66PI92PAZ/CnOEJRWRrkrxb+EX8yXO
-	QJUA9r92sqSTkwMSrZoOYVFKcXrrjbqLnqpZD/I+UQ/IRy0trZpZSkuXhWcOj8AuxRcdsY
-	Ol2xr7blGEOxpvNhyz0Ead8/Y3c0J6ya6JZMsvmRaL/YKLHPKbh/3SmlQbzAd/n0tHx9tA
-	hqd4UsQH432TJfB8SzCs2f3xMbjBDDsoz1RJGKPxU7mY73gvoR9OXbX8ss8PFA==
-Date: Mon, 06 Apr 2026 15:30:05 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <f63f25751b5db2ee5420ec4c12e36271ca22a864@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH v7 00/15] arm64: dts: qcom: sdm845-lg: Improve hardware
- support in devicetree
-To: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "David Heidelberg" <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, "Amir Dahan"
- <system64fumo@tuta.io>, "Christopher Brown" <crispybrown@gmail.com>,
- "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, "Pavel Machek" <pavel@ucw.cz>
-In-Reply-To: <177541802142.2061229.9094394728986735362.b4-ty@kernel.org>
-References: <20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org>
- <177541802142.2061229.9094394728986735362.b4-ty@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] dt-bindings: wireless: ath10k: Add quirk to skip
+ host cap QMI requests
+To: david@ixit.cz, Johannes Berg <johannes@sipsolutions.net>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Paul Sajna <sajattack@postmarketos.org>
+Cc: Amit Pundir <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v4-1-bc08538487aa@ixit.cz>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-1-bc08538487aa@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 34_wyomacFM75iOug7ctesJmzGNsiybU
+X-Authority-Analysis: v=2.4 cv=A5Nh/qWG c=1 sm=1 tr=0 ts=69d3d68d cx=c_pps
+ a=kVLUcbK0zfr7ocalXnG1qA==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=VwQbUJbxAAAA:8 a=Gbw9aFdXAAAA:8 a=KKAkSRfTAAAA:8 a=Jr6ivFuIO4VC9FIHmAQA:9
+ a=QEXdDO2ut3YA:10 a=vr4QvYf-bLy2KjpDp97w:22 a=9vIz8raoGPyDa4jBFAYH:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDE1NiBTYWx0ZWRfX4mmkLvpmDGjv
+ 0GDJ3DhTjLRiCw4mc6L35QXOdTS504RRM74/qZsxB1R8l7Io8lkKdjH95fjWuz7N5v6GMlEqpzc
+ 6jt8WW6UAY3crD7TpbeyWRTPUEoZCxZzLK6HvvIE2yWCbpQHm9PUf1bbs2gXpyDyTAox+qSe+mi
+ LMQKflE8ozxL5zP8k3VrtsbZCmez3xVd+rP3fg6W976Hms7OognsVXNujoA97dZNSMdAQhOL3EA
+ xDOu4OzjhjnVIzcKd/DrZlYpP+CkgOH1DWEdlH0d5RUwLgJxcrnHsFyH7OUjr5HIBdounU0Nv5Q
+ zjGxI68Zio8Bh5eDGk4C70MaI2nXy0NyBufUN4RAMfjIMI1Ho0bkMOXIhT8PEESTnb2NAGKekhh
+ q/rI/JQLOwqAQCouV/xaY6czZnF55YP539rJe7+/HNG3k17jCirLexHldZs/nhGKWLAISCdYfcn
+ VRU9uKARq5guQH2Ozew==
+X-Proofpoint-ORIG-GUID: 34_wyomacFM75iOug7ctesJmzGNsiybU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-06_03,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0
+ clxscore=1011 impostorscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604060156
 
-April 5, 2026 at 7:40 PM, "Bjorn Andersson" <andersson@kernel.org mailto:=
-andersson@kernel.org?to=3D%22Bjorn%20Andersson%22%20%3Candersson%40kernel=
-.org%3E > wrote:
+On 3/25/2026 10:57 AM, David Heidelberg via B4 Relay wrote:
+> From: Amit Pundir <amit.pundir@linaro.org>
+> 
+> Some firmware versions do not support the host-capability QMI request.
+> Since this request occurs before firmware and board files are loaded,
+> the quirk cannot be expressed in the firmware itself and must be described
+> in the device tree.
+> 
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> index f2440d39b7ebc..5120b3589ab57 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> @@ -171,6 +171,12 @@ properties:
+>        Quirk specifying that the firmware expects the 8bit version
+>        of the host capability QMI request
+>  
+> +  qcom,snoc-host-cap-skip-quirk:
+> +    type: boolean
+> +    description:
+> +      Quirk specifying that the firmware wants to skip the host
+> +      capability QMI request
+> +
+>    qcom,xo-cal-data:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>      description:
+> 
 
-> Applied, thanks!
->=20
->=20[01/15] arm64: dts: qcom: sdm845-lg-common: Sort nodes and properties
->  commit: 6a9e8df732014c1c758bd3cd6254b5b4cb273c7f
-> [02/15] arm64: dts: qcom: sdm845-lg-judyln: Add firmware nodes, change =
-path
->  commit: b9afe8581c0e14b7b56e2314dc7f9597bf23ef67
-> [03/15] arm64: dts: qcom: sdm845-lg-judyp: Define firmware paths for ju=
-dyp
->  commit: 8f4c53ae286bd6a113245ad53ce957e623374cf0
-> [04/15] arm64: dts: qcom: sdm845-lg-common: Enable venus
->  commit: e9f611de7ab51540c0cf246df6b7d4d99f4cec64
-> [05/15] arm64: dts: qcom: sdm845-lg-common: Enable qups and their dma c=
-ontrollers
->  commit: 4ec3045c969a326c458c53ca65bde5749e575d52
-> [06/15] arm64: dts: qcom: sdm845-lg: Add uarts and Bluetooth
->  commit: e746ed5af3084e9534135679c55e69eced0c657f
-> [07/15] arm64: dts: qcom: sdm845-lg-judyln: Add battery and charger
->  commit: 995c258982429db93db103fc26fcb3a0acd6a5ee
-> [08/15] arm64: dts: qcom: sdm845-lg-common: Add LEDs
->  commit: b49722c8a18cdd11f49357f3b8be23549f76a506
-> [09/15] arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb
->  commit: 2e7cdd400b6a4e67c27fc3e839342824b51d01ff
-> [10/15] arm64: dts: qcom: sdm845-lg-judyln: Add display panel
->  commit: c6c66aa3ef33dc3076c6dac64003b29bd9515b58
-> [11/15] arm64: dts: qcom: sdm845-lg: Add wifi nodes
->  commit: eb8fa32085261a07d763e9d616b3c206d0be82ff
-> [12/15] arm64: dts: qcom: sdm845-lg-common: Add chassis-type
->  commit: a5a5ad9848980e1019ca841fe057afb83debecfa
->=20
->=20Best regards,
-> --=20
->=20Bjorn Andersson <andersson@kernel.org>
->
+DT folks, there is a pending DTS series [1] that would like to reference this
+capability. Would like to get an ack so I can get this in the upcoming merge
+window.
 
-Please apply 13-15. 15 is the only change in v8, so what you've pulled he=
-re from v7 is fine.
+Thanks,
+/jeff
+
+[1] https://lore.kernel.org/all/20260401-judyln-dts-v8-0-7677cfafbc78@postmarketos.org/
