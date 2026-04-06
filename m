@@ -1,37 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682E82D9ECB;
-	Mon,  6 Apr 2026 05:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613C386541;
+	Mon,  6 Apr 2026 15:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775452619; cv=none; b=euHNDNxJGcvnXtBhTUJJwaihn8MCNbzx1bIXj65OuyrOGY/g1yuM2JQTN7XHoSp/qFVzM0ul+kS45iOM9JqX6zWU2GmE9655t89YLsxKOZ+YNBPBGzNh4UnvHpqmZ21dPaFVCNsv96KTFZoEebkHKqroWFdgXE6JA2WYprlvfDg=
+	t=1775488970; cv=none; b=d0uUNJzovyGcJnXU64sfuMTOHNNb047O8sK/Q8aeF5Xw3QsXdon1sSPwkdhQWfcNDgdZh4eCz5TR6tjWKQ7ns3nX4khKP3YOPb0zzssIoe/S1lpMz0z45nReUvzWETgDuJLXqfdrnLMbp4R6fLSHd/ZInX72rE5EgC1G9R6Kdec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775452619; c=relaxed/simple;
-	bh=diflTiFOAqcvYf3crqey6uaDb/lDhFF77VdlL8dJwh0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mkavE3If0uM+syz60h0XZQr5Vna5xaNc09sE9lHffaD/XGcGTmdB3A4xZrAZJFqTsQ8B0BIFaeL0s8vLzS1b3LEvhmk/AabxwDAg8Q/i2iaZD1pTThfdgKgCtvNpFuYcmfUzKVRMw0HudwvSfWR7Md3pVQM9F2cofEVgOJGQHx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tydBbXyN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775488970; c=relaxed/simple;
+	bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=MvsIPdmVPD43ZcPOHmlQ7OfBNlw0mvhAFhts5gi5i5hmuBmv8amMmR1HeFpBPoUa1LOQArVaF8sPaRzSAhnIPLGnY7qvIViv4xHMWIwETlBC9oqGb8MRmhdi0FnE9v5q/lZy27kGNUtB6xhEqSdDgki31hw5Ih/68ofyROyxOAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFbjQkjD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tydBbXyN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 27305C4AF11;
-	Mon,  6 Apr 2026 05:16:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFbjQkjD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9718C4CEF7;
+	Mon,  6 Apr 2026 15:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775452619;
-	bh=diflTiFOAqcvYf3crqey6uaDb/lDhFF77VdlL8dJwh0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=tydBbXyNhHRsQlT+UoWjS4c4ZsjuYKsADuemDDlvtg3uycQRNYV8C6L23UZ1Uq74D
-	 oK965UOWaaLK+Kxae/QZrXVH86NB8EaDK36IGLY7bB7UHo1AKDue7fjE7/ScJMyslS
-	 Tis5+ch3xgQfs1kqEpOalErzvZD5KKGp5TNgxPnBPCaf2kz6NhYsqPr4tM1dQqY/Fq
-	 K9uISVtkIDeGwpu7Zp4oiyE/xIzu6Wnmw8gpJnC7up8Qsa6WWPE37iGIfU1Jr56Pps
-	 qbz8qxmg+Vq+ApFy6J4HY7KlPfdZUr3Gb2IIObmouGxK1IcyQWnzPM9HoSsxgmnqBX
-	 DNFq2jcxRMT5Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F48AE9D818;
-	Mon,  6 Apr 2026 05:16:59 +0000 (UTC)
-From: Alexandre Messier via B4 Relay <devnull+alex.me.ssier.org@kernel.org>
-Date: Mon, 06 Apr 2026 01:17:00 -0400
-Subject: [PATCH v2 4/4] ARM: dts: qcom: msm8974pro-htc-m8: add touchscreen
+	s=k20201202; t=1775488969;
+	bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=vFbjQkjDICQPatHELDGaZzMGsOG7IMqZS8Nx0QZ7vwFj+aO7qSZLsXOzn/2N3Aj8P
+	 GQaS+U+vr2nDy11N5l6FpMnGTPxVQCPaO44HkAA0aJr7qr1c6F5Nfjt8wEOGHEdnaG
+	 uvklpS8YoFvJ8yZ4D9kHX5qNvlrRjscjnj6mvcxJIR/OHxiuHuUTfNloMmaxYvV1hs
+	 p9NclkJ/ClxVwPY7sllotz/eUaHLFeDjYUhXB7y9xDxfCsmLWmVlApD9hr+Nsa2eDI
+	 rE+YsIJ/4bKRYOWBWiKAMG5g4+q2szxGIIDSDYo+GQLzupJ/idfiqks9ySg9L9GvoR
+	 THwzn+tommHiQ==
+From: Mark Brown <broonie@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Alexander Koskovich <AKoskovich@pm.me>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
+ Rocky Liao <quic_rjliao@quicinc.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Jeff Johnson <jjohnson@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+In-Reply-To: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
+References: <20260403-milos-fp6-bt-wifi-v2-0-393322b27c5f@fairphone.com>
+Subject: Re: (subset) [PATCH v2 0/7] Enable Bluetooth and WiFi on Fairphone
+ (Gen. 6)
+Message-Id: <177548144839.46304.13972601101594073712.b4-ty@b4>
+Date: Mon, 06 Apr 2026 14:17:28 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,98 +57,50 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260406-m8-dts-additions-v2-4-c4c4bd50af48@me.ssier.org>
-References: <20260406-m8-dts-additions-v2-0-c4c4bd50af48@me.ssier.org>
-In-Reply-To: <20260406-m8-dts-additions-v2-0-c4c4bd50af48@me.ssier.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Luca Weiss <luca@lucaweiss.eu>, linux-arm-kernel@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alexandre Messier <alex@me.ssier.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775452618; l=1510;
- i=alex@me.ssier.org; s=20240603; h=from:subject:message-id;
- bh=A5B+vqZ179ZaDPlA3FT17LpryB1RKmK0Cto2Yde+kzY=;
- b=XFv28L9PjBz5gSbfK4yWi2aPoBQ1/kpYHiDEUwKx6u1z4TCJiy+e/YO806jiJrDus5Qvnkm1R
- s4N3BEMGiUtAYb1RCQKiqyBKCrtCw7pDynzRajt3cZUG4kNZgNIpTOe
-X-Developer-Key: i=alex@me.ssier.org; a=ed25519;
- pk=JjRqVfLd2XLHX2QTylKoROw346/1LOyZJX0q6cfnrKw=
-X-Endpoint-Received: by B4 Relay for alex@me.ssier.org/20240603 with
- auth_id=168
-X-Original-From: Alexandre Messier <alex@me.ssier.org>
-Reply-To: alex@me.ssier.org
+X-Mailer: b4 0.16-dev-67696
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1248; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=iC5RuUkjr4YheJjq+5kXm0uCQrLTCZePxmO0UJuDLJI=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp08/EHCSvABc5+hfj7LywcFO5vIyiMIyPbeR7h
+ ppJ03irVwuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCadPPxAAKCRAk1otyXVSH
+ 0KVpB/9S4D+rqQdrlGK7dDEaMH4ZQMEuGOMsBF05rICalPIeS+4HrqIdPQlTVFXQS+2FvhlW2v9
+ 05Q1bZHOQZs52JJs+bbrwIb+9HnsD4fm4Fcq/CwxMBFfcb3D/8Uh7op9NLC9TMkaPvIlEyMVD4V
+ 2eZIcjoyQ3ZyIsPzOqGIEKPo5UdI+TQyvmwOYnNcJ7Pg/Ft7ElkHEieBdQ7gR8SjyUegXQSAXNJ
+ Lklhvvjd7b4qNJo6F8BDqvjelJFrUH+BSDJI63aYQTuDG5KvMSdQqyGFYjyO6PyvaEmtsmtpWY1
+ OBo9Osy1m0mMXQWQCHFcbL50CpXYNDkWKuhxF3yLVZDqBqGq
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: Alexandre Messier <alex@me.ssier.org>
+On Fri, 03 Apr 2026 15:52:46 +0200, Luca Weiss wrote:
+> Enable Bluetooth and WiFi on Fairphone (Gen. 6)
+> 
+> Add the required bits to enable Bluetooth and WiFi on the Milos
+> SoC-based Fairphone (Gen. 6) smartphone.
 
-Add the touchscreen device node for the HTC One (M8).
+Applied to
 
-The downstream vendor kernel used an I2C frequency of 384 kHz
-for this bus. Use the same value as the vendor.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.1
 
-Signed-off-by: Alexandre Messier <alex@me.ssier.org>
----
- arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts | 36 +++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+Thanks!
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
-index 2edf407db567..66ad93e7dd20 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts
-@@ -65,6 +65,35 @@ vreg_vph_pwr: vreg-vph-pwr {
- 	};
- };
- 
-+&blsp1_i2c2 {
-+	clock-frequency = <384000>;
-+
-+	status = "okay";
-+
-+	touch@20 {
-+		compatible = "syna,rmi4-i2c";
-+		reg = <0x20>;
-+
-+		interrupts-extended = <&tlmm 18 IRQ_TYPE_LEVEL_LOW>;
-+
-+		pinctrl-0 = <&ts_int_pin>;
-+		pinctrl-names = "default";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		rmi4-f01@1 {
-+			reg = <0x1>;
-+			syna,nosleep-mode = <1>;
-+		};
-+
-+		rmi4-f11@11 {
-+			reg = <0x11>;
-+			syna,sensor-type = <1>;
-+		};
-+	};
-+};
-+
- &blsp1_i2c3 {
- 	clock-frequency = <384000>;
- 
-@@ -353,6 +382,13 @@ cmd-data-pins {
- 		};
- 	};
- 
-+	ts_int_pin: ts-int-pin-state {
-+		pins = "gpio18";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	wcnss_pin_a: wcnss-pin-active-state {
- 		bt-pins {
- 			pins = "gpio35", "gpio43", "gpio44";
+[1/7] regulator: dt-bindings: qcom,qca6390-pmu: Document WCN6755 PMU
+      https://git.kernel.org/broonie/regulator/c/b043657c35e5
 
--- 
-2.53.0
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
