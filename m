@@ -1,147 +1,142 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33271D9A66
-	for <phone-devel@vger.kernel.org>; Tue,  7 Apr 2026 04:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30501C3BF7;
+	Tue,  7 Apr 2026 05:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775537345; cv=none; b=UPPpmIIQNdvIkbC/OLmND4uznibiszZE3rdxvGjwJI6W0m+8xP/yYKdTLXyc2AJwKcYKKHzkL5c5lb+zbF2moasilW6GyjPvTJP0KSJD3Jx36KIq/psqE/F96VMuypr+qm3LrtNUpM89uhJj0A6DbytLylQeI2s8fAvP2qKyjk0=
+	t=1775540690; cv=none; b=LKLyY55oQ8BZQJkAU+3SSawqOqabPDMH4InV/M6dur3dV/mhN8Gcx0j5WFeS8Ueh2wO0t8x1+H3502P+H3ctF2wbIrWPYvn/DuO6WjIa3NV1BPZeE36uIJxAj+sTVsmGCBzQ43tbHS4U3TWMw2aWeik2jKjAIC/O4iclTffk0lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775537345; c=relaxed/simple;
-	bh=KN10ixWyhSiQO6k2rgognDXtkp2e3lun0UE56kDb9Wc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbiJ8atHYyP9ah4Kynf0KeOqbin+qqzN1zs+KLCsez87GNdrRFtSO9r7dPjaDFDYx0lr67OvHqxLBcvL2Ez0QalEVCmiwfV42IXGfBqLKeoySgKiquENiaStoRBNAMlTCUDh3kIJYRZrGYboSMvbJOB9otKUxnp1St3efZZHsoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N43ZuFzD; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775540690; c=relaxed/simple;
+	bh=ovlm/Qj5ghSLFKg6QZCNW1XSxzkl6Hh/6cBi4ThNHpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=blPPjSJ8O4eqPioxHrp/HEA6pKeloXmPN893LqeDEKdzbJ7QofG8+6JAPAk/qbF+tLFtqjtWHrCEl0DuzJRG3W5wbezjSwz4UKTGXI6N7KOC4QXsY4mzPNcY1sJi6/xon6d2/kB/Cq69XQ9vVy3gZX3CbwhEwZachbmc460Qprg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFa2r1yu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N43ZuFzD"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2cd339aeab4so3247617eec.0
-        for <phone-devel@vger.kernel.org>; Mon, 06 Apr 2026 21:49:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775537343; x=1776142143; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gk8b5C5Z9p7AhhgVp7PgvI/D1cC78P2Rxt1Jreg7P9I=;
-        b=N43ZuFzDCEkb9OyW8Nnts60N57hAkqcbfWr8VScF7h3HdB4KisYXKuxvfI6di9MPMe
-         oqcI9fRx1gZhU5SLzSOrYVDf4NtDLjolzk8TRFXY7UkeF1n/v6N3BKBty91tOQ9MRM6U
-         uEnKu3KZUa8xyybdb456yrEeFexW1Oy4QZvdnXTibWx0nBzxNvT3RRb29pqJgK/Td5yW
-         M2T3Nu/Z49pdKoe+Hmei0JjvVEeYdb9bkzB7/PiEauce5sNlPCrEtSOLAxQB2nSIvrBR
-         bGHx9+/JBQ6mS/03bfSfGD1VlnMIcu/zfTxlUqwtkxsrqf+bWqZshJ++Sp3hJN29HwDe
-         Fs1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775537343; x=1776142143;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gk8b5C5Z9p7AhhgVp7PgvI/D1cC78P2Rxt1Jreg7P9I=;
-        b=LlbWIR/LR+BuVZLvDqe6kJEW/l0CuTtiSx6+OPo7DnA9vU4BS4onq9QGm0DHbwW0fq
-         TV641KQHSnRSI3qk44cdsPzRHjqwOdVSNudDLLzGtSmSgms14NmTIs2i7TQLyqr7pUIS
-         y9STxFw8vWqI7Tte9gsUzY1s68aPgD3cAjItMPR4WurtUFzzpuf1h8CZtMaCRQfxjMYp
-         Rs9u/wyLEVsDQmVaaMaPtJP/jqlEfZIDf5Zeav5/dA/dX4fIcDYpjvWANkGYbhxLuA1P
-         iyviRb/IpLARd+H9Uu0G7cxX0KykekmNuKbNn9qDRm52AH6ccHSJFeOA/0+4KB9TBBlF
-         TOMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXdmMgMsbsDrIvWNP8jZ0C5Pd5K2OwhvIyurYRFlW+z5xA043nJYbKmj5lOVtkenesxUyIU/KSt2A98og==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2BVpegfe4CnaDVJmrPG+RpiY8Ygr+//FzE+ywD9q+J/6zt2zC
-	lplqg8rQC197INUaqrCrnDD2PM7v4tBdXNHAJIIcfkLf7/8i01Zi0N4M+w37ig==
-X-Gm-Gg: AeBDiesUHeIPNjhoUsiZ6RIUhQQft96x0CVUgRiEruDelZKIoNbLsFNZBk4+0C+sXC0
-	BhB1T7mevRi6UfKZhOAtpIujOX6WvHHLbYmq3TcJxSPjvp4DzOWXHMrpvyF/ClIzmfTLEYoSk8c
-	UQwMKNmqYf6O9ZL+4Lgw7qnL8RQic/UzJ6bhBbwC0SRdDbAgAeZRD1WjhoggEB2blkegBEDvYU9
-	WH6vTeoMMPMGSeSLSQ5VATtFwGLZaUgv+o9q5z8uOC+2XS1vLUOBqbrJQyn51YwSW9IKW8lQB4F
-	24mCu2dDlYdxfdnJlnVzMSV2GZ4yxhKIjurIBWOnFXucGuykcLVqp6p8eFs505LN5lDEDweGE+P
-	MYL6Gka5pGv88aVz5d+asyAs/Fx3H16Zd+I+SLEg1QNEBZtRh4pE/uEV8P2v3wZt50x19vfj733
-	VpYRfRTEsUGQ+dloLKIDSx4DXwP2Niz5YVVt32kG6VBD6zhi3o51SBMtBytaT8XqkQnKsJk8u9o
-	to=
-X-Received: by 2002:a05:7300:dc88:b0:2c5:b23e:48a4 with SMTP id 5a478bee46e88-2cbf69984ebmr7281281eec.0.1775537342525;
-        Mon, 06 Apr 2026 21:49:02 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:dd71:7176:b4e4:a7a5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca78df5ed3sm14644119eec.6.2026.04.06.21.49.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 21:49:01 -0700 (PDT)
-Date: Mon, 6 Apr 2026 21:48:58 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Vincent Huang <vincent.huang@tw.synaptics.com>, 
-	Casey Connolly <casey.connolly@linaro.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v8 1/7] dt-bindings: input: syna,rmi4: Document
- syna,rmi4-s3706b
-Message-ID: <adSMQXgbco8fvRLo@google.com>
-References: <20260324-synaptics-rmi4-v8-0-2168d2df68f5@ixit.cz>
- <20260324-synaptics-rmi4-v8-1-2168d2df68f5@ixit.cz>
- <acLpBXc9Qi5riQO0@google.com>
- <5630a4af-e18f-4daf-9b04-ea61091d9e51@ixit.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFa2r1yu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D80C2BC9E;
+	Tue,  7 Apr 2026 05:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775540690;
+	bh=ovlm/Qj5ghSLFKg6QZCNW1XSxzkl6Hh/6cBi4ThNHpY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PFa2r1yuJ/ZwAwZ8PPPCfzairIqS+aUXLZcY80Gwb20oi8P6AS0MXWpEjCqOZc4dq
+	 OMWAGdVWM9UKPCqravgRhTD4sREwpjXsAJuLiNZxolmIuSa4rgUjrLlEgQZM3skrqf
+	 Zu9iMOejDXk7lFJml3C4eQuFNV9NY469unRLEiwsZE4YfYXBQyFJwhPb0HFfVyEv1R
+	 DOYeCphDoFjCWGZTPdCNvZ/+sMVR0AMe8HsaeC8wC+lcgovAnh8cjnCH+03I0H3mxP
+	 dTCF8IPHmcWexRAbv5D072PV9SP6ivE/NGehrBkktuvE4DgwxglXf0JpQovfV/F72F
+	 NyTG1KxR33rXg==
+Message-ID: <0e73335e-9d1b-465a-8cbf-44d9e2020ee0@kernel.org>
+Date: Tue, 7 Apr 2026 07:44:45 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5630a4af-e18f-4daf-9b04-ea61091d9e51@ixit.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] dt-bindings: wireless: ath10k: Add quirk to skip
+ host cap QMI requests
+To: david@ixit.cz, Johannes Berg <johannes@sipsolutions.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Paul Sajna <sajattack@postmarketos.org>
+Cc: Amit Pundir <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org,
+ devicetree@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260325-skip-host-cam-qmi-req-v4-0-bc08538487aa@ixit.cz>
+ <20260325-skip-host-cam-qmi-req-v4-1-bc08538487aa@ixit.cz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260325-skip-host-cam-qmi-req-v4-1-bc08538487aa@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 25, 2026 at 12:33:23PM +0100, David Heidelberg wrote:
-> On 24/03/2026 20:42, Dmitry Torokhov wrote:
-> > On Tue, Mar 24, 2026 at 08:40:34PM +0100, David Heidelberg via B4 Relay wrote:
-> > > From: David Heidelberg <david@ixit.cz>
-> > > 
-> > > Mostly irrelevant for authentic Synaptics touchscreens, but very important
-> > > for applying workarounds to cheap TS knockoffs.
-> > > 
-> > > These knockoffs work well with the downstream driver, and since the user
-> > > has no way to distinguish them, later in this patch set, we introduce
-> > > workarounds to ensure they function as well as possible.
-> > > 
-> > > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > > ---
-> > >   Documentation/devicetree/bindings/input/syna,rmi4.yaml | 11 ++++++++---
-> > >   1 file changed, 8 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> > > index 8685ef4481f4a..fb4804ac3544d 100644
-> > > --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> > > +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> > > @@ -18,9 +18,14 @@ description: |
-> > >   properties:
-> > >     compatible:
-> > > -    enum:
-> > > -      - syna,rmi4-i2c
-> > > -      - syna,rmi4-spi
-> > > +    oneOf:
-> > > +      - enum:
-> > > +          - syna,rmi4-i2c
-> > > +          - syna,rmi4-spi
-> > > +      - items:
-> > > +          - enum:
-> > > +              - syna,rmi4-s3706b  # OnePlus 6/6T
-> > 
-> > I thought that all the workarounds will be keyed off this new
-> > compatible, but I do not see that. What am I missing?
+On 25/03/2026 18:57, David Heidelberg via B4 Relay wrote:
+> From: Amit Pundir <amit.pundir@linaro.org>
 > 
-> The compatible is used for sequence in the
+> Some firmware versions do not support the host-capability QMI request.
+> Since this request occurs before firmware and board files are loaded,
+> the quirk cannot be expressed in the firmware itself and must be described
+> in the device tree.
 > 
-> Input: synaptics-rmi4 - support fallback values for PDT descriptor bytes
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> where it is used to provide values missing for OP6 (and possible others in
-> the future, when added).
-> 
-> From my understanding the series, only two patches (1st and last) are
-> specific for the OP6, rest will likely benefit various TS not implementing
-> full Synaptics set. All measures apply only when touchscreen reports
-> something wrong.
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> index f2440d39b7ebc..5120b3589ab57 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> @@ -171,6 +171,12 @@ properties:
+>        Quirk specifying that the firmware expects the 8bit version
+>        of the host capability QMI request
+>  
+> +  qcom,snoc-host-cap-skip-quirk:
+> +    type: boolean
+> +    description:
+> +      Quirk specifying that the firmware wants to skip the host
+> +      capability QMI request
+> +
 
-If the sensor does not implement RMI4 protocol properly it should not
-use rmi4 compatibility. I will not apply any patches that work around
-incomplete implementations unless they are triggered by a dedicated
-compatible.
+Property is fine, looks conflicting with qcom,snoc-host-cap-8bit-quirk
+though. Either you skip QMI or use specific format of that request.
 
-Thanks.
+You need
+https://lore.kernel.org/all/20230118163208.GA117919-robh@kernel.org/
 
--- 
-Dmitry
+allOf:
+  - not:
+      required:
+
+
+Best regards,
+Krzysztof
