@@ -1,140 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF32D5923;
-	Mon,  6 Apr 2026 20:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCEE2836AF;
+	Tue,  7 Apr 2026 02:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775506749; cv=none; b=JjBPkF7RgphhVDVZ7Atfe1GX04Tnbb5thaEG4hghXEMK+mFrM1QOIiXUIkDOFURJIw238eSJB050lj8oXlvx7FYGCLnhnX4/+se22NOwH+qnZPg7bDon05sdQ6tfQeaXOL+6p9+gWVwzkUQCtRe7kvDEYHSozkbOtmdW5ZzLZig=
+	t=1775527833; cv=none; b=UawhSRnZyOhAOuaJPmgOMRcFSQBdwAz5uWdWYZ0+kGNWhHGCWu2CYh6Qw+/R2HhiQwehAnZocHRLf0jbDWfMJhdIf2wzgzxEIXk+qqi86nM3OMyXWARmQNpjmyfeQk0KUqk3ev6GDsR7HPgKaYdj2FLOYrXBR0A4wT6NULBmDsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775506749; c=relaxed/simple;
-	bh=0Q3tXh/N/mW8ffhClmjJ/eV4MLTTy6YVNm70ooWEQ50=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=u0wKe1UlO6ZmNki0hd+SO3BfmY4lhCguhUSHtx/xiYHuJPDbhAuFhL4rVKY6DtbGOdu+VvCV6IxOyhHorP8fNTtCLD28EzBmRCCNG06IL+8kqyXSeCX+4BEObT/wGHQKFick/2S8E6MpJiIdka6T8wR40LY1ChCv6ypGDNudzpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTfgXb0L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775527833; c=relaxed/simple;
+	bh=27jpjNzx0cFfgKTYlxhm5WUR7kjfs0yfVFmSOEdpKPk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZKxrtM0UpyHjbnnUrQl9xwFOs/BnOZ6g+LbvjJIEje3v2wgl8blt8qRKs/81fWOvwgPuJ4zeMnHPrUr9LAfglCNyknM36cb4oJFnJs8lR//Rk1xz/DhvZaOvNqjtpvHIOpMUlscO+dbZjU+PQ0Sq50bhApzQeMDWH8m8VsUfE70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzXTZKaH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTfgXb0L"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 26934C4CEF7;
-	Mon,  6 Apr 2026 20:19:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzXTZKaH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ED4C4CEF7;
+	Tue,  7 Apr 2026 02:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775506749;
-	bh=0Q3tXh/N/mW8ffhClmjJ/eV4MLTTy6YVNm70ooWEQ50=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=gTfgXb0L8FTWWe0vVFg4X+tszuE5ZD1TT4UDEihKw+MbvOn8oFu3H9gAS9nRJ38Qu
-	 /ZSnlOSsgp3oiEKiPOscB6Pioxpj23ncQOQkA/boX4q0ZO5+3wd/uy5W43vmiwsDsU
-	 FESSJqnXsZIQJdq5+twWkhy1DjKV7RNE4psCQH/nlMdP0x3i1dz5xa2dWswoYmrfUZ
-	 X7XIRJxiKYgaYYLYHFUDX1eAVHcNTwGpRWygiTGEsHPbSoEGX4HYON4Hl58c3gefAV
-	 fVh8GKQFtk/G75TDYVINMjKcg8uMjkTEh/CDreB5FYtXx6Z86kIn3m3aHfjvGN4Tqz
-	 tcDN+CP8+mgxQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 108A7FB5160;
-	Mon,  6 Apr 2026 20:19:09 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 06 Apr 2026 22:18:25 +0200
-Subject: [PATCH v2] arm64: dts: qcom: sdm845-oneplus: Enable known blocks
- and add placeholders
+	s=k20201202; t=1775527833;
+	bh=27jpjNzx0cFfgKTYlxhm5WUR7kjfs0yfVFmSOEdpKPk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=EzXTZKaHmvzWCLcXoXOtQY7cO0WXSsI1wCe83GtBzVaYOdiMRqgCIWpGZZDSd/Hlp
+	 cnCDA0gwcvLfwaGGEf9rAgooiPAjtzBaT2Npq9jPUk1hYi2lR3Qn5gA7iZkxpAtE4s
+	 G94JUAdMQHiDnKS4gAXHwEv9XCO1KwV6TYqa1ZLb5JRJ5ptDDbCO4uYKuSLVFc2Hjk
+	 Nbz4Tw1JAwiqJ+PMH9unFvclZSjc2v9pRc7w/QAXQCHrv/h/kDQJvz7ensk2MVt2ue
+	 IY52fve4m+z9//+LKNASQ+jaVbbGhM0YDnrsYi0ktHC67XPh3oZIlPLA5jeB2Eb0xV
+	 Uo4CyzXcWtEqw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE63809A28;
+	Tue,  7 Apr 2026 02:10:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260406-placeholders-v2-1-9cdbe1fc9666@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIABAV1GkC/1XMywrCMBCF4VcpszaSjLmoK99DugjJaAZKW5JSq
- qXvbqwrl/+B861QKDMVuDYrZJq58NDXwEMDIfn+SYJjbUCJRik8ibHzgdLQRcpFuGgN4cXqs9d
- QL2OmBy87d29rJy7TkF+7Pqvv+oNQ2X9oVkKJ6KLRGqUkF2688HQMb2i3bfsA/AJQMaYAAAA=
-X-Change-ID: 20251123-placeholders-7d65e29648a4
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1563; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=AVzwMsW29OzyZogD7/oC7WV7gAZxzBH+SW2iQDHGVNU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp1BU7glHYvyVib5voHAAb05fXLjKUjKvkSXEBO
- JhQ91xt4hOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadQVOwAKCRBgAj/E00kg
- cucJD/9M5lIqwyWqQrriy8WD8qm4T3QiE/Vd0fCadR4Rmi1RR6p/Q6n+MLu+XWpbHyYGJdTcHon
- xEGMR6wMAf7f2EgbNZdJIlaXHTQXDd8qMuW1VYd5U8NwQG9RgBb3nmmRtYkdD9rUomWXkpVoetV
- MCOIG5oHo4133DR6cxXXA5f4Z0jr+XeQzxgI92UHxR+KHMB8lbeiHr+JuJRDdJMfM2Vk/n3h0/u
- XxnulhAVr7zCb5/+BtaDgsnRPJpO9mhP28rCBPSiFWEu7vnPSszOY8XfRf1r8UpT0z/DVj79qLS
- HL6NarB2BgqqsljBtrLQ1sVU8jaJWG3ihEvA5lftgf/21fcc737tyCkTSb3z79TdQ9iaKRRF3SH
- Gx0JXHWuanre5TvR8sz5bDAjTeGibhCxGoMEztvcRLH2TGUbPWRttXm97rx/eYBB1LcnlgmP0wU
- 8G5F7RYEiiEEAnTrtazGSLABsAsE96+mvosm4+GMnr4ckOjseSdUHB2dgQYUdvegeLK8pyKUOVw
- tPT5hJlQpBZbKCaImiJ7zaUM7vBOCf7iaJZjPn4pl9l6VdsKiLgI9e5ZF3Zo2yx40xEnw7ODlWX
- gfo3TkW3gO0u5/cp6jyRVgCUMoX81StLTCmvhxnRo1NejUg13SsFbld7u/TPDDeCp7HmSoPbRE+
- 0dxTez1sv0XbJiQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 0/5] NFC support for five Qualcomm SDM845 phones
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177552781154.3342975.13085478526282398962.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Apr 2026 02:10:11 +0000
+References: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
+In-Reply-To: <20260403-oneplus-nfc-v3-0-fbdce57d63c1@ixit.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, amartinz@shift.eco,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, casey.connolly@linaro.org,
+ amartinz@shiftphones.com, petr.hodina@protonmail.com, l.j.beemster@gmail.com,
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ oe-linux-nfc@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, krzk@kernel.org
 
-From: David Heidelberg <david@ixit.cz>
+Hello:
 
-We know these devices are present; most of them are supported by
-downstream and are close to the mainline kernels.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This adds placeholders for:
- - front camera (imx371)
- - rear cameras (imx519, imx376k)
- - actuators
+On Fri, 03 Apr 2026 15:58:45 +0200 you wrote:
+> - OnePlus 6 / 6T
+>  - Pixel 3 / 3 XL
+>  - SHIFT 6MQ
+> 
+> Verified with NFC card using neard:
+> 
+> systemctl enable --now neard
+> nfctool --device nfc0 -1
+> nfctool -d nfc0 -p
+> gdbus introspect --system --dest org.neard --object-path /org/neard/nfc0/tag0/record0
+> 
+> [...]
 
-This is very handy when rebasing the integration tree with
-support for multiple different blocks at the same time.
+Here is the summary with links:
+  - [v3,1/5] dt-bindings: nfc: nxp,nci: Document PN557 compatible
+    https://git.kernel.org/netdev/net-next/c/e72058a4bed0
+  - [v3,2/5] arm64: dts: qcom: sdm845-oneplus: Enable NFC
+    (no matching commit)
+  - [v3,3/5] arm64: dts: qcom: sdm845-shift-axolotl: Correct touchscreen sleep state
+    (no matching commit)
+  - [v3,4/5] arm64: dts: qcom: sdm845-shift-axolotl: Enable NFC
+    (no matching commit)
+  - [v3,5/5] arm64: dts: qcom: sdm845-google-common: Enable NFC
+    (no matching commit)
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Changes in v2:
-- Dropped NFC placeholder, as the series for NFC support has been sent
-  upstream.
-- Link to v1: https://lore.kernel.org/r/20251216-placeholders-v1-1-d7d544200e7c@ixit.cz
----
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 6b7378cf4d493..719d98240a21d 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -442,6 +442,26 @@ vreg_s3c_0p6: smps3 {
- 	};
- };
- 
-+&cci {
-+	status = "okay";
-+};
-+
-+&cci_i2c0 {
-+	/* front sony,imx371 @10 */
-+
-+	/* rear sony,imx519 @1a */
-+
-+	/* rear onnn,lc898217xc @72 */
-+};
-+
-+&cci_i2c1 {
-+	/* sa,sa3103 @0d */
-+
-+	/* rear sony,imx376k @10 */
-+
-+	/* onnn,lc898217xc @74 */
-+};
-+
- &cdsp_pas {
- 	firmware-name = "qcom/sdm845/OnePlus/enchilada/cdsp.mbn";
- 
-
----
-base-commit: 816f193dd0d95246f208590924dd962b192def78
-change-id: 20251123-placeholders-7d65e29648a4
-
-Best regards,
+You are awesome, thank you!
 -- 
-David Heidelberg <david@ixit.cz>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
