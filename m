@@ -1,110 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CE238A712;
-	Tue,  7 Apr 2026 06:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A633124DD15;
+	Tue,  7 Apr 2026 07:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775544241; cv=none; b=qbPFDIBZWCs3O3ap4neIFG9gKgNs2K4N0VRT2NuolqJasiLbsBf3D5NAzJPyTewvPx/wuEBJAhNXd6Devt8oV5RrFP64HkSoCekC9lbcOXTbxBq+nmsJ1WVPG0Ur/wMc/tgVWjI0mQOOLkzzP1bQBFnCX+FCJ2J2FgP6HEkcmkQ=
+	t=1775545495; cv=none; b=CR8RyyeRgT+tCOaSB3dD8O+vRtLxAI8umddNUL7fS4+UzUqwNFDWL8zmeCfOSAya1+5W/74AMg5wCWeJZpmhBfkZ993QBkOnq0zU6MrzGc2C++Sh317MWCRvATanKHZceWcgFlDSQwNQ2+QOQ7WG0tj1akhzfxaD1Xl0l3qOj3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775544241; c=relaxed/simple;
-	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nCPEpFH0FOA7T08s4JZROz9NGFI1FEVulcdOSPaqkybxmvoRpSmJJjGN0JF5wC24znSHqlw95d7w4juLoXnEDZPZvnDvbehTTYZj0aGoHH+r+rVP95KsxQMAVu7JyjqqvREg9Ux7Kg32iOZLkiC78/gbWL+WB5xtHxNqD6LBAfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZjh3z+o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775545495; c=relaxed/simple;
+	bh=1E3mW74pLjjtq0bTl03zOtsPzX4+v84/2cQR0JqMVv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WnWbItynpvt68Ue3Mm2ji/5odeVEY5Yj+e4vHvEPxiHornXvmHvXhThYnjiwkmUxS9iYFCoSooy0gQpKotMcX7RrbQmNAO4fHFn+s0oxW1tHFVe2oYPfQDIxQqddNXncreQHRn8Nu9PitZpqqUekw4fmmc4Lga6CiyeuhrV5nws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMjJ41fX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZjh3z+o"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BD69CC19424;
-	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMjJ41fX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5ADC116C6;
+	Tue,  7 Apr 2026 07:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775544240;
-	bh=To0TOgWdk+Eg3vCUJ0MvI1sSRqScB4zFZ3xj+H7iwWk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LZjh3z+oKpl3+fFSh3fpCOIeXeEibbIAZ45Tgut4/0L/2VtEpuqkd/hV4xtxpTlOh
-	 cLOataclZiWmnVO3IfQErs9jpIl7IEmDGlk0VHqBQh2aLB/KVkhlwGHQFq1N3ABBy3
-	 TQIEg+oURUJrG2/4PWittvzZEYw+AHGJSiEASktUgCWSA6yTnYNfAgoeUZiH5PBeOB
-	 e8wYJM1toLafK4tHjGT/TASxIqpz4dTOBYeiaqIR2f8sEItLE5m26kFo0Qk6GSmIMp
-	 yW/MdmNbFGrsra4/hHrYIsEOW1tVz1R9U2IrMLDull3Qhv7/+xj6TjSefd+fLTEI+i
-	 DWiXaQ0S530+Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ACE07E9D832;
-	Tue,  7 Apr 2026 06:44:00 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 07 Apr 2026 08:43:56 +0200
-Subject: [PATCH v5 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable
- ath10k host-cap skip quirk
+	s=k20201202; t=1775545495;
+	bh=1E3mW74pLjjtq0bTl03zOtsPzX4+v84/2cQR0JqMVv8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZMjJ41fXIzImZ2L2+CsgZ9pP8XhmQfFXwxUvWEigRhdoZnsF7mWPvKnhy9L1tpmnP
+	 7gMJ2HwmvpQJ8SM/jF8MF8JBjHiFgJ0m9lkYnGEsH84BNUJa0OPEfKga1vGliuWhFn
+	 zaRDiQX+NOixk9Y7halpKlPRoaVhBvjh/DyNgsP4gdMKMsnngVib+7D8YtxvfOyfvL
+	 Y3T7UayOBvzf0iLRHxcTFL7iSud/0xsp4p1myaYEaR19SDOmXNMLnAJdMgJfq5NGQz
+	 6bjROML7eT11QzCjeK6zLEu5BKBF87n/dssYfCHZ0qt8zOmVLD2avZ1WQdz8yQyqBq
+	 8kxQGGCB0q6BA==
+Date: Tue, 7 Apr 2026 09:04:53 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Heidelberg <david@ixit.cz>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Casey Connolly <casey.connolly@linaro.org>, 
+	Joel Selvaraj <joelselvaraj.oss@gmail.com>, Jens Reidel <adrian@travitia.xyz>, 
+	Arnaud Ferraris <aferraris@debian.org>, Marco Mattiolo <marco.mattiolo@hotmail.it>, 
+	Petr Hodina <petr.hodina@protonmail.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: arm: qcom: Document Xiaomi Poco F1
+ Tianma variant
+Message-ID: <20260407-furry-cream-monkey-25be9a@quoll>
+References: <20260405-beryllium-compat-string-v2-0-91149be07835@ixit.cz>
+ <20260405-beryllium-compat-string-v2-1-91149be07835@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-skip-host-cam-qmi-req-v5-3-dfa8a05c6538@ixit.cz>
-References: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
-In-Reply-To: <20260407-skip-host-cam-qmi-req-v5-0-dfa8a05c6538@ixit.cz>
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Paul Sajna <sajattack@postmarketos.org>
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
- Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Amit Pundir <amit.pundir@linaro.org>, linux-wireless@vger.kernel.org, 
- devicetree@vger.kernel.org, ath10k@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=932; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=DU/dXePFyTa55SQv+lhHqY4KIdvjaGH0tSQ5egVr5Ig=;
- b=kA0DAAgBYAI/xNNJIHIByyZiAGnUp66g1k1G2PXK1XLApKqh8rZQqnP+rM1X6ccdHnoc1CQiZ
- YkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJp1KeuAAoJEGACP8TTSSByrA0P/3wf
- qabD5CEeb4B4+PsJgKOZY/BrgJN1A4Zdw5C35f3dwpNPtBQTwOkxEcSCHj5GYoAtZRGeJWCr+0Z
- 6Za616Xc2FfWBQa3wtnFtArLaTN58RK4j9patgL5m1lOe+iXo9A8ZyowzTRgnLA3jvxqfibnXdU
- Cab7tJzP2IyopQE4WpkfMYjj6PbA72EmXSMtVqBpPr73FIyYL1rSswZ52gOxhVIGOx6SAaZg+4c
- KsKnhg03Fzx7Y3UKTFqJ2JYMadV/h+GgmL4PfmYQqcLUtEcMm8BBRPiVFKGproGfkJ6hDA59JFH
- CVwyIV3QEC8op9GElbGGXsiAq0XbBFo+qvLme+gDcpTakvz1EzLv/bfYG+SPP9K4a1LlklC5Ehl
- AX+zAk15id1qDONaAxEvMqmb3cGD13a+fh+2UIdFC85hqzpGzUYqUZR1HtQmwu00VcA40aMZ1OC
- 2YgTBb6/gn82TMc4560FcTrUfrifRtAe1/jzgA1JvZsFhZHb+cCT2TqqduU7OmB4HfUxlWW/dm+
- 776t78Z0IxeMPAMYeg2sSjUubPOWtuRYWn1A/dpuXxY2+75D6wlD/mukE0f+FzRdqVIQ8zImbK9
- fxQTk8iTFc8OkBhZ6pTMXKdAKOP5igNOcTaLWDJlAmQ74V63pcGF7c3fFwrZU38fc94/eSp9NM8
- hmeoN
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260405-beryllium-compat-string-v2-1-91149be07835@ixit.cz>
 
-From: Amit Pundir <amit.pundir@linaro.org>
+On Sun, Apr 05, 2026 at 12:54:55PM +0200, David Heidelberg wrote:
+> Document the panel-specific compatible string for the Tianma variant
+> of the Xiaomi Poco F1:
+> 
+>   - "xiaomi,beryllium-tianma"
+> 
+> and require the generic fallback compatible:
+> 
+>   - "xiaomi,beryllium"
+> 
+> Update the binding to clarify that all panel variants must list the
+> variant-specific compatible first, followed by the generic device
+> compatible, in accordance with DT matching rules.
+> 
+> The previous binding documentation did not describe the Tianma variant
+> and did not clearly specify the required fallback compatible, which
+> resulted in inconsistent DTS implementations.
+> 
+> No functional differences are currently exposed between Tianma and EBBG
+> variants at the binding level; both rely on the same generic device
+> compatibility for software support.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 
-The Wi-Fi firmware used on Xiaomi Poco F1 (beryllium) phone doesn't
-support the host-capability QMI request, so add a quirk to skip it on
-this device.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 1298485c42142..950bbcc3bf91f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -661,5 +661,6 @@ &wifi {
- 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
- 
- 	qcom,calibration-variant = "xiaomi_beryllium";
-+	qcom,snoc-host-cap-skip-quirk;
- };
- 
-
--- 
-2.53.0
-
+Best regards,
+Krzysztof
 
