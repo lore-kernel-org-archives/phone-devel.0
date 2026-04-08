@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312AB3A0B2D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4385C3A2577;
 	Wed,  8 Apr 2026 22:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775686551; cv=none; b=SNTXR6cNkhExnL5pWHdUGWBGBGXXeI0sEcQxSEWbuNCOJLppVsBCNutffSdesF8SajIAUjJlHNjJV3lD0J84u7SumOmVg6bbvyhxMII6HCcwp6DjgfQ+Hja3i5B96pS/0Qbb1h8S2XdbmI58MwKu9o7edSFqOHRCG8geSMmVmIg=
+	t=1775686551; cv=none; b=CdXaTkAg/BfQsVCFvKMxEQKQjuHafci0jeJN3QqqGl83oSiufqBGEHPysVh/LcreS6vuz9cF75rQOuUIx83HKhFkNbknTc2gbsFBZ+4IdjTYGHHw+21nLa6q5yHYLxC07DIMvn7Lcz9cZa+wIloP6NYAHTqp5akhDOPybC2a0QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775686551; c=relaxed/simple;
-	bh=VugrxAEpcoaq9VvpeVHYFFo4mzyAFJTTi30xWQb6Pkw=;
+	bh=ZLkarQW8/Az8rauhmR2HAn+rZrJRg5Nvg4DuBB8fGyg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rf6tXPHLpOPs1Ey3RW0WITZW6t7gCgjXBhdXvWIesjs05NnHojn5GHFpQkT6dP9sQ9LVPLR6EyLrYr/RzEeE4vxMjAZpdxEKyD12o3IeJWp3QxICYUXyP+qtGK9dFTG7+trQjc9/glJU4J31T5B/GysGMAxyUx1Q19tQj6O+3QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQPzF6Vn; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=JG4cndDE9A4J0iidCqnf+WQZTw+/nmxvdINnUVW6FrK2ZZ6ctImEaRAqi7j2fj6LvJMD1KxVwm3XXbzgBVDiClaxGOw5XGYjF9ak9arqsA/Ea/IiMii+oCF5bzA3CGLPh0pEN09NBjOPPun7bAo1ES1k6iWodun6Fv6hwLEQCPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4RCEQfR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQPzF6Vn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C97B1C2BCB1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4RCEQfR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EEF17C2BCC7;
 	Wed,  8 Apr 2026 22:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775686550;
-	bh=VugrxAEpcoaq9VvpeVHYFFo4mzyAFJTTi30xWQb6Pkw=;
+	s=k20201202; t=1775686551;
+	bh=ZLkarQW8/Az8rauhmR2HAn+rZrJRg5Nvg4DuBB8fGyg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=aQPzF6Vn67pewcIXCtxfCI8bXpJvqQJ5JQxAxBOb3hbSRy5i5h6kwpHbL5hsVR9tC
-	 wWC29n9wAz75QquVv2X/qzPGCCxowEKDBVUiYpYPtODWwSlsRKsYlOotwpu4C7AG/a
-	 58GxY8/68QdM0MMYCCM0MI7qZfzrfLi7EyVuoDS+aGVHJLziwsnu5ZIMxSx+GXZ+5A
-	 8o5Nn325CPBgDsB4w5I2mGDPwP+EGCs/OfEWRHIFOQA/gaIa8x8W8gaL19xntR+y2F
-	 EgTBRi4fa4VUtvOBuB1uV0hRen2fHWPn67jawmQQuVs66ovSkEivDR0tPtRdbyRHGl
-	 dhphH8YYpA9uw==
+	b=R4RCEQfRBQG3Jocz4jTbcIGP9WAfz5heuJgd5C57LX/dV9t0iZy5YJYZ+BHNnLNjI
+	 vtOd7CmFnNBpRMtw6yaMZsRZZhqoFmO6I/UC9PKvwQGk93F3p5sHoBikw8puZ86dN8
+	 SeB5c3LhesPxoN1XhJGPaeJke6UnMvO8c5HzKo6m3usZk6T2925Ox7+GALpn8JFp0j
+	 qqG2Z2MVBfS5wyv6V+gVdZ2bVvtjqms1uZGMqIDx5/1nH+VwUdC69UiXUKeUVwcoWk
+	 wk2fuITpB4+77KqAYxUhrgfN375O7Zw9uYkeoIUUX40gSj9vFdkRXtb1d2mLUEGNK/
+	 bCOjZ4n0Zadzw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B814910FC45C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E567A10FC456;
 	Wed,  8 Apr 2026 22:15:50 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 09 Apr 2026 00:15:46 +0200
-Subject: [PATCH v4 03/11] Input: stmfts - Switch to
- devm_regulator_bulk_get_const
+Date: Thu, 09 Apr 2026 00:15:49 +0200
+Subject: [PATCH v4 06/11] Input: stmfts - use client to make future code
+ cleaner
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-stmfts5-v4-3-64fe62027db5@ixit.cz>
+Message-Id: <20260409-stmfts5-v4-6-64fe62027db5@ixit.cz>
 References: <20260409-stmfts5-v4-0-64fe62027db5@ixit.cz>
 In-Reply-To: <20260409-stmfts5-v4-0-64fe62027db5@ixit.cz>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
@@ -58,100 +58,54 @@ Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2336; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=999; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=FK/zsREY/XInSNUuszAKmQ33vgOOISGuAWF3OsBIumA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp1tOS/t9Q5M2mBMugd7+B1QN2+hFxl8CFpy5AT
- r9wo8bBUf6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadbTkgAKCRBgAj/E00kg
- cskbEADD0uywNEE0C4Qby+S4+XcDg8r/GbAfO73ZJ/s7X57qvmjMTkGGfXcMP19sgrxkJcxhY2z
- zrrYel32XiQtz+OCps0jAH+zm/p3d4UUrKBOybWVORZnRSG399kFlnZcOItbNnHNPfEy+NFfqFS
- Jel//UoxSwOzXV3vdHyc/ts2NkKN+D83pJGXDhBMEeddrtlqySPhJfPNzYSotEGXac1ZLAccZln
- gxvoL5opp2EAq47kAQE7L12qzzqxGLxW8g8zxGmyGamabjlGjqDQe05fi7x4t9UsyDGEE5cPzko
- 7zbjOk+YJ4JngzfvrKYbXU5iWxz0BDJxwnjXDDNIH2urZhM1C0e2BWMFxIYqFiW1JIsrGsAAgZg
- b8VdNdMtBxaO710QM5TjtJzUpHekWBtTQwl5ueJeQzXdmUurfzaNPW7M5ViP7BI7qUSV4k1VYA6
- plOTN0DmqnBmOivHy3lCfFqFWMODLtZ28gJcYPQB5EvO1BFcoa6YU396qSbRIa2ftw5aD4+KXfX
- FBw/qmyyZ2iBn2u+5VYO+7vf7aqDXjW1wVNNJwqGqeEB9ivdFJSU2KyhSt4qZ0S0FxwT9KeBoWX
- kXx06/kok7uLh7RiD62AwdGAmxepAhN5Q1NqsK+RXRMLoGyslXwQN1k33nqxlXYLcu67w0xXan7
- Ib7gBUWLHXj/tdA==
+ bh=b/jklM1zbCQq0LgFU9O2NrDUidLzNIiCSesKs846UrE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp1tOSX/8wXIcBMj7wQU9sHsMyexCIa9bif82F+
+ jn4O1E6y7uJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadbTkgAKCRBgAj/E00kg
+ cqcjEACw7KJL1B4IeGb5Y5BLhFGgrkasV9+ayx/oBWguyFHfkrIFB+xMFBltOu2p09IDBo1J4+p
+ 4qTRCWcb6YWbnDCLB9ROTbkJHB6FqnyqD0qHhzhCj6oe6bBX8VtwihwshYUqCMOiqYTPTfyZdYA
+ zSPIchO03UcluHlUbSNzns5DBC8wz7OuPjcumDzo4Ookxf5SkDVFbL1jOsWIQaf9EV8NDTp0kYv
+ Qd8zrfrmVJyd7TGsfqwYgEreMlu829h7AQSzyXM01kObdBqce32QrmXVCZvDMjTIXxkjy1YbmAJ
+ gkWpCMn40rVe07LKoU1qu/Eur0SmHWQhrUqYTQP0NeUH9PpeQTOn7QqiY6cA2gGkzLLnt2KjDr3
+ xlghMrox8RCtiMLMLcRJnJ26jJoDdxG+Omr8AE22F4bzHTUGQhZbBR/etFEzUAKKxXAxIu4By1X
+ iReyQ06qNMqe2ZarSxS8YemKaFQa+TJ4kfHhjx/3k0v213zjyLkoRRBZxBy09lgIqJDCf9HsOpe
+ fMArxmvZS0rqEKK82VhfTkuPnAPzTPV7FVjxCijX6gsJnS/DFfaqcIXXGWdnGAYnjby7VipMIz/
+ lPcTzlVlCUbfVXC6WuirJsGcmE5Q+6v5jMgd1eq3D/gIEjipqbxu6SHj47+2DJ5T7zDrBW6FHh0
+ a4CNzCUEFCnoVyQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+From: Petr Hodina <petr.hodina@protonmail.com>
 
-Switch to devm_regulator_bulk_get_const() to stop setting the supplies
-list in probe(), and move the regulator_bulk_data struct in static const.
+Make code cleaner, compiler will optimize it away anyway.
 
+Preparation for FTM5 support, where more steps are needed.
+
+Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/input/touchscreen/stmfts.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/input/touchscreen/stmfts.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
-index 7b1e975a85668..ff884e04ad4c8 100644
+index 290511dd69437..b61a19e954296 100644
 --- a/drivers/input/touchscreen/stmfts.c
 +++ b/drivers/input/touchscreen/stmfts.c
-@@ -69,9 +69,9 @@
- #define STMFTS_MAX_FINGERS	10
- #define STMFTS_DEV_NAME		"stmfts"
+@@ -769,9 +769,10 @@ static int stmfts_runtime_suspend(struct device *dev)
+ static int stmfts_runtime_resume(struct device *dev)
+ {
+ 	struct stmfts_data *sdata = dev_get_drvdata(dev);
++	struct i2c_client *client = sdata->client;
+ 	int ret;
  
--enum stmfts_regulators {
--	STMFTS_REGULATOR_VDD,
--	STMFTS_REGULATOR_AVDD,
-+static const struct regulator_bulk_data stmfts_supplies[] = {
-+	{ .supply = "vdd" },
-+	{ .supply = "avdd" },
- };
- 
- struct stmfts_data {
-@@ -82,7 +82,7 @@ struct stmfts_data {
- 
- 	struct touchscreen_properties prop;
- 
--	struct regulator_bulk_data regulators[2];
-+	struct regulator_bulk_data *supplies;
- 
- 	/*
- 	 * Presence of ledvdd will be used also to check
-@@ -523,8 +523,8 @@ static int stmfts_power_on(struct stmfts_data *sdata)
- 	int err;
- 	u8 reg[8];
- 
--	err = regulator_bulk_enable(ARRAY_SIZE(sdata->regulators),
--				    sdata->regulators);
-+	err = regulator_bulk_enable(ARRAY_SIZE(stmfts_supplies),
-+				    sdata->supplies);
- 	if (err)
- 		return err;
- 
-@@ -589,8 +589,8 @@ static void stmfts_power_off(void *data)
- 	struct stmfts_data *sdata = data;
- 
- 	disable_irq(sdata->client->irq);
--	regulator_bulk_disable(ARRAY_SIZE(sdata->regulators),
--						sdata->regulators);
-+	regulator_bulk_disable(ARRAY_SIZE(stmfts_supplies),
-+			       sdata->supplies);
- }
- 
- static int stmfts_enable_led(struct stmfts_data *sdata)
-@@ -638,11 +638,10 @@ static int stmfts_probe(struct i2c_client *client)
- 	mutex_init(&sdata->mutex);
- 	init_completion(&sdata->cmd_done);
- 
--	sdata->regulators[STMFTS_REGULATOR_VDD].supply = "vdd";
--	sdata->regulators[STMFTS_REGULATOR_AVDD].supply = "avdd";
--	err = devm_regulator_bulk_get(dev,
--				      ARRAY_SIZE(sdata->regulators),
--				      sdata->regulators);
-+	err = devm_regulator_bulk_get_const(dev,
-+					    ARRAY_SIZE(stmfts_supplies),
-+					    stmfts_supplies,
-+					    &sdata->supplies);
- 	if (err)
- 		return err;
+-	ret = i2c_smbus_write_byte(sdata->client, STMFTS_SLEEP_OUT);
++	ret = i2c_smbus_write_byte(client, STMFTS_SLEEP_OUT);
+ 	if (ret)
+ 		dev_err(dev, "failed to resume device: %d\n", ret);
  
 
 -- 
