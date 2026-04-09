@@ -1,38 +1,38 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C386D258EE1;
-	Thu,  9 Apr 2026 02:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756B7366810
+	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 02:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775702542; cv=none; b=JeC1A2JgC84Ri3fl7tOkybCXw82HS4t1mbRbn4rdWJj9s1/pPA/1I4HqOn1sb5o4ZjpT7daCUgXXRWO4FDeOKAB/Abpah3O0XAlF02C3G1amhuUdGTskeRq04D8VdBbNV21QSH34JFkLY76YwGsRSo0lUNoTHBLaB+idIlzRdsI=
+	t=1775702548; cv=none; b=TL27UdNei7nvQTXmZ7/Qbrl5XGq+uXTOhSjy0VBJtvFndH3xtvKvvm7ETQSs8MaFx6uFEti4t72KPN32jeakICGijFosBkkFnjwb2xq1zoGT09Hn6k+inZY4jscNjauSl7IBhTM/JEb+0vopJ5mJR744/Rq9LAqflS9ffLeKIxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775702542; c=relaxed/simple;
-	bh=sqb2CwDa1Cq0XxXDMv1rUhOVD7diLDVG83sABn513b8=;
+	s=arc-20240116; t=1775702548; c=relaxed/simple;
+	bh=fOcr/7mBz1Sen5Zu/vhR6WZBAfKDprmnT8KTucqA5Rw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bb69xIlPpRuXKo1v+GTURRWLzuOnwmUMdO1xoGxgcow5GO9GljmxJdgqCSn+y4JD2MCjdS8UX/hQajRxgmvpL+/5Sxz0zHR1fSiYRb18wLohuHqlkUQ8Bz60fXOwNqDXGyNMTG/kn/0y9x37rlwgA8N97rgMqI6LiIvSu3/Imco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=b/OoYyzu; arc=none smtp.client-ip=91.218.175.184
+	 In-Reply-To:To:Cc; b=spbpjZXlNam1gqNmG5OpMymzDQxxICAls6l8HFyQnk/780MNrEaExc6HxrMn3b465Pzv1FnLA13/Cu99huuCAluwgt05DN7moubVvFCuKput/4vLhHqJKCpVdvswd7HXVRGjLow93wP780hSzFrGhEonMlRt5t1ZXlHslYXNfD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=U3kNLGRX; arc=none smtp.client-ip=91.218.175.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="b/OoYyzu"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="U3kNLGRX"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1775702539;
+	s=key1; t=1775702545;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c4vft3JoOWNIiyb6XKVwI3B9R+MjrgmBnquYhO1fWhg=;
-	b=b/OoYyzuc7a9rPbMDKRtohqieZw/YG1+VStkpmV9VRI44IMFhxtgGSXY0V09dughuBnm6C
-	mOFqtse5XZztN4KqHuvzcVQaMjlpXh7OUsb+wr4V+jN0kqX4J+NtVvpbgGtD/SLuqFgd5q
-	7NL58cX55q+e7GnY/Z4RztuY1Ew4CNk74jJr+19vql+YoFyuz8Gd8EnD/+qaP1D0y7sN81
-	Cr4+1hpncRV8JRvejDCN3n9zSQK2dPvDhpu8INYGHrkGCv3IYmzJ8lDs9wLo4F2SROBKvf
-	76f5fLSA73QnhHjTbxQgqBaNTZwrIguotm8JPOEOcG0lhAVrazCGFhrxNOFQzQ==
+	bh=oiArMNH1scHIHb4vGHz83I/PRfi65XhkSgmiVQjhohE=;
+	b=U3kNLGRX34eiaEI2XOfPqsWHWhh7UXcuLHTAq+RWnQ2noyjLzEGqDagShK9/ZBAiM6YLrQ
+	wivBL8YPIjNIk/gvEygFTl/xNXr5ahrSH5K+7vDX4fqaZe37gf03LFcQ9QeVS2sNh5Bc5J
+	aO2++TGAyo2ARloLggatdHeO64BeFMCUgt7wRXlXkhE9dtn9e4MV4utY4qnYJTbELsi3SL
+	Nt+fP7rpVyaQ4iM+lo+2DGaJtsJCldeufx9isg1+coyK3NUMgtoxlAGWCLvz0LDYiKmVoH
+	KWVcuh3b4bxGAYczqfY9QkshziR8F4sjpw80cnokDJaCY5G3mQdIiW3auSvRVw==
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Wed, 08 Apr 2026 19:41:13 -0700
-Subject: [PATCH 2/4] arm64: dts: qcom: sdm845-lg-common: Change ipa
- gsi-loader to 'self', add memory-region
+Date: Wed, 08 Apr 2026 19:41:15 -0700
+Subject: [PATCH 4/4] arm64: dts: qcom: sdm845-lg: Enable
+ qcom,snoc-host-cap-skip-quirk
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-judyln-followup-v1-2-823467519b59@postmarketos.org>
+Message-Id: <20260408-judyln-followup-v1-4-823467519b59@postmarketos.org>
 References: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
 In-Reply-To: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -54,49 +54,36 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, 
- Paul Sajna <sajattack@postmarketos.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775702528; l=1064;
+ Paul Sajna <sajattack@postmarketos.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775702528; l=743;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=sqb2CwDa1Cq0XxXDMv1rUhOVD7diLDVG83sABn513b8=;
- b=4qgYHp3X0iqCOX1EAvidijoFkGMZ/+/ZE3Zg7y7oY/Po4VxghjhQ4ld2rLRo65+VhIzC/1K92
- TIk7VjaMF1EDVCsjDIiY9QMjzphcRoUeJH5BS+3Mvt4nmv6O2rBAI4l
+ bh=fOcr/7mBz1Sen5Zu/vhR6WZBAfKDprmnT8KTucqA5Rw=;
+ b=ZqGfUBv92qnTjnsx3KsufSh1RpTYO5j8Xi9mVtt+7PvCxM41zKVPJELiMbhksxyu9zCFaPrBz
+ dSVQqQxDwhRBNRb6SWiecY0fe2J34QZ013bei/cUSdDAPlRnqQ7/9jh
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-The modem firmware for this device doesn't preload the IPA firmware
-and requires the OS handles that instead. Set qcom,gsi-loader = "self"
-to reflect that.
+The WCN3990 firmware for judyln does not respond to the request for
+host capabilities. Add the devicetree quirk to skip this request.
 
-Ensure the ipa uses the correct memory.
-
-ipa 1e40000.ipa: channel 4 limited to 256 TREs
-ipa 1e40000.ipa: IPA driver initialized
-ipa 1e40000.ipa: received modem starting event
-ipa 1e40000.ipa: received modem running event
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 9d82961d527e..85dc4468b6c4 100644
+index 86cf4eb44084..e0c3566761bf 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -473,7 +473,9 @@ &gpu {
- };
+@@ -694,5 +694,7 @@ &wifi {
+ 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+ 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
  
- &ipa {
--	qcom,gsi-loader = "modem";
-+	qcom,gsi-loader = "self";
-+	memory-region = <&ipa_fw_mem>;
++	qcom,snoc-host-cap-skip-quirk;
 +
  	status = "okay";
  };
- 
 
 -- 
 2.53.0
