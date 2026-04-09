@@ -1,119 +1,114 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CB33DA5D8;
-	Thu,  9 Apr 2026 15:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5752B342CB2
+	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 21:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775747992; cv=none; b=aBfLe9oZalTuhZOjvLOl+SXl7we9iULM9znBr8dzfqH7yoRuooUJ6Q3IoRVNMFAAhlEvUEtDUnsa3Fa7mBJfWfQP6ge8QDnKTp3n4cMizTxcW1ua8VqTv/6GRaO7O6WLDZp57upZDoIY2qexVMs+FXstYB9l0XX2Yf8QhBY1FgQ=
+	t=1775769553; cv=none; b=HKIlJtX9PES14QM3SKeNCJ5ScfYRxLa+sIO0w2HOqEGRPR/mixC/KJLDQDqNt/CbNeOimDBRggQqggeLmLC5ZuKnCRMOmJTJjgV9BhNLFLT4xAvQXj3FssrrInJVKyxW2n14dBItsV94/59mmGN1EFOgsxvPrGvicRN2Fb09caY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775747992; c=relaxed/simple;
-	bh=9Eu0siJJ65AxUBDrGi32lm17n2xyY2V/g+wLQ+IeBmI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hzEBtIDdau6s9GkgrO1xtDlGrsky1XZnjesBsNwqRpsNylBvLiy/EDi61+8m9+jqvWc4ahPM1V8OZ8plZf0FHZEE7rEi8hVWBFq2umovZaUPlt7HjlsEeE/ToY/XOxbi9z2XDrsvNbEExE5OWh1+1VAY+R9YsieGzN4EC0zCNb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=hDJDzfar; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1775769553; c=relaxed/simple;
+	bh=TK7U0/XbzM8sVQEkZGsmbGPzqT8CPmOc8EOImm890/o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R/qb14zAXPF5l622jVkh+oCyznF1dBbY/G9pXc3dtt2ZrHZIZgaX+acA+R1l0sqU+Z4Gn2QhFrPc58FFQEshe4xwfaGcV7GzY82XKkFn1QpjFd/cqttACb8ZZJvcsiFAoAezMpZi7WxfChWKCsJLIzkPmaHRGrnYOBOJmkqUMnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrNSwWxz; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="hDJDzfar"
-Received: from [192.168.218.16] (37-48-0-9.nat.epc.tmcz.cz [37.48.0.9])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4A646534151B;
-	Thu, 09 Apr 2026 17:19:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1775747986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ldSQMaCIi3RqWDrIuCTK/RsYt+ET/zsF/yIERTkZQa8=;
-	b=hDJDzfartZD8ZhK+DdH1uZ5t0a4uTQJ9HnaH0LEXlt5HzdPQqhV2uZIB1XWkaIHhmWMGql
-	2591Us8+Gj1r8nVKrAJZVsIVoDDj0pUWxz0Ww4R1zJ7Oq/exdNkjjb3+3DUjjbwEtDpPXT
-	Bbbm2cefP8a97tXKngV/8uLwChnnuRo=
-Message-ID: <232b1df4-3261-42c9-adc6-463e5a189e6f@ixit.cz>
-Date: Thu, 9 Apr 2026 17:19:44 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrNSwWxz"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4889e045bc6so14518975e9.2
+        for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 14:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775769549; x=1776374349; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U30AFcv7lgMNUZ3ymlMVV/vyQq/k6Igfk7p7bVokTZ0=;
+        b=mrNSwWxz0eh5CScdOed4G67cj75w7M9SNfIitwzZqmE+d5URVQHqtNEedldW0FStLF
+         ySU8xqhJ4xQt+9RK4BB3V3SymBOT5uhlqngVph6PLSckw3H2BP3OPNwaQnJ6fFSgXWOJ
+         TlWegM2WRrvzVzvIR841fNjZ5669ZvQo84aMYtOi5kpB0zQgmmjYNQqJsrsEp2fa9CP1
+         KT1GF9aKERjzpK/xs29GJLl5D4ID4/U3HET1NGYYa+KqWQ5oJC62QJ29COs/5TNu+G0C
+         KOwD5Fk9NA5np4KEgFctHbIz9/LHOJ/LPdFzkjNxVEymobKPNbu2DtA4HSyZmhj86OBB
+         RP/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775769549; x=1776374349;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U30AFcv7lgMNUZ3ymlMVV/vyQq/k6Igfk7p7bVokTZ0=;
+        b=GtkRoKS3FtMeTy3S9seOnoEG/Lx+Lt4viVp0BdNKUrI+m9721ogFkeK8S2OCtBvdvj
+         ZSI0NolAfvb87BndWXfSWjLhzpE5zbvUcVxFhofXIWytn4m3crmjKzx4SmMeIMdWwAUk
+         altcqrIoyalugqBQR6PvUWKcDF8OcW0s35TEQJeUubyZ8Fjyl9kXMjcD+O7vEF447wje
+         CfxzN15/fQZnIlyH0lpn62pheqWQH702tshzriWGAyW3ceBy4keM4d5QWlW9H+HvVlkY
+         D7YCXAAxx5yUDiQKR9sza1Ts0Uk+kRuHrYmWG8FDz85UNhw85h518KnCvq+z4boQMLHT
+         lZEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwcUcX+0fu9ULVB/h/gfJG+wq7+c6aCM5NETEM4BMgU+6eRxgKY/ejmP+FHfNs8ftUQs58fqyqKDNJvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSwfhsa2x78UCHh5Gd0i+nm3ezjKkWbtsj0oR/Y9lmhJlUM9Qf
+	TcAxz5VpnxmwBo2aDPxQTdof0Z3BFxIMf6dyvUtbH63h7jK2mw4G3OXU
+X-Gm-Gg: AeBDieuqpf6E4VouqufrmQ19ZEMzh74GNnsODNuVNcnb46PzlxqSdE9/ScVv5DowBni
+	bbVGMeSgKtDzNvqxa3GaDX73hfE8/prUghaIu0hAgb1W0l3+b5PSc0tkPMlNqMzLfWiGyY87vo5
+	xWUdVpCY4GvEzejdPEZWLz4VUOAZr9wpS3RRIjsGoX5oLLhN2CSVcWeYbOVepGwGhKf5k27KNm0
+	97/5Pq/nq/qVihmvTv+i7x3xlYRdVkNolO/vTwnj4SxUZ1DKSa0WSiKJDkK3Xlbfpw7ULqFJock
+	8++9Is9t+dvQYvXbeRSPxjLW8uti08o2JFhAhcCAFHd8kXLnXb0XwtuwaXoRnwOG9vy/gq/LbmM
+	oFaVAZXF9I1WIMNVoZgwJr5LQNvQwCLJsS1c7IE22DvkEHrZmqsFxgOw4G0CJ8WWEu70zr+WVc8
+	/skShj3UTuEIz4/YZ5zJN6JzCLzm1Iilx6Y0u26Gllcdhe/+SpJQ+GJIxAUPN4s9UpMjFp3v0vk
+	QcIWW06e0wkmk39DJRCbo8=
+X-Received: by 2002:a05:6000:2886:b0:43b:7ff5:fdf7 with SMTP id ffacd0b85a97d-43d642c8664mr792554f8f.29.1775769549372;
+        Thu, 09 Apr 2026 14:19:09 -0700 (PDT)
+Received: from [127.0.1.1] (93-140-227-38.adsl.net.t-com.hr. [93.140.227.38])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm1797536f8f.5.2026.04.09.14.19.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 14:19:08 -0700 (PDT)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
+Subject: [PATCH 0/4] samsung,coreprimevelte dt fixes
+Date: Thu, 09 Apr 2026 23:17:23 +0200
+Message-Id: <20260409-cprime-dt-fixes-v6-20-v1-0-8df6f88942c8@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-oneplus: Update compatible
- to include model
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vincent Huang <vincent.huang@tw.synaptics.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
-References: <20260408-synaptics-rmi4-dt-v1-0-2d32bacce673@ixit.cz>
- <20260408-synaptics-rmi4-dt-v1-2-2d32bacce673@ixit.cz>
- <80067706-1857-46a0-a281-7f4ff3937468@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <80067706-1857-46a0-a281-7f4ff3937468@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3LTQqAIBBA4avErBtQ0cKuEi1Ex5pFP2hEIN49a
+ fnxeAUyJaYMU1cg0cOZz6NB9h34zR0rIYdmUEIZqaRGfyXeCcONkV/K+AyoBHpprB69MzFYaO+
+ V6M9tnZdaPyhEy0BnAAAA
+X-Change-ID: 20251214-cprime-dt-fixes-v6-20-c15947ca5fd9
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Karel Balej <balejk@matfyz.cz>, 
+ David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=843; i=duje@dujemihanovic.xyz;
+ s=20260328; h=from:subject:message-id;
+ bh=TK7U0/XbzM8sVQEkZGsmbGPzqT8CPmOc8EOImm890/o=;
+ b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGDJviJ/WYdkUH5InLrk8SERafMJdsX2/bQz2brQPZLvD/
+ Jjpolh8RykLgxgXg6yYIgvzUrlLfKnhEx2KbJNg5rAygQxh4OIUgImsrGL4p8ZyQuH3tztFn3d6
+ 7Ii2z/ndELVkeay3x0b5A/LSDz5GOzAyrLiuOu1Vh4fkDX+mypO6zH9v7A6fpB/jelq7rJxpl9s
+ RNgA=
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=9BD463017690089DAA8DC266275F544B3B1B4792
 
-On 09/04/2026 14:41, Konrad Dybcio wrote:
-> On 4/8/26 7:34 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> We know the driver is reporting s3706b, introduce the compatible so we
-> 
-> via Google search AI summary:
-> "Bon Chef S3706B is a black dinner fork (Roman Euro Dinner Fork)" - the
-> more you know!
+A small assortment of DT fixes for samsung,coreprimevelte.
 
-Oh no, that's definitely not compatible hardware! Maybe it's some fork... :P
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Duje Mihanović (4):
+      arm64: dts: marvell: samsung-coreprimevelte: Increase touchscreen voltage
+      arm64: dts: marvell: samsung,coreprimevelte: Use memory-region for framebuffer
+      arm64: dts: marvell: pxa1908: Add PSCI function IDs
+      arm64: dts: marvell: samsung-coreprimevelte: Add missing SDIO properties
+
+ .../boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts   | 11 +++++++----
+ arch/arm64/boot/dts/marvell/mmp/pxa1908.dtsi                  |  5 ++++-
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20251214-cprime-dt-fixes-v6-20-c15947ca5fd9
+
+Best regards,
+--  
+Duje Mihanović <duje@dujemihanovic.xyz>
+
