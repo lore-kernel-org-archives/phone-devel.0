@@ -1,90 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7F235DA44;
-	Thu,  9 Apr 2026 08:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA34399350
+	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 08:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775721630; cv=none; b=qBiw0trfstwPwA6doKtSdVEkaSl/Q5eHTZpPrm00Cf26zU70fJpJs/OczJ1CwW8lFEpaFp+I+0Btj92Y/wYaQNgk5zFH0oy254da419JH4R+qygk+00JEVClx5MNVK3lFeUXUQeri+5Buargkiue1kSCYXddEeGRJgTtuPhkf78=
+	t=1775722418; cv=none; b=qqMJc2XO2lB+n2X18A1L2YZTZ44rJm4KL9/1JeF0xa4GuHWAR2+/exsQ2jow2IxsorW/SdFSe1/F2gye+U0WSuF7ExV61XrIgbHDvxb4DER3TARmVo6DyhN8kqpZDKlf/HveKA6/6BNmVE7Jvp2mj7OCOOWbqoNQ/m3Rjtxg2fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775721630; c=relaxed/simple;
-	bh=vWhJwvXJLo5iz6DRP2dmGFaGe9c+eA5slOqT30o7uIQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gk7Wlm+RWonjERjTXUF32Cvih/dKDP1JI1ERXoKD3VH6/suzf9AR3pLcwtpRxMBNQ6w5urxFhRtJeWkI/7HMfrN44APfPcHALwuPd/geATbALPGiOmLff2CRt/W1D4gI6VxC9Hk58tUc4DgUlRnl0vjqe5hZP79t21FRnSBl5OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q14kSXwU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775722418; c=relaxed/simple;
+	bh=mWGhox8AXmFUrLnRncYPHqWj29USHg6AI1ZxcWStxYs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xdc5vusahelA3M3ciNeV0PGxLYDjNCRBnjXf8CZzzRpDS9t7izYTtLHbSgDTtTuRyXppocc99B+0sKyhojj9kGW/Op1R7BSn+cZy3PURDfiCYo2Q8ZFsg6dODme7XV0fFk3lauFhOFnG5Vy2Jom2d9XRl8z667hdyBGsAXrFtu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=GnWv8TQU; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q14kSXwU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8469CC4CEF7;
-	Thu,  9 Apr 2026 08:00:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775721630;
-	bh=vWhJwvXJLo5iz6DRP2dmGFaGe9c+eA5slOqT30o7uIQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Q14kSXwUk1N02mrzc5h+DXMR1JKBV8ri8A8HQu6QKwvwTpjk6yemVIQCBCnuu0wtg
-	 03ch1CrsNlA/nnrnov5P0ZADVJ8jcDNeQV3KaLGvKHWibJm8bkJclafpIimh8MF1Zt
-	 1sS6OqMXbN03e0xlnxZtShbdEGk5FGMDQTxZeO5Lw0OQ16/41rTCM/ZnrRm5sItk/t
-	 D/eveuaZ6mF6ELfiMpv6amrT/arwxCtYt9Hya3GRIBzRRHVFOIzM8BdDvLYslgLIfb
-	 VMqzGKdKiu2QiS5gYJhpaRSIuUY/geXct/P4swixqAZW2g4aYXBiqb49lbaH0jAi0J
-	 MLxubjzDddVrw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E0239307A6;
-	Thu,  9 Apr 2026 08:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="GnWv8TQU"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b9b1ffbb9f5so81683766b.2
+        for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 01:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1775722415; x=1776327215; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DlWAuV2ZEOJrkIZUEM7lgz/oKWXmhKq/PUKh/pIHm3w=;
+        b=GnWv8TQU7/gIwZyW7PIk+S5+yXyYWsP0IJ4NqmoTNLlTqXFqJqBByNsjUgaxqmawZ9
+         jXbRsD2qI+bseqpRd9tHzN6VO76B37m3gsv3vEfTWlYVVR8CugYErWIHgDx7rGTIfHDh
+         J8xJYnJm+Wig6aRirEWtkJNWmq8xVkjWkyMmEGM7Frjr3emQm6Bhdf7SJV4Q601rkZVH
+         q3/hZemxwOn24CsckDf12o++46fb4WDSiebFjfzzETtFTQUhH2nNZBVVPjeRJUfzqNco
+         XkMxNfGGd13W/7qYc11gSOXZBsVa/0pMF7jF64VJM+kk2IogqCD9gpiXXlgCBArpWe2N
+         p+Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775722415; x=1776327215;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DlWAuV2ZEOJrkIZUEM7lgz/oKWXmhKq/PUKh/pIHm3w=;
+        b=piLD5ynpGmQq+x+CAo53QQDej5hwCR9xAwrye/Wy6iGm/ddYjwEYR3UsNYr9bk3xiN
+         cSaSIhXmtAJen7/RJTI5B+FgfRj5mrJ39NCc7ZN4wddvBBAd8fUtxKzjyqjK8YyEW2n1
+         Jv7iDEdfbmvTxMfwYJ6doPcf+o/KbjGchgkjYBSv86VS9HpQFhqkHiyR6KUs56FsqLRa
+         BeupzhCWblK+HNU9XUITpVzlc9YweVEIf9KfEQ179xQXtf3qWNZIJjlstbMGUmQaAjAs
+         C4brZvkt6SOUWJxX2QGnmHBsyS+YhYSxR6L6Vj3STP0TEC/nxa2Y//gfRJyUttLqUQr1
+         4DUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHmEMAFpuSbKuorIjFIRaFW3w0PJbIm8XXP/ux5MMaFDYEC6y0koSKsQuSpbCM8EgTPYnSFyQHJB8foA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHWT1kWyOBFK48BC/kZBb77g075Pgxi3nNJXtE/A+mhE3nm292
+	q+uulMLuRuzsaVoOMmkTjPij/SxxxSyG9VdGTTmgTiptaJJRrDcmbOD1Km3FKZu1PWY=
+X-Gm-Gg: AeBDievBCZ/olhJPUlkpla8U1ATvM4SQQ85X8tcVVySQkvRed/Z531hlOwen7QoqcUi
+	TBS2j8CkaorDHiCYk0lIhxCmx6dEc/5SMYwpOWoj/Ae395edUzVgJ5vPCbPVFgYFBy7VHKO+odx
+	DWktwtwcRr+2EiBC5wevtmn4I9JT582/mtQSWPGECJopCm2MseEOKU6NnsguR2K3h8+mbCP2IGP
+	QUKTr9NII4LzGdNckiuhQdG0XFCsQCTNJBoFbREA+YHOCedT6/ycjzKz/w+8+W8DveFTJdLYxNc
+	W+ds+y+Fst6T7H5GKnjgNK8QUTyebVQAqhBlkEjcByHQED8GjPJ80K04gAz/4/2R5Asz/ArqADI
+	pFlwICgDOYLhhRjkpsMuuKnjWb7i5+5f8moBtoPy3IQYGltQDtFLBUXiNdqFmjBHegq8ijMtk7C
+	NzOvfdYaTbVW9aik+g/apE/kqkulSsBmN4tgL3bPuersKkr26JynVzioWyav9OZtxk5ZVP98+o2
+	MHVEw==
+X-Received: by 2002:a17:907:d87:b0:b9c:9594:e10 with SMTP id a640c23a62f3a-b9c9594137dmr967380166b.14.1775722414580;
+        Thu, 09 Apr 2026 01:13:34 -0700 (PDT)
+Received: from [172.16.220.101] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cec6f20sm709846066b.38.2026.04.09.01.13.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 01:13:34 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH net 0/2] More fixes for the IPA driver
+Date: Thu, 09 Apr 2026 10:13:30 +0200
+Message-Id: <20260409-ipa-fixes-v1-0-a817c30678ac@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/6] IPA v5.2 support for Milos and Fairphone (Gen. 6)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177572160654.1053850.6904532011284602186.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Apr 2026 08:00:06 +0000
-References: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
-In-Reply-To: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, andersson@kernel.org,
- konradybcio@kernel.org, akoskovich@pm.me,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NzQrDIBCEXyXsucJqoiZ5lZKD0bW1kJ+qKYWQd
+ 69tcxmYmY+ZHRLFQAn6aodIr5DCMhfDLxXYu5lvxIIrHgQKhQ12LKyG+fCmxIzU0nrRcnQeCr9
+ G+hUFv8JMGYZ/mLbxQTZ/V04s0nMrT/lkR5OI2WWaQu4rqRB1p4XFkZNua2s0b5zy3BclpUjW3
+ AnuYTiODzyDOqG+AAAA
+X-Change-ID: 20260409-ipa-fixes-a575cf2810df
+To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775722413; l=527;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=mWGhox8AXmFUrLnRncYPHqWj29USHg6AI1ZxcWStxYs=;
+ b=J2MpnoPY2PqhNg69JarwyHsbeXDvK8bDP7eNCK1kWpKXkeM6qykXpwNkNLR8+vhXqkqhe+oGT
+ Y9C2inv8v6JBb/SwphLOhGMoRJF09Rhozdbaa+530VucN3kK+yyRqQP
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Hello:
+Two more fixes for the Qualcomm IPA driver.
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (2):
+      net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
+      net: ipa: Fix decoding EV_PER_EE for IPA v5.0+
 
-On Fri, 03 Apr 2026 18:43:46 +0200 you wrote:
-> First, two fixes that unbreak IPA v5.0+, which can be applied
-> independently.
-> 
-> Then add support for IPA v5.2 which can be found in the Milos SoC. And
-> finally enable it on Fairphone (Gen. 6) so that mobile data (4G/5G/..)
-> starts working.
-> 
-> [...]
+ drivers/net/ipa/gsi.c      | 1 +
+ drivers/net/ipa/ipa_main.c | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+---
+base-commit: 56007972c0b1e783ca714d6f1f4d6e66e531d21f
+change-id: 20260409-ipa-fixes-a575cf2810df
 
-Here is the summary with links:
-  - [1/6] net: ipa: fix GENERIC_CMD register field masks for IPA v5.0+
-    https://git.kernel.org/netdev/net/c/9709b56d908a
-  - [2/6] net: ipa: fix event ring index not programmed for IPA v5.0+
-    https://git.kernel.org/netdev/net/c/56007972c0b1
-  - [3/6] dt-bindings: net: qcom,ipa: add Milos compatible
-    (no matching commit)
-  - [4/6] net: ipa: add IPA v5.2 configuration data
-    (no matching commit)
-  - [5/6] arm64: dts: qcom: milos: Add IPA node
-    (no matching commit)
-  - [6/6] arm64: dts: qcom: milos-fairphone-fp6: Enable IPA
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Best regards,
+--  
+Luca Weiss <luca.weiss@fairphone.com>
 
