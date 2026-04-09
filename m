@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138335B632;
-	Thu,  9 Apr 2026 08:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E433A6409;
+	Thu,  9 Apr 2026 08:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775724232; cv=none; b=pY7uAdCe9s3oxZuj+XEiJrlhrRYiQxMykkePOnjCQkcukE+OSCYF9fWiJVxRfsGAyaRIB4725+Tfnq/475JtOuISw/m9dv4z/39qe/f4gP5pia6nbdu1968xanA5O1fK7oO+sz6l76Ja+uYCEVTpL2BGW/LN2/jq9kvb07SRjOc=
+	t=1775724252; cv=none; b=mHrVZ20NyMmx8XPPcX8KN7NxLc4tgPZa+vOOJ/FNcBD+4FUly4IpefIFJtOTv2Lbl8bNp29Pm3EBSu6zILX8UuNhMJu65fqAZ7TsU3M2BFjKfkxj5lYGFQHcN9EJVdhsFIgdTFSuJQ086lCZ2AWJhWco22nf8i0lVLpnCTrsJI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775724232; c=relaxed/simple;
-	bh=aJBSg1zvjFMC2a3sE33F+JH8YevMaB9qVoB0e731xaM=;
+	s=arc-20240116; t=1775724252; c=relaxed/simple;
+	bh=1QhwVNI4u4wWXQ3csSQW9hn6h9H6ic0G/nG4ZDIWcss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hFQS6OkHnlI6WZnbF7bj4U4LH+9pMw2pnwzcXNhyScbl5CPwhJAX0dp/mcuRU3JkwGw+aThE3TpOZk3NemdzQWvar5nB7mdADdT9W80tUE0LzZudHQrCjtedu3D6VT9XeJ2zltVXvyzSyPprVlXkV9hNz3gn/AUBpvSLqEwr4mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Th/pqkn4; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=LZcdLtaLgVCFbMRNi8dVIfEOFlkSwN8lo/o+ZQbZfpbpoYiar4dHIcX0ZaoxUwryDWRS47ptJgu31q3xSZ8uBsLGDmTtEEwOj3qswkQOCBvhJkciE+Auq/Nge0RFe53Wwlp9SfiU6fca0Iixh/vMuwtESG0Zm8tUi+FAp6HSU2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Ayj8eYCn; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Th/pqkn4"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Ayj8eYCn"
 Received: from [10.200.133.170] (unknown [213.235.133.111])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 1B13A5340786;
-	Thu, 09 Apr 2026 10:43:39 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 013815340786;
+	Thu, 09 Apr 2026 10:44:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1775724220;
+	t=1775724248;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UX/6xgjwbr0uOJrvJc+5I1305F8id+04CSbJjQL+W9U=;
-	b=Th/pqkn4Y2DstUVbVlG7D/MVeMEDaVEgzmniRwrXWoh38q2QHxijOUxMrHG5GexMlBxyjp
-	Fff1j2JZSFb4SJLxZF9mj97wap4Lb3zIb6OamVSHZSPioxNdoRevZe3+4k37ksC5ib1Ecd
-	PIc5KKw6qyjhzMwgV1GtZMMSRi8rgPk=
-Message-ID: <1c0e21a1-4dbe-43dd-a9a0-c44d27508329@ixit.cz>
-Date: Thu, 9 Apr 2026 10:43:36 +0200
+	bh=xjUUmilJM91ZfXo8/LV9D4FL98Ulmye8emIYMXkJT2M=;
+	b=Ayj8eYCnCydKpHPmxwaWGhVdGNeHXrbzfbYJ/s9GWlyuokfGEaDPN5m7QSnzvvw8VYiTpt
+	3hb+om+jic5lHXMrl/Le8SCZ8p/MwlInENVYli4QvxLH9wiM2jNDCENp3JMNDwOM5fTL14
+	UrKeSteN/JxpnR7Ma1d7vZ5pv1rnB9Y=
+Message-ID: <ce627ae9-1cc9-479b-90c3-f461dfc7bc47@ixit.cz>
+Date: Thu, 9 Apr 2026 10:44:07 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: sdm845-lg-{judyln, judyp}:
- Reference memory region in fb
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: sdm845-lg: Enable
+ qcom,snoc-host-cap-skip-quirk
 To: Paul Sajna <sajattack@postmarketos.org>,
  Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -51,10 +51,9 @@ To: Paul Sajna <sajattack@postmarketos.org>,
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+ ~postmarketos/upstreaming@lists.sr.ht
 References: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
- <20260408-judyln-followup-v1-3-823467519b59@postmarketos.org>
+ <20260408-judyln-followup-v1-4-823467519b59@postmarketos.org>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -100,19 +99,31 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260408-judyln-followup-v1-3-823467519b59@postmarketos.org>
+In-Reply-To: <20260408-judyln-followup-v1-4-823467519b59@postmarketos.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
 On 09/04/2026 04:41, Paul Sajna wrote:
-> To prevent duplicating the framebuffer address and size point out the
-> existing framebuffer memory region instead of specifying the address
-> manually.
+> The WCN3990 firmware for judyln does not respond to the request for
+> host capabilities. Add the devicetree quirk to skip this request.
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 > Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 > ---
+>   arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+> index 86cf4eb44084..e0c3566761bf 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+> @@ -694,5 +694,7 @@ &wifi {
+>   	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+>   	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
+>   
+> +	qcom,snoc-host-cap-skip-quirk;
+> +
+>   	status = "okay";
+>   };
+> 
 
 Reviewed-by: David Heidelberg <david@ixit.cz>
