@@ -1,128 +1,118 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7493A16A0
-	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 08:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138335B632;
+	Thu,  9 Apr 2026 08:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775723197; cv=none; b=CvmsDkgZ89cqIoRJLpM5MW66KUyBcttt6hiLdbWqwI5Ze8O2ux06oJHa1yPdZartj0dm8urRbLlUMp6ZngauLqEDyEGm6bTIFKnHYLVd6+kLaUyclbnvIAs6om42rCkds+mzEJ0xLDAG5R/3PxeN5jatnlOiXokgamYKtS6eK0c=
+	t=1775724232; cv=none; b=pY7uAdCe9s3oxZuj+XEiJrlhrRYiQxMykkePOnjCQkcukE+OSCYF9fWiJVxRfsGAyaRIB4725+Tfnq/475JtOuISw/m9dv4z/39qe/f4gP5pia6nbdu1968xanA5O1fK7oO+sz6l76Ja+uYCEVTpL2BGW/LN2/jq9kvb07SRjOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775723197; c=relaxed/simple;
-	bh=EuhRbZ6NpCilnQOmXdYdPa2U1G2yQC2oX9aabqLBekk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Rc3gIIDaTbxUs9cw/iF3S7yqAu/FFmsmKJXtH8VPt0VNzgY2kaR5V5BEJPiv9HiiGNXTjvxaBgxa9TKVdAMH/1hL9frSZM36IjMvUQzBhgzUociJqnbSY3kkNSts2ATNiH5uulpyYc83f4qVkjTaej0LyZ/TnMB+BuwVd38Qx5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=F8YKfrx0; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1775724232; c=relaxed/simple;
+	bh=aJBSg1zvjFMC2a3sE33F+JH8YevMaB9qVoB0e731xaM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hFQS6OkHnlI6WZnbF7bj4U4LH+9pMw2pnwzcXNhyScbl5CPwhJAX0dp/mcuRU3JkwGw+aThE3TpOZk3NemdzQWvar5nB7mdADdT9W80tUE0LzZudHQrCjtedu3D6VT9XeJ2zltVXvyzSyPprVlXkV9hNz3gn/AUBpvSLqEwr4mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Th/pqkn4; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="F8YKfrx0"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b9358bc9c50so82122566b.1
-        for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 01:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1775723194; x=1776327994; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AZivT/Wgfja7s2ciPCKX2XjEYiV4fDrABVz+SXmA49Y=;
-        b=F8YKfrx09xf3HEsEiLZPCjzfK56Ui0QSCWfc9Flpn/p/jP6pYv05lq8A8hbWqaNgZB
-         4ifa1kEXSx5cDhQkHOquIMTKYAlSzms8Qzz9q1TMumEv/J8mtlPgiFX3Ki1uBvF+q4UC
-         6zpBvniAWWbTuwdDolDdXHEIc9S/HwDzUJFYypzV/4DMXjnPouO+dMciqqCdvsjp0Sjd
-         V8gigTd/kAe4Gl1JgmLq7Dz7bGP7lYKV8W+b2oAYzrkw3WvPCDdrro+yzHEuWCMVM6Uk
-         RhBKaXKYs2tF5oC2D0DB3ukawNrgWeDEOmAyuICU+wW7EmDaebvIGK2bQy+KUdl4J7uB
-         3pbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775723194; x=1776327994;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZivT/Wgfja7s2ciPCKX2XjEYiV4fDrABVz+SXmA49Y=;
-        b=GaGLHx0H/x8We7QXqS1PLuFQTuuFaCTJZEkZqCO4hqMJ7T+e2QetpFY7SZNSDLizLH
-         3iuQbPihn31ur+fv41ZulqbuNCu5RkLMM/uJiPUbAnpKQja/w5D6ovpdG7pR+5M2ckYo
-         RT8nedI8VlYH2ntsqBw/sKom/wIFzXKpuf3tq8TfAo+ID+4M/0xKQyM/odAKXfgj8WyC
-         kvIhvWJ999x2P1hMVOAJzFttPz97vQDUjuG52OXxojQnkjadJVBATzDrmQxyeM0VNeBB
-         RDGsyyfZYqmSMGKt/+pMe90QLZZQMH0va5fWDOj7VltyN34453aFEYj8P4NvTR4srCAW
-         Wz/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWcXDNE9DoZKRKaCZERNkj5SovqZ0kWKR9s85BeSJ+0XSFRm9tP/Umff8pCS6nJt9C6k/64eAwvRLfwgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzbjI3uWQYE4Q3ldK9jc4wb2nRR6OEuH2clMLdfrcKbPd5L8Q1
-	N1BC19YsZYYPxkVO1idPwKSIBXSTEXAY1dX5AiDJI7rNwXa+7OnB9Z0sqI5BqT78W3c=
-X-Gm-Gg: AeBDieun8nF1CC2VH+7KYp7Be6jxLRLz7gA/Tkb5YVgh+y/Lqp5c4wY0DDD25y/SC1k
-	ZJDkQls09mlbJVh4plWFh3rKXtsUSJOZ2gnPuud463VN0cV55do60Xg4+qDwi7w2vGTxv2v4RjY
-	OJKnQxK+k5Zurk8gsHev6+nwgpWvDAWmllWEugBIwiWyfQG5Z23VLLRnHSYNVPhDLMGrALf6WE5
-	LuBVUxLHO5DG2xmlr2DMjAQxS9k+P3j1q3SvILcnZBAsiztvEQ4Z6J8ijwl22tmLsWUe3DnKJ9w
-	C5PT1j80FeNCJbSmR/7tWtxoPnzDayiHdHwGWYMMPkZr/pmgwcL0t46wrKOJIXNhJoL+xD1g6IC
-	lJgmLtpvQHIm7qz5eE4aseJ7QHSAM2ZGEUawIYaoBnQ+vUPxvuK12ZBbJfnKVaHFX3DlD77CRKY
-	9s0nsMUiEDgA3O9g1V0YFp0WGXrTbDqwljzjh/MLkgOrMEubIwMqeShqq1NL4qHZvxMsO8AzFcd
-	eSSFe4=
-X-Received: by 2002:a17:907:1903:b0:b97:1d24:c004 with SMTP id a640c23a62f3a-b9c6742f6b4mr1299851566b.21.1775723194150;
-        Thu, 09 Apr 2026 01:26:34 -0700 (PDT)
-Received: from localhost (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3c972293sm715510466b.11.2026.04.09.01.26.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 01:26:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Th/pqkn4"
+Received: from [10.200.133.170] (unknown [213.235.133.111])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 1B13A5340786;
+	Thu, 09 Apr 2026 10:43:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1775724220;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UX/6xgjwbr0uOJrvJc+5I1305F8id+04CSbJjQL+W9U=;
+	b=Th/pqkn4Y2DstUVbVlG7D/MVeMEDaVEgzmniRwrXWoh38q2QHxijOUxMrHG5GexMlBxyjp
+	Fff1j2JZSFb4SJLxZF9mj97wap4Lb3zIb6OamVSHZSPioxNdoRevZe3+4k37ksC5ib1Ecd
+	PIc5KKw6qyjhzMwgV1GtZMMSRi8rgPk=
+Message-ID: <1c0e21a1-4dbe-43dd-a9a0-c44d27508329@ixit.cz>
+Date: Thu, 9 Apr 2026 10:43:36 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Apr 2026 10:26:32 +0200
-Message-Id: <DHOHC560BPB4.F35KB93S9D97@fairphone.com>
-Cc: "Alex Elder" <elder@kernel.org>, "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Bjorn
- Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Alexander Koskovich" <akoskovich@pm.me>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 6/6] arm64: dts: qcom: milos-fairphone-fp6: Enable IPA
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260403-milos-ipa-v1-0-01e9e4e03d3e@fairphone.com>
- <20260403-milos-ipa-v1-6-01e9e4e03d3e@fairphone.com>
- <ku4w5dbfk4ihxfslyf7lcxtxnbzabim5mmtm7xlhqbnmav36iv@zt3dky3vbfbo>
-In-Reply-To: <ku4w5dbfk4ihxfslyf7lcxtxnbzabim5mmtm7xlhqbnmav36iv@zt3dky3vbfbo>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] arm64: dts: qcom: sdm845-lg-{judyln, judyp}:
+ Reference memory region in fb
+To: Paul Sajna <sajattack@postmarketos.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
+ <20260408-judyln-followup-v1-3-823467519b59@postmarketos.org>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260408-judyln-followup-v1-3-823467519b59@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Dmitry,
 
-On Fri Apr 3, 2026 at 9:27 PM CEST, Dmitry Baryshkov wrote:
-> On Fri, Apr 03, 2026 at 06:43:52PM +0200, Luca Weiss wrote:
->> Configure and enable the node for IPA which enables mobile data on this
->> device.
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->>=20
->> diff --git a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts b/arch/arm=
-64/boot/dts/qcom/milos-fairphone-fp6.dts
->> index c1899db46e71..31c6d6627619 100644
->> --- a/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> +++ b/arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts
->> @@ -690,6 +690,15 @@ vreg_l7p: ldo7 {
->>  	/* AW86938FCR vibrator @ 0x5a */
->>  };
->> =20
->> +&ipa {
->> +	firmware-name =3D "qcom/milos/fairphone/fp6/ipa_fws.mbn";
->> +	memory-region =3D <&ipa_fw_mem>;
->> +
->> +	qcom,gsi-loader =3D "self";
->
-> Are these two common to all Milos devices? Should they be a part of the
-> milos.dtsi?
 
-All qcom,gsi-loader properties are in device .dts (or device-common
-.dtsi) files, never in SoC .dtsi files. Based on this, I guess it would
-mostly differ based on the boot firmware used. If Linux is booted in
-EL2, then probably it needs to be changed?
+On 09/04/2026 04:41, Paul Sajna wrote:
+> To prevent duplicating the framebuffer address and size point out the
+> existing framebuffer memory region instead of specifying the address
+> manually.
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> ---
 
-Regards
-Luca
+Reviewed-by: David Heidelberg <david@ixit.cz>
