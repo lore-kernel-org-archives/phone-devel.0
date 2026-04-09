@@ -1,120 +1,150 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40F739E6F8
-	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 08:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEDE3A16A0
+	for <phone-devel@vger.kernel.org>; Thu,  9 Apr 2026 08:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775722420; cv=none; b=WCN5A28mWhmFotGleLwSZsm0zlnu1EjOvvYjMm3JejnKdUA0bvCQcJo0OlvTCzUFZfa8lxVAPJcNy9vYKZLaubK+QKfqCWqkE0fwchF/LPVimuvBhZsgDOivvqauWZUXF5QTiJkAlqHe/VI0vIr/ZbZzmxyvXn6pQx2ILkhxY5g=
+	t=1775722642; cv=none; b=hCXJ+LOVOdzvF73yYQTKDgg7Yb69VlMDMU+oPaanFPk/XnwGktgfGHFnXd2Zwhygr0yGakCd/Zs75HQhXgoggRAdTfutbi3y7JQhQ43k60Kkm4oCxN/Gug7E8Rc0Cpsw38u6WvyzvJeQSi/RjkjpwxD87+Yulpg/2nTmEIpVXZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775722420; c=relaxed/simple;
-	bh=zVpeYCI0Fp2z5aqjv7cM/PPua39ANpiE2GE9IcuZhfs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bRrK29S+apnXuObYJnd1XB+IZnzSFq0YMPrOvpbYPeimPsc5pw3ImVbEezxaeridGcGXqBJvnnuehe6lIsS35WMoI8z3U3hqIE54ru6kYG6GEYPN/jSP7yZMA1kQlNYFjfvJd9TvSOZ52wZ0siJJbI2LKd95u0FWqvSJ4+cz8mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ai5YDOxS; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1775722642; c=relaxed/simple;
+	bh=totwhvENBNF8lsaeZIFlYkhK0o3Zzv788+2z2zVDsxI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uw3Ch8Pce0wJL4zJiNLBNHOwpdqVKqt7BjuNJQVOL6xE+s4rgu9KZ1LAESlC/rAkGlIWKQJKWgR27/CDMLv7oK9xu0CDy+TI+Z/2y6ComFlsN1vkBVVXkDPWGYhmD/iiEVmFq9EbT+ksaxwnDuZxjS5ggoE+j+M8CJxz0HadOGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q7Nr9jCU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RonBwuNu; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ai5YDOxS"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9b1ffbb9f5so81687466b.2
-        for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 01:13:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q7Nr9jCU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RonBwuNu"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6397mUeQ1073261
+	for <phone-devel@vger.kernel.org>; Thu, 9 Apr 2026 08:17:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	BxSRWVJFhTfuq67blrqNau+EN28Vfo5z6oDilIcjPXw=; b=Q7Nr9jCUxLE1/9Cv
+	8+8t5mFirrIPGARD34c7q7wvTtvoBuqgUeJJhhdHu5wlwzy14r4QUl/Rc68bLO7/
+	oLnkT9imU2Nvh/WXejsNrbqxNxbHbq/a2wZ96hW16aH9RVF1uedupq4Pu02YdL+N
+	18B1iNfogLMTijIRHVHxNcZgYKGGP1LQ9MyPapQofNhojAQtK986UBfDk2PT6XEZ
+	LdVG85U8kbp/kuvLAq5KihkTX2FDLcc0Tkb/KIbeAI7BgQLZdZsq5yzMAFrvTS9D
+	l5OwFyMZEasRgx97wjZQC4LCvzO4+bJLiFfHYI+hHjcapEwXimBUM1prHU5ku60h
+	UouXIg==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ddtb3b38j-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 08:17:20 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8954b9b5da7so2603776d6.2
+        for <phone-devel@vger.kernel.org>; Thu, 09 Apr 2026 01:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1775722417; x=1776327217; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xLl5gC/5dARZUSktr9tifAs18EiDAxNQou2h9Hd7lWo=;
-        b=ai5YDOxSESAibjjoqzj6vwacxgrGcmaoMS+m6WTTP3fBMt1V6SUwKsX/VYPRX1DSgh
-         klERBGmCt7CbrW31GnumjfHp7x289kiwrHAl2k/gBu3ZcTpGXpN48gp3kOElQ4KmuGmD
-         S2s66IQ+3qNSUD33WG4dX6VX9vfpDy3YfnM1gfxN62mprd5JL7jKLLGmYnFpyVKhNIun
-         fuC2e69sFBUxBCERLQ0btgVfSyWlPin+SC+X8IWDqd2HeRjC+B5JCwiEhDQta3WQ2zlI
-         Te2KgpXWb+AvY3Fu01ytcrHqxPiiTZiyhuaGbf3HdcfM8Q9pFxKCYXstMDI60kGj+O5Z
-         1yDg==
+        d=oss.qualcomm.com; s=google; t=1775722640; x=1776327440; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BxSRWVJFhTfuq67blrqNau+EN28Vfo5z6oDilIcjPXw=;
+        b=RonBwuNuQbAlfSaTsVsn3q++8CRlamQciXuAZ2S++vQmsusAjRIvrqsQItszdAeiny
+         vo73vMupaMGG3seng/wZKSovvvxQfa0c2BRRISrAYNpKyjkovK9DTcCJE+HkdTo4XeGk
+         2QR8nKZxIB3oyxnW9kGDYwIYN8QSGjBmZSKhpzLPxrR1HiL3ccWFIt3+TK9M3PuGozHg
+         sOBcUy2huipm6jgbUwn6YpDA8xYE+pPE7EiqGK6T1Hy4uhTyoid2aOFS0qnlaoFXgb3Q
+         Afclo2QRmyaB2UB7QbPVtKw76MQ9RuJXTB7NA1c0ui9+/9XLsxTWRVHYjf7VH9k3eEVJ
+         fCXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775722417; x=1776327217;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xLl5gC/5dARZUSktr9tifAs18EiDAxNQou2h9Hd7lWo=;
-        b=Ewy95obaNX9bevj/yEjNvGub2BX8RF/nuER614RRCVBfHxQ/E2P8OAm7dZK90e3YX+
-         d9FcHO73Cy5kWM59bvGS7eBEfgJdAzRDSrK9vfuLr0ucwartZnU98EwRzNnvmoy4C/wN
-         1KubhowxOaUJ/2WQVoGtfjNMYWzKMdNCrXdy1Cj7QpK/uTwcfJXEYnCZM6dvCd0qsWr/
-         bgrSjsMiG+ZgTLezTYUi9wfXEYs6Y1Ek0yDlXGMeXdjIILI9HtpFZyQxKUfOstLhtFDA
-         xKB9D6yWWP/kekQsAELoDg7/JtcN5rcttRTda4eIoXZg1EU+kXeMw3WgMa67mX6B10tW
-         BP7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWmuyLFiECcPag1D3zEAQK0xj3+jnrCne5WDCPDj3tEDngW4FtRJQ6jpkHciNJVHzIKgr7r/K9d9uJF9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCDMCPpDjlrFg66/tgOItMT1it81SmYmniOQhB7gac7BjD5Y1K
-	zT7NPOv2Dle3D4ec5lQcH14typRSvJC+q+nfcgGnEngPEb8h1opkIPgX4KNehC47mpM=
-X-Gm-Gg: AeBDiev85y7psbL+WaTLWrr8dyDWTsQCM1DqvPWZ8GVbv8Z8l8dxx2jv7E+0eB+9jUR
-	RfuvOmn4BrHg/6M7PR7y5lM4kCkL/5uzB7fBPIr1bTOOJRTv05Dsejq9ti2doxPsh6ZGshSRjgK
-	CTJkbtZfYoT66Er+ianEGQbacdFIem24u+LFhdcEfPyWkT04UrrbFci1ikW7m5sBBXJ5zKJJ6HW
-	6JhUT3ZQYkxkWE9f7lkMTGgNOgJQB85wYJEcuSONWRXWl2Kti7fC/sj/gZYRIUBQHfL7OndDZSh
-	XUhqGBKFJPICEkWQ4/P1vTaUOSF7hB7fUGxL4K/JSGzewh+BSlTe+5JbKOtqwIO+EbkKiDdXFC4
-	pkwd5fbdeDcbZNIVq/fDgIwqSCqXmufD6OICvw8xuNtRETatnLGJ8tAkprqgMO4IwuRMZwOGlBW
-	uBnrtfC7R9E+Zee8MCMqctC7tKEE2R8qr2A1UFJ7WSQZuiN9D7J5iYtBS+flPKlg4LAJdd4kd3/
-	xN3KKO/e5oFGB4Z
-X-Received: by 2002:a17:907:2d9f:b0:b9c:b3b5:bbf0 with SMTP id a640c23a62f3a-b9cb3b5bc8fmr892722766b.6.1775722416882;
-        Thu, 09 Apr 2026 01:13:36 -0700 (PDT)
-Received: from [172.16.220.101] (144-178-202-139.static.ef-service.nl. [144.178.202.139])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cec6f20sm709846066b.38.2026.04.09.01.13.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 01:13:36 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 09 Apr 2026 10:13:32 +0200
-Subject: [PATCH net 2/2] net: ipa: Fix decoding EV_PER_EE for IPA v5.0+
+        d=1e100.net; s=20251104; t=1775722640; x=1776327440;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BxSRWVJFhTfuq67blrqNau+EN28Vfo5z6oDilIcjPXw=;
+        b=AyduCKaYBZe+Q9cdDyKggzXS6S+wsW8kNOcljGeJi00LuthLbmdhUOAByhlI/PCcOb
+         ba0z8mKIJfsvGazeIbVf1QQpIKpGYqXkx4EmIfaaB9LR1Wf38qc0eBw34N5kuTLTmhq8
+         kBAD5UXM+UY2hBXvBUcJQdVSzJ60JcsMvY3oyEyK3HsQQeAztInI9SZnxCb5dcjCJFo4
+         t+0ZCpe6VupUm2G7+xMFddEZd8GnjBOKGXNAISsJ8NXKRyBL0ja/DeZLXwGABbJlu1rR
+         72+yG1m1fTVDf/kOPc2QrzzAakGIpci25C77BWcCY0RBoNwnyJf97i8aMcsvw+tDgonL
+         NExA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOVSETGm3kPpOpD3fL5IClHVNLHxynCzqdZOSORy5Ll+SROwGPiNoXXcG2OFy5nP2eO/yrX1jPKUVMag==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+93w+CnHNFoTW+loy5GMb9D1+JLlZDc8WaCzN1zPLZcE6RVtR
+	ZL5gNRNVa7pCqQ9SjAFE5eE6mOEjNzbSNplSf3u7ucX85cBFnX1zku+h2RfUVbRH0O1dKT42jT2
+	M5UD+K75omCQ5CK4tkIF6+H5lfXY1N7YF8f9gdn95x97HZ4ISXyTUg6CLZUICoSLmxg==
+X-Gm-Gg: AeBDietbfMze2wkMvwzng8L6h1e0GGwD2XwaQj5fEFxJDcQ/puRe2HjLyUfRXg50Dnk
+	pTpyD5FN4W0I/AhgUbIwgOY074GSeb6a2gWo41dBeJh10ka9ds3059bB2SYZlPS+UbujBvup5gv
+	bK+ibB/RFdBpZY38gSeUpKcoMCKO2RIGkCjaTDYjDWZX3YqfYoL/dNxJSZtDSv4emQYeQGrDirR
+	ObOHHrAbOzajufYqLIU4Ld0UevIUi/I81nR6z2yksN8H85GOTh8xs0P4UUGJvFgLVxQ7kePvssC
+	IO+7KuDRYHSYp8008WVJYpARVJZa3gVhQisew9fxMdLvD+jXY1kIxgXMvwfNDHOPbcyjxZ2DfZb
+	YkBtCg3EP58d4/P7pCmFhqTnT3ejApMMlPWaHmI4dvmkvfcGKZg8eEtuVsfLpqlEVtWV31HFSSq
+	rMbto=
+X-Received: by 2002:ad4:4eaa:0:b0:89a:732e:f805 with SMTP id 6a1803df08f44-8ac640bdf61mr79343586d6.7.1775722640099;
+        Thu, 09 Apr 2026 01:17:20 -0700 (PDT)
+X-Received: by 2002:ad4:4eaa:0:b0:89a:732e:f805 with SMTP id 6a1803df08f44-8ac640bdf61mr79343426d6.7.1775722639737;
+        Thu, 09 Apr 2026 01:17:19 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3c99fc09sm721173566b.17.2026.04.09.01.17.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Apr 2026 01:17:18 -0700 (PDT)
+Message-ID: <4c5a5f3d-c1c9-4b49-a045-3c2994adefc5@oss.qualcomm.com>
+Date: Thu, 9 Apr 2026 10:17:15 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-ipa-fixes-v1-2-a817c30678ac@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
+To: Luca Weiss <luca.weiss@fairphone.com>, Alex Elder <elder@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20260409-ipa-fixes-v1-0-a817c30678ac@fairphone.com>
-In-Reply-To: <20260409-ipa-fixes-v1-0-a817c30678ac@fairphone.com>
-To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775722413; l=1045;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=zVpeYCI0Fp2z5aqjv7cM/PPua39ANpiE2GE9IcuZhfs=;
- b=CHEi445KZvoC0I15KF5hTJRWv53wWRXSGHOTpa7orG3qMHl0QrFrlARJUij2VbYkde8+d0wyF
- KqVSQMVHMVbCXXj8FH5xKxVlPcmaajmNdmK1qmTVgdje8Gkloqxakwv
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+ <20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDA3MiBTYWx0ZWRfX1yZUubjSYL+s
+ 4SskekpySZWkVXtqO5kxIA7tCUBrF+RV4EGpSqpjCSdLwFiG2F5LUnKqO+BN3V0zoyn+nV8ajt6
+ Cy5iyTkWed4syzLr3nNaYwxMe9Cq0xNjd+z+Y8/sr4CKSV80k566/wXYZob/skPjzZX19i5OpTR
+ oVMcg49pkDFU1iRD6DDVKsXg0V+yVb6WAAhh13hNxXrefuOA+gSqrn2DQvtbqqQmxjqOXx1qxqI
+ BR9sNmBW1ntR3/AwMmVZEiXsAFEWKHk1rIO56BvDmTQJu9FM/NGVfVkQZpQhpbdMJxghLLZ8OQy
+ oOt7/bqlR/aFXRX/lQlq+G5a2LofVUTLXCbkMpK1QS1ZmJ+QZ1Q/fGpGTdDxIx6wSo+VxQWAIB6
+ myl058NSe7vCKcN7mg7cgK9ttSewY2qGGBuU8i4bVo8ozcfw4bikBXddj2q6muCk8ubD/bX2Lz9
+ eviqZY/dpeB0MAmjyEg==
+X-Authority-Analysis: v=2.4 cv=eKIjSnp1 c=1 sm=1 tr=0 ts=69d76090 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=c92rfblmAAAA:8 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=3mzYr_IWz7iMthFhtCsA:9
+ a=QEXdDO2ut3YA:10 a=pJ04lnu7RYOZP9TFuWaZ:22 a=GvGzcOZaWPEFPQC_NcjD:22
+ a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-GUID: tba_OIQHb69ic1p4Ff817GHuMAcrkfzt
+X-Proofpoint-ORIG-GUID: tba_OIQHb69ic1p4Ff817GHuMAcrkfzt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_02,2026-04-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 spamscore=0 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
+ definitions=main-2604090072
 
-Initially 'reg' and 'val' are assigned from HW_PARAM_2.
+On 4/9/26 10:13 AM, Luca Weiss wrote:
+> The 'val' variable gets overwritten multiple times, discarding previous
+> values. Looking at the git log shows these should be combined with |=
+> instead.
+> 
+> Fixes: 9265a4f0f0b4 ("net: ipa: define even more IPA register fields")
+> Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=4
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-But since IPA v5.0+ takes EV_PER_EE from HW_PARAM_4 (instead of
-NUM_EV_PER_EE from HW_PARAM_2), we not only need to re-assign 'reg' but
-also read the register value of that register into 'val' so that
-reg_decode() works on the correct value.
+Ha, nice!
 
-Fixes: f651334e1ef5 ("net: ipa: add HW_PARAM_4 GSI register")
-Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=2
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/net/ipa/gsi.c | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
-index 4c3227e77898..624649484d62 100644
---- a/drivers/net/ipa/gsi.c
-+++ b/drivers/net/ipa/gsi.c
-@@ -2044,6 +2044,7 @@ static int gsi_ring_setup(struct gsi *gsi)
- 		count = reg_decode(reg, NUM_EV_PER_EE, val);
- 	} else {
- 		reg = gsi_reg(gsi, HW_PARAM_4);
-+		val = ioread32(gsi->virt + reg_offset(reg));
- 		count = reg_decode(reg, EV_PER_EE, val);
- 	}
- 	if (!count) {
-
--- 
-2.53.0
-
+Konrad
