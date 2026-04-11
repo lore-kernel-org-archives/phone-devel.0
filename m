@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F90334C05;
-	Sat, 11 Apr 2026 10:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EE62D9ECA;
+	Sat, 11 Apr 2026 10:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775902186; cv=none; b=LkkrYGEAMzHobI0B7pQlaRgK6vL9nQf1ZGmEtECOeyT8VNCnpBG2HsHdJIQk4a5jXvdhrpUwlcGzQzE+QQpFyEI7pjoOp1ZSYuxCPOCzRGsIot5rGfVqBRCPYZnHpF8vc0msqCmtHwuOifRS1rSZiFX46wwbz4TIKy/1bKWSyjk=
+	t=1775902324; cv=none; b=sak79iQZJQnj6PkZ+ITw8qlEb+fPFjZKMJojObHPNYezfxiT1GpFeRq6LJHbqvfad/ISZP+ZW9ZGxLwJ1Yhna9VNfpBz8rlkCpyfF3J8PniBptYhhqo4ufqEs+tU9Xrhdxd2/p4KX9cP94V64td4d/hsVkedxlhbVDuWyVxPwIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775902186; c=relaxed/simple;
+	s=arc-20240116; t=1775902324; c=relaxed/simple;
 	bh=NdMtaSdTLfpsTfZlgnZf+vYaAvPEIw9oE+oKHLTdsIs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aYgTuvdFPnvRYolgg20At8BHTebd/ugPsWuw+I01ww4efuS48KiuGaRlr9EZDaCy4+hRiE/GwEDVE3pMfY+XSlxExKHMuYWD4SVFb8aItPQEuwa52lT4NRGcKQM2fYgBc8NVEqiHzdESexQ1LpmKnHbDm71fdOG0Ah//pRvZhhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bu3x0UOt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=TbhF+ClBMFXhQ7Lw283jhvT6acj3Io5sw0rpfMLSh+r9hD9RPCCcYjA5P0m7LPMohZ7Lpr3XJJBJqewZe18mUF2fpYCxJfCoEnOBJz8O4UO6UIEFNwdmFV9mHgNyo33baEroR78T5OrAn6KPPEi/kMfKHSp9p0/FXaUqXSMbr4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQB7iK4T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bu3x0UOt"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1019FC116C6;
-	Sat, 11 Apr 2026 10:09:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQB7iK4T"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D53FDC116C6;
+	Sat, 11 Apr 2026 10:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775902186;
+	s=k20201202; t=1775902323;
 	bh=NdMtaSdTLfpsTfZlgnZf+vYaAvPEIw9oE+oKHLTdsIs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Bu3x0UOtfmnNIMeGXPEJjI0RqrJdKOIdjYAHb31u9xUvx0+Cir2Wrh7zafxNyP3b6
-	 ilZ6kkAzOg41QoXn2w7LQdTPtqp3HX+uLlMELAsr0Hmrt+mBlUyUNwKVz9ipR5Mm66
-	 cHqYSbGIaPQuFYl1qo0AWXMLVWTP4vnY8XlY8D78WmRIQ/7BsOx1zdAS1RMJiBy0Yj
-	 AclgA+VcWZrD8zViBuHGAUYh/uryZ8QQtIxQlw6XDzHSCktOK34IeBD9NRU5hWZ4nB
-	 jUarnO9H8EsA1Ci5NgzAMzHifkFCHfyozjUfevukBFI5d5JFeOajdL5Mz5cuAsRcGi
-	 4o25GRAJhMmyw==
+	b=gQB7iK4TRh2xk708N3M7DF499W1ehhvARYGG+c/xyC5LkMpuf41B9LVrHvjKaBRvX
+	 apCCAUrd3YjdGdqBNmgy1RUfiBtXI4PLZshma7sywoBQVtkyJF7T9paCty03/7jnNB
+	 mdxGn7lJVediJlLty3+ubGeI0cEhHUX6xoID/jIEmRszTcAorvA9H0TuKCP6nop3dq
+	 ncItjbfA6zexSSc1l4EnVeU3HkN2GkSF1N7/lI827paPSyw7iRvV120eGX3xMqX28L
+	 6V09tjSLbBNNT3z1pQ5mNhNaU56kgG8CFXpGUE/wEBNAdKHePM4tpOPJ47YVLYlTZT
+	 rnvc5NdUfkW0g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 007BAF45A19;
-	Sat, 11 Apr 2026 10:09:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C444EF44879;
+	Sat, 11 Apr 2026 10:12:03 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 11 Apr 2026 12:09:41 +0200
-Subject: [PATCH 1/2] arm64: dts: qcom: sdm845-google: Add dual front IMX355
- cameras
+Date: Sat, 11 Apr 2026 12:12:02 +0200
+Subject: [PATCH v2 1/2] arm64: dts: qcom: sdm845-google: Add dual front
+ IMX355 cameras
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260411-pixel3-camera-v1-1-2757606515b6@ixit.cz>
-References: <20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz>
-In-Reply-To: <20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz>
+Message-Id: <20260411-pixel3-camera-v2-1-41b889abb14c@ixit.cz>
+References: <20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz>
+In-Reply-To: <20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -56,18 +56,18 @@ X-Mailer: b4 0.14.3
 X-Developer-Signature: v=1; a=openpgp-sha256; l=6705; i=david@ixit.cz;
  h=from:subject:message-id;
  bh=re7F5Z+Enf8P/iTLhHv2AWhHynUi8vNdPeOLUyk9VAw=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp2h3oQT6SwCp/AL33cmrmsFpUuPl4hEHD3XhL5
- dDxO4GMEzWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadod6AAKCRBgAj/E00kg
- cgQTEACy0m8jRqeklR/v+N19MUp4dntCyDkcm81Qr1V6f6NiXfbO/Ojgjv/bYPlY2aGgmem3vcF
- BX+aMyJCuBvO3b/RNt0VIPmAGQsgxIirBxwUC6Vv/C+SqmyzyVr3RCVHNshF68BlTMftq8S1HPK
- jeadH6JszJGPJLuub6UHRqL9beIsH7TeThd6EQL2GClIjyBX6wzqU59Llj3473MvtLtGl8Q7aIR
- aVqknDoNQKt89w2Mx35F4UUYNXBv6sIHRgopqDtUOEzKu985v/raVla/HRIAEr3RSdTOn3DIHiJ
- 4rC88h5CYZaG80IjyhRNUk+Fxik5qXPKshuzUadhrgHBVsZeF6QA6b/2ePWzbntThtttouz4gFf
- mCbIPqcmplMJSlWBDjC2tpmndLgaK4CFTtrdw2H9E7I7rpuWjZog4Mn6EBeBHyb+K67qIN8jiE2
- Bur54hwUaNhnkIoJPmq9/En/tNqtSlvmELVJK3wJkM8vtEux4aV+ESt+TMy0n7b0IODur+CWxzb
- 8/FCm5r/ijlFzRCjj0PyAirlIQTwJDMUjQ3QpkRvkTXmE3ygd9lL9aRrpg9Bw4okcHeGNBQKP9s
- cw7kD1/L4cczMlbMMURgmBxFo7/BnishquzEGduBHtEJzFkKto/t21BtpCPo1yoduZ2ONpdLHFc
- Guxlp8vURDjPDAA==
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp2h5yCcA/oMox/Oex5ZjqS5ivpzake89Vwmpkl
+ RI5DRHoiYCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadoecgAKCRBgAj/E00kg
+ cjXCD/9mdg/PqvIWSw9StDyAVZZ29RCMnFafkCLSTBY0iOg+jV9IUhIzNOl1oAxKlhR2ksf2Uxr
+ EDmQDZ9dKky97pLLJrkJM2ezCrI+AyfnmwieE5dH0KnaDh/wv21KMkG0/qmJGI3zUH+Mmkxs8y+
+ y6vH/AF1nKsjlmFwRzR4BUro4b9/yr2JQXt9dkjFm/ehm6+CCMXoSr8BCgTPhZilhR0qUqJ2I/6
+ 60shdaBEIc0WPs94P5TdOZb3+/ICeL4C9lnIukQO9VJ87zoTrEjM885+WreI8FTWa3k6HyUEcRa
+ sxl8ikw2u5r6A5hGiujBjrLVp2MMJZsoueCUnNfoUXYhg1AS+XTyhYSMWAajpXqkhAIC3Q4ZvdA
+ xxjnQ4M7bN/tUgDQS3xiIgr2lGIpL8Dj3sMVWXC4bkAsmfRslnzzxSgh7sPw1vhZ2LL+3QJBgFY
+ gTIIOi535iAkzNHRg35EI5go0S6cAuR9bkO/7mlV3RGn2t8SzHKCf+7qhnp+mWCxeeRMmibuf0z
+ dIx5FKYSrf+Taeaqgw/aUkKQoaZZjPL3vNx6sG47D1wXgsmrhEEcwW9cmT7Bhr6jWQTcYaMTM/f
+ 7nmYnOyzHJJNvSAevO0j1VEEw+dItF1hLWrqd1E5JWklGDVB3klNLSBE18hQpVZHKqD7nUlVWH8
+ MTftt2OEvNZ3TdA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
