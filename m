@@ -1,101 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF641212548;
-	Sat, 11 Apr 2026 13:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B101D2D5922;
+	Sat, 11 Apr 2026 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775913194; cv=none; b=mDtKjRWZK9fc0tVNU+AF/sR4/y0t7GW8fmvTB+nw7J8S2TUbmukDyutYFZFOBFjC3pFT7rrjVx57KMdjNqoZvxG45eY0DIRmTQp19/FXSlEf9E5Q10I18qn81YnoaKucpSeLdzypUSOmaARH+OYres/48bqMPEt+MdA2hsCmNq0=
+	t=1775916074; cv=none; b=DcGZKrzdBRXA1IZXOThTDJeuKXidMYmDDgUB27azQPsORNoUcJReN6WQtjneMhBkMLZiro4e1GhLSSIlHy9rmin6nWCE2KiT24Vk8tON/WC5bEABIRFH513QhHPb6cNB0hkRLnFzrm9fqOghnbcOitVMMAMtbICMRkez77vEF1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775913194; c=relaxed/simple;
-	bh=gYvw5ZKRCl0RH8BgUOu5V3anD1d0+Iic81fLL49D928=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KaSxdJi2bbpvb5MBC6ULe9fmKNtuNanZ/3mHVt52rFymTwz2gflRO+Ldyvu0svn+r7f+8jh3zfdRBiV/jjJ5cZUsTOv/ubOsg+70qYXA0NW/A2cD1YRiGWFYCTZV1UJWHbA1JVLQWzTlOvkY4fvcBQYIhgbcUrfJkay74kEgU3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nunJRZKv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775916074; c=relaxed/simple;
+	bh=zMQAjZnqu7cingfSFT93HgX3xVl7kJGu55bIC2BPZC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DUqhKEKscmJkUJL0sQQXjHEBeVmYhHAXGCWvzvWUUCDbWkqQr43s1FIY6wl5EE1a4ogvfhqgZkpssY6qvN6jIHet+QJS6mZCBfcUb4hOnnNOReeIwcmTwERL0wLS3mumtLge2HcLwydqjh9gpoT5isH3M3BUlX8UtVGy6CAmENM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fibVdRXp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nunJRZKv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5625C2BCB3;
-	Sat, 11 Apr 2026 13:13:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fibVdRXp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD43C4CEF7;
+	Sat, 11 Apr 2026 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775913193;
-	bh=gYvw5ZKRCl0RH8BgUOu5V3anD1d0+Iic81fLL49D928=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nunJRZKv+bX5GutT7y2MU+Ql+3/2vb2vEHZFTNhhznSFU/QtmH/XsHFZymosX4azG
-	 O/fLz0c/cNm1PXrDEe5xEU0BLDLjJCFVSpT5GZ+cVebstRPN0tyB43vZ2LhRjQLyqa
-	 XBJdK/gYB7MkQRJ8N78xEIey8nrs6u/cnv82lysG5F3ZEEdLp1EWrCAlSuxPLyiq5T
-	 tOucuHkFMYaVjrL8B7vqfaChpKGqKNC4IEBdGmCOu0HAUYEimfxh/fRlJnnljJ/DHo
-	 zCcDGKDptulKUTjhWZBV4HSTRLPrE+ZL4DEB4p6OxKCn9x/hNbWDqjbcpa1MAwgf+h
-	 vwJ1JtsHL2JMg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABE32F3ED53;
-	Sat, 11 Apr 2026 13:13:13 +0000 (UTC)
-From: Vasiliy Doylov via B4 Relay <devnull+nekocwd.mainlining.org@kernel.org>
-Date: Sat, 11 Apr 2026 16:13:10 +0300
-Subject: [PATCH v5 3/3] MAINTAINERS: Add entry for Onsemi LC898217XC lens
- voice coil driver
+	s=k20201202; t=1775916074;
+	bh=zMQAjZnqu7cingfSFT93HgX3xVl7kJGu55bIC2BPZC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fibVdRXpFVBtMh8is7+fWFJ/FwQnltlwXPrjcVyD1/DX/+whtdITt+HgUl+9DBi48
+	 fne8Q+juqdi6mzg5B/DqvMzaWAcYfXhxOtBZqqn+tZPep9kSM64s2AyZ6yibdHdq1Y
+	 MzgRnlKpVIPWWm1fGjdUmyNn9Ej94ZapvduXyuElPrqIkN8I3CZ3nO8mWhHGiURbMQ
+	 bn0O9l6gf4xOF4wNajddiyQ4Er1Pz2STKoSctR44WVGrPIszV+QAT46ix2EpRlvkA3
+	 rw2EUaYEkjSdpmZTKNNClNBqPAQV6z25v+1HTW/8VTZ2scBFENkhPa81L23swDe71w
+	 OKGzWb9Z1upoA==
+Date: Sat, 11 Apr 2026 16:01:12 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Heidelberg <david@ixit.cz>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 07/11] dt-bindings: input: touchscreen: st,stmfts:
+ Introduce reset GPIO
+Message-ID: <20260411-proficient-observant-bonobo-fc98b8@quoll>
+References: <20260409-stmfts5-v4-0-64fe62027db5@ixit.cz>
+ <20260409-stmfts5-v4-7-64fe62027db5@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260411-media-i2c-lc898217xc-initial-driver-v5-3-c71ddcf40bad@mainlining.org>
-References: <20260411-media-i2c-lc898217xc-initial-driver-v5-0-c71ddcf40bad@mainlining.org>
-In-Reply-To: <20260411-media-i2c-lc898217xc-initial-driver-v5-0-c71ddcf40bad@mainlining.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, david@ixit.cz
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Vitalii Skorkin <nikroks@mainlining.org>, 
- Antonio Rische <nt8r@protonmail.com>, 
- Vasiliy Doylov <nekocwd@mainlining.org>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=790;
- i=nekocwd@mainlining.org; h=from:subject:message-id;
- bh=47zPYZVQfTlmz5yR21UDZYEArwVIUE2fjhcCknakC2A=;
- b=owGbwMvMwCVmXFbadLHr1XTG02pJDJm3PF7oOn+d/NHi/3RJ+9A9a9JL/c280jTeRNv+Ph/a5
- 3Yt8XlSRykLgxgXg6yYIkv3+8P3HszjZS1V/8QLM4eVCWQIAxenAEzkmRjDP6scCb98vyzG8vR1
- KWvLc+dx3kzbqsf9/e7S3EednySXejD8d5rBWuY5jT/2h2DlscC7d+J+M6slPRfd0xUyQ8328qH
- P/AA=
-X-Developer-Key: i=nekocwd@mainlining.org; a=openpgp;
- fpr=8BEFC3DEE09E0D057527F20D33767582D18AEA97
-X-Endpoint-Received: by B4 Relay for nekocwd@mainlining.org/default with
- auth_id=692
-X-Original-From: Vasiliy Doylov <nekocwd@mainlining.org>
-Reply-To: nekocwd@mainlining.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260409-stmfts5-v4-7-64fe62027db5@ixit.cz>
 
-From: Vasiliy Doylov <nekocwd@mainlining.org>
+On Thu, Apr 09, 2026 at 12:15:50AM +0200, David Heidelberg wrote:
+> FTS has associated reset GPIO, document it.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Add entry for Onsemi LC898217XC lens voice coil driver
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Signed-off-by: Vasiliy Doylov <nekocwd@mainlining.org>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d4b396dccfe9..a87c03ad740b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19938,6 +19938,13 @@ S:	Supported
- W:	http://www.onsemi.com
- F:	drivers/net/phy/ncn*
- 
-+ONSEMI LC898217XC LENS VOICE COIL DRIVER
-+M:	Vasiliy Doylov <nekocwd@mainlining.org>
-+L:	linux-media@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/media/i2c/onnn,lc898217xc.yaml
-+F:	drivers/media/i2c/lc898217xc.c
-+
- OP-TEE DRIVER
- M:	Jens Wiklander <jens.wiklander@linaro.org>
- L:	op-tee@lists.trustedfirmware.org (moderated for non-subscribers)
-
--- 
-2.50.1
-
+Best regards,
+Krzysztof
 
