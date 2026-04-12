@@ -1,625 +1,128 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CE03793DF
-	for <phone-devel@vger.kernel.org>; Sun, 12 Apr 2026 11:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995D5469D;
+	Sun, 12 Apr 2026 16:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775994000; cv=none; b=csjGr1wD7tdIXzBb6Jd8Yp71GiispTKzITdh8XYbYSfzvlz8A3A6V0hZG19UJY6Hk1IWrr2LjDy5lXxT8wfQfTMBFb/wi1/zVfF/BhBg7UwUhTrniWq1gYkpPNMmBjr3bA5Htr7PaAlgMj6LW/i+kWGaHpMqfJmi7EBrO9KfilE=
+	t=1776011737; cv=none; b=Cg4BelWbMFwH1k0/9wJ9eSGiRiKp3hvZrHB9sFaSvnDQnSD80KddEvzv7W/g7ApDweDsI9V1ZmO29UTCpF48CZNloRy+lJbZQAFrxSu/l7XTXXGidhrK8xoQYYSxApYSsfA0wVZMX2rySAqRVOeK9EwxzectqFzf6L0/Vip0Zik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775994000; c=relaxed/simple;
-	bh=+7YAwx+nEicA0T9X0WiQfktNQ2hqHZFTJEduc/8Ww+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqYZZXqk2FA+uSW8CS3VCDCw1HFkukn9fGSIjdTUzejJvlF5tXHUL5KafwaHUxVIl892ZzHuhTvARvGg3bs+rEbv14lXYtzeHV5/e/DzQHWsqVohqE1yDcoBT6NkBUTdz1n/5I15l8L7p2QNiB5YByk4uydzBSdFkWWYkfouOA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=lU6nKKel; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1776011737; c=relaxed/simple;
+	bh=BEm9UqjfbfI+MdhBcBdMI6LDwrMJWzpzjgmq/qWyEro=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=X5qYJnVAW/mGwxMJih7mqJbdIAzX/EhXVFTitTxytpHFJHXcHRVRYYB4MsoIPvEjzffj1Xy/5BPxFBvPnjrT0ddHdwDG+b3si2WV8MAX8jrqkJc+L0IsNI3gWB9iiJ+OzLfgAcphPW//aOsmhFP1zpKyG1aC/ZeooyvXdl6V4BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aRFm5Fay; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="lU6nKKel"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1775993996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ylsu9Y5o2SCxsYagGgX6pZIWYd0qVXmNywyb7btE/gk=;
-	b=lU6nKKelfxByzWMT8Ea0wt2Cp+0w8AmkL8V+oQ7x2LtQBC4si5GFxgOJ3FdwIziKjb47zC
-	T0QwBYnPcPuyccBtltDUgZLU9SbBb+fHguxJjHV7N27uik7gAd1PNxa1cdJt6m9XRbiIMw
-	iYM2glph7ygxy65nMBiVPfrtoggmxMiUSudSuL/aU0BepcKNyiXsbHtPaIPKgK74caXzrt
-	O1b5aJrlameRQ2ExdTMd9gdn8lRrkXDLGQJr0ykQwcke3fvQ38OAqZH0l91XYatBDWNXiz
-	ckUoB4P0RebSrYhn20fVE9tKu/hw0atcjNkVKwfBxQ2NgZGUVC3OxRFAQjrJOA==
-From: Val Packett <val@packett.cool>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Val Packett <val@packett.cool>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alicja Michalska <alicja.michalska@9elements.com>,
-	dri-devel@lists.freedesktop.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 2/2] drm/panel: Add driver for Novatek NT37701 based OLED panels
-Date: Sun, 12 Apr 2026 08:00:45 -0300
-Message-ID: <20260412113851.355944-3-val@packett.cool>
-In-Reply-To: <20260412113851.355944-1-val@packett.cool>
-References: <20260412113851.355944-1-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aRFm5Fay"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6E43CC2BCB0;
+	Sun, 12 Apr 2026 16:35:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776011737;
+	bh=BEm9UqjfbfI+MdhBcBdMI6LDwrMJWzpzjgmq/qWyEro=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=aRFm5FayZJgedSKOwFX8LU0DXVtjMhtaXYlDhmpOHyKvwyHOiywkTQhspz6yEju7z
+	 ThcMFa1oHJbAArLyt9gPzPA0lOfYuOc4lVy7WHvmqBWfvr2omzj4clqDAdEPLZPt7a
+	 o4+QmCqOANk2u7CGXzleZxKW9qoVD9cWz4aT3BM3DNlQaUsjbBglM81IDvV5X+G4yO
+	 DaXlWz4+SbqBZuTQrcInRCABJsPWSbc3nwW/SzuSbeSZp12fYFh/xwq9UGj4Avg72c
+	 31kO/jzd+LiuNS//3wPOV34lgtUddNx9RxCoplSWsObQMUuL9Jz8hNUTEj49paN2C4
+	 UW48eL0iha2Ow==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 668DFE937ED;
+	Sun, 12 Apr 2026 16:35:37 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sun, 12 Apr 2026 18:35:37 +0200
+Subject: [PATCH v3 2/2] arm64: dts: qcom: sdm845-google: Enable PMI8998
+ camera flash LED
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260412-pixel3-camera-v3-2-e26b090a6110@ixit.cz>
+References: <20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz>
+In-Reply-To: <20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1445; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=7WqIva9DadD3+mE9XaAACC/Zf/TxomU1o2iRVVPNDnE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp28nYNrbKrzoa5xsx6fbxZcVifQuIoxyLbLirx
+ pOgU0xEEhOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCadvJ2AAKCRBgAj/E00kg
+ cmOJEACyFZ69DC7UXyxsYpnMuY1nIm1/9c8/mYNEDQ1AkBJKmfFRIZgIYkv3TShdAwkL2uHwehi
+ M16tUxEqjIE36S3tVTd0G1aWsIOxo4wNPuyM9Br0mHldpVPj9eLBu5zl8DS5IRHtfGfBHP/GSFa
+ Mwe9K4XpHf4jBLtxE4LuhHLdF4Sr8OSvGp91iCbpIleVQKnm7TwjY9kmi8kQl7ZTJ0b28EpRNl6
+ sK0nHuhyozWK6OM+wv8WsM9K7gLJwzdMasdNA8+9UDGRYK07LsOQessFluVsfwTyvkLdWI0OErf
+ dQ20knknHluMRW8I07k8ksa2Ssw3BPn5idX1VChcpKKsbmWFtVkEH1QFHmrrDnY+Q3w1f1Vtvys
+ DMdw3oCOjg17Y0oXq0YHKSo+cfgC5BTdm/hX+mzvmZrMBkR5P0PketaPi60DhTjrDIzDQsP6YTt
+ hCE99NKTAcXo3bSKznBu7QOK8YJ8IFN3/ZsLKqG77zvyDB1lBzRiagwMFHfG5ZSjmv+qGq44SLl
+ iZGNvWWGKakOw0OHvtsCJlLT1zzGJEmg2W0y2uT1/Pg34vXFkWc0wGBNBwSlNhiik5QJh4nRVtJ
+ zTXcqumg9hpSIMcnOAAJMC8zbKO9tW6DzxX/+KTbOZoFXzStC1IBFbXSTcoCwx1uV199yxKgtbT
+ Y4AweDRGP7KdAKA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Add a driver for panels with the NT37701 DDIC, starting with the Tianma
-panel (unknown model) used in the Motorola Edge 30 (dubai) smartphone.
+From: David Heidelberg <david@ixit.cz>
 
-Signed-off-by: Val Packett <val@packett.cool>
+Enable the PMI8998 flash LED block and describe the white flash LED
+used for the rear camera.
+
+Configure the LED in flash mode with hardware limits matching the
+original device configuration, including maximum current and timeout.
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/Makefile                |   1 +
- drivers/gpu/drm/panel/panel-novatek-nt37701.c | 532 ++++++++++++++++++
- 2 files changed, 533 insertions(+)
- create mode 100644 drivers/gpu/drm/panel/panel-novatek-nt37701.c
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index a4291dc3905b..183f968a5333 100644
---- a/drivers/gpu/drm/panel/Makefile
-+++ b/drivers/gpu/drm/panel/Makefile
-@@ -60,6 +60,7 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36523) += panel-novatek-nt36523.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672E) += panel-novatek-nt36672e.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37700F) += panel-novatek-nt37700f.o
-+obj-m += panel-novatek-nt37701.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37801) += panel-novatek-nt37801.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT39016) += panel-novatek-nt39016.o
- obj-$(CONFIG_DRM_PANEL_MANTIX_MLAF057WE51) += panel-mantix-mlaf057we51.o
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt37701.c b/drivers/gpu/drm/panel/panel-novatek-nt37701.c
-new file mode 100644
-index 000000000000..ea8a208fecb2
---- /dev/null
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt37701.c
-@@ -0,0 +1,532 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2026, The Linux Foundation. All rights reserved.
-+ * Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
-+ *   Copyright (c) 2013, The Linux Foundation. All rights reserved.
-+ */
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+index 070023a9813ce..e9d9842cb8674 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+@@ -6,6 +6,7 @@
+ #include <dt-bindings/dma/qcom-gpi.h>
+ #include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/leds/common.h>
+ #include <dt-bindings/media/video-interfaces.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ 
+@@ -596,6 +597,19 @@ &pmi8998_charger {
+ 	status = "okay";
+ };
+ 
++&pmi8998_flash {
++	status = "okay";
 +
-+#include <linux/backlight.h>
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/of.h>
-+
-+#include <video/mipi_display.h>
-+
-+#include <drm/display/drm_dsc.h>
-+#include <drm/display/drm_dsc_helper.h>
-+#include <drm/drm_mipi_dsi.h>
-+#include <drm/drm_modes.h>
-+#include <drm/drm_panel.h>
-+#include <drm/drm_probe_helper.h>
-+
-+enum nt37701_mode_idx {
-+	MODE_144HZ,
-+	MODE_120HZ,
-+	MODE_90HZ,
-+	MODE_60HZ,
-+	MODE_48HZ,
-+};
-+
-+static const struct drm_display_mode nt37701_panel_modes[5];
-+
-+struct nt37701_panel {
-+	struct drm_panel panel;
-+	struct mipi_dsi_device *dsi;
-+	struct drm_dsc_config dsc;
-+	struct regulator *supply;
-+	struct gpio_desc *reset_gpio;
-+};
-+
-+static inline
-+struct nt37701_panel *to_nt37701_panel(struct drm_panel *panel)
-+{
-+	return container_of(panel, struct nt37701_panel, panel);
-+}
-+
-+static void nt37701_panel_reset(struct nt37701_panel *ctx)
-+{
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	usleep_range(1000, 2000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	usleep_range(10000, 11000);
-+}
-+
-+#define nt37701_panel_switch_page(ctx, page) \
-+	mipi_dsi_dcs_write_seq_multi((ctx), 0xf0, 0x55, 0xaa, 0x52, 0x08, (page))
-+
-+static int nt37701_panel_on(struct nt37701_panel *ctx,
-+                             struct drm_display_mode *mode)
-+{
-+	struct mipi_dsi_device *dsi = ctx->dsi;
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	/* Voltage */
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x06);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb5, 0x00, 0x18, 0x4f);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb2, 0x11);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0f);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb2,
-+				     0x60, 0x50, 0x66, 0x91, 0x86, 0x91);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-+				     0x00, 0x08, 0x01, 0x5f, 0x01, 0x5f, 0x02,
-+				     0xa4, 0x02, 0xa4, 0x03, 0xbb);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0c);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-+				     0x03, 0xbb, 0x05, 0x2f, 0x05, 0x2f, 0x06,
-+				     0x91, 0x06, 0x91, 0x06, 0x92);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x18);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-+				     0x06, 0x92, 0x0a, 0x2f, 0x0a, 0x2f, 0x0d,
-+				     0xb9, 0x0d, 0xb9, 0x0f, 0xff);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x58, 0x00);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x08);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc3, 0x04);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x03);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc, 0x11, 0x00, 0x09, 0x51);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x04);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc,
-+				     0x00, 0x09, 0x51, 0x00, 0x09, 0x51, 0x00,
-+				     0x0b, 0x41);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0d);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc, 0x00, 0x11, 0x51);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc6,
-+				     0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
-+				     0x66, 0x66, 0x66, 0x66, 0x66);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1c);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc0,
-+				     0x15, 0x0a, 0x38, 0x27, 0x49);
-+	/* DSC */
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x03, 0x01);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x90, 0x01);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x91,
-+				     0xab, 0x28, 0x00, 0x0c, 0xc2, 0x00, 0x03,
-+				     0x1c, 0x01, 0x7e, 0x00, 0x0f, 0x08, 0xbb,
-+				     0x04, 0x3d, 0x10, 0xf0);
-+
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_MEMORY_START,
-+				     0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x01);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x88, 0x02, 0x1c, 0x08, 0x73);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x5f, 0x00);
-+	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x0000);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
-+				     0x20);
-+	mipi_dsi_dcs_set_tear_on_multi(&dsi_ctx, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
-+	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0x0000, 0x0437);
-+	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0x0000, 0x095f);
-+	if (mode->clock == nt37701_panel_modes[MODE_144HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x04);
-+	else if (mode->clock == nt37701_panel_modes[MODE_120HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x02);
-+	else if (mode->clock == nt37701_panel_modes[MODE_90HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x07);
-+	else if (mode->clock == nt37701_panel_modes[MODE_60HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x03);
-+	else
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x08);
-+	nt37701_panel_switch_page(&dsi_ctx, 0x08);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1,
-+				     0x00, 0x03, 0x03, 0x03, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe2,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00);
-+	if (mode->clock == nt37701_panel_modes[MODE_144HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3,
-+					     0x48, 0xf3, 0x49, 0xc0, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0xfc);
-+	else if (mode->clock == nt37701_panel_modes[MODE_120HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3,
-+					     0x94, 0x36, 0x53, 0x40, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0xff);
-+	else if (mode->clock == nt37701_panel_modes[MODE_90HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3,
-+					     0x25, 0xfe, 0xe1, 0x4f, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x92);
-+	else if (mode->clock == nt37701_panel_modes[MODE_60HZ].clock)
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3,
-+					     0x46, 0xcc, 0x11, 0x40, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0xf0);
-+	else
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3,
-+					     0xc0, 0x0e, 0xf3, 0x5d, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x98);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe4,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe5,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe6,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe7,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+				     0x00, 0x00, 0x00, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x04);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc1, 0x00);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc0, 0x0e, 0xb3, 0x21);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x08);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x03);
-+	if (mode->clock == nt37701_panel_modes[MODE_48HZ].clock) {
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc1, 0x02);
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xce,
-+					     0x22, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-+	} else {
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc1, 0x03);
-+		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xce,
-+					     0x22, 0x00, 0x00, 0x22, 0x00, 0x00, 0x02,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+					     0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-+	}
-+	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-+	mipi_dsi_msleep(&dsi_ctx, 120);
-+
-+	nt37701_panel_switch_page(&dsi_ctx, 0x08);
-+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1, 0x63);
-+	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
-+static int nt37701_panel_disable(struct drm_panel *panel)
-+{
-+	struct nt37701_panel *ctx = to_nt37701_panel(panel);
-+	struct mipi_dsi_device *dsi = ctx->dsi;
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
-+	mipi_dsi_msleep(&dsi_ctx, 50);
-+
-+	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
-+	mipi_dsi_msleep(&dsi_ctx, 100);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
-+static int nt37701_panel_prepare(struct drm_panel *panel,
-+                                  struct drm_display_mode *mode)
-+{
-+	struct nt37701_panel *ctx = to_nt37701_panel(panel);
-+	struct drm_dsc_picture_parameter_set pps;
-+	struct device *dev = &ctx->dsi->dev;
-+	int ret;
-+
-+	ret = regulator_enable(ctx->supply);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to enable power supply: %d\n", ret);
-+		return ret;
-+	}
-+
-+	nt37701_panel_reset(ctx);
-+
-+	ret = nt37701_panel_on(ctx, mode);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to initialize panel: %d\n", ret);
-+		goto err;
-+	}
-+
-+	drm_dsc_pps_payload_pack(&pps, &ctx->dsc);
-+
-+	ret = mipi_dsi_picture_parameter_set(ctx->dsi, &pps);
-+	if (ret < 0) {
-+		dev_err(panel->dev, "failed to transmit PPS: %d\n", ret);
-+		goto err;
-+	}
-+
-+	ret = mipi_dsi_compression_mode(ctx->dsi, true);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to enable compression mode: %d\n", ret);
-+		goto err;
-+	}
-+
-+	msleep(28);
-+
-+	return 0;
-+
-+err:
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+
-+	return ret;
-+}
-+
-+static int nt37701_panel_unprepare(struct drm_panel *panel)
-+{
-+	struct nt37701_panel *ctx = to_nt37701_panel(panel);
-+
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	regulator_disable(ctx->supply);
-+
-+	return 0;
-+}
-+
-+static const struct drm_display_mode nt37701_panel_modes[] = {
-+	[MODE_144HZ] = {
-+		.clock = (1080 + 32 + 16 + 32) * (2400 + 12 + 4 + 4) * 144 / 1000,
-+		.hdisplay = 1080,
-+		.hsync_start = 1080 + 32,
-+		.hsync_end = 1080 + 32 + 16,
-+		.htotal = 1080 + 32 + 16 + 32,
-+		.vdisplay = 2400,
-+		.vsync_start = 2400 + 12,
-+		.vsync_end = 2400 + 12 + 4,
-+		.vtotal = 2400 + 12 + 4 + 4,
-+		.width_mm = 69,
-+		.height_mm = 152,
-+		.type = DRM_MODE_TYPE_DRIVER,
-+	},
-+	[MODE_120HZ] = {
-+		.clock = (1080 + 32 + 16 + 32) * (2400 + 12 + 4 + 4) * 120 / 1000,
-+		.hdisplay = 1080,
-+		.hsync_start = 1080 + 32,
-+		.hsync_end = 1080 + 32 + 16,
-+		.htotal = 1080 + 32 + 16 + 32,
-+		.vdisplay = 2400,
-+		.vsync_start = 2400 + 12,
-+		.vsync_end = 2400 + 12 + 4,
-+		.vtotal = 2400 + 12 + 4 + 4,
-+		.width_mm = 69,
-+		.height_mm = 152,
-+		.type = DRM_MODE_TYPE_DRIVER,
-+	},
-+	[MODE_90HZ] = {
-+		.clock = (1080 + 32 + 16 + 32) * (2400 + 12 + 4 + 4) * 90 / 1000,
-+		.hdisplay = 1080,
-+		.hsync_start = 1080 + 32,
-+		.hsync_end = 1080 + 32 + 16,
-+		.htotal = 1080 + 32 + 16 + 32,
-+		.vdisplay = 2400,
-+		.vsync_start = 2400 + 12,
-+		.vsync_end = 2400 + 12 + 4,
-+		.vtotal = 2400 + 12 + 4 + 4,
-+		.width_mm = 69,
-+		.height_mm = 152,
-+		.type = DRM_MODE_TYPE_DRIVER,
-+	},
-+	[MODE_60HZ] = {
-+		.clock = (1080 + 32 + 16 + 32) * (2400 + 12 + 4 + 4) * 60 / 1000,
-+		.hdisplay = 1080,
-+		.hsync_start = 1080 + 32,
-+		.hsync_end = 1080 + 32 + 16,
-+		.htotal = 1080 + 32 + 16 + 32,
-+		.vdisplay = 2400,
-+		.vsync_start = 2400 + 12,
-+		.vsync_end = 2400 + 12 + 4,
-+		.vtotal = 2400 + 12 + 4 + 4,
-+		.width_mm = 69,
-+		.height_mm = 152,
-+		.type = DRM_MODE_TYPE_DRIVER,
-+	},
-+	[MODE_48HZ] = {
-+		.clock = (1080 + 32 + 16 + 32) * (2400 + 12 + 4 + 4) * 48 / 1000,
-+		.hdisplay = 1080,
-+		.hsync_start = 1080 + 32,
-+		.hsync_end = 1080 + 32 + 16,
-+		.htotal = 1080 + 32 + 16 + 32,
-+		.vdisplay = 2400,
-+		.vsync_start = 2400 + 12,
-+		.vsync_end = 2400 + 12 + 4,
-+		.vtotal = 2400 + 12 + 4 + 4,
-+		.width_mm = 69,
-+		.height_mm = 152,
-+		.type = DRM_MODE_TYPE_DRIVER,
-+	},
-+};
-+
-+static int nt37701_panel_get_modes(struct drm_panel *panel,
-+				     struct drm_connector *connector)
-+{
-+	int count = 0;
-+
-+	for (int i = 0; i < ARRAY_SIZE(nt37701_panel_modes); i++)
-+		count += drm_connector_helper_get_modes_fixed(connector,
-+						    &nt37701_panel_modes[i]);
-+
-+	return count;
-+}
-+
-+static const struct drm_panel_funcs nt37701_panel_panel_funcs = {
-+	.prepare_for_mode = nt37701_panel_prepare,
-+	.unprepare = nt37701_panel_unprepare,
-+	.disable = nt37701_panel_disable,
-+	.get_modes = nt37701_panel_get_modes,
-+};
-+
-+static int nt37701_panel_bl_update_status(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	u16 brightness = backlight_get_brightness(bl);
-+	int ret;
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
-+	if (ret < 0)
-+		return ret;
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	return 0;
-+}
-+
-+static int nt37701_panel_bl_get_brightness(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	u16 brightness;
-+	int ret;
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	ret = mipi_dsi_dcs_get_display_brightness_large(dsi, &brightness);
-+	if (ret < 0)
-+		return ret;
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	return brightness;
-+}
-+
-+static const struct backlight_ops nt37701_panel_bl_ops = {
-+	.update_status = nt37701_panel_bl_update_status,
-+	.get_brightness = nt37701_panel_bl_get_brightness,
-+};
-+
-+static struct backlight_device *
-+nt37701_panel_create_backlight(struct mipi_dsi_device *dsi)
-+{
-+	struct device *dev = &dsi->dev;
-+	const struct backlight_properties props = {
-+		.type = BACKLIGHT_RAW,
-+		.brightness = 1757,
-+		.max_brightness = 3514,
-+		.scale = BACKLIGHT_SCALE_NON_LINEAR,
++	led-1 {
++		function = LED_FUNCTION_FLASH;
++		color = <LED_COLOR_ID_WHITE>;
++		led-sources = <2>;
++		led-max-microamp = <500000>;
++		flash-max-microamp = <750000>;
++		flash-max-timeout-us = <1280000>;
 +	};
-+
-+	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
-+					      &nt37701_panel_bl_ops, &props);
-+}
-+
-+static int nt37701_panel_probe(struct mipi_dsi_device *dsi)
-+{
-+	struct device *dev = &dsi->dev;
-+	struct nt37701_panel *ctx;
-+	int ret;
-+
-+	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->supply = devm_regulator_get(dev, "power");
-+	if (IS_ERR(ctx->supply))
-+		return dev_err_probe(dev, PTR_ERR(ctx->supply),
-+				     "Failed to get power-supply\n");
-+
-+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(ctx->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
-+				     "Failed to get reset-gpios\n");
-+
-+	ctx->dsi = dsi;
-+	mipi_dsi_set_drvdata(dsi, ctx);
-+
-+	dsi->lanes = 4;
-+	dsi->format = MIPI_DSI_FMT_RGB101010;
-+	dsi->mode_flags = MIPI_DSI_MODE_NO_EOT_PACKET | MIPI_DSI_CLOCK_NON_CONTINUOUS;
-+
-+	drm_panel_init(&ctx->panel, dev, &nt37701_panel_panel_funcs,
-+		       DRM_MODE_CONNECTOR_DSI);
-+	ctx->panel.prepare_prev_first = true;
-+
-+	ctx->panel.backlight = nt37701_panel_create_backlight(dsi);
-+	if (IS_ERR(ctx->panel.backlight))
-+		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
-+				     "Failed to create backlight\n");
-+
-+	drm_panel_add(&ctx->panel);
-+
-+	/* This panel only supports DSC; unconditionally enable it */
-+	dsi->dsc = &ctx->dsc;
-+
-+	ctx->dsc.dsc_version_major = 1;
-+	ctx->dsc.dsc_version_minor = 1;
-+
-+	/* TODO: Pass slice_per_pkt = 1 */
-+	ctx->dsc.slice_height = 12;
-+	ctx->dsc.slice_width = 1080;
-+	ctx->dsc.slice_count = 1;
-+	ctx->dsc.bits_per_component = 10;
-+	ctx->dsc.bits_per_pixel = 10 << 4;
-+	ctx->dsc.block_pred_enable = true;
-+
-+	ret = mipi_dsi_attach(dsi);
-+	if (ret < 0) {
-+		drm_panel_remove(&ctx->panel);
-+		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static void nt37701_panel_remove(struct mipi_dsi_device *dsi)
-+{
-+	struct nt37701_panel *ctx = mipi_dsi_get_drvdata(dsi);
-+	int ret;
-+
-+	ret = mipi_dsi_detach(dsi);
-+	if (ret < 0)
-+		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
-+
-+	drm_panel_remove(&ctx->panel);
-+}
-+
-+static const struct of_device_id nt37701_panel_of_match[] = {
-+	{ .compatible = "tianma,nt37701-dubai" },
-+	{ /* sentinel */ }
 +};
-+MODULE_DEVICE_TABLE(of, nt37701_panel_of_match);
 +
-+static struct mipi_dsi_driver nt37701_panel_driver = {
-+	.probe = nt37701_panel_probe,
-+	.remove = nt37701_panel_remove,
-+	.driver = {
-+		.name = "panel-novatek-nt37701",
-+		.of_match_table = nt37701_panel_of_match,
-+	},
-+};
-+module_mipi_dsi_driver(nt37701_panel_driver);
-+
-+MODULE_AUTHOR("Val Packett <val@packett.cool>");
-+MODULE_DESCRIPTION("Driver for Novatek NT37701 based DSI panels");
-+MODULE_LICENSE("GPL");
+ &qupv3_id_0 {
+ 	status = "okay";
+ };
+
 -- 
 2.53.0
+
 
