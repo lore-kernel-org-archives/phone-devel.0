@@ -1,322 +1,148 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80986331
-	for <phone-devel@vger.kernel.org>; Mon, 13 Apr 2026 01:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B25E1548C
+	for <phone-devel@vger.kernel.org>; Mon, 13 Apr 2026 07:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776043801; cv=none; b=JOQSQDGiAadjbvUcVJlw+UL8g6/kM3mqJMgWksAyyitfWOU9w4+nG6QS7AEOkhLIEkktukKTZi6F/5s4vwDHcSwSTgfGUoH/b4lQTv4a8sMkVwcVPedWrGQngPQtvVI2F4BOl+Kcq4FrdNe4Dj4xfdQjiZR9yY7J3CULJkX5eRo=
+	t=1776064337; cv=none; b=s4D6ZrX6sBQSr8Jl5Y2neb/z9WGZKMLAjuYfQ7v2Ctl4af+WKGk35lhvRqQeds16pwCY/86GFdfDhZlU4ri0DRdUBQ8bne/RMuXBS5elvTJuvwVO8wQaPlwQ9v9Wa7jWQONtGNA346K8tROPqkTsTo6dUZ9rexK6Y1D/amoChH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776043801; c=relaxed/simple;
-	bh=/Ng1kQ05/jMESpzsIddz7nP1ZGdquPHKRrNNUXHacd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rHtfq5MlImQJ6UEu1T8zmG7bmjrcnixN9+d/uPIpRQlBOKGgLtRroq4A6oZEIm6Fum0Cq+jftYdEgfu4JakOQUbW25hXT+Q7XfJio0EtTE9bxTDE0oWKJ6cfvZVpXrkGXIsnWyvOcWY/ZGOXBBDwx9r8MRnFoh0rG1QFMwDJ+QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aJdbgUu8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PLImhQyJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1776064337; c=relaxed/simple;
+	bh=pyRyrGeRgn3gccRWNd9oANe9ty4qaiIwRTkZlb4h87U=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QuUIJ2i6uByJ9cHCsM0xYObyhdm5AmnbhSyeTQ/OBrUuI52LGPnaEk7dJeBCWN+VhU5GM7EKpS9SbNXGhlMNUIIlIYFTzYdqbCRhZUykwk20Pz3uIZ6WEAZD0k42rmYx5VqVHfUtJkL2MJSOvj/XmVE5/XDRyUuGLAFryTPT9kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AqAa3RlC; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aJdbgUu8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PLImhQyJ"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CE51IF543317
-	for <phone-devel@vger.kernel.org>; Mon, 13 Apr 2026 01:29:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=4xPVpsoMJBufQ32OcfsUYWbg
-	00L8GVQNJvCwUVmXS+E=; b=aJdbgUu8P2Ed+ONcwpxyZspYWFV0T1V1yTUluTUA
-	SGFGGWD1KRXeenfkxgFK5xtI8ru2B/i/ybI4ZfL02jqoT4qtY4Ip9M8H08B1syfB
-	Y6zcrsD+W8Q6nl0cPIrivUjDZLeVzCce2e9luw6iYCxeadDrLk6384WEAjXHtcRi
-	8c/gGeolsAWpo7zTT5FOoNGffgtFDiLeJ7HI6EWSLKF2ssisnhFNQUK8zvnMqM4B
-	sdcyo6dymBDQj5aKGV6juVQQ1k0/ZAwLWz3I5/gp9hk4STKu7sUlObmiJhRzwVAU
-	THx+lsBIJUyIH4+Le4A0BJVS+bu16qvD1nMvfIpXGUsPuQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dfexfu9xs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 13 Apr 2026 01:29:59 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50b4ca7e7c2so75973971cf.3
-        for <phone-devel@vger.kernel.org>; Sun, 12 Apr 2026 18:29:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AqAa3RlC"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488afb0427eso51211855e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 13 Apr 2026 00:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776043798; x=1776648598; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xPVpsoMJBufQ32OcfsUYWbg00L8GVQNJvCwUVmXS+E=;
-        b=PLImhQyJ+VxqbvjTyVc2I435DxeC8a4gfrlnELKXYoEI3qii4M1mM8yt2nwBj3XUxV
-         jloWeX+j/gkBj1eYC+tj2Z8xEwb0VOkvIj+sqBjlVZ/VYYcDu7Ckkd1rQynk8GSNm4co
-         kvgZu1dxWkijas3Xmf/jjI7vytpNcm6fsl8gAD29CcWFpX8ETxCrCblpCXQV4x4ge+uV
-         SijB8cHkFQNMJLmYVAvHTXUG+Sc5nTWaXoibE2Vc6ea0TSgL029xT6CwN4bACs111VXm
-         kl1OyDP2alGPwfYGSmVXrnMKweFn0oIoOxbBWU6cMoBFkGzTfr/wkP8n9KLG0YOFE//g
-         zvfA==
+        d=linaro.org; s=google; t=1776064335; x=1776669135; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nlmjxh1MtlwNMpIIddLFKoO92223Pp5bRATczu14GeY=;
+        b=AqAa3RlCwAtgTLlnxaEXL7SvVE6HOrnXH2zhwCuEaFxTHae9IhC4XpvTyv8wBNerYT
+         MpgQWvw3dFxQAERJtql4NITmQbJsYjRC9e30RRwTfrROD65Iizf8KKBdw5phdB5Qtuh+
+         mItFfi5hhgsQsk1RlAieD9P/xTA5qOGi1lu5CPTptGRE/ErqC80HHr4P3YzngHhfRjJ1
+         kkeiW3+Zy680fXvnCR5cAYY81mpiv0QsNlhQ15pnwOmfKAeW+s15NEx5LuvSh+3oC3ac
+         0+1fBPEubz5hD/NLJ+W3L3eHlbvO1W64E+uy4WVg8Nf5QssOac5yn+iXMbx0qN5M0ZdR
+         ng2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776043798; x=1776648598;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20251104; t=1776064335; x=1776669135;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4xPVpsoMJBufQ32OcfsUYWbg00L8GVQNJvCwUVmXS+E=;
-        b=P9VXuuzr8Ln3vo7l85fQRk91N//rpBJaHdxjOYa/iOFryxZkJfRHF41bchGhDM93YK
-         +izzK515IafPLmq+rweP8QJFJ2R4VXZ1YRMDNwzAcklahvYHz3B7pyk4AYPE45VwHlyh
-         h2oGgfcc4ihFimPiNuwgRTtQhHyfZcw4fUV63xLSOSBr0ggbHhT1umB2Ff02VyP2cxUG
-         dTmm0w/YyouhzSk3Vo2aJNPckHC7dIMhG4jeCFWIYUDkat4v8aInqeNo4wm5/jvlVwVV
-         g46WSkekdwf1UnQidQhCpgXd1O2V5Qe32IE9qNOg/6zOPw9Lxz1aVTxHvebAhoOe7/I4
-         MMpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbyYacPm2fquUytGQOFO8c2j6CVLogWx2zQ7I+6CAwsqaFPzISNHlljhdJV94Amy4chK3N0DxS9iTaMQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5wHERnxgkcOOtme2BKgWNK/g5MkxlCs7IXHeftsQkvBXHH0HU
-	zgKoiXYgLwibFwlrB4HwnKiX4XzAa2+LQdnXe+AYT7v8BbI3N/Aex7eAfW/eITyJ5m+PHqbpbq6
-	G4G0tpUwe4mArBtT+sjDhQuezctP4KSY4MIr78490Va2Qhn7IPVNYrZn2oQNT+l22gw==
-X-Gm-Gg: AeBDieu+M1jUgkVMKuNrgf59FrvvqN0FTzmvR4S3hqqcLDM4Vro41R1PtSa+fNMFMSl
-	rCI5w2VwwhMUDBsVZ1rWVDjTNE+faRIs6yKllYuU8cWuPVnOJzFGRF2ZTIw0A4mNUIXCl8WrRP0
-	BuagpMMHuvirEhE75pwBnN3JfVVF4k0CqiI1ixws1DMELpVdik4edDcG1qBImsFze9YyRLLBup5
-	kIrJMZE4lyN3poM/NJxb0GHCaRLnqYlKLsTZk+jlWiPF90hd6HGK9GRx8orw2id+Hz379NiMUnq
-	OBN/fDVoj82hbgCEGuq1j2Z7tUdaaD7xAqwDBuVeOV6F7eE5uNg9IufutcW0qlbLxEzfQn+HKTB
-	fpgl4Bbfq2NOAN32nkxuyagegIT9/+5s0Xv7zXDBeNKvdicp8ovMM+KElCUJ9E9DL+r4bumZvoM
-	IKtlzoG+eP8s5Z2Cz2o0P8My01W5pkUboxauU=
-X-Received: by 2002:a05:622a:13cd:b0:50d:97c1:6626 with SMTP id d75a77b69052e-50dd5b30de4mr175660781cf.7.1776043798435;
-        Sun, 12 Apr 2026 18:29:58 -0700 (PDT)
-X-Received: by 2002:a05:622a:13cd:b0:50d:97c1:6626 with SMTP id d75a77b69052e-50dd5b30de4mr175660371cf.7.1776043797933;
-        Sun, 12 Apr 2026 18:29:57 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38e4927037fsm21064871fa.3.2026.04.12.18.29.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 18:29:55 -0700 (PDT)
-Date: Mon, 13 Apr 2026 04:29:53 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Val Packett <val@packett.cool>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alicja Michalska <alicja.michalska@9elements.com>,
-        dri-devel@lists.freedesktop.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] drm/panel: Add driver for Novatek NT37701 based
- OLED panels
-Message-ID: <7iwz3mveqwp5cmxajgsnfnzyffewxkweesvywsyacxsdfmdqi3@qlwgqzw2upee>
-References: <20260412113851.355944-1-val@packett.cool>
- <20260412113851.355944-3-val@packett.cool>
+        bh=nlmjxh1MtlwNMpIIddLFKoO92223Pp5bRATczu14GeY=;
+        b=dLOdIC/+pRNMcjwAVraS5i3/pIK8mgb1SirwKVj0O2lFKrM6Mz+eWsgWHpHszqLJSV
+         gSh7cGDLmEqDr56S5PCzzYrvOOt+ENXvpyfJUqtCRQwmq+InoRHDZk/c2xfOYFbimr/J
+         mchelS0Na9QiZSaHrWeEpSX1QC436L7175Inn2GGuNEiD5yFsdyyMeNfxVrIVki0UkB2
+         CapKO64guqLG91KAO9GO11rh2JwVrSAQOPhFjM4dYi9WiqVnXfxtj0y6pivhchzaquys
+         Surl3xlh4Xp8Lpdh8d8BUPZud1P5e5Hk3WiOK9OJP0OLw0GrumcFl/omSRzkMlaoHX1Y
+         FMUw==
+X-Forwarded-Encrypted: i=1; AFNElJ9u6gsMclIVWXg837p48bSXIDZhBtWO/PbYoYWLmAA4SRZn2MSGg+UBTR4bOtheCCt0vvxTzHO/CoOWzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkO8CSlQES/5yFGbTWpKzOSdlyhefLolQRm7fqdUn4adcnVxjd
+	XJzc9aggrTO6NHyMlNFuFjt+aTU0/5X6vLySliZuI6KVGC+a+sMYvt8C4dia1bYcGYU=
+X-Gm-Gg: AeBDies4C9HlSWaiLNIjZ2Wb+8LpV9vna/Hhw5Zv5MjCgxJhwArRnzhdcYseYRsrEHu
+	wtXs9Atf+KeM4HmXvJkx7smFcLm4j5ouaahpx+cZSCdrSL2XbW3CKuh32aCBb2uAIaOC43uFtVP
+	m0g7yItHZjj1htypXC8oyObKdHwdTM4B1HT8f6yNfsJFZeqKFFl/Zs+f5F/zzv3GoiaZXLjZOxL
+	+PttY2lEuRCbqndrouZFEX03XtenOq1Qh/8aoK/ZKcTdWg2p1izqi84QwQdwm5a+GuijKomnkI2
+	s+DR1w0lLSqvE5AroZzEA54EpuxnVPkUCET1QLeq9PXe36eVPTSLKU4+19aXK3nxRNOIGLpK5+a
+	C3A/8HiNrU8XWFmhh4bal8aI9hZuOOLmbvoOSJduzdMiyD7O4TPZstLRt4LKfYDPom+2RR98N2g
+	Og/1+MHDCTS23T/K7MshibkdLOLm0h36a5CtG+taHcYYKew9zjeHdN3hEo1cSKcw73kvNONiqq8
+	u/CinE=
+X-Received: by 2002:a05:600c:c16d:b0:488:be21:54ae with SMTP id 5b1f17b1804b1-488d66504bfmr174467825e9.0.1776064334547;
+        Mon, 13 Apr 2026 00:12:14 -0700 (PDT)
+Received: from ?IPV6:2a01:cb1c:fcf:4600:4cfb:7427:8a08:9d25? ([2a01:cb1c:fcf:4600:4cfb:7427:8a08:9d25])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d592db30sm255250805e9.10.2026.04.13.00.12.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 00:12:14 -0700 (PDT)
+Message-ID: <a598a765-531a-4709-99e5-4597427d52b3@linaro.org>
+Date: Mon, 13 Apr 2026 09:12:15 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260412113851.355944-3-val@packett.cool>
-X-Proofpoint-GUID: -gNQuySWXv5QSCoc60-67XeAn6rksbSW
-X-Authority-Analysis: v=2.4 cv=OpZ/DS/t c=1 sm=1 tr=0 ts=69dc4717 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=Jt1seR1F_FQkLTMJGlMA:9
- a=CjuIK1q_8ugA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-ORIG-GUID: -gNQuySWXv5QSCoc60-67XeAn6rksbSW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDAxMSBTYWx0ZWRfXw05riTOCpaaA
- 4cujHGX/8ZydQnQPXZcWPIkeUmrOI3RZfcyYA7wOt8sDB1C7mBy5uJcS6o+O4y766JUP2gvIRdQ
- IXl5m2y7au1FJ7bhyAywquYQlZalOp6yvFs/EHY9XmuYgFRP9PbCiTMFUJx/kIch04UDm9v01vX
- XWLCawx/z2cSjgfzxGHU4NfoJ0wFJJTsslYYHDZBQYihyJT6xfUJCjjJlHP307y5RPFY8/yjizH
- HS9ZxkXm8HElG6Mm8jhfuug/00t08410ffatmZuUfw3JyJx9ahhQtxDdwNJSLLwONqlAVZY/iOg
- gXEpArLF/CUqJuGQR5QnlQaRwO/3QNF8FlTrKmZl7OGaUxaoI9aWUxrRWo7PKE+mIsxaGNmrjkh
- +kyYTCDPk7vX8+IZjrV9A6oEe/8/4Mo0QUemqsMXTJdbnnkDejvzccVr5CI/e3RNYS7NNju2YHj
- F8iiCbUlHG8QWSUjP8w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-12_06,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130011
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [RFC PATCH 1/2] drm: Introduce drm_panel_prepare_for_mode
+ callback
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Val Packett <val@packett.cool>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Rob Clark <robin.clark@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Alicja Michalska <alicja.michalska@9elements.com>,
+ dri-devel@lists.freedesktop.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260412113851.355944-1-val@packett.cool>
+ <20260412113851.355944-2-val@packett.cool>
+ <uckcm7zviwss3jdjrapzd2fpivpdkrdbpcgju2hmrayulfzeaf@2tnli5evjtuh>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <uckcm7zviwss3jdjrapzd2fpivpdkrdbpcgju2hmrayulfzeaf@2tnli5evjtuh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Apr 12, 2026 at 08:00:45AM -0300, Val Packett wrote:
-> Add a driver for panels with the NT37701 DDIC, starting with the Tianma
-> panel (unknown model) used in the Motorola Edge 30 (dubai) smartphone.
+On 4/13/26 03:05, Dmitry Baryshkov wrote:
+> On Sun, Apr 12, 2026 at 08:00:44AM -0300, Val Packett wrote:
+>> Modern OLED panels often need to vary their prepare commands based on the
+>> mode being set (resolution and refresh rate). Introduce a new variant of
+>> the drm_panel_prepare callback that passes the chosen mode as an argument
+>> to allow for this.
+>>
+>> Signed-off-by: Val Packett <val@packett.cool>
+>> ---
+>>   drivers/gpu/drm/bridge/panel.c |  8 ++++++--
+>>   drivers/gpu/drm/drm_panel.c    | 15 +++++++++++++--
+>>   include/drm/drm_panel.h        | 12 ++++++++++++
+>>   3 files changed, 31 insertions(+), 4 deletions(-)
+>>
 > 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
->  drivers/gpu/drm/panel/Makefile                |   1 +
->  drivers/gpu/drm/panel/panel-novatek-nt37701.c | 532 ++++++++++++++++++
->  2 files changed, 533 insertions(+)
->  create mode 100644 drivers/gpu/drm/panel/panel-novatek-nt37701.c
+> A (somewhat) better approach would be to let add .atomic_foo callbacks,
+> which would receive drm_atomic_state instance. See  the discussion
+> around [1].
 > 
-> diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-> index a4291dc3905b..183f968a5333 100644
-> --- a/drivers/gpu/drm/panel/Makefile
-> +++ b/drivers/gpu/drm/panel/Makefile
-> @@ -60,6 +60,7 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36523) += panel-novatek-nt36523.o
->  obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
->  obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672E) += panel-novatek-nt36672e.o
->  obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37700F) += panel-novatek-nt37700f.o
-> +obj-m += panel-novatek-nt37701.o
->  obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37801) += panel-novatek-nt37801.o
->  obj-$(CONFIG_DRM_PANEL_NOVATEK_NT39016) += panel-novatek-nt39016.o
->  obj-$(CONFIG_DRM_PANEL_MANTIX_MLAF057WE51) += panel-mantix-mlaf057we51.o
-> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt37701.c b/drivers/gpu/drm/panel/panel-novatek-nt37701.c
-> new file mode 100644
-> index 000000000000..ea8a208fecb2
-> --- /dev/null
-> +++ b/drivers/gpu/drm/panel/panel-novatek-nt37701.c
-> @@ -0,0 +1,532 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2026, The Linux Foundation. All rights reserved.
-> + * Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
-> + *   Copyright (c) 2013, The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#include <linux/backlight.h>
-> +#include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/module.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/of.h>
-> +
-> +#include <video/mipi_display.h>
-> +
-> +#include <drm/display/drm_dsc.h>
-> +#include <drm/display/drm_dsc_helper.h>
-> +#include <drm/drm_mipi_dsi.h>
-> +#include <drm/drm_modes.h>
-> +#include <drm/drm_panel.h>
-> +#include <drm/drm_probe_helper.h>
-> +
-> +enum nt37701_mode_idx {
-> +	MODE_144HZ,
-> +	MODE_120HZ,
-> +	MODE_90HZ,
-> +	MODE_60HZ,
-> +	MODE_48HZ,
-> +};
-> +
-> +static const struct drm_display_mode nt37701_panel_modes[5];
-> +
-> +struct nt37701_panel {
-> +	struct drm_panel panel;
-> +	struct mipi_dsi_device *dsi;
-> +	struct drm_dsc_config dsc;
-> +	struct regulator *supply;
-> +	struct gpio_desc *reset_gpio;
-> +};
-> +
-> +static inline
-> +struct nt37701_panel *to_nt37701_panel(struct drm_panel *panel)
-> +{
-> +	return container_of(panel, struct nt37701_panel, panel);
-> +}
-> +
-> +static void nt37701_panel_reset(struct nt37701_panel *ctx)
-> +{
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +	usleep_range(1000, 2000);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> +	usleep_range(10000, 11000);
-> +}
-> +
-> +#define nt37701_panel_switch_page(ctx, page) \
-> +	mipi_dsi_dcs_write_seq_multi((ctx), 0xf0, 0x55, 0xaa, 0x52, 0x08, (page))
-> +
-> +static int nt37701_panel_on(struct nt37701_panel *ctx,
-> +                             struct drm_display_mode *mode)
-> +{
-> +	struct mipi_dsi_device *dsi = ctx->dsi;
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
-> +
-> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-> +	/* Voltage */
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x06);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb5, 0x00, 0x18, 0x4f);
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb2, 0x11);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb2,
-> +				     0x60, 0x50, 0x66, 0x91, 0x86, 0x91);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-> +				     0x00, 0x08, 0x01, 0x5f, 0x01, 0x5f, 0x02,
-> +				     0xa4, 0x02, 0xa4, 0x03, 0xbb);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-> +				     0x03, 0xbb, 0x05, 0x2f, 0x05, 0x2f, 0x06,
-> +				     0x91, 0x06, 0x91, 0x06, 0x92);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x18);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb3,
-> +				     0x06, 0x92, 0x0a, 0x2f, 0x0a, 0x2f, 0x0d,
-> +				     0xb9, 0x0d, 0xb9, 0x0f, 0xff);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x58, 0x00);
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x08);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc3, 0x04);
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x03);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc, 0x11, 0x00, 0x09, 0x51);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x04);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc,
-> +				     0x00, 0x09, 0x51, 0x00, 0x09, 0x51, 0x00,
-> +				     0x0b, 0x41);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc, 0x00, 0x11, 0x51);
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc6,
-> +				     0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
-> +				     0x66, 0x66, 0x66, 0x66, 0x66);
-> +
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc0,
-> +				     0x15, 0x0a, 0x38, 0x27, 0x49);
-> +	/* DSC */
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x03, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x90, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x91,
-> +				     0xab, 0x28, 0x00, 0x0c, 0xc2, 0x00, 0x03,
-> +				     0x1c, 0x01, 0x7e, 0x00, 0x0f, 0x08, 0xbb,
-> +				     0x04, 0x3d, 0x10, 0xf0);
-> +
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_MEMORY_START,
-> +				     0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x88, 0x02, 0x1c, 0x08, 0x73);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x5f, 0x00);
-> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x0000);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
-> +				     0x20);
-> +	mipi_dsi_dcs_set_tear_on_multi(&dsi_ctx, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
-> +	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0x0000, 0x0437);
-> +	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0x0000, 0x095f);
-> +	if (mode->clock == nt37701_panel_modes[MODE_144HZ].clock)
-> +		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x04);
-> +	else if (mode->clock == nt37701_panel_modes[MODE_120HZ].clock)
-> +		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x02);
-> +	else if (mode->clock == nt37701_panel_modes[MODE_90HZ].clock)
-> +		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x07);
-> +	else if (mode->clock == nt37701_panel_modes[MODE_60HZ].clock)
-> +		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x03);
-> +	else
-> +		mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x08);
+> [1] https://lore.kernel.org/dri-devel/nfc6ih43gjpi5u67fpkkxgwwygv53grdldq7tfp5iiukrkiy2u@53fsrtezzkyt/
+> 
 
-This should be coming through the drm_atomic_state for the CRTC used by
-this panel. Most of the plumbing is already there, panel bridge needs to
-pass atomic state to the drm_panel functions. Note, the bridge has a
-reference to the encoder, so it can retrieve CRTC state. Panel functions
-would need to get drm_connector so that they can perform the same
-lookup. Once you get drm_crtc_state::mode, you can perform lookups here.
+I agree, the plan to add a new atomic ops if much better.
 
-It's a longer path than the one you have RFC'd here, but I think, it is
-a proper way to go.
-
-> +	nt37701_panel_switch_page(&dsi_ctx, 0x08);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1,
-> +				     0x00, 0x03, 0x03, 0x03, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe2,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00);
-
--- 
-With best wishes
-Dmitry
+Neil
