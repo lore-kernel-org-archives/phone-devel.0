@@ -1,170 +1,406 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0A3B7760
-	for <phone-devel@vger.kernel.org>; Tue, 14 Apr 2026 09:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1773559CA;
+	Tue, 14 Apr 2026 10:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776159985; cv=none; b=YGsOek5xsvsw5hlPTQdNah8IKb9pmDYdmqVGsXk+PuiKQfFEwq3gIJq4HRrRiqIKNTomstvOMfUjzFk4zfxzJtah3jxDIk4VSylN1HSAR14D78u+DHCv7ZB8CzMdOU+9JU6NR8Q4TQLwt5fPpBt1eDko/Hnw5jA1svWc3rNfp7M=
+	t=1776161861; cv=none; b=q/wD9bmYX2qfZIh4fIuDUY+tmwMDzKnaypzjRLkcoYwaFMcPAzUZDaNwreCTNjGtjMDPotPhqnfZVqnsA12Dru68/noOIGQKzpslNThY0YdUxzPxkzxTpEtdhaoRmH2/03F7nsxXL/A0RC/4WiJdXp1/WrcKyM2dTQA7iDjNTiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776159985; c=relaxed/simple;
-	bh=eIGlkgJRjXqEOrHmxxNOvdfyn1InkP3AlIpQDhMLaE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uHhtxYqlhkWlCtq/fGDVX+4mrGzB1arwMClxVIV66U5DascRJKubWHz4/CQP4zdspNR74NtjjzYT66ZktHzi+RRQHEEkCOvtgnE1L0n/uOq/QFCv5zyh4OYZv4tj4M6y2G0uIN7tStVXK1hmvV9i8GRafJa7Awyqhk3Mw4AbBtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YoO9FuEK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a1iskETD; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1776161861; c=relaxed/simple;
+	bh=juHl1zPpMM2skX9EH+5FNgvNyM+A9mBTBYc8r7D1gUs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PK/BpxZNUNFqRGX71s3gecrStyF1JEL8d7hJ8VAWj8i3Euq8ziJOX9viaA3Snf8jrQ+GYo/MGhF1Ne6uvSSUVT3IGfp/HfJV5IbFMqigap6XTu2YaRqY4xbjS7IQpuUIUuOUeUSajv22gMR4HvY4UCRU6tNPqQL89DADJ1uWAaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IamuxL47; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YoO9FuEK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a1iskETD"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63E6gU02280804
-	for <phone-devel@vger.kernel.org>; Tue, 14 Apr 2026 09:46:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Jp1ReYVfH7G6wmzBbDSPxhiCdbsX5vp/GDnX91ojXgw=; b=YoO9FuEKE/xJHkZ1
-	R/HBURFLYMPAPlcO2Og0Z6V6xbdBQqqSJNVoijYGZftEjmJbZZO8oUdgzNsoexXo
-	ZdVy9qQVz0+sgIKdynd+VPVslzSfk4R/1GWMK93mhLQvDoEQ9spAQ6JLI1CtzCXo
-	jBPu+uOcw1SMi5MGfD9u1112jfr23XGcM13BxYAd5RkM3EOaisoDLsWoygAWMofW
-	9iqb9r7BHNNiO2JH/zVQwcifzafXUTMI2pxmh2YCVlnY7zYoJK7esuKmwp+tn+WP
-	XoJ87S/OgXyg+jNXbq4AnjtTYXLThZDehoZsw1FDpBodXccnD9vJTlDj3NDm/i69
-	hrn9QA==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dh86vj4my-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 14 Apr 2026 09:46:22 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8d0095b0d80so156186485a.1
-        for <phone-devel@vger.kernel.org>; Tue, 14 Apr 2026 02:46:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776159982; x=1776764782; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Jp1ReYVfH7G6wmzBbDSPxhiCdbsX5vp/GDnX91ojXgw=;
-        b=a1iskETDsc4gVfHD2UUfeC52+EqvpXVD3301Bs74ZmW7/m1ib3V5jmGkru5HmGrUor
-         fJy5+gx39R73UVRXNZQQtWcMedBprWTzNF1kEQjU9Y0M9Q5tpr7dyXFUEnA/rrj0OIpU
-         trDLNKeYNLTa5hi9ZqfUcmKesXCGJnELS8iL1dZTgYuTNPh5LHDuXzZHq3YKV2Qbtxq6
-         nBybbc//o33FSUaELdRKKOmMJUVo6ChrLqfE/46fYECRqnLqdhr06mqC4Kh6EWbCd2zX
-         HWoyqIFjU4hYY44HNtep7IPk40d+mdR7XLsuB8kZgkSymOo+al5b1L5QLHrO+pZwbY4W
-         WDWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776159982; x=1776764782;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jp1ReYVfH7G6wmzBbDSPxhiCdbsX5vp/GDnX91ojXgw=;
-        b=EO3UOYc7TQ4ZGHlwZHStkyBU0CCGE7JjkhKxniha/heLkT5NYP2Sa50FaiXd3tjtCj
-         gVluPT+n9mW6jp6j67+oe7LVXyHdvB6x1V4fOosqWp3LJTRReAHzbZvAke/BYBc0u8u6
-         A2cePSgx5HexPiYj9PRGXqSP/EKNahzQL35Z5vSiR+z/oiu/fCdikafi3858Gtf9dHTM
-         1e7P1HfbcEJaKJba/8KObCgNl0ZZ5ZSFkEcsJ2+xkwaFSMTAQgAF6XSrQLUv2788UBb/
-         EJugj6Jj2gWvg3hO6Mw62hQIzWhabdCLId92j7JWvUywyco8HI73saupLzhUR5BlJexc
-         Y33A==
-X-Forwarded-Encrypted: i=1; AFNElJ8NpIQBNDXgsRhhxaevDsNt1NJF8pk9K7SqXuz8suiE+vV7jrc/a7naP/CpcH1wiRzIhpl58QYbHCZSig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRDrgLTME2EPAmX/ZXpdC7qTjb39b12SE5M6tfKiJureyT3bFP
-	zoySvZS59NT8CfAS1fOoPHPHIPtPrHpBfsWqoT+k4F2N1K6YdjqIao4hBlvCXr3cIImRVIaKZZZ
-	BgwdC0ITw2DJBVRHiYOWmHbXmG1wpoAGooogC2AgBOakQZqodGCqQbIa+Qe6EZtNZww==
-X-Gm-Gg: AeBDiesaKCGigTy92WMgK5cBSXJXsfNjWWyT836wE1TIVAJxPCRHT34C/rqe9/6Pbya
-	ccRlkswTNo939xIb9ehUC8ThYaJ1PGPBojnXtxS7PGKu++ToPktLOTgztD2MqM53oDbxV9TxIGa
-	4AQDWl2CkbqDPCxyWY79+3T0nEI7TzeMGfN64WQMfgSx8mSXFmlkMS5YFtAVqdS3BLbvB/lVr9z
-	9IivgiNHrCPyYW+2c+HBZg+xd7oiyA2sYFHG2l+qSiSpmihtQhJLIAbcULM1nUANDOTcpX4J3MR
-	YwPYMK/q8mdFThF3OfopQW8bLkFMpsSuzlHcUaZijrXgd28Nf6S8tv/DTXHIEvgPXOGYJLlONRp
-	VET+vO9JV7sCwfyk+cRNDAtyD8sg6b+9JO7nGXtfMK/xTWm34XB7i1Lt8W4FDn4CkrowG2zI8qM
-	TQZxf4B/qjXsVXGg==
-X-Received: by 2002:a05:620a:2902:b0:8d5:ddc3:a3ab with SMTP id af79cd13be357-8ddcf4b4dd5mr1581610585a.4.1776159982138;
-        Tue, 14 Apr 2026 02:46:22 -0700 (PDT)
-X-Received: by 2002:a05:620a:2902:b0:8d5:ddc3:a3ab with SMTP id af79cd13be357-8ddcf4b4dd5mr1581608585a.4.1776159981723;
-        Tue, 14 Apr 2026 02:46:21 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-670eb258a99sm1951183a12.15.2026.04.14.02.46.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2026 02:46:20 -0700 (PDT)
-Message-ID: <d53f1499-0afc-43e5-bee9-ae76df3c6910@oss.qualcomm.com>
-Date: Tue, 14 Apr 2026 11:46:18 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IamuxL47"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EA603C19425;
+	Tue, 14 Apr 2026 10:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776161861;
+	bh=juHl1zPpMM2skX9EH+5FNgvNyM+A9mBTBYc8r7D1gUs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=IamuxL47BsTXJcP9ml2XxvZzorlUVXS9Sjiq958/fRZjPY9336fJeGLiW4lnPy+RQ
+	 qRm888AcyXFF0isX91p1gID6g1tFbACfXVzcmR2VCpldaBUegkRFw5fMAXD8MSIYFc
+	 mU4KhDA0EHyNflNhAAgbvg/HmtdYS7hAIeBey/t/o9hQZMaZH2kXJlF7FU5su2fw46
+	 5PzBkgs+Q/t5jsWJWBiwpVY/yPuwb3BY0hCJp7StWMmKG06SW69m1JWD+Dd3bz/hGX
+	 UlhMYrB4VzqtpW247dfOPAHyJSdXl1tVkeTpPs3/zRj2diuSZp6WHeHIUqCFoIs0qp
+	 HLjbgWAYB6v6A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0319ED7B9A;
+	Tue, 14 Apr 2026 10:17:40 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 14 Apr 2026 12:12:10 +0200
+Subject: [PATCH] media: i2c: imx355: Add support for 24 MHz external clock
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] ARM: dts: qcom: msm8960: add SCM
-To: linux@smankusors.com, Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rudraksha Gupta <guptarud@gmail.com>
-References: <20260414-msm8960-wifi-v1-0-007fda9d6134@smankusors.com>
- <20260414-msm8960-wifi-v1-6-007fda9d6134@smankusors.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260414-msm8960-wifi-v1-6-007fda9d6134@smankusors.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: A8veO8CAOxiq_eEnRfSN3bW8DQ21d6ZQ
-X-Authority-Analysis: v=2.4 cv=cffiaHDM c=1 sm=1 tr=0 ts=69de0cee cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=wxLWbCv9AAAA:8 a=pGLkceISAAAA:8 a=O5woWLlMtrWFXwMO6pUA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=QJY96suAAestDpCc5Gi9:22
-X-Proofpoint-ORIG-GUID: A8veO8CAOxiq_eEnRfSN3bW8DQ21d6ZQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA5MSBTYWx0ZWRfX0rxiVOtFAWmT
- u3g4VSd0DR5y5vfIpBDcMHVmYn52s3IYHTTLiWay+zOK16wLXxo/SwqZQM9k/Z5XApSOFcn9l77
- qA8CYJ+8UzCW00oMC8N2pnuxsNKpk2XQBtOdIQpwGsZyNhVMfArLLHsz/gj02TDlSy31kbmHBKR
- JMdDj8GlBL8r3NOxpxgSO4bxr2k1yxV8bVsnhatCLPmS9X/03+/a95MUvV45GRWIXJDUD1mM3pZ
- XtXs4euX5bNUmnzsmRDYwrn8pBuVLMsEttZhTHMeVzQIgL3nu0bZMan1Zc7vpCHABrVPtBPrQk7
- LL6iJdoTw5wbXFWwhAsS58rMLfTP46Jrnf6i3IzxJ5PQBR41NPKKIyClhNQ5WFcy9l4qvHXa1xl
- pKHefUlegPvlrVgk7Kz+2uRPlpecOphvhn+2t426xc+Dkfyqku/WYxX5aM+nA2XqyeCYg660N9/
- diUqhLznQQYGc49bp7g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 lowpriorityscore=0 suspectscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140091
+Message-Id: <20260414-imx355-24mhz-v1-1-9ae77bc6e7ec@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAPkS3mkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDE0MT3czcCmNTU10jk9yMKt0ki+TktMQk48SUtCQloJaCotS0zAqwcdG
+ xtbUApEEQuF4AAAA=
+X-Change-ID: 20260414-imx355-24mhz-b8ccfab3adfb
+To: Tianshu Qiu <tian.shu.qiu@intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Richard Acayan <mailingradian@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9293; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=/RS+iqeOynacJviJ8IGq4JSr4HjAOfKq/naOIrw+LNY=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp3hRDNkId7Jc499vptwIZyY170CzvJGBr1JmpP
+ nVu6QjEJf+JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCad4UQwAKCRBgAj/E00kg
+ cl7XD/0WQanF2pKV2YxzpCOqq2Da5hmyEB9xPCJmuQOVp8m34GzXs8/gcfDcrESEITGt+h8CgBs
+ QLqz2jzYrGVwxnNV5zePiokD9WRj9AclS/WCcC1ZAt/z5YmcTn0UGXTR98NT+/9OY53wntncf7j
+ AHlf9OO5S7dvZGsEBXgfZUrvYvGP23hV7pzX8n6sZDv5KCtOrQlUg2AdE1oJ/deJIkDsHnNXvKy
+ wt0vIACgFwenhd3OuNUXYysoVWgO0Yth0SewT13ZWxbt2oBxResp97oZRQtTjXoBb3SbiA6PLyf
+ ERcMAQYVzsWgy0e9A8tC7ltn0Eii7S3xia5bYfPTrx3wJxU614rjnN4ap5mlcjv+QxlzR3jKsRb
+ jXkh4SJj/r+fXNJRtHwxdBQ+kF0IyrtMJh1OOHrFICg9sC09ArXn++9zzAfOal6NLm7spxQ/fPV
+ ULP7ClmGT5fWOJH8Bx+r4NtYsSMN/3Kdo2GwWRjwkPoIILDaAnrR2P5oZ/vPc4WINTQxj3Hx6d+
+ VNm8gw6lznUSxvMxZjnBH2v9oMsQDGdu80hyXGlkPiROk/jgoErk9A04i5olt6ZjMHMptbC03ro
+ 2TAnLJsw8sHrmMzDcPNHKfKB78pmjeN3odNetmyPtQzJeXk5PhpMGt6tC5MkDPkdetWaPZTON1r
+ sUYcOArr61ksoig==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 4/13/26 8:55 PM, Antony Kurniawan Soemardi via B4 Relay wrote:
-> From: Antony Kurniawan Soemardi <linux@smankusors.com>
-> 
-> Add the Secure Channel Manager firmware device node to the MSM8960
-> device tree. The SCM is required for secure communication between the
-> application processor and other subsystems.
-> 
-> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
-> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
-> index 1d5e97b6aa4b..bc3fd55e524a 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
-> @@ -77,6 +77,15 @@ l2: l2-cache {
->  		};
->  	};
->  
-> +	firmware {
-> +		scm {
-> +			compatible = "qcom,scm-msm8960", "qcom,scm";
-> +
-> +			clocks = <&rpmcc RPM_DAYTONA_FABRIC_CLK>;
+From: David Heidelberg <david@ixit.cz>
 
-I'm wondering if this should be an interconnect resource, but from a
-quick grepping, I think this is always supposed to be @ 64 MHz so
-perhaps not really
+The IMX355 sensor supports multiple external clock frequencies,
+including 19.2 MHz and 24 MHz. The driver currently supports only
+fixed 19.2 MHz input clock.
 
-(please tell me if you know more)
+Refactor the clock handling to make the PLL configuration dependent
+on the external clock frequency and add support for 24 MHz. Introduce
+a table of clock parameter sets and program the corresponding EXTCLK
+frequency and PLL multipliers to maintain consistent internal VCO
+frequencies across supported inputs.
 
-Konrad
+The PLL settings are adjusted so that:
+  - VT VCO remains at 1152 MHz
+  - OP VCO remains at 720 MHz
+
+This preserves existing timing characteristics while allowing systems
+using a 24 MHz clock to operate correctly.
+
+No functional change for existing 19.2 MHz users.
+
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Known users: Pixel 3 and 3a.
+---
+ drivers/media/i2c/imx355.c | 114 +++++++++++++++++++++------------------------
+ 1 file changed, 54 insertions(+), 60 deletions(-)
+
+diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
+index 27a5c212a527f..f9ec13bb27d10 100644
+--- a/drivers/media/i2c/imx355.c
++++ b/drivers/media/i2c/imx355.c
+@@ -25,6 +25,11 @@
+ #define IMX355_REG_CHIP_ID		0x0016
+ #define IMX355_CHIP_ID			0x0355
+ 
++/* PLL registers that depend on the external clock frequency */
++#define IMX355_REG_EXTCLK_FREQ		0x0136
++#define IMX355_REG_PLL_VT_MUL		0x0306
++#define IMX355_REG_PLL_OP_MUL		0x030e
++
+ /* V_TIMING internal */
+ #define IMX355_REG_FLL			0x0340
+ #define IMX355_FLL_MAX			0xffff
+@@ -63,7 +68,6 @@
+ 
+ /* default link frequency and external clock */
+ #define IMX355_LINK_FREQ_DEFAULT	360000000LL
+-#define IMX355_EXT_CLK			19200000
+ #define IMX355_LINK_FREQ_INDEX		0
+ 
+ /* number of data lanes */
+@@ -100,6 +104,33 @@ struct imx355_mode {
+ 	struct imx355_reg_list reg_list;
+ };
+ 
++struct imx355_clk_params {
++	u32 ext_clk;
++	u16 extclk_freq; /* External clock (MHz) in 8.8 fixed point) */
++	u16 pll_vt_mpy;	/* VT system PLL multiplier */
++	u16 pll_op_mpy;	/* OP system PLL multiplier */
++};
++
++/*
++ * All modes use the same PLL dividers (PREPLLCK_VT_DIV=2, PREPLLCK_OP_DIV=2),
++ * so the multipliers are adjusted to produce the same VCO frequencies:
++ *   VT VCO = 1152 MHz, OP VCO = 720 MHz
++ */
++static const struct imx355_clk_params imx355_clk_params[] = {
++	{
++		.ext_clk = 19200000,
++		.extclk_freq = 0x1333,	/* 19.2 MHz */
++		.pll_vt_mpy = 120,	/* 19.2 / 2 * 120 = 1152 MHz */
++		.pll_op_mpy = 75,	/* 19.2 / 2 * 75  = 720 MHz */
++	},
++	{
++		.ext_clk = 24000000,
++		.extclk_freq = 0x1800,	/* 24.0 MHz */
++		.pll_vt_mpy = 96,	/* 24.0 / 2 * 96  = 1152 MHz */
++		.pll_op_mpy = 60,	/* 24.0 / 2 * 60  = 720 MHz */
++	},
++};
++
+ struct imx355_hwcfg {
+ 	unsigned long link_freq_bitmap;
+ };
+@@ -125,6 +156,7 @@ struct imx355 {
+ 	const struct imx355_mode *cur_mode;
+ 
+ 	struct imx355_hwcfg *hwcfg;
++	const struct imx355_clk_params *clk_params;
+ 
+ 	/*
+ 	 * Mutex for serialized access:
+@@ -144,8 +176,6 @@ static const struct regulator_bulk_data imx355_supplies[] = {
+ };
+ 
+ static const struct imx355_reg imx355_global_regs[] = {
+-	{ 0x0136, 0x13 },
+-	{ 0x0137, 0x33 },
+ 	{ 0x304e, 0x03 },
+ 	{ 0x4348, 0x16 },
+ 	{ 0x4350, 0x19 },
+@@ -231,12 +261,8 @@ static const struct imx355_reg mode_3268x2448_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -280,12 +306,8 @@ static const struct imx355_reg mode_3264x2448_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -329,12 +351,8 @@ static const struct imx355_reg mode_3280x2464_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -378,12 +396,8 @@ static const struct imx355_reg mode_1940x1096_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -427,12 +441,8 @@ static const struct imx355_reg mode_1936x1096_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -476,12 +486,8 @@ static const struct imx355_reg mode_1924x1080_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -525,12 +531,8 @@ static const struct imx355_reg mode_1920x1080_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -574,12 +576,8 @@ static const struct imx355_reg mode_1640x1232_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -623,12 +621,8 @@ static const struct imx355_reg mode_1640x922_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -672,12 +666,8 @@ static const struct imx355_reg mode_1300x736_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -721,12 +711,8 @@ static const struct imx355_reg mode_1296x736_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -770,12 +756,8 @@ static const struct imx355_reg mode_1284x720_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -819,12 +801,8 @@ static const struct imx355_reg mode_1280x720_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x00 },
+ 	{ 0x0701, 0x10 },
+@@ -868,12 +846,8 @@ static const struct imx355_reg mode_820x616_regs[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x01 },
+ 	{ 0x0305, 0x02 },
+-	{ 0x0306, 0x00 },
+-	{ 0x0307, 0x78 },
+ 	{ 0x030b, 0x01 },
+ 	{ 0x030d, 0x02 },
+-	{ 0x030e, 0x00 },
+-	{ 0x030f, 0x4b },
+ 	{ 0x0310, 0x00 },
+ 	{ 0x0700, 0x02 },
+ 	{ 0x0701, 0x78 },
+@@ -1422,6 +1396,20 @@ static int imx355_start_streaming(struct imx355 *imx355)
+ 		return ret;
+ 	}
+ 
++	/* Set PLL registers for the external clock frequency */
++	ret = imx355_write_reg(imx355, IMX355_REG_EXTCLK_FREQ, 2,
++			       imx355->clk_params->extclk_freq);
++	if (ret)
++		return ret;
++	ret = imx355_write_reg(imx355, IMX355_REG_PLL_VT_MUL, 2,
++			       imx355->clk_params->pll_vt_mpy);
++	if (ret)
++		return ret;
++	ret = imx355_write_reg(imx355, IMX355_REG_PLL_OP_MUL, 2,
++			       imx355->clk_params->pll_op_mpy);
++	if (ret)
++		return ret;
++
+ 	/* set digital gain control to all color mode */
+ 	ret = imx355_write_reg(imx355, IMX355_REG_DPGA_USE_GLOBAL_GAIN, 1, 1);
+ 	if (ret)
+@@ -1749,7 +1737,13 @@ static int imx355_probe(struct i2c_client *client)
+ 				     "failed to get clock\n");
+ 
+ 	freq = clk_get_rate(imx355->clk);
+-	if (freq != IMX355_EXT_CLK)
++	for (unsigned int i = 0; i < ARRAY_SIZE(imx355_clk_params); i++) {
++		if (freq == imx355_clk_params[i].ext_clk) {
++			imx355->clk_params = &imx355_clk_params[i];
++			break;
++		}
++	}
++	if (!imx355->clk_params)
+ 		return dev_err_probe(imx355->dev, -EINVAL,
+ 				     "external clock %lu is not supported\n",
+ 				     freq);
+
+---
+base-commit: 66672af7a095d89f082c5327f3b15bc2f93d558e
+change-id: 20260414-imx355-24mhz-b8ccfab3adfb
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
+
