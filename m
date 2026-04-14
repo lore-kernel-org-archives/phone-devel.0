@@ -1,44 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10697.protonmail.ch (mail-10697.protonmail.ch [79.135.106.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925312FF160;
-	Tue, 14 Apr 2026 16:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61F93242A4
+	for <phone-devel@vger.kernel.org>; Tue, 14 Apr 2026 18:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776183855; cv=none; b=CinGQ3BrLGohVtd/z/zgBeqfLCBDAOKqoPqAmOF9qTCvAIPCHNnc6/QhGB0zcy687WKhqTbhTSrWKERhYA9M/NB2uYgAfVUYaUEe+QnYrN0Jb2X43U3Sq51jPnSAduJTNR/LhbkjOUEofwQRIUpbzvbiZcmi1Bc0enXWirzDrmQ=
+	t=1776192303; cv=none; b=MebAJjaivnFlscJcGKMSS+Pn70Qsnj5GNktO2wbI/rBHIrNVaFGPP7Eva3Px6mrowQWRD/reE60oVx0B4ZjakvxxqzB9E9jKd3DQcROzxUPOD6cYWYISLdO9jMRkgcsEmNVg9DhioHcq+uHXms6CIjYvdzmDdwJJGUIi55+0LIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776183855; c=relaxed/simple;
-	bh=BhJVhuq1ERNvkwltfV/6VfoiFUTjHYKa2RPCsP6TyKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZFmn+9JNGvg1QEeJ4PQdL4ZFpdnc44jx2Vp28wpV1fnZOxXyJ2oqv4sJc1V4aTpMz4jdKFPtyNL2Chllhaob/V87xa36m2eh9ss7jwN0nHe9K/GwILn9DVlO5ZzjQMDOpXWmhlfZpZZCYme1+bcckgJB6N0qcY1JkQPm++QrSlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtwTsJZm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776192303; c=relaxed/simple;
+	bh=0CF4/Bk0Wq2cuRuYQJOqFwMzntOOt7x4YDP7XlM1I9k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h87bpHCDZvWau0Hg174et79MeSB/EcD3HwwQmyOoPyzi0XceFetANuAJt2wBPpgbv4pPBAaJTCs0cmDoO5w2vai37f+YOzJi/ibkL7K6AdPnLYTq7ax71ObHexj6T/niUBpPwDjZujtEvhIHMLTaXPw/RiMxD7gAPRJDLL/INXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iukSMsVU; arc=none smtp.client-ip=79.135.106.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtwTsJZm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FA6C19425;
-	Tue, 14 Apr 2026 16:24:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776183855;
-	bh=BhJVhuq1ERNvkwltfV/6VfoiFUTjHYKa2RPCsP6TyKY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RtwTsJZmECnOMmXzz1pu14fmjGS7jo/i0TcGo7BN1SS+z8O+wmio03nMm6Vfhe5xN
-	 hw9wHMkHEL05J/TsCN1M2o0XZ+aQaFLge/BQDIuK9u+/9QChD91xd3mC3q9nnUsZgs
-	 PWQtG7S7c5w26Ub+z30E0QFHohH+d/Fcy1GbwYcrAOHBi53SxaFG7wlm9BGvhlqjC8
-	 0s5Exvwz38hkvIaaR6MY144CXFfyCX6Jtb2Y9XjOpBLfHO6/iFc5Q+DayfRgqKvGap
-	 3etuWiIhhKbff5hdSv6RbwTG3FDlBCN1yWQijJnQ+CYe1ZDnafydhCbXWqPzJBZ0zE
-	 6L3YMmCVYqRUQ==
-Date: Tue, 14 Apr 2026 17:24:09 +0100
-From: Daniel Thompson <danielt@kernel.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>, Karel Balej <balejk@matfyz.cz>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] backlight: ktd2801: enable BL_CORE_SUSPENDRESUME
-Message-ID: <ad5qKZjhfAnnpmNV@aspen.lan>
-References: <20260328-ktd2801-pm-fix-v1-1-007cb103faeb@dujemihanovic.xyz>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iukSMsVU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1776192297; x=1776451497;
+	bh=wF7XGc8CIQcRmH2ZlRKGhnkkkCJEh4IZ11LTi6Y90gQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=iukSMsVU7cAAVfZSIAaRZ2y6CMjBJrTWR8y2hF49xTYgpql1pyQj/ZBGVQGRkUXEP
+	 EAiAsEWYucs2XT+SUJhlWvRczbsWhzbjF1TQgev7KGn0io69jZdrMRCtRNBfdXXR53
+	 +cLW2F1+lzJakIknPW+y1Ugsz77BTe81VprWRO8w6aLhGtFTVTl8sdevGY9esPWSKK
+	 DTUzlZhMDJLhy6YSz7FW1glEs4Y0v/SscWCGbmPrF/QBM8rdXaHmOBOVJRPbv3688+
+	 ZKX1WGIkWm/sXEpmd9rK0Dk1yuQJHZM7dwFIQY0HIvIcs7rVHvc0sA6V4L5H5Ol3YM
+	 /XJLw5Zec9BCw==
+Date: Tue, 14 Apr 2026 18:44:55 +0000
+To: linux-kernel@vger.kernel.org
+From: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, "Lin, Meng-Bo" <linmengbo06890@proton.me>
+Subject: [PATCH 2/2] arm64: dts: qcom: msm8916-panasonic-eluga-u2: add initial device tree
+Message-ID: <20260414184429.168612-3-linmengbo06890@proton.me>
+In-Reply-To: <20260414184429.168612-1-linmengbo06890@proton.me>
+References: <20260414184429.168612-1-linmengbo06890@proton.me>
+Feedback-ID: 112742687:user:proton
+X-Pm-Message-ID: 7f4e5896de6de4358243d6ac5b38867072e8c426
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -46,23 +45,198 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260328-ktd2801-pm-fix-v1-1-007cb103faeb@dujemihanovic.xyz>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 28, 2026 at 09:42:16PM +0100, Duje Mihanović wrote:
-> From: Duje Mihanović <duje@dujemihanovic.xyz>
->
-> Boards using this backlight chip do not power the backlight off on
-> suspend. Enable BL_CORE_SUSPENDRESUME so the chip gets powered off by
-> the backlight core on suspend.
->
-> Tested on samsung,coreprimevelte.
->
-> Cc: stable@vger.kernel.org # v6.19
-> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+Panasonic ELUGA U2 is a phone using the MSM8916 SoC released in 2015.
 
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Add a device tree for with initial support for:
+
+- GPIO keys
+- GPIO LEDs
+- pm8916-vibrator
+- SDHCI (internal and external storage)
+- USB Device Mode
+- UART
+- Regulators
+
+Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+---
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../dts/qcom/msm8916-panasonic-eluga-u2.dts   | 149 ++++++++++++++++++
+ 2 files changed, 150 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8916-panasonic-eluga-u2.dts
+
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/M=
+akefile
+index 4ba8e7306419..4cbb4a079420 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -81,6 +81,7 @@ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-motorola-harpia.dt=
+b
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-motorola-osprey.dtb
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-motorola-surnia.dtb
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-mtp.dtb
++dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-panasonic-eluga-u2.dtb
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-a3u-eur.dtb
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-a5u-eur.dtb
+ dtb-$(CONFIG_ARCH_QCOM)=09+=3D msm8916-samsung-coreprimeltevzw.dtb
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-panasonic-eluga-u2.dts b/arch=
+/arm64/boot/dts/qcom/msm8916-panasonic-eluga-u2.dts
+new file mode 100644
+index 000000000000..8eff59119760
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8916-panasonic-eluga-u2.dts
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++#include "msm8916-pm8916.dtsi"
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++
++/ {
++=09model =3D "Panasonic ELUGA U2";
++=09compatible =3D "panasonic,eluga-u2", "qcom,msm8916";
++=09chassis-type =3D "handset";
++
++=09aliases {
++=09=09mmc0 =3D &sdhc_1; /* eMMC */
++=09=09mmc1 =3D &sdhc_2; /* SD card */
++=09=09serial0 =3D &blsp_uart2;
++=09};
++
++=09chosen {
++=09=09stdout-path =3D "serial0";
++=09};
++
++=09gpio-keys {
++=09=09compatible =3D "gpio-keys";
++
++=09=09pinctrl-0 =3D <&gpio_keys_default>;
++=09=09pinctrl-names =3D "default";
++
++=09=09label =3D "GPIO Buttons";
++
++=09=09button-volume-up {
++=09=09=09label =3D "Volume Up";
++=09=09=09gpios =3D <&tlmm 107 GPIO_ACTIVE_LOW>;
++=09=09=09linux,code =3D <KEY_VOLUMEUP>;
++=09=09};
++=09};
++
++=09gpio-leds {
++=09=09compatible =3D "gpio-leds";
++=09=09pinctrl-0 =3D <&pm8916_mpps_leds_default>;
++=09=09pinctrl-names =3D "default";
++
++=09=09led-green {
++=09=09=09function =3D LED_FUNCTION_STATUS;
++=09=09=09color =3D <LED_COLOR_ID_GREEN>;
++=09=09=09gpios =3D <&pm8916_mpps 2 GPIO_ACTIVE_LOW>;
++=09=09=09default-state =3D "off";
++=09=09};
++
++=09=09led-blue {
++=09=09=09function =3D LED_FUNCTION_STATUS;
++=09=09=09color =3D <LED_COLOR_ID_BLUE>;
++=09=09=09gpios =3D <&pm8916_mpps 4 GPIO_ACTIVE_LOW>;
++=09=09=09default-state =3D "off";
++=09=09};
++=09};
++
++=09usb_id: usb-id {
++=09=09compatible =3D "linux,extcon-usb-gpio";
++=09=09id-gpios =3D <&tlmm 110 GPIO_ACTIVE_HIGH>;
++=09=09pinctrl-0 =3D <&usb_id_default>;
++=09=09pinctrl-names =3D "default";
++=09};
++};
++
++&blsp_uart2 {
++=09status =3D "okay";
++};
++
++&pm8916_mpps {
++=09pm8916_mpps_leds_default: pm8916-mpps-state {
++=09=09pins =3D "mpp2", "mpp4";
++=09=09function =3D "digital";
++=09=09output-low;
++=09};
++};
++
++&pm8916_resin {
++=09linux,code =3D <KEY_VOLUMEDOWN>;
++=09status =3D "okay";
++};
++
++&pm8916_rpm_regulators {
++=09pm8916_l17: l17 {
++=09=09regulator-min-microvolt =3D <2850000>;
++=09=09regulator-max-microvolt =3D <2850000>;
++=09};
++};
++
++&pm8916_vib {
++=09status =3D "okay";
++};
++
++&sdhc_1 {
++=09status =3D "okay";
++};
++
++&sdhc_2 {
++=09pinctrl-0 =3D <&sdc2_default &sdc2_cd_default>;
++=09pinctrl-1 =3D <&sdc2_sleep &sdc2_cd_default>;
++=09pinctrl-names =3D "default", "sleep";
++
++=09cd-gpios =3D <&tlmm 38 GPIO_ACTIVE_LOW>;
++
++=09status =3D "okay";
++};
++
++&usb {
++=09extcon =3D <&usb_id>, <&usb_id>;
++=09status =3D "okay";
++};
++
++&usb_hs_phy {
++=09extcon =3D <&usb_id>;
++};
++
++&tlmm {
++=09gpio_keys_default: gpio-keys-default-state {
++=09=09pins =3D "gpio107";
++=09=09function =3D "gpio";
++=09=09drive-strength =3D <2>;
++=09=09bias-pull-up;
++=09};
++
++=09sdc2_cd_default: sdc2-cd-default-state {
++=09=09pins =3D "gpio38";
++=09=09function =3D "gpio";
++=09=09drive-strength =3D <2>;
++=09=09bias-disable;
++=09};
++
++=09usb_id_default: usb-id-default-state {
++=09=09pins =3D "gpio110";
++=09=09function =3D "gpio";
++=09=09drive-strength =3D <8>;
++=09=09bias-pull-up;
++=09};
++};
++
++&venus {
++=09status =3D "okay";
++};
++
++&venus_mem {
++=09status =3D "okay";
++};
+--=20
+2.47.3
 
 
-Daniel.
