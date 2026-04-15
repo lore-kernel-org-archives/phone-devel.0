@@ -1,138 +1,116 @@
-Received: from cornsilk.ash.relay.mailchannels.net (cornsilk.ash.relay.mailchannels.net [23.83.222.40])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927073E3DA3;
-	Wed, 15 Apr 2026 16:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776271194; cv=pass; b=TZkN5gYkDj2m/pYUy2Sh0zYddGypDs3Rkltp1THfJPGzYNycjuyrbzClAd+9cyHlhQj/1wgxbXI8B66dTdZkIzcWKM4OMsuSf252L62dCSy4b0WVBfYUCYooSGtXSmJGKvVWH3ux6SOVYRBYRJlwgUENecj25qUoKUjooIcG044=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776271194; c=relaxed/simple;
-	bh=+WYzEfzLHubdqx0fWn2UBfsq+Ag4FeaKeCuT/+YGbX0=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=HsRQK4GTsfQlMIMdRrolFA1yiISDqm3yICro5ZUf+NQIoKOsAs/K7y9/O4NE86j8+3IYN5MDd9++7HK9diApWdK/61/zn4JDj55dp+NK41N1+orc2/MOITFiCJL74Hnv52robnNPBE+i4iyQNlJZzWEEaFa24DGaqU82SZpGfRY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=lDxBsPIa; arc=pass smtp.client-ip=23.83.222.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636A83491C9;
+	Wed, 15 Apr 2026 21:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776288610; cv=none; b=O5bcmpdX7BxHg9H7N/A0hziHMAim5dBqWR8yLwvaw6pyQF9uUtsWM81WIZ0jncbnsi83xkJC6WbGdySTesL3sBlaKvTpmRaHLPGuxIRX0KS3Wnyf6DkGhjD6bk/Sl33PUID2ID5kVWYID5zCIRu/qvpF1eh0gRofv0vYd9KgmUk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776288610; c=relaxed/simple;
+	bh=wWh9BFGSeePJdiAQl4B72hJgYrgbq4DhVBsbTMTNLKU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fdJ6pEh/TsWegYWMHuB9jVJ4qwP1X48DEUrH/8JeWqxauepLAfZjxKPpZW3x39bzWcAcqx0JGvhg8FVHALLTiqBguM/fTeY4O583rxFLr/cNk3eOR6hmm519PLP/iG1/B11jzyzoO6ihcQ2KbybS+EjjBTXyAiSxWa62R5K4Dpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYOFxehO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="lDxBsPIa"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 8EB828C2652;
-	Wed, 15 Apr 2026 15:20:55 +0000 (UTC)
-Received: from de-fra-smtpout6.hostinger.io (100-101-170-129.trex-nlb.outbound.svc.cluster.local [100.101.170.129])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 434C48C2A8E;
-	Wed, 15 Apr 2026 15:20:52 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1776266455;
-	b=25uoSoFF+bgBpsv11KQWbuzMKn/yTm+5kCnDht78r1L3BXAmE3b9GS8bFnaVOxGpHmpBYC
-	gcIZJF/jp/Dfk6DBtRdP8dKuC1/CcBAwu+4WMXHq7SKyA2stwSidvXy2CS+U4jEdE28K8w
-	WJxoCR2jdXSRP8kYAPrfs/ZWRdsKnpEpjv8U0S4z5feXkbmE/TwNta8JZgVIHVxSUWxxUf
-	lM7r64D/jibMJkziTQJiRYGSzeNF7c+kF+haOjAmM/woyFi4ziDiYOroCQcSuzvyWM62JH
-	c7ND2J7JI71bus14tX/q8J8tywnt5t/OvFcn4T2MfkDaGWL0Bsd2LBUVosOfew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1776266455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=snluGqQP7QMHLqXPP6DrgIlyfEWJ6ROQdbtKBxFTO2Y=;
-	b=W52wRAJOYDdFo0/mHk+wpvQ1o8hzpPkdyeo+YWJROHbztdTOpIrx+IZgBvWtt+6WSlz3Mg
-	AadPu/Yw8kdnp3JLMv+IuiNdIjtORoLf4QFVU0/7HmX/Jgqm5b2bxpghc8A1wytLFGkA8X
-	nvXVTmsXqJlosUfCJS6XeRz3nB8pID4UtApkMNuGdpXy8C3ufWNCGuC6dM+M9AdY17vXTw
-	B/51wA1S/QVudGT6FCEjMiW/WuthQmYsgqWqxNOijSSrK63poPATrScTt2HDmRUjRGgo8N
-	3QJgVJE/296lnWaHRucbKdPHH6qh9dOO4H43RH2KNsy2uf5t3yA3e+vsw0SvQQ==
-ARC-Authentication-Results: i=1;
-	rspamd-6c65dd77f-mhjtr;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Rock-Name: 49e245f656abb596_1776266455365_3373235585
-X-MC-Loop-Signature: 1776266455365:2485615051
-X-MC-Ingress-Time: 1776266455365
-Received: from de-fra-smtpout6.hostinger.io (de-fra-smtpout6.hostinger.io
- [148.222.55.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.101.170.129 (trex/7.1.5);
-	Wed, 15 Apr 2026 15:20:55 +0000
-Received: from [IPV6:2001:448a:c020:f0b:7534:ccf3:5094:fe03] (unknown [IPv6:2001:448a:c020:f0b:7534:ccf3:5094:fe03])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fwlG04vQNz40HV;
-	Wed, 15 Apr 2026 15:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1776266450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=snluGqQP7QMHLqXPP6DrgIlyfEWJ6ROQdbtKBxFTO2Y=;
-	b=lDxBsPIaz3WmKHq3+z0Rw236HOJ3BVNVsgWlzPCIrhLnYS/L5dM3sS1YL+4kdOVN7Vj2qM
-	Ip/D2y7nABaMnQE6oUYh0JLn0rVjACWWyK5040JdMQZVngzFn17YzOERwb82MZ5o+3eft/
-	XaAetJEz/Ao7k1Lx0NT7AOJq62A09KUGoemrWf3kHi/LMzPY3m2HRwqbq0mhc9w7bjZEFB
-	uYDagVVQsLDCuUUyis64eyK+Fh0re7IERbxryHqnSk5p07mQa9k+pGA8SJ/WPuYpeJxP4k
-	JSznJwyTZdqFYTBJuc0otxJwVbd/ovbv0WDtJ33jhQSF5FWWFMjZUV1LB1ksHg==
-Message-ID: <71751331-651d-43aa-b30f-135cc62e8915@smankusors.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYOFxehO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 10AEEC19424;
+	Wed, 15 Apr 2026 21:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776288610;
+	bh=wWh9BFGSeePJdiAQl4B72hJgYrgbq4DhVBsbTMTNLKU=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=MYOFxehO/Vwd0XZv9BTiZC8Z0NTyqjS3Cr5uMISkx3g5dCCJqAT9bQuwAlyi3PzzH
+	 WMmHir7I7O8lFyNO9M/k3EO6rdoEQseSkkMK0V/WrPbq1pCzu5Wo5RbIEAYfWvXncF
+	 VJOLAZ9tkdqkrZ2Z0ePfJaelpGS5WCttHT4OhnfaQ8zfDO2c7f+n/WXCyltIRQh+1V
+	 c45corIYFUMw/Xty9OEnz/ZiHGiU4+eRfzbYe/KVNC4kgDveIhzpoNPWYJ4/3xaHvA
+	 os4iSxoij9L1LxPiDvpUczMVR790VrK3n5zKB4e8w51yMQkLNNibfV/TT5iPDl8S+D
+	 +RoCCBWUYOlTw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E89F5F433C9;
+	Wed, 15 Apr 2026 21:30:09 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Wed, 15 Apr 2026 23:30:05 +0200
+Subject: [PATCH] drm/panel: visionox-rm69299: Make use of
+ prepare_prev_first
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] mfd: qcom_rpm: add msm8960 QDSS clock resource
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Rudraksha Gupta <guptarud@gmail.com>
-References: <20260414-msm8960-wifi-v1-0-007fda9d6134@smankusors.com>
- <20260414-msm8960-wifi-v1-3-007fda9d6134@smankusors.com>
- <c63abc0e-e060-4825-b595-a46ddf262673@oss.qualcomm.com>
- <caa589af-f026-4664-8fb9-6b23b0e087f9@oss.qualcomm.com>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <caa589af-f026-4664-8fb9-6b23b0e087f9@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Wed, 15 Apr 2026 15:20:40 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=etGNzZpX c=1 sm=1 tr=0 ts=69dfacd2 a=/xj++nRiCg+rJg+YP4cClA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=wxLWbCv9AAAA:8 a=wsXp2s140FDuPjEIReEA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
-X-CM-Envelope: MS4xfNIe7XyNq1kUinlkmwTHbt5KeWqtEuq1Q1faRjAiSSBpKIf8XSL2Ucsux3PV3Rya+8jnz333aC8v7iMw8BS8P6lySqoey5AAy2kDxYdA4u8++ZyNUN1a Kw3EIFfDeAw3c5j60LzBjSx5y0xVh+GK5o6qgeNv8AWtRblCx2DBt4PR7Wq/ijWjYbbEsQGfiqwJDpajrPS4+diJ7YCxklm9UYYOUwhWEckPCTSTb5moBmc1 4WigMbyLT2eqH3xTxqbBFk6l2Xid+tOXDF/kn7trUJ8xbNI6ygvB6RuBV9vPcgj1c1iNAnyH2aHN49CaAEWrq+2uuO9Kt5yQdvBtKFidY0dGRwEVTH4q4jsG hhbu4NuemvwjPTtlffADfw/9yLK312u9ZHcTz7zsPqiqlNApg2PRQNDo7E0pqlnxKr9xT/WaiPmGgXvQMMVCb1umvloJD0fPRdPiTd2UVGKF1J/FfSQm6cI+ M69T9LxlDCLHGOnkASkZ/1S21eWaBe5DGgJDuUc8UBzzXv0HWtB55XglWXclpXMH8AMGr2ByyjWhPjSPa25ki0Tj3dOJSuQm3vmNXkXDogkDgl7IE0LWhZnT kGg4jPr3EYOoFgoe06MwyJnFaTxoF18ftlRtevoygIwexuN4ZwtPQRYxHLeLeY49yDXyTYI/QhOkTLmaGjTYOfOXH6nIm8qCaNzbNag9c0xJEslInCOFzyvG bU3JZSCpYjTHAgbbkFl3tl9BjQsqIVGchpM5Zqx/JeAATog9VFTEgJiF/NM+sGoZYK2xo+l1UYX5rUmuc/vaOwBCY+cxfAWm
-X-AuthUser: linux@smankusors.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260415-axolotl-display-v1-1-7abb2d248355@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAF0D4GkC/x3MQQqAIBBA0avErBM01KKrRAvRqQYkQyMM8e5Jy
+ 7f4v0DCSJhg7gpEfChROBtE34E9zLkjI9cMAx80l0Ixk4MPt2eO0uXNy0ahLEqhUdkJWnVF3Cj
+ /x2Wt9QMaKA/jYQAAAA==
+X-Change-ID: 20260415-axolotl-display-715ce416e5c8
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Douglas Anderson <dianders@chromium.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1248; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=bF7lrbD9lXIuwu2O8jm2gideODLb8OyFdzCi29iX97M=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp4ANgdDifmNfMWBOu+NsugDOUVuFeFEJSZeEVn
+ fmxJqsjIJKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaeADYAAKCRBgAj/E00kg
+ cvRlD/9WtZm5zQDZ+cGcDnNwbkI7VpIUXrL3lvwzDUdTsj6D16FeQ03ji8oROCHp36ZOzLZbd4a
+ OuOdcT3ujSQWnk3yk/+O4uhuCEBouxuRpSmhKrnvBtSpzTIvnARZbnX+Z88/97X53bNRouSiImj
+ hg1B2zuhjkr5vbjUP6t3C9l6RbisS4BhSYh2otzbS1oAat9lCs7QMS5m2R4QxES0bVdBuEuCqvR
+ 4F+Uc9nVJiVwTfsmEu0Xg0gnWNtzi+R+Lssxn8AtDYTUXFw25frSojydgX5u7OcLRJbc0SMsCXJ
+ OE6f5/FD/YGqzqbNNRSghshvIsJt7V2m4d5Vcfsi7hjWuRJOJ6etPpd5eYxW41XLBx9kQSIdHaZ
+ TGxcaVD/KZaPLUI2U932sxQ1yMVdnfOXOsehXp+F01oALKde00WiVYHVmOMXTeE68gXXCCmAwVs
+ 8IRDa/H8+BO0Y/94/Usw3WvXpPIY/4ZkcYdNHkVW4VEVwdxDJFht8op6qjScfj8Y3Yz2i7CrA+K
+ +62e5VZMP0X4AKtLR3lx4+Yus6u8qeBqsKAb9lcRJZtNjI8oQifhDQDPeiWcaOduCKpxpq6gz5i
+ V3NJne1oyksIqiGidAmzQLjyLKewE1JLL2jdD2qV+XjUsBypCh2BwtBpn8rYFZ6CpNjAHNPPbNj
+ EtbUhI6QE3FLh0A==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 4/14/2026 3:07 PM, Konrad Dybcio wrote:
-> On 4/14/26 10:06 AM, Konrad Dybcio wrote:
->> On 4/13/26 8:55 PM, Antony Kurniawan Soemardi via B4 Relay wrote:
->>> From: Antony Kurniawan Soemardi <linux@smankusors.com>
->>>
->>> msm8960 uses the same clock descriptor as apq8064 but lacked the
->>
->> This doesn't quite seem to be the case, some fields differ and
->> apq8064 additionally has:
->>
->> QCOM_RPM_PM8821_SMPS1
->> QCOM_RPM_PM8821_SMPS2
->> QCOM_RPM_PM8821_LDO1
->> QCOM_RPM_VDDMIN_GPIO
-> 
-> Ah hmm, the MFD driver seems to provide *all* RPM resources..
+From: Guido Günther <agx@sigxcpu.org>
 
-What I meant by "clock descriptor" in the commit message was
-specifically the subset corresponding to RPM managed clocks. From what I
-can tell based on downstream code, msm8960 and apq8064 seem to share the
-same set of RPM clocks, even though the overall resource lists differ.
+The DSI link must be powered up to let panel driver to talk to the panel
+during prepare() callback execution. Set the prepare_prev_first flag to
+guarantee this.
 
-Is that understanding correct?
+Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+index e5e688cf98fdc..0e33454650d13 100644
+--- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
++++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+@@ -387,6 +387,7 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_LPM |
+ 			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
++	ctx->panel.prepare_prev_first = true;
+ 	ret = mipi_dsi_attach(dsi);
+ 	if (ret < 0) {
+ 		dev_err(dev, "dsi attach failed ret = %d\n", ret);
+
+---
+base-commit: e6efabc0afca02efa263aba533f35d90117ab283
+change-id: 20260415-axolotl-display-715ce416e5c8
+
+Best regards,
 -- 
-Thanks,
-Antony K. S.
+David Heidelberg <david@ixit.cz>
+
+
