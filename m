@@ -1,131 +1,168 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7314C33AD9B
-	for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 07:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F61F3AD500
+	for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 09:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776409677; cv=none; b=cTN2iv7hP/kho/PWbpFIydIivjQ4tdds1bRuitl8GNMc6AUhcI31nfBhNg1uyodToF8otnwjE7RLoD7NkzMHFOrVdWGaYR5hZ5jycvWLdKzGxiClkDicHvjDLx81HRx7QZpsdQce3vACs0ueltWfWwxFi9uqNTJtEqPRYwBaxMg=
+	t=1776419477; cv=none; b=XhPj4C5salhfmXl0IGVc9Go4eKAMXvwyhK44VPQtmW0V4r21dCk2XoExQ/vyFhEGJh+FP8YQvN4alno8VU5hdiA63t6ZuV++woQGt3K7JfX5nJ92xK7QZWXY2UpDtUJ+YVXeQe5exr8knpoyQ5d14g9spOITcVrbHfMs51byYAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776409677; c=relaxed/simple;
-	bh=++e5FZB0tsvADRX7W3I2ua7//VvtHVnA0IB0LJVNzdk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QgHhBfnVkutA9wLMGFAhSYyR74xeM4+V69BGoAbIjWdjqb5qFpAG+SEgev/8GVz9ghH4L88BZnOViYk2Upx84bR1UDaSZISZGFmB/CVDGkbSmd4RwgRNYBQrVoVcxyIST1Ps+qG0wvieOdOr10n1ou/zTx/ML8BPXnCxoY0r6Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=KI0gSCtr; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1776419477; c=relaxed/simple;
+	bh=o3yDrb/88+LuAPFtniGU39J3MPiEpljWEOm2I3ZGhDs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=oojKgXhvLu22TCXvrm+HOegtXgh2S/BzpYSpDVMNPBk4cogiCyXUCQLsFBgBs+nLzDthOqP2tB4Q1oR9R+bkYPq70XRtQORdIDxdN+y2ERzYABHD1ic3YdqDrv9s0olfrsWVymcjiw294j3dTJWRgoXsFGb4LTMiz9va1aAFdD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GjJhF9cs; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="KI0gSCtr"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66e8cf72a93so438514a12.0
-        for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 00:07:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GjJhF9cs"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so4176855e9.0
+        for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 02:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1776409674; x=1777014474; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1776419473; x=1777024273; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JjyHbpSUyn7H1fP6Lf1b6SGYz/5Pq+5nMg5uPxkZH/0=;
-        b=KI0gSCtr1Vqld7CvrdNWBKb6UUd+HiAFPp4Id5DFUBk7QOcmTvJDgbidO7AKF8vu7B
-         w9tx1ezniuwjYlGUcChECpk9VvGmHokLHnKNamSFthjuyyOLO3sDIzZbZwkkBA0oCEK5
-         xtW6pP74QqeBjYgbhXKczwBEnP4E4QV+T3+GiBD6oGTukDSoISJs9t4vFDxsrEp+JH01
-         U4T8eedDbPSZ+dbVLFeJK9M0wgTail30zkreQUW3G01EbqWi9CXtZrR6LqDRnNJC0ZM/
-         01IvuDRcxsrjCtzleWwT2+1x0+d1Q4Kam1me3yqcymF2TzmqEMnHdxjgpxAd1Dhlawi+
-         glvA==
+        bh=P0uCHuAKeS6uUlnZaQ00rIBdMGYxOjfO74lX8NHxdEo=;
+        b=GjJhF9csq0TNSx+LyE2b3I0w92BKZjB6LebS9Hd6KjoALoVifvLALSkOjJ0EzI5xvS
+         rSZem+cnvVBdJSH5eENMsRoJNdb9aZEwCmi3X6eeehndn10ftzsbMq8t/XfLWmMkjy8Q
+         cO2kxDVgqCOmwb+Ho6Tx3BPvTipqDNmxh1QfIlSPiUs9MABry2TYxHyFx/vmj9FCrbVy
+         lKB1eLakYUVe5McUjdV/UVVhd8Qdym0lVw2CooJAj1uB/N33k/sks6eRFouvs3OVXKQc
+         4zGzhhf+GCKfuYLK+oTpVptVP1HWct0FveS1RBXRE6HXoO0FmSP6NCmKMTrUb2wUWZwq
+         hA+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776409674; x=1777014474;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JjyHbpSUyn7H1fP6Lf1b6SGYz/5Pq+5nMg5uPxkZH/0=;
-        b=hiPTzj6wmtXr7qVrkv9DJWU51+pH6PdVagfu2VhMGIPqNO/viCP7GHVFEgl1Zoar8V
-         4SuzpIZrtiMe1Wxf37oflQ2KIoD9LoYc/MzYVO5ip/uIQaaXvcfXfCn4E4N5dDHoy1Rn
-         JTAyPGZrnCJM24z0n3tRtbmxUDUpOp8aLNy757N9UzPyI0wTy9MgFve1uSbCyzFKCyZj
-         m9aEtvWVLx5VJ9tmmdkaZpLaEMVftLJ1sXvzrJn26W02P2exaomeG3Eu4NqJ1UPmDAot
-         gnG+c6KZMomapL1OUSXKvuUIG+idOJor8G0E1VmUVlxYxlrSo9CY0FP6s4IKWeiE7ujp
-         YtbA==
-X-Forwarded-Encrypted: i=1; AFNElJ9svogEbj4IWMi2WSQ4mlXxqH72CoTV1Zx6ZHNaZK4ByjRyQ/dle2Ah5AlUiuuGShfxLQLLd1P49Wmn+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAC+jvsN1gUfN+CBzsDeAjDAwI8OQpVgh/f695wh6W8pnb0IKy
-	9wYyJVRJenZziYFrkY7/A5affqA/REAB9SwuzVepGr/a6QtMP8x+7q2UzpWzNZt14hQ=
-X-Gm-Gg: AeBDieuvU6/FihzfWsoLQfYZ7M5DiuVq0TKYE8BPvh1pgLalKSrvtIklycolKMcaD64
-	pkBANj7Riw3C9T1+kxUBHz/lMYnVg/ED5gpo3ijlDzSJYgx4JMyCydEcIvhmp89QUBRVXZxyCw/
-	1ldEqSUE+GU3iRJF8CtI0OGiv/6JYk+4tJvv9gQsSAoNJYtqYNjM00auhoC7XFjZ62fG2p8VQSe
-	+Insi9RkrXaM0AJ3GEFIRe2oZ6UTbebxu3ILI5pmgDYJ7GHZkiuqwnTr5QMcdDFpCBwcjD+1GhC
-	G3glqZYQWEdUT/HL0uhMZ0VUF+BxQC64jFyUaawFet303xR2yAb6Kca8HSlykuP2dlSKYTM8VGF
-	cy+EzOmvCEfnRs6SbmU+xtipWYbRn6GV2+tVGjKaCeFhBXbqYSBsSESesz4MLa6d1eiyJ3ZY0iB
-	JF2iGZubQjIadTfPglyfgRppufC6I9bo08kraNY/EYP3FwTgbHErF9nl9wn0BSJD/fmuN/L8yGG
-	wQvdk8EK1Kg+fZO
-X-Received: by 2002:a17:906:dc89:b0:b98:6926:13cb with SMTP id a640c23a62f3a-ba418b7e13cmr85858466b.9.1776409673778;
-        Fri, 17 Apr 2026 00:07:53 -0700 (PDT)
-Received: from [172.16.240.100] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba451cdfd27sm26448466b.26.2026.04.17.00.07.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 00:07:52 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 17 Apr 2026 09:07:46 +0200
-Subject: [PATCH v3 3/3] arm64: dts: qcom: milos: Add GX clock controller
+        d=1e100.net; s=20251104; t=1776419473; x=1777024273;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P0uCHuAKeS6uUlnZaQ00rIBdMGYxOjfO74lX8NHxdEo=;
+        b=tF4it0HyYaBYDNs+Garg8/o4QHjXgoth9ujaQ9ARelLEHcQScGhDF+PtsAQ5JU6pxX
+         deGkzLFxcSPf9LGz7DARhgCJSkdaIsmZP2IoAh5KXyhPPO/3i5RDu7axCtr4j5tyDwyu
+         Jfi3r61yNnYpp41hUh7378U+m1vtkoOTCvUOlGi/3Za1/WakhXTkCYeYtfcaNNnwAmRg
+         MAAHtrGU3qmxJXobHDhaRjiCBv60qINCf7QwuAzHXZtaPyPbN+d0MPjMDO+48A3ZvFQq
+         Dx3Hkt80MHDmXhReXAzp1lHkNkLvh7txKU63B0SCTsE2J/iB0UVKAhO72nDVYvCaZLsP
+         e43A==
+X-Forwarded-Encrypted: i=1; AFNElJ+mgd2t/HMAi4gsfrwwNxtBOcVvQt448QGkcC7eRbtIMXbXoJpRDiXBuxHNkU3CB7EzpV8EDxnFHm3Icw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwZH8HbjKfPydGHz+YudJEzUVTobvVDmoqLp8l+H3Ws+KBARJ5
+	Zmhr6/x5407AVOvFjtu9VwTYdI6DH2Y/Axx0HWDT+lY4okXuY/6+QMWFJx1tli8JPbw=
+X-Gm-Gg: AeBDievsFJ8bmk6lcJ4DlkeYCmmNcinOZEnPrQ+pO8jCFNg9aZsA+yzhIz5/6kY71e6
+	mIdPiPqpD/6L3XoVhfkINc3/0yIS1qQkTOsLZHxzNuO9NASo0ZKl8118yx+YZZCJTZPIsen4f8K
+	1S6D4rI2jScPLzhN430nRKsakweNt/kix3osE8hqE7xUkAW9tPd/ZFfcD7lTTplCUtLNySvNJQy
+	UMqny63MwyY+Qt9tb6+f2tCfDihtDw1esTkaYkUqqDfrF+6+qy0esWhjcDYgfi+q8tmeQKl7YBN
+	nwnZRph/nonooPB4fp20+fFIT4tDG3KddRrnGB7inqqmTHhgrSbixg65goVe6j3Y7O2kbbfyJcV
+	KERHajBdBJA3HIZScok4JLKwko8zIkJDR2u0w8LE8xu0g9TgEFRrAsaEQtQz6D0NdXzp/fe6M3N
+	Sl3Kk1g4bOGrVFR/iDkVcIQ673m/L9kFTWJqL4HRXK+Gmg4L5Zmf0YZs0m+w/Ede4igoz/lRZ4w
+	BaS4AAr4uoF/eNcZQ==
+X-Received: by 2002:a05:600c:3110:b0:487:243f:dc3e with SMTP id 5b1f17b1804b1-488fb739cf6mr27616865e9.6.1776419473355;
+        Fri, 17 Apr 2026 02:51:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:9b0a:b8df:9ec3:b505? ([2a01:e0a:106d:1080:9b0a:b8df:9ec3:b505])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc14a61asm30946315e9.15.2026.04.17.02.51.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Apr 2026 02:51:13 -0700 (PDT)
+Message-ID: <a8031b65-62bf-46fd-b360-54dc84c58d13@linaro.org>
+Date: Fri, 17 Apr 2026 11:51:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260417-milos-gxclkctl-v3-3-08f5988c43a2@fairphone.com>
-References: <20260417-milos-gxclkctl-v3-0-08f5988c43a2@fairphone.com>
-In-Reply-To: <20260417-milos-gxclkctl-v3-0-08f5988c43a2@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Alexander Koskovich <akoskovich@pm.me>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776409667; l=1066;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=++e5FZB0tsvADRX7W3I2ua7//VvtHVnA0IB0LJVNzdk=;
- b=8898ctpJBm3z6J1Uj5QTf6yngGfQCbUWxKiZsXVNy4Ta5P8d/CK0C0G4aB6tnCpRQPEcfJeNB
- L8jWLKqiTU4Av8SW1RkWv8ZYRUHrsnE6+elqbkdzzz/fze4rBXJsT2v
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v2] drm/panel: visionox-rm69299: Make use of
+ prepare_prev_first
+To: david@ixit.cz, Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Dmitry Baryshkov <lumag@kernel.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Douglas Anderson <dianders@chromium.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+References: <20260417-axolotl-display-v2-1-8ce5341e46c2@ixit.cz>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260417-axolotl-display-v2-1-8ce5341e46c2@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add a node for the GX clock controller, which provides a power domain to
-consumers.
+On 4/17/26 08:55, David Heidelberg via B4 Relay wrote:
+> From: Guido Günther <agx@sigxcpu.org>
+> 
+> The DSI link must be powered up to let panel driver to talk to the panel
+> during prepare() callback execution. Set the prepare_prev_first flag to
+> guarantee this.
+> 
+> Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Changes in v2:
+> - Move the prepare_prev_first before drm_panel_add(). (Douglas)
+> - Link to v1: https://lore.kernel.org/r/20260415-axolotl-display-v1-1-7abb2d248355@ixit.cz
+> ---
+>   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> index e5e688cf98fdc..f1430370ff942 100644
+> --- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> +++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
+> @@ -371,16 +371,18 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
+>   		return ret;
+>   
+>   	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+>   	if (IS_ERR(ctx->reset_gpio)) {
+>   		dev_err(dev, "cannot get reset gpio %ld\n", PTR_ERR(ctx->reset_gpio));
+>   		return PTR_ERR(ctx->reset_gpio);
+>   	}
+>   
+> +	ctx->panel.prepare_prev_first = true;
+> +
+>   	ctx->panel.backlight = visionox_rm69299_create_backlight(ctx);
+>   	if (IS_ERR(ctx->panel.backlight))
+>   		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
+>   				     "Failed to create backlight\n");
+>   
+>   	drm_panel_add(&ctx->panel);
+>   
+>   	dsi->lanes = 4;
+> 
+> ---
+> base-commit: e6efabc0afca02efa263aba533f35d90117ab283
+> change-id: 20260415-axolotl-display-715ce416e5c8
+> 
+> Best regards,
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/milos.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
-index 4a64a98a434b..4bd9181ca03e 100644
---- a/arch/arm64/boot/dts/qcom/milos.dtsi
-+++ b/arch/arm64/boot/dts/qcom/milos.dtsi
-@@ -1542,6 +1542,16 @@ lpass_ag_noc: interconnect@3c40000 {
- 			qcom,bcm-voters = <&apps_bcm_voter>;
- 		};
- 
-+		gxclkctl: clock-controller@3d64000 {
-+			compatible = "qcom,milos-gxclkctl";
-+			reg = <0x0 0x03d64000 0x0 0x6000>;
-+
-+			power-domains = <&rpmhpd RPMHPD_GFX>,
-+					<&gpucc GPU_CC_CX_GDSC>;
-+
-+			#power-domain-cells = <1>;
-+		};
-+
- 		gpucc: clock-controller@3d90000 {
- 			compatible = "qcom,milos-gpucc";
- 			reg = <0x0 0x03d90000 0x0 0x9800>;
-
--- 
-2.53.0
-
+Thanks,
+Neil
