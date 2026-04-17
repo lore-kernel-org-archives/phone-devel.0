@@ -1,37 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953E4231A23;
-	Fri, 17 Apr 2026 06:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F276335554
+	for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 07:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776408946; cv=none; b=dQAsXPm4FwfxfZPbBvnPMN5BoWfz3PESm3wYaKw0u41DSaT1iSd7PSIwgzzrtEUxqKaEuIrPFLNff6m2B3khkKZrALcabm4lvll8tMAYXjgGCDn/MUnlBLW3jRucxeLDFm2iM9uGmedDm3dcIDFGE0Gh6BdSrSvdHBnCDy55T5w=
+	t=1776409673; cv=none; b=LwJGhQbw6DbNvmoclssOnQFY46a8SHiIKHKAKC19wC8MUyzVaepLb6Nrvtn2teo8/fRdHSA2kmjJKqDsbLNEXCVWhPoLpMKxn4KjzJxN6DzAxiVz7KZWvXlWJGok4wycxjTjwcV+qMrzLJcA+OVYbgyjAixD2x7BJdSqZl0XaLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776408946; c=relaxed/simple;
-	bh=BUM1sFfc4z+gNHol3L3e6w/35+hoaRKwg5VUfwrXLdE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L/DGqqvPYvH/wE7oxXO6/sMDd4/sn9e02dmWa5veVf9wQdbidEtfspXzMZx0em1S4ISfcDaP3mZLLhL+khqfiIj5F7atxlt34WtcQWotc3u2OfrUGdXTjbhc8b0ckySoZcDa5wEc4NjgeexKeUV1I2j2LNJteQjO8W7LErtLcFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMbHhbsv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776409673; c=relaxed/simple;
+	bh=Q3U+5k1MvoRdWNZqyqWnSS2ZPwFJtCBfEHKSkleJKtU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rvJXRmAKNvagqUDNzpfLEO5Ca8koexGFUKC/k/iiDMrbRXndSTSKXh0XiQvPO2BVSp4uUrb90qYkK+hrcjrfv9NJOf6CLPEuyOPzteEol8RiU1KIQ6qhNQzfQQlfD4pLBkbWdZOizKBMvup71HZaZ2E4gQu63V4NN1Y5hzRaD9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yej2iAN2; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMbHhbsv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19334C19425;
-	Fri, 17 Apr 2026 06:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776408946;
-	bh=BUM1sFfc4z+gNHol3L3e6w/35+hoaRKwg5VUfwrXLdE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nMbHhbsvhFuKS17AdiBMfoaIvdOwn9vUmoGOZL475/6lsy/6HyIbeWMTzoxEhjonY
-	 yjvsUgKIASBtwRgmELj0Dg+r3INSCGq3r1OCAUv1Qk/FDHKLKbuqUb81KHiDaGqseK
-	 5iLbkGvK400ES9Ndn14Q2CI5L4q407ZS9FklD18nKXXKbAXnKjI2rZRBLOeUE6muE1
-	 5oQnFLwwS9TS92evz+b5ngGPo9cLVlNfirqnYOgkhoIizlWLdMeWdseNFA3h2FhGCZ
-	 KZ1Sf5JOmLUigrt6hFdfpducUfKk3aD91uzxEyJOakZmEXemfjckVbdzTn52lMwpb2
-	 BkFr9dL3OAwTg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03B91F8E4A7;
-	Fri, 17 Apr 2026 06:55:46 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 17 Apr 2026 08:55:42 +0200
-Subject: [PATCH v2] drm/panel: visionox-rm69299: Make use of
- prepare_prev_first
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yej2iAN2"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6712fd40860so533981a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 17 Apr 2026 00:07:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1776409670; x=1777014470; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qWDoup54yGiZZn5FFTCb80LFjkN7Dfch2gvN3C5FWn0=;
+        b=yej2iAN2TiOabVBGu4MF72oav8gO6COSCaEFnb2pMitC+FJwkZEkTDwxtY/V1/Hx61
+         m5URZWjrirH8MjppvMOddIMiQzTMIbgL//Aw917PQnQCfN3joQC1y4fA/lrajFm4YwTj
+         bT/wcfMmULtvI93dCECuFlYKepTdFu+h6VIhqbdGuxcBVS/5EoAZ6gOXJRb3oJHOmz2Z
+         QzfXJ6D78yE7qGHUm97Sm90NzzzXB0/fRaUP3TkdkttGp/zED+DnbDRH2G0WCjhNPq1T
+         cwzNp1DOW1j8+jKsnvzsFtV+PXFt1fnRRavco+u987WCttfdX3zfGrhiEvxTf5xoioRE
+         hMJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776409670; x=1777014470;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qWDoup54yGiZZn5FFTCb80LFjkN7Dfch2gvN3C5FWn0=;
+        b=D4p1MCtkCI/f+XdNo714T/j+xwLqy9+/k7KGfDIhLKs1yEfKrcAF6GORZ5HBMiKVTw
+         s2KfoSiXVx9hGmm95FDbC2EhGmGrrpoh0ekjlO/czm0vTYA4ynyUvph5kJYq2MBbk53l
+         esQCVIFYQFW4qSvJ1lxHI70Xs5Bwgs+hXSqQEEiBhz+PpeatjhJ5sMBltvdidq2cVnP3
+         jBhaUvDpuEYrU8U+S5sywqQ3xzyYEMe6br2fkPn5Y5/3TH0ilM6+i8JmhhBTG/EKSXwy
+         EZeXPyKyVL/I0xo9i2AHsZjdGB/9Rlgea+TH8BLl2oM+rA/6glvHau0wQaEjYZebAoPb
+         Qdbw==
+X-Forwarded-Encrypted: i=1; AFNElJ/nyboOFsH9OqDhdkSsCLoHNmWdbecS+6uQ0obhbaIEotYm5qkuWoTm6zbascbDdYvbKswXOOaoJmJCkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxErPVphbk4qb+SiWIrPpUmTrkHbUXeIAqeTnRN0oYiGNMTaCa2
+	lDfw159HGwQHYJrNjNW98qXRykB0sCrbWnSnT9R8hUn+2eP5Gw6xRaz9W7tqaapQtfg=
+X-Gm-Gg: AeBDiev7yoCqjcArcZBrpXxgcAv7lFhh6BUK3MDcui+MY4lfsmFYA/14eDmSWpIcfbd
+	Zw4u7TJQ+F8hZD6alalegVyHttSmu7yQlmFPHX3J5A9+gtz1xlx4Wl+kzOBnl94KFGXvfH2c3jw
+	ZRbG4KxDgTY/sltn2oSc9luTgpjUrtoFukeenRw79i9qL+B++670A2XYrWCvoy8aVJXGTfl4n2f
+	mwceZxC2aGZIrEYyhSsOm/AdqnKtmZaxqke8bLUFtL0hdBkyqSaOUOiYHUZ9/YnomKNOgTLVq8o
+	OsGQYTCP0SxCGUkuRoIIpnl8B0KLXltebUF1B+yOz5TY+ERJtb40qivPwQnVCROxW94cWPP1CMe
+	miFN0QzQMSwMBF/if1vclMfa7JMfzsbPl+WpyAR/s4a9MIXQ4Bdob6ckdJqjWpT0EIvPSdadNAZ
+	Pokk/SHcJ356rQljxxw+OPXP07BMv0/qGQ7zaV9OLiCCHVs1BAckdVU7jC6apjDQnCPtiz9T3tW
+	HR4KF4LRXnHcRDRCvyAJqJUsO0=
+X-Received: by 2002:a17:907:8e0e:b0:b9a:cb5e:5379 with SMTP id a640c23a62f3a-ba419171db1mr84163466b.15.1776409669646;
+        Fri, 17 Apr 2026 00:07:49 -0700 (PDT)
+Received: from [172.16.240.100] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba451cdfd27sm26448466b.26.2026.04.17.00.07.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 00:07:48 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v3 0/3] Add support for GXCLK for Milos
+Date: Fri, 17 Apr 2026 09:07:43 +0200
+Message-Id: <20260417-milos-gxclkctl-v3-0-08f5988c43a2@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,93 +68,68 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260417-axolotl-display-v2-1-8ce5341e46c2@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAG3Z4WkC/3WNwQ6DIBAFf8XsuTRCQU1P/Y/GA8K2bkLEACFaw
- 7+Xeu9xJnnzDogYCCPcmwMCZorklwri0oCZ9fJGRrYyiFZ0reSK6c07nxyzFFend9ZzZVDyDpU
- ZoK7WgC/azuJzrDxTTD7s50HmP/u/lTnjrNfTJKyQw02pB22UruYDYynlCwCuFoOsAAAA
-X-Change-ID: 20260415-axolotl-display-715ce416e5c8
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Douglas Anderson <dianders@chromium.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1693; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=9qaIOk2jaDgB2Cwe96XjpEy/bDYDz7aCW+7/jIamQeA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp4dlwDVNUHkEYKJ4EK7EcKFKl9f3Jw1BBY493q
- Y324AJTfe6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaeHZcAAKCRBgAj/E00kg
- cttsD/9m2anpA36jjz0zc5Pmrdj7RngeZZnHIPytR2ydyH1jeLbPHn2F3Ibnu+mYJPis3syIgUk
- KLSCVr7eT56sD8tETG37D/OvZfDqkCyG9fNoKC1m1+I9pw912f32cPe+GsC6mVIEcsOD+RTIAyD
- YDddEQRCYz8hTnlm+9pNpYU5iIYzRRurP12ItgvLGRTToPtJ8SOYudEiDnTsN4AO1iF0o6MUDhl
- ce70P+RizgTNbVt58vdBANuGmQ3NomKt/Al/UfTT/cSse836BevvVkmyXEfBHyU7lDzSA7MaZ3y
- DWX3iYRulpWJN+xY3iDujFthoZZj0W8z0W3Q8DtZWYguIKEH92785pu4TAtA3HHasKDFdc3Apih
- JyKhDwFhhQQCZ6LZUPG+BKTrH1a8wBDqE/F8RXW3+xN0Sp7yzXlXvdXTtrtXmO6iOGb2pIcOBhr
- 0zomRSKVy7xoI0T5t8TAwpyvIEYpAaf23uioV+yXyPiH7+VMNTylg8Z7zU81mWOmgmgqgi9ldp4
- ehxKx7DtYVYHWReGTKS8zCkRxzBnxbcUkbEau2JLOhGjR4+smPCLAodZYHDYtbUBoji3xoiomMt
- 2Yuiz1fmJuyDWbgAFI6AS3uLVjEdNBuR08wfr0ZvoFZ1XpM71s5jAkR2yZRFZA/GYrzMlduEqiT
- O16IDSInnSNhg1g==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOQQ6CMBAF0KuQrq2ZFgRh5T2MiwIDTIRW20owh
+ rtb68JE4/JP8t+fB3NoCR2rkgezOJMjo0NINwlrBqV75NSGzCTIHFLI+USjcbxfmvHc+JHv1T4
+ tZJsrgcBC6WKxoyWCx9M7W7zeguvfR1Yrh7wx00S+SjQunkc7Ezl7FQZy3th7fGgWsfFvexYcO
+ EANJaLYlao4dIrsZTAat2EgcrP8EBmkP4QMRLnDusxU0YLKvol1XZ/2T318JAEAAA==
+X-Change-ID: 20260306-milos-gxclkctl-8a8372d6a1e0
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexander Koskovich <akoskovich@pm.me>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>, 
+ Taniya Das <taniya.das@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776409667; l=1290;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=Q3U+5k1MvoRdWNZqyqWnSS2ZPwFJtCBfEHKSkleJKtU=;
+ b=ItnCRFeepb3xdXIGRx23ePVoTpbsJ6cicQ7SXkETPWOcf6/bgmzgAVAUFXbGC8dnDknPIxtNv
+ fqY038lsnThDHoJOTNJwKhswdIWVpMfu/JbcooXn+erEEhddbITdwvz
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-From: Guido Günther <agx@sigxcpu.org>
+Similar to other new SoCs, Milos also contains the GXCLKCTL block that
+we need to control for GPU. Add support for it.
 
-The DSI link must be powered up to let panel driver to talk to the panel
-during prepare() callback execution. Set the prepare_prev_first flag to
-guarantee this.
-
-Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
+Changes in v3:
+- Replace unevaluatedProperties with additionalProperties
+- Pick up tags
+- Link to v2: https://patch.msgid.link/20260403-milos-gxclkctl-v2-0-95eb94a7d0a4@fairphone.com
+
 Changes in v2:
-- Move the prepare_prev_first before drm_panel_add(). (Douglas)
-- Link to v1: https://lore.kernel.org/r/20260415-axolotl-display-v1-1-7abb2d248355@ixit.cz
----
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index e5e688cf98fdc..f1430370ff942 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -371,16 +371,18 @@ static int visionox_rm69299_probe(struct mipi_dsi_device *dsi)
- 		return ret;
- 
- 	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(ctx->reset_gpio)) {
- 		dev_err(dev, "cannot get reset gpio %ld\n", PTR_ERR(ctx->reset_gpio));
- 		return PTR_ERR(ctx->reset_gpio);
- 	}
- 
-+	ctx->panel.prepare_prev_first = true;
-+
- 	ctx->panel.backlight = visionox_rm69299_create_backlight(ctx);
- 	if (IS_ERR(ctx->panel.backlight))
- 		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
- 				     "Failed to create backlight\n");
- 
- 	drm_panel_add(&ctx->panel);
- 
- 	dsi->lanes = 4;
+- Update casing of binding title, reg goes as second property (Krzysztof)
+- Rebase on linux-next
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20260306-milos-gxclkctl-v1-0-00b09ee159a7@fairphone.com
 
 ---
-base-commit: e6efabc0afca02efa263aba533f35d90117ab283
-change-id: 20260415-axolotl-display-715ce416e5c8
+Luca Weiss (3):
+      dt-bindings: clock: qcom: document the Milos GX clock controller
+      clk: qcom: Add support for GXCLK for Milos
+      arm64: dts: qcom: milos: Add GX clock controller
+
+ .../bindings/clock/qcom,milos-gxclkctl.yaml        | 61 ++++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/milos.dtsi                | 10 ++++
+ drivers/clk/qcom/Makefile                          |  2 +-
+ drivers/clk/qcom/gxclkctl-kaanapali.c              |  1 +
+ 4 files changed, 73 insertions(+), 1 deletion(-)
+---
+base-commit: f4d9dc7f102a8d7e7fa018ae048aa324349122a4
+change-id: 20260306-milos-gxclkctl-8a8372d6a1e0
 
 Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
+--  
+Luca Weiss <luca.weiss@fairphone.com>
 
