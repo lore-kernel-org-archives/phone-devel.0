@@ -1,168 +1,129 @@
-Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
+Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DE333998;
-	Sun, 19 Apr 2026 13:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776606083; cv=pass; b=cvDYmt1DaoT/iXUW6DvyrBCrw6oTNNnHxy5A15acSjUZbeVbEIbfbI2nkoL0kUD1QAfzg1OijoN4FNVKh1TGIe21NyLsRyj95+ZfIZ3aVT/sAD79s1KYi9vZAgmhLP+evPTH1Vx7SUzw8Gy0/8FPc7j9rLdacuPKhzYOiHv6G6M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776606083; c=relaxed/simple;
-	bh=VnFxSTJogffl2XE7uVUb6etkwqqG5nQ1gKXcU/nILEs=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=TP6XY5kTjNIqdljvSE2I21ZuniIPFlL9D6kZ6hHgsQEReaFVAGs1/4HePJefxk38ZiRSd+sGAVhoXD76ghYmiurWGpnO9ybqaFDYSMqpKfHod/7jWbFEjkX46Ri4KoN/LFgYiErsiTgt/3HnncF97p0ESJPgBNS05BaLnKNCM54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=sRVkW/Lt; arc=pass smtp.client-ip=23.83.218.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830471A6831;
+	Sun, 19 Apr 2026 20:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776632119; cv=none; b=YRRdEgp93Tp2XyY5sbZRwTa9m8DKGkmTQLNaHR/zrSS1gYo36bUh4rO273bGspX2y4AI/jp53ZhwZno+BsoACStjCAaKXfrKSIf8avmtKgSPbwFTlA+75WZgiGbA0FzMGRSL6RnjRsZDQZ+idRfKM/UsyWqjndrbyl8jMUBj2xE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776632119; c=relaxed/simple;
+	bh=mMXd/kazajBIcAdcXmWmpbLcdsL3+deZiodDRu1n87w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Qn0uxqNcio/udnNp7VolRrDtq2lpFbfNd7M7YSRX60T4BV26H60gYBGDgjinKGtr6rx8CSJ1sSq3LiIjovcY6+1eFF6NdEFm04jrg7YM2w/qW5GBiX/3cP/QbfLX6iI50IjiNtPSbRYX2RocE2ANQrT5pqPbScH3vBWPIJN5S+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=v/uy9GLB; arc=none smtp.client-ip=168.119.26.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="sRVkW/Lt"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id C4BC176216A;
-	Sun, 19 Apr 2026 13:41:15 +0000 (UTC)
-Received: from fr-int-smtpout26.hostinger.io (100-103-3-248.trex-nlb.outbound.svc.cluster.local [100.103.3.248])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id A806B7625CD;
-	Sun, 19 Apr 2026 13:41:12 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1776606075;
-	b=5DiXgn5IjiaI0LEZp3wLsuPdKvUrdNUIf79gh3vibkWPKpw91rGAEoag+sHismIrahBBzF
-	BqsbBN8ylHhF/XcM3W1UOqfzdYyfydqb3jDo3qy2CZtHHMB/FJO+k/XACidaDlMp9wBB82
-	93vwsSHerKgFoFYzvMjhg9PAmL+OxyC0pgjZu6/m3o3jWvMKy4aMlHZ77pJfSC5D53gH54
-	fjrgHtl6XajdibIL3I88CLpl/ZqfpJjZUBqX3F9W3m/m5gkFIP67bpqa0AN4kzNnvxIMNv
-	9gUf65hTVai5bzmT+Am+B4oPeaODDTyso/QDZ0NMMMPONqB2W70qi96H7SbX7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1776606075;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3ZegHV/Cy+Vd7QHA2PrtnXvjHee6c7TW3JGeMrYaQs=;
-	b=evGteiemUyJ7t424zGfbZWENhvr5iuVUAlzDFktk6z4lmx0V7ttnV/avvUi0qhma7yCOEL
-	ZElRAumGAGo/WH+x/TBcx4mQZJ62zgkGkFrNz9U8wGlViOz/13T2YZmXrNUDA5aNDBUn9B
-	F/c1nnOw4IorkG6VNE2vZLURoJjIo0Iz7eyKC1FoOit0LBNYrvS7bzp/ql1OMOSnIz0wgG
-	H42xVcSLaSae2k2aUX1guN+Hx8CjKbt3VeI10uozeu6AnXmwakL08Abd1Q/089NPy2S/Xd
-	mDXjj+OBfVHIMP0tvbkJGvuNYJdQgvTtdUbwGcMNTr6qEhdoUfczTSGhsDi6eA==
-ARC-Authentication-Results: i=1;
-	rspamd-5895b9784c-cklvk;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Shoe-Tasty: 6f71109443f2d5fb_1776606075658_2962281406
-X-MC-Loop-Signature: 1776606075658:2584535058
-X-MC-Ingress-Time: 1776606075657
-Received: from fr-int-smtpout26.hostinger.io (fr-int-smtpout26.hostinger.io
- [148.222.54.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.103.3.248 (trex/7.1.5);
-	Sun, 19 Apr 2026 13:41:15 +0000
-Received: from [IPV6:2001:448a:c020:c3c:d097:d42a:836e:79a] (unknown [IPv6:2001:448a:c020:c3c:d097:d42a:836e:79a])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4fz8sH2FWqz1xml;
-	Sun, 19 Apr 2026 13:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1776606071;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k3ZegHV/Cy+Vd7QHA2PrtnXvjHee6c7TW3JGeMrYaQs=;
-	b=sRVkW/Ltusmhkvn8dBC2v/Kcm7c87/nVx+exry90S4iyrTOLzdoozM2Xn65wmlYARLgZDw
-	nUJf8xW+Yg9aot3JHQ4Q8BqJ8HcgHml+h3JLnbqIE4zdziGx1UDJVUoIhy23cj032DeBuT
-	v52b9b3nb3v+Oy58YiVL/SrPAXerHLU9/eJJp39hBiTyY8ZbWss67iihZDOsIgluXQ/uFq
-	TCPrfhhyMINeA7vcCCQ34dBNnQSXb+6vXuRyyJpisn0qzw2COt/7sq+2zwxbf3+nVfW7k0
-	DyVqV0jMdobi07i52PGU4mFeqIl3gPPHcX47MWfRBwXXvBIbZei4Vex5rj/VFA==
-Message-ID: <71196906-0a06-4647-9080-ac6e7d2741ad@smankusors.com>
+	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="v/uy9GLB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
+	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=8QJGLTOhJGOcLGXJwTPrhXHSouYTwqDUTTa8K1Pchto=; b=v/uy9GLBvVYkrWkA6SvLb0BA3b
+	OVOQMOxwGg8WTYnDAHcWZENwcIOTUsK7b33ebOC1PlFF1BgDGGrpMFW+i7urk9wrSnENETpWPkImJ
+	HuQr4OMQJcT59PG1LDbYS8uJjfTlhxcEOq36HiOrCQObErVWonlQrFZUFUSJ1PYjdOHX1knRTt2iT
+	R52hxwQtG9ix7UYLhmLdPSVOrRBbEFOQCVgOA52As38fbFpSxUxFk0lrmOPThRSFoawdk57jFlovg
+	4Sm3bGq97rT8s5rABh1dvuHdrPrLUvFlhMHXR/oJtCa3s74gkxWnXG/Vvu5iL+MDS22iPpQod7LsK
+	KdEDrucw==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <git@apitzsch.eu>)
+	id 1wEYjL-0006vf-2J;
+	Sun, 19 Apr 2026 22:26:59 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <git@apitzsch.eu>)
+	id 1wEYjK-000FSx-0B;
+	Sun, 19 Apr 2026 22:26:58 +0200
+Message-ID: <a09485c54946b754741259540257393734b518c3.camel@apitzsch.eu>
+Subject: Re: [PATCH RFC 06/10] arm64: dts: qcom: msm8939-asus-z00t: add Venus
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Erikas Bitovtas
+	 <xerikasxx@gmail.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bryan O'Donoghue	
+ <bod@kernel.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio	 <konradybcio@kernel.org>, Michael
+ Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Date: Sun, 19 Apr 2026 22:26:56 +0200
+In-Reply-To: <37poakqgqhsuavvrm2dyzwk36syyq44o4cfdsylkzwsupbh2yt@ycdvyrxgnrcs>
+References: <20260416-msm8939-venus-rfc-v1-0-a09fcf2c23df@gmail.com>
+	 <20260416-msm8939-venus-rfc-v1-6-a09fcf2c23df@gmail.com>
+	 <0a5f9bd6-d3ea-4819-8be3-cc5a06ec0339@oss.qualcomm.com>
+	 <ad482bdd-2fb5-432f-be1d-dec25d9cbf5b@gmail.com>
+	 <37poakqgqhsuavvrm2dyzwk36syyq44o4cfdsylkzwsupbh2yt@ycdvyrxgnrcs>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] ARM: dts: qcom: msm8960: add SMSM & SPS
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski
- <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>
-References: <20260414-msm8960-wifi-v1-0-007fda9d6134@smankusors.com>
- <20260414-msm8960-wifi-v1-8-007fda9d6134@smankusors.com>
- <u7buljdmiu2kf5unlqs2jh5u24ymteyrfvbb2drc6ntsei2mqq@yuhjpchgpgh3>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <u7buljdmiu2kf5unlqs2jh5u24ymteyrfvbb2drc6ntsei2mqq@yuhjpchgpgh3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Sun, 19 Apr 2026 13:41:07 +0000 (UTC)
-X-CM-Envelope: MS4xfMHuAEyLu7fY7qdSQn1P7SJ3nktyA4wwwWmntaxPCTCwN7T0+fI9gq32cd86IoZ/CZizMu9sce47R5J3igRoOF28ezWgc9wwSPvyvZoZ1sfzAW+OqiLj 7kfGFPYbESJC1Pkmf2Wczry1JSrPdkJ3e/YPcJ4SdlqCKFBlEG+/j2TXDiPi4CLslY12rRzZc98aUp+kcJ5TJdvfzhY9l8RGhxlYcPH+O1CKh0J8yuENAr5I grNidR3JB2HsiOoA3Okjk6kxcPBINJLhSWwTfcZbeIXMpy1ptJDaVdNIGa40Bm0PaCis1PCR4N2icVc8g+gUtpAlppmNzhSyrAgLFylazbqlrAhj1t16HLn/ YM9Pf0cLDsSUU0LVsSpezoq+lEiG22tLBp4EDwHv72RtXRjnB5+SZC+G8tVnaEDq2Idizx0nB5RDKKEintAYEXzp3DvZRtu1IuUPGoi8ot9gmHnHN4lE3QW4 NLu09iyGkxnyW5AiZpx4COulyw9PhY3cMaJiPGtKJOw+udIu7eJtqMAoDkZ29/sGcTz1b+Ku9oVBCH4CtLUVyL6sX2HbjhIlFzKqWx82FxoUFqShDSIX+8sd EWo7tFRbmZNWfziYCei1XNGUMJiHl3nEn13BifEym0CXZIg3SsGFImBvz8Ejf04Ju3q06x0PmwmibmETOtagncmkvrcASO4OTcdCeKdyLtuLyluNpZdZVDXm m184KlolMWJASbtZ6Lc6yh7fMib1v6/V6yxfhOrkeXZ0PK45tvbMmaGfNVCnI+TufFDxqH/GFQnhauwMAnGuRzSXoKU7iZJL
-X-CM-Analysis: v=2.4 cv=ZbRPNdVA c=1 sm=1 tr=0 ts=69e4db77 a=q8XfeKLTkGORBkIvkVRlwA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=wxLWbCv9AAAA:8 a=pGLkceISAAAA:8 a=2Liv2LJbaJilggPZqoAA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
-X-AuthUser: linux@smankusors.com
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27976/Sun Apr 19 08:26:09 2026)
 
-On 4/18/2026 11:53 PM, Dmitry Baryshkov wrote:
-> On Tue, Apr 14, 2026 at 01:55:35AM +0700, Antony Kurniawan Soemardi via B4 Relay wrote:
->> From: Antony Kurniawan Soemardi <linux@smankusors.com>
->>
->> Add the Shared Memory State Machine node to coordinate state transitions
->> between the Applications processor and the Riva subsystem.
->>
->> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
->> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
->> ---
->>   arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 30 ++++++++++++++++++++++++++++++
->>   1 file changed, 30 insertions(+)
->>
->> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
->> index 218cf3158dfb..107c5613aa4a 100644
->> --- a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
->> +++ b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
->> @@ -109,6 +109,31 @@ smem {
->>   		hwlocks = <&sfpb_mutex 3>;
->>   	};
->>   
->> +	smsm {
->> +		compatible = "qcom,smsm";
->> +
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		qcom,ipc-1 = <&l2cc 8 4>;
->> +		qcom,ipc-2 = <&l2cc 8 14>;
->> +		qcom,ipc-3 = <&l2cc 8 23>;
->> +		qcom,ipc-4 = <&sps_sic_non_secure 0x4094 0>;
->> +
->> +		apps_smsm: apps@0 {
->> +			reg = <0>;
->> +			#qcom,smem-state-cells = <1>;
->> +		};
->> +
->> +		wcnss_smsm: wcnss@3 {
->> +			reg = <3>;
->> +			interrupts = <GIC_SPI 204 IRQ_TYPE_EDGE_RISING>;
->> +
->> +			interrupt-controller;
->> +			#interrupt-cells = <2>;
->> +		};
-> 
-> Are there other SMSMs (modem, Q6, DSPS)? If so and if you are going to
-> send another revision, could you please add those?
-Yes there are. But I've intentionally left them out for now since
-they're unrelated to this Wi-Fi enablement series and I currently have
-no way to test them without bringing up the modem, audio, and/or video
-subsystems first.
+Hi Dmitry,
 
-I think it's cleaner to keep this series focused on what's verifiable
-today and handle the rest in a future separate series. What do you
-think?
+Am Samstag, dem 18.04.2026 um 02:40 +0300 schrieb Dmitry Baryshkov:
+> On Thu, Apr 16, 2026 at 07:57:30PM +0300, Erikas Bitovtas wrote:
+> >=20
+> >=20
+> > On 4/16/26 6:17 PM, Konrad Dybcio wrote:
+> > > On 4/16/26 3:43 PM, Erikas Bitovtas wrote:
+> > > > Enable Venus video encoder/decoder for Asus ZenFone 2
+> > > > Laser/Selfie.
+> > > >=20
+> > > > Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> > > > ---
+> > > > =C2=A0arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 8 ++++++++
+> > > > =C2=A01 file changed, 8 insertions(+)
+> > > >=20
+> > > > diff --git a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
+> > > > b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
+> > > > index 90e966242720..231a3e9c1929 100644
+> > > > --- a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
+> > > > +++ b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
+> > > > @@ -267,6 +267,14 @@ &usb_hs_phy {
+> > > > =C2=A0	extcon =3D <&usb_id>;
+> > > > =C2=A0};
+> > > > =C2=A0
+> > > > +&venus {
+> > > > +	status =3D "okay";
+> > >=20
+> > > You need a firmware path here
+> >=20
+> > When I tested Venus on my device, it loaded without one specified -
+> > msm-firmware-loader creates a symbolic link from modem partition
+> > for firmware. Additionally, none of the MSM8916 devices seem to
+> > include a firmware name. Has something changed since then?
+>=20
+> Us becoming more strict? Or more caring? The default file paths are
+> supposed to be used for unfused devices. So if they don't work with
+> yours (most likely they don't), please add firmware-name:
+>=20
+> firmware-name =3D "qcom/msm8916/Asus/z00t/venus.mbn";
 
--- 
-Thanks,
-Antony K. S.
+For BQ M5 (msm8939-longcheer-l9100), venus works with the firmware
+provided by linux-firmware [1] and the default path (here "qcom/venus-
+1.8/venus.mbn").
+
+Just to be clear, should the firmware-name still be added in this case,
+even if it is the default one?
+
+Best regards,
+Andr=C3=A9
+
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware=
+.git/tree/qcom/venus-1.8
