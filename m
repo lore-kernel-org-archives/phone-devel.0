@@ -1,129 +1,92 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830471A6831;
-	Sun, 19 Apr 2026 20:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57793382388
+	for <phone-devel@vger.kernel.org>; Mon, 20 Apr 2026 08:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776632119; cv=none; b=YRRdEgp93Tp2XyY5sbZRwTa9m8DKGkmTQLNaHR/zrSS1gYo36bUh4rO273bGspX2y4AI/jp53ZhwZno+BsoACStjCAaKXfrKSIf8avmtKgSPbwFTlA+75WZgiGbA0FzMGRSL6RnjRsZDQZ+idRfKM/UsyWqjndrbyl8jMUBj2xE=
+	t=1776673868; cv=none; b=rnAbz7KJ/vRyrljXhJfE1hhPH68K4Z7sMxzsKAgVEiInV3Kep5ZkriCx4FJ1CbhK7qHqQFoLJHTEmpFCeegDRM3QMOxemu0I7c80dgOZd0QnH6IJVxNXegN3OW6aupWyepHcZqYymEuux6YoBiokLS64zOTku7iQm9dLYIavxcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776632119; c=relaxed/simple;
-	bh=mMXd/kazajBIcAdcXmWmpbLcdsL3+deZiodDRu1n87w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qn0uxqNcio/udnNp7VolRrDtq2lpFbfNd7M7YSRX60T4BV26H60gYBGDgjinKGtr6rx8CSJ1sSq3LiIjovcY6+1eFF6NdEFm04jrg7YM2w/qW5GBiX/3cP/QbfLX6iI50IjiNtPSbRYX2RocE2ANQrT5pqPbScH3vBWPIJN5S+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=v/uy9GLB; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1776673868; c=relaxed/simple;
+	bh=TkxBkpxIkLfIlBiUOnE+RSkdH2oRaYJgDneP5SU9m9U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f1K/qtfo+I1LTXYn4XiCVHJ+4bRvATp/c9VDemoJt3Ur8EuKGmrH+wVPHX/mtvUn0FqcT6Wkb+wf76QJ8cd817FJ58SnFUAj5a+U3uICRn0l789b4ERDYag/xM3q2FCh6OGIXsD0hqZjKBaxX8LUL+BU+ZP+Pg+5vEtM6+MPxwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxud+BDQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="v/uy9GLB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=8QJGLTOhJGOcLGXJwTPrhXHSouYTwqDUTTa8K1Pchto=; b=v/uy9GLBvVYkrWkA6SvLb0BA3b
-	OVOQMOxwGg8WTYnDAHcWZENwcIOTUsK7b33ebOC1PlFF1BgDGGrpMFW+i7urk9wrSnENETpWPkImJ
-	HuQr4OMQJcT59PG1LDbYS8uJjfTlhxcEOq36HiOrCQObErVWonlQrFZUFUSJ1PYjdOHX1knRTt2iT
-	R52hxwQtG9ix7UYLhmLdPSVOrRBbEFOQCVgOA52As38fbFpSxUxFk0lrmOPThRSFoawdk57jFlovg
-	4Sm3bGq97rT8s5rABh1dvuHdrPrLUvFlhMHXR/oJtCa3s74gkxWnXG/Vvu5iL+MDS22iPpQod7LsK
-	KdEDrucw==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1wEYjL-0006vf-2J;
-	Sun, 19 Apr 2026 22:26:59 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1wEYjK-000FSx-0B;
-	Sun, 19 Apr 2026 22:26:58 +0200
-Message-ID: <a09485c54946b754741259540257393734b518c3.camel@apitzsch.eu>
-Subject: Re: [PATCH RFC 06/10] arm64: dts: qcom: msm8939-asus-z00t: add Venus
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Erikas Bitovtas
-	 <xerikasxx@gmail.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bryan O'Donoghue	
- <bod@kernel.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Bjorn Andersson
- <andersson@kernel.org>, Konrad Dybcio	 <konradybcio@kernel.org>, Michael
- Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org
-Date: Sun, 19 Apr 2026 22:26:56 +0200
-In-Reply-To: <37poakqgqhsuavvrm2dyzwk36syyq44o4cfdsylkzwsupbh2yt@ycdvyrxgnrcs>
-References: <20260416-msm8939-venus-rfc-v1-0-a09fcf2c23df@gmail.com>
-	 <20260416-msm8939-venus-rfc-v1-6-a09fcf2c23df@gmail.com>
-	 <0a5f9bd6-d3ea-4819-8be3-cc5a06ec0339@oss.qualcomm.com>
-	 <ad482bdd-2fb5-432f-be1d-dec25d9cbf5b@gmail.com>
-	 <37poakqgqhsuavvrm2dyzwk36syyq44o4cfdsylkzwsupbh2yt@ycdvyrxgnrcs>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxud+BDQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE6FC2BCB6
+	for <phone-devel@vger.kernel.org>; Mon, 20 Apr 2026 08:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776673868;
+	bh=TkxBkpxIkLfIlBiUOnE+RSkdH2oRaYJgDneP5SU9m9U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uxud+BDQSiTa6Bs4hptkPn+00Xt41mVF8mW0o+nR9mbPg4KDp7Ep3EsJ3xWz8yo14
+	 GE7FPgmMe5IQ+wDOveCrb7tKe0B5xoNKds69fA4KbiZ2GZI778TSTUXgEjT7iC8Fr5
+	 yswgdkUDqg8d10A064DuZ1GQ+vegOru820herN0X0LSqL9TA8taYWCRukaElNAhHzo
+	 JO7kRsJwlx2YW5KLNMCwzjUB9mpP73omTQCKIMo+rb+eoteH+NbuVenDU9Z527fzgJ
+	 54wQfokGlIhI+FJGfE2aEeHhLp3QtPpa6ZtkPow7hk74g22yf4flb8S0F0XITGY2Wg
+	 uujms7QDQxn6Q==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a3d42263e4so2720957e87.2
+        for <phone-devel@vger.kernel.org>; Mon, 20 Apr 2026 01:31:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ81WEOWX4HnpZM5IrzJQxT9VCpmmXgFl9C3w4gxquwyIRtdVsb9KI8SL6XY7KGlybbCfpZS4eDGS+aEoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxssgdBCb9EFanvHxXLcnmu3iPg3UoDi6IrzdeARRR3vFK27uzR
+	rZ1rdi0PexUR7IOxIkdbhG+PMF3YvE7+eDDuoVjNjb5IimOC4F7jMAvRMJ+yntWzRJRhg+2jW1h
+	rEAH2pykj+EuGgura1Pr0okXh12/rBpY=
+X-Received: by 2002:a05:6512:2208:b0:5a1:3f3f:a29b with SMTP id
+ 2adb3069b0e04-5a4172bb1acmr4057641e87.6.1776673866600; Mon, 20 Apr 2026
+ 01:31:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27976/Sun Apr 19 08:26:09 2026)
+References: <20260416182829.1440262-1-kuba@kernel.org>
+In-Reply-To: <20260416182829.1440262-1-kuba@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 20 Apr 2026 10:30:53 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmBxH1Zubh2avWrvMs4L0zv1NU7WEO3D8aeGiiVZo5AdQ@mail.gmail.com>
+X-Gm-Features: AQROBzBS1rwUfJkxu4I1Uao8rY7kY_R00Kb59THitu5QitALyMHIJTX2479zrZI
+Message-ID: <CAD++jLmBxH1Zubh2avWrvMs4L0zv1NU7WEO3D8aeGiiVZo5AdQ@mail.gmail.com>
+Subject: Re: [PATCH net-deletions] caif: remove CAIF NETWORK LAYER
+To: Jakub Kicinski <kuba@kernel.org>, phone-devel@vger.kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net, 
+	skhan@linuxfoundation.org, alexs@kernel.org, si.yanteng@linux.dev, 
+	dzm91@hust.edu.cn, linux@armlinux.org.uk, mst@redhat.com, jasowang@redhat.com, 
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, xu.xin16@zte.com.cn, 
+	wang.yaxin@zte.com.cn, jiang.kun2@zte.com.cn, jihed.chaibi.dev@gmail.com, 
+	arnd@arndb.de, tytso@mit.edu, jiayuan.chen@shopee.com, 
+	gregkh@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dmitry,
+On Thu, Apr 16, 2026 at 8:28=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 
-Am Samstag, dem 18.04.2026 um 02:40 +0300 schrieb Dmitry Baryshkov:
-> On Thu, Apr 16, 2026 at 07:57:30PM +0300, Erikas Bitovtas wrote:
-> >=20
-> >=20
-> > On 4/16/26 6:17 PM, Konrad Dybcio wrote:
-> > > On 4/16/26 3:43 PM, Erikas Bitovtas wrote:
-> > > > Enable Venus video encoder/decoder for Asus ZenFone 2
-> > > > Laser/Selfie.
-> > > >=20
-> > > > Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
-> > > > ---
-> > > > =C2=A0arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 8 ++++++++
-> > > > =C2=A01 file changed, 8 insertions(+)
-> > > >=20
-> > > > diff --git a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-> > > > b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-> > > > index 90e966242720..231a3e9c1929 100644
-> > > > --- a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-> > > > +++ b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-> > > > @@ -267,6 +267,14 @@ &usb_hs_phy {
-> > > > =C2=A0	extcon =3D <&usb_id>;
-> > > > =C2=A0};
-> > > > =C2=A0
-> > > > +&venus {
-> > > > +	status =3D "okay";
-> > >=20
-> > > You need a firmware path here
-> >=20
-> > When I tested Venus on my device, it loaded without one specified -
-> > msm-firmware-loader creates a symbolic link from modem partition
-> > for firmware. Additionally, none of the MSM8916 devices seem to
-> > include a firmware name. Has something changed since then?
->=20
-> Us becoming more strict? Or more caring? The default file paths are
-> supposed to be used for unfused devices. So if they don't work with
-> yours (most likely they don't), please add firmware-name:
->=20
-> firmware-name =3D "qcom/msm8916/Asus/z00t/venus.mbn";
+> Remove CAIF (Communication CPU to Application CPU Interface), the
+> ST-Ericsson modem protocol. The subsystem has been orphaned since 2013.
+> The last meaningful changes from the maintainers were in March 2013:
+>   a8c7687bf216 ("caif_virtio: Check that vringh_config is not null")
+>   b2273be8d2df ("caif_virtio: Use vringh_notify_enable correctly")
+>   0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
+>
+> Not-so-coincidentally, according to "the Internet" ST-Ericsson officially
+> shut down its modem joint venture in Aug 2013.
 
-For BQ M5 (msm8939-longcheer-l9100), venus works with the firmware
-provided by linux-firmware [1] and the default path (here "qcom/venus-
-1.8/venus.mbn").
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Just to be clear, should the firmware-name still be added in this case,
-even if it is the default one?
+This specific code was used out-of-tree for modems M5730,
+M5740 etc used for minor Android phone brands such as Sharp,
+Motorola, Philips.
 
-Best regards,
-Andr=C3=A9
+However it is also used in the Samsung Galaxy S 4G, so
+let's page phone-devel@vger.kernel.org so the possible
+audience knows. PostmarketOS is not actively supporting
+it.
 
+I remember that I advised Sjur to use virtio for this project and it lives
+on through the generic contributions to virtio that resulted.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware=
-.git/tree/qcom/venus-1.8
+Yours,
+Linus Walleij
