@@ -1,32 +1,34 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F22383C68
-	for <phone-devel@vger.kernel.org>; Mon, 20 Apr 2026 21:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CC43876CC
+	for <phone-devel@vger.kernel.org>; Mon, 20 Apr 2026 21:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776721009; cv=none; b=gZq7nwB6LvotT4zJVdYfrQsGgrmqE1/Zm4WdjTvsD1uyEBIV4WD5VOa3tIDcAHvlLAdAL3E3upqtSSk6Ccxuhmr8D1XI5W93+TXuCRwPwThUMkGnULahYKXm3JeraEytMpg8wa4TSIGowJ/d9lLNMGQ78tBG1PR4hTOO8dvmywc=
+	t=1776721032; cv=none; b=I7AhH0fC/zBGIn1tz2bbqYBy10bN3tTwYACHotMIPrcbcuLAecf3uLkbs55sSEeZvvhg+3yUsVs85YWBBoN6AODgUYmJTRaLEUute/cn47LW5s7i7esIsN/2xapnjwJNrl+osaTuW5VAjrI+ERsCtYLB3GMdQJ4/fM49Rqhtyks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776721009; c=relaxed/simple;
-	bh=Zoa9UFukAnEuQ9c5K2BgTjKyv1xjsW93g1GcRgdd5/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nu5/6AJBKCHNQYOOTx32do/Bez3F+ID49xGcn+Y+xTQNPorrF1daaX0Gcu5F/s3NaLsGo4nhARbDYW23K6X6xwXCg2m4sUY/6xKySO/vjN6BtRkutLrNoL52ssUGm84IUmi5IbE8nAMkVm4QzrQ4Tm675ex2Z6W6Q6stPS4bnEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=u+f72JwR; arc=none smtp.client-ip=95.215.58.173
+	s=arc-20240116; t=1776721032; c=relaxed/simple;
+	bh=Yf0WPJgEw63hC4Ftd+tg8HDiNA4NmQPEsc/monuPMwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lRsmX1pPk59kxt4Q4q305FHxwIW/BdGvvIthkp8EgFUyKKr7xQWipWxLOWsQgqK3c4Da7ZmafLDA9Z1GmZtGkzuIEmdKWxFvZWrzF3lfaxp04cnFRYd1lISKF43I/x6qcFemtdha9cGJSdt1+KcSV0Fyb6HNBGKk2HrHZ37qlmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=hwgH6S5t; arc=none smtp.client-ip=95.215.58.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="u+f72JwR"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="hwgH6S5t"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1776721004;
+	s=key1; t=1776721028;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LVdcleR35uFx2dhc75lKVNMy76V7PNh/Wg93kc21brE=;
-	b=u+f72JwRan4JbDYbD2LgiOH0fSvSWK/ym7mKC37YeaH2jl9rNx3XEqbfA9PuJZhyTJ67iQ
-	tmU4uS95gEQDe82tfBBdPMis5gUxCIVvld/dmhydw+ZvtwiAtaVoqms4cwt9e/hSasTbSD
-	j/Fi9rDQyyuXb90agGlME7CtfERdPOCde8Tjn7zCfn4VMu2tiEYAyBAtySvMwid+5GT7O6
-	NjIocox0kY9lvlytSY0s5466Yxt35Ub7HyEdywNe7Qu05TddQ5J9JUdQ20ExymjfXRZTtn
-	Y1JDi5Kac9mSyWaeTL/kHvu3JhnStH7Tr0mzqqdZ9d5yFXqHD7irqz8BlnXatg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rDQnhd1Mjgk59m3jRZy2qUsquCCaUodGYFITXbEmC+w=;
+	b=hwgH6S5tjmcIagQuDVgIeDmjCxuZ/AWKS9LqRE5D73g/NXrFormvU8OjfFL8JgwHcRrm53
+	ka9vdy6vaZ+pgCdYsxWlOB97aEcfFDkBY79Dq1uXKoVQCPenTzIOXjoPWdjze8gn6XURn1
+	6XYyQxgJPjpbCWLU20joeFvgcWDOhEcU1n6kb1Xpbgz4uWbLwJOTxffZf9XNaTPWJL2sRc
+	BeM24N0MyTxHrgcE9lMPhxGyzWSeZpLzmrbeoblUbOTE/vtK2tDNonF14iYJUW8mCtgOsd
+	qaTC+tmK4ejwgU7tyfWI7wE8lxxNkauURtmSKlAEqOIrwrCZGiiRPU8lx4ywJA==
 From: Val Packett <val@packett.cool>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -37,11 +39,13 @@ Cc: Val Packett <val@packett.cool>,
 	Luca Weiss <luca.weiss@fairphone.com>,
 	phone-devel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] ASoC: codecs: aw88261: fix changing sample rate and bit width
-Date: Mon, 20 Apr 2026 16:39:58 -0300
-Message-ID: <20260420213250.215465-2-val@packett.cool>
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH 2/2] ASoC: codecs: aw88261: use correct registers for AW88258
+Date: Mon, 20 Apr 2026 16:40:00 -0300
+Message-ID: <20260420213250.215465-4-val@packett.cool>
+In-Reply-To: <20260420213250.215465-2-val@packett.cool>
+References: <20260420213250.215465-2-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,378 +55,162 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The aw88261 driver only worked with 32-bit 48kHz streams so far due to
-the lack of a proper PLL initialization sequence. Fix by selecting all
-the necessary PLL settings based on what was passed to us in the
-hw_params DAI callback. This replaces the strange downstream routine
-that tries two divider modes in sequence.
+The AW88258 has a slightly different register map, namely the PLL ones
+are different and some extra boost ones are absent. Before the recent
+hw_params fix, the PLL CCO_MUX accesses were actually always wrong as
+the PLLCTRL1 address (0x54) was from the AW88261 but the CCO_MUX offset
+(14) was from the AW88258. With said fix the AW88261 parameters were
+always used, making it work on that chip. Make the accesses correct
+for the AW88258 as well.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
+This one is not tested (don't have the hardware), but since I've noticed
+that the CCO_MUX was not even correct for any of the supported chips,
+I've decided to try fixing it for the other one as well.
 
-This driver is used for the speakers on devices like fairphone-fp5 and
-motorola-dubai, but until now only with non-upstreamable hacks (see [1])
-to force the use of S32_LE because it "did not initialize with the format
-limited to S16_LE".
+Code style wise this is kind of a really annoying situation but hopefully
+this looks okay enough
 
-It seems like the downstream driver did not actually handle this properly
-either, so I presume similar hacks are done there too. There are two
-different versions I've found (in the same tree even): the "newer" more
-complex one [2] sends hw_params straight to /dev/null and has this bizzare
-I-don't-know-what-I'm-doing "mode1/mode2" routine that was copied into the
-upstream driver, while the other simpler one [3] does indeed have an
-hw_params callback that configures registers based on the params..
-
-Except if anyone tried to just copy it, it wouldn't actually fix support
-for bit widths other than 32. The crucial thing it missed was the I2SBCK
-field, which is what's actually responsible for setting the "physical"
-frame length! Also during testing I've discovered that the value of the
-registers was being reset during aw88261_dev_pwd, so touching registers
-directly in the hw_params handler would not work.
-
-With this patch, the aw88261 speakers in my motorola-dubai do work with
-the S16_LE format, avoiding the need for sm8250.c hacks.
-
-[1]: https://github.com/sc7280-mainline/linux/commit/b9c78cb306ff069eee65213c67b7e7fba40e6221
-[2]: https://github.com/LineageOS/android_kernel_motorola_sm7325/tree/lineage-23.2/techpack/audio/asoc/codecs/aw88261
-[3]: https://github.com/LineageOS/android_kernel_motorola_sm7325/blob/lineage-23.2/techpack/audio/asoc/codecs/aw882xx/aw882xx.c
-
-Thanks,
 ~val
-
 ---
- sound/soc/codecs/aw88261.c | 174 ++++++++++++++++++++++++-------------
- sound/soc/codecs/aw88261.h |  78 ++++++++++++++++-
- 2 files changed, 189 insertions(+), 63 deletions(-)
+ sound/soc/codecs/aw88258.h | 34 ++++++++++++++++++++++++++++++++++
+ sound/soc/codecs/aw88261.c | 37 ++++++++++++++++++++++++++-----------
+ 2 files changed, 60 insertions(+), 11 deletions(-)
+ create mode 100644 sound/soc/codecs/aw88258.h
 
+diff --git a/sound/soc/codecs/aw88258.h b/sound/soc/codecs/aw88258.h
+new file mode 100644
+index 000000000000..7ae177667ae6
+--- /dev/null
++++ b/sound/soc/codecs/aw88258.h
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0-only
++//
++// aw88258.h  --  AW88258 ALSA SoC Audio driver
++//
++// Copyright (c) 2023 awinic Technology CO., LTD
++//
++// Author: Jimmy Zhang <zhangjianming@awinic.com>
++// Author: Weidong Wang <wangweidong.a@awinic.com>
++//
++
++#ifndef __AW88258_H__
++#define __AW88258_H__
++
++/* This file contains definitions for registers that differ between
++ * the AW88261 (ID 0x2113) and the AW88258 (ID 0x1852). */
++
++#define AW88258_PLLCTRL1_REG		(0x66)
++#define AW88258_PLLCTRL2_REG		(0x67)
++#define AW88258_PLLCTRL3_REG		(0x68)
++
++#define AW88258_CCO_MUX_START_BIT	(14)
++#define AW88258_CCO_MUX_BITS_LEN	(1)
++#define AW88258_CCO_MUX_MASK		\
++	(~(((1<<AW88258_CCO_MUX_BITS_LEN)-1) << AW88258_CCO_MUX_START_BIT))
++
++#define AW88258_CCO_MUX_DIVIDED	(0)
++#define AW88258_CCO_MUX_DIVIDED_VALUE	\
++	(AW88258_CCO_MUX_DIVIDED << AW88258_CCO_MUX_START_BIT)
++
++#define AW88258_CCO_MUX_BYPASS		(1)
++#define AW88258_CCO_MUX_BYPASS_VALUE	\
++	(AW88258_CCO_MUX_BYPASS << AW88258_CCO_MUX_START_BIT)
++
++#endif
 diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
-index a6805d5405cd..3c7d3e3865eb 100644
+index 3c7d3e3865eb..172f38a4921c 100644
 --- a/sound/soc/codecs/aw88261.c
 +++ b/sound/soc/codecs/aw88261.c
-@@ -13,6 +13,7 @@
- #include <linux/regmap.h>
+@@ -14,6 +14,7 @@
  #include <linux/regulator/consumer.h>
  #include <sound/soc.h>
-+#include <sound/pcm_params.h>
+ #include <sound/pcm_params.h>
++#include "aw88258.h"
  #include "aw88261.h"
  #include "aw88395/aw88395_data_type.h"
  #include "aw88395/aw88395_device.h"
-@@ -158,7 +159,7 @@ static int aw88261_dev_get_iis_status(struct aw_device *aw_dev)
- 	return ret;
- }
- 
--static int aw88261_dev_check_mode1_pll(struct aw_device *aw_dev)
-+static int aw88261_dev_check_pll(struct aw_device *aw_dev)
+@@ -179,37 +180,36 @@ static int aw88261_dev_check_pll(struct aw_device *aw_dev)
+ static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
  {
- 	int ret, i;
- 
-@@ -175,71 +176,95 @@ static int aw88261_dev_check_mode1_pll(struct aw_device *aw_dev)
- 	return -EPERM;
- }
- 
--static int aw88261_dev_check_mode2_pll(struct aw_device *aw_dev)
--{
--	unsigned int reg_val;
--	int ret, i;
--
--	ret = regmap_read(aw_dev->regmap, AW88261_PLLCTRL1_REG, &reg_val);
--	if (ret)
--		return ret;
--
--	reg_val &= (~AW88261_CCO_MUX_MASK);
--	if (reg_val == AW88261_CCO_MUX_DIVIDED_VALUE) {
--		dev_dbg(aw_dev->dev, "CCO_MUX is already divider");
--		return -EPERM;
--	}
--
--	/* change mode2 */
--	ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
--			~AW88261_CCO_MUX_MASK, AW88261_CCO_MUX_DIVIDED_VALUE);
--	if (ret)
--		return ret;
--
--	for (i = 0; i < AW88261_DEV_SYSST_CHECK_MAX; i++) {
--		ret = aw88261_dev_get_iis_status(aw_dev);
--		if (ret) {
--			dev_err(aw_dev->dev, "mode2 iis signal check error");
--			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
--		} else {
--			break;
--		}
--	}
--
--	/* change mode1 */
--	ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
--			~AW88261_CCO_MUX_MASK, AW88261_CCO_MUX_BYPASS_VALUE);
--	if (ret == 0) {
--		usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
--		for (i = 0; i < AW88261_DEV_SYSST_CHECK_MAX; i++) {
--			ret = aw88261_dev_check_mode1_pll(aw_dev);
--			if (ret) {
--				dev_err(aw_dev->dev, "mode2 switch to mode1, iis signal check error");
--				usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
--			} else {
--				break;
--			}
--		}
--	}
--
--	return ret;
--}
--
--static int aw88261_dev_check_syspll(struct aw_device *aw_dev)
-+static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
- {
-+	struct aw_device *aw_dev = aw88261->aw_pa;
-+	uint32_t sr_value, fs_value, cco_mux_value, bck_value;
+ 	struct aw_device *aw_dev = aw88261->aw_pa;
+-	uint32_t sr_value, fs_value, cco_mux_value, bck_value;
++	uint32_t sr_value, fs_value, bck_value;
++	bool bypass_divider = false;
  	int ret;
  
--	ret = aw88261_dev_check_mode1_pll(aw_dev);
--	if (ret) {
--		dev_dbg(aw_dev->dev, "mode1 check iis failed try switch to mode2 check");
--		ret = aw88261_dev_check_mode2_pll(aw_dev);
--		if (ret) {
--			dev_err(aw_dev->dev, "mode2 check iis failed");
--			return ret;
--		}
-+	switch (aw88261->sample_rate) {
-+	case 8000:
-+		sr_value = AW88261_I2SSR_8KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
-+		break;
-+	case 16000:
-+		sr_value = AW88261_I2SSR_16KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
-+		break;
-+	case 32000:
-+		sr_value = AW88261_I2SSR_32KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
-+		break;
-+	case 44100:
-+		sr_value = AW88261_I2SSR_44P1KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
-+		break;
-+	case 48000:
-+		sr_value = AW88261_I2SSR_48KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
-+		break;
-+	case 96000:
-+		sr_value = AW88261_I2SSR_96KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
-+		break;
-+	case 192000:
-+		sr_value = AW88261_I2SSR_192KHZ_VALUE;
-+		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
-+		break;
-+	default:
-+		dev_err(aw_dev->dev, "unsupported sample rate %d\n",
-+			aw88261->sample_rate);
-+		return -EINVAL;
+ 	switch (aw88261->sample_rate) {
+ 	case 8000:
+ 		sr_value = AW88261_I2SSR_8KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
+ 		break;
+ 	case 16000:
+ 		sr_value = AW88261_I2SSR_16KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
+ 		break;
+ 	case 32000:
+ 		sr_value = AW88261_I2SSR_32KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_DIVIDED_VALUE;
++		bypass_divider = true;
+ 		break;
+ 	case 44100:
+ 		sr_value = AW88261_I2SSR_44P1KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
++		bypass_divider = true;
+ 		break;
+ 	case 48000:
+ 		sr_value = AW88261_I2SSR_48KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
++		bypass_divider = true;
+ 		break;
+ 	case 96000:
+ 		sr_value = AW88261_I2SSR_96KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
++		bypass_divider = true;
+ 		break;
+ 	case 192000:
+ 		sr_value = AW88261_I2SSR_192KHZ_VALUE;
+-		cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
++		bypass_divider = true;
+ 		break;
+ 	default:
+ 		dev_err(aw_dev->dev, "unsupported sample rate %d\n",
+@@ -241,8 +241,21 @@ static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
  	}
  
--	return ret;
-+	switch (aw88261->bit_width) {
-+	case 16:
-+		fs_value = AW88261_I2SFS_16_BITS_VALUE;
-+		bck_value = AW88261_I2SBCK_32FS_VALUE;
+ 	/* PLL divider must be used for 8/16/32 kHz modes */
+-	ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
+-			~AW88261_CCO_MUX_MASK, cco_mux_value);
++	switch (aw_dev->chip_id) {
++	case AW88261_CHIP_ID:
++		ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
++				~AW88261_CCO_MUX_MASK, bypass_divider ?
++				AW88261_CCO_MUX_BYPASS_VALUE : AW88261_CCO_MUX_DIVIDED);
 +		break;
-+	case 20:
-+		fs_value = AW88261_I2SFS_20_BITS_VALUE;
-+		bck_value = AW88261_I2SBCK_48FS_VALUE;
-+		break;
-+	case 24:
-+		fs_value = AW88261_I2SFS_24_BITS_VALUE;
-+		bck_value = AW88261_I2SBCK_48FS_VALUE;
-+		break;
-+	case 32:
-+		fs_value = AW88261_I2SFS_32_BITS_VALUE;
-+		bck_value = AW88261_I2SBCK_64FS_VALUE;
++	case AW88258_CHIP_ID:
++		ret = regmap_update_bits(aw_dev->regmap, AW88258_PLLCTRL1_REG,
++				~AW88258_CCO_MUX_MASK, bypass_divider ?
++				AW88258_CCO_MUX_BYPASS_VALUE : AW88258_CCO_MUX_DIVIDED);
 +		break;
 +	default:
-+		dev_err(aw_dev->dev, "unsupported bit width %d\n",
-+			aw88261->bit_width);
-+		return -EINVAL;
++		WARN_ONCE(1, "missing PLL regs for chip %x", aw_dev->chip_id);
++		return -ENXIO;
 +	}
-+
-+	/* PLL divider must be used for 8/16/32 kHz modes */
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
-+			~AW88261_CCO_MUX_MASK, cco_mux_value);
-+	if (ret)
-+		return ret;
-+
-+	/* The word clock (WCK) defines the beginning of a frame */
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL1_REG,
-+			~AW88261_I2SSR_MASK, sr_value);
-+	if (ret)
-+		return ret;
-+
-+	/* The bit clock (BCK) defines the length of a frame */
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL1_REG,
-+			~AW88261_I2SBCK_MASK, bck_value);
-+	if (ret)
-+		return ret;
-+
-+	/* The logical frame size is the width of data for 1 slot */
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL1_REG,
-+			~AW88261_I2SFS_MASK, fs_value);
-+	if (ret)
-+		return ret;
-+
-+	return aw88261_dev_check_pll(aw_dev);
- }
+ 	if (ret)
+ 		return ret;
  
- static int aw88261_dev_check_sysst(struct aw_device *aw_dev)
-@@ -558,7 +583,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
- 	aw88261_dev_pwd(aw_dev, false);
- 	usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
+@@ -306,7 +319,9 @@ static void aw88261_dev_uls_hmute(struct aw_device *aw_dev, bool uls_hmute)
  
--	ret = aw88261_dev_check_syspll(aw_dev);
-+	ret = aw88261_dev_configure_syspll(aw88261);
- 	if (ret) {
- 		dev_err(aw_dev->dev, "pll check failed cannot start");
- 		goto pll_check_fail;
-@@ -712,6 +737,26 @@ static void aw88261_start(struct aw88261 *aw88261, bool sync_start)
- 			AW88261_START_WORK_DELAY_MS);
- }
- 
-+static int aw88261_hw_params(struct snd_pcm_substream *substream,
-+	struct snd_pcm_hw_params *params,
-+	struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
-+		return 0;
-+
-+	/* Only store the settings as the regs do get reset when starting */
-+	aw88261->sample_rate = params_rate(params);
-+	aw88261->bit_width = params_width(params);
-+	return 0;
-+}
-+
-+static const struct snd_soc_dai_ops aw88261_dai_ops = {
-+	.hw_params = aw88261_hw_params,
-+};
-+
- static struct snd_soc_dai_driver aw88261_dai[] = {
- 	{
- 		.name = "aw88261-aif",
-@@ -730,6 +775,7 @@ static struct snd_soc_dai_driver aw88261_dai[] = {
- 			.rates = AW88261_RATES,
- 			.formats = AW88261_FORMATS,
- 		},
-+		.ops = &aw88261_dai_ops,
- 	},
- };
- 
-@@ -1249,6 +1295,10 @@ static int aw88261_i2c_probe(struct i2c_client *i2c)
- 	if (!aw88261)
- 		return -ENOMEM;
- 
-+	/* set defaults */
-+	aw88261->sample_rate = 48000;
-+	aw88261->bit_width = 32;
-+
- 	mutex_init(&aw88261->lock);
- 
- 	i2c_set_clientdata(i2c, aw88261);
-diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
-index 1fee589608d6..2100fddaa68f 100644
---- a/sound/soc/codecs/aw88261.h
-+++ b/sound/soc/codecs/aw88261.h
-@@ -264,7 +264,81 @@
- #define AW88261_I2STXEN_ENABLE_VALUE	\
- 	(AW88261_I2STXEN_ENABLE << AW88261_I2STXEN_START_BIT)
- 
--#define AW88261_CCO_MUX_START_BIT	(14)
-+#define AW88261_I2SFS_START_BIT			(6)
-+#define AW88261_I2SFS_BITS_LEN			(2)
-+#define AW88261_I2SFS_MASK				\
-+	(~(((1<<AW88261_I2SFS_BITS_LEN)-1)<<AW88261_I2SFS_START_BIT))
-+
-+#define AW88261_I2SFS_16_BITS			(0)
-+#define AW88261_I2SFS_16_BITS_VALUE		\
-+	(AW88261_I2SFS_16_BITS << AW88261_I2SFS_START_BIT)
-+#define AW88261_I2SFS_20_BITS			(1)
-+#define AW88261_I2SFS_20_BITS_VALUE		\
-+	(AW88261_I2SFS_20_BITS << AW88261_I2SFS_START_BIT)
-+#define AW88261_I2SFS_24_BITS			(2)
-+#define AW88261_I2SFS_24_BITS_VALUE		\
-+	(AW88261_I2SFS_24_BITS << AW88261_I2SFS_START_BIT)
-+#define AW88261_I2SFS_32_BITS			(3)
-+#define AW88261_I2SFS_32_BITS_VALUE		\
-+	(AW88261_I2SFS_32_BITS << AW88261_I2SFS_START_BIT)
-+
-+#define AW88261_I2SBCK_START_BIT	(4)
-+#define AW88261_I2SBCK_BITS_LEN	(2)
-+#define AW88261_I2SBCK_MASK	\
-+	(~(((1<<AW88261_I2SBCK_BITS_LEN)-1) << AW88261_I2SBCK_START_BIT))
-+
-+#define AW88261_I2SBCK_32FS	(0)
-+#define AW88261_I2SBCK_32FS_VALUE	\
-+	(AW88261_I2SBCK_32FS << AW88261_I2SBCK_START_BIT)
-+
-+#define AW88261_I2SBCK_48FS	(1)
-+#define AW88261_I2SBCK_48FS_VALUE	\
-+	(AW88261_I2SBCK_48FS << AW88261_I2SBCK_START_BIT)
-+
-+#define AW88261_I2SBCK_64FS	(2)
-+#define AW88261_I2SBCK_64FS_VALUE	\
-+	(AW88261_I2SBCK_64FS << AW88261_I2SBCK_START_BIT)
-+
-+#define AW88261_I2SSR_START_BIT			(0)
-+#define AW88261_I2SSR_BITS_LEN			(4)
-+#define AW88261_I2SSR_MASK				\
-+	(~(((1<<AW88261_I2SSR_BITS_LEN)-1) << AW88261_I2SSR_START_BIT))
-+
-+#define AW88261_I2SSR_8KHZ				(0)
-+#define AW88261_I2SSR_8KHZ_VALUE		\
-+	(AW88261_I2SSR_8KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_11P025KHZ			(1)
-+#define AW88261_I2SSR_11P025KHZ_VALUE	\
-+	(AW88261_I2SSR_11P025KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_12KHZ				(2)
-+#define AW88261_I2SSR_12KHZ_VALUE		\
-+	(AW88261_I2SSR_12KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_16KHZ				(3)
-+#define AW88261_I2SSR_16KHZ_VALUE		\
-+	(AW88261_I2SSR_16KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_22P05KHZ			(4)
-+#define AW88261_I2SSR_22P05KHZ_VALUE	\
-+	(AW88261_I2SSR_22P05KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_24KHZ				(5)
-+#define AW88261_I2SSR_24KHZ_VALUE		\
-+	(AW88261_I2SSR_24KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_32KHZ				(6)
-+#define AW88261_I2SSR_32KHZ_VALUE		\
-+	(AW88261_I2SSR_32KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_44P1KHZ			(7)
-+#define AW88261_I2SSR_44P1KHZ_VALUE	\
-+	(AW88261_I2SSR_44P1KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_48KHZ				(8)
-+#define AW88261_I2SSR_48KHZ_VALUE		\
-+	(AW88261_I2SSR_48KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_96KHZ				(9)
-+#define AW88261_I2SSR_96KHZ_VALUE		\
-+	(AW88261_I2SSR_96KHZ << AW88261_I2SSR_START_BIT)
-+#define AW88261_I2SSR_192KHZ			(10)
-+#define AW88261_I2SSR_192KHZ_VALUE		\
-+	(AW88261_I2SSR_192KHZ << AW88261_I2SSR_START_BIT)
-+
-+#define AW88261_CCO_MUX_START_BIT	(6)
- #define AW88261_CCO_MUX_BITS_LEN	(1)
- #define AW88261_CCO_MUX_MASK		\
- 	(~(((1<<AW88261_CCO_MUX_BITS_LEN)-1) << AW88261_CCO_MUX_START_BIT))
-@@ -450,6 +524,8 @@ struct aw88261 {
- 	int frcset_en;
- 	unsigned int mute_st;
- 	unsigned int amppd_st;
-+	int sample_rate;
-+	int bit_width;
- 
- 	bool phase_sync;
- };
+ static void aw88261_reg_force_set(struct aw88261 *aw88261)
+ {
+-	if (aw88261->frcset_en == AW88261_FRCSET_ENABLE) {
++	if (aw88261->aw_pa->chip_id == AW88258_CHIP_ID) {
++		dev_dbg(aw88261->aw_pa->dev, "force_set not supported on aw88258");
++	} else if (aw88261->frcset_en == AW88261_FRCSET_ENABLE) {
+ 		/* set FORCE_PWM */
+ 		regmap_update_bits(aw88261->regmap, AW88261_BSTCTRL3_REG,
+ 				AW88261_FORCE_PWM_MASK, AW88261_FORCE_PWM_FORCEMINUS_PWM_VALUE);
 -- 
 2.53.0
 
