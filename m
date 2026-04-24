@@ -1,92 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209B3FB7FC
-	for <phone-devel@vger.kernel.org>; Fri, 24 Apr 2026 20:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC2040DFA9
+	for <phone-devel@vger.kernel.org>; Sat, 25 Apr 2026 00:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777063552; cv=none; b=SQ5g95676mNNfTp2RR14+oxQEJvtbbuLZtwSJoEWrDq4It1yaAVhQhKuXfoH225FQqUccBmrWrVnu1xDEFTSH/lHN/H3CaOTc4jE/+Gjw2aGcCxkokKM59m2MgTs/73TlJtRq21utJphg5zvOqfMGUFFoCqaA85ocbUTWy2HelI=
+	t=1777075978; cv=none; b=G7GQ+bhP3biOEv3S2x2T8W1Dz1KFiOPbXXbNQj0OdVAwqbHdGEauBgWnjcl+CWqbAVU6TxdSEUXJ1E3JBnwNwBGAjzvY8RBNG5fGOh8PjZ4OCOal2Xl+gtGJfUAsAdOlyT64bIb7bv4P/hOipHoVet+/xGm5OsWewH0V3QjoxV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777063552; c=relaxed/simple;
-	bh=QQVPbAJe1D/rdWVbB8sLL4cm+7ydyjVeQVpTo63Bf8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pu68quoqTFy4LNb9Nev+zAEmi4ei3KMn4bgF4obhlR9ePi7ObEHkpoUtonBJD69zCA17J04UqHk27f5vZ34UsAiggxEMrIhIHO/0m4KJL7HOBdV0pZAM7wOadz8ExQ19qa3oKy/VtDpq1osqwQt01YZtOT+2/8b7X0F+EkTezk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zt1liQyH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777075978; c=relaxed/simple;
+	bh=aU8xMHpdG5Z5vbiF0vjjNMZ1Suz1Tv07QODPa4Q17RE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LqiWjjlo88d2KJlHNKjghJn1sx8LLJe7y7xii5fqYJIn26qbbopcAx53c9Pd0aW+t4wiDd9t1g/esYIrBCtYFha1kNNZ2vdXxNJD9Uue8yXsWypx5+pnYEf+M43nT17MCaG/OpV5lW4C36IfySjdyr2Cu0L3OpXoCqe02sSXDSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=WOcbttiG; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zt1liQyH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35459C19425
-	for <phone-devel@vger.kernel.org>; Fri, 24 Apr 2026 20:45:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777063552;
-	bh=QQVPbAJe1D/rdWVbB8sLL4cm+7ydyjVeQVpTo63Bf8Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zt1liQyHojBEDzgt/4Y58/4Uce4XcufB6/jvkWkLfjSg7du7b+DzcD9pM7igFAChV
-	 u1ymyZL/X7H+cESfBujV8Ilr+0PnhuyPzwtGu+XKAhq8VimCjWeUb3jlgY5FrLw+8D
-	 dz8QNb71x67yilXALKaZMLsxwdTWiLnBl5Lj37Bo3XMbS0ArYojF/XysRaX/Pf3mBo
-	 R+ELy4AfVNscYmkCfIhY5fDEKvmdcUgl+EHczvVbAfrjj7JXUoou0tVDo2Tp4qQGuy
-	 p3sOUq1I/57RxCV+dylRgjG94a/vkOpO7Vq4uLn5qz0ryr5t9a9C5oElEmT/BVSzxv
-	 kbxAgLzSX3NxA==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a283c44478so13923040e87.3
-        for <phone-devel@vger.kernel.org>; Fri, 24 Apr 2026 13:45:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+SKbtskH2rDHAnU7Ksx3foCY+O7pHhThYVGx4+PHtTLUIHv40OegTGQA9LOFj8pvHZ/Kb7PYh57jN6FQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqaCZLeKc22fd68Mzx73CA/IxdqDtVlD4OeMVzjdj5KmP+kv9S
-	c1Ie3sZMwbvT2mKh+EYEh0nbOQUv+W9FwnDquT5ahI6u9DVBW+kSYeddvHp4NM1VX5jCrxP4Qex
-	DbVMhN7JPyab511FrnoY7shVFR4910vI=
-X-Received: by 2002:a05:6512:3190:b0:5a7:3c4a:cf24 with SMTP id
- 2adb3069b0e04-5a73c4ad073mr697853e87.42.1777063550924; Fri, 24 Apr 2026
- 13:45:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="WOcbttiG"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1777075974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=chJOcd0DtmPp/g4ereI9hdknMHM8JOupi0CaWwBC/z4=;
+	b=WOcbttiGekK8ugcVqTepHMYNbWVJqpxhR8MWiyRJ0FBu4kdfvgnWlEOCQK+EqCktZcT8wh
+	dUbAFLbkcNLWjfzKzAsAqzZkNW66A8gd8aXtZvkJkazHGML6iwecgcVz/rV3TbNCSWyWRi
+	iyvtEr8iTXc7jOYtwGUcswPuMJmZMqbRRY1+uuatkxGxQb1G47eU0aZ07/EIpFQ2qyfPTb
+	IStemv5RPQkWWVFB7AFbcgXNQmQIeMEdaWlFjfIPb3VqShJuZvbs7s8Ue2o42zKWT6Nc0M
+	29BrYoeJgfa/Tl40AoHV3hKJhVdsVD1kowrFvT5/sL0OtgXKpMIKck6v5XmnCg==
+From: Val Packett <val@packett.cool>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Val Packett <val@packett.cool>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	dri-devel@lists.freedesktop.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] drm/bridge: panel: call the new atomic panel ops
+Date: Fri, 24 Apr 2026 20:49:51 -0300
+Message-ID: <20260425001130.233935-2-val@packett.cool>
+In-Reply-To: <20260425001130.233935-1-val@packett.cool>
+References: <20260425001130.233935-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260421-mainline-send-v1-sending-v1-0-bcb0857724de@alex-min.fr> <20260421-mainline-send-v1-sending-v1-8-bcb0857724de@alex-min.fr>
-In-Reply-To: <20260421-mainline-send-v1-sending-v1-8-bcb0857724de@alex-min.fr>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 24 Apr 2026 22:45:38 +0200
-X-Gmail-Original-Message-ID: <CAD++jLns8oZiT2f=xygyQpW7M4K8uK+1b69mnttVdyyFPvsZcg@mail.gmail.com>
-X-Gm-Features: AQROBzBoXAy-C0CrQerj336vDfFiZhyjD7Ifx3DKS-loH9I1fUGk0cwOK9RXNKM
-Message-ID: <CAD++jLns8oZiT2f=xygyQpW7M4K8uK+1b69mnttVdyyFPvsZcg@mail.gmail.com>
-Subject: Re: [PATCH 8/8] ARM: dts: qcom: Add Samsung Galaxy S4
-To: contact@alex-min.fr
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Guru Das Srinagesh <linux@gurudas.dev>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, iommu@lists.linux.dev, 
-	phone-devel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Alexandre,
+As the panel API now includes atomic versions of the power ops, call the
+new atomic wrappers in order to allow panel drivers to access CRTC state
+like the mode being set.
 
-On Tue, Apr 21, 2026 at 11:45=E2=80=AFAM Alexandre MINETTE via B4 Relay
-<devnull+contact.alex-min.fr@kernel.org> wrote:
+Signed-off-by: Val Packett <val@packett.cool>
+---
+ drivers/gpu/drm/bridge/panel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> From: Alexandre MINETTE <contact@alex-min.fr>
->
-> Add a device tree for the Samsung Galaxy S4, codenamed jflte.
->
-> This has been tested on a Samsung Galaxy S4 GT-I9505. The initial support
-> covers UART, USB peripheral mode with USB networking, the front LED and
-> the physical buttons.
->
-> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
+diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
+index 184a8b7049a7..3d3aca6416d2 100644
+--- a/drivers/gpu/drm/bridge/panel.c
++++ b/drivers/gpu/drm/bridge/panel.c
+@@ -126,7 +126,7 @@ static void panel_bridge_atomic_pre_enable(struct drm_bridge *bridge,
+ 	if (old_crtc_state && old_crtc_state->self_refresh_active)
+ 		return;
+ 
+-	drm_panel_prepare(panel_bridge->panel);
++	drm_panel_atomic_prepare(panel_bridge->panel, crtc, atomic_state);
+ }
+ 
+ static void panel_bridge_atomic_enable(struct drm_bridge *bridge,
+@@ -145,7 +145,7 @@ static void panel_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	if (old_crtc_state && old_crtc_state->self_refresh_active)
+ 		return;
+ 
+-	drm_panel_enable(panel_bridge->panel);
++	drm_panel_atomic_enable(panel_bridge->panel, crtc, atomic_state);
+ }
+ 
+ static void panel_bridge_atomic_disable(struct drm_bridge *bridge,
+@@ -164,7 +164,7 @@ static void panel_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	if (new_crtc_state && new_crtc_state->self_refresh_active)
+ 		return;
+ 
+-	drm_panel_disable(panel_bridge->panel);
++	drm_panel_atomic_disable(panel_bridge->panel, crtc, atomic_state);
+ }
+ 
+ static void panel_bridge_atomic_post_disable(struct drm_bridge *bridge,
+@@ -183,7 +183,7 @@ static void panel_bridge_atomic_post_disable(struct drm_bridge *bridge,
+ 	if (new_crtc_state && new_crtc_state->self_refresh_active)
+ 		return;
+ 
+-	drm_panel_unprepare(panel_bridge->panel);
++	drm_panel_atomic_unprepare(panel_bridge->panel, crtc, atomic_state);
+ }
+ 
+ static int panel_bridge_get_modes(struct drm_bridge *bridge,
+-- 
+2.53.0
 
-Which modem is in this phone?
-
-I just briefly mentione the S4 in this message:
-https://lore.kernel.org/phone-devel/CAD++jLmBxH1Zubh2avWrvMs4L0zv1NU7WEO3D8=
-aeGiiVZo5AdQ@mail.gmail.com/T/#u
-
-If this phone has one of the Ericsson CAIF modems it feels weird if
-we add the DTS at the same time as we delete the modem support
-code... (it can be resurrected easily of course)
-
-Yours,
-Linus Walleij
