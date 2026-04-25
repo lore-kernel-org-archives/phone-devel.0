@@ -1,67 +1,82 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CB837AA79
-	for <phone-devel@vger.kernel.org>; Sat, 25 Apr 2026 18:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777141906; cv=none; b=Du0PwKk2MN/v0tIWL0dAKlf/JRhMw6ymsw+PYNKrfa72dXXmN6eujBO4vxCHaRi1gY0tBP4WLYpj+zmQft6z4pIMEYgsdySfKhbcECDbFsqp2EUM3VNFcJGNewL1s6da9k+c+2J68FOIfXUgGGqEEMcByOtjlo14SoHDZyPc2Y0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777141906; c=relaxed/simple;
-	bh=a7H80R42r3F7Ek1jE2GWR+lyOfXfzqpGUFLS1QAha0A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S06VSPt3CmuPqFEkgGilhuTtLB6RkLhcciAQ+vmsC8fIbFOjpawjnJZ077XkCbamgB5xfZ/Ki8y33HLzwR4i0r9w2ftjZpPwTxNIXTzmiwKnpMzBOiKU7M5G7wCoXfYWxeprHJgTTsw9A7RRET1WzxrPYy1+pPW97O0CQfTORzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSxqb0e3; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7432B4A07;
+	Sat, 25 Apr 2026 20:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777149572; cv=pass; b=pA1eD1m+FDu6nDYpYYBVNOaAdUJn6dFfQqJxxPsVFUl6NdER0OVaJyzk7WTu5NCVvNF7HrlUSM7quzmHVgE7AnH/uXzmsYQGMiY/gBiMtSng8yj68m7SSxPhuhPa+mhnIqQ+tTjECrchtRodba3TN6muFdXn+ImbohHieNx2b6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777149572; c=relaxed/simple;
+	bh=uUqaV12seEtPtVIXeUjLaxEeEhA5OYLznkygmUrFoug=;
+	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc:Date; b=t3mOZWKexhG0uG1LYetmRggz4BTvHhj9HHWPTU/08d6nirQh9KeWFf4ThJYCdxq5MEaRZIXdIzBTESrmWGKJ0KKAnf0vIVXUHrxl07ikNGGbKeTiv1xbByg7rhh8IhSEK2kAz1SqVnvPh97qPUFHZB6xwPPzrNzPETRE09jJa8s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=TnTR83oy; arc=pass smtp.client-ip=23.83.212.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSxqb0e3"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488ad135063so80913015e9.0
-        for <phone-devel@vger.kernel.org>; Sat, 25 Apr 2026 11:31:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777141900; x=1777746700; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ARuAZF6TJpQOmiY9M38BKODkMHskTETvMicBDgqEAHI=;
-        b=fSxqb0e344dGNAPKn/eAFTTXa2QGyYRMAUyJI/vwNvxXyu3ld6A11XMOEKMWmmps+u
-         KrWWatBypeaPXHfhkTjyYX6SXQ/Bi690I4Dc74IAIJMKfUNs2GKioVDnmwWsV3782beQ
-         +ErpIOnmBcLZx6ZdnnJEPn8Xbv75iJ+NDejoCeTmWYLXH8v/ajLf35MyG3RjU27tigPX
-         9QRzMS8Le0VwdqmBJ6Nrt3qUUql3v2M0E27OtTaf2YgFgQMgtPERBGDBTcsxFI4GAbSg
-         hF3Qi6HtBVSzHaxniZGZ0JcNoSmlymdu2RLwH5Sj/5dCiXXwPbz2dYM4uIkTcIXKigBS
-         Nztw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777141900; x=1777746700;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ARuAZF6TJpQOmiY9M38BKODkMHskTETvMicBDgqEAHI=;
-        b=mv/2Y4uBUzoyVldKnF58uBJ2qydrhDORpiEmQCkpHlezf+rEc2ZTWNrO5W4q4RzQ8n
-         3bGmHJA8bbsR8ZAkktwUbtgFjf0BosMzOpuWDTnsPDaPN7DQ0U4Efrf5cOxB3Bq5ZhHn
-         JgcVPSqE3pjNWZwZqLh4v17vvRJ8SLfMSP0maY65ZE0wP1drSKk51Vbux/tQR9IaI9Su
-         QUaqNMmpdMIA6I9Eildqtv9eWzz7e9EGxex1fpNiZuctVvmKQ0Nyvmb0KwJvw4oEgySt
-         9mx6kJ1foxYnMjAUP3+I5muQlgY1U3Y2AhsNOzMwhqsLmKoESQGcviob//WryoxU4qZX
-         SyiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Uzkm3lXNsNiuWysPLZsmynPXERI43Mk8R9EPIWZV41Bm5W71czayXKWg3lPgy5bVRHbZKkvvGWGxiIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd6s9a7bZNyEY0p/ia2++DXmVNOyyWSQn+puUmDEnCioH3qCJM
-	jnsVx7bWblGRrTypHZgXF1f07/2NuYT7E35MByvIPFFn0r371KnCAN+x
-X-Gm-Gg: AeBDiev5VST0mPocOsBJtv1ai1QLjmcdcrjukTwPuvFIDvzdg2LTnM3RCTGlXTaqMrk
-	nCI4t62Axw+3B+dMS0Q31+e0TkDRSOho+vlzJ43otglv13jcfTk37wlUG7DM611vNUYVmHTypRi
-	M1s37/p79Hm7+260Onc6fHngDa9pksFx2//zcqKEFF977k30ZJsRZWyqRZ474BUfViV98o1LdSW
-	ad+aCrBEkeVXcbzBSqXmHxM35chS/TizFbosz1V9gtjpcmT6Aex4J0CVUb87uMvQR+wjshivcCM
-	17y9iJZQhSbWy6k5v/EATxyH8RtiHMvXV4PU+xuFIqgtjRH/ErIjHV1akztYBS0QftvsRSzYhYS
-	69oZZC+MG8iDG5sA7H6Xfs6+tbXBpzj0jd8xwLKKV2W35ZD43iR/H74wWX4z/s6JcuXC8niDa2r
-	oz+Txm76oKfDJ/7U39R2MKMTic+g0Okf7cWZs=
-X-Received: by 2002:a05:600c:41d6:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-488fb745294mr323101045e9.1.1777141900459;
-        Sat, 25 Apr 2026 11:31:40 -0700 (PDT)
-Received: from [192.168.8.79] ([2a00:f502:260:fa4:a26c:adcb:8da8:3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4899dc95920sm133613675e9.6.2026.04.25.11.31.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 11:31:40 -0700 (PDT)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Sat, 25 Apr 2026 21:31:12 +0300
-Subject: [PATCH RFC v2 11/11] media: qcom: venus: Enable HEVC decoding for
- MSM8939
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="TnTR83oy"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id BE0D9401CD9;
+	Sat, 25 Apr 2026 20:39:23 +0000 (UTC)
+Received: from de-fra-smtpout8.hostinger.io (trex-green-7.trex.outbound.svc.cluster.local [100.96.10.251])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 3602A401DA7;
+	Sat, 25 Apr 2026 20:39:18 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1777149561;
+	b=e2arGKDLyK/WFXEUsRwAFZBiGi1Z0RuGMPFfhoWuwnANJk6/HGDO415Iksrt1bTfzyVb4X
+	mt3+hxPHRIPhLhKehaR2U7Iq0hhP2tMuTDkEMAz1OoSf7cXsMHBzAvG44rurrHYcDv6wn9
+	mSQQHyfGA31h3DD8bxQFdT1aC7KwSOy1Ih9p2O69eyUZYuYqQhwZY+rcV829RGPVPH2JAe
+	V644KawYvYWc038A5cNE3MJJcogOHRXFJ0vLiYa+8Sdsh6x33cw7JGuUCNUOKSk7SDiBAG
+	zVccPlinK3tdGIDkProMspe6iLahvtq2CXxbrPIDzvEKdeazP8u3+xBESaCPSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1777149561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pdqPNcyC8p5DZ1G2D9ueEdeo+CXG8qVsYjxRxYoj6so=;
+	b=ZZe/G1ZeV4z6n6u15BA6J9IqP88Wkq7N2XcnYL1kDIJZNyp4Cic9bitmCpxqSlvMKuB0j9
+	Q4mTxHWjZVDcqfeU4+aBEmZdtm3DIeNX/rjKW68Hz44BBmqKu3payzchfM5gY1rq0KV+WU
+	SO+30h/GYEEn8QAY510gWvTfto8HMtLJsZ8Ud48hP+eCK/rYBZF8L8/KdxL4jBMe4/BNcU
+	VqX/T62WQv4fvdyvonkISDLR0X9EObxuOaqOwr1iuQNRvGGRqMZgIIHq02Fn0mY166kl7Q
+	yr4ayoX8QK2ZdxxAWg1/6nhnWkbT1Y8S1udhbGMiharcHM+Hobi2Ab2rYoNHNg==
+ARC-Authentication-Results: i=1;
+	rspamd-b9d4fc544-8wftt;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Shoe-Shoe: 542da13c796eb997_1777149563686_213841609
+X-MC-Loop-Signature: 1777149563686:2640551659
+X-MC-Ingress-Time: 1777149563685
+Received: from de-fra-smtpout8.hostinger.io (de-fra-smtpout8.hostinger.io
+ [148.222.55.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.10.251 (trex/7.1.5);
+	Sat, 25 Apr 2026 20:39:23 +0000
+Received: from [172.17.0.2] (unknown [36.79.100.152])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4g31rx0f8Zz3wkN;
+	Sat, 25 Apr 2026 20:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1777149556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdqPNcyC8p5DZ1G2D9ueEdeo+CXG8qVsYjxRxYoj6so=;
+	b=TnTR83oyHnvowu6nJMPIkXeNaTEW81baa9IOhnCnPfYeYzga3NRqWWxNqVVR/sSZvuVJoE
+	d0Tba723UnMEMjO5hjWu1ZWJqbC26nWPO1Y1J4/0uaOH7ZUuY4B54Qna4bowrVGfNdcUhU
+	byHruyJouEXjfHcDsOjLeRsmyHKWcct/j+KbCkQxkhu2hg6DsdEJzF+nPEwPV1yxPb8wV3
+	6y1RRjL2lyyXqx8offLb2EBOUC2wSq9wskWLmK5LjWwPNElqrRhLvvva04zYNWrWbq9s4u
+	VGQRbEpPfvS+zS2kin5CrpMLJ8N6KF9/B3psVpZQJUlA2r9C0xsYoGUbk4P1BQ==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH v4 1/4] ARM: dts: qcom: pm8921: add labels for ADC channels
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,63 +85,113 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260425-msm8939-venus-rfc-v2-11-f69e52b36207@gmail.com>
-References: <20260425-msm8939-venus-rfc-v2-0-f69e52b36207@gmail.com>
-In-Reply-To: <20260425-msm8939-venus-rfc-v2-0-f69e52b36207@gmail.com>
-To: Bryan O'Donoghue <bod@kernel.org>, 
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+Message-Id: <20260426-pm8xxx-xoadc-label-v4-1-0ec782362615@smankusors.com>
+References: <20260426-pm8xxx-xoadc-label-v4-0-0ec782362615@smankusors.com>
+In-Reply-To: <20260426-pm8xxx-xoadc-label-v4-0-0ec782362615@smankusors.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
-X-Mailer: b4 0.15.2
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777149546; l=1868;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=uUqaV12seEtPtVIXeUjLaxEeEhA5OYLznkygmUrFoug=;
+ b=qt5Dyoo+Rg3XHPIYLJ/rqje98OwQ8RV8H5yCmsXC+FYwhAz5ifn23OpcxT4imRlxwFRlDFNBe
+ EygE97TCY77CGKXRax0pE8ydb5MyGxWi7E6+P0fBEujI/WF1mlDSrt4
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Sat, 25 Apr 2026 20:39:12 +0000 (UTC)
+X-CM-Envelope: MS4xfJgz0AQ+Pl7DPZeQMahIxHt4cGnxUKaRLpK4VqkxY7wbi7LvsVb0IGYgvOrXe7H2OTDLDCkSv5uljcn8364OgB2unG8BqgezA2tt3gdh/a7kJyyd9+v7 peFieGLEnpV5QYoRXxVfgyjxiZxf8llPIJ195JmxHSG3VUs7VVSOz9gWcWf/GbBtTjcuWT9ontb/JmYjXSedxbmjcjKTrJRh4BQnFXNxMyHAy4EPCaiPa+11 /Zq+/7WEe//diLM43TlTw0ayc+cCiL0YNRiAQvnSOQuAeh5Zsi5z0/FJdLOlttNB2TSqFcR0IaFYCx0/yJRIlpb8oHZfkAqx4vS/veJKcXGn2PP2juxqaBMU cEd4ORk7FGBec2JpfmTBDXvIe0MTyr9gYumYjyiTCdkJk07iQlBXVMatpsFvzpmhoYBGgvvRjb5fwKE4mIBZyE3CZmvGGg0MPpaKdEFVbAGQgP49QSCa9XUX RrgB5arNSl2CTGnl22NkfvpBylsclK3Nt4tz+5Vyao7Tm+PXM4YXk49aLLGo3TibOeG0G2IRekPskEbWU4KLxuRWev3IiiCcyaVsUDHh2gxP2pCbyBfGFo1n xhRlR0WnvidCnHbRlVE21rYv92l+KlygudO84rT2r2f7mpsVNuHJiqgZGjZRt+zEOO+dQZahsG/V0hAAKegbi21Oitx3opViB/bmH9xCqT4ZDU9GttXi3/fM EZTNOYZXPg8e7UkAUAMIsukmHtgl4/V+WI2i8xtCIFaUxvuOTLvLgQ==
+X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69ed2674 a=ivwHvKELjomHP5eB21RdOw==:117 a=ivwHvKELjomHP5eB21RdOw==:17 a=IkcTkHD0fZMA:10 a=EUspDBNiAAAA:8 a=wxLWbCv9AAAA:8 a=6KmzlaTv6ROrj-tHFqgA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-AuthUser: linux@smankusors.com
 
-MSM8939 supports HEVC decoding. Do not disable the HEVC codec HFI bit
-and add it to codec type converter method so it can be recognized.
+Add label properties to all XOADC ADC channel nodes in the PM8921 PMIC
+device tree. This allows userspace and drivers to identify channels by
+name rather than relying on datasheet name.
 
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 ---
- drivers/media/platform/qcom/venus/core.c       | 2 ++
- drivers/media/platform/qcom/venus/hfi_parser.c | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom/pm8921.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index ebe166b5c955..98526a1735d9 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -178,6 +178,8 @@ static void venus_sys_error_handler(struct work_struct *work)
- static u32 to_v4l2_codec_type(u32 codec)
- {
- 	switch (codec) {
-+	case HFI_VIDEO_CODEC_HEVC:
-+		return V4L2_PIX_FMT_HEVC;
- 	case HFI_VIDEO_CODEC_H264:
- 		return V4L2_PIX_FMT_H264;
- 	case HFI_VIDEO_CODEC_H263:
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 92765f9c8873..178274d10c02 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -207,7 +207,8 @@ static int parse_codecs(struct venus_core *core, void *data)
- 	core->enc_codecs = codecs->enc_codecs;
+diff --git a/arch/arm/boot/dts/qcom/pm8921.dtsi b/arch/arm/boot/dts/qcom/pm8921.dtsi
+index 535cb6a2543f..15246f4bd267 100644
+--- a/arch/arm/boot/dts/qcom/pm8921.dtsi
++++ b/arch/arm/boot/dts/qcom/pm8921.dtsi
+@@ -75,50 +75,62 @@ pm8921_xoadc: xoadc@197 {
  
- 	if (IS_V1(core)) {
--		core->dec_codecs &= ~HFI_VIDEO_CODEC_HEVC;
-+		if (!device_is_compatible(core->dev, "qcom,msm8939-venus"))
-+			core->dec_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
- 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 	}
+ 			vcoin: adc-channel@0 {
+ 				reg = <0x00 0x00>;
++				label = "vcoin";
+ 			};
+ 
+ 			vbat: adc-channel@1 {
+ 				reg = <0x00 0x01>;
++				label = "vbat";
+ 			};
+ 
+ 			dcin: adc-channel@2 {
+ 				reg = <0x00 0x02>;
++				label = "dcin";
+ 			};
+ 
+ 			vph_pwr: adc-channel@4 {
+ 				reg = <0x00 0x04>;
++				label = "vph_pwr";
+ 			};
+ 
+ 			batt_therm: adc-channel@8 {
+ 				reg = <0x00 0x08>;
++				label = "batt_therm";
+ 			};
+ 
+ 			batt_id: adc-channel@9 {
+ 				reg = <0x00 0x09>;
++				label = "batt_id";
+ 			};
+ 
+ 			usb_vbus: adc-channel@a {
+ 				reg = <0x00 0x0a>;
++				label = "usb_vbus";
+ 			};
+ 
+ 			die_temp: adc-channel@b {
+ 				reg = <0x00 0x0b>;
++				label = "die_temp";
+ 			};
+ 
+ 			ref_625mv: adc-channel@c {
+ 				reg = <0x00 0x0c>;
++				label = "ref_625mv";
+ 			};
+ 
+ 			ref_1250mv: adc-channel@d {
+ 				reg = <0x00 0x0d>;
++				label = "ref_1250mv";
+ 			};
+ 
+ 			chg_temp: adc-channel@e {
+ 				reg = <0x00 0x0e>;
++				label = "chg_temp";
+ 			};
+ 
+ 			ref_muxoff: adc-channel@f {
+ 				reg = <0x00 0x0f>;
++				label = "ref_muxoff";
+ 			};
+ 		};
+ 	};
 
 -- 
-2.54.0
+2.34.1
 
