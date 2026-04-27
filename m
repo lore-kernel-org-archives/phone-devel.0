@@ -1,50 +1,50 @@
 Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158073C8705;
-	Mon, 27 Apr 2026 14:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F933CEB9D;
+	Mon, 27 Apr 2026 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777298716; cv=none; b=UYrRd/hL/bgm7hfEZPFaEAgwJ9bbHeqwpCVFC038T7wWb8OrqU0ObV4N7xVsXzw+tPFaorqrYxwxIDsbkKF1klvCBlp85v+YLixvjcS2hhbeDdEs/ZJTN+Efd06lxjPqGeOoFNknZEk2AF9B4oGgYVOPOUeeCpN1WJ7GIix3fmA=
+	t=1777298716; cv=none; b=CAaVmessAhpkFYhuBsM3++OKBoylDv2wLRTa8NPHvQdoOnuz6MB/714dpkLYNv7/ZEQb2+OWoCeXglBKXHVK6HaQx0JdU1+0UIU1LHOlFCIhJBdk1OEB9sqRsbDhh7PkG5l8ccNi2qoZBptWLi/HnSCDYWWV46meo17iGsqXLUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777298716; c=relaxed/simple;
-	bh=FI2xHZ5s53YZXM5tCMDJAEfMZ6Vuac8IhGFN2EN+Xu8=;
+	bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QGGTNCVWyReyEjncEFhu2JCmWw13atmF7s025BOjZWV6f5Oxax9F8rlyhcwwHkGbVvFsomFYh6cyvC3HHsM6Gqs3bUSlopVqhebSXLDyCNH6Sk/HKutLPDoyk2CLAKNBheqM6lSNa/gJs/F0JpeixgGGFs2v4iFiFykH7dOwHP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=A+7LVzbk; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=DKeTJJT9; arc=none smtp.client-ip=24.134.29.49
+	 In-Reply-To:To:Cc; b=TcDGKPzwiyFhlOQSRsZb9nmjZhhSKfG+qA0xpKnsl3tz9dNiyouEfVMoJZaVDwQusoBb8q8KPlCOHM6wo/kyYhMUICpOWRMDPxfQ+5PxTJahIH/Y4+V7nWgEEfOmk5xO3YdvDuhAJS4WYrsFKNdhTHcCcfegFfHZmwS9SvXIw3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=jTLfo309; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=ZvhCPiuk; arc=none smtp.client-ip=24.134.29.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="A+7LVzbk";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="DKeTJJT9"
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="jTLfo309";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="ZvhCPiuk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1777298206; bh=FI2xHZ5s53YZXM5tCMDJAEfMZ6Vuac8IhGFN2EN+Xu8=;
+	t=1777298202; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=A+7LVzbklL6nLRtUWQGNIT17f6AiEsKnmMo7ALCU6OSSm70+0xgDLtJMsLzqiFkjo
-	 AT8dpHIXtWBpQJHGavsFc8DTW9E7q7dwf7gPLRD6b7HAaxKPvpB4W2EgkC5ro9X6pF
-	 9q4osDrAFb2haSMysoCLb4eLVTToVbWe3A7YAszN9mE6gSOucGxacFE7A+49Lq4SjD
-	 WIc+JhHDTCXXMDqPCpt0sKa4eoYrZyw4rPUOf8JRwnpmm8rlcctZvJto7Qce7IcuvK
-	 HpBLwuf5X9SYC6JV49qV5rd62xQbR1+72TUk9doo6g/AT00b6L8f5kQC2mGndQs1zx
-	 gN0HflLr5XznA==
+	b=jTLfo309rSOvCXDyT+8rU/3neR1kZ5f7IA5vgv0MM8QFNs/PqNUzxbXXYO8YgE+Df
+	 YBokwzOwbMUIbZ6ZmRbiA/6s27Wqw2BhuEa0ptfkwBiv0l2e+V/KnQr/BxE9SeAJed
+	 KjCCaE6f0wuC9BbMzsyt1fW1ZORQ95/lVD5RIFDKkFDPRwJlOUtYaYwCRZ6fQfdQ0o
+	 0C9wBhVDYTv9+h2FOzH1Y50236GyvkRzkEzx+9Yyfr7O1lNCTSpKGKR4uWEFeG+wTt
+	 0U1eZ17zZz0lZ/2mbYp2z+44J53iFGZHbcPJnSk9InvkWOQB2xscRIe3X2oe/Ogkxs
+	 ffQeEw1RPeedA==
 Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 3D40EFB03;
-	Mon, 27 Apr 2026 15:56:46 +0200 (CEST)
+	by honk.sigxcpu.org (Postfix) with ESMTP id B4906FB02;
+	Mon, 27 Apr 2026 15:56:42 +0200 (CEST)
 Received: from honk.sigxcpu.org ([127.0.0.1])
  by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id 9QIjiA4jjUfz; Mon, 27 Apr 2026 15:56:40 +0200 (CEST)
+ id JZsWk8qix5cl; Mon, 27 Apr 2026 15:56:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1777298196; bh=FI2xHZ5s53YZXM5tCMDJAEfMZ6Vuac8IhGFN2EN+Xu8=;
+	t=1777298195; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DKeTJJT9GiiYgL92RupQ2k66fxgsfcH64UFr6m42BbHxE1/6EKjCnFj0uSOWPDjad
-	 k+sl3it72Mj8f2ceqzS6J4WTZtnzS2U2nQ4w7f2vsC8Hf63xyDXBHDxVhPNS7M2VTU
-	 Kn0LVJ00ou6wgTWm79pBAx6ujMMdglXQMPkChhziDddjwKl4gUOI/nhfqHOq8XSZI7
-	 kNkTCAmt2VCZs8ofWOfXRFmwURF8YcSHt8sd/kuJnMSu4aOtaaGB7xhFfXtZd+mSL+
-	 9aXetmBOHgx8dPQ4X78KDf4TfjGvcY5mpiK0p2UeRhG2t6m7ZYOuIIq4kj0gfxjrHd
-	 szX/tX9Uu43dA==
+	b=ZvhCPiuk9Oil4YBIvzlgHLcDJ0GoWbRWHajmIDWLk89wChekaFdBbtwP6kosB0/N7
+	 5CcKTlKdTU7AjgywlmuqYGoljvISWcUXxNuqtI2MlPW+858PHSINvpGsb4AOqwCF/P
+	 wcd3f2Vg/kuZ7ymlRSZgz7WH4DTCadGD0xSaCHUoppBIQ+uKa49eTCjeAAMm9cFYyj
+	 wH1ZiJpaYd/t73u/2r+3xmnBb6SjPP0FgYJD6HMKQJL2ZRmVQipEnNkTH3SEeoIYeP
+	 WveHW26cE662Xwqm+oOI9UbB1dqEyGeRj7VeysrBT596WPOmSSAhwBQFuT/76dfwws
+	 wsKdcVv2TX1Dg==
 From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Mon, 27 Apr 2026 15:56:07 +0200
-Subject: [PATCH 2/2] drm/panel: visionox-rm69299: Move power_on/off into
- prepare/unprepare
+Date: Mon, 27 Apr 2026 15:56:06 +0200
+Subject: [PATCH 1/2] drm/panel: visionox-rm69299: Split DSI commands out
+ into enable/disable
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260427-visionox-rm69299-enable-v1-2-fa7d62d26d87@sigxcpu.org>
+Message-Id: <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
 References: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
 In-Reply-To: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -65,97 +65,151 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
  =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2228; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=FI2xHZ5s53YZXM5tCMDJAEfMZ6Vuac8IhGFN2EN+Xu8=;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4304; i=agx@sigxcpu.org;
+ h=from:subject:message-id; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQnA3MnNTRTB4VWpXRnVPb0EvakMwdGRsaHJIZ04yCjlFbjgzUHN2S3FFcUJzbEYr
- dHlKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYWU5ckVnQUt
- DUkFsdjRaU1N2ekI0emJiRC85TlRKcDRDU1o3enRWUVFDdFFxOTdSNmFtbGVjZlVmbDRROWFIaQ
- pBaExpQ0lWdWtCMmNSeFppSk8xcEtGbjZnS2d1L3hjNUpnWHQra2ZhcDAvOW10R1p3NXh5U2U5c
- S9SREdGSExTClM0WU1sN0FDTkhpQjdYZ2VDMzcvbU5nTWNndGxpNEtoU1YwMWs0ZkhKWDdqM2I0
- ZGYvMFpXWGg2WGcwakwwWEgKeldrSUpBQzBjVEwwSHRuM0U0Y2pVQUVOSk9ZNjJJQWlqQk5SbU1
- VM1JXOXZtTXBQcEtFd0RRL3ZJV0ZCRzVhUgppcnhHS0hVWldKREVEYytXWm42VnFWM2YzNm8yY2
- 9DTGppaDM5OTRmTSt6bzd4TkpWWFVUZkdZd0FObi9nOHV0CjZhMGI4VnF0dHlVOFUvSDk5cXJLN
- FVSQ2ZSUzlUVnhlalR4NW1kZm14eWRDZTZHVGVyLzdHb3g4a0FTUENIRkQKYmhKbk5WbVNNVlp5
- MGpkSDdmdlhUSjJlZCtKQklodXhxMlpsWDdwd0xERFZzaXltZURhVjhOVTI3ck5jNCtOOApRdVR
- KcW9lTXUzWENzZjFDWlF2OVZ5NFpHNXJyUElSWUVxVFNPclZhK0xRQWFNalpnc0VGWVV4U1EyL2
- MzNlNzClBYRWM0ZXRsbUFJZVJpdHFOdjFKZmh3ejdWdE8vbTZuUFF5d0gySklzY0QxbzExeWhie
- lptb3o0M21EeVJ6TFcKU3FLYnJMM0pQOEo3WUc1dVhici90Sk9CeEVPdGo3YS9abExUS0k0YWdQ
- Ynk5a3h5U20zRjJoMEJGcEJRV3VuQgpWUmRrdnYrbkZXV250amowQjVEU0cwa0lrY0t4ejZhMnV
- wWmIvbzhrQ2tYZkUvOWxzT1pqeFR2MGVQcDFONEpWCnlmOVdnZz09Cj1na3VSCi0tLS0tRU5EIF
+ UhqQWNzbVlnQnA3MnNROVZ6Si9vTWRzczVVdVFpV3dpWG5POEI3CmVWWHNFSzdEdmp3WjRqc1Bo
+ YmVKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYWU5ckVBQUt
+ DUkFsdjRaU1N2ekI0NFJLRUFDTk56Y0VsOEVaRkxkYjZQeEhmTHNCSHIrK0JibWdBM1NoZnBIbQ
+ pub2R3VmxxUVFMTlhBeUZVQ0NyQWpHMHlobWM0VzdvRTlUbU9pN3lMS0xLT3hjYkpXSjJFTFRUS
+ itkcWRnUVl5Ckw2SmhTV0dyeVZCYzJWOTFkbDZuOSs1M25ETWdXWmJYK1BZWGlBeDI2c25BVWJ0
+ N0JOcDhJeGxNNHprY2phSWUKSXk5dmtLL0VCcmlxVTJVeHpjWVdDTGY4cGNwcnF6T0c2SUJITGF
+ MVHU2dWV5RUZhUFJucTNSRkVyYzFwaEJTSQpmUjgvQzlEcDJwMFdxTzZSZ2ZmRzVSeTJPYlN1Mz
+ d3VHFpWDMvRFFiemg0N2JFdlFZL1NWTFhQbHFwdmp4S2t2CnVLeHpkSTdYVVBsSlFpaC9hemFMT
+ kFiRmo3b0hmS3ZSQVMxVktjeFZJUnZhVFU1eHRERmlZaEhpbmYxZkJOS3kKQ0lOUHZoZE16SVg3
+ eFBVZnV0bHlQNHA1eCttRThPUWpja1JsbG8xNVAxd3VuaDZXQTZHY2pGODNFa2RaSVdUTQp1eHk
+ 5c2FORDBlS0djWkQ0Unc3Q0o0VEl1VjZKdWUwRWU4dzRCaGM2UitISzhKK0l1VlRsS0h0anBWSF
+ Z4MVUxCkU1Z3R5d2FVbXpoN2JLRVFQNWtYaWRscWQvSVBKOWVwVlhFdFRnOHcrZWZ6aGVQaE55U
+ XVYR09aWGpkWGVlV3IKZXQ0RXFseGlMQndRUjhkYzdzODBuT2Y2cDVGN1g2dXdUd0s1SW5taEtj
+ V25tcjRZMmtVVkYzbnRMY04rSmlxegppQ2toRmZlT0lRTEI1VUNZR3o2eFB2OW5uUUVzb3JQd2R
+ zQW02TGh1Ly9KdDVtN3VxQXVUT3AwYkpxU2N4NXhhCjNFMTNtUT09Cj02bFZMCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
  fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
 
-No need to have separate functions now that prepare/unprepare only
-handle powering on & off.
+It's when DSI commands should be sent and it also fixes these DSI errors
+on every screen blank/unblank on the SHIFT6mq:
+
+dmesg:
+  msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx] *ERROR* wait for video done timed out
+  dsi_cmds2buf_tx: cmd dma tx failed, type=0x5, data0=0x28, len=4, ret=-110
+  panel-visionox-rm69299 ae94000.dsi.0: sending DCS SET_DISPLAY_OFF failed: -110
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 36 +++++++++-----------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+ drivers/gpu/drm/panel/panel-visionox-rm69299.c | 77 +++++++++++++++-----------
+ 1 file changed, 44 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index 3c92a6ceb8df..5c869d353368 100644
+index f1430370ff94..3c92a6ceb8df 100644
 --- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
 +++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -198,15 +198,25 @@ static int visionox_rm69299_disable(struct drm_panel *panel)
- 	return dsi_ctx.accum_err;
+@@ -158,6 +158,46 @@ static inline struct visionox_rm69299 *panel_to_ctx(struct drm_panel *panel)
+ 	return container_of(panel, struct visionox_rm69299, panel);
  }
  
--static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
-+static int visionox_rm69299_unprepare(struct drm_panel *panel)
++static int visionox_rm69299_enable(struct drm_panel *panel)
 +{
 +	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
 +
-+	gpiod_set_value(ctx->reset_gpio, 0);
++	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
 +
-+	return regulator_bulk_disable(ARRAY_SIZE(visionox_rm69299_supplies),
-+				      ctx->supplies);
++	for (int i = 0; i < ctx->desc->init_seq_len; i++)
++		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
++
++	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
++
++	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
++	mipi_dsi_msleep(&dsi_ctx, 120);
++
++	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
++
++	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
++	mipi_dsi_msleep(&dsi_ctx, 120);
++
++	return dsi_ctx.accum_err;
 +}
 +
-+static int visionox_rm69299_prepare(struct drm_panel *panel)
++static int visionox_rm69299_disable(struct drm_panel *panel)
++{
++	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
++
++	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
++
++	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
++
++	/* 120ms delay required here as per DCS spec */
++	mipi_dsi_msleep(&dsi_ctx, 120);
++
++	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
++
++	return dsi_ctx.accum_err;
++}
++
+ static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
  {
  	int ret;
-+	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
- 
- 	ret = regulator_bulk_enable(ARRAY_SIZE(visionox_rm69299_supplies),
- 				    ctx->supplies);
- 	if (ret < 0)
- 		return ret;
+@@ -193,16 +233,6 @@ static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
+ static int visionox_rm69299_unprepare(struct drm_panel *panel)
+ {
+ 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
+-	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
 -
- 	/*
- 	 * Reset sequence of visionox panel requires the panel to be
- 	 * out of reset for 10ms, followed by being held in reset
-@@ -222,28 +232,6 @@ static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
- 	return 0;
+-	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+-
+-	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+-
+-	/* 120ms delay required here as per DCS spec */
+-	mipi_dsi_msleep(&dsi_ctx, 120);
+-
+-	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+ 
+ 	return visionox_rm69299_power_off(ctx);
+ }
+@@ -210,29 +240,8 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
+ static int visionox_rm69299_prepare(struct drm_panel *panel)
+ {
+ 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
+-	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+-	int ret, i;
+ 
+-	ret = visionox_rm69299_power_on(ctx);
+-	if (ret < 0)
+-		return ret;
+-
+-	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+-
+-	for (i = 0; i < ctx->desc->init_seq_len; i++)
+-		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
+-
+-	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+-
+-	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
+-	mipi_dsi_msleep(&dsi_ctx, 120);
+-
+-	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+-
+-	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
+-	mipi_dsi_msleep(&dsi_ctx, 120);
+-
+-	return dsi_ctx.accum_err;
++	return visionox_rm69299_power_on(ctx);
  }
  
--static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
--{
--	gpiod_set_value(ctx->reset_gpio, 0);
--
--	return regulator_bulk_disable(ARRAY_SIZE(visionox_rm69299_supplies),
--				      ctx->supplies);
--}
--
--static int visionox_rm69299_unprepare(struct drm_panel *panel)
--{
--	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
--
--	return visionox_rm69299_power_off(ctx);
--}
--
--static int visionox_rm69299_prepare(struct drm_panel *panel)
--{
--	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
--
--	return visionox_rm69299_power_on(ctx);
--}
--
  static const struct drm_display_mode visionox_rm69299_1080x2248_60hz = {
- 	.name = "1080x2248",
- 	.clock = 158695,
+@@ -284,7 +293,9 @@ static int visionox_rm69299_get_modes(struct drm_panel *panel,
+ 
+ static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
+ 	.unprepare = visionox_rm69299_unprepare,
+-	.prepare = visionox_rm69299_prepare,
++	.disable   = visionox_rm69299_disable,
++	.prepare   = visionox_rm69299_prepare,
++	.enable	   = visionox_rm69299_enable,
+ 	.get_modes = visionox_rm69299_get_modes,
+ };
+ 
 
 -- 
 2.53.0
