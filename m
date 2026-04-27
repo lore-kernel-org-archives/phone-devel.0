@@ -1,115 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C595636F42D;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9136B29ACC5;
+	Mon, 27 Apr 2026 07:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777272283; cv=none; b=EQQkCVR5DTU3B09ajJRYs5yfPXvNd7kvybyzfk4JR6DyxAgGsofZLTBJjx2XVHzgMEp50AAOBt6/bu47ttGOIR9rcNTa+QQjYJ/4r3ybSg7MosXRDPfrQxajzm+JpFeTngNsbm06fgwudAZT90fEy4EHoGwV8VhoIjrUfmjPfeA=
+	t=1777276434; cv=none; b=T7/V03PrUPZc8fAiFyKMwfm90owT5R1D3yzFvda13x28KP8ydFpqnBxCe39MQqWlKN8itH57SG4tw1UGZ+dgXdMwW+YTGdLUcftbeta+u7CNvDCMECqEgna5Rkk3O+ol29lYamkQub7x+ThgdZX11LTmoxkbdxSYiCYTkUZ10Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777272283; c=relaxed/simple;
-	bh=8wkSSpByQImqhD/3iayk5DZrcTDZIc1JAUCH4fWwUHs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e/8PQ1+cnUQAOof31MeqommGcWaezFass/cEeRxyfquYYsSJcLAosudgvsgZBIwOUwTmDnd83CQa8JGVQFtZaxKakC4xqR2JJBSjZBRJhY6AvU0wNeoYoF20G7YlDsVOQDADfa9uH+JqU8YYI4AihOGiVGUWXKeMVL4JdYUCM64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8emKuCF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777276434; c=relaxed/simple;
+	bh=aXXauhBu84m0zkaw5xvXwETxYMmftmj0mucH4ZqZV8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBQgbTKsvuwcZaUTyE/7lssNBSF+3kcQInNC3iB1I6oMpG5maCZNT9HVPyJMyETlRs2IV99Okrt6X4vSZ5rFaFpTd/QqX1HvF1zZu/lLliKgqEH25+MKzfDKkSAYXicQGZEHSp9e1GLJG6wlaH/7sZdX8B3modnw2aa7DO2NzYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PUvjZHfW; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8emKuCF"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8CFD7C2BCB8;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777272283;
-	bh=8wkSSpByQImqhD/3iayk5DZrcTDZIc1JAUCH4fWwUHs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=n8emKuCF0lsZxcqVJJ7ICib9Y7O7RJgfceKRIe/be7cHmaB4NpqLwpuJsK3BAF0le
-	 zy1hPW5coxIQl59v8kmCkeFlUcwE0BSwjcJNdJcztZSH6sGDf62tW8vLjBqMJfRRIU
-	 IEwv4BGrgfsL3F6W7ctyUClZYAasp9D0/M7NG3bj6ze5XpLJmbZi9OQkopX4cGUa4W
-	 mFMp+1TFDp1uB6FstpTWmYQfmWszKq2bg5OXwElz8s1ZguYKVLX77Ulf6hKGNRSX6W
-	 98n3TGfIaaA8p+UMWgxNBEUQLmC3xr6ORFYj2gCsO/B9gnxt+Gulj5U1y8sq+CjuVr
-	 RcycQG4ng8dzQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DB07FF8867;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 27 Apr 2026 08:44:42 +0200
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-lg: Enable
- qcom,snoc-host-cap-skip-quirk
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUvjZHfW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777276433; x=1808812433;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aXXauhBu84m0zkaw5xvXwETxYMmftmj0mucH4ZqZV8E=;
+  b=PUvjZHfW0XNDjFb4HUoQg3j5pEFg5vAeJepaqaXpmDSIPWShO2MhibPL
+   Tbie7y3ccrZlBhlnunCg2oQOyK/aew4vORp8ULysgJWyLZe9YL/0RiNn5
+   gQYzIAFwqesMhJfo8krnfhzAZ/nVeC+c7JecvakrliReI74LJ0NeqrBNE
+   MnixcIfXLnm34h/IcVIfIcrKC4nwl3Izr8cKNsli+WlBN8eJFMUjqTTrz
+   9GkFHesTv32JvBOB1NjX20W49/Ldhzuv3bsGu2T1ASZZzb+tmN10iOWp1
+   IkvH0InfOOOH4jMrWHpJShPuZ+dOJRcR2qqW50ORhsWMpaE1oGXcHQRpF
+   A==;
+X-CSE-ConnectionGUID: wZHV/mtRTvSagPBzmJDsLw==
+X-CSE-MsgGUID: bqQo9w/QSayQO0dFX62V4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="82018805"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="82018805"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 00:53:53 -0700
+X-CSE-ConnectionGUID: zQnQN4EmRNuCfc+D6/YTJA==
+X-CSE-MsgGUID: nACzrQHnS0+BN93wq5h6SA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="227036888"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.2])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 00:53:48 -0700
+Date: Mon, 27 Apr 2026 10:53:46 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Antony Kurniawan Soemardi <linux@smankusors.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v4 2/4] iio: adc: qcom-pm8xxx-xoadc: remove redundant
+ error logs when reading values
+Message-ID: <ae8WCnjrI-4XuWPF@ashevche-desk.local>
+References: <20260426-pm8xxx-xoadc-label-v4-0-0ec782362615@smankusors.com>
+ <20260426-pm8xxx-xoadc-label-v4-2-0ec782362615@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-2-4398e94bde70@ixit.cz>
-References: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
-In-Reply-To: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Amit Pundir <amit.pundir@linaro.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Paul Sajna <sajattack@postmarketos.org>
-Cc: Konrad Dybcio <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1150; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=rjReFmShlnTaM2lZx/85DqjUqhkr2W2r+NrmMgLxkjg=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp7wXaphRDQGvH4XoK/VOPxmZ+p4W1VgL/Papcr
- 7665zCi8+WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCae8F2gAKCRBgAj/E00kg
- cpTQD/439i8fIE09B6ex6xtz9if7DkBu8PuwBU2Taq7vE95PPMAYRaAxfb2HHnj9Exj1hQxiKg6
- Zkr5TgcSzT1jLsXLy/OWrkQt+Tc1m3JY6DTyZaCn0fHJhwx684MhKV1kVXUb0oz+OXyoYpOHUFT
- jfHpb0UlTi7yMh0S8fFLwWNBg7d/TB/bNznOZcM+n0PU6sW1pxzpo7o2hbakWsH0Fxmi1QLRcV3
- 7nT8y/dy/AM7zrzwNtF+EbWM+C71JOL/7thBCjL70snDCRa+MefTjQVThQXfj54t06ZaeuzXA5O
- M/o3kFNYam3hu63t09cagRi35TJZCZgSV+rSCWUwkpevQKjkMcv848t2P9ECb5XMGLnMwqyqAVn
- KbaVgFwB9bXNYgbcrDkO6Te1AvVRwYaD+HBcJqArBmHdFjIkTO/smAbWY3iQ1DHKG+G3H7Bc3E+
- sgTCLwZQ0GpijqeE1oacU8tswlZIYrajT8QiwlTBbKAyk/p9vEH8kaFt2AXiaJIV35GeeVjJIhm
- sdVXtgjnGlWQHAZjMQViJz52rGYd3rdvcIm0JubgTknhSQupMhCgp5uI+s3A3w0M7vdZ4fRAMLB
- yZOyI6VHul6bpKaxJ4K2CKUiVZS5DdTTlyTba+XZFItCvOg8qRoIJj/2Hy0TkRC3EICWVHDL1PT
- wWt8eMFw4yleEjQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260426-pm8xxx-xoadc-label-v4-2-0ec782362615@smankusors.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Paul Sajna <sajattack@postmarketos.org>
+On Sat, Apr 25, 2026 at 08:39:16PM +0000, Antony Kurniawan Soemardi wrote:
+> Drop dev_err() logging for -EINVAL and -ETIMEDOUT cases and rely on
+> return values to report errors, reducing unnecessary log noise.
 
-The WCN3990 firmware for judyln does not respond to the request for
-host capabilities. Add the devicetree quirk to skip this request.
+Assuming that this error codes go to the user space without changes,
+this LGTM, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Fixes: eb8fa3208526 ("arm64: dts: qcom: sdm845-lg: Add wifi nodes")
-Cc: <stable@vger.kernel.org> # 7.1.x
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+The EINVAL --> ENOENT can be discussed / changed separately later on.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 71d070619ad73..2d02d77d35ea7 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -675,10 +675,12 @@ &venus {
- 
- &wifi {
- 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
- 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
- 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
- 
-+	qcom,snoc-host-cap-skip-quirk;
-+
- 	status = "okay";
- };
+...
+
+> +	if (!wait_for_completion_timeout(&adc->complete,
+> +					 VADC_CONV_TIME_MAX_US)) {
+
+I would even dare to make this a single line (82 characters).
 
 -- 
-2.53.0
+With Best Regards,
+Andy Shevchenko
 
 
