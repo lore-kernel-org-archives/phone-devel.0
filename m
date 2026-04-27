@@ -1,50 +1,65 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F933CEB9D;
-	Mon, 27 Apr 2026 14:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59643DA7DF
+	for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 17:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777298716; cv=none; b=CAaVmessAhpkFYhuBsM3++OKBoylDv2wLRTa8NPHvQdoOnuz6MB/714dpkLYNv7/ZEQb2+OWoCeXglBKXHVK6HaQx0JdU1+0UIU1LHOlFCIhJBdk1OEB9sqRsbDhh7PkG5l8ccNi2qoZBptWLi/HnSCDYWWV46meo17iGsqXLUw=
+	t=1777312721; cv=none; b=tlVEokys+A5zYkGIoDwRrVFNV7u1L7kY3dxsdhjZFS7zrJGHHrN9ZsRC1CrH/gDW3Zql3SXJ60m7v6a0WafoyEN3vASddB1pKrWD/BA11TUNbbM1PCFtOmsV94vYhpDO58/vgXW1nqj6VmE1ew3nJAKmlmkvU60yh9RBEYFcPR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777298716; c=relaxed/simple;
-	bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TcDGKPzwiyFhlOQSRsZb9nmjZhhSKfG+qA0xpKnsl3tz9dNiyouEfVMoJZaVDwQusoBb8q8KPlCOHM6wo/kyYhMUICpOWRMDPxfQ+5PxTJahIH/Y4+V7nWgEEfOmk5xO3YdvDuhAJS4WYrsFKNdhTHcCcfegFfHZmwS9SvXIw3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=jTLfo309; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=ZvhCPiuk; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1777312721; c=relaxed/simple;
+	bh=/8ZPi24r+2KjLGP7S/vkRpBzqTPelKRknbWu+/4Pfq8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=shM/s37bHKf7RI5MXv/h1l8LMP55DDTYFJ7nb32ow/SMwID6xfhIbwPggok7ysyh1bzgC44yad3/Gcf34znnWMJM53gzZ4j9f6WbcafaikslX81me+2MF6Zg//a7I5hc8Iq9MM6FAlVdyGYxVrNb0igi+FLhuvxFBwzMncmObhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hq7d2KcZ; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="jTLfo309";
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="ZvhCPiuk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1777298202; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=jTLfo309rSOvCXDyT+8rU/3neR1kZ5f7IA5vgv0MM8QFNs/PqNUzxbXXYO8YgE+Df
-	 YBokwzOwbMUIbZ6ZmRbiA/6s27Wqw2BhuEa0ptfkwBiv0l2e+V/KnQr/BxE9SeAJed
-	 KjCCaE6f0wuC9BbMzsyt1fW1ZORQ95/lVD5RIFDKkFDPRwJlOUtYaYwCRZ6fQfdQ0o
-	 0C9wBhVDYTv9+h2FOzH1Y50236GyvkRzkEzx+9Yyfr7O1lNCTSpKGKR4uWEFeG+wTt
-	 0U1eZ17zZz0lZ/2mbYp2z+44J53iFGZHbcPJnSk9InvkWOQB2xscRIe3X2oe/Ogkxs
-	 ffQeEw1RPeedA==
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id B4906FB02;
-	Mon, 27 Apr 2026 15:56:42 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
- by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id JZsWk8qix5cl; Mon, 27 Apr 2026 15:56:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1777298195; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZvhCPiuk9Oil4YBIvzlgHLcDJ0GoWbRWHajmIDWLk89wChekaFdBbtwP6kosB0/N7
-	 5CcKTlKdTU7AjgywlmuqYGoljvISWcUXxNuqtI2MlPW+858PHSINvpGsb4AOqwCF/P
-	 wcd3f2Vg/kuZ7ymlRSZgz7WH4DTCadGD0xSaCHUoppBIQ+uKa49eTCjeAAMm9cFYyj
-	 wH1ZiJpaYd/t73u/2r+3xmnBb6SjPP0FgYJD6HMKQJL2ZRmVQipEnNkTH3SEeoIYeP
-	 WveHW26cE662Xwqm+oOI9UbB1dqEyGeRj7VeysrBT596WPOmSSAhwBQFuT/76dfwws
-	 wsKdcVv2TX1Dg==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Mon, 27 Apr 2026 15:56:06 +0200
-Subject: [PATCH 1/2] drm/panel: visionox-rm69299: Split DSI commands out
- into enable/disable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hq7d2KcZ"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79a2ee65171so119299627b3.2
+        for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 10:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777312719; x=1777917519; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yDDYwvsriCdPFU1Y3E6YCoMsHtkfAqF5QUr0mwz7Of0=;
+        b=Hq7d2KcZNoA0a0fK29wCEghyCF07aIfpeuEULvw8i1nmBHrX5H6SgK+QK1/RVZFA6P
+         dgUBmXW/V3CGXeOLWW5neiXcosOL46sugrjwcu1QfsLapPuGaOgDqbO7T6fODPEtGFP+
+         lCk4yYklxzZCv1EiNiBJRF6tQt/dsNh9CNV3w+Vg2wbOVFOSynpbIeo2aneHqlRyK8Ak
+         qBPe61g0er2yEgADNBSve/4H81LHAhnO5XWGllTsTb7tUgbuda5Wh90/b1vrxNXghsuE
+         u/W40jwDsWVOwTJYWTRt9QdswZjQd0QY20leZXUWC745XVIZbVirMKMC22Y00MaYQ5NF
+         oBDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777312719; x=1777917519;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yDDYwvsriCdPFU1Y3E6YCoMsHtkfAqF5QUr0mwz7Of0=;
+        b=KgKnjax2xmc6Sy+7dC9TpYRrk2gMMUu8NQpu6qHx13E0cwPivdcTW+n9CBbFqFzxHD
+         f1FpVOMFZbdCkODmLoxQqJctuiJd6tgoiK3cnP7arB0/70YxLPSXzHjwaYhbyjRFrIBT
+         Y6kDqXyZBi3chGIspQwRCasJYxLL9SR7ciCBJ0n0NEMkIuA379FadVgojxEVAmQdCEyk
+         Xm6re3qO/DluJoM/gIwSzxOlpk+gkFObEikeowSvs+jc6h2ohkKbHIBPPZUe/xg9eaF3
+         EWsJOhe0yfGaOyIejJAeFKi1/SeOEMA1vnoIN/uekdCrpfBjsGQP/w1ns7/MK0czv/mz
+         puKg==
+X-Forwarded-Encrypted: i=1; AFNElJ/697lLUnUbGMpYUAhIZ7nSKDj9lEtHsdoAd5+QwzS2kyQjRxFF0dCYltvUWlSqqLYT/z7urQ+FHeRlRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv6RLVNSBVIJPWiDh0oHi1kJsqda308l92FmYU7b2LCwyJGfSK
+	nNQx0y63t+RaqviFZhUcAvwvzr8VkglQKe+e1lArf3lmbIBckvQ5dxOt
+X-Gm-Gg: AeBDieul/pDwlTAKFHDMB74VMTHNc1q2+NCDVIRSJ7DVlSyimUaWxcwHNVy5a8m5YKk
+	bqpbe6cYeOLDjqSJ2CmX1ZSrCk3MeGOLOJjlaYW1tkmmwTe6XzcVT49wxsq9I+4hNRocfLteRuK
+	C2vMzL5VynP5AOrwm2QqHQ/o43E9PNXzxc8sv1wblqDI4MpbZAbc9FLJuGeeoFWQgy5khc8RlZk
+	h+J/kdf9WL2YHYQMC88ez+XIDEP92iXhckePcH4WtDzJ1pBpLeN9lgtdBW0X0qlKNnl/GIiFrcX
+	wx+GQatA6AdPeO49G50OWfvr/lxTqZr4blQo03oENd1XefYFVUS+4/hzBX3HpXnkEnoN/pkQOqq
+	8pTiNkmcsg+HX1IqnqA95JvW68VPsQaouJZkOVBxDaQiyga1MWVU5JUsaP4MkPssW+0IURhj8++
+	F8b9eSBsxiUTZb3XynqDpp3fsWBmV5umG47T5emSX5I4KGDkc=
+X-Received: by 2002:a05:690c:12:b0:79a:cc18:19c6 with SMTP id 00721157ae682-7bcededfdecmr3022397b3.34.1777312718633;
+        Mon, 27 Apr 2026 10:58:38 -0700 (PDT)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bcf05e9cf8sm198467b3.18.2026.04.27.10.58.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 10:58:38 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH RFC v3 00/11] media: qcom: venus: add MSM8939 support
+Date: Mon, 27 Apr 2026 20:58:22 +0300
+Message-Id: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,164 +68,138 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
-References: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
-In-Reply-To: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4304; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=18NYeaQ+mVybiXnZoHTdPXC31Y87nOeJpcTxWS0RO8A=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQnA3MnNROVZ6Si9vTWRzczVVdVFpV3dpWG5POEI3CmVWWHNFSzdEdmp3WjRqc1Bo
- YmVKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYWU5ckVBQUt
- DUkFsdjRaU1N2ekI0NFJLRUFDTk56Y0VsOEVaRkxkYjZQeEhmTHNCSHIrK0JibWdBM1NoZnBIbQ
- pub2R3VmxxUVFMTlhBeUZVQ0NyQWpHMHlobWM0VzdvRTlUbU9pN3lMS0xLT3hjYkpXSjJFTFRUS
- itkcWRnUVl5Ckw2SmhTV0dyeVZCYzJWOTFkbDZuOSs1M25ETWdXWmJYK1BZWGlBeDI2c25BVWJ0
- N0JOcDhJeGxNNHprY2phSWUKSXk5dmtLL0VCcmlxVTJVeHpjWVdDTGY4cGNwcnF6T0c2SUJITGF
- MVHU2dWV5RUZhUFJucTNSRkVyYzFwaEJTSQpmUjgvQzlEcDJwMFdxTzZSZ2ZmRzVSeTJPYlN1Mz
- d3VHFpWDMvRFFiemg0N2JFdlFZL1NWTFhQbHFwdmp4S2t2CnVLeHpkSTdYVVBsSlFpaC9hemFMT
- kFiRmo3b0hmS3ZSQVMxVktjeFZJUnZhVFU1eHRERmlZaEhpbmYxZkJOS3kKQ0lOUHZoZE16SVg3
- eFBVZnV0bHlQNHA1eCttRThPUWpja1JsbG8xNVAxd3VuaDZXQTZHY2pGODNFa2RaSVdUTQp1eHk
- 5c2FORDBlS0djWkQ0Unc3Q0o0VEl1VjZKdWUwRWU4dzRCaGM2UitISzhKK0l1VlRsS0h0anBWSF
- Z4MVUxCkU1Z3R5d2FVbXpoN2JLRVFQNWtYaWRscWQvSVBKOWVwVlhFdFRnOHcrZWZ6aGVQaE55U
- XVYR09aWGpkWGVlV3IKZXQ0RXFseGlMQndRUjhkYzdzODBuT2Y2cDVGN1g2dXdUd0s1SW5taEtj
- V25tcjRZMmtVVkYzbnRMY04rSmlxegppQ2toRmZlT0lRTEI1VUNZR3o2eFB2OW5uUUVzb3JQd2R
- zQW02TGh1Ly9KdDVtN3VxQXVUT3AwYkpxU2N4NXhhCjNFMTNtUT09Cj02bFZMCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ6CMBAF0KuYrq0pAxRxZWLiAdwaFzBMoUbAt
+ NBoCHe31A0L4/JP/rw/MUtGk2WHzcQMOW113/kQbzcMm6KrievKZwYCpEgiyVvb7vM454660XK
+ jkKOAFBPMElUQ839PQ0q/gnlll/OJ3b5HO5Z3wmHRllqj7dCbd1h2USj/GXERF7wQuUIFCHGlj
+ nVb6McO+zb4DlYCpL8E8IKSOaVQxhJEthbmef4AoE2cMAsBAAA=
+X-Change-ID: 20260416-msm8939-venus-rfc-c025c4c74fae
+To: Bryan O'Donoghue <bod@kernel.org>, 
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-It's when DSI commands should be sent and it also fixes these DSI errors
-on every screen blank/unblank on the SHIFT6mq:
+This patch series adds support for Venus on MSM8939. It is mostly
+similar to MSM8916 Venus, except it needs two additional cores to be
+powered on before it can start decoding.
 
-dmesg:
-  msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx] *ERROR* wait for video done timed out
-  dsi_cmds2buf_tx: cmd dma tx failed, type=0x5, data0=0x28, len=4, ret=-110
-  panel-visionox-rm69299 ae94000.dsi.0: sending DCS SET_DISPLAY_OFF failed: -110
+This patch series is marked as an RFC. Before submitting a non-RFC
+series, I would like to have some details clarified regarding how Venus
+works in order to improve and eventually upstream support for MSM8939.
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
+1. In downstream, particularly in LA.BR.1.2.9.1_rb1.5, the buses
+   for vcodec0 cores have only decoding bits enabled, as depicted
+   by qcom,bus-configs property of qcom,msm-bus-clients children
+   in qcom,vidc node. Do I understand correctly that these cores
+   are only needed for decoding, and not for encoding?
+2. Currently in device tree there is a video-decoder subnode for Venus
+   node, however, for SDM845-v2 (and newer) chipsets, Venus does not use
+   subnodes. Does this mean it should be dropped for MSM8939 as well?
+3. MSM8939 supports HEVC decoding, however, as the patchset is written
+   now, it does not work. It can be enabled, however, it will result in
+   breakage of Venus for faulty MSM8916 firmwares, because the code
+   disabling HEVC for HFI v1 needs to be removed, and as per commit
+   c50cc6dc6c48 ("media: venus: hfi_parser: Ignore HEVC encoding for V1"),
+   this would break support for some MSM8916 devices. What could be the
+   best way to work around this?
+4. To attach vcodec0 power domain list to dev_{dec,enc}, I had to move
+   vdec_get and venc_get later in the probe. Should this be avoided, and
+   is there a better way to attach vcodec power domains?
+
+There may be some other issues with this patchset - this is WIP code, so
+feedback is very appreciated. Thank you!
+
+Also, as per Dmitry's request, I am attaching Fluster results and
+v4l2-compliance output. Fluster results were very inconsistent and
+caused power collapse fails.
+H.264: https://pastebin.com/C15qeq5W
+H.265 (HEVC): https://pastebin.com/WDsnxvuk
+VP8: https://pastebin.com/egAgEm15
+v4l2-compliance: https://pastebin.com/VpBhEFc1
+Power collapse fail log: https://pastebin.com/rTivMcpK
+
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 77 +++++++++++++++-----------
- 1 file changed, 44 insertions(+), 33 deletions(-)
+Changes in v3:
+- Added missing vcodec1_clks to resource struct.
+- Removed enc_nodename from resource struct since we include
+  video-decoder now.
+- Link to v2: https://patch.msgid.link/20260425-msm8939-venus-rfc-v2-0-f69e52b36207@gmail.com
 
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index f1430370ff94..3c92a6ceb8df 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -158,6 +158,46 @@ static inline struct visionox_rm69299 *panel_to_ctx(struct drm_panel *panel)
- 	return container_of(panel, struct visionox_rm69299, panel);
- }
- 
-+static int visionox_rm69299_enable(struct drm_panel *panel)
-+{
-+	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-+
-+	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	for (int i = 0; i < ctx->desc->init_seq_len; i++)
-+		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
-+
-+	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-+
-+	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
-+	mipi_dsi_msleep(&dsi_ctx, 120);
-+
-+	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
-+
-+	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
-+	mipi_dsi_msleep(&dsi_ctx, 120);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
-+static int visionox_rm69299_disable(struct drm_panel *panel)
-+{
-+	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-+	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-+
-+	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
-+
-+	/* 120ms delay required here as per DCS spec */
-+	mipi_dsi_msleep(&dsi_ctx, 120);
-+
-+	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
-+
-+	return dsi_ctx.accum_err;
-+}
-+
- static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
- {
- 	int ret;
-@@ -193,16 +233,6 @@ static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
- static int visionox_rm69299_unprepare(struct drm_panel *panel)
- {
- 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
--	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
--
--	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
--
--	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
--
--	/* 120ms delay required here as per DCS spec */
--	mipi_dsi_msleep(&dsi_ctx, 120);
--
--	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
- 
- 	return visionox_rm69299_power_off(ctx);
- }
-@@ -210,29 +240,8 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
- static int visionox_rm69299_prepare(struct drm_panel *panel)
- {
- 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
--	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
--	int ret, i;
- 
--	ret = visionox_rm69299_power_on(ctx);
--	if (ret < 0)
--		return ret;
--
--	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
--
--	for (i = 0; i < ctx->desc->init_seq_len; i++)
--		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
--
--	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
--
--	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
--	mipi_dsi_msleep(&dsi_ctx, 120);
--
--	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
--
--	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
--	mipi_dsi_msleep(&dsi_ctx, 120);
--
--	return dsi_ctx.accum_err;
-+	return visionox_rm69299_power_on(ctx);
- }
- 
- static const struct drm_display_mode visionox_rm69299_1080x2248_60hz = {
-@@ -284,7 +293,9 @@ static int visionox_rm69299_get_modes(struct drm_panel *panel,
- 
- static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
- 	.unprepare = visionox_rm69299_unprepare,
--	.prepare = visionox_rm69299_prepare,
-+	.disable   = visionox_rm69299_disable,
-+	.prepare   = visionox_rm69299_prepare,
-+	.enable	   = visionox_rm69299_enable,
- 	.get_modes = visionox_rm69299_get_modes,
- };
- 
+Changes in v2:
+- Enabled GDSCs during encoding as well.
+- Merged vcodec{0,1}_pmdomains_num into vcodec_pmdomains_num.
+- Reworded commit for marking GDSCs as hardware controlled. Same
+  situation as in cdc59600bccf ("clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock")
+- Clarified the reason for missing firmware-name property in device
+  tree.
+- Clarified the reason for moving vdec_get and venc_get for later.
+- Link to v1: https://patch.msgid.link/20260416-msm8939-venus-rfc-v1-0-a09fcf2c23df@gmail.com
 
--- 
-2.53.0
+To: Bryan O'Donoghue <bod@kernel.org>
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: André Apitzsch <git@apitzsch.eu>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>
+To: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
+
+---
+André Apitzsch (4):
+      media: dt-bindings: venus: Add qcom,msm8939 schema
+      media: qcom: venus: Add msm8939 resource struct
+      arm64: dts: qcom: msm8939: Add venus node
+      arm64: dts: qcom: msm8939-longcheer-l9100: Enable venus node
+
+Erikas Bitovtas (7):
+      media: qcom: venus: add pmdomains to the struct based on the purpose of cores
+      arm64: dts: qcom: msm8939-asus-z00t: add Venus
+      clk: qcom: gcc-msm8939: mark Venus core GDSCs as hardware controlled
+      media: qcom: venus: move getting vdec and venc for later
+      media: qcom: venus: Move HFI v3 venc and vdec methods to HFI v1
+      media: qcom: venus: add power domain enable logic for Venus cores
+      media: qcom: venus: Enable HEVC decoding for MSM8939
+
+ .../bindings/media/qcom,msm8939-venus.yaml         | 147 ++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts     |   8 +
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |   8 +
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              |  34 ++++
+ drivers/clk/qcom/gcc-msm8939.c                     |   4 +
+ drivers/media/platform/qcom/venus/core.c           |  42 +++++
+ drivers/media/platform/qcom/venus/core.h           |   6 +
+ drivers/media/platform/qcom/venus/hfi_parser.c     |   3 +-
+ drivers/media/platform/qcom/venus/pm_helpers.c     | 187 ++++++++++++++++++---
+ drivers/media/platform/qcom/venus/vdec.c           |  12 +-
+ drivers/media/platform/qcom/venus/venc.c           |  12 +-
+ 11 files changed, 430 insertions(+), 33 deletions(-)
+---
+base-commit: 7080e32d3f09d8688c4a87d81bdcc71f7f606b16
+change-id: 20260416-msm8939-venus-rfc-c025c4c74fae
+
+Best regards,
+--  
+Erikas Bitovtas <xerikasxx@gmail.com>
 
