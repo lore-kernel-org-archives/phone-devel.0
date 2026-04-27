@@ -1,67 +1,37 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D853F1653
-	for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 17:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9183534A78F;
+	Mon, 27 Apr 2026 19:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777312775; cv=none; b=kTZJNtMSFJjiEThBryj9fhETMQJ6Lk+a3L3SWILkEDA/63itz8Y5eYcs68mivndoV2s4/LEZJMLgqHI83XoUGYBcL3skxXfZpwX4A112C8H8fG18IL+vbix/eNdxy2G3lnygKGPvxwBRCBuSy5iZHCl9wjAAHh1zQINRqwEKHxY=
+	t=1777318490; cv=none; b=lvZ2BUIktv/2qEH3jYlHa31p1F+tOlFDtTRpXa/pG5/9XHm3c8aZgpvKdgV51xk1HPCvAgRpchloiQ9Ufn8vnrJG1bvENmIvF0D6E0gOHKOvp0qLMQD8ufzKhKI6rpqGW1SPxTUQ/6HqxpW7GLvFhqfAnajDGZxR3yT8Qj1V8L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777312775; c=relaxed/simple;
-	bh=jaeITwTqO4QGRkrd+ii3VEXitM34y6Z0TnInmvQS8UE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DDsgw+9Sb66awa7eZMo8uwOCmqO6HqSjHT9HyXGiKAN+zvxoynEY27T97MKSn/c7rfgp4B+plHI4PFPNt/cAiTUInXkMQtwyEQlvRnWlfYLV9xWe6xhQsU6YdWChXQ4mee1fTthduuREeDGpMf73mvjiVchIwAEBiFwalHoOQfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cloFT4Ur; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777318490; c=relaxed/simple;
+	bh=LOMHarbM4v+JH2BBsj44YuwETzM7GQZrOBerh8UkOyI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ExVW/k5ZUSHu83sEUY3jnStwoDjtm15Q/QWJ+JKzADpH6g0lxxKmq69h5D7+dJsm2jRbHpw0OPTX3CKWFGta6jyO2YP4TAKsfoSUtRdDJ+zlxcz8RJJFBzEHIAMPs61u9pBZ2QKTZDH9xtQktFhZghHHVDZrI+SxcAeUIJXx9a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQPZVkb9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cloFT4Ur"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7927261a3acso92501007b3.0
-        for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 10:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777312773; x=1777917573; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UonjgGu1yenUo9y1UU2Zm+nX8gxbxS5Oh+dqLJhe99s=;
-        b=cloFT4UrX1eHGRseqTfWtZAWUrTYM1Ah88ObizgSjn2oOSz2i/ut7BolUj5m6OobQO
-         AtaJk99aTPh+N18Uvr9OQkBfkJDl/vwpPR5QqLJYJaY5mTctquf6ezA/i4cg2n1zjzsC
-         Zb7TV7Q3oK25agJ8K6dDg3KbSr/kDiF+zLK5YPQBaGbH2EN7+KLishycnsONW6yeo5td
-         CGGQJk4q01a3iP+IMcLZhCx6EF3K5NzYwi64/vLiqLME5OsB3h4Oe+ctYv/zYYjyaM+l
-         ca/sBV81xwQWjg/S+K4ctBrS+hH8pzStTLoq7dtOQ5nYCbGIPh8S60Y/8T83QNPLVDo1
-         RYLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777312773; x=1777917573;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UonjgGu1yenUo9y1UU2Zm+nX8gxbxS5Oh+dqLJhe99s=;
-        b=YQjscb8VLBolzNTtc1gH/GSMdSBEqN3hspMZhky0laN2ncq+7JTZODr9uk7qcGhTDS
-         9pVeJVYKG6UREsfzilEU2FHMBy2JrJTCVHX+IcfpTEn1OhIO+uMyweGoC3KyirgzANET
-         xxIoUa2wWJs7lordgr/oKbGNrNLyBboPSkBPcMdjOwI32onKqerwMeJASXE5ViZafHOC
-         y9xey4HQ2fQJD5t4QMJ0ApILTo22vabVB2c5PzGconU/KZGNv10JxDFjomp6B8OzmGEU
-         +DdL/lWNTg40KYS5mm5DyOBSByH2K0h8iblAp+HxbHiJEd1TWZJoA88kcTLCS4akvjeM
-         0Zkg==
-X-Forwarded-Encrypted: i=1; AFNElJ902m0Cfz3NQtLtHX3Ech+PgIDvTe+Sf2m9Sm5y9/CY9uUFaROa5sBNgc5oEQj0/HfxNHy4p2kTZiQl7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YziDUMFxWDdrUqbuHqjqpBQFnIxGBwMI51+aT51mNtUV1XCzFZY
-	1GXYSkW9yQeITn9w9Qk6gAYaG8btJ6G7rXV/qZqxLMfdpSRXy15HJEtu
-X-Gm-Gg: AeBDieud0TkrCLfxfgYbkbsawDw0Uh7xUtr0kDsAvFwz5dqacZfBcfrEiBxuDy+sZqS
-	hi2NEXFM09Ea8X7e8rIWk3KGCRYk6NixUQhTZhs/5cXtg6qZ9ol6+wLFv+pBoyFY+jdXn4O+pzM
-	AvfeY8m/2QzXohYtMXVg6a74MJPfk9GuEDxQoYQPsoSdJcgw/xN4ak1dsFLoaxz2C+g6yZsFkEB
-	0pmgOWRoUvppnUZzUfNeBHrfHSlLdlfai4sggB2DCWc8yGVRK9gitJU2WI+fzdXCxStgXF61ARH
-	0Dr5S+1JwNIDnsloeUf/qV0ekkXvSBcxFi+c5Kvx/pPWErnpDV38BTAYi3pIY7NEkq7N7iYXShV
-	1ULmFoviUoZdESRkNSoZUvhP0hp2hq5es7rDLWL0SKw4DrOVPHwXMYnJjVkFitM1P+BO3srSkXV
-	jf8qztZyMMhH+bq729gW0DD3DscTBi0GtSSGdMJVscLlWP1dE=
-X-Received: by 2002:a05:690c:9c0e:b0:7b1:e942:bddb with SMTP id 00721157ae682-7bced9fe6bfmr3858847b3.13.1777312773578;
-        Mon, 27 Apr 2026 10:59:33 -0700 (PDT)
-Received: from [192.168.0.39] ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bcf05e9cf8sm198467b3.18.2026.04.27.10.59.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 10:59:33 -0700 (PDT)
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-Date: Mon, 27 Apr 2026 20:58:33 +0300
-Subject: [PATCH RFC v3 11/11] media: qcom: venus: Enable HEVC decoding for
- MSM8939
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQPZVkb9"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6B398C19425;
+	Mon, 27 Apr 2026 19:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777318490;
+	bh=LOMHarbM4v+JH2BBsj44YuwETzM7GQZrOBerh8UkOyI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=kQPZVkb94OcJwHzJwqptEYuTWJ9fd6OG8uGK266PafxSf4WfXy1snWhtRQq8AiiTk
+	 MpOwtt2okrrWYDGFpzVRuFgkk5As8Ki5w+WBZlZKI9a78IHPzP2biVpnl7CCUiLKJt
+	 Iakx2Zpt7OzGfdM2HcGG6zst6KVbj2v5b4ROSqmyVIp5bP3HuLWXKM7rcYHkuBva/K
+	 jN19Z3owe7ekaIkmcr5K7VGIHHKCECAhf35W9Q9l3TUgVTN9v8KqI38BvtAnS30GLm
+	 UOyJshxQNmT0EYJMozt9H2sVdAK592kSsixaL0nKyIuMOIbTWo2T//ILgNezfkcMcF
+	 JavBIZmwcM+IA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60B12FF8868;
+	Mon, 27 Apr 2026 19:34:50 +0000 (UTC)
+From: Alexandre MINETTE via B4 Relay <devnull+contact.alex-min.fr@kernel.org>
+Subject: [PATCH v2 0/8] Add Samsung Galaxy S4 support
+Date: Mon, 27 Apr 2026 21:34:46 +0200
+Message-Id: <20260427-mainline-send-v1-sending-v2-0-dcaa9178007b@alex-min.fr>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,63 +40,90 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-msm8939-venus-rfc-v3-11-288195bb7917@gmail.com>
-References: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
-In-Reply-To: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
-To: Bryan O'Donoghue <bod@kernel.org>, 
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAFa672kC/42NwQqDMBBEf0X23C1JsBp76n8UD5qsuqBrSUqwi
+ P/e1C/oaeYNzMwOkQJThHuxQ6DEkVfJYC4FuKmTkZB9ZjDKVKo0GpeOZWYhjCQekz6VZURjG3K
+ Npco7Dbn+CjTwdk4/28wTx/caPudT0r/0j9FsFfauV/ZW16b09Ohm2nBhuQ4B2uM4vheRB8PCA
+ AAA
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>
-X-Mailer: b4 0.15.2
+ Conor Dooley <conor+dt@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+ Chanwoo Choi <cw00.choi@samsung.com>, 
+ Guru Das Srinagesh <linux@gurudas.dev>, Linus Walleij <linusw@kernel.org>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, Joerg Roedel <joro@8bytes.org>, 
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ iommu@lists.linux.dev, phone-devel@vger.kernel.org, 
+ Alexandre MINETTE <contact@alex-min.fr>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777318488; l=2418;
+ i=contact@alex-min.fr; s=20260421; h=from:subject:message-id;
+ bh=LOMHarbM4v+JH2BBsj44YuwETzM7GQZrOBerh8UkOyI=;
+ b=AL7tZWu53t/0Uhru9BLys/An11yWBqwc9RpldlJZZeD9jGyfuEoVTdLI0Rp8RKs1CFATSsn97
+ zxVVP0Ya6+NAReJVNB4q/VUsReuQYvnvBCOeF4IZQhOaULymhRTjrNs
+X-Developer-Key: i=contact@alex-min.fr; a=ed25519;
+ pk=KOCaxY4v16ptaT0uk1FRkuaDF2n1JhmnYwLiqWD76M4=
+X-Endpoint-Received: by B4 Relay for contact@alex-min.fr/20260421 with
+ auth_id=743
+X-Original-From: Alexandre MINETTE <contact@alex-min.fr>
+Reply-To: contact@alex-min.fr
 
-MSM8939 supports HEVC decoding. Do not disable the HEVC codec HFI bit
-and add it to codec type converter method so it can be recognized.
+Add initial mainline support for the Samsung Galaxy S4, codenamed jflte.
 
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+This series adds the devicetree binding and board DTS, together with the
+small driver and common DTS changes needed to boot the device with working
+USB peripheral mode.
+
+Tested on a Samsung Galaxy S4 GT-I9505. With this series the device boots
+and supports UART, USB peripheral mode with USB networking, the front
+notification LED and the physical buttons.
+
+Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
 ---
- drivers/media/platform/qcom/venus/core.c       | 2 ++
- drivers/media/platform/qcom/venus/hfi_parser.c | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Changes in v2:
+- Keep the APQ8064 compatible list in qcom.yaml alphabetically sorted.
+- Clarify the Qualcomm pinctrl commit message and include the failing hog
+  lookup trace seen on APQ8064.
+- Clarify the MSM IOMMU commit message and include the NULL dereference
+  trace seen during IOMMU probe on APQ8064.
+- Move the PM8921 USB ID extcon node to the end of the PM8921 child nodes.
+- Reorder the jflte DTS nodes and pinctrl properties as requested by
+  reviewers.
+- Add Reviewed-by/Acked-by tags collected on v1.
+- Link to v1: https://lore.kernel.org/r/20260421-mainline-send-v1-sending-v1-0-bcb0857724de@alex-min.fr
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 5bd3ad21b366..943d498f4e4e 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -178,6 +178,8 @@ static void venus_sys_error_handler(struct work_struct *work)
- static u32 to_v4l2_codec_type(u32 codec)
- {
- 	switch (codec) {
-+	case HFI_VIDEO_CODEC_HEVC:
-+		return V4L2_PIX_FMT_HEVC;
- 	case HFI_VIDEO_CODEC_H264:
- 		return V4L2_PIX_FMT_H264;
- 	case HFI_VIDEO_CODEC_H263:
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 92765f9c8873..178274d10c02 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -207,7 +207,8 @@ static int parse_codecs(struct venus_core *core, void *data)
- 	core->enc_codecs = codecs->enc_codecs;
- 
- 	if (IS_V1(core)) {
--		core->dec_codecs &= ~HFI_VIDEO_CODEC_HEVC;
-+		if (!device_is_compatible(core->dev, "qcom,msm8939-venus"))
-+			core->dec_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
- 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 	}
+---
+Alexandre MINETTE (8):
+      dt-bindings: arm: qcom: Add Samsung Galaxy S4
+      dt-bindings: extcon: qcom,pm8941-misc: Add PM8921 compatible
+      pinctrl: qcom: Register functions before enabling pinctrl
+      iommu/msm: Look up masters per IOMMU instance
+      extcon: qcom-spmi-misc: Add PM8921 compatible
+      ARM: dts: qcom: apq8064: Fix USB controller clocks
+      ARM: dts: qcom: pm8921: Add USB ID extcon
+      ARM: dts: qcom: Add Samsung Galaxy S4
 
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ .../bindings/extcon/qcom,pm8941-misc.yaml          |  17 +-
+ arch/arm/boot/dts/qcom/Makefile                    |   1 +
+ arch/arm/boot/dts/qcom/pm8921.dtsi                 |   7 +
+ .../boot/dts/qcom/qcom-apq8064-samsung-jflte.dts   | 485 +++++++++++++++++++++
+ arch/arm/boot/dts/qcom/qcom-apq8064.dtsi           |  18 +-
+ drivers/extcon/extcon-qcom-spmi-misc.c             |   1 +
+ drivers/iommu/msm_iommu.c                          |  28 +-
+ drivers/pinctrl/qcom/pinctrl-msm.c                 |  15 +-
+ 9 files changed, 546 insertions(+), 27 deletions(-)
+---
+base-commit: b4e07588e743c989499ca24d49e752c074924a9a
+change-id: 20260421-mainline-send-v1-sending-289ec98e6dc1
+
+Best regards,
 -- 
-2.54.0
+Alexandre MINETTE <contact@alex-min.fr>
+
 
