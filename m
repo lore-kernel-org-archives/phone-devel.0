@@ -1,105 +1,107 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361D02E2DF2
-	for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 20:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFDD2E54AA
+	for <phone-devel@vger.kernel.org>; Tue, 28 Apr 2026 03:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777321363; cv=none; b=CTV3hFnJxwhDHZ5hpdTMVeHpJOKPhPfILYNF2HNy60fFT1mxnR2LXJ9P9DrmGBXTlD+qBqdVulUvn5aNHc4sC5hpJk3gQFad86dKHB2oHZzxjIZin7zpTpQeAPcc2EYtKNb8JwATJegupu8y7UXIgYPPZKco6lnsqpE7tkHMfME=
+	t=1777348290; cv=none; b=KSAynd6Y9KxBHxkeC9R7+XOUmRUICN1wQuCcmeo7ZhanSU0Il6nQ+hOMUPjL5/rCfbkDIR4AIKCLTsL5+C9UYD8EtcEKG5mN53PGubQLSG4ngJSHbVb2oybU/YJwLiL89m74Ao9S4qyVuozZn8+AzvVap44FrOiGlyiPrmWo0Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777321363; c=relaxed/simple;
-	bh=YTd/Z0HCcKLHukgv576kTNa9f4xPUI4kMQZ0Lh2Y+V0=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=j0gbZxNWVoVzroZ0hkBARvZEOrt2Du7Sy/wwO4v7Xr8QE5mMDjXsM4LRnx9xYHHLmW9FYEhhZnqQRT58ViRl7UveB9eOZ/uxtMMdVw7dh8QsVTP1n3E1sFIklZfJ1vuxQmB68ZqpaSECRKKhdCpISSlUWw229pAzBvuuYGZELuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=YMzhjdp5; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1777348290; c=relaxed/simple;
+	bh=RQfjDmjDhFBZQeNCmuYx5MyE8j6k2g5d33MZmHmxCmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iwFyspySj0J5AjOW04y2EY0+dKB8lWris9fp7NrHmhBXPJJMSy86YFibc0AJ2jgRY1/S/jU1LqfV0zT8dfIVZtETF5mNQe9lg3Q127axTuacZck4CWA3AOzCbyIpq+7/m0PV70j/efaDZrtoLFpw4o57lraKHuwYf2EnXIsGlLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=om7wcb+v; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="YMzhjdp5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="om7wcb+v"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8f15e900586so229408585a.1
+        for <phone-devel@vger.kernel.org>; Mon, 27 Apr 2026 20:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777348288; x=1777953088; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=63f4GofBoWLfXQjvxrKaQNrlmvp+JGGyl1KjrPUdmXI=;
+        b=om7wcb+v6jOtI69VUjVTFihCYGBnZ5on48uPRzAVMvPTaqFaNcbrLl/6MkV5QW+DcB
+         kxPDH4bKZSsy5XmRm6RUPqu+fcooPzoHWEhtjRZAX44M6VDtYXsp9PJa0AlQ564ogkmu
+         022TOCX/89rPiIRSdYugVcf4FDmF2hozU9ZqVhVnuTB2Ex2JO9VFPkiLEV1CkoV/C1F+
+         CqvoYdDWOskf2ylBidvPs0a0KN4SQMrNQOTTlZ2uEPoEZNlvSQtV3HlOtYfy9h+v8X+9
+         0xdTds4jnVnlRDkYlkB2JIi604qcnCLwU4hZMjyQ39PogIL4lNHuMGTgg5w+drVjz7kS
+         RN/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777348288; x=1777953088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=63f4GofBoWLfXQjvxrKaQNrlmvp+JGGyl1KjrPUdmXI=;
+        b=kTZnDrleKR8gqoBV2ttKJEMfBDjVa8EEZbME0tM1tNzIEGGVYt8sqzdt7c4y6Nz/bL
+         a9gxKeq/9TfAI/Py4kGItOPRh3Ik1Gvz+IJRwW+FtmqWZYvVYPP6pQrPFgZHBsaPxSaa
+         8wqT6cL12lCBbvbMA7vNC2Fvr3Eg31Ca7iZmBijd0zgPAgdR6qW0XCndheZrsJXL4xHM
+         kmpw2e1xs3YVdS/bYZeUSX++DFgkpaZneic86EMo5xiLazu4GAzF6RuJff7etCfEOULn
+         QOYxnHOlKp0YkyervEbvhdr892IEgsZiAc8LXJDV7w0TtgWT8+AtdQMbad1d25mqjri2
+         A5tw==
+X-Forwarded-Encrypted: i=1; AFNElJ8UQ43q7eUgbJDkV+4vPt0TXuZsn55qyRrCa073s0dpBKXfGeS/wZdLwcPCVNZsEK7SaxIXqKLFTC7ZMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ0WMVKdrNX60dUWcBw3uNXIB9YoWvg5BcS1bWieUAvbU/evha
+	wOfUR48E3Oc6sLz4ND4JGyvrRhvB9GkZ5VxGmoHyPMudi5CxiSiW0QZY
+X-Gm-Gg: AeBDievXwlEcaBa2twcMUwgsK0M/NjblOrO2a9kGYeYxreOJS6U7eFinyzKt07IdZtl
+	0yW01WJAisvQwGvak+DSqTCXD/sHXdgG7egHTL4qpIAsuGA0p8pQdV7NB94aTpklWmawuWCCnGv
+	CLD680gXDXwupd9UtYrpqOgKBYPM9V/LuxHyRgLWweTIAxkluqKLdR12uMEQIGOT5eEXljE1+Od
+	tUJtMWlJszt6hVghrsmS1tLVWwkna+3EeNK1svz5wLVIKl3iMY+6uOVoaU7eimnHuKmoQVfR9Wz
+	8ruAB/J/wuUSRxiIUnLoWioxjXt+7qmUGpsM92u29q3N7wW7NJwKB8hHg9lhNtL2HqtmBWjPZjR
+	0LjopN+SKP1SyqJgTQ6pgPgH262doS8NIhLaAbSfxH9XzNIyOeickArSZNR7Y35iwCOL5s6Tnqa
+	nXUGdg47yR74nZFysTFz87vW3Ulvdw/zCHH+Hz
+X-Received: by 2002:a05:620a:29c1:b0:8f0:f1a5:680c with SMTP id af79cd13be357-8f7d9016b82mr191945585a.29.1777348288133;
+        Mon, 27 Apr 2026 20:51:28 -0700 (PDT)
+Received: from localhost ([184.144.58.243])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c4dbcfbdsm100150285a.12.2026.04.27.20.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 20:51:27 -0700 (PDT)
+Date: Mon, 27 Apr 2026 23:52:10 -0400
+From: Richard Acayan <mailingradian@gmail.com>
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+	Todor Tomov <todor.too@gmail.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Robert Mader <robert.mader@collabora.com>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v9 1/7] dt-bindings: media: qcom,sdm670-camss: Remove
+ clock-lanes requirement
+Message-ID: <afAu6ueMsjBY-yUB@rdacayan>
+References: <20260217002738.133534-1-mailingradian@gmail.com>
+ <20260217002738.133534-2-mailingradian@gmail.com>
+ <4898366c-108d-479e-93cb-f79b27ba811f@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1777321358;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WBUWoNvxUkGv0blpLp4hLR3tQUEDpc81rOZHnN/VVUo=;
-	b=YMzhjdp5FNAhb4Z1tg0sSgl0PNTXf8kfwPTd2XHvmruWGEvC5xOYGB9qDihwT9c8ppRkdf
-	auEJ/Jb62RLQJMjSVjfAqylbKIyunq9CRr97vOKUK4iCvMlhjGmfETa2lLCJXm5v76NXdH
-	Qr7ltK+j2Fvzf9WvKqLWlf1QjdOiU+AgtoyWmwa/lerPKtMXvvIz/uPFCy5lbZDsWX+/0+
-	LHU62gM+poogk3Bbx9CS5YHM2mLia9wFcr1D0bkTVmjCYmhku/alA5Ij8xVe8xV9K5FcVZ
-	RQNGLfq2Q6tBzWF68Yzg8XCnHKOVzFMcT4VDvXLWkL/gg97+v0Vn2eW2k0FdCg==
-Date: Mon, 27 Apr 2026 20:22:31 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Paul Sajna" <sajattack@postmarketos.org>
-Message-ID: <a0bbc97055846dae83db766e60a39899f09e1e91@postmarketos.org>
-TLS-Required: No
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-lg: Enable
- qcom,snoc-host-cap-skip-quirk
-To: david@ixit.cz, "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Amit Pundir" <amit.pundir@linaro.org>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>
-Cc: "Konrad Dybcio" <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, "Konrad Dybcio"
- <konrad.dybcio@oss.qualcomm.com>, "David Heidelberg" <david@ixit.cz>,
- stable@vger.kernel.org
-In-Reply-To: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-2-4398e94bde70@ixit.cz>
-References: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
- <20260427-b4-skip-host-cam-qmi-req-fixup-v1-2-4398e94bde70@ixit.cz>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4898366c-108d-479e-93cb-f79b27ba811f@linaro.org>
 
-April 26, 2026 at 11:44 PM, "David Heidelberg via B4 Relay" <devnull+davi=
-d.ixit.cz@kernel.org mailto:devnull+david.ixit.cz@kernel.org?to=3D%22Davi=
-d%20Heidelberg%20via%20B4%20Relay%22%20%3Cdevnull%2Bdavid.ixit.cz%40kerne=
-l.org%3E > wrote:
+On Wed, Apr 01, 2026 at 12:22:34AM +0300, Vladimir Zapolskiy wrote:
+> On 2/17/26 02:27, Richard Acayan wrote:
+> > The clock-lanes property has no effect on the hardware configuration, as
+> > of commit 336136e197e2 ("media: dt-bindings: media: camss: Remove
+> > clock-lane property"). Since boards with new camss support can omit the
+> > property, remove it from the required lists.
+> > 
+> > Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+> 
+> If you send another v10 of the series, please remove 'clock-lanes'
+> property from the example as well.
 
-
->=20
->=20From: Paul Sajna <sajattack@postmarketos.org>
->=20
->=20The WCN3990 firmware for judyln does not respond to the request for
-> host capabilities. Add the devicetree quirk to skip this request.
->=20
->=20Fixes: eb8fa3208526 ("arm64: dts: qcom: sdm845-lg: Add wifi nodes")
-> Cc: <stable@vger.kernel.org> # 7.1.x
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Reviewed-by: David Heidelberg <david@ixit.cz>
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
->=20
->=20diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/ar=
-m64/boot/dts/qcom/sdm845-lg-common.dtsi
-> index 71d070619ad73..2d02d77d35ea7 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> @@ -675,10 +675,12 @@ &venus {
->=20=20
->=20 &wifi {
->  vdd-0.8-cx-mx-supply =3D <&vreg_l5a_0p8>;
->  vdd-1.8-xo-supply =3D <&vreg_l7a_1p8>;
->  vdd-1.3-rfa-supply =3D <&vreg_l17a_1p3>;
->  vdd-3.3-ch0-supply =3D <&vreg_l25a_3p3>;
->  vdd-3.3-ch1-supply =3D <&vreg_l23a_3p3>;
->=20=20
->=20+ qcom,snoc-host-cap-skip-quirk;
-> +
->  status =3D "okay";
->  };
->=20
->=20--=20
-> 2.53.0
->
-Tested-By: Paul Sajna <sajattack@postmarketos.org>
+I don't think I can send a new revision of this patch since it's already
+applied, though there may be an opportunity if clock-lanes requirements
+are removed in bulk.
