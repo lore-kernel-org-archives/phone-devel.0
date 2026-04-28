@@ -1,69 +1,143 @@
-Received: from vinatta.cz (vinatta.cz [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A863F65E6;
-	Tue, 28 Apr 2026 12:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5348044BCBE;
+	Tue, 28 Apr 2026 13:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777378081; cv=none; b=m/OzzB7nj8iYvvc1njMVYkjVjyIdV6fU+LDTshk8UtxP234cKCH6Jc4uHUFxMl8ilvo8j6bn82vMS4jN8Kn/qPUeIVmGbLLMgJy4FB3bGYfbLkg944466q8RCGfYSqlCsrnEIsqo9loR4Dk2YTTuXoquAssJ+rVTNfgXamZNcug=
+	t=1777383413; cv=none; b=s0q+YgcpnhQkEAMPkQ9CRjTD9eS0bfs5NMZY2AEsYF3x7X+FoAboC+MrS+i2qT5B/YBA1IjH6YQdSsK6FVrRFJaDE29O+7h3WKua4usYxND5+WO4CIzf7OFvyRNhFewX0qLA7zzDFV8SHKvBulIWQqINoEVHMR2Y8XvTkFxqw3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777378081; c=relaxed/simple;
-	bh=THopMcPwAtElDRUjMyyfKmvTfcYIKXT2QBM8u2Qz/0E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=HbO8q0CWjLyFHepX69/M8AfJiEAlhJK3pbZ+NbwwIKbL4G/+4Lf4hVP20LvnP2adb/eDcfBYS8wMwUQcNB6BLFpKooXMUdnNM/IW1EkjlEPju/zgHa7K4rwKNTI7IHFOHRfzctLdh+bh2Nplv2mGE7WycphhE9p+/RVQQqoTiRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=ccOUyYpO; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
+	s=arc-20240116; t=1777383413; c=relaxed/simple;
+	bh=SV/abDQ9GHMF1r7JuRQf6ccezy9MHlopkSctJDFMcm0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lsBRdu2EFu4uRLs1qXusGK7Rad0ivK1niV3dZ3NdBfIDKT5S8kIDXK/SRN/VwrxzQ6c3nLEuSmaHt99oPovV3cGl0hCvShYvha83TUxN4O29whrP7OhxSZgRyYHdLPvwttbHxsMy1ved12kWBzXczCOHL6gj8CLw3mzg3I6a+is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQCh+V7X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="ccOUyYpO"
-DKIM-Signature: a=rsa-sha256; bh=QczeZu7gF0v+2N++LTfsB6F6SrmXmtHT861C4vJJ1/8=;
- c=relaxed/relaxed; d=vinatta.cz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@vinatta.cz; s=default; t=1777377143; v=1; x=1777809143;
- b=ccOUyYpOtcqIW1eTmfw27QEgWmyxLbAp2Fpl/1wRU+oj8IBLeRODoQukciDhCH4enEMh8dhF
- WJXAIwjf7QVzkJfNPr4bXWZshUXnOUhl+JaVDtq2Y1psg3uJfrm7037XeCapDa6ww4hEH3rYBPl
- gRNK6ToKvaBSGZt7fOQ3no+JR+2hSTjwa8P39dmjfnxOdxav4PyGlkNXApb6K3+dMBltubBb3Dr
- jGzJmE7Th9w9W7EwsNqtPZZ4gEBk2CedUJA6iGPVjdjOg9q3yb1lVmXav5Ux3uuJy8o+jW8nTIc
- zIkwZ72vKQsYJRY9AMXW82FTSeecMkL9fZ7iSOISL1O3A==
-Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
- 986f9e12; Tue, 28 Apr 2026 13:52:23 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQCh+V7X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD15C2BCAF;
+	Tue, 28 Apr 2026 13:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777383413;
+	bh=SV/abDQ9GHMF1r7JuRQf6ccezy9MHlopkSctJDFMcm0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TQCh+V7XkKalFjhqFLnZNoiER1cm/2IHx7i6qSIQhKboGz5cU13NVK2zoPg1a3Kgb
+	 rs2jpke3ulloLBQX+zWbcGmjrmRsQLZ1w6M0GpeyMWWfTrqHcX3r/oTMJQq5dUfzU+
+	 06ZCug4Hh5myP99JcCzJmdFYixP1RX+MS2ekstaMvfVq0rqWolWC2TfQYJUjav88Rx
+	 yXduw3391pgOvi4qnylT1CfZLoIWNA/b+1kXJfpwBm60Xtb1efuJiDCnwfWVATXvbe
+	 Q7iFO2tjk2MwkH6gYZRCW1TrP9h/h9JOJhvFDK+G/mZ5wqBD/s8/3SyasoxJwCslF6
+	 SzEZkfZkXLOtg==
+Message-ID: <2846fc60-bf8c-43b3-ae64-58faad6aed2f@kernel.org>
+Date: Tue, 28 Apr 2026 14:36:47 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Apr 2026 13:52:23 +0200
-Message-Id: <DI4RM3GB8BI6.1HBB04RO97J8O@matfyz.cz>
-Cc: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "David Wronek" <david@mainlining.org>,
- <phone-devel@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>
-Subject: Re: [PATCH 1/4] arm64: dts: marvell: samsung-coreprimevelte:
- Increase touchscreen voltage
-To: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20260409-cprime-dt-fixes-v6-20-v1-0-8df6f88942c8@dujemihanovic.xyz> <20260409-cprime-dt-fixes-v6-20-v1-1-8df6f88942c8@dujemihanovic.xyz>
-In-Reply-To: <20260409-cprime-dt-fixes-v6-20-v1-1-8df6f88942c8@dujemihanovic.xyz>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 04/11] arm64: dts: qcom: msm8939: Add venus node
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
+ <Xfiq_WNTU9P-ThZLMs4plWE5hwtmwyVyKJc1bD5BKdhERGouucNpyuenIoKQiKfZKaRzP-PdamsNlQ8vezjrRg==@protonmail.internalid>
+ <20260427-msm8939-venus-rfc-v3-4-288195bb7917@gmail.com>
+ <56d609dd-62be-47eb-8ba3-c5d70d773113@kernel.org>
+ <QRkqY_zK7EC4e0ZMoLVyLUhgI9A5RrBcJLm22d69xKT17HzJMXsEDdz_qodBN9qogvuS1XqN4zdemqcoByY5CA==@protonmail.internalid>
+ <34627be5-75cc-469b-af23-f1f08ce29820@gmail.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bod@kernel.org>
+In-Reply-To: <34627be5-75cc-469b-af23-f1f08ce29820@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Duje Mihanovi=C4=87, 2026-04-09T23:17:24+02:00:
-> From: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
->
-> The old 1.9V setting was found to be insufficient in certain
-> environments (in my case cold ones), causing the touchscreen to register
-> ghost touches and mostly ignore actual touches. Increase the voltage to
-> 2.5V to correct the issue.
->
-> Fixes: ec958b5b18c8 ("arm64: dts: samsung,coreprimevelte: add touchscreen=
-")
-> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
-> ---
->  arch/arm64/boot/dts/marvell/mmp/pxa1908-samsung-coreprimevelte.dts | 2 +=
--
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 28/04/2026 10:47, Erikas Bitovtas wrote:
+> 
+> 
+> On 4/28/26 10:10 AM, Bryan O'Donoghue wrote:
+>> On 27/04/2026 18:58, Erikas Bitovtas wrote:
+>>> +            video-decoder {
+>>> +                compatible = "venus-decoder";
+>>> +                clocks = <&gcc GCC_VENUS0_CORE0_VCODEC0_CLK>,
+>>> +                     <&gcc GCC_VENUS0_CORE1_VCODEC0_CLK>;
+>>> +                clock-names = "core0", "core1";
+>>> +                power-domains = <&gcc VENUS_CORE0_GDSC>,
+>>> +                        <&gcc VENUS_CORE1_GDSC>;
+>>> +                power-domain-names = "core0", "core1";
+>>> +            };
+>>> +
+>>> +            video-encoder {
+>>> +                compatible = "venus-encoder";
+>>> +                clocks = <&gcc GCC_VENUS0_CORE0_VCODEC0_CLK>,
+>>> +                     <&gcc GCC_VENUS0_CORE1_VCODEC0_CLK>;
+>>> +                clock-names = "core0", "core1";
+>>> +                power-domains = <&gcc VENUS_CORE0_GDSC>,
+>>> +                        <&gcc VENUS_CORE1_GDSC>;
+>>> +                power-domain-names = "core0", "core1";
+>>> +            };
+>>
+>> So to be fair in this case you do have a reason to have an encoder and
+>> decoder compatible here _but_ it should be the case that one one of the
+>> sub-devices contains CORE0 related stuff and the other CORE1 related stuff.
+>>
+>> Because in that case the sub-devices actually represent individual
+>> hardware settings.
+>>
+>> So listing power-domains and clocks for both cores in each node like
+>> this militates against that.
+>>
+>> The other thing is to double check of the encoder and decoder are inter-
+>> changable here i.e. can either core be encoder or decoder or is it fixed ?
+>>
+>> I believe on older generations - perhaps not on 8939 it is not
+>> interchangable.
+>>
+> I found this in LA.BR.1.2.9.1_rb1.5:
+> https://github.com/msm8916-mainline/linux-downstream/blob/b20608408caff817ec874f325127b07609fbaeb8/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L1589
+> Only decoder bits are being set in bus configs. This suggests that the
+> cores are not interchangeable.
+> Then again, I never managed to get encoding working on MSM8939. Testing
+> it with
+> gst-launch-1.0 videotestsrc ! videoconvert ! v4l2vp8enc ! queue !
+> v4l2vp8dec ! xvimagesink
+> Fails with the following log: https://pastebin.com/nmZcLgPV
+> And in dmesg it reports a firmware error:
+> [  784.461031] qcom-venus 1d00000.video-codec: no valid instance(pkt
+> session_id:dead, pkt:21001)
+> [  784.461126] qcom-venus-decoder 1d00000.video-codec:video-decoder:
+> dec: event session error 0
+> [  784.461200] qcom-venus-encoder 1d00000.video-codec:video-encoder:
+> enc: event session error 0
+> [  784.468799] qcom-venus 1d00000.video-codec: SFR message from FW:
+> QC_IMAGE_VERSION_STRING=VIDEO.VE.1.8-00099, Err_Fatal -
+> Z:\b\venus\utils\src\vbuffer.c:1319:
+> [  785.791641] qcom-venus 1d00000.video-codec: System error has
+> occurred, recovery failed to init HFI
+> [  787.018339] qcom-venus 1d00000.video-codec: System error has
+> occurred, recovery failed to init HFI
+> [  787.097253] qcom-venus 1d00000.video-codec: system error has occurred
+> (recovered)
+> This happens regardless of whether I enable the cores for encoding too
+> or not. The same errors were happening on MSM8916 as well. So I can't
+> tell if these cores are interchangeable just by testing.
 
-Acked-by: Karel Balej <balejk@matfyz.cz>
+Right so if you swap around the definition of which core is encoder and 
+which decoder do you get the same or different result ?
+
+i.e. is it because you are trying to get encoder running generally or 
+because of the core you are doing it on ?
+
+How about declaring both cores a decoder ?
+
+---
+bod
