@@ -1,56 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646CE3932E8;
-	Wed, 29 Apr 2026 03:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5975347503;
+	Wed, 29 Apr 2026 04:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777434430; cv=none; b=YYBxeuwyArhdPrRKU+Tbqeqe4m8oB97a5csSkvS6j1KA3S9ZUfc0ibp2jF0xGUf0U6mtmmOEoOj/CnIG7guwlc3n8SeZWy8H6xGoAlP3ORAfZ0jxHzOxt4EZHB9xBud4akZrnUq71P0flMDYfNLlBT9BgQo9nudhKtebV9Z7nx8=
+	t=1777436066; cv=none; b=dYmZBz89O14nFkpCog+3Mx1tFUaIHhlq/Ge4CT/a0t9ynopalgUrR11TWiEE+1xMWSbhNVN9I69/7hJB6l6pfO0M6EsqcbK25j9cSnQZ/y4FNIC8bl83RnxaNCuVPKOdPPJR1OpoHog0PpJF1VCrtK6OBt3l9xXo44eltmkV10w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777434430; c=relaxed/simple;
-	bh=i4i7Xm8YltywNE9Vi6II5NYEZBD1iQLfp4F1NTKsRcg=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=PLFRL/pXAoCJvC+BvCyAfv8ZBC3ana61kqSkLGqCYqNsG4NrSazrsARpmkdfDgGFX4EtHDG9VL2fDNaiv2y3mDJ62XM7DkKSj321LaYX1h70d3MAnsGCmVWurkx9H/hFP9QKgn8hzbwfiWjIfwhLgf7bml7sYqM+0vI2HNbolmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jpe+EyN5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777436066; c=relaxed/simple;
+	bh=0ZwZkqVJrw29/5iaSkv2Pk4a6yjdFhnMUB9Mo7b0o7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ts/3nDMyr1p3Y+87Wn7Yogj5LiBQnsQweCPmUh+CT9xch9XRK6//TuyU8U/1ggTCMOs3NIHEovnkmeXCv86WAeMDHlZ7T2IVlQBXklbIiYLY7NN/WmAbF8fvLVM6EMeY5aJljNl9sTw+LKU+vHbIVroz68X9igfmZjDeKQk1pbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWn5dkda; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jpe+EyN5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2DDC2BCC4;
-	Wed, 29 Apr 2026 03:47:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWn5dkda"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C5EC19425;
+	Wed, 29 Apr 2026 04:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777434430;
-	bh=i4i7Xm8YltywNE9Vi6II5NYEZBD1iQLfp4F1NTKsRcg=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=jpe+EyN5vlo3AFXgHK80+TWvubFVayxRprfSNv8o9GmYj7I4Lv1FpYN58AzXDR5iZ
-	 nkU614mr8rMANZ6n5xZhGTkB4C/dMRy0UxFVxLk1L4QfHaP26HC9x+HtwVZt9erDHV
-	 JUPvAv5QarVcjNpLq7S2sOWEc2g4IminhU/dWysUgAOJutxqaf5PwgAzdFQdV6CveB
-	 NUfniOdOAjs9MIK6e8OP/76KFMRfaXLGrxS72ZKcyoHMOuljn/RZjYh99c5kctuovW
-	 D4qPtIljLmQUCjtyda761hBo2Ih7NcC66YF2ePo6VzP3/lVcFbh1b4ZPezUy/BXHy2
-	 hOmCKJgSP8Jqg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1777436066;
+	bh=0ZwZkqVJrw29/5iaSkv2Pk4a6yjdFhnMUB9Mo7b0o7M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LWn5dkdaXbwjK8iHaKQk4PW31akmpHACgkfC63R42t66c0jpXYGNcvH3CDfsL69iD
+	 GOOfiH3DkKj5ZUwofhlRZtFdj3/aVKKPZ3IiKa6Lsh4tNgqsc7LumLnaUeu6+dE/w1
+	 MV/fX9arnwACG2wGG2ADpVU8HDKdm31kt1RwF4BacZSBT4dnVpe0cVisYWCudVoo3R
+	 aPPsLEyyWPgn+Ludvr+nhmFznZgDNS4nFLkUxrjdDVPbzuY96tizEYkLpFtBGnQugr
+	 DkFmYYwkWEY5XS26JFMekg0y0kBXMxy7AHLh2UwTW5nBYcxcI26a7GD1azSpBj310D
+	 +MpYvn6mEx0uA==
+Message-ID: <0ee6bf23-17a3-4a7c-93d2-276e97cc3a14@kernel.org>
+Date: Wed, 29 Apr 2026 05:14:20 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260414-pxa1908-clk-reset-v1-1-94bae5f3a8cf@dujemihanovic.xyz>
-References: <20260414-pxa1908-clk-reset-v1-0-94bae5f3a8cf@dujemihanovic.xyz> <20260414-pxa1908-clk-reset-v1-1-94bae5f3a8cf@dujemihanovic.xyz>
-Subject: Re: [PATCH 1/4] dt-bindings: clock: marvell,pxa1908: Add #reset-cells
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Karel Balej <balejk@matfyz.cz>, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Duje =?utf-8?q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-To: Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <dujemihanovic32@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>
-Date: Tue, 28 Apr 2026 19:08:36 -0700
-Message-ID: <177742851672.5403.5765326540508025807@localhost.localdomain>
-User-Agent: alot/0.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 07/11] clk: qcom: gcc-msm8939: mark Venus core
+ GDSCs as hardware controlled
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
+ <9kBbj8Jr-f6eqC6XfnJPf3gKQD-3WfzXgzl4KEVKhRZlW2_GftgFBsijqUgEvGcgmeFqPwtVquMmibHUMaR_sQ==@protonmail.internalid>
+ <20260427-msm8939-venus-rfc-v3-7-288195bb7917@gmail.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bod@kernel.org>
+In-Reply-To: <20260427-msm8939-venus-rfc-v3-7-288195bb7917@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Quoting Duje Mihanovi=C4=87 (2026-04-14 12:51:50)
-> From: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
->=20
-> The APBC and APBCP controllers have reset lines exposed. Give them
-> a #reset-cells so that they may be used as reset controllers.
->=20
-> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+On 27/04/2026 18:58, Erikas Bitovtas wrote:
+> Since in downstream kernel VENUS_CORE0_GDSC and VENUS_CORE1_GDSC have a
+> device tree property "qcom,supports-hw-trigger", add a HW_CTRL flag
+> to these GDSCs to indicate that they are hardware controlled.
+> 
+> Venus core clock cannot be enabled if Venus core GDSCs are switched off.
+> But since they are hardware controlled, they can be switched off at
+> any moment. Vote for the Venus core clock to enable it later when GDSCs
+> get turned on.
+> 
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 > ---
+>   drivers/clk/qcom/gcc-msm8939.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/clk/qcom/gcc-msm8939.c b/drivers/clk/qcom/gcc-msm8939.c
+> index 45193b3d714b..420997b00ae0 100644
+> --- a/drivers/clk/qcom/gcc-msm8939.c
+> +++ b/drivers/clk/qcom/gcc-msm8939.c
+> @@ -3664,6 +3664,7 @@ static struct clk_branch gcc_venus0_vcodec0_clk = {
+> 
+>   static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
+>   	.halt_reg = 0x4c02c,
+> +	.halt_check = BRANCH_HALT_SKIP,
+>   	.clkr = {
+>   		.enable_reg = 0x4c02c,
+>   		.enable_mask = BIT(0),
+> @@ -3681,6 +3682,7 @@ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
+> 
+>   static struct clk_branch gcc_venus0_core1_vcodec0_clk = {
+>   	.halt_reg = 0x4c034,
+> +	.halt_check = BRANCH_HALT_SKIP,
+>   	.clkr = {
+>   		.enable_reg = 0x4c034,
+>   		.enable_mask = BIT(0),
+> @@ -3753,6 +3755,7 @@ static struct gdsc venus_core0_gdsc = {
+>   	.pd = {
+>   		.name = "venus_core0",
+>   	},
+> +	.flags = HW_CTRL,
+>   	.pwrsts = PWRSTS_OFF_ON,
+>   };
+> 
+> @@ -3761,6 +3764,7 @@ static struct gdsc venus_core1_gdsc = {
+>   	.pd = {
+>   		.name = "venus_core1",
+>   	},
+> +	.flags = HW_CTRL,
+>   	.pwrsts = PWRSTS_OFF_ON,
+>   };
+> 
+> 
+> --
+> 2.54.0
+> 
 
-Applied to clk-next
+The downstream opts to put the GDSC under hw control, which is not the 
+same thing as it being under hw control, its up to you to put it under 
+hw control.
+
+So you might want to be more conservative especially given you have a 
+problem getting the encoder and decoder to run simultaneously - I might 
+try parking this patch and then see what happens.
+
+---
+bod
