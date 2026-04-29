@@ -1,123 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vinatta.cz (vinatta.cz [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452743FBEC2;
-	Wed, 29 Apr 2026 13:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AE83FBEC2;
+	Wed, 29 Apr 2026 13:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777468630; cv=none; b=G7bKKmpBhACArfYOA4dgBfQCVbkuuNdYrzJ7oQS6sxK+vlEdR0w9bSn/9A2Z7ilBEBuOP36KXhFS2PZ6+/gMgkZKpMEyv0i7F4VeWJr6fyfcJMLkXapZ0a6UoyQPC3SQ183Yg24zKRz4GqchgVzCZNE4mfYlJOKEk2hqZajip00=
+	t=1777468866; cv=none; b=d0hKgX3Iv80FDr3i0E6TF4AnRlNvy4y9EtCMKy/2/Uj7GqzqzEdeSjMLugddMbrjHPgiVeZtm9svRAkXnwBSnAKWVlWudoyWQiaI8J1bJfo60QelXB6w2XHP+LAJbGE27nSj9um2dW0MgyYjR1ZFI2njbvFGbdOUfaLnbDMyYCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777468630; c=relaxed/simple;
-	bh=m6I0kIOLEEQyFWPgbgKBr90QtqznadjT7oLS6MfUb8U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k/YvX62ZEYbjWaX/5EGLoj6T2KUQizelHhy27dYMQRjf/QwLpC9JUEkiMeS+96He1Mjvfn+w7i3l+1now+8ezSDMjZeRg2uG4kOAKKDCPIw1L3SwXbbKIBirAycQsF0h4MvnojRpV8DjNdA6wtOOWmH/fCHHXDWq9+sRAdAbBow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsxLuzWY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777468866; c=relaxed/simple;
+	bh=xqRqdqb9cql00b3xqlZ9Qf54W2TCp7JZjtSRq3okoys=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=l1t8UcFwRIgWJP9/HjfE1rUWx+3HZBlHFONSca6gCkj92EEutu8TrXvKVhsF2aHyS6N4kuM6LNsJBkQW1mW58KvhrNAMb1kBV1KtJwS0pdQ5gvxgjSGso1p5vEhizqdO+v2A1rHwqYb/pGuHJ+FUd5Ez27Dz+0hOactjYwjnrco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=IyM+Dn02; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsxLuzWY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CE26DC19425;
-	Wed, 29 Apr 2026 13:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777468629;
-	bh=m6I0kIOLEEQyFWPgbgKBr90QtqznadjT7oLS6MfUb8U=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=HsxLuzWYLIHxQb4PvSG6Ujmo1bV4IG8g9ty2u3IuoTckvJJlQVq0U5TaUlsJvPdik
-	 hO8ibiLaa9KDDYWKKWfGcorsXJTNxNd8htOhshhLVMqvkDclyU1Bo5nbPFWaeVGDbQ
-	 H9S08H2KnCySQ3lWeWFHIUHZXK9APasMfDZR7F/Yy8olNsMEiOTYoX5EG7lMENYuXU
-	 Q/Q7gOMpYrrrUkUCJRpIX3BJHycnb0FDtMdhhW6/M0pCn0KwlVm0HFZSLCnlZrIKVA
-	 dpRQ1z95kxuq6arKtoOfPF5UDUW25Joqb5aWpWd2etJQPQfLzfdEDv3MGA54En1VYq
-	 bADJTVN5m4LHw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9828CCFA13;
-	Wed, 29 Apr 2026 13:17:09 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 29 Apr 2026 15:16:53 +0200
-Subject: [PATCH] arm64: dts: qcom: sdm845-xiaomi-beryllium: Correct IPA FW
- path
+	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="IyM+Dn02"
+DKIM-Signature: a=rsa-sha256; bh=xqRqdqb9cql00b3xqlZ9Qf54W2TCp7JZjtSRq3okoys=;
+ c=relaxed/relaxed; d=vinatta.cz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@vinatta.cz; s=default; t=1777468828; v=1; x=1777900828;
+ b=IyM+Dn02OPnovfHH7qNxVHpRW3lq/vYVi8gIZcW4AH7D2xne9s+wetiIl+wxpJE6OZFyTOkm
+ RguW5ARTHy3psH4xEHq1wSvuu9pVbbBnDs7WkbnysjUgPn2Zn3tjG/vwTwPw6Jzk8QNkZajEwln
+ bEnKo/NHeCiP3dxeqdMa/VD2iYAHYg6eNe9oGnLxh+poF0IoDqoQFGNVA00lFNXMxn6Ic/jt0CK
+ fy6UDDHUSrkQHQ1sajzCK6X3Ek3xAf3QWRyeapcFtUvNGmSxGuNDfAOtcZFgdBCEUkHi/u1pIh5
+ 7MIEt8s/hY14nWI79pi1zTXz57/0aOCSnp6eLVR7s/6cQ==
+Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
+ 2b91500b; Wed, 29 Apr 2026 15:20:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-beryllium-ipa-fix-v1-1-816326ba9047@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAMQE8mkC/x2MWw5AMBAAr9Lst02qFcpVxIfHYhNKtiFE3F3jc
- yaZeSCQMAWo1ANCJwfefIQ0UdDPrZ8IeYgMRptcZ6bEjuReFj5W5L3FkS8sqHRF7pzV1kHsdqG
- o/2fdvO8H65RbMmMAAAA=
-X-Change-ID: 20260429-beryllium-ipa-fix-7e9876883038
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Robert Eckelmann <longnoserob@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Joel Selvaraj <foss@joelselvaraj.com>, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=XlrWu6+s0yzcZbPOuqwUJ1OG+3gH3ACkoRurIxaFbys=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp8gTUUmKZ9rMDMP4he+SdSlNbVNxIugNU0O8Ni
- MZMl2tA2MSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCafIE1AAKCRBgAj/E00kg
- cvzGEACNCAxF/J4o22AFXb6r0uX1FmcnZjznlEbXhaWpLqT4+tAJcREq+AkxPDRwQ9VVZbSkIqr
- EUEAt32Mhyd2jZJDWBUNcjIXPqLXLtYREyiGYNf9cPS9Y/c4EKdRugBUwW33ks/GBAtnEJOvbAC
- QsmF2eiyOJBvezknOrj9Hhru1Ov1BOSGN3ECAb2Hk4mYBPugnDPfAp5Fj16j+35MZb8/d2YL73O
- JrPk0R4qSjfy8AooCsNx81my9fZU+3JNCV3aIYxvrIeIjf8ZVlVRTp83kqcaBNcs2A3e2WEIYhn
- r7SLguPkJp8G8bJenvHWRFPeC6Kl1jadJSeI1NSJcNbMMQNucSN77b5OrCch/Tgb8J9QToYddac
- MWHIn04OC6pWSHW/Me9ZT2EpegMrYBMNmz1wdIZjzQrKw6Vgus2rkLjmLCOjlTwGaIoqgVIi4kT
- U869bTS/4JTP2mZrXBKkmwfATqKTCWSlf3PAfdpjU/1CC6uV8yMnU11sqFk2uC6+0Ju2YQHjBAj
- bpOVb+pXFtpJ8sKF2H+fXulDdJjiq1bXqb3VMYIKs2jbxsTSaZan3GRe+Aqeh6iYbxwwWyJmdLq
- uZoTP6cCZDa/iNSy4Xs/j1AgPfmZBwpe28hcIGQYoCY4h4vL4bCNAfun2aQc8D4tkHGeawbdGdA
- dA2J159BbDNZxPA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Apr 2026 15:20:28 +0200
+Message-Id: <DI5O432AFZVX.3VGKJP31AZX97@matfyz.cz>
+Cc: "Brian Norris" <briannorris@chromium.org>, "Johannes Berg"
+ <johannes@sipsolutions.net>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Andrew Lunn"
+ <andrew@lunn.ch>, "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>, "Ulf Hansson"
+ <ulf.hansson@linaro.org>, "Frank Li" <Frank.Li@nxp.com>,
+ <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng
+ Fan" <peng.fan@nxp.com>, <david@ixit.cz>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
+ samsung,coreprimevelte
+To: "Francesco Dolcini" <francesco@dolcini.it>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
+ <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+ <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
+ <20260429112232.GD17033@francesco-nb>
+In-Reply-To: <20260429112232.GD17033@francesco-nb>
 
-From: Joel Selvaraj <foss@joelselvaraj.com>
+Hello, Francesco,
 
-The path was accidentally reverted back to old while refactoring of the
-device-tree.
+Francesco Dolcini, 2026-04-29T13:22:32+02:00:
+> On Wed, Apr 29, 2026 at 12:55:23PM +0200, Karel Balej wrote:
+>> without the firmware being in linux-firmware?
+>
+> What's the license of this firmware? Am I wrong saying that if
+> the license allows it, you could just send a patch to have it integrated
+> to the linux-firmware repository? Is there any history or documentation
+> on the topic (please apologize if this is a well known topic, just
+> answer RTFM if this is the case).
 
-Fixes: 5bde31dc7b17 ("arm64: dts: qcom: sdm845-xiaomi-beryllium: Add placeholders and sort")
-Signed-off-by: Joel Selvaraj <foss@joelselvaraj.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+that's one of the issues, the license is not specified explicitly
+anywhere as far as I know. Likely it is the same as the other Marvell
+blobs already in linux-firmware (the mrvl directory), but we don't know
+for sure.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 1298485c42142..22354968aeaa3 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -266,17 +266,17 @@ &ibb {
- 	regulator-pull-down;
- 	regulator-soft-start;
- 	qcom,discharge-resistor-kohms = <300>;
- };
- 
- &ipa {
- 	qcom,gsi-loader = "self";
- 	memory-region = <&ipa_fw_mem>;
--	firmware-name = "qcom/sdm845/beryllium/ipa_fws.mbn";
-+	firmware-name = "qcom/sdm845/Xiaomi/beryllium/ipa_fws.mbn";
- 
- 	status = "okay";
- };
- 
- &i2c5 {
- 	clock-frequency = <400000>;
- 
- 	status = "okay";
+As far as I know, even if I was to submit the firmware myself, it would
+still require a sign-off from someone from NXP [1].
 
----
-base-commit: dca922e019dd758b4c1b4bec8f1d509efddeaab4
-change-id: 20260429-beryllium-ipa-fix-7e9876883038
+> I read a couple of days ago that for example the firmwares for the
+> various Apple arm64 laptop cannot be redistributed and every single
+> individual that wants to use those needs to extract those from their
+> system.
 
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
+Are those blobs loaded by the mainline kernel? If so, it would be the
+same situation as I'm proposing here I believe.
 
+> All of that seems just a legal matter, and IANAL ...
 
+It is.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware=
+.git/about/#signed-off-by-requirement
+
+Karel
