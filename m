@@ -1,82 +1,83 @@
-Received: from vinatta.cz (vinatta.cz [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8104137E2F8;
-	Wed, 29 Apr 2026 18:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B5235E94F;
+	Wed, 29 Apr 2026 20:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777487812; cv=none; b=NAKup9Tr1WhfPoTM+J4IDNtj4Pvrwp8HPSL3W50wkdmhECra7njczNTr0PKIV5ClZ48zvRA55914dIXoB+NsH3eWCihjyJKTuioNmuqHfXXd2bNi3psOmMAYyhf087rP0rfr0dQBS7Ib9xLEnU2LOLRr5cCgoj8X5CdhDmeolec=
+	t=1777494932; cv=none; b=QmYFl+FVMKQo2AaqTst62dTXVPVEcr8un2RB8+Ps4Iu3H8gmY7lv+4d16MBQs2/di+si5dtOHi+6jqBac5zku3x4ssyeNFUIgtphEIBlBUilrRRywcwCjNnuXDKLTVuXYoZc/a9Zd6pubP56Egv3xy/WYQMuc/m+u/N0E7NJeKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777487812; c=relaxed/simple;
-	bh=UaKL1VITGxGKAwtbx/cCauZTVexmzreqjwsha7+HCvw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=tfDIKL3wMtI5JN+xScEb+P7OlMwoCQkCc0KPrPkF1O7X5Hbx3il6mEGgyU85h3wMC5zHNRbcHHxE1JmELTY/LkvH3BzJ62ag81I9rXs15s2HkfzZ6RbXDQyDHE7r2RZIzTwNuOvgLaSxkBajyKX89TkqMEPPQIHdoSxbMv3an1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=sjExcYGf; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
+	s=arc-20240116; t=1777494932; c=relaxed/simple;
+	bh=rufxEQD76zjB+sGn217WJftdtxWXtAM/N8y3tXTg0LU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BpSkNWLMmVXxiPEBlC52HDn9x08u1RIvCZXOmT+x+mzhxgIbJkVXMzvBw2WNc/4Dh4K+LSmwn4obzMWU2M0/1two+OxQwyDLSfID9kd+9HaA5JjZsBZFcZl7Cbtgc3vA0LSynsicjEpVcsbhOPPnsQmhdKadJ2EOqzg4vTMBtdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIGJsGDs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="sjExcYGf"
-DKIM-Signature: a=rsa-sha256; bh=UaKL1VITGxGKAwtbx/cCauZTVexmzreqjwsha7+HCvw=;
- c=relaxed/relaxed; d=vinatta.cz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@vinatta.cz; s=default; t=1777487786; v=1; x=1777919786;
- b=sjExcYGfSBa/pQLBcc/Y8CfPVNF1lRhd4ybKJ1qIB2T+LFZQR6E0kXI/k07g9Bdc6mKf0tVp
- Vu6SQxAbaZxOjrbujqb5MYda9E+oVkecOARdLpMfRX0ItiRfKoHSLwYNCpkVNIBF5urXUt5ISyd
- WxtKxwG6zIboC430MwLQp4oSmR+Jun1vL6mfiiFhWN1DTEt9JcEWPXnKA92Lg9Fb1k1jopDPNV9
- n7ROIzxHCXcDSLkdEPQDsDs+3f7ohcbMijRpsF5OngqzFtdXX6JESgJ9fC53NUyNyC9CL5HvHsF
- eAJs9FaBOw2pvSImfkK6oicWWkljST0nba1KWwY7tNP1w==
-Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
- 9f7750af; Wed, 29 Apr 2026 20:36:26 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIGJsGDs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800DCC19425;
+	Wed, 29 Apr 2026 20:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777494931;
+	bh=rufxEQD76zjB+sGn217WJftdtxWXtAM/N8y3tXTg0LU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RIGJsGDsTmMMNNmBXyJ71peWBYO5CwXyDmcGh5zFVDbWe9rgRDujZPfj9NQFIl7ji
+	 tvlAwDpAUa6Z8HSgjpkpwPAw/dBskOAQ4wOixnvX/yw10yhyqE8anlmhMG3NSYqVcu
+	 JItxl+iRm0ZSsUvD8Cdf/99+G8z4M5YZk0k5DoO5rVqm/JfLT/i9iswAUL6IqtV1PJ
+	 FdQqNOQM6dnM3g6zpwCE/3KADE14Q1Hc5lHw+7dDd5b3WkDNGN5iwNPmEk0GyIk3WL
+	 c987scdq52K6LG4fLpEwpzubYNIlUItMLci+e24p6ZKT1UvIk+4NBRwtnJOaIs7yUg
+	 WQh1thuh6azqA==
+Message-ID: <a52f7acc-44b0-4669-a97c-686aae623f97@kernel.org>
+Date: Wed, 29 Apr 2026 21:35:25 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Apr 2026 20:36:26 +0200
-Message-Id: <DI5UU03J2IU3.61E7OU85TZJH@matfyz.cz>
-Cc: "Francesco Dolcini" <francesco@dolcini.it>, "Johannes Berg"
- <johannes@sipsolutions.net>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Andrew Lunn"
- <andrew@lunn.ch>, "Gregory Clement" <gregory.clement@bootlin.com>,
- "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>, "Ulf Hansson"
- <ulf.hansson@linaro.org>, "Frank Li" <Frank.Li@nxp.com>,
- <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng
- Fan" <peng.fan@nxp.com>, <david@ixit.cz>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
- samsung,coreprimevelte
-To: "Brian Norris" <briannorris@chromium.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20251026182602.26464-1-balejk@matfyz.cz>
- <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
- <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
- <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz> <afI8y70U7wFT_07h@google.com>
-In-Reply-To: <afI8y70U7wFT_07h@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 04/11] arm64: dts: qcom: msm8939: Add venus node
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
+ <Xfiq_WNTU9P-ThZLMs4plWE5hwtmwyVyKJc1bD5BKdhERGouucNpyuenIoKQiKfZKaRzP-PdamsNlQ8vezjrRg==@protonmail.internalid>
+ <20260427-msm8939-venus-rfc-v3-4-288195bb7917@gmail.com>
+ <56d609dd-62be-47eb-8ba3-c5d70d773113@kernel.org>
+ <QRkqY_zK7EC4e0ZMoLVyLUhgI9A5RrBcJLm22d69xKT17HzJMXsEDdz_qodBN9qogvuS1XqN4zdemqcoByY5CA==@protonmail.internalid>
+ <34627be5-75cc-469b-af23-f1f08ce29820@gmail.com>
+ <2846fc60-bf8c-43b3-ae64-58faad6aed2f@kernel.org>
+ <xF67mO47hDKLzMEauOb12gQbqTt6OO5h2ODjqizbRCXRpz1KUs2qHsX8InXbE5xWVFBdPAPYK26WacBHk1TDKw==@protonmail.internalid>
+ <89f2b7ab-2335-4029-a074-4d9bf956c14f@gmail.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bod@kernel.org>
+In-Reply-To: <89f2b7ab-2335-4029-a074-4d9bf956c14f@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Brian Norris, 2026-04-29T10:15:55-07:00:
->> and it would be great to not have to keep the
->> patches in a fork, especially when trying to build on top of them
->> further (such as to fix the driver-firmware incompatibilities discussed
->> in one of the patches of this series).
->
-> Patch 3 is a different story. At the moment, it's definitely not
-> acceptable. But I tried to provide hints about how you can write proper
-> FW compatibility logic. I'm still not optimistic that'll be easy and
-> maintainable, and we still reserve the right to reject patches if they
-> make things unmaintainable.
+On 29/04/2026 13:42, Erikas Bitovtas wrote:
+>> How about declaring both cores a decoder ?
+>>
+> That is what I did on v1. Ideally we'd decide which core we want to
+> power up based on what codec we are dealing with, but given there is no
+> easy way to do so on mainline yet, it could work.> ---
 
-I was referring to the original patches here, I would of course modify
-the compability patch according to your feedback, I just didn't want to
-invest the effort into that when it wasn't and still isn't clear if it
-will ever be possible to upstream it.
+@Vikash @Dikshita
 
-I'm curious to hear from Johannes now then.
+Could you possibly check up on whether 8936/8939 has fixed core 
+assignments ?
 
-Thank you for the information,
-Karel
+@Erikas please give a try my suggested change on hardware GDSC control - 
+perhaps this is the reason why encoder doesn't work.
+
+---
+bod
