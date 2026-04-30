@@ -1,156 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1132C34B66F;
-	Wed, 29 Apr 2026 20:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FC5251795
+	for <phone-devel@vger.kernel.org>; Thu, 30 Apr 2026 07:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777495239; cv=none; b=iFamJJ4ajDHjrZb5SkOSLgl7g5yDa+/NVHZnny9T0REWqWdI1aEdlsItrL18d+zyfedi/dbfxszvIYi8ssd1lugoIoSfRt4nf8Do/zCv+HhabddfO3feONSnFRbvqIrYninyFRzQk2mHeIDllRbVL25tVqymr9QexiAUEfGSo1s=
+	t=1777533052; cv=none; b=GiVexeGoiKZdLzJErfUJBwVoVyrQFgYzrqhzQohE8Jy9ql9aoehtPoj1tIKSkrygAoHFIL4wtFEtkbYCm1WUSvqKwMN3Xs42YFXdqrawosVcCco2Z+VyTxFA8/egeAwmwNL0a6gp7BC520obE02I3vA5LCA5sWCR0M20Cyv30ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777495239; c=relaxed/simple;
-	bh=RMLcQJJNC4SMyMimRZPEc4qkILRGGn/CHxLxUpM36R8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p0lj4Kf7YfmWTcWhm9/11YE7+A0+VIbLECAssqnMUoA0CBUjDBxDkb4vVIOWyjBKFPxRUbCJwA3mM7UzIwOmiO0vb/pxtGa14S9/UhSgd/Iy+yDlC/sSA+HL9LQEBKXkSjXJRv+fe1CGZ1dEXGMIpq+rdISGZez4LbY0jFEfPwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RhNAQjxb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777533052; c=relaxed/simple;
+	bh=QhQKB2mRUuTtgEbrNzVyQWry9Jhf3YZS5lk/FPu/bGE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IpJBblbgGtIWeFTEvK0Z9Yr5rA518g2wJ4eRQuJGTwecCRWTUu5+vPkkvKGnfkLQzIl1Rv6EKj9Bx9BQQC/QQRpX033dOJxqCFHlEbr5oxhBUSMSI8lesnc2hubpg6S41apcRrsHQmecNhe2CWS3FUXQYpzM95+0ku5Gd5AFV2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=fYFej4iR; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RhNAQjxb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B55C19425;
-	Wed, 29 Apr 2026 20:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777495238;
-	bh=RMLcQJJNC4SMyMimRZPEc4qkILRGGn/CHxLxUpM36R8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RhNAQjxbf7tcUUT6ibsm+nTvGXa0U22X+Whm9Jml2ZlJ9IR7Z2xZ3HLRNNDjsp3Ue
-	 DewjGx4aQfyGRT46Iq9MujiesFuM/C0H2Ot79znSS/s72bwPDfipO07cceFa2BybYY
-	 wygS6Bmxq3gla8AOqNySNbiX1cyICe+zs6zfry3cgIZwP4fZFYbsol1UGmpLgueRWn
-	 tUmCwVNATkaN2mqTYbvWzF0il1PlhvddydUI40gmcRknGV5nItcwchW6k/Qw2zO4eo
-	 RCYyUcHXZVoKPspjZbK7kga7CdIHVtOqrAJP/9p8XfjNPn2hBkxR/dx0UCQ1+Pw0ZY
-	 OmN7LMQmYlxoQ==
-Message-ID: <1b72000f-ff3d-493b-bd70-e0f3d45d78ee@kernel.org>
-Date: Wed, 29 Apr 2026 21:40:32 +0100
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="fYFej4iR"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so4701815e9.2
+        for <phone-devel@vger.kernel.org>; Thu, 30 Apr 2026 00:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1777533049; x=1778137849; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aE4vBf5pFQqHJ7JzFp5lwW/U6bPFUoFVmhKlS9U+c7s=;
+        b=fYFej4iRwj8Q47Zjp2yyzDeW1yrn9awRIqN4FPApvdIIzvxZsrSPYFNLMkv9plRVHK
+         u36fchzOs3ivYM1i3fsk5d/OExiutj08lHhVfLSWA26UOiKGMANjvQEq6mRmCfuH/+PD
+         2Zpv8/easd0St9SWAkQ6TcByk2Lx16vtaDAujpjpNcAWUa6wWqGE2xVeq0uOODjX0Oq5
+         MDfKP/nwJHCPncaSMzAb1BejIsSa5RRHI9uM19Lt+BiK4eHRlxGNOqrko6emkJxu8lFg
+         vDF2ELXSfSbo8IuFqb0I7ueY/327iLsgARwupuFylW/X3M7OREpIGlsPTvrC9YMnCmDt
+         QxLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777533049; x=1778137849;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aE4vBf5pFQqHJ7JzFp5lwW/U6bPFUoFVmhKlS9U+c7s=;
+        b=KP5VYBW0nuDdKncxryU12kqlz+yb6NlqcvCl/Y0zXKGTC9cK2V9pg6C98aBZaebw3g
+         gNC16eML1UxgI9yx0RwzPigLf6zLSL3nsmlYppKQPD6E9ftmnV3s6t7BiJ75vsPXEEzz
+         5tXAcX4tti0eUDb2EytAcs7Ir1HZ1fPATTf4fBfjnY6fAnoIFNSyRKGFDbgM4nYj3vQe
+         HBmrR7l6NxYWtWijWVdrbcNxGLA+MutSW5pcMB3qzipqSiczL8czkZaDEkCuRNHBzodH
+         alr6DpyYPC1ZgbwZ/8uRLuJAAqXEvnhMUXGos5kJnP/0h7gBeeiMYOSYoKZRTVGAlg3h
+         bJBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8C0gzRR1mKO5QdCtLHXlu+KtFk+FsDG+Ihvsutes6hlIviXElGdt0G0W3ib3WBU/pDWt0yqrNf/+xXpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3XkajGy2RUv2R09gkqK6prUC3ImJ9itMlL8TeWRblbmcJmmd7
+	VM2lSypQGHtOx1V4bi+oxozlyCh7igsVt9ZX8aKZEGEn33r5t9g0pSTktrYwO07Wn0o=
+X-Gm-Gg: AeBDiesBhLpm3V3zz+dXdHgC+BkMad2qwuL+fq8BrFzWCzsxerEcy/oiP9hyOjgB0Ms
+	goDZHeZFSLAha+o1l/ymUZ6lnp7l97h36duu1fR+hHKYSbCMO4+RLZ2BWjOTzpZNemmbJzCJzkj
+	z0XWeTfYdnSfhxDpbI17FRm9J1N9FWd9d9gohuLVJr12xAZM6Tba0nicaIqD3YXhRrPZTmmo+nd
+	wmd9JfsnU/I8gnKmchSvxeDagPaRsmYv0LaqyGU3Q+kbhPqA905L+Ok974K1jnQygFRvZHvBbfz
+	Zr6fNoa4JOcApEZJ76nI6HkTIhJGRHzMmpzN3UX/DhhKrNQV5WPsPPbJceoygLf2Cty1YX0Yia2
+	7ay2KOpKrr0T8bA610qY25gTVBs8HzGS7kcFoTFEvTxbnpEbVaOIJ0JLhh/DH3XH+9mFPwvJ9+4
+	CPDyGC3yENK9zvOH8RLsLU9BPhLVGf78tMnhs/zNFmXP4uzeQGlLyQCY69wOH6lmxWpReHvixSm
+	VSckMEJRmu/KtFgGDA=
+X-Received: by 2002:a05:600c:8483:b0:487:2671:fb8f with SMTP id 5b1f17b1804b1-48a83d73324mr27890335e9.8.1777533049245;
+        Thu, 30 Apr 2026 00:10:49 -0700 (PDT)
+Received: from [192.168.178.36] (046124200255.public.t-mobile.at. [46.124.200.255])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed6b89sm46080825e9.1.2026.04.30.00.10.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 00:10:48 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v2 0/5] Add LPASS LPI pin controller support for SM6350
+Date: Thu, 30 Apr 2026 09:10:40 +0200
+Message-Id: <20260430-sm6350-lpi-tlmm-v2-0-81d068025b97@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 07/11] clk: qcom: gcc-msm8939: mark Venus core
- GDSCs as hardware controlled
-To: Erikas Bitovtas <xerikasxx@gmail.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com>
- <9kBbj8Jr-f6eqC6XfnJPf3gKQD-3WfzXgzl4KEVKhRZlW2_GftgFBsijqUgEvGcgmeFqPwtVquMmibHUMaR_sQ==@protonmail.internalid>
- <20260427-msm8939-venus-rfc-v3-7-288195bb7917@gmail.com>
- <0ee6bf23-17a3-4a7c-93d2-276e97cc3a14@kernel.org>
- <1120b76e-3c98-4f32-821f-baab667dfc38@oss.qualcomm.com>
- <YFtrV3he8diR63hM-WC6tLDO2r5soHv4LHmm4YazfqNevyVk4RBsFsQIm5PqOCSDRzxi33BeOPp0NkQdB6iwGw==@protonmail.internalid>
- <05df6383-5325-4f88-9638-22bc2d7a768d@gmail.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bod@kernel.org>
-In-Reply-To: <05df6383-5325-4f88-9638-22bc2d7a768d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ6DIBBFr2JYdxpAJbar3qNxgTrWSQQsUGNjv
+ HtR182s3kz+f7OygJ4wsHu2Mo8zBXI2gbxkrB20fSFQl5hJLhUXsoJgVF5yGCeCOBoDTdfqosO
+ mVIVgKTV57Gk5Gp914oFCdP57CGaxb/93zQI45Kqs8l7qfR69Jj8NzuK1dYbV2ynw+P6kT+NpY
+ Y0OCOluKN4zi0uEw1DIW0psP3Wo3APjAAAA
+X-Change-ID: 20260128-sm6350-lpi-tlmm-bdca4deb5641
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777533047; l=1992;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=QhQKB2mRUuTtgEbrNzVyQWry9Jhf3YZS5lk/FPu/bGE=;
+ b=I2DiK9SeNbN+KP+wFWjjnhIUJ5RMd8BNN8v7oSbkqI6PJiH33CQS4/zUIe1YOvTRqGpykL5lV
+ mnap3+ig0YYDu9R0Qnbs2gaD0qG+DRGisKOaB0mpJe9VF64CG+0olfz
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On 29/04/2026 15:00, Erikas Bitovtas wrote:
-> 
-> 
-> On 4/29/26 12:18 PM, Konrad Dybcio wrote:
->> On 4/29/26 6:14 AM, Bryan O'Donoghue wrote:
->>> On 27/04/2026 18:58, Erikas Bitovtas wrote:
->>>> Since in downstream kernel VENUS_CORE0_GDSC and VENUS_CORE1_GDSC have a
->>>> device tree property "qcom,supports-hw-trigger", add a HW_CTRL flag
->>>> to these GDSCs to indicate that they are hardware controlled.
->>>>
->>>> Venus core clock cannot be enabled if Venus core GDSCs are switched off.
->>>> But since they are hardware controlled, they can be switched off at
->>>> any moment. Vote for the Venus core clock to enable it later when GDSCs
->>>> get turned on.
->>>>
->>>> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->>>> ---
->>>>    drivers/clk/qcom/gcc-msm8939.c | 4 ++++
->>>>    1 file changed, 4 insertions(+)
->>>>
->>>> diff --git a/drivers/clk/qcom/gcc-msm8939.c b/drivers/clk/qcom/gcc-msm8939.c
->>>> index 45193b3d714b..420997b00ae0 100644
->>>> --- a/drivers/clk/qcom/gcc-msm8939.c
->>>> +++ b/drivers/clk/qcom/gcc-msm8939.c
->>>> @@ -3664,6 +3664,7 @@ static struct clk_branch gcc_venus0_vcodec0_clk = {
->>>>
->>>>    static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
->>>>        .halt_reg = 0x4c02c,
->>>> +    .halt_check = BRANCH_HALT_SKIP,
->>>>        .clkr = {
->>>>            .enable_reg = 0x4c02c,
->>>>            .enable_mask = BIT(0),
->>>> @@ -3681,6 +3682,7 @@ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
->>>>
->>>>    static struct clk_branch gcc_venus0_core1_vcodec0_clk = {
->>>>        .halt_reg = 0x4c034,
->>>> +    .halt_check = BRANCH_HALT_SKIP,
->>>>        .clkr = {
->>>>            .enable_reg = 0x4c034,
->>>>            .enable_mask = BIT(0),
->>>> @@ -3753,6 +3755,7 @@ static struct gdsc venus_core0_gdsc = {
->>>>        .pd = {
->>>>            .name = "venus_core0",
->>>>        },
->>>> +    .flags = HW_CTRL,
->>>>        .pwrsts = PWRSTS_OFF_ON,
->>>>    };
->>>>
->>>> @@ -3761,6 +3764,7 @@ static struct gdsc venus_core1_gdsc = {
->>>>        .pd = {
->>>>            .name = "venus_core1",
->>>>        },
->>>> +    .flags = HW_CTRL,
->>>>        .pwrsts = PWRSTS_OFF_ON,
->>>>    };
->>>>
->>>>
->>>> --
->>>> 2.54.0
->>>>
->>>
->>> The downstream opts to put the GDSC under hw control, which is not the same thing as it being under hw control, its up to you to put it under hw control.
->>>
->>> So you might want to be more conservative especially given you have a problem getting the encoder and decoder to run simultaneously - I might try parking this patch and then see what happens.
->>
->> i.e., Bryan is asking you to replace HW_CTRL with HW_CTRL_TRIGGER
->>
-> I tried to revert the patch and replace HW_CTRL with HW_CTRL_TRIGGER -
-> both result in power collapse fails.> Konrad
-> 
+Introduce support for the LPASS LPI pin controller for the Qualcomm
+SM6350 SoC, by adding the dt-bindings, driver, dts bits and enabling it
+in the arm64 defconfig.
 
-I assume you still can't bring either core up as encoder in this case ?
+The custom slew offset for gpio14 is described as
+"qcom,lpi-slew-base-tbl" in the downstream dts[0]. I've tried to find
+some reasonable solution to have this handled correctly in the patches
+here, but suggestions are welcome how to improve the situation. There's
+of course several ways to implement a solution for this.
 
-i.e. what we'd like to understand is if perhaps for some reason the GDSC 
-on/off control is the cause of the encoder failure.
+[0] https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/refs/heads/kernel/13/fp4/qcom/lagoon-lpi.dtsi#25
 
-I'm OOO at the moment but from memory I think the documentation for 8939 
-states that it can do the same things 8916 can but with higher 
-resolution - and clocks obviously.
-
-Another core if I remember and something about HVEC.
-
-I'm not sure what it says about HEVC.
-
-Meh - two upstream decoders is better than zero upstream support.
-
-Probably time to transition this series away from RFC..
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+- Fix dt bindings example
+- Drop note about too little register space (Konrad)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20260128-sm6350-lpi-tlmm-v1-0-36583f2a2a2a@fairphone.com
 
 ---
-bod
+Luca Weiss (5):
+      dt-bindings: pinctrl: qcom: Add SM6350 LPI pinctrl
+      pinctrl: qcom: lpass-lpi: Add ability to use SPARE_1 for slew control
+      pinctrl: qcom: Add SM6350 LPASS LPI TLMM
+      arm64: dts: qcom: sm6350: add LPASS LPI pin controller
+      arm64: defconfig: Enable LPASS LPI pin controller for SM6350
+
+ .../pinctrl/qcom,sm6350-lpass-lpi-pinctrl.yaml     | 124 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               |  66 +++++++++
+ arch/arm64/configs/defconfig                       |   1 +
+ drivers/pinctrl/qcom/Kconfig                       |   9 ++
+ drivers/pinctrl/qcom/Makefile                      |   1 +
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c           |   2 +
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.h           |  20 +++
+ drivers/pinctrl/qcom/pinctrl-sm6350-lpass-lpi.c    | 149 +++++++++++++++++++++
+ 8 files changed, 372 insertions(+)
+---
+base-commit: 3d33d10c2d4f964c9223fd9a27eb7f0ac733c216
+change-id: 20260128-sm6350-lpi-tlmm-bdca4deb5641
+
+Best regards,
+--  
+Luca Weiss <luca.weiss@fairphone.com>
+
