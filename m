@@ -1,39 +1,66 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A6240B6C3;
-	Fri,  1 May 2026 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A90372686
+	for <phone-devel@vger.kernel.org>; Fri,  1 May 2026 22:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777659462; cv=none; b=OUJ936T5Ha7qX+LvK9FmANJqWgyL0viNPIRqKxDMkRElgVkyK8/53HWTLKhksN8zZte/QCORiemToUhqzRu5qSpNqO5r2qv6na6XNM9Y76jMetgvHp8Q0iOFgpECqDioJIO0AF4GJ4OE2/SiIGG8hdejP1zU6jgW06mS8cPLY4g=
+	t=1777674754; cv=none; b=O2oJzCfmYTuB6MqTZD3TffNyNdL3oPvaCfR0rFijQasOr0T1NeXPIkLtfYYd9V9u1kegoDky8Xe91QMIAE4/VVJ3bgi2p20YRGWWNifgwM+eDh9PAubHxZnj6Hu7NXPgmraLtTSrYKsmJ3rb5x1xVPN4rf8AHzm8CWhT9WWg7b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777659462; c=relaxed/simple;
-	bh=HWuT45Ax0/0DTD6UpiDuU1BmtPsA3vuSIAPabXXi7xY=;
+	s=arc-20240116; t=1777674754; c=relaxed/simple;
+	bh=4oi2IaluIhRvKF52S0SOnm9jRb+Tkz0XS5iLBmxeyEQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QRLd4/NQygjCKjtpOGUn2QTGkjLSnT3SDAfZgFZOHingqxV2AXLiFYLEZ0KJvsV4qApMaFBjQ2vD2JMxelO4iaBfiYBK1HNzrJ/WMglkTmW+G7kk7H71pyHANAjIBH5tkOX2zDvq3/8/eUQiw4EcH5m1kKUgCKOoDpKrTXf006k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=UcKToqLR; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=jGQxUgg6uBk6KV+T0ND/7M3fpNqWSfukk3MpHc8OLnqT4FQgOOanoherS4/4A3FXZIayrmlAINRJc1v56EfdOZNYfhgeXXgcmxWEhEfKgmzaBb2tAFn/+TH50Ne+ijrh1TupUgkmsra95FJ5piQ8fQeQCfTxuZq/8KEk3a0/64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ebcn3N/X; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="UcKToqLR"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 39EC65340AAF;
-	Fri, 01 May 2026 20:17:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1777659455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QmTNTBxgvlk1DaN8qB/H7GZCld3B010jCjw8SXOL4oE=;
-	b=UcKToqLRgOf6JxZfDJcgcSnbQWpppQS7gAnDlEgGW91KVsbsspcz5nd7lOgaLdxKTztQlV
-	HVPrr+JIh2qBDlK+ZR0NhP+2cYbQwsP8hz7DdpExnva4ecK+Ja91cmn3+lLr0qGTGdFH+w
-	oDhKdXerIl9d9kqtGE+6mC7Q+FkiLkA=
-Message-ID: <3c1f93e2-1be4-4cd9-9396-1c0896d3657f@ixit.cz>
-Date: Fri, 1 May 2026 20:17:34 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ebcn3N/X"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4891f625344so24174575e9.0
+        for <phone-devel@vger.kernel.org>; Fri, 01 May 2026 15:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777674751; x=1778279551; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mE5A7NqhuYtbLG8hB5tWWnVE9s95FeOPuLQxQGxHZPU=;
+        b=Ebcn3N/XZLnJqYQjncNMCDkhq0PcA0mfHACoi0uFKei414VDH7AiAEC49j3M5ugjpI
+         ug7S5v13aviAvKRT4MQJV6DR21/typZ/NN8LnitDsmsL9WFcwPZ992FwoGAfXzn12151
+         TWvYnZ2wTo5Sy0Kp3h1W/p8LDr4joMOJJlmklV32OuXQgXC9O6YB1LXTNnVTzgCttIrr
+         +uRtaYb84Yj5g9+cjvRKQqcIa77dNAVQGzLKvPIVLX9nEfNLSEQYhGg9wCRc4OCgPrBU
+         EoL9qB1PpbG8JQ/zEtB00wHuC9qehz2puGVI4tNAE1zflmIPxEAP5V5PyAUZJIKRyNlt
+         Nn7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777674751; x=1778279551;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mE5A7NqhuYtbLG8hB5tWWnVE9s95FeOPuLQxQGxHZPU=;
+        b=lwQ2hESwz/fWm5+ONYR1teUf7EuodGPeERgtFwe7mdvJTPsyht9V93cdzO8HavcK0j
+         9qVsy8My8ef7JZhLtdkrgfkF3nndsGUyY8tSYGrHg2laJNVvj9jr1Quh0notOJ3r9eZS
+         9DqUMVWfNJcdJsEkznt+EYHmvFvIyYZhHEoB5DO7nbFtmxKfEetavOgE9NF7tZ7Cxald
+         rygkyHG0ga8M8m0Tp5+ts9S3P8re/i3P8v6ApjZhwAzR8RdvaxaHJ2GBRl9uuYeTOwHE
+         m+raSg2e+dRQ4Ziqb+UIQYYvpX3qbGeYMFDBdfeDmz+aIcKGsjy0wyReheBZTg6zBec+
+         DJGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ86iSE1Hyt8ltCJBe3V54IZEgv1eF35SR5912fGjWQpJJtXyE277vm9IqN0unf7gN63kNR97uq9pv7hQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIo0/tYXGsmxszmET5vzCwG7l4SF96XKmu9k5c6DACrwEGGJIb
+	d1cKpT/TbtQ3MqD4Ts+ru0Tj/tJPDCade2KCWI5lHpuqVRi55J8x6g/phQCJZCbSqXM=
+X-Gm-Gg: AeBDieuO3cRxy1DL5j7eMedhpuOetggKO1f45X0D5x/Zxai8H1pQZmKilk3X9ky/zQg
+	9YBk3Sqqn16WdaDfphxLu0f/5zVfBzeF6CopnaCfgki5xOXi7hJckCsCTCzrHA8+qNLfE8CCkqv
+	TbTBuGscycCkXBY1zJ3ZmXwr04Sg+PD1S8dBy+RjAIa9dg5/hi6DsUsMQp2jUJvdnvvu8wZivaD
+	xuXDG8kuKMigvB1F0itBo4nT1VjmHWFpRXEc8Z1rqnTJ5QujJ9u4pE+wcyhhI97BGRM0AArY6hg
+	8VXiywSgRwsULAbyd3B7kAPt7kLDlP3LKDo/CQ+RqcSIb4x12slsh8Kcv2+dkjZUhLjOjDeWYCX
+	bLWryVVeT0K+4oftkxsrheTBC3Cj5Hv7dLDNgkuZtQBtpLF2ljD24AN1Qed0DG5u/7kxYIz/1lf
+	4hCVddjMCoJZ8N5Ek5Ve7lRSW2QbiFYp6pTmG2fdrc0EYDM08o
+X-Received: by 2002:a05:600c:a410:b0:48a:761:5816 with SMTP id 5b1f17b1804b1-48a970c1bc1mr14014075e9.8.1777674750296;
+        Fri, 01 May 2026 15:32:30 -0700 (PDT)
+Received: from [192.168.42.159] ([83.240.169.14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8fe845f0sm32044245e9.1.2026.05.01.15.32.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2026 15:32:29 -0700 (PDT)
+Message-ID: <108ecc23-c821-4387-a324-5e3c20c3cc5e@linaro.org>
+Date: Fri, 1 May 2026 23:32:22 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,555 +68,232 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] drm/panel: Add driver for Novatek NT37705 panel
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+Subject: Re: [PATCH v4 0/3] Add CAMSS support for SM6350
+To: Luca Weiss <luca.weiss@fairphone.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org
-References: <20260501-fp6-panel-v1-0-e09cb05651cc@fairphone.com>
- <20260501-fp6-panel-v1-2-e09cb05651cc@fairphone.com>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>
+References: <20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com>
+ <2a108976-374a-46e1-968d-7befa4369a74@linaro.org>
+ <4SLDL62Oin3XdiLjUEC_YAVA-m1dKV4j_8_RolU6NJFWCIWtem6e6sCb9n7OIHbcIWBfWdXx_vZy5mXCAbWUDg==@protonmail.internalid>
+ <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com>
+ <c87d229c-137c-4e59-99cc-a97ef04f6e1b@kernel.org>
+ <DI79CX4PU08J.2M2V0U4PTOVEU@fairphone.com>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260501-fp6-panel-v1-2-e09cb05651cc@fairphone.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <DI79CX4PU08J.2M2V0U4PTOVEU@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 01/05/2026 15:52, Luca Weiss wrote:
-> Add support for the 2484x1116 AMOLED panel from BOE (BJ631JHM-T71-D900)
-> bundled with a NT37705 driver IC, as found on the Fairphone (Gen. 6)
-> smartphone.
+On 01/05/2026 11:12, Luca Weiss wrote:
+> Hi Bryan,
 > 
-> The panel can also be configured in 10-bit (RGB101010) mode, however
-> currently it's configured in 8-bit (RGB888) since there's some issues in
-> the Qualcomm DPU driver when driving this panel in 10-bit.
+> On Fri Apr 3, 2026 at 5:07 PM CEST, Bryan O'Donoghue wrote:
+>> On 03/04/2026 09:09, Luca Weiss wrote:
+>>> Hi Vladimir,
+>>>
+>>> On Tue Mar 31, 2026 at 12:49 AM CEST, Vladimir Zapolskiy wrote:
+>>>> Hi Luca,
+>>>>
+>>>> On 2/16/26 10:54, Luca Weiss wrote:
+>>>>> Add bindings, driver and dts to support the Camera Subsystem on the
+>>>>> SM6350 SoC.
+>>>>>
+>>>>> These patches were tested on a Fairphone 4 smartphone with WIP sensor
+>>>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly as
+>>>>> far as I can tell.
+>>>>>
+>>>>> Though when stopping the camera stream, the following clock warning
+>>>>> appears in dmesg. But it does not interfere with any functionality,
+>>>>> starting and stopping the stream works and debugcc is showing 426.4 MHz
+>>>>> while the clock is on, and 'off' while it's off.
+>>>>>
+>>>>> Any suggestion how to fix this, is appreciated.
+>>>>
+>>>> I've looked at CAMCC recently, and I do notice that SM6350 CAMCC does not
+>>>> set '.use_rpm = true' flag for whatever reason.
+>>>>
+>>>> If you find a free minute, can you test the change below?..
+>>>
+>>> Unfortunately that change does not resolve the "gcc_camera_axi_clk
+>>> status stuck at 'on'" warning.
+>>>
+>>> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
+>>> active
+>>>
+>>> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.clock-controller/power/runtime_status
+>>> suspended
+>>>
+>>>>
+>>>> ----8<----
+>>>> diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
+>>>> index 7df12c1311c6..ba880e4edcaf 100644
+>>>> --- a/drivers/clk/qcom/camcc-sm6350.c
+>>>> +++ b/drivers/clk/qcom/camcc-sm6350.c
+>>>> @@ -1880,6 +1880,7 @@ static const struct qcom_cc_desc camcc_sm6350_desc = {
+>>>>     	.num_clks = ARRAY_SIZE(camcc_sm6350_clocks),
+>>>>     	.gdscs = camcc_sm6350_gdscs,
+>>>>     	.num_gdscs = ARRAY_SIZE(camcc_sm6350_gdscs),
+>>>> +	.use_rpm = true,
+>>>>     };
+>>>>
+>>>>     static const struct of_device_id camcc_sm6350_match_table[] = {
+>>>> ----8<----
+>>>>
+>>>> This change could be considered to be included in any case, I believe.
+>>>
+>>> I guess this change is now the way to enable pm_runtime, I had this
+>>> series 3 years ago in February 2023:
+>>> https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm-v3-0-d35e0d833cc4@fairphone.com/
+>>>
+>>> But I never followed up due to me not understanding pm_runtime well and
+>>> no direct need for it.
+>>>
+>>> But I guess reviving that with use_rpm = true, add power-domains &
+>>> required-opps to dt-bindings and sm6350.dtsi should be a good idea?
+>>>
+>>> Regards
+>>> Luca
+>>>
+>>>>
+>>>>> [ 5738.590980] ------------[ cut here ]------------
+>>>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
+>>>>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x170/0x190
+>>>>> [ 5738.591081] Modules linked in:
+>>>>> [ 5738.591099] CPU: 0 UID: 10000 PID: 6918 Comm: plasma-camera Tainted: G        W           6.17.0-00057-ge6b67db49622 #71 NONE
+>>>>> [ 5738.591118] Tainted: [W]=WARN
+>>>>> [ 5738.591126] Hardware name: Fairphone 4 (DT)
+>>>>> [ 5738.591136] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>>>>> [ 5738.591150] pc : clk_branch_toggle+0x170/0x190
+>>>>> [ 5738.591164] lr : clk_branch_toggle+0x170/0x190
+>>>>> [ 5738.591177] sp : ffff800086ed3980
+>>>>> [ 5738.591184] x29: ffff800086ed3990 x28: 0000000000000001 x27: ffff800086ed3cd8
+>>>>> [ 5738.591208] x26: 0000000000000000 x25: ffffda14fcfbd250 x24: 0000000000000000
+>>>>> [ 5738.591230] x23: 0000000000000000 x22: ffffda14fc38bce0 x21: 0000000000000000
+>>>>> [ 5738.591252] x20: ffffda14fd33e618 x19: 0000000000000000 x18: 00000000000064c8
+>>>>> [ 5738.591274] x17: 0000000000000000 x16: 00001ae003667e9e x15: ffffda14fd2a07b0
+>>>>> [ 5738.591295] x14: 0000000000000000 x13: 6f27207461206b63 x12: 7574732073757461
+>>>>> [ 5738.591317] x11: 0000000000000058 x10: 0000000000000018 x9 : ffffda14fd2a0838
+>>>>> [ 5738.591338] x8 : 0000000000057fa8 x7 : 0000000000000a16 x6 : ffffda14fd2f8838
+>>>>> [ 5738.591360] x5 : ffff0001f6f59788 x4 : 0000000000000a15 x3 : ffff25ecf9d7e000
+>>>>> [ 5738.591381] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000baf5c100
+>>>>> [ 5738.591403] Call trace:
+>>>>> [ 5738.591412]  clk_branch_toggle+0x170/0x190 (P)
+>>>>> [ 5738.591429]  clk_branch2_disable+0x1c/0x30
+>>>>> [ 5738.591445]  clk_core_disable+0x5c/0xb4
+>>>>> [ 5738.591462]  clk_disable+0x38/0x60
+>>>>> [ 5738.591478]  camss_disable_clocks+0x44/0x78
+>>>>> [ 5738.591496]  vfe_put+0x7c/0xc0
+>>>>> [ 5738.591512]  vfe_set_power+0x40/0x50
+>>>>> [ 5738.591528]  pipeline_pm_power_one+0x14c/0x150
+>>>>> [ 5738.591546]  pipeline_pm_power+0x74/0xf4
+>>>>> [ 5738.591561]  v4l2_pipeline_pm_use+0x54/0x9c
+>>>>> [ 5738.591577]  v4l2_pipeline_pm_put+0x14/0x40
+>>>>> [ 5738.591592]  video_unprepare_streaming+0x18/0x24
+>>>>> [ 5738.591608]  __vb2_queue_cancel+0x4c/0x314
+>>>>> [ 5738.591626]  vb2_core_streamoff+0x24/0xc8
+>>>>> [ 5738.591643]  vb2_ioctl_streamoff+0x58/0x98
+>>>>> [ 5738.591657]  v4l_streamoff+0x24/0x30
+>>>>> [ 5738.591672]  __video_do_ioctl+0x430/0x4a8
+>>>>> [ 5738.591689]  video_usercopy+0x2ac/0x680
+>>>>> [ 5738.591705]  video_ioctl2+0x18/0x40
+>>>>> [ 5738.591720]  v4l2_ioctl+0x40/0x60
+>>>>> [ 5738.591734]  __arm64_sys_ioctl+0x90/0xf0
+>>>>> [ 5738.591750]  invoke_syscall.constprop.0+0x40/0xf0
+>>>>> [ 5738.591769]  el0_svc_common.constprop.0+0x38/0xd8
+>>>>> [ 5738.591785]  do_el0_svc+0x1c/0x28
+>>>>> [ 5738.591801]  el0_svc+0x34/0xe8
+>>>>> [ 5738.591820]  el0t_64_sync_handler+0xa0/0xe4
+>>>>> [ 5738.591838]  el0t_64_sync+0x198/0x19c
+>>>>> [ 5738.591854] ---[ end trace 0000000000000000 ]---
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>> Changes in v4:
+>>>>> - Update power-domain-names order (Krzysztof)
+>>>>> - Make hex numbers lower case in init seq (David)
+>>>>> - Pick up tags
+>>>>> - Link to v3: https://lore.kernel.org/r/20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com
+>>>>
+>>>> Should find some time myself to issue RBs, sorry for the delay.
+>>>>
+>>>>> Changes in v3:
+>>>>> - Update dt-bindings to include everything related to camss
+>>>>> - Update regulator names
+>>>>> - Remove slow_ahb_src
+>>>>> - Link to v2: https://lore.kernel.org/r/20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com
+>>>>>
+>>>>> Changes in v2:
+>>>>> - Remove prefix from interconnect-names
+>>>>> - Move 'top' power-domain to the top of list
+>>>>> - Update regulator supply names
+>>>>> - Link to v1: https://lore.kernel.org/r/20251024-sm6350-camss-v1-0-63d626638add@fairphone.com
+>>>>>
+>>>>> ---
+>>>>> Luca Weiss (3):
+>>>>>          dt-bindings: media: camss: Add qcom,sm6350-camss
+>>>>>          media: qcom: camss: Add SM6350 support
+>>>>>          arm64: dts: qcom: sm6350: Add CAMSS node
+>>>>>
+>>>>>     .../bindings/media/qcom,sm6350-camss.yaml          | 471 +++++++++++++++++++++
+>>>>>     arch/arm64/boot/dts/qcom/sm6350.dtsi               | 233 ++++++++++
+>>>>>     .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 125 ++++++
+>>>>>     drivers/media/platform/qcom/camss/camss-vfe.c      |   2 +
+>>>>>     drivers/media/platform/qcom/camss/camss.c          | 261 ++++++++++++
+>>>>>     drivers/media/platform/qcom/camss/camss.h          |   1 +
+>>>>>     6 files changed, 1093 insertions(+)
+>>>>> ---
+>>>>> base-commit: 3daf23347bb5f4a375d0101ed29c97ce1a99721b
+>>>>> change-id: 20251024-sm6350-camss-9c404bf9cfdd
+>>>>>
+>>>>> Best regards,
+>>>
+>>
+>> What about taking the clock out of hardware gated mode ?
+>>
+>> ┌─[deckard@sagittarius-a] - [~/Development/qualcomm/qlt-kernel] - [Fri
+>> Apr 03, 16:05]
+>> └─[$]> git diff
+>> diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+>> index a4d6dff9d0f7f..f98cb35bcd408 100644
+>> --- a/drivers/clk/qcom/gcc-sm6350.c
+>> +++ b/drivers/clk/qcom/gcc-sm6350.c
+>> @@ -909,8 +909,6 @@ static struct clk_branch gcc_camera_ahb_clk = {
+>>    static struct clk_branch gcc_camera_axi_clk = {
+>>           .halt_reg = 0x17018,
+>>           .halt_check = BRANCH_HALT,
+>> -       .hwcg_reg = 0x17018,
+>> -       .hwcg_bit = 1,
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->   drivers/gpu/drm/panel/Kconfig                 |  11 +
->   drivers/gpu/drm/panel/Makefile                |   1 +
->   drivers/gpu/drm/panel/panel-novatek-nt37705.c | 413 ++++++++++++++++++++++++++
->   3 files changed, 425 insertions(+)
+> Unfortunately this change has no effect, still getting the same error
 > 
-> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-> index 979109c27b9b..59ab3f29d8ef 100644
-> --- a/drivers/gpu/drm/panel/Kconfig
-> +++ b/drivers/gpu/drm/panel/Kconfig
-> @@ -624,6 +624,17 @@ config DRM_PANEL_NOVATEK_NT37700F
->   	  Say Y here if you want to enable support for Novatek NT37700F DSI
->   	  panel module. The panel has a resolution of 1080x2160.
->   
-> +config DRM_PANEL_NOVATEK_NT37705
-> +	tristate "Novatek NT37705-based DSI panel"
-> +	depends on OF
-> +	depends on DRM_MIPI_DSI
-> +	depends on BACKLIGHT_CLASS_DEVICE
-> +	select DRM_KMS_HELPER
-> +	help
-> +	  Say Y here if you want to enable support for Novatek NT37705-based
-> +	  display panels, such as the one found in the The Fairphone (Gen. 6)
-> +	  smartphone.
-> +
->   config DRM_PANEL_NOVATEK_NT37801
->   	tristate "Novatek NT37801/NT37810 AMOLED DSI panel"
->   	depends on OF
-> diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-> index 0d694acbfbb6..94639bc58ca8 100644
-> --- a/drivers/gpu/drm/panel/Makefile
-> +++ b/drivers/gpu/drm/panel/Makefile
-> @@ -61,6 +61,7 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36523) += panel-novatek-nt36523.o
->   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
->   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672E) += panel-novatek-nt36672e.o
->   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37700F) += panel-novatek-nt37700f.o
-> +obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37705) += panel-novatek-nt37705.o
->   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37801) += panel-novatek-nt37801.o
->   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT39016) += panel-novatek-nt39016.o
->   obj-$(CONFIG_DRM_PANEL_MANTIX_MLAF057WE51) += panel-mantix-mlaf057we51.o
-> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt37705.c b/drivers/gpu/drm/panel/panel-novatek-nt37705.c
-> new file mode 100644
-> index 000000000000..27bd8072ccd1
-> --- /dev/null
-> +++ b/drivers/gpu/drm/panel/panel-novatek-nt37705.c
-> @@ -0,0 +1,413 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree.
-> + * Copyright (c) 2026 Luca Weiss <luca.weiss@fairphone.com>
-> + */
-> +
-> +#include <linux/backlight.h>
-> +#include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +#include <video/mipi_display.h>
-> +
-> +#include <drm/display/drm_dsc.h>
-> +#include <drm/display/drm_dsc_helper.h>
-> +#include <drm/drm_mipi_dsi.h>
-> +#include <drm/drm_modes.h>
-> +#include <drm/drm_panel.h>
-> +#include <drm/drm_probe_helper.h>
-> +
-> +struct nt37705_panel {
-> +	struct drm_panel panel;
-> +	struct mipi_dsi_device *dsi;
-> +	struct drm_dsc_config dsc;
-> +	struct regulator_bulk_data *supplies;
-> +	struct gpio_desc *reset_gpio;
-> +};
-> +
-> +static const struct regulator_bulk_data nt37705_supplies[] = {
-> +	{ .supply = "vddio" },
-> +	{ .supply = "dvdd" },
-> +	{ .supply = "vci" },
-> +};
-> +
-> +static inline struct nt37705_panel *to_nt37705_panel(struct drm_panel *panel)
-> +{
-> +	return container_of_const(panel, struct nt37705_panel, panel);
-> +}
-> +
-> +static void nt37705_reset(struct nt37705_panel *ctx)
-> +{
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> +	usleep_range(10000, 11000);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +	usleep_range(5000, 6000);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> +	usleep_range(10000, 11000);
-> +}
-> +
-> +static int nt37705_on(struct nt37705_panel *ctx)
-> +{
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-> +
-> +	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-> +
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0,
-> +				     0x55, 0xaa, 0x52, 0x08, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1b);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba, 0x18);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x2c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x01, 0x01, 0x01, 0x00, 0x05, 0x05,
-> +				     0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00,
-> +				     0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x3c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x0b,
-> +				     0x0b, 0x00, 0x00, 0x0b, 0x0b, 0x00, 0x00,
-> +				     0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x4c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-> +				     0x1d, 0x00, 0x00, 0x00, 0x1d, 0x00, 0x00,
-> +				     0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x5c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
-> +				     0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
-> +				     0x01, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x6c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x0b,
-> +				     0x77, 0x77, 0x00, 0x00, 0x0b, 0x00, 0x1d,
-> +				     0x00, 0x1d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x7c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x0b,
-> +				     0x77, 0x77, 0x00, 0x00, 0x0b, 0x00, 0x1d,
-> +				     0x00, 0x1d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x8c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +				     0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x9c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x11, 0x11, 0x20, 0x02, 0x00, 0x03, 0x00,
-> +				     0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0xa4);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba, 0x00, 0xc0, 0x40, 0x08);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0xa8);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-> +				     0x22);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0xb0);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xba,
-> +				     0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
-> +				     0x22);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0,
-> +				     0x55, 0xaa, 0x52, 0x08, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x05);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc5, 0x15, 0x15, 0x15, 0xdd);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0,
-> +				     0x55, 0xaa, 0x52, 0x08, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0e);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb5, 0x32);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf0,
-> +				     0x55, 0xaa, 0x52, 0x00, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x80);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x19);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf2, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1a);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf4, 0x55);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x11);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf8, 0x01, 0x7f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x2d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf8, 0x01, 0x20);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x81);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x05);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xfe, 0x3c);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf9, 0x04);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x1e);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xfb, 0x0f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf5, 0x20);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x0d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xfb, 0x80);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x83);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x12);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xfe, 0x41);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x13);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xfd, 0x21);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x35);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY,
-> +				     0x20);
-> +	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0x0000, 0x045b);
-> +	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0x0000, 0x09b3);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_SET_GAMMA_CURVE, 0x00);
-> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0xbb0d);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x04);
-> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0xfe0f);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x81, 0x01, 0x19);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x03, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x90, 0x03, 0x03);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x91,
-> +				     0x89, 0x28, 0x00, 0x0c, 0xd2, 0x00, 0x02,
-> +				     0x2f, 0x01, 0x18, 0x00, 0x07, 0x09, 0x75,
-> +				     0x08, 0x34, 0x10, 0xf0);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x02);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x5a, 0x01);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x30);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6d, 0x00);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x11, 0x00);
-> +	mipi_dsi_msleep(&dsi_ctx, 120);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x29, 0x00);
-> +	mipi_dsi_msleep(&dsi_ctx, 22);
-> +
-> +	return dsi_ctx.accum_err;
-> +}
-> +
-> +static int nt37705_off(struct nt37705_panel *ctx)
-> +{
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-> +
-> +	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> +
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x28, 0x00);
-> +	mipi_dsi_msleep(&dsi_ctx, 20);
-> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x10, 0x00);
-> +	mipi_dsi_msleep(&dsi_ctx, 120);
-> +
-> +	return dsi_ctx.accum_err;
-> +}
-> +
-> +static int nt37705_prepare(struct drm_panel *panel)
-> +{
-> +	struct nt37705_panel *ctx = to_nt37705_panel(panel);
-> +	struct device *dev = &ctx->dsi->dev;
-> +	struct drm_dsc_picture_parameter_set pps;
-> +	int ret;
-> +
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(nt37705_supplies), ctx->supplies);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to enable regulators: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	nt37705_reset(ctx);
-> +
-> +	ret = nt37705_on(ctx);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to initialize panel: %d\n", ret);
-> +		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +		regulator_bulk_disable(ARRAY_SIZE(nt37705_supplies), ctx->supplies);
-> +		return ret;
-> +	}
-> +
-> +	drm_dsc_pps_payload_pack(&pps, &ctx->dsc);
-> +
-> +	ret = mipi_dsi_picture_parameter_set(ctx->dsi, &pps);
-> +	if (ret < 0) {
-> +		dev_err(panel->dev, "failed to transmit PPS: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = mipi_dsi_compression_mode(ctx->dsi, true);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to enable compression mode: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	msleep(28); /* TODO: Is this panel-dependent? */
-> +
-> +	return 0;
-> +}
-> +
-> +static int nt37705_unprepare(struct drm_panel *panel)
-> +{
-> +	struct nt37705_panel *ctx = to_nt37705_panel(panel);
-> +	struct device *dev = &ctx->dsi->dev;
-> +	int ret;
-> +
-> +	ret = nt37705_off(ctx);
-> +	if (ret < 0)
-> +		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
-> +
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +	regulator_bulk_disable(ARRAY_SIZE(nt37705_supplies), ctx->supplies);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct drm_display_mode nt37705_mode = {
-
-this is definitely related to the panel, not the DDIC, thus naming should 
-reflect that
-
-
-> +	.clock = (1116 + 100 + 30 + 100) * (2484 + 70 + 48 + 70) * 120 / 1000,
-> +	.hdisplay = 1116,
-> +	.hsync_start = 1116 + 100,
-> +	.hsync_end = 1116 + 100 + 30,
-> +	.htotal = 1116 + 100 + 30 + 100,
-> +	.vdisplay = 2484,
-> +	.vsync_start = 2484 + 70,
-> +	.vsync_end = 2484 + 70 + 48,
-> +	.vtotal = 2484 + 70 + 48 + 70,
-> +	.width_mm = 66,
-> +	.height_mm = 146,
-> +	.type = DRM_MODE_TYPE_DRIVER,
-> +};
-> +
-> +static int nt37705_get_modes(struct drm_panel *panel,
-> +			     struct drm_connector *connector)
-> +{
-> +	return drm_connector_helper_get_modes_fixed(connector, &nt37705_mode);
-> +}
-> +
-> +static const struct drm_panel_funcs nt37705_panel_funcs = {
-> +	.prepare = nt37705_prepare,
-> +	.unprepare = nt37705_unprepare,
-> +	.get_modes = nt37705_get_modes,
-> +};
-> +
-> +static int nt37705_bl_update_status(struct backlight_device *bl)
-> +{
-> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
-> +	u16 brightness = backlight_get_brightness(bl);
-> +	int ret;
-> +
-> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> +
-> +	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct backlight_ops nt37705_bl_ops = {
-> +	.update_status = nt37705_bl_update_status,
-> +};
-> +
-> +static struct backlight_device *
-> +nt37705_create_backlight(struct mipi_dsi_device *dsi)
-> +{
-> +	struct device *dev = &dsi->dev;
-> +	const struct backlight_properties props = {
-> +		.type = BACKLIGHT_RAW,
-> +		.scale = BACKLIGHT_SCALE_NON_LINEAR,
-> +		.brightness = 4095,
-
-maybe setting it to half at boot would be sensible?
-
-> +		.max_brightness = 4095,
-> +	};
-> +
-> +	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi,
-> +					      &nt37705_bl_ops, &props);
-> +}
-> +
-> +static int nt37705_probe(struct mipi_dsi_device *dsi)
-> +{
-> +	struct device *dev = &dsi->dev;
-> +	struct nt37705_panel *ctx;
-> +	int ret;
-> +
-> +	ctx = devm_drm_panel_alloc(dev, struct nt37705_panel, panel,
-> +				   &nt37705_panel_funcs,
-> +				   DRM_MODE_CONNECTOR_DSI);
-> +	if (IS_ERR(ctx))
-> +		return PTR_ERR(ctx);
-> +
-> +	ret = devm_regulator_bulk_get_const(dev,
-> +					    ARRAY_SIZE(nt37705_supplies),
-> +					    nt37705_supplies,
-> +					    &ctx->supplies);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(ctx->reset_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
-> +				     "Failed to get reset-gpios\n");
-> +
-> +	ctx->dsi = dsi;
-> +	mipi_dsi_set_drvdata(dsi, ctx);
-> +
-> +	dsi->lanes = 4;
-> +	dsi->format = MIPI_DSI_FMT_RGB888;
-> +	dsi->mode_flags = MIPI_DSI_MODE_NO_EOT_PACKET |
-> +			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
-> +
-> +	ctx->panel.prepare_prev_first = true;
-> +
-> +	ctx->panel.backlight = nt37705_create_backlight(dsi);
-> +	if (IS_ERR(ctx->panel.backlight))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
-> +				     "Failed to create backlight\n");
-> +
-> +	drm_panel_add(&ctx->panel);
-> +
-> +	/* This panel only supports DSC; unconditionally enable it */
-> +	dsi->dsc = &ctx->dsc;
-> +
-> +	ctx->dsc.dsc_version_major = 1;
-> +	ctx->dsc.dsc_version_minor = 1;
-> +
-> +	/* TODO: Pass slice_per_pkt = 2 */
-> +	ctx->dsc.slice_height = 12;
-> +	ctx->dsc.slice_width = 558;
-> +	/*
-> +	 * TODO: hdisplay should be read from the selected mode once
-> +	 * it is passed back to drm_panel (in prepare?)
-> +	 */
-> +	WARN_ON(1116 % ctx->dsc.slice_width);
-> +	ctx->dsc.slice_count = 1116 / ctx->dsc.slice_width;
-> +	ctx->dsc.bits_per_component = 8;
-> +	ctx->dsc.bits_per_pixel = 8 << 4; /* 4 fractional bits */
-> +	ctx->dsc.block_pred_enable = true;
-> +
-> +	ret = mipi_dsi_attach(dsi);
-> +	if (ret < 0) {
-> +		drm_panel_remove(&ctx->panel);
-> +		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void nt37705_remove(struct mipi_dsi_device *dsi)
-> +{
-> +	struct nt37705_panel *ctx = mipi_dsi_get_drvdata(dsi);
-> +	int ret;
-> +
-> +	ret = mipi_dsi_detach(dsi);
-> +	if (ret < 0)
-> +		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
-> +
-> +	drm_panel_remove(&ctx->panel);
-> +}
-> +
-> +static const struct of_device_id nt37705_of_match[] = {
-> +	{ .compatible = "boe,bj631jhm-t71-d900" },
-
-it would make sense to put DDIC as part of compatible, something like 
-novatek,nt37705-bj631jhm
-
-we communite with DDIC, not with the panel directly.
-
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, nt37705_of_match);
-> +
-> +static struct mipi_dsi_driver nt37705_driver = {
-> +	.probe = nt37705_probe,
-> +	.remove = nt37705_remove,
-> +	.driver = {
-> +		.name = "panel-novatek-nt37705",
-> +		.of_match_table = nt37705_of_match,
-> +	},
-> +};
-> +module_mipi_dsi_driver(nt37705_driver);
-> +
-> +MODULE_DESCRIPTION("DRM driver for NT37705-equipped DSI panels");
-> +MODULE_LICENSE("GPL");
+> [  192.154311] ------------[ cut here ]------------
+> [  192.154339] gcc_camera_axi_clk status stuck at 'on'
+> [  192.154364] WARNING: drivers/clk/qcom/clk-branch.c:87 at clk_branch_toggle+0x170/0x190, CPU#5: CameraManager/5996
+> [  192.154387] Modules linked in:
+> [  192.154403] CPU: 5 UID: 10000 PID: 5996 Comm: CameraManager Tainted: G        W           7.0.0-00074-gb9262f98394c-dirty #31 PREEMPTLAZY
 > 
+> Regards
+> Luca
 
--- 
-David Heidelberg
+Sorry wait a second did you say you had a fix for this around CX ?
 
+https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm-v3-2-d35e0d833cc4@fairphone.com/
+
+Is this series adding or missing power-domains = <CX> ?
+
+Shouldn't this be in the gcc node ?
+
++			power-domains = <&rpmhpd SM6350_CX>;
++			required-opps = <&rpmhpd_opp_low_svs>;
+
+---
+bod
