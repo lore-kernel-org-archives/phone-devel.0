@@ -1,120 +1,186 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713BC3CFF79;
-	Fri,  1 May 2026 14:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C5421C9EA;
+	Fri,  1 May 2026 15:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777647110; cv=none; b=la8QWy0UPtF1+r8OfPE8JBj/H4zOJhDQOaP3wvK4r65LYbsZSDBo+iCFcim+RRIxUyL6C4GxI1v5I3JtbRABCy+NbU+iTpyADYgmVd1EhJvJxHvpyMuvwCyDt4JwqFiTAZVxrpLNo9WNKQCuVU246sOvSHo5MiXFcvjocV9Tzv4=
+	t=1777650671; cv=none; b=Kt75EY9w5sz/bnGASqzaEZIF8LdHOEddWdaoHb7i3Gbv+M6Y01wQOcz6Y6t12DHEhnjspUqyQrxUOB+0LbgEbDYpvErKaEol+FgBZs9+NYvlCmbdNhps/iNbDV3rSuQ8VCf57EX2U/AFrqL5jr5O5IZrmwOmmTiGD5+SjQD+fQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777647110; c=relaxed/simple;
-	bh=gUw13X5rOhDAEW6O3AqQz07Ik5d10u+si2J1VSOW9XU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pUG8B87C/Cd4KN1n/hgIlkinU5D2v85ZstKkDPf3rKUytsYAyK/0tTTMTs/rtPjD6bxNXj9kEbvtU6579nuPY2G4M0FTDNVunFkUOBMgKS1gkwxIS4RYdhArBSd35a9nXY3StIe3fjKkXhyWR2AWaZ+Teqjen3zfEKRRH2qbXXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cr9Tqvmj; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1777650671; c=relaxed/simple;
+	bh=Fkgyd2j//vivMvpbm5BeGCiSXXdWUFA+VDVHD/REf9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IL2an6wW1y3i+N9XcOLJlxr23qY4rCreRUGaeVDeLeZUkQgBaa62/JiD3MMuN2/sgO68Z5D3fZvQ2JC7IKSyeLlXFveZYOt5HlVtIH46HpbbPPrK12CucW//xT7za07sPwLV94n4fTa2tW5qoZh0wC5B3j1CZ66lih2D6EZIQ+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/qbqEOk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cr9Tqvmj"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2E3C15340B22;
-	Fri, 01 May 2026 16:51:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1777647097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uZ3Rg5MZt3buQ+iw7G2oz++ZgXwW/c4xrsHxmm6CVXg=;
-	b=Cr9TqvmjzQ3LpzMypLoao03YFiubOJLcdTS/uflVpUb+DW8c3xeoc7T4qurKQlOpHM2JNd
-	me4Nnr3XHKGJgK5kEXBTbjFtxEwPVlmeQuDzwXlWZOXvCa5JjXJeJ6GhBw+fpDZAbdcluI
-	+c/aXqSHIm4OWVRLVRUdU/D06JmFmGU=
-Message-ID: <747c9978-9dbe-4f74-a7d8-6ab689a7dce3@ixit.cz>
-Date: Fri, 1 May 2026 16:51:36 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/qbqEOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728CFC2BCB4;
+	Fri,  1 May 2026 15:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777650670;
+	bh=Fkgyd2j//vivMvpbm5BeGCiSXXdWUFA+VDVHD/REf9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q/qbqEOkgDC3AOOwqrWptr+d8TVHKehN2KgfWzxQe3SplNurG9bL3e8GABhPnsM09
+	 WktGE3x5YUzq6MGyZd2y/nsW5eyT6rTGeKrzo9+EOXvfmrNqP2MGAFz/Z35Iys0qqA
+	 sscHpQwQ3P614pZyQ8pKE59f634ulyxI1j93WcK4Pq0kvjukXq2mbqFehTqHlv3k9K
+	 N0dzVtcu30Ut8TdVULQ3zoLsadiwPOPn/dUbc58ywPskjV7k0Eri1VIOxJvks4/hyR
+	 +hWyw+mcsSz24Nmp41xo5R6MEbYPntkZXt9ZHStr5ZmD7An1ssmu4K4ANA5JAh+9By
+	 V11aTaCZitf5Q==
+Date: Fri, 1 May 2026 16:51:05 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: display: panel: Add Novatek NT37705
+Message-ID: <20260501-yogurt-wise-2a2884e3ec59@spud>
+References: <20260501-fp6-panel-v1-0-e09cb05651cc@fairphone.com>
+ <20260501-fp6-panel-v1-1-e09cb05651cc@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/panel: visionox-rm69299: Split DSI commands out
- into enable/disable
-To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
- <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TCqlpNj/G+bOCtw3"
+Content-Disposition: inline
+In-Reply-To: <20260501-fp6-panel-v1-1-e09cb05651cc@fairphone.com>
 
-04/2026 15:56, Guido Günther wrote:
-> It's when DSI commands should be sent and it also fixes these DSI errors
-> on every screen blank/unblank on the SHIFT6mq:
-> 
-> dmesg:
->    msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx] *ERROR* wait for video done timed out
->    dsi_cmds2buf_tx: cmd dma tx failed, type=0x5, data0=0x28, len=4, ret=-110
->    panel-visionox-rm69299 ae94000.dsi.0: sending DCS SET_DISPLAY_OFF failed: -110
-> 
-> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+
+--TCqlpNj/G+bOCtw3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, May 01, 2026 at 03:52:45PM +0200, Luca Weiss wrote:
+> Novatek NT37705 is a display driver IC used to drive AMOLED DSI panels.
+>=20
+> Describe it and the panel in the Fairphone (Gen. 6) (BJ631JHM-T71-D900
+> from BOE) using it.
+>=20
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 77 +++++++++++++++-----------
->   1 file changed, 44 insertions(+), 33 deletions(-)
+>  .../bindings/display/panel/novatek,nt37705.yaml    | 72 ++++++++++++++++=
+++++++
+>  1 file changed, 72 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37=
+705.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.=
+yaml
+> new file mode 100644
+> index 000000000000..1c796599f6fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
+> @@ -0,0 +1,72 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/novatek,nt37705.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Novatek NT37705-based DSI display panels
+> +
+> +maintainers:
+> +  - Luca Weiss <luca.weiss@fairphone.com>
+> +
+> +description:
+> +  The Novatek NT37705 is a generic DSI Panel IC used to control AMOLED p=
+anels.
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    contains:
+> +      const: boe,bj631jhm-t71-d900
 
-Reviewed-by: David Heidelberg <david@ixit.cz>
-Tested-by: David Heidelberg <david@ixit.cz>
+Compatible doesn't match the filename, nor does the commit message match
+what you've got here. Sounds like you're missing a fallback to
+$filename.
+
+pw-bot: changes-requested
+
+Cheers,
+Conor.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vddio-supply:
+> +    description: I/O voltage rail
+> +
+> +  dvdd-supply:
+> +    description: Digital voltage rail
+> +
+> +  vci-supply:
+> +    description: Analog voltage rail
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - vddio-supply
+> +  - dvdd-supply
+> +  - vci-supply
+> +  - port
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        panel@0 {
+> +            compatible =3D "boe,bj631jhm-t71-d900";
+> +            reg =3D <0>;
+> +
+> +            reset-gpios =3D <&tlmm 12 GPIO_ACTIVE_LOW>;
+> +
+> +            vci-supply =3D <&vreg_l19b>;
+> +            vddio-supply =3D <&vreg_l9b>;
+> +            dvdd-supply =3D <&vreg_oled_dvdd_1p2>;
+> +
+> +            port {
+> +                panel_in_0: endpoint {
+> +                    remote-endpoint =3D <&dsi0_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+>=20
+> --=20
+> 2.54.0
+>=20
+
+--TCqlpNj/G+bOCtw3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCafTL6QAKCRB4tDGHoIJi
+0kcFAQDkpJzCo4l7vUej3Ls7tED6BqFbk6tKidwZCIm2ei4sIwD/fATcdanpFsQN
+pZmkVtXjY5+oh8AOr2rgaeHlNxv8KAo=
+=mEw5
+-----END PGP SIGNATURE-----
+
+--TCqlpNj/G+bOCtw3--
