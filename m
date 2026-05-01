@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF542BDC32;
-	Fri,  1 May 2026 14:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713BC3CFF79;
+	Fri,  1 May 2026 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777647050; cv=none; b=ibYR0e2EMSY/6VqmNwkFZd7a9W0rH5+v+iDXaQK19/Oa4eC2l04B1TE+RlYs+RjV76lrQSzFIXx4quy/q5gp7l0kpcHR9FcAOylUNWFJF0reLSpmfCjq4s158OWoDntzt433JPH62P/cEx92rPCSKdLArsU5cyiVwEap5JdJbL0=
+	t=1777647110; cv=none; b=la8QWy0UPtF1+r8OfPE8JBj/H4zOJhDQOaP3wvK4r65LYbsZSDBo+iCFcim+RRIxUyL6C4GxI1v5I3JtbRABCy+NbU+iTpyADYgmVd1EhJvJxHvpyMuvwCyDt4JwqFiTAZVxrpLNo9WNKQCuVU246sOvSHo5MiXFcvjocV9Tzv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777647050; c=relaxed/simple;
-	bh=nZnkrSyddpTBmkizfrlJuGg07jjWkWfNHm1qJo4yzwU=;
+	s=arc-20240116; t=1777647110; c=relaxed/simple;
+	bh=gUw13X5rOhDAEW6O3AqQz07Ik5d10u+si2J1VSOW9XU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XkKNUuWw8nGz/vxaL/bFH5PzQp+2HJaa+unK/xWr+w+uxaksy6wJjwywQy8V1F2HF5nM0UgWFVjNHOvdIVHpvRb+Jp68kK06qnbzD4WDfm6HPfKRJVNDasVisaRyoxkST+hK4kcEFifhBc+9DN3ylWruYY5pQT3yLXeqevbkj+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=VDtYEZ5b; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=pUG8B87C/Cd4KN1n/hgIlkinU5D2v85ZstKkDPf3rKUytsYAyK/0tTTMTs/rtPjD6bxNXj9kEbvtU6579nuPY2G4M0FTDNVunFkUOBMgKS1gkwxIS4RYdhArBSd35a9nXY3StIe3fjKkXhyWR2AWaZ+Teqjen3zfEKRRH2qbXXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cr9Tqvmj; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="VDtYEZ5b"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cr9Tqvmj"
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 996D55340FCD;
-	Fri, 01 May 2026 16:50:38 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 2E3C15340B22;
+	Fri, 01 May 2026 16:51:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1777647038;
+	t=1777647097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8bracWZbA9S1hZzhS6P3EWP2FeSsV2QHgBQVXubkZ/w=;
-	b=VDtYEZ5b8X+eZWBOy77lTI4Qlz5jmLf7RMh8HKO86zTF2MIok9RFD+eYYnkTUijxC04ylg
-	vsqIqQmw/6+67+dO/QYCYtk3Gro9uZVSlmzODXjDzS91bKAqFcpUS26EXRk5oHNx6bL5oR
-	6PdWNKZulTzM3IJbfkVOfezYqqkaGh8=
-Message-ID: <161b2074-ba4a-4456-a236-955a2575c5cd@ixit.cz>
-Date: Fri, 1 May 2026 16:50:38 +0200
+	bh=uZ3Rg5MZt3buQ+iw7G2oz++ZgXwW/c4xrsHxmm6CVXg=;
+	b=Cr9TqvmjzQ3LpzMypLoao03YFiubOJLcdTS/uflVpUb+DW8c3xeoc7T4qurKQlOpHM2JNd
+	me4Nnr3XHKGJgK5kEXBTbjFtxEwPVlmeQuDzwXlWZOXvCa5JjXJeJ6GhBw+fpDZAbdcluI
+	+c/aXqSHIm4OWVRLVRUdU/D06JmFmGU=
+Message-ID: <747c9978-9dbe-4f74-a7d8-6ab689a7dce3@ixit.cz>
+Date: Fri, 1 May 2026 16:51:36 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/panel: visionox-rm69299: Move power_on/off into
- prepare/unprepare
+Subject: Re: [PATCH 1/2] drm/panel: visionox-rm69299: Split DSI commands out
+ into enable/disable
 To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
  Neil Armstrong <neil.armstrong@linaro.org>,
  Jessica Zhang <jesszhan0024@gmail.com>,
@@ -52,7 +52,7 @@ To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
- <20260427-visionox-rm69299-enable-v1-2-fa7d62d26d87@sigxcpu.org>
+ <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -98,18 +98,23 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260427-visionox-rm69299-enable-v1-2-fa7d62d26d87@sigxcpu.org>
+In-Reply-To: <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 04/2026 15:56, Guido Günther wrote:
-> No need to have separate functions now that prepare/unprepare only
-> handle powering on & off.
+> It's when DSI commands should be sent and it also fixes these DSI errors
+> on every screen blank/unblank on the SHIFT6mq:
+> 
+> dmesg:
+>    msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx] *ERROR* wait for video done timed out
+>    dsi_cmds2buf_tx: cmd dma tx failed, type=0x5, data0=0x28, len=4, ret=-110
+>    panel-visionox-rm69299 ae94000.dsi.0: sending DCS SET_DISPLAY_OFF failed: -110
 > 
 > Signed-off-by: Guido Günther <agx@sigxcpu.org>
 > ---
->   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 36 +++++++++-----------------
->   1 file changed, 12 insertions(+), 24 deletions(-)
-> 
+>   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 77 +++++++++++++++-----------
+>   1 file changed, 44 insertions(+), 33 deletions(-)
 
+Reviewed-by: David Heidelberg <david@ixit.cz>
 Tested-by: David Heidelberg <david@ixit.cz>
