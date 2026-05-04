@@ -1,170 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ADD31DD97;
-	Mon,  4 May 2026 20:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA61C3845C0
+	for <phone-devel@vger.kernel.org>; Mon,  4 May 2026 22:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777927627; cv=none; b=fEj6QbSxq/JyDHjERRN3SwkVhGmA7hkM9OBkVrOPqjy2SZPSLCcZu6va94OO35hWxfujv1XpJovp4pWEmDxOcmWgLgeb3/eEGxfeh/94rcKSobDbEjwy+Eao/RkWVyHvdkqY7RCOf3EWY/CCRhes5P91/exRcyKqreE58tYRbvA=
+	t=1777934415; cv=none; b=mNoXIxaOWF3+VgvFY4XcTqM6dTioQ+wbFDGrc1zCjG11iFW7S+n+Arzt1muHpwMxp8eMNdlejZlB6u8JoIsSDu/tACyZl684+v61sphVdpj2HOvu37vP1EZD5ZeRfBKGNUPl0ToM/4DJctZ2KUQuJly1D3IehmcQnAS+mQQdUAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777927627; c=relaxed/simple;
-	bh=ofaeSJ6wgxoQTSkFMwPMfdQHfwwAu1hwLQCirCS8cps=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UlyeGgtMyocAYoMIfiWnGwz4O6Nta12kv+sXrl9gMklW1sxolf15hSIDLM1lvpu1Gq0Q+bwKkhxL3UnTBf76JxlyYr9u4/+qLDkcHGZfsjYjZLvYfPmrA2PSwmeumDgpuG+/u09ghzexBjJQoTNTZGKqu15N4Hau+8RIkhem2VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t0BUfo3n; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777934415; c=relaxed/simple;
+	bh=tbZ+AvvHbrL75au5Rx/mr5ZMruUtLT3oIM+mD3Zyhuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=feKZ0G5OIRGyyGGdI4DDIVPX2q/TD92SKughIn4w+JVbzseyC1mhQxI8pkDwTdLthJcdaf18oMTEbxh1y83VqM9efeYqnjJOcyGX9Vzmgt9/rouncOBvDfUkd5uTmbDOOuWUNtX3WO9CTZ/TK800XQG0s3fi99MHms+wwaPcI+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=I1S7IowS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VJYkgVgz; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t0BUfo3n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB62C2BCB8;
-	Mon,  4 May 2026 20:47:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777927627;
-	bh=ofaeSJ6wgxoQTSkFMwPMfdQHfwwAu1hwLQCirCS8cps=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=t0BUfo3nNFvYW95ko4gYpzNkm16E847yBACUad/Pu3ATFV3qwpgchbSpPQ+bUF+5O
-	 i3ZxRJneYB8jAUekM9KNEGJafdl/5PZFL9DP+GNmfJhWN/RDylnRZEDJS+zTWSv3kI
-	 Sdztehc42yj2mVEbWnSy3fJ5TMAsCiIlrawQc10je7EEUfHqvFxHwoBZahx+E5b7kT
-	 tUl0rHZi2a6D2MK4Hwx1g7fZe+1Q3q0jPAgq5APPrDIC0fMHo0Po1OH6fMmvGNKAph
-	 jpaKA8LEx96ljjlTI0TJbA79at2FVz7s017brqCvWiV1DO7J+4ZsA5SdOqw5hMnlLk
-	 cpRUq3w6xjwkw==
-Message-ID: <80908399-941b-4504-922b-555ba9d0e43a@kernel.org>
-Date: Mon, 4 May 2026 22:47:00 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="I1S7IowS";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VJYkgVgz"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644LGe2c1187203
+	for <phone-devel@vger.kernel.org>; Mon, 4 May 2026 22:40:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=fKsRobYlVid8ozPAY7e2ux14
+	j9F4sny35spO5DP0VcI=; b=I1S7IowSpcYgHQ4H0pXji/mLJv8SEaDLiv/VUtgp
+	/z/FvWfVv0fDY24+m0OZoXQnGzvajzffJn169AGtzLyM3aYgk0+JY8oMisC3Uqab
+	bWlYwEOeVuHCUbGHjGJ7s+trig68WzJhmOcnpy9nfd0LSdcIwjhL8nLKt7lleAy+
+	1Y7PVLyqeEz/mlIGlNv9sFnWvSi928tP8L6/O1Evjw59pso+RwZnnP21HLRQLILa
+	TvY0lJPOfM6fC1+pWb+594MNE+eWojJ/040hW/3I3rg6g1PAVOj3xYFtAotXvJXn
+	gS+9sKljpzc5TeA3mi5bicUZ16POTgsIgNeoR7iuIfaGew==
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com [209.85.222.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dxvvg9upr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 04 May 2026 22:40:13 +0000 (GMT)
+Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-95d25cc8f5bso1592716241.3
+        for <phone-devel@vger.kernel.org>; Mon, 04 May 2026 15:40:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777934413; x=1778539213; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fKsRobYlVid8ozPAY7e2ux14j9F4sny35spO5DP0VcI=;
+        b=VJYkgVgz6MJWh9PtioszXFJubt2RRmVrtpj/4aoQaWqcklfYZ8EGy2Q4DPBKIq/Gxa
+         SU4yCcBkvObe6uZS/3lhGCO/aVp/mH3oIhRHNx71MSjFN9ef9+hvsXatvMvLfyU68b5V
+         WtLZutxx1KvRp8OLZSAP/6dNtDhptTmx/YAH2cNSYzsVkXL+9updfTePMzX8ODj+mOjK
+         hpTPdjExpvE9Mv/xPEeOgOrFSK7wV4skfD/LoDLnDcCC/LmSHGMUmwPJyvnCyvU2XUQH
+         WEGjEz7Z3XJoTFIVnEILoJLhT37s/bZ6W2lm2BqM+5Om75M0/mLWw7NRHYEm+RgVutMb
+         eHpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777934413; x=1778539213;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fKsRobYlVid8ozPAY7e2ux14j9F4sny35spO5DP0VcI=;
+        b=Oxqb2K5YdubR2zbmAltjqdJvFBSuvsdShXh+02DMZ5McM8GbAFIcNZl+ff3tktIEXm
+         lLhL1nX0DoC1s8f28j3rXHC0wbfCRcZ6ZLjHxcRQtczXnY3YlTt4c6hsgGp0dK2v/9ew
+         VIF+5HUrrllBi0tWDmJsUDreF/8rfj/tkKdGCckGJPQtsVmPe4dXfV72BvI+AJm3mN3U
+         M2kn5o+G+y5/2T7eO758BbZ/nU2bMQqCGvO9i6awcxOmtaPQAh5Zmmdl7R/wc0m5xBNy
+         Al1Ka79sBT+OMVylZQLKibte9msK+90GAzzFRLwk1kG+EaaFGGXYeEEccyqgvg35Q0Ke
+         WHBA==
+X-Forwarded-Encrypted: i=1; AFNElJ9ySPhPyZ96TEQPISRC0ofaqocuyjsY/a0ZxDQibMNuZY5ZiZDuYC1AfYFLsZ2Mb8W9M2oAjcCDq7XKJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCxtxvMy/7VZ+ijx3RRh1WIcuuJmZwQpaZE81bFQT6MZGloKmQ
+	+TWaeN6X8gnp1gDopeD14Xg3W3+zVXBz4eKZbuMO+Hikec+jM0LOAsOCwjF/vb9XFyjybEafj1E
+	Hxs0FJlGtmjPCWjVyhxfCbg94pLnhn7e+1EmYexjhJs7CT/xnwMSo9h8v1xruYTLgAg==
+X-Gm-Gg: AeBDieuttrkqxRlCEmpG7j+AmBoGQriIXEJeZKdymIKn1Ldd8Qh1s1nDrlN4DFxaNlB
+	xNuzyc3pkU1VNUbYEABOFf66ssSNdJMdGj0nyoisPt+HhWXg4etAonrS57hMwbnDGo+WNfUEoMX
+	Eq+PDctqU3lyYVo7MGXUn67QwXAH+USEnM+Jw9nHAwxYLK6S/CxtUAeKbh5aURTO6O4x1hq1D3u
+	ze4fz0N0lSDm3Z8HvsFCJJlEjNh6WwEAvGrCi1oouzX8/TTZFfcoJ5e5eamwIptgWT5hpMeR5au
+	+CcbhzqgewiVKUigWVX+ReELMupEedoZVfPpiuXnTlF8J2Kya5zRACbmbmU39xMLWAxWWTJhTwo
+	0YQeNhnUGueY1o1CP7lJmXHT4hXsyYB9F5l+oFqomYB/B3gSIA3yorqVxtn+UJ3iovgjXEm0bwQ
+	q7Wc22vS9w2Qw7h8y0TtT72AUkW3TvCilHoA7Az4ik8uYzjQ==
+X-Received: by 2002:a05:6122:896:b0:572:353f:be2d with SMTP id 71dfb90a1353d-5750c6b2f14mr6080124e0c.13.1777934412934;
+        Mon, 04 May 2026 15:40:12 -0700 (PDT)
+X-Received: by 2002:a05:6122:896:b0:572:353f:be2d with SMTP id 71dfb90a1353d-5750c6b2f14mr6080099e0c.13.1777934412502;
+        Mon, 04 May 2026 15:40:12 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3936108fb8bsm33734251fa.2.2026.05.04.15.40.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 15:40:09 -0700 (PDT)
+Date: Tue, 5 May 2026 01:40:06 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: milos-fairphone-fp6: Enable display
+Message-ID: <6hygg2pm6fbp3scdurycihyov4ffgpkd4szmtjvwjpok7qbfk6@czbszxhvn7ev>
+References: <20260501-fp6-panel-v1-0-e09cb05651cc@fairphone.com>
+ <20260501-fp6-panel-v1-4-e09cb05651cc@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: display: panel: Add Novatek NT37705
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>, Conor Dooley <conor@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20260501-fp6-panel-v1-0-e09cb05651cc@fairphone.com>
- <20260501-fp6-panel-v1-1-e09cb05651cc@fairphone.com>
- <20260501-yogurt-wise-2a2884e3ec59@spud>
- <DI9XL1VYYTY7.19IRSM8VIDO53@fairphone.com>
- <a2444df4-abf1-4b56-8556-7efb238bc677@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <a2444df4-abf1-4b56-8556-7efb238bc677@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260501-fp6-panel-v1-4-e09cb05651cc@fairphone.com>
+X-Proofpoint-ORIG-GUID: _DeTSssRAYRt4FeafWcKToBkRtq0xK0g
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDIxMCBTYWx0ZWRfX5BiPtA/OIEvV
+ q9lAYkDfre1KZKnEVPQCmERJURYvJJ/JPZwHUxAY66ZDWBuulue0IOW31aEQF3tWxFnOAo5hIy2
+ rI/dLb03gkYS+D1jaJ0R6K9d2Usr+ZphpOv+zTdJJz/4b5xS6mTgt2MXJZQXEejXFiqUXDGFjq0
+ +QUB34+5goC4Mw/zRdpQo15qDTl/phG8bovq6UYUP7I0VGBYF5fdgEBXcSHfy03bSr1C6CXjdAv
+ UqDBZzCkV07rBG4DVGv4047+ZnRkbHYlMZldsxmGZWTLzn5ETKSUyzsbBb1c7I/c1JheDUorfj8
+ Rowy8Xqwsdr82hxBLl0Wixt90QtUK4ge0Mao76HdnlLQYhjUF1a+HT0gx+In1HWlcqyl89vBx2J
+ eCduizhJv1dymRWJV52NOXaIQdcjueZQamQUehYBiXDO2uS5zgTZ8jHnJjJci9Zed3OdhfxhOgM
+ xpa7LlIgaMis6204myg==
+X-Authority-Analysis: v=2.4 cv=K+AS2SWI c=1 sm=1 tr=0 ts=69f9204d cx=c_pps
+ a=KB4UBwrhAZV1kjiGHFQexw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=6H0WHjuAAAAA:8
+ a=EUspDBNiAAAA:8 a=t_WoDEAhxH4J7FjSGWwA:9 a=CjuIK1q_8ugA:10
+ a=o1xkdb1NAhiiM49bd1HK:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-GUID: _DeTSssRAYRt4FeafWcKToBkRtq0xK0g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_06,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605040210
 
-On 04/05/2026 22:45, Krzysztof Kozlowski wrote:
-> On 04/05/2026 15:36, Luca Weiss wrote:
->> Hi Conor,
->>
->> On Fri May 1, 2026 at 5:51 PM CEST, Conor Dooley wrote:
->>> On Fri, May 01, 2026 at 03:52:45PM +0200, Luca Weiss wrote:
->>>> Novatek NT37705 is a display driver IC used to drive AMOLED DSI panels.
->>>>
->>>> Describe it and the panel in the Fairphone (Gen. 6) (BJ631JHM-T71-D900
->>>> from BOE) using it.
->>>>
->>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>> ---
->>>>  .../bindings/display/panel/novatek,nt37705.yaml    | 72 ++++++++++++++++++++++
->>>>  1 file changed, 72 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
->>>> new file mode 100644
->>>> index 000000000000..1c796599f6fc
->>>> --- /dev/null
->>>> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
->>>> @@ -0,0 +1,72 @@
->>>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
->>>> +%YAML 1.2
->>>> +---
->>>> +$id: http://devicetree.org/schemas/display/panel/novatek,nt37705.yaml#
->>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>> +
->>>> +title: Novatek NT37705-based DSI display panels
->>>> +
->>>> +maintainers:
->>>> +  - Luca Weiss <luca.weiss@fairphone.com>
->>>> +
->>>> +description:
->>>> +  The Novatek NT37705 is a generic DSI Panel IC used to control AMOLED panels.
->>>> +
->>>> +allOf:
->>>> +  - $ref: panel-common.yaml#
->>>> +
->>>> +properties:
->>>> +  compatible:
->>>> +    contains:
->>>> +      const: boe,bj631jhm-t71-d900
->>>
->>> Compatible doesn't match the filename, nor does the commit message match
->>> what you've got here. Sounds like you're missing a fallback to
->>> $filename.
->>
->> The last times I was upstreaming panel drivers (Feb 2024 and June 2025),
->> this was the requested way of doing things.
+On Fri, May 01, 2026 at 03:52:48PM +0200, Luca Weiss wrote:
+> Configure the MDSS nodes for the phone and add the panel node.
 > 
-> So this was requested that time and is requested now. What is here
-> uncertain?
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts | 64 ++++++++++++++++++++++++
+>  1 file changed, 64 insertions(+)
 > 
->>
->> Compatible being the company and model number making the actual panel
->> assembly (driver IC + touchscreen + glass etc), while the rest being
->> named after the driver IC manufacturer & number.
-> 
-> So exactly what was asked for...
 
-Assuming "the rest" you mean the fallback. Just to remind - we talk here
-about the bindings, not drivers.
+Modulo panel's compatible (which is discussed elsewhere):
 
-Best regards,
-Krzysztof
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+
+
+
+-- 
+With best wishes
+Dmitry
