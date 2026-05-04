@@ -1,207 +1,342 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D97E3AA4F9;
-	Sun,  3 May 2026 21:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E96E2DECCC
+	for <phone-devel@vger.kernel.org>; Mon,  4 May 2026 07:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777844597; cv=none; b=irvNyqFV2hb5P32ycaGbW23LmLDmv07krQM96o9nj1LvF7vcFfFlgqFiUSKXTEg5SzYNwyKjiEEWCM26C6VPpdFgoo4Q+YSxAiLiaPKeCc7fLibbo3J6j1VpRB0sUyrsCSUot6dSAWo2NDeFWkCI0sXAXj60r2LOu0xhDv7WAfY=
+	t=1777878863; cv=none; b=rsdEo+WUs/YtTCBXcpwGXyl9G7KdXayLUg5Ci3Zng7uIIZpXrOlFutrDqpiloQC2+cJpzow4VvS0JheMMykYLXokSj5AlmGGayW+UoNUoQY9rqzgzzDch34kNe+71HsrKY8l1fVhx4UaK/pMEAIZECo17K5NyoEmzVIfoBStx1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777844597; c=relaxed/simple;
-	bh=iDvvmgMnzPPa9SOCDBpACDK2Hc5WSuZ2cl8tKe58wy8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kr8zFKcCwRNd8ZqJ/rU7lHBX85WB5iPBr0x+PYMD7n3KuYtdK4a14Ge5tf8UyzpkYDTVnme63CSm9t7/Im9kkCUy3yr3aj7wpPKSzn7TsHoUM93akykNg85vMw1loIfbVgVksmTeScr2AoSi6OggTNPg1/BpDXVkE5avKVhAHFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tmTljv5Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777878863; c=relaxed/simple;
+	bh=pv9jAeuFRhkHKpIR5bfO5WT9b7wRC1Arsl11qQKhKHw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=GJ1T2puF4TgQoclSk8vexfEqOYeaz3I/3FpZ7479KzSYrwt7JOy98rOtmBSQ2kjoErATJMO4N0RrGEOY3wR+Z7bn7btPQoV6r/ECNUpKBPmvTHHAXY+vVTODRUVKn4mCHbXwMagdH3Jj6deI5M0o3QQTtzHfQVDGrnotVq3bXdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=lTj1Zsc+; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tmTljv5Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B167C2BCFB;
-	Sun,  3 May 2026 21:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777844597;
-	bh=iDvvmgMnzPPa9SOCDBpACDK2Hc5WSuZ2cl8tKe58wy8=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=tmTljv5YUpM1Y2UulX9L1wM0Kx79WScoB4ycXBZMkmX2spBS6jTLpDHTruswqFzZk
-	 0We2Qa8gVsqXFu+Z8q4369rzlJ40c7OpAkBl7gUNb6XcK4cmQMU1qmtU1aZ1Q0Yknp
-	 MqAcge9zSqLhiffUjEB201y4riAMHkBxsEOi+/jG0hMB0P5TM4qQZuIP/Rux3hk+9q
-	 KholqkxeJlhsh0dL3LAyeAkM5NzMG1jtbLn5YND7SqbkWmKKkTOTD/J7lsbLhWyRsc
-	 /Kz8fDZaEs686vYGY5Xeoaa2ILEQ2LIgvb9T6d8Dmmzf3ggdJ3jIpe4IPDJCpy1m5D
-	 lBvbe4p/1NQ8w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50DC2FF886F;
-	Sun,  3 May 2026 21:43:16 +0000 (UTC)
-From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
-Subject: [PATCH v5 0/3] Samsung Expressatt: Camera Flash
-Date: Sun, 03 May 2026 14:43:14 -0700
-Message-Id: <20260503-expressatt_camera_flash-v5-0-95524506a799@gmail.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="lTj1Zsc+"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48896199cbaso33108615e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 04 May 2026 00:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1777878860; x=1778483660; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u5o9x9GYyoZ+AFvL1xpCIK5IQIqCECCAGULCOqSDjJ8=;
+        b=lTj1Zsc+UslpaIjsXlwi4PGhDnO/95Qaclv3/mAxtumYFdmv/JPb90/eJkIdeixXrZ
+         yjeKp/rJcYc9S3NuR55zGyOc3ViC9ijxPuhmO2yM08wultpNL5MLiMqjjZbIa/tN2fAa
+         Lkbnk4c/+/g1DcX1SGFe2nf/5VvAeuTvktbx7d+Z7Y+KixFt+nLPdBHRF/HycVVAiLEO
+         OXX3U/TwLX4rNWfJMNQTFbaVx8EME+yQoRl3uwijHG0CumqO2J+1rAuCUgvQ8Jju3UJP
+         FxqMivKosFBDnc0cp9h1a9Hr00al/q4TDzL0LG9GxPbwQrrsI9pQ6Eh02V4eSqmypEwn
+         wvjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777878860; x=1778483660;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u5o9x9GYyoZ+AFvL1xpCIK5IQIqCECCAGULCOqSDjJ8=;
+        b=Jrqgnt5RgJg77/vIN7OxGpQILroY5a0tfUUdmlLUDb1PxI2v1Y7lrycPCiQnWzp7U1
+         AKQCKQBIO+qkCJJG0pXBaLrmWhCCaQ9e5nLetS4g+h4p8hVVOod8jC0w3dVXaxOxKdNk
+         rdutnK47ZAjGl0DCNBmBGPM9OBYTePFPCuNZY6ku0MJQdFEPGMoDOmVskojJ8Yza+iIB
+         YtBdnTtUCDX9tk5KUBuSiXB3adGzmgz9pQyL31Bs9xKMYJ2HEv4JAkfReVzQXmc8UfVX
+         3YbihRFeO1CBNMKwgfs7luov7KqQ+e9o09QeC7da1HgRuSZwOaUQCJd0XJbsd+jr9Th0
+         DaWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ92HsSxL5DcPxJGisBfzxScrQVjiFiDcSiSs2SQ6we/fYW0G4xz/oevQ0W2Ck3doFInK92MKkQNzDIDFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG1RXeNDTovL7gkxF3zF8P94WZDKCWa40CHQpNYsf5PyegwMpt
+	6rMr8HuqTDxLS5fA3A7WfvOxTiQGaQJAbiqW86yBCOnhFMwS6QxTREtkcwXO6jSa2+k=
+X-Gm-Gg: AeBDieujPTAwGIFMc9g6MxPYLN5XmoSN9XAn9bdV9kQsTDaOuqu7YUn4iV366fjf0Un
+	s/34wtcBUr1uyEs1kk6p9aFfsnwvJTy3hI9ex4tLiQmJMVKXY1hMFFw7IMXuvn9roE+8jv92pEb
+	rTVbOVsUwO/1QkMoP9UKlXkLGetq7bq3S1gha5CcCGDrvP1eQ1GMaq7JQBozNsKADSNyh48RRdN
+	agZOY9bzNtfjD5PbHyhZsdC7iPnEyZpN2NvNY20sSOUDu5afdX+heHhFyHes4D/A795SOrv8yJX
+	O/Mmqwn/vPRL0ydTMhvV9ROdxaZmPojy0Pk37cvB5h4VsK501s0PiECGbScPuu0LSrSHNpqR2hn
+	18w8Z7zp6Fk06cttBesCOsMhcD771IB1R6yf9PqWZPQFF9KGE38CCDTjWdnbfQJMaVD6gKoodau
+	umFyvgfjhIJLDauha05wYGgetadDqMkYUPIB3X/KnDpDwbkTTith5f+bqpiAjh5Jbf8xjs98VnX
+	hw8pNd5yg==
+X-Received: by 2002:a05:600c:8903:b0:487:1fb4:7e1 with SMTP id 5b1f17b1804b1-48a98663f36mr111227975e9.22.1777878860050;
+        Mon, 04 May 2026 00:14:20 -0700 (PDT)
+Received: from localhost (046124194177.public.t-mobile.at. [46.124.194.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed6b89sm305101835e9.1.2026.05.04.00.14.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 00:14:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XP3WrDIBTA8VcJXs/iR4w1jLH3GKMYPTayptnUh
- paSd5+1N1LodnlEf3/PFUUIHiLqmysKsPjo52MexEuDzKiPe8De5hkxwjrCSYfh/B0gRp3Szug
- Jgt65g44jptxQoWXLpNYov863nD8X+ePzPgf4OeVAuh+i6caUQN+8Fl8QXvk4zSczfsEFLxRT7
- KS1wg5dC8S+7yftDxszT2+31qAj4DxMPvXNIjcE3Yqjj2kOl7LaQkvy3y1yieCBKtU5aayzVam
- YC6scun3usOwIwwalO8atGR4dXjnsj//w7IAUIKzYKkXco9NWDqfPnTY7joJSrpWtoLx21nX9B
- crZcLgIAgAA
-X-Change-ID: 20260306-expressatt_camera_flash-13c15a7427aa
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
- Conor Dooley <conor.dooley@microchip.com>, David Heidelberg <david@ixit.cz>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777844595; l=4663;
- i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
- bh=iDvvmgMnzPPa9SOCDBpACDK2Hc5WSuZ2cl8tKe58wy8=;
- b=QkyVbXwKR5OjOF3vJrisabWX1C29thoLfVHFC27V1PS38+0g9Sv83mDWfuZ1Iq394PvEjIH1C
- XSLJ4f2t1t4DpHZIRWFkQyTdv2TjFzmuoPWbkTZ8rzG9p6HjKkVg/CM
-X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
- pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
-X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
- auth_id=211
-X-Original-From: Rudraksha Gupta <guptarud@gmail.com>
-Reply-To: guptarud@gmail.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 May 2026 09:14:17 +0200
+Message-Id: <DI9PGFY950VK.3VURRR6215P75@fairphone.com>
+Subject: Re: [PATCH v4 0/3] Add CAMSS support for SM6350
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, "Luca Weiss"
+ <luca.weiss@fairphone.com>, "Bryan O'Donoghue" <bod@kernel.org>, "Vladimir
+ Zapolskiy" <vladimir.zapolskiy@linaro.org>
+Cc: "Konrad Dybcio" <konradybcio@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Robert Foss" <rfoss@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Todor Tomov"
+ <todor.too@gmail.com>, "Mauro Carvalho Chehab" <mchehab@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com>
+ <2a108976-374a-46e1-968d-7befa4369a74@linaro.org>
+ <4SLDL62Oin3XdiLjUEC_YAVA-m1dKV4j_8_RolU6NJFWCIWtem6e6sCb9n7OIHbcIWBfWdXx_vZy5mXCAbWUDg==@protonmail.internalid> <DHJD7P2TXQTH.1TQ4YQQ21A6CS@fairphone.com> <c87d229c-137c-4e59-99cc-a97ef04f6e1b@kernel.org> <DI79CX4PU08J.2M2V0U4PTOVEU@fairphone.com> <108ecc23-c821-4387-a324-5e3c20c3cc5e@linaro.org>
+In-Reply-To: <108ecc23-c821-4387-a324-5e3c20c3cc5e@linaro.org>
 
-This small series adds camera flash to an existing similar mainline
-driver and adds it to the Samsung Expressatt's DTS
+Hi Bryan,
 
-// Tests
+On Sat May 2, 2026 at 12:32 AM CEST, Bryan O'Donoghue wrote:
+> On 01/05/2026 11:12, Luca Weiss wrote:
+>> Hi Bryan,
+>>=20
+>> On Fri Apr 3, 2026 at 5:07 PM CEST, Bryan O'Donoghue wrote:
+>>> On 03/04/2026 09:09, Luca Weiss wrote:
+>>>> Hi Vladimir,
+>>>>
+>>>> On Tue Mar 31, 2026 at 12:49 AM CEST, Vladimir Zapolskiy wrote:
+>>>>> Hi Luca,
+>>>>>
+>>>>> On 2/16/26 10:54, Luca Weiss wrote:
+>>>>>> Add bindings, driver and dts to support the Camera Subsystem on the
+>>>>>> SM6350 SoC.
+>>>>>>
+>>>>>> These patches were tested on a Fairphone 4 smartphone with WIP senso=
+r
+>>>>>> drivers (Sony IMX576 and IMX582), the camera pipeline works properly=
+ as
+>>>>>> far as I can tell.
+>>>>>>
+>>>>>> Though when stopping the camera stream, the following clock warning
+>>>>>> appears in dmesg. But it does not interfere with any functionality,
+>>>>>> starting and stopping the stream works and debugcc is showing 426.4 =
+MHz
+>>>>>> while the clock is on, and 'off' while it's off.
+>>>>>>
+>>>>>> Any suggestion how to fix this, is appreciated.
+>>>>>
+>>>>> I've looked at CAMCC recently, and I do notice that SM6350 CAMCC does=
+ not
+>>>>> set '.use_rpm =3D true' flag for whatever reason.
+>>>>>
+>>>>> If you find a free minute, can you test the change below?..
+>>>>
+>>>> Unfortunately that change does not resolve the "gcc_camera_axi_clk
+>>>> status stuck at 'on'" warning.
+>>>>
+>>>> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.cl=
+ock-controller/power/runtime_status
+>>>> active
+>>>>
+>>>> fairphone-fp4:~$ cat /sys/bus/platform/drivers/sm6350-camcc/ad00000.cl=
+ock-controller/power/runtime_status
+>>>> suspended
+>>>>
+>>>>>
+>>>>> ----8<----
+>>>>> diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc=
+-sm6350.c
+>>>>> index 7df12c1311c6..ba880e4edcaf 100644
+>>>>> --- a/drivers/clk/qcom/camcc-sm6350.c
+>>>>> +++ b/drivers/clk/qcom/camcc-sm6350.c
+>>>>> @@ -1880,6 +1880,7 @@ static const struct qcom_cc_desc camcc_sm6350_d=
+esc =3D {
+>>>>>     	.num_clks =3D ARRAY_SIZE(camcc_sm6350_clocks),
+>>>>>     	.gdscs =3D camcc_sm6350_gdscs,
+>>>>>     	.num_gdscs =3D ARRAY_SIZE(camcc_sm6350_gdscs),
+>>>>> +	.use_rpm =3D true,
+>>>>>     };
+>>>>>
+>>>>>     static const struct of_device_id camcc_sm6350_match_table[] =3D {
+>>>>> ----8<----
+>>>>>
+>>>>> This change could be considered to be included in any case, I believe=
+.
+>>>>
+>>>> I guess this change is now the way to enable pm_runtime, I had this
+>>>> series 3 years ago in February 2023:
+>>>> https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm=
+-v3-0-d35e0d833cc4@fairphone.com/
+>>>>
+>>>> But I never followed up due to me not understanding pm_runtime well an=
+d
+>>>> no direct need for it.
+>>>>
+>>>> But I guess reviving that with use_rpm =3D true, add power-domains &
+>>>> required-opps to dt-bindings and sm6350.dtsi should be a good idea?
+>>>>
+>>>> Regards
+>>>> Luca
+>>>>
+>>>>>
+>>>>>> [ 5738.590980] ------------[ cut here ]------------
+>>>>>> [ 5738.591009] gcc_camera_axi_clk status stuck at 'on'
+>>>>>> [ 5738.591049] WARNING: CPU: 0 PID: 6918 at drivers/clk/qcom/clk-bra=
+nch.c:87 clk_branch_toggle+0x170/0x190
+>>>>>> [ 5738.591081] Modules linked in:
+>>>>>> [ 5738.591099] CPU: 0 UID: 10000 PID: 6918 Comm: plasma-camera Taint=
+ed: G        W           6.17.0-00057-ge6b67db49622 #71 NONE
+>>>>>> [ 5738.591118] Tainted: [W]=3DWARN
+>>>>>> [ 5738.591126] Hardware name: Fairphone 4 (DT)
+>>>>>> [ 5738.591136] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS=
+ BTYPE=3D--)
+>>>>>> [ 5738.591150] pc : clk_branch_toggle+0x170/0x190
+>>>>>> [ 5738.591164] lr : clk_branch_toggle+0x170/0x190
+>>>>>> [ 5738.591177] sp : ffff800086ed3980
+>>>>>> [ 5738.591184] x29: ffff800086ed3990 x28: 0000000000000001 x27: ffff=
+800086ed3cd8
+>>>>>> [ 5738.591208] x26: 0000000000000000 x25: ffffda14fcfbd250 x24: 0000=
+000000000000
+>>>>>> [ 5738.591230] x23: 0000000000000000 x22: ffffda14fc38bce0 x21: 0000=
+000000000000
+>>>>>> [ 5738.591252] x20: ffffda14fd33e618 x19: 0000000000000000 x18: 0000=
+0000000064c8
+>>>>>> [ 5738.591274] x17: 0000000000000000 x16: 00001ae003667e9e x15: ffff=
+da14fd2a07b0
+>>>>>> [ 5738.591295] x14: 0000000000000000 x13: 6f27207461206b63 x12: 7574=
+732073757461
+>>>>>> [ 5738.591317] x11: 0000000000000058 x10: 0000000000000018 x9 : ffff=
+da14fd2a0838
+>>>>>> [ 5738.591338] x8 : 0000000000057fa8 x7 : 0000000000000a16 x6 : ffff=
+da14fd2f8838
+>>>>>> [ 5738.591360] x5 : ffff0001f6f59788 x4 : 0000000000000a15 x3 : ffff=
+25ecf9d7e000
+>>>>>> [ 5738.591381] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff=
+0000baf5c100
+>>>>>> [ 5738.591403] Call trace:
+>>>>>> [ 5738.591412]  clk_branch_toggle+0x170/0x190 (P)
+>>>>>> [ 5738.591429]  clk_branch2_disable+0x1c/0x30
+>>>>>> [ 5738.591445]  clk_core_disable+0x5c/0xb4
+>>>>>> [ 5738.591462]  clk_disable+0x38/0x60
+>>>>>> [ 5738.591478]  camss_disable_clocks+0x44/0x78
+>>>>>> [ 5738.591496]  vfe_put+0x7c/0xc0
+>>>>>> [ 5738.591512]  vfe_set_power+0x40/0x50
+>>>>>> [ 5738.591528]  pipeline_pm_power_one+0x14c/0x150
+>>>>>> [ 5738.591546]  pipeline_pm_power+0x74/0xf4
+>>>>>> [ 5738.591561]  v4l2_pipeline_pm_use+0x54/0x9c
+>>>>>> [ 5738.591577]  v4l2_pipeline_pm_put+0x14/0x40
+>>>>>> [ 5738.591592]  video_unprepare_streaming+0x18/0x24
+>>>>>> [ 5738.591608]  __vb2_queue_cancel+0x4c/0x314
+>>>>>> [ 5738.591626]  vb2_core_streamoff+0x24/0xc8
+>>>>>> [ 5738.591643]  vb2_ioctl_streamoff+0x58/0x98
+>>>>>> [ 5738.591657]  v4l_streamoff+0x24/0x30
+>>>>>> [ 5738.591672]  __video_do_ioctl+0x430/0x4a8
+>>>>>> [ 5738.591689]  video_usercopy+0x2ac/0x680
+>>>>>> [ 5738.591705]  video_ioctl2+0x18/0x40
+>>>>>> [ 5738.591720]  v4l2_ioctl+0x40/0x60
+>>>>>> [ 5738.591734]  __arm64_sys_ioctl+0x90/0xf0
+>>>>>> [ 5738.591750]  invoke_syscall.constprop.0+0x40/0xf0
+>>>>>> [ 5738.591769]  el0_svc_common.constprop.0+0x38/0xd8
+>>>>>> [ 5738.591785]  do_el0_svc+0x1c/0x28
+>>>>>> [ 5738.591801]  el0_svc+0x34/0xe8
+>>>>>> [ 5738.591820]  el0t_64_sync_handler+0xa0/0xe4
+>>>>>> [ 5738.591838]  el0t_64_sync+0x198/0x19c
+>>>>>> [ 5738.591854] ---[ end trace 0000000000000000 ]---
+>>>>>>
+>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>>> ---
+>>>>>> Changes in v4:
+>>>>>> - Update power-domain-names order (Krzysztof)
+>>>>>> - Make hex numbers lower case in init seq (David)
+>>>>>> - Pick up tags
+>>>>>> - Link to v3: https://lore.kernel.org/r/20260213-sm6350-camss-v3-0-3=
+0a845b0b7cc@fairphone.com
+>>>>>
+>>>>> Should find some time myself to issue RBs, sorry for the delay.
+>>>>>
+>>>>>> Changes in v3:
+>>>>>> - Update dt-bindings to include everything related to camss
+>>>>>> - Update regulator names
+>>>>>> - Remove slow_ahb_src
+>>>>>> - Link to v2: https://lore.kernel.org/r/20251114-sm6350-camss-v2-0-d=
+1ff67da33b6@fairphone.com
+>>>>>>
+>>>>>> Changes in v2:
+>>>>>> - Remove prefix from interconnect-names
+>>>>>> - Move 'top' power-domain to the top of list
+>>>>>> - Update regulator supply names
+>>>>>> - Link to v1: https://lore.kernel.org/r/20251024-sm6350-camss-v1-0-6=
+3d626638add@fairphone.com
+>>>>>>
+>>>>>> ---
+>>>>>> Luca Weiss (3):
+>>>>>>          dt-bindings: media: camss: Add qcom,sm6350-camss
+>>>>>>          media: qcom: camss: Add SM6350 support
+>>>>>>          arm64: dts: qcom: sm6350: Add CAMSS node
+>>>>>>
+>>>>>>     .../bindings/media/qcom,sm6350-camss.yaml          | 471 +++++++=
+++++++++++++++
+>>>>>>     arch/arm64/boot/dts/qcom/sm6350.dtsi               | 233 +++++++=
++++
+>>>>>>     .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 125 ++++++
+>>>>>>     drivers/media/platform/qcom/camss/camss-vfe.c      |   2 +
+>>>>>>     drivers/media/platform/qcom/camss/camss.c          | 261 +++++++=
++++++
+>>>>>>     drivers/media/platform/qcom/camss/camss.h          |   1 +
+>>>>>>     6 files changed, 1093 insertions(+)
+>>>>>> ---
+>>>>>> base-commit: 3daf23347bb5f4a375d0101ed29c97ce1a99721b
+>>>>>> change-id: 20251024-sm6350-camss-9c404bf9cfdd
+>>>>>>
+>>>>>> Best regards,
+>>>>
+>>>
+>>> What about taking the clock out of hardware gated mode ?
+>>>
+>>> =E2=94=8C=E2=94=80[deckard@sagittarius-a] - [~/Development/qualcomm/qlt=
+-kernel] - [Fri
+>>> Apr 03, 16:05]
+>>> =E2=94=94=E2=94=80[$]> git diff
+>>> diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm635=
+0.c
+>>> index a4d6dff9d0f7f..f98cb35bcd408 100644
+>>> --- a/drivers/clk/qcom/gcc-sm6350.c
+>>> +++ b/drivers/clk/qcom/gcc-sm6350.c
+>>> @@ -909,8 +909,6 @@ static struct clk_branch gcc_camera_ahb_clk =3D {
+>>>    static struct clk_branch gcc_camera_axi_clk =3D {
+>>>           .halt_reg =3D 0x17018,
+>>>           .halt_check =3D BRANCH_HALT,
+>>> -       .hwcg_reg =3D 0x17018,
+>>> -       .hwcg_bit =3D 1,
+>>=20
+>> Unfortunately this change has no effect, still getting the same error
+>>=20
+>> [  192.154311] ------------[ cut here ]------------
+>> [  192.154339] gcc_camera_axi_clk status stuck at 'on'
+>> [  192.154364] WARNING: drivers/clk/qcom/clk-branch.c:87 at clk_branch_t=
+oggle+0x170/0x190, CPU#5: CameraManager/5996
+>> [  192.154387] Modules linked in:
+>> [  192.154403] CPU: 5 UID: 10000 PID: 5996 Comm: CameraManager Tainted: =
+G        W           7.0.0-00074-gb9262f98394c-dirty #31 PREEMPTLAZY
+>>=20
+>> Regards
+>> Luca
+>
+> Sorry wait a second did you say you had a fix for this around CX ?
+>
+> https://lore.kernel.org/linux-arm-msm/20230213-sm6350-camcc-runtime_pm-v3=
+-2-d35e0d833cc4@fairphone.com/
+>
+> Is this series adding or missing power-domains =3D <CX> ?
+>
+> Shouldn't this be in the gcc node ?
+>
+> +			power-domains =3D <&rpmhpd SM6350_CX>;
+> +			required-opps =3D <&rpmhpd_opp_low_svs>;
 
-// # Navigate to LED
-sudo su
-cd /sys/class/leds/white:flash
+In this thread I've tried ".use_rpm =3D true" for *camcc* - which I
+believe is the modern equivalent to all the code added in the linked
+series.
 
-// # Should stay at dim brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 0 > brightness           # LED_OFF
+For gcc I don't believe I've tried adding anything.
 
-// # Max Brightness
-echo 50 > brightness
-echo 0 > brightness           # LED_OFF
-echo 99 > brightness
-echo 0 > brightness           # LED_OFF
-echo 1000 > brightness
-echo 0 > brightness           # LED_OFF
-echo 100 > brightness
-echo 0 > brightness           # LED_OFF
+But practically, isn't CX always on anyways, especially with screen on
+and everthing, so practically it shouldn't make any difference?
 
-// # Should increase in brightness
-for i in $(seq 1 16); do echo $i > brightness; sleep 1; done
-echo 0 > brightness           # LED_OFF
-
-// # Test flash strobe (rt8515_led_flash_strobe_set)
-cat max_flash_timeout          # check max
-echo 200000 > flash_timeout    # 200ms
-echo 1 > flash_strobe          # strobe ON → brightness_commit + timer
-cat flash_strobe               # should read 1, then 0 after timeout
-sleep 1
-cat flash_strobe               # should be 0 (timer fired)
-
-// # Test manual strobe cancel
-echo 1 > flash_strobe ; echo 0 > flash_strobe          # immediate off
-
-// # Check regulator error handling
-dmesg | tail -20                     # look for any "failed to turn off LED" msgs
-
-// # Multiple strobes shouldn't cause errors
-echo 200000 > flash_timeout
-echo 1 > flash_strobe
-echo 1 > flash_strobe
-sleep 1
-cat flash_strobe
-dmesg | tail -20
-
-// # Multiple strobes shouldn't cause errors (extreme test)
-for i in $(seq 1 500); do echo 1 > flash_strobe; echo 0 > flash_strobe; done
-dmesg | tail -20
-
-// # Test minimal timeout (turns on briefly)
-echo 1 > flash_timeout
-echo 1 > flash_strobe
-sleep 0.1
-cat flash_strobe
-dmesg | tail -20
-
-// # Flash strobe overrides brightness and flashes at full brightness
-echo 200000 > flash_timeout
-echo 1 > brightness
-echo 1 > flash_strobe
-sleep 1
-cat flash_strobe
-cat brightness
-dmesg | tail -20
-
-Downstream reference:
-Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/drivers/leds/Makefile#L51
-Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/arch/arm/mach-msm/board-apexq-camera.c#L591
-
-Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
----
-Changes in v5:
-- Address Lee Jones's comments:
-    - formatting
-    - use devm_regulator_get_optional()
-    - use a workqueue instead of a timer
-    - previously we were validating ent-gpios xor vin-supply at probe,
-        but was removed. update the commit msg to reflect this
-- Link to v4: https://lore.kernel.org/r/20260331-expressatt_camera_flash-v4-0-f1e99f474513@gmail.com
-
-Changes in v4:
-- Driver:
-    - revert function renames
-    - add comment to use flash instead if torch pin not available
-- Link to v3: https://lore.kernel.org/r/20260326-expressatt_camera_flash-v3-0-e75e5d58990f@gmail.com
-
-Changes in v3:
-- DTS:
-    - Renamed and reordered nodes
-- Driver:
-    - Use regulator_is_enabled() instead of reg_enabled
-    - remove ent xor vin check
-    - remove rt->reg == -ENODEV check
-    - rename functions to reflect what they do and added ret's
-    - Fixed: LED was increasing in brightness when setting the same
-        brightness multiple times
-- Link to v2: https://lore.kernel.org/r/20260318-expressatt_camera_flash-v2-0-5c2b9a623dcb@gmail.com
-
-Changes in v2:
-- dt-bindings: Explain the hardware and not the driver
-- **/*: Use vin-supply instead of unlock-gpio
-- expressatt DTS: Reorder pinctrl-*
-- expressatt DTS: Define rfs-ohms to a default (couldn't find
-                  information about this)
-- Link to v1: https://lore.kernel.org/r/20260306-expressatt_camera_flash-v1-0-b1996f7cdfdd@gmail.com
-
----
-Rudraksha Gupta (3):
-      dt-bindings: leds: rt8515: Support single-GPIO flash ICs with vin supply
-      leds: flash: rt8515: Support single-GPIO flash ICs with vin supply
-      ARM: dts: qcom: msm8960: expressatt: Add camera flash
-
- .../devicetree/bindings/leds/richtek,rt8515.yaml   |  34 +++++-
- .../dts/qcom/qcom-msm8960-samsung-expressatt.dts   |  43 +++++++
- drivers/leds/flash/leds-rt8515.c                   | 130 +++++++++++++++++----
- 3 files changed, 181 insertions(+), 26 deletions(-)
----
-base-commit: 3131ff5a117498bb4b9db3a238bb311cbf8383ce
-change-id: 20260306-expressatt_camera_flash-13c15a7427aa
-prerequisite-message-id: <20260503-expressatt-touchkey-v1-1-f7dd5db64e0d@gmail.com>
-prerequisite-patch-id: 8de4de7909722ccaf385c4224f25a623eaa72c28
-
-Best regards,
--- 
-Rudraksha Gupta <guptarud@gmail.com>
-
-
+Regards
+Luca
