@@ -1,69 +1,68 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A3430CD9E
-	for <phone-devel@vger.kernel.org>; Tue,  5 May 2026 13:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8E747DD7C
+	for <phone-devel@vger.kernel.org>; Tue,  5 May 2026 13:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777989535; cv=none; b=IYLEnLlBAytx4qfIPwnncIdyUUTV9hrH6mQEuzqvcJ05lZ1k/jqxssPtPrs5Hjj9MERRQ3jiIBQccfoIMWF7Fh5Xm/tNKLq973EKTx2hWG5o6vrqgFy65V//oxpVEbuxlFmj86F5WQcCJhRpcF9O6L/EnYHUx0mzDpojL4kEB2w=
+	t=1777989549; cv=none; b=JawBLIJ58kRWV0hUXyfdo8PDoO/XByGYLlmGVTkHG2kJwQTXGPvwhzsRskhALIR2EZGMcpAT7Zgzrgx8ZJkpY+9EU+cF4ouJMCNEztp7aja2A748203k1oyvcG0tCRcAj6O1sKOhQ/5FMSCZuz8r2pDw7cWXMEGzroaHPIfF9kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777989535; c=relaxed/simple;
-	bh=D5qA573oEns8WumfZOHmd/nTRVStD24XDCla8xCr+mk=;
+	s=arc-20240116; t=1777989549; c=relaxed/simple;
+	bh=ap512pc+5GuvGMbqOfDP5AQ1btQoG1tc1lu4yd4RVr4=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JM/UbjwpCviVTWRjuv0WzMmpzEvQ1AYS2x1XcYm0hoxLXo0Gl/ETjLvxgpSZlAT8OLY0/SBl9pWnGIEF8Lx1FA/Lvt6nXyEbXO5EwCAdcWtYi6F9kYKJJGdUntbUCtMYMj7OnQHgDWFXybyMugx+jfD8mYeL65sUYCmAE27yVEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M2kBBLg/; arc=none smtp.client-ip=209.85.128.49
+	 In-Reply-To:Content-Type; b=hM0Csuk2wYRlCkG4fTzFUAp7E3DC+0++SGmSMMgygkCfz9PcPSY7lrFfvURyWYxexxkbfgEIZ6aEHA044ggrcb68NcyufqhB4ZstNWkZHN9YxNpRlCyZ0a+lUNx2mAC8jhn4qkWAqRMJehCTR+TrL1WPnRFTzNWxk7q45t4x1cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oeOmFaS6; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M2kBBLg/"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso65333925e9.1
-        for <phone-devel@vger.kernel.org>; Tue, 05 May 2026 06:58:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oeOmFaS6"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so33682515e9.3
+        for <phone-devel@vger.kernel.org>; Tue, 05 May 2026 06:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777989532; x=1778594332; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1777989546; x=1778594346; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iEThy3ceEM1qRBHeltl9ycUnSvR4lD90NN2PoprYdj4=;
-        b=M2kBBLg/dnMyd8hJjLOwCUyB1w1ABW8fiJTO8cCTHUjO/q2hDt63soynzmd1qsGfn0
-         Ttbo8jyS8/pShbLBGWjzZn7oRxQMWfSXXoeVCGQQZPHixaRclm/R9vv8skVadJTfM/cJ
-         fF/kailjGCjusypu/KmKaypE+/GhNitCYvET9TF2FgTEiXeLdMbx/fxpj2OhkxG0nd2Y
-         dJTsBo/6zvWCpvNsNifDc8isMtB//fPF2K073eR1gjE69GpJkiYgDQV1U498YLCZPYLq
-         iDcq3xluzZaVGCZDzhHhlSrhVQYBWhgjugYm9haorpShT3sw/TGgOCYkwMMRx7TJDVbN
-         eqbw==
+        bh=5jDuJcze3P4s7VYgp+yE4jNd0LF2tgF4WZnAUmhlkIk=;
+        b=oeOmFaS6DwUCNG21pmaDY4mLfGkK8eCVwLaFNM5YHW7Oq/ey1xrchF+4fUT7+/mx4n
+         Y53/jSV3KMmaN3aABzUqyz4ugLp0GTe9Olg7vDlBq3lB8uqFhZAm7PC1k6pcCE5QBqEX
+         VuAVFuglJbt464JG1xIAyCPz0Wtw1YTks7cS+O9EHNwIjLxrYumhE+5Old9Z2DSXn4yj
+         h3m6yPT1odzdnuzmhmBCL5aFLDx6r9K00pGmbvOHA4TlKZPSPww02AUaKBQs01x1qzTf
+         BL/BJlw8ZYbxPgcyvaGZDRRlQMXwBCTm+1VPpx3xlR58yC4ObgdFMm8BIPzy9yFBIXmo
+         Cm1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777989532; x=1778594332;
+        d=1e100.net; s=20251104; t=1777989546; x=1778594346;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iEThy3ceEM1qRBHeltl9ycUnSvR4lD90NN2PoprYdj4=;
-        b=PQkCKrOZ1pav6lVcqwglTziEQSpnPNcm4+9qoSsSkxKlNdOm6siRyfNESOidLBeUEy
-         6dMleNkdjRvBAzWuAt1nXj/7XWuYxFOAauhjuMYT6GggtsDgIEIB4vAAvZqyrchIy7JJ
-         AE0LlubX6t6fX4Z0r14bJccn3LUlNYzUrNSd9P8tWcBVJBe8Jr0vbBz/277R94ipMMY/
-         UrnC9wZDmWpXoMsGRqeqTTDg2m0Z9EJ2qkomoEjV5YNTV2YO8aB2ZGVQOPksM17wRFLp
-         Pg63TbrQgxBaCECULzhT00tBmAx9V83TrLH4P6+IZd4Amq1JsLRz7dW/2+vEDxfAolkR
-         o+fw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ii1lfeA/hkBy4UgA0j57rKStW7kptMpgHBb77ajwr9+GaFjJGTZNDge0dAWHzqMJcutFeH49MhPe2vA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzModYGMOSv+lxX6IDMKkLVM3KJAMrYUgk85l9sjCOIkxKShK9H
-	o8XYgxbtlJBqlvMyyfRhQNF822aNlGaUAThKdetRjwvhMLkGzXVDgzzeNLqMNzIWEZkZJZcn9t/
-	gIGYx
-X-Gm-Gg: AeBDieuJmUbBziFP1C+H7BX0Xm0iCCw2n2/xWwX5kIvkWXffWIHp74dSQ2BgeXLBiU+
-	LMIvTRQCkb1gw3O4ygVeOm3OkkyI6K9Zbkl/QYghFu4/LsgxX4l7u62lA04LzGuc5XFpI0iswWx
-	/0gFZ4A9xT6WnivkrfQy+0QzNShL5rrDWcQ/b/62FuktWXH5vV+MTyK4X92rDzfxV0bXanrLP/8
-	kjMNc4FqGVYXmV4VCuVwArIUMPfjqoTFw2iVQOxEhvsO0EC38X8IK9JoccbAIfTGbNoTFlc0Wpj
-	MclWTlVCxJvyGUeylFCXZpYise3kPqYeRSQa23YGW2rXzrs5Q28QpRGM0oYtDPdVoVos31D8phK
-	+l1Fzv038TAPz7GXyoCSqHvYR8mRNOjDaR3HdLIeQ143wla2pvRroiCpveyVfouvwy9REroljip
-	QGp3uu+sIxtObmbsYKJMtohCidXG5P9sd+Z6SAbNM+2Pe0zCxt41XbRO/JIG8W0BhcEHKPkkaQ2
-	13KgV3FTlRrahwezQ==
-X-Received: by 2002:a05:600c:4b16:b0:489:e696:836f with SMTP id 5b1f17b1804b1-48bcc9f32f3mr131446495e9.10.1777989531558;
-        Tue, 05 May 2026 06:58:51 -0700 (PDT)
+        bh=5jDuJcze3P4s7VYgp+yE4jNd0LF2tgF4WZnAUmhlkIk=;
+        b=RWWENOoEZ5cEA2nGyhh1rpX3CQtbfD1/w3D3JCQes/VC8oKrqRlOH7r0TwNcm1gJ5u
+         jZcvMj8CuaWiN6ymOuDq0HzSD+gblscH0k6Jk2rmpXtbIxIAZeqfju/Ojvyxtsyww69G
+         FlIVgiqKq71VC0MwigSodsPYZyUQtRNe/B3NzvlRsBZUNaON911Ao0vGYp7ojouWbsbi
+         Pi0iAaPFzmKdH3EXpruMA51WhvmOMUOSe6ZRBeD8e4TVOW7ESxEFz1iE02X8RXyZeeud
+         wcZy17VJYrpmJxuI4kPXsYVIG6hSXRAn0/8nrAPvdTCP73uBMVTml1OH2z8SSGPIYFve
+         xW3A==
+X-Forwarded-Encrypted: i=1; AFNElJ+EE2t13g8DdUswCjzsO/TkTwzF82j4TAC4Llg/NbrihHDwrNHLb+fVd2P+LuPCppBSPxqjJb0S9hUZVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS3vQtyVr7nHfmlbDyO8vMEax8MVkJkqUWR2MSoBLrtsb2MNbM
+	g/DEJCNrRJfgHvHtO4GSNiMByml8wSaXJuCsarRboIXzkfI9v7IpI25y2Sk24XKhv34=
+X-Gm-Gg: AeBDievXbTGhYglQUh2xJh3YQ2yhOdVDF7S6JceOn7twsCfzuukQ1ghCYHEu3PbU3hZ
+	joqlYJXthO9/dGr/XZhjla0Z4uyraUGCwHWpHzHAKuvq5TgEZyytYkqlCmXERg8+ArXrMfbTq2N
+	bjiS08Ps+AfJXjIGtrPq5fbxM4o5HKnOBWkEbzO0vz/Udub6oOHVoo0YlEiBQYJ8J79Dqm0o7o5
+	qYED7du0Ptk+lEo95f5BOAmieJhAUnTw5QniK/hOco8MRSrQPKkItZ78Mh4fYq/HOGtbW64nUOf
+	GfdWTPtKa+nANGusbGmCgRKcc7DBdHAwpfWi4e9eTxYjPyJ/9j6k//RixvxffGkT2nKxkVVDie9
+	CU3HGhRzMMZ4YGaZgbMPG8merZYcML7eNCIGqtJN+ORK987bWT2PMjsovAidwxBwgJ6TOivHKbb
+	YF1hrl4e39lsLgRIViIy413OyqWUvEMTtMuwYAzTJy79dnl/zNnSggwVThXA1N9GJm8yXyVwHFe
+	rQJpjTE41n+SSTdcrOCdpFUvVIo
+X-Received: by 2002:a05:600c:c094:b0:48d:5c1:bc3b with SMTP id 5b1f17b1804b1-48d18cef847mr40114605e9.24.1777989545455;
+        Tue, 05 May 2026 06:59:05 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:19a4:dd04:854d:9f82? ([2a01:e0a:106d:1080:19a4:dd04:854d:9f82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d181efbdfsm17720105e9.25.2026.05.05.06.58.50
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d181efbdfsm17724765e9.25.2026.05.05.06.59.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 06:58:50 -0700 (PDT)
-Message-ID: <f47be60b-5629-4536-89ee-6d033e21fe20@linaro.org>
-Date: Tue, 5 May 2026 15:58:49 +0200
+        Tue, 05 May 2026 06:59:05 -0700 (PDT)
+Message-ID: <e2c0d1a3-9023-423f-b784-32f55cc859b7@linaro.org>
+Date: Tue, 5 May 2026 15:59:04 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -73,8 +72,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2 3/4] drm/panel: Clean up S6E3HA2 config dependencies
- and fill help text
+Subject: Re: [PATCH v2 4/4] drm/panel: Enable GPIOLIB for panels which uses
+ functions from it
 To: david@ixit.cz, Jessica Zhang <jesszhan0024@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
@@ -85,7 +84,7 @@ Cc: Casey Connolly <casey.connolly@linaro.org>,
  marijn.suijten@somainline.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20260505-panel-clean-up-kconfig-dep-v2-0-9cc31d6e6919@ixit.cz>
- <20260505-panel-clean-up-kconfig-dep-v2-3-9cc31d6e6919@ixit.cz>
+ <20260505-panel-clean-up-kconfig-dep-v2-4-9cc31d6e6919@ixit.cz>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -112,59 +111,148 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260505-panel-clean-up-kconfig-dep-v2-3-9cc31d6e6919@ixit.cz>
+In-Reply-To: <20260505-panel-clean-up-kconfig-dep-v2-4-9cc31d6e6919@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 5/5/26 15:53, David Heidelberg via B4 Relay wrote:
 > From: David Heidelberg <david@ixit.cz>
 > 
-> As per the config name this Display IC features a DSI command-mode
-> interface (or the command to switch to video mode is not
-> known/documented) and does not use any of the video-mode helper
-> utilities, hence should not select VIDEOMODE_HELPERS. In addition it
-> uses devm_gpiod_get() and related functions from GPIOLIB.
+> These panels used on sdm845 devices are using GPIOLIB functions,
+> ensure it's enabled.
 > 
-> Fixes: 779679d3c164 ("drm/panel: Add support for S6E3HA8 panel driver")
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->   drivers/gpu/drm/panel/Kconfig | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
+>   drivers/gpu/drm/panel/Kconfig | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-> index 813380ca76117..9360297ee99e5 100644
+> index 9360297ee99e5..268b45d4b82f5 100644
 > --- a/drivers/gpu/drm/panel/Kconfig
 > +++ b/drivers/gpu/drm/panel/Kconfig
-> @@ -904,21 +904,28 @@ config DRM_PANEL_SAMSUNG_S6E3HA2
->   	tristate "Samsung S6E3HA2 DSI video mode panel"
+> @@ -102,16 +102,17 @@ config DRM_PANEL_BOE_TV101WUM_LL2
+>   	depends on DRM_MIPI_DSI
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to support for BOE TV101WUM-LL2
+>   	  WUXGA PANEL DSI Video Mode panel
+>   
+>   config DRM_PANEL_EBBG_FT8719
+>   	tristate "EBBG FT8719 panel driver"
+> +	depends on GPIOLIB
 >   	depends on OF
 >   	depends on DRM_MIPI_DSI
 >   	depends on BACKLIGHT_CLASS_DEVICE
->   	select VIDEOMODE_HELPERS
+>   	help
+>   	  Say Y here if you want to enable support for the EBBG FT8719
+>   	  video mode panel. Mainly found on Xiaomi Poco F1 mobile phone.
+>   	  The panel has a resolution of 1080x2246. It provides a MIPI DSI
+>   	  interface to the host.
+> @@ -339,17 +340,18 @@ config DRM_PANEL_JADARD_JD9365DA_H3
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for Jadard JD9365DA-H3
+>   	  WXGA MIPI DSI panel. The panel support TFT dot matrix LCD with
+>   	  800RGBx1280 dots at maximum.
 >   
->   config DRM_PANEL_SAMSUNG_S6E3HA8
->   	tristate "Samsung S6E3HA8 DSI video mode panel"
+>   config DRM_PANEL_JDI_LPM102A188A
+>   	tristate "JDI LPM102A188A DSI panel"
+> -	depends on OF && GPIOLIB
+> +	depends on GPIOLIB
+> +	depends on OF
+>   	depends on DRM_MIPI_DSI
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for JDI LPM102A188A DSI
+>   	  command mode panel as found in Google Pixel C devices.
+>   	  The panel has a 2560×1800 resolution. It provides a MIPI DSI interface
+>   	  to the host.
+>   
+> @@ -454,16 +456,17 @@ config DRM_PANEL_LG_LG4573
+>   	depends on OF && SPI
+>   	select VIDEOMODE_HELPERS
+>   	help
+>   	  Say Y here if you want to enable support for LG4573 RGB panel.
+>   	  To compile this driver as a module, choose M here.
+>   
+>   config DRM_PANEL_LG_SW43408
+>   	tristate "LG SW43408 panel"
 > +	depends on GPIOLIB
 >   	depends on OF
 >   	depends on DRM_MIPI_DSI
 >   	depends on BACKLIGHT_CLASS_DEVICE
 >   	select DRM_DISPLAY_DSC_HELPER
-> -	select VIDEOMODE_HELPERS
-> +	help
-> +	  Say Y or M here if you want to enable support for the
-> +	  Samsung S6E3HA8 DDIC and connected MIPI DSI panel.
-> +	  Currently supported panels:
-> +
-> +	    Samsung AMB577PX01 (found in the Samsung S9 smartphone)
-> +
+>   	select DRM_DISPLAY_HELPER
+>   	help
+>   	  Say Y here if you want to enable support for LG sw43408 panel.
+>   	  The panel has a 1080x2160@60Hz resolution and uses 24 bit RGB per
+> @@ -579,26 +582,28 @@ config DRM_PANEL_NOVATEK_NT36523
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for the panels built
+>   	  around the Novatek NT36523 display controller, such as some
+>   	  Boe panels used in Xiaomi Mi Pad 5 and 5 Pro tablets.
 >   
->   config DRM_PANEL_SAMSUNG_S6E63J0X03
->   	tristate "Samsung S6E63J0X03 DSI command mode panel"
+>   config DRM_PANEL_NOVATEK_NT36672A
+>   	tristate "Novatek NT36672A DSI panel"
+> +	depends on GPIOLIB
 >   	depends on OF
 >   	depends on DRM_MIPI_DSI
 >   	depends on BACKLIGHT_CLASS_DEVICE
->   	select VIDEOMODE_HELPERS
+>   	help
+>   	  Say Y here if you want to enable support for the panels built
+>   	  around the Novatek NT36672A display controller, such as some
+>   	  Tianma panels used in a few Xiaomi Poco F1 mobile phones.
 >   
+>   config DRM_PANEL_NOVATEK_NT36672E
+>   	tristate "Novatek NT36672E DSI panel"
+> +	depends on GPIOLIB
+>   	depends on OF
+>   	depends on DRM_MIPI_DSI
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for Novatek NT36672E DSI Video Mode
+>   	  LCD panel module. The panel has a resolution of 1080x2408 and uses 24 bit
+>   	  RGB per pixel.
+>   
+> @@ -726,17 +731,18 @@ config DRM_PANEL_RAYDIUM_RM692E5
+>   	select DRM_DISPLAY_DSC_HELPER
+>   	select DRM_DISPLAY_HELPER
+>   	help
+>   	  Say Y here if you want to enable support for Raydium RM692E5-based
+>   	  display panels, such as the one found in the Fairphone 5 smartphone.
+>   
+>   config DRM_PANEL_RAYDIUM_RM69380
+>   	tristate "Raydium RM69380-based DSI panel"
+> -	depends on OF && GPIOLIB
+> +	depends on GPIOLIB
+> +	depends on OF
+>   	depends on DRM_MIPI_DSI
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for Raydium RM69380-based
+>   	  display panels.
+>   
+>   	  This panel controller can be found in the Lenovo Xiaoxin Pad Pro 2021
+>   	  in combination with an EDO OLED panel.
+> @@ -1251,16 +1257,17 @@ config DRM_PANEL_VISIONOX_R66451
+>   	select DRM_DISPLAY_DSC_HELPER
+>   	select DRM_DISPLAY_HELPER
+>   	help
+>   	  Say Y here if you want to enable support for Visionox
+>   	  R66451 1080x2340 AMOLED DSI panel.
+>   
+>   config DRM_PANEL_VISIONOX_RM69299
+>   	tristate "Visionox RM69299"
+> +	depends on GPIOLIB
+>   	depends on OF
+>   	depends on DRM_MIPI_DSI
+>   	depends on BACKLIGHT_CLASS_DEVICE
+>   	help
+>   	  Say Y here if you want to enable support for Visionox
+>   	  RM69299  DSI Video Mode panel.
+>   
+>   config DRM_PANEL_VISIONOX_RM692E5
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
