@@ -1,126 +1,173 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583002E1F06
-	for <phone-devel@vger.kernel.org>; Wed,  6 May 2026 04:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE553B6366;
+	Wed,  6 May 2026 07:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778040799; cv=none; b=Ens+zWglb4RzcKsXH/nYf59KQgscetCk936KO9sCY7TY9J0zEmfm+u/mfb2XwF+sjps1TaXUp6lzJ3tOowisHs3qhUfSp8MvRIB9fi8wEDVGpCznanPFuoBU0QQ+FiJTSUU6G9fZqMTeQfb//kpxaW5CEDBzC5pIMpHI/awyKIw=
+	t=1778052821; cv=none; b=cDiGwZvu5ms/l/GR6d/GwZSkMXinwrlz/Y1zBANvn+TVya39UTM2IOkRfZXd3Yvyh2pYWRUVl56pa1aoBtThvk5BBuzxhigzYNTZNm6lNvx7sSR/+2csBob7N3ocso+09vYaVpivN54GQ6QdhJC5ld2XI4UoC2sPVem0RrYE84A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778040799; c=relaxed/simple;
-	bh=frbzxEXgRRlVE51v+aCI98zlf4/cdiVrUDs7Jwkc0KQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gp8m9yT6DKwSTZzEBgTg1D6wQtsNzh4+BoE1zUcL/X6lDykh4a3w5U6O+5Xet90DLcGoY+CNvAxTFKkIK6UJBD5be7iviw/Zmg1+5BPlOxhURKdQ59jYnzYUoBsl9Sx4Maqxvp071U02ewYPmalvQ0N1hPKTBI1ZPuOuPi6PyEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=xUvOWaae; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1778052821; c=relaxed/simple;
+	bh=F2Y0rkFfu8WpYJn2WFscZsjiOa2h76q/1wFRyrGfSi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pB8w63Sh9CnIWhzWu5jvOHof2iq0R4FMKAJlg/R/YS8bHITBc+yOU3G0DROldstK9Agcao7GVjHAjRBDNmrpPkAYwJzsvmawM89EMN1xnXXM9g9/Q3A78+Wrkm9YuEbGrYZUK1MEIykSFp5Wyregy8l6OjnPbUcEDQBIHBResMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCGrX+GH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="xUvOWaae"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1778040785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=cBHmrDBv19QyurC3+jHUVbKKZE2OfTIyANnOpKeAJWo=;
-	b=xUvOWaaeiAd8BM4h89r6eIOcG+GMW3d5rX49gC8wHsXfrWg99NpLOGd11kPA21LQ6uL6Fd
-	Mf/GW8uo5g5fxy6FUIfIM9PJI3aWjToi1G8PUY1lquwDSYr8xMgRCdR50k3X/3chCSe7X4
-	s86321knoLpUh6gMbjr96NyePoTyQfMJCajtG605cmaUb6bNmyG0aAZLPqd8MYzLZS5bwI
-	5LpoX+5aUZj8GMfjMSSVNslutubexbGtc/axFzNwzPO8BtkGarIxn4nDB4msNV4T8DpzeL
-	55wQGvd2433FVFK8lr+wFyHkuewz+GikC7etCYBKty+9kST66lb+dPwLH0fAEw==
-From: Val Packett <val@packett.cool>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Val Packett <val@packett.cool>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH] ASoC: soc-core: use the device tree card name as long_name
-Date: Wed,  6 May 2026 00:58:55 -0300
-Message-ID: <20260506041112.412871-2-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCGrX+GH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D310CC2BCB8;
+	Wed,  6 May 2026 07:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778052821;
+	bh=F2Y0rkFfu8WpYJn2WFscZsjiOa2h76q/1wFRyrGfSi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HCGrX+GHCUYy+ayJnjE8RaOFP8GmHrTBXZ5dOScZTUNJK3S5URWnzKRucVzda7Ai+
+	 YmeFXEXyLK8f6jabvhnXTpckMgSHiZJVj+rwhgnR1ag6s0Tjzkl0koSGg9qSiAYWJ/
+	 3M6MLiBK0bO9z+xL09iF3XYSHE+3ZaU46vxo0ys6agLBjN+2TZgVqo2pUr4CcG0vjJ
+	 +QhJ0cR3F6cC9LHjVLhoCsAEL4tkuKSixFw6ZaiHmjeL83+KcnyAFxB0iOcA71E6J3
+	 Jye9koB3/Jd3IKeWPXiLP5YrjqzU6u18/GR0c7Ahw3bmPiAxGh3LOrNxinJANfIOL2
+	 pYJlJFsZPXmgg==
+Date: Wed, 6 May 2026 09:33:38 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: Bryan O'Donoghue <bod@kernel.org>, 
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>, Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, linux-media@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 1/9] media: dt-bindings: venus: Add qcom,msm8939 schema
+Message-ID: <20260506-magic-greedy-caterpillar-ea5ad8@quoll>
+References: <20260506-msm8939-venus-rfc-v4-0-994f5eb22acb@gmail.com>
+ <20260506-msm8939-venus-rfc-v4-1-994f5eb22acb@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260506-msm8939-venus-rfc-v4-1-994f5eb22acb@gmail.com>
 
-When setting the model property for the sound card on an OF/DT system,
-the expectation is that that model name would be used in the UCM config
-path lookup. However, the DT model name was only used as the "short"
-name, which gets overriden by the "long" name during loading, and
-the "long" name is automatically set based on DMI data if available.
-As a result, adding an intermediate bootloader such as U-Boot which
-provides DMI data on a device that didn't have it before would break
-the UCM config loading by suddenly looking at the "wrong" path.
+On Wed, May 06, 2026 at 12:44:38AM +0300, Erikas Bitovtas wrote:
+> From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+>=20
+> Add a schema description for the Venus video decoder/encoder IP in
+> MSM8939.
+>=20
+> Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+> ---
+>  .../bindings/media/qcom,msm8939-venus.yaml         | 75 ++++++++++++++++=
+++++++
+>  1 file changed, 75 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8939-venus.y=
+aml b/Documentation/devicetree/bindings/media/qcom,msm8939-venus.yaml
+> new file mode 100644
+> index 000000000000..5bbc7cfb61c0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/qcom,msm8939-venus.yaml
+> @@ -0,0 +1,75 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/qcom,msm8939-venus.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm MSM8939 Venus video encode and decode accelerators
+> +
+> +maintainers:
+> +  - Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> +  - Erikas Bitovtas <xerikasxx@gmail.com>
+> +
+> +description: |
 
-Fix by assigning the DT model name to the long_name field as well.
+Do not need '|' unless you need to preserve formatting.
 
-Signed-off-by: Val Packett <val@packett.cool>
----
+> +  The Venus IP is a video encode and decode accelerator present
+> +  on Qualcomm platforms
+> +
+> +allOf:
+> +  - $ref: qcom,venus-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: qcom,msm8939-venus
+> +
+> +  power-domains:
+> +    maxItems: 3
+> +
+> +  power-domain-names:
+> +    items:
+> +      - const: venus
+> +      - const: core0
 
-For more context/examples, see:
-https://gitlab.postmarketos.org/postmarketOS/pmaports/-/work_items/4386
+vcodec0
 
-err, for some reason that link requires an account to view right now,
-hopefully that's fixed by the time you're reading this. if not, quoting:
+> +      - const: core1
 
-> ALSA looks for wrong device name when using U-Boot
-> 
-> What's the expected behaviour?
->   ALSA finds Fairphone 5.conf
-> What's the current behaviour?
->   ALSA looks for fairphone-Fairphone5-.conf, doesn't find it, and results in no audio.
+vcodec1
 
-("Fairphone 5.conf" coming from `model = "Fairphone 5";` in .dts)
+> +
+> +  clocks:
+> +    maxItems: 5
+> +
+> +  clock-names:
+> +    items:
+> +      - const: core
+> +      - const: iface
+> +      - const: bus
+> +      - const: core0
 
-So it's totally unexpected in the DT world that adding DMI info would
-change which UCM path is used.
+vcodec0_core
 
-Now the question is, could this possibly break anything for anyone???..
+> +      - const: core1
 
-Qcom laptops do not rely on these model-based paths at all, instead
-having custom DMI match `If` conditions inside of "fallback" SoC-wide
-UCM .conf files such as:
-https://github.com/alsa-project/alsa-ucm-conf/blob/980fb83651e82c3e53d3a0ab7fa9b7d6fc2d809b/ucm2/Qualcomm/x1e80100/x1e80100.conf
+vcodec1_core
 
-So there it shouldn't make a difference. But does *anyone* use DMI-based
-soundcard names intentionally on *any* DT platform?
+To match other bindings.
 
+> +
+> +  iommus:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - iommus
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/clock/qcom,gcc-msm8939.h>
+> +
+> +    video-codec@1d00000 {
+> +      compatible =3D "qcom,msm8939-venus";
+> +      reg =3D <0x01d00000 0xff000>;
+> +      interrupts =3D <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+> +      clocks =3D <&gcc GCC_VENUS0_VCODEC0_CLK>,
+> +               <&gcc GCC_VENUS0_AHB_CLK>,
+> +               <&gcc GCC_VENUS0_AXI_CLK>,
+> +               <&gcc GCC_VENUS0_CORE0_VCODEC0_CLK>,
+> +               <&gcc GCC_VENUS0_CORE1_VCODEC0_CLK>;
+> +      clock-names =3D "core", "iface", "bus", "core0", "core1";
+> +      power-domains =3D <&gcc VENUS_GDSC>,
+> +                      <&gcc VENUS_CORE0_GDSC>,
+> +                      <&gcc VENUS_CORE1_GDSC>;
+> +      power-domain-names =3D "venus", "core0", "core1";
+> +      iommus =3D <&apps_iommu 5>;
+> +      memory-region =3D <&venus_mem>;
+> +      status =3D "disabled";
 
-Thanks,
-~val
+Examples cannot be disabled. Please add here complete example.
 
-P.S. I don't understand the lifecycle of these strings but it seeeems that
-the expectation is that they point to static data so they're never freed?
-
----
- sound/soc/soc-core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 3fecf9fc903c..8456595bb41d 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -2995,6 +2995,14 @@ int snd_soc_of_parse_card_name(struct snd_soc_card *card,
- 		return ret;
- 	}
- 
-+	/*
-+	 * When setting the OF property in a device tree, the expectation is
-+	 * that the UCM config matching the value would be loaded. However if
-+	 * a long_name is set, it would be used in the config path instead, and
-+	 * snd_soc_set_dmi_name sets long_name to the DMI name if it's unset.
-+	 */
-+	card->long_name = card->name;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(snd_soc_of_parse_card_name);
--- 
-2.53.0
+Best regards,
+Krzysztof
 
