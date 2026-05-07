@@ -1,68 +1,68 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A510B2877DE
-	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 07:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C5231ED83
+	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 07:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778137913; cv=none; b=XG1cdceujoi2kvB5KVifqH7I5Hd8Ge+nJQGDdrLfweUMY31RG8azsbIZa/KKQWuO7fZ7AJrnjixg+N03IFIyJkWgKo53x5vQWO4H0TbMIZD6gGmsUiA005t3It1ZYz3m0oZQMrfDZq+wRh+KXN/Sc0JvevnMFGE4eaPmqnMnjVc=
+	t=1778137968; cv=none; b=na85A/Ed52N5GYZHQ0wpetjVhoLYuO8LvDBZBNwicrwDKuosjAQNU04jhKn9OHPJx8/QhlsSbHqPUBy1kvM21EXuE08u+NiXF9PYEk8z7Ph6gxnfWW9cPaEpgfqwyEgZ7hZZfAFDmwkAQxroCDEYSopnf9X245xnxwFMU6YMNkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778137913; c=relaxed/simple;
-	bh=A4sxlXdJ5VpsjfAq/q2qS53fkOxEwNUruwMMAmLro40=;
+	s=arc-20240116; t=1778137968; c=relaxed/simple;
+	bh=aoxoRwdupPVjinyBEJT3CZV0vycwYHpVtIKdHcBikFM=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FS+9twpEgf6U5snq8YanPFg7RuEci6AtC+RoCc61QqInEKk/veRL6Wi9u8dmDXE5zSQ3R4WCoV41skc/KHEL4j+g/3Y8+8doaX12D4NH82O6P3XrhD5rpytayZymjJ3fnYjfAt3dA8XHfNWhwXud7hTFV5t9TKSI9ZihQJJNziE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xppp/trV; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:Content-Type; b=d8y569l9kD74eIy+Efh6n82rwTXBTxH5Qb3bMJwpdymEXi7tuGs6TI1kJILUyHtOhxXKOqH+48xlwljU21H4dGWJKCpH/DSWqNn9bltddA1kZb2OxbzamTdXchhVf1wN5vHnKSGBdS7ZVdzSNVXSuTsbqxrs6FpAycEo10SbwnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SbkbsyB7; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xppp/trV"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-44b330c5cc6so357730f8f.1
-        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 00:11:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SbkbsyB7"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4890d945eb4so10390295e9.0
+        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 00:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1778137910; x=1778742710; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1778137965; x=1778742765; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bGYzjuf3R/p5pJNr3Enknt/6f+NCeQFDRQlWU1+0ACg=;
-        b=Xppp/trVdcyLaKS24GN+KtoCVLQd+XvV9rIMsu5SMsA2p1bC3JJldBCZ+0+itRGif4
-         mxey4yVvqwUdwOX0iVLtwap17F6UhfyUpKM1NomNFd+aXSMMPdTCB33tOWNysKGr+HnY
-         UDjNsy9ApmKeI+twrN4NM8PDLW31Z/WFryriyRw+cmA0/nxQooxu8eH+f3L6nOVC29xS
-         INTe+UxnWVvTzXqNXCSbbL+Bv0zpHfn8nGRg3F9AbH5FlorPCBPxO7Gg8rVlFC20gVus
-         p1Po9Aq11h9MG7ng0TY2Yu3BZzrudfMsNltrlO5uem8nlfavq0vvILvfOsne6utnsB/o
-         oXXA==
+        bh=nxn+gzXZryt3B/YHtHg/ku/ujylgebVtdoLvLxBx7Y8=;
+        b=SbkbsyB7OhQdxplPLcdaNC5RKNI0mRt9rbvemRlFGRpDE1CBzyqtjwGrpi1UKZTSVE
+         sq2f1H/1K9kUpKdpDtUPPCgUzGFIkmovHygeOPks3nme4DR772gR4thn88XdJbaPtuUa
+         wQJq3Kt75Y5a50kr4b6+ibCbVWJJCw2JUhmti5XE8R/Ao5PJ1QrApthYnXLCJn1PXf6Y
+         BLDroYAXy+q7SsPmE31GCeT7Q8uANM5w1bDWeTJZc4bMD1yRXqL/dTVHNczSBLmswqzv
+         uOZHFhNCtAAuuskMrivBHI+27n54WzPRevFzllEJQ77Czp5KolaWei1AzKsZqnJzNuaL
+         0Jbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778137910; x=1778742710;
+        d=1e100.net; s=20251104; t=1778137965; x=1778742765;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:references:cc:to:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bGYzjuf3R/p5pJNr3Enknt/6f+NCeQFDRQlWU1+0ACg=;
-        b=NxTGb4wcfMimtBDJ394QOrTscj23w4LzYmAfwOI91Qz6B+0YgciE8KaCY7idBeuy5+
-         9bFp616qXNXHGP3Z3mH7sFt9PaNsCJKQlvEkkpKUAzIFn4RHJbBPZH4oNwEra2oOlm7c
-         TFEOtlOuAxEKxBcpSU7kFDOgRdLOxYc1J8AzcBNyErUzsdbChQAnmb/KKtdyvArjd0rz
-         6M3U07Cs8Zy5hi83w0wt/JTibqDMfUorzMxl5yeGkKdL7s+doibYAm7+3cbUJSkU3pKw
-         T0st2jVMj/hZMM7f7H046j2fqPI+lzW51Zinmg9RD62oY0CSC4kq27utrfrEPiaCgPq9
-         arLw==
-X-Forwarded-Encrypted: i=1; AFNElJ+DXfFF4cw+JkZ5v7D6t1mBRLiolb0qxxchsPN7xwL7auVpZV9Yat/URDclg5EuQTe44iPZTaXEp/PSIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEkSV4dhMmLoGEbWzG1o5qbprPKdKlBa/PWAaDwVGzPLmmYZcg
-	2Z0fbWCsw2bh4QQOCWQ5nQ5kIqgC1WMA8Y1NmojJYbLFdxxf1xMm4cdnmAEyf3Kh8Bo=
-X-Gm-Gg: AeBDietNhSgtnwYdkw2A8qigqmlJgxB0ZBbBAGUR9crhMTYW0ecnaSDZ5ge50iuXxEA
-	iqo/cZrHa4pQ3DGhpszGTBO35S4Amm5SAMzL0Gl/OtBIVbMY+YjuFJ0WPS+c14yuh5q5KEkAxTR
-	1hFWFz6EJLgvBxHP41p9k1rEuC6uPtRqE0othpQ34xOHNsFmyh2uYdE28+V91vrTJIH9iTlKSEg
-	glEYYToUJaVrMOtS/3AzAXy69UqAN8H3ql3RcIyQAAwKUv2J1a91jaffSchH/9hQLUYmKIxNbhq
-	m3IsmZ4bYVq6tILxqQQj+WzWPWPyWAnUBPvg6cw0f8pPG0uIhWpKM14IOWWcCK9SgQ5u1nnGqcD
-	M+icJLc976ufClRcsNMEJhddFRrnZIOJ1dQWpp3cdpCCPVisJ2SiuKNI77HnZwU34+6TFLGy9ZT
-	WPwXKuKZkbJoB0WBmjLve7h5mQ3WLX4WuLVStt58sA/yyivty/y1dINOQN1S7j4whFDm6//Nphz
-	s6EoaCSa2O+aEmj3w==
-X-Received: by 2002:a5d:5d87:0:b0:43d:d037:d59c with SMTP id ffacd0b85a97d-4515b524224mr10977840f8f.16.1778137909805;
-        Thu, 07 May 2026 00:11:49 -0700 (PDT)
+        bh=nxn+gzXZryt3B/YHtHg/ku/ujylgebVtdoLvLxBx7Y8=;
+        b=YfMKiD052rO8hfzbXm5WBpMXygkSam+HrdsMqOc4ngcTK0yP/4aEsofmoTfKz9YcU7
+         Tx0ZI8fY4AQHGsP7lNtMkvffOYP3ELGWJoKTNcvg7iUA2WyOdee8PvJ9K0mm6Oj6KtfU
+         nA0x29R+JOHvQoxao5Axn6YSRQ/o7DjO5WujafXWOzdo+upneNLtDYGfBZ6yFVC3+k6C
+         nXXsvmEzx+ti/XVqATGIv3jEyVLLGiqfyDqtgeETl6qT6klnOF71ferMusey4THZLKDH
+         CBRau5M3xabGeannnT/tmmldynrhvhsGhMu0hdfRGAiMw0AXwdBrfF9+BUn5JCLLc3/x
+         +hRw==
+X-Forwarded-Encrypted: i=1; AFNElJ/GinaNzeV7+iGBADd2MlcpdlcjOvkwQxsq22303n/Eb24ssQd5+Y9DTpt3wFLRz+4ZwUs6gwB7AZkVwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy72t1rJMd/UfrbbTu1BmM9fFq3O30oMpYU2QbNV6m3kRjH0ymx
+	rDatcU6xJtcauTaX587M5HAYIGxuTv1rtnUBvliIfe2UPkmnt/w3PMc2ruaXElcD4RY=
+X-Gm-Gg: AeBDietVt5W7Mwz4TIwAvkAofYijv9MdiE0c3gBvShLe7HI6Ez5dw8hCgvrN/J+RCYu
+	oNugs2VeW5bqUbc7v2uszWXsnAW+WbN50UnXwPprh/v0Mi/fAuaflkz/tP+HGyenP3GLaeVs9EI
+	X6jaHcGbbs4hcw3e+U+Rjf2iLCkNgoY/tljk8tdkflo5+o+VFeNCylXqYIJfr7v9O4IYHkKvPW6
+	js4POeGTEpL7FLpIz9sKYIU0hpQguYidCPIwcTAftDHd8iyQ6QTV6YAljA05AKFLJnBPI0xiCOM
+	xlMJFNGGCVCgaAmx/AkrhTtKhds6H3j1DOT8YBpiHzKtgqCvAfpbDzh/WJSOXCsv/T15cuI4sI4
+	yuG1QdYRO9Fr2PG7kIwlmD6iUqwoOICZ5VqV4pSho+6n7nnhs1bL4hWR0gNmWWiDn/wPk4YvUQ/
+	lFgC8lblmZaUNcle86W0R86Tqct052ID+Yg4VC8Quj9otkKUYGNfYlIe7xQABv5itTbJjZaemxY
+	PUgoSuiWPdRPYhGWA==
+X-Received: by 2002:a05:600c:c0d8:b0:486:faa8:9e4 with SMTP id 5b1f17b1804b1-48e5e000c1cmr17768625e9.12.1778137965257;
+        Thu, 07 May 2026 00:12:45 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:5798:67fd:c866:b378? ([2a01:e0a:106d:1080:5798:67fd:c866:b378])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-450524834eesm17521496f8f.4.2026.05.07.00.11.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e5389da63sm103677125e9.4.2026.05.07.00.12.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 00:11:49 -0700 (PDT)
-Message-ID: <d3f99285-1811-45f7-91be-5017438c2475@linaro.org>
-Date: Thu, 7 May 2026 09:11:47 +0200
+        Thu, 07 May 2026 00:12:44 -0700 (PDT)
+Message-ID: <fb94f291-3831-417a-a924-e355cae27d89@linaro.org>
+Date: Thu, 7 May 2026 09:12:43 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,8 +72,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 1/2] drm/panel: visionox-rm69299: Split DSI commands out
- into enable/disable
+Subject: Re: [PATCH 2/2] drm/panel: visionox-rm69299: Move power_on/off into
+ prepare/unprepare
 To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
  Jessica Zhang <jesszhan0024@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -82,7 +82,7 @@ To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 References: <20260427-visionox-rm69299-enable-v1-0-fa7d62d26d87@sigxcpu.org>
- <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
+ <20260427-visionox-rm69299-enable-v1-2-fa7d62d26d87@sigxcpu.org>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -109,140 +109,85 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260427-visionox-rm69299-enable-v1-1-fa7d62d26d87@sigxcpu.org>
+In-Reply-To: <20260427-visionox-rm69299-enable-v1-2-fa7d62d26d87@sigxcpu.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 4/27/26 15:56, Guido Günther wrote:
-> It's when DSI commands should be sent and it also fixes these DSI errors
-> on every screen blank/unblank on the SHIFT6mq:
-> 
-> dmesg:
->    msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx] *ERROR* wait for video done timed out
->    dsi_cmds2buf_tx: cmd dma tx failed, type=0x5, data0=0x28, len=4, ret=-110
->    panel-visionox-rm69299 ae94000.dsi.0: sending DCS SET_DISPLAY_OFF failed: -110
+> No need to have separate functions now that prepare/unprepare only
+> handle powering on & off.
 
-This error is un unprepare, the link should be in LP11 so the command should still work,
-but you can move them to disable(), but in the other way you should still keep the
-power on commands in prepare() since the link is in LP11 and video is not flowing.
+Following my comment on patch 1, just move the unprepare() one, keep the
+power on in prepare().
 
 Neil
 
 > 
 > Signed-off-by: Guido Günther <agx@sigxcpu.org>
 > ---
->   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 77 +++++++++++++++-----------
->   1 file changed, 44 insertions(+), 33 deletions(-)
+>   drivers/gpu/drm/panel/panel-visionox-rm69299.c | 36 +++++++++-----------------
+>   1 file changed, 12 insertions(+), 24 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-> index f1430370ff94..3c92a6ceb8df 100644
+> index 3c92a6ceb8df..5c869d353368 100644
 > --- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
 > +++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-> @@ -158,6 +158,46 @@ static inline struct visionox_rm69299 *panel_to_ctx(struct drm_panel *panel)
->   	return container_of(panel, struct visionox_rm69299, panel);
+> @@ -198,15 +198,25 @@ static int visionox_rm69299_disable(struct drm_panel *panel)
+>   	return dsi_ctx.accum_err;
 >   }
 >   
-> +static int visionox_rm69299_enable(struct drm_panel *panel)
+> -static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
+> +static int visionox_rm69299_unprepare(struct drm_panel *panel)
 > +{
 > +	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
 > +
-> +	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +	gpiod_set_value(ctx->reset_gpio, 0);
 > +
-> +	for (int i = 0; i < ctx->desc->init_seq_len; i++)
-> +		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
-> +
-> +	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-> +
-> +	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
-> +	mipi_dsi_msleep(&dsi_ctx, 120);
-> +
-> +	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
-> +
-> +	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
-> +	mipi_dsi_msleep(&dsi_ctx, 120);
-> +
-> +	return dsi_ctx.accum_err;
+> +	return regulator_bulk_disable(ARRAY_SIZE(visionox_rm69299_supplies),
+> +				      ctx->supplies);
 > +}
 > +
-> +static int visionox_rm69299_disable(struct drm_panel *panel)
-> +{
-> +	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-> +
-> +	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> +
-> +	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
-> +
-> +	/* 120ms delay required here as per DCS spec */
-> +	mipi_dsi_msleep(&dsi_ctx, 120);
-> +
-> +	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
-> +
-> +	return dsi_ctx.accum_err;
-> +}
-> +
->   static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
+> +static int visionox_rm69299_prepare(struct drm_panel *panel)
 >   {
 >   	int ret;
-> @@ -193,16 +233,6 @@ static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
->   static int visionox_rm69299_unprepare(struct drm_panel *panel)
->   {
->   	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-> -	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-> -
-> -	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> -
-> -	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
-> -
-> -	/* 120ms delay required here as per DCS spec */
-> -	mipi_dsi_msleep(&dsi_ctx, 120);
-> -
-> -	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+> +	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
 >   
->   	return visionox_rm69299_power_off(ctx);
->   }
-> @@ -210,29 +240,8 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
->   static int visionox_rm69299_prepare(struct drm_panel *panel)
->   {
->   	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-> -	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
-> -	int ret, i;
->   
-> -	ret = visionox_rm69299_power_on(ctx);
-> -	if (ret < 0)
-> -		return ret;
+>   	ret = regulator_bulk_enable(ARRAY_SIZE(visionox_rm69299_supplies),
+>   				    ctx->supplies);
+>   	if (ret < 0)
+>   		return ret;
 > -
-> -	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-> -
-> -	for (i = 0; i < ctx->desc->init_seq_len; i++)
-> -		mipi_dsi_dcs_write_buffer_multi(&dsi_ctx, &ctx->desc->init_seq[i * 2], 2);
-> -
-> -	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-> -
-> -	/* Per DSI spec wait 120ms after sending exit sleep DCS command */
-> -	mipi_dsi_msleep(&dsi_ctx, 120);
-> -
-> -	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
-> -
-> -	/* Per DSI spec wait 120ms after sending set_display_on DCS command */
-> -	mipi_dsi_msleep(&dsi_ctx, 120);
-> -
-> -	return dsi_ctx.accum_err;
-> +	return visionox_rm69299_power_on(ctx);
+>   	/*
+>   	 * Reset sequence of visionox panel requires the panel to be
+>   	 * out of reset for 10ms, followed by being held in reset
+> @@ -222,28 +232,6 @@ static int visionox_rm69299_power_on(struct visionox_rm69299 *ctx)
+>   	return 0;
 >   }
 >   
+> -static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
+> -{
+> -	gpiod_set_value(ctx->reset_gpio, 0);
+> -
+> -	return regulator_bulk_disable(ARRAY_SIZE(visionox_rm69299_supplies),
+> -				      ctx->supplies);
+> -}
+> -
+> -static int visionox_rm69299_unprepare(struct drm_panel *panel)
+> -{
+> -	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
+> -
+> -	return visionox_rm69299_power_off(ctx);
+> -}
+> -
+> -static int visionox_rm69299_prepare(struct drm_panel *panel)
+> -{
+> -	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
+> -
+> -	return visionox_rm69299_power_on(ctx);
+> -}
+> -
 >   static const struct drm_display_mode visionox_rm69299_1080x2248_60hz = {
-> @@ -284,7 +293,9 @@ static int visionox_rm69299_get_modes(struct drm_panel *panel,
->   
->   static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
->   	.unprepare = visionox_rm69299_unprepare,
-> -	.prepare = visionox_rm69299_prepare,
-> +	.disable   = visionox_rm69299_disable,
-> +	.prepare   = visionox_rm69299_prepare,
-> +	.enable	   = visionox_rm69299_enable,
->   	.get_modes = visionox_rm69299_get_modes,
->   };
->   
+>   	.name = "1080x2248",
+>   	.clock = 158695,
 > 
 
