@@ -1,49 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AD24ADDA9;
-	Thu,  7 May 2026 20:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14EB345741;
+	Thu,  7 May 2026 20:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186115; cv=none; b=d6h/7bVjzWAZrKXljREK35H5ldeAHybi06o7hDPaP09oN3d1VycbUhm35oYPOkG/Fw5NDoFayxeuygFh2kTFGEjJnwpXH01Kuifla1/dImTlKrxSUc22hwcxAMuX9DxCUGF+6aCED6kdnvZ0+wKsGsn0EBxxPHjEXi9V8pImPaY=
+	t=1778186122; cv=none; b=XnZhxjEijJHM+tET68yp/29YnsH+gxpGJsDgd+3urnFMLC7IhbiFTr/IrMWpKCZf6IAojvfHqm0epQjGDwhzGstzF5ecxd5zoghlGvwOR69bZzpZsdNtKkBNEQO05RH/u7V9x5gCzgMC0tSOtILkVKlpdbZ2nZnRoDOCEzRV5qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186115; c=relaxed/simple;
-	bh=sazAP2oVGZXfkGTv+FhIqQYVwPUI1cGv6nC8EixNI4A=;
+	s=arc-20240116; t=1778186122; c=relaxed/simple;
+	bh=pFaClC15A5h5LUxiUTMKOYJdhEY+xd8nzrtmaKHEWUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GuARWeCXgfw2RQWG7zuU8krnsGCQcaiADGdiejHS4u2H5XYQjBI4OsVGadGlEORjBv/36xK29G/8wS031RHXcz7w7jxAvsyai97xAH2IUI8FK//MvCKxlOXhB9md15PZEwkbCcsr4mQyTg3tO07A2Ts39EFXYvhO1g38rCREv7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/joN8l4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=bnQnQdpdjz4EJ3wDTA4m5AW2K6RRPQHigQ5ERsj5ohxkMFaVtk6ONLA5ihwR49Yb9MYYrkUMWEkpoBtl23EdNfU2gmL1RZymVLEHWV+MdrBFG2wlIAyxVT437EwPOcesE+ZJ3wFmrJkhmwNjHrNkIInPlVWP5Vrc9/iCIAdxCMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzUU5UXX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/joN8l4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6F3C2BCB2;
-	Thu,  7 May 2026 20:35:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzUU5UXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3906C2BCC9;
+	Thu,  7 May 2026 20:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778186115;
-	bh=sazAP2oVGZXfkGTv+FhIqQYVwPUI1cGv6nC8EixNI4A=;
+	s=k20201202; t=1778186121;
+	bh=pFaClC15A5h5LUxiUTMKOYJdhEY+xd8nzrtmaKHEWUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/joN8l4Ed94NcKBj/YtnyDm7Bhn8NeTTrroS+UzsBnuymweS0q0IGkRghxODj5es
-	 ksz/CIEws6E1xYFb1GMZUPpqhHfYke09+5FUw+hw8utQgr0wARu/E0Jxx3suK0HMa1
-	 YeULbwsxN5BXxqlVMpgiTH6dFS4IDclnqJ0xxBWQtFdDzpknsFNURkcLOkaWzNGLh1
-	 I7xh0BJrqF6Am1KP/YLx0YsDHatH3rGunRvOwiBnypxIh2NcULg7eskutly9WhEgJn
-	 2oKCEZO7FdKyS3q+UDH0sut5jgjehAVZL2TVWFhZeGMretoIBCwk3Ji2rJE3kZsqNw
-	 rDmANMZyj8nJA==
+	b=JzUU5UXX5wSYlnNfXgszAc7TvILW8ETeeN811kNIK3vF65q1U793fpkIVRO34Pd6I
+	 uC57JzslFIOWalDcCds0tLSp0ubSVOnQyEMz5nHrTQvU7lhKm8lThuySUmRykCq7L0
+	 /OE4SsxzRBAHdUyV5Qy8OO2m5yigCCCWdj9p3zmErFwf5DnRgmD0nG7oaWgGXVoCOR
+	 4arC3RntCzbV2VFTi0ksRhPpfkpKbdlDjsd21+WqvN/MFSOKx24dF2gteqoNeOhUUL
+	 C/S7zzdiYijWbuk9n+2+2nNww6N+xYnfW+T8NQN16lmSaDxQn95sGmG9Ls4138q6OM
+	 W9rON2FdbJjLw==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Val Packett <val@packett.cool>
+	=?UTF-8?q?Kamil=20Go=C5=82da?= <kamil.golda@protonmail.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Yedaya Katsman <yedaya.ka@gmail.com>
 Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
-Date: Thu,  7 May 2026 15:34:30 -0500
-Message-ID: <177818606041.73000.17657106462085102010.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v4 0/3] Add support for the Samsung S6E8FCO DSI and M1906F9 display panel
+Date: Thu,  7 May 2026 15:34:32 -0500
+Message-ID: <177818605997.73000.9692910497119100760.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260403054417.167917-1-val@packett.cool>
-References: <20260403054417.167917-1-val@packett.cool>
+In-Reply-To: <20260314-panel-patches-v4-0-1ecbb2c0c3c8@gmail.com>
+References: <20260314-panel-patches-v4-0-1ecbb2c0c3c8@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,18 +65,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 03 Apr 2026 02:33:08 -0300, Val Packett wrote:
-> Motorola Edge 30 (motorola,dubai) is a smartphone based on the
-> SM7325 SoC.
+On Sat, 14 Mar 2026 23:46:20 +0200, Yedaya Katsman wrote:
+> This adds a driver to support the Samsung S6E8FCO DSI controller with the
+> M1906F9 display panel found in Xiaomi Mi A3 (xiaomi-laurel). The driver is
+> generated using linux-mdss-dsi-panel-driver-generator[0].
 > 
+> The mdss reset dependency makes the screen work more reliably.
 > 
+> [0]: https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+> Original tree with patches: https://gitlab.postmarketos.org/SzczurekYT/linux/-/tree/laurel
+> 
+> [...]
 
 Applied, thanks!
 
-[1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
-      commit: 839d20f9f3da93f65c000187ee68387598bdecb5
-[2/2] arm64: dts: qcom: Add Motorola Edge 30 (dubai) DTS
-      commit: dd1316efdbc5a998b901b1c5f27da73d45060795
+[3/3] arm64: dts: qcom: sm6125-xiaomi-laurel-sprout: Enable MDSS and add panel
+      commit: 493cb869874cd301c370adf9a3f9577942c4f0f1
 
 Best regards,
 -- 
