@@ -1,91 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489A9DF6C;
-	Thu,  7 May 2026 00:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05FF239E7F
+	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 01:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778112180; cv=none; b=WMswApptLKoWobsNFMQ8VG/7Y2q/A4k/4XyTv2UVhJ2KQsYMaZAPBykyq5WZSYhSo/bsUWzl6lL2ptBan7ia5Ey1jxF1bCnK34Eix2CS50bz0xicRKKek72Qr4iK542m9sM02M2ROizS3fvmWX3k1IdEOn6ST0znf82N34hFJxg=
+	t=1778118423; cv=none; b=IlI8p+QMuw8S9y/hXMJPrN2qQ1T2ZLpF4QfapeYFrmITqvuJNVe92gD6MaOUlgsO9B/6BCDw7bPwL3HjTqDmE44vo3h7hjeXGAZRn6o1zH3oTbrCnN/OzmBMEx2/cTpYMwaKNFB1dR5J30f+ukwdCqBHeWXwEnErhFiDJB0HzBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778112180; c=relaxed/simple;
-	bh=2QKygJs5Bc+od5SrnKqbgqEKFReI/NphVpSq50RT8iI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJOIm381ByzWlYLPnigwtJvOjV6i/2EHxvCsCY58Duv+XYCiI4O5FmNwxKD98mg2YdDdEs1FleL5ypS+93V70NyImpeteggwJVMT8O+PEjHnV4LgNPCLB+LHTTFeULSlb9B1isnqu+CzPBSmY/HyUE2qj2VTFx75fDn+FEZhhMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ph3QBBok; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778118423; c=relaxed/simple;
+	bh=ptahMHxAwcMzgJUkdJAwL9Np/nYEs8gByqgKb70ZGU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ot4fCcf6QW9X43Yd9Bfeu7zI6kTz/AVG2K1FlQY5SUb+NnSEnjXGngfRg72W4/I9Bl8uKfbeStjwfDFKSu/b2NAgVnvEGBJHU7aQGnCb4m56inAharhuycJbD2C6i9fTBEikjUSPCcU+ErqMbOrH+zZ4Vey+/UBUR+Ek5SJccUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=e/t0Bw0e; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ph3QBBok"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B99C2BCB2;
-	Thu,  7 May 2026 00:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778112179;
-	bh=2QKygJs5Bc+od5SrnKqbgqEKFReI/NphVpSq50RT8iI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ph3QBBokjvE8IhdL4GKVb0z7EI30y8c7A+X/0UCtg+/W4iP/bmg12FFTfySMuzKKT
-	 /UB7clHMam98HhIk5HvauIF2r50B5xm9osZmNAUmkvIplYobBlpx4v4a8j3V/vpFRa
-	 bKuf7VT6LCRE+0PAKeCMFOzApniHpWAjhkcMtN1xYtJDbPPqzWdJZP8fk4IKeNKXjO
-	 /jttDRmfHYScg1hFM56rtAUGAH5xFxZq1E7MQIaq5JiCG0g2E/sAk7GIOEZ7iBKUW+
-	 s5bdexMbm06exo79vIBlzGg7iL64ZVLG7q/Nml5TAHv/IHgf1Ed+pXxRRwFEVYWxin
-	 EgOd3hc3NTV8w==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 2763E1AC587F; Thu, 07 May 2026 01:02:57 +0100 (BST)
-Date: Thu, 7 May 2026 09:02:57 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Bhushan Shah <bhushan.shah@machinesoul.in>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Antoine Bernard <zalnir@proton.me>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] ASoC: qcom: qdsp6: q6afe: fix clk vote response
- type mismatch
-Message-ID: <afvWsfgIz9Q-_cjH@sirena.co.uk>
-References: <20260506204142.659778-1-val@packett.cool>
- <20260506204142.659778-2-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="e/t0Bw0e"
+Message-ID: <35b45fd0-fffb-455b-b19d-5c29cc955563@packett.cool>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1778118408;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2lk0xUHftJD0rJZhHZIYmoYd2dWXW26635MabL0+A0s=;
+	b=e/t0Bw0eH/FG81UNZB8PXX5CTv8G5YfwI473WJ6VQD5RryLVhi1MV/jgZAWcoWxlvxF8G7
+	jTnsQzrJqpZwoMpyUabou0hxvPpdvwwXinacY0Eqgv/KGVsvG459eUmpjGgrcpsJpbbxqb
+	UynFV0PS4+j+bHPupsbc2OQX8Whlaixhr9Ba8FfhA+8lS1rOJ45tqjJnHhvDEKH87dtc8w
+	ID3vI7O5T29NVDel+rmtmVeIYbtjMmJmDVVwM0uczjeeYiNH7yVguVW7hNSm8PPUjqlt1p
+	nqZbtFz/AVb6go4LZDV2aUwyV9TUqI3jCDw+/VaPqOq7di2UcNzbMG8lMomlVw==
+Date: Wed, 6 May 2026 22:46:33 -0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HNMYbKs3xz29VMcr"
-Content-Disposition: inline
-In-Reply-To: <20260506204142.659778-2-val@packett.cool>
-X-Cookie: Truckers welcome.
+Subject: Re: [PATCH v2 1/6] ASoC: qcom: qdsp6: q6afe: fix clk vote response
+ type mismatch
+To: Mark Brown <broonie@kernel.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ Bhushan Shah <bhushan.shah@machinesoul.in>,
+ Luca Weiss <luca.weiss@fairphone.com>, Antoine Bernard <zalnir@proton.me>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260506204142.659778-1-val@packett.cool>
+ <20260506204142.659778-2-val@packett.cool> <afvWsfgIz9Q-_cjH@sirena.co.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+In-Reply-To: <afvWsfgIz9Q-_cjH@sirena.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
 
---HNMYbKs3xz29VMcr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 5/6/26 9:02 PM, Mark Brown wrote:
+> On Wed, May 06, 2026 at 05:33:02PM -0300, Val Packett wrote:
+>> The response sent by the firmware when requesting a clock vote (opcode
+>> AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST) does not actually have
+>> the same opcode + status payload as APR_BASIC_RSP_RESULT. Rather, it
+>> returns one single u32 which is the client_handle that must be used in
+>> future unvote requests for the same clock.
+> Please send cover letters for your serieses, it helps tooling.  Please
+> also supply inter version changelogs.
 
-On Wed, May 06, 2026 at 05:33:02PM -0300, Val Packett wrote:
-> The response sent by the firmware when requesting a clock vote (opcode
-> AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST) does not actually have
-> the same opcode + status payload as APR_BASIC_RSP_RESULT. Rather, it
-> returns one single u32 which is the client_handle that must be used in
-> future unvote requests for the same clock.
+ummm:
 
-Please send cover letters for your serieses, it helps tooling.  Please
-also supply inter version changelogs.
+https://lore.kernel.org/all/20260506204142.659778-1-val@packett.cool/
 
---HNMYbKs3xz29VMcr
-Content-Type: application/pgp-signature; name="signature.asc"
+I even Cc'd all(?) the lists, as usual.. Oh, sorry- not stable@ I guess.
 
------BEGIN PGP SIGNATURE-----
+I didn't even realize the Cc from the sign-off section would actually 
+immediately be used by git send-email, I thought it would only get sent 
+to stable when merged.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn71rAACgkQJNaLcl1U
-h9Anzgf9FNOOJE3kohhLSXALdDcFC+1Fx4LVrxUPlnTEy6hgIs+7+tjX4CnC7Q33
-1WHxuGpzCwc14KIOANfZGOWAxZ1uumrkkoKBzp2HEIK70EP71xQjBSJH+ICh+0Hp
-Tj9D+Q5rxP6Wedm+fHuusJZ897TgvXkInBkcG4uRjc6Nfzdotlx8SUjXkpjodyJe
-4RtEv1qGxqI0Mt1GyLv4XldJuoyxufTy5xIMp5YQ8wTaPYDD1oXjYeUnz1gqrInn
-nFT8rs9soUwLJvI3fhxpYGm+uG7CJvWj4ETVWVDiE9lLdK5Ilq+jFw/+7MX2c/8D
-aThHNceQTsCWPf0JQxKdXSLXwMV0Pg==
-=RlbE
------END PGP SIGNATURE-----
+~val
 
---HNMYbKs3xz29VMcr--
