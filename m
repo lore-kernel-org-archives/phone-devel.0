@@ -1,51 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDD548C3FB;
-	Thu,  7 May 2026 20:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FF54963C8;
+	Thu,  7 May 2026 20:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186091; cv=none; b=U08nrjsr3pWdS6d9RMfHp6IhQeClkRvGCOdZIBnoFdB+0YeDjqZOlu/Padto871mvFjBJaqsYCixF+zOBKKcT0alnJF1bO1NDA+Ml9yNQpIs0bNP+t4+JjXWSb8ackQXGJlk8ssLuQCwiuF/7MTzp5blEjFMIX9E3HWmZNyk24Q=
+	t=1778186102; cv=none; b=Qeb1ylcK+9DOCbSkbwTL3FWZhzmV0qng3WT/VdpQ1ScXLOkiHMkcqVUZbqbpoAYZIAZWZ+Rflb7xEetkrLmMysLAZtWM3NQzHexbpDeMfyn3l2Tvv3GQ3UE9Ra7dDq7NNOFQ2cO5w5d619LbkgoCkLHIg5qeuXQm7MSOBzbFh1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186091; c=relaxed/simple;
-	bh=vJpujULvu2R4dMJFierq+vxTCy/9SAK8xjiblP2q/Vk=;
+	s=arc-20240116; t=1778186102; c=relaxed/simple;
+	bh=ueGuLxo82i5DDsYT+sB50+o01392wKz8Jx6tEzi9N3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KplRJ46953BITNYMsstUqLLKOpMf0g3SlVuaeZ3Wit0KV4BlkbO0MLFWQYlwMlLI6wm2sFk5lr/YBKF6cSbSomqugvdO24FW6Mc35Z4h9T44kXKVgyuzEvB7/+u7fk/UFn+m7q3QPy2vUYYL0eWJ9kBrDxQLmUEcKMxyOtoClS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qGfl1bu1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=AX82yIfNWq97Lp9M2yYsUuphGbPCHNAK0B0rz/3JRnfoaUPmlJVYlZSrojAEu1691KGxfOIwr5rSD4fw79MEZztTDZHPfy6VuNKUQfdpykMS1BPtWK6zBSnDkdPQnLWTYKPoGAlWVqFvEIyDoLbgYOcvLXdMpFmoVYMqeQ4T8n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKRSX2WZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qGfl1bu1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9461C4AF14;
-	Thu,  7 May 2026 20:34:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKRSX2WZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D045FC2BCC7;
+	Thu,  7 May 2026 20:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778186091;
-	bh=vJpujULvu2R4dMJFierq+vxTCy/9SAK8xjiblP2q/Vk=;
+	s=k20201202; t=1778186102;
+	bh=ueGuLxo82i5DDsYT+sB50+o01392wKz8Jx6tEzi9N3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGfl1bu157JKU5AbcGdpkUm7fgOEEytPrGVh/nv/J2eK+wd972mwmHuCK36eirVdY
-	 6321CPvhvqEohlsfl210eIwCg9buM8SjFepn6S+Q+mwXpaR7yy3vLqP4T3ATy3E/d0
-	 B9fE8Z0zWqInSINMgDqlu/6M9g7V9psDtMI6cFp/2ZG4kWqyDSwWYLng+wOPViFztB
-	 ldpAotq4WRv+LufQaur9NLIOqZGJYBemGCzyL8OP9gvnraGtF1W0EMMxTzERR7i7wD
-	 LIrT+aawAmwc1kIfbwGUAFnLYwqGAlk2OHq2gMbA2xSw6ak10M/zNd8Hx4UN3Xg21R
-	 1aduUhmq0fvDg==
+	b=gKRSX2WZP3OczWsBT/RkaxSbXudTgkrVsc1jT/AfxdanqaDriTlsd83cMzguxB5bg
+	 atjE7cgY1iQZBv/wNHIb4xlfB1prPNqsDR6taeLB1bfbGKqlbcwxE8oopA6UQIioUH
+	 mz6bE/lYKSM983MuSl/P/MYhlsESSAuqG3YjVd0k+bo8vZ+qDbgzqeqUJKQmvFp74x
+	 qh/KODeol8IfvA1deh4Wq2njnWLaO6al3Kxhljw4R/JfcwGY6WWBLODyFXRAjglZuC
+	 7iAhcQmuZmQm03KZ3D/nh8iP41yCaE3WP6wEXhdRLHzwbVsFWnljIScNpGAXmdHOJc
+	 A2RgF/8GKkZOQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sam Day <me@samcday.com>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	David Heidelberg <david@ixit.cz>
-Cc: linux-arm-msm@vger.kernel.org,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Petr Hodina <petr.hodina@protonmail.com>
-Subject: Re: [PATCH v4 0/4] Add framebuffer on Xiaomi Poco F1 and disable the MDSS on tianma panel variant
-Date: Thu,  7 May 2026 15:34:17 -0500
-Message-ID: <177818606017.73000.3325751231222513886.b4-ty@kernel.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v3 0/3] Add support for GXCLK for Milos
+Date: Thu,  7 May 2026 15:34:23 -0500
+Message-ID: <177818606022.73000.2660676757602882253.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402-beryllium-fb-v4-0-46170004da28@ixit.cz>
-References: <20260402-beryllium-fb-v4-0-46170004da28@ixit.cz>
+In-Reply-To: <20260417-milos-gxclkctl-v3-0-08f5988c43a2@fairphone.com>
+References: <20260417-milos-gxclkctl-v3-0-08f5988c43a2@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -56,26 +62,18 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 02 Apr 2026 00:39:34 +0200, David Heidelberg wrote:
-> Enable framebuffer for early console output.
+On Fri, 17 Apr 2026 09:07:43 +0200, Luca Weiss wrote:
+> Similar to other new SoCs, Milos also contains the GXCLKCTL block that
+> we need to control for GPU. Add support for it.
 > 
-> Due to broken panel driver on tianma and no visual output it's better
-> to disable the MDSS so the framebuffer stays on.
 > 
-> In case second patch gets rejected, please apply the first one standalone
-> 
-> [...]
 
 Applied, thanks!
 
-[1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: Introduce framebuffer
-      commit: a4f6959661f0c8542e5a89aaaef27fc4ac9408a6
-[2/4] arm64: dts: qcom: sdm845-oneplus: Drop address from framebuffer node
-      commit: b379bb1470d864659ae9522b72f241a15255dce6
-[3/4] arm64: dts: qcom: sdm845-shift-axolotl: Convert fb to use memory-region
-      commit: 15520f868651d6b03c603918bade78f4799df7ca
-[4/4] arm64: dts: qcom: sdm845-samsung-starqltechn: Convert fb to use memory-region
-      commit: 2eae029f7d38c5fc03a778f483b5079d0e355472
+[1/3] dt-bindings: clock: qcom: document the Milos GX clock controller
+      commit: e628f6a6c33ac647bb904c35a674a0f664c99efe
+[2/3] clk: qcom: Add support for GXCLK for Milos
+      commit: 3df6b9dbd24e1610854c17a8ec4ac146481b8e42
 
 Best regards,
 -- 
