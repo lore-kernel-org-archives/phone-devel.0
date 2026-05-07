@@ -1,86 +1,86 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30E834A76E
-	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 08:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D01538F929
+	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 08:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778142904; cv=none; b=s5cc7VO360+lDBGNKQHqS7u5uVIMk7XJ0tJxVW91Ze3tij9I8qn2K+1fht8cdSjGpngxndKt4jQZ7H6f7WPrzyAG69fdC406IYmiO4bR+uHpu2fG2qvMdNBNlcs19kV1jcmyFn8LCy7IjFBO7y9kyzCFSpZ8mIA6S7YuVtAk9NI=
+	t=1778143917; cv=none; b=ahF2mgmD5tyXQn78LyNzoO5m1UuIeBs2v4ibE+zcMe2MKLcTGos6qgolom1KjyxxnV7JAp0nnFE0LMSyEqrRmzXnCspAxrWjcXvjNGZe53V6y4WnJo4aztKAYDDYvfpMdclF7v+zfk3bP8/8ZUcQlNBgyv2sn7TakLME04iHnE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778142904; c=relaxed/simple;
-	bh=LMqROSuajz+PWuBt0xHHNxUH2N+B0UWtP08N5eUq/EY=;
+	s=arc-20240116; t=1778143917; c=relaxed/simple;
+	bh=Kd56bN3gu6uxbWvn3bhH3wHcIlXHeWTPMbpY4iQk8u8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G6h8unr2XZtHxm+12HxfI21/fyRfs9mR/7vnkA6Eg5qUWvOI5bBagEt9Sg1DkcMKMYhSPUkM6EAkt5KUEZsVeD2V4rtOqWtzP8j1DQlDpuKRKJurKUDnDHL8dn/DZR5A0Mcmx2JUJLg5mTkdc1WbGMQngiEWZVZRpMyfhBH0GUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NXU4aRlS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LXDyJtBv; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=WBAu7pQIYfRvPGIKsMAb2v4QfF8QrFvbnKQAbXOSSbFbPr0FRQ/1dDr/TkKCwgYfmImGYk7+NMYf7BZpvwJrrYUfgVlrvlDhgPYh4vd5HoNJ3UOMCF8vTyN34GOA1zViE6bATE9r58YbzJtv0PUS5lfaxQEbnGro91vaZRWPjjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N1fLM1Z0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZyNNntsW; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NXU4aRlS";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LXDyJtBv"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6477pVLP1424474
-	for <phone-devel@vger.kernel.org>; Thu, 7 May 2026 08:35:00 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="N1fLM1Z0";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZyNNntsW"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6475AgIH3925083
+	for <phone-devel@vger.kernel.org>; Thu, 7 May 2026 08:51:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZLEprv08ng8QG4vA0GtRduxj5Wj+FiN0/pWFH+mdbAQ=; b=NXU4aRlS/JmpC5eR
-	cUlBEq8qGqxgW6cfAxwVVUvXABKgoKQwHwXKDJ0M/MwZtL1tvqB9l2IygQYo4HWk
-	WvXIcZT3o5AFiTheHs+9HXFceIjGDaSZ4l3YnLmFyEWM11hdpZpGLmf8QtJWmsqj
-	hkIYutdAfDWRS82ZpuOVfyrkAonzScCr07zYbI9b+nlvPoQvbcOVGBMXuu+kZuzB
-	AVUJ2Mcg0bMV3db/K9wuiYuJ15uD/GqRH7VxqbiW/SuzlieemXdDE7j1brNP3t28
-	YVcXFtDNeb9VyzeS6aR+finbuN9HNi/G8Wi1JKcMron3uUy+E7SnmVuWR/BlB4yM
-	QEidkw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0pqfr5bk-1
+	cP3rLsoC5XmxHXQhD/dEud8ZcY5y3tuze8ltsJwAUjE=; b=N1fLM1Z0z+T1sCHU
+	K6ANun0LFiP6FEB/8ZqKww0q1U9nHLArx7YZiOR93LjsaKjNn5iEG95fRBcIgzzS
+	NvmNM5NHropjSbZxKI7KlbaiKdrwFPFelhCXK4ZipjHPMiU2K4tXJMexSHjqJctn
+	XNP6eVQsxNLhVbBNNta9Ma29hXwash9VCbgVT0J7KiiX7mnaLnPwzEyufwSzEcyn
+	wy4xnFgBtLbMS7Ee58d350tGjCLmNzxt6iBlqkG88vz1FbqXXhnI33jzPDy/8wOT
+	3Q2daECDpExqQxHK1gTYbDgAbYxoUzac/o2ArDg0xTVN+0CGLVUR45BEAAgIComf
+	xH+D9Q==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0c88aaa8-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 08:35:00 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50d8ed08aa4so18332891cf.3
-        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 01:35:00 -0700 (PDT)
+	for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 08:51:46 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5102a9671c8so13257601cf.1
+        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 01:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778142900; x=1778747700; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1778143906; x=1778748706; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZLEprv08ng8QG4vA0GtRduxj5Wj+FiN0/pWFH+mdbAQ=;
-        b=LXDyJtBvCCih3KkgO7485R8w3l8M6Vh7HBYBbXB2eOt4XI3rGWE50WkbnPjrEOjMwH
-         gXzeVwWqhmW0AY1PHUlRL0Gvh1xPRcG5s1rL1cSf8n19SLVDxhHZR1TSeRk7v2ZDBcdT
-         3DpVwih9i0Jk/E5uCwP5WvjhOzINyy/081N3b73/spPsDhBK4fp1z/6b9J+Jy4QfTRA+
-         DM3d3nO47vpNBQitWB7sq8hwB4bLzUhhbumlcEl/sT0GHLxg7V4/uQS0Dk9kTx4qtzt+
-         d+M40+MxECerO5KNztOr6Ai+yMpab1XU4zH2kMZXOBrLm1VIGVWhtf2k2K/E3FTSmyCM
-         1/Mw==
+        bh=cP3rLsoC5XmxHXQhD/dEud8ZcY5y3tuze8ltsJwAUjE=;
+        b=ZyNNntsWPIwAbgw0URxu/nIwcurE9yuSb7N8mOyekYlZrhxvxNz2cFnpRfVHSYavFF
+         o42CIUTC5blyQU/CexIMC5nqYGY7QZri/odzuTHvupgc/B0w2TuB/udh5K/SlgtArtkf
+         c1mv2JCRL1tisuYrzPS7phwLu9afMDtoKnQ3wamT2eA6XvtUQC44BO+l7TmVCbPdCZJW
+         K4sa8IWdA0BJbgaNNsE/+Z5jJv4yDu+2RIgSy/MvVIG86bgsLrsh7X4tu4/5KC05etoy
+         Ekwi5YVuR/BQSlcPBhAT+nF1uae+4oZSioV8VxjNTpFAFmpUvjJFhx/GoswOQtplXhbQ
+         MJsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778142900; x=1778747700;
+        d=1e100.net; s=20251104; t=1778143906; x=1778748706;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZLEprv08ng8QG4vA0GtRduxj5Wj+FiN0/pWFH+mdbAQ=;
-        b=D4oFbKuz0sYrbFw+zYjxZcY/vQ2mn8AX5Qxck7Lc65P2bhoT4uLAK1S9gz90mhkUVv
-         x9Inc6ow4+egiC7s+X2iY7q0CdYkW9Uzp8NUmCc2k2+L30viONQ0ZM5/a1MdY35rOC9t
-         wXBeMpJIDhIfVAlFdjGWD5Wa8JmiRQa2Pv7yET13z/fozlQ7YkjnusvA0vHNvwQczewe
-         NVR3Nl9F2zBxzhfxz/siyd0q1VZ/TWTePXRLZSTQgKLaq26r3Vtyxn0bSXwtkjge2uAJ
-         jm4xp4UqR86VLZFiDtPQO/cFd9zZ84gd/QmUxj7v0KkNbma406M4hnyOwovtGbw+491s
-         QmMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9TGLwvwxKahq9qxsIluD4WhcAk5MDZVDhVjUOcUXodRv9uOd1YPzdmTSmuOlK7k31LfmiD4LCVFpcnmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFe26PCH7+rXi0W6fzOgySppHWiFbM5CUmflbWH5PF+IqXdotM
-	jb7KULvlwdexKzWcywNx73XxuhBdbk+nmLRqvmEO40JRprYIfobvEZsGuGN61c+mGwqhADVyXao
-	hkO68WEHRZ37N7AD6FMz/CtmieXP8S0ns0UVvTl7rK1wYhT4jKKMGtlTyzuoSkzCJdA==
-X-Gm-Gg: AeBDievt+p4qqv5gsZuqjLGLkScp7JH2Y5/g+lTL/dGK4YkbHC8ji8mkQMX1of0CT4T
-	awNTFwazYfuAIn5iMWa/ymgcyZbzzubzDBqOO41OLbUa4gTuHNA4FP+KF+vPTAziQrW7Uu0Vkpl
-	GyOj+1jeYd4dSo3cGH4UblGyeziNL8rvVUtKgZ8es021FPY02qXGj6TDCnOwbpsXkmhBWGxpUHm
-	4+KBMlLzCDypAD5pweOtHftMycIxdcBk7tvnr5QIGW1Es/vFN4nCf/jSXtxibkYdJsB35SpZmqK
-	SIelxE/uxPe9UHjnantqLjsDBjbSixgwdvy2BRNxlVC29U78KNHRrRxpohtV4+v2VvDjvjjCi2v
-	5o9nHMZr0V1CvFkWCbwt1H784HKnhm0xBJJzWVPlaz4vQIcTYPRRyjxIa7vY=
-X-Received: by 2002:a05:622a:620a:b0:50b:2d93:97bd with SMTP id d75a77b69052e-51461e671d4mr94196401cf.24.1778142899900;
-        Thu, 07 May 2026 01:34:59 -0700 (PDT)
-X-Received: by 2002:a05:622a:620a:b0:50b:2d93:97bd with SMTP id d75a77b69052e-51461e671d4mr94195901cf.24.1778142899098;
-        Thu, 07 May 2026 01:34:59 -0700 (PDT)
+        bh=cP3rLsoC5XmxHXQhD/dEud8ZcY5y3tuze8ltsJwAUjE=;
+        b=JW2ILxp9CcXgRSIvtmB4LnJDz9s22PqeayYTkz1k1HDXP3VwK9X5SateplQkqMRCkK
+         /rosvlrILrx6tVFF/3g9nOwmILl7Ld1Ab1YKUdwPZrkXo9YprVXCyWSVlNyK0vbvb7VA
+         tOTSmxNO/xQoHzgIDp1v89yae+BI5ZiUxogplkcdrdBr0esGPJ4Hc1XOl075D6d1qaap
+         xPlP3jYOIe8VPAXB1J9INwmm0qwu5Ri6WkceJtURpz+/Mkb4wm2RDWhWnNmKIP3bHUCW
+         zj/vo8z81VEhEQZKkNvhYO5pjTfRQ2/kiwA0Xp1xGjcOsRVGK1AZNi/tQlh28IkdlQ/M
+         1K+A==
+X-Forwarded-Encrypted: i=1; AFNElJ8GGaKHiVmenqNPQ998APWCiKzx1GzxfC/VPV1kjWr0yFduabFRp/eTtn4JEYk+TBk7wKGnwRfJqGVI7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQfkgU0VLubnb0kbbrcK41mRgcFZZntrVZ5yXY4NHbVq1v5qL1
+	wP+pvzbn0zZ7Rlx0N5ntIHFKSjMkzqPRk+rB3zgedyzDeB0BQZEMjXC2fYXhloGojdKSXPE9xfV
+	KCdQZOzi3KdUJLxPoKt4R3JS79buluuPQUnMhvh4c8R3UMkkf+FSvi+41OpWSnrYPKg==
+X-Gm-Gg: AeBDievvgjGfLZtDvyMn6VgiSA3gu9NDe8y8jRMc685/lDsI+R153CmGbDuvXGjcoX3
+	34e1Y5RYAnS1td3bqHJFEcsBQ5WZgyziuWC1ZE5b3XIKV0PJftDxXkxQ5dfE2TtNNohGopq9q2H
+	N7q8RCO4IcTejYJ+pzCQwp4yh8ahCxpSICJJAXJX8FldsS+xBhXMzLO+Iihgr0wM6N/5zXjRlDL
+	/3bq4A/sw7vL4J1MAWAFdlkJqIzhmG6og6XE3JIEjd7RE6NKhkUQsfcKpFF3odxFXbkh9+GCJdb
+	3jUKflYhopiM4qyHCcXHBi3BuMWwxgP3oXbWBvXNGJ5bUJMvGGdvIvk3ExrR2sphs5D4oDB6xT3
+	euPDNYh6nwlgz/ChDMgn4Ojco5x7iPsxFnlTny6z2s0N//Cu6n654EMwChrA=
+X-Received: by 2002:ac8:5807:0:b0:50b:3357:7e70 with SMTP id d75a77b69052e-51461fb3815mr95896721cf.28.1778143905765;
+        Thu, 07 May 2026 01:51:45 -0700 (PDT)
+X-Received: by 2002:ac8:5807:0:b0:50b:3357:7e70 with SMTP id d75a77b69052e-51461fb3815mr95896411cf.28.1778143905251;
+        Thu, 07 May 2026 01:51:45 -0700 (PDT)
 Received: from [192.168.68.112] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-67cd904fe68sm1872140a12.0.2026.05.07.01.34.56
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48e530b05d9sm48930755e9.3.2026.05.07.01.51.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 01:34:58 -0700 (PDT)
-Message-ID: <f586f504-ab76-4641-a80c-1ba7cc2d58a8@oss.qualcomm.com>
-Date: Thu, 7 May 2026 08:34:55 +0000
+        Thu, 07 May 2026 01:51:44 -0700 (PDT)
+Message-ID: <6338e51d-da58-410e-b10a-4a565d467f1f@oss.qualcomm.com>
+Date: Thu, 7 May 2026 08:51:42 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] ASoC: qcom: sm8250: add Senary MI2S RX support
+Subject: Re: [PATCH v2 4/6] ASoC: qcom: sm8250: add TDM RX support
 To: Val Packett <val@packett.cool>, Srinivas Kandagatla <srini@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
@@ -99,66 +99,244 @@ Cc: Bhushan Shah <bhushan.shah@machinesoul.in>,
         linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20260506204142.659778-1-val@packett.cool>
- <20260506204142.659778-4-val@packett.cool>
+ <20260506204142.659778-5-val@packett.cool>
 Content-Language: en-US
 From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-In-Reply-To: <20260506204142.659778-4-val@packett.cool>
+In-Reply-To: <20260506204142.659778-5-val@packett.cool>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=TJB1jVla c=1 sm=1 tr=0 ts=69fc4eb4 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+X-Proofpoint-ORIG-GUID: lQCUk_IHVNEhkgqFbe32PLRYv4US9OYL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA4NyBTYWx0ZWRfX8XCYr2ChCVHv
+ 7lzVPFJYmcA8B03aasKs0vGVt3PDmBc4qgEbGkyEzoSDORkXxjZhcC5ATJeRGW5+bXToD5jAT58
+ 1B7MEhJS3SSma6wytJcDOhKTThAZNJ4PPd8nnP/CCbI0lAKQ5Qp9jK1uviS2wpVrMPcuH1PyF6P
+ PK2DopCR751Cww4evvqRWmCLnZ8spGgjDmZRcXRsaLBIuLcXN/lLtBY8RWlgiyhK/Gg5sNLLg18
+ 9Ru5Oux+GhLZuwmDAUZ5ha2rhcGq4fzU9N2r6nFHTiHONwELrxbX7ZxlaXoFOfqStlfjaqEQn1x
+ qk3Y0yqNJgVAIKV5PIsRx/nOW9XcHFC5VPJPDXYbbhKZK1R1brfFH+xF29i5f69lneYLAvbzvDm
+ K5hD7gRFFbAJlXSirerIiH6I3VPVxOwobWRNwckZ7G3v8m84ox2Bk9+j+b6SBbbfi1Gb14FM+pg
+ RBIihrofX0CkjrPhFIA==
+X-Proofpoint-GUID: lQCUk_IHVNEhkgqFbe32PLRYv4US9OYL
+X-Authority-Analysis: v=2.4 cv=X8Zi7mTe c=1 sm=1 tr=0 ts=69fc52a2 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=-T4oWIldSm4hssfr7QUA:9 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA4MiBTYWx0ZWRfX0NGvoogtSo6z
- MUFbFyiXKSavJUb3HY3lbKVVv2Zyxghl5tPi5/igIvTRClEYM2mLD+y4bB8/rd4adkDQq76ckj2
- dEL5kUHcT6tmFwcQ4k5JGGebw0YLfIsrRLq7l2tsFXpWSQ0HUyiPKEXV/2ZMLRXDOaW7K+brSvq
- szEH4mk6TG3wqK/MRn+yUGCLtACexdouM1tr0HBDiDVgOkC+R+4Lk0Xh9ct9qpT7k9kBPbch6Br
- 8Ui9IIQ0TSgCsB8uFa7UMvDY6Hy04QWxP6Exq00BSpjC6xjUAdiUdhNeixAqNpHeJKzMsVIdTkv
- OlxXRlLjPmd33c1m7d4nG1sYjkC18hHN1cUm/0vrLajQpPtKXNlnzhr/45sRvvnCIkdbv2qOBI+
- NE4sibFNdTjuPz4bl6v9kiJ07sNnTfVv0l98wW1AeyPrkLKbKmyvHV/4nGjwo/2+PELtFt2rYDx
- lUROQVR+L75nGx13XhQ==
-X-Proofpoint-GUID: JG4e9NHzksu-GJMrddjtMIC-257yuOJz
-X-Proofpoint-ORIG-GUID: JG4e9NHzksu-GJMrddjtMIC-257yuOJz
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=fdbe8OLCKT6xAC55-esA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 adultscore=0 spamscore=0 suspectscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 priorityscore=1501 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070082
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070087
 
 On 5/6/26 8:33 PM, Val Packett wrote:
-> Add support for the SENARY_MI2S_RX DAI which is used on some devices to
-> send audio data to speaker amplifiers.
+> Add support for TDM RX DAIs which are used on some devices to send audio
+> data to speaker amplifiers. Channels are assigned based on the codec
+> DAI names for a quad-speaker setup such as on the xiaomi-pipa tablet.
 > 
 > Signed-off-by: Val Packett <val@packett.cool>
 > ---
-
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-
->  sound/soc/qcom/sm8250.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  sound/soc/qcom/sm8250.c | 141 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 141 insertions(+)
 > 
 > diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-> index f193d0ba63d0..a675913da943 100644
+> index a675913da943..b64fd3970ba1 100644
 > --- a/sound/soc/qcom/sm8250.c
 > +++ b/sound/soc/qcom/sm8250.c
-> @@ -112,6 +112,14 @@ static int sm8250_snd_startup(struct snd_pcm_substream *substream)
+> @@ -17,6 +17,10 @@
+>  #include "sdw.h"
+>  
+>  #define MI2S_BCLK_RATE		1536000
+> +#define TDM_BCLK_RATE		6144000
+> +#define NUM_TDM_SLOTS		8
+> +
+> +static unsigned int tdm_slot_offset[8] = {0, 4, 8, 12, 16, 20, 24, 28};
+static const ?
+
+>  
+>  struct sm8250_snd_data {
+>  	bool stream_prepared[AFE_PORT_MAX];
+> @@ -55,6 +59,89 @@ static void sm8250_snd_exit(struct snd_soc_pcm_runtime *rtd)
+>  
+>  }
+>  
+> +static int sm8250_tdm_snd_hw_params(struct snd_pcm_substream *substream,
+> +					struct snd_pcm_hw_params *params)
+> +{
+> +	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+> +	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+> +	struct snd_soc_dai *codec_dai;
+> +	unsigned int rx_mask;
+> +	int ret = 0, j;
+> +	int channels, slot_width;
+> +
+> +	switch (params_format(params)) {
+> +	case SNDRV_PCM_FORMAT_S16_LE:
+> +		slot_width = 16;
+> +		break;
+
+Any reason only S16?
+
+> +	default:
+> +		dev_err(rtd->dev, "%s: invalid param format 0x%x\n",
+> +				__func__, params_format(params));
+> +		return -EINVAL;
+> +	}
+> +
+> +	channels = params_channels(params);
+> +
+> +	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+> +		ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0x3,
+Please define the magic constants like 0x3 here.
+
+> +				8, slot_width);
+> +		if (ret < 0) {
+> +			dev_err(rtd->dev, "%s: failed to set tdm slot, err:%d\n",
+> +					__func__, ret);
+> +			goto end;
+> +		}
+> +
+> +		ret = snd_soc_dai_set_channel_map(cpu_dai, 0, NULL,
+> +				channels, tdm_slot_offset);
+> +		if (ret < 0) {
+> +			dev_err(rtd->dev, "%s: failed to set channel map, err:%d\n",
+> +					__func__, ret);
+> +			goto end;
+> +		}
+> +	} else {
+> +		ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0xf, 0,
+> +				8, slot_width);
+> +		if (ret < 0) {
+> +			dev_err(rtd->dev, "%s: failed to set tdm slot, err:%d\n",
+> +					__func__, ret);
+> +			goto end;
+> +		}
+> +
+> +		ret = snd_soc_dai_set_channel_map(cpu_dai, channels,
+> +				tdm_slot_offset, 0, NULL);
+
+> +		if (ret < 0) {
+> +			dev_err(rtd->dev, "%s: failed to set channel map, err:%d\n",
+> +					__func__, ret);
+> +			goto end;
+> +		}
+> +	}
+> +
+> +	for_each_rtd_codec_dais(rtd, j, codec_dai) {
+> +		if (strstr(codec_dai->component->name_prefix, "PL")) {
+name prefix can be null.
+
+> +			rx_mask = BIT(0);
+> +		} else if (strstr(codec_dai->component->name_prefix, "PR")) {
+name prefix comparision is fragile design, this will break very soon.
+and this is not a binding too.
+
+
+This also raises question about the using this generic driver for such
+specific combination. Can these be made specific to compatible ?
+
+
+> +			rx_mask = BIT(1);
+> +		} else if (strstr(codec_dai->component->name_prefix, "SL")) {
+> +			rx_mask = BIT(2);
+> +		} else if (strstr(codec_dai->component->name_prefix, "SR")) {
+> +			rx_mask = BIT(3);
+> +		} else {
+> +			rx_mask = 0;
+> +			dev_warn(rtd->dev, "%s: codec DAI name '%s' not recognized\n",
+> +				__func__, codec_dai->component->name_prefix);
+> +		}
+> +		ret = snd_soc_dai_set_tdm_slot(codec_dai, 0, rx_mask,
+> +				NUM_TDM_SLOTS, slot_width);
+
+
+
+> +		if (ret < 0) {
+Can we handle -ENOSUPP?
+
+> +			dev_err(rtd->dev, "%s: failed to set TDM slot, err:%d\n",
+> +				__func__, ret);
+> +			goto end;
+> +		}
+> +	}
+> +
+> +end:
+> +	return ret;
+> +}
+> +
+>  static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+>  				     struct snd_pcm_hw_params *params)
+>  {
+> @@ -120,6 +207,41 @@ static int sm8250_snd_startup(struct snd_pcm_substream *substream)
 >  		snd_soc_dai_set_fmt(cpu_dai, fmt);
 >  		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
 >  		break;
-> +	case SENARY_MI2S_RX:
-> +		codec_dai_fmt |= SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_I2S;
+> +	case PRIMARY_TDM_RX_0:
+> +		codec_dai_fmt |= SND_SOC_DAIFMT_IB_NF | SND_SOC_DAIFMT_DSP_B;
 > +		snd_soc_dai_set_sysclk(cpu_dai,
-> +			Q6AFE_LPASS_CLK_ID_SEN_MI2S_IBIT,
-> +			MI2S_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
-> +		snd_soc_dai_set_fmt(cpu_dai, fmt);
+> +			Q6AFE_LPASS_CLK_ID_PRI_TDM_IBIT,
+> +			TDM_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+> +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+> +		break;
+> +	case SECONDARY_TDM_RX_0:
+> +		codec_dai_fmt |= SND_SOC_DAIFMT_IB_NF | SND_SOC_DAIFMT_DSP_B;
+> +		snd_soc_dai_set_sysclk(cpu_dai,
+> +			Q6AFE_LPASS_CLK_ID_SEC_TDM_IBIT,
+> +			TDM_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+> +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+> +		break;
+> +	case TERTIARY_TDM_RX_0:
+> +		codec_dai_fmt |= SND_SOC_DAIFMT_IB_NF | SND_SOC_DAIFMT_DSP_B;
+> +		snd_soc_dai_set_sysclk(cpu_dai,
+> +			Q6AFE_LPASS_CLK_ID_TER_TDM_IBIT,
+> +			TDM_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+> +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+> +		break;
+> +	case QUATERNARY_TDM_RX_0:
+> +		codec_dai_fmt |= SND_SOC_DAIFMT_IB_NF | SND_SOC_DAIFMT_DSP_B;
+> +		snd_soc_dai_set_sysclk(cpu_dai,
+> +			Q6AFE_LPASS_CLK_ID_QUAD_TDM_IBIT,
+> +			TDM_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
+> +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
+> +		break;
+> +	case QUINARY_TDM_RX_0:
+> +		codec_dai_fmt |= SND_SOC_DAIFMT_IB_NF | SND_SOC_DAIFMT_DSP_B;
+> +		snd_soc_dai_set_sysclk(cpu_dai,
+> +			Q6AFE_LPASS_CLK_ID_QUIN_TDM_IBIT,
+> +			TDM_BCLK_RATE, SNDRV_PCM_STREAM_PLAYBACK);
 > +		snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
 > +		break;
 >  	default:
 >  		break;
 >  	}
+> @@ -145,10 +267,29 @@ static int sm8250_snd_hw_free(struct snd_pcm_substream *substream)
+>  	return qcom_snd_sdw_hw_free(substream, &data->stream_prepared[cpu_dai->id]);
+>  }
+>  
+> +static int sm8250_snd_hw_params(struct snd_pcm_substream *substream,
+> +				struct snd_pcm_hw_params *params)
+> +{
+> +	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+> +	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+> +	int ret = 0;
+> +
+> +	switch (cpu_dai->id) {
+> +	case PRIMARY_TDM_RX_0...QUINARY_TDM_TX_7:
+> +		ret = sm8250_tdm_snd_hw_params(substream, params);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  static const struct snd_soc_ops sm8250_be_ops = {
+>  	.startup = sm8250_snd_startup,
+>  	.shutdown = qcom_snd_sdw_shutdown,
+>  	.hw_free = sm8250_snd_hw_free,
+> +	.hw_params = sm8250_snd_hw_params,
+>  	.prepare = sm8250_snd_prepare,
+>  };
+>  
 
