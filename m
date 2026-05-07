@@ -1,56 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E9340286;
-	Thu,  7 May 2026 20:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AD24ADDA9;
+	Thu,  7 May 2026 20:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186108; cv=none; b=k2FIRcTUxpRknj4a68IVX9Gq6mGd7qTPHH6oQNzjE2MtDKoTUlq4qJAdF8rbCG76U8znCoQZfU7t5wBNOa6v4lRDgfqzLjZF9e9uBKRpOeWE7iiu3crRCN6ZwGfK07srjG5a0pp9LHeHTDSBf9zPZpHiBHJRydu549uTpQbcMmM=
+	t=1778186115; cv=none; b=d6h/7bVjzWAZrKXljREK35H5ldeAHybi06o7hDPaP09oN3d1VycbUhm35oYPOkG/Fw5NDoFayxeuygFh2kTFGEjJnwpXH01Kuifla1/dImTlKrxSUc22hwcxAMuX9DxCUGF+6aCED6kdnvZ0+wKsGsn0EBxxPHjEXi9V8pImPaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186108; c=relaxed/simple;
-	bh=pdUxHJFr/avUru8v7w4LIVbr8CD2Jlb/uUKuoinaArc=;
+	s=arc-20240116; t=1778186115; c=relaxed/simple;
+	bh=sazAP2oVGZXfkGTv+FhIqQYVwPUI1cGv6nC8EixNI4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A+f4LjQuw43fcTFZrxsoaMrfkOz3i9vjoAjoxO9cK/ZZ2f6KGHBiYm28ro6k9HIVu2sJUTCNBWDRXPZ0GpGQ3AJ5n2AOvXuzoVzeKcExbbA23ct4u4GCUmh1xQk7wESnf7zL0EOSwXaQWlM8fXPErH2fASzQ5HjXZcUqw7Ps36s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+PUi/yC; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GuARWeCXgfw2RQWG7zuU8krnsGCQcaiADGdiejHS4u2H5XYQjBI4OsVGadGlEORjBv/36xK29G/8wS031RHXcz7w7jxAvsyai97xAH2IUI8FK//MvCKxlOXhB9md15PZEwkbCcsr4mQyTg3tO07A2Ts39EFXYvhO1g38rCREv7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/joN8l4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+PUi/yC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293A5C2BCB8;
-	Thu,  7 May 2026 20:35:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/joN8l4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6F3C2BCB2;
+	Thu,  7 May 2026 20:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778186107;
-	bh=pdUxHJFr/avUru8v7w4LIVbr8CD2Jlb/uUKuoinaArc=;
+	s=k20201202; t=1778186115;
+	bh=sazAP2oVGZXfkGTv+FhIqQYVwPUI1cGv6nC8EixNI4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+PUi/yCbGqZvPZczwZ/5C9kjmX1l+BHtEL+exqb2+eWd4F7Gp5Ql8Z0cUzLZjwe/
-	 UKx471tMo5ZtUKjDNIQb+GIahAFSqvWryJkGrA5c4qEE4EQtgQoX18XaYET67raw65
-	 5iWPy8nYqZLhkVXDYE2X8UgTzVJsAoqcuGs3NxHwGKm7RCwqR+wlENnpwWQkZPK1MO
-	 Lb65y8KVn0gOd3JBt7SQmr9rOfwZ8M2h7BX0X4rakB/x+yiYhxiY/0PvNk5oLHXQLa
-	 ITcckwKaATdXRBANcZ3Z2rNCYXeuw/c0p/hoDNjLsJUAoslEqjM7T7GrqAcBBBAFOc
-	 7OnPDKcsr1oew==
+	b=S/joN8l4Ed94NcKBj/YtnyDm7Bhn8NeTTrroS+UzsBnuymweS0q0IGkRghxODj5es
+	 ksz/CIEws6E1xYFb1GMZUPpqhHfYke09+5FUw+hw8utQgr0wARu/E0Jxx3suK0HMa1
+	 YeULbwsxN5BXxqlVMpgiTH6dFS4IDclnqJ0xxBWQtFdDzpknsFNURkcLOkaWzNGLh1
+	 I7xh0BJrqF6Am1KP/YLx0YsDHatH3rGunRvOwiBnypxIh2NcULg7eskutly9WhEgJn
+	 2oKCEZO7FdKyS3q+UDH0sut5jgjehAVZL2TVWFhZeGMretoIBCwk3Ji2rJE3kZsqNw
+	 rDmANMZyj8nJA==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Val Packett <val@packett.cool>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	Richard Acayan <mailingradian@gmail.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Todor Tomov <todor.too@gmail.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org,
-	Robert Mader <robert.mader@collabora.com>,
-	David Heidelberg <david@ixit.cz>,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v12 0/3] arm64: dts: qcom: sdm670-google-sargo: front camera support
-Date: Thu,  7 May 2026 15:34:26 -0500
-Message-ID: <177818606015.73000.6974952903773673444.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
+Date: Thu,  7 May 2026 15:34:30 -0500
+Message-ID: <177818606041.73000.17657106462085102010.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331194437.41041-1-mailingradian@gmail.com>
-References: <20260331194437.41041-1-mailingradian@gmail.com>
+In-Reply-To: <20260403054417.167917-1-val@packett.cool>
+References: <20260403054417.167917-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,24 +54,18 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Tue, 31 Mar 2026 15:44:34 -0400, Richard Acayan wrote:
-> This adds support for the IMX355 in devicetree and adds support for the
-> Pixel 3a front camera.
+On Fri, 03 Apr 2026 02:33:08 -0300, Val Packett wrote:
+> Motorola Edge 30 (motorola,dubai) is a smartphone based on the
+> SM7325 SoC.
 > 
-> Changes since v11 (https://lore.kernel.org/r/20260324020132.8683-1-mailingradian@gmail.com):
-> - mention 24 MHz in mclk2 comment (3/3)
-> - drop applied patches (previously 1-4/7)
 > 
-> [...]
 
 Applied, thanks!
 
-[1/3] arm64: dts: qcom: sdm670: label the camss ports instead of endpoints
-      commit: cbdf1a61dde22c226a776d60ea5bff260b94f653
-[2/3] arm64: dts: qcom: sdm670: add camera mclk pins
-      commit: 86695909eab6bfa577bf68c615dbe852ba9c8197
-[3/3] arm64: dts: qcom: sdm670-google-sargo: add imx355 front camera
-      commit: 8d3a34d7890faa4d968b16e29c5c80e559291fd2
+[1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
+      commit: 839d20f9f3da93f65c000187ee68387598bdecb5
+[2/2] arm64: dts: qcom: Add Motorola Edge 30 (dubai) DTS
+      commit: dd1316efdbc5a998b901b1c5f27da73d45060795
 
 Best regards,
 -- 
