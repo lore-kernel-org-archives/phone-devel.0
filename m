@@ -1,197 +1,198 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2581E39DBC2
-	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 08:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572F134752D
+	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 08:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778142679; cv=none; b=Zz71ZGdWee/t4D/cyUEMX305RWCczi9Zl6J3scwCa7zvLCDQ8JiZqSQhZUVZzn0H+CmVh9mKoAvDjjWmSll7PNlgU8Es1cyGqAg9OSpY4hR1Qej0pb+9dXPiYZy8RIfcFXjh6zDmjXaGI33PbC71SQFi0RfTNXqA5pes0Bo89GM=
+	t=1778142822; cv=none; b=Li1VxGsymCwvmqqAgcmAOn4StFCBLoKztNBwO/68oTiHz0hBhgclp0ogxKVuwDvtfC9iW41LobNRN3/pU13HYu3+6yLk4ZYl95VhboiiqrQV3ZoVGfojAM5GKwbacZxEq9duFpifN1Odd8uErNrzmhrou1RveepUG+VDmvW7qKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778142679; c=relaxed/simple;
-	bh=QS+xgoVpj05u0kN4fcEBZA7FdHDEHzpoDC0VDQZG2Ng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e5PiIU8JtaiYQqIutnq5wFst3b4TGIh9ylVyjnAe2/AlbVm35xPblSsPeCO3/DQjucbVCfubwXbpm0yt2zeWpc5f0264VU4mMK0oLRo11tNbnLhZRs5dQSkxA41CnG3L0zAC419CM/kUVPwDYtP+VFad8R/ehcgU7D0j/Ct3fV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BhXHcaXi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kQeS+DBd; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1778142822; c=relaxed/simple;
+	bh=D3osnMe3vp6rwSX+97IPBj9Y1Qkke5LagVWMBNxNw0A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oRyj2B8JUu5b89VcpMF4B50VCwm1vGIrg9tMRpbTT/0HusxsvdssyUtMt+zYbO+NJabHcYRWRcRGk/7P52++wSlXl3g3l2MqlEOEjvPk64REkMZCt2cLeKj/zX0iIezlnj5YWCKF+h02kEvwo2a0VbnLIEHxmH+zMfY1Uz8J2E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TaAAXT+V; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BhXHcaXi";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kQeS+DBd"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64759h8J3924960
-	for <phone-devel@vger.kernel.org>; Thu, 7 May 2026 08:31:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	D2XIi6C2iZGs4L66zdNlkVPXJfVednJv4dvbXHiQwWA=; b=BhXHcaXiPBfofdoq
-	lDzcH23JLjPWu2ruIVMlHF1l/fJ10xI4Bg+54JTCkn0ZX/ww/dABbaLNxWIZ0irX
-	kvoLZSBKRCNi7wrzRp0PNFfaMMUgmfjEK76lXTt7oar8vCQBEakBwRl673VDAosa
-	Q8/EO1/FyuEgcbMDhmjybOKy1MWbWzjq47SkaVuCeNEGEu4B0PbDsOjDwtZX5B6y
-	+PzKMs1cUeZm1dbR6wlYeB5ojBSmM5yw9j5eHP7dT5OdBp43h12WTU01TBqFIYaZ
-	ShmgZi9jTx5WAAOoc6qQdZ1bo+l2kmqT7wGgxwwHsburVoKs1yb5dSqdxHMAnBlL
-	GAX0Fw==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0c88a7jb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 08:31:14 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-6312431089aso171065137.0
-        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 01:31:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TaAAXT+V"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7bd5c582c6cso5411027b3.1
+        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 01:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778142673; x=1778747473; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D2XIi6C2iZGs4L66zdNlkVPXJfVednJv4dvbXHiQwWA=;
-        b=kQeS+DBdan8AA77aWYPbUHg6xR0Kd+iTY5p2avh21D+xQV5U6RwM3QN/9sR8DjvC/i
-         zKiZtMBeP6CeVjUrrRM0+gIhySuFzaH/G4DtYEq4oz/TAE82BAGvSlRProA9w9Zj6/j9
-         YEhhpQloZAthK+89UY0a4hhFG8IOOdc2PY+Zku9PnRcZjattvkk1NYAL3TG6iFuzgGGa
-         EdFWj36X3GBZuBQuG6bfiW35fJooZkZm4fDaT2AGq3SygYlUHSqmGHqkMPAgA5TGti7i
-         6ADiahUHHYMiEY1O8HCKf5rFmN6BGmZMsuE5b0FITWnA3Do452RoUfCFTQw4KxmONCkG
-         yUXw==
+        d=gmail.com; s=20251104; t=1778142816; x=1778747616; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u8Sk4ijFe93HuTbksMx/E9qQulVUf+80VobQVOkUoSw=;
+        b=TaAAXT+VyQSSbKz0IHsLjhmRGLd7Zy9A820pTZh3TlYK2rtcOt3PglRiFf+q6JYHA8
+         4dThlogZLucG0lHc1F3BLefcKjNacXtzq7YweV2z2Y10JiBjylnB0iAHIz7IFju8PKmb
+         RvuSTsyCRcRpvE/L3k4aD0iyJzwGX/dw3PqI1uY8mnU4b16dg7u0vA3/dq0ZIVnOnuMw
+         yNdwxOr1m8nqKzUE+5Euaqxgogi9jAr0vQhA7rIrOWwO8J069fiS3XZBrfsdHwhjB2Cl
+         ouHDBEbJLG91KNQbDUwAqLxocxhneEWXLWs7eMp6a0Gy79QyyjAFXRzLBun3XZ5mbXmX
+         0RfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778142673; x=1778747473;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D2XIi6C2iZGs4L66zdNlkVPXJfVednJv4dvbXHiQwWA=;
-        b=CiBo6p4RBw1tuDVfGnS6ohqUdoGrxAEKv6G5K65LzzuFnuUoJCChQPdcavBrWHrylF
-         8KUNVDMo1jZ5uQ4VmtYnVlTsPoqjv6Z/w1fBbfPT9TBn1RaiOuLpQ5ZuHrhwrB4cj6LM
-         y+blSwoLSJHFUD3oZDmic+cvf8OjYHI9H1Gl4UoUF7WG61QLUOZBv31WtcgKO/xo/cy2
-         9yuAMJcB8CUB4nqQr2ok8snZfrOcWkSI/3UgwFODMzztoTsIPGMu3YGwWY+XVdKOawyK
-         fKxq4a00FrGccST6yExHXV8bE+eWZ3FZq1vHemRSOsupEdOQgijikMWN4RoQCOTav7eD
-         Rfsg==
-X-Forwarded-Encrypted: i=1; AFNElJ8zQxFJCRqftObVGZe5b475FtBqmcg+mZUXc2P/PsLSBx2n9qjhmqQdDKEdJwVzKxPim+z58ginvshxWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylvcmMZodGzO1byMH7pClnUhFaBfXupOYP0A7yC0zUBvfGxvoY
-	qqGsscN/BGtCNojZ+RXpopCJlGSOMDFVpm75AMaY102dGSLXKJjpv3paIWkq+LYetPUGOzyB2kC
-	tB9C/p0WFff9bN6Y55d+IEnaph4AgIHE19O085I6v+xj1n4Dr43PwxywNPzfCvn9I4Q==
-X-Gm-Gg: AeBDievrfWfGt5EAgr0VmWjlT9OkZEasASAXxM0VYzHtq3C2zVrvNnYp1dtqUq6VFBo
-	xIbd7+7kkZViho3xVXN/B9ddmJq25uBPT8yCsmzAtQDaaNadaOEWqodln49Bhe91Fj65DGHCYwd
-	cTRgZRnggbcSE3nmGTLCYy4XsiM1r+Xpl7XBf2pqZYb9/qvQ4OGNjpKffOaEM7yiQTCwg5E8m7d
-	doCORD845jQIVHvPPgXODNdmGp/Ht97qT4DeYAg2ig8sTMJIjN6pPRPE8jZX2dnVOhnqS1sYs4K
-	cSE3TS6aLZM+OiQwIds4X+OBiLl+AVKNC/hb6IKv9FkKgclGAumneXLKoASL49DUAghUW2QCH0z
-	HzHdMiSQQQWYTsPUbnJpp7zOEYqRFePALUMT0RUtVFvrh/+4qwZuznlEpvOg=
-X-Received: by 2002:a05:6102:26c3:b0:62e:1ae1:cd6f with SMTP id ada2fe7eead31-63115d83748mr644461137.3.1778142673195;
-        Thu, 07 May 2026 01:31:13 -0700 (PDT)
-X-Received: by 2002:a05:6102:26c3:b0:62e:1ae1:cd6f with SMTP id ada2fe7eead31-63115d83748mr644457137.3.1778142672825;
-        Thu, 07 May 2026 01:31:12 -0700 (PDT)
-Received: from [192.168.68.112] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-bc833742a54sm53375366b.32.2026.05.07.01.31.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 01:31:12 -0700 (PDT)
-Message-ID: <af0d5cd5-4d4d-4cf1-a347-4f40c595d07d@oss.qualcomm.com>
-Date: Thu, 7 May 2026 08:31:10 +0000
+        d=1e100.net; s=20251104; t=1778142816; x=1778747616;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u8Sk4ijFe93HuTbksMx/E9qQulVUf+80VobQVOkUoSw=;
+        b=JbfqRoTAfszMoqbJZMq4cpoNLqIkIBfbJmPfK7YUEZsc9Z1bLQn4NvliM1/QvEK1ax
+         G78g8VI8SggqksYnUFjizlKxvgb7HjgavJopN+7hgfocP8ZjcVb3eXbDlYmuhCly7gUh
+         2+1Js3WQYx/SopoC6FHbJDzoIb99ua1Nu2NQR6NXoP1Hg69D5baSvl9+nZXKmNBYE6Wl
+         YDX/vNYatsuszbJytfg9lSCeycE4Xhdy5Xc2C7m9o8Qh4LiaLljrpCtBIl20mx+dcZ9r
+         ggBQf7nMKjeplMcWWMsIuxI8AMmqWTeFp93yyQwwyGzqLzqKOvPfOYCCme9hbsEWCly9
+         gDCg==
+X-Forwarded-Encrypted: i=1; AFNElJ9QW4gUggxEStP3poDM+7KGvHpwk16PNveltcPh/HGp2ocOJzPMecR3mL9zAYmsJWBICk88mUhYSZxuJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS3vdQLhNBUW1mwWZWaRDv8d/BMMSKWE47n8yo1oSmZK/JPDXz
+	lsajcrbq5h8NevdyGlm2StzTDzrfDsGXc7kCw8IRCgg/yQMxrPz5XiB3
+X-Gm-Gg: AeBDiesKZqlprpQOhrHduQm8JyUmUqyXFnV8ARPBcNqgOcKRqEUTz6B1DjzytTRdfI/
+	PTgG9d6aqlCMcXvF+iIEqaGUQ3YBL1Os4mu3NTfIs0i2zDY144FmlfBweBo1nYmarVuJOltNCTc
+	bNykDfxMmHZVTe1VkliUR+y2FNuMvvRBggyxxE3pT/WtfgW+gzkgFFtOMlsMObcVRFvbDOvxbIZ
+	DaQYpK1LW8SBk1eAemrB+CynQUCbcxFWteak6hlH6phGsMZ71S/RAWQQLqGiZ9TQmout0WPnCxW
+	x60V03ymV08l8fvn5KSKGoVf0WmaeFAPu/BleCXdigL3ZsidX8RDZAM99iLrzQI8zTN/t9cWtoS
+	yjh5slcVfRI+6LX4oEj6nA4g9vGMJeOFMTKK/VkZVcrSA5+kgB/wOGfmgyzN8urvoHFvWxckU5D
+	wlEFVW5iDWVHWAUVRrENYJxNJtafP3e73HoEHy
+X-Received: by 2002:a05:690c:e04e:b0:7bf:424:bf4d with SMTP id 00721157ae682-7bf0424ed8bmr19632797b3.2.1778142815746;
+        Thu, 07 May 2026 01:33:35 -0700 (PDT)
+Received: from [192.168.0.39] ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6683794dsm91692297b3.27.2026.05.07.01.33.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 01:33:35 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v5 0/8] media: qcom: venus: add MSM8939 support
+Date: Thu, 07 May 2026 11:32:15 +0300
+Message-Id: <20260507-msm8939-venus-rfc-v5-0-d7b5ea2ce591@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] ASoC: qcom: qdsp6: q6routing: add Senary MI2S
- ports
-To: Val Packett <val@packett.cool>, Srinivas Kandagatla <srini@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: Bhushan Shah <bhushan.shah@machinesoul.in>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Antoine Bernard <zalnir@proton.me>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260506204142.659778-1-val@packett.cool>
- <20260506204142.659778-3-val@packett.cool>
-Content-Language: en-US
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-In-Reply-To: <20260506204142.659778-3-val@packett.cool>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: NiRSKMgB1iAerdlVd6864IzRphZ57w9L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA4MiBTYWx0ZWRfXzHHdtQTiCWua
- uJ4I1HZy9US/33ql+u5HXOkeJLwl6W++25BwL1TeFn5IUrgi1JG+KCo8RPKUSLLDjve7yuWt08/
- vRC2ZGfSFNdKftSpNgPDTr6PKIHCAAGT4FiGh7iYcpXp8CoL0Pqi1G8l6OZ2gPdml779i7QquG8
- SvZMz/3EGMHqdiV+3VDqhvanEa2yGMrhMvRW8/sdA3eSQurbydET6h1xaPbJNhEzUEw5csc21HY
- cUNECAyHSW6n3y0hm8T6NQWmW/FSj5laIOnzmRAIQmVsmlPsdoU1FPDjF9D0d1azj/XeT1/+uuu
- P9sh43UKjY6egUT8pCbk1EsJvZrZ+TeQEmeCLsJ9crZpNHDmw/xhWYJdsPiVAvU12wt3TmDZDjU
- MpaUul+LJ/xCtt3U0QElNxPMZUYy2Y0Ms2Q/QoeTp1Q8YMuzAY25J5732u9UTrIgszrZ9oF3uS0
- 8pI5c7cuLoRo7w5Ssog==
-X-Proofpoint-GUID: NiRSKMgB1iAerdlVd6864IzRphZ57w9L
-X-Authority-Analysis: v=2.4 cv=X8Zi7mTe c=1 sm=1 tr=0 ts=69fc4dd2 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=cc8_7rZf7ZdJLD7Cf0wA:9 a=QEXdDO2ut3YA:10
- a=ODZdjJIeia2B_SHc_B0f:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 spamscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070082
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PQW7DIBAF0KtErEsEA9gmq9yj6gImQ0JV2xEkK
+ FHkuweni1qt1eWX/ryvebBMKVJmu82DJSoxx3GowbxtGJ7ccCQeDzUzENAILRve576zyvJCwzX
+ zFJCjAIMaWx0csXp3ThTi7WW+f3znfPWfhJcZmhunmC9jur9Gi5x7//lFcsGdsAEDIKhD2B97F
+ 7+2OPZs9gssBDBrAlQhNJYMeNWAaH8Laim0a4KqAnSdtMb71so/gv4RjFj9QlfBWh0MeQCHfil
+ M0/QEFbT/WooBAAA=
+X-Change-ID: 20260416-msm8939-venus-rfc-c025c4c74fae
+To: Bryan O'Donoghue <bod@kernel.org>, 
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-On 5/6/26 8:33 PM, Val Packett wrote:
-> This commit adds support for senary MI2S mixers.
-> 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
+This patch series adds support for Venus on MSM8939. It is mostly
+similar to MSM8916 Venus, except it needs two additional cores to be
+powered on before it can start decoding.
 
-lgtm,
+As per Dmitry's request, I am attaching Fluster results and
+v4l2-compliance output. Fluster results were very inconsistent and
+caused power collapse fails.
+H.264: https://pastebin.com/C15qeq5W
+H.265 (HEVC): https://pastebin.com/WDsnxvuk
+VP8: https://pastebin.com/egAgEm15
+v4l2-compliance: https://pastebin.com/VpBhEFc1
+Power collapse fail log: https://pastebin.com/rTivMcpK
 
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Changes in v5:
+- Undid the merge of vcodec_clks, they are split back to
+  vcodec{0,1}_clks now.
+- Extracted a dev_pm_domain_attach_list() call into a function of its
+  own to reduce nesting.
+- Added missing "power-domain-names" required property to device tree
+  binding.
+- Renamed vcodec clocks and power domains to match other Venus bindings.
+- Reordered commits and grouped them by subsystems. Now first come DTB
+  patches, then clock, then media.
+- Removed "status = "disabled"" in the device tree example.
+- Link to v4: https://patch.msgid.link/20260506-msm8939-venus-rfc-v4-0-994f5eb22acb@gmail.com
 
->  sound/soc/qcom/qdsp6/q6routing.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/sound/soc/qcom/qdsp6/q6routing.c b/sound/soc/qcom/qdsp6/q6routing.c
-> index 7386226046fa..55119cc33d95 100644
-> --- a/sound/soc/qcom/qdsp6/q6routing.c
-> +++ b/sound/soc/qcom/qdsp6/q6routing.c
-> @@ -68,6 +68,7 @@
->  	{ mix_name, "SEC_MI2S_TX", "SEC_MI2S_TX" },	\
->  	{ mix_name, "QUAT_MI2S_TX", "QUAT_MI2S_TX" },	\
->  	{ mix_name, "QUIN_MI2S_TX", "QUIN_MI2S_TX" },	\
-> +	{ mix_name, "SEN_MI2S_TX", "SEN_MI2S_TX" },	\
->  	{ mix_name, "TERT_MI2S_TX", "TERT_MI2S_TX" },		\
->  	{ mix_name, "SLIMBUS_0_TX", "SLIMBUS_0_TX" },		\
->  	{ mix_name, "SLIMBUS_1_TX", "SLIMBUS_1_TX" },		\
-> @@ -145,6 +146,9 @@
->  	SOC_SINGLE_EXT("QUIN_MI2S_TX", QUINARY_MI2S_TX,			\
->  		id, 1, 0, msm_routing_get_audio_mixer,			\
->  		msm_routing_put_audio_mixer),				\
-> +	SOC_SINGLE_EXT("SEN_MI2S_TX", SENARY_MI2S_TX,			\
-> +		id, 1, 0, msm_routing_get_audio_mixer,			\
-> +		msm_routing_put_audio_mixer),				\
->  	SOC_SINGLE_EXT("SLIMBUS_0_TX", SLIMBUS_0_TX,			\
->  		id, 1, 0, msm_routing_get_audio_mixer,			\
->  		msm_routing_put_audio_mixer),				\
-> @@ -535,6 +539,9 @@ static const struct snd_kcontrol_new quaternary_mi2s_rx_mixer_controls[] = {
->  static const struct snd_kcontrol_new quinary_mi2s_rx_mixer_controls[] = {
->  	Q6ROUTING_RX_MIXERS(QUINARY_MI2S_RX) };
->  
-> +static const struct snd_kcontrol_new senary_mi2s_rx_mixer_controls[] = {
-> +	Q6ROUTING_RX_MIXERS(SENARY_MI2S_RX) };
-> +
->  static const struct snd_kcontrol_new tertiary_mi2s_rx_mixer_controls[] = {
->  	Q6ROUTING_RX_MIXERS(TERTIARY_MI2S_RX) };
->  
-> @@ -777,6 +784,9 @@ static const struct snd_soc_dapm_widget msm_qdsp6_widgets[] = {
->  	SND_SOC_DAPM_MIXER("QUIN_MI2S_RX Audio Mixer", SND_SOC_NOPM, 0, 0,
->  			   quinary_mi2s_rx_mixer_controls,
->  			   ARRAY_SIZE(quinary_mi2s_rx_mixer_controls)),
-> +	SND_SOC_DAPM_MIXER("SEN_MI2S_RX Audio Mixer", SND_SOC_NOPM, 0, 0,
-> +			   senary_mi2s_rx_mixer_controls,
-> +			   ARRAY_SIZE(senary_mi2s_rx_mixer_controls)),
->  	SND_SOC_DAPM_MIXER("TERT_MI2S_RX Audio Mixer", SND_SOC_NOPM, 0, 0,
->  			   tertiary_mi2s_rx_mixer_controls,
->  			   ARRAY_SIZE(tertiary_mi2s_rx_mixer_controls)),
-> @@ -969,6 +979,7 @@ static const struct snd_soc_dapm_route intercon[] = {
->  	Q6ROUTING_RX_DAPM_ROUTE("SLIMBUS_6_RX Audio Mixer", "SLIMBUS_6_RX"),
->  	Q6ROUTING_RX_DAPM_ROUTE("QUAT_MI2S_RX Audio Mixer", "QUAT_MI2S_RX"),
->  	Q6ROUTING_RX_DAPM_ROUTE("QUIN_MI2S_RX Audio Mixer", "QUIN_MI2S_RX"),
-> +	Q6ROUTING_RX_DAPM_ROUTE("SEN_MI2S_RX Audio Mixer", "SEN_MI2S_RX"),
->  	Q6ROUTING_RX_DAPM_ROUTE("TERT_MI2S_RX Audio Mixer", "TERT_MI2S_RX"),
->  	Q6ROUTING_RX_DAPM_ROUTE("SEC_MI2S_RX Audio Mixer", "SEC_MI2S_RX"),
->  	Q6ROUTING_RX_DAPM_ROUTE("PRI_MI2S_RX Audio Mixer", "PRI_MI2S_RX"),
+Changes in v4:
+- Removed vcodec{0,1}_pmdomains and merged vcodec{0,1}_clks into
+  vcodec_clks instead for MSM8939.
+- Inlined video decoder and encoder device tree nodes in the driver and
+  removed them from the binding.
+- Kept vdec and venc methods for HFI v3 separate from HFI v1.
+- {vdec,venc}_get() are now called as early as before, since it is no
+  longer needed for us to attach power domains to dev_dec and dev_enc.
+- Link to v3: https://patch.msgid.link/20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com
+
+Changes in v3:
+- Added missing vcodec1_clks to resource struct.
+- Removed enc_nodename from resource struct since we include
+  video-decoder now.
+- Link to v2: https://patch.msgid.link/20260425-msm8939-venus-rfc-v2-0-f69e52b36207@gmail.com
+
+Changes in v2:
+- Enabled GDSCs during encoding as well.
+- Merged vcodec{0,1}_pmdomains_num into vcodec_pmdomains_num.
+- Reworded commit for marking GDSCs as hardware controlled. Same
+  situation as in cdc59600bccf ("clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock")
+- Clarified the reason for missing firmware-name property in device
+  tree.
+- Clarified the reason for moving vdec_get and venc_get for later.
+- Link to v1: https://patch.msgid.link/20260416-msm8939-venus-rfc-v1-0-a09fcf2c23df@gmail.com
+
+To: Bryan O'Donoghue <bod@kernel.org>
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: André Apitzsch <git@apitzsch.eu>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>
+To: Stephen Boyd <sboyd@kernel.org>
+To: Brian Masney <bmasney@redhat.com>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
+
+---
+André Apitzsch (4):
+      media: dt-bindings: venus: Add qcom,msm8939 schema
+      arm64: dts: qcom: msm8939: Add venus node
+      arm64: dts: qcom: msm8939-longcheer-l9100: Enable venus node
+      media: qcom: venus: Add msm8939 resource struct
+
+Erikas Bitovtas (4):
+      arm64: dts: qcom: msm8939-asus-z00t: add Venus
+      clk: qcom: gcc-msm8939: mark Venus core GDSCs as hardware controlled
+      media: qcom: venus: add power domain enable logic for Venus cores
+      media: qcom: venus: Enable HEVC decoding for MSM8939
+
+ .../bindings/media/qcom,msm8939-venus.yaml         |  79 +++++++++++
+ arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts     |   8 ++
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |   8 ++
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              |  23 ++++
+ drivers/clk/qcom/gcc-msm8939.c                     |   4 +
+ drivers/media/platform/qcom/venus/core.c           |  43 ++++++
+ drivers/media/platform/qcom/venus/hfi_parser.c     |   3 +-
+ drivers/media/platform/qcom/venus/pm_helpers.c     | 149 ++++++++++++++++++++-
+ 8 files changed, 312 insertions(+), 5 deletions(-)
+---
+base-commit: 735d2f48cadaa9a87e7c7601667878de70c771c5
+change-id: 20260416-msm8939-venus-rfc-c025c4c74fae
+
+Best regards,
+--  
+Erikas Bitovtas <xerikasxx@gmail.com>
 
