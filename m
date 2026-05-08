@@ -1,47 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC6E2F8E8E;
-	Fri,  8 May 2026 01:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DBA371CEC
+	for <phone-devel@vger.kernel.org>; Fri,  8 May 2026 06:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778203939; cv=none; b=nGQzRd8ZVCUgo/omeZC6XPHoPtpxLwqXF10IzDQso4Pz0nR3qXKIUc7O541K8lChFYJUVDAaHLndQUNN+8RZf6zh0v7oZFYCeeRRJhqbUehxyn1ps5D0oNdx+N7KVZWO9g50dnRoG0ct9IoS4bigx47ZcYbHec7rU9+ERfCRbiE=
+	t=1778220714; cv=none; b=cc62111PCMVcRJpRfTgoowGabUwzVnfmrApuhQJigdTMRAB1ARSuHB7CuhkZ613i9F1xFsJBHfur32eGxaZkMVkLt5RsYsFQEm72pYfvw+m4XjwJ3YPHqgSU1Z7lkuXI8xAsI1ZreeLR9YrTBFr9/K987A3ycLc+L5e8WyxhytU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778203939; c=relaxed/simple;
-	bh=QP0xG48S9tXmtCpI+YjP2zIBDW86qbdVELRqOAKilqM=;
+	s=arc-20240116; t=1778220714; c=relaxed/simple;
+	bh=UOMQRXoAVwk70uaufZhCWFNt7EA3VOTwF7G0ARoU3VM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ajnXr/LbM7ff/1Db2zfyhJYypwSz2bldbPmzLsrFARqoKR0woraX5D5WJMJ/20yuT1c1f6oZOyrB6HQSax5FsgxyUQrvQELD1frIfrQbe4lZQrcX4af1F5WBAQ0Wz9jl9BHttVoX/NtfR2XCvTheT8HCNniEm2VPT4OemM8AEAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPtgybFn; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ccwG9R89zIQesfqaMTf2lAt66yYCVY4A9SyT3N5+QZ7RUdipxEI0KSMHKtSsV1T4ujHQfvJs1LVbKhePn+LnbP4M0NS8vIw5JIItK8MCMRKOw5hmtVvVTLuRKmrjjykaRqsTD5K87s/mk0i1CtHJGfuTfSzKCjnMaR0qT+awLEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=af9Aq9W0; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPtgybFn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE15C2BCB2;
-	Fri,  8 May 2026 01:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778203938;
-	bh=QP0xG48S9tXmtCpI+YjP2zIBDW86qbdVELRqOAKilqM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NPtgybFnxiU/9wqeAjmLiX5jcpkh22KSrUmRWWc0ifwYDfYI5gyFBGwRIM2DZWZ5R
-	 shY1ZvtBAJTVNZs+G9H1+Jixrqyazmct2tfnZNPizRWaTh117NaqjFwo3rzZzFYAo2
-	 g0LzwlQDrL6HZ/LO5JD8KtZvLsuJmjZyl09ax92f6tEKDhuBtfotn2m390TJLJwF1y
-	 EJmhCPrNZaJSdSxyyEMA6T7JrmeM88MgwutZgQHhF2qF2dCfvMnf58uLHCj/yBiT18
-	 mftY56a1uPxo47dT3bpTwaKyvCPEyLqvN6s41QIPpaM72gFxzgTbUkup1Q+0eeKaLc
-	 ykXfd87BDzYTw==
-Date: Thu, 7 May 2026 20:32:13 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Georgi Djakov <djakov@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="af9Aq9W0"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2c15849aa2cso2113582eec.0
+        for <phone-devel@vger.kernel.org>; Thu, 07 May 2026 23:11:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778220704; x=1778825504; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jXb0SR/K0dwEQwnGYT+FJTHi8ls55dvpbTwOnKCIOSw=;
+        b=af9Aq9W0YoPBm3194Lof4H08dGP+IF1d0al6sFdkh25soZ66jiCO1V56mxofiQLRJ1
+         eS29CYpT7QFelcSRA652MmQA4IzaC9kXNqM7iiKrvPPacrX3MP+ZwdlSIUs6VOVpYi9B
+         d98xZfJPhigLxZYybmnXEW6phB0VJUA13jsXMmLZekAV94oI0DCV46Zv0NkpTMH4MtQQ
+         NyvdNSRG/TOyc1wlWiwT9tQG8ytP7EqafxbQKQP6zBffcx5QnC9qk/41pQDKKW4PAt7u
+         gh9jzhkmp3sDLj24NDARc8itE86iV1UMnvsDT3U4YP1rfnsFzrsSxRCvfuSbE4lpjxHU
+         HU+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778220704; x=1778825504;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jXb0SR/K0dwEQwnGYT+FJTHi8ls55dvpbTwOnKCIOSw=;
+        b=YBaZRPSx/gQ1wnR72IoGXU1uCEhzngbNdCQ5FUQVqHKSUJadbw0X0yrxCK0fxi7u1D
+         3hhvAVtltLVdBZLNm3Hxx/EhTtM46G3uzGKgySKaqDlABHF3+b4y/d8FV7VwVOMnViM6
+         usEisr/FB/M1u5d6OZwJWjjY3glY2n9F4dx7vdb1NfLUuGX8nnvxh3xTNQ3MlSV9SdMk
+         /4lA0eY8byyFmXmY7t3wGh9dzUncV51Ys3/4v3Peinozh/YMpEUFzclxnmwxIhsYvtvb
+         LNsoWzLGeH6mX+yMwX8WqqNPVo8G/T5/vn/3EWhyVbYanYKOhWeZ4jlKETxQ8goqJt0A
+         GYQA==
+X-Forwarded-Encrypted: i=1; AFNElJ8vryEvZ77T4C6oODx6pnDMuHVO61Z1XhFlKogLT0vvZaF5fvof+u476iBt5RqFvDb6QOnf3sLqr9jSCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsU7sj4Wp34vzsQJUyvM3d+b01FEI53pHiA4M4nrfrwvNEJfAX
+	1Dz2HHm8kuGklqDnf2EFkPgZO/EjP1aZvg6y4474TXyOyPk+8R4FXixx
+X-Gm-Gg: Acq92OGonUnCLKD3qts56Kon47bwI97FUZqjQFKAMCkUraXIihLEC+yXyXdKsT3B7a7
+	V9P+TNp3wDBng+vQWlbpZRgfbW2ZkAIwtW/JYE0twQc5aivuK8R6lEsVDHT20ajrhwnFH8SDSgd
+	OediESKxNyFXN52GwkEevqj5xDcXRS9ui9DvtKtThfIkJAeOeKZpJIopEUvGP0BIchcu/KhsEXC
+	UnvgReDwkjI9gKuKn6AQ+FGguoG5wGg6cMbdh9SXsXnxPNe4A8BZ8sV5v1DcpVCmEKsuiPd6T72
+	f1gn84NLmfp36/o86X2+/ZGfyZYmPXwLJ47D6scqGHlUgq56SiezmGLtXr1hmyPD5sPfsqqeRB1
+	47VGLgMaY7+GgRjOX5WMzj3bvI/+06KjvjharsyVu/33frXPIdksToSZI4X7yXxPahBRmwvPE6U
+	bKXrMRy6Mc6WuAsvtMsxYTx3yT/knfPTc2BZudNgTvBd3e/TTYIsPl1PAVf+1q+3hV8RtD/ME7Y
+	bk=
+X-Received: by 2002:a05:693c:2b08:b0:2ea:cd38:f921 with SMTP id 5a478bee46e88-2f54aa78245mr5844784eec.26.1778220703475;
+        Thu, 07 May 2026 23:11:43 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:852e:ebf3:8de1:32e1])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888e3e285sm1132502eec.27.2026.05.07.23.11.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 23:11:42 -0700 (PDT)
+Date: Thu, 7 May 2026 23:11:39 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Mike Tipton <mike.tipton@oss.qualcomm.com>, 
-	Taniya Das <taniya.das@oss.qualcomm.com>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/5] interconnect: Add devm_of_icc_get_by_index() as
- exported API for users
-Message-ID: <af08-zMGzSSsw_NR@baldur>
-References: <20260501-milos-camcc-icc-v2-0-bb83c1256cc3@fairphone.com>
- <20260501-milos-camcc-icc-v2-1-bb83c1256cc3@fairphone.com>
+	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 10/11] Input: stmfts - support FTS5
+Message-ID: <af13d0-zM8Qjtjcj@google.com>
+References: <20260409-stmfts5-v4-0-64fe62027db5@ixit.cz>
+ <20260409-stmfts5-v4-10-64fe62027db5@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -50,83 +82,324 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260501-milos-camcc-icc-v2-1-bb83c1256cc3@fairphone.com>
+In-Reply-To: <20260409-stmfts5-v4-10-64fe62027db5@ixit.cz>
 
-On Fri, May 01, 2026 at 11:18:29AM +0200, Luca Weiss wrote:
-> Users can use devm version of of_icc_get_by_index() to benefit from
-> automatic resource release.
-> 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Hi David,
 
-Georgi, can I have an ack on this, or an immutable branch and a ping
-once it's available?
-
-Thanks,
-Bjorn
-
-> ---
->  drivers/interconnect/core.c  | 20 ++++++++++++++++++++
->  include/linux/interconnect.h |  6 ++++++
->  2 files changed, 26 insertions(+)
-> 
-> diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
-> index 8569b78a1851..bc2e416dbcb2 100644
-> --- a/drivers/interconnect/core.c
-> +++ b/drivers/interconnect/core.c
-> @@ -443,6 +443,26 @@ struct icc_path *devm_of_icc_get(struct device *dev, const char *name)
->  }
->  EXPORT_SYMBOL_GPL(devm_of_icc_get);
+On Thu, Apr 09, 2026 at 12:15:53AM +0200, David Heidelberg via B4 Relay wrote:
+> @@ -101,12 +129,27 @@ struct stmfts_data {
 >  
-> +struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx)
+>  	struct completion cmd_done;
+>  
+> +	unsigned long touch_id;
+> +	unsigned long stylus_id;
+
+I wonder why do you track contacts yourself instead of telling input
+core to do it for you and report BTN_TOUCH as needed? You just need to
+call input_mt_sync_frame() when you are done processing input frame.
+
+Does the device send all contacts state in one transmission or it can
+transmit contacts one by one?
+
+> +
+> +	/* Boundary check - some devices report max value, adjust */
+> +	if (x >= sdata->prop.max_x)
+> +		x = sdata->prop.max_x - 1;
+> +	if (y >= sdata->prop.max_y)
+> +		y = sdata->prop.max_y - 1;
+
+It is allowed to exceed declared min and max, so this clampin is not
+needed.
+
+>  
+> +static int stmfts5_set_scan_mode(struct stmfts_data *sdata, const u8 val)
 > +{
-> +	struct icc_path **ptr, *path;
+> +	int err;
 > +
-> +	ptr = devres_alloc(devm_icc_release, sizeof(*ptr), GFP_KERNEL);
-> +	if (!ptr)
-> +		return ERR_PTR(-ENOMEM);
+> +	u8 scan_mode_cmd[3] = { STMFTS5_SET_SCAN_MODE, 0x00, val };
+> +	struct i2c_msg msg = {
+> +		.addr = sdata->client->addr,
+> +		.len = sizeof(scan_mode_cmd),
+> +		.buf = scan_mode_cmd,
+> +	};
 > +
-> +	path = of_icc_get_by_index(dev, idx);
-> +	if (!IS_ERR(path)) {
-> +		*ptr = path;
-> +		devres_add(dev, ptr);
-> +	} else {
-> +		devres_free(ptr);
+> +	err = i2c_transfer(sdata->client->adapter, &msg, 1);
+
+Is this i2c_master_send()?
+
+> +	if (err != 1)
+> +		return err < 0 ? err : -EIO;
+> +
+> +	return 0;
+> +
+> +}
+> +
+>  static int stmfts_input_open(struct input_dev *dev)
+>  {
+>  	struct stmfts_data *sdata = input_get_drvdata(dev);
+> @@ -371,6 +622,28 @@ static int stmfts_input_open(struct input_dev *dev)
+>  	return 0;
+>  }
+>  
+> +static int stmfts5_input_open(struct input_dev *dev)
+> +{
+> +	struct stmfts_data *sdata = input_get_drvdata(dev);
+> +	int err;
+> +
+> +	err = pm_runtime_resume_and_get(&sdata->client->dev);
+> +	if (err)
+> +		return err;
+> +
+> +	mutex_lock(&sdata->mutex);
+> +	sdata->running = true;
+> +	mutex_unlock(&sdata->mutex);
+
+	scoped_guard(mutex, &sdata->mutex)
+		sdata->running;
+
+> +
+> +	err = stmfts5_set_scan_mode(sdata, 0xff);
+> +	if (err) {
+> +		pm_runtime_put_sync(&sdata->client->dev);
+
+Reset "running"?
+
+> +		return err;
 > +	}
 > +
-> +	return path;
+> +	return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(devm_of_icc_get_by_index);
 > +
->  /**
->   * of_icc_get_by_index() - get a path handle from a DT node based on index
->   * @dev: device pointer for the consumer device
-> diff --git a/include/linux/interconnect.h b/include/linux/interconnect.h
-> index 4b12821528a6..75a32ad0482e 100644
-> --- a/include/linux/interconnect.h
-> +++ b/include/linux/interconnect.h
-> @@ -47,6 +47,7 @@ struct icc_path *of_icc_get(struct device *dev, const char *name);
->  struct icc_path *devm_of_icc_get(struct device *dev, const char *name);
->  int devm_of_icc_bulk_get(struct device *dev, int num_paths, struct icc_bulk_data *paths);
->  struct icc_path *of_icc_get_by_index(struct device *dev, int idx);
-> +struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx);
->  void icc_put(struct icc_path *path);
->  int icc_enable(struct icc_path *path);
->  int icc_disable(struct icc_path *path);
-> @@ -79,6 +80,11 @@ static inline struct icc_path *of_icc_get_by_index(struct device *dev, int idx)
->  	return NULL;
+>  static void stmfts_input_close(struct input_dev *dev)
+>  {
+>  	struct stmfts_data *sdata = input_get_drvdata(dev);
+> @@ -404,6 +677,23 @@ static void stmfts_input_close(struct input_dev *dev)
+>  	pm_runtime_put_sync(&sdata->client->dev);
 >  }
 >  
-> +static inline struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx)
+> +static void stmfts5_input_close(struct input_dev *dev)
 > +{
-> +	return NULL;
+> +	struct stmfts_data *sdata = input_get_drvdata(dev);
+> +	int err;
+> +
+> +	err = stmfts5_set_scan_mode(sdata, 0x00);
+> +	if (err)
+> +		dev_warn(&sdata->client->dev,
+> +			 "failed to disable touchscreen: %d\n", err);
+> +
+> +	mutex_lock(&sdata->mutex);
+> +	sdata->running = false;
+> +	mutex_unlock(&sdata->mutex);
+
+scoped_guard()
+
+> +
+> +	pm_runtime_put_sync(&sdata->client->dev);
 > +}
 > +
->  static inline void icc_put(struct icc_path *path)
+>  static ssize_t stmfts_sysfs_chip_id(struct device *dev,
+>  				struct device_attribute *attr, char *buf)
 >  {
+> @@ -484,10 +774,8 @@ static ssize_t stmfts_sysfs_hover_enable_write(struct device *dev,
+>  	guard(mutex)(&sdata->mutex);
+>  
+>  	if (hover != sdata->hover_enabled) {
+> -		if (sdata->running) {
+> -			err = i2c_smbus_write_byte(sdata->client,
+> -					   value ? STMFTS_SS_HOVER_SENSE_ON :
+> -						   STMFTS_SS_HOVER_SENSE_OFF);
+> +		if (sdata->running && sdata->ops->set_hover) {
+> +			err = sdata->ops->set_hover(sdata, hover);
+>  			if (err)
+>  				return err;
+>  		}
+> @@ -612,7 +900,7 @@ static int stmfts_power_on(struct stmfts_data *sdata)
+>  	if (sdata->reset_gpio)
+>  		stmfts_reset(sdata);
+>  
+> -	err = stmfts_configure(sdata);
+> +	err = sdata->ops->configure(sdata);
+>  	if (err)
+>  		regulator_bulk_disable(ARRAY_SIZE(stmfts_supplies),
+>  				       sdata->supplies);
+> @@ -620,6 +908,29 @@ static int stmfts_power_on(struct stmfts_data *sdata)
+>  	return err;
 >  }
-> 
-> -- 
-> 2.54.0
-> 
+>  
+> +static int stmfts5_configure(struct stmfts_data *sdata)
+> +{
+> +	u8 event[STMFTS_EVENT_SIZE];
+> +	int ret;
+> +
+> +	/* Verify I2C communication */
+> +	ret = i2c_smbus_read_i2c_block_data(sdata->client,
+> +					    STMFTS_READ_ALL_EVENT,
+> +					    sizeof(event), event);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	enable_irq(sdata->client->irq);
+> +
+> +	return 0;
+> +}
+> +
+> +static void stmfts5_chip_power_off(struct stmfts_data *sdata)
+> +{
+> +	i2c_smbus_write_byte(sdata->client, STMFTS_SLEEP_IN);
+> +	msleep(20);
+> +}
+> +
+>  static void stmfts_power_off(void *data)
+>  {
+>  	struct stmfts_data *sdata = data;
+> @@ -629,10 +940,73 @@ static void stmfts_power_off(void *data)
+>  	if (sdata->reset_gpio)
+>  		gpiod_set_value_cansleep(sdata->reset_gpio, 1);
+>  
+> +	if (sdata->ops->power_off)
+> +		sdata->ops->power_off(sdata);
+> +
+>  	regulator_bulk_disable(ARRAY_SIZE(stmfts_supplies),
+>  			       sdata->supplies);
+>  }
+>  
+> +static int stmfts_setup_input(struct stmfts_data *sdata)
+> +{
+> +	struct device *dev = &sdata->client->dev;
+> +
+> +	input_set_abs_params(sdata->input, ABS_MT_ORIENTATION, 0, 255, 0, 0);
+> +	input_set_abs_params(sdata->input, ABS_DISTANCE, 0, 255, 0, 0);
+> +
+> +	sdata->use_key = device_property_read_bool(dev, "touch-key-connected");
+> +	if (sdata->use_key) {
+> +		input_set_capability(sdata->input, EV_KEY, KEY_MENU);
+> +		input_set_capability(sdata->input, EV_KEY, KEY_BACK);
+> +	}
+> +
+> +	return input_mt_init_slots(sdata->input, STMFTS_MAX_FINGERS,
+> +				   INPUT_MT_DIRECT);
+> +}
+> +
+> +static int stmfts5_setup_input(struct stmfts_data *sdata)
+> +{
+> +	struct device *dev = &sdata->client->dev;
+> +
+> +	sdata->mode_switch_gpio = devm_gpiod_get_optional(dev, "mode-switch",
+> +							  GPIOD_OUT_HIGH);
+> +	if (IS_ERR(sdata->mode_switch_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(sdata->mode_switch_gpio),
+> +				     "Failed to get GPIO 'switch'\n");
+> +
+> +	/* Mark as direct input device for calibration support */
+> +	__set_bit(INPUT_PROP_DIRECT, sdata->input->propbit);
+> +
+> +	/* Set up basic touch capabilities */
+> +	input_set_capability(sdata->input, EV_KEY, BTN_TOUCH);
+
+This will be done by input_mt_init_slots(..., INPUT_MT_DIRECT). 
+
+> +
+> +	/* Set resolution for accurate calibration */
+> +	if (!input_abs_get_res(sdata->input, ABS_MT_POSITION_X)) {
+> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_X, 10);
+> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_Y, 10);
+> +	}
+> +
+> +	input_set_abs_params(sdata->input, ABS_MT_DISTANCE, 0, 255, 0, 0);
+> +
+> +	/* Enable stylus support if requested */
+> +	sdata->stylus_enabled = device_property_read_bool(dev, "stylus-enabled");
+> +
+> +	/* Initialize touch tracking bitmaps */
+> +	sdata->touch_id = 0;
+> +	sdata->stylus_id = 0;
+> +
+> +	/* Initialize MT slots with support for pen tool type */
+> +	return input_mt_init_slots(sdata->input, STMFTS_MAX_FINGERS,
+> +				   INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED);
+
+Why INPUT_MT_DROP_UNUSED?
+
+> +}
+> +
+> +static int stmfts_set_hover(struct stmfts_data *sdata, bool enable)
+> +{
+> +	return i2c_smbus_write_byte(sdata->client,
+> +				    enable ? STMFTS_SS_HOVER_SENSE_ON :
+> +					     STMFTS_SS_HOVER_SENSE_OFF);
+> +}
+> +
+>  static int stmfts_enable_led(struct stmfts_data *sdata)
+>  {
+>  	int err;
+> @@ -678,6 +1052,8 @@ static int stmfts_probe(struct i2c_client *client)
+>  	mutex_init(&sdata->mutex);
+>  	init_completion(&sdata->cmd_done);
+>  
+> +	sdata->ops = of_device_get_match_data(dev);
+> +
+>  	err = devm_regulator_bulk_get_const(dev,
+>  					    ARRAY_SIZE(stmfts_supplies),
+>  					    stmfts_supplies,
+> @@ -697,8 +1073,8 @@ static int stmfts_probe(struct i2c_client *client)
+>  
+>  	sdata->input->name = STMFTS_DEV_NAME;
+>  	sdata->input->id.bustype = BUS_I2C;
+> -	sdata->input->open = stmfts_input_open;
+> -	sdata->input->close = stmfts_input_close;
+> +	sdata->input->open = sdata->ops->input_open;
+> +	sdata->input->close = sdata->ops->input_close;
+>  
+>  	input_set_capability(sdata->input, EV_ABS, ABS_MT_POSITION_X);
+>  	input_set_capability(sdata->input, EV_ABS, ABS_MT_POSITION_Y);
+> @@ -706,19 +1082,9 @@ static int stmfts_probe(struct i2c_client *client)
+>  
+>  	input_set_abs_params(sdata->input, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
+>  	input_set_abs_params(sdata->input, ABS_MT_TOUCH_MINOR, 0, 255, 0, 0);
+> -	input_set_abs_params(sdata->input, ABS_MT_ORIENTATION, 0, 255, 0, 0);
+>  	input_set_abs_params(sdata->input, ABS_MT_PRESSURE, 0, 255, 0, 0);
+> -	input_set_abs_params(sdata->input, ABS_DISTANCE, 0, 255, 0, 0);
+> -
+> -	sdata->use_key = device_property_read_bool(dev,
+> -						   "touch-key-connected");
+> -	if (sdata->use_key) {
+> -		input_set_capability(sdata->input, EV_KEY, KEY_MENU);
+> -		input_set_capability(sdata->input, EV_KEY, KEY_BACK);
+> -	}
+>  
+> -	err = input_mt_init_slots(sdata->input,
+> -				  STMFTS_MAX_FINGERS, INPUT_MT_DIRECT);
+> +	err = sdata->ops->setup_input(sdata);
+>  	if (err)
+>  		return err;
+>  
+> @@ -789,13 +1155,62 @@ static int stmfts_runtime_suspend(struct device *dev)
+>  	return ret;
+>  }
+>  
+> -static int stmfts_runtime_resume(struct device *dev)
+> +static int stmfts_chip_runtime_resume(struct stmfts_data *sdata)
+> +{
+> +	return i2c_smbus_write_byte(sdata->client, STMFTS_SLEEP_OUT);
+> +}
+> +
+> +static int stmfts5_chip_runtime_resume(struct stmfts_data *sdata)
+>  {
+> -	struct stmfts_data *sdata = dev_get_drvdata(dev);
+>  	struct i2c_client *client = sdata->client;
+> +	struct device *dev = &client->dev;
+> +	u8 int_enable_cmd[4] = {0xB6, 0x00, 0x2C, 0x01};
+> +	struct i2c_msg msg = {
+> +		.addr = client->addr,
+> +		.len = sizeof(int_enable_cmd),
+> +		.buf = int_enable_cmd,
+> +	};
+>  	int ret;
+
+"int err" everywhere where the variable carries error code or 0.
+
+
+Thanks.
+
+-- 
+Dmitry
