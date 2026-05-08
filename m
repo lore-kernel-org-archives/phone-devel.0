@@ -1,73 +1,132 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFA03128A2
-	for <phone-devel@vger.kernel.org>; Thu,  7 May 2026 20:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC6E2F8E8E;
+	Fri,  8 May 2026 01:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778187234; cv=none; b=RQxPOhaOxxbkE/Eko8fby7H0J5Azt8iT/kjvF+Ymc5TVa71WIgiZq0gchaMSeTIQK9lJ6pUTd+l8o86fQ5gs7+EfIba42038BayiKS4hJpEqhyGdJ1IbJe/ygua4+0prpJ4ZUWAbV8TNoprI49xC/csfJZTc6Pdfl8xqQgqXIOo=
+	t=1778203939; cv=none; b=nGQzRd8ZVCUgo/omeZC6XPHoPtpxLwqXF10IzDQso4Pz0nR3qXKIUc7O541K8lChFYJUVDAaHLndQUNN+8RZf6zh0v7oZFYCeeRRJhqbUehxyn1ps5D0oNdx+N7KVZWO9g50dnRoG0ct9IoS4bigx47ZcYbHec7rU9+ERfCRbiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778187234; c=relaxed/simple;
-	bh=9vUg0xkiSDkepEoN8IDASAjds+I8c1f9uvf6Obg1TMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FJLFUVok9svAGYBDg8ORJr1cgVZXDohm5tXy04RTvuanNamd7gfbObHkBNQgJzr5FqavQWnoTibDgeBbQM4G6Vz00MLcBN3eVsFnO0/wR+s2WLDS6XE9NsaZtDTEDoEfZ8AhK8HE0gYMPirUVCJF78yjuYOhrWLwafp6v0aw8eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=QN6Q+Vye; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1778203939; c=relaxed/simple;
+	bh=QP0xG48S9tXmtCpI+YjP2zIBDW86qbdVELRqOAKilqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ajnXr/LbM7ff/1Db2zfyhJYypwSz2bldbPmzLsrFARqoKR0woraX5D5WJMJ/20yuT1c1f6oZOyrB6HQSax5FsgxyUQrvQELD1frIfrQbe4lZQrcX4af1F5WBAQ0Wz9jl9BHttVoX/NtfR2XCvTheT8HCNniEm2VPT4OemM8AEAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPtgybFn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="QN6Q+Vye"
-Message-ID: <68f52289-eb4e-4f01-a705-a0f490c08594@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1778187230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6k+wfspzFKv3Ve/IAsYT1QG5E45d6fJFzLS1REhNuj0=;
-	b=QN6Q+VyeR9Ug7qTHsaWRnn2Z4rpxVKz/eOGs4G66Weqcf65haee64UAIQ4zdhXGPtRbIUU
-	dv0/QsdrEhJYzrwK4eBSKhhIrgLR0tOuDeCi/i/NN95Sib4pksKgEmyss3NtYr4c8JKAqq
-	cA7wGyrIlr/MQtbb+YdvHokKPRuEmhNFQc5IhyNt8pc3iFAuCoh8p4G54VYkfAYoFzc/cm
-	jayyTIy1QOJouGaxHNcLFmtCW4evQ1LgU3xcAWVD4fPow2DQ8zMeYx10O4gUCRKQ3iAPYa
-	9wNJ4aTo0GKOtTi8ucnePrUZzGEMRbXykWybAjhwsnKVV7jBCPt0LYRwFZwZEA==
-Date: Thu, 7 May 2026 17:53:34 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPtgybFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE15C2BCB2;
+	Fri,  8 May 2026 01:32:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778203938;
+	bh=QP0xG48S9tXmtCpI+YjP2zIBDW86qbdVELRqOAKilqM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NPtgybFnxiU/9wqeAjmLiX5jcpkh22KSrUmRWWc0ifwYDfYI5gyFBGwRIM2DZWZ5R
+	 shY1ZvtBAJTVNZs+G9H1+Jixrqyazmct2tfnZNPizRWaTh117NaqjFwo3rzZzFYAo2
+	 g0LzwlQDrL6HZ/LO5JD8KtZvLsuJmjZyl09ax92f6tEKDhuBtfotn2m390TJLJwF1y
+	 EJmhCPrNZaJSdSxyyEMA6T7JrmeM88MgwutZgQHhF2qF2dCfvMnf58uLHCj/yBiT18
+	 mftY56a1uPxo47dT3bpTwaKyvCPEyLqvN6s41QIPpaM72gFxzgTbUkup1Q+0eeKaLc
+	 ykXfd87BDzYTw==
+Date: Thu, 7 May 2026 20:32:13 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Georgi Djakov <djakov@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Mike Tipton <mike.tipton@oss.qualcomm.com>, 
+	Taniya Das <taniya.das@oss.qualcomm.com>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/5] interconnect: Add devm_of_icc_get_by_index() as
+ exported API for users
+Message-ID: <af08-zMGzSSsw_NR@baldur>
+References: <20260501-milos-camcc-icc-v2-0-bb83c1256cc3@fairphone.com>
+ <20260501-milos-camcc-icc-v2-1-bb83c1256cc3@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: arm: qcom: Add SM7325
- Motorola Edge 30 (dubai)
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260403054417.167917-1-val@packett.cool>
- <177818606041.73000.17657106462085102010.b4-ty@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <177818606041.73000.17657106462085102010.b4-ty@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260501-milos-camcc-icc-v2-1-bb83c1256cc3@fairphone.com>
 
+On Fri, May 01, 2026 at 11:18:29AM +0200, Luca Weiss wrote:
+> Users can use devm version of of_icc_get_by_index() to benefit from
+> automatic resource release.
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-On 5/7/26 5:34 PM, Bjorn Andersson wrote:
-> On Fri, 03 Apr 2026 02:33:08 -0300, Val Packett wrote:
->> Motorola Edge 30 (motorola,dubai) is a smartphone based on the
->> SM7325 SoC.
-> Applied, thanks!
->
-> [1/2] dt-bindings: arm: qcom: Add SM7325 Motorola Edge 30 (dubai)
->        commit: 839d20f9f3da93f65c000187ee68387598bdecb5
-> [2/2] arm64: dts: qcom: Add Motorola Edge 30 (dubai) DTS
->        commit: dd1316efdbc5a998b901b1c5f27da73d45060795
+Georgi, can I have an ack on this, or an immutable branch and a ping
+once it's available?
 
-the.. v2?? but I've sent the v3 yesterday :(
+Thanks,
+Bjorn
 
-~val
-
+> ---
+>  drivers/interconnect/core.c  | 20 ++++++++++++++++++++
+>  include/linux/interconnect.h |  6 ++++++
+>  2 files changed, 26 insertions(+)
+> 
+> diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+> index 8569b78a1851..bc2e416dbcb2 100644
+> --- a/drivers/interconnect/core.c
+> +++ b/drivers/interconnect/core.c
+> @@ -443,6 +443,26 @@ struct icc_path *devm_of_icc_get(struct device *dev, const char *name)
+>  }
+>  EXPORT_SYMBOL_GPL(devm_of_icc_get);
+>  
+> +struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx)
+> +{
+> +	struct icc_path **ptr, *path;
+> +
+> +	ptr = devres_alloc(devm_icc_release, sizeof(*ptr), GFP_KERNEL);
+> +	if (!ptr)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	path = of_icc_get_by_index(dev, idx);
+> +	if (!IS_ERR(path)) {
+> +		*ptr = path;
+> +		devres_add(dev, ptr);
+> +	} else {
+> +		devres_free(ptr);
+> +	}
+> +
+> +	return path;
+> +}
+> +EXPORT_SYMBOL_GPL(devm_of_icc_get_by_index);
+> +
+>  /**
+>   * of_icc_get_by_index() - get a path handle from a DT node based on index
+>   * @dev: device pointer for the consumer device
+> diff --git a/include/linux/interconnect.h b/include/linux/interconnect.h
+> index 4b12821528a6..75a32ad0482e 100644
+> --- a/include/linux/interconnect.h
+> +++ b/include/linux/interconnect.h
+> @@ -47,6 +47,7 @@ struct icc_path *of_icc_get(struct device *dev, const char *name);
+>  struct icc_path *devm_of_icc_get(struct device *dev, const char *name);
+>  int devm_of_icc_bulk_get(struct device *dev, int num_paths, struct icc_bulk_data *paths);
+>  struct icc_path *of_icc_get_by_index(struct device *dev, int idx);
+> +struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx);
+>  void icc_put(struct icc_path *path);
+>  int icc_enable(struct icc_path *path);
+>  int icc_disable(struct icc_path *path);
+> @@ -79,6 +80,11 @@ static inline struct icc_path *of_icc_get_by_index(struct device *dev, int idx)
+>  	return NULL;
+>  }
+>  
+> +static inline struct icc_path *devm_of_icc_get_by_index(struct device *dev, int idx)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline void icc_put(struct icc_path *path)
+>  {
+>  }
+> 
+> -- 
+> 2.54.0
+> 
