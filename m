@@ -1,81 +1,65 @@
-Received: from cornsilk.ash.relay.mailchannels.net (cornsilk.ash.relay.mailchannels.net [23.83.222.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506CA35C180;
-	Sun, 10 May 2026 08:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778403400; cv=pass; b=pPyXL6h8tewdgW5PCXnpzBtnbAx8osnIzPs+/ZdWMaYU5zdQkl5Mgc/mo/bmfF8/lzJ8jmbBBGbLH+GqrBC1qsMudl4dqJUWfJ7awciyEUAwPb/00MzAd570DqVwXeHbLNWH2lzcZC1RjnfI2T3dzvd4ZN0GfkexU1MnP6pm3Fw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778403400; c=relaxed/simple;
-	bh=LJw0feRo6h/fdCYR3DzW037kC4NR/95nnheYGUKw0Rg=;
-	h=From:Subject:Message-Id:MIME-Version:Content-Type:To:Cc:Date; b=iW47Jf3CBInhoe9Y3QnqhqhIDdNNsdBWedofC3rBi3lMQLbPLXmgUpApMAVRj68RR0NDg3GLE9ucr4UqTzAN5zzDRFLSS2iSZ75CHZYByLmJCkHimlbvY4RFx4Uh4iC8rColn2rK9/eB4dlArHtKJLAFK4A7iu32NOPp35Km+hI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=ZOJAvb4W; arc=pass smtp.client-ip=23.83.222.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58E12BEC45
+	for <phone-devel@vger.kernel.org>; Sun, 10 May 2026 09:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778406471; cv=none; b=U+ckW138wYb+PZpja2d6UYXF6NC16n8duEHy9fNDvaFbf/lVxz4i1AXlcWkepRPbwJDrf7281jdzRmzMUB3Y9EeUq7ndRL3IM72tMVivkE4SQGOMDkZnu2upwyVfdkixu30U1ynE2O3bzAgUyokbcTCydSdPKEQtaZ2Cblqm8Y4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778406471; c=relaxed/simple;
+	bh=D62mlNiWPfzKSRriXG2cWLUSvblI+VAYnydIZWkmXAQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=A0kXffhsI9a5cThZvy+MXLeik4JgGoZ9rA4n28CVmhwsjWPqCqWqFhh7kT264NHb3064owTmRzJj5HFPqUANAjy1ba4Dc77VfSdfUthSxByPoI0a87yuJmiAoHHjWyM5kgZBYsCuueNZdzaLI98OIzlQdH33Vxmo6+/qIXnKLdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3hfyrmH; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="ZOJAvb4W"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 51A4672040F;
-	Sun, 10 May 2026 07:01:41 +0000 (UTC)
-Received: from de-fra-smtpout6.hostinger.io (trex-green-4.trex.outbound.svc.cluster.local [100.103.253.195])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 55317720D62;
-	Sun, 10 May 2026 07:01:35 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1778396498;
-	b=YfNuZq3hN1w3FboaSTURlnctlAiMGuUsPRDkDVbRd5OoCA57sDsI7cLTq6Wt9lO66MkrHU
-	BR6BfQadASpCdeo2N7228AaNf/1uosdvnTz4H0Ay/n6mQWebv+cxFmQDvHNBTvkLaqsYt5
-	+c5FeJx/dM9jJSIpBDmAbncwnWAZbUU2fYLkrHJy0QSB1MF+gXVuWzG1WriikDtkdB5zXz
-	//PnPa+lbAnaGPf/2F6zlVcEGHE5RjmzlYDVvcYYIUMG/+dm79cTVO74l9Mhg+noPrR4bW
-	P8ThJinCOcZYrl1kAQD9taQ3yPPXyGzoSljsooZhBMVwatn/LEmzR+qKb3GfzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1778396498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=OWN7kFmTB9cIrKIoHElkniUz55DlU2ENwGRAv/EJhRY=;
-	b=4g5Oirmy2o2NkcrFXps/AyfGi5bkBFztXub6/3ydHo6G+hycQpQiVwg4zEDMkhDch2xxnH
-	1mNlRNqAIEzyklgNwn12hoCtSjD0xuKVIWgZ2O98lWVFNz1bY4s1TUD8/H2Wk/fQi5TouZ
-	VC/7cX0CkuomXgD6UITUJNi7W24NDc+ipDNxn5VPINZaYYvwsDjP9DIjihhmWfqXQEZ8yQ
-	7eOM7zNqrrXfFtAjaTUxZ0KAkHDfsLZEgQ+Y53VmVxNZJC/Tp3z794YVsR3Ciq3TtOoDb8
-	mKc84qzXnYV5VjFUz7LyNhgVyD6jIp2QHmPCLN+VYvtGHtPXQ9+qvLsU6grtOQ==
-ARC-Authentication-Results: i=1;
-	rspamd-79cfc4d687-w9599;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Relation-Snatch: 4c2f37de1e316e3e_1778396501059_1300172283
-X-MC-Loop-Signature: 1778396501059:801621561
-X-MC-Ingress-Time: 1778396501058
-Received: from de-fra-smtpout6.hostinger.io (de-fra-smtpout6.hostinger.io
- [148.222.55.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.103.253.195 (trex/7.1.5);
-	Sun, 10 May 2026 07:01:41 +0000
-Received: from [172.17.0.2] (unknown [125.163.203.7])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gCv0T54H8z3x6D;
-	Sun, 10 May 2026 07:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1778396493;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OWN7kFmTB9cIrKIoHElkniUz55DlU2ENwGRAv/EJhRY=;
-	b=ZOJAvb4W4fzIZDxm5JUlLlleHb2iV+jZNVIqSNVUIM4ZQd6BrDLDN0GbGzGEXRooOKazHR
-	IumViELtJP9Wh6s8p4BVQLiJo0TZGDmiQHeTp/QNAgFks5Yy+W5DdOcwMuQBo1+ykxaOfK
-	1MME3oOAkllTse+a090EZrkdZ4vwfqOnhzuKaTpAbW8Q6O68DZ5fRz++Dqsq/9T2sztSds
-	ABYyPdZEANv8OTP3EEdSOc++xLWnQNam9v9Zuuwt4iNGaIrrc57VkIfNExQOVqOXd5oy50
-	a4noAJ4xkOh8RYKXMYPWSqve4PCOmq1a5ehi1kN8nxEeoNgy6JvDZW4eYE/CVQ==
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-Subject: [PATCH v6 0/4] iio: adc: qcom-pm8xxx-xoadc: add support for
- reading channel labels from DT
-Message-Id: <20260510-pm8xxx-xoadc-label-v6-0-49700fd03005@smankusors.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3hfyrmH"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so56166615e9.2
+        for <phone-devel@vger.kernel.org>; Sun, 10 May 2026 02:47:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778406468; x=1779011268; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WsUU3X1LaJjztgUuBWgXdCZ84qVTBBh6rswqrtRvpIY=;
+        b=Z3hfyrmH/4Gbaqydo3VQA0jmwo9kNhq7j5/URF1mNOJv44J+bxXr19VoQpJknh5iiL
+         6fiACLGTxs8Mp/NO72DFu4TSgFqMb8S2iD7pUL3jJxeSmx4ok+gk4vAeZCHuHeyHo84T
+         n/KyadK6wsndgCtY03eVw8cIfp0rkoh+nMzvpLxxBaou4AW49v3QKCgtDDx4BG4Qd6nD
+         hWtqZeo3CPZI1knRR11qVlgjXrsQdeiGqEicRn2oRDUtUdygyp9Kksk3dYbY/YSLfrHi
+         /FkufxX5OaPAAKURmIOnFpEdsSONbIvzANhBRMpfCbvUVu1S4YVoOF+xz3viilHPCjrN
+         BgNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778406468; x=1779011268;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WsUU3X1LaJjztgUuBWgXdCZ84qVTBBh6rswqrtRvpIY=;
+        b=HrfnhwMBtQyvtFOcch63YIhOamhzs8y98ZMG651AquJf1p3YfVGLUviDfQm5AOjqmr
+         9lZ8JGD582DrtuIzEQY2Wb5vnUQ5Y28fqTIbmFTaJTLSPT57CYYllXEr2hiuKK7wab4a
+         4oB88CuW3DvygRcsNBxeSqKqh6g/F79ZoQlfvI3hDjrCemJ2meTXX6zszQZoZTB4xe6u
+         SzFUolmnYhIVnMpRgJJzG7uz1JS15IuNs/zyHKpQiQgHrVHESmHLGP/qIznM6OPMfvlP
+         ObqWlqLQ14pjQ1Mvcqywf0xjYX3WtSPZ38wwsCNl67ZeE626w21RUzAT2AQpquM2GRzL
+         U0+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/vAjYIrcKv6rRNVe7IUSqrijB7YXz/5TpPmZlI0NJ0iaSLZPlO8TwYRSewQwTjuVrmlN11JfZ0yTLPvw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuxmjrOU6t/ny8Fipv9lnaI6URSIpNrYZBl8M/1jQrHhjsLR/j
+	IWK5wnNfGEjmfL4UGYIjEVN4csQxAeUsJfHxsXb0424RG28ThNmH2Ea7
+X-Gm-Gg: Acq92OFFjpa1pJTbRUKleNdcVe8wzi4uVZ5/52YcF/G9yaYmVoH/QnNr2V24M9VuQU1
+	PkxddmTSPV+G7k4MrHaZCHXO0x2TI3R/NsGcEAM9REOWTZZYfh8PzY6RZKZf/5BcyMSiq4Qxmnu
+	ooRM2tJLbWNn0j+2CKSu04wtOiH5GeNlCoog5icoPTtgKnmxzWed8oU3J56CGswzvnG/nweE3wY
+	JfZqWYq5zIi+P26xQrovTqSF40AcNdRMoqSlEqre0C4xWCfWYKK6F3rNcevySUcTypYP2WTBw2w
+	3FdOC1SL12nF1VHkKlYc7Jxz2D1kTHxvV5a2t+RtjOThpuPQIXODEOMAYMQ4pil9STE5ogMs/yV
+	79T+b282RXrlo8wVEylbMVXfL839+mIzlRHA2FjbD063Bjj4ikSYT3LIGz0oZhK0NIh31dNf6Uj
+	GUS/5pxdacUwJSb1jcwTJhVtx0U2JR
+X-Received: by 2002:a05:600c:37c6:b0:48e:7f22:d90 with SMTP id 5b1f17b1804b1-48e7f7de432mr20458845e9.4.1778406467953;
+        Sun, 10 May 2026 02:47:47 -0700 (PDT)
+Received: from [192.168.8.79] ([2a00:f502:160:4e2:a099:cad9:2ecd:93de])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e702e0bf2sm182807925e9.4.2026.05.10.02.47.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 May 2026 02:47:47 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v6 0/8] media: qcom: venus: add MSM8939 support
+Date: Sun, 10 May 2026 12:47:38 +0300
+Message-Id: <20260510-msm8939-venus-rfc-v6-0-e69465375900@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -84,118 +68,138 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAK8sAGoC/3XP20rEMBAG4FdZcm0kmZwar3wP8SKHiRvctkujJ
- bL03U0XxILx8h+Yb+a/kYJLxkKeTjey4JpLnqcW9MOJhLOb3pDm2DIBBpoJ4PQ6DrVWWmcXA70
- 4jxcqjUsxmcS0s6QtXhdMud7Rl9eWz7l8zMvX/cbK9+kPp3vcyimjDMzAVHRRRv9cRje9f5Z5K
- Y9hHslurvDrSCa6DjQHrFfMpwE46q4jjo7qOqI5NiE3NsAgMHQdeXD+6SX3XhjMAEKD5qrrqKN
- juo7a/0HjlVMCk7V/nG3bvgGyrHxm2QEAAA==
-X-Change-ID: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PTU7DMBAF4KtUXmNkj38Ss+IeiIU9GbdGJEF2a
+ 4Gq3B2nLIhKxPJJb76ZubJCOVFhT4cry1RTSfPUgn04MDz56Ug8DS0zEGCFlpaPZeydcrzSdCk
+ 8R+QowKDGTkdPrM19ZIrp82a+vP7kcglvhOcVWhunVM5z/rotrXLt/edXyQX3wkWMgKCG+Hwcf
+ Xp/xHlkq19hI4DZE6AJ0ToyEJQF0d0Lait0e4JqAvS9dCaEzsk/gv4VjNj9QjfBOR0NBQCP4V4
+ wW2H3BtOEoQuGPCAZJ7fCsizfX5vQS8wBAAA=
+X-Change-ID: 20260416-msm8939-venus-rfc-c025c4c74fae
+To: Bryan O'Donoghue <bod@kernel.org>, 
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Linus Walleij <linusw@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- Antony Kurniawan Soemardi <linux@smankusors.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Andy Shevchenko <andriy.shevchenko@intel.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778396489; l=3350;
- i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=LJw0feRo6h/fdCYR3DzW037kC4NR/95nnheYGUKw0Rg=;
- b=D04ryW12sihGdIxiVNEXxqnMfMaKw2a0KTGSS4LA607fmOjyq9XOf9V2pzFF29ExfOxR3uNu8
- i0xtUZY2GvqDfOBs9YhcJuWj/Cf68jgdCDsQhOfXua88yCr19W53G7+
-X-Developer-Key: i=linux@smankusors.com; a=ed25519;
- pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
-Date: Sun, 10 May 2026 07:01:29 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=ALriHGRn c=1 sm=1 tr=0 ts=6a002d4d a=aYg++IQuMqL9NhcFIsEovw==:117 a=aYg++IQuMqL9NhcFIsEovw==:17 a=IkcTkHD0fZMA:10 a=bC-a23v3AAAA:8 a=wxLWbCv9AAAA:8 a=VwQbUJbxAAAA:8 a=SVKZwNC4Madxtg2eTdAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=QJY96suAAestDpCc5Gi9:22
-X-CM-Envelope: MS4xfAXyGkWY0Ckl4XhVpyJaWYDKxf4MS7eHSjsrcMlF/8XOaD1osyTGAbtfE8tzv1g6b3/cinYr5nTtUwLWh5PTENs7Yt63BjccZ4gys66KO2ah0866ne0o S0nCFc/WXUhM9DnDChcpAji86VkKhii/ax6kJzzjpyf4+xyOLXz3BKZkrr24eDHJdrnBXU9UxG1U64bi87XhlPSN9PtA3hI7pXsLCgGNh09WR3GK5dHiTz3d miT58BhHQWPY8nOloD0/o52erLL/pFT9yC3M8aUSeuO0QyUPaHVfFs4bdsKkVyQTYcoTJE15xgMuLbdEQOmTz6m0dBrH3LXb5iHYV/lJv+qzYnrrGfs2MWuz 3EaycroWJS35tdAQxd+3yoxlWubvvq0KVGEYvicP8u08I8Vy9Qqt0yKCjBG50YMX2mGPfEi56FV9Bi7bvsM+tt0HqYlwLVxrFfxpq0iRnWPTF/OkLoz9Mbdb +C8euf2Q7vgG9xG1t4ohRQ1DJhWaOK0RjtkNJ2gzu2kDiWX6tHkbIZjwEGpKVeC3qHTEIW/ra5s6xh93lXp+DXI/bGZk28BhtSJjPhx/TsfOmX2KFeqziG7z WWEcZZNHjz/kbatjzFKJzsIXNhO+QqVSQl696Ow8609KO87fleYRSs9xr4C+crFad6HFXqBoynEAs6xycYYMTHrnSjb1q5+SYxmtSwabbPfVRyhS7189oFgA SQGtxqLxgXwzJKdX9+5XWo5olKg/SAa0scFoPMnblPtEDWKnFWTfAAIjEB97XORdMti68v2VZut0WNXnph2/chNyPp/4bcg54HBk+04Obzs4L0iuTEXUAg==
-X-AuthUser: linux@smankusors.com
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-This series adds support for reading channel labels from the device tree
-in the Qualcomm PM8xxx XOADC driver, along with the corresponding DT
-updates for the PM8921 PMIC. Also removes the redundant error logs when
-reading values, as returning -EINVAL and -ETIMEDOUT are sufficient to
-report failures.
+This patch series adds support for Venus on MSM8939. It is mostly
+similar to MSM8916 Venus, except it needs two additional cores to be
+powered on before it can start decoding.
 
-This series also includes minor refactoring, such as removing redundant
-error loggings.
+As per Dmitry's request, I am attaching Fluster results and
+v4l2-compliance output. Fluster results were very inconsistent and
+caused power collapse fails.
+H.264: https://pastebin.com/C15qeq5W
+H.265 (HEVC): https://pastebin.com/WDsnxvuk
+VP8: https://pastebin.com/egAgEm15
+v4l2-compliance: https://pastebin.com/VpBhEFc1
+Power collapse fail log: https://pastebin.com/rTivMcpK
 
-Tested on Sony Xperia SP (PM8921):
-> cat /sys/bus/iio/devices/iio\:device0/in_voltage7_label
-usb_vbus
-> cat /sys/bus/iio/devices/iio\:device0/in_temp12_label
-ref_muxoff
-> sensors
-iio_hwmon-isa-0000
-Adapter: ISA adapter
-vbat:        267.86 V
-dcin:          4.82 kV
-...
-chg_temp:    +1071.4°C
-
-Note: the sensor readings above are incorrect due to pending calibration
-fixes are not included in this series. This patch only addresses label
-visibility. The values are expected to be wrong until the calibration
-fixes lands separately.
-
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
 ---
 Changes in v6:
-- Onelining wait_for_completion_timeout on removing redundant error logs
-- Fixed dtbs_check failure by adding the missing label property to the
-  DT bindings
-- Link to v5: https://patch.msgid.link/20260427-pm8xxx-xoadc-label-v5-0-9e7b5a53ef99@smankusors.com
+- Added a more generic mechanism on blacklisting codecs.
+- Reworded a commit for setting Venus core GDSCs to hardware controlled.
+- Reworded a commit for adding HEVC decoding to MSM8939.
+- Link to v5: https://patch.msgid.link/20260507-msm8939-venus-rfc-v5-0-d7b5ea2ce591@gmail.com
 
 Changes in v5:
-- Drop constify pointers patch as it causes build failures
-- Link to v4: https://patch.msgid.link/20260426-pm8xxx-xoadc-label-v4-0-0ec782362615@smankusors.com
+- Undid the merge of vcodec_clks, they are split back to
+  vcodec{0,1}_clks now.
+- Extracted a dev_pm_domain_attach_list() call into a function of its
+  own to reduce nesting.
+- Added missing "power-domain-names" required property to device tree
+  binding.
+- Renamed vcodec clocks and power domains to match other Venus bindings.
+- Reordered commits and grouped them by subsystems. Now first come DTB
+  patches, then clock, then media.
+- Removed "status = "disabled"" in the device tree example.
+- Link to v4: https://patch.msgid.link/20260506-msm8939-venus-rfc-v4-0-994f5eb22acb@gmail.com
 
 Changes in v4:
-- Constify pointers in read operations
-- Reworked wait_for_completion_timeout() handling
-- Updated variable declaration style in pm8xxx_read_label()
-- Link to v3: https://lore.kernel.org/r/20260405-pm8xxx-xoadc-label-v3-0-9fe179c283ec@smankusors.com
+- Removed vcodec{0,1}_pmdomains and merged vcodec{0,1}_clks into
+  vcodec_clks instead for MSM8939.
+- Inlined video decoder and encoder device tree nodes in the driver and
+  removed them from the binding.
+- Kept vdec and venc methods for HFI v3 separate from HFI v1.
+- {vdec,venc}_get() are now called as early as before, since it is no
+  longer needed for us to attach power domains to dev_dec and dev_enc.
+- Link to v3: https://patch.msgid.link/20260427-msm8939-venus-rfc-v3-0-288195bb7917@gmail.com
 
 Changes in v3:
-- Simplify label assignment logic by removing the unnecessary
-  conditional branch
-- Remove redundant error logging in pm8xxx_read_channel_rsv, since
-  -ETIMEDOUT is sufficient to report failures.
-- Link to v2: https://lore.kernel.org/r/20260403-pm8xxx-xoadc-label-v2-0-29b50bf821e6@smankusors.com
+- Added missing vcodec1_clks to resource struct.
+- Removed enc_nodename from resource struct since we include
+  video-decoder now.
+- Link to v2: https://patch.msgid.link/20260425-msm8939-venus-rfc-v2-0-f69e52b36207@gmail.com
 
 Changes in v2:
-- Remove redundant error logging in pm8xxx_read_raw, since -EINVAL is
-  sufficient to report failures.
-- Reword the uncommon Tested-by commit tag to freeform text
-- Link to v1: https://lore.kernel.org/r/20260326-pm8xxx-xoadc-label-v1-0-027805dad4db@smankusors.com
+- Enabled GDSCs during encoding as well.
+- Merged vcodec{0,1}_pmdomains_num into vcodec_pmdomains_num.
+- Reworded commit for marking GDSCs as hardware controlled. Same
+  situation as in cdc59600bccf ("clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock")
+- Clarified the reason for missing firmware-name property in device
+  tree.
+- Clarified the reason for moving vdec_get and venc_get for later.
+- Link to v1: https://patch.msgid.link/20260416-msm8939-venus-rfc-v1-0-a09fcf2c23df@gmail.com
 
-Changes since original patch:
-- The label is now read from the platform description (device tree)
-  instead of the internal datasheet name.
-- Link to original patch:
-  https://lore.kernel.org/all/20251028-pm8xxx-xoadc-fix-v1-1-b000e1036e41@smankusors.com/
+To: Bryan O'Donoghue <bod@kernel.org>
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+To: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: André Apitzsch <git@apitzsch.eu>
+To: Erikas Bitovtas <xerikasxx@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>
+To: Stephen Boyd <sboyd@kernel.org>
+To: Brian Masney <bmasney@redhat.com>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
 
 ---
-Antony Kurniawan Soemardi (4):
-      dt-bindings: iio: adc: qcom,pm8018-adc: add label property for ADC channels
-      ARM: dts: qcom: pm8921: add labels for ADC channels
-      iio: adc: qcom-pm8xxx-xoadc: remove redundant error logs when reading values
-      iio: adc: qcom-pm8xxx-xoadc: add support for reading channel labels
+André Apitzsch (4):
+      media: dt-bindings: venus: Add qcom,msm8939 schema
+      arm64: dts: qcom: msm8939: Add venus node
+      arm64: dts: qcom: msm8939-longcheer-l9100: Enable venus node
+      media: qcom: venus: Add msm8939 resource struct
 
- .../bindings/iio/adc/qcom,pm8018-adc.yaml          | 15 +++++++++
- arch/arm/boot/dts/qcom/pm8921.dtsi                 | 12 +++++++
- drivers/iio/adc/qcom-pm8xxx-xoadc.c                | 39 ++++++++++++----------
- 3 files changed, 49 insertions(+), 17 deletions(-)
+Erikas Bitovtas (4):
+      arm64: dts: qcom: msm8939-asus-z00t: add Venus
+      clk: qcom: gcc-msm8939: mark Venus core GDSCs as hardware controlled
+      media: qcom: venus: add power domain enable logic for Venus cores
+      media: qcom: venus: add codec blacklist mechanism
+
+ .../bindings/media/qcom,msm8939-venus.yaml         |  79 +++++++++++
+ arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts     |   8 ++
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |   8 ++
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              |  23 ++++
+ drivers/clk/qcom/gcc-msm8939.c                     |   4 +
+ drivers/media/platform/qcom/venus/core.c           |  47 +++++++
+ drivers/media/platform/qcom/venus/core.h           |   2 +
+ drivers/media/platform/qcom/venus/hfi_parser.c     |  10 +-
+ drivers/media/platform/qcom/venus/pm_helpers.c     | 149 ++++++++++++++++++++-
+ 9 files changed, 321 insertions(+), 9 deletions(-)
 ---
-base-commit: 7527e0bfead35a65431b3e865333e5277f97e706
-change-id: 20260321-pm8xxx-xoadc-label-47afdf7f06a9
+base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+change-id: 20260416-msm8939-venus-rfc-c025c4c74fae
 
 Best regards,
 --  
-Antony Kurniawan Soemardi <linux@smankusors.com>
+Erikas Bitovtas <xerikasxx@gmail.com>
 
