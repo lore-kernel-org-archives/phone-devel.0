@@ -1,118 +1,197 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC2B39658D
-	for <phone-devel@vger.kernel.org>; Sat,  9 May 2026 14:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778337831; cv=none; b=cGo2C6HarDKbvi+Pluf2VFELn1SVTfWd9EbVyVK8bnNCIy7u40v2jVOdf5RMvZsCggoQuckGJx1J1gtiZDC+vOgzBu3ZJxdiCogK8iZlV+Yl6w5MOmQZ5+UnurUPkY0Zcd29lAhPcD4zXibsfao8f/u2BT4Xy5ne61S8z8Le0Cs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778337831; c=relaxed/simple;
-	bh=dO/mpADzMV7Bgz+dNLvnHa5uezPUyzJiV1A8vcfRjcA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CQqjBkybe3fB5EgSdPnoRq/QeMbJRJM5mwrScL6uJzU86UwPvZGoNSo9+AGIUMl4dOFOA96qjkEB598CeO73fQFLA8cEoTG69A55P0TMewEJOOmmqdBp4SoQNXZjImewOHWFCrFx9kuQXFBzDnp46sIkphgSw579mmgCuQHA22A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cc+NYHr8; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F187E0FF;
+	Sun, 10 May 2026 07:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.253
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778396939; cv=pass; b=AGEJ5Etzlr0ZUJYh6xuxM1ys+pxf5SJYSE1TN2cLRFiaf4C9YQ0XrlTPY0YfzoGBqUJA50Z+ruYPthpI7AxvH9U/tnCnJt6Aa8cIJTR+kLnYJo3OSjZgcTXq89lnvAxfCCFmkBm5MMF9UgSRKZjiKWsRzLZKgd9vEbjx+YQ2OiM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778396939; c=relaxed/simple;
+	bh=uUqaV12seEtPtVIXeUjLaxEeEhA5OYLznkygmUrFoug=;
+	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc:Date; b=Mc9gG9bwSqoLBgJiAzjyoiX7HWgaGPrla0mfUUHXkCGtehBbtf/C6Ojf4kRQKULZAIeVS4SABVBkN7ezHeh37HwM4yTLipBBcRRgXtroPJUzi3KBJDDjD2NHMLty+GweTlOaKn1Vr065hlzVmpgakc8fUGT+LauyqDOHqb+fML8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=CxYCaZxI; arc=pass smtp.client-ip=23.83.218.253
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cc+NYHr8"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-67f7caa33easo478457a12.1
-        for <phone-devel@vger.kernel.org>; Sat, 09 May 2026 07:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778337828; x=1778942628; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rTagnauLE+hhKKiT1zAZaD+hPibc/QQjA6EWs3KI5oU=;
-        b=Cc+NYHr8FMBLyFMItErNkK+Jr7HYawtfq+4HjEjytz9cyTd6sMGoZeUA8uJcDgdXka
-         8rR2ERGQ+ne3e9jFvzGg+Hz0Dnk/VIlbKewFnGRQdgd+vYfq7DWhbpo42T0kZoXOgto3
-         iGOWyIq1G1TbndkFjIeJJk11jlp5CS+oxW0mCJcVVzEXOtV/B479qDvpTXsTLCR03DkP
-         XXxPKcwpWzQEDqVV1SNR+GLSZEDl8lRyUGRo4paFZis32Z/mPJzTByEgt1RGkYU6+tVG
-         eIzVZjBY8UQk1VnfV9DGkKMw35DKTfJ6HC+Mbqil/6a8+QIPmVmcWk06b5ZVhFACl2Az
-         089A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778337828; x=1778942628;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rTagnauLE+hhKKiT1zAZaD+hPibc/QQjA6EWs3KI5oU=;
-        b=rtIl2lrIDlzgFajuDiRA9nkZ0JYsJMP2/cLAirVmBIGxGoKehklJOw/HUB7wYkiZLk
-         oWLDMNlvwgauCkjOoX14GW9LBTGRoXy5z++vGHEOcehwiV9vc2VBDXbxP+ODwj/uUXfG
-         P8GxBuZLDa+FsD48NXF9NjquxRHdTamkWB3rQKeWjox7mJu1aZCkp/77+jQhZD0wcWSh
-         B/Az1We+oITY/YpwY96pPuN8C620sFn9WQlFEn9qxjb12p0p4RYSX+v85xlyJwd+UKjv
-         oMViHyGjKrKnuHkgbkxmPJ2wnwyhlwr2Q9S5LsMLV1+ZizoomBPJYnbtQVuenKi3yvq6
-         togA==
-X-Forwarded-Encrypted: i=1; AFNElJ/X+oSUEStMy3XvBg02tmOI2M3R2/V4/s88cUR5K2ahL/dGz75fKrnTqiT8hKAUvsIA1k1ML+kXbutw9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWD5KwWvVQ/3u9ocp1J+V4ZlM86Yg5qFdEDg6HhmL8D58x1de0
-	/+6CIwN3EVBCgtkI3ocmthO/HndFkutxeWa6PlUH/nLspLypE1a0zGS8
-X-Gm-Gg: Acq92OHuu81ZjJSbm85jz6QIJn6hxxSJtFLHOcgjrHFIOMGtHXmSnV5IBulJURl4/6D
-	JBo+H/VmcISuLV80iKqcg22hmeZnT4kYhKcVaKtqmAtvQc5Rzxgo6p53T21ryOE80U7Gv2ZwwAo
-	HFc2LlCLZjkZ3uL1dmUk8uPomiYbd02j4YneUp/BpDP12+JqUPFR6yrFQlL10TEuMGAk3bV5/KT
-	zmRCiVnEmenMeG0lD74DssQLl4un0g4tQ6DH4xMGrV4VzqAzr9jTWKREVfyAzZkaAsf5XUBmtpQ
-	Sr808oyFxRu/91N551qWnonES2En2d2rNw9tR5U5D2Xc5ywwZJrydtx9Ut3XRkb6DYpI1dNRWdn
-	FRUzHVSPT2BR690jQqSnP38c1VlrE6Pnywy7KX0L+O644VOz51VTuN9lJtrunsSyn2Z92avl6Yp
-	hBAsPt02Tv8ru57Mf48lMQlVsp958SIoIcPU9bIPNysX4W4CTGNykUJZn8g2Sg1DKHzU3d
-X-Received: by 2002:a05:6402:5407:b0:673:9b15:39d3 with SMTP id 4fb4d7f45d1cf-67d642b04ddmr8185100a12.16.1778337827665;
-        Sat, 09 May 2026 07:43:47 -0700 (PDT)
-Received: from ?IPV6:2a00:f502:160:4e2:a099:cad9:2ecd:93de? ([2a00:f502:160:4e2:a099:cad9:2ecd:93de])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0b6a11asm1820101a12.8.2026.05.09.07.43.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 May 2026 07:43:47 -0700 (PDT)
-Message-ID: <1ee77cbb-9894-4b16-ae2b-8e9035fd6cd5@gmail.com>
-Date: Sat, 9 May 2026 17:43:42 +0300
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="CxYCaZxI"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id A4290409A8;
+	Sun, 10 May 2026 07:01:46 +0000 (UTC)
+Received: from de-fra-smtpout6.hostinger.io (trex-green-0.trex.outbound.svc.cluster.local [100.100.197.175])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 02F064092E;
+	Sun, 10 May 2026 07:01:42 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1778396506;
+	b=rf3s3fN2i4SaSbNw/PDcrjFAN2poRgZEqezmTpwRuRmNc71p2WOwiV4PzP+RWEP3Uza2Ed
+	CC3DZAVjDCVhJYGs7Y/YrzvvA7MPgQxoZ7Q42goBao05cqKNKiC1fhrhD823nWXKyo3iWW
+	g9BVIX42CBEz2MenzWAiC10Y4qL8vLF5+XJdkqVn4TAD2wNKEEEovxk8h26voOX2lSaw9e
+	s+xCyUvvoPs0zlmXxXR1k+JAQqK3zgWtHePhjMJCa9Q+5tRCFSEHfVaIn53Qich8Dgsheq
+	HBGIvIGrKr6HxP6EgFTabx9ZWQ8tkdqQPgmRYzCyPj6Yg0j3y9Fk/xTeK+v4MA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1778396506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pdqPNcyC8p5DZ1G2D9ueEdeo+CXG8qVsYjxRxYoj6so=;
+	b=OF+gZtWvS3VK+X80OYKQMMeb492fc8uvdBKp0WrPZiP05hCqSXk88/LLuMs+E867FwvUw9
+	mpzvP30WzB+/wH9yVV/fP+/Gg+qNAx5fLxu52/gDN42wOCjPG6+/6ERAURpTOx2DZcWaqc
+	wpRXqIjRAQ+BDlfw5xJAGfysXOiG2OjvODNytPwEzvFjntGXNQFs1CMZQVh7PBEYoT9icJ
+	NfMUpoCEd0qf74oeuwhHwsYRU2fYS1nEZgR4rMuDvj8Ue3nAxAKVymFgL3gZUa+xwN4pYa
+	PM8id0QnNQ5ND1FjwBDHJfvt8tVa5zEm0GqCK/ogfMVpvxrzFP6pc2p8E3XOxA==
+ARC-Authentication-Results: i=1;
+	rspamd-79cfc4d687-4ctzm;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Macabre-Oafish: 0f1b1bd716a3c8d8_1778396506477_3978607614
+X-MC-Loop-Signature: 1778396506477:1579005207
+X-MC-Ingress-Time: 1778396506477
+Received: from de-fra-smtpout6.hostinger.io (de-fra-smtpout6.hostinger.io
+ [148.222.55.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.100.197.175 (trex/7.1.5);
+	Sun, 10 May 2026 07:01:46 +0000
+Received: from [172.17.0.2] (unknown [125.163.203.7])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gCv0d4Rz4z409w;
+	Sun, 10 May 2026 07:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1778396501;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdqPNcyC8p5DZ1G2D9ueEdeo+CXG8qVsYjxRxYoj6so=;
+	b=CxYCaZxIMvucNVGtisSyRlMbAJ3jc8f1RxNCLLN+27S6y7Ucd/T+N7sls27qD1+doaS0MY
+	/9V9sfC92grcMO67yCKa9FxerMRX4E7ZEe7dy7NWrcJQDQrBoVDkA1yfJDoX6hituwdgMR
+	/Ys5eqYno0EiXkH63RvHavXvn1cvURl7JTNIfw6bqIszY5V0o7QRTSyD5llAg33lowaZMy
+	py3XA+ZNx7CrJNnT969cCwUBCKbkv6z7N+drFRJXLcQagLZ+Hv2TvnE2tOufcACMnzKKEs
+	CnugRMr5tCTj72BoJv2T+e2bkbiA57d0zvZkmz4RNFIuySvXMnTkA2zNO/U/CQ==
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Subject: [PATCH v6 2/4] ARM: dts: qcom: pm8921: add labels for ADC channels
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/8] clk: qcom: gcc-msm8939: mark Venus core GDSCs as
- hardware controlled
-To: Bryan O'Donoghue <bod@kernel.org>,
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20260507-msm8939-venus-rfc-v5-0-d7b5ea2ce591@gmail.com>
- <17c4626e-8926-4cad-842d-a1b171d1e962@kernel.org>
- <CYaHtccGOWlaUtl3QIKva44ybJiRHsPOZmHEkl2KKGmnDxJ8vTH-SVNMGbL7bjkYjI692nplORzOhpfjs3XJfg==@protonmail.internalid>
- <4f1ab5b8-3bfe-43a6-8b91-317456188544@gmail.com>
- <7df3bff7-b872-4b20-8e7c-698157a41f33@kernel.org>
- <tawGGT4rtpw22Ng-MgM--GhoEihBU7tY_TrFUHf8raMKApyqTcSkKHyfSuRIL_bqNp_5zWD4SBG_C4c8CB7_6Q==@protonmail.internalid>
- <18998766-62fe-4a5e-95d8-1bfae712d8fb@gmail.com>
- <614a087d-d219-49cb-85ee-772044558649@kernel.org>
- <Jxt4BbN1dL8VKh_Zjah1xecAjz3c9VfbhKSm4a0K2D1MNKfJKIFnCPLj2VvdW1q4LnMIQy8bCzV3YoVnLFYUlA==@protonmail.internalid>
- <0cee27b6-f566-4958-8634-2c43e099281e@gmail.com>
- <dd435489-0cf7-4274-99bf-a591a15e91e4@kernel.org>
- <-hM6afm_Cu_8Cha9U-hrlrg6CGDEb5D3PFpPPCfIh-QgkdFJp_r0Ah9k1dvAF4zkju2dPc3FZJxvOA4V4hupAA==@protonmail.internalid>
- <69f9a6b7-7431-442a-82a2-6305635a508a@gmail.com>
- <9bf43e04-f834-45b6-8942-bcae2e480371@kernel.org>
-Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <9bf43e04-f834-45b6-8942-bcae2e480371@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260510-pm8xxx-xoadc-label-v6-2-49700fd03005@smankusors.com>
+References: <20260510-pm8xxx-xoadc-label-v6-0-49700fd03005@smankusors.com>
+In-Reply-To: <20260510-pm8xxx-xoadc-label-v6-0-49700fd03005@smankusors.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Linus Walleij <linusw@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778396489; l=1868;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=uUqaV12seEtPtVIXeUjLaxEeEhA5OYLznkygmUrFoug=;
+ b=YpvieAWbBlxthYULqYFawwT/Gp2x0bmdnJzX+eKg5yBm9iQzn5Zb8A1VQJI7ZK9WAI68+37Z+
+ MD429gfm+OmC2FwM/VG87G0ebOd69xP8NdJn/j6dxkWlTQUP6M7ABkw
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+Date: Sun, 10 May 2026 07:01:37 +0000 (UTC)
+X-CM-Envelope: MS4xfDK4Iw6rNShkpnfUtCy2M5CG+YzA/FpUD/19Nch57lLi1y99plHZ8pQhctN9zZsYmsoknmDKLiV47zRN/38ZXUSMV7eiYGdjRYWoU+qIyevMYm1SJ7hf xUAL6kj3EfgGPBUpNUxFB6c4YQghFIO1w+8gWA6Nh409kKnyEZagJN0dklvBmlSLrZETVc4lbz3RrDu1AIm4TBLgwXrAWzqtlvWwkWIS6W4lOCQB7hYAYK+r 4oNHENAASBerjr5LZZjWQWOVxpIcV2D2avBPmHUPh8eYayAxYaHRcEv0Z84l8Ed3i5RUXqABslvBvfl18cpQjexO1XFLAIVvQ3LTkoNdxTL73HLYWJ4yv4R7 gkLdRusvqPpP3ki34Ey8kwxiJfe6V/y4wxBMzhRPI6YDFQsrEfK2IEHlWnDL9Y3DCQX6Nu+hGS2EpGngHf4Dhr9cTOrZwTNmPnuG/CUrzw1KiTpd3doMSpFd zsqpB+xiSms+UhQnu997oZDbYTfqv1gJnB5XCRR8n/dqAsyhGgaMKFW9rkTZBFb9O9131Khx/mVD5ulHRKaVob6mc9OTp12nJv/N/vgmBBDdhpIo6M4woauA 6vRScpEHWhZIbzVMctI0r3waXRfhyncfOqxx63Imt6rncXqqXdt5JVdZrUEbYOK7PSD4e6BeZPq3XHo70V29qxn7ZybXBo+BGS4k9BbOlIBR2GkUWMBSFXXi suLODyRR9VDe8/zpsQ8Zof8+T40pV9Wmn7oi5DWRHBeZPZ3FxN6IPGmqVq6vDXnKroGUus4tI6k=
+X-CM-Analysis: v=2.4 cv=ALriHGRn c=1 sm=1 tr=0 ts=6a002d55 a=aYg++IQuMqL9NhcFIsEovw==:117 a=aYg++IQuMqL9NhcFIsEovw==:17 a=IkcTkHD0fZMA:10 a=EUspDBNiAAAA:8 a=wxLWbCv9AAAA:8 a=6KmzlaTv6ROrj-tHFqgA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-AuthUser: linux@smankusors.com
 
-> OTOH if Core1 can't be coaxed into working in either mode, we are better
-> off either holding off on this series until the breakages is root caused
-> or leaving out Core1 entirely for now.
-> 
-> i.e. there is no utility in declaring an encoder or decoder to userspace
-> that is known to be broken.
-> Last time I tried to enable only 1 of the cores, the following would happen:
-- If core0 is enabled, HEVC decoding would work, but not the other codecs.
-- If core1 is enabled, the rest of codecs would work, but not HEVC.
-Given we don't really have a way to power up a core based on which codec
-we are dealing with, I suggest we leave both cores in the binding and
-enable them indiscriminately.
+Add label properties to all XOADC ADC channel nodes in the PM8921 PMIC
+device tree. This allows userspace and drivers to identify channels by
+name rather than relying on datasheet name.
+
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
+---
+ arch/arm/boot/dts/qcom/pm8921.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/boot/dts/qcom/pm8921.dtsi b/arch/arm/boot/dts/qcom/pm8921.dtsi
+index 535cb6a2543f..15246f4bd267 100644
+--- a/arch/arm/boot/dts/qcom/pm8921.dtsi
++++ b/arch/arm/boot/dts/qcom/pm8921.dtsi
+@@ -75,50 +75,62 @@ pm8921_xoadc: xoadc@197 {
+ 
+ 			vcoin: adc-channel@0 {
+ 				reg = <0x00 0x00>;
++				label = "vcoin";
+ 			};
+ 
+ 			vbat: adc-channel@1 {
+ 				reg = <0x00 0x01>;
++				label = "vbat";
+ 			};
+ 
+ 			dcin: adc-channel@2 {
+ 				reg = <0x00 0x02>;
++				label = "dcin";
+ 			};
+ 
+ 			vph_pwr: adc-channel@4 {
+ 				reg = <0x00 0x04>;
++				label = "vph_pwr";
+ 			};
+ 
+ 			batt_therm: adc-channel@8 {
+ 				reg = <0x00 0x08>;
++				label = "batt_therm";
+ 			};
+ 
+ 			batt_id: adc-channel@9 {
+ 				reg = <0x00 0x09>;
++				label = "batt_id";
+ 			};
+ 
+ 			usb_vbus: adc-channel@a {
+ 				reg = <0x00 0x0a>;
++				label = "usb_vbus";
+ 			};
+ 
+ 			die_temp: adc-channel@b {
+ 				reg = <0x00 0x0b>;
++				label = "die_temp";
+ 			};
+ 
+ 			ref_625mv: adc-channel@c {
+ 				reg = <0x00 0x0c>;
++				label = "ref_625mv";
+ 			};
+ 
+ 			ref_1250mv: adc-channel@d {
+ 				reg = <0x00 0x0d>;
++				label = "ref_1250mv";
+ 			};
+ 
+ 			chg_temp: adc-channel@e {
+ 				reg = <0x00 0x0e>;
++				label = "chg_temp";
+ 			};
+ 
+ 			ref_muxoff: adc-channel@f {
+ 				reg = <0x00 0x0f>;
++				label = "ref_muxoff";
+ 			};
+ 		};
+ 	};
+
+-- 
+2.34.1
+
