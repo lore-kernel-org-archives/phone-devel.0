@@ -1,55 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E11B3BADA3
-	for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 09:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557E83BED16
+	for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 09:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778491712; cv=none; b=PDTdY5rMapCuOMcUrPG6MChcziL9GKgEe8lf/qcVM1B0vdpNnYI02HUvhIzL809dD5ysavk5YAhcspldMdT8bLMaR5mCHM+njUKuyIcFv1aFqbHPhxY+htYilzekArsmbc60Z0LDKWssIevncuM9B/GC8HidA3FoIteYtKlSWa4=
+	t=1778491757; cv=none; b=fCav+Q34oUGP2dxq7L0GtP5AKaqsnfMkFZSRsoQFbn5QWzIARkNogb0O0/EK8ZUybM++Iczc2BfCL1OJLycRTArwSntBG7fh2u866YNLwQKuiIPiqfMHGOA64rBkMRdLYtzCPUI9KVi/kZoxwwTeq56R+hXFICeoZusFw5VgPFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778491712; c=relaxed/simple;
-	bh=cfOlR5qjLH6F0mgDNpFieNzkfYgGlRYjxfxkEfFlJtA=;
+	s=arc-20240116; t=1778491757; c=relaxed/simple;
+	bh=/8WLgKR5wjFJrUpA/ZQ4kOdLYBjqDpn/KJQ+OzXehHQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G60dCGuR28QFnx0YA/bMvcbXAUXQPnhKSV0WfpzJBd3t584m9Fq3aVV+m1VBK1HJ8ETjQqK2RiQGIPyM1tUimO5o8cG6Af4T5IEnUJNojLR2fRSFI0NhfYmHRJTLsOzODxm5/teoiT7IXj6tYFuBWafpglGhpgv3z0U5s+OQ4uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAFbkgdC; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=oDaL4L7yPNFcHuq5V6FujT4gM6Q8ti18pKHw3mmHDFssE+++rddxG/Bw5bG6NGizRDE2/Tva2/lUGxW+lkAXUotEOR5xZK8kbo96WqxNysNJC80lO59uqprrTesZ6rmOIkfC6EszhK242vePogKXNbzQvH6JxaA9hkYcpNvLZsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlfcsNeD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAFbkgdC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE374C2BCFA
-	for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 09:28:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlfcsNeD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C383C2BD04
+	for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 09:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778491712;
-	bh=cfOlR5qjLH6F0mgDNpFieNzkfYgGlRYjxfxkEfFlJtA=;
+	s=k20201202; t=1778491757;
+	bh=/8WLgKR5wjFJrUpA/ZQ4kOdLYBjqDpn/KJQ+OzXehHQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iAFbkgdCexDixdQ1ZcTDnztqRaDhEtvzGhmVdx/T+WoH0PnNQ3HgXQotA61Lhqoe7
-	 vjQi7E5Q78xBt9F1tBY8dS7QJTCbL2VMQBbVYxYtrWjBUOuGwfMltbKR04Ri07yT9S
-	 Tbzyn0/xFUa1MS1Y4zbAzCH9pzyz4l8EKOvoa3TtiZREK+XuntVTslLjcs4imw6xtj
-	 hU7weOo4UJKcxcb2G16dQJSFfZr6TSjm87MdJLpIxK2SQT7szRZAyy6+x7lTABQvU3
-	 CZzfduG9O1M2VOjofRVCJjHNMUm2a41q5nlnD/CG495qJPw3RBXqQkEPurh/S9tqh2
-	 Vib4zjjXbNSqg==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a86c1fe573so4383760e87.3
-        for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 02:28:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ97kQmuVtE4XmH0h65rtl/Pw1zvQwXRNRQx6MJGWZJ6dtbLs0XWVmCvA/J20lSZJUxF50KDLoGsviywuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YypYewcUQ4c3RZaynqu/UZYnpemcYZ5VDOwu/a8T8Pd6ucjp14R
-	A3cVOLKhMs9RbEe4945NNGT0F1N0g09PEoPAVsEprvTiFInqfLm+b/u50ijssiQNgwGqFKkoWWB
-	vItfQNPLdVzQTh4qOkPjwc1tsVRZU3nM=
-X-Received: by 2002:a05:6512:3c87:b0:5a8:6f4a:6a62 with SMTP id
- 2adb3069b0e04-5a8b729150emr1970564e87.41.1778491710434; Mon, 11 May 2026
- 02:28:30 -0700 (PDT)
+	b=GlfcsNeDUKVhz4/ZQU9+SQdfSg36gL5hFVfiQc4Z0zYA21UxlassSvsCPna/ZtlUH
+	 jWBinOniQJeqx3mAgpeZEZilpwLFOxsVJjEXkALbc5tAGgf9SIG2r1k2b07BmIx+2C
+	 uIkhf22bfPCYt7Sk9krSJBMjeGxTMSEYGFLQOe3ceuWAUeTUBVLl6S37LFecleLHvC
+	 yregLvD5gTV22d1Ui5jAXv2ML2Yh/FxR/UGrmvCiSS9zvzjdIeWrkty3RVesOecJvi
+	 xZN6vS8PWvK3DVGXgAhpwkJbUkgAW5IEZNJj+x00UQVj7RrhZcRBp6fLgL3qoN3MzP
+	 s3K+MoMBNyd0w==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a8c6fc5fd3so927588e87.0
+        for <phone-devel@vger.kernel.org>; Mon, 11 May 2026 02:29:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8MD/j7XfeDc4Yfr9t4Zcz53cjKagZ8G45imFzEjA10hU7MN3OnGoFUp3UeZHteNOkyEoKED89+U8wpnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZJY5mj4N8CXPAwQL9q5gqRSU7cq+dEkHnbG0qEZtlTnQ+lDga
+	wTkleAf/q1LUFqbh+QK/KAuwtUF9edpOMkxmRqtTuAlUVzH64ks0+o+cuxznsORnMxJsYuD/BeI
+	Cw3KVtWL1WqFTcM5BqTM3oTlw2oQM7Lc=
+X-Received: by 2002:a05:6512:39c6:b0:5a8:7360:5c59 with SMTP id
+ 2adb3069b0e04-5a899b98095mr4948327e87.10.1778491755749; Mon, 11 May 2026
+ 02:29:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260510-pm8xxx-xoadc-label-v6-0-49700fd03005@smankusors.com> <20260510-pm8xxx-xoadc-label-v6-1-49700fd03005@smankusors.com>
-In-Reply-To: <20260510-pm8xxx-xoadc-label-v6-1-49700fd03005@smankusors.com>
+References: <20260510-pm8xxx-xoadc-label-v6-0-49700fd03005@smankusors.com> <20260510-pm8xxx-xoadc-label-v6-4-49700fd03005@smankusors.com>
+In-Reply-To: <20260510-pm8xxx-xoadc-label-v6-4-49700fd03005@smankusors.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 11 May 2026 11:28:18 +0200
-X-Gmail-Original-Message-ID: <CAD++jLkEsw1EHQ1bBp3R-0N7ABL6P9Wz7Kd2CEQcyXYPshTF7g@mail.gmail.com>
-X-Gm-Features: AVHnY4IhqEH9lgst_x7YrGT_DKgqpsvJ-gMtJBV52g5yHUpPfofeDWqPW--0Ep4
-Message-ID: <CAD++jLkEsw1EHQ1bBp3R-0N7ABL6P9Wz7Kd2CEQcyXYPshTF7g@mail.gmail.com>
-Subject: Re: [PATCH v6 1/4] dt-bindings: iio: adc: qcom,pm8018-adc: add label
- property for ADC channels
+Date: Mon, 11 May 2026 11:29:02 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkR8HULNncaKre2jhkCfrvSGhuaNjun_WBaTK0Gib2=vw@mail.gmail.com>
+X-Gm-Features: AVHnY4LOpGAki2ZZx-8fEzwB0VI2UtPd19xvaRIQQUjKadmi0IYy9LQrvAehbGc
+Message-ID: <CAD++jLkR8HULNncaKre2jhkCfrvSGhuaNjun_WBaTK0Gib2=vw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] iio: adc: qcom-pm8xxx-xoadc: add support for
+ reading channel labels
 To: Antony Kurniawan Soemardi <linux@smankusors.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -57,19 +57,25 @@ Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.or
 	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
 	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	phone-devel@vger.kernel.org
+	phone-devel@vger.kernel.org, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 10, 2026 at 9:04=E2=80=AFAM Antony Kurniawan Soemardi
+On Sun, May 10, 2026 at 9:02=E2=80=AFAM Antony Kurniawan Soemardi
 <linux@smankusors.com> wrote:
 
-> Add a new optional label property for ADC channels to help users
-> identify each channel when reading values from the sysfs interface.
+> Implement the .read_label callback to allow userspace to identify ADC
+> channels via the "label" property in the device tree. The name field in
+> pm8xxx_chan_info is renamed to label to better reflect its purpose. If
+> no label is provided in the device tree, it defaults to the hardware
+> datasheet name.
 >
+> The change has been tested on Sony Xperia SP (PM8921).
+>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 > Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 
-Makes sense to me, nice with some roadsigns in this djungle.
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
