@@ -1,53 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6043D2FEC;
-	Tue, 12 May 2026 20:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D633A3D5C06;
+	Tue, 12 May 2026 20:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617431; cv=none; b=Msn68XnTUn3eS13oMdE5rDw3+yMQxwhAWGsHaFd8eZ1TikWNC3ygtr7JP8qopRbTcdghAwurBEBdSUQxJ3RScqbmrairv/6aVqhQAt+6BCkQ3WbFLpVe/iDexREZIlHQ3uv78RAFy3TL9Nxq/9mba6dr8usR/lLPIyAMy1h6v7A=
+	t=1778617434; cv=none; b=XjdMQeDFDUUpM6DKOBTEHV9OjnVKU6qJ23nEv4NICeyt7cblcvc/R6Byeh9YrziQulyIP2pwHGl66naEGSxSZWkJ0M5hmUYu1poOq3ACLFDAl6TENxy6PqmQY7A+NH3XC3yyDTMO9YchQZev5x3XP8Xaz/+hVH3paWI9Ad9xjbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617431; c=relaxed/simple;
-	bh=r7C8okDrmZ4V85cTOZoFCuRzK0Plr6eNfjzzPe5Y3hw=;
+	s=arc-20240116; t=1778617434; c=relaxed/simple;
+	bh=mQk0s8mtv63bM0yo010w4D1GeTlfHBqmaw3KLvodcYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZzfXsGiMg4elccjLfjq5haoeP2qYoAvdpmX9Kt3vtHxkfoN8brdV98AKDceI3zT5NFwyV7m/gCWkyv4eIkkNEz2LKCTx6110b6krOitfYau8NyNf5Swb4L6PQRdg2Vp4T/F/wWXPUlymQjhfN9Ed758SvPf8QB0qNzdsy433dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNx71Kbk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tZa1RVWIQB2vUw055ZQwq1YcPKkUbPONZ/NmjKzUK9/wV6WrApVq1AY5BeFwoyjD4rSLbmwix8dl4p/EDR00yE46mH1IeBes6j3KNPJG1OkxHVPqeFYDq/y4hPwoWz5nsJFBqOVjnPDPDtoF1XUFufuyba+sCpAZojH8ov1vUmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1pCaq2Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNx71Kbk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79988C2BCFA;
-	Tue, 12 May 2026 20:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1pCaq2Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FFFC2BCC7;
+	Tue, 12 May 2026 20:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778617431;
-	bh=r7C8okDrmZ4V85cTOZoFCuRzK0Plr6eNfjzzPe5Y3hw=;
+	s=k20201202; t=1778617434;
+	bh=mQk0s8mtv63bM0yo010w4D1GeTlfHBqmaw3KLvodcYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNx71KbkOBZo/0s/F5gr5GeW6TcXz1KY3rTJscM5YMiS0SHwrVUW1NeCzDRTXPk6V
-	 J6hJxeLzxz5fsonWz2Ma4+Q4oaTxWH74Zx6J3hMpLZu6n76iD3do0ATeb+SzW0tQbk
-	 aIMB8Xfhl+Bh21a6iEAklzb2woXwKYQnFTU7tFCnhPHdDgiXuHEcs/naaEZ5SWo9DE
-	 FAMF47Z2M3EUEcYhHOFLVzcB3vMNqJLW97oyMn5RPlTXsLBTOP19lIXNxDMGifcElN
-	 PR0LMKTATVLi2ONtWk3V1tNj65RWlFo6EC8osCK2B0EW8bkk0hIQ1v7eCEyhWHV+2r
-	 DcgZIH65SkPoA==
+	b=s1pCaq2Zp9RIToquoqBsMPwGEXyKj/KJtUMgB/zRqwxNJ4TFvcKuhIY/b/TnCCmgx
+	 ZjHxCOv6RnRspjNQGG7ZdBBjf5KJCY/PqIQ/uKDtfq7fA2nrLVm0hXViWfGeZ1sAOn
+	 1yAFe2CRxI5vW4JnEAoP3BgA8Bt4bgTCaMp8dgE8xSANeuMSAmpSkMetYLMlMcMx+y
+	 cKVXr3GWCefd8KnpBIONk4ANv7qsRc7AgDujy5kaDu7DW+sAXfzE9BcXmcLSAcGGvY
+	 dQ5JIPi2IT2/fUOPieVLpPXxCMEwK7NllpS+1FKzP8ojMso514C2gvrHUsCSDvIKEk
+	 qbwQJIZ0FENQA==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Linus Walleij <linusw@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	David Heidelberg <david@ixit.cz>,
+	Paul Sajna <sajattack@postmarketos.org>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/5] Add LPASS LPI pin controller support for SM6350
-Date: Tue, 12 May 2026 15:23:03 -0500
-Message-ID: <177861739372.1242344.6203003940273712177.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH 0/4] arm64: dts: qcom: sdm845-lg: Devicetree followup
+Date: Tue, 12 May 2026 15:23:07 -0500
+Message-ID: <177861739366.1242344.3815215725258355687.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260430-sm6350-lpi-tlmm-v2-0-81d068025b97@fairphone.com>
-References: <20260430-sm6350-lpi-tlmm-v2-0-81d068025b97@fairphone.com>
+In-Reply-To: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
+References: <20260408-judyln-followup-v1-0-823467519b59@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -58,25 +57,27 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 30 Apr 2026 09:10:40 +0200, Luca Weiss wrote:
-> Introduce support for the LPASS LPI pin controller for the Qualcomm
-> SM6350 SoC, by adding the dt-bindings, driver, dts bits and enabling it
-> in the arm64 defconfig.
+On Wed, 08 Apr 2026 19:41:11 -0700, Paul Sajna wrote:
+> Re-send 3 patches that got dropped from 20260331-judyln-dts-v7-0-87217b15fefb@postmarketos.org
 > 
-> The custom slew offset for gpio14 is described as
-> "qcom,lpi-slew-base-tbl" in the downstream dts[0]. I've tried to find
-> some reasonable solution to have this handled correctly in the patches
-> here, but suggestions are welcome how to improve the situation. There's
-> of course several ways to implement a solution for this.
+> (https://lore.kernel.org/linux-arm-msm/177541802142.2061229.9094394728986735362.b4-ty@kernel.org/)
+> 
+> Re-enable qcom,snoc-host-cap-skip-quirk
+> 
+> To:
 > 
 > [...]
 
 Applied, thanks!
 
-[4/5] arm64: dts: qcom: sm6350: add LPASS LPI pin controller
-      commit: 630398127110753474576cbc0cd4ad102b18005e
-[5/5] arm64: defconfig: Enable LPASS LPI pin controller for SM6350
-      commit: b1b08554e3be97712febad9d4d9ad617a1a32af1
+[1/4] arm64: dts: qcom: sdm845-lg-common: Add camera flash
+      commit: 4eacad2d8e3bd1115a65fd62ce5e08825706fa52
+[2/4] arm64: dts: qcom: sdm845-lg-common: Change ipa gsi-loader to 'self', add memory-region
+      commit: d2735f569053092ca2a47367dce1594b985409e5
+[3/4] arm64: dts: qcom: sdm845-lg-{judyln, judyp}: Reference memory region in fb
+      commit: 3f779220c64796df483c4cd47154d4ff1104a2e2
+[4/4] arm64: dts: qcom: sdm845-lg: Enable qcom,snoc-host-cap-skip-quirk
+      commit: 0f7c65c11f59332ec6d02bf0482a283510efd03a
 
 Best regards,
 -- 
