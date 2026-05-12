@@ -1,66 +1,33 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC30441020
-	for <phone-devel@vger.kernel.org>; Tue, 12 May 2026 07:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559DE397E6D;
+	Tue, 12 May 2026 08:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778569536; cv=none; b=jwZNLx1DXzdaI8uQ0C9KiG87bl9+HlSk+akuYi5jZkCN7HYnK+/tD2koKMrxfY7xUZgXNwboCTRHKboAVitP2QHtYIHBjzrohIghUAWt9u8ZDCVxWjou0yQyAYH7MdMRCzb8iXsArRe3aq3Gh14tU5tpRSTdeot/42iKIN9opGU=
+	t=1778576251; cv=none; b=tQoMcztZIH3fKfHsILnMP/jy4Qs6eyosTOcs7wXnj5hlfOgcv/r0ArwaffaGMnv5JRHFlARtpJWPSOeIVUGZeeXSwtVoKBaF553B9ytz5lpWX6wl1q2cfY4E5ABWdYbph5VJ6RVGWO97SCeFcR//85yNGewtNqaqCG1ABEw6JWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778569536; c=relaxed/simple;
-	bh=S1y/611h5F1yDCLY2MwHHiifJrIn907EP4/nio92UgI=;
+	s=arc-20240116; t=1778576251; c=relaxed/simple;
+	bh=9RcgFbtI2EtyIuP/xuStrFIZ3slvf4MbBnKxWbKgI+k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WnA4drI0Vajz93XFxUqW2NmB27rxKupprcTS1xHtxuMJuzhdv3IeYW3Cmel7qqkafjNPftuXLHl5WcvCwoYPbu/LSIXjjUSSDI/PiycF/EMyJlIE1zRNhlHCQP7dPvsb0uZ203zZE0UkM4z2dLJqVKVDGYR3K044uolZmiiL6xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BK0C75Yv; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=bRZqdrS+m8GuOD9rhCvzoJ0wJJTMBJ9A5/biobSYnU1bdVDDJEmznvanpVGtFxKVz9yg4rKBaiKki/A9tgpUz9KEjz6Hyz3yOqweupNbIS25N6vY8k8OYyvn0jMn8uWNynvCB5kre2D0lsm+6qgoSa3heTM+3UCfHbnlEOFXyqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFffOHHH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BK0C75Yv"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd22b2abaa4so127337366b.0
-        for <phone-devel@vger.kernel.org>; Tue, 12 May 2026 00:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778569530; x=1779174330; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+au2wZMjR4hSPfSatgV6boyFWtlvztIAKTjtpXaCIFs=;
-        b=BK0C75YvBPrANr+ri1CVo6P8WvyLhqIh/Y8/a0IL6DEoVektjOYyfz7oy7+8++me+/
-         wbTTyApThqtCx2Cmgo/qca4BBMIWVbILm9OTbHkQtnoV5zKbe1c2mSpbAQhNLJSb3+UZ
-         t48MvJb/QbnP0pTt0MVfCq2bYMDsOtOwcwZpWENRVtAhCpyDKp0qviirwqWltOh/c9Ld
-         F7wyLcNcyThyVFqc8QiUQJjWShddmJLDMbdi3e2ZIp+GREcuT5WXkHoCjXqULz1zr4Qy
-         VziaOY5j8TvaMu/nAQtf/9+T2DYkrsgIJEYDk/jNo/4MwEgT9Tcbn6EORGPS/N6UNYpY
-         4pRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778569530; x=1779174330;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+au2wZMjR4hSPfSatgV6boyFWtlvztIAKTjtpXaCIFs=;
-        b=jI0nlaHxbmYRm2sMbLvd5iTk1IAPVetYid/+BGeat0MRzmbio82fenJpKeNDITvC0B
-         kogDCuTn3m92nk6feXD0OfJvdXCFUzkCAtnGqcVAUGQPOFB4omVbntcvkVkYf0b5mZfA
-         1vTGwfEGRgwNrGiw+y/ixL4JbO9o/KGOexZLcxwzdR9mG7y4W3sZUYHOnS77syPxz5g8
-         g0AQe2sSzJGQpgHKc0/wim5cCx+E/zn6ZfsFmJXAjgFbtHTG6cdT9OhhmWcvjGEqtBS6
-         5d0VzTtSRl+IghMsag96rGcvaQo13fbN4hSitGyT0t9mUrjB6CsdoCev7EV13vp4oQ3y
-         IXCA==
-X-Forwarded-Encrypted: i=1; AFNElJ8hNVxhyh4Iw50J37KXJnsuI2ERxH1ryS/V5tlum2RozxntemROuy/CbE+dAI0SpWUO6O0J2BGvCElLsQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2jKGcX6xcQVkkU07bCmv86aU5zDV0r/YJtCDeKS54Gxq0XLKP
-	q7ijwwqkP70jh/utq/bP3c9p8HjdwBuD40SnzBpqpiCy4RUgyexnkwz5
-X-Gm-Gg: Acq92OHpaMSQDX4Eu4plKb3ScC8WVvAdDJkgIBAzBANWjVBCJ+HendDtQQhF2h+4W1z
-	GziUXTbaVOsy/JDdbBg6YXcviD6i4QkvhuLRJsdpQS9VBgQ0DvNt2l1hqTcaBJoL4Aeg2yEFozV
-	uKvyIdzzVxHxx83djX2OjTZzfuGsx+vHhFnHgTT4525bAdQ9t+czmv+GwdpiwIpKxmPCvgKA8iq
-	1LMd0dOgQY1Ahx0pVVJf/cPFISjQAq/d7QToX6BVMvJO0FOYyhsC+8RZKvYY8i4ZczE9pmmL0Rq
-	CfQ7E01DiEg4Bu/GkUasGTwGVFk4Wj1NF4vTfITEmmeK2aBuyoAhAQ6E9qxTqqS+l38ezkdZb0J
-	QvYjn+5/iie6OEFkpEunbssBRfPKZtV3UNc7RBFhI8NSUas1AeTD/X4MxyhJuKjjWegqoICeEH4
-	V5gvAPc35rLajbk1hYc7lI9uucX4AkA+mi8jiCrShZbX3ath8uiryKH6AasEkORSTVb3Zj
-X-Received: by 2002:a17:907:e113:b0:bd2:27c4:f453 with SMTP id a640c23a62f3a-bd227c4f500mr115768566b.9.1778569529638;
-        Tue, 12 May 2026 00:05:29 -0700 (PDT)
-Received: from ?IPV6:2a00:f502:160:4e2:a099:cad9:2ecd:93de? ([2a00:f502:160:4e2:a099:cad9:2ecd:93de])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0e2c317sm4646281a12.31.2026.05.12.00.05.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 00:05:29 -0700 (PDT)
-Message-ID: <c99d1b63-b304-4440-9bd5-b119dd0042e5@gmail.com>
-Date: Tue, 12 May 2026 10:05:26 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFffOHHH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7470CC2BCB0;
+	Tue, 12 May 2026 08:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778576249;
+	bh=9RcgFbtI2EtyIuP/xuStrFIZ3slvf4MbBnKxWbKgI+k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cFffOHHHZs+xIhMeXFbyJW0RDBAQ5J/wh6vjtj71feqejDcYAQJNWj4CbF8sSM+uu
+	 Q+2CGVSTg2/0u+un6LwGMaMmTyoQp+TzChSGkpU0KDgnGC0NYVe45Lgux7EJN2bpSs
+	 C6A8zuY8K6XX/xApR6HVMdTRL8THqT/xDLjop1CwIkqcfljy/uf2bGSWE1XVzcZCG1
+	 PP+BZjTjND1JjfgqhJjMi3rfanpv9JpncnaVELqpqbhxjsuljf81q4lkEePC4Xevun
+	 SkHQnMCLnrZNyEgWHm91LR5vhBB/KnWA5ucUhTNnOmNIeGIqJuZ7q0y6ABj7fhU4MI
+	 2ga1p/Y2CH41Q==
+Message-ID: <7180ef28-e7fd-4ed3-978b-34bfa8e25eb1@kernel.org>
+Date: Tue, 12 May 2026 09:57:23 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,7 +36,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 3/9] media: qcom: venus: Add msm8939 resource struct
-To: Bryan O'Donoghue <bod@kernel.org>,
+To: Erikas Bitovtas <xerikasxx@gmail.com>,
  Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
  Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -88,36 +55,88 @@ References: <20260506-msm8939-venus-rfc-v4-0-994f5eb22acb@gmail.com>
  <0TaxINYCitQd2DsGsbhRviwmrQkaaVMaE9vABS3gSsSPNfrgS3JPTIo_kvTzyEhGOAZuMVq-k-5T8mqDM7dnIw==@protonmail.internalid>
  <20260506-msm8939-venus-rfc-v4-3-994f5eb22acb@gmail.com>
  <108401cb-040a-441c-b463-b69df195378e@kernel.org>
+ <mouIchcg0mA9oAJqE0K9Cs3CGxN-Ug7Qnk5TUtdnFkIZzApBj0WsRqPNi3xYEPKiwyPm73Hr0eDaCWbSFCNhMw==@protonmail.internalid>
+ <c99d1b63-b304-4440-9bd5-b119dd0042e5@gmail.com>
+From: Bryan O'Donoghue <bod@kernel.org>
 Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <108401cb-040a-441c-b463-b69df195378e@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <c99d1b63-b304-4440-9bd5-b119dd0042e5@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 12/05/2026 08:05, Erikas Bitovtas wrote:
+> 
+> 
+> On 5/6/26 2:33 AM, Bryan O'Donoghue wrote:
+>> On 05/05/2026 22:44, Erikas Bitovtas wrote:
+>>> +    .vcodec_clks = { "core0", "core1" },
+>>> +    .vcodec_clks_num = 2,
+>>
+>> This smells a bit dodgy to me.
+>>
+>> You already have
+>>
+>> struct clk *vcodec0_clks[VIDC_VCODEC_CLKS_NUM_MAX];
+>> struct clk *vcodec1_clks[VIDC_VCODEC_CLKS_NUM_MAX];
+>>
+>> so why add vcodec_clks and put core0 and core1 into a new array.
+>> vcodec0_clks and vcodec1_clks seem like a very natural place for core0
+>> and core1 clocks to live ?
+>>
+> Sashiko found some power management issues in my code, so I'm coming
+> back to this.
+> The idea is to call vcodec_clks_get only once for inline cores, thus
+> avoiding duplicate clock assignment. Attaching to vcodec{0,1}_clks
+> instead would mean we're adding the same clocks twice. I dropped it in
+> later revisions, but now I want to re-introduce this, then add them in
+> core_get_v1 instead of {vdec,venc}_get_v1.> ---
+>> bod
+> 
 
+That's fine just please give as much detail as possible in the commit 
+log to justify.
 
-On 5/6/26 2:33 AM, Bryan O'Donoghue wrote:
-> On 05/05/2026 22:44, Erikas Bitovtas wrote:
->> +    .vcodec_clks = { "core0", "core1" },
->> +    .vcodec_clks_num = 2,
-> 
-> This smells a bit dodgy to me.
-> 
-> You already have
-> 
-> struct clk *vcodec0_clks[VIDC_VCODEC_CLKS_NUM_MAX];
-> struct clk *vcodec1_clks[VIDC_VCODEC_CLKS_NUM_MAX];
-> 
-> so why add vcodec_clks and put core0 and core1 into a new array.
-> vcodec0_clks and vcodec1_clks seem like a very natural place for core0
-> and core1 clocks to live ?
-> 
-Sashiko found some power management issues in my code, so I'm coming
-back to this.
-The idea is to call vcodec_clks_get only once for inline cores, thus
-avoiding duplicate clock assignment. Attaching to vcodec{0,1}_clks
-instead would mean we're adding the same clocks twice. I dropped it in
-later revisions, but now I want to re-introduce this, then add them in
-core_get_v1 instead of {vdec,venc}_get_v1.> ---
-> bod
-
+---
+bod
