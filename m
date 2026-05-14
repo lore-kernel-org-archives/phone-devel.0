@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BC7407583;
-	Thu, 14 May 2026 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA7E40DFD1;
+	Thu, 14 May 2026 14:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778767764; cv=none; b=HdZdu3Jgtn6Q3WARqJf0ZI2VpXGALAuraPs+kLGWLz/iRRulGvBuQVV/S4n18ypdaMGnMGaKbAb4LSoaoHtEFO/VOm461+4eraerzSE7/D86F7HOKgnaP3utYapFFHfEpZ+9WUloD+1BxYao0f+EvA6F0D0k9lUDFr8Wp2sZViQ=
+	t=1778767766; cv=none; b=YgW4pfbcu3L3oEU7fbzQoGxoM8UmDb4TQB0CZCbpcr2Z0K479L1Wm+0FzdiFeJ67ecOgWWeDdMC8Y70so+PEDErOjtCBxqsqgp9rdDssaKyTB8o5dnYyV6Vg/Ydf203VR5ENm0wA1z3D1EzkHk/UQ+qxKgP5XfLLfED/iYRPALM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778767764; c=relaxed/simple;
-	bh=DzRDH4cbEVAi9XsADsayvcSyczdiqr82Oaapba9+ZrQ=;
+	s=arc-20240116; t=1778767766; c=relaxed/simple;
+	bh=NhVLviqMkDYbtGDymlF/G9R50yyzlfYfTIw5XBES5Y4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a/quG7ALjfF28IQdFCw0rCK+yh2HbQTHzZCcnfVlGJn2Lb4bQqn5MZ2EWHRaBWj047lDgstqB/m0DALzb2DrNw9VTBPp4WuA0kiAFhJp2sRvYtlw2rrAhxjVz0lPaYNSGDkDRvBKyqB9HYZXhvkcTSevjCcxQdTR9BoSZorFegI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2tJRYpN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MZbmj+Iqywsi51vjlVHsogU0P7noAYODjbcGgVz9MUSEyWdlzmVezgpsuScNZT9rwGLQwLOv0Zxg/vyvKkv6LULRLGHYAamQtNNxJN0bgRPgr4H6f6Ecv+o99vQBHq+rTTDWFetKU2uwq24T62rOpPl/qrQNBQFCGHGtqKRiKzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmcidO5+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2tJRYpN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 97340C4AF0B;
-	Thu, 14 May 2026 14:09:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmcidO5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 36A26C2BCFF;
+	Thu, 14 May 2026 14:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778767764;
-	bh=DzRDH4cbEVAi9XsADsayvcSyczdiqr82Oaapba9+ZrQ=;
+	s=k20201202; t=1778767766;
+	bh=NhVLviqMkDYbtGDymlF/G9R50yyzlfYfTIw5XBES5Y4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=O2tJRYpNA8HHVparbVybj/4WU816WvcOMBla0xpVOsPAskUS10eIBVC9hiG02RTLa
-	 5zZES2TvVdUqRRjtHqEr9Q2Kuk5iOVHnjFFt9GqIpAEGNQpzSk8nRC/bwqUrk3/hdI
-	 s8brPW1f/bqFZaU6mpBe+7k3/vmxa5WJ9aAT2GfxuOHsU8bY1NbZoRGaGYHcDOPy8b
-	 GpuP0E3igw5c0l0Rcok+rmf9Lhavynlba2YgPpWdS1wj0T0LZV8BDsQx0oOhx8jHH2
-	 Z82BL67FGDslfapZI+blt73PncBhKAeFky3ThmIFf8+dpeuQ1fYzyKVyaTftLrnPmJ
-	 KNvNVQSin1VfA==
+	b=KmcidO5+lwvMx7QAqRl/aIJYqAUNiAKSdnY29fwmepB8g9ouPkKFX3fT7K0SaE2rX
+	 Vyj61kr9VfI7qKU5ErzbkLcJLWY4oQAKkfyXF7NKlJPy8ZNLuxRAWYijHoAwXHlrtV
+	 rwSxuh39ODd0k5/biOCz4sQ+8Cmir/chlfpKlg1JmMJB7P8YWocVunpYNP87xFCFm6
+	 9uPME2V4rzXS5hbJAQC8k5jQUElOmr16iVOvfZircKBpzoAjRfxLC8U1tiRP8+JN/W
+	 T8dcmOKNw0QjDAER3PSjjIKI8C8J+tYVHFRpSRv+Pch/UARus63KxUSyl+r2T9dKy3
+	 YEwoBUhu1v2Yw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7637DCD4F3C;
-	Thu, 14 May 2026 14:09:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24309CD4F25;
+	Thu, 14 May 2026 14:09:26 +0000 (UTC)
 From: Antony Kurniawan Soemardi via B4 Relay <devnull+linux.smankusors.com@kernel.org>
-Date: Thu, 14 May 2026 21:08:30 +0700
-Subject: [PATCH v2 01/10] dt-bindings: clock: qcom,rpmcc: add msm8960
- compatible
+Date: Thu, 14 May 2026 21:08:39 +0700
+Subject: [PATCH v2 10/10] ARM: dts: qcom: msm8960: huashan: enable Wi-Fi
+ and Bluetooth
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-msm8960-wifi-v2-1-7cbae45dab5e@smankusors.com>
+Message-Id: <20260514-msm8960-wifi-v2-10-7cbae45dab5e@smankusors.com>
 References: <20260514-msm8960-wifi-v2-0-7cbae45dab5e@smankusors.com>
 In-Reply-To: <20260514-msm8960-wifi-v2-0-7cbae45dab5e@smankusors.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -54,13 +54,14 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
  linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Rudraksha Gupta <guptarud@gmail.com>, 
- Antony Kurniawan Soemardi <linux@smankusors.com>
+ Antony Kurniawan Soemardi <linux@smankusors.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778767762; l=3572;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778767762; l=1040;
  i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=yJDZ3oI+U0ik6kyM6Iek60rqNIUI/8S+jJgZ5v5/O/A=;
- b=fmmYh5Gfdbg3cKUMUc+qEkC8K+LYzBMP75QRB7sMRRyPnKn1OvhRcnnevzpEkce4S0UXKA8j2
- vqX/MP77qafDprIo0OWksbP+KA5IK26gDnql9Oc9WybYDhZ/TTLXWxq
+ bh=SLa77ZNp7lfbDqaVc3OTTZcPOotiwNceDTW3KD4D7DQ=;
+ b=wenOAgoSYUbFmEFqpoDXTncdQcdFpkHhnzibnktdaM3GvNB6AGKz2bc5M63fs3bDrT6o+scuJ
+ dTpr8VSPUFTBkiyXBE/OUo1S/YQH4ROqu9QmvQoVMoSG4nFIjVMqhGu
 X-Developer-Key: i=linux@smankusors.com; a=ed25519;
  pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
 X-Endpoint-Received: by B4 Relay for linux@smankusors.com/20250609 with
@@ -70,116 +71,40 @@ Reply-To: linux@smankusors.com
 
 From: Antony Kurniawan Soemardi <linux@smankusors.com>
 
-Document the qcom,rpmcc-msm8960 compatible.
+Add Wi-Fi and Bluetooth support for Sony Xperia SP.
 
-The MSM8960 platform shares the same RPM clock definitions as
-APQ8064, so extend the existing conditional schema to treat
-qcom,rpmcc-msm8960 the same as qcom,rpmcc-apq8064.
-
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 ---
- .../devicetree/bindings/clock/qcom,rpmcc.yaml      | 77 +++++++++++++---------
- 1 file changed, 47 insertions(+), 30 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/qcom,rpmcc.yaml b/Documentation/devicetree/bindings/clock/qcom,rpmcc.yaml
-index ab97d4b7dba8..32ef7d08e0bb 100644
---- a/Documentation/devicetree/bindings/clock/qcom,rpmcc.yaml
-+++ b/Documentation/devicetree/bindings/clock/qcom,rpmcc.yaml
-@@ -21,35 +21,40 @@ description: |
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts b/arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts
+index 591dc837e600..7d54ced3641f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts
+@@ -95,6 +95,21 @@ MATRIX_KEY(1, 1, KEY_CAMERA)
+ 	status = "okay";
+ };
  
- properties:
-   compatible:
--    items:
--      - enum:
--          - qcom,rpmcc-apq8060
--          - qcom,rpmcc-apq8064
--          - qcom,rpmcc-ipq806x
--          - qcom,rpmcc-mdm9607
--          - qcom,rpmcc-msm8226
--          - qcom,rpmcc-msm8660
--          - qcom,rpmcc-msm8909
--          - qcom,rpmcc-msm8916
--          - qcom,rpmcc-msm8917
--          - qcom,rpmcc-msm8936
--          - qcom,rpmcc-msm8937
--          - qcom,rpmcc-msm8940
--          - qcom,rpmcc-msm8953
--          - qcom,rpmcc-msm8974
--          - qcom,rpmcc-msm8976
--          - qcom,rpmcc-msm8992
--          - qcom,rpmcc-msm8994
--          - qcom,rpmcc-msm8996
--          - qcom,rpmcc-msm8998
--          - qcom,rpmcc-qcm2290
--          - qcom,rpmcc-qcs404
--          - qcom,rpmcc-sdm429
--          - qcom,rpmcc-sdm660
--          - qcom,rpmcc-sm6115
--          - qcom,rpmcc-sm6125
--          - qcom,rpmcc-sm6375
--      - const: qcom,rpmcc
-+    oneOf:
-+      - items:
-+          - enum:
-+              - qcom,rpmcc-apq8060
-+              - qcom,rpmcc-apq8064
-+              - qcom,rpmcc-ipq806x
-+              - qcom,rpmcc-mdm9607
-+              - qcom,rpmcc-msm8226
-+              - qcom,rpmcc-msm8660
-+              - qcom,rpmcc-msm8909
-+              - qcom,rpmcc-msm8916
-+              - qcom,rpmcc-msm8917
-+              - qcom,rpmcc-msm8936
-+              - qcom,rpmcc-msm8937
-+              - qcom,rpmcc-msm8940
-+              - qcom,rpmcc-msm8953
-+              - qcom,rpmcc-msm8974
-+              - qcom,rpmcc-msm8976
-+              - qcom,rpmcc-msm8992
-+              - qcom,rpmcc-msm8994
-+              - qcom,rpmcc-msm8996
-+              - qcom,rpmcc-msm8998
-+              - qcom,rpmcc-qcm2290
-+              - qcom,rpmcc-qcs404
-+              - qcom,rpmcc-sdm429
-+              - qcom,rpmcc-sdm660
-+              - qcom,rpmcc-sm6115
-+              - qcom,rpmcc-sm6125
-+              - qcom,rpmcc-sm6375
-+          - const: qcom,rpmcc
-+      - items:
-+          - const: qcom,rpmcc-msm8960
-+          - const: qcom,rpmcc-apq8064
-+          - const: qcom,rpmcc
- 
-   '#clock-cells':
-     const: 1
-@@ -90,7 +95,9 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: qcom,rpmcc-apq8064
-+            enum:
-+              - qcom,rpmcc-apq8064
-+              - qcom,rpmcc-msm8960
-     then:
-       properties:
-         clocks:
-@@ -164,3 +171,13 @@ examples:
-             clock-names = "pxo";
-         };
-     };
++&riva {
++	vddcx-supply = <&pm8921_s3>;
++	vddmx-supply = <&pm8921_l24>;
++	vddpx-supply = <&pm8921_s4>;
 +
-+  - |
-+    rpm {
-+        clock-controller {
-+            compatible = "qcom,rpmcc-msm8960", "qcom,rpmcc-apq8064", "qcom,rpmcc";
-+            #clock-cells = <1>;
-+            clocks = <&pxo_board>, <&cxo_board>;
-+            clock-names = "pxo", "cxo";
-+        };
-+    };
++	status = "okay";
++
++	iris {
++		vdddig-supply = <&pm8921_lvs2>;
++		vddpa-supply = <&pm8921_l10>;
++		vddrfa-supply = <&pm8921_s2>;
++		vddxo-supply = <&pm8921_l4>;
++	};
++};
++
+ &rpm {
+ 	regulators {
+ 		compatible = "qcom,rpm-pm8921-regulators";
 
 -- 
 2.34.1
