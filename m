@@ -1,206 +1,79 @@
-Received: from bumble.birch.relay.mailchannels.net (bumble.birch.relay.mailchannels.net [23.83.209.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vinatta.cz (vinatta.cz [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA91D39937B;
-	Sat, 16 May 2026 10:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778928805; cv=pass; b=K5yyn3AII2ntknI81YofdBzM/Drm/eKgdim0m7ULfTRV43tmaZ6hbFtSRTQJh0tB90KvTOJf+bTtN1Gn0yUgmB4Kjkh2Xcnkk4wCg0vkZSV9jXpKPnIw45hgGBisJdx9VvxNDfyxe5AYooFY81D4ScTInRsfoXKzXUrWxzal0vA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778928805; c=relaxed/simple;
-	bh=EvlFNFL5qYe6hGJ5zak/zDGnwmqF9V8P0Xwz5Os/PqQ=;
-	h=From:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:Date; b=HFgtpnGVc0vYmkVeywcFbvTUw30F1SQlZCkNHqYtFKblMDbuXtTsLgh2PshKO6RwxiyMI3rCpivWtlyk4oZddCo0AVEG4kCrqBhHAG5b5rqdP4qgEGfQ2olBhaeM811Ng1ZkVuedw93A8MmfoqJm8gqxLT7lQXepwHfwKbfHLOQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=k9+awQhK; arc=pass smtp.client-ip=23.83.209.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED7B36AF6;
+	Sun, 17 May 2026 08:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779006769; cv=none; b=Xl/6miQSGPYNW7Ox07HFGBnLJpwMUnx5rXc8xrTIsPsrsBc4hyK1/62DZ0mH9VXUfk1Q5yzZS0h/5faw+ZevPFkG+ueJtV+dlrH7JpkQLs8pGMs80HK2R9k0/4xPpd1CtTYm92h6YWxyVeEOkKtuuWedipPl67O6hhfL4XT/8KU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779006769; c=relaxed/simple;
+	bh=OxaLP5J/GZlEF9ERJgv3Nk5LgC1koMIzY2yYzqkHqo0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=tgV0fNw/TrQSa7Pn6fprKnoNMIZ4GCn69huMOT8To+hcxEU9nhAJUxt49rjp4e7xuyq8XBnp/gxfzgsMY79/b4lNhjAyrn127+Q+gCLMvFNtywjRCtu7ekFL4VU10DRJLstaftSQ8KlY6KkEGunQqsTRUQdOy+1Z+126nQv5HpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=PMO/+ude; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="k9+awQhK"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 4C2CF4E1319;
-	Sat, 16 May 2026 10:53:23 +0000 (UTC)
-Received: from fr-int-smtpout20.hostinger.io (100-98-15-67.trex-nlb.outbound.svc.cluster.local [100.98.15.67])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id C63084E1145;
-	Sat, 16 May 2026 10:53:18 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1778928800;
-	b=zxfnjuUXWimh1WEHeEkKTM2I4aJ5j2AiwjwxysBzK3q7iRHzd4yI4JSAlCHKCJBwCYrnzF
-	EL4env8zSqJtBFtAKk95zULyNkhm6bS/eeCfZJxKvOxQ6zDMEbr3GQ2uIdddQ+6geM1+Jh
-	oJcKwjETZ24Mwo734xIbO7/Tw7ZUrLCmmn1MAbTORUuCF6qXoHNCB3/6jtxBVDricP9u03
-	JTpVzArPYmImmH9aTTiQf4V40n68/Bn4GYap2uSIlEIwUi4//Jk9lnnoRXzLHhZvXK0X5W
-	1X8sqCro8+5SnOHuv3BZ3JqcbDwr9M5+lpSontqb/20pVZGcZbv3zVX2bC2efg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1778928800;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=4M80wcRFRdldUMVHV+1auAZaTo5JHUT1ayi0K1G4Kyk=;
-	b=UZZcDuSep2ujJiRMSA6nRuR8zkDka29kfvFkiOu7m1SmmgrdPzHVk5IZTh3s+frAp+IcCr
-	OcT38qz9J1Ip0cbSE+XodfTB2hnUH7r6dQ0IDFVOrqROvFVbzzhihyrzH4sO2ohBqiqSKF
-	30eqoz0T9qM0Psxla0UfhzPJ6Pjj/LraYhFLsq2VYq+G320C69/t9we2vX3SHpa7GNCPqu
-	aCYO1VDEO2vPNPNmS2G5DmlyQjJNfkE4wKDjeUcXUThGvqf22fm32RsY2rIeHmfqu/3JEl
-	srK7k41AlsGeYv+Zhi9jphH0cJTFQyx3gk/8z0Q/3KfSCSx90dlvcWqvSxzeqg==
-ARC-Authentication-Results: i=1;
-	rspamd-5c5444c55f-srnxv;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Supply-Vacuous: 391faea43c85d4a4_1778928803093_4123370979
-X-MC-Loop-Signature: 1778928803092:2594299746
-X-MC-Ingress-Time: 1778928803092
-Received: from fr-int-smtpout20.hostinger.io (fr-int-smtpout20.hostinger.io
- [148.222.54.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.98.15.67 (trex/7.1.5);
-	Sat, 16 May 2026 10:53:23 +0000
-Received: from [172.17.0.2] (unknown [125.163.200.11])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gHgs62rP5z1xxw;
-	Sat, 16 May 2026 10:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1778928797;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4M80wcRFRdldUMVHV+1auAZaTo5JHUT1ayi0K1G4Kyk=;
-	b=k9+awQhKaRrt5WAmGsprRH0HHO6XvdpSoyVMA1cmwGCkCeXejGLzEBhzJwyGwl4NR+734j
-	dAsiDUDkm5duIGIpbfs/KrXDerAVggwhtc6JS3Ub+FSgbyigoTueihpiBS2jKaag3bel+q
-	T1W0ziKJkjKwtvXXA68HicmGXsei0tLVhQg7va78GpOZBsrGTY77jjkonQlEfZ3usa8M6r
-	2z+madNRImsxe1SN1AHdQSK+tiu9bEJRkUNi2ABuTTTjo6U6FhqMnbE1r3VAJsLJblkxng
-	Kvw4hdindriJGBn2c5Ulec+hmCy3Z/f4nrQh7jYpW4mjy9HG/5t7aIK9PAW8MQ==
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-Subject: [PATCH v2] dt-bindings: usb: ci-hdrc-usb2: allow up to 3 clocks
- for qcom,ci-hdrc
+	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="PMO/+ude"
+DKIM-Signature: a=rsa-sha256; bh=OxaLP5J/GZlEF9ERJgv3Nk5LgC1koMIzY2yYzqkHqo0=;
+ c=relaxed/relaxed; d=vinatta.cz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@vinatta.cz; s=default; t=1779005699; v=1; x=1779437699;
+ b=PMO/+udeo7XzeJ8ziq0fMVnhQ+lOkfiqksINzGQTUTMbfUvnCquMjhKwC3iwPY69pXYaTPBr
+ 0sYDtwXBrRrnzTxUb9iMiyQ1fWScUadCw1gNsRPnH3MAf89gDDidD+fIjXGtKdtEbyaylXRkjb4
+ KAqHsz2O73Xe2rKMmCUWIhfn6x0SyvfnJuJubOJMAZyWwgoOn7RAC9RN8hQjUIlP9S8R6bWfN0p
+ gslmcWbFPc1rV0XGiUzGb/CTfDGc+N/Z2rK0l6C+Yi008AthGl+Yt8jxLtjvtzfoUe37i/vEH38
+ XEL331//YH1DNuli4G5ud92X6UHMl0ipgir8EUdNwZs0w==
+Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
+ 6a5c1ecf; Sun, 17 May 2026 10:14:59 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-qcom-ci-hdrc-clock-fix-v2-1-aaec8d33d0aa@smankusors.com>
-X-B4-Tracking: v=1; b=H4sIAJJMCGoC/4WNQQ6CMBREr0K69ptS0gquvIdhUX6LVKTVfiAaw
- t0teACXbzJvZmFko7PEztnCop0dueATiEPGsNP+ZsGZxExwobjkFbwwDIAOOhMR8BGwh9a9odR
- GniquURWKJfkZbYr34Wv9Y5qau8VxW9sanaMxxM/+POdb7+/JnEMOrRRFqZq2lEZfaNC+nyhEO
- iaF1eu6fgHJ48js0wAAAA==
-X-Change-ID: 20260509-qcom-ci-hdrc-clock-fix-8ad5790ac636
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Xu Yang <xu.yang_2@nxp.com>, 
- Peng Fan <peng.fan@nxp.com>
-Cc: MINETTE Alexandre <contact@alex-min.fr>, linux-usb@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
- Antony Kurniawan Soemardi <linux@smankusors.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778928794; l=3228;
- i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=EvlFNFL5qYe6hGJ5zak/zDGnwmqF9V8P0Xwz5Os/PqQ=;
- b=NL4pUFBFokpG5mWm/WZ0cBJBPvxtS1dPlvrbpfX4iB0obRZ6l6h2JVMBrg/ksMlWYm5XIf7yK
- 5u/7Si2YY4TCA+suxTdqHvPw9NRrMkP8Bdb12cy7JPXFV9k47yLQ/aF
-X-Developer-Key: i=linux@smankusors.com; a=ed25519;
- pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
-Date: Sat, 16 May 2026 10:53:14 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=ZbRPNdVA c=1 sm=1 tr=0 ts=6a084c9c a=oT7Jj8hHNdDiqa595b47Tg==:117 a=oT7Jj8hHNdDiqa595b47Tg==:17 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=wxLWbCv9AAAA:8 a=bC-a23v3AAAA:8 a=dH9NZFB9pYOLtSt-TGoA:9 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10 a=QJY96suAAestDpCc5Gi9:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-CM-Envelope: MS4xfBhvQF75CsiQCMnTKpFwby4XDa6qbq+Q8Q3H4LqHysAxHCyrcW++qt6aCpSN+yIokSvnBU7uoGg10A6EybXzFGdnMleT06DIAaFQ/QTElpFQHnSbjsha HRmDBx4iYZUkBLB8eX2TaXZUgV0XWtZ6+mnDUHfu3XEfeGFv4EdAfGzbkIfC87rBFtY2adYiKw6xd+QaOl5dghElcIUImEURJ6E5oxon/jEbZuvKcRy9xJjY ls3DM/aQtejIT4XKIPCNpRkDq5ciMKQwdo9/+di8WyM+HTf0iDOxBAykFe3rSkDPqvk1iTPRuIe2AzUry0lFJLF9m80hbDWcnNpteC4r25L1V6gGXhivY+ol ijG38/XxFjC7eOC4L+zEju3P8ZzOwqqQx9YHRYnuCBpXo8Rvpot5UInareWuwJqpCRC5sPb3YHY3KLH/reCcuQ89rZVLHii6XiNa8p43PdsqwSblRpJEuOZx eZ4Pcxhl6G36i9bqckMUGFF2yYPDjA+/zVgJjE+bFLv5zBk5YrnmKicdunMw+87Sw/jCBNdxH7XGFLcc21fT203FFLPF2C12I0aJyQ==
-X-AuthUser: linux@smankusors.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 17 May 2026 10:14:58 +0200
+Message-Id: <DIKSVZCAQES1.35I4QY11LBVNV@matfyz.cz>
+Cc: "Brian Norris" <briannorris@chromium.org>, "Francesco Dolcini"
+ <francesco@dolcini.it>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Andrew Lunn"
+ <andrew@lunn.ch>, "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>, "Ulf Hansson"
+ <ulf.hansson@linaro.org>, "Frank Li" <Frank.Li@nxp.com>,
+ <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng
+ Fan" <peng.fan@nxp.com>, <david@ixit.cz>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
+ samsung,coreprimevelte
+To: "Johannes Berg" <johannes@sipsolutions.net>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
+ <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+ <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
+In-Reply-To: <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
 
-Some Qualcomm SoCs such as apq8064 and msm8960 require a third "fs"
-clock in addition to "iface" and "core", needed to propagate resets
-through the controller and wrapper logic. Later SoCs such as msm8974
-dropped this requirement and only use two clocks.
+Johannes,
 
-Note that the existing apq8064 and msm8960 DTS files currently specify
-the "iface" and "core" clocks in reverse order compared to most newer
-SoCs DTS, which causes dtbs_check warnings for these older SoCs. The
-dependent patch series will fix that clock ordering.
+Karel Balej, 2026-04-29T12:55:23+02:00:
+> Brian, what are the options here now? Would it be possible to make an
+> exception and accept the patches without the firmware being in
+> linux-firmware? This is an old device with no mainstream audience so I
+> expect everyone who will want to use it will be able to supply the
+> firmware themselves and it would be great to not have to keep the
+> patches in a fork, especially when trying to build on top of them
+> further (such as to fix the driver-firmware incompatibilities discussed
+> in one of the patches of this series).
 
-Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
----
-This patch updates the ci-hdrc-usb2 binding to allow up to 3 clocks for
-qcom,ci-hdrc, to accommodate Qualcomm SoCs that require an additional
-"fs" clock for reset propagation.
+would you please let us know whether there is any chance an exception
+could be made for this chip regarding the firmware or whether there is
+any other way to upstream the support?
 
-This is a prerequisite for the following patch series currently under
-review:
-  - ARM: dts: qcom: apq8064: Fix USB controller clocks [1]
-  - ARM: dts: qcom: msm8960: add RPM clock controller and fix USB
-    clocks [2]
-
-Without this binding change, those series produce dtbs_check errors
-due to the 3-clock entries in their respective device tree sources.
-
-[1] https://lore.kernel.org/all/20260427-mainline-send-v1-sending-v2-6-dcaa9178007b@alex-min.fr/
-[2] https://lore.kernel.org/all/20260514-msm8960-wifi-v2-5-7cbae45dab5e@smankusors.com/
----
-Changes in v2:
-- Reverted the removal of clock properties from the top level
-- Enforced stricter clock property requirements with clock-names for
-  qcom,ci-hdrc compatible nodes
-- Removed minItems from the else case, as it is already covered at the
-  top level
-- Link to v1: https://patch.msgid.link/20260509-qcom-ci-hdrc-clock-fix-v1-1-f52386bf85da@smankusors.com
----
- .../devicetree/bindings/usb/ci-hdrc-usb2.yaml      | 25 ++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml b/Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml
-index 691d6cf02c27..a4575a413f42 100644
---- a/Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml
-+++ b/Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml
-@@ -45,11 +45,11 @@ properties:
- 
-   clocks:
-     minItems: 1
--    maxItems: 2
-+    maxItems: 3
- 
-   clock-names:
-     minItems: 1
--    maxItems: 2
-+    maxItems: 3
- 
-   operating-points-v2:
-     description: A phandle to the OPP table containing the performance states.
-@@ -91,6 +91,27 @@ allOf:
-   - $ref: chipidea,usb2-common.yaml#
-   - $ref: usb-hcd.yaml#
-   - $ref: usb-drd.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: qcom,ci-hdrc
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 2
-+        clock-names:
-+          minItems: 2
-+          items:
-+            - const: iface
-+            - const: core
-+            - const: fs
-+    else:
-+      properties:
-+        clocks:
-+          maxItems: 2
-+        clock-names:
-+          maxItems: 2
- 
- unevaluatedProperties: false
- 
-
----
-base-commit: 70390501d1944d4e5b8f7352be180fceb3a44132
-change-id: 20260509-qcom-ci-hdrc-clock-fix-8ad5790ac636
-
-Best regards,
---  
-Antony Kurniawan Soemardi <linux@smankusors.com>
-
+Thank you and best regards,
+Karel
