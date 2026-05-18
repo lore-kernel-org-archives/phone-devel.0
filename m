@@ -1,34 +1,34 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482893AB5B2
-	for <phone-devel@vger.kernel.org>; Mon, 18 May 2026 22:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279F53AC0E7;
+	Mon, 18 May 2026 22:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779142204; cv=none; b=sGp8MYEtBAaxRVvu/xDTGEfUR8odo/xWynSrZ1d3b0h0qzYHB9zo4SYnrVDrsK4cTYOeUMM7r9LzgeUEY9ORh+H9JG81ogLqQacCLLAE7708qZM+TJehRuzJFe+E5exQQS9y0lKpsEc4WxGt5wiDEH3prergV4IM/7qORy57Tpc=
+	t=1779142207; cv=none; b=VXb7byGWIZ9k3yWG8fPYW0O1LMO1EFApuyES74KDWyxACxTOdMuXaIaLD/WTTatrDnzF+zK9zSzv34HAuomobWgm8L4HfM8kVdpfdT5qqVJ0IOsuOFJ5H0R6MJTpeZyBoMjvPbJUrUW5QOr82oXmYpHOjahFi30IKNoPspm40fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779142204; c=relaxed/simple;
-	bh=Gng09ZVjxIUQtjT6CwVjWQrKmKvtPgnvkwMmSCuU1R4=;
+	s=arc-20240116; t=1779142207; c=relaxed/simple;
+	bh=URmp26tKBGoiicxLrMXpHPTiImn6hJvImXigNcRJes4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOMjGF1bHPWNLTsIoF81T6fZSHQcQq/+lCD7MbpRXDYX6GCFgtdh7JHzkKne2tEOItEsCA2z5IncWXVFwnz0e1oaKhdvmJ4LDH1BMlE7FdV5tKn0SDsk1mnf6gBQexWAspFG28Bo00g+3LX56XtniocbJZqxxtEgDj4JXZVl0EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=qZ1ILxFu; arc=none smtp.client-ip=91.218.175.174
+	 MIME-Version; b=iI9VOn97RRbB7PgVUXB6M3lyKjYPpYQZLebGVALGhP8qmsmWdAD4VISkDHrmmKplO4N14qZ/8osE00yn3SOEVgLv7NJJnvIV2O1boPlVcXlokIwLfLUdMLsxC44/aRu5BcHQsWYWy/tEejVdmFw92P2NfOxdN2Tkn6iHzgVgCPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=ZrJAXo9w; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="qZ1ILxFu"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="ZrJAXo9w"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1779142200;
+	s=key1; t=1779142204;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jAidUZ+Fxpswpyf14V25vo5EL9uh0VjzUWu2r2SDXxI=;
-	b=qZ1ILxFuBhwyaxcriFNaAtsLHgFTknY8KVjQEwn3T6KqRFzJj4ChKe6setmQc2xIvS0uw9
-	xnUmJ7wIzmX7bpIl62crTwRGtH/0ZPmixpB/aD0seIxvttQFJLXc9MFr9UMyl8k08tXWul
-	LnxBgKR08cLkVDHUB43nQr7gZot/Due9krx7hiAqlqsvQPHrlP5s68vrrOwxRBN9YQdURE
-	audtdxaTGCETdzrnVarC1e68UUMmwYPKcQVgfCvLUn2DsaOuc16r8NtqWihwf5XtVT1qn/
-	Cg1Pd7ndPA6OMmht+5xERW3pPceOoK2lG0yrQ8oX+PfZcq59JYpQ7JOKUrf2+g==
+	bh=3K4qR9C35aVhEtDaP0TWG4lhSCAS1YIunpYZOMyKOHw=;
+	b=ZrJAXo9wIvPAuFTTtDxsedeif5y655fPDRNNuTt3FkNRwR+tn3Yx8YVQCqG/WBhcQV+BOz
+	5UFv84kHepcYehZ5RIjVKIK5KF8I6E5eheJtZRMN8IiybiBzphHkcNRCJ4qSND/98+/+cc
+	9kzMsVWX+yWuvAfmuc+ojs4RN5nKaxlhlAzpSo7YQVVqgCDeX3TTL8kol8HYYEDZ6PgKfv
+	cbCl2fI+2r59s+41wt0Yiyd57F9ku/wlvOdtlr7rfxIgS8JyKeiXVacIxgX1OBFOT2ztM5
+	Rmj7lIWP0R/iTANwWHMBtLKWSZylLKHSTYvotwtW5ZNe7CBiL9vMNNtWgLSITQ==
 From: Val Packett <val@packett.cool>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -39,9 +39,9 @@ Cc: Val Packett <val@packett.cool>,
 	phone-devel@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/7] ASoC: codecs: aw88261: remove fade in/out on start/stop
-Date: Mon, 18 May 2026 18:44:33 -0300
-Message-ID: <20260518220906.347958-5-val@packett.cool>
+Subject: [PATCH v2 5/7] ASoC: codecs: aw88261: remove async start
+Date: Mon, 18 May 2026 18:44:34 -0300
+Message-ID: <20260518220906.347958-6-val@packett.cool>
 In-Reply-To: <20260518220906.347958-1-val@packett.cool>
 References: <20260518220906.347958-1-val@packett.cool>
 Precedence: bulk
@@ -53,242 +53,121 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-This "feature" was copied from downstream, but it does not belong in
-the kernel at all. Remove it to simplify the driver.
+Codec drivers are not supposed to do anything like this. The result was
+that the first second or so of playback was essentially inaudible, and
+very short alert sounds could be missed entirely. Let's not do this.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- sound/soc/codecs/aw88261.c | 158 +------------------------------------
- sound/soc/codecs/aw88261.h |   3 -
- 2 files changed, 2 insertions(+), 159 deletions(-)
+ sound/soc/codecs/aw88261.c | 33 ++++-----------------------------
+ sound/soc/codecs/aw88261.h |  6 ------
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
 diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
-index d1fc3403cb5a..ba2a0b0fc296 100644
+index ba2a0b0fc296..e0644fb445e5 100644
 --- a/sound/soc/codecs/aw88261.c
 +++ b/sound/soc/codecs/aw88261.c
-@@ -45,50 +45,6 @@ static void aw88261_dev_set_volume(struct aw_device *aw_dev, unsigned int value)
- 	regmap_write(aw_dev->regmap, AW88261_SYSCTRL2_REG, real_value);
+@@ -649,17 +649,7 @@ static void aw88261_start_pa(struct aw88261 *aw88261)
+ 		dev_err(aw88261->aw_pa->dev, "start failure (%d)\n", ret);
  }
  
--static void aw88261_dev_fade_in(struct aw_device *aw_dev)
+-static void aw88261_startup_work(struct work_struct *work)
 -{
--	struct aw_volume_desc *desc = &aw_dev->volume_desc;
--	int fade_in_vol = desc->ctl_volume;
--	int fade_step = aw_dev->fade_step;
--	int i;
+-	struct aw88261 *aw88261 =
+-		container_of(work, struct aw88261, start_work.work);
 -
--	if (fade_step == 0 || aw_dev->fade_in_time == 0) {
--		aw88261_dev_set_volume(aw_dev, fade_in_vol);
--		return;
--	}
--
--	for (i = AW88261_MUTE_VOL; i >= fade_in_vol; i -= fade_step) {
--		aw88261_dev_set_volume(aw_dev, i);
--		usleep_range(aw_dev->fade_in_time,
--					aw_dev->fade_in_time + 10);
--	}
--
--	if (i != fade_in_vol)
--		aw88261_dev_set_volume(aw_dev, fade_in_vol);
+-	mutex_lock(&aw88261->lock);
+-	aw88261_start_pa(aw88261);
+-	mutex_unlock(&aw88261->lock);
 -}
 -
--static void aw88261_dev_fade_out(struct aw_device *aw_dev)
--{
--	struct aw_volume_desc *desc = &aw_dev->volume_desc;
--	int fade_step = aw_dev->fade_step;
--	int i;
--
--	if (fade_step == 0 || aw_dev->fade_out_time == 0) {
--		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
--		return;
--	}
--
--	for (i = desc->ctl_volume; i <= AW88261_MUTE_VOL; i += fade_step) {
--		aw88261_dev_set_volume(aw_dev, i);
--		usleep_range(aw_dev->fade_out_time, aw_dev->fade_out_time + 10);
--	}
--
--	if (i != AW88261_MUTE_VOL) {
--		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
--		usleep_range(aw_dev->fade_out_time, aw_dev->fade_out_time + 10);
--	}
--}
--
- static void aw88261_dev_i2s_tx_enable(struct aw_device *aw_dev, bool flag)
+-static void aw88261_start(struct aw88261 *aw88261, bool sync_start)
++static void aw88261_start(struct aw88261 *aw88261)
  {
- 	if (flag)
-@@ -122,13 +78,13 @@ static void aw88261_dev_amppd(struct aw_device *aw_dev, bool amppd)
- static void aw88261_dev_mute(struct aw_device *aw_dev, bool is_mute)
- {
- 	if (is_mute) {
--		aw88261_dev_fade_out(aw_dev);
-+		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
- 		regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
- 				~AW88261_HMUTE_MASK, AW88261_HMUTE_ENABLE_VALUE);
- 	} else {
- 		regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
- 				~AW88261_HMUTE_MASK, AW88261_HMUTE_DISABLE_VALUE);
--		aw88261_dev_fade_in(aw_dev);
-+		aw88261_dev_set_volume(aw_dev, aw_dev->volume_desc.ctl_volume);
+ 	if (aw88261->aw_pa->fw_status != AW88261_DEV_FW_OK)
+ 		return;
+@@ -667,12 +657,7 @@ static void aw88261_start(struct aw88261 *aw88261, bool sync_start)
+ 	if (aw88261->aw_pa->status == AW88261_DEV_PW_ON)
+ 		return;
+ 
+-	if (sync_start == AW88261_SYNC_START)
+-		aw88261_start_pa(aw88261);
+-	else
+-		queue_delayed_work(system_dfl_wq,
+-			&aw88261->start_work,
+-			AW88261_START_WORK_DELAY_MS);
++	aw88261_start_pa(aw88261);
+ }
+ 
+ static int aw88261_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+@@ -970,7 +955,7 @@ static int aw88261_profile_set(struct snd_kcontrol *kcontrol,
+ 
+ 	if (aw88261->aw_pa->status) {
+ 		aw88261_dev_stop(aw88261->aw_pa);
+-		aw88261_start(aw88261, AW88261_SYNC_START);
++		aw88261_start(aw88261);
  	}
- }
  
-@@ -936,75 +892,6 @@ static struct snd_soc_dai_driver aw88261_dai[] = {
- 	},
- };
+ 	mutex_unlock(&aw88261->lock);
+@@ -1032,7 +1017,7 @@ static int aw88261_playback_event(struct snd_soc_dapm_widget *w,
+ 	mutex_lock(&aw88261->lock);
+ 	switch (event) {
+ 	case SND_SOC_DAPM_PRE_PMU:
+-		aw88261_start(aw88261, AW88261_ASYNC_START);
++		aw88261_start(aw88261);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		aw88261_dev_stop(aw88261->aw_pa);
+@@ -1192,8 +1177,6 @@ static int aw88261_codec_probe(struct snd_soc_component *component)
+ 	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
+ 	int ret;
  
--static int aw88261_get_fade_in_time(struct snd_kcontrol *kcontrol,
--	struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
--	struct aw_device *aw_dev = aw88261->aw_pa;
+-	INIT_DELAYED_WORK(&aw88261->start_work, aw88261_startup_work);
 -
--	ucontrol->value.integer.value[0] = aw_dev->fade_in_time;
--
--	return 0;
--}
--
--static int aw88261_set_fade_in_time(struct snd_kcontrol *kcontrol,
--	struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
--	struct soc_mixer_control *mc =
--		(struct soc_mixer_control *)kcontrol->private_value;
--	struct aw_device *aw_dev = aw88261->aw_pa;
--	int time;
--
--	time = ucontrol->value.integer.value[0];
--
--	if (time < mc->min || time > mc->max)
--		return -EINVAL;
--
--	if (time != aw_dev->fade_in_time) {
--		aw_dev->fade_in_time = time;
--		return 1;
--	}
--
--	return 0;
--}
--
--static int aw88261_get_fade_out_time(struct snd_kcontrol *kcontrol,
--	struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
--	struct aw_device *aw_dev = aw88261->aw_pa;
--
--	ucontrol->value.integer.value[0] = aw_dev->fade_out_time;
--
--	return 0;
--}
--
--static int aw88261_set_fade_out_time(struct snd_kcontrol *kcontrol,
--	struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
--	struct soc_mixer_control *mc =
--		(struct soc_mixer_control *)kcontrol->private_value;
--	struct aw_device *aw_dev = aw88261->aw_pa;
--	int time;
--
--	time = ucontrol->value.integer.value[0];
--	if (time < mc->min || time > mc->max)
--		return -EINVAL;
--
--	if (time != aw_dev->fade_out_time) {
--		aw_dev->fade_out_time = time;
--		return 1;
--	}
--
--	return 0;
--}
--
- static int aw88261_dev_set_profile_index(struct aw_device *aw_dev, int index)
- {
- 	/* check the index whether is valid */
-@@ -1128,48 +1015,10 @@ static int aw88261_volume_set(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
- 
--static int aw88261_get_fade_step(struct snd_kcontrol *kcontrol,
--				struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *codec = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(codec);
--
--	ucontrol->value.integer.value[0] = aw88261->aw_pa->fade_step;
--
--	return 0;
--}
--
--static int aw88261_set_fade_step(struct snd_kcontrol *kcontrol,
--				struct snd_ctl_elem_value *ucontrol)
--{
--	struct snd_soc_component *codec = snd_kcontrol_chip(kcontrol);
--	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(codec);
--	struct soc_mixer_control *mc =
--		(struct soc_mixer_control *)kcontrol->private_value;
--	int value;
--
--	value = ucontrol->value.integer.value[0];
--	if (value < mc->min || value > mc->max)
--		return -EINVAL;
--
--	if (aw88261->aw_pa->fade_step != value) {
--		aw88261->aw_pa->fade_step = value;
--		return 1;
--	}
--
--	return 0;
--}
--
- static const struct snd_kcontrol_new aw88261_controls[] = {
- 	SOC_SINGLE_EXT("PCM Playback Volume", AW88261_SYSCTRL2_REG,
- 		6, AW88261_MUTE_VOL, 0, aw88261_volume_get,
- 		aw88261_volume_set),
--	SOC_SINGLE_EXT("Fade Step", 0, 0, AW88261_MUTE_VOL, 0,
--		aw88261_get_fade_step, aw88261_set_fade_step),
--	SOC_SINGLE_EXT("Volume Ramp Up Step", 0, 0, FADE_TIME_MAX, FADE_TIME_MIN,
--		aw88261_get_fade_in_time, aw88261_set_fade_in_time),
--	SOC_SINGLE_EXT("Volume Ramp Down Step", 0, 0, FADE_TIME_MAX, FADE_TIME_MIN,
--		aw88261_get_fade_out_time, aw88261_set_fade_out_time),
- 	AW88261_PROFILE_EXT("Profile Set", aw88261_profile_info,
- 		aw88261_profile_get, aw88261_profile_set),
- };
-@@ -1260,8 +1109,6 @@ static int aw88261_dev_init(struct aw88261 *aw88261, struct aw_container *aw_cfg
+ 	ret = aw88261_request_firmware_file(aw88261);
  	if (ret)
- 		return ret;
+ 		return dev_err_probe(aw88261->aw_pa->dev, ret,
+@@ -1217,16 +1200,8 @@ static int aw88261_codec_probe(struct snd_soc_component *component)
+ 	return ret;
+ }
  
--	aw_dev->fade_in_time = AW88261_500_US;
--	aw_dev->fade_out_time = AW88261_500_US;
- 	aw_dev->prof_cur = AW88261_INIT_PROFILE;
- 	aw_dev->prof_index = AW88261_INIT_PROFILE;
+-static void aw88261_codec_remove(struct snd_soc_component *aw_codec)
+-{
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(aw_codec);
+-
+-	cancel_delayed_work_sync(&aw88261->start_work);
+-}
+-
+ static const struct snd_soc_component_driver soc_codec_dev_aw88261 = {
+ 	.probe = aw88261_codec_probe,
+-	.remove = aw88261_codec_remove,
+ };
  
-@@ -1432,7 +1279,6 @@ static int aw88261_init(struct aw88261 *aw88261, struct i2c_client *i2c, struct
- 	aw_dev->prof_info.prof_type = AW88395_DEV_NONE_TYPE_ID;
- 	aw_dev->channel = 0;
- 	aw_dev->fw_status = AW88261_DEV_FW_FAILED;
--	aw_dev->fade_step = AW88261_VOLUME_STEP_DB;
- 	aw_dev->volume_desc.ctl_volume = AW88261_VOL_DEFAULT_VALUE;
- 	aw_dev->volume_desc.mute_volume = AW88261_MUTE_VOL;
- 	aw88261_parse_channel_dt(aw88261);
+ static void aw88261_parse_channel_dt(struct aw88261 *aw88261)
 diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
-index 02820795d434..12c98f01fcfe 100644
+index 12c98f01fcfe..1b1beba6a26b 100644
 --- a/sound/soc/codecs/aw88261.h
 +++ b/sound/soc/codecs/aw88261.h
-@@ -531,9 +531,6 @@
- 			SNDRV_PCM_FMTBIT_S24_LE | \
- 			SNDRV_PCM_FMTBIT_S32_LE)
+@@ -555,11 +555,6 @@
+ 	.put = profile_set, \
+ }
  
--#define FADE_TIME_MAX			100000
--#define FADE_TIME_MIN			0
+-enum {
+-	AW88261_SYNC_START = 0,
+-	AW88261_ASYNC_START,
+-};
 -
- #define AW88261_DEV_DEFAULT_CH		(0)
- #define AW88261_ACF_FILE		"aw88261_acf.bin"
- #define AW88261_DEV_SYSST_CHECK_MAX	(10)
+ enum aw88261_id {
+ 	AW88261_CHIP_ID = 0x2113,
+ };
+@@ -594,7 +589,6 @@ struct aw88261 {
+ 	struct aw_device *aw_pa;
+ 	struct mutex lock;
+ 	struct gpio_desc *reset_gpio;
+-	struct delayed_work start_work;
+ 	struct regmap *regmap;
+ 	struct aw_container *aw_cfg;
+ 
 -- 
 2.53.0
 
