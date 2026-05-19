@@ -1,119 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA25407CFD;
-	Tue, 19 May 2026 16:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1103D9049;
+	Tue, 19 May 2026 21:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779207649; cv=none; b=pI3Zv1/2TKCcVXad3l1sZj2iOM1drSRk97/PU5/H+WPVaEIOiPKjLp0PBci3VctkxL0aT+iioF4aK2ozpAhvz6tfkxHU9n7gEK37nzJ8leJT5WJINn0YFOI8xfmB7tAq1+85GibdG/o8iBj0/iePQupE7+0MJvJop3MoU+y+EXM=
+	t=1779225126; cv=none; b=e8qG/yrSVtq1NZPRpSDuRwkXPl0cVTsJHCp+5rjTh4CXySVMRr6ZIZGNCg7z5hM+0pIj0zmlwDrNCdJDKkoNjQk/Po1ZnGQTA+Ga2psLD45QVpFaUPO+2fLe6hxQsVWY9c5bQhc382qdZ88bBK3MKGFRTTG4pmeKR7Q4ykLIcFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779207649; c=relaxed/simple;
-	bh=ELoAf8oLF/+NoPxDFNwW00zqYHr58JG4kK7pV+yDj5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eWwVPeajl59Ke0g6KOlVhKOwo8HeqlMe2K+3CB+Dk5HWD6zJ5/WWXMgOcXyH020/G1Cqnt3LAEsGvY9QYWf3dtxsHxNJHkByX0Ill46J8bK+RWE8vdTEk8Gtiod3aZ3ePQTEk2XrV+b69wwUIqP8wqec8lbsQVjkSpy54u6BijU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vdt84AEb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779225126; c=relaxed/simple;
+	bh=9JMwSSLgNyfL49CsTnVSIMP671ydxjgXM0HUrJM8lAU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FjOFEjJepShTZhHI5hkMlSY15A2ZtQAnK6pLGTxPaQ9Qh8yW2onZTidC22ZnsfaZ5epBXzWPK02Tk6bGwe1+H9j6CfyzVh/Ao3r8kb7+U2ICP+SButYYhEXptGnYM3G97smwIpR0Xl+f0hHiWq/db313H9PM9qDJMBVXBfTNN+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=vHmBAQyo; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vdt84AEb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B92DC2BCC7;
-	Tue, 19 May 2026 16:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779207649;
-	bh=ELoAf8oLF/+NoPxDFNwW00zqYHr58JG4kK7pV+yDj5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vdt84AEbvA7WSgg16neBn3Uk4cyujH35sOYSfAkouVaVuVdhXEC7+BoEwzqntJiRH
-	 iju6Ro4mcVeapKycrKcWU5VmuFJTHSlXJBGSFpIgJorSq+E6EIrafpTqgnJ2HRruJn
-	 j1nBYcqetEX9ZX3NNOaQCchgYHsvTN1bT0mkVOoceHK7EjFOJu2i9KJxEeGIcSZfWn
-	 DuxvWUq9pBh7kx7umpXSmNZepppCYULuvBs08JHBVegL6lB5wD6d51ekZFeqx+jq27
-	 WMz0xNeugGBQjxpfBMbe41r+FapXaLLrWgkHNuTskUY6D8YWZnUq/nY9rtR5KB00oq
-	 Kq7zT1VONk/mA==
-Date: Tue, 19 May 2026 17:20:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] ASoC: codecs: aw88261: make volume control usable
-Message-ID: <97775db6-b417-4e07-962a-f0228684d7e3@sirena.org.uk>
-References: <20260518220906.347958-1-val@packett.cool>
- <20260518220906.347958-8-val@packett.cool>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="vHmBAQyo"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 9E11A5341058;
+	Tue, 19 May 2026 23:03:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1779224582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MyMPIRDqjJPenGSERvDWs7fwWFvgDp+zAyYF2uoU87c=;
+	b=vHmBAQyoXrNPyA90hE9zPjAoRy72HDF3k1U4R8aWTgpAcFl9jTh4zJ7Pnb4hlaT4CFM9l/
+	HCanuYqjnscmJ4xK9IxZJNQjqD4CcPsEjrww9HHn4BCrNO3kz7kOyH77n1MAWeHGs/XXNh
+	daa2b9KByZ2HZpl8fi9n9R8P0w7PFN8=
+Message-ID: <4b797a3f-01c9-4b02-be98-7b82099c2e0e@ixit.cz>
+Date: Tue, 19 May 2026 23:03:00 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ReWHQlouYyeCao8a"
-Content-Disposition: inline
-In-Reply-To: <20260518220906.347958-8-val@packett.cool>
-X-Cookie: Huh?
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] pinctrl: qcom: Register functions before enabling
+ pinctrl
+To: MINETTE Alexandre <contact@alex-min.fr>, Linus Walleij <linusw@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Guru Das Srinagesh
+ <linux@gurudas.dev>, Rob Clark <robin.clark@oss.qualcomm.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
+ phone-devel@vger.kernel.org
+References: <20260519-mainline-send-v1-sending-v3-0-3dd7aa125353@alex-min.fr>
+ <20260519-mainline-send-v1-sending-v3-3-3dd7aa125353@alex-min.fr>
+ <CAD++jLm=BxHsPJ4rgqwY8SvaefZUO+Pfv8E8xizqPsdJZw5weA@mail.gmail.com>
+ <298550eb-1bdf-4d7c-8111-8b8f0b5dc056@app.fastmail.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <298550eb-1bdf-4d7c-8111-8b8f0b5dc056@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 19/05/2026 10:48, MINETTE Alexandre wrote:
+> Thanks a lot Linus!
+> 
+> This patch is required for my Samsung Galaxy S4 GT-I9505 to boot but I also
+> have confirmation from another contributor that the same pinctrl patch
+> helped boot the ASUS Nexus 7 (2013), codenamed flo, which is also based
+> on APQ8064.
+> 
 
---ReWHQlouYyeCao8a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello Alex,
 
-On Mon, May 18, 2026 at 06:44:36PM -0300, Val Packett wrote:
+if what you wrote about asus-flo/deb is true, then this patch should have 
+`Fixes: ` tag, as I remember it was booting with few limited patches ~5 years 
+back then (only one serious was hack for proper clock bringup).
 
-> @@ -424,17 +415,7 @@ static int aw88261_dev_reg_update(struct aw88261 *aw=
-88261,
->  			break;
->  	}
-> =20
-> -	ret =3D aw88261_dev_set_vcalb(aw_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	if (aw_dev->prof_cur !=3D aw_dev->prof_index)
-> -		vol_desc->ctl_volume =3D 0;
-> -
-> -	/* keep min volume */
-> -	aw88261_dev_set_volume(aw_dev, vol_desc->mute_volume);
-> -
-> -	return ret;
-> +	return aw88261_dev_set_vcalb(aw_dev);
->  }
+David
 
-This looks like it was intentional in order to ensure that things are
-muted until we power up (there's an unmute in _dev_start())?
+-- 
+David Heidelberg
 
-> @@ -983,13 +965,13 @@ static int aw88261_volume_set(struct snd_kcontrol *=
-kcontrol,
->  	struct aw_volume_desc *vol_desc =3D &aw88261->aw_pa->volume_desc;
->  	struct soc_mixer_control *mc =3D
->  		(struct soc_mixer_control *)kcontrol->private_value;
-> -	int value;
-> -
-> -	value =3D ucontrol->value.integer.value[0];
-> +	int value =3D ucontrol->value.integer.value[0];
-> =20
->  	if (value < mc->min || value > mc->max)
->  		return -EINVAL;
-> =20
-> +	value =3D AW88261_MUTE_VOL - (value * 2);
-> +
-
-We're doing the invert of the value scale before we store it, currently
-the default value is defined as 0 in the header so we'll default to
-maximum volume which is likely to lead to some distress at some point.
-The default should be updated as well.
-
---ReWHQlouYyeCao8a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoMjdwACgkQJNaLcl1U
-h9DUVwf/XNn5pf4E2MfjoRLBrUye3qifzdbq6sD1E0/C4vuGjeCSwUFCGZOE0iDD
-ayRdQ8zyrRumVN5GNoguTaWmwPX1MDtpEeUJ4Uu+Fh7kMrbARHsTXWExo8oqc+UU
-cfWTPa9xNy58jBhbQAiiCXPnBSqENa8bPaEgjuI3llkOIMC01lT6smP/1NPNkeEq
-vPAoIG0/ZuYODIMMrG3xCEE0SDViJCAc4fChz+vcoHptRI+EGmEe0NjehoQiZo5b
-qEHcc7Ordy5INDiEL/LyEIzQnLGiHybPfVJYb7a1xhlcEeTttq/E5WGXvxTaNypL
-9u8ZUs9/yNgt6YdIXbVGr5bUrovqvA==
-=oZ6i
------END PGP SIGNATURE-----
-
---ReWHQlouYyeCao8a--
