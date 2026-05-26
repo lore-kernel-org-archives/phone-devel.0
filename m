@@ -1,65 +1,65 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30B409601
-	for <phone-devel@vger.kernel.org>; Tue, 26 May 2026 15:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E971B3128BE
+	for <phone-devel@vger.kernel.org>; Tue, 26 May 2026 15:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779807794; cv=none; b=jPpeBe5XoGBCnCwBUez6mZpRhyW2lY+ZjkOSmGSucOiGYr9q0ZHe4vjKKUvX5oe+tA1hpdjk6a7lq9JHUZ9dq386XRyZF45GAYCTVRPvvVrctTnWzNVKd4C+R5vrlqj+K6EkXUKyI2O0u9gBi14hwknLzo6vZhwbJ7uGCssvIPU=
+	t=1779809404; cv=none; b=Wvh1J+BL9tc1BTALU2pwF9jh+yEIur16m6OLCoCnGzYZi4FwTUETuZHhJ8OSQ5KYAFLeFwwJjsWN0+gotUYtnlAqYZMlKFq8ZjkNrfXcKh7/GNrov2w7buW1R4edr3YvAo9BpjpCuoxGUYysT6i6kCXvpbckdWrp4PPVoqyss3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779807794; c=relaxed/simple;
-	bh=MdzDJMQisHkSOiLYvopwwr1v98FNTtU6w7SCFX6+GsU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=K8XVLmPKnkQVsW21JNbncP11XGCyUHsTgjZoCIWKPiDY9fWGGCLJ/x6jVjnHBeSChsjuBj2D4XAGv3vXQQLUrgh7XNQwYkja8Etx7V1z2klADOcGi+MjkgWrn/HEQv0uk+VYtjUC2o7hbVc7ylpy69O5eFK6qr1bftaMgtBpz5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=F9c6yTQp; arc=none smtp.client-ip=209.85.167.42
+	s=arc-20240116; t=1779809404; c=relaxed/simple;
+	bh=gtARaji0iedyihFboa4MiYFPXacfVkUajiysfN3oeaE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=U8fbEf9704cNClEE5ZdE60sA7cq2genc0owDBoKuD4D2KwZicISLTdGLsIsYCc6ZS/gs2Ie7UBp/0/5NXdU9YiWZZtJRd92vch9hsm0IqmOV7hVczNK4N64vSJbHMK+o9fO50wj+E+FjNXNplKylwLOyaoqpqQV8EHjTuzHAIv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=tqufA+hu; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="F9c6yTQp"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a877510541so11633140e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 26 May 2026 08:03:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="tqufA+hu"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso91849115e9.0
+        for <phone-devel@vger.kernel.org>; Tue, 26 May 2026 08:30:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1779807791; x=1780412591; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MDbuAa08BqGLwPFVUvrCU0ivDFLjKQA1mJKnc79aZhw=;
-        b=F9c6yTQp9UzQ/DAIpeEYTPwgT+IjVgoR/EiYo/n71jNBXx9e3aZPSaaX4pkL9ErUSZ
-         L2hLH/a/l9S3EoS558bL0pM2kxDOKFE+7WCTjfXEGn6hUWrJe+MmC5E9M8MfvAt4Ypgj
-         m6rd2lUJQP8F0in/zdP8A9E54lO3ehsENVAxZ0KJ0r8OXApPI7BfNLA9HaY2ecaVaO/3
-         1fAFtrwTIkGPV78Xe1/i0IUjbNBHPOun1HXnJSIJMDglbpgKB14taXFOqM1Zrl42EHvl
-         IGNIXpiUfMDd9He5bh/N2efHAM4qdFpBVyBb3bwbCFGYCnioUiDCyNzDvlUygj3sgAdi
-         wc+w==
+        d=fairphone.com; s=fair; t=1779809400; x=1780414200; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1nEjxAN1sA7rfDN69w2hPO+PESN8+FOGSXAcryFYRJQ=;
+        b=tqufA+hu7Jjx0aUFggOOVXILhIkGTmXFa4yMHxgyrvSua8x7kakM4oB0XE8XLbsdjT
+         ApZode0YGocW6+vUmyhHXrXGR6jD0jRCyl1GRaKDMkgP48R2nAjb7QmQ9LUSevpm5Ysl
+         cUmU0VAwqrqE+dLYAtDxMEl5XuYc5oqZuGjuNIlK9AWngGFtgX7N3Xgvx7a30V/aJaC1
+         /HqY0LYhRXwQefKefYqvPbvhSb4J3xruz0UyTBi5bX3rnCtzr7NH5phuwV5KXU4wrO2E
+         Fimly5dkHd5MWEUOrxUa878M9R/8MDCBJDceL7Sp7hfDzJvbUc7B6KCyTv9gwA+Mda63
+         lUvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779807791; x=1780412591;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779809400; x=1780414200;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MDbuAa08BqGLwPFVUvrCU0ivDFLjKQA1mJKnc79aZhw=;
-        b=p1/NTMFq1NQEKY4OmJMjx3t/0vcKedigFsIJ8jQ3uaWMtLcP7W1jMxyusUe8o5SSK5
-         H6eYKcpD4nij7FiONaVouCkgOhvKHC/HXSGg7NlMSSMhkTOyhom2lDeuclrcEAdcICnY
-         hs+O3mWkrVYcb9flyWlMdnEd1ySvuZZtaJWR2vbLm9jBfpw87M0fmIg0CmCCZMLOUeOn
-         qJ8H9HkB7YXQRYC/DUnRHBSSLJ8Ph2m8pNDVuKyc2+pLJdfUeDZOsQjsm1wJEKfp7pPv
-         iXwxZTUGYQIQhbb2YIFRc5lKTpRM1PsweB/2lrPdr0UmgN8HAi6dYacKAI1ZQL2pZo8A
-         oDzA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Ciavnf9BulnYRDV7idsGPGvbl3XQugSDrLOU9Vgifw+fPiTwweGI2zyCKHgXGrHdLbwlFHMg3NSEWSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqekkFj5f90XGFnXQYyiS1qmcG2VI3pxoX+InTs2DG1Rklul5M
-	Tx0whLQDGZ2fciOlt2axClgmVXO8aHyVpRSFGRP3+nUoPApLgdJMS31b7KAb62emOJU=
-X-Gm-Gg: Acq92OFMTvXvPtDMXjHcfwrQ8l33I1mNRtcbsTMlIBJiLnEru6yFj6p7A5rI/4t4CLU
-	rrEdneMIjojAjIjw3C/7g7XcFAb6W99QUAHLkfJLMM+I/LjCxjTyhsznGbtTyi1jasS785Wu5Hc
-	gDlSbw/DJd3RmalK2aKtQLcZrCgf4Pr6UWUXMTs83314+XYpdC7JkqJ2d3+GQIYbAWx1Rd03Zzv
-	CaTMR7vawUjJgPbgVt08Z5JLWN+ZX9xp7SZucEnG4ETlpshYa/jfPCgN9gVMLzGx5NG8IR2qx1E
-	xxAIJVaXWOAMQ2tsB+D8lcdJRZIa03q2NQVvQXa7iHR3kE9oK2Hc+ekUmNO8SzjereSZTXp7mBi
-	kHaOAe1ghsDMMvLCs3UlfDEjooidV+nQ+VcZFnb9cq/P3zYsn/Ssqy4wH4lp1IoI6G6tmTmEU/J
-	KujFuM6K6w3auc3/r4qQYB2qJo6V9986X0
-X-Received: by 2002:a19:5209:0:b0:5a8:6e50:b16a with SMTP id 2adb3069b0e04-5aa323c8140mr4045337e87.34.1779807791133;
-        Tue, 26 May 2026 08:03:11 -0700 (PDT)
+        bh=1nEjxAN1sA7rfDN69w2hPO+PESN8+FOGSXAcryFYRJQ=;
+        b=QbjBRYUKzZjJ9t9+CimcnHH/NLAthLmrJ/Sc1WHPUWEk96WjPzv/Ep9ZbDmI1VWT4A
+         TllFhaF7zvQjWLmV3aArzwZxssuMmoTw94+Swpo4TOFSrfHgBx+JmtzR2a6al6GEFHkv
+         m8voc2j0dm5YZZMpa/fpMuHhMaumnTMUi9T2G65PPa5/z+U3oAL3P3UGl9hKjX798H03
+         NcJvjtk4LNU5HOemGFb5pazk1WYLbJQCxXIR1PVN6+OOdVt3kchmLyjrt/QY6Bey5We6
+         2vfMhUQvwSCDX7WzcWyjWFLX4DM1qClvW7e7mkBqJAoB7VMOSWEDcszilhvu9HDKIQ8q
+         MdyA==
+X-Forwarded-Encrypted: i=1; AFNElJ/z8cMxPQRnxY9pZOv1aOD3eORVXUNFeUJkXTpi6lqRAUw2Q2eoUv7uR0AelooTAIAqOQqr0gbx43LTxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylARCb0pxWzE5pOdIlka3i3efgii8m1Fkv8jy5Qtety7S8choA
+	/MexQdmFKjaNx0qvNSThLrw9xWa8G5JdM/QWPcqSARZFdKWl+b7QXhM4q5lpHhpWQW8=
+X-Gm-Gg: Acq92OFVLuI9/F3+F+uW2gotDPcVb0UWv+bGwsrBXzmza04xsXviLe+awO4EPfJY4e6
+	5Q+9sFxtj5vcVLj2wRNfOyDPMDaEWbwQsoD+TUOBNvsxZJUg6cDemdGIKJS8mRpDcJD5TcEqbPx
+	garQAoxKf5pMzuJ6wLqeetyuLzybYPmGMjShvYqhksapio2As3wnYWXiako1zcR3NLDOYtcsfrP
+	yMQ5qTG0c7EjwCs1wvXo79d6Ms3zpuF+ce7CzsN5RYfNJuZgHvO1uaE6BJFDYRaU7Sr/tFGNvrW
+	RuAqp+NBw1n2jSuA3RU5azRLkLgnaPJqhkhY5D4hJDqfOrZUPwbu+jz8xTZ2AykJm1QGiM6+944
+	EKbYYPsIPQTGhkbRXYEhuMFqzejBOzuIfRBmlv0hHRQ1WMjtLq5LjeWaL5cFYH/MDagpIqyRDSo
+	1wbIXO1b/ghKT7xklMZ3Hmhb15yklKp8vFUa0P98rES9c=
+X-Received: by 2002:a05:600c:4ecc:b0:48a:557e:6b4f with SMTP id 5b1f17b1804b1-490426d2805mr289300505e9.23.1779809400016;
+        Tue, 26 May 2026 08:30:00 -0700 (PDT)
 Received: from [10.107.1.102] ([212.133.41.39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ec7fcd7f9sm22652026f8f.37.2026.05.26.08.03.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d5caeesm37691140f8f.29.2026.05.26.08.29.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:03:10 -0700 (PDT)
+        Tue, 26 May 2026 08:29:59 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Tue, 26 May 2026 17:03:05 +0200
-Subject: [PATCH] ASoC: codecs: lpass-va-macro: Fix LPASS Codec Version for
- SC7280
+Subject: [PATCH RFC 0/2] Correctly use TX macro v9.4 for SC7280 / Kodiak
+Date: Tue, 26 May 2026 17:29:53 +0200
+Message-Id: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,81 +68,86 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-sc7280-va-macro-2-0-v1-1-2c1b572fa388@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ6CQAxA4auQrm3SaWQQrmJcDEOBmvCTqRITw
- t0dZfkt3tvBJKkYNMUOSTY1XeYMdykgjmEeBLXLBib2VLJHixXfCLeAU4hpQUbCnrprWbvgnWs
- hl2uSXj//6/1x2t7tU+Lrt4Lj+ALBIQLwdwAAAA==
-X-Change-ID: 20260526-sc7280-va-macro-2-0-f0d4591a611b
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUyMz3eJkcyMLA92SCt3cxOSifF1DQ3PLFHMLs8Q0wzQloK6CotS0zAq
+ widFKQW7OSrEQweLSpKzU5BKQWUq1tQBjjlraeAAAAA==
+X-Change-ID: 20260526-sc7280-tx-macro-1179d786af1f
 To: Srinivas Kandagatla <srini@kernel.org>, 
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Dmitry Baryshkov <lumag@kernel.org>
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, cros-qcom-dts-watchers@chromium.org
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779807788; l=2090;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779809398; l=2723;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=MdzDJMQisHkSOiLYvopwwr1v98FNTtU6w7SCFX6+GsU=;
- b=klKyWck4OZBbzCMoyUDCxam5sjFW3KC80yR+prYicLm/iE1cPSctV+zhwZ4rs8aJa3bprNTa4
- fxviKyHu+zsA2WzHYi5LI1SkxwRBbanEyBLa6N7nmDgDYJr67B3ya3M
+ bh=gtARaji0iedyihFboa4MiYFPXacfVkUajiysfN3oeaE=;
+ b=DU6lEr7HK0FtWOqwqRd+8LMDKONgKKPlX25JlgyaJSwT3dFB77t/ULxjshQKkiEu45KTBKZwn
+ vUbIT0oHUXZDoL2/SiTL8lKQUWfJWAZDbv6gsdf3/VihGLLtWnKEmJG
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-According to both the static definition in downstream...
+With the v9 data, that sc7280 is mistakenly using, the controls will
+have completely wrong names and using wrong code paths that do not apply
+to TX macro v9.4.
 
-  yupik-audio-overlay.dtsi: qcom,bolero-version = <4>;
-  #define BOLERO_VERSION_2_0 0x0004)
+This is an RFC to get some feedback how to continue.
 
-and the runtime detection:
+1. We update the "qcom,sc7280-lpass-tx-macro" compatible to 9.4, break
+   unchanged dtbs (the sources are updated in this series) and break UCM
+   until it's updated.
 
-  CDC_VA_TOP_CSR_CORE_ID_0=0x1
-  CDC_VA_TOP_CSR_CORE_ID_1=0xf
+2. We add a new compatible "qcom,sc7280-lpass-tx-macro-fixed" - name is
+   just a suggestion ;) - and make sure existing boards with audio keep
+   using the old "broken" compatible. This should be completely
+   backwards compatible, since we keep the existing compatible working
+   as-is.
 
-SC7280 has LPASS Codec Version 2.0 and not, as declared with
-sm8250_va_data LPASS_CODEC_VERSION_1_0.
+3. We add some dt flag "qcom,use-correct-tx-macro-version;" and handle
+   the rest similar to option 2, by opting in boards to the updated
+   behavior.
 
-Create new va_macro_data with .version not set to use the runtime
-detection and correctly get .version = LPASS_CODEC_VERSION_2_0.
+4. We keep everything the same. We know it's wrong, both the
+   audio-routing in dtb and the controls in UCM have incorrect names,
+   but it's working apparently.
 
-Fixes: 77212f300bfd ("ASoC: codecs: lpass-va-macro: set the default codec version for sm8250")
+Please let me know your thoughts.
+
+As a bit of a note where I'm coming from, I'm working on microphone
+bringup for qcm6490-fairphone-fp5 where so far we've been using
+qcom,sm8450-lpass-tx-macro to get the correct control names. I've tried
+reverting to sc7280-lpass-tx-macro, updating audio-routing in dts and
+UCM to the v9.0 names and it does seem that microphone (AMIC1) is
+working with that, but I'm not particularly happy about leaving the
+wrong control names everywhere, so I'm happy to try and untangle this
+situation.
+
+I'm also not sure where this v9.x actually comes from, maybe I'm lacking
+some documentation, downstream kernel only refers to Bolero v1.x and
+v2.x so these seems to be a completely different versioning system.
+
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-I'm fairly confident this is correct, but please someone double check
-this if they can.
----
- sound/soc/codecs/lpass-va-macro.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Luca Weiss (2):
+      ASoC: codecs: lpass-tx-macro: Use correct config for sc7280
+      arm64: dts: qcom: kodiak: Fix up LPASS TX macro v9.4 control names
 
-diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
-index 528d5b167ecf..58a5798823d7 100644
---- a/sound/soc/codecs/lpass-va-macro.c
-+++ b/sound/soc/codecs/lpass-va-macro.c
-@@ -244,6 +244,11 @@ static const struct va_macro_data sm8250_va_data = {
- 	.version = LPASS_CODEC_VERSION_1_0,
- };
- 
-+static const struct va_macro_data sc7280_va_data = {
-+	.has_swr_master = false,
-+	.has_npl_clk = false,
-+};
-+
- static const struct va_macro_data sm8450_va_data = {
- 	.has_swr_master = true,
- 	.has_npl_clk = true,
-@@ -1755,7 +1760,7 @@ static const struct dev_pm_ops va_macro_pm_ops = {
- };
- 
- static const struct of_device_id va_macro_dt_match[] = {
--	{ .compatible = "qcom,sc7280-lpass-va-macro", .data = &sm8250_va_data },
-+	{ .compatible = "qcom,sc7280-lpass-va-macro", .data = &sc7280_va_data },
- 	{ .compatible = "qcom,sm6115-lpass-va-macro", .data = &sm8450_va_data },
- 	{ .compatible = "qcom,sm8250-lpass-va-macro", .data = &sm8250_va_data },
- 	{ .compatible = "qcom,sm8450-lpass-va-macro", .data = &sm8450_va_data },
-
+ arch/arm64/boot/dts/qcom/qcm6490-idp.dts           |  2 +-
+ .../boot/dts/qcom/qcs6490-radxa-dragon-q6a.dts     |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-crd-r3.dts         | 22 +++++++++++-----------
+ .../dts/qcom/sc7280-herobrine-audio-wcd9385.dtsi   | 22 +++++++++++-----------
+ .../dts/qcom/sc7280-herobrine-villager-r1.dtsi     | 22 +++++++++++-----------
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi           | 22 +++++++++++-----------
+ sound/soc/codecs/lpass-tx-macro.c                  |  9 ++-------
+ 7 files changed, 48 insertions(+), 53 deletions(-)
 ---
 base-commit: 550604d6c9b9efc8d068aff94dc301694a7afdee
-change-id: 20260526-sc7280-va-macro-2-0-f0d4591a611b
+change-id: 20260526-sc7280-tx-macro-1179d786af1f
 
 Best regards,
 --  
