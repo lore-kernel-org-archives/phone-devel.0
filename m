@@ -1,34 +1,34 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1543C076
-	for <phone-devel@vger.kernel.org>; Fri, 29 May 2026 20:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C5643D4EE;
+	Fri, 29 May 2026 20:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085199; cv=none; b=RrXcWNu1Qi9yqi3ADH+YyxGYQKZ+Fh/FhjckdMJ+nSmQXejQaQZDi4pkTDUA4H8WdJqfth1dix16Uz9I9dEN//mqMwK8z/CmEM75/Ci1cz7IG7Znz5IYmrYlUNdDrsRiBYMpfTI0v5bQDiuhnkmLcPMA00fxqI3sa5iHC1wNPyk=
+	t=1780085203; cv=none; b=N3B9xD6PpJPIxQ7+SwgfIqHl+l+Kj+qO+TwLYQJHlKZI48IzlacRZMrUKwApMeAXrpwHzjDJasbT8ZpQrqykqRlKI/vPf73oeTr30WgTTChxQbeYpXtnWH1u5yjFcEnVgIt1eNqrb+L4bXrm0hnxwpGcEJuILapnx6DUJVfONtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085199; c=relaxed/simple;
-	bh=5CvQFhDhQ1li/v6s97IBZPEd9GeMkqK2YF1lHrzBNTM=;
+	s=arc-20240116; t=1780085203; c=relaxed/simple;
+	bh=NQCGUjPcYda/pylMgITMJiPXEpkpAkZXIM2YXv0aOig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YH/YRuPks2a4K9pkfT7q7dWSAElP+kDpm6yxwLBQhsVYf3zsXUEWmhAztNf/SkZxFKmsKAwLspjMRK0yT8GzbIAJ0C5ffdRJB41MbcZ7QX5X8GTSnkmrR2e0U6iJx9DplJK4/LmfGFBUST9yCaip1OFeQeLgV5j4RyaIsnTGhqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=WGbSH7HD; arc=none smtp.client-ip=95.215.58.170
+	 MIME-Version; b=Gy+UIS/3B9MzJ6glHN71JZa5xooz7my3r+OHQIVhb7MelVFaQtezIWRtftAdv3M381eU+7VXLGAbY3drMv6DJgidaxkwHvPx8lOL5rsO2k3+ZLdlWAGFrt0jtc2C1FXXTpGad3hfwfL1otN6apOLYFDD/Lk7cAg7nqjoUoZwK1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=KflyKL8r; arc=none smtp.client-ip=95.215.58.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="WGbSH7HD"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="KflyKL8r"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1780085195;
+	s=key1; t=1780085199;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MARCjR0Y+8edNfhm+8iTKzm22hxVW2+vvTbHgb0X7lg=;
-	b=WGbSH7HDaaT2t6NWiVRxZzNufczeHJQErZwol41vd42MbOxyszZgFOdcRemTL7IzCltqCP
-	7jsEKIMZ8n37yRHrPm69KaEj8Jre0rdl93UrcfHKujFTPo2LErdWnUgQjS2rMZcLdU3cQw
-	ybu5fqGE1iqhIfNV95oNYNDXpt1p8UxHW73nxeHRaztqUUyYwLJQvBHpG+XjECQqWoUEPP
-	JKxCR6IlhT/6FzTUPTKov5kply4p1lLm/2VJayNaZl42T7BqpaRcdCC06Ga5CR3a4g+/Yx
-	SW2Xs/Uk+7xngk2G6v89Jdgv0U+VzxTUgldZjwaV9G1UFSMK+xjkiuuUGTkNkw==
+	bh=VL+pAs0fYoDbMxSGaf0xvSKkHteSEBRZVSVccDAbyto=;
+	b=KflyKL8rm5iiR0qeMo64BYVFCgA2xsenZ04csYyFIDshm00UKYdnD5UQ0y3s/CxnDfTHAd
+	+eze6PMTa+LiWtYSKTikppQb4HoD3VuiONeNhar55ZP4qZHpjdH3AD4dHzFgxt7H3O2Wfs
+	y82XA72Qw8k4G371GJrwU37XkLJY1+qX85Pco+EcAIcGcSLQBtDP4ZC/KARlxTtk4JdRPi
+	22CKcPwmdcys/+RBKJtmvsle02D+gNkwaqtY2KqQjttxXU1zr3R674ajo9gyFFEzJlPkil
+	DYTR7/O/3pZ6hCKMiOnLPbU/G5YUNBGqI+5fmYbGuTPDiusVyZXYuzQUS4yT7A==
 From: Val Packett <val@packett.cool>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -40,9 +40,9 @@ Cc: Val Packett <val@packett.cool>,
 	phone-devel@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/7] ASoC: codecs: aw88261: reduce log spam
-Date: Fri, 29 May 2026 17:05:10 -0300
-Message-ID: <20260529200550.529719-4-val@packett.cool>
+Subject: [PATCH v3 4/7] ASoC: codecs: aw88261: remove fade in/out on start/stop
+Date: Fri, 29 May 2026 17:05:11 -0300
+Message-ID: <20260529200550.529719-5-val@packett.cool>
 In-Reply-To: <20260529200550.529719-1-val@packett.cool>
 References: <20260529200550.529719-1-val@packett.cool>
 Precedence: bulk
@@ -54,110 +54,242 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-This driver would create a wall of logspam during initialization due to
-e.g. the PLL not being ready while waiting for it to stabilize. Change
-intermediate dev_err() calls to dev_dbg() to reduce the noise.
-
-While here, log the detected chip ID when that check fails.
+This "feature" was copied from downstream, but it does not belong in
+the kernel at all. Remove it to simplify the driver.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- sound/soc/codecs/aw88261.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ sound/soc/codecs/aw88261.c | 158 +------------------------------------
+ sound/soc/codecs/aw88261.h |   3 -
+ 2 files changed, 2 insertions(+), 159 deletions(-)
 
 diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
-index d6a6173d8af4..a20b66239d50 100644
+index a20b66239d50..f6a93244046d 100644
 --- a/sound/soc/codecs/aw88261.c
 +++ b/sound/soc/codecs/aw88261.c
-@@ -153,7 +153,7 @@ static int aw88261_dev_get_iis_status(struct aw_device *aw_dev)
- 	if (ret)
- 		return ret;
- 	if ((reg_val & AW88261_BIT_PLL_CHECK) != AW88261_BIT_PLL_CHECK) {
--		dev_err(aw_dev->dev, "check pll lock fail,reg_val:0x%04x", reg_val);
-+		dev_dbg(aw_dev->dev, "check pll lock fail,reg_val:0x%04x", reg_val);
- 		return -EINVAL;
- 	}
- 
-@@ -167,7 +167,7 @@ static int aw88261_dev_check_pll(struct aw_device *aw_dev)
- 	for (i = 0; i < AW88261_DEV_SYSST_CHECK_MAX; i++) {
- 		ret = aw88261_dev_get_iis_status(aw_dev);
- 		if (ret) {
--			dev_err(aw_dev->dev, "mode1 iis signal check error");
-+			dev_dbg(aw_dev->dev, "mode1 iis signal check error");
- 			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
- 		} else {
- 			return ret;
-@@ -261,7 +261,7 @@ static int aw88261_dev_check_sysst(struct aw_device *aw_dev)
- 		check_val = reg_val & (~AW88261_BIT_SYSST_CHECK_MASK)
- 							& AW88261_BIT_SYSST_CHECK;
- 		if (check_val != AW88261_BIT_SYSST_CHECK) {
--			dev_err(aw_dev->dev, "check sysst fail, reg_val=0x%04x, check:0x%x",
-+			dev_dbg(aw_dev->dev, "check sysst fail, reg_val=0x%04x, check:0x%x",
- 				reg_val, AW88261_BIT_SYSST_CHECK);
- 			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
- 		} else {
-@@ -555,7 +555,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
- 	int ret;
- 
- 	if (aw_dev->status == AW88261_DEV_PW_ON) {
--		dev_info(aw_dev->dev, "already power on");
-+		dev_dbg(aw_dev->dev, "already power on");
- 		return 0;
- 	}
- 
-@@ -565,7 +565,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
- 
- 	ret = aw88261_dev_configure_syspll(aw88261);
- 	if (ret) {
--		dev_err(aw_dev->dev, "pll check failed cannot start");
-+		dev_dbg(aw_dev->dev, "pll check failed");
- 		goto pll_check_fail;
- 	}
- 
-@@ -576,7 +576,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
- 	/* check i2s status */
- 	ret = aw88261_dev_check_sysst(aw_dev);
- 	if (ret) {
--		dev_err(aw_dev->dev, "sysst check failed");
-+		dev_dbg(aw_dev->dev, "sysst check failed");
- 		goto sysst_check_fail;
- 	}
- 
-@@ -677,18 +677,22 @@ static void aw88261_start_pa(struct aw88261 *aw88261)
- 	for (i = 0; i < AW88261_START_RETRIES; i++) {
- 		ret = aw88261_reg_update(aw88261, aw88261->phase_sync);
- 		if (ret) {
--			dev_err(aw88261->aw_pa->dev, "fw update failed, cnt:%d\n", i);
-+			dev_dbg(aw88261->aw_pa->dev,
-+				"aw88261_reg_update failed, cnt:%d, ret:%d\n", i, ret);
- 			continue;
- 		}
- 		ret = aw88261_dev_start(aw88261);
- 		if (ret) {
--			dev_err(aw88261->aw_pa->dev, "aw88261 device start failed. retry = %d", i);
-+			dev_dbg(aw88261->aw_pa->dev,
-+				"aw88261_dev_start failed, cnt:%d, ret:%d\n", i, ret);
- 			continue;
- 		} else {
--			dev_info(aw88261->aw_pa->dev, "start success\n");
-+			dev_dbg(aw88261->aw_pa->dev, "start success\n");
- 			break;
- 		}
- 	}
-+	if (ret != 0)
-+		dev_err(aw88261->aw_pa->dev, "start failure (%d)\n", ret);
+@@ -45,50 +45,6 @@ static void aw88261_dev_set_volume(struct aw_device *aw_dev, unsigned int value)
+ 	regmap_write(aw_dev->regmap, AW88261_SYSCTRL2_REG, real_value);
  }
  
- static void aw88261_startup_work(struct work_struct *work)
-@@ -1431,7 +1435,7 @@ static int aw88261_init(struct aw88261 *aw88261, struct i2c_client *i2c, struct
- 		return ret;
+-static void aw88261_dev_fade_in(struct aw_device *aw_dev)
+-{
+-	struct aw_volume_desc *desc = &aw_dev->volume_desc;
+-	int fade_in_vol = desc->ctl_volume;
+-	int fade_step = aw_dev->fade_step;
+-	int i;
+-
+-	if (fade_step == 0 || aw_dev->fade_in_time == 0) {
+-		aw88261_dev_set_volume(aw_dev, fade_in_vol);
+-		return;
+-	}
+-
+-	for (i = AW88261_MUTE_VOL; i >= fade_in_vol; i -= fade_step) {
+-		aw88261_dev_set_volume(aw_dev, i);
+-		usleep_range(aw_dev->fade_in_time,
+-					aw_dev->fade_in_time + 10);
+-	}
+-
+-	if (i != fade_in_vol)
+-		aw88261_dev_set_volume(aw_dev, fade_in_vol);
+-}
+-
+-static void aw88261_dev_fade_out(struct aw_device *aw_dev)
+-{
+-	struct aw_volume_desc *desc = &aw_dev->volume_desc;
+-	int fade_step = aw_dev->fade_step;
+-	int i;
+-
+-	if (fade_step == 0 || aw_dev->fade_out_time == 0) {
+-		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
+-		return;
+-	}
+-
+-	for (i = desc->ctl_volume; i <= AW88261_MUTE_VOL; i += fade_step) {
+-		aw88261_dev_set_volume(aw_dev, i);
+-		usleep_range(aw_dev->fade_out_time, aw_dev->fade_out_time + 10);
+-	}
+-
+-	if (i != AW88261_MUTE_VOL) {
+-		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
+-		usleep_range(aw_dev->fade_out_time, aw_dev->fade_out_time + 10);
+-	}
+-}
+-
+ static void aw88261_dev_i2s_tx_enable(struct aw_device *aw_dev, bool flag)
+ {
+ 	if (flag)
+@@ -122,13 +78,13 @@ static void aw88261_dev_amppd(struct aw_device *aw_dev, bool amppd)
+ static void aw88261_dev_mute(struct aw_device *aw_dev, bool is_mute)
+ {
+ 	if (is_mute) {
+-		aw88261_dev_fade_out(aw_dev);
++		aw88261_dev_set_volume(aw_dev, AW88261_MUTE_VOL);
+ 		regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
+ 				~AW88261_HMUTE_MASK, AW88261_HMUTE_ENABLE_VALUE);
+ 	} else {
+ 		regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
+ 				~AW88261_HMUTE_MASK, AW88261_HMUTE_DISABLE_VALUE);
+-		aw88261_dev_fade_in(aw_dev);
++		aw88261_dev_set_volume(aw_dev, aw_dev->volume_desc.ctl_volume);
  	}
- 	if (chip_id != AW88261_CHIP_ID) {
--		dev_err(&i2c->dev, "unsupported device");
-+		dev_err(&i2c->dev, "unsupported device id = %x", chip_id);
- 		return -ENXIO;
- 	}
+ }
  
+@@ -960,75 +916,6 @@ static struct snd_soc_dai_driver aw88261_dai[] = {
+ 	},
+ };
+ 
+-static int aw88261_get_fade_in_time(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
+-	struct aw_device *aw_dev = aw88261->aw_pa;
+-
+-	ucontrol->value.integer.value[0] = aw_dev->fade_in_time;
+-
+-	return 0;
+-}
+-
+-static int aw88261_set_fade_in_time(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-	struct aw_device *aw_dev = aw88261->aw_pa;
+-	int time;
+-
+-	time = ucontrol->value.integer.value[0];
+-
+-	if (time < mc->min || time > mc->max)
+-		return -EINVAL;
+-
+-	if (time != aw_dev->fade_in_time) {
+-		aw_dev->fade_in_time = time;
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+-static int aw88261_get_fade_out_time(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
+-	struct aw_device *aw_dev = aw88261->aw_pa;
+-
+-	ucontrol->value.integer.value[0] = aw_dev->fade_out_time;
+-
+-	return 0;
+-}
+-
+-static int aw88261_set_fade_out_time(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-	struct aw_device *aw_dev = aw88261->aw_pa;
+-	int time;
+-
+-	time = ucontrol->value.integer.value[0];
+-	if (time < mc->min || time > mc->max)
+-		return -EINVAL;
+-
+-	if (time != aw_dev->fade_out_time) {
+-		aw_dev->fade_out_time = time;
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ static int aw88261_dev_set_profile_index(struct aw_device *aw_dev, int index)
+ {
+ 	/* check the index whether is valid */
+@@ -1152,48 +1039,10 @@ static int aw88261_volume_set(struct snd_kcontrol *kcontrol,
+ 	return 0;
+ }
+ 
+-static int aw88261_get_fade_step(struct snd_kcontrol *kcontrol,
+-				struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *codec = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(codec);
+-
+-	ucontrol->value.integer.value[0] = aw88261->aw_pa->fade_step;
+-
+-	return 0;
+-}
+-
+-static int aw88261_set_fade_step(struct snd_kcontrol *kcontrol,
+-				struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct snd_soc_component *codec = snd_kcontrol_chip(kcontrol);
+-	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(codec);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-	int value;
+-
+-	value = ucontrol->value.integer.value[0];
+-	if (value < mc->min || value > mc->max)
+-		return -EINVAL;
+-
+-	if (aw88261->aw_pa->fade_step != value) {
+-		aw88261->aw_pa->fade_step = value;
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ static const struct snd_kcontrol_new aw88261_controls[] = {
+ 	SOC_SINGLE_EXT("PCM Playback Volume", AW88261_SYSCTRL2_REG,
+ 		6, AW88261_MUTE_VOL, 0, aw88261_volume_get,
+ 		aw88261_volume_set),
+-	SOC_SINGLE_EXT("Fade Step", 0, 0, AW88261_MUTE_VOL, 0,
+-		aw88261_get_fade_step, aw88261_set_fade_step),
+-	SOC_SINGLE_EXT("Volume Ramp Up Step", 0, 0, FADE_TIME_MAX, FADE_TIME_MIN,
+-		aw88261_get_fade_in_time, aw88261_set_fade_in_time),
+-	SOC_SINGLE_EXT("Volume Ramp Down Step", 0, 0, FADE_TIME_MAX, FADE_TIME_MIN,
+-		aw88261_get_fade_out_time, aw88261_set_fade_out_time),
+ 	AW88261_PROFILE_EXT("Profile Set", aw88261_profile_info,
+ 		aw88261_profile_get, aw88261_profile_set),
+ };
+@@ -1284,8 +1133,6 @@ static int aw88261_dev_init(struct aw88261 *aw88261, struct aw_container *aw_cfg
+ 	if (ret)
+ 		return ret;
+ 
+-	aw_dev->fade_in_time = AW88261_500_US;
+-	aw_dev->fade_out_time = AW88261_500_US;
+ 	aw_dev->prof_cur = AW88261_INIT_PROFILE;
+ 	aw_dev->prof_index = AW88261_INIT_PROFILE;
+ 
+@@ -1456,7 +1303,6 @@ static int aw88261_init(struct aw88261 *aw88261, struct i2c_client *i2c, struct
+ 	aw_dev->prof_info.prof_type = AW88395_DEV_NONE_TYPE_ID;
+ 	aw_dev->channel = 0;
+ 	aw_dev->fw_status = AW88261_DEV_FW_FAILED;
+-	aw_dev->fade_step = AW88261_VOLUME_STEP_DB;
+ 	aw_dev->volume_desc.ctl_volume = AW88261_VOL_DEFAULT_VALUE;
+ 	aw_dev->volume_desc.mute_volume = AW88261_MUTE_VOL;
+ 	aw88261_parse_channel_dt(aw88261);
+diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
+index d75f55cdca42..9a5384624541 100644
+--- a/sound/soc/codecs/aw88261.h
++++ b/sound/soc/codecs/aw88261.h
+@@ -533,9 +533,6 @@
+ 			SNDRV_PCM_FMTBIT_S24_LE | \
+ 			SNDRV_PCM_FMTBIT_S32_LE)
+ 
+-#define FADE_TIME_MAX			100000
+-#define FADE_TIME_MIN			0
+-
+ #define AW88261_DEV_DEFAULT_CH		(0)
+ #define AW88261_ACF_FILE		"aw88261_acf.bin"
+ #define AW88261_DEV_SYSST_CHECK_MAX	(10)
 -- 
 2.53.0
 
