@@ -1,34 +1,34 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C04B3F88BE;
-	Fri, 29 May 2026 20:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1543C076
+	for <phone-devel@vger.kernel.org>; Fri, 29 May 2026 20:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085194; cv=none; b=l1C5WJ3VckH90AbQJgLJMnwDza37+BnOAMrI39x5m8XoGhCa7O6RdVnJzoihBmrQIR6USPFjteDJNH9kG8gUs/FXHcWSHKoeY6LWKorhVBAmIWvDbzQWsSxg+at/Zvt/BsGnW++a2FnGzASbRUxtOtWlTz/jFREOtDn3nBf9Eks=
+	t=1780085199; cv=none; b=RrXcWNu1Qi9yqi3ADH+YyxGYQKZ+Fh/FhjckdMJ+nSmQXejQaQZDi4pkTDUA4H8WdJqfth1dix16Uz9I9dEN//mqMwK8z/CmEM75/Ci1cz7IG7Znz5IYmrYlUNdDrsRiBYMpfTI0v5bQDiuhnkmLcPMA00fxqI3sa5iHC1wNPyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085194; c=relaxed/simple;
-	bh=wl4gtEG1KVXz9wv4uwkPybc5g3m1xGVvSEBtBFKC1uw=;
+	s=arc-20240116; t=1780085199; c=relaxed/simple;
+	bh=5CvQFhDhQ1li/v6s97IBZPEd9GeMkqK2YF1lHrzBNTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6u+mlv7G1pOdWPzlei0s4FfEB6AogCPeBcp88EX4fOUPMcDyEeaQkiZtaKYAVOwkkCDc+sfzR/NjSy7XJpYJ2TNlhBRjlIwtrDqMiO/mE25lnuu/HSk3EHvOWj2gpNl7DrSy09zz8vKjSlBWgaLkBdAky+ZgGd3mtFF0GrsSXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=uNwVFk1m; arc=none smtp.client-ip=95.215.58.179
+	 MIME-Version; b=YH/YRuPks2a4K9pkfT7q7dWSAElP+kDpm6yxwLBQhsVYf3zsXUEWmhAztNf/SkZxFKmsKAwLspjMRK0yT8GzbIAJ0C5ffdRJB41MbcZ7QX5X8GTSnkmrR2e0U6iJx9DplJK4/LmfGFBUST9yCaip1OFeQeLgV5j4RyaIsnTGhqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=WGbSH7HD; arc=none smtp.client-ip=95.215.58.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="uNwVFk1m"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="WGbSH7HD"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1780085190;
+	s=key1; t=1780085195;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KwvWEhvGxKfMUTHv546WllZJX3cjFvFN76S5sIanXbA=;
-	b=uNwVFk1m5fB6yb1CZd+IhPEz6V3LOTTnGJb0h1xSLXyk1df32ZYVyXJ0YwZr0oivC92HQL
-	A8f1uTXFg8ZxfbO3ihTGOvRMAL9Kb53xK7SZREiiEJ+pQBRwKLy1h/Kn+GS0g9fZUXc89Q
-	DbV1FuUbv08DOeydLH6NSrxDB3qfRSWlc4zk7mMW8VumwxVeM7GwL4wEdEOwzF0HuPjLKS
-	E/hopjqOOlQG0ncVQugpovxtC3Nx1pCOfTNTB9iTiALtZ7ko8/pYpwXVP3rgKPa6he4ABw
-	s04V+96DnLxVMDCnKJY5DqW6W48YUJsXtvUe1Ik1sdBKkNH+WHCDGI8B9yKPcw==
+	bh=MARCjR0Y+8edNfhm+8iTKzm22hxVW2+vvTbHgb0X7lg=;
+	b=WGbSH7HDaaT2t6NWiVRxZzNufczeHJQErZwol41vd42MbOxyszZgFOdcRemTL7IzCltqCP
+	7jsEKIMZ8n37yRHrPm69KaEj8Jre0rdl93UrcfHKujFTPo2LErdWnUgQjS2rMZcLdU3cQw
+	ybu5fqGE1iqhIfNV95oNYNDXpt1p8UxHW73nxeHRaztqUUyYwLJQvBHpG+XjECQqWoUEPP
+	JKxCR6IlhT/6FzTUPTKov5kply4p1lLm/2VJayNaZl42T7BqpaRcdCC06Ga5CR3a4g+/Yx
+	SW2Xs/Uk+7xngk2G6v89Jdgv0U+VzxTUgldZjwaV9G1UFSMK+xjkiuuUGTkNkw==
 From: Val Packett <val@packett.cool>
 To: Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
@@ -40,9 +40,9 @@ Cc: Val Packett <val@packett.cool>,
 	phone-devel@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/7] ASoC: codecs: aw88261: add TDM support
-Date: Fri, 29 May 2026 17:05:09 -0300
-Message-ID: <20260529200550.529719-3-val@packett.cool>
+Subject: [PATCH v3 3/7] ASoC: codecs: aw88261: reduce log spam
+Date: Fri, 29 May 2026 17:05:10 -0300
+Message-ID: <20260529200550.529719-4-val@packett.cool>
 In-Reply-To: <20260529200550.529719-1-val@packett.cool>
 References: <20260529200550.529719-1-val@packett.cool>
 Precedence: bulk
@@ -54,270 +54,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-This amp supports TDM mode, so implement the set_tdm_slot operation to
-let the SoC driver configure the TDM slot number, width, and masks.
+This driver would create a wall of logspam during initialization due to
+e.g. the PLL not being ready while waiting for it to stabilize. Change
+intermediate dev_err() calls to dev_dbg() to reduce the noise.
+
+While here, log the detected chip ID when that check fails.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- sound/soc/codecs/aw88261.c | 115 ++++++++++++++++++++++++++++++++++++-
- sound/soc/codecs/aw88261.h |  56 ++++++++++++++++++
- 2 files changed, 170 insertions(+), 1 deletion(-)
+ sound/soc/codecs/aw88261.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
-index 6d4b911be298..d6a6173d8af4 100644
+index d6a6173d8af4..a20b66239d50 100644
 --- a/sound/soc/codecs/aw88261.c
 +++ b/sound/soc/codecs/aw88261.c
-@@ -10,6 +10,7 @@
- 
- #include <linux/i2c.h>
- #include <linux/firmware.h>
-+#include <linux/bitops.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <sound/soc.h>
-@@ -181,6 +182,30 @@ static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
- 	struct aw_device *aw_dev = aw88261->aw_pa;
- 	int ret;
- 
-+	/* Configure TDM slots (I2S is represented as no slots) */
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL2_REG,
-+			~AW88261_SLOT_NUM_MASK, aw88261->slot_num_value);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL2_REG,
-+			~AW88261_I2S_TX_SLOTVLD_MASK,
-+			aw88261->tx_slotvld_mask);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL2_REG,
-+			~AW88261_I2S_RXL_SLOTVLD_MASK,
-+			aw88261->rxl_slotvld_mask);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL2_REG,
-+			~AW88261_I2S_RXR_SLOTVLD_MASK,
-+			aw88261->rxr_slotvld_mask);
-+	if (ret)
-+		return ret;
-+
- 	/* PLL divider must be used for 8/16/32 kHz modes */
- 	ret = regmap_update_bits(aw_dev->regmap, AW88261_PLLCTRL1_REG,
- 			~AW88261_CCO_MUX_MASK, aw88261->cco_mux_value);
-@@ -195,7 +220,9 @@ static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
- 
- 	/* The bit clock (BCK) defines the length of a frame */
- 	ret = regmap_update_bits(aw_dev->regmap, AW88261_I2SCTRL1_REG,
--			~AW88261_I2SBCK_MASK, aw88261->bck_value);
-+			~AW88261_I2SBCK_MASK,
-+			(aw88261->tdm_bck_value != AW88261_TDM_BCK_UNSET)
-+			? aw88261->tdm_bck_value : aw88261->bck_value);
+@@ -153,7 +153,7 @@ static int aw88261_dev_get_iis_status(struct aw_device *aw_dev)
  	if (ret)
  		return ret;
+ 	if ((reg_val & AW88261_BIT_PLL_CHECK) != AW88261_BIT_PLL_CHECK) {
+-		dev_err(aw_dev->dev, "check pll lock fail,reg_val:0x%04x", reg_val);
++		dev_dbg(aw_dev->dev, "check pll lock fail,reg_val:0x%04x", reg_val);
+ 		return -EINVAL;
+ 	}
  
-@@ -710,9 +737,11 @@ static int aw88261_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+@@ -167,7 +167,7 @@ static int aw88261_dev_check_pll(struct aw_device *aw_dev)
+ 	for (i = 0; i < AW88261_DEV_SYSST_CHECK_MAX; i++) {
+ 		ret = aw88261_dev_get_iis_status(aw_dev);
+ 		if (ret) {
+-			dev_err(aw_dev->dev, "mode1 iis signal check error");
++			dev_dbg(aw_dev->dev, "mode1 iis signal check error");
+ 			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
+ 		} else {
+ 			return ret;
+@@ -261,7 +261,7 @@ static int aw88261_dev_check_sysst(struct aw_device *aw_dev)
+ 		check_val = reg_val & (~AW88261_BIT_SYSST_CHECK_MASK)
+ 							& AW88261_BIT_SYSST_CHECK;
+ 		if (check_val != AW88261_BIT_SYSST_CHECK) {
+-			dev_err(aw_dev->dev, "check sysst fail, reg_val=0x%04x, check:0x%x",
++			dev_dbg(aw_dev->dev, "check sysst fail, reg_val=0x%04x, check:0x%x",
+ 				reg_val, AW88261_BIT_SYSST_CHECK);
+ 			usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
+ 		} else {
+@@ -555,7 +555,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 	int ret;
  
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_I2S:
-+	case SND_SOC_DAIFMT_DSP_A:
- 		aw88261->md_value = AW88261_I2SMD_PHILIPS_STANDARD_VALUE;
- 		break;
- 	case SND_SOC_DAIFMT_MSB:
-+	case SND_SOC_DAIFMT_DSP_B:
- 		aw88261->md_value = AW88261_I2SMD_MSB_JUSTIFIED_VALUE;
- 		break;
- 	case SND_SOC_DAIFMT_LSB:
-@@ -819,9 +848,90 @@ static int aw88261_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
+ 	if (aw_dev->status == AW88261_DEV_PW_ON) {
+-		dev_info(aw_dev->dev, "already power on");
++		dev_dbg(aw_dev->dev, "already power on");
+ 		return 0;
+ 	}
+ 
+@@ -565,7 +565,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 
+ 	ret = aw88261_dev_configure_syspll(aw88261);
+ 	if (ret) {
+-		dev_err(aw_dev->dev, "pll check failed cannot start");
++		dev_dbg(aw_dev->dev, "pll check failed");
+ 		goto pll_check_fail;
+ 	}
+ 
+@@ -576,7 +576,7 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 	/* check i2s status */
+ 	ret = aw88261_dev_check_sysst(aw_dev);
+ 	if (ret) {
+-		dev_err(aw_dev->dev, "sysst check failed");
++		dev_dbg(aw_dev->dev, "sysst check failed");
+ 		goto sysst_check_fail;
+ 	}
+ 
+@@ -677,18 +677,22 @@ static void aw88261_start_pa(struct aw88261 *aw88261)
+ 	for (i = 0; i < AW88261_START_RETRIES; i++) {
+ 		ret = aw88261_reg_update(aw88261, aw88261->phase_sync);
+ 		if (ret) {
+-			dev_err(aw88261->aw_pa->dev, "fw update failed, cnt:%d\n", i);
++			dev_dbg(aw88261->aw_pa->dev,
++				"aw88261_reg_update failed, cnt:%d, ret:%d\n", i, ret);
+ 			continue;
+ 		}
+ 		ret = aw88261_dev_start(aw88261);
+ 		if (ret) {
+-			dev_err(aw88261->aw_pa->dev, "aw88261 device start failed. retry = %d", i);
++			dev_dbg(aw88261->aw_pa->dev,
++				"aw88261_dev_start failed, cnt:%d, ret:%d\n", i, ret);
+ 			continue;
+ 		} else {
+-			dev_info(aw88261->aw_pa->dev, "start success\n");
++			dev_dbg(aw88261->aw_pa->dev, "start success\n");
+ 			break;
+ 		}
+ 	}
++	if (ret != 0)
++		dev_err(aw88261->aw_pa->dev, "start failure (%d)\n", ret);
  }
  
-+static int aw88261_set_tdm_slot(struct snd_soc_dai *dai,
-+	unsigned int tx_mask, unsigned int rx_mask, int slots, int slot_width)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(component);
-+	int chan;
-+
-+	switch (slots) {
-+	case 0:
-+		/* Just reset everything TDM related to I2S values */
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_I2S_MODE_VALUE;
-+		aw88261->tdm_bck_value = AW88261_TDM_BCK_UNSET;
-+		aw88261->tx_slotvld_mask = 0 << AW88261_I2S_TX_SLOTVLD_START_BIT;
-+		aw88261->rxl_slotvld_mask = 0 << AW88261_I2S_RXL_SLOTVLD_START_BIT;
-+		aw88261->rxr_slotvld_mask = 1 << AW88261_I2S_RXR_SLOTVLD_START_BIT;
-+		return 0;
-+	case 1:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM1S_VALUE;
-+		break;
-+	case 2:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM2S_VALUE;
-+		break;
-+	case 4:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM4S_VALUE;
-+		break;
-+	case 6:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM6S_VALUE;
-+		break;
-+	case 8:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM8S_VALUE;
-+		break;
-+	case 16:
-+		aw88261->slot_num_value = AW88261_SLOT_NUM_TDM16S_VALUE;
-+		break;
-+	default:
-+		dev_err(aw88261->aw_pa->dev, "unsupported slot count %d\n", slots);
-+		return -EINVAL;
-+	}
-+
-+	switch (slot_width) {
-+	case 16:
-+		aw88261->tdm_bck_value = AW88261_I2SBCK_32FS_VALUE;
-+		break;
-+	case 20:
-+	case 24:
-+		aw88261->tdm_bck_value = AW88261_I2SBCK_48FS_VALUE;
-+		break;
-+	case 32:
-+		aw88261->tdm_bck_value = AW88261_I2SBCK_64FS_VALUE;
-+		break;
-+	default:
-+		dev_err(aw88261->aw_pa->dev, "unsupported slot width %d\n",
-+			slot_width);
-+		return -EINVAL;
-+	}
-+
-+	if (tx_mask != 0) {
-+		if ((chan = __ffs(tx_mask)) > 16)
-+			return -EINVAL;
-+
-+		aw88261->tx_slotvld_mask = chan << AW88261_I2S_TX_SLOTVLD_START_BIT;
-+	}
-+
-+	if (rx_mask != 0) {
-+		if ((chan = __ffs(rx_mask)) > 16)
-+			return -EINVAL;
-+
-+		aw88261->rxl_slotvld_mask = chan << AW88261_I2S_RXL_SLOTVLD_START_BIT;
-+	}
-+
-+	if ((rx_mask & ~BIT(chan)) != 0) {
-+		if ((chan = __ffs(rx_mask & ~BIT(chan))) > 16)
-+			return -EINVAL;
-+
-+		aw88261->rxr_slotvld_mask = chan << AW88261_I2S_RXR_SLOTVLD_START_BIT;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct snd_soc_dai_ops aw88261_dai_ops = {
- 	.set_fmt = aw88261_set_fmt,
- 	.hw_params = aw88261_hw_params,
-+	.set_tdm_slot = aw88261_set_tdm_slot,
- };
- 
- static struct snd_soc_dai_driver aw88261_dai[] = {
-@@ -1363,12 +1473,15 @@ static int aw88261_i2c_probe(struct i2c_client *i2c)
- 		return -ENOMEM;
- 
- 	/* set defaults */
-+	aw88261->slot_num_value = AW88261_SLOT_NUM_I2S_MODE_VALUE;
- 	aw88261->sr_value = AW88261_I2SSR_48KHZ_VALUE;
- 	aw88261->cco_mux_value = AW88261_CCO_MUX_BYPASS_VALUE;
- 	aw88261->fs_value = AW88261_I2SFS_24_BITS_VALUE;
- 	aw88261->bck_value = AW88261_I2SBCK_64FS_VALUE;
- 	aw88261->bck_inv_value = AW88261_BCKINV_NOT_INVERT_VALUE;
-+	aw88261->tdm_bck_value = AW88261_TDM_BCK_UNSET;
- 	aw88261->md_value = AW88261_I2SMD_PHILIPS_STANDARD_VALUE;
-+	aw88261->rxr_slotvld_mask = 1 << AW88261_I2S_RXR_SLOTVLD_START_BIT;
- 
- 	mutex_init(&aw88261->lock);
- 
-diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
-index 3d7483d625a9..d75f55cdca42 100644
---- a/sound/soc/codecs/aw88261.h
-+++ b/sound/soc/codecs/aw88261.h
-@@ -329,6 +329,8 @@
- #define AW88261_I2SBCK_64FS_VALUE	\
- 	(AW88261_I2SBCK_64FS << AW88261_I2SBCK_START_BIT)
- 
-+#define AW88261_TDM_BCK_UNSET			UINT_MAX
-+
- #define AW88261_I2SSR_START_BIT			(0)
- #define AW88261_I2SSR_BITS_LEN			(4)
- #define AW88261_I2SSR_MASK				\
-@@ -368,6 +370,54 @@
- #define AW88261_I2SSR_192KHZ_VALUE		\
- 	(AW88261_I2SSR_192KHZ << AW88261_I2SSR_START_BIT)
- 
-+#define AW88261_SLOT_NUM_START_BIT	(12)
-+#define AW88261_SLOT_NUM_BITS_LEN	(3)
-+#define AW88261_SLOT_NUM_MASK	\
-+	(~(((1<<AW88261_SLOT_NUM_BITS_LEN)-1) << AW88261_SLOT_NUM_START_BIT))
-+
-+#define AW88261_SLOT_NUM_I2S_MODE	(0)
-+#define AW88261_SLOT_NUM_I2S_MODE_VALUE	\
-+	(AW88261_SLOT_NUM_I2S_MODE << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM1S	(1)
-+#define AW88261_SLOT_NUM_TDM1S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM1S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM2S	(2)
-+#define AW88261_SLOT_NUM_TDM2S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM2S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM4S	(3)
-+#define AW88261_SLOT_NUM_TDM4S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM4S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM6S	(4)
-+#define AW88261_SLOT_NUM_TDM6S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM6S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM8S	(5)
-+#define AW88261_SLOT_NUM_TDM8S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM8S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_SLOT_NUM_TDM16S	(6)
-+#define AW88261_SLOT_NUM_TDM16S_VALUE	\
-+	(AW88261_SLOT_NUM_TDM16S << AW88261_SLOT_NUM_START_BIT)
-+
-+#define AW88261_I2S_TX_SLOTVLD_START_BIT	(8)
-+#define AW88261_I2S_TX_SLOTVLD_BITS_LEN	(4)
-+#define AW88261_I2S_TX_SLOTVLD_MASK	\
-+	(~(((1<<AW88261_I2S_TX_SLOTVLD_BITS_LEN)-1) << AW88261_I2S_TX_SLOTVLD_START_BIT))
-+
-+#define AW88261_I2S_RXR_SLOTVLD_START_BIT	(4)
-+#define AW88261_I2S_RXR_SLOTVLD_BITS_LEN	(4)
-+#define AW88261_I2S_RXR_SLOTVLD_MASK	\
-+	(~(((1<<AW88261_I2S_RXR_SLOTVLD_BITS_LEN)-1) << AW88261_I2S_RXR_SLOTVLD_START_BIT))
-+
-+#define AW88261_I2S_RXL_SLOTVLD_START_BIT	(0)
-+#define AW88261_I2S_RXL_SLOTVLD_BITS_LEN	(4)
-+#define AW88261_I2S_RXL_SLOTVLD_MASK	\
-+	(~(((1<<AW88261_I2S_RXL_SLOTVLD_BITS_LEN)-1) << AW88261_I2S_RXL_SLOTVLD_START_BIT))
-+
- #define AW88261_CCO_MUX_START_BIT	(6)
- #define AW88261_CCO_MUX_BITS_LEN	(1)
- #define AW88261_CCO_MUX_MASK		\
-@@ -563,8 +613,14 @@ struct aw88261 {
- 	unsigned int fs_value;
- 	unsigned int bck_value;
- 	unsigned int bck_inv_value;
-+	unsigned int tdm_bck_value;
- 	unsigned int md_value;
- 
-+	unsigned int slot_num_value;
-+	unsigned int tx_slotvld_mask;
-+	unsigned int rxl_slotvld_mask;
-+	unsigned int rxr_slotvld_mask;
-+
- 	bool phase_sync;
- };
+ static void aw88261_startup_work(struct work_struct *work)
+@@ -1431,7 +1435,7 @@ static int aw88261_init(struct aw88261 *aw88261, struct i2c_client *i2c, struct
+ 		return ret;
+ 	}
+ 	if (chip_id != AW88261_CHIP_ID) {
+-		dev_err(&i2c->dev, "unsupported device");
++		dev_err(&i2c->dev, "unsupported device id = %x", chip_id);
+ 		return -ENXIO;
+ 	}
  
 -- 
 2.53.0
