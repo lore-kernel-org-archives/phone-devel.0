@@ -1,161 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816902BCF45;
-	Thu, 28 May 2026 02:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497B2326D65;
+	Fri, 29 May 2026 20:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779935672; cv=none; b=dEiitFjiwRMEBaVS4CjOF/0wVvA1p1P4C7Y8co2vdBYOL/wKomHFYSJb3O9nXrcIVxqMsgVtOcgBYvNLaslgsVMjcH7lkdQ/jjjLrLTcHPF7fCT23xwyEG5SJNNVbM7/SzXh2XaG8qZKZTgflfjlOAiv2SyEwef0dg4bB2gCT6A=
+	t=1780085187; cv=none; b=o/09HWq8S2G3tccPhpyO1cRKGmEQnbxDPCYMyDlCQsmrW8SugDfFSiu+24rdnJey5ZJS6KUqBH0rBHu22FzpbV4E0SQSsZEf9JK9T4mArr6NqbdBavVurWcSCRpAkMsBwiNf59xiWLJoUE1HJ4hpimwB13YHiqRrxQxbrFxQPZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779935672; c=relaxed/simple;
-	bh=cWFq0UmsChy1UMKhJ3jNAc6iyXXgrydkyp2h6htMuew=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a+wbvEj0U7JTXDdV3p3EhIS5f7oaM+i0CRqiydIH62KmEDDMi1A7sywlTw4K8WF+poqyjrShOrARp6+TucldQhw7L7YbdRPQDtIOOSh6neBg76E+UxH99NCRMc+V1iN31zxxlL/TxWvlM2YaVKBCV8rihqGW6O4BRcxUdt6Qsec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3Xkv2Tu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780085187; c=relaxed/simple;
+	bh=CIUeZtR9flmQY/Rk2shYwr7gjCwZWoK3WGB9353uXZg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gyKnp/VHqAei8TUL9poUKqjlAf3BOCAOZ4xsnNLVGpfCs5keCecIR8xYIJK4szTgV/0Cy5rErd/Uyet6x3lp8tJO3dALwgMWo3ojZGOKm4ziCqYUg++Uw6MQ/qYnvD/aVmiQfySMPgp18FdzC8d84f7v4LCfDQ5tLX7gKqClx5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=OcSx3las; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3Xkv2Tu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 27998C2BCB4;
-	Thu, 28 May 2026 02:34:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779935672;
-	bh=cWFq0UmsChy1UMKhJ3jNAc6iyXXgrydkyp2h6htMuew=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=t3Xkv2Tuy3HGPA+x+efSpVrJ4fXs6qm7x1cFQ16Fk8GOlXZzqJ6PCi6qS3rzDJoN8
-	 ZYhIJo/zsKyDJCMSKNniAFs5Gs2sb/t6bDHfoJ3eCQ0PcQI6otmT8wNPCwXlelYaQz
-	 V4GYErK3yV+Oe0mIegO0bZyWCB9D1Joyh2LLtso2dP5/l3M7vMrUOmcuQjMXfV33Ai
-	 l1iqTylfAUXfWfex8enm7AXQdOHkOrvnY1vJ2KF7yba9evGv26OfgFtXkn+PXRRpC2
-	 xcetoKj0cmeh+Y3ASuIHcRGMyCekEIxN5SnxWeEp24shZcQGVThWoOINg6Z3/GVZYi
-	 h5Jl8gAwaPbwA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1289ACD6E44;
-	Thu, 28 May 2026 02:34:32 +0000 (UTC)
-From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
-Date: Wed, 27 May 2026 19:34:30 -0700
-Subject: [PATCH v6 1/3] dt-bindings: leds: rt8515: Support single-GPIO
- flash ICs with vin supply
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="OcSx3las"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1780085182;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rcYy/l6NXcLq2eqDqCytUXXd+j+CJAl6HB+DkxvvhDg=;
+	b=OcSx3lasArCugWDw2s6i4zAImr/C2xbw9dSZkMtN5qRCpC7CEBTZz+2+C0REKxXqnje3Ys
+	0WzffIoh9KfXT9d/YZ15KWt9Kn+lIGkrIY6grfl8KOkrCdvFj4Fl5YJlMC48eL1C78J5xK
+	cW3mYIGkTpMDkxT7kZpnIiCM2Q0DjEActwI6e/2N8f6ula0/mowyyN6iJNx+VmFFWEs5lG
+	BRzYigNLXvdEh1O8xLb2xB0bu9rPoXvOqnleNVqa78D8Gq2/L4ztNBw+Qlso+IHeUJbWIk
+	LwFXLY3dDrveSc9z7BfGjU0VVH25P43GlXumF/bI2KpOvnInDA/Gf3OIXVJPsA==
+From: Val Packett <val@packett.cool>
+To: 
+Cc: Val Packett <val@packett.cool>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/7] ASoC: codecs: aw88261: fixes and cleanup
+Date: Fri, 29 May 2026 17:05:07 -0300
+Message-ID: <20260529200550.529719-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-expressatt_camera_flash-v6-1-de0f150024e4@gmail.com>
-References: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
-In-Reply-To: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
- Conor Dooley <conor.dooley@microchip.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779935671; l=2722;
- i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
- bh=zVrQqx9DX85PpInFmz437RLTadxI5BhJ9KjSu1CJI9w=;
- b=9br2+hzBNCL2YlZb5RbnwvO/7VUwaI0dFKogVbWsOPN5yREx/vtJ4hNiMBQ7O35T8kaCW/F7J
- QRn6EJLHBD+BpUwzAmDyu6Q23uNxSArfVVKBZlBMQqqni9kDkfBoSbT
-X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
- pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
-X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
- auth_id=211
-X-Original-From: Rudraksha Gupta <guptarud@gmail.com>
-Reply-To: guptarud@gmail.com
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Rudraksha Gupta <guptarud@gmail.com>
+The Awinic smart speaker/amp drivers were merged in a very
+"downstream-brained" state, where configuration was only really
+determined by the binary "firmware" (register list) file instead
+of properly participating in the ASoC system. Let's start
+untangling this mess. This series makes aw88261 actually usable
+on devices like fairphone-fp5, motorola-dubai and xiaomi-pipa.
 
-Some flash ICs use the same one-wire pulse-count protocol as the RT8515
-but have only a single enable line for both flash and torch modes, plus
-an optional input voltage supply (e.g. a GPIO-controlled fixed
-regulator) that gates power to the chip.
+v3:
+- Set default volume to the halfway point
+- Restored mute-until-powered-on behavior
+- Made TDM slot_width override the hw_params physical_width
+- Made set_tdm_slot(0) reset channel mapping to I2S default (L/R == 0/1)
+- Pulled T-b tag
 
-Make ent-gpios optional and add a vin-supply property to support these
-variants. Add a oneOf constraint requiring exactly one of ent-gpios or
-vin-supply. Add a binding example showing the single-GPIO configuration
-with an input supply.
+v2: https://lore.kernel.org/all/20260518220906.347958-1-val@packett.cool/
+v1: https://lore.kernel.org/all/20260420213250.215465-2-val@packett.cool/
 
-Assisted-by: Claude:claude-opus-4.6
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
----
- .../devicetree/bindings/leds/richtek,rt8515.yaml   | 34 +++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+Val Packett (7):
+  ASoC: codecs: aw88261: support changing sample rate and bit width
+  ASoC: codecs: aw88261: add TDM support
+  ASoC: codecs: aw88261: reduce log spam
+  ASoC: codecs: aw88261: remove fade in/out on start/stop
+  ASoC: codecs: aw88261: remove async start
+  ASoC: codecs: aw88261: fix incorrect masks for boost regs
+  ASoC: codecs: aw88261: make volume control usable
 
-diff --git a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
-index 0356371a6b01..ab3c5139132c 100644
---- a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
-+++ b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
-@@ -15,6 +15,10 @@ description: |
-   current for each mode is defined in hardware using two resistors
-   RFS and RTS.
- 
-+  Some flash ICs use the same one-wire pulse-count protocol but have
-+  only a single enable line for both flash and torch modes. For these
-+  single-channel variants, only enf-gpios is needed.
-+
- properties:
-   compatible:
-     const: richtek,rt8515
-@@ -26,6 +30,11 @@ properties:
-   ent-gpios:
-     maxItems: 1
-     description: A connection to the 'ENT' (enable torch) pin.
-+      Not present on single-channel flash ICs that use only one enable
-+      line for both flash and torch modes.
-+
-+  vin-supply:
-+    description: Optional input supply for the flash IC.
- 
-   richtek,rfs-ohms:
-     minimum: 7680
-@@ -81,10 +90,15 @@ properties:
- 
- required:
-   - compatible
--  - ent-gpios
-   - enf-gpios
-   - led
- 
-+oneOf:
-+  - required:
-+      - ent-gpios
-+  - required:
-+      - vin-supply
-+
- additionalProperties: false
- 
- examples:
-@@ -108,4 +122,22 @@ examples:
-         };
-     };
- 
-+  - |
-+    /* Single-channel flash IC with input supply */
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/leds/common.h>
-+
-+    led-controller {
-+        compatible = "richtek,rt8515";
-+        enf-gpios = <&tlmm 3 GPIO_ACTIVE_HIGH>;
-+        vin-supply = <&flash_reg>;
-+        richtek,rfs-ohms = <16000>;
-+
-+        led {
-+            function = LED_FUNCTION_FLASH;
-+            color = <LED_COLOR_ID_WHITE>;
-+            flash-max-timeout-us = <250000>;
-+        };
-+    };
-+
- ...
+ sound/soc/codecs/aw88261.c | 627 ++++++++++++++++++++-----------------
+ sound/soc/codecs/aw88261.h | 185 ++++++++++-
+ 2 files changed, 516 insertions(+), 296 deletions(-)
 
 -- 
-2.54.0
-
+2.53.0
 
