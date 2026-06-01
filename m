@@ -1,39 +1,58 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from cheetah.cherry.relay.mailchannels.net (cheetah.cherry.relay.mailchannels.net [23.83.223.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2582EA72A;
-	Mon,  1 Jun 2026 17:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC73DC4A2;
+	Mon,  1 Jun 2026 17:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.223.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780333383; cv=none; b=e2227ke/5oyTnkoWsEN0p2QPf+4oqG0hsewJ1lWwLmRs6EqEzGojZmLeVkVF61r/XOmbA53X/2RCXEhphgWzC9J+AsXBnPrYhBcQlBYG7mSqyYSl9rw8x18UJTxUM3B3IdzufxuglzBTmP3ifqiGUCj4Ox0V3vEoc1orvMOWFO0=
+	t=1780333514; cv=none; b=Si2yzygH3BDMvycGYpabIIzzZtVwi2cQFIYT2f/QWpc9EIWwsfqQElXFDlayJcfSLuox+I3fSME1P0iO1rcnrfbgCblajV4f1bPYb2/yQQ8wqXpTHCqSPKrYNAN67bkOsNN/0KB0ltQr2OHUHnUHg0mkW7Y3gR/vPNP8sNNte74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780333383; c=relaxed/simple;
-	bh=8WsYYXy0LSkMl4P+/kiwX6H8dqN4+Y6M0KPXAHxVuwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PCioK3LbXK8R0UZ9wHRfnwGTKABtN6bDOh05xiUTY/LMhJwSLRxzHFJWW5ZdPRRzN3q5s2/V24h/1tgHV8c6HWzodGZJl/KadU9W88LKxRnQuw6Y7x+vA3FU0a4x66tIAI+XeIdLFyUSuQoZ7/eCyVF4uvOWwjw0KYDPn62v8K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zDhAxlDH; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1780333514; c=relaxed/simple;
+	bh=o9/3t5aWbbAT4sGsBTZI/+VJf6LBvxpKJ80lKzrLliU=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=pLbWaRMSU1a7+EoWHIj9h81I6/sIgXkFXTlsSLigu0TXhqQSHXhNJtdTtinmfjRjhrM1mIqI2gQWtfqSxig5R0DG7QbiXRrU37vB6t6cz+iAtnZ7CsW6RfyVkp7m6bTf1Omvjkix5FmExhTOP37Phq3qBSFz0IezweR7PymfTrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=XoJYBb7H; arc=none smtp.client-ip=23.83.223.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zDhAxlDH"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9179A534157F;
-	Mon, 01 Jun 2026 19:02:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1780333378;
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="XoJYBb7H"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 113028C2B23;
+	Mon, 01 Jun 2026 13:36:58 +0000 (UTC)
+Received: from fr-int-smtpout29.hostinger.io (100-103-80-215.trex-nlb.outbound.svc.cluster.local [100.103.80.215])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id B4ED48C2BB9;
+	Mon, 01 Jun 2026 13:36:54 +0000 (UTC)
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Bad
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Towering-Tart: 49787cab7e6f26d6_1780321017667_4149070711
+X-MC-Loop-Signature: 1780321017667:3849519496
+X-MC-Ingress-Time: 1780321017667
+Received: from fr-int-smtpout29.hostinger.io (fr-int-smtpout29.hostinger.io
+ [148.222.54.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.103.80.215 (trex/7.1.5);
+	Mon, 01 Jun 2026 13:36:57 +0000
+Received: from [IPV6:2001:448a:c020:315:d8d9:5955:e1e1:fdf6] (unknown [IPv6:2001:448a:c020:315:d8d9:5955:e1e1:fdf6])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gTZkS5vY6z2xbP;
+	Mon,  1 Jun 2026 13:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1780321013;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CNDA99ZKEEGK/UOVD7Lzi1Dn+/Vl4AtUMnGx3I5ZUNg=;
-	b=zDhAxlDHLlYagR3y7me/ZW59y9BfnXWOblg1ejsId5ySofdcCiN7IMca8jApLqTRSbp6S2
-	XfV7+qAupsLJg2e5WZ9/oSY2jtjt3gsGWLifJBJ/LH+Z4lxQSatIu9Lvl4wwFoMmUZrwmd
-	ULOmF8O0cmoXfX53rmLcMyD12Y2V+7o=
-Message-ID: <a547e784-9e24-4dba-abcb-6c22130af2f2@ixit.cz>
-Date: Mon, 1 Jun 2026 19:02:57 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=b0eRaTv1LFHSdq+CnYjSAChuDEys2xywHPYRW1l131U=;
+	b=XoJYBb7HLM5cEgOvFYynrBpuowCLbNp0nGP4uZhJ7EnBKpp/pdxqgknCRuO5u3wJW8k1K6
+	eSJ6JJtA03NyAh0If/JuoRLBYHz9ofmIzCevOn2RoGlUSMPM00lTPVgg/pX8e8kgGBYSyF
+	60FaO/akpjwEoYrIWN9efHWsg8pwYwhRovax8NKg+BjKmNxA/kzE/7GZ3nqMzhV4aDrAQ7
+	W5mct+/cn+yiFnKXxdZFv5aL7kLMIyRB0ilJ6b4yaFKfiTgEbNN2TSJD/sJc1uIoAQbpn6
+	IjZKk+RMN4ClXnWnauGjhl1re2k3FdCMdSOO5AEgKgZnyEfohF057wsKd6Siug==
+Message-ID: <4d5e1b90-5d81-4e34-a4f1-79ef1eccc0a0@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,186 +60,56 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH WIP v5 6/9] media: qcom: camss: csiphy-3ph: Update Gen2
- v1.1 MIPI CSI-2 C-PHY init
-To: Bryan O'Donoghue <bod.linux@nxsw.ie>, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>,
- Cory Keitz <ckeitz@amazon.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz>
- <20260531-qcom-cphy-v5-6-6be0f62b4d65@ixit.cz>
- <eff110a1-4161-4190-a0b2-7a1139a85d52@nxsw.ie>
+Subject: Re: [PATCH v3 04/10] clk: qcom: clk-rpm: add msm8960 compatible
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski
+ <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>
+References: <20260601-msm8960-wifi-v3-0-fec6ac8dba02@smankusors.com>
+ <20260601-msm8960-wifi-v3-4-fec6ac8dba02@smankusors.com>
+ <rvs5c4shgeroxsllqtxyjtsrb2447yprucw7qtmeissbbxtvtb@24nexo4dy6r4>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <eff110a1-4161-4190-a0b2-7a1139a85d52@nxsw.ie>
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+In-Reply-To: <rvs5c4shgeroxsllqtxyjtsrb2447yprucw7qtmeissbbxtvtb@24nexo4dy6r4>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Date: Mon,  1 Jun 2026 13:36:48 +0000 (UTC)
+X-CM-Envelope: MS4xfFfNaEMvPFTihY0Ico06EK6b0IgvVdL5S1AMJ8bfvfwUl0iIAAURtEPrrQUKgCmmr41byoNMuMggKQWSeUAvAOZsXhxmwI4kO00FkKbW6Xo0czx2jcT5 SkgYN7Z/Spm6jfYqXP/7srl7p9fAddVnD6vhIyg+wp+6+BEueZ4XD6UihlSe2x39Z3edGA6DPBU+bUHydvX79XmOCdgObfV2zSb1bYq+kT7Z0l3I23+m8kZX Ke+eZEUihl5im1RZn/QH7sKPdJR4c982Nep/RxIyyUfeUtz/Jp9SYdzXlF/iycy5UR4+/71ESw8QQQ2STyh7Um3XFH/W+eX7i7LSpWhmG0YTrwaEP8Q3F8EO /s4s99DUmv65/lObT3QwNuBJcaOCqdvU9F/DD0a7xNAizP4IolJ5GVUy67hX+IbBzVsXvmwqBO+S9twlooXfub4MQZFsmhnMacAUCGq4t1GrifVuW3IrLQEN JKGi4XMdTgknlw7xQuDB7kHQut1Jx0Vo6fmJRV7XtSrw6uYHqQhiaJumhY/Hn2cIpc7xCNARWQzanhskOx2iAAB149WeyzdayoS1w6mZFjYj8o76oQqgATSV 7mPo8aSwoz3YA9IO0tTLHqYVN/xjKcRRXk6HvygqJxaEhLMfqKKOoOydIkGBGB+J2jSvCVPXBRg19KncCKp/9jND/aMsO8MC0vzPNuCy9PW6TIfAIzij6UIH b2pBNJlaVJ7tOP3RQpPzaG42CUIKJaqRpaHlzgI02bRqliC5PmUKdndD1prhgOSrB55/5IkwlytBDgIKfARI0TTxbbM4eWly
+X-CM-Analysis: v=2.4 cv=Gq4Q+V1C c=1 sm=1 tr=0 ts=6a1d8af5 a=sFzhlXDghRqO5QIJeS1uNQ==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=wxLWbCv9AAAA:8 a=pGLkceISAAAA:8 a=h6FRIkA3AyYJ9ISumXAA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
+X-AuthUser: linux@smankusors.com
 
-On 01/06/2026 18:03, Bryan O'Donoghue wrote:
-> On 31/05/2026 14:08, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
+On 6/1/2026 6:38 PM, Dmitry Baryshkov wrote:
+> On Mon, Jun 01, 2026 at 03:51:17PM +0700, Antony Kurniawan Soemardi via B4 Relay wrote:
+>> From: Antony Kurniawan Soemardi <linux@smankusors.com>
 >>
->> These values should improve C-PHY behaviour. Should match most recent
->> Qualcomm code.
+>> Add support for the "qcom,rpmcc-msm8960" compatible string to the
+>> RPM clock driver.
 >>
->> Acked-by: Cory Keitz <ckeitz@amazon.com>
->> Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> msm8960 uses the same RPM clock descriptions as apq8064, so reuse
+>> rpm_clk_apq8064 for this compatible.
+>>
+>> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
+>> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 >> ---
->>    .../media/platform/qcom/camss/camss-csiphy-3ph-1-0.c   | 18 +++++++++---------
->>    1 file changed, 9 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> index d837fcf7cd2f0..9a0f009c033bb 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> @@ -220,19 +220,19 @@ csiphy_lane_regs lane_regs_sdm845[] = {
->>    	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    };
->>
->>    /* GEN2 1.0 3PH */
->>    /* 3 entries: 3 lanes (C-PHY) */
->>    static const struct
->>    csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->> -	{0x015c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x0168, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x016c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x015c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x0168, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x016c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0104, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x010c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>    	{0x0108, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->>    	{0x0114, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0150, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0118, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x011c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0120, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> @@ -240,19 +240,19 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->>    	{0x0128, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x012c, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0144, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0160, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x01cc, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0164, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x01dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->>
->> -	{0x035c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x0368, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x036c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x035c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x0368, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x036c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0304, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x030c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>    	{0x0308, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->>    	{0x0314, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0350, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0318, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x031c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0320, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> @@ -260,19 +260,19 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->>    	{0x0328, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x032c, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0344, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0360, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x03cc, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0364, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x03dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->>
->> -	{0x055c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x0568, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> -	{0x056c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x055c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x0568, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{0x056c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0504, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x050c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>    	{0x0508, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->>    	{0x0514, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0550, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0518, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x051c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>    	{0x0520, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->>
->> --
->> 2.53.0
->>
->>
+>>   drivers/clk/qcom/clk-rpm.c | 1 +
+>>   1 file changed, 1 insertion(+)
 >>
 > 
-> Squash this down !
+> On the other hand... You have added APQ8064 strings as a fallback. Is
+> this change really needed until you actually have SoC-specific quirks?
 
-Document the regs !
+The fallback was recommended by Konrad in the initial review:
+https://lore.kernel.org/all/677f1d1d-a1fe-42ec-9e82-c9e504873c98@oss.qualcomm.com/
 
-But now seriously - it's nice to have at least commit documenting what these 
-change doing.
-
-In previous discussion [1] we agreed on keeping this commit.
-
-David
-
-[1] 
-https://lore.kernel.org/linux-media/be4abbc8-414a-429d-baff-48c829378a31@linaro.org/
-
-> 
-> ---
-> bod
-> 
+As for SoC specific quirks, I don't have anything planned right now 
+about it though...
 
 -- 
-David Heidelberg
-
+Thanks,
+Antony K. S.
