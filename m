@@ -1,108 +1,226 @@
-Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC902283CAF;
-	Mon,  1 Jun 2026 16:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2582EA72A;
+	Mon,  1 Jun 2026 17:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329972; cv=none; b=DTNqzyM3Vh4TSgO+Ygo9d1OsyZAKiyQ8VUNpkextAA7EuDWirNQMKAfMrPLeaa0w+Ap4f3IY7d2H9oGeAZ/eS0FTqcfhYKpX2AwVZxpxbk+4ndbl2OAa1D8mf8WEoN+AZdznzkiufDKwC+bMedaaZAdHWASr1TAgGM/EtYBvGWg=
+	t=1780333383; cv=none; b=e2227ke/5oyTnkoWsEN0p2QPf+4oqG0hsewJ1lWwLmRs6EqEzGojZmLeVkVF61r/XOmbA53X/2RCXEhphgWzC9J+AsXBnPrYhBcQlBYG7mSqyYSl9rw8x18UJTxUM3B3IdzufxuglzBTmP3ifqiGUCj4Ox0V3vEoc1orvMOWFO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329972; c=relaxed/simple;
-	bh=/3rNSSceNL2wCo52RJwTdih5C1kJmAMlheUO18wFuW8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bZqTmF/8WBflONpK+mWUAxpjPFG7KGCpODxYO78Tgp0eBsUGfaiXOaJQChcvgqWjfmhvGTFYEn3pnDmUJ0hztRobYjPM7IfL5FBMMSLcTIlDxFpOjYBGAniIv7iTf/EgkjcfmD0db2Pgm8EIm4923YAsCO9vyG7mPZ9oiKHbS80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nxsw.ie; spf=pass smtp.mailfrom=nxsw.ie; dkim=pass (2048-bit key) header.d=nxsw.ie header.i=@nxsw.ie header.b=eKENZMs8; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nxsw.ie
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxsw.ie
+	s=arc-20240116; t=1780333383; c=relaxed/simple;
+	bh=8WsYYXy0LSkMl4P+/kiwX6H8dqN4+Y6M0KPXAHxVuwA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PCioK3LbXK8R0UZ9wHRfnwGTKABtN6bDOh05xiUTY/LMhJwSLRxzHFJWW5ZdPRRzN3q5s2/V24h/1tgHV8c6HWzodGZJl/KadU9W88LKxRnQuw6Y7x+vA3FU0a4x66tIAI+XeIdLFyUSuQoZ7/eCyVF4uvOWwjw0KYDPn62v8K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zDhAxlDH; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxsw.ie header.i=@nxsw.ie header.b="eKENZMs8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxsw.ie;
-	s=protonmail; t=1780329967; x=1780589167;
-	bh=UzDD1WGN+WmDKcizcrpIA/6lsYmnSFIs7OphgE5XXDM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=eKENZMs8I7AYcRgphto1zv6Z5jzepcsGmZMhMhPDocsJbs3d8NtOWq4YnXAuDQK7X
-	 fr5bYlf3XcKD/EAqo3kq4bCAuH+GDpnRoD6vWxNVk7r+CF5+ijZMlQRAyxwABg6aZ7
-	 s2J6xMDDdd7D1W7ff+Yuww9zwZfEzosTr9hOGBKFIJSF+GW/hCIcu+9cqaXh9qNESv
-	 u5RsKMsku+9eAX+AiQIrJ8TiGv3bquqs94dumcllhNH8OswNezNJ2KS6i5SU7OpSNI
-	 1665fOMbZkLBBT9wlYQ8ly6pZFkY+BMn5fOC44nXW17W40JWITrrCKTOJ0uVZYqL1a
-	 fZ8RiI5rsJ8lw==
-Date: Mon, 01 Jun 2026 16:06:02 +0000
-To: david@ixit.cz, Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>
-From: Bryan O'Donoghue <bod.linux@nxsw.ie>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH WIP v5 9/9] media: qcom: camss: Enable C-PHY where available
-Message-ID: <c79292f0-4ce1-432d-bbf0-803780d74002@nxsw.ie>
-In-Reply-To: <20260531-qcom-cphy-v5-9-6be0f62b4d65@ixit.cz>
-References: <20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz> <20260531-qcom-cphy-v5-9-6be0f62b4d65@ixit.cz>
-Feedback-ID: 136405006:user:proton
-X-Pm-Message-ID: 60138d82d18641374c3fcd9c4641261d92de9260
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zDhAxlDH"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 9179A534157F;
+	Mon, 01 Jun 2026 19:02:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1780333378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=CNDA99ZKEEGK/UOVD7Lzi1Dn+/Vl4AtUMnGx3I5ZUNg=;
+	b=zDhAxlDHLlYagR3y7me/ZW59y9BfnXWOblg1ejsId5ySofdcCiN7IMca8jApLqTRSbp6S2
+	XfV7+qAupsLJg2e5WZ9/oSY2jtjt3gsGWLifJBJ/LH+Z4lxQSatIu9Lvl4wwFoMmUZrwmd
+	ULOmF8O0cmoXfX53rmLcMyD12Y2V+7o=
+Message-ID: <a547e784-9e24-4dba-abcb-6c22130af2f2@ixit.cz>
+Date: Mon, 1 Jun 2026 19:02:57 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH WIP v5 6/9] media: qcom: camss: csiphy-3ph: Update Gen2
+ v1.1 MIPI CSI-2 C-PHY init
+To: Bryan O'Donoghue <bod.linux@nxsw.ie>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>,
+ Cory Keitz <ckeitz@amazon.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz>
+ <20260531-qcom-cphy-v5-6-6be0f62b4d65@ixit.cz>
+ <eff110a1-4161-4190-a0b2-7a1139a85d52@nxsw.ie>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <eff110a1-4161-4190-a0b2-7a1139a85d52@nxsw.ie>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 31/05/2026 14:08, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
->=20
-> After all the changes done we can now safely enable C-PHY for a SoC
-> where it's available.
->=20
-> Acked-by: Cory Keitz <ckeitz@amazon.com>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+On 01/06/2026 18:03, Bryan O'Donoghue wrote:
+> On 31/05/2026 14:08, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> These values should improve C-PHY behaviour. Should match most recent
+>> Qualcomm code.
+>>
+>> Acked-by: Cory Keitz <ckeitz@amazon.com>
+>> Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>    .../media/platform/qcom/camss/camss-csiphy-3ph-1-0.c   | 18 +++++++++---------
+>>    1 file changed, 9 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> index d837fcf7cd2f0..9a0f009c033bb 100644
+>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> @@ -220,19 +220,19 @@ csiphy_lane_regs lane_regs_sdm845[] = {
+>>    	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    };
+>>
+>>    /* GEN2 1.0 3PH */
+>>    /* 3 entries: 3 lanes (C-PHY) */
+>>    static const struct
+>>    csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+>> -	{0x015c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x0168, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x016c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x015c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x0168, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x016c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0104, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x010c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+>>    	{0x0108, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+>>    	{0x0114, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0150, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0118, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x011c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0120, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> @@ -240,19 +240,19 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+>>    	{0x0128, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x012c, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0144, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0160, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x01cc, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0164, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x01dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>
+>> -	{0x035c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x0368, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x036c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x035c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x0368, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x036c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0304, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x030c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+>>    	{0x0308, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+>>    	{0x0314, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0350, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0318, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x031c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0320, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> @@ -260,19 +260,19 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+>>    	{0x0328, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x032c, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0344, 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0360, 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x03cc, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0364, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x03dc, 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>
+>> -	{0x055c, 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x0568, 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> -	{0x056c, 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x055c, 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x0568, 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> +	{0x056c, 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0504, 0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x050c, 0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+>>    	{0x0508, 0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+>>    	{0x0514, 0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0550, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0518, 0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x051c, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>    	{0x0520, 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>
+>> --
+>> 2.53.0
+>>
+>>
+>>
+> 
+> Squash this down !
+
+Document the regs !
+
+But now seriously - it's nice to have at least commit documenting what these 
+change doing.
+
+In previous discussion [1] we agreed on keeping this commit.
+
+David
+
+[1] 
+https://lore.kernel.org/linux-media/be4abbc8-414a-429d-baff-48c829378a31@linaro.org/
+
+> 
 > ---
->   drivers/media/platform/qcom/camss/camss.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/pl=
-atform/qcom/camss/camss.c
-> index db4e14a84a95f..555c53343a1e9 100644
-> --- a/drivers/media/platform/qcom/camss/camss.c
-> +++ b/drivers/media/platform/qcom/camss/camss.c
-> @@ -4761,21 +4761,21 @@ static int camss_parse_endpoint_node(struct devic=
-e *dev,
->   =09struct v4l2_fwnode_endpoint vep =3D { { 0 } };
->   =09unsigned int i;
->   =09int ret;
->=20
->   =09ret =3D v4l2_fwnode_endpoint_parse(ep, &vep);
->   =09if (ret)
->   =09=09return ret;
->=20
-> -=09/*
-> -=09 * Most SoCs support both D-PHY and C-PHY standards, but currently on=
-ly
-> -=09 * D-PHY is supported in the driver.
-> -=09 */
-> -=09if (vep.bus_type !=3D V4L2_MBUS_CSI2_DPHY) {
-> +=09switch (vep.bus_type) {
-> +=09case V4L2_MBUS_CSI2_CPHY:
-> +=09case V4L2_MBUS_CSI2_DPHY:
-> +=09=09break;
-> +=09default:
->   =09=09dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
->   =09=09return -EINVAL;
->   =09}
->=20
->   =09csd->interface.csiphy_id =3D vep.base.port;
->=20
->   =09mipi_csi2 =3D &vep.bus.mipi_csi2;
->   =09lncfg->num_data =3D mipi_csi2->num_data_lanes;
->=20
-> --
-> 2.53.0
->=20
->=20
->=20
+> bod
+> 
 
-
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-
----
-bod
+-- 
+David Heidelberg
 
