@@ -1,151 +1,184 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084D83546D9
-	for <phone-devel@vger.kernel.org>; Mon,  1 Jun 2026 12:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8140312825;
+	Mon,  1 Jun 2026 12:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780315667; cv=none; b=uCp0TV5bGpycqiT6h/QGyCbZYZqXIDjmfSlNv1kDk3aCVIwHNxTICGv6ZSMWjnDKF80v+bGgMorPet0jktnQvKoq1Bscj9W2Wuss4rWHZUzYoYbSmJJaXXWLEQ/xFC92p2t0gZHaEgffgWsA4dlsfvXMZCIAzlpymYI0sChuG0k=
+	t=1780318120; cv=none; b=qU2RPqdM0sTUqKEvogcrAppv40+GyuXYTFqzR2OQ09s/K/tnA+KLEp3p4AVGzSNwunyebPWL7AaSHht0JdZ33eNfCU1XO+AXX8nNUwTw7btHsQ6vUKXS5uX4SVk6K2F4WQ+P3brSzBnr3ULt8hEmyXatp7IjbSfVHpeHfNkoDgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780315667; c=relaxed/simple;
-	bh=zs0qdbXs2x30afTWW7YL6ZC9DLX82eZT/SOhbldZUH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgSSQ4HsoW1CdR3ukxmXpG+isxYWyx/7xYXCFRsro84538/OinSV2uI4Jvs/qfKB/SBo579fLKsLkP6aT6EHRcH5Uz9NUO5yBVqstySF7u+iQZX/800vcqlfyzOvFydWNcL4XCcVvYGhe4k1UI5Xp2/JcpPKLlQlhjH0ctrBRjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YOkbTG24; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gj1Vnceg; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1780318120; c=relaxed/simple;
+	bh=crxdKZoTI+jDwFs0/5V0KIo2XWywz5U4PLR/JdfStOs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D2GzQLfaU5RmIcsCGyz2fhbbIL+Cdjf9QDe+pgopsDUmDBPcnLCayHgdUnh1CPDhUghVVLxnitqDjQkn78vdlrRRiA+rOWCFHJk7/MT6XxedMQw3iav36UvuhSbPvj/CyDH0vBLA9mUNqjMWJJlrxHyP6aLwblYzCaXl1vbuwj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=OkNnLcHS; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YOkbTG24";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gj1Vnceg"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6517N1Te2882669
-	for <phone-devel@vger.kernel.org>; Mon, 1 Jun 2026 12:07:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=dv11lKJOxLoelkQcyG8M51LX
-	H0JVFSvQtsQEal0SIx0=; b=YOkbTG24moufP5CdBcqmMwE9sLCpQl45J7dEwBT8
-	f+iuJCMLrmkN3vziDKDfcPRPTGeeJqfmP4N67LZIJik6PvBnTPK6b5JjrhMpOPy8
-	qaT0kZ65/fkIpMUjSKkwvhpTTW05D37684pzg40tU24lK5tLCcKtF2vKtIULHQ9P
-	7hwSeO2F/0XOyb80YXw2B7gODzRsq6+7nfxlDy9KpYVin+bhDBl9RqtQN6cWlG/9
-	aXTlxrp+e0Bdby+gBscZ//Q33Yddd70HtNXNbNZib7Ct+pDNa0KRFolOJJGFEZu0
-	laK7XZUa9o2wg2Ljsc4dfe5oi3gBuln1DW7jCU4TLNQt5A==
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com [209.85.221.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4efq7ffjbq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 01 Jun 2026 12:07:44 +0000 (GMT)
-Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-59ebb69acadso737116e0c.1
-        for <phone-devel@vger.kernel.org>; Mon, 01 Jun 2026 05:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1780315664; x=1780920464; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dv11lKJOxLoelkQcyG8M51LXH0JVFSvQtsQEal0SIx0=;
-        b=gj1VncegwH0cESmBjQXP5s5apMyQ1mDGGfhByd7lQ+xO9XIp9WRgL4pKKaqlvBeART
-         vyoAqeFFsYSRHkarEcQjwuFFkMIw4VP4U5CIgjaGuak2r3dOdKt2NHyl59+u2r4o6NhM
-         I8goOHs4MqaXqZs1NXTzaepD4eysAefZWHJl2b8uv6zBXXtmyYXh7ilKAhTCjfymTYNV
-         1oGJnNY9DoJUbw3cZ6+Hp26ouzwgBNjAyM3y/nqL3CMemI0eFAmQB3ACV15ebxoDe2hk
-         iXtsYp1qtJH0ywNYtcaZLwoC82hDXF68ByzRLzbz3jN5wQ1GxpqMkAoGe/RDaeg/WSWC
-         4Nzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780315664; x=1780920464;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dv11lKJOxLoelkQcyG8M51LXH0JVFSvQtsQEal0SIx0=;
-        b=kTmCrC3VUVu6bAfa8li17Kg8j5BHG38GEjTMO+IixgEAW76Z4MzqUQDWsHwf/w33gi
-         Dk1AGZ8mLHGukPlzcZv1OmMZ/BiQQmQRmKFhkLafZefFFwuAH9E1DNgHOd2DTQ6qmk47
-         ivckcAW2zull12SHLYKh+/YW51g4nagY4okDsT4WgWPttPgc/9VhCpkOgkwgfi/zU3hM
-         WfVgO9fMn9iBRVwd/XjwniHMuc8Tbxr6g+LR4xKlawZ2bcS0gjslLTWY35QV9zBBtDhY
-         DmsmNqhpF5hHhF2tx4f7Rg6KLDCrLkv9FUZFPKwBi7DXJAS8xN64IhqDdjs57qWYOXxf
-         edrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+jN9vGMd4SFcPo/ryDmFpSIZIb7mLNFhKiinmO4JuTClKXXwpssJS4akLbuC6eKHnzt2VPE0UXB44+yA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM4AM/qf0XfHJjl/8ceuE0glHT7Gc8G7Eb1MoCDjpDW4dChwYH
-	1ApfD/BB27CGJ1qBp5FFECprSyq877fvPF7IdrpVz10zb900qaCVF72RR2GDzFDIeqVp7MTpU0q
-	BSkwRmJC+sniB37wqSlm32rvXiFwWkg/b2fxuovuAF3BH1ot47JjUqrOL4Sxuomlc1Q==
-X-Gm-Gg: Acq92OGxJDJFbBqK9Zbbrpk08poUVwPPNu3mDu8iwDp9rSRnQgzi3kb0yFwnHHnFZsX
-	+7JoGUiF93q0OKUwgKSqiRSq4tE189yFCNr7rG7DdTYGtOaXRN70K8EWvc91IAW584S9etcOkou
-	Z6/4s6f/wduasUskEnG+fLE2FsrBAZT51pZ0PITZAiA+eomjhwmOVteo5stsAI0tDh5r6xjVsRL
-	Bsg4j7vCHvqZME53BzFPkd4AxZ0mPN+cDGxMhevgFy6kQkfDPVR5couEHEU2gRHX02ZjFpAo/Yy
-	YB2ySY8XO5kUYV9nGJS24v7qnVCAxwfdhWB3NUp4gNDpCOEZFTdp5nLqefv3M90SLmvQVa5icMe
-	XIFXve34cRgLz78nP0DeUCLc1JVdYlG4RL81Nd6OgAVMzL9YaDGfy7Wy6HLnYfCYQdpQv3EMW0k
-	oU2cIWNgjtb3eUmK2/exNdZ+g0chGkhWYFB8WJvBgja+HLlw==
-X-Received: by 2002:a05:6122:178b:b0:5a2:5c65:850f with SMTP id 71dfb90a1353d-5a25c658b47mr683145e0c.10.1780315663918;
-        Mon, 01 Jun 2026 05:07:43 -0700 (PDT)
-X-Received: by 2002:a05:6122:178b:b0:5a2:5c65:850f with SMTP id 71dfb90a1353d-5a25c658b47mr683042e0c.10.1780315663363;
-        Mon, 01 Jun 2026 05:07:43 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa62f7f539sm1516467e87.4.2026.06.01.05.07.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 05:07:42 -0700 (PDT)
-Date: Mon, 1 Jun 2026 15:07:40 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: linux@smankusors.com
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rudraksha Gupta <guptarud@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 10/10] ARM: dts: qcom: msm8960: huashan: enable Wi-Fi
- and Bluetooth
-Message-ID: <vsbimklkzmee63nfwpnx2b7dtlilfcaqwv6d3gj4xkmm6x7hpd@rdc75raf7q4b>
-References: <20260601-msm8960-wifi-v3-0-fec6ac8dba02@smankusors.com>
- <20260601-msm8960-wifi-v3-10-fec6ac8dba02@smankusors.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="OkNnLcHS"
+Received: from [172.20.10.2] (78-80-16-54.customers.tmcz.cz [78.80.16.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 788715340F31;
+	Mon, 01 Jun 2026 14:48:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1780318106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=npppapGLI5N30vwTwhBrK+A7/r+ID4Cbad3ZNd7CvvY=;
+	b=OkNnLcHSZDvkrwV1Yz/LrUV6IospgJiFKvrNUVlv4YqqDMkBXkCgAjVKE6M0EKyDerkg6l
+	lFRLz+8lawvljOpiSBdya1lJAB1u2JG3PEr2gIaH7uyIoTjTauGRirazM4qBajKmMP2guS
+	5caq452A1D8edlXEhWe+i5aPDoH5j8o=
+Message-ID: <c8cda422-1a02-4a2d-bd01-6c04ebebd0be@ixit.cz>
+Date: Mon, 1 Jun 2026 14:48:22 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601-msm8960-wifi-v3-10-fec6ac8dba02@smankusors.com>
-X-Proofpoint-ORIG-GUID: blAhuzvisFwTexJU5jMhBT6is8n6VC0s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDEyMSBTYWx0ZWRfX/NTc+GnHXHP3
- 0v7uwEwIoW3LNZ1uP85i7B4L1wtFAxHa7D4R1jUiaNbg40fODi0oG2PSbH57E60Wz7jX+1iZj+q
- 0Kw6HpQ8t3RXqBfJbB/2Ul/AvjenC0KE4uEedjpg7XQLvExj2kHF5w14B/NOSL3MjVktl49z5k1
- IN23A/4iv6Y9ArNA8gG1LG5oovCc9hAG5BN45eIQ7i3PE0CHvHYQqzr6geXU/A3NgI5JUxBHHdz
- p9OCGHkUjRoCKa8ER0rOmpNfxXvzNSe5LprxXLB6DJdfKKMDApodaF7NoSCjJmDlce8MB24L7AP
- OwIB5n292ite2tn3zjFmttoagBLFGbiGRtrz/u8Iqn/mgfJZR0ZcHESKtJE5F/tpMMDpSrBufKF
- MUdoi5Bix2fuA661T7ThRTfuaB2j53CE2jz4B5pdOjJ9X5luY9mH+2mj3p67nLhv7mjdL0VqKwX
- py4kwuvHKj9TV5iObEQ==
-X-Proofpoint-GUID: blAhuzvisFwTexJU5jMhBT6is8n6VC0s
-X-Authority-Analysis: v=2.4 cv=XqzK/1F9 c=1 sm=1 tr=0 ts=6a1d7610 cx=c_pps
- a=1Os3MKEOqt8YzSjcPV0cFA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=wxLWbCv9AAAA:8
- a=EUspDBNiAAAA:8 a=Li_iKjNru-aZ8oNNNaIA:9 a=CjuIK1q_8ugA:10
- a=hhpmQAJR8DioWGSBphRh:22 a=QJY96suAAestDpCc5Gi9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2606010121
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH WIP v5 2/9] media: qcom: camss: csiphy-3ph: Use odd bits
+ for configuring C-PHY lanes
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ Casey Connolly <casey.connolly@linaro.org>, "Dr. Git" <drgitx@gmail.com>,
+ Cory Keitz <ckeitz@amazon.com>, Loic Poulain
+ <loic.poulain@oss.qualcomm.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Joel Selvaraj <foss@joelselvaraj.com>, Kieran Bingham <kbingham@kernel.org>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz>
+ <20260531-qcom-cphy-v5-2-6be0f62b4d65@ixit.cz>
+ <ah1HhruI1Qc2FfwG@kekkonen.localdomain>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <ah1HhruI1Qc2FfwG@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 01, 2026 at 03:51:23PM +0700, Antony Kurniawan Soemardi via B4 Relay wrote:
-> From: Antony Kurniawan Soemardi <linux@smankusors.com>
+On 01/06/2026 10:49, Sakari Ailus wrote:
+> Hi David,
 > 
-> Add Wi-Fi and Bluetooth support for Sony Xperia SP.
+> Thanks for the patch.
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8960-sony-huashan.dts | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+> On Sun, May 31, 2026 at 03:08:10PM +0200, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> So far, only D-PHY mode was supported, which uses even bits when enabling
+>> or masking lanes. For C-PHY configuration, the hardware instead requires
+>> using the odd bits.
+>>
+>> Since there can be unrecognized configuration allow returning failure.
+>>
+>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>> Acked-by: Cory Keitz <ckeitz@amazon.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   .../platform/qcom/camss/camss-csiphy-2ph-1-0.c     |  8 ++--
+>>   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 49 +++++++++++++++++-----
+>>   drivers/media/platform/qcom/camss/camss-csiphy.c   |  5 +--
+>>   drivers/media/platform/qcom/camss/camss-csiphy.h   |  6 +--
+>>   4 files changed, 48 insertions(+), 20 deletions(-)
+>>
+
+[...]
+
+>> -static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+>> -				struct csiphy_config *cfg,
+>> -				s64 link_freq, u8 lane_mask)
+>> +static int csiphy_lanes_enable(struct csiphy_device *csiphy,
+>> +			       struct csiphy_config *cfg,
+>> +			       s64 link_freq, u8 lane_mask)
+>>   {
+>> +	struct device *dev = csiphy->camss->dev;
+>>   	struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
+>>   	struct csiphy_device_regs *regs = csiphy->regs;
+>>   	u8 settle_cnt;
+>>   	u8 val;
+>>   	int i;
+>>   
+>>   	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+>>   
+>> -	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> -	for (i = 0; i < c->num_data; i++)
+>> -		val |= BIT(c->data[i].pos * 2);
+>> +	val = 0;
+>> +
+>> +	switch (c->phy_cfg) {
+>> +	case V4L2_MBUS_CSI2_CPHY:
+>> +		for (i = 0; i < c->num_data; i++)
+>> +			val |= BIT((c->data[i].pos * 2) + 1);
+>> +		break;
+>> +	case V4L2_MBUS_CSI2_DPHY:
+>> +		val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> +
+>> +		for (i = 0; i < c->num_data; i++)
+>> +			val |= BIT(c->data[i].pos * 2);
+>> +		break;
+>> +	default:
+>> +		dev_err(dev, "Unsupported bus type %d\n", c->phy_cfg);
+>> +		return -EINVAL;
 > 
+> If this is the only reason why you're changing the return type to int, I'd
+> suggest using WARN_ON() in this case. I presume it'd take a driver bug for
+> this to trigger?
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Thank you for the review.
 
+If others agree, I would also prefer WARN_ON instead of changing return values.
 
--- 
-With best wishes
-Dmitry
+David
+
+[...]
