@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409053033C0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD6B3803E5;
 	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780443053; cv=none; b=AoIIjR1FZxwXlijMA6V0zyNyOlQpmyoJvP1nhXSTCxol0R6tGmPv/dUw/iGrYfVe7R+SBIf+5JDvNroaoXdm76/1PKjDn6jk72MlxBfTW3BLGtPMEpyOT9KoKc1MRNoMPCHhemv6UiQZMjKznUi8EjiCkXU2L0HVgfaZ1AwvzNg=
+	t=1780443053; cv=none; b=IeNBho5HNGJR6IqnzXHOMRKWc08hY29wIG0GSqwGVQlWWFvdJCpJ+9XyvYYn19o86SU3sSZwzxGOP+CwxvCWjOcGzNxgGjrzyiDtUL3KcW9/GafZgMl71An1juaj/8wHvfl5GwBizo1NfhgA5Z9fQ58woUspsPzuYqzpL8QTZj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780443053; c=relaxed/simple;
-	bh=FQSGsxJUavVmIbh1PvZEytyiaMY/zidGTGCoSvDEAkg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pPsF2A++q8G+0ZdIG1toOdERcuBd0CxPtEq2n5lyfJWmPc/q4C782iNjRKGZWbsB9QBRZLb2QMYA78hXvHDMz0Z6JCqx7Ne3iVTVCUwHElO2rewCPQwPxpIuOVxtDTs3MBCwRPmZ0LWlbIsuJPSdc+0l4fdTrNCq/AAKiaCVijg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4mRGryn; arc=none smtp.client-ip=10.30.226.201
+	bh=HTNtOvb3rkzBVVhUrnJp4mfZAtoPLyHxQWxt6btkzSk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=E3Fb7A1RMtjmEzZVTNpWX5U2xR8Q9MXLr+kRY9Mi8hKuyFbycxfgIAekDIrQUL913RPOTe9eFmwkM82+Qzez0pCiOJTKJd9QKMDhySympgL07lJSK02hNddjxUI/Mow5iL9G3lXa/6bEN/bcdVMSNr6PryHcyDGDhL5NfYYoroo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Je9HHssQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4mRGryn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DB31AC2BCB4;
-	Tue,  2 Jun 2026 23:30:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Je9HHssQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3176CC2BCFD;
+	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780443053;
-	bh=FQSGsxJUavVmIbh1PvZEytyiaMY/zidGTGCoSvDEAkg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=W4mRGryna9t2fi3IJosREI+QWuqelTGT1jOyJiUymBIT26/TdC4/pSXog9/3DjTgj
-	 37W/EiwcTeqv69sHDlggsQa1aAcLresrkWagHqYJuRfN1qBhjtpzw2wPR2KdqteI/Y
-	 1srKOlbPiVxYK+sCbDZbz79F+h6rlBHeZFLy5CXDlGE6p5MNLrvQ5XXoCreKwgCclL
-	 lo3bVXGax9HZzJg7gEozKgKoARfplzWP/hRfyZ6UUrFCa1OLj377vDcc3xqOTlVwo7
-	 Q+2uAsNNuwb+lv0SrmcQVdtiDWcnIK7uDbCWY0xEeSm2sU/fkdkhnc8GA7U4Pe2mfA
-	 4bqm3N8KAbcow==
+	bh=HTNtOvb3rkzBVVhUrnJp4mfZAtoPLyHxQWxt6btkzSk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Je9HHssQTbdR1dYC8WS73EuhdrhEku2VAYO1ylgW79nlQJC+oykqt5dcTY/UOeyas
+	 8PPBPvyAWzdPw75myuRW4qOt8n4sKnTSKmVDCN/xVR4KQZpOtGIwaTlLqGIkoU+0vR
+	 pSuYcqH4lI+lNpLGfWnXgKgfk4CFwsI/eTEKhHTXza2uwj6eQ7H4phWxD6I0osszKz
+	 rr8gkD1k7M2Z+8o1uzRqyEX6w1Ezy3BRcpIK87Qme6+VBITWOfYXO8MQ1Q5oKDFOS0
+	 L7BHuDoxGt0RAgVD14ta20aAcp9nwLc5VW4wCKuKKaERcSHcO8zqxembyrO1K0I3V4
+	 8qagqnzdqSflQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE1ABCD6E57;
-	Tue,  2 Jun 2026 23:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28674CD6E57;
+	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v6 0/8] media: camss: Add support for C-PHY configuration
- on Qualcomm platforms
-Date: Wed, 03 Jun 2026 01:30:38 +0200
-Message-Id: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+Date: Wed, 03 Jun 2026 01:30:44 +0200
+Subject: [PATCH v6 6/8] media: qcom: camss: csiphy-3ph: Update Gen2 v1.1
+ MIPI CSI-2 C-PHY init
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,12 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJ5nH2oC/23OTWrDMBCG4asErasyo5+R01XvUbqwRqNai8aJH
- UzS4LtXMRTb0OU36HnRQ40yFBnV2+GhBpnKWPpTHfRyUNy1py/RJdWtDBiPCEd94f5b87m76xg
- bjqlFJudUfX8eJJfb0vr4rLsr47Uf7kt6wuf1v8qEGjSSz0HCMYLge7mV6yv/qGdjMqsz4LbOV
- EfReslNhICyd/bPESCGrbPVNSyBWqAcUtw7tzoLuHWuOvHWIiXDTH7v/Oq83Tm//FMgk4kubd0
- 8z7/nOvhOgAEAAA==
-X-Change-ID: 20251109-qcom-cphy-bb8cbda1c644
+Message-Id: <20260603-qcom-cphy-v6-6-e50de0b557a8@ixit.cz>
+References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+In-Reply-To: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
 To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
  Bryan O'Donoghue <bod@kernel.org>, 
@@ -61,147 +58,131 @@ Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5747; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6215; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=FQSGsxJUavVmIbh1PvZEytyiaMY/zidGTGCoSvDEAkg=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqH2ep7nbK5dTtpq95ihAgQkfyuvPJS9obA8Xib
- EAE5R1I8mmJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCah9nqQAKCRBgAj/E00kg
- cuysEAC16VFplCtzOM6q48ppiN4rKxPYJMT79NqDnarWODRUJlU1tiKrUxy1dU2vlaQbjSOBLMT
- N57YfYv4JC7tp+zkdKG1LLWFIsNkwTw7U4abM4cI/ZYI2gjOWJTH+Cp/vIQ8oEF9sN4Tgnk1BUK
- dlTpQXDsPO4QoM1Bb+C5RYxZI4BYaIAx1DkfFHF0p1mypM1i0BqAh7a+eCYytc++OaA+Sc7hRZb
- GSGwz3qcU52w+mKQtEVts0gaygxxcAb7A9LytUWv01bwW3CADWSpc3srZz6TR79eQxmGKCFYnd8
- HR0t4IMGHABPbkpr/KR3gROaDvmzKe6tWHMAxGjuLteDhiIa65MyXzm2OoPQ/Geq3+WKPKeFy3S
- h5G4lU6xJBqCU/ztL1UURF9gs1rdIjEUOrcJ8PevxPYR5S3wUIKXGlhmq3Teb17lZSjJe1liwRZ
- LdLeOqd7q/bLshRb0b3WSuHHU6xiRRpdD2SGM6FSGJl/qrbF7Afqyb+jjWLIDWsc6e6PLt/nRfC
- 4EpbplBejLMA4NTDGd5qYdDHflSpo6UEQWhCFs68GzgIqUzrnR3eISbgAMah8lbQifa+R27D34s
- novDoWzZGfnQLcyDEu7cQ1chZpGz4yKhS+Pynjr4mjf4yUCjjaUGsF4x38/Gnc/iSV7G64swFrs
- 3EAh6iZL4eoJbSA==
+ bh=lAagj4EHBXPn6edHZgo820FSpzF/DZVst5jKpYa1zSY=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqH2eqMWOgB9tfLDZM8/Lc5QRdB3RRFRoq8NUxQ
+ aWOMLLL1naJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCah9nqgAKCRBgAj/E00kg
+ chUyD/9ByPN+f/sF99KXXXNRH5QbogI3/pBxhB6fCFab8OeWuaY+L/zI3p6Z3LK/rUcuepNLrae
+ aTx2xCw8wpioKurhV30jiGE5s+7QU1HNvXylURnnGF5lfFOkLX/Hti53Zta6iLy2b+zXopfALS3
+ 0Ac/s1LhiwIjVIq1uIfHqbX5F7r2GWotJgUWLyD9Yu4qI8JWA4Sw/M43ofte679jDHEpwcmYGa1
+ OkcZ4jHdCmPBCd5OfQAQon80vopQCUw/xFs8s2LjLz4htWxXZOstSRw0ARl6deognCqzjADMUHG
+ KIYqJZKxpiFww7GbwL687dyvdQB50iSrYHjEqEubd/hCIGZb/nhd9ZYjadwKTGX/WApRXfekcDv
+ dSKN7aMRlyBKPn7bOGv7x8BfQFZZILgphYVGeRLsxQqDutChdeCzR9TyLzsoP20ivhtqsizy+2d
+ KUcvfHjp77JDzfoRENPE4CNhbdUpIYo9IOMytopOx+bqwgIRWREzZ+ICBvv25W5NtYwc7PykZUi
+ g6tW6qHMGRjXZPRBkFiGZ/BVRS4c6d8g3qVlXEWpoz5J/vOomge3v9kTgy8R/KTS6FTIrVaWEwk
+ tPb3DF0Yg8PQ8IPA7mRoczGjGT99YG9WP39k4bfhixC+TTSNtBEIGtTSFnoZNzprEv7HaHmhOg2
+ XxCiJx7ymaEkE8g==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Note: WIP tag added, as not everything from the previous review round has
-been addressed.
+From: David Heidelberg <david@ixit.cz>
 
-# Short summary
+These values should improve C-PHY behaviour. Should match most recent
+Qualcomm code.
 
-This patch series extends the Qualcomm CAMSS (Camera Subsystem),
-including CSID and CSIPHY components, to support C-PHY mode configuration.
-
-# Background and motivation
-
-Modern smartphone cameras increasingly rely on MIPI C-PHY rather than 
-D-PHY, thanks to its higher data throughput and signal efficiency.
-As a result, many OEMs adopt C-PHY interfaces for main (rear) cameras on
-Qualcomm-based devices.
-
-Until now, mainline Linux lacked C-PHY configuration support for Qualcomm
-chipsets, preventing bring-up of primary camera sensors on several
-Snapdragon platforms. This series closes that gap.
-
- - Introduces C-PHY configuration support for the CAMSS driver stack,
-   covering both CSID and CSIPHY blocks.
- - Successfully enables C-PHY operation on the Snapdragon 845 platform.
- - Tested on OnePlus 6 and 6T phones running mainline Linux,
-   using the Sony IMX519 main camera sensor.
- - The new configuration allows other chipsets versionsto enable C-PHY by
-   simply adding corresponding sensor driver support and csiphy
-   initialization data, following the example set for sdm845.
-
-With this patch series, mainline Linux gains working C-PHY support for
-Snapdragon 845, paving the way for improved main camera functionality
-across many Qualcomm-based devices. The groundwork also simplifies
-future enablement efforts for additional SoCs and sensors.
-
-Until merged, the series will be also available at:
-  https://codeberg.org/sdm845/linux/commits/branch/b4/qcom-cphy
-
+Acked-by: Cory Keitz <ckeitz@amazon.com>
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v6:
-- lanes_enable now uses WARN_ONCE instead of return values. (Sakari)
-- Dropped Kodiak patch until it gets better documented.
-- Document the 3ph C-PHY sdm845 registers a bit.
-- Link to v5: https://lore.kernel.org/r/20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz
+ .../media/platform/qcom/camss/camss-csiphy-3ph-1-0.c  | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-Changes in v5:
-- Split first patch enabling C-PHY part into last patch. (Bryan)
-- Fix the camss_get_link_freq crash. (Cory)
-- Dropped patch whitelisting C-PHY, instead use nullptr check. (Bryan)
-- Dropped A-b/R-b from
- "media: qcom: camss: Initialize lanes after lane configuration is available"
- and changed Petr to Co-developed by and owned the patch.
-- Link to v4: https://lore.kernel.org/r/20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+index 13d7372bd225d..0e33faa648f8e 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -227,19 +227,19 @@ csiphy_lane_regs lane_regs_sdm845[] = {
+ 	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
+ };
+ 
+ /* GEN2 1.0 3PH */
+ /* 3 entries: 3 lanes (C-PHY) */
+ static const struct
+ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+-	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(23), 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(26), 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(27), 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+@@ -247,19 +247,19 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 
+-	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(23), 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(26), 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(27), 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+@@ -267,36 +267,35 @@ csiphy_lane_regs lane_regs_sdm845_3ph[] = {
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 
+-	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
+-	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(23), 0x63, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(26), 0xac, 0x00, CSIPHY_DEFAULT_PARAMS},
++	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(27), 0xa5, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(9),  0x7f, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+-
+ };
+ 
+ /* GEN2 1.1 2PH */
+ static const struct
+ csiphy_lane_regs lane_regs_sc8280xp[] = {
+ 	{0x0004, 0x0C, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{0x002C, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
+ 	{0x0034, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 
-Changes in v4:
-- Documented cphy parametr to camss_get_link_freq.
-- Use BIT() macro for lane_mask. (Bryan)
-- Correct lane_mask calculation. (Kieran + me)
-- Removed comment for the D/C-PHY sequences init. (Bryan)
-- Pass &csid->phy for calculate freq. (Bryan)
-- Added missing cphy description to camss_get_link_freq. (kernel test robot)
-- Gen2 v1.1 MIPI CSI-2 CPHY init hex to lowercase.
-- Added back missed commit with improved electrical for sdm845 3ph.
-- NOT addressed yet:
-  - Proliferating special cases in switch statements on a per-SoC basis is verboten. 
-  - is it possible to set clock_lane to say 0xff in DT ? 
-- Link to v3: https://lore.kernel.org/r/20260117-qcom-cphy-v3-0-8ce76a06f7db@ixit.cz
-
-Changes in v3:
-- Make lanes_enable return sucess or error, since I couldn't move the
-  configuration to the _init.
-- Dropped R-b tags on
-  "media: qcom: camss: Initialize lanes after lane configuration is available"
-  as I changed formatting.
-- Link to v2: https://lore.kernel.org/r/20251204-qcom-cphy-v2-0-6b35ef8b071e@ixit.cz
-
-Changes in v2:
-- This is still WIP patch series, thus I wanted to publish already
-  changed parts to get feedback regarding to the direction of patchset.
-- When switch to using odd bits, zeroed val which was left unitialized in v1.
-- Accidentally missed archs added back in the commit moving lane regs to
-  new location.
-- Remove commit with reverting check for only D-PHY is supported and
-  adjusted the check to also account for C-PHY.
-- Documented link frequency calculation with defines. (Casey)
-- Changed the cphy boolean to phy_cfg enum in the camss/camss-csiphy.
-  (Brian)
-- Added patch for csiphy-3ph enablement for sm7280 from Luca as I'm
-  meanwhile trying to bring up the C-PHY sensor on FairPhone 5.
-- Merged these two commits together
-    csiphy-3ph: Enable sdm845 C-PHY sequence
-    csiphy-3ph: Add Gen2 v1.1 MIPI CSI-2 CPHY init
-  merged R-b.
-- Link to v1: https://lore.kernel.org/r/20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz
-
----
-David Heidelberg (8):
-      media: qcom: camss: csiphy: Introduce PHY configuration
-      media: qcom: camss: csiphy-3ph: Use odd bits for configuring C-PHY lanes
-      media: qcom: camss: Prepare CSID for C-PHY support
-      media: qcom: camss: Initialize lanes after lane configuration is available
-      media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI CSI-2 C-PHY init
-      media: qcom: camss: csiphy-3ph: Update Gen2 v1.1 MIPI CSI-2 C-PHY init
-      media: qcom: camss: Account for C-PHY when calculating link frequency
-      media: qcom: camss: Enable C-PHY where available
-
- .../media/platform/qcom/camss/camss-csid-gen2.c    |   1 +
- drivers/media/platform/qcom/camss/camss-csid.c     |   8 +-
- drivers/media/platform/qcom/camss/camss-csid.h     |   1 +
- .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 243 +++++++++++++++++----
- drivers/media/platform/qcom/camss/camss-csiphy.c   |   6 +-
- drivers/media/platform/qcom/camss/camss-csiphy.h   |   2 +
- drivers/media/platform/qcom/camss/camss.c          |  36 ++-
- drivers/media/platform/qcom/camss/camss.h          |   2 +-
- 8 files changed, 236 insertions(+), 63 deletions(-)
----
-base-commit: b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
-change-id: 20251109-qcom-cphy-bb8cbda1c644
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.53.0
 
 
