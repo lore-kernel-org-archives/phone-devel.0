@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406DE280CE5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407A92BEFEE;
 	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780443053; cv=none; b=kbmgc+g3DL2BKD8cnvMPqxywhgBNHKEwLcbtC5psnK5/vO6yFoqkXdjNRmzGXQKyH0XMQtOSBVtd3hbNQjsJcef0fTbsSZUIhr+zCbwJJTCQlByGc5h4D+O+XxeRoVR5atavuKp1QTcliha5Nj3gK77RBAPvX5WGbg4j0ooDPbE=
+	t=1780443053; cv=none; b=ap2MScmCys9oIJZemXZNJ+PMZpsrVJaWL4P1aviC37UswliTCQUINTHzqUxXYqc2kHNRe+LWNGi7mF+sVSFhXZJ59S9iJSkb2dy+tZZHqqhBBHYcnRxa/ylfgBHQ32GDYPH+fuxeQuINkY8oHugUm1VG6Y2RhWOCoN5MF6exDMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780443053; c=relaxed/simple;
-	bh=CjfCagTQLI8bBi6i3IWnIyNxNKAECGht+E/xZ9ED7So=;
+	bh=1Vh82qJGGC1Heb5rOQYS8il+RuoY07KZwVTHU9an9fA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dkyPbjxCan7nH+6w8yn8YORMR349JEL9bnhoxs4qRkXpMi540PGvKWC5nqvqzX4GMms/D1C+yycNgGo8ZbuxuNKrbZU1A+36MeUOkaGPG9HkX9MTVUdQ1H1zkHgY5PEFwZFhPOgjeYJ7bcq3xDJKh/sQPZFtwcUXi9eOZsmxbcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GASBQfPr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gKgTxzveh37HT1iXWKFfdTw7CptBp3ngLzWDL569c3+seDsNmFTai8nzHcRy7ojMAqSD+oW4mYDZxcfJnpFspdWhd7Pk55yEvIpPOAqbYkjK20GDFF5mGHx1FH4qxAHE+q08M3uiDP9ZjhpJGDgadQtbStTDYF5JgBSfvPqUZ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9466c/6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GASBQfPr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D05FC2BCF6;
-	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9466c/6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E48F9C2BCF4;
+	Tue,  2 Jun 2026 23:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780443053;
-	bh=CjfCagTQLI8bBi6i3IWnIyNxNKAECGht+E/xZ9ED7So=;
+	bh=1Vh82qJGGC1Heb5rOQYS8il+RuoY07KZwVTHU9an9fA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=GASBQfPrkQRwc51MZGFbUzqZk6jA1NmWR1zCBEUyCEvLgOMi0qa3T1u0p0H6PVqeq
-	 PrQFPALYSb1xTSjyikhN6vi9S+twn8bdWkbfEOch6QdSbfaSQALXf6PdfLF2qpU4vn
-	 5DLvUGQVKwPBGe6NcB334iMXbuBd73JblfaUrwG8WMTX7wb0ivmJbyTZmK8J2epSqS
-	 Bm8E1C1QJh+yCbbXFUpajqx4ib11Tu/0ZmxS2QDsYXeH37DmmmS/ujBXEJOHyMuzey
-	 mK/zVRnEc/U6l+i/9Uov/C6FWeOG6k+JeXxc+5owHzINvz6WLvzwESAhnv9J32GErL
-	 KswkRQ3P3ZnSA==
+	b=T9466c/6A6xUMQf1Gq5okxGICntUYRLuu2cawGJQmrDxE2LAQkObGCTgguOIHUaBz
+	 zdZcDpfyjw5E2qWDtQFf+5vJR8Ki/V0AwDRD9zTFk73DJvFAQq9jdI8PO5xi392wSJ
+	 39JyhG49HBCNk3CItuLaQjzQWnH0yrhGs/BpZ8RIRXfatjY2X4WxF2zRQ6HRoC8two
+	 wKWdvP+HKgjTwpH9oLznnzjdimbG1jGR4peEPB/ljPHGzDnEm7/Zeg+UuKUsr8CcSU
+	 6cFGYw5xXH2Zcg0y4bsA3CHQUTF8RNJDreo+ThjfR+4iHczwpUGrIddd9VZ5JPrE+i
+	 UmzvCqzhiWeeg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED9DFCD6E6A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE564CD6E5D;
 	Tue,  2 Jun 2026 23:30:52 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 03 Jun 2026 01:30:41 +0200
-Subject: [PATCH v6 3/8] media: qcom: camss: Prepare CSID for C-PHY support
+Date: Wed, 03 Jun 2026 01:30:39 +0200
+Subject: [PATCH v6 1/8] media: qcom: camss: csiphy: Introduce PHY
+ configuration
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-qcom-cphy-v6-3-e50de0b557a8@ixit.cz>
+Message-Id: <20260603-qcom-cphy-v6-1-e50de0b557a8@ixit.cz>
 References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
 In-Reply-To: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
 To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
@@ -57,21 +58,21 @@ Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3063; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2386; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=S/NCEpJ9Qg9rdkYHEby0/Ggz1JWYH66XExTkL5xCQFM=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqH2eqmiThGqOenOAQV/pT5wh7aaQ+uc23W6WCc
- W45LO893pqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCah9nqgAKCRBgAj/E00kg
- cusYD/95uE6PTfjvRU0xvq+WTCLJjA3pdhBhpXuNoZB5+KoawdkbIRN9lOyDY3Ks+dW+z6Tqom8
- kIKKPySLiBR9dOXzeMLP4soTk0J0eKUZa0dSXc0XCkVOWgKEPD70GvE3X9aE+Lp13UzVu07+KHJ
- gYRdy0oYb98OaBaJEDLIuu67eNNjGaRUrv/g12dTbbJgxj9g88nW0omvb/kw1aCNKvDqxNzj1Kf
- BqQrQm5Qi3b9Blal/huvec1tkx/9chP3oNSIB2PKWC/xy8LuExpE1JllMlclSQQOOSfwDVrInXw
- KfoS4oEcHAjDzTdd53UouVhurniU1q6ocqHfqQ4RppgVGWzkZyFz+X57yq9G5sh712y45gsLS5X
- 7Vbku/+G7QiL98WQOudmk1NYQjPhFdRQHUptC0IY8K9z3UX3I4WpYK2PEV3ctyypG8AoZ07TlyT
- cFAxvOBeaTPKPCDeuw5ZDRKrWYFVM/Y5hH0Unpm+9lNtvXUbjmOLI67AvFkShve7zKLrTVD/fIY
- ofIQBZsA68sCtjRiZIT4/TU2bCy0YWTBh0b5e7CO/Mpwl1PwI1y22MrRLUT7madBlg11elX5yyK
- /fzZ6eEsSw3lRQTCQ8vRwUa4shzVihIjdLcVlc60xNWd36zo+90lzlgF05D5uYg3dC8prU2JXiF
- r19/OgJHHk/Od6w==
+ bh=KqK7CczWYX/iIrUS5Nv8VtWWkWE2d7OmmtIR810fNRE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqH2eqIY7n1nYt0dC+7KaI6/rvWxHbk90teL16L
+ FoElXc/9iuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCah9nqgAKCRBgAj/E00kg
+ cqr6D/0UyrGMxN8RIkODM7OEU3BX1HeqrVc+JAqk+QGldd6wy9xOFU/c/Gz/r7NqtKrnClDOcbI
+ 8kNaOSWQDX0BqcKEBm5XUDbuA2TkNyvxQa14B3JYwHKz4heijzwhdktrwA6Feu3rRnHRtmY4irb
+ bCV51YZmrisDh/Xnjp2JyFVDA7vo+ZLY7WRGaARbmhr0hZde3ITLReVnYa0jWkm5Voc3eNp4NpM
+ jAZXWcSQunJuTeg/Yz7mmJJsvD4RLm2M3VTT7beqHjVtr1XeCXhvBzlPU8bLb6JuiC3Z0wWXT+q
+ /iTTO2TLxmYPGF/U9aPIyu7K6Aq8cEE2KLDTb3JCuCYph8Q1qV6cFSQTnV6+jTYXGnQCUFM3pvE
+ BYFl6XICOTH6un+DQhlKUV/nNL0kZ+8/sHoiVkFECPr+EQYL+Ra6uW2e5BcrPr/LIvoIso0CbVI
+ HwNSYlWC6WKIF1+8l+j3/FH2Yte9+b4GPR8V/lIn1CLyv9eAcCxJHvUwlzLLJGZoF0BAicF02sY
+ z5zP7tk8ayL6FaJay6Y86vlQ4yJB+FC9PlAQ+5ZHBaTU704k8bMB/vV+3dE/9dSYGGmYoHlcUyc
+ vU1LGbaoAtzQ9J4R8OwDPAA6mdzla1BfB9j4thYecShQT+pcAYfUBfTq0r3nzQIlpL9Oa6fVPim
+ t3wxbakRiryAFLw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -80,86 +81,77 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Inherit C-PHY information from CSIPHY, so we can configure CSID
-properly.
+Read PHY configuration from the device-tree bus-type and save it into
+the csiphy structure for later use.
 
-CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
+For C-PHY, skip clock line configuration, as there is none.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Acked-by: Cory Keitz <ckeitz@amazon.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
- drivers/media/platform/qcom/camss/camss-csid.c      | 1 +
- drivers/media/platform/qcom/camss/camss-csid.h      | 1 +
- 3 files changed, 3 insertions(+)
+ drivers/media/platform/qcom/camss/camss-csiphy.h | 2 ++
+ drivers/media/platform/qcom/camss/camss.c        | 8 ++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-index eadcb2f7e3aaa..52ef730b10553 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-@@ -178,16 +178,17 @@ static void __csid_configure_rx(struct csid_device *csid,
- 	int val;
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.h b/drivers/media/platform/qcom/camss/camss-csiphy.h
+index 9d9657b82f748..2ebb307be18ba 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy.h
++++ b/drivers/media/platform/qcom/camss/camss-csiphy.h
+@@ -25,21 +25,23 @@
  
- 	if (!lane_cnt)
- 		lane_cnt = 4;
+ struct csiphy_lane {
+ 	u8 pos;
+ 	u8 pol;
+ };
  
- 	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
- 	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
- 	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
-+	val |= csid->phy.cphy << CSI2_RX_CFG0_PHY_TYPE_SEL;
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
+ /**
+  * struct csiphy_lanes_cfg - CSIPHY lanes configuration
++ * @phy_cfg:  interface selection (C-PHY or D-PHY)
+  * @num_data: number of data lanes
+  * @data:     data lanes configuration
+  * @clk:      clock lane configuration (only for D-PHY)
+  */
+ struct csiphy_lanes_cfg {
++	enum v4l2_mbus_type phy_cfg;
+ 	int num_data;
+ 	struct csiphy_lane *data;
+ 	struct csiphy_lane clk;
+ };
  
- 	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
- 	if (vc > 3)
- 		val |= 1 << CSI2_RX_CFG1_VC_MODE;
- 	val |= 1 << CSI2_RX_CFG1_MISR_EN;
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1);
- }
-diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-index 48459b46a981b..8d5c872f84ed5 100644
---- a/drivers/media/platform/qcom/camss/camss-csid.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid.c
-@@ -1286,16 +1286,17 @@ static int csid_link_setup(struct media_entity *entity,
- 			/* do no allow a link from CSIPHY to CSID */
- 			if (!csiphy->cfg.csi2)
- 				return -EPERM;
- 
- 			csid->phy.csiphy_id = csiphy->id;
- 
- 			lane_cfg = &csiphy->cfg.csi2->lane_cfg;
- 			csid->phy.lane_cnt = lane_cfg->num_data;
-+			csid->phy.cphy = (lane_cfg->phy_cfg == V4L2_MBUS_CSI2_CPHY);
- 			csid->phy.lane_assign = csid_get_lane_assign(lane_cfg, lane_cfg->num_data);
- 			csid->tpg_linked = false;
- 		}
+ struct csiphy_csi2_cfg {
+ 	struct csiphy_lanes_cfg lane_cfg;
+ };
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 2123f6388e3d7..072c428e25166 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -4761,19 +4761,23 @@ static int camss_parse_endpoint_node(struct device *dev,
+ 	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY) {
+ 		dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
+ 		return -EINVAL;
  	}
- 	/* Decide which virtual channels to enable based on which source pads are enabled */
- 	if (local->flags & MEDIA_PAD_FL_SOURCE) {
- 		struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);
- 		struct csid_device *csid = v4l2_get_subdevdata(sd);
-diff --git a/drivers/media/platform/qcom/camss/camss-csid.h b/drivers/media/platform/qcom/camss/camss-csid.h
-index 5296b10f6bac8..00e2669db64c9 100644
---- a/drivers/media/platform/qcom/camss/camss-csid.h
-+++ b/drivers/media/platform/qcom/camss/camss-csid.h
-@@ -65,16 +65,17 @@ struct csid_testgen_config {
- };
  
- struct csid_phy_config {
- 	u8 csiphy_id;
- 	u8 lane_cnt;
- 	u32 lane_assign;
- 	u32 en_vc;
- 	u8 need_vc_update;
-+	bool cphy;
- };
+ 	csd->interface.csiphy_id = vep.base.port;
  
- struct csid_device;
+ 	mipi_csi2 = &vep.bus.mipi_csi2;
+-	lncfg->clk.pos = mipi_csi2->clock_lane;
+-	lncfg->clk.pol = mipi_csi2->lane_polarities[0];
+ 	lncfg->num_data = mipi_csi2->num_data_lanes;
++	lncfg->phy_cfg = vep.bus_type;
++
++	if (lncfg->phy_cfg != V4L2_MBUS_CSI2_CPHY) {
++		lncfg->clk.pos = mipi_csi2->clock_lane;
++		lncfg->clk.pol = mipi_csi2->lane_polarities[0];
++	}
  
- struct csid_hw_ops {
- 	/*
- 	 * configure_stream - Configures and starts CSID input stream
- 	 * @csid: CSID device
+ 	lncfg->data = devm_kcalloc(dev,
+ 				   lncfg->num_data, sizeof(*lncfg->data),
+ 				   GFP_KERNEL);
+ 	if (!lncfg->data)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < lncfg->num_data; i++) {
 
 -- 
 2.53.0
