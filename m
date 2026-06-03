@@ -1,128 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCF13815C2;
-	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9D539DBFC;
+	Wed,  3 Jun 2026 08:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780443053; cv=none; b=Yi05v0HfXWA7ZvX41pS/PrHNO9LSnrkRI1pLZ5UZ7lT6XIlWS2S6lSSxCeE6F8OQVlPae0QKlDvfRv62GmaE1zRmsBozuAVTzga4/8OvrwRg3v+UPsUdfh0Hk6Tu3D4NzbAOdYrKGYCXKaeiyCEMQeJEmflxwNCZ1p2Qt/URm1Q=
+	t=1780476021; cv=none; b=t5cXDH//6Ksq3Sq/NnCsX0P7MeNCUMyiaVDWB6ejob7AAtfh+K9yovUySnURhwnrs8KahhWmbcFHkTjMWDPhm6c6YNhAskW5O3F+GKTNOipACCXdltk294qMRyidR1EOgJIIsAIgFum4IQkFKqV5gfw2Yv57lpOiZcobmiAonhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780443053; c=relaxed/simple;
-	bh=yJk1wbL1jqLZ7xqEvSc5MqxvJ8W6C4e/ugOsmSZ4iIA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rtqTa0eoeS3tVP5XE1SqU0/WK1NfXzdzNSFmaIOO5QmH2bKqgT9BgycEd/YVm/u21DxDxvsuxYzhl2NLSJ611nDy6AviRWQLmJ9TORTbkByTG4JSKcKP6m6NSyrUORQ/+2oU8V/mi3Gr6mG91BxMZpMSDF5lPb19Ob3We6YOksM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKyL8IcL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780476021; c=relaxed/simple;
+	bh=K/rKz6b4F77j0xHWzIXpJgeNDf7V610k4bC4qX6dHXs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=CAjnkncX2WHqKbj2AXXxQArdawp+bjePU5J1KjLqSWsYKvP0dFKrTaOL7vrcYsx+gqKbMltIsiRB+5ZiEsNgxYsNJClRvR90mj6HY+7C5ZNnB3ZGeaxRJM8AOUnN0A8jeLBML60N2Y+Z+SZCW/14w6rc65DSHhhiCeOI8Awz/3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=NUhbtQtX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HgJyHdRS; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKyL8IcL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 50B37C2BCFC;
-	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780443053;
-	bh=yJk1wbL1jqLZ7xqEvSc5MqxvJ8W6C4e/ugOsmSZ4iIA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eKyL8IcLC6P90WRBBGqtbovDIMdp9iXpbN9UFlUHlpHOy+ADO/ZoY7kpLKKzodq27
-	 +fPZdrvuuNHq6301aHRts+31BLuOZj5sUqiM1IKeCMlHrV/40eSVLhG9JeDBtgy6EF
-	 t2K7qcCH93cRc9Sga3kqmwfT4jD8vrDWfJu0AHJXPxGPaGEJLqdwCZYQm/fe7X/aSL
-	 7zrHDFIp69SbDCPDvpNk90wp+e4GQiCkh2tyWnSPmvf/buYd1PKivaWcCmlpNJQ31X
-	 XsTqqvJVRJU/DOH1WJ5MIiQYitq4JjH6HgH60k77eH+zwfn/D8YMdtcrFwbXmzwRGy
-	 v67JuTGEz3oBA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D9ECD6E6A;
-	Tue,  2 Jun 2026 23:30:53 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 03 Jun 2026 01:30:46 +0200
-Subject: [PATCH v6 8/8] media: qcom: camss: Enable C-PHY where available
+	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="NUhbtQtX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HgJyHdRS"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 16D21EC013A;
+	Wed,  3 Jun 2026 04:40:19 -0400 (EDT)
+Received: from phl-imap-03 ([10.202.2.93])
+  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 04:40:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alex-min.fr; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780476019;
+	 x=1780562419; bh=u0muCYJkeE3pAYE8lO+AAxGI4J4BhmqEcwm6uUfo5uE=; b=
+	NUhbtQtXq9p/nvFoC74C/PrIAJqC6bllujDUVKiqxWWnA84ocxtk6uRXfbIl/0cO
+	i+hsW7ELyy2qYZD2v/NxN1RMlqzwe1lDNKCdu2NlTJgw+WAjLh7kNLcNUvHFF1IL
+	iS0C1chljLts+6KV5h3fW2cToPiEtY+E7HpzNCFTtjuVEXmMLr8hF5aFYnz5qPPu
+	5jpwp/wj/+L2ld7X9mG1jvtQ4xDneF+2XBPdk79P3Ql56K9E9vcu4TZUyQY5/AaD
+	5r3MLSfKiI0YGatPMgpPtI4ij8NwkFxqsMoK2JjN0uyACz4x/yDaEJVzW1TrmEye
+	WczvN6GhHr14LUGUgL4gOw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780476019; x=
+	1780562419; bh=u0muCYJkeE3pAYE8lO+AAxGI4J4BhmqEcwm6uUfo5uE=; b=H
+	gJyHdRSTRsWoDpuJsf7SJWxzVfm1dIVxuZktRPwJpnCUOzGt+eynSj4QNtK9VBt+
+	S0jm6E5WhzgLn1SyDpVYUBSPAyx3cEpzi+K9ebItz+nFl6CiEwGs7Xbqf9ufdJ0F
+	qa/urCO67q/hxfjF2KgfogPWFBJBinLYWw+0JH1FT0aLaZa03sYZ0VX349TGDovy
+	oOlFMR1WDmZ7SrE8yYYN3yPPSfYIfwboNX/K3NeY2ciIrkBrKv6s6JXSRk3xYbNw
+	hj6kGHKzTJ0aSoWPQ2EgmZS3TH8LXrOFmGYto7mmloQbPXrzOUc5FMQNpVxRJ/uO
+	w6gwWCx4qVXzbD948xo1A==
+X-ME-Sender: <xms:cugfalkrtFRJoZEYipjnGJLLK79ssZzaBQRS3TZRTQSDuOKjgz22sw>
+    <xme:cugfaro-Q--4yh0osdZvzxv0hW7y5fXjZZsBFqn6EK_9MbAhq0cmAWn5pv9BvklDV
+    DuUbHK9IKnjTvfYwrB8FjKhhzqrLTyO3gPhI104YnODxkuadkDtEQ>
+X-ME-Proxy-Cause: dmFkZTEjqkwl1pkbDArUnxuEE9GIScT8QO+8RvSWozOv35+sUiTP6ILEcbWB6RLnpvoP3a
+    Ba61CieoqCG+XP2aXBG06Q49zacl1TWZDij9mZ5F82zfTe0jpnrLGMRNbdJvC0FPseuIsm
+    0bTvDzAJDmxhsFLm1cIDD7h68Tco7NgQlFArcyK+9QG8qy/n3pGwgDvY5ukcuRNs+0M9Es
+    CkDowBjDl0Z7YoMuJbADt1w+VnwwQpS8eG6cRxSftCj6tJJ3THuMsY3pr6Lx6fWTZ1EpjI
+    xJvy7fGjVZ/qLMZ7wJa+egFrb1Phw9ygMsklLoOz7gzYuZSTsHb8OctXMhBoqT3RZDHmgx
+    L2BxiLdoF2oa4ypW459jUGwxzF66/Jzr+vCRHuIgIlZUuJZcwvn0f1gibdnq1sRwk6uPJi
+    568djrU1KhUo8av09KNlw3EsHTbJOkngAG+4TtOWgMOiWV9+nfNK5FBg1RLW17c3nXSyzP
+    wAtOx3pWkzFQAyyYKnPlMPfz+eFWVFsDs2z/aWRf9GhXdKFGu9r7CudNWQO0Dl+CpIZfIi
+    ASP+fYv1QfWjokvSqf6xIOP4CayS/+SjmH0wfKidhsSKCZjNVzWIjtj6QL0xlcAp6frGEb
+    I+etpvMfP7exP71LFKgjYtw3I9VIbYnQdH/I88cL0oi3r60YQmb0pXuVXW4A
+X-ME-Proxy: <xmx:cugfajihGlrX1kAJ-qiBxOhBd6SoT11j81dCPcitNeQOHm3I40ydkg>
+    <xmx:cugfarAFq-uIuJD1OXMgI1b5z3zRJseXAfN79wfjPDKdzqCpeRM7sA>
+    <xmx:cugfapve9avYfSV3IYPTPCKmiab9e2uk2aroJolroF4YFoy1nwdoqw>
+    <xmx:cugfat4b3L2DC-G2_6QuNaEqhcEOJLKzCKayrLi7ZD_PVZaeeu5q9Q>
+    <xmx:c-gfanApLeFI2REDd8kclC9auE-RF1W7wpIXdJ4H7oN0pt4tTUxk6jGP>
+Feedback-ID: i72694427:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3B73B18E006C; Wed,  3 Jun 2026 04:40:18 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-qcom-cphy-v6-8-e50de0b557a8@ixit.cz>
-References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
-In-Reply-To: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Kieran Bingham <kbingham@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1350; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=WQAK+dTWd4zgEWrjdRbxx4I2y2Bah8Upe6SOIj07erk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqH2erjuxOKIAR+9NWPxdxKUDCuTfi2NbYCikRQ
- COb0d9Bi+GJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCah9nqwAKCRBgAj/E00kg
- cmjDD/4n7DVvh3LREds6dJWlxq9B/BDPRCKUbwEadOF1zpoety9Rv7X7b9Q1/tRyATv2fY+FLoE
- I7YrJMxuc7keo/YjNMsSM7SJe9AtE1g3r3capal4EELqIShe2NFX/9JXx0u7xKAkhDP2Cr9zhRr
- N7h4Fy+IFTc56UTy/cdz/+ps8ClZe2cQ++HFfbjmLRZpdmrpQXP5Nlb5NRBZVnkApD6KYEV3/do
- sI9o/6Cdskjv2mh/lL0epIkmCpeyoaJ4FdJ6Bj/R+uHexyAQcB+EmkiS/DbOVGPbpCtGj9yadrr
- +2dTC9UTvuaQiUBUPdE8HjTlL8XlplYo/uJL9zAM2eYECTkejcYqEyZYGFoVWrNBkTiQmpv/ops
- DTy8SsDCN/+B4ge2ZVX9cejnhITI9IQ2Trxj8FAAKAR1as/6BXeYvPzXHW5whcMOiJmi9ikG+/N
- 0FgbcUy6nLaIaWaCHVRqwtbW4lFXKB7gkRh3/Xkao3MAdckELKLJSEyY2t9l+asEH7DE62Esexh
- nMsUEFC1BE4yJgJStdPgSRxPvIG3kjXuD0P/rqIv8wh+xPu9//CM/L3tH93b/DF/GQDEe6RkTyp
- yJ7P0/Lz2uCdoPmJ/+kA1FJlqmZ19OX1RT+poq1oudavVnWfn02GqocUfBZOYFrHd9bqUG2my8a
- xA+28VPx5AFYHQg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-ThreadId: ABg7bcuugZBJ
+Date: Wed, 03 Jun 2026 10:39:24 +0200
+From: "MINETTE Alexandre" <contact@alex-min.fr>
+To: "Krzysztof Kozlowski" <krzk@kernel.org>
+Cc: "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "MyungJoo Ham" <myungjoo.ham@samsung.com>,
+ "Chanwoo Choi" <cw00.choi@samsung.com>,
+ "Guru Das Srinagesh" <linux@gurudas.dev>,
+ "Linus Walleij" <linusw@kernel.org>,
+ "Rob Clark" <robin.clark@oss.qualcomm.com>, "Joerg Roedel" <joro@8bytes.org>,
+ "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Kees Cook" <kees@kernel.org>, "Tony Luck" <tony.luck@intel.com>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
+ phone-devel@vger.kernel.org
+Message-Id: <50c433df-d737-45da-93dc-76d365052a6c@app.fastmail.com>
+In-Reply-To: <20260428-jumping-discerning-oarfish-d2caf1@quoll>
+References: <20260427-mainline-send-v1-sending-v2-0-dcaa9178007b@alex-min.fr>
+ <20260427-mainline-send-v1-sending-v2-7-dcaa9178007b@alex-min.fr>
+ <20260428-jumping-discerning-oarfish-d2caf1@quoll>
+Subject: Re: [PATCH v2 7/8] ARM: dts: qcom: pm8921: Add USB ID extcon
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: David Heidelberg <david@ixit.cz>
+Thanks for the feedback, Krzysztof.
 
-After all the changes done we can now safely enable C-PHY for a SoC
-where it's available.
+Do you mean that the PM8921 USB ID handling should be exposed by the
+PM8921 parent node itself, so USB consumers would reference the PMIC
+directly, e.g.:
 
-Acked-by: Cory Keitz <ckeitz@amazon.com>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/platform/qcom/camss/camss.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+  	extcon =3D <&muic>, <&pm8921>;
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index db4e14a84a95f..555c53343a1e9 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -4761,21 +4761,21 @@ static int camss_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
- 	int ret;
- 
- 	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * Most SoCs support both D-PHY and C-PHY standards, but currently only
--	 * D-PHY is supported in the driver.
--	 */
--	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY) {
-+	switch (vep.bus_type) {
-+	case V4L2_MBUS_CSI2_CPHY:
-+	case V4L2_MBUS_CSI2_DPHY:
-+		break;
-+	default:
- 		dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
- 		return -EINVAL;
- 	}
- 
- 	csd->interface.csiphy_id = vep.base.port;
- 
- 	mipi_csi2 = &vep.bus.mipi_csi2;
- 	lncfg->num_data = mipi_csi2->num_data_lanes;
+I am fine with that model, but it would require more driver changes: the
+current extcon driver binds to a separate platform device, while the
+PM8921 parent node is already handled by the PM8xxx MFD driver.
 
--- 
-2.53.0
+Is that the direction you would prefer for v4?
+--=20
+  MINETTE Alexandre
+  contact@alex-min.fr
 
-
+Mar 28 avr 2026, =C3=A0 08:56, Krzysztof Kozlowski a =C3=A9crit=E2=80=AF:
+> On Mon, Apr 27, 2026 at 09:34:53PM +0200, Alexandre MINETTE wrote:
+>> Add the PM8921 USB ID interrupt as a disabled extcon provider. Boards
+>> can enable it when their USB controller consumes the PMIC USB ID state
+>> for OTG role detection.
+>>=20
+>> The interrupt corresponds to PM8921 USB_ID_IN, block 6 bit 1.
+>>=20
+>> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
+>> ---
+>>  arch/arm/boot/dts/qcom/pm8921.dtsi | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>=20
+>> diff --git a/arch/arm/boot/dts/qcom/pm8921.dtsi b/arch/arm/boot/dts/q=
+com/pm8921.dtsi
+>> index 535cb6a2543f..30366536f580 100644
+>> --- a/arch/arm/boot/dts/qcom/pm8921.dtsi
+>> +++ b/arch/arm/boot/dts/qcom/pm8921.dtsi
+>> @@ -121,6 +121,13 @@ ref_muxoff: adc-channel@f {
+>>  				reg =3D <0x00 0x0f>;
+>>  			};
+>>  		};
+>> +
+>> +		usb_id: usb-detect {
+>
+> You should not mix non-addressable children with addressable. If you
+> really do not have address, but other children have, then probably this
+> is part of the main device, so should be folded into the parent node.
+>
+> Best regards,
+> Krzysztof
