@@ -1,72 +1,72 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9D539DBFC;
-	Wed,  3 Jun 2026 08:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C8040910D;
+	Wed,  3 Jun 2026 08:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780476021; cv=none; b=t5cXDH//6Ksq3Sq/NnCsX0P7MeNCUMyiaVDWB6ejob7AAtfh+K9yovUySnURhwnrs8KahhWmbcFHkTjMWDPhm6c6YNhAskW5O3F+GKTNOipACCXdltk294qMRyidR1EOgJIIsAIgFum4IQkFKqV5gfw2Yv57lpOiZcobmiAonhg=
+	t=1780477190; cv=none; b=r/48zY1OExHfR6H/DfiyqW7NUqHdngHi3jkttTXhjpCnbMKvKX698Fspj/6WHhryQ36umJGJU2Sbx50Yec7+8CKo4ALQ+cWtNE9QTaHO2e9Tt+MFvc7CiNmd8ibFexDkKBRjb4IABR8s1HgMCBQd9CPEv++RF4KW5vw57dYzTS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780476021; c=relaxed/simple;
-	bh=K/rKz6b4F77j0xHWzIXpJgeNDf7V610k4bC4qX6dHXs=;
+	s=arc-20240116; t=1780477190; c=relaxed/simple;
+	bh=ztF4BT8IElW1EAM/iUON2PhtHHt3jm5Fed4urA0d4bY=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=CAjnkncX2WHqKbj2AXXxQArdawp+bjePU5J1KjLqSWsYKvP0dFKrTaOL7vrcYsx+gqKbMltIsiRB+5ZiEsNgxYsNJClRvR90mj6HY+7C5ZNnB3ZGeaxRJM8AOUnN0A8jeLBML60N2Y+Z+SZCW/14w6rc65DSHhhiCeOI8Awz/3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=NUhbtQtX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HgJyHdRS; arc=none smtp.client-ip=103.168.172.148
+	 Subject:Content-Type; b=CgoVW/ez4XMaUzJDdHMfQvp1SGDHnI6rM9W6hqZWaOzm6wXlK/ztN/IEosf0JqiV9qKvX3RY95//kWScX0IEkS8G6EW42KWRHEtA2NlJJtaCnfjLvKdGrZYvL10ZSbkuxizZUFX9eFueP/j7p617c/fLxMFx+dzHxWREEGsv7dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=NP31gjgb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MJJu0O99; arc=none smtp.client-ip=103.168.172.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="NUhbtQtX";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HgJyHdRS"
+	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="NP31gjgb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MJJu0O99"
 Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 16D21EC013A;
-	Wed,  3 Jun 2026 04:40:19 -0400 (EDT)
+	by mailfout.phl.internal (Postfix) with ESMTP id 8062AEC0143;
+	Wed,  3 Jun 2026 04:59:48 -0400 (EDT)
 Received: from phl-imap-03 ([10.202.2.93])
-  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 04:40:19 -0400
+  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 04:59:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alex-min.fr; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780476019;
-	 x=1780562419; bh=u0muCYJkeE3pAYE8lO+AAxGI4J4BhmqEcwm6uUfo5uE=; b=
-	NUhbtQtXq9p/nvFoC74C/PrIAJqC6bllujDUVKiqxWWnA84ocxtk6uRXfbIl/0cO
-	i+hsW7ELyy2qYZD2v/NxN1RMlqzwe1lDNKCdu2NlTJgw+WAjLh7kNLcNUvHFF1IL
-	iS0C1chljLts+6KV5h3fW2cToPiEtY+E7HpzNCFTtjuVEXmMLr8hF5aFYnz5qPPu
-	5jpwp/wj/+L2ld7X9mG1jvtQ4xDneF+2XBPdk79P3Ql56K9E9vcu4TZUyQY5/AaD
-	5r3MLSfKiI0YGatPMgpPtI4ij8NwkFxqsMoK2JjN0uyACz4x/yDaEJVzW1TrmEye
-	WczvN6GhHr14LUGUgL4gOw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780477188;
+	 x=1780563588; bh=R1Luc/aCcjuMXa/T7EwpzALBWVDdnlVy5kkRX84+U+c=; b=
+	NP31gjgbIgevccQrrzt+pHO6DNbMEDXbovqL00yLhEcwsVcOiopH3zkpkQQcSYy7
+	70vc7AMKe4l2d2hAbJech94LF9Wg/cwk6RJqbyGQL6z8gMjKl3hPhdMsj37U2RJE
+	sX4dZrw9Cf+J0c8uuQ2trzjABgoqaz/FHf/JkHUuIqsMsEMI6Yj0fupIpKs0zwH7
+	rEQcjcVjAWrLRRImy+0na+cYtNAFIKBLBpwVpJ4dFmv1IWNECX+K5ibVuO+vYxUU
+	+B7Ffa4d4LsnVD/14p/IvaM1R1iFU8vgpWTo80Y5+UqCEU5+MxqgFtVjNAY+XS95
+	Je6SKaK5m+5SSIzjnHPjFQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780476019; x=
-	1780562419; bh=u0muCYJkeE3pAYE8lO+AAxGI4J4BhmqEcwm6uUfo5uE=; b=H
-	gJyHdRSTRsWoDpuJsf7SJWxzVfm1dIVxuZktRPwJpnCUOzGt+eynSj4QNtK9VBt+
-	S0jm6E5WhzgLn1SyDpVYUBSPAyx3cEpzi+K9ebItz+nFl6CiEwGs7Xbqf9ufdJ0F
-	qa/urCO67q/hxfjF2KgfogPWFBJBinLYWw+0JH1FT0aLaZa03sYZ0VX349TGDovy
-	oOlFMR1WDmZ7SrE8yYYN3yPPSfYIfwboNX/K3NeY2ciIrkBrKv6s6JXSRk3xYbNw
-	hj6kGHKzTJ0aSoWPQ2EgmZS3TH8LXrOFmGYto7mmloQbPXrzOUc5FMQNpVxRJ/uO
-	w6gwWCx4qVXzbD948xo1A==
-X-ME-Sender: <xms:cugfalkrtFRJoZEYipjnGJLLK79ssZzaBQRS3TZRTQSDuOKjgz22sw>
-    <xme:cugfaro-Q--4yh0osdZvzxv0hW7y5fXjZZsBFqn6EK_9MbAhq0cmAWn5pv9BvklDV
-    DuUbHK9IKnjTvfYwrB8FjKhhzqrLTyO3gPhI104YnODxkuadkDtEQ>
-X-ME-Proxy-Cause: dmFkZTEjqkwl1pkbDArUnxuEE9GIScT8QO+8RvSWozOv35+sUiTP6ILEcbWB6RLnpvoP3a
-    Ba61CieoqCG+XP2aXBG06Q49zacl1TWZDij9mZ5F82zfTe0jpnrLGMRNbdJvC0FPseuIsm
-    0bTvDzAJDmxhsFLm1cIDD7h68Tco7NgQlFArcyK+9QG8qy/n3pGwgDvY5ukcuRNs+0M9Es
-    CkDowBjDl0Z7YoMuJbADt1w+VnwwQpS8eG6cRxSftCj6tJJ3THuMsY3pr6Lx6fWTZ1EpjI
-    xJvy7fGjVZ/qLMZ7wJa+egFrb1Phw9ygMsklLoOz7gzYuZSTsHb8OctXMhBoqT3RZDHmgx
-    L2BxiLdoF2oa4ypW459jUGwxzF66/Jzr+vCRHuIgIlZUuJZcwvn0f1gibdnq1sRwk6uPJi
-    568djrU1KhUo8av09KNlw3EsHTbJOkngAG+4TtOWgMOiWV9+nfNK5FBg1RLW17c3nXSyzP
-    wAtOx3pWkzFQAyyYKnPlMPfz+eFWVFsDs2z/aWRf9GhXdKFGu9r7CudNWQO0Dl+CpIZfIi
-    ASP+fYv1QfWjokvSqf6xIOP4CayS/+SjmH0wfKidhsSKCZjNVzWIjtj6QL0xlcAp6frGEb
-    I+etpvMfP7exP71LFKgjYtw3I9VIbYnQdH/I88cL0oi3r60YQmb0pXuVXW4A
-X-ME-Proxy: <xmx:cugfajihGlrX1kAJ-qiBxOhBd6SoT11j81dCPcitNeQOHm3I40ydkg>
-    <xmx:cugfarAFq-uIuJD1OXMgI1b5z3zRJseXAfN79wfjPDKdzqCpeRM7sA>
-    <xmx:cugfapve9avYfSV3IYPTPCKmiab9e2uk2aroJolroF4YFoy1nwdoqw>
-    <xmx:cugfat4b3L2DC-G2_6QuNaEqhcEOJLKzCKayrLi7ZD_PVZaeeu5q9Q>
-    <xmx:c-gfanApLeFI2REDd8kclC9auE-RF1W7wpIXdJ4H7oN0pt4tTUxk6jGP>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780477188; x=
+	1780563588; bh=R1Luc/aCcjuMXa/T7EwpzALBWVDdnlVy5kkRX84+U+c=; b=M
+	JJu0O99bA2f7xQ418KgOl/UV31AmRfJfsjegbRJjA/u8EHt2AuljdpF3QtVomOEE
+	XCaWdSoNve/2zCAj926ODXmm9XM75U0MP7tmS3rx5LyALgxDEUK3Y0tnYdJF/5ED
+	Wh/HX4C+WIfFXPjvuOKRcHrXIRZxhuMZWew9FFPs22fWjEQPAFfd9uU+vu0hSeFJ
+	tD01AloNAbPH+G8mGOkIp24EXYgJIqMH4JAivtXOj6fYLVlzszZxgt4wLMqpuWd8
+	mtG6eCHQo/lmdmFoyN1rrdtAJKpzywO56YTK3xR/TWxhETBY5Yg8oSj7BrRgjQ/8
+	g3Ossyo27KUw3CYue34JQ==
+X-ME-Sender: <xms:A-0fag7oca7qikHhl0CUlyQ_53SWDB-q2wFdji-Vs03jMoC-a-HxQA>
+    <xme:A-0fass1c4lY-jFyIIejqJycqgwJMLoAy1EUXIga89fG-BiCUSKY83woRZSoHpxGr
+    Of2QSTrH7Z9URV9VTKpsGSXG7igZNIqMB7HsL4dhVCYN4FM9TQgiQ>
+X-ME-Proxy-Cause: dmFkZTFEF1p3KY1NI3DS2ef3AXrVnrQiXettYjJNovNV+TA2YH9EdcHk0MqZ3oV56NdzN0
+    dTAKPjcvgZhId6ng7Q7btgM/a1BfqL5ySqk7elTgQKa6D+uaqSDBpMabDcWgOSZqAe4cbS
+    KNKPcsz1ZMoTzI/Xn1nfYU/M0xfTbeacep83OJnEB6HVMbAeTovgL7l9dX03eghfWf4nCE
+    G2pMY0/IjA92D/9AHm9m7xCGQ9o1y+1XWy12Ns4tw+sii6/EmcIKAUNdcQheVNVYdPiOK8
+    EEQ9MAd5Jp8FJkSva58L7zgj7h9FZCxttbf2IoK8Jr8GNq7hUL/LVYiWloIUc99h99lJG2
+    3MUxtLAdX4qJmjgBVLj5jn/A439aoTViYV6hd4sqfI6FXF3NG9mgrWW4WXTdsgW05Gjftp
+    lkELPwCAn0DJ+qgJ13sER550EkSkx8YQNPVa513pWyf2BbY6IciWnRdqN+uDV/0trW9Mty
+    2crlmLnb5W2h1kfMDpmCj96YPZnRhCujfsWaGjr773QDoVm/dYA+Ti/H1VH0vaQywnusZW
+    3GCRuJhL3yfTGzqgZrcTikg+RcsOQMmAepSe8TDpzmuOE+b1+Fz0HCk63f/CGKL1Vmi1JR
+    RjIdhP4zB43gz+ZB21Deq+fFZIwJTmymzKZMw1aBSnS45EtrHwIphvc+tHbg
+X-ME-Proxy: <xmx:A-0falU_FTpjDg238smBDQJz02CoF2cadVuCUA6R8agbzy-yipebNg>
+    <xmx:A-0faglmKlwi37cTbjl1oSNIrLtSzIOLY6YL91Puqg3ASxvLZmrWpA>
+    <xmx:A-0faoDazQIU68o916ZPKciFCPk7o5VJVAUIhbUBVuh45lFpABJrlA>
+    <xmx:A-0fal8aPpF2IdqYVglSw29VfVI4GlkkDiIYe2knCXa3xRORw56mKQ>
+    <xmx:BO0fav02tdSAa5_psnn6ISbiQ3n-1LGZL7gAoC72F8j1om3cVFyLJAPF>
 Feedback-ID: i72694427:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3B73B18E006C; Wed,  3 Jun 2026 04:40:18 -0400 (EDT)
+	id ACAD018E0074; Wed,  3 Jun 2026 04:59:47 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -74,10 +74,10 @@ List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ABg7bcuugZBJ
-Date: Wed, 03 Jun 2026 10:39:24 +0200
+X-ThreadId: A511MZycEBGs
+Date: Wed, 03 Jun 2026 10:58:24 +0200
 From: "MINETTE Alexandre" <contact@alex-min.fr>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>
+To: "David Heidelberg" <david@ixit.cz>, "Linus Walleij" <linusw@kernel.org>
 Cc: "Bjorn Andersson" <andersson@kernel.org>,
  "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
  "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
@@ -85,7 +85,6 @@ Cc: "Bjorn Andersson" <andersson@kernel.org>,
  "MyungJoo Ham" <myungjoo.ham@samsung.com>,
  "Chanwoo Choi" <cw00.choi@samsung.com>,
  "Guru Das Srinagesh" <linux@gurudas.dev>,
- "Linus Walleij" <linusw@kernel.org>,
  "Rob Clark" <robin.clark@oss.qualcomm.com>, "Joerg Roedel" <joro@8bytes.org>,
  "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>,
  "Kees Cook" <kees@kernel.org>, "Tony Luck" <tony.luck@intel.com>,
@@ -93,60 +92,54 @@ Cc: "Bjorn Andersson" <andersson@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-gpio@vger.kernel.org, iommu@lists.linux.dev,
  phone-devel@vger.kernel.org
-Message-Id: <50c433df-d737-45da-93dc-76d365052a6c@app.fastmail.com>
-In-Reply-To: <20260428-jumping-discerning-oarfish-d2caf1@quoll>
-References: <20260427-mainline-send-v1-sending-v2-0-dcaa9178007b@alex-min.fr>
- <20260427-mainline-send-v1-sending-v2-7-dcaa9178007b@alex-min.fr>
- <20260428-jumping-discerning-oarfish-d2caf1@quoll>
-Subject: Re: [PATCH v2 7/8] ARM: dts: qcom: pm8921: Add USB ID extcon
+Message-Id: <48cfedcb-a9f5-402e-9973-f5c175fd2740@app.fastmail.com>
+In-Reply-To: <4b797a3f-01c9-4b02-be98-7b82099c2e0e@ixit.cz>
+References: <20260519-mainline-send-v1-sending-v3-0-3dd7aa125353@alex-min.fr>
+ <20260519-mainline-send-v1-sending-v3-3-3dd7aa125353@alex-min.fr>
+ <CAD++jLm=BxHsPJ4rgqwY8SvaefZUO+Pfv8E8xizqPsdJZw5weA@mail.gmail.com>
+ <298550eb-1bdf-4d7c-8111-8b8f0b5dc056@app.fastmail.com>
+ <4b797a3f-01c9-4b02-be98-7b82099c2e0e@ixit.cz>
+Subject: Re: [PATCH v3 3/8] pinctrl: qcom: Register functions before enabling pinctrl
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Thanks for the feedback, Krzysztof.
+Thanks David.
 
-Do you mean that the PM8921 USB ID handling should be exposed by the
-PM8921 parent node itself, so USB consumers would reference the PMIC
-directly, e.g.:
+I initially considered adding a Fixes: tag, but I do not have a commit I
+can point to. This looks like a latent ordering issue in the
+Qualcomm pinctrl probe path and could have happened at any time until no=
+w.=20
 
-  	extcon =3D <&muic>, <&pm8921>;
-
-I am fine with that model, but it would require more driver changes: the
-current extcon driver binds to a separate platform device, while the
-PM8921 parent node is already handled by the PM8xxx MFD driver.
-
-Is that the direction you would prefer for v4?
+The failure became visible on APQ8064 boards such as this jflte, and I a=
+lso
+have a report that the same change helps flo/deb, but I do not want to
+add a misleading Fixes tag as we don't really know which commit really t=
+riggered the race condition.
 --=20
   MINETTE Alexandre
   contact@alex-min.fr
 
-Mar 28 avr 2026, =C3=A0 08:56, Krzysztof Kozlowski a =C3=A9crit=E2=80=AF:
-> On Mon, Apr 27, 2026 at 09:34:53PM +0200, Alexandre MINETTE wrote:
->> Add the PM8921 USB ID interrupt as a disabled extcon provider. Boards
->> can enable it when their USB controller consumes the PMIC USB ID state
->> for OTG role detection.
+Mar 19 mai 2026, =C3=A0 23:03, David Heidelberg a =C3=A9crit=E2=80=AF:
+> On 19/05/2026 10:48, MINETTE Alexandre wrote:
+>> Thanks a lot Linus!
 >>=20
->> The interrupt corresponds to PM8921 USB_ID_IN, block 6 bit 1.
+>> This patch is required for my Samsung Galaxy S4 GT-I9505 to boot but =
+I also
+>> have confirmation from another contributor that the same pinctrl patch
+>> helped boot the ASUS Nexus 7 (2013), codenamed flo, which is also bas=
+ed
+>> on APQ8064.
 >>=20
->> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
->> ---
->>  arch/arm/boot/dts/qcom/pm8921.dtsi | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>=20
->> diff --git a/arch/arm/boot/dts/qcom/pm8921.dtsi b/arch/arm/boot/dts/q=
-com/pm8921.dtsi
->> index 535cb6a2543f..30366536f580 100644
->> --- a/arch/arm/boot/dts/qcom/pm8921.dtsi
->> +++ b/arch/arm/boot/dts/qcom/pm8921.dtsi
->> @@ -121,6 +121,13 @@ ref_muxoff: adc-channel@f {
->>  				reg =3D <0x00 0x0f>;
->>  			};
->>  		};
->> +
->> +		usb_id: usb-detect {
 >
-> You should not mix non-addressable children with addressable. If you
-> really do not have address, but other children have, then probably this
-> is part of the main device, so should be folded into the parent node.
+> Hello Alex,
 >
-> Best regards,
-> Krzysztof
+> if what you wrote about asus-flo/deb is true, then this patch should h=
+ave=20
+> `Fixes: ` tag, as I remember it was booting with few limited patches ~=
+5 years=20
+> back then (only one serious was hack for proper clock bringup).
+>
+> David
+>
+> --=20
+> David Heidelberg
