@@ -1,157 +1,226 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACCB37B028;
-	Wed,  3 Jun 2026 09:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6DC1FC8;
+	Wed,  3 Jun 2026 10:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780478188; cv=none; b=r5Q49XEalAZ8OjCK5GPQjrfLX/sWAEuCGgU1lE2wYJumxcngwwN/+DvVkenzhpSCJWbsIBvQIsa6GVsmAzbPh7Lxh/EeFIZGrz5Ips4nzHbLEYYoE51pJdN9eg5T9rMubdobU8FYuf6eWaiRcIKfXxZQ+B1s0GXVDyO5RD1L6j8=
+	t=1780480986; cv=none; b=NUfgUdFOXCYamB4oDpAoILCMq2s1CNIohG+0xjLRWJeo5Ylt/mhP8CCHlk+oKNqxotef2QHmD8wod9omIfZ/nbvfW8v05yR04Vi71p6IVRAAHdCGtmGkrP+pufByog24r7B046s1h0ibxs7dtonNbAw5xAcV7rSUomtSHzvexHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780478188; c=relaxed/simple;
-	bh=zZMMRaYCVfvGznAZaMWQjUMAtdzTOIBli6JD/djRl6c=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=eAo3Y8+4Jjp30Bo5AJs0DpS1RbtSTNC0TKF42V8skf3CCDRhSGhW/yuahquUPbelwcmc6WIQTdi8eVTGRIOtOLFPbptEQfEVW6AoFvPkuXZRVMaWoTB0Xmz0b0J6P2qdDRvh679re7Va9XNZERpm3k+PnKdlHkPBvlyO4t6AwSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=lw+ngl/j; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZG6Jr+d/; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alex-min.fr
+	s=arc-20240116; t=1780480986; c=relaxed/simple;
+	bh=rd/XJCLeGutAP6vdv4HQbc/zX0TFcCi8MS1cMvpS+qA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g+pgU16T+4YvC1rWFbrGCOXU6Yb3Pc2xrBNv5uFtZjaNfqWhNGoT9+miIxgB4liUEeAH8xpDEor9sz7sY01+8xikwQNzjImB5igFQLuiu9qGkdT0wEiUS0EN8JgjZnR/iIM/bBD10B3UNAeVR1aWeIx85AdqWzJoE35P8O996zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKQ2P70O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="lw+ngl/j";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZG6Jr+d/"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 092B1140010D;
-	Wed,  3 Jun 2026 05:16:26 -0400 (EDT)
-Received: from phl-imap-03 ([10.202.2.93])
-  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 05:16:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alex-min.fr; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780478186;
-	 x=1780564586; bh=vyee6GA+nWTTHzOKHQkml5rtHb2XOqTCfRzWyyvR/0M=; b=
-	lw+ngl/jwNEHm4RAoLixw50HbJ8WBvVO4Xh5FezsdzckaHYl+gj98dAg7D8KrXZO
-	acNm1NA1yy3GEzV6y95gv3Jj9CrZ3482cC/roLO9Kl2HOZCUPCq13tFTyMICyl+2
-	/hIXGY4L1aRpy+J3GkQeEmTOFZOZBfFUA4tZObMkyfol7XBa+WrJI7moST7mc98C
-	cfC+jyexq0gUAsSdC3D3PiUI81T3L/D0o+/onIRC5+QB3THev1jEIVcG7x8vzecX
-	LZN1Uqrv+jtYsn5lUYiA7H0s+BjXtLLXkLjKEPnuSNFq0i/ZmbWHyjiSUnptcbk/
-	zorPe5sw/43ha7xwUZOpPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780478186; x=
-	1780564586; bh=vyee6GA+nWTTHzOKHQkml5rtHb2XOqTCfRzWyyvR/0M=; b=Z
-	G6Jr+d/mb4Vn+dx57WZu7UO4Cpa0sW0wjNe2Ea8Ti8m0NGnehJW2Jiyhu207AY/x
-	Yr4d5VelVByS2/UKT1ekkTP6VVlCfcCJ7dz8KtEfyljpCIuIp1Gu1U+zzTv2EFQ+
-	dQGq00FhBriCETd8BqyrEAw1zj0IjF92QydGFl7bp9vjL6nibK/O6ItBrT/pLGGX
-	CbJ/+8LnpPpsvLl1shC2GpzZJNP9ZaT2LIlsG8pfkhJlAqlib1XILJO99ylmvt30
-	a15ozh3gFswdwqiVtHFOWPURAk4L0q3tkN/QkFb9mAnldPDO2TH1kLyWf8KAx++N
-	DbmJ30Mb2namRoVRNZXOQ==
-X-ME-Sender: <xms:6fAfanEWFdfSK0xzUw3p7P_70Zqv-4DsDumqe0osby_MRNn4B-PNEg>
-    <xme:6fAfavLn3g_LpedoMZlOhNYqLlV8gykHFTIWfSSNlniWLxEm8-zCQ0RXgX-73k2zE
-    Qr20JasBAEI_cEbBlJioMZ--xo2OpDmNsYOvbwlZXGiVY8nvIW0Kw>
-X-ME-Proxy-Cause: dmFkZTEKtdUk3+AoNrb6F/9o5+qhQ3MJedbgaPlnSzxbii3fpnIWSakKB30IRXehXRWZ8a
-    3ArwDkxvG0XlD9ZRDd/oEngsRSASg8CVBxa7prWi7/Q1p6+/bTmnunWpL9c0l3T2Euye0G
-    LPwV1CcAvqwqTX3nCAUATvT0rYc0mnTpff6AkUQdW7vxkuRjFZaV997pWsndxIdO36608s
-    HlT87MdU4iNI0yTC+0PnFPdKzTNUKqg+6enjhDw6m2ys75CauEE69Gctn4VUaE8OuzHBaG
-    +vkSziUvakMY1a5UJoK6y/6Lelrq5Y1IRXaC91cn6GvZDAWRoL08YaFnWqmu8IIYsIdYrX
-    VHPJQgm8WlaYkTEPnEGSiRMQBc51jeK11IXvSKHod8QEIxgo2sGyEm8jxERRFsd5jbCf9U
-    v72TT+WsfUvH/zAZBCGgwYsp/sSr8I36+5XO2P9Y6jnCN/3dJix4qFCA3o5NOZEzNHL2QR
-    4xDLU9g8GgAAdpAVV/hfeUIp8BtE3N1yBGX2svO0c3cZ4R1zkZCpmLfUOmAP98zNusUBYN
-    axzCjNrnddeurXHP1yfFdngFwpxyBR51T9oZJuTKwY4par/mTFpKYyaQq7202ULoFkaElL
-    N7p9W3I2pcyFi+Z9K9Onq2eo6Ueeb+ahw+sW3rQx59YIyOxopNc98NzRjSYg
-X-ME-Proxy: <xmx:6fAfahCXgm-c-CqFw50O6wBWhMnxectsULnmhxR4hgxFVbQLkgHWPQ>
-    <xmx:6fAfaqjC7mKIzCzP6HTzIxcxnj0mNNKZy9e1S63FYQEVF9sjUVHkXA>
-    <xmx:6fAfajMkNJRCYsWZVAOdd4OM-utzxguWF7WEx3hS8ZXGbD8ztPuisg>
-    <xmx:6fAfapZNBotVaNo2Kq6tVXgORuFrfs4pjMwVJzXlrJeJoQv8iVHEcw>
-    <xmx:6vAfaoh1KFr33uvHO8-B9LUi2UhHhGsAl0z3dihTQuK4XfSfeh3agVg0>
-Feedback-ID: i72694427:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1840618E006C; Wed,  3 Jun 2026 05:16:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKQ2P70O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C6D1F00893;
+	Wed,  3 Jun 2026 10:03:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780480985;
+	bh=ACwX1eA04+1ASs8+AUZM9OwlIkHtK3XNcCJgkbAhMwo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JKQ2P70OeXVvmbAmsD2p6whOHUqY0yERjAJ3N8YonPJgMlZa+CdTzFUHYzsSRIcBx
+	 g5XhoSr3gk7j7AN3FiF5qdRCr10scOxrzPi7FY88G0aUmAuGND23oRLOffMIv1kaIx
+	 ipdw7Nttnh2qCBynEjisTnqfyJXDanHflIh21kL8gzX/DacW6tB0n9DMI7jl0X0OLm
+	 hp9DNRDd16dTZPdu9AnREHoq264xlRMN90ILUCiVgHwhJswS5rAIvGes8Y9x3562ti
+	 uVolNK8BR0tzakwkKB809xNNeIHwxGyzoJXJXTlKb38CWWFOjYFOjpVZuKUYC+s8GP
+	 Yy1dQ6s5nGXhg==
+Message-ID: <22807003-2b9a-4a28-982e-8c432cb9b9a1@kernel.org>
+Date: Wed, 3 Jun 2026 11:03:00 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ALxfIZ7KI3KB
-Date: Wed, 03 Jun 2026 11:16:04 +0200
-From: "MINETTE Alexandre" <contact@alex-min.fr>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "MyungJoo Ham" <myungjoo.ham@samsung.com>,
- "Chanwoo Choi" <cw00.choi@samsung.com>,
- "Guru Das Srinagesh" <linux@gurudas.dev>,
- "Linus Walleij" <linusw@kernel.org>,
- "Rob Clark" <robin.clark@oss.qualcomm.com>, "Joerg Roedel" <joro@8bytes.org>,
- "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>,
- "Kees Cook" <kees@kernel.org>, "Tony Luck" <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- iommu@lists.linux.dev, phone-devel@vger.kernel.org
-Message-Id: <356a9e23-7172-4b26-993e-e82581d29553@app.fastmail.com>
-In-Reply-To: <39d8e501-d84e-4870-b98b-a08b0a68f8ee@kernel.org>
-References: <20260519-mainline-send-v1-sending-v3-0-3dd7aa125353@alex-min.fr>
- <20260519-mainline-send-v1-sending-v3-2-3dd7aa125353@alex-min.fr>
- <39d8e501-d84e-4870-b98b-a08b0a68f8ee@kernel.org>
-Subject: Re: [PATCH v3 2/8] dt-bindings: extcon: qcom,pm8941-misc: Add PM8921
- compatible
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/8] media: camss: Add support for C-PHY configuration
+ on Qualcomm platforms
+To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Sorry I initially replied to the wrong thread by mistake.
-
-Thanks for the feedback, Krzysztof.
-
-Do you mean that the PM8921 USB ID handling should be exposed by the
-PM8921 parent node itself, so USB consumers would reference the PMIC
-directly, e.g.:
-
-  extcon =3D <&muic>, <&pm8921>;
-
-I am fine with that model, but it would require more driver changes: the
-current extcon driver binds to a separate platform device, while the
-PM8921 parent node is already handled by the PM8xxx MFD driver.
-
-Is that the direction you would prefer for v4?
-
---=20
-  MINETTE Alexandre
-  contact@alex-min.fr
-
-Mer 20 mai 2026, =C3=A0 09:22, Krzysztof Kozlowski a =C3=A9crit=E2=80=AF:
-> On 19/05/2026 09:16, Alexandre MINETTE via B4 Relay wrote:
->> From: Alexandre MINETTE <contact@alex-min.fr>
->>=20
->> PM8921/PM8821 provide USB ID detection through the PMIC USB block. The
->> USB_ID_IN interrupt is exposed by the PM8921 interrupt controller and=
- is
->> used by APQ8064 platforms for OTG role detection.
->>=20
->> The device is modeled as a child of the SSBI-connected PM8921 PMIC.
->> Unlike PM8941, the downstream PM8xxx misc device is not instantiated =
-with
->> a register resource for this path, and the mainline extcon driver only
->
-> I could have guessed that at v2, but this suggests that device is not a
-> separate block. If it does not have separate addressing, then it is not
-> a dedicated/separate sub device in the PMIC and your node plus binding
-> should be squashed into the parent.
->
->> needs the named USB ID interrupt. Allow qcom,pm8921-misc without requ=
-iring
->> reg.
->>=20
->> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
->> ---
->>  .../devicetree/bindings/extcon/qcom,pm8941-misc.yaml    | 17 +++++++=
-++++++----
->>  1 file changed, 13 insertions(+), 4 deletions(-)
->
->
+On 03/06/2026 00:30, David Heidelberg via B4 Relay wrote:
+> Note: WIP tag added, as not everything from the previous review round has
+> been addressed.
+> 
+> # Short summary
+> 
+> This patch series extends the Qualcomm CAMSS (Camera Subsystem),
+> including CSID and CSIPHY components, to support C-PHY mode configuration.
+> 
+> # Background and motivation
+> 
+> Modern smartphone cameras increasingly rely on MIPI C-PHY rather than
+> D-PHY, thanks to its higher data throughput and signal efficiency.
+> As a result, many OEMs adopt C-PHY interfaces for main (rear) cameras on
+> Qualcomm-based devices.
+> 
+> Until now, mainline Linux lacked C-PHY configuration support for Qualcomm
+> chipsets, preventing bring-up of primary camera sensors on several
+> Snapdragon platforms. This series closes that gap.
+> 
+>   - Introduces C-PHY configuration support for the CAMSS driver stack,
+>     covering both CSID and CSIPHY blocks.
+>   - Successfully enables C-PHY operation on the Snapdragon 845 platform.
+>   - Tested on OnePlus 6 and 6T phones running mainline Linux,
+>     using the Sony IMX519 main camera sensor.
+>   - The new configuration allows other chipsets versionsto enable C-PHY by
+>     simply adding corresponding sensor driver support and csiphy
+>     initialization data, following the example set for sdm845.
+> 
+> With this patch series, mainline Linux gains working C-PHY support for
+> Snapdragon 845, paving the way for improved main camera functionality
+> across many Qualcomm-based devices. The groundwork also simplifies
+> future enablement efforts for additional SoCs and sensors.
+> 
+> Until merged, the series will be also available at:
+>    https://codeberg.org/sdm845/linux/commits/branch/b4/qcom-cphy
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Changes in v6:
+> - lanes_enable now uses WARN_ONCE instead of return values. (Sakari)
+> - Dropped Kodiak patch until it gets better documented.
+> - Document the 3ph C-PHY sdm845 registers a bit.
+> - Link to v5: https://lore.kernel.org/r/20260531-qcom-cphy-v5-0-6be0f62b4d65@ixit.cz
+> 
+> Changes in v5:
+> - Split first patch enabling C-PHY part into last patch. (Bryan)
+> - Fix the camss_get_link_freq crash. (Cory)
+> - Dropped patch whitelisting C-PHY, instead use nullptr check. (Bryan)
+> - Dropped A-b/R-b from
+>   "media: qcom: camss: Initialize lanes after lane configuration is available"
+>   and changed Petr to Co-developed by and owned the patch.
+> - Link to v4: https://lore.kernel.org/r/20260301-qcom-cphy-v4-0-e53316d2cc65@ixit.cz
+> 
+> Changes in v4:
+> - Documented cphy parametr to camss_get_link_freq.
+> - Use BIT() macro for lane_mask. (Bryan)
+> - Correct lane_mask calculation. (Kieran + me)
+> - Removed comment for the D/C-PHY sequences init. (Bryan)
+> - Pass &csid->phy for calculate freq. (Bryan)
+> - Added missing cphy description to camss_get_link_freq. (kernel test robot)
+> - Gen2 v1.1 MIPI CSI-2 CPHY init hex to lowercase.
+> - Added back missed commit with improved electrical for sdm845 3ph.
+> - NOT addressed yet:
+>    - Proliferating special cases in switch statements on a per-SoC basis is verboten.
+>    - is it possible to set clock_lane to say 0xff in DT ?
+> - Link to v3: https://lore.kernel.org/r/20260117-qcom-cphy-v3-0-8ce76a06f7db@ixit.cz
+> 
+> Changes in v3:
+> - Make lanes_enable return sucess or error, since I couldn't move the
+>    configuration to the _init.
+> - Dropped R-b tags on
+>    "media: qcom: camss: Initialize lanes after lane configuration is available"
+>    as I changed formatting.
+> - Link to v2: https://lore.kernel.org/r/20251204-qcom-cphy-v2-0-6b35ef8b071e@ixit.cz
+> 
+> Changes in v2:
+> - This is still WIP patch series, thus I wanted to publish already
+>    changed parts to get feedback regarding to the direction of patchset.
+> - When switch to using odd bits, zeroed val which was left unitialized in v1.
+> - Accidentally missed archs added back in the commit moving lane regs to
+>    new location.
+> - Remove commit with reverting check for only D-PHY is supported and
+>    adjusted the check to also account for C-PHY.
+> - Documented link frequency calculation with defines. (Casey)
+> - Changed the cphy boolean to phy_cfg enum in the camss/camss-csiphy.
+>    (Brian)
+> - Added patch for csiphy-3ph enablement for sm7280 from Luca as I'm
+>    meanwhile trying to bring up the C-PHY sensor on FairPhone 5.
+> - Merged these two commits together
+>      csiphy-3ph: Enable sdm845 C-PHY sequence
+>      csiphy-3ph: Add Gen2 v1.1 MIPI CSI-2 CPHY init
+>    merged R-b.
+> - Link to v1: https://lore.kernel.org/r/20251109-qcom-cphy-v1-0-165f7e79b0e1@ixit.cz
+> 
+> ---
+> David Heidelberg (8):
+>        media: qcom: camss: csiphy: Introduce PHY configuration
+>        media: qcom: camss: csiphy-3ph: Use odd bits for configuring C-PHY lanes
+>        media: qcom: camss: Prepare CSID for C-PHY support
+>        media: qcom: camss: Initialize lanes after lane configuration is available
+>        media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI CSI-2 C-PHY init
+>        media: qcom: camss: csiphy-3ph: Update Gen2 v1.1 MIPI CSI-2 C-PHY init
+>        media: qcom: camss: Account for C-PHY when calculating link frequency
+>        media: qcom: camss: Enable C-PHY where available
+> 
+>   .../media/platform/qcom/camss/camss-csid-gen2.c    |   1 +
+>   drivers/media/platform/qcom/camss/camss-csid.c     |   8 +-
+>   drivers/media/platform/qcom/camss/camss-csid.h     |   1 +
+>   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 243 +++++++++++++++++----
+>   drivers/media/platform/qcom/camss/camss-csiphy.c   |   6 +-
+>   drivers/media/platform/qcom/camss/camss-csiphy.h   |   2 +
+>   drivers/media/platform/qcom/camss/camss.c          |  36 ++-
+>   drivers/media/platform/qcom/camss/camss.h          |   2 +-
+>   8 files changed, 236 insertions(+), 63 deletions(-)
+> ---
+> base-commit: b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
+> change-id: 20251109-qcom-cphy-bb8cbda1c644
+> 
 > Best regards,
-> Krzysztof
+
+I'd like to see a dts to go with this ideally for upstream ...
+
+---
+bod
