@@ -1,259 +1,142 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893F29D264;
-	Thu,  4 Jun 2026 19:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780600068; cv=fail; b=dE5lKajF13LNmV5HQJDTaHE5dvzJvv9V03M+C7zy5zwdsFw7vK7UhK2A3LXukdES5l89scBKPTy5Ms10Zlo7Tm0oMrL3XcQZrYpAvoqj3kzYYaA8c8oPyMb5XNYROOrngiYPQ6s396pB0Uwd4KQ1t9HJxV1e9JUYoYGsSRkTdm0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780600068; c=relaxed/simple;
-	bh=o5zHf8EF8etvuQwix3yohX1vzn6sQxS0O2qOc+Pj8iY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Bt2RcfY59/RtpxiCRGRZeG2tdg7NmlGsauUp6P8uU0YATU65kTLp3oFgxvAEJU3QoANlVIj23PgTjRnGqlSmu5pn+Ufc4ora40ys88ph0eFoFxt1utm9wWcM+1uTN6vjg4Vb6PoxsTET0inRQKIWeIQXXALQlzU79FMhpsjloxU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mSYA+b0o; arc=fail smtp.client-ip=52.101.83.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AC33B96B
+	for <phone-devel@vger.kernel.org>; Thu,  4 Jun 2026 20:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780604377; cv=none; b=f/rUztwQdj7CD4xB319Rupl1PuD7xQE29Zi1PLwRBW5HXnVk92WLuyMiyyNZS2t+9HCC8JxnpZobsb4kKIvB6K/tI3+j2r9HjEEIVicfeeQzgBhnVV6m4uXzCWzuYXtqe1tCdAkZyAPo1sWWz+nQqNbcAY8NgYnY9ttDhxGiXMI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780604377; c=relaxed/simple;
+	bh=45KdNmv+Drab9Z/X5tJfZfZLATdmtXAQ0rISrsmLpag=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gynkaEM6DJaEP2Ms2AEkcYxWm9lxZ41NYU47kbMHJiNyR3xoS+ymxYEODNFXcMtVs/PcxZcCFZNcpAQTafBrwcR0s3zwBD3B3Empt5h0gIKK8lFXRAGNUBFAH/hYzhocfB5bxnh8HZEs1j6cXGtbc+EsJ34O3kudaBJpu3b5vAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+YCQcHH; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mSYA+b0o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h8ch58i1+jvBS6e5yrtWZDb9rMFROCU5icEJ4CkX4NIbJ+eybBc/p0wPZGpHl0C4YsZ8ZpV0z12vnAnwkM/iXLBCurta9X9i7v2BrcfSsNwGECs5ceMmvOJ9I2BA67Ol70Lb66O9Sr31sbiftCeIEr6NsNWjlJR7afgrt9pIJl7b6Hkg9DF0jB0EbDJsChW1svLC4mfxFc3GQ3uQr4zZOX2L17HPWqac45Iaajb9hw2UO6uFswJmAhmfxB0i7wsHPR0J0ULT3iOVUX4jdITKWAfIaYjBlefzrAJKpEhpRDM+F9TJXfTczIc+I4CpaseMSWHZsTfi9lDJcDe8gSISGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kCfb50eB/oY0rUN3oLM8PsXismVGH8gNzLOGDc+uKNo=;
- b=IoHo2NHiMzumz55OkQgRwMvjP/BdJ2TixoRnqzfoIkb4y9oW7NZ+2QDs/jTzsSiLiZDWJHpWrt7S2hg/Qb1L/+bDkOL99dgV2LculsjA40601dzQcGPgHO90uCur0Xld6+OPtkPqQicmqjqOuaTVbesaMtSUyTFvSNt2VksgyZn+Fni4NJswpTYmFNrequX3+zrl4vJ62AF9s0N6aQkLMf2GUz9ZEeDVgzUbod218o4AIkNdZuIdHazPuPU0t2GOHGx1gJrpbd+04+mY4NYPrwdRfLyYLte8nc7Ya6tEgou2LLe7QUgbvpKq94MeigxTql1kZgZYGNgvbm4MBWC3wg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kCfb50eB/oY0rUN3oLM8PsXismVGH8gNzLOGDc+uKNo=;
- b=mSYA+b0o2Lbo+w1vEBL3pkNZRZFZAaL2BBaLxmjK5IxwFZlg5rbp2U2XgZdTmqMe5B7963KxO6jyYpVXth4gsK0U5i7csXiG3S46abMROWIEhJMSeTGLmCkEArocunAVm8DGDVgaixxy7BeJxTupJnrzWnm0IUphQlqL9bqvDeskuuXtWUCEwEz4FeewXSDLRCLA/9VynmDKFVqHAqC7SRuc4CtUlW66/Ha+9rpkGgWBrocD0enlNjjtichZ8fKv511OyDSiiHnFV5cPBOZcpW4Epx8uJvckUA/gzlfU4W0VsZe0Iw4cc52BWGjnKORoOnlLr9qzB98ZK5y9aj9Y4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DB9PR04MB9961.eurprd04.prod.outlook.com (2603:10a6:10:4ee::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 19:07:42 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 19:07:42 +0000
-Date: Thu, 4 Jun 2026 15:07:35 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Bryan O'Donoghue <bod@kernel.org>, Robert Foss <rfoss@kernel.org>,
-	Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Petr Hodina <phodina@protonmail.com>, "Dr. Git" <drgitx@gmail.com>,
-	Cory Keitz <ckeitz@amazon.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v6 3/8] media: qcom: camss: Prepare CSID for C-PHY support
-Message-ID: <aiHM94-IDjiJWeqe@lizhi-Precision-Tower-5810>
-References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
- <20260603-qcom-cphy-v6-3-e50de0b557a8@ixit.cz>
- <aiChDyKleAYuzjMg@lizhi-Precision-Tower-5810>
- <43b7da84-3390-4094-a61f-9e887660eb10@ixit.cz>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43b7da84-3390-4094-a61f-9e887660eb10@ixit.cz>
-X-ClientProxiedBy: SA1P222CA0163.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k+YCQcHH"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490b4e1ade7so12814605e9.0
+        for <phone-devel@vger.kernel.org>; Thu, 04 Jun 2026 13:19:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780604373; x=1781209173; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrQNCOwYef0/rUPI4L9x7Ym+o1MWvmOU9IU4X/FxWJo=;
+        b=k+YCQcHHFm1T+/x4siejTgf2GshzdI/qc0/40ZzSYQt+sG0EjwTrnR1qGecYyMzHsw
+         V4gZ2cEpw2afU31q/7HJoKX+WkUgnovhJBqfvQrY87OObPwKmLvrqNzHQADiYsluQz5G
+         n8BKexrMhuhjZkeWiFK4vjZloaqRDzyj6rK3HUWECc4Ky1+LyCnjX60rpK7wjTJR8iuC
+         7LXWSsOFv57VhX9KVoJ1GG51vHoOwyquYHbyPllD7TN/taAsQ3aFUrjeO1OEYdrLkSto
+         9fQJ5SMHvgCo9sVNd6wnCg68Edj3sTe8oG5DPhfn7BjH8fwRC2Mhl5ZQlxs9jd50P9vc
+         KrEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780604373; x=1781209173;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HrQNCOwYef0/rUPI4L9x7Ym+o1MWvmOU9IU4X/FxWJo=;
+        b=AoqwAN3WXwqkqnSgFg/rSw1I2ZGDi6R6rjD7Etk1Yuk1b/RThzor/kCMRoVqEv1QLf
+         wSsNofy48n34kZHKx5uuIVtv2kpK+czhBa+B8HvDcD1ZLpZKY54nX3uqsxGQIpX0kuFt
+         JxR7qVZ07u4sNJz3ODm2J6my+vw9AAWueqY07QKX08ccgCzR1ThVnXoiHv3OXrszj960
+         vCqDB+jmdwD6YoXUq2LJ/shFxEnFrBAvYdMzeKjET7JvYAsMysNuZF3vmPdYFbtLW7ts
+         Hz5RIGrvxoZSN5Kq/4hPV04CZWvQtLM1/GPoy6zw74gzb5jZt3PNtttIUCek8a5C3ocK
+         jaVA==
+X-Forwarded-Encrypted: i=1; AFNElJ+uvS02/Cq5/fl8YxuL3UX6FFzxBGomiGFSsfyVG0P1TYJwYzWgikmAgdQ2An/4FvsM8rA+CoHl7h+2yQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFK9UX6Qj+gpVjjXKgxk2UBAI2yw1vVUdJlagHrJTtO0XjxXcC
+	YbD5RXAyaJU1gqyr2b+0SkV+eRUUocTuBY/9gmA8DWcdwXSC/r3mCE1g
+X-Gm-Gg: Acq92OEgUwJFGHbDk70zqbI9icotYPgkuEdASdMJ1mlbizwWfNmb72k6pWfFMS7XkwX
+	2iIAOGObk9cpPLhDr0BIaic6W5hHSQCkBIaBwFJQy4Ctddk0uCVor1GSDPTDpv1VOz+AL4ZTWq7
+	Pe6anplJ3bieVUF32SoZgCQTCnR4qKP7z1P8RWqZ+7TJJnU5In/rZNi5PgfbzTz5sxZ/Wq1w9Rw
+	h1Zt+Pog44vRIWTvD6ksT7mbT/0W3vc5kuL62TVVtl2BNjzUWANJXMkbj8WOcpXapVJcQroGOQL
+	cUhZCdEsl6F79G9o1QICwuNz18kHELJ70tiQvVW8L+FC4n24Isz5rhmO5L+//sxTyY1zUl01xJd
+	kiLc5ekzxIOS9gzv+kaQtrpsuxX2z24X3RUXuEhfxG+Zrt2EO0ZqYX+0lM6DojLI3eQ3D0+frpI
+	K/WmVMKH433ShTW93zXuJZITOLyLin4ADt/vQ/lg==
+X-Received: by 2002:a05:600c:3153:b0:490:b8c0:d46a with SMTP id 5b1f17b1804b1-490c2604790mr1881625e9.22.1780604372996;
+        Thu, 04 Jun 2026 13:19:32 -0700 (PDT)
+Received: from [192.168.8.79] ([2a00:f502:160:43ff:9a39:ef13:72e0:8f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f344558sm18999748f8f.18.2026.06.04.13.19.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 13:19:32 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Subject: [PATCH v3 0/2] ARM: dts: qcom: msm8926-sony-xperia-yukon-eagle:
+ add initial device tree
+Date: Thu, 04 Jun 2026 23:19:26 +0300
+Message-Id: <20260604-yukon-eagle-v3-0-9e3b57d306a8@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB9961:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4702584a-fb1b-4535-786e-08dec26c8de4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|7416014|376014|52116014|366016|18002099003|22082099003|38350700014|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	TkIyKW+o1/ffXmFRNL5zvteBqsT1v59Edh3hN0eIhOmY3IcCKImuZhQonYP6kI4r4VqD2KZ+C7j+3ig7cZqq9/g8Se94andKpbUVYQLex6S8kFfK3LGXKgvBw2W8ylwaAUWU+ytzgft/X5TM1ldwSowjYz3l5JiVUJc9C43XSdWnn0hR6T+1wCExhZNv/jmKfolrYf5PY6vOmHtJzfoHDHvKmr2AHr5S9Xhm4n7q36eFAbG7mV9M4JSuJKafwMUF3vJsHNtcdrk8kcYkFjrc+JxQ2Ab1FdrYAWt3GjNiJO4RjE02SmdT741HtiViT/7usEDDbW9gk6lFWV0I6/N0bYGy5HoPWZfICaMQ3x4RSi6mPwc4V0xqyEXFd82+MQAiJQ/VBELye8ptR7OOht68h96C9/D5iLhBT+wrCxgYnVRG/EtoU8nXuj8c+c06n6ZY73Ljuwd9yqx9QyhXtY9om7Xz2eVLkSGDc8n9ebhHJh1mZ8Qqlrql7q5PvIk433TRZLW4VspfKOS0hsLem7YchBwKmaWEPGP32HiEuSIOxNnMOh1fdBQ/WnAeFJUhJl55x6dnUuN5+XGkL9Z08GKhQh+LNyLIRK/EcPr0ZDxNxxIbBbzbQpm7LXn85Plt7g8qeyMSpcZ0tX/FiBelQnMMFMLqKHC9WWF5+edCDKRPO2CW6iw+D0mmFnSFeE+v6o5ISYg+ZCV7c/zAM6Pcsc6izF43rGWG9K3ESyBBd5zFkmQlf1y1+4hSoIfQInwY8c4q
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(376014)(52116014)(366016)(18002099003)(22082099003)(38350700014)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?X9ip8i7+/8HX8pQrKDS0szx8rTrASHtjUeWm3ukmh9Qr6dyZtWUXfxm3Bjny?=
- =?us-ascii?Q?VgbsngkRpWjFxwexVryBFFzf/RsmU6DXo1exyVRU4kCYG+0s3tOY0eBlWgIi?=
- =?us-ascii?Q?lKbQ8Trua4gIvAeEQM7iirmufWvLFUzEXAWPHu+fr11/KfhyVJLIaRHlylVF?=
- =?us-ascii?Q?6+GO8P10Q1rziuYju8Td3ywNMtKKNRlIGYmzwXm9hyIroZcaFnZeXj2hQAkT?=
- =?us-ascii?Q?nIXKiadmuHVYJ6QC/JeVUFN2wzRkxAmfs9cWOWUfvDITNzl0HzXgEbT8K6hE?=
- =?us-ascii?Q?6LWpYtgoTrnt9Ribvf4XDE+ripsabF/Raw0Pn9Ue0pe+/TZy4zSQNHbbhfD8?=
- =?us-ascii?Q?KuHRENsl08j6FAWU4VZWHAFObICBJDUsWHGLtG3OzA9YA61Enu9hXPBwMnuC?=
- =?us-ascii?Q?o+FQ7XuCn40bgLLQ2uYZ010YlC8MSsGHTt1dt+sw6aRV1oZYGaAebsC/50jW?=
- =?us-ascii?Q?9wnKyq++4R2lN6MZN66GKYukNS5l4rmDLdFMg/3UiG43czjlI17PQ9SHB6Hf?=
- =?us-ascii?Q?1ibcT0MiRkg/M9MN0mblSa5OtbD8utNvjVzufP8Gln9QCVj5M6AmuuygYgE+?=
- =?us-ascii?Q?lr44uhWC168Rm8+v9mC0RS1LJVpJpokxgIh4zOoenOgMCCT239rEeVICO6w/?=
- =?us-ascii?Q?0J8Gbr/JMk+cO6KCkJlUI43q10l2HYaJvYZXhpoBn0VnMzMQ1d9TuHD9LUuO?=
- =?us-ascii?Q?UWToTl3uFTGkHODpwCUfGsUzuNferqiytrMP5sqeDa0RcEY6hL2VJdf4KUzg?=
- =?us-ascii?Q?6fZdVPchslRaOT0UtF9EA8rRHf7f34TWO6D4W5VtIl/dgyF+3AwkFYvguRUE?=
- =?us-ascii?Q?EjUspiSkC2MH/ckwEL+2+7an23tqBN0iuD1KB/VKq//A2P50s18RGpg60fk2?=
- =?us-ascii?Q?vimHvIfE/gFJXCxkyPeZt9tqD9RMnBb0rrAoH920i/PeBABn3wEMPa8y4zPX?=
- =?us-ascii?Q?wXVpEFl50l4OQj+FNVK0VF911VDRAjxlW8ruzBi4JfIfWE0NkCc9kcz/N4Wi?=
- =?us-ascii?Q?jU1nYogzo4qgbataEamjT9VU7hVShWO2Arv7R06rAkMDlNx8QOlBRHPpvVXS?=
- =?us-ascii?Q?lHyf5UPaS9jw71z0IpbTSQAnVaSLRSczC7jN7IQKU4Rm+ySt8k0i3mjn7RLJ?=
- =?us-ascii?Q?+0wtvYnXLcB0h36yHEONY21QaPIk+94sRCJAZMcBJMquM2X1lCTkAOnXbSrh?=
- =?us-ascii?Q?KZx64uBdtCSiDn+IbTman7iJz7lDSgYaHyyUcSDFFRRcGsV3TUovnP80/Mqu?=
- =?us-ascii?Q?3sgkxZAYy4BL4lreVJMesIQfu+cs16/Zp8+kIwAi8xZkFy8jSq983Mnn/79l?=
- =?us-ascii?Q?OHfMoxwGVgQZHhULgvINKz1FciiFYY6FkkC7HMEGfXNcAzsWZwzYuwGdwt+s?=
- =?us-ascii?Q?BXbeYwcnBXDnyqVHe99L8VUMp9t5x2GLkK8awyGj7AHt15EjuKeZuqm8zOLZ?=
- =?us-ascii?Q?/JcW2lBRnf8kBX9f3125SUOwA5oRZ4dXOsBdqDsd0DTVsu+onQE47Q4GKWhl?=
- =?us-ascii?Q?Yg9JdDAxMKy8zc2bVjZiW1KLP1PW6406FYkYB2/M2fh74TU+QTLuFI+yzdLg?=
- =?us-ascii?Q?8gdJLE4y1WT2vSLHHXG4uuQaTm20FR97erignFCRIwkMkHVrX4TTm+GaRNZW?=
- =?us-ascii?Q?mvsnAomjxZJ9ZJDMXvaXElqtEreDEhUerrV+SPC7i/yOVZlqgxqX2HAPOXY2?=
- =?us-ascii?Q?eR9sjnh7IW/WGOLuu7S7TSCcVkfCK+Y8m4Ai7pPsgFlO56YyuhiF0FC284Lf?=
- =?us-ascii?Q?mn9yWxCsjg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4702584a-fb1b-4535-786e-08dec26c8de4
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 19:07:42.7512
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DbTCpPBfDesVpvUfSqRAgCbQF0S8cqXkFXIeGXUP0O9qO9Q0geFT2d3z2TY6x39CTChzuWVii7JZXd7vavBpyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9961
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WN0Q6CIABFf8XxHA0QEHvqP1oPqKCUSgNlOee/B
+ 7ZWPZ7tnnNX4JUzyoNTtgKngvHGjhHyQwbqTo6tgqaJDAgiHDHC4TLf7QiVbHsFOROaaIElpg2
+ IxsMpbZ577XJ9s5+rm6qnlEiLzvjJumW/CzjtPuXirxwwRLAUGJcNp7LA1bkdpOmPtR1AKgfyd
+ TnK/10SXS14RSliItfs19227QVMkaBT9AAAAA==
+X-Change-ID: 20260526-yukon-eagle-658f2f81a14d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-On Thu, Jun 04, 2026 at 02:34:49PM +0200, David Heidelberg wrote:
-> On 03/06/2026 23:47, Frank Li wrote:
-> > On Wed, Jun 03, 2026 at 01:30:41AM +0200, David Heidelberg wrote:
-> > > Inherit C-PHY information from CSIPHY, so we can configure CSID
-> > > properly.
-> > >
-> > > CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
-> > >
-> > > Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> > > Acked-by: Cory Keitz <ckeitz@amazon.com>
-> > > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > > ---
-> > >   drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
-> > >   drivers/media/platform/qcom/camss/camss-csid.c      | 1 +
-> > >   drivers/media/platform/qcom/camss/camss-csid.h      | 1 +
-> > >   3 files changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> > > index eadcb2f7e3aaa..52ef730b10553 100644
-> > > --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> > > +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> > > @@ -178,16 +178,17 @@ static void __csid_configure_rx(struct csid_device *csid,
-> > >   	int val;
-> > >
-> > >   	if (!lane_cnt)
-> > >   		lane_cnt = 4;
-> > >
-> > >   	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
-> > >   	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
-> > >   	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
-> > > +	val |= csid->phy.cphy << CSI2_RX_CFG0_PHY_TYPE_SEL;
-> >
-> > shift a bool type is not good habbit. some compiler may treat as undefine
-> > beheavor.
-> >
-> > Frank
->
-> Oh I found out Bryan commented on the older revisions about the boolean usage.
->
-> So idea is convert this to:
->
-> +enum csid_phy_sel {
-> +       CSID_PHY_SEL_DPHY = 0,
-> +       CSID_PHY_SEL_CPHY = 1
-> +};
-> +
->
-> [...]
->
->  struct csid_phy_config {
->         u8 csiphy_id;
->         u8 lane_cnt;
->         u32 lane_assign;
->         u32 en_vc;
->         u8 need_vc_update;
-> -       bool cphy;
-> +       enum csid_phy_sel phy_sel;
->  };
->
-> Frank, Bryan, snds good?
+Sony Xperia M2 is a smartphone released in 2014 based on the Qualcomm
+Snapdragon 400 (MSM8926) platform.
 
-good for me
+Add initial device tree for Sony Xperia M2 with support for:
+- Framebuffer
+- GPIO buttons (Volume Down and Camera)
+- Regulators
+- Internal storage
+- SD card
+- Accelerometer
+- Magnetometer
+- Ambient Light/Proximity sensor
+- NFC
+- pm8226_resin (Volume Up)
+- Vibrator
+- USB/Charger
 
-Frank
->
-> >
-> > >   	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
-> > >
-> > >   	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
-> > >   	if (vc > 3)
-> > >   		val |= 1 << CSI2_RX_CFG1_VC_MODE;
-> > >   	val |= 1 << CSI2_RX_CFG1_MISR_EN;
-> > >   	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1);
-> > >   }
-> > > diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-> > > index 48459b46a981b..8d5c872f84ed5 100644
-> > > --- a/drivers/media/platform/qcom/camss/camss-csid.c
-> > > +++ b/drivers/media/platform/qcom/camss/camss-csid.c
-> > > @@ -1286,16 +1286,17 @@ static int csid_link_setup(struct media_entity *entity,
-> > >   			/* do no allow a link from CSIPHY to CSID */
-> > >   			if (!csiphy->cfg.csi2)
-> > >   				return -EPERM;
-> > >
-> > >   			csid->phy.csiphy_id = csiphy->id;
-> > >
-> > >   			lane_cfg = &csiphy->cfg.csi2->lane_cfg;
-> > >   			csid->phy.lane_cnt = lane_cfg->num_data;
-> > > +			csid->phy.cphy = (lane_cfg->phy_cfg == V4L2_MBUS_CSI2_CPHY);
-> > >   			csid->phy.lane_assign = csid_get_lane_assign(lane_cfg, lane_cfg->num_data);
-> > >   			csid->tpg_linked = false;
-> > >   		}
-> > >   	}
-> > >   	/* Decide which virtual channels to enable based on which source pads are enabled */
-> > >   	if (local->flags & MEDIA_PAD_FL_SOURCE) {
-> > >   		struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);
-> > >   		struct csid_device *csid = v4l2_get_subdevdata(sd);
-> > > diff --git a/drivers/media/platform/qcom/camss/camss-csid.h b/drivers/media/platform/qcom/camss/camss-csid.h
-> > > index 5296b10f6bac8..00e2669db64c9 100644
-> > > --- a/drivers/media/platform/qcom/camss/camss-csid.h
-> > > +++ b/drivers/media/platform/qcom/camss/camss-csid.h
-> > > @@ -65,16 +65,17 @@ struct csid_testgen_config {
-> > >   };
-> > >
-> > >   struct csid_phy_config {
-> > >   	u8 csiphy_id;
-> > >   	u8 lane_cnt;
-> > >   	u32 lane_assign;
-> > >   	u32 en_vc;
-> > >   	u8 need_vc_update;
-> > > +	bool cphy;
-> > >   };
-> > >
-> > >   struct csid_device;
-> > >
-> > >   struct csid_hw_ops {
-> > >   	/*
-> > >   	 * configure_stream - Configures and starts CSID input stream
-> > >   	 * @csid: CSID device
-> > >
-> > > --
-> > > 2.53.0
-> > >
->
-> --
-> David Heidelberg
->
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Changes in v3:
+- Changed incorrect "chassis" to "chassis-type" in the device tree.
+- Mentioned added vibrator in the commit message.
+- Link to v2: https://patch.msgid.link/20260603-yukon-eagle-v2-0-f86b440583f5@gmail.com
+
+Changes in v2:
+- Dropped `regulator-always-on` for l3, l6 and l8.
+- Mentioned added GPIO buttons and reset input in the commit message.
+- Link to v1: https://patch.msgid.link/20260527-yukon-eagle-v1-0-98119d64a71b@gmail.com
+
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Erikas Bitovtas (2):
+      dt-bindings: arm: qcom: Add Sony Xperia M2
+      ARM: dts: qcom: msm8926-sony-xperia-yukon-eagle: add initial device tree
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm/boot/dts/qcom/Makefile                    |   1 +
+ .../dts/qcom/msm8926-sony-xperia-yukon-eagle.dts   | 403 +++++++++++++++++++++
+ 3 files changed, 405 insertions(+)
+---
+base-commit: b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
+change-id: 20260526-yukon-eagle-658f2f81a14d
+
+Best regards,
+--  
+Erikas Bitovtas <xerikasxx@gmail.com>
+
