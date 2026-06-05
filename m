@@ -1,146 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C923FFFAF
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jun 2026 15:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A52EEE98
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jun 2026 22:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780672159; cv=none; b=noorCpf3vFB19A0pgmUDmsfswLLSuXzBK7aNDyVcZ5u3OKnUQdAAf3KjJKoWdT1EP+aJyNYDI2vV8kTW7mnfrQHfjk8+D8dDRF/2l2WeV//AokcgHDRj3ybC9PWZChUrKSY69vEpc1m0zSZ7fLcIUWqDb8ZtlYxMxPh1h7HWJs0=
+	t=1780698015; cv=none; b=nzcj3tRYWP7oxfnmXyvHQb04C//hr+/GVjb1tf9+8VJYB3DloTh8D2DGvkmF+BIFMxN+X36eTymEmud4sp8EIiYZ+m9A7eZx54FgVEg+muMICPhXAauudCIx588nJX18IIboXwRLqMI/z9V9diUeJxwxEeT4yA4SoTntaSp2DcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780672159; c=relaxed/simple;
-	bh=C8mUzmX2BzwAFXvJ9e/+t0DOKCq7LZ1fiW5O/u8HuMA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cIEJUINmgptydfsS/wKMpenZZtA0SouBHUMk9ST/R6TNq7d1rAlKyILa6/bvUInL0livYsnuloOm9p50bXvszjkFbU2XoaT9RNTN2Ga1joNGLEdoHI/h1aXnrlNXCNeMpQ9jKasA1aNtL5ZkjDU3h5HvEvI8CbFUuaSXN9SiMUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THnUYf9a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780698015; c=relaxed/simple;
+	bh=/fJR9ObIjB90E/QkVHybSi2y1A5XCak5hCNjolyBIsI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lIqA+cDiqMM4Qw0y1oh3bdaDfKlPcfRJY75LRdt73OlSFCUkqzkkuwyECRMRh0Xq3mUnG5nEZ1yxQd1PuKgEhV3OXsS99fl7OJjlIunnHfLeTOD46Be5LBeHbyT4gvRRVgcN0gRp4L/iCqOwGJ2vY/d4mNCTBOsNknMwyaMdxfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=v9qFIcGf; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THnUYf9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A3AFEC2BCB4;
-	Fri,  5 Jun 2026 15:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780672158;
-	bh=C8mUzmX2BzwAFXvJ9e/+t0DOKCq7LZ1fiW5O/u8HuMA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=THnUYf9aCKYSpIXMdhHwqQmI04E/jFNCu9eGPvqJVA4tTf20727fC2wR6bLs9UlGM
-	 PQkr0eODqP+UaMGYOSiw5YwXgFeWPZrpgf617LixFuzpehAVcxdrdH7lm9KcreAl27
-	 NOpKuo2RluXsHlRHsMRTpxZPvI4QkMxgeHJRgG+6dZZpGrcbdP7MTlWbSWJHu8x4qu
-	 rXOEKYCk5921LqXjZom19nz1M0ekkQWtoIIq9fgJ0VEV3PMZ3wHw4b93tRTVD5N0VJ
-	 WEJyntQwCm3qvHrXNV/jPoyl5ehbxa1kdT6IRlnivytG+MlXmYm9Zz80SBb3maerzr
-	 5IVE4G1SXJGkg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F61BCD6E7C;
-	Fri,  5 Jun 2026 15:09:18 +0000 (UTC)
-From: Petr Hodina via B4 Relay <devnull+petr.hodina.protonmail.com@kernel.org>
-Date: Fri, 05 Jun 2026 17:09:07 +0200
-Subject: [PATCH v2] gpio: qcom_spmi_gpio: move PM8998 GPIO from legacy pmic
- driver
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="v9qFIcGf"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-45fd461e4a5so1653382f8f.0
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jun 2026 15:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1780698011; x=1781302811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p/HB8G1yTQPOAvgzKZeKYVge98Lt9ZnLKHPu1l7zZb4=;
+        b=v9qFIcGf3AzlWTMlJODbm2DBzIdu3pdSB9KlLvoOgaTA8nN64Jb61RDdKdVCLNgnlM
+         aCDmRUI/U0Ee5CwyRPjMDWUvAliXoPY3dLNnLzswOQGKmxsaS9bWrwleM9TzZt5WfgV3
+         cmJc5xsjyi4QT9RQC03L2Boxtr1yu/xacJ36vkGXcKV30BA4oRpCHJojx/pNdDyrP7Nq
+         NTKAv9ZXSJB4H5gPlX0xc4QfP5CTwI83/Fy0A+5V9skGxkDCHOjRjPOm9gmxz5LRWKUw
+         OoAqeGVMiO7VRAt3p+7mhdL4VMqOps2D+kBzKZQH/ijRjkXOSV28ciC4NvxcZlkfK9Jy
+         lc2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780698011; x=1781302811;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p/HB8G1yTQPOAvgzKZeKYVge98Lt9ZnLKHPu1l7zZb4=;
+        b=dw1DWVDLznaVRH9GoBL9+Dd5ed0VSxreTxc+I3RBI/++Xvrxr27rBtmmKzz8q1WOi3
+         k+sZ4aoPhKC28Kdfy4gYqqVOzS9kI6RarQtqdOefyQ1CbldjS9cevi/kbKOe96DmzsgJ
+         c8EMD4piJlkv3iHWksIyjRt3jfJec5BAxY+rTNxbtC1uk0J0QOmz0irt6ghK/DYAa4E1
+         5wePqdOy+lSJcmXG3kwGWmuPCyG4/saFex2FJ6ux0ZyjgJwCbNKxIVpMT+YAEFfaQhn3
+         oF1A1RSIrXmF3+SGhflGoyILgZfy8AKP0BGJGiWqskiqAR6uOExa4OzvzdxKK9DbVjrf
+         yKCw==
+X-Forwarded-Encrypted: i=1; AFNElJ9NB3iCkY8rskn2qNgfO5A4i3JUFu/AiHUg3AkQHC4UYNxjF5mosWovj7zDmbKC98hewAHQAZBQ+7NTlw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrB9JBFAip34vlPuw5gN0SSKrchijNhm/K8ySngURIMhewfR0k
+	wPrO87nG/G8ZhV27g5mIvxkTRefVMB6I05/vQLZqxB7KO9xVKy1GKrQLZe0E/sI2i7Q=
+X-Gm-Gg: Acq92OEYOx6j+VvT+Le5tMycwyoYySPhLnryHye12JwpAcpC0Qe8UnzUqZ+oXvnaTO6
+	uPyEfF98cu//H+qNmFrwncqrEAezRzy48oDQXJCg/PcOqHQgt/lmJ6+HcY3PSwzeaxDhrK0AgtZ
+	vFfoNK3784Hnof4BUAcXC+pvTkCPH5osoJ6gPxsPR1xaWMPhTXDMQMp4XZfmuQHl6qncmqVmLDB
+	cCrm0jxDjswbi4OoMzYXgPXWWzBLst+4QH3snX1Jg9TM0dp4j749/pjeQ4pq9e0A7RJwmuUdo1L
+	KCfKNvCzOitOBFWiHF4/Hnu4dzIzFxO+7DvbJv+h/Jx9ipvskoEz+V9QgBaCY2ZF0SIGgFublX0
+	tYH95oUZ1/zurcfshxJ13WR7wDzoMcRXLSxS7G+1IUNjSO5A3z0NgUcmwnx/zfceDtOTjGOQfr3
+	gLWE0Idu+MCyjLEfZjzLjDnB07Cv4pKHMzCA7+Eaa8UmZJ
+X-Received: by 2002:adf:e743:0:b0:45e:f1c5:709 with SMTP id ffacd0b85a97d-4603076cb46mr6547079f8f.37.1780698010560;
+        Fri, 05 Jun 2026 15:20:10 -0700 (PDT)
+Received: from [192.168.0.101] ([109.77.32.74])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d40sm28849253f8f.26.2026.06.05.15.20.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 15:20:09 -0700 (PDT)
+Message-ID: <87ed4bcc-aa66-4a1f-becc-7fce1fe795c1@linaro.org>
+Date: Fri, 5 Jun 2026 23:20:06 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 5/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI
+ CSI-2 C-PHY init
+To: Michael Srba <Michael.Srba@seznam.cz>, Bryan O'Donoghue <bod@kernel.org>,
+ Frank Li <Frank.li@nxp.com>, David Heidelberg <david@ixit.cz>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+ <20260603-qcom-cphy-v6-5-e50de0b557a8@ixit.cz>
+ <8azU3NvUdGCvWCxLb0gz7FWkTGFL4k_xiBUPp170jiYIQjwHyRqynP_oLG4pjFkIRSY_bo91FQh9ECYlXdXrsw==@protonmail.internalid>
+ <aiCiVe_LRA4DXTCL@lizhi-Precision-Tower-5810>
+ <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
+ <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-qcom-gpio-v2-1-c34093041c66@protonmail.com>
-X-B4-Tracking: v=1; b=H4sIAJLmImoC/22NSw6CMBQAr0Le2ppSAdGV9zAs+nnCM0KxrY2G9
- O4W3LqcZDKzgEdH6OFcLOAwkic7ZRC7AvQgpx4ZmcwguGh4w0v21HZk/UyWnVpsa6mEaKojZH9
- 2eKP31rp2P/YvdUcd1sBqDOSDdZ9tFsvV+9eNJeMMRaW0UYfaSH6ZnQ12GiU99tmCLqX0BRMxw
- NK5AAAA
-X-Change-ID: 20260601-qcom-gpio-98e85ab22647
-To: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, 
- u-boot@lists.denx.de
-Cc: Casey Connolly <casey.connolly@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>, 
- Rui Miguel Silva <rui.silva@linaro.org>, phone-devel@vger.kernel.org, 
- Petr Hodina <petr.hodina@protonmail.com>, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- David Wronek <david.wronek@mainlining.org>, 
- Jens Reidel <adrian@mainlining.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780672157; l=2955;
- i=petr.hodina@protonmail.com; s=20260107; h=from:subject:message-id;
- bh=f1sNnGIfocv/L5Gx2f4Rimv78qhXAQcS9qTF8ZwCfwA=;
- b=ROFiNlQ48fEd7xr/1wgsG6is9rlRXOcx+sP3Vjf2g9P5XF+s5BNIUloDn6Pwit+cCzMZRvrf0
- D4GxUPEvHi8CjoD9/PU03B0rS0jgZvwDfESBF/KOUu0a7EABlnPyqIf
-X-Developer-Key: i=petr.hodina@protonmail.com; a=ed25519;
- pk=3QaVc6AaAu1IsyyH86+LIOOFhD7kCws8Xhe+wwyE7Bg=
-X-Endpoint-Received: by B4 Relay for petr.hodina@protonmail.com/20260107
- with auth_id=594
-X-Original-From: Petr Hodina <petr.hodina@protonmail.com>
-Reply-To: petr.hodina@protonmail.com
 
-From: Petr Hodina <petr.hodina@protonmail.com>
+On 05/06/2026 15:47, Michael Srba wrote:
+>> So, hex values from downstream in this case are acceptable.
+>>
+>> OTOH vendors can and should enumerate their registers in an upstream 
+>> submission.
+> I thought this was the policy indeed, but this made me wonder if ALL the 
+> magic numbers
+> in that file were added by volunteers. And weirdly I found this:
+> https://github.com/torvalds/linux/ 
+> commit/7803b63a1640a0a39e3ebad487b33cb2d26e778b
+> and possibly some other commits look like they were made by people on 
+> Qualcomm's
+> payroll. This specifically is QUIC, and idk how much documentation 
+> access they have,
+> but at minimum I assume they had access to the CTRLn register names? 
+> (fwiw it's entirely
+> plausible that the registers don't actually *have* better names).
+> 
+> I didn't follow the relevant ML discussions, but it seems to me like 
+> they should've
+> been told to document the registers?
 
-Move the "qcom,pm8998-gpio" compatible from the legacy driver
-qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
-(sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
-the Volume UP gpio-key.
+"That money was just resting in my account"
 
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
----
-Move the "qcom,pm8998-gpio" compatible from the legacy driver
-qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
-(sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
-the Volume UP gpio-key.
+There's alot of technical debt to digest, which I think should be solved 
+in the new PHY API driver.
 
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
----
-Changes in v2:
-- Reworked per Neil Armstrong's suggestion on v1: migrate PM8998 to the
-  modern qcom_spmi_gpio driver instead of extending the legacy
-  qcom_pmic_gpio.c.
-- Dropped "gpio: qcom_pmic_gpio: implement standard pinconf parameters".
-- Dropped "gpio: qcom_pmic_gpio: don't reset pull on direction change".
-- Replaced with a single qcom_spmi_gpio.c patch that claims the
-  qcom,pm8998-gpio compatible.
-- Link to v1: https://patch.msgid.link/20260601-qcom-gpio-v1-0-e24bcdb35da0@protonmail.com
+- Move to new driver
+- Start enumerating registers correctly
+- Transition to QMP PHY levels of lane config instead of long lists
+   of "mission mode" writes.
 
-To: Sumit Garg <sumit.garg@kernel.org>
-To: u-boot-qcom@groups.io
-To: u-boot@lists.denx.de
-Cc: Casey Connolly <casey.connolly@linaro.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Tom Rini <trini@konsulko.com>
-Cc: Rui Miguel Silva <rui.silva@linaro.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>
-Cc: Luca Weiss <luca.weiss@fairphone.com>
-Cc: David Wronek <david.wronek@mainlining.org>
-Cc: Jens Reidel <adrian@mainlining.org>
----
- drivers/gpio/qcom_pmic_gpio.c | 1 -
- drivers/gpio/qcom_spmi_gpio.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/qcom_pmic_gpio.c b/drivers/gpio/qcom_pmic_gpio.c
-index 4458c55cd3d..6215f794e09 100644
---- a/drivers/gpio/qcom_pmic_gpio.c
-+++ b/drivers/gpio/qcom_pmic_gpio.c
-@@ -344,7 +344,6 @@ static int qcom_gpio_probe(struct udevice *dev)
- static const struct udevice_id qcom_gpio_ids[] = {
- 	{ .compatible = "qcom,pm8916-gpio" },
- 	{ .compatible = "qcom,pm8994-gpio" },	/* 22 GPIO's */
--	{ .compatible = "qcom,pm8998-gpio" },
- 	{ .compatible = "qcom,pms405-gpio" },
- 	{ .compatible = "qcom,pm6125-gpio" },
- 	{ .compatible = "qcom,pm8150-gpio" },
-diff --git a/drivers/gpio/qcom_spmi_gpio.c b/drivers/gpio/qcom_spmi_gpio.c
-index 1a7c7c48dfc..8c3323b23b7 100644
---- a/drivers/gpio/qcom_spmi_gpio.c
-+++ b/drivers/gpio/qcom_spmi_gpio.c
-@@ -751,6 +751,7 @@ static const struct udevice_id qcom_spmi_pmic_gpio_ids[] = {
- 	{ .compatible = "qcom,pm8550b-gpio" },
- 	{ .compatible = "qcom,pm8550ve-gpio" },
- 	{ .compatible = "qcom,pm8550vs-gpio" },
-+	{ .compatible = "qcom,pm8998-gpio" },
- 	{ .compatible = "qcom,pmk8550-gpio" },
- 	{ .compatible = "qcom,pmr735d-gpio" },
- 	{ }
+If you ever rent a car in Ireland and get lost, you might ask a local 
+"how do I get to Tip from here" and we'd scratch our heads under a flat 
+cap and say something like "ah well shure, I wouldn't start from here" ;)
 
 ---
-base-commit: 1f89ddd61cd8c27a3dc1fc7edbeccb55d424eb72
-change-id: 20260601-qcom-gpio-98e85ab22647
-
-Best regards,
---  
-Petr Hodina <petr.hodina@protonmail.com>
-
-
+bod
