@@ -1,130 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mxd.seznam.cz (mxd.seznam.cz [77.75.76.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA474C043E;
-	Fri,  5 Jun 2026 13:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006BE3D668F;
+	Fri,  5 Jun 2026 14:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.76.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780665285; cv=none; b=mDRWkIDIa1i8TQl3QeZdRbreJo4ytJoTbkVOkNmw5TQZViG3pF8BNLDN5Zo2lBDdIDS6LmK0ZEurvdBM7NbnWW/XXQAc3do5Y7/OFWDOfnRsy29mfDVaH9sCLMXbHV+b7TL5RaJIegU8FrLZEU55stSd+UINoB0anBqM311WwFI=
+	t=1780671176; cv=none; b=PpaXogERD5cSSUcOAVDSUBAOYrl5lrSKItMy8bSrYidpgTdCxlgtMHyTs8GqCbsLbUp8wy6qNW1bJlsNq39SfF5gIxLGjZJ5GhzSFcTbeuk6sJU6LOCCxT4DXA2Aru0egr3oLgAgU9xygsNw4xAnI5ZtZhdW/HemaOl8BGiuHVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780665285; c=relaxed/simple;
-	bh=osGiFncjqFDXOPPqosXHo/JcVhGAWPB+hRCAk0hjsOE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Fo4qj1K1e3WCWHM0eoq3aXgzo23heRedfFqmzU15nhlH9Ae38R2gSgNvw3ixuCiG5JQ4+CpyoxdLPOG44l10HVdYEUGJIE4hsodlrFoilpMZtLcxPIrXnEc23AdRDiC0t+TTOMnC4TLRHi6xkRk2fi0dlwAWkc/BCCql5MXfOJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAQ09/2z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780671176; c=relaxed/simple;
+	bh=nQfDg2cAMFcvMVUxNquY59qh0L6Dc689yPLLlWQkl+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ph74Huox6O+N/fp3kExk8E+di0N6fmHJgkiNaZ6V712Ts6JjgK3wTVWAoOLATF0sEce/T3mMWwnRbab09LzkjnE90Siv2XMNBHFiKmjHtdJIyMMmb4UkyVY/PKeg7EqJbLjh6DngfKgOwcVJR4AjvQzRWh0inZcvwj2PnYie0Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seznam.cz; spf=pass smtp.mailfrom=seznam.cz; dkim=pass (2048-bit key) header.d=seznam.cz header.i=@seznam.cz header.b=pLa7z7v3; arc=none smtp.client-ip=77.75.76.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seznam.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seznam.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAQ09/2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5FC79C2BCB4;
-	Fri,  5 Jun 2026 13:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780665285;
-	bh=osGiFncjqFDXOPPqosXHo/JcVhGAWPB+hRCAk0hjsOE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hAQ09/2zF6DuG6HmTunDVsFGskzDv2iDcIftIU1UP+uF7ahrYd/48aDi1Jkj6OmeS
-	 QPJLNkzoLNJDjjcTE4wOHJ12gBL7JpxhHDoW7feVIMpwLHv9H0A8NAnm3OaQYBgV9Z
-	 2xAmAEyvAfByTVVzDlWLrJNrXiQvYB3zfxzZJc60F/Jyg6YQ6uq3xci1jaA6zQ1XsS
-	 kGQtitMHYnn4SEueTDBlD/IUvfJHwNUm1uf6tl3Ti7lGsemmYtcw/qdmK6zCwHHnht
-	 njPi31Mzraic0RQMg3dNB8N9Whb7uJ9EYmdhSNeSWuHfMj4IDycL+7Ohmshsu4NON4
-	 lqhz2VEyyYg1g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5846FCD6E79;
-	Fri,  5 Jun 2026 13:14:45 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 05 Jun 2026 15:14:46 +0200
-Subject: [PATCH v7 8/8] media: qcom: camss: Enable C-PHY where available
+	dkim=pass (2048-bit key) header.d=seznam.cz header.i=@seznam.cz header.b="pLa7z7v3"
+Received: from email.seznam.cz
+	by smtpc-mxd-85fb448c55-l247v
+	(smtpc-mxd-85fb448c55-l247v [2a02:598:96:8a00::1200:706])
+	id 09c79de452c9c98d086e51ba;
+	Fri, 05 Jun 2026 16:50:15 +0200 (CEST)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=szn1;
+	t=1780671015; bh=nQfDg2cAMFcvMVUxNquY59qh0L6Dc689yPLLlWQkl+I=;
+	h=Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 Content-Language:From:Content-Type:Content-Transfer-Encoding;
+	b=pLa7z7v3soMAQhW/LRwANtgNNhKoyl7yR+UNJXQqByQqik1fBbMNr1MzQI0O4iUlZ
+	 /BA6BW21Ayi3Uv8wSSCuyi0Yd1+g1dNMmzxIQtsaF1TzirzbK3NgQOSz1dUsD8oglz
+	 4eKRjd1K48k0elDGZvTZYZhROKBVvhJFSQJjMbcc6F7aimBmva3dYSx4ZSAPBKo8Of
+	 23WR2LkLh4HguLPN8HCB+wuAI8gEYhWr7OFR/QgIW6PIHUJIdNwsTBgWCjk81WAQaH
+	 ZtSqsxrPdEh02olyQLwiN1lgU+RoPsmUMxPaLxb80qPLYRP3IlD9rVNkQNUUOCokV+
+	 v9KeY7P6mXchg==
+Received: from [192.168.0.240] (ip-111-27.static.ccinternet.cz
+	[147.161.27.111])
+	by smtpd-relay-647c665986-mvmlh (szn-email-smtpd/2.0.74) with ESMTPA
+	id c0acc1d8-caa7-4a77-879e-f30b4be02d4f;
+	Fri, 05 Jun 2026 16:49:51 +0200
+Message-ID: <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
+Date: Fri, 5 Jun 2026 16:47:34 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-qcom-cphy-v7-8-426c37e9008f@ixit.cz>
-References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
-In-Reply-To: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Frank Li <Frank.Li@nxp.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Kieran Bingham <kbingham@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1392; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=yfuNEpBnQgvYmUSkvI5U4j/G6UateQzCMCBG6SxmfO0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqIsvCGPCeA6Vs/cZWC74UxxwO3XMTA73Yifj1y
- nb6TtTIXdqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaiLLwgAKCRBgAj/E00kg
- cvDwD/9N0SLyhXrNDXxcob+1QDH1XlDJH/a9IgDU+RMX/2YzGvIj5sE8A/LrCVcQjRW4xv+yVmU
- xhBOqmZRyWEqVJb8JYS3wto2Hjg3x88u5z5Xn7v0bI5J1fS4/pCFnQLlgEmWdm0ObtjDWmt83lH
- RZ7RebCn0YSnhvZwflkWGM5syyA2wBJkl3Mear/zJcXDg7MLysiXNxG62S+tENla3NldYYtook3
- Dwf41MF56Qqo/jPwESXhHqgfLsKjFGlhayui9Gbp5LDrfbph4BBna9pKZ3wsU3FZVoH3IkG7hhS
- 7d2EWCMg2nihfN+6Zuxbog0KajAoKupv6QGXeilQuTlAB8Wu78CSXmI3IMxYOm6yz8uRJqfVtWv
- fn7VifJEjATmL0epGJS4Hat8Ev4NY3vGH/uzuJSO0Bd1GK6FgR0FqCNgZQJi8btNH1N1139HA/H
- xU0HtFCJrBlB8VZS/6KTQf+ot14T8c9aE6gIAj5yxy7+PmyQ/uoni4/wlxo8LMdsVHujyTZD8Fq
- +Yibhb+0GWuSWJf++z2pdKkIVNCCrAMp/7w/sut95OOkDarfuIXhnv3pVbw7GQ5rlJWt/CG/FSO
- XojozBjaDbxwI3h8qI5W7NUqULsmu2Acg1i/aQ4QSPFpnf87+UDxj1GfmxES41+1O9MfH6VllEM
- jHoOngc8lFjLKkA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 5/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI
+ CSI-2 C-PHY init
+To: Bryan O'Donoghue <bod@kernel.org>, Frank Li <Frank.li@nxp.com>,
+ David Heidelberg <david@ixit.cz>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
+ <20260603-qcom-cphy-v6-5-e50de0b557a8@ixit.cz>
+ <8azU3NvUdGCvWCxLb0gz7FWkTGFL4k_xiBUPp170jiYIQjwHyRqynP_oLG4pjFkIRSY_bo91FQh9ECYlXdXrsw==@protonmail.internalid>
+ <aiCiVe_LRA4DXTCL@lizhi-Precision-Tower-5810>
+ <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
+Content-Language: en-US
+From: Michael Srba <Michael.Srba@seznam.cz>
+In-Reply-To: <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: David Heidelberg <david@ixit.cz>
+Hi,
 
-After all the changes done we can now safely enable C-PHY for a SoC
-where it's available.
+On 6/5/26 12:25, Bryan O'Donoghue wrote:
+> On 03/06/2026 22:53, Frank Li wrote:
+>>> +    {CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
+>>> +    {CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
+>> what's these magic number in ADDR(x), if it is register, it'd better to use
+>> macro.
+>
+> That's not really feasible for non-Qualcomm, non-vendor document-enabled people to provide. For alot of the code that gets sent to upstream we have magic-numbers for registers only, published in downstream code.
+>
+> We can't demand better documentation from community members who simply don't have it.
+Makes sense.
+>
+> So, hex values from downstream in this case are acceptable.
+>
+> OTOH vendors can and should enumerate their registers in an upstream submission.
+I thought this was the policy indeed, but this made me wonder if ALL the magic numbers
+in that file were added by volunteers. And weirdly I found this:
+https://github.com/torvalds/linux/commit/7803b63a1640a0a39e3ebad487b33cb2d26e778b
+and possibly some other commits look like they were made by people on Qualcomm's
+payroll. This specifically is QUIC, and idk how much documentation access they have,
+but at minimum I assume they had access to the CTRLn register names? (fwiw it's entirely
+plausible that the registers don't actually *have* better names).
 
-Acked-by: Cory Keitz <ckeitz@amazon.com>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/platform/qcom/camss/camss.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+I didn't follow the relevant ML discussions, but it seems to me like they should've
+been told to document the registers?
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index db4e14a84a95f..555c53343a1e9 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -4761,21 +4761,21 @@ static int camss_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
- 	int ret;
- 
- 	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * Most SoCs support both D-PHY and C-PHY standards, but currently only
--	 * D-PHY is supported in the driver.
--	 */
--	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY) {
-+	switch (vep.bus_type) {
-+	case V4L2_MBUS_CSI2_CPHY:
-+	case V4L2_MBUS_CSI2_DPHY:
-+		break;
-+	default:
- 		dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
- 		return -EINVAL;
- 	}
- 
- 	csd->interface.csiphy_id = vep.base.port;
- 
- 	mipi_csi2 = &vep.bus.mipi_csi2;
- 	lncfg->num_data = mipi_csi2->num_data_lanes;
+And even if the documentation they have is not complete, seeing as they are being paid
+by Qualcomm to work on this, would it be unreasonable to pressure Qualcomm to give them
+documentation for the bitfields (which obviously has to exist *somewhere*, even if
+the registers are free-form, the values do *something*).
 
--- 
-2.53.0
-
-
+- Michael
+>
+> ---
+> bod
+>
