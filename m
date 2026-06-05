@@ -1,112 +1,146 @@
-Received: from mxd.seznam.cz (mxd.seznam.cz [77.75.76.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006BE3D668F;
-	Fri,  5 Jun 2026 14:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.76.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C923FFFAF
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jun 2026 15:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671176; cv=none; b=PpaXogERD5cSSUcOAVDSUBAOYrl5lrSKItMy8bSrYidpgTdCxlgtMHyTs8GqCbsLbUp8wy6qNW1bJlsNq39SfF5gIxLGjZJ5GhzSFcTbeuk6sJU6LOCCxT4DXA2Aru0egr3oLgAgU9xygsNw4xAnI5ZtZhdW/HemaOl8BGiuHVY=
+	t=1780672159; cv=none; b=noorCpf3vFB19A0pgmUDmsfswLLSuXzBK7aNDyVcZ5u3OKnUQdAAf3KjJKoWdT1EP+aJyNYDI2vV8kTW7mnfrQHfjk8+D8dDRF/2l2WeV//AokcgHDRj3ybC9PWZChUrKSY69vEpc1m0zSZ7fLcIUWqDb8ZtlYxMxPh1h7HWJs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671176; c=relaxed/simple;
-	bh=nQfDg2cAMFcvMVUxNquY59qh0L6Dc689yPLLlWQkl+I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ph74Huox6O+N/fp3kExk8E+di0N6fmHJgkiNaZ6V712Ts6JjgK3wTVWAoOLATF0sEce/T3mMWwnRbab09LzkjnE90Siv2XMNBHFiKmjHtdJIyMMmb4UkyVY/PKeg7EqJbLjh6DngfKgOwcVJR4AjvQzRWh0inZcvwj2PnYie0Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seznam.cz; spf=pass smtp.mailfrom=seznam.cz; dkim=pass (2048-bit key) header.d=seznam.cz header.i=@seznam.cz header.b=pLa7z7v3; arc=none smtp.client-ip=77.75.76.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seznam.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seznam.cz
+	s=arc-20240116; t=1780672159; c=relaxed/simple;
+	bh=C8mUzmX2BzwAFXvJ9e/+t0DOKCq7LZ1fiW5O/u8HuMA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cIEJUINmgptydfsS/wKMpenZZtA0SouBHUMk9ST/R6TNq7d1rAlKyILa6/bvUInL0livYsnuloOm9p50bXvszjkFbU2XoaT9RNTN2Ga1joNGLEdoHI/h1aXnrlNXCNeMpQ9jKasA1aNtL5ZkjDU3h5HvEvI8CbFUuaSXN9SiMUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THnUYf9a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seznam.cz header.i=@seznam.cz header.b="pLa7z7v3"
-Received: from email.seznam.cz
-	by smtpc-mxd-85fb448c55-l247v
-	(smtpc-mxd-85fb448c55-l247v [2a02:598:96:8a00::1200:706])
-	id 09c79de452c9c98d086e51ba;
-	Fri, 05 Jun 2026 16:50:15 +0200 (CEST)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=szn1;
-	t=1780671015; bh=nQfDg2cAMFcvMVUxNquY59qh0L6Dc689yPLLlWQkl+I=;
-	h=Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 Content-Language:From:Content-Type:Content-Transfer-Encoding;
-	b=pLa7z7v3soMAQhW/LRwANtgNNhKoyl7yR+UNJXQqByQqik1fBbMNr1MzQI0O4iUlZ
-	 /BA6BW21Ayi3Uv8wSSCuyi0Yd1+g1dNMmzxIQtsaF1TzirzbK3NgQOSz1dUsD8oglz
-	 4eKRjd1K48k0elDGZvTZYZhROKBVvhJFSQJjMbcc6F7aimBmva3dYSx4ZSAPBKo8Of
-	 23WR2LkLh4HguLPN8HCB+wuAI8gEYhWr7OFR/QgIW6PIHUJIdNwsTBgWCjk81WAQaH
-	 ZtSqsxrPdEh02olyQLwiN1lgU+RoPsmUMxPaLxb80qPLYRP3IlD9rVNkQNUUOCokV+
-	 v9KeY7P6mXchg==
-Received: from [192.168.0.240] (ip-111-27.static.ccinternet.cz
-	[147.161.27.111])
-	by smtpd-relay-647c665986-mvmlh (szn-email-smtpd/2.0.74) with ESMTPA
-	id c0acc1d8-caa7-4a77-879e-f30b4be02d4f;
-	Fri, 05 Jun 2026 16:49:51 +0200
-Message-ID: <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
-Date: Fri, 5 Jun 2026 16:47:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THnUYf9a"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A3AFEC2BCB4;
+	Fri,  5 Jun 2026 15:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780672158;
+	bh=C8mUzmX2BzwAFXvJ9e/+t0DOKCq7LZ1fiW5O/u8HuMA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=THnUYf9aCKYSpIXMdhHwqQmI04E/jFNCu9eGPvqJVA4tTf20727fC2wR6bLs9UlGM
+	 PQkr0eODqP+UaMGYOSiw5YwXgFeWPZrpgf617LixFuzpehAVcxdrdH7lm9KcreAl27
+	 NOpKuo2RluXsHlRHsMRTpxZPvI4QkMxgeHJRgG+6dZZpGrcbdP7MTlWbSWJHu8x4qu
+	 rXOEKYCk5921LqXjZom19nz1M0ekkQWtoIIq9fgJ0VEV3PMZ3wHw4b93tRTVD5N0VJ
+	 WEJyntQwCm3qvHrXNV/jPoyl5ehbxa1kdT6IRlnivytG+MlXmYm9Zz80SBb3maerzr
+	 5IVE4G1SXJGkg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F61BCD6E7C;
+	Fri,  5 Jun 2026 15:09:18 +0000 (UTC)
+From: Petr Hodina via B4 Relay <devnull+petr.hodina.protonmail.com@kernel.org>
+Date: Fri, 05 Jun 2026 17:09:07 +0200
+Subject: [PATCH v2] gpio: qcom_spmi_gpio: move PM8998 GPIO from legacy pmic
+ driver
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI
- CSI-2 C-PHY init
-To: Bryan O'Donoghue <bod@kernel.org>, Frank Li <Frank.li@nxp.com>,
- David Heidelberg <david@ixit.cz>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
- <20260603-qcom-cphy-v6-5-e50de0b557a8@ixit.cz>
- <8azU3NvUdGCvWCxLb0gz7FWkTGFL4k_xiBUPp170jiYIQjwHyRqynP_oLG4pjFkIRSY_bo91FQh9ECYlXdXrsw==@protonmail.internalid>
- <aiCiVe_LRA4DXTCL@lizhi-Precision-Tower-5810>
- <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
-Content-Language: en-US
-From: Michael Srba <Michael.Srba@seznam.cz>
-In-Reply-To: <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-qcom-gpio-v2-1-c34093041c66@protonmail.com>
+X-B4-Tracking: v=1; b=H4sIAJLmImoC/22NSw6CMBQAr0Le2ppSAdGV9zAs+nnCM0KxrY2G9
+ O4W3LqcZDKzgEdH6OFcLOAwkic7ZRC7AvQgpx4ZmcwguGh4w0v21HZk/UyWnVpsa6mEaKojZH9
+ 2eKP31rp2P/YvdUcd1sBqDOSDdZ9tFsvV+9eNJeMMRaW0UYfaSH6ZnQ12GiU99tmCLqX0BRMxw
+ NK5AAAA
+X-Change-ID: 20260601-qcom-gpio-98e85ab22647
+To: Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io, 
+ u-boot@lists.denx.de
+Cc: Casey Connolly <casey.connolly@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini <trini@konsulko.com>, 
+ Rui Miguel Silva <rui.silva@linaro.org>, phone-devel@vger.kernel.org, 
+ Petr Hodina <petr.hodina@protonmail.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ David Wronek <david.wronek@mainlining.org>, 
+ Jens Reidel <adrian@mainlining.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780672157; l=2955;
+ i=petr.hodina@protonmail.com; s=20260107; h=from:subject:message-id;
+ bh=f1sNnGIfocv/L5Gx2f4Rimv78qhXAQcS9qTF8ZwCfwA=;
+ b=ROFiNlQ48fEd7xr/1wgsG6is9rlRXOcx+sP3Vjf2g9P5XF+s5BNIUloDn6Pwit+cCzMZRvrf0
+ D4GxUPEvHi8CjoD9/PU03B0rS0jgZvwDfESBF/KOUu0a7EABlnPyqIf
+X-Developer-Key: i=petr.hodina@protonmail.com; a=ed25519;
+ pk=3QaVc6AaAu1IsyyH86+LIOOFhD7kCws8Xhe+wwyE7Bg=
+X-Endpoint-Received: by B4 Relay for petr.hodina@protonmail.com/20260107
+ with auth_id=594
+X-Original-From: Petr Hodina <petr.hodina@protonmail.com>
+Reply-To: petr.hodina@protonmail.com
 
-Hi,
+From: Petr Hodina <petr.hodina@protonmail.com>
 
-On 6/5/26 12:25, Bryan O'Donoghue wrote:
-> On 03/06/2026 22:53, Frank Li wrote:
->>> +    {CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>> +    {CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> what's these magic number in ADDR(x), if it is register, it'd better to use
->> macro.
->
-> That's not really feasible for non-Qualcomm, non-vendor document-enabled people to provide. For alot of the code that gets sent to upstream we have magic-numbers for registers only, published in downstream code.
->
-> We can't demand better documentation from community members who simply don't have it.
-Makes sense.
->
-> So, hex values from downstream in this case are acceptable.
->
-> OTOH vendors can and should enumerate their registers in an upstream submission.
-I thought this was the policy indeed, but this made me wonder if ALL the magic numbers
-in that file were added by volunteers. And weirdly I found this:
-https://github.com/torvalds/linux/commit/7803b63a1640a0a39e3ebad487b33cb2d26e778b
-and possibly some other commits look like they were made by people on Qualcomm's
-payroll. This specifically is QUIC, and idk how much documentation access they have,
-but at minimum I assume they had access to the CTRLn register names? (fwiw it's entirely
-plausible that the registers don't actually *have* better names).
+Move the "qcom,pm8998-gpio" compatible from the legacy driver
+qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
+(sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
+the Volume UP gpio-key.
 
-I didn't follow the relevant ML discussions, but it seems to me like they should've
-been told to document the registers?
+Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
+---
+Move the "qcom,pm8998-gpio" compatible from the legacy driver
+qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
+(sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
+the Volume UP gpio-key.
 
-And even if the documentation they have is not complete, seeing as they are being paid
-by Qualcomm to work on this, would it be unreasonable to pressure Qualcomm to give them
-documentation for the bitfields (which obviously has to exist *somewhere*, even if
-the registers are free-form, the values do *something*).
+Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
+---
+Changes in v2:
+- Reworked per Neil Armstrong's suggestion on v1: migrate PM8998 to the
+  modern qcom_spmi_gpio driver instead of extending the legacy
+  qcom_pmic_gpio.c.
+- Dropped "gpio: qcom_pmic_gpio: implement standard pinconf parameters".
+- Dropped "gpio: qcom_pmic_gpio: don't reset pull on direction change".
+- Replaced with a single qcom_spmi_gpio.c patch that claims the
+  qcom,pm8998-gpio compatible.
+- Link to v1: https://patch.msgid.link/20260601-qcom-gpio-v1-0-e24bcdb35da0@protonmail.com
 
-- Michael
->
-> ---
-> bod
->
+To: Sumit Garg <sumit.garg@kernel.org>
+To: u-boot-qcom@groups.io
+To: u-boot@lists.denx.de
+Cc: Casey Connolly <casey.connolly@linaro.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Tom Rini <trini@konsulko.com>
+Cc: Rui Miguel Silva <rui.silva@linaro.org>
+Cc: Petr Hodina <petr.hodina@protonmail.com>
+Cc: Luca Weiss <luca.weiss@fairphone.com>
+Cc: David Wronek <david.wronek@mainlining.org>
+Cc: Jens Reidel <adrian@mainlining.org>
+---
+ drivers/gpio/qcom_pmic_gpio.c | 1 -
+ drivers/gpio/qcom_spmi_gpio.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpio/qcom_pmic_gpio.c b/drivers/gpio/qcom_pmic_gpio.c
+index 4458c55cd3d..6215f794e09 100644
+--- a/drivers/gpio/qcom_pmic_gpio.c
++++ b/drivers/gpio/qcom_pmic_gpio.c
+@@ -344,7 +344,6 @@ static int qcom_gpio_probe(struct udevice *dev)
+ static const struct udevice_id qcom_gpio_ids[] = {
+ 	{ .compatible = "qcom,pm8916-gpio" },
+ 	{ .compatible = "qcom,pm8994-gpio" },	/* 22 GPIO's */
+-	{ .compatible = "qcom,pm8998-gpio" },
+ 	{ .compatible = "qcom,pms405-gpio" },
+ 	{ .compatible = "qcom,pm6125-gpio" },
+ 	{ .compatible = "qcom,pm8150-gpio" },
+diff --git a/drivers/gpio/qcom_spmi_gpio.c b/drivers/gpio/qcom_spmi_gpio.c
+index 1a7c7c48dfc..8c3323b23b7 100644
+--- a/drivers/gpio/qcom_spmi_gpio.c
++++ b/drivers/gpio/qcom_spmi_gpio.c
+@@ -751,6 +751,7 @@ static const struct udevice_id qcom_spmi_pmic_gpio_ids[] = {
+ 	{ .compatible = "qcom,pm8550b-gpio" },
+ 	{ .compatible = "qcom,pm8550ve-gpio" },
+ 	{ .compatible = "qcom,pm8550vs-gpio" },
++	{ .compatible = "qcom,pm8998-gpio" },
+ 	{ .compatible = "qcom,pmk8550-gpio" },
+ 	{ .compatible = "qcom,pmr735d-gpio" },
+ 	{ }
+
+---
+base-commit: 1f89ddd61cd8c27a3dc1fc7edbeccb55d424eb72
+change-id: 20260601-qcom-gpio-98e85ab22647
+
+Best regards,
+--  
+Petr Hodina <petr.hodina@protonmail.com>
+
+
