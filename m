@@ -1,135 +1,156 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from vinatta.cz (vinatta.cz [37.205.8.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A52EEE98
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jun 2026 22:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D081257855;
+	Sun,  7 Jun 2026 10:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780698015; cv=none; b=nzcj3tRYWP7oxfnmXyvHQb04C//hr+/GVjb1tf9+8VJYB3DloTh8D2DGvkmF+BIFMxN+X36eTymEmud4sp8EIiYZ+m9A7eZx54FgVEg+muMICPhXAauudCIx588nJX18IIboXwRLqMI/z9V9diUeJxwxEeT4yA4SoTntaSp2DcI=
+	t=1780828525; cv=none; b=X5nbXBW9cMG7iCP8y0r72uH8yXa0sR9KwcGe6+krqbnyU7zkr0OGXGIExIFzEsoVSm5TfzlLAKFweP2egRhZ56aL4W54WKE7Zs594lsHMzP+qLTcZdHFNecCfJjD9Bep9tTZ0k+eIZqWghDxwEIKIew7NkI29kmf+7QI1Qwp/kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780698015; c=relaxed/simple;
-	bh=/fJR9ObIjB90E/QkVHybSi2y1A5XCak5hCNjolyBIsI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lIqA+cDiqMM4Qw0y1oh3bdaDfKlPcfRJY75LRdt73OlSFCUkqzkkuwyECRMRh0Xq3mUnG5nEZ1yxQd1PuKgEhV3OXsS99fl7OJjlIunnHfLeTOD46Be5LBeHbyT4gvRRVgcN0gRp4L/iCqOwGJ2vY/d4mNCTBOsNknMwyaMdxfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=v9qFIcGf; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1780828525; c=relaxed/simple;
+	bh=sB9DQeRkuWeZiSHTms9NV6hjc3XvirX8YIcp7h1Z0jI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=Oich1VenkdNhZsO8wYuy9tBf2m5PRENYhMhXmgtmupSmqeIY+3zzTBuHE+AqEhGgxdeW6X+rv2pShAljRT1g5195ksXdiqxP5sc+47ZAllYucSkPckv+Hwsn35uZrxOUkg0xrNiLamlWjENB27jxDrEIXAlqrDKl3qjxEzYlP9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=Ei3346eb; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="v9qFIcGf"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-45fd461e4a5so1653382f8f.0
-        for <phone-devel@vger.kernel.org>; Fri, 05 Jun 2026 15:20:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780698011; x=1781302811; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p/HB8G1yTQPOAvgzKZeKYVge98Lt9ZnLKHPu1l7zZb4=;
-        b=v9qFIcGf3AzlWTMlJODbm2DBzIdu3pdSB9KlLvoOgaTA8nN64Jb61RDdKdVCLNgnlM
-         aCDmRUI/U0Ee5CwyRPjMDWUvAliXoPY3dLNnLzswOQGKmxsaS9bWrwleM9TzZt5WfgV3
-         cmJc5xsjyi4QT9RQC03L2Boxtr1yu/xacJ36vkGXcKV30BA4oRpCHJojx/pNdDyrP7Nq
-         NTKAv9ZXSJB4H5gPlX0xc4QfP5CTwI83/Fy0A+5V9skGxkDCHOjRjPOm9gmxz5LRWKUw
-         OoAqeGVMiO7VRAt3p+7mhdL4VMqOps2D+kBzKZQH/ijRjkXOSV28ciC4NvxcZlkfK9Jy
-         lc2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780698011; x=1781302811;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p/HB8G1yTQPOAvgzKZeKYVge98Lt9ZnLKHPu1l7zZb4=;
-        b=dw1DWVDLznaVRH9GoBL9+Dd5ed0VSxreTxc+I3RBI/++Xvrxr27rBtmmKzz8q1WOi3
-         k+sZ4aoPhKC28Kdfy4gYqqVOzS9kI6RarQtqdOefyQ1CbldjS9cevi/kbKOe96DmzsgJ
-         c8EMD4piJlkv3iHWksIyjRt3jfJec5BAxY+rTNxbtC1uk0J0QOmz0irt6ghK/DYAa4E1
-         5wePqdOy+lSJcmXG3kwGWmuPCyG4/saFex2FJ6ux0ZyjgJwCbNKxIVpMT+YAEFfaQhn3
-         oF1A1RSIrXmF3+SGhflGoyILgZfy8AKP0BGJGiWqskiqAR6uOExa4OzvzdxKK9DbVjrf
-         yKCw==
-X-Forwarded-Encrypted: i=1; AFNElJ9NB3iCkY8rskn2qNgfO5A4i3JUFu/AiHUg3AkQHC4UYNxjF5mosWovj7zDmbKC98hewAHQAZBQ+7NTlw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrB9JBFAip34vlPuw5gN0SSKrchijNhm/K8ySngURIMhewfR0k
-	wPrO87nG/G8ZhV27g5mIvxkTRefVMB6I05/vQLZqxB7KO9xVKy1GKrQLZe0E/sI2i7Q=
-X-Gm-Gg: Acq92OEYOx6j+VvT+Le5tMycwyoYySPhLnryHye12JwpAcpC0Qe8UnzUqZ+oXvnaTO6
-	uPyEfF98cu//H+qNmFrwncqrEAezRzy48oDQXJCg/PcOqHQgt/lmJ6+HcY3PSwzeaxDhrK0AgtZ
-	vFfoNK3784Hnof4BUAcXC+pvTkCPH5osoJ6gPxsPR1xaWMPhTXDMQMp4XZfmuQHl6qncmqVmLDB
-	cCrm0jxDjswbi4OoMzYXgPXWWzBLst+4QH3snX1Jg9TM0dp4j749/pjeQ4pq9e0A7RJwmuUdo1L
-	KCfKNvCzOitOBFWiHF4/Hnu4dzIzFxO+7DvbJv+h/Jx9ipvskoEz+V9QgBaCY2ZF0SIGgFublX0
-	tYH95oUZ1/zurcfshxJ13WR7wDzoMcRXLSxS7G+1IUNjSO5A3z0NgUcmwnx/zfceDtOTjGOQfr3
-	gLWE0Idu+MCyjLEfZjzLjDnB07Cv4pKHMzCA7+Eaa8UmZJ
-X-Received: by 2002:adf:e743:0:b0:45e:f1c5:709 with SMTP id ffacd0b85a97d-4603076cb46mr6547079f8f.37.1780698010560;
-        Fri, 05 Jun 2026 15:20:10 -0700 (PDT)
-Received: from [192.168.0.101] ([109.77.32.74])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d40sm28849253f8f.26.2026.06.05.15.20.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 15:20:09 -0700 (PDT)
-Message-ID: <87ed4bcc-aa66-4a1f-becc-7fce1fe795c1@linaro.org>
-Date: Fri, 5 Jun 2026 23:20:06 +0100
+	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="Ei3346eb"
+DKIM-Signature: a=rsa-sha256; bh=mO4758l4xD4doudJsBypWffgPZyM4fYzNrX9tTyuI3s=;
+ c=relaxed/relaxed; d=vinatta.cz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@vinatta.cz; s=default; t=1780827561; v=1; x=1781259561;
+ b=Ei3346ebznbzoY+9Qon6+dNgqo1xRE97BD4hbG8ZKJcmVwiQqeq3YlLx+4PXyFu0RH/mZnFr
+ uIgZ86jwee0wLUX2j9PU3suUzGr27NJlacuPbsa6Bqp0ECpiVEg/HnUOZ2/G0NtaCnfvJ3v+htX
+ WihFy6Xf1r69CPAV5X2sEAGiAMRf4D7ZVm5NRzZrPZKXtKvcjIoVdMlAJwPz6hKr0SjMLTdEkO0
+ ME9AKNuyvNk4sef9Q10Mz54/FzHbMLAWdtP/JcYZTLbyN65S8XdeXye7AAayaQFJTVNhej+NHfc
+ 8TVcfYurWrTqiaW/NRLX/E8WvyODd9HUmZSRHY+oolNqg==
+Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
+ e04f78f5; Sun, 07 Jun 2026 12:19:21 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI
- CSI-2 C-PHY init
-To: Michael Srba <Michael.Srba@seznam.cz>, Bryan O'Donoghue <bod@kernel.org>,
- Frank Li <Frank.li@nxp.com>, David Heidelberg <david@ixit.cz>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz>
- <20260603-qcom-cphy-v6-5-e50de0b557a8@ixit.cz>
- <8azU3NvUdGCvWCxLb0gz7FWkTGFL4k_xiBUPp170jiYIQjwHyRqynP_oLG4pjFkIRSY_bo91FQh9ECYlXdXrsw==@protonmail.internalid>
- <aiCiVe_LRA4DXTCL@lizhi-Precision-Tower-5810>
- <8b9f8754-48da-4b61-84b8-3688520c7f63@kernel.org>
- <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <c7f35621-2bdb-4e66-ac8a-6c7fc6f80f1c@seznam.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 07 Jun 2026 12:19:21 +0200
+Message-Id: <DJ2QONQXFUDK.22S5350HOO2N6@matfyz.cz>
+Cc: <devicetree@vger.kernel.org>, <phone-devel@vger.kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <linux-kernel@vger.kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>, "Lee Jones"
+ <lee@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] mfd: 88pm886: Initialize battery page
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20260526-88pm886-vbus-v1-0-f2bd1fd3c19e@dujemihanovic.xyz>
+ <20260526-88pm886-vbus-v1-2-f2bd1fd3c19e@dujemihanovic.xyz>
+In-Reply-To: <20260526-88pm886-vbus-v1-2-f2bd1fd3c19e@dujemihanovic.xyz>
 
-On 05/06/2026 15:47, Michael Srba wrote:
->> So, hex values from downstream in this case are acceptable.
->>
->> OTOH vendors can and should enumerate their registers in an upstream 
->> submission.
-> I thought this was the policy indeed, but this made me wonder if ALL the 
-> magic numbers
-> in that file were added by volunteers. And weirdly I found this:
-> https://github.com/torvalds/linux/ 
-> commit/7803b63a1640a0a39e3ebad487b33cb2d26e778b
-> and possibly some other commits look like they were made by people on 
-> Qualcomm's
-> payroll. This specifically is QUIC, and idk how much documentation 
-> access they have,
-> but at minimum I assume they had access to the CTRLn register names? 
-> (fwiw it's entirely
-> plausible that the registers don't actually *have* better names).
-> 
-> I didn't follow the relevant ML discussions, but it seems to me like 
-> they should've
-> been told to document the registers?
+Duje Mihanovi=C4=87, 2026-05-26T21:14:48+02:00:
+> From: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+>
+> Initialize the PMIC's battery page. The battery page registers are
+> shared between Vbus regulator, charger, fuelgauge and camera flash
+> blocks, hence the commonization of the page.
+>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje@dujemihanovic.xyz>
+> ---
+>  drivers/mfd/88pm886.c       | 21 ++++++++++++++++++++-
+>  include/linux/mfd/88pm886.h |  5 +++++
+>  2 files changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
+> index e411d8dee554..73102e638eba 100644
+> --- a/drivers/mfd/88pm886.c
+> +++ b/drivers/mfd/88pm886.c
+> @@ -16,6 +16,12 @@ static const struct regmap_config pm886_regmap_config =
+=3D {
+>  	.max_register =3D PM886_REG_RTC_SPARE6,
+>  };
+> =20
+> +static const struct regmap_config pm886_regmap_battery_config =3D {
+> +	.reg_bits =3D 8,
+> +	.val_bits =3D 8,
+> +	.max_register =3D PM886_REG_CLS_CONFIG1,
+> +};
+> +
+>  static const struct regmap_irq pm886_regmap_irqs[] =3D {
+>  	REGMAP_IRQ_REG(PM886_IRQ_ONKEY, 0, PM886_INT_ENA1_ONKEY),
+>  };
+> @@ -88,7 +94,8 @@ static int pm886_probe(struct i2c_client *client)
+>  	struct regmap_irq_chip_data *irq_data;
+>  	struct device *dev =3D &client->dev;
+>  	struct pm886_chip *chip;
+> -	struct regmap *regmap;
+> +	struct regmap *regmap, *regmap_battery;
+> +	struct i2c_client *battery_page;
 
-"That money was just resting in my account"
+Not sure if this should be reordered to preserve the "reverse Christmas
+tree", but maybe it's fine if checkpatch didn't complain.
 
-There's alot of technical debt to digest, which I think should be solved 
-in the new PHY API driver.
+>  	unsigned int chip_id;
+>  	int err;
+> =20
+> @@ -105,6 +112,18 @@ static int pm886_probe(struct i2c_client *client)
+>  		return dev_err_probe(dev, PTR_ERR(regmap), "Failed to initialize regma=
+p\n");
+>  	chip->regmap =3D regmap;
+> =20
+> +	battery_page =3D devm_i2c_new_dummy_device(dev, client->adapter,
+> +						 client->addr + PM886_PAGE_OFFSET_BATTERY);
+> +	if (IS_ERR(battery_page))
+> +		return dev_err_probe(dev, PTR_ERR(battery_page),
+> +				     "Failed to initialize battery page\n");
+> +
+> +	regmap_battery =3D devm_regmap_init_i2c(battery_page, &pm886_regmap_bat=
+tery_config);
+> +	if (IS_ERR(regmap_battery))
+> +		return dev_err_probe(dev, PTR_ERR(regmap_battery),
+> +				     "Failed to initialize battery regmap\n");
+> +	chip->regmap_battery =3D regmap_battery;
+> +
 
-- Move to new driver
-- Start enumerating registers correctly
-- Transition to QMP PHY levels of lane config instead of long lists
-   of "mission mode" writes.
+Nit: maybe this could go below the chip ID check so that it's not
+executed if the check subsequently fails?
 
-If you ever rent a car in Ireland and get lost, you might ask a local 
-"how do I get to Tip from here" and we'd scratch our heads under a flat 
-cap and say something like "ah well shure, I wouldn't start from here" ;)
+Also, I think the error messages are missing either a definite article
+or an underscore. Same in the commit message title.
 
----
-bod
+>  	err =3D regmap_read(regmap, PM886_REG_ID, &chip_id);
+>  	if (err)
+>  		return dev_err_probe(dev, err, "Failed to read chip ID\n");
+> diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
+> index 38892ba7b8a4..2c24dd3032ab 100644
+> --- a/include/linux/mfd/88pm886.h
+> +++ b/include/linux/mfd/88pm886.h
+> @@ -11,6 +11,7 @@
+> =20
+>  #define PM886_PAGE_OFFSET_REGULATORS	1
+>  #define PM886_PAGE_OFFSET_GPADC		2
+> +#define PM886_PAGE_OFFSET_BATTERY	3
+> =20
+>  #define PM886_REG_ID			0x00
+> =20
+> @@ -128,9 +129,13 @@
+>  #define PM886_GPADC_BIAS_LEVELS		16
+>  #define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
+> =20
+> +/* Battery block register definitions */
+> +#define PM886_REG_CLS_CONFIG1		0x71
+> +
+>  struct pm886_chip {
+>  	struct i2c_client *client;
+>  	unsigned int chip_id;
+>  	struct regmap *regmap;
+> +	struct regmap *regmap_battery;
+>  };
+>  #endif /* __MFD_88PM886_H */
+>
+> --=20
+> 2.54.0
+
+Reviewed-by: Karel Balej <balejk@matfyz.cz>
