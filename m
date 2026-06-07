@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D938888F;
-	Sun,  7 Jun 2026 14:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9073A3E87;
+	Sun,  7 Jun 2026 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780841545; cv=none; b=cDMhp1nXaIyXYzaeWpiqPRXjjN/AxqX6RRFaRfqqdBBNHyiR5mt50MGdmDnVE1OknLGMWgMzmZ6hQCJkZe4twts7rp9HhnKvOqJFOepCLgQdyYrAyuzuFcvPI4GbJi9cHY1YkjaNsgDQXrNnjKbbdlHXbADbCGZlHluj5erW3Vc=
+	t=1780841545; cv=none; b=q6RjdSx6Rnbb+YGgNBcnjS5CJlfhbQQjDG9zhZH/H2uE3plwovQ546ZMr20s1bmfARUNv4LMzgswGlnhWRNFUL3Yq3wigzwq+9wbG5Z18OzBXoPjBuZsryg8aIjeujetMOFnXK6KmY9D4Hajz8Khkoh9QpGWICHY0Mx8RtGDUkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780841545; c=relaxed/simple;
-	bh=VXFI2Thg0ZPZn98L4AfzCgC22eFLe52VScYx6+NF/yU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TM8fOp2wd+R7ttN3uDR7EpW0IEXgP5L6VFU7lre7K0BCHwS4PMSh37krevYKb1nF8Lgk8DukEZjodRMrVWi9BGstQbC57z3AGQd6b+pTWIM+Wn7u3doyzikooUXfSGFZwQz7ypm06TlcvDQjQhW094pcrOv2T4QBVlBhEYEXA6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAvPzBJ1; arc=none smtp.client-ip=10.30.226.201
+	bh=SN97g4eXmK1Hw6QJTh1ApmmGZAS7U+3aXMC+FoGCjRs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fP7YMajImtd5p6RcQTsEgfb//q08qovhuNTcTozllGHTtLbwrEUj6a9nljDTOd4yoFd85/h8tQrs7WGPVDrIrxYNo/466GFrRoaeEfl9OukzTxdqJHxQoTNpMmAdNjvwVA0qHA1pjuqo/9wqS/Dcny3wiqrOhHaPkQTHFP2zYvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5uDXs8V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAvPzBJ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A654CC2BCB4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5uDXs8V"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C9BE1C4AF0F;
 	Sun,  7 Jun 2026 14:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780841544;
-	bh=VXFI2Thg0ZPZn98L4AfzCgC22eFLe52VScYx6+NF/yU=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=SAvPzBJ1YQuIsk3JhvlUZbaPXxIwX0alXTrTaWy6YcsuuUcwCkxgcvdC+cJTUgoIM
-	 nvGyNLcS9cRhyIpTjh6u7U5qBD0bPpiBVv9c7+otsPLbDuiBrmAVlUpxLQuux7OG/+
-	 9LEC/1T9Vd/rOiuhe1oglisdWfZD+0Pp0iTGqFu+EZIWOTnHoOYsC/spK+OwUFdoFw
-	 boMcbxyRLKTDVrlB6cHE9JeMER1CMiDffcrtGbpZWRGbvG1ChbwJ/GWR55tIG0Kz20
-	 T4HJWeHR6b5YCJiQmDzh7Q+FwhZLK5ZkEElkWqHo2qmZHQ6u5aav8+NYoNyj6rMebS
-	 nGXeTFJ6a8azg==
+	bh=SN97g4eXmK1Hw6QJTh1ApmmGZAS7U+3aXMC+FoGCjRs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=u5uDXs8VpLexFz7o/Ag0XgxDye+FOSW/O2qh3ES3r+KD7h/AEDGqRzfVd3QWMR342
+	 CZe6MQT7fXEK3L2whYo01vuE+AMkXeQaiMtils3+V1iT5D+qcGiM7wbJSV9ZfCZKfo
+	 MP4qYRnMNl3a14DRjCjujYvbcQ2gHbt4uuAZTCMQyErHfA02/eZBqmaRIawvbGSytu
+	 8oHCn7yQAFrNXQd5iVBpOc86XjT9av4xePdyWXZSzvFuZXHuZqNWog7SO4JUtliYvP
+	 q9sWAwWLk7gJIvJ5KBYTy/p43eZjkcyqgO7zeUMbnWtaL+vYomz/mlxJdwK8IjxZaw
+	 p7CFPFr5H4naA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A559CD8C8E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3FDDCD8C93;
 	Sun,  7 Jun 2026 14:12:24 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 0/2] Convert qcm6490 framebuffers to use memory-region
-Date: Sun, 07 Jun 2026 16:12:17 +0200
-Message-Id: <20260607-shift8-fb-v1-0-72b9dac25f4a@ixit.cz>
+Date: Sun, 07 Jun 2026 16:12:19 +0200
+Subject: [PATCH 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Convert fb to
+ use memory-region
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEF8JWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDMwNz3eKMzLQSC920JF0zg7QUM7MkA/MUCzMloPqCotS0zAqwWdGxtbU
- ABywqtlsAAAA=
-X-Change-ID: 20260607-shift8-fb-60fd66b07d86
+Message-Id: <20260607-shift8-fb-v1-2-72b9dac25f4a@ixit.cz>
+References: <20260607-shift8-fb-v1-0-72b9dac25f4a@ixit.cz>
+In-Reply-To: <20260607-shift8-fb-v1-0-72b9dac25f4a@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,44 +52,66 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=635; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1149; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=VXFI2Thg0ZPZn98L4AfzCgC22eFLe52VScYx6+NF/yU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqJXxHGDqvCtvP8Vvnx1zOU2LExgk5yOf4Ltu8I
- KlzHGelSKyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaiV8RwAKCRBgAj/E00kg
- cjerEAC7ml4ybpC2agnoPSETQiKU7QNKBAJWZEib4uznq4lSZy7DKIwhk4udcgBbI7+RGeLMh4S
- VuTv3wZpRGCbuIIieuZlCrcVrKX1757jsrUOTaoLd180aCWc1ZIDQAGP7Vl2Z/w2Yv3G3XdPgW0
- E9X4mo7pu339AhNKSZuC/7Evzi5FR6ykFd5F889dpiuOM5mn4dfOk4yb+B6B26opvsh8YBIrDjC
- cJ1Wx48il8O4i6GqltQAa7joEMW7d+UVbNnC013ln12dToERGiX4w/v61oOCf1aCHBWCElzkHLq
- pdv7YW49jWMAXzrb4xIEcmqk91yr4OmelxnlyP5/Tr8xskcxM5NZfRPiXnhkz8GiDmdaTwrNm1g
- uC4TKhhRZz+gulJc9XoQ/g+sPH8LgdNmlQjZF1957T/oTWa9PnSDp0RlKmgYi5hgWJQnehlT1Xb
- iRWTzwg2ht/7S1Arh9I2Ca4eLSXGzz7UxBw7X+5oAmr5hr/N3Sph/S7KWfFIvq2HqDj3icg87Ew
- 84EelkKhnKU/h9RfYRsWQuFyY7XTF/oGERY3STRrz+XKQiuftUhMF/k9qpmOxCmaONxzy6RefdV
- LhnEXvtU9UHTglrH9bG9v4OB2ihibwwZFjcVWiDjNkw0FtJDuyWRkC3j1/182y+rIQ8dpInpTJj
- wCtRwoDKT5LM9ew==
+ bh=KULJnC5wByyrnpV9Tcy4pepjm2js9OMamuzNs1jvFiw=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqJXxHV05wOdRcHomRxte6SsEwkVlVexm3L1A3r
+ K41sA2c14WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaiV8RwAKCRBgAj/E00kg
+ ci1aD/9FAbrqqMFNKChm/jOstmzz0OHZbfhSVn68fHxoG0vfQW23HyiIMl2uT2gGhcmnznposgG
+ zhH+dq3v5Ff1vWMxMAjPpDoUONsHn/+bYcq/vzx73DFPXVt3nTrB78DGu8sbu79VSniIzfh+2zh
+ 8aig2qI+KEzZ+ibNgEYNdIHaGaYwBnaMwkEVWnRjkfdJuK1ZOH/DIp8aHnBnEdFvTKudbXvahyf
+ iX60Cq71rdVEinMTlCltmcEZwmv3NYtYJR78ZSTzOetHJ6Hy7+r0+EcOarUV4rUpnt24vad6xTz
+ AkJ0+DqnYxsSJFf4ltfDSbeelHNjCnYg78GmFpnp+RNU8yIC6oxO2MkzMVRCAmymBaKyrpra1Rl
+ PUW7WnMUQni+oQD/BcWj21SE7Rwa1KkoNxmKKIbm3fDI4wZykfKouWG35FgnxhWhPJv8vCORuet
+ LsAHnFsJpiZDF+GB8o2AvPODYysoJ12Z6pwZRiMfcQQxHRy7y89nF+Hmmy1B/PMSLlJTGczpLa0
+ zU5vUi61aTuphxyrXMuDOeREBYIhm2btiW2jHiEXqDB7HvWnoT+9r9KDkbhpit12HtvhLmI+wfO
+ zuDmxXUmiyXZmeLHLmawyDXXmK1LzC1KYMeYsGiG8VorqUKrDle2UD+h86Qo0xynOcf5MYqHFdV
+ urBtunVbbFjGECQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Now that upstream u-boot recognize it, no reason to not do.
+From: David Heidelberg <david@ixit.cz>
+
+Instead of manually specifying reg, reuse the memory region.
+
+This fixed mismatch of the node naming (0xe1000000 X framebuffer@a000000)
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-David Heidelberg (2):
-      arm64: dts: qcom: qcm6490-shift-otter: Convert fb to use memory-region
-      arm64: dts: qcom: qcm6490-fairphone-fp5: Convert fb to use memory-region
-
  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 4 ++--
- arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts   | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
----
-base-commit: b99ae45861eccff1e1d8c7b05a13650be805d437
-change-id: 20260607-shift8-fb-60fd66b07d86
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Best regards,
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 04cb9230d29fd..4ca0e93ed63ee 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -35,19 +35,19 @@ aliases {
+ 		serial1 = &uart7;
+ 	};
+ 
+ 	chosen {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		framebuffer0: framebuffer@a000000 {
++		framebuffer {
+ 			compatible = "simple-framebuffer";
+-			reg = <0x0 0xe1000000 0x0 (2700 * 1224 * 4)>;
++			memory-region = <&cont_splash_mem>;
+ 			width = <1224>;
+ 			height = <2700>;
+ 			stride = <(1224 * 4)>;
+ 			format = "a8r8g8b8";
+ 			clocks = <&gcc GCC_DISP_HF_AXI_CLK>;
+ 			vci-supply = <&vreg_oled_vci>;
+ 			dvdd-supply = <&vreg_oled_dvdd>;
+ 		};
+
 -- 
-David Heidelberg <david@ixit.cz>
+2.53.0
 
 
