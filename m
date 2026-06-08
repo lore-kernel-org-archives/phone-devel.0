@@ -1,173 +1,253 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013020.outbound.protection.outlook.com [52.101.72.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB8C34751D
-	for <phone-devel@vger.kernel.org>; Mon,  8 Jun 2026 17:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780938059; cv=none; b=DBxW/2qcu7XPOvsIqQUNcfUzuQWjrx+TcGxzDvNQvSdiF5RBvAc14/8V7pykJrWODMwWIgW3+nxw0bW3dTVTVbeaQyLHNP2Pc8Dk22+dymbu/hwWMi7Ge/+iEYN5Js5ctPCM0VOdKWiR0ZWlK8fw88Hd8YUaqVJumQqW6WX8vPo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780938059; c=relaxed/simple;
-	bh=5mvOFr57QdmCOZIH10NBkLPJN28o5FUmRnig68cIKyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zx9v4AgeI4VxNj6b7vbygqjo42tEBq+G9+Wd71WDHCH7zkP3QZKoGhjllANODJM4wmVFaDgajx6P7Geg/RUReiow25v6BvJgc5WWWXRdfYqOClGcRiUijMzLLfQrdC06YTN5yCdah6MGmOttLNbEcgK0GszN2wnspa+ps2VNwIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ud0bTWau; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D65382F26;
+	Mon,  8 Jun 2026 18:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780942578; cv=fail; b=qp4OP3aGpbrllu2VGgYFd8bUFSVpOw5rR8sNr7GFGG9z0q8Njo+4CGTPO7sAsE5FcTp7R4eRl9D/iVk7kS114KsSxaVNXgL7vThFk6kwOzeWUNsu/LZk/Q5eRcMYZ5f3ZZ0ZUsUa9kR0mYzDyB6aU5U/RJKzXwEjkSqgVYuqRpI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780942578; c=relaxed/simple;
+	bh=Re63xzrpE2zYbSNo3n8kWka8C3+7gl/cmGbXQyND3kU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RENrOpStcBvJAw8zSOGg/veFRtEoqp6BAH9E/0BFXHm3cieY8WdlSgmqEGpTNHG15QK7UWGwC+fhdSPADRI84DMc5UpqiKzrNJ/ML43asXFBXjr+lOy2nsx7z6cqhLeWz/Z38h+QNI7o25BVNpl5i6QNcpATcgLLDk7I1SKpzpg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qpOhnER9; arc=fail smtp.client-ip=52.101.72.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ud0bTWau"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-69170548d0eso2860911a12.2
-        for <phone-devel@vger.kernel.org>; Mon, 08 Jun 2026 10:00:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780938057; x=1781542857; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YQdKRDGLxWtcVy3dVG4sqJ3R7C9ssUG4+sQ2kF3IHpM=;
-        b=Ud0bTWau7S3BJewbN5Fy5qTvEsIOR/r7cZkhaC7o0VW4/z74Ppt5tjMTUgfDX3AeSW
-         dWEKRrMC8Rb3/2OqbsH280+0OxDEHe3RMkfJU+QLhz0n5QdXM5CJoNcZ3lrD51xO54Qp
-         /9BB6mCSUdfqT1G31t8dIXyFL4q7MRyRkn3LkVO6jIR7NgzB4pMPRickZdvVHnd4ockx
-         cY+Eu4U8PTuXVHh8R9oPbEG700qTTo/ml30aXVgi+4XebMoI2GYSpjwL5lWxtIQfylV7
-         B3V7MVftMt5folgL0NJ6vUcD2E87CJe3JgIOnAkq/QhOF8j/G/qJtv/qSfriNgnOwaUt
-         V1Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780938057; x=1781542857;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YQdKRDGLxWtcVy3dVG4sqJ3R7C9ssUG4+sQ2kF3IHpM=;
-        b=LIR3dTJQQrG9p0eUgZiNAUK8vv6xRg5RKOaD5cBV/0RZxJOifGqduyBasXSSE4pfl8
-         MVKKUD4Mon56F6M6/2HSY+kZ9zmzpza+ktGIMZVExb435rzlGkK6Fg9N8gt0xUT6s+HM
-         xAOgEW6sJsbcx+wQPmEhYFXHrZe02ihGEJZDsp6oENFwf/kRYa8P0xvhF9p++F945me0
-         AmpzfE7uUxqeCbtT5pKGijhFUkpcLoYAUQ/SYlAkIp8/VGdpULL7v0a77ptKsM0QUjSw
-         BvmLdjd1sQnEcxO120DTEa7JsVAQ8zUOcWesoMNzMB/S8WkzsdlOfN0pl6fQGjxT3OLK
-         jadw==
-X-Forwarded-Encrypted: i=1; AFNElJ+HdkCsjI8d2XlZTNGn2MStWtGyoVI96LRB8cTN6dxtXWJ4DCdX3E5vRXARNzY77+pYRfK767K1Sod+yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFBTrijaeT3xbcF6r00xZhuHOmZxdc1KVYddRtbphagpzq6REn
-	QjfqsjpVWVSTDl/vxx1iI1Ii1N98l9H3qq8jJiDVU4dTENjDewAwRCTFIIkt+vn2d8s=
-X-Gm-Gg: Acq92OGSU1RYHS+MZtx5D/wqkTnEmB+qDKIXOF7gqtGdluqP+AMwsdeMxgbvCE4pJtZ
-	g5n0Nk0RK+hXBo+CH6QAiZCQ0Jn33M6uVUeN1Q4rDHo98ezce/qwNfy7gckdo5xLdfAQvfQVuF8
-	EIVysUp6h0QYopr6LBS+Hmf9FViIguAJLuf6V5CcKEvIpDA9Kw/G17i/mOwdZNz6ChIvpwPHlWC
-	zFhr1dc+KJ8/AcOu64LuzQN26vpjKM0Btbcuv+u+2h7adxWF1ffAuZDT/LOGozb2KCIw1+EDNr/
-	3JHcyF/GaWvvTs3PRn5/dlEQefckYGaopq8xHh6uOA5pZJJbkZkT14xU6j+C5nYkVlo/nmOnbIK
-	2wBayXOcy80AyiqHBhYUvUzlzagWS3izniatLZgv2nFLIV833IGc4CB7KdO/J6qrvmbv16f2GDU
-	VQCOGw/VR4GZDUruika4AZTZp+S009ekOAmCysyPD1orfd1aY2q3KIJxJAGnoW7xdavv1dPB5/a
-	Q==
-X-Received: by 2002:a17:907:94cc:b0:bd8:f4bf:76e2 with SMTP id a640c23a62f3a-bf373afb82bmr653512366b.48.1780938056680;
-        Mon, 08 Jun 2026 10:00:56 -0700 (PDT)
-Received: from [192.168.1.36] (p5b29e032.dip0.t-ipconnect.de. [91.41.224.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e64303892sm7454030a12.0.2026.06.08.10.00.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 10:00:54 -0700 (PDT)
-Message-ID: <9883eec4-84af-41f7-abc6-46531e44e926@linaro.org>
-Date: Mon, 8 Jun 2026 19:00:52 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qpOhnER9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xmAJ4TAorFy5UJTqpMu1y8mFG9dcmJEeIe/3HoZL8MTJZM9yGrBxEMFTca41/4OXaZ5vOW5rZ54o0atK0C8/Ypu9BgkrnYgQ0D25PtbhHbCeIkX3xaA59RZdP2ViCt2sBCC/DJuXaNLrkaRVcPSgYSsyjDPVwUdD0YqJ7qhF3vKGOdAti4EFeNrB2opReAB1XS66yTOe+nJmXCZAuaygyhjCDFlRpPr1lQ/VM1eHm3hRhBooGev9xaW4suFZE6ZKaYRxmVmZ4Kcl0VQdOYF/FWx04S81E7VfNixmYDJGtQAGanT7zjx/S5NZgMSKRNR7XIZL/9IgDj9mbvJJe+gxjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GD7j8q55WTq6X6hbQPlYQoQNxgr4xEYMfKeQiDy83to=;
+ b=X/i6njoClhTSar+2/FOh/1pQdIJ59SZOsTJAURHeVIPNLkv66zwuX9Z+jG9sVuvSjFkEHlLcyAuPPR6sECiRaCbTOgE5KlZ0vQolQCBGb1Df8yCnru5qiHUWx5qnqP6hbsQ715Cf1f6NOdGkBk165UnQt75bCcPWkzFeoyVIVkrjrfCWne0jdJa0FdApEBMJF4fO/hbOUN0ea3kbT8fBt6D4FxfJ0s+kF2nt27+p8Tc7uqAV85shEiwFL1iYk61yJ93Of5t3JKbmNoWbdo9fYPPougCd+tNhfenrhgKb5amIlZ+cm6P1RNaQ1aSmwT6cTTk+ujhB8lDxftzzqZL4Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GD7j8q55WTq6X6hbQPlYQoQNxgr4xEYMfKeQiDy83to=;
+ b=qpOhnER9MqXP9b+olcP03oCURxwjhhFc325q3MaA/jy1XQ1Qde7DtFQqBshgQWaNOlEsqcq8zHUMBoLPQwyUpLEryjQKkcf2rBSJRs0DbASU93ZcwPfemgyaI/Ej6loDpAPoOis8hqDNuylO6Dyh0SVnwgk2bZ2e7B3Hh0xX2tPjM8mFcax7HOFl6OZyokhbLIR9SecBcusZDaOIy3pKAaulsAmF0Ar/Ii1tfbxVLPEUyyNTsScEaR9iTM7wglJa1PtDR9yZ2bY4ctsDShJkoURFpbiwwJUWRJ4K6HE9RHfkS1Z2fSGERMB4Zy6ZrlX8ITLgKqjj+wK/13Xeqb3C8g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV2PR04MB11637.eurprd04.prod.outlook.com (2603:10a6:150:2ca::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 18:16:11 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 18:16:11 +0000
+Date: Mon, 8 Jun 2026 14:16:06 -0400
+From: Frank Li <Frank.Li@oss.nxp.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Petr Hodina <phodina@protonmail.com>, "Dr. Git" <drgitx@gmail.com>,
+	Cory Keitz <ckeitz@amazon.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] media: qcom: camss: csiphy-3ph: Use odd bits for
+ configuring C-PHY lanes
+Message-ID: <aicG5nsTy7rIuWTc@lizhi-Precision-Tower-5810>
+References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+ <20260605-qcom-cphy-v7-2-426c37e9008f@ixit.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605-qcom-cphy-v7-2-426c37e9008f@ixit.cz>
+X-ClientProxiedBy: PH8P220CA0017.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:345::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] gpio: qcom_spmi_gpio: move PM8998 GPIO from legacy
- pmic driver
-Content-Language: en-US
-To: petr.hodina@protonmail.com, Sumit Garg <sumit.garg@kernel.org>,
- u-boot-qcom@groups.io, u-boot@lists.denx.de
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini
- <trini@konsulko.com>, Rui Miguel Silva <rui.silva@linaro.org>,
- phone-devel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
- David Wronek <david.wronek@mainlining.org>,
- Jens Reidel <adrian@mainlining.org>
-References: <20260605-qcom-gpio-v2-1-c34093041c66@protonmail.com>
-From: Casey Connolly <casey.connolly@linaro.org>
-In-Reply-To: <20260605-qcom-gpio-v2-1-c34093041c66@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV2PR04MB11637:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b386390-835e-4419-340c-08dec58a0515
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|11063799006|4143699003|56012099006|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Nu5ZyjBXN1YBX612cj/KD+pCm5gYQVjCON+BhvZOKqCzJMtJVyFWuj6quopG49YRWKiTstu72WEUNKVBtubAD4+1Z2TOLggsXpB5Iq8muxUa+Nv89pOugtF5WxEhF0xdv8i2bRH5dwN9cFIcPL3UE1iygnmLbQ3X8j0BQKZMFbvTm5zQwg12L/bHvsh/9kEDynQH0nLw52IxU5YzNCIO5m+30uL6TqeOoIaq7/MHgwJTAhyh4t8gc0dDE1MSqn3QEc73/cUtcdIx+m8ZShGRL2aTd0m7AhW2LpKLu5mYxkj7DUr0GzXV2IEyqr+Owp0aeroUQgj9cQgLckbPqQI9UXNsS9G3re1fX9zruKsQjqyI/i6qURNmhzaSny1O6mrKdZDYwkkmuTVJiS0Pj7H2R/fX2eFI45hcItysnzzn0c9r4oef2n45o3MU+TwtseRbGr0Wx4sEU0CnFDmOkYcu+JXk3jWt5FgBFgLgeXbDvMm0TVuHMQjbUQpeE6DS8J9YqXjPKw7n3JQj6dSCoWPRCqjjPJ4ea91mnzaewG4nGzSLwgsIcW4AhUn3xI7C2TJo5ZUiBR1fsMtjuJIeC6qV9ybI+VUTfnTlmF1fO60SatQYmGUm0GUAvQ3ywWgYNiTst/1sSuFrsHWCau61nmdHqvXj27R+OO55yUsGWoCtyaKQLrkEtK/MSJsba1aojtCZ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(11063799006)(4143699003)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AI2wJ73fb6fLHWlkHdqAGAGESh0XH2hdXf06fwpsPa+PRge0w6DiPV51I2Lz?=
+ =?us-ascii?Q?8sa1dKh7pCxMARcmkQaasCpywr1we/QApuXMygiOya2hxVoa0FmL/ZLBGXHk?=
+ =?us-ascii?Q?xPdcIAbMOc8T8VDfV5J/o6ZZKDAGcajfJtL76oitOs2yYuxmjDKm1oZlJbdm?=
+ =?us-ascii?Q?dxvpqgcPrh/7AXVAh37AF92p6OHS+upUxcueNbm1MP56s+feMlzYzgkjFNRP?=
+ =?us-ascii?Q?5QCidk0c9xEmQ6P8+dn7bTG6WKr8m771gCa0N8kUkZYpEc6eHTpJHO/OR7Z2?=
+ =?us-ascii?Q?d5G3eO4iG0mQzH6RECqBRl3kEZmWY8taFsO3GTl0SiCBwPWUXK477SPIbwII?=
+ =?us-ascii?Q?wkhlKo7V2Ztr253nc2pkyiyM51l65owRJAxIVAxjxNfFCeH9OmzcbcJPICAZ?=
+ =?us-ascii?Q?drgUKi2zlLrttY0JhzPpMjvcMCUAPmJn5hD31QUEdxawKm+Yld/T/Kok1wms?=
+ =?us-ascii?Q?KV6X13onAMhaqRrab4rdPFAkZMLg6WKyzlLnyzDgPFw4TtwuK4xqwOsK6mld?=
+ =?us-ascii?Q?FQfqrKsSgqGO3ahEfuircdVdIj6wvbP4ZpIWb8PqPsW0/9dZQQSL2xZRKa7B?=
+ =?us-ascii?Q?R4Zcs7kLP3ELHrVZLnFPwVBETh+UG09TGrNGhGh7Z9am2z3aadCfTZzlenzk?=
+ =?us-ascii?Q?xTidBXjea6yc6nbVXK5/76YU7I4tmFf/83xDIv/zVoE4/YTpo9dOVee/lyF+?=
+ =?us-ascii?Q?vVFnmuJFbR2mK5KxNtiiDnanADObT1vTS3nbRBJU8XZnsHwZPNnkN/wfy+RM?=
+ =?us-ascii?Q?0PMYTcuJq5QNtwa7bZbMI3CfJmzuIexkVhDEDPBocM8Q9V75hgcBCk5y7xFA?=
+ =?us-ascii?Q?ms1AzqIqxnEPr44k/9yEuZ4LypTawkfbJeO3RdUOwxeKQnJc52nJnnWOET6Z?=
+ =?us-ascii?Q?7lnrJEpfqlMfhxdbWUG7XVwsENQLGTr5Q9ryiO9z4QndC1vDtHM6Zb1LUEIe?=
+ =?us-ascii?Q?PPRU9wkPTVJEFoozDpuK2eKHXKfzZu65Z3R/aoBYC/8TsSamYESpPYVuZv/y?=
+ =?us-ascii?Q?GBmNJV0zK52ckfkdFZfEEhjAKXUQrz9O0JtQWzndm4u7CY4wTG1BH/XqOZfJ?=
+ =?us-ascii?Q?TJZJhUEZGQ0AIscmK5swO2u8Pvo9IvdyZDL5ZDO/JNJaSOYttwz/o0aDDuBI?=
+ =?us-ascii?Q?oFyft/Wxd5iXLEtDL2CS+w+D5nBjKBaAvnPfi/6Ow5/uIAzCayNa3O96tILX?=
+ =?us-ascii?Q?IPq979jxYP8FFGEHQb0jnKn/ZyHJRmyWoKaPjDODaQ8VGMVvCni0TXSYZeZp?=
+ =?us-ascii?Q?oTtbNNXGAt+o1ekXZg/G3U5kmFDr526gnqiuYdTeO4GaPnC69MOq6vfhVXgx?=
+ =?us-ascii?Q?kbTtqIsD1DS4JhxayR8vUjuZPhiMgbwq3tFh24Y+NO9mwy/PfLjgcf/yWUzM?=
+ =?us-ascii?Q?4tpSCV0TbkKi7Ra5HehYF0SdJhljmcXIPgicyTGJV4GsEJ5tg/1BZhontgrQ?=
+ =?us-ascii?Q?QgZms3HVEGnHYE1e9NUcFZchxat7KeAGzrAPvy3n1Gl5fgVtTr9249UI6igr?=
+ =?us-ascii?Q?KoNA4Vsxzf+fUpjT/vY098bwdEEGIoX2NFf6bDfuoKQSMdoAyHoToXVPYA3O?=
+ =?us-ascii?Q?luT0dKJ7Kzz+aP5v9PZ16PNJf+NNOkaeof4gv7YrBwfmY1DSG7Zb2hG6W7cb?=
+ =?us-ascii?Q?VUc2YYww8L8twQulP3espHOSgm/Z+Qief+/lExUE60lC8Q2rZ4LjxA2kVIAd?=
+ =?us-ascii?Q?C0ComY/rF/16KvXbPOSa0EZjfLSnOYzHZVWEirQ6R7mxCuEUuVes8RFgX8HZ?=
+ =?us-ascii?Q?5BitA7W1RxtP/K9iyTOT4xjGwpg5ZrBvZDWVX0rN5Z1ugc3YBJwH?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b386390-835e-4419-340c-08dec58a0515
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 18:16:11.6836
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: omY4DUjNy8YQtprsfKVfyWlgzClXQn1Bz1RohhUsjnW0eCWjidOzf6YqKS+Ap49YA3wPC4rJcPsu8Mj2zDU95hHSp3rZTh3XbyzEt0OQRLmcHaprNBUCaJFSzeK53Wq4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11637
 
-
-
-On 05/06/2026 17:09, Petr Hodina via B4 Relay wrote:
-> From: Petr Hodina <petr.hodina@protonmail.com>
-> 
-> Move the "qcom,pm8998-gpio" compatible from the legacy driver
-> qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
-> (sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
-> the Volume UP gpio-key.
-> 
-> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
+On Fri, Jun 05, 2026 at 03:14:40PM +0200, David Heidelberg wrote:
+> So far, only D-PHY mode was supported, which uses even bits when enabling
+> or masking lanes. For C-PHY configuration, the hardware instead requires
+> using the odd bits.
+>
+> Since there can be unrecognized configuration allow returning failure.
+>
+> Acked-by: Cory Keitz <ckeitz@amazon.com>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
-> Move the "qcom,pm8998-gpio" compatible from the legacy driver
-> qcom_pmic_gpio.c to qcom_spmi_gpio.c. Enables on PM8998-based boards
-> (sdm845: SHIFT 6mq, Pixel 3, OnePlus 6, Poco F1, Sony Xperia Akatsuki)
-> the Volume UP gpio-key.
-> 
-> Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
+>  .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 39 +++++++++++++++++-----
+>  1 file changed, 31 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> index dac8d2ecf7995..fa24fc9706748 100644
+> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+> @@ -9,16 +9,17 @@
+>   */
+>
+>  #include "camss.h"
+>  #include "camss-csiphy.h"
+>
+>  #include <linux/delay.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/io.h>
+> +#include <linux/media-bus-format.h>
+>
+>  #define CSIPHY_3PH_LNn_CFG1(n)			(0x000 + 0x100 * (n))
+>  #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG	(BIT(7) | BIT(6))
+>  #define CSIPHY_3PH_LNn_CFG2(n)			(0x004 + 0x100 * (n))
+>  #define CSIPHY_3PH_LNn_CFG2_LP_REC_EN_INT	BIT(3)
+>  #define CSIPHY_3PH_LNn_CFG3(n)			(0x008 + 0x100 * (n))
+>  #define CSIPHY_3PH_LNn_CFG4(n)			(0x00c + 0x100 * (n))
+>  #define CSIPHY_3PH_LNn_CFG4_T_HS_CLK_MISS	0xa4
+> @@ -1108,23 +1109,32 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
+>  		writel_relaxed(val, csiphy->base + r->reg_addr);
+>  		if (r->delay_us)
+>  			udelay(r->delay_us);
+>  	}
+>  }
+>
+>  static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
+>  {
+> -	u8 lane_mask;
+> -	int i;
+> +	u8 lane_mask = 0;
+> +	u8 offset = 0;
+>
+> -	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> +	switch (lane_cfg->phy_cfg) {
+> +	case V4L2_MBUS_CSI2_CPHY:
+> +		offset = 1;
+> +		break;
+> +	case V4L2_MBUS_CSI2_DPHY:
+> +		lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+>
+> -	for (i = 0; i < lane_cfg->num_data; i++)
+> -		lane_mask |= 1 << lane_cfg->data[i].pos;
+> +	for (int i = 0; i < lane_cfg->num_data; i++)
+> +		lane_mask |= BIT(lane_cfg->data[i].pos + offset);
+>
+>  	return lane_mask;
+>  }
+>
+>  static bool csiphy_is_gen2(u32 version)
+>  {
+>  	bool ret = false;
+>
+> @@ -1155,19 +1165,32 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+>  	struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
+>  	struct csiphy_device_regs *regs = csiphy->regs;
+>  	u8 settle_cnt;
+>  	u8 val;
+>  	int i;
+>
+>  	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+>
+> -	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> -	for (i = 0; i < c->num_data; i++)
+> -		val |= BIT(c->data[i].pos * 2);
+> +	val = 0;
+> +
+> +	switch (c->phy_cfg) {
+> +	case V4L2_MBUS_CSI2_CPHY:
+> +		for (i = 0; i < c->num_data; i++)
+> +			val |= BIT((c->data[i].pos * 2) + 1);
+> +		break;
+> +	case V4L2_MBUS_CSI2_DPHY:
+> +		val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+> +
+> +		for (i = 0; i < c->num_data; i++)
+> +			val |= BIT(c->data[i].pos * 2);
+> +		break;
+> +	default:
+> +		WARN_ONCE(1, "Unsupported bus type %d!\n", c->phy_cfg);
+> +	}
 
-Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
+can you use similar method as csiphy_get_lane_mask()
 
-> ---
-> Changes in v2:
-> - Reworked per Neil Armstrong's suggestion on v1: migrate PM8998 to the
->   modern qcom_spmi_gpio driver instead of extending the legacy
->   qcom_pmic_gpio.c.
-> - Dropped "gpio: qcom_pmic_gpio: implement standard pinconf parameters".
-> - Dropped "gpio: qcom_pmic_gpio: don't reset pull on direction change".
-> - Replaced with a single qcom_spmi_gpio.c patch that claims the
->   qcom,pm8998-gpio compatible.
-> - Link to v1: https://patch.msgid.link/20260601-qcom-gpio-v1-0-e24bcdb35da0@protonmail.com
-> 
-> To: Sumit Garg <sumit.garg@kernel.org>
-> To: u-boot-qcom@groups.io
-> To: u-boot@lists.denx.de
-> Cc: Casey Connolly <casey.connolly@linaro.org>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Tom Rini <trini@konsulko.com>
-> Cc: Rui Miguel Silva <rui.silva@linaro.org>
-> Cc: Petr Hodina <petr.hodina@protonmail.com>
-> Cc: Luca Weiss <luca.weiss@fairphone.com>
-> Cc: David Wronek <david.wronek@mainlining.org>
-> Cc: Jens Reidel <adrian@mainlining.org>
-> ---
->  drivers/gpio/qcom_pmic_gpio.c | 1 -
->  drivers/gpio/qcom_spmi_gpio.c | 1 +
->  2 files changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpio/qcom_pmic_gpio.c b/drivers/gpio/qcom_pmic_gpio.c
-> index 4458c55cd3d..6215f794e09 100644
-> --- a/drivers/gpio/qcom_pmic_gpio.c
-> +++ b/drivers/gpio/qcom_pmic_gpio.c
-> @@ -344,7 +344,6 @@ static int qcom_gpio_probe(struct udevice *dev)
->  static const struct udevice_id qcom_gpio_ids[] = {
->  	{ .compatible = "qcom,pm8916-gpio" },
->  	{ .compatible = "qcom,pm8994-gpio" },	/* 22 GPIO's */
-> -	{ .compatible = "qcom,pm8998-gpio" },
->  	{ .compatible = "qcom,pms405-gpio" },
->  	{ .compatible = "qcom,pm6125-gpio" },
->  	{ .compatible = "qcom,pm8150-gpio" },
-> diff --git a/drivers/gpio/qcom_spmi_gpio.c b/drivers/gpio/qcom_spmi_gpio.c
-> index 1a7c7c48dfc..8c3323b23b7 100644
-> --- a/drivers/gpio/qcom_spmi_gpio.c
-> +++ b/drivers/gpio/qcom_spmi_gpio.c
-> @@ -751,6 +751,7 @@ static const struct udevice_id qcom_spmi_pmic_gpio_ids[] = {
->  	{ .compatible = "qcom,pm8550b-gpio" },
->  	{ .compatible = "qcom,pm8550ve-gpio" },
->  	{ .compatible = "qcom,pm8550vs-gpio" },
-> +	{ .compatible = "qcom,pm8998-gpio" },
->  	{ .compatible = "qcom,pmk8550-gpio" },
->  	{ .compatible = "qcom,pmr735d-gpio" },
->  	{ }
-> 
-> ---
-> base-commit: 1f89ddd61cd8c27a3dc1fc7edbeccb55d424eb72
-> change-id: 20260601-qcom-gpio-98e85ab22647
-> 
-> Best regards,
-> --  
-> Petr Hodina <petr.hodina@protonmail.com>
-> 
-> 
-
--- 
-// Casey (she/her)
-
+Frank
+>
+>  	writel_relaxed(val, csiphy->base +
+>  		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
+>
+>  	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_COMMON_PWRDN_B;
+>  	writel_relaxed(val, csiphy->base +
+>  		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 6));
+>
+>
+> --
+> 2.53.0
+>
