@@ -1,250 +1,241 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012044.outbound.protection.outlook.com [52.101.66.44])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C6307AC7;
-	Mon,  8 Jun 2026 18:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942701; cv=fail; b=FxJjUR6OItvKKdhJiaf+oFW2iIXMXBd29KUnPdGwbtUSWvj0P0J8wF3pTMd78eWH4hQpJzDaGyyq/qOzmOIXxw28PYSUTxHBL+1qsso3Z6lUngggJeQgHlYG8QAWVxZSZ+G/mKvJ/GowXfAzDV7iLU75NDoaAJdnMHQAxBotixk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942701; c=relaxed/simple;
-	bh=9TgYqH4zEmGEaVpSXuemQWi9ntQn5rWlCKaHcUtsyAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gxrL9dnakzV8BtU1d0Y9OVoA0z62ttaMWvu2Qz6rBxyelOUc4AkoeiG4b8/BoM6sslg2LR3QmSD5w7J8JTC7P1a0+PjWvBruvGYivylHGz/jtJ08O5vXLXAHGprY317GSMSAd66GziRq6n33r98DXT+E3y1Jp8L8yeGEVnO+uEY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=VX9PFIsR; arc=fail smtp.client-ip=52.101.66.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D7037DEAA;
+	Mon,  8 Jun 2026 19:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780947174; cv=none; b=ck17O+CYv0E/8AbBpVBQB5Lembj9pPJrMW+sBZxjGAbwNyIn2bed1cCNRT+oz5HGq5GpEb8MTfd5P2JGC5YgrnwDf7dTExys4Wyo6oBwphSwrQiqtx1e9Yh9/zCJVouZvSXlOJzPciOGdLQVSQbOe7Q4nthw/ytbA++OSV/CXiw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780947174; c=relaxed/simple;
+	bh=MZPCAxHNr6f8ZQ8AfNZ3GIp722iWmuQI+ckc4qIZX8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fyqq44mnm1Rv55BXANQ/xLcj2BsfzyFgfERrzMdEd1TyWHm7GeWiUzY8YNVcJToEWIHjoJMeUpWRjY2+DApejiSHqYVF7KsCaN74BBpQS6xiOU8AGX8O41dTsp0JjYpAqTjSy8jaKLwwOCvfWfc8KJ4A1MUoFd40GHC4pNTae2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TT4U7ECQ; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="VX9PFIsR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=efwadxVEhzG1LhjjldyqLIfTOKC3jF4MOLPft73ZcisG32dW5lYwQ8u5emQBoPdkganm4/Zi0PlEHxGeWXK+bezuItG7EpxDPzFAyrOp424KHAOOFtz3gw67LnG8EbaauXTLxl941XW8htud7yM4KegqDVPRpW+TdjqnhKNu6BmaaJIGlNJcA68J7HWIt6f21NEHiEuaeCB/OoAb8HGMHPYbrghTgPhnQ/DxU6OuMM0XbJeiiar5CmSqOBn1CAdKgYPB184hFXWxcXzhGcfvDxYU7FiIBAiRo9Qzt7O3taD0CETqPMr8mouqo92/p6eAsNPJSBnbGPp2m2kzSeBRVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+rP6vcHgk9V+zxpf/gfcerGGcXyPB/VNSS0kCaZaLs0=;
- b=VlHD7zG8gDQBcRTJQj7606ND2L3faof7ihaZbwzHasb1k+NaanXc4TRiIRUuk6mrGO5mB3D6FpNLxJ06sXp1bZeZNfoapVyixi2KPm/Okr43r0VPkyOMVhR1+i3WY6aYzU0sVfAR1yUIGuY903+OVx1E4Eb0BCPttiRjEypb6fKyA2HPsdXdXAg3YkJjlOzERGvhrt6dLxXVdKIqgqvx4vqbivGucXDI6T9yKso7XkpQVELVCP35nXzxrDgKEeePIN2aDf0PdKAAZmN+1xRRCO0kPXuVMuEW8cvLKTqgamxwBgUZTcBOQWyzLcH30R5Mam9XXEAnmlaorORZg9D+3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+rP6vcHgk9V+zxpf/gfcerGGcXyPB/VNSS0kCaZaLs0=;
- b=VX9PFIsR0b9lq4lW8tUkeC8X/8iJN9muJfX+QW07I4AVzAxGXFXIkqfBieY8cL4t4tnozVIn1wWuVsViZqco5pQd1WgW8lcil1fublOgw3jc6Dj7Vhr/Ljqedaz/f4VPS52CbrhQhxKB6DrYOv0JUL1m+/6JuigfaZqTd8XZ6cHxcxnV4oJNtCdBEo4JKWlkyaTvhoka9DSHRosDgzD7Olb2LFaaM3MaMefAYvFGoWJrVhmEZrEVDNgLQltDM/ovgq+DVbRFBDNw5lN2lsxhJQjpktHA9xKEaI6UGWqlPn2hyZ8vDz3GHdgqTj0kPCU0dwh8PetHAuHBA3J1W4tuYg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by PAXPR04MB8671.eurprd04.prod.outlook.com (2603:10a6:102:21e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
- 18:18:16 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 18:18:16 +0000
-Date: Mon, 8 Jun 2026 14:18:11 -0400
-From: Frank Li <Frank.Li@oss.nxp.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Petr Hodina <phodina@protonmail.com>, "Dr. Git" <drgitx@gmail.com>,
-	Cory Keitz <ckeitz@amazon.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v7 3/8] media: qcom: camss: Prepare CSID for C-PHY support
-Message-ID: <aicHY0RRxsvsIRzQ@lizhi-Precision-Tower-5810>
-References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
- <20260605-qcom-cphy-v7-3-426c37e9008f@ixit.cz>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260605-qcom-cphy-v7-3-426c37e9008f@ixit.cz>
-X-ClientProxiedBy: PH8PR02CA0010.namprd02.prod.outlook.com
- (2603:10b6:510:2d0::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TT4U7ECQ"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 32A3B5340E39;
+	Mon, 08 Jun 2026 21:32:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1780947158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Tk8KTYVETv+cYFcpczO5q1tg0yHV9+DtGUYkbDQ7bMU=;
+	b=TT4U7ECQW/lHR0AyFnlzqDTi2g+i76W6i7tkMvfUmLeo3RAg40EY18ry2jMM9iaLSOYk6E
+	TpogioMilwPX71qH5lD6EV6l/7Y0Olqt8bx/fVOHGgihRe2zqWfvoW5ItWrDb1bq1COPck
+	3FTYXMPhRNupsA7YHF39neXm9zpnBjg=
+Message-ID: <92b08f05-4b1a-4cf8-8616-d16bd4bb26ba@ixit.cz>
+Date: Mon, 8 Jun 2026 21:32:37 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|PAXPR04MB8671:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4deda186-b1d4-4af4-ccb8-08dec58a4f54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	E5OOYt7JjYcT7kWFpJdwerQYFyGKuT1gTMrHW9QEnU8zfkAqnH2AMPdoxVyoi19OTcwbv+7aPSX9u0Z4r09Zr96LLjyiFQX3wemY9i5HYCpNjfGhQhPKg3lxSguoYpmsV+WCxRLlcvAgANvvfw/KNoMOU3H9yj8IuYFUxXSppl4hKW7BIur/hKEjZkSIwibXAEYnTikikLas/4KCqcBsSb2J2y4fMpQtx5m0bAjMDbDqxKSsRDKsN439z4YQQJOveERat5nYrt8PP4+WBEz/VeyBJ4J0M8r5vLXiBgwYh86/Q5BKH5Ng3GsBKpPvWZlNGFoQ8IZtq3P/PKoCLsk/lZ8EzxBHoI5+31A5Re6utFc9niwxMpB284ffrS1bxw3UMznYfn2Q//wo9IBm4UKxZs0GCFnlirFm2fBHDVx9m4tovhr9aqniaWXWuwZSofFrCQXvadLJrfmq4t8gkHp/ZXzT1nONUii6vj846g8sFvoUfD94vrWTkciHsMIFz2Lr66eIb8jQc5C4qkxYg5IrLVe30F4C/iWIqeCEQRt8ezlA0935CcIbx8nkjaJLPIgAQGHBBR7yD2/8EXM66i0Ry3TpVrHvp78snbyFtne8eoXgwGL3LN/6/Of2OODUG0pBFE3iqR386kFoIPnkODPwLLbNY5BDOALeWYUkOBe56SgwNQ6jLWJ0mXZKQi9aO/wx
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?J35yZeOUtVfwbJ/a1CHx1XI6eRgIQ/+bI8I28jkTPoiR+NPWsS9f/NjZjeVn?=
- =?us-ascii?Q?uJbf2RJs5G7uk3gJKYrbPCkBMzdnu4AuBXCjewUJ+j6fNaOiVud1l4kcV/IW?=
- =?us-ascii?Q?6c/NEFRwwL0tb2HIHn0qUg9Am2NFkfij4do3mqTZwRVOhd0GucdMz3eNsAW5?=
- =?us-ascii?Q?JmH/dR1tox4hN4wiClYlArHyF7QczrAedu6OXoXjvykMrxEvqX4YXrPJrvmh?=
- =?us-ascii?Q?xqhTjNP2yPpKXLeL4gJvfH4T4Jx2mh7GbDWAG3iIsjaOm4CRcZ+r9yiMFncx?=
- =?us-ascii?Q?BfhzaPSplbB9QLJFXLhON01i9xX4SU823H+nPHi26sB+Bsyieomee4NV2hjg?=
- =?us-ascii?Q?LTTrQwVoJqjGSt/BzbryZ3DvbnMPqf279o7MmHvw0yxZd25kjNZSfvjE9uyS?=
- =?us-ascii?Q?FI+qwdcQ1p1Tmrjek6yXxza9Ojv83pEMLNeJAHCKqu09jQ7Cfjfj42ANAFM7?=
- =?us-ascii?Q?psOYxfPCUGb4ODVaGVMvtfN3vhYiWW0JQ170u2BcEdmyH5zyG9oFWacrz37V?=
- =?us-ascii?Q?qGhwEt9L367JGsiMEeZLMgnaqZQuZEkW+QLX2XiawCzu1Bic6KZLjhksBDTo?=
- =?us-ascii?Q?bBmv3z5rhAyPe5yJ5CHn8xIxDB51EkJY3lfdjsX1NrJ3WjwzNHZAmLSegCgO?=
- =?us-ascii?Q?QYxdnh671Y60q4iIgDp2DDLhk24KtrK+85U6eobbyQ+61rLmdAolJ4p3uj0m?=
- =?us-ascii?Q?4q2d8oDuPF7TAVzT+mpEW2YON7DHV+X10Yk7NvIPOJr/ltlnJWYwZ/+f9yt7?=
- =?us-ascii?Q?a7rTu3adQYO6iZMV9YhnFoamTKdKk1bqHReZ5TSAE3dgFuHvvjkNIe2h/+bt?=
- =?us-ascii?Q?TXN2eFZiFk0uuQ3nv4CmyhaI00l3s6WIy8dVYIRVCPdf1xDh5kZLEvx67JAn?=
- =?us-ascii?Q?DquqH1adA4UBVrMf+cSRhIzyCpm3783QWiGDonG0m64XMGgKwuSuLGlMNI0D?=
- =?us-ascii?Q?3ROTSkgDrww7x6OSgTgPxtywNuR0ZKTGf94/+ElpcV/KnxpM6fWkZPIn58cO?=
- =?us-ascii?Q?7fmTNSS71cUPP0pxs7ozoiDyCRt/XS2S9KZLhac5czOTpLKphWzZ+TSLCEYG?=
- =?us-ascii?Q?TV3beIVqGTdZST55UloBWC+sw1aLIL+GVR8oA90SY82smFgG6+xW8RGs4FxZ?=
- =?us-ascii?Q?mnD9udJTiQcOC4+LOcq0/BlGaGZRYdzNmspBAgEhVp7z9aKfSj3950f8hU40?=
- =?us-ascii?Q?l/uA3ebhVi9wTye9+XQ+R3ZGPpwYolNl3MWT7pwOqXqF3QqrHBbfGQP9aE18?=
- =?us-ascii?Q?smJXo4ptN+3bTEcI09nhJl0QX7nuQTPYMnAvORPKKgxcmckXFrPKoBqlaL/+?=
- =?us-ascii?Q?ay04Hg680dW+GfNggIBYS0S55XQD+Ua9jqXiTyRFcdKkD8Rd3n4hx50+EC+x?=
- =?us-ascii?Q?Vli0Z4J/oXAVdHnqOvWXbRUDFKwXVFCJwbL9WnxP6x2ijyC21lcnv1bTgGno?=
- =?us-ascii?Q?Ua52nSaT4+HQNP4LxBF4qWL0BMabCgD2gQQbakDvoc5QsoXlyQJ5VoblIqpt?=
- =?us-ascii?Q?NMfw4hjfipExFxscaAk35cvijrHln3kTDA1GBWx9lbJ/E4FG7TJ27vz5Ra43?=
- =?us-ascii?Q?tVTHXf5MICggRPlknuDSrpYSZkLWURTWGBNTv2dSNW9fHhDUhYv8kCXZJPpq?=
- =?us-ascii?Q?9mxI3zWLvq4Wokklh8mabquFfNIWs3swCFfi7jVmlTM37Ma8OgfGlTLthVSd?=
- =?us-ascii?Q?BMLVt65dthQDa/iptQOqi6j87OZ/5tttSN1N4mmIL/y0wO+SG/oWYu9qVfFW?=
- =?us-ascii?Q?KdowT1FIjiE/3kjEnXlgMYneUnzZv9/TzimAladuVkDBjC4ncgUo?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4deda186-b1d4-4af4-ccb8-08dec58a4f54
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 18:18:16.2051
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VjN04E31hxeZeftNPejTFeoDmdSX6FsHunsZvm60hK3AO2wVCHIu8mnURMdn71yVPVejGaw6w6OLj+X662XWW5BuaMe72ZL/0th2nu+Mr5kEJHxNuYGy1D7TQGdwLV9R
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8671
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/8] media: qcom: camss: csiphy-3ph: Use odd bits for
+ configuring C-PHY lanes
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Bryan O'Donoghue <bod@kernel.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, Frank Li <Frank.Li@nxp.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+ <20260605-qcom-cphy-v7-2-426c37e9008f@ixit.cz>
+ <aicG5nsTy7rIuWTc@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <aicG5nsTy7rIuWTc@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 05, 2026 at 03:14:41PM +0200, David Heidelberg wrote:
-> Inherit C-PHY information from CSIPHY, so we can configure CSID
-> properly.
->
-> CSI2_RX_CFG0_PHY_TYPE_SEL must be set to 1, when C-PHY mode is used.
->
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Acked-by: Cory Keitz <ckeitz@amazon.com>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/media/platform/qcom/camss/camss-csid-gen2.c | 1 +
->  drivers/media/platform/qcom/camss/camss-csid.c      | 5 +++++
->  drivers/media/platform/qcom/camss/camss-csid.h      | 6 ++++++
->  3 files changed, 12 insertions(+)
->
-> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> index eadcb2f7e3aaa..a5b406cc8ead3 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> @@ -178,16 +178,17 @@ static void __csid_configure_rx(struct csid_device *csid,
->  	int val;
->
->  	if (!lane_cnt)
->  		lane_cnt = 4;
->
->  	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
->  	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
->  	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
-> +	val |= csid->phy.phy_sel << CSI2_RX_CFG0_PHY_TYPE_SEL;
+On 08/06/2026 20:16, Frank Li wrote:
+> On Fri, Jun 05, 2026 at 03:14:40PM +0200, David Heidelberg wrote:
+>> So far, only D-PHY mode was supported, which uses even bits when enabling
+>> or masking lanes. For C-PHY configuration, the hardware instead requires
+>> using the odd bits.
+>>
+>> Since there can be unrecognized configuration allow returning failure.
+>>
+>> Acked-by: Cory Keitz <ckeitz@amazon.com>
+>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 39 +++++++++++++++++-----
+>>   1 file changed, 31 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> index dac8d2ecf7995..fa24fc9706748 100644
+>> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+>> @@ -9,16 +9,17 @@
+>>    */
+>>
+>>   #include "camss.h"
+>>   #include "camss-csiphy.h"
+>>
+>>   #include <linux/delay.h>
+>>   #include <linux/interrupt.h>
+>>   #include <linux/io.h>
+>> +#include <linux/media-bus-format.h>
+>>
+>>   #define CSIPHY_3PH_LNn_CFG1(n)			(0x000 + 0x100 * (n))
+>>   #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG	(BIT(7) | BIT(6))
+>>   #define CSIPHY_3PH_LNn_CFG2(n)			(0x004 + 0x100 * (n))
+>>   #define CSIPHY_3PH_LNn_CFG2_LP_REC_EN_INT	BIT(3)
+>>   #define CSIPHY_3PH_LNn_CFG3(n)			(0x008 + 0x100 * (n))
+>>   #define CSIPHY_3PH_LNn_CFG4(n)			(0x00c + 0x100 * (n))
+>>   #define CSIPHY_3PH_LNn_CFG4_T_HS_CLK_MISS	0xa4
+>> @@ -1108,23 +1109,32 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
+>>   		writel_relaxed(val, csiphy->base + r->reg_addr);
+>>   		if (r->delay_us)
+>>   			udelay(r->delay_us);
+>>   	}
+>>   }
+>>
+>>   static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
+>>   {
+>> -	u8 lane_mask;
+>> -	int i;
+>> +	u8 lane_mask = 0;
+>> +	u8 offset = 0;
+>>
+>> -	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> +	switch (lane_cfg->phy_cfg) {
+>> +	case V4L2_MBUS_CSI2_CPHY:
+>> +		offset = 1;
+>> +		break;
+>> +	case V4L2_MBUS_CSI2_DPHY:
+>> +		lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> +		break;
+>> +	default:
+>> +		break;
+>> +	}
+>>
+>> -	for (i = 0; i < lane_cfg->num_data; i++)
+>> -		lane_mask |= 1 << lane_cfg->data[i].pos;
+>> +	for (int i = 0; i < lane_cfg->num_data; i++)
+>> +		lane_mask |= BIT(lane_cfg->data[i].pos + offset);
+>>
+>>   	return lane_mask;
+>>   }
+>>
+>>   static bool csiphy_is_gen2(u32 version)
+>>   {
+>>   	bool ret = false;
+>>
+>> @@ -1155,19 +1165,32 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+>>   	struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
+>>   	struct csiphy_device_regs *regs = csiphy->regs;
+>>   	u8 settle_cnt;
+>>   	u8 val;
+>>   	int i;
+>>
+>>   	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+>>
+>> -	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> -	for (i = 0; i < c->num_data; i++)
+>> -		val |= BIT(c->data[i].pos * 2);
+>> +	val = 0;
+>> +
+>> +	switch (c->phy_cfg) {
+>> +	case V4L2_MBUS_CSI2_CPHY:
+>> +		for (i = 0; i < c->num_data; i++)
+>> +			val |= BIT((c->data[i].pos * 2) + 1);
+>> +		break;
+>> +	case V4L2_MBUS_CSI2_DPHY:
+>> +		val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+>> +
+>> +		for (i = 0; i < c->num_data; i++)
+>> +			val |= BIT(c->data[i].pos * 2);
+>> +		break;
+>> +	default:
+>> +		WARN_ONCE(1, "Unsupported bus type %d!\n", c->phy_cfg);
+>> +	}
+> 
+> can you use similar method as csiphy_get_lane_mask()
+> 
 
+Done, look better, but I guess we seriously need the refactor/split done by 
+Bryan as I looking at the current code.
 
-It is fine for now. Suggest change to FIELD_PREP() in future.
+David
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Frank
+>>
+>>   	writel_relaxed(val, csiphy->base +
+>>   		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
+>>
+>>   	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_COMMON_PWRDN_B;
+>>   	writel_relaxed(val, csiphy->base +
+>>   		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 6));
+>>
+>>
+>> --
+>> 2.53.0
+>>
 
->  	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
->
->  	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
->  	if (vc > 3)
->  		val |= 1 << CSI2_RX_CFG1_VC_MODE;
->  	val |= 1 << CSI2_RX_CFG1_MISR_EN;
->  	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1);
->  }
-> diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-> index 48459b46a981b..bcc34ac9dd212 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csid.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csid.c
-> @@ -1286,16 +1286,21 @@ static int csid_link_setup(struct media_entity *entity,
->  			/* do no allow a link from CSIPHY to CSID */
->  			if (!csiphy->cfg.csi2)
->  				return -EPERM;
->
->  			csid->phy.csiphy_id = csiphy->id;
->
->  			lane_cfg = &csiphy->cfg.csi2->lane_cfg;
->  			csid->phy.lane_cnt = lane_cfg->num_data;
-> +			if (lane_cfg->phy_cfg == V4L2_MBUS_CSI2_CPHY)
-> +				csid->phy.phy_sel = CSID_PHY_SEL_CPHY;
-> +			else
-> +				csid->phy.phy_sel = CSID_PHY_SEL_DPHY;
-> +
->  			csid->phy.lane_assign = csid_get_lane_assign(lane_cfg, lane_cfg->num_data);
->  			csid->tpg_linked = false;
->  		}
->  	}
->  	/* Decide which virtual channels to enable based on which source pads are enabled */
->  	if (local->flags & MEDIA_PAD_FL_SOURCE) {
->  		struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);
->  		struct csid_device *csid = v4l2_get_subdevdata(sd);
-> diff --git a/drivers/media/platform/qcom/camss/camss-csid.h b/drivers/media/platform/qcom/camss/camss-csid.h
-> index 5296b10f6bac8..e65590b0df69f 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csid.h
-> +++ b/drivers/media/platform/qcom/camss/camss-csid.h
-> @@ -39,16 +39,21 @@ enum csid_testgen_mode {
->  	CSID_PAYLOAD_MODE_USER_SPECIFIED = 6,
->  	CSID_PAYLOAD_MODE_NUM_SUPPORTED_GEN1 = 6, /* excluding disabled */
->  	CSID_PAYLOAD_MODE_COMPLEX_PATTERN = 7,
->  	CSID_PAYLOAD_MODE_COLOR_BOX = 8,
->  	CSID_PAYLOAD_MODE_COLOR_BARS = 9,
->  	CSID_PAYLOAD_MODE_NUM_SUPPORTED_GEN2 = 9, /* excluding disabled */
->  };
->
-> +enum csid_phy_sel {
-> +	CSID_PHY_SEL_DPHY = 0,
-> +	CSID_PHY_SEL_CPHY = 1
-> +};
-> +
->  struct csid_format_info {
->  	u32 code;
->  	u8 data_type;
->  	u8 decode_format;
->  	u8 bpp;
->  	u8 spp; /* bus samples per pixel */
->  };
->
-> @@ -65,16 +70,17 @@ struct csid_testgen_config {
->  };
->
->  struct csid_phy_config {
->  	u8 csiphy_id;
->  	u8 lane_cnt;
->  	u32 lane_assign;
->  	u32 en_vc;
->  	u8 need_vc_update;
-> +	enum csid_phy_sel phy_sel;
->  };
->
->  struct csid_device;
->
->  struct csid_hw_ops {
->  	/*
->  	 * configure_stream - Configures and starts CSID input stream
->  	 * @csid: CSID device
->
-> --
-> 2.53.0
->
+-- 
+David Heidelberg
+
