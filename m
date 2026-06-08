@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AAC3B27FA;
-	Mon,  8 Jun 2026 08:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EDB3A9D9A;
+	Mon,  8 Jun 2026 09:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908990; cv=none; b=k3u21qY5s7yesoP1EsJLVpTYpEEEhhqUHv5h+92QboG0301q8XmKHASuqT5yMQX0TJoF9CO6TjYhlQWGD1qua73D16yaa7mhw3Iyt+Ql4zOFUkYq+InzpqntVJ1MgAP4F5szosZf3NSS8bFA+26iCBWy30zZuVa+d1SoTHI1YQs=
+	t=1780909223; cv=none; b=Y/FwR6aiY9zzo8FEbu/xY7seg0xiMXo+8KEJs9yMXAKs/UGhXiV/9zxjoQWwOvF3t3Oabr1ZpjZa2izZgbFN67eozYKBPEca0RG+VCl+HlIsUsvr4RPey2E0mjm6CDmM8EVzqC5YgnLT8fDya7Drmva2yAYeyGVhTzACMSroQsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780908990; c=relaxed/simple;
-	bh=uE3q7lOQhX6TD1NljIu5EQpKW9yfTOM+EJ637Tuqsek=;
+	s=arc-20240116; t=1780909223; c=relaxed/simple;
+	bh=lSk7gQ/lW3BlqOtJNQrQHjlidWOAQV8tAllgfKcIwcM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bVY3AZLMcnv6w1xF1VQ5krP5IhJSKDXl1J12mVoff8iYi0AQSBHqtJASyNTtL+V4wPx47R95x8fDkohBXrY+iq9RhmRcAdtxrbkT8r+9HBSM92Rc5N4Vg4/htYM+VXF1cFBJVsxmA2JpOUJmoBeH3gDtyyfHZSZ/mvF5Ou+vUR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K51igrXX; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=gyWvwOD72Snvhw+brP7eeL7yuTTZxv4QeNEJzGZtvD2t+zkCGVS1Comwwqr4T7dwVo4qInf8kA2WHErRT7KPqW+NyAhsMVcwo5aNFRTgbO1kwhE8TIGPkReQCCAZH9bItZjbU/oAQtv0z/nHiOKxAVTG6qTJAs9Bn1bYghZDaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/WoZqEm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K51igrXX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF5D1F00893;
-	Mon,  8 Jun 2026 08:56:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/WoZqEm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6601F00893;
+	Mon,  8 Jun 2026 09:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908989;
-	bh=7TaSkqVM8tNNbUj9Lkas7kKacOO87VVrmRgpxX7eEsE=;
+	s=k20260515; t=1780909222;
+	bh=id3Jp+9KC6cwzbngs1gLJuwiUAA3WunBLErPTUj26h4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K51igrXXDrmyfIC9RopwvgKi/HRJ2pT7LIslbueCwWdyWgMnE698304ErVsCul9BX
-	 QUrIwAXbCEK7qcGOUu+b5FeLObu7ltjgktgcK20MaRywoTQxGHtsZclIVDGK37xDwI
-	 YTchxvoj7tae5wZ7sRMpBfNJ58cETHQJzSjvrYEOQu5R0qg8KQ+8efN9CBPvOew6X6
-	 zQUB8HScAi9UX66Cg/XvcuFqj+/ZDKxZAYpabCskiXpnqbcsYfCW/3T9lZJMu3fNfL
-	 P9gDOoQKRIxO8wdEhR0xTAvZnadZ7qF8nR7zBCRZQBCoR+CUl7J7Dy2uHk6/vkAO1S
-	 Y/z1vOAuAm6dg==
-Message-ID: <1715df23-044a-4ebe-bf24-e0299b32e4ae@kernel.org>
-Date: Mon, 8 Jun 2026 09:56:24 +0100
+	b=Y/WoZqEmLevIbC2WpoZb6bHu1gRFUCY0bGtRezlqPjWWuc//Wnfm0dWssTpZtuAZB
+	 T/5fsGDnlTbt1sHTK3zgstmb5DyTT0Wrl988ljwpsUYyK3yb65bnOoSixamLPskJGR
+	 lXuI8vZ89WOk64tRAuRv1EszRR4EVheo+VsqTqLy5y6d4JiGVrPa2vkj2BCiisFlG8
+	 ftN3qpdHuwUzOmwZ1Q4FVJV0AMaQMhnjeJFQwURZCdhlf9PV/ePFthBZBquA2BxPSK
+	 fD3oqYPzhGmM98BPPmo7Ekp0HzD4PHD/5tQsmcwDWOeds/4Vlx5WbXuhLkn4L7gi40
+	 TI8/2TvSBrgKQ==
+Message-ID: <3dbc6dab-9a60-4c2b-9bcf-a6a4e40678b0@kernel.org>
+Date: Mon, 8 Jun 2026 10:00:17 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,10 +35,11 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/8] media: camss: Add support for C-PHY configuration
- on Qualcomm platforms
+Subject: Re: [PATCH v7 5/8] media: qcom: camss: csiphy-3ph: Add Gen2 v1.1 MIPI
+ CSI-2 C-PHY init
 To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
  Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
@@ -51,6 +52,8 @@ Cc: Frank Li <Frank.Li@nxp.com>,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+ <Q2_NzIXxG_GQGApURbaECWme3vKnz9jt5Vx2Cxph2hvFSzNFDB7kjtVawAJRMMR1esC11xdPdkpd9ll3vujOKg==@protonmail.internalid>
+ <20260605-qcom-cphy-v7-5-426c37e9008f@ixit.cz>
 From: Bryan O'Donoghue <bod@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=bod@kernel.org; keydata=
@@ -96,61 +99,27 @@ Autocrypt: addr=bod@kernel.org; keydata=
  LKSGEglMpiX07M1AotgvylN5C8fjbouoK+/RAMsXkk8jba6rPfuuXPaDjCyyKn6zSVHETnHW
  3AJbgVY50T8STpnxayBQvWbCvu+6NOEjXCbyaOJig+5l0zlGN9XHjdANXC5HnwmyaGRL9YDq
  Jh2nVXVJDincOdQRdKcJjYLqaOAoWrYWSDi1iZGspHBTDrnOvfMQzzHY
-In-Reply-To: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+In-Reply-To: <20260605-qcom-cphy-v7-5-426c37e9008f@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 05/06/2026 14:14, David Heidelberg via B4 Relay wrote:
-> Note: WIP tag added, as not everything from the previous review round has
-> been addressed.
-> 
-> # Short summary
-> 
-> This patch series extends the Qualcomm CAMSS (Camera Subsystem),
-> including CSID and CSIPHY components, to support C-PHY mode configuration.
-> 
-> # Background and motivation
-> 
-> Modern smartphone cameras increasingly rely on MIPI C-PHY rather than
-> D-PHY, thanks to its higher data throughput and signal efficiency.
-> As a result, many OEMs adopt C-PHY interfaces for main (rear) cameras on
-> Qualcomm-based devices.
-> 
-> Until now, mainline Linux lacked C-PHY configuration support for Qualcomm
-> chipsets, preventing bring-up of primary camera sensors on several
-> Snapdragon platforms. This series closes that gap.
-> 
->   - Introduces C-PHY configuration support for the CAMSS driver stack,
->     covering both CSID and CSIPHY blocks.
->   - Successfully enables C-PHY operation on the Snapdragon 845 platform.
->   - Tested on OnePlus 6 and 6T phones running mainline Linux,
->     using the Sony IMX519 main camera sensor.
->   - The new configuration allows other chipsets versionsto enable C-PHY by
->     simply adding corresponding sensor driver support and csiphy
->     initialization data, following the example set for sdm845.
-> 
-> With this patch series, mainline Linux gains working C-PHY support for
-> Snapdragon 845, paving the way for improved main camera functionality
-> across many Qualcomm-based devices. The groundwork also simplifies
-> future enablement efforts for additional SoCs and sensors.
-> 
-> Until merged, the series will be also available at:
->    https://codeberg.org/sdm845/linux/commits/branch/b4/qcom-cphy
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> Changes in v7:
-> - Move logic out of switch. (Frank)
-> - Change csid cphy knob to phy_sel using enum. (Bryan, Frank)
-> - Link to v6: https://lore.kernel.org/r/20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz
-So I was asking you previously about a dts to support this in some way 
-in effect to prove it works.
+>   	case CAMSS_845:
+>   		if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
+> -			regs->lane_regs = NULL;
+> -			regs->lane_array_size = 0;
+> +			regs->lane_regs = &lane_regs_sdm845_3ph[0];
+> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845_3ph);
+>   		} else {
+>   			regs->lane_regs = &lane_regs_sdm845[0];
+>   			regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
+>   		}
 
-I had a meeting with some qcom guys on Friday and the informed me they 
-have based work on top of yours, which is inference enough that it works.
+The nittiest nit pick I can make sorry ...
 
-Some Tested-by: from others interested in this work, would be greatly 
-appreciated at this stage.
+IMO the default in the code should be DPHY with CPHY the alternative.
+
+Globally that should be true in this code.
 
 ---
 bod
