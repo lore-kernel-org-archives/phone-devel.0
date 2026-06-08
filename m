@@ -1,91 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE463B2FFB;
-	Mon,  8 Jun 2026 08:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AAC3B27FA;
+	Mon,  8 Jun 2026 08:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908930; cv=none; b=RaZveklYPhEsc4mR3jDPzQ+cSSF0V6bntBq/G1vEzKPiyoX1c+SlTBqNaR26LtwfOOlXTZtgN6FN3HFUP/b1EiwWpj+A5JQgrnZgVmmvW8vo+qscfdGA+fxpdlBc1f9ixgryTbsd72QeYTOIfyrnAEzCyZceGXiZtiXt4o9CQBc=
+	t=1780908990; cv=none; b=k3u21qY5s7yesoP1EsJLVpTYpEEEhhqUHv5h+92QboG0301q8XmKHASuqT5yMQX0TJoF9CO6TjYhlQWGD1qua73D16yaa7mhw3Iyt+Ql4zOFUkYq+InzpqntVJ1MgAP4F5szosZf3NSS8bFA+26iCBWy30zZuVa+d1SoTHI1YQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780908930; c=relaxed/simple;
-	bh=y4BfutItMRvmH3RltnVp7QouoDix0M0zL2yCAFC8ILI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TWRIbffGwkUBRd4WQ5MdSZGhB8TD8NYzj2Tuq0Zud+XH75yjvSN3xsbk5LplUkUf+CO2gj6tS9+BXhaueF5myBbqhtHrjKlFtp0CSYtVpKYEx0XUTexbJbrMfxBQ9xJU6I3MQT+86nI3z0rL/qOtHjJeL/M25LBAWTY4412dyyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLrFKphX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780908990; c=relaxed/simple;
+	bh=uE3q7lOQhX6TD1NljIu5EQpKW9yfTOM+EJ637Tuqsek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bVY3AZLMcnv6w1xF1VQ5krP5IhJSKDXl1J12mVoff8iYi0AQSBHqtJASyNTtL+V4wPx47R95x8fDkohBXrY+iq9RhmRcAdtxrbkT8r+9HBSM92Rc5N4Vg4/htYM+VXF1cFBJVsxmA2JpOUJmoBeH3gDtyyfHZSZ/mvF5Ou+vUR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K51igrXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLrFKphX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E04F1F00893;
-	Mon,  8 Jun 2026 08:55:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K51igrXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF5D1F00893;
+	Mon,  8 Jun 2026 08:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908929;
-	bh=ZaXpV5o4XSzFfGGwxH9qcSMPAHS5WLvkB+DI+9OzD4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CLrFKphXgBtfinoh+ezkdMkTRn0Z4mYfjqpSNiZI6MLfbn6GrK/khli6O8/3tTXmO
-	 qmNOn7mK7zlCQ05hyjrprCaxmxYRxLQwOy5kbjvevqriqgkUMYjSiH7qxgjv7/DcxN
-	 3PXeHBetCadn2A5TwzZMyKgcBOd8LeeH0lkbajGegSKgYkO7kasze6AvOzQxmn/GJ/
-	 X2He2snTrjf+r86JLyfHkb8xmZeKNFjrsrcghslNhxittOHO1nUfIqaaxil9N86KXc
-	 uR1XQVejXZM1pREXeN1mo5otuetnnU2ujUoH4Y2MKE2KSxF5V01FszdcSZrRZGru+H
-	 drZb9UBzbT1sQ==
-Date: Mon, 8 Jun 2026 09:55:24 +0100
-From: Lee Jones <lee@kernel.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Cc: Karel Balej <balejk@matfyz.cz>, devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] mfd: 88pm886: Initialize battery page
-Message-ID: <20260608085524.GG4151951@google.com>
-References: <20260526-88pm886-vbus-v1-0-f2bd1fd3c19e@dujemihanovic.xyz>
- <20260526-88pm886-vbus-v1-2-f2bd1fd3c19e@dujemihanovic.xyz>
- <DJ2QONQXFUDK.22S5350HOO2N6@matfyz.cz>
- <uME6Hy8mQeKxnZAg1Q4aPA@gmail.com>
+	s=k20260515; t=1780908989;
+	bh=7TaSkqVM8tNNbUj9Lkas7kKacOO87VVrmRgpxX7eEsE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=K51igrXXDrmyfIC9RopwvgKi/HRJ2pT7LIslbueCwWdyWgMnE698304ErVsCul9BX
+	 QUrIwAXbCEK7qcGOUu+b5FeLObu7ltjgktgcK20MaRywoTQxGHtsZclIVDGK37xDwI
+	 YTchxvoj7tae5wZ7sRMpBfNJ58cETHQJzSjvrYEOQu5R0qg8KQ+8efN9CBPvOew6X6
+	 zQUB8HScAi9UX66Cg/XvcuFqj+/ZDKxZAYpabCskiXpnqbcsYfCW/3T9lZJMu3fNfL
+	 P9gDOoQKRIxO8wdEhR0xTAvZnadZ7qF8nR7zBCRZQBCoR+CUl7J7Dy2uHk6/vkAO1S
+	 Y/z1vOAuAm6dg==
+Message-ID: <1715df23-044a-4ebe-bf24-e0299b32e4ae@kernel.org>
+Date: Mon, 8 Jun 2026 09:56:24 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <uME6Hy8mQeKxnZAg1Q4aPA@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/8] media: camss: Add support for C-PHY configuration
+ on Qualcomm platforms
+To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>, Bryan O'Donoghue <bod@kernel.org>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, 07 Jun 2026, Duje Mihanović wrote:
-
-> On Sunday, 7 June 2026 12:19:21 Central European Summer Time Karel Balej 
-> wrote:
-> > Duje Mihanović, 2026-05-26T21:14:48+02:00:
+On 05/06/2026 14:14, David Heidelberg via B4 Relay wrote:
+> Note: WIP tag added, as not everything from the previous review round has
+> been addressed.
 > 
-> [...]
+> # Short summary
 > 
-> > > @@ -88,7 +94,8 @@ static int pm886_probe(struct i2c_client *client)
-> > > 
-> > >  	struct regmap_irq_chip_data *irq_data;
-> > >  	struct device *dev = &client->dev;
-> > >  	struct pm886_chip *chip;
-> > > 
-> > > -	struct regmap *regmap;
-> > > +	struct regmap *regmap, *regmap_battery;
-> > > +	struct i2c_client *battery_page;
-> > 
-> > Not sure if this should be reordered to preserve the "reverse Christmas
-> > tree", but maybe it's fine if checkpatch didn't complain.
+> This patch series extends the Qualcomm CAMSS (Camera Subsystem),
+> including CSID and CSIPHY components, to support C-PHY mode configuration.
 > 
-> I opted not to move the declarations around in this case as IMO it would 
-> present noise in the diff, but on second thought it may have been the better 
-> choice.
+> # Background and motivation
 > 
-> Lee, do you by chance know how to proceed here?
+> Modern smartphone cameras increasingly rely on MIPI C-PHY rather than
+> D-PHY, thanks to its higher data throughput and signal efficiency.
+> As a result, many OEMs adopt C-PHY interfaces for main (rear) cameras on
+> Qualcomm-based devices.
+> 
+> Until now, mainline Linux lacked C-PHY configuration support for Qualcomm
+> chipsets, preventing bring-up of primary camera sensors on several
+> Snapdragon platforms. This series closes that gap.
+> 
+>   - Introduces C-PHY configuration support for the CAMSS driver stack,
+>     covering both CSID and CSIPHY blocks.
+>   - Successfully enables C-PHY operation on the Snapdragon 845 platform.
+>   - Tested on OnePlus 6 and 6T phones running mainline Linux,
+>     using the Sony IMX519 main camera sensor.
+>   - The new configuration allows other chipsets versionsto enable C-PHY by
+>     simply adding corresponding sensor driver support and csiphy
+>     initialization data, following the example set for sdm845.
+> 
+> With this patch series, mainline Linux gains working C-PHY support for
+> Snapdragon 845, paving the way for improved main camera functionality
+> across many Qualcomm-based devices. The groundwork also simplifies
+> future enablement efforts for additional SoCs and sensors.
+> 
+> Until merged, the series will be also available at:
+>    https://codeberg.org/sdm845/linux/commits/branch/b4/qcom-cphy
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Changes in v7:
+> - Move logic out of switch. (Frank)
+> - Change csid cphy knob to phy_sel using enum. (Bryan, Frank)
+> - Link to v6: https://lore.kernel.org/r/20260603-qcom-cphy-v6-0-e50de0b557a8@ixit.cz
+So I was asking you previously about a dts to support this in some way 
+in effect to prove it works.
 
-You can move them.
+I had a meeting with some qcom guys on Friday and the informed me they 
+have based work on top of yours, which is inference enough that it works.
 
-Please take into consideration data-size as well, rather than blindly
-following RCT.  Larger items (structs) at the top down to smaller (ints
-and bools) as the bottom.  Luckily the larger (data size) items also end
-up being longer (string).
+Some Tested-by: from others interested in this work, would be greatly 
+appreciated at this stage.
 
--- 
-Lee Jones
+---
+bod
