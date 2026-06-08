@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D7037DEAA;
-	Mon,  8 Jun 2026 19:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9F53859CE;
+	Mon,  8 Jun 2026 19:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780947174; cv=none; b=ck17O+CYv0E/8AbBpVBQB5Lembj9pPJrMW+sBZxjGAbwNyIn2bed1cCNRT+oz5HGq5GpEb8MTfd5P2JGC5YgrnwDf7dTExys4Wyo6oBwphSwrQiqtx1e9Yh9/zCJVouZvSXlOJzPciOGdLQVSQbOe7Q4nthw/ytbA++OSV/CXiw=
+	t=1780948418; cv=none; b=r6DbRwUccUUjgtqwvG/VNrfSVtRjBDbTywHCcOvLwvWGleJ3NN2vK6fDjfWBL5iOViYt9DmY2kUbonYn6Cd+t/lVz7EUAso0zvSsiUz5mV/R08f9929ZXaB9sPuRJwF3wzI9CW+7KWJHZNvKcrjX000ceWrRl3lNG9FcrFF7S60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780947174; c=relaxed/simple;
-	bh=MZPCAxHNr6f8ZQ8AfNZ3GIp722iWmuQI+ckc4qIZX8I=;
+	s=arc-20240116; t=1780948418; c=relaxed/simple;
+	bh=388VSpe1mA9umAPgbsHw3rRpkzuMJlcggbuYHXTun4k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fyqq44mnm1Rv55BXANQ/xLcj2BsfzyFgfERrzMdEd1TyWHm7GeWiUzY8YNVcJToEWIHjoJMeUpWRjY2+DApejiSHqYVF7KsCaN74BBpQS6xiOU8AGX8O41dTsp0JjYpAqTjSy8jaKLwwOCvfWfc8KJ4A1MUoFd40GHC4pNTae2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=TT4U7ECQ; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=cmnQUUNAV9ELgt65uufI8V5lLXJl6j1Elmk3/JgfkppgixKYy7iDHKYZx7fZkHp8jLHt5ar/8il4ecArcPyAehmIif/Ap1GzzjghAP5AgTc+l6piOjXKYljSbLPoRrA9URBYz3Ghjm4ektkWtt8kv78CElkUmKHu0IvMYnbBUK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=15u/58wX; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="TT4U7ECQ"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="15u/58wX"
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 32A3B5340E39;
-	Mon, 08 Jun 2026 21:32:38 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id A47975340ADC;
+	Mon, 08 Jun 2026 21:53:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1780947158;
+	t=1780948413;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Tk8KTYVETv+cYFcpczO5q1tg0yHV9+DtGUYkbDQ7bMU=;
-	b=TT4U7ECQW/lHR0AyFnlzqDTi2g+i76W6i7tkMvfUmLeo3RAg40EY18ry2jMM9iaLSOYk6E
-	TpogioMilwPX71qH5lD6EV6l/7Y0Olqt8bx/fVOHGgihRe2zqWfvoW5ItWrDb1bq1COPck
-	3FTYXMPhRNupsA7YHF39neXm9zpnBjg=
-Message-ID: <92b08f05-4b1a-4cf8-8616-d16bd4bb26ba@ixit.cz>
-Date: Mon, 8 Jun 2026 21:32:37 +0200
+	bh=thDxxT15aCK0CqixoLCh2ppXR9SvjnPHiBl2+OnDNnM=;
+	b=15u/58wXsQ/bhSQ+0oiGIL0wn6hciDNcq8/WpS+VQhDfKbeYbUI4Y/+aGlqb2SCaWsdDsl
+	fYSL+/Pfzkr+BOfDVc7jXhvHejXaqdLhBCxazIF2i1AvXR9gjN/XWNyPJqZms3hC4IwYdT
+	zJC3/ZdaytqJWfqYGa+/Z/d9582ZCL4=
+Message-ID: <a7d2ef9f-4770-4aaa-81b9-4653af3aadf0@ixit.cz>
+Date: Mon, 8 Jun 2026 21:53:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,25 +41,15 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/8] media: qcom: camss: csiphy-3ph: Use odd bits for
- configuring C-PHY lanes
-To: Frank Li <Frank.Li@oss.nxp.com>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>, Frank Li <Frank.Li@nxp.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
- <20260605-qcom-cphy-v7-2-426c37e9008f@ixit.cz>
- <aicG5nsTy7rIuWTc@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH] arm64: dts: qcom: sm6125-xiaomi-laurel-sprout: Fixup
+ panel compatible
+To: Yedaya Katsman <yedaya.ka@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260608-b4-compatible-s6e8fc0-fixup-v1-1-303606b53c1a@gmail.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -105,137 +95,16 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <aicG5nsTy7rIuWTc@lizhi-Precision-Tower-5810>
+In-Reply-To: <20260608-b4-compatible-s6e8fc0-fixup-v1-1-303606b53c1a@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 08/06/2026 20:16, Frank Li wrote:
-> On Fri, Jun 05, 2026 at 03:14:40PM +0200, David Heidelberg wrote:
->> So far, only D-PHY mode was supported, which uses even bits when enabling
->> or masking lanes. For C-PHY configuration, the hardware instead requires
->> using the odd bits.
->>
->> Since there can be unrecognized configuration allow returning failure.
->>
->> Acked-by: Cory Keitz <ckeitz@amazon.com>
->> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 39 +++++++++++++++++-----
->>   1 file changed, 31 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> index dac8d2ecf7995..fa24fc9706748 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> @@ -9,16 +9,17 @@
->>    */
->>
->>   #include "camss.h"
->>   #include "camss-csiphy.h"
->>
->>   #include <linux/delay.h>
->>   #include <linux/interrupt.h>
->>   #include <linux/io.h>
->> +#include <linux/media-bus-format.h>
->>
->>   #define CSIPHY_3PH_LNn_CFG1(n)			(0x000 + 0x100 * (n))
->>   #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG	(BIT(7) | BIT(6))
->>   #define CSIPHY_3PH_LNn_CFG2(n)			(0x004 + 0x100 * (n))
->>   #define CSIPHY_3PH_LNn_CFG2_LP_REC_EN_INT	BIT(3)
->>   #define CSIPHY_3PH_LNn_CFG3(n)			(0x008 + 0x100 * (n))
->>   #define CSIPHY_3PH_LNn_CFG4(n)			(0x00c + 0x100 * (n))
->>   #define CSIPHY_3PH_LNn_CFG4_T_HS_CLK_MISS	0xa4
->> @@ -1108,23 +1109,32 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
->>   		writel_relaxed(val, csiphy->base + r->reg_addr);
->>   		if (r->delay_us)
->>   			udelay(r->delay_us);
->>   	}
->>   }
->>
->>   static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
->>   {
->> -	u8 lane_mask;
->> -	int i;
->> +	u8 lane_mask = 0;
->> +	u8 offset = 0;
->>
->> -	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->> +	switch (lane_cfg->phy_cfg) {
->> +	case V4L2_MBUS_CSI2_CPHY:
->> +		offset = 1;
->> +		break;
->> +	case V4L2_MBUS_CSI2_DPHY:
->> +		lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->> +		break;
->> +	default:
->> +		break;
->> +	}
->>
->> -	for (i = 0; i < lane_cfg->num_data; i++)
->> -		lane_mask |= 1 << lane_cfg->data[i].pos;
->> +	for (int i = 0; i < lane_cfg->num_data; i++)
->> +		lane_mask |= BIT(lane_cfg->data[i].pos + offset);
->>
->>   	return lane_mask;
->>   }
->>
->>   static bool csiphy_is_gen2(u32 version)
->>   {
->>   	bool ret = false;
->>
->> @@ -1155,19 +1165,32 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>   	struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
->>   	struct csiphy_device_regs *regs = csiphy->regs;
->>   	u8 settle_cnt;
->>   	u8 val;
->>   	int i;
->>
->>   	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
->>
->> -	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->> -	for (i = 0; i < c->num_data; i++)
->> -		val |= BIT(c->data[i].pos * 2);
->> +	val = 0;
->> +
->> +	switch (c->phy_cfg) {
->> +	case V4L2_MBUS_CSI2_CPHY:
->> +		for (i = 0; i < c->num_data; i++)
->> +			val |= BIT((c->data[i].pos * 2) + 1);
->> +		break;
->> +	case V4L2_MBUS_CSI2_DPHY:
->> +		val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->> +
->> +		for (i = 0; i < c->num_data; i++)
->> +			val |= BIT(c->data[i].pos * 2);
->> +		break;
->> +	default:
->> +		WARN_ONCE(1, "Unsupported bus type %d!\n", c->phy_cfg);
->> +	}
+On 08/06/2026 16:28, Yedaya Katsman wrote:
+> The change to the panel compatible was missed, fix it. This compatible is
+> already in the driver.
 > 
-> can you use similar method as csiphy_get_lane_mask()
-> 
+> Signed-off-by: Yedaya Katsman <yedaya.ka@gmail.com>
 
-Done, look better, but I guess we seriously need the refactor/split done by 
-Bryan as I looking at the current code.
+I think it should have Fixes: tag
 
 David
-
-> Frank
->>
->>   	writel_relaxed(val, csiphy->base +
->>   		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
->>
->>   	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_COMMON_PWRDN_B;
->>   	writel_relaxed(val, csiphy->base +
->>   		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 6));
->>
->>
->> --
->> 2.53.0
->>
-
--- 
-David Heidelberg
-
