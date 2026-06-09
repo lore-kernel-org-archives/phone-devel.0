@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4F43EA960;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5A13EAC74;
 	Tue,  9 Jun 2026 08:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780992836; cv=none; b=mBa9eSaadpI2xj+47ZKasSaSL6yPFNKTDPNmo9WtbcVlAFAyJvxnFaUzK+sC3FI1bNELrMeHwv1gIQ4LzP0bSEABK4j15U9f//LuTz8TxCWc8KsABVrc1x2aqub9P93PMcn4RNu8J6MmkXauRnPmtZwhEunUlJNRHp2LM08PXSE=
+	t=1780992836; cv=none; b=PE06g65EHVCUG9P15RUATqRNomX7jH1j7EVkvN8XlYc9qOiaszfiw5yfmbVjWHTj7BFJEihWlkzNh9AZ9MVav3Y44v0lQmlr2p2moKjk2jcBcbGLjMQgg2wGECZwmjRqI9CeOu/D+/mYwXc71Hi6UMUZeg5o+Ul3nhmRBjl3EDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780992836; c=relaxed/simple;
-	bh=7DeREkHBuy3CC/OxlxoJowva/HyNWfGd+W2ZNWZknP8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ug1H/a3BqrZ1vwF5GGwIPXCNJrEki9g/nX7+NlNGhvmgTB4d5Jzyf5iGvyfWp8f2YLS5BX8W0XGLd95I39EbahQHtUN+8xFxpXXhWZNTKDw6eBHLkVI6VAHCdr4YpKUdUmY0a4Wu7Kdr1BEwmpE9r9QEcOrPCLQ4e9dtW7pU27w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWOELbB8; arc=none smtp.client-ip=10.30.226.201
+	bh=gHH888DMfaKgGEuNMxRFwJFh5FsrPvr3DTEjnPXl5/o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SVc9gOcPNLcKmITHr+G4+tZrMKF6Pj8J9oJYDS4PjwreeO/jbaVb7cj6rAiw/ZgAsiqBWuCpHAB/dIN+90Pz8OFeYPgIbU8h8zYglgtJ57HS0MzYz383yZZ3Y6qH8mHKtWYjT0prc3CsdI2IY11yUFZjhAEt8bgXw5aWxpvGYOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvMAUU8c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWOELbB8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 54473C4AF14;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvMAUU8c"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2CFBAC2BCB9;
 	Tue,  9 Jun 2026 08:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780992836;
-	bh=7DeREkHBuy3CC/OxlxoJowva/HyNWfGd+W2ZNWZknP8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CWOELbB8IQffBpp32Xxy7uNHNgdX5kV9vYYSX0s1dXb8DpvPE3LdZO5E0JDYXgEB7
-	 rD4w/6bhh+0JCZ97PTbzLciQUZrZzv8QtC63aWGiJQuj+Pj+COYdE279k9PdTIdyU7
-	 Z9XRWmdM8G0lDiIIp4uEpKGaqrlb8UNkOgCdMSo0cYETDvMVnVU4ho2yu+VLz7O8w+
-	 J+itGKcbMj5wJgwM40fVQG/PSVu7/kWo7o+rQa/PnV2cTw+YGy+XUrjOS/IRWCbHGj
-	 ANnHMbz+CsLkfZ7zPXkVGGEo1+gn/zN/NMxpsIJGp6SCzbsIDK64p2B267FUojhyQB
-	 a/uILlsKYsepg==
+	bh=gHH888DMfaKgGEuNMxRFwJFh5FsrPvr3DTEjnPXl5/o=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=lvMAUU8caQ4BA7m5rSW4BGy4m4lpinVT6KJi0JVIFsld/gpl4XD0mGj0PMXWcIA5q
+	 mqL1W2kAyZuQMdw4cGmKqjrh2wjBskpngxtig61cJf0j3T++mbafyzl05zF1zA65gn
+	 phfh3qTKD6IBizzRwQunqAgogaor50Js9rzPLJJx9GCqL6ioPbwEz+9DjlajzT4oGg
+	 w2JynUDzxvlFiQBInIIYhJCw6xJyWPKTDhI/ReCOa0e+p1NmY43TNROwUGL3LL1O/L
+	 FpUmmXo4DOFfnB4SabNs/NFA65CtlbfpvlJ50xWtCTeX4zAfqNQl0IRw12d9yGGbll
+	 hvXPjTS+zp+tQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46302CD8CBD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FC57CD8CA4;
 	Tue,  9 Jun 2026 08:13:56 +0000 (UTC)
 From: Alexandre MINETTE via B4 Relay <devnull+contact.alex-min.fr@kernel.org>
-Date: Tue, 09 Jun 2026 10:13:45 +0200
-Subject: [PATCH v4 2/6] pinctrl: qcom: Register functions before enabling
- pinctrl
+Subject: [PATCH v4 0/6] Add Samsung Galaxy S4 support
+Date: Tue, 09 Jun 2026 10:13:43 +0200
+Message-Id: <20260609-mainline-send-v1-sending-v4-0-83768fbf404d@alex-min.fr>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +40,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-mainline-send-v1-sending-v4-2-83768fbf404d@alex-min.fr>
-References: <20260609-mainline-send-v1-sending-v4-0-83768fbf404d@alex-min.fr>
-In-Reply-To: <20260609-mainline-send-v1-sending-v4-0-83768fbf404d@alex-min.fr>
+X-B4-Tracking: v=1; b=H4sIADfLJ2oC/43NTQ6CMBAF4KuQrq3pD1Bw5T2Mi9IOMAkU05oGQ
+ 7i7hY0aE+Nq5r1kvllIAI8QyClbiIeIASeXQn7IiOm164CiTZkIJkqWC05HjW5ABzSAszTyfaL
+ rqKhqMHUFpTWcpPObhxbnnb5cU+4x3Cf/2D9FvrV/oGlltDENqwqlRG7hrAeY6Yju2HqysVG8U
+ +oHJRJljdY1VxVjqvmm5IsqeP2DkomS1iqtuShkIT+pdV2fLHdgnFgBAAA=
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -55,13 +55,17 @@ To: Bjorn Andersson <andersson@kernel.org>,
  "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
- phone-devel@vger.kernel.org, Alexandre MINETTE <contact@alex-min.fr>
+ phone-devel@vger.kernel.org, Alexandre MINETTE <contact@alex-min.fr>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780992834; l=2004;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780992834; l=3812;
  i=contact@alex-min.fr; s=20260421; h=from:subject:message-id;
- bh=gqK5qmgCceA2ln5R06RBqAB8HOklQ9gk21qwB8S51xo=;
- b=oBXpglylxTL8r10fHries+jj6sz0vvWF+pd91bThspg4YbX+vsu5D/py2VN/VVL2saD7OMEIs
- tTcEhnLN/F2BihmfHOaQaRt8roOJubzk8/A0jBBIY2YOXy41lsUczPl
+ bh=gHH888DMfaKgGEuNMxRFwJFh5FsrPvr3DTEjnPXl5/o=;
+ b=4Wuli+y9wsnk9cFGe66d7AhtuKCs4arD7VZTWNiZIdvihpdK+xhWlMQUUbidRm1Q+eQLBcYDP
+ MDu2yUq1gJLDZy4RV0dJf0/Ai0wDvHucmc5Jeoyq879iQyi45yoXMnT
 X-Developer-Key: i=contact@alex-min.fr; a=ed25519;
  pk=KOCaxY4v16ptaT0uk1FRkuaDF2n1JhmnYwLiqWD76M4=
 X-Endpoint-Received: by B4 Relay for contact@alex-min.fr/20260421 with
@@ -69,62 +73,84 @@ X-Endpoint-Received: by B4 Relay for contact@alex-min.fr/20260421 with
 X-Original-From: Alexandre MINETTE <contact@alex-min.fr>
 Reply-To: contact@alex-min.fr
 
-From: Alexandre MINETTE <contact@alex-min.fr>
+Add initial mainline support for the Samsung Galaxy S4, codenamed jflte.
 
-pinctrl consumers can request states while the pinctrl core enables the
-controller. On Qualcomm pinctrl drivers this can happen before the SoC
-function list has been registered, which leaves the function table
-incomplete during state lookup.
+This series adds the devicetree binding and board DTS, together with the
+small driver and common DTS changes needed to boot the device with working
+USB peripheral mode.
 
-On APQ8064 this can fail while claiming pinctrl hogs:
+Tested on a Samsung Galaxy S4 GT-I9505. This series adds support for
+UART, USB peripheral mode with USB networking, the front notification
+LED and the physical buttons.
 
-   apq8064-pinctrl 800000.pinctrl: invalid function ps_hold in map table
-   apq8064-pinctrl 800000.pinctrl: error claiming hogs: -22
-   apq8064-pinctrl 800000.pinctrl: could not claim hogs: -22
-
-Register Qualcomm pinctrl with devm_pinctrl_register_and_init(), add the
-SoC pin functions, and only then enable the pinctrl device.
+Booting the device also requires an MSM IOMMU master handling fix,
+which will be submitted separately.
 
 Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+Changes in v4:
+- Rework PM8921 USB ID support by registering the extcon device from the
+  parent PMIC driver instead of describing a separate DT child node.
+- Add GPIO_OPEN_DRAIN flag to i2c-gpio
+- Drop the Reviewed-by tag from the Galaxy S4 DTS patch because its USB
+  extcon description changed.
+- Drop the MSM IOMMU master lookup fix from this series. It needs a
+  broader rework and will be sent separately.
+- jflte still needs that follow-up MSM IOMMU fix to boot.
+- Link to v3: https://lore.kernel.org/r/20260519-mainline-send-v1-sending-v3-0-3dd7aa125353@alex-min.fr
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index 45b3a2763eb8..a2a1e0835735 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -1593,11 +1593,11 @@ int msm_pinctrl_probe(struct platform_device *pdev,
- 	pctrl->desc.pins = pctrl->soc->pins;
- 	pctrl->desc.npins = pctrl->soc->npins;
- 
--	pctrl->pctrl = devm_pinctrl_register(&pdev->dev, &pctrl->desc, pctrl);
--	if (IS_ERR(pctrl->pctrl)) {
--		dev_err(&pdev->dev, "Couldn't register pinctrl driver\n");
--		return PTR_ERR(pctrl->pctrl);
--	}
-+	ret = devm_pinctrl_register_and_init(&pdev->dev, &pctrl->desc,
-+					     pctrl, &pctrl->pctrl);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Couldn't register pinctrl driver\n");
- 
- 	for (i = 0; i < soc_data->nfunctions; i++) {
- 		func = &soc_data->functions[i];
-@@ -1607,6 +1607,11 @@ int msm_pinctrl_probe(struct platform_device *pdev,
- 			return ret;
- 	}
- 
-+	ret = pinctrl_enable(pctrl->pctrl);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Couldn't enable pinctrl driver\n");
-+
- 	ret = msm_gpio_init(pctrl);
- 	if (ret)
- 		return ret;
+Changes in v3:
+- Clarify that the Galaxy S4 compatible is for the Qualcomm
+  APQ8064-based variant, and add Krzysztof's Acked-by.
+- Clarify the PM8921 USB ID binding, driver and DTS commit messages to
+  describe the PMIC interrupt-controller interface and the lack of a
+  known register resource for this interrupt-only path.
+- Keep the PM8921 USB ID extcon node non-addressable rather than adding a
+  speculative reg value.
+- Keep the MUIC and LED buses as i2c-gpio. Testing the corresponding
+  GSBI controllers on GT-I9505 made USB fail to enumerate with the MUIC
+  on GSBI2, and made LED brightness writes time out with the LED on
+  GSBI3.
+- Reorder APQ8064 USB clock entries to match the related ci-hdrc binding
+  update, using iface, core, fs order.
+- Sort the jflte DTB Makefile entry after the LG Nexus 4 entry.
+- Link to v2: https://lore.kernel.org/r/20260427-mainline-send-v1-sending-v2-0-dcaa9178007b@alex-min.fr
 
+Changes in v2:
+- Keep the APQ8064 compatible list in qcom.yaml alphabetically sorted.
+- Clarify the Qualcomm pinctrl commit message and include the failing hog
+  lookup trace seen on APQ8064.
+- Clarify the MSM IOMMU commit message and include the NULL dereference
+  trace seen during IOMMU probe on APQ8064.
+- Move the PM8921 USB ID extcon node to the end of the PM8921 child nodes.
+- Reorder the jflte DTS nodes and pinctrl properties as requested by
+  reviewers.
+- Add Reviewed-by/Acked-by tags collected on v1.
+- Link to v1: https://lore.kernel.org/r/20260421-mainline-send-v1-sending-v1-0-bcb0857724de@alex-min.fr
+
+---
+Alexandre MINETTE (6):
+      dt-bindings: arm: qcom: Add Samsung Galaxy S4
+      pinctrl: qcom: Register functions before enabling pinctrl
+      ARM: dts: qcom: apq8064: Fix USB controller clocks
+      mfd: qcom-pm8xxx: register PM8921 USB ID extcon
+      extcon: qcom-spmi-misc: match PM8xxx USB ID platform device
+      ARM: dts: qcom: Add Samsung Galaxy S4
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm/boot/dts/qcom/Makefile                    |   1 +
+ .../boot/dts/qcom/qcom-apq8064-samsung-jflte.dts   | 481 +++++++++++++++++++++
+ arch/arm/boot/dts/qcom/qcom-apq8064.dtsi           |  18 +-
+ drivers/extcon/extcon-qcom-spmi-misc.c             |   7 +
+ drivers/mfd/qcom-pm8xxx.c                          |  78 +++-
+ drivers/pinctrl/qcom/pinctrl-msm.c                 |  15 +-
+ 7 files changed, 588 insertions(+), 13 deletions(-)
+---
+base-commit: 4bf3800382b91c2898d14452cf4332782b3fe80a
+change-id: 20260421-mainline-send-v1-sending-289ec98e6dc1
+
+Best regards,
 -- 
-2.43.0
+Alexandre MINETTE <contact@alex-min.fr>
 
 
