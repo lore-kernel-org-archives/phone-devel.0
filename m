@@ -1,122 +1,186 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75929B77E;
-	Tue,  9 Jun 2026 16:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D622F2D9787;
+	Wed, 10 Jun 2026 07:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781023331; cv=none; b=Wpsrj+s2nxV2p4ZPrMZF9eDRV6DXbBq3/jxdWWm99uGHVE7v4VilwHBDp+iVWfN8GplzTSQE2hcfFGsew5tMuAAOqG3SlnNgtwx9yBti7N0E2PSIzektRADJmKKt783f6uukbHt0qWn2o9OUxacZUKmXwi+30TXDzNh9avjUI6E=
+	t=1781077759; cv=none; b=Og2VAwhtKRzsgooK8HZNX8vAzoPJYkavHa2RPJ3dDT42WVJU2CVHY54uMNyZhdeobtiptRF9jocvzvGAzEdLFx+GL+owhXkp27wIdU6Gv+V8xd8daRTJrQiK5uIax0WVp9az6zqI/vEUPx4fPgrDcNzXo3W+3r9Rb5/kLPYdTW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781023331; c=relaxed/simple;
-	bh=f8U3CviyCU51P8ImP3kfg24gVdTyuZcrjVFCMhrHMW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rwVItwCT2vEnsyZC7ymPhY4j9DQZoANv5829QThSHx50ZcFuKc4l0LtrDF6iB5oE/eVXMY3uNEOji8amv7YQMTIcHYfgUVCBPZ1sV0i82RQRwDro6dCcGu/h5M60obVoelp5VQGTo4FnnBeckCayncxWSGDQqFjol1aJNAqclXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=MAmVvSGJ; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1781077759; c=relaxed/simple;
+	bh=lD1HUnZXDh8evB2ZyROS/+Exc/gYge+hONvXJRsg0UY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hicDlU2cFgzuZONSfH6rd5tn7CGyDslO7PW9U4TMpruMWdD+lcIJ3k6UUFwFQ/5rIn0RW60mkIDDSRZDrTDwDYN+uHXhi0V6XwArbcPWM+DrUX/EcXoArJQVk8haNcOV+J1IvUPJyY3r+job+s8KEtaajKPNxHSw/N8dcHznoqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sFXCTkQF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="MAmVvSGJ"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 5E5C25340866;
-	Tue, 09 Jun 2026 18:42:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1781023326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Gk27He8vqPFqmcGELX5t0abQFIfgMvQwTGmgnMcTnN4=;
-	b=MAmVvSGJpt4h2+bGMhMIOaFdqJB3d1bledbSp9D3itUDsRubmJoSiBUvAKX61XvFgUlQjj
-	7OGgi9qKu72RAazFrO/8k+jOsPHP0JCfgd8/6n17lDWLvX7V+QaaBGSESxCpmU1YowCJQy
-	hhf6jjfaoOUaPSGXhlDWJkf+7+brynw=
-Message-ID: <c5a382a0-e844-4d36-b8fa-aea28b7835e0@ixit.cz>
-Date: Tue, 9 Jun 2026 18:42:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sFXCTkQF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79F6FC2BCB9;
+	Wed, 10 Jun 2026 07:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781077759;
+	bh=lD1HUnZXDh8evB2ZyROS/+Exc/gYge+hONvXJRsg0UY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=sFXCTkQFUj30kP12tXU3X+Elc6KPQMgHJy/S4wyg4uB3hHXD9VW+Sg5A1Y6rofwOD
+	 PnBCCKSzLiLXGFa4/aNO8EPUNEtNNmtF8W8Is7GfsagbFj5hy2jLZgUIVS868osOQn
+	 ItTmk51/M1OynqNhKQomyWevpLNHfI6ZwVuQoKnqZkjKdOaT+nzhe3OlCrSCOwKXU0
+	 yLBg4h0mt22I3qfXyWEDVOEs8VaNC9xtdSKxciRZByL2VFWKWmjShGJvmXGs5QO7DX
+	 HdOkNTFJjVldKzRyYL2UCrhHOeSUy8slR1e+LR5Tl6nxEBRUoWgXDLZuViDnBi5WEh
+	 Pv+lx9/cFpuzw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B98CD98C7;
+	Wed, 10 Jun 2026 07:49:19 +0000 (UTC)
+From: Alexandre MINETTE via B4 Relay <devnull+contact.alex-min.fr@kernel.org>
+Date: Wed, 10 Jun 2026 09:49:17 +0200
+Subject: [PATCH] drm/msm/a3xx: Drain VBIF before GPU suspend
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] ARM: dts: qcom: Add Samsung Galaxy S4
-To: contact@alex-min.fr, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Guru Das Srinagesh
- <linux@gurudas.dev>, Linus Walleij <linusw@kernel.org>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260609-mainline-send-v1-sending-v4-0-83768fbf404d@alex-min.fr>
- <20260609-mainline-send-v1-sending-v4-6-83768fbf404d@alex-min.fr>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260609-mainline-send-v1-sending-v4-6-83768fbf404d@alex-min.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-mainline-fix-a3xx-gpu-hang-sending-v1-1-9282182840b5@alex-min.fr>
+X-B4-Tracking: v=1; b=H4sIAPwWKWoC/yWNywrCQAxFf6VkbWAetYK/Ii6mnVgjGsuklYHSf
+ zfV1eXA4dwVlAqTwrlZodCHld9i4A8NDPckIyFnYwgudK7zDl+J5clCeOOKKdaK47TgrqKSZLY
+ NR9f2Mcfc+hNYaCpk8u/kcv2zLv2Dhnkvw7Z9AYguHeSGAAAA
+X-Change-ID: 20260610-mainline-fix-a3xx-gpu-hang-sending-2504b3d3d417
+To: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Akhil P Oommen <akhilpo@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Alexandre MINETTE <contact@alex-min.fr>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781077758; l=4188;
+ i=contact@alex-min.fr; s=20260421; h=from:subject:message-id;
+ bh=U1m7+SxBVxKaqhEGJu1GKuE9XFcw724ySAWY6Dm6jt4=;
+ b=nrWv/4C4ROSaessiJUfrFyLGL8vxGp7iEbTcPpIDVjzhm5GMPY2gubhvQdtpsE1HDsq0fRHUJ
+ N8MMsl3qktVBuMTFr00w7oJnk+2lIfD+kdrBvz16faVmf2QzhyMn59s
+X-Developer-Key: i=contact@alex-min.fr; a=ed25519;
+ pk=KOCaxY4v16ptaT0uk1FRkuaDF2n1JhmnYwLiqWD76M4=
+X-Endpoint-Received: by B4 Relay for contact@alex-min.fr/20260421 with
+ auth_id=743
+X-Original-From: Alexandre MINETTE <contact@alex-min.fr>
+Reply-To: contact@alex-min.fr
 
-On 09/06/2026 10:13, Alexandre MINETTE via B4 Relay wrote:
-> From: Alexandre MINETTE <contact@alex-min.fr>
-> 
-> Add a device tree for the Samsung Galaxy S4, codenamed jflte.
-> 
-> This has been tested on a Samsung Galaxy S4 GT-I9505. The initial support
-> covers UART, USB peripheral mode with USB networking, the front LED and
-> the physical buttons.
-> 
-> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
-> ---
->   arch/arm/boot/dts/qcom/Makefile                    |   1 +
->   .../boot/dts/qcom/qcom-apq8064-samsung-jflte.dts   | 481 +++++++++++++++++++++
->   2 files changed, 482 insertions(+)
+From: Alexandre MINETTE <contact@alex-min.fr>
 
-Acked-by: David Heidelberg <david@ixit.cz>
+A3xx hangs after every runtime suspend on the Samsung Galaxy S4
+GT-I9505. Even simple GPU workloads, such as drawing a single triangle,
+hang reliably once the GPU has been suspended by runtime PM.
+
+The generic MSM GPU suspend path disables clocks/power, but A3xx also
+needs to ensure that pending VBIF transactions are drained before that
+happens.
+
+Add an A3xx-specific pm_suspend callback. Wait for the GPU to become
+idle, halt all VBIF XIN clients, wait for the corresponding
+acknowledgment, and only then enter the generic MSM GPU suspend path.
+
+This fixes reliable A3xx GPU hangs observed after runtime PM on the
+Samsung Galaxy S4 GT-I9505, codename jflte. The failure is reported as:
+
+  mdp4 5100000.display-controller: [drm:hangcheck_handler] *ERROR* 3.2.0.2: hangcheck detected gpu lockup rb 0!
+  mdp4 5100000.display-controller: [drm:hangcheck_handler] *ERROR* 3.2.0.2:     completed fence: 4294967041
+  mdp4 5100000.display-controller: [drm:hangcheck_handler] *ERROR* 3.2.0.2:     submitted fence: 4294967049
+  mdp4 5100000.display-controller: [drm:recover_worker] *ERROR* 3.2.0.2: hangcheck recover!
+
+Link: https://github.com/freedreno-zz/freedreno/issues/12
+Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
+---
+Fix A3xx GPU hangs after runtime PM by draining pending VBIF
+transactions before entering the generic MSM GPU suspend path.
+---
+ drivers/gpu/drm/msm/adreno/a3xx_gpu.c         | 36 ++++++++++++++++++++++++++-
+ drivers/gpu/drm/msm/registers/adreno/a3xx.xml |  2 ++
+ 2 files changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
+index 018183e0ac3f..a37be1241271 100644
+--- a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
+@@ -25,6 +25,8 @@
+ 
+ extern bool hang_debug;
+ 
++#define A3XX_VBIF_XIN_HALT_CTRL0_MASK	GENMASK(5, 0)
++
+ static void a3xx_dump(struct msm_gpu *gpu);
+ static bool a3xx_idle(struct msm_gpu *gpu);
+ 
+@@ -502,6 +504,38 @@ static u64 a3xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)
+ 	return busy_cycles;
+ }
+ 
++static int a3xx_vbif_halt(struct msm_gpu *gpu)
++{
++	u32 ack;
++	int ret;
++
++	gpu_write(gpu, REG_A3XX_VBIF_XIN_HALT_CTRL0,
++		  A3XX_VBIF_XIN_HALT_CTRL0_MASK);
++	ret = spin_until(((ack = gpu_read(gpu, REG_A3XX_VBIF_XIN_HALT_CTRL1)) &
++			  A3XX_VBIF_XIN_HALT_CTRL0_MASK) ==
++			 A3XX_VBIF_XIN_HALT_CTRL0_MASK);
++	gpu_write(gpu, REG_A3XX_VBIF_XIN_HALT_CTRL0, 0);
++
++	if (ret)
++		return -EBUSY;
++
++	return 0;
++}
++
++static int a3xx_pm_suspend(struct msm_gpu *gpu)
++{
++	int ret;
++
++	if (!a3xx_idle(gpu))
++		return -EBUSY;
++
++	ret = a3xx_vbif_halt(gpu);
++	if (ret)
++		return ret;
++
++	return msm_gpu_pm_suspend(gpu);
++}
++
+ static u32 a3xx_get_rptr(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
+ {
+ 	ring->memptrs->rptr = gpu_read(gpu, REG_AXXX_CP_RB_RPTR);
+@@ -597,7 +631,7 @@ const struct adreno_gpu_funcs a3xx_gpu_funcs = {
+ 		.get_param = adreno_get_param,
+ 		.set_param = adreno_set_param,
+ 		.hw_init = a3xx_hw_init,
+-		.pm_suspend = msm_gpu_pm_suspend,
++		.pm_suspend = a3xx_pm_suspend,
+ 		.pm_resume = msm_gpu_pm_resume,
+ 		.recover = a3xx_recover,
+ 		.submit = a3xx_submit,
+diff --git a/drivers/gpu/drm/msm/registers/adreno/a3xx.xml b/drivers/gpu/drm/msm/registers/adreno/a3xx.xml
+index 6717abc0a897..096de72b0b6c 100644
+--- a/drivers/gpu/drm/msm/registers/adreno/a3xx.xml
++++ b/drivers/gpu/drm/msm/registers/adreno/a3xx.xml
+@@ -1499,6 +1499,8 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
+ 	<reg32 offset="0x3058" name="VBIF_OUT_AXI_AMEMTYPE_CONF0"/>
+ 	<reg32 offset="0x305e" name="VBIF_OUT_AXI_AOOO_EN"/>
+ 	<reg32 offset="0x305f" name="VBIF_OUT_AXI_AOOO"/>
++	<reg32 offset="0x3080" name="VBIF_XIN_HALT_CTRL0"/>
++	<reg32 offset="0x3081" name="VBIF_XIN_HALT_CTRL1"/>
+ 
+ 	<bitset name="a3xx_vbif_perf_cnt" inline="yes">
+ 		<bitfield name="CNT0" pos="0" type="boolean"/>
+
+---
+base-commit: 2d3090a8aeb596a26935db0955d46c9a5db5c6ce
+change-id: 20260610-mainline-fix-a3xx-gpu-hang-sending-2504b3d3d417
+
+Best regards,
+--  
+Alexandre MINETTE <contact@alex-min.fr>
+
+
