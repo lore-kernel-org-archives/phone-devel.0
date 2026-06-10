@@ -1,180 +1,186 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F932D781B;
-	Wed, 10 Jun 2026 17:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6574D29C328;
+	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781113485; cv=none; b=NRxhxTVM6spctF+aiz9Ee1aOprWg1IZaxCx76P/X1P+dCE3KDHmr4iPWAyzHUqTNYMdOUNMIWCBK7zPyCtEYWG4gLO113yb483wouZW1hjHkQMoKGUtVfyEtP52Wdb7nFQDrYSzD7zE91SI1Rc3Io90YXf4ybjJgNtV6sXgTIGk=
+	t=1781116106; cv=none; b=m+BrpyZBNzKrmxSWjjhMJKKLs0aZ0c5VuNLBBICbgYRR0K1cE2Uf4AXzI9B+zzDg5s5QwfQNxHewP5XVXBEj/rkXWzkzJECuff2qWUVedL45XB+jfjojKuCl63UcLlJVAxaCEBdQGnT8PovP4pFqT6PVJf9KY3kqV9xlMnmluCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781113485; c=relaxed/simple;
-	bh=iX5EaEYttj5Mt4GBQgQDykOgVf+QxFit+eTHttHQiOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lymTPHiyIITH1iOXvL3zsbpb6D2UigiFGg7cLPkf0tbPDmuBHl3ydCfnVUXRJRT+JIVSCc7dIye/DYm2dJnMrjimSRkvq3pkZSiSPn79uuRq5W1f6XKXp9TjircyfxGLSXvaUivz3XMJJh24klvTdyhln7cjRTb65Nab48Lcn4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Bh3cii0p; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1781116106; c=relaxed/simple;
+	bh=H1VFUp3PjkKWJdD41MKRZH7D7dfv43n0A4wgkEm6UuY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QspCyad/oXRnh8eY73YRxy/hEr+WsKSDZtziZXq0Z5GpOZbE0y6AmpMZt+756HCTO9Gol+GfsBH3XRR42hra8HTSJr9FOBbld2qD9RaqR1LqXz3aI+y2ZR39RsizlxdUqh6ix9VmGDi16vJrfGw2lJkJmfR7DM7DndTTyE4DiNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwuXagvy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Bh3cii0p"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 11BF053405F6;
-	Wed, 10 Jun 2026 19:44:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1781113469;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nSA4gXda/9DDXLCW0xADHGVnUNL6mo9VPd3SmQOmg3I=;
-	b=Bh3cii0paCrtMliuwuIndxCRM93u3N3rutDQXJWQfgJuLZOFVv1Tigi4r+XNBdvDsd9yBm
-	R1/1nzQe+mCot7pfTr9lltWQeb0OHJDVdhm2QeDXgFnPC65MEfe9GBtizsTdBu2kngCZWV
-	Jjg4S4bHC/e0enQqX0lYVo5Pv4dx5G4=
-Message-ID: <d99ada08-ab7e-42c3-9e6b-174a4631dc4a@ixit.cz>
-Date: Wed, 10 Jun 2026 19:44:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwuXagvy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 33DE1C4AF14;
+	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781116106;
+	bh=H1VFUp3PjkKWJdD41MKRZH7D7dfv43n0A4wgkEm6UuY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=MwuXagvyfCAaKiyA+gNGbYnvJyI8wKX5GJktLB3QlDl+lyvjIVggr3VitYODzzT92
+	 zwez1o7m86yUWy/K0ESzA6nKnEyFWfrFPNVqthV8RpKyQKaHju0pX2XkIUyHV3La0Y
+	 Y+9HTEfqlc2mrTvDfU81pN3rSbkUBzaG9ttOybD2PcCXAeOl6PyAL1R1elcfW63c8I
+	 277EKMeue5qD3dHOBphakJ1r+oxekQskRT7KD3owvIwRxVsIlxprfxbX9LteqelwmO
+	 w2fvsaDtax8yMf0MS4qZVWIBNj6j9NO9Vu/FIJmhhaYdP7zBfXee1GnV9Mc1KoRTNd
+	 NhYTVkDP9JSOg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B34FCD98C7;
+	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Wed, 10 Jun 2026 20:28:23 +0200
+Subject: [PATCH v8 3/9] media: qcom: camss: csiphy-3ph: Use odd bits for
+ configuring C-PHY lanes
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 7/8] media: qcom: camss: Account for C-PHY when
- calculating link frequency
-To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>, Robert Foss
- <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260605-qcom-cphy-v7-0-426c37e9008f@ixit.cz>
- <20260605-qcom-cphy-v7-7-426c37e9008f@ixit.cz>
- <b4599747-7eaa-4ccb-8144-fabfa4c96593@oss.qualcomm.com>
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-qcom-cphy-v8-3-cd4387785179@ixit.cz>
+References: <20260610-qcom-cphy-v8-0-cd4387785179@ixit.cz>
+In-Reply-To: <20260610-qcom-cphy-v8-0-cd4387785179@ixit.cz>
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Bryan O'Donoghue <bod@kernel.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
+ "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
+Cc: Frank Li <Frank.Li@nxp.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Kieran Bingham <kbingham@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=TVUoRIJn5ULvYNpapsB4ZItCc34ZCZTZby6Hd3C8I2o=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqKazHq88a544lmWGFAghH+C0vt7VXhKfnt2e9A
+ 1TmU6njwsuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaimsxwAKCRBgAj/E00kg
+ co9jEADH1IKGSsgWZ3amcuuM4I389OIuoXYOCheH/7IRPVmwg6zd6Rnd4YPkQ5DpYLr6uSBcg5f
+ gNINwEmj+Vsu4bbel09NThpVotELMHwBTQwQjZaIugQ5s07Rsuap6tXm8OUqbG0gzuAL5EyU5yI
+ Ybks+ND1iq1zu/qcdaaybCnKHKTqQd5iIkytn4gigEfEsgAZlFT1ZjL6+41BebEuDIBAay3YT+c
+ qTzb8zL+n1MPaY+iu1RCQhzTIadZ3AdXUAAfUEJJlRbF/kgmyYUO0G1cy8ApsHaGg5d0+cnR3/c
+ 2JTbUp6UgnM+caWS+JbhbXODltXepef7kwDhm47kgkrZGR+HffV+ta7rfri7SwywIg4hKqFfd6f
+ shesCqbhQsF3KqZxrmXMGST6yZ5c+VJ+qMfrKhnKGHQ/Uo3JzQnwjhfpoyHMqsyXnnXvfj2CHQ2
+ HPF1XFnY+ceKVDUEGgNvIZCa1bIR4X8sq7Y6Q86kqD72V6eyFfdsBJWtNe6wzBgpNoW3rXD1wg1
+ hosDAS3vGzxiMFEZVn3ZF/8TIp+Od+OE0huIicF1rG798Fh2+yUH9WEj1IC9ek3wdciTfGl9zfe
+ AUKZ6LlMvaaUOQsuTyu4HF82RQQvZav/HpSTRr9cS7xftCnlL5adHpO2WyUWVd7XiaiU0j0YsqJ
+ UiW7YA5DHZN2VgQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+
 From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <b4599747-7eaa-4ccb-8144-fabfa4c96593@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 10/06/2026 10:23, Wenmeng Liu wrote:
-> 
-> 
-> On 6/5/2026 9:14 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Ensure that the link frequency divider correctly accounts for C-PHY
->> operation. The divider differs between D-PHY and C-PHY, as described
->> in the MIPI CSI-2 specification.
->>
->> For more details, see:
->> https://docs.kernel.org/driver-api/media/tx-rx.html#pixel-rate
->>
->> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Acked-by: Cory Keitz <ckeitz@amazon.com>
->> Tested-by: Cory Keitz <ckeitz@amazon.com>
->> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->> Link: https://docs.kernel.org/driver-api/media/tx-rx.html#pixel-rate
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/media/platform/qcom/camss/camss-csid.c   |  7 +++++--
->>   drivers/media/platform/qcom/camss/camss-csiphy.c |  6 ++----
->>   drivers/media/platform/qcom/camss/camss.c        | 18 +++++++++++++++---
->>   drivers/media/platform/qcom/camss/camss.h        |  2 +-
->>   4 files changed, 23 insertions(+), 10 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/ 
->> platform/qcom/camss/camss-csid.c
->> index bcc34ac9dd212..7415e811082da 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csid.c
->> @@ -534,25 +534,28 @@ const struct csid_format_info *csid_get_fmt_entry(const 
->> struct csid_format_info
->>   /*
->>    * csid_set_clock_rates - Calculate and set clock rates on CSID module
->>    * @csiphy: CSID device
->>    */
->>   static int csid_set_clock_rates(struct csid_device *csid)
->>   {
->>       struct device *dev = csid->camss->dev;
->> +    struct csiphy_device *csiphy = &csid->camss->csiphy[csid->phy.csiphy_id];
-> 
-> The PHY indices are not necessarily contiguous on some platforms, such as Hamoa 
-> or Purwa.
-> 
-> For example, on Hamoa, we have csiphy0, csiphy1, csiphy2, and csiphy4. Using 
-> csiphy->id directly would lead to an array out-of-bounds access.
-> 
+So far, only D-PHY mode was supported, which uses even bits when enabling
+or masking lanes. For C-PHY configuration, the hardware instead requires
+using the odd bits.
 
-Nice catch, thanks. I thought I'll make it cleaner, but I guess this chance 
-could be pain point. Reverted to passing (number of) `lanes` and just added cphy 
-bool instead of passing whole struct.
+Since there can be unrecognized configuration allow returning failure.
 
-David
+Acked-by: Cory Keitz <ckeitz@amazon.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 25 ++++++++++++++--------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-> Thanks,
-> Wenmeng
->> +    struct csiphy_lanes_cfg *lane_cfg = &csiphy->cfg.csi2->lane_cfg;
->>       const struct csid_format_info *fmt;
->> +
->>       s64 link_freq;
->>       int i, j;
->>       int ret;
-> 
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+index 7c8c0e41bc62f..dfcd9ed2eb7a3 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -9,16 +9,17 @@
+  */
+ 
+ #include "camss.h"
+ #include "camss-csiphy.h"
+ 
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/media-bus-format.h>
+ 
+ #define CSIPHY_3PH_LNn_CFG1(n)			(0x000 + 0x100 * (n))
+ #define CSIPHY_3PH_LNn_CFG1_SWI_REC_DLY_PRG	(BIT(7) | BIT(6))
+ #define CSIPHY_3PH_LNn_CFG2(n)			(0x004 + 0x100 * (n))
+ #define CSIPHY_3PH_LNn_CFG2_LP_REC_EN_INT	BIT(3)
+ #define CSIPHY_3PH_LNn_CFG3(n)			(0x008 + 0x100 * (n))
+ #define CSIPHY_3PH_LNn_CFG4(n)			(0x00c + 0x100 * (n))
+ #define CSIPHY_3PH_LNn_CFG4_T_HS_CLK_MISS	0xa4
+@@ -1108,23 +1109,32 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
+ 		writel_relaxed(val, csiphy->base + r->reg_addr);
+ 		if (r->delay_us)
+ 			udelay(r->delay_us);
+ 	}
+ }
+ 
+ static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
+ {
+-	u8 lane_mask;
+-	int i;
++	u8 lane_mask = 0;
++	u8 offset = 0;
+ 
+-	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
++	switch (lane_cfg->phy_cfg) {
++	case V4L2_MBUS_CSI2_CPHY:
++		offset = 1;
++		break;
++	case V4L2_MBUS_CSI2_DPHY:
++		lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
++		break;
++	default:
++		break;
++	}
+ 
+-	for (i = 0; i < lane_cfg->num_data; i++)
+-		lane_mask |= BIT(lane_cfg->data[i].pos * 2);
++	for (int i = 0; i < lane_cfg->num_data; i++)
++		lane_mask |= BIT((lane_cfg->data[i].pos * 2) + offset);
+ 
+ 	return lane_mask;
+ }
+ 
+ static bool csiphy_is_gen2(u32 version)
+ {
+ 	bool ret = false;
+ 
+@@ -1155,20 +1165,17 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+ 	struct csiphy_lanes_cfg *c = &cfg->csi2->lane_cfg;
+ 	struct csiphy_device_regs *regs = csiphy->regs;
+ 	u8 settle_cnt;
+ 	u8 val;
+ 	int i;
+ 
+ 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+ 
+-	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+-	for (i = 0; i < c->num_data; i++)
+-		val |= BIT(c->data[i].pos * 2);
+-
++	val = csiphy_get_lane_mask(c);
+ 	writel_relaxed(val, csiphy->base +
+ 		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
+ 
+ 	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_COMMON_PWRDN_B;
+ 	writel_relaxed(val, csiphy->base +
+ 		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 6));
+ 
+ 	val = 0x02;
 
 -- 
-David Heidelberg
+2.53.0
+
 
