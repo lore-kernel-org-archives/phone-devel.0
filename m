@@ -1,150 +1,92 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8402D73BC
-	for <phone-devel@vger.kernel.org>; Thu, 11 Jun 2026 12:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ED33FCB05
+	for <phone-devel@vger.kernel.org>; Thu, 11 Jun 2026 13:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781180572; cv=none; b=pBwTfSKBWnnBQSFK/f0j3Uxq9+ahleDpvwO1+WlnszRA6oJK90SxQBVUDnWHDzMMEH7xo0Znix0xQmQNHCVQ4KxmQvw5QPZCZWOd0MHRJOZItdCoB71u87w5R3dMqZEvYjkOJgzxxpJGgkRYqeHzfUOYdi0Z2HZrMkUJXgFfeno=
+	t=1781182913; cv=none; b=e1nJ3J2kJ+IR039mxhPrtwvGtzRWizBSDl2VbehHi/OgxI29Dl0+NgRpEARvR1ofYZN2JljuOfBNttZ8Oa+WKJ4jo8RgTh5E/PAZ2Sc5eMDTO2bwcC5Ps9lL2pCDh2R9atVi+SUIdpvmlc5D5JDQqit6S4YArhf8x1Cu9O8OXYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781180572; c=relaxed/simple;
-	bh=6mybAxFWA9piKMYdQTC95b5ZGi6YKc2Dvduxn+GK1Rs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V66eb7YMCtDWH+lcaTddksG8vOXTGLRc05zqdPOCJxoE8q0nRRC/zTZcYIJ+vsMUQhkx0SUvantdkLemVmPqJh87+MPTIITS9TgQi7GmDZ9rfl3i76WYSFwe4MH9IsIwfQM/qeTL8JueBL9nVIjLxEXXObe+YlXMFZU2T7tgqq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sZuwcPG3; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1781182913; c=relaxed/simple;
+	bh=dxtzzd8ZdpD5pq1vA/GOSoUSAYH9K65OMoFmKECPM+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OcUsk+YFdZ+RbftBX46PplHMTXkALasUGTuXNqrM5r8DuADm3dhKQYb1xps9F2SRF19fTmW3mT+UjHDthwuXyhUUmVUhhnCFgfBmsAAKNXKiQNv4t01ypb1DvU48I2OCXtHWCuoKXj+CvPyNMzYGq5AgwDHflEHXBU3r8TZXDL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Blk/EA7K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sZuwcPG3"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aa68da4e45so709137e87.2
-        for <phone-devel@vger.kernel.org>; Thu, 11 Jun 2026 05:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781180569; x=1781785369; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3UVAPv+vJYyMdfCgAAqYJ+tpswqCocudVoYqqRm2LCg=;
-        b=sZuwcPG3VczZISaPBGPUIykdEVbYJmqWYESl0nQwgXSBnWyTgIQx+NZWRAXknB/oBd
-         i7jzaBuPwUV5Eaz1P9UvlsuO+18UVjbHf2PKL8Mltx8H09UjN3nvf2tL+fcKDz1ylKuY
-         1pHLnMxxk7Gju4UrFZsszu2s0brHQs4i0PXmmsR+4Pr+50dOEbXGIq3D+7RVMFMTVIoM
-         euvfJGEKm2UELN6qTQ2z6G2pb81APsN/FIxtGLiDDSDfXIgFZkXG/KJZe1EJuXlGxCSk
-         h1Wy9jsHN/7KsPEyYyxKQ88nzCXu9QbGQZXgzHnQBwXriPQdJhDu5tDVuiQzCZhR46Yk
-         qS5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781180569; x=1781785369;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3UVAPv+vJYyMdfCgAAqYJ+tpswqCocudVoYqqRm2LCg=;
-        b=l47IblMNCT2BB5Tva0K/klNmYi6uQ5YSzLbdQ8oWz57HY8Foyfeh0GIH6E4QdX0sq0
-         6Q7RPPisinu6/RDeqaMpJyVrcy9Jeo4djIsrNNyDUZ4jOd4yV9S26gNouxzrqyKBXRaK
-         70pETdR5OlhyCgksKPjlHL6fd1bPy+pLhEUcVaWC17P/l6Ii2Radr57h4kG/DxMt4zMs
-         ceubv8U+p/MFBBWmzSiXfbo7qh3GqhHj2qyNDYrDHWZvPruOiQk3x3J4sTc3IxHtOQZI
-         OtNScHL389pYKdTFRlrCt8s4/j0ViTozki6eExKQlNz7yQB+T1ddf6QFngPmKbtFqblj
-         frZA==
-X-Forwarded-Encrypted: i=1; AFNElJ+P8zFa5gZT3N4J2CdhMwbgYDMEusq4UoLsv34PoHpTu/OV/RND/er9M3StB+kp+IKVom2movGIHIpVpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv9IdWgSueN7iRTt0cOLb8/9uOU2NLUyg8a1Sd2b59RFf/HhFf
-	A24/ThNsojtB55Hrl4rYmpqIxDIy2gCFKM79auLs/iZGoJfX10xDpTmK3/htyOlOeak=
-X-Gm-Gg: Acq92OEZXH5cjjw4nwGHm+sx/YzIY2qGdC0f3NO9TDKy6ueHxSVViYghmwaAhhGt8Gh
-	GOUk5ExL41kCDp4kBQhla0+c9oVohlmxgJcAZe7fjrylbpzF/2Ic1eAfBJ+kwvcZPBv/zaIBtlx
-	D2OpFF93xfVhimHDdJquA0a8aDzK1xS4dVjHhcpsdJw9FuPlCe9FqN/d8G0xfnUmA52RZ2EvSdz
-	lFPIRw7OyMpD9c/NU0SJ1TgOgo1xRuP/T2qmYUb1F3u81zUsVlFMBJ72+31TsLXvTNloKfDSqfP
-	iEuCrkp2W7oStyl0XcZ6tR2XiYFRCgDTk/JNwC433hxwOd6wdOOKKKoHkydEON99ybI95h2MV/Z
-	Nquc9aj9S8aqBDigxRR2lpy33Cbb4Gb8h3mLhrmt9UoQmoKosfpgnUvxth7Yf4aqYMH5FEAjTcu
-	Uif878FcpErlDFQ9biP9NvjwkEVcDAy8g1FradusuiF8kN2ddz3JrkEsmty9dtjJ15mKY+smyd6
-	DW6NW+9T0DYsFYO
-X-Received: by 2002:a05:6512:1548:b0:5ad:2ac0:9fb0 with SMTP id 2adb3069b0e04-5ad2ac0a109mr69074e87.4.1781180569120;
-        Thu, 11 Jun 2026 05:22:49 -0700 (PDT)
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa7b8fc8d9sm6258927e87.28.2026.06.11.05.22.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 05:22:48 -0700 (PDT)
-Message-ID: <ed42708e-97b6-4c5a-aa52-d712cd4dc591@linaro.org>
-Date: Thu, 11 Jun 2026 15:22:47 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Blk/EA7K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662C61F008A0
+	for <phone-devel@vger.kernel.org>; Thu, 11 Jun 2026 13:01:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781182912;
+	bh=S/PaI/bw+VuuG55BNgAn27yXdiH77TYjTv4aXLlbWog=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Blk/EA7Ki8FhZPKTVwAbrly0vGRvkggV7PJk6BBQb3Q/3eVpfUNWRK75IjQSg5mg+
+	 7uHt657Ji294n3R06rLbAdxoea6f4jWQYjwajkIXwZqLZJjjExN42xRW6SC2gdrZsZ
+	 C9VnY5LyPbYQi8FvA8rODXYw3FUk3vQGurkb3cdYMFL0Pc8QH5oiNZXxtmG2FBN9Xg
+	 JT9jIpO+oSYJzOw36mYDd6YRo3Wia4Z3CQmustlvjWg0JZ7WoFJC0akTyjjVD7H7/6
+	 Hs4FE13hXn99EOGod6oLnDnYPjCCpClfOSFtyyRTHAYfS0Uz666PxYzeCreBgmQDTL
+	 1RXl/OM0QNK+Q==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa68e66128so8299621e87.2
+        for <phone-devel@vger.kernel.org>; Thu, 11 Jun 2026 06:01:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8b8iWVf/Q9bK/gzSupQGd25ZXaX3pMpgNIPbrQrUREwXWKaCYe2lG3df5fxYK9QoPzmcchBNmEyly+Gg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzV/hMd0QSTL2ZuWfuiSk4NAsKvgmgRfmkfku441/PNmHf5NhQF
+	j5IdLoCBVr5942vvGlVTYARqVMh/QZN6IFYQ7+5kdzLwFJ5PY7sXBJaHwjF0rKiA428+/d0ZHKi
+	4g5XIB72F0YMUxRtokZPrijLAbyKxYBE=
+X-Received: by 2002:a05:6512:1152:b0:5aa:63a8:c78e with SMTP id
+ 2adb3069b0e04-5ad27ac4ebbmr1039822e87.15.1781182911091; Thu, 11 Jun 2026
+ 06:01:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/9] media: qcom: camss: csiphy-3ph: Fix lane mask
- calculation
-To: david@ixit.cz, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>,
- Petr Hodina <phodina@protonmail.com>, "Dr. Git" <drgitx@gmail.com>,
- Cory Keitz <ckeitz@amazon.com>, Loic Poulain
- <loic.poulain@oss.qualcomm.com>, Hans Verkuil <hverkuil@kernel.org>,
- Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, stable@vger.kernel.org
-References: <20260610-qcom-cphy-v8-0-cd4387785179@ixit.cz>
- <20260610-qcom-cphy-v8-2-cd4387785179@ixit.cz>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20260610-qcom-cphy-v8-2-cd4387785179@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260519-mainline-send-v1-sending-v3-0-3dd7aa125353@alex-min.fr> <20260519-mainline-send-v1-sending-v3-3-3dd7aa125353@alex-min.fr>
+In-Reply-To: <20260519-mainline-send-v1-sending-v3-3-3dd7aa125353@alex-min.fr>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 11 Jun 2026 15:01:38 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk91JoT=EdsUErcdXsQiY6vbaacNM0k1kRFZSnMrb5=BA@mail.gmail.com>
+X-Gm-Features: AVVi8CedkAYnUTjUGO8FTTgdtbuc-hXcCSM9t-36jlw6P4qpvJQbaTo5hy8aBXM
+Message-ID: <CAD++jLk91JoT=EdsUErcdXsQiY6vbaacNM0k1kRFZSnMrb5=BA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/8] pinctrl: qcom: Register functions before enabling pinctrl
+To: contact@alex-min.fr
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Guru Das Srinagesh <linux@gurudas.dev>, Rob Clark <robin.clark@oss.qualcomm.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, iommu@lists.linux.dev, 
+	phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/10/26 21:28, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> The lane mask must be multiplied by 2, but this was accidentally omitted.
+On Tue, May 19, 2026 at 9:16=E2=80=AFAM Alexandre MINETTE via B4 Relay
+<devnull+contact.alex-min.fr@kernel.org> wrote:
 
-Fortunately this computed lane mask value has never been used expectedly by
-csiphy-3ph users.
+> From: Alexandre MINETTE <contact@alex-min.fr>
+>
+> pinctrl consumers can request states while the pinctrl core enables the
+> controller. On Qualcomm pinctrl drivers this can happen before the SoC
+> function list has been registered, which leaves the function table
+> incomplete during state lookup.
+>
+> On APQ8064 this can fail while claiming pinctrl hogs:
+>
+>    apq8064-pinctrl 800000.pinctrl: invalid function ps_hold in map table
+>    apq8064-pinctrl 800000.pinctrl: error claiming hogs: -22
+>    apq8064-pinctrl 800000.pinctrl: could not claim hogs: -22
+>
+> Register Qualcomm pinctrl with devm_pinctrl_register_and_init(), add the
+> SoC pin functions, and only then enable the pinctrl device.
+>
+> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
 
-> 
-> Fixes: c94d21ffa814 ("media: camss: Add CSIPHY files")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+This v3 patch applied, I saw there is a v4 and Sashiko is whining
+about it so check if there is anything to it, but the AI is a bit noisy
+so I just don't care now that I have a review tag from Konrad.
 
-Fixes shall be the first patches in any series, please reorder for v9.
-
-Then, formally it looks like a fix, but to my understanding it's just a noop
-change against the current upstream codebase, thus the change is not justified
-to gain the Fixes tag, see Documentation/process/stable-kernel-rules.rst.
-
-> ---
->   drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> index dac8d2ecf7995..7c8c0e41bc62f 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-> @@ -1114,17 +1114,17 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
->   static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
->   {
->   	u8 lane_mask;
->   	int i;
->   
->   	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
->   
->   	for (i = 0; i < lane_cfg->num_data; i++)
-> -		lane_mask |= 1 << lane_cfg->data[i].pos;
-> +		lane_mask |= BIT(lane_cfg->data[i].pos * 2);
->   
->   	return lane_mask;
->   }
->   
->   static bool csiphy_is_gen2(u32 version)
->   {
->   	bool ret = false;
->   
-> 
-
-After dropping Fixes tag and cc to stable,
-
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-
--- 
-Best wishes,
-Vladimir
+Yours,
+Linus Walleij
