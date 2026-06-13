@@ -1,66 +1,67 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCCF1CD1E4
-	for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 14:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ABC26CE2D
+	for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 14:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781360470; cv=none; b=QgetsqxXn+lI+AfyHNnk5tedKv0DS1lluljjUiqcKVckVKcnAzOkc+RWMoWnYAM9KBCWZgSRatadwDo+l6xabrmElI/NhjJBvyQRAuXkPuwrNqzKPhy5JpWLqwmOqXo3aLZZMVnQq90EIs4jG5TH4/Q2WV3fSObD18bIS6pfrNY=
+	t=1781360471; cv=none; b=KOFHOfk15xoptyUYwyFE66Mtlh3UmmvAcG6Jeai/c3GO96ObiPqoSPyAkljzEXRsOCLZR0lQipoFzmZlWqv6RUexAXbafpu/Kr4+xDorqhfQ5balefDHL11O89GW+LmMBaSeW4HUlPcQVR7LeQtq5ae8ZwY6/w/iJIr4uWAiLmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781360470; c=relaxed/simple;
-	bh=4RwIQpnSS540rrz2XwThfQIkCSAIA9Hi6psUTMlB1Vo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PI/da3IZvhP8oSbIYmVyPY1fhBDu5dWFUtYlZgbb3xGm+azYflc6mKX3QvkuBCXTpryszJbMCxCf1UnAZlrE/osS1Eo8AaRoNB5msTYpHVG1wKFw8VYXHLnVEWwlLsis/LRRDneNC1UlZrGaN9XjmIdKFLbXZrLwot8MLlXyU+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJEdfk8d; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1781360471; c=relaxed/simple;
+	bh=dBKjpEpWIY+YoZpaXSyTr1vHWQHSlPyQ7j+bI/CPuvk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GIqBdBFMAzB2a0Ncyf/iEYUzbzxh0rqA4Zh7+8k55CjUnkJyYQenKPTWzvoLh54++9+DiDHxxzCiDvbF2jCIIzKlr5C/kGldR+eNAU6xfW+K7xIq7dWUHBTmaL0pdtGPCVIC2jn7KikiaF06YgCReZanzdxWlrK5gDN49uE5nyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g81P3dn3; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJEdfk8d"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45eecb8bf67so1476901f8f.2
-        for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 07:21:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g81P3dn3"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45e9f4a3510so1104083f8f.1
+        for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 07:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781360466; x=1781965266; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TU4VglUkVPVW+6N9UdLyGYgN20Fi0sqVSdBe5wTIVLQ=;
-        b=dJEdfk8d67237pMb7W3yrtf+pHJQFxxGYko4gyVen+2hqN6MgmOcYWSgppfSqMLn28
-         wb0EweESxozNmAHES5kmgLIt6xC295cXZ/btCi2VYG9DlgYEBIwZyr3niZlrlqMH6/Fu
-         uuf5Gz57tlj4w9Zb94QU5mq86dFkmrmPSSZvklbp0SvrqZ1DwoiuAOq5HbI21Pzpq4fM
-         FywE+qHW0UizgvlvY1/XEguUfsJkpi5iss4k9p3KAPwGamn/vBwiPyvo+9weQ8VOy0Wa
-         QWLmIh8s3ukVyiG6D3ywAtlYxFp5BahqUudOpCwD0iyhWj6FJVIT6HSNNENrk1F0A6Lt
-         AdNg==
+        d=gmail.com; s=20251104; t=1781360467; x=1781965267; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g6ohP8dsrr2qK8qEWNnxQ1LBIqyvgS8irkA8ITgD7Yg=;
+        b=g81P3dn31CcomZ36pvcumAMuTEUL8BcnBvPTmcQU9pszc+2YgN8FaPiDfNpz3QJBo5
+         uKm6qGabHbasYU9eMcIKUD+r10i2m4YOyf7LzOPwpjui9hQC+MklWwQXiASUnq4S93yB
+         n2Wl2xoTvrc/Gu/3StTiHELn1wXKkQPkM5EKWlM12V6qdaUvMxmzFJQBaZXZzk8fEebf
+         xUgcDtsEyPAtXNe9VxhOvUl9DtaTOs7u1/0oKz1dZuFRgTCvN/UjCCcPmcL+1QWWYV6H
+         kGXAccz4g5mmL8s7EqImfSxUoPSeaNmVukNu6WSom5h2sgIfY591YpLfiby6UZB9mf8k
+         f1rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781360466; x=1781965266;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TU4VglUkVPVW+6N9UdLyGYgN20Fi0sqVSdBe5wTIVLQ=;
-        b=ATpLuKAcYNIXVDhKicjNCiKlmrgM0AYNpZPlilJt2KV2myMydc5yNa8nfmeyL22mPa
-         hzb9Zy/iitKDTuRfRGDtNA6/EVmWdF+f+1avQjWDJW8K6UlAKgYJGwQIRzXWb7YwLHo5
-         aF5g3CXpqUibYiEeb/Dk6U4VcqaU2TUQztgTE5ZI4UBU0gSoy7kTxfq0lJ79eMHfidFv
-         Zxb7Iu6a0l5/8KAMEw8hrxvT20XakuXVgBh83kr/0kzuuNOTJETtGUzpsTgBV04obAZt
-         rqLCQU1lujK6wj8uemf6HzzU+ZDYtntz/5PbhBEQY/LNhImRAqWjFrMyQSSBRCyvtxG/
-         PNPw==
-X-Forwarded-Encrypted: i=1; AFNElJ8jhWuIqqapixywRvgxCe+ff1U4S6xonUAyswwAME/gEuxeDmlZilNRQqVSRy585TLyT1zfkn4b3pubCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYsFLBgtFPUeEue9jPIz9J/ByMNcnJti+gmMFfU99ghzx6ppC+
-	3nTnl6a30M2A8jJX85+RIsy0gAB4R4XZmsG6vxmqTzPJkbdk1EkDMysC
-X-Gm-Gg: Acq92OGWfME8LN9Is4KxeQdYb6Cxy9EKSu6I14SubhHO3EmB6hZu1Xb77dt9KDPNOJJ
-	XcjqHyLctWjZL9/HT4nmEX+uMOfTBQHYFv1GpV0o0XqOAi6dXO6llRQYvcFf4m0mu8mLXLRv83Y
-	hrIqiO7eo+4HHpHy8XboPMTo8rcBPNlUljSkvMikIfQHkuF9a6qQCG2iOzHnJvwHUPn4RuwZZNA
-	4cCG9WtcN/aU0Tz3PtjMnpaXvoVS+RYV0wkFFY277acOST2PFVeLowf2QdPEm8bOEM4wTsJnS0q
-	wPLSPDvrggkGVlJo9BJ4vtIMGL0esA+9ddDfSi0m2KYvBDn+kBbJzFq6Xsq7vBlaW7g2M6zL2j2
-	tIRZqaJuH0cBDJGWSf9XnjrMsOeM6L3oVGtk5WJVELlRdVCjcw7Uyo/VffhvLa4F6m+zIX59N8p
-	eHUBl2CEo30AVtRl+99eWzLBHCETsADYXDHkaMpipa3kBA49zVglMAJbykEpDor31nnBUpc8lIH
-	j8hz9bLuQLxOPdvnuuknK8=
-X-Received: by 2002:a5d:5d81:0:b0:43b:5672:efe with SMTP id ffacd0b85a97d-4606da69f80mr10130839f8f.9.1781360466020;
-        Sat, 13 Jun 2026 07:21:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781360467; x=1781965267;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=g6ohP8dsrr2qK8qEWNnxQ1LBIqyvgS8irkA8ITgD7Yg=;
+        b=RhQpyVqd2PniUNSOjkGZ2F3oYBsQYvZEimew6dylZRitJxG1D4eYb2NBI3LHAXADES
+         nALy08/eGtKaqnZ6xrNHqcdj1wNrvDGVm2Wdyb1sQOGvpK0l0qQ0aTqJJQm0oR2EdVkB
+         k3eyxWgK0GdDOW9U5RGLhv1LUzVJtC13b8RrOx+yr3fOE1Wl0e8O5KRxHj5wlBU5GtUm
+         WIhp75X+8bB/3yh1gUczk5/WJf2VPBrB8ttPcIlW/sc+t/H7v9PmI1Bv4eTQwlv5MDtV
+         SJYzvB0jwhkigPYfzyVBNpvoVKrsz+uv9Hw7rjXsXd7q2eW5WTBq2awFlQvXoC6zHFHk
+         xYZA==
+X-Forwarded-Encrypted: i=1; AFNElJ9kfaiC2BL7RAeeeQe5FQFdGjc65ksxzaJB0TNn5Kh28/y8eq/nvd5x5OiG7pDfJ1tqnVkflfXbGRH7NQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI4xmpukmimkolQH+V/TG7bnyJlEa6ulRuyXJdRzoPJoNnTyFg
+	bHxq9oVaWdZYddUZuMfvTotsVvq0hTH6e3M6GSRI/5u6Aa/S9d8+xUVnMIf4ju6t
+X-Gm-Gg: Acq92OG4raRLjePCXzh23FgZIs8lSd5y/BHaKy56TkTG4FbujEuSrvZaSA7Xp+5Ujaw
+	F4xE1GKpxsbNJ1ugod7ft+oNGu8jFrUESfaahqmhkumJ/eJlzu3NyvUlkwcHKDqbA3XS+HLG0YN
+	I4FT4boebTQYHTTkUwavsTuNAp28IMLNp0s2T2sJsgGDsed1lgCEHXEPcNxL1ihv1m7zI6r98Mw
+	Vza5A/Y5XRSvBHw5l9wtGCuB6g+D1CjVcg2irjIHCOps8rsEXmuZmW2c+8krc8egLpCoFEE282O
+	D+ZvAmUxb+ZinFXZghYCtVTdJ/DuP/PO3r3DfbiUl+/VkVFIni3zSYBpwe13kGD2DDCxHLTYrJW
+	euhpdWHFGOsUGyi6dCntESPFt+vpTHpxXle/nYgd/6IrT74rv+lVq7SHLSP2+o/8S34QGOFOFHI
+	HRMXJSRXAjwSbITaH9QngkGeK4FpvVLhkPVLQa27iEy/bW8rS9B0d/KWqqxOK0V2llphGnac2w/
+	vAAfqmy/mEVJBCGnyk3e7Y=
+X-Received: by 2002:a5d:5d13:0:b0:460:e2e:6e2b with SMTP id ffacd0b85a97d-46074a8a1b7mr4764639f8f.20.1781360467298;
+        Sat, 13 Jun 2026 07:21:07 -0700 (PDT)
 Received: from [127.0.1.1] (93-143-178-20.adsl.net.t-com.hr. [93.143.178.20])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm16827223f8f.5.2026.06.13.07.21.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm16827223f8f.5.2026.06.13.07.21.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 07:21:05 -0700 (PDT)
+        Sat, 13 Jun 2026 07:21:07 -0700 (PDT)
 From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Subject: [PATCH v2 0/3] 88PM886 Vbus regulator support
-Date: Sat, 13 Jun 2026 16:20:52 +0200
-Message-Id: <20260613-88pm886-vbus-v2-0-021dfb02c6bb@dujemihanovic.xyz>
+Date: Sat, 13 Jun 2026 16:20:53 +0200
+Subject: [PATCH v2 1/3] dt-bindings: mfd: 88pm886: Allow vbus regulator
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,11 +70,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12OywqDMBREf0XuuikmosSu+h/iwiQ39Qo+SDRox
- X9vtF11eWDmzOzg0RF6eCQ7OAzkaRwiiFsCum2GFzIykUGkokhzXjApp17KggW1eJZjppQ1pVa
- NgViZHFpaL11Vf9kvqkM9n44z0ZKfR7dde4GfuZ9a/KkDZymzQhluTaZ5iU+zdNhTPDUG0vd1e
- 0N9HMcHWRAU1MIAAAA=
-X-Change-ID: 20260516-88pm886-vbus-5e3bbfd9cbad
+Message-Id: <20260613-88pm886-vbus-v2-1-021dfb02c6bb@dujemihanovic.xyz>
+References: <20260613-88pm886-vbus-v2-0-021dfb02c6bb@dujemihanovic.xyz>
+In-Reply-To: <20260613-88pm886-vbus-v2-0-021dfb02c6bb@dujemihanovic.xyz>
 To: Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
@@ -83,46 +82,42 @@ Cc: devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
  =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, 
  Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1144;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1047;
  i=duje@dujemihanovic.xyz; s=20260328; h=from:subject:message-id;
- bh=4RwIQpnSS540rrz2XwThfQIkCSAIA9Hi6psUTMlB1Vo=;
- b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGLJ00wNeHXj86PasNb+Suve9zHOcrVEyPW1Hwc/jh6t5F
- ovPCxWs6ShlYRDjYpAVU2RhXip3iS81fKJDkW0SzBxWJpAhDFycAjCRvkiGX0w15o9MUupK8zd9
- Wtblf+ut7BO1jX8mvlv1M053Xkfa3WuMDEfMtd/EfYhMW+m/1/HOlw/fvd9ve1Cpw5XGGiHekNb
- ozwoA
+ bh=4gG38m60zNtEceURSA/5gu2M6BW5gWxnRcLhKQIPpkM=;
+ b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGLJ00wPc8//v7OaWc3aUXjs3/r8aj1yCV4Lo8psHf1mpO
+ DyU/x7SUcrCIMbFICumyMK8VO4SX2r4RIci2ySYOaxMIEMYuDgFYCKXnjD8L51m6KWwbXZmxVfP
+ 2ZttfJl+nr0/xT59azrTDNcN52sn72P4718QIByq+DDEfIlMQpKw6O4PV6Rao3kWLXpXvtyys/c
+ FGwA=
 X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
  fpr=9BD463017690089DAA8DC266275F544B3B1B4792
 
-Hello,
+From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-This series adds support for the USB Vbus regulator found on Marvell's
-88PM886 PMIC. The regulator enables USB role switching on boards using
-the PMIC.
+Add vbus to patternProperties for the regulators node to allow for the
+PMIC's vbus regulator to be exposed.
 
+Reviewed-by: Karel Balej <balejk@matfyz.cz>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 ---
-Changes in v2:
-- Initialize battery page after chip ID check
-- Clean up includes and variable ordering
-- Update trailers
-- Link to v1: https://patch.msgid.link/20260526-88pm886-vbus-v1-0-f2bd1fd3c19e@dujemihanovic.xyz
+ Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Duje Mihanović (3):
-      dt-bindings: mfd: 88pm886: Allow vbus regulator
-      mfd: 88pm886: Initialize the battery page
-      regulator: 88pm886: Add Vbus regulator
+diff --git a/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml b/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
+index 92a72a99fd79..940262898353 100644
+--- a/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
++++ b/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
+@@ -29,7 +29,7 @@ properties:
+     type: object
+     additionalProperties: false
+     patternProperties:
+-      "^(ldo(1[0-6]|[1-9])|buck[1-5])$":
++      "^(ldo(1[0-6]|[1-9])|buck[1-5]|vbus)$":
+         type: object
+         $ref: /schemas/regulator/regulator.yaml#
+         description: LDO or buck regulator.
 
- .../bindings/mfd/marvell,88pm886-a1.yaml           |  2 +-
- drivers/mfd/88pm886.c                              | 21 ++++++++++++++++-
- drivers/regulator/88pm886-regulator.c              | 26 ++++++++++++++++++++++
- include/linux/mfd/88pm886.h                        | 12 ++++++++++
- 4 files changed, 59 insertions(+), 2 deletions(-)
----
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-change-id: 20260516-88pm886-vbus-5e3bbfd9cbad
-
-Best regards,
---  
-Duje Mihanović <duje@dujemihanovic.xyz>
+-- 
+2.54.0
 
