@@ -1,67 +1,67 @@
 Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85633313E10
-	for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CE6313534
+	for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781360473; cv=none; b=D5T7/mJn0GNyXBvVg2802CXcoXIq4RinWjs5JoNe7svCcm4TVFlBlPycTq3ZRvFDcl9CpS6OsfN/vmmlX8X6seNpzSWg+mUwFVr0iYDG1iOSS9NsSxsZuESTJdZCii1ft36cONFpizD+mxkjaEc9vF18F2q+c35R7B0h6SX3Lz0=
+	t=1781360475; cv=none; b=q1+nucrrN/OwdCKyOwJweXBOohOjhlbEDhyYJzY5WJyMOfXZACMO4I+gCNRB+eDcVVwF3c2w6hYjbow64M0dw4eCeR1VuBwVtx7f5e0EsLZjoVu3mkcaFoRyyqWqY+G7+glxCFyk8x9tlaDI60Ppqm4+nWpCURiMTtg4oyIxFAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781360473; c=relaxed/simple;
-	bh=9yJu2dJxEoG69r7armkn1uXO0+LbbsdYRkSyhvXQmQY=;
+	s=arc-20240116; t=1781360475; c=relaxed/simple;
+	bh=HsOIQUVZP0meU1up8FjT45jfTNwDlV/UQKJQd4Y56S4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I5tPnOAvVLTcq3v1AvAl3ORSDEyMOKFQoog+cUTViboqqqj4ow6vd2mXacON7u8RxLPCuIPhBcpwT9E11hgbJAogdv8V0RImVIELHDDmeAHz+zW6EZqu9uYbxD775hcl0jHD4R4oWH2G7Kl52SKkxdUbW9ZcMWC/ro/jwzhK/x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzoyJE2g; arc=none smtp.client-ip=209.85.221.48
+	 In-Reply-To:To:Cc; b=WitslWMAoSa6FpWJwduoYZowrYc2Fri6PypM/B9NooFE+Tn4JGn8pSiSCH3HpsUt02W+TQvsm2evOPEjSJ66seaelBiC+07rSjN5ZeWodcF96B4uY6ZTaSJySraCwsTp1uHPlT/F5d6JCgidz7BReT51FfSDv4T/9ADxY7kPATg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p8/o14RT; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzoyJE2g"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45eee266c6cso1652515f8f.1
-        for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 07:21:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p8/o14RT"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ef616daf6so2048920f8f.3
+        for <phone-devel@vger.kernel.org>; Sat, 13 Jun 2026 07:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781360468; x=1781965268; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781360470; x=1781965270; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=scBpgkPwRJRRB0oOaefOk5GQsdI4UdFOs60BEKTsuNo=;
-        b=ZzoyJE2gLRMksNzXL7fl8/nhIi9Fr7QtCS3NjHsASE9UWLW6dLByr+5YQ32k7RHU4K
-         3smlf9GUUPIXOYN/2EICetq/abo0pa3MfSU0syzhtC+xEJHbeaylXNDoM2q8GA4UopAH
-         3NkwehSklW9Cau0Y2EMNR4W0W8OcQLw/EP0IeR9VQRGef3arkc66/k2VWhcp/CodrjaF
-         /KKyJ4qti5gHzs7qFpKtucBjL2MxcAPmlTxYB2xD0HhM70U70ycmSoGNnOVLs+CFP1vj
-         0S9v0ZH/Q0fYg8lYJIGMdQdH7aqY9LOq2461/oh6BOJU1K3Juw4N/xR+WonPv39fDqkG
-         AXLA==
+        bh=jIa0BdxxpHyXYoZXZICGHhLbBKJPg22HxWM6nxicHsU=;
+        b=p8/o14RTQfTa6VqAjq8s+BGaKlU9lC/zvyyEawRXrxnr/8N0s9SnZ3Q4VeY3BHadM1
+         FYVhgErdGVyl1LJuiycuRjUt5YJ0ZwLanBLto2T0lQz3I+MwXkpgsLgiwkN6W9tb4EgK
+         uGXnxiTKVjwKrkbuHwgn6oUIaSFLvwflLjLXkhqf8yfePuvRAER64sULlhgfuocUU26N
+         IJlFvPGF2RQT3vyrM+pz/Q3U5yFCNLlEjxjRKpheue2eWP8uaQr0CJaFf7ySaewKkVoG
+         C5GN9uKj2tO2rxRlMRR9Zo1hEGneweTbH4m9OqNzyJWEygAeQEdU48pHgPQ9/MN/uvT9
+         HERQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781360468; x=1781965268;
+        d=1e100.net; s=20251104; t=1781360470; x=1781965270;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=scBpgkPwRJRRB0oOaefOk5GQsdI4UdFOs60BEKTsuNo=;
-        b=H3OYqLdVygC2hgL+XVRXWYZIdWW71j9Quw8oLAtInsNmWj0CD5usGrdLs7bNVOvm09
-         Oc8v7WVN3dhgOhQo8T5E7joOiVz5S0khSkLFf5NBclK6cdLkMOEzE239MRzuS2IayZ75
-         wunYF9M6mpMV1N+XS1BFqRQWRBVAbnnM7/ZEnWuIHNfAaicTg7VoLUG26RACJ49ETWve
-         jwD43s7MMU+0N3o0Erb5RcX2fcSYe1tEHBvThYDNrQj4IWBEOZFIqWNQ5rkA4Kfp/aF8
-         1SkR4i2VSWyot4P2htf9QqLToD5txMpa9ivlRZfIME48A5YdAWcx+e7Nfy9J2Lu+dqGw
-         eZBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8xcQtN/0piSTE/iWekq2fDM3qfzMZFZ+oagpQUhvqPpZw4NEfsGnMtwj1dVS+FBm4PDuPi8YgP5fRMOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMRDs4liJGd4z4fhW9srnAkMpmla03GG5iPVAcdBk3cJXwNz37
-	Wg9GuMq2JVVB3RxXKQrTx6AL2h2ORK+ex9m1FXUES2ptTxgMkPsupNzt
-X-Gm-Gg: Acq92OGKdzm7kQTKvKQeQjxJMRl5rGqgfdMxZq7QBxiNhhuD+oqZPG/wmSlD91dAGTI
-	7WAcTSQRoaFloHjANvOPHiC6QZmcZHPEhAAjsnDvE9EerpIAEgZBYRg8ZWRY8/OsVp+2a+bpQ9v
-	z7ZDoOh/4MImeBQkhuHjUPEr+TpNY8zoFlaATZzMC2Zzbtrt1RgV+fg6Ly/k0LAVt332DrOaY7v
-	aT7rTh1nIhU6g1DfDyVbTr0zrId3OiQrPoNkOi3e5u2GohsUnzSsN7xaUkJIrlwHmGmdOqNjWV7
-	LGK4ImF5caVzx/tz/wG1rBKAu19wkmRBjF2WFPMcTX4iYqv4EnJZsDS8E5+ZHktJB09l1fnHcnQ
-	H1UP5b8CCs9ydt1ePvpAY5N1jXNsrBuYNAbSxYvOvuZ1cgjDWdq0G6V6nwXX6X9XH0sXSVU07uO
-	B6dOqy+Tt1UtbLZiNxFlRdXB3FSm22WSP/b341elAm3FfOcwUH+01QSsa7vQZiETO/iVwwLJzIs
-	O0gmdn0f86O2VPROs1Te9qulzBzPUQ3qA==
-X-Received: by 2002:a05:6000:2210:b0:45e:ee20:b897 with SMTP id ffacd0b85a97d-46074a87ca2mr4494885f8f.6.1781360468556;
-        Sat, 13 Jun 2026 07:21:08 -0700 (PDT)
+        bh=jIa0BdxxpHyXYoZXZICGHhLbBKJPg22HxWM6nxicHsU=;
+        b=Q1ndeVH2Z9L78gsrEDu0flSW2wLNCu2BdtYnauxzovxrUhxN6vdJa2qwHiSvoqUbvW
+         rZcbDxgf+MPQ0rfVPFbxYu8hTBQvJcdzTfMwTe8ggKwvDe1i2/IFDbkl75CKqqgnCjL3
+         7iOGNuRRVbFaaAm9EDNpCBF01soTxMD/HNsgSdRw+aYXBufWjtG+xGhJquAPeiG8LaOU
+         5fTl+64UenfbirjfU6vHsTaQtq5200m09DkN3uim0jJs3kO7p1rZ/9VRGxPk6xesjaCg
+         OUuE2WqePujp+tu5Qe3RIF1Jt/TBGh1f+l4lWtk9I8FHKAKttYfHEBQivcRLt+PK+3Oe
+         QLCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/cRxcWldDP3rtjd1J/aqi3awgU8jQtF0URQkGlwqLnumI3cTeKnZefpmVE7BoKHmMDDSV7Fe7BidrQDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb6j9kginHDMoqU7dA9Jh6R8a6ClDBPjND8q618UZHk3Fk/j3t
+	r7jIpbRz8ClwBW6fo40iGVpZZjEM4mRgPfO1xMPug26bbNCuwOSyATOX
+X-Gm-Gg: Acq92OFkQOH1DHbKZitDxjfipF1psaQcCSimj91y54CGUgjX6B29npKwoJQCMOT/IXW
+	TAoMdscxzZb6tJ3eJ7fP2IHl+6cEqQ84KFBUkjLlUa3xFTydj+9N+wdLAr3Pot8z3hzjcfhT0aX
+	sjo6UWYkgS7d7HypJCwUB68qI3UNfjOSW6W5t9pHiKLh0RCDzfZDsRn2lORdYmH2wmqBNhT1EsU
+	G+CU3kkqPN3/jfmlxs3kDWb00EIF89SYQZNsiTikpaQ4ZNHru1TUmh3urvEWX6eZpv+sLF/XjZ2
+	vLdnOPmIIyARFj76r+fPvTCIhF6ie3q3CTa57g5eCPk3zxPSy63Oe+TawBqsNU1P96bhN+6+IWv
+	V9CU2y4bktZFK5a8+WugjjEKYpzeeChYUs4JsUy7tFXEx5ETRaA843oB92jv3Dc8lqbkLbsR6TC
+	YSwfrQwyEhvJK6JvROlWe01FBs3YLtO94EWf0/8+aGC7y6D9mTRlsI8S8+Gc1t3s/HSjSgpRG5f
+	DAAKaAMV4qfzEDUdlNn4w0=
+X-Received: by 2002:a05:6000:2889:b0:461:92e9:f83 with SMTP id ffacd0b85a97d-46192e912a1mr2169582f8f.36.1781360469911;
+        Sat, 13 Jun 2026 07:21:09 -0700 (PDT)
 Received: from [127.0.1.1] (93-143-178-20.adsl.net.t-com.hr. [93.143.178.20])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm16827223f8f.5.2026.06.13.07.21.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm16827223f8f.5.2026.06.13.07.21.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 07:21:08 -0700 (PDT)
+        Sat, 13 Jun 2026 07:21:09 -0700 (PDT)
 From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Date: Sat, 13 Jun 2026 16:20:54 +0200
-Subject: [PATCH v2 2/3] mfd: 88pm886: Initialize the battery page
+Date: Sat, 13 Jun 2026 16:20:55 +0200
+Subject: [PATCH v2 3/3] regulator: 88pm886: Add Vbus regulator
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260613-88pm886-vbus-v2-2-021dfb02c6bb@dujemihanovic.xyz>
+Message-Id: <20260613-88pm886-vbus-v2-3-021dfb02c6bb@dujemihanovic.xyz>
 References: <20260613-88pm886-vbus-v2-0-021dfb02c6bb@dujemihanovic.xyz>
 In-Reply-To: <20260613-88pm886-vbus-v2-0-021dfb02c6bb@dujemihanovic.xyz>
 To: Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
@@ -81,109 +81,100 @@ Cc: devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
  ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3081;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2608;
  i=duje@dujemihanovic.xyz; s=20260328; h=from:subject:message-id;
- bh=XiL7JAqbG0xv8gwNjEHmXefx65ts53pGI9Kg5zOFbVg=;
- b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGLJ00wNcGY/d97eYK+uj+U7/Xerz0AniXkVpUy6ue/Fi2
- 4ETNyzDOkpZGMS4GGTFFFmYl8pd4ksNn+hQZJsEM4eVCWQIAxenAEykjpXhv4vz1hpFIVX5863t
- nxi/d4i0mN44Uf548axnycomKRwSuxn+B10ri36XFlA/oSv2r+pirSuzdDTCF2Tv71w4kcdoC28
- sHwA=
+ bh=LWAYeJg//k4Yt9WD2CLMT2Q79dhFXBPAg7/kBfUTROM=;
+ b=owGbwMvMwCW2z0j3+uHIyKOMp9WSGLJ00wM+FEyz/7/wkkuUyf1D31RSrX4UT8qQ8t57QWd/t
+ NGxE486O0pZGMS4GGTFFFmYl8pd4ksNn+hQZJsEM4eVCWQIAxenAEzkwUZGhsm6K89ryRcI3by0
+ kOWC1pKol9q5afYFjekR870fbRWct5XhD/dO3R7LD4f+yS3bOaHs7Nt8lejHtwJOaJ0Xfpd2vEb
+ hITcA
 X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
  fpr=9BD463017690089DAA8DC266275F544B3B1B4792
 
 From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Initialize the PMIC's battery page. The battery page registers are
-shared between Vbus regulator, charger, fuelgauge and camera flash
-blocks, hence the commonization of the page.
+Add support for the PMIC's Vbus regulator. This regulator is mandatory
+for USB OTG support on boards using the PMIC.
 
 Reviewed-by: Karel Balej <balejk@matfyz.cz>
 Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 ---
 Changes in v2:
-- Reword commit message
-- Reorder pm886_probe() local variables according to RCT
-- Initialize battery page after succcessful chip ID check
+- Drop unneeded units.h include
 ---
- drivers/mfd/88pm886.c       | 21 ++++++++++++++++++++-
- include/linux/mfd/88pm886.h |  5 +++++
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ drivers/regulator/88pm886-regulator.c | 26 ++++++++++++++++++++++++++
+ include/linux/mfd/88pm886.h           |  7 +++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-index e411d8dee554..f8401d5e6dbe 100644
---- a/drivers/mfd/88pm886.c
-+++ b/drivers/mfd/88pm886.c
-@@ -16,6 +16,12 @@ static const struct regmap_config pm886_regmap_config = {
- 	.max_register = PM886_REG_RTC_SPARE6,
+diff --git a/drivers/regulator/88pm886-regulator.c b/drivers/regulator/88pm886-regulator.c
+index a38bd4f312b7..53cb68528cea 100644
+--- a/drivers/regulator/88pm886-regulator.c
++++ b/drivers/regulator/88pm886-regulator.c
+@@ -337,6 +337,25 @@ static struct regulator_desc pm886_regulators[] = {
+ 	},
  };
  
-+static const struct regmap_config pm886_regmap_battery_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = PM886_REG_CLS_CONFIG1,
++static const struct linear_range pm886_vbus_volt_ranges[] = {
++	REGULATOR_LINEAR_RANGE(3750000, 0, 7, 250000)
 +};
 +
- static const struct regmap_irq pm886_regmap_irqs[] = {
- 	REGMAP_IRQ_REG(PM886_IRQ_ONKEY, 0, PM886_INT_ENA1_ONKEY),
- };
-@@ -85,10 +91,11 @@ static int pm886_setup_irq(struct pm886_chip *chip,
- 
- static int pm886_probe(struct i2c_client *client)
++static struct regulator_desc pm886_vbus_regulator = {
++	.name = "vbus",
++	.regulators_node = "regulators",
++	.of_match = "vbus",
++	.ops = &pm886_buck_ops,
++	.type = REGULATOR_VOLTAGE,
++	.n_voltages = 8,
++	.linear_ranges = pm886_vbus_volt_ranges,
++	.n_linear_ranges = ARRAY_SIZE(pm886_vbus_volt_ranges),
++	.vsel_reg = PM886_REG_BOOST_CONFIG1,
++	.vsel_mask = PM886_REG_BOOST_MASK,
++	.enable_reg = PM886_REG_BATTERY_CONFIG1,
++	.enable_mask = PM886_REG_VBUS_EN,
++};
++
+ static int pm886_regulator_probe(struct platform_device *pdev)
  {
-+	struct regmap *regmap, *regmap_battery;
- 	struct regmap_irq_chip_data *irq_data;
- 	struct device *dev = &client->dev;
-+	struct i2c_client *battery_page;
- 	struct pm886_chip *chip;
--	struct regmap *regmap;
- 	unsigned int chip_id;
- 	int err;
+ 	struct pm886_chip *chip = dev_get_drvdata(pdev->dev.parent);
+@@ -369,6 +388,13 @@ static int pm886_regulator_probe(struct platform_device *pdev)
+ 					"Failed to register %s\n", rdesc->name);
+ 	}
  
-@@ -112,6 +119,18 @@ static int pm886_probe(struct i2c_client *client)
- 	if (chip->chip_id != chip_id)
- 		return dev_err_probe(dev, -EINVAL, "Unsupported chip: 0x%x\n", chip_id);
++	rcfg.regmap = chip->regmap_battery;
++	rdesc = &pm886_vbus_regulator;
++	rdev = devm_regulator_register(dev, rdesc, &rcfg);
++	if (IS_ERR(rdev))
++		return dev_err_probe(dev, PTR_ERR(rdev),
++				      "Failed to register %s\n", rdesc->name);
++
+ 	return 0;
+ }
  
-+	battery_page = devm_i2c_new_dummy_device(dev, client->adapter,
-+						 client->addr + PM886_PAGE_OFFSET_BATTERY);
-+	if (IS_ERR(battery_page))
-+		return dev_err_probe(dev, PTR_ERR(battery_page),
-+				     "Failed to initialize battery page\n");
-+
-+	regmap_battery = devm_regmap_init_i2c(battery_page, &pm886_regmap_battery_config);
-+	if (IS_ERR(regmap_battery))
-+		return dev_err_probe(dev, PTR_ERR(regmap_battery),
-+				     "Failed to initialize battery regmap\n");
-+	chip->regmap_battery = regmap_battery;
-+
- 	err = pm886_setup_irq(chip, &irq_data);
- 	if (err)
- 		return err;
 diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
-index 38892ba7b8a4..2c24dd3032ab 100644
+index 2c24dd3032ab..9e96d2cb92f5 100644
 --- a/include/linux/mfd/88pm886.h
 +++ b/include/linux/mfd/88pm886.h
-@@ -11,6 +11,7 @@
+@@ -2,6 +2,7 @@
+ #ifndef __MFD_88PM886_H
+ #define __MFD_88PM886_H
  
- #define PM886_PAGE_OFFSET_REGULATORS	1
- #define PM886_PAGE_OFFSET_GPADC		2
-+#define PM886_PAGE_OFFSET_BATTERY	3
++#include <linux/bits.h>
+ #include <linux/i2c.h>
+ #include <linux/regmap.h>
  
- #define PM886_REG_ID			0x00
- 
-@@ -128,9 +129,13 @@
- #define PM886_GPADC_BIAS_LEVELS		16
+@@ -130,6 +131,12 @@
  #define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
  
-+/* Battery block register definitions */
-+#define PM886_REG_CLS_CONFIG1		0x71
+ /* Battery block register definitions */
++#define PM886_REG_BATTERY_CONFIG1	0x28
++#define PM886_REG_VBUS_EN		BIT(7)
 +
++#define PM886_REG_BOOST_CONFIG1		0x6b
++#define PM886_REG_BOOST_MASK		GENMASK(2, 0)
++
+ #define PM886_REG_CLS_CONFIG1		0x71
+ 
  struct pm886_chip {
- 	struct i2c_client *client;
- 	unsigned int chip_id;
- 	struct regmap *regmap;
-+	struct regmap *regmap_battery;
- };
- #endif /* __MFD_88PM886_H */
 
 -- 
 2.54.0
