@@ -1,95 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1103519D074;
-	Sun, 14 Jun 2026 10:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF95929D267;
+	Sun, 14 Jun 2026 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781433356; cv=none; b=RSifJ6ibR1hcuYoKM2cGQx+4ER0YbzgGOUjc4IeShGLgeM7nvq9ipKNKs9IHANcqv2F5aCB7WxvI+b2zKTpI14E4K/s4IOy3qEeXOJ5HlAy53boKAq9uQ4Ifzbsg3xix6rlNQP/4YgblcdRWmN6XOPz+BQPD0prADJJ5EfQsY2k=
+	t=1781473225; cv=none; b=j7FB8PP41sib02pfkaCkLsKs8fywgGPKQLaHSIN7UVc14EcCS1yv5/Sqf+v5U1gAKjnAgY5cHOVyJ3m9hxroX1cHNfBJN69Lpsfvqde2dT562QtE6QvjbfXRVJS1IPgVTuZZGMAnUN3EUyhJaKPydUje8TTzPmgXno3/yy8abyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781433356; c=relaxed/simple;
-	bh=1QF+N2X8XnhDlVoAMtIFBKDi5geAr1OcSkaPvDmkDXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e6MuMHlcXYq/iK6sFteDYu5Sz9LbZk/kUOAwe7byQzatUxstmgkXhIgZWTGczABiE5fRJeeUfboh90Iv+1fOrWx3KMovLC4nLi0d36azRWsf7Bv2R1kZE4ElUHqLXVJc9CFyI2RBRCHIH/6XTN5EqKcROEqLBy2FY4lekn/h/d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6t0XovL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781473225; c=relaxed/simple;
+	bh=YeWt6ilz2rTfTgSZrPbRsBD3V7K33gUGcwAcwFD8V48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qjzkq8nc/vnv/yeV6ZYIW+7Cp0rBtxyiqDnbAh90vEbPIdL0EaRFUjMLKmzl+B0EugqmxuFB/VnDF914jcOsSkqDljm9OROK4qoukPhHb3h9sSB/BkXq+mcnumwtkbt6PvTrfRI8B1VWnnJBEyOSto796D6VjVDSKvnlGxHPPQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFg/0a+3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6t0XovL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAE31F000E9;
-	Sun, 14 Jun 2026 10:35:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFg/0a+3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257931F000E9;
+	Sun, 14 Jun 2026 21:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781433355;
-	bh=VAEADmbcc/MqYQEuunt2++DWQsDZgWfCQK6e2A75YCo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V6t0XovLp8S9/5f3Wmq1flzwwuqCVk0EhR7r7B5P6P7n+JNLI0RBsl4C/OjPWZbxc
-	 icWCTSvYir3LVwVO/GSW6wft6r800V3wSTR3fB8NSdPduMxWhDsHBXIPdCc1xjx9Kz
-	 gGsmv4BmTwcKETJ0W1E+rAMiXfBO32Gdul/TO/5ZWLAvFBi0aPCcNDM1kqWxcs+EbV
-	 tuiBoyZMYd25yEL/jV5x+10L4KVqnM4B0LzlMFhGq/HKuuoFpZ+dFE7knIXjCK0nQQ
-	 XkW2vcFRyR2ED62nSMDhhL4qmtrBc5CsK9sIpSsaZIOAa2LuA8WqTItYXsQ/Tp82ry
-	 1RU+xZTJOmxyQ==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 678041AC5AC6; Sun, 14 Jun 2026 11:35:52 +0100 (BST)
-Date: Sun, 14 Jun 2026 11:35:52 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	Konrad Dybcio <konradybcio@kernel.org>
-Subject: Re: [PATCH QUESTION] ASoC: qcom: sdm845: use DSP_A format for TDM
- codec DAIs
-Message-ID: <ai6ECJgLG_GGx3tM@sirena.co.uk>
-References: <20260613-rfc-dsp-b-to-a-v1-1-7d095fe90a05@ixit.cz>
- <ai3tafRfEgN938cu@sirena.co.uk>
- <5f262a04-8e92-4ac1-bd7c-1246231d3de2@ixit.cz>
+	s=k20260515; t=1781473224;
+	bh=czSpGHnu/6m54nRewROulWLRKswPRXBxOoj+wn+X2Lk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WFg/0a+32MgufWVU3hcyVAxi9AN82mhg6sPIMjnNICr/iRDcSmZ2rzbIigvwjFcyI
+	 seQ/NzX5YI8tJH2Exm/mkYV0F5KC/CfEVtck/7Yid/RIxjPeEEG6qNZTKkuofzhc1Z
+	 jCZR27tg8wCmLB9SFpFh31GBSqT+0/llS5MaFyX5wrTZOrQ4CLttoQjw6cnBXKBam0
+	 nU1wnTEtA0y+eBssDAd5Eg/4saei8RGF42F9cjWx9jSVGPZxdsq9TGWWVHgYwFOL6t
+	 cb8igZaAz5JVR5Ft1yQT7glzs1f0GxDfeEHKsC/YVFfsUfG+DJGKyYqhxMYOGh2nUk
+	 jw+UZhOtAoC1g==
+Message-ID: <04c39f6d-e01b-4336-b077-c744f8a85c07@kernel.org>
+Date: Sun, 14 Jun 2026 22:40:20 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="V4sUG4M8NCPEnOOs"
-Content-Disposition: inline
-In-Reply-To: <5f262a04-8e92-4ac1-bd7c-1246231d3de2@ixit.cz>
-X-Cookie: Price does not include taxes.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: codecs: lpass-va-macro: Fix LPASS Codec Version for
+ SC7280
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Dmitry Baryshkov <lumag@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260526-sc7280-va-macro-2-0-v1-1-2c1b572fa388@fairphone.com>
+ <311ceabf-23ff-471b-9553-797c7d76af74@oss.qualcomm.com>
+ <DJ654FFH3T09.1VKAT493JUWP3@fairphone.com>
+Content-Language: en-US
+From: Srinivas Kandagatla <srini@kernel.org>
+In-Reply-To: <DJ654FFH3T09.1VKAT493JUWP3@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---V4sUG4M8NCPEnOOs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Sun, Jun 14, 2026 at 09:26:42AM +0200, David Heidelberg wrote:
-> On 14/06/2026 01:53, Mark Brown wrote:
+On 6/11/26 11:16 AM, Luca Weiss wrote:
+> On Wed Jun 10, 2026 at 12:52 PM CEST, Srinivas Kandagatla wrote:
+>>
+>> Thanks Luca for the patch,
+>>
+>> On 5/26/26 4:03 PM, Luca Weiss wrote:
+>>> According to both the static definition in downstream...
+>>>
+>>>   yupik-audio-overlay.dtsi: qcom,bolero-version = <4>;
+>>>   #define BOLERO_VERSION_2_0 0x0004)
+>>>
+>>> and the runtime detection:
+>>>
+>>>   CDC_VA_TOP_CSR_CORE_ID_0=0x1
+>>>   CDC_VA_TOP_CSR_CORE_ID_1=0xf
+>>>
+>>> SC7280 has LPASS Codec Version 2.0 and not, as declared with
+>>> sm8250_va_data LPASS_CODEC_VERSION_1_0.
+>>>
+>>> Create new va_macro_data with .version not set to use the runtime
+>>> detection and correctly get .version = LPASS_CODEC_VERSION_2_0.
+>>>
+>>> Fixes: 77212f300bfd ("ASoC: codecs: lpass-va-macro: set the default codec version for sm8250")
+>>
+>> Can you help me understand if this change was fixing any issue, if so
+>> can you pl add CC stable
+> 
+> I'm pretty sure that just came around because I was looking at the
+> different parts of the audio stack and trying to figure out if there's
+> something wrong somewhere, and how the different versions floating
+> around downstream & upstream & documentation match up.
+> 
+> I'm not aware of a situation where this change makes a difference -
+> apart from the dev_dbg() print.
+> 
+>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>> I'm fairly confident this is correct, but please someone double check
+>>> this if they can.
+>>
+>> Yes, you are correct, this is actually Bolero 1.1.0 Version where things
+>> have changed in codec. if you read major number it will be 1
+>> This has been artificially tagged as 2.0 in the driver.
+>> So the change that you are doing is correct.
+>>
+>> Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+> 
+> Thanks a lot for checking! Opens even more questions in my mind, why
+> 1.1.0 == 2.0 but somebody somewhere decided that at some point I guess.
 
-> > That sounds like both.  The Cirrus driver is definitely buggy if it's
-> > mapping DSP A and B to the same register value, at least one of those is
-> > wrong.
+I have no idea why this was done, Looking at the downstream drivers, am
+guessing that there were two different variants of lpass codec drivers
+in downstream one is less than v1 and other one is v2. 1.1.0 is
+supported in v2 driver.
 
-> I need to clarify. The CS35L36 supports by default only DSP_A, but when
-> extended to "take DSP_B", speaker just works.
+--srini
+> 
+> Regards
+> Luca
 
-> This was done previously.
-
-No, that's buggy.  If the device only supports DSP A then the device
-only support DSP A and the driver should express that.  Any hacks that
-can be done to make it interoperate with something else should be done
-in the framework.
-
---V4sUG4M8NCPEnOOs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmouhAcACgkQJNaLcl1U
-h9Bnngf/WupwiWbL0WB9ym1D3QF3qbHDSXJQKSOo1Vtwcxx/lGFNckmPUKycd3J9
-PBI5zJ2wZ2q2onMZmpv27eAj9i0waVhvNdcFDqZnfPNqQimg/c/lewv9zjmVuBcJ
-+oCiSrGHfZfs6znEt+IMntQSre4gljue2Pj4H7yxvFg0UWzNyPJXxRwfwSLELDmA
-cligdZJ3hYWLuxpxc3txpaI49oPpoaU385y2Sgc8peNMgOh3FkxDXzPT+d1CwWoA
-zDeAHr1OlUykRAzOUxg3uODD2zx05XGmWfE/tMAqvOZg2vMsF1gK5vgM2++2WpJ7
-dgE2fOiOOQEEXYuNfYOGMuQFg4vbyA==
-=+odq
------END PGP SIGNATURE-----
-
---V4sUG4M8NCPEnOOs--
