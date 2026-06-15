@@ -1,38 +1,37 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F4F3BB4A;
-	Mon, 15 Jun 2026 00:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CE078F29
+	for <phone-devel@vger.kernel.org>; Mon, 15 Jun 2026 00:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781482112; cv=none; b=jjQqWVtNSRrZ4dnZAIzs9Z93BlgqyLqrBaJ8wCMWd7xCOT5T9JUZ/2rD1Oh2DCXD3KKrtJg/Z1B1XrrW0gNOJgJ+xw5AdDUf9ZR3CMIP9Ovlnjjd2l45UKNRacV4ZrQ4VvjRO0aFIXiQwmo2e6WfV2p9BxUgNBIrCc0emTGacFs=
+	t=1781482113; cv=none; b=p5AcgehHZkfQQCUd0KbvbOkyQr4WOMdbwips0HQBARoZyL4K2D5sCs2zjl6+GR/ciSbqKU5ZA+tpXeF9QyaJeqGE6xfHjWpc7HbZCXqZRJhmSU94HkPBeXlCip2DvJ3enZq0AKDEoAD4IESh5J0roy0aglzp4YUQDcw8VI58npA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781482112; c=relaxed/simple;
-	bh=Ks9/ggz0gsVtbuy3t9hg1UTiYS+A12Js0rYjwehxUPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ibXFamilXvXkInSZf7IvrtUCqGFAZRIz0RFzcVAhbG6nxdPq+wm7rRYbJtvlLIUzCNNljVvbSXxnGFhoNkL3UmBi0S3tf9ILOE4rznIiy4DwBobVtZHJY/lBwjfkP7wjnB8aWhmnj5fvXxB2orB/OB/oGcR88VYXrHYZi0G/1hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=gEWReboa; arc=none smtp.client-ip=91.218.175.178
+	s=arc-20240116; t=1781482113; c=relaxed/simple;
+	bh=rah64DAbHLiiCx0F8BwuF0wdHE1rPZTHNczqUGp4Doc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=txiG5JVHbuZB4+BGZ043Iv1t1r9jDIn1Z+QIsYfUXF+c35auzaFbR3WJmn8ljS63kfrCCOHvr1Ihok+l6/bjLrJYMaI0tSdoRp34e8vRqjuafBB9/jd+0Noou4pBEN7t93lBbQZW2IIx6iJWbMyWDCH7kjycmyN0jxUX0fKn4jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=L28GJ93b; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="gEWReboa"
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="L28GJ93b"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1781482108;
+	s=key1; t=1781482100;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vuvqav2sU6zSRBZDHAzLQ2ucs28StDCHC2l3aV/G/U0=;
-	b=gEWReboaLC9ILUVIVaLt9fW/I982/gpbCwY1HkbyuN+C9Q7dWlFCmRMIZOWLqD3gxf81CD
-	dubMjf9Uz8KzqfFVbCvAru8FEl0vT5D8EiDxBdNSu2QRn7Qq/GIw0d/DH8X+VRGLWJfvdc
-	CJWwRHmhPKmp1r4d8OnDN5WAfgA2MCw5/+XmZNRbcyE4ggcj4a/QMziAZKQLQ39lFWCAZs
-	5vadsLAvFNRvTzp8rOlsZngI0TGRInKUUibq4LYKr5Nm++E3/7R5oekfTQ+3fDv0CjqHfs
-	P/AEzDTiaTec84IN4NIRHpldfMGSUmEwg+Zj4dhTGHb+X0klyhmP45TbKcasCQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Y5h9FupKCVpWVuTxDIclbr6vHMJHhiy3KbpUgOXtyEY=;
+	b=L28GJ93btzt8er3+yRsENpn28Gxmc3VlHAvlYMkEaZNfyJ3bkgtn6Mj9bbfyP7dARsc7Vg
+	8CTubhgZCxDlYlfgI9Bid9XkjkGGYLWASe5H75Apk7lu583a/QxTeW6Rz/EIfcZoQqackV
+	PDoVtAa2njSgdGCdOXBzI46PafDFptqeJLC6vWAk8pf62o6eXO8AINg1TPdmHgIDgc8moD
+	hCLFj6sxBtA31pNxQRr9OFR3bKFn6X3wNDIR37nS5S5TpYp9tzV6hasHk6N4Df7n0Z97Zq
+	z6dDg+1N7IIusopQ61jlc243q9coZtVgMEfYJo91kPXzdBknoYdRUqeC9Ag9EA==
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Sun, 14 Jun 2026 17:07:59 -0700
-Subject: [PATCH v3 2/4] dt-bindings: display: panel: Add documentation for
- lg,sw49410-lh609qh1
+Subject: [PATCH v3 0/4] Add DRM driver for LG LH609QH1 Panel with
+ SiliconWorks SW49410 DDIC
+Date: Sun, 14 Jun 2026 17:07:57 -0700
+Message-Id: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,9 +40,11 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
-References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
-In-Reply-To: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMQQ6CMBCF4auQWVvTFhqoK+9hXLQwQBVb0mIjI
+ dzdwsoYzaz+Sd63QEBvMMApW8BjNME4myI/ZFD3ynZITJMaOOWCSkbJ7dnMgyWjsjgQWVQtK8t
+ apIM0GT225rVzl2vq3oTJ+XnXI9u+f6DICCUVF3VZFDTXWp9HF6aH8necXDg638HmRf5piC+DJ
+ 4MypTmTskUlfhjrur4B1sHobvMAAAA=
+X-Change-ID: 20250910-judyln-panel-948f177c5c5c
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
@@ -57,108 +58,69 @@ Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
  phone-devel@vger.kernel.org, Amir Dahan <system64fumo@tuta.io>, 
  Paul Sajna <sajattack@postmarketos.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781482095; l=2409;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781482095; l=2360;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=Ks9/ggz0gsVtbuy3t9hg1UTiYS+A12Js0rYjwehxUPU=;
- b=TaxnqGmI3KdzfXiBJe5J0lfduQUw8XGGu66SUV6wR3T4yI6PCsarkN5kFltywOvESRe/X22oU
- o432i6+6lieB3zfduUwHO+HEYi/Ph/LlKNdaUqfNOXv8Bv/QubQIQyR
+ bh=rah64DAbHLiiCx0F8BwuF0wdHE1rPZTHNczqUGp4Doc=;
+ b=7P1CfylnRTCjbzuoMzQriGooHcWRfaxgRyYDPjahzuYssl1Xl6bUgC/OXqI/vPrDhtC+KvhEf
+ ACL7F5IT8bIDHbUxr/W7e4P9vhTGc8GYd3549t754sPpceBIrn2+ACk
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 X-Migadu-Flow: FLOW_OUT
 
-Document how to use lg,sw49410-lh609qh1 in a devicetree
+This patch series adds a drm panel driver for the LG SW49410 panel found
+in the LG G7 ThinQ (codename judyln).
 
+The basic driver skeleton was generated by https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+from the vendor device-tree.
+
+There seems to still be some power supply issues, the bottom-left corner
+of the screen is dark, and the rest of the screen develops shadow-y
+burn-in-like patterns when resumed after being left off for a while.
+https://i.imgur.com/oJZSHzE.jpeg
+
+Comments were added explaining magic numbers, MAINTAINERS updated, and devicetree
+documentation added
+
+Co-developed-by: Amir Dahan <system64fumo@tuta.io>
+Signed-off-by: Amir Dahan <system64fumo@tuta.io>
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- .../bindings/display/panel/lg,sw49410.yaml         | 79 ++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+Changes in v3:
+- Add power supplies
+- Use full panel name including panel and DDIC
+- Update email addresses
+- Various improvements copied from other similar upstream panels
+- Switch back to not using panel-simple due to power supply properties
+- Revert incorrect merged panel-simple bindings
+- Link to v2: https://lore.kernel.org/r/20250915-judyln-panel-v2-0-01ab2199fea5@postmarketos.org
 
-diff --git a/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml b/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml
-new file mode 100644
-index 000000000000..4c4bf4d89353
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml
-@@ -0,0 +1,79 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/lg,sw49410.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: LG LH609QH1 MIPI-DSI panel with SW49410 controller
-+
-+maintainers:
-+  - Paul Sajna <sajattack@postmarketos.org>
-+
-+description:
-+  LG LH609QH1 6.1" 1440x3120 MIPI DSI panel with SW49410 controller found in LG G7 ThinQ smartphone.
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: lg,sw49410
-+      - const: lg,sw49410-lh609qh1
-+
-+  reg:
-+    maxItems: 1
-+
-+  backlight:
-+    description: Backlight device reference
-+
-+  reset-gpios:
-+    description: Reset pin reference
-+
-+  vsp-supply:
-+    description: Positive voltage supply
-+
-+  vsn-supply:
-+    description: Negative voltage supply
-+
-+required:
-+  - compatible
-+  - reg
-+  - reset-gpios
-+  - port
-+  - vsp-supply
-+  - vsn-supply
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            reg = <0>;
-+            compatible = "lg,sw49410-lh609qh1";
-+
-+            backlight = <&pmi8998_wled>;
-+            reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
-+            width-mm = <65>;
-+            height-mm = <140>;
-+
-+            vsp-supply = <&lab>;
-+            vsn-supply = <&ibb>;
-+
-+            pinctrl-0 = <&sde_dsi_active &sde_te_active_sleep>;
-+            pinctrl-1 = <&sde_dsi_sleep &sde_te_active_sleep>;
-+            pinctrl-names = "default", "sleep";
-+
-+            port {
-+              panel_in: endpoint {
-+                remote-endpoint = <&mdss_dsi0_out>;
-+              };
-+            };
-+        };
-+    };
+Changes in v2:
+- use "multi" versions of functions
+- remove DRM_DISPLAY_DP_HELPER
+- change dt-bindings to panel-simple
+- Link to v1: https://lore.kernel.org/r/20250910-judyln-panel-v1-0-825c74403bbb@postmarketos.org
 
+---
+Amir Dahan (1):
+      drm: panel: Add LG LH609QH1 Panel with SW49410 controller
+
+Paul Sajna (3):
+      dt-bindings: display: panel: Add documentation for lg,sw49410-lh609qh1
+      MAINTAINERS: add Paul Sajna as maintainer for lg,sw49410-lh609qh1
+      Revert "dt-bindings: display: panel: panel-simple: Add lg,sw49410 compatible"
+
+ .../bindings/display/panel/lg,sw49410.yaml         |  79 +++
+ .../bindings/display/panel/panel-simple.yaml       |   2 -
+ MAINTAINERS                                        |   6 +
+ drivers/gpu/drm/panel/Kconfig                      |  15 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-lg-sw49410.c           | 528 +++++++++++++++++++++
+ 6 files changed, 629 insertions(+), 2 deletions(-)
+---
+base-commit: c9b2552e124828f40d5102b146dc72b506b65de9
+change-id: 20250910-judyln-panel-948f177c5c5c
+
+Best regards,
 -- 
-2.54.0
+Paul Sajna <sajattack@postmarketos.org>
 
