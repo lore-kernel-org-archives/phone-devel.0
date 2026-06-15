@@ -1,96 +1,174 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FD9192B75
-	for <phone-devel@vger.kernel.org>; Mon, 15 Jun 2026 00:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09B93A7F61;
+	Mon, 15 Jun 2026 05:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781482119; cv=none; b=j8hDgYdx4ufOYP91z0ju4Q1gBHOTRM5ad03OxX/9cf30EOe7qDUU4f95nkrRrsgda7wq/Bm3jU5enmi4ZGk73gRMHPOIuZX5xj3X7p1k140RfjQ3jQgibjWpe1xBf37G/0C9wv6wdZ9qXMAo3mN6KXg/nlCCb/thGAf0EyjfJdA=
+	t=1781501930; cv=none; b=u8qMSjnDSarsRQoStFNlDByz35qnljQRPoluQqT2XQ6Lmm75vwEhxR1TG85dLUq20GXVavbMaHnwPhO86wNMHMIGlbe4n0HrJPeD1iBOu27939n1K5Y4FeU1MBcqrOdRzuofKCK2Wavvr7JSkGNZ0m75uhNenWoeVedeTsw/adU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781482119; c=relaxed/simple;
-	bh=g4LsE0oUeBORs6EP9fBGYDXKPlMpulzbsT65r0ihbYE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l1tBCZ9YELFU65ZO43vcUsTUJgTAMb1zf2KTOv9DtSBBUJT5Pgo4pNPh7CT3UUwSvWXrQlHRhS30RbX0uH+HLu9+qi+aR2GwXdf7pSaW95E5T+/xpSIrs1ug54b0kgdAuHBleu/lEL94QadFJnPNdnD4bEoaeyGh4NJKRR6KQnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=BtkmzVTj; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1781501930; c=relaxed/simple;
+	bh=XYz8WkBhkXVvEC1qzobYBWC1dAfs+wrs6ykV9KteXjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dwNmmpQhlxOyUUwI55sZkVZmRMBgJEIUx5nTcBeOWRdyT1yJQjG1QXNiDv1S+JWPJClK4+ha+y9P1wZ0rSyEF5cPN8SMVsh3jc6F3/IQADMxLjKgoF3ZRlszLdlTTgTSRX0WG1MoSX3+722jN8vDOGtJf2pGaN3TZVikzHIM+NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIS22vpz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="BtkmzVTj"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1781482116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8LFnjM2WcVsdQ7iGTQq/KkiMHSRoGfQrE7FIyOH5nQI=;
-	b=BtkmzVTjRUnJvv+bFzzpEz906LMqB1HG/liAPHwyakSv4lmEeRzd/U2F36xmqyJKKTRtgJ
-	nhPigEg+HrP9cg/HQ9zMa+jvJyFgphEDzBn288kzaVGk5Dt3CH+/6UhXC5dShioZuHBN0R
-	4tljkMvhHBH/FXcyziQhzzz4DrpYpFuIjkc1KjpGWBhyJ++A2gpYnTyrQpwYkc4EUk0dGR
-	vkYv/a49C77Q0izK0i/q2ZCzJv0gP9EZhOHdWjso+iuXRk+d5ygW0uP5d8cGHiGRLulIhy
-	GFWfPSVaU0k2sdhZm69Yx13PB+Ez/llKEZB3pks3CiKQhDxcn9KJlPHVjghnQw==
-From: Paul Sajna <sajattack@postmarketos.org>
-Date: Sun, 14 Jun 2026 17:08:01 -0700
-Subject: [PATCH v3 4/4] Revert "dt-bindings: display: panel: panel-simple:
- Add lg,sw49410 compatible"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIS22vpz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172EA1F000E9;
+	Mon, 15 Jun 2026 05:38:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781501926;
+	bh=61hhhHxcLFdnYxc73vAonQrotow/c6tshPZMdlSimBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cIS22vpzTpXb6oBTunY9fHvKllDKVLyTg9aFbuSKk45xfnJEICk4G0/WRGZtMPhkT
+	 C3craMqr9NSt0FB3EY/idQnvhVy1Z0gPbe0A6uPT8umjArxH9wFS0RdKyfQ4HdMZYE
+	 vOvsa1tQvisyYjnFZDgfnXmwvbsYKwc2Z1Ux/bHsQPgNsewjeLbrLg1jDWohkdxaew
+	 Xjwcv6pF0UdwG4UxW1/vftfcLqts3+fuiTOdHVHnaMsDtoo+3XNFmWPg2T82v3rSkv
+	 R7ysCXACp4FkPL/5mMbVxleWTPAdw8NsO/yEMz0mEVCbelFAmZx0IX2vKJ3mpIDDRK
+	 R8gQhXv87tL0w==
+Date: Mon, 15 Jun 2026 07:38:42 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Paul Sajna <sajattack@postmarketos.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
+	Amir Dahan <system64fumo@tuta.io>
+Subject: Re: [PATCH v3 2/4] dt-bindings: display: panel: Add documentation
+ for lg,sw49410-lh609qh1
+Message-ID: <20260615-thick-trout-of-inquire-4e4251@quoll>
+References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
+ <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260614-judyln-panel-v3-4-07f4134441bd@postmarketos.org>
-References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
-In-Reply-To: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Jessica Zhang <jesszhan0024@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- phone-devel@vger.kernel.org, Amir Dahan <system64fumo@tuta.io>, 
- Paul Sajna <sajattack@postmarketos.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781482095; l=1194;
- i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=g4LsE0oUeBORs6EP9fBGYDXKPlMpulzbsT65r0ihbYE=;
- b=yU0bx3nb755hToRHoxxFdjdi+4LOx+YcSylY4MqtdPtN5OS/CYDBNw34gllXFO+2yNtZtt7rA
- KG8sc6lXygsAiNgHjhjESTiPrrNjzVxUBo6YnAPHnuC0lrWhYwdEYyx
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
 
-This reverts commit a74c2e55ab66519ffa2069ac9ae83cd937bff4c4.
+On Sun, Jun 14, 2026 at 05:07:59PM -0700, Paul Sajna wrote:
+> Document how to use lg,sw49410-lh609qh1 in a devicetree
 
-It isn't actually panel-simple-compatible, and we knew as much by the
-time this merged, but I guess maintainers needed something to prevent
-the dt-bindings error going off while I was working on these patches.
+"Add Foo bar MIPI DSI panel, which suppors somehing something resolution
+etc."
 
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 --
- 1 file changed, 2 deletions(-)
+You describe hardware.
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 21453f0d7ce2..58303a767a36 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -204,8 +204,6 @@ properties:
-       - lemaker,bl035-rgb-002
-         # LG 7" (800x480 pixels) TFT LCD panel
-       - lg,lb070wv8
--        # LG 6.1" (1440x3120) IPS LCD panel
--      - lg,sw49410
-         # Logic Technologies LT161010-2NHC 7" WVGA TFT Cap Touch Module
-       - logictechno,lt161010-2nhc
-         # Logic Technologies LT161010-2NHR 7" WVGA TFT Resistive Touch Module
+> 
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> ---
+>  .../bindings/display/panel/lg,sw49410.yaml         | 79 ++++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+> 
 
--- 
-2.54.0
+A nit, subject: drop second/last, redundant "documentation for". The
+"dt-bindings" prefix is already stating that this is documentation.
+See also:
+https://elixir.bootlin.com/linux/v7.1-rc7/source/Documentation/devicetree/bindings/submitting-patches.rst#L23
+
+> diff --git a/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml b/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml
+> new file mode 100644
+> index 000000000000..4c4bf4d89353
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/lg,sw49410.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/lg,sw49410.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: LG LH609QH1 MIPI-DSI panel with SW49410 controller
+> +
+> +maintainers:
+> +  - Paul Sajna <sajattack@postmarketos.org>
+> +
+> +description:
+> +  LG LH609QH1 6.1" 1440x3120 MIPI DSI panel with SW49410 controller found in LG G7 ThinQ smartphone.
+
+Please wrap code according to the preferred limit expressed in Kernel
+coding style (checkpatch is not a coding style description, but only a
+tool).  However don't wrap blindly (see Kernel coding style).
+
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: lg,sw49410
+> +      - const: lg,sw49410-lh609qh1
+
+This is very confusing - why two compatibles and why same devices - both
+sw49410 - are compatible with each other?
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  backlight:
+> +    description: Backlight device reference
+
+Drop property here, not needed.
+
+> +
+> +  reset-gpios:
+> +    description: Reset pin reference
+> +
+> +  vsp-supply:
+> +    description: Positive voltage supply
+> +
+> +  vsn-supply:
+> +    description: Negative voltage supply
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - port
+> +  - vsp-supply
+> +  - vsn-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        panel@0 {
+> +            reg = <0>;
+> +            compatible = "lg,sw49410-lh609qh1";
+> +
+> +            backlight = <&pmi8998_wled>;
+> +            reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+> +            width-mm = <65>;
+> +            height-mm = <140>;
+> +
+> +            vsp-supply = <&lab>;
+> +            vsn-supply = <&ibb>;
+> +
+> +            pinctrl-0 = <&sde_dsi_active &sde_te_active_sleep>;
+> +            pinctrl-1 = <&sde_dsi_sleep &sde_te_active_sleep>;
+> +            pinctrl-names = "default", "sleep";
+> +
+> +            port {
+> +              panel_in: endpoint {
+
+Messed/inconsistent indentation.
+
+
+Best regards,
+Krzysztof
 
