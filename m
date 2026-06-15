@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9BD353EEB;
-	Mon, 15 Jun 2026 09:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361D430C17B;
+	Mon, 15 Jun 2026 09:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781515053; cv=none; b=auxrFeyhVO33EszX81ZhAR5wJ1aFkO8NwP9kd0EDtfNQSM6nLsIJY3SMDisC5R9jNxAwW2uLUgWnAqmmf9OfQPNseUyiTnMSeGFjhX/SPm0Fv0RFgNFOt3G5B/ztl0Izu/csn53boASHnxDx6m0cDxTPiYEl9EWTTnoHrfWAmng=
+	t=1781515188; cv=none; b=F0fW7lQwYCCKDFWlDMfbf/I6T7GAGvVb3SjOdKpRhXi8r0px2HuXsv5ehKNoRrdzh6VK3coB14V5OCeqYs5DB5i/S9LbRR2PZ1+Gf8lk3lYh5RotoI9zbWbB3k7gTCjd4f+v+cYLn65aPQbAWd2yL5BSM89d7Z5h58Q/Sul3LgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781515053; c=relaxed/simple;
-	bh=sUN1mggEBsvNeQUZYfEsFlExB4nn5MMmyNrc+xQboLM=;
+	s=arc-20240116; t=1781515188; c=relaxed/simple;
+	bh=br9QnaTbiZ2vg/7ulLpvZw5fknOcKi18/N9imRPdXg4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uJKxF0Hya/C2INsQpkwlddFB3Ai0ZZGYtBG9qT40MPQOBvypwFfGac+S7LbLNCrflZJjAkfMp51c9vz9ADoe94dWa4DXlgV4VcHnmUZyxu1LRM8G8XPoatNHwLVjxbCT9mxdPmgnHyNXtRs1/i3fo3Dh0YWIYYcP/l9IExhWNms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mpb+BgFs; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTqhifY8TAjczqUsPRRht6YJgnJyUi0p1BkviM3D7DoEDIXx3rIRq6XFXber5e/bJKRno96sN8FucV8xx3g8Ipgm7//woxdGZtgTWY4epBKMzkWRtb8HxaekzqVTQ8DChmoUw7XbjnJgtl3GCWsq+vAPE9QyFQPu3MvGEW34thI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kA49cMA8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mpb+BgFs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03D61F000E9;
-	Mon, 15 Jun 2026 09:17:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kA49cMA8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C3B1F000E9;
+	Mon, 15 Jun 2026 09:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781515052;
-	bh=sUN1mggEBsvNeQUZYfEsFlExB4nn5MMmyNrc+xQboLM=;
+	s=k20260515; t=1781515186;
+	bh=br9QnaTbiZ2vg/7ulLpvZw5fknOcKi18/N9imRPdXg4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mpb+BgFsw+7A0qUi5aHSlxex14BAbTk6I++U0zGciY8ez4lvx7WpwG+e1pH1XSZ3M
-	 ovXb4pNne9USG2Ho523ENLtgwxwq9zblIB4r9RZXAGkDWwReHND5fZiMIL9pmZwtCn
-	 RGnC67HS0HTX8uBRRdKziZJg+I+3nM05lOk4SaxLqG+k9cEqpOSVf/+/44jtq9ctVP
-	 iK3Vvv50UxhBgx1v2XtujNL/o4IYMr4aLKKVYk8t/v5fl+gOP/ACI9890Mz3MCurpt
-	 ANGMu+7g41+OpprAVigK9pFgEHrDnaXj0cBhaHRfQKUzKg8sGorG+69eFWyD3sOlRF
-	 uSM5xb52sniMg==
-Date: Mon, 15 Jun 2026 11:17:29 +0200
+	b=kA49cMA86AwcMwcNsaChkSPTsdN/DDsvJyojhwKPUxHiEjeAbYe/Yd15439IEqvPP
+	 7w2VNzD7C7FvlFfEmF0ImzlWbBaW/PDSfioDkOp4YBsd7MZpvCPJQcuKJtcaItEKYO
+	 +CoiGfi/wXCQBNVqzrzZ71ONVQwAjRIiIxmURq/0AGklJjDYoupgQa4MiRiHCuESUO
+	 7+XX0L9r1aUKFrwcui1mcw82GpgAv8JttdFU6e5Tg1Y1X9pvVnrx3AruGBoSrp3MmP
+	 ckuCsbS1jdy+wM46j/NoSPWi72y6aGA8qw/IxiazjoGOysEyInwYYH+myQhzwYZKOh
+	 ++PAjq61w/EJw==
+Date: Mon, 15 Jun 2026 11:19:44 +0200
 From: Maxime Ripard <mripard@kernel.org>
 To: Paul Sajna <sajattack@postmarketos.org>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -37,11 +37,10 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	Jessica Zhang <jesszhan0024@gmail.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
 	devicetree@vger.kernel.org, David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
 	Amir Dahan <system64fumo@tuta.io>
-Subject: Re: [PATCH v3 4/4] Revert "dt-bindings: display: panel:
- panel-simple: Add lg,sw49410 compatible"
-Message-ID: <20260615-amigurumi-kagu-of-prestige-ecae6c@houat>
+Subject: Re: [PATCH v3 0/4] Add DRM driver for LG LH609QH1 Panel with
+ SiliconWorks SW49410 DDIC
+Message-ID: <20260615-celadon-pug-of-teaching-f1eb0a@houat>
 References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
- <20260614-judyln-panel-v3-4-07f4134441bd@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -49,44 +48,50 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="afkgux7sdtvsh334"
+	protocol="application/pgp-signature"; boundary="r3flv32pwoicf25h"
 Content-Disposition: inline
-In-Reply-To: <20260614-judyln-panel-v3-4-07f4134441bd@postmarketos.org>
+In-Reply-To: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
 
 
---afkgux7sdtvsh334
+--r3flv32pwoicf25h
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 4/4] Revert "dt-bindings: display: panel:
- panel-simple: Add lg,sw49410 compatible"
+Subject: Re: [PATCH v3 0/4] Add DRM driver for LG LH609QH1 Panel with
+ SiliconWorks SW49410 DDIC
 MIME-Version: 1.0
 
-On Sun, Jun 14, 2026 at 05:08:01PM -0700, Paul Sajna wrote:
-> This reverts commit a74c2e55ab66519ffa2069ac9ae83cd937bff4c4.
+Hi,
+
+On Sun, Jun 14, 2026 at 05:07:57PM -0700, Paul Sajna wrote:
+> This patch series adds a drm panel driver for the LG SW49410 panel found
+> in the LG G7 ThinQ (codename judyln).
 >=20
-> It isn't actually panel-simple-compatible, and we knew as much by the
-> time this merged, but I guess maintainers needed something to prevent
-> the dt-bindings error going off while I was working on these patches.
+> The basic driver skeleton was generated by
+> https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator=
+ from the vendor
+> device-tree.
+>=20
+> There seems to still be some power supply issues, the bottom-left
+> corner of the screen is dark, and the rest of the screen develops
+> shadow-y burn-in-like patterns when resumed after being left off for a
+> while. https://i.imgur.com/oJZSHzE.jpeg
 
-I had a look at the patch and discussion that commit was from, and I
-didn't see anyone bringing up that it wasn't actually panel-simple
-compatible.
-
-If you knew as much back then, why wasn't this brought up?
+If it's not reliable, why should we merge it, especially if it can lead
+to ABI-breaking changes like it happened already.
 
 Maxime
 
---afkgux7sdtvsh334
+--r3flv32pwoicf25h
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCai/DIAAKCRAnX84Zoj2+
-dt4gAX49UvOe2Zj08VKwUKpsZozNFe/Yoeizs4amVYEac2pNv+aAF420ATx6l1hM
-5i8fITgBegOFQFS9CgjhrXP4pP1+hSO4vcQ5SSy0pMGsN73XmQXJJAjapYIp85+a
-eXguIesxmw==
-=F+rc
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCai/DrwAKCRAnX84Zoj2+
+dvSLAYCUeqXkEWCZYPDmb9C4HFz4oPSXwi1Dx6FvQvx1m6GcGlmBxYGudjULAGhD
+BkqFyysBgIaJFNlt8hptIRLxVVW6H9rPZv/sFsX6b+XvM1Xrw+6hqlzLyWoJq04c
+bMMlDVi88Q==
+=3mCa
 -----END PGP SIGNATURE-----
 
---afkgux7sdtvsh334--
+--r3flv32pwoicf25h--
