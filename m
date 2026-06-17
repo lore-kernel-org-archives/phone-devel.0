@@ -1,132 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E5C392C2F;
-	Wed, 17 Jun 2026 08:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4946D3D565C
+	for <phone-devel@vger.kernel.org>; Wed, 17 Jun 2026 10:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781685145; cv=none; b=kIvBDkYdvDHWQ+QUWuHOF6vSr2HQ6TuS1KbXCEcx6jRRRrb8MJKSyEGV3NyFSUCwa690SmW2kYZi/qmgLzoNGUPCgJbPVmxsmHre48wd84ul/9kc5FFCMxxcbYK4YCCH23i8aCtx169Fmtk4+VKriaxQWgh7SrKXVmy6SaX2TEI=
+	t=1781690716; cv=none; b=VBrBYdM15XXVHHCBQfuSb6BDTpGt6+mBXw5EKknOmVVH5+MEATO1YxNTa0RVpsjjLs2bZ5TpNd/UNURbJst1Cnr9V+BHz5RQDXG6fW/hlUbPd9X0at9et4Id316DQIGnM6R1pYQCNNHQDwxhT+2gNVXXbMVkSoUvNLr2KgxUtPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781685145; c=relaxed/simple;
-	bh=l3uzC5RqqxzM3n8/+39StV34+5jEjjflyVqKlx4xsuA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OtwtV1zAyBnjUFOThnXaV/ZT3Q0+I/kbSZ4985tMPWDLsAMaY3OOGdvgZSgsfMzNCFGzSlKQaSaVi5ef1v/PbhkDiRJs/tRdeN00Z5W60FQ86ev4fL6GAL4Nw6RuAMrweJkFxqS1ayJtBOWe5vyp5j15wF/cBEZLekCsNn1XGe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNRlPxaG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781690716; c=relaxed/simple;
+	bh=5TxvZppIuVK4IbjAthVhCxutkqy3HZ+yhexbIYSVtPA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V9Xb7EJKzC6rI1DysUZgCqct94RL6ZBXXv3HALxY1LUaLz7yh+RIKG27xYi0JRaKqJ5bgnXUi//OZBqYqqPoezpvc6yqCOV5SDYG/1x9+vbdGBxod4DCv2ANAIgdZF0ZrPrkB7M+IImyXJ4mdR+ZzT5CO7e7MgLg36Cdu/F3DOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TzyDBHuG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YvnwrA6w; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNRlPxaG"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77A73C4AF0F;
-	Wed, 17 Jun 2026 08:32:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781685145;
-	bh=l3uzC5RqqxzM3n8/+39StV34+5jEjjflyVqKlx4xsuA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jNRlPxaGoR26GRZPIu8xKr7wWGV50qC6JYNxRZfYham/nAJ2TRCD9Be3l2rlj0AS2
-	 xSdYynam6FLRAuS0Qh0GP+yK1mapxw3UUoP6aQkxEyfM53zcLH751WJ0qBCkv9T+io
-	 MAZGu4CfVYliOYYshbR1b+Vc2mdjUcnaOfFQgg4erT7OtcFtL0iQC1dGB99vBvAVhW
-	 OG4sDQNFv7Aqmjd0nTYw+kqHp7Mj7X4sxqCR6Mf27dsCRh8NJVLQYuDropESd7Z6d/
-	 3xoop9zvBnhawWLxT85oSlM2zgSC8k/d1zrFyz5DXPIefcBHl0nwTgAk/Zg/poG8mj
-	 +j0gTKQA4pQzg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F3DDCD98F0;
-	Wed, 17 Jun 2026 08:32:25 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 17 Jun 2026 10:32:27 +0200
-Subject: [PATCH v9 9/9] media: qcom: camss: Enable C-PHY where available
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TzyDBHuG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YvnwrA6w"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65H8Vqqp2192032
+	for <phone-devel@vger.kernel.org>; Wed, 17 Jun 2026 10:05:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	G/3xtJbSgpRVggmVdlAhVnxw+ha4tmbu5w4Ruonole8=; b=TzyDBHuGE0f1IEdm
+	9V9NIeNbNQDb/0iqMZTyuniZC+ryNCgg1zPpFpCJCj/bTaVZhjC4IJAratuOuCJy
+	ku9yMUEKH0bBi/jozOQUqItvOty3CIJwa7uxyN0UIe06CDzjCtkTI5pRk0WS7bOh
+	ZfpvcKAaFXyPIKVs01ZjzNfp3HnlNGV9Aw7fGKr0a8Grg9L8gnmI9BWsI22e1JmD
+	aScaO19J7tLldH4liU1GeFxHsgqws5ZV8ODpQJoGDSHZcUdKn/cbF5oH6PZaXh2T
+	aP+BNQ8KBtOi7TpFmNeB9S/amPwszcJaSd1aKJdKAvdezqlkagqgaeBMc+6gYrMU
+	kvHVRg==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eueesjkgm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 17 Jun 2026 10:05:12 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-517bdeceb54so13194101cf.2
+        for <phone-devel@vger.kernel.org>; Wed, 17 Jun 2026 03:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1781690712; x=1782295512; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G/3xtJbSgpRVggmVdlAhVnxw+ha4tmbu5w4Ruonole8=;
+        b=YvnwrA6wN0QbP1JS6MwoZKMlQMqcuJWg9yQxBiHoeooMle6T2HRAQc37SVauKe5iG9
+         0RoPpQ1ubXcnYUYEQuOn/KX4etcMD0WOoUQfn5rF4rs+4HKJsopRNIN3VT8mVpzEe4HT
+         BkN5xBujcut5smLgsHqwfznYOglfnWAlbUnzNaSBkVEOwmMYW/r11whYxj5kZGbHNRuS
+         nMe+PVvajju9XGjW6D1s5vyHNJuSJw4e50kn5GkFNChfngQK8r7CVV0eE0SJBYg5coGI
+         mZ0pFgf/5HSIoXAMv3ua1IFEV38k/CKJTXbWTHUPQqjlIVx8MwMREt5dOfmSYcSkBw8K
+         NGWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781690712; x=1782295512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G/3xtJbSgpRVggmVdlAhVnxw+ha4tmbu5w4Ruonole8=;
+        b=Plq+P4nDVnHji51cjlWcMj+chsnWT+/c68jTm4VKDZbhfvgfOJQf0OssHR52WgeLn5
+         KuVJXG/8PoxbI+9nABYNYBY9ahwnIterntdKefaS45ZqlZZIUiBwiBuFIcRdIKoWLdEh
+         3FNzX0jEYoKUPTUMSmp+ZkhP1JqZibNqwpyCfmN0pyAwFFHd5LgoSntHO6DCKbjktV7W
+         0r3hugDXkVlKZ6TdnYGisqR86HP+E97f6hwFTMp3kg2kQv8klzhAkh5QPRfVnmHZ16/l
+         CWcTPmU045N6BXG5nR5N0ftmBvsSsAgkjY2Z/ag4ECjS6S8Z/4cm4eJ3C13mMprZ4V0G
+         H+TA==
+X-Forwarded-Encrypted: i=1; AFNElJ9zZUgQz0CEDicCVfEo/FCEiadJWOwPb8V/21Cy+ltoelOHQMHZQy7tVVzztItmymhW8hmizc0rEKzwnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8auZB0DTYOV5+XaVTVKaxNvH7/MUG47kJqYtSxrnAg6PjjGYG
+	NvSo0zKUFShBiq4dCL0gtOPT+Qa/L3eNsUcuGXpjgdrlc5UXBEsHgPNmodM2u+brktwYXFwfjLk
+	PlvRslMbsOxKgenWXZwNQS2SoaFHnb2RZDTHXpq4h4nrcQZSFyzFbv8MK/dJuuiXdfQ==
+X-Gm-Gg: Acq92OHi1zvTDVYNGEqyinMrRpOfRQQKO39Ud2LHn4x6wVLKyeN6DZR8Nf25zWHE+T/
+	yJy5VFa0vbPvh01LYTOyDgTc02LwHZIyGNGzzWk9tiRwX4dM8x+DBYIoMRYCrdvihu4EyGO35S0
+	9IxRM6y2YgfxudhOGCk3yHWdKHdOxmUcHQLKscYx9BuRoAE9YauFHzs7iBnL+loCLVPXuJQGcdA
+	g7yD2v4VdyOxxmYnetedqpRPjJtwrj9QjI+BGbwQVjBAqDSUa2p/ylQbuDvghJ8Xay0hXF8TmU+
+	Rk81Ui3yNBkk8jgExH9FmKyPW2F3B2EkUUcDEOzWCn71Iu7z909X1HFhIuglChBl6IEdCIpEPIY
+	or2xEnPBpvqHYw5K0a4vroxGsgIRQbh0XC9w=
+X-Received: by 2002:ac8:7f91:0:b0:517:5d21:9899 with SMTP id d75a77b69052e-519ac25db63mr22095961cf.5.1781690712306;
+        Wed, 17 Jun 2026 03:05:12 -0700 (PDT)
+X-Received: by 2002:ac8:7f91:0:b0:517:5d21:9899 with SMTP id d75a77b69052e-519ac25db63mr22095711cf.5.1781690711861;
+        Wed, 17 Jun 2026 03:05:11 -0700 (PDT)
+Received: from [192.168.120.170] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c01ee8286c9sm484557866b.5.2026.06.17.03.05.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 03:05:11 -0700 (PDT)
+Message-ID: <b39e4b4f-c166-48e1-901c-51694cf8172b@oss.qualcomm.com>
+Date: Wed, 17 Jun 2026 12:05:08 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: kodiak: Elite-ify LPASS macros
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260617-qcom-cphy-v9-9-83da8a8e4e44@ixit.cz>
-References: <20260617-qcom-cphy-v9-0-83da8a8e4e44@ixit.cz>
-In-Reply-To: <20260617-qcom-cphy-v9-0-83da8a8e4e44@ixit.cz>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Frank Li <Frank.Li@nxp.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Kieran Bingham <kbingham@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1392; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=XCi14gM/uWIoK+pzO3oCf9ehRkiwcrxS49fsQobP0+s=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqMluW+jF3Lr8VpM2COVKWC6hom9xxExNCesNF0
- ji1AO+ZoZqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCajJblgAKCRBgAj/E00kg
- cgKqEACYPm+mneNrVxrgg9Cz90IrI+Lw0KVPE3vMznPnf2VnIGXHtMbVIWNUoWDsQnWymZqOaM5
- 4rLQHTc/Fq3lkDFlYUkuZ21fcYT9/760MUyiSrp5Eg/vhrLYXmO6mZl4bZgh27JYbpiDw+OgFho
- rQH0svTAMn6gfrUe14vrfAmb6+k6B/H4Z0h+CPq6EkGIDFmaECxcmRMOydv+QyBlJzflXHkBO1i
- 8yzs+RK0RTVnYQOKKzMDYg5T0uP+vWexNdWVW0wIQRUBU+LbL6CeOB+ZE2hCfckx9y43NpK8tfX
- ijsiUmCWOppkUQqIQn3+GedKo/AHGlzur7cx82zR0m1xKrhDPaV23kK/F3oUovg7e9PWMDaPGUi
- xD5qeyBgQqFcgp5tQY9nVGOkmlb5EQwHslvXOpNsJYlK6Pbp69nHWqm3Obdkn5vmcyAcYD/cFwg
- ndF5uGxec0RmjKzRumFL1+EP3hn7EiF0SeewgJnwW7+QSVKxcbkY7P19xgA73U429k7mp3T2/bM
- 7AAFpkWc+qD/vGikV8iENakNtm1ldblBad+4p2nfAIAj+NvHTxnzqKFFwVoAXNdRmWHPSfN6ijM
- 0D/mY1PglUVQdddpWGgySSTbFKONS2i4NuTmyLM6o9+YmaFXAuPj0Mcg6GZSgxvG7YsViO6LtyQ
- Amj/5NUDzpYhd/w==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDA5NCBTYWx0ZWRfX/vJCDSeX9ly9
+ kBtquj4N50kUyn9auoZBymicXzHknDfcST1DQDO271AIzknPf7HDbNR8hZ1q1cN5qGWzr7br33/
+ kroylEmOdg1NLZf60Ls9qpiFuzSSTZfR67/zgKB1U5Nh4vnkKYWAoDwhGqrEsKpdmfoK2TiqtFc
+ vYdpqAO1dIZ1U8ChBlkRtF2MWGs8AO8jxaBp1DuOvcNVIOjB+EIjT40MGzo/RFspUj7bVDH/iTr
+ 32ho4vQhCK/QwihTZHAWTuTvipQ1O+s5K9rv8TWrjlBgVzrQERaK17py77Ji0g/YAJ16+UI6ov8
+ ZapGwJ874fewRMFviePD+RrSMPGsBCnPzqnOtjMJagQPV68cnRTEgAVgv0/vEFc5B5ZJj1zJ5YG
+ gqqvs6su7kA9uZKm5icbLU9S3iD87MoS0j87AcHYmCPu+uMRRw5hqjrCtcFGE45/b71W5ijJKu2
+ wYY8+gQ4K79UGaIXAmg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDA5NCBTYWx0ZWRfX5pKGbX8tH8XZ
+ 0CnGkO8N4pYu2eCjUkw09AM+0hyS2N+jQ9GB7xK8eVAPG9HKVXbqP2DA2VuApmnId6bpgfpMbjD
+ nKobRFdRpBWfB19KcYuP3AL07qr1hMs=
+X-Proofpoint-ORIG-GUID: 2_u_EdUEg84Z6HWaB0AHZhY99knQzF2t
+X-Proofpoint-GUID: 2_u_EdUEg84Z6HWaB0AHZhY99knQzF2t
+X-Authority-Analysis: v=2.4 cv=ePojSnp1 c=1 sm=1 tr=0 ts=6a327159 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=UVdh9-GTA9LMwvOUMncA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-17_01,2026-06-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606170094
 
-From: David Heidelberg <david@ixit.cz>
+On 5/22/26 4:46 PM, Luca Weiss wrote:
+> Due to initial kodiak/sc7280 bringup being done for Chrome platforms,
+> some Chrome-specific bits still remain in kodiak.dtsi, like the clocks
+> and power-domains for the LPASS RX/TX/WSA/VA macros.
+> 
+> Move them to sc7280-chrome-common.dtsi and put Elite (q6afecc)
+> equivalents in its place. The qcs6490-audioreach.dtsi file can also drop
+> deletion of power-domains properties then.
+> 
+> This follows previous commits moving Chrome-specific configuration to
+> the correct file, leaving kodiak.dtsi for Elite and
+> qcs6490-audioreach.dtsi for AudioReach.
+> 
+> No functional change intended. The clock-output-names property will now
+> exist for both Chrome and AudioReach devices but this shouldn't have any
+> relevant effect. And WSA macro clocks weren't added to Chrome because I
+> don't believe this would've ever worked given it already referenced
+> q6afecc and the nodes were originally added during AudioReach bringup.
 
-After all the changes done we can now safely enable C-PHY for a SoC
-where it's available.
+I think it's better to keep them, if only to make sure that the result
+of dtx_diff isn't outside the expectation of a commit that claims to
+only reshuffle data for these platforms
 
-Acked-by: Cory Keitz <ckeitz@amazon.com>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/platform/qcom/camss/camss.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+It looks OK as-is for Elite and Audioreach platforms (for the record, I
+checked rb3gen2 and FP5)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 66171069057f8..ebf8f21b5fa2e 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -4760,21 +4760,21 @@ static int camss_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
- 	int ret;
- 
- 	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * Most SoCs support both D-PHY and C-PHY standards, but currently only
--	 * D-PHY is supported in the driver.
--	 */
--	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY) {
-+	switch (vep.bus_type) {
-+	case V4L2_MBUS_CSI2_CPHY:
-+	case V4L2_MBUS_CSI2_DPHY:
-+		break;
-+	default:
- 		dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
- 		return -EINVAL;
- 	}
- 
- 	csd->interface.csiphy_id = vep.base.port;
- 
- 	mipi_csi2 = &vep.bus.mipi_csi2;
- 	lncfg->num_data = mipi_csi2->num_data_lanes;
-
--- 
-2.53.0
-
-
+Konrad
