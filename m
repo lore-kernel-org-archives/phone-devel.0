@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25501E7C2E;
-	Sun, 21 Jun 2026 15:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB9219CD1D;
+	Sun, 21 Jun 2026 17:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782057264; cv=none; b=SSHuugmpgDhXCZdRxroKjTCNkTANHVVP8//LmXaAqx66ug16oP49FUkQHOm/P2hPcgkQAEMa/IALoihMKnsKVdhVCkIxShwscPgdCV8Lz9Mi5MD3cs3i4GPo2eZM3pwn03xYCjf0htyxr0vaPImzByRSp7xygOsgV28bgVMGXaA=
+	t=1782061913; cv=none; b=A90cH6n8uLQeBaS2i8u9TrMzShAtq16jvJm5a4nB/MnSuuX1IvIVvD6cisnVhWe4eOeNJ27D0jb8j6Er73F9KN285zcQhrx6FXtwVEDPBrnpjfhaldQUy9hOHfFam5YcnNVxt6lXMuABBu8oXcrKhKJF1ZBGLGFsJQ2qQew+WWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782057264; c=relaxed/simple;
-	bh=kx+1OhR5t+FtwSj9jKoXpxjWKcVf4VDDgIJwp5BPkYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qqmHi+iq62AJIv3cChh7mXhz91lva/4dWFUgFgoO4hdGqAkKnFrQTlkAPQiFFfgZHR8g8xv7aO9eQMGGu6dCOc5J1n867J+TXhC+DG/mt3r5X9PabcUFCU7eNm1Gzsig4/vlhrCi9aHd7Uj9lIq952rv60v5nrtrGHiszkuHwfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cq12duOx; arc=none smtp.client-ip=185.100.197.86
+	s=arc-20240116; t=1782061913; c=relaxed/simple;
+	bh=MIXzP6z3IJlflBPzTDZAqFAWGWJuUfaQFqcEUGDSMPo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=P3krvsG9mpIY0VAWJyYB4gFbpxsc0BZvgRBu6csWZCOvJ5s4NM5rDs+2Bt8URDQNQDK5AzkWpzOrUgwPbPiYVKQPKirvh17QXuPgoVGQE98IjhPTNNbMQcDKskVyPCoycXTxeRrTSDNGTxMWd5nIRIGGNJNzrcWqYU8uROjibG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=1606aFCw; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cq12duOx"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="1606aFCw"
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 42FF45340E57;
-	Sun, 21 Jun 2026 17:54:18 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id BC72F5340414;
+	Sun, 21 Jun 2026 19:11:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1782057258;
+	t=1782061906;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M/eNKPvXbgH3Ts2S0ozJ/U1sKefs/BslszFr6hk4YwE=;
-	b=Cq12duOxg33QSMMT9mo1etZGR1ruYnxbEu3HT1ogNlmORnIpk5hFzP53izRHx46f7zgNHm
-	sUXX1WxGd/fG7bHm4Rn+NmZngWvffwMlxXyg94iRL7jwB1rpAas7fkOri7Yugw+wGhezg7
-	mczdd70N+9YdsK0bt8olEHeF//3Mtc4=
-Message-ID: <357aee62-78ec-4ee3-afb8-5be3ffe70cbd@ixit.cz>
-Date: Sun, 21 Jun 2026 17:54:17 +0200
+	bh=tKZWV1qa3iWpS/GlfPS3WgV/fVjbIu/pDZ53OQskYG0=;
+	b=1606aFCwHjlKbkDtqEgnA7jMFXPFD6NwmrTYEb4Ab4xUZKIumNsW4M24AHVBJZOXH2TSSt
+	BwBxC6vhCIARzeXaAX/A61aI5zCKVOVOdAJx3JXr6/wj88AoZ1qY9imZy4m0I4fu8KgEZI
+	CU4q7PDrvY2UNUpZYaa8CYRg8i3DjGk=
+Message-ID: <742c7a13-9465-40e8-8990-e679712e9784@ixit.cz>
+Date: Sun, 21 Jun 2026 19:11:45 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,20 +41,24 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH QUESTION] ASoC: qcom: sdm845: use DSP_A format for TDM
- codec DAIs
-To: Srinivas Kandagatla <srini@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Konrad Dybcio <konradybcio@kernel.org>,
- Richard Acayan <mailingradian@gmail.com>
-References: <20260613-rfc-dsp-b-to-a-v1-1-7d095fe90a05@ixit.cz>
- <ai3tafRfEgN938cu@sirena.co.uk>
- <5f262a04-8e92-4ac1-bd7c-1246231d3de2@ixit.cz>
- <7f94caa0-48ba-46f3-922e-f16e39fd22c9@kernel.org>
-Content-Language: en-US
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-oneplus: Update
+ compatible to include model
 From: David Heidelberg <david@ixit.cz>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vincent Huang <vincent.huang@tw.synaptics.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20260523-synaptics-rmi4-dt-v2-0-0645122babdc@ixit.cz>
+ <20260523-synaptics-rmi4-dt-v2-2-0645122babdc@ixit.cz>
+ <ahdoBl3qCTyvlYJf@google.com> <1d0e7e31-f808-4347-955a-7246dea208f5@ixit.cz>
+Content-Language: en-US
 Autocrypt: addr=david@ixit.cz; keydata=
  xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
  9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
@@ -98,85 +102,98 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <7f94caa0-48ba-46f3-922e-f16e39fd22c9@kernel.org>
+In-Reply-To: <1d0e7e31-f808-4347-955a-7246dea208f5@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 14/06/2026 23:40, Srinivas Kandagatla wrote:
-> 
-> 
-> On 6/14/26 8:26 AM, David Heidelberg wrote:
->> On 14/06/2026 01:53, Mark Brown wrote:
->>> On Sat, Jun 13, 2026 at 09:55:59PM +0200, David Heidelberg via B4
->>> Relay wrote:
->>>
->>>> Currently this worked only because the cs35l36
->>>> codec mapped both DSP_A and DSP_B to the same hardware register value
->>>> (asp_fmt = 0), which is inherently DSP_A timing.
->>>
->>>> The CPU-side AFE is configured with qcom,tdm-data-delay = <1> which
->>>> produces DSP_A framing.
->>>> The codec format should match what is actually on the wire.
->>>
->>>> So I'm pretty lost if I should go fixing cs35l36 or sdm845.c.
->>>
->>> That sounds like both.  The Cirrus driver is definitely buggy if it's
->>> mapping DSP A and B to the same register value, at least one of those is
->>> wrong.
+On 28/05/2026 00:13, David Heidelberg wrote:
+> On 27/05/2026 23:56, Dmitry Torokhov wrote:
+>> Hi David,
 >>
->> I need to clarify. The CS35L36 supports by default only DSP_A, but when
->> extended to "take DSP_B", speaker just works.
+>> On Sat, May 23, 2026 at 11:45:35AM +0200, David Heidelberg via B4 Relay wrote:
+>>> From: David Heidelberg <david@ixit.cz>
+>>>
+>>> We know the driver is reporting s3706b, introduce the compatible so we
+>>> can more easily introduce quirks for weird touchscreen replacements in
+>>> followup series.
+>>>
+>>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>> ---
+>>>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/ 
+>>> arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>> index 6b7378cf4d493..148164d456a5a 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>> @@ -475,17 +475,17 @@ bq27441_fg: bq27441-battery@55 {
+>>>       };
+>>>   };
+>>>   &i2c12 {
+>>>       status = "okay";
+>>>       clock-frequency = <400000>;
+>>>       synaptics-rmi4-i2c@20 {
+>>> -        compatible = "syna,rmi4-i2c";
+>>> +        compatible = "syna,rmi4-s3706b", "syna,rmi4-i2c";
 >>
->> This was done previously.
->>
->> Since there isn't any different configuration on the codec side when
->> added DSP_B into same codepath as DSP_A, I would assume QCOM ASoC send
->> DSP_A, just marking it as DSP_B ?
+>> So I believe we established that this device (s3706b) does not in fact
+>> implement rmi4 protocol properly. Why do we have "syna,rmi4-i2c" as a
+>> fallback? Shouldn't it be just "syna,rmi4-s3706b"?
 > 
+> The vendor supplies s3706b which does implement the RMI4 properly.
 > 
-> 		qcom,tdm-sync-mode = <0>;
-> 		qcom,tdm-sync-src = <1>;
-> sets the short sync with 1 clk delay making it DSP_A.
+> The 3rd party replacement impersonating original parts may not implement it 
+> properly, but I don't address this issue in this initial submission.
 > 
-> for DSP_B you would need, no delay.
+> With this compatible we know which original part is used by the vendor and 
+> installed in the phones, so later we can deduct specific sequences for the 
+> replacement aftermarket parts to keep phone touchscreen working same as they do 
+> on Android without affecting other devices.
 
-Sure, does that mean the sdm845.c is currently correctly setting 
-SND_SOC_DAIFMT_DSP_B there? or there is some missing part of logic deciding it?
+Hello Dmitry.
 
-Because the reason audio works when I convince driver either:
+May I ask what is currently preventing this series from moving forward?
 
-a) sdm845 ASoC it uses BSP_A instead of B ... or
-b) cs35l36 it uses BSP_B instead of A
+The first version was posted in 2023 [1]. I picked it up again in 2025 [2] and 
+am now on the 9th iteration (this patchset). At this point, the series has been 
+under discussion for well over a year, with relatively little feedback and 
+increasingly long gaps between review rounds.
 
-implies to me, that:
-  1. both devices are setting the HW to either BSP_A or BSP_B mode (just don't 
-know which one)
-  2. but the driver flag for ASoC or codec we setting on the driver side is wrong
+The current approach is based on the guidance I have received so far, including 
+suggestions from the device-tree maintainers. When concerns were raised, I tried 
+to address them and rework the series accordingly.
 
-If one side really used BSP_A and other BSP_B, the audio should be at best 
-heavily distorted, right?
+What I am struggling with is understanding what specific issue still needs to be 
+resolved before these patches can be accepted. If there are remaining 
+requirements, objections to the approach, or technical concerns that I have not 
+addressed, I would appreciate having them stated explicitly so I can work on them.
 
-Please correct me, if I misunderstood or if there is nice doc I could read about it.
+I also split out the straightforward, self-contained changes in the hope that at 
+least those could progress independently while I continued working on any 
+follow-up requirements. However, even those patches do not appear to be moving 
+forward.
 
-Thanks
+Could you please clarify what outcome you would like to see from this series, 
+and what concrete changes would be required to get it accepted?
+
+Thank you,
 David
 
-P.S. I did quick search what close-to-mainline repo has for Pixel 3a to reach 
-working audio and it's slightly different, see [1]. There isn't any change done 
-to the cs35l36 driver in the sdm670 tree.
 
 [1] 
-https://gitlab.com/sdm670-mainline/linux/-/commit/9eba5aa993f5fb7b4bf5cc936ec22852987d3f9f
+https://lore.kernel.org/all/20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org/
+[2] https://lore.kernel.org/all/20250402-synaptics-rmi4-v4-0-1bb95959e564@ixit.cz/
 
 > 
-> --srini
->>
->> There isn't any other consumer to check against and I would assume
->> incorrectly configured TDM slot would lead - at least - to disorted output.
->>
->> The reference (which now works) is here [1].
->>
->> David
->>
->> [1] https://codeberg.org/sdm845/linux/commits/branch/b4/pixel3-audio
+> David
 > 
+>>
+>> Thanks.
+>>
+> 
+
+-- 
+David Heidelberg
+
