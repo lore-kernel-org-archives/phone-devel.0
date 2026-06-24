@@ -1,157 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7AB33D506;
-	Wed, 24 Jun 2026 19:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19771A3165;
+	Wed, 24 Jun 2026 20:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782330344; cv=none; b=vF2cKYbvGJ59gFuQx3PxQ60s+0L+yVAiMiyHjS7/YnZLLPlyNtXpPDF5nLSX1mzrIJBT5DyFkDaGQAqU3xoMxWvqyvAE72vmzWls5++cV//WqgItFZrz5dP6oShHxf91nCvsvxtZXnhxHEbFVmsCijvdztLctEbbm3jPrQ9inFA=
+	t=1782331504; cv=none; b=m9PR1I50/xVG/ZhliWU4OA5IF+Ii9vkLBTQ8eUTv4QSIBNLh1Rsc06atPAWaoMbUgL/RX+iRPhCkEDnri9VPEfqQPpwTcZbdLMffU/K9raEDn6EdkVfGaqg/EhebRxzfb6SWCfz9Tg+G6lqpn3UhB9HF+33tQuApBql7kb2k+Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782330344; c=relaxed/simple;
-	bh=BzyOlsszxJEeIY9pYAhULIu3fNM+/17IvpEOrDVmRlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cpd2VO68KxOM8KMS1nsVhV/rsyKpOQ3LaAmB3F2/3IOEbdDdX4pOLPdmT2J4XG3NI19AWmtDc78gE/I2HSegr2QIblpojM/Swg/bNr0D68h9XfHozG/oWN3PPBMsKy+XpcYdhttKuaTQRZrQhtC3hPo6ZDo3I+Ngn+YHqaVnk6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMVDEan6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782331504; c=relaxed/simple;
+	bh=TuvVpa9Vvtxo9YlIJLNDD9deFOPwHojQLHTOLxD7xyk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hpjIwE+mOLa6lgh9PsdplZlngFebtPz8EUBxfEFNAw8Hg2UA/hnSIE4zcaeawGM4EU7GcojMgVrki0RRRokBTspKkBB4M58L6SJvsXmed19t0fyP5k8phwy/b6hSMzODRTwHzzIrRYW6zqv4Pzp0zt8tycG7wWX4sKkc0x0dctA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Hm+Wsyis; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMVDEan6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7721F000E9;
-	Wed, 24 Jun 2026 19:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782330342;
-	bh=+YMatfDrWesAa/1uFkH2Ifq/id2ddc7RPiI/6Itz998=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FMVDEan6qU6OtyY5LEV2DZpmdbMtUaUlp4bGR+hj/6BaKiZBthX3JDxLTeYBcn6wL
-	 pis5nHOFr0KRSIdPqA37dHiLVA0QObfTLf9TCHkWsBGStCFWSq+wl2SaMhz6Bnc5TI
-	 vTOHNf52lphs9i3auX4oelZQyhTrD5ehQT1YWyVSiZlqKTXXDsNgUwgevCUBWRJnal
-	 M3CHeoOQwbijcGkXyqtRozyAKuAbRRiU0GCWpl+7Vu+m3vhSFvKnU2SyVcwRAYVc8Z
-	 kGirYKHROlNAVvC53Oh2GPlEFkL5QwZ0Tmv4vcMhZe0BdniAEKnSuN7MiCmh9diO1N
-	 hvlr/NPwAyzYA==
-Date: Wed, 24 Jun 2026 14:45:41 -0500
-From: Rob Herring <robh@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, patches@opensource.cirrus.com,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2] ASoC: dt-bindings: Convert cirrus,cs35l36 to DT schema
-Message-ID: <20260624194541.GA672824-robh@kernel.org>
-References: <20260624-dt-cirrus-cs35l36-v2-1-74eccdbd8fe4@ixit.cz>
- <CAL_JsqLE8Z-LbeF9r=sqRqAoGUcs7R-T4cN+hF3QzjGydHctgQ@mail.gmail.com>
- <3873b111-36d5-442e-996c-31d05d23c8e8@ixit.cz>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Hm+Wsyis"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 715135341288;
+	Wed, 24 Jun 2026 22:04:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1782331497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MaFMm0sZWQl4heqM115ym8R7hWYHovM7AXLI97zFbG8=;
+	b=Hm+WsyisvV2n/XNcf0Pd3nQhBNFaD9hYniiyH6s8764f0b80ZfbSCIbo5/f3atGPj5zECn
+	CQ1hMHVBLwfBAOedFzSiQ3E/B/ABRT8o217yO7pxQFeJ7WZaAyPy361YMhxHDuEk/6eQW7
+	aPB4jmSZsM2gPe8yFolob9bV6m/nW40=
+Message-ID: <f5675ed7-fe1a-4b80-862b-c046d72304e7@ixit.cz>
+Date: Wed, 24 Jun 2026 22:04:57 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ASoC: dt-bindings: Convert cirrus,cs35l36 to DT schema
+To: Rob Herring <robh@kernel.org>
+Cc: David Rhodes <david.rhodes@cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, patches@opensource.cirrus.com,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260624-dt-cirrus-cs35l36-v2-1-74eccdbd8fe4@ixit.cz>
+ <CAL_JsqLE8Z-LbeF9r=sqRqAoGUcs7R-T4cN+hF3QzjGydHctgQ@mail.gmail.com>
+ <3873b111-36d5-442e-996c-31d05d23c8e8@ixit.cz>
+ <20260624194541.GA672824-robh@kernel.org>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260624194541.GA672824-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3873b111-36d5-442e-996c-31d05d23c8e8@ixit.cz>
 
-On Wed, Jun 24, 2026 at 08:39:28PM +0200, David Heidelberg wrote:
-> On 24/06/2026 20:17, Rob Herring wrote:
-> > On Wed, Jun 24, 2026 at 11:02 AM David Heidelberg via B4 Relay
-> > <devnull+david.ixit.cz@kernel.org> wrote:
-> > > 
-> > > From: David Heidelberg <david@ixit.cz>
-> > > 
-> > > Convert CS35L36 Speaker Amplifier to yaml.
-> > > 
-> > > Changes:
-> > >   - maintainers email to the generic Cirrus email
-> > >   - Both the codec and downstream worked just fine without
-> > >     VP-supply provided. Align with datasheet for similar models.
-> > >   - add dai-common.yaml to cover for '#sound-dai-cells',
-> > >     'sound-name-prefix'
-> > > 
-> > > Reviewed-by: David Rhodes <David.Rhodes@cirrus.com>
-> > 
-> > If you are going to take stuff I haven't fixed:
-> > 
-> > Assisted-by: OpenAI:gpt-4
-> > 
-> > (I don't remember the exact flavor I used)
-> > 
-> > > Co-developed-by: Rob Herring (Arm) <robh@kernel.org>
-> > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > > ---
-> > > Relevant for Pixel 3 / 3XL / 4.
-> > > ---
-> > > Changes in v2:
-> > > - Rename the commit. (Mark)
-> > > - Link to v1: https://lore.kernel.org/r/20260618-dt-cirrus-cs35l36-v1-1-1a43515666ad@ixit.cz
-> > > ---
-> > >   .../devicetree/bindings/sound/cirrus,cs35l36.yaml  | 224 +++++++++++++++++++++
-> > >   .../devicetree/bindings/sound/cs35l36.txt          | 168 ----------------
-> > >   2 files changed, 224 insertions(+), 168 deletions(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml
-> > > new file mode 100644
-> > > index 0000000000000..af0acaaefb68e
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml
-> > > @@ -0,0 +1,224 @@
-> > > +# SPDX-License-Identifier: GPL-2.0-only
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/cirrus,cs35l36.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Cirrus Logic CS35L36 Speaker Amplifier
-> > > +
-> > > +maintainers:
-> > > +  - patches@opensource.cirrus.com
-> > > +  - Bjorn Helgaas <bhelgaas@google.com>
-> > 
-> > Bjorn is not correct. Generally we want a person, not a company list.
+On 24/06/2026 21:45, Rob Herring wrote:
+> On Wed, Jun 24, 2026 at 08:39:28PM +0200, David Heidelberg wrote:
+>> On 24/06/2026 20:17, Rob Herring wrote:
+>>> On Wed, Jun 24, 2026 at 11:02 AM David Heidelberg via B4 Relay
+>>> <devnull+david.ixit.cz@kernel.org> wrote:
+>>>>
+>>>> From: David Heidelberg <david@ixit.cz>
+>>>>
+>>>> Convert CS35L36 Speaker Amplifier to yaml.
+>>>>
+>>>> Changes:
+>>>>    - maintainers email to the generic Cirrus email
+>>>>    - Both the codec and downstream worked just fine without
+>>>>      VP-supply provided. Align with datasheet for similar models.
+>>>>    - add dai-common.yaml to cover for '#sound-dai-cells',
+>>>>      'sound-name-prefix'
+>>>>
+>>>> Reviewed-by: David Rhodes <David.Rhodes@cirrus.com>
+>>>
+>>> If you are going to take stuff I haven't fixed:
+>>>
+>>> Assisted-by: OpenAI:gpt-4
+>>>
+>>> (I don't remember the exact flavor I used)
+>>>
+>>>> Co-developed-by: Rob Herring (Arm) <robh@kernel.org>
+>>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>>> ---
+>>>> Relevant for Pixel 3 / 3XL / 4.
+>>>> ---
+>>>> Changes in v2:
+>>>> - Rename the commit. (Mark)
+>>>> - Link to v1: https://lore.kernel.org/r/20260618-dt-cirrus-cs35l36-v1-1-1a43515666ad@ixit.cz
+>>>> ---
+>>>>    .../devicetree/bindings/sound/cirrus,cs35l36.yaml  | 224 +++++++++++++++++++++
+>>>>    .../devicetree/bindings/sound/cs35l36.txt          | 168 ----------------
+>>>>    2 files changed, 224 insertions(+), 168 deletions(-)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml b/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml
+>>>> new file mode 100644
+>>>> index 0000000000000..af0acaaefb68e
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/sound/cirrus,cs35l36.yaml
+>>>> @@ -0,0 +1,224 @@
+>>>> +# SPDX-License-Identifier: GPL-2.0-only
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/cirrus,cs35l36.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: Cirrus Logic CS35L36 Speaker Amplifier
+>>>> +
+>>>> +maintainers:
+>>>> +  - patches@opensource.cirrus.com
+>>>> +  - Bjorn Helgaas <bhelgaas@google.com>
+>>>
+>>> Bjorn is not correct. Generally we want a person, not a company list.
+>>
+>> I'm adding back James, can I keep the patches at 2nd place?
 > 
-> I'm adding back James, can I keep the patches at 2nd place?
-
-Yes.
-
-> > > +      cirrus,vpbr-thld:
-> > > +        description: Initial VPBR threshold voltage
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-atk-rate:
-> > > +        description: Attenuation attack step rate
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-atk-vol:
-> > > +        description: VP brownout prevention step size
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-max-attn:
-> > > +        description: Maximum attenuation during VP brownout prevention
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-wait:
-> > > +        description: Delay between brownout clearance and attenuation release
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-rel-rate:
-> > > +        description: Attenuation release step rate
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +
-> > > +      cirrus,vpbr-mute-en:
-> > > +        description: Mute audio if maximum attenuation reached
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > 
-> > Constraints on any of these?
+> Yes.
 > 
-> Code just applies whatever is thrown at it, maybe David knows more?
+>>>> +      cirrus,vpbr-thld:
+>>>> +        description: Initial VPBR threshold voltage
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-atk-rate:
+>>>> +        description: Attenuation attack step rate
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-atk-vol:
+>>>> +        description: VP brownout prevention step size
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-max-attn:
+>>>> +        description: Maximum attenuation during VP brownout prevention
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-wait:
+>>>> +        description: Delay between brownout clearance and attenuation release
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-rel-rate:
+>>>> +        description: Attenuation release step rate
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>> +
+>>>> +      cirrus,vpbr-mute-en:
+>>>> +        description: Mute audio if maximum attenuation reached
+>>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>>
+>>> Constraints on any of these?
+>>
+>> Code just applies whatever is thrown at it, maybe David knows more?
+>>
+>> #nodatasheet (but would be lovely to have one)
 > 
-> #nodatasheet (but would be lovely to have one)
+> Unless the driver just takes these values and shoves them straight into
+> a 32-bit register, the driver should give some clue about the size or
+> possible values.
 
-Unless the driver just takes these values and shoves them straight into 
-a 32-bit register, the driver should give some clue about the size or 
-possible values.
+Okay, that's me being too lazy. Fair enough, I'll fill the constraints :)
 
-Rob
+Thanks
+David
+
+> 
+> Rob
+
+-- 
+David Heidelberg
+
