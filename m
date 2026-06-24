@@ -1,193 +1,253 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [185.100.197.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9BE322B9F
-	for <phone-devel@vger.kernel.org>; Wed, 24 Jun 2026 08:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D473C8719;
+	Wed, 24 Jun 2026 14:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782288047; cv=none; b=qcS3wGcggiKc7ZmBK31gzSduy39/a566fGi7SV9m7xsqhbE1gmeVFKAh00v7USXWaveBgbPofm8NAQzfvC8kYkR5vHIjh5ICKwqVxSd0ottq0HIpjHWc69XdwzvBv3fZCqcX/Jo+eIaDJykQnbV0kjY2W/Eo9t4aq7eMa03TLRw=
+	t=1782311855; cv=none; b=AIh5YePsTnGrx3oUHMDncvCUiPzZot1RJ402HOcG5G37yM+7w0wlkI9ZkQT/lT3Mq3Azh0tIX3aItIgpq8GR64tT8/8H79rCY3p7bvi97qWeLCZ1ZHqxm5FKhbSrPgWZColRYYdvYUQNgOot7LzaNaZgHYSCahzbbtcN2V5sYLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782288047; c=relaxed/simple;
-	bh=N/YmEEM3JnJUsV+8++0ZovcY2W6+bqMcuqvJyy9zv1s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=mZcAIqlHSa6xzPKQ/+jvZaaQGpowvjrmnYXQpdOc6gLakM2R2mVwimglf+o2+On9ONT0Na/2QZy/PpTWbzfbpZ+Ool/tbMCXogNfxqZSGf48DieaZCG84mnTencCy4DlO09FL/gyMTlMqxHXOhoT+pa+ioeWUmOfjGek9kNI2BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=pD6F2IU8; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1782311855; c=relaxed/simple;
+	bh=X5+06UqZzkHrP6XrYqi7IbD4LXgp8YyzW7DWroQ38NU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EMpJfsoETnZi6wprqtqt/FooIWI52jlsgb5EQ2GqLoFwzywV007ABtrZCOSJvyNKCXDEaiOtPgD8y3Ug5FF7fZvunzpXFgPtbaUnvMjft6BLkQp2tS3FQ7cUaH0VawQ2OIGPh6PVBtD7IoDgQM2pXhlpmzkfXso+95Xp7eeEWJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=D4Ovcwk8; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="pD6F2IU8"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b64c8311so8687795e9.3
-        for <phone-devel@vger.kernel.org>; Wed, 24 Jun 2026 01:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1782288044; x=1782892844; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bTWWK32Ejjyq6jHOCCUN+iBQR69zwL/fyrY9B09gGws=;
-        b=pD6F2IU8XyjlwbKBMiPB1AuY0GTqUqf1IW1Lj+vHEyrQFu52+gQRj+C6RcKjRHeod7
-         PJGMMH2Y3LBIX+CaBzM4hZD5kCUBhCz/wFW8GY4ml+0q2Degapn/JSCO8I8SqfuhmLsv
-         TePN/+JouX4sk24eaUNErpw2yMR/zZ0AdGxpkVFU20KyrVwG5N4kkA3DPmWkcNuHn9GG
-         IdPPE3Id3FlE9aGZ7QnRubaLEgc85AQu2OrEaAi3f0sYiLMaW4l24PkGHNB0tDTNpyXg
-         a1x+3KArB2WkyM9U4XoKXpJBCHcsynFnkK/hBp3WEQYsirfFiA6ISobpLfke0QvGUMzq
-         AhlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782288044; x=1782892844;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bTWWK32Ejjyq6jHOCCUN+iBQR69zwL/fyrY9B09gGws=;
-        b=riAsUsk/TnUt/O06TevnOiYr2YB5AHmk924fpQZurswjUaOvSiNCwKvePoe5pM7dlf
-         HI6uzIP0qbawpjoQHrOVxAjd0JI+zoQNEIttZKmKL8+Kv7q2rXk/aM+vM/b3nFRhPCaa
-         RrTC9OzcFbXis7gQnSoSgHLNYf9nhsNd3euSqa5XXZSbRIeX1AuSk1EZxfGR5q1WKTl8
-         qRqJzpZ/jigs6t5JsMERDuZPkk0gpmcVkVLYQfBWr4WY7TPponnFd1PBuvARBDmTn/i5
-         DoB8CXMqk2F15lyr/gJXPgHE86Srl5xkxd91RKtIOpnJMjCmUaDchYYySX6acsmGSZxM
-         svvg==
-X-Forwarded-Encrypted: i=1; AFNElJ8ffgDATMBho0SVyh1lbA1Mgm+6UgbK410EaN2+RZrX+frntXDqTCyQAzhXft+YzKzifCJu7oEN3gSc7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzedfVMLSPLNU7r7M9nN447vhLVDtqpK8Y/MREfM3GkLYpWJlZ
-	SSj+DNriiP2t+mW4X9+wpw+LZFcp5x45+KwFNqASQDe29ZuUNJC0rS7U8XVsj7sfZiWVJQp/65g
-	Z5HLobjlyjQ==
-X-Gm-Gg: AfdE7cm1lqKX4xWUh1ZoUNgBH9wmZGEb2sucNS+t1jm6ye+bPZEobO5dAmPu6NzLpd8
-	lbcvLUuLEoIHXdcQKU4ccDviNfrNS+VuBvbQyceVX2ZsA6s37hkEjNCtGdYCrjakwrFzbhFsgGq
-	ku0GP0+GFNSlU5XBxkJJnxc+Ea5nuO1wfAEkoh6ZWrLw53xraFupwmAU4lr8hz7kMDO/QA1GSOr
-	ITqLHvRpK6X4bHp3ZV8phJd3YqNhVE+9pFtI8ZiX6iLilWtSYY8ppzEIP+JHFr7/Nag3MltUBu+
-	AXrwAcqaBYyZtGxTAOo498wkwMXVkz6t48lmkGlOhK5sMVQ+4BNDFyq8NiFAdK8S7uHqQr00mdf
-	q8CrAT5N3Mtt4tSY6wsjTVq2KAHyrJfxr6cROI/BhZ9/BzI6jiFjZ2UE46dbkGEWT84tEuKkbqD
-	1Ojqdf5bVJRQWYZXhADAIXgo9+x2l63QdwXLGan4H5s7wZPqP7ln5TJDE=
-X-Received: by 2002:a05:600c:4454:b0:490:e913:656a with SMTP id 5b1f17b1804b1-49260874c40mr30465665e9.27.1782288041332;
-        Wed, 24 Jun 2026 01:00:41 -0700 (PDT)
-Received: from localhost (ip-185-104-138-186.ptr.icomera.net. [185.104.138.186])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49249238bfbsm373948445e9.5.2026.06.24.01.00.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jun 2026 01:00:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="D4Ovcwk8"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 8C6D05341340;
+	Wed, 24 Jun 2026 16:37:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1782311845;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=m4ErC33RfBLiCY2kdeSnjPaFzr/CFyTNYdB6Jj+bpow=;
+	b=D4Ovcwk8Jyqkpx6KcpNfckOx/0BHHRfU/e0Lhao3aZczIkjICR90jBr8AG3hxbhM7Z2fy5
+	ML7H8XGFq1DDRKE0iz5Kyx4f945Sf2zfsyJ3BFjjqWwDSxvwqaNUr1nYACXh2NaK4y7g9D
+	2d9+Oz62YcaJE7M3hYprMcOlCHxBRrA=
+Message-ID: <52b7dd3a-3f6f-474c-8386-4fc2776b185b@ixit.cz>
+Date: Wed, 24 Jun 2026 16:37:25 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 10:00:39 +0200
-Message-Id: <DJH4DPXBAJ6V.1TJTFGBP413TP@fairphone.com>
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: kodiak: Sort pinctrl subnodes by
- pins
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Vladimir Zapolskiy"
- <vladimir.zapolskiy@linaro.org>, "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260612-kodiak-cam-mclk-v1-0-fd294ff003a2@fairphone.com>
- <f05ad4ae-140a-40a7-a6ef-9ac2ddb0a939@linaro.org>
- <DJ747VLQEHIN.Q3SS1FFC9I3L@fairphone.com>
- <ba0e9f93-fd2b-4895-b8a7-8e38eeff9bcb@oss.qualcomm.com>
- <DJFDYAS1AY8Z.3GD4A5UMWLAUC@fairphone.com>
- <99654e01-3a52-4a9e-b003-24230aa6a248@oss.qualcomm.com>
-In-Reply-To: <99654e01-3a52-4a9e-b003-24230aa6a248@oss.qualcomm.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-oneplus: Update
+ compatible to include model
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vincent Huang <vincent.huang@tw.synaptics.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ Krzysztof Kozlowski <krzk@kernel.org>
+References: <20260523-synaptics-rmi4-dt-v2-0-0645122babdc@ixit.cz>
+ <20260523-synaptics-rmi4-dt-v2-2-0645122babdc@ixit.cz>
+ <ahdoBl3qCTyvlYJf@google.com> <1d0e7e31-f808-4347-955a-7246dea208f5@ixit.cz>
+ <742c7a13-9465-40e8-8990-e679712e9784@ixit.cz> <ajtaUb4YmyZTDLmQ@google.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <ajtaUb4YmyZTDLmQ@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed Jun 24, 2026 at 9:59 AM CEST, Konrad Dybcio wrote:
-> On 6/22/26 9:05 AM, Luca Weiss wrote:
->> On Mon Jun 15, 2026 at 2:09 PM CEST, Konrad Dybcio wrote:
->>> On 6/12/26 3:46 PM, Luca Weiss wrote:
->>>> On Fri Jun 12, 2026 at 2:59 PM CEST, Vladimir Zapolskiy wrote:
->>>>> As documented in the "Devicetree Sources (DTS) Coding Style" document=
-,
->>>>> pinctrl subnodes should be sorted by the pins property. Do this once =
-for
->>>>> kodiak.dtsi so that future additions can be added at the right places=
-.
+On 24/06/2026 06:28, Dmitry Torokhov wrote:
+> Hi David,
+> 
+> On Sun, Jun 21, 2026 at 07:11:45PM +0200, David Heidelberg wrote:
+>> On 28/05/2026 00:13, David Heidelberg wrote:
+>>> On 27/05/2026 23:56, Dmitry Torokhov wrote:
+>>>> Hi David,
+>>>>
+>>>> On Sat, May 23, 2026 at 11:45:35AM +0200, David Heidelberg via B4 Relay wrote:
+>>>>> From: David Heidelberg <david@ixit.cz>
 >>>>>
->>>>> No functional change intended, verified with dtx_diff.
+>>>>> We know the driver is reporting s3706b, introduce the compatible so we
+>>>>> can more easily introduce quirks for weird touchscreen replacements in
+>>>>> followup series.
 >>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
 >>>>> ---
->>>>>   arch/arm64/boot/dts/qcom/kodiak.dtsi | 1382 +++++++++++++++++------=
------------
->>>>>   1 file changed, 691 insertions(+), 691 deletions(-)
+>>>>>    arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 2 +-
+>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
 >>>>>
->>>>> diff --git a/arch/arm64/boot/dts/qcom/kodiak.dtsi b/arch/arm64/boot/d=
-ts/qcom/kodiak.dtsi
->>>>> index fa540d8c2615..62daef726d32 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/kodiak.dtsi
->>>>> +++ b/arch/arm64/boot/dts/qcom/kodiak.dtsi
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>>>> b/arch/ arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>>>> index 6b7378cf4d493..148164d456a5a 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+>>>>> @@ -475,17 +475,17 @@ bq27441_fg: bq27441-battery@55 {
+>>>>>        };
+>>>>>    };
+>>>>>    &i2c12 {
+>>>>>        status = "okay";
+>>>>>        clock-frequency = <400000>;
+>>>>>        synaptics-rmi4-i2c@20 {
+>>>>> -        compatible = "syna,rmi4-i2c";
+>>>>> +        compatible = "syna,rmi4-s3706b", "syna,rmi4-i2c";
 >>>>
->>>> <snip>
->>>>
->>>>> +			qup_uart12_cts: qup-uart12-cts-state {
->>>>> +				pins =3D "gpio48";
->>>>> +				function =3D "qup14";
->>>>> +			};
->>>>> +
->>>>> +			qup_uart12_rts: qup-uart12-rts-state {
->>>>> +				pins =3D "gpio49";
->>>>> +				function =3D "qup14";
->>>>> +			};
->>>>> +
->>>>> +			qup_uart12_tx: qup-uart12-tx-state {
->>>>> +				pins =3D "gpio50";
->>>>> +				function =3D "qup14";
->>>>> +			};
->>>>>
->>>>> I understand and support the intention to keep this change non-functi=
-onal,
->>>>> but this pad "gpio50" is for qup16 also, right?
->>>>
->>>> According to my QCM6490 data sheet, GPIO_50 has these functions:
->>>> * UART for qup14 (OK)
->>>> * SPI for qup14 (OK)
->>>> * SPI for qup16 (no pinctrl)
+>>>> So I believe we established that this device (s3706b) does not in fact
+>>>> implement rmi4 protocol properly. Why do we have "syna,rmi4-i2c" as a
+>>>> fallback? Shouldn't it be just "syna,rmi4-s3706b"?
 >>>
->>> "no pinctrl" meaning "not defined in the upstream dt as of today"?
->>=20
->> Correct.
->>=20
->>>>> Similarly pads "gpio54"/"gpio55" for qup14 function, "gpio62"/"gpio63=
-"
->>>>> for qup16 function, I find all of these are missing on the original l=
-ist.
->>>>
->>>> GPIO_54:
->>>> * UART qup15 (OK)
->>>> * SPI qup15 (OK)
->>>> * SPI qup14 (no pinctrl)
->>>>
->>>> GPIO_55:
->>>> * UART qup15 (OK)
->>>> * SPI qup15 (OK)
->>>> * SPI qup14 (no pinctrl)
->>>>
->>>> GPIO_62:
->>>> * UART qup17 (OK)
->>>> * SPI qup17 (OK)
->>>> * SPI qup16 (no pinctrl)
->>>>
->>>> GPIO_63:
->>>> * UART qup16 (?)
->>>> * SPI qup16 (lane 3) (?)
->>>> * SPI qup16 (lane 5) (?)
->>>>
->>>> But the GPIO_63 looks weird, is the data sheet wrong?! Where would
->>>> UART_RX of QUP1 SE7 go? Maybe it should be UART qup17 and SPI qup17 an=
-d
->>>> then SPI qup16 ??
+>>> The vendor supplies s3706b which does implement the RMI4 properly.
 >>>
->>> GPIO63:
+>>> The 3rd party replacement impersonating original parts may not implement
+>>> it properly, but I don't address this issue in this initial submission.
 >>>
->>> QUP1_SE6 SPI_CS2
->>> QUP1_SE7 UART_RX/SPI_CS0
->>=20
->> That matches pinctrl driver and kodiak.dtsi at least. Still, the data
->> sheet is just wrong there. If you have any contact to relevant people
->> there, please let them know!
->
-> Please share the 80-xxxx-xx number and I'll see what I can do
+>>> With this compatible we know which original part is used by the vendor
+>>> and installed in the phones, so later we can deduct specific sequences
+>>> for the replacement aftermarket parts to keep phone touchscreen working
+>>> same as they do on Android without affecting other devices.
+>>
+>> Hello Dmitry.
+>>
+>> May I ask what is currently preventing this series from moving forward?
+>>
+>> The first version was posted in 2023 [1]. I picked it up again in 2025 [2]
+>> and am now on the 9th iteration (this patchset). At this point, the series
+>> has been under discussion for well over a year, with relatively little
+>> feedback and increasingly long gaps between review rounds.
+>>
+>> The current approach is based on the guidance I have received so far,
+>> including suggestions from the device-tree maintainers. When concerns were
+>> raised, I tried to address them and rework the series accordingly.
+>>
+>> What I am struggling with is understanding what specific issue still needs
+>> to be resolved before these patches can be accepted. If there are remaining
+>> requirements, objections to the approach, or technical concerns that I have
+>> not addressed, I would appreciate having them stated explicitly so I can
+>> work on them.
+>>
+>> I also split out the straightforward, self-contained changes in the hope
+>> that at least those could progress independently while I continued working
+>> on any follow-up requirements. However, even those patches do not appear to
+>> be moving forward.
+>>
+>> Could you please clarify what outcome you would like to see from this
+>> series, and what concrete changes would be required to get it accepted?
+> 
+> I am still confused about how you want to differentiate between the full
+> RMI4 support vs the OnePlus flavor. The "syna,rmi4-s3706b", as you
+> mentioned, implements RMI4 protocol properly, so we do not need to
+> actually have it documented neither in binding nor in DTS.
 
-80-20659-1 Rev. AM
+--- part 1 ---
 
-Regards
-Luca
+This series addresses identification within device-tree. It's normal recommended 
+practice.
+
+If we know, the device ships specific, but **compliant** variant, we just put it 
+as compatible = "more-specific", "less-specific"; in this case 
+"syna,rmi4-s3706b", "syna,rmi4-i2c"
+
+This approach is used everywhere. This has nothing to do with after-market parts.
+
+--- part 2 (irrelevant for this series) ---
+
+> 
+> The issue you have with after-market parts that are not compliant and we
+> need to figure out how to deal with them. Inside the driver I
+
+As was suggested by device-tree folks, this is the first step, there isn't 
+better one available. If there is, please suggest one, and I'll apply it.
+
+> essentially need a"incomplete protocol" flag that we can use to
+> implement additional checks or skip known to be not implemented
+> functions/queries. In DT we could introduce something like
+> "oneplus,rmi4-i2c" that is decidedly not compatible with "syna,rmi4-i2c"
+> and neither one should be a fallback for the other.
+> 
+> This of course needs buy-in from DT maintainers.
+
+As you can see, this still holds Acked-by and Reviewed-by from the relevant 
+people - Krzysztof and Konrad.
+
+> 
+> Does this make sense?
+
+For the scope we're discussing it doesn't seems so.
+
+This discussion should be associated with the last revision of the full series I 
+sent 3 months ago. We're in very unflattering state, where:
+
+   2018 - these aftermarket touchscreen worked on Android well enough for people 
+to have working touch (let's say with slightly worse experience then the original).
+
+   2026 in the mainline, we cannot even more forward and report to user-space 
+there is aftermarket non-compliant piece of hardware installed.
+
+Actionable steps I suggest after this series lands:
+
+1. don't do any changes, but since we know what 3rd party touchscreen do 
+incorrectly deviating from the standard, REPORT it to the userspace, so USER 
+know, their device (phone/tablet) doesn't have original part.
+
+2. then figure out, IF we can reasonably well workaround it and HOW to do it
+
+These two steps present some progress which could be discussed and could lead us 
+somewhere, what do you think?
+
+David
+
+> 
+> Thanks.
+> 
