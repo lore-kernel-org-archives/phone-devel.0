@@ -1,33 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B1C3E3C68;
-	Fri, 26 Jun 2026 07:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308E73750D6;
+	Fri, 26 Jun 2026 14:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782459742; cv=none; b=oK4F4zcRe2Y91UkR5I8i07YQ+KWKQvCGP2sUt3Q6B6h+6UCNZLn9SNj6Rj8dG1MqLAzDP6s+FMXp/PajUhPEXBZWb3TDiAk4wk9Cr9HCfcXa4W+m1v88Q3jVIreq/TnhU412QyC247jRZDVzANKEECgBBoP5DHbPWYVLMmajISA=
+	t=1782483093; cv=none; b=fqRvQbzD1kf/D0J16EsE6VzYwCtboPw9WmyccSjf7L3iTUzdYo6Pme/vxLrEpwwj9RqvQWjqFsItQelTHgadrUUplJbwE84M+ByTii+boYCqpKn52vYaZelTTpProJZpgDDkgS7JiN3BhU9xo4FQ3U92IGjYs2KsPFq1oekBzHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782459742; c=relaxed/simple;
-	bh=/9bJzCLXu+XRWRNZvRgGOcrm76MKLAlFsEhJkA0NLp0=;
+	s=arc-20240116; t=1782483093; c=relaxed/simple;
+	bh=6C5hArhWwYzdaJr2MzciUWsQUrFgJpjcA2bCkwkiVPE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kyhcQ5DZZ2AIg2CT0R4SucdiIPyF7FvQws+U/DpOiHN83UsJNHn24lMKAjD6smBUqqXuxATZoU/c1i1fhmFITT/dlOkGYV9wRKlRsANejMYwYLt6UcpbiG53MOGMoPCVP+4dE1qBkyEWBnVK1YeCp7FvHW3VgnTdjRRiHIBA/AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoQCFvDp; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Fdk9zQ/wIy55ub+FBiCxshHVQV/mw4IvkickTFZQkWqhBcTx3WizTvUbM+LwWbDTkIpRJqgp7LLg2NvhjvkZsONRgNWbXHIUIH5t5leIWZwRJx04UohNLUlfw74Irs6C5HtYAp6vG1R/HhUcwUZY6sMzu+GiDOarkfP3+4YGmsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Uf4675RJ; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoQCFvDp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A29E1F000E9;
-	Fri, 26 Jun 2026 07:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782459741;
-	bh=etYENOeSZId+ruwOU1toe2ZhPkwps93/WrI7AqM4gz8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OoQCFvDpvxlup1UMU6B1GZC/J+bKGycENqNE3EFhgcwOCVlerqtANzW4Oa+p6tRKN
-	 QAtDbcwFDFnbbZuo2u63qW0RaCEOg9l3eSbJVKRzfAg1XHGLIrDKru27/766ikyNfO
-	 Zv8J3tg8EtvGLRQU48YfuUy6pv+Htu7ucmkrhCkoDRuCWJo/CP0lj53As4YUlbIbsr
-	 9A89rtFXVSm+TlJRLvM7pZg+OOFR3tnL3gIhNMOQFWHAxfGoqFo9vg4wtcSc0WURtT
-	 4IoCR9TJeoOBzGTpU56kw3ZazeTKGhzugONO6XIpBT6NOSxyFNWLxNxKY+cUZQlJNH
-	 hvy6RnqopDwFQ==
-Message-ID: <001abe91-5b9a-4d8b-a52a-fff1b1558ba4@kernel.org>
-Date: Fri, 26 Jun 2026 09:42:13 +0200
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Uf4675RJ"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 639055340139;
+	Fri, 26 Jun 2026 16:11:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1782483088;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HTCmCgqDJk51YW5CVQgQ9h2UDSSC2DWCPmLn+V/EXWc=;
+	b=Uf4675RJd8MkDZp4kSGXR6RHR5XZbmq07Yr6ws9alDkZSLKoCHZtQyx4ieqBrUl5ayh45n
+	S6svrVSGyPGeRPL3bGmluLICAJ6VKLfg2YYu2QXVbcw6IkELJfT0pslC7U8sn00jeOlrLT
+	iXRV+6QCcfszUPn9UqJ1Hf6E16zF8vY=
+Message-ID: <71691c8e-f05e-4f3a-9507-9a590fd5e2c5@ixit.cz>
+Date: Fri, 26 Jun 2026 16:11:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -37,188 +43,83 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-oneplus: Update
  compatible to include model
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
  Vincent Huang <vincent.huang@tw.synaptics.com>,
- Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, linux-input@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260523-synaptics-rmi4-dt-v2-0-0645122babdc@ixit.cz>
- <20260523-synaptics-rmi4-dt-v2-2-0645122babdc@ixit.cz>
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ Rob Herring <robh@kernel.org>
+References: <20260523-synaptics-rmi4-dt-v2-2-0645122babdc@ixit.cz>
  <ahdoBl3qCTyvlYJf@google.com> <1d0e7e31-f808-4347-955a-7246dea208f5@ixit.cz>
  <742c7a13-9465-40e8-8990-e679712e9784@ixit.cz> <ajtaUb4YmyZTDLmQ@google.com>
  <52b7dd3a-3f6f-474c-8386-4fc2776b185b@ixit.cz> <ajxakXFuKAkhdZLN@google.com>
  <f81e4d83-90d9-47c8-aee9-319df3f8b0fb@kernel.org>
- <aj1OhZQjO5nNYlAo@google.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <aj1OhZQjO5nNYlAo@google.com> <32affded-bae2-46c4-a702-2054fbfe46a8@ixit.cz>
+ <aj4QUY5p7gqLplVT@google.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <aj1OhZQjO5nNYlAo@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <aj4QUY5p7gqLplVT@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 25/06/2026 18:57, Dmitry Torokhov wrote:
-> Hi Krzysztof,
+[...]
+
 > 
-> On Thu, Jun 25, 2026 at 10:23:54AM +0200, Krzysztof Kozlowski wrote:
->> On 25/06/2026 06:53, Dmitry Torokhov wrote:
->>> On Wed, Jun 24, 2026 at 04:37:25PM +0200, David Heidelberg wrote:
->>>> On 24/06/2026 06:28, Dmitry Torokhov wrote:
->>>>> Hi David,
->>>>>
->>>>> On Sun, Jun 21, 2026 at 07:11:45PM +0200, David Heidelberg wrote:
->>>>>> On 28/05/2026 00:13, David Heidelberg wrote:
->>>>>>> On 27/05/2026 23:56, Dmitry Torokhov wrote:
->>>>>>>> Hi David,
->>>>>>>>
->>>>>>>> On Sat, May 23, 2026 at 11:45:35AM +0200, David Heidelberg via B4 Relay wrote:
->>>>>>>>> From: David Heidelberg <david@ixit.cz>
->>>>>>>>>
->>>>>>>>> We know the driver is reporting s3706b, introduce the compatible so we
->>>>>>>>> can more easily introduce quirks for weird touchscreen replacements in
->>>>>>>>> followup series.
->>>>>>>>>
->>>>>>>>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>>>>>>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>>>>>>> ---
->>>>>>>>>    arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 2 +-
->>>>>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>>>
->>>>>>>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>>>>>>> b/arch/ arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>>>>>>> index 6b7378cf4d493..148164d456a5a 100644
->>>>>>>>> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>>>>>>> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->>>>>>>>> @@ -475,17 +475,17 @@ bq27441_fg: bq27441-battery@55 {
->>>>>>>>>        };
->>>>>>>>>    };
->>>>>>>>>    &i2c12 {
->>>>>>>>>        status = "okay";
->>>>>>>>>        clock-frequency = <400000>;
->>>>>>>>>        synaptics-rmi4-i2c@20 {
->>>>>>>>> -        compatible = "syna,rmi4-i2c";
->>>>>>>>> +        compatible = "syna,rmi4-s3706b", "syna,rmi4-i2c";
->>>>>>>>
->>>>>>>> So I believe we established that this device (s3706b) does not in fact
->>>>>>>> implement rmi4 protocol properly. Why do we have "syna,rmi4-i2c" as a
->>>>>>>> fallback? Shouldn't it be just "syna,rmi4-s3706b"?
->>>>>>>
->>>>>>> The vendor supplies s3706b which does implement the RMI4 properly.
->>>>>>>
->>>>>>> The 3rd party replacement impersonating original parts may not implement
->>>>>>> it properly, but I don't address this issue in this initial submission.
->>>>>>>
->>>>>>> With this compatible we know which original part is used by the vendor
->>>>>>> and installed in the phones, so later we can deduct specific sequences
->>>>>>> for the replacement aftermarket parts to keep phone touchscreen working
->>>>>>> same as they do on Android without affecting other devices.
->>>>>>
->>>>>> Hello Dmitry.
->>>>>>
->>>>>> May I ask what is currently preventing this series from moving forward?
->>>>>>
->>>>>> The first version was posted in 2023 [1]. I picked it up again in 2025 [2]
->>>>>> and am now on the 9th iteration (this patchset). At this point, the series
->>>>>> has been under discussion for well over a year, with relatively little
->>>>>> feedback and increasingly long gaps between review rounds.
->>>>>>
->>>>>> The current approach is based on the guidance I have received so far,
->>>>>> including suggestions from the device-tree maintainers. When concerns were
->>>>>> raised, I tried to address them and rework the series accordingly.
->>>>>>
->>>>>> What I am struggling with is understanding what specific issue still needs
->>>>>> to be resolved before these patches can be accepted. If there are remaining
->>>>>> requirements, objections to the approach, or technical concerns that I have
->>>>>> not addressed, I would appreciate having them stated explicitly so I can
->>>>>> work on them.
->>>>>>
->>>>>> I also split out the straightforward, self-contained changes in the hope
->>>>>> that at least those could progress independently while I continued working
->>>>>> on any follow-up requirements. However, even those patches do not appear to
->>>>>> be moving forward.
->>>>>>
->>>>>> Could you please clarify what outcome you would like to see from this
->>>>>> series, and what concrete changes would be required to get it accepted?
->>>>>
->>>>> I am still confused about how you want to differentiate between the full
->>>>> RMI4 support vs the OnePlus flavor. The "syna,rmi4-s3706b", as you
->>>>> mentioned, implements RMI4 protocol properly, so we do not need to
->>>>> actually have it documented neither in binding nor in DTS.
->>>>
->>>> --- part 1 ---
->>>>
->>>> This series addresses identification within device-tree. It's normal
->>>> recommended practice.
->>>>
->>>> If we know, the device ships specific, but **compliant** variant, we just
->>>> put it as compatible = "more-specific", "less-specific"; in this case
->>>> "syna,rmi4-s3706b", "syna,rmi4-i2c"
->>>>
->>>> This approach is used everywhere. This has nothing to do with after-market parts.
->>>
->>> We do this in many cases, sometimes when a part has different timings or
->>> maybe additional functionality compared to the base model.
->>
->> Generic expectation is to have always dedicated front compatible for
->> every device. rmi4-i2c is not really specific enough, more like a
->> family, thus a specific device compatible is essential by the DT rules.
+> OK, I applied the binding change, the dts change should go through some
+> other tree.
 > 
-> Essential in what way? What will break if such compatible is not there?
+> Thanks.
+> 
 
-Essential by the rules we defined for DT and documented in writing-bindings.
+Thank you, I think Bjorn will be picking the dts change :)
 
-> We have lived without it for many years and will continue live happily
-> without it for years to come.
-
-
-Does not matter if compatible is used or not. The rules are dictating that.
-
-Best regards,
-Krzysztof
+David
