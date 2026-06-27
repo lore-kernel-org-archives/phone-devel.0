@@ -1,125 +1,157 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308E73750D6;
-	Fri, 26 Jun 2026 14:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4223394B;
+	Sat, 27 Jun 2026 12:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782483093; cv=none; b=fqRvQbzD1kf/D0J16EsE6VzYwCtboPw9WmyccSjf7L3iTUzdYo6Pme/vxLrEpwwj9RqvQWjqFsItQelTHgadrUUplJbwE84M+ByTii+boYCqpKn52vYaZelTTpProJZpgDDkgS7JiN3BhU9xo4FQ3U92IGjYs2KsPFq1oekBzHk=
+	t=1782562728; cv=none; b=YsPYddJ6bQLmgnFNLR+Jx3B8VpZoOGuNNDJJ9ePG81p95XbbY+5s+w5cDyWcQCWW9C4EKS5XAn+UXXOI7vVFaPFEYu/joFejB4KNeHDm8R/b6U6A8xQZkxMMTXNvy7s8HA8fSMYd98PhL2w36nMMCEqUvDEU8ifw/lg9orJkjbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782483093; c=relaxed/simple;
-	bh=6C5hArhWwYzdaJr2MzciUWsQUrFgJpjcA2bCkwkiVPE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fdk9zQ/wIy55ub+FBiCxshHVQV/mw4IvkickTFZQkWqhBcTx3WizTvUbM+LwWbDTkIpRJqgp7LLg2NvhjvkZsONRgNWbXHIUIH5t5leIWZwRJx04UohNLUlfw74Irs6C5HtYAp6vG1R/HhUcwUZY6sMzu+GiDOarkfP3+4YGmsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Uf4675RJ; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1782562728; c=relaxed/simple;
+	bh=eivawmkvEg3QOzOWv3jCpgD4FqmH/lPvupBZyhy3T98=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W5BZf0vqt7eKHEWl79c7PsKTNc9dAkwrSwUDZlboF2MDKH7jjq9Y0vuhap5q1WIIv6P1RGxqaZMI4aArMaOh7ZwaO+WNoNOaZro8pe572/O5k9icl3gzSolhxi6/G4Fo5a08IdqydHXC9H/W6mLY1z7jLIYiVTTI4e2s0ogOtPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAhpU2Ey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Uf4675RJ"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 639055340139;
-	Fri, 26 Jun 2026 16:11:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1782483088;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HTCmCgqDJk51YW5CVQgQ9h2UDSSC2DWCPmLn+V/EXWc=;
-	b=Uf4675RJd8MkDZp4kSGXR6RHR5XZbmq07Yr6ws9alDkZSLKoCHZtQyx4ieqBrUl5ayh45n
-	S6svrVSGyPGeRPL3bGmluLICAJ6VKLfg2YYu2QXVbcw6IkELJfT0pslC7U8sn00jeOlrLT
-	iXRV+6QCcfszUPn9UqJ1Hf6E16zF8vY=
-Message-ID: <71691c8e-f05e-4f3a-9507-9a590fd5e2c5@ixit.cz>
-Date: Fri, 26 Jun 2026 16:11:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAhpU2Ey"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0375EC2BCB3;
+	Sat, 27 Jun 2026 12:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782562728;
+	bh=eivawmkvEg3QOzOWv3jCpgD4FqmH/lPvupBZyhy3T98=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=VAhpU2EyEL2zGGmgO60SjJbLfc4ka1tLn5BfvUAOnmI62ieB4UNM1bHJZPy+ElNbW
+	 YF77HbFRdHvoPQRs5BUG2QnkHLhD+RA5byMIEEfkmLp6JEwAJGXMc+jzQ94ti5nSdx
+	 qdx/daGmodFXM5vE9gu/R/3Nx4xSHkJgWtDHge4bUMkTvOlVC9XcqU2BVppPCoNJvg
+	 4YCqJ1YQ0wzVlboBgBVjNiPoCvRy+S6jMZINwmMbba4GtALxrWtOcr6KUQHu1uaoFa
+	 qv2lh9rexxBtAgS03GHDM67ebuqCSJUqUfkJjlHyao/58t5CUd7NgM7HXIhLkaPB9a
+	 rO0xnkubU28Tg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECA16C43458;
+	Sat, 27 Jun 2026 12:18:47 +0000 (UTC)
+From: Sam Day via B4 Relay <devnull+me.samcday.com@kernel.org>
+Date: Sat, 27 Jun 2026 22:18:45 +1000
+Subject: [PATCH RFC] drm/msm/mdss: keep mdp1-mem interconnect alive during
+ suspend on SDM845
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-oneplus: Update
- compatible to include model
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vincent Huang <vincent.huang@tw.synaptics.com>,
- Konrad Dybcio <konradybcio@kernel.org>, linux-input@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
- Rob Herring <robh@kernel.org>
-References: <20260523-synaptics-rmi4-dt-v2-2-0645122babdc@ixit.cz>
- <ahdoBl3qCTyvlYJf@google.com> <1d0e7e31-f808-4347-955a-7246dea208f5@ixit.cz>
- <742c7a13-9465-40e8-8990-e679712e9784@ixit.cz> <ajtaUb4YmyZTDLmQ@google.com>
- <52b7dd3a-3f6f-474c-8386-4fc2776b185b@ixit.cz> <ajxakXFuKAkhdZLN@google.com>
- <f81e4d83-90d9-47c8-aee9-319df3f8b0fb@kernel.org>
- <aj1OhZQjO5nNYlAo@google.com> <32affded-bae2-46c4-a702-2054fbfe46a8@ixit.cz>
- <aj4QUY5p7gqLplVT@google.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <aj4QUY5p7gqLplVT@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260627-rfc-sdm845-interconnect-collapse-workaround-v1-1-608a38de3715@samcday.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NPQ7CMAxA4atUnrHUlhIqVqQegBUxBMcBi+JUT
+ vmRqt6diPFb3lsgswlnOFQLGL8lS9KCZlMB3b3eGCUUQ1u3rnbtHi0S5vDsux2KzmyUVJlmpDS
+ OfsqMn2QPb+mlAa++odh3jvw2QilOxlG+/9sZTsMRLuv6A65c+oGCAAAA
+X-Change-ID: 20260627-rfc-sdm845-interconnect-collapse-workaround-ba1cf846ca3f
+To: Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Sam Day <me@samcday.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782562727; l=3411;
+ i=me@samcday.com; s=20240502; h=from:subject:message-id;
+ bh=BMiudGPsxROy8BnSvYjoc4O7qJ+BrrRqh/a8bYRWcC0=;
+ b=PsiWZuMwX4x8LrKzl/Bcpfpzq6k3TOSP+hKPP+Lr33iH54+T1jbS5Lx9oIUOWAal8GqgdqqRe
+ 4sGzPTD4htnBmYL4x356+P81ZtZfsL07HxZUmvi3bp68XLqVc1LCe6q
+X-Developer-Key: i=me@samcday.com; a=ed25519;
+ pk=bzyS0akxWMqr9+AXzgBRIp28KKpEOs+GjYMc2yf+aeU=
+X-Endpoint-Received: by B4 Relay for me@samcday.com/20240502 with
+ auth_id=595
+X-Original-From: Sam Day <me@samcday.com>
+Reply-To: me@samcday.com
 
-[...]
+From: Sam Day <me@samcday.com>
 
-> 
-> OK, I applied the binding change, the dts change should go through some
-> other tree.
-> 
-> Thanks.
-> 
+If the peak vote for mdp1-mem is allowed to drop to zero, it seems to
+cause the fabric to collapse that path entirely, which causes the device
+to bus stall and fatally reset.
 
-Thank you, I think Bjorn will be picking the dts change :)
+This issue was identified specifically on sdm845-oneplus-fajita, so this
+workaround is applied narrowly to SDM845's MDSS.
 
-David
+---
+This RFC patch is a spiritual successor to the "Addressing stability
+issues on SDM845 with the -next tree" series sent by David and Petr 6
+months ago.
+
+As Dmitry pointed out, the patch introduces leakages to the runtime PM
+refcounting. In practice, this means that MDSS never actually gets
+suspended, which is why the patch appeared to "fix" the issue.
+
+The deeper root cause is that, when msm_mdss_disable() runs and unvotes
+the mdp1-mem interconnect bandwidth, that seems to collapse the fabric
+entirely and causes the bus stall -> hang -> reboot behaviour.
+
+I've confirmed that a tiny non-zero peak bandwidth vote keeps the fabric
+alive and avoids the issue.
+
+Of course, this is still a fairly egregious hack, but it *does* allow
+blanking to suspend and resume DSI + DPU + MDSS properly without the bus
+stall.
+
+Here's what I've validated with instrumentation:
+
+ * DSI host disable, IRQ disable, PLL state save, host power-off, link
+   clock disable, regulator disable, SFPB disable, and PHY disable all
+   complete successfully before the fatal reset occurrs.
+ * DPU runtime suspend also completes. The bandwidth accounting was
+   checked and confirmed to reach runtime suspend with 0 refs, with no
+   pending frame state.
+ * The device survives through MDSS clock disabling and mdp0-mem
+   zero voting, it's really just the mdp1-mem zero vote that is isolated
+   as the cause of the stall + reset.
+
+So, I'm not really sure where to go from here. I'm sure that this
+workaround is not suitable for inclusion upstream as it still seems to
+be papering over an underlying issue... But it's unclear to me if this is
+some kind of hardware quirk on SDM845, a problem with the SDM845 DT
+wiring, a driver issue, or something else entirely.
+
+I'd appreciate any advice on how to further diagnose this issue and what
+direction to take from here.
+
+Kind regards,
+-Sam
+
+Link: https://lore.kernel.org/phone-devel/20251213-stability-discussion-v1-0-b25df8453526@ixit.cz/
+Signed-off-by: Sam Day <me@samcday.com>
+---
+ drivers/gpu/drm/msm/msm_mdss.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
+index 9087c4b290db..c635380b2ac3 100644
+--- a/drivers/gpu/drm/msm/msm_mdss.c
++++ b/drivers/gpu/drm/msm/msm_mdss.c
+@@ -284,8 +284,12 @@ static int msm_mdss_disable(struct msm_mdss *msm_mdss)
+ 
+ 	clk_bulk_disable_unprepare(msm_mdss->num_clocks, msm_mdss->clocks);
+ 
+-	for (i = 0; i < msm_mdss->num_mdp_paths; i++)
+-		icc_set_bw(msm_mdss->mdp_path[i], 0, 0);
++	for (i = 0; i < msm_mdss->num_mdp_paths; i++) {
++		if (of_device_is_compatible(msm_mdss->dev->of_node, "qcom,sdm845-mdss") && i == 1)
++			icc_set_bw(msm_mdss->mdp_path[i], 0, 1);
++		else
++			icc_set_bw(msm_mdss->mdp_path[i], 0, 0);
++	}
+ 
+ 	if (msm_mdss->reg_bus_path)
+ 		icc_set_bw(msm_mdss->reg_bus_path, 0, 0);
+
+---
+base-commit: 5a66900afbd6b2a063eebad35294038a654de2b0
+change-id: 20260627-rfc-sdm845-interconnect-collapse-workaround-ba1cf846ca3f
+
+Best regards,
+-- 
+Sam Day <me@samcday.com>
+
+
