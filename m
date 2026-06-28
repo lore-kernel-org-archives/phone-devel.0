@@ -1,157 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4223394B;
-	Sat, 27 Jun 2026 12:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A6435A381
+	for <phone-devel@vger.kernel.org>; Sun, 28 Jun 2026 21:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782562728; cv=none; b=YsPYddJ6bQLmgnFNLR+Jx3B8VpZoOGuNNDJJ9ePG81p95XbbY+5s+w5cDyWcQCWW9C4EKS5XAn+UXXOI7vVFaPFEYu/joFejB4KNeHDm8R/b6U6A8xQZkxMMTXNvy7s8HA8fSMYd98PhL2w36nMMCEqUvDEU8ifw/lg9orJkjbg=
+	t=1782681746; cv=none; b=R/ZNqQn1YjB3YqBLU7dmZx/9QCc8Dbd4fo4Y1wsHTH2jd0WPuoATtwQeqfnOwCU4/VYhk/MEBl79kn9X7AJ3Owxw649bfFUEb0hImCLxcxBC1QACT4B/ijDZWgqUbf39o5BEhScG8Ad5bj9RTuRloryqkBG+gVwZJ4rAbsWvLR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782562728; c=relaxed/simple;
-	bh=eivawmkvEg3QOzOWv3jCpgD4FqmH/lPvupBZyhy3T98=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W5BZf0vqt7eKHEWl79c7PsKTNc9dAkwrSwUDZlboF2MDKH7jjq9Y0vuhap5q1WIIv6P1RGxqaZMI4aArMaOh7ZwaO+WNoNOaZro8pe572/O5k9icl3gzSolhxi6/G4Fo5a08IdqydHXC9H/W6mLY1z7jLIYiVTTI4e2s0ogOtPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAhpU2Ey; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1782681746; c=relaxed/simple;
+	bh=a6hO2bkyGimNoQpAf6PDpshymlShF6v5MfnLUcqOnOI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M43ohzE0eKlevZrVY8o48uRPOdqxpPPbMdDJojKV/wNQNhoED+WzdXb64sRQUgiGHM29KfOdH8mwKkBKrEJmlTWx/h9N4o06mLffC3BLlHJgIxoPZhqD6K0TK2zCfvVtCQrV+GYE0dVWiFJJEvELgkRUmlZLw4a8oaoyqeLFf6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=JQmQT06+; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAhpU2Ey"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0375EC2BCB3;
-	Sat, 27 Jun 2026 12:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782562728;
-	bh=eivawmkvEg3QOzOWv3jCpgD4FqmH/lPvupBZyhy3T98=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=VAhpU2EyEL2zGGmgO60SjJbLfc4ka1tLn5BfvUAOnmI62ieB4UNM1bHJZPy+ElNbW
-	 YF77HbFRdHvoPQRs5BUG2QnkHLhD+RA5byMIEEfkmLp6JEwAJGXMc+jzQ94ti5nSdx
-	 qdx/daGmodFXM5vE9gu/R/3Nx4xSHkJgWtDHge4bUMkTvOlVC9XcqU2BVppPCoNJvg
-	 4YCqJ1YQ0wzVlboBgBVjNiPoCvRy+S6jMZINwmMbba4GtALxrWtOcr6KUQHu1uaoFa
-	 qv2lh9rexxBtAgS03GHDM67ebuqCSJUqUfkJjlHyao/58t5CUd7NgM7HXIhLkaPB9a
-	 rO0xnkubU28Tg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECA16C43458;
-	Sat, 27 Jun 2026 12:18:47 +0000 (UTC)
-From: Sam Day via B4 Relay <devnull+me.samcday.com@kernel.org>
-Date: Sat, 27 Jun 2026 22:18:45 +1000
-Subject: [PATCH RFC] drm/msm/mdss: keep mdp1-mem interconnect alive during
- suspend on SDM845
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="JQmQT06+"
+Message-ID: <0ca65209-0b03-4458-a11a-24e750d10bd3@postmarketos.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1782681742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hrMUHiWhbzKBhMjauXMj8VHHhIQ7W1Y3uTUD0rFqkSc=;
+	b=JQmQT06+7zubY1s4BmHzAcHjzkWiRWe+oiYbw0wxCZbKEyspf/p0yd8ww9Zs6CJX+BZvOR
+	qbXZPrRGSTjE6hlDe+YvnPTFiPYHPnfYyszs4ElQ2a0fYra3hMAZoDZ/ex3+b7KTZvzx8z
+	O6Qejnv6U47R7lXfI/oMgW+GBgVIp9K4CC2xLnWTOFi+FBmk6OAx5vg4ozCG3TN+GY6OH+
+	5R9i+5R1iqjb++V18/q4esb3O5FzXQLk29+pxqYAcsKVpzVeLOfU+nlbyVSCsOXnV2WWoF
+	UN5lpxQr4NrtaXkcdbI22v71q9zg1to7R9CsPIjJ05olOCs+e/b7pAFA5oob2g==
+Date: Sun, 28 Jun 2026 14:22:03 -0700
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH v3 2/4] dt-bindings: display: panel: Add documentation for
+ lg,sw49410-lh609qh1
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
+ Amir Dahan <system64fumo@tuta.io>
+References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
+ <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
+ <20260615-thick-trout-of-inquire-4e4251@quoll>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Paul Sajna <sajattack@postmarketos.org>
+Autocrypt: addr=sajattack@postmarketos.org; keydata=
+ xjMEaVNevhYJKwYBBAHaRw8BAQdAjvGGprvrSn/CmlA1Bpjc4S5zJBNSz/6q0AESlS2JbdjN
+ J1BhdWwgU2FqbmEgPHNhamF0dGFja0Bwb3N0bWFya2V0b3Mub3JnPsKZBBMWCgBBFiEEv1E8
+ AP7J5F2dJQd4hycszAKyDbsFAmmt6twCGwMFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwEC
+ HgcCF4AACgkQhycszAKyDbv25QD9EdvXYqdH6vGQvB5HrUnMOsd37AZkKKgK87kMOXL/5tcA
+ /jM3VLcq9mol+GstmBm1itIVAblXcm+H8g/wKoPXq/4LzjgEaVNevhIKKwYBBAGXVQEFAQEH
+ QEgCn8S+S7t/3QvXt4dK4572qd+iTl7h4JX1FEV5XUs6AwEIB8J+BBgWCgAmFiEEv1E8AP7J
+ 5F2dJQd4hycszAKyDbsFAmlTXr4CGwwFCQlmAYAACgkQhycszAKyDbueJAD+IMjk8ztbONXz
+ H7fieZc5LoR+6mHnddccacmQyPcGAvsA/0+5SkHEgIBuKwkzwrmKgDqcLhVuEs2f1H2GxKUX jqQI
+In-Reply-To: <20260615-thick-trout-of-inquire-4e4251@quoll>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260627-rfc-sdm845-interconnect-collapse-workaround-v1-1-608a38de3715@samcday.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NPQ7CMAxA4atUnrHUlhIqVqQegBUxBMcBi+JUT
- vmRqt6diPFb3lsgswlnOFQLGL8lS9KCZlMB3b3eGCUUQ1u3rnbtHi0S5vDsux2KzmyUVJlmpDS
- OfsqMn2QPb+mlAa++odh3jvw2QilOxlG+/9sZTsMRLuv6A65c+oGCAAAA
-X-Change-ID: 20260627-rfc-sdm845-interconnect-collapse-workaround-ba1cf846ca3f
-To: Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Sam Day <me@samcday.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782562727; l=3411;
- i=me@samcday.com; s=20240502; h=from:subject:message-id;
- bh=BMiudGPsxROy8BnSvYjoc4O7qJ+BrrRqh/a8bYRWcC0=;
- b=PsiWZuMwX4x8LrKzl/Bcpfpzq6k3TOSP+hKPP+Lr33iH54+T1jbS5Lx9oIUOWAal8GqgdqqRe
- 4sGzPTD4htnBmYL4x356+P81ZtZfsL07HxZUmvi3bp68XLqVc1LCe6q
-X-Developer-Key: i=me@samcday.com; a=ed25519;
- pk=bzyS0akxWMqr9+AXzgBRIp28KKpEOs+GjYMc2yf+aeU=
-X-Endpoint-Received: by B4 Relay for me@samcday.com/20240502 with
- auth_id=595
-X-Original-From: Sam Day <me@samcday.com>
-Reply-To: me@samcday.com
+X-Migadu-Flow: FLOW_OUT
 
-From: Sam Day <me@samcday.com>
+On 2026-06-14 10:38 p.m., Krzysztof Kozlowski wrote:
+>> +properties:
+>> +  compatible:
+>> +    items:
+>> +      - const: lg,sw49410
+>> +      - const: lg,sw49410-lh609qh1
+> 
+> This is very confusing - why two compatibles and why same devices - both
+> sw49410 - are compatible with each other?
 
-If the peak vote for mdp1-mem is allowed to drop to zero, it seems to
-cause the fabric to collapse that path entirely, which causes the device
-to bus stall and fatally reset.
+Hi Krzysztof, yes they are both compatible. One with DDIC and one with
+DDIC+Panel. David Heidelberg suggested I include the panel.
+Is this the correct style for both compatible?
 
-This issue was identified specifically on sdm845-oneplus-fajita, so this
-workaround is applied narrowly to SDM845's MDSS.
+properties:
+   compatible:
+     items:
+       - enum:
+           lg,sw49410-lh609qh1
+       - const: lg,sw49410
 
----
-This RFC patch is a spiritual successor to the "Addressing stability
-issues on SDM845 with the -next tree" series sent by David and Petr 6
-months ago.
-
-As Dmitry pointed out, the patch introduces leakages to the runtime PM
-refcounting. In practice, this means that MDSS never actually gets
-suspended, which is why the patch appeared to "fix" the issue.
-
-The deeper root cause is that, when msm_mdss_disable() runs and unvotes
-the mdp1-mem interconnect bandwidth, that seems to collapse the fabric
-entirely and causes the bus stall -> hang -> reboot behaviour.
-
-I've confirmed that a tiny non-zero peak bandwidth vote keeps the fabric
-alive and avoids the issue.
-
-Of course, this is still a fairly egregious hack, but it *does* allow
-blanking to suspend and resume DSI + DPU + MDSS properly without the bus
-stall.
-
-Here's what I've validated with instrumentation:
-
- * DSI host disable, IRQ disable, PLL state save, host power-off, link
-   clock disable, regulator disable, SFPB disable, and PHY disable all
-   complete successfully before the fatal reset occurrs.
- * DPU runtime suspend also completes. The bandwidth accounting was
-   checked and confirmed to reach runtime suspend with 0 refs, with no
-   pending frame state.
- * The device survives through MDSS clock disabling and mdp0-mem
-   zero voting, it's really just the mdp1-mem zero vote that is isolated
-   as the cause of the stall + reset.
-
-So, I'm not really sure where to go from here. I'm sure that this
-workaround is not suitable for inclusion upstream as it still seems to
-be papering over an underlying issue... But it's unclear to me if this is
-some kind of hardware quirk on SDM845, a problem with the SDM845 DT
-wiring, a driver issue, or something else entirely.
-
-I'd appreciate any advice on how to further diagnose this issue and what
-direction to take from here.
-
-Kind regards,
--Sam
-
-Link: https://lore.kernel.org/phone-devel/20251213-stability-discussion-v1-0-b25df8453526@ixit.cz/
-Signed-off-by: Sam Day <me@samcday.com>
----
- drivers/gpu/drm/msm/msm_mdss.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-index 9087c4b290db..c635380b2ac3 100644
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -284,8 +284,12 @@ static int msm_mdss_disable(struct msm_mdss *msm_mdss)
- 
- 	clk_bulk_disable_unprepare(msm_mdss->num_clocks, msm_mdss->clocks);
- 
--	for (i = 0; i < msm_mdss->num_mdp_paths; i++)
--		icc_set_bw(msm_mdss->mdp_path[i], 0, 0);
-+	for (i = 0; i < msm_mdss->num_mdp_paths; i++) {
-+		if (of_device_is_compatible(msm_mdss->dev->of_node, "qcom,sdm845-mdss") && i == 1)
-+			icc_set_bw(msm_mdss->mdp_path[i], 0, 1);
-+		else
-+			icc_set_bw(msm_mdss->mdp_path[i], 0, 0);
-+	}
- 
- 	if (msm_mdss->reg_bus_path)
- 		icc_set_bw(msm_mdss->reg_bus_path, 0, 0);
-
----
-base-commit: 5a66900afbd6b2a063eebad35294038a654de2b0
-change-id: 20260627-rfc-sdm845-interconnect-collapse-workaround-ba1cf846ca3f
-
-Best regards,
 -- 
-Sam Day <me@samcday.com>
-
-
+Hal: They're going for the kernel!
+Margo: Colonel Who?
