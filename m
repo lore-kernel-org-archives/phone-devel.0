@@ -1,39 +1,58 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7482ED872;
-	Mon, 29 Jun 2026 17:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9033803F2;
+	Mon, 29 Jun 2026 19:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.209.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782755713; cv=none; b=NHdKXCCCQ0q9K73YuQdDA7R3AO3/1DoLkcx7VSvenLim8GsVmPEyd21tiaDRzjbG9OWcLy7oKRP/pN2msy5w79c+6/lb4BmxpgSGwPsjxVerJefDsxqvdbG4xMmruEjKf6bduPJRo+AiQMzue8G+kGynMuTC4xP/vl/cncagHyU=
+	t=1782762109; cv=none; b=L/ZPPiR0D40Z4vTKWec1N5hq/3jgf3FRiHjjFn50+X9B0QtdwfIVR/zU7x/s6KdR4TYX78+gVpk0oGBo1IIvLoTD9WIoUSPUwy2PMs7dxThBACKKSVjN3tjP+JzeKH1ubPkhhMEFOW37oLpZUN86JSBHm+gIxaiD6is2kjYuIX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782755713; c=relaxed/simple;
-	bh=WPp9V9rieLa0szWhakoJkRFeRxiMV0iUR0cF5Y9wGxo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NFsI1R/nvuASqiJencZgu7Y54FhPLzYU8HBIHX49UzJIx3Cm4xWWwN2oyn412nMQtpmIdKucnJpDic5HnsjWMZM88TB60TwWmgn5y856PySEvYfDc2bbkaKoIbz84VOEmuF16NpRLIPIuTzF/L9u+rQeTOIR0b+jM5VgC9EFZP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=yeemfvqO; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1782762109; c=relaxed/simple;
+	bh=Fgm3l8MJA0Le/r0K5irIq0he0GuKjbR4LOeGRerkBy4=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=ejkSx4gL/8CTEvYph1vFdaPtsTPrjXlMTNXv7wpEIKzhRZhudLXfwzIPh/UwlPivNt2rx0yfB+pZvadQPro2zkJ0W1ffAbuRgumk+0oxhhd9nsoIJoG5cbEnrhzHrvmJ8+nVYUviKFdlBZG7VL0fvJkdJdU6WhlJaw/n3why6WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=LEpTe7/Y; arc=none smtp.client-ip=23.83.209.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="yeemfvqO"
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 52B0D53411D7;
-	Mon, 29 Jun 2026 19:55:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1782755702;
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="LEpTe7/Y"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 743AF721AD6;
+	Mon, 29 Jun 2026 19:41:46 +0000 (UTC)
+Received: from fr-int-smtpout23.hostinger.io (100-99-18-221.trex-nlb.outbound.svc.cluster.local [100.99.18.221])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 05F13722DBF;
+	Mon, 29 Jun 2026 19:41:42 +0000 (UTC)
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Soft-Tank: 6e0c897c538e6886_1782762106291_1829064959
+X-MC-Loop-Signature: 1782762106291:940535404
+X-MC-Ingress-Time: 1782762106291
+Received: from fr-int-smtpout23.hostinger.io (fr-int-smtpout23.hostinger.io
+ [148.222.54.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.18.221 (trex/7.1.5);
+	Mon, 29 Jun 2026 19:41:46 +0000
+Received: from [IPV6:2001:448a:c030:3ec5:354f:5fbd:f4fe:4abf] (unknown [IPv6:2001:448a:c030:3ec5:354f:5fbd:f4fe:4abf])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gpxVT2p2Tz1xql;
+	Mon, 29 Jun 2026 19:41:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1782762101;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j+TFjbHrHu87xxKwwVcWMdfo2sF9lRUN8NIQ1Lagubg=;
-	b=yeemfvqO1JQN6/WYseI/WDriOWpcHy2zSoQy4FTwMpfxqu435NuafGcwrsJXYVmyCqC0YT
-	K1F2OcSJGZ4w8KqgGV8kTkuRg/2jJqmEdwmxemMH41yVmMTHkEd//LgzVjpLkTRn4hunsO
-	eWI8jq+HY/y85EHvn/P0mIe+w4XLN+U=
-Message-ID: <c364a9fb-59c6-41bd-bb91-620c96e7ab8b@ixit.cz>
-Date: Mon, 29 Jun 2026 19:55:01 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=mf6gsDgb6CflBLqE6QCHPCck70qrJ5bPrH4uI36lvug=;
+	b=LEpTe7/Y6+z5tTJ7OgBhd5PcLDmGd8BtSo459x/z8hRT2C2AiWXCBfv+Dn4Gq9hqAAzZNo
+	mxi+reBudSa0i5xkZs8FvT3DBNKfXrAX0B6icRynNcgOLkP2bpGE7Cn7EMiqsmfM7TIAnW
+	rEc1Rr9wNcJj9ffioackollRcU/IpBsrGHrDDpBEZuzU7OZ8lZs2vzRGLy1csaGsYJK/ra
+	moOfflYuOQ/mXMFO/gf4uhkw+viKK88+0mPhZVp9L3H7++b9gq0D1TLwmX+8eGTtVunHBk
+	/8ckYNWH4Vdw4Ur9omFu4V5fdUZhMn65/AW1CBf35SGBl9JX+6mWCi2I5J9UjQ==
+Message-ID: <417600e8-9be7-4c6e-a62c-f10a5fca7a9a@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,97 +60,95 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] dt-bindings: display: panel: Add documentation for
- lg,sw49410-lh609qh1
-To: Paul Sajna <sajattack@postmarketos.org>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, Amir Dahan <system64fumo@tuta.io>
-References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
- <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
- <20260615-thick-trout-of-inquire-4e4251@quoll>
- <0ca65209-0b03-4458-a11a-24e750d10bd3@postmarketos.org>
+Subject: Re: [PATCH v3 05/10] ARM: dts: qcom: msm8960: add RPM clock
+ controller and fix USB clocks
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ Rudraksha Gupta <guptarud@gmail.com>, Alexandre MINETTE <contact@alex-min.fr>
+References: <20260601-msm8960-wifi-v3-0-fec6ac8dba02@smankusors.com>
+ <20260601-msm8960-wifi-v3-5-fec6ac8dba02@smankusors.com>
+ <1d15a420-7360-429e-a451-ec1f012a0346@oss.qualcomm.com>
+ <efb42f6c-b26a-4ee0-a5e7-0a25a0a41f50@smankusors.com>
+ <b0d30704-7761-40a2-9090-983f32102c8a@oss.qualcomm.com>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <0ca65209-0b03-4458-a11a-24e750d10bd3@postmarketos.org>
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+In-Reply-To: <b0d30704-7761-40a2-9090-983f32102c8a@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Date: Mon, 29 Jun 2026 19:41:37 +0000 (UTC)
+X-CM-Envelope: MS4xfH3zFpxAuKJs4Q3JZFNQhlKzU2k8sx9RQUh6NNlij5+Gh21orHO+pJP1UlGQTgSSa0AN32wYUGsizsBeZ6hKP1tXhOsEvgsAWxbC9xfZukkhdR2A1pyA 58hQf3YGSiZscOOCV7UOYP6LgAsuTCIekKXubxI1izPmSIkje+utpX91i918DKTDaq9oByQBeHB/XsK2N/zzGSjF+eUGP+lcuB5EafUO21rlGQGXZYIHgd4j DKa0xftk2gE7BbDmZo5IXL6KnFt76RMAhD4se2QmK53MFNmgDuw6IshFWw/rSPnUM9i3R9RrvWtg7qzJXdmzI6LEF1OVobAgl/TicmzzbZJL2Rnp01xYLJpR hT6gxRiVLygpnJPJktXwuxaCNR8qnfOdP2sl4TajQAljOpgwxfyRypeSHAY7v5qyH6iRWh5hkHGmpw3CdCx9C7EKgiksfvIhrEE2hq6D7c419nUw2LbAZjnl dE0FxItPNz447YlTCQnOej0B35OYxFE92DU+52I78kJTO3nm4zle0JB9cZMzniOUF4roIGLh6KVSVh06RwGFh9QDKQB+eQJfzKVPXH7RdedYFMXQfxqEQ0xy EYa8VfHLsC/M4LQY9jbKjfRBtb4jzxHEAbqFdWgA8jMz5QVOj5NcpWIUvvDfK2lsjJsctyOpNtBmquMaA780d5nkN5il7HkWQniCLPiuTM4QpJcId+OddbTF 0CpstuDATwwQXiNzu7KVvai6wSVI5D3V9ptXhqCravpreQrmqInIQ35YRgCb5q6JbydIii3ULGiFEhjIRkpojHxnLrx6CVzmkbOfp6w9FywijDmk8MnSF8ya EqsVOF26iSBujQJvYUk=
+X-CM-Analysis: v=2.4 cv=GMJaEfNK c=1 sm=1 tr=0 ts=6a42ca75 a=w1GBRM/3DoNZU4Dpj/menA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=wxLWbCv9AAAA:8 a=mF3C4NYB_VIFf37MXf4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Db0iDgFn7o8KFbWQUzvq:22 a=QJY96suAAestDpCc5Gi9:22
+X-AuthUser: linux@smankusors.com
 
-On 28/06/2026 23:22, Paul Sajna wrote:
-> On 2026-06-14 10:38 p.m., Krzysztof Kozlowski wrote:
->>> +properties:
->>> +  compatible:
->>> +    items:
->>> +      - const: lg,sw49410
->>> +      - const: lg,sw49410-lh609qh1
+On 6/16/2026 8:43 PM, Konrad Dybcio wrote:
+> On 6/16/26 3:04 PM, Antony Kurniawan Soemardi wrote:
+>> On 6/9/2026 7:21 PM, Konrad Dybcio wrote:
+>>> On 6/1/26 10:51 AM, Antony Kurniawan Soemardi via B4 Relay wrote:
+>>>> From: Antony Kurniawan Soemardi <linux@smankusors.com>
+>>>> @@ -507,8 +519,12 @@ usb1: usb@12500000 {
+>>>>                reg = <0x12500000 0x200>,
+>>>>                      <0x12500200 0x200>;
+>>>>                interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
+>>>> -            clocks = <&gcc USB_HS1_XCVR_CLK>, <&gcc USB_HS1_H_CLK>;
+>>>> -            clock-names = "core", "iface";
+>>>> +            clocks = <&gcc USB_HS1_H_CLK>,
+>>>> +                 <&rpmcc RPM_DAYTONA_FABRIC_CLK>,
+>>>> +                 <&gcc USB_HS1_XCVR_CLK>;
+>>>> +            clock-names = "iface",
+>>>> +                      "core",
+>>>> +                      "fs";
+>>>
+>>> The bindings change you sent changes the expectations - "core" used
+>>> to be the first clock. And I would guesstimate that the
+>>> DAYTONA_FABRIC clock is not really "core" - does downstream do any
+>>> ratesetting on the other two?
 >>
->> This is very confusing - why two compatibles and why same devices - both
->> sw49410 - are compatible with each other?
+>> Looking at the downstream, I can only find HS1_XCVR being set to 60MHz, DAYTONA_FABRIC being set to the max rate (just for voting purposes?). I don't see any clk_set_rate for HS1_P though.
+>>
+>> Would you rather the other way around? Like "core", "iface", and "fs"? My concern is that such a change would result in a large number of warnings for newer SoC device trees.
 > 
-> Hi Krzysztof, yes they are both compatible. One with DDIC and one with
-> DDIC+Panel. David Heidelberg suggested I include the panel.
-> Is this the correct style for both compatible?
+> I didn't notice you're actually aligning the order with bindings. I was
+> under the impression this was a random change.
 > 
-> properties:
->    compatible:
->      items:
->        - enum:
->            lg,sw49410-lh609qh1
->        - const: lg,sw49410
+> For the clock assignments themselves, I think the schema reflects a
+> full-speed (i.e. usb 1.x) core.. I dug out some ancient doc that says
+> that we should have:
 > 
+> - ahb (bus clock - perhaps daytona in this case?)
+> - system (core clock for the thing, >55 Mhz for compliant HS operation
+>    or at least 35 MHz for any sort of operation)
+> - ulpi_clk (60 MHz, coming from the USB PHY) (we can probably ignore this
+>    in our description)
+> - inactivity_timer since there's a BAM instance attached to this host
+>    (possibly handled implicitly)
+> 
+> for the record, there's 4 hosts:
+> 
+> USB1_HS @ 0x12500000 (this one)
+> USB2_HSIC @ 0x12520000
+> USB1_FS @ 0x18000000
+> USB2_FS @ 0x18100000
+> 
+> I don't know if they are all exposed and functional though
 
-Better, but since `lg,sw49410` is contained in the compatible string with the 
-panel itself, I guess `lg,sw49410-lh609qh1` should be enough.
+Hmm, I'm not sure which option is technically more correct.
 
-David
+I did try swapping the clocks, using daytona as the iface clock and
+`hs1_h` as the core clock. USB still works as expected in Sony Xperia
+SP.
+
+If that's what you want, let me know. I'm also curious whether others
+agree with this approach.
+
+Also cc +Alexandre for the recent Samsung Galaxy S4 patches.
+-- 
+Thanks,
+Antony K. S.
