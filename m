@@ -1,209 +1,137 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B763FC5CB
-	for <phone-devel@vger.kernel.org>; Mon, 29 Jun 2026 10:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7482ED872;
+	Mon, 29 Jun 2026 17:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782728408; cv=none; b=khdyWe0OgUlCa3LXEdQ4Itc7Is4BlOUi/2kmzHO7mEFaHBp6gU31ZHM+Ed5EVK+FNBcVS9kDIoGTLxCMPnxfBgUYPvr794aANm0dcjiS7SEkeqWwMnrSffUkRKq73BD+Wr2Z7EJcVWffpi2VsFTVCYZUlNE7U8zdmj9P6JzC2kI=
+	t=1782755713; cv=none; b=NHdKXCCCQ0q9K73YuQdDA7R3AO3/1DoLkcx7VSvenLim8GsVmPEyd21tiaDRzjbG9OWcLy7oKRP/pN2msy5w79c+6/lb4BmxpgSGwPsjxVerJefDsxqvdbG4xMmruEjKf6bduPJRo+AiQMzue8G+kGynMuTC4xP/vl/cncagHyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782728408; c=relaxed/simple;
-	bh=0tcYS/TGLDKTnc+D6P6cIojnHQYd5yvToL1o1yYJPUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQuVg1TODWqbiU4ZKhTDjl4YwNeSoTFVwPS73CieeGZTP9jO2gujPeJaADBwWXMKLWS+c2tX5q/fJSx8/+91Vv+o10IiNObKHng/gIHka3G6SIkJmV3sjlRBQH5p7ydw79TTFw4Cj0FAU0yf+j2EcPmKEStAyAM3K1RzVbHXEwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YRxQaSze; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=g6hC2nkg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782755713; c=relaxed/simple;
+	bh=WPp9V9rieLa0szWhakoJkRFeRxiMV0iUR0cF5Y9wGxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NFsI1R/nvuASqiJencZgu7Y54FhPLzYU8HBIHX49UzJIx3Cm4xWWwN2oyn412nMQtpmIdKucnJpDic5HnsjWMZM88TB60TwWmgn5y856PySEvYfDc2bbkaKoIbz84VOEmuF16NpRLIPIuTzF/L9u+rQeTOIR0b+jM5VgC9EFZP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=yeemfvqO; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YRxQaSze";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="g6hC2nkg"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T8xqgE2432457
-	for <phone-devel@vger.kernel.org>; Mon, 29 Jun 2026 10:20:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=0UGKVqsdGzbosb+05ZlN0oEU
-	xhwfuM2PCDbsn8tProM=; b=YRxQaSzeimiNXwkmQKEKAkI6eUjxi0HuQqHn/ObK
-	C/m60CMpRpmK2tXn/hjS8eQQqNVQQeHO7gGlbejGXkt4DWDrUv24dZ7eBDpCvjbZ
-	XjJl6uFNzd4nJMRJxcgSv/qaKfeI9ZFHMNm3gT2nZOwvXVffAFt0XtkaCJ7qdXi0
-	a4vj5SezFbuRh7SVUsgz9HfhBzwz37P4nkkF0HgkFDvB51VdDNjMUrmvJcYzLFts
-	Upu2eTUupchJ8PURTaLNhjIEO4xleFCRaSU9g+0NIxAMUo+dn3co0LbRnnlv4QG+
-	gICYmB00ti4aCwTw8WI267MDSuabGd67VZJBGveC43/bIQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f3nperbe6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 29 Jun 2026 10:20:02 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92ac0a54110so494065285a.2
-        for <phone-devel@vger.kernel.org>; Mon, 29 Jun 2026 03:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782728401; x=1783333201; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0UGKVqsdGzbosb+05ZlN0oEUxhwfuM2PCDbsn8tProM=;
-        b=g6hC2nkgyaDMa0QJz+lCngTkfGmt1CB/ycW8JsImOs2MdK8HacyB+rxOJ62feSQf2E
-         irqAZ+G0w/UstonIgY+gQ2KmH2l1mrqGRsKJsSU0VPsHxEoCLc9viEFetjRBqCxqLxXN
-         9v005o1zCLdjgmpbpkFfx8hRJCMjGdcoYQJicNcuzfYXQzmGT66Hdkwnyw67E8JJaAKw
-         9wfY5dELswO5DRr17BZLT/n6I/gAzH+5XqNg1o4DPWMMiw0CrI48lKxtzxQUS1tLecHy
-         hoX7eIfyzBO5jbOjsqV5L8iXWjDca+jm7FeeAU/8sa1n4z4/Pf2X0x3bWyCUt0cKM7vD
-         zPIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782728401; x=1783333201;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0UGKVqsdGzbosb+05ZlN0oEUxhwfuM2PCDbsn8tProM=;
-        b=hY7mfxiSIp4kglBNOYC9Ar6AYq0C4f3PoIAI8DiXef2ks3WmEAa6aASgiviRUD4X0V
-         fGdXYbUtqy5zk7NEDX7Ir6ZHnsMbi+LWNp+jyg9rdm9WDvTwSXu3JdOrCpVH+McCGScQ
-         SL2WrY6oizTagoPaL77kfLl57fW2N/dI0EJNcwr2e5wRnn9/Bzg2puu6EjdJF/SnbFzN
-         91jO8XQctb+KwuC9X/ajeJ0DFKiz3ulSWN7IrE6XB83//JungfuEmIJEVTjv/3o8gaE4
-         pu6pD+px6xab+jPUHzYKl5JbLYOp4B9XKFcWG1cdxRbZldMcKIXgdkgnp/KOt5k4z+Jw
-         ivkQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9KxdVGN5o4NKijHTBlKgMTc8W8VTlJ77x8vXqFpatffeNSVV5AhV7keGZTbnC2+guLIWHhyzUSP3it/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLw1Njolx2j44qaw8ceiDG39GfLUr50McA6m0u2X8Y1ykVOR/A
-	do0L9jz/gu8Lh7D9Se41axy7T0Lw3+JP2lBRgEDx+2yFT8Dl8w4vmilHqS6LIJoMIycZsR1/bWL
-	R1GAPkW8kDVKCnQk72n+FOIwPeQnw2+a6fJhxkVlfszDpINDQc5uOIwvK50asGISkSQ==
-X-Gm-Gg: AfdE7cnpw6D2WHK3KFaNRu8YQNGbfxzWqYGbxUbNl0xgMQyYTXbLdTwmIfIKQQein+r
-	V1OlrsRxJ7YNmULLNDOB+usxkd9Cdt+UONYODk5ViDgYo6FXYLDJLYZCXoH2/fyt4bFTboKhf7F
-	4JFS6WhC1I7eX+7ID3fa9yMNZlIRwHsYBYMS4iJB1Y/MyjTyZgso9DxBdo6h/+pjCIjXQEWq+xo
-	BK1cUJu9H9KVofp9YKRuW62kLlOS+jGq6UXtrBjWxQ+p1a8sCnJXr6jXcmx4/UY0ZCzWQSK8V06
-	fyCOpNsX8wgYt99lb5/spESixVBUzw6T6rOw3DwFfEpKdkR4wmnxa68FFZ3Iae+0ai8GssEUtb/
-	/HLETkV2akyAWr/WOaexAMHaz6DGk7VtX9vxzmrTBI9bq2Q/NVCufQuKkr534L+tnrHxngS6Q/L
-	/FrrEwm48brWuV4ZDD5XL0Rtfm
-X-Received: by 2002:a05:620a:2308:20b0:92b:6805:eae4 with SMTP id af79cd13be357-92b6805ee71mr984801085a.65.1782728401203;
-        Mon, 29 Jun 2026 03:20:01 -0700 (PDT)
-X-Received: by 2002:a05:620a:2308:20b0:92b:6805:eae4 with SMTP id af79cd13be357-92b6805ee71mr984796585a.65.1782728400683;
-        Mon, 29 Jun 2026 03:20:00 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b01631f82sm10787451fa.6.2026.06.29.03.19.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 03:19:58 -0700 (PDT)
-Date: Mon, 29 Jun 2026 13:19:56 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: me@samcday.com
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH RFC] drm/msm/mdss: keep mdp1-mem interconnect alive
- during suspend on SDM845
-Message-ID: <j76vpo5gxpwek7vpsjz2hydgcyibhvjueljftj24j2ritpb3mr@ej6bf335nxq4>
-References: <20260627-rfc-sdm845-interconnect-collapse-workaround-v1-1-608a38de3715@samcday.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="yeemfvqO"
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 52B0D53411D7;
+	Mon, 29 Jun 2026 19:55:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1782755702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=j+TFjbHrHu87xxKwwVcWMdfo2sF9lRUN8NIQ1Lagubg=;
+	b=yeemfvqO1JQN6/WYseI/WDriOWpcHy2zSoQy4FTwMpfxqu435NuafGcwrsJXYVmyCqC0YT
+	K1F2OcSJGZ4w8KqgGV8kTkuRg/2jJqmEdwmxemMH41yVmMTHkEd//LgzVjpLkTRn4hunsO
+	eWI8jq+HY/y85EHvn/P0mIe+w4XLN+U=
+Message-ID: <c364a9fb-59c6-41bd-bb91-620c96e7ab8b@ixit.cz>
+Date: Mon, 29 Jun 2026 19:55:01 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260627-rfc-sdm845-interconnect-collapse-workaround-v1-1-608a38de3715@samcday.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDA4MyBTYWx0ZWRfX2vNcb8ODnHJT
- KbJtGRrOe5g86XVqgTPYJPDD50au3/GWJzvLGN0xZs+31Of7vej864NMR9HXUZgVuBZTChUFE2y
- UQGeIhHZtsmmTaId/NiSI4sDC6zspVnur/rwJ5KJ3Emo981SqMPIY8pOXgKwGk/M5o4FUw3Vujy
- yzd69WjX12u8gg1/6Zw/jNU7MEAbYNOPMZoX/GarvSjWQlJY76vwzdZ58OE0wHKiYtZbxK1LfOS
- Y+2JXz4LcEft/fM+pxyYHEpILSIqd+BpbsFXmK0hxV18k+Jjv6KKbdcJbuAltrvv9yoD0Tzanc0
- ZeReCuxPbz9xXEB0ZV0Lhk3ilWP6fQg87uwMMy2LVcpLr344JfAMRC/OcKWIjkuMZ4tkmX+fFcW
- /I9/BN2B/FMgwUC54IXSNvGlN9586d3u53ckfOcxxPDzCzSgWbNTE5hLsm0JlK3pqSfTcu1v387
- fnw71CueAOA/JzvrFJA==
-X-Proofpoint-ORIG-GUID: QbNE1s0IXq2afpRa1yZ7YWBYvbdAl991
-X-Authority-Analysis: v=2.4 cv=T6q8ifKQ c=1 sm=1 tr=0 ts=6a4246d2 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=VwQbUJbxAAAA:8
- a=lKQ-AihTAAAA:8 a=6hj42vQ7RftltVCiR-cA:9 a=CjuIK1q_8ugA:10
- a=PEH46H7Ffwr30OY-TuGO:22 a=K6G5NyU7usMl-irPePdK:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDA4MyBTYWx0ZWRfXxgdvcSpqnbfW
- A84zXIaNGRapB6Biuu9cZ6/JtVwMdziUp4bxPUYej17ZDzXPrjlqd0OzV66+erdAeL+2jhSlIIe
- AGjbNjEkx4SjzV/HE29bg0JbtAnnx/Y=
-X-Proofpoint-GUID: QbNE1s0IXq2afpRa1yZ7YWBYvbdAl991
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-29_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 suspectscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606290083
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] dt-bindings: display: panel: Add documentation for
+ lg,sw49410-lh609qh1
+To: Paul Sajna <sajattack@postmarketos.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ phone-devel@vger.kernel.org, Amir Dahan <system64fumo@tuta.io>
+References: <20260614-judyln-panel-v3-0-07f4134441bd@postmarketos.org>
+ <20260614-judyln-panel-v3-2-07f4134441bd@postmarketos.org>
+ <20260615-thick-trout-of-inquire-4e4251@quoll>
+ <0ca65209-0b03-4458-a11a-24e750d10bd3@postmarketos.org>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <0ca65209-0b03-4458-a11a-24e750d10bd3@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jun 27, 2026 at 10:18:45PM +1000, Sam Day via B4 Relay wrote:
-> From: Sam Day <me@samcday.com>
+On 28/06/2026 23:22, Paul Sajna wrote:
+> On 2026-06-14 10:38 p.m., Krzysztof Kozlowski wrote:
+>>> +properties:
+>>> +  compatible:
+>>> +    items:
+>>> +      - const: lg,sw49410
+>>> +      - const: lg,sw49410-lh609qh1
+>>
+>> This is very confusing - why two compatibles and why same devices - both
+>> sw49410 - are compatible with each other?
 > 
-> If the peak vote for mdp1-mem is allowed to drop to zero, it seems to
-> cause the fabric to collapse that path entirely, which causes the device
-> to bus stall and fatally reset.
+> Hi Krzysztof, yes they are both compatible. One with DDIC and one with
+> DDIC+Panel. David Heidelberg suggested I include the panel.
+> Is this the correct style for both compatible?
 > 
-> This issue was identified specifically on sdm845-oneplus-fajita, so this
-> workaround is applied narrowly to SDM845's MDSS.
+> properties:
+>    compatible:
+>      items:
+>        - enum:
+>            lg,sw49410-lh609qh1
+>        - const: lg,sw49410
 > 
-> ---
-> This RFC patch is a spiritual successor to the "Addressing stability
-> issues on SDM845 with the -next tree" series sent by David and Petr 6
-> months ago.
-> 
-> As Dmitry pointed out, the patch introduces leakages to the runtime PM
-> refcounting. In practice, this means that MDSS never actually gets
-> suspended, which is why the patch appeared to "fix" the issue.
-> 
-> The deeper root cause is that, when msm_mdss_disable() runs and unvotes
-> the mdp1-mem interconnect bandwidth, that seems to collapse the fabric
-> entirely and causes the bus stall -> hang -> reboot behaviour.
-> 
-> I've confirmed that a tiny non-zero peak bandwidth vote keeps the fabric
-> alive and avoids the issue.
-> 
-> Of course, this is still a fairly egregious hack, but it *does* allow
-> blanking to suspend and resume DSI + DPU + MDSS properly without the bus
-> stall.
 
-I'm a bit sceptical about this patch. The Lenovo Yoga C630 uses a
-variant of SDM845. There I don't observe any issues with the MM itself.
-But cluster suspend can cause issues there too. I suspect that there is
-a missing vote (or undervote) on the CX or MX, which results in
-suspend/resume crashes. And if that's true, then your patch does exactly
-that - I think it will add an internal CX vote, which won't be dropped,
-preventing CX collapse.
+Better, but since `lg,sw49410` is contained in the compatible string with the 
+panel itself, I guess `lg,sw49410-lh609qh1` should be enough.
 
-> 
-> Here's what I've validated with instrumentation:
-> 
->  * DSI host disable, IRQ disable, PLL state save, host power-off, link
->    clock disable, regulator disable, SFPB disable, and PHY disable all
->    complete successfully before the fatal reset occurrs.
->  * DPU runtime suspend also completes. The bandwidth accounting was
->    checked and confirmed to reach runtime suspend with 0 refs, with no
->    pending frame state.
->  * The device survives through MDSS clock disabling and mdp0-mem
->    zero voting, it's really just the mdp1-mem zero vote that is isolated
->    as the cause of the stall + reset.
-
-Will it work if you suspend the MDSS (dropping all votes) and then
-forcibly break the device suspend by returning an error from the later
-stage?
-> 
-> So, I'm not really sure where to go from here. I'm sure that this
-> workaround is not suitable for inclusion upstream as it still seems to
-> be papering over an underlying issue... But it's unclear to me if this is
-> some kind of hardware quirk on SDM845, a problem with the SDM845 DT
-> wiring, a driver issue, or something else entirely.
-
-I don't have a good advice here. Try disabling cluster idle node. If the
-device still works, it's not a mdp1-mem.
-
-> 
-> I'd appreciate any advice on how to further diagnose this issue and what
-> direction to take from here.
-> 
-> Kind regards,
-> -Sam
-> 
-> Link: https://lore.kernel.org/phone-devel/20251213-stability-discussion-v1-0-b25df8453526@ixit.cz/
-> Signed-off-by: Sam Day <me@samcday.com>
-
--- 
-With best wishes
-Dmitry
+David
