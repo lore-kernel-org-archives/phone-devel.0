@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E323815E8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5D438F258;
 	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782939176; cv=none; b=JdJcQ0oBj2mxRcRBNBm3hB21NGWIXfhV8uw4a/VVMFKqAx7MEHV1vXb81y4FDoHQEzn8UqlG/iYYwjdfGmqWuL1AGe1JvN5NOWzuSTT90lahmVpCI/RbZ6dy+XvHIj7+TUaacZuTvW2SZ9SsfTWWe+Rx/dP12Gs6LAeQ6+qtQSc=
+	t=1782939176; cv=none; b=J1pQqmUa0dl2A5H8bSDuQobdQ6lSsBb/K1MgrO+oq/LfcDZT6GqsOgvTY6NzN1mQzLnf1fbsdntoTYoZWAwBO2mDw+EnKFaOO5OPR91dLv3Wgt9bXks+/89k32ItxILbw2Fs+ym+9AinSsGhQPDWTMs2kPbFju7oigfs92xw3LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782939176; c=relaxed/simple;
-	bh=zoGOulQF1M2h8Q01GsubA1RgVWr6kNLn78527WuVvX4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PfkzaKcDXXuJhSzQ1ZxuiavkwXXXbBkjj4oLxFbgRMnFrSxbtuHdeZJqUM2CJBspOx780eMtYfSMhBi17kKZE5GXMT0yuutwDgBJSCiG4bGREvQ5Qp3T1buQArgBn3pQEev+7/NaRgQHTt8IY/WIsAjIuCSomtJUJs+27dYAgY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdqDcBvw; arc=none smtp.client-ip=10.30.226.201
+	bh=9BTqj89bZxMO325WD7xX7lCh2duf1b3+w/twlN+ydgw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oBdPELogoamuVJAhn3Fo7DakV2aTnGC0Kz0H8BxnSk6dXWSjxYT8QSlL08R/Cw1lff2inLG6Vn2RORsnS+QoDbqo84XJjPCreScoX45VQ60k75c2uPArU7KdqHf9hHCN5xQna/i8qoNgRjSAWEoLPX5WkUSazMO0L92UKaBnYfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X9/ps9WM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdqDcBvw"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B0D3C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X9/ps9WM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2AE55C2BCC6;
 	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782939176;
-	bh=zoGOulQF1M2h8Q01GsubA1RgVWr6kNLn78527WuVvX4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=tdqDcBvwsG4ho9YcfZLXBYpBfB09VA28Y829Dr14qBjmsHYYDTAEGxURLSbCq5CAf
-	 nVn4cyUex0WyNoQ8w8HqfM2mtRvDX1qXebfuPmrxFTo2J1k6HmtHESBYy7DUPVTHMD
-	 hKNTM6rWNSDM3G5R8okIiFmKbWTbWcQkUkJmKr1+1pjBoOVIRyS4jCiZvPyaF6aSvt
-	 HKOYPOYUBHsaySiKMig4qRhBV0EAMkwihP5DEQjuse+sbLfGvgwtLBppcLJ2RqPPaN
-	 pd0sH/dLV0tnGInNcg3txJUN8ByGJeMx7BvCHbMJd7I4aK9kpeQMJydeNk/N+ynq6j
-	 UN7A70dWROjnw==
+	bh=9BTqj89bZxMO325WD7xX7lCh2duf1b3+w/twlN+ydgw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=X9/ps9WMXdLiUn6n5QWIzWvPWTQgYYA6dw6dQ/pvZ9qYRdDsm/HOApzoLK8qaniyb
+	 jWaSZ4g9LgojvVxboylQPihgi5Q7Hqd9N3yIRqEZ1omGC1oOP9Zlauh9949srZlLau
+	 p2fFqhFw/4dFbmhPMG2HNZJjdZR/sNhd+ytFZCFWTcwkftBWZOUuVz0HsEZ3bC4QYn
+	 TSCz3cqZMOQh1AUR3ne8nkuw8jdBnd9BR4OQ4sCkhMIvBLgwQ4XuD9ydlTgiMtcFbv
+	 FjCD/VcHtRu29xFfvkcs2XdiC9RWTSjo1aCJfW/CIFk97OeddaHOo+Kc5aeA6qOpt9
+	 EZqH5/e/jUwVw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E117CC43458;
-	Wed,  1 Jul 2026 20:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1206CC44500;
+	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
 From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
-Subject: [PATCH v6 0/4] Enable new features for flipkart-rimob
-Date: Wed, 01 Jul 2026 23:55:53 +0200
-Message-Id: <20260701-rimob-new-features-v6-0-be7d5d1e007f@protonmail.com>
+Date: Wed, 01 Jul 2026 23:55:55 +0200
+Subject: [PATCH v6 2/4] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ WiFi/Bluetooth
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,13 +40,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23OzWrDMAzA8VcpPs9Dlr/invYeYwfHkVfDEhc7y
- zZK3n1uYRCYj3+BftKNVSqJKjufbqzQlmrKSwvzdGLh4pd34mlqzRDQgATJS5rzyBf64pH8+lm
- ocpDWKTVKbxBYW7wWiun7gb6+tb6kuuby87ixifv0jxt63CY4cO8xSAnaYoCXa8lrXmafPp5Dn
- tnd3PDgiL6DzQlijIMTVilHXUceHBRdRzZnUuNANBg7ke066ujYrqOaA4amGF1QGlzX0QdH9v/
- RzdExRIUeXRD4z9n3/RczdNSv2QEAAA==
-X-Change-ID: 20260303-rimob-new-features-037944b3a620
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260701-rimob-new-features-v6-2-be7d5d1e007f@protonmail.com>
+References: <20260701-rimob-new-features-v6-0-be7d5d1e007f@protonmail.com>
+In-Reply-To: <20260701-rimob-new-features-v6-0-be7d5d1e007f@protonmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -62,11 +60,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
  Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782942968; l=4333;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782942968; l=1054;
  i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
- bh=zoGOulQF1M2h8Q01GsubA1RgVWr6kNLn78527WuVvX4=;
- b=U//qRAjidfOu+8iCd75GDvniNljYnibrSMFyl6RvvelelrWzvAq7r9W9O0irwJ3ebV06ez4zS
- 4icm3O99nKUAq6Ob9ApVdPOYTvUyjT2xGdMmLPk2hA2GUisl8cfXTwN
+ bh=fh/EPBf6DDi6xO2cT/WF/4Df/j3opWByAPpvZnndrW8=;
+ b=R4zM1P/Hr6IXKz9AHkz0y0Eo0nHecrIsFCkGZ7dFzrxzBXjCWZfUDPPNcCvZd7kHX+IosP25n
+ NfcMNMONfOqB20U02MdXYZgffCcvoSEiWAJTV/c8QV95wuojpdQMjom
 X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
  pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
 X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
@@ -74,105 +72,43 @@ X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
 X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
 Reply-To: cristian_ci@protonmail.com
 
-This series enables a set of miscellaneous features for Billion Capture+ 
-(a handset using the MSM8953 SoC released in 2017):
-- Panel and GPU
-- Touchscreen
-- WiFi + Bluetooth
-- Hall sensor 
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-To: Neil Armstrong <neil.armstrong@linaro.org>
-To: Jessica Zhang <jesszhan0024@gmail.com>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: Maxime Ripard <mripard@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-msm@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht
-Cc: phone-devel@vger.kernel.org 
+Configure and enable the WCNSS which provides WiFi and Bluetooth on this
+device using the WCN3660B chip.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
 ---
-Changes in v6:
-- Drop applied patches;
-- Pick up tag;
-- Link to v5: https://lore.kernel.org/r/20260331-rimob-new-features-v5-0-5fcf42a29c12@protonmail.com
+ arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Changes in v5:
-- Based on dts-coding-style.html ("Nodes without unit addresses shall be
-  ordered alpha-numerically by the node name. For a few node types, they 
-  can be ordered by the main property, e.g. pin configuration states
-  ordered by value of “pins” property."), sort pinctrl states by GPIO 
-  index (Konrad);
-- Pick up tags;
-- Link to v4: https://lore.kernel.org/r/20260327-rimob-new-features-v4-0-06edff9c4509@protonmail.com
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+index 5a9d71d1e466..db5c9f04bf1a 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+@@ -326,3 +326,18 @@ &usb3 {
+ &usb3_dwc3 {
+ 	dr_mode = "peripheral";
+ };
++
++&wcnss {
++	vddpx-supply = <&pm8953_l5>;
++
++	status = "okay";
++};
++
++&wcnss_iris {
++	compatible = "qcom,wcn3660b";
++
++	vddxo-supply = <&pm8953_l7>;
++	vddrfa-supply = <&pm8953_l19>;
++	vddpa-supply = <&pm8953_l9>;
++	vdddig-supply = <&pm8953_l5>;
++};
 
-Changes in v4:
-- (patch 1/6): added a new compatible (since it's not possible to
-  identify panel vendor/id), matching user of this device and leaving
-  novatek,nt35532 as fallback (Dmitry);
-- (patch 2/6):
-  - according to bindings changes, make panel driver handling multiple
-    panels paired with NT35532 and use specific compatible/data;
-  - due to changes applied to panel code, remove tag received previously
-    by Dmitry.
-- (patch 3/6): 
-  - use a specific panel compatible, according to bindings changes;
-  - remove 'output-high' property from panel pinctrl, since panel is not
-    reset.
-- Link to v3: https://lore.kernel.org/r/20260321-rimob-new-features-v3-0-d4b8ee867de7@protonmail.com
-
-Changes in v3:
-- (patch 1/6): removed avdd, avee and vci supplies from 'required' properties;
-- (patch 2/6):
-  - removed "select VIDEOMODE_HELPERS" from nt35532 Kconfig entry, since 
-    its functions are not used (but this option is enabled and its code 
-    compiled anyway) by nt35532 panel driver;
-  - pick up tags (Dmitry).
-- (patch 3/6): replaced a506_zap.mdt with a506_zap.mbn firmware name
-  in gpu_zap_shader (Dmitry); 
-- (patch 5/6): pick up tags (Konrad);
-- (patch 6/6): pick up tags (Konrad);
-- Link to v2: https://lore.kernel.org/r/20260318-rimob-new-features-v2-0-c1bf8917449e@protonmail.com
-
-Changes in v2:
-- (patch 1/6): define power supplies in the bindings as per datasheet  
-  and update example;
-- (patch 2/6): add blank lines where required between mipi dsi write
-  sequences in nt35532_on() function and make use of names for mipi dcs
-  commands, instead of hex numbers, to improve readibility (Dmitry); 
-- (patch 3/6): move pinctrl lines ibto panel node and get rid of
-  sleep/reset state, since panel just uses one pinctrl state for
-  default/sleep (Dmitry). Also, update power supplies according to
-  bindings; 
-- (patch 4/6): pick up tags (Konrad,Dmitry);
-- (patch 6/6): squash hall sensor node into gpio-keys (Dmitry);
-- Link to v1: https://lore.kernel.org/r/20260308-rimob-new-features-v1-0-aa2c330572c0@protonmail.com
-
----
-Cristian Cozzolino (4):
-      arm64: dts: qcom: msm8953-flipkart-rimob: Enable display and GPU
-      arm64: dts: qcom: msm8953-flipkart-rimob: Enable WiFi/Bluetooth
-      arm64: dts: qcom: msm8953-flipkart-rimob: Enable touchscreen
-      arm64: dts: qcom: msm8953-flipkart-rimob: Enable Hall sensor
-
- .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 138 ++++++++++++++++++++-
- 1 file changed, 137 insertions(+), 1 deletion(-)
----
-base-commit: be5c93fa674f0fc3c8f359c2143abce6bbb422e6
-change-id: 20260303-rimob-new-features-037944b3a620
-
-Best regards,
 -- 
-Cristian Cozzolino <cristian_ci@protonmail.com>
+2.53.0
 
 
