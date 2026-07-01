@@ -1,124 +1,144 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9623AD529
-	for <phone-devel@vger.kernel.org>; Wed,  1 Jul 2026 06:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4B3F0AB7
+	for <phone-devel@vger.kernel.org>; Wed,  1 Jul 2026 08:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782886777; cv=none; b=POrvxNd9a+eGfKqZ2X5rbAP0G9reRl631bnn2z51964zJyUqxnQ0Xt7TZFrLnf9i/hqn4OHTCOK5aONVLUseZw7CgOgmAy0/1UAbNeUgAR7i3gaxsutblvZx/G2ZD443QkDURILlf8ENEvQrjJLFauUk2CprMyLoxz3lEVJ+Hp0=
+	t=1782895877; cv=none; b=I1JQsCUOqKCvu1BrJ19WXX4dcjI/1xJwHBLAv83pUjE4RrBIOdh/A45AtvYI7FeEqYppjRhgaVMddArjbMpsdD+j2dX789j0+lOUPmgOY8hMsU6E1UHjIzeSxoY4ZtbzTnzKmR2nzDUf+uER3xjTw82JDDiOBFSyD28Ace48AaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782886777; c=relaxed/simple;
-	bh=y35146R1hLQHr0cXVvffTxW+/OTdywP5qn459ftUbR0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TzJbPQAAQTbGmUSyEu0j0FGFC7+3y9Tx0MCTiwXZcy4ZARF/MLmz/VNZR/8PAepLR3gltkCFY+NJJAqxVyr48YBp2NV6W9D7ePoe3Ac4N313qWIywf6Fg+SSySYnUO7SVPuZPIxHN2/4I/l+aj6OH2GdnDfyZhxyy9urhz0Ieo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=xUq1NEcx; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1782895877; c=relaxed/simple;
+	bh=/6Hbmv+j5VVz2Qew1mwOKDUOPfWnD5Hc/1yxo36gb+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SSI5gfynDEs/XDPy9on/B20OpCX2dWJqKI9b9WgAjaNcdJdv9DXtOv6S96VLi3BAttX75Vcn5+hLO4hEtY234+ufuAiqzVUe/IAEeSy/+QqUmlyTXjVptb9dH9goWx3no5jY5r2DNq8YWsrBcea13pDWzD3ptkW5zykemtna6Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PnK8ycWK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aVHFiA0w; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="xUq1NEcx"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-475cb71a4ebso225063f8f.0
-        for <phone-devel@vger.kernel.org>; Tue, 30 Jun 2026 23:19:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PnK8ycWK";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aVHFiA0w"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6618GDBV411099
+	for <phone-devel@vger.kernel.org>; Wed, 1 Jul 2026 08:51:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4qkyYKJBBJfOgR8NQFS/rnAqFlPZoKot/SYiMkB+EmI=; b=PnK8ycWKXte09IQw
+	jrfNKEQ7sygq33L2R9J0L+A1wzdEq8TFqZ0HWzG8KRzyX/sKoIIIxlfBpxDUOdTm
+	RFUNAhaw3/Vyv9sbkgGIZr1Ykaq18LO5lnRJLPieDEteTfdxw/3Kop3f9iPGYzpd
+	q2Ou0DxmSH0SdWpgMDS7KUXcvVM+0RLI1HEDSkFBxMXO0XQuXCx5bPOiiM3MA9po
+	IQggs7kCJhca8/9pIT7tbgSxLjuWbEZ1o7KcLiY4TZtvUrbwM6bBRGFzfou630EX
+	2NxKIhBpkdu8Ueapo94RaRggB9qc3wNYMVFHymOE1KptwAPGklBuWDpYhdazK/Qm
+	CAp9lQ==
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4hfybpfk-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 01 Jul 2026 08:51:14 +0000 (GMT)
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8f015665cdfso994556d6.1
+        for <phone-devel@vger.kernel.org>; Wed, 01 Jul 2026 01:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1782886773; x=1783491573; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+PbsLJCR1LGXeK1bTzaX+dlzYS17E09lgiH/dHDN2c=;
-        b=xUq1NEcxIq0ESL4lfVzuX73zd+FCW6ZoU08QsS1bk8p0eewqXjlrHh/BV9bjWIRJsO
-         YVSNhNje4IpOtEUNHDI58wNU+6T7BUZtkNK8aZdpzFp+DH/L/0OXp2HnKNux9pXg1Bvr
-         GLHxfCVr0PJD2a7KIeHgDRlFrX+c20UHLfhopyfkKchefnNxYs4k5sPRIeu3XEKBQ0Nn
-         6SMmq8XxtAyDyzrU5oJ5t+9zAeaem5vwyBZ+MVRNJESuksfshgBpt831epMBBOkyMKKP
-         /xtrpOo38R8NvISqS9+r9mT6UA4dfbSjlnaRNM4D0hxK8N2br1szu+CemwTQZbND4f49
-         hXjQ==
+        d=oss.qualcomm.com; s=google; t=1782895874; x=1783500674; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4qkyYKJBBJfOgR8NQFS/rnAqFlPZoKot/SYiMkB+EmI=;
+        b=aVHFiA0woSw1PBe1YpTiFbQTv7AK+TfS4pyE/mPQiqooFHKfOw5OyRReF/e51A0OcE
+         jk9BhEVgvKsFPRWq56abLhVydxDtZrTaIuCKE5F4+ooBYS3jJcDlndVGKW17cmPiQa+X
+         l2V1g1VLoQgavbcUkPqVIXOeIB5xDGvIwiujeX8CapTamZvwQT+USFq7YdgLu+w746Pm
+         Ml5xOTvBjmQGRAq3OPGbNJ3cYtMVVdV0hDQ/H4EyGtS0DyVxc9MXpOdtw9wFhRWX5Qv3
+         dLsXlbKfV6lY8RZKaWI5VxXK77bX7WxJS8dnyal6FxELGHM5pGlyQITvRsDZWsdkogdj
+         1RQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782886773; x=1783491573;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z+PbsLJCR1LGXeK1bTzaX+dlzYS17E09lgiH/dHDN2c=;
-        b=RrZeDpAnbbOioV9MmJytcr7rKGJ1uUAJkcVeDXXRgn5MzcSF+eZHihVQs55s8HzT7O
-         dDBwMMj2/wUdd4Mu9TnX3Y5ZVzoaYG403VJeB2B0cIWwZR+P2YRaX4zJfKIW/hxydJYT
-         1x8DLGY6PFATtbx/WyOECHpuOWiHYIEcmRDY8WPvlH7cMitATxw6fk0GHnCB+UO0bAMd
-         m+yfH6gS2HDEyek2mtp3b+gmehE8WRN8RfeTXMVdoI8m5okXbBWNSJF0YmgCKCjGwMfj
-         fQkXXyKVBOg+A7ZHJr8gmGUBdhtC7eQLV/3x25GreXmYH252MTwaScHjoWQ0oFnq2WmY
-         xhJg==
-X-Forwarded-Encrypted: i=1; AFNElJ8zHOut9/140apnOOXdHC+zJsCg5sHA91ZBPjQqjQwWQDUatnM+0tjzkeYf/tsu1jxpLtTPUBRgA/7Sbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhrjEweYXXrjBlo1nCyxeMJuNOdESoJlSyiVOkm9sOkD5y9EyY
-	j066fH5DRkNhjJwXUvrDR4LnDLUoABEt6685PwjKKb4ktZsZYDc2I51F0WOUcPnvorQ=
-X-Gm-Gg: AfdE7cmv9WhKP3HbB++BMvWsp0oUcIGqPJGpHmhXFKTcyDk+facxbswCpuMu+LySyYk
-	hfDFP9+4S8eTowyMIHFilG//VHONsQd4mS9rVj8OTJ2jHc9lu60rSYayKDNQdN+9S3YIEm5jpIp
-	SFFgA9jinVPMjRzP+iZdwXSHcaEIV6ywAgFjcz86tvPqKhDpAAbxtb4o2i+pr37uemGO5NQixm1
-	/KjoKSSmV26BswxBT5KXQZ5zfxIQisJN4Yk1vgXQAOH+czhpep2/fAHd9OuPDya2cIKNs324MHY
-	qokXOX5+b5kB6ujdWx/zR2G4Gxt5x2W3iH7FmhsEiODqLGxVAedIQmiLYuIOJ0HIWVl737bsUTq
-	huwcsqKufk7ujwHID+x4N4qSsQuR2P56KoRkknYOtTHSH1EWqMHpTIdpuajO/o3ioiq7KqABgk3
-	x/Gx+aKdSBnJ+prtQzss8=
-X-Received: by 2002:a05:600c:c046:b0:492:4668:27b5 with SMTP id 5b1f17b1804b1-493c2b3d3ffmr2644035e9.6.1782886773243;
-        Tue, 30 Jun 2026 23:19:33 -0700 (PDT)
-Received: from [10.33.0.72] ([212.133.41.85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47563d194b0sm14748608f8f.1.2026.06.30.23.19.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 23:19:32 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Wed, 01 Jul 2026 08:19:30 +0200
-Subject: [PATCH] clk: qcom: Don't use all caps for Glymur GPUCC
+        d=1e100.net; s=20251104; t=1782895874; x=1783500674;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4qkyYKJBBJfOgR8NQFS/rnAqFlPZoKot/SYiMkB+EmI=;
+        b=iguRb+ji2ncsEqEes6F4hY2EJXa2LJbA1UpJ+HAKuJ58R3KHmdSvs0N/Dpgzkhpe9j
+         NKwHuMjjCgaOV/ZT8decjJ0XBHqzUuFSUh8s5eGrhtL0wHNcDF/keCj6V7G5pXQtDexr
+         s11ya+eCqBcGnO9b5fVL3PehJM4myCsDTRNn22TaZMv+WHLPif4/mQ81q1tTj5OPaaSU
+         WMYiidl8T8g1CEnBagbUDfBXH6z20HRpmwuo0XIQxjMKn77ii5vCa3PTiAu3OtTyyfV2
+         YEBUMa3W7VVdngTi9uFoGMsFCXHvUP4K0KdXqhMRtihHdnYZ4mgmBHxrJK732yrXo+XB
+         rESQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq5sqv7n+74kKPS3dpGClCbpnXFrz5l4Xjxk9zCpCHX8KksE7ZOiuEg8l6yP8ZcMZ0HKNeln3cu6uW1Yg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTI3+Y4867PlhBt1lJc6ERJpqy4QNdzlRT/pyAxRtApfQYtN1X
+	8S9slxZoMhAAPyNlaFxzslhidAAt/xmIuSGnQDujpzddRhCGhqoihRve5QrZima+IUP0i3I+TJ9
+	4GF/h7Y3fVecuprfXzItNXQ1RVXapo0uqpZoatCe668tu32vPqWfPwPYOKnmiBryvKg==
+X-Gm-Gg: AfdE7cmxNgikE1vif5AThCwMC7UWs15TzXpsmOB5Y6nGVFIKCL35bKXWvjcgebFLX6z
+	RSq3YoBE0+LNY3yPdbVZ4p5RoJjMAymbNrSUzOjapQwsPzccG30TNC5FKEqo6mysVSrbfzG3xbc
+	jDLQu/ELCKFgcekVQDbzzPLwlNOsFqohtiq6WzfxG8vCTDO4+TxGbSbSQjmOHSVBn+QkHGZ2qcC
+	PqaVgcYS8fV/x8njFDq5EoLWaTLu1D8/SVyXcQiXmcpV2UgRih+1t6IzKzWq8OTwhmISh/ed1XM
+	N4ptWyGCyTdnFpDLkv/akxmWPrn2rKQ8jPfcNGmU+IRfrqHLgEzqub+jrLPgLRRYcjpXlG4s0bB
+	4z8+6zUqdKJ1Fs1nJCh2j6zlSt9+2Y6RS40o=
+X-Received: by 2002:a05:6214:5005:b0:8f2:7e8d:eed9 with SMTP id 6a1803df08f44-8f3c94d80f5mr4647746d6.9.1782895874005;
+        Wed, 01 Jul 2026 01:51:14 -0700 (PDT)
+X-Received: by 2002:a05:6214:5005:b0:8f2:7e8d:eed9 with SMTP id 6a1803df08f44-8f3c94d80f5mr4647586d6.9.1782895873602;
+        Wed, 01 Jul 2026 01:51:13 -0700 (PDT)
+Received: from [192.168.120.170] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6988270903fsm1829565a12.11.2026.07.01.01.51.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Jul 2026 01:51:12 -0700 (PDT)
+Message-ID: <8d9b045d-edf1-47e2-bc46-202686cc680b@oss.qualcomm.com>
+Date: Wed, 1 Jul 2026 10:51:09 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: qcom: Don't use all caps for Glymur GPUCC
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260701-glymur-uncaps-v1-1-5f7065348eb2@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260701-glymur-uncaps-v1-1-5f7065348eb2@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260701-glymur-uncaps-v1-1-5f7065348eb2@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDcwND3fScytzSIt3SvOTEgmJdyyRTYwszE9M0gyQLJaCegqLUtMwKsHn
- RsRB+cWlSVmpyCcgQpdpaAHjbmdRxAAAA
-X-Change-ID: 20260701-glymur-uncaps-9b538645f0b8
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782886771; l=1097;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=y35146R1hLQHr0cXVvffTxW+/OTdywP5qn459ftUbR0=;
- b=mQrz1gNPzurdTuK+gXJ6oSM7mBxuhXNjzjZoHt5+V/7V1w1jwV2UE9wRxS5ime2wHKmUg+QDK
- BN1QGSiW8PrAbsH6RKrNTWZV4Mlh56gWTl0qGGPjVJaqfciqq3Vsqc+
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+X-Authority-Analysis: v=2.4 cv=J5OaKgnS c=1 sm=1 tr=0 ts=6a44d502 cx=c_pps
+ a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=XN7p8K0ll9WvaQOQMdIA:9 a=QEXdDO2ut3YA:10
+ a=AYr37p2UDEkA:10 a=pJ04lnu7RYOZP9TFuWaZ:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-ORIG-GUID: 2eujlKvf3EvIwwaCGAiMBFi4HZpNInJ9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDA5MCBTYWx0ZWRfX+O7QB3qXlXFb
+ 2Da/UnSkvkLztQ9vFYJPDWuYRFYThTL0aceCj0ggZyxFnKULrTiCCcSctMCQ+UE7wZ+AOsKQVjp
+ 9+JLf1/DSLy3Vy82vyDlHdEc/bK57I4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDA5MCBTYWx0ZWRfX/VgWOLw0T1DU
+ u2/YnQb0AbCkOzHX+nn65S9F/+QjBzkNcLUfPa7jtZP8YtTrM7YE7U4zLMs5Vn8ZzhmKfPeicQy
+ kXFkpM/ZWmo+pM9MX9tIVTQk4bST01J3/S0Ia1nYUMJ9jjb9l4BqT6/JlRw+CTLJWrkKKq8G5W5
+ FU7tIXTVKB9IZQWBbqvPgi1008UvXMJc/JsOCGMYF/yMb8Z24tz18ApB1Pzuf2Q9h7b6bggVS0i
+ UPx4eP4E3Xg5+scZcFpQzSGjHn09rkR35LdSjqzlcLMoU0fbYmnyC/9QwO5wy44VUdYLI7dgCQG
+ Q4Qh7bcQ9JMu8yFQBm81OyQ4gebT6Qpp+F+cVpx8AjAdSP7sMgn8OU8UDdVS5C1/j9eoQAXEWms
+ DibnFbQMXtZbI7RlDEEutUwqm+G0CH+ipJX4Y26tdYx+4UEVj/NK9esxF/aOXpU33dJqH+/Wfrk
+ 5/IxJZfGBeWCev5dzbQ==
+X-Proofpoint-GUID: 2eujlKvf3EvIwwaCGAiMBFi4HZpNInJ9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-01_02,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010090
 
-All other Glymur driver use "Glymur" and not all caps "GLYMUR". Align
-the prompt and help text.
+On 7/1/26 8:19 AM, Luca Weiss wrote:
+> All other Glymur driver use "Glymur" and not all caps "GLYMUR". Align
+> the prompt and help text.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/clk/qcom/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 7d84c2f1d911..4169ecd95ef3 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -65,11 +65,11 @@ config CLK_GLYMUR_GCC
- 	  I2C, USB, UFS, SDCC, etc.
- 
- config CLK_GLYMUR_GPUCC
--	tristate "GLYMUR Graphics Clock Controller"
-+	tristate "Glymur Graphics Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
- 	select CLK_GLYMUR_GCC
- 	help
--	  Support for the graphics clock controller on GLYMUR devices.
-+	  Support for the graphics clock controller on Glymur devices.
- 	  Say Y if you want to support graphics controller devices and
- 	  functionality such as 3D graphics.
- 
-
----
-base-commit: 7de6ae9e12207ec146f2f3f1e58d1a99317e88bc
-change-id: 20260701-glymur-uncaps-9b538645f0b8
-
-Best regards,
---  
-Luca Weiss <luca.weiss@fairphone.com>
-
+Konrad
