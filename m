@@ -1,48 +1,38 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4693F077C;
-	Wed,  1 Jul 2026 11:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DA0349CC2;
+	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782903774; cv=none; b=bRLE7G+Tur0gI0HRJ/Y7Ro2JgSXj0m/nrB4EyC1fMgrpUpLNK9JO8+6ItLUaKKiqTOV7+sUw/L580U9YWpgWZ05glYaPBbUp77M31yPHdTFDgKmVOFPdhVb6g6GUSmKXUE1JSsWfV3U2JPQ6YGrsl5VMDySe3AXZtzVOFZ+4mP8=
+	t=1782939176; cv=none; b=bK8ulepgtLaSgThnImlP5CPaQaVr/lh0HJJinfgILVytJcP4L+D3eVj6GINM/rU6Q2pB0KMuGtUpWO022yGCpfZcw3uZmKwI6FjqTBNumHa75pYhISvqPLLRF+Xm8UOJUMLh5ejFx8vq5HxOidlmkmOLQuHtPCc3cayDlpc5wbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782903774; c=relaxed/simple;
-	bh=NQhTOH7lbS22lqnZrsXUeoym6lJDp0e+hYPviGfdbvM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AUO7NSOvOFzUCfKBZbfj4mK06bm7Gr1U9NkEVNvSt2iWwsw/8YwbGxEYw45KF20b5Q4J5IcGfNU2yGDgmvzB3El4viQ4nP0XPZYSFmd32Tpb6o+P8fGb0uMc4zWHzb4ID7yJQEfWWmxtBDtqrl4aGl42iDEa0knTusr7TqhrHmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVN92ySH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782939176; c=relaxed/simple;
+	bh=2YlDhGN/bU/PSRMNbE96AWQ5T72iWW/Ex5jsIdupOI8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=POKHqXGKCvkXaOg4cNlA6kiG8Ey+78ZvU3q/WmrrwJo6XpsA7ZwgsRB1MPb6awwUsibjcIctwv2FVpzJQoNET49WBM1PJc+7Ob73EL0EYE9gtBtp4GcIoOM3AB323swBQxaOtlHI+3jf8zkeXrllD+7P4nV6bOMFn9QAUK3gLYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvNie/9P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVN92ySH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2821F000E9;
-	Wed,  1 Jul 2026 11:02:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782903772;
-	bh=9vUHsAg9pHC1O7gXCUAYGBB5kTl+vq03cakkfnwM53s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=WVN92ySHyfzvL75b//qrAfhwt7Qlioi0mb+PAguWj/6T/wBFDaacsGLk0q++viysd
-	 VCk4hQCUz0B/e5FabPlrdJ6lmadxYkQY8x48fRd3lTnCMlj834ygvxBKK6jbd6jmRH
-	 I9ehFbVqCcmrQGZgk6fIgSCYUVE4dFXLJs2M6HmxVDqch4jANqfR4JxjzqCcLNnuv8
-	 coC5v7WNLOT1EGSiCVzZkJgD6DDX/KLZV6Z9U3nmCIdj+8CKvPh5/+YY/ty9DxBUNN
-	 ynapR5dT/jL4ZAl5/toY+RUV7o8MRFn2hmTAC/jy3m6T2MaOnnYcETZWNeJbJSP4hQ
-	 pxf7BOqB12tsQ==
-From: Mark Brown <broonie@kernel.org>
-To: David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, patches@opensource.cirrus.com, 
- Bjorn Helgaas <bhelgaas@google.com>, David Heidelberg <david@ixit.cz>
-Cc: David Rhodes <drhodes@opensource.cirrus.com>, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Rhodes <David.Rhodes@cirrus.com>
-In-Reply-To: <20260624-dt-cirrus-cs35l36-v3-1-ec451d5a2908@ixit.cz>
-References: <20260624-dt-cirrus-cs35l36-v3-1-ec451d5a2908@ixit.cz>
-Subject: Re: [PATCH v3] ASoC: dt-bindings: Convert cirrus,cs35l36 to DT
- schema
-Message-Id: <178284521305.368110.12236626138017371767.b4-ty@b4>
-Date: Tue, 30 Jun 2026 19:46:53 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvNie/9P"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B3D3C2BCF4;
+	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782939176;
+	bh=2YlDhGN/bU/PSRMNbE96AWQ5T72iWW/Ex5jsIdupOI8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=AvNie/9PxKLUN03sgHFcANLfObgjnVpA0FY4vjj5pCeyEAxNmQ24bJshz2QD+tLW+
+	 jVfKPZ6iLq7ueiG9LZje8rhRavso4/+dCX7BiOZbBhoIESk7xMcbxLQSBV1e26juid
+	 flpFGZh1MzIMw7ya7AGgQHY4G+vUKhLSsvPeDKcJck/h1PRRHm1TvDj7tbS0hwhIm0
+	 yPkslC1KTv/ShBGwJ0t2M5WzW1mAPcLdUJ9ojgGsNaVi0ePtnLls/Ga7JF68qRaPBC
+	 R1+uwZBPISfVTrARrQyGL5vF6X5CeQTfAQ2CTPwlClXfNhs7TX82I74/bf41YUErnq
+	 QMTfjrqI0TJXw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00C4CC43327;
+	Wed,  1 Jul 2026 20:52:56 +0000 (UTC)
+From: Cristian Cozzolino via B4 Relay <devnull+cristian_ci.protonmail.com@kernel.org>
+Date: Wed, 01 Jul 2026 23:55:54 +0200
+Subject: [PATCH v6 1/4] arm64: dts: qcom: msm8953-flipkart-rimob: Enable
+ display and GPU
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,47 +41,155 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1130; i=broonie@kernel.org;
- h=from:subject:message-id; bh=NQhTOH7lbS22lqnZrsXUeoym6lJDp0e+hYPviGfdbvM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqRPPYH6cLjC3o/TM6h/i25kDWgoXC9C9yNFpec
- csCGChOIqOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakTz2AAKCRAk1otyXVSH
- 0Em9B/47mZmiZdgWsDglKabwgp6ZTCbgVxGNlVo3K5MZ3oC3SaAobaEHvGByFTIUoAmonoBEwnI
- kZ/B8TH8LTTTrn5DnbHNgzuwIZku2HwI0m9lGmQ6fqNR3Wob77fa6OhzdulYrEeAbvyVjvzvivM
- dI8/0cPwJLeFhGUaoyowgyimar5W4+kw2DF+PiuPUODPRt8GOB6di/iBDW3lSzUiamN16MJW//l
- jKB8wqlFWWRWRJPaxXLZivMewvPbUszjRF7sEKabqi2kbm7vmGyulQs0zDNJPHpi6nytNwU+aGl
- LwY5GwjaNSDqs1WkyZO3YHXrTQV3qvhl5QZDVjl5+qUjFvra
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Message-Id: <20260701-rimob-new-features-v6-1-be7d5d1e007f@protonmail.com>
+References: <20260701-rimob-new-features-v6-0-be7d5d1e007f@protonmail.com>
+In-Reply-To: <20260701-rimob-new-features-v6-0-be7d5d1e007f@protonmail.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Cristian Cozzolino <cristian_ci@protonmail.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782942968; l=2566;
+ i=cristian_ci@protonmail.com; s=20250620; h=from:subject:message-id;
+ bh=JuCU1pE0+0lvM8kuKiy/BFRbd08GXSc2r+jPT6oN2Xo=;
+ b=et0KJ9GZbZoioy7N11n18rD2tpIWxq3mY94zOMOrkqYOfJP2yeSoatX6N6wO6HANkCEb3KzTT
+ 6zct88Mp0NYDTrPwb3OxL41JdcYR/zDr5tvt3jjdvBBzWXKC/6umIOq
+X-Developer-Key: i=cristian_ci@protonmail.com; a=ed25519;
+ pk=xH5IvIPUNHV1Q8R0/pq2CfuVFR/wTiAyuyi6IwedjZY=
+X-Endpoint-Received: by B4 Relay for cristian_ci@protonmail.com/20250620
+ with auth_id=438
+X-Original-From: Cristian Cozzolino <cristian_ci@protonmail.com>
+Reply-To: cristian_ci@protonmail.com
 
-On Wed, 24 Jun 2026 23:10:02 +0200, David Heidelberg wrote:
-> ASoC: dt-bindings: Convert cirrus,cs35l36 to DT schema
+From: Cristian Cozzolino <cristian_ci@protonmail.com>
 
-Applied to
+Add the description for the display panel found on this phone.
+And with this done we can also enable the GPU and set the zap shader
+firmware path.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.3
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Cristian Cozzolino <cristian_ci@protonmail.com>
+---
+ .../arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts | 73 ++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-Thanks!
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+index ef4faf763132..5a9d71d1e466 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-flipkart-rimob.dts
+@@ -78,6 +78,13 @@ vph_pwr: vph-pwr-regulator {
+ 	};
+ };
+ 
++&gpu {
++	status = "okay";
++};
++
++&gpu_zap_shader {
++	firmware-name = "qcom/msm8953/flipkart/rimob/a506_zap.mbn";
++};
+ 
+ &hsusb_phy {
+ 	vdd-supply = <&pm8953_l3>;
+@@ -87,11 +94,70 @@ &hsusb_phy {
+ 	status = "okay";
+ };
+ 
++&ibb {
++	qcom,discharge-resistor-kohms = <32>;
++};
++
++&lab {
++	qcom,soft-start-us = <800>;
++};
++
++&mdss {
++	status = "okay";
++};
++
++&mdss_dsi0 {
++	vdda-supply = <&pm8953_s3>;
++	vddio-supply = <&pm8953_l6>;
++
++	status = "okay";
++
++	panel: panel@0 {
++		compatible = "flipkart,rimob-panel-nt35532-cs";
++		reg = <0>;
++
++		backlight = <&pmi8950_wled>;
++		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
++		avdd-supply = <&lab>;
++		avee-supply = <&ibb>;
++		vci-supply = <&pm8953_l17>;
++		vddi-supply = <&pm8953_l6>;
++
++		pinctrl-0 = <&panel_default>;
++		pinctrl-names = "default";
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&mdss_dsi0_out>;
++			};
++		};
++	};
++};
++
++&mdss_dsi0_out {
++	data-lanes = <0 1 2 3>;
++	remote-endpoint = <&panel_in>;
++};
++
++&mdss_dsi0_phy {
++	vcca-supply = <&pm8953_l3>;
++
++	status = "okay";
++};
++
+ &pm8953_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
+ 	status = "okay";
+ };
+ 
++&pmi8950_wled {
++	qcom,current-limit-microamp = <10000>;
++	qcom,num-strings = <3>;
++	qcom,ovp-millivolt = <29500>;
++
++	status = "okay";
++};
++
+ &rpm_requests {
+ 	regulators {
+ 		compatible = "qcom,rpm-pm8953-regulators";
+@@ -238,6 +304,13 @@ &sdhc_2 {
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <135 4>;
+ 
++	panel_default: panel-default-state {
++		pins = "gpio61";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-disable;
++	};
++
+ 	gpio_key_default: gpio-key-default-state {
+ 		pins = "gpio85";
+ 		function = "gpio";
 
-[1/1] ASoC: dt-bindings: Convert cirrus,cs35l36 to DT schema
-      https://git.kernel.org/broonie/sound/c/bff7fad1010e
+-- 
+2.53.0
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 
