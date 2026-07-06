@@ -1,39 +1,87 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8A64DA53C;
-	Mon,  6 Jul 2026 09:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D6B43C7B3
+	for <phone-devel@vger.kernel.org>; Mon,  6 Jul 2026 09:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329445; cv=none; b=JFHF0tSaGlqFpefWKQQEM/jurJyjMLVCOao6qDn2lXZttpoyGbEKpUQ6tnty/miEGil1xuPs0ogqOpV8FwrYN8+k0S8RKTMLisWRmE/JnhxhsVTCGEmwe7EK+kVHxXjLa0GRxTQHmknzjyeJyJEoEE+SeFwrEmSvw/KWKUbiQHY=
+	t=1783330818; cv=none; b=ay2p5HtjuHl+913b1iagSzPB3QDFs9pn6PUwj3PHP9zHzIN68iQT8iGF7jmJdsbxXYBWv2wTzX3G1rdPEnCEs+TG3W094yRy2co7FUs1hNTLcLPoVTystLRIyDVL1j9Kr74uwFpWK4jbq3Y4P6FS9eqh3X0Fi+MAHRn98QRABrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329445; c=relaxed/simple;
-	bh=klE1DYmlrZdBY9yEO5N860Zh66sMFtAvFr+2kINBUtQ=;
+	s=arc-20240116; t=1783330818; c=relaxed/simple;
+	bh=/mGvhP+bM/UE7zk3QUuSnK0plHwAziRdFpYlJdVwdK4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D9ekJDUbWRdahfSPWOfX0mwDzAPKfJLY/2BuX6+BBLAf3ZUph7nkdvZB0jmVqXsQSju9zj5UORRk709dBDrvdhX8MVTuQgxIj23i7LqHV9OBA0isMwpW0vbC1gPPZAh2bH9n/22hvJs0v9jbQAw5G4kQcqDmopZg9GivoqvcVps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=xgiQEnEd; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=ngcRLCgSb0Nyp7hIz2cX9Q8sAxTPsQbWOQqHfGyebeINqDWbo+6Pk9zJZq1ZQtGAfjnz+1gajkkhXe+AdjRzhW1mYKVDzb+uSsZO6jIOLu1QFQL9gQtR2UVk/8gbLdHpaH7d7Nk0Dh0Fuuu78SOdU2/WD6rup/gY32jLF/xaP9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gkKoo6P+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LhMBEn0z; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="xgiQEnEd"
-Received: from [172.20.10.2] (78-80-16-106.customers.tmcz.cz [78.80.16.106])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 933345340536;
-	Mon, 06 Jul 2026 11:17:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1783329432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ic8uu5oVJNxFuEiRo5VWDpp86FEfjcvS2MRIg1QrZWY=;
-	b=xgiQEnEdOUnanAm7VUbMRU4SD+QbE7hTa+akFwo8jbwzqbCZunDgm947bxzhDPP5T0fUJR
-	6D7oWKK6wP2NAQY323tr4jNxlZf6iyVFVf/HK8wIRiNh1lFoF9VnA4e0lPZqTkCT0rtBPj
-	+DxuhgooMax4WsiUJtsq1XXKa/GIH7s=
-Message-ID: <323f9495-16f2-474a-9604-c67a3279571f@ixit.cz>
-Date: Mon, 6 Jul 2026 11:17:11 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gkKoo6P+";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LhMBEn0z"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66694GHs142717
+	for <phone-devel@vger.kernel.org>; Mon, 6 Jul 2026 09:40:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Ut+TLtnWZIvlepOTyMstyRteyQgk6ZW9hRzle6ONrB8=; b=gkKoo6P+MsiYfvVT
+	aGNasdm0QPQYJinayQVEtPkSO1T0jI3VFfioSA3AQNpd8fQgzbmEBKn3b8Q6/ww7
+	vAFW21F5jz6MaGtb6V0fXlR1JDQ70KAbVf/vDbxiIlLxZuO8qiw3l+tm2GZJe6vw
+	aQRrzDmJx9TAvUxEu2Eja5UC6jTzT7qku/mMdkpVYd5prABCk2NgFYoKgUyDahuO
+	6NGYb5nubl7scvyy00uameIM8+ltJ5nTvxKLzZ9rDp5vwZQ9QjC2kZL31KxKWZLU
+	cPCnbqwuw2ToWLcyYAGyMfVdUPLnRYOnF8kCRxgMK5PKiA2Rtm0071BS+w/HYEX8
+	fWFuHw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f6s4swq0c-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 06 Jul 2026 09:40:14 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c08e9c344so12443901cf.3
+        for <phone-devel@vger.kernel.org>; Mon, 06 Jul 2026 02:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783330813; x=1783935613; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ut+TLtnWZIvlepOTyMstyRteyQgk6ZW9hRzle6ONrB8=;
+        b=LhMBEn0zxWA1jTroFpXPsjtMVnGwPuxb/EBRZdSm1b5uVqxcbZCEm4jerQ3K6f2swo
+         2uRSohYd5Sbos3+cSAVTaIWL5L2YHbMfpKqB4NxnqZJ0n5LRd5m4fUefZ2ldjKuwDvd2
+         kyEk6j92DFpYz+7xiBJZy2P0CW2/Aqyn8jegW7+768LYpPJ8rbgCNVRg1+sxRR13HIYa
+         hd33q6yRQIOMh9GAfAxgoqdQ3tB2WgGLDj7eFfb3a0f+2tMdGzKNdcnOj8jBRjPeDAge
+         T6OfnAr4qFpmWaqoOdVcYqgJ85T8SG0o9f9TRdvBglUIAY8Qo6TpT+XCaFEW6/khBv8v
+         Yubw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783330813; x=1783935613;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ut+TLtnWZIvlepOTyMstyRteyQgk6ZW9hRzle6ONrB8=;
+        b=UeXbaoEzkQ4fz9PP9jJnwvkPUsdJyJDAYdEDGevUSY+1nPNAk+ElnSekOObTOi7lRE
+         uyR/s/o3iNZdPv4FaK9K0cmvNbIKEjgz1xEbRWRZnx3vQ3nT8vUXs64KB1fCnjkZZCyw
+         IH0XJBGc9LjkdPH/ENg3iHzolnPVTsymfUQHUGBsqCsW2piSgue5yms9UJSIwubR6FEy
+         FFJpqOy2XUHZDgjkbcGHlVXitK31PpQFcdUMVZrjsKgigj0fUcT2SBhincnNNg3c88I7
+         qZJQvl2fvyi4wmiSQCVSDaeKaKojy5dPCF2jN/LQ4b884eEXCagLEvMM42sufR1LahGC
+         B6gw==
+X-Forwarded-Encrypted: i=1; AHgh+RrwtfD73guyCwWiRuzvYIsa7M01D6Gl3ORMEBjB1gDaK4aBG0YEmUruNQdgY6LpVR+GTQFJIZ4MtsNhzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW8mANRLfaTBW9Bn+gQTXIjyCp4snMETANN91p0O4BTcmAukA/
+	W7Jl0qTieHDu+FkFw+2GeCl3FDlrsWDrTdTSnRMiAonyxBUNT2WVStJIVZW0urDKYIVbzBFJmNm
+	UqEQ7bRXEYv07X5mcnZDXbuF2+blxfwiv9yGwLaPMEa3dvQHtwq3V7di3cAXNKb4P7w==
+X-Gm-Gg: AfdE7clNSFtsaFAvyDFO/jXDV8g8RUmcRpivuy1d6fddrlP7Dd1I6T+oKU1jjBs5bTn
+	B+o4QSofDZr8Zm9p4GZ0ZY/cw9vXpgwAO+hZPKAWlg73YJl4x7wgwwxbBU9U6PPMPX5WVV/i6Jf
+	6EXp9qMyjBKZLx2E5TuY1ReSou4YxbB7KzJw0PBhJde7Q3Xqbp4nj3rcaBn8niA3j9dkJX38K82
+	kDEKFI3xgvVx/VLIwNnu2uuhKYkzckenq/LTQojs7PGB3tzx4Y3B7lnVXYMpS8PVnIrf8I5kzGE
+	XAR3s08n3hdZ2jXzS4jCNfwD4PP/vGoyqWUi1LokR4fvbVoTeODtN7axKJdy4qGOyzHHgb/2GuX
+	FRJZeDE4Z93ewudQ8GyxM03Rt4utejrgXEtA=
+X-Received: by 2002:ac8:5989:0:b0:51a:8079:795e with SMTP id d75a77b69052e-51c4bd8eb68mr114023131cf.4.1783330813245;
+        Mon, 06 Jul 2026 02:40:13 -0700 (PDT)
+X-Received: by 2002:ac8:5989:0:b0:51a:8079:795e with SMTP id d75a77b69052e-51c4bd8eb68mr114022901cf.4.1783330812816;
+        Mon, 06 Jul 2026 02:40:12 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b628c16fsm728351866b.37.2026.07.06.02.40.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jul 2026 02:40:12 -0700 (PDT)
+Message-ID: <a1ce3c2b-4a68-424c-9aac-6cfaf6a98a24@oss.qualcomm.com>
+Date: Mon, 6 Jul 2026 11:40:08 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,93 +89,78 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 6/6] arm64: dts: qcom: sdm845-google: Add basic audio
- support
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>,
- Richard Fitzgerald <rf@opensource.cirrus.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- David Rhodes <drhodes@opensource.cirrus.com>,
- Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH RFC 2/6] ASoC: qcom: sdm845: use DSP_A format for TDM
+ codec DAIs
+To: David Heidelberg <david@ixit.cz>, Srinivas Kandagatla <srini@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        David Rhodes <drhodes@opensource.cirrus.com>,
+        Conor Dooley <conor+dt@kernel.org>
 Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+        linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20260705-pixel3-audio-v1-0-3b66f33859f1@ixit.cz>
- <20260705-pixel3-audio-v1-6-3b66f33859f1@ixit.cz>
- <373bbf80-a874-459c-b77e-a86dc5f75d51@oss.qualcomm.com>
+ <20260705-pixel3-audio-v1-2-3b66f33859f1@ixit.cz>
+ <15493c41-51ec-47f1-be1f-d211a970e487@oss.qualcomm.com>
+ <f71e9b9b-a023-4d07-a6ca-58714ee22d06@ixit.cz>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <373bbf80-a874-459c-b77e-a86dc5f75d51@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <f71e9b9b-a023-4d07-a6ca-58714ee22d06@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDA5NyBTYWx0ZWRfX7bmjSuJEJwlg
+ inCLsi5ocGKvADHOGiKr4RvHolX5gxkgz0T0s6FZCti8kpE8iJBB5r3EAB2NWCP4SnjUOCwjefl
+ 0aAAoLxBafaoRUXjbKOqwTxmTFUd7IE=
+X-Proofpoint-ORIG-GUID: 5I5ORmiZPhZYSJweKxj1jNAKiyLq5iJn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDA5NyBTYWx0ZWRfX7GS1OMWWvwLp
+ 4oIo4okOidwwPf5yOVtVl3AE4UMXXHV1mKNCHxG2FD3lNQSx05inDhlOGpPAnCpW8E6+HQEOmKY
+ bmLCSalEuTlWbbyBwX9N/QHI2/zSwWzXQX+wGPQVOxKGnXpL6zZGLOTad0DC+tVdkE5brvYnFpG
+ pP9s/Sd+Su+W7aKtNPSReIX6bVN7YahnXsD3UYb9+65gn4dql6SXq3GHCgxtFn2AgGM9Ilhn7ya
+ /UsNaAPfiELnp2GYutWGGQ/jnGgHtuGfrbgWs0H6cSYSOGk4PxAG4hFY65gHYlYAlE2RXbQx3Et
+ 7eu7R1+Sc77w41TB2H/ElEAY6Lh8uCCyPzDma6CzkSqrv/iF2NkYQUnYgZNR6zowV+h7b2fPzxP
+ M1Xu8904o+oZuLsdRdOmIRW47peCx5/aeJXdyhsP2goHKOeMd8yhBXAkYS38Qg3Nv2qFiN1m1n0
+ 9JFeWWJpCVbHnz85nQA==
+X-Proofpoint-GUID: 5I5ORmiZPhZYSJweKxj1jNAKiyLq5iJn
+X-Authority-Analysis: v=2.4 cv=ZfQt8MVA c=1 sm=1 tr=0 ts=6a4b77fe cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=widc2lmKH10sdeCS_vkA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-06_01,2026-07-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607060097
 
-On 06/07/2026 11:14, Konrad Dybcio wrote:
-> On 7/5/26 10:06 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
+On 7/6/26 11:15 AM, David Heidelberg wrote:
+> On 06/07/2026 10:33, Konrad Dybcio wrote:
+>> On 7/5/26 10:06 PM, David Heidelberg via B4 Relay wrote:
+>>> From: David Heidelberg <david@ixit.cz>
+>>>
+>>> Before the DSP_B only worked because the only close-to-mainline consumer
+>>> cs35l36 codec was patched to map both DSP_A and DSP_B to the same
+>>> hardware register value (asp_fmt = 0), which is inherently DSP_A timing.
+>>> Use the right codec (DSP_A) which works as expected.
+>>>
+>>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>>> ---
 >>
->> Introduce support for sound card and wire two CS35L36 audio codecs for
->> top and bottom speakers.
+>> Fixes?
 >>
->> Inspired by commit from Joel Selvaraj.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
 > 
-> This looks good, but since the binding is not YAML, it introduces:
+> I was thinking about it, but I don't see any mainline consumer of TDM within the sdm845 arch.
 > 
-> failed to match any schema with compatible: ['cirrus,cs35l36']
-> 
-> so please also fix that up
+> If you think it make sense, I'll mark it.
 
-I did :) bff7fad1010eea6f183fb110b54171cf8700ef8e , at this moment in the -next.
+I personally think Fixes makes sense whenever the code is fixed,
+not only if there's a user-visible bug. Up to you.
 
-David
-> 
-> Konrad
+Konrad
