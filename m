@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020F74252D3;
-	Mon,  6 Jul 2026 09:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8A64DA53C;
+	Mon,  6 Jul 2026 09:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329335; cv=none; b=WmbU4qBZV0UDy6xDkca7QHYz1SPIK54otkaE8hnTRwLJyWHi/60Y7wgDML7k8/D+1/C+0LsEfXKafUr83QTnxpk698K8MbDG0rCyRD4FWiIL2AW+Vsbx+gTthLyCqMZNw+suGesWQFUCjfsWDoaDiRIMQGBG3TeOOAbizMoiZaU=
+	t=1783329445; cv=none; b=JFHF0tSaGlqFpefWKQQEM/jurJyjMLVCOao6qDn2lXZttpoyGbEKpUQ6tnty/miEGil1xuPs0ogqOpV8FwrYN8+k0S8RKTMLisWRmE/JnhxhsVTCGEmwe7EK+kVHxXjLa0GRxTQHmknzjyeJyJEoEE+SeFwrEmSvw/KWKUbiQHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329335; c=relaxed/simple;
-	bh=0hS8vw7MNSF4HOyaeNLcycdWRgFtm2Vd8D4R8NZbuyE=;
+	s=arc-20240116; t=1783329445; c=relaxed/simple;
+	bh=klE1DYmlrZdBY9yEO5N860Zh66sMFtAvFr+2kINBUtQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FcYUyJkNqACx9ua31Q897+KD2pylI0ncQy8jze8AXKf2T1UOWoaUatex74AlbHE36rCWapEGsoLD8TNbg2BiE6K5e0lqrwcLTHehp3/DV0lCmnttOPR+kOw25HvTAcABXpbhnPKCmLbiJ4HsAgkPOOMgzEoc+4D4b16W3v2fAP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=b73rt3BD; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=D9ekJDUbWRdahfSPWOfX0mwDzAPKfJLY/2BuX6+BBLAf3ZUph7nkdvZB0jmVqXsQSju9zj5UORRk709dBDrvdhX8MVTuQgxIj23i7LqHV9OBA0isMwpW0vbC1gPPZAh2bH9n/22hvJs0v9jbQAw5G4kQcqDmopZg9GivoqvcVps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=xgiQEnEd; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="b73rt3BD"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="xgiQEnEd"
 Received: from [172.20.10.2] (78-80-16-106.customers.tmcz.cz [78.80.16.106])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 5F30A534071E;
-	Mon, 06 Jul 2026 11:15:20 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 933345340536;
+	Mon, 06 Jul 2026 11:17:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1783329321;
+	t=1783329432;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OpymYWCMeOw0pSw3wVZrb6qM4nRKD+tybJpcb6YiwcI=;
-	b=b73rt3BDhJUcgcso25zAz9ZQNupBXcn9+NTev7icQ4zItktQVIEqeVUP20QnRkDSJZaUfr
-	dEla340i1RzUpgLndBKHNd5p/LfHR2l9RPTIGqyArPMqqcQy7SbixGB8rvY5T5hjZ5z3TD
-	YS71dhoZAWKdXWyYFUwz40eU+dQZdUk=
-Message-ID: <f71e9b9b-a023-4d07-a6ca-58714ee22d06@ixit.cz>
-Date: Mon, 6 Jul 2026 11:15:19 +0200
+	bh=Ic8uu5oVJNxFuEiRo5VWDpp86FEfjcvS2MRIg1QrZWY=;
+	b=xgiQEnEdOUnanAm7VUbMRU4SD+QbE7hTa+akFwo8jbwzqbCZunDgm947bxzhDPP5T0fUJR
+	6D7oWKK6wP2NAQY323tr4jNxlZf6iyVFVf/HK8wIRiNh1lFoF9VnA4e0lPZqTkCT0rtBPj
+	+DxuhgooMax4WsiUJtsq1XXKa/GIH7s=
+Message-ID: <323f9495-16f2-474a-9604-c67a3279571f@ixit.cz>
+Date: Mon, 6 Jul 2026 11:17:11 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/6] ASoC: qcom: sdm845: use DSP_A format for TDM
- codec DAIs
+Subject: Re: [PATCH RFC 6/6] arm64: dts: qcom: sdm845-google: Add basic audio
+ support
 To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
  Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
@@ -57,8 +57,8 @@ Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
  devicetree@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20260705-pixel3-audio-v1-0-3b66f33859f1@ixit.cz>
- <20260705-pixel3-audio-v1-2-3b66f33859f1@ixit.cz>
- <15493c41-51ec-47f1-be1f-d211a970e487@oss.qualcomm.com>
+ <20260705-pixel3-audio-v1-6-3b66f33859f1@ixit.cz>
+ <373bbf80-a874-459c-b77e-a86dc5f75d51@oss.qualcomm.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -104,30 +104,30 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <15493c41-51ec-47f1-be1f-d211a970e487@oss.qualcomm.com>
+In-Reply-To: <373bbf80-a874-459c-b77e-a86dc5f75d51@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 06/07/2026 10:33, Konrad Dybcio wrote:
+On 06/07/2026 11:14, Konrad Dybcio wrote:
 > On 7/5/26 10:06 PM, David Heidelberg via B4 Relay wrote:
 >> From: David Heidelberg <david@ixit.cz>
 >>
->> Before the DSP_B only worked because the only close-to-mainline consumer
->> cs35l36 codec was patched to map both DSP_A and DSP_B to the same
->> hardware register value (asp_fmt = 0), which is inherently DSP_A timing.
->> Use the right codec (DSP_A) which works as expected.
+>> Introduce support for sound card and wire two CS35L36 audio codecs for
+>> top and bottom speakers.
+>>
+>> Inspired by commit from Joel Selvaraj.
 >>
 >> Signed-off-by: David Heidelberg <david@ixit.cz>
 >> ---
 > 
-> Fixes?
+> This looks good, but since the binding is not YAML, it introduces:
 > 
+> failed to match any schema with compatible: ['cirrus,cs35l36']
+> 
+> so please also fix that up
 
-I was thinking about it, but I don't see any mainline consumer of TDM within the 
-sdm845 arch.
-
-If you think it make sense, I'll mark it.
+I did :) bff7fad1010eea6f183fb110b54171cf8700ef8e , at this moment in the -next.
 
 David
-
+> 
 > Konrad
