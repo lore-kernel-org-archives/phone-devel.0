@@ -1,54 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E5B2FFDE3;
-	Tue,  7 Jul 2026 01:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1416231F9A0;
+	Tue,  7 Jul 2026 01:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783387657; cv=none; b=fSq1IMimmvctK/TXUrMzXfn3XtdsXTiJhTZnBCMa8TTAFDhSb1lruEmssWIifdTtOAM4/aDozAd5DIgG0lQFwztZcSx4dSMgjT2WFX2iCIUjw1bSzsebMFV6UCv+wWYv/7SeMH/BEzaeczZ72n98zi0eJlz72GYfvkJ0nfYHyp8=
+	t=1783387665; cv=none; b=heMnLiWBGxN/EnvRYd4v1KBkbW4RRJZoOGjaAi+CTWNfkETYr+zWwWrgNYFWHcQRpnKOl5O7QE/ylbbJbzhJJC+vweJF18HcArPTvzbbp6g5znHhwIIL0oEBaEFGC4PK/1VXT5WRuW5pjJxCuMMJ+rEmxLxQNMYBRY9gVJr9uvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783387657; c=relaxed/simple;
-	bh=kni8+lO6N5E+laA2Hc7bOfG/j+KSwOIEn96kfYxITo0=;
+	s=arc-20240116; t=1783387665; c=relaxed/simple;
+	bh=lvw3I4TWI1jWK69gk1yx0G/XBv5emzOqwkSWWH99/OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AkQYPDClgLYnlBXH2ZfVOn2pmpdRfU8mirBl45gdlMspbNNc3QOtIxPpskF2LrUiFTrvuoRG59fVA8Fiq9vivbCjNrXJjw1almzRScX9Qou8qehXEyZbx3o8r+dIaOMfveEX9PoG8aFjcMkbH4HZk22yTdRhObNH2LNFEo50Fng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2qgSrNx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PPjNolisl3coj1jjxvwuVoQ9MTzOyF/O4CwKtjsaQZ5HuHdC6id2M//ExeOas2HL1k4sdMvVHuOcG6JTBU9vVayqyrctzZ60m4xaxhbS8rkLfxREcbg1RzTofe9/Y63kA5jW5eBbKv5OCXf+AbMhajhrvZwisHF1O75IZjY7hkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbFg8IqO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2qgSrNx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D501F00A3E;
-	Tue,  7 Jul 2026 01:27:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbFg8IqO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337301F00AC4;
+	Tue,  7 Jul 2026 01:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783387656;
-	bh=HCkOFf4noYW2Oi5lHGy48ez1wOQdlsBhJaJd+daqKMk=;
+	s=k20260515; t=1783387662;
+	bh=g7F4jQ/jT+kjL2k9TN1bHVmEhgRhrOnB0T0rRK3UpCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I2qgSrNxmAmxs5jjRrLocOuSldR/GJR5DwPDZzKF2RF/lpjp7VJcXAElLHi82IYfj
-	 ruzruuIIHCo38VusAgn1MmnhL97FnlwHdMJfiX2wL1atyARDBAFllFCgP2+dVo6lAx
-	 9pxSaFrCOU4pxljyVge1fxBfKFVlS8kM+7yR7+FnGJ71dXfRKwJWU+oCa4UINRwZlU
-	 4E9Mu11XRQVUnyF1he9iMk9TWdVQ+f6gYrcT/P5V9Or4roPf7D6UqRdxOGQgK43xb2
-	 ahuDto+QOPDQctFR57UWQxVaa96lfQ48RhGcsNXyXXWLJbMwcZPReSIvWJ7UiMpWTb
-	 7i4+A4BuF1cxg==
+	b=EbFg8IqOwSkERWAYcsoID8CwdcZ+1LWAFAkm5o8sEyWeZfghgsLMdu9DAdwPUcHHx
+	 kWUGsd2meZYe5CCf94Tz9cycWMWizHj7K9Rb07B1GNSOE8zQDWKrSDSzxaqTBwb5Bf
+	 pdpSM5pyiKRW2YusbNo0YHF3BIxAOQNrBjM9lH0v9OB0K2qKQFeH+kTOj/msRhym6W
+	 LGMk05kzKsXV+DkCWALTzRrT1fmNH3BVM9rDcoWyKi5fegG6WINC9iXgyxyLw7ua3T
+	 C1rypRf8dqvu0qOkwLCO5GoRzML3DegSda4UFgc6mnrWLswSafsinZ+lONqkAKKkqO
+	 KQTS8IqXf/R1w==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Vincent Huang <vincent.huang@tw.synaptics.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	David Heidelberg <david@ixit.cz>
-Cc: linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 0/2] Introduce OnePlus 6/6T touchscreen compatible
-Date: Mon,  6 Jul 2026 20:27:18 -0500
-Message-ID: <178338764545.1558388.7968899731538373474.b4-ty@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Some improvements for SM6350 & Fairphone 4
+Date: Mon,  6 Jul 2026 20:27:24 -0500
+Message-ID: <178338764567.1558388.14038060755092062792.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260523-synaptics-rmi4-dt-v2-0-0645122babdc@ixit.cz>
-References: <20260523-synaptics-rmi4-dt-v2-0-0645122babdc@ixit.cz>
+In-Reply-To: <20260505-sm6350-misc-v1-0-0b9efc22690c@fairphone.com>
+References: <20260505-sm6350-misc-v1-0-0b9efc22690c@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -59,18 +54,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sat, 23 May 2026 11:45:33 +0200, David Heidelberg wrote:
-> Mostly related to the
->   https://codeberg.org/sdm845/linux/commits/branch/b4/synaptics-rmi4
-> series, but independent on other changes which I trying to upstream for
-> more than one year.
+On Tue, 05 May 2026 17:08:32 +0200, Luca Weiss wrote:
+> Add a few missing interconnect paths, the pil-reloc region in IMEM and
+> correct the node name of the simple-framebuffer node.
 > 
 > 
 
 Applied, thanks!
 
-[2/2] arm64: dts: qcom: sdm845-oneplus: Update compatible to include model
-      commit: cc8748ed4da16233d5b3f27e86a412a991645aed
+[1/3] arm64: dts: qcom: sm6350: Add interconnects for GPU, MPSS & CDSP
+      commit: cc62a79bfa39e057c73828c1ed369b63d832edca
+[2/3] arm64: dts: qcom: sm6350: Add PIL info region
+      commit: edda2a710b87fd49bd991895f34195b6ea37e286
+[3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Fix address in fb node name
+      commit: f6e65005fe55c3d09287851523de06367cbf0bc2
 
 Best regards,
 -- 
