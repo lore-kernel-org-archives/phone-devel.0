@@ -1,125 +1,111 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F373DCDAB
-	for <phone-devel@vger.kernel.org>; Thu,  9 Jul 2026 07:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F5339E19A;
+	Thu,  9 Jul 2026 17:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783580826; cv=none; b=KnDflAEBDa6v/tB6/DpV4ZoiEjIvjOpKOdQL75VHsKClr0FOUbQNxF8nkRktGntgYyfstXEHaX17h/XDvrDpMm+Cwlhh45C3H6gEjg9ifCGQwQKfWFS+nM9CtXuz+88M+Ozbw//rdjXFOrJmw8DcBa+QiGK9yoOc4j/0XH8SLeY=
+	t=1783616416; cv=none; b=VlsuCKtZa2ZEqQNe35jE+yLP5U5+p0vl2/9JJ/a/oN7K/1JvWp1QkvkPbmjcPzK0L7cq+P0Jd3mJHlXLDWLc9mLqMWEhL9Ac/2WdStCO+xO0PYR1Om7O/pO4MMGn2C02X38HX42VM+cuv3NJ4FDwUab9dnFBiS+W3DK5ZsUOQe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783580826; c=relaxed/simple;
-	bh=Bnd/Zp3niZIQob/FNfLgwtO3XTUE9bxrb51tY42Yjss=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fJeP8lZrp5Hq9vq3Jgt9EPFJmCWGuBd8E9svOHv70CFLZ/8I9Gyxb9uJmgLmOnms/hf06DcJP6w/IcG9WRbJzvbUJgRXoPB+3OMAtJsIewHiSCXVH804ZMN+jvDMZi9bs2kNrOr+moAz/pl2LM4rFadDOqczRbnFPZCeT3h+loM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=gLsp7Dd1; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1783616416; c=relaxed/simple;
+	bh=BgOB4cA8VuQ/dZ/q/j/sqfbK5UXDzkPMDIFs+OghEXs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CpspIsBLhholBL+rdFjX5A4ta2jtrx9YWY6FPcWmcg7hoNWTkJ26Szd3BQTUoE4gw5eeCyDFsgimbgJOy36Pyg3dNxvw6EbbFRidEwX47naxll91TLSwIPdy4QhgVBcasTWRgHkpgcAu6wLfBQtAyQpxcjcv20guaXIGRcCJ3xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CA6KugSv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="gLsp7Dd1"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15c257a488so200266466b.3
-        for <phone-devel@vger.kernel.org>; Thu, 09 Jul 2026 00:07:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1783580820; x=1784185620; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=39wxSflXcaAuLOW85LSK1MzZPDJ4dD+cTINLmzJuWNw=;
-        b=gLsp7Dd1WVvvxNVzg0TEshjZfYeaBtgcq8CTqXXbwUOJd7r8Qtb+oP9eCA/LzinkrT
-         /ueUwtkfdbEZT3eRvolfn182weA34O2dMkA/8QNSaiwQ4Oos0CsAqs/uaoDPXGSue2QE
-         sE5Iau+Am+lLQ2kJj54eDIkSdJew+WpHDO/bFtybnWU8S5C5Ll0s2trL+ntKRvcgEh8w
-         iZ3SzhmzPVaxidRhAA4aPtwzhpMwE9IN2w0nnyx/NvkFN2EJnQnoMpPmNN4iNn4O9vdp
-         hiQf0djgmMURAn5qc1tsFRlkv2rSEDq213wtVSbXULMU4+y2n+0u/CWfJ+4MEFiq2Pvd
-         Kdow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783580820; x=1784185620;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=39wxSflXcaAuLOW85LSK1MzZPDJ4dD+cTINLmzJuWNw=;
-        b=BmyCp4RyNZGhiLJtEhWSpbyw+x3ko9jyk28xG3wU9+V9Ssc8Z7OquU/ncKJ69gslM4
-         e/o9r93VZ7pgbMgWgwe41hpTTlR0Tx5gTREzz5Npa3RXkz2NNy1HizcyzQ75bOxP7uvz
-         cmrPbkS8uoXn45rdcHZ/dgnsVe2Q62aXQd/hqFRwda1UKu8kVwaonChyakeoM8OxDaNu
-         icBQRUr23tQM5+6Qh0/puj26lJGfpMyBw4cJwuDOFbfOJ09VbeSLQXa5el/3oY/9XMXa
-         fL7stgN8+kL/gjU2T/+YwA7I0VFOxY2pa9bpkZrI4x0ycC3/RLTJgZpQQ+aR2Izsjopt
-         w6rQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoxR9dInNANV3t1nMo7FCFUdQtNh6T5fyybJa59NKgZkk8LxFlHnbaX0pCjDqB1O/029AUYjJBl07KD2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTf6xieIwMCU7wAO48QaoQJxZCDkNnWpL0mlnfWFN6qOrpHpOf
-	6ytR772AZpQ2bUvt5OtuiWHHMb0nM20NEQ5EE9dFyf3/mavqiXG/4elu9xjJnKsgmZM=
-X-Gm-Gg: AfdE7cmGLlNKbvM6tT31Vzk0SKN+kWFmSNcRgefZXpuiMC3Yzn2YKwVsyK5STyt9PDV
-	rQZWLMCWVuQQA0iPpra3vjOeuv0uxLbkUEpGyx4sXJYobFbZaGn67nfAoC4dLg2N73pAc+pWWij
-	Wk5kXjV4n0bROBFKCE1bly8l2CDnS9JJIlpg0pod7rN9jDfdO3AwyHwoB2k5KRWYld0q4jCNzOe
-	V69S5Mr+W3Lh1gCzbCxr/irA28a3eJbQlh0rwzONzwo5zgB2ELM24NXtZbRw4lh+Jwz4+HduD/h
-	3wJCS9An9a6pVg5Sezt8DzbxxgnWmt2uunO1Bwur/3aKmnx2p+DLQypniqZSyQJc3DEptyMDTY3
-	YJWrw2a/ijGEvVCHHzzDLSsG6P1e2vy2EnLiB0apejXOs75j7TV2hLGztgBVmE7Ab8w2U0Kz4wJ
-	yia7af3Puksz9vEQFxSnTUjWNjoqZaFMNL/WvhiAMf4WoIBij2L1qOSK4yMw==
-X-Received: by 2002:a17:907:3f86:b0:c15:d0b6:495c with SMTP id a640c23a62f3a-c15d0b64ce5mr261020666b.29.1783580818201;
-        Thu, 09 Jul 2026 00:06:58 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ca1bd81asm240667266b.30.2026.07.09.00.06.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 00:06:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CA6KugSv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD88EC2BCC6;
+	Thu,  9 Jul 2026 17:00:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783616415;
+	bh=BgOB4cA8VuQ/dZ/q/j/sqfbK5UXDzkPMDIFs+OghEXs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=CA6KugSvuBiMMvCTNT+U5g/sSPhmtle69wQhaiev2x/1qrq+5UOKL29C7WglUxzpE
+	 URXKx7uYkPDoQchilFZ2KpiTF0hSw6RaCTScqB8q1N8yHbiZfYMfSYXnihG05K+KRL
+	 PRcjiv0UzgUvs/FsVZ4elZmchEgBvb3w/MpX3TMzd1eDMdDEcJg+yYRmBeO6psBPtz
+	 qSYzjDCopmEAJ2fXN1Q/flht1nsiD/Hm3jab0HuczHFGz7J9+BdXel63KIJzZATA3i
+	 ooncOiQ2M8i+sAWeJXWC6HanlikCVMrBoWzyMVr7wEJ58WDLTkEc9oz2sO5KXwl0VM
+	 6IWnIre8e+FIQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8F95C44501;
+	Thu,  9 Jul 2026 17:00:15 +0000 (UTC)
+From: Federico Amedeo Izzo via B4 Relay <devnull+federico.izzo.pro@kernel.org>
+Date: Thu, 09 Jul 2026 19:00:10 +0200
+Subject: [PATCH] slimbus: qcom-ngd-ctrl: fix ngd register base address
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Jul 2026 09:06:56 +0200
-Message-Id: <DJTUMRRV8K1A.3AL1AMOF242DP@fairphone.com>
-Cc: "Srinivas Kandagatla" <srini@kernel.org>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Jaroslav Kysela"
- <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- <cros-qcom-dts-watchers@chromium.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH RFC 1/2] ASoC: codecs: lpass-tx-macro: Use correct
- config for sc7280
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
- <20260526-sc7280-tx-macro-v1-1-1aad6900fec0@fairphone.com>
- <4rd4l5ioccdiggvlwl623qsdoy2udy5cr6sigyxrg5pbdll37g@sboebzvzlr6m>
-In-Reply-To: <4rd4l5ioccdiggvlwl623qsdoy2udy5cr6sigyxrg5pbdll37g@sboebzvzlr6m>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-qcom-ngd-register-base-fix-v1-1-5f7ab48f9209@izzo.pro>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBBA0auQWTtJiyjgVYyLtox1TCwyg4SEc
+ HcqLN9f/AWUhEnhViwgNLFynzLsqYDwcikScpcNpSmvpjYtDqH/YIodCkXWkQS9U8Inz+gubW3
+ PzjaVbyAPvkI57/P747D+/JvC+D/Cum5SVOQHfgAAAA==
+X-Change-ID: 20260709-qcom-ngd-register-base-fix-a59713a184b8
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Federico Amedeo Izzo <federico@izzo.pro>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783616414; l=1498;
+ i=federico@izzo.pro; s=20251017; h=from:subject:message-id;
+ bh=YJ5NoHF16uL+S0+ruF7CdiW1W1Lj7X20ZzLrfsWs2uc=;
+ b=6GKaN8cIpOR7P8+3A1ZUNjECNDVngPPRIiPIxLZutcAZeSce1HTeKWXEVgcnXYLH/hxn4qBbg
+ QcvpdMOTAjfA5cvKg83OeN5nGnFp480VGzyArEMjuTzRhtT5iQzGZbf
+X-Developer-Key: i=federico@izzo.pro; a=ed25519;
+ pk=XfmNfpH48k8jLbId5NKrp0yoKoFb/uLjr97qIxBImBw=
+X-Endpoint-Received: by B4 Relay for federico@izzo.pro/20251017 with
+ auth_id=544
+X-Original-From: Federico Amedeo Izzo <federico@izzo.pro>
+Reply-To: federico@izzo.pro
 
-Hi Dmitry,
+From: Federico Amedeo Izzo <federico@izzo.pro>
 
-On Sat Jul 4, 2026 at 1:55 AM CEST, Dmitry Baryshkov wrote:
-> On Tue, May 26, 2026 at 05:29:54PM +0200, Luca Weiss wrote:
->> With the v9 data, the controls will have completely wrong names and
->> using wrong code paths that do not apply to v9.4.
->>=20
->> Note, that this will change control names so it's a breaking change.
->
-> Is it something that we want to keep as compatible for the old DTs? Or
-> is it completely broken and unusable?
+The slimbus controller register base was calculated using the
+controller ID and the register size, producing wrong results for ID > 1.
 
-It's definitely not completely broken since a good number of devices
-work (seemingly) correctly with it.
+The expression reduces to ngd->base = ctrl->base for controller with ID = 1;
+but for ID > 1 the other factors produce a wrong base address.
+This bug caused a crash while trying to bring-up the secondary
+slimbus controller (ID = 3) on oneplus-enchilada with sdm845.
 
-I also tried and I could make the microphone on Fairphone 5 (QCM6490,
-Elite audio) work even with the "wrong" v9.0 config, by updating the
-control names to the v9 names instead of the correct v9.4 names.
+In practice, the correct base address for each slimbus controller can be
+obtained from the device-tree, so there is no need for further
+calculations.
 
-In the cover letter I've expanded more on this and the possible options
-I see.
+This was validated by reading the version register from the WCN3990 slim
+interface on oneplus-enchilada.
 
-Regards
-Luca
+---
+Signed-off-by: Federico Amedeo Izzo <federico@izzo.pro>
+---
+ drivers/slimbus/qcom-ngd-ctrl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>  sound/soc/codecs/lpass-tx-macro.c | 9 ++-------
->>  1 file changed, 2 insertions(+), 7 deletions(-)
->>=20
+diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
+index 80877e951849..91932f8d021b 100644
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1547,8 +1547,7 @@ static int of_qcom_slim_ngd_register(struct device *parent,
+ 			kfree(ngd);
+ 			return ret;
+ 		}
+-		ngd->base = ctrl->base + ngd->id * data->offset +
+-					(ngd->id - 1) * data->size;
++		ngd->base = ctrl->base + data->offset;
+ 
+ 		return 0;
+ 	}
+
+---
+base-commit: b9810cd75b9fb56a3425d391cba3f608502bd474
+change-id: 20260709-qcom-ngd-register-base-fix-a59713a184b8
+
+Best regards,
+--  
+Federico Amedeo Izzo <federico@izzo.pro>
+
 
