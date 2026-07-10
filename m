@@ -1,36 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F5339E19A;
-	Thu,  9 Jul 2026 17:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9973DCDA4
+	for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 09:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783616416; cv=none; b=VlsuCKtZa2ZEqQNe35jE+yLP5U5+p0vl2/9JJ/a/oN7K/1JvWp1QkvkPbmjcPzK0L7cq+P0Jd3mJHlXLDWLc9mLqMWEhL9Ac/2WdStCO+xO0PYR1Om7O/pO4MMGn2C02X38HX42VM+cuv3NJ4FDwUab9dnFBiS+W3DK5ZsUOQe0=
+	t=1783675378; cv=none; b=hlVPFDEvoxtHGGpFgdj8LUcW9WEqYMGTHGXKkmsOZeQUX6o02hYZqFv2GwkHtSQNL/h64zqwcvNzJImelzEXaRDHN+D0Vg0EFmmLCeOtszxhN3xDD22p7C2Nu1OoyPoODqgCXnlIB/46akSCSXagm70nKx+1yx9o6haPq99WaEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783616416; c=relaxed/simple;
-	bh=BgOB4cA8VuQ/dZ/q/j/sqfbK5UXDzkPMDIFs+OghEXs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CpspIsBLhholBL+rdFjX5A4ta2jtrx9YWY6FPcWmcg7hoNWTkJ26Szd3BQTUoE4gw5eeCyDFsgimbgJOy36Pyg3dNxvw6EbbFRidEwX47naxll91TLSwIPdy4QhgVBcasTWRgHkpgcAu6wLfBQtAyQpxcjcv20guaXIGRcCJ3xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CA6KugSv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783675378; c=relaxed/simple;
+	bh=zw1mFAgdyKfwxUO/njqEe7kg2B2BmHFMBO5LtyuiIrY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FapA6KqpVXC8AUu571dcCeS2vWWhKRqFs3YdQMaBhRtrqZfMleoiu9gMHZWLnKLgKah9V6byn8aaap3b5+zOq8CVH/eLSMNlL676QxBA47sRgV7XlXlHaM7VFmmML2fNt6Tu8XhHkLdXpYTGege4dCAL2p8tst7MzPJqZmPn8C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=dWRL7MCO; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CA6KugSv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DD88EC2BCC6;
-	Thu,  9 Jul 2026 17:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783616415;
-	bh=BgOB4cA8VuQ/dZ/q/j/sqfbK5UXDzkPMDIFs+OghEXs=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=CA6KugSvuBiMMvCTNT+U5g/sSPhmtle69wQhaiev2x/1qrq+5UOKL29C7WglUxzpE
-	 URXKx7uYkPDoQchilFZ2KpiTF0hSw6RaCTScqB8q1N8yHbiZfYMfSYXnihG05K+KRL
-	 PRcjiv0UzgUvs/FsVZ4elZmchEgBvb3w/MpX3TMzd1eDMdDEcJg+yYRmBeO6psBPtz
-	 qSYzjDCopmEAJ2fXN1Q/flht1nsiD/Hm3jab0HuczHFGz7J9+BdXel63KIJzZATA3i
-	 ooncOiQ2M8i+sAWeJXWC6HanlikCVMrBoWzyMVr7wEJ58WDLTkEc9oz2sO5KXwl0VM
-	 6IWnIre8e+FIQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8F95C44501;
-	Thu,  9 Jul 2026 17:00:15 +0000 (UTC)
-From: Federico Amedeo Izzo via B4 Relay <devnull+federico.izzo.pro@kernel.org>
-Date: Thu, 09 Jul 2026 19:00:10 +0200
-Subject: [PATCH] slimbus: qcom-ngd-ctrl: fix ngd register base address
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="dWRL7MCO"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15f020a223so102574966b.1
+        for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 02:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1783675374; x=1784280174; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=43ADvkMGQUmy+J3D9zAwHZqQPNIWMHkG2zAIy0Ld1CM=;
+        b=dWRL7MCOYZB5Zmb16RQaPELkA38J21mz5H/DwqZEIvbEJtE9FAiBupYmcCLA1zz412
+         MJCNRiMfy/5hy9m9UK8FMZ99TaEfbbXx7F79YOuiNWxnDTukAO9Nb6mqYMbEi6g0PQu9
+         eA+ph31N5ArQVgVmZQdLzd25gy+SaBTzVcA5R1gh5sd/zQhTuv4LQ0cSyZ7826U6kki/
+         wzSV/nZK9drk7C7Q/eYVP1T6gXLkcE4FjqIStDFRsCwKx9XwgcZA/Pu9wHLor3/Hd8Uf
+         oncY/NkPbM/J63TUHC4IwuQIjrG4CJw2qBu/7A8SE605T8bkie80BsVPddkADgbWAC7+
+         3HFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783675374; x=1784280174;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=43ADvkMGQUmy+J3D9zAwHZqQPNIWMHkG2zAIy0Ld1CM=;
+        b=IV8Ee6vsi/v5duEpYf1Padwhmp8SkcB/mASah7PLD3HLSm/zH5k4lqqdXAifnK4Cdx
+         LrZ+TELHg98enMtetysYo6fVbNvjTMSYJF7jFGseCWrx/MgatdZCPoFoqQIwwpr6HmjQ
+         VzS/uZ+aBRSsuKVRcqJOa2H8f3EfaOkBGxmNOIlaI3I0Cf2xxNBwQPRe69tJAfCu57ly
+         OKvxX4e/WfFEaLtecFl+6Gq0YHQoPygf3bL1sH49kyPV9i41jJiDiGgwY79zzr2C7ON+
+         fxrQmGJL630eFxDLNj6Kon8+gJZIrA4e0g2oEeSP83NtcvjIPSHkDrLxLlprjBIXaBHT
+         LmLw==
+X-Forwarded-Encrypted: i=1; AHgh+RpUdyP3bkhmlouU+ayIcCQncRZeKDapXydOIS0WvgGUrKI51Qaf8ksyeX7gm+7ZWRrTM5ZP0HcJ4Y8rHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsDMBVBsFmWMZUUMKxCDUd9qU3iu/B99AZcKGd+cXZwAvExZLK
+	HOoMri8PD8/cbPXBH0ZVXpens6jR1jj/ttLtd3Ua3WHybMPa5O4gE8g8LjZxx9TOtDE=
+X-Gm-Gg: AfdE7ckfxISYfJrAulIxWQipClG8jsSM2+J9ozhPN+z/0yF7PPv/ScCtx8q0zgM959L
+	R4HahpKHAP1TC3j8HI6Ct0jVC1LkKqPOLYCClsrMcZ/ADKIy0pe+CPDLCSVbxMI0XXkpphlMVeM
+	++vnEQ4LNZarOi8f/H4/lXw+cnAdsFM5mTvDu1pPiDE28QIgvUDLpo56nj3YVu9k31MMFAszDA/
+	SgwduSJxy050z2jmA3vCVb8HD9nnwp9IYwDzNCm4iZ4ye7K1ANx5fD+f/llmAT6OyvDx2nQNs/2
+	657tU3JVtgHMsxmSlCwPTl6WOz85x+ALkbRCWnJC1ivUyJz6iJ7tyb+1o88sBnKVKN73ay5GxDO
+	Bzo4wLeCEQLZ1baiawpAEb59HKJuVQSFWu8SRIJkURRPtsQisXF/aKenQnvaR3WqPFcYIROjQDg
+	Hw93rWEB2vW5mYXbI74XgTgJtbdhDJt4/E1+4SuD4LIWPEuqSH0QCfyTpL5AP/KyO/W88=
+X-Received: by 2002:a17:906:6a1a:b0:c15:db3a:c105 with SMTP id a640c23a62f3a-c15db3ac262mr328581466b.1.1783675373799;
+        Fri, 10 Jul 2026 02:22:53 -0700 (PDT)
+Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15dfda815dsm261785566b.36.2026.07.10.02.22.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 02:22:53 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/4] Add Milos CPU OPP table for DDR & L3 bandwidth scaling
+Date: Fri, 10 Jul 2026 11:22:38 +0200
+Message-Id: <20260710-milos-cpu-opp-v1-0-ae7f4b09bc77@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,73 +69,62 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-qcom-ngd-register-base-fix-v1-1-5f7ab48f9209@izzo.pro>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBBA0auQWTtJiyjgVYyLtox1TCwyg4SEc
- HcqLN9f/AWUhEnhViwgNLFynzLsqYDwcikScpcNpSmvpjYtDqH/YIodCkXWkQS9U8Inz+gubW3
- PzjaVbyAPvkI57/P747D+/JvC+D/Cum5SVOQHfgAAAA==
-X-Change-ID: 20260709-qcom-ngd-register-base-fix-a59713a184b8
-To: Srinivas Kandagatla <srini@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- Federico Amedeo Izzo <federico@izzo.pro>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBA0avIrB2IKUyhVxEXJh3bKdWEjBFBv
+ LtRl2/x/wbKSVjhVW2QeBGVMBU0dQX+208fRnkXgzWWzLMxOMo/KPqYMcSIlgZH/kGOyUBpYuJ
+ B1uvXdrc1ux/7+ZzAvh9nUbzNcQAAAA==
+X-Change-ID: 20260710-milos-cpu-opp-26fb6c36be60
+To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexander Koskovich <akoskovich@pm.me>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783616414; l=1498;
- i=federico@izzo.pro; s=20251017; h=from:subject:message-id;
- bh=YJ5NoHF16uL+S0+ruF7CdiW1W1Lj7X20ZzLrfsWs2uc=;
- b=6GKaN8cIpOR7P8+3A1ZUNjECNDVngPPRIiPIxLZutcAZeSce1HTeKWXEVgcnXYLH/hxn4qBbg
- QcvpdMOTAjfA5cvKg83OeN5nGnFp480VGzyArEMjuTzRhtT5iQzGZbf
-X-Developer-Key: i=federico@izzo.pro; a=ed25519;
- pk=XfmNfpH48k8jLbId5NKrp0yoKoFb/uLjr97qIxBImBw=
-X-Endpoint-Received: by B4 Relay for federico@izzo.pro/20251017 with
- auth_id=544
-X-Original-From: Federico Amedeo Izzo <federico@izzo.pro>
-Reply-To: federico@izzo.pro
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783675372; l=1427;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=zw1mFAgdyKfwxUO/njqEe7kg2B2BmHFMBO5LtyuiIrY=;
+ b=2ygJEg8asxfZxnC971eSgSt5Ie8THGBJkGRgEb0Dqld8rZ0/r6+OqBE/HUvUiWUiS4STcBzMq
+ yUyWpfLcMpSBX9sMHCDh3TL+w0L2fWGSgd+5BIlwI5sQ1bc7ExtvxRI
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-From: Federico Amedeo Izzo <federico@izzo.pro>
+Add a node for the OSM L3 on the Milos SoC and define the CPU OPP tables
+to scale DDR & L3 bandwidths when CPU cores change frequency.
 
-The slimbus controller register base was calculated using the
-controller ID and the register size, producing wrong results for ID > 1.
+Tested with 7zip benchmark ("7z b") and membw [0] showing very close
+results compared to disabling .sync_state and thus keeping all
+interconnect bandwidths on maximum vote.
 
-The expression reduces to ngd->base = ctrl->base for controller with ID = 1;
-but for ID > 1 the other factors produce a wrong base address.
-This bug caused a crash while trying to bring-up the secondary
-slimbus controller (ID = 3) on oneplus-enchilada with sdm845.
+[0] https://github.com/doug65536/membw
 
-In practice, the correct base address for each slimbus controller can be
-obtained from the device-tree, so there is no need for further
-calculations.
+Unfortunately there's no support upstream yet to have different
+opp-peak-kBps values depending on whether the device is running on DDR4
+or DDR5 RAM, which is where Milos should use different DDR votes. For
+now the DDR5 values are used which are (usually) higher, but should
+hopefully not cause any issues on devices with DDR4. TODO comments are
+placed where they differ.
 
-This was validated by reading the version register from the WCN3990 slim
-interface on oneplus-enchilada.
-
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Signed-off-by: Federico Amedeo Izzo <federico@izzo.pro>
----
- drivers/slimbus/qcom-ngd-ctrl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Luca Weiss (4):
+      dt-bindings: interconnect: OSM L3: Document Milos OSM L3 compatible
+      arm64: dts: qcom: milos: add OSM L3 node
+      arm64: dts: qcom: milos: add CPU interconnect properties
+      arm64: dts: qcom: milos: add CPU OPP table with DDR & L3 bandwidths
 
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 80877e951849..91932f8d021b 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1547,8 +1547,7 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 			kfree(ngd);
- 			return ret;
- 		}
--		ngd->base = ctrl->base + ngd->id * data->offset +
--					(ngd->id - 1) * data->size;
-+		ngd->base = ctrl->base + data->offset;
- 
- 		return 0;
- 	}
-
+ .../bindings/interconnect/qcom,osm-l3.yaml         |   1 +
+ arch/arm64/boot/dts/qcom/milos.dtsi                | 344 +++++++++++++++++++++
+ 2 files changed, 345 insertions(+)
 ---
-base-commit: b9810cd75b9fb56a3425d391cba3f608502bd474
-change-id: 20260709-qcom-ngd-register-base-fix-a59713a184b8
+base-commit: 1db6c7d7df786928c6fb52625f46f1f856158728
+change-id: 20260710-milos-cpu-opp-26fb6c36be60
 
 Best regards,
 --  
-Federico Amedeo Izzo <federico@izzo.pro>
-
+Luca Weiss <luca.weiss@fairphone.com>
 
