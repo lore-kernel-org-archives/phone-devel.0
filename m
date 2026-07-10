@@ -1,68 +1,68 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29C13DCDAB
-	for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 09:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2373E00A9
+	for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 09:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783675379; cv=none; b=LCt+B/rkXsJko8AhscZRqZR/2/KofA9oGYJQ17olwtdi0ZvqLatL9yg+uf0baUrceOv5SobbaloC/xGUCFzp5hP8N13In/JrDhmETLJUkQWRkL0GD86KeRJMFUo1PZovXnzgqV9usD3T9kwU69B10aByoi5VkTqUtMqxgnbb/Rw=
+	t=1783675381; cv=none; b=kPxSQT+53VWr755IQpYjnV50NHsnTFNGIog1noi1BjhjjcjEfz4kzQhY0guvEhsaYhBlinWwpfwtR3aoRlnudzTovkRbYI7MeV8hpqziWccpoAdXpuH1NFqAPI24P6N8OtHPy4Y4gw2H51TWRvUlAWj0kHR6k68Fp6L3o1wzWDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783675379; c=relaxed/simple;
-	bh=2/pH/58ZPSVPRJvZYePDwwn0y2ezcvuAOg6I4e2E1hc=;
+	s=arc-20240116; t=1783675381; c=relaxed/simple;
+	bh=MKOhRPK9BzP+Ba1kQzcE+8jxLp4Hbza+J3F5k7LQQLE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UXfZsJH5bY2RNt3SsP/IIE7UIv6hIwRkjVjUQIqFvvGYvwJHV5I+BXvNk8EKrLLGWNMDOIzTpU44j66Anpzq1r5BwHxaBkg0X3pEDJ/ixN25wJ8QLAEn5dJlgjqnKq3XC7o0/xRMbkBiOXXK7g4HKt2UMVYIbAGjVdJX5+I7yDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=5rRUqhHl; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:To:Cc; b=gxHYeRbEESjtg8e42evyNfKJBdG1fzT9n2pF7pjTKqcpzc3k27VJgA1cV1SErQjmVF8fm7TGqSUUE3itl7uRi4tlzreHBrnKwHIfchsdt8FX+L3tHyP+E+z7KLN7FZpm7Xm0U4bHoQSsk4tIfnehQUXN6bDWFwZUAc9QIpNToCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=FUrzNPQo; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="5rRUqhHl"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c15f6de6cdfso112193966b.0
-        for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 02:22:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="FUrzNPQo"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c15f47e6297so91271966b.0
+        for <phone-devel@vger.kernel.org>; Fri, 10 Jul 2026 02:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1783675375; x=1784280175; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1783675377; x=1784280177; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iUnfFgpx3dZdJM3zV3PHug4HTfilmgNZwXGP6vHMpiQ=;
-        b=5rRUqhHl7SM6pxnfM1MmKT1RlmNQ6e8/fPiixj2PM+RS759VgmCUgz82HvjEiDJN4Q
-         a2R6Bp9FMOv5V/wR0mXIC2HvuxYiJdoCuMSj6sDP4JKC9TGAVXqG298w95aOVBJSKuLK
-         G9IN8aPfrCIEyg6RO/ISWneH5hFVJ3Qw4vJpQM4RljnZVLyiJCeabLL5L9djMp9MRvU1
-         y3xrV2ATEzr5pvbrD3UWuR+eRqRjuIqjnpKC8JoGi5J2j2tnn0YqwcDu2Emd/AN+ghDa
-         9lFM7o2bA1DYBVCyLQ1qeTm9RVIupGVHPnW1c1yy1CPy7MdoTfPvPrlSqiQVd6ofAzg2
-         Xg2A==
+        bh=K2PljI4ZF98i/3jw94W7rpF3nBz83urTcSx2ZEy+Me0=;
+        b=FUrzNPQosMBvoBVHxYq7yYmSg7EcDwfXQ1QSVG1BAUbTYsLEelQqmx0FtqUBR9JGo7
+         ffsfM067neuMHOWVbhNgFaH9e/yiKciWjXymaQRFd/Fjf3+EsMZGNbMl5ZTH8293XacJ
+         5uskzyP1w/mqfPnqT5UXxlsJkjEUDJhZ7TqCsVsyNRi0LyM84RdGfB6g+PE+23t25B2C
+         xrSXUbHLJtG3SadijssjYzTnxqIFhwtd5rZuc0fFEevJJ9EfqLiBtdQEkoFAKws3YzdG
+         7Tfrqt9LxoXo8Q4m3rKp1J4pGj04X9V/uoGw3/Je0ZQl5SqXEsCHIm9zmmpfSArlGtDP
+         mztw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783675375; x=1784280175;
+        d=1e100.net; s=20251104; t=1783675377; x=1784280177;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iUnfFgpx3dZdJM3zV3PHug4HTfilmgNZwXGP6vHMpiQ=;
-        b=SgO5ZqsYw32Wv3uuTGZllA7LaQSJOgiXrc9CDChi5k4nD/GIHD2hqaZL2DUUITE24q
-         C5zHUw1XcPQyVSW5N27qBbtrxjvM5kGPJSp8ZSvx9q8Rd++oXmCAb++dRmRaoIrSY/4h
-         eMgDza79HlFlIMcGGcStLGNSxNRRgTJzbfZ6nmKdJ5ZKsK3rrJTAjUo3dr9s871KaWsU
-         OuR0XP7cySXyhV1gWXO/bk0wn4gnUOPvHpy5ymJswmNpWJT5CV9UJ99C2QpHShEvplc3
-         5zzNdMhUYVJPUmaNIYR2Zs/MGGtbIbYEKOsPk7W702kYOZo6SR5T2TjAIV1pjHLGs40L
-         KqSw==
-X-Forwarded-Encrypted: i=1; AHgh+RrXkx/7vmtH5v+XemwtdgG/FFlVUiUfcDtVH75QunqRwbiIXtPzUpod9JRLyBmm99IS7oMI6aJhJCxKSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwINNQg9rerZOLDRBMWGzTkt1eRbqTOWsd6ZS+SFx0CLLHN2TbB
-	1/W0sfiK1li6rWAkpmEeMkLsHKirGKm63xOPwLE0WaPyx+LOWbprVZs75eiGUFIMjXA=
-X-Gm-Gg: AfdE7cnk/7fSiRXDXhV9DvR5AFt6rvIH5SYpFln3XrU9jdfn/doe+rN6fgXMq1NPnhm
-	fBSh1V2X/6z/qUayZj6RuFxG3dUVkRtfuSBLJF+4Ve1BC8EC014g4ZU1VmizaQXtHdQLlyt7vi2
-	cdPgjYuQ4FxZT1S6v5AIvWNvRpEhYoTalRibDpl3+Wg+ujMykgS3E38MjorkBoXqWBe4Qa8FvLP
-	nxEvU2Nw7Ku42GwqaGa8d3w35e8tb3CICxzlTuXPre83IqeQZY5DufNTY5meDtWimb/5KvhfPQV
-	TcUjLbcbD+ra7TuJaS0jtJlkfuyOmKUffnbdf6bLntTcVgLrRkFEQvhehVLZw8wBB0iHwWH7lJd
-	Xcyz6EhU+SLkrS9sVlSveRdAe4+eG8U443bDH0/PyBTt83/DvshTAMq43YFupsPlqSAXWtLTkx5
-	Jch84J5uUWH4qjobVJsN6eQhJurxefjIu6Xb1DhbpK1v2IFhQ/IPOXo7uz5NJ5qb7/Ty8=
-X-Received: by 2002:a17:907:971f:b0:c12:7f25:cc59 with SMTP id a640c23a62f3a-c15ce0ab923mr383566866b.16.1783675374892;
-        Fri, 10 Jul 2026 02:22:54 -0700 (PDT)
+        bh=K2PljI4ZF98i/3jw94W7rpF3nBz83urTcSx2ZEy+Me0=;
+        b=a1ndk1ko/sAoujPvwHz+skwoFQDzU1NCAEgmLI0XCPlxKlsIkqHkU8R9cPg1oXmavG
+         auZzhHnNPLdrQlKOYaLKPofKf+9Skuu+yMRzqY6MRS2OKuS677015+JbeurGO2nUhAnE
+         b0rr6/S3Msz7OYQJZwyjEnSTGV7ylq7y86Rr01t40M1No9b4nSjloCBJ363hvsNiVaoN
+         T8P8QuYWZVTZBIN6s1oOCQmZzUyuBzQGqSDw/CPrbinOxhy0R9OvBmKgm79FQo8ht5ZR
+         puJ9dHo6512eSzkg6JjpWPOE1feJTtNIDIAXWWvbBBarydAFflJZL5scr7/aG+cFIFI4
+         em/g==
+X-Forwarded-Encrypted: i=1; AHgh+RqmvM+CrpEEMvPQgYmupXtAd+/keUQmxeIKBnsW3TtHkRp5c52jaqowSBXuUkZdEwpascFwJX7N7v07UA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7PdAGTLm0bNg7ppQeFk3/cftvFNIZi6Y7vvOQ7ILzgFIoS+D8
+	yDEGyiwMkclvj7rR+rQw4L5iBjDnaxsyRxgC4uo+QsUzIEWQ5NLMSDS+wZ6LoDdLl2Q=
+X-Gm-Gg: AfdE7cmmBuMFRDTaKJeTQX2qLWDjviJxPWkSStPgGvbRM8cYE+1/GqkkQPLpm8WDEhY
+	QYfdw1lebdAdRMXdfd/OGA5JdzsJsE/Q8N+wzGkve5j4Uc5CYp3Q8r3hsAe29XGEcz0pb0Hz2Fx
+	ePvmnXfVa2qatwgr4yaahIR1eZ4TrTT9Df5fTD5QlD2AQRL0BDERdsQpZhAdcI2jrVv26FGF/7Q
+	L+VMJeiJMpCbRL+iKZjAX+Bk+YDSv75jo4g+Q94uJ01uMC5dojWwuH8U0/2OiBz/EhF4NK4jOu3
+	IMFSKDMXrHWv3occWwxoN2ET0Uy9CximxClgTeV+xsHum5XPwE/ZmfDn/chb/bstvayCyFrJNTL
+	rmxLKMHxZgesHCNAvMAa14RVa1peGgbtgNSg49L99JAIFSVbpTAHi6Yy/ST8buAseyqmRIWaZrH
+	xipo0IqfFZFVXk7+B4vqAZuGFy2cgp9lEO2qs7utGTg1CjD3QZHqkr0+0f9BWytR2rWnE=
+X-Received: by 2002:a17:907:76d2:b0:c12:7c80:8844 with SMTP id a640c23a62f3a-c15ce0c0b28mr312764666b.41.1783675377205;
+        Fri, 10 Jul 2026 02:22:57 -0700 (PDT)
 Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15dfda815dsm261785566b.36.2026.07.10.02.22.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15dfda815dsm261785566b.36.2026.07.10.02.22.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 02:22:54 -0700 (PDT)
+        Fri, 10 Jul 2026 02:22:56 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 10 Jul 2026 11:22:39 +0200
-Subject: [PATCH 1/4] dt-bindings: interconnect: OSM L3: Document Milos OSM
- L3 compatible
+Date: Fri, 10 Jul 2026 11:22:41 +0200
+Subject: [PATCH 3/4] arm64: dts: qcom: milos: add CPU interconnect
+ properties
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-milos-cpu-opp-v1-1-ae7f4b09bc77@fairphone.com>
+Message-Id: <20260710-milos-cpu-opp-v1-3-ae7f4b09bc77@fairphone.com>
 References: <20260710-milos-cpu-opp-v1-0-ae7f4b09bc77@fairphone.com>
 In-Reply-To: <20260710-milos-cpu-opp-v1-0-ae7f4b09bc77@fairphone.com>
 To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -86,33 +86,131 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783675372; l=823;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783675372; l=3619;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=2/pH/58ZPSVPRJvZYePDwwn0y2ezcvuAOg6I4e2E1hc=;
- b=mZje+eL9LnFEwjHLlmoyphuamb10BC+qArdJFGRuLfUvjg0fKeVUXAEx0HydxxY9D0RU6A61U
- iSsZJ2nnMRAAkMGX/QEf0uNPmQyplh7YaCMfQrso3oCzBoGdCKnf6Fp
+ bh=MKOhRPK9BzP+Ba1kQzcE+8jxLp4Hbza+J3F5k7LQQLE=;
+ b=mJD3v2Seb0xmqYIKaKsx0e+KlFU1SZrgJW2OdoDBPr3JfIv9SYXWkvffUlTG+bZV5kOSR2efg
+ 7uWrnUEnWqcCm5aUZf93Sz17FlJtoXMz/KpAWPvedkjxG4A2sd/PG/6
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Document the OSM L3 found in the Qualcomm Milos SoC.
+Add the interconnect entry for each CPU, with 2 different paths:
+- CPU to DDR
+- L3 Cache from CPU to DDR interface
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/interconnect/qcom,osm-l3.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/milos.dtsi | 41 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,osm-l3.yaml b/Documentation/devicetree/bindings/interconnect/qcom,osm-l3.yaml
-index 41b9f758bf8b..17690ff34489 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,osm-l3.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,osm-l3.yaml
-@@ -29,6 +29,7 @@ properties:
-       - items:
-           - enum:
-               - qcom,eliza-epss-l3
-+              - qcom,milos-epss-l3
-               - qcom,sa8775p-epss-l3
-               - qcom,sc7280-epss-l3
-               - qcom,sc8280xp-epss-l3
+diff --git a/arch/arm64/boot/dts/qcom/milos.dtsi b/arch/arm64/boot/dts/qcom/milos.dtsi
+index 1172a4f6adab..8e288b5dfc58 100644
+--- a/arch/arm64/boot/dts/qcom/milos.dtsi
++++ b/arch/arm64/boot/dts/qcom/milos.dtsi
+@@ -14,6 +14,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interconnect/qcom,icc.h>
+ #include <dt-bindings/interconnect/qcom,milos-rpmh.h>
++#include <dt-bindings/interconnect/qcom,osm-l3.h>
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+ #include <dt-bindings/mailbox/qcom-ipcc.h>
+ #include <dt-bindings/power/qcom,rpmhpd.h>
+@@ -65,6 +66,11 @@ cpu0: cpu@0 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_0: l2-cache {
+@@ -98,6 +104,11 @@ cpu1: cpu@100 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 		};
+ 
+@@ -118,6 +129,11 @@ cpu2: cpu@200 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_2: l2-cache {
+@@ -145,6 +161,11 @@ cpu3: cpu@300 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 0>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 		};
+ 
+@@ -165,6 +186,11 @@ cpu4: cpu@400 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_4: l2-cache {
+@@ -192,6 +218,11 @@ cpu5: cpu@500 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_5: l2-cache {
+@@ -219,6 +250,11 @@ cpu6: cpu@600 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 1>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_6: l2-cache {
+@@ -246,6 +282,11 @@ cpu7: cpu@700 {
+ 
+ 			qcom,freq-domain = <&cpufreq_hw 2>;
+ 
++			interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&epss_l3 MASTER_EPSS_L3_APPS
++					 &epss_l3 SLAVE_EPSS_L3_SHARED>;
++
+ 			#cooling-cells = <2>;
+ 
+ 			l2_7: l2-cache {
 
 -- 
 2.55.0
