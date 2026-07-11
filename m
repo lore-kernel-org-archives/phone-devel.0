@@ -1,58 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D43937B415;
-	Fri, 10 Jul 2026 18:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47A533D4E9;
+	Sat, 11 Jul 2026 19:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783706846; cv=none; b=US62I42sZSloN3+dqyhhqZh/ctqp8i6GCVXmvGV35OAVByQecna34zdfImBm4OdXVhEt2D3z5zNgmAnz5vNkuPsqRoBHZmmJn3Etxsm4OlGABh8/D+P77VrA24PWmQs+fZsUKBB7QswMZJwXnrFnG+oX7ICJe72kBu1qUFCDLfM=
+	t=1783799415; cv=none; b=pWqWe9Ban0n4NiIWyuGlmFdpqomUtjISEzV0moxuDiEXyFlrvjH8EJejIIlP4Y8LMJeyzX8uftqtTMeK5MtoHmjYJx0Lw5M1gjtf8SKPjQ1RRRiN5FAxsS9ltg6+OPuLv5PSFVoR/5jc4XwW0/3227/ciK/gqZRmrHrziWpDxkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783706846; c=relaxed/simple;
-	bh=lcpICsyTNqKGxTwAISCqIqc1zQK9fexyXV9marLETHk=;
+	s=arc-20240116; t=1783799415; c=relaxed/simple;
+	bh=Sq6AEdBGAtLYX1pdUxs4xNIh4SVQYBxeTW2pW0kerR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NllHFZwTt4CqObPcMlLXDuXfRSr3grbLPnQe3bCYzC9sYOPSAOD9T0pwNtmS7FSpup1PmC559PJYVm/n3MSlGrOxIE0v/UD752WL/5jUajjO5DUUQKgsGA7u0lfoDg+FdSW3G1HOxY+96lufIHeXe2z+i/6hHSR6/RVH4eAMwdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkavSFY6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=KFBGcEvaYr0N4AE1zbCXjHFO+fIXTYhNhFXzlWv8z9x/UeOujHR4ko318tN/Vxep3JBxDhE60UmTzmo6i0hDcEJ2rU7S/FK+AqY++IPjEa3skmd+9qzZuOzbKVLM9JJr3JE3MKspGN7ceKY/hXcFFcHPmbfi/NhiczKScrt37rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6JrJcbT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkavSFY6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDBA1F00A3F;
-	Fri, 10 Jul 2026 18:07:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6JrJcbT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8E21F00A3E;
+	Sat, 11 Jul 2026 19:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783706843;
-	bh=4G+nAEbDkSf79QMV/VmVVdOvQKG969j3uYzdvbfr1YQ=;
+	s=k20260515; t=1783799414;
+	bh=lc8/sIOOnpZf83E7y/fJNO1WHGyzISseZrgZLpK+5Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dkavSFY62Auhika3QZ0PRVc9ADe2tkbwq27tSizdqnfHX5gERCYyQe9zNd5RrT88i
-	 P3FzInuzog0a8hTeSNMcLExpSuYi3ftDEtQJabZHKhZE/1SH5CTjylRJKvcorRNlVS
-	 UMWZKqFoldUpyeC9xTgE9wKLkuFXoD0lcwVsC9YmpbJIyFpJe7wifI1CGNuCXak9EF
-	 O9S1FDP5sWdmT4kbRgYr357br2cTvPyY3NtyEuqT7BtleRnlCdGmCDipdLmuFSmRSx
-	 LPYR8OwT/Ga3KBKzZLX3pl0M1w/iVzlG3isCSHWt8V//Dlyk/2hRg5ZLDY6N+zbuHH
-	 fWzRyd2UFwIQw==
+	b=F6JrJcbTqxm/EjYBf5E6xUESPaJHe6Z9Ir9IrAASbR0m+3n3FpYfemSo8q2X7+C7b
+	 MKTHnDZ9TeLrM9oEYXYWdTqxQc9IB4lx8s/xffGJv8WbG/xeSQPmid5IJrisGlv/5Y
+	 gme2WA6D6dYpdyd65IxrH3e5e34CHP6bwwCIWu2+rlPh/AmmxmgPaS7+xLlTqx2cUu
+	 0IhKWTKfi+HCk27h3rn2LkhcvVj5zBeTKJa4AeS0uHJsc4EZcZBUXjiKDtO8sDw0JA
+	 0N2wjyBfyjm+i6/kxymrIFSEL1vNagPDt1yS/++BJq2wEaBJ9FkqYVwRZEMWkNzDSB
+	 oD0/uU2iU66bg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Val Packett <val@packett.cool>
-Cc: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	linux@mainlining.org,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v2] remoteproc: qcom_wcnss: Fix handling the lack of PD regulators in v3
-Date: Fri, 10 Jul 2026 13:07:07 -0500
-Message-ID: <178370682982.2572738.1804514769753985254.b4-ty@kernel.org>
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v4 0/2] ARM: dts: qcom: msm8926-sony-xperia-yukon-eagle: add initial device tree
+Date: Sat, 11 Jul 2026 14:49:52 -0500
+Message-ID: <178379938607.163099.16596449114579997016.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260201210230.911220-1-val@packett.cool>
-References: <20260201210230.911220-1-val@packett.cool>
+In-Reply-To: <20260610-yukon-eagle-v4-0-763d5698bd2c@gmail.com>
+References: <20260610-yukon-eagle-v4-0-763d5698bd2c@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -63,24 +56,29 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sun, 01 Feb 2026 17:55:03 -0300, Val Packett wrote:
-> The changes introduced to handle single power domain platforms have
-> swapped the info pointer increment from num_pd_vregs to num_pds, which
-> would shift the info pointer past the end of the array for pronto-v3,
-> which does not list power domain regulators in vregs.
+On Wed, 10 Jun 2026 14:38:56 +0300, Erikas Bitovtas wrote:
+> Sony Xperia M2 is a smartphone released in 2014 based on the Qualcomm
+> Snapdragon 400 (MSM8926) platform.
 > 
-> This showed up as a difference between GCC- and LLVM-compiled kernels
-> on SDM632 devices, where only with LLVM one would get the
-> "regulator request with no identifier" error, because the out-of-bounds
-> memory ended up being zeroed. Fix by skipping the increment when there
-> are more power domains than regulators.
+> Add initial device tree for Sony Xperia M2 with support for:
+> - Framebuffer
+> - GPIO buttons (Volume Down and Camera)
+> - Regulators
+> - Internal storage
+> - SD card
+> - Accelerometer
+> - Ambient Light/Proximity sensor
+> - NFC
+> - pm8226_resin (Volume Up)
+> - Vibrator
+> - USB/Charger
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] remoteproc: qcom_wcnss: Fix handling the lack of PD regulators in v3
-      commit: 3dbc90b9c22ea96e37bf55f6011e63b5123ec668
+[2/2] ARM: dts: qcom: msm8926-sony-xperia-yukon-eagle: add initial device tree
+      commit: 1c436bca83bef0f7ca8d106a878a89af17048270
 
 Best regards,
 -- 
