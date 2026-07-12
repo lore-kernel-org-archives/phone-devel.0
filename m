@@ -1,38 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08C27A476;
-	Sun, 12 Jul 2026 03:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC7F248F73;
+	Sun, 12 Jul 2026 03:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783826005; cv=none; b=phWZvM7q6n6XNaR1H/sv29hW8fJ7P8YBXLWH5l5JCo8QFEnmLMIlKEXTwJoQvM8DZLJVm3goXYqKSN9GWLjW2WpdlgXClTvglUSxW4GP+h9m6JAUWxZZoXR5j9OKuxSLTTg4e5v18JFHz8kBS5DSGiA8CR5zI2bjLyuGuksS/34=
+	t=1783826046; cv=none; b=TCuWLaq1dT+W3Dj3Vua6NCNY+yX2VtGcZqxNTsqV7lba5l0wJcwEtZYiPkyPUyQeJ137Kwzq1hxcL0hEIr3yOS6JvAtnObsHuU8SctltDqjzOURr3z8yq7Udl9M0fmv+BbEFxKIBumj1NpbRYkRoIckRctveEWXFF8atfQ25Xu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783826005; c=relaxed/simple;
-	bh=DKPMlvVzmwc1lG5celyEdrQ0cGNAS6Srx+f2rta+Lic=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dSp/XZ0Pcb5Y2YR3hH4E+TUWs3Y/2648IJ2YMJoMgrRHEzOdfy0/Ec4UdXPfl0ngeD2okKBxzah/2HQ+5Ue4YwuenPzjdX2BBh7oDSX0jlC2fkChn3fx8sgzLG973WMFC5GkmnklAklxo57vk+h8YqcdA3Tzzx2KZYSAatS+uq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYX0lFSd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783826046; c=relaxed/simple;
+	bh=mmOkhodHGtEQly1sJFXQCl0QkPRAuKzorAgvaUlQrpk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AP0SHi5IrMjJyCBGv1jUxRnUxAU/2eAFBUgnI65c5oISLukiHD0wkjd78OFnGmoXYpyUB34pPZv01BIkZC9JOQfS0aFxBuz7Rn9yENnYU2PPX0cWe+IT2X98ucHzTutJCOxTGVWICboOewrES4fwpV/kMIqkqfoChMeir9ZB1Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nuav4sd1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYX0lFSd"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 44D10C2BCC9;
-	Sun, 12 Jul 2026 03:13:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nuav4sd1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9B945C2BCF4;
+	Sun, 12 Jul 2026 03:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783826004;
-	bh=DKPMlvVzmwc1lG5celyEdrQ0cGNAS6Srx+f2rta+Lic=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nYX0lFSd+ZhEPeU0iTdOcIJPFOwpwYcX9iaZMJSsydM56629yjn/I+bMiJVXZCTJh
-	 Lk/u6F2Qu+cC1j+NUeR9/q3R67Do0E3FUBdP2u6QZ6iBZOvTXlOpRjWPzVduTcqPK3
-	 XQQVJAdOpUL7CX+TQA7Hdnlo7Xgka1ufhc1NEZrowudhgT7TZ5wunabqS9X12bQG3m
-	 Cd/ftCSB+VXOu2zRp1lCR0Hr0LPJyG5hlaRCFLOjocG8K3AEVQYvpJuqdkTATDZGoU
-	 j8mhmH8c6BzGKWJviKQDMsZC1s3OdawSQa5aqop1O2XZ8Hmnyki+u0xyG0FC8/cuwu
-	 sSMHkiPFKLTcA==
+	s=k20201202; t=1783826045;
+	bh=mmOkhodHGtEQly1sJFXQCl0QkPRAuKzorAgvaUlQrpk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Nuav4sd1jzHBwS6lSQL5X95lx8S1SXKL2p2A9cyPJIyOVbXmUPjCmOnEQDI39iChb
+	 m7ROshMWdHvDfvHjDNXgi++ec7c96YHppV23Rdoaf9ezqSYajeVQ/X5V4LUDtUmDF6
+	 YOX63eNQYDOgHj+nj4EXqsVdqtBQkpfsTdsBvGULZTvIlcBwH+EDvildpXB+QshdGO
+	 i+108STxuKEwdMRK7/3taHwCrbgFpTk/mM4K8GXa/BIpRKRCdBSsaifJ17hZqxbldv
+	 pfj2aqzzOZKVbEze31SJyJBRQ5qPUpDdEK1OnoiLoa9Y2mBN9GP4vS0RZNAM3Ymi8a
+	 BtMc0yFY/fHWg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 337EFC44506;
-	Sun, 12 Jul 2026 03:13:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89A9BC43458;
+	Sun, 12 Jul 2026 03:14:05 +0000 (UTC)
 From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Date: Sat, 11 Jul 2026 23:13:17 -0400
-Subject: [PATCH v2 1/2] phy: qcom: qmp-combo: Correct pre-emphasis table
- for QMP v4 DP PHYs
+Date: Sat, 11 Jul 2026 23:14:01 -0400
+Subject: [PATCH v2] iommu/arm-smmu-qcom: Add SM8450 MDSS compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,21 +39,24 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260711-sm8450-qol-qmp-v2-1-d14353bd6ff4@proton.me>
-References: <20260711-sm8450-qol-qmp-v2-0-d14353bd6ff4@proton.me>
-In-Reply-To: <20260711-sm8450-qol-qmp-v2-0-d14353bd6ff4@proton.me>
-To: Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, Bjorn Andersson <andersson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+Message-Id: <20260711-sm8450-qol-smmu-v2-1-41a6fba41c3e@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/02NQQ6CMBREr0L+2pq2CAVW3sOwQPqRGqHYD42G9
+ O4W2Libl8y8WYHQGSSokhUcekPGjhHkKYG2b8YHMqMjg+Qy50oIRkNxyTh721eMw8IyhboUqHl
+ aKoiryWFnPrvxVh9My/2J7bxptkZvaLbuu196sfUOey7lv90LxlmqUCIWuit1c52cne14HhDqE
+ MIPrXS1FbsAAAA=
+X-Change-ID: 20260711-sm8450-qol-smmu-57ed91ed0397
+To: Rob Clark <robin.clark@oss.qualcomm.com>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>
+Cc: iommu@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
  Esteban Urrutia <esteuwu@proton.me>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783826003; l=858;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783826044; l=1419;
  i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=ttOwHTqD5JdqKOp7yycqD22zqZB91giULaJsKWEhUOg=;
- b=okopUU6ct22uAyQBjs0owdIiioEOIrEhqKrIr1KVHvVpz0useNbiGQNX9x27TuH89XfR2pG23
- 7yPnCez5FIoC1ydOEbM1E4q+5j5y1JMdAdgi2kpqYLbN9h009Wa+rBM
+ bh=IfJaejqIoPsz18N/gqtzvEjuLMyEPDB5DAuVkODkmwc=;
+ b=UvSUTz/MEMZyJa7vizKpKWIYxkiZgRxVdBJ+9EKLTBhRtjyn7HLNnNYv7ncQG/5rvMzEMVbEi
+ 1LpVyl+XTlpB1FA0BgmVY6yPnRyCCrkkSS8bu45gFrluIVoQYEDttnj
 X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
  pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
 X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
@@ -65,29 +66,44 @@ Reply-To: esteuwu@proton.me
 
 From: Esteban Urrutia <esteuwu@proton.me>
 
-Comparing sm8350 and sm8450 tables, this seems to be a typo.
+Add the compatible for the MDSS client on the Snapdragon 8 Gen 1 so it can
+be properly configured by the IOMMU driver.
 
-Fixes: ef14aff107bd ("phy: qcom: com-qmp-combo: add SM8350 & SM8450 support")
+Otherwise, there is an unhandled context fault, because the framebuffer is
+already configured in UEFI.
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch allows the MDSS driver to properly function on SM8450 based
+devices.
+---
+Changes in v2:
+- Split series in subseries (dispcc, dts, qmp, smmu)
+- Link to v1: https://patch.msgid.link/20260622-sm8450-qol-v1-0-37e2ee8df9da@proton.me
+---
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index cdcfad2e86b1..a72c3b9654ec 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -2108,7 +2108,7 @@ static const u8 qmp_dp_v4_pre_emphasis_hbr3_hbr2[4][4] = {
- static const u8 qmp_dp_v4_pre_emphasis_hbr_rbr[4][4] = {
- 	{ 0x00, 0x0d, 0x14, 0x1a },
- 	{ 0x00, 0x0e, 0x15, 0xff },
--	{ 0x00, 0x0d, 0xff, 0xff },
-+	{ 0x00, 0x0e, 0xff, 0xff },
- 	{ 0x03, 0xff, 0xff, 0xff }
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index e2c914fccd6f..795e8ec7e8fa 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -425,6 +425,7 @@ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,sm6375-mdss" },
+ 	{ .compatible = "qcom,sm8150-mdss" },
+ 	{ .compatible = "qcom,sm8250-mdss" },
++	{ .compatible = "qcom,sm8450-mdss" },
+ 	{ .compatible = "qcom,x1e80100-mdss" },
+ 	{ }
  };
- 
 
--- 
-2.55.0
+---
+base-commit: bee763d5f341b99cf472afeb508d4988f62a6ca1
+change-id: 20260711-sm8450-qol-smmu-57ed91ed0397
+
+Best regards,
+--  
+Esteban Urrutia <esteuwu@proton.me>
 
 
