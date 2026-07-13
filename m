@@ -1,43 +1,43 @@
-Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
+Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640FE18D636;
-	Mon, 13 Jul 2026 14:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5194B3B841F
+	for <phone-devel@vger.kernel.org>; Mon, 13 Jul 2026 22:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783951527; cv=none; b=fk/Y3jpsvuBJUKPwvXF/0B3KhC/n8vKIbjhfRK0GAtOIOuIOxI0AasOl1tb3eSRQeScQSmKKwc43DTdigwKV4DSSqhOy9zf/3YL9zwhSFNT2TVd98n1lovj25sRkgo38VhR1AGWGnFZcAMizBrabtBCXvWCzheDzmT3AwZjt1ZU=
+	t=1783982857; cv=none; b=HwvPHVpPtCffmSNZVFNS/xPU/gAYm8cGzv4U00O4GIiTunzluemzy3MQGkdOM6z5Q+uRvlmiXU6WBOgX1MtBTmz+JdYxDGe4qbGnoK6P7ZNx4krk8RkFl+CHQlW/rsZTFMK8/DhlytMGfT38z9hEACFGIu1YEfVOMDbtOnaDPBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783951527; c=relaxed/simple;
-	bh=Jmkrf/EOcsaJtEIwx99+hxx+pRDkd8Tp9R0cq4jY6os=;
+	s=arc-20240116; t=1783982857; c=relaxed/simple;
+	bh=jMGWE8tA/29DhQ/N6afaPNZfUuTNcd/k2GMf4/rve6U=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bymJbsc/2lDHP6PglCFDvkLaIV3EBtWbWbUxcz+wsqJMpOYnv2Qeqc1Dv95QqGbVenfeLmRRbGO2bz0HJySFPeJS8PC6WawhXuUz2T0XM1zx9Nvh6R3VjAFKU+PD2H+kk0NY/rTB0lz8BcJUEK67Ec8G3e4MErfvjlwFbKY43J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fvbSQ/tJ; arc=none smtp.client-ip=109.224.244.122
+	 MIME-Version:Content-Type; b=O3qerNTP0i0oQdWu9MqOm8DcW70D8iGkDnI1OTJtdmiNdmDTaYakPrVUHy3Z/rzNgFM8veymfigGiJDJXDI/OAb+/uYvtdo9XKw2YsR5tk3u+FXUWINhX65It/MNagLl6A/B7+RIc2DA1fhs9RgG6GxSa9AvhcFW3Dlp9O0n2LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=In+B9Cui; arc=none smtp.client-ip=109.224.244.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fvbSQ/tJ"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="In+B9Cui"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783951515; x=1784210715;
-	bh=JNVm5dqtN4z1AXI4iOUrU1/SqbEPl4ytOZKLht8iRdk=;
+	s=3dkiarpw4bg4zokmj73yonjex4.protonmail; t=1783982844; x=1784242044;
+	bh=jMGWE8tA/29DhQ/N6afaPNZfUuTNcd/k2GMf4/rve6U=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=fvbSQ/tJkUDLyg3/6asMTv9lTYHTIYXAw4o0ONgjz6ZQrMnA3qtx48KjyTjICDwQf
-	 0sGjXv97+Vrz8iqRL+83wHypwtbglPZV8L3G+HQGmnYaEOAWvRv6Z+WXyQur78LyGl
-	 sXGt2S9k4lTGQubdPqB6UuqsV3IC8XCjAxjIFjD1KYLZ+yvsvDGtXcftzuT0nKe52H
-	 Gs7l29m59PCe+/qxgJCLRuCDYmRjKzX+t0DINc/mVa9Syqlu1SR25lwyfQJNpNGIef
-	 qqG2ebhDKAdudpHGg59UHnh8swkDd7UcnVjYhLr3OlN36cfFk254F/02vfXlcjRjkb
-	 d3L0f0+EMoRtw==
-Date: Mon, 13 Jul 2026 14:05:12 +0000
+	b=In+B9CuiPaRuzaxYQwMp4IgoG2wMQ656Nifnp9pcE8NftRUttLfb9sztvdrtvADkJ
+	 oFla/PDOyY9uXaJ5dYYvfLgKVjz4RhYwmpfre5fLa7bHz342234qyhm4yai/VJfS+n
+	 RPgK0oNWGMX+XAKc3vDt8sGSOWkIS7AW+M+iZwgo/rgfQZFHQbSGFMj8M/rZ4oQRWE
+	 nAmPZ8hIskIq/Wgxq8zyBXEwHE7O/fpIdERP0ikOoMRBrunvY8u/hkVm5BBLGcPswP
+	 NBLMQuVxsLXKc5i5245lqlGgFOvonNOcqNFCpk7GppFmoIf7Giqg9aav+dMZsrFnrq
+	 wcKS8TVh02ciQ==
+Date: Mon, 13 Jul 2026 22:47:19 +0000
 To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, Dmitry Baryshkov <lumag@kernel.org>, Danila Tikhonov <danila@jiaxyga.com>
 From: Esteban Urrutia <esteuwu@proton.me>
 Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] clk: qcom: dispcc-sm8450: Migrate to qcom_cc_driver_data
-Message-ID: <83ebfe48-3161-4261-8e3b-905b2eebd2ee@proton.me>
-In-Reply-To: <dcea3653-1428-49ee-9287-a1b27da2003b@oss.qualcomm.com>
-References: <20260711-sm8450-qol-dispcc-v2-0-fc1a07ac5601@proton.me> <20260711-sm8450-qol-dispcc-v2-2-fc1a07ac5601@proton.me> <dcea3653-1428-49ee-9287-a1b27da2003b@oss.qualcomm.com>
+Subject: Re: [PATCH v2 3/3] clk: qcom: dispcc-sm8450: Keep pll types as is for SM8475
+Message-ID: <d58a72e3-fbb3-4dad-a706-a61b8267825a@proton.me>
+In-Reply-To: <d6a56ee7-2380-4e2a-b217-6d7398944279@oss.qualcomm.com>
+References: <20260711-sm8450-qol-dispcc-v2-0-fc1a07ac5601@proton.me> <20260711-sm8450-qol-dispcc-v2-3-fc1a07ac5601@proton.me> <d6a56ee7-2380-4e2a-b217-6d7398944279@oss.qualcomm.com>
 Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 69e0dd07640d0cb1341423a707ce184a092d134a
+X-Pm-Message-ID: 31ff9d771682dc8a421c67293ce9b4f8748cda45
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,15 +47,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 7/13/26 6:47 AM, Konrad Dybcio wrote:
-> [...]
+On 7/13/26 6:57 AM, Konrad Dybcio wrote:
+> No, these are two separate hardware designs and you can't mix the
+> configuration like that just because it so happens to circumvent a bug.
 >=20
->>  =09/* Enable clock gating for MDP clocks */
->>  =09regmap_update_bits(regmap, DISP_CC_MISC_CMD, 0x10, 0x10);
+> Taking a peek at clk_lucid_evo_pll_configure, there's an early bailout:
 >=20
-> This would ideally become regmap_set_bits(..., BIT(4)) in desc->clk_regs_=
-configure
-Will do in v3 :)
+> if (trion_pll_is_enabled(pll, regmap)) {
+> =09pr_debug("Lucid Evo PLL is already enabled, skipping configuration\n")=
+;
+> =09return;
+> }
+>=20
+> I think it should be fine to copy-paste it as-is for LUCID_OLE. Please
+> check if that resolves your issue.
+Indeed, this solves the issue and the display no longer glitches out at
+boot.
+Will correct in v3; thanks for pointing me in the right direction.
 
 Regards,
 Esteban
