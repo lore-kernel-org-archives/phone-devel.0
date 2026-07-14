@@ -1,70 +1,150 @@
-Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5194B3B841F
-	for <phone-devel@vger.kernel.org>; Mon, 13 Jul 2026 22:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E7D18D636;
+	Tue, 14 Jul 2026 03:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783982857; cv=none; b=HwvPHVpPtCffmSNZVFNS/xPU/gAYm8cGzv4U00O4GIiTunzluemzy3MQGkdOM6z5Q+uRvlmiXU6WBOgX1MtBTmz+JdYxDGe4qbGnoK6P7ZNx4krk8RkFl+CHQlW/rsZTFMK8/DhlytMGfT38z9hEACFGIu1YEfVOMDbtOnaDPBo=
+	t=1783999718; cv=none; b=p/7rJYPjSxW6qHbqJWnC/IDfim1d2kQ/c6MuaWMfsES/3uWnvJ5zD1SIjNZUzA4nfED77ilDhXpgcnq4aYXRn7I44tqyPGfGf61DNAcb3S5VWsYl8LfG03UxlrtC3qLoY6vk5nCErbpDPp3qYE/hUkoSXJ6djggUIpb1+9S26KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783982857; c=relaxed/simple;
-	bh=jMGWE8tA/29DhQ/N6afaPNZfUuTNcd/k2GMf4/rve6U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O3qerNTP0i0oQdWu9MqOm8DcW70D8iGkDnI1OTJtdmiNdmDTaYakPrVUHy3Z/rzNgFM8veymfigGiJDJXDI/OAb+/uYvtdo9XKw2YsR5tk3u+FXUWINhX65It/MNagLl6A/B7+RIc2DA1fhs9RgG6GxSa9AvhcFW3Dlp9O0n2LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=In+B9Cui; arc=none smtp.client-ip=109.224.244.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1783999718; c=relaxed/simple;
+	bh=tuOyGc2HvqsLhhkEBIqIuJ5wQ1fqizUe9vaqx38ybbk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Mgy1VKHl1nP7KvQu+LOSiJx1cCNnQmZ707lFE619OgyBRVlQ1OV2EtmAQPU2s7lpYLGYvCPaQQOhCWdotS7GjXCyvaxW3vstnpNIgxG9/ZXJSS8icVVhz+Ks8fEvQGVAQ2bgoakYwqSFtOt2keobKXrz/pyimeKyPCi3MunzI7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqef01Uk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="In+B9Cui"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=3dkiarpw4bg4zokmj73yonjex4.protonmail; t=1783982844; x=1784242044;
-	bh=jMGWE8tA/29DhQ/N6afaPNZfUuTNcd/k2GMf4/rve6U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=In+B9CuiPaRuzaxYQwMp4IgoG2wMQ656Nifnp9pcE8NftRUttLfb9sztvdrtvADkJ
-	 oFla/PDOyY9uXaJ5dYYvfLgKVjz4RhYwmpfre5fLa7bHz342234qyhm4yai/VJfS+n
-	 RPgK0oNWGMX+XAKc3vDt8sGSOWkIS7AW+M+iZwgo/rgfQZFHQbSGFMj8M/rZ4oQRWE
-	 nAmPZ8hIskIq/Wgxq8zyBXEwHE7O/fpIdERP0ikOoMRBrunvY8u/hkVm5BBLGcPswP
-	 NBLMQuVxsLXKc5i5245lqlGgFOvonNOcqNFCpk7GppFmoIf7Giqg9aav+dMZsrFnrq
-	 wcKS8TVh02ciQ==
-Date: Mon, 13 Jul 2026 22:47:19 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, Dmitry Baryshkov <lumag@kernel.org>, Danila Tikhonov <danila@jiaxyga.com>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] clk: qcom: dispcc-sm8450: Keep pll types as is for SM8475
-Message-ID: <d58a72e3-fbb3-4dad-a706-a61b8267825a@proton.me>
-In-Reply-To: <d6a56ee7-2380-4e2a-b217-6d7398944279@oss.qualcomm.com>
-References: <20260711-sm8450-qol-dispcc-v2-0-fc1a07ac5601@proton.me> <20260711-sm8450-qol-dispcc-v2-3-fc1a07ac5601@proton.me> <d6a56ee7-2380-4e2a-b217-6d7398944279@oss.qualcomm.com>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 31ff9d771682dc8a421c67293ce9b4f8748cda45
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqef01Uk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 70055C2BCF7;
+	Tue, 14 Jul 2026 03:28:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783999718;
+	bh=tuOyGc2HvqsLhhkEBIqIuJ5wQ1fqizUe9vaqx38ybbk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=mqef01UkobXMx7cBupSiuGbj2JnGgxFaxzbq+2sQN2AzWBcTgAe0UskH4u6fIoMND
+	 ie4C2JTsnDoQ2Y9SdgpmtaJkA1bWL+iFgd+mzOy5AmCc7kZ8J71fY5DzZiBFGlwk4c
+	 ik54x/midVfTpUe01FDhT3IXKFd7Q2AiveyMH5ei7qzsSFZJnbWNqWjpG8LTvr6Yya
+	 L6yRoj+sdb81QFu6S5fuuV6Jh3MvsmK4Mk9bJu/P0V3gdb9Y9EAp/+4Voe2TxW9pMR
+	 lBXkYjlWOCgpgegTRHzgSdeqcMxeJ7DbhxzvZTw3kdrqytkO0WXGbBK8xuTI4kRpgx
+	 MqScvwCa1FRIw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54408C44507;
+	Tue, 14 Jul 2026 03:28:38 +0000 (UTC)
+From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
+Date: Mon, 13 Jul 2026 23:28:18 -0400
+Subject: [PATCH v3 2/3] clk: qcom: dispcc-sm8450: Migrate to
+ qcom_cc_driver_data
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260713-sm8450-qol-dispcc-v3-2-56fd05822270@proton.me>
+References: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me>
+In-Reply-To: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Jagadeesh Kona <quic_jkona@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Esteban Urrutia <esteuwu@proton.me>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783999716; l=2981;
+ i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
+ bh=Jbnp8p29U7ihTi5nzGMIrBxFlgzT7kH3/JhcN7BtyIQ=;
+ b=fP44rtzAgx+pYQdrFCgjsq+g5In/H5GO93GUDY8+TCs1kWxhPt+TMwL+PeYzvO77jEhEIK7Oj
+ R4ZGbcf7QKNDewMBceIhAYdqOkN+s4BSBYxICimdeSXj+da/4Pgc53q
+X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
+ pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
+X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
+ auth_id=835
+X-Original-From: Esteban Urrutia <esteuwu@proton.me>
+Reply-To: esteuwu@proton.me
 
-On 7/13/26 6:57 AM, Konrad Dybcio wrote:
-> No, these are two separate hardware designs and you can't mix the
-> configuration like that just because it so happens to circumvent a bug.
->=20
-> Taking a peek at clk_lucid_evo_pll_configure, there's an early bailout:
->=20
-> if (trion_pll_is_enabled(pll, regmap)) {
-> =09pr_debug("Lucid Evo PLL is already enabled, skipping configuration\n")=
-;
-> =09return;
-> }
->=20
-> I think it should be fine to copy-paste it as-is for LUCID_OLE. Please
-> check if that resolves your issue.
-Indeed, this solves the issue and the display no longer glitches out at
-boot.
-Will correct in v3; thanks for pointing me in the right direction.
+From: Esteban Urrutia <esteuwu@proton.me>
 
-Regards,
-Esteban
+Migrate to qcom_cc_driver_data, which is used by other clock controller
+drivers.
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+---
+ drivers/clk/qcom/dispcc-sm8450.c | 38 ++++++++++++++++++++++++++++----------
+ 1 file changed, 28 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
+index c7e04bd315d5..facbf040ab9a 100644
+--- a/drivers/clk/qcom/dispcc-sm8450.c
++++ b/drivers/clk/qcom/dispcc-sm8450.c
+@@ -1778,6 +1778,29 @@ static const struct regmap_config disp_cc_sm8450_regmap_config = {
+ 	.fast_io = true,
+ };
+ 
++static struct clk_alpha_pll *disp_cc_sm8450_plls[] = {
++	&disp_cc_pll0,
++	&disp_cc_pll1,
++};
++
++static const u32 disp_cc_sm8450_critical_cbcrs[] = {
++	0xe05c, /* DISP_CC_XO_CLK */
++};
++
++static void disp_cc_sm8450_clk_regs_configure(struct device *dev, struct regmap *regmap)
++{
++	/* Enable clock gating for MDP clocks */
++	regmap_set_bits(regmap, DISP_CC_MISC_CMD, BIT(4));
++}
++
++static const struct qcom_cc_driver_data disp_cc_sm8450_driver_data = {
++	.alpha_plls = disp_cc_sm8450_plls,
++	.num_alpha_plls = ARRAY_SIZE(disp_cc_sm8450_plls),
++	.clk_cbcrs = disp_cc_sm8450_critical_cbcrs,
++	.num_clk_cbcrs = ARRAY_SIZE(disp_cc_sm8450_critical_cbcrs),
++	.clk_regs_configure = disp_cc_sm8450_clk_regs_configure,
++};
++
+ static const struct qcom_cc_desc disp_cc_sm8450_desc = {
+ 	.config = &disp_cc_sm8450_regmap_config,
+ 	.clks = disp_cc_sm8450_clocks,
+@@ -1786,6 +1809,7 @@ static const struct qcom_cc_desc disp_cc_sm8450_desc = {
+ 	.num_resets = ARRAY_SIZE(disp_cc_sm8450_resets),
+ 	.gdscs = disp_cc_sm8450_gdscs,
+ 	.num_gdscs = ARRAY_SIZE(disp_cc_sm8450_gdscs),
++	.driver_data = &disp_cc_sm8450_driver_data,
+ };
+ 
+ static const struct of_device_id disp_cc_sm8450_match_table[] = {
+@@ -1823,19 +1847,13 @@ static int disp_cc_sm8450_probe(struct platform_device *pdev)
+ 		disp_cc_pll1.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_LUCID_OLE];
+ 		disp_cc_pll1.clkr.hw.init = &sm8475_disp_cc_pll1_init;
+ 
+-		clk_lucid_ole_pll_configure(&disp_cc_pll0, regmap, &sm8475_disp_cc_pll0_config);
+-		clk_lucid_ole_pll_configure(&disp_cc_pll1, regmap, &sm8475_disp_cc_pll1_config);
++		disp_cc_pll0.config = &sm8475_disp_cc_pll0_config;
++		disp_cc_pll1.config = &sm8475_disp_cc_pll1_config;
+ 	} else {
+-		clk_lucid_evo_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
+-		clk_lucid_evo_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
++		disp_cc_pll0.config = &disp_cc_pll0_config;
++		disp_cc_pll1.config = &disp_cc_pll1_config;
+ 	}
+ 
+-	/* Enable clock gating for MDP clocks */
+-	regmap_update_bits(regmap, DISP_CC_MISC_CMD, 0x10, 0x10);
+-
+-	/* Keep some clocks always-on */
+-	qcom_branch_set_clk_en(regmap, 0xe05c); /* DISP_CC_XO_CLK */
+-
+ 	ret = qcom_cc_really_probe(&pdev->dev, &disp_cc_sm8450_desc, regmap);
+ 	if (ret)
+ 		goto err_put_rpm;
+
+-- 
+2.55.0
+
 
