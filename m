@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7B02F6560;
-	Fri, 17 Jul 2026 21:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247012EC0A4;
+	Fri, 17 Jul 2026 21:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784322268; cv=none; b=nwP5qLyhGrVhzFZpn6aQyQPEU5C0swNEkAuFe7lQt0i+wrSxM41NsTU1gnzKr8w4WvZwAMunglr3zP/U5a9awym2yhJBlhMDuAE2jFdCJrS6g3GTYpr4BVJBug2MowCVSk3XC2MjAet4dv9VIoFblT2zL6PTdNw7g92wOCF9feY=
+	t=1784322514; cv=none; b=eyAVYL9zWMVSJykKgrgVrG3KRsO1xDvDXwdwLiDy64DlceYLqtKrf/9R92cZ7sHo1QSWwUw1Ylc+Ocv3aq7CVKIDXh1YDG+/CjeWv48gQDqX6JLFOrFJao0A+4wgkatS7DMK8qcjArUi6908LdnjPTJW2NXbFhlyNZzDNlSPjho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784322268; c=relaxed/simple;
-	bh=tcBsvlAtSpPMBcAz8qshWjkmRpMsGtUzftMHBrdxQF0=;
+	s=arc-20240116; t=1784322514; c=relaxed/simple;
+	bh=LJLuFHEJLRrrJT8/uQRejUUpZY7N2clwhlYNSsXTQOI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YvA/cX0fkM0zKs0ebOVhLJTOZq0xWmSA4qWvMOvQFX/p1a10KggQSh8AmaAd8TdlqNF6C1sJEZ6+p4EJH7Oa1eeXl/Ky56ukpwMazQ1zmH3YB7sLXtMepWTYw3MSifmI048u4Fuc2FY7zkDa5pYnc0E5kTow93qY9j6gRUPcDDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=lyf/zbfo; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=GFNgXFy0nr6a3jXxclgmeBbQ1M/kx4sy2Zx51fhSGLDOozFvI227CgHlLxSiCqykWLDtp5MTAmspQWeMRRahlmvX3raAI1zqrU/Yu1KMuv85AhZwA7JtvzDSq5lwjraEDaz20KkK62n3IjM4/q5ZCv+3qIsVSoI5ff0vYAcGnlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=bQluLM9h; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="lyf/zbfo"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="bQluLM9h"
 Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 40CCE53403BB;
-	Fri, 17 Jul 2026 23:04:21 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 067715340388;
+	Fri, 17 Jul 2026 23:02:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784322261;
+	t=1784322133;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CQr7QuU6rNfGQjeOhr67iZ0L0PzYiU0lqA4hYXfpOiA=;
-	b=lyf/zbfo/D7AH7bWPFixM9GwauXS01iM2aUf3w+R47UIm7FNWNZKjU8XEBM14RfRLH9Lmx
-	dDoqRgJPGXdJsKjh4VlChW6mhwxPBHhfC9+2ATRPqLisUdD5PNVC47Ze1WpSyI1pCD0YdN
-	3AefX2CHKzp3KpPubz/aReCxYbdqrrE=
-Message-ID: <88a87da7-ffa0-4f34-aba8-e8aa995aa79f@ixit.cz>
-Date: Fri, 17 Jul 2026 23:04:20 +0200
+	bh=Oq9NtYuTPcyfgKc/M4q0GlqItnWYxDvFy2+B0yhwzA0=;
+	b=bQluLM9h0euhySlaxOlCQUmhxsbmDS4q7yxjm+YvOAMq+YwOLdc5sd3yP3spSFsN2QhlOQ
+	2obdn/toUq28ohATAWvS+VY0xscKRoi5INjT5QrJkBYHnn2zOKtvSNR0YUBXc4GiGUxQzs
+	3xIZE3GhAM3TwOS22NBC4Bz/Xt0x8Xg=
+Message-ID: <e43fd30b-4f97-4f14-85f2-7d113c0dc1c3@ixit.cz>
+Date: Fri, 17 Jul 2026 23:02:11 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,16 +41,17 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] SM8450 QoL changes (dts)
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Esteban Urrutia <esteuwu@proton.me>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-References: <20260711-sm8450-qol-dts-v2-0-5eb2e86468c5@proton.me>
- <178425854592.1084804.16144771627314071470.b4-ty@kernel.org>
+Subject: Re: [PATCH v3 1/3] clk: qcom: dispcc-sm8450: Fix
+ disp_cc_mdss_mdp_clk_src ops
+To: esteuwu@proton.me, Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Jagadeesh Kona
+ <quic_jkona@quicinc.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me>
+ <20260713-sm8450-qol-dispcc-v3-1-56fd05822270@proton.me>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -96,29 +97,32 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <178425854592.1084804.16144771627314071470.b4-ty@kernel.org>
+In-Reply-To: <20260713-sm8450-qol-dispcc-v3-1-56fd05822270@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 17/07/2026 05:23, Bjorn Andersson wrote:
+On 14/07/2026 05:28, Esteban Urrutia via B4 Relay wrote:
+> From: Esteban Urrutia <esteuwu@proton.me>
 > 
-> On Sat, 11 Jul 2026 23:12:26 -0400, Esteban Urrutia wrote:
->> These patches focus on correcting some details on the DTS for the SM8450
->> SoC.
->>
->>
+> If the clock frequency is changed at registration time, a flicker will be
+> visible at boot.
+> Switching to clk_rcg2_shared_no_init_park_ops fixes this.
 > 
-> Applied, thanks!
+> Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+> ---
+>   drivers/clk/qcom/dispcc-sm8450.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [1/2] arm64: dts: qcom: sm8450: Remove unneeded reserved memory nodes
->        commit: 0ed8261e0ebdac5f1f08dcbfc209efe36937ed2d
-> [2/2] arm64: dts: qcom: sm8450: Add mode-switch property to qmpphy
->        commit: 8a2b4481b66c802af293e55eee07406971d5aa7b
-> 
-> Best regards,
+Heya,
 
-I'm afraid there is v3 of this patchset :(
-
-https://lore.kernel.org/all/20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me/
+it's likely this change will be safe for older sdm845 too? Comma.AI people have 
+it applied downstream on top of 6.18/7.1 [1], so I'm wondering if it's something 
+after testing on available targets could be enabled for 845 too.
 
 David
+
+[1] 
+https://github.com/commaai/vamOS/blob/master/kernel/patches/0004-clk-qcom-dispcc-sdm845-use-no_init_park-ops-for-disp.patch
+[...]
