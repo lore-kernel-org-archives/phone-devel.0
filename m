@@ -1,68 +1,68 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CC33F8ECA
-	for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 13:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824533EA969
+	for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 13:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784294434; cv=none; b=iVhMwFIkk9gktc/dQn+UptaBL8D89DbG1D0ozUsRm7T/Vx7+gBKUlwi4G0aqrD019TPH6XWkgcIOaV9lVc0Zo1eT+JvVRkTcIWh0kR580BzryOOiScH7Dy6bJZ+B0N1n5BUpFRqEo079BrE083hV+30luz8e9QGDpSz+2QtnlpE=
+	t=1784295254; cv=none; b=ukdONpZKxxmNt6vASQ/qBPtGP1b/htj0TS41kS33emE2VW0AyX6TtRM2o38Exp2wQSMOwpCmIOBVXvvNgDS2hBXuonJXGYd9MrsZvuumvj07qo90x7oJ2K8joVEGXkuK2nZuDUrK522gEXPphAaYaorq2n2MUchyVw7wR1zbZ5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784294434; c=relaxed/simple;
-	bh=4tg7Tw9YFwtuTaNFXfaHJYmypQcA98LC9ovUCSBOML8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uhL+mJ918RIkud/tluUobgyd9fRewrOSudnnZVMKOyE3Mf6fNSh7VmYm3FyaYC0G68xzWneF/QTQif7GCLkqukr031iu5anhkWfsKGdIl/0XOy2y6zitoi/MzaJ6E9ARTJIL2DnkKpqudAX06XGKC5LVQ5MNf1rTXzdtiBFeLvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=mFCWzBiP; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1784295254; c=relaxed/simple;
+	bh=DXXh0GJHE8ur+1dO1nCpSy/JskzK6PWckuD1ZB0l9cQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OjXK7TqE9b0FrvT3GUu4phzWY0AjGGo1VSrK608C7qucQHNszQhy282VoifZ/VF1bPU1txCY4ShoB2KKd2YkZwW51+SvZrWWYKprV2NXjOwKOm/XW7syaJFXiVReMMdCJ4/r5Z451+4fumJC+CBdU8Ms5+mEUNe0s/s1QGLGIzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=m2rc9AI1; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mFCWzBiP"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493b966dd74so31873505e9.3
-        for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 06:20:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="m2rc9AI1"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4720d22c94aso4964410f8f.1
+        for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 06:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1784294430; x=1784899230; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hw/Yv8W0bG7wwTURy/Xky2RJZ2FwJjbfAnGBUOVKvuM=;
-        b=mFCWzBiPH+/ufK2FUBdbJZ/hY2APpxUtA2lKFZjSYXWH3HI+30svivl/52lqjcNpxT
-         27N/GuCIQd2RiQ+KwuU1B2hWzIYq9auWvAbAyqvGs2zznOjFgThSuz6f4eJMGigCCEeG
-         lc1xIMff5LWPmmzOeSU7FiBP4kTJZMMMcfsX44WgLvIhKWCbyp3zMxgwop11Fs50Ra3o
-         Rz2W6kuCNnH+u+zYxXX64Gynwf/eAn3JzUbs6QB7kfEhdxGEXnOUjrYSrBWOFgX9GC6f
-         qq5cKIq6lwfufl35Xv9inRM9IqCpoH1QbKSMHmzN/ef+0JzaeMUWIjEd9ZBzx+iToyFV
-         bL5Q==
+        d=fairphone.com; s=fair; t=1784295250; x=1784900050; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KSVT86jwC5nyb5SerhE6T35ZLSgx4GxTVi5D3yHG51o=;
+        b=m2rc9AI1tZROXhbsnjBg3IkKftwrRLzJc30owGyDwE7uUc7KLs8R3EkJpl8dWRkHws
+         xLaLRguMeYUYyQ0s+DsLURbEeAxGBCPzCjN/BLNaix5wPOt6w3CVxLO8AilWGGcI9BEo
+         Tgm+1CZv2HtAjrwzCLd80O4+euWLFHZ00YHNooUboDyQY03cn983gQpAWmaGQ2XfCnIL
+         3erYaPqxanQsIXstzkGGphxfYV2tG7t1u75XDboFBcvP3mcz/G5QJ5r92RkYf1jfokDd
+         yrtWt+1MD/vbX2YkRhXowdRTkKprxKG5SosoveuFwK5bvupK2blkekeOmFA/Pp0SXWUs
+         V+zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784294430; x=1784899230;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hw/Yv8W0bG7wwTURy/Xky2RJZ2FwJjbfAnGBUOVKvuM=;
-        b=me2hK27ss2By08dJ3AiTUStlwFoDl3amMyxnnUyQ/vp6XOSIX1nVCgt1K9HQEwd4pQ
-         ZRwmjlAVL4lWb+mLPDgc5I7C5Ae97OsB7n/ErWPS8MC2Xd8DrPHkjMl0C5DiiznEGu3n
-         50ykAHt7+qKKXMedj5tyX4vtfAAucMftAAmibjQAHRI5A3or11mxDYquB0KNy1WzV48w
-         lPJlOzylLjc/qQZGMzoyscn71ukXj+hvEh9B6MYrwfUFSUsslhQi3jwLkjCMwegOfctq
-         /51dJyUt4e55jHzuBdfjud8aNw/wqC5NCwZ1AcBZVEIyoIkvkH+N8KMjVQinvp+PZAlu
-         EHZw==
-X-Forwarded-Encrypted: i=1; AHgh+RozPvuiH4xzNrA6bJvNsPhz1XUlUpXbd38JCbtLPfhoOqFhrjZpIRt8hFjlzSFyCGh6QdqJUJtCCt2KeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDeGFemZ7qfDHfTgmFQyD3qkShSpnTFRbUJy3C/yOVMTJocr4y
-	AiAdlwPjWcCMtaEdsfz/keQvQcZL+gWhYl2oCcLYcd0CfNkNg/QXB0iZZuWgRmgOLQc=
-X-Gm-Gg: AfdE7cnjj5tjkZgPi1TaIQ/K7+wo5KvCXOCJsi0su0pBXdQVrI3lqD7sJeOwlNHEk3G
-	1hprWm61z2JFanq1vcpBtJsa4FI8dwZRMB9rtCx8lOJ8WP888y4Ygtr9Qug+L9V3nie0eEZ7C2u
-	7bywcsyc5aP3kbe8EX2VHQjyM0vVf9whZxynxwsjbceE8xUwt5TZytGRnvwPBAPv3s3MEFI9H1x
-	UiJfABCHi4AuwRj+jvqrwZGYWs904IW8NwiKjS2kTTY9nyWaQFQiZzBYVzf2zpJrf8+LpOXrzfG
-	FQJp493ov9wHbbe1dUkNBV6rw8M+GLHF+L8fW8IN9DZqodouaxrsbPEasohgVJD0JZoROGpW6xf
-	onWRgTi2Ip6K5OdxE1r/A7n8gq1F+U/BkQbbiuzBjIGuD/1kr/3WfIU+/vXaTb1jtrBZUvcCf4T
-	JCnWiB6G/sQQCEEWc=
-X-Received: by 2002:a05:600c:5943:b0:493:c4e1:40a6 with SMTP id 5b1f17b1804b1-4954a514619mr20541645e9.32.1784294430288;
-        Fri, 17 Jul 2026 06:20:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784295250; x=1784900050;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KSVT86jwC5nyb5SerhE6T35ZLSgx4GxTVi5D3yHG51o=;
+        b=dumPEVrkSuTg63wwbFpQt/AEpTF3+UeyR4XIQV/sHeznQlt6GtSQw+cy3ampyBq05r
+         RyBv1GJR53Q/UseIQ+N2HsuY29w0dgriyCXVbQKdveYfZSK+VBHEsK7OG5qGbR7eXCBl
+         x7qrKM2b9rvonYqE6ID5M5T0qGy9USvkHUfE60HOFBj8ZlOzB+xw7etJCxqr5uz2f8ZB
+         ZCn5yj/rbfp5QvOZ9F3qmRwgTK1vqPlK+9rn53x370eVOytsM8qr+IrxGcy/aUjLFfAn
+         qNdrHbGGc5mfzRfHXu1Z5xus7jp4RPFogQMOVqglA6YAcwriCgpx3m90YUqo9zY11JIJ
+         8wAw==
+X-Forwarded-Encrypted: i=1; AHgh+RowAEAPVvNwvbDViEX1pPRsLTGcMuAeg7TIUTNNDPmQ6Wtc7heRlpzxS0hVeTZPOCxTwzBOfWlnvXyEQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG8939PrKh6fE3tiB29xoCU38lNdFNz5//wr58PhV46xlAP8Bo
+	m1AFJAFobzWPD3H5qC/cfFxXNFUv+8SU7NeEyYD13VbEw3ItOfXeYQy/PehWz6iWR2S1tVaKrnR
+	HHZF+DlIA1g==
+X-Gm-Gg: AfdE7cmww3WfyWQyIS8L4sm8rrYMvKW+cQIGDLGLYc/6mfbjCKR5Bkv71HDEZlG1+SV
+	V+2ewdf7Kb9AQzz/M4pBeXCHRJHKQcXq5d2bG1GJGpPA70Ln72S7SU7ucjqi9CwKB5GiElohpPt
+	d8Ym9ZXZmDZB4r2lo46uXrUzlHp0U/SJ0OkX7lTMDiVndlSbzwqeE9Atu0KH4YYynGPuvnio5Pn
+	2hWCJ1lk/L2vCGU5UnvMI826HOGoWDnHLyp/y+gAvoSZovWX2O9R2JB3oXDyMOC3j9IoYfgo9Fs
+	dkioDpo+Eb2KmVcmUclxD71tnSU1KLRQqPMm6c6KmUTPJkYWrQq5L2OQ0lrvDEF82Zqd4INS9SO
+	f7GHwWjrcsVZexX9ypHZvfNNsYgHm6o9y+d3NpWmuFGOFLzoDyMT4bjwc0qh1eB3Qs6Iye8Zy0P
+	brrQ1sZaQjrtB9RJhi1VaWUlUJSA==
+X-Received: by 2002:a05:6000:4702:b0:47d:fc20:e7b4 with SMTP id ffacd0b85a97d-47f622f2c4amr3719847f8f.10.1784295249579;
+        Fri, 17 Jul 2026 06:34:09 -0700 (PDT)
 Received: from [172.18.170.139] ([185.104.138.147])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954ba2abd0sm28220295e9.15.2026.07.17.06.20.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49ab8sm4361547f8f.5.2026.07.17.06.33.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 06:20:30 -0700 (PDT)
+        Fri, 17 Jul 2026 06:34:09 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 17 Jul 2026 15:19:34 +0200
-Subject: [PATCH v2 3/3] arm64: dts: qcom: qcs6490-rb3gen2-vision-mezzanine:
- Use common pinctrl
+Subject: [PATCH v2 0/2] Add Milos CPU OPP table for DDR & L3 bandwidth
+ scaling
+Date: Fri, 17 Jul 2026 15:33:02 +0200
+Message-Id: <20260717-milos-cpu-opp-v2-0-428813fafd52@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -71,68 +71,70 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-kodiak-cam-mclk-v2-3-04451f1374bd@fairphone.com>
-References: <20260717-kodiak-cam-mclk-v2-0-04451f1374bd@fairphone.com>
-In-Reply-To: <20260717-kodiak-cam-mclk-v2-0-04451f1374bd@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ7CIBBFr9KwdhqKBqIr72G6AJzaMbYgUKJpe
+ ndpu3b5Mv+/PzOLGAgju1QzC5gpkhsLiEPFbK/HBwLdCzPBheSq4TDQy0WwfgLnPQjZGWmP0qD
+ krHR8wI4+m+/W7hwn80SbVsma6CkmF77bYG7W3D93boCDRtWdDD8bq9S10xR870asrRtYu+wDA
+ d9T+Tvtq8zoiFDuA6VLlVUtIFhRwssPDA/AEewAAAA=
+X-Change-ID: 20260710-milos-cpu-opp-26fb6c36be60
+To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
+ Conor Dooley <conor+dt@kernel.org>, 
+ Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexander Koskovich <akoskovich@pm.me>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784294383; l=1451;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784295239; l=1554;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=4tg7Tw9YFwtuTaNFXfaHJYmypQcA98LC9ovUCSBOML8=;
- b=jn/P0MbHPLHJEwkXoOznJmDcj62GIY+xc3oyTXDgT6bxcM6l0FG4aHB4MlI4ZJHIuVm01DwUG
- UricQafvBmjDhgy2FIMwjTYFK54nEngYu9Pm3CFo6fsT1tqQfMTaNZG
+ bh=DXXh0GJHE8ur+1dO1nCpSy/JskzK6PWckuD1ZB0l9cQ=;
+ b=VjKsALIT2Lckvq6HraKgzl8M6gMe1at9iKNQMLqAWalW7m0MptW3ptDBRU3bKX2SWOeWF/uOK
+ 3t4a1YkJqXwD4XOOo8qQmEJfvK7eOGs58FGcw9K3Ic1MLKrCeT4wWeg
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Since there's already a define for gpio67 (mclk3) in kodiak.dtsi, use
-that instead of defining an extra pinctrl state. Also rename the suspend
-state to match naming.
+Add a node for the OSM L3 on the Milos SoC and define the CPU OPP tables
+to scale DDR & L3 bandwidths when CPU cores change frequency.
 
-No functional change intended.
+Tested with 7zip benchmark ("7z b") and membw [0] showing very close
+results compared to disabling .sync_state and thus keeping all
+interconnect bandwidths on maximum vote.
+
+[0] https://github.com/doug65536/membw
+
+Unfortunately there's no support upstream yet to have different
+opp-peak-kBps values depending on whether the device is running on DDR4
+or DDR5 RAM, which is where Milos should use different DDR votes. For
+now the DDR5 values are used which are (usually) higher, but should
+hopefully not cause any issues on devices with DDR4. TODO comments are
+placed where they differ.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- .../boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtso     | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+Changes in v2:
+- Squash the three dts patches into one, some patches along would result
+  in performance degradation.
+- Pick up tags
+- Link to v1: https://patch.msgid.link/20260710-milos-cpu-opp-v1-0-ae7f4b09bc77@fairphone.com
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtso b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtso
-index b9e4a5214f70..aceafea45343 100644
---- a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtso
-+++ b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtso
-@@ -51,8 +51,8 @@ camera@1a {
- 
- 		reset-gpios = <&tlmm 78 GPIO_ACTIVE_LOW>;
- 		pinctrl-names = "default", "suspend";
--		pinctrl-0 = <&cam2_default>;
--		pinctrl-1 = <&cam2_suspend>;
-+		pinctrl-0 = <&cam_mclk3_default>;
-+		pinctrl-1 = <&cam_mclk3_suspend>;
- 
- 		clocks = <&camcc CAM_CC_MCLK3_CLK>;
- 		assigned-clocks = <&camcc CAM_CC_MCLK3_CLK>;
-@@ -73,14 +73,7 @@ imx577_ep: endpoint {
- };
- 
- &tlmm {
--	cam2_default: cam2-default-state {
--		pins = "gpio67";
--		function = "cam_mclk";
--		drive-strength = <2>;
--		bias-disable;
--	};
--
--	cam2_suspend: cam2-suspend-state {
-+	cam_mclk3_suspend: cam-mclk3-suspend-state {
- 		pins = "gpio67";
- 		function = "cam_mclk";
- 		drive-strength = <2>;
+---
+Luca Weiss (2):
+      dt-bindings: interconnect: OSM L3: Document Milos OSM L3 compatible
+      arm64: dts: qcom: milos: add CPU OPP table with DDR & L3 bandwidths
 
--- 
-2.55.0
+ .../bindings/interconnect/qcom,osm-l3.yaml         |   1 +
+ arch/arm64/boot/dts/qcom/milos.dtsi                | 344 +++++++++++++++++++++
+ 2 files changed, 345 insertions(+)
+---
+base-commit: 4c45e14df2f4e77982ad70d6d8e3fe750edd4c37
+change-id: 20260710-milos-cpu-opp-26fb6c36be60
+
+Best regards,
+--  
+Luca Weiss <luca.weiss@fairphone.com>
 
