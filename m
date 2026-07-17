@@ -1,66 +1,68 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64013F6606
-	for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 11:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF63911B2
+	for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 11:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784288733; cv=none; b=bd2te6Gg2y2jt4S9f21W7QiiiOLd5l51KrNigd0gMwtQhp4BZU0PtNhK9XLwSBYk5VlRLYS1o9TWgAkKRvTvjPNwVGfcma96E8uzmmlym0Vz0k4qxIxKEk3E7v7zhsn4tlcl4siTk9URn4p5D5ORwMUclgNtTKFRm3zVneZMeI0=
+	t=1784288734; cv=none; b=iNzwA5AHhDnHTeg5OdvjUaVTpP2A8vHu48H1Z5zq4qPuQAXLXYze5wimp4xpnbaoUbqljBWdEGqadqdHlYgr4FbO/8Wi8vXjunXws2MjFiY7kDWQYZwHkOGjnmzFHKw7fjYbJ/MOfBXfFviawtOY7ZrS+lmSBNSOIReI+osWmRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784288733; c=relaxed/simple;
-	bh=9LbC1FHVDDMZdYZI0WqN7RgRzl9vDprPfnVnjf9MUaI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=exeYQfLZ/uS/I9rwmvS2f2AOaZw+1dOmugQjy5R1eaG336QUca3gJhAuKMQfJ6p/K3hcnVxJgMfble+iiJUr1aXvOz9xFLKrR6GNYtZwQeq5UN2RqSWhwIBArtRYV5nAPl1hMEhFvGoB3+SD/EXqAlk6EnNM4IbC6yUmnv/yfkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=3ryjejuU; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1784288734; c=relaxed/simple;
+	bh=Gp9rEZnBlCdYZ83KomJ1Rix6qPb0mAp0og56IEFZHZg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mg6LjOLnTPi5i+Ad4ZMfnZNO2HcTD8KVVPZJ5t/GIRjQnxMALJPhxmneOwsVduNhNsRfXf8yZSVeAjhrbKUNfObf16P/6PBHqFsUB4Xs/OuoZRSGdV8UpYomBxGC1uixR3rMXaw38n7XIKnQiWPRdiaGZ2+4NVG6Gk23pw3PCOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=wW8YZIku; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3ryjejuU"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493b966dd74so31417295e9.3
-        for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 04:45:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="wW8YZIku"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954d383e64so809785e9.1
+        for <phone-devel@vger.kernel.org>; Fri, 17 Jul 2026 04:45:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1784288728; x=1784893528; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=EpUodwbhkAxMkmXtH6zvZRrKPhM41ygJzANZM/9HTt0=;
-        b=3ryjejuUxYTfUqthX+6JVN6mV4yYEwMcwwceDmQrFthpdosF7FuHqRBin/WkCEZnfc
-         bVroc8hCNxndz7pvXLUvmwl6p7CCRJNsPbGMba9+tUWK55Wcj+Tk1RVGU8ugzl5QddW2
-         q8Iufr+sGixnWj8+4asi8Im4TMPkuzSvcO5lnxNomVM7MGWX+lrcSJkZziP0Xo3ksALM
-         rsrDM1NcP0yxr+dGz6BE6jP1NmUrmCclnYszoHLLq8F3LQZniEoZR1rJmj4miHCWWSkA
-         6Jr023hi1rYPAIR6gqEQbwektat4iwt4gHgQhkBgEKNdGr4MBQr9wzigV1U7jcf46svq
-         t5FQ==
+        d=fairphone.com; s=fair; t=1784288729; x=1784893529; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/4pJ9iuKTUV6iyRj89cg8Mv/REeAs+Q/BrxX8LSxG30=;
+        b=wW8YZIku8uWaR2+cXIHwGaf6buawK7buWuIoJGTv41YmztDBiTJnfbIs/h5e+Yfuj9
+         N1OlwaWfP/a534pEIVhiD1hqUAkyRu9GRYZ1Vbq9tA3MCkbgAOXya7ONAwsYq0R9tisx
+         00d4VhfAK7VY9JyQmmygsMgV3pmR7Qy8DMiLqKbKhmagSwFnQtHmFbxPU5Rp1q+OSZH0
+         4CaacT8rZu5VZUyE6gpkCF9tLJnuDoOyBLrcC6xk/EexErt7upaYMYXwhbPpnZwlg0X+
+         9LXlSZPAHM6A3JAk58+3gti9Jz0zmj/wg17vgUe3w1hS6rGztq6KwEsGgEjYeZwYwMXa
+         3LAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784288728; x=1784893528;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=EpUodwbhkAxMkmXtH6zvZRrKPhM41ygJzANZM/9HTt0=;
-        b=FtAiUTD0UxFlY7kv68lsdccwjFVzAanD+Gui4+J7bOyK7ktDZuc0WGeOmMdJnHyy17
-         jrFETV8ObH3on/sRd69QpcZMeIPcrf4LXMyyp7ArAklSMnpjlhfGFfKwyUxep1ON7J9e
-         SGYeIyCT4xhUouUqTYnpztHXqU07y963G/kipztrGqRE1c7vcGWt84xFA0uvMtCOZOpn
-         J8cVT8sky6DrMjppoyTtKrbuyoILwU9D//6jG6iiELeVD42WBLUC6VTuYxIku9mJjtAV
-         6D2kSTo67r0LM/to65R+7h+GDRDTwgpEho2yEuc+uDFdUw9o76e3MqwOIFeTc8d/7O32
-         bwoQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpk4YaGGNSbm0Gl+VwtX7x3QFkaU5a3hFlNsXdh9kftSrzC41X6ai6FrvF4XtqSpGpDXpHIguY9ZJdO/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxErBn6w9cwZAKHjxjAjgNaB97aPv6H7FBkb9PJfBaLIc7h9VPM
-	rYeYOxCI18sY5YbaM9Hdz35i9np5NjCPQtstU0/ywqu3McgXSDGkbx4lCZmjemFgy4o=
-X-Gm-Gg: AfdE7ckkuSumeeBVSWudq+OaGiGroZ7lcpXte1kUjILsMO9y7QFE03wAP2vHLXMNipP
-	XbrBJvGitaebrVotn/PKg+9vFBO4YMkRVHQRzGHa9Wzk0w8jWWHgzRsYyYnU627YXf0djJTlGZt
-	psGpHuAA3ZOu4EfpELEsE5uGALDnmhCuxd3e+wY+JwFH8WqBIi4JZgf+xqrGoA1aa40GiK8M8mU
-	cffFzNgYO6s0LMG/ZIEyGxXfEPc30ic9Qp2yOxV+aaNrx9EMDsl0Od7ETEwqwnToJtKJgyF3iQI
-	m/tdMlGqqhx37OZFS92vFxcFEOvtaGcOhtSWqD/6S6c6I7Uhx69MXvMAl4zvCMIelhiliTRZNNg
-	pMdEgifKhblhcwQfbPJimvrehEg2HXJTRKuge/dUCCRYRyVDGbRLkSAPsT+NtPlyaE0R2I2K+wC
-	HwEF4AcmgI9tDysRw=
-X-Received: by 2002:a05:600c:1396:b0:493:b150:c607 with SMTP id 5b1f17b1804b1-4954a3f36a9mr25499865e9.12.1784288727673;
-        Fri, 17 Jul 2026 04:45:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784288729; x=1784893529;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/4pJ9iuKTUV6iyRj89cg8Mv/REeAs+Q/BrxX8LSxG30=;
+        b=rOEa+PFp1ye5hnL7HdSF0QnTyVfLtR7NcUFitiby88nS30Fu9u0dZpUzRGkew1FwEl
+         DQUKDCJVbd+Jd+iV8zXgyeqxoOcdTZGg++AuMyAwd8saLia8yzZBIRIF/65kWvnIv6Fc
+         6PA83GYBw7xv/7kRMNVYr6szpN/aAbbY39GrX9xh871SbzZhkcJNEy+9pndFsY0pMxv/
+         jxLTIyiiTb1CyLa8dB6P1vP8EI5hWCY43rTr1dps6FfZQY+dzNsM2YkMgzMDWlVlwO5n
+         7DswCCb7SfxxNabwlrMWsGSDgqiHeECR0+JKPqZRPJZ9Zd3L8S5UdBXz3o0oYAP4VOMT
+         Xx/g==
+X-Forwarded-Encrypted: i=1; AHgh+RoAb0WYr8nqr5thbnSWxqsDh79HQq+OtJQBYhYQCqGLLgFEFopfq3FyYJZWizrImYopY1Fj48Ruk94gLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynO8O/bybzfB8TFXgzjsci1sM4d4kBgUBqlRFg89oNs89ysRGm
+	dUIQ/CZu6CCet1xYEYsKsinWxFk9UxM04R5mAFX7G7cqDrzHgk+rwizqCSad+IKm1xM=
+X-Gm-Gg: AfdE7cks3YURjkjc01BEcVa4gM7tKSF0074VaLLzdZNk1CVEng3vku57I9P7Dn0s7Jn
+	put9GV2iuXpoeL+vdIdyOtyacJn/+7ZcfygdVQ3pMeDl5qy7OEdxUv9X63qOaTTXFQ/En5d/DOk
+	dn97lX9nf6VZtNwjzBkM7YGlnzxNVU+zXEWTg5bgXPAcXwTd0HbMGtrIpCFYCNb4S2lysa4E3i6
+	BHx8FEBJLxIuVgcr/Cujwt2Qsd8uk0tjcSfruTmRFjbyL6FR1TQEdHBbEDHJcosKIWbHcH4ZBJL
+	8qdt2xhMWI3eOlKhWAorWy07ZHMa1+IHjPmu5PBqXtO/FCeICU1lGub1JRK2S1RC5NvEKtN/Lqb
+	Renqj41YPn6SvsysrKt9VbaIY4dTkg1Mz9JXi/igCW1Rcgwyd2iafPLEbQBYlUyOySwsFZvk9wY
+	gT
+X-Received: by 2002:a05:600c:1c0b:b0:495:46dd:e238 with SMTP id 5b1f17b1804b1-4954a50ea30mr28928275e9.30.1784288729096;
+        Fri, 17 Jul 2026 04:45:29 -0700 (PDT)
 Received: from [172.18.170.139] ([185.104.138.147])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499f3f99sm41353855e9.0.2026.07.17.04.45.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495499f3f99sm41353855e9.0.2026.07.17.04.45.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 04:45:27 -0700 (PDT)
+        Fri, 17 Jul 2026 04:45:28 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/2] Add Milos CPU-to-DDR BWMON support
-Date: Fri, 17 Jul 2026 13:45:01 +0200
-Message-Id: <20260717-milos-cpu-bwmon-v1-0-dfe0bac9898c@fairphone.com>
+Date: Fri, 17 Jul 2026 13:45:02 +0200
+Subject: [PATCH 1/2] dt-bindings: interconnect: qcom-bwmon: Add Milos
+ cpu-bwmon compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,10 +71,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2Nyw6CMBBFf4XM2klofTTyK4YFrVMdY1vsQ0kI/
- 24Vlic599wZEkWmBF0zQ6Q3Jw6+gtg1YO6DvxHytTLIVp5aJRQ6foaEZiyoPy54tIb28qwOZLW
- AuhojWZ7+xUu/cir6QSb/MpsR6VXqVV410EMiNME5zl3jacq43R2hX5YvqiRshKQAAAA=
-X-Change-ID: 20260717-milos-cpu-bwmon-fce32974efb1
+Message-Id: <20260717-milos-cpu-bwmon-v1-1-dfe0bac9898c@fairphone.com>
+References: <20260717-milos-cpu-bwmon-v1-0-dfe0bac9898c@fairphone.com>
+In-Reply-To: <20260717-milos-cpu-bwmon-v1-0-dfe0bac9898c@fairphone.com>
 To: Krzysztof Kozlowski <krzk@kernel.org>, 
  Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
@@ -83,37 +84,35 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784288726; l=983;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784288726; l=940;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=9LbC1FHVDDMZdYZI0WqN7RgRzl9vDprPfnVnjf9MUaI=;
- b=vrKpPTrZL0S2ljLXdwMb0KdZ1gBG0K3Q0BF4hIQXj4WiGn98nVZ7Q45EATOPjPOb57d+Gw0ZR
- mTE7gVnOQtHB+UYaxZoWMscEQIhJFqmq0SKKNOpYD723i7Eq4WoxpWu
+ bh=Gp9rEZnBlCdYZ83KomJ1Rix6qPb0mAp0og56IEFZHZg=;
+ b=x5sMB4LhOoiMg6caeXJmg8aAp9bmLEHqIa7MZpv9P6PG9JcZmMQrCEpDiXG9fnuO9V391JC1i
+ oULEO+qXM+lA9p1wYt8fOGCB8jyNQNP9+iHRbNR00Lyw9izp5e1ACE3
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Add support for the bandwidth monitoring block on Milos which lets the
-driver vote on interconnect bandwidth based on monitored throughput.
-
-Similar to the CPU OPP table series[0], this would benefit from driver
-support that can differentiate between DDR4 and DDR5 RAM since different
-votes would be correct.
-
-[0] https://lore.kernel.org/linux-arm-msm/20260710-milos-cpu-opp-v1-0-ae7f4b09bc77@fairphone.com/
+Add the compatible string for the CPU-to-DDR bandwidth monitor on the
+Milos SoC, which is BWMONv5.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (2):
-      dt-bindings: interconnect: qcom-bwmon: Add Milos cpu-bwmon compatible
-      arm64: dts: qcom: milos: Add CPU-to-DDR BWMON support
+ Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../bindings/interconnect/qcom,msm8998-bwmon.yaml  |  1 +
- arch/arm64/boot/dts/qcom/milos.dtsi                | 49 ++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
----
-base-commit: 19827e7930a5511c68e12aac6e4522f3661a1709
-change-id: 20260717-milos-cpu-bwmon-fce32974efb1
+diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml
+index c0a5e925ff95..4e33c75d9243 100644
+--- a/Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml
++++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml
+@@ -49,6 +49,7 @@ properties:
+           - enum:
+               - qcom,eliza-llcc-bwmon
+               - qcom,hawi-llcc-bwmon
++              - qcom,milos-cpu-bwmon
+               - qcom,qcs615-llcc-bwmon
+               - qcom,qcs8300-llcc-bwmon
+               - qcom,sa8775p-llcc-bwmon
 
-Best regards,
---  
-Luca Weiss <luca.weiss@fairphone.com>
+-- 
+2.55.0
 
