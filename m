@@ -1,128 +1,133 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247012EC0A4;
-	Fri, 17 Jul 2026 21:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4D73D5237
+	for <phone-devel@vger.kernel.org>; Sat, 18 Jul 2026 15:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784322514; cv=none; b=eyAVYL9zWMVSJykKgrgVrG3KRsO1xDvDXwdwLiDy64DlceYLqtKrf/9R92cZ7sHo1QSWwUw1Ylc+Ocv3aq7CVKIDXh1YDG+/CjeWv48gQDqX6JLFOrFJao0A+4wgkatS7DMK8qcjArUi6908LdnjPTJW2NXbFhlyNZzDNlSPjho=
+	t=1784388097; cv=none; b=t4SBOR238h0Rkw1fJCUgSZY0pGADinv22J6bhas+EPD4H4UcmYf5dOk2UGixpSRzdi6pjely+2ngsSqZnI67k6r6yQN3AmvP9kgBDfvVodHtATHFOsuPIqy6LJORP14cX9C1xrCFWqQRQUyTJd4WNMMblSfTHKZT36KTliZPB0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784322514; c=relaxed/simple;
-	bh=LJLuFHEJLRrrJT8/uQRejUUpZY7N2clwhlYNSsXTQOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GFNgXFy0nr6a3jXxclgmeBbQ1M/kx4sy2Zx51fhSGLDOozFvI227CgHlLxSiCqykWLDtp5MTAmspQWeMRRahlmvX3raAI1zqrU/Yu1KMuv85AhZwA7JtvzDSq5lwjraEDaz20KkK62n3IjM4/q5ZCv+3qIsVSoI5ff0vYAcGnlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=bQluLM9h; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1784388097; c=relaxed/simple;
+	bh=pDPn99N+ICG1K7TKp4PgKMOzXmJllsI8p04WRkYOgbQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JhFKICvmqfY8CmQtSkCsDenNAM8xqJDN4DUaAoS1pR2XLHnDIXSGHzLLCI+nDvJszFRNqS9SeA7J5RJ7Tq+mX3xE3O14fKHVetob8kEU3YCum/mA6BF6hlV7euNXtT11ZPmKh9L8YgS7EjuEshtdDhUKC9DmVXb0J/oVDqcfaTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r0PTt4WX; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="bQluLM9h"
-Received: from [192.168.1.182] (ip-62-24-73-79.bb.vodafone.cz [62.24.73.79])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 067715340388;
-	Fri, 17 Jul 2026 23:02:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784322133;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Oq9NtYuTPcyfgKc/M4q0GlqItnWYxDvFy2+B0yhwzA0=;
-	b=bQluLM9h0euhySlaxOlCQUmhxsbmDS4q7yxjm+YvOAMq+YwOLdc5sd3yP3spSFsN2QhlOQ
-	2obdn/toUq28ohATAWvS+VY0xscKRoi5INjT5QrJkBYHnn2zOKtvSNR0YUBXc4GiGUxQzs
-	3xIZE3GhAM3TwOS22NBC4Bz/Xt0x8Xg=
-Message-ID: <e43fd30b-4f97-4f14-85f2-7d113c0dc1c3@ixit.cz>
-Date: Fri, 17 Jul 2026 23:02:11 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r0PTt4WX"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so7140891a91.0
+        for <phone-devel@vger.kernel.org>; Sat, 18 Jul 2026 08:21:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784388095; x=1784992895; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yEoG8yRI+aYCT3H+YBQOUKD8pSL6ReWVyutnSqA0MV0=;
+        b=r0PTt4WXtJ3v2C/rv9/7EShJe/7MQFeGy3Ybudc5nJvVH3QKTchPNorZSG60Gz/wZA
+         /f3gN+/t7alJc5svO5W/dfZXltyVbW+t4t45BHa9UozbX4PEaWnOo3vk/tofYKkaSEP6
+         UCN/GMGprNpUcZXTuvvgvpEyxkpnxjlwhGER4rcXgAIrK/8h20o67SaugyoTVAPIrsXR
+         Z6/w2RqJxVj4hUi5BQ5R5ngZG//n+c2UKw79jLLuIIJIM//wd1CxlmaJZOqkMVoMkkrp
+         fwL3I52jdjVv4Z5CtLWDpESku2xTHPE2Z1hv1iaN6+/XcwrjIlEmGjT9zPdnkEHtqVnU
+         xMNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784388095; x=1784992895;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=yEoG8yRI+aYCT3H+YBQOUKD8pSL6ReWVyutnSqA0MV0=;
+        b=VQxPgRFnxOCFTuROEKMoNuI5FS4fyu0NAY4TxuLT2ZzJjGLtz4HFvPLkgkaC1V736a
+         rRTe9UOmql6nopFhy5E5yYebT3TBCOCLJw1C4oDgYmQGbQIUZK3RCv6otYzxMu7t5BZq
+         6n+2pPOphfOecPBY4vLTJeeWmRTbh+TiqnwkJZQB5EalS+27wngKUo+smcbZeHGvGEGs
+         JpARWJfHPBMO6sfoiro27MQRBak7CY87NBglCw/Z4sHU37a4c7LDQwcZeWg3JFlw5AId
+         KvsuB17ZWzCkYHEZnTVsrVUPZBDAWf4N7is+p075e6deCK+sBxHL0gyPguXVFIYDYniH
+         Tdbg==
+X-Forwarded-Encrypted: i=1; AHgh+RqP0iIm0MwOhszNVeUcX7TSqDL06vnyNIbQkWnfgqe1ayDoZSpAJ7AfQVOtKIvBQxOpR1lTKA4SjT06ag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHb0eF3kFhhYC5Mova7+xDdmStlR398vCSIcx2F1odRnnBOUSo
+	D0YYa1X5Q/LdagSiVHgUHU8TI9wDuNpVkctI3m3COI0+LkWpX+HeMoHp
+X-Gm-Gg: AfdE7ckiaP+20eqCnQVjN8jRcilybQHEIAv6R9zdTzazohO/ni1xlegVzmEIkxaSi9r
+	il64s55QEpIoz3pj5Dqr7axgJLw5duKR8Y16sGo2VmEcSpey29HLKZTRTvukUT1ONdp/uWgD6hw
+	H0l4XXQ1Hl0pHyqNdZ1ubMUafa+y8KCni448Aa1UpE1FzQjGblYSnY7D6fW44heb8m7jxhjVcFc
+	RPZ7kZ8+Qiwjx4UeJhO+CPsMdxO7PqY96wfWwq5ayC6OcFT4OGGrg2GEwXRLgUSxGaiapjgHbmD
+	KXgcdXlTbpeuZSrnpVsq+s/0VX5fnXhSibVx4dudYZux+zdh5g0hQuxS34U5omXOtrNJYXj593q
+	VrKCqyStmLzR2dRusyQOu5q/uNmVGOXTeoc9PBWFpUNm1EsZvcCXYYqsiT5Ezan/7JKAHd+ir3v
+	cdn8kezqk4
+X-Received: by 2002:a17:90b:1f8d:b0:38d:c0f9:30be with SMTP id 98e67ed59e1d1-38e4b578797mr7711017a91.38.1784388094777;
+        Sat, 18 Jul 2026 08:21:34 -0700 (PDT)
+Received: from [192.168.0.103] ([45.113.100.172])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-31429f9bcccsm21303405eec.4.2026.07.18.08.21.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 08:21:34 -0700 (PDT)
+From: Biswapriyo Nath <nathbappai@gmail.com>
+Date: Sat, 18 Jul 2026 15:21:25 +0000
+Subject: [PATCH] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add vbus-supply in
+ Type-C connector
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] clk: qcom: dispcc-sm8450: Fix
- disp_cc_mdss_mdp_clk_src ops
-To: esteuwu@proton.me, Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Jagadeesh Kona
- <quic_jkona@quicinc.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me>
- <20260713-sm8450-qol-dispcc-v3-1-56fd05822270@proton.me>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260713-sm8450-qol-dispcc-v3-1-56fd05822270@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260718-ginkgo-vbus-typec-v1-1-d5ed0aa6b78b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2Nyw6CMBBFf4V07RDLu8QY/8OwKO2IVctrCtEQ/
+ t0KbiY5yZ1zFkY4GiRWBgsbcTZkutYDPwRM3WXbIBjtmUXHKDvmvIDGtM+mg7meCNynRwVS5Fr
+ EhdAy1sz/9SPezHtzXqudaaofqNxP9F+MOEw+5vYZs0gkt1gZnLZWygV4DTjV2702c8iAJ3maZ
+ CKNikhfOqJwmORLddaG/pxZta5fYhs829MAAAA=
+X-Change-ID: 20260718-ginkgo-vbus-typec-a97d9389da3d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Biswapriyo Nath <nathbappai@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784388090; l=1616;
+ i=nathbappai@gmail.com; s=20260718; h=from:subject:message-id;
+ bh=pDPn99N+ICG1K7TKp4PgKMOzXmJllsI8p04WRkYOgbQ=;
+ b=7KDba2OaRdEYGWz/amL5v2WMGbUjUZyEWGEv+7QG7GQ5sPQLIaaMv/Wc6kT0U0i4LK470diaV
+ WR9/mCnqATqCZqIstaZea6CsLysP2O7o4Ckvq4SAaMlNZNQjl97OBpZ
+X-Developer-Key: i=nathbappai@gmail.com; a=ed25519;
+ pk=ATtK28d7wNTkFPtwgWLEaJ1T7ikcnGabljPw7CKsQ0Q=
 
-On 14/07/2026 05:28, Esteban Urrutia via B4 Relay wrote:
-> From: Esteban Urrutia <esteuwu@proton.me>
-> 
-> If the clock frequency is changed at registration time, a flicker will be
-> visible at boot.
-> Switching to clk_rcg2_shared_no_init_park_ops fixes this.
-> 
-> Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
-> ---
->   drivers/clk/qcom/dispcc-sm8450.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-Heya,
+VBUS supply property was moved from pmi632 typec node to USB-C connector.
+This fixes the following warning in kernel message.
+pmic@2:typec@1500: supply vdd-vbus not found, using dummy regulator
 
-it's likely this change will be safe for older sdm845 too? Comma.AI people have 
-it applied downstream on top of 6.18/7.1 [1], so I'm wondering if it's something 
-after testing on available targets could be enabled for 845 too.
+Fixes: c1da9374c3e0 ("arm64: dts: qcom: sm6125-xiaomi-ginkgo: Add PMI632 Type-C property")
+Signed-off-by: Biswapriyo Nath <nathbappai@gmail.com>
+---
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-David
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi
+index a5458ab41629..59042a593753 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo-common.dtsi
+@@ -133,6 +133,8 @@ connector {
+ 		typec-power-opmode = "default";
+ 		pd-disable;
+ 
++		vbus-supply = <&pmi632_vbus>;
++
+ 		port {
+ 			pmi632_hs_in: endpoint {
+ 				remote-endpoint = <&usb_dwc3_hs>;
 
-[1] 
-https://github.com/commaai/vamOS/blob/master/kernel/patches/0004-clk-qcom-dispcc-sdm845-use-no_init_park-ops-for-disp.patch
-[...]
+---
+base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
+change-id: 20260718-ginkgo-vbus-typec-a97d9389da3d
+prerequisite-message-id: <20260519-fix-tcpm-vbus-v1-6-14754695282d@oss.qualcomm.com>
+prerequisite-patch-id: 6c6c95591d4aff3681de3a3bbeae9d23f77040c5
+prerequisite-patch-id: 51a84aabba9117f91505cc9c17f2c7064768ca33
+prerequisite-patch-id: 2432fbca7762ddb799b5c64f932760083ff0ea85
+prerequisite-patch-id: e3fe6166b11e43616b406a1ff6a8ac28611e7cdf
+prerequisite-patch-id: fe4070481a2bfc530e1a869bd981c32a8147f7e9
+prerequisite-patch-id: 4fc9afebebdfadfe644126dcdcdfe30f8e0ae685
+
+Best regards,
+--  
+Biswapriyo Nath <nathbappai@gmail.com>
+
