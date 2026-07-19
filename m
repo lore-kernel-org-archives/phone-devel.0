@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DC33B6C05;
-	Sun, 19 Jul 2026 18:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42C2F851;
+	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784484237; cv=none; b=tMeVcvZ+oT8ini50wklNreb/hvOkc01M5cynQaZOSQVn3c5fLJd+/Tph21n5Ms0Hyz/AWwSMToFNx/E/X0ghInKqFKdHlW4v/gQfRJQ+psz8RKCWInWFEf8fjN3IhtGaRuc9oyZjDGbNzyCEyAH/7i4j1Dy0Wz9M0aHNxnkaCyI=
+	t=1784497516; cv=none; b=PYNrsMkoFUJv/agGlym5i60K7u3+c8MRpfGBHZiYhxh42tEA/Cz7+UOmZv9O6D6m2cIA/tvfaXoeqGey4LvrHW4K1bEFYSJwle70D1VTNGFbT+8yR9pOgDYUK9ni6Z8Gdo6o1ttE65hOc+R8Ec2T4C38FDp/M99g0U/QUrFW00s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784484237; c=relaxed/simple;
-	bh=9IK7s2pPNUfDsWJGspBxUn6AiQyUzX4A9mk6XW5ob/I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=is2JZqy5XjAcUzfpSHpE+5VBod4a4yAHMBHiQylE7zZoAhSUE1HOx7guP8oPoE3MrTTa3knuk2TvkLw5Sor439LTZx8yocvGsrBo8Ume72oxTN+O68oF+1er+eOh40HVuFbirGRvtg4pxP4BlQZ0nQJWruiU4E3xemdJVuEOLGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg+O41RQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1784497516; c=relaxed/simple;
+	bh=06RORYZVy+l1c/0jcgQo/Nfh2IBrxjzShSvFNl87FvY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QZ6gRb5RisONNflfhdN91iZJi/Fc/3BunYWY6AEhlBUbgy1UpcsfNnK29KgbDUFxWUVV6DtutJb4JGbXlLkQZMh2p9o0F355GVxRFsU/NtrXlInNrigW339N/u8YKLei2pFtwE73fAMwhsQUiOnyt7qcEFw5KfPvr9xLRWUZvgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Waa1AFQM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg+O41RQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E39BC2BCC7;
-	Sun, 19 Jul 2026 18:03:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Waa1AFQM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B7592C2BCF7;
+	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784484236;
-	bh=9IK7s2pPNUfDsWJGspBxUn6AiQyUzX4A9mk6XW5ob/I=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Fg+O41RQa56yH0JYpz767gx+ozW3nNl293MvnS4Pn51gH5IxHTR2EMuDFKN+igRYG
-	 9i+5a/D7x3Ov1uAXGka+6CcO927jBb/sBZpDTbdvHekq5TCb8vsB28zuFhRQfsTsvY
-	 s1Q7+ZAkpIzR/xh73BfFmDgQ7zXW+v5C1oG1uvmgRBDeZBDKWq3XeIqm1HH+iEpsQg
-	 0O7cW+u6GHZcIyLP6IGcuUdcKDgECfD8FnGLx90fgkn0KjXThrvKpTt+60mKla+K47
-	 1mvuhngbxBefU0iNmLXhrpY4RjXIm4FIBnQNGUbp5ulthRWQGfVckrM3FM4MpwVdAX
-	 dMRytLrXjLpsw==
+	s=k20201202; t=1784497515;
+	bh=06RORYZVy+l1c/0jcgQo/Nfh2IBrxjzShSvFNl87FvY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Waa1AFQM/65PVNjwfFz1Bt+9wb5JOn6uO+1zPZS9lsgCo36JW0I+CbxEaQVaST/pF
+	 +6SNFi7oDcAfXIRlBvKNTnbmTrzBkq/FPDDJGtKMymRBqFZ9dUF1ERldMPAMJdjF06
+	 kTfogolMK4UP5DUOJeveJf+9u8eqI3Bb/CP958dD+bq1ZrwnENme15EbbtfTvEzvvQ
+	 fv7X27/ex6geFtw6kvoT/+hQ65RBedrBBXobhhXlGkQQo7EeVjm6RTwXtGJJPqqhBw
+	 KIGrEJtWp8BfSlycjm0pssimBnPXMDlf5/6Wn32AKxmzeNq6ncr2NhZEOBg9s/dheX
+	 3ik1yW2kLUBqA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 192F0C4450A;
-	Sun, 19 Jul 2026 18:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93E5AC44512;
+	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v5 0/2] Add initial dual front camera and rear flash
- support for Pixel 3 / 3 XL
-Date: Sun, 19 Jul 2026 20:03:51 +0200
-Message-Id: <20260719-pixel3-camera-v5-0-99593f1bd8ec@ixit.cz>
+Date: Sun, 19 Jul 2026 23:45:05 +0200
+Subject: [PATCH RFC v2] wifi: ath10k: make in-order rx amsdu buffers
+ persistent
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,85 +40,271 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIcRXWoC/33Qyw7CIBAF0F8xrMUww6Pgyv8wLgBHJfFJa+Mj/
- XepmqhduLwTziW5d1ZTTlSz6ejOMrWpTod9CXo8YnHj92viaVkyQ4FGSND8mC60lTz6HWXPvXP
- WhZW2jogVc8y0Kg/6vvmi5E2qm0O+Putb6K+vJgUwaGqBC46VrowwGnQws3RJzSTeWN/T4l+Lx
- SoI1jofAqj4a+W3xaGVxRKaIJzwBkD8WvWxFbihVf2/NvoAKI3V+LHda4xMp3PZtHkv0nUPoOZ
- ef3EBAAA=
-X-Change-ID: 20260315-pixel3-camera-a9989bf589ee
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, 
- Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+Message-Id: <20260719-ath10k-a-msdu-v2-1-f479bb9d1217@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAGBFXWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDc0NL3cSSDEODbN1E3dzilFLdZBNLY2OT1CQDS8MUJaCegqLUtMwKsHn
+ RSkFuzkqxtbUASGkunmQAAAA=
+X-Change-ID: 20260719-ath10k-a-msdu-c49334eb091d
+To: Jeff Johnson <jjohnson@kernel.org>, 
+ Johannes Berg <johannes.berg@intel.com>, 
+ Kalle Valo <kvalo@qca.qualcomm.com>, 
+ Michal Kazior <michal.kazior@tieto.com>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Richard Acayan <mailingradian@gmail.com>, 
+ David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1946; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8018; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=9IK7s2pPNUfDsWJGspBxUn6AiQyUzX4A9mk6XW5ob/I=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqXRGK6x+kS5ZKp+BykqFFaTFnPKfntJ9N+eyRL
- ZfM8iS7uK+JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal0RigAKCRBgAj/E00kg
- cljrD/0atHf6ROhLCReAiBODQvK9PYgrzTDheFfwThVEdTTBsw6Ov+B383VnOEscKme2KWFo/LT
- faQ5p37yJ9imksgQlWy5DsshIauT04emgd3K8sVTG0mHBVSE8LswD+d2IQIWxJUDZz1Ku56y5qG
- Dnuj61Z9SkSJPYiEX4urTO5ViGY/LndSYLkB1qym5CgZjRqeXGnwFl85bdsZy6rg1UUIyvs0+XW
- 812EBozUrikO5CfyXiULYXK27keLs+2Nzn+MH2j4qi7wa5FpSZ8qIQGtTxvEfldDOlZVmS5DFU0
- Uj/d7ySPcAEUHtZ526IxMcc0gDeX/szSXBFupZ2Adi7xxmGJt868FhPAzJPpDe5dsQA7T6vVSJ7
- btzXcDn2GbXfIVmuGOp2IWLwRFxZswL57BZfugtbwBDzeVZL9N2zvm2M3NfeEf9q4ILbyJ/O8ct
- gf7WKhiTJoyVN+Gh2E2+r59Pgvwg6JeCjxGzaFghULh2OqH3dfcIkzunlFeZ1JEvKZGao6fSK5m
- 4XY23yJlht1/wToxmqySB25dzan5wUCXrJZIwj/3PfGKhLEe/bHaeKrXxIM5VOHeCSILtRPA6mi
- IAL5bKgl3CSlBYlGNvg3zVhZvSLxnkKfT8zvS3Ic9tORj9OzmB6VEjAATYtI4ymn/akyOn3zfaK
- 0OtBkrifVYPKkRw==
+ bh=eJO73j6StWvYoT6k/tDaKaIZy8rPtLgZblz2V5IMI5w=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqXUVqGCRYP+kPct4/I2100bua9kIokiDzlCmsh
+ Is1Hny2IVSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal1FagAKCRBgAj/E00kg
+ clEpD/9nZOZRFFop8rj3IcW7WAwZGdTRjwGyv2KtHSpDFMsr0PrHD0lyP0m2iU3FMDMyO1JL/hO
+ 5zmtvaE/dSMLMJ32Hu1Enf2cP6wIMYiEieADJGj9qDArxxDv0sUhTPz1h4n4mpVQThW8sLBPVok
+ GnnDtAAp5x+Bxx6kP3h+RU+rQyxdzoMYz0nas7W3hcS05ch6e04MJuLlfEvHDy3WzDoM1DQT8W7
+ qX7lEDuNx7fo74LWvh8vMJJae8eC0ig2cuCq9aXR4hjYZXtXOvdZRqBNvVANkZEJXLDSng0WV4M
+ KkfQmagU51s9YjR9iZq+YN88bbsM9A3oehzOFmRcVynspSM3At0TJvNN5O7OPtec1eibU/4L6BX
+ Kv+oJ//9lAprcfOpSJwRyOajeW+K8dN27tCOcjmW2qCrQmX3zXu23EmomF0gxL8Tjn01M6KdVoU
+ n0VI57tB7DwOPcmit9CtdxWFCJ1aujywefrCEPQRbPqWIh9tigQeD/Opc7So0oxw63ADxptLfR3
+ 0A3zwheiUCO0F+T08MF4jP6sKzVOxgSRUUwhFJMue1c06szlQO2e95sOd6xUri1fBUqql2yt/iL
+ rssawXoe9hnrnQi8Sf5LXfhAxW4TYN5MLRluNE8D5x9By0e9Dbd0wJhXbhzuD7ospFdMqUFxd0x
+ dzHns4MoZKJZlHQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Describe the dual front-facing IMX355 sensors (standard and wide)
-and enable the PMI8998 flash LED with hardware-accurate limits.
+From: Richard Acayan <mailingradian@gmail.com>
 
-This brings up the basic camera topology and flash support in DT.
+The WCN3990 might split MSDUs among multiple "in-order" indications. The
+driver needs information from previous indications to handle MPDUs that
+are not started by the same indications that complete them. Move the
+list that tracks unprocessed MSDUs to the driver state so the driver can
+handle MPDUs that are split in this way and be less confused.
 
+Fixes: c545070e404b ("ath10k: implement rx reorder support")
+Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Co-developed-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v5:
-- Added function-enumarator to flash LEDs. (Sashiko)
-- Dropped l22a regulator needed only for NFOV actuator. (Sashiko)
-- Dropped vdda-csi[0-2]-supply, as it was unused. (Sashiko).
-- Added previously omited cam_mclk2_sleep sleep state.
-- Link to v4: https://lore.kernel.org/r/20260719-pixel3-camera-v4-0-48cab1236852@ixit.cz
-
-Changes in v4:
-- Use 24 MHz ext clock for the cameras, as the downstream does, since
-  the upstream driver can now support it.
-- Added additional LED, as the phone contains two separately controlled
-  white LEDs flash (upper and bottom, in one module).
-- Increase flash-max-microamp, as I took wrong "flash" from the
-  downstream sources and dropped Dmitry R-b.
-- Address formatting issues. (Konrad)
-- Link to v3: https://lore.kernel.org/r/20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz
-
-Changes in v3:
-- Dropped cam_vio label. (Dmitry)
-- Move the MCLK2 pinctrl from cameras to common camss. (Dmitry)
-- Link to v2: https://lore.kernel.org/r/20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz
+This one we have in-tree forever.
 
 Changes in v2:
-- leds.h include escaped the initial submission. Fixed.
-- Link to v1: https://lore.kernel.org/r/20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz
-
+- checkpatch & style. (Jeff)
+- Improve comments.
+- Link to v1: https://lore.kernel.org/linux-wireless/20260210021249.12132-2-mailingradian@gmail.com/
 ---
-David Heidelberg (2):
-      arm64: dts: qcom: sdm845-google: Add dual front IMX355 cameras
-      arm64: dts: qcom: sdm845-google: Enable PMI8998 camera flash LEDs
+ drivers/net/wireless/ath/ath10k/htt.h    |  4 +++
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 50 +++++++++++++++++++++++++-------
+ 2 files changed, 43 insertions(+), 11 deletions(-)
 
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 197 ++++++++++++++++++++-
- 1 file changed, 196 insertions(+), 1 deletion(-)
+diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+index 25c6b2e2f81c8..07c3dc088f07b 100644
+--- a/drivers/net/wireless/ath/ath10k/htt.h
++++ b/drivers/net/wireless/ath/ath10k/htt.h
+@@ -1924,16 +1924,20 @@ struct ath10k_htt {
+ 
+ 	bool tx_mem_allocated;
+ 	const struct ath10k_htt_tx_ops *tx_ops;
+ 	const struct ath10k_htt_rx_ops *rx_ops;
+ 	bool disable_tx_comp;
+ 	bool bundle_tx;
+ 	struct sk_buff_head tx_req_head;
+ 	struct sk_buff_head tx_complete_head;
++
++	u8 rx_in_ord_split_tid;
++	u16 rx_in_ord_split_peer_id;
++	struct sk_buff_head rx_in_ord_split;
+ };
+ 
+ struct ath10k_htt_tx_ops {
+ 	int (*htt_send_rx_ring_cfg)(struct ath10k_htt *htt);
+ 	int (*htt_send_frag_desc_bank_cfg)(struct ath10k_htt *htt);
+ 	int (*htt_alloc_frag_desc)(struct ath10k_htt *htt);
+ 	void (*htt_free_frag_desc)(struct ath10k_htt *htt);
+ 	int (*htt_tx)(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txmode,
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index ab2d373b4750d..732bd3a2f9992 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -291,16 +291,18 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
+ 		return;
+ 
+ 	timer_delete_sync(&htt->rx_ring.refill_retry_timer);
+ 
+ 	skb_queue_purge(&htt->rx_msdus_q);
+ 	skb_queue_purge(&htt->rx_in_ord_compl_q);
+ 	skb_queue_purge(&htt->tx_fetch_ind_q);
+ 
++	skb_queue_purge(&htt->rx_in_ord_split);
++
+ 	spin_lock_bh(&htt->rx_ring.lock);
+ 	ath10k_htt_rx_ring_free(htt);
+ 	spin_unlock_bh(&htt->rx_ring.lock);
+ 
+ 	dma_free_coherent(htt->ar->dev,
+ 			  ath10k_htt_get_rx_ring_size(htt),
+ 			  ath10k_htt_get_vaddr_ring(htt),
+ 			  htt->rx_ring.base_paddr);
+@@ -841,16 +843,18 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
+ 	htt->rx_ring.sw_rd_idx.msdu_payld = 0;
+ 	hash_init(htt->rx_ring.skb_table);
+ 
+ 	skb_queue_head_init(&htt->rx_msdus_q);
+ 	skb_queue_head_init(&htt->rx_in_ord_compl_q);
+ 	skb_queue_head_init(&htt->tx_fetch_ind_q);
+ 	atomic_set(&htt->num_mpdus_ready, 0);
+ 
++	skb_queue_head_init(&htt->rx_in_ord_split);
++
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "htt rx ring size %d fill_level %d\n",
+ 		   htt->rx_ring.size, htt->rx_ring.fill_level);
+ 	return 0;
+ 
+ err_dma_idx:
+ 	dma_free_coherent(htt->ar->dev,
+ 			  ath10k_htt_get_rx_ring_size(htt),
+ 			  vaddr_ring,
+@@ -3156,16 +3160,20 @@ static int ath10k_htt_rx_extract_amsdu(struct ath10k_hw_params *hw,
+ 	struct rx_msdu_end_common *rxd_msdu_end_common;
+ 
+ 	if (skb_queue_empty(list))
+ 		return -ENOBUFS;
+ 
+ 	if (WARN_ON(!skb_queue_empty(amsdu)))
+ 		return -EINVAL;
+ 
++	msdu = skb_peek(list);
++	rxd = HTT_RX_BUF_TO_RX_DESC(hw,
++				    (void *)msdu->data - hw->rx_desc_ops->rx_desc_size);
++
+ 	while ((msdu = __skb_dequeue(list))) {
+ 		__skb_queue_tail(amsdu, msdu);
+ 
+ 		rxd = HTT_RX_BUF_TO_RX_DESC(hw,
+ 					    (void *)msdu->data -
+ 					    hw->rx_desc_ops->rx_desc_size);
+ 
+ 		rxd_msdu_end_common = ath10k_htt_rx_desc_get_msdu_end(hw, rxd);
+@@ -3257,17 +3265,16 @@ static void ath10k_htt_rx_h_rx_offload(struct ath10k *ar,
+ 	}
+ }
+ 
+ static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
+ {
+ 	struct ath10k_htt *htt = &ar->htt;
+ 	struct htt_resp *resp = (void *)skb->data;
+ 	struct ieee80211_rx_status *status = &htt->rx_status;
+-	struct sk_buff_head list;
+ 	struct sk_buff_head amsdu;
+ 	u16 peer_id;
+ 	u16 msdu_count;
+ 	u8 vdev_id;
+ 	u8 tid;
+ 	bool offload;
+ 	bool frag;
+ 	int ret;
+@@ -3292,64 +3299,85 @@ static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
+ 		   "htt rx in ord vdev %i peer %i tid %i offload %i frag %i msdu count %i\n",
+ 		   vdev_id, peer_id, tid, offload, frag, msdu_count);
+ 
+ 	if (skb->len < msdu_count * sizeof(*resp->rx_in_ord_ind.msdu_descs32)) {
+ 		ath10k_warn(ar, "dropping invalid in order rx indication\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/* The event can deliver more than 1 A-MSDU. Each A-MSDU is later
+-	 * extracted and processed.
++	if (!skb_queue_empty(&htt->rx_in_ord_split)) {
++		/*
++		 * It might still be possible to handle this case if there is
++		 * only one peer that splits at each given moment. We are
++		 * bailing out because we should have a test case for this
++		 * before trying to fix it.
++		 */
++		if (tid != htt->rx_in_ord_split_tid ||
++		    peer_id != htt->rx_in_ord_split_peer_id ||
++		    offload) {
++			ath10k_warn(ar, "split amsdu did not resume immediately\n");
++			htt->rx_confused = true;
++			ath10k_core_start_recovery(ar);
++			return -EIO;
++		}
++	}
++
++	/*
++	 * The event can deliver more than 1 A-MSDU or continue a previous one.
++	 * Each A-MSDU is later extracted and processed.
+ 	 */
+-	__skb_queue_head_init(&list);
+ 	if (ar->hw_params.target_64bit)
+ 		ret = ath10k_htt_rx_pop_paddr64_list(htt, &resp->rx_in_ord_ind,
+-						     &list);
++						     &htt->rx_in_ord_split);
+ 	else
+ 		ret = ath10k_htt_rx_pop_paddr32_list(htt, &resp->rx_in_ord_ind,
+-						     &list);
++						     &htt->rx_in_ord_split);
+ 
+ 	if (ret < 0) {
+ 		ath10k_warn(ar, "failed to pop paddr list: %d\n", ret);
+ 		htt->rx_confused = true;
+ 		ath10k_core_start_recovery(ar);
+ 		return -EIO;
+ 	}
+ 
+ 	/* Offloaded frames are very different and need to be handled
+ 	 * separately.
+ 	 */
+ 	if (offload)
+-		ath10k_htt_rx_h_rx_offload(ar, &list);
++		ath10k_htt_rx_h_rx_offload(ar, &htt->rx_in_ord_split);
+ 
+-	while (!skb_queue_empty(&list)) {
++	while (!skb_queue_empty(&htt->rx_in_ord_split)) {
+ 		__skb_queue_head_init(&amsdu);
+-		ret = ath10k_htt_rx_extract_amsdu(&ar->hw_params, &list, &amsdu);
++		ret = ath10k_htt_rx_extract_amsdu(&ar->hw_params,
++						  &htt->rx_in_ord_split, &amsdu);
+ 		switch (ret) {
+ 		case 0:
+ 			/* Note: The in-order indication may report interleaved
+ 			 * frames from different PPDUs meaning reported rx rate
+ 			 * to mac80211 isn't accurate/reliable. It's still
+ 			 * better to report something than nothing though. This
+ 			 * should still give an idea about rx rate to the user.
+ 			 */
+ 			ath10k_htt_rx_h_ppdu(ar, &amsdu, status, vdev_id);
+ 			ath10k_htt_rx_h_filter(ar, &amsdu, status, NULL);
+ 			ath10k_htt_rx_h_mpdu(ar, &amsdu, status, false, NULL,
+ 					     NULL, peer_id, frag);
+ 			ath10k_htt_rx_h_enqueue(ar, &amsdu, status);
+ 			break;
+ 		case -EAGAIN:
+-			fallthrough;
++			htt->rx_in_ord_split_tid = tid;
++			htt->rx_in_ord_split_peer_id = peer_id;
++
++			return -EIO;
+ 		default:
+ 			/* Should not happen. */
+ 			ath10k_warn(ar, "failed to extract amsdu: %d\n", ret);
+ 			htt->rx_confused = true;
+-			__skb_queue_purge(&list);
++			__skb_queue_purge(&htt->rx_in_ord_split);
+ 			ath10k_core_start_recovery(ar);
+ 			return -EIO;
+ 		}
+ 	}
+ 	return ret;
+ }
+ 
+ static void ath10k_htt_rx_tx_fetch_resp_id_confirm(struct ath10k *ar,
+
 ---
 base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
-change-id: 20260315-pixel3-camera-a9989bf589ee
+change-id: 20260719-ath10k-a-msdu-c49334eb091d
 
 Best regards,
 -- 
