@@ -1,313 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42C2F851;
-	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE8B3CB2FE
+	for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 08:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784497516; cv=none; b=PYNrsMkoFUJv/agGlym5i60K7u3+c8MRpfGBHZiYhxh42tEA/Cz7+UOmZv9O6D6m2cIA/tvfaXoeqGey4LvrHW4K1bEFYSJwle70D1VTNGFbT+8yR9pOgDYUK9ni6Z8Gdo6o1ttE65hOc+R8Ec2T4C38FDp/M99g0U/QUrFW00s=
+	t=1784535250; cv=none; b=YoFC9HahYar0Vm43PYSPjjjx/LTGO06lgP2kaqsMcx69xizLnptPuAkk2LIsPqS5wrHqUHxRx8mtCGNi+edP35LfXAwW5cWMhznz2rSPGkGAP30TwwLVwhc/XbQnvwug33nyJEW/n4hP6cQD3zIeyf1pzygJDTRsz1oL+MBqVes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784497516; c=relaxed/simple;
-	bh=06RORYZVy+l1c/0jcgQo/Nfh2IBrxjzShSvFNl87FvY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QZ6gRb5RisONNflfhdN91iZJi/Fc/3BunYWY6AEhlBUbgy1UpcsfNnK29KgbDUFxWUVV6DtutJb4JGbXlLkQZMh2p9o0F355GVxRFsU/NtrXlInNrigW339N/u8YKLei2pFtwE73fAMwhsQUiOnyt7qcEFw5KfPvr9xLRWUZvgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Waa1AFQM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1784535250; c=relaxed/simple;
+	bh=o+ww71zqul1lQ6ZJcLPTKRz0ecgZ/H3wEyDx34f482o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KuqAWKN8jlUPZg8ylB8bOOIPIpFh+QZ1A/HhEv3l1fi6nhzqOIg5OAiipkVmuPABmpssVJ/TDu9MsKbQbSxOJKwk1/6cYiBlyUOCEmB/NfL6paXfUE4wSwKh5TEUM5BnqiIdTAEsmpCHghwndXHxN5aFdybzyJrZ/yK9zT23EOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=irt3KpTQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=W+98lOY2; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Waa1AFQM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B7592C2BCF7;
-	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784497515;
-	bh=06RORYZVy+l1c/0jcgQo/Nfh2IBrxjzShSvFNl87FvY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Waa1AFQM/65PVNjwfFz1Bt+9wb5JOn6uO+1zPZS9lsgCo36JW0I+CbxEaQVaST/pF
-	 +6SNFi7oDcAfXIRlBvKNTnbmTrzBkq/FPDDJGtKMymRBqFZ9dUF1ERldMPAMJdjF06
-	 kTfogolMK4UP5DUOJeveJf+9u8eqI3Bb/CP958dD+bq1ZrwnENme15EbbtfTvEzvvQ
-	 fv7X27/ex6geFtw6kvoT/+hQ65RBedrBBXobhhXlGkQQo7EeVjm6RTwXtGJJPqqhBw
-	 KIGrEJtWp8BfSlycjm0pssimBnPXMDlf5/6Wn32AKxmzeNq6ncr2NhZEOBg9s/dheX
-	 3ik1yW2kLUBqA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93E5AC44512;
-	Sun, 19 Jul 2026 21:45:15 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 19 Jul 2026 23:45:05 +0200
-Subject: [PATCH RFC v2] wifi: ath10k: make in-order rx amsdu buffers
- persistent
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="irt3KpTQ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="W+98lOY2"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K6RkPX1713749
+	for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 08:14:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fxSJtoZ36fpCUBl6Gw3F3Tl87CjAtSY5VBZzPq11lL0=; b=irt3KpTQjZgCvSkg
+	2vZTHG5kDZU3BViixt5gyrcsC70NGn1gOAGoeEaNrLzYjaXETf5wjD7qOsTlxD66
+	o4GylQTk42k8Fd1NrEUgwmnw1pNdlIzCO2AWzOhU/KoBoD3Q1423ju2D3Qj5tYWo
+	V58LymGaKfpBIzJ4dzrzoXqFF5dk4qg3+zSvTgCOe62ferPMlWUUeJJKa7vP8Od9
+	zcKIgDfrpkB2/bHzZ3+KA9kc2ZHTlwlXx5vU08tkPBt55P13+NZduEpJqT4Bof3b
+	wzDN1L4WtD1++NU4qV8LuCzqUuf1NqdHTKLFOs9ZgE2DqWa64DPYHv9Hhr6Le7cQ
+	fSzDdA==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fg2dc55r7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 08:14:08 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e566bae1bso190373085a.3
+        for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 01:14:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784535247; x=1785140047; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fxSJtoZ36fpCUBl6Gw3F3Tl87CjAtSY5VBZzPq11lL0=;
+        b=W+98lOY2O3yCDGSs2LjATzKHq5l9ZFgnoCnt9crTjcccEUDKhoVGsqPMxMNCNjy7Q+
+         wjtW2+PHM7xFs1szNW5VNeOu3efDUTmjWpPXVHt2OwMQkKElqwriZmcGQZK1wkHWVkBw
+         mEhXEAsqakkdhUuJk3zZlcKz5jNTyrpfybxfazn6DtJKK1ftDe6M9yWiXSUdSmo0bqQi
+         xLPddfAiHpjnuROS6WRk/wgOWF77fFoj7GyCpC3Lna4uvUye8Zp1jOEH6fOfrbJTAQD9
+         8UDqvoR2AdGV6xDNzUXN65eM7CElsYwhgTXtE9SR/cfVy9h6WirsKE9MQrgo1+39nlPW
+         j95A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784535247; x=1785140047;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fxSJtoZ36fpCUBl6Gw3F3Tl87CjAtSY5VBZzPq11lL0=;
+        b=gFb2+peNCTYUSx1r/Fz7DJQXQyL+d5EXoxBwQBrbL1doGjwKvT5xYwrFT34IhTsH3d
+         WyNa05KmO+57+U4gBFztCDPd/ICW+qUVsMK1lU1ej3tPufeLzLIJRcPPn6heU3jSkKmp
+         BWVtpT9CFW7F+T7QIi4pfbjWV+gCMBe9H6XPsxaYQhrq1yo8l85Kdmn2srL0DaQzu8PH
+         WBxo/8tlDRzrvlkaijXQKO5r6JX/+rjPFXNGdI9lwLVBZSFRhZk1dbNvoxBiEYBnCSNg
+         PZ1v/nSmn88mWB7xouweHF37Xq+ab/AgsbSLfhKwcFQEQn9QUtfJ8vuKOtgPcFVlWi5z
+         yJew==
+X-Forwarded-Encrypted: i=1; AHgh+RpvYjcvhhgw9B81tczro3ZCBoO0IYsLFxgiRjleVTvzO4FQU2aVBGyx9cdK2k//WGiLRbd/zAfCzRbCdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfwSaIpLBSaWYY1Kdb4K8xwXt85OkKUlx7nubaPZQ8Uke1vZ92
+	oXvbG4eV3kt8JkhOo9guYL3LCSC/9XCyuE9VDcRu+RPF25cySPWK8ISXYLvgWC0DwSH4U6ZeR2i
+	FWlQPBst63WnsNkqvuM6ecvuNyBoFoajevtvivigb3isBy5QYx0PQ8DfMDxy91kzffw==
+X-Gm-Gg: AfdE7cme2oqj/uvAfy87nhwfVSTmYx0JWa1P9tXhmUvkml0pXDBVzo8QQJPQgxY6gyo
+	E1LwSdqcun7gy0DZzwsC4knRX7RhJyULta1BB/HGLOVfkDJzW3d9zhjUDbH5cq5rrhwBxDIOoHh
+	Yyt1FU35X1Ya6iqETFlkchq1K64v/MCNLXIjSj/afGSDykSCjrLSqrj8LgqwfLdUR8/hWjN2JBA
+	7EJYSHbnnNscovOHOqEVy82PEtHxNrl87NIlgXMw1JLheuJNfkDCPWxHr339htzyXhR1j3rpig7
+	PcgNiaJDUIxyvdyPw7p2IgNG7iGZjXK0hEEGIC9k/4avKekM5Vs8ksCUlzlDK6SbHAPxZehWN0u
+	XRf6YvDc962TRVvVee4zyKMPr
+X-Received: by 2002:a05:620a:aa09:b0:92e:d1e1:8300 with SMTP id af79cd13be357-930b41f98dbmr965454285a.3.1784535247477;
+        Mon, 20 Jul 2026 01:14:07 -0700 (PDT)
+X-Received: by 2002:a05:620a:aa09:b0:92e:d1e1:8300 with SMTP id af79cd13be357-930b41f98dbmr965452985a.3.1784535247075;
+        Mon, 20 Jul 2026 01:14:07 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1705a09a44sm421171266b.19.2026.07.20.01.14.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 01:14:06 -0700 (PDT)
+Message-ID: <23a3b460-3ce6-4139-bcd9-a9fd88d7436d@oss.qualcomm.com>
+Date: Mon, 20 Jul 2026 10:14:03 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] clk: qcom: dispcc-sm8450: Fix
+ disp_cc_mdss_mdp_clk_src ops
+To: Esteban Urrutia <esteuwu@proton.me>, David Heidelberg <david@ixit.cz>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me>
+ <20260713-sm8450-qol-dispcc-v3-1-56fd05822270@proton.me>
+ <e43fd30b-4f97-4f14-85f2-7d113c0dc1c3@ixit.cz>
+ <57bece3e-cfa8-4ddd-811b-eae271b738fd@proton.me>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <57bece3e-cfa8-4ddd-811b-eae271b738fd@proton.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260719-ath10k-a-msdu-v2-1-f479bb9d1217@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAGBFXWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDc0NL3cSSDEODbN1E3dzilFLdZBNLY2OT1CQDS8MUJaCegqLUtMwKsHn
- RSkFuzkqxtbUASGkunmQAAAA=
-X-Change-ID: 20260719-ath10k-a-msdu-c49334eb091d
-To: Jeff Johnson <jjohnson@kernel.org>, 
- Johannes Berg <johannes.berg@intel.com>, 
- Kalle Valo <kvalo@qca.qualcomm.com>, 
- Michal Kazior <michal.kazior@tieto.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Richard Acayan <mailingradian@gmail.com>, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8018; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=eJO73j6StWvYoT6k/tDaKaIZy8rPtLgZblz2V5IMI5w=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqXUVqGCRYP+kPct4/I2100bua9kIokiDzlCmsh
- Is1Hny2IVSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal1FagAKCRBgAj/E00kg
- clEpD/9nZOZRFFop8rj3IcW7WAwZGdTRjwGyv2KtHSpDFMsr0PrHD0lyP0m2iU3FMDMyO1JL/hO
- 5zmtvaE/dSMLMJ32Hu1Enf2cP6wIMYiEieADJGj9qDArxxDv0sUhTPz1h4n4mpVQThW8sLBPVok
- GnnDtAAp5x+Bxx6kP3h+RU+rQyxdzoMYz0nas7W3hcS05ch6e04MJuLlfEvHDy3WzDoM1DQT8W7
- qX7lEDuNx7fo74LWvh8vMJJae8eC0ig2cuCq9aXR4hjYZXtXOvdZRqBNvVANkZEJXLDSng0WV4M
- KkfQmagU51s9YjR9iZq+YN88bbsM9A3oehzOFmRcVynspSM3At0TJvNN5O7OPtec1eibU/4L6BX
- Kv+oJ//9lAprcfOpSJwRyOajeW+K8dN27tCOcjmW2qCrQmX3zXu23EmomF0gxL8Tjn01M6KdVoU
- n0VI57tB7DwOPcmit9CtdxWFCJ1aujywefrCEPQRbPqWIh9tigQeD/Opc7So0oxw63ADxptLfR3
- 0A3zwheiUCO0F+T08MF4jP6sKzVOxgSRUUwhFJMue1c06szlQO2e95sOd6xUri1fBUqql2yt/iL
- rssawXoe9hnrnQi8Sf5LXfhAxW4TYN5MLRluNE8D5x9By0e9Dbd0wJhXbhzuD7ospFdMqUFxd0x
- dzHns4MoZKJZlHQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDA5MCBTYWx0ZWRfXylKR6+nX9uMG
+ W/ZESxZOm4NDBx4a/lbk9j/LjLdri+5oCWYl6NLi5ypgUudzfzPR4VqJaMOb/R7AC2TDFeRCcPy
+ olVcg6o9gMcKB1ZyhVFQaRSeTtSFkt8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA5MCBTYWx0ZWRfX7Osh3KnqiZ6a
+ pTWpiGU/22uNlbTWHjADqgmjlvcd7UtbSruwna0M07ZV2k7GrN4Bc4tjMm/ZozNVY0b/GoZXExq
+ t89y8YGAcD97wEZ9mGYtwZasZQSgGQ1BHgmyk5xvuPctXjdsTXSfdKqW2eqaiAnwJhXA9dkMwla
+ K16kG7DPVE8LwASzI2cH3mMn1n/csFL5VfA+Mxk2WJvsZW93Nlj8Aot4fE4lzwk6BrlaPwx9XiU
+ m1jkdLwofWUWM4Ly/6ySBQc2VGv6P371urudjl5de3AWTYMfa6NuHuOXSNJ62ftwZ7yFvZQpVsK
+ Kxnk1PHbWxg/QzGv+ap6VPB8PNlLdP3/Go9rbzIJFmmsyozw0EZsgrgE9iAI7jZwF7ho9+SM+iw
+ RmxHN4Bm6eg221ZFIwg7vGYpsrrp51RkuKcWmU+WLVcerm+igQoxDB4Q69MLJmMDeDFzMOmVaZH
+ EDfanEECAwiwkYRjwyA==
+X-Proofpoint-ORIG-GUID: ZbdirOhnHZ5Gxy256j9LQ9EE8xz1ymL9
+X-Proofpoint-GUID: ZbdirOhnHZ5Gxy256j9LQ9EE8xz1ymL9
+X-Authority-Analysis: v=2.4 cv=FOQrAeos c=1 sm=1 tr=0 ts=6a5dd8d0 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=s1V7f2QmSm5Kp7TUuH8A:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-20_01,2026-07-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607200090
 
-From: Richard Acayan <mailingradian@gmail.com>
+On 7/19/26 1:28 AM, Esteban Urrutia wrote:
+> On 7/17/26 5:02 PM, David Heidelberg wrote:
+>> it's likely this change will be safe for older sdm845 too? Comma.AI people have
+>> it applied downstream on top of 6.18/7.1 [1], so I'm wondering if it's something
+>> after testing on available targets could be enabled for 845 too.
+> 
+> Hello.
+> I'm not sure, since the patch you linked modifies both mdp and rot clocks
+> while I only had to modify mdp for SM8450/8475.
+> Both clocks would have to be tested to get a verdict.
 
-The WCN3990 might split MSDUs among multiple "in-order" indications. The
-driver needs information from previous indications to handle MPDUs that
-are not started by the same indications that complete them. Move the
-list that tracks unprocessed MSDUs to the driver state so the driver can
-handle MPDUs that are split in this way and be less confused.
+I think the 'rot' part should be unused - the hardware is not
+driven by Linux today and I doubt the bootloader sets it up
 
-Fixes: c545070e404b ("ath10k: implement rx reorder support")
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Co-developed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-This one we have in-tree forever.
-
-Changes in v2:
-- checkpatch & style. (Jeff)
-- Improve comments.
-- Link to v1: https://lore.kernel.org/linux-wireless/20260210021249.12132-2-mailingradian@gmail.com/
----
- drivers/net/wireless/ath/ath10k/htt.h    |  4 +++
- drivers/net/wireless/ath/ath10k/htt_rx.c | 50 +++++++++++++++++++++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
-index 25c6b2e2f81c8..07c3dc088f07b 100644
---- a/drivers/net/wireless/ath/ath10k/htt.h
-+++ b/drivers/net/wireless/ath/ath10k/htt.h
-@@ -1924,16 +1924,20 @@ struct ath10k_htt {
- 
- 	bool tx_mem_allocated;
- 	const struct ath10k_htt_tx_ops *tx_ops;
- 	const struct ath10k_htt_rx_ops *rx_ops;
- 	bool disable_tx_comp;
- 	bool bundle_tx;
- 	struct sk_buff_head tx_req_head;
- 	struct sk_buff_head tx_complete_head;
-+
-+	u8 rx_in_ord_split_tid;
-+	u16 rx_in_ord_split_peer_id;
-+	struct sk_buff_head rx_in_ord_split;
- };
- 
- struct ath10k_htt_tx_ops {
- 	int (*htt_send_rx_ring_cfg)(struct ath10k_htt *htt);
- 	int (*htt_send_frag_desc_bank_cfg)(struct ath10k_htt *htt);
- 	int (*htt_alloc_frag_desc)(struct ath10k_htt *htt);
- 	void (*htt_free_frag_desc)(struct ath10k_htt *htt);
- 	int (*htt_tx)(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txmode,
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index ab2d373b4750d..732bd3a2f9992 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -291,16 +291,18 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
- 		return;
- 
- 	timer_delete_sync(&htt->rx_ring.refill_retry_timer);
- 
- 	skb_queue_purge(&htt->rx_msdus_q);
- 	skb_queue_purge(&htt->rx_in_ord_compl_q);
- 	skb_queue_purge(&htt->tx_fetch_ind_q);
- 
-+	skb_queue_purge(&htt->rx_in_ord_split);
-+
- 	spin_lock_bh(&htt->rx_ring.lock);
- 	ath10k_htt_rx_ring_free(htt);
- 	spin_unlock_bh(&htt->rx_ring.lock);
- 
- 	dma_free_coherent(htt->ar->dev,
- 			  ath10k_htt_get_rx_ring_size(htt),
- 			  ath10k_htt_get_vaddr_ring(htt),
- 			  htt->rx_ring.base_paddr);
-@@ -841,16 +843,18 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
- 	htt->rx_ring.sw_rd_idx.msdu_payld = 0;
- 	hash_init(htt->rx_ring.skb_table);
- 
- 	skb_queue_head_init(&htt->rx_msdus_q);
- 	skb_queue_head_init(&htt->rx_in_ord_compl_q);
- 	skb_queue_head_init(&htt->tx_fetch_ind_q);
- 	atomic_set(&htt->num_mpdus_ready, 0);
- 
-+	skb_queue_head_init(&htt->rx_in_ord_split);
-+
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "htt rx ring size %d fill_level %d\n",
- 		   htt->rx_ring.size, htt->rx_ring.fill_level);
- 	return 0;
- 
- err_dma_idx:
- 	dma_free_coherent(htt->ar->dev,
- 			  ath10k_htt_get_rx_ring_size(htt),
- 			  vaddr_ring,
-@@ -3156,16 +3160,20 @@ static int ath10k_htt_rx_extract_amsdu(struct ath10k_hw_params *hw,
- 	struct rx_msdu_end_common *rxd_msdu_end_common;
- 
- 	if (skb_queue_empty(list))
- 		return -ENOBUFS;
- 
- 	if (WARN_ON(!skb_queue_empty(amsdu)))
- 		return -EINVAL;
- 
-+	msdu = skb_peek(list);
-+	rxd = HTT_RX_BUF_TO_RX_DESC(hw,
-+				    (void *)msdu->data - hw->rx_desc_ops->rx_desc_size);
-+
- 	while ((msdu = __skb_dequeue(list))) {
- 		__skb_queue_tail(amsdu, msdu);
- 
- 		rxd = HTT_RX_BUF_TO_RX_DESC(hw,
- 					    (void *)msdu->data -
- 					    hw->rx_desc_ops->rx_desc_size);
- 
- 		rxd_msdu_end_common = ath10k_htt_rx_desc_get_msdu_end(hw, rxd);
-@@ -3257,17 +3265,16 @@ static void ath10k_htt_rx_h_rx_offload(struct ath10k *ar,
- 	}
- }
- 
- static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
- {
- 	struct ath10k_htt *htt = &ar->htt;
- 	struct htt_resp *resp = (void *)skb->data;
- 	struct ieee80211_rx_status *status = &htt->rx_status;
--	struct sk_buff_head list;
- 	struct sk_buff_head amsdu;
- 	u16 peer_id;
- 	u16 msdu_count;
- 	u8 vdev_id;
- 	u8 tid;
- 	bool offload;
- 	bool frag;
- 	int ret;
-@@ -3292,64 +3299,85 @@ static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
- 		   "htt rx in ord vdev %i peer %i tid %i offload %i frag %i msdu count %i\n",
- 		   vdev_id, peer_id, tid, offload, frag, msdu_count);
- 
- 	if (skb->len < msdu_count * sizeof(*resp->rx_in_ord_ind.msdu_descs32)) {
- 		ath10k_warn(ar, "dropping invalid in order rx indication\n");
- 		return -EINVAL;
- 	}
- 
--	/* The event can deliver more than 1 A-MSDU. Each A-MSDU is later
--	 * extracted and processed.
-+	if (!skb_queue_empty(&htt->rx_in_ord_split)) {
-+		/*
-+		 * It might still be possible to handle this case if there is
-+		 * only one peer that splits at each given moment. We are
-+		 * bailing out because we should have a test case for this
-+		 * before trying to fix it.
-+		 */
-+		if (tid != htt->rx_in_ord_split_tid ||
-+		    peer_id != htt->rx_in_ord_split_peer_id ||
-+		    offload) {
-+			ath10k_warn(ar, "split amsdu did not resume immediately\n");
-+			htt->rx_confused = true;
-+			ath10k_core_start_recovery(ar);
-+			return -EIO;
-+		}
-+	}
-+
-+	/*
-+	 * The event can deliver more than 1 A-MSDU or continue a previous one.
-+	 * Each A-MSDU is later extracted and processed.
- 	 */
--	__skb_queue_head_init(&list);
- 	if (ar->hw_params.target_64bit)
- 		ret = ath10k_htt_rx_pop_paddr64_list(htt, &resp->rx_in_ord_ind,
--						     &list);
-+						     &htt->rx_in_ord_split);
- 	else
- 		ret = ath10k_htt_rx_pop_paddr32_list(htt, &resp->rx_in_ord_ind,
--						     &list);
-+						     &htt->rx_in_ord_split);
- 
- 	if (ret < 0) {
- 		ath10k_warn(ar, "failed to pop paddr list: %d\n", ret);
- 		htt->rx_confused = true;
- 		ath10k_core_start_recovery(ar);
- 		return -EIO;
- 	}
- 
- 	/* Offloaded frames are very different and need to be handled
- 	 * separately.
- 	 */
- 	if (offload)
--		ath10k_htt_rx_h_rx_offload(ar, &list);
-+		ath10k_htt_rx_h_rx_offload(ar, &htt->rx_in_ord_split);
- 
--	while (!skb_queue_empty(&list)) {
-+	while (!skb_queue_empty(&htt->rx_in_ord_split)) {
- 		__skb_queue_head_init(&amsdu);
--		ret = ath10k_htt_rx_extract_amsdu(&ar->hw_params, &list, &amsdu);
-+		ret = ath10k_htt_rx_extract_amsdu(&ar->hw_params,
-+						  &htt->rx_in_ord_split, &amsdu);
- 		switch (ret) {
- 		case 0:
- 			/* Note: The in-order indication may report interleaved
- 			 * frames from different PPDUs meaning reported rx rate
- 			 * to mac80211 isn't accurate/reliable. It's still
- 			 * better to report something than nothing though. This
- 			 * should still give an idea about rx rate to the user.
- 			 */
- 			ath10k_htt_rx_h_ppdu(ar, &amsdu, status, vdev_id);
- 			ath10k_htt_rx_h_filter(ar, &amsdu, status, NULL);
- 			ath10k_htt_rx_h_mpdu(ar, &amsdu, status, false, NULL,
- 					     NULL, peer_id, frag);
- 			ath10k_htt_rx_h_enqueue(ar, &amsdu, status);
- 			break;
- 		case -EAGAIN:
--			fallthrough;
-+			htt->rx_in_ord_split_tid = tid;
-+			htt->rx_in_ord_split_peer_id = peer_id;
-+
-+			return -EIO;
- 		default:
- 			/* Should not happen. */
- 			ath10k_warn(ar, "failed to extract amsdu: %d\n", ret);
- 			htt->rx_confused = true;
--			__skb_queue_purge(&list);
-+			__skb_queue_purge(&htt->rx_in_ord_split);
- 			ath10k_core_start_recovery(ar);
- 			return -EIO;
- 		}
- 	}
- 	return ret;
- }
- 
- static void ath10k_htt_rx_tx_fetch_resp_id_confirm(struct ath10k *ar,
-
----
-base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
-change-id: 20260719-ath10k-a-msdu-c49334eb091d
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
-
+Konrad
