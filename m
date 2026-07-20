@@ -1,127 +1,109 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEDE41BA6C;
-	Mon, 20 Jul 2026 12:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B38420486
+	for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 13:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784552061; cv=none; b=Uh5YlQHDJpMsQ4kaVle4f0LuwIB7erZ0r/pPPOSP79lHD76by0DeWePPR+WHWNjJLRDU3fO0/+e/1ywOewTHjmVRX1odhW8Cs6cuSYEu4HSFLoKP1k06zqLOyXKHQJPorxNLzsXbtisMYDxOW3Law0HDk0qJjyibruwMOFSHptc=
+	t=1784552991; cv=none; b=mPwoc68NgCgsOfGj1XAkECCVJYYDDcJrWA4fwZpK0K4Czqfpf+uCy8qCT8++df0vZK0NJnm7zlM9bnx7owCn0ij9h6xAu0VbTwokte0lLKm3wuNKQDlsJRha55obDSaph/E1a5kqoQRaR6f/pByH0cYHgjvs8SSvnbmcrub6OyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784552061; c=relaxed/simple;
-	bh=bPDzPwHkP8/uCPCjUFJ+++mcV9Wo2opgZUlSb2Eu8Bo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VOEaE8UjPeMpRUe7pSYxHTAKXSJtfsmOz0Jbs4LMnYrtOGwHtsYvaqHDDzq75jBLgBTZ0EMnmmFZjgBg038N5hCG/wYmRnhHIW5oojj5vfi8PdYYgtteRinjx5cpaeLVCXF7YPzTCw7tLWkNQv8u7yYxHNvt9zlvjl7b14r/9pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=AF7fWuRE; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1784552991; c=relaxed/simple;
+	bh=EO92awxn34skIVS7EB9Uq/R0FtNKX5+atpdMK45nbNo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pvq56rAoJ7xWnpS216s3ZqnD7IQ0DYcaBn0aInBiMBpzukzw/6lK/ADxDfaKQCR18BJrONaViHqhEiP4ml4PeVpypL2oEQHU2ovDFOPg4oucXDqHjmQM+F5K0q5HJrjNsERnW+5lScxEYlKZhd994jlstAJYtzU9Mc6R1hqqo6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g7/DB9m8; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="AF7fWuRE"
-Received: from [172.16.124.192] (ip-78-44-13-22.bb.vodafone.cz [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 7F6605340263;
-	Mon, 20 Jul 2026 14:54:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784552055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5UJJ9AGxOuEpi5KTgqxObL3hBgV3pTaZjpjXiJSRfjQ=;
-	b=AF7fWuREI3y07f0OOA6DbdBE27pzUxcNuMhlsfMutYh8cii6Jqj/qMR/+zu1u7we8Cluyr
-	GKbCgt7uP4j0Za9YNoA3kCGT5P4C24tQnRojrgbENVgORI27nqXYcA2DRMP2pbktRMG6hs
-	MUigYq+zJ0heTU+8SfxYRxBLeXiWBUY=
-Message-ID: <803f5056-4348-4050-903d-f4ab430eafb0@ixit.cz>
-Date: Mon, 20 Jul 2026 14:54:14 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g7/DB9m8"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49557167508so16155985e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 20 Jul 2026 06:09:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1784552988; x=1785157788; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+h2Q619dl8wI7WNCJbvozQ6DDMbbno91znOwGOQgLhc=;
+        b=g7/DB9m8+0x/t3oStTgu1UyrOD5gnePeaY2p6fKDSwXIZJG6MaRQmmAiJEE6Mn2x5g
+         5Nh+ipUGsP8A/Ss0vYKA7yzlYBaXJsynYCrad2i90trqfjZU9kgEVD7yhrwUj0B0ocxv
+         GjPBCu8NfAJeu2Z30LxtkCNZTtViQ4Gc9d1il7KTX/xyoyMmnDkfTbbX0Hz7Jhx3gvLv
+         b93d3SJSMK1uNjyROajMYNf9wMV43xIYf0j0YyRWf7lNhx0Za0nMGq7mavboUFKx3zP7
+         EdbodfPPcztwlY6LdwKHNl1rAL+UHhGlGOuxwQaM97MfAjNLsgbpf9vUxI6Dkf716102
+         JbXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784552988; x=1785157788;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+h2Q619dl8wI7WNCJbvozQ6DDMbbno91znOwGOQgLhc=;
+        b=bfl1sI1SHP/dN7XNaJmI/TwuHESOlSNvo6/YCLf+dmEa+nzkHOzyCBA93HBA5tjjgA
+         9vsdDKFCIfIl0oSCew8eIa+uHrgEcVp6B/JCthg/fKg2WlrxU4BrBa4/PPVEUrJAnCR6
+         LIi4PLawIK21JUdnRGy7crna7VajGFqFz7zfhktmhJQHpRHq3cvMna4oTS/Gd+OevdfP
+         A8xxOC1DezQlfJW5jNM3SCt1NjTjI093AJAOUGvzcI3ljIhNYEqmXgcD6GRgqs0C8nkj
+         t9BMzdga3fNCpB4OYXb374US6r/W8m4GBcgOJ2Q8IaUAjqQgiFxborgYpkoQN9MnNdnG
+         YBoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roqeyk3zUK00VlnGCd3wjbX27UvLgXaDOVrWyZsMNPS/dZvV6DSt0B06nHiH3OwcedistR6yHCmjaWhYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyphk7L3KRFI2yOjf0Av5BEzS3ODCtvdrWxDb7VG+Xdc7COEatS
+	pUybC0C7xDfBUGfm+/8vKARIpQZhbd5n+aFqTVCmp9z9/gQVTQgdNVqz+t9S+Y9uMiY=
+X-Gm-Gg: AfdE7cl+ULOu6geHi9xpxuhvkeC6bMbwPWNp7fm7DyX1HW0q35i3lg/5/83Bh6o1z6l
+	Vd0HXn02qDu83fxRnygliXJmHZg+1to7/MAQA8wwpY3U1gM4YQT397MnJHhn3xuxmcFayTkMTi4
+	28BtRNvjzWRCuSsTswWaAdWwJvVkbj6OBo2FjhYzVlTMWAM6KCg1NbW5l+DPx6S1DaZhsy1ZFN9
+	MPPrSER+oNuelRU7VU61ciQ5pb6+wLK8o394SAOxsmXiHjD+o9hDrrjNTnqujc8A/HufMxwtcE9
+	AowXsgwdscDG3zMMAGpBXworJSeLfC1BUtunxs+9BDxMWDb74xqPg5kCsrvQm/2kycU/aDiINAA
+	uoeXZThsjeUEef6GfPOAFhmsUEdr4xARIAZ0jD4YXIx5hUMqr7HFmnzrTvDK6rTy7Rd9sYXrT+P
+	esGxpP3z/dHGa7SIisQB2YnMc=
+X-Received: by 2002:a05:600c:5246:b0:495:6482:9d8c with SMTP id 5b1f17b1804b1-49564829df7mr2659795e9.37.1784552988438;
+        Mon, 20 Jul 2026 06:09:48 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:106d:1080:8261:5fff:fe11:bdda])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ec7ea1sm30767434f8f.24.2026.07.20.06.09.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 06:09:47 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?C=C3=A9dric=20Bellegarde?= <cedric.bellegarde@adishatz.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	Simona Vetter <simona@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maxime Ripard <mripard@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	David Heidelberg <david@ixit.cz>,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH] drm/panel: sofef00: Fix DSI transfer errors on backlight update
+Date: Mon, 20 Jul 2026 15:09:39 +0200
+Message-Id: <178455228137.789946.17345667385294508463.b4-ty@b4>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260706051825.78752-1-cedric.bellegarde@adishatz.org>
+References: <20260706051825.78752-1-cedric.bellegarde@adishatz.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/panel: sofef00: Fix DSI transfer errors on backlight
- update
-To: =?UTF-8?Q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>,
- linux-kernel@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>,
- David Airlie <airlied@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Maxime Ripard <mripard@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Casey Connolly <casey.connolly@linaro.org>, phone-devel@vger.kernel.org
-References: <20260706051825.78752-1-cedric.bellegarde@adishatz.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260706051825.78752-1-cedric.bellegarde@adishatz.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On 06/07/2026 07:18, Cédric Bellegarde wrote:
+Hi,
+
+On Mon, 06 Jul 2026 07:18:22 +0200, Cédric Bellegarde wrote:
 > Backlight updates via bl_update_status() could be triggered before the
 > panel was fully initialized, resulting in failed DCS commands during
 > the atomic commit sequence.
 > 
 > Guard bl_update_status() with a prepared flag to skip backlight updates
 > when the panel is not yet ready.
+> 
+> [...]
 
-Looking at
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
 
-  * When the panel is enabled backlight will be enabled after a
-  * successful call to &drm_panel_funcs.enable()
+[1/1] drm/panel: sofef00: Fix DSI transfer errors on backlight update
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/72eb80d9f4e6c0493298bbf782c6a07a24b4e608
 
-in drivers/gpu/drm/drm_panel.c
-
-I have feeling this isn't something driver itself should take care of.
-
-While this solving issue for this specific driver, I'm not seeing anything 
-similar deployed anywhere else which makes me suspicious.
-
-David
-
-[...]
+-- 
+Neil
