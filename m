@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB813E9284;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECFA3E833E;
 	Mon, 20 Jul 2026 10:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784544791; cv=none; b=Cq5/aik/pPckVSAXsWjsLf/CUyUgdB2GBMlUHuesxDs7JY/0OXj+nYzQB54MD0bz8gizY02hsd+paIL2AB0K/0fSR6F5aCtXHMo4HVWHFmIS446RkPFBYILkS2MYpRP85NSJH/A4g7lvANVJNbvRSh03CZ9TsfcJKbRs8ihIW2s=
+	t=1784544791; cv=none; b=bTSKbav220An0UX3GHLFFSW0N0NgnEFdIjvgl/eoSZupzgNAnDKlP/vhCXBGgntnehwLsn+g5e4w7msUosLdG9bCRPQTfNiaRwbLuKRlYtpBq10n0bioS70ZHbWptj9OIzVBx7FVsKpTeBOvz3uxQ6zW8XHiEbO9e3bqpxx8gvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784544791; c=relaxed/simple;
-	bh=VasTktyFUPD4AQ67HvndhYwaYe8DvrCH9EdAcPC1AgA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i9PzRH3yLytE0+WKIUJIwR9GbjWgowOfDSxmzaTkkvfFrFNrpMuCwGclHUekKe0Ocn+o2mu6cCiTf0xrWV7sNNf+NEcwpBwY8SuxnqsK+tuNO6teZ55XJfiRDKOUgi3VxMeH0b6ysxGT919XQee8reGdVZ5erfjETmauYgLmgS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucRl/5Sj; arc=none smtp.client-ip=10.30.226.201
+	bh=BGakHQfj0KcopuqpfIs69Dg6vnPZiuL/U9trm4K5Zow=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WPEApCgMWJFJbEvTp/vwFnnrKgYayl5iR3rtNpZGVu6T95C1jWZWosC1Jecneig7/z1ekVdKZUmktebWQdvXqM2Q59zhsVApTyq1Thh8ot1T1c6pYRj2Szwd2TWqrN4POO5Ov725bbhexgLAJS51Wi8rfIxmZYpp76hRHrs+toU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ab7fm+DR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucRl/5Sj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A951C2BCF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ab7fm+DR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C07AC2BCB8;
 	Mon, 20 Jul 2026 10:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784544790;
-	bh=VasTktyFUPD4AQ67HvndhYwaYe8DvrCH9EdAcPC1AgA=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=ucRl/5SjDxvcJgMMU+bMhzaWoywdoV6WUoG1LZR1Wnaq0k0yh5HT+T6DlftmO7iUH
-	 767jYPYCDGW1DhCwv//Med5+9W079Oy0DR58kHYdAhN9NGYZwBBr0tKbsACeL5YTBU
-	 dHu2gd/YiH5BZ14VUbp7TzKSVxBxMKxFH511QR/G78hQEa2KAAvFCCACeJyDCDHUTu
-	 D9K98z0sGbjG8v1Gr7PjLHC6l128sRosfNJ9AmOWE5Z6p1mewxds3PWuQJuBq3Wdrl
-	 umCAZMlMIKALW/TdxtqPeQIIqINa4ojXd3YW7vW9nuy0UQ/8gsI1cCQKoBeAqihz/d
-	 dG1FucN2ATLxg==
+	bh=BGakHQfj0KcopuqpfIs69Dg6vnPZiuL/U9trm4K5Zow=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Ab7fm+DRp2Z8Vo2T4ybng/AJzvxqFuGgijUtGyZr+bedJriV09Fp8cFyqlvZj46Lm
+	 H3Djs0mbui94kO3pe6kmLvTxJzlPjZrjZRXDC2dzw6pJaibcqB5hQ1H++KoiOtMgwE
+	 v7D9+SjG58hJy3EHsdNqGou7zSbgTAb7skQMuE+jjyuS7WtnLuMTiCCzO7K5uaEB3V
+	 CwnVtXCcux7AaX8YVT/+gpgSXA2Ngo6zDcxttqBXXvFa2vvhlU2Mh7ToPpc9UwD95M
+	 ziKvnNBan7MCKJFRVhuP9HkVMTU5zbNLe1DcwericqmAUXfiFAJ6wEJ2qEeLUlOJvl
+	 6Z6YQejp++YGQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E687C44527;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FB3EC4452A;
 	Mon, 20 Jul 2026 10:53:10 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v6 0/2] Add initial dual front camera and rear flash
- support for Pixel 3 / 3 XL
-Date: Mon, 20 Jul 2026 12:53:06 +0200
-Message-Id: <20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz>
+Date: Mon, 20 Jul 2026 12:53:08 +0200
+Subject: [PATCH v6 2/2] arm64: dts: qcom: sdm845-google: Enable PMI8998
+ camera flash LEDs
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,12 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABL+XWoC/33RTW7CMBAF4Ksgr2vk8V88rHqPqgvbTMASBeqkE
- S3K3TuBSiVZsHyWv2dr5io6qoU6sVldRaWhdOV05OBfViLv43FHsmw5C620VwacPJcLHYzM8YN
- qlBExYGpdQCLB5lyp5QtT39s7533p+lP9vtUPMJ3emyzAomkAqaRuXOOVd+CSfy2X0q/zj5h6B
- v3UarYWUggYUwKb59Y8Wr20hi1pnxSq6AHU3Np/2wAurZ3eDTkm0MYHp+fWPbWOLaJD00LaBnr
- 483gfZKXPL95H/zfNcfwFZu7wHK0BAAA=
-X-Change-ID: 20260315-pixel3-camera-a9989bf589ee
+Message-Id: <20260720-pixel3-camera-v6-2-afe419bef476@ixit.cz>
+References: <20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz>
+In-Reply-To: <20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -57,81 +54,110 @@ Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2265; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2187; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=VasTktyFUPD4AQ67HvndhYwaYe8DvrCH9EdAcPC1AgA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqXf4UDUWDOdgWx6PNlM3XUJZOPS7xYKnbdBWYX
- LZ96zbDACyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal3+FAAKCRBgAj/E00kg
- clDPD/44MWNF3PQ2J4iZeUDzIb378/RMLNTBtDkRvGCge8wMJJ+DnO2UlHS+zQJk8iCAQpcD4IG
- hVPAfYFl5hhO6PyKwxxK+r7tZ2fct5c2Zwbns2Jc59OfQU2SDoCCOCu1x8EfkM/6Q64amsneBNr
- oaff+oP/SbEIl7+R32Z8kLDqhX289+yRuD1zkUXG32OcjDqzCbo7TYhELp3s8rgftBsjS+SMQxa
- UCkDV8C5axKXm0NhJaCeZA6BqtumYjeDRHGRspUruDk0mGztaOGxG22RR/1+7dgaWIV4GkwK44F
- ZViTJCLf1nQJBP2N1k/QyQ0gO5zX2ZAGdA2kB9dZTvP8loutdfMfw8k4Up9SAUYslAiI7XmEDlx
- y3fHvUxnoW7HFW+go71iGuWmP872GDieeDQJw1HU8WwZskjTcMy014iQpZjHRgPRc1C+7Yc+EDH
- h1kG05jgcJqmFRsYYmb+XRzvOvLkV8R6Ge5aOB+jYtVsFfa22V/L0h7z4dSrqq4bMkvwISk8xMK
- 064RAbk9/VomKNENsM1yoYeshz+3a4oTiaozgl4gi+ioC20SqasFtKDPRpbr/PApt0ZdylHz8/2
- Tm2a+qxpeD61ie7T6fIVA5b12+g4Aru9OeIIk4+QNbIKFV5D+7QfKAbN7uVu3tHj4CDagNjRKUj
- TLb4TNLwCqGA8SQ==
+ bh=+JTTruT1wyhpjPxfzBWwZfGwRsmkaQCpAUzY/f6Aiic=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqXf4Uj2pZ6Kubd5/ik8gO7F84rxctxStDvnZuu
+ cddClBOCPSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal3+FAAKCRBgAj/E00kg
+ cqWOEACOMGp12pxBKnY8ya7rfeUKSwR0bg76cNT/SiI5hbMADwsdnYhWI+w6+wh0LHxTGWcst+K
+ 1JFjkdSOB0WxUp/TlkQT61l+cmiMsAK453mIij95ss3xJ8FeehZ0uEVdOt4wXLD1iQi7TortnDp
+ zyz21+yh7yFEEXnquciny3gqMh9rvle90x0++JJdAnW/eICqBwDZ4nzLKmQoQI5szK9RTBFfvsn
+ WbVeVVgbq16RoJOmO24Lm0PyiKw9gtgt2MpAzCsKpTAMv0K4+Yf6KsL68H+hCM7rrogrzsZehUW
+ 5fZPwOKZs7XHeMiuWDnhPh0TvgLOKXO8THefd3Af3lFTcFrZvF+zJstVzVVsiujssdbGxIkad2O
+ GifMI+Yf8OS7NxE+FSA/H+k52lIbVale/yAoPRN5bU72BAr96sloxzv8nNhTnXohUnv8E2Wo/tb
+ 9s/CaLMO2QJsb65tz5t5h23XRMs7vDWaVVg6Gxfq12YenOikYKVg3OdDgnxtfcfs8wP/Dd8HYDP
+ Sbldr7bmqXn9zcSfplNEcGSKeRmkuB7EkRCX+olEs2Ke4pXzpXYHsP9kKic6HP5eBazyV22fcf6
+ vG6gj/ovewD8+/LlvnlRbllFV0dRixx9zVho6xmnCrChiUr+YwV0ItMOmITJhAQojzUm1pFRXNF
+ D8ihg1dNRFZNA3g==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Describe the dual front-facing IMX355 sensors (standard and wide)
-and enable the PMI8998 flash LED with hardware-accurate limits.
+From: David Heidelberg <david@ixit.cz>
 
-This brings up the basic camera topology and flash support in DT.
+Enable the PMI8998 flash LED block and describe two white flash LEDs
+used for the rear camera.
 
+Configure the LED in flash mode with hardware limits matching the
+original device configuration, including maximum current and timeout.
+
+In contrary to downstream, we can control both LEDs separately.
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v6:
-- Remove forgotten bias-pull-down property from cci0_sleep node.
-  (dtbs_check)
-- ..-regulator -> regulator-.. (Konrad)
-- Rename camera -pin to -state and remove _pin from the labes. (Konrad,
-  dtbs_check)
-- Link to v5: https://lore.kernel.org/r/20260719-pixel3-camera-v5-0-99593f1bd8ec@ixit.cz
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Changes in v5:
-- Added function-enumarator to flash LEDs. (Sashiko)
-- Dropped l22a regulator needed only for NFOV actuator. (Sashiko)
-- Dropped vdda-csi[0-2]-supply, as it was unused. (Sashiko).
-- Added previously omited cam_mclk2_sleep sleep state.
-- Link to v4: https://lore.kernel.org/r/20260719-pixel3-camera-v4-0-48cab1236852@ixit.cz
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+index 267dcd6eddaee..c8699f72cfecf 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+@@ -1,16 +1,17 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ /dts-v1/;
+ 
+ #include <dt-bindings/arm/qcom,ids.h>
+ #include <dt-bindings/dma/qcom-gpi.h>
+ #include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/leds/common.h>
+ #include <dt-bindings/media/video-interfaces.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ 
+ #include "sdm845.dtsi"
+ #include "pm8998.dtsi"
+ #include "pmi8998.dtsi"
+ 
+ /delete-node/ &mpss_region;
+@@ -590,16 +591,42 @@ &pm8998_resin {
+ };
+ 
+ &pmi8998_charger {
+ 	monitored-battery = <&battery>;
+ 
+ 	status = "okay";
+ };
+ 
++&pmi8998_flash {
++	status = "okay";
++
++	/* upper flash module part */
++	led-0 {
++		function = LED_FUNCTION_FLASH;
++		color = <LED_COLOR_ID_WHITE>;
++		led-sources = <1>;
++		led-max-microamp = <500000>;
++		flash-max-microamp = <1500000>;
++		flash-max-timeout-us = <1280000>;
++		function-enumerator = <0>;
++	};
++
++	/* lower flash module part */
++	led-1 {
++		function = LED_FUNCTION_FLASH;
++		color = <LED_COLOR_ID_WHITE>;
++		led-sources = <2>;
++		led-max-microamp = <500000>;
++		flash-max-microamp = <1500000>;
++		flash-max-timeout-us = <1280000>;
++		function-enumerator = <1>;
++	};
++};
++
+ &qupv3_id_0 {
+ 	status = "okay";
+ };
+ 
+ &qupv3_id_1 {
+ 	status = "okay";
+ };
+ 
 
-Changes in v4:
-- Use 24 MHz ext clock for the cameras, as the downstream does, since
-  the upstream driver can now support it.
-- Added additional LED, as the phone contains two separately controlled
-  white LEDs flash (upper and bottom, in one module).
-- Increase flash-max-microamp, as I took wrong "flash" from the
-  downstream sources and dropped Dmitry R-b.
-- Address formatting issues. (Konrad)
-- Link to v3: https://lore.kernel.org/r/20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz
-
-Changes in v3:
-- Dropped cam_vio label. (Dmitry)
-- Move the MCLK2 pinctrl from cameras to common camss. (Dmitry)
-- Link to v2: https://lore.kernel.org/r/20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz
-
-Changes in v2:
-- leds.h include escaped the initial submission. Fixed.
-- Link to v1: https://lore.kernel.org/r/20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz
-
----
-David Heidelberg (2):
-      arm64: dts: qcom: sdm845-google: Add dual front IMX355 cameras
-      arm64: dts: qcom: sdm845-google: Enable PMI8998 camera flash LEDs
-
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 198 ++++++++++++++++++++-
- 1 file changed, 197 insertions(+), 1 deletion(-)
----
-base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
-change-id: 20260315-pixel3-camera-a9989bf589ee
-
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.53.0
 
 
