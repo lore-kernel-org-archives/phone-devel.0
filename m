@@ -1,184 +1,153 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888E3BC68A;
-	Tue, 21 Jul 2026 10:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1222B1D416C;
+	Tue, 21 Jul 2026 12:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784630375; cv=none; b=Wh039y78D7iNE9fg6+L4I6LnDPNlVCOLuyzvUNjwR30uL3iILEonSgmLdy6caJYWdLWVHrxYQqprMdHnJwUuI2lUVx53vON7dVcsTRb/BP1jDtQwWhIcrPvl+Bq2fmlyKYM7BZFc14QgWur7Z7jF79q1gbUelE/k9tkGtZDAEUU=
+	t=1784637215; cv=none; b=tqQiA2Vh4TLCGvxyhosUQ8if1bam5+tpK8qXjCDsYBAZq47bQCxJW2QoVREwzE7FEGdGaGPuLwRMBSKTE9Kff1Ws91+p8chi9aie5GmbIeInuPA+glHCGLqvr8JCfu1ToI3kru407wewZSDFgIZ1m+UCRRsjzvpLmvlZKL8IzVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784630375; c=relaxed/simple;
-	bh=/hNqK7YRC1RSEZdjFS4a5vpTWW0bDD7sQRW+Z8zv3h8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mt0ijDiKpdhDKs3SgHCb+GTVKGf5mJ4xJLYvyw3GgG5jbz87JagkcrXr5kF1hc1ARemWNMF39b+SPqM33Rm7crSJXzezuBjNq573jg6OSVp0hbZrWhUtP8bVE9GjEeXev0ThcjLk4uinK9Zsw8/8iJ3tX1+8o11G8Fwd1EkDpPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=DX7JhZaz; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1784637215; c=relaxed/simple;
+	bh=ns1LjmqdvwTkJNn1DSFszH60IOI7yr4JlPHwBH6lcqg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mPAKFfDGHkXt/C6HiMe61uZZwNWmwbEkXzOCguXIFQ6cB0uB8RqrRZXxJoQEgrUWgJbtha+miuL4upusyuw1Yinmag2L1Fl34txTHY96E4Y14gtk4tPMsK9SxQyNYSDk/vkB8ARx12bFrRE667CpXwUCPhevuTmFlDitLBqJHEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwXRkZJE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="DX7JhZaz"
-Received: from [172.16.124.192] (ip-78-44-13-22.bb.vodafone.cz [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 5A66A53401EE;
-	Tue, 21 Jul 2026 12:39:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1784630368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6R52rk6QYa9/i37aNodQp6F1XVJRiGVvf+hFyxj9CVw=;
-	b=DX7JhZaz1SRw4Ruhbd4cbyRW+VU82m45YResZHI4RJZg3fpJX+8oxmaaU8ih5zXQT7kE/r
-	lkddF5IajhUG+sCiwIHtUmFsr+ofYQlCJKXVH0vAjQI/gdzJ2n0LZLsvrJzCz9RDzNu+BP
-	cR2TBDDhubsx0iSi9rtgFe1Ap4ekqCs=
-Message-ID: <16c23505-cd3d-42b7-aec2-52f9b7492028@ixit.cz>
-Date: Tue, 21 Jul 2026 12:39:27 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwXRkZJE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AE03DC2BCB8;
+	Tue, 21 Jul 2026 12:33:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784637214;
+	bh=ns1LjmqdvwTkJNn1DSFszH60IOI7yr4JlPHwBH6lcqg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=dwXRkZJEsYCZH/FuTZuHk0ehnQwSCzuWy+x0rV9RthSkviP8m9IJVJTaht352te2z
+	 8CECpnVkroVX08eXgME/QIIPpKhKC2VNtd1K1w9rhY+Zh35ruVGsB3Nf4BDh4gCrDU
+	 tcFnTR2ugVJ6ngOGpdpLbC7jsS8SXXz2efJQV0fjt1HrhbOCH2U1bifCwSLbXH+R1v
+	 vnUmmU3gXcFYNVEt++OubX/clcj7Fo+GZ7rfHrtIN4Tp9vIPwfSvu/xJVGlFG/kpqY
+	 3O0C7tje84pwoSvB9zreryL/ExnldhGTf5YTR01JW7BcKhy6GlDPAaFWXkBn1iBxT7
+	 /ZcUenZRk83Ww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 885A0C4452F;
+	Tue, 21 Jul 2026 12:33:34 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v7 0/2] Add initial dual front camera and rear flash
+ support for Pixel 3 / 3 XL
+Date: Tue, 21 Jul 2026 14:33:28 +0200
+Message-Id: <20260721-pixel3-camera-v7-0-82d323c6c5d2@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2] wifi: ath10k: make in-order rx amsdu buffers
- persistent
-To: Jeff Johnson <jjohnson@kernel.org>, Kalle Valo <kvalo@qca.qualcomm.com>,
- Michal Kazior <michal.kazior@tieto.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Richard Acayan <mailingradian@gmail.com>
-References: <20260719-ath10k-a-msdu-v2-1-f479bb9d1217@ixit.cz>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260719-ath10k-a-msdu-v2-1-f479bb9d1217@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33STW6DMBAF4Ksg1nXl8R82q96j6sLjjBOrDaRAU
+ dood++QLJKwyHIsvoft51M90lBorNvqVA80l7H0HQ/NS1WnXey2JMqG51pJ5aQGKw7lSF9apLi
+ nIYoYgg+YrQ9ENZvDQJk/WPLeP3jelXHqh99L/AzL6jXJAKySZhBSqMY2TjoLFt1bOZbpNf3VS
+ 86snlrF1gB6HyIimPRo9b1Va6vZknIog4wOQD5ac7MNhLU1y399ighKO2/Vo7VPrWUbgg06A24
+ 8rfbs7qySa+vYxkwGAlI2zd1dna8lDPT9w11O1yZuVbbVJdJJLz6xdNtd3IueH0A3xYmbF0rGn
+ GRGF2zT8sVxGsaRROr3+zK1FR/EK68jKo9JB9kQSHQQHRoklylHSIgq80bO/5gh8ZdcAgAA
+X-Change-ID: 20260315-pixel3-camera-a9989bf589ee
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Petr Hodina <petr.hodina@protonmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3089; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=ns1LjmqdvwTkJNn1DSFszH60IOI7yr4JlPHwBH6lcqg=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqX2cddAEKBzCHafHIKaCEF07nYk08q8x+Rk1NP
+ udUAHyfm3CJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCal9nHQAKCRBgAj/E00kg
+ cgK7D/0QUCUh801LmQ6Cbx2MeAt7X6XG1KDdrbCfBObYl6HrqTqHl6Fg4tb9iN8cLC4pcusS8Zv
+ yURD65BnPlMT3X/5Y+u0t32ORKffyWjvbxTAgyLTypcvKc6BcS0BHpPxCMK4o3j+KyKhtVf33/Q
+ 90unrndv/YpVoG0gTIlrvo5SyM0Xwat4F1w9wDuIyXIVWukxWKfgtNZYiyLtn6d6dIg+KMPslFa
+ XRXLKWwB9i+iNF7FXyKBIGcIRLy4FTIKC8572lDH6oBwVrA0T3xZbj2RmvEZpmBvOpLVnRWYPQ3
+ S/uzn38dIG8UTYJmHS+jcwLxioOAYQ3m4J58eylZ8DWKELLiAbU/ntrskJriLF0/kuVm+Enr8k1
+ zrZjcUSCNVRiviB0Gb+QV7idkDe0JJGESAbxOXvc2qAWSfzzTt6JmwJ71WwzEbKvJ0k7aH29PM8
+ jvSgVsIYPvEsospWz2vdrS9VmfbPIYGIJ9Nd6mz6DqBwtS8knHEWprMTlp8YpEVn2b8GtmDMA0C
+ ThGVi2mNiC849O3hm9fYcePOs4l1AeKXBIbgrNsOXIon416Mnd1HQdCgS3p8wnopX9hT2z75tas
+ kquFitI/3CITdwPREpbgHE7xEcFg/K2ZC6cRWNnryqz7KyCaT6Uca5r+Q8M6Bzl2Xa/pCVkOiFL
+ Yq8g3VFxIwxLZqA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Sharing Sashiko review, at the first part of it was something I wondered before 
-resending the v2.
+Describe the dual front-facing IMX355 sensors (standard and wide)
+and enable the PMI8998 flash LED with hardware-accurate limits.
 
-I'm not sure what exactly is achieved with the msdu & rxd assignment, as it 
-seems to be really immediately discarded.
+This brings up the basic camera topology and flash support in DT.
 
-Please excuse my lack of knowledge in the wireless field, it's just patch which 
-we carry for long time and it seems helps others projects using WCN3990 too
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v7:
+- Depend on the
+  https://lore.kernel.org/all/20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com/
+  (Konrad)
+- Sort the renamed regulators. Why Mr. Anderson, why. (Konrad)
+- Link to v6: https://lore.kernel.org/r/20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz
 
- > - 0016: WCN3990 splits A-MSDUs across multiple HTT in-order
- >   indications; mainline dropped them ("failed to extract amsdu: -11",
- >   rx_confused), collapsing TCP under load (49 kB/s). Persist the
- >   in-order MSDU list in driver state.
-https://github.com/commaai/vamOS/commit/12d80d09e61188895e90d9e4245d513ad4d07f25
+Changes in v6:
+- Remove forgotten bias-pull-down property from cci0_sleep node.
+  (dtbs_check)
+- ..-regulator -> regulator-.. (Konrad)
+- Rename camera -pin to -state and remove _pin from the labes. (Konrad,
+  dtbs_check)
+- Link to v5: https://lore.kernel.org/r/20260719-pixel3-camera-v5-0-99593f1bd8ec@ixit.cz
 
-Thanks
-David
+Changes in v5:
+- Added function-enumarator to flash LEDs. (Sashiko)
+- Dropped l22a regulator needed only for NFOV actuator. (Sashiko)
+- Dropped vdda-csi[0-2]-supply, as it was unused. (Sashiko).
+- Added previously omited cam_mclk2_sleep sleep state.
+- Link to v4: https://lore.kernel.org/r/20260719-pixel3-camera-v4-0-48cab1236852@ixit.cz
 
---- Patch [1]: [PATCH RFC v2] wifi: ath10k: make in-order rx amsdu buffers 
-persistent ---
-commit 10e41b4de22d818aaaa807183134d42a4da09825
-Author: Richard Acayan <mailingradian@gmail.com>
+Changes in v4:
+- Use 24 MHz ext clock for the cameras, as the downstream does, since
+  the upstream driver can now support it.
+- Added additional LED, as the phone contains two separately controlled
+  white LEDs flash (upper and bottom, in one module).
+- Increase flash-max-microamp, as I took wrong "flash" from the
+  downstream sources and dropped Dmitry R-b.
+- Address formatting issues. (Konrad)
+- Link to v3: https://lore.kernel.org/r/20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz
 
-wifi: ath10k: make in-order rx amsdu buffers persistent
+Changes in v3:
+- Dropped cam_vio label. (Dmitry)
+- Move the MCLK2 pinctrl from cameras to common camss. (Dmitry)
+- Link to v2: https://lore.kernel.org/r/20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz
 
-This commit moves the list tracking unprocessed MSDUs to the driver state,
-allowing it to handle MPDUs that are split among multiple in-order
-indications.
+Changes in v2:
+- leds.h include escaped the initial submission. Fixed.
+- Link to v1: https://lore.kernel.org/r/20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz
 
-Link: 
-https://lore.kernel.org/linux-wireless/20260210021249.12132-2-mailingradian@gmail.com/
+---
+David Heidelberg (2):
+      arm64: dts: qcom: sdm845-google: Add dual front IMX355 cameras
+      arm64: dts: qcom: sdm845-google: Enable PMI8998 camera flash LEDs
 
- > diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c 
-b/drivers/net/wireless/ath/ath10k/htt_rx.c
- > index ab2d373b4750d..732bd3a2f9992 100644
- > --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
- > +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 199 ++++++++++++++++++++-
+ 1 file changed, 198 insertions(+), 1 deletion(-)
+---
+base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
+change-id: 20260315-pixel3-camera-a9989bf589ee
+prerequisite-change-id: 20260608-kbingham-orientation-20afc0fb6957:v3
+prerequisite-patch-id: 4ca069e5db821444cc3555a6ec3939c89dfaf233
+prerequisite-patch-id: aa559ddd6f34d32f6f250e02086d1b2b932a2688
+prerequisite-patch-id: c45901f8d919eb99a5bf282a1c89f5aa7c36cc52
+prerequisite-patch-id: b2c8278c88db9d929453b8153f3e698cbf0053f9
+prerequisite-patch-id: 3ce9cd5eab9a04b3b1f7d796a67b4c2cce903e1c
+prerequisite-patch-id: 68e98a7f998b731d8c5520620e48b63dc839cf25
+prerequisite-patch-id: 2b7d638e54d82ca3689ac06272440137e67f1656
 
-[ ... ]
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
 
- > @@ -3161,6 +3165,10 @@ static int ath10k_htt_rx_extract_amsdu(struct 
-ath10k_hw_params *hw,
- >  	if (WARN_ON(!skb_queue_empty(amsdu)))
- >  		return -EINVAL;
- >
- > +	msdu = skb_peek(list);
- > +	rxd = HTT_RX_BUF_TO_RX_DESC(hw,
- > +				    (void *)msdu->data - hw->rx_desc_ops->rx_desc_size);
- > +
 
-This isn't a bug, but are these assignments to msdu and rxd unused?
-
-They appear to be unconditionally overwritten in the while loop condition and
-the first statement of the loop body without ever being read.
-
- >  	while ((msdu = __skb_dequeue(list))) {
- >  		__skb_queue_tail(amsdu, msdu);
-
-[ ... ]
-
- > @@ -3339,12 +3364,15 @@ static int ath10k_htt_rx_in_ord_ind(struct ath10k 
-*ar, struct sk_buff *skb)
- >  			ath10k_htt_rx_h_enqueue(ar, &amsdu, status);
- >  			break;
- >  		case -EAGAIN:
- > -			fallthrough;
- > +			htt->rx_in_ord_split_tid = tid;
- > +			htt->rx_in_ord_split_peer_id = peer_id;
- > +
- > +			return -EIO;
-
-Will returning -EIO here prematurely abort the NAPI polling loop?
-
-When a split AMSDU is received from the hardware and
-ath10k_htt_rx_extract_amsdu() returns -EAGAIN, this -EIO return value is
-propagated up to ath10k_htt_txrx_compl_task(), which interprets it as a
-signal to abort the rx_in_ord_compl_q loop and reschedule NAPI.
-
-This seems to leave any subsequent queued packets, potentially including the
-remainder of the split AMSDU, unprocessed until the next NAPI poll.
-
- >  		default:
- >  			/* Should not happen. */
- >  			ath10k_warn(ar, "failed to extract amsdu: %d\n", ret);
