@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA043BA241;
-	Tue, 21 Jul 2026 08:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50DE4266B5;
+	Tue, 21 Jul 2026 10:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784622128; cv=none; b=tAEedEv/cytTYrQj5mcxClLPuU+k9IUgKozDmmNxeQ9xApMm/Wmg5O/Z3Oi8sCx2iN0PBO9o8gohI5CzBxCF7suf3/6tj34wexImS/3+0twhb298SZ5E8R0hXn5n+FArNKnJ3KCS+YMLv6TAWuicGCkS3jzZd5pSy3/9gOG9P0s=
+	t=1784629144; cv=none; b=qLjnWCxELEnVID4waL6iKdKqhdfb8Tq+aVU0KfmvRy+Bnv7aTAkj8Z1yKqQofOKLTSUwNyApD2dnKkM/XuPlAK193EqW6/1Qex1fMtAzuY/oTTM4DGU30QDosyryxyoYOH5wT+riaWsc/vlopFrChsolMFrm6QsinzuFsEvL1/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784622128; c=relaxed/simple;
-	bh=sZ7e+m6Z4c1mRQdotRU74mkZnANm2xdEVgjgdFn06hc=;
+	s=arc-20240116; t=1784629144; c=relaxed/simple;
+	bh=82RrQO8mhJAusNBh5vtNQdTZBmcOgIfMlHJN9+p6N+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cOPpEE3WmJfLCuSx2R82x+Ut2eh9zEuzjSxe3CQqJApHjFK4SCz6mxLoCRJBGZB1muZjQMeV3VTJOy4ahiGly4O2yJ5zfb6kii/HTaTI6rncK1OmCtNrOT141Hv4U3js1H86GYtOf35/BwSGJyIHVKXuy0JsmdzoHTXr0aaPAzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJpddCYq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=AuGY4pxQie4aAp2/c8jy9Xzmi9fLf0BT4B+kgh6Q3/AyIISW0xw7tta0WMw1upsvgfhqF+DebhlNE8e8LOogm8Zn+QCdvxM3TgjJUJy1U0e6zek56gShRyzPvCBlbx2aI3ZmFppaf+wQVYO8dPn9BkWcfynlUJaN6aeEYlJjcXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oG2F4tqo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJpddCYq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86ED11F00A3A;
-	Tue, 21 Jul 2026 08:22:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oG2F4tqo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951151F000E9;
+	Tue, 21 Jul 2026 10:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784622127;
-	bh=0RHaEW0w/bs/hq1yndHK4/l1ePJNconwoidEFJXJN3E=;
+	s=k20260515; t=1784629139;
+	bh=5m8Yk+GO/D3rTwvE3QFXHXJHBNuaLeAiSj80fAkXgvM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oJpddCYq4AeC9n+mxP4PQSReyMhRNyiB9J3mvOKYtPMo6PVR/xFL1ExyRYz4q/8a1
-	 asidlzMtsvM5Q+RgLWm3sqkSIsOvKVZQ0gWXL9xpHnIod2Mc99fJpYi6WlM34vx7Cy
-	 /KKG50FqsLPffSLPSzkTLOb7huUW8eAwO31fzUJ6ES+Fb4/IPhmG5pLQV7dMJJeMRE
-	 cCj+bKC9B1RIEjz/NdOTsxLqZftqldceOYwf18ga3sODSWmvQD30/YxzbugQarVsSW
-	 5klWGmayf0TmLV/UWyb3G70FtNYzenFzeyNt1UdWO3MCMUQkPlOBQZyE/FAHPUSuVA
-	 9EZ8aVtSQBcqg==
-Date: Tue, 21 Jul 2026 10:22:03 +0200
+	b=oG2F4tqoDyX7ok6FWtzrgP6ofTXz9Qq4FdgEpCMLvMYvFlQpFSLTmAVv1Y+II2+ic
+	 B9QRbyqD1EwqqWBUagX6BNyfOd7TFCAXypFB3mTE6Nub6FvemU5IIFJhjPEbx1S6x1
+	 tsiTXB1TMUN3aEY4G2T7v+xQMX4ppiFjkuitoPi3wDGFsPk8dgDcaOJIAX84i2oOzL
+	 AZy31e2iYtX3HhiGtAbU/ddXcHB67gI2QrMradYtD4SPuEOLFrx+ujBvCr5/VtnxVO
+	 rG3D8j2H5GQFc9RRsQkZZWqyT4M+h7hr6bsfKusaSmvDkeYvZUwJwzcTfm2mPQoCls
+	 VYUiSLspNwS9A==
+Date: Tue, 21 Jul 2026 12:18:56 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Esteban Urrutia <esteuwu@proton.me>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy:
- Add SM8475 QMP PHY
-Message-ID: <20260721-smoky-honorable-nightingale-8526e2@quoll>
-References: <20260715-sm8475-bup-usbss-v2-0-2d8def39b190@proton.me>
- <20260715-sm8475-bup-usbss-v2-1-2d8def39b190@proton.me>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-pm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: interconnect: qcom-bwmon: Add Milos
+ cpu-bwmon compatible
+Message-ID: <20260721-icy-jaguar-of-virtuosity-1dd295@quoll>
+References: <20260717-milos-cpu-bwmon-v1-0-dfe0bac9898c@fairphone.com>
+ <20260717-milos-cpu-bwmon-v1-1-dfe0bac9898c@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,19 +47,18 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260715-sm8475-bup-usbss-v2-1-2d8def39b190@proton.me>
+In-Reply-To: <20260717-milos-cpu-bwmon-v1-1-dfe0bac9898c@fairphone.com>
 
-On Wed, Jul 15, 2026 at 03:06:54AM -0400, Esteban Urrutia wrote:
-> SM8450 init sequence for this PHY varies significantly and can't be used in
-> SM8475.
-> Add bindings for the PHY found in this SoC.
+On Fri, Jul 17, 2026 at 01:45:02PM +0200, Luca Weiss wrote:
+> Add the compatible string for the CPU-to-DDR bandwidth monitor on the
+> Milos SoC, which is BWMONv5.
 > 
-> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml | 1 +
+>  Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml | 1 +
 >  1 file changed, 1 insertion(+)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
