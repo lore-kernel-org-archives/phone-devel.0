@@ -1,71 +1,79 @@
-Received: from mail-106118.protonmail.ch (mail-106118.protonmail.ch [79.135.106.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A90411F89
-	for <phone-devel@vger.kernel.org>; Wed, 22 Jul 2026 17:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D98A43F4C3;
+	Wed, 22 Jul 2026 21:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784740954; cv=none; b=b4uYanlYFECEnWLLSraNTRyasmgAM2DyyR+e+kpaMttYw1k8QF2ggoUBtiZNxL24B84wWrF5FZlqi9qs7gjYXJcysH3da4tqEbu9yAwOLTMO/7MQtf9HDDhPHC8l+TeGwFl3YGJaXU3gizlUc1i2pA/PKSaSUL/7Bw38Ebbp2QQ=
+	t=1784756400; cv=none; b=WlEEYj+bD2I/23J03ZeYRoxeQ6i/Zjc8Bpu2KyYVQ9snEgHmySC837mlynOfde7zimrMb245fumKlCxP0dp52L+nKMOtvZVxtXeLU1H/h5qbMN/M54HkysCcOwPcAC9/sAqKDtm4sD6FAEk2nDIZBB4dX3WHjvgQt/WXr7NYIaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784740954; c=relaxed/simple;
-	bh=otgE4BlDNttJLSTdSkPcjBDLB10Ko4Z57qMN5bI2t8E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NNWpR+a9R56AMHqmaN49fAA0llFc5EvcoK4YhLdWimm398LJ9wbF4ch5U9VtciCiat/awbKzzSRBG3nQlFnKEcS6tnr4DSB/aZnHKqhSQmqsNuXeteHhW3Xp04YhvvK0hMQCe53/u35U3HC9nncUblRZ4/zGSrHY9goOvDV1T5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AeBW49hS; arc=none smtp.client-ip=79.135.106.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1784756400; c=relaxed/simple;
+	bh=9+xzSvJGToT5d6yYZEBVMvz2tq94dZTg+cEmYvs6cRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=admwK90F8S8KJ6YTdeXNNO8X9StZOhFjyeCeTbXKuphRt0VvEZgDGk2cS0cT3WMaYUBggqfXLwgKAuz/CYV2XWFLwnvoxLNWw7c7xkpHegqEeUEWpS7iaRs9jYKSvMfDsYmmWIxPxnUaQH0bKSD2t7W+QeQnBYoHA9oUb2z54E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2T0ggEP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AeBW49hS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1784740946; x=1785000146;
-	bh=otgE4BlDNttJLSTdSkPcjBDLB10Ko4Z57qMN5bI2t8E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AeBW49hSY5qGGQqGex6CdqUBshJCM96AbFDjgqv7QjSEAQq+DQ2guXEhJCnY7TYhL
-	 N2tzv7VOxsl9lctvo5I9CthgbBmZDPnfNW+aoATPO6dR08hRrIK9Omcw11kif3KbQo
-	 7aTpNqu/ohps0Sord60LyhJjnLaA+XGBUqspIh1B+62NTFWunDaI248n2mYtW3/w+8
-	 gdL5q3XqkXgU+x82Pn0eVT3hMfm2zs/zwHVTqaKoGAKvppkzx3qyKJK70Jy/3CxSle
-	 1GhgPlRtTxe+SHcGPslqZWg+fjPvFHTh9zyUaHwLW4IagRml/+vsEKP6JVnlfRVU/U
-	 0syE9VepyRD+A==
-Date: Wed, 22 Jul 2026 17:22:21 +0000
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Dmitry Baryshkov <lumag@kernel.org>, Bjorn Andersson <andersson@kernel.org>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] phy: qcom: qmp-combo: Correct pre-emphasis table for QMP v4 DP PHYs
-Message-ID: <56b9c83e-e90b-4b95-acff-d0a232069fe0@proton.me>
-In-Reply-To: <20260711-sm8450-qol-qmp-v2-1-d14353bd6ff4@proton.me>
-References: <20260711-sm8450-qol-qmp-v2-0-d14353bd6ff4@proton.me> <20260711-sm8450-qol-qmp-v2-1-d14353bd6ff4@proton.me>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 23e43a487f912dc5619a457c760ffd98f8aeb263
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2T0ggEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB331F000E9;
+	Wed, 22 Jul 2026 21:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784756398;
+	bh=eYJOxwafJl8OVO7ncar+6PV1o72DMzw1345lwAkie64=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=g2T0ggEP+OzKgwGT1ua3fLRCEfsJHCUoE8FKfLu3rnKwkTwl4OJh4SY5bVUZGP20Z
+	 ycu63WdemDnA4UHLqyRNyMJ7QDhBuZsNWPVsTb5RReFpLEwdiW5x85yqL858gXVBHD
+	 2SbD5Qjb2Br81+olXRINqIV5qrw8U8x52zk9Et1epHCO5GDbboegW6SSAUq4cN4dZO
+	 aOf9+DV94dTf6HUPM6m20DbTqXqMDK0XrZoli/ySD1i3Oxxx3SSw2+bEGxNRrHwnu5
+	 lHLAqWw9fEreSZyWtuDLA+E679GcXpSQNFCmunk2SrLeiQQ7jYSRrW89JP7tv8pLhj
+	 7veJ2m+sxh3DQ==
+From: Will Deacon <will@kernel.org>
+To: Rob Clark <robin.clark@oss.qualcomm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Esteban Urrutia <esteuwu@proton.me>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v2] iommu/arm-smmu-qcom: Add SM8450 MDSS compatible
+Date: Wed, 22 Jul 2026 22:39:21 +0100
+Message-ID: <178472263086.2852085.5726009348827145429.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260711-sm8450-qol-smmu-v2-1-41a6fba41c3e@proton.me>
+References: <20260711-sm8450-qol-smmu-v2-1-41a6fba41c3e@proton.me>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 7/11/26 11:13 PM, Esteban Urrutia via B4 Relay wrote:
-> Comparing sm8350 and sm8450 tables, this seems to be a typo.
->=20
-> Fixes: ef14aff107bd ("phy: qcom: com-qmp-combo: add SM8350 & SM8450 suppo=
-rt")
-> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
-+Dmitry, is there any update on this?
-A confirmation on the tables was requested by Konrad almost a month ago
-in v1 [1].
-I asked for an update two weeks after, to which Konrad also requested an
-update in v1 [2].
-Please confirm the correct tables for SM8350/SM8450 so that this commit
-can be handled accordingly.
+On Sat, 11 Jul 2026 23:14:01 -0400, Esteban Urrutia wrote:
+> Add the compatible for the MDSS client on the Snapdragon 8 Gen 1 so it can
+> be properly configured by the IOMMU driver.
+> 
+> Otherwise, there is an unhandled context fault, because the framebuffer is
+> already configured in UEFI.
+> 
+> 
+> [...]
 
-Regards,
-Esteban
+Applied to iommu (arm/smmu/updates), thanks!
 
-[1] https://lore.kernel.org/all/4635a665-f605-4647-810d-c9d83a271a86@oss.qu=
-alcomm.com/
-[2] https://lore.kernel.org/all/7cfbc3dc-c1c7-4e4d-afe4-67a25084f607@oss.qu=
-alcomm.com/
+[1/1] iommu/arm-smmu-qcom: Add SM8450 MDSS compatible
+      https://git.kernel.org/iommu/c/d149c8b2c014
 
+Cheers,
+-- 
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
