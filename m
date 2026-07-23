@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60A31AF07;
-	Thu, 23 Jul 2026 14:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265373403FA;
+	Thu, 23 Jul 2026 14:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784818500; cv=none; b=HHYH8XYJS+ERvkWBAKMtw75VU5hJprqgnRCYVYuRf8Vz/0xUKZI7UqvqtHZb2++WIqXqRb2cjooQ80ih2g8xfRrdwEySiB83DuszDF3W4McMnQb4JZ67k7578sYugvDNM48G7R/xox/bMoee80kCvcbIZB9Efnh7oUlw4pZDOzg=
+	t=1784818500; cv=none; b=FwmjKDL1vcRkl3R1QHRI1Da6vLDHWWOX0fXTpGDs7kD2IHtvGoREU5em2athrtk0VkC0KxOQYw4Lrz4RN/aa78PDL4BCs7xKrU1o79Z/AigSGJtfiDfUHKVMnc/+TeWW23GCczRDEOg4ZJKITl/TLPgpHMWn/pCHx3feyi6MMTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784818500; c=relaxed/simple;
-	bh=bkBPbgCG+JwsJ/4CRQTu9uoshFqb+X/VXg4zAFDbW6A=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=anmUNmMUPZc6Hy4PjBe9wKi760pCcktESumcnmX9ZU5vlXCcja8xAnpi5b589WCsL4QeS6nhNod9odwr6XSIV5mFJbXRRUlIq6hTCfLiH6X3DXwtiNF0Q0Qgy8e7gy70fG+Lo1NZrWrLSyncMj+QBnbN5ZnFnb2F6MfwTIF9x/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2XRtq8K; arc=none smtp.client-ip=10.30.226.201
+	bh=QEAV4U59CqCRV1e+1Daz1vRxOx3T7ZWxXiaETPt8+e0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=X5wP+uZdyeelkGWXSRtL1F3moTTNrD5sMzYei+4Ol0JOX67cVkJuNglO/UcA/2DuGgJqwvH2olkmZevJZfrab5aUdNVt9V/L7jO4Io1JLHaCShxFBTfaA1uZu6McJy6G6Por4dgjafTd4ygvNss3CGdVde7X01pcblOB4G+mMWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3q3kr/y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2XRtq8K"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A52C5C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3q3kr/y"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C3126C2BCC6;
 	Thu, 23 Jul 2026 14:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784818499;
-	bh=bkBPbgCG+JwsJ/4CRQTu9uoshFqb+X/VXg4zAFDbW6A=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Q2XRtq8Kf94ZiBQywuSfLiivAp4s+bokNWL3q2x38uSQ35tkplzDvpY5goU7nQGK9
-	 iQhn7/V99DkaXS/W2Tar8l0spQKETuPGCbrJLJ1MQiWQegBlMDPWvxTUmfo/j6fPJ2
-	 Fa+DTplPJPSK+aP27LoKaGQM/CAWqwtcO4YucNsujlKWqmeI4PMaF2lIGMSHtbQIId
-	 4AuKdcgx505iAbMlard4adL2bDcNiVFsLIdWiDFunrZ8hv2bxReCHpVNj8J14nFXKb
-	 RQywNh4A5skC8gkg36mI5Pg2sjNaAI4I/YaFJXg2QkGHxXBxSVIZ47sPQZZJ6AJdfN
-	 adShn+B77EFHw==
+	bh=QEAV4U59CqCRV1e+1Daz1vRxOx3T7ZWxXiaETPt8+e0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=i3q3kr/yawq5rzDWsFjvtAPd6lqyJQj6C0+nK2s7tm+SWKG9sThthsKPdA9YmG6J5
+	 mhpqCEkJ5Pfoz0DzxoZ0q7dmY/aPTA5A1+dUNMf6DIhz4oaSn0wWijoohyqgyqgH/Q
+	 0B7eZjjx5Iv4PkBBCpoKSJAbu7v46l0sKeiF/+JBk8qspWV6IWscJhdQCc1fhSflIC
+	 HwhbTIn7ZFFW5EzUTP9qdDV/rpvVvXq8tvhWSR//VlB3SCHQRNhE3bQD4KIDlFkAp4
+	 vYFrSHJKv234I4uHQcTCnrw14md/3xUT3eqMTRF7/hhaRc1NZb6XEFFACc39/G80BR
+	 Et6K5+3pnMgBA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1DAC531D1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2118C531F8;
 	Thu, 23 Jul 2026 14:54:59 +0000 (UTC)
 From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Subject: [PATCH 0/2] PM8350B LDO support
-Date: Thu, 23 Jul 2026 10:53:51 -0400
-Message-Id: <20260723-pm8350b-ldo-v1-0-42b5428a0d3f@proton.me>
+Date: Thu, 23 Jul 2026 10:53:53 -0400
+Subject: [PATCH 2/2] regulator: qcom-rpmh: Add support for PM8350B
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSQ5AQBBA0atIrXXSSgxxFbHooVBiSjciEXfXW
- L7F/xd4ckwequgCRwd7XuaAJI7A9GruSLANBpSYywJTsU5lmkktRruIokTUqrU5ZQZCsTpq+fx
- udfPb73ogs70LuO8HrkmlK28AAAA=
-X-Change-ID: 20260723-pm8350b-ldo-7822bafd6e5c
+Message-Id: <20260723-pm8350b-ldo-v1-2-42b5428a0d3f@proton.me>
+References: <20260723-pm8350b-ldo-v1-0-42b5428a0d3f@proton.me>
+In-Reply-To: <20260723-pm8350b-ldo-v1-0-42b5428a0d3f@proton.me>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>
@@ -51,11 +50,11 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  phone-devel@vger.kernel.org, Esteban Urrutia <esteuwu@proton.me>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784818498; l=1005;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784818498; l=1295;
  i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=bkBPbgCG+JwsJ/4CRQTu9uoshFqb+X/VXg4zAFDbW6A=;
- b=fYb5im4/MAI/XaEnIC8H+Hcm67yn2KYKv/Hx45tEz0gVAahSZh1uBkCrYAYFvieNn4TIibOwU
- +oL9Rml89bDD7X96HIJ4sCXGMU7qYvohKXxFGeRqYGwpmzOd2/eWdoP
+ bh=WpvVHbr3AbWbUS/FGPBN8RtA2Y0Nr6DvrP+keHwhmM0=;
+ b=ajbmyhj5jTzUeAPR+4eB5vPOg9F0Hk8ryp98ysevM7AolBSOvkKyxscMCBksotyWgCsF5fTd7
+ eV2f7+Dp7ydAYWzcclbkX8U/PKxqSKnAyHGnCSyE3TZaJcvHOxAB+SH
 X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
  pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
 X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
@@ -63,30 +62,45 @@ X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
 X-Original-From: Esteban Urrutia <esteuwu@proton.me>
 Reply-To: esteuwu@proton.me
 
-The PM8350B PMIC has an LDO regulator which seems to be mostly used for
-powering display driver ICs.
-On my device's schematics, vdd-l1-supply is represented as VIN_DDIC, and
-vdd-l1 is represented as VREG_DDIC.
-Downstream this LDO is of type pmic5-ldo and I assume it should be of
-type pmic5_nldo upstream, since this is the type of regulator with the
-least margin error for the reference voltage, which is 1250-1296mV for
-my device.
+From: Esteban Urrutia <esteuwu@proton.me>
+
+The PM8350B has only one LDO, which gets its power from a dedicated input.
+Add support for it.
 
 Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 ---
-Esteban Urrutia (2):
-      regulator: dt-bindings: qcom,rpmh: Add support for PM8350B
-      regulator: qcom-rpmh: Add support for PM8350B
+ drivers/regulator/qcom-rpmh-regulator.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- .../devicetree/bindings/regulator/qcom,rpmh-regulator.yaml    | 11 +++++++++++
- drivers/regulator/qcom-rpmh-regulator.c                       |  9 +++++++++
- 2 files changed, 20 insertions(+)
----
-base-commit: b4515cf4156356e8f4fe6e0fdc17f59adab9772f
-change-id: 20260723-pm8350b-ldo-7822bafd6e5c
+diff --git a/drivers/regulator/qcom-rpmh-regulator.c b/drivers/regulator/qcom-rpmh-regulator.c
+index 756a4201225e..73856e3df337 100644
+--- a/drivers/regulator/qcom-rpmh-regulator.c
++++ b/drivers/regulator/qcom-rpmh-regulator.c
+@@ -1269,6 +1269,11 @@ static const struct rpmh_vreg_init_data pm8350_vreg_data[] = {
+ 	{}
+ };
+ 
++static const struct rpmh_vreg_init_data pm8350b_vreg_data[] = {
++	RPMH_VREG("ldo1",   LDO,  1,  &pmic5_nldo,      "vdd-l1"),
++	{}
++};
++
+ static const struct rpmh_vreg_init_data pm8350c_vreg_data[] = {
+ 	RPMH_VREG("smps1",  SMPS, 1,  &pmic5_hfsmps515, "vdd-s1"),
+ 	RPMH_VREG("smps2",  SMPS, 2,  &pmic5_ftsmps510, "vdd-s2"),
+@@ -1868,6 +1873,10 @@ static const struct of_device_id __maybe_unused rpmh_regulator_match_table[] = {
+ 		.compatible = "qcom,pm8350-rpmh-regulators",
+ 		.data = pm8350_vreg_data,
+ 	},
++	{
++		.compatible = "qcom,pm8350b-rpmh-regulators",
++		.data = pm8350b_vreg_data,
++	},
+ 	{
+ 		.compatible = "qcom,pm8350c-rpmh-regulators",
+ 		.data = pm8350c_vreg_data,
 
-Best regards,
---  
-Esteban Urrutia <esteuwu@proton.me>
+-- 
+2.55.0
 
 
