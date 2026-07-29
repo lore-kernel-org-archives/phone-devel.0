@@ -1,274 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E32282F1B;
-	Tue, 28 Jul 2026 01:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B22381E8D
+	for <phone-devel@vger.kernel.org>; Wed, 29 Jul 2026 02:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785201608; cv=none; b=HWTAxEXm9KD50Zokjzz62ZZM3YEzaTBYCVwclI96b3xoIA+whcaafkiuHzeTwNsi0gTDddA5OLTXb2D52CVxE3uaEAw0ETD80HGEswq9DU/BNCY9cj2Dtx2aa54HoBjLYOtUtP6ydmWtMzbHjzZoFUqPtyJCKbCvxNc/wjnyGoc=
+	t=1785293088; cv=none; b=M2I9DeN+rzYHXtxDR+8Ju/v2NQHqlTYvGYJedYOjD2liCGV3jIVzzd3PcEC/IQXUCJPvw2QQmK6LOz9dAE14nw6vLGWeeG6GdF7nyxFzk4VapVgp3/Q86DiAwH7Cx/0FPDzadzxuuK3dizT/HtudMMQZNOZnDUkizDe6pctFBs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785201608; c=relaxed/simple;
-	bh=V5Mj8+KXokuuedqJV0YZXgawcmpOl3xxL72RlJ0hmsk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sXVIfyqn0Bd4P0B6gesxq3XaQsb7owZdBJadQUHdzSzm3U+AL3mtV41ItvrG5kEswMABep4VE5P7svjHAnRF2QEcLSCKVlEG8oWUVoeJfRv4gjgb2d5zcaryHXB7HsLvwzhQYUZM9JPsh5gCFDxYbZPKqbCr3edRBAxHbJbV1qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlM5RqTi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785293088; c=relaxed/simple;
+	bh=H1jEBpulhwXcxkrQhaY5mwLrLyjgFnxDDci3QGQk6Ns=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nNSzddF/ZIa0PMkq/bxvdiev1dcpc5Z3Or3YWoSj6NWhLu/QelcU9x0QBhp9lcGTfGcFOSPcabTClcQpO9rHIO7S5b/zgRtdKLH4UhC2VIfl1iUM/qD4mvGsUFkb2/W+/enXYUAkc/WkHUrFdt70a6tp+891zwAqbvLkOPbEuzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=efTlB+p/; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlM5RqTi"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2440AC2BCF7;
-	Tue, 28 Jul 2026 01:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785201608;
-	bh=V5Mj8+KXokuuedqJV0YZXgawcmpOl3xxL72RlJ0hmsk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SlM5RqTiErJpwFR0i4TXPD0h/8228k7Rfd+2r5zoG1/VOGC7YDTjzoI1tlpy7wUvy
-	 ldASWMumEYvz5cOXxW4hQhJTV9XPD116BnWE1Se2hKeoUXZBnYFcfI1/3r4rP1LqQc
-	 yxTWNH10hHaHS1xzEsaE2I255kbKRB8oaK8vtoQoHl3/ByQBMcxs6sNB3cvBR+99Px
-	 QfaoBchTjW0Yj0cp6KcYHFiDD1yvA9CvCJpUDVfqyNpoYvwOyg2OlI9kadDJxx+5Bg
-	 soMQHmyI6nUohUjGfGYcm9w8u2KZ7ppvlKykkIrO9npnIMlvrPCyzLjxyEAG6mO5OX
-	 2HGFe9mKQB7rg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F04B9C531D0;
-	Tue, 28 Jul 2026 01:20:07 +0000 (UTC)
-From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Date: Mon, 27 Jul 2026 21:19:34 -0400
-Subject: [PATCH 1/2] dt-bindings: usb: Add Parade PS5169 redriver bindings
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="efTlB+p/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1785293074; x=1785552274;
+	bh=H1jEBpulhwXcxkrQhaY5mwLrLyjgFnxDDci3QGQk6Ns=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=efTlB+p/08TxaRCZdpi05SY1v5hRaHlAfSRnqZFMqVwQvTrz7ejH71yIsJ+y3IgFs
+	 8qc5j7pxertNjU9Ky5ajpugjeF0Wg1wP1L7gmcTXTl5cZboBGeNwxoOfULF7r0FHxL
+	 776vwiwK3YOTk5sDuOJ7aIiYyiNR6umJD1WXTupq4p48kHidgBqvXYUcVq8ikwCzlL
+	 Em/sIjUE1cf+6Y5R8I5BodikipGFTZbv26mN1GWaSt8rFZMReaISW4WHtyr3zF4ZsR
+	 mNnBferqVdvs4YJck9YeUFAgDBpOM76bxnfru0dmAbJoUswMIhH+H2kQ1mHqJxf6iX
+	 RB4rbKUlN/++A==
+Date: Wed, 29 Jul 2026 02:44:27 +0000
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, Dmitry Baryshkov <lumag@kernel.org>, Jagadeesh Kona <quic_jkona@quicinc.com>
+From: Esteban Urrutia <esteuwu@proton.me>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] clk: qcom: alpha-pll: Check Lucid Ole PLL status before configuring
+Message-ID: <1c4ff5d7-58dd-42c1-882c-c1ce0d5a62cb@proton.me>
+In-Reply-To: <40404aa6-7822-4c65-abdf-0ecf1fa073cc@oss.qualcomm.com>
+References: <20260713-sm8450-qol-dispcc-v3-0-56fd05822270@proton.me> <20260713-sm8450-qol-dispcc-v3-3-56fd05822270@proton.me> <40404aa6-7822-4c65-abdf-0ecf1fa073cc@oss.qualcomm.com>
+Feedback-ID: 147889766:user:proton
+X-Pm-Message-ID: 72e22563e9944f6a8e79f33c9bd846bf4313b83e
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-ps5169-bup-v1-1-c76a8ef3b239@proton.me>
-References: <20260727-ps5169-bup-v1-0-c76a8ef3b239@proton.me>
-In-Reply-To: <20260727-ps5169-bup-v1-0-c76a8ef3b239@proton.me>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Esteban Urrutia <esteuwu@proton.me>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785201606; l=5782;
- i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=XrA62lSi9Hct6BU2/Wdu52E9fNAtqyvkYTG62kpPHKI=;
- b=8bz18Ihb1Qg5UqyBDz0eoMxkYcAU6/IakynLwaYmoG+feEFhtBR8cpCi1X6t5TF0uJYWzt1XK
- gV1gTymgeVADdWxMtROq/NKUSJBeS9MhjXBoMTePXOp7S0dKzKxzb69
-X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
- pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
-X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
- auth_id=835
-X-Original-From: Esteban Urrutia <esteuwu@proton.me>
-Reply-To: esteuwu@proton.me
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Esteban Urrutia <esteuwu@proton.me>
+On 7/15/26 5:31 AM, Konrad Dybcio wrote:
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Add bindings for the Parade PS5169 and PS5170 USB Type-C linear redrivers.
-The difference between PS5169 and PS5170 is that PS5170 features an
-embedded AUX switch, while PS5169 does not.
-Future-proof the binding by adding PS5170 as well.
 
-Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
----
- .../devicetree/bindings/usb/parade,ps5169.yaml     | 186 +++++++++++++++++++++
- 1 file changed, 186 insertions(+)
+Konrad, since you pointed me in the right direction for this commit, can
+I have your permission to add Suggested-by?
+I should have asked this earlier. Sorry about that.
 
-diff --git a/Documentation/devicetree/bindings/usb/parade,ps5169.yaml b/Documentation/devicetree/bindings/usb/parade,ps5169.yaml
-new file mode 100644
-index 000000000000..23ca8e6c0491
---- /dev/null
-+++ b/Documentation/devicetree/bindings/usb/parade,ps5169.yaml
-@@ -0,0 +1,186 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/usb/parade,ps5169.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Parade PS5169 USB Type-C linear redriver
-+
-+maintainers:
-+  - Esteban Urrutia <esteuwu@proton.me>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: parade,ps5170
-+          - const: parade,ps5169
-+      - const: parade,ps5169
-+
-+  reg:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description: 1.8V power supply
-+
-+  reset-gpios:
-+    maxItems: 1
-+
-+  orientation-switch: true
-+  retimer-switch: true
-+
-+  parade,dp-eq-level:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Equalization level for DisplayPort channels which is mapped to decibels.
-+    # 0: 2    dB
-+    # 1: 5.5  dB
-+    # 2: 6.5  dB
-+    # 3: 7.5  dB
-+    # 4: 8    dB
-+    # 5: 8.5  dB
-+    # 6: 9.5  dB
-+    # 7: 10   dB
-+    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
-+
-+  parade,usb-rx-eq-level:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Equalization level for USB receive channels which is mapped to decibels.
-+    # 0: 5.2  dB
-+    # 1: 6    dB
-+    # 2: 7    dB
-+    # 3: 8    dB
-+    # 4: 8.8  dB
-+    # 5: 9.6  dB
-+    # 6: 10.4 dB
-+    # 7: 11.2 dB
-+    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
-+
-+  parade,usb-tx-eq-level:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Equalization level for USB transmit channels which is mapped to decibels.
-+    # 0: 2    dB
-+    # 1: 5.5  dB
-+    # 2: 6.5  dB
-+    # 3: 7.5  dB
-+    # 4: 8    dB
-+    # 5: 8.5  dB
-+    # 6: 9.5  dB
-+    # 7: 10   dB
-+    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
-+
-+  parade,aux-rx-data-reverse:
-+    type: boolean
-+    description:
-+      Please check the driver before specifying this property.
-+      Usage of this property is design-specific.
-+
-+  parade,fine-tune-lfps-swing:
-+    type: boolean
-+    description:
-+      If this property is specified a 50 ohm termination will be set on the USB receive channels.
-+      Usage of this property is design-specific.
-+
-+  parade,dp-set-gain:
-+    type: boolean
-+    description:
-+      If this property is specified a gain of -0.9 dB will be applied on the DisplayPort channels.
-+
-+  parade,usb-rx-set-gain:
-+    type: boolean
-+    description:
-+      If this property is specified a gain of -0.9 dB will be applied on the USB receive channels.
-+
-+  parade,usb-tx-set-gain:
-+    type: boolean
-+    description:
-+      If this property is specified a gain of -0.9 dB will be applied on the USB transmit channels.
-+
-+  ports:
-+    $ref: /schemas/graph.yaml#/properties/ports
-+    properties:
-+      port@0:
-+        $ref: /schemas/graph.yaml#/properties/port
-+        description: Super Speed (SS) Output endpoint to the Type-C connector
-+
-+      port@1:
-+        $ref: /schemas/graph.yaml#/$defs/port-base
-+        description: Super Speed (SS) Input endpoint from the Super-Speed PHY
-+        unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - vcc-supply
-+  - reset-gpios
-+  - orientation-switch
-+  - retimer-switch
-+
-+allOf:
-+  - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: parade,ps5170
-+    then:
-+      properties:
-+        ports:
-+          properties:
-+            port@2:
-+              $ref: /schemas/graph.yaml#/properties/port
-+              description:
-+                Sideband Use (SBU) AUX lines endpoint to the Type-C connector for the purpose of
-+                handling altmode muxing and orientation switching.
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        typec-retimer@30 {
-+            compatible = "parade,ps5169";
-+            reg = <0x30>;
-+
-+            vcc-supply = <&vreg_s10b_1p8>;
-+            reset-gpios = <&tlmm 54 GPIO_ACTIVE_LOW>;
-+
-+            orientation-switch;
-+            retimer-switch;
-+
-+            parade,dp-eq-level = <0>;     /* 2   dB */
-+            parade,usb-rx-eq-level = <0>; /* 5.2 dB */
-+            parade,usb-tx-eq-level = <0>; /* 2   dB */
-+
-+            parade,aux-rx-data-reverse;
-+            parade,fine-tune-lfps-swing;
-+
-+            ports {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+                    usb_con_ss: endpoint {
-+                        remote-endpoint = <&typec_con_ss>;
-+                    };
-+                };
-+
-+                port@1 {
-+                    reg = <1>;
-+                    phy_con_ss: endpoint {
-+                        remote-endpoint = <&usb_phy_ss>;
-+                    };
-+                };
-+            };
-+        };
-+    };
-+...
-
--- 
-2.55.0
-
+Regards,
+Esteban
 
