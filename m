@@ -1,39 +1,33 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E403FFABF;
-	Thu, 30 Jul 2026 09:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85536DCE1;
+	Thu, 30 Jul 2026 09:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785403341; cv=none; b=cytPQJ9VPlKe/rND10/oaE7YeXejuetpQdVpWZ/DDu0mEznXyhc7qCuubaZ4WUZ1puiomYsDJNEBCluLSvgwD2j123mw9fDAu3TR5ek0PYsZWwchR4eHQmwPqffHjEr15HnZ/LLhlwz5oBj+VxTxTqk9vRfl5hBbk4PkePynciQ=
+	t=1785403868; cv=none; b=MBxzAUs7qZcEaena496fI5ERS8m0BeAwTphcl/1ORlKjMD5l1/bR0zEeLr26mC8jC2Sbro0lYNJvjHxE7+YnLHI04lp+yeIyAFZR2B9paw/J6+KS+BE03O4KDBMfKcEBHmzfFdJM43UQhW6tKtG5dik8bGrPXqaPTh12LVzdPxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785403341; c=relaxed/simple;
-	bh=cs2czJ6L3Hm3J0RCGZuds1IMtFRnYH6ybz0tK2i6rig=;
+	s=arc-20240116; t=1785403868; c=relaxed/simple;
+	bh=GtUJjjfoE6/hrkOFhX+Byxkd72IQfDsx2Y7MfTPLaiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZDw5xewgFdWbTohnZLeKGniC2QiCBK35+KAI+GC3g4XQnt4hvii7WfHjZ7THZLqxc+JlzE/tx1sK+1T+AB6+4CaLXZlCa+Lu77lHPNUHCA+2di59LHhecqTfTH43iypCm3lRxFxWIM7FMvjdFns8nf7ZHN/zJ84XEbHH3yImHXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=g3yZbcYl; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=bTZwB58l04P4NA+GjrmdAurBTa+lclO5vQaanNKHtIEmjoLxxF7hGcUngNXS8ChzESMvdGNxTnFS9N/DIIMWhzvQdw5N3CmVgleQla6cuRTA79ZlXO/5yNutrR6Iczo9vF134YRMYc/LYtxQno2ePxc9ZjxcMvwWha50pFSCx5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKo4X3fZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="g3yZbcYl"
-Received: from [172.20.10.2] (78-80-17-116.customers.tmcz.cz [78.80.17.116])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9603C5340200;
-	Thu, 30 Jul 2026 11:22:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1785403332;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JEyzl6lt8ai9G4Oxiag+VTZHxXQe60Ayevig6+mQcHo=;
-	b=g3yZbcYlvEx7FMl0DBUQuwj7R5/DZbqRocjRh4b0xPE8Cjxnwak2vG4DyI2haUGejY/ric
-	aHmxb2dAijRYkSCrazPSeCz+vCVY3VNKEYHiwPJgf5tpy80Hu1+wD1LrKt297FHtBsBLZu
-	P3upRNryF2M80JGnVRsDB6DkRN4jhJY=
-Message-ID: <0afc1927-e8bf-4976-8744-50089e81b331@ixit.cz>
-Date: Thu, 30 Jul 2026 11:22:11 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKo4X3fZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D091F000E9;
+	Thu, 30 Jul 2026 09:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785403867;
+	bh=+WpvZpP4ISYK9VWgY7NLkHxGLl/yo5GjPIvxkOManVA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fKo4X3fZ2RNRJQsrnoQF9yWKfEZXP5l4MfzI70DqVhpMPSuSJWUXKRzWMuwugF6xz
+	 JryaZ/Njh4PmEh3bkIs4BxBpZDDDaRBKwTv1QL0hwqyI9CY2Cwrubx7AxvPngGVPJz
+	 E4R/eYqRk3sUU/eLI0ADGBX8/DRQ+uS6X3LKiXhElJx/LI0pguvJVo3N/o51Ac609V
+	 /qz9BHiAEZAmYgoT/gO2Pty0TS7m4EMZfJ58OeDImDF7BzQX4tunkQHc4caGSx/NtV
+	 229wEXBmDPcsWDCwdVD46haPmWQ1kMVOvBv7POYDNubuv6XpfcU/tz1284QAa7+L4V
+	 +qpmF8Q3qz7dA==
+Message-ID: <635b1d39-636f-4aa0-8194-c3aa2b69edb2@kernel.org>
+Date: Thu, 30 Jul 2026 10:31:01 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,12 +35,11 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v9 8/9] media: qcom: camss: Account for C-PHY when
- calculating link frequency
-To: Frank Li <Frank.li@oss.nxp.com>
+Subject: Re: [PATCH RESEND v9 6/9] media: qcom: camss: csiphy-3ph: Add Gen2
+ v1.1 MIPI CSI-2 C-PHY init
+To: David Heidelberg <david@ixit.cz>, Frank Li <Frank.li@oss.nxp.com>
 Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>,
  Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
  Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
@@ -60,270 +53,78 @@ Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
  phone-devel@vger.kernel.org
 References: <20260729-qcom-cphy-v9-0-1f8d9fdab037@ixit.cz>
- <20260729-qcom-cphy-v9-8-1f8d9fdab037@ixit.cz>
- <ampzggsXYEZ34ieJ@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <ampzggsXYEZ34ieJ@lizhi-Precision-Tower-5810>
+ <20260729-qcom-cphy-v9-6-1f8d9fdab037@ixit.cz>
+ <ampyJ9FmwKmpE0YW@lizhi-Precision-Tower-5810>
+ <l3ZdvkIZbPMoXMa5x0QMYJJeTQQWGBb9abcBGSeSrc9FY4bkv-lBPZngod6wqoSmJCUnCB5GVYN-RLrf2dT48Q==@protonmail.internalid>
+ <3648ba47-fa2a-4e2d-a3f2-040cd9568ace@ixit.cz>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-GB
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <3648ba47-fa2a-4e2d-a3f2-040cd9568ace@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 29/07/2026 23:41, Frank Li wrote:
-> On Wed, Jul 29, 2026 at 10:20:03PM +0200, David Heidelberg wrote:
->> Ensure that the link frequency divider correctly accounts for C-PHY
->> operation. The divider differs between D-PHY and C-PHY, as described
->> in the MIPI CSI-2 specification.
+On 30/07/2026 10:15, David Heidelberg wrote:
+> On 29/07/2026 23:35, Frank Li wrote:
+>> On Wed, Jul 29, 2026 at 10:20:01PM +0200, David Heidelberg wrote:
+>>> Add a PHY configuration sequence for the sdm845 which uses a Qualcomm
+>>> Gen 2 version 1.1 CSI-2 PHY.
+>>>
+>>> The PHY can be configured as two phase or three phase in C-PHY or D-PHY
+>>> mode.
+>> too much or, according to my understand D-PHY use 2 phase,  C-PHY use 3
+>> phase?
 >>
->> For more details, see:
->> https://docs.kernel.org/driver-api/media/tx-rx.html#pixel-rate
->>
->> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Link: https://docs.kernel.org/driver-api/media/tx-rx.html#pixel-rate
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/media/platform/qcom/camss/camss-csid.c   |  6 ++++--
->>   drivers/media/platform/qcom/camss/camss-csiphy.c |  6 ++++--
->>   drivers/media/platform/qcom/camss/camss.c        | 15 +++++++++++++--
->>   drivers/media/platform/qcom/camss/camss.h        |  2 +-
->>   4 files changed, 22 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
->> index bcc34ac9dd212..c8cb6f1a3d3bc 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csid.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csid.c
->> @@ -535,24 +535,26 @@ const struct csid_format_info *csid_get_fmt_entry(const struct csid_format_info
->>   /*
->>    * csid_set_clock_rates - Calculate and set clock rates on CSID module
->>    * @csiphy: CSID device
->>    */
->>   static int csid_set_clock_rates(struct csid_device *csid)
->>   {
->>   	struct device *dev = csid->camss->dev;
->>   	const struct csid_format_info *fmt;
->> +	const bool cphy = (csid->phy.phy_sel == CSID_PHY_SEL_CPHY);
->> +
->>   	s64 link_freq;
->>   	int i, j;
->>   	int ret;
->>
->>   	fmt = csid_get_fmt_entry(csid->res->formats->formats, csid->res->formats->nformats,
->>   				 csid->fmt[MSM_CSIPHY_PAD_SINK].code);
->> -	link_freq = camss_get_link_freq(&csid->subdev.entity, fmt->bpp,
->> -					csid->phy.lane_cnt);
->> +
->> +	link_freq = camss_get_link_freq(&csid->subdev.entity, fmt->bpp, csid->phy.lane_cnt, cphy);
->>   	if (link_freq < 0)
->>   		link_freq = 0;
->>
->>   	for (i = 0; i < csid->nclocks; i++) {
->>   		struct camss_clock *clock = &csid->clock[i];
->>
->>   		if (!strcmp(clock->name, "csi0") ||
->>   		    !strcmp(clock->name, "csi1") ||
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
->> index 539ac4888b608..a136cd27880a6 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
->> @@ -139,18 +139,19 @@ static int csiphy_set_clock_rates(struct csiphy_device *csiphy)
->>   	struct device *dev = csiphy->camss->dev;
->>   	s64 link_freq;
->>   	int i, j;
->>   	int ret;
->>
->>   	u8 bpp = csiphy_get_bpp(csiphy->res->formats->formats, csiphy->res->formats->nformats,
->>   				csiphy->fmt[MSM_CSIPHY_PAD_SINK].code);
->>   	u8 num_lanes = csiphy->cfg.csi2->lane_cfg.num_data;
->> +	const bool cphy = (csiphy->cfg.csi2->lane_cfg.phy_cfg == V4L2_MBUS_CSI2_CPHY);
->>
->> -	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes);
->> +	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes, cphy);
->>   	if (link_freq < 0)
->>   		link_freq  = 0;
->>
->>   	for (i = 0; i < csiphy->nclocks; i++) {
->>   		struct camss_clock *clock = &csiphy->clock[i];
->>
->>   		if (csiphy->rate_set[i]) {
->>   			u64 min_rate = link_freq / 4;
->> @@ -265,19 +266,20 @@ static int csiphy_set_power(struct v4l2_subdev *sd, int on)
->>   static int csiphy_stream_on(struct csiphy_device *csiphy)
->>   {
->>   	struct csiphy_config *cfg = &csiphy->cfg;
->>   	s64 link_freq;
->>   	u8 lane_mask = csiphy->res->hw_ops->get_lane_mask(&cfg->csi2->lane_cfg);
->>   	u8 bpp = csiphy_get_bpp(csiphy->res->formats->formats, csiphy->res->formats->nformats,
->>   				csiphy->fmt[MSM_CSIPHY_PAD_SINK].code);
->>   	u8 num_lanes = csiphy->cfg.csi2->lane_cfg.num_data;
->> +	const bool cphy = (csiphy->cfg.csi2->lane_cfg.phy_cfg == V4L2_MBUS_CSI2_CPHY);
->>   	u8 val;
->>
->> -	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes);
->> +	link_freq = camss_get_link_freq(&csiphy->subdev.entity, bpp, num_lanes, cphy);
->>
->>   	if (link_freq < 0) {
->>   		dev_err(csiphy->camss->dev,
->>   			"Cannot get CSI2 transmitter's link frequency\n");
->>   		return -EINVAL;
->>   	}
->>
->>   	if (csiphy->base_clk_mux) {
->> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
->> index 072c428e25166..66171069057f8 100644
->> --- a/drivers/media/platform/qcom/camss/camss.c
->> +++ b/drivers/media/platform/qcom/camss/camss.c
->> @@ -27,16 +27,24 @@
->>   #include <media/v4l2-mc.h>
->>   #include <media/v4l2-fwnode.h>
->>
->>   #include "camss.h"
->>
->>   #define CAMSS_CLOCK_MARGIN_NUMERATOR 105
->>   #define CAMSS_CLOCK_MARGIN_DENOMINATOR 100
->>
->> +/*
->> + * C-PHY encodes data by 16/7 ~ 2.28 bits/symbol
->> + * D-PHY doesn't encode data, thus 16/16 = 1 b/s
->> + */
->> +#define CAMSS_COMMON_PHY_DIVIDENT 16
->> +#define CAMSS_CPHY_DIVISOR 7
->> +#define CAMSS_DPHY_DIVISOR 16
->> +
->>   static const struct parent_dev_ops vfe_parent_dev_ops;
->>
->>   static const struct camss_subdev_resources csiphy_res_8x16[] = {
->>   	/* CSIPHY0 */
->>   	{
->>   		.regulators = {},
->>   		.clock = { "top_ahb", "ispif_ahb", "ahb", "csiphy0_timer" },
->>   		.clock_rate = { { 0 },
->> @@ -4619,29 +4627,32 @@ struct media_pad *camss_find_sensor_pad(struct media_entity *entity)
->>   	}
->>   }
->>
->>   /**
->>    * camss_get_link_freq - Get link frequency from sensor
->>    * @entity: Media entity in the current pipeline
->>    * @bpp: Number of bits per pixel for the current format
->>    * @lanes: Number of lanes in the link to the sensor
->> + * @cphy: If C-PHY encoding is used.
->>    *
->>    * Return link frequency on success or a negative error code otherwise
->>    */
->>   s64 camss_get_link_freq(struct media_entity *entity, unsigned int bpp,
->> -			unsigned int lanes)
->> +			unsigned int lanes, const bool cphy)
-> 
-> you change this function argument, can you direct pass down csiphy instead
-> entity
-> 
-> so move
-> const bool cphy = (csiphy->cfg.csi2->lane_cfg.phy_cfg == V4L2_MBUS_CSI2_CPHY);
-> 
-> into this help function,
-> 
-> to avoid dupicate such logic everywhere.
+>> The PHY can be configured as two phase (D-PHY) or three phase (C-PHY) ?
+> Yes, I'll address the wrong wording in the next version then 🙂
 
-I tried similar approach in previous revisions [1], but it ended poorly due to 
-this structure not being initialized at the time when I need it what I recall, 
-thus I ended up with the cphy param again :(
+Can you look at what's required to convert to the new driver ?
 
-David
+I think some Linux plumbing to represent cphy v dphy to the phy 
+subsystem might be nice, plus differentiating inside of the new driver 
+and camss with media-graph used to find the PHY.
 
-
-[1] https://lore.kernel.org/all/20260605-qcom-cphy-v7-7-426c37e9008f@ixit.cz/
-
-> 
-> Frank
->>   {
->>   	struct media_pad *sensor_pad;
->> +	unsigned int div = lanes * 2 * (cphy ? CAMSS_CPHY_DIVISOR :
->> +					       CAMSS_DPHY_DIVISOR);
->>
->>   	sensor_pad = camss_find_sensor_pad(entity);
->>   	if (!sensor_pad)
->>   		return -ENODEV;
->>
->> -	return v4l2_get_link_freq(sensor_pad, bpp, 2 * lanes);
->> +	return v4l2_get_link_freq(sensor_pad, CAMSS_COMMON_PHY_DIVIDENT * bpp, div);
->>   }
->>
->>   /*
->>    * camss_get_pixel_clock - Get pixel clock rate from sensor
->>    * @entity: Media entity in the current pipeline
->>    * @pixel_clock: Received pixel clock value
->>    *
->>    * Return 0 on success or a negative error code otherwise
->> diff --git a/drivers/media/platform/qcom/camss/camss.h b/drivers/media/platform/qcom/camss/camss.h
->> index 93d691c8ac63b..12b14ba8fcec3 100644
->> --- a/drivers/media/platform/qcom/camss/camss.h
->> +++ b/drivers/media/platform/qcom/camss/camss.h
->> @@ -164,17 +164,17 @@ struct parent_dev_ops {
->>   };
->>
->>   void camss_add_clock_margin(u64 *rate);
->>   int camss_enable_clocks(int nclocks, struct camss_clock *clock,
->>   			struct device *dev);
->>   void camss_disable_clocks(int nclocks, struct camss_clock *clock);
->>   struct media_pad *camss_find_sensor_pad(struct media_entity *entity);
->>   s64 camss_get_link_freq(struct media_entity *entity, unsigned int bpp,
->> -			unsigned int lanes);
->> +			unsigned int lanes, const bool cphy);
->>   int camss_get_pixel_clock(struct media_entity *entity, u64 *pixel_clock);
->>   int camss_pm_domain_on(struct camss *camss, int id);
->>   void camss_pm_domain_off(struct camss *camss, int id);
->>   int camss_vfe_get(struct camss *camss, int id);
->>   void camss_vfe_put(struct camss *camss, int id);
->>   void camss_delete(struct camss *camss);
->>   void camss_buf_done(struct camss *camss, int hw_id, int port_id);
->>   void camss_reg_update(struct camss *camss, int hw_id,
->>
->> --
->> 2.53.0
->>
-
--- 
-David Heidelberg
-
+---
+bod
