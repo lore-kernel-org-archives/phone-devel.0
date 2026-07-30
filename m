@@ -1,39 +1,83 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E9B3C1F46;
-	Thu, 30 Jul 2026 09:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785402928; cv=none; b=FcLxyT9aOiNxKH93JP7ZpepbJnKy2AciQyyj1F1bah1h4/fjThetVIlAXfYNTTpkGOKdtOlgZXXu4a/k/wS+iFfspNXPy1KviEkRPWIuwDrckryL7dGQZLf4pKYnfBCc85F7blKxXP0AQ4D04ybTRHUWStq7gNAOVNP8pRHfcpM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785402928; c=relaxed/simple;
-	bh=UmwN+WTJEJE7oKulH1Yg0C5zd6Y9t88c1da4+WxIRLU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3B13FB07E;
+	Thu, 30 Jul 2026 09:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.168
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785403143; cv=fail; b=LvUeO5cNIhIk4KmjNwjmNRWkzS6GDp1yfArqE7NzaXu98v8h17NjR+p5xsTrRTsRY8rx0aw7EUWsRkKIK/uSzyUbFIDKVDak0PhXzaL7Cud6W3RvYMgkYyyKnwtN1/mQFvhXUXhNljABczm2k09qD18CH+pRZ7eQYCQuqWZuDoE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785403143; c=relaxed/simple;
+	bh=u/YZ1sYfZ68KxwIUYp+VhWHpRBxdg/EJtddya4iNPXc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sXLU0OGV+6H7aBPHBRQyRPCQpE97jHkqQ9I3WttXTC/WW6I8dMK6LEQycFd9pCXShlgGn9SQ8yHKt+i8HsHrl+JE0dl0x0Penb2HbP+ou/G8Ss7EpGRovhSAy5QAKuvSrs0Wq/5B38e9iJmgTycehxSpqU2ffWfSV4c7mO1moy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=bFrob3te; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=GFXUUpcSxg3CLkX4AZfIH/elTLvQVp6G1JPq2AFtPTZmV0XSNJ001A7aRyhR3QZXlA2v2UzcngAF5mhquOlKy8R5G8I+/vRmJsmRoa0JVRHCRLviYpbSRqAh9xXLjDiadkmikZ/bKfsPETifbLvnJPZohqkzM8tqcRNTuGYydYI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=Vkn3KKeG; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=txCFOcB7; arc=fail smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="bFrob3te"
-Received: from [172.20.10.2] (78-80-17-116.customers.tmcz.cz [78.80.17.116])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4E01153401D8;
-	Thu, 30 Jul 2026 11:15:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1785402919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N+hma7a5kVC2Y5gdV6R4vjgQiSTBA8PLN2bcB14p5/0=;
-	b=bFrob3te3onucFY7WzPjAAeVNTL2d1dTRXkuHXKFHilSYM41Y5PmdYb5vKqosSy13EaJtt
-	RBtYQdRiIm9/GD+C5qhYw39Ue1fls2dvMoyVeq4Zm5diK4BFyYFNOJP6qMZcDQt6sG6AKC
-	aNUHnBzBFpr71qyNPnXYaKomQAlQfeI=
-Message-ID: <3648ba47-fa2a-4e2d-a3f2-040cd9568ace@ixit.cz>
-Date: Thu, 30 Jul 2026 11:15:17 +0200
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="Vkn3KKeG";
+	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="txCFOcB7"
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U8phN0986552;
+	Thu, 30 Jul 2026 04:18:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=6OVRqDuR1EgT1V0Y57bwruZTq9hHjiVXIKrb6AfTyH4=; b=
+	Vkn3KKeGEzj9/41hY4pKX3HRAskrHLD2qKOlRa5yG3H6AfpA4fP2Sz1OPGElPwSt
+	LjgfzklaGRC91Zfq5HUq2k/AIoDa2AV9PeD/HqaSrHKnfdq5Ll3kce0EcPqIJEGM
+	dXg0fqW4yKktBnZlG7DZQcCY8nGfaOcYeuukg2zS4sB77LdbCpHpTNJ1yoJ+ONt9
+	vYxGmOrELafCNFUyz8H9rUu2tl1Bkln7pKGVPiYnMOfeVPDFQn6PrQSM6R8sVcPx
+	EPDBwglR9oZoSUSY0tNHXNaOwWfTkXmAFRnMHJ5U2V0+qx540FZ23vXW7zYeuH4z
+	wKfKfud2OqU++NUngCT3ow==
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11022112.outbound.protection.outlook.com [52.101.43.112])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4fr3f9r14d-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 04:18:45 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bkDoa9oadYu1PquSAQzdSVl+v6T8y/+7AdxuIlTkhoO+62jOElgbZS5aWXrHEeteXYZFJx9ch2vjmnsWFgh127A7XINozROR0zxrCn7cKCvtDxUD+JwbBMgyjy9TUeEmvz4PJk3WwZXQf/z7rOHPN1Y05LJuSzXdiP9CyZrDaQzEPZVseXNNhrOBzUUrCw4zl9s1pybID8mvcX/lDpHvjNxHJWMvdht9qBey8dnNR0c/ygkK2zYlZD2H+IzID6zmSUa1z3FfWP1nTCekHHPDkJ9FLOtrt85T6Zw+p3cXkR8JKmmEnsLJFR0UbB9Gbi9+RxEh69ymepqGqgRhIM4nDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6OVRqDuR1EgT1V0Y57bwruZTq9hHjiVXIKrb6AfTyH4=;
+ b=G4cCXPW2LVy9MqzwqZ8Extjhx4ZSS7d1pKH4m70HmduCZ0SUcwFKaQG3EceA++qYv66n6dUzkecW7CrTYfHj2gCEmRrM1BKO9vJWodDc0BFl4niJiQoulnqAiy7pocu4uql+uEwAJLrYOjEi9HizTH1JWtgDHm+gnccR889Bx8yk3qNNCZ/qb6S4051eDUGG/fDkw3aJlbgO8WioXcVwIgNGEWts66BtsQH43YJkBU8ar2T2WPlOfUiCob0BgIZv1f23vQqCa/U2008mqSnUhLkA5HxfcDYWkJqO74CJsfhev8T8mTZL2x2byAzv58mFA20f0kUCJuYzWg7ZsvesbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 84.19.233.75) smtp.rcpttodomain=cirrus.com
+ smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=opensource.cirrus.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6OVRqDuR1EgT1V0Y57bwruZTq9hHjiVXIKrb6AfTyH4=;
+ b=txCFOcB7NqtIKV9xKAFOUUbFhBgSsA1X/FR/s6XrO99rbdU51OxMyIcLN0pY8SykV8J/UM8wRlu+i5W1IwjI+WFoqpK5rTBXjjlhlXCf0f1JB/WfnGB/cWsF/xAUwV6Ey58QX1xlAZySW1AQSRnLVqV8Wy8NghFhblx26qbY5lw=
+Received: from SA9PR10CA0016.namprd10.prod.outlook.com (2603:10b6:806:a7::21)
+ by CH9PR19MB9323.namprd19.prod.outlook.com (2603:10b6:610:2e0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
+ 2026 09:18:41 +0000
+Received: from SA2PEPF00003AE8.namprd02.prod.outlook.com
+ (2603:10b6:806:a7:cafe::3d) by SA9PR10CA0016.outlook.office365.com
+ (2603:10b6:806:a7::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.14 via Frontend Transport; Thu,
+ 30 Jul 2026 09:18:41 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ opensource.cirrus.com discourages use of 84.19.233.75 as permitted sender)
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ SA2PEPF00003AE8.mail.protection.outlook.com (10.167.248.8) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
+ via Frontend Transport; Thu, 30 Jul 2026 09:18:40 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id C15C1406541;
+	Thu, 30 Jul 2026 09:18:38 +0000 (UTC)
+Received: from [198.61.69.19] (EDIN4L06LR3.ad.cirrus.com [198.61.69.19])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 9060682025A;
+	Thu, 30 Jul 2026 09:18:37 +0000 (UTC)
+Message-ID: <3ae4d88a-20f1-49b0-b5e3-34b2ee37e47a@opensource.cirrus.com>
+Date: Thu, 30 Jul 2026 10:18:36 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,257 +85,109 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v9 6/9] media: qcom: camss: csiphy-3ph: Add Gen2
- v1.1 MIPI CSI-2 C-PHY init
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bryan O'Donoghue <bod@kernel.org>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>,
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Hans Verkuil <hverkuil@kernel.org>,
- Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>, Frank Li
- <Frank.Li@nxp.com>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260729-qcom-cphy-v9-0-1f8d9fdab037@ixit.cz>
- <20260729-qcom-cphy-v9-6-1f8d9fdab037@ixit.cz>
- <ampyJ9FmwKmpE0YW@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH RFC 5/6] ASoC: cs35l36: Implement set_tdm_slot to program
+ RX slot register
+To: Charles Keepax <ckeepax@opensource.cirrus.com>,
+        David Heidelberg <david@ixit.cz>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        David Rhodes <drhodes@opensource.cirrus.com>,
+        Conor Dooley <conor+dt@kernel.org>, linux-sound@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@opensource.cirrus.com, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20260705-pixel3-audio-v1-0-3b66f33859f1@ixit.cz>
+ <20260705-pixel3-audio-v1-5-3b66f33859f1@ixit.cz>
+ <aktsvw1IrM7ctTxg@opensource.cirrus.com>
+ <1348b108-1034-4ab0-a967-972a9456151d@ixit.cz>
+ <amsRJMxoCPMZXQfI@opensource.cirrus.com>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <ampyJ9FmwKmpE0YW@lizhi-Precision-Tower-5810>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <amsRJMxoCPMZXQfI@opensource.cirrus.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE8:EE_|CH9PR19MB9323:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b0492d4-7933-444c-c3be-08deee1b8b8c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|61400799027|23010399003|82310400026|36860700016|7416014|376014|18002099003|22082099003|16102099003|6133799003|10067099003|11063799006|5023799004|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	oDiVTlS3x7PwUyTDcB+QOS2RyLbc5g9RaylGSbUxuPTtLKlR86bMU2toQmJLk3tQqdvpp++Am4kOZBkOCE4ulHKkDqqjiexDI+1lQo/XWqV1DLgyfNlopyf1I9EU2Zhnr/+23bLuULeJXE9sX090VfizvZzqXF3+NcfUOWekLKhhYqArV7gDqLaW5IOzhuFwpmMA9VoNrjq0PRjIdD84Y5hnhVp1Va2eF/Wbk2eeOQd3yGZUgrZqSh+W0Kgq5L/mz5XkldzyOeseggXNyWiWfOrs2BQqe2rbAHNn1u4+hGxyob7GZ03HepK4IuRM1agyzlUlsv4Sg0s8XVGiNIB4wEuh404cwmRYsG6WUhiKKyw9A5Yrz/CITMyIn69iKTuyMW2j2hzD/1qghn9LR8DJfyZFY1ROScMLnxYP94YXV32fW1RL6jklouxlAnpVM+9O2gRW1dDvbWk/vtNO02TqXusEdpahf/AQN/dwTgUgfMRXXrvTB/SJ1qHzTc50WNZThuSiwPuVnMv1EMP/aKz3oCYxf5gLpGyou32FKlOi0JhYaI/N4neKpdt+upVYz0blbricC+MVcCVr2wVK3oCWH9ISKYRK9bFW6utxTdMUNdgCurSsg7K9meZ2hrE0hu+MrlCtAtUJdpGi09pDiukJXJ/SlsSCaD4yiOJsLaWXLdbiwHXRSZh9EIwVJpWCpGEhhjJxfBj4sIQQJ1QXmhZQkQ==
+X-Forefront-Antispam-Report:
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(61400799027)(23010399003)(82310400026)(36860700016)(7416014)(376014)(18002099003)(22082099003)(16102099003)(6133799003)(10067099003)(11063799006)(5023799004)(4143699003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	zFD8LcgrY1cM02e0g4aKP654H3jLdeoheCGMnhgTfLHUiXEthoA8HaYO1J8LG1vrGz5M5de9L26vE0RPRvcPkyEYB8++NeJpxZV8EJ3YuYgMJzIR9rGAfv4DsJfhXKKk0Nyb6cg/sPMZm9Ew0L/qcn4RQh2Nfv9sFvHs9bdHh1/34y75m9b5l5fOuMNMKS8OzDiQYSvRd4EEoAmhVR6Xml8wsDU1ywXx25E8LoeWY5SUMPKeV7FMJ+jHI8JIuKtercTeGCT+oeV0I5lWOjtG3Ar03AcwMhuTau+Y09OroCpEXJ5DKK+96MEXfQ6z2PkzSrhjmuftaawbt7FLEGjJMDoX7cn+slRxShhR7OgKI+9nStzvswWXhVs5smPa9tDNjesWk+I6GSZwqDOxbgeOSgDY7+hzXbuLV2D1ZGqOnJhdOQtR3LHoaXKfNLG9kdR6
+X-Exchange-RoutingPolicyChecked:
+	G12UuG+FnbI4Pj2vNYpxBt81JzcyznjygYm6eLO76YSTDP51h5JknW8CpVIdd7zXC/JtJJDeTla9OpOw72MSncOyp0Dd+A46c1t06oc98M1OPjxy0G5EgZJnnJYZy0UizZj9eNcOUzDnHmgVdzHd85vl2lkKBetuLVBU8cQjBMRuni5r7Yot5PUx5dbHNSKp/p4448O41Xcf31Lh7dDP2Qfmlw5Xv6GjtvLTN5RXmV6k5+D7XePxtyywH2ipEb3Z73+W/LppB6HJQH2KaHCpv81sntO3BPrpP6qsS00E5TPw0XXkvavttTHdKaIiICHGKhtOd/OC6cV5BOnE9hc2Nw==
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 09:18:40.3286
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b0492d4-7933-444c-c3be-08deee1b8b8c
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-SA2PEPF00003AE8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH9PR19MB9323
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA2OCBTYWx0ZWRfX8ZGpUJoNAOTN
+ kq0gKvDUJ6RhAtfiGFpw/BfkROlCrXota7ZSlB/fiE+QI3C7MGFojCvhnsHOSy8al0uQ0Sg1Vi9
+ 9zPvAzLeXlcR9WYAMOaWjkyPtCwEaaoSuKDgT8D7hjUpZIeMBMSAtEfZpwaTohHY+F0CQ8W+7WB
+ ibIxMIP7gboltuuWqxptxPXvrPLrHG/Iv+IQS3lj/VBjx1y00l9e++LXHSn5aD2D0Sg3m1LGkiW
+ z2mHMXT5cKxc/2p4tnBU5QulNwS4hbCWzHVV6UOISqCy7Xu/DIaZVv2c+WRPRQuC6OOUqNJtCZM
+ ocXwi2tuu/QV94939SkEHL/KLtramZptWjyA9y31TePSR692w1JkUZWpqzV4BjVc8KYz5hezvN0
+ sXMYslU+gBirP5V5jZ2yzqAl2BRmzVSjFEBLpvSNXYk9dkf9SwMEPs7yYxVAstwM72Qt994kkUS
+ wE3jwd4QY0Ieh7cuh1A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA2OCBTYWx0ZWRfX3r1vEOVBTkL3
+ 1jWOzb1Ki2PgxNf4o4Mp9HZgYTzlC9MHUouvUPw2JQQpvTVt5JSHLihpgX0CXqKHqVu5uTNYs7q
+ LQvWPW3V+yfhGn+qg1CIZwsJT2AvqMw=
+X-Proofpoint-ORIG-GUID: uQ-wciYpsQYNfgSD-DKF75I2lmoynE-N
+X-Authority-Analysis: v=2.4 cv=OOIXGyaB c=1 sm=1 tr=0 ts=6a6b16f5 cx=c_pps
+ a=p4c3Up3QyKVVMVBhHExQxQ==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=iX4cTi3TZMoOKdANLEfx:22 a=KfkQE9S9VqCBgivYGm0O:22
+ a=8YGGJw5uPLGaxvb1TaEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: uQ-wciYpsQYNfgSD-DKF75I2lmoynE-N
+X-Proofpoint-Spam-Reason: safe
 
-On 29/07/2026 23:35, Frank Li wrote:
-> On Wed, Jul 29, 2026 at 10:20:01PM +0200, David Heidelberg wrote:
->> Add a PHY configuration sequence for the sdm845 which uses a Qualcomm
->> Gen 2 version 1.1 CSI-2 PHY.
+On 30/7/26 09:53, Charles Keepax wrote:
+> On Wed, Jul 29, 2026 at 08:22:42PM +0200, David Heidelberg wrote:
+>> On 06/07/2026 10:52, Charles Keepax wrote:
+>>> On Sun, Jul 05, 2026 at 10:06:55PM +0200, David Heidelberg via B4 Relay wrote:
+>>>> +	if (rx_mask)
+>>>> +		regmap_update_bits(cs35l36->regmap, CS35L36_ASP_RX1_SLOT,
+>>>> +				   CS35L36_ASP_RX1_SLOT_MASK,
+>>>> +				   ffs(rx_mask) - 1);
+>>>
+>>> It is more normal for the masks to specify the slot number rather
+>>> than the bit number, it would probably be nicer to stick with
+>>> that convention even though it will complicate the code here a
+>>> little.
 >>
->> The PHY can be configured as two phase or three phase in C-PHY or D-PHY
->> mode.
+>> Thank you, is there one of the cs*l* series which implements in similar
+>> fashion as requested?
 > 
-> too much or, according to my understand D-PHY use 2 phase,  C-PHY use 3
-> phase?
+> sound/soc/codecs/arizona.c, sound/soc/codecs/cs42l43.c or
+> sound/soc/codecs/cs35l56.c all implement set_tdm, those are
+> probably reasonable inspiration.
 > 
-> The PHY can be configured as two phase (D-PHY) or three phase (C-PHY) ?
+> Thanks,
+> Charles
 
-Yes, I'll address the wrong wording in the next version then :)
+Worth noting that it's not mandatory to implement set_tdm_slot().
+If nothing needs it this is just adding dead code.
 
-> 
-> Frank
-> 
->> This configuration supports three-phase C-PHY mode.
->>
->> Acked-by: Cory Keitz <ckeitz@amazon.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     | 78 +++++++++++++++++++++-
->>   1 file changed, 76 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> index 5c07aa9d19c51..83de89a88dbb1 100644
->> --- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> +++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
->> @@ -45,16 +45,23 @@
->>
->>   #define CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(offset, n)	((offset) + 0x4 * (n))
->>   #define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE	BIT(7)
->>   #define CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_COMMON_PWRDN_B	BIT(0)
->>   #define CSIPHY_3PH_CMN_CSI_COMMON_CTRL6_SHOW_REV_ID	BIT(1)
->>   #define CSIPHY_3PH_CMN_CSI_COMMON_STATUSn(offset, common_status_offset, n) \
->>   	((offset) + (common_status_offset) + 0x4 * (n))
->>
->> +#define CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(n) \
->> +	(0x0100 + ((n) * 0x4))
->> +#define CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(n) \
->> +	(0x0300 + ((n) * 0x4))
->> +#define CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(n) \
->> +	(0x0500 + ((n) * 0x4))
->> +
->>   #define CSIPHY_DEFAULT_PARAMS		0
->>   #define CSIPHY_LANE_ENABLE		1
->>   #define CSIPHY_SETTLE_CNT_LOWER_BYTE	2
->>   #define CSIPHY_SETTLE_CNT_HIGHER_BYTE	3
->>   #define CSIPHY_DNP_PARAMS		4
->>   #define CSIPHY_2PH_REGS			5
->>   #define CSIPHY_3PH_REGS			6
->>   #define CSIPHY_SKEW_CAL			7
->> @@ -141,16 +148,17 @@ csiphy_lane_regs lane_regs_sa8775p[] = {
->>   	{0x0460, 0xFD, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0464, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x065C, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0660, 0xFD, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   };
->>
->>   /* GEN2 1.0 2PH */
->> +/* 5 entries: clock + 4 lanes */
->>   static const struct
->>   csiphy_lane_regs lane_regs_sdm845[] = {
->>   	{0x0004, 0x0C, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x002C, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0034, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x001C, 0x0A, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0014, 0x60, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0028, 0x00, 0x00, CSIPHY_DNP_PARAMS},
->> @@ -215,16 +223,82 @@ csiphy_lane_regs lane_regs_sdm845[] = {
->>   	{0x0608, 0x00, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->>   	{0x060C, 0x00, 0x00, CSIPHY_DNP_PARAMS},
->>   	{0x0610, 0x52, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0638, 0xFE, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0660, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0664, 0x7F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   };
->>
->> +/* GEN2 1.0 3PH */
->> +/* 3 entries: 3 lanes (C-PHY) */
->> +static const struct
->> +csiphy_lane_regs lane_regs_sdm845_3ph[] = {
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(9),  0x7f, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN1_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(9),  0x7f, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN3_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(23), 0x43, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(26), 0xa0, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(27), 0x25, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(1),  0x06, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(3),  0x12, 0x00, CSIPHY_SETTLE_CNT_LOWER_BYTE},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(2),  0x00, 0x00, CSIPHY_SETTLE_CNT_HIGHER_BYTE},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(5),  0x20, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(20), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(6),  0x3e, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(7),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(8),  0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(9),  0x7f, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(10), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(11), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(17), 0x12, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(24), 0x02, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(51), 0x41, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(25), 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +	{CSIPHY_LN5_CSI_3PH_CTRLn_ADDR(55), 0x51, 0x00, CSIPHY_DEFAULT_PARAMS},
->> +
->> +};
->> +
->>   /* GEN2 1.1 2PH */
->>   static const struct
->>   csiphy_lane_regs lane_regs_sc8280xp[] = {
->>   	{0x0004, 0x0C, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x002C, 0x01, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0034, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x001C, 0x0A, 0x00, CSIPHY_DEFAULT_PARAMS},
->>   	{0x0014, 0x60, 0x00, CSIPHY_DEFAULT_PARAMS},
->> @@ -1169,18 +1243,18 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
->>   	int i;
->>
->>   	switch (csiphy->camss->res->version) {
->>   	case CAMSS_845:
->>   		if (c->phy_cfg == V4L2_MBUS_CSI2_DPHY) {
->>   			regs->lane_regs = &lane_regs_sdm845[0];
->>   			regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
->>   		} else if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
->> -			regs->lane_regs = NULL;
->> -			regs->lane_array_size = 0;
->> +			regs->lane_regs = &lane_regs_sdm845_3ph[0];
->> +			regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845_3ph);
->>   		}
->>   		break;
->>   	case CAMSS_2290:
->>   	case CAMSS_6150:
->>   		if (c->phy_cfg == V4L2_MBUS_CSI2_DPHY) {
->>   			regs->lane_regs = &lane_regs_qcm2290[0];
->>   			regs->lane_array_size = ARRAY_SIZE(lane_regs_qcm2290);
->>   		} else if (c->phy_cfg == V4L2_MBUS_CSI2_CPHY) {
->>
->> --
->> 2.53.0
->>
-
--- 
-David Heidelberg
-
+However, cs35l56_make_tdm_config_word() is probably what you want
+as a starting point. It uses the mask to indicate which TDM slots are
+active and assigns those slot numbers to consecutive RX/TX channels.
+But the register layout of the *X_SLOT fields is different on CS35L36,
+so the code will need some adjustment.
