@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843134562AB;
-	Fri, 31 Jul 2026 18:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D8E317145;
+	Fri, 31 Jul 2026 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785521447; cv=none; b=k7ENM1twK+mL9rMeOwXolNhBqhPMQzML1YKHlg1T+RxNQh7RooU0BK/bPt72QbGvrh7u3t1RTCDtxL0d5qV6BfKSbYrzn9M4ibULKF/ybaD6FTkInAm/Vw9ZniINKJC2tTRy3BfxoqzDP/9fOt+I1+ROe6yjNiESsypNz/v2NC4=
+	t=1785521624; cv=none; b=iUtBZd704KdziZeDRf/0llvMQYmez8AodXgoFctR31aVK3JRaC54fO6wjlHzwfVzJUgFWud1cRe/EnhaZZUgcTnD3mwOHIahEUykYykiXEsaq96CblmQJ0Q/wMmdX8Oxu7d3yJU8p8xue0jU56/nd/bkNmy3obUgbh8mr1wDS88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785521447; c=relaxed/simple;
-	bh=0Ub6+6oge9n6qmLgOMNxwOmeJ1tEE28hucNGPqA9TMw=;
+	s=arc-20240116; t=1785521624; c=relaxed/simple;
+	bh=KfTjNNKnWk5wHsdCCE5vzAX6dsXmM8yrfPK7Dobg8/U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CK+JurPLdI6aEUkHG9DpvGUAZ+tk4ALz1Xk0jGpkvoBjpu1EKSfwhLTum59l//xMBahFsrJ4w85GXgdU4c/QmQYo5SLAKCscSBwmNtLg7aLQrILOVnLmAURuKbzzYV6tfcdwv54olkt7Uhgn1NweGHWQAvm7J//Fl5sEkfQ4KUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nP3vU+ud; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=qTYe8nryhSP1wRqL0wIFGhFYQxlKf13DSQOBn35Gs2JR/nDzyK78vvCqUDIBdxw1kZNUT1rcC+CoRII5sDJaZwjIt4JOMoW4u+w09G+OTFHfYLYZyM3Wp15Q1fIQDlwRgWDeA4fhqQOaHjQCJxK6ycko53HuG34T8hPfFfHyETw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPVBSzuq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nP3vU+ud"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AECA0C2BCFB;
-	Fri, 31 Jul 2026 18:10:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPVBSzuq"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 85082C2BCF4;
+	Fri, 31 Jul 2026 18:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785521446;
-	bh=0Ub6+6oge9n6qmLgOMNxwOmeJ1tEE28hucNGPqA9TMw=;
+	s=k20201202; t=1785521623;
+	bh=KfTjNNKnWk5wHsdCCE5vzAX6dsXmM8yrfPK7Dobg8/U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nP3vU+ud0mKIQXnRIB8SNN91LkAxAuPpMsx3of8hTMC1PIEINOqsYkeaQ6SGPa1mf
-	 xQJqwSMMF2YXFtTBhn0MSfeLfhXhoBDtFZ0GNw5VO4lobfp8UrN+doHU3UTRq4bZj0
-	 KOODR5XdbDnrRaVbRyaoNIcKD7yEGqzR8n05dXyvRPl9S/k3Qc7Y6en6AhU02EyQ08
-	 WULn5fC3fMzZ5CshxHVlgNPerBDNYojyeTzqtwVQSj/BB3vSncbYCPdFE4P+IUJvEX
-	 aN15hFzOHEYghqLMXan6onpJprPkTocJA8G0RjyGmU/lLl9SmHBR1oOxAG2JMZNUxn
-	 ZkzjMnBHTeTaA==
+	b=WPVBSzuqCPVuFHFgMjfvnV3Pt6lNHPyuIueeyghWMB0ZsDu91k/CeDzI7qfmi9+lm
+	 CP/qZeeOt5/vCOtZqsrKkU8kForn3jvSn+MH5KXN0fA17HfkeqdnsFsrRBQQa318kd
+	 /tCkiT8UX+nD69cLFJYVh2y+yf8VwhmY+DSt3sTwiGJi02agPBE0l6roSKWBE1ljAU
+	 JtSAyKLe+uJK/Zus+dPSdtBTpHECjGgeGs+Lj4IuePYVKRz0eYkKX+ykpMTrVORew/
+	 FEbD5qttCBpJjf9jpooHNwaFizegbhh5tWx7wWi6uAK2UeSUKn/mc+mmF0CLoJs5Zb
+	 QRkyb/qpCTiXw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88785C5516D;
-	Fri, 31 Jul 2026 18:10:46 +0000 (UTC)
-From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Date: Fri, 31 Jul 2026 14:08:23 -0400
-Subject: [PATCH 1/3] pinctrl: qcom: Commonize pinctrl-sm8450 headers
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68C6EC55174;
+	Fri, 31 Jul 2026 18:13:43 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 31 Jul 2026 20:13:41 +0200
+Subject: [PATCH 1/2] Input: rmi4 - report difference between platform data
+ and detected coord in F12
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,552 +41,121 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-sm8475-tlmm-v1-1-3007a8e4aa62@proton.me>
-References: <20260731-sm8475-tlmm-v1-0-3007a8e4aa62@proton.me>
-In-Reply-To: <20260731-sm8475-tlmm-v1-0-3007a8e4aa62@proton.me>
-To: Bartosz Golaszewski <brgl@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
- phone-devel@vger.kernel.org, Esteban Urrutia <esteuwu@proton.me>
+Message-Id: <20260731-respect-x-y-mm-v1-1-3e85a4bec745@ixit.cz>
+References: <20260731-respect-x-y-mm-v1-0-3e85a4bec745@ixit.cz>
+In-Reply-To: <20260731-respect-x-y-mm-v1-0-3e85a4bec745@ixit.cz>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785521444; l=12925;
- i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=LhzjaVscZHR6jyLbymZUjeXvDivPKoMM0j0J+uAXra4=;
- b=n+w+u/77KYZX8X1v71Sa4/DEFIW2/BGUMoKoo5uRHG0P2b2+TUrdtD3GgIAxLuKqweS09S50+
- Q4uZYHLly14A1tkgK1ZpIqtYVwqJEN9JFcPMtMmq5a5FA09i1t9HkBm
-X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
- pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
-X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
- auth_id=835
-X-Original-From: Esteban Urrutia <esteuwu@proton.me>
-Reply-To: esteuwu@proton.me
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2648; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=KcxlaadXI0sDygb4fMMOU6arV2orhy2zzcrNAiR0jQA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqbOXWBzQlWNZ4k7e/PuXXPdS4g4A8HHOfc1etk
+ AQeKgB0UPeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCamzl1gAKCRBgAj/E00kg
+ ct0nEADDU1m0h5E1HySL4fEtbDGO537e4dzP4nDXxN1tR8B6iOdck8Y3p4BClpaMUMZaPlTeJmj
+ hlvXT+OR8pHB9xUD3fWppLn/ktYcRRtzotow42fvRQFPzA9HXb/jEVCH87oeFNkscOR1K2joYJN
+ ofHgEFktQUHUU06TeLAw3Fmzd1a6/hX8wHqf9Cx7XFmFKrLtHL6XrnncGkG2gCbNSn6dnkP9P9f
+ SV3LRt4ReGw0DHAozsAwasya6vKZqBi4ZdK/VFRnRj1vOXifZVyTLdI3W1iIk8k7HYyROIj0eww
+ OXZwQMkeeoVmE2ldAxM1wgpvTxfw9IqgyVP57+MNfhN0pCPfKcmW8Rw7mT6LRNQJL+wx7LhiqcR
+ fAMkNtUXomJ8kLpuElBT47FDokCG6BIUbcovFsVVEqiFZHecbJi1FFKS7rPTd1fbDjLmwLGTVPs
+ VkF/n8uUsjI6oEXLfe04H6bUx0YCwR++5yIouNSlIkK9DESCSaqr6HEhUJe7/F+DNlsJsS53I+N
+ DFFO0uAUvkh7r3a+TJINsHiF5hitE6XwtDwEloPUhJgLNVrahDHVeDI0gU1XU43R8VGPpOS7BPn
+ hDohvrLEiC1DXPGHrBUHWt/IKt3IpbzrF4IuxeV/UKWu37jCiLyVAMC4OMhroJtDWLFUTAMUNDG
+ aS6OQfACqR0oH+Q==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-From: Esteban Urrutia <esteuwu@proton.me>
+From: David Heidelberg <david@ixit.cz>
 
-Some headers found on pinctrl-sm8450 are compatible with SM8475.
-Commonize these headers to prepare for adding pinctrl support for SM8475.
+Platform data may define touchscreen-x-mm and touchscreen-y-mm, but
+these are quietly overridden by data provided by sensor.
 
-Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+Warn when detected data doesn't match the device-tree data.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/pinctrl/qcom/pinctrl-sm8450.c | 233 +-------------------------------
- drivers/pinctrl/qcom/pinctrl-sm8450.h | 246 ++++++++++++++++++++++++++++++++++
- 2 files changed, 247 insertions(+), 232 deletions(-)
+ drivers/input/rmi4/rmi_f12.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8450.c b/drivers/pinctrl/qcom/pinctrl-sm8450.c
-index 8ca5b6e15e6c..7b2627989d68 100644
---- a/drivers/pinctrl/qcom/pinctrl-sm8450.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sm8450.c
-@@ -9,96 +9,7 @@
- #include <linux/platform_device.h>
+diff --git a/drivers/input/rmi4/rmi_f12.c b/drivers/input/rmi4/rmi_f12.c
+index 88c28089de993..88797556e738c 100644
+--- a/drivers/input/rmi4/rmi_f12.c
++++ b/drivers/input/rmi4/rmi_f12.c
+@@ -95,16 +95,17 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
+ {
+ 	const struct rmi_register_desc_item *item;
+ 	struct rmi_2d_sensor *sensor = &f12->sensor;
+ 	struct rmi_function *fn = sensor->fn;
+ 	struct rmi_device *rmi_dev = fn->rmi_dev;
+ 	int ret;
+ 	int offset;
+ 	u8 buf[15];
++	u8 x_mm, y_mm;
+ 	int pitch_x = 0;
+ 	int pitch_y = 0;
+ 	int rx_receivers = 0;
+ 	int tx_receivers = 0;
+ 	u16 query_dpm_addr = 0;
+ 	int dpm_resolution = 0;
  
- #include "pinctrl-msm.h"
--
--#define REG_SIZE 0x1000
--
--#define PINGROUP(id, f1, f2, f3, f4, f5, f6, f7, f8, f9)	\
--	{					        \
--		.grp = PINCTRL_PINGROUP("gpio" #id, 	\
--			gpio##id##_pins, 		\
--			ARRAY_SIZE(gpio##id##_pins)),	\
--		.funcs = (int[]){			\
--			msm_mux_gpio, /* gpio mode */	\
--			msm_mux_##f1,			\
--			msm_mux_##f2,			\
--			msm_mux_##f3,			\
--			msm_mux_##f4,			\
--			msm_mux_##f5,			\
--			msm_mux_##f6,			\
--			msm_mux_##f7,			\
--			msm_mux_##f8,			\
--			msm_mux_##f9			\
--		},				        \
--		.nfuncs = 10,				\
--		.ctl_reg = REG_SIZE * id,			\
--		.io_reg = 0x4 + REG_SIZE * id,		\
--		.intr_cfg_reg = 0x8 + REG_SIZE * id,		\
--		.intr_status_reg = 0xc + REG_SIZE * id,	\
--		.mux_bit = 2,			\
--		.pull_bit = 0,			\
--		.drv_bit = 6,			\
--		.egpio_enable = 12,		\
--		.egpio_present = 11,		\
--		.oe_bit = 9,			\
--		.in_bit = 0,			\
--		.out_bit = 1,			\
--		.intr_enable_bit = 0,		\
--		.intr_status_bit = 0,		\
--		.intr_target_bit = 5,		\
--		.intr_target_kpss_val = 3,	\
--		.intr_raw_status_bit = 4,	\
--		.intr_polarity_bit = 1,		\
--		.intr_detection_bit = 2,	\
--		.intr_detection_width = 2,	\
--	}
--
--#define SDC_QDSD_PINGROUP(pg_name, ctl, pull, drv)	\
--	{					        \
--		.grp = PINCTRL_PINGROUP(#pg_name, 	\
--			pg_name##_pins, 		\
--			ARRAY_SIZE(pg_name##_pins)),	\
--		.ctl_reg = ctl,				\
--		.io_reg = 0,				\
--		.intr_cfg_reg = 0,			\
--		.intr_status_reg = 0,			\
--		.mux_bit = -1,				\
--		.pull_bit = pull,			\
--		.drv_bit = drv,				\
--		.oe_bit = -1,				\
--		.in_bit = -1,				\
--		.out_bit = -1,				\
--		.intr_enable_bit = -1,			\
--		.intr_status_bit = -1,			\
--		.intr_target_bit = -1,			\
--		.intr_raw_status_bit = -1,		\
--		.intr_polarity_bit = -1,		\
--		.intr_detection_bit = -1,		\
--		.intr_detection_width = -1,		\
--	}
--
--#define UFS_RESET(pg_name, offset)				\
--	{					        \
--		.grp = PINCTRL_PINGROUP(#pg_name, 	\
--			pg_name##_pins, 		\
--			ARRAY_SIZE(pg_name##_pins)),	\
--		.ctl_reg = offset,			\
--		.io_reg = offset + 0x4,			\
--		.intr_cfg_reg = 0,			\
--		.intr_status_reg = 0,			\
--		.mux_bit = -1,				\
--		.pull_bit = 3,				\
--		.drv_bit = 0,				\
--		.oe_bit = -1,				\
--		.in_bit = -1,				\
--		.out_bit = 0,				\
--		.intr_enable_bit = -1,			\
--		.intr_status_bit = -1,			\
--		.intr_target_bit = -1,			\
--		.intr_raw_status_bit = -1,		\
--		.intr_polarity_bit = -1,		\
--		.intr_detection_bit = -1,		\
--		.intr_detection_width = -1,		\
--	}
-+#include "pinctrl-sm8450.h"
+ 	item = rmi_get_register_desc_item(&f12->control_reg_desc, 8);
+@@ -166,33 +167,46 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
+ 		query_dpm_addr = fn->fd.query_base_addr	+ offset;
+ 		ret = rmi_read(fn->rmi_dev, query_dpm_addr, buf);
+ 		if (ret) {
+ 			dev_err(&fn->dev, "Failed to read DPM value: %d\n", ret);
+ 			return ret;
+ 		}
+ 		dpm_resolution = buf[0];
  
- static const struct pinctrl_pin_desc sm8450_pins[] = {
- 	PINCTRL_PIN(0, "GPIO_0"),
-@@ -317,8 +228,6 @@ static const struct pinctrl_pin_desc sm8450_pins[] = {
- 	PINCTRL_PIN(213, "SDC2_DATA"),
- };
+-		sensor->x_mm = sensor->max_x / dpm_resolution;
+-		sensor->y_mm = sensor->max_y / dpm_resolution;
++		x_mm = sensor->max_x / dpm_resolution;
++		y_mm = sensor->max_y / dpm_resolution;
+ 	} else {
+ 		if (rmi_register_desc_has_subpacket(item, 3)) {
+ 			rx_receivers = buf[offset];
+ 			tx_receivers = buf[offset + 1];
+ 			offset += 2;
+ 		}
  
--#define DECLARE_MSM_GPIO_PINS(pin) \
--	static const unsigned int gpio##pin##_pins[] = { pin }
- DECLARE_MSM_GPIO_PINS(0);
- DECLARE_MSM_GPIO_PINS(1);
- DECLARE_MSM_GPIO_PINS(2);
-@@ -535,146 +444,6 @@ static const unsigned int sdc2_clk_pins[] = { 211 };
- static const unsigned int sdc2_cmd_pins[] = { 212 };
- static const unsigned int sdc2_data_pins[] = { 213 };
+ 		/* Skip over sensor flags */
+ 		if (rmi_register_desc_has_subpacket(item, 4))
+ 			offset += 1;
  
--enum sm8450_functions {
--	msm_mux_gpio,
--	msm_mux_aon_cam,
--	msm_mux_atest_char,
--	msm_mux_atest_usb,
--	msm_mux_audio_ref,
--	msm_mux_cam_mclk,
--	msm_mux_cci_async,
--	msm_mux_cci_i2c,
--	msm_mux_cci_timer,
--	msm_mux_cmu_rng,
--	msm_mux_coex_uart1,
--	msm_mux_coex_uart2,
--	msm_mux_cri_trng,
--	msm_mux_cri_trng0,
--	msm_mux_cri_trng1,
--	msm_mux_dbg_out,
--	msm_mux_ddr_bist,
--	msm_mux_ddr_pxi0,
--	msm_mux_ddr_pxi1,
--	msm_mux_ddr_pxi2,
--	msm_mux_ddr_pxi3,
--	msm_mux_dp_hot,
--	msm_mux_egpio,
--	msm_mux_gcc_gp1,
--	msm_mux_gcc_gp2,
--	msm_mux_gcc_gp3,
--	msm_mux_ibi_i3c,
--	msm_mux_jitter_bist,
--	msm_mux_mdp_vsync,
--	msm_mux_mdp_vsync0,
--	msm_mux_mdp_vsync1,
--	msm_mux_mdp_vsync2,
--	msm_mux_mdp_vsync3,
--	msm_mux_mi2s0_data0,
--	msm_mux_mi2s0_data1,
--	msm_mux_mi2s0_sck,
--	msm_mux_mi2s0_ws,
--	msm_mux_mi2s2_data0,
--	msm_mux_mi2s2_data1,
--	msm_mux_mi2s2_sck,
--	msm_mux_mi2s2_ws,
--	msm_mux_mss_grfc0,
--	msm_mux_mss_grfc1,
--	msm_mux_mss_grfc10,
--	msm_mux_mss_grfc11,
--	msm_mux_mss_grfc12,
--	msm_mux_mss_grfc2,
--	msm_mux_mss_grfc3,
--	msm_mux_mss_grfc4,
--	msm_mux_mss_grfc5,
--	msm_mux_mss_grfc6,
--	msm_mux_mss_grfc7,
--	msm_mux_mss_grfc8,
--	msm_mux_mss_grfc9,
--	msm_mux_nav,
--	msm_mux_pcie0_clkreqn,
--	msm_mux_pcie1_clkreqn,
--	msm_mux_phase_flag,
--	msm_mux_pll_bist,
--	msm_mux_pll_clk,
--	msm_mux_pri_mi2s,
--	msm_mux_prng_rosc,
--	msm_mux_qdss_cti,
--	msm_mux_qdss_gpio,
--	msm_mux_qlink0_enable,
--	msm_mux_qlink0_request,
--	msm_mux_qlink0_wmss,
--	msm_mux_qlink1_enable,
--	msm_mux_qlink1_request,
--	msm_mux_qlink1_wmss,
--	msm_mux_qlink2_enable,
--	msm_mux_qlink2_request,
--	msm_mux_qlink2_wmss,
--	msm_mux_qspi0,
--	msm_mux_qspi1,
--	msm_mux_qspi2,
--	msm_mux_qspi3,
--	msm_mux_qspi_clk,
--	msm_mux_qspi_cs,
--	msm_mux_qup0,
--	msm_mux_qup1,
--	msm_mux_qup10,
--	msm_mux_qup11,
--	msm_mux_qup12,
--	msm_mux_qup13,
--	msm_mux_qup14,
--	msm_mux_qup15,
--	msm_mux_qup16,
--	msm_mux_qup17,
--	msm_mux_qup18,
--	msm_mux_qup19,
--	msm_mux_qup2,
--	msm_mux_qup20,
--	msm_mux_qup21,
--	msm_mux_qup3,
--	msm_mux_qup4,
--	msm_mux_qup5,
--	msm_mux_qup6,
--	msm_mux_qup7,
--	msm_mux_qup8,
--	msm_mux_qup9,
--	msm_mux_qup_l4,
--	msm_mux_qup_l5,
--	msm_mux_qup_l6,
--	msm_mux_sd_write,
--	msm_mux_sdc40,
--	msm_mux_sdc41,
--	msm_mux_sdc42,
--	msm_mux_sdc43,
--	msm_mux_sdc4_clk,
--	msm_mux_sdc4_cmd,
--	msm_mux_sec_mi2s,
--	msm_mux_tb_trig,
--	msm_mux_tgu_ch0,
--	msm_mux_tgu_ch1,
--	msm_mux_tgu_ch2,
--	msm_mux_tgu_ch3,
--	msm_mux_tmess_prng0,
--	msm_mux_tmess_prng1,
--	msm_mux_tmess_prng2,
--	msm_mux_tmess_prng3,
--	msm_mux_tsense_pwm1,
--	msm_mux_tsense_pwm2,
--	msm_mux_uim0_clk,
--	msm_mux_uim0_data,
--	msm_mux_uim0_present,
--	msm_mux_uim0_reset,
--	msm_mux_uim1_clk,
--	msm_mux_uim1_data,
--	msm_mux_uim1_present,
--	msm_mux_uim1_reset,
--	msm_mux_usb2phy_ac,
--	msm_mux_usb_phy,
--	msm_mux_vfr_0,
--	msm_mux_vfr_1,
--	msm_mux_vsense_trigger,
--	msm_mux__,
--};
--
- static const char * const gpio_groups[] = {
- 	"gpio0", "gpio1", "gpio2", "gpio3", "gpio4", "gpio5", "gpio6", "gpio7",
- 	"gpio8", "gpio9", "gpio10", "gpio11", "gpio12", "gpio13", "gpio14",
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8450.h b/drivers/pinctrl/qcom/pinctrl-sm8450.h
-new file mode 100644
-index 000000000000..7501c694db57
---- /dev/null
-+++ b/drivers/pinctrl/qcom/pinctrl-sm8450.h
-@@ -0,0 +1,246 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2020-2021, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021, Linaro Limited
-+ */
-+#ifndef __PINCTRL_SM8450_H__
-+#define __PINCTRL_SM8450_H__
+-		sensor->x_mm = (pitch_x * rx_receivers) >> 12;
+-		sensor->y_mm = (pitch_y * tx_receivers) >> 12;
++		x_mm = (pitch_x * rx_receivers) >> 12;
++		y_mm = (pitch_y * tx_receivers) >> 12;
+ 	}
+ 
++	if (sensor->x_mm && sensor->x_mm != x_mm)
++		dev_warn(&fn->dev,
++			 "platform data x_mm (%d) != detected x_mm: (%d)\n",
++			 sensor->x_mm, x_mm);
 +
-+#include <linux/array_size.h>
++	if (sensor->y_mm && sensor->y_mm != y_mm)
++		dev_warn(&fn->dev,
++			 "platform data y_mm (%d) != detected y_mm: (%d)\n",
++			 sensor->y_mm, y_mm);
 +
-+#include <linux/pinctrl/pinctrl.h>
++	sensor->x_mm = x_mm;
++	sensor->y_mm = y_mm;
 +
-+#define REG_SIZE 0x1000
-+
-+#define PINGROUP(id, f1, f2, f3, f4, f5, f6, f7, f8, f9)	\
-+	{					        \
-+		.grp = PINCTRL_PINGROUP("gpio" #id, 	\
-+			gpio##id##_pins, 		\
-+			ARRAY_SIZE(gpio##id##_pins)),	\
-+		.funcs = (int[]){			\
-+			msm_mux_gpio, /* gpio mode */	\
-+			msm_mux_##f1,			\
-+			msm_mux_##f2,			\
-+			msm_mux_##f3,			\
-+			msm_mux_##f4,			\
-+			msm_mux_##f5,			\
-+			msm_mux_##f6,			\
-+			msm_mux_##f7,			\
-+			msm_mux_##f8,			\
-+			msm_mux_##f9			\
-+		},				        \
-+		.nfuncs = 10,				\
-+		.ctl_reg = REG_SIZE * id,			\
-+		.io_reg = 0x4 + REG_SIZE * id,		\
-+		.intr_cfg_reg = 0x8 + REG_SIZE * id,		\
-+		.intr_status_reg = 0xc + REG_SIZE * id,	\
-+		.mux_bit = 2,			\
-+		.pull_bit = 0,			\
-+		.drv_bit = 6,			\
-+		.egpio_enable = 12,		\
-+		.egpio_present = 11,		\
-+		.oe_bit = 9,			\
-+		.in_bit = 0,			\
-+		.out_bit = 1,			\
-+		.intr_enable_bit = 0,		\
-+		.intr_status_bit = 0,		\
-+		.intr_target_bit = 5,		\
-+		.intr_target_kpss_val = 3,	\
-+		.intr_raw_status_bit = 4,	\
-+		.intr_polarity_bit = 1,		\
-+		.intr_detection_bit = 2,	\
-+		.intr_detection_width = 2,	\
-+	}
-+
-+#define SDC_QDSD_PINGROUP(pg_name, ctl, pull, drv)	\
-+	{					        \
-+		.grp = PINCTRL_PINGROUP(#pg_name, 	\
-+			pg_name##_pins, 		\
-+			ARRAY_SIZE(pg_name##_pins)),	\
-+		.ctl_reg = ctl,				\
-+		.io_reg = 0,				\
-+		.intr_cfg_reg = 0,			\
-+		.intr_status_reg = 0,			\
-+		.mux_bit = -1,				\
-+		.pull_bit = pull,			\
-+		.drv_bit = drv,				\
-+		.oe_bit = -1,				\
-+		.in_bit = -1,				\
-+		.out_bit = -1,				\
-+		.intr_enable_bit = -1,			\
-+		.intr_status_bit = -1,			\
-+		.intr_target_bit = -1,			\
-+		.intr_raw_status_bit = -1,		\
-+		.intr_polarity_bit = -1,		\
-+		.intr_detection_bit = -1,		\
-+		.intr_detection_width = -1,		\
-+	}
-+
-+#define UFS_RESET(pg_name, offset)				\
-+	{					        \
-+		.grp = PINCTRL_PINGROUP(#pg_name, 	\
-+			pg_name##_pins, 		\
-+			ARRAY_SIZE(pg_name##_pins)),	\
-+		.ctl_reg = offset,			\
-+		.io_reg = offset + 0x4,			\
-+		.intr_cfg_reg = 0,			\
-+		.intr_status_reg = 0,			\
-+		.mux_bit = -1,				\
-+		.pull_bit = 3,				\
-+		.drv_bit = 0,				\
-+		.oe_bit = -1,				\
-+		.in_bit = -1,				\
-+		.out_bit = 0,				\
-+		.intr_enable_bit = -1,			\
-+		.intr_status_bit = -1,			\
-+		.intr_target_bit = -1,			\
-+		.intr_raw_status_bit = -1,		\
-+		.intr_polarity_bit = -1,		\
-+		.intr_detection_bit = -1,		\
-+		.intr_detection_width = -1,		\
-+	}
-+
-+#define DECLARE_MSM_GPIO_PINS(pin) \
-+	static const unsigned int gpio##pin##_pins[] = { pin }
-+
-+enum sm8450_functions {
-+	msm_mux_gpio,
-+	msm_mux_aon_cam,
-+	msm_mux_atest_char,
-+	msm_mux_atest_usb,
-+	msm_mux_audio_ref,
-+	msm_mux_cam_mclk,
-+	msm_mux_cci_async,
-+	msm_mux_cci_i2c,
-+	msm_mux_cci_timer,
-+	msm_mux_cmu_rng,
-+	msm_mux_coex_uart1,
-+	msm_mux_coex_uart2,
-+	msm_mux_cri_trng,
-+	msm_mux_cri_trng0,
-+	msm_mux_cri_trng1,
-+	msm_mux_dbg_out,
-+	msm_mux_ddr_bist,
-+	msm_mux_ddr_pxi0,
-+	msm_mux_ddr_pxi1,
-+	msm_mux_ddr_pxi2,
-+	msm_mux_ddr_pxi3,
-+	msm_mux_dp_hot,
-+	msm_mux_egpio,
-+	msm_mux_gcc_gp1,
-+	msm_mux_gcc_gp2,
-+	msm_mux_gcc_gp3,
-+	msm_mux_ibi_i3c,
-+	msm_mux_jitter_bist,
-+	msm_mux_mdp_vsync,
-+	msm_mux_mdp_vsync0,
-+	msm_mux_mdp_vsync1,
-+	msm_mux_mdp_vsync2,
-+	msm_mux_mdp_vsync3,
-+	msm_mux_mi2s0_data0,
-+	msm_mux_mi2s0_data1,
-+	msm_mux_mi2s0_sck,
-+	msm_mux_mi2s0_ws,
-+	msm_mux_mi2s2_data0,
-+	msm_mux_mi2s2_data1,
-+	msm_mux_mi2s2_sck,
-+	msm_mux_mi2s2_ws,
-+	msm_mux_mss_grfc0,
-+	msm_mux_mss_grfc1,
-+	msm_mux_mss_grfc10,
-+	msm_mux_mss_grfc11,
-+	msm_mux_mss_grfc12,
-+	msm_mux_mss_grfc2,
-+	msm_mux_mss_grfc3,
-+	msm_mux_mss_grfc4,
-+	msm_mux_mss_grfc5,
-+	msm_mux_mss_grfc6,
-+	msm_mux_mss_grfc7,
-+	msm_mux_mss_grfc8,
-+	msm_mux_mss_grfc9,
-+	msm_mux_nav,
-+	msm_mux_pcie0_clkreqn,
-+	msm_mux_pcie1_clkreqn,
-+	msm_mux_phase_flag,
-+	msm_mux_pll_bist,
-+	msm_mux_pll_clk,
-+	msm_mux_pri_mi2s,
-+	msm_mux_prng_rosc,
-+	msm_mux_qdss_cti,
-+	msm_mux_qdss_gpio,
-+	msm_mux_qlink0_enable,
-+	msm_mux_qlink0_request,
-+	msm_mux_qlink0_wmss,
-+	msm_mux_qlink1_enable,
-+	msm_mux_qlink1_request,
-+	msm_mux_qlink1_wmss,
-+	msm_mux_qlink2_enable,
-+	msm_mux_qlink2_request,
-+	msm_mux_qlink2_wmss,
-+	msm_mux_qspi0,
-+	msm_mux_qspi1,
-+	msm_mux_qspi2,
-+	msm_mux_qspi3,
-+	msm_mux_qspi_clk,
-+	msm_mux_qspi_cs,
-+	msm_mux_qup0,
-+	msm_mux_qup1,
-+	msm_mux_qup10,
-+	msm_mux_qup11,
-+	msm_mux_qup12,
-+	msm_mux_qup13,
-+	msm_mux_qup14,
-+	msm_mux_qup15,
-+	msm_mux_qup16,
-+	msm_mux_qup17,
-+	msm_mux_qup18,
-+	msm_mux_qup19,
-+	msm_mux_qup2,
-+	msm_mux_qup20,
-+	msm_mux_qup21,
-+	msm_mux_qup3,
-+	msm_mux_qup4,
-+	msm_mux_qup5,
-+	msm_mux_qup6,
-+	msm_mux_qup7,
-+	msm_mux_qup8,
-+	msm_mux_qup9,
-+	msm_mux_qup_l4,
-+	msm_mux_qup_l5,
-+	msm_mux_qup_l6,
-+	msm_mux_sd_write,
-+	msm_mux_sdc40,
-+	msm_mux_sdc41,
-+	msm_mux_sdc42,
-+	msm_mux_sdc43,
-+	msm_mux_sdc4_clk,
-+	msm_mux_sdc4_cmd,
-+	msm_mux_sec_mi2s,
-+	msm_mux_tb_trig,
-+	msm_mux_tgu_ch0,
-+	msm_mux_tgu_ch1,
-+	msm_mux_tgu_ch2,
-+	msm_mux_tgu_ch3,
-+	msm_mux_tmess_prng0,
-+	msm_mux_tmess_prng1,
-+	msm_mux_tmess_prng2,
-+	msm_mux_tmess_prng3,
-+	msm_mux_tsense_pwm1,
-+	msm_mux_tsense_pwm2,
-+	msm_mux_uim0_clk,
-+	msm_mux_uim0_data,
-+	msm_mux_uim0_present,
-+	msm_mux_uim0_reset,
-+	msm_mux_uim1_clk,
-+	msm_mux_uim1_data,
-+	msm_mux_uim1_present,
-+	msm_mux_uim1_reset,
-+	msm_mux_usb2phy_ac,
-+	msm_mux_usb_phy,
-+	msm_mux_vfr_0,
-+	msm_mux_vfr_1,
-+	msm_mux_vsense_trigger,
-+	msm_mux__,
-+};
-+
-+#endif /* __PINCTRL_SM8450_H__ */
+ 	rmi_dbg(RMI_DEBUG_FN, &fn->dev, "%s: x_mm: %d y_mm: %d\n", __func__,
+ 		sensor->x_mm, sensor->y_mm);
+ 
+ 	return 0;
+ }
+ 
+ static void rmi_f12_process_objects(struct f12_data *f12, u8 *data1, u32 size)
+ {
 
 -- 
-2.55.0
+2.53.0
 
 
