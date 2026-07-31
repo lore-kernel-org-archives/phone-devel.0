@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C36737B3FE;
-	Fri, 31 Jul 2026 20:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3F637756F;
+	Fri, 31 Jul 2026 20:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528649; cv=none; b=Nae4wn8Ot+xZjfHBf3cF1TifpT2Ij5I4bJEY/5wzy1CzqUSVUpGLiJYwDbEjksxR4svP1d/X+QUfCAixIx7vUpbCcUhqft5XYdEwY4OSAzM8MKedL1I6eGV+isPynMNZKRj3TvZI1bJ4aI0Z/i84dYxHcojD6hlK/XMqa9EwpWY=
+	t=1785530061; cv=none; b=GvI++wKgiqlAjZKnBbIMxZSG/ZkUpL8fByj+2/VhQ6MJXfSw/4YG/g6xI6SL6txsA3qbk1mvsE+B9GSzxGfjZ0l3g+Pff8LDXSP7F0mHHZw5bVGQck71EaqY03uCzmvJGg4RsqrSf8uuhHOYd3pnEJ/sxZt46/XkWICFS8W1wb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528649; c=relaxed/simple;
-	bh=MN+E8uKmNziTDPAS4WhxKrvN1P3cyNy2Cs44KWIQrpw=;
+	s=arc-20240116; t=1785530061; c=relaxed/simple;
+	bh=gx9bijnn+Hz1eN9yKjmxkI87RpcUy74TLPj4ERZMN1g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i+5G1HenXBNb5zxwTCiD/tQ6bz0pL7DtPndlNSZp9OsBKfDFTb4Chj8+qbCxHAsQfH3YQ6AI8tlqjTz0sYVCSJMxwN0XGHauGqFlQBptaBHyHCQAY5PTzilEv+X7ZUVXBZSPjAc39K113ZJC9Mctrzhvl34PNKwO5c7kYWYlZp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDLKP4qa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=evU5suBKofPs3WRy2DpUSmZs30McmrYVQoTxTXZwvyxBpWNlkaDcrfbr+7i1sl+k9Tm34qxX7loD8LTYupFPyZogDqPkg2gtN1RzhJVxFFk0ZJuWEkpvZM+Pq1xr2yVaks2OZX/bqQc2KyahdBSxHA2tQYe3PlSb6h4WVrSNL1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1b1kK6r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDLKP4qa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D25BC2BD00;
-	Fri, 31 Jul 2026 20:10:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1b1kK6r"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 65662C2BCB9;
+	Fri, 31 Jul 2026 20:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785528649;
-	bh=MN+E8uKmNziTDPAS4WhxKrvN1P3cyNy2Cs44KWIQrpw=;
+	s=k20201202; t=1785530061;
+	bh=gx9bijnn+Hz1eN9yKjmxkI87RpcUy74TLPj4ERZMN1g=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RDLKP4qaYUWSnOPsvPDXKgqiJ/3VqOm+WLVoJ9HaD53+rrsSJeAOQH1PVgIQ8mqrS
-	 8h9A7/CBjXmYuOHpukKPCafu9cwROl6Jn7DXR+HgN9rCDTrPPPwbbRZ+Xz6MWhLL84
-	 t+ZsiK2mniuu5CnuR1No+T0dqxu6MPMf3e98R1h9iElPbHZ3trLJnnqrLPB2iHBuBI
-	 sLjpKjwgqj18R86cFoSO2q/tgmRk5FggkrXqJpUsgiF2f0NgZCSsx0JY4vLqUwyH6n
-	 JWAy5x83BJig4p+V3ZhI265xrW5ixmvnA0Jyn7OoLljqltTOT7WRPzL0xAE5dPru7h
-	 qYSXd4tmxrMcw==
+	b=V1b1kK6r+gnSFKEMelfll8k+HkYG4o2OXUqxUAbmg0sPrDdhl1/DQrfRm38pQ4Iaa
+	 5fcq1Up+u5WshMZ9ZPjIQ8NHYT97jzqAlYtDj0tZg0DzjAz8X21nGP5vaKNvI2HlA/
+	 XjiJJx/x+V22//Mgcrl6YMdKP07j8jwNLj+PB3xTyDdBQ8YbcGi195ObRL8fQ5ULiL
+	 wTcOsee6c4R2WiRPrvwL6B9G2ukZUS1tCqej2hMBxoWo5oHXtWcHtG2s2r8DQjwUX+
+	 Fz3tN1FJLuSZEDsQTlFT3ZV4ImhRPZTr+bnuHlPG/HX7mX+GDi3fQrOjgI8wZr8uQ8
+	 cj/g3upHGOQ1A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38D4BC5516F;
-	Fri, 31 Jul 2026 20:10:49 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Fri, 31 Jul 2026 22:08:23 +0200
-Subject: [PATCH v10 4/4] arm64: dts: qcom: msm8939-asus-z00t: add Venus
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45E6DC55174;
+	Fri, 31 Jul 2026 20:34:21 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Fri, 31 Jul 2026 22:34:12 +0200
+Subject: [PATCH v9 1/5] Input: synaptics-rmi4 - handle duplicate/unknown
+ PDT entries
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,70 +41,200 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-msm8939-venus-rfc-v10-4-9ac503250fc7@apitzsch.eu>
-References: <20260731-msm8939-venus-rfc-v10-0-9ac503250fc7@apitzsch.eu>
-In-Reply-To: <20260731-msm8939-venus-rfc-v10-0-9ac503250fc7@apitzsch.eu>
-To: Bryan O'Donoghue <bod@kernel.org>, 
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+Message-Id: <20260731-synaptics-rmi4-v9-1-f088c47af6c5@ixit.cz>
+References: <20260731-synaptics-rmi4-v9-0-f088c47af6c5@ixit.cz>
+In-Reply-To: <20260731-synaptics-rmi4-v9-0-f088c47af6c5@ixit.cz>
+To: Kaustabh Chakraborty <kauschluss@disroot.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
-Cc: Erikas Bitovtas <xerikasxx@gmail.com>, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+ Vincent Huang <vincent.huang@tw.synaptics.com>, 
+ Marcus Ramberg <marcus@means.no>, 
+ Casey Connolly <casey.connolly@linaro.org>
+Cc: David Heidelberg <david@ixit.cz>, linux-input@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  phone-devel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785528647; l=851;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=vlNIGsZjjCgtqd020ljm5+oJCLR6R19lTDHEE9egzdU=;
- b=8TM5hw4wja65Zv38hod93BBrYT1cwIwhvPZToxGBMhoeUJ5BgT0Rq9m7i4djk8qOe4nmN9ka7
- hld2quFarESA51mu5OA39xdLcdqJtOXHHqlRlYplRJHTGLsnF/6C678
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4835; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=QMmRp8KVD1VgRiH9r3c9vC9t2faLPigCXSGNEqMux4o=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqbQbLdbwhgLM+vUDHssT065RleIOK4kdKZsiWP
+ /hyFkkNeMyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCam0GywAKCRBgAj/E00kg
+ cqBND/wJMxsTYkoG+1yN8r2lL0YR57M6mu13XPU2KVd9e8M7Tro17L2KLqcibf7/4XKoZI2jPuu
+ ny5AE7B9fvtxdvrhPhnaUlQ8s4hn1OEq+GHfXT7PqhGxqjpimFNy6Ic7qC4HA/YeXl3YMBZQl7j
+ h7loBfNoqZU8/bHhwFyzxur+rQx4ib3KEP8iITXNV9xijlKIy39OwFJ0eYZSQoznqiU/q+6nhso
+ E39rVd9Ptkx2sBh49Ybk0d5aBiNFKEGnqL4MDZQ33MXJR+/WomJFbJFXaIQyLnmtlAMyA7B+Mir
+ ze550DrD1IYatrWYV7wB3N/ld2nPLxyzj6pp160saV0A5aDy9XHNg8Ll0dl22ILq6JJhjI7jbWa
+ nxYjfEKLbMhFjmZ4xo+pPPeLJvw5widNjkuFSxmCEcf3hpTPY/rX/x1kCY+rVemzgSw70lGONHJ
+ 6+4KVz+XCncbJ1Yd3ijwSjVHDcqn5lmbEysKF9ydogfdMUdzzoxA2fX7lvmkz+diFLOl1FwQdbr
+ h0SugZDpiSY54gnGCs6+djCFTs/M9zn4ymn00byaINHQ3WT7u++4PZx/0Uc89e47GGMvuJ9t3BJ
+ cUrND48duKOU5cg0DOB5xlqqWMVkfZE8CbXveewYaZmHltvNRXRkhjlEGVR1MZBbyrJhzlnnfhv
+ mVUIxy77bd6U5hg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-From: Erikas Bitovtas <xerikasxx@gmail.com>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-Enable Venus video encoder/decoder for Asus ZenFone 2 Laser/Selfie.
+Some third party rmi4-compatible ICs don't expose their PDT entries
+very well. Add a few checks to skip duplicate entries as well as entries
+for unsupported functions.
 
-Default firmware paths work on Asus ZenFone 2 Laser/Selfie, which
-means firmware-name property can be left out.
+This is required to support some phones with third party displays.
 
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+Validated on a stock OnePlus 6T (original parts):
+manufacturer: Synaptics, product: S3706B, fw id: 2852315
+
+Co-developed-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Co-developed-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/input/rmi4/rmi_driver.c | 41 +++++++++++++++++++++++++++++++++++------
+ drivers/input/rmi4/rmi_driver.h |  7 +++++++
+ 2 files changed, 42 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-index 90e966242720..231a3e9c1929 100644
---- a/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8939-asus-z00t.dts
-@@ -267,6 +267,14 @@ &usb_hs_phy {
- 	extcon = <&usb_id>;
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 5d49a9021c7d0..3edec5ae1f8c9 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -493,22 +493,48 @@ static void rmi_driver_copy_pdt_to_fd(const struct pdt_entry *pdt,
+ 	fd->command_base_addr = pdt->command_base_addr + pdt->page_start;
+ 	fd->control_base_addr = pdt->control_base_addr + pdt->page_start;
+ 	fd->data_base_addr = pdt->data_base_addr + pdt->page_start;
+ 	fd->function_number = pdt->function_number;
+ 	fd->interrupt_source_count = pdt->interrupt_source_count;
+ 	fd->function_version = pdt->function_version;
+ }
+ 
++static bool rmi_pdt_entry_is_valid(struct rmi_device *rmi_dev,
++				   struct pdt_scan_state *state, u8 fn)
++{
++	switch (fn) {
++	case 0x01:
++	case 0x03:
++	case 0x11:
++	case 0x12:
++	case 0x30:
++	case 0x34:
++	case 0x3a:
++	case 0x54:
++	case 0x55:
++		if (state->pdts[fn] == true)
++			return false;
++		break;
++	default:
++		rmi_dbg(RMI_DEBUG_CORE, &rmi_dev->dev,
++			"PDT has unknown function number %#02x\n", fn);
++		return false;
++	}
++
++	state->pdts[fn] = true;
++	return true;
++}
++
+ #define RMI_SCAN_CONTINUE	0
+ #define RMI_SCAN_DONE		1
+ 
+ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
+ 			     int page,
+-			     int *empty_pages,
++			     struct pdt_scan_state *state,
+ 			     void *ctx,
+ 			     int (*callback)(struct rmi_device *rmi_dev,
+ 					     void *ctx,
+ 					     const struct pdt_entry *entry))
+ {
+ 	struct rmi_driver_data *data = dev_get_drvdata(&rmi_dev->dev);
+ 	struct pdt_entry pdt_entry;
+ 	u16 page_start = RMI4_PAGE_SIZE * page;
+@@ -521,44 +547,47 @@ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
+ 	for (addr = pdt_start; addr >= pdt_end; addr -= RMI_PDT_ENTRY_SIZE) {
+ 		error = rmi_read_pdt_entry(rmi_dev, &pdt_entry, addr);
+ 		if (error)
+ 			return error;
+ 
+ 		if (RMI4_END_OF_PDT(pdt_entry.function_number))
+ 			break;
+ 
++		if (!rmi_pdt_entry_is_valid(rmi_dev, state, pdt_entry.function_number))
++			continue;
++
+ 		retval = callback(rmi_dev, ctx, &pdt_entry);
+ 		if (retval != RMI_SCAN_CONTINUE)
+ 			return retval;
+ 	}
+ 
+ 	/*
+ 	 * Count number of empty PDT pages. If a gap of two pages
+ 	 * or more is found, stop scanning.
+ 	 */
+ 	if (addr == pdt_start)
+-		++*empty_pages;
++		++state->empty_pages;
+ 	else
+-		*empty_pages = 0;
++		state->empty_pages = 0;
+ 
+-	return (data->bootloader_mode || *empty_pages >= 2) ?
++	return (data->bootloader_mode || state->empty_pages >= 2) ?
+ 					RMI_SCAN_DONE : RMI_SCAN_CONTINUE;
+ }
+ 
+ int rmi_scan_pdt(struct rmi_device *rmi_dev, void *ctx,
+ 		 int (*callback)(struct rmi_device *rmi_dev,
+ 		 void *ctx, const struct pdt_entry *entry))
+ {
+ 	int page;
+-	int empty_pages = 0;
++	struct pdt_scan_state state = {0, 0, {0}};
+ 	int retval = RMI_SCAN_DONE;
+ 
+ 	for (page = 0; page <= RMI4_MAX_PAGE; page++) {
+-		retval = rmi_scan_pdt_page(rmi_dev, page, &empty_pages,
++		retval = rmi_scan_pdt_page(rmi_dev, page, &state,
+ 					   ctx, callback);
+ 		if (retval != RMI_SCAN_CONTINUE)
+ 			break;
+ 	}
+ 
+ 	return retval < 0 ? retval : 0;
+ }
+ 
+diff --git a/drivers/input/rmi4/rmi_driver.h b/drivers/input/rmi4/rmi_driver.h
+index abeafb77a4838..6de8faed08917 100644
+--- a/drivers/input/rmi4/rmi_driver.h
++++ b/drivers/input/rmi4/rmi_driver.h
+@@ -44,16 +44,23 @@ struct pdt_entry {
+ 	u8 interrupt_source_count;
+ 	u8 function_version;
+ 	u8 function_number;
  };
  
-+&venus {
-+	status = "okay";
+ #define RMI_REG_DESC_PRESENCE_BITS	(32 * BITS_PER_BYTE)
+ #define RMI_REG_DESC_PRESENCE_REGS_MAX	(3 + RMI_REG_DESC_PRESENCE_BITS / 8)
+ #define RMI_REG_DESC_SUBPACKET_BITS	(37 * BITS_PER_BYTE)
++#define RMI_PDT_MAX 0x55
++
++struct pdt_scan_state {
++	u8 empty_pages;
++	bool pdts[RMI_PDT_MAX + 1];
 +};
 +
-+&venus_mem {
-+	status = "okay";
-+};
-+
- &wcnss {
- 	status = "okay";
+ 
+ /* describes a single packet register */
+ struct rmi_register_desc_item {
+ 	u32 reg_size;
+ 	u16 reg;
+ 	u16 num_subpackets;
+ 	DECLARE_BITMAP(subpacket_map, RMI_REG_DESC_SUBPACKET_BITS);
  };
 
 -- 
-2.55.0
+2.53.0
 
 
