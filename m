@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA03B45628C;
-	Fri, 31 Jul 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482D136F8F0;
+	Fri, 31 Jul 2026 20:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785521624; cv=none; b=AKKL3vwNvvTm8IoazkEI/f0itRQ8pwykz6628tIqRLBLML1xY5rnqo+MR/+pEMEPVHub1rmgBEAofYUf2uClUL/EFuPNy5d3VGE6nqsKVpqnU3KHHMoAv9OxRylr4JKIhCCVceUWks984k9FIfmgWF/FxRazMB9/BjGH/wGut2g=
+	t=1785528649; cv=none; b=XNN7qMUGRTnLBm12Y16O1/vDT6+fOK4C3VUp5rLr9zjyaOookLa4w/XXIFbvZ8iOPI0CFhhfBeKABZqPjVc0CSoNkcl/rYMnT8dNu/2saGrXV5dIo9FGGRQtVw2Q1ZoYks1dde+l6eG9IL5dE4FZogbeeVDj5jZOhAlV48uf0vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785521624; c=relaxed/simple;
-	bh=nxKCitRBdhRFYrqzR4Nz0UpPkFjaxXyXjUdCT7aiPK8=;
+	s=arc-20240116; t=1785528649; c=relaxed/simple;
+	bh=v/Wwhs9C29QjHbW1bSV59yh/8/MBs9P70QIe3ou74F4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TIpBIP4W/8hCZmk1dk1dzLF4a0ZtfXolY2waO1iPBTFUKUvscomo4D/A+8rpy5B82BXd+En7NhvwxCypuhqhxoyXk084YlRPNjgo16evORzOFT+OTnTfphn/KoUJ5DITNMN34hweEgJisBewNAH/+NEAe8tILYOeJ+NmYN0CC9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q49+8U3P; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Vc0oTXNnOqgODDcDTOHkrtTMByVgO9x53gcUJTEkEEL/y6ilo18ZEnYVUaMWYK0ln7JQcsAMYDGIazFqUvLyRafIT5kAPez3qXfQ0o8K++B8zkckR/N10EPzHmO2vTu19f8DKzT8iny3dPG32TdbcGe/LCA3o4UfcQ53SvomrUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0CVfZ/H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q49+8U3P"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9749EC2BCF5;
-	Fri, 31 Jul 2026 18:13:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0CVfZ/H"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E5725C2BCF6;
+	Fri, 31 Jul 2026 20:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785521623;
-	bh=nxKCitRBdhRFYrqzR4Nz0UpPkFjaxXyXjUdCT7aiPK8=;
+	s=k20201202; t=1785528649;
+	bh=v/Wwhs9C29QjHbW1bSV59yh/8/MBs9P70QIe3ou74F4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=q49+8U3P+wZpNKZbOltnCftjC520D2sdQ7izxAbDN7kea/S1bEMh31nvsGzRWHYuo
-	 zgSLVOec1Vq9jNpszH76WRvRLlsl5lz4sAGpQqOHL9kfpyf54xxHS6Z8ChymUkRdB/
-	 2hNqIVwj33TIKue7YhaEGJRhy+F6iX2dQycakDJT7IUwGG/8FN5rU5xIACsunmBivf
-	 6EQGG3C+mzFN70EZmEsC2FxnPLlVJojV4ET9yOJD4kza86mD8B9xEMnhA9REqefF+H
-	 pTC3Qb26qyPdLi7Blyx4ggeaUvDhX6FQMBUYj/T5xrOlwWIupsVQTfj5jH/yp/m3NS
-	 U5g92NGxll9NQ==
+	b=X0CVfZ/HYyyU3HqxsUCn4043H9MvZG1+i2lXLFT3jNiAr4dzyusdR5sS/T6klhnqY
+	 AFpowgDh8YreRyN/H4Wd7j2FoVas7cIwgOSFTfMxbpgL56ZkuI6dsEAMKk0Mfl+Dhf
+	 CrNeGgDdLPXpFywK+U+DzKi/tNmq77oA9gVrWz7juma6syhYopfoASAsS4GSmGKxfv
+	 dplaMWvOssL++sa8QKglNmVKABSQ4oK4Eoshb+mr8DLpOPU+YkXmnhiY0j5urjRgE6
+	 27XECFViOT9Nn6OooBwqxRAAU5pGoLf9jrpYxh7VZV2CRKf99y0YceANv4qce1EpYc
+	 S9p1nABExW6Ww==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78F28C55175;
-	Fri, 31 Jul 2026 18:13:43 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 31 Jul 2026 20:13:42 +0200
-Subject: [PATCH 2/2] Input: rmi4 - fallback to platform data for x/y-mm in
- F12
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4363C55174;
+	Fri, 31 Jul 2026 20:10:48 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Fri, 31 Jul 2026 22:08:20 +0200
+Subject: [PATCH v10 1/4] clk: qcom: gcc-msm8939: mark Venus core GDSCs as
+ hardware controlled
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,83 +40,91 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-respect-x-y-mm-v1-2-3e85a4bec745@ixit.cz>
-References: <20260731-respect-x-y-mm-v1-0-3e85a4bec745@ixit.cz>
-In-Reply-To: <20260731-respect-x-y-mm-v1-0-3e85a4bec745@ixit.cz>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260731-msm8939-venus-rfc-v10-1-9ac503250fc7@apitzsch.eu>
+References: <20260731-msm8939-venus-rfc-v10-0-9ac503250fc7@apitzsch.eu>
+In-Reply-To: <20260731-msm8939-venus-rfc-v10-0-9ac503250fc7@apitzsch.eu>
+To: Bryan O'Donoghue <bod@kernel.org>, 
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
+Cc: Erikas Bitovtas <xerikasxx@gmail.com>, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1349; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=FHkjKLPSxXK4iS4yiWmJ/MFTnc2JaT4CfcKwjt/EYzk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqbOXWzlXUJRaASEN9halIiggO1xueDsO71jPpA
- SVyrkG0wXKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCamzl1gAKCRBgAj/E00kg
- cv5OEACEXcIpioN0gy0GimILBfxT0MBmMM1g67cEX+Mp6G+zGgPDV33FddT1ZiQe5xJcDiK7ZN0
- dXgxHIZ+e6BVPI2708brv8GvDnNCUNQock4bvxQ9K3gmU7p8bgLO2C8qI0JaDsndWXUoZx3uI3R
- 3mGhiP6Ijva99By/1MQzyRDkgym1yyi2lzmqvfH4/eAT/USZMBCOGXUZlupeoNbZq/N36rz2SPg
- x2xKpSD3pfKM3BEaTfmcBEv++kaj8iNPqGFsPk+JwIFoTZAQR88CRZpbmOeyc9yGgPTEiOX7Ikq
- a1qHqDeMDsRUUFfAmk21QId/jpyuYLUlg6UrLrd9bSuyztfNNNDE5XwlRaj7emLATe75+l0zg7h
- KDnEDBivGv0QvDEgRoUewiDQ8ecSJhRHCvWv+WL288joZF+mqLR+mn6jdUD54N3gk/S11F80EzS
- AETXWwZ8noHXnhQ0Hu/exB3+CeuI7yz4ja5pextQFm9k+EGa7b7bc4+4xG0CYolDXqowlQGTcsr
- W4Ony28qAQlWl2epBxfN5t1FFnKrNtzmaaz/kVFcGdbpmVuST5cKOCwGUadJpeLhofzZth8FWig
- G8/XFTTiYMWcCHa0piHA7ZJRyBUpVu5uDFLwcWbou4L4MKUcGn/nFG4vyS7vhlPDdIyVPl3NV9V
- kxTDhhSFC1zr3fQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785528647; l=1606;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=Zcl6BS6NSRBxGBTBPqhiSvFlL/mbr0G2alrt9SBdJ5A=;
+ b=rzIaEPt57WcdIZPW/V7tFMVty/ab0yGQppF0pJQBFCgUbg0XTEJLE23TySOmDqtOtTOGeUrKN
+ fqM0Q/SpiB6DNaV+pjibLKrv78wwQDVk+UWM2X0WCHZ9bQnCNtv3f0c
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-From: David Heidelberg <david@ixit.cz>
+From: Erikas Bitovtas <xerikasxx@gmail.com>
 
-When detection for touchscreen-x-mm / y-mm returns 0, fallback to the
-platform data, so we get meaningful values.
+Allow Venus core GDSCs to have their control passed to hardware, so they
+can be powered on by Venus firmware and explicitly state that the vcodec
+clocks' halt bit should be checked.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+[André: Update commit message]
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/input/rmi4/rmi_f12.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-msm8939.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/input/rmi4/rmi_f12.c b/drivers/input/rmi4/rmi_f12.c
-index 88797556e738c..6f2e98c3a3499 100644
---- a/drivers/input/rmi4/rmi_f12.c
-+++ b/drivers/input/rmi4/rmi_f12.c
-@@ -194,18 +194,29 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
- 			 "platform data x_mm (%d) != detected x_mm: (%d)\n",
- 			 sensor->x_mm, x_mm);
+diff --git a/drivers/clk/qcom/gcc-msm8939.c b/drivers/clk/qcom/gcc-msm8939.c
+index ffd7f14fcbaf..3900a06189ff 100644
+--- a/drivers/clk/qcom/gcc-msm8939.c
++++ b/drivers/clk/qcom/gcc-msm8939.c
+@@ -3665,6 +3665,7 @@ static struct clk_branch gcc_venus0_vcodec0_clk = {
  
- 	if (sensor->y_mm && sensor->y_mm != y_mm)
- 		dev_warn(&fn->dev,
- 			 "platform data y_mm (%d) != detected y_mm: (%d)\n",
- 			 sensor->y_mm, y_mm);
+ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
+ 	.halt_reg = 0x4c02c,
++	.halt_check = BRANCH_HALT,
+ 	.clkr = {
+ 		.enable_reg = 0x4c02c,
+ 		.enable_mask = BIT(0),
+@@ -3682,6 +3683,7 @@ static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
  
--	sensor->x_mm = x_mm;
--	sensor->y_mm = y_mm;
-+	if (x_mm)
-+		sensor->x_mm = x_mm;
-+	else
-+		dev_warn(&fn->dev,
-+			 "x_mm detection returned 0, keeping %d\n",
-+			 sensor->x_mm);
-+
-+	if (y_mm)
-+		sensor->y_mm = y_mm;
-+	else
-+		dev_warn(&fn->dev,
-+			 "y_mm detection returned 0, keeping %d\n",
-+			 sensor->y_mm);
+ static struct clk_branch gcc_venus0_core1_vcodec0_clk = {
+ 	.halt_reg = 0x4c034,
++	.halt_check = BRANCH_HALT,
+ 	.clkr = {
+ 		.enable_reg = 0x4c034,
+ 		.enable_mask = BIT(0),
+@@ -3754,6 +3756,7 @@ static struct gdsc venus_core0_gdsc = {
+ 	.pd = {
+ 		.name = "venus_core0",
+ 	},
++	.flags = HW_CTRL_TRIGGER,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
  
- 	rmi_dbg(RMI_DEBUG_FN, &fn->dev, "%s: x_mm: %d y_mm: %d\n", __func__,
- 		sensor->x_mm, sensor->y_mm);
+@@ -3762,6 +3765,7 @@ static struct gdsc venus_core1_gdsc = {
+ 	.pd = {
+ 		.name = "venus_core1",
+ 	},
++	.flags = HW_CTRL_TRIGGER,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
  
- 	return 0;
- }
- 
- static void rmi_f12_process_objects(struct f12_data *f12, u8 *data1, u32 size)
 
 -- 
-2.53.0
+2.55.0
 
 
