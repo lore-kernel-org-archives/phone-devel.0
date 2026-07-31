@@ -1,87 +1,39 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from ixit.cz (static-84-42-129-46.bb.vodafone.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECAC44D01C
-	for <phone-devel@vger.kernel.org>; Fri, 31 Jul 2026 16:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D264A449B1C;
+	Fri, 31 Jul 2026 16:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785516150; cv=none; b=eaG6XgTJzJSq6Tdl7zf+7WQ4WkBKfB595Lhir+mgFhRuRXCg9bmeXGnRsZ1pgIramJm/sJ5H4XbixtCpDmDmpvmjLeqcCsTBZhu8yuKy2/YE4j5/XldzF0rcf32+VQ34tqpXKoqMnGzZN7btvRY/tOfyTJ9NmyTC6lOgxSi5y+Q=
+	t=1785516386; cv=none; b=lNW1vQ9vcfCj6bH9JrevHCsnANOwmEvnp0udIwB755J7UWMB+LkKV8ZhI/9S4H1uowvzBHU3EpKM4Zp2qJzOjJCgNKHtQP/dltEg0LXLNg5h4/qHo7OIAocdluBpZ126Leczr1+SYMfxZdR6P1m795NQ/bHI0oeuwE9221Y7brA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785516150; c=relaxed/simple;
-	bh=j7oNLmRGMB7G6Bknh5UBWwNbKEi6AzTwDDWtWUuYDxw=;
+	s=arc-20240116; t=1785516386; c=relaxed/simple;
+	bh=EgHKssWS2IHEXnxUIZmtbiWHpOQgMwWncHCs0HiDZD4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jsAoY8QaHw7baeONmLWBJU9jI7ZnNPh3HHr/hnJHwZ2m5Mrpc7l53rFgvrFb0A2io7OOrRtyjYd0SgJ5wk+ABT0K8eXf7+LYMnCCKcY/DiLI7LCmWSjkNXk/pch1IPz1OTaAjCe4/d8WQ+Vdku3gDyr+z9dmmSMLdieV/7Hc4Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iWyCUDqU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bCJM5n8v; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=PeZ5ixec0jhKgmytkUupg5XTrDTRmYCw8gWCHiwBJPZntZdypLujSjVkBoWMUo0QUYxncVQt6k6Bhh5T6r6aAxdPW5irvQAMJTlqejiNafjb7KBTwcxpvOT3JWsbsb6KUmDM2yQgEKsHuQGg2cYqAs/BWfT9llCXSQeUNYPC3lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=js9CfTCX; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iWyCUDqU";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bCJM5n8v"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VFP8Oe108902
-	for <phone-devel@vger.kernel.org>; Fri, 31 Jul 2026 16:42:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2kl7Z2qOkmquPX69ck+O7i+EQ9JO4vg6bvwMuEcRZXs=; b=iWyCUDqUGRxgqRqB
-	soyngGkJSiQdGpu7AqErmbaNNBcysw/bB6MLShY5bKTqsU4cEkZR16GXkC9sOBOK
-	fTVxHO0YQ05ExrdftiLGafcaG8ofrf8vS0hGXnCGkLy3e8/DT7H/8P3ynwusJ5VX
-	pnnZEKP+dxa5ThpnBSgXesrd25bhil7S83jeSRV6ro8sm9LqSRoEeevJHNPaS4CG
-	Vd7GQMzdtyrxWneanaGXQiXxhzoz16KoZVqLj/6qTW08HsH3ijAYI0pbs+MjlV32
-	llmGHJqllwbudh3j6591IpekHR0UXi6hByKzjE8Gc3Eq4FXJbIxTiwMgI59UAihG
-	k9Vv7Q==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fru2u19df-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Fri, 31 Jul 2026 16:42:26 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51bfd1772d8so2037271cf.1
-        for <phone-devel@vger.kernel.org>; Fri, 31 Jul 2026 09:42:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1785516145; x=1786120945; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2kl7Z2qOkmquPX69ck+O7i+EQ9JO4vg6bvwMuEcRZXs=;
-        b=bCJM5n8vUyZY0re/wU4C0VMQ2yv7NSP1JflTB2IC9IL0SyrWFpcxHiEBUbkZ8TD1m9
-         KIIobzHzovqpJNsoCYWQ+mEk7nlQuN5qkB479GglwZylRFEETE1vehv2nlkU6n6yw1EV
-         FxT8J3zqqNz2gtJMsmSVnHDyPOl/aG5Nwl7ncveZlkBqVH07V/GvROXGEIz30ItHae5J
-         OaFtZxsALia2hnjOUQ0uq7nj2H9tqJtzjfM56KuEvlyA5fwcPw6L4HeLSdmE17PnYS33
-         1jU/cOXLtGMDiGb8cJRJbFHv/1obIELzkmCIx31DaBRsdhIFln5Lpb6dq9Qz3emfL1Zj
-         KNEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785516145; x=1786120945;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2kl7Z2qOkmquPX69ck+O7i+EQ9JO4vg6bvwMuEcRZXs=;
-        b=ImQrwLwwvVS23KXpgvGpS4WcYWe+flT9wm2h0IzMyBSiykGp89jeVbsfCLIQTsfP3X
-         nKRXbImv3bR3jqJhZ3Lw3vWtI+4dODQKOomnEeCKO+8EilcUa+fEcetyeCT4Snu4xDuy
-         C7BvApD134p8CZUJ9rz1hi3KYYYTliiLgYhvdpn6Uvwq5XOn6dJgmfT0Nme7S88RVBj2
-         TnbbSLvXwkpyi019FSDWJAjXiZtJyIj1OSsVeVoVok2Q+L+CdEkEQdPUIqw2hoNnVhNo
-         AaCtrYhmX8Z0t3VrZs82ya2RpcivdjZt3pMlmo9Lcz0wb+SRSq1Jj0XgbaaSUWL37yeY
-         dkRQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqAcEJifXjW/xFfIA2ptWZIX34Xm/4FI+gVNC9hAjbv5m5kZxBk8TtWFtIs2KDmYp8ffA5kokPCAXzgyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2S7VOvdq44u9DxMhkAVcxmmA6Dzz/BsNAsv6YyIa+K/QUwCTM
-	0+KBQCm4DHgwCAuLAp6iPSHkW53eeY/RvnVz6ReGJOffaeg97qx7Bp5wd4HmSq6HCFPBJJSz1Zl
-	PU5DxwFzolw41QDt38GpbkwVM0pOHYupege77ROSTDq1B43FpL999tOlFioCnH81D4A==
-X-Gm-Gg: AR+sD13SOZu3X60qjwtpbvLW5K7SH2l6kIFz8kxHe+cg7kM7Zu8mEVIESFV0ctr/TQd
-	JEoGm/ELjP842Tw38Qqx2J4I0a9qKwUciQNNi2F8PxfcUo4YTtVF8jhrKfmp1ZbnawBiT6SDLbB
-	t0Q6ZTOpdEOrNeeDhK5C6XA8/tYcb0nRh7zA8E8fVAS0GJRuoXwNZk0laZ38B0wyfK93AzInYDO
-	umPmPMwhnLbpWiypmfiWqDF3x1Gu4iCpMJhlxsljNhWqcCSK1WMtdHzMsvMqV42huhMgGBmoOAl
-	74Nunyx/B6LzSWp+yjat0fcmN0tfMlS0zg8YTPPs0tyAOUL3UaNKxUbHc186JpcZCvgYtixdEQI
-	I0jbzDOcMbS3pbuL+JkVVUSdh
-X-Received: by 2002:a05:622a:aa42:20b0:50f:a53b:9d5 with SMTP id d75a77b69052e-52b56737710mr9634191cf.2.1785516145135;
-        Fri, 31 Jul 2026 09:42:25 -0700 (PDT)
-X-Received: by 2002:a05:622a:aa42:20b0:50f:a53b:9d5 with SMTP id d75a77b69052e-52b56737710mr9633851cf.2.1785516144687;
-        Fri, 31 Jul 2026 09:42:24 -0700 (PDT)
-Received: from [192.168.120.193] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd450d731sm218741466b.47.2026.07.31.09.42.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 09:42:23 -0700 (PDT)
-Message-ID: <b300cfc5-b6be-4227-905d-d69200fcf857@oss.qualcomm.com>
-Date: Fri, 31 Jul 2026 18:42:21 +0200
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="js9CfTCX"
+Received: from [10.0.0.182] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id D2BD45340464;
+	Fri, 31 Jul 2026 18:46:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1785516378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yTnhZR+RH3H49Tzpp/p53oE4c6zUUfnXbDUgm/T7+84=;
+	b=js9CfTCXnQ845E+2EUMHYeYyInsISOG10dFJzpDoAiwg22i2ehcrvQoxRkzaIqjc8TpBPF
+	nbljwfQUx2wAbyOgRzn5pd/OG4SlTt1AKc857c8H/utLfECJoP2zn2+b4RzyUSeb3kPgL0
+	dI7LxaNc/w5pO5sNJ8Zhdr/oeeBA0gk=
+Message-ID: <b9afe038-dfa3-4927-adf3-5b99885fb911@ixit.cz>
+Date: Fri, 31 Jul 2026 18:46:18 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,100 +41,147 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: soc: qcom: qcom,pmic-glink: Add
- compatible string for SM8475
-To: Esteban Urrutia <esteuwu@proton.me>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        phone-devel@vger.kernel.org
-References: <20260731-sm8475-pmic-glink-v2-0-28c04928ef22@proton.me>
- <20260731-sm8475-pmic-glink-v2-1-28c04928ef22@proton.me>
- <20260731-savvy-piquant-chowchow-f516f2@quoll>
- <9718d7b8-7303-47a2-9d75-58bbde6385e9@proton.me>
- <c4ceda32-d4c8-4fd9-b0d6-3f4519485bde@oss.qualcomm.com>
- <6fc5165c-95b5-475a-a0a6-e1d7b9721222@proton.me>
- <2ace2703-79cb-4046-a2b3-8fdeb9b2c99e@oss.qualcomm.com>
- <f3324409-8e07-478b-a0e3-da5b41d31e7c@proton.me>
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: sdm845-shift-axolotl: Add
+ actuator for main rear camera
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Alexander Martinz <amartinz@shiftphones.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260730-dw9714v-v2-0-d5da19e6c60b@ixit.cz>
+ <20260730-dw9714v-v2-2-d5da19e6c60b@ixit.cz>
+ <3ac4eb1b-348b-444a-bba0-e4c64d5b57bb@oss.qualcomm.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <f3324409-8e07-478b-a0e3-da5b41d31e7c@proton.me>
-Content-Type: text/plain; charset=UTF-8
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <3ac4eb1b-348b-444a-bba0-e4c64d5b57bb@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: Dyc9iYQwAusIX8xNdp1MgiHyvDdm6DHy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDEyNyBTYWx0ZWRfX9tzAQM75Tumw
- lkHn99neBrHbWLZlqctic9bw5RY0uUXpxsVaYSicmAEUmgOBB0ZZsQ/2d8VnZtMzBMG004ea265
- LHeTPrAQeBnElZqhiIVPvi/U/DecNW5T82PhT4OmGsUvdQ8o7rRbwPw9OkxEwPv02cI33d3VxNk
- Lq6yGxCC8enrH/iZVUDChBuC50+AejRJ6sY/lZzpEmpFxJzU+yQd21OXIMIc/dr3fdsIcGf9DF7
- EV8a2ISyPNoSStudicRZ/Z6L9o/kvu9TaTBWIRM0I2oiz1PsCEO4bMpTR8jqtfMbrp8gJKuje0u
- 5Dcdq8OeWzC1Zd0FFK16oHfqjmx/KMG3bCrKClwqJLvsgql9Jm30yfajp8UArpDAqNNQII/NWfE
- jJsUymSIv5iwOOmhK8KN065dPt4ew35X5Jhbz7TLfbFvRX6PVHNcQEN/yPV9JCjRuVSw4eb2be+
- dG5wKs8E0kxIwUoaQIQ==
-X-Proofpoint-GUID: Dyc9iYQwAusIX8xNdp1MgiHyvDdm6DHy
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDEyNyBTYWx0ZWRfX0XIdHFSfSmi+
- R7KbIn38ytDO3kjW5UIlsYoBEPKCifzpTl+p8MAYGt3SUUbyYkV0OxmOytT4Njh/4MhfDTQdIVT
- A9opvK1iXDxU4dtPlcwP+tStg0e1uds=
-X-Authority-Analysis: v=2.4 cv=b+uCJNGx c=1 sm=1 tr=0 ts=6a6cd072 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=x51eZAOGJv5k9Dsnt6IA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_05,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310127
 
-On 7/31/26 6:40 PM, Esteban Urrutia wrote:
-> On 7/31/26 12:28 PM, Konrad Dybcio wrote:
->> Somehow I confabulated the generic compatible being present in the
->> driver... I was trying to explain that
+
+On 31/07/2026 17:41, Konrad Dybcio wrote:
+> On 7/30/26 12:20 AM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
 >>
->> And yes I didn't notice the 8350/8450 difference. But anyway, the
->> resolution will be one of:
+>> Main rear camera uses Dongwoon DW9714V actuator. Add regulator and
+>> actuator node.
 >>
->> // 8450 is fully compatible
->> "qcom,sm8475-pmic-glink",
->> "qcom,sm8450-pmic-glink",
->> "qcom,pmic-glink"
->>
->> or
->>
->> // 8475 is special
->> "qcom,sm8475-pmic-glink",
->> "qcom,pmic-glink"
->>
->> depending on what you believe is more correct. I think the first
->> one fits better.
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
 > 
-> Yes, I agree the first case fits better, but I believe there is also a
-> possible third case:
+> [...]
 > 
-> // 8550 is fully compatible
-> "qcom,sm8475-pmic-glink",
-> "qcom,sm8550-pmic-glink",
-> "qcom,pmic-glink"
+>> +	/* SGM2036-2.8YUDH4G/TR */
+>> +	cam_bus_2p8: regulator-cam-bus-2p8 {
+>> +		compatible = "regulator-fixed";
+>> +
+>> +		regulator-name = "cam_bus_2p8";
+>> +		regulator-min-microvolt = <2800000>;
+>> +		regulator-max-microvolt = <2800000>;
+>> +		regulator-enable-ramp-delay = <100>;
+>> +
+>> +		gpio = <&tlmm 8 GPIO_ACTIVE_HIGH>;
+>> +		enable-active-high;
+>> +
+>> +		pinctrl-0 = <&cam_bus_avdd_default_state>;
+>> +		pinctrl-1 = <&cam_bus_avdd_sleep_state>;
+>> +		pinctrl-names = "default", "sleep";
+>> +
+>> +		vin-supply = <&vreg_bob>;
+>> +
+>> +		/*
+>> +		 * TODO: This node represent bus supply to the cam i2c module.
+>> +		 * Others DT do in similar fashion, but should be addressed
+>> +		 * by the bus-supply in the future
+>> +		 */
 > 
-> The reason why I believe this is that I've found SM8475 to include some
-> elements such as eUSB or PHY sequences found in more recent SoCs such as
-> SM8550.
-> I guess that's the case since SM8475 is a respin, but I'm not sure.
+> I can't quite parse the second sentence..
 
-pmic-glink provides three main services:
+I'll rephrase, I noticed that other device-trees where there is also i2c 
+level-shifter also introduce always-on regulator. I let clanker check impact on 
+power consumption, it's likely irrelevant, but in the future would be nice to 
+have proper bus-supply property in use instead of always-on.
 
-- UCSI (Type-C)
-- altmode pin assignment notifications (also Type-C)
-- battmgr (battery/power supply)
+> 
+> [...]
+> 
+>> +&cci_i2c0 {
+>> +	rear_camera_actuator: actuator@c {
+>> +		compatible = "dongwoon,dw9714v", "dongwoon,dw9714a", "dongwoon,dw9714";
+> 
+> 1 a line would be neater
+> 
+> [...]
+> 
+>> +	cam_bus_avdd_default_state: cam-bus-avdd-default-state {
+>> +		pins = "gpio8";
+>> +		function = "gpio";
+>> +		bias-disable;
+>> +		drive-strength = <2>;
+> 
+> Other nodes have drive-strength first, then bias
+> 
+>> +	};
+>> +
+>> +	cam_bus_avdd_sleep_state: cam-bus-avdd-sleep-state {
+>> +		pins = "gpio8";
+>> +		function = "gpio";
+>> +		bias-disable;
+>> +		drive-strength = <2>;
+>> +		output-low;
+> 
+> Drop output-low, the regulator driver will set that
 
-In that scope, I believe it's no different to 8450
+Sure, all noted and next version will include these changes.>
+> Konrad
 
-Konrad
+-- 
+David Heidelberg
+
