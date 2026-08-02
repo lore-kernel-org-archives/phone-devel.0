@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F3C322B9F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8493264C2;
 	Sun,  2 Aug 2026 19:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785697468; cv=none; b=hiWWFEr1Spg0KdpDaQs4HXNgWI7E12u5AxE5Zn8GgfodkyH4z6LWKiJpVbodCbN+e+zU8FmE/VeG6Mk0MwXjoF8POeurthaOQwmRVScierCkg4OCeqgt8BeWANNS2NXSKgH9s588+0997v6ayHbKjC/sDYfXraCpdKnq60AJQX0=
+	t=1785697468; cv=none; b=EusWzKbVK8K1zim/l05XRhnQnQAjPCmcUppjG5hcmOM5OxfeHKnSu8Fsbl5PGamMD0xKTRGXs+aRgG2jTpX4Ud/mhPFIK97LHsCMqLhuNrSOBrXkG6HfeqB2LXEHs6CoA1O7g30zkIfzHUCLrvVIs++jS4YxgnjZPA8ct3PDaEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785697468; c=relaxed/simple;
-	bh=zej4kdUAy+UwwIeZvONpaRp1+hv+VHCuom+CNXEPQUc=;
+	bh=khCqX8lJFWK/GgSlxtmKqSrnQG3SMsT8JoAlUswSW/c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VsP6K0zQjcPfqygrMNlefypxkYhir3jaEEXLLgyXA/0rTnrwhkMHlKm9FuE3R4PTSCtS6YkTvdwsQ8HBOHIh/4zx8h5MqmGRnsoP6dNqGYLqaVQve/NGg6JOb7oOcPTGDcDF9E9xh4bYm+cuvY9okAd+czltzJFEdV3XE9JKYi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=emWhHtUS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cvT+G5ZsXtYEYiQaPAVmJer4ZlRjRpLrOfw0hOwKIxNezMrqYeFgu7oTB6HqJ+O9s9er6NesMGYWVwv27jSRCQ4VNhcYkGZCRTAqtXxH4cmaXsyhIDKUeDBnotOkTYmn95IDTfQAnvR6s/4umUevY5M61PV3TnDjnVnB3gms9zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mu9/w4FG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="emWhHtUS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D42A3C2BCFD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mu9/w4FG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E5C78C32786;
 	Sun,  2 Aug 2026 19:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785697468;
-	bh=zej4kdUAy+UwwIeZvONpaRp1+hv+VHCuom+CNXEPQUc=;
+	bh=khCqX8lJFWK/GgSlxtmKqSrnQG3SMsT8JoAlUswSW/c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=emWhHtUSlOLpIQswgiKeDdcQyWaBCZWPpnbTs+syFmMX2QqQJ4Ko0vGzBwYF6INRt
-	 F10QLfVkJBxxWUajm/kIiX806PN+kuZRZV4C5deTwBfXQPHCxPlBoB/gvlmTC//GZq
-	 FeK6g6MDdsttavGe1VoGZnV52D+CsTVWEeOeuwW2VkQBJnOhMaQoyOZXz2HLcuP43I
-	 1WU7GMxhP4SuXR0m4R4O6uORoLfkDqkKIjPTn5VeV2S1mJhbRZ55jR91mXPYrNu+me
-	 +zWszk4V+1hC+Uxrr8jrOzxE0sRHwEtRHYi7s2N6wgXn3wIr+euU4EoXWrsxqxqw6v
-	 AZ2pP/z78FkVQ==
+	b=Mu9/w4FGDmBRPIHScDRwqKGylarzijdkoFZnmyWb0duFf1HouJYmx1KmzL862COid
+	 vfOqARLQu4T3DfidrXmxRLiJjoGW2taBw9fjgP6tXBal7KwcassJ1G0eiaOlHom3tX
+	 9jv9ziVkR9cycjecW1Udz7peI0sp7GZIu7LPCyCjIfehlCnQiCSIKxeUcOvTRbIKAf
+	 XytMYkYvCb0cwqyoJBRKnGG5esr+rGnWLgGkGM6pySR7Y8tB/GqkQy3Bt328YMIfW4
+	 YlhdufvTgsne348JZCSt6wjMUu4mNdlSWlL9PtfdxNdfxQKqKri9q0wTZyyKFW+FCK
+	 BYQPRN4AI9DEQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B84D2C55182;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1C1CC55189;
 	Sun,  2 Aug 2026 19:04:27 +0000 (UTC)
 From: Antony Kurniawan Soemardi via B4 Relay <devnull+linux.smankusors.com@kernel.org>
-Date: Mon, 03 Aug 2026 02:03:48 +0700
-Subject: [PATCH v4 4/7] ARM: dts: qcom: msm8960: add SMEM & hwlock
+Date: Mon, 03 Aug 2026 02:03:50 +0700
+Subject: [PATCH v4 6/7] ARM: dts: qcom: msm8960: add Riva
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260803-msm8960-wifi-v4-4-5ffa27aea39d@smankusors.com>
+Message-Id: <20260803-msm8960-wifi-v4-6-5ffa27aea39d@smankusors.com>
 References: <20260803-msm8960-wifi-v4-0-5ffa27aea39d@smankusors.com>
 In-Reply-To: <20260803-msm8960-wifi-v4-0-5ffa27aea39d@smankusors.com>
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -51,14 +51,13 @@ Cc: phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>,
  mfd@lists.linux.dev, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  Antony Kurniawan Soemardi <linux@smankusors.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785697465; l=1523;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785697466; l=3618;
  i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
- bh=fvhRzRjU0yN+7aG9hHrRg8CqXC9zD6U9BQS3e0hc1Zc=;
- b=kyxD41Rgbk7rgTHi6d2z9eS0P1x+42mn3FEIqgPX/yv3mzFysQDa1jqF/vjzZTxqBMw2gXQxY
- 8rlMxD7mEmnB7DWeg5WWuHKvO2awf8WpxAK60C7kxQLAPMB7bYGjpe9
+ bh=fr3rjZlQXngheXwD/mNnh2DPhB8LO+v93yIQFztu+no=;
+ b=yk4Np48JMaXShJk2qbf/Z7G/8CWvHJksGcu7I2gFPYuX9bkwjHBZL2l3FiaehFFc/1LYnk2hD
+ Kt8eSKAhsW+Cy0xya4dfix40yyvyKIIlbJCZ5JBhy1INya0tH0Tg64Y
 X-Developer-Key: i=linux@smankusors.com; a=ed25519;
  pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
 X-Endpoint-Received: by B4 Relay for linux@smankusors.com/20250609 with
@@ -68,60 +67,133 @@ Reply-To: linux@smankusors.com
 
 From: Antony Kurniawan Soemardi <linux@smankusors.com>
 
-Enable shared memory communication and add the SFPB lock for MSM8960.
-These provide the foundation for inter-processor communication with the
-Riva (BT + Wi-Fi) subsystem.
+Add the Riva Peripheral Image Loader node to support the Wireless
+Connectivity and Networking Subsystem on MSM8960. This includes:
+
+- Reserved memory region for WCNSS firmware
+- WCN3660 iris radio controller
+- Bluetooth and Wi-Fi sub-devices exposed via the SMD edge
+- Pinctrl states for Bluetooth and Wi-Fi power management
 
 Tested-by: Rudraksha Gupta <guptarud@gmail.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
 ---
- arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 87 ++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
 
 diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
-index 00957482dee6..9389b6358d8d 100644
+index 0088381d77ea..b9c28e468d32 100644
 --- a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
 +++ b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
-@@ -91,6 +91,24 @@ memory@80000000 {
- 		reg = <0x80000000 0>;
- 	};
- 
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
+@@ -100,6 +100,11 @@ smem_region: smem@80000000 {
+ 			reg = <0x80000000 0x200000>;
+ 			no-map;
+ 		};
 +
-+		smem_region: smem@80000000 {
-+			reg = <0x80000000 0x200000>;
++		wcnss_mem: wcnss@8f000000 {
++			reg = <0x8f000000 0x700000>;
 +			no-map;
 +		};
-+	};
+ 	};
+ 
+ 	smem {
+@@ -320,6 +325,34 @@ i2c12-pins {
+ 				};
+ 			};
+ 
++			riva_bt_default_state: riva-bt-active-state {
++				pins = "gpio28", "gpio29";
++				function = "bt";
++				drive-strength = <2>;
++				bias-disable;
++			};
 +
-+	smem {
-+		compatible = "qcom,smem";
-+		memory-region = <&smem_region>;
++			riva_bt_sleep_state: riva-bt-sleep-state {
++				pins = "gpio28", "gpio29";
++				function = "bt";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
 +
-+		hwlocks = <&sfpb_mutex 3>;
-+	};
++			riva_wlan_default_state: riva-wlan-active-state {
++				pins = "gpio84", "gpio85", "gpio86", "gpio87", "gpio88";
++				function = "wlan";
++				drive-strength = <6>;
++				bias-pull-down;
++			};
 +
- 	soc: soc {
- 		compatible = "simple-bus";
- 		ranges;
-@@ -343,6 +361,12 @@ tsens: thermal-sensor {
++			riva_wlan_sleep_state: riva-wlan-sleep-state {
++				pins = "gpio84", "gpio85", "gpio86", "gpio87", "gpio88";
++				function = "wlan";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
+ 			sdcc3_default_state: sdcc3-default-state {
+ 				clk-pins {
+ 					pins = "sdc3_clk";
+@@ -459,6 +492,60 @@ saw1_vreg: regulator {
  			};
  		};
  
-+		sfpb_mutex: hwlock@1200600 {
-+			compatible = "qcom,sfpb-mutex";
-+			reg = <0x01200600 0x100>;
-+			#hwlock-cells = <1>;
++		riva: riva-pil@3200800 {
++			compatible = "qcom,riva-pil";
++			reg = <0x03200800 0x1000>,
++			      <0x03202000 0x2000>,
++			      <0x03204000 0x100>;
++			reg-names = "ccu",
++				    "dxe",
++				    "pmu";
++			pinctrl-0 = <&riva_wlan_default_state>, <&riva_bt_default_state>;
++			pinctrl-1 = <&riva_wlan_sleep_state>, <&riva_bt_sleep_state>;
++			pinctrl-names = "default", "sleep";
++			interrupts-extended = <&intc GIC_SPI 199 IRQ_TYPE_EDGE_RISING>,
++					      <&wcnss_smsm 6 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog", "fatal";
++			memory-region = <&wcnss_mem>;
++
++			status = "disabled";
++
++			iris {
++				compatible = "qcom,wcn3660";
++				clocks = <&cxo_board>;
++				clock-names = "xo";
++			};
++
++			smd-edge {
++				interrupts = <GIC_SPI 198 IRQ_TYPE_EDGE_RISING>;
++				label = "riva";
++				qcom,ipc = <&l2cc 8 25>;
++				qcom,smd-edge = <6>;
++
++				wcnss {
++					compatible = "qcom,wcnss";
++					qcom,smd-channels = "WCNSS_CTRL";
++					qcom,mmio = <&riva>;
++
++					bluetooth {
++						compatible = "qcom,wcnss-bt";
++					};
++
++					wifi {
++						compatible = "qcom,wcnss-wlan";
++						interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>,
++							     <GIC_SPI 202 IRQ_TYPE_LEVEL_HIGH>;
++						interrupt-names = "tx",
++								  "rx";
++						qcom,smem-states = <&apps_smsm 10>,
++								   <&apps_smsm 9>;
++						qcom,smem-state-names = "tx-enable",
++									"tx-rings-empty";
++					};
++				};
++			};
 +		};
 +
- 		intc: interrupt-controller@2000000 {
- 			compatible = "qcom,msm-qgic2";
- 			reg = <0x02000000 0x1000>,
+ 		clock-controller@4000000 {
+ 			compatible = "qcom,mmcc-msm8960";
+ 			reg = <0x4000000 0x1000>;
 
 -- 
 2.34.1
