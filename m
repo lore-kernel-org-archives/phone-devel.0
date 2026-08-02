@@ -1,89 +1,141 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB352C1584;
-	Sun,  2 Aug 2026 18:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E45C237180;
+	Sun,  2 Aug 2026 19:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785696772; cv=none; b=ErT9mFoCPqOnR8lZmcaNBbpMD+VL6fjN7ozXHMZZwqRu1KSzIvi3eG7ZXpBowlcP8kIeKyg0M0Y6FTTtITafu5kgW2JrGbMatqgx7qfxaMUC7YiA/hPJdu1S9XZj3elwvqV0Zzp8EqSc5B6VqV7CcezU+I+vXQ8MRC0wTELl+aI=
+	t=1785697468; cv=none; b=EN/chCVZCxs+UH8jjeCLTdradhlrNL8eQB2SZ0IUBGKdzTCp7gBJ86bZyFpoywI0GPm7w4Su6Hpi7QUJVEC2mJQa+TqoNzL8zLYp84d16dDwE7tiuXrrKVy6frABJReJdnrdHOzn8fVIK4H5UVcOOurKEEJZuAYka5n+rCxa0b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785696772; c=relaxed/simple;
-	bh=kg1Ubs5hh8yagdF4ZRFnQtABqhvw1Fz3ph+iJ7/tZ3s=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jN9455qild5/Gi6kV+05pygXQBR8BvWxauJlwBQOG2xzH2BGbI7l35YahojEQZM/510PRLku2IaByfJb+UVr8OSYdVxQZ0Ae6UHgBMK4KDNdB9s/5Ii44BLfLOM//Mv/veSQ1RUc7CCr4Ohm5yezqhQqxdrP3MBhPQH3hgwCV/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jjaCGM8z; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1785697468; c=relaxed/simple;
+	bh=zugU8+y0Yoj+/w5PM+oZxznMMbVN70TW1KMWzz2DKy8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ngkCGl8ktUPvIqH+RfUEvUsg6W4jrlzmXVJW3+67sxZPpQgUuRIn99HK+KPioceaIeejNhN2qQI5+HiP/VauAoZlP3wUKZ6rlML/M0/re+CtlKWjrX3Kvu3UGhAr+1XlrqgVBhM0BeHbFd+XCjsJSabou5ZLC0YDu28NkPQFD4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sED3JR35; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jjaCGM8z"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ecv3dAnjpbj95dDhT6WhWjFxzbgkCUgzqbqZU5zaHHQ=;
-	t=1785696770; x=1786906370; b=jjaCGM8zibInWoAshLKc6qxte3KX295NJDhFfcMAf+GC8fy
-	g6Qmrnz+ATfz0pcgQUeTW8A8wWs+OT4Ni3n2d6ejQM1PgqIW7FOSf0qa7uD5A+81CrihWSdCbv7mB
-	Nxu5Zcu+LCabuF+NrWsvOP05HA5FcKzsYm4z3JSU7u4350x7eNlrmSA6ITwfFxiuR9+WssNftj1a1
-	bYA9d59axzJfk9TG4NK7jtD5Hj0daWnao0Zvp/solARth7NgiEKXxzdOSTh9rqM1sxw0WHknqh0St
-	Fl89dP2jfxaQrTh6Sb5cAkNF/KZOH8gKqa/Qs1lheB8g8hYluPaIB0TtqxmFHFkg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wqbIl-0000000DyWI-0tHl;
-	Sun, 02 Aug 2026 20:52:47 +0200
-Message-ID: <35231759dc9633edf72a745d0079897c000ff5ea.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: rsi: Fix types to appease CFI
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stefan Hansson <newbyte@postmarketos.org>, Stefan Hansson
-	 <newbie13xd@gmail.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Date: Sun, 02 Aug 2026 20:52:46 +0200
-In-Reply-To: <ba0fbf6a-024d-425c-aed3-ab0ee67246d4@postmarketos.org>
-References: <20260802-rsi-cfi-fix-v1-1-5821d2cb54ee@postmarketos.org>
-	 <a0ab921cb2172a07b37d2a221917a78ba6e14da0.camel@sipsolutions.net>
-	 <ba0fbf6a-024d-425c-aed3-ab0ee67246d4@postmarketos.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sED3JR35"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BDF14C2BCFA;
+	Sun,  2 Aug 2026 19:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785697467;
+	bh=zugU8+y0Yoj+/w5PM+oZxznMMbVN70TW1KMWzz2DKy8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=sED3JR35f336Mg0/IJItKKeYkafWzDNFiQ9BKc78RY2BlR5sv4dYLbV6cVEQtM1xU
+	 5Dt40y1GUAGZO1gc3WWLM/WOkpkGdcF7NIMK1mcRu08qYoS8LEbAO5UHmD6NpabxF4
+	 pap6Tcq1gnDgEFXure5MkQLJDI7Z8HvirBMyuoA93lNPFyC7XhokQfdAdKKht9TZFQ
+	 RtHTTlEmUiQDXVl/06p1cfPpmPOkO2nFEQrol0VTTUMN9IVoCzs24J/5f8iUiGHQao
+	 AXqy/QvfQzZ2d5vFSHiVYkmipWG+ADUVzKkL2VLaKNw/38hPV3VJrRu1LtSOTLEhfo
+	 p3ezOuwbpzhww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F8E8C55174;
+	Sun,  2 Aug 2026 19:04:27 +0000 (UTC)
+From: Antony Kurniawan Soemardi via B4 Relay <devnull+linux.smankusors.com@kernel.org>
+Date: Mon, 03 Aug 2026 02:03:46 +0700
+Subject: [PATCH v4 2/7] ARM: dts: qcom: msm8960: add RPM clock controller
+ and fix USB clocks
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260803-msm8960-wifi-v4-2-5ffa27aea39d@smankusors.com>
+References: <20260803-msm8960-wifi-v4-0-5ffa27aea39d@smankusors.com>
+In-Reply-To: <20260803-msm8960-wifi-v4-0-5ffa27aea39d@smankusors.com>
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
+ mfd@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Antony Kurniawan Soemardi <linux@smankusors.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785697465; l=2459;
+ i=linux@smankusors.com; s=20250609; h=from:subject:message-id;
+ bh=iIYYtM55Tx+Y0Xs653xyUTxfQMeNNj1lUSNegdYpWt4=;
+ b=vhmy5EWuy52VWKTM+23+rq5IxxrPW3ijYnpDNdMWD3ZDLn6GIt24GLVbTaTZ8kh1dpa+Q+Z3p
+ QhVfplEhsy9A1zR0jIQ+trRD6suZV+jfMnYPTf5q36RWPZ7Lh4KeB8m
+X-Developer-Key: i=linux@smankusors.com; a=ed25519;
+ pk=65wTy06fJl2/h/EJwjr704YG+yjHFhZObJBWzzK+N00=
+X-Endpoint-Received: by B4 Relay for linux@smankusors.com/20250609 with
+ auth_id=733
+X-Original-From: Antony Kurniawan Soemardi <linux@smankusors.com>
+Reply-To: linux@smankusors.com
 
-On Sun, 2026-08-02 at 20:40 +0200, Stefan Hansson wrote:
-> Hello Johannes,
->=20
-> On 02/08/2026 18:24, Johannes Berg wrote:
-> > On Sun, 2026-08-02 at 14:22 +0200, Stefan Hansson wrote:
-> > > Avoids errors like:
-> > >=20
-> > >      CFI failure at kthread+0x124/0x1cc (target: rsi_coex_scheduler_t=
-hread+0x0/0x1b4 [redpine_91x]; expected type: 0x89fb613d)
-> >=20
-> > Yeah, well. Everyone gets _one_ warning to send patches that actually
-> > build warning-free, after that I just drop them without notice...
->=20
-> Could you clarify what you are referring to here? I don't get any errors=
-=20
-> when building after applying this patch on top of next-20260730:
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
 
-Alright, so it does build, sorry. I was just looking at nipa:
-https://patchwork.kernel.org/project/linux-wireless/patch/20260802-rsi-cfi-=
-fix-v1-1-5821d2cb54ee@postmarketos.org/
+The RPM clock controller manages clocks shared between the application
+processor and the RPM firmware, including fabric and bus clocks required
+by several peripherals.
 
-But I see now it's just duplicating the kernel-doc issues across all the
-builds ... I wasn't paying attention to _what_ it was reporting and the
-kthread_complete_and_exit() use in the functions and thought it was
-likely getting "control reaches end of non-void function" warnings since
-you change functions to int without ever returning anything.
+With the RPM clock controller now available in the device tree, the USB
+controller must explicitly declare its dependency on
+RPM_DAYTONA_FABRIC_CLK. Without this declaration, the clock framework
+would consider it unused and disable it, breaking USB functionality.
 
-> If you are referring to checkpatch.pl complaining about the=20
-> aforementioned error line being too long, I can wrap it if you prefer tha=
-t.
+This also corrects the previous misuse of USB_HS1_XCVR_CLK as the core
+clock. The XCVR clock is in fact used for PHY/reset handling rather than
+as the main core clock.
 
-Nah, that's fine, no worries.
+A similar issue has been observed on APQ8064, where missing the RPM
+fabric clock dependency leads to broken USB.
 
-johannes
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
+---
+ arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
+index fd28401cebb5..6ead9fec557a 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
+@@ -5,6 +5,7 @@
+ #include <dt-bindings/clock/qcom,gcc-msm8960.h>
+ #include <dt-bindings/reset/qcom,gcc-msm8960.h>
+ #include <dt-bindings/clock/qcom,lcc-msm8960.h>
++#include <dt-bindings/clock/qcom,rpmcc.h>
+ #include <dt-bindings/mfd/qcom-rpm.h>
+ #include <dt-bindings/soc/qcom,gsbi.h>
+ 
+@@ -98,6 +99,16 @@ rpm: rpm@108000 {
+ 			interrupt-names = "ack",
+ 					  "err",
+ 					  "wakeup";
++
++			rpmcc: clock-controller {
++				compatible = "qcom,rpmcc-apq8064",
++					     "qcom,rpmcc";
++				#clock-cells = <1>;
++				clocks = <&pxo_board>,
++					 <&cxo_board>;
++				clock-names = "pxo",
++					      "cxo";
++			};
+ 		};
+ 
+ 		ssbi: ssbi@500000 {
+@@ -507,8 +518,12 @@ usb1: usb@12500000 {
+ 			reg = <0x12500000 0x200>,
+ 			      <0x12500200 0x200>;
+ 			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&gcc USB_HS1_XCVR_CLK>, <&gcc USB_HS1_H_CLK>;
+-			clock-names = "core", "iface";
++			clocks = <&rpmcc RPM_DAYTONA_FABRIC_CLK>,
++				 <&gcc USB_HS1_H_CLK>,
++				 <&gcc USB_HS1_XCVR_CLK>;
++			clock-names = "iface",
++				      "core",
++				      "fs";
+ 			assigned-clocks = <&gcc USB_HS1_XCVR_CLK>;
+ 			assigned-clock-rates = <60000000>;
+ 			resets = <&gcc USB_HS1_RESET>;
+
+-- 
+2.34.1
+
+
