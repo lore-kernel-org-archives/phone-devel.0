@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A79B36C0AB;
-	Sun,  2 Aug 2026 06:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF8428FFF6;
+	Sun,  2 Aug 2026 07:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785652812; cv=none; b=cXi1pAztGCShbR2d8rgJFO/DbXdHhu9q1rT2lzdKx1A8imsyGHupPy6+s0uuG76rXo2j4QyhGaVerMKrUynBxCyYjaq3ciP9l1MgTrG7iQzKaCAN8rhOdPfVB5fxh7JoYJtGSojgvSiWGtpk0d6oAO286qnS58ImiPbTZEWcOuA=
+	t=1785656050; cv=none; b=h7Y/fILu6WAWVTZBnFdNFvZtbvAfx8Jk0Q7OAnP0FkhRB6aB1K7AdWKNIh72Ur6jGPmllGMBnq8P9C7sB+4S9QAYi8vA0gM1NAqASnbKHGugSTC0dw22rE2cML6YdWjntnnBYdNJsCOcVi9AagqTGO3FpkVZf0ofVc2zoVAa9hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785652812; c=relaxed/simple;
-	bh=In5rCKNTa55tl3GwmLgLp4Wwbw3pKVv4bNBORL90G7Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iffi4nAo2rUWYR6AKS6BPSl1Tblk85BbYWVK/vDqRXfe9EyAYs5N/0lTndpjNXaEe1S7zlbmU68nqOXLHsLA3nO2EBfjEoB1iSsB4qht0E8QpKAKGWUMcju7M8dIiRRECKzR8km6VtFJAtU/jO70S/uoLLX7ACD2Lb+oOx8rhWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzTw0wsZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785656050; c=relaxed/simple;
+	bh=dF6McqN+FOmJKguvLyijKyZg4sFoQKzhynIX/q8eOOQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KKoFEwzr2+8Gv0O7/KskkGqdzbyTsgUZRvFC9D5D/gkBfv9uS3seLHOhFqtmTF9kHZWiH+AC/OP00Ht1+sEqnpYQbSRJBNk83a569LlUDRuU5hO+AZNzgDnYhtMRjlYnMmsocb9wweBhizeA3do8+lQmuoKGGgB1gH3/8wcYnH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itAFZGBD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzTw0wsZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 45ED6C19425;
-	Sun,  2 Aug 2026 06:40:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itAFZGBD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EEFB3C2BCFA;
+	Sun,  2 Aug 2026 07:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785652811;
-	bh=In5rCKNTa55tl3GwmLgLp4Wwbw3pKVv4bNBORL90G7Q=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=IzTw0wsZgcVixw8dFzV3DASwzTQ0NIfWr9Nw+Iff+quqyHCT+fLm2AkNrH+zVDuoJ
-	 vP50ZavPUg8qHO6Uhk4L9tBiZE3/9jI24a/qoDtH/fc5JvaSbQrqAZv+O3Vx7mVGtL
-	 Paw4GMWD4+aRdY44ENoaLHvbX18Sr+UTfpNJ0LtyFHaqGF44cvp4X2aZ6B5m5Qy6Qj
-	 Lcm6bMfLaXK4tZhYtJZCVNDtucOwdAjJMgQvL+YRT/RYVjA42IemxqQ66lGBDpjKH/
-	 dRUiSXIQx/KO2sTSYOcsZfvNK4aGh4Z+9/zQGe1n+55YxU4r4rhjuSVLIYIY3qtmbR
-	 HmswJOCKmiqTw==
+	s=k20201202; t=1785656050;
+	bh=dF6McqN+FOmJKguvLyijKyZg4sFoQKzhynIX/q8eOOQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=itAFZGBDqIIgiFQM8bfn1uSi2Hccm1OZx/oD/Wlhg+UJeqTuEZzrKK6gODBCHUF9R
+	 J1EBRiGZklduM54W1PWKk55j/joSeWcWKYZvrd+uAtPojDJoZIcoa9HsvHiCs8m1uT
+	 QO3Nn591gGh2VFbcrvZYpWr5/ohvbANjG5Fd4Xfa57TcQtV4QrpNC66bsIbRi0YpLt
+	 OqW1SxMEGiCCmiBa+Kt0t65CUIocKR/YIQoUvEjXAcbhPdXc1V+uq7FK6V1dGpq+7O
+	 LBkSISfJoehnw1kCQrqd2daXb73iiF26bcNAsKjQg1Ai7OL39v/U51n5BRFByiPe40
+	 l9CG83EQVYPFw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B4D2C55173;
-	Sun,  2 Aug 2026 06:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB0E1C55175;
+	Sun,  2 Aug 2026 07:34:09 +0000 (UTC)
 From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Date: Sun, 02 Aug 2026 02:39:55 -0400
-Subject: [PATCH v3] dt-bindings: soc: qcom: qcom,pmic-glink: Add compatible
- string for SM8475
+Date: Sun, 02 Aug 2026 03:30:55 -0400
+Subject: [PATCH v2 2/4] pinctrl: qcom: Commonize pinctrl-sm8450 headers
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,25 +40,22 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-sm8475-pmic-glink-v3-1-45216e6ec572@proton.me>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NTQ7CIBQE4KsY1mLg9QfqynsYF5a+tqiFBirRN
- L27UDddGJeTzHwzE49OoyfH3UwcBu21NTFk+x1R/dV0SHUTMwEGJRNQUT/IXBR0HLSi3UObOy0
- EFmVbyQbqjMTd6LDVr9U8X77ZP+sbqilBqdFrP1n3Xk8DT71/fuCUUQXIq1Ioljd4Gp2drDkMS
- JIfYCNk/JcAUQAZxxVIbAG2wrIsH7TT1U8GAQAA
-X-Change-ID: 20260729-sm8475-pmic-glink-57e56f98d2b3
+Message-Id: <20260802-sm8475-tlmm-v2-2-a93e1d1cb53b@proton.me>
+References: <20260802-sm8475-tlmm-v2-0-a93e1d1cb53b@proton.me>
+In-Reply-To: <20260802-sm8475-tlmm-v2-0-a93e1d1cb53b@proton.me>
 To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Esteban Urrutia <esteuwu@proton.me>
+ Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Esteban Urrutia <esteuwu@proton.me>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785652809; l=1696;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785656048; l=12925;
  i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=tn2xH0fzQ/e6xT6kAD58wd7odc28IuNeh1bh7VNPiEQ=;
- b=e08RXdumGEVucO+Vc+5VdB5GOkbF64uTxGj6Kjc5KWzP2O2qAnY/d2BqgZVdaGIR2/0AN95oE
- pHTp6y+OnwKB1QmhPab8ixfMFDrvd5Yn6HgoNxLbXRGqHvA59zLZrpv
+ bh=FicDUvkiibB/pKpQsUX6I+Lshtw7HYQv+K4ifmTSe3c=;
+ b=pc6MTJDxO4GfziLjj6qZf6/RHFzfOmUuOuMQARHDbkCqhbp8BAXj/6hQeulgXEq+rGNTUAci6
+ w3CjChcwhKWC2viOGcwKX+3/joz5DdS3l8z6AbJI6Rs3Arv5vsLBLWY
 X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
  pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
 X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
@@ -68,49 +65,527 @@ Reply-To: esteuwu@proton.me
 
 From: Esteban Urrutia <esteuwu@proton.me>
 
-SM8475 is compatible with SM8450 with respect to pmic-glink support.
-Add a compatible string for SM8475 using SM8450 as a fallback.
+Some headers found on pinctrl-sm8450 are compatible with SM8475.
+Commonize these headers to prepare for adding pinctrl support for SM8475.
 
 Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 ---
-This series adds a compatible string for pmic-glink in SM8475 in
-dt-bindings using SM8450 as a fallback to provide support for it.
----
-Changes in v3:
-- Drop patch modifying ucsi_glink (redundant)
-  - Use SM8450 compatible as a fallback instead
-- Link to v2: https://patch.msgid.link/20260731-sm8475-pmic-glink-v2-0-28c04928ef22@proton.me
+ drivers/pinctrl/qcom/pinctrl-sm8450.c | 233 +-------------------------------
+ drivers/pinctrl/qcom/pinctrl-sm8450.h | 246 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 247 insertions(+), 232 deletions(-)
 
-Changes in v2:
-- Apply suggestions from Krzysztof
-- Link to v1: https://patch.msgid.link/20260729-sm8475-pmic-glink-v1-0-c2e1967c04de@proton.me
----
- Documentation/devicetree/bindings/soc/qcom/qcom,pmic-glink.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8450.c b/drivers/pinctrl/qcom/pinctrl-sm8450.c
+index 8bb6702cebe2..0d19e604e2e1 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm8450.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm8450.c
+@@ -9,96 +9,7 @@
+ #include <linux/platform_device.h>
+ 
+ #include "pinctrl-msm.h"
+-
+-#define REG_SIZE 0x1000
+-
+-#define PINGROUP(id, f1, f2, f3, f4, f5, f6, f7, f8, f9)	\
+-	{					        \
+-		.grp = PINCTRL_PINGROUP("gpio" #id, 	\
+-			gpio##id##_pins, 		\
+-			ARRAY_SIZE(gpio##id##_pins)),	\
+-		.funcs = (int[]){			\
+-			msm_mux_gpio, /* gpio mode */	\
+-			msm_mux_##f1,			\
+-			msm_mux_##f2,			\
+-			msm_mux_##f3,			\
+-			msm_mux_##f4,			\
+-			msm_mux_##f5,			\
+-			msm_mux_##f6,			\
+-			msm_mux_##f7,			\
+-			msm_mux_##f8,			\
+-			msm_mux_##f9			\
+-		},				        \
+-		.nfuncs = 10,				\
+-		.ctl_reg = REG_SIZE * id,			\
+-		.io_reg = 0x4 + REG_SIZE * id,		\
+-		.intr_cfg_reg = 0x8 + REG_SIZE * id,		\
+-		.intr_status_reg = 0xc + REG_SIZE * id,	\
+-		.mux_bit = 2,			\
+-		.pull_bit = 0,			\
+-		.drv_bit = 6,			\
+-		.egpio_enable = 12,		\
+-		.egpio_present = 11,		\
+-		.oe_bit = 9,			\
+-		.in_bit = 0,			\
+-		.out_bit = 1,			\
+-		.intr_enable_bit = 0,		\
+-		.intr_status_bit = 0,		\
+-		.intr_target_bit = 5,		\
+-		.intr_target_kpss_val = 3,	\
+-		.intr_raw_status_bit = 4,	\
+-		.intr_polarity_bit = 1,		\
+-		.intr_detection_bit = 2,	\
+-		.intr_detection_width = 2,	\
+-	}
+-
+-#define SDC_QDSD_PINGROUP(pg_name, ctl, pull, drv)	\
+-	{					        \
+-		.grp = PINCTRL_PINGROUP(#pg_name, 	\
+-			pg_name##_pins, 		\
+-			ARRAY_SIZE(pg_name##_pins)),	\
+-		.ctl_reg = ctl,				\
+-		.io_reg = 0,				\
+-		.intr_cfg_reg = 0,			\
+-		.intr_status_reg = 0,			\
+-		.mux_bit = -1,				\
+-		.pull_bit = pull,			\
+-		.drv_bit = drv,				\
+-		.oe_bit = -1,				\
+-		.in_bit = -1,				\
+-		.out_bit = -1,				\
+-		.intr_enable_bit = -1,			\
+-		.intr_status_bit = -1,			\
+-		.intr_target_bit = -1,			\
+-		.intr_raw_status_bit = -1,		\
+-		.intr_polarity_bit = -1,		\
+-		.intr_detection_bit = -1,		\
+-		.intr_detection_width = -1,		\
+-	}
+-
+-#define UFS_RESET(pg_name, offset)				\
+-	{					        \
+-		.grp = PINCTRL_PINGROUP(#pg_name, 	\
+-			pg_name##_pins, 		\
+-			ARRAY_SIZE(pg_name##_pins)),	\
+-		.ctl_reg = offset,			\
+-		.io_reg = offset + 0x4,			\
+-		.intr_cfg_reg = 0,			\
+-		.intr_status_reg = 0,			\
+-		.mux_bit = -1,				\
+-		.pull_bit = 3,				\
+-		.drv_bit = 0,				\
+-		.oe_bit = -1,				\
+-		.in_bit = -1,				\
+-		.out_bit = 0,				\
+-		.intr_enable_bit = -1,			\
+-		.intr_status_bit = -1,			\
+-		.intr_target_bit = -1,			\
+-		.intr_raw_status_bit = -1,		\
+-		.intr_polarity_bit = -1,		\
+-		.intr_detection_bit = -1,		\
+-		.intr_detection_width = -1,		\
+-	}
++#include "pinctrl-sm8450.h"
+ 
+ static const struct pinctrl_pin_desc sm8450_pins[] = {
+ 	PINCTRL_PIN(0, "GPIO_0"),
+@@ -317,8 +228,6 @@ static const struct pinctrl_pin_desc sm8450_pins[] = {
+ 	PINCTRL_PIN(213, "SDC2_DATA"),
+ };
+ 
+-#define DECLARE_MSM_GPIO_PINS(pin) \
+-	static const unsigned int gpio##pin##_pins[] = { pin }
+ DECLARE_MSM_GPIO_PINS(0);
+ DECLARE_MSM_GPIO_PINS(1);
+ DECLARE_MSM_GPIO_PINS(2);
+@@ -535,146 +444,6 @@ static const unsigned int sdc2_clk_pins[] = { 211 };
+ static const unsigned int sdc2_cmd_pins[] = { 212 };
+ static const unsigned int sdc2_data_pins[] = { 213 };
+ 
+-enum sm8450_functions {
+-	msm_mux_gpio,
+-	msm_mux_aon_cam,
+-	msm_mux_atest_char,
+-	msm_mux_atest_usb,
+-	msm_mux_audio_ref,
+-	msm_mux_cam_mclk,
+-	msm_mux_cci_async,
+-	msm_mux_cci_i2c,
+-	msm_mux_cci_timer,
+-	msm_mux_cmu_rng,
+-	msm_mux_coex_uart1,
+-	msm_mux_coex_uart2,
+-	msm_mux_cri_trng,
+-	msm_mux_cri_trng0,
+-	msm_mux_cri_trng1,
+-	msm_mux_dbg_out,
+-	msm_mux_ddr_bist,
+-	msm_mux_ddr_pxi0,
+-	msm_mux_ddr_pxi1,
+-	msm_mux_ddr_pxi2,
+-	msm_mux_ddr_pxi3,
+-	msm_mux_dp_hot,
+-	msm_mux_egpio,
+-	msm_mux_gcc_gp1,
+-	msm_mux_gcc_gp2,
+-	msm_mux_gcc_gp3,
+-	msm_mux_ibi_i3c,
+-	msm_mux_jitter_bist,
+-	msm_mux_mdp_vsync,
+-	msm_mux_mdp_vsync0,
+-	msm_mux_mdp_vsync1,
+-	msm_mux_mdp_vsync2,
+-	msm_mux_mdp_vsync3,
+-	msm_mux_mi2s0_data0,
+-	msm_mux_mi2s0_data1,
+-	msm_mux_mi2s0_sck,
+-	msm_mux_mi2s0_ws,
+-	msm_mux_mi2s2_data0,
+-	msm_mux_mi2s2_data1,
+-	msm_mux_mi2s2_sck,
+-	msm_mux_mi2s2_ws,
+-	msm_mux_mss_grfc0,
+-	msm_mux_mss_grfc1,
+-	msm_mux_mss_grfc10,
+-	msm_mux_mss_grfc11,
+-	msm_mux_mss_grfc12,
+-	msm_mux_mss_grfc2,
+-	msm_mux_mss_grfc3,
+-	msm_mux_mss_grfc4,
+-	msm_mux_mss_grfc5,
+-	msm_mux_mss_grfc6,
+-	msm_mux_mss_grfc7,
+-	msm_mux_mss_grfc8,
+-	msm_mux_mss_grfc9,
+-	msm_mux_nav,
+-	msm_mux_pcie0_clkreqn,
+-	msm_mux_pcie1_clkreqn,
+-	msm_mux_phase_flag,
+-	msm_mux_pll_bist,
+-	msm_mux_pll_clk,
+-	msm_mux_pri_mi2s,
+-	msm_mux_prng_rosc,
+-	msm_mux_qdss_cti,
+-	msm_mux_qdss_gpio,
+-	msm_mux_qlink0_enable,
+-	msm_mux_qlink0_request,
+-	msm_mux_qlink0_wmss,
+-	msm_mux_qlink1_enable,
+-	msm_mux_qlink1_request,
+-	msm_mux_qlink1_wmss,
+-	msm_mux_qlink2_enable,
+-	msm_mux_qlink2_request,
+-	msm_mux_qlink2_wmss,
+-	msm_mux_qspi0,
+-	msm_mux_qspi1,
+-	msm_mux_qspi2,
+-	msm_mux_qspi3,
+-	msm_mux_qspi_clk,
+-	msm_mux_qspi_cs,
+-	msm_mux_qup0,
+-	msm_mux_qup1,
+-	msm_mux_qup10,
+-	msm_mux_qup11,
+-	msm_mux_qup12,
+-	msm_mux_qup13,
+-	msm_mux_qup14,
+-	msm_mux_qup15,
+-	msm_mux_qup16,
+-	msm_mux_qup17,
+-	msm_mux_qup18,
+-	msm_mux_qup19,
+-	msm_mux_qup2,
+-	msm_mux_qup20,
+-	msm_mux_qup21,
+-	msm_mux_qup3,
+-	msm_mux_qup4,
+-	msm_mux_qup5,
+-	msm_mux_qup6,
+-	msm_mux_qup7,
+-	msm_mux_qup8,
+-	msm_mux_qup9,
+-	msm_mux_qup_l4,
+-	msm_mux_qup_l5,
+-	msm_mux_qup_l6,
+-	msm_mux_sd_write,
+-	msm_mux_sdc40,
+-	msm_mux_sdc41,
+-	msm_mux_sdc42,
+-	msm_mux_sdc43,
+-	msm_mux_sdc4_clk,
+-	msm_mux_sdc4_cmd,
+-	msm_mux_sec_mi2s,
+-	msm_mux_tb_trig,
+-	msm_mux_tgu_ch0,
+-	msm_mux_tgu_ch1,
+-	msm_mux_tgu_ch2,
+-	msm_mux_tgu_ch3,
+-	msm_mux_tmess_prng0,
+-	msm_mux_tmess_prng1,
+-	msm_mux_tmess_prng2,
+-	msm_mux_tmess_prng3,
+-	msm_mux_tsense_pwm1,
+-	msm_mux_tsense_pwm2,
+-	msm_mux_uim0_clk,
+-	msm_mux_uim0_data,
+-	msm_mux_uim0_present,
+-	msm_mux_uim0_reset,
+-	msm_mux_uim1_clk,
+-	msm_mux_uim1_data,
+-	msm_mux_uim1_present,
+-	msm_mux_uim1_reset,
+-	msm_mux_usb2phy_ac,
+-	msm_mux_usb_phy,
+-	msm_mux_vfr_0,
+-	msm_mux_vfr_1,
+-	msm_mux_vsense_trigger,
+-	msm_mux__,
+-};
+-
+ static const char * const gpio_groups[] = {
+ 	"gpio0", "gpio1", "gpio2", "gpio3", "gpio4", "gpio5", "gpio6", "gpio7",
+ 	"gpio8", "gpio9", "gpio10", "gpio11", "gpio12", "gpio13", "gpio14",
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8450.h b/drivers/pinctrl/qcom/pinctrl-sm8450.h
+new file mode 100644
+index 000000000000..7501c694db57
+--- /dev/null
++++ b/drivers/pinctrl/qcom/pinctrl-sm8450.h
+@@ -0,0 +1,246 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2020-2021, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2021, Linaro Limited
++ */
++#ifndef __PINCTRL_SM8450_H__
++#define __PINCTRL_SM8450_H__
++
++#include <linux/array_size.h>
++
++#include <linux/pinctrl/pinctrl.h>
++
++#define REG_SIZE 0x1000
++
++#define PINGROUP(id, f1, f2, f3, f4, f5, f6, f7, f8, f9)	\
++	{					        \
++		.grp = PINCTRL_PINGROUP("gpio" #id, 	\
++			gpio##id##_pins, 		\
++			ARRAY_SIZE(gpio##id##_pins)),	\
++		.funcs = (int[]){			\
++			msm_mux_gpio, /* gpio mode */	\
++			msm_mux_##f1,			\
++			msm_mux_##f2,			\
++			msm_mux_##f3,			\
++			msm_mux_##f4,			\
++			msm_mux_##f5,			\
++			msm_mux_##f6,			\
++			msm_mux_##f7,			\
++			msm_mux_##f8,			\
++			msm_mux_##f9			\
++		},				        \
++		.nfuncs = 10,				\
++		.ctl_reg = REG_SIZE * id,			\
++		.io_reg = 0x4 + REG_SIZE * id,		\
++		.intr_cfg_reg = 0x8 + REG_SIZE * id,		\
++		.intr_status_reg = 0xc + REG_SIZE * id,	\
++		.mux_bit = 2,			\
++		.pull_bit = 0,			\
++		.drv_bit = 6,			\
++		.egpio_enable = 12,		\
++		.egpio_present = 11,		\
++		.oe_bit = 9,			\
++		.in_bit = 0,			\
++		.out_bit = 1,			\
++		.intr_enable_bit = 0,		\
++		.intr_status_bit = 0,		\
++		.intr_target_bit = 5,		\
++		.intr_target_kpss_val = 3,	\
++		.intr_raw_status_bit = 4,	\
++		.intr_polarity_bit = 1,		\
++		.intr_detection_bit = 2,	\
++		.intr_detection_width = 2,	\
++	}
++
++#define SDC_QDSD_PINGROUP(pg_name, ctl, pull, drv)	\
++	{					        \
++		.grp = PINCTRL_PINGROUP(#pg_name, 	\
++			pg_name##_pins, 		\
++			ARRAY_SIZE(pg_name##_pins)),	\
++		.ctl_reg = ctl,				\
++		.io_reg = 0,				\
++		.intr_cfg_reg = 0,			\
++		.intr_status_reg = 0,			\
++		.mux_bit = -1,				\
++		.pull_bit = pull,			\
++		.drv_bit = drv,				\
++		.oe_bit = -1,				\
++		.in_bit = -1,				\
++		.out_bit = -1,				\
++		.intr_enable_bit = -1,			\
++		.intr_status_bit = -1,			\
++		.intr_target_bit = -1,			\
++		.intr_raw_status_bit = -1,		\
++		.intr_polarity_bit = -1,		\
++		.intr_detection_bit = -1,		\
++		.intr_detection_width = -1,		\
++	}
++
++#define UFS_RESET(pg_name, offset)				\
++	{					        \
++		.grp = PINCTRL_PINGROUP(#pg_name, 	\
++			pg_name##_pins, 		\
++			ARRAY_SIZE(pg_name##_pins)),	\
++		.ctl_reg = offset,			\
++		.io_reg = offset + 0x4,			\
++		.intr_cfg_reg = 0,			\
++		.intr_status_reg = 0,			\
++		.mux_bit = -1,				\
++		.pull_bit = 3,				\
++		.drv_bit = 0,				\
++		.oe_bit = -1,				\
++		.in_bit = -1,				\
++		.out_bit = 0,				\
++		.intr_enable_bit = -1,			\
++		.intr_status_bit = -1,			\
++		.intr_target_bit = -1,			\
++		.intr_raw_status_bit = -1,		\
++		.intr_polarity_bit = -1,		\
++		.intr_detection_bit = -1,		\
++		.intr_detection_width = -1,		\
++	}
++
++#define DECLARE_MSM_GPIO_PINS(pin) \
++	static const unsigned int gpio##pin##_pins[] = { pin }
++
++enum sm8450_functions {
++	msm_mux_gpio,
++	msm_mux_aon_cam,
++	msm_mux_atest_char,
++	msm_mux_atest_usb,
++	msm_mux_audio_ref,
++	msm_mux_cam_mclk,
++	msm_mux_cci_async,
++	msm_mux_cci_i2c,
++	msm_mux_cci_timer,
++	msm_mux_cmu_rng,
++	msm_mux_coex_uart1,
++	msm_mux_coex_uart2,
++	msm_mux_cri_trng,
++	msm_mux_cri_trng0,
++	msm_mux_cri_trng1,
++	msm_mux_dbg_out,
++	msm_mux_ddr_bist,
++	msm_mux_ddr_pxi0,
++	msm_mux_ddr_pxi1,
++	msm_mux_ddr_pxi2,
++	msm_mux_ddr_pxi3,
++	msm_mux_dp_hot,
++	msm_mux_egpio,
++	msm_mux_gcc_gp1,
++	msm_mux_gcc_gp2,
++	msm_mux_gcc_gp3,
++	msm_mux_ibi_i3c,
++	msm_mux_jitter_bist,
++	msm_mux_mdp_vsync,
++	msm_mux_mdp_vsync0,
++	msm_mux_mdp_vsync1,
++	msm_mux_mdp_vsync2,
++	msm_mux_mdp_vsync3,
++	msm_mux_mi2s0_data0,
++	msm_mux_mi2s0_data1,
++	msm_mux_mi2s0_sck,
++	msm_mux_mi2s0_ws,
++	msm_mux_mi2s2_data0,
++	msm_mux_mi2s2_data1,
++	msm_mux_mi2s2_sck,
++	msm_mux_mi2s2_ws,
++	msm_mux_mss_grfc0,
++	msm_mux_mss_grfc1,
++	msm_mux_mss_grfc10,
++	msm_mux_mss_grfc11,
++	msm_mux_mss_grfc12,
++	msm_mux_mss_grfc2,
++	msm_mux_mss_grfc3,
++	msm_mux_mss_grfc4,
++	msm_mux_mss_grfc5,
++	msm_mux_mss_grfc6,
++	msm_mux_mss_grfc7,
++	msm_mux_mss_grfc8,
++	msm_mux_mss_grfc9,
++	msm_mux_nav,
++	msm_mux_pcie0_clkreqn,
++	msm_mux_pcie1_clkreqn,
++	msm_mux_phase_flag,
++	msm_mux_pll_bist,
++	msm_mux_pll_clk,
++	msm_mux_pri_mi2s,
++	msm_mux_prng_rosc,
++	msm_mux_qdss_cti,
++	msm_mux_qdss_gpio,
++	msm_mux_qlink0_enable,
++	msm_mux_qlink0_request,
++	msm_mux_qlink0_wmss,
++	msm_mux_qlink1_enable,
++	msm_mux_qlink1_request,
++	msm_mux_qlink1_wmss,
++	msm_mux_qlink2_enable,
++	msm_mux_qlink2_request,
++	msm_mux_qlink2_wmss,
++	msm_mux_qspi0,
++	msm_mux_qspi1,
++	msm_mux_qspi2,
++	msm_mux_qspi3,
++	msm_mux_qspi_clk,
++	msm_mux_qspi_cs,
++	msm_mux_qup0,
++	msm_mux_qup1,
++	msm_mux_qup10,
++	msm_mux_qup11,
++	msm_mux_qup12,
++	msm_mux_qup13,
++	msm_mux_qup14,
++	msm_mux_qup15,
++	msm_mux_qup16,
++	msm_mux_qup17,
++	msm_mux_qup18,
++	msm_mux_qup19,
++	msm_mux_qup2,
++	msm_mux_qup20,
++	msm_mux_qup21,
++	msm_mux_qup3,
++	msm_mux_qup4,
++	msm_mux_qup5,
++	msm_mux_qup6,
++	msm_mux_qup7,
++	msm_mux_qup8,
++	msm_mux_qup9,
++	msm_mux_qup_l4,
++	msm_mux_qup_l5,
++	msm_mux_qup_l6,
++	msm_mux_sd_write,
++	msm_mux_sdc40,
++	msm_mux_sdc41,
++	msm_mux_sdc42,
++	msm_mux_sdc43,
++	msm_mux_sdc4_clk,
++	msm_mux_sdc4_cmd,
++	msm_mux_sec_mi2s,
++	msm_mux_tb_trig,
++	msm_mux_tgu_ch0,
++	msm_mux_tgu_ch1,
++	msm_mux_tgu_ch2,
++	msm_mux_tgu_ch3,
++	msm_mux_tmess_prng0,
++	msm_mux_tmess_prng1,
++	msm_mux_tmess_prng2,
++	msm_mux_tmess_prng3,
++	msm_mux_tsense_pwm1,
++	msm_mux_tsense_pwm2,
++	msm_mux_uim0_clk,
++	msm_mux_uim0_data,
++	msm_mux_uim0_present,
++	msm_mux_uim0_reset,
++	msm_mux_uim1_clk,
++	msm_mux_uim1_data,
++	msm_mux_uim1_present,
++	msm_mux_uim1_reset,
++	msm_mux_usb2phy_ac,
++	msm_mux_usb_phy,
++	msm_mux_vfr_0,
++	msm_mux_vfr_1,
++	msm_mux_vsense_trigger,
++	msm_mux__,
++};
++
++#endif /* __PINCTRL_SM8450_H__ */
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,pmic-glink.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,pmic-glink.yaml
-index 16ad4f5698fc..d4478d9b3212 100644
---- a/Documentation/devicetree/bindings/soc/qcom/qcom,pmic-glink.yaml
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,pmic-glink.yaml
-@@ -43,6 +43,11 @@ properties:
-               - qcom,sm7325-pmic-glink
-           - const: qcom,qcm6490-pmic-glink
-           - const: qcom,pmic-glink
-+      - items:
-+          - enum:
-+              - qcom,sm8475-pmic-glink
-+          - const: qcom,sm8450-pmic-glink
-+          - const: qcom,pmic-glink
-       - items:
-           - enum:
-               - qcom,eliza-pmic-glink
-
----
-base-commit: 415606a7be939835db9b0d6b711887586646346d
-change-id: 20260729-sm8475-pmic-glink-57e56f98d2b3
-
-Best regards,
---  
-Esteban Urrutia <esteuwu@proton.me>
+-- 
+2.55.0
 
 
