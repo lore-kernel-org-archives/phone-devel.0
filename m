@@ -1,127 +1,133 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF46175A81;
-	Sun,  2 Aug 2026 19:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF396242D6C
+	for <phone-devel@vger.kernel.org>; Sun,  2 Aug 2026 22:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785697704; cv=none; b=BqqczT+H7fQQ/v4PMobQCxIqC8RgDk+b5TQtN4VXMw4YCI/LEAbZNbjQM0YUzbKbcpDeApay9nvYxvuIlODq7+lVRLpiI8RgO7se5LGooSQRovbaola0W7y4UFiQEJa9sQDx66KK/GTN3UddQ4SwzIG6yPw4ZLbz+YSiD11vDO8=
+	t=1785709051; cv=none; b=nlecvc+1EDVAID5OtxSAGIZf11pwA6s+WsO8N5jJqINaAhm3gQoq3bDio/ZL+4C62ufNb/hCphtAVRaIFMKUeXhdTFAnIo1P8/tNE3Baq7Yq46MPnXF2erT79BkdE6DqQcZoCEi9Gl0CDn73NR/aSimMGQ+CUJCVmbN7NuZD4wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785697704; c=relaxed/simple;
-	bh=2hOmZdPlfBzKcHtwcK27rodmO/H/LByEIMeVmYI76r0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Kp0UQMGwinsCouwZHUkfty4m6ssDXYS8dsvmWVX5g3r27FSn8/OA51/meSfe89CgdXQ7O2J4Blig6e1+yRtifLGRWEUQiyCtH+Yf+eEbFNn97odfw+SP3nKXANsFhsmTPb8+/iywnUfJj13XpR0T4nVHHZLCD0LnD0Gs0PRQHL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=cwVtQgf1; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1785709051; c=relaxed/simple;
+	bh=T8GIVGVx3IVGy3cz7RX/iIVlyqRH0fdXuqZLWkXg95I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5qKK8cJBc9vnnvjF/w39yoqBm4VaEw9H63GCLJHn8FPALNvJ8DG0m/BrEwH2NB33IEgKpftc9SWLPXEzGJUjvASpVuooUk967n/f8t1vjBUf0yFvtWLy7LYQ/RcUbEaV32t/tdnObQVdIJZ6vJ5K9tWFIpU+OeBBA4mkJ3X91I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=l30D97X0; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="cwVtQgf1"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-	s=key1; t=1785697688;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NCeDnJm35+LyDL6EE/vXkfkMVeZz2GdJ2gAVeksgF8c=;
-	b=cwVtQgf1m39N9bovnrEWwjoCe37yGmY6hPciRq/PfJHAICFIGuKZccUIxBhJ2Bfw8/RCnk
-	2FIy5x8BTm3dIbuCVwg6bGCquSBQ3w27Oafv20b9Yapkk7EEvOQpgBeLEDKKqcOSuDq2ku
-	CSbC/xMt3qWHNNiXnXUrjSfSbNT8xXmb5ID2mJjfVq3tK1GvTInwPT4428qdPop+MrFcs5
-	0vZpJBWlzlmR0Chhrv8XcIknlNMhoTS1l6qwKwFHNZXOmGVeWqLnwA4TGHoKlyMrXznYnC
-	dSjmWzozi/B4pxGC9tz0MKI0qsSgepGqANR6ep5LD7xByP9lh0VbG1vhkq5a2g==
-From: Paul Sajna <sajattack@postmarketos.org>
-Date: Sun, 02 Aug 2026 12:06:42 -0700
-Subject: [PATCH] arm64: dts: qcom: sdm845-lg: fix sdcard pinctrl nodes
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="l30D97X0"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so6472885e9.2
+        for <phone-devel@vger.kernel.org>; Sun, 02 Aug 2026 15:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1785709048; x=1786313848; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6bsPGvzNC3Iop4WsfghniduLra8GHqGeExlE9Ii45fI=;
+        b=l30D97X0haxplDJA1LQczHII77xXxIut2oUbt5aPYMTZ+cNYgj5AD3f6h+CjF2kS9M
+         ME5VilM82USaF0Kc7kgaPRVwy+IhJgbLylvhiBu3k7s5SQss20MZqTGXwIcsKNrtfe9r
+         tOfESoOpFErqibVvLhQZQi+5gWmFpA3roEh1D4kCxlk38fvV5zXevDQiPI+i4dCxTCRh
+         +s97HbuKcFi3JLXCeVDWyNsYtLc8Y1kS6IBOX2ucWxzuvw0Bi5YYR+yYf2hYvOXZXjqn
+         LfMe0R3KlIVeilGv2nFVxr3JF4IOapSkEL4VuIt2vAeo0WDpjEAKKQ0SAb9hqpf899bx
+         uiJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785709048; x=1786313848;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6bsPGvzNC3Iop4WsfghniduLra8GHqGeExlE9Ii45fI=;
+        b=Pol+Pqf4r5q9lHfPya+fDPuLDfR35li82yZjw3wI5ShdosLHi/HVdYEu+9iYuYfF9S
+         K8XIW6IxvmDcXSilqLMcKkZ9i+Xv8ddZ3hSmv7zwfPLo9dKH5QoEyrQZX1c5pozANAwx
+         KnnOTIOvTFDyB7dz65Ug5sL1BXKayD+8+WMzt/UblwoliRfVYtTBC1JOsqF3T7SPSaFd
+         j/QixfDndA08+xWm6t4Bz94qFa/dM2jflyjcHDKn5zg1uRMraCBJZqusGnmzzdNo+CMd
+         pEzfeJ3+z2QU1lqbko/z+q2gtmMSE1bbEnCwHfcyS9uqGLQZrtjKlCKUtUvYhSnAzH1M
+         ZKJQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8MccRpW43iT6WygBmOUG3t3gm/U1vQ42ZrBwWjCaEwplFY4HIVGTWe+CA3sgR0hlGt2Sxy85pmeO+uw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2TKDCkQJcKHJGLZnVq6LRb/ThTnN1XphZuJVVWCB9b0iSXD50
+	fCGvj5PhGboCWlduMrkSYY/TnOsL+gQkWPZSlYngSb6VR/ah4EOBjt9T3MQU+5R3Nc0=
+X-Gm-Gg: AR+sD12wO2+1CAo8aUHdlndUwO9MwvsM8X0M3Y3COYDpfisJsjXXf4WmKAlEkf7MDL5
+	JSaoMeWpX/T93GAUlv9fUStVO07+GbN4ughwphr0BES9ggImoVwmrgTbhKvuaUGzY1BRfckzd0Y
+	pswaUJRGWnZJwANsWsKY6J6FliWFQj/3XnsXAVEwgYdb/3rPFXBALfZl3N0GheHULKPvCCKKe/P
+	ajNHYhoXh0D5HdtTib36VNUBl3eMjVkum0FY1VEFahQ6GW46w7apu72oYpU9r1j8YIqrn/RFrGG
+	0dOrZNkf4rrtkYsp+Da3u4OgM4aeUekbSoa1CaEr/K5y/+L3PT5cf8q+lMKoA7ByROq5Pf6nmU/
+	qzzRM7Oqn/eD6Z85RgakdTEep9H32J+ESI+q7nhIMbWwuTFWCZSEazzeQGAgvqIMHstxYKQN8lG
+	lZo+O0JrKVQaOsqP/Bf+rON3rMkCDlu70yHnpFc4GRuWQnK8u4QqP3vyXIVaeUX+S2jA==
+X-Received: by 2002:a7b:cd93:0:b0:495:3de8:33a6 with SMTP id 5b1f17b1804b1-4980c65ed1bmr126447945e9.16.1785709047703;
+        Sun, 02 Aug 2026 15:17:27 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49807b5f0c3sm155072855e9.5.2026.08.02.15.17.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 15:17:26 -0700 (PDT)
+Date: Mon, 3 Aug 2026 00:17:24 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH RFC 2/3] ASoC: codecs: tfa98xx: add driver for TFA2
+ amplifiers
+Message-ID: <am_BahJARF9z0P0u@monoceros>
+References: <20260802-tfa98xx-upstream-v1-0-4dd55cdd658a@ixit.cz>
+ <20260802-tfa98xx-upstream-v1-2-4dd55cdd658a@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-judyln-sdcard-fix-v1-1-b3477cfc42cc@postmarketos.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQrCQAyF4auUrBuYBm3Fq0gXcRLbFBllYkUpv
- btju/wevH8B12zqcK4WyPo2t0cqaOoK4shpUDQpBgrUhlMgnGb53hO6RM6CN/tgQ5E4HLhjOUL
- 5PbOWeWte+t0+XyeNr38I1vUH/GqU/nUAAAA=
-X-Change-ID: 20260802-judyln-sdcard-fix-12c2a04a7ad5
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Anton Bambura <jenneron@protonmail.com>, 
- Stefan Hansson <newbie13xd@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, Paul Sajna <sajattack@postmarketos.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785697685; l=1870;
- i=sajattack@postmarketos.org; s=20250413; h=from:subject:message-id;
- bh=2hOmZdPlfBzKcHtwcK27rodmO/H/LByEIMeVmYI76r0=;
- b=AFOycZYR4EEw1U+zGFN8WNqUPPIrcnit6NfhcTP3n61vxYHgvZc6O43LEPwbRSJBl5TWtQvGk
- JYCmseMidMpARNlo8S7ToGE9lQDEvkQqxnpcBnsegtAaTk8THaqEmfh
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=ZFE/UBqiz9Wr8b+zBL27opOjw5x5ket5JFqks/VQGeM=
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eissgc2t76naakqg"
+Content-Disposition: inline
+In-Reply-To: <20260802-tfa98xx-upstream-v1-2-4dd55cdd658a@ixit.cz>
 
-sdcard was previously rather unreliable during boot on sdm845-lg-judyln
 
-Identified and applied correct settings from downstream lineageos kernel.
+--eissgc2t76naakqg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH RFC 2/3] ASoC: codecs: tfa98xx: add driver for TFA2
+ amplifiers
+MIME-Version: 1.0
 
-Verified card was properly detected over 5 reboots with rootfs on sdcard.
+Hello,
 
-Refer to downstream: https://github.com/LineageOS/android_kernel_lge_sdm845/blob/efa8458f79dffeb380d43b38b9403407f87d9f05/arch/arm64/boot/dts/qcom/sdm845-pinctrl.dtsi#L148-L303
+On Sun, Aug 02, 2026 at 02:42:41PM +0200, David Heidelberg wrote:
+> +#include <linux/i2c.h>
+> +#include <linux/mod_devicetable.h>
 
-Fixes: 28ae8aa3923c ("arm64: dts: qcom: add device tree for LG G7 and LG V35")
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+Please don't include <linux/mod_devicetable.h>, that is going away soon.
+Also <linux/i2c.h> already provides i2c_device_id and of_device_id
+(ie. the two structures that used to be defined in
+<linux/mod_devicetable.h> that you're using), so just drop the #include
+for <mod_devicetable.h>.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 5ac2e058827c..055d17e966be 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -581,33 +581,26 @@ &tlmm {
- 	sdc2_clk: sdc2-clk-state {
- 		pins = "sdc2_clk";
- 		bias-disable;
--
--		/*
--		 * It seems that mmc_test reports errors if drive
--		 * strength is not 16 on clk, cmd, and data pins.
--		 *
--		 * TODO: copy-pasted from mtp, try other values
--		 * on these devices.
--		 */
- 		drive-strength = <16>;
- 	};
- 
- 	sdc2_cmd: sdc2-cmd-state {
- 		pins = "sdc2_cmd";
- 		bias-pull-up;
--		drive-strength = <16>;
-+		drive-strength = <10>;
- 	};
- 
- 	sdc2_data: sdc2-data-state {
- 		pins = "sdc2_data";
- 		bias-pull-up;
--		drive-strength = <16>;
-+		drive-strength = <10>;
- 	};
- 
- 	sd_card_det_n: sd-card-det-n-state {
- 		pins = "gpio126";
- 		function = "gpio";
- 		bias-pull-up;
-+		drive-strength = <2>;
- 	};
- };
- 
+> [...]
+> +static const struct i2c_device_id tfa98xx_i2c_id[] = {
+> +	{ "tfa9894", (kernel_ulong_t)&tfa9894_chip },
 
----
-base-commit: 415606a7be939835db9b0d6b711887586646346d
-change-id: 20260802-judyln-sdcard-fix-12c2a04a7ad5
+Please make this
 
-Best regards,
---  
-Paul Sajna <sajattack@postmarketos.org>
+	{ .name = "tfa9894", .driver_data = (kernel_ulong_t)&tfa9894_chip },
 
+Best regards
+Uwe
+
+--eissgc2t76naakqg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpvwfEACgkQj4D7WH0S
+/k5ofAf/fcXOQAhsDuQI1vXZjfYD+Nu2PG5sMkw/QbLri499oQfMbAfRG0JWATEF
+QlWrFmVUB03381JLDXyXWtkO5evnjkldLr3bqGY7QevsfpxmOHDV9zLomJjfAqyL
+RmIcbr5btKIh2FZJRZslqHYoKiG7SeNZJLyxeYU4lW8vZcohMMRHlPGSCEC7RoNI
+sJdx+JMXR+ZHBOuwOrObZDxREbyQwdSnxD1gEEwmXEcpb0rZUWVIEZKXNekbV2XN
+izdCJ/P/vwPVNl7yrZLjlzfD6t2AFmYBYIq4kLKM1vrAd8gxMcxwTQH+XKnFNaWC
+RZQ+MsjqlG8Lw4wj970ztO4ky/yXFQ==
+=/KIq
+-----END PGP SIGNATURE-----
+
+--eissgc2t76naakqg--
