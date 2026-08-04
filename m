@@ -1,116 +1,107 @@
-Received: from rusty.tulip.relay.mailchannels.net (rusty.tulip.relay.mailchannels.net [23.83.218.252])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27A43E9C16;
-	Tue,  4 Aug 2026 14:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.218.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6EA3446DE;
+	Tue,  4 Aug 2026 18:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853528; cv=none; b=bLSm5oRuA/CoASB+r2w4nNeoPE/E9Z5EnpDQZ3+gAdduvwjJL8JPGd3vwlbpioTnmW37kHOUF7iFA7FkhiwgLYhjpCb/F7cM1KreW449+E1pe5Xe6P9uvPCnGDJA+FXercyLnfC207SkFkdL/s1/Xhbd/kqjnkL0ZiJYmFaySkA=
+	t=1785866809; cv=none; b=MvZdKidVQ67hR+WkYR8bZL5e+8AO2nymQ510JqI/i8mSFp+pMRL2MBf5UFC1bcTPXWDUP8g8qP2gBWcRuKMPwLlLHzfYsAWGcniG1MbLtFjfIjhbc2sZTluvf+V35bKtDTMBr/Ci7I91ZwR1T2yu87Sbm99GUY4vXDQHqfxw19w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853528; c=relaxed/simple;
-	bh=ctCtmWffUD8JKJGWtgLHm8Bl2ZGh8zN8rkiL2guT5ZM=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=EBsoBQ6h2bvYVnT+8SF+9aOBx8rPEUuHcoHti4KBAspapn9ugWkTqqmJCzdVfV7JlR0QHtdYJ/gpVg/XbyPRPgYvMJ8VFYzU21O9b07QFVw6RDMxawbRHdt6qjc3rPeRW1FuXKsUyvesx3ax3mXNCwKGYc0gFO9waw9hY0az2nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=Fb24aMBq; arc=none smtp.client-ip=23.83.218.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
+	s=arc-20240116; t=1785866809; c=relaxed/simple;
+	bh=UYYeoFYGn74wN3HBRtWiUwkieFmQvRE83tQm10aXEO8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lcwp99s1f9X5crIvVMbnB4V8o04nTNtL8hmmPHrd5OKwErw/qztOdwkCpboYLckloyDPSyQ6ZeGTpK+xdj0eU6Lsfcrfyc/r6yZJUxX5LnyK1+9J9I/vl2CsnGKwASZiEqCbil/GQz8d1h/rIfKl9xCllKGAwf/pZt1R1k5xP8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYpXThW/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="Fb24aMBq"
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 8C78D802A42;
-	Tue, 04 Aug 2026 14:24:56 +0000 (UTC)
-Received: from fr-int-smtpout18.hostinger.io (100-111-241-60.trex-nlb.outbound.svc.cluster.local [100.111.241.60])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 42CDA80274F;
-	Tue, 04 Aug 2026 14:24:51 +0000 (UTC)
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Celery-Hook: 6e5f91ee2dc7ef85_1785853495174_255492421
-X-MC-Loop-Signature: 1785853495174:838635090
-X-MC-Ingress-Time: 1785853495173
-Received: from fr-int-smtpout18.hostinger.io (fr-int-smtpout18.hostinger.io
- [148.222.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.111.241.60 (trex/8.0.2);
-	Tue, 04 Aug 2026 14:24:55 +0000
-Received: from [IPV6:2404:c0:b203:a6a7:55d9:cde7:2d4f:c58d] (unknown [IPv6:2404:c0:b203:a6a7:55d9:cde7:2d4f:c58d])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4hDwly6wtQz1xxd;
-	Tue,  4 Aug 2026 14:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1785853489;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9v+HbTzWBfh1Gmf/fk8WRVhO2s6dDvNdLs+LNUAiZ+U=;
-	b=Fb24aMBqZhBji2+gyywXVphlyDdaKJ2LrNxnqwsKJZ4szLWhT0GYNP9BL8L00Zqh3A24rD
-	gPDmY5IJUtoQdSEzQmyH354Fm6nmqYdSg3vn9mARYGPJCqJW5SL5uPk/3TazgJoT4jb4+F
-	gD0PEUtmsCBsmkk/DqX8WQLgWE9WqlAW+Day1Jsv8dQQpY0OSypMq+M/jNkLqFukCdZYDd
-	gGT1PJRkipgx9PDh8wNfhHxOt2z6VI6lDabIg41o/cN/6MddaFnpsNz865iCs3UUreYSGc
-	8nGlbHq008EXUr78yrrMiy75QYUzSTWoCnmjWAGSZSPFfLFOvVhq1Yj7c5EZ5w==
-Message-ID: <ddc7820d-a9c8-4a69-9df2-6bc4ff61d3ee@smankusors.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYpXThW/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3D04AC2BCF5;
+	Tue,  4 Aug 2026 18:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785866809;
+	bh=UYYeoFYGn74wN3HBRtWiUwkieFmQvRE83tQm10aXEO8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YYpXThW/dImuzbVnljcU+E2waCL8eO2490cqvCs3ii/5IvSpFDdiouFjpmwnCFtq1
+	 fkuxINWN253djY3/h0IzbAPeMJB+2lJKcHxA1VjZDBXjsUnG9p1DnDuX2kbx2Y6Hp8
+	 zw+F+wICME3JFFE6KsIXTGc+Zaal+0aCSXhIR6IYzDBzCShsQCmT55AqIFJIbGhFQ8
+	 XsfYEdkHydTy3DUtFjRFZ1qafB1I9JHP8dExbUlYReWfkuhmqEk1YY/pOeKP5Q8BuT
+	 F2nhjTTYhrx/11qbbUDH3zs/H9BrpfD2/z8K1/xvBMe5nLttYJt6VvWNh0kg6/abNC
+	 Tjwthut8wipTQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 047CCC55822;
+	Tue,  4 Aug 2026 18:06:49 +0000 (UTC)
+From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
+Subject: [PATCH RESEND v3 0/2] Initial QMP USB PHY support for SM8475
+Date: Tue, 04 Aug 2026 14:06:18 -0400
+Message-Id: <20260804-sm8475-bup-usbss-v3-0-9a5b9ebf62de@proton.me>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/6] ARM: dts: qcom: apq8064: Fix USB controller clocks
-To: contact@alex-min.fr, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Guru Das Srinagesh
- <linux@gurudas.dev>, Linus Walleij <linusw@kernel.org>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Lee Jones <lee@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-References: <20260804-mainline-send-v1-sending-v5-0-149dd4372ac8@alex-min.fr>
- <20260804-mainline-send-v1-sending-v5-3-149dd4372ac8@alex-min.fr>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <20260804-mainline-send-v1-sending-v5-3-149dd4372ac8@alex-min.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Date: Tue,  4 Aug 2026 14:24:30 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Gq4Q+V1C c=1 sm=1 tr=0 ts=6a71f631 a=qOstXJigc3fKijKOYFRv+w==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=accKExrkbF7l0cSrD3IA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfE5ajB1JLe7ezsWryTj5qvDzd4QHZzk3f5Rb0lKfA/jBmdRgYWa1BL92L3UfCfKEwnJl0hoI2CLlCMb6g9Jq670GZ+/n/994fWHzCMJPXz1y0Ym5vdSz mgUNz6p+x9iu93tjBOeNdBkXEWFGzQbSTagzU1LOjpgzU00WCRFP2QY3G/JilT3NPQueiSF73npLZRRGu1T7En2TxKSUOMRi9vQJUnHWPWb0rpZxAt0hd+G4 4wdDZzgzqzXCTq0kjHGbv5BFb4sldnhyTuJbT/G8WZTwhTEP8K6rhV4A5b4nhpN6eao3wNgrcmkunklG+qBFS/P5y+bEBzovUFw0dlNWET8vTMzkPqfcjAgg YNXJp1k7tbfoeOrNAEk5oXsgH53ejwhGQYQn0IFFyMHfVmldvbwGBBUIYb7xHzar7GiFo4vWgaJ2Aj0FXDWHtzCcSOGJfxoZtt2CEo6JwZ9Z6ID0MUDqouTN QqQN8BEPA3909wvYPbQVv+PlvY3X9WNuBcuWDKnJp80QBj5HIaQQE5ZF8ixlpcveWn04dxmvBavFCSLbZ/AFCps+WOQctkgkRlzSI/8J3mu6WV1X4TH3Wlv0 azEFsy1wbMIkwDohBMpg+SRA7JFM5ZgTlXpGaSBhiQCQPqhI/QpH0q47xir+AbYrFQIwFo3rzINQM9dDvxAhz9HVsqOjpbXQmjXQXpI0tIp1PkG0SoWnV2xc NhyWm9ku5aOaeoUm8SomvwgCt1/aIdOPoIexd7ZNclFPKjcdi1uTPWy2pfQMnr1Le2L2VfmVm4knUY0bioyLPueZbFQyRFp++CZx+ksiIPiJcnoMUemcQuAQ /wOLKW+MFyaMRWzWbQLE+ka/kd1Vj46jet8YcBl1sqIVM8VnlPt7rPAYj05CYa+koybkCtmX4C8Cxmj70f1BzIRAauu/t5ClLSRU6Cy8nrjTBWx/I7HZaEm+ Ipqq/HWKCk5Eimg
- vn8noAlnIoSm4HxMrDEIBU1RQZ6H+qJ3/0vXi4WSw/bWjFbmP3z8aIg==
-X-AuthUser: linux@smankusors.com
+To: Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Esteban Urrutia <esteuwu@proton.me>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785866807; l=1598;
+ i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
+ bh=UYYeoFYGn74wN3HBRtWiUwkieFmQvRE83tQm10aXEO8=;
+ b=L72rDqhmOb52xnhpROj5aEtCiw6jb355ELkkORugIfTAJB/wS+qrYr4lrPMQFOPUreOcjir0n
+ SfnUusl8AnKBK41/OEh97Yolcmm5lQxu+NANskHoyOBfHXxirN90Ylo
+X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
+ pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
+X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
+ auth_id=835
+X-Original-From: Esteban Urrutia <esteuwu@proton.me>
+Reply-To: esteuwu@proton.me
 
-On 8/4/2026 1:34 PM, Alexandre MINETTE via B4 Relay wrote:
-> From: Alexandre MINETTE <contact@alex-min.fr>
-> 
-> The APQ8064 HS USB controller nodes describe the transceiver clock as
-> "core", but the ChipIdea MSM glue expects "core" to be the controller
-> fabric clock and "fs" to be the transceiver clock.
-> 
-> This mismatch can leave the fabric clock disabled while the controller is
-> accessed. Some boards may tolerate that if the clock is already enabled
-> elsewhere, but it is not a correct description of the hardware.
-> 
-> Describe the RPM Daytona fabric clock as "core", the AHB clock as
-> "iface", and the transceiver clock as "fs" for all APQ8064 HS USB
-> controllers. Without this, USB does not probe reliably on Samsung Galaxy
-> S4 because the fabric clock remains disabled.
+Based on the following patch:
+[1] https://lore.kernel.org/all/20260711-sm8450-qol-qmp-v2-2-d14353bd6ff4@proton.me/
 
-oh sorry, I forgot to mention that, depending on the feedback on
-msm8960's patch [1], we might end up swapping the Daytona fabric and
-HS1_H clocks. So, Daytona fabric would be the "iface" and HS1_H would be
-the "core".
+This series adds support for the QMP USB PHY found in the SM8475 SoC.
+The initialization sequence varies noticeably when compared to the one
+used in the SM8450 SoC, hence the need to add support for this PHY.
 
-[1] 
-https://lore.kernel.org/all/1416ada5-ccdf-400e-b2b8-d2c5c7e335dc@oss.qualcomm.com/
+Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+---
+Changes in v3:
+- Apply suggestions from Dmitry
+- Drop PLL version patch
+  - Explain the situation instead of renaming the structs
+- Link to v2: https://patch.msgid.link/20260715-sm8475-bup-usbss-v2-0-2d8def39b190@proton.me
 
+Changes in v2:
+- Split series in subseries (pcie, usbss)
+  - Sorry, it should have been like this from the start!
+- Add notice about base commit
+  - Reason why calibrate_dp_phy is not present
+- Modify referenced swing and pre-emphasis tables
+- Move v1 PLL tables to SM8475 support patch
+  - Warnings are generated at build time otherwise
+- Link to v1: https://patch.msgid.link/20260714-sm8475-bup-v1-0-b2871be2b4ec@proton.me
+
+---
+Esteban Urrutia (2):
+      dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: Add SM8475 QMP PHY
+      phy: qcom: qmp-combo: Add SM8475 support
+
+ .../phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml         |   1 +
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c          | 169 +++++++++++++++++++++
+ 2 files changed, 170 insertions(+)
+---
+base-commit: 30b4a96d99ce8447f4589af6f7da35d4b43e0af6
+change-id: 20260714-sm8475-bup-usbss-e68349473f6e
+
+Best regards,
+--
+Esteban Urrutia <esteuwu@proton.me>
 -- 
-Thanks,
-Antony K. S.
+Esteban Urrutia <esteuwu@proton.me>
+
+
