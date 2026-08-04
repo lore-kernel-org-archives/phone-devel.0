@@ -1,39 +1,58 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from rusty.tulip.relay.mailchannels.net (rusty.tulip.relay.mailchannels.net [23.83.218.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E14E42FCDE;
-	Tue,  4 Aug 2026 09:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27A43E9C16;
+	Tue,  4 Aug 2026 14:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.218.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785834748; cv=none; b=IpcNSMekqAA6GfbDIwrAR2muyevxc7zItuzBXxzfQ+jqvtWIKg+5oxK53E8xsVMYAvkUsOoo9BEVNIy0N+isDDbvEFX4/HK+dN2vBowYASO4KwXLJ8QBm3K3dbufpA+BXh8h4m6QGOqcAzEsUIZQg2r7m7zcFKgCIDMzj42GPVc=
+	t=1785853528; cv=none; b=bLSm5oRuA/CoASB+r2w4nNeoPE/E9Z5EnpDQZ3+gAdduvwjJL8JPGd3vwlbpioTnmW37kHOUF7iFA7FkhiwgLYhjpCb/F7cM1KreW449+E1pe5Xe6P9uvPCnGDJA+FXercyLnfC207SkFkdL/s1/Xhbd/kqjnkL0ZiJYmFaySkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785834748; c=relaxed/simple;
-	bh=rA3ndTPXDRKlf1VX6Bg0uKtMubVbUgJkDdvtaNj4igc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=I4MpJNrwYYwu+wvzyqUB5C1sOGBU5tQz0u2iZJI3X/F3G7Yf9iFEryu53FzAq+/hvLRmK4FjCgOZr7vOoDBPfCQXRJpWq8Y55r1U2ObtkpyGJ8gqKhT9yw5SlN+IqxCFd92S5NwyEIdh1viW5TpNQHJf4PDxBHy7SgJSuxuqFIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Yb9uSmGE; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1785853528; c=relaxed/simple;
+	bh=ctCtmWffUD8JKJGWtgLHm8Bl2ZGh8zN8rkiL2guT5ZM=;
+	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Date; b=EBsoBQ6h2bvYVnT+8SF+9aOBx8rPEUuHcoHti4KBAspapn9ugWkTqqmJCzdVfV7JlR0QHtdYJ/gpVg/XbyPRPgYvMJ8VFYzU21O9b07QFVw6RDMxawbRHdt6qjc3rPeRW1FuXKsUyvesx3ax3mXNCwKGYc0gFO9waw9hY0az2nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=Fb24aMBq; arc=none smtp.client-ip=23.83.218.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Yb9uSmGE"
-Received: from [172.16.124.192] (ip-78-44-13-22.bb.vodafone.cz [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D059353400F7;
-	Tue, 04 Aug 2026 11:12:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1785834742;
+	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="Fb24aMBq"
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 8C78D802A42;
+	Tue, 04 Aug 2026 14:24:56 +0000 (UTC)
+Received: from fr-int-smtpout18.hostinger.io (100-111-241-60.trex-nlb.outbound.svc.cluster.local [100.111.241.60])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 42CDA80274F;
+	Tue, 04 Aug 2026 14:24:51 +0000 (UTC)
+X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Celery-Hook: 6e5f91ee2dc7ef85_1785853495174_255492421
+X-MC-Loop-Signature: 1785853495174:838635090
+X-MC-Ingress-Time: 1785853495173
+Received: from fr-int-smtpout18.hostinger.io (fr-int-smtpout18.hostinger.io
+ [148.222.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.111.241.60 (trex/8.0.2);
+	Tue, 04 Aug 2026 14:24:55 +0000
+Received: from [IPV6:2404:c0:b203:a6a7:55d9:cde7:2d4f:c58d] (unknown [IPv6:2404:c0:b203:a6a7:55d9:cde7:2d4f:c58d])
+	(Authenticated sender: linux@smankusors.com)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4hDwly6wtQz1xxd;
+	Tue,  4 Aug 2026 14:24:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
+	s=hostingermail-a; t=1785853489;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wfzxdUNz5hU0FrJNe5i6lUnlVJ8GKKJNvBxqXSs0TCI=;
-	b=Yb9uSmGE0ah/7nH3FizhJeXyiqfu1R43yomBq+k5hC+fsLvtTCgkb/Jo/jLbq9Hs8nRC6X
-	23tpXNuSwosQx24cfAgtOgdtEcW9/MA7c05wI4lVjc+g/VUoZX5qckm85sGbRKfB3treR7
-	oSWoxsCZbKZuBMHA/UUpooMdxbHNyK0=
-Message-ID: <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
-Date: Tue, 4 Aug 2026 11:12:21 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=9v+HbTzWBfh1Gmf/fk8WRVhO2s6dDvNdLs+LNUAiZ+U=;
+	b=Fb24aMBqZhBji2+gyywXVphlyDdaKJ2LrNxnqwsKJZ4szLWhT0GYNP9BL8L00Zqh3A24rD
+	gPDmY5IJUtoQdSEzQmyH354Fm6nmqYdSg3vn9mARYGPJCqJW5SL5uPk/3TazgJoT4jb4+F
+	gD0PEUtmsCBsmkk/DqX8WQLgWE9WqlAW+Day1Jsv8dQQpY0OSypMq+M/jNkLqFukCdZYDd
+	gGT1PJRkipgx9PDh8wNfhHxOt2z6VI6lDabIg41o/cN/6MddaFnpsNz865iCs3UUreYSGc
+	8nGlbHq008EXUr78yrrMiy75QYUzSTWoCnmjWAGSZSPFfLFOvVhq1Yj7c5EZ5w==
+Message-ID: <ddc7820d-a9c8-4a69-9df2-6bc4ff61d3ee@smankusors.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,140 +60,57 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
- coil requires higher voltage
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH v5 3/6] ARM: dts: qcom: apq8064: Fix USB controller clocks
+To: contact@alex-min.fr, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Olivier Benjamin <olivier.benjamin@bootlin.com>,
- Manuel Traut <manut@mecka.net>, Alexander Warnecke
- <awarnecke002@hotmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- phone-devel@vger.kernel.org, imx@lists.linux.dev, stable@vger.kernel.org
-References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
- <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
- <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
+ <conor+dt@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Guru Das Srinagesh
+ <linux@gurudas.dev>, Linus Walleij <linusw@kernel.org>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>, Lee Jones <lee@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+References: <20260804-mainline-send-v1-sending-v5-0-149dd4372ac8@alex-min.fr>
+ <20260804-mainline-send-v1-sending-v5-3-149dd4372ac8@alex-min.fr>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
+From: Antony Kurniawan Soemardi <linux@smankusors.com>
+In-Reply-To: <20260804-mainline-send-v1-sending-v5-3-149dd4372ac8@alex-min.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Date: Tue,  4 Aug 2026 14:24:30 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=Gq4Q+V1C c=1 sm=1 tr=0 ts=6a71f631 a=qOstXJigc3fKijKOYFRv+w==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=accKExrkbF7l0cSrD3IA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfE5ajB1JLe7ezsWryTj5qvDzd4QHZzk3f5Rb0lKfA/jBmdRgYWa1BL92L3UfCfKEwnJl0hoI2CLlCMb6g9Jq670GZ+/n/994fWHzCMJPXz1y0Ym5vdSz mgUNz6p+x9iu93tjBOeNdBkXEWFGzQbSTagzU1LOjpgzU00WCRFP2QY3G/JilT3NPQueiSF73npLZRRGu1T7En2TxKSUOMRi9vQJUnHWPWb0rpZxAt0hd+G4 4wdDZzgzqzXCTq0kjHGbv5BFb4sldnhyTuJbT/G8WZTwhTEP8K6rhV4A5b4nhpN6eao3wNgrcmkunklG+qBFS/P5y+bEBzovUFw0dlNWET8vTMzkPqfcjAgg YNXJp1k7tbfoeOrNAEk5oXsgH53ejwhGQYQn0IFFyMHfVmldvbwGBBUIYb7xHzar7GiFo4vWgaJ2Aj0FXDWHtzCcSOGJfxoZtt2CEo6JwZ9Z6ID0MUDqouTN QqQN8BEPA3909wvYPbQVv+PlvY3X9WNuBcuWDKnJp80QBj5HIaQQE5ZF8ixlpcveWn04dxmvBavFCSLbZ/AFCps+WOQctkgkRlzSI/8J3mu6WV1X4TH3Wlv0 azEFsy1wbMIkwDohBMpg+SRA7JFM5ZgTlXpGaSBhiQCQPqhI/QpH0q47xir+AbYrFQIwFo3rzINQM9dDvxAhz9HVsqOjpbXQmjXQXpI0tIp1PkG0SoWnV2xc NhyWm9ku5aOaeoUm8SomvwgCt1/aIdOPoIexd7ZNclFPKjcdi1uTPWy2pfQMnr1Le2L2VfmVm4knUY0bioyLPueZbFQyRFp++CZx+ksiIPiJcnoMUemcQuAQ /wOLKW+MFyaMRWzWbQLE+ka/kd1Vj46jet8YcBl1sqIVM8VnlPt7rPAYj05CYa+koybkCtmX4C8Cxmj70f1BzIRAauu/t5ClLSRU6Cy8nrjTBWx/I7HZaEm+ Ipqq/HWKCk5Eimg
+ vn8noAlnIoSm4HxMrDEIBU1RQZ6H+qJ3/0vXi4WSw/bWjFbmP3z8aIg==
+X-AuthUser: linux@smankusors.com
 
-On 04/08/2026 09:39, Ondřej Jirman wrote:
-> Hi,
+On 8/4/2026 1:34 PM, Alexandre MINETTE via B4 Relay wrote:
+> From: Alexandre MINETTE <contact@alex-min.fr>
 > 
-> On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
->> Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
->>
->> Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> index d46cdfe3f7849..bde35d9b2263e 100644
->> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->> @@ -473,17 +473,17 @@ wcam_out: endpoint {
->>   			};
->>   		};
->>   	};
->>   
->>   	wcam_lens: camera-lens@c {
->>   		compatible = "dongwoon,dw9714";
->>   		reg = <0x0c>;
->>   		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
->> -		vcc-supply = <&vcc1v8_dvp>;
->> +		vcc-supply = <&avdd2v8_dvp>;
+> The APQ8064 HS USB controller nodes describe the transceiver clock as
+> "core", but the ChipIdea MSM glue expects "core" to be the controller
+> fabric clock and "fs" to be the transceiver clock.
 > 
-> This does not match reality, schematic says it's VCC2V8_DVP:
+> This mismatch can leave the fabric clock disabled while the controller is
+> accessed. Some boards may tolerate that if the clock is already enabled
+> elsewhere, but it is not a correct description of the hardware.
 > 
-> 	https://xff.cz/dl/tmp/6253a0465329df41.png
+> Describe the RPM Daytona fabric clock as "core", the AHB clock as
+> "iface", and the transceiver clock as "fs" for all APQ8064 HS USB
+> controllers. Without this, USB does not probe reliably on Samsung Galaxy
+> S4 because the fabric clock remains disabled.
 
-Ahoj,
+oh sorry, I forgot to mention that, depending on the feedback on
+msm8960's patch [1], we might end up swapping the Daytona fabric and
+HS1_H clocks. So, Daytona fabric would be the "iface" and HS1_H would be
+the "core".
 
-thanks for spotting this, since I know you have the device, would be too much to 
-ask you to send standalone fix for PP Pro?
-
-I would drop the change from the series.
-
-David
-
-P.S. I noticed I didn't mark this series RFC. Too late.
-
-> 
-> regards,
-> 	o.
-> 
->>   	};
->>   
->>   	ucam: camera@36 {
->>   		compatible = "ovti,ov8858";
->>   		reg = <0x36>;
->>   		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
->>   		clock-names = "xvclk";
->>   		dovdd-supply = <&vcc1v8_dvp>;
->>
->> -- 
->> 2.53.0
->>
->>
+[1] 
+https://lore.kernel.org/all/1416ada5-ccdf-400e-b2b8-d2c5c7e335dc@oss.qualcomm.com/
 
 -- 
-David Heidelberg
-
+Thanks,
+Antony K. S.
