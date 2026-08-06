@@ -1,177 +1,74 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A1030C156;
-	Thu,  6 Aug 2026 14:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C09227BF93;
+	Thu,  6 Aug 2026 16:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786025940; cv=none; b=APdyNQO3giH0xuM+EO+OEI/5tz5+O3tFgMJdCvk8ihQa5wLXUWgvtZ/bcZYIGvTfLbsboiPYUhpSXNIzJiOdptcBqqjZMuXzFISGx0xADYZuKb+8KkCXIvMkRuip3XKPRMTsLzRJsGGNvQMZZZsk5FXSqd4nGN5KUeeqAXwuMOc=
+	t=1786033579; cv=none; b=iVCwoYhYqYeS4jAgMQOZkwmkLPstSiF3vpvUQsNk2f7rN9fPVsjgIVnaRKDTw7UrEPG+VIOgHk6JS/FdEdTXiIOf64LDdCBExcPD5AKOG6q0FqdBO8gAxznRj/SIrjbArDniULqBVAaLTYAHm8zKwYxs/Ax9zjHddKAs6srzYb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786025940; c=relaxed/simple;
-	bh=b6tGJgjbWseM7FlphtaARLIwHe4KRXa10wZMxOFBvWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dFLVFEp1WwErLt8Hn3tDHWnJ09v+Q9VYvPmnkIUNhp6Hrk+vk0tpsMGpZP62+iGfZAiqx5zypyfklD6W/aGoGNt1PibLJS5Vst1qbuy0ql3lJu3EAtcTVgqeB/gswO1DxWdOLD4HicCTiFsSm0NA45zOC450d9UsP2K02khRkpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=hfvsUE2U; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	s=arc-20240116; t=1786033579; c=relaxed/simple;
+	bh=K32lkY0iyjQ6ltPX22VBJZISyAW+jJ2aq/jWcL6FMts=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XkeIcDZFD4yCLOGlk1ci88YoMnkOvjkr9Owerip39YlkMl0g4xz/+5qOjg6b2BytvX7mVolucS3IYbQ1wAZqg/eqpG4XYm6qJRz4gLtHw+jDSYDJLYRjjZS2j2QRsj8TrplQih34hdmQhMzq4Lwb1wcMCeNpCQkNl/7iXONq81M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2YXq+Ks; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="hfvsUE2U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1786025934; bh=b6tGJgjbWseM7FlphtaARLIwHe4KRXa10wZMxOFBvWo=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=hfvsUE2U2fnm8isZGBZhasv9Exh8AzA5/wdep+DCpOAZUfJlytb89pnFX+BEV5dHo
-	 hsJUXMCTeaXxQw0KmF8+jgzbdq9VbYQRYiUgvkEzgLQMx2F+V582cYawsbpKGPXCpj
-	 zXYXArluPudj1uElf1TWmKIWdeMegs/rvjZQfplU=
-Date: Thu, 6 Aug 2026 16:18:53 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: David Heidelberg <david@ixit.cz>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
-	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
-	imx@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
- coil requires higher voltage
-Message-ID: <cluhol4kfk4mi3ybxfo52hyuepxuwfgrgv54vsvn3e7x43d3la@xfcodg4jlosv>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	David Heidelberg <david@ixit.cz>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
-	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
-	imx@lists.linux.dev, stable@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
- <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
- <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
- <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
- <galrq4ug3hhny2ivpylqwuztwv7vnqvm6sdhlu6pucxk6qy2mz@zxw4ckkxj2sh>
- <dd2f19ac-a65e-4e53-aa2f-6f76c949366e@ixit.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2YXq+Ks"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D751F00A3A;
+	Thu,  6 Aug 2026 16:26:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786033577;
+	bh=J7FU8gW2VUhAfd7BYGs2hAuYby6wONMtKH3laYXT+I8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=I2YXq+KsUedHGxOYgPSJ3xf9cpbYMZaMo1D8hCe4nhKzpv+LG4lBfJNkL7RpDYn7R
+	 rIcXmbnV7SVUCFuyXU4Iq4L0E+ID59GNKgj5fU/Kp7Us3PLk/djskQLxa4kYveyi7X
+	 8ym28if7WAjeswo8sbTobs0EZC6inBE3w1iqHhlleSWibeAdh1BrP0UP7VWNkS8BaN
+	 D/VMGKaHUl7ggoaWDsBNKT+IEStQZkbjEKXO0dFBaFja8PZFbQEcO4vDwmKdW+Oh7X
+	 w7YbAZemHT5o109PqL2uS5wCytfs/C2LVf5iByIr2poT9dzBpqkVsi20qUJW4PKhh3
+	 Hg5kvM1GH6QUA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Esteban Urrutia <esteuwu@proton.me>
+Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260804-sm8475-bup-usbss-v3-0-9a5b9ebf62de@proton.me>
+References: <20260804-sm8475-bup-usbss-v3-0-9a5b9ebf62de@proton.me>
+Subject: Re: [PATCH RESEND v3 0/2] Initial QMP USB PHY support for SM8475
+Message-Id: <178603357411.674490.11520339407340817802.b4-ty@kernel.org>
+Date: Thu, 06 Aug 2026 21:56:14 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dd2f19ac-a65e-4e53-aa2f-6f76c949366e@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Thu, Aug 06, 2026 at 01:49:07PM +0200, David Heidelberg wrote:
-> On 06/08/2026 13:19, Ondřej Jirman wrote:
-> > Hi,
-> > 
-> > On Tue, Aug 04, 2026 at 11:12:21AM +0200, David Heidelberg wrote:
-> > > On 04/08/2026 09:39, Ondřej Jirman wrote:
-> > > > Hi,
-> > > > 
-> > > > On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
-> > > > > From: David Heidelberg <david@ixit.cz>
-> > > > > 
-> > > > > By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
-> > > > > Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
-> > > > > 
-> > > > > Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > > > > ---
-> > > > >    arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
-> > > > >    1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > > > > index d46cdfe3f7849..bde35d9b2263e 100644
-> > > > > --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > > > > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > > > > @@ -473,17 +473,17 @@ wcam_out: endpoint {
-> > > > >    			};
-> > > > >    		};
-> > > > >    	};
-> > > > >    	wcam_lens: camera-lens@c {
-> > > > >    		compatible = "dongwoon,dw9714";
-> > > > >    		reg = <0x0c>;
-> > > > >    		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
-> > > > > -		vcc-supply = <&vcc1v8_dvp>;
-> > > > > +		vcc-supply = <&avdd2v8_dvp>;
-> > > > 
-> > > > This does not match reality, schematic says it's VCC2V8_DVP:
-> > > > 
-> > > > 	https://xff.cz/dl/tmp/6253a0465329df41.png
-> > > 
-> > > Ahoj,
-> > > 
-> > > thanks for spotting this, since I know you have the device, would be too
-> > > much to ask you to send standalone fix for PP Pro?
-> > > 
-> > > I would drop the change from the series.
-> > 
-> > Ok. Just for the reference, vcc1v8_dvp here feeds an enable pin for VCC2V8_DVP
-> > LDO regulator (which is supplied from VCC3V3_SYS and not described in DT, yet).
-> > So in practice enabling vcc1v8_dvp enables both VCC2V8_DVP and AVDD2V8_DVP and
-> > while DT does not describe the HW in detail, it describes the only regulator
-> > that is actually controllable and enables all needed power rails for the camera
-> > modules all by itself in proper order/timing.
-> > 
-> > Not sure what's the DT maintainers idea here about whether DT has to describe
-> > every detail of power rails routing, or just what's pragmatic.
-> 
-> My perception is that DT syntax should describe everything, except passive
-> components.
-> 
-> No additional GPIO is needed to enable VCC and AVDD?
 
-Yes, it's completely transparent. vcc1v8_dvp indirectly powers up all other
-camera sensor regulators.
+On Tue, 04 Aug 2026 14:06:18 -0400, Esteban Urrutia wrote:
+> Based on the following patch:
+> [1] https://lore.kernel.org/all/20260711-sm8450-qol-qmp-v2-2-d14353bd6ff4@proton.me/
+> 
+> This series adds support for the QMP USB PHY found in the SM8475 SoC.
+> The initialization sequence varies noticeably when compared to the one
+> used in the SM8450 SoC, hence the need to add support for this PHY.
+> 
+> [...]
 
-Regards,
-	o.j.
+Applied, thanks!
 
-> Here, it seems to me that explanation like this in DT could cover it. But
-> I'm no authority here :)
-> 
-> David
-> 
-> > 
-> > Best regards,
-> > 	o.j.
-> > 
-> > > David
-> > > 
-> > > P.S. I noticed I didn't mark this series RFC. Too late.
-> > > 
-> > > > 
-> > > > regards,
-> > > > 	o.
-> > > > 
-> > > > >    	};
-> > > > >    	ucam: camera@36 {
-> > > > >    		compatible = "ovti,ov8858";
-> > > > >    		reg = <0x36>;
-> > > > >    		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
-> > > > >    		clock-names = "xvclk";
-> > > > >    		dovdd-supply = <&vcc1v8_dvp>;
-> > > > > 
-> > > > > -- 
-> > > > > 2.53.0
-> > > > > 
-> > > > > 
-> > > 
-> > > -- 
-> > > David Heidelberg
-> > > 
-> 
-> -- 
-> David Heidelberg
-> 
+[1/2] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: Add SM8475 QMP PHY
+      commit: f8bb67fa3651d494427194c1e283886ad4cdbde0
+[2/2] phy: qcom: qmp-combo: Add SM8475 support
+      commit: 9583243a524c0ea4dd08541900ab2c7da95ce13f
+
+Best regards,
+-- 
+~Vinod
+
+
