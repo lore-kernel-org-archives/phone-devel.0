@@ -1,43 +1,62 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7CC45518E;
-	Wed,  5 Aug 2026 22:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E1F43B3F4;
+	Thu,  6 Aug 2026 11:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785970602; cv=none; b=uAJJxlcdMD7rzZaXBr9s++sH6/MUyhVbojgGHA/35C4p8u/JdfJU9TS2Ikv6+oxKhLORdug3JF/5xzWJPDq/bAtlfKKGxEisPfG7xOzmR+MlZ9y0EKv2C7pFKjmdvpMjk+/guV0HkQAQTnD09X2pnMnKbYPI1oaloGFfacJO3uk=
+	t=1786015172; cv=none; b=O6qsbgE2Cz86AiBLzZU99zyx6Q3aYAvZSndCpIgFtIBw+0++FZhHg+iWn6vEY/F+CX5j/8I7tBRHMriesK4cUPT8hVzT7n2Jfor28SW6Ay3vGpexbSZu0lVD4pfGeo3PeH272JmFAtyDOYqT8JCZLjvm5FFfTeo6+uDHpakckKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785970602; c=relaxed/simple;
-	bh=07HKGFW/al0imxq0pYVJrQriMtzR6zWZG67Qi84KhPc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DGB0nLDLzCcUEZPijrV2gUp44kaLeu7O9v81nrZT8Rl43FafrCBVuu5AxMw41TYHdkjbwpBEc8wZVbWDv1mVnTTEL5WY8HJvJDnv5CpAYRir1aweliwnQ1xE21sRafoeT+1cDDFcrN+GdP4KJsAJnDKC4dmMrmHmztL6nRUrVVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HQTXtAmS; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1786015172; c=relaxed/simple;
+	bh=VZJLBZnRyPxnCLoEjoQyTL2E3KhxDtuYstjmKXmloU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HjSTfDx7ZhDCiTMU2RCGh99hBYn1hHiFxPRcwjYV/0ZfDA5mGgD9lFj65uj2nE/J9vfB/iMhOCv5DL1q6vfsvkhG6zfsebGYg3wU7vEHivo6H1Fdfn6cAqvXJDMHG54vY/9Ej9MgRW4aAzw+xHtDXPMDmVMh8/31X3UBx8lRtEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=t+gQlB1V; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HQTXtAmS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1785970590; x=1786229790;
-	bh=07HKGFW/al0imxq0pYVJrQriMtzR6zWZG67Qi84KhPc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HQTXtAmSRN6rv5/CntDPr1aDld2KlXnc2amXwwx/HK0wtFYK2Zi34WMnnrED1/R6Z
-	 vhjRRhmVJY+jfM6QnlPlB2JoAfdD9Vgoe9BKCiwn+t9TiYZTen9w0mWfMsCjRknAKm
-	 0HN7Ka/ZbSCCdqSOAOxZ0Mbk9Rzt5M5jAIMc83aDlUPKSIHV516IrkYCLHpEj8JA/k
-	 eV6ahnlD7tgo/nsTToERbXlxYzNSTi2ycB4gxHR/QwJv0g3PiRlHIETGiCngSvVKZC
-	 UzayjQJe6KU6v0L7xPLzrxJHZ/whoRb3Z+eKCtdxiRm18fefSLmNrH1zH6S40vX30o
-	 7+AE52aCANx+g==
-Date: Wed, 05 Aug 2026 22:56:24 +0000
-To: Krzysztof Kozlowski <krzk@kernel.org>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3] dt-bindings: soc: qcom: qcom,pmic-glink: Add compatible string for SM8475
-Message-ID: <1b4193cd-3b31-4376-adde-84251655eea9@proton.me>
-In-Reply-To: <20260803-upbeat-banana-ermine-4fdf45@quoll>
-References: <20260802-sm8475-pmic-glink-v3-1-45216e6ec572@proton.me> <20260803-upbeat-banana-ermine-4fdf45@quoll>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 7d38fb9f8eb22293ccf2ed7196e661f7e81686b3
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="t+gQlB1V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1786015158; bh=VZJLBZnRyPxnCLoEjoQyTL2E3KhxDtuYstjmKXmloU4=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=t+gQlB1V0eTdunNlGu7Efvhp5s23euUhKrq6r0mCrUKAP+ZyJPCZcjD5rWEJV0a8G
+	 +do9zHUtckn+wcm2J/HtiEghohNvu6748gAEhWdbxh6GdmWctUq/1GcJqgWQeAKKSH
+	 Xk/5pR+QEFiuQthNPkjj66Ko3Zv2jBQJIpVixhp0=
+Date: Thu, 6 Aug 2026 13:19:18 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
+	imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] arm64: dts: rockchip: rk3399-pinephone-pro: DW9714
+ coil requires higher voltage
+Message-ID: <galrq4ug3hhny2ivpylqwuztwv7vnqvm6sdhlu6pucxk6qy2mz@zxw4ckkxj2sh>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	David Heidelberg <david@ixit.cz>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+	Manuel Traut <manut@mecka.net>, Alexander Warnecke <awarnecke002@hotmail.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org, 
+	imx@lists.linux.dev, stable@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
+ <20260801-pp-pro-camera-v1-2-7b4d90788f9f@ixit.cz>
+ <2j7ogeqj565sftp5wzqvtzi2id76fof623bifbmyu6ckhf6vm6@ya7h4tp5i4qf>
+ <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -45,22 +64,89 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7d55eaba-967c-4de6-8021-6b2d17670b1f@ixit.cz>
 
-On 8/3/26 3:20 AM, Krzysztof Kozlowski wrote:
-> On Sun, Aug 02, 2026 at 02:39:55AM -0400, Esteban Urrutia wrote:
->> SM8475 is compatible with SM8450 with respect to pmic-glink support.
->=20
-> "Add the Qualcomm SM8475 PMIC GLINK, compatible with the SM8450 one."
->=20
-> (or "Add a compatible for ..." and rest as above)
->=20
->> Add a compatible string for SM8475 using SM8450 as a fallback.
->=20
-> And this is redundant.
+Hi,
 
-I'll consider the feedback for future commits.
+On Tue, Aug 04, 2026 at 11:12:21AM +0200, David Heidelberg wrote:
+> On 04/08/2026 09:39, Ondřej Jirman wrote:
+> > Hi,
+> > 
+> > On Sat, Aug 01, 2026 at 02:35:21AM +0200, David Heidelberg via B4 Relay wrote:
+> > > From: David Heidelberg <david@ixit.cz>
+> > > 
+> > > By datasheet the VDD (in-kernel named vcc) range is between 2.3 to 4.3 V.
+> > > Usually it's around 2.8 V. Here it matches the avdd2v8_dvp.
+> > > 
+> > > Fixes: 9336eb829a18 ("arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > ---
+> > >   arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > index d46cdfe3f7849..bde35d9b2263e 100644
+> > > --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+> > > @@ -473,17 +473,17 @@ wcam_out: endpoint {
+> > >   			};
+> > >   		};
+> > >   	};
+> > >   	wcam_lens: camera-lens@c {
+> > >   		compatible = "dongwoon,dw9714";
+> > >   		reg = <0x0c>;
+> > >   		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
+> > > -		vcc-supply = <&vcc1v8_dvp>;
+> > > +		vcc-supply = <&avdd2v8_dvp>;
+> > 
+> > This does not match reality, schematic says it's VCC2V8_DVP:
+> > 
+> > 	https://xff.cz/dl/tmp/6253a0465329df41.png
+> 
+> Ahoj,
+> 
+> thanks for spotting this, since I know you have the device, would be too
+> much to ask you to send standalone fix for PP Pro?
+> 
+> I would drop the change from the series.
 
-Regards,
-Esteban
+Ok. Just for the reference, vcc1v8_dvp here feeds an enable pin for VCC2V8_DVP
+LDO regulator (which is supplied from VCC3V3_SYS and not described in DT, yet).
+So in practice enabling vcc1v8_dvp enables both VCC2V8_DVP and AVDD2V8_DVP and
+while DT does not describe the HW in detail, it describes the only regulator
+that is actually controllable and enables all needed power rails for the camera
+modules all by itself in proper order/timing.
 
+Not sure what's the DT maintainers idea here about whether DT has to describe
+every detail of power rails routing, or just what's pragmatic.
+
+Best regards,
+	o.j.
+
+> David
+> 
+> P.S. I noticed I didn't mark this series RFC. Too late.
+> 
+> > 
+> > regards,
+> > 	o.
+> > 
+> > >   	};
+> > >   	ucam: camera@36 {
+> > >   		compatible = "ovti,ov8858";
+> > >   		reg = <0x36>;
+> > >   		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
+> > >   		clock-names = "xvclk";
+> > >   		dovdd-supply = <&vcc1v8_dvp>;
+> > > 
+> > > -- 
+> > > 2.53.0
+> > > 
+> > > 
+> 
+> -- 
+> David Heidelberg
+> 
