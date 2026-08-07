@@ -1,166 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCDA47254E;
-	Thu,  6 Aug 2026 17:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ECB156C6A
+	for <phone-devel@vger.kernel.org>; Fri,  7 Aug 2026 02:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786036670; cv=none; b=H6rwwGBXJjnwxPoX0TLp/hNgvuearBvR8sux+3M4hlt1NdK022l6r08G3FkRtvYffqjCTgKwzUWEWzSbK5wH7bp7WuOdZw/aKOf0O86wHxqVRcmjlbikCFrhgn8qDdDo5RVDGHmLoqAJbmJQKMZqaj8vsX0oQ6Mn4Ontcb6V9nw=
+	t=1786068952; cv=none; b=fJ8POYnAnn6a+GX/nCR42ae+VAJUS/bbQq7xibC2r4bMcwa4G943e3ZeRlSg/m012+35L4td1pKejQctxconxwJ6evhqpKscYw9WMZXH4PgM04CrNDBpswORor2wXjzIMiiwT9aoYBlbSsZ6HZROidhcSh1ZuExkscWfnmBrpZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786036670; c=relaxed/simple;
-	bh=FlB8jVQn9eTxNoQ8MEojSF7yMtYjT795B3DvPoC+HiA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qM6oekaDxaJ1t09SwU7A9U63cZmuNT8otVkP5FNh1lqFGi5rIyKe95YuNPp40sdMXl1sd7LDynA6c6UCGG3vf8XsqYsH4SDYVUe4Z140j5ZB53f1w+O9ABIdohSvfaHHjwrTrrq7imnb7yTKPyY48cxTO98Y65nA6QoPymWhqqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=reBm3ajv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786068952; c=relaxed/simple;
+	bh=zcuFMRMcf7Vm1UYev2UDSQX6fSUA6Wpr3DX12/H4w1A=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kYbubE99o4hsuGwJYd64JW+0XaFJFiKqBzWRUi4YYKwGcDfkcUcwaxJd/Mm61UX9aUKCm1UK3sHa3j4wyNKT5gaHtvJLHiWRu1L0gVxrCHyrUGnVZVzob19lkbamQ/5QRSt+3u0p7aug8hpdkYabTeuuafWM0ormv3aVXTmUBQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ISC17R+9; arc=none smtp.client-ip=109.224.244.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="reBm3ajv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 122E2C2BCF5;
-	Thu,  6 Aug 2026 17:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786036669;
-	bh=FlB8jVQn9eTxNoQ8MEojSF7yMtYjT795B3DvPoC+HiA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=reBm3ajvloAWpwCypPa8wQ89hI7xaLdRVE2CkA8/9vpdEX/sVUWMA3HsIy8/XF4oO
-	 dzY7/Gqt3PbRZ7HpY0xoB3xv2/Iy/oqVb4BKcDwdl1Og/+dIuM0goNuZ5X0K+HnUUr
-	 p56FaPSAvM64riHxpckvQEQ5n+CaYhEdGaCbAmOyU/q/6vx/vUl8jei/olQb5LEUtM
-	 SjvB3pYWVT+uNJzY06rmaoDKHOqIg7VFw/5H1kpovDm95Cv/IDxOGvcSmYo5VtRUbo
-	 7UdQV4KdkjnJ0nmoxeaQ47wUQEH6VYmGIW4H21Qkx3V91BvjYS6eNzIoCqOlHorfti
-	 jAvF/b0KZStHg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD426C56205;
-	Thu,  6 Aug 2026 17:17:48 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 06 Aug 2026 19:17:46 +0200
-Subject: [PATCH v2] Input: rmi4 - Use platform data instead of query, when
- available
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ISC17R+9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1786068933; x=1786328133;
+	bh=t/hSfTn2D5QANsI1yfumTIwdpMzz9D5cDp1+waF062I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ISC17R+9SMWeuBI59R31KELlC4WbVakZhenlmgWVF4Kaw6lYn2RI8aHNv7I9ULXGh
+	 j36OiiY8kCk8Pw19ZIEdFkxuJwEeo/vj+n8aQZqHom5dsN6aXV/BRMUep6eIZeu3Um
+	 GVAIpFDSXP0bILTL/GeOndoO6yaqK24x++CpltrfZTp1z+8imj/iBUflIx0LkdHu3Z
+	 nV/zRaOWgruZHeRdZtCYlqlQnPJ9YzLTvFHxMVp2TF13236iaEJvc9kQdcvqU5YT8n
+	 7XLi/htDWHuhXoUu50j3lLQo738H/fRIOJe4BTKtasNREiuarVXcmNcqmgb+3VQz8Q
+	 rEyYxgqjUJwdw==
+Date: Fri, 07 Aug 2026 02:15:27 +0000
+To: Krzysztof Kozlowski <krzk@kernel.org>
+From: Esteban Urrutia <esteuwu@proton.me>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-usb@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: usb: Add Parade PS5169 redriver bindings
+Message-ID: <11214e90-7168-4180-af9c-b5922c146a71@proton.me>
+In-Reply-To: <20260730-enigmatic-coati-of-love-54ae0b@quoll>
+References: <20260729-ps5169-bup-v2-0-203b0a49881a@proton.me> <20260729-ps5169-bup-v2-1-203b0a49881a@proton.me> <20260730-enigmatic-coati-of-love-54ae0b@quoll>
+Feedback-ID: 147889766:user:proton
+X-Pm-Message-ID: 5bc3e928f222755b138c8f604f3d7bc29b6a611e
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-respect-x-y-mm-v2-1-e0681ed3d63c@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4XM2jGlFCus/A/DAuogY8IjLRKQ9
- N9tce3yJOeeu4Mjy+SgTHawtLDjcQggTwmYrh6ehPwIDFLIi9BZipbcRGbGFTfse2y1qmWhBRW
- NhjCaLLW8HsF79WP3bl5hESvR6NjNo92OxyWN3t/4kqLAjK55rRoyWuU3Xnk+mw9U3vsvXMfTb
- LwAAAA=
-X-Change-ID: 20260731-respect-x-y-mm-f74a2970e9b7
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2890; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=ijmilf0lpUcz+HkhDMLoUaxcl60QoPGzgv/0zCY5VNc=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqdMG7Ffq6pa4IVMjy6UeJXqgjYDcNZmEzBLLaP
- 6Z/JqSlkdOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCanTBuwAKCRBgAj/E00kg
- cq6TD/9sdGscujEVvbG6xWe4WCFC3Xr9RjpI+AuGMIvhNwB6MSo5O4lxD8DZiZ7Un9qAJT1coXt
- VFXolLPX3BVPOY+Xt/rsUxSyxoSr4ydCOgDRFsKk0VRh6I4YGIeUoGEJjE/vJbKgusoJmaZDZJI
- EmNXne1NwD5Kc9kBQ5+cD1C1r4uoSx2TgWSlgUwb4bABiG6Z0z6Kh5Ks2gIGH54+wYcTrhcuSpz
- T4+LRVEJZqfPuIYawv8Mp+iXkJtCzYSXL7ZOZcbvYNVmpgd+gHVRkHV/v2bA+Do7WM1IImNMhQx
- 8GY0qJPHLZJWmPed9FrLyqwFex2u5QQm68trlqkVX94Z8UcbcV+G2eUgZVcx8bNzo1ot4E/V1tw
- U2FIbktuneRTvxJck1S/9zxGA/zrpynZpQOi8g3/1oH2MHb5hyK9l9w/pkG1tBZ0xo3oi3GmLOz
- bzRZn7hYEHsIhqJi856Clv8d1dpevKwVb4fqWd9ZcuWsidBuEs7HQoGMjFBsI5yD63whfzU8yET
- 1fILoP1VLOJkcFb6tU1zqDzqrq+Ed/gn3SzXG/fHewJswdDuOqBVok9azijv5sNG0PNrj6JsNRx
- 6zvfCZ2zXGLaCvcoFebgQHYKFlDsTANxzz6FA6Ro9RG+FxrFl1V7iK2DavzqWneOqHcvkooofc2
- 2qWwkWtXd5USuhQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: David Heidelberg <david@ixit.cz>
+On 7/30/26 3:15 AM, Krzysztof Kozlowski wrote:
+> On Wed, Jul 29, 2026 at 02:03:14AM -0400, Esteban Urrutia wrote:
+>> Add bindings for the Parade PS5169 and PS5170 USB Type-C linear redriver=
+s.
+>> The difference between PS5169 and PS5170 is that PS5170 features an
+>> embedded AUX switch, while PS5169 does not.
+>> Future-proof the binding by adding PS5170 as well.
+>>
+>> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+>> ---
+>>  .../devicetree/bindings/usb/parade,ps5169.yaml     | 191 ++++++++++++++=
++++++++
+>>  1 file changed, 191 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/usb/parade,ps5169.yaml b/=
+Documentation/devicetree/bindings/usb/parade,ps5169.yaml
+>> new file mode 100644
+>> index 000000000000..86ea2351ee1e
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/usb/parade,ps5169.yaml
+>> @@ -0,0 +1,191 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/usb/parade,ps5169.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Parade PS5169 USB Type-C linear redriver
+>> +
+>> +maintainers:
+>> +  - Esteban Urrutia <esteuwu@proton.me>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      - items:
+>> +          - const: parade,ps5170
+>> +          - const: parade,ps5169
+>> +      - const: parade,ps5169
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  vcc-supply:
+>> +    description: 1.8V power supply
+>> +
+>> +  reset-gpios:
+>> +    maxItems: 1
+>> +
+>> +  orientation-switch: true
+>> +  retimer-switch: true
+>> +
+>> +  parade,dp-eq-level:
+>=20
+> Use -db suffix instead.
+> See https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schema=
+s/property-units.yaml
 
-Platform data may define touchscreen-x-mm and touchscreen-y-mm, but
-these were quietly overridden by data provided by sensor.
+Will do.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-This series ensures, that when invalid value is detected or mismatch
-between value defined in the device-tree and the read from the
-touchscreen is observed, the user is notified and zero is ignored.
----
-Changes in v2:
-- Reworked to use device-tree values, when available, but still detect
-  when both or one is missing. (Dmitry)
-- Link to v1: https://patch.msgid.link/20260731-respect-x-y-mm-v1-0-3e85a4bec745@ixit.cz
----
- drivers/input/rmi4/rmi_f12.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Equalization level for DisplayPort channels which is mapped to de=
+cibels.
+>> +    # 0: 2    dB
+>> +    # 1: 5.5  dB
+>> +    # 2: 6.5  dB
+>> +    # 3: 7.5  dB
+>> +    # 4: 8    dB
+>> +    # 5: 8.5  dB
+>> +    # 6: 9.5  dB
+>> +    # 7: 10   dB
+>> +    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+>> +
+>> +  parade,usb-rx-eq-level:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Equalization level for USB receive channels which is mapped to de=
+cibels.
+>> +    # 0: 5.2  dB
+>> +    # 1: 6    dB
+>> +    # 2: 7    dB
+>> +    # 3: 8    dB
+>> +    # 4: 8.8  dB
+>> +    # 5: 9.6  dB
+>> +    # 6: 10.4 dB
+>> +    # 7: 11.2 dB
+>> +    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+>> +
+>> +  parade,usb-tx-eq-level:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Equalization level for USB transmit channels which is mapped to d=
+ecibels.
+>> +    # 0: 2    dB
+>> +    # 1: 5.5  dB
+>> +    # 2: 6.5  dB
+>> +    # 3: 7.5  dB
+>> +    # 4: 8    dB
+>> +    # 5: 8.5  dB
+>> +    # 6: 9.5  dB
+>> +    # 7: 10   dB
+>> +    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+>> +
+>> +  parade,aux-rx-data-reverse:
+>> +    type: boolean
+>> +    description:
+>> +      Please check the driver before specifying this property.
+>=20
+> References to driver make this dubious.
 
-diff --git a/drivers/input/rmi4/rmi_f12.c b/drivers/input/rmi4/rmi_f12.c
-index 88c28089de993..841884d967a3d 100644
---- a/drivers/input/rmi4/rmi_f12.c
-+++ b/drivers/input/rmi4/rmi_f12.c
-@@ -150,47 +150,55 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
- 			"%s: Inactive Border xlo:%d xhi:%d ylo:%d yhi:%d\n",
- 			__func__,
- 			buf[offset], buf[offset + 1],
- 			buf[offset + 2], buf[offset + 3]);
- 
- 		offset += 4;
- 	}
- 
-+	/* When platform data are provided, we're done */
-+	if (sensor->x_mm && sensor->y_mm)
-+		return 0;
-+
- 	/*
- 	 * Use the Query DPM feature when the resolution query register
- 	 * exists.
- 	 */
- 	if (rmi_get_register_desc_item(&f12->query_reg_desc,
- 				       RMI_F12_QUERY_RESOLUTION)) {
- 		offset = rmi_register_desc_calc_reg_offset(&f12->query_reg_desc,
- 							   RMI_F12_QUERY_RESOLUTION);
- 		query_dpm_addr = fn->fd.query_base_addr	+ offset;
- 		ret = rmi_read(fn->rmi_dev, query_dpm_addr, buf);
- 		if (ret) {
- 			dev_err(&fn->dev, "Failed to read DPM value: %d\n", ret);
- 			return ret;
- 		}
- 		dpm_resolution = buf[0];
- 
--		sensor->x_mm = sensor->max_x / dpm_resolution;
--		sensor->y_mm = sensor->max_y / dpm_resolution;
-+		if (!sensor->x_mm)
-+			sensor->x_mm = sensor->max_x / dpm_resolution;
-+		if (!sensor->y_mm)
-+			sensor->y_mm = sensor->max_y / dpm_resolution;
- 	} else {
- 		if (rmi_register_desc_has_subpacket(item, 3)) {
- 			rx_receivers = buf[offset];
- 			tx_receivers = buf[offset + 1];
- 			offset += 2;
- 		}
- 
- 		/* Skip over sensor flags */
- 		if (rmi_register_desc_has_subpacket(item, 4))
- 			offset += 1;
- 
--		sensor->x_mm = (pitch_x * rx_receivers) >> 12;
--		sensor->y_mm = (pitch_y * tx_receivers) >> 12;
-+		if (!sensor->x_mm)
-+			sensor->x_mm = (pitch_x * rx_receivers) >> 12;
-+		if (!sensor->y_mm)
-+			sensor->y_mm = (pitch_y * tx_receivers) >> 12;
- 	}
- 
- 	rmi_dbg(RMI_DEBUG_FN, &fn->dev, "%s: x_mm: %d y_mm: %d\n", __func__,
- 		sensor->x_mm, sensor->y_mm);
- 
- 	return 0;
- }
- 
+Indeed. I haven't been able to put what this does into words, so I think
+I'll drop it and add it back later when I figure that out.
 
----
-base-commit: 95d6a9ccef99117115e41e9adb271243bd5e985b
-change-id: 20260731-respect-x-y-mm-f74a2970e9b7
+>> +      Usage of this property is design-specific.
+>> +
+>> +  parade,fine-tune-lfps-swing:
+>> +    type: boolean
+>> +    description:
+>> +      If this property is specified a 50 ohm termination will be set on=
+ the USB receive channels.
+>=20
+> s/If this property is specified//
+>=20
+> Just describe the hardware, not the syntax of DTS.
 
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+Will fix.
 
+>> +      Usage of this property is design-specific.
+>> +
+>> +  parade,dp-set-gain:
+>> +    type: boolean
+>> +    description:
+>> +      If this property is specified a gain of -0.9 dB will be applied o=
+n the DisplayPort channels.
+>> +
+>> +  parade,usb-rx-set-gain:
+>> +    type: boolean
+>> +    description:
+>> +      If this property is specified a gain of -0.9 dB will be applied o=
+n the USB receive channels.
+>> +
+>> +  parade,usb-tx-set-gain:
+>> +    type: boolean
+>> +    description:
+>> +      If this property is specified a gain of -0.9 dB will be applied o=
+n the USB transmit channels.
+>> +
+>> +  ports:
+>> +    $ref: /schemas/graph.yaml#/properties/ports
+>> +    properties:
+>> +      port@0:
+>> +        $ref: /schemas/graph.yaml#/properties/port
+>> +        description: Super Speed (SS) Output endpoint to the Type-C con=
+nector
+>> +
+>> +      port@1:
+>> +        $ref: /schemas/graph.yaml#/$defs/port-base
+>=20
+> Why 'port-base' here but 'port' in port@0?
+
+'port' should be used instead of 'port-base' in port@1.
+Will fix.
+
+>> +        description: Super Speed (SS) Input endpoint from the Super-Spe=
+ed PHY
+>> +        unevaluatedProperties: false
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - vcc-supply
+>> +  - reset-gpios
+>> +  - orientation-switch
+>> +  - retimer-switch
+>> +
+>> +allOf:
+>> +  - $ref: usb-switch.yaml#
+>> +  - $ref: usb-switch-ports.yaml#
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: parade,ps5170
+>> +    then:
+>> +      properties:
+>> +        ports:
+>> +          properties:
+>> +            port@2:
+>=20
+> You must define all properties in top-level block and you only disallow
+> them. See writing-bindings.
+
+Will fix.
+
+>> +              $ref: /schemas/graph.yaml#/properties/port
+>> +              description:
+>> +                Sideband Use (SBU) AUX lines endpoint to the Type-C con=
+nector for the purpose of
+>> +                handling altmode muxing and orientation switching.
+>> +    else:
+>> +      properties:
+>> +        ports:
+>> +          properties:
+>> +            port@2: false
+>> +
+>> +additionalProperties: false
+Thanks for the review.
+
+Regards,
+Esteban
 
