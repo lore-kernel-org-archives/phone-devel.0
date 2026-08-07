@@ -1,43 +1,43 @@
-Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D672F84F;
-	Fri,  7 Aug 2026 02:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C09F22579E
+	for <phone-devel@vger.kernel.org>; Fri,  7 Aug 2026 03:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786069042; cv=none; b=YTRTSsdu2gxEEMfVu/vZKlL7sV0oJ6CtbtcwBh3xPxA9KX5sjWlw3jyP/UnC0mTdkIYfRK/ZrLaJ0UTetk8GZePrO9C9jTFNqfcyE8JCfo6a/tCQxvVykAKO4XxQl5MfAMDXzbRXDPchs5nY5KgxIUorZCu7C6VAyrkMte0c7mw=
+	t=1786073283; cv=none; b=lED82t/poI7GPyDwHx+Xd8Ncm5POR0R3Ue0Y4g8Lh9/R6QH2PYIBhe8/9VxZ/cGvmvXsBjlSUXUSv0zvnu9K6fK2sEqssHkzMbfEmpnOYGAWabkKb0avD13GSjQY8pnTLh9BoZaVRGjSk6s7B733wn00SWbOEiqg/EVkAXtI9tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786069042; c=relaxed/simple;
-	bh=4nprjSkYOT0qGWkIrXSVKFGhK/kqLSouNIsD1wTYSuk=;
+	s=arc-20240116; t=1786073283; c=relaxed/simple;
+	bh=TPJtm4SJOctddJ8jFpftgRdBDxhtifxnOZSBD+9CcyI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ikXS+/h5AXHLo3WyMC6x8g3Z7CZ05+B2pJdwtEMj8V7aegEX5Kkg5l6kowPSMMerDVzdccjPXXdDOERKr3egshI39qxBLBJh56yJPa2sfa+MaufhnXvGVxPLn7HYW3xaHwSfVPUc53CSJhNyEnHih1Azb+iYw1HX6KnrhTAY/GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AqDNtX9z; arc=none smtp.client-ip=109.224.244.17
+	 MIME-Version:Content-Type; b=GOPpGkz6SedFr7QvdIQLvPAICiUWbTYdAdtXnBE8nPZrsqKN1OKdCZvuvOpgJ1cvjxp1ynj44tlVKIKWHzjXmce7ohajR3RJm8q/5n8p67MSb25fq4KX16Dh+bypHcNKJgJ8A4ML8ssEt0w9K/Eymz3AFXCNuWzT6JXt4WT5mTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LeJ6BGzT; arc=none smtp.client-ip=185.70.43.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AqDNtX9z"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LeJ6BGzT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=4h6bznpybngm3p4rgj47lskhui.protonmail; t=1786069036; x=1786328236;
-	bh=4nprjSkYOT0qGWkIrXSVKFGhK/kqLSouNIsD1wTYSuk=;
+	s=protonmail; t=1786073268; x=1786332468;
+	bh=TPJtm4SJOctddJ8jFpftgRdBDxhtifxnOZSBD+9CcyI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=AqDNtX9zx4Ef5LxdKYfRbU24jLANMpkv/PKTZdddg0t9m7k7a1OyRwl1UHwRq9YH/
-	 zasfcQN2SKjrdw7MgxSxqJCW0Jd3zTJgIN3CgUvF7rWn+9aeSRWOPzdVyZpAw8yBAb
-	 RU3s4GRBeSRV504IApw9RAGbQtmLcjUi2S3rsJo78gEfVY2yEZV+aoAJugSFO4nWwh
-	 B7gDPm4xxjSdqH0ktUqs9tizVC2rd9smz1NADk6YcByl2B7xTvFaArDUjIFuDPFE1H
-	 8uymPyoaw4EyBsgk4eIaCCsXAyopoa1jBgpI3Jg1/RRyWTdUbM4Pa5d8pMjtq3s5vB
-	 HymScSNJKAngw==
-Date: Fri, 07 Aug 2026 02:17:13 +0000
-To: Krzysztof Kozlowski <krzk@kernel.org>
+	b=LeJ6BGzTkCayTRhy9IWoe43gl4oezsgpVwiH/rXvd7queZ26Agx3BLkad/EH/HNiq
+	 crnhtjcS+Qly+VA01EyGJuqlF6Oq3EXnZnU5yQSyTUbZFRKEIHHHvMVzSxQovNHU7A
+	 Ym/IovqrTmaKqAMX/kpJAbC1mDVRxOqVZq9zzB8x0Dh4Ffqgs7oxkXsw0hFrknGSnh
+	 aJs4YZQU2JGYua6IIq86B/cahTT6MTcHDYuEH3wRE93+zb6vI9c0EdFdeb6q+kkB1d
+	 OmE97kdfQN8659SKSxgxrMp0JuVqxG56DYCyCmLqaMH7+nkvHYUSGacWm1E4IoYl8Q
+	 am39RxytMfkwA==
+Date: Fri, 07 Aug 2026 03:27:42 +0000
+To: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dt-bindings: pinctrl: qcom,sm8450-tlmm: Add compatible for SM8475
-Message-ID: <69245b21-ab6d-43bd-9502-d6e31505ff94@proton.me>
-In-Reply-To: <20260803-greedy-ruby-whippet-8ed6eb@quoll>
-References: <20260802-sm8475-tlmm-v2-0-a93e1d1cb53b@proton.me> <20260802-sm8475-tlmm-v2-3-a93e1d1cb53b@proton.me> <20260803-greedy-ruby-whippet-8ed6eb@quoll>
+Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Initial PCIe0 PHY support for SM8475
+Message-ID: <f0c1eba8-c6d9-4831-a460-980bead03c4d@proton.me>
+In-Reply-To: <20260715-sm8475-bup-pcie-v2-0-48bd91a19abf@proton.me>
+References: <20260715-sm8475-bup-pcie-v2-0-48bd91a19abf@proton.me>
 Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: ac7c11d5c76be404a804b08784a8852bb9031c04
+X-Pm-Message-ID: 67781fc1a0af1802f91f0ba9b76081dad5b9c44b
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,17 +47,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 8/3/26 6:00 AM, Krzysztof Kozlowski wrote:
-> On Sun, Aug 02, 2026 at 03:30:56AM -0400, Esteban Urrutia wrote:
->> SM8450 and SM8475 have different pinctrl drivers, which are incompatible
->> with each other.
->=20
-> Describe the hardware and its incompatibility, not drivers.
->=20
->> Add compatible string for the SM8475 pinctrl driver.
->=20
-> Drop references to driver completely. See DTS101 slides.
-Will fix these in next revision.
+On 7/15/26 2:37 AM, Esteban Urrutia via B4 Relay wrote:
+> This series adds support for the PCIe0 PHY found in the SM8475 SoC.
+> The initialization sequence varies noticeably when compared to the one us=
+ed
+> in the SM8450 SoC, hence the need to add support for this PHY.
+Any chance on this series being picked up?
+Kind of related (since both series belong to the same subsystem): I
+resent USB SS support for SM8475 some days ago and this has been picked
+up already.
 
 Regards,
 Esteban
