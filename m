@@ -1,69 +1,68 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231DD463B79
-	for <phone-devel@vger.kernel.org>; Fri,  7 Aug 2026 07:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51441466B47
+	for <phone-devel@vger.kernel.org>; Fri,  7 Aug 2026 07:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786088781; cv=none; b=eQfhsp83YxvqqYtt8VJdQgI8QEvNlj2jRpiklK0tiTEp4U6xWzfZ2vSfMF8FzM33UHjRcXTUKciZxSUEilk5uYqOOoHnsJIAr8gu6lXeTXiQSeJBVg0jb4oow6d2vaJqEBcPYjR6+79hptSaN96XM8eTHNpPdzIBA8fwxVyDOPw=
+	t=1786088782; cv=none; b=mH/g7ycfBeT43VdP0cn3l2MTwM4syBSvteQRmPkuovaaXEHDoO0rP5RGWZYGVqCU2uK6BKtoevLw5Gg9bzL8OQB7mfrDs56bI41pmsLd3wENXlOrrprN3eLJteunDtwMKEscvoEwgsc817YivNWsXt5TmuM6C4tHtOpHZasxP5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786088781; c=relaxed/simple;
-	bh=xuFI5Q5PVaGG13a653oWxSPz1g51NAalhPKeOlwyekI=;
+	s=arc-20240116; t=1786088782; c=relaxed/simple;
+	bh=IzuyGpzwH+5W9XFy1kPfgzd/QVcGUIiyKRGNz+cEUck=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LTtiOHTtJ5MdR4rTIlikErnSTou1HFqT9L1DT70U2Q2wBRRFMs7EnmUzLEeQJ7C9YKTt0JePIZYfgSFKQFgA7un4s+NDnJ/QgF49BUm21o1Z0qSB7t5u0lAgn65fjegX3EUk/s8qsEbNMmoMUZ5SNo/TP3dRQLN2JbAY9uk0xtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=c2u3/zxz; arc=none smtp.client-ip=209.85.208.46
+	 In-Reply-To:To:Cc; b=U0eg90M5VcFKwB7pY2e1hBEQj8lTaNLFNWkWATT22uyTxCZxBX3nn9jNnSRDx4Xs3zPvbFVOAkduMv2+NxB4jHjh3WzDp1ifbQNoQhtV5RICNVvqemEuMfw233ED7/Pc8qJAWZURiqjEWP6wP2MAHRy6kLgy8kO6oYDYPD90Soc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=d7om+9o8; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="c2u3/zxz"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a0de062db5so4889509a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 07 Aug 2026 00:46:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="d7om+9o8"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15cd3fd760so336011166b.2
+        for <phone-devel@vger.kernel.org>; Fri, 07 Aug 2026 00:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1786088777; x=1786693577; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1786088778; x=1786693578; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hUQBHJUBPKqNKadVj/rfrpbmjDMRBzP/h2QeAnKpatc=;
-        b=c2u3/zxz+KnYRQYcigh1U/0hqAHg33hbKIvMatAHTEajvXBrlkTo2QF59hrkVQd2OF
-         FPdEgW+UeSM32X5IrUwdugR1pq8heT+y5o5fZ52HcsSyRK2YU2MpMN9ARbyPvvJikR/i
-         bg468eeeB4hlyfCh70OBDEb3DOYyqd3tovsHoKGeyGZjfB5I0lASjy4+W+5F/Fhw33lo
-         j6VP4TlOhRZWFIOZJ5w/Wje6V8GJT5v3vaOG+AuTCTcVWi24KrQNRcaKdHghZO+N+s0N
-         TihnlFztbZW30gc6B3i/b1cfxqysdWyeysBHziCZvEZ/L+wd4vqbmqlGDBngJgxDzPIP
-         Q2WQ==
+        bh=XzVAhOy/xN1Xk3FHaKTbiIDUKHy3pS/Z2yp40xvvQRc=;
+        b=d7om+9o8VMAUqvBZIl+EKRrYsJRtKOpd+tKnYmdXkVU9Dus4bJnkwKIiZvzz7WkG1o
+         lEBzdkiJ6KS3J7WVKcBbeys5ec0Fcea3O45UgS8XUoKVg3LOY4nqs6FNr6TnLT20s3fe
+         3RcOAkF9UHX9JVAQsqaMr5SeaCSpfS83A6afEBGMJTI7iYeACFOPSPyGPQJCyeFnsfgD
+         1fiur5/V8Ds9iKqFDQhh1hWkdCa77OYHnSLiLCOySQ/+cNDZtZ1KJ2EweFmrOb0k8YJJ
+         M7h0UOPmjDliuaPNZ9P3piAh8g+49tPyMzG0WziZ+8Zld37EAXlTyOD18N4NUnoqhAja
+         YLMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786088777; x=1786693577;
+        d=1e100.net; s=20251104; t=1786088778; x=1786693578;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hUQBHJUBPKqNKadVj/rfrpbmjDMRBzP/h2QeAnKpatc=;
-        b=qgvXnVowDpRb+Y6OjfwkrJDGDu8xIubXn/KNRCt5WLeGaikrQDOQzZ8YadY30Za9ds
-         7Zb5BDVrP6A6nUqOYpnwWEAHAGPCYuLGYR7U60gaIrVHF7oVu5mHOS0beP/Q5IeJwJQo
-         y2eIQywTE5s42ZcXv7oFg2ESfQFA/s1hwfogkHY5v4i8Imgqsy5RxJHx0Z+71Jh9ZT2i
-         huMUUP1pgA0Iv3YrdDJlHtqxi/Xqddl22B4hFe4vFexJRA1Xc7tRjaiQk6pLYcscAL9B
-         BUjg7HmdQ9BUlGoFkS/R5ZXwxJKLFnrawwFVLl8Nn6zXbqrnS8YGBRY3SYOfNxRMuI9Y
-         VSLQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqy6g1zyrQOFoY2YVeUmIIwq+PQ9hexymT0Ej4fjG6Q6RbFMTjjLcLnGiNXqwYTqa4UoCqBGET+TRr4mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxfe+R9BpufzqY2r4e1ZQa/ukv62FFclIahTNMGnBUSP0hY8U5r
-	AqJBk/XbVmQApXUvKGSgvTxr8O0gY6Nl0yJ1TgENgAdFMp4HsD4UFfoD6HBH8bqjqWmqMhpihtz
-	QGHv39Gc=
-X-Gm-Gg: AR+sD12HQb/yQ143ygUV98OOtLJQZcwau0JkAGDvALOGYn5thwv2FodSYqkF/MAV4pQ
-	G0EGC49r8VzbzotLZ8NeeP5gUV7nMGTUYIAGDlWGP1KCg/JDuXyoJkQpy/VSNuvkYnZmDFXwb8B
-	vH4n4OiX+oB3u1dj5kpcnNDZer78qrcpqai1+j+H0509EA9le9ccsFYe0zH031mljYYXSkR+Nh1
-	g6auXyh8QVi5cwA5pQgaEPxVmU9akUCrQOzz9wONvJVU8yy4Qok5IuYWqfoIHkVgMjVoKlzjG0y
-	G9RL0RS9vMIaPMcRa8o+DZKXu2suJHileuC1zkGcl8kV5kIA3sUnqz55T5RiCkoeD2rvMwy+ErQ
-	YkOBovGLh+3ei/YPlM530F5N0jubrhJxdHs9nW1irrRrlVK2flYEVFzwl3Cak+O/drnk8lfSfPE
-	V+2Fzq/6vUbjve/+xjJ3qbmrsBi5m2W8PFIJB9lVJOuj2T6MhRB/GPR8odGu42eAxhDjROZfcxV
-	65JhifYCnaJ18alOlg/ne/EgXIBzhHivMRD9XIsijE=
-X-Received: by 2002:a17:907:c0e:b0:c19:523f:5a0 with SMTP id a640c23a62f3a-c207eba2525mr104403666b.11.1786088777396;
-        Fri, 07 Aug 2026 00:46:17 -0700 (PDT)
+        bh=XzVAhOy/xN1Xk3FHaKTbiIDUKHy3pS/Z2yp40xvvQRc=;
+        b=JYbQL1PKAwEnzOpUknqbvcA3iRMvKRQRU0zbF4nsXdiDqvcvLb3fFENl0heRjoCoGn
+         WgWcurgSSXRg3qFeyX2zPn6YqKjqjaotwLR0ce1vsyXcp58f3xwCdqTgHRp3bdgtHAki
+         +Fy2TM2B8ZJvIOQPDlWYNFlD3wPlCt+MsKcXYVl8gEP8buu4z2c9drc0dr3l/YnrOjAR
+         5vwDv96pRMMSJOOt73TJQ04UfsGB5/jDVrn8YS6JmLmcd/KalT2Oa+bJANYpMre/dJZz
+         X5ejnqAOt+VnQmDco+NsSZ57UK8CpKbDmN+o3jAwmIoc26AbveZ1PnaoI4tz2zO0nVYl
+         bpwA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqh31iVRkMX/Lf7mfz73I9xQP4FnEf+6HCyElNh5ffndZNVj5KIVdO7kHgES0gZomcqum6wbp98tdLCsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQf0jEh8Nx7GvklYs9RHv9nOolrULwDlYFv42+JXH+pHrQ0SCo
+	gyibNsqWI3lDNlwdk7KfeOkHNDyPEtN/H/FfHrWhNiwDvmNr5FwzZVf7PletFxHbfys=
+X-Gm-Gg: AR+sD10gT/a11LSFww2PiWEaeLIiyDqSzWM++d5O2GwhmS5c9KlpYO9zNDUxjHvs5zx
+	80GV44AGAdL71X8lKbe3WO5rQrr2sndngECBAM33Q6XmAuKp23NYsGKwDmrorB9YLu4aYgW9Vf8
+	CVYaZQ+sRuXQ8Upy+908RFcvV5L5YMiQAArcJdXardehS2ErWiCuCyG61BPk93Kpu7dGaf3Q1QQ
+	8msBT4c6hmsKSwkFChrd+sl1fVBPMqHJIyjAPSLl+SQ0+wSZ8awpc3VKwSjcOa543RI0M9lYaiV
+	HZsM7pzj8KsRpjfrsQ7zZC0YjowARxqpxNUOUEXv+q6/n9VFtB1noCHzdVa2uVZizaZeZX4AZzw
+	JQUZxriv4RPKXBuLKQ9VU/pSFz6CSZoRe2HWtucQ1Wu9ytOoOfbHDlyAFd4NX5BoeO3HzB0R/37
+	Ugnb1J2vVASWVp6J6Hpfip6O4Cp0z7ioSTqqkuJFXG5ikgqCyf5vx49jdG1weRbuYVXa0jJUw+0
+	XznczeDuh1z1VUmEiZ+5UcKqCJLQe65KYSrJAxJ2Q4=
+X-Received: by 2002:a17:907:930c:b0:c1f:1520:4de5 with SMTP id a640c23a62f3a-c2039afb044mr997030666b.1.1786088778628;
+        Fri, 07 Aug 2026 00:46:18 -0700 (PDT)
 Received: from [172.16.240.102] (144-178-202-142.static.ef-service.nl. [144.178.202.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2080c90494sm19432266b.36.2026.08.07.00.46.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2080c90494sm19432266b.36.2026.08.07.00.46.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 00:46:17 -0700 (PDT)
+        Fri, 07 Aug 2026 00:46:18 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 07 Aug 2026 09:46:04 +0200
-Subject: [PATCH RFT 1/3] clk: qcom: gcc-eliza: Fix always-enabling
+Date: Fri, 07 Aug 2026 09:46:06 +0200
+Subject: [PATCH RFT 3/3] clk: qcom: gcc-kaanapali: Fix always-enabling
  PCIE_RSCC clocks
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -73,7 +72,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260807-various-pcie-clk-fix-v1-1-5caf78a599d7@fairphone.com>
+Message-Id: <20260807-various-pcie-clk-fix-v1-3-5caf78a599d7@fairphone.com>
 References: <20260807-various-pcie-clk-fix-v1-0-5caf78a599d7@fairphone.com>
 In-Reply-To: <20260807-various-pcie-clk-fix-v1-0-5caf78a599d7@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -89,11 +88,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786088775; l=1636;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786088775; l=1581;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=xuFI5Q5PVaGG13a653oWxSPz1g51NAalhPKeOlwyekI=;
- b=OXG25V5ARtGUJVxIyXDW+USORGyOaj0s9wColp0IAl5AEuF1LG94pyjn+EuvGXuDY24NQTytp
- q6+8ZYpr5E4B3Cw6u9cCqMwEwftg4L1waHGPpbXfiHhvfwOujJ9vvS6
+ bh=IzuyGpzwH+5W9XFy1kPfgzd/QVcGUIiyKRGNz+cEUck=;
+ b=ibZFcqfvuGnha1lbV0ra4kA7Omqr82sT0bdZrYoXGclvGIcsj7X/ekS9Ykm5vVp6UAF5vbRSq
+ nHdnSPRXZ0iC/7swoRIH1xUKLKPeZRD1lzVpjBd0/twKVSqQbr4I0ta
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
@@ -102,36 +101,36 @@ each entry which will set BIT(0) to enable the clock. This is however
 wrong for these two PCIE_RSCC clocks which need BIT(20) and BIT(21) set
 respectively to enable them.
 
-Fixes: 3d356ab4a1ec ("clk: qcom: Add support for Global clock controller on Eliza")
+Fixes: d1919c375f21 ("clk: qcom: Add support for Global clock controller on Kaanapali")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/clk/qcom/gcc-eliza.c | 6 ++++--
+ drivers/clk/qcom/gcc-kaanapali.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-eliza.c b/drivers/clk/qcom/gcc-eliza.c
-index 3e26c7a1e5b5..fe18942a59ac 100644
---- a/drivers/clk/qcom/gcc-eliza.c
-+++ b/drivers/clk/qcom/gcc-eliza.c
-@@ -3010,8 +3010,6 @@ static const u32 gcc_eliza_critical_cbcrs[] = {
- 	0x26034, /* GCC_CAMERA_XO_CLK */
- 	0x27004, /* GCC_DISP_AHB_CLK */
+diff --git a/drivers/clk/qcom/gcc-kaanapali.c b/drivers/clk/qcom/gcc-kaanapali.c
+index 842c1a70c691..5bcbcd178657 100644
+--- a/drivers/clk/qcom/gcc-kaanapali.c
++++ b/drivers/clk/qcom/gcc-kaanapali.c
+@@ -3464,8 +3464,6 @@ static const u32 gcc_kaanapali_critical_cbcrs[] = {
+ 	0x9f004, /* GCC_EVA_AHB_CLK */
+ 	0x9f024, /* GCC_EVA_XO_CLK */
  	0x71004, /* GCC_GPU_CFG_AHB_CLK */
 -	0x52010, /* GCC_PCIE_RSCC_CFG_AHB_CLK */
 -	0x52010, /* GCC_PCIE_RSCC_XO_CLK */
  	0x32004, /* GCC_VIDEO_AHB_CLK */
- 	0x32038, /* GCC_VIDEO_XO_CLK */
+ 	0x32040, /* GCC_VIDEO_XO_CLK */
  };
-@@ -3045,6 +3043,10 @@ static const struct regmap_config gcc_eliza_regmap_config = {
+@@ -3480,6 +3478,10 @@ static const struct regmap_config gcc_kaanapali_regmap_config = {
  
- static void clk_eliza_regs_configure(struct device *dev, struct regmap *regmap)
+ static void clk_kaanapali_regs_configure(struct device *dev, struct regmap *regmap)
  {
 +	/* Keep clocks always enabled */
 +	regmap_update_bits(regmap, 0x52010, BIT(20), BIT(20)); /* GCC_PCIE_RSCC_CFG_AHB_CLK */
 +	regmap_update_bits(regmap, 0x52010, BIT(21), BIT(21)); /* GCC_PCIE_RSCC_XO_CLK */
 +
- 	/* FORCE_MEM_CORE_ON for ufs phy ice core and gcc ufs phy axi clocks  */
+ 	/* FORCE_MEM_CORE_ON for ufs phy ice core clocks */
  	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
- 	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_axi_clk, true);
+ }
 
 -- 
 2.55.0
