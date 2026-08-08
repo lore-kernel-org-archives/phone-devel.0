@@ -1,43 +1,43 @@
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
+Received: from mail-43102.protonmail.ch (mail-43102.protonmail.ch [185.70.43.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21FB468C20;
-	Fri,  7 Aug 2026 13:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB501DFDE
+	for <phone-devel@vger.kernel.org>; Sat,  8 Aug 2026 00:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786109005; cv=none; b=pIq1739rOKoGY3k3GY3TT8uGh0rpO84ILeaNsDoMeI15ypE7/QMTc2Qnmz02a2gM8ATl5CMEccooxBldjqybnymeIY0+TFFiqRQoIf5nIoLngV49Kfv69stW5QxmbX/0X5b3IJqT28chvHdIreVux26+tIRk9h+N4zRiY0lLUqU=
+	t=1786147774; cv=none; b=aT9CwBXkk4Ssp3/06Uw/3Oh4NYvgvstmqUJCYliGSnVKFJvzsx1WJx1nNCJAShP1PNmmoMkevx+T9WYuMDxRW6DmX3POab3AErWKRwKyw8D0C0PzyzAoJjEB6+qtSWA3TpE7LZZ3+c7fuRnj6BcAKMsuRfeZrTFsR0+cwP9AXXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786109005; c=relaxed/simple;
-	bh=8AzOmKPFHDxA8q+uSAZX9GWmAvClTspGZbGdrE9wVq0=;
+	s=arc-20240116; t=1786147774; c=relaxed/simple;
+	bh=lDRaQu6/9wkhlDCv2yTHfkldEo5fvukdaDSbjb18JJE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LjW3hBLKfm9kkr9NmFo4+/cnDvhBzBeJU9LpiMNINHdCJhzCRzGBz3gx1tDo28Oe1xJzJHd7CFMEpO7+C3DcSyPi3bq0z5amGLjqWqt48/B6C3G21FEaCRCljzmkgc/MjVn4/qXkBy95gXx55yNLQavYm3zc+oZYiL8sj85bFpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ILCHpRWr; arc=none smtp.client-ip=185.70.43.101
+	 MIME-Version:Content-Type; b=dIfU2xezF9iQlOkucLan/1cP8dISc8gFnsgmhQIOp3XkRk8hTdaW6Vt1tx/e2xOOZkJNkCYpdKKg3yW0BDiuMkOb/aDyl0nZfO+4PnkFr8FFxFukJvhe9ToAJ7eZuZvRWxL3t/O6DAGZsZ2hywSOPFV9F0PA6spUwMRIVIlQOSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H0Midps+; arc=none smtp.client-ip=185.70.43.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ILCHpRWr"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H0Midps+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1786108996; x=1786368196;
-	bh=8AzOmKPFHDxA8q+uSAZX9GWmAvClTspGZbGdrE9wVq0=;
+	s=protonmail; t=1786147764; x=1786406964;
+	bh=lDRaQu6/9wkhlDCv2yTHfkldEo5fvukdaDSbjb18JJE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ILCHpRWrT/i9iUVblxEpAgmMiXFzXSmX1cDffE/Z1bN7O5Rj7rGqtVrooO2CJCUJp
-	 zXkv0XSfc1QvYFghNAIstWEwVQwSy2WyT3v7/xN7HuIeLDDjR+5ar5Z0Lq5XtCH0Iz
-	 DBCfGdj3WlVIMD51rDjQlA29aDxVFqvqr0kEyvTSHSprjHZhZO1w29DceFxd43nerj
-	 t9swyi7ELYXGVgp+JmFRYIHYfZOizIMcPAUgFJ45e4/QqbActwuB6Lfy7VRCT53vnK
-	 3vPAcMYMHk6ZlLaiwDTT55r/v6E/WKU0PEgIA3zVaZrs952yabWOjzInMwTGQdbvV4
-	 XLW1ifKeE7ruw==
-Date: Fri, 07 Aug 2026 13:23:11 +0000
-To: Vinod Koul <vkoul@kernel.org>
+	b=H0Midps+lnpM9dRKAzZs8LO8dpNxkBv/G9YcUw0UkuZN/5JCwuC8erTfZRGrIw/zN
+	 oTReXtNmVQKNncv6ZY6MBoXdCECZ/gC+a/g4UWmzLPa/Q6haSPqm+5dbbUMYKQMqzn
+	 Sj/Jn6DdVr1j+OS25MljK+RJA+wnLYbtT291XFBHcAhZI7TcBT56vgJhnXGflGBSZ3
+	 8c6Fz2KQEw7FD1HmHJyLk9FlqPrYIJ8iQQS7Ld7ImgZfDh1E/OFzr7TEJy3KrS5tNL
+	 la0xbLjQuPYFpEvt9nD5W9fj5dyfCjrr7dUiuHscI+3AAKwQ3Ka5HqozecSRuiShVk
+	 aadVyZFjCN5qQ==
+Date: Sat, 08 Aug 2026 00:09:16 +0000
+To: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Dmitry Baryshkov <lumag@kernel.org>, Bjorn Andersson <andersson@kernel.org>
 From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] Initial PCIe0 PHY support for SM8475
-Message-ID: <a9c94d7e-f21e-4b14-8e8b-e744850730b9@proton.me>
-In-Reply-To: <anWNemb2WCYUwRJm@vaman>
-References: <20260715-sm8475-bup-pcie-v2-0-48bd91a19abf@proton.me> <f0c1eba8-c6d9-4831-a460-980bead03c4d@proton.me> <anWNemb2WCYUwRJm@vaman>
+Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v2 2/2] phy: qcom: qmp-combo: Drop qmp_v4_calibrate_dp_phy
+Message-ID: <32cfbf72-f2a9-4919-aedb-49f76a400362@proton.me>
+In-Reply-To: <20260711-sm8450-qol-qmp-v2-2-d14353bd6ff4@proton.me>
+References: <20260711-sm8450-qol-qmp-v2-0-d14353bd6ff4@proton.me> <20260711-sm8450-qol-qmp-v2-2-d14353bd6ff4@proton.me>
 Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 7557f2a5859058bade0c65992c59e17045d99b5e
+X-Pm-Message-ID: 650ffaff1a53d7802a9dba88bf6b3af193d76c97
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,23 +47,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 8/7/26 3:47 AM, Vinod Koul wrote:
-> On 07-08-26, 03:27, Esteban Urrutia wrote:
->> On 7/15/26 2:37 AM, Esteban Urrutia via B4 Relay wrote:
->>> This series adds support for the PCIe0 PHY found in the SM8475 SoC.
->>> The initialization sequence varies noticeably when compared to the one =
-used
->>> in the SM8450 SoC, hence the need to add support for this PHY.
->> Any chance on this series being picked up?
->> Kind of related (since both series belong to the same subsystem): I
->> resent USB SS support for SM8475 some days ago and this has been picked
->> up already.
+On 7/11/26 11:13 PM, Esteban Urrutia via B4 Relay wrote:
+> From: Esteban Urrutia <esteuwu@proton.me>
 >=20
-> Already picked up, should be pushed later today
+> There are no downstream device trees that specify five values in the
+> qcom,aux-cfg1-settings array.
+> Plus, after cross referencing both downstream device trees and entries
+> which refer this function, only 0x13 is specified.
+> Since 0x13 is written at initialization time, drop this function as a
+> whole, and remove now unused variable assignations.
+>=20
+> Fixes: aff188feb5e1 ("phy: qcom-qmp: add support for sm8250-usb3-dp phy")
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 
-
-Thanks for the reply!
+Could this commit in question please be picked as a subset of this
+patch?
+This commit should have been picked along with [1] since
+calibrate_dp_phy is not present in it because of this very commit.
 
 Regards,
 Esteban
+
+[1] https://lore.kernel.org/linux-arm-msm/178603357411.674490.1152033940734=
+0817802.b4-ty@kernel.org/T/#t
 
