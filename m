@@ -1,87 +1,147 @@
-Received: from vinatta.cz (vinatta.cz [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78483277CAD;
-	Mon, 10 Aug 2026 05:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5AB3B0598;
+	Mon, 10 Aug 2026 09:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786340317; cv=none; b=nl/e/0VAwSGPlJOGimRZH3ZA6KOtwtenko1ih04xfiPfJr/1WW+KxiQyWkP3Arvk20IFfy1ZcdP9wYgrkFPmJQV9elGFfs/nqiskq2gerZy6mQt3lJnXx4IY57fCleKME0KXmIa+nlFg9IMroQGY1NWxKVXhdqjG/FsKKWjcZAY=
+	t=1786354713; cv=none; b=blWsF1Y99tNhEF1Ht9H3Rsiq/feqazQY3XlJejzw3u8OKZm5hpjuCFe/Ctn8jvUYuVz1VVOx9ATm1tqxayANYd7jotvaf83bGqtJAxLC+6r/Rg0cgnJNN11vWfKXY/ahdv7pYr1CRAFx22Nq2ah/TU+EMrs8oQpMbgtOBaE//aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786340317; c=relaxed/simple;
-	bh=rdgatJqXq09iZfF8MwWC7oqz/aY6pcVLm3L68LKTsVg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Cc:Subject:
-	 References:In-Reply-To; b=JoxB2a0jm2ITwXeFGUgkvKyb/YD5N++vfrX/89XdxlwiDfyCc+aOA1EOFnWmKcSBnB9nd5LRDsyDQFmyQq50SQPU4wy8c73tyrCJr2Wq0jpVcbdXYsBW1sYNgP8LoxZkLJUMvqWJRUV58IZ2YAmPjwDckBa2ylNgoaNET+5fj8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=vinatta.cz; dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b=oGxaFSkb; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinatta.cz
+	s=arc-20240116; t=1786354713; c=relaxed/simple;
+	bh=h0yIhrerMJAiuFRsy++PNeEJXVg6iydzgDzRGIswKfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IediiEs6e9mmePtqlkvyyn92NAdKMTOigC6EJnwOMLwg5ZVRI5dwrDsqe7diBHoVXu+anxK4RPHx7aOwa9DIQh8/If5kb7GJaVhjGQFOKf4Fmkh3B+1kjtJzzfl7IH1fbF/jx2hSFL0szUWYFPqc5U14yQyMXKMRZCIFO5QK/5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=necaQJAs; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vinatta.cz header.i=@vinatta.cz header.b="oGxaFSkb"
-DKIM-Signature: a=rsa-sha256; bh=rdgatJqXq09iZfF8MwWC7oqz/aY6pcVLm3L68LKTsVg=;
- c=relaxed/relaxed; d=vinatta.cz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@vinatta.cz; s=default; t=1786339366; v=1; x=1786771366;
- b=oGxaFSkb04TgaZtwxVkxckf1o7rYI9s9/g6I7Of/SalSoGIexeWIuZlUoEHf73s0Nz8+hSCO
- 2mOt9PDjshw9LrKOukPYyHWII+Uck9dHlxrom4H64jN1o5BFdzzPoa9+IFdmpBoKBQDBVl16dQs
- hC35Gafs18KqAAzWU46laRUuSsP4DfzpJLci/N+VWs3zQRlDEPttvBsDAEekZmzC1nzttaILjwY
- yZau2lTDM6Ymsd74zl4KX0Y06mN6FNZrSkv1WFxAl0CftJlHdo4eL5z7SAml85Z/PAHHrPlxTBn
- GrKqIEVA05Te3hkgHF92CN9f233BrkQuCP+yRINYgmKHA==
-Received: by vinatta.cz (envelope-sender <karel@vinatta.cz>) with ESMTPS id
- 15759296; Mon, 10 Aug 2026 07:22:46 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="necaQJAs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786354712; x=1817890712;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h0yIhrerMJAiuFRsy++PNeEJXVg6iydzgDzRGIswKfs=;
+  b=necaQJAsuMaZ0DZYB8b68P3aDQE85J+mjjNvK1FuSOpyWabrOwO65HMI
+   kaGBIgHzZzqACFE6oMKdKQy5/ika7AzA5Gc5ubh0vGgdcwiBLNX+DTFOD
+   6S//2Ff0+YnPHq85+MwdvkVXporr4/lIy6ALCG+iUwXYuV2BGAqNZDU7n
+   2DHLKYBLEtfFp1UeKfNGF1fmlEtuxokHXgvmnD3YHGvHBI8v5cvXnOdvK
+   IGTj3gzOLMZyWBcT8h0q8CwCyvuROBg1QQGx0xBm1kKt3uJkraSpfOSYS
+   9X2vRwE+5XuQa57RmJbMbDF0Q5Pmae5fQNOHruheJR8fjRWBXc7+Azo3y
+   Q==;
+X-CSE-ConnectionGUID: ZDZJ5DbHS9CIBuNRN02edg==
+X-CSE-MsgGUID: t1cI63o6RMy1CI5x1kuJKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="98015041"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="98015041"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 02:38:31 -0700
+X-CSE-ConnectionGUID: sf8saDVWRmiZMFEJMCI6GQ==
+X-CSE-MsgGUID: 4EKwvLwxSQyiJHpE4KQauQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
+   d="scan'208";a="263040797"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.127])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 02:38:28 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 942B6121197;
+	Mon, 10 Aug 2026 12:38:26 +0300 (EEST)
+Date: Mon, 10 Aug 2026 12:38:26 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: david@ixit.cz
+Cc: Alexander Martinz <amartinz@shiftphones.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: dongwoon,dw9714:
+ Document DW9714A and V variant
+Message-ID: <anmcEvEwld-ZV9WE@kekkonen.localdomain>
+References: <20260803-dw9714v-v3-0-8e10278dcd0d@ixit.cz>
+ <20260803-dw9714v-v3-1-8e10278dcd0d@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Aug 2026 07:22:34 +0200
-Message-Id: <DKL0GAHVZF2H.1PCBLWAT453SS@matfyz.cz>
-To: "Johannes Berg" <johannes@sipsolutions.net>
-From: "Karel Balej" <balejk@matfyz.cz>
-Cc: "Brian Norris" <briannorris@chromium.org>, "Francesco Dolcini"
- <francesco@dolcini.it>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, "Andrew Lunn"
- <andrew@lunn.ch>, "Gregory Clement" <gregory.clement@bootlin.com>,
- "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>, "Ulf Hansson"
- <ulf.hansson@linaro.org>, "Frank Li" <Frank.Li@nxp.com>,
- <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>, "Peng
- Fan" <peng.fan@nxp.com>, <david@ixit.cz>
-Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
- samsung,coreprimevelte
-References: <20251026182602.26464-1-balejk@matfyz.cz>
- <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
- <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
- <DI5L100Q1RKO.1A68EJIPWYSRC@matfyz.cz>
- <DIKSVZCAQES1.35I4QY11LBVNV@matfyz.cz>
-In-Reply-To: <DIKSVZCAQES1.35I4QY11LBVNV@matfyz.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803-dw9714v-v3-1-8e10278dcd0d@ixit.cz>
 
-Johannes,
+Hi David,
 
-Karel Balej, 2026-05-17T10:14:58+02:00:
-> Karel Balej, 2026-04-29T12:55:23+02:00:
->> what are the options here now? Would it be possible to make an
->> exception and accept the patches without the firmware being in
->> linux-firmware? This is an old device with no mainstream audience so I
->> expect everyone who will want to use it will be able to supply the
->> firmware themselves and it would be great to not have to keep the
->> patches in a fork, especially when trying to build on top of them
->> further (such as to fix the driver-firmware incompatibilities discussed
->> in one of the patches of this series).
->
-> would you please let us know whether there is any chance an exception
-> could be made for this chip regarding the firmware or whether there is
-> any other way to upstream the support?
+On Mon, Aug 03, 2026 at 11:50:25AM +0200, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> DW9714A is successor of DW9714 and DW9714V is successor of the DW9714A.
+> 
+> All actuators are backward compatible, but they do introduce new features,
+> such as Smart Actuator Control (SAC) mode which can minimize the
+> mechanical vibration and achieve very fast mechanical settling time.
+> Support for SAC can be implemented in the future.
 
-I still haven't heard from you, could you please have a look and let us
-know if there is any way forward?
+What kind of configuration does SAC require? Such things generally aren't
+configured from the userspace, compare e.g. with the dw9719 bindings
+discussion.
 
-The support for the chip has been out of tree for over two and a half
-years now.
+> 
+> Nit: fix typo in description by removing duplicate information.
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  .../devicetree/bindings/media/i2c/dongwoon,dw9714.yaml     | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+> index 66229a3dc05d6..7c2769e6c4880 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+> @@ -5,22 +5,30 @@ $id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9714.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Dongwoon Anatech DW9714 camera voice coil lens driver
+>  
+>  maintainers:
+>    - Krzysztof Kozlowski <krzk@kernel.org>
+>  
+>  description:
+> -  DW9174 is a 10-bit DAC with current sink capability. It is intended for
+> -  driving voice coil lenses in camera modules.
+> +  10-bit DAC with current sink capability. It is intended for driving
+> +  voice coil lenses in camera modules.
+>  
+>  properties:
+>    compatible:
+> -    const: dongwoon,dw9714
+> +    oneOf:
+> +      - items:
+> +          - const: dongwoon,dw9714v
+> +          - const: dongwoon,dw9714a
+> +          - const: dongwoon,dw9714
+> +      - items:
+> +          - const: dongwoon,dw9714a
+> +          - const: dongwoon,dw9714
+> +      - const: dongwoon,dw9714
+>  
+>    reg:
+>      maxItems: 1
+>  
+>    powerdown-gpios:
+>      description:
+>        XSD pin for shutdown (active low)
+>  
+> 
 
-Thank you,
-Karel
+-- 
+Regards,
+
+Sakari Ailus
